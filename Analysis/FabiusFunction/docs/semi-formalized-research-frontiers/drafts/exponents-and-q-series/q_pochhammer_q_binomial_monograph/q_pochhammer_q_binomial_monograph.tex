@@ -127,13 +127,8 @@
 \crefname{warning}{warning}{warnings}
 \Crefname{warning}{Warning}{Warnings}
 
-% Document-local semantic commands.  Their names expose distinctions that the
-% identical traditional glyphs do not: finite versus generalized indices,
-% the base of a q-multinomial, and the typed combinatorial object involved.
-\newcommand{\QMultinomial}[3]{\genfrac{[}{]}{0pt}{}{#1}{#2}_{#3}}
-\newcommand{\GeneralizedQPochhammer}[3]{(#1;#2)_{#3}}
-\newcommand{\GeneralizedGaussianBinomial}[3]{\genfrac{[}{]}{0pt}{}{#1}{#2}_{#3}}
-\newcommand{\GeneralizedQNumber}[2]{\left[#1\right]_{#2}}
+% Remaining document-local semantic commands.  Their names expose the typed
+% combinatorial or analytic object when a traditional glyph would not.
 \newcommand{\QFallingPower}[4]{\left(#1-#2\right)_{#3}^{\langle #4\rangle}}
 \newcommand{\JacksonDifferential}[2]{\mathop{}\!\mathrm d_{#1}#2}
 \newcommand{\InversionNumber}[1]{\operatorname{inv}(#1)}
@@ -4564,6 +4559,25 @@ Pair $m=-n$ with $m=n+1$ for $n\ge0$.  Their sum is
 \]
 Cancelling the common minus sign proves the identity.
 \end{proof}
+
+% ed.: remark added to record the proof used by the formalization.
+\begin{remark}[A derivative-free proof]\label{rem:jacobi-cubic-formalization}
+The formalization avoids differentiating the bilateral series.  Pairing
+$k=n+1$ with $k=-n$ in \eqref{eq:jtp-minus} (both have
+$\binom k2=\binom{n+1}2$) and dividing by $1-z$ gives, for $z\ne0,1$,
+\[
+ \frac{(z;q)_\infty(q/z;q)_\infty(q;q)_\infty}{1-z}
+ =\sum_{n\ge0}(-1)^{n+1}q^{\binom{n+1}2}
+ \Bigl(-z^{-n}\sum_{i=0}^{2n}z^i\Bigr),
+\]
+since $z^{n+1}-z^{-n}=-z^{-n}(1-z^{2n+1})$ and
+$1-z^{2n+1}=(1-z)\sum_{i\le 2n}z^i$.  The left side equals
+$(qz;q)_\infty(q/z;q)_\infty(q;q)_\infty$, which tends to $(q;q)_\infty^3$ as
+$z\to1$ by continuity of the infinite product; on the right each term tends
+to $(-1)^n(2n+1)q^{\binom{n+1}2}$, and for $\lvert z-1\rvert<\tfrac12$ the
+terms are dominated by $\lvert q\rvert^{\binom n2}(27\lvert q\rvert/2)^n$, so
+Tannery's theorem passes the limit through the sum.
+\end{remark}
 
 \section{A theta form of the \texorpdfstring{$q$}{q}-gamma reflection product}
 
@@ -10252,6 +10266,24 @@ requires no nonvanishing premise.  The last two theorems,
 scale and nome $1/4$ and transfer the product to a bounded Fabius witness
 satisfying \path{IsFabius}.
 
+The zero-definition, three-theorem module
+\path{GeometricPochhammerNormalConvergence.lean} strengthens that pointwise
+identity to the exact outer-product convergence used here.  For every complex
+$q$ with $\lVert q\rVert<1$,
+\path{hasProdLocallyUniformly_geometricSincProduct_complexQPochhammerInf}
+proves locally uniform convergence on the whole $z$-plane of
+\[
+ \prod_{k\ge0}
+ \left(\frac{z^2}{(k+1)^2};q^2\right)_\infty
+\]
+to $S_q(z)$, including $q=0$.  The declarations
+\path{hasProdLocallyUniformly_rvachevFourierProduct_complexQPochhammerInf}
+and
+\path{hasProdLocallyUniformly_rvachevFourier_complexQPochhammerInf}
+give respectively the nome-$1/4$ Rvachev product and its bounded-Fabius
+Fourier specialization.  Thus the outer locally-uniform, equivalently normal
+convergence, portion of the inside product is now an exact Lean subclaim.
+
 In centered characteristic-function coordinates,
 $z=(1-q)t/(2\pi)$ identifies the general theorem with the inside product.
 At the dyadic scale this is $t=4\pi z$.  In the uncentered MGF normalization
@@ -10282,11 +10314,11 @@ $q=0$ and negative contractions.  The additional declarations
 \path{tendstoLocallyUniformly_prefix_sinc_charFun} and
 \path{tendstoUniformlyOn_prefix_sinc_charFun} give local uniform convergence
 of the full prefixes on the real frequency line and uniform convergence on
-every compact real frequency set.  There is still no named centered
-or MGF bridge and no outside formula or zero--pole exchange; named
-local-uniform or normal convergence of the outer Pochhammer product over the
-spectral index and a packaged complex-frequency full-prefix statement are also
-absent.  Thus \Cref{thm:qF-spectral} remains only partially formalized.
+every compact real frequency set.  There is still no named centered or MGF
+bridge, no packaged complex-frequency full-phase-prefix statement, and no
+outside formula, pole divisor, or zero--pole exchange.  Thus
+\Cref{thm:qF-spectral} remains only partially formalized even though its
+inside-disk pointwise factorization and outer normal convergence are exact.
 
 \begin{remark}[The nome, and where the $q$-objects finally appear]\label{rem:qF-nome}
 The geometric ratio $q$ of the random series \eqref{eq:geometric-uniform-series}
@@ -12489,8 +12521,8 @@ inside the proof below does not formalize the result the proof concludes.
   than a mathematical claim.
 \end{description}
 
-Of the 282 labelled forward results, 70 are \statusexact, 82 are
-\statuspartial, 122 are \statusnone, and 8 are \statusna.  The original
+Of the 282 labelled forward results, 71 are \statusexact, 84 are
+\statuspartial, 119 are \statusnone, and 8 are \statusna.  The original
 191-result pre-Fabius core had 36 \statusexact, 29 \statuspartial, 123
 \statusnone, and 3 \statusna{} entries.  The four integrated guide chapters
 add 31 human-proved but not Lean-formalized assertions and five labelled
@@ -12552,9 +12584,13 @@ convergence, entireness, the exact division-free factor-zero locus, the
 reciprocal-power zero lattice for nonzero \(q\), and analytic order one from
 the generic API rather than duplicating those analytic proofs.  The
 factor-zero and simple-order results include the boundary \(q=0\).  The
+zero-definition, three-theorem
+\texttt{GeometricPochhammerNormalConvergence} leaf further proves locally
+uniform convergence of the \emph{outer rearranged} Pochhammer-product
+right-hand side for every strict complex contraction, its nome-\(1/4\)
+Rvachev specialization, and the bounded-Fabius Fourier specialization.  The
 combined interface still does not supply the book's named centered/MGF
-wrapper, outside-disk reciprocal formula, or local-uniform/normal-convergence
-theorem for the \emph{outer rearranged} Pochhammer-product right-hand side.
+wrapper or its outside-disk reciprocal, pole-divisor, and zero--pole clauses.
 The generic module owns the analytic-order theorem, including \(q=0\);
 \texttt{QPochhammerEntire} preserves the legacy naming surface.
 
@@ -12565,6 +12601,7 @@ complete public declaration lists:
 \small
 \path{QBinomialCauchy.lean}: one definition and five theorems, including the
 compatibility spelling of the primary identity;\\
+\path{QMultinomial.lean}: one definition and seven theorems;\\
 \path{SymmetricFunctionOrthogonality.lean}: one definition and six theorems;\\
 \path{CompleteHomogeneousGenerating.lean}: one definition and six theorems;\\
 \path{CompleteHomogeneousAsymptotics.lean}: one theorem;\\
@@ -12576,13 +12613,22 @@ compatibility spelling of the primary identity;\\
 \path{QPochhammerElementaryIdentities.lean}: 13 theorems;\\
 \path{QPochhammerDissection.lean}: zero definitions and two theorems;\\
 \path{QPochhammerInfinite.lean}: one definition and twenty-nine theorems;\\
+\path{QPochhammerInfiniteBounds.lean}: zero definitions and five theorems;\\
+\path{QPochhammerComplexOrder.lean}: one definition and four theorems;\\
 \path{QPochhammerEntire.lean}: zero definitions and five legacy compatibility
+theorems;\\
+\path{GeometricPochhammerNormalConvergence.lean}: zero definitions and three
 theorems;\\
 \path{QBinomialTheoremInfinite.lean}: one definition and 22 theorems; its
 use of \path{Fabius.finiteQPochhammerIn_zero_left} imports the unique
 declaration from \path{GaussianBinomialAtOne.lean};\\
+\path{BasicHypergeometricSeries.lean}: two definitions and five theorems;\\
+\path{HeineTransformation.lean}: two definitions and five theorems;\\
+\path{QGaussSummation.lean}: zero definitions and two theorems;\\
 \path{QBinomialReciprocity.lean}: four theorems;\\
 \path{GaussianBinomialPalindromic.lean}: zero definitions and twelve
+theorems;\\
+\path{GaussianBinomialPolynomialStructure.lean}: zero definitions and five
 theorems;\\
 \path{GaussianBinomialAtNegOne.lean}: five theorems;\\
 \path{RvachevPochhammerFactorization.lean}: one definition and nine theorems;\\
@@ -12627,7 +12673,14 @@ reflection in that exact degree, and coefficient palindromicity for the
 universal polynomial over every nontrivial commutative semiring where degree
 requires nontriviality.  The same module also exports
 \path{Fabius.coeff_gaussianBinomial_top} and
-\path{Fabius.two_mul_derivative_gaussianBinomial_eval_one}.  Together with symmetry,
+\path{Fabius.two_mul_derivative_gaussianBinomial_eval_one}.  The companion
+\path{GaussianBinomialPolynomialStructure.lean} exports the five
+\(\NaturalNumbers[X]\)-specialized declarations
+\path{Fabius.natDegree_gaussianBinomial_universal},
+\path{Fabius.gaussianBinomial_universal_monic},
+\path{Fabius.coeff_zero_gaussianBinomial_universal},
+\path{Fabius.gaussianBinomial_universal_reflect}, and
+\path{Fabius.coeff_gaussianBinomial_universal_symm}.  Together with symmetry,
 unit reciprocity, and the universal-evaluation theorem from
 \path{GaussianBinomialUniversal.lean}, this is the exact Lean counterpart of
 \Cref{cor:positivity,thm:qbinom-structure}.
@@ -12766,8 +12819,21 @@ specialize to the fixed nome
 \(1/4\); the Fourier form assumes exactly a bounded Fabius witness and
 \path{IsFabius}.  What remains outside the API from
 \Cref{thm:qF-spectral} is its named centered/MGF packaging, outside-disk
-reciprocal and zero--pole clauses, and named local-uniform or normal
-convergence of the outer Pochhammer product over the spectral index.
+reciprocal formula, pole divisor, and zero--pole clauses.
+
+\item The zero-definition, three-theorem module
+\path{GeometricPochhammerNormalConvergence.lean} consists exactly of
+\path{Fabius.hasProdLocallyUniformly_geometricSincProduct_complexQPochhammerInf},
+\path{Fabius.hasProdLocallyUniformly_rvachevFourierProduct_complexQPochhammerInf},
+and
+\path{Fabius.hasProdLocallyUniformly_rvachevFourier_complexQPochhammerInf}.
+The first gives locally uniform convergence on the whole complex plane of the
+outer nome-$q^2$ Pochhammer product to $S_q$ for every complex strict
+contraction, including $q=0$.  The second fixes the dyadic scale and nome
+$1/4$; the third transfers that result to the Fourier transform of every
+bounded Fabius witness satisfying \path{IsFabius}.  This is precisely the
+outer normal-convergence subclaim of the inside-disk formula after its linear
+change of variables; it asserts no exterior reciprocal or pole statement.
 
 \item The zero-definition, five-theorem module
 \path{QPochhammerEntire.lean} consists exactly of the legacy compatibility
@@ -12795,8 +12861,9 @@ the five theorems cover all of \Cref{thm:poch-entire}; the division-free third
 and simple-order fifth theorem also cover the boundary \(q=0\), where the sole
 zero is \(a=1\).  The Lean surface asserts nothing for
 \(\lVert q\rVert\ge1\), no joint holomorphy in \(q\), closed derivative or
-growth formula, reciprocal meromorphic continuation, or local-uniform
-convergence of the separate outer product over spectral indices.
+growth formula, or reciprocal meromorphic continuation.  The separate
+outer-product leaf above owns the locally uniform convergence over spectral
+indices.
 
 \item The final geometric-sinc tranche contributes four public theorems in
 \path{GeometricReciprocalGamma.lean}, namely
@@ -12828,9 +12895,9 @@ These are exact subclaims of
 \Cref{thm:geometric-uniform-characteristic,thm:qF-spectral}; neither compound
 label is promoted, because no declaration packages the former's
 complex-frequency full phase-prefix convergence or the latter's centered/MGF
-wrapper, reciprocal outside-disk formula, zero--pole exchange, and named
-local-uniform or normal convergence of the outer Pochhammer product over the
-spectral index.
+wrapper, reciprocal outside-disk formula, pole divisor, and zero--pole
+exchange.  The latter's outer normal convergence is exact through
+\path{GeometricPochhammerNormalConvergence.lean} as recorded above.
 
 \item The six theorems of \path{GeometricCompleteHomogeneous.lean} are
 \path{Fabius.completeHomogeneousEval_geometric},
@@ -12983,8 +13050,8 @@ inferred from a related finite identity.
 \toprule
 Chapter & \statusexact & \statuspartial & \statusnone & \statusna\\
 \midrule
-The algebra of $q$-shifted factorials & 11 & 1 & 3 & 0\\
-$q$-integers and Gaussian coefficients & 8 & 0 & 1 & 0\\
+The algebra of $q$-shifted factorials & 11 & 2 & 2 & 0\\
+$q$-integers and Gaussian coefficients & 8 & 1 & 0 & 0\\
 Finite $q$-binomial theorems and inversion & 9 & 1 & 0 & 0\\
 Weighted binomial coefficients and symmetric functions & 3 & 2 & 3 & 0\\
 Partitions, words, paths, and inversion statistics & 3 & 1 & 5 & 0\\
@@ -12996,7 +13063,7 @@ Euler telescoping and very-well-poised summations & 0 & 0 & 4 & 0\\
 Bilateral series and Ramanujan's \texorpdfstring{${}_1\psi_1$}{1psi1} sum & 0 & 0 & 2 & 0\\
 $q$-difference calculus and the quantum binomial & 7 & 2 & 1 & 0\\
 The $q$-gamma and $q$-beta functions & 1 & 1 & 6 & 0\\
-Jacobi's triple product & 4 & 2 & 2 & 0\\
+Jacobi's triple product & 5 & 2 & 1 & 0\\
 Theta modularity, lattice dissection, and sums of squares & 0 & 0 & 14 & 4\\
 Partitions and product--sum identities & 0 & 0 & 4 & 0\\
 Bailey pairs and the Rogers--Ramanujan identities & 1 & 0 & 6 & 0\\
@@ -13012,7 +13079,7 @@ Half-base arithmetic and Prouhet--Thue--Morse cancellation & 6 & 3 & 0 & 0\\
 Geometric uniform sums, $q$-cumulants, and the Fabius--Rvachev functions & 2 & 11 & 0 & 0\\
 Dyadic Gaussian--Thue--Morse structure and the values of $F$ & 6 & 44 & 6 & 0\\
 \midrule
-\textbf{Forward total} & 70 & 82 & 122 & 8\\
+\textbf{Forward total} & 71 & 84 & 119 & 8\\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -13117,16 +13184,24 @@ $q^\alpha$, each identity under the nonvanishing hypothesis that makes its
 right-hand side defined; the integral case is
 \texttt{qPochhammerInfIn\_\allowbreak{}eq\_\allowbreak{}finite\_\allowbreak{}mul\_\allowbreak{}shift}
 of \texttt{QPochhammerInfinite}}\\[2pt]
-\Cref{prop:order-derivative} & \statusnone & ---\\[2pt]
+\Cref{prop:order-derivative} & \statuspartial &
+\texttt{hasDerivAt\_\allowbreak{}qPochhammerC},
+\texttt{hasDerivAt\_\allowbreak{}qPochhammerInfIn\_\allowbreak{}mul\_\allowbreak{}cpow}\newline
+{\footnotesize\texttt{QPochhammerOrderDerivative}; the derivative in the
+order with the displayed logarithmic form, at every $\alpha$ with
+$\lVert aq^\alpha\rVert<1$ (principal branch); holomorphy on a general open
+$U$ avoiding the poles and the local uniformity are not formalized}\\[2pt]
 \Cref{thm:lambert-log} & \statuspartial &
 \texttt{tsum\_\allowbreak{}log\_\allowbreak{}one\_\allowbreak{}sub\_\allowbreak{}geom},
-\texttt{tsum\_\allowbreak{}log\_\allowbreak{}one\_\allowbreak{}sub\_\allowbreak{}geom\_\allowbreak{}real},
 \texttt{exp\_\allowbreak{}neg\_\allowbreak{}tsum\_\allowbreak{}lambert\_\allowbreak{}eq\_\allowbreak{}qPochhammerInfIn},
-\texttt{hasSum\_\allowbreak{}lambert\_\allowbreak{}log\_\allowbreak{}complex}\newline
-{\footnotesize\texttt{EulerLogTransform}; \texttt{LambertSeriesLog}; the
-series identity with the principal logarithms of the factors, its real
-form, and its exponential form $\exp(-\sum_m a^m/(m(1-q^m)))=(a;q)_\infty$;
-the two derivative formulas and the local uniformity are not formalized}\\[2pt]
+\texttt{hasDerivAt\_\allowbreak{}qPochhammerInfIn},
+\texttt{hasDerivAt\_\allowbreak{}qPochhammerInfIn\_\allowbreak{}lambert},
+\texttt{tsum\_\allowbreak{}neg\_\allowbreak{}pow\_\allowbreak{}div\_\allowbreak{}one\_\allowbreak{}sub\_\allowbreak{}mul\_\allowbreak{}pow\_\allowbreak{}eq}\newline
+{\footnotesize\texttt{EulerLogTransform}; \texttt{LambertSeriesLog};
+\texttt{QPochhammerLogDerivative}; the series identity with principal
+logarithms, its exponential form, and both derivative formulas for
+$\lvert a\rvert<1$ by termwise differentiation on discs; the local uniformity
+is used in the proofs but not stated as a separate result}\\[2pt]
 \Cref{cor:divisor-sum} & \statusnone & ---\\[2pt]
 \Cref{thm:poch-dilog} & \statusnone & ---\\[2pt]
 \Cref{prop:classical-poch-limit} & \statusexact &
@@ -13148,7 +13223,7 @@ the quotient form in any field with $(q;q)_k\ne0$, the cleared form in every
 commutative ring}\\[2pt]
 \Cref{thm:qpascal} & \statusexact & \texttt{gaussianBinomial\_\allowbreak{}succ\_\allowbreak{}succ\_\allowbreak{}alt}\newline{\footnotesize\texttt{FiniteQBinomialCore}}\\[2pt]
 \Cref{cor:positivity} & \statusexact &
-\texttt{gaussianBinomial\_\allowbreak{}eq\_\allowbreak{}eval₂\_\allowbreak{}universal}\newline
+\texttt{gaussianBinomial\_\allowbreak{}eq\_\allowbreak{}eval	extsubscript{2}\_\allowbreak{}universal}\newline
 {\footnotesize\texttt{GaussianBinomialUniversal}; $[n,k]_q$ is the value at
 $q$ of the universal polynomial $[n,k]_X\in\NaturalNumbers[X]$, in every
 commutative semiring, by naturality of the $q$-Pascal recurrence}\\[2pt]
@@ -13158,11 +13233,15 @@ commutative semiring, by naturality of the $q$-Pascal recurrence}\\[2pt]
 \texttt{gaussianBinomial\_\allowbreak{}natDegree},
 \texttt{gaussianBinomial\_\allowbreak{}monic},
 \texttt{coeff\_\allowbreak{}gaussianBinomial\_\allowbreak{}zero},
+\texttt{coeff\_\allowbreak{}gaussianBinomial\_\allowbreak{}top},
 \texttt{reflect\_\allowbreak{}gaussianBinomial},
 \texttt{coeff\_\allowbreak{}gaussianBinomial\_\allowbreak{}reflect}\newline
 {\footnotesize\texttt{FiniteQBinomialCore}; \texttt{QBinomialReciprocity};
-\texttt{GaussianBinomialPalindromic}; all four items exact for every
-\(k\le n\), including boundary columns}\\[2pt]
+\texttt{GaussianBinomialPalindromic};
+\texttt{GaussianBinomialPolynomialStructure}; (iii) and (iv) for the universal
+polynomial $[n,k]_X$ over every commutative semiring, palindromicity as
+$\operatorname{reflect}_{k(n-k)}[n,k]_X=[n,k]_X$ by induction from the two
+$q$-Pascal recurrences}\\[2pt]
 \Cref{cor:qbinom-neg-one-odd} & \statusexact &
 \texttt{gaussianBinomial\_\allowbreak{}neg\_\allowbreak{}one\_\allowbreak{}eq\_\allowbreak{}zero\_\allowbreak{}of\_\allowbreak{}odd\_\allowbreak{}degree},
 \texttt{gaussianBinomial\_\allowbreak{}neg\_\allowbreak{}one\_\allowbreak{}even\_\allowbreak{}odd\_\allowbreak{}eq\_\allowbreak{}zero}\newline
@@ -13176,7 +13255,7 @@ semiring, by continuity of the Gaussian coefficient in its base}\\[2pt]
 \Cref{prop:qmult-factor} & \statusexact &
 \texttt{finiteQPochhammerIn\_\allowbreak{}self\_\allowbreak{}sum\_\allowbreak{}eq\_\allowbreak{}qMultinomial\_\allowbreak{}mul},
 \texttt{qMultinomial\_\allowbreak{}eq\_\allowbreak{}div},
-\texttt{qMultinomial\_\allowbreak{}eq\_\allowbreak{}eval₂\_\allowbreak{}universal}\newline
+\texttt{qMultinomial\_\allowbreak{}eq\_\allowbreak{}eval	extsubscript{2}\_\allowbreak{}universal}\newline
 {\footnotesize\texttt{QMultinomial}; the product of Gaussian coefficients is
 the definition there, the factorial form is proved division-free over every
 commutative ring and as a quotient over every field with $(q;q)_n\ne0$, and
@@ -13187,7 +13266,12 @@ polynomiality with natural coefficients is naturality of the recurrence}\\[2pt]
 {\footnotesize\texttt{QPochhammerElementaryIdentities}; exact displayed
 denominators and \(k<n\), with both root-safe cross-multiplied forms exported
 totally for all \(n,k\) by zero extension}\\[2pt]
-\Cref{thm:qbinom-moments} & \statusnone & ---\\[2pt]
+\Cref{thm:qbinom-moments} & \statuspartial &
+\texttt{two\_\allowbreak{}mul\_\allowbreak{}derivative\_\allowbreak{}gaussianBinomial\_\allowbreak{}eval\_\allowbreak{}one}\newline
+{\footnotesize\texttt{GaussianBinomialPalindromic}; the mean and the
+derivative formula in the division-free form
+$2\,([n,k]_X)'(1)=k(n-k)\binom nk$, over every commutative semiring, from
+palindromicity; the variance is not formalized}\\[2pt]
 \midrule
 \multicolumn{3}{@{}l}{\itshape Finite $q$-binomial theorems and inversion}\\
 \midrule
@@ -13480,7 +13564,12 @@ $\sum_{n\in\IntegerNumbers}(-1)^nq^{n(3n-1)/2}$ with the exponent
 \texttt{pentagonalExponent}, and the paired one-sided form, in any complete
 normed field including $q=0$}\\[2pt]
 \Cref{cor:euler-partition-recurrence} & \statusnone & ---\\[2pt]
-\Cref{thm:jacobi-cubic} & \statusnone & ---\\[2pt]
+\Cref{thm:jacobi-cubic} & \statusexact &
+\texttt{hasSum\_\allowbreak{}jacobi\_\allowbreak{}cubic}\newline
+{\footnotesize\texttt{JacobiCubic}; as a \texttt{HasSum} over
+$\ComplexNumbers$, with the exponent written $\binom{n+1}{2}$; proved by a
+difference quotient at $z=1$ and Tannery's theorem instead of termwise
+differentiation; see \Cref{rem:jacobi-cubic-formalization}}\\[2pt]
 \Cref{cor:qgamma-theta} & \statusexact &
 \texttt{hasSum\_\allowbreak{}theta\_\allowbreak{}qGamma\_\allowbreak{}reflection}\newline
 {\footnotesize\texttt{QGamma}; the theta series is stated as a
@@ -13807,13 +13896,17 @@ the general normalized analytic-germ uniqueness theorem}\\[2pt]
 \texttt{summable\_\allowbreak{}norm\_\allowbreak{}sineTerm\_\allowbreak{}qpow\_\allowbreak{}pair},
 \texttt{geometricSincProduct\_\allowbreak{}eq\_\allowbreak{}tprod\_\allowbreak{}pair}, and
 \texttt{geometricSincProduct\_\allowbreak{}eq\_\allowbreak{}tprod\_\allowbreak{}complexQPochhammerInf}
-from \texttt{RvachevPochhammerFactorization}; general uncentered
-real-frequency sinc bridge, locally uniform entire $S_q$, the pointwise
-general-$q$ nome-$q^2$ Pochhammer factorization, and real-frequency local and
-compact uniform convergence of the full prefixes are exact, but the named
-centered/MGF wrapper, reciprocal outside-disk formula, zero--pole exchange,
-and named local-uniform or normal convergence of the Pochhammer-product
-right-hand side are not packaged}\\[2pt]
+from \texttt{RvachevPochhammerFactorization}; and
+\texttt{hasProdLocallyUniformly\_\allowbreak{}geometricSincProduct\_\allowbreak{}complexQPochhammerInf},
+\texttt{hasProdLocallyUniformly\_\allowbreak{}rvachevFourierProduct\_\allowbreak{}complexQPochhammerInf}, and
+\texttt{hasProdLocallyUniformly\_\allowbreak{}rvachevFourier\_\allowbreak{}complexQPochhammerInf}
+from \texttt{GeometricPochhammerNormalConvergence}; general uncentered
+real-frequency sinc bridge, locally uniform entire $S_q$, the pointwise and
+outer-locally-uniform general-$q$ nome-$q^2$ Pochhammer factorization, both
+dyadic outer-product specializations, and real-frequency local and compact
+uniform convergence of the full prefixes are exact, but the named
+centered/MGF wrapper, reciprocal outside-disk formula, pole divisor, and
+zero--pole exchange are not packaged}\\[2pt]
 \Cref{thm:qF-moment-polynomial} & \statusnone & ---\\[2pt]
 \Cref{prop:qF-P-degree-sharp} & \statusnone & ---\\[2pt]
 \Cref{cor:qF-halfbase-dictionary} & \statuspartial &

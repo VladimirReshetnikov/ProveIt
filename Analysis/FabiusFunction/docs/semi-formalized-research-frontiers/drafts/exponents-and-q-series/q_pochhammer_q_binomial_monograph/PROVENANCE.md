@@ -37,27 +37,41 @@ Exactly three guarded serial passes produced 337, 347, and 347 pages. The
 The validation record in `README.md` distinguishes compilation, font
 embedding, complete page rendering, contact-sheet review, and full-resolution
 inspection. PDFs retained beneath `assets/` are research figures, not
-manuscripts.
+manuscripts.  A later synchronized checkpoint supersedes that artifact: the
+retained 348-page, 3,002,729-byte A4 PDF has SHA-256
+`8bf14b52d8a0fc0abc4d54cca503fd47a2df37cf76ee1bb4e442bea1fd2a4aa7`
+and was built in three serial passes from the 14,158-line, 661,835-byte source
+with SHA-256
+`79ee5e60a6c7e42a91c58dcd9bcae56173cc6b4aa3e54739a461943f705f3904`.
 
-The live source now postdates that receipt. Its 14,201-line, 663,950-byte TeX
+The live source now postdates that receipt. Its 14,294-line, 669,417-byte TeX
 source has SHA-256
-`fe19f8a028a7310d4604a3ab78db5325b58df3d0004dbe1922acb5cdec8928fb`.
+`697238ad7c03ba7611f03524de3445e152da2ea3bff18cca3cbb07986fb09ab2`.
 It incorporates exhaustive crosswalks for `QPochhammerEntire` (zero
 definitions and five theorems), `QPochhammerInfinite` (one definition and
 twenty-nine theorems), `QPochhammerDissection` (zero definitions and two
-theorems), and `GaussianBinomialPalindromic` (zero definitions and twelve
-theorems). The `QPochhammerEntire.lean` leaf proves the fixed-nome
+theorems), `GaussianBinomialPalindromic` (zero definitions and twelve
+theorems), `GaussianBinomialPolynomialStructure` (zero definitions and five
+theorems), and `GeometricPochhammerNormalConvergence` (zero definitions and
+three theorems). It also inventories `QMultinomial` (one definition and seven
+theorems), `QPochhammerInfiniteBounds` (five theorems),
+`QPochhammerComplexOrder` (one definition and four theorems),
+`BasicHypergeometricSeries` (two definitions and five theorems),
+`HeineTransformation` (two definitions and five theorems), and
+`QGaussSummation` (two theorems). The `QPochhammerEntire.lean` leaf proves the fixed-nome
 single-symbol locally uniform product and differentiability, the
 division-free factor-zero criterion including `q = 0`, the reciprocal-power
 zero lattice for nonzero nome, and simple analytic order at every zero. The
-forward status inventory is 70 exact / 82 partial / 122 none / 8 interface;
+three-theorem outer-product leaf proves local-uniform normal convergence for
+every complex strict contraction, including `q = 0`, while the compound
+`thm:qF-spectral` row remains Partial at its named centered/MGF and exterior
+reciprocal clauses. The forward status inventory is 71 exact / 84 partial / 119 none / 8 interface;
 the original 191-result pre-Fabius core is 36 / 29 / 123 / 3 and the
-q-integer/Gaussian chapter is 8 / 0 / 1 / 0. The five-publication concordance
+q-integer/Gaussian chapter is 8 / 1 / 0 / 0. The five-publication concordance
 has 65 Lean-proved, 413 human-proved frontier, 60 not-applicable, and 9
 conjecture rows.
-No normal-convergence claim is made for the additional outer product indexed
-by spectral scale. No PDF was generated for this source-only update, so the
-retained 347-page artifact is historical and must not be treated as rendering
+No PDF was generated locally for this source-only merge update, so the
+retained 348-page artifact is historical and must not be treated as rendering
 the current source.
 
 The former q-Pochhammer/q-binomial monograph arrived in commit

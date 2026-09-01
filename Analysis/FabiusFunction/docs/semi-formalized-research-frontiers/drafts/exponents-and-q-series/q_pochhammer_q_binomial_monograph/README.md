@@ -96,29 +96,36 @@ It checks every permanent package file except the self-referential root
 useful because it preserves the migrated experiment and research-figure
 boundary.
 
-The retained `q_pochhammer_q_binomial_monograph.pdf` is a 347-page A4
-build of the current master source (14,072 lines, 656,200 bytes,
-SHA-256 `062b7230d95ff8bd52b11253c6c3c8820d6f6a82e4307ae5d82a1d793c00c517`).
-The PDF is 2,996,319 bytes with SHA-256
-`29b422a39c42be37bd1487d4245c44e55706720c545dd015957644e47014bd48`.
+The retained `q_pochhammer_q_binomial_monograph.pdf` is a 348-page A4
+build of the current master source (14,158 lines, 661,835 bytes,
+SHA-256 `79ee5e60a6c7e42a91c58dcd9bcae56173cc6b4aa3e54739a461943f705f3904`).
+The PDF is 3,002,729 bytes with SHA-256
+`8bf14b52d8a0fc0abc4d54cca503fd47a2df37cf76ee1bb4e442bea1fd2a4aa7`.
 It was built by exactly three serial
-`pdflatex -interaction=nonstopmode -halt-on-error` passes, which produced 337,
-347, and 347 pages, with `makeindex` run on the `.idx` file after each pass.
+`pdflatex -interaction=nonstopmode -halt-on-error` passes, which produced 338,
+348, and 348 pages, with `makeindex` run on the `.idx` file after each pass.
 The final log scan found three overfull boxes, all in the single paragraph of the QPochhammerEntire crosswalk (source lines 652--670) whose long declaration names lack break points. All pages are A4. `pdffonts` reports 42 font rows, all
 embedded and subsetted, including 5 Libertinus rows, with no Type-3
 fonts. The files under `assets/experiments/**/figures/` remain research
 figures, not publication manuscripts.
 
 The current master TeX is a source-only successor to that checkpoint. Its
-14,201-line, 663,950-byte source has SHA-256
-`fe19f8a028a7310d4604a3ab78db5325b58df3d0004dbe1922acb5cdec8928fb`.
+14,294-line, 669,417-byte source has SHA-256
+`697238ad7c03ba7611f03524de3445e152da2ea3bff18cca3cbb07986fb09ab2`.
 It includes exhaustive crosswalks for `QPochhammerEntire` (zero definitions
 and five legacy compatibility theorems), `QPochhammerInfinite` (one definition
 and twenty-nine theorems), `QPochhammerDissection` (zero definitions and two
 theorems), `QBinomialTheoremInfinite` (one definition and twenty-two
-theorems), and `GaussianBinomialPalindromic` (zero definitions and twelve
-theorems), together with expanded Euler, Jacobi, and Rogers--Szegő
-material.
+theorems), `GaussianBinomialPalindromic` (zero definitions and twelve
+theorems), `GaussianBinomialPolynomialStructure` (zero definitions and five
+theorems), and `GeometricPochhammerNormalConvergence` (zero
+definitions and three theorems). The newer inventory also includes
+`QMultinomial` (one definition and seven theorems),
+`QPochhammerInfiniteBounds` (five theorems), `QPochhammerComplexOrder` (one
+definition and four theorems), `BasicHypergeometricSeries` (two definitions
+and five theorems), `HeineTransformation` (two definitions and five theorems),
+and `QGaussSummation` (two theorems), as well as expanded Euler, Jacobi, and
+Rogers--Szegő material.
 The two newest generic theorems are
 `deriv_qPochhammerInfIn_ne_zero_of_mul_pow_eq_one`, which gives a nonzero
 derivative at every raw factor zero `a*q^j = 1` including `q = 0`, and
@@ -129,23 +136,25 @@ entireness, zero-locus, reciprocal-power, and analytic-order results rather
 than duplicating their analytic proofs. In `QBinomialTheoremInfinite`,
 `finiteQPochhammerIn_zero_left` remains the unique declaration owned by
 `GaussianBinomialAtOne` and is imported rather than redeclared. The forward
-status ledger is 70 Exact, 82 Partial, 122 None, and 8 interface rows; the
+status ledger is 71 Exact, 84 Partial, 119 None, and 8 interface rows; the
 original 191-result pre-Fabius core is 36/29/123/3, and the
-q-integer/Gaussian chapter is 8/0/1/0.  The completed source concordance records 65 Lean-proved rows,
+q-integer/Gaussian chapter is 8/1/0/0.  The completed source concordance records 65 Lean-proved rows,
 413 human-proved frontier rows, 60 not-applicable rows, and 9 conjectures.
-The twelve-theorem `GaussianBinomialPalindromic` API gives exact degree,
+The twelve-theorem `GaussianBinomialPalindromic` API and five-theorem
+`GaussianBinomialPolynomialStructure` API give exact degree,
 monicity, constant and top coefficients, reflection, coefficient
 palindromicity, and the division-free mean identity over generic commutative
 semirings; it promotes `thm:qbinom-structure` to Exact.  The independent inverse-source
 proposition `prop:gq-positive-palindromic` remains Partial because its
 coefficient-of-`q`-equals-one clause has no Lean counterpart. The compound
-outer spectral-product theorem remains Partial: local uniformity for one
-symbol as a function of its argument at fixed contracting nome does not
-establish normal convergence of the additional product over spectral scales.
+outer spectral-product theorem remains Partial even though the three-theorem
+outer-product leaf proves local-uniform (normal) convergence for every complex
+strict contraction, including `q = 0`; its named centered/MGF packaging and
+exterior reciprocal, pole-divisor, and zero--pole clauses remain outside Lean.
 
 The retained PDF and its named checkpoint source were synchronized by that
 build.  The current source now postdates the checkpoint, and the root package
 checksum ledger (`SHA256SUMS`) records the actual hashes of both.  No PDF was
-built for this source-only formalization crosswalk update; the 347-page PDF
+built for this source-only formalization crosswalk update; the 348-page PDF
 remains a historical, source-pinned artifact until the next synchronized
 three-pass build.

@@ -69,7 +69,8 @@ theorem summable_twoPhiOneTerm (a b : 𝕜) {c q : 𝕜} (hq : ‖q‖ < 1)
   obtain ⟨K, _, hK⟩ := exists_norm_twoPhiOneTerm_le a b hq hc z
   exact ((summable_geometric_of_lt_one (norm_nonneg z) hz).mul_left K).of_norm_bounded hK
 
-/-- The defining `₂φ₁` series sums to `twoPhiOne` throughout its absolute-convergence domain. -/
+/-- The defining terms sum to `twoPhiOne` throughout its open unit disc of
+absolute convergence. -/
 theorem hasSum_twoPhiOne (a b : 𝕜) {c q : 𝕜} (hq : ‖q‖ < 1)
     (hc : qPochhammerInfIn c q ≠ 0) {z : 𝕜} (hz : ‖z‖ < 1) :
     HasSum (twoPhiOneTerm a b c q z) (twoPhiOne a b c q z) :=
