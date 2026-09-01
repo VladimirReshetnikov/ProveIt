@@ -53,13 +53,14 @@ group's README remain valid. The canonical comb synthesis has since completed
 its structural-validator, final-PDF, and live root/asset-ledger gates as
 recorded in its row below; full numerical replay and fresh-checkout
 reproduction remain separate work. Its valuation crosswalk and references to
-the renamed q-series synthesis are now included in a synchronized 156-page
-canonical PDF. The primary exposition and Lean walkthrough PDFs were subsequently
-rebuilt upstream at 166 and 126 A4 pages and include both the prime-power
-valuation and exhaustive closed-form Gaunt crosswalks.  The merged TeX sources
-add expanded formula-and-proof commentary, so exact post-merge source/PDF
-synchronization is not claimed; only a parity rebuild is pending for those two
-artifacts.
+the renamed q-series synthesis are included in a synchronized 156-page
+canonical PDF. The primary exposition and Lean walkthrough PDFs were rebuilt
+upstream at 166 and 126 A4 pages and include both the prime-power valuation and
+exhaustive closed-form Gaunt crosswalks. The merged TeX sources now add expanded
+formula-and-proof commentary for the Appell/deconvolution crosswalk, so those
+retained 166- and 126-page PDFs await a post-merge parity rebuild. The canonical
+frontier volume likewise has source-only Appell/deconvolution crosswalk updates;
+its retained 236-page PDF also awaits a post-merge rebuild.
 
 New Frontiers-2 retains its verified 41-page post-union render as a historical
 artifact.  The current source adds the thirty-declaration zero-row-square and
@@ -92,8 +93,9 @@ links to pre-consolidation commit `2e3567feb14947ee3ebcdab11adca64e746ad26f`.
 The seven live document packages are organized by content. The canonical
 `q_pochhammer_q_binomial_monograph/` is at this topic root; the other six are
 grouped under `q-fabius-parameter-deformations/` and
-`geometric-sinc-and-exponent-families/`. The retained
-`q-pochhammer-and-inversion/` index records historical source locations only.
+`geometric-sinc-and-exponent-families/`. The former
+`q-pochhammer-and-inversion/` locations are provenance-only and remain
+recoverable from the pinned revisions and Git history; no live index remains.
 The relative directories below name the current package locations; historical
 arrival paths remain unchanged.
 
@@ -168,14 +170,20 @@ canonical-source draft for five live inputs pinned at
 chapter files. The reproducible raw source-result inventory passes 194/194
 rows (projection SHA-256
 `ff123825f7516adb1edfd9e738f9021d38c03960f0ea134554ede9e14cd8459f`),
-but it is not a reviewed theorem concordance and its canonical-disposition
-fields remain pending. `ASSET_DISPOSITION.csv` accounts for 88 source-group
-files; the deduplicated asset tree is present, and its exhaustive live
-`assets/SHA256SUMS` ledger verifies all 61 retained payloads. The required
-`theorem_concordance.csv` and canonical PDF are absent, so the source validator
-cannot complete and no publication gate is claimed. PDFs retained in the five
-source packages or migrated as evidence are historical/source assets, not a
-rendering of the canonical master. All five inputs therefore remain live.
+and the reviewed `theorem_concordance.csv` preserves those ten immutable
+source fields for all 194 rows.  Its current dispositions are 39 Lean-proved,
+106 human-proved frontier results, 10 conjectures, 15 open problems, and 24
+nonassertoric rows; the static canonical validator passes.  In particular,
+the centered Appell deconvolution, positive-degree Appell mean-zero, and
+arbitrarily phased polynomial-deconvolution rows now have exact named Lean
+counterparts, while the Appell lattice theorem remains human-proved because
+its degree-`N+1` superconvergent-phase clause is not formalized.
+`ASSET_DISPOSITION.csv` accounts for 88 source-group files; the deduplicated
+asset tree is present, and its exhaustive live `assets/SHA256SUMS` ledger
+verifies all 61 retained payloads. The canonical PDF is still absent, so the
+publication gate is not complete. PDFs retained in the five source packages
+or migrated as evidence are historical/source assets, not a rendering of the
+canonical master. All five inputs therefore remain live.
 
 | Directory | Document | Previous path |
 | --- | --- | --- |

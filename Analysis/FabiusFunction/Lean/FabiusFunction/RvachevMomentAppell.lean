@@ -1,6 +1,7 @@
 import FabiusFunction.AnalyticMoments
 import FabiusFunction.AppellSequence
 import FabiusFunction.ReciprocalExponentialGenerating
+import Mathlib.MeasureTheory.Measure.Haar.Unique
 import Mathlib.Topology.Algebra.Polynomial
 
 /-!
@@ -428,5 +429,55 @@ theorem integral_eval_rvachevDeconvolvedPolynomial_add_mul_rvachev
     integral_eval_rvachevAppellPolynomial_add_mul_rvachev F hF]
   simpa only [Polynomial.sum_def] using
     (Polynomial.eval_eq_sum (p := P) (x := x)).symm
+
+/-- Reflection invariance of the even Rvachev density converts additive
+smoothing into centered convolution: smoothing the reflected translate of a
+deconvolved polynomial recovers the original polynomial. -/
+theorem integral_eval_rvachevDeconvolvedPolynomial_sub_mul_rvachev
+    (F : BoundedFabius) (hF : IsFabius F) (P : ℝ[X]) (x : ℝ) :
+    (∫ y : ℝ,
+      (rvachevDeconvolvedPolynomial P).eval (x - y) * rvachevUp F y) =
+        P.eval x := by
+  calc
+    (∫ y : ℝ,
+        (rvachevDeconvolvedPolynomial P).eval (x - y) * rvachevUp F y) =
+        ∫ y : ℝ,
+          (rvachevDeconvolvedPolynomial P).eval (x - (-y)) *
+            rvachevUp F (-y) := by
+      simpa only using
+        (integral_neg_eq_self
+          (fun y : ℝ ↦
+            (rvachevDeconvolvedPolynomial P).eval (x - y) *
+              rvachevUp F y) volume).symm
+    _ = ∫ y : ℝ,
+          (rvachevDeconvolvedPolynomial P).eval (x + y) *
+            rvachevUp F y := by
+      refine integral_congr_ae (Filter.Eventually.of_forall fun y ↦ ?_)
+      dsimp only
+      rw [sub_neg_eq_add, rvachevUp_even F y]
+    _ = P.eval x :=
+      integral_eval_rvachevDeconvolvedPolynomial_add_mul_rvachev F hF P x
+
+/-- Centered convolution of the `n`-th Rvachev--Appell polynomial against
+the even Rvachev density recovers the monomial `x ^ n`. -/
+theorem integral_eval_rvachevAppellPolynomial_sub_mul_rvachev
+    (F : BoundedFabius) (hF : IsFabius F) (n : ℕ) (x : ℝ) :
+    (∫ y : ℝ,
+      (rvachevAppellPolynomial n).eval (x - y) * rvachevUp F y) =
+        x ^ n := by
+  simpa only [rvachevDeconvolvedPolynomial_X_pow,
+    Polynomial.eval_pow, Polynomial.eval_X] using
+    (integral_eval_rvachevDeconvolvedPolynomial_sub_mul_rvachev
+      F hF (X ^ n) x)
+
+/-- Every positive-degree Rvachev--Appell polynomial has mean zero under the
+Rvachev probability density. -/
+theorem integral_eval_rvachevAppellPolynomial_mul_rvachev_eq_zero
+    (F : BoundedFabius) (hF : IsFabius F)
+    {n : ℕ} (hn : 0 < n) :
+    (∫ y : ℝ,
+      (rvachevAppellPolynomial n).eval y * rvachevUp F y) = 0 := by
+  simpa only [zero_add, zero_pow hn.ne'] using
+    (integral_eval_rvachevAppellPolynomial_add_mul_rvachev F hF n 0)
 
 end Fabius

@@ -76,21 +76,19 @@ and as a [rendered PDF](docs/Fabius_Function_and_Rvachev_Up/Fabius_Function_and_
 That primary exposition is deliberately proof-backed: every mathematical claim
 in it must have a proved counterpart in the Lean development.
 
-> **Artifact status (2026-08-31).**  The primary exposition and Lean
-> walkthrough PDFs were rebuilt upstream in fresh, guarded three-pass
-> Libertinus cycles; they contain 166 and 126 A4 pages, respectively, and
+> **Artifact status (2026-09-01).**  The retained primary exposition and Lean
+> walkthrough PDFs are the last validated 166- and 126-page A4 renders; they
 > include the prime-power valuation and exhaustive 30-declaration closed-form
-> Gaunt crosswalks.  Every font in these two refreshed artifacts is embedded
-> and subset, with no Type 3 font.  The merged TeX retains those results and
-> adds expanded formula-and-proof ledgers, so exact post-merge source/PDF
-> synchronization is not claimed.  The retained canonical frontier
-> (236 pages), Integration and Transform Frontiers (376), Representation
-> Frontiers (301), and filed New Frontiers (41) PDFs predate the closed-form
-> tranche and are not synchronized with their current sources.  Earlier checks
-> of the canonical and filed artifacts, including the filed package's historical
-> ledger, are rendering records rather than claims of current source/PDF parity.
-> The latter four require content rebuilds; the primary and walkthrough require
-> only a parity rebuild for the expanded source commentary.
+> Gaunt crosswalks.  Their merged TeX sources now also contain the reflected
+> Appell/deconvolution results and expanded formula-and-proof commentary, so
+> both PDFs are historical pending a post-merge three-pass rebuild.  The
+> retained 236-page canonical-frontier, 301-page Representation Frontiers,
+> 41-page filed New Frontiers, and 71-page notation-catalogue PDFs likewise
+> predate their current sources.  In particular, the filed package's mixed
+> 20-row ledger verifies its current source and retained PDF as separate
+> payloads; it does not establish source/PDF parity.  The upstream canonical
+> q-series synthesis and rebuilt Integration-and-Transform master remain
+> synchronized.  Package-local notices record the remaining rebuild debt.
 
 The formally proved small-argument hierarchy—including the corrected sharp
 asymptotic, the general coefficient algebra for the recursive all-orders
@@ -229,8 +227,6 @@ Padé/J-fractions, infinite Jacobi theory, and asymptotics also remain open.
 
 | Purpose | Focused import | Good starting declarations |
 | --- | --- | --- |
-| Total integer zero-row Wigner-square datum and closed Legendre Gaunt form | `FabiusFunction.LegendreGauntClosedForm` | Exhaustive public inventory: two definitions, `legendreGauntAdmissible` and `legendreWignerThreeJZeroSqRat`; and twenty-five theorems, `legendreGauntAdmissible_iff_exists_pairwise_add`, `legendreGauntAdmissible_pairwise_add`, `legendreWignerThreeJZeroSqRat_pairwise_add`, `legendreWignerThreeJZeroSqRat_pairwise_add_factorial`, `legendreWignerThreeJZeroSqRat_eq_factorial_of_halfSum`, `legendreWignerThreeJZeroSqRat_eq_zero_of_not_admissible`, `legendreGauntRat_add_boundary`, `legendreGauntRat_add_boundary_eq_two_mul_wignerThreeJZeroSqRat`, `legendreGauntRat_zero_left`, `legendreGauntRat_zero_left_eq_two_mul_wignerThreeJZeroSqRat`, `legendreGauntRat_pairwise_add_eq_two_mul_wignerThreeJZeroSqRat`, `legendreGauntRat_eq_zero_of_not_admissible`, `legendreGauntRat_eq_two_mul_wignerThreeJZeroSqRat`, `legendreGaunt_eq_two_mul_wignerThreeJZeroSqRat`, `legendreWignerThreeJZeroSqRat_pos_iff_admissible`, `legendreWignerThreeJZeroSqRat_nonneg`, `legendreWignerThreeJZeroSqRat_eq_zero_iff_not_admissible`, `legendreGauntRat_pos_iff_admissible`, `legendreGauntRat_eq_zero_iff_not_admissible`, `legendreGaunt_pos_iff_admissible`, `legendreGaunt_eq_zero_iff_not_admissible`, `legendreGauntRat_nonneg`, `legendreGaunt_nonneg`, `legendreProductLinearizationCoeffRat_eq_mul_wignerThreeJZeroSqRat`, and `legendreProductLinearizationCoeffRat_pos_iff_admissible`.  Admissibility means even `i+j+k` together with all three weak triangle inequalities, equivalently `i=b+c`, `j=a+c`, and `k=a+b` for naturals `a,b,c`.  With `C_n=choose (2*n) n` and `s=a+b+c`, the total datum is zero off support and on support is `W²(b+c,a+c,a+b)=C_a*C_b*C_c/((2*s+1)*C_s)`; its factorial form is `s!^2*(2*a)!*(2*b)!*(2*c)!/((2*s+1)!*a!^2*b!^2*c!^2)`.  The half-sum form assumes exactly `i+j+k=2*s` and `i≤s`, `j≤s`, `k≤s`.  The degenerate boundaries are `legendreGauntRat i j (i+j)=2*C_i*C_j/((2*(i+j)+1)*C_(i+j))=2*W²(i,j,i+j)` and `legendreGauntRat 0 j k = if j=k then 2/(2*j+1) else 0 = 2*W²(0,j,k)`.  For all natural indices, `legendreGauntRat i j k=2*W²(i,j,k)` and `legendreGaunt i j k=2*(W²(i,j,k):ℝ)`; the square and both Gaunt forms are nonnegative, are positive exactly on admissible support, and vanish exactly off it.  Finally `legendreProductLinearizationCoeffRat i j k=(2*k+1)*W²(i,j,k)` and is positive exactly on support.  This is a directly defined rational square datum only: no signed symbol or Condon--Shortley phase, half-integer or nonzero-magnetic-index symbols, general `3j`/`6j`/`9j`, Wigner orthogonality, recoupling, or infinite-series result is claimed. |
-| Finite Wigner-square sums for rational and real up-law Legendre Gram entries | `FabiusFunction.FabiusLegendreGauntClosedForm` | Exhaustive public inventory: zero definitions and three theorems, `rvachevLegendreGramEntryRat_eq_two_mul_sum_wignerThreeJZeroSqRat`, `rvachevLegendreGramMatrixRat_apply_eq_two_mul_sum_wignerThreeJZeroSqRat`, and `upLegendreGramMatrix_apply_eq_two_mul_sum_wignerThreeJZeroSqRat`.  Unconditionally for natural `i,j`, the rational entry is `2 * ∑ r ∈ range ((i+j)/2+1), canonicalRvachevLegendreCoefficientRat r * legendreWignerThreeJZeroSqRat i j (2*r)`; the identical formula holds entrywise for `i j : Fin n` in `rvachevLegendreGramMatrixRat n`.  For `F : BoundedFabius` with exactly `hF : IsFabius F`, the real entry `upLegendreGramMatrix F n i j` is the same finite twice-sum with `rvachevLegendreCoefficient F r` and the real cast of the square datum.  These theorems close the finite Wigner-square Gram route only; they do not introduce a signed/general Wigner API or any infinite Legendre-series interchange, Christoffel reconstruction, root/quadrature, Padé/J-fraction, infinite-Jacobi, or asymptotic theorem. |
 | Definitions, the bounded characterization, folded `up`, and the global first-jet reflection law | `FabiusFunction.Basic`, `FabiusFunction.Differential` | `BoundedFabius`, `IsFabius`, `rvachevUp`, `rvachevUp_even`, `rvachevUp_eq_zero_of_not_mem_Ioo`, `support_rvachev_subset_Ioo`, `rvachev_hasDerivAt`, `fabius_hasDerivAt`, `deriv_fabiusReal`, `deriv_fabiusReal_one_sub` |
 | Sharp bounded derivatives and the exact zero-interleaved Thue--Morse pattern on every matched dyadic grid | `FabiusFunction.BoundedDerivatives` | `iteratedDeriv_fabiusReal_of_lt_one`, `iteratedDeriv_fabiusReal_dyadicGrid_eq_ite`, `iteratedDeriv_fabiusReal_dyadicGrid_eq_zero_iff`, `abs_iteratedDeriv_fabiusReal_dyadicGrid_of_odd`, `abs_iteratedDeriv_fabiusReal_le`, `isGreatest_abs_iteratedDeriv_fabiusReal` |
 | Exact derivative cells, signed natural moments, and normalized signed and absolute distributions | `FabiusFunction.RvachevDerivativeDistribution` | Exhaustive public surface (one definition and 18 theorems): `rvachevDerivativeCell`; `rvachevDerivativeCell_eq_div_add`, `rvachevDerivativeCell_one_eq_succ_neg_one`, `rvachevDerivativeCell_zero_neg_one`, `rvachevDerivativeCell_two_pow_neg_one`, `rvachevDerivativeCell_mem_Icc`, `iteratedDeriv_rvachev_cell`, `iteratedDeriv_rvachev_cell_zero`, `abs_iteratedDeriv_rvachev_cell`, `intervalIntegral_comp_iteratedDeriv_rvachev`, `intervalIntegral_iteratedDeriv_rvachev_pow`, `intervalIntegral_iteratedDeriv_rvachev_pow_of_even`, `intervalIntegral_iteratedDeriv_rvachev_pow_eq_zero_of_odd`, `intervalIntegral_comp_normalized_iteratedDeriv_rvachev`, `intervalIntegral_comp_abs_iteratedDeriv_rvachev`, `intervalIntegral_comp_normalized_abs_iteratedDeriv_rvachev`, `map_normalized_abs_iteratedDeriv_rvachev_restrict_Icc`, `map_normalized_iteratedDeriv_rvachev_restrict_Icc`, and `intervalIntegral_abs_iteratedDeriv_rvachev_rpow`.  If `T_n=(n+1).choose 2`, the general `Nat`-power identity is `integral (up^(n))^m = (2^n)^-1 * (1+(-1)^m)^n * (2^T_n)^m * integral up^m`; its even specialization holds for every `n`, including `n=0`, while its odd vanishing specialization assumes exactly `0<n`.  For every `0<n`, the sharply normalized signed derivative has, both against continuous Banach-valued tests and as a restricted-Lebesgue Borel pushforward, the symmetric half-mixture of the `up` law and its reflection; the positive-order hypothesis is essential because at `n=0` the signed law is the unsymmetrized `up` law.  Separately, the absolute-moment theorem uses `Real.rpow` for every real `p>=0`, and the normalized absolute derivative has the same restricted-Lebesgue pushforward as `up` for every `n`.  No `eLpNorm` or general rearrangement-invariant norm ladder, inverse-Fabius level-set formula, beta package, or spectral layer is asserted. |
@@ -316,7 +312,7 @@ Padé/J-fractions, infinite Jacobi theory, and asymptotics also remain open.
 | Quarter Catalan formal germ and dyadic-rescaling bridge | `FabiusFunction.QuarterCatalanGerm` | Exhaustive public surface (two definitions and thirteen theorems): `quarterCatalanCoefficient`, `quarterCatalanCoefficient_zero`, `quarterCatalanCoefficient_succ_eq_report`, `quarterCatalanGermSeries`, `quarterCatalanGermSeries_coeff`, `quarterCatalanGermSeries_coeff_succ`, `quarterCatalanGermSeries_constantCoeff`, `quarterCatalanGermSeries_equation`, `powerSeries_quadratic_injectiveOn_zeroConstant`, `eq_quarterCatalanGermSeries_of_equation`, `existsUnique_quarterCatalanGermSeries`, `dyadicGermTwo_functionalEquation`, `rescale_dyadicGermTwo_eq_quadraticInverse`, `dyadicGermTwo_eq_rescale_quadraticInverse`, `coeff_dyadicGermTwo_succ`.  The explicit Catalan coefficient sequence and its rational power series give the unique zero-constant solution of `D + 4D² = (4/9)X`.  Rescaling the dyadic parameter by `9/4` identifies the distinguished dyadic germ exactly with the Catalan inverse of `X + 4X²`, and every positive coefficient is `(4/9)^(m+1) (-4)^m C_m`.  This module is formal power-series algebra only; the downstream actual-jet bridge is supplied separately. |
 | Actual quarter inverse Catalan jet | `FabiusFunction.FabiusInverseQuarterJet` | Exhaustive public surface: `iteratedDeriv_centeredFabiusInv_quarter_eq_quadraticInverse`, `iteratedDeriv_fabiusInv_five_seventy_two_succ`.  For every bounded Fabius solution, the full centered derivative jet at `5/72 = F(1/4)` equals the factorial-scaled coefficient sequence of `QuadraticInverse.inverse 4`; in particular `G^(m+1)(5/72) = (m+1)! (-4)^m C_m`.  This is equality of all jets, not local analytic equality: it neither erases the known nonanalytic flat defect nor proves that defect is nonzero by a named remainder theorem. |
 | Finite polynomial integrals from raw moments and formal cumulants | `FabiusFunction.PolynomialExpectationCumulant` | `integral_eval₂_eq_sum_moment`, `integral_eval₂_eq_sum_completeBell_momentCumulant_with_mass_correction`, `integral_eval₂_eq_sum_completeBell_momentCumulant_of_moment_zero_eq_one`, `integral_eval₂_eq_sum_completeBell_momentCumulant` |
-| Rvachev raw moments, triangular and injective reciprocal-moment Appell deconvolution, and exact shifted-up polynomial synthesis | `FabiusFunction.RvachevMomentAppell`, `FabiusFunction.RvachevPolynomialSynthesis` | `rvachevRawMomentRat`, `rvachevReciprocalMomentRat`, `rvachevAppellPolynomial`, `rvachevDeconvolvedPolynomial`, `rvachevDeconvolutionLinearMap`, `rvachevDeconvolvedPolynomial_finsetSum`, `rvachevDeconvolvedPolynomial_monomial`, `rvachevDeconvolvedPolynomial_X_pow`, `coeff_rvachevDeconvolvedPolynomial_natDegree`, `natDegree_rvachevDeconvolvedPolynomial`, `leadingCoeff_rvachevDeconvolvedPolynomial`, `rvachevDeconvolvedPolynomial_eq_zero_iff`, `rvachevDeconvolutionLinearMap_injective`, `rvachevDeconvolvedPolynomial_injective`, `integral_eval_rvachevDeconvolvedPolynomial_add_mul_rvachev`, `tsum_rvachevDeconvolvedPolynomial_mul_shifted_rvachevUp`, `normalized_sum_Ioo_rvachevDeconvolvedPolynomial_mul_shifted_rvachevUp` |
+| Rvachev raw moments, triangular and injective reciprocal-moment Appell deconvolution, centered convolution identities, and exact shifted-up polynomial synthesis | `FabiusFunction.RvachevMomentAppell`, `FabiusFunction.RvachevPolynomialSynthesis` | `rvachevRawMomentRat`, `rvachevReciprocalMomentRat`, `rvachevAppellPolynomial`, `rvachevDeconvolvedPolynomial`, `rvachevDeconvolutionLinearMap`, `rvachevDeconvolvedPolynomial_finsetSum`, `rvachevDeconvolvedPolynomial_monomial`, `rvachevDeconvolvedPolynomial_X_pow`, `coeff_rvachevDeconvolvedPolynomial_natDegree`, `natDegree_rvachevDeconvolvedPolynomial`, `leadingCoeff_rvachevDeconvolvedPolynomial`, `rvachevDeconvolvedPolynomial_eq_zero_iff`, `rvachevDeconvolutionLinearMap_injective`, `rvachevDeconvolvedPolynomial_injective`, `integral_eval_rvachevDeconvolvedPolynomial_add_mul_rvachev`, `integral_eval_rvachevDeconvolvedPolynomial_sub_mul_rvachev`, `integral_eval_rvachevAppellPolynomial_sub_mul_rvachev`, `integral_eval_rvachevAppellPolynomial_mul_rvachev_eq_zero`, `tsum_rvachevDeconvolvedPolynomial_mul_shifted_rvachevUp`, `normalized_sum_Ioo_rvachevDeconvolvedPolynomial_mul_shifted_rvachevUp`, `normalized_tsum_shifted_rvachevDeconvolvedPolynomial_mul_rvachevUp` |
 | Shifted dyadic polynomial comb exactness and normalized self-sampling quadrature | `FabiusFunction.PolynomialCombExactness` | Exhaustive public surface: exactly three theorems, `finite_support_comb`, `tsum_shifted_polynomial_eq_integral`, and `integral_polynomial_mul_rvachevUp_eq_dyadic_tsum`.  For every bounded Fabius solution, natural level `m`, real phase `theta`, and arbitrary real weight function `g`, the sampled product `g(theta+k) * up(2^-m * (theta+k))` has finite integer support.  Every real polynomial `P` with `P.natDegree <= m` therefore satisfies the corresponding whole-line shifted comb identity.  In physical coordinates, for every natural `N`, arbitrary real phase, and `P.natDegree <= N`, its integral against `up` equals `2^-N` times the integer sum over nodes `2^-N * (theta+k)` weighted by `up` at those same nodes.  The statements include level zero; the sums are finite by compact support, and no phase rationality or positivity hypothesis is imposed. |
 | Generic finite-node Lagrange--Rvachev decoder, cardinal biorthogonality, and exact interpolation loop | `FabiusFunction.LagrangeRvachevSynthesis` | Exhaustive public surface: two definitions, `lagrangeRvachevDecoder` and `lagrangeRvachevAtomCoefficient`; and seven theorems, `natDegree_lagrangeBasis_le_card_sub_one`, `natDegree_lagrangeInterpolate_le_card_sub_one`, `normalized_sum_Ioo_lagrangeRvachevDecoder_mul_shifted_rvachevUp`, `normalized_sum_Ioo_lagrangeRvachevDecoder_eval_node`, `lagrangeRvachevAtomCoefficient_eq_deconvolved_interpolate`, `sum_Ioo_lagrangeRvachevAtomCoefficient_mul_shifted_rvachevUp`, and `sum_lagrangeRvachevDecoder_eq_one`.  The degree bounds and polynomial reconstruction need no distinct-node hypothesis; componentwise Kronecker biorthogonality requires distinct nodes and evaluation inside `[-1,1]`, while the row-sum theorem additionally requires a nonempty node set.  This closes the reusable generic finite-node synthesis loop, not a geometric Gaussian closed-form decoder, bundled matrix/right-inverse wrapper, or optimal/minimum-variation decoder theorem. |
 | Sharp universal composite-mesh exactness and least natural meshes | `FabiusFunction.CompositeMeshSharpness` | Exhaustive public surface: `exists_shift_tsum_shifted_monomial_ne_integral_nat_real`, `rvachevCombExactThrough`, `rvachevCombExactThrough_iff_padicValNat`, `rvachevCombExactThrough_iff_pow_two_dvd`, `rvachevCombExactThrough_two_pow`, `two_pow_le_of_rvachevCombExactThrough`, `isLeast_rvachevCombExactThrough`, `isLeast_rvachevCombExactThrough_even`.  The `IsLeast` results quantify over meshes exact for the whole real polynomial space through the stated degree; they do not assert minimality for an individual Legendre polynomial, a fixed Legendre partial sum, or a target-adapted mesh. |
@@ -605,12 +601,12 @@ positive-half-line mass with `A_2`, and the latter with both the unscaled and
 `1/(2*pi)`-scaled dyadic sinc-product integrals in the Self-Reconstruction
 report.
 
-At compiled source checkpoint `a3854643d`,
+In the current compiled tree,
 `RvachevMomentAppell.lean` exports six public definitions:
 `Fabius.rvachevRawMomentRat`, `Fabius.rvachevReciprocalMomentRat`,
 `Fabius.rvachevAppellPolynomialRat`, `Fabius.rvachevAppellPolynomial`, and
 `Fabius.rvachevDeconvolvedPolynomial`, together with the linear-map package
-`Fabius.rvachevDeconvolutionLinearMap`.  Its thirty public theorems are
+`Fabius.rvachevDeconvolutionLinearMap`.  Its thirty-three public theorems are
 `Fabius.rvachevRawMomentRat_zero`, `Fabius.rvachevRawMomentRat_even`,
 `Fabius.rvachevRawMomentRat_odd`,
 `Fabius.rvachevReciprocalMomentRat_zero`,
@@ -638,8 +634,11 @@ At compiled source checkpoint `a3854643d`,
 `Fabius.leadingCoeff_rvachevDeconvolvedPolynomial`,
 `Fabius.rvachevDeconvolvedPolynomial_eq_zero_iff`,
 `Fabius.rvachevDeconvolutionLinearMap_injective`,
-`Fabius.rvachevDeconvolvedPolynomial_injective`, and
-`Fabius.integral_eval_rvachevDeconvolvedPolynomial_add_mul_rvachev`.  They
+`Fabius.rvachevDeconvolvedPolynomial_injective`,
+`Fabius.integral_eval_rvachevDeconvolvedPolynomial_add_mul_rvachev`,
+`Fabius.integral_eval_rvachevDeconvolvedPolynomial_sub_mul_rvachev`,
+`Fabius.integral_eval_rvachevAppellPolynomial_sub_mul_rvachev`, and
+`Fabius.integral_eval_rvachevAppellPolynomial_mul_rvachev_eq_zero`.  They
 package the full rational raw-moment sequence, its formal binomial-convolution
 reciprocal and complete-Bell description, rational and real monic Appell
 families of exact degree, and polynomial deconvolution as an explicit real
@@ -650,18 +649,33 @@ Rvachev--Appell polynomial.  Its triangular top term is unchanged: it
 preserves the coefficient in the original `natDegree`, hence preserves exact
 `natDegree` and `leadingCoeff`, has trivial kernel, and is injective both as
 the packaged linear map and as the underlying raw operation.  Smoothing it by
-`up` recovers the original polynomial.
+`up` recovers the original polynomial.  Reflection invariance of the even
+Rvachev density also turns this additive smoothing into the centered
+`x - y` convolution for every real polynomial; the corresponding centered
+Appell identity recovers `x ^ n`, and every positive-degree Appell polynomial
+has Rvachev mean zero.  These statements do not supply an analytic reciprocal
+MGF or Appell generating series, a literal differential-operator expansion,
+reciprocal/deconvolution parity, or the displayed low reciprocal coefficients.
 
-At compiled source checkpoint `c51a41fcf`,
+In the current compiled tree,
 `RvachevPolynomialSynthesis.lean` exports no public definitions and exactly
-four public theorems:
+five public theorems:
 `Fabius.tsum_rvachevDeconvolvedPolynomial_mul_shifted_rvachevUp`,
 `Fabius.normalized_tsum_rvachevDeconvolvedPolynomial_mul_shifted_rvachevUp`,
-`Fabius.sum_Ioo_rvachevDeconvolvedPolynomial_mul_shifted_rvachevUp`, and
-`Fabius.normalized_sum_Ioo_rvachevDeconvolvedPolynomial_mul_shifted_rvachevUp`.
+`Fabius.sum_Ioo_rvachevDeconvolvedPolynomial_mul_shifted_rvachevUp`,
+`Fabius.normalized_sum_Ioo_rvachevDeconvolvedPolynomial_mul_shifted_rvachevUp`,
+and
+`Fabius.normalized_tsum_shifted_rvachevDeconvolvedPolynomial_mul_rvachevUp`.
 For every nonzero natural mesh `M` and polynomial of degree at most `v₂(M)`,
 they give both global `tsum` synthesis and, on `[-1,1]`, its exact finite
-`k ∈ (-2M,2M)` form with the `1/M` normalization.
+`k ∈ (-2M,2M)` form with the `1/M` normalization.  The fifth theorem holds
+for arbitrary real phase `θ` and real `x`: it samples `up` at
+`M⁻¹ * (θ + k)`, evaluates the deconvolved polynomial at
+`x - M⁻¹ * (θ + k)`, and reconstructs `P.eval x`.  Taking
+`M = 2 ^ N` formalizes arbitrary-phase polynomial reproduction through every
+degree `n ≤ N`.  It does not formalize the Appell-lattice extension to degree
+`N + 1` at parity-selected superconvergent phases, including the odd-`N`
+quarter phases.
 
 The current-tree module `LagrangeRvachevSynthesis.lean` exports exactly two
 public definitions, `Fabius.lagrangeRvachevDecoder` and
@@ -768,14 +782,15 @@ interval supremum norm; the module also exports the raw `TendstoUniformlyOn`
 form, convergence of the supremum-norm error to zero, and the pointwise
 corollary on `[-1,1]`.
 
-The six modules in this tranche have respectively `6/30`, `0/4`, `2/7`,
+The six modules in this tranche have respectively `6/33`, `0/5`, `2/7`,
 `1/7`, `6/7`, and `5/25` public definition/theorem inventories, for exactly
-100 public
+104 public
 declarations in total.  Universal whole-space mesh sharpness is now proved,
 but target-specific minimality for an individual Legendre polynomial or
 partial sum is not.  The modules also do not assert an
-analytic reciprocal-MGF or differential-series realization of deconvolution,
-the displayed low reciprocal coefficients, parity or the displayed closed
+analytic reciprocal-MGF or Appell generating-series realization of
+deconvolution, a literal differential-operator expansion, the displayed low
+reciprocal coefficients, reciprocal/deconvolution parity or the displayed closed
 formulas for the deconvolved Legendre family,
 coefficient rationality for the atom rows, equality of the fixed-scale and
 separately scaled coefficient vectors, a geometric closed-form or bundled
