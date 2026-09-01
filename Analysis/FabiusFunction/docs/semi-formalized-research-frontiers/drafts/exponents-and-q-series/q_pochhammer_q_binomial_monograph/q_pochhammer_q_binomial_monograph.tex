@@ -12531,7 +12531,9 @@ positive-modulus residue-class dissection, and the exact factor-zero locus
 under a multiplicative norm.  It further gives locally uniform convergence
 and continuity over complete locally compact normed fields, and over
 \(\ComplexNumbers\) gives entireness and an explicit nonzero derivative at
-every reciprocal-power zero for \(q\ne0\).  Its predecessor
+every reciprocal-power zero for \(q\ne0\).  It now also proves actual
+derivative nonvanishing directly from every raw factor equation \(aq^j=1\),
+including \(q=0\), and analytic order exactly one at every zero.  Its predecessor
 \texttt{QPochhammerDissection} proves the finite exact and remainder
 dissections over an arbitrary commutative ring.  The separate
 \texttt{RvachevPochhammerFactorization} module
@@ -12552,9 +12554,8 @@ right-hand side for every strict complex contraction, its nome-\(1/4\)
 Rvachev specialization, and the bounded-Fabius Fourier specialization.  The
 combined interface still does not supply the book's named centered/MGF
 wrapper or its outside-disk reciprocal, pole-divisor, and zero--pole clauses.
-The generic module has no analytic-order theorem; that conclusion for the
-separately named complex wrapper, including \(q=0\), remains owned by
-\texttt{QPochhammerEntire}.
+The generic module owns the analytic-order theorem, including \(q=0\);
+\texttt{QPochhammerEntire} preserves the legacy naming surface.
 
 The promoted, strengthened, and new finite-$q$ and weighted
 symmetric-function rows in this edition were statically checked against the
@@ -12582,7 +12583,7 @@ declaration from \path{GaussianBinomialAtOne.lean};\\
 \path{QBinomialReciprocity.lean}: four theorems;\\
 \path{GaussianBinomialAtNegOne.lean}: five theorems;\\
 \path{QPochhammerDissection.lean}: zero definitions and two theorems;\\
-\path{QPochhammerInfinite.lean}: one definition and twenty-seven theorems;\\
+\path{QPochhammerInfinite.lean}: one definition and twenty-nine theorems;\\
 \path{RvachevPochhammerFactorization.lean}: one definition and nine theorems;\\
 \path{QPochhammerEntire.lean}: zero definitions and five theorems;\\
 \path{GeometricPochhammerNormalConvergence.lean}: zero definitions and three
@@ -12595,6 +12596,12 @@ theorems;\\
 \path{FabiusInverseQuarterJet.lean}: two theorems;\\
 \path{QuarterCatalanRichardson.lean}: three definitions and 15 theorems.
 \end{center}
+
+The imported \path{QBinomialTheoremInfinite.lean} surface has one definition
+and 22 theorems.  In particular,
+\path{Fabius.finiteQPochhammerIn_zero_left} is canonically declared in
+\path{GaussianBinomialAtOne.lean} and merely made available by that import; it
+is not redeclared in \path{QBinomialTheoremInfinite.lean}.
 
 The added finite \(q\)-algebra and geometric layers have the following
 exhaustive public surfaces.
@@ -12659,7 +12666,7 @@ therefore includes the endpoint $u=r$.  Together with the infinite
 dissection named below, these declarations formalize all of
 \Cref{prop:dissection,cor:dissection-remainder}.
 
-\item The one-definition, twenty-seven-theorem module
+\item The one-definition, twenty-nine-theorem module
 \path{QPochhammerInfinite.lean} starts with the total topological
 commutative-ring definition \path{Fabius.qPochhammerInfIn} and its defining
 theorem \path{Fabius.qPochhammerInfIn_eq_tprod}.  In a normed ring with
@@ -12711,9 +12718,13 @@ $(-1)^{j+1}(q^{\binom j2})^{-1}(q;q)_j(q;q)_\infty$, and
 \path{Fabius.deriv_qPochhammerInfIn_inv_pow_ne_zero} proves this displayed
 coefficient nonzero.  The latter theorem literally states coefficient
 nonvanishing and uses the preceding \path{HasDerivAt} theorem for its
-derivative interpretation.  This generic module proves no
-\path{analyticOrderAt} statement and is not a replacement for the separate
-complex wrapper below.
+derivative interpretation.  The division-free theorem
+\path{Fabius.deriv_qPochhammerInfIn_ne_zero_of_mul_pow_eq_one} instead states
+that the actual derivative is nonzero whenever $aq^j=1$; it includes $q=0$,
+where the equation forces $j=0$ and $a=1$.  Finally,
+\path{Fabius.analyticOrderAt_qPochhammerInfIn_of_eq_zero} states that every
+zero has analytic order exactly one for every strict complex contraction,
+again including $q=0$.
 
 \item \path{RvachevPochhammerFactorization.lean} has the one definition
 \path{Fabius.complexQPochhammerInf} and exactly nine theorems:
@@ -12763,8 +12774,11 @@ change of variables; it asserts no exterior reciprocal or pole statement.
 \path{Fabius.complexQPochhammerInf_eq_zero_iff},
 \path{Fabius.complexQPochhammerInf_eq_zero_iff_eq_inv_pow}, and
 \path{Fabius.analyticOrderAt_complexQPochhammerInf_of_eq_zero}.
-For every complex \(q\) under exactly \(\lVert q\rVert<1\), the first theorem
-gives locally uniform convergence on the whole \(a\)-plane to
+They transfer the generic \path{qPochhammerInfIn} results to the older
+\path{complexQPochhammerInf} declaration names; no analytic product,
+zero-cofactor, derivative-nonvanishing, or analytic-order proof is duplicated
+here.  For every complex \(q\) under exactly \(\lVert q\rVert<1\), the first
+wrapper gives locally uniform convergence on the whole \(a\)-plane to
 \(a\mapsto(a;q)_\infty\), and the second proves that this function is entire.
 The third is the division-free equivalence
 \[
@@ -13074,7 +13088,9 @@ differentiable parameter}\\[2pt]
 \texttt{qPochhammerInfIn\_\allowbreak{}eq\_\allowbreak{}zero\_\allowbreak{}iff\_\allowbreak{}exists\_\allowbreak{}inv\_\allowbreak{}pow},
 \texttt{hasDerivAt\_\allowbreak{}qPochhammerInfIn\_\allowbreak{}of\_\allowbreak{}mul\_\allowbreak{}pow\_\allowbreak{}eq\_\allowbreak{}one},
 \texttt{hasDerivAt\_\allowbreak{}qPochhammerInfIn\_\allowbreak{}inv\_\allowbreak{}pow},
-\texttt{deriv\_\allowbreak{}qPochhammerInfIn\_\allowbreak{}inv\_\allowbreak{}pow\_\allowbreak{}ne\_\allowbreak{}zero};
+\texttt{deriv\_\allowbreak{}qPochhammerInfIn\_\allowbreak{}inv\_\allowbreak{}pow\_\allowbreak{}ne\_\allowbreak{}zero},
+\texttt{deriv\_\allowbreak{}qPochhammerInfIn\_\allowbreak{}ne\_\allowbreak{}zero\_\allowbreak{}of\_\allowbreak{}mul\_\allowbreak{}pow\_\allowbreak{}eq\_\allowbreak{}one},
+\texttt{analyticOrderAt\_\allowbreak{}qPochhammerInfIn\_\allowbreak{}of\_\allowbreak{}eq\_\allowbreak{}zero};
 \texttt{hasProdLocallyUniformly\_\allowbreak{}complexQPochhammerInf},
 \texttt{complexQPochhammerInf\_\allowbreak{}differentiable},
 \texttt{complexQPochhammerInf\_\allowbreak{}eq\_\allowbreak{}zero\_\allowbreak{}iff},

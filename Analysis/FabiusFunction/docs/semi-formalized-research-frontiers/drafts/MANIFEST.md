@@ -79,14 +79,15 @@ in the linked q-series registry remain unchanged by this merge.
 
 For the final source-only union, package-local READMEs and ledgers record the
 current q-series and Exponents source fingerprints. The live Exponents TeX is
-16,362 lines and 737,086 bytes with SHA-256
-`11b459fdbe4cd44b4690d8ed91864b8864112a03bbff8f8bf980d197eb37dd55`;
+16,371 lines and 737,633 bytes with SHA-256
+`6102be1da3d7262d80da1dbd0de4ccb049e77a14018fe38afe4ba2b60fe1a66a`;
 it includes the exact zero-order/exponent identifiability and constructive
 first-difference crosswalk from the new zero-definition, six-theorem Lean
 module, while zeta-quotient, cumulant/analytic-sample, and probability-law
 identifiability remain Partial in Lean. It also records the exact
 zero-definition, three-theorem outer q-Pochhammer normal-convergence API;
-the centered/MGF and outside-disk zero--pole compound claim remains Partial.
+the centered/MGF wrappers, outside-disk reciprocal formula, pole divisor, and
+zero--pole exchange in the compound claim remain Partial.
 The retained Exponents PDF is 238 A4
 pages and 6,316,535 bytes with SHA-256
 `df7b9ad69e0310b17988dd42cc22559cf22ff26027395c005c374ad51f9e62aa`.

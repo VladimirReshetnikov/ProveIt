@@ -109,17 +109,20 @@ only 4,606 declarations and
 declarations, including 69 undocumented ones.  Run the script for the live
 numbers rather than copying these historical values.
 
-The live post-merge 2026-09-01 inventory contains 641 modules and 8,650
+The live post-merge 2026-09-01 inventory contains 643 modules and 8,661
 lexically visible public declarations, with zero missing module headers and
 zero missing doc comments.  Relative to the 610/8,318 activation checkpoint,
-the current tree adds thirty-one modules and 332 declarations.  Relative to
-the earlier 630/8,552 merged checkpoint, concurrent source work adds eleven
-modules and 98 declarations.  The two tranches audited here account for one
-of those modules and six declarations: the new zero-definition/three-theorem
+the current tree adds thirty-three modules and 343 declarations.  Relative to
+the earlier 630/8,552 merged checkpoint, concurrent source work adds thirteen
+modules and 109 declarations.  The prime-power and outer-product tranches
+account for one of those modules and six declarations: the new
+zero-definition/three-theorem
 `GeometricPochhammerNormalConvergence.lean` leaf and three additional theorems
-in `PrimePowerBinomialValuation.lean`.  The older 622/8,472, 623/8,476,
-629/8,546, and 630/8,552 deltas below are retained as historical checkpoints,
-not descriptions of the live tree.  The earlier additions and q-series
+in `PrimePowerBinomialValuation.lean`.  The subsequent q-polish adds two
+theorems to `QPochhammerInfinite.lean`, and the two-module effective-inverse
+tranche contributes nine declarations.  The older 622/8,472, 623/8,476,
+629/8,546, 630/8,552, and 641/8,650 deltas below are retained as historical
+checkpoints, not descriptions of the live tree.  The earlier additions and q-series
 tranches are itemized below.  The branch-point geometry and
 asymptotics leaves contribute 17 declarations for the one-sided vertical
 tangents and leading signed square-root laws of both real Lambert branches.
@@ -190,7 +193,7 @@ theorems.  `primePowerChoose_padicValNat_add` and
 `twoPowChoose_padicValNat` and `twoPowSubTwoChoose_padicValNat` are the two
 strict-interior dyadic-comb wrappers.  The upper companion boundary is
 necessarily excluded because at `j=p^m` the binomial coefficient is zero.
-The newly added leaf, `QPochhammerEntire.lean`, contributes no definitions
+The compatibility leaf, `QPochhammerEntire.lean`, contributes no definitions
 and exactly five theorems:
 `hasProdLocallyUniformly_complexQPochhammerInf`,
 `complexQPochhammerInf_differentiable`,
@@ -215,13 +218,13 @@ bounded-Fabius specializations.  This promotes only the locally-uniform/normal-
 convergence clause.  The compound `qF` spectral theorem remains partial:
 centered characteristic-function/MGF packaging, the outside-disk reciprocal
 formula, the pole divisor, and the zero--pole exchange remain absent.
-The two subsequent q-Pochhammer leaves contribute thirty declarations.
+The two subsequent q-Pochhammer leaves contribute thirty-two declarations.
 `QPochhammerDissection.lean` has no definitions and exactly two theorems,
 `finiteQPochhammerIn_dissection` and
 `finiteQPochhammerIn_dissection_remainder`; both are finite identities over
 every commutative ring, with the remainder theorem assuming exactly `u ≤ r`.
 `QPochhammerInfinite.lean` has one definition, `qPochhammerInfIn`, and exactly
-twenty-seven theorems:
+twenty-nine theorems:
 `qPochhammerInfIn_eq_tprod`, `summable_norm_mul_pow`,
 `one_sub_ne_zero_of_norm_lt_one`, `norm_mul_pow_self_lt_one`,
 `finiteQPochhammerIn_self_ne_zero`,
@@ -240,23 +243,31 @@ twenty-seven theorems:
 `pow_sq_mul_finiteQPochhammerIn_inv_pow_self`,
 `differentiable_qPochhammerInfIn`,
 `hasDerivAt_qPochhammerInfIn_of_mul_pow_eq_one`,
-`hasDerivAt_qPochhammerInfIn_inv_pow`, and
-`deriv_qPochhammerInfIn_inv_pow_ne_zero`.  These stratify the total
+`hasDerivAt_qPochhammerInfIn_inv_pow`,
+`deriv_qPochhammerInfIn_inv_pow_ne_zero`,
+`deriv_qPochhammerInfIn_ne_zero_of_mul_pow_eq_one`, and
+`analyticOrderAt_qPochhammerInfIn_of_eq_zero`.  These stratify the total
 topological-ring definition, strict-contraction complete-normed-ring
 product/shift/dissection and multiplicative-norm zero API, complete-field
 inverse-power zeros, locally compact field local uniformity and continuity,
-and complex entire and simple-zero derivative formulas.  They make no
-joint-nome holomorphy or global asymptotic claim; the separate five-theorem
-`QPochhammerEntire.lean` API retains analytic order one for
-`complexQPochhammerInf`, including `q=0`.
+and complex entire, nonzero-derivative, and analytic-order-one formulas,
+including the raw-factor statements at `q=0`.  They make no joint-nome
+holomorphy or global asymptotic claim; the separate five-theorem
+`QPochhammerEntire.lean` API retains the compatibility names for
+`complexQPochhammerInf`, adds the nonzero-nome reciprocal-power spelling, and
+includes analytic order one at `q=0`; no public equality bridge between the
+two product definitions is counted.
 The final incoming seven-module increment consists of the four-theorem
 `GaussianBinomialAtNegOneDerivative.lean` leaf described above and six further
-q-series modules contributing exactly seventy declarations.
-`QBinomialTheoremInfinite.lean` contributes one definition and twenty-three
+q-series modules contributing exactly sixty-nine declarations.
+`QBinomialTheoremInfinite.lean` contributes one definition and twenty-two
 theorems: real comparison products and Gaussian majorants, fixed-column
 convergence, Tannery transfer, Euler's product and reciprocal expansions, and
 the infinite q-binomial theorem over complete normed fields under the stated
-strict nome and series-variable contractions.  `JacobiTripleProduct.lean`
+strict nome and series-variable contractions.  The reused theorem
+`finiteQPochhammerIn_zero_left` remains canonically owned by
+`GaussianBinomialAtOne.lean` and is not counted in this module.
+`JacobiTripleProduct.lean`
 contributes two definitions and twenty-five theorems: the exact finite
 polynomial identity over commutative rings, its Laurent field form, the
 complete-normed-field Jacobi sums for nonzero Laurent variable and strict
@@ -270,8 +281,10 @@ commutation hypotheses.  Finally, `RogersSzegoPolynomial.lean` contributes
 one definition and nine theorems: finite commutative-(semi)ring boundary and
 recurrence laws, plus the complete-normed-field generating series under
 `‖q‖ < 1`, `‖t‖ < 1`, and `‖z*t‖ < 1`.  These six module counts sum to
-70, and with the four q=-1 derivative declarations give the audited 74-name
-increment from 622/8,472 to 629/8,546.
+69, and with the four q=-1 derivative declarations give the deduplicated
+73-name incoming increment.  The two subsequent
+`QPochhammerInfinite.lean` theorems bring the live change from 622/8,472 to
+629/8,547 to 75 declarations.
 The closed-form Gaunt leaf `LegendreGauntClosedForm.lean` contributes two definitions and
 twenty-five theorems: the total integer zero-row Wigner-square datum, its exact
 central-binomial and factorial forms, the all-degree Gaunt identification,
@@ -333,13 +346,14 @@ The same merged tree adds the complementary general q-product leaves.
 `finiteQPochhammerIn_dissection` and
 `finiteQPochhammerIn_dissection_remainder`, for exact full-period and remainder
 residue-class decompositions over an arbitrary commutative ring.
-`QPochhammerInfinite.lean` contributes one definition and twenty-seven
+`QPochhammerInfinite.lean` contributes one definition and twenty-nine
 theorems.  Its surface includes convergence and finite-prefix limits in
 complete normed commutative rings, concatenation and residue-class dissection,
 factor and reciprocal-power zero criteria, locally uniform parameter
 convergence and continuity over complete locally compact normed fields, and
-entireness with explicit nonzero derivatives at every reciprocal-power zero
-over `ℂ`.  These two leaves therefore contribute thirty declarations.  Their
+entireness with explicit nonzero derivatives and analytic order one at every
+factor zero over `ℂ`, including `q=0`.  These two leaves therefore contribute
+thirty-two declarations.  Their
 generic `qPochhammerInfIn` is distinct from the older
 `complexQPochhammerInf`; the five-theorem `QPochhammerEntire` API above remains
 the analytic-order layer for the latter symbol, and no named equality bridge
@@ -408,6 +422,23 @@ The additional declaration in `PolynomialCombExactness.lean` is
 physical-coordinate self-sampling quadrature for every real polynomial whose
 natural degree is at most the dyadic level and every real phase.
 
+The effective-inverse tranche contributes two modules and nine public
+declarations.  `EffectiveMonotoneInverse.lean` is exactly 2+6: the definitions
+`SequentiallyComputableOn` and `unitClamp`; the clamping theorem
+`unitClamp_sequentiallyComputable`; the three certified tolerant-comparison
+lemmas `tolerantDifference_error`, `tolerantDifference_safe_updates`, and
+`tolerantDifference_inconclusive`; and the constructive inverse results
+`tolerantBisection_correct` and `effectiveInversionOn_Icc`.  The latter works
+for a computably dyadically approximable strict monotone bijection of
+`[0,1]` supplied with a computable positive reciprocal inverse modulus; its
+three-way comparison never decides equality, because the inconclusive branch
+already certifies the requested inverse error.  `FabiusInverseComputable.lean`
+is exactly 0+1: `fabiusInv_isComputableRealFunction` combines that sequential
+realizer with the logarithmic Delta modulus for every bounded Fabius witness.
+Clamping makes the theorem about the total inverse on all real inputs.  These
+results are computability certificates, not an input-bit running-time bound or
+an exact least endpoint-mass denominator.
+
 The retained comb-interpolation synthesis PDF is a validated 158-page A4
 historical receipt: the current source includes a post-render update to its
 additive-dyadic chapter, so a fresh parity build remains pending.  The rebuilt
@@ -421,8 +452,8 @@ retained 167-page primary, 126-page walkthrough, 237-page canonical frontier,
 notation-catalogue artifacts likewise predate their current merged sources.
 Their package notices treat those PDFs as historical validation receipts, not
 parity claims, until fresh uninterrupted three-pass builds complete.  The
-inverse-computability receipt likewise requires refresh for the 641/8,650
-census.  The canonical inverse-theory publication is now a synchronized
+inverse-computability receipt likewise requires refresh for the 643/8,661
+census and the two-module effective-inverse tranche.  The canonical inverse-theory publication is now a synchronized
 134-page A4 artifact at the latest-main source checkpoint.
 
 ### What the review pass caught

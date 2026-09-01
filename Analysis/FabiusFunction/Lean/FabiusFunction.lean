@@ -437,6 +437,8 @@ import FabiusFunction.NotElementary
 import FabiusFunction.InverseBranch
 import FabiusFunction.InverseNotElementary
 import FabiusFunction.FabiusComputableSpline
+import FabiusFunction.EffectiveMonotoneInverse
+import FabiusFunction.FabiusInverseComputable
 import FabiusFunction.FabiusSaddleJetClosedForm
 import FabiusFunction.FabiusSaddleExponentClosedForm
 import FabiusFunction.FabiusSaddleJetStirling
@@ -597,6 +599,18 @@ effective uniform continuity.  The same centered splines converge uniformly
 on all of `ℝ` to the signed extension with error at most `2⁻ᵖ`, while the
 finite binary-reduction telescope through scale `N ≥ 1` converges uniformly
 with error at most `2^(1-N)`.
+
+The inverse now has the same full computable-real interface.  A generic
+tolerant-bisection layer proves that every computably dyadically approximable
+strict monotone bijection of `[0,1]` has a sequentially computable inverse once
+a computable positive reciprocal inverse modulus is supplied.  Its certified
+three-way comparisons never decide equality: a large signed difference safely
+shrinks the bracket, while an inconclusive result already meets the requested
+inverse tolerance.  Specializing the construction to `fabiusReal`, clamping
+input names to `[0,1]`, and combining it with the logarithmic Delta modulus
+proves `fabiusInv_isComputableRealFunction` for every bounded Fabius witness.
+This is a computability certificate for the total inverse, not an input-bit
+running-time theorem or an exact least endpoint-mass denominator.
 
 The zeta–Lambert tail calculus of the Thue–Morse frontier results is
 formalized end to end.  The engine is the Euler log transform: for any

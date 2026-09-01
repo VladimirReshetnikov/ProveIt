@@ -44,18 +44,22 @@ and was built in three serial passes from the 14,072-line, 656,200-byte source
 with SHA-256
 `062b7230d95ff8bd52b11253c6c3c8820d6f6a82e4307ae5d82a1d793c00c517`.
 
-The live source now postdates that receipt. Its 14,115-line, 658,674-byte TeX
+The live source now postdates that receipt. Its 14,131-line, 659,907-byte TeX
 source has SHA-256
-`4f679c347aa5fa2488e1888b21b50a19d3257dbe2e200219e0b302c2ecc2c231`.
+`29651bd102f4167b952957df74c1098a22c2becbec6de6bc769d9361a7aef6c8`.
 It incorporates exhaustive crosswalks for `QPochhammerEntire` (zero
 definitions and five theorems), `QPochhammerInfinite` (one definition and
-twenty-seven theorems), and `QPochhammerDissection` (zero definitions and two
+twenty-nine theorems), and `QPochhammerDissection` (zero definitions and two
 theorems), plus `GeometricPochhammerNormalConvergence` (zero definitions and
 three theorems). The `QPochhammerEntire.lean` leaf proves the fixed-nome
 single-symbol locally uniform product and differentiability, the
 division-free factor-zero criterion including `q = 0`, the reciprocal-power
-zero lattice for nonzero nome, and simple analytic order at every zero. Only
-`thm:poch-entire` is promoted by that leaf. The newer three-theorem leaf proves
+zero lattice for nonzero nome, and simple analytic order at every zero. The
+generic `QPochhammerInfinite.lean` surface now owns actual derivative
+nonvanishing from every raw factor equation, including `q = 0`, and analytic
+order exactly one at every zero; `QPochhammerEntire.lean` preserves the legacy
+complex-wrapper naming surface. Only `thm:poch-entire` is promoted by those
+single-symbol results. The newer three-theorem leaf proves
 the additional outer product's local-uniform (normal) convergence for every
 complex strict contraction, including `q = 0`, and gives the dyadic Rvachev
 product and bounded-Fabius Fourier specializations. The compound

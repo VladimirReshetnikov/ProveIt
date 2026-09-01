@@ -111,10 +111,10 @@ fonts. The files under `assets/experiments/**/figures/` remain research
 figures, not publication manuscripts.
 
 The live master source now postdates that retained PDF. Its
-14,115-line, 658,674-byte source has SHA-256
-`4f679c347aa5fa2488e1888b21b50a19d3257dbe2e200219e0b302c2ecc2c231`.
+14,131-line, 659,907-byte source has SHA-256
+`29651bd102f4167b952957df74c1098a22c2becbec6de6bc769d9361a7aef6c8`.
 It includes exhaustive crosswalks for `QPochhammerEntire` (zero definitions
-and five theorems), `QPochhammerInfinite` (one definition and twenty-seven
+and five theorems), `QPochhammerInfinite` (one definition and twenty-nine
 theorems), and `QPochhammerDissection` (zero definitions and two theorems),
 together with `GeometricPochhammerNormalConvergence` (zero definitions and
 three theorems) and expanded Euler, infinite-q-binomial, Jacobi, and
@@ -122,8 +122,11 @@ Rogers--Szegő material.
 The `QPochhammerEntire` crosswalk records fixed-nome local uniformity and
 entireness, the division-free factor-zero criterion valid at `q = 0`, the
 reciprocal-power zero lattice for nonzero nome, and simple analytic order at
-every zero. The `QBinomialTheoremInfinite` inventory is one definition and
-twenty-two theorems: `finiteQPochhammerIn_zero_left` remains the single
+every zero. The generic `QPochhammerInfinite` surface now also proves actual
+derivative nonvanishing from every raw factor equation, including `q = 0`,
+and analytic order exactly one at every zero; `QPochhammerEntire` retains the
+legacy complex-wrapper names. The `QBinomialTheoremInfinite` inventory is one
+definition and twenty-two theorems: `finiteQPochhammerIn_zero_left` remains the single
 declaration owned by `GaussianBinomialAtOne` and is imported rather than
 redeclared. The forward status ledger is 64 Exact, 78 Partial, 132 None, and
 8 interface rows; the 191-result pre-Fabius core is 36/29/123/3. The compound outer spectral-product

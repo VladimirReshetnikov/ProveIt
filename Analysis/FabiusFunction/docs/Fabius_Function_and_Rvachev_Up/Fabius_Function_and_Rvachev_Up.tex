@@ -3198,7 +3198,7 @@ for all natural \(r,n\), including the empty boundaries, and
 under exactly \(u\le r\), hence also at \(u=r\).
 
 The exhaustive public surface of \path{QPochhammerInfinite.lean} is one
-definition and twenty-seven theorems.  For a commutative ring with an
+definition and twenty-nine theorems.  For a commutative ring with an
 arbitrary topology, \lean{qPochhammerInfIn} is the total Mathlib
 \texttt{tprod}
 \(\prod'_{j\ge0}(1-aq^j)\), and \lean{qPochhammerInfIn_eq_tprod} is its
@@ -3253,23 +3253,25 @@ entireness.  The algebraic cofactor identity
 \lean{pow_sq_mul_finiteQPochhammerIn_inv_pow_self} holds in every field under
 \(q\ne0\).
 
-Finally, the four complex declarations are
+Finally, the six complex declarations are
 \lean{differentiable_qPochhammerInfIn},
 \lean{hasDerivAt_qPochhammerInfIn_of_mul_pow_eq_one},
 \lean{hasDerivAt_qPochhammerInfIn_inv_pow}, and
-\lean{deriv_qPochhammerInfIn_inv_pow_ne_zero}.  The first proves entireness
+\lean{deriv_qPochhammerInfIn_inv_pow_ne_zero}, together with
+\lean{deriv_qPochhammerInfIn_ne_zero_of_mul_pow_eq_one} and
+\lean{analyticOrderAt_qPochhammerInfIn_of_eq_zero}.  The first proves entireness
 for \(\lVert q\rVert<1\); the second gives the derivative after removing a
 factor from the raw hypothesis \(a_0q^j=1\), including the possible
-\(q=0,j=0\) case.  The last two assume \(q\ne0\) and together give
+\(q=0,j=0\) case, and the fifth proves that raw-factor derivative is nonzero.
+The inverse-power pair assumes \(q\ne0\) and together gives
 \[
  \frac{\Differential}{\Differential a}(a;q)_\infty\bigg|_{a=q^{-j}}
  =(-1)^{j+1}(q^{\binom j2})^{-1}(q;q)_j(q;q)_\infty\ne0.
 \]
-The last declaration itself proves nonvanishing of the displayed coefficient;
-the preceding \texttt{HasDerivAt} theorem identifies it with the derivative.
-This generic API supplies no analytic-order declaration.  Analytic order one
-for the separately named complex wrapper, including the degenerate nome
-\(q=0\), remains exactly
+The coefficient theorem proves nonvanishing of the displayed expression; the
+preceding \texttt{HasDerivAt} theorem identifies it with the derivative.  The
+sixth theorem gives analytic order one at every zero, including the degenerate
+nome \(q=0\).  The same conclusion for the separately named complex wrapper is
 \lean{analyticOrderAt_complexQPochhammerInf_of_eq_zero} in
 \path{QPochhammerEntire.lean}; conversely that five-theorem wrapper supplies
 none of the generic ring-valued concatenation or dissection laws.
@@ -3815,11 +3817,12 @@ because the underlying infinite product is totalized outside its admissible
 range.  No spectral-zeta recovery, cumulant-sample recovery, or
 identifiability of an underlying probability law is asserted; those remain
 open interfaces.  With the later concurrent source union, the live facade
-census is 641 modules and 8,650 public declarations.  The current TeX also
+census is 643 modules and 8,661 public declarations.  The current TeX also
 contains the six-theorem prime-power companion-row API and the
-zero-definition/three-theorem outer Pochhammer normal-convergence API.  These
-are source-only overlays; the retained 167-page PDF is explicitly historical
-and has not been regenerated for these additions.
+zero-definition/three-theorem outer Pochhammer normal-convergence API, plus
+the two-module/nine-declaration effective-inverse tranche.  These are
+source-only overlays; the retained 167-page PDF is explicitly historical and
+has not been regenerated for these additions.
 
 On the real axis the origin is the unique global point of unit modulus:
 \begin{equation}
@@ -5287,10 +5290,40 @@ package the factorial and report-exact Delta witnesses for
 \lean{EffectivelyUniformContinuous}.
 
 This is the exhaustive public surface of the module: three definitions and
-fifteen theorems.  It does not construct the exact endpoint-mass ceiling
-denominator or a tolerant-bisection realizer, and it makes no
-\lean{SequentiallyComputable}, combined \lean{IsComputableRealFunction}, or
-input-bit asymptotic claim.
+fifteen theorems.  This module itself does not construct the exact endpoint-
+mass ceiling denominator or a tolerant-bisection realizer.  The downstream
+modules below supply the realizer, \lean{SequentiallyComputable}, and the
+combined \lean{IsComputableRealFunction} theorem; input-bit asymptotics remain
+open.
+
+\subsection{Tolerant inversion and computability of the total inverse}
+\label{sec:fabius-inverse-computable}
+
+The generic module \path{EffectiveMonotoneInverse.lean} has exactly two public
+definitions and six public theorems.  The definitions are
+\lean{SequentiallyComputableOn} and \lean{unitClamp}; the theorem inventory is
+\lean{unitClamp_sequentiallyComputable},
+\lean{tolerantDifference_error},
+\lean{tolerantDifference_safe_updates},
+\lean{tolerantDifference_inconclusive},
+\lean{tolerantBisection_correct}, and
+\lean{effectiveInversionOn_Icc}.  Given a computably dyadically approximable
+strict monotone bijection of \([0,1]\), a computable positive denominator, and
+the corresponding reciprocal inverse modulus, tolerant bisection transforms
+every uniform fast dyadic input name into an inverse name at the same requested
+precision.  A certified large signed difference safely updates one end of the
+bracket; an inconclusive comparison already certifies the inverse error.  Thus
+the construction never decides equality of computable reals.
+
+The specialization \path{FabiusInverseComputable.lean} has no public
+definitions and exactly one public theorem,
+\lean{fabiusInv_isComputableRealFunction}.  For every bounded Fabius witness it
+uses the centered-spline forward evaluator, the logarithmic Delta inverse
+modulus, and the generic bisection theorem to obtain sequential computability
+on the unit interval.  Clamping input names then proves the statement for the
+total inverse on all of \(\RealNumbers\), while the same logarithmic modulus
+supplies effective uniform continuity.  This closes computability, but not an
+exact least endpoint-mass denominator or an input-bit running-time theorem.
 
 \subsection{Precise non-elementarity}
 
@@ -12463,6 +12496,8 @@ Analyticity, inverse, effective inverse continuity, elementary obstruction &
 \path{FabiusInverseQuarterJet.lean},
 \path{FabiusInverseEffectiveContinuity.lean},
 \path{FabiusInverseLogarithmicModulus.lean},
+\path{EffectiveMonotoneInverse.lean},
+\path{FabiusInverseComputable.lean},
 \path{ElementaryFunction.lean}, \path{NotElementary.lean},
 \path{InverseBranch.lean}, \path{InverseNotElementary.lean}\\
 Moments and exact arithmetic &

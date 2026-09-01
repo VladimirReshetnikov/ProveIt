@@ -937,8 +937,10 @@ the corresponding elementary-denominator forms are
 Finally \nolinkurl{fabiusInv_effectivelyUniformContinuous} packages the
 reciprocal-precision condition as \nolinkurl{EffectivelyUniformContinuous}.
 These two definitions and twelve theorems are the module's complete public
-surface.  It does not provide a tolerant-bisection realizer, sequential
-computability, or a combined \nolinkurl{IsComputableRealFunction} theorem.
+surface.  This leaf itself does not provide a tolerant-bisection realizer,
+sequential computability, or a combined
+\nolinkurl{IsComputableRealFunction} theorem; the downstream effective-
+inversion modules below now supply all three.
 
 The downstream \nolinkurl{FabiusInverseLogarithmicModulus.lean} replaces the
 coarse choice \(r=n\) by
@@ -990,10 +992,36 @@ separately package the factorial and report-exact Delta witnesses for
 \nolinkurl{EffectivelyUniformContinuous}.
 
 These three definitions and fifteen theorems are the complete public surface.
-The module does not construct the exact endpoint-mass ceiling denominator or
-a tolerant-bisection realizer, and it proves no
-\nolinkurl{SequentiallyComputable}, combined
-\nolinkurl{IsComputableRealFunction}, or input-bit asymptotic statement.
+This module itself does not construct the exact endpoint-mass ceiling
+denominator or a tolerant-bisection realizer.  The downstream modules below
+prove \nolinkurl{SequentiallyComputable} and the combined
+\nolinkurl{IsComputableRealFunction} statement; no input-bit asymptotic is
+claimed.
+
+The generic \nolinkurl{EffectiveMonotoneInverse.lean} layer has exactly two
+public definitions and six theorems.  Its definitions are
+\nolinkurl{SequentiallyComputableOn} and \nolinkurl{unitClamp}; its theorems
+are \nolinkurl{unitClamp_sequentiallyComputable},
+\nolinkurl{tolerantDifference_error},
+\nolinkurl{tolerantDifference_safe_updates},
+\nolinkurl{tolerantDifference_inconclusive},
+\nolinkurl{tolerantBisection_correct}, and
+\nolinkurl{effectiveInversionOn_Icc}.  For a computably dyadically
+approximable strict monotone bijection of \([0,1]\), a computable positive
+reciprocal inverse modulus makes its inverse sequentially computable on that
+interval.  The comparison is genuinely three-way: a certified large signed
+difference updates the bracket, while the inconclusive branch already proves
+the requested inverse approximation, so equality of computable reals is never
+decided.
+
+The specialization \nolinkurl{FabiusInverseComputable.lean} has no public
+definitions and exactly one theorem,
+\nolinkurl{fabiusInv_isComputableRealFunction}.  Tolerant bisection supplies
+the sequential clause on \([0,1]\), input clamping extends it to the total
+inverse on \(\RealNumbers\), and the logarithmic Delta modulus supplies
+effective uniform continuity.  This is a computability certificate for every
+bounded Fabius witness, not an exact least endpoint-mass denominator or an
+input-bit running-time theorem.
 
 The separate smooth bridge \nolinkurl{FabiusInverseQuarterJet.lean} identifies
 the complete inverse jet at the quarter anchor.  For
@@ -1141,13 +1169,13 @@ No. & Declaration & Formal content \\
 \end{longtable}
 
 The boundary is important.  The two denominator definitions and their
-primitive-recursion proofs are executable, but \nolinkurl{fabiusInv} itself
-is still a \emph{noncomputable} order-isomorphism inverse.  An effective
-modulus alone is not a name-producing algorithm.  This module proves neither
+primitive-recursion proofs are executable, while the definition
+\nolinkurl{fabiusInv} remains noncomputable.  An effective modulus alone is
+not a name-producing algorithm, so this module by itself proves neither
 \nolinkurl{SequentiallyComputable} nor a combined
-\nolinkurl{IsComputableRealFunction} theorem for the inverse, and it supplies
-no logarithmic selector \(r(n)\), exact least/ceiling denominator, tolerant
-bisection realizer, or input-bit complexity bound.
+\nolinkurl{IsComputableRealFunction} theorem.  The later logarithmic and
+tolerant-bisection modules provide the selector and name-producing algorithm;
+the exact least/ceiling denominator and input-bit complexity remain open.
 
 \subsection{Generic formal implicit roots versus inverse-Fabius germs}
 \nolinkurl{ImplicitPowerSeries.lean} isolates a purely formal root engine.
@@ -2060,7 +2088,7 @@ and, under exactly \(u\le r\), its partial-period form with lengths \(n+1\)
 for \(s<u\) and \(n\) for \(u\le s<r\).  No restriction on \(q\), topology,
 division, cancellation, or nonvanishing is present.
 
-The one-definition, twenty-seven-theorem module
+The one-definition, twenty-nine-theorem module
 \nolinkurl{QPochhammerInfinite.lean} has the exhaustive public surface
 \nolinkurl{qPochhammerInfIn};
 \nolinkurl{qPochhammerInfIn_eq_tprod},
@@ -2088,8 +2116,10 @@ The one-definition, twenty-seven-theorem module
 \nolinkurl{pow_sq_mul_finiteQPochhammerIn_inv_pow_self},
 \nolinkurl{differentiable_qPochhammerInfIn},
 \nolinkurl{hasDerivAt_qPochhammerInfIn_of_mul_pow_eq_one},
-\nolinkurl{hasDerivAt_qPochhammerInfIn_inv_pow}, and
-\nolinkurl{deriv_qPochhammerInfIn_inv_pow_ne_zero}.
+\nolinkurl{hasDerivAt_qPochhammerInfIn_inv_pow},
+\nolinkurl{deriv_qPochhammerInfIn_inv_pow_ne_zero},
+\nolinkurl{deriv_qPochhammerInfIn_ne_zero_of_mul_pow_eq_one}, and
+\nolinkurl{analyticOrderAt_qPochhammerInfIn_of_eq_zero}.
 The total definition needs only a topological commutative ring.  For
 \(\lVert q\rVert<1\), completeness, a commutative normed-ring structure, and
 \(\lVert1\rVert=1\) support the product, finite-prefix limit, shift and
@@ -5107,7 +5137,7 @@ General geometric-sinc Pochhammer factorization & \nolinkurl{complexQPochhammerI
 Outer geometric spectral Pochhammer normal convergence & \nolinkurl{hasProdLocallyUniformly_geometricSincProduct_complexQPochhammerInf}, \nolinkurl{hasProdLocallyUniformly_rvachevFourierProduct_complexQPochhammerInf}, \nolinkurl{hasProdLocallyUniformly_rvachevFourier_complexQPochhammerInf} & Exhaustive zero-definition/three-theorem surface of \nolinkurl{GeometricPochhammerNormalConvergence.lean}; the general theorem assumes exactly \(\lVert q\rVert<1\), includes \(q=0\), and the last two are dyadic Rvachev/Fabius specializations; the centered/MGF and outside-disk/pole clauses remain open \\
 Fixed-nome entire Pochhammer symbol and simple zero lattice & \nolinkurl{hasProdLocallyUniformly_complexQPochhammerInf}, \nolinkurl{complexQPochhammerInf_differentiable}, \nolinkurl{complexQPochhammerInf_eq_zero_iff}, \nolinkurl{complexQPochhammerInf_eq_zero_iff_eq_inv_pow}, \nolinkurl{analyticOrderAt_complexQPochhammerInf_of_eq_zero} & \nolinkurl{QPochhammerEntire.lean}; zero definitions and five theorems, including the \(q=0\)-safe factor-zero form and the reciprocal-power lattice under \(q\ne0\) \\
 Finite q-Pochhammer residue-class dissection & \nolinkurl{finiteQPochhammerIn_dissection}, \nolinkurl{finiteQPochhammerIn_dissection_remainder} & Exhaustive zero-definition/two-theorem surface of \nolinkurl{QPochhammerDissection.lean}; arbitrary commutative ring, all natural \(r,n\), and remainder boundary \(u\le r\), with no hypothesis on \(q\) \\
-Generic infinite q-Pochhammer product & \nolinkurl{qPochhammerInfIn} and the twenty-seven theorems listed exhaustively in the current-tree discussion above & \nolinkurl{QPochhammerInfinite.lean}; total topological-ring definition, complete-normed-ring convergence/concatenation/dissection, multiplicative-norm zero locus, locally compact field continuity, complex entireness and explicit simple-zero derivative; distinct from the \nolinkurl{complexQPochhammerInf} analytic-order wrapper \\
+Generic infinite q-Pochhammer product & \nolinkurl{qPochhammerInfIn} and the twenty-nine theorems listed exhaustively in the current-tree discussion above & \nolinkurl{QPochhammerInfinite.lean}; total topological-ring definition, complete-normed-ring convergence/concatenation/dissection, multiplicative-norm zero locus, locally compact field continuity, complex entireness, nonzero raw-factor derivatives, and analytic order one, including (q=0); distinct from the \nolinkurl{complexQPochhammerInf} compatibility wrapper \\
 Infinite q-binomial theorem and Euler expansions & \nolinkurl{gaussianMajorant}, \nolinkurl{hasSum_qBinomial_theorem}, \nolinkurl{hasSum_euler_product}, \nolinkurl{hasSum_euler_reciprocal} & \nolinkurl{QBinomialTheoremInfinite.lean}; one definition and twenty-two theorems, listed exhaustively above \\
 Jacobi triple product and pentagonal sums & \nolinkurl{thetaExponent}, \nolinkurl{pentagonalExponent}, \nolinkurl{hasSum_jacobi_triple_product}, \nolinkurl{hasSum_pentagonal}, \nolinkurl{hasSum_pentagonal_pairs} & \nolinkurl{JacobiTripleProduct.lean}; two definitions and twenty-five theorems, listed exhaustively above \\
 Finite q-Pascal summations & \nolinkurl{sum_gaussianBinomial_succ_mul}, \nolinkurl{sum_gaussianBinomial_succ_mul'}, \nolinkurl{Commute.gaussianBinomial_left}, \nolinkurl{Commute.gaussianBinomial_right} & Exhaustive zero-definition/four-theorem surface of \nolinkurl{QPascalSummation.lean} \\
@@ -5255,7 +5285,7 @@ Module & Role in the development \\
 \nolinkurl{QPochhammerEntire.lean} & No definitions and five theorems: for each fixed complex \(\lVert q\rVert<1\), locally uniform convergence in \(a\), entireness of \(a\mapsto(a;q)_\infty\), the total factor-zero criterion, the reciprocal-power lattice when \(q\ne0\), and analytic order one at every zero.  The \(q=0\)-safe theorem remains division-free; no joint holomorphy or centered/MGF wrapper is asserted. \\
 \nolinkurl{GeometricPochhammerNormalConvergence.lean} & No definitions and three theorems: locally uniform convergence on \(\ComplexNumbers\) of the outer spectral Pochhammer product to \(S_q\) for every \(\lVert q\rVert<1\), including \(q=0\), and the dyadic Rvachev/Fabius specializations.  The compound centered/MGF, outside-disk reciprocal, pole-divisor, and zero--pole clauses remain unproved. \\
 \nolinkurl{QPochhammerDissection.lean} & Exactly two theorems and no public definitions: finite exact residue-class dissection over every commutative ring, and its remainder form under \(u\le r\), including all empty and \(u=r\) boundaries. \\
-\nolinkurl{QPochhammerInfinite.lean} & One definition and exactly twenty-seven theorems: the total generic \(q\)-Pochhammer \texttt{tprod}; strict-contraction summability, multipliability, finite-prefix convergence, concatenation, factor removal and positive-modulus dissection in complete normed commutative rings; the exact factor-zero locus under a multiplicative norm; locally uniform convergence and continuity over complete locally compact normed fields; complex entireness and the explicit nonzero derivative at every reciprocal-power zero for \(q\ne0\).  This module does not provide the separate wrapper's \texttt{analyticOrderAt} result. \\
+\nolinkurl{QPochhammerInfinite.lean} & One definition and exactly twenty-nine theorems: the total generic \(q\)-Pochhammer \texttt{tprod}; strict-contraction summability, multipliability, finite-prefix convergence, concatenation, factor removal and positive-modulus dissection in complete normed commutative rings; the exact factor-zero locus under a multiplicative norm; locally uniform convergence and continuity over complete locally compact normed fields; complex entireness, nonzero derivatives at raw factor zeros (including \(q=0\)), reciprocal-power derivative formulas for \(q\ne0\), and analytic order one at every zero. \\
 \nolinkurl{QBinomialTheoremInfinite.lean} & One definition and exactly twenty-two theorems: dominated passage from finite Gaussian coefficients, positivity and nonvanishing controls, the infinite q-binomial theorem, and Euler product and reciprocal expansions. \\
 \nolinkurl{JacobiTripleProduct.lean} & Two definitions and exactly twenty-five theorems: theta and pentagonal exponents, finite and infinite Jacobi triple products, and Euler pentagonal sums. \\
 \nolinkurl{QPascalSummation.lean} & Exactly four theorems and no public definitions: two finite Gaussian-binomial summations and the left and right commuting q-binomial identities. \\

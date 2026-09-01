@@ -515,8 +515,8 @@ remain research frontiers. These fractional-Volterra API claims were checked at 
 
 Geometric-sinc subgroup member:
 [`Exponents_and_q_Series_Frontiers/`](geometric-sinc-and-exponent-families/Exponents_and_q_Series_Frontiers/)
-(current semantic-union TeX: 16,362 lines and 737,086 bytes, SHA-256
-`11b459fdbe4cd44b4690d8ed91864b8864112a03bbff8f8bf980d197eb37dd55`;
+(current semantic-union TeX: 16,371 lines and 737,633 bytes, SHA-256
+`6102be1da3d7262d80da1dbd0de4ccb049e77a14018fe38afe4ba2b60fe1a66a`;
 latest validated PDF: 238 A4 pages and 6,316,535 bytes, SHA-256
 `df7b9ad69e0310b17988dd42cc22559cf22ff26027395c005c374ad51f9e62aa`;
 across seven parts). The PDF was built in exactly three guarded serial passes,
@@ -836,11 +836,12 @@ compatibility spelling of its primary identity),
 `QBinomialInversionSpecializations.lean` (two definitions, four theorems),
 `QPochhammerElementaryIdentities.lean` (13 theorems),
 `QPochhammerDissection.lean` (two theorems),
-`QPochhammerInfinite.lean` (one definition, 27 theorems),
+`QPochhammerInfinite.lean` (one definition, 29 theorems),
 `QBinomialReciprocity.lean` (four theorems),
 `GaussianBinomialAtNegOne.lean` (five theorems),
 `RvachevPochhammerFactorization.lean` (one definition, nine theorems), and
-`QPochhammerEntire.lean` (zero definitions, five theorems), and
+`QPochhammerEntire.lean` (zero definitions; four legacy compatibility
+wrappers plus one analytic-order theorem), and
 `GeometricPochhammerNormalConvergence.lean` (zero definitions, three
 theorems).
 The five `GaussianBinomialAtNegOne` theorems are
@@ -983,11 +984,16 @@ theorems justify the exchange of scale and spectral-zero indices, including
 `Fabius.finiteQPochhammerIn_dissection` and
 `Fabius.finiteQPochhammerIn_dissection_remainder` over every commutative ring;
 the latter allows the stronger boundary `u <= r`. `QPochhammerInfinite.lean`
-adds the generic definition `Fabius.qPochhammerInfIn` and 27 theorems. For a
+adds the generic definition `Fabius.qPochhammerInfIn` and 29 theorems. For a
 fixed contracting nome they include finite-prefix convergence, natural-number
 finite shifts, factor removal, infinite dissection, and the exact zero locus;
 over the complex numbers they include local uniformity in `a`, entire-ness,
-and an explicit nonzero derivative at every zero `q^(-j)`. Thus the finite
+and an explicit nonzero derivative at every zero `q^(-j)`. The new
+`Fabius.deriv_qPochhammerInfIn_ne_zero_of_mul_pow_eq_one` is the division-free
+derivative-nonvanishing statement at every raw factor zero `a*q^j = 1`, so it
+also covers `q = 0`; `Fabius.analyticOrderAt_qPochhammerInfIn_of_eq_zero`
+then states that every zero has analytic order exactly one, again including
+`q = 0`. Thus the finite
 dissection and remainder rows are exact, while the arbitrary-complex-order
 concatenation row is only partial. Infinite dissection assumes a positive
 modulus, while the two finite dissection theorems require no contraction or
@@ -995,13 +1001,16 @@ nonvanishing. These free-parameter regularity results prove neither joint
 `(a,q)` holomorphy nor continuation in the nome, and they do not supply the canonical chapter's
 explicit uniform-in-`q` tails and derivative kernels.
 
-`QPochhammerEntire.lean` adds exactly five theorems
+`QPochhammerEntire.lean` retains the four legacy compatibility wrappers and
+adds the analytic-order theorem, for exactly five public theorems:
 `Fabius.hasProdLocallyUniformly_complexQPochhammerInf`,
 `Fabius.complexQPochhammerInf_differentiable`,
 `Fabius.complexQPochhammerInf_eq_zero_iff`,
 `Fabius.complexQPochhammerInf_eq_zero_iff_eq_inv_pow`, and
 `Fabius.analyticOrderAt_complexQPochhammerInf_of_eq_zero`. For each fixed
-complex `q` with `‖q‖ < 1`, these prove local uniform convergence of the
+complex `q` with `‖q‖ < 1`, these transfer the generic `qPochhammerInfIn`
+results to the older `complexQPochhammerInf` names rather than duplicating
+their analytic proofs. They expose local uniform convergence of the
 defining factors on the whole complex `a`-plane, entire-ness in `a`, the raw
 factor-zero locus `∃ j, 1 - a*q^j = 0`, and analytic order one at every zero.
 The division-free zero statement includes `q = 0`, while the reciprocal-power
@@ -1039,13 +1048,16 @@ proves local-uniform convergence on the whole complex plane of the outer
 nome-`q^2` Pochhammer product to `S_q` for every complex strict contraction,
 including `q = 0`. The other two declarations specialize to the nome-`1/4`
 Rvachev product and then to the Fourier transform of every bounded Fabius
-witness satisfying `IsFabius`. This closes the outer normal-convergence
+witness satisfying `IsFabius`:
+`Fabius.hasProdLocallyUniformly_rvachevFourierProduct_complexQPochhammerInf`
+and `Fabius.hasProdLocallyUniformly_rvachevFourier_complexQPochhammerInf`.
+This closes the outer normal-convergence
 subclaim only; the named centered/MGF and exterior reciprocal/pole packaging
 of the compound manuscript theorem remains Partial.
 
 `QPochhammerDissection.lean` adds the two denominator-free finite residue-class
 factorizations over arbitrary commutative rings. `QPochhammerInfinite.lean`
-adds the generic infinite symbol `Fabius.qPochhammerInfIn` and 27 theorems:
+adds the generic infinite symbol `Fabius.qPochhammerInfIn` and 29 theorems:
 strict-contraction summability and convergence, finite-prefix and residue-class
 factorizations, exact zero criteria, locally uniform parameter convergence,
 continuity and complex differentiability, and explicit nonzero derivatives at
