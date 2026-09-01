@@ -3938,13 +3938,14 @@ coefficient sum, whose cast is the real triple-Legendre interval integral.  The 
 theorems generate the index symmetries, and the normalized coefficient gives exact finite
 product linearization over rational and real scalars.  Odd total degree and any strict
 triangle violation force vanishing; these are necessary support conditions only,
-with no converse or nonvanishing theorem.  There is no Wigner \(3j\) identification,
-factorial formula, or nonnegativity-by-Wigner result in this predecessor module; the
-closed-form leaf immediately below supplies those square-level conclusions.\\
+with no converse or nonvanishing theorem in this module.  The downstream closed-form
+module supplies the exact total squared zero-row Wigner \(3j\) identification, factorial
+forms, sharp support, and nonnegativity results; none of those conclusions should be read
+back into this predecessor module.\\
 \path{LegendreGauntClosedForm.lean} &
 Exactly two public definitions,
-\lean{legendreGauntAdmissible} and
-\lean{legendreWignerThreeJZeroSqRat}, and twenty-five public theorems:
+\lean{legendreGauntAdmissible} and \lean{legendreWignerThreeJZeroSqRat}, and twenty-five
+public theorems:
 \lean{legendreGauntAdmissible_iff_exists_pairwise_add},
 \lean{legendreGauntAdmissible_pairwise_add},
 \lean{legendreWignerThreeJZeroSqRat_pairwise_add},
@@ -3971,22 +3972,27 @@ Exactly two public definitions,
 \lean{legendreProductLinearizationCoeffRat_eq_mul_wignerThreeJZeroSqRat}, and
 \lean{legendreProductLinearizationCoeffRat_pos_iff_admissible}.
 Admissibility is even total degree together with the three weak triangle inequalities,
-equivalently
-\(i=b+c\), \(j=a+c\), \(k=a+b\).  With \(s=a+b+c\), the total rational square datum is
+equivalently \(i=b+c\), \(j=a+c\), \(k=a+b\).  With \(s=a+b+c\), the total rational
+square datum \(W_{ijk}^{2}=\lean{legendreWignerThreeJZeroSqRat}(i,j,k)\) is
 \[
  W_{ijk}^{2}=
  \frac{\binom{2a}{a}\binom{2b}{b}\binom{2c}{c}}
       {(2s+1)\binom{2s}{s}},
- \qquad
- G_{ijk}^{\RationalNumbers}=2W_{ijk}^{2},
 \]
-with equivalent pairwise-coordinate and half-sum factorial formulas.  It is positive
-exactly on the admissible support and zero otherwise; the rational and real Gaunt
-coefficients have the same sharp support and are nonnegative.  The coefficient of
-\(P_k\) in \(P_iP_j\) is \((2k+1)W_{ijk}^{2}\).  The definition is deliberately the
-total square of the integer-index zero-row datum: it makes no signed-symbol or
-Condon--Shortley phase choice and proves no half-integer, nonzero-magnetic-index,
-general \(3j/6j/9j\), Wigner orthogonality, or recoupling theorem.\\
+with equivalent pairwise-coordinate and half-sum factorial formulas.  At arbitrary
+natural indices the global identities are
+\[
+ G_{ijk}^{\RationalNumbers}=2W_{ijk}^{2},
+ \qquad
+ G_{ijk}=2\bigl(W_{ijk}^{2}:\RealNumbers\bigr).
+\]
+The datum is positive exactly on the admissible support and zero otherwise; the rational
+and real Gaunt coefficients have the same sharp support and are nonnegative.  The
+coefficient of \(P_k\) in \(P_iP_j\) is \((2k+1)W_{ijk}^{2}\) and is positive exactly on
+that support.  Separate boundary theorems cover \(k=i+j\) and \(i=0\).  This is
+deliberately the total square of the integer-index zero-row datum: no signed symbol or
+Condon--Shortley phase is chosen, and half-integer indices, nonzero magnetic indices,
+general \(3j/6j/9j\) theory, Wigner orthogonality, and recoupling identities remain open.\\
 \path{FabiusLegendreHankelDeterminant.lean} &
 Exactly two public definitions, \lean{upLegendreGramMatrix} and
 \lean{upLegendreGramDet}, and seven public theorems:
@@ -4036,8 +4042,10 @@ matrix, and determinant cast to the real up-law objects.  The rational determina
 Hankel determinant times the squared-leading-coefficient product, equals one in order zero,
 and is positive; its exact ratios give the rational norm and zero-based
 \(\beta_{n+1}\), with the latter prefactor \(((n+1)/(2n+1))^2\).  The next module
-supplies the finite Gaunt entry formulas, and the closed-form leaves adjacent to the Gaunt
-rows identify their zero-row Wigner-square form.  Signed or general Wigner theory,
+supplies the finite Gaunt entry formulas, and its downstream closed-form module converts
+them to finite total squared zero-row Wigner-$3j$ sums.  The rational Gram module itself
+proves neither formula.  Signed symbols and phases, half-integer or
+nonzero-magnetic-index theory, and general recoupling and Wigner orthogonality,
 Christoffel reconstruction, roots or quadrature, infinite Jacobi
 products/continued fractions, and asymptotics remain open.\\
 \path{FabiusLegendreGaunt.lean} &
@@ -4075,11 +4083,12 @@ entry with the same even finite sum using
 \lean{legendreGaunt}\((i,j,2r)\).  The other six theorems are unconditional.  These are
 finite polynomial and finite-sum identities.  Together with \path{LegendreGaunt.lean},
 they close the finite Gaunt-integral/product-linearization layer and the finite Rvachev
-Gram-entry expansion.  By themselves they prove no Wigner/$3j$ identification or
-factorial formula and no nonnegativity by that route; the two closed-form leaves adjacent
-to this row close precisely that finite square-level gap.  Infinite
-Legendre-series/integral interchange, Christoffel reconstruction, and named values for the
-displayed \(G_3\) entries remain outside this module.\\
+Gram-entry expansion.  This module itself proves no Wigner/$3j$ identification or
+factorial formula and no nonnegativity by that route; the two downstream closed-form
+modules supply exactly the total squared integer zero-row results and finite Gram sums.
+No signed-symbol or phase convention, half-integer or nonzero-magnetic-index theory,
+infinite Legendre-series/integral interchange, Christoffel reconstruction, or named values
+for the displayed \(G_3\) entries are proved here.\\
 \path{FabiusLegendreGauntClosedForm.lean} &
 Zero public definitions and exactly three public theorems:
 \lean{rvachevLegendreGramEntryRat_eq_two_mul_sum_wignerThreeJZeroSqRat},
@@ -4131,8 +4140,9 @@ twenty-eight theorems.  The finite Gaunt--zero-row-Wigner-square identification,
 factorial form, sharp support and positivity, product-linearization coefficients, and
 finite rational and real up-law Gram-entry square sums are therefore exact.  The values
 leaf still gives no named theorem for the displayed \(G_3\) entries.  Signed or general
-Wigner symbols, Christoffel reconstruction, roots or quadrature, infinite Jacobi
-products/continued fractions, and asymptotics remain open.\\
+Wigner symbols and phase conventions, half-integer or nonzero-magnetic-index symbols,
+general recoupling and Wigner orthogonality, Christoffel reconstruction, roots or
+quadrature, infinite Jacobi products/continued fractions, and asymptotics remain open.\\
 \path{FractionalVolterra.lean}, \path{FractionalVolterraSemigroup.lean} &
 The total real-order Gamma-normalized operator, its unconditional endpoint/locality/scalar,
 order-one, and positive-natural-order rules, and its positive-order ordered-endpoint
@@ -8764,7 +8774,7 @@ This is the most direct connection between the fast bit-recursive evaluator and 
 argument series: the finite recursion is not a separate algorithm pasted onto the infinite
 formula; it is literally the same telescope when the binary tail eventually becomes zero.
 
-\subsection{Direct one-row Appell and nested digit--$q$ forms}
+\subsection{Direct one-row Appell and nested digit--\texorpdfstring{$q$}{q} forms}
 
 The triangular reconstruction below is not the only way to insert the Gaussian row.  Retaining
 the Appell variable throughout the finite identity gives the direct centered formula.

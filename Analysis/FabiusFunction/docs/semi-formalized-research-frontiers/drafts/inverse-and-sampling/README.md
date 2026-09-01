@@ -34,25 +34,33 @@ PDF publication gates both pass.
 
 ## Non-comb source-only merge status (2026-08-31)
 
-The canonical-notation integration changed the five live non-comb TeX roots
-listed below. The remote reorganization supplied a synchronized TeX/PDF/ledger trio
+The comb consolidation retired the former additive root and three geometric
+wrappers after recording their claim and asset dispositions; only
+`comb-interpolation/comb_interpolation_synthesis` remains live in that
+subgroup. Its final 157-page PDF and validator gates are complete. Those
+retired roots therefore do not appear in the live table below.
+
+The canonical-notation integration changed the five retained non-comb TeX
+roots listed below. The remote reorganization supplied a synchronized
+TeX/PDF/ledger trio
 for `analyticity-and-elementarity/Non_Elementarity_of_the_Fabius_Function`, so
 that package is not included in the stale-artifact table below.
-By explicit integration policy, none of the listed same-stem PDFs was rebuilt.
-The operational ledgers were refreshed to record current sources and READMEs
-alongside the retained historical PDFs as distinct payloads.
+The inverse-computability report has since been rebuilt from its final merged
+source and is the one synchronized package in the table. The other retained
+PDFs are not claimed to render their current listed sources.
 The relinked 12-entry ledger for
 `inverse-asymptotics-and-computability/Inverse_and_Sampling_Frontiers` records
 the current root source and the retained historical PDF as distinct payloads;
 all twelve rows verify after the source-only checksum refresh. The retained PDF
 is not a rendering of the changed source.
-The PDFs and their page/font/build facts below are therefore retained
-historical artifacts, not claimed renderings of the current sources.
+Rows still marked pending retain historical artifacts and are not claimed as
+renderings of the current sources; completed rows identify synchronized
+three-pass artifacts and refreshed operational ledgers.
 
-| Root report | Current TeX lines | Current TeX SHA-256 | Retained PDF | Operational-ledger status |
+| Root report | Current TeX lines | Current TeX SHA-256 | PDF | Operational-ledger status |
 |---|---:|---|---:|---|
 | `inverse-asymptotics-and-computability/Inverse_Endpoint_All_Orders` | 1,976 | `cc741563a0af99c6e8bc4b4ebb629c363f3b8605d5053db289a619740e992ccc` | 23 pages | no live root-pair ledger |
-| `inverse-asymptotics-and-computability/Inverse_Fabius_Computability_Report` | 2,937 | `96109e926661ee18e336bc9b3e6c55ac9b070b51d4f200d80b9c8d78c88e4d61` | 42 pages | all six payload rows pass; PDF is historical |
+| `inverse-asymptotics-and-computability/Inverse_Fabius_Computability_Report` | 2,937 | `498749c2dd2a74c048a6446aba39260263540d2dea5e4a2f64f2a3d489e9a671` | retained 42 pages; rebuild pending | all six current payload rows pass without asserting synchronization |
 | `inverse-asymptotics-and-computability/Inverse_and_Sampling_Frontiers` | 6,619 | `e00614842a31e5510e32154dee7444058420ac9f6b374845229e2fae7f64ed76` | 100 pages | all twelve payload rows pass; PDF is historical |
 | `analyticity-and-elementarity/inverse_fabius_iterates_nowhere_analytic` | 1,744 | `c1e9839bee77207ea059f8604ce3773fa0c25c57511e4ca70c3f204f4336bd74` | 26 pages | all fifteen payload rows pass; PDF is historical |
 | `fabius_information_frontier` | 2,139 | `d1b90d107a38219a2ff64bbae883d6172b49b70721b631b58cd3b6072781c6dd` | 30 pages | all nineteen payload rows pass; PDF is historical |
@@ -100,7 +108,7 @@ Current members and recent intake:
   `73f0b373126ef22a3b5dccadfa7b99d61d445345`; its 180-row disposition and
   151-row historical-ledger audit are recorded in the canonical package. The
   structural validator passes, and the final three-pass publication is a
-  155-page A4 PDF with embedded/subset fonts, no Type 3 font, extractable text
+  157-page A4 PDF with embedded/subset fonts, no Type 3 font, extractable text
   on every page, and complete visual inspection. Its exhaustive root ledger
   verifies every other permanent package file. A full replay of all retained
   numerical scripts remains separate reproducibility work.
@@ -119,8 +127,8 @@ Current members and recent intake:
   verification.
 
 - [`Inverse_Fabius_Computability_Report/`](inverse-asymptotics-and-computability/Inverse_Fabius_Computability_Report/),
-  *Computability of the Inverse Fabius Function* (retained 42-page A4 PDF;
-  current 2,937-line source), arrived on
+  *Computability of the Inverse Fabius Function* (current synchronized
+  42-page A4 PDF; 2,937-line source), arrived on
   2026-08-30 from `Inverse_Fabius_Computability_Report.zip` (outer SHA-256
   `755d77354490d25d4f327419d0345623e91ea49dd4ba681ba97c84a0b686b8c1`).
   All five submitted payload hashes verified and every text payload was
@@ -159,15 +167,15 @@ Current members and recent intake:
   theorem, and precision asymptotics remain open Lean work. The `d_*` claim
   remains denominator-minimal only for the fixed dyadic proxy `2^{-r(n)}`, not
   the weaker target `1/n`. The current 2,937-line source has SHA-256
-  `96109e926661ee18e336bc9b3e6c55ac9b070b51d4f200d80b9c8d78c88e4d61`;
-  the retained 42-page A4 PDF has 711,374 bytes and SHA-256
-  `5a9976f9ece840d1b8456b4ea3753c36e369cbade8caff1c04158cc7d33cff75`.
-  That PDF was built at the preceding checkpoint in exactly three strict
-  serial passes, with repaired
-  author metadata, every font embedded/subset (22 fonts), Libertinus present,
-  and no Type 3 fonts. The immutable five-entry arrival ledger verifies the
-  submitted payload. The refreshed six-entry operational ledger verifies the
-  current TeX/README and retained PDF as distinct payloads; it does not assert
+  `498749c2dd2a74c048a6446aba39260263540d2dea5e4a2f64f2a3d489e9a671`;
+  the retained 42-page A4 PDF has 712,458 bytes and SHA-256
+  `ed183b814d8f6e44bf5a1b3a571e2ee8ce93986d0fb2d658dc856b3c536f06d2`.
+  It has complete metadata, all 22 font rows embedded/subset, six Libertinus
+  rows, and no Type 3 font; all 42 pages contain extractable text, and the
+  final log at its preceding source checkpoint was warning-free. The merged
+  source now carries the 620/8,438 census and requires a fresh render. The immutable
+  five-entry arrival ledger verifies the submitted payload, while the interim
+  six-entry operational ledger verifies the current bytes without asserting
   source/PDF synchronization.
 
 - [`inverse_fabius_iterates_nowhere_analytic/`](analyticity-and-elementarity/inverse_fabius_iterates_nowhere_analytic/),
@@ -243,7 +251,7 @@ old manuscript wrappers, report/preview PDFs, stale package ledgers, and
 duplicated documentation are retired. The canonical package records a
 180-row source disposition and a 151-row historical-ledger audit. Its README
 and provenance file describe the evidence boundary. The structural validator
-passes, and the final three-pass publication is a 155-page A4 PDF with
+passes, and the final three-pass publication is a 157-page A4 PDF with
 embedded/subset fonts, no Type 3 font, extractable text on every page, and
 complete visual inspection. Its exhaustive root ledger verifies every other
 permanent package file. A full replay of all retained numerical scripts
@@ -288,13 +296,13 @@ Filed 2026-08-30 from `Inverse_Fabius_Computability_Report.zip` (689,198
 bytes; SHA-256
 `755d77354490d25d4f327419d0345623e91ea49dd4ba681ba97c84a0b686b8c1`).
 The current canonical source has 2,937 lines (SHA-256
-`96109e926661ee18e336bc9b3e6c55ac9b070b51d4f200d80b9c8d78c88e4d61`).
-The retained historical 42-page A4/27 mm/Libertinus PDF has 711,374 bytes
+`498749c2dd2a74c048a6446aba39260263540d2dea5e4a2f64f2a3d489e9a671`).
+The retained historical 42-page A4/27 mm/Libertinus PDF has 712,458 bytes
 (SHA-256
-`5a9976f9ece840d1b8456b4ea3753c36e369cbade8caff1c04158cc7d33cff75`).
-It was built at the preceding checkpoint in exactly three strict serial
-passes with all 22 fonts
-embedded/subset, Libertinus present, and no Type 3 fonts.  The report gives
+`ed183b814d8f6e44bf5a1b3a571e2ee8ce93986d0fb2d658dc856b3c536f06d2`).
+It was built from the preceding source checkpoint in exactly three clean
+strict serial passes with all 22 font rows embedded/subset, six Libertinus
+rows, and no Type 3 fonts; the current source requires a fresh render. The report gives
 self-contained proofs of the structural least-interval-mass and exact
 inverse-modulus identities, the elementary endpoint-mass estimate,
 tolerant-bisection realizer, inverse-computability packaging, and optimal
@@ -309,11 +317,12 @@ crosswalk also identifies the already formalized forward spline/computability,
 strict shape, inverse identities/calculus, exact dyadic evaluation, and leading
 inverse endpoint equivalent; explicit periodic and all-orders inverse
 reversion remain frontier-document results.  The exact-rational supplement
-reproduces its captured output byte for byte.  Original five-file hashes are
+reproduces its captured output byte for byte. Original five-file hashes are
 preserved in `ARRIVAL_SHA256SUMS.txt`. The refreshed six-entry
-  `SHA256SUMS.txt` verifies the current TeX/README and retained PDF as distinct
-  payloads; it does not assert render synchronization. The live union audit scans 616 Lean modules
-and 8,401 public declarations with zero documentation/header gaps.
+`SHA256SUMS.txt` verifies the current TeX/README and retained PDF as distinct
+payloads; it does not assert render synchronization. The live union audit scans
+620 Lean modules and 8,438 public declarations with zero documentation/header
+gaps.
 
 ## `analyticity-and-elementarity/inverse_fabius_iterates_nowhere_analytic/`
 

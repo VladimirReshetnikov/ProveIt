@@ -80,7 +80,7 @@ through finite Gaunt matrices.
 ## Post-snapshot Lean crosswalk
 
 The pinned audit and its corpus-relative novelty statements remain historical.
-The current repository has since added five executable-rational modules beside
+The current repository has since added seven executable-rational modules beside
 the generic moment-Gram and real Fabius--Legendre determinant layers:
 
 - `LegendrePolynomialRational.lean` contributes two public definitions and six
@@ -148,11 +148,17 @@ the generic moment-Gram and real Fabius--Legendre determinant layers:
   form, the boundary and zero-index cases, the unconditional rational and real
   identities `Gaunt = 2 * square`, sharp support, zero, positivity and
   nonnegativity, and the product-linearization coefficient bridge.  The
-  square notation makes no signed-symbol or phase choice.
+  square notation makes no signed-symbol or phase choice and supplies no
+  half-integer, nonzero-magnetic-index, general `3j`/`6j`/`9j`, orthogonality,
+  or recoupling API.
 - `FabiusLegendreGauntClosedForm.lean` contributes zero definitions and three
-  public theorems.  They substitute the square identity into the finite
-  rational entry, rational matrix, and real up-Gram sums.  The first two are
-  unconditional; the real theorem requires `BoundedFabius` and `IsFabius`.
+  public theorems:
+  `rvachevLegendreGramEntryRat_eq_two_mul_sum_wignerThreeJZeroSqRat`,
+  `rvachevLegendreGramMatrixRat_apply_eq_two_mul_sum_wignerThreeJZeroSqRat`,
+  and `upLegendreGramMatrix_apply_eq_two_mul_sum_wignerThreeJZeroSqRat`.
+  They give the finite rational entry, rational matrix-entry, and real up-law
+  matrix-entry Wigner-square sums; the real bridge retains its
+  `BoundedFabius` and `IsFabius` hypotheses.
 
 Thus executable rational coefficient, entry, matrix, determinant, cast,
 positivity, norm-ratio, and Jacobi-ratio layers now have exact Lean
@@ -160,16 +166,23 @@ counterparts, and the displayed `H_4` and `beta_4` now have named exact values.
 The rational Gaunt triple sum, its real integral cast, rational/real product
 linearizations, rational/real finite Rvachev Gram-entry expansions, total
 integer-index zero-row square datum, factorial form, sharp support and
-positivity, and finite Wigner-square matrix now have exact Lean counterparts.
+positivity, nonnegativity, and finite Wigner-square matrix now have exact Lean
+counterparts.
 A signed symbol, phase convention, half-integer and nonzero-magnetic-index
 objects, general Wigner orthogonality/recoupling, Christoffel reconstruction,
 named `G_3` entry values, roots, quadrature, infinite Jacobi products, and
 asymptotics remain paper-only.  The report keeps the original 22-declaration
 coefficient/Gram inventory, the exhaustive eleven-theorem values inventory,
 the 25-declaration Gaunt inventory, and the 30-declaration closed-form/wrapper
-addition separate.  The broader eleven-module inventory has twenty definitions
-and one hundred nine theorems, 129 declarations in all.  The retained 41-page
-PDF is a verified historical 99-name artifact and predates this last addition.
+addition separate.  The two closed-form leaves add thirty names, so the focused
+report crosswalk grows from 76 to 106 names; the broader eleven-module
+inventory has twenty definitions and 109 theorems, 129 declarations in all.
+The retained 41-page PDF is a verified historical 99-name artifact and
+predates this last addition.
+
+The previously validated PDF, preflight, and checksum receipt predate this
+crosswalk correction. They remain historical evidence but are stale for the
+current source; a new build and refreshed preflight/ledger are pending.
 
 ## Status discipline
 

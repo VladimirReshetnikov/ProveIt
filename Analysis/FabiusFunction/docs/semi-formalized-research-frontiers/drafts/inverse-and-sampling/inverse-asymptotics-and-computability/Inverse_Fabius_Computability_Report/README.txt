@@ -1,26 +1,27 @@
 COMPUTABILITY OF THE INVERSE FABIUS FUNCTION
 =============================================
 
-SOURCE-ONLY MERGE STATUS (2026-08-31)
--------------------------------------
+CURRENT SYNCHRONIZED BUILD (2026-08-31)
+---------------------------------------
 The current TeX has 2937 lines and SHA-256
-96109e926661ee18e336bc9b3e6c55ac9b070b51d4f200d80b9c8d78c88e4d61.
-The retained 42-page PDF was not rebuilt after the notation migration and is
-not claimed to be synchronized with that source.  The refreshed six-entry
-SHA256SUMS.txt verifies the current source/README and the retained PDF as
-distinct payloads; it does not assert render synchronization. Later uses of "synchronized", "current", or
-"final" in historical build notes refer to the preceding checkpoint.
+498749c2dd2a74c048a6446aba39260263540d2dea5e4a2f64f2a3d489e9a671.
+It retains the Lagrange/synthesis crosswalk and local inverse-notation/source
+repairs, with the combined live audit updated to 620 modules and 8,438 public
+declarations.  Exactly three clean, strict, serial pdfLaTeX passes produced
+the current 42-page A4 PDF (712,447 bytes; SHA-256
+dc8da9d476d6b5330aad0ac3253bab162ddcb944653b038bc0aede4be4fc3fe1).
+The source, PDF, and refreshed six-entry operational ledger are synchronized.
 
 Contents
 --------
 inverse_fabius_computability.tex
     Complete 2937-line, canonically styled LaTeX source of the report.  Its
-    semantic merge unites the equality/rigidity, effective-continuity, and
-    logarithmic reciprocal-modulus crosswalks described below.
+    semantic merge unites the equality/rigidity, effective-continuity,
+    logarithmic reciprocal-modulus, and Lagrange/synthesis crosswalks while
+    retaining the local inverse-notation and source repairs.
 
 inverse_fabius_computability.pdf
-    Retained 42-page A4 rendering from the preceding publication checkpoint;
-    not rebuilt from the current merged source.
+    Current validated 42-page A4 rendering of the merged source.
 
 inverse_fabius_computability_experiments.py
     Exact-rational Python supplement using only the standard library.  It
@@ -35,8 +36,7 @@ ARRIVAL_SHA256SUMS.txt
 
 SHA256SUMS.txt
     Refreshed six-entry operational payload ledger (the ledger itself is
-    intentionally not self-hashed); all six rows verify, while the PDF remains
-    the explicitly retained historical render described above.
+    intentionally not self-hashed); all six rows verify.
 
 Arrival provenance
 ------------------
@@ -78,7 +78,7 @@ forward computability, strict density shape, the clamped inverse and its
 inverse identities/calculus, exact dyadic inverse evaluation, and the leading
 inverse endpoint equivalent.  The report names those exact declarations and
 keeps its remaining inverse-computability declarations unqualified and
-schematic.  The live union audit scans 616 Lean modules and 8,401 public
+schematic.  The live union audit scans 620 Lean modules and 8,438 public
 declarations with zero documentation/header gaps.  No unqualified worldwide
 novelty claim is made.
 
@@ -141,16 +141,13 @@ target tolerance 1/n.
 
 Build and validation
 --------------------
-At the preceding publication checkpoint, the then-2967-line source used the
-repository's canonical article/A4/27 mm/Libertinus style and was rebuilt from
-clean auxiliaries in exactly three strict serial pdfLaTeX passes.  The
-retained 42-page PDF has populated
-author metadata; every page is A4 with zero rotation; every font is embedded
-and subset; Libertinus is present; and no Type 3 font is used.  The final log
-has no errors, unresolved references/citations, rerun request, or overfull
-box.  Text extraction and visual checks cover the status boundary, corpus
-audit, asymptotic caveat, Lean roadmap, proof-status tables, and both
-exhaustive effective-continuity crosswalks.  Auxiliary files were removed
-after validation and the six-entry active checksum ledger refreshed. Those
-build and ledger facts are historical; the source-only merge status above is
-the current state.
+The current 2937-line source uses the repository's canonical
+article/A4/27 mm/Libertinus style.  Starting from clean auxiliaries, exactly
+three strict serial pdfLaTeX passes produced the synchronized 42-page PDF with
+populated title, author, subject, and keyword metadata.  All 42 pages are A4
+with zero rotation and contain extractable text.  All 22 font rows are
+embedded and subset, six are Libertinus, and no Type 3 font is used.  The
+final log has no errors, warnings, unresolved references or citations, rerun
+request, overfull box, or underfull box.  Pages 1, 21, and 42 were inspected
+visually.  Auxiliary sidecars were removed after validation, and the active
+six-entry ledger verifies the complete current payload.

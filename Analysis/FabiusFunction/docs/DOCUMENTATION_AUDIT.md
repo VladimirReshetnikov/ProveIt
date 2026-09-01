@@ -131,13 +131,15 @@ declarations: two first-derivative formulas at `q = -1` and two simple-root
 multiplicity theorems.  Three signed-power moment theorems in
 `RvachevDerivativeDistribution.lean` give the exact Boolean-cube formula and
 its even-moment and positive-order odd-moment corollaries.  The same module's
-two positive-order signed-distribution theorems are
-`intervalIntegral_comp_normalized_iteratedDeriv_rvachev` (the Banach-valued
-continuous-test half-mixture) and
-`map_normalized_iteratedDeriv_rvachev_restrict_Icc` (the restricted-Lebesgue
-Borel pushforward).  These theorems require exactly `0<n`; order zero retains
-the unsymmetrized original `rvachevUp` law.  The all-depth
-`generalizedRvachevProduct_two_pow_mul` shift--refinement theorem belongs to
+two additional positive-order signed-distribution theorems give the sharply
+normalized half-mixture law under exactly `0<n`:
+`intervalIntegral_comp_normalized_iteratedDeriv_rvachev` is the continuous-test
+half-mixture into any real Banach space, and
+`map_normalized_iteratedDeriv_rvachev_restrict_Icc` is the corresponding Borel
+pushforward identity for Lebesgue measure restricted to the closed interval
+`[-1,1]`.  Order zero instead has the unsymmetrized original `rvachevUp` law.
+The remaining declaration is the all-depth
+`generalizedRvachevProduct_two_pow_mul` shift--refinement theorem in
 `WeightLinearityProducts.lean`.  The final nine declarations are the two
 definitions and seven theorems of `LagrangeRvachevSynthesis.lean`: the generic
 finite-node decoder and atom coefficient, degree bounds, cardinal synthesis,
@@ -229,21 +231,25 @@ future source addition must preserve the full invariant
 rather than merely avoid worsening a historical backlog.  Run the script for
 live numbers after merging concurrent source work.
 
-The primary exposition and Lean walkthrough PDFs were rebuilt upstream in
-fresh, guarded three-pass Libertinus cycles on 2026-08-31.  They contain 166
-and 126 A4 pages and include the prime-power valuation and exhaustive
-30-declaration closed-form Gaunt crosswalks.  All fonts in these two artifacts
-are embedded and subset, with no Type 3 font.  The merged TeX sources retain
-those results and add expanded formula-and-proof ledgers, so exact post-merge
-source/PDF synchronization is not claimed.
-The retained 236-page canonical frontier, 376-page Integration and Transform
-Frontiers, 301-page Representation Frontiers, and 41-page filed New Frontiers
-PDFs predate the closed-form tranche and are not synchronized with their current
-sources.  Earlier checks of the canonical and filed artifacts, including the
-filed package's historical 20-entry ledger, do not establish current parity.
-Those four PDFs retain explicit pending-build disclosures and await content
-rebuilds; the primary and walkthrough await only parity rebuilds for the
-expanded source commentary.
+The additional declaration in `PolynomialCombExactness.lean` is
+`integral_polynomial_mul_rvachevUp_eq_dyadic_tsum`, the exact normalized
+physical-coordinate self-sampling quadrature for every real polynomial whose
+natural degree is at most the dyadic level and every real phase.
+
+The current retained comb-interpolation synthesis PDF contains 158 A4 pages.
+The retained canonical frontier PDF contains 237 A4 pages, but its source is
+under separate union resolution, so source/PDF parity is not claimed and a
+parity rebuild is pending if that resolution changes the TeX.  The filed New
+Frontiers artifact remains at 41 A4 pages, with parity governed by its separate
+source merge.  The notation catalogue, primary exposition, and Lean
+walkthrough TeX sources contain post-replay unions, including the
+Lagrange--Rvachev, prime-power, and total rational integer-index zero-row
+Wigner-square material.  Their retained PDFs predate those unions; the locally
+validated 167-page primary render is a historical receipt rather than a
+current parity claim.  All three source/PDF pairs are pending fresh
+uninterrupted three-pass Libertinus builds.  Other frontier packages with a
+source newer than their retained PDF carry an explicit local pending-build
+disclosure rather than relying on this global audit note.
 
 ### What the review pass caught
 

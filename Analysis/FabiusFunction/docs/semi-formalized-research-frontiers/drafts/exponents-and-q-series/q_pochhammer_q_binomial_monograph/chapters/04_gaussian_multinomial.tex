@@ -425,7 +425,7 @@ Then
   \frac{y}{\Phi_m'(\zeta)R_m(\zeta)}+\BigO(y^2).
 \]
 
-\begin{proposition}[Value and derivative at \(q=-1\)]
+\begin{proposition}[Complete first jet at \(q=-1\)]
 \label{prop:gq-minus-one}
 One has
 \[
@@ -437,10 +437,18 @@ One has
   &\text{otherwise}.
   \end{cases}
 \]
+In every nonzero case, \(d=k(n-k)\) is even and
+\[
+  G_{n,k}'(-1)
+  =-\frac d2\binom{\lfloor n/2\rfloor}{\lfloor k/2\rfloor}.
+\]
 In the zero case, writing \(n=2m\) and \(k=2r+1\),
 \[
   G_{2m,2r+1}'(-1)=(m-r)\binom mr.
 \]
+Here \(r<m\), so this derivative is nonzero.  Thus \(-1\) has root
+multiplicity one over \(\IntegerNumbers\), and after base change over every
+characteristic-zero commutative ring.
 \end{proposition}
 
 \begin{proof}
@@ -455,12 +463,22 @@ the surviving factorial ratios reduce to the displayed binomial coefficient.
 When \(n\) is even and \(k\) odd, there is exactly one unpaired even numerator
 factor, so the value is zero.
 
+In every other parity case \(d=k(n-k)\) is even.  Differentiate the
+reciprocity identity \(G(q)=q^dG(q^{-1})\) and set \(q=-1\).  This gives
+\[
+  G'(-1)=-dG(-1)-G'(-1),
+\]
+and hence the displayed even-degree derivative formula.
+
 In that case the quotient after removing the unique factor \(1+q\) has limit
 \[
   \frac{m!}{r!(m-r-1)!}=(m-r)\binom mr.
 \]
 Because \(1+q\) has derivative one at \(-1\), this limit is exactly
-\(G_{2m,2r+1}'(-1)\).
+\(G_{2m,2r+1}'(-1)\).  The standing assumptions \(0<k<n\) imply \(r<m\),
+so the integer slope is positive and the alternating zero is simple.  Root
+multiplicity is preserved by the injective base change from
+\(\IntegerNumbers\) to any characteristic-zero commutative ring.
 \end{proof}
 
 \begin{remark}[Exact Lean crosswalk]

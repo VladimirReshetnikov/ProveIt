@@ -29,6 +29,7 @@
   citecolor=linkblue,
   urlcolor=linkblue,
   pdftitle={The Fabius Function and Rvachev's Up-Function},
+  pdfauthor={Vladimir Reshetnikov; ProveIt formal-development synthesis},
   pdfsubject={Exact arithmetic, Fourier analysis, probability, and sharp asymptotics},
   pdfkeywords={Fabius function, Rvachev up-function, dyadic rational, Lambert W, saddle point, Thue-Morse}
 }
@@ -747,7 +748,7 @@ Differentiating gives $F'(x)=2F(2x)$.  The second half of
 endpoint values are immediate.
 \end{proof}
 
-\subsection{The differential equation for $\RvachevUp$ and smoothness}
+\subsection{The differential equation for \texorpdfstring{$\RvachevUp$}{up} and smoothness}
 
 Folding \eqref{eq:F-diffeq} and \eqref{eq:F-diffeq-right} yields the refinement-type
 differential equation
@@ -4564,9 +4565,18 @@ half-mixture in continuous-test and Borel-pushforward form
 \eqref{eq:rvachev-normalized-signed-test} and
 \eqref{eq:rvachev-normalized-signed-pushforward}, and the ordinary
 \(\NaturalNumbers\)-power formulas
-\eqref{eq:rvachev-signed-nat-moments}--\eqref{eq:rvachev-odd-nat-moments}.
-The natural-power formulas are distinct from the nonnegative-real \lean{Real.rpow}
-absolute moments in \eqref{eq:rvachev-rpow-moments}.  The current module does not state
+\eqref{eq:rvachev-signed-nat-moments}--\eqref{eq:rvachev-odd-nat-moments}.  The latter
+are distinct from the nonnegative-real \lean{Real.rpow} absolute moments in
+\eqref{eq:rvachev-rpow-moments}.  At every positive derivative order,
+\lean{intervalIntegral_comp_normalized_iteratedDeriv_rvachev} identifies every
+continuous Banach-valued test integral of the sharply normalized signed derivative
+with the half-sum of the corresponding \(\RvachevUp\) and reflected
+\(-\RvachevUp\) integrals.  The companion
+\lean{map_normalized_iteratedDeriv_rvachev_restrict_Icc} is the exact equality of
+their restricted-Lebesgue pushforward measures.  Both theorems require exactly
+\(0<n\).  The symmetric signed Borel law is therefore closed; its sharp \(0<n\)
+boundary preserves the unsymmetrized \(n=0\) profile.  An independent product-space
+Rademacher realization is not yet packaged.  Nor does the current module state
 the \lean{eLpNorm} or general rearrangement-invariant norm ladder, the exact inverse-Fabius
 level sets, the beta-transform identities, or the later spectral layers.  Those claims
 remain in the research-frontier report.  Equation
@@ -6274,7 +6284,7 @@ proved denominator information used in this article.  Proposed exact factorizati
 least common denominator, together with the associated numerical tables, are kept in the
 consolidated research-frontier volume until their individual statements are formalized.
 
-\subsection{The exact half-base \(q\)-binomial layer}
+\subsection{The exact half-base \texorpdfstring{\(q\)}{q}-binomial layer}
 \label{subsec:q-binomial-dyadic}
 \label{sec:qs-half-base-calculus}
 
@@ -6390,16 +6400,17 @@ The functoriality, alternate Pascal, and symmetry statements
 The companion \path{QBinomialReciprocity.lean} has no public definitions and exactly
 four public theorems.  For a unit \(q\) in any commutative semiring,
 \begin{equation}
- q^{k(n-k)}{n\brack k}_{q^{-1}}={n\brack k}_q             \label{eq:q-gaussian-reciprocity}
+ q^{k(n-k)}\GaussianBinomial{n}{k}{q^{-1}}=\GaussianBinomial{n}{k}{q}
+                                                               \label{eq:q-gaussian-reciprocity}
 \end{equation}
 is \lean{gaussianBinomial_reciprocity_units}; the statement is total in \(n,k\), since
 the recursive Gaussian coefficients on both sides vanish when \(n<k\).  The theorem
 \lean{gaussianBinomial_reciprocity} is exactly the nonzero-\(q\) wrapper over an arbitrary
 semifield.  Over every commutative ring,
 \lean{gaussianBinomial_neg_one_eq_zero_of_odd_degree} proves
-\({n\brack k}_{-1}=0\) when \(k(n-k)\) is odd, and
+\(\GaussianBinomial{n}{k}{-1}=0\) when \(k(n-k)\) is odd, and
 \lean{gaussianBinomial_neg_one_even_odd_eq_zero} proves the total specialization
-\({2a\brack 2b+1}_{-1}=0\), including the above-diagonal cases.  These are finite
+\(\GaussianBinomial{2a}{2b+1}{-1}=0\), including the above-diagonal cases.  These are finite
 algebraic identities: they use no quotient formula, cancellation, integral-domain,
 characteristic, topology, or convergence hypothesis.
 
@@ -6433,10 +6444,10 @@ are
 \begin{align*}
  \prod_{j<k}(q^N-q^j)
    &=(-1)^kq^{\binom k2}(q^{N-k+1};q)_k \qquad(k\le N),\\
- (1-q^{k+1}){n\brack k+1}_q
-   &=(1-q^{n-k}){n\brack k}_q,\\
- (1-q^{n-k}){n\brack k}_q
-   &=(1-q^n){n-1\brack k}_q.
+ (1-q^{k+1})\GaussianBinomial{n}{k+1}{q}
+   &=(1-q^{n-k})\GaussianBinomial{n}{k}{q},\\
+ (1-q^{n-k})\GaussianBinomial{n}{k}{q}
+   &=(1-q^n)\GaussianBinomial{n-1}{k}{q}.
 \end{align*}
 These formulas remain valid at roots of unity; the first also permits zero
 divisors and \(q=0\), while the last two are total for all natural \(n,k\).
@@ -6460,22 +6471,22 @@ cleared terminating identity needs only \(q\ne0\); the quotient
 \]
 additionally requires \((q;q)_{N-k}\ne0\), while the vanishing for \(k>N\)
 again needs only \(q\ne0\).  For \(k<n\), the adjacent quotient corollaries
-require, respectively, \({n\brack k}_q\ne0\) and \(1-q^{k+1}\ne0\), or
-\({n-1\brack k}_q\ne0\) and \(1-q^{n-k}\ne0\); neither assumes \(q\ne0\).
+require, respectively, \(\GaussianBinomial{n}{k}{q}\ne0\) and \(1-q^{k+1}\ne0\), or
+\(\GaussianBinomial{n-1}{k}{q}\ne0\) and \(1-q^{n-k}\ne0\); neither assumes \(q\ne0\).
 
 The four-theorem module \path{QBinomialReciprocity.lean} supplies the exact
 palindromic counterpart.  Its unit-valued theorem
 \lean{gaussianBinomial_reciprocity_units} holds in every commutative semiring,
 including semirings with zero divisors, and is total in both indices:
 \[
- q^{k(n-k)}{n\brack k}_{q^{-1}}={n\brack k}_q.
+ q^{k(n-k)}\GaussianBinomial{n}{k}{q^{-1}}=\GaussianBinomial{n}{k}{q}.
 \]
 The wrapper \lean{gaussianBinomial_reciprocity} assumes a semifield and only
 \(q\ne0\).  The remaining two theorems,
 \lean{gaussianBinomial_neg_one_eq_zero_of_odd_degree} and
 \lean{gaussianBinomial_neg_one_even_odd_eq_zero}, show over every commutative
 ring that odd Gaussian degree forces vanishing at \(q=-1\), and in particular
-\({2a\brack 2b+1}_{-1}=0\).  The latter is total above the row as well.  These
+\(\GaussianBinomial{2a}{2b+1}{-1}=0\).  The latter is total above the row as well.  These
 proofs use neither a q-Pochhammer quotient nor domain cancellation.
 
 Over the rationals, \lean{finiteQPochhammerIn_rat_eq} identifies the generic product
@@ -6751,7 +6762,7 @@ theorems require \texttt{[CommRing R]}.
 Let \(R\) be a commutative ring and let \(q,s,z\in R\).  With the total
 inverse Gaussian row from \eqref{eq:q-scaled-inverse-kernel},
 \[
- L^{q,s}_{n,k}=(-s)^{n-k}q^{\binom{n-k}{2}}{n\brack k}_q,
+ L^{q,s}_{n,k}=(-s)^{n-k}q^{\binom{n-k}{2}}\GaussianBinomial{n}{k}{q},
 \]
 one has the homogeneous, denominator-free characteristic identity
 \begin{equation}
@@ -7611,7 +7622,7 @@ $\Lambda_m=\alpha_m\mathcal T_m(y_m)$ term by term.  The claim follows from
 $\Floor{x}=0$; the closed endpoint $x=1$ requires the restored zeroth term.
 \end{proof}
 
-\subsection{The global complex $q$-binomial series}
+\subsection{The global complex \texorpdfstring{$q$}{q}-binomial series}
 \label{subsec:global-q-series}
 
 The finite constant-polynomial identity from \cref{subsec:q-binomial-dyadic} can be inserted
@@ -7703,7 +7714,7 @@ Convergence comes entirely from the binary-tail majorant
 \eqref{eq:global-summand-majorant}; the special-function manipulations are finite and
 algebraic.
 
-\section{A complex $q$-binomial discrete limit}
+\section{A complex \texorpdfstring{$q$}{q}-binomial discrete limit}
 \label{sec:q-discrete-limit}
 
 There is a second way in which the same Gaussian row produces $\FabiusGlobal$.  It is a genuine
@@ -10654,7 +10665,7 @@ symmetry already proved in \eqref{eq:shape-symmetry-global} gives only the ident
 \end{equation}
 No additional right-endpoint asymptotic-transfer theorem is asserted here.
 
-\section{The Fourier--Legendre expansion of \(\RvachevUp\)}
+\section{The Fourier--Legendre expansion of \texorpdfstring{\(\RvachevUp\)}{up}}
 \label{sec:legendre}
 
 Let \(P_n\) be the Legendre polynomial normalized by \(P_n(1)=1\), and define
@@ -11459,10 +11470,12 @@ The two swap theorems generate the usual permutation symmetry, and the normalize
 coefficient \((2k+1)\lean{legendreGauntRat}(i,j,k)/2\) gives exact finite product
 linearizations of \(P_iP_j\) over the rational and real coefficient fields.  An odd sum
 \(i+j+k\), or any strict triangle violation, forces the rational Gaunt coefficient to
-vanish.  These are necessary support restrictions only: no converse or nonvanishing
-theorem is asserted in \path{LegendreGaunt.lean} itself.  The next module supplies the
-sharp converse, the zero-row Wigner-square identification and its factorial form, and
-nonnegativity; those statements should not be read back into this twelve-theorem API.
+vanish.  These are necessary support restrictions only within
+\path{LegendreGaunt.lean}: that module itself proves no converse, Wigner-square,
+factorial, or positivity theorem.  The following closed-form leaf supplies the exact
+total squared zero-row integer-index datum, sharpens support to an equivalence, and proves
+its factorial forms and nonnegativity; those statements should not be read back into this
+twelve-theorem API.
 
 At the proof level, monomial integration on the symmetric interval gives the displayed
 even/odd moments.  Expanding the three rational Legendre polynomials into their finite
@@ -11504,7 +11517,6 @@ zero-magnetic-row layer.  Its exactly two public definitions are
 \lean{legendreGaunt_nonneg},
 \lean{legendreProductLinearizationCoeffRat_eq_mul_wignerThreeJZeroSqRat}, and
 \lean{legendreProductLinearizationCoeffRat_pos_iff_admissible}.
-
 Here \lean{legendreGauntAdmissible}\((i,j,k)\) means that \(i+j+k\) is even and
 that the three weak triangle inequalities hold.  Equivalently, there are
 \(a,b,c\in\NaturalNumbers\) with
@@ -11538,7 +11550,8 @@ nonnegative everywhere.  The exact coefficient of \(P_k\) in \(P_iP_j\) satisfie
 and is positive exactly on that same support.  Separate boundary theorems evaluate the
 degenerate triangle \(k=i+j\) and the case \(i=0\).  The name ``Wigner square'' is
 deliberately precise: this is a rationally defined square for integer indices in the
-zero-magnetic row.  The module chooses no signed symbol or phase convention and develops
+zero-magnetic row.  The module chooses no signed Wigner symbol or Condon--Shortley phase
+convention and develops
 no half-integer indices, nonzero magnetic indices, general \(3j/6j/9j\) symbols, Wigner
 orthogonality, or recoupling identity.
 
@@ -11575,12 +11588,16 @@ of the exact rational Rvachev subdiagonal each additionally require
 the cross-ratio is a genuine Jacobi formula.  This determinant module does not itself
 expand individual Gram entries.  The finite rational Gaunt expansion and entry
 rationality are supplied by \path{LegendreGaunt.lean} and
-\path{FabiusLegendreGaunt.lean} below.  The core integer-index zero-row Wigner-square
-identification and its factorial form are supplied by
-\path{LegendreGauntClosedForm.lean} above, while
-\path{FabiusLegendreGauntClosedForm.lean} below transports that identity to finite
-rational and real Gram-entry sums.  A signed Wigner symbol, Christoffel reconstruction,
-and an infinite Jacobi product remain outside the current surface.  Also,
+\path{FabiusLegendreGaunt.lean}.  The core total rational integer-index zero-row
+Wigner-square datum, its central-binomial and factorial forms, sharp support,
+positivity, nonnegativity, and boundary laws are supplied by
+\path{LegendreGauntClosedForm.lean}.  The wrapper
+\path{FabiusLegendreGauntClosedForm.lean} transports that identity to the
+unconditional finite rational entry and matrix sums and, under
+\lean{BoundedFabius} with \lean{IsFabius}, to the finite real up-law matrix sum.
+Neither leaf chooses a signed \(3j\) phase or supplies half-integer or nonzero
+magnetic indices, Wigner orthogonality, recoupling, Christoffel reconstruction, or
+an infinite Jacobi product.  Also,
 \lean{rvachevTranslateGram} is a different object: it pairs shifted-up atoms under
 unweighted interval integration, whereas \lean{upLegendreGramMatrix} pairs polynomials under
 the up-law moment functional.
@@ -11614,12 +11631,15 @@ two theorems express the exact rational squared norm and the zero-based
 Gram-determinant ratios, with the latter carrying the factor
 \(((n+1)/(2n+1))^2\).  Thus the executable coefficient, entry, matrix, determinant,
 cast, positivity, norm-ratio, and Jacobi-ratio layer is formalized.  Its finite Gaunt
-entry representation is supplied by the next companion module, while
-\path{LegendreGauntClosedForm.lean} above supplies the integer-index zero-row
-Wigner-square and factorial closure and \path{FabiusLegendreGauntClosedForm.lean} below
-supplies the corresponding finite Gram sums.  Signed or general Wigner symbols,
-Christoffel reconstruction, root or quadrature theory, infinite Jacobi products or
-continued fractions, Pad\'e theory, and asymptotics remain open.
+entry representation is supplied by the next companion module.  The closed-form core
+\path{LegendreGauntClosedForm.lean} supplies the total rational integer-index
+zero-row Wigner-square datum and factorial closure, while
+\path{FabiusLegendreGauntClosedForm.lean} substitutes it into the finite rational
+entry and matrix sums and the finite real up-law matrix sum.  This rational Gram
+module itself proves neither formula.  No signed \(3j\) phase, half-integer or
+nonzero magnetic indices, Wigner orthogonality, recoupling, Christoffel
+reconstruction, root or quadrature theory, infinite Jacobi product or continued
+fraction, Pad\'e theory, or asymptotic result is supplied here.
 
 \path{FabiusLegendreGaunt.lean} has exactly one public definition,
 \lean{canonicalRvachevFullLegendreCoefficientRat}, and exactly eight public theorems:
@@ -11679,11 +11699,12 @@ Christoffel reconstruction or Pad\'e approximation, and named values for the ind
 entries of the displayed low-order \(G_3\).
 
 \begin{boxedremark}\textbf{Source/PDF version notice.}\space
-The retained 166-page PDF in this directory was rebuilt from the incoming source and
-already contains the exhaustive two-definition, twenty-eight-theorem closed-form
-inventory.  The merged TeX source retains that material and adds the expanded
-formula-and-proof ledger below.  Because the PDF was not regenerated after this merge,
-exact source/PDF synchronization is not claimed at this checkpoint.
+The locally validated 167-page PDF in this directory contains the exhaustive combined
+two-definition, twenty-eight-theorem closed-form surface from the preceding merged
+source.  The present post-replay TeX union retains that material and adds the expanded
+formula-and-proof ledger below.  The PDF therefore predates the current union:
+source/PDF parity is not claimed, and a fresh uninterrupted three-pass Libertinus rebuild
+is pending.
 \end{boxedremark}
 
 For a formula-level audit of the preceding inventory, the core
@@ -11886,11 +11907,14 @@ theorems---the real Hankel-ratio value, its squared-orthogonal-polynomial integr
 the identity \(H_4/H_3=\beta_4\)---requires both
 \(F:\lean{BoundedFabius}\) and \(h_F:\lean{IsFabius}\,F\).  Thus the displayed norm and
 subdiagonal are now named exact Lean evaluations.  The separate Gaunt modules close the
-finite entry expansion, but this values leaf supplies no named evaluation of the displayed
-\(G_3\) entries.  The downstream closed-form modules supply the total integer-index
-zero-row Wigner-square identification and factorial formula, but not a signed or general
-Wigner-symbol API.  Christoffel reconstruction, roots and quadrature, infinite Jacobi
-products or continued fractions, Pad\'e theory, and asymptotics remain open.
+finite entry expansion, and the closed-form leaves close the total rational
+integer-index zero-row Wigner-square identification, its central-binomial and
+factorial forms, and the corresponding finite rational-entry, rational-matrix, and
+real-matrix Gram sums; this values leaf supplies no named evaluation of the displayed
+\(G_3\) entries.  No signed \(3j\) phase, half-integer or nonzero magnetic
+indices, Wigner orthogonality, recoupling, Christoffel reconstruction, roots or
+quadrature, infinite Jacobi product or continued fraction, Pad\'e theory, or
+asymptotic result is supplied here.
 
 This closure does not supply a complex logarithmic fixed point, complex order,
 pointwise or nontangential Sokhotski--Plemelj limits, a principal-value Hilbert-transform
@@ -11933,7 +11957,7 @@ convention, and conclusion.
 Every retained result above points to one or more exact declaration names.  The principal
 source groups are:
 
-\begin{longtable}{@{}p{0.31\textwidth}p{0.64\textwidth}@{}}
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.31\textwidth}>{\raggedright\arraybackslash}p{0.64\textwidth}@{}}
 \toprule
 Topic & Modules\\
 \midrule
@@ -11987,16 +12011,17 @@ renormalization, Laurent/Herglotz/inversion layers, initial Jacobi data, and fin
 \path{QuarterSplineTwoSided.lean}, \path{FabiusComputability.lean}\\
 Executable rational Legendre Gaunt coefficients and finite product linearization &
 \path{LegendreGaunt.lean}\\
-Two definitions and twenty-five theorems for total rational integer-index zero-row
-Wigner-square data, central-binomial and factorial closed forms, global rational/real
-Gaunt identities, boundary values, and sharp support, positivity, nonnegativity, and
-product-coefficient laws &
+Two definitions and twenty-five theorems for the total rational integer-index
+zero-row Wigner-square datum, pairwise-coordinate central-binomial and factorial
+forms, the half-sum factorial form, global rational and real Gaunt identities,
+degenerate and zero-index boundary values, sharp support, positivity,
+nonnegativity, and product-coefficient laws &
 \path{LegendreGauntClosedForm.lean}\\
 Finite rational and real up-law Legendre Gram entry expansions &
 \path{FabiusLegendreGaunt.lean}\\
-No public definitions and three theorems for finite rational and real up-law Legendre
-Gram entries as twice finite canonical-coefficient sums against the total zero-row
-Wigner-square datum &
+Zero public definitions and three theorems for the finite rational entry, rational
+matrix, and real up-law matrix as twice finite canonical-coefficient sums against
+the total rational integer-index zero-row Wigner-square datum &
 \path{FabiusLegendreGauntClosedForm.lean}\\
 Hyperbolic activation kernels, the finite activation Taylor jet, arbitrary square-summable
 activation series, sharp local and Tannery asymptotics, and geometric and dyadic effective
@@ -12422,7 +12447,7 @@ compiler-validated checkpoint \texttt{d312c0603}.
 
 \newblock The seven-module activation tranche, including the divided-slope totalization and
 the finite degree-eight activation Taylor jet, is recorded at immutable source checkpoint
-\texttt{a345425d21d90e680bf15e34093af42c69c08a83}.
+\nolinkurl{a345425d21d90e680bf15e34093af42c69c08a83}.
 \newblock \url{https://github.com/VladimirReshetnikov/ProveIt/tree/a345425d21d90e680bf15e34093af42c69c08a83/Analysis/FabiusFunction}.
 
 \end{thebibliography}

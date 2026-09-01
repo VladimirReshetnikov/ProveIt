@@ -29,6 +29,7 @@
   citecolor=linkblue,
   urlcolor=linkblue,
   pdftitle={The Fabius Function in Lean: A Guided Walkthrough of the ProveIt Formalization},
+  pdfauthor={Vladimir Reshetnikov; ProveIt formalization walkthrough},
   pdfsubject={Lean 4 formalization walkthrough},
   pdfkeywords={Fabius function, Rvachev up-function, Lean, mathlib, dyadic rationals, asymptotics}
 }
@@ -1458,6 +1459,23 @@ The argument differs for odd and even indices.  Odd-index statements reduce to t
   \item coprimality in reduced form; and
   \item a valuation statement for the dyadic value \(F(2^{-n})\).
 \end{itemize}
+
+The later leaf \nolinkurl{PrimePowerBinomialValuation.lean} exposes the
+prime-power Pascal-row identity directly through \nolinkurl{padicValNat}.  Its
+exhaustive public API consists of exactly three theorems:
+\nolinkurl{primePowerChoose_padicValNat_add},
+\nolinkurl{primePowerChoose_padicValNat}, and
+\nolinkurl{twoPowChoose_padicValNat}.  For every prime \(p\), exponent \(m\), and
+\(0<j\le p^m\), the first two state
+\[
+ \nu_p\!\binom{p^m}{j}+\nu_p(j)=m,
+ \qquad
+ \nu_p\!\binom{p^m}{j}=m-\nu_p(j).
+\]
+The generic surface includes \(j=p^m\) and \(m=0\), excluding only \(j=0\)
+because the valuation is totalized there.  The third theorem is the strict
+dyadic-comb specialization \(0<j<2^m\).  No endpoint-flat
+\(\binom{2^m-2}{j-1}\) companion or valuation-histogram count is proved.
 
 \subsection{Denominator bounds}
 \nolinkurl{DenominatorBound.lean} and \nolinkurl{HalfMomentDenominator.lean} assemble divisibility results into explicit bounds.  Rather than attempting to compute the reduced denominator directly, the proof supplies a common denominator known to clear every term in a recurrence.  The reduced denominator then divides that common denominator by the universal property of rational normalization.
@@ -3413,15 +3431,14 @@ hypotheses in the public theorem surface occur in the three support results:
  i+j<k\ \lor\ i+k<j\ \lor\ j+k<i
 \]
 implies the same.  These are necessary support zeros only.  There is no converse
-support theorem, Wigner \(3j\) identification, factorial closed form, positivity
-theorem, or asymptotic assertion in \nolinkurl{LegendreGaunt.lean} itself.  The
-following focused module closes the first four of those gaps at the integer-index,
-zero-magnetic-row square level.
+support theorem, zero-row Wigner-square identification, factorial closed form,
+positivity theorem, or asymptotic assertion in \nolinkurl{LegendreGaunt.lean}
+itself.  The next focused leaf closes the first four gaps for the total squared
+zero-row integer-index datum and sharpens support to an equivalence.
 
-The exhaustive public API of \nolinkurl{LegendreGauntClosedForm.lean} consists of two
-definitions,
-\nolinkurl{legendreGauntAdmissible} and
-\nolinkurl{legendreWignerThreeJZeroSqRat}, and twenty-five theorems,
+The exhaustive public API of \nolinkurl{LegendreGauntClosedForm.lean} consists
+of exactly two definitions, \nolinkurl{legendreGauntAdmissible} and
+\nolinkurl{legendreWignerThreeJZeroSqRat}, and exactly twenty-five theorems:
 \nolinkurl{legendreGauntAdmissible_iff_exists_pairwise_add},
 \nolinkurl{legendreGauntAdmissible_pairwise_add},
 \nolinkurl{legendreWignerThreeJZeroSqRat_pairwise_add},
@@ -3472,10 +3489,11 @@ exactly \(i+j+k=2s\) and \(i,j,k\leq s\).  The global identities are
 \]
 The square datum and both Gaunt coefficients are positive exactly on the admissible
 support, vanish exactly off it, and are nonnegative everywhere; \(L_{ijk}\) has the
-same sharp positivity support.  Separate theorems cover \(k=i+j\) and \(i=0\).
-This remains deliberately narrower than a Wigner-symbol library: there is no signed
-symbol or phase convention, half-integer or nonzero-magnetic-index theory, general
-\(3j/6j/9j\) symbol, Wigner orthogonality, or recoupling identity.
+same sharp positivity support.  Separate central-binomial boundary theorems cover
+\(k=i+j\) and \(i=0\).  This total object is only the \emph{squared zero-row
+integer-index} datum: there is no signed symbol or phase convention, half-integer or
+nonzero-magnetic-index theory, general \(3j/6j/9j\) symbol, Wigner orthogonality, or
+recoupling identity.
 
 The companion \nolinkurl{FabiusLegendreGaunt.lean} converts those product
 linearizations into finite formulas for the Rvachev Legendre Gram entries.  Its
@@ -3536,13 +3554,14 @@ of \(\FullRvachevLegendreCoefficientRat{k}\) with
 \]
 where \(c_r(F)\) is \nolinkurl{rvachevLegendreCoefficient}\((F,r)\), for
 \(i,j\in\operatorname{Fin} n\).  The other six theorems are unconditional finite
-identities.  No infinite Legendre series is interchanged with integration, and the
-module itself proves no Wigner-square or factorial formula, Christoffel reconstruction,
-or new positivity or asymptotic result.  The preceding
-\nolinkurl{LegendreGauntClosedForm.lean} supplies the integer zero-row Wigner-square,
-factorial, sharp-support, and positivity results independently of this companion.
+identities.  No infinite Legendre series is interchanged with integration, and this
+module itself proves no Wigner-square or factorial formula, Christoffel
+reconstruction, or new positivity or asymptotic result.  The preceding
+\nolinkurl{LegendreGauntClosedForm.lean} supplies the squared integer zero-row datum,
+factorial forms, sharp support, and positivity independently.  The final finite
+composition leaf makes that substitution; neither companion chooses a signed phase or
+treats half-integer or nonzero magnetic indices, orthogonality, or recoupling.
 
-The final finite composition leaf
 \nolinkurl{FabiusLegendreGauntClosedForm.lean} has no public definitions and exactly
 three public theorems:
 \nolinkurl{rvachevLegendreGramEntryRat_eq_two_mul_sum_wignerThreeJZeroSqRat},
@@ -3554,23 +3573,34 @@ For arbitrary natural \(i,j\), the first is the unconditional rational identity
  =2\sum_{r=0}^{\Floor{(i+j)/2}}
  c_r^{\RationalNumbers}W_{ij,2r}^{2,\RationalNumbers}.
 \]
-The second packages the same formula entrywise for the executable rational Gram matrix.
-The third assumes exactly \(F\) of type \nolinkurl{BoundedFabius} and
-\(h_F\) of type \nolinkurl{IsFabius F}, replacing the rational coefficient by
-\(c_r(F)\) and the square datum by its real cast in the genuine up-law Gram matrix.
-The construction is a finite substitution only.  It chooses no signed phase and adds no
-half-integer, nonzero-magnetic-index, general recoupling, orthogonality, or
+For \(i,j\in\operatorname{Fin} n\), the executable rational matrix theorem is
+\[
+ R_{n,ij}^{\RationalNumbers}
+ =2\sum_{r=0}^{\Floor{(i+j)/2}}
+ c_r^{\RationalNumbers}W_{ij,2r}^{2,\RationalNumbers}.
+\]
+The third theorem assumes exactly \(F\) of type \nolinkurl{BoundedFabius} and
+\(h_F\) of type \nolinkurl{IsFabius F}; for \(i,j\in\operatorname{Fin} n\) it states
+\[
+ D^F_{n,ij}
+ =2\sum_{r=0}^{\Floor{(i+j)/2}}
+ c_r(F)\bigl(W_{ij,2r}^{2,\RationalNumbers}:\RealNumbers\bigr).
+\]
+Thus the exact boundary is finite rational entry, rational matrix, and real up-law
+matrix sums against the total squared zero-row integer datum.  The construction is a
+finite substitution only: it chooses no signed \(3j\) phase and adds no half-integer,
+nonzero-magnetic-index, general Wigner-symbol, orthogonality, recoupling, or
 infinite-series result.
 
 \subsubsection{Expanded zero-row Wigner-square formula and proof ledger}
 \label{ch:legendre-gaunt-closed-form}
 
 \begin{boxedremark}\textbf{Source/PDF version notice.}\space
-The retained 126-page walkthrough PDF in this directory was rebuilt from the incoming
-source and already contains the exhaustive two-definition, twenty-eight-theorem
-closed-form inventory.  The merged TeX source retains that material and adds the expanded
-formula-and-proof ledger in this subsubsection.  Because the PDF was not regenerated after
-this merge, exact source/PDF synchronization is not claimed at this checkpoint.
+The retained walkthrough PDF already contains the exhaustive combined two-definition,
+twenty-eight-theorem closed-form surface from the preceding source.  The present
+post-replay TeX union retains that material and adds the expanded formula-and-proof ledger
+in this subsubsection.  The PDF therefore predates the current union: source/PDF parity is
+not claimed, and a fresh uninterrupted three-pass Libertinus rebuild is pending.
 \end{boxedremark}
 
 The limitations just stated remain exact descriptions of the two predecessor modules.
@@ -4790,6 +4820,7 @@ Inverse-power table \(F(2^{-n})\) & \nolinkurl{fabiusInversePowTwoTable}, \nolin
 Total dyadic evaluator & \nolinkurl{fabiusDyadicValue} & \nolinkurl{Arithmetic.lean}; analytic correctness wrapper in \nolinkurl{PaperStatements.lean} \\
 Dyadic common denominator \(D_n\) & \nolinkurl{dyadicDenominator} & \nolinkurl{Arithmetic.lean} and \nolinkurl{DenominatorBound.lean} \\
 Reshetnikov quantity \(R_n\) & \nolinkurl{reshetnikov} & \nolinkurl{Arithmetic.lean} and \nolinkurl{PaperStatements.lean} \\
+Prime-power Pascal-row valuation & \nolinkurl{primePowerChoose_padicValNat_add}, \nolinkurl{primePowerChoose_padicValNat}, \nolinkurl{twoPowChoose_padicValNat} & Exhaustive three-theorem surface of \nolinkurl{PrimePowerBinomialValuation.lean}; generic additive/subtraction forms include \(j=p^m\) and \(m=0\), while the dyadic-comb wrapper assumes \(0<j<2^m\) \\
 Generic continuous-CDF and density extraction & \nolinkurl{continuous_cdf_of_nullSingleton}, \nolinkurl{cdf_reflection_sub}, \nolinkurl{measure_eq_withDensity_of_cdf_hasDerivAt} & \nolinkurl{ContinuousCDF.lean} \\
 Affine independent-copy operator and uniqueness & \nolinkurl{affineIndependentCopyLaw}, \nolinkurl{affineIndependentCopyLaw_isProbabilityMeasure}, \nolinkurl{affineIndependentCopyLaw_eq_map_prod}, \nolinkurl{charFun_affineIndependentCopyLaw}, \nolinkurl{charFun_eq_mul_charFun_of_affineIndependentCopy_fixedPoint}, \nolinkurl{charFun_iterate_of_affineIndependentCopy_fixedPoint}, \nolinkurl{eq_of_charFun_affine_recurrence}, \nolinkurl{affineIndependentCopyLaw_fixedPoint_unique}, \nolinkurl{affineIndependentCopy_map_fixedPoint_unique} & \nolinkurl{AffineIndependentCopy.lean}; arbitrary measurable digit space and second-countable Borel real inner-product target, with completeness only for the three uniqueness declarations \\
 Geometric uniform law \(\mu_q\) & \nolinkurl{geometricUniformDistribution}, \nolinkurl{geometricUniformDistribution_selfSimilar}, \nolinkurl{geometricUniformDistribution_support_eq_Icc}, \nolinkurl{eq_geometricUniformDistribution_of_selfSimilar} & \nolinkurl{GeometricUniformLaw.lean} and \nolinkurl{GeometricUniformUniqueness.lean}; the characterization holds for \(\lvert q\rvert<1\) without support, density, or moment assumptions \\
@@ -4819,6 +4850,8 @@ Classical principal/lower Lambert reference coordinates & \nolinkurl{fabiusPrinc
 Fabius Lambert-phase curvature & \nolinkurl{fabiusLambertInflectionInput}, \nolinkurl{deriv_deriv_fabiusLambertPhase_eq_zero_iff}, \nolinkurl{strictConvexOn_fabiusLambertPhase_left}, \nolinkurl{strictConcaveOn_fabiusLambertPhase_right}, \nolinkurl{strictConvexOn_fabiusPrincipalLambertPhase} & \nolinkurl{PowerExponentialLambertFabiusCurvature.lean}; exact lower inflection and principal global-\nolinkurl{Iic} convexity \\
 Periodic correction \(\Psi\) & \nolinkurl{negativeLaplacePsi} & \nolinkurl{PeriodicCorrection.lean} \\
 Even Legendre truncation & \nolinkurl{rvachevLegendrePartialSumPolynomial} & \nolinkurl{FabiusLegendreLeastSquares.lean} \\
+Total squared zero-row integer Wigner datum & \nolinkurl{legendreGauntAdmissible}, \nolinkurl{legendreWignerThreeJZeroSqRat}, \nolinkurl{legendreGauntRat_eq_two_mul_wignerThreeJZeroSqRat} & Exhaustive two-definition/twenty-five-theorem closed form, factorial formulas, sharp support, and positivity in \nolinkurl{LegendreGauntClosedForm.lean}; no signed phase, half-integer/nonzero magnetic indices, orthogonality, or recoupling \\
+Finite Rvachev/up-law Wigner-square Gram sums & \nolinkurl{rvachevLegendreGramEntryRat_eq_two_mul_sum_wignerThreeJZeroSqRat}, \nolinkurl{rvachevLegendreGramMatrixRat_apply_eq_two_mul_sum_wignerThreeJZeroSqRat}, \nolinkurl{upLegendreGramMatrix_apply_eq_two_mul_sum_wignerThreeJZeroSqRat} & Exact zero-definition/three-theorem rational-entry, rational-matrix, and real-matrix surface of \nolinkurl{FabiusLegendreGauntClosedForm.lean} \\
 \bottomrule
 \end{longtable}
 
@@ -5096,9 +5129,9 @@ Module & Role in the development \\
 \nolinkurl{FabiusLegendreLeastSquares.lean} & Pythagorean identity and unique least-squares optimality of finite Legendre truncations. \\
 \nolinkurl{FabiusLegendreEnergy.lean} & Polynomial-form Legendre blocks, their complete orthogonality, full coefficient Parseval identity, exact shifted coefficient-energy tails in \nolinkurl{HasSum} and \nolinkurl{tsum} form, and the real-variable Legendre series for \(\int_0^1F(t)^2\,dt\).  Finite up-translate realization, Fourier/sinc energy formulas, and rationality of partial sums remain outside the module. \\
 \nolinkurl{LegendreGaunt.lean} & Four definitions and twelve theorems giving executable rational Lebesgue moments and Gaunt coefficients, real-cast and moment-functional bridges, two index swaps, finite real/rational Legendre product linearizations, and the proved parity and triangle-support zeros; see \cref{ch:legendre-gaunt}. \\
-\nolinkurl{LegendreGauntClosedForm.lean} & Two definitions and twenty-five theorems giving the total rational integer-index zero-row Wigner-square datum, its central-binomial and factorial forms, global rational/real Gaunt identification, sharp support, positivity, nonnegativity, boundary values, and product-coefficient laws; no signed phase, half-integer, nonzero-magnetic-index, or general recoupling theory; see \cref{ch:legendre-gaunt-closed-form}. \\
+\nolinkurl{LegendreGauntClosedForm.lean} & Two definitions and twenty-five theorems giving the total rational integer-index zero-row Wigner-square datum, pairwise-coordinate central-binomial and factorial forms, the half-sum factorial form, exact global rational and real Gaunt identities, sharp support, positivity, nonnegativity, degenerate and zero-index boundary values, and product-coefficient laws; no signed phase, half-integer or nonzero magnetic indices, Wigner orthogonality, or recoupling; see \cref{ch:legendre-gaunt-closed-form}. \\
 \nolinkurl{FabiusLegendreGaunt.lean} & One definition and eight theorems extending the rational Rvachev--Legendre coefficients by odd zeros and expressing rational and genuine up-law Gram entries as exact finite full/even Gaunt sums; see \cref{ch:legendre-gaunt}. \\
-\nolinkurl{FabiusLegendreGauntClosedForm.lean} & No public definitions and three theorems expressing the rational Gram entry, rational Gram-matrix entry, and genuine up-law Gram-matrix entry as twice finite canonical-coefficient sums against the total zero-row Wigner-square datum; see \cref{ch:legendre-gaunt-closed-form}. \\
+\nolinkurl{FabiusLegendreGauntClosedForm.lean} & Zero public definitions and three theorems expressing the finite rational entry, rational matrix, and real up-law matrix as twice finite canonical-coefficient sums against the total rational integer-index zero-row Wigner-square datum; no signed phase, half-integer or nonzero magnetic indices, broader Wigner-symbol theory, orthogonality, or recoupling; see \cref{ch:legendre-gaunt-closed-form}. \\
 \addlinespace[0.45em]
 \multicolumn{2}{l}{\textbf{K-fold Thue--Morse audit and auxiliary asymptotics}}\\[0.25em]
 \nolinkurl{ThueMorseApproximation.lean} & Exact identification of corrected grid samples with moving-center step approximants and pointwise convergence, including the endpoint. \\
@@ -5222,11 +5255,29 @@ Lean audits of the previously recorded new or refactored declarations,
 \nolinkurl{propext}, \nolinkurl{Classical.choice}, and \nolinkurl{Quot.sound}
 for each.  At that upstream checkpoint, static inspection found all 610 modules
 below \nolinkurl{FabiusFunction/} reachable from the facade and every one of
-the 105 activation declarations documented.  The present merged census is 619
-modules and 8,434 public declarations, all reachable from the facade under the
-current static audit.  No new aggregate facade build is claimed by this
-historical receipt.  The title-page pin and reproduction count continue to
-describe the older audited snapshot.
+the 105 activation declarations documented.  The present merged census is 620
+modules and 8,438 public declarations, all reachable from the facade under the
+current static audit.  Relative to that 610/8,318 checkpoint,
+the union adds the two raw Lambert branch-point leaves (seventeen
+declarations), the two Legendre--Gaunt leaves (twenty-five),
+\nolinkurl{GeometricUniformMultisection.lean} (two coordinate definitions and
+three half--quarter laws), and the four-declaration
+\nolinkurl{GaussianBinomialAtNegOneDerivative.lean} leaf.  It also adds the
+two-definition/seven-theorem \nolinkurl{LagrangeRvachevSynthesis.lean} leaf,
+the three-theorem \nolinkurl{PrimePowerBinomialValuation.lean} leaf, the
+two-definition/twenty-five-theorem \nolinkurl{LegendreGauntClosedForm.lean}
+core, and its zero-definition/three-theorem
+\nolinkurl{FabiusLegendreGauntClosedForm.lean} wrapper.  Existing modules add
+the generalized spectral $q$-Pochhammer APIs, four geometric-density
+diagnostics, two geometric-sinc phase-prefix convergence theorems, eleven
+inverse-modulus refinements, three signed-power Rvachev moment theorems, and
+the general iterated shift--refinement product law; the merged
+\nolinkurl{PolynomialCombExactness.lean} surface also contains
+\nolinkurl{integral_polynomial_mul_rvachevUp_eq_dyadic_tsum}, the exact
+normalized physical-coordinate self-sampling quadrature.  No aggregate facade
+build is claimed for this checkpoint.
+The title-page pin and reproduction count continue to describe the older
+audited snapshot.
 \end{remark}
 
 \section{Corrections and critical distinctions}\label{app:corrections}

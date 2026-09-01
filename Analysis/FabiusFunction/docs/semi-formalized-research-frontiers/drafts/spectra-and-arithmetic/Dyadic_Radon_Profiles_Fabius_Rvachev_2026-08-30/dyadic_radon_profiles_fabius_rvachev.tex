@@ -4,7 +4,7 @@
 \usepackage[utf8]{inputenc}
 \IfFileExists{libertinus.sty}{\usepackage{libertinus}}{\usepackage{lmodern}}
 \usepackage{microtype}
-\usepackage[a4paper,margin=27mm,headheight=15pt]{geometry}
+\usepackage[a4paper,margin=0.92in,headheight=15pt]{geometry}
 \usepackage{amsmath,amssymb,amsthm,mathtools,bm}
 \usepackage{booktabs,longtable,array,tabularx,multirow}
 \usepackage{graphicx}
@@ -33,14 +33,16 @@
   citecolor=darkgreen,
   urlcolor=teal,
   pdftitle={Dyadic Radon Profiles in the Fabius--Rvachev Web},
-  pdfauthor={Research report for Vladimir Reshetnikov}
+  pdfauthor={Research report for Vladimir Reshetnikov},
+  pdfsubject={Spectral reconstruction, generalized Thue--Morse signs, sampled cumulants, Pascal factorizations, and Lambert frontiers},
+  pdfkeywords={Fabius function, Rvachev up-function, Radon profile, Thue--Morse, cumulant, Pascal factorization, Lambert W}
 }
 
 \pagestyle{fancy}
 \fancyhf{}
 \fancyhead[L]{\small Dyadic Radon profiles}
 \fancyhead[R]{\small \thepage}
-\setlength{\headheight}{14pt}
+\setlength{\headheight}{15pt}
 
 \numberwithin{equation}{section}
 \setcounter{tocdepth}{2}
@@ -260,7 +262,7 @@ their composition through a general dyadic direction profile.
 
 \subsection{Result ledger}
 
-\begin{longtable}{@{}p{0.08\textwidth}p{0.34\textwidth}p{0.50\textwidth}@{}}
+\begin{longtable}{@{}p{0.08\textwidth}p{0.34\textwidth}>{\raggedright\arraybackslash}p{0.50\textwidth}@{}}
 \caption{Principal results and proof status.}\label{tab:result-ledger}\\
 \toprule
 ID & Result & Contribution \\
@@ -1531,7 +1533,7 @@ families through valuation $18$.
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.92\textwidth]{figures/profile_inversion.pdf}
+\includegraphics[width=0.92\textwidth]{figures/profile_inversion.png}
 \caption{\Evidence\ A direction profile is integrated once to the sinc
 exponents and twice to the integer-zero multiplicities.  The second difference
 recovers the original profile exactly.}
@@ -1549,7 +1551,7 @@ $-48,1536,-122880$, in agreement with the exact Thue--Morse product.
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.98\textwidth]{figures/digital_signs.pdf}
+\includegraphics[width=0.98\textwidth]{figures/digital_signs.png}
 \caption{\Evidence\ Prefixes of four generalized spectral sign sequences.
 The third row is a Pascal mask; the fourth comes from sparse power-of-two
 shells and is provably nonautomatic by \cref{thm:automaticity}.}
@@ -1574,7 +1576,7 @@ predicted by the seven occupied dyadic atoms.
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.92\textwidth]{figures/cumulant_ratio_moments.pdf}
+\includegraphics[width=0.92\textwidth]{figures/cumulant_ratio_moments.png}
 \caption{\Evidence\ Complete monotonicity of the exact cumulant-ratio sequence.
 The plotted floating values come from exact rational data.}
 \label{fig:cumulant-ratios}
@@ -1596,7 +1598,7 @@ toward their proved constants.
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.92\textwidth]{figures/fourier_envelope.pdf}
+\includegraphics[width=0.92\textwidth]{figures/fourier_envelope.png}
 \caption{\Evidence\ Convergence along the sharp rational dyadic ray.  The
 horizontal lines are the constants in \eqref{eq:sharp-envelope}.}
 \label{fig:fourier-envelope}
@@ -1900,7 +1902,7 @@ For every profile,
  R_2&\le R_1,\\
  R_3-2R_2+R_1&\ge0,\\
  R_1R_3-R_2^2&\ge0,\\
- \det\begin{pmatrix}R_1&R_2&R_3\\RealNumbers_2&R_3&R_4\\RealNumbers_3&R_4&R_5\end{pmatrix}&\ge0.
+ \det\begin{pmatrix}R_1&R_2&R_3\\ R_2&R_3&R_4\\ R_3&R_4&R_5\end{pmatrix}&\ge0.
 \end{align*}
 These are necessary conditions for any proposed even-cumulant sequence to come
 from a dyadic Radon profile.  They are not sufficient unless the representing
@@ -1956,8 +1958,8 @@ Path & Purpose \\
 \path{numerical_experiments.py} & fully commented exact and high-precision experiment driver \\
 \path{data/*.csv} & deterministic exact/numerical tables \\
 \path{data/fourier_envelope_table.tex} & generated manuscript table \\
-\path{figures/*.pdf} & vector figures used in the report \\
-\path{figures/*.png} & raster inspection copies \\
+\path{figures/*.pdf} & retained vector source figures \\
+\path{figures/*.png} & raster figures used in the report \\
 \path{numerical_results.txt} & human-readable computation summary \\
 \path{CORPUS_AUDIT.md} & current claim-oriented nonduplication audit \\
 \path{corpus_inventory_2026-08-27.txt} & preserved recursive TeX path ledger \\
@@ -1969,13 +1971,16 @@ Path & Purpose \\
 \end{center}
 \endgroup
 
+\begingroup
+\sloppy
 \begin{thebibliography}{99}
 
 \bibitem{ProveItDocs}
 V.~Reshetnikov,
 \emph{ProveIt: Analysis/FabiusFunction documentation corpus},
 GitHub repository,
-\url{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Analysis/FabiusFunction/docs},
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Analysis/FabiusFunction/docs}%
+{\nolinkurl{github.com/VladimirReshetnikov/ProveIt}},
 accessed 30 August 2026.
 
 \bibitem{Fabius1966}
@@ -2040,5 +2045,6 @@ E.~C.~Titchmarsh,
 Oxford University Press, 1948.
 
 \end{thebibliography}
+\endgroup
 
 \end{document}

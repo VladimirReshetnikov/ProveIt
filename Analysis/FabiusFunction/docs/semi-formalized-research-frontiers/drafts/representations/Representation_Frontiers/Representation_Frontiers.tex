@@ -17,6 +17,7 @@
 \usepackage{fancyhdr}
 \usepackage{listings}
 \usepackage{url}
+\input{../../../../fabius-notation.tex}
 
 \hypersetup{
   hypertexnames=false,
@@ -370,13 +371,13 @@ This section compresses the principal representation families already present in
 repository and places the new formulas beside them.  Proofs of the new entries begin in
 Section~\ref{p1:sec:cauchy}.
 
-\subsection{Real-space and probability representations of \(\rho\)}
+\subsection[Real-space and probability representations of rho]{Real-space and probability representations of \(\rho\)}
 
 \paragraph{Infinite convolution (\statusknown).}
 Since \(2^{-k}U_k\) is uniform on \([-2^{-k},2^{-k}]\),
 \begin{equation}
  \rho=\mathop{\ast}_{k=1}^{\infty}
- \left(2^{k-1}\one_{[-2^{-k},2^{-k}]}\right).                \label{p1:eq:rho-convolution}
+ \left(2^{k-1}\IndicatorOf{[-2^{-k},2^{-k}]}\right).        \label{p1:eq:rho-convolution}
 \end{equation}
 This is the real-space counterpart of the sinc product.
 
@@ -419,7 +420,7 @@ The audited corpus also contains Poisson-summation formulas, Legendre expansions
 periodized cosine series, dyadic spline limits, and endpoint transseries.  They are not
 rederived here.
 
-\subsection{Product, zero, gamma, and exponential representations of \(\Phi\)}
+\subsection[Product, zero, gamma, and exponential representations of Phi]{Product, zero, gamma, and exponential representations of \(\Phi\)}
 
 \paragraph{Canonical zero product (\statusknown).}
 Let \(\nu_2(n)\) be the exponent of \(2\) in \(n\).  The nonzero integer \(n\) is a zero of
@@ -484,7 +485,7 @@ so all moments are complete Bell polynomials in explicit Bernoulli/Mersenne cumu
 These formulas, together with reciprocal Bell expansions for \(1/\Phi\), are developed
 extensively in the repository.
 
-\subsection{Transform representations of \(F\) and \(F^{-1}\)}
+\subsection[Transform representations of F and inverse F]{Transform representations of \(F\) and \(F^{-1}\)}
 
 The CDF inversion formula gives
 \begin{equation}
@@ -1014,9 +1015,9 @@ algorithms: use finite convolution to resolve endpoint geometry and a short Jaco
 to compress the remaining moment error.
 \end{remark}
 
-\section{Exact transforms of \(F\), one-sided \(\RvachevUp\), and \(F^{-1}\)}\label{p1:sec:fabius-transforms}
+\section[Exact transforms of F, one-sided up, and inverse F]{Exact transforms of \(F\), one-sided \(\RvachevUp\), and \(F^{-1}\)}\label{p1:sec:fabius-transforms}
 
-\subsection{The Laplace and Fourier transforms of \(F\)}
+\subsection[The Laplace and Fourier transforms of F]{The Laplace and Fourier transforms of \(F\)}
 
 \begin{theorem}[Transform of the Fabius function]\label{p1:thm:F-transform}
 For complex \(s\), with the value at \(s=0\) understood by continuity,
@@ -1171,7 +1172,7 @@ sum exposes multiplicities and supports rigorous rational tail bounds.
 
 The valuation weight has the divisor decomposition
 \begin{equation}
- 1+\nu_2(n)=\sum_{k=0}^{\infty}\one_{2^k\mid n}.             \label{p1:eq:valuation-indicators}
+ 1+\nu_2(n)=\sum_{k=0}^{\infty}\IndicatorOf{2^k\mid n}.     \label{p1:eq:valuation-indicators}
 \end{equation}
 This turns the zero sum into a dyadic superposition of classical special functions.
 
@@ -1547,8 +1548,8 @@ The determinant transport and generic up-moment cross-ratio hold for every
 \path{BoundedFabius}; interpreting entries as integrals, proving strict
 positivity, and comparing with the exact rational subdiagonal additionally use
 \path{IsFabius}.  Consecutive leading coefficients contribute
-\((n+1)/(2n+1)\), and zero-based index \(n\) denotes \(\beta_{n+1}\).  The module
-does not prove a Gaunt/Wigner-symbol expansion or entry rationality by that
+\((n+1)/(2n+1)\), and zero-based index \(n\) denotes \(\beta_{n+1}\).  That module
+alone does not prove a Gaunt/Wigner-symbol expansion or entry rationality by that
 route, Christoffel reconstruction, roots, quadrature, an infinite Jacobi
 product/continued fraction, or asymptotics.
 
@@ -1572,7 +1573,7 @@ moment-pairing objects; for \path{BoundedFabius} data satisfying \path{IsFabius}
 casts are the real up-law objects.  The rational determinant is the Hankel determinant times
 the squared-leading-coefficient product, equals one in order zero, is strictly positive,
 and gives exact norm and zero-based \(\beta_{n+1}\) determinant ratios, the latter with
-factor \(((n+1)/(2n+1))^2\).  This does not supply a Gaunt/Wigner/\(3j\) entry expansion,
+factor \(((n+1)/(2n+1))^2\).  This module alone does not supply a Gaunt/Wigner/\(3j\) entry expansion,
 Christoffel reconstruction, roots, quadrature, an infinite Jacobi product/continued
 fraction, or asymptotics.
 
@@ -1600,7 +1601,7 @@ compute the order-one through order-five rational Legendre Gram determinants as
 \]
 with the subdiagonal index zero-based.  Those eight rational computations have no
 analytic input.  Each of the three real/integral transports requires an input
-an input \(F\) of type \path{BoundedFabius} together with a certificate
+\(F\) of type \path{BoundedFabius} together with a certificate
 \(h_F\) of type \path{IsFabius}; they identify the
 real fourth Hankel ratio, its squared orthogonal-polynomial integral, and its quotient
 by the third ratio.  This values leaf closes the displayed low-order values, not by
@@ -4642,7 +4643,7 @@ In distributional notation this is the infinite-cube integral
 and
 \begin{equation}\label{p3:eq:F-cube}
  F(x)=\int_{[0,1]^{\NaturalNumbers}}
- \one_{\{\sum_{j\ge1}2^{-j}v_j\le x\}}
+ \IndicatorOf{\{\sum_{j\ge1}2^{-j}v_j\le x\}}
  \prod_{j\ge1}\Differential v_j.
 \end{equation}
 
@@ -4794,7 +4795,7 @@ we obtain the rapidly convergent series
 \end{align}
 Every derivative may be taken termwise.
 
-\subsection{Fourier images of $p$, $F$, and $1-F$}
+\subsection[Fourier images of p, F, and 1-F]{Fourier images of $p$, $F$, and $1-F$}
 
 The affine relation between $p$ and $\RvachevUp$ gives
 \begin{equation}\label{p3:eq:p-transform}
@@ -5103,7 +5104,7 @@ smooth density and smooth test function, but the sinc-window formula has a
 clearer probabilistic interpretation: it is exactly the transform of the
 conditional-expectation density.
 
-\subsection{Moments, $L^q$ norms, and discrete entropies}
+\subsection[Moments, Lq norms, and discrete entropies]{Moments, $L^q$ norms, and discrete entropies}
 
 For $q>0$, uniform convergence gives
 \begin{equation}\label{p3:eq:Lq-mass-limit}
@@ -5144,7 +5145,7 @@ Every finite approximant is rational.
 Let
 \begin{equation}\label{p3:eq:eta-haar}
  \eta_{n,k}
- =\one_{I_{n+1,2k}}-\one_{I_{n+1,2k+1}},
+ =\IndicatorOf{I_{n+1,2k}}-\IndicatorOf{I_{n+1,2k+1}},
  \qquad 0\le k<2^n,
 \end{equation}
 and let $h_{n,k}=2^{n/2}\eta_{n,k}$ be the orthonormal Haar functions.
@@ -5303,7 +5304,7 @@ Because $F$ is convex on $[0,1/2]$ and concave on $[1/2,1]$, one also has
 \end{equation}
 with the $n=0$ coefficient zero by symmetry.
 
-\subsection{A sinc-squared series for the Fourier image of $F$}
+\subsection[A sinc-squared series for the Fourier image of F]{A sinc-squared series for the Fourier image of $F$}
 
 The transform of a peak-one tent of width $2^{-n}$ is
 \begin{equation}\label{p3:eq:tent-transform}
@@ -5980,7 +5981,7 @@ adjacent inverse-dyadic values.  It complements the repository's local inverse
 series and exact inverse values at special dyadic levels: local inverse
 aithmetic enters a global moment formula through a simple polygonal limit.
 
-\subsection{Dual $L^q$ spectra and entropy constants}
+\subsection[Dual Lq spectra and entropy constants]{Dual $L^q$ spectra and entropy constants}
 
 Because $q_{N,k}=\int_{k/n_N}^{(k+1)/n_N}G'(u)\Differential u$, the slope
 $n_Nq_{N,k}$ is the dyadic conditional expectation of $G'$.  This gives a
@@ -6034,7 +6035,7 @@ Thus the two exact partitions retain different continuous entropies:
 The second constant is sensitive to endpoint flatness, whereas the first is
 weighted by the probability density itself.
 
-\section{Haar scale energies and the $\SincRad^4$ continuum expansion}
+\section[Haar scale energies and the sinc-fourth-power continuum expansion]{Haar scale energies and the $\SincRad^4$ continuum expansion}
 \label{p3:sec:haar-energy}
 
 \subsection{Three exact forms of the energy}
@@ -6107,7 +6108,7 @@ would expose the superalgebraic smoothness more efficiently.
 Let
 \begin{equation}\label{p3:eq:Kh-def}
  K_h(x)=h^{-1/2}
- \bigl(\one_{[-h/2,0]}(x)-\one_{[0,h/2]}(x)\bigr).
+ \bigl(\IndicatorOf{[-h/2,0]}(x)-\IndicatorOf{[0,h/2]}(x)\bigr).
 \end{equation}
 Its squared Fourier modulus is
 \begin{equation}\label{p3:eq:Kh-transform}
@@ -6659,7 +6660,7 @@ $G((j+1)2^{-N})-G(j2^{-N})$ and $\Theta_N$ is the lower-Lambert phase.
 This would turn inverse endpoint asymptotics into a discrete partition function
 and provide a phase-resolved refinement of the $L^s$ threshold for $G'$.
 
-\subsection{Base-$b$ and nonuniform scale systems}
+\subsection[Base-b and nonuniform scale systems]{Base-$b$ and nonuniform scale systems}
 
 The multiresolution arguments do not fundamentally require base two.  A
 base-$b$ weighted-uniform series would produce $b$-adic mass arrays,
@@ -8171,7 +8172,7 @@ The first values are
  \label{p4:eq:first-e}
 \end{equation}
 
-\subsection{A positive spectral formula for \(F(2^{-n})\)}
+\subsection[A positive spectral formula for F at inverse powers of two]{A positive spectral formula for \(F(2^{-n})\)}
 
 The audited corpus supplies \eqref{p4:eq:dyadic-moment}.  The centered variable gives
 \begin{equation}
@@ -8373,7 +8374,7 @@ The power traces also give Euler--Rayleigh bounds for the first positive zero
 Although the zero is already known exactly, these inequalities illustrate how the
 Bernoulli trace data alone recover the spectral edge.
 
-\section{Determinant inversion formulas for \(\RvachevUp\) and \(F\)}
+\section[Determinant inversion formulas for up and F]{Determinant inversion formulas for \(\RvachevUp\) and \(F\)}
 \label{p4:sec:det-inversion}
 
 Substitution of the Fredholm determinant into classical inversion formulas produces
@@ -12227,13 +12228,13 @@ This section compresses the principal representation families already present in
 repository and places the new formulas beside them.  Proofs of the new entries begin in
 Section~\ref{p6:sec:cauchy}.
 
-\subsection{Real-space and probability representations of \(\rho\)}
+\subsection[Real-space and probability representations of rho]{Real-space and probability representations of \(\rho\)}
 
 \paragraph{Infinite convolution (\statusknownPartl).}
 Since \(2^{-k}U_k\) is uniform on \([-2^{-k},2^{-k}]\),
 \begin{equation}
  \rho=\mathop{\ast}_{k=1}^{\infty}
- \left(2^{k-1}\one_{[-2^{-k},2^{-k}]}\right).                \label{p6:eq:rho-convolution}
+ \left(2^{k-1}\IndicatorOf{[-2^{-k},2^{-k}]}\right).        \label{p6:eq:rho-convolution}
 \end{equation}
 This is the real-space counterpart of the sinc product.
 
@@ -12276,7 +12277,7 @@ The audited corpus also contains Poisson-summation formulas, Legendre expansions
 periodized cosine series, dyadic spline limits, and endpoint transseries.  They are not
 rederived here.
 
-\subsection{Product, zero, gamma, and exponential representations of \(\Phi\)}
+\subsection[Product, zero, gamma, and exponential representations of Phi]{Product, zero, gamma, and exponential representations of \(\Phi\)}
 
 \paragraph{Canonical zero product (\statusknownPartl).}
 Let \(\nu_2(n)\) be the exponent of \(2\) in \(n\).  The nonzero integer \(n\) is a zero of
@@ -12332,7 +12333,7 @@ so all moments are complete Bell polynomials in explicit Bernoulli/Mersenne cumu
 These formulas, together with reciprocal Bell expansions for \(1/\Phi\), are developed
 extensively in the repository.
 
-\subsection{Transform representations of \(F\) and \(F^{-1}\)}
+\subsection[Transform representations of F and inverse F]{Transform representations of \(F\) and \(F^{-1}\)}
 
 The CDF inversion formula gives
 \begin{equation}
@@ -12670,9 +12671,9 @@ algorithms: use finite convolution to resolve endpoint geometry and a short Jaco
 to compress the remaining moment error.
 \end{remark}
 
-\section{Exact transforms of \(F\), one-sided \(\RvachevUp\), and \(F^{-1}\)}\label{p6:sec:fabius-transforms}
+\section[Exact transforms of F, one-sided up, and inverse F]{Exact transforms of \(F\), one-sided \(\RvachevUp\), and \(F^{-1}\)}\label{p6:sec:fabius-transforms}
 
-\subsection{The Laplace and Fourier transforms of \(F\)}
+\subsection[The Laplace and Fourier transforms of F]{The Laplace and Fourier transforms of \(F\)}
 
 \begin{theorem}[Transform of the Fabius function]\label{p6:thm:F-transform}
 For complex \(s\), with the value at \(s=0\) understood by continuity,
@@ -12827,7 +12828,7 @@ sum exposes multiplicities and supports rigorous rational tail bounds.
 
 The valuation weight has the divisor decomposition
 \begin{equation}
- 1+\nu_2(n)=\sum_{k=0}^{\infty}\one_{2^k\mid n}.             \label{p6:eq:valuation-indicators}
+ 1+\nu_2(n)=\sum_{k=0}^{\infty}\IndicatorOf{2^k\mid n}.     \label{p6:eq:valuation-indicators}
 \end{equation}
 This turns the zero sum into a dyadic superposition of classical special functions.
 
@@ -14909,7 +14910,7 @@ The ordinary moment series is centered at infinity in powers of \(z^{-1}\). By c
 \eqref{p7:eq:R-Cheb-series} uses the conformal coordinate of the slit plane, so it remains
 geometrically adapted even near the support.
 
-\subsection{Boundary recovery of \(\rho\)}
+\subsection[Boundary recovery of rho]{Boundary recovery of \(\rho\)}
 
 Set
 \begin{equation}
@@ -14951,7 +14952,7 @@ The harmonic conjugate is
 \end{align}
 Thus one disk-analytic function packages the density and its circular Hilbert transform.
 
-\subsection{Phase series for \(F\) and \(F^{-1}\)}
+\subsection[Phase series for F and inverse F]{Phase series for \(F\) and \(F^{-1}\)}
 
 For \(0<u<1\), put
 \begin{equation}
@@ -16384,7 +16385,7 @@ $[0,1]$~\cite{p8:jessen1935} and let $V_j=2U_j-1$, uniform on $[-1,1]$.  Then
 $F(x)=\Probability(X\le x)$, and $Y$ has density $\RvachevUp$.  Consequently
 \begin{equation}
  \RvachevUp=\mathop{\ast}_{j=1}^{\infty}
- \left(2^{j-1}\1_{[-2^{-j},2^{-j}]}
+ \left(2^{j-1}\IndicatorOf{[-2^{-j},2^{-j}]}
  \right)              \label{p8:eq:infinite-convolution}
 \end{equation}
 in the sense of weak limits and, in fact, in the smooth-density topology
@@ -16940,8 +16941,8 @@ into $\omega_G(4^{-J})$ to resolve the non-algebraic global convergence rate.
 Define the unnormalized Haar step
 \begin{equation}
  H_{m,k}(x)=
- \1_{[\ell_{m,k},\xi_{m,k})}(x)
- -\1_{[\xi_{m,k},r_{m,k})}(x).                           \label{p8:eq:haar-step}
+ \IndicatorOf{[\ell_{m,k},\xi_{m,k})}(x)
+ -\IndicatorOf{[\xi_{m,k},r_{m,k})}(x).                  \label{p8:eq:haar-step}
 \end{equation}
 Then $\Lambda'_{m,k}=2^{m+1}H_{m,k}$ away from its three
 corners.
@@ -17409,7 +17410,7 @@ Expanding the independent binomial laws gives the finite sum
  F_N^\triangle(x)=2^{-N(N-1)/2}
  \sum_{k_2=0}^{1}\cdots\sum_{k_N=0}^{N-1}
  \left(\prod_{n=2}^{N}\binom{n-1}{k_n}\right)
- \1_{\{\sum_{n=2}^{N}k_n2^{-n}\le x\}}.}              \label{p8:eq:triangular-cdf}
+ \IndicatorOf{\{\sum_{n=2}^{N}k_n2^{-n}\le x\}}.}     \label{p8:eq:triangular-cdf}
 \end{equation}
 Then $F_N^\triangle(x)\to F(x)$ at every real $x$.
 
@@ -17843,7 +17844,7 @@ inclusion--exclusion evaluation of the same polytope volume.
 One may also write the infinite-dimensional product-measure integral
 \begin{equation}
  F(x)=\int_{[0,1]^\NaturalNumbers}
- \1_{\{\sum_{j\ge1}2^{-j}u_j\le x\}}\Differential\bm u.           \label{p8:eq:infinite-cube-integral}
+ \IndicatorOf{\{\sum_{j\ge1}2^{-j}u_j\le x\}}\Differential\bm u.  \label{p8:eq:infinite-cube-integral}
 \end{equation}
 This is the geometric form of the probability model, but it emphasizes that
 the Fabius function is the distribution of weighted half-spaces cutting a
@@ -18423,7 +18424,7 @@ Object & Formula & Status\\
 \midrule
 \endhead
 $F$ & $F(x)=\Probability(\sum_{j\ge1}2^{-j}U_j\le x)$ & baseline\\
-$\RvachevUp$ & $\RvachevUp(y)=\mathop{\ast}_{j\ge1}2^{j-1}\1_{[-2^{-j},2^{-j}]}(y)$ & baseline\\
+$\RvachevUp$ & $\RvachevUp(y)=\mathop{\ast}_{j\ge1}2^{j-1}\IndicatorOf{[-2^{-j},2^{-j}]}(y)$ & baseline\\
 $\Phi$ & $\Phi(t)=\prod_{j\ge1}\SincRad(t/2^j)$ & baseline\\
 $\Phi$ & $\Phi(t)=\prod_{n\ge1}(1-t^2/(4\pi^2n^2))^{1+\TwoAdicValuation(n)}$ & baseline\\
 $F_N$ & $\dfrac{2^{N(N+1)/2}}{N!}\sum_{k<2^N}(-1)^{\BinaryDigitSum(k)}(x-k/2^N)_+^N$ & baseline\\
@@ -18634,4 +18635,3 @@ itself).  Neither the corpus nor Mathlib previously carried any tent or B-spline
 moment API.
 
 \end{document}
-\input{../../../../fabius-notation.tex}

@@ -39,12 +39,11 @@ the report body genuinely uses follow that shared block. The validated PDF is
 rendered with fully embedded, subset Libertinus prose fonts and no Type 3
 fonts.
 
-The 2026-08-31 source-only notation merge changed the TeX source without
-rerendering the report, at the user's request. The existing PDF and its
-validation record remain the last validated render; `CHECKSUMS.sha256`
-therefore currently passes 15 of 18 rows. The TeX source and the two honesty
-notes (`README.md` and `pdf_validation.txt`) await the deferred rebuild and
-ledger refresh.
+The synchronized 2026-08-31 artifact rebuild used exactly three clean, serial
+pdfLaTeX passes. The resulting 24-page A4 PDF matches the 1,940-line source,
+has complete metadata, embeds and subsets all 24 font rows, includes five
+Libertinus rows, and has no Type 3 fonts. All 24 pages rendered and contained
+extractable text; the live 18-entry checksum ledger was refreshed afterward.
 
 Rebuild from this directory:
 
