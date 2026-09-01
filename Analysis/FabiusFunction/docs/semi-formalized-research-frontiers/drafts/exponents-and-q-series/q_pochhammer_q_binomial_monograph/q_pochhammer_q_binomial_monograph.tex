@@ -12423,8 +12423,8 @@ inside the proof below does not formalize the result the proof concludes.
   than a mathematical claim.
 \end{description}
 
-Of the 282 labelled forward results, 51 are \statusexact, 78 are
-\statuspartial, 145 are \statusnone, and 8 are \statusna.  The original
+Of the 282 labelled forward results, 59 are \statusexact, 78 are
+\statuspartial, 137 are \statusnone, and 8 are \statusna.  The original
 191-result pre-Fabius core had 36 \statusexact, 29 \statuspartial, 123
 \statusnone, and 3 \statusna{} entries.  The four integrated guide chapters
 add 31 human-proved but not Lean-formalized assertions and five labelled
@@ -12884,8 +12884,8 @@ inferred from a related finite identity.
 \toprule
 Chapter & \statusexact & \statuspartial & \statusnone & \statusna\\
 \midrule
-The algebra of $q$-shifted factorials & 6 & 2 & 7 & 0\\
-$q$-integers and Gaussian coefficients & 3 & 2 & 4 & 0\\
+The algebra of $q$-shifted factorials & 7 & 2 & 6 & 0\\
+$q$-integers and Gaussian coefficients & 5 & 1 & 3 & 0\\
 Finite $q$-binomial theorems and inversion & 9 & 1 & 0 & 0\\
 Weighted binomial coefficients and symmetric functions & 3 & 2 & 3 & 0\\
 Partitions, words, paths, and inversion statistics & 3 & 1 & 5 & 0\\
@@ -12895,9 +12895,9 @@ The infinite $q$-binomial theorem & 1 & 1 & 2 & 0\\
 Basic hypergeometric series & 1 & 0 & 8 & 0\\
 Euler telescoping and very-well-poised summations & 0 & 0 & 4 & 0\\
 Bilateral series and Ramanujan's \texorpdfstring{${}_1\psi_1$}{1psi1} sum & 0 & 0 & 2 & 0\\
-$q$-difference calculus and the quantum binomial & 0 & 0 & 10 & 0\\
-The $q$-gamma and $q$-beta functions & 0 & 0 & 8 & 0\\
-Jacobi's triple product & 3 & 1 & 4 & 0\\
+$q$-difference calculus and the quantum binomial & 3 & 0 & 7 & 0\\
+The $q$-gamma and $q$-beta functions & 1 & 1 & 6 & 0\\
+Jacobi's triple product & 4 & 1 & 3 & 0\\
 Theta modularity, lattice dissection, and sums of squares & 0 & 0 & 14 & 4\\
 Partitions and product--sum identities & 0 & 0 & 4 & 0\\
 Bailey pairs and the Rogers--Ramanujan identities & 1 & 0 & 6 & 0\\
@@ -12913,7 +12913,7 @@ Half-base arithmetic and Prouhet--Thue--Morse cancellation & 6 & 3 & 0 & 0\\
 Geometric uniform sums, $q$-cumulants, and the Fabius--Rvachev functions & 2 & 11 & 0 & 0\\
 Dyadic Gaussian--Thue--Morse structure and the values of $F$ & 6 & 44 & 6 & 0\\
 \midrule
-\textbf{Forward total} & 51 & 78 & 145 & 8\\
+\textbf{Forward total} & 59 & 78 & 137 & 8\\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -12960,7 +12960,14 @@ remainder allowed to equal $r$}\\[2pt]
 quotient additionally assuming \((q;q)_{N-k}\ne0\); root-safe numerator and
 cleared forms are also exported}\\[2pt]
 \Cref{thm:partial-fraction} & \statusnone & ---\\[2pt]
-\Cref{prop:logder-finite} & \statusnone & ---\\[2pt]
+\Cref{prop:logder-finite} & \statusexact &
+\texttt{hasDerivAt\_\allowbreak{}finiteQPochhammerIn},
+\texttt{hasDerivAt\_\allowbreak{}finiteQPochhammerIn\_\allowbreak{}of\_\allowbreak{}ne\_\allowbreak{}zero},
+\texttt{hasDerivAt\_\allowbreak{}finiteQPochhammerIn\_\allowbreak{}comp}\newline
+{\footnotesize\texttt{QPochhammerDerivative}; over every nontrivially normed
+field, as \texttt{HasDerivAt} statements: the product-rule form, the
+logarithmic form away from the zeros, and the chain-rule form for a
+differentiable parameter}\\[2pt]
 \Cref{thm:poch-entire} & \statusexact &
 \texttt{tendsto\_\allowbreak{}finiteQPochhammerIn\_\allowbreak{}qPochhammerInfIn},
 \texttt{hasProdLocallyUniformly\_\allowbreak{}qPochhammerInfIn},
@@ -12992,14 +12999,27 @@ lattice}\\[2pt]
 {\footnotesize\texttt{QPochhammerInfinite}; exact for nonnegative integral
 shifts, not for arbitrary complex \(\alpha,\beta\)}\\[2pt]
 \Cref{prop:order-derivative} & \statusnone & ---\\[2pt]
-\Cref{thm:lambert-log} & \statuspartial & \texttt{tsum\_\allowbreak{}log\_\allowbreak{}one\_\allowbreak{}sub\_\allowbreak{}geom}\newline{\footnotesize\texttt{EulerLogTransform}}\\[2pt]
+\Cref{thm:lambert-log} & \statuspartial &
+\texttt{tsum\_\allowbreak{}log\_\allowbreak{}one\_\allowbreak{}sub\_\allowbreak{}geom},
+\texttt{tsum\_\allowbreak{}log\_\allowbreak{}one\_\allowbreak{}sub\_\allowbreak{}geom\_\allowbreak{}real},
+\texttt{exp\_\allowbreak{}neg\_\allowbreak{}tsum\_\allowbreak{}lambert\_\allowbreak{}eq\_\allowbreak{}qPochhammerInfIn},
+\texttt{hasSum\_\allowbreak{}lambert\_\allowbreak{}log\_\allowbreak{}complex}\newline
+{\footnotesize\texttt{EulerLogTransform}; \texttt{LambertSeriesLog}; the
+series identity with the principal logarithms of the factors, its real
+form, and its exponential form $\exp(-\sum_m a^m/(m(1-q^m)))=(a;q)_\infty$;
+the two derivative formulas and the local uniformity are not formalized}\\[2pt]
 \Cref{cor:divisor-sum} & \statusnone & ---\\[2pt]
 \Cref{thm:poch-dilog} & \statusnone & ---\\[2pt]
 \Cref{prop:classical-poch-limit} & \statusnone & ---\\[2pt]
 \midrule
 \multicolumn{3}{@{}l}{\itshape $q$-integers and Gaussian coefficients}\\
 \midrule
-\Cref{prop:qbinom-products} & \statuspartial & \texttt{qPochhammer\_\allowbreak{}tail\_\allowbreak{}div\_\allowbreak{}self\_\allowbreak{}eq\_\allowbreak{}qBinomial}\newline{\footnotesize\texttt{GeometricLagrangeQMoments}}\\[2pt]
+\Cref{prop:qbinom-products} & \statusexact &
+\texttt{gaussianBinomial\_\allowbreak{}eq\_\allowbreak{}finiteQPochhammerIn\_\allowbreak{}div},
+\texttt{finiteQPochhammerIn\_\allowbreak{}self\_\allowbreak{}mul\_\allowbreak{}gaussianBinomial}\newline
+{\footnotesize\texttt{GaussianBinomialContinuity}; \texttt{FiniteQBinomialCore};
+the quotient form in any field with $(q;q)_k\ne0$, the cleared form in every
+commutative ring}\\[2pt]
 \Cref{thm:qpascal} & \statusexact & \texttt{gaussianBinomial\_\allowbreak{}succ\_\allowbreak{}succ\_\allowbreak{}alt}\newline{\footnotesize\texttt{FiniteQBinomialCore}}\\[2pt]
 \Cref{cor:positivity} & \statusnone & ---\\[2pt]
 \Cref{thm:qbinom-structure} & \statuspartial &
@@ -13012,7 +13032,11 @@ items (i)--(ii) exact, polynomial degree and coefficient reversal still open}\\[
 \texttt{gaussianBinomial\_\allowbreak{}neg\_\allowbreak{}one\_\allowbreak{}even\_\allowbreak{}odd\_\allowbreak{}eq\_\allowbreak{}zero}\newline
 {\footnotesize\texttt{QBinomialReciprocity}; arbitrary commutative ring,
 including above-row zero extension}\\[2pt]
-\Cref{cor:qbinom-classical} & \statusnone & ---\\[2pt]
+\Cref{cor:qbinom-classical} & \statusexact &
+\texttt{tendsto\_\allowbreak{}gaussianBinomial\_\allowbreak{}nhds\_\allowbreak{}one},
+\texttt{continuous\_\allowbreak{}gaussianBinomial}\newline
+{\footnotesize\texttt{GaussianBinomialContinuity}; in every topological
+semiring, by continuity of the Gaussian coefficient in its base}\\[2pt]
 \Cref{prop:qmult-factor} & \statusnone & ---\\[2pt]
 \Cref{prop:adjacent-ratio} & \statusexact &
 \texttt{gaussianBinomial\_\allowbreak{}adjacent\_\allowbreak{}div},
@@ -13171,11 +13195,29 @@ the first for every $z$, the second for $\lVert z\rVert<1$}\\[2pt]
 \midrule
 \multicolumn{3}{@{}l}{\itshape $q$-difference calculus and the quantum binomial}\\
 \midrule
-\Cref{prop:qderivative-rules} & \statusnone & ---\\[2pt]
-\Cref{thm:q-leibniz} & \statusnone & ---\\[2pt]
+\Cref{prop:qderivative-rules} & \statusexact &
+\texttt{qDerivative\_\allowbreak{}X\_\allowbreak{}pow},
+\texttt{qDerivative\_\allowbreak{}mul},
+\texttt{qDerivative\_\allowbreak{}mul'},
+\texttt{qDerivative\_\allowbreak{}comp\_\allowbreak{}C\_\allowbreak{}mul\_\allowbreak{}X},
+\texttt{eval\_\allowbreak{}qDerivative\_\allowbreak{}mul}\newline
+{\footnotesize\texttt{PolynomialQDerivative}; on polynomials over every
+commutative semiring, division-free, with the scaling rule for an arbitrary
+scale factor and the difference-quotient characterization
+$(1-q)x\,D_qp(x)=p(x)-p(qx)$ over every commutative ring}\\[2pt]
+\Cref{thm:q-leibniz} & \statusexact &
+\texttt{qDerivative\_\allowbreak{}iterate\_\allowbreak{}mul},
+\texttt{qDerivative\_\allowbreak{}iterate\_\allowbreak{}comp\_\allowbreak{}C\_\allowbreak{}mul\_\allowbreak{}X}\newline
+{\footnotesize\texttt{PolynomialQLeibniz}; on polynomials over every
+commutative semiring, from the product rule and the first $q$-Pascal
+summation}\\[2pt]
 \Cref{lem:qfalling-derivative} & \statusnone & ---\\[2pt]
 \Cref{thm:q-taylor} & \statusnone & ---\\[2pt]
-\Cref{thm:quantum-binomial} & \statusnone & ---\\[2pt]
+\Cref{thm:quantum-binomial} & \statusexact &
+\texttt{quantum\_\allowbreak{}binomial},
+\texttt{quantumPlane\_\allowbreak{}mul\_\allowbreak{}pow}\newline
+{\footnotesize\texttt{QuantumBinomial}; every semiring, with $q$ assumed only
+to commute with $X$ and $Y$; see \Cref{rem:quantum-binomial-generality}}\\[2pt]
 \Cref{cor:quantum-multinomial} & \statusnone & ---\\[2pt]
 \Cref{cor:qexp-factor} & \statusnone & ---\\[2pt]
 \Cref{prop:qexp-eigen} & \statusnone & ---\\[2pt]
@@ -13184,14 +13226,24 @@ the first for every $z$, the second for $\lVert z\rVert<1$}\\[2pt]
 \midrule
 \multicolumn{3}{@{}l}{\itshape The $q$-gamma and $q$-beta functions}\\
 \midrule
-\Cref{thm:qgamma-basic} & \statusnone & ---\\[2pt]
+\Cref{thm:qgamma-basic} & \statuspartial &
+\texttt{qGamma\_\allowbreak{}one},
+\texttt{qGamma\_\allowbreak{}add\_\allowbreak{}one},
+\texttt{qGamma\_\allowbreak{}nat\_\allowbreak{}succ},
+\texttt{qGamma\_\allowbreak{}pos}\newline
+{\footnotesize\texttt{QGamma}; the three real identities for $x>0$ and
+$0<q<1$, with $[x]_q$ as \texttt{qNumber} and its agreement with the
+$q$-integer at natural arguments; the meromorphic-continuation clause is
+not formalized}\\[2pt]
 \Cref{prop:qgamma-convex} & \statusnone & ---\\[2pt]
 \Cref{thm:q-bohr-mollerup} & \statusnone & ---\\[2pt]
 \Cref{thm:qgamma-classical-limit} & \statusnone & ---\\[2pt]
 \Cref{thm:qbeta} & \statusnone & ---\\[2pt]
 \Cref{cor:qbeta-recurrence} & \statusnone & ---\\[2pt]
 \Cref{thm:qgamma-multiplication} & \statusnone & ---\\[2pt]
-\Cref{prop:qgamma-reflection} & \statusnone & ---\\[2pt]
+\Cref{prop:qgamma-reflection} & \statusexact &
+\texttt{qGamma\_\allowbreak{}mul\_\allowbreak{}qGamma\_\allowbreak{}one\_\allowbreak{}sub}\newline
+{\footnotesize\texttt{QGamma}; for every real $x$}\\[2pt]
 \midrule
 \multicolumn{3}{@{}l}{\itshape Jacobi's triple product}\\
 \midrule
@@ -13224,7 +13276,10 @@ $\sum_{n\in\IntegerNumbers}(-1)^nq^{n(3n-1)/2}$ with the exponent
 normed field including $q=0$}\\[2pt]
 \Cref{cor:euler-partition-recurrence} & \statusnone & ---\\[2pt]
 \Cref{thm:jacobi-cubic} & \statusnone & ---\\[2pt]
-\Cref{cor:qgamma-theta} & \statusnone & ---\\[2pt]
+\Cref{cor:qgamma-theta} & \statusexact &
+\texttt{hasSum\_\allowbreak{}theta\_\allowbreak{}qGamma\_\allowbreak{}reflection}\newline
+{\footnotesize\texttt{QGamma}; the theta series is stated as a
+\texttt{HasSum} with value $(1-q)(q;q)_\infty^3/(\Gamma_q(x)\Gamma_q(1-x))$}\\[2pt]
 \midrule
 \multicolumn{3}{@{}l}{\itshape Partitions and product--sum identities}\\
 \midrule
