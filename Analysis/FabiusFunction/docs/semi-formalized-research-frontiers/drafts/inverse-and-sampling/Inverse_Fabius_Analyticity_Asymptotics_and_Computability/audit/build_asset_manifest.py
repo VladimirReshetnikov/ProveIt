@@ -1023,6 +1023,8 @@ def expected_asset_files() -> set[str]:
     }
     return copied | {
         "README.md",
+        "endpoint/dyadic-completion/figures/dyadic_tail_convergence.png",
+        "endpoint/dyadic-completion/figures/psi_periodic.png",
         "requirements.txt",
         "self-sampling/appell_a8_sturm_certificate.txt",
         "SHA256SUMS",
