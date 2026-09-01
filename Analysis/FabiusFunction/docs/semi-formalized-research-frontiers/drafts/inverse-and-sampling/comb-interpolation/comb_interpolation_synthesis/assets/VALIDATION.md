@@ -13,7 +13,7 @@ local general-$q$/endpoint-jet, Lagrange,
 revisions in `chapters/03_additive_dyadic.tex`,
 `chapters/90_reference_appendices.tex`, and
 `comb_interpolation_synthesis.tex`. The repository-wide documentation census
-at this merge checkpoint is 623 Lean modules and 8,476 public declarations.
+at this merge checkpoint is 629 Lean modules and 8,546 public declarations.
 The checked-in PDF was built from the immediately preceding source graph and
 passed the complete publication gate recorded below. A later canonical-notation
 edit in `chapters/03_additive_dyadic.tex` requires a fresh exact three-pass

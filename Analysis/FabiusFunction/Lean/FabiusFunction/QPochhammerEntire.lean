@@ -26,6 +26,8 @@ statement.
 * `complexQPochhammerInf_differentiable` proves that `(·;q)_∞` is entire.
 * `complexQPochhammerInf_eq_zero_iff` gives the exact factor-zero locus,
   without dividing by a power of `q`.
+* `complexQPochhammerInf_eq_zero_iff_eq_inv_pow` rewrites that locus as the
+  usual lattice `a = (q ^ j)⁻¹` when `q ≠ 0`.
 * `analyticOrderAt_complexQPochhammerInf_of_eq_zero` proves that every zero
   has analytic order one, including the unique zero at `a = 1` when `q = 0`.
 * `analyticOrderAt_qPochhammerInfIn_of_eq_zero` gives the same conclusion
@@ -76,6 +78,25 @@ theorem complexQPochhammerInf_eq_zero_iff
     exact ⟨j, sub_eq_zero.mpr hj.symm⟩
   · rintro ⟨j, hj⟩
     exact ⟨j, (sub_eq_zero.mp hj).symm⟩
+
+/-- For a nonzero strict contraction, the zeros of `(a;q)_∞` are exactly
+the reciprocal powers of `q`.  The nonzero hypothesis is essential for this
+division-based spelling; the preceding factor-zero theorem also covers
+`q = 0`. -/
+theorem complexQPochhammerInf_eq_zero_iff_eq_inv_pow
+    (a q : ℂ) (hq : ‖q‖ < 1) (hq0 : q ≠ 0) :
+    complexQPochhammerInf a q = 0 ↔
+      ∃ j : ℕ, a = (q ^ j)⁻¹ := by
+  rw [complexQPochhammerInf_eq_zero_iff a q hq]
+  constructor
+  · rintro ⟨j, hj⟩
+    refine ⟨j, ?_⟩
+    have hqj : q ^ j ≠ 0 := pow_ne_zero j hq0
+    apply mul_right_cancel₀ hqj
+    rw [(sub_eq_zero.mp hj).symm, inv_mul_cancel₀ hqj]
+  · rintro ⟨j, rfl⟩
+    refine ⟨j, sub_eq_zero.mpr ?_⟩
+    exact (inv_mul_cancel₀ (pow_ne_zero j hq0)).symm
 
 private theorem complexQPochhammerFactor_zero_index_unique
     (a q : ℂ) (hq : ‖q‖ < 1) {j k : ℕ}

@@ -102,7 +102,7 @@
 \large Exact arithmetic, probability, Fourier analysis, and corrected sharp asymptotics}
 \author{Human-readable synthesis of the formal development\\
 \small Vladimir Reshetnikov's \texttt{ProveIt} repository}
-\date{Integrated repository snapshot: 31 August 2026\\
+\date{Integrated repository snapshot: 1 September 2026\\
 \small Historical Cauchy/complex-product checkpoint \nolinkurl{a81a13b46};
 CDF/implicit checkpoint \nolinkurl{e6f535e5d};
 affine-law checkpoint \nolinkurl{d312c0603};\\
@@ -147,7 +147,11 @@ the bounded Fabius function and the affine Rvachev bump exactly.  A support-free
 theorem transports uniform measure through
 the clamped Fabius inverse and gives Banach-valued quantile substitution.  The analytic part develops the
 formal sinc and cosine products, Fourier inversion and Poisson summation, exact moment
-recurrences, and the Fourier--Legendre expansion.  The arithmetic part gives reciprocal-power
+recurrences, and the Fourier--Legendre expansion.  For each fixed complex strict
+contraction, the infinite q-Pochhammer symbol is
+also proved entire in its symbol variable, with its exact factor-zero and
+reciprocal-power zero descriptions and analytic order one at every zero.  The arithmetic
+part gives reciprocal-power
 values, Thue--Morse formulas for arbitrary dyadic arguments, executable binary reduction,
 two-adic information, exact half-base values, and denominator-free arbitrary-base
 $q$-binomial and geometric-interpolation identities present in Lean.  A compact-rectangle
@@ -3105,142 +3109,9 @@ factorization, derive spectral-zeta, Mellin, or logarithmic-derivative
 consequences, prove local-uniform or normal convergence of the outer
 Pochhammer product over the spectral index, name the frontier's centered
 \(\psi_q\) or \(M_q\), or supply an outside \(\lVert q\rVert>1\) reciprocal
-formula.  The next theorem records the downstream analytic and zero-set API
-for each inner Pochhammer factor.
-\end{proof}
-
-\begin{theorem}[Entire complex \(q\)-Pochhammer product and simple factor zeros]
-Fix \(q\in\ComplexNumbers\) with \(\lVert q\rVert<1\).  The products of the
-factors \(a\mapsto 1-aq^j\) converge locally uniformly on the whole complex
-\(a\)-plane to \(a\mapsto(a;q)_{\infty,\ComplexNumbers}\); in particular this
-limit is entire in \(a\).  Its exact zero locus is
-\begin{equation}
- (a;q)_{\infty,\ComplexNumbers}=0
- \quad\Longleftrightarrow\quad
- \exists j\in\NaturalNumbers,\;1-aq^j=0.
- \label{eq:complex-qpochhammer-zero-locus}
-\end{equation}
-Every zero in this raw factor locus is simple: the analytic order of
-\(a\mapsto(a;q)_{\infty,\ComplexNumbers}\) at that point is one.  This includes
-the degenerate strict contraction \(q=0\), whose unique zero is \(a=1\).
-\end{theorem}
-
-\begin{proof}[Formal crosswalk and exact boundary]
-The zero-definition leaf \path{QPochhammerEntire.lean} has exactly four public
-theorems, in source order:
-\lean{hasProdLocallyUniformly_complexQPochhammerInf},
-\lean{complexQPochhammerInf_differentiable},
-\lean{complexQPochhammerInf_eq_zero_iff}, and
-\lean{analyticOrderAt_complexQPochhammerInf_of_eq_zero}.
-The first applies the summable-scale product engine to the geometric sequence
-\(q^j\); the second promotes the resulting product to an entire function of
-\(a\).  The third is deliberately the factor-zero equivalence in
-\eqref{eq:complex-qpochhammer-zero-locus}, with no division by \(q^j\).  For
-the fourth, the proof shows that a vanishing factor has a unique index, splits the product into a
-finite prefix and shifted tail, and factors locally as
-\[
- (z;q)_{\infty,\ComplexNumbers}=(z-a)U(z),
- \qquad U(a)\ne0,
-\]
-where \(U\) is entire.  The uniqueness argument treats \(q=0\) separately, so
-the simple-zero conclusion includes that boundary.
-
-The hypothesis on the nome is exactly the strict complex contraction
-\(\lVert q\rVert<1\); the locally uniform and entire statements vary \(a\)
-with \(q\) fixed.  The fourth theorem additionally assumes that the displayed
-value is zero.  The module gives no division-based parametrization such as
-\(a=q^{-j}\), no joint holomorphy in \(q\), no local-uniform theorem for the
-outer spectral product in \eqref{eq:geometric-complex-qpochhammer}, and no
-global entire-function growth, order, type, or asymptotic estimate.
-\end{proof}
-
-\begin{theorem}[Finite dissections and the general infinite \(q\)-Pochhammer API]
-Over every commutative ring, with no hypothesis on \(a\) or \(q\),
-\[
- (a;q)_{rn}=\prod_{s=0}^{r-1}(aq^s;q^r)_n.
-\]
-If \(u\le r\), the exact remainder form gives length \(n+1\) to the residue
-classes \(s<u\) and length \(n\) to \(u\le s<r\); this includes \(u=0\) and
-\(u=r\).
-
-Let \(R\) now be a complete commutative normed ring with
-\(\lVert1\rVert=1\).  The total symbol
-\[
- (a;q)_{\infty,R}:=\prod_{j=0}^{\infty}(1-aq^j)
-\]
-is a genuine product when \(\lVert q\rVert<1\), is the limit of its finite
-prefixes, splits into a finite prefix and shifted tail, admits removal of any
-one factor, and, for \(0<r\), satisfies
-\[
- (a;q)_{\infty,R}=\prod_{s=0}^{r-1}(aq^s;q^r)_{\infty,R}.
-\]
-If the norm is multiplicative, its zeros are exactly the raw factor zeros
-\(aq^j=1\).  In a complete normed field with \(q\ne0\), these are
-\(a=(q^j)^{-1}\).  Local compactness gives locally uniform convergence and
-continuity in \(a\) for fixed \(q\); over \(\ComplexNumbers\) the function of
-\(a\) is entire.  At a factor zero its derivative has the exact cofactor
-formula, and for \(q\ne0\) the derivative at each inverse-power zero has an
-explicit nonzero closed form.
-\end{theorem}
-
-\begin{proof}[Exhaustive formal crosswalk and exact boundaries]
-The zero-definition module \path{QPochhammerDissection.lean} has exactly two
-public theorems,
-\lean{finiteQPochhammerIn_dissection} and
-\lean{finiteQPochhammerIn_dissection_remainder}.  Their source signature is
-an arbitrary commutative ring; the second assumes exactly \(u\le r\).
-Neither theorem uses topology, convergence, division, cancellation, or a
-nonvanishing premise.
-
-\path{QPochhammerInfinite.lean} has the one public definition
-\lean{qPochhammerInfIn} and exactly twenty-seven public theorems:
-\lean{qPochhammerInfIn_eq_tprod},
-\lean{summable_norm_mul_pow},
-\lean{one_sub_ne_zero_of_norm_lt_one},
-\lean{norm_mul_pow_self_lt_one},
-\lean{finiteQPochhammerIn_self_ne_zero},
-\lean{multipliable_one_sub_mul_pow_of_norm_lt_one},
-\lean{hasProd_qPochhammerInfIn},
-\lean{tendsto_finiteQPochhammerIn_qPochhammerInfIn},
-\lean{qPochhammerInfIn_eq_finite_mul_shift},
-\lean{qPochhammerInfIn_succ_shift},
-\lean{qPochhammerInfIn_eq_factor_mul},
-\lean{qPochhammerInfIn_dissection},
-\lean{qPochhammerInfIn_ne_zero},
-\lean{qPochhammerInfIn_eq_zero_iff},
-\lean{qPochhammerInfIn_self_ne_zero},
-\lean{qPochhammerInfIn_eq_tprod_smul},
-\lean{summable_norm_pow_of_norm_lt_one},
-\lean{isBigO_one_sub_sub_one},
-\lean{differentiable_finiteQPochhammerIn},
-\lean{qPochhammerInfIn_eq_zero_iff_exists_inv_pow},
-\lean{hasProdLocallyUniformly_qPochhammerInfIn},
-\lean{continuous_qPochhammerInfIn},
-\lean{pow_sq_mul_finiteQPochhammerIn_inv_pow_self},
-\lean{differentiable_qPochhammerInfIn},
-\lean{hasDerivAt_qPochhammerInfIn_of_mul_pow_eq_one},
-\lean{hasDerivAt_qPochhammerInfIn_inv_pow}, and
-\lean{deriv_qPochhammerInfIn_inv_pow_ne_zero}.
-
-The definition itself needs only a topological commutative ring and, outside
-the convergence range, has the usual totalized \texttt{tprod} value.  The
-product, limit, shifts, factor removal, and positive-modulus dissection use a
-complete commutative normed ring with \(\lVert1\rVert=1\) and exactly
-\(\lVert q\rVert<1\).  Exact zero detection additionally uses a
-multiplicative norm.  The inverse-power zero parametrization is a complete
-normed-field theorem and additionally assumes \(q\ne0\); local uniformity and
-continuity additionally use local compactness.  Differentiability of the
-infinite symbol and the derivative formulas are complex-variable statements.
-Only the inverse-power derivative and its nonvanishing theorem require
-\(q\ne0\).
-
-These declarations vary \(a\) with \(q\) fixed.  They do not prove joint
-holomorphy in \(q\), an outside-disk continuation, or a global
-growth/order/type/asymptotic theorem.  The preceding
-\path{QPochhammerEntire.lean} remains a separate four-theorem API for
-\lean{complexQPochhammerInf}; in particular its
-\lean{analyticOrderAt_complexQPochhammerInf_of_eq_zero} supplies the named
-analytic-order-one statement, including the \(q=0\) zero.
+formula.  The next theorem records the downstream fixed-nome analytic and
+zero-set API, including its division-free \(q=0\) boundary and the
+reciprocal-power description when \(q\ne0\).
 \end{proof}
 
 \begin{theorem}[Entire complex q-Pochhammer factors and their simple zeros]
@@ -3279,14 +3150,16 @@ vanish.  Factoring out that unique linear term leaves a holomorphic cofactor
 which is nonzero at \(a\), proving that the zero is simple.
 
 The downstream module \path{QPochhammerEntire.lean} introduces no public
-definition and has exactly four public theorems:
+definition and has exactly five public theorems:
 \lean{hasProdLocallyUniformly_complexQPochhammerInf},
 \lean{complexQPochhammerInf_differentiable},
-\lean{complexQPochhammerInf_eq_zero_iff}, and
+\lean{complexQPochhammerInf_eq_zero_iff},
+\lean{complexQPochhammerInf_eq_zero_iff_eq_inv_pow}, and
 \lean{analyticOrderAt_complexQPochhammerInf_of_eq_zero}.
 They formalize, in order, the locally uniform product, entireness, the
-division-free equivalence \eqref{eq:complex-qpochhammer-zero-locus}, and
-analytic order one at every zero, always under exactly \(\lVert q\rVert<1\).
+division-free equivalence \eqref{eq:complex-qpochhammer-zero-locus}, its
+reciprocal-power form under \(q\ne0\), and analytic order one at every zero,
+always under exactly \(\lVert q\rVert<1\).
 The factor form is deliberately stronger than a reciprocal-power listing
 because it remains valid at \(q=0\).  The module does not treat
 \(\lVert q\rVert\ge1\), joint holomorphy in \(q\), a closed derivative formula,
@@ -3300,7 +3173,7 @@ The later modules \path{QPochhammerDissection.lean} and
 \path{QPochhammerInfinite.lean} expose a second public name for the same
 displayed factor product, but in the greatest algebraic generality used by
 each result.  They do not replace \lean{complexQPochhammerInf} or any of the
-four \path{QPochhammerEntire.lean} theorems above.  The finite dissection
+five \path{QPochhammerEntire.lean} theorems above.  The finite dissection
 module has no public definition and exactly two theorems.  Over an arbitrary
 commutative ring,
 \lean{finiteQPochhammerIn_dissection} proves
@@ -3390,8 +3263,82 @@ This generic API supplies no analytic-order declaration.  Analytic order one
 for the separately named complex wrapper, including the degenerate nome
 \(q=0\), remains exactly
 \lean{analyticOrderAt_complexQPochhammerInf_of_eq_zero} in
-\path{QPochhammerEntire.lean}; conversely that four-theorem wrapper supplies
+\path{QPochhammerEntire.lean}; conversely that five-theorem wrapper supplies
 none of the generic ring-valued concatenation or dissection laws.
+
+\paragraph{Latest finite and infinite q-series tranche.}
+Six further facade-reachable modules extend this layer without changing the
+hypotheses above.  \path{GaussianBinomialContinuity.lean} has no definitions
+and exactly three theorems,
+\lean{continuous_gaussianBinomial},
+\lean{tendsto_gaussianBinomial_nhds_one}, and
+\lean{gaussianBinomial_eq_finiteQPochhammerIn_div}, for continuity, the
+classical \(q\to1\) limit, and the finite-Pochhammer quotient formula.
+\path{QPascalSummation.lean} has no definitions and exactly four theorems,
+\lean{sum_gaussianBinomial_succ_mul},
+\lean{sum_gaussianBinomial_succ_mul'},
+\lean{Commute.gaussianBinomial_left}, and
+\lean{Commute.gaussianBinomial_right}.
+\path{QuantumBinomial.lean} has no definitions and exactly the two
+noncommutative theorems \lean{quantumPlane_mul_pow} and
+\lean{quantum_binomial}.
+
+The remaining three modules carry the longer analytic inventories.
+\path{QBinomialTheoremInfinite.lean} has one definition and twenty-two
+theorems; its public surface comprises \lean{gaussianMajorant},
+\lean{hasSum_of_tendsto_of_dominated},
+\lean{one_le_qPochhammerInfIn_neg},
+\lean{finiteQPochhammerIn_neg_le_qPochhammerInfIn},
+\lean{qPochhammerInfIn_nonneg},
+\lean{qPochhammerInfIn_le_finiteQPochhammerIn},
+\lean{qPochhammerInfIn_pos_of_lt_one},
+\lean{qPochhammerInfIn_zero_left},
+\lean{norm_finiteQPochhammerIn_le_neg_norm},
+\lean{finiteQPochhammerIn_norm_le_norm},
+\lean{norm_finiteQPochhammerIn_le},
+\lean{qPochhammerInfIn_norm_le_norm_finiteQPochhammerIn},
+\lean{finiteQPochhammerIn_ne_zero_of_norm_lt_one},
+\lean{gaussianBinomial_eq_div},
+\lean{gaussianMajorant_nonneg},
+\lean{norm_gaussianBinomial_le},
+\lean{tendsto_finiteQPochhammerIn_pow_atTop},
+\lean{tendsto_gaussianBinomial_atTop},
+\lean{summable_pow_choose_two_mul_pow},
+\lean{hasSum_euler_product},
+\lean{qPochhammerInfIn_ne_zero_of_norm_lt_one},
+\lean{hasSum_qBinomial_theorem}, and
+\lean{hasSum_euler_reciprocal}.
+
+\path{JacobiTripleProduct.lean} has two definitions and twenty-five theorems.
+Its exact public inventory is \lean{thetaExponent},
+\lean{pentagonalExponent}, \lean{two_dvd_mul_sub_one},
+\lean{mul_sub_one_nonneg}, \lean{two_mul_thetaExponent},
+\lean{thetaExponent_natCast}, \lean{thetaExponent_neg_natCast},
+\lean{choose_two_add_choose_two_succ_eq},
+\lean{sum_mul_sum_eq_sum_antidiagonal}, \lean{thetaCoeff_pair_eq},
+\lean{sum_antidiagonal_thetaCoeff}, \lean{finite_triple_product_poly},
+\lean{pow_mul_finiteQPochhammerIn_div},
+\lean{neg_one_zpow_natCast_sub}, \lean{finite_triple_product},
+\lean{norm_gaussianBinomialInt_le},
+\lean{tendsto_gaussianBinomialInt_central},
+\lean{summable_pow_thetaExponent_mul_zpow},
+\lean{hasSum_jacobi_triple_product},
+\lean{hasSum_jacobi_triple_product'},
+\lean{mul_three_mul_sub_one_nonneg},
+\lean{two_dvd_mul_three_mul_sub_one},
+\lean{two_mul_pentagonalExponent}, \lean{pentagonalExponent_eq},
+\lean{pentagonalExponent_pos}, \lean{hasSum_pentagonal}, and
+\lean{hasSum_pentagonal_pairs}.
+
+Finally, \path{RogersSzegoPolynomial.lean} has one definition and nine
+theorems: \lean{rogersSzego}, \lean{rogersSzego_zero},
+\lean{rogersSzego_one}, \lean{rogersSzego_succ},
+\lean{one_sub_pow_succ_mul_gaussianBinomial_succ_succ},
+\lean{rogersSzego_dilation}, \lean{rogersSzego_three_term},
+\lean{summable_norm_pow_div_finiteQPochhammerIn_self},
+\lean{sum_antidiagonal_euler_mul_euler}, and
+\lean{hasSum_rogersSzego_generating}.  Thus the six modules contribute four
+definitions and sixty-five theorems, sixty-nine public declarations in total.
 
 The exponent in the canonical product has a finite, base-generic double-counting
 origin that is useful independently of sinc products.  For \(b,N,J\in\NaturalNumbers\), put
@@ -3781,9 +3728,88 @@ Lean totalizes the boundary cases:
 Accordingly, the resulting \(W\)-values at those degenerate inputs are
 algebraic conventions.  More importantly, this subsection proves finite
 arithmetic identities only.  Formula \eqref{eq:weighted-scale-pascal}
-supplies the binomial expression proposed for higher-rank Rvachev products,
-but it does not assert convergence of such a product or identify its analytic
-zero order.  Those analytic bridges remain separate obligations.
+supplies the binomial expression proposed for higher-rank Rvachev products;
+the analytic bridge for admissible dyadic exponent sequences is now supplied
+by the following separate layer.
+
+\subsection{Recovering generalized Rvachev exponents from dyadic orders}
+
+Let \(a:\NaturalNumbers\to\NaturalNumbers\) satisfy
+\(\sum_{h\ge0}a(h)/2^h<\infty\), and set
+\begin{equation}
+ \Phi_a(z):=\prod_{h\ge0}
+   \SincRad\!\left(\frac{\pi z}{2^h}\right)^{a(h)}.
+ \label{eq:generalized-rvachev-product-identifiability}
+\end{equation}
+The complete generalized zero-divisor theorem and
+\(\nu_2(2^n)=n\) give the sparse but lossless sampling formula
+\begin{equation}
+ \boxed{\quad
+ \OrderOperator_{z=2^n}\Phi_a(z)
+   =W_{2,a}(2^n)=P_a(n)=\sum_{h=0}^{n}a(h).
+ \quad}                                                        \label{eq:generalized-rvachev-dyadic-order}
+\end{equation}
+These orders are finite.  Hence Lean's \(\operatorname{ENat.toNat}\)
+converts them back to natural numbers, and the exponent decoder is
+\begin{align}
+ a(0)
+   &=\operatorname{ENat.toNat}\!\left(
+       \OrderOperator_{z=1}\Phi_a(z)\right),                  \label{eq:generalized-rvachev-exponent-zero}\\
+ a(n+1)
+   &=\operatorname{ENat.toNat}\!\left(
+       \OrderOperator_{z=2^{n+1}}\Phi_a(z)\right)
+     -\operatorname{ENat.toNat}\!\left(
+       \OrderOperator_{z=2^n}\Phi_a(z)\right).               \label{eq:generalized-rvachev-exponent-succ}
+\end{align}
+In particular, for two admissible sequences \(a,c\),
+\begin{equation}
+ \boxed{\qquad \Phi_a=\Phi_c\quad\Longleftrightarrow\quad a=c.\qquad}
+                                                               \label{eq:generalized-rvachev-product-injective}
+\end{equation}
+
+\begin{proof}[Formal proof and exact recovery argument]
+Equation \eqref{eq:generalized-rvachev-dyadic-order} is
+\lean{analyticOrderAt_generalizedRvachevProduct_two_pow}: the complete
+integer zero-divisor formula identifies the order at a positive integer with
+\lean{weightedScaleMultiplicity}, and
+\lean{padicValNat_base_pow} reduces its value at \(2^n\) to the inclusive
+prefix \(P_a(n)\).  At \(n=0\) the sampled point is \(2^0=1\), not the
+origin, and \(P_a(0)=a(0)\); every product in
+\eqref{eq:generalized-rvachev-product-identifiability} instead has value one
+at the origin.  Next,
+\(P_a(n+1)=P_a(n)+a(n+1)\).  Applying
+\(\operatorname{ENat.toNat}\) to the finite natural-cast order formula and
+using natural-number cancellation gives
+\eqref{eq:generalized-rvachev-exponent-succ}.
+
+The constructive formulas are
+\lean{exponent_zero_eq_toNat_analyticOrderAt_generalizedRvachevProduct} and
+\lean{exponent_succ_eq_toNat_analyticOrderAt_generalizedRvachevProduct}.
+Equality of all dyadic orders implies equality of the exponent sequences by
+\lean{exponentSequence_eq_of_analyticOrderAt_two_pow_eq}; its reusable
+general-base cancellation lemma is
+\lean{weightSequence_eq_of_weightedScaleMultiplicity_base_pow_eq}, valid for
+every \(b>1\) in an additive cancellative commutative monoid.  Finally, full
+function equality transports through \lean{analyticOrderAt} at every dyadic
+point, so the decoder proves the forward implication in
+\eqref{eq:generalized-rvachev-product-injective}; the reverse implication is
+substitution.  This is \lean{generalizedRvachevProduct_eq_iff}.
+All six theorems, and no definitions, form
+\path{GeneralizedRvachevIdentifiability.lean}.
+\end{proof}
+
+The datum used here is the analytic divisor---the zero locations together
+with their multiplicities.  The unweighted zero set alone is insufficient,
+and sampling the product values at the dyadic zeros is also insufficient:
+distinct positive exponent sequences can vanish at the same sampled points.
+The two summability hypotheses in the comparison theorem are essential
+because the underlying infinite product is totalized outside its admissible
+range.  No spectral-zeta recovery, cumulant-sample recovery, or
+identifiability of an underlying probability law is asserted; those remain
+open interfaces.  This zero-definition/six-theorem leaf raises the live
+facade census to 630 modules and 8,552 public declarations.  This is a
+source-only overlay; the retained 167-page PDF is explicitly historical and
+has not been regenerated for this addition.
 
 On the real axis the origin is the unique global point of unit modulus:
 \begin{equation}
@@ -12375,7 +12401,9 @@ Fourier analysis &
 Summable-scale products, finite and infinite q-Pochhammer dissection, the
 generic complete-normed-ring infinite symbol and its explicit complex zero
 derivatives, geometric reciprocal-Gamma factorization, the separate complex
-Pochhammer wrapper, and its analytic-order-one factor theory &
+Pochhammer wrapper and its analytic-order-one factor theory, and the latest
+infinite q-binomial, Jacobi, q-Pascal, continuity, quantum-binomial, and
+Rogers--Szeg\H{o} polynomial APIs &
 \path{ScaledInfiniteProducts.lean}, \path{GeometricReciprocalGamma.lean},
 \path{RvachevPochhammerFactorization.lean}, \path{QPochhammerDissection.lean},
 \path{QPochhammerInfinite.lean}, \path{QPochhammerEntire.lean},
@@ -12571,6 +12599,7 @@ Article & Lean & Meaning\\
 \(d_q(t)\) & \lean{geometricActivationDimension}\hspace{0.35em}\lean{q}\hspace{0.35em}\lean{t} & normalized geometric activation dimension\\
 \(d_{\rm dy}(t)\) & \lean{dyadicEffectiveDimension}\hspace{0.35em}\lean{t} & dyadic specialization \(d_{1/2}(t)\)\\
 \(G_q\) & \lean{geometricReciprocalGamma}\hspace{0.35em}\lean{q} & entire reciprocal-Gamma product for \(\lVert q\rVert<1\)\\
+\((a;q)_{\infty,\ComplexNumbers}\) & \lean{complexQPochhammerInf}\hspace{0.35em}\lean{a}\hspace{0.35em}\lean{q} & total infinite symbol; for fixed \(\lVert q\rVert<1\), an entire function of \(a\) with the factor-zero set and simple zeros above\\
 \(\Gamma_{\langle q\rangle}\) & \lean{geometricGamma}\hspace{0.35em}\lean{q} & totalized meromorphic inverse of \(G_q\)\\
 \(G_{\rm dy},\Gamma_{\rm dy}\) & \lean{dyadicReciprocalGamma}\hspace{0.35em}\lean{dyadicGamma} & dyadic reciprocal product and totalized meromorphic inverse\\
 \(V_af\) & \lean{volterraPrimitive}\hspace{0.35em}\lean{a}\hspace{0.35em}\lean{f} & first oriented primitive at base \(a\)\\
