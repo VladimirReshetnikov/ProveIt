@@ -106,7 +106,11 @@ current q-series and Exponents source fingerprints. The live Exponents TeX is
 it includes the exact zero-order/exponent identifiability and constructive
 first-difference crosswalk from the new zero-definition, six-theorem Lean
 module, while zeta-quotient, cumulant/analytic-sample, and probability-law
-identifiability remain Partial in Lean. The retained Exponents PDF is 238 A4
+identifiability remain Partial in Lean. It also records the exact
+zero-definition, three-theorem outer q-Pochhammer normal-convergence API;
+the centered/MGF wrappers, outside-disk reciprocal formula, pole divisor, and
+zero--pole exchange in the compound claim remain Partial.
+The retained Exponents PDF is 238 A4
 pages and 6,953,898 bytes with SHA-256
 `fa719a8ea68d3c474928b9fae7449f827eb35a5452613f2b660d8e88ba27267e`.
 It was rendered from the preceding 16,274-line, 731,692-byte source with
