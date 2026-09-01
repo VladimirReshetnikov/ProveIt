@@ -228,19 +228,21 @@ future source addition must preserve the full invariant
 rather than merely avoid worsening a historical backlog.  Run the script for
 live numbers after merging concurrent source work.
 
-The current sources are newer than six retained PDFs.  No PDF was rebuilt for
-the source-only 30-declaration `LegendreGauntClosedForm.lean` and
-`FabiusLegendreGauntClosedForm.lean` documentation tranche.  The affected
-artifacts are the 165-page primary exposition, 125-page Lean walkthrough,
-236-page canonical frontier, 376-page Integration and Transform Frontiers,
-301-page Representation Frontiers, and 41-page filed New Frontiers PDFs; all
-six predate the closed-form tranche and are not synchronized with their current
-sources.  The primary PDF also predates the source-only prime-power-valuation
-crosswalk.  Earlier build checks established embedded, subset fonts and no
-Type 3 fonts in the four formerly refreshed primary, walkthrough, canonical,
-and filed artifacts, and the filed package's retained 20-entry ledger verified
-that earlier source/PDF pair.  Those historical checks are not claims of
-current parity.  Rebuilds of all six PDFs remain pending.
+The primary exposition and Lean walkthrough PDFs were rebuilt upstream in
+fresh, guarded three-pass Libertinus cycles on 2026-08-31.  They contain 166
+and 126 A4 pages and include the prime-power valuation and exhaustive
+30-declaration closed-form Gaunt crosswalks.  All fonts in these two artifacts
+are embedded and subset, with no Type 3 font.  The merged TeX sources retain
+those results and add expanded formula-and-proof ledgers, so exact post-merge
+source/PDF synchronization is not claimed.
+The retained 236-page canonical frontier, 376-page Integration and Transform
+Frontiers, 301-page Representation Frontiers, and 41-page filed New Frontiers
+PDFs predate the closed-form tranche and are not synchronized with their current
+sources.  Earlier checks of the canonical and filed artifacts, including the
+filed package's historical 20-entry ledger, do not establish current parity.
+Those four PDFs retain explicit pending-build disclosures and await content
+rebuilds; the primary and walkthrough await only parity rebuilds for the
+expanded source commentary.
 
 ### What the review pass caught
 
