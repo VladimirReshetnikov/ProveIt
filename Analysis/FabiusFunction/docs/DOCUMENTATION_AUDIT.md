@@ -166,13 +166,12 @@ future source addition must preserve the full invariant
 rather than merely avoid worsening a historical backlog.  Run the script for
 live numbers after merging concurrent source work.
 
-The primary exposition's retained 165-page PDF and the 125-page Lean
-walkthrough were rebuilt in fresh, uninterrupted three-pass Libertinus cycles
-on 2026-08-31.  The primary exposition has since received the source-only
-valuation addition and therefore carries an explicit pending-build disclosure;
-the walkthrough remains synchronized.  The canonical frontier and filed New
-Frontiers PDFs were rebuilt from their final merged sources and contain 236 and
-41 A4 pages.  All fonts in these four artifacts are embedded and subset, no
+The primary exposition and Lean walkthrough were rebuilt from their final
+merged sources in fresh, guarded three-pass Libertinus cycles on 2026-08-31;
+their synchronized PDFs contain 166 and 126 A4 pages and include the
+prime-power valuation and closed-form Gaunt crosswalks.  The canonical frontier
+and filed New Frontiers PDFs were rebuilt from their final merged sources and
+contain 236 and 41 A4 pages.  All fonts in these four artifacts are embedded and subset, no
 Type 3 font remains, and the filed package's 20-entry ledger verifies 20/20.
 Frontier packages that still have a source newer than their retained PDF carry
 an explicit local pending-build disclosure rather than relying on this global
