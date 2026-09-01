@@ -12524,10 +12524,11 @@ contracting complex nome.  It also identifies every geometric sinc product
 at a strict complex contraction with the corresponding nome-\(q^2\)
 Pochhammer product, pointwise and globally in the complex argument; only its
 final two Rvachev wrappers fix the nome to \(1/4\).  The downstream
-five-theorem \texttt{QPochhammerEntire} module now proves locally uniform
-convergence in the symbol variable, entireness, the exact division-free
-factor-zero locus, the reciprocal-power zero lattice for nonzero \(q\), and
-analytic order one at every zero for every strict complex contraction.  The
+five-theorem \texttt{QPochhammerEntire} module retains legacy compatibility
+wrappers for the older complex-symbol names.  They transfer locally uniform
+convergence, entireness, the exact division-free factor-zero locus, the
+reciprocal-power zero lattice for nonzero \(q\), and analytic order one from
+the generic API rather than duplicating those analytic proofs.  The
 factor-zero and simple-order results include the boundary \(q=0\).  The
 combined interface still does not supply the book's named centered/MGF
 wrapper, outside-disk reciprocal formula, or local-uniform/normal-convergence
@@ -12551,18 +12552,16 @@ compatibility spelling of the primary identity;\\
 \path{QDifferenceAnnihilation.lean}: four theorems;\\
 \path{QBinomialInversionSpecializations.lean}: two definitions and four theorems;\\
 \path{QPochhammerElementaryIdentities.lean}: 13 theorems;\\
-\path{QPochhammerDissection.lean}: two theorems;\\
-\path{QPochhammerInfinite.lean}: one definition and 27 theorems;\\
-\path{QPochhammerEntire.lean}: five theorems;\\
+\path{QPochhammerDissection.lean}: zero definitions and two theorems;\\
+\path{QPochhammerInfinite.lean}: one definition and twenty-nine theorems;\\
+\path{QPochhammerEntire.lean}: zero definitions and five legacy compatibility
+theorems;\\
 \path{QBinomialTheoremInfinite.lean}: one definition and 22 theorems; its
 use of \path{Fabius.finiteQPochhammerIn_zero_left} imports the unique
 declaration from \path{GaussianBinomialAtOne.lean};\\
 \path{QBinomialReciprocity.lean}: four theorems;\\
 \path{GaussianBinomialAtNegOne.lean}: five theorems;\\
-\path{QPochhammerDissection.lean}: zero definitions and two theorems;\\
-\path{QPochhammerInfinite.lean}: one definition and twenty-nine theorems;\\
 \path{RvachevPochhammerFactorization.lean}: one definition and nine theorems;\\
-\path{QPochhammerEntire.lean}: zero definitions and five theorems;\\
 \path{GeometricCompleteHomogeneous.lean}: six theorems;\\
 \path{GeometricLagrangeCompleteHomogeneous.lean}: five theorems;\\
 \path{GeometricLagrangeQMoments.lean}: one definition and 37 theorems;\\
@@ -12730,7 +12729,8 @@ reciprocal and zero--pole clauses, and named local-uniform or normal
 convergence of the outer Pochhammer product over the spectral index.
 
 \item The zero-definition, five-theorem module
-\path{QPochhammerEntire.lean} consists exactly of
+\path{QPochhammerEntire.lean} consists exactly of the legacy compatibility
+wrappers
 \path{Fabius.hasProdLocallyUniformly_complexQPochhammerInf},
 \path{Fabius.complexQPochhammerInf_differentiable},
 \path{Fabius.complexQPochhammerInf_eq_zero_iff},
@@ -13060,13 +13060,13 @@ differentiable parameter}\\[2pt]
 {\footnotesize\texttt{QPochhammerInfinite}; convergence, concatenation, and the
 zero criterion in every complete normed commutative ring (multiplicative norm
 for the zeros), locally uniform convergence and continuity over every
-complete locally compact normed field, holomorphy and the derivative formula
-over $\ComplexNumbers$; see \Cref{rem:poch-entire-generality}.  The parallel
-$\ComplexNumbers$-only module \texttt{QPochhammerEntire} proves the same
-convergence, holomorphy, and factor-zero locus for
-\texttt{complexQPochhammerInf}, including $q=0$, together with analytic order
-one at every zero; for $q\ne0$ it also gives the literal reciprocal-power zero
-lattice}\\[2pt]
+complete locally compact normed field, holomorphy, actual derivative
+nonvanishing at every raw factor zero, and analytic order one over
+$\ComplexNumbers$; see \Cref{rem:poch-entire-generality}.  The
+$\ComplexNumbers$-only module \texttt{QPochhammerEntire} retains five legacy
+compatibility wrappers that transfer these generic facts to
+\texttt{complexQPochhammerInf}, including $q=0$, and give the reciprocal-power
+zero lattice for $q\ne0$, without duplicate analytic proofs}\\[2pt]
 \Cref{prop:complex-concat} & \statuspartial &
 \texttt{qPochhammerInfIn\_\allowbreak{}eq\_\allowbreak{}finite\_\allowbreak{}mul\_\allowbreak{}shift},
 \texttt{qPochhammerInfIn\_\allowbreak{}succ\_\allowbreak{}shift}\newline

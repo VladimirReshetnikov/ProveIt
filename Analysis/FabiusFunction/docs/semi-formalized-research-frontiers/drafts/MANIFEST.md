@@ -19,9 +19,10 @@ old flat layout; the **Previous path** column below is the map. Documents
 were moved verbatim — no `.tex` content was changed by the reorganization,
 so no PDF was rebuilt for it.
 
-**Current artifact checkpoint (2026-09-01).** The live Lean audit is 629
-facade-reachable modules and 8,546 public declarations, with no missing module
-headers or declaration documentation. Several PDFs below are retained,
+**Current artifact checkpoint (2026-09-01).** The live Lean audit scans 643
+source modules and 8,661 public declarations, with no missing module headers or
+declaration comments.
+Several PDFs below are retained,
 readable publication checkpoints rather than renders of the final merged TeX.
 In particular, the primary exposition, Lean walkthrough, canonical frontier,
 Integration-and-Transform master, notation catalogue, Representation master,
@@ -37,6 +38,17 @@ for Exponents. The
 listed page counts are artifact receipts, not claims of current source/PDF
 synchronization except where a package explicitly records it.
 
+The inverse-computability row below retains its detailed arrival history, but
+its latest source-only checkpoint supersedes the older inline boundary: the
+current report is 2,992 lines (SHA-256
+`359ac1239788d1d7af25214a6be26e421f716db6d1c254692469bddd2d25833a`).
+`EffectiveMonotoneInverse.lean` now proves the certified fixed-depth
+tolerant-bisection realizer and restricted sequential inversion, while
+`FabiusInverseComputable.lean` proves the totalized inverse is an
+`IsComputableRealFunction`. The retained 42-page PDF remains historical; the
+exact ceiling modulus, gap-to-modulus abstract strengthening, and input-bit
+asymptotics remain outside Lean.
+
 The two canonical syntheses have newer, source-pinned publication receipts.
 The q-series master was rebuilt from source SHA-256
 `ec9455ecd789b0dbca777a5f5df49c4cfefa51d8e8e8719a7a29296eab4afe65`
@@ -49,7 +61,9 @@ modules contribute another 69 public declarations for continuity at `q = 1`,
 Euler and q-binomial sums, Jacobi's triple product, q-Pascal summation, the
 noncommutative q-binomial theorem, and Rogers--Szegő polynomials. The local
 reciprocal-power zero-lattice theorem completes `QPochhammerEntire.lean` to
-five theorems, making the final merged TeX newer than that receipt and requiring
+five theorems, and two further general-product theorems complete
+`QPochhammerInfinite.lean` to one definition and 29 theorems. The final merged
+TeX is therefore newer than that receipt and requires
 another strict three-pass build and ledger refresh. The comb synthesis also
 has a later chapter-03 notation edit: its retained 158-page, 2,456,105-byte
 A4 PDF has SHA-256
@@ -238,13 +252,19 @@ rows (projection SHA-256
 `ff123825f7516adb1edfd9e738f9021d38c03960f0ea134554ede9e14cd8459f`),
 and the reviewed `theorem_concordance.csv` preserves those ten immutable
 source fields for all 194 rows. The structural validator passes with 748
-labels and 588 references. Its current dispositions are 39 Lean-proved,
-106 human-proved frontier results, 10 conjectures, 15 open problems, and 24
+labels and 588 references. Its current dispositions are 47 Lean-proved,
+98 human-proved frontier results, 10 conjectures, 15 open problems, and 24
 nonassertoric rows. In particular,
 the centered Appell deconvolution, positive-degree Appell mean-zero, and
 arbitrarily phased polynomial-deconvolution rows now have exact named Lean
 counterparts, while the Appell lattice theorem remains human-proved because
 its degree-`N+1` superconvergent-phase clause is not formalized.
+Eight inverse-computability rows are now exact as well: the main combined
+theorem, the three tolerant-comparison certificates, fixed-depth bisection,
+restricted sequential inversion, computable clamping, and the totalized
+sequential corollary. The broader abstract inversion row remains human-proved
+because the generic Lean theorem accepts a computable inverse modulus rather
+than deriving it from the manuscript's positive gap sequence.
 `ASSET_DISPOSITION.csv` accounts for 88 source-group files; the deduplicated
 asset tree is present, and its exhaustive live `assets/SHA256SUMS` ledger
 verifies all 61 retained payloads. The canonical PDF is still absent, so the
