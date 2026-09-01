@@ -12636,6 +12636,8 @@ declaration from \path{GaussianBinomialAtOne.lean};\\
 \path{CyclotomicFactorization.lean}: zero definitions and seven theorems;\\
 \path{GaussianBinomialPalindromic.lean}: zero definitions and twelve
 theorems;\\
+\path{GaussianBinomialPolynomialStructure.lean}: zero definitions and five
+theorems;\\
 \path{GaussianBinomialAtNegOne.lean}: five theorems;\\
 \path{RvachevPochhammerFactorization.lean}: one definition and nine theorems;\\
 \path{GeometricCompleteHomogeneous.lean}: six theorems;\\
@@ -12679,7 +12681,14 @@ reflection in that exact degree, and coefficient palindromicity for the
 universal polynomial over every nontrivial commutative semiring where degree
 requires nontriviality.  The same module also exports
 \path{Fabius.coeff_gaussianBinomial_top} and
-\path{Fabius.two_mul_derivative_gaussianBinomial_eval_one}.  Together with symmetry,
+\path{Fabius.two_mul_derivative_gaussianBinomial_eval_one}.  The companion
+\path{GaussianBinomialPolynomialStructure.lean} exports the five
+\(\NaturalNumbers[X]\)-specialized declarations
+\path{Fabius.natDegree_gaussianBinomial_universal},
+\path{Fabius.gaussianBinomial_universal_monic},
+\path{Fabius.coeff_zero_gaussianBinomial_universal},
+\path{Fabius.gaussianBinomial_universal_reflect}, and
+\path{Fabius.coeff_gaussianBinomial_universal_symm}.  Together with symmetry,
 unit reciprocity, and the universal-evaluation theorem from
 \path{GaussianBinomialUniversal.lean}, this is the exact Lean counterpart of
 \Cref{cor:positivity,thm:qbinom-structure}.
@@ -13230,11 +13239,14 @@ commutative semiring, by naturality of the $q$-Pascal recurrence}\\[2pt]
 \texttt{gaussianBinomial\_\allowbreak{}symm},
 \texttt{gaussianBinomial\_\allowbreak{}reciprocity\_\allowbreak{}units},
 \texttt{gaussianBinomial\_\allowbreak{}natDegree},
+\texttt{gaussianBinomial\_\allowbreak{}monic},
 \texttt{coeff\_\allowbreak{}gaussianBinomial\_\allowbreak{}zero},
 \texttt{coeff\_\allowbreak{}gaussianBinomial\_\allowbreak{}top},
-\texttt{reflect\_\allowbreak{}gaussianBinomial}\newline
+\texttt{reflect\_\allowbreak{}gaussianBinomial},
+\texttt{coeff\_\allowbreak{}gaussianBinomial\_\allowbreak{}reflect}\newline
 {\footnotesize\texttt{FiniteQBinomialCore}; \texttt{QBinomialReciprocity};
-\texttt{GaussianBinomialPalindromic}; (iii) and (iv) for the universal
+\texttt{GaussianBinomialPalindromic};
+\texttt{GaussianBinomialPolynomialStructure}; (iii) and (iv) for the universal
 polynomial $[n,k]_X$ over every commutative semiring, palindromicity as
 $\operatorname{reflect}_{k(n-k)}[n,k]_X=[n,k]_X$ by induction from the two
 $q$-Pascal recurrences}\\[2pt]

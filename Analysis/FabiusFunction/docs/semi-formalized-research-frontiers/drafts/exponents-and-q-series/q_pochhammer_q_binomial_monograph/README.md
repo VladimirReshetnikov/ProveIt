@@ -116,8 +116,10 @@ The current master TeX is a source-only successor to that checkpoint. Its
 It includes exhaustive crosswalks for `QPochhammerEntire` (zero definitions
 and five legacy compatibility theorems), `QPochhammerInfinite` (one definition
 and twenty-nine theorems), `QPochhammerDissection` (zero definitions and two
-theorems), and `QBinomialTheoremInfinite` (one definition and twenty-two
-theorems), together with `GeometricPochhammerNormalConvergence` (zero
+theorems), `QBinomialTheoremInfinite` (one definition and twenty-two
+theorems), `GaussianBinomialPalindromic` (zero definitions and twelve
+theorems), `GaussianBinomialPolynomialStructure` (zero definitions and five
+theorems), and `GeometricPochhammerNormalConvergence` (zero
 definitions and three theorems). The newer inventory also includes
 `QMultinomial` (one definition and seven theorems),
 `QPochhammerInfiniteBounds` (five theorems), `QPochhammerComplexOrder` (one

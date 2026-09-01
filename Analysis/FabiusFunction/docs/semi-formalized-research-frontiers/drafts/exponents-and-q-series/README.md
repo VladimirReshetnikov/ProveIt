@@ -799,19 +799,18 @@ Partial, 117 with no counterpart, and 8 interface-only. The original
 191-result pre-Fabius core had 36 exact, 29 partial, 123 with no counterpart,
 and 3 interface-only entries. The four integrated-guide chapters add 31
 human-proved but not Lean-formalized assertions and five labelled definitions;
-the later Fabius bridge contributes the remaining 56 rows. Its pointwise
+the later Fabius bridge contributes the remaining rows. Its pointwise
 inside-`q^2` Pochhammer factorization and the outer product's locally uniform
 (normal) convergence are now formal for every complex strict contraction,
-including `q = 0`. The compound spectral theorem remains Partial at its named
-centered/MGF wrappers and its reciprocal outside-disk formula, pole divisor,
-and zero--pole exchange. The algebra of q-shifted factorials now accounts for 6 exact, 2
-partial, and 7
+including `q = 0`. The compound spectral theorem remains partial at its named
+centered/MGF wrappers and exterior reciprocal clauses. The algebra of
+q-shifted factorials now accounts for 11 exact, 2 partial, and 2
 unformalized results; the q-integer and Gaussian-coefficient chapter for
-7 exact, 0 partial, and 2 unformalized results. The finite
+8 exact, 1 partial, and 0 unformalized results. The finite
 q-binomial/inversion chapter now accounts for 9 exact, 1 partial, and 0
 unformalized results; the weighted chapter for 3 exact, 2 partial, and 3
-unformalized results; and the basic-hypergeometric chapter for 1 exact, 0
-partial, and 8 unformalized results. The cyclotomic chapter now has 1 exact,
+unformalized results; and the basic-hypergeometric chapter for 1 exact, 3
+partial, and 5 unformalized results. The cyclotomic chapter now has 1 exact,
 0 partial, and 8 unformalized results. The exact rows include the primary and
 second q-Cauchy identities, both weighted-Pascal recurrences,
 elementary--complete orthogonality, and weighted symmetric-function inversion.
@@ -836,6 +835,7 @@ compatibility spelling of its primary identity),
 `QPochhammerDissection.lean` (two theorems),
 `QPochhammerInfinite.lean` (one definition, 29 theorems),
 `QBinomialReciprocity.lean` (four theorems),
+`GaussianBinomialPalindromic.lean` (zero definitions, twelve theorems),
 `GaussianBinomialPolynomialStructure.lean` (zero definitions, five theorems),
 `CentralQBinomialReduction.lean` (zero definitions, six theorems),
 `CyclotomicFactorization.lean` (zero definitions, seven theorems),
