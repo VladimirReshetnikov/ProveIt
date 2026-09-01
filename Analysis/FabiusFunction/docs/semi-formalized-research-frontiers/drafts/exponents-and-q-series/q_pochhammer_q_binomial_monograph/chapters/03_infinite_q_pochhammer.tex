@@ -121,16 +121,22 @@ contraction together with local compactness is assumed by
 \lean{Fabius.pow_sq_mul_finiteQPochhammerIn_inv_pow_self} is algebraic over a
 field with \(q\ne0\).
 
-Over \(\ComplexNumbers\), the final four theorems are
+Over \(\ComplexNumbers\), the final six theorems are
 \lean{Fabius.differentiable_qPochhammerInfIn},
 \lean{Fabius.hasDerivAt_qPochhammerInfIn_of_mul_pow_eq_one},
-\lean{Fabius.hasDerivAt_qPochhammerInfIn_inv_pow}, and
-\lean{Fabius.deriv_qPochhammerInfIn_inv_pow_ne_zero}.  The raw derivative
+\lean{Fabius.hasDerivAt_qPochhammerInfIn_inv_pow},
+\lean{Fabius.deriv_qPochhammerInfIn_inv_pow_ne_zero},
+\lean{Fabius.deriv_qPochhammerInfIn_ne_zero_of_mul_pow_eq_one}, and
+\lean{Fabius.analyticOrderAt_qPochhammerInfIn_of_eq_zero}.  The raw derivative
 theorem assumes \(a_0q^j=1\) and permits \(q=0,j=0\); the reciprocal-power
 formula and its nonvanishing theorem assume \(q\ne0\) and give exactly
-\cref{eq:ip-zero-derivative}.  The final theorem literally proves the
-displayed coefficient nonzero, while the preceding \texttt{HasDerivAt}
-theorem identifies that coefficient with the derivative.
+\cref{eq:ip-zero-derivative}.  The inverse-power nonvanishing theorem literally
+proves the displayed coefficient nonzero, while the preceding \texttt{HasDerivAt}
+theorem identifies that coefficient with the derivative.  The first new
+theorem strengthens this to actual derivative nonvanishing directly from the
+division-free raw factor equation \(aq^j=1\), including \(q=0\).  The second
+states that every zero of \(a\mapsto(a;q)_\infty\) has analytic order exactly
+one for every strict complex contraction, again including \(q=0\).
 
 The finite parent module \path{QPochhammerDissection.lean} has no public
 definition and exactly the two commutative-ring theorems
@@ -141,7 +147,7 @@ assumes exactly \(u\le r\), including \(u=r\).  The positive-modulus
 infinite identity listed above is the limit-level companion.
 
 The infinite declarations listed above exhaust the one definition and
-twenty-seven theorems of
+twenty-nine theorems of
 \path{QPochhammerInfinite.lean}.  They formalize the fixed-\(q\) convergence,
 entireness, zero, finite-shift, residue-dissection, and zero-derivative
 subclaims used in this chapter.  They do \emph{not} formalize the
@@ -150,10 +156,12 @@ uniform-in-\(q\) numerical tail bounds
 three logarithmic-derivative series
 \cref{eq:ip-a-logder,eq:ip-a-logsecond,eq:ip-q-logder}; consequently the
 compound \Cref{thm:ip-normal-convergence} remains a human-proved frontier
-result.  Nor does this generic module state analytic order.  That separate
-conclusion for \lean{Fabius.complexQPochhammerInf}, including \(q=0\), remains
-\lean{Fabius.analyticOrderAt_complexQPochhammerInf_of_eq_zero} in
-\path{QPochhammerEntire.lean}.
+result.  The generic module now states analytic order one directly through
+\lean{Fabius.analyticOrderAt_qPochhammerInfIn_of_eq_zero}.  The unchanged
+\lean{Fabius.analyticOrderAt_complexQPochhammerInf_of_eq_zero} and the other
+three declarations in \path{QPochhammerEntire.lean} are legacy compatibility
+wrappers for the older \lean{Fabius.complexQPochhammerInf} names; they transfer
+the generic results rather than duplicating their analytic proofs.
 
 \begin{lemma}[Lambert logarithm]
 \label{lem:ip-lambert-log}

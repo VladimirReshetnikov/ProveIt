@@ -115,9 +115,20 @@ physical pages 1, 247, 313, 314, 319, 338, and 340 was clean. The files under
 manuscripts.
 
 The live source now includes exhaustive crosswalks for
-`QPochhammerEntire` (four theorems), `QPochhammerInfinite` (one definition and
-twenty-seven theorems), and `QPochhammerDissection` (two theorems), together
-with expanded Euler, infinite-q-binomial, Jacobi, and Rogers--Szegő material.
+`QPochhammerEntire` (four legacy compatibility wrappers),
+`QPochhammerInfinite` (one definition and twenty-nine theorems), and
+`QPochhammerDissection` (two theorems), together with expanded Euler,
+infinite-q-binomial, Jacobi, and Rogers--Szegő material.  The two newest
+generic theorems are
+`deriv_qPochhammerInfIn_ne_zero_of_mul_pow_eq_one`, which gives a nonzero
+derivative at every raw factor zero `a*q^j = 1` including `q = 0`, and
+`analyticOrderAt_qPochhammerInfIn_of_eq_zero`, which gives analytic order
+exactly one at every zero.  The unchanged `QPochhammerEntire` declarations
+retain the older `complexQPochhammerInf` names by transferring these generic
+facts, not by duplicating their analytic proofs.  `QBinomialTheoremInfinite`
+has one definition and twenty-two theorems; `finiteQPochhammerIn_zero_left`
+is canonically declared in `GaussianBinomialAtOne` and is only imported there,
+not redeclared.
 Those post-checkpoint source changes mean that the retained PDF does not render
 the live source. Publication synchronization requires a fresh exact three-pass
 build followed by regeneration of the root package checksum ledger.
