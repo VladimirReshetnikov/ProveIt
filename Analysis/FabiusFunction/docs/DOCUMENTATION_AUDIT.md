@@ -109,11 +109,15 @@ only 4,606 declarations and
 declarations, including 69 undocumented ones.  Run the script for the live
 numbers rather than copying these historical values.
 
-The post-merge 2026-09-01 inventory contains 622 modules and 8,473 lexically
+The post-merge 2026-09-01 inventory contains 629 modules and 8,546 lexically
 visible public declarations, with zero missing module headers and zero missing
 doc comments.  Relative to the 610/8,318 activation checkpoint, the current
-tree adds twelve modules and 155 declarations.  The initial exact union added
-five modules and 67 declarations.  The branch-point geometry and
+tree adds nineteen modules and 228 declarations.  The 623/8,476 `origin/main`
+baseline was already stale because it did not count the latest six q-series
+modules.  Relative to that stale baseline the live delta is six modules and 70
+declarations, comprising those six modules' 69 declarations together with the reciprocal-power
+zero-lattice theorem retained from the feature branch in
+`QPochhammerEntire.lean`.  The branch-point geometry and
 asymptotics leaves contribute 17 declarations for the one-sided vertical
 tangents and leading signed square-root laws of both real Lambert branches.
 The two Legendre--Gaunt modules contribute 25: four definitions and twelve
@@ -125,31 +129,37 @@ remaining twenty declarations are three generalized spectral q-Pochhammer
 APIs, four density-diagnostic theorems, the locally uniform real-frequency
 phase-prefix theorem and its compact-set uniform corollary in
 `GeometricSincCharacteristicFunction.lean`, and eleven inverse-modulus
-strictness and equality refinements.  The fifth module,
-`GeometricUniformMultisection.lean`, contributes two coordinate definitions
-and three fixed half/quarter multisection theorems.  The baseline records the
-current inventory after the subsequent three-theorem signed natural-moment
-addition to `RvachevDerivativeDistribution.lean`, the all-depth
+strictness and equality refinements.  `GeometricUniformMultisection.lean`
+contributes two coordinate definitions and three fixed half/quarter
+multisection theorems.  `GaussianBinomialAtNegOneDerivative.lean` supplies four
+declarations: two first-derivative formulas at `q = -1` and two simple-root
+multiplicity theorems.  Three signed-power moment theorems in
+`RvachevDerivativeDistribution.lean` give the exact Boolean-cube formula and
+its even-moment and positive-order odd-moment corollaries.  The same module's
+two additional positive-order signed-distribution theorems give the sharply
+normalized half-mixture law under exactly `0<n`:
+`intervalIntegral_comp_normalized_iteratedDeriv_rvachev` is the continuous-test
+half-mixture into any real Banach space, and
+`map_normalized_iteratedDeriv_rvachev_restrict_Icc` is the corresponding Borel
+pushforward identity for Lebesgue measure restricted to the closed interval
+`[-1,1]`.  Order zero instead has the unsymmetrized original `rvachevUp` law.
+The remaining declaration is the all-depth
 `generalizedRvachevProduct_two_pow_mul` shift--refinement theorem in
-`WeightLinearityProducts.lean`, and the two positive-order signed-distribution
-theorems `intervalIntegral_comp_normalized_iteratedDeriv_rvachev` and
-`map_normalized_iteratedDeriv_rvachev_restrict_Icc`.  The last pair gives the
-exact symmetric half-mixture first against continuous Banach-valued tests and
-then as a restricted-Lebesgue Borel pushforward equality.  The interpolation
-tranche contributes ten declarations.  Nine are the two definitions and seven
-theorems of
-`LagrangeRvachevSynthesis.lean`: the generic finite-node decoder and atom
-coefficient, degree bounds, cardinal synthesis, componentwise biorthogonality,
-linear coefficient identity, exact finite interpolation loop, and unit row
-mass.  This inventory claim does not extend to a geometric Gaussian
-closed-form decoder, a matrix wrapper, or an optimal/minimum-variation decoder
-theorem.  The subsequent
+`WeightLinearityProducts.lean`.  The final nine declarations are the two
+definitions and seven theorems of `LagrangeRvachevSynthesis.lean`: the generic
+finite-node decoder and atom coefficient, degree bounds, cardinal synthesis,
+componentwise biorthogonality, linear coefficient identity, exact finite
+interpolation loop, and unit row mass.  This inventory claim does not extend to
+a geometric Gaussian closed-form decoder, a matrix wrapper, or an
+optimal/minimum-variation decoder theorem.  The subsequent
 `integral_polynomial_mul_rvachevUp_eq_dyadic_tsum` theorem in
 `PolynomialCombExactness.lean` packages the polynomial-times-Rvachev integral
 as the corresponding dyadic shifted-polynomial sum and contributes one further
 declaration.  The subsequent centered Appell/deconvolution and arbitrary-phase
 polynomial-reproduction tranche contributes four declarations: three in
 `RvachevMomentAppell.lean` and one in `RvachevPolynomialSynthesis.lean`.
+The merged q-series leaves are inventoried below from the live source tree;
+those counts supersede the intermediate pre-union q-series subtotal.
 The valuation tranche's new leaf
 `PrimePowerBinomialValuation.lean` contributes three theorems: the additive and
 subtraction forms for an arbitrary prime-power Pascal row, and the strict-
@@ -224,6 +234,26 @@ generic `qPochhammerInfIn` is distinct from the older
 the analytic-order layer for the latter symbol, and no named equality bridge
 between the two definitions is counted.
 
+The synchronized q-series API also retains the full `origin/main` theorem
+inventory.  `GaussianBinomialAtNegOneDerivative.lean` is 0+4, and
+`GaussianBinomialContinuity.lean` is 0+3:
+`continuous_gaussianBinomial`, `tendsto_gaussianBinomial_nhds_one`, and
+`gaussianBinomial_eq_finiteQPochhammerIn_div`.  The
+`JacobiTripleProduct.lean` 2-definition/25-theorem tranche contains the finite triple-product
+polynomial and field identities, the bilateral Jacobi `HasSum` forms, and the
+pentagonal and paired-pentagonal `HasSum` corollaries.  The
+`QBinomialTheoremInfinite.lean` 1-definition/22-theorem tranche contains the real comparison and
+norm bounds, fixed-column Gaussian limit, Euler product, analytic q-binomial,
+and reciprocal Euler `HasSum` results.  `QPascalSummation.lean` is 0+4:
+`sum_gaussianBinomial_succ_mul`, `sum_gaussianBinomial_succ_mul'`,
+`Commute.gaussianBinomial_left`, and `Commute.gaussianBinomial_right`.
+`QuantumBinomial.lean` is 0+2, namely `quantumPlane_mul_pow` and
+`quantum_binomial`.  Finally, the `RogersSzegoPolynomial.lean` 1-definition/9-theorem
+tranche covers the zero, row-sum, and successor laws, dilation and three-term
+recurrences, the Euler antidiagonal convolution, and
+`hasSum_rogersSzego_generating`.  None of these retained APIs is replaced by
+the fixed-nome `QPochhammerEntire` layer.
+
 The audited formula contract is equally exact.  Admissibility is even total
 degree plus the three weak triangle inequalities, equivalently
 `i=b+c`, `j=a+c`, `k=a+b`.  If `C_n=choose (2*n) n` and `s=a+b+c`, then the
@@ -262,19 +292,27 @@ future source addition must preserve the full invariant
 rather than merely avoid worsening a historical backlog.  Run the script for
 live numbers after merging concurrent source work.
 
-The retained primary exposition and Lean walkthrough PDFs are the last
-validated 166- and 126-page A4 renders and include the prime-power valuation
-and exhaustive 30-declaration closed-form Gaunt crosswalks.  Their merged TeX
-sources now also contain the reflected Appell/deconvolution results, expanded
-formula-and-proof commentary, and the five-theorem fixed-nome q-Pochhammer
-entire-function overlay, so both PDFs await a post-merge three-pass rebuild.
-The retained 236-page canonical-frontier, 376-page Integration and Transform
-Frontiers, 301-page Representation Frontiers, 41-page filed New Frontiers,
-and 71-page notation-catalogue PDFs likewise predate their current sources.
-The filed package's mixed 20-row ledger verifies its current source and
-retained PDF as separate payloads and does not establish parity.  Package-local
-notices record the remaining rebuild debt, including the historical q-series
-renders.
+The additional declaration in `PolynomialCombExactness.lean` is
+`integral_polynomial_mul_rvachevUp_eq_dyadic_tsum`, the exact normalized
+physical-coordinate self-sampling quadrature for every real polynomial whose
+natural degree is at most the dyadic level and every real phase.
+
+The retained comb-interpolation synthesis PDF is a validated 158-page A4
+historical receipt: the current source includes a post-render update to its
+additive-dyadic chapter, so a fresh parity build remains pending.  The rebuilt
+Integration-and-Transform master retains a historical 377-page PDF.  The canonical
+q-series synthesis is a validated 335-page historical receipt: the semantic
+union adds its fixed-nome and general finite/infinite q-Pochhammer crosswalks
+and the six latest q-series modules, so a parity rebuild remains pending.  The
+retained 167-page primary, 126-page walkthrough, 237-page canonical frontier,
+301-page Representation Frontiers, 41-page New Frontiers, and 88-page
+notation-catalogue artifacts likewise predate their current merged sources.
+Their package notices treat those PDFs as historical validation receipts, not
+parity claims, until fresh uninterrupted three-pass builds complete.  The
+inverse-computability receipt likewise requires refresh for the 629/8,546
+census;
+the canonical inverse-theory publication remains pending after its
+Appell/deconvolution crosswalk update.
 
 ### What the review pass caught
 

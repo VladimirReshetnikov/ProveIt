@@ -76,14 +76,6 @@ Q_STATUS_RE = re.compile(
     re.DOTALL,
 )
 
-# The source inventory is intentionally pinned to the pre-consolidation
-# publication revision, while Lean status continues to advance.  Keep these
-# label-level current-status promotions explicit instead of rewriting the
-# immutable source pin or hand-editing generated concordance rows.
-CURRENT_Q_STATUS_OVERRIDES = {
-    "thm:poch-entire": "Lean-proved",
-}
-
 AUDIT_DIR = Path(__file__).resolve().parent
 PACKAGE_ROOT = AUDIT_DIR.parent
 PIN_FILE = AUDIT_DIR / "MERGE_SOURCE_REVISION"
@@ -369,6 +361,13 @@ Q_REDIRECTS = {
     "thm:durfee-qvand": "cor:central-vandermonde",
     "prop:fixed-k-limit": "thm:fixed-column-limit",
     "lem:fabius-real-spline": "lem:fabius-spline-expectation",
+}
+
+# Canonical proof statuses can advance after the immutable merge snapshot.
+CURRENT_Q_STATUS_OVERRIDES = {
+    "prop:dissection": "Lean-proved",
+    "cor:dissection-remainder": "Lean-proved",
+    "thm:poch-entire": "Lean-proved",
 }
 
 Q_SOURCE_LINE_TARGETS = {
@@ -739,6 +738,8 @@ def reviewed_rows(
     groups: dict[str, str],
     q_statuses: dict[str, str],
 ) -> list[dict[str, str]]:
+    q_statuses = dict(q_statuses)
+    q_statuses.update(CURRENT_Q_STATUS_OVERRIDES)
     guide_map = parse_guide_map()
     inverse_statuses = inverse_status_projection()
     reviewed: list[dict[str, str]] = []

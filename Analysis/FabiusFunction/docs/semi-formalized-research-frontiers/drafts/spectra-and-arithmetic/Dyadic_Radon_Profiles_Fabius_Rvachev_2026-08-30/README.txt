@@ -11,7 +11,7 @@ dyadic_radon_profiles_fabius_rvachev.tex
     Complete LaTeX manuscript.
 
 dyadic_radon_profiles_fabius_rvachev.pdf
-    Compiled 31-page PDF, rendered and visually inspected page by page.
+    Compiled 29-page A4 PDF, rebuilt from the current source.
 
 numerical_experiments.py
     Fully commented experiment driver.  Exact integer/rational arithmetic is
@@ -60,10 +60,10 @@ data/fourier_envelope_table.tex
     Generated table included by the manuscript.
 
 figures/*.pdf
-    Vector figures used by the manuscript.
+    Retained vector source figures.
 
 figures/*.png
-    Raster inspection copies.
+    Raster figures used by the manuscript to avoid Type 3 plot fonts.
 
 numerical_results.txt
     Compact human-readable computation summary.
@@ -80,26 +80,24 @@ The script is deterministic and overwrites the generated data/figure files.
 BUILDING THE PDF
 ----------------
 
-A TeX Live installation with latexmk is recommended:
+A TeX Live installation with Libertinus is required. Run exactly three serial
+passes:
 
-    latexmk -pdf -interaction=nonstopmode -halt-on-error \
-        dyadic_radon_profiles_fabius_rvachev.tex
+    pdflatex -interaction=nonstopmode -halt-on-error -file-line-error dyadic_radon_profiles_fabius_rvachev.tex
+    pdflatex -interaction=nonstopmode -halt-on-error -file-line-error dyadic_radon_profiles_fabius_rvachev.tex
+    pdflatex -interaction=nonstopmode -halt-on-error -file-line-error dyadic_radon_profiles_fabius_rvachev.tex
 
 The manuscript expects the relative directories data/ and figures/ to remain
 next to the TeX source.
 
-PDF VISUAL VERIFICATION
------------------------
+PDF ARTIFACT VERIFICATION
+-------------------------
 
-The final PDF was rendered with the supplied PDF workflow at 150 dpi:
-
-    python /home/oai/skills/pdfs/scripts/render_pdf.py \
-        dyadic_radon_profiles_fabius_rvachev.pdf \
-        --out_dir _renders --dpi 150
-
-All 31 pages were inspected through contact sheets, with full-resolution checks
-of dense tables and figures.  No clipped text, overlaps, broken glyphs, or
-missing figures were observed.
+The synchronized 2026-08-31 rebuild has 29 A4 pages at rotation zero. Every
+page rendered and contained extractable text. All 24 font rows are embedded
+and subset, six are Libertinus, and none is Type 3. The final log has no TeX
+error, unresolved reference/citation, rerun request, overfull box, or underfull
+box.
 
 DEPENDENCIES
 ------------

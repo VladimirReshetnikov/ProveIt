@@ -26,30 +26,38 @@ The three guides arrived respectively in commits
 assets: each donor package consisted only of TeX, PDF, and a repository
 checksum ledger. Their superseded PDFs were retired with the donor packages
 and are not canonical renderings of this larger source. The former forward
-and inverse manuscript PDFs were removed for the same reason. The retained
-`q_pochhammer_q_binomial_monograph.pdf` is the reproducible 334-page A4
-publication checkpoint built by three byte-identical serial passes at fixed
-source epoch `1788242400`.  It is 2,917,795 bytes and has SHA-256
-`aa75c32926fb0d5b20d831f9df0be584073f1cbc4232c25facbd21d98b9f680d`.
+and inverse manuscript PDFs were removed for the same reason. The merged
+master retains one canonical publication checkpoint,
+`q_pochhammer_q_binomial_monograph.pdf`: a reproducible 335-page A4 artifact
+built from the then-current source SHA-256
+`9b7ac11a815efa7f3c6ea08b9626c06143fd6b0d633fef6edfc8bc21c2f6783a`
+by exactly three successful serial passes at fixed source epoch `1788242400`.
+The build gate pinned `origin/main` at
+`8a7d03dc379638a6cbda302074b2feba27c21961`; the 2,163,339-byte PDF has
+SHA-256
+`91c649d0c69628e134e71f1be6c39c3cbc96b91bfc63e456011083cf0e882f03`.
 The validation record in `README.md` distinguishes compilation, font
 embedding, complete page rendering, contact-sheet review, and full-resolution
 inspection. PDFs retained beneath `assets/` are research figures, not
 manuscripts.
 
-The 1 September 2026 source-only overlay is newer than that PDF. Its current
-13,640-line, 625,280-byte TeX source has SHA-256
-`9e40aca60dc15444df84cef0e4596e6fbdfc7828d3c9b274060230dcc3e7feaf`.
-The zero-definition, five-theorem `QPochhammerEntire.lean` leaf proves the
-fixed-nome single-symbol local-uniform product, differentiability, the
-division-free factor-zero criterion, the reciprocal-power zero lattice for a
-nonzero nome, and simple analytic order at every zero.  Only
-`thm:poch-entire` is promoted.  The forward status inventory is therefore
-42 exact / 73 partial / 159 none / 8 interface; the 190-result pre-Fabius core
-is 36 / 29 / 122 / 3 and the q-shifted-factorial chapter is 4 / 1 / 10 / 0.
+The live source now postdates that receipt. Its 13,914-line, 646,156-byte TeX
+source has SHA-256
+`bf270b5f522b159576d91121110239bdf6797640e1ac307111a1895ac0c70109`.
+It incorporates exhaustive crosswalks for `QPochhammerEntire` (zero
+definitions and five theorems), `QPochhammerInfinite` (one definition and
+twenty-seven theorems), and `QPochhammerDissection` (zero definitions and two
+theorems). The `QPochhammerEntire.lean` leaf proves the fixed-nome
+single-symbol locally uniform product and differentiability, the
+division-free factor-zero criterion including `q = 0`, the reciprocal-power
+zero lattice for nonzero nome, and simple analytic order at every zero. Only
+`thm:poch-entire` is promoted by that leaf. The forward status inventory is
+48 exact / 77 partial / 149 none / 8 interface; the 190-result pre-Fabius core
+is 42 / 33 / 112 / 3 and the q-shifted-factorial chapter is 6 / 1 / 8 / 0.
 No normal-convergence claim is made for the additional outer product indexed
-by spectral scale.  Because no PDF was generated for this overlay, the
-retained 334-page artifact is historical with respect to current source and
-must not be treated as rendering the promotion.
+by spectral scale. No PDF was generated for this source-only update, so the
+retained 335-page artifact is historical and must not be treated as rendering
+the current source.
 
 The former q-Pochhammer/q-binomial monograph arrived in commit
 `47172bc03ec078961d8b023dfe156ecd712efb65`. Its pre-repair source SHA-256 was
@@ -114,7 +122,7 @@ The remainder of this ledger preserves the earlier six-package inverse-q
 consolidation. Historical names, archive hashes, source paths, and the pinned
 revision are facts about that prior merge and deliberately remain unchanged.
 
-The canonical volume absorbs the following six source packages.  The paths
+The canonical volume absorbed the following six source packages.  The paths
 below are historical paths relative to their former sibling layout under
 `exponents-and-q-series/`.  The exact normalized source tree is pinned by
 [`audit/SOURCE_REVISION`](audit/SOURCE_REVISION), and repository history
@@ -201,10 +209,12 @@ and its PDF had SHA-256
 The superseded source and rendering are recoverable at commit `1d5c97985`.
 The retained program and numerical output already live in the canonical asset
 tree.  These seven late sidecars are intentionally absent from the 77-row
-asset-disposition ledger, which inventories the earlier immutable
-`6fe9fb8f50e1b8a9a800fa0e8ef6f688f5bb5838` source snapshot.  Git commit
-`53c431137` remains the byte-level archive for all seven sidecars summarized in
-this section.
+asset-disposition ledger.  That ledger's 73 tracked source hashes are frozen
+against asset snapshot `f46e5d7f6f225bf0a43d8945e67d6f0e4aec8d54`, where
+all 73 match.  The separate theorem/source-concordance pin
+`6fe9fb8f50e1b8a9a800fa0e8ef6f688f5bb5838` matches only 66 of those 73 asset
+rows.  Git commit `53c431137` remains the byte-level archive for all seven
+sidecars summarized in this section.
 
 For that reason the earlier six-package consolidation chose the neutral
 `inverse_q_analogs_and_series/` directory: promoting the broadest precursor in
@@ -271,10 +281,10 @@ Only two source packages themselves recorded an immutable repository snapshot:
   `23b19a515ceb44a513b1ec56aeb5c9e99dda5952`.
 
 Both names resolve to commits in the repository.  The other four packages
-recorded no immutable source commit, so their build statements are preserved
+recorded no package-local immutable source commit, so their build statements are preserved
 as historical package claims, not promoted to current validation evidence.
-Independently, this consolidation pins the normalized sources of all six
-packages at
+Independently, the theorem/source-concordance audit pins the normalized sources
+of all six packages at
 `6fe9fb8f50e1b8a9a800fa0e8ef6f688f5bb5838`, the value stored in
 `audit/SOURCE_REVISION` and verified as an ancestor of the retirement commit.
 
@@ -283,12 +293,21 @@ Unique scripts, captured outputs, tables, and figures were migrated under
 calculation.  The completed 77-row disposition ledger retains 39 files---six
 programs, 19 CSV/TXT outputs, and 14 vector figures---and retires 38
 superseded narratives, duplicate previews, package metadata files, generated
-LaTeX fragments, and build products.  All 33 retained non-script payloads
-match their historical source bytes.  The six programs were rerun serially;
+LaTeX fragments, and build products.  It records an immutable source SHA-256
+for each of the 73 tracked source files, a canonical destination SHA-256 for
+every migration, `NOT_RETAINED` for every retirement, and
+`UNTRACKED_TRANSIENT_ABSENT` for the four ignored TeX build paths that did not
+exist at the freeze.  All 33 retained non-script payloads match their
+historical source bytes.  Exactly five of the six migrated programs carry
+distinct destination hashes because their output paths were adapted to the
+canonical layout; the forward `q_expansion_experiments.py` stayed
+byte-identical because it writes only to standard output and required no path
+rewrite.  The programs were rerun serially;
 [`assets/VALIDATION.md`](assets/VALIDATION.md) records exact-output parity and
 the one disclosed last-digit runtime drift, while `assets/SHA256SUMS` fixes
 the post-migration bytes.
 
+All six superseded directories were removed from the live tree.
 All tracked superseded material remains recoverable from Git history.  The
 only untracked files removed with the old directories were four disposable
 TeX build intermediates (`.aux`, `.log`, `.out`, and `.toc`) already recorded

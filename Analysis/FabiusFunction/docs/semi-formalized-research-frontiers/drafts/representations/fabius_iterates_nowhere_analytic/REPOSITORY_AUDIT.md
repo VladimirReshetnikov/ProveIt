@@ -44,16 +44,17 @@ for `n >= 2`.
 
 ## Final merged-document validation
 
-The final TeX was frozen at 1,566 lines and 63,630 bytes with SHA-256
-`e46584803c86359e977f404ea4d9b7f515c5579cf392f10d87f2ceaeb8b3c835`.
+The final TeX was frozen at 1,542 lines and 63,320 bytes with SHA-256
+`c0684c7c790d9e1b2b569d49d4d2a294aabc409c23a74f8cc1cdc5eb83ff6384`.
 Starting from clean auxiliary state, exactly three strict serial `pdflatex`
-passes produced a 22-page, 785,347-byte A4 PDF with SHA-256
-`eed9b151ab43ba846e9d6d945a4e815d0ed11b9ecf530cee27711c26fb11bcf6`.
+passes on 2026-08-31 produced a 22-page, 786,569-byte A4 PDF with SHA-256
+`46244adfe1289f318b76b306ae0b11f751425488b1099c785c85ad3dcba45b08`.
 The final log has no warning, TeX error, unresolved reference or citation,
 rerun request, duplicate destination, or overfull/underfull box.  All 22 font
 rows are embedded and subset Type 1 fonts, five are Libertinus, and none is
 Type 3 or Latin Modern.  Every page has extractable text and A4/zero-rotation
-geometry.  All 22 rendered pages were visually inspected, including the
+geometry; title, author, subject, and keywords metadata are present.  All 22
+rendered pages were visually inspected, including the
 status boundary, exhaustive Lean crosswalk, exact tie proposition, warning
 quarantines, sole live conjecture, numerical figures, and source map.
 

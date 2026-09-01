@@ -96,33 +96,45 @@ It checks every permanent package file except the self-referential root
 useful because it preserves the migrated experiment and research-figure
 boundary.
 
-The retained publication artifact is `q_pochhammer_q_binomial_monograph.pdf`.
-It was built from its publication-checkpoint source by three consecutive serial
+The retained canonical publication artifact is
+`q_pochhammer_q_binomial_monograph.pdf`. It was built from the then-current
+source SHA-256
+`9b7ac11a815efa7f3c6ea08b9626c06143fd6b0d633fef6edfc8bc21c2f6783a`,
+with `origin/main` pinned at
+`8a7d03dc379638a6cbda302074b2feba27c21961` when the gate began, by exactly
+three successful consecutive serial
 `pdflatex -interaction=nonstopmode -halt-on-error` passes with
-`SOURCE_DATE_EPOCH=1788242400`; all three passes produced the same bytes. The
-result is a 334-page A4 PDF of 2,917,795 bytes with SHA-256
-`aa75c32926fb0d5b20d831f9df0be584073f1cbc4232c25facbd21d98b9f680d`.
+`SOURCE_DATE_EPOCH=1788242400`. The final pass produced a 335-page A4 PDF of
+2,163,339 bytes with SHA-256
+`91c649d0c69628e134e71f1be6c39c3cbc96b91bfc63e456011083cf0e882f03`.
 The final log has no layout, reference, rerun, font, package, or PDF-string
-warning. `pdffonts` reports every font embedded and subsetted, including the
-Libertinus serif and monospaced faces. Poppler rendered all 334 pages at
-827-by-1170 pixels. Every page was covered by the complete contact-sheet
-review; the six pages changed during the final typography repair were also
-inspected at full resolution, while the remaining 328 renders were
-byte-identical to their already reviewed versions. The files under
+warning. `pdfinfo` reports A4 media and zero rotation on every page.
+`pdffonts` reports 42 Type-1 entries, all embedded and subsetted, including
+five Libertinus entries and no Type-3 font. Poppler rendered all 335 pages at
+298-by-421 pixels without a blank page. Every page was covered by nine complete
+contact sheets; pages 1, 115, 263, 284, 308, 329, and 335 were additionally
+inspected at 1,191-by-1,684 pixels, covering the title, both exact
+`q=-1` crosswalks, the certification chapter, the formalization appendix, its
+final register page, and the end of the index. The files under
 `assets/experiments/**/figures/` remain research figures, not publication
 manuscripts.
 
-The current master TeX is a source-only successor to that checkpoint.  Its
-13,640-line, 625,280-byte source has SHA-256
-`9e40aca60dc15444df84cef0e4596e6fbdfc7828d3c9b274060230dcc3e7feaf`.
-It contains later notation repairs and the exact five-theorem
-`FabiusFunction.QPochhammerEntire` crosswalk: fixed-nome local uniformity and
-entireness, both division-free and reciprocal-power zero descriptions, and
-simple analytic order at every zero.  Consequently the retained 334-page PDF
-is historical and exact source/PDF parity is not claimed; no PDF was rebuilt
-for this tranche.  The forward status ledger is now 42 Exact, 73 Partial, 159
-None, and 8 interface rows.  The 190-result pre-Fabius core is 36/29/122/3,
-and its q-shifted-factorial chapter is 4/1/10/0.  The compound outer
-spectral-product theorem remains Partial: the new locally uniform theorem
-concerns one symbol as a function of its argument at fixed contracting nome,
-not normal convergence of the additional product over spectral scales.
+The current master TeX is a source-only successor to that checkpoint. Its
+13,914-line, 646,156-byte source has SHA-256
+`bf270b5f522b159576d91121110239bdf6797640e1ac307111a1895ac0c70109`.
+It includes exhaustive crosswalks for `QPochhammerEntire` (zero definitions
+and five theorems), `QPochhammerInfinite` (one definition and twenty-seven
+theorems), and `QPochhammerDissection` (zero definitions and two theorems).
+The `QPochhammerEntire` crosswalk records fixed-nome local uniformity and
+entireness, the division-free factor-zero criterion valid at `q = 0`, the
+reciprocal-power zero lattice for nonzero nome, and simple analytic order at
+every zero. The forward status ledger is 48 Exact, 77 Partial, 149 None, and
+8 interface rows; the 190-result pre-Fabius core is 42/33/112/3, and its
+q-shifted-factorial chapter is 6/1/8/0. The compound outer spectral-product
+theorem remains Partial: local uniformity for one symbol as a function of its
+argument at fixed contracting nome does not establish normal convergence of
+the additional product over spectral scales.
+
+No PDF was rebuilt for this source-only update. The retained 335-page PDF is
+therefore a historical publication checkpoint, and exact source/PDF parity is
+not claimed.

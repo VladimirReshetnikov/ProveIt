@@ -29,23 +29,20 @@ zero-bias transformations are classical.
 ## Package contents
 
 - `Zero_Bias_Towers_and_Spectral_Peeling.tex` — current 1,926-line,
-  72,038-byte A4/27 mm/Libertinus source; SHA-256
-  `07a6876751b79db0b4af3fb7a765eced5846fb24ad82c02e19fb01314b65c834`.
-- `Zero_Bias_Towers_and_Spectral_Peeling.pdf` — last validated 26-page
-  three-pass render of the preceding source checkpoint; it has not yet been
-  regenerated from the current merge-resolved source.
+  72,171-byte A4/27 mm/Libertinus source; SHA-256
+  `80b3d01e7555d322781fedf671f1984279cb8e997d964f96942cb117db79b9b2`.
+- `Zero_Bias_Towers_and_Spectral_Peeling.pdf` — validated 26-page three-pass
+  render of that exact source; SHA-256
+  `e7698059db2a24985b90258683af4fde277235159379fc7b294583dbb6bf0f37`.
 - `zero_bias_tower_experiments.py` — 839-line exact/numerical experiment.
 - `requirements.txt` — pinned publication environment.
 - `data/` — three exact/released tables and three floating-point tables.
 - `figures/` — five figures in PDF and PNG form; regenerated PDFs use
   embedded/subset TrueType outlines and no Type 3 fonts.
 - `INTAKE_AUDIT.md` — provenance, replay drift, mathematical-status, and
-  last-render PDF validation record, plus the current uncompiled-source
-  fingerprint.
+  current synchronized-source/PDF validation record.
 - `ARRIVAL_SHA256SUMS` — immutable 21-entry delivered-payload ledger.
-- `SHA256SUMS` — last validated normalized-package ledger (excluding itself).
-  Its current-source and pending-rebuild metadata rows await refresh; the
-  existing PDF row continues to verify the last validated render.
+- `SHA256SUMS` — validated normalized-package ledger (excluding itself).
 
 ## Numerical replay
 
@@ -78,15 +75,14 @@ pdflatex -interaction=nonstopmode -halt-on-error -file-line-error \
   Zero_Bias_Towers_and_Spectral_Peeling.tex
 ```
 
-The existing PDF's final clean build used exactly those three serial passes.
-It is not synchronized with the current source. Its historical build log has no
+The current PDF's final clean build on 2026-08-31 used exactly those three
+serial passes from clean auxiliaries, producing 25, 26, and 26 pages. Its
+final build log has no
 errors, undefined references, rerun requests, duplicate destinations, or
 overfull boxes; five benign underfull cells in the claim-status table were
-visually checked. All 39 PDF font rows are embedded and subset, Libertinus is
-present, and neither the report nor its five vector figures contains Type 3
-fonts. Representative theorem, plot, conjecture, and appendix pages were
-rendered and inspected.
-
-After rebuilding the current source, refresh its TeX/PDF entries and the
-README/INTAKE_AUDIT rows in `SHA256SUMS` together. Until then, a full ledger
-check is expected to report those pending rows rather than a clean package.
+visually checked. All 26 pages are A4, rotation zero, and nonblank. All 39 PDF
+font rows are embedded and subset, five are Libertinus, and neither the report
+nor its five vector figures contains Type 3 fonts. Title, author, subject, and
+keywords metadata are present. Physical pages 1, 13, 18--20, 22, and 26 were
+visually checked, including all five figures and the repaired running heads.
+The exhaustive live ledger passes in full.

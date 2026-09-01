@@ -7,8 +7,8 @@ The delivered archive `Fabius_Zero_Bias_Frontier_Report.zip` had SHA-256
 Its paths were traversal-safe and its 21-file delivered ledger verified
 21/21 before any edit. `ARRIVAL_SHA256SUMS` preserves that ledger verbatim.
 The live `SHA256SUMS` file records the last validated normalized checkpoint;
-its current-source and pending-rebuild metadata rows must be refreshed after
-the next PDF build.
+its current TeX, PDF, README, and intake-audit rows describe the synchronized
+2026-08-31 repository rebuild.
 
 ## Mathematical-status audit
 
@@ -58,25 +58,25 @@ The report uses the repository's canonical article/A4/27 mm/Libertinus
 preamble, apart from report metadata/running heads and required local notation.
 The numerical generator pins PDF font type 42. Mathematical body, labels, and
 conjecture boundaries were otherwise preserved, with only the explicit
-formal-status and replay notes added.
+formal-status and replay notes added. The package-local running title is
+abbreviated to prevent collision with the long Section 9 mark, and explicit
+plain-text bookmark forms remove the three math-in-heading warning sites.
 
-The source used for the existing validated PDF had SHA-256
-`e83f0e426ce872b4da4cd046fa5fcc8a53b4c5e29e60c60ecc6ff7bbc7fb823e`.
+The source used for the current validated PDF has SHA-256
+`80b3d01e7555d322781fedf671f1984279cb8e997d964f96942cb117db79b9b2`.
 After a clean auxiliary state it received exactly three strict serial
-`pdflatex` passes. That last validated PDF is 26 A4 pages, 770,486 bytes, with SHA-256
-`2d90086da466124eae2e32addf6d68556f35459b4a6debac07be4859035a12b5`.
+`pdflatex` passes on 2026-08-31, producing 25, 26, and 26 pages. The resulting
+PDF is 26 A4 pages, 771,261
+bytes, with SHA-256
+`e7698059db2a24985b90258683af4fde277235159379fc7b294583dbb6bf0f37`.
 The third-pass log has no errors, undefined references, rerun requests,
-duplicate destinations, or overfull boxes; its five underfull notices are
+duplicate destinations, package warnings, LaTeX warnings, or overfull boxes;
+its five underfull notices are
 confined to a visually clean claim-status table. All 39 font rows are embedded
-and subset, Libertinus is present, and no Type 3 font occurs. Text extraction
-and representative visual checks of the title, status table, theorem pages,
-five figures, conjectures, and appendix passed. Build auxiliaries were removed.
-
-The current merge-resolved source has 1,926 lines and 72,038 bytes, with
-SHA-256
-`07a6876751b79db0b4af3fb7a765eced5846fb24ad82c02e19fb01314b65c834`.
-It has no conflict markers and the focused canonical-notation audit reports no
-findings, but it has not been compiled. The existing PDF remains the last
-validated render. Its ledger row still verifies; the TeX and metadata rows
-carrying this pending-rebuild notice must be refreshed together after a new
-three-pass build.
+and subset, five are Libertinus, and no Type 3 font occurs. Every page is at
+rotation zero and has extractable text; title, author, subject, and keywords
+metadata are present. Physical pages 1, 13, 18--20, 22, and 26 passed visual
+inspection, covering the title, theorem pages, all five figures, repaired
+running heads, conjectures, and appendix. The 1,926-line, 72,171-byte
+merge-resolved source has no conflict markers, and the focused
+canonical-notation audit reports no findings. Build auxiliaries were removed.

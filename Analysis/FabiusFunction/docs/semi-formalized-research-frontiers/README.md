@@ -21,12 +21,12 @@ The canonical frontier artifacts are:
 - [`semi-formalized-research-frontiers.tex`](semi-formalized-research-frontiers.tex)
 - [`semi-formalized-research-frontiers.pdf`](semi-formalized-research-frontiers.pdf)
 
-> **Source/PDF synchronization.** The current TeX includes the 31 August 2026
-> Legendre Gaunt--Wigner-square closed-form overlay. The retained 236-page A4
+> **Source/PDF synchronization.** The retained 237-page A4 PDF includes the
+> 31 August 2026 Legendre Gaunt--Wigner-square closed-form overlay. Its
 > PDF (SHA-256
-> `8b491f9296204f56b9477064531ad7546d55ea1ea0786b7d3f6425076f5fcf76`)
-> was not rebuilt for that source-only update. It is a historical render and
-> must not be cited as displaying the current overlay.
+> `21180fa05a754b52a057495464674e9d6ac26a51488c2c770730c641b5ffe887`)
+> source predates the later q-Pochhammer overlay and expanded ledger, so it is
+> a historical render and must not be cited as displaying the final source union.
 
 The 1 September 2026 source-only q-Pochhammer overlay is likewise newer than
 the retained PDFs.  The new `QPochhammerEntire.lean` leaf has zero definitions
@@ -34,17 +34,21 @@ and five theorems: for a fixed complex nome with norm less than one it proves
 local uniform convergence of the infinite product, differentiability in the
 symbol, the division-free factor-zero criterion, the reciprocal-power zero
 lattice when the nome is nonzero, and analytic order one at every zero.  This
-promotes only `thm:poch-entire` in the consolidated q-series monograph.  Its
-forward status totals are now 42 exact / 73 partial / 159 none / 8 interface,
-with 36 / 29 / 122 / 3 in the 190-result pre-Fabius core and 4 / 1 / 10 / 0
-in the q-shifted-factorial chapter.  It does not claim normal convergence of
-the additional outer product indexed by spectral scale.
+promotes only `thm:poch-entire` in the consolidated q-series monograph.  The
+same current source also crosswalks the generic infinite/dissection API and
+the later Euler, q-binomial, Jacobi, quantum-binomial, and Rogers--Szegő
+tranche. Its 282-result forward status totals are now 48 exact / 77 partial /
+149 none / 8 interface, with 42 / 33 / 112 / 3 in the 190-result pre-Fabius
+core and 6 / 1 / 8 / 0 in the q-shifted-factorial chapter. It does not claim
+normal convergence of the additional outer product indexed by spectral scale.
 
-The monograph's retained 334-page A4 PDF (2,917,795 bytes; SHA-256
-`aa75c32926fb0d5b20d831f9df0be584073f1cbc4232c25facbd21d98b9f680d`)
-predates that overlay.  It remains a reproducible historical publication
-checkpoint, but must not be cited as displaying the current theorem promotion
-until a new PDF is built and inspected.
+The monograph's current 13,914-line, 646,156-byte source has SHA-256
+`bf270b5f522b159576d91121110239bdf6797640e1ac307111a1895ac0c70109`.
+Its retained 335-page A4 PDF (2,163,339 bytes; SHA-256
+`91c649d0c69628e134e71f1be6c39c3cbc96b91bfc63e456011083cf0e882f03`)
+renders an earlier explicitly pinned source. It remains a reproducible
+historical publication checkpoint, but must not be cited as displaying the
+current theorem promotions until a new PDF is built and inspected.
 
 The current finite-moment/Legendre/Gaunt crosswalk covers eleven modules with
 20 public definitions and 109 public theorems, 129 declarations in all. The

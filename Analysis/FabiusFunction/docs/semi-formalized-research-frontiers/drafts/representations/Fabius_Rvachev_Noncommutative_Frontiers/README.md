@@ -95,8 +95,22 @@ subset fonts, no Type 3 fonts, no unresolved references or rerun request, and
 no overfull boxes. Remove only TeX sidecars such as `.aux`, `.log`, `.out`, and
 `.toc`; the files under `results/` are reproducibility payloads.
 
-The normalized three-pass build is 26 A4 pages. All fonts are embedded and
-subset, Libertinus is present, Type 3 fonts are absent, the final log has no
-overfull box, error, unresolved-reference, or rerun warning, and all 21 live
-payload checksums verify. The three one-page vector plot PDFs likewise have
-all fonts embedded and subset and contain no Type 3 fonts.
+## Current validation receipt
+
+The current source was rebuilt on 2026-08-31 from a clean auxiliary state in
+exactly three strict serial `pdflatex` passes, which produced 25, 26, and 26
+pages. The final PDF is 723,151 bytes with SHA-256
+`397caa036acbc4a7b72cad881da236693e9261a3ca0dde677f6fee91e9d13c68`;
+the 1,318-line, 64,984-byte source has SHA-256
+`5b9088e4a9b2a70f19b7849b4c7183fb97b6472c4b964a9d4d5be78133d0bfd7`.
+
+All 26 pages are A4 with zero rotation and nonblank extractable text. The PDF
+has complete title, author, subject, and keyword metadata. All 19 font rows
+are embedded and subset, four are Libertinus, and none is Type 3. The report
+embeds the retained PNG twins on pages 11 and 18. The final log has no
+LaTeX/package warning, overfull or underfull box, TeX error, unresolved
+reference/citation, duplicate destination, or rerun request. Pages 1, 11, 18,
+and 26 were inspected at full-page resolution and are unclipped and readable.
+All 21 live payload checksums verify after the synchronized source, PDF,
+README, and ledger refresh. The three retained one-page vector plot PDFs also
+have all fonts embedded and subset and contain no Type 3 fonts.

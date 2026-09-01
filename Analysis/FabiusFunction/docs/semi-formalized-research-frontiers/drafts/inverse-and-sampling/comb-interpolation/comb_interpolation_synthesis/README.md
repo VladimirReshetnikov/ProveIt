@@ -41,10 +41,14 @@ not claim a formal geometric Gaussian closed-form decoder, the associated
 elementary-symmetric/prefactor formula, a `Matrix` wrapper, or decoder
 optimization.
 
-The separate `Fabius.twoPowChoose_padicValNat` crosswalk is an exact Lean
-counterpart only for the strict-interior formula in `thm:weight-valuation`.
-The companion endpoint-flat assertion for `choose(2^m - 2, j - 1)` is stated
-separately in the chapter and remains unformalized.
+The separate exact concordance row maps the strict-interior formula in
+`thm:weight-valuation` to `Fabius.twoPowChoose_padicValNat` in
+`FabiusFunction.PrimePowerBinomialValuation`. That module also proves the
+arbitrary-prime identities `Fabius.primePowerChoose_padicValNat_add` and
+`Fabius.primePowerChoose_padicValNat`, including the positive right endpoint
+`j = p^m`. The companion endpoint-flat assertion for
+`choose(2^m - 2, j - 1)` is stated separately in the chapter and remains
+unformalized.
 
 ## Sources reconciled
 
@@ -90,21 +94,18 @@ pdflatex -interaction=nonstopmode -halt-on-error comb_interpolation_synthesis.te
 pdflatex -interaction=nonstopmode -halt-on-error comb_interpolation_synthesis.tex
 ```
 
-A successful command is not, by itself, the complete publication gate. The
-current canonical artifact's PDF hash, page, font, log, and visual-inspection
-facts are recorded once in
-[`assets/VALIDATION.md`](assets/VALIDATION.md). Keeping those mutable
-measurements in one record prevents status drift between README files.
-
-Later edits changed `chapters/03_additive_dyadic.tex` to crosswalk
-`thm:weight-valuation` to `Fabius.twoPowChoose_padicValNat`, and changed
-`chapters/01_geometric_core.tex` and `chapters/99_bibliography.tex` to point to
-the consolidated q-series synthesis at its stable publication path. The PDF
-was then rebuilt in exactly three strict serial passes at fixed source epoch
-`1788242400`; passes two and three were byte-identical. The current 156-page,
-2,934,621-byte artifact has SHA-256
-`00070eafd0734681a7dd125cb64e4c898710c01dc8c8220362550567843bce00`
-and is synchronized with those sources.
+A successful command is not, by itself, the complete publication gate. From a
+clean auxiliary state, the preceding semantic-union source received exactly three
+strict serial passes at fixed source epoch `1788242400`, producing 151, 158,
+and 158 pages. The retained publication PDF has 158 pages, 2,456,105
+bytes, and SHA-256
+`81d249c8b2bb124836c858bd8e0ef9c8764606a2f9655a798d69e7565b1759b4`.
+The later canonical-notation edit in `chapters/03_additive_dyadic.tex` makes
+that PDF a validated checkpoint rather than a rendering of the current source;
+a fresh exact three-pass build is pending. The root ledger verifies the current
+source and retained PDF as distinct payloads. The complete checkpoint receipt
+and the older historical receipts are recorded once in
+[`assets/VALIDATION.md`](assets/VALIDATION.md).
 
 ## Reproduce the computational evidence
 
@@ -134,15 +135,28 @@ full interpolation replay, is in [`assets/README.md`](assets/README.md).
 ## Current status
 
 The 180-row source-pin disposition and 23-row post-pin reconciliation are
-complete. The deterministic canonical validator passes the structural,
-editorial, provenance, theorem-concordance, and exhaustive package-checksum
-gates. Its Lean check only confirms that each curated exact or partial-support
-declaration name occurs in its nominated module; it is not a live Lean census
-or theorem-type checker. Three concordance rows are exact Lean crosswalks; the
-compound decoder and biorthogonality rows remain human-proved with narrower
-partial-support notes. The root `SHA256SUMS` is the exhaustive ledger for every
-other permanent package file. The synchronized canonical PDF's measurements
-and inspections are recorded only in
-[`assets/VALIDATION.md`](assets/VALIDATION.md). A fresh-checkout reproduction
-and a full rerun of every retained numerical script remain separate
-reproducibility work.
+complete. The eight historical ledgers contribute 151 audit rows: 68 match
+byte-for-byte, 34 match after CRLF/LF normalization, 29 differ substantively,
+and 20 point to files no longer present at that pin. These are historical facts,
+not a live checksum certificate.
+
+The completed publication union preserves the incoming stable-path edits
+in `chapters/01_geometric_core.tex` and `chapters/99_bibliography.tex` together
+with the local general-$q$, endpoint-jet, Lagrange-synthesis,
+`PrimePowerBinomialValuation`, reference-appendix, layout, and driver edits in
+`chapters/03_additive_dyadic.tex`, `chapters/90_reference_appendices.tex`, and
+`comb_interpolation_synthesis.tex`. The repository-wide Lean documentation
+census at this merge checkpoint is 629 modules and 8,546 public declarations.
+That census is contextual evidence, not a claim that every manuscript result
+in this volume is formalized.
+
+The deterministic validator passes the nine-file TeX graph, structural and
+proof discipline, 800 labels, 782 references, 62 bibliography keys,
+disposition, historical-ledger, companion-payload, 232-row
+theorem-concordance, and exhaustive package-checksum gates. Its narrow Lean
+identifier check is not a live theorem-type check. The root `SHA256SUMS` is the
+single exhaustive ledger for every other permanent package file, including
+the retained PDF and complete evidence tree; it verifies current bytes without
+asserting source/PDF synchronization. There is no
+`assets/SHA256SUMS`. A fresh-checkout reproduction and a full rerun of every
+retained numerical script remain separate reproducibility work.

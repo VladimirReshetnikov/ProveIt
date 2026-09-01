@@ -6,7 +6,7 @@
 - `fabius_frontier_report.pdf` — compiled 22-page report.
 - `numerical_experiments.py` — commented, network-free exact/high-precision experiments.
 - `generated/` — exact TeX tables and a plain-text numerical summary.
-- `figures/` — PDF figures used by LaTeX, with PNG copies.
+- `figures/` — retained vector sources and the PNG figures used by LaTeX.
 - `requirements.txt` — Python packages used by the experiment script.
 
 ## Main new theorem chains
@@ -37,10 +37,18 @@ The script overwrites the files in `generated/` and `figures/`. It uses exact `s
 
 ## Rebuild the PDF
 
-A TeX Live installation with `latexmk` and the standard packages used in the preamble is sufficient:
+A TeX Live installation with Libertinus is required. Run exactly three serial
+passes:
 
 ```bash
-latexmk -pdf -interaction=nonstopmode -halt-on-error fabius_frontier_report.tex
+pdflatex -interaction=nonstopmode -halt-on-error -file-line-error fabius_frontier_report.tex
+pdflatex -interaction=nonstopmode -halt-on-error -file-line-error fabius_frontier_report.tex
+pdflatex -interaction=nonstopmode -halt-on-error -file-line-error fabius_frontier_report.tex
 ```
 
-The delivered PDF was built with pdfTeX and visually verified after rendering every page.
+The synchronized 2026-08-31 rebuild is 22 A4 pages. Every page rendered and
+contained extractable text. All 18 font rows are embedded and subset, five are
+Libertinus, and none is Type 3. The final log has no TeX error, unresolved
+reference/citation, rerun request, overfull box, or underfull box. The separate
+`ARRIVAL_SHA256SUMS` ledger remains unchanged; `SHA256SUMS` records the current
+source, PDF, and experiment script.
