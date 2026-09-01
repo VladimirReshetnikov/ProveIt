@@ -1,8 +1,37 @@
 # Exponents and q-series
 
-New standalone intake members:
+The eleven live document packages are grouped one level deeper by their
+primary mathematical overlap:
 
-- [`fabius_q_frontiers_report/`](fabius_q_frontiers_report/),
+- [`general-q-series-guides/`](general-q-series-guides/) contains the three
+  closely overlapping introductions to classical q-series, theta products,
+  Bailey chains, and Rogers--Ramanujan theory.
+- [`q-pochhammer-and-inversion/`](q-pochhammer-and-inversion/) pairs the
+  comprehensive forward q-Pochhammer/Gaussian reference with the canonical
+  branch-aware inverse-q synthesis.
+- [`q-fabius-parameter-deformations/`](q-fabius-parameter-deformations/)
+  contains the continuous-parameter, limit-regime, susceptibility, and smooth
+  response reports for the geometric q-Fabius family.
+- [`geometric-sinc-and-exponent-families/`](geometric-sinc-and-exponent-families/)
+  contains the central exponent/geometric-sinc synthesis and its
+  negative/reciprocal and cyclotomic companion reports.
+
+Every package appears in exactly one subgroup. No document was moved out of
+`exponents-and-q-series/`; the new level is navigational and does not change
+the mathematical or formalization status recorded below.
+
+This hierarchy-only move adds one parent-directory step to each master
+source's shared `fabius-notation.tex` include. No mathematical prose or formula
+changed, and the existing PDFs were deliberately retained rather than rebuilt.
+Accordingly, the publication-build statements below describe the most recent
+render, while any source/PDF byte-synchronization claim predates this path
+adjustment.
+
+## Detailed package record
+
+Recent standalone intake members:
+
+- [`fabius_q_frontiers_report/`](q-fabius-parameter-deformations/fabius_q_frontiers_report/),
   *Parameter-Flow, Gaussian, and Large-Deviation Frontiers for the
   q-Fabius--Rvachev Family* (23 A4 pp and 1,506 source lines at arrival;
   current main artifact: 22 A4 pp from 1,492 source lines; with two scripts,
@@ -19,12 +48,12 @@ New standalone intake members:
   PDFs contain the same eight Type-3 rows. Figure-font normalization remains
   deferred.
 
-- [`Continuous_Parameter_Edgeworth_and_q_Gevrey_Frontier/`](Continuous_Parameter_Edgeworth_and_q_Gevrey_Frontier/),
+- [`Continuous_Parameter_Edgeworth_and_q_Gevrey_Frontier/`](q-fabius-parameter-deformations/Continuous_Parameter_Edgeworth_and_q_Gevrey_Frontier/),
   *Continuous-Parameter Edgeworth Theory, Large Deviations, and Quadratic
   q-Gevrey Regularity at the Fabius--Rvachev Frontier* (29 A4 pp and 1,387
   main-source lines at arrival; current main artifact: 29 A4 pp from 1,372
   source lines, SHA-256
-  `1b205a58d084e1d40fd85caf1b26298a772a7b86b9f9a7806b0cd63c5865dd45`),
+  `e9d99619992f78050326249272b18f5941f659dea0f022522b23ec218953d5bf`),
   arrived on 2026-08-30 in direct-arrival commit
   `52179f63fe955a64508915eedaa560de9f3056da` under the bare generic wrapper
   `Fabius_Rvachev_Frontier_Report_2026-08-30-G/` and was filed under this
@@ -37,7 +66,7 @@ New standalone intake members:
   continuous-parameter Edgeworth and deviation regimes, Lambert endpoint
   asymptotics, and quadratic-exponential Denjoy--Carleman regularity.
 
-- [`q-series-proof-oriented-article/`](q-series-proof-oriented-article/),
+- [`q-series-proof-oriented-article/`](general-q-series-guides/q-series-proof-oriented-article/),
   *A Proof-Oriented Guide to q-Series: Shifted Factorials, Basic
   Hypergeometric Summation, Theta Products, Partitions, Bailey Pairs, and
   Rogers--Ramanujan Theory* (39 letter-paper pages and 2,891 source lines at
@@ -48,19 +77,19 @@ New standalone intake members:
   passes; the refreshed repository-generated `SHA256SUMS` verifies both the
   current TeX and its synchronized PDF. The TeX was already LF.
 
-- [`q_series_from_first_principles/`](q_series_from_first_principles/),
+- [`q_series_from_first_principles/`](general-q-series-guides/q_series_from_first_principles/),
   *q-Series from First Principles: Products, Basic Hypergeometric Sums,
   Theta Functions, Partitions, Bailey Pairs, and the Rogers--Ramanujan World*
   (30 letter-paper pages and 1,548 source lines at arrival; current artifact:
   28 A4 pages from a 1,540-line source with SHA-256
-  `926a3dca0877e6c4dbdfed407003dfa3d1553556b9c32b134363b8bca95e648f`),
+  `d5145a089b4205b729f1c9ce79798d9f8d425a4686b53d92a89911015aeb78d7`),
   likewise arrived as a bare TeX/PDF directory in direct-arrival commit
   `c167e550348bfb33b4297684100d55dfb48b8c1a` without an archive, outer hash,
   or ledger. The current PDF was rebuilt from the final source in three strict
   passes; the refreshed repository-generated `SHA256SUMS` verifies both the
   current TeX and its synchronized PDF. Its TeX was already LF.
 
-- [`q_series_monograph/`](q_series_monograph/),
+- [`q_series_monograph/`](general-q-series-guides/q_series_monograph/),
   *A Proof-Driven Guide to q-Series, Basic Hypergeometric Identities, Bailey
   Chains, and Rogers--Ramanujan Theory* (1,915 source lines at arrival; current
   artifact: 27 A4 pages from 1,910 source lines), arrived as a source-only bare
@@ -78,17 +107,17 @@ duplicate analysis of the three similarly scoped general q-series articles
 was performed during intake, and manuscript labels or numerical checks do not
 establish Lean verification.
 
-- [`inverse_q_analogs_and_series/`](inverse_q_analogs_and_series/),
+- [`inverse_q_analogs_and_series/`](q-pochhammer-and-inversion/inverse_q_analogs_and_series/),
   *Inverse q-Analogs and Their Series Expansions: A Branch-Aware,
   Proof-Complete Synthesis* (85 A4 pages; 6,689 source lines across the driver
   and nine chapters), is the canonical consolidation of
   the six former inverse-q and forward-expansion packages.  Its
-  [`theorem_concordance.csv`](inverse_q_analogs_and_series/theorem_concordance.csv)
+  [`theorem_concordance.csv`](q-pochhammer-and-inversion/inverse_q_analogs_and_series/theorem_concordance.csv)
   accounts for all 260 source result environments, with the revision-backed
   audit validating 260/260 rows; the retained-asset checksum ledger verifies
   43/43 entries.  The
-  [`PROVENANCE.md`](inverse_q_analogs_and_series/PROVENANCE.md) and
-  [`assets/ASSET_DISPOSITION.csv`](inverse_q_analogs_and_series/assets/ASSET_DISPOSITION.csv)
+  [`PROVENANCE.md`](q-pochhammer-and-inversion/inverse_q_analogs_and_series/PROVENANCE.md) and
+  [`assets/ASSET_DISPOSITION.csv`](q-pochhammer-and-inversion/inverse_q_analogs_and_series/assets/ASSET_DISPOSITION.csv)
   preserve package-, result-, archive-, and asset-level provenance.  Unique
   reproducibility assets live under `assets/`; the superseded layouts remain
   recoverable from the pinned pre-retirement Git revision and repository
@@ -102,7 +131,7 @@ establish Lean verification.
   visual inspections for the canonical layout; those two inspections were not
   rerun during this metadata-only refresh.
 
-- [`Cyclotomic_q_Fabius_Rvachev_Frontier/`](Cyclotomic_q_Fabius_Rvachev_Frontier/),
+- [`Cyclotomic_q_Fabius_Rvachev_Frontier/`](geometric-sinc-and-exponent-families/Cyclotomic_q_Fabius_Rvachev_Frontier/),
   *Cyclotomic Blow-Ups and Natural Boundaries for the q-Fabius--Rvachev Sinc
   Product* (25 pp at arrival; current 28-page A4 main PDF and
   1,873-line source),
@@ -123,7 +152,7 @@ establish Lean verification.
   Type-3 figure-font rows; the standalone figures contain the same nine Type-3
   rows. Figure-font normalization remains deferred.
 
-- [`Fabius_Rvachev_Frontier_Report/`](Fabius_Rvachev_Frontier_Report/),
+- [`Fabius_Rvachev_Frontier_Report/`](geometric-sinc-and-exponent-families/Fabius_Rvachev_Frontier_Report/),
 *Negative Parameters, Reciprocal Bases, and the Gaussian Boundary* (current
 1,475-line source and matching 26-page A4 PDF), arrived on 2026-08-30 with all
 13 payload checksums verified. Its current PDF was rebuilt from the final
@@ -136,7 +165,7 @@ consolidated volume, the report remains standalone until its genuinely new
 claims are isolated and the overlap is deliberately deduplicated.  Paper
 theorem labels do not by themselves assert Lean formalization.
 
-- [`Fabius_Flat_Parameter_Response_Dynamics/`](Fabius_Flat_Parameter_Response_Dynamics/),
+- [`Fabius_Flat_Parameter_Response_Dynamics/`](q-fabius-parameter-deformations/Fabius_Flat_Parameter_Response_Dynamics/),
   *Flat Parameter Fronts, q-Susceptibility, and Smooth Dynamics* (26 A4 pp;
   current 1,890-line TeX and 519-line deterministic exact/Monte-Carlo program),
   was filed on 2026-08-30 from `fabius_frontier_report_2026.zip` (803,598 bytes;
@@ -494,9 +523,10 @@ piecewise/refinement, and inverse/quantile formulas
 remain research frontiers. These fractional-Volterra API claims were checked at source checkpoint
 `149332f9d`.
 
-Member: `Exponents_and_q_Series_Frontiers`
+Geometric-sinc subgroup member:
+[`Exponents_and_q_Series_Frontiers/`](geometric-sinc-and-exponent-families/Exponents_and_q_Series_Frontiers/)
 (current synchronized PDF: 237 A4 pp; current merged TeX: 16,235 lines,
-SHA-256 `96a367de3454770c53b5c2b543404c9a78bb5e73b1f5c9234309f369502671b8`,
+SHA-256 `fbd294c4cb23c979043725ca5596ff25364ad20a0dce7d01a67e7ac5da9f1450`,
 and current PDF: 6,313,577 bytes, SHA-256
 `7599ebc1dc137dbc0d3891e7fade43678abac255e2fa78627111ff0555b5681d`;
 across seven parts; the PDF was rebuilt from this source in three strict
@@ -731,10 +761,11 @@ matching `assets/` directories.
 `Signed_Reciprocal_q_Fabius_Frontiers/` were merged editorially as the
 volume's Part VII; their figures/data are likewise under `assets/`.)
 
-Second member: `q_pochhammer_q_binomial_monograph/`
+Forward/inverse subgroup member:
+[`q_pochhammer_q_binomial_monograph/`](q-pochhammer-and-inversion/q_pochhammer_q_binomial_monograph/)
 (213-page current A4 PDF; book class; the current source is
 13,117 lines with SHA-256
-`69da4656233255c345ac323ff35c2d15c1f374fadf5a8657e89a2f33292ddf0d`;
+`29d7b1d4bd2e5601f4eee63acc1ff7ef3f5f904e0f5f3b8474ce6c51a2129cca`;
 the 1,582,997-byte PDF has SHA-256
 `7ee6f8f6d8e72228a5b20daa119caa4d834b11063f910b526897b2677a2ede7b`
 and was rebuilt from that source in three strict passes) —
