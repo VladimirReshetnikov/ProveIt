@@ -428,7 +428,13 @@ The synchronized q-series API also retains the full `origin/main` theorem
 inventory.  `GaussianBinomialAtNegOneDerivative.lean` is 0+4, and
 `GaussianBinomialContinuity.lean` is 0+3:
 `continuous_gaussianBinomial`, `tendsto_gaussianBinomial_nhds_one`, and
-`gaussianBinomial_eq_finiteQPochhammerIn_div`.  The
+`gaussianBinomial_eq_finiteQPochhammerIn_div`.
+`GaussianBinomialPolynomialStructure.lean` is 0+5:
+`natDegree_gaussianBinomial_universal`,
+`gaussianBinomial_universal_monic`,
+`coeff_zero_gaussianBinomial_universal`,
+`gaussianBinomial_universal_reflect`, and
+`coeff_gaussianBinomial_universal_symm`.  The
 `JacobiTripleProduct.lean` 2-definition/25-theorem tranche contains the finite triple-product
 polynomial and field identities, the bilateral Jacobi `HasSum` forms, and the
 pentagonal and paired-pentagonal `HasSum` corollaries.  The

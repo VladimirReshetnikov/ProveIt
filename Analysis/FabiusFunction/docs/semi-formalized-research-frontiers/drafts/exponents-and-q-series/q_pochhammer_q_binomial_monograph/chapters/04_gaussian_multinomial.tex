@@ -53,6 +53,24 @@ coefficient of \(q\) is one: there is exactly one partition of \(1\) in a
 nonempty \(k\times b\) rectangle.
 \end{proof}
 
+\begin{remark}[Partial Lean crosswalk]
+The universal-polynomial theorem
+\nolinkurl{gaussianBinomial_eq_eval₂_universal} supplies the nonnegative
+integral coefficients.  The five public theorems of
+\nolinkurl{GaussianBinomialPolynomialStructure}---
+\nolinkurl{natDegree_gaussianBinomial_universal},
+\nolinkurl{gaussianBinomial_universal_monic},
+\nolinkurl{coeff_zero_gaussianBinomial_universal},
+\nolinkurl{gaussianBinomial_universal_reflect}, and
+\nolinkurl{coeff_gaussianBinomial_universal_symm}---give exact degree,
+monicity, constant coefficient one, reflection, and coefficient
+palindromicity for every admissible column.  No current declaration proves
+that the coefficient of \(q\) is one for the strict interior range
+\(0<k<n\).  Consequently
+\cref{prop:gq-positive-palindromic} remains a human-proved, partially
+formalized proposition rather than an exact Lean row.
+\end{remark}
+
 \begin{theorem}[Global positive-base inverse]
 \label{thm:gq-positive-inverse}
 The restriction of \(G_{n,k}\) to \([0,\infty)\) is a continuous strictly

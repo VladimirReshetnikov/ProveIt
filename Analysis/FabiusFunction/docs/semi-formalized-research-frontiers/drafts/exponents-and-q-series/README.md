@@ -31,7 +31,7 @@ q-series tranche and the zero-definition, three-theorem
 crosswalk. That source is a source-only successor to the fresh artifact receipt
 and requires a later synchronized three-pass build. Retained PDFs under its `assets/` tree are
 research figures, not alternate manuscript renderings. The current Lean audit
-contains 643 facade-reachable modules and 8,661 public declarations, with no
+contains 644 facade-reachable modules and 8,666 public declarations, with no
 missing module headers or declaration documentation.
 
 ## Detailed package record
@@ -802,7 +802,7 @@ centered/MGF wrappers and its reciprocal outside-disk formula, pole divisor,
 and zero--pole exchange. The algebra of q-shifted factorials now accounts for 6 exact, 2
 partial, and 7
 unformalized results; the q-integer and Gaussian-coefficient chapter for
-3 exact, 2 partial, and 4 unformalized results. The finite
+7 exact, 0 partial, and 2 unformalized results. The finite
 q-binomial/inversion chapter now accounts for 9 exact, 1 partial, and 0
 unformalized results; the weighted chapter for 3 exact, 2 partial, and 3
 unformalized results; and the basic-hypergeometric chapter for 1 exact, 0
@@ -831,6 +831,7 @@ compatibility spelling of its primary identity),
 `QPochhammerDissection.lean` (two theorems),
 `QPochhammerInfinite.lean` (one definition, 29 theorems),
 `QBinomialReciprocity.lean` (four theorems),
+`GaussianBinomialPolynomialStructure.lean` (zero definitions, five theorems),
 `GaussianBinomialAtNegOne.lean` (five theorems),
 `RvachevPochhammerFactorization.lean` (one definition, nine theorems), and
 `QPochhammerEntire.lean` (zero definitions; four legacy compatibility

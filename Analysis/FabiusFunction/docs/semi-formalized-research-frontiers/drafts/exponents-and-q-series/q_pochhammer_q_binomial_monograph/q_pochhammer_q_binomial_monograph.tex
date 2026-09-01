@@ -978,6 +978,16 @@ For all $0\le k\le n$, the Gaussian coefficient $\GaussianBinomial{n}{k}{q}$ bel
 Induct on $n$.  The boundary values are $1$.  Either recurrence in \Cref{thm:qpascal} expresses an interior coefficient as a sum of two polynomials with nonnegative integral coefficients.
 \end{proof}
 
+\begin{remark}[Exact universal polynomial in Lean]
+The theorem
+\lean{Fabius.gaussianBinomial_eq_eval₂_universal} in
+\path{GaussianBinomialUniversal.lean} identifies every Gaussian coefficient
+over a commutative semiring with the evaluation of the universal polynomial
+\(GaussianBinomial{n}{k}{X}\in\NaturalNumbers[X]\).  Thus the polynomiality
+and coefficientwise nonnegativity asserted in \Cref{cor:positivity} are
+\statusexact{} in Lean, without a quotient or a nonvanishing hypothesis.
+\end{remark}
+
 \section{Symmetry, reciprocity, and degree}
 
 \begin{theorem}[Elementary structure]\label{thm:qbinom-structure}
@@ -1020,9 +1030,9 @@ Writing \(\GaussianBinomial{n}{k}{q}=\sum_{j=0}^{k(n-k)}c_jq^j\) and comparing p
 \(c_j=c_{k(n-k)-j}\), which is precisely palindromicity.
 \end{proof}
 
-\begin{remark}[Exact reciprocal core in Lean]
-Items~\textup{(i)} and \textup{(ii)} have exact machine-checked counterparts.
-Symmetry is \lean{Fabius.gaussianBinomial_symm}.  Reciprocity is
+\begin{remark}[Exact polynomial structure in Lean]
+All four items have exact machine-checked counterparts.  Symmetry is
+\lean{Fabius.gaussianBinomial_symm}.  Reciprocity is
 \lean{Fabius.gaussianBinomial_reciprocity_units} in
 \path{QBinomialReciprocity.lean}: for every unit \(u\) in every commutative
 semiring and all \(n,k\in\NaturalNumbers\), including the zero extension above the
@@ -1033,9 +1043,17 @@ diagonal,
 The wrapper \lean{Fabius.gaussianBinomial_reciprocity} specializes this to a
 nonzero element of an arbitrary semifield.  Unlike the quotient proof above,
 the formal proof is a denominator-free induction on the two Pascal
-recurrences, so it remains valid with zero divisors.  Items~\textup{(iii)} and
-\textup{(iv)} are not yet represented as polynomial-degree and coefficient
-theorems; consequently \Cref{thm:qbinom-structure} remains \statuspartial.
+recurrences, so it remains valid with zero divisors.  In
+\path{GaussianBinomialPalindromic.lean},
+\lean{Fabius.gaussianBinomial_natDegree},
+\lean{Fabius.gaussianBinomial_monic}, and
+\lean{Fabius.coeff_gaussianBinomial_zero} give the exact degree,
+leading coefficient, and constant coefficient of the universal polynomial;
+\lean{Fabius.reflect_gaussianBinomial} and
+\lean{Fabius.coeff_gaussianBinomial_reflect} give reflection and
+coefficient palindromicity.  These statements hold for every \(k\le n\),
+including both boundary columns, so \Cref{thm:qbinom-structure} is
+\statusexact.
 \end{remark}
 
 \begin{corollary}[Odd reciprocal degree at \(q=-1\)]
@@ -12613,6 +12631,8 @@ declaration from \path{GaussianBinomialAtOne.lean};\\
 \path{HeineTransformation.lean}: two definitions and five theorems;\\
 \path{QGaussSummation.lean}: zero definitions and two theorems;\\
 \path{QBinomialReciprocity.lean}: four theorems;\\
+\path{GaussianBinomialPalindromic.lean}: zero definitions and twelve
+theorems;\\
 \path{GaussianBinomialAtNegOne.lean}: five theorems;\\
 \path{RvachevPochhammerFactorization.lean}: one definition and nine theorems;\\
 \path{GeometricCompleteHomogeneous.lean}: six theorems;\\
@@ -12643,6 +12663,23 @@ semifield.  The two \(q=-1\) consequences are universal commutative-ring
 identities, transported from the integer Gaussian polynomial, and the
 even-row odd-column statement includes columns above the row by zero
 extension.
+
+\item The direct structure theorems of
+\path{GaussianBinomialPalindromic.lean} are
+\path{Fabius.gaussianBinomial_natDegree},
+\path{Fabius.gaussianBinomial_monic},
+\path{Fabius.coeff_gaussianBinomial_zero},
+\path{Fabius.reflect_gaussianBinomial}, and
+\path{Fabius.coeff_gaussianBinomial_reflect}.  For every \(k\le n\),
+they give exact degree \(k(n-k)\), monicity, constant coefficient one,
+reflection in that exact degree, and coefficient palindromicity for the
+universal polynomial over every nontrivial commutative semiring where degree
+requires nontriviality.  The same module also exports
+\path{Fabius.coeff_gaussianBinomial_top} and
+\path{Fabius.two_mul_derivative_gaussianBinomial_eval_one}.  Together with symmetry,
+unit reciprocity, and the universal-evaluation theorem from
+\path{GaussianBinomialUniversal.lean}, this is the exact Lean counterpart of
+\Cref{cor:positivity,thm:qbinom-structure}.
 
 \item The five theorems of \path{GaussianBinomialAtNegOne.lean} are
 \path{Fabius.gaussianBinomial_neg_one_even_even},
