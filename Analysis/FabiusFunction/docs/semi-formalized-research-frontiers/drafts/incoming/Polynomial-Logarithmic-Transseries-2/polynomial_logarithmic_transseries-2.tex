@@ -392,8 +392,8 @@ If
 \]
 then its inverse usually has the form
 \[
- f^{[-1]}(x)=x-\alpha\log x
- +\sum_{n\ge1}\frac{\LambertPolynomial{n}(\log x)}{x^n}.
+ \rev{f}(x)=x-\alpha\log x
+ +\sum_{n\ge1}\frac{p_n(\log x)}{x^n}.
 \]
 This includes Lambert \(W\), generalized Lambert equations, asymptotic
 inverses used in prime-number estimates, and inverses of many exp--log
@@ -449,7 +449,7 @@ scale.  One convenient formulation is the following.  Suppose
 if for every \(N\ge n_0\) there exists an integer \(M_N\) such that
 \begin{equation}\label{eq:analytic-remainder}
  f(X)-\sum_{n=n_0}^{N}a_n(\log X)X^{-n}
- =\BigO\!\left(X^{-N-1}(\log X)^{M_N}\right)
+ =\BigOAt{X^{-N-1}(\log X)^{M_N}}{X\to\infty,\ X\in S}
 \end{equation}
 through the sector or ray under consideration.  Stronger definitions enumerate
 all individual monomials \(X^{-n}L^m\), but
@@ -555,9 +555,9 @@ The t-adic valuation satisfies
  \qquad
  \val_t(A+B)\ge\min\{\val_t(A),\val_t(B)\}.
 \]
-The congruence
+The valuation-tail notation
 \[
- A\equiv B\pmod{t^N}
+ A=B+\FormalBigO_t(t^N)
 \]
 means \(\val_t(A-B)\ge N\).  The truncation operator is
 \begin{equation}\label{eq:truncation}
@@ -572,7 +572,8 @@ truncations \([A_j]_{<N}\) eventually stabilize.  Then there is a unique
 \(A\in\PolynomialLogLaurentRing{\K}\) whose truncation at every order is that stable value.
 \end{proposition}
 \begin{proof}
-For each integer \(n\), choose \(N>n\).  Eventual stabilization modulo \(t^N\)
+For each integer \(n\), choose \(N>n\).  Eventual stabilization below outer
+\(t\)-order \(N\)
 fixes a unique coefficient \(a_n(L)\).  These coefficients are compatible as
 \(N\) varies.  The resulting formal Laurent series has a lower bound on its
 support because the sequence is already Laurent-bounded at some initial
@@ -1516,7 +1517,7 @@ Let the outer series be
 \begin{equation}\label{eq:outer-near-identity}
  F(Y)=Y+a(\log Y)+\frac{b(\log Y)}Y
  +\frac{c(\log Y)}{Y^2}+\frac{d(\log Y)}{Y^3}
- +\BigO(Y^{-4}),
+ +\FormalBigOAt{Y^{-4}}{Y^{-1}},
 \end{equation}
 and let \(G\) be as in \cref{eq:near-identity-inner}.  Write
 \[
@@ -1575,7 +1576,7 @@ and
 \]
 Thus
 \[
- F(G)=X+\left(L-\frac{L^2}{2}\right)X^{-2}+\BigO(X^{-3}).
+ F(G)=X+\left(L-\frac{L^2}{2}\right)X^{-2}+\FormalBigO_t(t^3).
 \]
 Adding
 \[
@@ -1818,7 +1819,7 @@ To compute \(G=\rev{F}\) through t-order \(N\):
 \item Start with \(G_{-1}=X\).
 \item For \(n=0,1,\ldots,N\), compute the residual
 \[
- R_n=F\compose G_{n-1}-X\pmod{t^{n+1}}.
+ R_n=\bigl[F\compose G_{n-1}-X\bigr]_{<n+1}.
 \]
 \item Extract its t-order \(n\) coefficient \(r_n(L)=[t^n]R_n\).
 \item Set
@@ -2099,6 +2100,11 @@ Since \(W\sim X\), the first correction in \cref{eq:W-log-equation} is
  \qquad
  R=\sum_{n\ge1}\LambertPolynomial{n}(L)X^{-n}.
 \end{equation}
+Throughout this article the shared Lambert family is zero-based, with
+\(\LambertPolynomial{0}(u)=-u\).  Equivalently,
+\[
+ W=X+\sum_{n\ge0}\LambertPolynomial{n}(L)X^{-n}.
+\]
 Then
 \[
  \log W
@@ -2553,7 +2559,7 @@ An expression with two logarithmic levels may become an ordinary
 polynomial--logarithmic series after a change of dominant coordinate.  For
 example,
 \begin{equation}\label{eq:multiseries-form}
- \sum_{n\ge0}\frac{\LambertPolynomial{n}(\log\log X)}{(\log X)^n}
+ \sum_{n\ge0}\frac{p_n(\log\log X)}{(\log X)^n}
 \end{equation}
 is polynomial--logarithmic in the new fast variable
 \[
@@ -2652,7 +2658,7 @@ Now the small parameter is \(L_1^{-1}\), and the coefficients are polynomials
 in \(L_2\).  The first balance is
 \begin{equation}\label{eq:u-first-logprefactor}
  u=\beta^2\frac{L_2}{L_1}
- +\BigO\!\left(\frac{L_2^2}{L_1^2}\right).
+ +\BigOAt{L_2^2/L_1^2}{X\to+\infty}.
 \end{equation}
 Thus
 \begin{equation}\label{eq:invert-XlogX-first}
@@ -2934,7 +2940,7 @@ The second is
 The third term begins at x-order four.  Hence
 \begin{equation}\label{eq:small-inverse-example}
  \rev f(x)=x-a x^2\ell+a^2x^3(2\ell^2-\ell)
- +\BigO\!\left(x^4\ell^3\right).
+ +\FormalBigO_x(x^4).
 \end{equation}
 Substitution into \(f\) cancels the x-squared and x-cubed blocks.
 \end{workedbox}
@@ -3294,7 +3300,7 @@ def derivative_x(a: Series, cutoff: int) -> Series:
 
 def compose_regular(f: Series, u: Series,
                     cutoff: int, lam=sp.S.One) -> Series:
-    """F(lam*X*(1+u)), modulo t**cutoff."""
+    """Truncate F(lam*X*(1+u)) below t**cutoff."""
     delta = log1p(u, cutoff + 2)
     out: Series = {}
     for n, poly in f.items():
@@ -3452,7 +3458,8 @@ For a serious symbolic computation, record:
 \item the exact software version and simplification assumptions.
 \end{enumerate}
 This information is often more important than the final list of coefficients,
-because it determines what the displayed \(\BigO\)-term actually means.
+because it determines whether the displayed remainder is a formal valuation
+tail or an analytic estimate with an explicit limiting regime.
 
 \begin{summarybox}
 A polynomial--logarithmic series can be implemented as a sparse map from
@@ -3566,7 +3573,8 @@ interaction.
 \section{A four-block composition with nontrivial coefficients}
 Let
 \[
- F(Y)=Y+(\log^2Y-1)+\frac{2\log Y}{Y}+\frac1{Y^2}+\BigO(Y^{-3})
+ F(Y)=Y+(\log^2Y-1)+\frac{2\log Y}{Y}+\frac1{Y^2}
+ +\FormalBigOAt{Y^{-3}}{Y^{-1}}
 \]
 and
 \[
@@ -3734,19 +3742,19 @@ To verify \(f(g(x))\), first note
 \]
 Through x-order one inside the logarithm,
 \[
- \log\frac1g=\ell+a x\ell+\BigO(x^2\ell^2).
+ \log\frac1g=\ell+a x\ell+\FormalBigO_x(x^2).
 \]
 Also
 \[
- g^2=x^2-2a x^3\ell+\BigO(x^4\ell^2).
+ g^2=x^2-2a x^3\ell+\FormalBigO_x(x^4).
 \]
 Therefore
 \begin{align*}
  f(g)&=g+a g^2\log(1/g)\\
  &=x-a x^2\ell+a^2x^3(2\ell^2-\ell)
    +a x^2\ell+a^2x^3(\ell-2\ell^2)
-   +\BigO(x^4\ell^3)\\
- &=x+\BigO(x^4\ell^3).
+   +\FormalBigO_x(x^4)\\
+ &=x+\FormalBigO_x(x^4).
 \end{align*}
 Every displayed correction cancels.
 
@@ -3862,7 +3870,7 @@ a suitable complex sector,
  \log(1+u)=u-\frac{u^2}{2}+\frac{u^3}{3}-\cdots.
 \]
 The analytic Taylor remainder after \(M\) terms is
-\(\BigO(u^{M+1})\) when \(u\) stays in a compact subset avoiding the branch cut and
+\(\BigOAt{u^{M+1}}{u\to0}\) when \(u\) stays in a compact subset avoiding the branch cut and
 \(-1\).  Since positive t-valuation implies \(u^M\) gains at least M t-orders,
 formal truncation and analytic Taylor truncation agree.
 
@@ -3943,13 +3951,13 @@ Suppose a real \(C^1\) function \(F\) is eventually strictly increasing and
 Let \(G_N(X)\) be a finite polynomial--logarithmic expression such that
 \begin{equation}\label{eq:inverse-residual-analytic}
  F(G_N(X))-X
- =\BigO\!\left(X^{-N-1}L^M\right)
+ =\BigOAt{X^{-N-1}L^M}{X\to+\infty}
 \end{equation}
 for some \(M\), and suppose \(G_N(X)\to+\infty\).  Then the eventual inverse
-\(G=F^{-1}\) satisfies
+\(G=\rev{F}\) satisfies
 \begin{equation}\label{eq:inverse-error-transfer}
  G(X)-G_N(X)
- =\BigO\!\left(X^{-N-1}L^M\right).
+ =\BigOAt{X^{-N-1}L^M}{X\to+\infty}.
 \end{equation}
 \end{theorem}
 \begin{proof}
@@ -4041,14 +4049,15 @@ A useful final formula should state:
 \begin{enumerate}
 \item the limit, such as \(X\to+\infty\) or \(z\to\infty\) in a sector;
 \item the chosen branch of every logarithm and inverse;
-\item whether \(\FormalBigO_t(t^N)\) is formal or analytic;
-\item any logarithmic factor hidden in an analytic \(\BigO\)-bound;
+\item the formal truncation order, stated with \(\FormalBigO_t(t^N)\);
+\item any analytic remainder, stated separately with its limit, domain, and
+      logarithmic factor;
 \item whether the series is known to converge or is only asymptotic.
 \end{enumerate}
 For example,
 \[
  W_0(z)=X-L+\sum_{n=1}^N\frac{\LambertPolynomial{n}(L)}{X^n}
- +\BigO\!\left(\frac{L^{N+1}}{X^{N+1}}\right),
+ +\BigOAt{L^{N+1}/X^{N+1}}{z\to+\infty},
 \]
 with \(X=\log z\), \(L=\log X\), and \(z\to+\infty\), is an analytic
 statement.  The notation
@@ -4184,7 +4193,7 @@ The statement
 means coefficient agreement below t-order \(N\).  It does not by itself assert
 an analytic bound with a constant.  Conversely,
 \[
- A(X)-B(X)=\BigO(X^{-N}L^M)
+ A(X)-B(X)=\BigOAt{X^{-N}L^M}{X\to+\infty}
 \]
 is an analytic statement and may hide a nontrivial logarithmic exponent.
 Always label the formal t-adic remainder distinctly.
@@ -4829,13 +4838,13 @@ Let \(h(x)=a x^2\ell+b x^3\).  The first reversion term is
 Only the leading part \(a x^2\ell\) of \(h\) contributes to x-order three in
 the second term:
 \[
- \frac12(h^2)'=a^2x^3(2\ell^2-\ell)+\BigO(x^4\ell^2).
+ \frac12(h^2)'=a^2x^3(2\ell^2-\ell)+\FormalBigO_x(x^4).
 \]
 Thus
 \[
  \rev f(x)=x-a x^2\ell+
  \bigl(a^2(2\ell^2-\ell)-b\bigr)x^3
- +\BigO(x^4\ell^3).
+ +\FormalBigO_x(x^4).
 \]
 
 \subsection*{Solution 12}

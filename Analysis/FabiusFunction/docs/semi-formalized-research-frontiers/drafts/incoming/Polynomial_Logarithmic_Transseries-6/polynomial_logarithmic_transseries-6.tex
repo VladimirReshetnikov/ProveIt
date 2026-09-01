@@ -422,7 +422,7 @@ The truncation through block $N$ is
 \]
 and
 \[
- F\equiv G\pmod{t^{N+1}}
+ F=G+\FormalBigO_t(t^{N+1})
  \quad\Longleftrightarrow\quad
  \trunc{F}{N}=\trunc{G}{N}.
 \]
@@ -576,8 +576,9 @@ the coefficient of $t^N$ in $FG$ depends only on the blocks
  \qquad
  B_{m_0},\ldots,B_{N-n_0}.
 \]
-Consequently, if $F\equiv\ApproximationOf{F}\pmod{t^{p}}$ and
-$G\equiv\ApproximationOf{G}\pmod{t^{q}}$, then
+Consequently, if
+$F=\ApproximationOf{F}+\FormalBigO_t(t^{p})$ and
+$G=\ApproximationOf{G}+\FormalBigO_t(t^{q})$, then
 \begin{equation}\label{eq:mult-error-rule}
  FG-\ApproximationOf{F}\ApproximationOf{G}
  =\FormalBigO_t\!\left(t^{\min(p+m_0,q+n_0)}\right).
@@ -659,7 +660,7 @@ Suppose both factors begin at block zero and are wanted through $t^N$.
 \caption{Truncated polynomial--logarithmic product}
 \label{alg:pl-product}
 \KwIn{Blocks $A_0,\ldots,A_N$ and $B_0,\ldots,B_N$ in a coefficient ring}
-\KwOut{Blocks $C_0,\ldots,C_N$ of $FG\bmod t^{N+1}$}
+\KwOut{Blocks $C_0,\ldots,C_N$ of $\trunc{FG}{N}$}
 \For{$r\leftarrow0$ \KwTo $N$}{
   $C_r\leftarrow0$\;
   \For{$i\leftarrow0$ \KwTo $r$}{
@@ -808,7 +809,7 @@ $N\ge1$:
 If $q_0,\ldots,q_N$ are defined by \eqref{eq:quotient-recurrence}, then
 \[
  B\sum_{n=0}^{N}q_nt^n
- \equiv A\pmod{t^{N+1}}.
+ =A+\FormalBigO_t(t^{N+1}).
 \]
 They are the unique blocks with this property.
 \end{theorem}
@@ -1385,14 +1386,14 @@ $R^n$ one place toward the retained range.
 \caption{Near-identity composition through outer block $N$}
 \label{alg:generator-composition}
 \KwIn{$F=\sum_{n=n_0}^{N}p_nt^n$, $G=X+\Delta$, target $N$}
-\KwOut{$F\compose G\pmod{t^{N+1}}$}
+\KwOut{$\trunc{F\compose G}{N}$}
 $U\leftarrow t\Delta$\;
-$R\leftarrow(1+U)^{-1}\pmod{t^{N-n_0+1}}$\;
-$V\leftarrow\log(1+U)\pmod{t^{N-n_0+1}}$\;
+$R\leftarrow\trunc{(1+U)^{-1}}{N-n_0}$\;
+$V\leftarrow\trunc{\log(1+U)}{N-n_0}$\;
 $H\leftarrow0$\;
 \For{$n\leftarrow n_0$ \KwTo $N$}{
   $H\leftarrow H+t^nR^np_n(L+V)$\;
-  $H\leftarrow H\bmod t^{N+1}$\;
+  $H\leftarrow\trunc{H}{N}$\;
 }
 \Return{$H$}\;
 \end{algorithm}
@@ -1874,10 +1875,10 @@ discarded block back to an earlier order.
 \caption{Fixed-point compositional inversion}
 \label{alg:fixed-inverse}
 \KwIn{$F=X+A$, target outer block $N$}
-\KwOut{$G=F\compinv\pmod{t^{N+1}}$}
+\KwOut{$G=\trunc{F\compinv}{N}$}
 $B\leftarrow0$\;
 \For{$j\leftarrow0$ \KwTo $N$}{
-  $B\leftarrow-\,A\compose(Y+B)\pmod{t^{N+1}}$\;
+  $B\leftarrow\trunc{-\,A\compose(Y+B)}{N}$\;
 }
 \Return{$Y+B$}\;
 \end{algorithm}
@@ -1946,10 +1947,10 @@ read the first nonzero residual block, and cancel it.
 \caption{Residual-cancellation series reversal}
 \label{alg:triangular-reversal}
 \KwIn{$F=X+A$, target outer block $N$}
-\KwOut{$G=F\compinv\pmod{t^{N+1}}$}
+\KwOut{$G=\trunc{F\compinv}{N}$}
 $G\leftarrow Y$\;
 \For{$n\leftarrow0$ \KwTo $N$}{
-  $R\leftarrow F\compose G-Y\pmod{t^{n+1}}$\;
+  $R\leftarrow\trunc{F\compose G-Y}{n}$\;
   $r_n\leftarrow[t^n]R$\;
   $G\leftarrow G-r_nt^n$\;
 }
@@ -2066,13 +2067,13 @@ one step per newly stabilized block.
 \caption{Newton compositional inversion}
 \label{alg:newton-composition}
 \KwIn{$F=X+A$, target outer block $N$}
-\KwOut{$G=F\compinv\pmod{t^{N+1}}$}
+\KwOut{$G=\trunc{F\compinv}{N}$}
 $G\leftarrow Y$; $p\leftarrow0$\;
 \While{$p\le N$}{
   choose $q\leftarrow\min(N+1,2p+2)$\;
-  $R\leftarrow F\compose G-Y\pmod{t^q}$\;
-  $J\leftarrow F'\compose G\pmod{t^q}$\;
-  $G\leftarrow G-R/J\pmod{t^q}$\;
+  $R\leftarrow\trunc{F\compose G-Y}{q-1}$\;
+  $J\leftarrow\trunc{F'\compose G}{q-1}$\;
+  $G\leftarrow\trunc{G-R/J}{q-1}$\;
   $p\leftarrow q$\;
 }
 \Return{$G$}\;
@@ -2276,7 +2277,7 @@ gives
 \begin{align}\label{eq:u-power-log-inverse}
  u=\frac1\rho\biggl[&S-\sigma\log S+\sigma\log\rho-\log c\\
  &+\frac{\sigma^2\log S+\sigma\log c-\sigma^2\log\rho}{S}
- +\BigO\!\left(\frac{(\log S)^2}{S^2}\right)\biggr].\notag
+ +\BigOAt{(\log S)^2/S^2}{S\to+\infty}\biggr].\notag
 \end{align}
 Exponentiating yields
 \begin{align}\label{eq:X-power-log-inverse}
@@ -2285,7 +2286,7 @@ Exponentiating yields
  &\times\left[1+
  \frac{\sigma^2\log S+\sigma\log c-\sigma^2\log\rho}
       {\rho S}
- +\BigO\!\left(\frac{(\log S)^2}{S^2}\right)\right].\notag
+ +\BigOAt{(\log S)^2/S^2}{S\to+\infty}\right].\notag
 \end{align}
 Further terms are generated recursively in powers of $S^{-1}$ with
 polynomial coefficients in $\log S$.
@@ -2299,7 +2300,7 @@ Then
 \[
  \log u=\log S-\log\rho
  +\frac{-\sigma\log S+C}{S}
- +\BigO\left(\frac{(\log S)^2}{S^2}\right).
+ +\BigOAt{(\log S)^2/S^2}{S\to+\infty}.
 \]
 Substitution into \eqref{eq:power-log-logeq} gives
 $C=\sigma\log\rho-\log c$, $a=\sigma^2$, and
@@ -2450,7 +2451,7 @@ closed formula below produces
  +\frac{\frac12L^2-L}{Y^2}
  +\frac{\frac13L^3-\frac32L^2+L}{Y^3}\notag\\
  &+\frac{\frac14L^4-\frac{11}{6}L^3+3L^2-L}{Y^4}
- +\BigO\!\left(\frac{L^5}{Y^5}\right).
+ +\BigOAt{L^5/Y^5}{|Y|\to\infty,\ Y\in S_k}.
 \end{align}
 The first two scales $Y$ and $L=\log Y$ determine the entire hierarchy.
 
@@ -2562,6 +2563,15 @@ For $r\ge1$,
  \prod_{j=0}^{r-1}(\partial_z-j)z^{r+1}.
 \end{equation}
 \end{theorem}
+The shared family also includes the index-zero term
+$\LambertPolynomial{0}(z)=-z$.  Consequently
+\[
+ \WrightOmega(Y)=Y+
+ \sum_{r\ge0}\frac{\LambertPolynomial{r}(L)}{Y^r},
+ \qquad L=\log Y,
+\]
+which is identical to the convention that displays $-L$ separately and sums
+over $r\ge1$.
 The product is a falling factorial of the differential operator,
 $\partial_z^{\underline r}$.
 
@@ -2819,16 +2829,18 @@ $F'(u)=1+1/u$, one Newton correction is
 \end{equation}
 Taylor's theorem gives
 \begin{equation}\label{eq:W-error-from-residual}
- w-w_N=\delta_N+\BigO\!\left(
- \frac{R_N^2}{\AbsoluteValue{w_N}^2}\right)
+ w-w_N=\delta_N+
+ \BigOAt{R_N^2/\AbsoluteValue{w_N}^2}
+        {|L_1|\to\infty,\ L_1\in S_k}
 \end{equation}
 provided the segment or complex neighborhood stays away from $0$ and the
 chosen branch cut.  Thus the residual supplies both a check and an improved
 approximation.
 
-For the formal truncation,
+For the corresponding truncation on a fixed branch sector,
 \[
- R_N=\BigO\!\left(\frac{L_2^{N+1}}{L_1^{N+1}}\right),
+ R_N=\BigOAt{L_2^{N+1}/L_1^{N+1}}
+              {|L_1|\to\infty,\ L_1\in S_k},
 \]
 so the inverse error has the same leading order because $F'(w)=1+\LittleO(1)$.
 This is the analytic reflection of the triangular residual-cancellation
@@ -2898,7 +2910,7 @@ With $L_1=\log Y$ and $L_2=\log L_1$, division of the Lambert expansion gives
  &+\frac{L_2}{L_1}
  +\frac{L_2^2-L_2}{L_1^2}\\
  &+\frac{L_2^3-\frac52L_2^2+L_2}{L_1^3}
- +\BigO\!\left(\frac{L_2^4}{L_1^4}\right)\biggr].\notag
+ +\BigOAt{L_2^4/L_1^4}{|L_1|\to\infty,\ L_1\in S_k}\biggr].\notag
 \end{align}
 This is a compact example in which reversion is followed by formal division.
 
@@ -2935,7 +2947,7 @@ polynomial--logarithmic perturbation.  The first result is
 \begin{equation}\label{eq:normal-quantile-first}
  q=\sqrt{2S}
  -\frac{\log S+\log(4\pi)}{2\sqrt{2S}}
- +\BigO\!\left(\frac{(\log S)^2}{S^{3/2}}\right).
+ +\BigOAt{(\log S)^2/S^{3/2}}{S\to+\infty}.
 \end{equation}
 All later terms can be obtained by the same reversion algorithms.  This
 explains why logarithms of logarithms occur in extreme quantiles.
@@ -3018,20 +3030,20 @@ unless another variable is explicitly introduced.
 \section{A product and a quotient in logarithmic blocks}
 Consider
 \begin{align*}
- A&=1+(L+1)t+(L^2-L)t^2+\BigO(t^3),\\
- B&=1+(2L-1)t+(3-L)t^2+\BigO(t^3).
+ A&=1+(L+1)t+(L^2-L)t^2+\FormalBigO_t(t^3),\\
+ B&=1+(2L-1)t+(3-L)t^2+\FormalBigO_t(t^3).
 \end{align*}
 The product is obtained by block convolution:
 \begin{align*}
  AB
  &=1+\bigl[(L+1)+(2L-1)\bigr]t\\
  &\quad+\bigl[(L^2-L)+(L+1)(2L-1)+(3-L)\bigr]t^2
-   +\BigO(t^3)\\
- &=1+3Lt+(3L^2-L+2)t^2+\BigO(t^3).
+   +\FormalBigO_t(t^3)\\
+ &=1+3Lt+(3L^2-L+2)t^2+\FormalBigO_t(t^3).
 \end{align*}
 For the quotient, write
 \[
- \frac AB=1+Q_1t+Q_2t^2+\BigO(t^3).
+ \frac AB=1+Q_1t+Q_2t^2+\FormalBigO_t(t^3).
 \]
 The triangular division rule gives
 \[
@@ -3046,7 +3058,7 @@ and
 Consequently
 \begin{equation}\label{eq:worked-quotient}
  \frac AB
- =1+(2-L)t+(3L^2-5L-1)t^2+\BigO(t^3).
+ =1+(2-L)t+(3L^2-5L-1)t^2+\FormalBigO_t(t^3).
 \end{equation}
 A reliable check is multiplication by the divisor. Substituting
 \eqref{eq:worked-quotient} into $B(A/B)$ recovers $A$ through $t^2$. This
@@ -3076,13 +3088,13 @@ where every occurrence of $A$ on the right is evaluated at $Y$ and
        -t^2\frac{\partial}{\partial t}.
 \]
 Only the first four displayed terms can contribute through $t^3$. Indeed,
-$A=\BigO(L)$ and each application of $\D$ raises the outer $t$-order by one.
+$A=\BigOAt{L}{Y\to+\infty}$ and each application of $\D$ raises the outer $t$-order by one.
 A direct calculation gives
 \begin{align}
  G(Y)=Y&-2L-1+\frac{L+3}{Y}
  +\frac{-3L^2+7L-3}{Y^2}\notag\\
  &+\frac{-\frac{32}{3}L^3+25L^2-6L-\frac{59}{6}}{Y^3}
- +\BigO\!\left(\frac{L^4}{Y^4}\right).
+ +\BigOAt{L^4/Y^4}{Y\to+\infty}.
  \label{eq:worked-inverse}
 \end{align}
 
@@ -3119,7 +3131,7 @@ $F(G(Y))-Y$ gives
 \[
  F(G(Y))-Y
  =\left(28L^4-\frac{211}{3}L^3-15L^2+91L-\frac{59}{3}\right)t^4
- +\BigO(L^5t^5).
+ +\BigOAt{L^5/Y^5}{Y\to+\infty}.
 \]
 Thus every coefficient claimed in \eqref{eq:worked-inverse} is certified.
 The nonzero $t^4$ residual is expected: it is the first block not included in
@@ -3153,7 +3165,7 @@ The first three Lagrange--B\"urmann terms yield
  +\frac{1}{Y^2}\left[
    -Ap^2+\frac{A^2}{2}
    \left(a+\frac bL+\frac b{L^2}\right)\right]
- +\BigO\!\left(\frac{L^4}{Y^3}\right).
+ +\BigOAt{L^4/Y^3}{Y\to+\infty}.
  \label{eq:nested-log-inverse}
 \end{align}
 This formula illustrates an important closure point. The coefficient of
@@ -3177,8 +3189,9 @@ and perform
  G_{j+1}
  =G_j-\frac{F(G_j)-Y}{F'(G_j)}.
 \end{equation}
-If $F(G_j)-Y=\BigO(t^m)$ and $F'(G_j)=1+\BigO(t)$, the next residual is
-typically $\BigO(t^{2m})$. Thus the working precision can be doubled at
+If $F(G_j)-Y=\FormalBigO_t(t^m)$ and
+$F'(G_j)=1+\FormalBigO_t(t)$, the next residual is typically
+$\FormalBigO_t(t^{2m})$. Thus the working precision can be doubled at
 each stage:
 \[
  t,\quad t^2,\quad t^4,\quad t^8,\quad\ldots.
@@ -3193,7 +3206,7 @@ Consider
  Y=X^\rho(\log X)^\sigma
  \left(1+\frac{c_1}{\log X}
        +\frac{c_2}{(\log X)^2}
-       +\BigO((\log X)^{-3})\right),
+       +\BigOAt{(\log X)^{-3}}{X\to+\infty}\right),
  \qquad \rho>0.
 \end{equation}
 Put $Z=\log X$ and $S=\log Y$. Taking logarithms gives
@@ -3202,7 +3215,7 @@ Put $Z=\log X$ and $S=\log Y$. Taking logarithms gives
  &=\rho Z+\sigma\log Z
    +\frac{c_1}{Z}
    +\frac{c_2-\frac12c_1^2}{Z^2}
-   +\BigO(Z^{-3}).
+   +\BigOAt{Z^{-3}}{Z\to+\infty}.
  \label{eq:worked-log-reduction}
 \end{align}
 The unperturbed equation $S=\rho Z+\sigma\log Z$ has the exact inverse
@@ -3231,13 +3244,13 @@ Suppose
 \begin{equation}\label{eq:worked-implicit}
  Y=X+\alpha\log X+\beta
  +\frac{\gamma\log X+\delta}{X}
- +\BigO\!\left(\frac{(\log X)^2}{X^2}\right).
+ +\BigOAt{(\log X)^2/X^2}{X\to+\infty}.
 \end{equation}
 The triangular formulas of \cref{ch:reversion-triangular} immediately give
 \begin{align}
  X=Y&-\alpha L-\beta\\
  &+\frac{(\alpha^2-\gamma)L+\alpha\beta-\delta}{Y}
- +\BigO\!\left(\frac{L^2}{Y^2}\right).
+ +\BigOAt{L^2/Y^2}{Y\to+\infty}.
  \label{eq:worked-implicit-inverse}
 \end{align}
 This two-line computation is often all that an application needs. The
@@ -3257,13 +3270,16 @@ Formal existence theorems become useful only when accompanied by
 coefficientwise algorithms. Algorithmic inversion of exp--log functions by
 multiseries is developed systematically by Salvy and Shackell
 \cite{SalvyShackell1999}. The algorithms in this chapter are deliberately
-finite: they compute the image of a transseries in a quotient by a prescribed
-filtration ideal. No machine is asked to store an infinite object.
+finite: they retain a prescribed principal part together with a finite
+representative modulo the additive tail filtration.  This is not a quotient
+of the Laurent ring by an ideal: \(t\) is a unit in \(\K[L]((t))\), so the
+tail \(t^{N+1}\K[L][[t]]\) is not an ideal of that Laurent ring.  No machine is
+asked to store an infinite object.
 
 \section{Sparse block representation}
 A truncated one-logarithm transseries
 \[
- T=\sum_{n=n_0}^{N}p_n(L)t^n+\BigO(t^{N+1})
+ T=\sum_{n=n_0}^{N}p_n(L)t^n+\FormalBigO_t(t^{N+1})
 \]
 can be stored as a sparse map
 \[
@@ -3323,7 +3339,7 @@ the coefficient field.
 \begin{algorithm}[H]
 \caption{Truncated reciprocal}
 \KwIn{$B=\sum_{n=0}^{N}b_nt^n$ with invertible $b_0$}
-\KwOut{$C=B^{-1}\bmod t^{N+1}$}
+\KwOut{$C=\trunc{B^{-1}}{N}$}
 $c_0\leftarrow b_0^{-1}$\;
 \For{$n\leftarrow1$ \KwTo $N$}{
   $s\leftarrow0$\;
@@ -3379,13 +3395,13 @@ every source block.
 \begin{algorithm}[H]
 \caption{Generator-based composition}
 \KwIn{$F=\sum_{n=n_0}^{N}p_n(L)t^n$, $G=Y(1+U)$, target order $N$}
-\KwOut{$F\compose G\bmod t_Y^{N+1}$}
-$R\leftarrow(1+U)^{-1}\bmod t_Y^{N+1}$\;
-$H\leftarrow\log(1+U)\bmod t_Y^{N+1}$\;
+\KwOut{$F\compose G$ through outer $t_Y$-block $N$}
+$R\leftarrow(1+U)^{-1}$, truncated through $t_Y$-block $N$\;
+$H\leftarrow\log(1+U)$, truncated through $t_Y$-block $N$\;
 $S\leftarrow0$\;
 \ForEach{retained block $(n,p_n)$ of $F$}{
-  $S\leftarrow S+
-  t_Y^n R^n\,p_n(L_Y+H)\pmod{t_Y^{N+1}}$\;
+  $S\leftarrow S+t_Y^n R^n\,p_n(L_Y+H)$\;
+  truncate $S$ through $t_Y$-block $N$\;
 }
 \Return $S$\;
 \end{algorithm}
@@ -3642,7 +3658,7 @@ The most useful analytic bridge is a residual estimate.
 
 \begin{theorem}[Residual-to-inverse error]\label{thm:residual-inverse}
 Let $f$ be continuously differentiable and one-to-one on an interval $I$.
-Suppose $x_\ast=f^{-1}(y)$ and an approximation $x_N\in I$ satisfy
+Suppose $x_\ast=f\compinv(y)$ and an approximation $x_N\in I$ satisfy
 \[
  \AbsoluteValue{f'(x)}\ge m>0
 \]
@@ -3662,7 +3678,8 @@ for some $\xi$ between $x_N$ and $x_\ast$. Take absolute values and use
 $\AbsoluteValue{f'(\xi)}\ge m$.
 \end{proof}
 
-For $f(X)=X+\BigO(\log X)$, one has $f'(X)=1+\LittleO(1)$ under the relevant
+For $f(X)=X+\BigOAt{\log X}{X\to+\infty}$, one has
+$f'(X)=1+\LittleO(1)$ under the relevant
 differentiability hypotheses, so $m$ may be chosen close to $1$ for large
 $X$. Therefore the first omitted residual block is also the natural scale
 of the inverse error. This gives a rigorous reason for the residual checks
@@ -3824,7 +3841,7 @@ The estimate
 does not contain $X^{-3}(\log X)^{100}$ under the usual bounded-coefficient
 interpretation. Prefer a scale-aware statement such as
 \[
- \BigO\!\left(\frac{(\log X)^d}{X^3}\right)
+ \BigOAt{(\log X)^d/X^3}{X\to+\infty}
 \]
 or identify the first omitted monomial explicitly.
 
@@ -4061,7 +4078,7 @@ Reversion on the appropriate sign branch gives
  \LambertW_{-1}(-x)
  =-S-M-\frac{M}{S}
  +\frac{M^2/2-M}{S^2}
- +\BigO\!\left(\frac{M^3}{S^3}\right).
+ +\BigOAt{M^3/S^3}{x\to0^+}.
 \]
 The same Lambert polynomials occur, but signs and the logarithmic branch are
 changed by the transformed defining equation.
@@ -4176,14 +4193,14 @@ If
 \[
  F(X)=X+a\log X+b
  +\frac{c\log X+d}{X}
- +\BigO\!\left(\frac{(\log X)^2}{X^2}\right),
+ +\BigOAt{(\log X)^2/X^2}{X\to+\infty},
 \]
 then
 \[
  F\compinv(Y)
  =Y-aL-b
  +\frac{(a^2-c)L+ab-d}{Y}
- +\BigO\!\left(\frac{L^2}{Y^2}\right).
+ +\BigOAt{L^2/Y^2}{Y\to+\infty}.
 \]
 
 \section*{Lambert and Wright omega}
@@ -4221,10 +4238,10 @@ Thus, with $L_1=\log z$ and $L_2=\log L_1$,
 \]
 
 \section*{Residual certification}
-If $x_N$ approximates $f^{-1}(y)$ and
+If $x_N$ approximates $f\compinv(y)$ and
 $\AbsoluteValue{f'}\ge m>0$ between $x_N$ and the exact inverse, then
 \[
- \AbsoluteValue{x_N-f^{-1}(y)}
+ \AbsoluteValue{x_N-f\compinv(y)}
  \le\frac{\AbsoluteValue{f(x_N)-y}}{m}.
 \]
 
@@ -4250,8 +4267,9 @@ $\compose$&Composition.\\
 $F\compinv$&Compositional inverse of $F$.\\
 $\D$&Derivative with respect to the large variable.\\
 block&All monomials sharing one outer power $t^n$.\\
-filtration&Nested ideals or precision levels used to define truncation and
-coefficientwise convergence.\\
+filtration&Nested additive tail subgroups used to define precision and
+coefficientwise convergence; after restriction to a power-series tail ring,
+these subgroups are ideals.\\
 near identity&A map $F(X)=X+\LittleO(X)$ in the selected scale.\\
 series reversal&Compositional inversion, not reciprocal.\\
 summable family&A formal family for which every monomial receives only
