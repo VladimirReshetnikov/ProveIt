@@ -37,25 +37,34 @@ Exactly three guarded serial passes produced 331, 340, and 340 pages. The
 The validation record in `README.md` distinguishes compilation, font
 embedding, complete page rendering, contact-sheet review, and full-resolution
 inspection. PDFs retained beneath `assets/` are research figures, not
-manuscripts.
+manuscripts.  A later synchronized checkpoint supersedes that artifact: the
+retained 347-page, 2,996,319-byte A4 PDF has SHA-256
+`29b422a39c42be37bd1487d4245c44e55706720c545dd015957644e47014bd48`
+and was built in three serial passes from the 14,072-line, 656,200-byte source
+with SHA-256
+`062b7230d95ff8bd52b11253c6c3c8820d6f6a82e4307ae5d82a1d793c00c517`.
 
-The live source now postdates that receipt. Its 13,941-line, 647,940-byte TeX
+The live source now postdates that receipt. Its 14,115-line, 658,674-byte TeX
 source has SHA-256
-`619d45dad475fd869c294aeed1f1eac6b99d9b3cfef6a9487383ee3e92931bbe`.
+`4f679c347aa5fa2488e1888b21b50a19d3257dbe2e200219e0b302c2ecc2c231`.
 It incorporates exhaustive crosswalks for `QPochhammerEntire` (zero
 definitions and five theorems), `QPochhammerInfinite` (one definition and
 twenty-seven theorems), and `QPochhammerDissection` (zero definitions and two
-theorems). The `QPochhammerEntire.lean` leaf proves the fixed-nome
+theorems), plus `GeometricPochhammerNormalConvergence` (zero definitions and
+three theorems). The `QPochhammerEntire.lean` leaf proves the fixed-nome
 single-symbol locally uniform product and differentiability, the
 division-free factor-zero criterion including `q = 0`, the reciprocal-power
 zero lattice for nonzero nome, and simple analytic order at every zero. Only
-`thm:poch-entire` is promoted by that leaf. The forward status inventory is
-51 exact / 78 partial / 145 none / 8 interface; the 191-result pre-Fabius core
-is 36 / 29 / 123 / 3 and the q-shifted-factorial chapter is 6 / 1 / 8 / 0.
-No normal-convergence claim is made for the additional outer product indexed
-by spectral scale. No PDF was generated for this source-only update, so the
-retained 340-page artifact is historical and must not be treated as rendering
-the current source.
+`thm:poch-entire` is promoted by that leaf. The newer three-theorem leaf proves
+the additional outer product's local-uniform (normal) convergence for every
+complex strict contraction, including `q = 0`, and gives the dyadic Rvachev
+product and bounded-Fabius Fourier specializations. The compound
+`thm:qF-spectral` row remains Partial because its named centered/MGF packaging
+and exterior reciprocal, pole-divisor, and zero--pole clauses are absent. The
+forward status inventory remains 64 exact / 78 partial / 132 none / 8
+interface; the 191-result pre-Fabius core remains 36 / 29 / 123 / 3. No PDF
+was generated for this source-only update, so the retained 347-page artifact
+is historical and must not be treated as rendering the current source.
 
 The former q-Pochhammer/q-binomial monograph arrived in commit
 `47172bc03ec078961d8b023dfe156ecd712efb65`. Its pre-repair source SHA-256 was

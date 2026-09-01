@@ -97,7 +97,8 @@ useful because it preserves the migrated experiment and research-figure
 boundary.
 
 The retained `q_pochhammer_q_binomial_monograph.pdf` is a 347-page A4
-build of the current master source (14,072 lines, 656,200 bytes,
+historical build of the immediately preceding master source (14,072 lines,
+656,200 bytes,
 SHA-256 `062b7230d95ff8bd52b11253c6c3c8820d6f6a82e4307ae5d82a1d793c00c517`).
 The PDF is 2,996,319 bytes with SHA-256
 `29b422a39c42be37bd1487d4245c44e55706720c545dd015957644e47014bd48`.
@@ -109,13 +110,14 @@ embedded and subsetted, including 5 Libertinus rows, with no Type-3
 fonts. The files under `assets/experiments/**/figures/` remain research
 figures, not publication manuscripts.
 
-The master source is the one described above. Its
-14,072-line, 656,200-byte source has SHA-256
-`062b7230d95ff8bd52b11253c6c3c8820d6f6a82e4307ae5d82a1d793c00c517`.
+The live master source now postdates that retained PDF. Its
+14,115-line, 658,674-byte source has SHA-256
+`4f679c347aa5fa2488e1888b21b50a19d3257dbe2e200219e0b302c2ecc2c231`.
 It includes exhaustive crosswalks for `QPochhammerEntire` (zero definitions
 and five theorems), `QPochhammerInfinite` (one definition and twenty-seven
 theorems), and `QPochhammerDissection` (zero definitions and two theorems),
-together with expanded Euler, infinite-q-binomial, Jacobi, and
+together with `GeometricPochhammerNormalConvergence` (zero definitions and
+three theorems) and expanded Euler, infinite-q-binomial, Jacobi, and
 Rogers--Szegő material.
 The `QPochhammerEntire` crosswalk records fixed-nome local uniformity and
 entireness, the division-free factor-zero criterion valid at `q = 0`, the
@@ -125,12 +127,14 @@ twenty-two theorems: `finiteQPochhammerIn_zero_left` remains the single
 declaration owned by `GaussianBinomialAtOne` and is imported rather than
 redeclared. The forward status ledger is 64 Exact, 78 Partial, 132 None, and
 8 interface rows; the 191-result pre-Fabius core is 36/29/123/3. The compound outer spectral-product
-theorem remains Partial: local uniformity for one symbol as a function of its
-argument at fixed contracting nome does not establish normal convergence of
-the additional product over spectral scales.
+theorem remains Partial even though the new three-theorem leaf now proves the
+outer product's local-uniform (normal) convergence for every complex strict
+contraction, its nome-`1/4` Rvachev specialization, and the bounded-Fabius
+Fourier specialization. The named centered/MGF packaging and the exterior
+reciprocal formula, pole divisor, and zero--pole exchange remain outside Lean.
 
-Source and PDF were synchronized by this build, and the root package checksum
-ledger (`SHA256SUMS`) was regenerated with `audit/build_package_checksums.py`
-afterwards. PDFs are rebuilt in batches, at most about once per hour, so
-source-only commits may precede the next synchronization; the ledger and the
-figures above always describe the retained PDF.
+No PDF was generated for this source-only crosswalk update. The 347-page PDF
+therefore remains a source-pinned historical artifact, while the root package
+checksum ledger records the live source and retained PDF as distinct payloads.
+PDFs are rebuilt in batches, at most about once per hour; synchronization is
+claimed only after a fresh guarded build.

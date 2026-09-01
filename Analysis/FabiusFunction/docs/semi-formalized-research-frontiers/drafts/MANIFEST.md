@@ -19,8 +19,8 @@ old flat layout; the **Previous path** column below is the map. Documents
 were moved verbatim — no `.tex` content was changed by the reorganization,
 so no PDF was rebuilt for it.
 
-**Current artifact checkpoint (2026-09-01).** The live Lean audit is 629
-facade-reachable modules and 8,546 public declarations, with no missing module
+**Current artifact checkpoint (2026-09-01).** The live Lean audit is 641
+facade-reachable modules and 8,650 public declarations, with no missing module
 headers or declaration documentation. Several PDFs below are retained,
 readable publication checkpoints rather than renders of the final merged TeX.
 In particular, the primary exposition, Lean walkthrough, canonical frontier,
@@ -32,25 +32,27 @@ Documented pre-replay checkpoints include 167 pages
 for the primary exposition, 126 for the walkthrough, 237 for the canonical
 frontier, 377 for the Integration master, 88 for the notation catalogue, 301
 for Representation, 41 for New Frontiers-2, 42 for inverse computability, 158
-for the comb synthesis, 340 for the consolidated q-series synthesis, and 238
+for the comb synthesis, 347 for the consolidated q-series synthesis, and 238
 for Exponents. The
 listed page counts are artifact receipts, not claims of current source/PDF
 synchronization except where a package explicitly records it.
 
 The two canonical syntheses have newer, source-pinned publication receipts.
-The q-series master was rebuilt from source SHA-256
-`ec9455ecd789b0dbca777a5f5df49c4cfefa51d8e8e8719a7a29296eab4afe65`
-into a 340-page, 2,180,191-byte A4 PDF with SHA-256
-`e64a4ef65a9fcce3a4f211f2125b0f8440910cf4527635f76975b0967800e667`.
-That receipt includes the 28-declaration `QPochhammerInfinite.lean`, the
-two-theorem `QPochhammerDissection.lean`, and the first four
-`QPochhammerEntire.lean` theorems. Six subsequent finite/infinite q-series
-modules contribute another 69 public declarations for continuity at `q = 1`,
-Euler and q-binomial sums, Jacobi's triple product, q-Pascal summation, the
-noncommutative q-binomial theorem, and Rogers--Szegő polynomials. The local
-reciprocal-power zero-lattice theorem completes `QPochhammerEntire.lean` to
-five theorems, making the final merged TeX newer than that receipt and requiring
-another strict three-pass build and ledger refresh. The comb synthesis also
+The retained q-series PDF is the 347-page, 2,996,319-byte A4 artifact with
+SHA-256
+`29b422a39c42be37bd1487d4245c44e55706720c545dd015957644e47014bd48`,
+built from the 14,072-line, 656,200-byte source with SHA-256
+`062b7230d95ff8bd52b11253c6c3c8820d6f6a82e4307ae5d82a1d793c00c517`.
+The live q-series source is now 14,115 lines and 658,674 bytes, with SHA-256
+`4f679c347aa5fa2488e1888b21b50a19d3257dbe2e200219e0b302c2ecc2c231`.
+It adds the zero-definition, three-theorem
+`GeometricPochhammerNormalConvergence.lean` crosswalk: the outer spectral
+product's locally uniform convergence is exact for every complex strict
+contraction, including `q = 0`, with dyadic Rvachev and bounded-Fabius Fourier
+specializations. The compound centered/MGF and exterior reciprocal/pole
+theorem remains Partial. The forward status ledger remains 64 Exact / 78
+Partial / 132 None / 8 interface rows. No PDF was generated for this
+source-only update, so the retained 347-page artifact is historical. The comb synthesis also
 has a later chapter-03 notation edit: its retained 158-page, 2,456,105-byte
 A4 PDF has SHA-256
 `81d249c8b2bb124836c858bd8e0ef9c8764606a2f9655a798d69e7565b1759b4`;
@@ -77,12 +79,15 @@ in the linked q-series registry remain unchanged by this merge.
 
 For the final source-only union, package-local READMEs and ledgers record the
 current q-series and Exponents source fingerprints. The live Exponents TeX is
-16,344 lines and 736,083 bytes with SHA-256
-`2c34d526f18379822ced4d807fd4049ecb85231f4a42a1cd2773fd3c990dd3b9`;
+16,362 lines and 737,086 bytes with SHA-256
+`11b459fdbe4cd44b4690d8ed91864b8864112a03bbff8f8bf980d197eb37dd55`;
 it includes the exact zero-order/exponent identifiability and constructive
 first-difference crosswalk from the new zero-definition, six-theorem Lean
 module, while zeta-quotient, cumulant/analytic-sample, and probability-law
-identifiability remain Partial in Lean. The retained Exponents PDF is 238 A4
+identifiability remain Partial in Lean. It also records the exact
+zero-definition, three-theorem outer q-Pochhammer normal-convergence API;
+the centered/MGF and outside-disk zero--pole compound claim remains Partial.
+The retained Exponents PDF is 238 A4
 pages and 6,316,535 bytes with SHA-256
 `df7b9ad69e0310b17988dd42cc22559cf22ff26027395c005c374ad51f9e62aa`.
 Both rebuilt PDFs predate the merged fifth-theorem crosswalk and are therefore

@@ -10230,6 +10230,24 @@ requires no nonvanishing premise.  The last two theorems,
 scale and nome $1/4$ and transfer the product to a bounded Fabius witness
 satisfying \path{IsFabius}.
 
+The zero-definition, three-theorem module
+\path{GeometricPochhammerNormalConvergence.lean} strengthens that pointwise
+identity to the exact outer-product convergence used here.  For every complex
+$q$ with $\lVert q\rVert<1$,
+\path{hasProdLocallyUniformly_geometricSincProduct_complexQPochhammerInf}
+proves locally uniform convergence on the whole $z$-plane of
+\[
+ \prod_{k\ge0}
+ \left(\frac{z^2}{(k+1)^2};q^2\right)_\infty
+\]
+to $S_q(z)$, including $q=0$.  The declarations
+\path{hasProdLocallyUniformly_rvachevFourierProduct_complexQPochhammerInf}
+and
+\path{hasProdLocallyUniformly_rvachevFourier_complexQPochhammerInf}
+give respectively the nome-$1/4$ Rvachev product and its bounded-Fabius
+Fourier specialization.  Thus the outer locally-uniform, equivalently normal
+convergence, portion of the inside product is now an exact Lean subclaim.
+
 In centered characteristic-function coordinates,
 $z=(1-q)t/(2\pi)$ identifies the general theorem with the inside product.
 At the dyadic scale this is $t=4\pi z$.  In the uncentered MGF normalization
@@ -10260,11 +10278,11 @@ $q=0$ and negative contractions.  The additional declarations
 \path{tendstoLocallyUniformly_prefix_sinc_charFun} and
 \path{tendstoUniformlyOn_prefix_sinc_charFun} give local uniform convergence
 of the full prefixes on the real frequency line and uniform convergence on
-every compact real frequency set.  There is still no named centered
-or MGF bridge and no outside formula or zero--pole exchange; named
-local-uniform or normal convergence of the outer Pochhammer product over the
-spectral index and a packaged complex-frequency full-prefix statement are also
-absent.  Thus \Cref{thm:qF-spectral} remains only partially formalized.
+every compact real frequency set.  There is still no named centered or MGF
+bridge, no packaged complex-frequency full-phase-prefix statement, and no
+outside formula, pole divisor, or zero--pole exchange.  Thus
+\Cref{thm:qF-spectral} remains only partially formalized even though its
+inside-disk pointwise factorization and outer normal convergence are exact.
 
 \begin{remark}[The nome, and where the $q$-objects finally appear]\label{rem:qF-nome}
 The geometric ratio $q$ of the random series \eqref{eq:geometric-uniform-series}
@@ -12527,9 +12545,13 @@ convergence in the symbol variable, entireness, the exact division-free
 factor-zero locus, the reciprocal-power zero lattice for nonzero \(q\), and
 analytic order one at every zero for every strict complex contraction.  The
 factor-zero and simple-order results include the boundary \(q=0\).  The
+zero-definition, three-theorem
+\texttt{GeometricPochhammerNormalConvergence} leaf further proves locally
+uniform convergence of the \emph{outer rearranged} Pochhammer-product
+right-hand side for every strict complex contraction, its nome-\(1/4\)
+Rvachev specialization, and the bounded-Fabius Fourier specialization.  The
 combined interface still does not supply the book's named centered/MGF
-wrapper, outside-disk reciprocal formula, or local-uniform/normal-convergence
-theorem for the \emph{outer rearranged} Pochhammer-product right-hand side.
+wrapper or its outside-disk reciprocal, pole-divisor, and zero--pole clauses.
 The generic module has no analytic-order theorem; that conclusion for the
 separately named complex wrapper, including \(q=0\), remains owned by
 \texttt{QPochhammerEntire}.
@@ -12553,6 +12575,7 @@ compatibility spelling of the primary identity;\\
 \path{QPochhammerDissection.lean}: two theorems;\\
 \path{QPochhammerInfinite.lean}: one definition and 27 theorems;\\
 \path{QPochhammerEntire.lean}: five theorems;\\
+\path{GeometricPochhammerNormalConvergence.lean}: three theorems;\\
 \path{QBinomialTheoremInfinite.lean}: one definition and 22 theorems; its
 use of \path{Fabius.finiteQPochhammerIn_zero_left} imports the unique
 declaration from \path{GaussianBinomialAtOne.lean};\\
@@ -12562,6 +12585,8 @@ declaration from \path{GaussianBinomialAtOne.lean};\\
 \path{QPochhammerInfinite.lean}: one definition and twenty-seven theorems;\\
 \path{RvachevPochhammerFactorization.lean}: one definition and nine theorems;\\
 \path{QPochhammerEntire.lean}: zero definitions and five theorems;\\
+\path{GeometricPochhammerNormalConvergence.lean}: zero definitions and three
+theorems;\\
 \path{GeometricCompleteHomogeneous.lean}: six theorems;\\
 \path{GeometricLagrangeCompleteHomogeneous.lean}: five theorems;\\
 \path{GeometricLagrangeQMoments.lean}: one definition and 37 theorems;\\
@@ -12715,8 +12740,21 @@ specialize to the fixed nome
 \(1/4\); the Fourier form assumes exactly a bounded Fabius witness and
 \path{IsFabius}.  What remains outside the API from
 \Cref{thm:qF-spectral} is its named centered/MGF packaging, outside-disk
-reciprocal and zero--pole clauses, and named local-uniform or normal
-convergence of the outer Pochhammer product over the spectral index.
+reciprocal formula, pole divisor, and zero--pole clauses.
+
+\item The zero-definition, three-theorem module
+\path{GeometricPochhammerNormalConvergence.lean} consists exactly of
+\path{Fabius.hasProdLocallyUniformly_geometricSincProduct_complexQPochhammerInf},
+\path{Fabius.hasProdLocallyUniformly_rvachevFourierProduct_complexQPochhammerInf},
+and
+\path{Fabius.hasProdLocallyUniformly_rvachevFourier_complexQPochhammerInf}.
+The first gives locally uniform convergence on the whole complex plane of the
+outer nome-$q^2$ Pochhammer product to $S_q$ for every complex strict
+contraction, including $q=0$.  The second fixes the dyadic scale and nome
+$1/4$; the third transfers that result to the Fourier transform of every
+bounded Fabius witness satisfying \path{IsFabius}.  This is precisely the
+outer normal-convergence subclaim of the inside-disk formula after its linear
+change of variables; it asserts no exterior reciprocal or pole statement.
 
 \item The zero-definition, five-theorem module
 \path{QPochhammerEntire.lean} consists exactly of
@@ -12740,8 +12778,9 @@ the five theorems cover all of \Cref{thm:poch-entire}; the division-free third
 and simple-order fifth theorem also cover the boundary \(q=0\), where the sole
 zero is \(a=1\).  The Lean surface asserts nothing for
 \(\lVert q\rVert\ge1\), no joint holomorphy in \(q\), closed derivative or
-growth formula, reciprocal meromorphic continuation, or local-uniform
-convergence of the separate outer product over spectral indices.
+growth formula, or reciprocal meromorphic continuation.  The separate
+outer-product leaf above owns the locally uniform convergence over spectral
+indices.
 
 \item The final geometric-sinc tranche contributes four public theorems in
 \path{GeometricReciprocalGamma.lean}, namely
@@ -12773,9 +12812,9 @@ These are exact subclaims of
 \Cref{thm:geometric-uniform-characteristic,thm:qF-spectral}; neither compound
 label is promoted, because no declaration packages the former's
 complex-frequency full phase-prefix convergence or the latter's centered/MGF
-wrapper, reciprocal outside-disk formula, zero--pole exchange, and named
-local-uniform or normal convergence of the outer Pochhammer product over the
-spectral index.
+wrapper, reciprocal outside-disk formula, pole divisor, and zero--pole
+exchange.  The latter's outer normal convergence is exact through
+\path{GeometricPochhammerNormalConvergence.lean} as recorded above.
 
 \item The six theorems of \path{GeometricCompleteHomogeneous.lean} are
 \path{Fabius.completeHomogeneousEval_geometric},
@@ -13678,13 +13717,17 @@ the general normalized analytic-germ uniqueness theorem}\\[2pt]
 \texttt{summable\_\allowbreak{}norm\_\allowbreak{}sineTerm\_\allowbreak{}qpow\_\allowbreak{}pair},
 \texttt{geometricSincProduct\_\allowbreak{}eq\_\allowbreak{}tprod\_\allowbreak{}pair}, and
 \texttt{geometricSincProduct\_\allowbreak{}eq\_\allowbreak{}tprod\_\allowbreak{}complexQPochhammerInf}
-from \texttt{RvachevPochhammerFactorization}; general uncentered
-real-frequency sinc bridge, locally uniform entire $S_q$, the pointwise
-general-$q$ nome-$q^2$ Pochhammer factorization, and real-frequency local and
-compact uniform convergence of the full prefixes are exact, but the named
-centered/MGF wrapper, reciprocal outside-disk formula, zero--pole exchange,
-and named local-uniform or normal convergence of the Pochhammer-product
-right-hand side are not packaged}\\[2pt]
+from \texttt{RvachevPochhammerFactorization}; and
+\texttt{hasProdLocallyUniformly\_\allowbreak{}geometricSincProduct\_\allowbreak{}complexQPochhammerInf},
+\texttt{hasProdLocallyUniformly\_\allowbreak{}rvachevFourierProduct\_\allowbreak{}complexQPochhammerInf}, and
+\texttt{hasProdLocallyUniformly\_\allowbreak{}rvachevFourier\_\allowbreak{}complexQPochhammerInf}
+from \texttt{GeometricPochhammerNormalConvergence}; general uncentered
+real-frequency sinc bridge, locally uniform entire $S_q$, the pointwise and
+outer-locally-uniform general-$q$ nome-$q^2$ Pochhammer factorization, both
+dyadic outer-product specializations, and real-frequency local and compact
+uniform convergence of the full prefixes are exact, but the named
+centered/MGF wrapper, reciprocal outside-disk formula, pole divisor, and
+zero--pole exchange are not packaged}\\[2pt]
 \Cref{thm:qF-moment-polynomial} & \statusnone & ---\\[2pt]
 \Cref{prop:qF-P-degree-sharp} & \statusnone & ---\\[2pt]
 \Cref{cor:qF-halfbase-dictionary} & \statuspartial &

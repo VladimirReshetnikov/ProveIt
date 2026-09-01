@@ -14,12 +14,17 @@ natural-boundary program.
 
 The current live Exponents synthesis source is
 `Exponents_and_q_Series_Frontiers/Exponents_and_q_Series_Frontiers.tex`
-(16,344 lines, 736,083 bytes, SHA-256
-`2c34d526f18379822ced4d807fd4049ecb85231f4a42a1cd2773fd3c990dd3b9`).
+(16,362 lines, 737,086 bytes, SHA-256
+`11b459fdbe4cd44b4690d8ed91864b8864112a03bbff8f8bf980d197eb37dd55`).
 It now includes the exact Lean crosswalk from integer-zero multiplicities to
 the exponent sequence, constructive dyadic-order first differences, and full
-generalized-product rigidity; zeta-quotient, cumulant/analytic-sample, and
-probability-law identifiability remain Partial in Lean.
+generalized-product rigidity.  It also records the zero-definition,
+three-theorem `GeometricPochhammerNormalConvergence.lean` API: the outer
+nome-`q^2` Pochhammer product converges locally uniformly for every complex
+strict contraction, including `q = 0`, with dyadic Rvachev-product and
+bounded-Fabius Fourier specializations.  The compound centered/MGF and
+outside-disk zero--pole statement remains Partial, as do zeta-quotient,
+cumulant/analytic-sample, and probability-law identifiability.
 
 The retained historical PDF has 238 A4 pages and 6,316,535 bytes, with SHA-256
 `df7b9ad69e0310b17988dd42cc22559cf22ff26027395c005c374ad51f9e62aa`.
