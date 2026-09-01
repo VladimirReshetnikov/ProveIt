@@ -52,7 +52,10 @@ argument.  It does not mean that the statement has a corresponding Lean
 declaration.  The formal API was audited at the source snapshot
 \path{e5175d5eb78d66f4e31db3bc506541b9bae12c57}; the relevant files and
 declarations listed below were unchanged when rechecked at intake head
-\path{ffcdbdac47246bd553f272bd1ceac441f8dd4f0c}.
+\path{ffcdbdac47246bd553f272bd1ceac441f8dd4f0c}.  The current crosswalk also
+audits the later compiled module
+\path{FabiusFunction.LagrangeRvachevSynthesis}; that current formal API is
+separate from the immutable manuscript source pin.
 
 The repository already formalizes substantial finite foundations:
 \begin{enumerate}
@@ -73,6 +76,12 @@ The repository already formalizes substantial finite foundations:
       \path{integral_eval_rvachevDeconvolvedPolynomial_add_mul_rvachev}
       and
       \path{normalized_sum_Ioo_rvachevDeconvolvedPolynomial_mul_shifted_rvachevUp}.
+\item generic finite Lagrange--Rvachev synthesis for arbitrary node families:
+      \path{normalized_sum_Ioo_lagrangeRvachevDecoder_mul_shifted_rvachevUp},
+      \path{normalized_sum_Ioo_lagrangeRvachevDecoder_eval_node},
+      \path{lagrangeRvachevAtomCoefficient_eq_deconvolved_interpolate},
+      \path{sum_Ioo_lagrangeRvachevAtomCoefficient_mul_shifted_rvachevUp},
+      and \path{sum_lagrangeRvachevDecoder_eq_one}.
 \end{enumerate}
 
 No one-to-one Lean declaration was found for this report's Jackson
@@ -80,9 +89,12 @@ divided-difference theorem, Gaussian Newton basis pair, arbitrary-evaluation
 complete-homogeneous interpolation remainder, analytic infinite Newton
 convergence theorem, boundary-layer or global Lebesgue asymptotics,
 Newton--Jackson quadrature, Fabius boundary-residue and fixed-jet bounds,
-gap-growth bound, or Gaussian--Appell cardinal/biorthogonality packaging.
-Some of these follow on paper from formalized finite ingredients, but that is
-not the same as a checked Lean theorem.  The conjectures and research
+gap-growth bound, the closed geometric Gaussian--Appell decoder formula and
+prefactor, or the Matrix-level right-inverse/stochastic-encoder package.
+The new scalar Lagrange--Rvachev API covers the generic synthesis,
+coefficient, nodewise-biorthogonality, and decoder-row-sum layers only.  Some
+remaining statements follow on paper from formalized finite ingredients, but
+that is not the same as a checked Lean theorem.  The conjectures and research
 problems have no proof status in either layer.
 
 \subsection{The affine geometric comb}
@@ -2239,6 +2251,17 @@ the same derivative calculation as in
 \eqref{gq:eq:barycentric-weight}.
 \end{proof}
 
+\paragraph{Formalization boundary.}
+The generic cardinal-synthesis identity in
+\eqref{gq:eq:cardinal-up-decoder}, with the decoder defined by
+\eqref{gq:eq:decoder-entry-definition}, is formalized for arbitrary finite
+node families by
+\path{normalized_sum_Ioo_lagrangeRvachevDecoder_mul_shifted_rvachevUp}.
+That declaration does not derive the geometric elementary-symmetric formula
+\eqref{gq:eq:decoder-entry-explicit} or the Gaussian prefactor
+\eqref{gq:eq:decoder-gaussian-prefactor}.  Because this theorem asserts all
+three formulas, its concordance row remains a human-proved frontier result.
+
 \begin{corollary}[Interpolation through an atomic dictionary]
 \label{gq:cor:interpolation-up-factorization}
 For arbitrary nodal data $y_0,\ldots,y_n$,
@@ -2263,6 +2286,15 @@ decoder expansion of each cardinal from
 and collect the coefficient of each atom $u(x-kh)$.  The collected
 coefficient is exactly \eqref{gq:eq:atomic-coefficient-transform}.
 \end{proof}
+
+\paragraph{Formalization boundary.}
+The generic scalar coefficient factorization is
+\path{lagrangeRvachevAtomCoefficient_eq_deconvolved_interpolate}, and the
+complete finite interpolation loop is
+\path{sum_Ioo_lagrangeRvachevAtomCoefficient_mul_shifted_rvachevUp}.
+They hold for arbitrary finite node families under the stated mesh-degree and
+interval hypotheses, so the latter declaration is the exact compiled
+crosswalk for this corollary.
 
 \subsection{Collocation, a stochastic encoder, and a signed right inverse}
 
@@ -2305,6 +2337,15 @@ from $u\ge0$.  Finally
  =(\App1)(kh)=1.
 \]
 \end{proof}
+
+\paragraph{Formalization boundary.}
+The component identity is formalized by
+\path{normalized_sum_Ioo_lagrangeRvachevDecoder_eval_node}, and
+\path{sum_lagrangeRvachevDecoder_eq_one} proves that the unnormalized decoder
+row sums to one for a nonempty distinct node family.  The module does not
+package these scalar sums as a typed Matrix identity, nor does it formalize
+the row-stochastic encoder assertion.  The compound theorem therefore remains
+a human-proved frontier result in the concordance.
 
 Thus a positive averaging map has an exact signed polynomial decoder.  The
 right inverse cannot generally be nonnegative: reconstructing high-degree
@@ -2881,10 +2922,16 @@ a claim that the whole report is already formalized.
 \item \textbf{Fabius arithmetic.}  Reuse the existing exact dyadic-value and
       moment development to prove \Cref{gq:thm:fabius-gaussian-transform}, the
       residue generating function, and the fixed-jet bound.
-\item \textbf{Atomic synthesis.}  Reuse the repository's already formalized
-      Rvachev Appell deconvolution and finite polynomial-synthesis theorem;
-      specialize it to \eqref{gq:eq:cardinal-up-decoder}.  Matrix
-      biorthogonality then reduces to finite sums.
+\item \textbf{Atomic synthesis.}  The generic scalar decoder synthesis,
+      coefficient factorization, full interpolation loop, componentwise node
+      biorthogonality, and unnormalized decoder row-sum law are formalized in
+      \path{FabiusFunction.LagrangeRvachevSynthesis}.  The remaining tasks are
+      to derive the geometric elementary-symmetric decoder and Gaussian
+      prefactor in
+      \eqref{gq:eq:decoder-entry-explicit}--\eqref{gq:eq:decoder-gaussian-prefactor}
+      and to package the resulting scalar identities as the Matrix statement
+      \eqref{gq:eq:stochastic-right-inverse}.  Decoder optimization remains
+      the open problem \Cref{gq:prob:minimum-variation-decoder}.
 \end{enumerate}
 
 The sharp global Lebesgue theorem is the most analytically demanding new

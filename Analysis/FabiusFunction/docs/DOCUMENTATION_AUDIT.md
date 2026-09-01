@@ -109,10 +109,10 @@ only 4,606 declarations and
 declarations, including 69 undocumented ones.  Run the script for the live
 numbers rather than copying these historical values.
 
-The post-merge 2026-08-31 inventory contains 616 modules and 8,395 lexically
+The post-merge 2026-08-31 inventory contains 617 modules and 8,404 lexically
 visible public declarations, with zero missing module headers and zero missing
 doc comments.  Relative to the 610/8,318 activation checkpoint, the exact
-union adds six modules and 77 declarations.  The branch-point geometry and
+union adds seven modules and 86 declarations.  The branch-point geometry and
 asymptotics leaves contribute 17 declarations for the one-sided vertical
 tangents and leading signed square-root laws of both real Lambert branches.
 The two Legendre--Gaunt modules contribute 25: four definitions and twelve
@@ -135,20 +135,28 @@ two positive-order signed-distribution theorems are
 `intervalIntegral_comp_normalized_iteratedDeriv_rvachev` (the Banach-valued
 continuous-test half-mixture) and
 `map_normalized_iteratedDeriv_rvachev_restrict_Icc` (the restricted-Lebesgue
-Borel pushforward).  The remaining declaration is the all-depth
-`generalizedRvachevProduct_two_pow_mul`
-shift--refinement theorem in `WeightLinearityProducts.lean`.  The baseline
-records the current inventory and those zeroes, so every future source addition
-must preserve the full invariant rather than merely avoid worsening a
-historical backlog.  Run the script for live numbers after merging concurrent
-source work.
+Borel pushforward).  The all-depth
+`generalizedRvachevProduct_two_pow_mul` shift--refinement theorem belongs to
+`WeightLinearityProducts.lean`.  The final nine declarations are the two
+definitions and seven theorems of `LagrangeRvachevSynthesis.lean`: the generic
+finite-node decoder and atom coefficient, degree bounds, cardinal synthesis,
+componentwise biorthogonality, linear coefficient identity, exact finite
+interpolation loop, and unit row mass.  This inventory claim does not extend to
+a geometric Gaussian closed-form decoder, a matrix wrapper, or an
+optimal/minimum-variation decoder theorem.  The baseline records zero missing
+headers and zero missing doc comments, so every future source addition must
+preserve the full invariant rather than merely avoid worsening a historical
+backlog.  Run the script for live numbers after merging concurrent source work.
 
-The documentation merge was initially validated source-only.  The three
-changed publication roots were subsequently rebuilt from their final merged
-TeX sources in three strict serial pdfLaTeX passes each.  The resulting primary,
-canonical-frontier, and filed New Frontiers PDFs contain 164, 236, and 41 A4
-pages, respectively; all fonts are embedded and subset, no Type 3 font remains,
-and the filed package's 20-entry ledger verifies 20/20.
+The primary exposition and Lean walkthrough were rebuilt from their current
+sources in fresh, uninterrupted three-pass Libertinus cycles on 2026-08-31 and
+contain 165 and 125 A4 pages.  The canonical frontier and filed New Frontiers
+PDFs were likewise rebuilt from their final merged sources and contain 236 and
+41 A4 pages.  All fonts in these four refreshed artifacts are embedded and
+subset, no Type 3 font remains, and the filed package's 20-entry ledger verifies
+20/20.  Frontier packages that still have a source newer than their retained
+PDF carry an explicit local pending-build disclosure rather than relying on
+this global audit note.
 
 ### What the review pass caught
 

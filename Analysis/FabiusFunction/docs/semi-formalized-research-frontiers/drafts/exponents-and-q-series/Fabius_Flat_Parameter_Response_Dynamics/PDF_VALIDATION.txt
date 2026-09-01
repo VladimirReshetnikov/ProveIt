@@ -1,8 +1,9 @@
 Fabius flat-parameter report PDF validation
 ============================================
 
-Validation date: 2026-08-30
-Status: PASS, with one inspected non-clipping overfull-box note
+Validation refresh: 2026-08-31
+Status: PASS for current identity, geometry, font, and text gates; the earlier
+        log and all-page visual inspection are identified separately below
 
 Build
 -----
@@ -16,15 +17,15 @@ Exit status: 0 on all three passes
 Final source
 ------------
 Path: fabius_frontier_report.tex
-Lines: 1944
-SHA-256: 5b6b142e80be2050027278ca4e14d470fbd033a7351cda13950ab43b72c44b78
+Lines: 1890
+SHA-256: 95458436d084cadecb55fd14bfaa604a0eff244e3b1c38bd2d642831070477be
 
 Final PDF
 ---------
 Path: fabius_frontier_report.pdf
 Pages: 26
-Bytes: 700676
-SHA-256: e258db772de0a665552d52ad12f86165024bce5c0e2f29d1a325d6a866ad5e12
+Bytes: 701353
+SHA-256: f436ae1aaf645080a8f51be9c31b1cdf9305b0b7c6df046bfbd50a119bbe7bed
 PDF version: 1.5
 Encrypted: no
 JavaScript: no
@@ -46,41 +47,30 @@ Nonembedded font records: 0
 Nonsubset font records: 0
 Type 3 font records: 0
 
-Log inspection
+Log provenance
 --------------
-Fatal errors: 0
-Undefined citations/references: 0
-Rerun requests: 0
-Duplicate destinations: 0
-Missing characters/glyphs: 0
-
-One overfull hbox of 6.38734 pt remains at TeX lines 903--905, in the short
-proof below the tangent sinc product. The rendered location on PDF page 12
-was inspected at full-page resolution: the sentence and formula are legible,
-inside the visible page area, and not clipped.
-
-Two underfull hboxes were inspected:
-  badness 1072 at TeX line 345, a narrow comparison-table cell;
-  badness 1448 at TeX lines 1840--1842, a narrow inventory-table cell.
-Neither produces collision, clipping, or an unreadable gap.
+All three strict final-source passes exited 0.  Their auxiliary log was removed
+after the build and was not recreated during this metadata-only refresh.
+Consequently this receipt does not project the 2026-08-30 warning counts or
+obsolete TeX line coordinates onto the current 1,890-line source.  The earlier
+publication-gate inspection found one non-clipping overfull box and two benign
+underfull table cells in the preceding canonical layout.
 
 Text and visual inspection
 --------------------------
-pdftotext extracted 83072 bytes in layout mode.
-Every page has non-whitespace text:
+pdftotext extracted 83095 bytes in layout mode.
+Every page has non-whitespace text in the current PDF:
   minimum 407 characters (page 3, intentional final contents page);
-  maximum 2703 characters;
+  maximum 2705 characters (page 4);
   no "??" unresolved-reference sentinel.
 
-All 26 pages were rasterized at 110 dpi and inspected as a contact sheet.
-Pages 3, 12, 15, 21, and 26 were additionally inspected at individual
-full-page resolution, covering the sparse contents page, the inspected
-overfull location, the first figure and conditional section heading, the
-second figure, and the final bibliography page. No blank, truncated,
-corrupt, overlapping, or visibly clipped page was found.
+The current rebuilt bytes were not rasterized again during this metadata-only
+refresh.  The 2026-08-30 gate rasterized all 26 pages of the preceding
+canonical layout at 110 dpi and inspected both a contact sheet and selected
+full-page renderings; it found no blank, truncated, corrupt, overlapping, or
+visibly clipped page.  That observation is retained as historical validation,
+not represented as a new visual inspection of the current PDF hash.
 
 Auxiliary cleanup
 -----------------
-After recording this validation, fabius_frontier_report.aux,
-fabius_frontier_report.log, fabius_frontier_report.out, and
-fabius_frontier_report.toc are removed from the package.
+No fabius_frontier_report.aux, .log, .out, or .toc file remains in the package.
