@@ -161,7 +161,7 @@ whose logarithmic expansion yields the even cumulants
  \kappa_{2r}=\frac{2^{2r-1}B_{2r}}{r\,(2^{2r}-1)},
  \qquad
  \Expectation X^{n}
- =\Bell_n(0,\kappa_2,0,\kappa_4,\dots),
+ =\ExponentialCompleteBellPolynomial{n}(0,\kappa_2,0,\kappa_4,\dots),
  \label{eq:cumulants}
 \end{equation}
 one of several places where complete Bell polynomials organize the
@@ -728,7 +728,7 @@ $s\ge0$,
  \boxed{\;
  T_{m,m+s}=(-1)^{m}2^{m(m-1)/2}\,
  \frac{(m+s)!}{s!}\,
- \Bell_s\bigl(\lambda_{m,1},\dots,\lambda_{m,s}\bigr).
+ \ExponentialCompleteBellPolynomial{s}\bigl(\lambda_{m,1},\dots,\lambda_{m,s}\bigr).
  \;}
  \label{eq:TN-Bell}
 \end{equation}
@@ -743,7 +743,7 @@ summed over $x=2^{j}t$, $0\le j<m$: the prefactors contribute
 $(-1)^{m}2^{0+1+\cdots+(m-1)}t^{m}$, the linear terms sum to
 $(M-1)t/2$, and each even term is the finite geometric sum in
 \eqref{eq:lambda-jets}.  Comparing
-$\exp(\sum_r x_rt^r/r!)=\sum_s\Bell_s(x_1,\dots,x_s)t^{s}/s!$ with the
+$\exp(\sum_r x_rt^r/r!)=\sum_s\ExponentialCompleteBellPolynomial{s}(x_1,\dots,x_s)t^{s}/s!$ with the
 definition of $T_{m,n}$ gives \eqref{eq:TN-Bell}.
 \end{proof}
 
@@ -1446,7 +1446,7 @@ $\lambda_s(n)=(\log\Psi_n)^{(s)}(0)$.  Then for every $r\ge0$
 \begin{equation}
  \Phi^{(d+r)}(n)
  =\frac{(d+r)!}{r!}\,\Psi_n(0)\,
- \Bell_r\bigl(\lambda_1(n),\dots,\lambda_r(n)\bigr),
+ \ExponentialCompleteBellPolynomial{r}\bigl(\lambda_1(n),\dots,\lambda_r(n)\bigr),
  \label{eq:Bell-jets}
 \end{equation}
 with
@@ -1471,7 +1471,7 @@ $s=2j$,
 \begin{proof}
 Equation \eqref{eq:Bell-jets} is the Leibniz expansion of
 $w^{d}\Psi_n(w)$ at $w=0$ combined with the Bell formula
-$\Psi_n^{(r)}(0)=\Psi_n(0)\Bell_r(\lambda_1,\dots,\lambda_r)$ for
+$\Psi_n^{(r)}(0)=\Psi_n(0)\ExponentialCompleteBellPolynomial{r}(\lambda_1,\dots,\lambda_r)$ for
 derivatives of $\exp(\log\Psi_n)$.  Logarithmic differentiation of the
 three factors of $\Psi_n$ gives \eqref{eq:lambda-s}; for the finite
 sinc block use

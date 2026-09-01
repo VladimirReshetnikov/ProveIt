@@ -91,7 +91,6 @@
 \newcommand{\statusopen}{\textcolor{deepred}{\textbf{conjectural/open}}}
 \newcommand{\NormalCDF}{\Phi_{\!G}}
 \newcommand{\NormalSurv}{\overline{\Phi}_{\!G}}
-\newcommand{\Bell}{\mathcal B}
 \newcommand{\Agen}{\mathcal A}
 \newcommand{\Zspec}{\mathcal Z}
 \newcommand{\Mellin}{\mathcal M}
@@ -1066,7 +1065,7 @@ $A(4^{-j})$.
 The even moments are
 \begin{equation}
  \Expectation X_a^{2n}
- =\Bell_{2n}\bigl(0,\kappa_2,0,\kappa_4,\ldots,0,\kappa_{2n}\bigr),
+ =\ExponentialCompleteBellPolynomial{2n}\bigl(0,\kappa_2,0,\kappa_4,\ldots,0,\kappa_{2n}\bigr),
  \label{p1:eq:bell-moments}
 \end{equation}
 or explicitly
@@ -15034,7 +15033,7 @@ with $[n]_q=1+q+\cdots+q^{n-1}$; all odd cumulants above the mean vanish, and
  \kappa_2(q)=\frac1{12}\,\frac{1-q}{1+q}.
 \end{equation}
 Moments are complete Bell polynomials,
-$m_n(q)=\Bell_n\bigl(\tfrac12,\kappa_2,0,\kappa_4,0,\ldots\bigr)$, hence exact
+$m_n(q)=\ExponentialCompleteBellPolynomial{n}\bigl(\tfrac12,\kappa_2,0,\kappa_4,0,\ldots\bigr)$, hence exact
 rationals at every rational $q$.
 \end{theorem}
 
@@ -15489,7 +15488,7 @@ equation induces the refinement
 \end{equation}
 (with $B_1=-\tfrac12$), a Bernoulli-polynomial analogue of the Fabius Mahler
 equation; and the Bell form
-$\Br_n^{(r)}(x)=\Bell_n\bigl(x-\tfrac12,-\kappa_2(r),0,-\kappa_4(r),0,
+$\Br_n^{(r)}(x)=\ExponentialCompleteBellPolynomial{n}\bigl(x-\tfrac12,-\kappa_2(r),0,-\kappa_4(r),0,
 \ldots\bigr)$ gives
 \[
  \Br_2^{(r)}=z^2-v_r,\quad
@@ -15676,7 +15675,7 @@ Equivalently (general-radix Bell--Bernoulli form), the same subset sums obey
 \begin{gather}
  S_{N,N+\ell}(q)
  =(-1)^Nq^{\binom N2}\frac{(N+\ell)!}{\ell!}\,
- \Bell_\ell\bigl(\gamma_1,\ldots,\gamma_\ell\bigr),
+ \ExponentialCompleteBellPolynomial{\ell}\bigl(\gamma_1,\ldots,\gamma_\ell\bigr),
  \label{p7:eq:radix-bell}\\
  \gamma_1=\tfrac12[N]_q,\qquad
  \gamma_{2r}=\frac{B_{2r}}{2r}\,[N]_{q^{2r}},\qquad
