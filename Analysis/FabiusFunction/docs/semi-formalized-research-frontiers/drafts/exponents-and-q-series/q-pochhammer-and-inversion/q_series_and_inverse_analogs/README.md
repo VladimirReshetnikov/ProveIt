@@ -96,9 +96,18 @@ It checks every permanent package file except the self-referential root
 useful because it preserves the migrated experiment and research-figure
 boundary.
 
-There is intentionally no canonical PDF in this directory. PDF generation
-was skipped by explicit user direction, and all five superseded manuscript
-PDFs were deleted rather than renamed into misleading partial or donor
-renderings. The PDF files under `assets/experiments/**/figures/` are retained
-research figures, not publication manuscripts. No current claim is made about
-TeX compilation, page count, font embedding, or rendered-page inspection.
+The canonical publication artifact is `q_series_and_inverse_analogs.pdf`. It
+was built from `q_series_and_inverse_analogs.tex` by three consecutive serial
+`pdflatex -interaction=nonstopmode -halt-on-error` passes with
+`SOURCE_DATE_EPOCH=1788242400`; all three passes produced the same bytes. The
+result is a 334-page A4 PDF of 2,917,795 bytes with SHA-256
+`aa75c32926fb0d5b20d831f9df0be584073f1cbc4232c25facbd21d98b9f680d`.
+The final log has no layout, reference, rerun, font, package, or PDF-string
+warning. `pdffonts` reports every font embedded and subsetted, including the
+Libertinus serif and monospaced faces. Poppler rendered all 334 pages at
+827-by-1170 pixels. Every page was covered by the complete contact-sheet
+review; the six pages changed during the final typography repair were also
+inspected at full resolution, while the remaining 328 renders were
+byte-identical to their already reviewed versions. The files under
+`assets/experiments/**/figures/` remain research figures, not publication
+manuscripts.

@@ -26,9 +26,16 @@ The three guides arrived respectively in commits
 assets: each donor package consisted only of TeX, PDF, and a repository
 checksum ledger. Their superseded PDFs were retired with the donor packages
 and are not canonical renderings of this larger source. The former forward
-and inverse manuscript PDFs were removed for the same reason. By explicit
-user direction, no canonical publication PDF was generated from the merged
-master; PDFs retained beneath `assets/` are research figures, not manuscripts.
+and inverse manuscript PDFs were removed for the same reason. The merged
+master now has one canonical publication rendering,
+`q_series_and_inverse_analogs.pdf`: a reproducible 334-page A4 artifact built
+by three byte-identical serial passes at fixed source epoch `1788242400`, with
+SHA-256
+`aa75c32926fb0d5b20d831f9df0be584073f1cbc4232c25facbd21d98b9f680d`.
+The validation record in `README.md` distinguishes compilation, font
+embedding, complete page rendering, contact-sheet review, and full-resolution
+inspection. PDFs retained beneath `assets/` are research figures, not
+manuscripts.
 
 The former q-Pochhammer/q-binomial monograph arrived in commit
 `47172bc03ec078961d8b023dfe156ecd712efb65`. Its pre-repair source SHA-256 was
