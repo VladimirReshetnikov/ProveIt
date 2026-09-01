@@ -95,14 +95,16 @@ pdflatex -interaction=nonstopmode -halt-on-error comb_interpolation_synthesis.te
 ```
 
 A successful command is not, by itself, the complete publication gate. From a
-clean auxiliary state, the final semantic-union source received exactly three
+clean auxiliary state, the preceding semantic-union source received exactly three
 strict serial passes at fixed source epoch `1788242400`, producing 151, 158,
-and 158 pages. The synchronized publication PDF has 158 pages, 2,456,105
+and 158 pages. The retained publication PDF has 158 pages, 2,456,105
 bytes, and SHA-256
 `81d249c8b2bb124836c858bd8e0ef9c8764606a2f9655a798d69e7565b1759b4`.
-The source validator and root ledger, together with the log, A4/page, text,
-metadata, font, render, and visual gates, all pass. The complete current
-receipt and the older historical receipts are recorded once in
+The later canonical-notation edit in `chapters/03_additive_dyadic.tex` makes
+that PDF a validated checkpoint rather than a rendering of the current source;
+a fresh exact three-pass build is pending. The root ledger verifies the current
+source and retained PDF as distinct payloads. The complete checkpoint receipt
+and the older historical receipts are recorded once in
 [`assets/VALIDATION.md`](assets/VALIDATION.md).
 
 ## Reproduce the computational evidence
@@ -144,7 +146,7 @@ with the local general-$q$, endpoint-jet, Lagrange-synthesis,
 `PrimePowerBinomialValuation`, reference-appendix, layout, and driver edits in
 `chapters/03_additive_dyadic.tex`, `chapters/90_reference_appendices.tex`, and
 `comb_interpolation_synthesis.tex`. The repository-wide Lean documentation
-census at this merge checkpoint is 621 modules and 8,446 public declarations.
+census at this merge checkpoint is 623 modules and 8,476 public declarations.
 That census is contextual evidence, not a claim that every manuscript result
 in this volume is formalized.
 
@@ -154,6 +156,7 @@ disposition, historical-ledger, companion-payload, 232-row
 theorem-concordance, and exhaustive package-checksum gates. Its narrow Lean
 identifier check is not a live theorem-type check. The root `SHA256SUMS` is the
 single exhaustive ledger for every other permanent package file, including
-the synchronized PDF and complete evidence tree; there is no
+the retained PDF and complete evidence tree; it verifies current bytes without
+asserting source/PDF synchronization. There is no
 `assets/SHA256SUMS`. A fresh-checkout reproduction and a full rerun of every
 retained numerical script remain separate reproducibility work.

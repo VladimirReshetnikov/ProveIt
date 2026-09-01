@@ -96,8 +96,9 @@ It checks every permanent package file except the self-referential root
 useful because it preserves the migrated experiment and research-figure
 boundary.
 
-The canonical publication artifact is `q_pochhammer_q_binomial_monograph.pdf`.
-It was built from final source SHA-256
+The retained canonical publication artifact is
+`q_pochhammer_q_binomial_monograph.pdf`. It was built from the then-current
+source SHA-256
 `9b7ac11a815efa7f3c6ea08b9626c06143fd6b0d633fef6edfc8bc21c2f6783a`,
 with `origin/main` pinned at
 `8a7d03dc379638a6cbda302074b2feba27c21961` when the gate began, by exactly
@@ -117,3 +118,10 @@ inspected at 1,191-by-1,684 pixels, covering the title, both exact
 final register page, and the end of the index. The files under
 `assets/experiments/**/figures/` remain research figures, not publication
 manuscripts.
+
+The live source now includes exhaustive crosswalks for
+`QPochhammerEntire` (four theorems), `QPochhammerInfinite` (one definition and
+twenty-seven theorems), and `QPochhammerDissection` (two theorems). Those
+post-receipt source changes make the 335-page PDF a historical checkpoint;
+publication synchronization requires a fresh exact three-pass build followed
+by regeneration of the root package checksum ledger.

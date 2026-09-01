@@ -27,9 +27,9 @@ assets: each donor package consisted only of TeX, PDF, and a repository
 checksum ledger. Their superseded PDFs were retired with the donor packages
 and are not canonical renderings of this larger source. The former forward
 and inverse manuscript PDFs were removed for the same reason. The merged
-master now has one canonical publication rendering,
+master retains one canonical publication checkpoint,
 `q_pochhammer_q_binomial_monograph.pdf`: a reproducible 335-page A4 artifact
-built from source SHA-256
+built from the then-current source SHA-256
 `9b7ac11a815efa7f3c6ea08b9626c06143fd6b0d633fef6edfc8bc21c2f6783a`
 by exactly three successful serial passes at fixed source epoch `1788242400`.
 The build gate pinned `origin/main` at
@@ -40,6 +40,12 @@ The validation record in `README.md` distinguishes compilation, font
 embedding, complete page rendering, contact-sheet review, and full-resolution
 inspection. PDFs retained beneath `assets/` are research figures, not
 manuscripts.
+
+The live source now postdates that receipt: it incorporates the exhaustive
+`QPochhammerEntire`, `QPochhammerInfinite`, and `QPochhammerDissection` Lean
+crosswalks. The 335-page PDF therefore remains a historical publication
+checkpoint until the final source receives a fresh exact three-pass build and
+the package checksum ledger is regenerated.
 
 The former q-Pochhammer/q-binomial monograph arrived in commit
 `47172bc03ec078961d8b023dfe156ecd712efb65`. Its pre-repair source SHA-256 was

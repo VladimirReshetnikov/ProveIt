@@ -22,11 +22,13 @@ inverse-q synthesis have been dispositioned into
 Their earlier names, arrival hashes, and publication facts remain provenance,
 not parallel live documents. The canonical pre-`c3720b763` source has a
 verified reproducible 335-page A4 publication. Its source/PDF receipt remains
-valid, but the new four-theorem `QPochhammerEntire.lean` surface must be added
-to the formalization crosswalk before the final semantic-union source is rebuilt.
+valid. The subsequent `QPochhammerEntire.lean`,
+`QPochhammerInfinite.lean`, and `QPochhammerDissection.lean` surfaces are now
+incorporated into the current formalization crosswalk; that semantic-union
+source requires a fresh three-pass build and ledger refresh.
 Retained PDFs under its `assets/` tree are research figures, not alternate
-manuscript renderings. The current Lean audit contains 621 facade-reachable
-modules and 8,446 public declarations, with no missing module headers or
+manuscript renderings. The current Lean audit contains 623 facade-reachable
+modules and 8,476 public declarations, with no missing module headers or
 declaration documentation.
 
 ## Detailed package record
@@ -90,7 +92,7 @@ Current packages and retained intake records:
   figures. Pinned source revisions and Git history preserve every superseded
   layout and arrival fact.
 
-  The current `q_pochhammer_q_binomial_monograph.pdf` is a reproducible
+  The retained `q_pochhammer_q_binomial_monograph.pdf` is a reproducible
   335-page A4 render of source SHA-256
   `9b7ac11a815efa7f3c6ea08b9626c06143fd6b0d633fef6edfc8bc21c2f6783a`
   (2,163,339 bytes; PDF SHA-256
@@ -98,10 +100,10 @@ Current packages and retained intake records:
   Exactly three strict serial passes produced the artifact; all 335 pages,
   A4 media, metadata, text extraction, embedded/subset fonts including
   Libertinus, absence of Type 3 fonts, and targeted visual review passed. This
-  remains a valid receipt for the pre-`c3720b763` source. The newly merged
-  `QPochhammerEntire.lean` API is not yet represented in the publication
-  crosswalk, so incorporating that four-theorem surface will create a new
-  final source that needs another strict three-pass build and ledger refresh.
+  remains a valid receipt for the pre-`c3720b763` source. The later
+  `QPochhammerEntire.lean`, `QPochhammerInfinite.lean`, and
+  `QPochhammerDissection.lean` APIs are represented in the current source;
+  that post-receipt union needs another strict three-pass build and ledger refresh.
   PDF files retained beneath `assets/` are vector research figures, not
   manuscript builds. Manuscript result labels and numerical checks remain
   distinct from Lean verification.
@@ -764,9 +766,10 @@ and a 1,582,997-byte, 213-page PDF (SHA-256
 `7ee6f8f6d8e72228a5b20daa119caa4d834b11063f910b526897b2677a2ede7b`).
 Those figures identify a retired historical artifact; they are not build
 claims about the current canonical source. The canonical synthesis's newer
-335-page PDF does render its explicitly hashed pre-`c3720b763` source; it will
-become a historical source-pinned receipt once the `QPochhammerEntire.lean`
-crosswalk is incorporated and the resulting final union is rebuilt.
+335-page PDF does render its explicitly hashed pre-`c3720b763` source and is
+now a historical source-pinned receipt because the three later q-Pochhammer
+module crosswalks are incorporated into the current source. That source still
+requires its final build.
 
 The pre-`c3720b763` forward formalization crosswalk has 284 labelled results: 42
 exact, 74 partial, 160 with no counterpart, and 8 interface-only. The original
@@ -944,9 +947,10 @@ theorems justify the exchange of scale and spectral-zero indices, including
 eight-theorem sinc-product tranche above
 supplies the general-`q` uncentered real-frequency bridge, locally uniform
 entire `S_q`, and real-frequency local and compact uniform convergence of the
-full phase-bearing prefixes.  There is still no named centered or MGF
-wrapper, no outside-disk reciprocal formula, and no named local-uniform or
-normal-convergence theorem for the Pochhammer-product right-hand side.
+full phase-bearing prefixes.  There is still no named centered or MGF wrapper
+or outside-disk reciprocal formula. The later entire and generic
+infinite-product leaves supply the parameter-local-uniform and normal-
+convergence layer described below.
 
 `QPochhammerEntire.lean` adds exactly four public theorems beyond that
 pointwise product surface:
@@ -957,7 +961,17 @@ pointwise product surface:
 strict contraction, they prove locally uniform convergence in the parameter
 `a`, entire-ness of `a ↦ (a;q)_∞`, the exact factor-zero locus, and analytic
 order one at every zero. The division-free factor formulation includes the
-degenerate nome `q = 0`. These are proved, facade-reachable Lean results, but
-they postdate the 284-row publication crosswalk above; adding their exact
-human-readable counterparts and refreshed crosswalk rows is the outstanding
-source edit before the next canonical three-pass build.
+degenerate nome `q = 0`. These are proved, facade-reachable Lean results. Their
+exact human-readable counterparts and refreshed crosswalk rows are now present
+in the current source, whose next canonical three-pass build remains pending.
+
+`QPochhammerDissection.lean` adds the two denominator-free finite residue-class
+factorizations over arbitrary commutative rings. `QPochhammerInfinite.lean`
+adds the generic infinite symbol `Fabius.qPochhammerInfIn` and 27 theorems:
+strict-contraction summability and convergence, finite-prefix and residue-class
+factorizations, exact zero criteria, locally uniform parameter convergence,
+continuity and complex differentiability, and explicit nonzero derivatives at
+inverse-power zeros. Its infinite dissection assumes a positive modulus, while
+the two finite dissection theorems require no contraction or nonvanishing.
+These APIs are regularity statements in the free parameter, not joint
+analyticity or continuation in the nome.

@@ -1,7 +1,7 @@
 # Validation record
 
 This record distinguishes completed inventory work, historical publication
-checkpoints, and the current completed semantic-union publication. The immutable source
+checkpoints, and the current source graph. The immutable source
 baseline is `73f0b373126ef22a3b5dccadfa7b99d61d445345`. Historical artifacts remain
 receipts only for their stated input graphs. Full numerical replay and
 fresh-checkout reproduction remain separate.
@@ -13,10 +13,13 @@ local general-$q$/endpoint-jet, Lagrange,
 revisions in `chapters/03_additive_dyadic.tex`,
 `chapters/90_reference_appendices.tex`, and
 `comb_interpolation_synthesis.tex`. The repository-wide documentation census
-at this merge checkpoint is 621 Lean modules and 8,446 public declarations.
-The checked-in PDF was built from this final union and passed the complete
-publication gate. The root `SHA256SUMS` is the single exhaustive package
-ledger; there is no `assets/SHA256SUMS`.
+at this merge checkpoint is 623 Lean modules and 8,476 public declarations.
+The checked-in PDF was built from the immediately preceding source graph and
+passed the complete publication gate recorded below. A later canonical-notation
+edit in `chapters/03_additive_dyadic.tex` requires a fresh exact three-pass
+render. The root `SHA256SUMS` is the single exhaustive package ledger and
+verifies the current source and retained PDF as distinct payloads; there is no
+`assets/SHA256SUMS`.
 
 ## Completed source and evidence checks
 
@@ -66,7 +69,7 @@ The complete row-level audit is
 are historical manifests, mismatches are reported rather than silently
 rewritten. They do not certify the current canonical payloads.
 
-## Current completed semantic-union publication gate
+## Retained semantic-union publication checkpoint
 
 - The current union retains the incoming `chapters/01_geometric_core.tex` and
   `chapters/99_bibliography.tex` path corrections together with the local
