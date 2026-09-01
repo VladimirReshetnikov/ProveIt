@@ -114,10 +114,27 @@ physical pages 1, 247, 313, 314, 319, 338, and 340 was clean. The files under
 `assets/experiments/**/figures/` remain research figures, not publication
 manuscripts.
 
-The live source now includes exhaustive crosswalks for
-`QPochhammerEntire` (four theorems), `QPochhammerInfinite` (one definition and
-twenty-seven theorems), and `QPochhammerDissection` (two theorems), together
-with expanded Euler, infinite-q-binomial, Jacobi, and Rogers--Szegő material.
-Those post-checkpoint source changes mean that the retained PDF does not render
-the live source. Publication synchronization requires a fresh exact three-pass
+The current master TeX is a source-only successor to that checkpoint. Its
+13,941-line, 647,940-byte source has SHA-256
+`619d45dad475fd869c294aeed1f1eac6b99d9b3cfef6a9487383ee3e92931bbe`.
+It includes exhaustive crosswalks for `QPochhammerEntire` (zero definitions
+and five theorems), `QPochhammerInfinite` (one definition and twenty-seven
+theorems), and `QPochhammerDissection` (zero definitions and two theorems),
+together with expanded Euler, infinite-q-binomial, Jacobi, and
+Rogers--Szegő material.
+The `QPochhammerEntire` crosswalk records fixed-nome local uniformity and
+entireness, the division-free factor-zero criterion valid at `q = 0`, the
+reciprocal-power zero lattice for nonzero nome, and simple analytic order at
+every zero. The `QBinomialTheoremInfinite` inventory is one definition and
+twenty-two theorems: `finiteQPochhammerIn_zero_left` remains the single
+declaration owned by `GaussianBinomialAtOne` and is imported rather than
+redeclared. The forward status ledger is 51 Exact, 78 Partial, 145 None, and
+8 interface rows; the 191-result pre-Fabius core is 36/29/123/3. The compound outer spectral-product
+theorem remains Partial: local uniformity for one symbol as a function of its
+argument at fixed contracting nome does not establish normal convergence of
+the additional product over spectral scales.
+
+No PDF was rebuilt for this source-only update. The retained 340-page PDF is
+therefore a historical publication checkpoint, and exact source/PDF parity is
+not claimed. Publication synchronization requires a fresh exact three-pass
 build followed by regeneration of the root package checksum ledger.

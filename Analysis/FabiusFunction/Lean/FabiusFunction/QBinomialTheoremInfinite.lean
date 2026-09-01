@@ -1,5 +1,6 @@
 import FabiusFunction.QPochhammerInfinite
 import FabiusFunction.QBinomialCauchy
+import FabiusFunction.GaussianBinomialAtOne
 import Mathlib.Analysis.Normed.Group.Tannery
 
 /-!
@@ -161,11 +162,6 @@ end RealComparison
 section NormBounds
 
 variable {𝕜 : Type*} [NormedField 𝕜]
-
-/-- `(0;q)_n = 1`. -/
-@[simp] theorem finiteQPochhammerIn_zero_left {R : Type*} [CommRing R] (q : R) (n : ℕ) :
-    finiteQPochhammerIn 0 q n = 1 := by
-  simp [finiteQPochhammerIn]
 
 /-- `(0;q)_∞ = 1`. -/
 @[simp] theorem qPochhammerInfIn_zero_left {R : Type*} [CommRing R] [TopologicalSpace R]
