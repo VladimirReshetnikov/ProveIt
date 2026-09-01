@@ -96,18 +96,32 @@ It checks every permanent package file except the self-referential root
 useful because it preserves the migrated experiment and research-figure
 boundary.
 
-The canonical publication artifact is `q_pochhammer_q_binomial_monograph.pdf`.
-It was built from `q_pochhammer_q_binomial_monograph.tex` by three consecutive serial
+The retained canonical publication artifact is
+`q_pochhammer_q_binomial_monograph.pdf`. It was built from the then-current
+source SHA-256
+`9b7ac11a815efa7f3c6ea08b9626c06143fd6b0d633fef6edfc8bc21c2f6783a`,
+with `origin/main` pinned at
+`8a7d03dc379638a6cbda302074b2feba27c21961` when the gate began, by exactly
+three successful consecutive serial
 `pdflatex -interaction=nonstopmode -halt-on-error` passes with
-`SOURCE_DATE_EPOCH=1788242400`; all three passes produced the same bytes. The
-result is a 334-page A4 PDF of 2,917,795 bytes with SHA-256
-`aa75c32926fb0d5b20d831f9df0be584073f1cbc4232c25facbd21d98b9f680d`.
+`SOURCE_DATE_EPOCH=1788242400`. The final pass produced a 335-page A4 PDF of
+2,163,339 bytes with SHA-256
+`91c649d0c69628e134e71f1be6c39c3cbc96b91bfc63e456011083cf0e882f03`.
 The final log has no layout, reference, rerun, font, package, or PDF-string
-warning. `pdffonts` reports every font embedded and subsetted, including the
-Libertinus serif and monospaced faces. Poppler rendered all 334 pages at
-827-by-1170 pixels. Every page was covered by the complete contact-sheet
-review; the six pages changed during the final typography repair were also
-inspected at full resolution, while the remaining 328 renders were
-byte-identical to their already reviewed versions. The files under
+warning. `pdfinfo` reports A4 media and zero rotation on every page.
+`pdffonts` reports 42 Type-1 entries, all embedded and subsetted, including
+five Libertinus entries and no Type-3 font. Poppler rendered all 335 pages at
+298-by-421 pixels without a blank page. Every page was covered by nine complete
+contact sheets; pages 1, 115, 263, 284, 308, 329, and 335 were additionally
+inspected at 1,191-by-1,684 pixels, covering the title, both exact
+`q=-1` crosswalks, the certification chapter, the formalization appendix, its
+final register page, and the end of the index. The files under
 `assets/experiments/**/figures/` remain research figures, not publication
 manuscripts.
+
+The live source now includes exhaustive crosswalks for
+`QPochhammerEntire` (four theorems), `QPochhammerInfinite` (one definition and
+twenty-seven theorems), and `QPochhammerDissection` (two theorems). Those
+post-receipt source changes make the 335-page PDF a historical checkpoint;
+publication synchronization requires a fresh exact three-pass build followed
+by regeneration of the root package checksum ledger.

@@ -78,6 +78,83 @@ bounded by convergent geometric series with at most a polynomial factor in
 proves all three identities.
 \end{proof}
 
+\paragraph{Exact fixed-nome Lean subclaims and their boundary.}
+The generic formal object is \lean{Fabius.qPochhammerInfIn}, the total
+\texttt{tprod} in an arbitrary topological commutative ring, with defining
+theorem \lean{Fabius.qPochhammerInfIn_eq_tprod}.  In a normed ring with
+\(\lVert1\rVert=1\), the elementary lemmas are
+\lean{Fabius.summable_norm_mul_pow},
+\lean{Fabius.one_sub_ne_zero_of_norm_lt_one}, and
+\lean{Fabius.norm_mul_pow_self_lt_one}; the finite self-product result
+\lean{Fabius.finiteQPochhammerIn_self_ne_zero} additionally uses a
+commutative ring with no zero divisors.
+
+For \(\lVert q\rVert<1\) in a complete normed commutative ring with
+\(\lVert1\rVert=1\), the seven exact convergence and factorization theorems
+are
+\lean{Fabius.multipliable_one_sub_mul_pow_of_norm_lt_one},
+\lean{Fabius.hasProd_qPochhammerInfIn},
+\lean{Fabius.tendsto_finiteQPochhammerIn_qPochhammerInfIn},
+\lean{Fabius.qPochhammerInfIn_eq_finite_mul_shift},
+\lean{Fabius.qPochhammerInfIn_succ_shift},
+\lean{Fabius.qPochhammerInfIn_eq_factor_mul}, and
+\lean{Fabius.qPochhammerInfIn_dissection}; only the last also assumes
+\(0<r\).  With a multiplicative norm, the exact zero block is
+\lean{Fabius.qPochhammerInfIn_ne_zero},
+\lean{Fabius.qPochhammerInfIn_eq_zero_iff}, and
+\lean{Fabius.qPochhammerInfIn_self_ne_zero}.  The middle theorem is the raw
+factor equation \(aq^j=1\), so it includes \(q=0\).
+
+The unconditional normed-field support theorems are
+\lean{Fabius.qPochhammerInfIn_eq_tprod_smul} and
+\lean{Fabius.isBigO_one_sub_sub_one};
+\lean{Fabius.summable_norm_pow_of_norm_lt_one} additionally assumes
+\(\lVert q\rVert<1\), while
+\lean{Fabius.differentiable_finiteQPochhammerIn} needs only a nontrivially
+normed field.  In a complete normed field, \(\lVert q\rVert<1\) and
+\(q\ne0\) give the reciprocal
+zero enumeration
+\lean{Fabius.qPochhammerInfIn_eq_zero_iff_exists_inv_pow}; the same strict
+contraction together with local compactness is assumed by
+\lean{Fabius.hasProdLocallyUniformly_qPochhammerInfIn} and
+\lean{Fabius.continuous_qPochhammerInfIn}.  The finite cofactor identity
+\lean{Fabius.pow_sq_mul_finiteQPochhammerIn_inv_pow_self} is algebraic over a
+field with \(q\ne0\).
+
+Over \(\ComplexNumbers\), the final four theorems are
+\lean{Fabius.differentiable_qPochhammerInfIn},
+\lean{Fabius.hasDerivAt_qPochhammerInfIn_of_mul_pow_eq_one},
+\lean{Fabius.hasDerivAt_qPochhammerInfIn_inv_pow}, and
+\lean{Fabius.deriv_qPochhammerInfIn_inv_pow_ne_zero}.  The raw derivative
+theorem assumes \(a_0q^j=1\) and permits \(q=0,j=0\); the reciprocal-power
+formula and its nonvanishing theorem assume \(q\ne0\) and give exactly
+\cref{eq:ip-zero-derivative}.  The final theorem literally proves the
+displayed coefficient nonzero, while the preceding \texttt{HasDerivAt}
+theorem identifies that coefficient with the derivative.
+
+The finite parent module \path{QPochhammerDissection.lean} has no public
+definition and exactly the two commutative-ring theorems
+\lean{Fabius.finiteQPochhammerIn_dissection} and
+\lean{Fabius.finiteQPochhammerIn_dissection_remainder}.  They require no
+condition on \(q\); the first is total in natural \(r,n\), and the second
+assumes exactly \(u\le r\), including \(u=r\).  The positive-modulus
+infinite identity listed above is the limit-level companion.
+
+The infinite declarations listed above exhaust the one definition and
+twenty-seven theorems of
+\path{QPochhammerInfinite.lean}.  They formalize the fixed-\(q\) convergence,
+entireness, zero, finite-shift, residue-dissection, and zero-derivative
+subclaims used in this chapter.  They do \emph{not} formalize the
+uniform-in-\(q\) numerical tail bounds
+\cref{eq:ip-product-tail,eq:ip-log-tail}, joint holomorphy in \((a,q)\), or the
+three logarithmic-derivative series
+\cref{eq:ip-a-logder,eq:ip-a-logsecond,eq:ip-q-logder}; consequently the
+compound \Cref{thm:ip-normal-convergence} remains a human-proved frontier
+result.  Nor does this generic module state analytic order.  That separate
+conclusion for \lean{Fabius.complexQPochhammerInf}, including \(q=0\), remains
+\lean{Fabius.analyticOrderAt_complexQPochhammerInf_of_eq_zero} in
+\path{QPochhammerEntire.lean}.
+
 \begin{lemma}[Lambert logarithm]
 \label{lem:ip-lambert-log}
 For \(|a|<1\) and \(|q|<1\),

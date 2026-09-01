@@ -174,10 +174,13 @@ not proof statuses.
 
 The extractor initially generated the five editorial columns empty, because
 text matching cannot decide mathematical equivalence.  In the reviewed
-ledger, all \(260\) rows now have a canonical status and disposition note;
-\(180\) map to canonical labels, while the remaining \(80\) are explicitly
-absorbed, retired, or not separately asserted.  Exact Lean module and
-declaration cells remain empty unless an exact formal counterpart is claimed.
+ledger, all \(260\) rows now have a canonical status and disposition note.  Its
+status census is one \emph{Lean-proved}, \(147\)
+\emph{human-proved frontier result}, fifteen \emph{conjecture}, and \(97\)
+\emph{not applicable}; \(180\) rows map to canonical labels, while the
+remaining \(80\) are explicitly absorbed, retired, or not separately asserted.
+Exact Lean module and declaration cells remain empty unless an exact formal
+counterpart is claimed.
 The retained reviewed CSV is authoritative.  The revision-backed extractor
 \lean{audit/extract_source_results.py} reproduces and verifies its ten
 immutable source columns from the commit pinned in
@@ -302,33 +305,42 @@ Source package & Principal source themes & Canonical destinations\\
 \lean{inverse_q_analog_functions_report}
 & Branch orientation, regular inverse germs, sensitivities, real and complex
 sheet atlases, continuation.
-& \Cref{sec:uq-regular-germs,sec:uq-sensitivities,fp-finite-covering,sec:ip-argument-atlas,sec:certification-frontiers}.\\
+& \Cref{sec:uq-regular-germs,sec:uq-sensitivities,fp-finite-covering,%
+sec:ip-argument-atlas,sec:certification-frontiers}.\\
 \addlinespace
 \lean{inverse_q_analog_jet_atlas}
 & Triangular coefficient recurrences, Lagrange inversion, Bell polynomials,
 mixed jets, multivariate and Good inversion.
-& \Cref{sec:uq-formal-inversion,sec:uq-lagrange-burmann,sec:uq-bell-packaging,sec:uq-multivariate-recursion,sec:uq-lagrange-good}.\\
+& \Cref{sec:uq-formal-inversion,sec:uq-lagrange-burmann,%
+sec:uq-bell-packaging,sec:uq-multivariate-recursion,%
+sec:uq-lagrange-good}.\\
 \addlinespace
 \lean{inverse_q_analogs_extended_report}
 & Exceptional finite bases, \(q=0,\pm1\), radial cyclotomic inversion,
 \(q\)-special functions, certification, Fabius--Rvachev recovery.
-& \Cref{fp-base-inversion,fp-minus-one-section,sec:ip-real-base,sec:ip-cyclotomic,sec:qs-qgamma,sec:fr-geometric-law,sec:certification-frontiers}.\\
+& \Cref{fp-base-inversion,fp-minus-one-section,sec:ip-real-base,%
+sec:ip-cyclotomic,sec:qs-qgamma,sec:fr-geometric-law,%
+sec:certification-frontiers}.\\
 \addlinespace
 \lean{inverse_q_analogs_report}
 & Discriminants, real gaps and remote sheets, \(q\)-special inverses,
 certification algorithms, conjecture register.
-& \Cref{fp-finite-covering,sec:ip-argument-atlas,thm:ip-remote-gaps,sec:qs-qdigamma,sec:certification-frontiers,sec:precise-open-frontiers}.\\
+& \Cref{fp-finite-covering,sec:ip-argument-atlas,thm:ip-remote-gaps,%
+sec:qs-qdigamma,sec:certification-frontiers,sec:precise-open-frontiers}.\\
 \addlinespace
 \lean{inverse_q_analogs_report-2}
 & Reciprocal regimes, roots of unity, compact inverse tables, independent
 algorithmic derivations.
-& \Cref{fp-base-inversion,sec:ip-fixed-a-qone,sec:ip-cyclotomic,sec:gaussian-infinity,sec:qs-qexponentials,sec:certification-frontiers}.\\
+& \Cref{fp-base-inversion,sec:ip-fixed-a-qone,sec:ip-cyclotomic,%
+sec:gaussian-infinity,sec:qs-qexponentials,%
+sec:certification-frontiers}.\\
 \addlinespace
 \lean{q_pochhammer_q_binomial_expansions_report}
 & Exact forward coefficient engines, uniform remainders, Bernoulli and
 polylogarithmic expansions, Gaussian/multinomial limits, roots of unity,
 \(q\)-gamma and \(q\)-beta.
-& \Cref{fp-finite-covering,sec:ip-fixed-a-qone,sec:ip-qx,sec:gaussian-one,sec:qmultinomial,sec:qs-qgamma,sec:qs-qbeta}.\\
+& \Cref{fp-finite-covering,sec:ip-fixed-a-qone,sec:ip-qx,%
+sec:gaussian-one,sec:qmultinomial,sec:qs-qgamma,sec:qs-qbeta}.\\
 \bottomrule
 \end{tabularx}
 \caption{Topical source-to-canonical crosswalk.}
@@ -341,7 +353,7 @@ polylogarithmic expansions, Gaussian/multinomial limits, roots of unity,
 
 The exact declaration-level source map is already given in
 \cref{sec:lean-certification-map} and is not duplicated here.  Its current
-formal surface has five principal islands:
+formal surface has six principal islands:
 
 \begin{enumerate}
 \item classical Fabius inverse identities, monotonicity, continuity,
@@ -349,8 +361,17 @@ formal surface has five principal islands:
 \item the geometric-uniform probability law, its support and self-similarity,
   the geometric sinc characteristic-function identity, certified sinc and CDF
   tails, and an effective forward Fabius modulus;
+\item the generic infinite \(q\)-Pochhammer product at every strict contraction:
+  complete-normed-ring convergence, concatenation, factor removal and
+  positive-modulus dissection, the multiplicative-norm factor-zero locus,
+  locally compact field continuity, and complex entireness with an explicit
+  nonzero reciprocal-zero derivative; the separate complex wrapper additionally
+  has analytic order one at every zero, including \(q=0\);
 \item selected finite \(q\)-Pochhammer and Gaussian-polynomial identities,
-  including reciprocity and exact values at \(q=-1\);
+  including exact residue-class and remainder dissections over arbitrary
+  commutative rings, reciprocity, exact values and first derivatives at
+  \(q=-1\), and multiplicity one for the alternating zero over
+  characteristic-zero rings;
 \item Bell/cumulant conversion and a quadratic asymptotic-inversion lemma;
 \item real Lambert-\(W\) branch-point geometry: the opposite vertical
   tangents and failure of finite differentiability, together with the signed
@@ -369,11 +390,14 @@ remainder theorem, still less a formal inversion theorem for a
 These declarations support parts of the canonical narrative; they do not
 silently formalize stronger neighbors.  In particular, no Lean status is
 claimed here for the general analytic and formal inverse theorems beyond the
-named Bell and quadratic support, or for the human proofs of infinite-product
-normal convergence, remote-gap and log-periodic asymptotics, all-order
-\(q\to1\) and cyclotomic expansions, Dedekind-eta completion, Gaussian and
-\(q\)-special global inverse atlases, complex certification algorithms, or
-the conjectures in
+  named Bell and quadratic support.  Beyond the fixed-\(q\) generic
+  \(q\)-Pochhammer declarations named above, no Lean status is claimed for the
+  uniform-in-\(q\) product and logarithmic tail bounds, joint holomorphy, or
+  the differentiated logarithmic kernels of
+\cref{thm:ip-normal-convergence}, nor for remote-gap and log-periodic
+asymptotics, all-order \(q\to1\) and cyclotomic expansions, Dedekind-eta
+completion, Gaussian and \(q\)-special global inverse atlases, complex
+certification algorithms, or the conjectures in
 \cref{sec:precise-open-frontiers}.  A theorem in those families remains a
 \emph{human-proved frontier result} unless an exact named declaration is
 listed for that exact statement.

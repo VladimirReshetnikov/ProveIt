@@ -44,21 +44,26 @@ and Meixner-Pollaczek orthogonality are cited in the report.
 
 ## Build the PDF
 
-A TeX Live installation containing `latexmk`, Libertinus, AMS packages,
+A TeX Live installation containing Libertinus, AMS packages,
 `mathtools`, `cleveref`, `booktabs`, `longtable`, `microtype`, `listings`, and
 `hyperref` is required.
 
-From the archive root, run:
+From clean auxiliaries in the archive root, run exactly three serial passes:
 
 ```bash
-latexmk -pdf -interaction=nonstopmode -halt-on-error \
-  common_digit_fabius_zonoids.tex
+pdflatex -interaction=nonstopmode -halt-on-error common_digit_fabius_zonoids.tex
+pdflatex -interaction=nonstopmode -halt-on-error common_digit_fabius_zonoids.tex
+pdflatex -interaction=nonstopmode -halt-on-error common_digit_fabius_zonoids.tex
 ```
 
-The supplied PDF was built with:
-
-- pdfTeX 1.40.26 (TeX Live 2025/dev, Debian packaging)
-- `latexmk` using the standard PDFLaTeX workflow
+The repository PDF was rebuilt by that exact procedure on 2026-08-31 with
+pdfTeX 1.40.22. It has 36 A4 pages, all at rotation zero and nonblank. All 27
+font rows are embedded and subset, five are Libertinus, and none is Type 3.
+The source selects the retained PNG figure twins because the vector plot
+companions contain Type-3 fonts. The final log has no error, unresolved
+reference, rerun request, or overfull box; its two underfull notices are a
+status-table cell and the long repository URL. Title, author, subject, and
+keywords metadata are present.
 
 ## Reproduce the experiments and figures
 
@@ -70,8 +75,9 @@ python -m venv .venv
 . .venv/bin/activate                 # Windows PowerShell: .venv\Scripts\Activate.ps1
 python -m pip install -r requirements.txt
 python code/experiments.py --output-root .
-latexmk -pdf -interaction=nonstopmode -halt-on-error \
-  common_digit_fabius_zonoids.tex
+pdflatex -interaction=nonstopmode -halt-on-error common_digit_fabius_zonoids.tex
+pdflatex -interaction=nonstopmode -halt-on-error common_digit_fabius_zonoids.tex
+pdflatex -interaction=nonstopmode -halt-on-error common_digit_fabius_zonoids.tex
 ```
 
 The script uses the fixed Monte Carlo seed `20260830`, records all numerical

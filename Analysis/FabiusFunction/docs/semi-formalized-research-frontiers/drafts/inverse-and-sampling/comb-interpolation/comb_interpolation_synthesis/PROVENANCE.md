@@ -58,9 +58,8 @@ experiment is promoted to a proof.
 
 The resulting article is modularized under `chapters/` so that shared notation
 and lemmas appear once. The theorem concordance and the final structural
-validator are separate editorial products. The final validator now passes;
-that result follows the recorded validation gate rather than merely the
-presence of assembled TeX.
+validator are separate editorial products; their eventual successful run must
+not be inferred merely from the presence of the assembled TeX.
 
 ## File disposition
 
@@ -171,9 +170,11 @@ The row-level evidence is preserved in
 [`assets/HISTORICAL_LEDGER_AUDIT.csv`](assets/HISTORICAL_LEDGER_AUDIT.csv).
 These ledgers describe earlier package states and are not a checksum manifest
 for the canonical tree. The live `assets/COMPANION_PAYLOADS.csv` provenance
-ledger is deliberately separate from this historical audit, while the single
-root `SHA256SUMS` exhaustively covers every other permanent package file and
-verifies in full.
+ledger is deliberately separate from this historical audit. The package uses
+one live checksum ledger, the root `SHA256SUMS`, rather than a second ledger
+under `assets/`. That root ledger was exhaustive at the recorded upstream
+publication checkpoint; it is explicitly partial for the current source union
+until the required rebuild and final ledger regeneration.
 
 ## Recoverability
 
@@ -185,7 +186,10 @@ only one human-readable publication plus unique evidence; Git is the archival
 store for superseded wrappers and publications.
 
 Publication validation is recorded once in
-[`assets/VALIDATION.md`](assets/VALIDATION.md), including the completed
-canonical validator, final PDF, and root-ledger gates. Full numerical replay
-and fresh-checkout reproduction remain separate reproducibility work; this
-provenance record neither duplicates nor supersedes those checks.
+[`assets/VALIDATION.md`](assets/VALIDATION.md). It preserves the completed
+historical PDF, canonical-validator, and root-ledger gates while marking the
+current semantic union—upstream Lagrange-crosswalk material together with the
+replayed general-$q$ and endpoint-jet chapter edits—as requiring a new build
+and validation cycle. Full numerical replay and fresh-checkout reproduction
+remain separate reproducibility work; this provenance record neither
+duplicates nor supersedes those checks.
