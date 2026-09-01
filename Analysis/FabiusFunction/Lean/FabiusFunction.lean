@@ -471,6 +471,12 @@ import FabiusFunction.GlobalBlockFold
 import FabiusFunction.NormalizationDictionary
 import FabiusFunction.QPochhammerDissection
 import FabiusFunction.QPochhammerInfinite
+import FabiusFunction.QBinomialTheoremInfinite
+import FabiusFunction.JacobiTripleProduct
+import FabiusFunction.QPascalSummation
+import FabiusFunction.GaussianBinomialContinuity
+import FabiusFunction.QuantumBinomial
+import FabiusFunction.RogersSzegoPolynomial
 
 set_option autoImplicit false
 

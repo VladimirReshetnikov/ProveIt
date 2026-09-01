@@ -68,29 +68,12 @@ inverse/New-Frontiers PDF as current is superseded by this checkpoint. The
 closed-form Gaunt/Wigner-square boundary recorded below and the q-jet status
 in the linked q-series registry remain unchanged by this merge.
 
-## Unprocessed incoming arrivals
+## Incoming status
 
-The following payloads are recorded only as **raw inbox inventory**. They have
-not passed the mandatory archive/integrity gate, been unpacked or normalized
-where applicable, undergone claim-by-claim mathematical review, been compared
-for duplication, received a Lean crosswalk, or been accepted as canonical.
-Their manuscript labels and included PDFs establish no repository proof,
-publication, or verification status.
-
-| Incoming payload | Delivered form | Intake status |
-| --- | --- | --- |
-| `Combinatorial_Coefficient_Calculus-2.zip` | ZIP archive | raw, unprocessed |
-| `Combinatorial_Coefficient_Calculus.zip` | ZIP archive | raw, unprocessed |
-| `Combinatorial_Formulae_and_Inversion_Theorems.zip` | ZIP archive | raw, unprocessed |
-| `Unified_Combinatorial_Coefficient_Calculus.zip` | ZIP archive | raw, unprocessed |
-| `Unified_Combinatorial_Formulae.zip` | ZIP archive | raw, unprocessed |
-| `Unified_Combinatorial_Formulae_and_Inversion_Theorems.zip` | ZIP archive | raw, unprocessed |
-| `Polynomial-Logarithmic-Transseries-1/` | one TeX/PDF pair | raw, unprocessed |
-| `Polynomial-Logarithmic-Transseries-2/` | one TeX/PDF pair | raw, unprocessed |
-| `Polynomial_Logarithmic_Transseries-3/` | one TeX/PDF pair | raw, unprocessed |
-| `Polynomial-Logarithmic-Transseries-4/` | one TeX/PDF pair | raw, unprocessed |
-| `Polynomial_Logarithmic_Transseries-5/` | one TeX/PDF pair | raw, unprocessed |
-| `Polynomial_Logarithmic_Transseries-6/` | one TeX/PDF pair | raw, unprocessed |
+No research payload is awaiting intake.  The `incoming/` directory contains
+only its permanent `README.md`; the six combinatorial archives and six
+polynomial-logarithmic transseries directories received on 2026-09-01 are
+recorded in their filed thematic groups below.
 
 ## fourier-decay — `rvachev_up_fourier_decay/`
 
@@ -177,6 +160,17 @@ No finite endpoint derivative is asserted.  An `O(z + exp(-1))` remainder after 
 | Directory | Document | Previous path |
 | --- | --- | --- |
 | `Lambert_W_Guide/` | *The Lambert W Function: A Real-Variable Guide* (62 A4 pp, consolidated edition, 2026-08-28) — editorial merge of the four independent treatments: the spine is the most complete article (branches, identities, exact branch-pair parametrization with Bernoulli gap expansions, derivative polynomials, integral calculus with all polynomial moments and Mellin integrals on both unbounded ends, local Taylor, Maclaurin with proved Lagrange–Bürmann, tree function/Cayley, signed Puiseux at the branch point with recurrences, unified Stirling-number logarithmic asymptotics for both branches, rigorous elementary bounds incl. Chatzigeorgiou's W₋₁ bracket, Padé and Euler continued fractions, Kalugin–Jeffrey–Corless cut integrals with complete monotonicity of W₀′, residual-certified branch-safe logarithmic Newton with monotone global starts, transcendental-equation catalogue, applications, Wright omega, complex-branch guide, problems with solutions, formula sheet); a complements section preserves the other three treatments' unique layers — the complete power-tower convergence theorem (exact interval e^{−e} ≤ a ≤ e^{1/e} with two-cycle exclusion and neutral endpoints), x^y = y^x, inverse-Taylor/Schröder corrections with branch-aware seeds, the logarithmic fixed-point iteration criterion (attracting iff \|W\|>1), branch-exchange involution, scaling identities, fixed points 2πin, unwinding-integer logarithm identity, closed Lagrange form of the Puiseux coefficients, square-root monodromy, the transcendence theorem (W_k(algebraic ≠ 0) is transcendental), a practitioner's toolkit (parameter gradients with the (1+w)^{−1} factor, differentiate-in-w, parametrize-by-w, floating-point hazards), further applications (patch residence via W₋₁, Wien displacement, linear-drag fall time, Schwarzschild tortoise inversion, π(x) < x/W₀(x)), and the r-Lambert/generalized-Lambert outlook; plus a corpus-role section and a four-way concordance appendix (all shared constants verified identical); the packages' figures/data/scripts live under `assets/` (absorbed article .tex sources deleted after merging; SHA-256 provenance in the document) | absorbed member packages deleted; git history is the archive |
+| `Polynomial-Logarithmic-Transseries-1/` | *Polynomial–Logarithmic Transseries: Algebra, Composition, Series Reversal, and the Lambert W Archetype* — archival pair: 4,023-line/182,487-byte source (`f2fa999b…e033d90`) and 119-page/584,392-byte custom-size PDF (`a4fc4af0…69e886`); repository-added ledger 2/2 | bare `incoming/Polynomial-Logarithmic-Transseries-1/`; direct-arrival commit `730e1763…95ab4f`, no submitted archive or ledger; filed byte-for-byte 2026-09-01 |
+| `Polynomial-Logarithmic-Transseries-2/` | *Polynomial-Logarithmic Transseries: Arithmetic, Division, Composition, and Series Reversal* — archival pair: 5,014-line/168,311-byte source (`7d2c7725…7bff18`) and 102-page/571,108-byte custom-size PDF (`5e9ff596…bfc68e`); repository-added ledger 2/2 | bare `incoming/Polynomial-Logarithmic-Transseries-2/`; direct-arrival commit `730e1763…95ab4f`, no submitted archive or ledger; filed byte-for-byte 2026-09-01 |
+| `Polynomial_Logarithmic_Transseries-3/` | *Polynomial-Logarithmic Transseries: Arithmetic, Composition, Series Reversal, and the Lambert W Expansion* — archival pair: 4,255-line/146,006-byte source (`11585567…694e07`; original line-411 trailing whitespace retained) and 87-page/510,663-byte Letter PDF (`3f7c4bc1…58a4af`); repository-added ledger 2/2 | bare `incoming/Polynomial_Logarithmic_Transseries-3/`; direct-arrival commit `730e1763…95ab4f`, no submitted archive or ledger; filed byte-for-byte 2026-09-01 |
+| `Polynomial-Logarithmic-Transseries-4/` | *Polynomial-Logarithmic Transseries: Algebra, Composition, Reversion, and the Lambert W Function* — archival pair: 3,138-line/118,001-byte source (`4ce4be2f…54c16f`) and 47-page/428,534-byte A4 PDF (`c2d75b35…45a3eb`); repository-added ledger 2/2 | bare `incoming/Polynomial-Logarithmic-Transseries-4/`; direct-arrival commit `730e1763…95ab4f`, no submitted archive or ledger; filed byte-for-byte 2026-09-01 |
+| `Polynomial_Logarithmic_Transseries-5/` | *Polynomial-Logarithmic Transseries: Algebra, Composition, Series Reversal, and the Lambert W Function* — archival pair: 2,440-line/102,903-byte source (`f522755b…c1c7d9`) and 44-page/389,188-byte Letter PDF (`189e95ab…58a2db`); repository-added ledger 2/2 | bare `incoming/Polynomial_Logarithmic_Transseries-5/`; direct-arrival commit `730e1763…95ab4f`, no submitted archive or ledger; filed byte-for-byte 2026-09-01 |
+| `Polynomial_Logarithmic_Transseries-6/` | *Polynomial–Logarithmic Transseries: Algebra, Division, Composition, and Asymptotic Series Reversal* (cover adds “with Lambert's W function as the guiding example”) — archival pair: 4,354-line/150,235-byte source (`f94b2e81…bece1a`) and 100-page/701,319-byte A4 PDF (`b5142bad…467aa`); repository-added ledger 2/2 | bare `incoming/Polynomial_Logarithmic_Transseries-6/`; direct-arrival commit `730e1763…95ab4f`, no submitted archive or ledger; filed byte-for-byte 2026-09-01 |
+
+The six retained arrival PDFs have embedded/subset fonts and no Type 3 font,
+but none uses Libertinus; two are custom 522-by-738-point, two are Letter, and
+two are A4.  Styling repair, comparison, claim review, consolidation, and Lean
+crosswalking remain deferred until after the intake publication gate.
 
 ## spectra-and-arithmetic — `spectra-and-arithmetic/`
 
