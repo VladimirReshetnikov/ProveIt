@@ -48,12 +48,12 @@ crosswalking remain deferred until after publication of this intake.
 
 | Directory | Source receipt | PDF receipt |
 | --- | --- | --- |
-| `Polynomial-Logarithmic-Transseries-1/` | current: 4,020 lines; 186,959 bytes; SHA-256 `870ffdba51d56a198e0e157022243a05e86a4dac4e59af7e48e191a8b4a8f506` | retained historical: 119 custom 522-by-738-point pages; 584,392 bytes; SHA-256 `a4fc4af07586af1b4ed8f694b4c2b9e512a97f11014e0ac03c0d75426869e886` |
+| `Polynomial-Logarithmic-Transseries-1/` | current: 4,020 lines; 186,981 bytes; SHA-256 `fe5057f4a8018874b91cccdbf9fb57b8af16ddf2ec86ea4b7b5fe02d654b1a14` | retained historical: 119 custom 522-by-738-point pages; 584,392 bytes; SHA-256 `a4fc4af07586af1b4ed8f694b4c2b9e512a97f11014e0ac03c0d75426869e886` |
 | `Polynomial-Logarithmic-Transseries-2/` | current: 5,007 lines; 172,310 bytes; SHA-256 `c5f150b2de8586a83c4ebc4aacb9596bb65347c7b94298c94040fb0801f15c32` | retained historical: 102 custom 522-by-738-point pages; 571,108 bytes; SHA-256 `5e9ff596708266992b288d2d5430e2ae70cb6e18d5e6cd1e3a7503c068bfc68e` |
-| `Polynomial_Logarithmic_Transseries-3/` | current: 4,252 lines; 150,143 bytes; SHA-256 `76ed420e62e7f1c1b7f252293c7186263794d734148684fbe86da4236e0ad161` | retained historical: 87 Letter pages; 510,663 bytes; SHA-256 `3f7c4bc1e12e572bbfa675d55e35e399c98875ae2783a09842b7d961cd58a4af` |
-| `Polynomial-Logarithmic-Transseries-4/` | current: 3,135 lines; 120,596 bytes; SHA-256 `8d3da32ceb99e39b1e45660d9eb6c63e3b908c16c6d4b2c37edbeb8c3ab999b4` | retained historical: 47 A4 pages; 428,534 bytes; SHA-256 `c2d75b3534f74c91ac4ee25b176ffbdca7d912b157104954d5dd3f961945a3eb` |
-| `Polynomial_Logarithmic_Transseries-5/` | current: 2,442 lines; 106,006 bytes; SHA-256 `8a18e3578fb60d82181ada9b108e5bf17c0e027e7bc3409077e1dc4ae549373d` | retained historical: 44 Letter pages; 389,188 bytes; SHA-256 `189e95ab5c293b953f6bc7c1a432eaa34cd3b8b6fe47ed2372c345cf7158a2db` |
-| `Polynomial_Logarithmic_Transseries-6/` | current: 4,389 lines; 155,680 bytes; SHA-256 `96b4ae626f7afc7fb306dab7eb3e23e410b0fc5e459aa74b992629e84ee535d9` | retained historical: 100 A4 pages; 701,319 bytes; SHA-256 `b5142badcabd40cd976a72b7b9581b93938d3f486e2229cad51d5d94483467aa` |
+| `Polynomial_Logarithmic_Transseries-3/` | current: 4,252 lines; 150,154 bytes; SHA-256 `7f76b86b005a326f69a005ce7b9f2bb7493b52a5a32d471027811f18f79e33d6` | retained historical: 87 Letter pages; 510,663 bytes; SHA-256 `3f7c4bc1e12e572bbfa675d55e35e399c98875ae2783a09842b7d961cd58a4af` |
+| `Polynomial-Logarithmic-Transseries-4/` | current: 3,135 lines; 120,618 bytes; SHA-256 `0f6614c8842123fb033f256edd8f0447d19569fc6356e3a8e2198a054eb87683` | retained historical: 47 A4 pages; 428,534 bytes; SHA-256 `c2d75b3534f74c91ac4ee25b176ffbdca7d912b157104954d5dd3f961945a3eb` |
+| `Polynomial_Logarithmic_Transseries-5/` | current: 2,443 lines; 106,051 bytes; SHA-256 `aa8557ab0e7d4aac21aeb89d9290bcb53d6cc4a9fc6db33da89ccf1ddb97083b` | retained historical: 44 Letter pages; 389,188 bytes; SHA-256 `189e95ab5c293b953f6bc7c1a432eaa34cd3b8b6fe47ed2372c345cf7158a2db` |
+| `Polynomial_Logarithmic_Transseries-6/` | current: 4,389 lines; 155,691 bytes; SHA-256 `2020d6f9f2b71f35c45a5698edc464f66314d02ac2be1af48ffa776117a83646` | retained historical: 100 A4 pages; 701,319 bytes; SHA-256 `b5142badcabd40cd976a72b7b9581b93938d3f486e2229cad51d5d94483467aa` |
 
 All six arrival PDFs are readable and unencrypted, and every font row is
 embedded and subset with no Type 3 font.  None uses Libertinus.  Their retained

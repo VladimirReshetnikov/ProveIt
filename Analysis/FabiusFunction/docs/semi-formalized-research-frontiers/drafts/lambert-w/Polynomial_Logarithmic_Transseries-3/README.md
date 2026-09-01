@@ -10,8 +10,8 @@ was not rebuilt. The repository-added `SHA256SUMS` records the current source
 and historical PDF as distinct payloads.
 
 - Current source: `Polynomial_Logarithmic_Transseries-3.tex`, 4,252 lines and
-  150,143 bytes; SHA-256
-  `76ed420e62e7f1c1b7f252293c7186263794d734148684fbe86da4236e0ad161`.
+  150,154 bytes; SHA-256
+  `7f76b86b005a326f69a005ce7b9f2bb7493b52a5a32d471027811f18f79e33d6`.
 - PDF: `Polynomial_Logarithmic_Transseries-3.pdf`, 87 unencrypted Letter
   pages and 510,663 bytes; SHA-256
   `3f7c4bc1e12e572bbfa675d55e35e399c98875ae2783a09842b7d961cd58a4af`.
