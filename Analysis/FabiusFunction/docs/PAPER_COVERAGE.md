@@ -30,7 +30,7 @@ or [rendered PDF](Fabius_Function_and_Rvachev_Up/Fabius_Function_and_Rvachev_Up.
 > The retained primary exposition, Lean walkthrough, canonical frontier,
 > Representation Frontiers, filed New Frontiers, notation catalogue,
 > comb-interpolation synthesis, and q-series synthesis PDFs contain respectively
-> 167, 126, 237, 301, 41, 88, 158, and 340 pages.  Their current TeX sources
+> 167, 126, 237, 301, 41, 88, 158, and 348 pages.  Their current TeX sources
 > contain post-render unions, so those PDFs are historical validation receipts
 > rather than source/PDF-parity claims.  The Integration-and-Transform master
 > likewise retains a historical 377-page PDF; all of these documents await fresh uninterrupted

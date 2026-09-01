@@ -20,10 +20,9 @@ general-q-series guides, forward q-Pochhammer/q-binomial monograph, and
 inverse-q synthesis have been dispositioned into
 [`q_pochhammer_q_binomial_monograph/`](q_pochhammer_q_binomial_monograph/).
 Their earlier names, arrival hashes, and publication facts remain provenance,
-not parallel live documents. The latest validated receipt is the 347-page A4
-publication built from source SHA-256
-`062b7230d95ff8bd52b11253c6c3c8820d6f6a82e4307ae5d82a1d793c00c517`.
-The merged source incorporates the later five-theorem
+not parallel live documents. The current canonical TeX postdates its retained
+historical PDF; the exact source and artifact receipt appears once in the
+detailed package record below. The merged source incorporates the later five-theorem
 `QPochhammerEntire.lean`, `QPochhammerInfinite.lean`, and
 `QPochhammerDissection.lean` surfaces, together with the latest six-module
 q-series tranche and the zero-definition, three-theorem
@@ -95,23 +94,23 @@ Current packages and retained intake records:
   figures. Pinned source revisions and Git history preserve every superseded
   layout and arrival fact.
 
-  The latest validated build-checkpoint source was the 14,072-line,
-  656,200-byte `q_pochhammer_q_binomial_monograph.tex`, with SHA-256
-  `062b7230d95ff8bd52b11253c6c3c8820d6f6a82e4307ae5d82a1d793c00c517`.
-  Its retained `q_pochhammer_q_binomial_monograph.pdf` is a 347-page A4
-  rendering of 2,996,319 bytes, with SHA-256
-  `29b422a39c42be37bd1487d4245c44e55706720c545dd015957644e47014bd48`.
-  Exactly three guarded serial passes produced that pair; all 347 pages, A4
-  boxes, text extraction, embedded/subset Type-1 fonts including Libertinus,
-  absence of Type-3 fonts, and targeted visual review passed. The current
-  source has 14,172 lines and 662,701 bytes, with SHA-256
-  `5c3f2505062265d3ce9d0023564ed45c3b0486afa62fa3d6a7846894f3476af2`.
+  The current `q_pochhammer_q_binomial_monograph.tex` has 14,287 lines,
+  669,121 bytes, and SHA-256
+  `c1c9466bf2d166b47e7020033743e28ae39b610f8339b8f3d378ce3a2e1918d6`.
+  Its retained `q_pochhammer_q_binomial_monograph.pdf` is a historical
+  348-page A4 artifact of 3,002,729 bytes, with SHA-256
+  `8bf14b52d8a0fc0abc4d54cca503fd47a2df37cf76ee1bb4e442bea1fd2a4aa7`.
+  That PDF was built in exactly three guarded serial passes (338, 348, and 348
+  pages) from the preceding 14,158-line, 661,835-byte source with SHA-256
+  `79ee5e60a6c7e42a91c58dcd9bcae56173cc6b4aa3e54739a461943f705f3904`.
+  Its A4 boxes, text extraction, embedded/subset Type-1 fonts including
+  Libertinus, absence of Type-3 fonts, and targeted visual review passed at
+  that checkpoint. Because the current TeX is newer, no render parity is
+  claimed.
   It carries the five-theorem `QPochhammerEntire.lean`, the generic
   `QPochhammerInfinite.lean` and `QPochhammerDissection.lean` APIs, and the
   latest six-module q-series tranche, plus the three-theorem
-  `GeometricPochhammerNormalConvergence.lean` outer-product API. Its fresh
-  render is pending, so the validated 347-page PDF remains a source-pinned
-  historical artifact. PDF files retained
+  `GeometricPochhammerNormalConvergence.lean` outer-product API. PDF files retained
   beneath `assets/` are vector research figures, not manuscript builds.
   Manuscript result labels and numerical checks remain
   distinct from Lean verification.
@@ -765,8 +764,8 @@ volume's Part VII; their figures/data are likewise under `assets/`.)
 
 Canonical forward/inverse publication:
 [`q_pochhammer_q_binomial_monograph/`](q_pochhammer_q_binomial_monograph/)
-(latest validated 347-page canonical A4 publication PDF; source-only
-outer-product crosswalk rebuild pending) — *q-Series and Inverse q-Analogs:
+(current TeX with a retained historical A4 publication checkpoint; exact
+receipt in the detailed package record above) — *q-Series and Inverse q-Analogs:
 A Proof-Oriented Synthesis*. Its forward backbone proves from first principles
 the shifted-factorial, Gaussian, hypergeometric, theta, partition, Bailey,
 cyclotomic, interpolation, and Fabius--Rvachev machinery consumed by Parts II,
@@ -783,14 +782,12 @@ pre-consolidation rendered checkpoint had 13,117 source lines (SHA-256
 and a 1,582,997-byte, 213-page PDF (SHA-256
 `7ee6f8f6d8e72228a5b20daa119caa4d834b11063f910b526897b2677a2ede7b`).
 Those figures identify a retired historical artifact; they are not build
-claims about the current canonical source. The canonical synthesis's newer
-347-page PDF renders source SHA-256
-`062b7230d95ff8bd52b11253c6c3c8820d6f6a82e4307ae5d82a1d793c00c517`
-and is now a source-pinned receipt because the semantic-union source, including
-the outer-normal-convergence crosswalk, postdates that fresh build checkpoint.
+claims about the current canonical source. The canonical synthesis's current
+source and retained historical PDF are identified by the single exact receipt
+in the detailed package record above.
 
-The latest validated forward formalization ledger has 282 rows: 67 Exact, 80
-Partial, 127 with no counterpart, and 8 interface-only. The original
+The latest validated forward formalization ledger has 282 labelled results:
+71 Exact, 84 Partial, 119 None, and 8 N/A. The original
 191-result pre-Fabius core had 36 exact, 29 partial, 123 with no counterpart,
 and 3 interface-only entries. The four integrated-guide chapters add 31
 human-proved but not Lean-formalized assertions and five labelled definitions;

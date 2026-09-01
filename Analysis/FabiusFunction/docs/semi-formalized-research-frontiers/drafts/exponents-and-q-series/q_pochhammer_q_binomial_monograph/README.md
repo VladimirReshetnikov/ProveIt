@@ -96,12 +96,13 @@ It checks every permanent package file except the self-referential root
 useful because it preserves the migrated experiment and research-figure
 boundary.
 
-The retained `q_pochhammer_q_binomial_monograph.pdf` is a 348-page A4
-build of the current master source (14,158 lines, 661,835 bytes,
-SHA-256 `79ee5e60a6c7e42a91c58dcd9bcae56173cc6b4aa3e54739a461943f705f3904`).
-The PDF is 3,002,729 bytes with SHA-256
+The retained `q_pochhammer_q_binomial_monograph.pdf` is a historical
+348-page A4 publication checkpoint. It was built from the then-current
+14,158-line, 661,835-byte master source with SHA-256
+`79ee5e60a6c7e42a91c58dcd9bcae56173cc6b4aa3e54739a461943f705f3904`.
+The PDF has 3,002,729 bytes and SHA-256
 `8bf14b52d8a0fc0abc4d54cca503fd47a2df37cf76ee1bb4e442bea1fd2a4aa7`.
-It was built by exactly three serial
+It was produced by exactly three serial
 `pdflatex -interaction=nonstopmode -halt-on-error` passes, which produced 338,
 348, and 348 pages, with `makeindex` run on the `.idx` file after each pass.
 The final log scan found three overfull boxes, all in the single paragraph of the QPochhammerEntire crosswalk (source lines 652--670) whose long declaration names lack break points. All pages are A4. `pdffonts` reports 42 font rows, all
@@ -109,16 +110,18 @@ embedded and subsetted, including 5 Libertinus rows, with no Type-3
 fonts. The files under `assets/experiments/**/figures/` remain research
 figures, not publication manuscripts.
 
-The master source is the one described above. Its
-14,088-line, 657,425-byte source has SHA-256
-`791152ff41477e4f187d18edab195f1aa1232e9fbcafbbd536a62b24a7b8e799`.
-It includes exhaustive crosswalks for `QPochhammerEntire` (zero definitions
+The current master source postdates that checkpoint: it has 14,287 lines,
+669,121 bytes, and SHA-256
+`c1c9466bf2d166b47e7020033743e28ae39b610f8339b8f3d378ce3a2e1918d6`.
+Consequently the retained PDF is historical, and no render parity with the
+current TeX is claimed. The current source includes exhaustive crosswalks for
+`QPochhammerEntire` (zero definitions
 and five legacy compatibility theorems), `QPochhammerInfinite` (one definition
 and twenty-nine theorems), `QPochhammerDissection` (zero definitions and two
 theorems), and `QBinomialTheoremInfinite` (one definition and twenty-two
 theorems), together with `GeometricPochhammerNormalConvergence` (zero
 definitions and three theorems). The newer inventory also includes
-`QMultinomial` (one definition and seven theorems),
+`QMultinomial` (one definition and nine theorems),
 `QPochhammerInfiniteBounds` (five theorems), `QPochhammerComplexOrder` (one
 definition and four theorems), `BasicHypergeometricSeries` (two definitions
 and five theorems), `HeineTransformation` (two definitions and five theorems),
@@ -134,7 +137,8 @@ entireness, zero-locus, reciprocal-power, and analytic-order results rather
 than duplicating their analytic proofs. In `QBinomialTheoremInfinite`,
 `finiteQPochhammerIn_zero_left` remains the unique declaration owned by
 `GaussianBinomialAtOne` and is imported rather than redeclared. The forward
-status ledger is 71 Exact, 84 Partial, 119 None, and 8 interface rows; the
+status ledger covers 282 labelled results: 71 Exact, 84 Partial, 119 None,
+and 8 N/A; the
 191-result pre-Fabius core is 36/29/123/3. The compound outer spectral-product
 theorem remains Partial even though the three-theorem outer-product leaf proves
 local-uniform (normal) convergence for every complex strict contraction, its
@@ -142,8 +146,7 @@ nome-`1/4` Rvachev specialization, and the bounded-Fabius Fourier
 specialization. Its named centered/MGF packaging and exterior reciprocal
 formula, pole divisor, and zero--pole exchange remain outside Lean.
 
-No PDF was generated for this source-only crosswalk update. The 347-page PDF
-therefore remains a source-pinned historical artifact, while the root package
-checksum ledger records the live source and retained PDF as distinct payloads.
+The root package checksum ledger records the live source and retained PDF as
+distinct payloads.
 PDFs are rebuilt in batches, at most about once per hour; synchronization is
 claimed only after a fresh guarded build.
