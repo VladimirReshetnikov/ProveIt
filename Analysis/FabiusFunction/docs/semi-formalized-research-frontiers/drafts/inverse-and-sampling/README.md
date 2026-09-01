@@ -58,15 +58,6 @@ asset dispositions are recorded in
 [`PROVENANCE.md`](Inverse_Fabius_Analyticity_Asymptotics_and_Computability/PROVENANCE.md);
 they are provenance locators, not live navigation targets.
 
-The immutable extraction pin is
-`0a0cdabeb72a6f7d67cfdfb76d02a8f7381c7bf7`. The five old layouts are also
-recoverable together at
-`93db15ad3c0645bd3cfd0a3e6e694e3c86a3aa2b`, a complete pre-retirement
-snapshot. Their former paths, nested predecessor packages, arrival hashes, and
-asset dispositions are recorded in
-[`PROVENANCE.md`](Inverse_Fabius_Analyticity_Asymptotics_and_Computability/PROVENANCE.md);
-they are provenance locators, not live navigation targets.
-
 ## Other live packages
 
 [`comb-interpolation/comb_interpolation_synthesis/`](comb-interpolation/comb_interpolation_synthesis/)
@@ -77,6 +68,11 @@ results while stating their common Gaussian--Pascal and Jackson--Newton spine
 once. Its 180-row source disposition and 151-row historical-ledger audit pass;
 the retained 158-page PDF is a historical checkpoint pending a fresh render of
 the current notation-normalized source.
+
+[`fabius_information_frontier/`](fabius_information_frontier/) remains an
+archival information-geometry intake. Its arrival and operational ledgers
+distinguish the submitted PDF from later source changes; manuscript theorem
+labels do not by themselves establish current Lean verification.
 
 ## Formalization notes
 
@@ -100,19 +96,6 @@ factorial-scaled Catalan sequence. In ordinary mathematical notation, if
 \[
 G^{(m+1)}(5/72)=(m+1)!\,(-4)^m C_m \qquad (m\ge 0).
 \]
-
-This is equality of the full smooth jet, not local analytic equality. A named
-nonzero flat-remainder decomposition remains open, as do the general-dyadic
-analytic/algebraic shadow, convergence and identification of the inverse
-Taylor series, and the corresponding all-orders Bell--Lagrange coefficient
-formula.
-
-`FabiusFunction.LagrangeRvachevSynthesis` supplies two definitions and seven
-theorems closing the generic finite-node decoder, cardinal biorthogonality,
-and exact interpolation loop. It does not by itself prove the geometric-node
-Gaussian closed forms, a bundled matrix/right-inverse wrapper, or an
-optimal/minimum-variation decoder theorem; the exhaustive public inventory is
-in the root [`Analysis/FabiusFunction/README.md`](../../../../README.md).
 
 This is equality of the full smooth jet, not local analytic equality. A named
 nonzero flat-remainder decomposition remains open, as do the general-dyadic
