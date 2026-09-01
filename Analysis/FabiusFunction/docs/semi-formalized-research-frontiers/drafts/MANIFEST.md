@@ -33,7 +33,7 @@ Documented pre-replay checkpoints include 167 pages
 for the primary exposition, 126 for the walkthrough, 237 for the canonical
 frontier, 377 for the Integration master, 88 for the notation catalogue, 301
 for Representation, 41 for New Frontiers-2, 42 for inverse computability, 158
-for the comb synthesis, 347 for the consolidated q-series synthesis, and 238
+for the comb synthesis, 348 for the consolidated q-series synthesis, and 238
 for Exponents. The
 listed page counts are artifact receipts, not claims of current source/PDF
 synchronization except where a package explicitly records it.
@@ -50,13 +50,13 @@ exact ceiling modulus, gap-to-modulus abstract strengthening, and input-bit
 asymptotics remain outside Lean.
 
 The two canonical syntheses have newer, source-pinned publication receipts.
-The retained q-series PDF is the 347-page, 2,996,319-byte A4 artifact with
+The retained q-series PDF is the 348-page, 3,002,729-byte A4 artifact with
 SHA-256
-`29b422a39c42be37bd1487d4245c44e55706720c545dd015957644e47014bd48`,
-built from the 14,072-line, 656,200-byte source with SHA-256
-`062b7230d95ff8bd52b11253c6c3c8820d6f6a82e4307ae5d82a1d793c00c517`.
-The live q-series source is now 14,210 lines and 664,923 bytes, with SHA-256
-`71d9619aac8787effe4d7e0342dddab6aeb795aab7f1b9a0d0064c1c2d41a90a`.
+`8bf14b52d8a0fc0abc4d54cca503fd47a2df37cf76ee1bb4e442bea1fd2a4aa7`,
+built from the 14,158-line, 661,835-byte source with SHA-256
+`79ee5e60a6c7e42a91c58dcd9bcae56173cc6b4aa3e54739a461943f705f3904`.
+The live q-series source is now 14,288 lines and 669,172 bytes, with SHA-256
+`f0025c44ff2021f576625fb7628e23e8102827d2152f3135e381ae2b31d818bd`.
 Six finite/infinite q-series modules contribute 69 public declarations for
 continuity at `q = 1`, Euler and q-binomial sums, Jacobi's triple product,
 q-Pascal summation, the noncommutative q-binomial theorem, and Rogers--Szegő
@@ -75,9 +75,9 @@ theorems. The source also adds the zero-definition, three-theorem
 product's locally uniform convergence is exact for every complex strict
 contraction, including `q = 0`, with dyadic Rvachev and bounded-Fabius Fourier
 specializations. The compound centered/MGF and exterior reciprocal/pole
-theorem remains Partial. The forward status ledger is 69 Exact / 83 Partial /
-122 None / 8 interface rows. No PDF was generated for this source-only update,
-so the retained 347-page artifact is historical. The comb synthesis also
+theorem remains Partial. The forward status ledger is 71 Exact / 84 Partial /
+119 None / 8 interface rows. No PDF was generated locally for this source-only
+update, so the supplied 348-page artifact remains historical. The comb synthesis also
 has a later chapter-03 notation edit: its retained 158-page, 2,456,105-byte
 A4 PDF has SHA-256
 `81d249c8b2bb124836c858bd8e0ef9c8764606a2f9655a798d69e7565b1759b4`;

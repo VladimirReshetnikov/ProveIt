@@ -491,6 +491,7 @@ import FabiusFunction.QPochhammerIntegerIndex
 import FabiusFunction.QPartialFractions
 import FabiusFunction.PolynomialQTaylor
 import FabiusFunction.GaussianBinomialUniversal
+import FabiusFunction.GaussianBinomialPolynomialStructure
 import FabiusFunction.QPochhammerInfiniteBounds
 import FabiusFunction.HeineTransformation
 import FabiusFunction.QGaussSummation
@@ -499,6 +500,9 @@ import FabiusFunction.BasicHypergeometricSeries
 import FabiusFunction.QMultinomial
 import FabiusFunction.QExponential
 import FabiusFunction.JacksonIntegral
+import FabiusFunction.QPochhammerLogDerivative
+import FabiusFunction.QPochhammerOrderDerivative
+import FabiusFunction.JacobiCubic
 import FabiusFunction.GaussianBinomialPalindromic
 import FabiusFunction.ThetaQuasiPeriodicity
 
@@ -638,6 +642,12 @@ the bilateral-theta product, quasi-periodicity, and exact zero criterion.  The
 analytic declarations retain their stated strict-contraction, nonzero-variable,
 convergence, and nonvanishing hypotheses.
 
+The next four q-series leaves add twenty theorems and no definitions.  They
+give the exact degree, monicity, constant coefficient, and palindromicity of
+the universal Gaussian polynomial over `ℕ`; Jacobi's cubic identity in
+`HasSum` form; the q-Pochhammer logarithmic derivative and its Lambert-series
+form on the unit disc; and differentiation of the complex-order q-Pochhammer
+symbol under its explicit strict-contraction and nonzero-nome hypotheses.
 The zeta–Lambert tail calculus of the Thue–Morse frontier results is
 formalized end to end.  The engine is the Euler log transform: for any
 absolutely summable family with all norms below one, over any index type,

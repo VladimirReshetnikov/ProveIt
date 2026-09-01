@@ -109,12 +109,12 @@ only 4,606 declarations and
 declarations, including 69 undocumented ones.  Run the script for the live
 numbers rather than copying these historical values.
 
-The live post-merge 2026-09-01 inventory contains 653 modules and 8,735
+The live post-merge 2026-09-01 inventory contains 657 modules and 8,755
 lexically visible public declarations, with zero missing module headers and
 zero missing doc comments.  Relative to the 610/8,318 activation checkpoint,
-the current tree adds forty-three modules and 417 declarations.  Relative to
-the earlier 630/8,552 merged checkpoint, concurrent source work adds twenty-three
-modules and 183 declarations.  The prime-power and outer-product tranches
+the current tree adds forty-seven modules and 437 declarations.  Relative to
+the earlier 630/8,552 merged checkpoint, concurrent source work adds twenty-seven
+modules and 203 declarations.  The prime-power and outer-product tranches
 account for one module and six declarations: the zero-definition/three-theorem
 `GeometricPochhammerNormalConvergence.lean` leaf and three additional theorems
 in `PrimePowerBinomialValuation.lean`.  The q-polish adds two theorems to
@@ -124,6 +124,10 @@ contributes nine declarations, the first six q-calculus modules contribute
 Those leaves are `GaussianBinomialPalindromic.lean` 0+12,
 `JacksonIntegral.lean` 1+7, `QExponential.lean` 3+8, and
 `ThetaQuasiPeriodicity.lean` 1+6: five definitions and thirty-three theorems.
+Four still newer q-series leaves contribute twenty theorems and no definitions:
+`GaussianBinomialPolynomialStructure.lean` 0+5, `JacobiCubic.lean` 0+2,
+`QPochhammerLogDerivative.lean` 0+10, and
+`QPochhammerOrderDerivative.lean` 0+3.
 The older 622/8,472, 623/8,476, 629/8,546, 630/8,552,
 641/8,650, and 643/8,661 values below are historical checkpoints, not
 descriptions of the live tree.  The earlier additions and q-series tranches are
@@ -317,7 +321,8 @@ inverse-computability modules then brought that feature snapshot to 631/8,556,
 a nine-module/84-declaration change.  The six further incoming q-calculus
 leaves contribute 36 declarations and brought the intermediate audit to
 649/8,697.  The four subsequent leaves contribute 38 declarations and bring
-the live audit to the 653/8,735 census recorded above.
+that audit to 653/8,735.  The final four leaves contribute twenty declarations
+and bring the live audit to the 657/8,755 census recorded above.
 
 That increment is exhaustively counted as
 `QPochhammerInfiniteBounds.lean` 0+5, `HeineTransformation.lean` 2+5,
@@ -328,7 +333,6 @@ q-Gauss identities, a ratio-defined complex-order q-Pochhammer API, general
 basic-hypergeometric terms and summability, and the division-free recursive
 q-multinomial interface.  The displayed contraction, nonvanishing, and
 denominator hypotheses remain part of these APIs.
-
 The final four-module increment is exhaustively counted as
 `GaussianBinomialPalindromic.lean` 0+12, `JacksonIntegral.lean` 1+7,
 `QExponential.lean` 3+8, and `ThetaQuasiPeriodicity.lean` 1+6.  It adds the
@@ -338,6 +342,15 @@ fundamental theorem and integration by parts; and the bilateral theta product,
 quasi-periodicity, and zero criterion.  Their analytic declarations keep the
 displayed strict-contraction, nonzero-variable, convergence, and nonvanishing
 hypotheses.
+
+The still newer four-module increment is exhaustively counted as
+`GaussianBinomialPolynomialStructure.lean` 0+5, `JacobiCubic.lean` 0+2,
+`QPochhammerLogDerivative.lean` 0+10, and
+`QPochhammerOrderDerivative.lean` 0+3.  Its twenty theorems add universal
+Gaussian polynomial structure over `ℕ[X]`, Jacobi's cubic identity, the
+q-Pochhammer logarithmic derivative and Lambert-series form on the unit disc,
+and the derivative with respect to complex order.  The strict-contraction,
+unit-disc, nonzero-nome, and shifted-argument hypotheses remain explicit.
 
 `EffectiveMonotoneInverse.lean` has exactly two public definitions,
 `Fabius.SequentiallyComputableOn` and `Fabius.unitClamp`, and exactly six
@@ -443,7 +456,13 @@ The synchronized q-series API also retains the full `origin/main` theorem
 inventory.  `GaussianBinomialAtNegOneDerivative.lean` is 0+4, and
 `GaussianBinomialContinuity.lean` is 0+3:
 `continuous_gaussianBinomial`, `tendsto_gaussianBinomial_nhds_one`, and
-`gaussianBinomial_eq_finiteQPochhammerIn_div`.  The
+`gaussianBinomial_eq_finiteQPochhammerIn_div`.
+`GaussianBinomialPolynomialStructure.lean` is 0+5:
+`natDegree_gaussianBinomial_universal`,
+`gaussianBinomial_universal_monic`,
+`coeff_zero_gaussianBinomial_universal`,
+`gaussianBinomial_universal_reflect`, and
+`coeff_gaussianBinomial_universal_symm`.  The
 `JacobiTripleProduct.lean` 2-definition/25-theorem tranche contains the finite triple-product
 polynomial and field identities, the bilateral Jacobi `HasSum` forms, and the
 pentagonal and paired-pentagonal `HasSum` corollaries.  The
@@ -525,14 +544,15 @@ Integration-and-Transform master retains a historical 377-page PDF.  The canonic
 q-series synthesis is a validated 340-page historical receipt.  It contains
 the earlier general finite/infinite q-Pochhammer crosswalks and six q-series
 modules; the merged fifth fixed-nome theorem, two later general
-q-Pochhammer theorems, and the ten newest q-calculus modules make final parity
+q-Pochhammer theorems, and the fourteen newest q-series/q-calculus modules make
+final parity
 pending.  The retained 167-page primary, 126-page walkthrough, 237-page
 canonical frontier, 301-page Representation Frontiers, 41-page New Frontiers,
 and 88-page notation-catalogue artifacts likewise predate their current merged
 sources.  Their package notices treat those PDFs as historical validation
 receipts, not parity claims, until fresh uninterrupted three-pass builds
 complete.  The inverse-computability receipt likewise requires refresh for the
-653/8,735 census.  The canonical inverse-theory publication retains a 134-page
+657/8,755 census.  The canonical inverse-theory publication retains a 134-page
 artifact synchronized at its latest-main source checkpoint; the merged
 effective-inversion tranche makes current parity pending.
 

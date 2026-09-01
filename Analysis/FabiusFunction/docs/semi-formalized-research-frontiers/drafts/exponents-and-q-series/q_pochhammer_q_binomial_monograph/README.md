@@ -96,23 +96,23 @@ It checks every permanent package file except the self-referential root
 useful because it preserves the migrated experiment and research-figure
 boundary.
 
-The retained `q_pochhammer_q_binomial_monograph.pdf` is a 347-page A4
-historical build of the immediately preceding master source (14,072 lines,
-656,200 bytes,
-SHA-256 `062b7230d95ff8bd52b11253c6c3c8820d6f6a82e4307ae5d82a1d793c00c517`).
-The PDF is 2,996,319 bytes with SHA-256
-`29b422a39c42be37bd1487d4245c44e55706720c545dd015957644e47014bd48`.
+The retained `q_pochhammer_q_binomial_monograph.pdf` is a 348-page A4
+historical build of the immediately preceding master source (14,158 lines,
+661,835 bytes,
+SHA-256 `79ee5e60a6c7e42a91c58dcd9bcae56173cc6b4aa3e54739a461943f705f3904`).
+The PDF is 3,002,729 bytes with SHA-256
+`8bf14b52d8a0fc0abc4d54cca503fd47a2df37cf76ee1bb4e442bea1fd2a4aa7`.
 It was built by exactly three serial
-`pdflatex -interaction=nonstopmode -halt-on-error` passes, which produced 337,
-347, and 347 pages, with `makeindex` run on the `.idx` file after each pass.
+`pdflatex -interaction=nonstopmode -halt-on-error` passes, which produced 338,
+348, and 348 pages, with `makeindex` run on the `.idx` file after each pass.
 The final log scan found three overfull boxes, all in the single paragraph of the QPochhammerEntire crosswalk (source lines 652--670) whose long declaration names lack break points. All pages are A4. `pdffonts` reports 42 font rows, all
 embedded and subsetted, including 5 Libertinus rows, with no Type-3
 fonts. The files under `assets/experiments/**/figures/` remain research
 figures, not publication manuscripts.
 
 The current master TeX is a source-only successor to that checkpoint. Its
-14,210-line, 664,923-byte source has SHA-256
-`71d9619aac8787effe4d7e0342dddab6aeb795aab7f1b9a0d0064c1c2d41a90a`.
+14,288-line, 669,172-byte source has SHA-256
+`f0025c44ff2021f576625fb7628e23e8102827d2152f3135e381ae2b31d818bd`.
 It includes exhaustive crosswalks for `QPochhammerEntire` (zero definitions
 and five legacy compatibility theorems), `QPochhammerInfinite` (one definition
 and twenty-nine theorems), `QPochhammerDissection` (zero definitions and two
@@ -127,7 +127,10 @@ and `QGaussSummation` (two theorems), as well as expanded Euler, Jacobi, and
 Rogers--Szegő material. The latest inventory adds
 `GaussianBinomialPalindromic` (twelve theorems), `QExponential` (three
 definitions and eight theorems), `JacksonIntegral` (one definition and seven
-theorems), and `ThetaQuasiPeriodicity` (one definition and six theorems).
+theorems), `ThetaQuasiPeriodicity` (one definition and six theorems),
+`QPochhammerLogDerivative` (ten theorems),
+`QPochhammerOrderDerivative` (three theorems), and `JacobiCubic` (two
+theorems).
 The two newest generic theorems are
 `deriv_qPochhammerInfIn_ne_zero_of_mul_pow_eq_one`, which gives a nonzero
 derivative at every raw factor zero `a*q^j = 1` including `q = 0`, and
@@ -138,7 +141,7 @@ entireness, zero-locus, reciprocal-power, and analytic-order results rather
 than duplicating their analytic proofs. In `QBinomialTheoremInfinite`,
 `finiteQPochhammerIn_zero_left` remains the unique declaration owned by
 `GaussianBinomialAtOne` and is imported rather than redeclared. The forward
-status ledger is 69 Exact, 83 Partial, 122 None, and 8 interface rows; the
+status ledger is 71 Exact, 84 Partial, 119 None, and 8 interface rows; the
 191-result pre-Fabius core is 36/29/123/3. The compound outer spectral-product
 theorem remains Partial even though the three-theorem outer-product leaf proves
 local-uniform (normal) convergence for every complex strict contraction, its
@@ -149,9 +152,13 @@ The new status changes record the exact q-exponential eigenfunction and
 Jackson integration-by-parts subclaims, and Partial formalizations of the
 q-exponential factorization, Jackson fundamental theorem, and theta
 quasi-periodicity; the remaining clauses named in their rows stay explicit.
+The incoming tail further makes the full elementary Gaussian-polynomial
+structure and Jacobi's cubic identity Exact, while adding Partial order
+derivative and Gaussian-moment rows; the Lambert logarithm row remains
+Partial with both displayed derivative formulas now formalized.
 
-No PDF was generated for this source-only crosswalk update. The 347-page PDF
-therefore remains a source-pinned historical artifact, while the root package
+No PDF was generated locally while resolving this merge. The supplied
+348-page PDF therefore remains a source-pinned historical artifact, while the root package
 checksum ledger records the live source and retained PDF as distinct payloads.
 PDFs are rebuilt in batches, at most about once per hour; synchronization is
 claimed only after a fresh guarded build.

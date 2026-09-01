@@ -28,12 +28,12 @@ checksum ledger. Their superseded PDFs were retired with the donor packages
 and are not canonical renderings of this larger source. The former forward
 and inverse manuscript PDFs were removed for the same reason. The merged
 master retains one canonical publication checkpoint,
-`q_pochhammer_q_binomial_monograph.pdf`: a reproducible 340-page A4 artifact
-built from the then-current 13,690-line, 628,147-byte source with SHA-256
-`da420f5b2622cd088af43cea0ac448105c9f6af65cf1734de6535e3427f8e052`.
-Exactly three guarded serial passes produced 331, 340, and 340 pages. The
-2,180,191-byte PDF has SHA-256
-`e64a4ef65a9fcce3a4f211f2125b0f8440910cf4527635f76975b0967800e667`.
+`q_pochhammer_q_binomial_monograph.pdf`: a reproducible 347-page A4 artifact
+built from the then-current 14,072-line, 656,200-byte source with SHA-256
+`062b7230d95ff8bd52b11253c6c3c8820d6f6a82e4307ae5d82a1d793c00c517`.
+Exactly three guarded serial passes produced 337, 347, and 347 pages. The
+2,996,319-byte PDF has SHA-256
+`29b422a39c42be37bd1487d4245c44e55706720c545dd015957644e47014bd48`.
 The validation record in `README.md` distinguishes compilation, font
 embedding, complete page rendering, contact-sheet review, and full-resolution
 inspection. PDFs retained beneath `assets/` are research figures, not
@@ -43,10 +43,16 @@ retained 347-page, 2,996,319-byte A4 PDF has SHA-256
 and was built in three serial passes from the 14,072-line, 656,200-byte source
 with SHA-256
 `062b7230d95ff8bd52b11253c6c3c8820d6f6a82e4307ae5d82a1d793c00c517`.
+The currently retained checkpoint supersedes it: the 348-page, 3,002,729-byte
+A4 PDF has SHA-256
+`8bf14b52d8a0fc0abc4d54cca503fd47a2df37cf76ee1bb4e442bea1fd2a4aa7`
+and was built in three serial passes from the 14,158-line, 661,835-byte source
+with SHA-256
+`79ee5e60a6c7e42a91c58dcd9bcae56173cc6b4aa3e54739a461943f705f3904`.
 
-The live source now postdates that receipt. Its 14,210-line, 664,923-byte TeX
+The live source now postdates that receipt. Its 14,288-line, 669,172-byte TeX
 source has SHA-256
-`71d9619aac8787effe4d7e0342dddab6aeb795aab7f1b9a0d0064c1c2d41a90a`.
+`f0025c44ff2021f576625fb7628e23e8102827d2152f3135e381ae2b31d818bd`.
 It incorporates exhaustive crosswalks for `QPochhammerEntire` (zero
 definitions and five legacy compatibility theorems), `QPochhammerInfinite`
 (one definition and twenty-nine theorems), and `QPochhammerDissection` (zero
@@ -59,8 +65,10 @@ theorems), `QPochhammerComplexOrder` (one definition and four theorems),
 `QGaussSummation` (two theorems). The next tranche adds
 `GaussianBinomialPalindromic` (twelve theorems), `QExponential` (three
 definitions and eight theorems), `JacksonIntegral` (one definition and seven
-theorems), and `ThetaQuasiPeriodicity` (one definition and six theorems). The
-`QPochhammerEntire.lean` leaf proves the fixed-nome
+theorems), `ThetaQuasiPeriodicity` (one definition and six theorems),
+`QPochhammerLogDerivative` (ten theorems),
+`QPochhammerOrderDerivative` (three theorems), and `JacobiCubic` (two
+theorems). The `QPochhammerEntire.lean` leaf proves the fixed-nome
 single-symbol locally uniform product and differentiability, the
 division-free factor-zero criterion including `q = 0`, the reciprocal-power
 zero lattice for nonzero nome, and simple analytic order at every zero. The
@@ -74,9 +82,9 @@ complex strict contraction, including `q = 0`, and gives the dyadic Rvachev
 product and bounded-Fabius Fourier specializations. The compound
 `thm:qF-spectral` row remains Partial because its named centered/MGF packaging
 and exterior reciprocal, pole-divisor, and zero--pole clauses are absent. The
-forward status inventory is 69 exact / 83 partial / 122 none / 8
+forward status inventory is 71 exact / 84 partial / 119 none / 8
 interface; the 191-result pre-Fabius core remains 36 / 29 / 123 / 3. No PDF
-was generated for this source-only update, so the retained 347-page artifact
+was generated locally while resolving this merge, so the supplied 348-page artifact
 is historical and must not be treated as rendering the current source.
 
 The former q-Pochhammer/q-binomial monograph arrived in commit

@@ -127,13 +127,8 @@
 \crefname{warning}{warning}{warnings}
 \Crefname{warning}{Warning}{Warnings}
 
-% Document-local semantic commands.  Their names expose distinctions that the
-% identical traditional glyphs do not: finite versus generalized indices,
-% the base of a q-multinomial, and the typed combinatorial object involved.
-\newcommand{\QMultinomial}[3]{\genfrac{[}{]}{0pt}{}{#1}{#2}_{#3}}
-\newcommand{\GeneralizedQPochhammer}[3]{(#1;#2)_{#3}}
-\newcommand{\GeneralizedGaussianBinomial}[3]{\genfrac{[}{]}{0pt}{}{#1}{#2}_{#3}}
-\newcommand{\GeneralizedQNumber}[2]{\left[#1\right]_{#2}}
+% Remaining document-local semantic commands.  Their names expose the typed
+% combinatorial or analytic object when a traditional glyph would not.
 \newcommand{\QFallingPower}[4]{\left(#1-#2\right)_{#3}^{\langle #4\rangle}}
 \newcommand{\JacksonDifferential}[2]{\mathop{}\!\mathrm d_{#1}#2}
 \newcommand{\InversionNumber}[1]{\operatorname{inv}(#1)}
@@ -978,6 +973,16 @@ For all $0\le k\le n$, the Gaussian coefficient $\GaussianBinomial{n}{k}{q}$ bel
 Induct on $n$.  The boundary values are $1$.  Either recurrence in \Cref{thm:qpascal} expresses an interior coefficient as a sum of two polynomials with nonnegative integral coefficients.
 \end{proof}
 
+\begin{remark}[Exact universal polynomial in Lean]
+The theorem
+\lean{Fabius.gaussianBinomial_eq_eval₂_universal} in
+\path{GaussianBinomialUniversal.lean} identifies every Gaussian coefficient
+over a commutative semiring with the evaluation of the universal polynomial
+\(GaussianBinomial{n}{k}{X}\in\NaturalNumbers[X]\).  Thus the polynomiality
+and coefficientwise nonnegativity asserted in \Cref{cor:positivity} are
+\statusexact{} in Lean, without a quotient or a nonvanishing hypothesis.
+\end{remark}
+
 \section{Symmetry, reciprocity, and degree}
 
 \begin{theorem}[Elementary structure]\label{thm:qbinom-structure}
@@ -1020,9 +1025,9 @@ Writing \(\GaussianBinomial{n}{k}{q}=\sum_{j=0}^{k(n-k)}c_jq^j\) and comparing p
 \(c_j=c_{k(n-k)-j}\), which is precisely palindromicity.
 \end{proof}
 
-\begin{remark}[Exact reciprocal core in Lean]
-Items~\textup{(i)} and \textup{(ii)} have exact machine-checked counterparts.
-Symmetry is \lean{Fabius.gaussianBinomial_symm}.  Reciprocity is
+\begin{remark}[Exact polynomial structure in Lean]
+All four items have exact machine-checked counterparts.  Symmetry is
+\lean{Fabius.gaussianBinomial_symm}.  Reciprocity is
 \lean{Fabius.gaussianBinomial_reciprocity_units} in
 \path{QBinomialReciprocity.lean}: for every unit \(u\) in every commutative
 semiring and all \(n,k\in\NaturalNumbers\), including the zero extension above the
@@ -1033,9 +1038,17 @@ diagonal,
 The wrapper \lean{Fabius.gaussianBinomial_reciprocity} specializes this to a
 nonzero element of an arbitrary semifield.  Unlike the quotient proof above,
 the formal proof is a denominator-free induction on the two Pascal
-recurrences, so it remains valid with zero divisors.  Items~\textup{(iii)} and
-\textup{(iv)} are not yet represented as polynomial-degree and coefficient
-theorems; consequently \Cref{thm:qbinom-structure} remains \statuspartial.
+recurrences, so it remains valid with zero divisors.  In
+\path{GaussianBinomialPalindromic.lean},
+\lean{Fabius.gaussianBinomial_natDegree},
+\lean{Fabius.gaussianBinomial_monic}, and
+\lean{Fabius.coeff_gaussianBinomial_zero} give the exact degree,
+leading coefficient, and constant coefficient of the universal polynomial;
+\lean{Fabius.reflect_gaussianBinomial} and
+\lean{Fabius.coeff_gaussianBinomial_reflect} give reflection and
+coefficient palindromicity.  These statements hold for every \(k\le n\),
+including both boundary columns, so \Cref{thm:qbinom-structure} is
+\statusexact.
 \end{remark}
 
 \begin{corollary}[Odd reciprocal degree at \(q=-1\)]
@@ -4546,6 +4559,25 @@ Pair $m=-n$ with $m=n+1$ for $n\ge0$.  Their sum is
 \]
 Cancelling the common minus sign proves the identity.
 \end{proof}
+
+% ed.: remark added to record the proof used by the formalization.
+\begin{remark}[A derivative-free proof]\label{rem:jacobi-cubic-formalization}
+The formalization avoids differentiating the bilateral series.  Pairing
+$k=n+1$ with $k=-n$ in \eqref{eq:jtp-minus} (both have
+$\binom k2=\binom{n+1}2$) and dividing by $1-z$ gives, for $z\ne0,1$,
+\[
+ \frac{(z;q)_\infty(q/z;q)_\infty(q;q)_\infty}{1-z}
+ =\sum_{n\ge0}(-1)^{n+1}q^{\binom{n+1}2}
+ \Bigl(-z^{-n}\sum_{i=0}^{2n}z^i\Bigr),
+\]
+since $z^{n+1}-z^{-n}=-z^{-n}(1-z^{2n+1})$ and
+$1-z^{2n+1}=(1-z)\sum_{i\le 2n}z^i$.  The left side equals
+$(qz;q)_\infty(q/z;q)_\infty(q;q)_\infty$, which tends to $(q;q)_\infty^3$ as
+$z\to1$ by continuity of the infinite product; on the right each term tends
+to $(-1)^n(2n+1)q^{\binom{n+1}2}$, and for $\lvert z-1\rvert<\tfrac12$ the
+terms are dominated by $\lvert q\rvert^{\binom n2}(27\lvert q\rvert/2)^n$, so
+Tannery's theorem passes the limit through the sum.
+\end{remark}
 
 \section{A theta form of the \texorpdfstring{$q$}{q}-gamma reflection product}
 
@@ -12489,8 +12521,8 @@ inside the proof below does not formalize the result the proof concludes.
   than a mathematical claim.
 \end{description}
 
-Of the 282 labelled forward results, 69 are \statusexact, 83 are
-\statuspartial, 122 are \statusnone, and 8 are \statusna.  The original
+Of the 282 labelled forward results, 71 are \statusexact, 84 are
+\statuspartial, 119 are \statusnone, and 8 are \statusna.  The original
 191-result pre-Fabius core had 36 \statusexact, 29 \statuspartial, 123
 \statusnone, and 3 \statusna{} entries.  The four integrated guide chapters
 add 31 human-proved but not Lean-formalized assertions and five labelled
@@ -12570,7 +12602,6 @@ complete public declaration lists:
 \path{QBinomialCauchy.lean}: one definition and five theorems, including the
 compatibility spelling of the primary identity;\\
 \path{QMultinomial.lean}: one definition and seven theorems;\\
-\path{GaussianBinomialPalindromic.lean}: zero definitions and twelve theorems;\\
 \path{SymmetricFunctionOrthogonality.lean}: one definition and six theorems;\\
 \path{CompleteHomogeneousGenerating.lean}: one definition and six theorems;\\
 \path{CompleteHomogeneousAsymptotics.lean}: one theorem;\\
@@ -12585,7 +12616,9 @@ compatibility spelling of the primary identity;\\
 \path{QPochhammerDissection.lean}: zero definitions and two theorems;\\
 \path{QPochhammerInfinite.lean}: one definition and twenty-nine theorems;\\
 \path{QPochhammerInfiniteBounds.lean}: zero definitions and five theorems;\\
+\path{QPochhammerLogDerivative.lean}: zero definitions and ten theorems;\\
 \path{QPochhammerComplexOrder.lean}: one definition and four theorems;\\
+\path{QPochhammerOrderDerivative.lean}: zero definitions and three theorems;\\
 \path{QPochhammerEntire.lean}: zero definitions and five legacy compatibility
 theorems;\\
 \path{GeometricPochhammerNormalConvergence.lean}: zero definitions and three
@@ -12597,7 +12630,10 @@ declaration from \path{GaussianBinomialAtOne.lean};\\
 \path{HeineTransformation.lean}: two definitions and five theorems;\\
 \path{QGaussSummation.lean}: zero definitions and two theorems;\\
 \path{ThetaQuasiPeriodicity.lean}: one definition and six theorems;\\
+\path{JacobiCubic.lean}: zero definitions and two theorems;\\
 \path{QBinomialReciprocity.lean}: four theorems;\\
+\path{GaussianBinomialPalindromic.lean}: zero definitions and twelve
+theorems;\\
 \path{GaussianBinomialAtNegOne.lean}: five theorems;\\
 \path{RvachevPochhammerFactorization.lean}: one definition and nine theorems;\\
 \path{GeometricCompleteHomogeneous.lean}: six theorems;\\
@@ -12628,6 +12664,23 @@ semifield.  The two \(q=-1\) consequences are universal commutative-ring
 identities, transported from the integer Gaussian polynomial, and the
 even-row odd-column statement includes columns above the row by zero
 extension.
+
+\item The direct structure theorems of
+\path{GaussianBinomialPalindromic.lean} are
+\path{Fabius.gaussianBinomial_natDegree},
+\path{Fabius.gaussianBinomial_monic},
+\path{Fabius.coeff_gaussianBinomial_zero},
+\path{Fabius.reflect_gaussianBinomial}, and
+\path{Fabius.coeff_gaussianBinomial_reflect}.  For every \(k\le n\),
+they give exact degree \(k(n-k)\), monicity, constant coefficient one,
+reflection in that exact degree, and coefficient palindromicity for the
+universal polynomial over every nontrivial commutative semiring where degree
+requires nontriviality.  The same module also exports
+\path{Fabius.coeff_gaussianBinomial_top} and
+\path{Fabius.two_mul_derivative_gaussianBinomial_eval_one}.  Together with symmetry,
+unit reciprocity, and the universal-evaluation theorem from
+\path{GaussianBinomialUniversal.lean}, this is the exact Lean counterpart of
+\Cref{cor:positivity,thm:qbinom-structure}.
 
 \item The five theorems of \path{GaussianBinomialAtNegOne.lean} are
 \path{Fabius.gaussianBinomial_neg_one_even_even},
@@ -12994,8 +13047,8 @@ inferred from a related finite identity.
 \toprule
 Chapter & \statusexact & \statuspartial & \statusnone & \statusna\\
 \midrule
-The algebra of $q$-shifted factorials & 11 & 1 & 3 & 0\\
-$q$-integers and Gaussian coefficients & 7 & 1 & 1 & 0\\
+The algebra of $q$-shifted factorials & 11 & 2 & 2 & 0\\
+$q$-integers and Gaussian coefficients & 8 & 1 & 0 & 0\\
 Finite $q$-binomial theorems and inversion & 9 & 1 & 0 & 0\\
 Weighted binomial coefficients and symmetric functions & 3 & 2 & 3 & 0\\
 Partitions, words, paths, and inversion statistics & 3 & 1 & 5 & 0\\
@@ -13007,7 +13060,7 @@ Euler telescoping and very-well-poised summations & 0 & 0 & 4 & 0\\
 Bilateral series and Ramanujan's \texorpdfstring{${}_1\psi_1$}{1psi1} sum & 0 & 0 & 2 & 0\\
 $q$-difference calculus and the quantum binomial & 7 & 2 & 1 & 0\\
 The $q$-gamma and $q$-beta functions & 1 & 1 & 6 & 0\\
-Jacobi's triple product & 4 & 2 & 2 & 0\\
+Jacobi's triple product & 5 & 2 & 1 & 0\\
 Theta modularity, lattice dissection, and sums of squares & 0 & 0 & 14 & 4\\
 Partitions and product--sum identities & 0 & 0 & 4 & 0\\
 Bailey pairs and the Rogers--Ramanujan identities & 1 & 0 & 6 & 0\\
@@ -13023,7 +13076,7 @@ Half-base arithmetic and Prouhet--Thue--Morse cancellation & 6 & 3 & 0 & 0\\
 Geometric uniform sums, $q$-cumulants, and the Fabius--Rvachev functions & 2 & 11 & 0 & 0\\
 Dyadic Gaussian--Thue--Morse structure and the values of $F$ & 6 & 44 & 6 & 0\\
 \midrule
-\textbf{Forward total} & 69 & 83 & 122 & 8\\
+\textbf{Forward total} & 71 & 84 & 119 & 8\\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -13128,16 +13181,24 @@ $q^\alpha$, each identity under the nonvanishing hypothesis that makes its
 right-hand side defined; the integral case is
 \texttt{qPochhammerInfIn\_\allowbreak{}eq\_\allowbreak{}finite\_\allowbreak{}mul\_\allowbreak{}shift}
 of \texttt{QPochhammerInfinite}}\\[2pt]
-\Cref{prop:order-derivative} & \statusnone & ---\\[2pt]
+\Cref{prop:order-derivative} & \statuspartial &
+\texttt{hasDerivAt\_\allowbreak{}qPochhammerC},
+\texttt{hasDerivAt\_\allowbreak{}qPochhammerInfIn\_\allowbreak{}mul\_\allowbreak{}cpow}\newline
+{\footnotesize\texttt{QPochhammerOrderDerivative}; the derivative in the
+order with the displayed logarithmic form, at every $\alpha$ with
+$\lVert aq^\alpha\rVert<1$ (principal branch); holomorphy on a general open
+$U$ avoiding the poles and the local uniformity are not formalized}\\[2pt]
 \Cref{thm:lambert-log} & \statuspartial &
 \texttt{tsum\_\allowbreak{}log\_\allowbreak{}one\_\allowbreak{}sub\_\allowbreak{}geom},
-\texttt{tsum\_\allowbreak{}log\_\allowbreak{}one\_\allowbreak{}sub\_\allowbreak{}geom\_\allowbreak{}real},
 \texttt{exp\_\allowbreak{}neg\_\allowbreak{}tsum\_\allowbreak{}lambert\_\allowbreak{}eq\_\allowbreak{}qPochhammerInfIn},
-\texttt{hasSum\_\allowbreak{}lambert\_\allowbreak{}log\_\allowbreak{}complex}\newline
-{\footnotesize\texttt{EulerLogTransform}; \texttt{LambertSeriesLog}; the
-series identity with the principal logarithms of the factors, its real
-form, and its exponential form $\exp(-\sum_m a^m/(m(1-q^m)))=(a;q)_\infty$;
-the two derivative formulas and the local uniformity are not formalized}\\[2pt]
+\texttt{hasDerivAt\_\allowbreak{}qPochhammerInfIn},
+\texttt{hasDerivAt\_\allowbreak{}qPochhammerInfIn\_\allowbreak{}lambert},
+\texttt{tsum\_\allowbreak{}neg\_\allowbreak{}pow\_\allowbreak{}div\_\allowbreak{}one\_\allowbreak{}sub\_\allowbreak{}mul\_\allowbreak{}pow\_\allowbreak{}eq}\newline
+{\footnotesize\texttt{EulerLogTransform}; \texttt{LambertSeriesLog};
+\texttt{QPochhammerLogDerivative}; the series identity with principal
+logarithms, its exponential form, and both derivative formulas for
+$\lvert a\rvert<1$ by termwise differentiation on discs; the local uniformity
+is used in the proofs but not stated as a separate result}\\[2pt]
 \Cref{cor:divisor-sum} & \statusnone & ---\\[2pt]
 \Cref{thm:poch-dilog} & \statusnone & ---\\[2pt]
 \Cref{prop:classical-poch-limit} & \statusexact &
@@ -13163,11 +13224,18 @@ commutative ring}\\[2pt]
 {\footnotesize\texttt{GaussianBinomialUniversal}; $[n,k]_q$ is the value at
 $q$ of the universal polynomial $[n,k]_X\in\NaturalNumbers[X]$, in every
 commutative semiring, by naturality of the $q$-Pascal recurrence}\\[2pt]
-\Cref{thm:qbinom-structure} & \statuspartial &
+\Cref{thm:qbinom-structure} & \statusexact &
 \texttt{gaussianBinomial\_\allowbreak{}symm},
-\texttt{gaussianBinomial\_\allowbreak{}reciprocity\_\allowbreak{}units}\newline
+\texttt{gaussianBinomial\_\allowbreak{}reciprocity\_\allowbreak{}units},
+\texttt{gaussianBinomial\_\allowbreak{}natDegree},
+\texttt{coeff\_\allowbreak{}gaussianBinomial\_\allowbreak{}zero},
+\texttt{coeff\_\allowbreak{}gaussianBinomial\_\allowbreak{}top},
+\texttt{reflect\_\allowbreak{}gaussianBinomial}\newline
 {\footnotesize\texttt{FiniteQBinomialCore}; \texttt{QBinomialReciprocity};
-items (i)--(ii) exact, polynomial degree and coefficient reversal still open}\\[2pt]
+\texttt{GaussianBinomialPalindromic}; (iii) and (iv) for the universal
+polynomial $[n,k]_X$ over every commutative semiring, palindromicity as
+$\operatorname{reflect}_{k(n-k)}[n,k]_X=[n,k]_X$ by induction from the two
+$q$-Pascal recurrences}\\[2pt]
 \Cref{cor:qbinom-neg-one-odd} & \statusexact &
 \texttt{gaussianBinomial\_\allowbreak{}neg\_\allowbreak{}one\_\allowbreak{}eq\_\allowbreak{}zero\_\allowbreak{}of\_\allowbreak{}odd\_\allowbreak{}degree},
 \texttt{gaussianBinomial\_\allowbreak{}neg\_\allowbreak{}one\_\allowbreak{}even\_\allowbreak{}odd\_\allowbreak{}eq\_\allowbreak{}zero}\newline
@@ -13192,7 +13260,12 @@ polynomiality with natural coefficients is naturality of the recurrence}\\[2pt]
 {\footnotesize\texttt{QPochhammerElementaryIdentities}; exact displayed
 denominators and \(k<n\), with both root-safe cross-multiplied forms exported
 totally for all \(n,k\) by zero extension}\\[2pt]
-\Cref{thm:qbinom-moments} & \statusnone & ---\\[2pt]
+\Cref{thm:qbinom-moments} & \statuspartial &
+\texttt{two\_\allowbreak{}mul\_\allowbreak{}derivative\_\allowbreak{}gaussianBinomial\_\allowbreak{}eval\_\allowbreak{}one}\newline
+{\footnotesize\texttt{GaussianBinomialPalindromic}; the mean and the
+derivative formula in the division-free form
+$2\,([n,k]_X)'(1)=k(n-k)\binom nk$, over every commutative semiring, from
+palindromicity; the variance is not formalized}\\[2pt]
 \midrule
 \multicolumn{3}{@{}l}{\itshape Finite $q$-binomial theorems and inversion}\\
 \midrule
@@ -13485,7 +13558,12 @@ $\sum_{n\in\IntegerNumbers}(-1)^nq^{n(3n-1)/2}$ with the exponent
 \texttt{pentagonalExponent}, and the paired one-sided form, in any complete
 normed field including $q=0$}\\[2pt]
 \Cref{cor:euler-partition-recurrence} & \statusnone & ---\\[2pt]
-\Cref{thm:jacobi-cubic} & \statusnone & ---\\[2pt]
+\Cref{thm:jacobi-cubic} & \statusexact &
+\texttt{hasSum\_\allowbreak{}jacobi\_\allowbreak{}cubic}\newline
+{\footnotesize\texttt{JacobiCubic}; as a \texttt{HasSum} over
+$\ComplexNumbers$, with the exponent written $\binom{n+1}{2}$; proved by a
+difference quotient at $z=1$ and Tannery's theorem instead of termwise
+differentiation; see \Cref{rem:jacobi-cubic-formalization}}\\[2pt]
 \Cref{cor:qgamma-theta} & \statusexact &
 \texttt{hasSum\_\allowbreak{}theta\_\allowbreak{}qGamma\_\allowbreak{}reflection}\newline
 {\footnotesize\texttt{QGamma}; the theta series is stated as a

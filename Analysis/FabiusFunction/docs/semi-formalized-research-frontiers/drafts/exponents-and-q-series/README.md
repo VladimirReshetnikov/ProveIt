@@ -20,9 +20,9 @@ general-q-series guides, forward q-Pochhammer/q-binomial monograph, and
 inverse-q synthesis have been dispositioned into
 [`q_pochhammer_q_binomial_monograph/`](q_pochhammer_q_binomial_monograph/).
 Their earlier names, arrival hashes, and publication facts remain provenance,
-not parallel live documents. The latest validated receipt is the 347-page A4
+not parallel live documents. The latest validated receipt is the 348-page A4
 publication built from source SHA-256
-`062b7230d95ff8bd52b11253c6c3c8820d6f6a82e4307ae5d82a1d793c00c517`.
+`79ee5e60a6c7e42a91c58dcd9bcae56173cc6b4aa3e54739a461943f705f3904`.
 The merged source incorporates the later five-theorem
 `QPochhammerEntire.lean`, `QPochhammerInfinite.lean`, and
 `QPochhammerDissection.lean` surfaces, together with the subsequent q-series
@@ -31,7 +31,7 @@ module tranches and the zero-definition, three-theorem
 crosswalk. That source is a source-only successor to the fresh artifact receipt
 and requires a later synchronized three-pass build. Retained PDFs under its `assets/` tree are
 research figures, not alternate manuscript renderings. The current Lean audit
-contains 643 facade-reachable modules and 8,661 public declarations, with no
+contains 644 facade-reachable modules and 8,666 public declarations, with no
 missing module headers or declaration documentation.
 
 ## Detailed package record
@@ -95,22 +95,22 @@ Current packages and retained intake records:
   figures. Pinned source revisions and Git history preserve every superseded
   layout and arrival fact.
 
-  The latest validated build-checkpoint source was the 14,072-line,
-  656,200-byte `q_pochhammer_q_binomial_monograph.tex`, with SHA-256
-  `062b7230d95ff8bd52b11253c6c3c8820d6f6a82e4307ae5d82a1d793c00c517`.
-  Its retained `q_pochhammer_q_binomial_monograph.pdf` is a 347-page A4
-  rendering of 2,996,319 bytes, with SHA-256
-  `29b422a39c42be37bd1487d4245c44e55706720c545dd015957644e47014bd48`.
-  Exactly three guarded serial passes produced that pair; all 347 pages, A4
-  boxes, text extraction, embedded/subset Type-1 fonts including Libertinus,
-  absence of Type-3 fonts, and targeted visual review passed. The current
-  source has 14,210 lines and 664,923 bytes, with SHA-256
-  `71d9619aac8787effe4d7e0342dddab6aeb795aab7f1b9a0d0064c1c2d41a90a`.
+  The latest validated build-checkpoint source was the 14,158-line,
+  661,835-byte `q_pochhammer_q_binomial_monograph.tex`, with SHA-256
+  `79ee5e60a6c7e42a91c58dcd9bcae56173cc6b4aa3e54739a461943f705f3904`.
+  Its retained `q_pochhammer_q_binomial_monograph.pdf` is a 348-page A4
+  rendering of 3,002,729 bytes, with SHA-256
+  `8bf14b52d8a0fc0abc4d54cca503fd47a2df37cf76ee1bb4e442bea1fd2a4aa7`.
+  Exactly three serial passes produced 338, 348, and 348 pages; A4 geometry,
+  text extraction, embedded/subset Type-1 fonts including Libertinus, and
+  absence of Type-3 fonts passed. The current source has 14,288 lines and
+  669,172 bytes, with SHA-256
+  `f0025c44ff2021f576625fb7628e23e8102827d2152f3135e381ae2b31d818bd`.
   It carries the five-theorem `QPochhammerEntire.lean`, the generic
   `QPochhammerInfinite.lean` and `QPochhammerDissection.lean` APIs, and the
   subsequent q-series module tranches, plus the three-theorem
   `GeometricPochhammerNormalConvergence.lean` outer-product API. Its fresh
-  render is pending, so the validated 347-page PDF remains a source-pinned
+  render is pending, so the supplied 348-page PDF remains a source-pinned
   historical artifact. PDF files retained
   beneath `assets/` are vector research figures, not manuscript builds.
   Manuscript result labels and numerical checks remain
@@ -770,7 +770,7 @@ volume's Part VII; their figures/data are likewise under `assets/`.)
 
 Canonical forward/inverse publication:
 [`q_pochhammer_q_binomial_monograph/`](q_pochhammer_q_binomial_monograph/)
-(latest validated 347-page canonical A4 publication PDF; source-only
+(latest validated 348-page canonical A4 publication PDF; source-only
 outer-product crosswalk rebuild pending) — *q-Series and Inverse q-Analogs:
 A Proof-Oriented Synthesis*. Its forward backbone proves from first principles
 the shifted-factorial, Gaussian, hypergeometric, theta, partition, Bailey,
@@ -789,13 +789,13 @@ and a 1,582,997-byte, 213-page PDF (SHA-256
 `7ee6f8f6d8e72228a5b20daa119caa4d834b11063f910b526897b2677a2ede7b`).
 Those figures identify a retired historical artifact; they are not build
 claims about the current canonical source. The canonical synthesis's newer
-347-page PDF renders source SHA-256
-`062b7230d95ff8bd52b11253c6c3c8820d6f6a82e4307ae5d82a1d793c00c517`
+348-page PDF renders source SHA-256
+`79ee5e60a6c7e42a91c58dcd9bcae56173cc6b4aa3e54739a461943f705f3904`
 and is now a source-pinned receipt because the semantic-union source, including
 the outer-normal-convergence crosswalk, postdates that fresh build checkpoint.
 
-The latest validated forward formalization ledger has 282 rows: 69 Exact, 83
-Partial, 122 with no counterpart, and 8 interface-only. The original
+The latest validated forward formalization ledger has 282 rows: 71 Exact, 84
+Partial, 119 with no counterpart, and 8 interface-only. The original
 191-result pre-Fabius core had 36 exact, 29 partial, 123 with no counterpart,
 and 3 interface-only entries. The four integrated-guide chapters add 31
 human-proved but not Lean-formalized assertions and five labelled definitions;
@@ -807,7 +807,7 @@ centered/MGF wrappers and its reciprocal outside-disk formula, pole divisor,
 and zero--pole exchange. The algebra of q-shifted factorials now accounts for 6 exact, 2
 partial, and 7
 unformalized results; the q-integer and Gaussian-coefficient chapter for
-3 exact, 2 partial, and 4 unformalized results. The finite
+7 exact, 0 partial, and 2 unformalized results. The finite
 q-binomial/inversion chapter now accounts for 9 exact, 1 partial, and 0
 unformalized results; the weighted chapter for 3 exact, 2 partial, and 3
 unformalized results; and the basic-hypergeometric chapter for 1 exact, 0
@@ -836,6 +836,7 @@ compatibility spelling of its primary identity),
 `QPochhammerDissection.lean` (two theorems),
 `QPochhammerInfinite.lean` (one definition, 29 theorems),
 `QBinomialReciprocity.lean` (four theorems),
+`GaussianBinomialPolynomialStructure.lean` (zero definitions, five theorems),
 `GaussianBinomialAtNegOne.lean` (five theorems),
 `RvachevPochhammerFactorization.lean` (one definition, nine theorems), and
 `QPochhammerEntire.lean` (zero definitions; four legacy compatibility
