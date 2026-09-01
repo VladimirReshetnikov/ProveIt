@@ -76,10 +76,13 @@ and as a [rendered PDF](docs/Fabius_Function_and_Rvachev_Up/Fabius_Function_and_
 That primary exposition is deliberately proof-backed: every mathematical claim
 in it must have a proved counterpart in the Lean development.
 
-> **Artifact status (2026-08-31).**  The primary exposition and Lean
-> walkthrough were rebuilt from their current sources in fresh, uninterrupted
-> three-pass Libertinus cycles and now contain 165 and 125 A4 pages,
-> respectively.  The canonical frontier and filed New Frontiers PDFs were
+> **Artifact status (2026-08-31).**  The incoming Lagrange-synthesis checkpoint
+> rebuilt the primary exposition and Lean walkthrough in fresh, uninterrupted
+> three-pass Libertinus cycles; the retained PDFs contain 165 and 125 A4 pages,
+> respectively.  The primary source subsequently gained the prime-power
+> valuation crosswalk without another PDF build, so its PDF renders the
+> Lagrange tranche but not that later source-only addition; the walkthrough
+> remains synchronized.  The canonical frontier and filed New Frontiers PDFs were
 > likewise rebuilt from their final merged sources and contain 236 and 41 A4
 > pages.  Every font in these four refreshed artifacts is embedded and subset,
 > with no Type 3 font.  Other frontier documents that still await a matching
@@ -212,6 +215,7 @@ points:
 | Original compact-support characterization and bounded/original bridge | `FabiusFunction.OriginalUniqueness` | `IsOriginalFabius`, `IsOriginalFabius.mk_of_derivative_law`, `IsFabius.isOriginalFabius_rvachevUp`, `rvachevUp_eq_iff_eqOn_Iic_one`, `isFabius_iff_isOriginalFabius_rvachevUp_and_rightTail`, `isOriginalFabius_iff_existsUnique_isFabius` |
 | Generic affine-difference iterates and derivative orbits | `FabiusFunction.AffineDifferenceOrbit` | `affineDifference_iterate_apply`, `iteratedDeriv_eq_affineDifference_iterate_on`, `affineDifference_iterate_two_one_apply`; the module assumes a one-step derivative identity and does not prove the up-law resolvent equation |
 | Central-binomial valuation and the Thue--Morse sign | `FabiusFunction.CentralBinomialValuation` | Exhaustive public surface: `padicValNat_two_centralBinom`, `thueMorseSign_eq_neg_one_pow_centralBinom`, `padicValNat_two_centralBinom_eq_zero_iff`; for every natural `n`, the valuation is `binaryWeight n`, the sign is its `(-1)`-power, and valuation zero is equivalent to binary weight zero (hence occurs only at `n = 0`, not at positive powers of two) |
+| Prime-power Pascal-row valuations and the dyadic-comb weights | `FabiusFunction.PrimePowerBinomialValuation` | Exhaustive three-theorem surface: `primePowerChoose_padicValNat_add`, `primePowerChoose_padicValNat`, and `twoPowChoose_padicValNat`.  For every prime `p`, `j ≤ p^m`, and `j ≠ 0`, the generic results give the truncation-free additive valuation identity and its natural-subtraction form, including `j = p^m` and `m = 0`; the last theorem is the strict dyadic-comb specialization `0 < j < 2^m`.  The endpoint-flat `C(2^m-2,j-1)` companion and valuation-histogram counts remain open. |
 | Rademacher sine signs and the Thue--Morse product | `FabiusFunction.RademacherSine` | Exhaustive nine-theorem surface: `sin_pi_mul_eq_neg_one_zpow_floor`, `sin_pi_mul_fract_pos`, `sign_sin_pi_mul`, `floor_rademacherPoint`, `fract_rademacherPoint_ne_zero`, `sign_sin_rademacherPoint`, `sign_sin_rademacherPoint_eq_one_of_lt`, `thueMorseSign_eq_prod_sign_sin`, and `thueMorseSign_eq_tprod_sign_sin`.  The factored sine identity is unconditional; the two general sign statements assume exactly a nonzero fractional part; the half-shifted point is never integral; the finite product assumes `n < 2^m`; and the `tprod` identity is total because all sufficiently late factors are proved to equal one.  This is finite-support sign bookkeeping, not convergence of a genuinely nontrivial infinite product or an unshifted sine formula. |
 | Binary digits as differences of dyadic floors | `FabiusFunction.BinaryDigitFloor` | Exhaustive public surface: `div_two_pow_succ_eq_div_div`, `sub_two_mul_div_two`, `div_two_pow_sub_two_mul_div_two_pow_succ`, `testBit_toNat_eq_div_sub_two_mul_div`; the identities are total in their natural-number inputs and give the atlas's exact floor-difference digit formula, without an analytic or real-floor generalization |
 | General-base cumulative scale multiplicities and digit recovery | `FabiusFunction.BaseDigitMultiplicity` | Exhaustive public inventory: zero definitions and five theorems, `sum_range_weightedScaleMultiplicity_of_log_lt`, `sum_range_weightedScaleMultiplicity_log`, `sum_range_div_pow_log_eq_self_add_tail`, `sub_one_mul_sum_padicValNat_succ_add_digitSum`, and `sum_range_padicValNat_succ_eq_sub_digitSum_div`.  The first two hold over every additive commutative monoid; the explicit-height form assumes `1 < b` and `Nat.log b N < H`, while the sharp-height form assumes only `1 < b`.  The remaining natural-number identities also assume exactly `1 < b`, include `N = 0`, and require no primality.  This is the finite count `(b-1) * sum_(n=1)^N (1+nu_b(n)) + s_b(N) = bN` and its quotient form, not an analytic zero-multiplicity theorem. |

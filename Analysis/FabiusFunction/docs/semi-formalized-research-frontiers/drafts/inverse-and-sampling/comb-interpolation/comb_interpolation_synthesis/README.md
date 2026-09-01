@@ -41,6 +41,11 @@ not claim a formal geometric Gaussian closed-form decoder, the associated
 elementary-symmetric/prefactor formula, a `Matrix` wrapper, or decoder
 optimization.
 
+The separate `Fabius.twoPowChoose_padicValNat` crosswalk is an exact Lean
+counterpart only for the strict-interior formula in `thm:weight-valuation`.
+The companion endpoint-flat assertion for `choose(2^m - 2, j - 1)` is stated
+separately in the chapter and remains unformalized.
+
 ## Sources reconciled
 
 The earlier `Dyadic_Comb_Frontiers` volume had already absorbed nine nested
@@ -86,10 +91,17 @@ pdflatex -interaction=nonstopmode -halt-on-error comb_interpolation_synthesis.te
 ```
 
 A successful command is not, by itself, the complete publication gate. The
-current synchronized artifact's source/PDF hashes, page, font, log, and visual-
-inspection facts are recorded once in
+retained incoming publication artifact's build-source and PDF hashes, page,
+font, log, and visual-inspection facts are recorded once in
 [`assets/VALIDATION.md`](assets/VALIDATION.md). Keeping those mutable
 measurements in one record prevents status drift between README files.
+
+The later source-only crosswalk of `thm:weight-valuation` to
+`Fabius.twoPowChoose_padicValNat` changed
+`chapters/03_additive_dyadic.tex` but, by explicit instruction, did not rebuild
+the PDF. These measurements therefore describe the retained incoming
+publication artifact and do not assert render synchronization with the current
+chapter.
 
 ## Reproduce the computational evidence
 
@@ -123,10 +135,12 @@ complete. The deterministic canonical validator passes the structural,
 editorial, provenance, theorem-concordance, and exhaustive package-checksum
 gates. Its Lean check only confirms that each curated exact or partial-support
 declaration name occurs in its nominated module; it is not a live Lean census
-or theorem-type checker. Two concordance rows are exact Lean crosswalks; the
+or theorem-type checker. Three concordance rows are exact Lean crosswalks; the
 compound decoder and biorthogonality rows remain human-proved with narrower
 partial-support notes. The root `SHA256SUMS` is the exhaustive ledger for every
-other permanent package file. The current PDF is synchronized with the
-formalization-crosswalk source; its measurements and inspections, together
-with the remaining fresh-checkout and numerical-replay work, are recorded only
-in [`assets/VALIDATION.md`](assets/VALIDATION.md).
+other permanent package file. The retained incoming publication PDF's
+measurements and inspections are recorded only in
+[`assets/VALIDATION.md`](assets/VALIDATION.md); it predates the source-only
+valuation crosswalk and is not synchronized with the current chapter. A
+fresh-checkout reproduction and a full rerun of every retained numerical
+script remain separate reproducibility work.

@@ -1,11 +1,18 @@
 # Validation record
 
 This record separates completed inventory and canonical-publication checks
-from outstanding reproducibility work. The structural validator, synchronized
-final PDF, and single exhaustive root ledger were complete at this recorded
-checkpoint; full numerical replay and fresh-checkout reproduction remain
-separate. The immutable source baseline is
+from outstanding reproducibility work. The structural validator, retained
+incoming publication PDF, and single exhaustive root ledger were complete at
+the recorded publication checkpoint; full numerical replay and fresh-checkout
+reproduction remain separate. The immutable source baseline is
 `73f0b373126ef22a3b5dccadfa7b99d61d445345`.
+
+After that incoming publication checkpoint, the source-only Lean crosswalk for
+`thm:weight-valuation` updated `chapters/03_additive_dyadic.tex` and the
+theorem concordance. The canonical validator and the single exhaustive root
+ledger were refreshed, but the PDF was intentionally not rebuilt. Consequently
+the PDF measurements below validate the retained incoming publication artifact,
+not render synchronization with the current chapter bytes.
 
 ## Completed source and evidence checks
 
@@ -55,11 +62,11 @@ The complete row-level audit is
 are historical manifests, mismatches are reported rather than silently
 rewritten. They do not certify the current canonical payloads.
 
-## Completed canonical publication gates
+## Completed incoming publication-artifact gates
 
 - `python audit/validate_canonical.py` passes the canonical nine-file TeX
   graph, environment balance, 212 result environments (149 proof-required),
-  800 labels, 780 references, 62 bibliography keys, the 180-row source
+  800 labels, 781 references, 62 bibliography keys, the 180-row source
   disposition, the 23-row post-pin reconciliation, the 151-row historical-
   ledger audit, 111 companion-payload provenance rows for 110 physical
   payloads, the exhaustive root checksum ledger, and the 232-row theorem
@@ -68,16 +75,19 @@ rewritten. They do not certify the current canonical payloads.
 - The validator's Lean check is intentionally narrow: it confirms that the
   curated exact and partial-support declaration names occur in their nominated
   modules. It does not invoke Lean, compare theorem types, or claim that the
-  two exact concordance rows are a complete census of current formal results.
+  three exact concordance rows are a complete census of current formal results.
   Generic decoder synthesis, node biorthogonality, coefficient factorization,
   the full interpolation loop, and the unnormalized decoder row-sum law are
   checked at this identifier level. The geometric Gaussian closed-form
   decoder, its elementary-symmetric/prefactor formula, a typed `Matrix`
-  wrapper, and optimization are not claimed.
+  wrapper, and optimization are not claimed. The exact
+  `Fabius.twoPowChoose_padicValNat` crosswalk covers only the strict-interior
+  dyadic valuation formula; the separately stated endpoint-flat companion
+  assertion remains unformalized.
 - The publication driver itself remains at 188 lines, 6,722 bytes, and SHA-256
   `92878edbef877a5e121c96cc80a003bd2137150550c8e05b5cd970ecefe6b248`.
-  The driver, its seven included chapters, and the shared notation file had
-  the fixed combined SHA-256
+  At the incoming artifact's build checkpoint, the driver, its seven included
+  chapters, and the shared notation file had the fixed combined SHA-256
   `941950f6416e8087b209c6c2af596343daca3881c11d44694b1cbc75d3dbe97a`
   throughout the final build cycle.
 - After a separate empty-TeX-lane and clean-auxiliary gate, exactly three
@@ -85,7 +95,8 @@ rewritten. They do not certify the current canonical payloads.
   source. All three exited successfully, no other TeX process appeared between
   passes, and no later TeX pass was run. The successive pass products had 149,
   156, and 156 pages; the final pass wrote 2,452,884 bytes.
-- The final PDF has 156 pages, 2,452,884 bytes, and SHA-256
+- The retained incoming publication PDF has 156 pages, 2,452,884 bytes, and
+  SHA-256
   `ea23b4ad19a41c5246b548db7c79e18d50835b697a88e9a5aa2b1188af3b4d35`.
   Every page is 595.276 by 841.89 points (A4), has
   rotation zero and identical MediaBox, CropBox, BleedBox, TrimBox, and ArtBox
@@ -123,9 +134,9 @@ concordance begins with the four peer manuscripts; the earlier nine packages
 retain original bytes, source-hash prefixes, and package-level contribution
 summaries, not a second theorem-by-theorem concordance. The accurate scope is
 recorded in `../PROVENANCE.md`. Correcting the TeX sentence would require
-another paired PDF rebuild. This branch deliberately leaves that chapter and
-the synchronized PDF bytes supplied by main unchanged because PDF generation
-was skipped at the user's direction.
+another paired PDF rebuild. This branch deliberately leaves that provenance
+chapter and the retained PDF bytes supplied by main unchanged because PDF
+generation was skipped at the user's direction.
 
 ## Required publication procedure
 
@@ -134,4 +145,6 @@ canonical README's [build section](../README.md#build-the-canonical-article).
 Then inspect the final log for errors, unresolved references, rerun requests,
 and overfull boxes; inspect PDF metadata and fonts; render every page; and
 visually examine every rendered page. The measured result of that procedure is
-recorded above for the current source.
+recorded above for the incoming publication-source snapshot. The retained PDF
+was not rebuilt after the later source-only valuation crosswalk and is not
+synchronized with the current additive-dyadic chapter.

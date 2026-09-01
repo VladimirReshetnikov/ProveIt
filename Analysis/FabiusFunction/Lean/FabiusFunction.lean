@@ -126,6 +126,7 @@ import FabiusFunction.ThueMorseValuation
 import FabiusFunction.DyadicZeroMultiplicity
 import FabiusFunction.PascalDyadicMultiplicity
 import FabiusFunction.CentralBinomialValuation
+import FabiusFunction.PrimePowerBinomialValuation
 import FabiusFunction.ThueMorseDigits
 import FabiusFunction.ThueMorseEnumerators
 import FabiusFunction.ThueMorseRarefied
@@ -389,6 +390,7 @@ import FabiusFunction.LegendreGauntClosedForm
 import FabiusFunction.FabiusLegendreEnergy
 import FabiusFunction.FabiusLegendreRationalEnergy
 import FabiusFunction.FabiusLegendreGaunt
+import FabiusFunction.FabiusLegendreGauntClosedForm
 import FabiusFunction.FabiusSquareEnergyFourier
 import FabiusFunction.FabiusLegendreTranslateBlocks
 import FabiusFunction.FabiusLegendreTranslateSeries
