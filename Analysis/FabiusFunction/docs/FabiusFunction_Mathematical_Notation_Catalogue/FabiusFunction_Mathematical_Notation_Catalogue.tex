@@ -17,6 +17,7 @@
 \usepackage{titlesec}
 \usepackage{listings}
 \usepackage{xurl}
+\usepackage{ragged2e,needspace}
 \usepackage{hyperref}
 \usepackage[nameinlink,noabbrev]{cleveref}
 
@@ -44,10 +45,15 @@
 \titleformat{\section}{\Large\bfseries}{\thesection}{0.7em}{}
 \titleformat{\subsection}{\large\bfseries}{\thesubsection}{0.7em}{}
 \titleformat{\subsubsection}{\normalsize\bfseries}{\thesubsubsection}{0.7em}{}
+\titleformat{\paragraph}[block]{\normalsize\bfseries}{}{0pt}{}
+\titlespacing*{\paragraph}{0pt}{1.0\baselineskip}{0.25\baselineskip}
 \setcounter{secnumdepth}{3}
 \setcounter{tocdepth}{2}
 \setlist[itemize]{leftmargin=2em,itemsep=0.25em,topsep=0.4em}
 \setlist[enumerate]{leftmargin=2.3em,itemsep=0.25em,topsep=0.4em}
+\widowpenalty=10000
+\clubpenalty=10000
+\displaywidowpenalty=10000
 
 % Long command names and file paths occasionally leave no natural break point.
 \setlength{\emergencystretch}{2em}
@@ -65,14 +71,19 @@
 \newtheorem{remark}[theorem]{Remark}
 \newtheorem{warning}[theorem]{Warning}
 
+\newcolumntype{L}[1]{>{\RaggedRight\arraybackslash}p{#1}}
+\newcolumntype{S}[1]{>{\RaggedRight\arraybackslash\scriptsize}p{#1}}
+
 % Repository-facing helpers are not mathematical notation and therefore do not
 % belong in the shared notation input.
-\newcommand{\repo}{\nolinkurl{Analysis/FabiusFunction}}
+\DeclareRobustCommand{\shortpath}[1]{\mbox{\path{#1}}}
+\DeclareRobustCommand{\modulepath}[1]{\shortpath{#1}}
+\DeclareRobustCommand{\repo}{\modulepath{Analysis/FabiusFunction}}
 \newcommand{\lean}[1]{%
-  \ifmmode\text{\nolinkurl{#1}}\else\nolinkurl{#1}\fi}
-\newcommand{\commandname}[1]{\texttt{\textbackslash#1}}
+  \ifmmode\text{\nolinkurl{#1}}\else\mbox{\nolinkurl{#1}}\fi}
+\DeclareRobustCommand{\commandname}[1]{\texttt{\textbackslash#1}}
 % Machine-readable token for the exhaustive document-local accent register.
-\newcommand{\localaccentname}[1]{\commandname{#1}}
+\DeclareRobustCommand{\localaccentname}[1]{\commandname{#1}}
 
 \newenvironment{proofidea}{\par\smallskip\noindent\textit{Proof architecture.}\ }{\hfill$\square$\par\smallskip}
 \newenvironment{boxedremark}{%
@@ -83,11 +94,13 @@
 }
 
 \lstdefinestyle{pseudo}{
-  basicstyle=\ttfamily\small,
+  basicstyle=\ttfamily\scriptsize,
   backgroundcolor=\color{shadegray},
   frame=single,
   rulecolor=\color{rulegray},
   columns=fullflexible,
+  breaklines=true,
+  breakatwhitespace=true,
   keepspaces=true,
   showstringspaces=false,
   xleftmargin=0.7em,
@@ -98,6 +111,7 @@
 
 % Catalogue-only presentation helpers.  They add no mathematical notation.
 \newenvironment{catalogueentry}[2]{%
+  \Needspace{6\baselineskip}%
   \par\addvspace{1.05\baselineskip}%
   \phantomsection\hypertarget{notation:#1}{}%
   \noindent{\large\bfseries #2}\par\smallskip
@@ -105,10 +119,12 @@
   \par\nopagebreak[2]\vspace{0.2\baselineskip}%
   \noindent\color{rulegray}\rule{\linewidth}{0.3pt}\color{black}%
 }
-\newcommand{\entryfield}[2]{\par\noindent\textit{#1.}\enspace #2}
+\newcommand{\entryfield}[2]{\Needspace{3\baselineskip}\par\noindent\textit{#1.}\enspace #2}
 \newcommand{\notelink}[2]{\hyperlink{notation:#1}{#2}}
+\AddToHook{cmd/paragraph/before}{\Needspace{6\baselineskip}}
 
-\title{\bfseries Mathematical Notation Catalogue for \texttt{Analysis/FabiusFunction}\\[0.35em]
+\title{\bfseries Mathematical Notation Catalogue for
+\mbox{\texttt{Analysis/FabiusFunction}}\\[0.35em]
 \large Canonical symbols, exact definitions, local namespaces, and historical aliases}
 \author{Encyclopedic companion to Vladimir Reshetnikov's \texttt{ProveIt} formalization}
 \date{Notation contract \FabiusNotationVersion\\
@@ -134,11 +150,11 @@ local-namespace crosswalks rather than through overloaded bare letters.
 
 \begin{boxedremark}
 \textbf{Normative scope.}
-The command definitions in \path{docs/fabius-notation.tex}, version
+The command definitions in \modulepath{docs/fabius-notation.tex}, version
 \FabiusNotationVersion, are normative for active project-authored LaTeX.  This catalogue
-defines their mathematical meaning.  The directory \path{docs/archive/} is not an active
+defines their mathematical meaning.  The directory \modulepath{docs/archive/} is not an active
 migration target and is used only as provenance.  A historical source under
-\path{docs/papers/} may display its original notation only inside an explicit historical
+\modulepath{docs/papers/} may display its original notation only inside an explicit historical
 scope.  A source-faithful whole-paper transcription opens that scope with the exact
 preamble marker \texttt{HISTORICAL-NOTATION-SCOPE}; a shorter quotation labels the
 historical convention at the quotation itself.  The marker never exempts surrounding
@@ -148,6 +164,12 @@ inherit the namespace of their standalone parent document.
 
 \tableofcontents
 \newpage
+
+% Major catalogue divisions always open on a fresh page.  Besides improving
+% navigation, this keeps the running section mark faithful to the page's
+% opening content rather than to a section introduced near its foot.
+\let\cataloguesection\section
+\renewcommand{\section}{\clearpage\cataloguesection}
 
 \section{Scope contract and how to use this catalogue}
 
@@ -164,7 +186,7 @@ Typography that changes no mathematical meaning---for example the insertion of b
 The catalogue has two levels.
 \begin{enumerate}
 \item A \emph{global semantic symbol} has one meaning throughout the active corpus and,
-      where available, one command in \path{fabius-notation.tex}.
+      where available, one command in \modulepath{fabius-notation.tex}.
 \item A \emph{local symbol} is scoped to a definition, theorem, table, or explicitly named
       document part.  A local symbol must be declared where its scope begins and must not
       be cited outside that scope without qualification.
@@ -222,7 +244,8 @@ The first column is the literal shared command name.  The second column is its r
 the third fixes its semantics.  Commands taking arguments show metavariables in braces.
 
 \begingroup\small
-\begin{longtable}{@{}p{0.28\textwidth}p{0.19\textwidth}p{0.47\textwidth}@{}}
+\renewcommand{\commandname}[1]{\texttt{\textbackslash#1}\allowbreak}
+\begin{longtable}{@{}S{0.35\textwidth}L{0.14\textwidth}L{0.45\textwidth}@{}}
 \toprule
 Shared command & Rendering & Normative meaning\\
 \midrule
@@ -408,10 +431,11 @@ limiting regime $a$ printed.\\
 \begin{catalogueentry}{contract-version}{Shared notation contract version}
 \entryfield{Command}{\commandname{FabiusNotationVersion} expands to the ISO date
 \FabiusNotationVersion.}
-\entryfield{Meaning}{It identifies the semantic API described by this catalogue and
-\path{docs/fabius-notation.tex}.  It is not a publication date, source revision, theorem
-date, numeric parameter, or claim that every historical source was authored on that
-date.}
+\entryfield{Meaning}{It identifies the semantic API described by this catalogue.}
+\entryfield{Contract file}{The corresponding source is
+\modulepath{docs/fabius-notation.tex}.  The version is not a publication date, source
+revision, theorem date, numeric parameter, or claim that every historical source was
+authored on that date.}
 \entryfield{Update rule}{Any addition, removal, arity change, or mathematical change to
 a shared command updates this date and the quick reference, alphabetical index, rendered
 symbol index, retired-alias mapping, and relevant detailed entry in the same change.}
@@ -617,10 +641,13 @@ $\OrderOperator_{z_0}(f)=m\in\NaturalNumbers$ when
 $f(z)=(z-z_0)^m g(z)$ with $g(z_0)\ne0$.  For a pole, a signed divisor order is written
 $\OrderOperator_{z_0}^{\mathrm{div}}(f)<0$ so that it cannot be mistaken for the
 nonnegative zero order.}
-\entryfield{Multiplicative order}{For a group element $a$, the multiplicative order is
-$\OrderOperator_G(a)=\min\SetOf{n\in\PositiveIntegers:a^n=e_G}$ when this set is
-nonempty and is $\infty$ otherwise.  The group subscript is mandatory whenever an
-analytic order also occurs.}
+\entryfield{Multiplicative order}{For a group element $a$, put
+$S_G(a)=\SetOf{n\in\PositiveIntegers:a^n=e_G}$.  When this set is nonempty,
+\[
+ \OrderOperator_G(a)=\min S_G(a).
+\]
+When it is empty, $\OrderOperator_G(a)=\infty$.  The group subscript is mandatory
+whenever an analytic order also occurs.}
 \entryfield{Other orders}{Differential-equation order, recurrence order, matrix order,
 and asymptotic truncation order are prose-qualified quantities.  The shared operator
 provides typography, not permission to leave the species or base point implicit.}
@@ -752,7 +779,7 @@ $\RvachevUp(0)=1$, and has topological support $[-1,1]$.  Every derivative vanis
 $x=\pm1$.}
 \entryfield{Differential law}{For every $x\in\RealNumbers$,
 $\RvachevUp'(x)=2(\RvachevUp(2x+1)-\RvachevUp(2x-1))$.}
-\entryfield{Lean crosswalk}{\lean{rvachevUp} in \path{Basic.lean}, with differential,
+\entryfield{Lean crosswalk}{\lean{rvachevUp} in \modulepath{Basic.lean}, with differential,
 support, Fourier, and shape theorems in their dedicated modules.  Status:
 \textbf{Lean-proved}.}
 \entryfield{Historical aliases}{The source papers print an upright word ``up'', use
@@ -777,8 +804,9 @@ $\FabiusGlobal(x)=\FabiusBounded(x)$.  Globally,
 $\FabiusGlobal'(x)=2\FabiusGlobal(2x)$.  Repeated differentiation gives
 $\FabiusGlobal^{(m)}(x)=2^{\binom{m+1}{2}}\FabiusGlobal(2^m x)$ for
 $m\in\NaturalNumbers$.}
-\entryfield{Lean crosswalk}{\lean{extendedFabius}, with translate-cell and calculus results
-in \path{GlobalExtension.lean}.  Status: \textbf{Lean-proved}.}
+\entryfield{Lean declaration}{\lean{extendedFabius}.}
+\entryfield{Lean module and status}{Translate-cell and calculus results are in
+\modulepath{GlobalExtension.lean}.  Status: \textbf{Lean-proved}.}
 \entryfield{Retired aliases}{The former calligraphic glyph, the former decorated-capital
 glyph, and the plain capital glyph of the 2017 arithmetic paper are historical aliases.
 They must be translated semantically, never by a blind global replacement.}
@@ -802,7 +830,7 @@ $\operatorname{clamp}(y)=\min\{1,\max\{0,y\}\}$ and
 \]
 Consequently it is zero on $(-\infty,0]$ and one on $[1,\infty)$.}
 \entryfield{Lean crosswalk}{\lean{fabiusInv} and \lean{fabiusOrderIso} in
-\path{FabiusInverse.lean}.  Status: \textbf{Lean-proved}.}
+\modulepath{FabiusInverse.lean}.  Status: \textbf{Lean-proved}.}
 \entryfield{Retired aliases}{Bare $I$, $G$, $J$, the formal inverse expression, and a
 legacy inverse macro occur in older prose.  They are local or historical only.}
 \end{catalogueentry}
@@ -1041,6 +1069,7 @@ The letter $S_q$ and its support must be printed whenever this normalization is 
    \frac{\EulerE^{\ImaginaryUnit t(1-q)q^n}-1}
         {\ImaginaryUnit t(1-q)q^n},
 \]
+\nopagebreak[4]
 with every factor assigned its continuous value $1$ at $t=0$.}
 \entryfield{Complex \(q\)}{For $q\in\ComplexNumbers$, the same product may define an
 analytic function for $|q|<1$, but it is no longer the characteristic function of a real
@@ -1126,9 +1155,13 @@ This has no density assumption.}
 \end{catalogueentry}
 
 \begin{catalogueentry}{fourier-angular}{The angular-frequency Fourier transform}
-\entryfield{Commands}{\commandname{FourierAngularOperator} is the operator token,
-\commandname{FourierAngularTransformOf}\texttt{\{f\}} is its bracketed application,
-and \commandname{FourierAngular}\texttt{\{f\}} is its normalization-labelled hat.}
+\entryfield{Operator token}{\commandname{FourierAngularOperator} denotes the transform
+operator without supplying its operand.}
+\entryfield{Bracketed application}{\commandname{FourierAngularTransformOf}\texttt{\{f\}}
+denotes the transform applied to $f$ and prints the operand in brackets.}
+\entryfield{Normalization-labelled hat}{\commandname{FourierAngular}\texttt{\{f\}}
+denotes the same transform of $f$ with the angular-frequency normalization printed on the
+hat.}
 \entryfield{Forward transform}{For $f\in L^1(\RealNumbers)$,
 \[
  \FourierAngular{f}(\omega)
@@ -1151,11 +1184,9 @@ This is a Fourier--Stieltjes transform and requires no density.}
  f(x)=\frac1{2\pi}\int_{\RealNumbers}
  \FourierAngular{f}(\omega)\EulerE^{\ImaginaryUnit\omega x}\,\Differential\omega.
 \]
-The forward direction has no prefactor and the inverse has $1/(2\pi)$.  The command
-denoting this inverse on a stated inversion domain is
-\begin{center}
-\commandname{InverseFourierAngularOperator}.
-\end{center}}
+The forward direction has no prefactor and the inverse has $1/(2\pi)$.}
+\entryfield{Inverse command}{\commandname{InverseFourierAngularOperator} denotes precisely
+this inverse on a stated inversion domain.}
 \entryfield{Rules}{$\FourierAngular{f'}(\omega)
 =\ImaginaryUnit\omega\FourierAngular f(\omega)$ and
 $\FourierAngular{f\Convolution g}
@@ -1170,6 +1201,7 @@ $\mu$, for the two Fourier--Stieltjes transforms just defined.  A formula may ch
 variables between the conventions only by displaying this rescaling.}
 \end{catalogueentry}
 
+\Needspace{13\baselineskip}%
 \begin{catalogueentry}{characteristic-function}{Characteristic functions and Fourier
 signs}
 \entryfield{Definition}{For a real random variable $X$ with probability law $\mu$,
@@ -1456,7 +1488,7 @@ $\ThueMorseSign{2n+1}=-\ThueMorseSign n$.}
 At $N=0$ both sides are $1$: the sum contains the sole term $n=0$ and the product is
 empty.}
 \entryfield{Lean crosswalk}{The formal sign sequence uses declarations in
-\path{ThueMorse.lean} and related prefix modules.  Exact theorem names are recorded in
+\modulepath{ThueMorse.lean} and related prefix modules.  Exact theorem names are recorded in
 the crosswalk appendix; prose identities are not upgraded beyond their verified status.}
 \end{catalogueentry}
 
@@ -1475,6 +1507,23 @@ library-specific totalization; each theorem states which codomain it uses.}
 \entryfield{Two-adic abbreviation}{$\TwoAdicValuation(n)=\PadicValuation2(n)$.
 For $n\ne0$, write $n=2^{\TwoAdicValuation(n)}n_{\mathrm{odd}}$ with
 $n_{\mathrm{odd}}$ odd.}
+\entryfield{Prime-power Pascal row}{For a prime \(p\), \(m\in\NaturalNumbers\), and
+\(j\in\PositiveIntegers\) with \(j\le p^m\), the finite-natural valuation satisfies
+\[
+ \PadicValuation p\!\binom{p^m}{j}+\PadicValuation p(j)=m,
+ \qquad
+ \PadicValuation p\!\binom{p^m}{j}=m-\PadicValuation p(j).
+\]
+The right endpoint \(j=p^m\) and the boundary \(m=0\) are included.  The strict
+dyadic-comb specialization has \(0<j<2^m\).  These formulas do not cover the distinct
+endpoint-flat weights \(\binom{2^m-2}{j-1}\).}
+\entryfield{Lean crosswalk}{\nolinkurl{primePowerChoose_padicValNat_add} and
+\nolinkurl{primePowerChoose_padicValNat} in
+\nolinkurl{PrimePowerBinomialValuation.lean} prove the arbitrary-prime identities;
+\nolinkurl{twoPowChoose_padicValNat} is the strict dyadic specialization.  Lean's
+\lean{padicValNat} is totalized in \(\NaturalNumbers\), so its exact zero behavior is the
+declaration's behavior rather than the extended-value convention above.  Status:
+\textbf{Lean-proved}.}
 \entryfield{Order notation}{For a zero or pole of a meromorphic function at $z_0$,
 $\OrderOperator_{z_0}(f)$ is a different valuation-like object; positive values denote
 zeros and negative values poles in this catalogue.}
@@ -1518,6 +1567,7 @@ chosen with positive angle.}
 $a_n=\ThueMorseSign n$, the product formula evaluates the DFT at
 $z=\zeta_N^{-k}$.  Multiplicities of zeros require counting vanishing factors, not only
 identifying a vanishing product.}
+\Needspace{13\baselineskip}%
 \entryfield{Document-local command}{In the Thue--Morse atlas,
 \commandname{ThueMorseDFTCoefficient}\texttt{\{m\}\{k\}} has the two arguments
 $m\in\NaturalNumbers$ and $k\in\IntegerNumbers$ in that order and means
@@ -1527,6 +1577,7 @@ $m\in\NaturalNumbers$ and $k\in\IntegerNumbers$ in that order and means
  \sum_{n=0}^{2^m-1}\ThueMorseSign n\,
  \EulerE^{-2\pi\ImaginaryUnit kn/2^m}.
 \]
+\nopagebreak[4]
 The value depends only on $k$ modulo $2^m$; the canonical representative range is
 $0\le k<2^m$.  The forward transform is unscaled, the exponential sign is negative,
 and inversion therefore carries the factor $2^{-m}$ and the positive exponential.  This
@@ -1719,9 +1770,11 @@ operator token in $\LeastCommonMultiple(a_1,\ldots,a_r)$; its parenthesized inte
 are source arguments, not TeX macro arguments.  Its value is the unique nonnegative
 generator of the ideal
 $a_1\IntegerNumbers\cap\cdots\cap a_r\IntegerNumbers$ and is therefore insensitive to
-signs.  For $r=0$ the empty intersection is $\IntegerNumbers$.  Explicitly,
+signs.}
+\entryfield{Zero and family conventions}{For $r=0$ the empty intersection is
+$\IntegerNumbers$.  Explicitly,
 $\LeastCommonMultiple(a,b)=\LeastCommonMultiple(\AbsoluteValue a,\AbsoluteValue b)$,
-$\gcd(0,0)=0$, $\LeastCommonMultiple(0,b)=0$ for every $b$, a singleton family has
+$\gcd(0,0)=0$, $\LeastCommonMultiple(0,b)=0$ for every $b$, a~singleton family has
 LCM $\AbsoluteValue a$, and the empty family has LCM $1$.  The empty-family value is the
 unit for adjoining further inputs and is required in the dyadic-denominator formulas.}
 \entryfield{Möbius function}{$\mu_{\mathrm{M}}(n)=0$ if a prime square divides $n$, and
@@ -1736,7 +1789,7 @@ $n\in\PositiveIntegers$ and $\alpha\in\ComplexNumbers$, with positive divisors a
 $d^\alpha=\exp(\alpha\log d)$.}
 \end{catalogueentry}
 
-\section{Asymptotics, logarithms, Lambert \(W\), and saddle analysis}
+\section{Asymptotics, logarithms, Lambert W, and saddle analysis}
 
 \begin{catalogueentry}{asymptotic-regime}{Limits and named asymptotic regimes}
 \entryfield{Limit annotation}{A limit variable and destination are part of every
@@ -2120,9 +2173,10 @@ The series is entire; $z$ may be complex.}
 \]
 The empty product gives $N_0^{(c)}=1$.  Historical prose used a capital-letter
 sequence that collided with Fabius functions; new prose uses the semantic superscript.}
-\entryfield{Lean crosswalk}{\lean{moment n} and \lean{momentIntegral n}, with exact
-arithmetic results in \path{Arithmetic.lean} and analytic results in
-\path{AnalyticMoments.lean}.  Status: \textbf{Lean-proved}.}
+\entryfield{Lean declarations}{\lean{moment n} and \lean{momentIntegral n}.}
+\entryfield{Lean modules and status}{Exact arithmetic results are in
+\modulepath{Arithmetic.lean}; analytic results are in
+\modulepath{AnalyticMoments.lean}.  Status: \textbf{Lean-proved}.}
 \end{catalogueentry}
 
 \begin{catalogueentry}{half-moments}{Normalized half moments}
@@ -2174,8 +2228,8 @@ polynomial remainders, resolvents, and recurrence polynomials.}
 Mersenne-type product stops at $\Floor{n/2}$.  Removing or shifting any of these produces
 a different normalization.}
 \entryfield{Lean crosswalk}{\lean{reshetnikov n} and the corresponding integrality,
-positivity, and oddness theorems in \path{Arithmetic.lean} and
-\path{PaperStatements.lean}.  Status: \textbf{Lean-proved}.}
+positivity, and oddness theorems in \modulepath{Arithmetic.lean} and
+\modulepath{PaperStatements.lean}.  Status: \textbf{Lean-proved}.}
 \end{catalogueentry}
 
 \begin{catalogueentry}{dyadic-denominator}{Dyadic common denominators}
@@ -2197,8 +2251,10 @@ values after applying the exact reflection/translation relation.}
 \entryfield{Collision policy}{A bare $D_n$ is never globally canonical: it also denotes
 determinants and asymptotic main terms.  The semantic superscript is required outside a
 single-purpose local scope.}
-\entryfield{Lean crosswalk}{\lean{dyadicDenominator n} in \path{Arithmetic.lean}, with
-bounds in \path{DenominatorBound.lean}.  Status: \textbf{Lean-proved}.}
+\entryfield{Lean declaration}{\lean{dyadicDenominator n}.}
+\entryfield{Lean modules and status}{The definition is in \modulepath{Arithmetic.lean}.
+\par\noindent Bounds are in \modulepath{DenominatorBound.lean}.  Status:
+\textbf{Lean-proved}.}
 \end{catalogueentry}
 
 \section{Approximation, orthogonal polynomials, splines, and quadrature}
@@ -2259,6 +2315,82 @@ $(2n+1)\langle f,P_n^{\mathrm{Leg}}\rangle/2$.  The corpus prints which one it m
 \entryfield{Collision}{The letter $P_n$ is local: it also denotes probability,
 prefix polynomials, and Padé denominators.  A family superscript is required in a
 cross-topic statement.}
+\end{catalogueentry}
+
+\begin{catalogueentry}{legendre-gaunt-wigner-zero-row}
+{Legendre Gaunt coefficients and the squared zero-row Wigner \(3j\) datum}
+\entryfield{Indices and normalization}{Throughout this entry
+\(i,j,k\in\NaturalNumbers\), and \(P_n^{\mathrm{Leg}}(1)=1\).  The Gaunt coefficient is
+\[
+ G_{ijk}\DefinitionEquals
+ \int_{-1}^{1}P_i^{\mathrm{Leg}}(x)P_j^{\mathrm{Leg}}(x)
+ P_k^{\mathrm{Leg}}(x)\,\Differential x.
+\]
+It is not a coefficient for monic or orthonormal Legendre polynomials.}
+\entryfield{Admissible support}{Write \(\mathsf{Adm}(i,j,k)\) for the simultaneous
+conditions
+\[
+ i+j+k\equiv0\pmod2,
+ \qquad i\le j+k,\quad j\le i+k,\quad k\le i+j.
+\]
+Thus admissibility means even total degree and all three weak triangle inequalities;
+none is implicit.  On this support, \(s\DefinitionEquals(i+j+k)/2\) is a natural number
+and \(s-i,s-j,s-k\in\NaturalNumbers\).}
+\entryfield{Total rational square datum}{Define
+\[
+ W_{ijk}^{2,0}\DefinitionEquals
+ \begin{cases}
+ \displaystyle
+ \frac{
+  \binom{2(s-i)}{s-i}
+  \binom{2(s-j)}{s-j}
+  \binom{2(s-k)}{s-k}}
+ {(2s+1)\binom{2s}{s}},
+ &\mathsf{Adm}(i,j,k),\\[1.1em]
+ 0,&\text{otherwise}.
+ \end{cases}
+\]
+This is a total element of \(\RationalNumbers\) and equals the square of the integer-index
+zero-row Wigner \(3j\) datum.  The superscript \(2,0\) records ``square'' and ``zero
+magnetic row''; it does not select a signed Wigner symbol.}
+\entryfield{Gaunt and product-linearization identities}{The exact relations are
+\[
+ G_{ijk}=2W_{ijk}^{2,0},
+ \qquad
+ [P_k^{\mathrm{Leg}}]\bigl(P_i^{\mathrm{Leg}}P_j^{\mathrm{Leg}}\bigr)
+ =(2k+1)W_{ijk}^{2,0},
+\]
+where the bracket denotes the coefficient of \(P_k^{\mathrm{Leg}}\) in the finite
+Legendre-basis expansion.  Off the admissible support both sides of the first identity
+vanish.}
+\entryfield{Triangle coordinates and factorial form}{Equivalently, there are
+\(a,b,c\in\NaturalNumbers\) with
+\(i=b+c\), \(j=a+c\), and \(k=a+b\).  Then
+\[
+ W_{ijk}^{2,0}
+ =\frac{\binom{2a}{a}\binom{2b}{b}\binom{2c}{c}}
+ {(2(a+b+c)+1)\binom{2(a+b+c)}{a+b+c}},
+\]
+and expansion of each central binomial coefficient gives the source's equivalent
+factorial quotient.}
+\entryfield{Rvachev Gram use family}{Substitution into the finite Rvachev--Legendre
+Gaunt expansion gives rational Gram entries, rational Gram-matrix entries, and---under a
+bounded Fabius object plus its Fabius-specification proof---real up-law Gram entries as
+finite sums of canonical Rvachev--Legendre coefficients times \(W_{ij,2r}^{2,0}\).  This
+finite use does not authorize an infinite Legendre-series interchange.}
+\entryfield{Formal boundary}{Only the total rational square of the integer-index,
+zero-magnetic-row datum is present.  There is no sign or Condon--Shortley phase choice,
+no half-integer spin, no nonzero magnetic index, no general \(3j\), \(6j\), or \(9j\)
+symbol, and no Wigner orthogonality or recoupling theory.}
+\entryfield{Lean crosswalk}{\lean{legendreGauntAdmissible} and
+\lean{legendreWignerThreeJZeroSqRat} in \modulepath{LegendreGauntClosedForm.lean}
+implement the support predicate and total square datum.  The central identities are
+\nolinkurl{legendreGauntRat_eq_two_mul_wignerThreeJZeroSqRat},
+\nolinkurl{legendreGaunt_eq_two_mul_wignerThreeJZeroSqRat}, and
+\nolinkurl{legendreProductLinearizationCoeffRat_eq_mul_wignerThreeJZeroSqRat}.
+\modulepath{FabiusLegendreGauntClosedForm.lean} supplies the finite rational and real
+Rvachev Gram-entry sums, with \lean{IsFabius} required for the analytic real formula.
+Status: \textbf{Lean-proved with the displayed hypotheses}.}
 \end{catalogueentry}
 
 \begin{catalogueentry}{moments-hankel}{Moment matrices and Hankel determinants}
@@ -2359,6 +2491,24 @@ printed separately.}
 \entryfield{Error}{An expression $E_N(f)=\int f\,\Differential\mu-Q_N(f)$ fixes the sign.
 The derivative form of an error requires the exact smoothness interval and normalization
 constant.}
+\entryfield{Shifted dyadic Rvachev self-sampling}{Let \(F\) be a bounded Fabius object
+satisfying the Fabius specification, \(N\in\NaturalNumbers\),
+\(P\in\RealNumbers[X]\) with \(\deg P\le N\), and \(\theta\in\RealNumbers\).  Then
+\[
+ \int_{\RealNumbers}P(x)\RvachevUp_F(x)\,\Differential x
+ =2^{-N}\sum_{k\in\IntegerNumbers}
+ P\!\left(2^{-N}(\theta+k)\right)
+ \RvachevUp_F\!\left(2^{-N}(\theta+k)\right).
+\]
+The right side is formally a bilateral infinite sum, but compact support makes it finite.
+The theorem proves exactness for every polynomial of degree at most \(N\); it does not
+assert failure in degree \(N+1\), so it does not by itself establish that the degree of
+exactness is exactly \(N\).}
+\entryfield{Lean crosswalk}{The displayed rule is
+\nolinkurl{integral_polynomial_mul_rvachevUp_eq_dyadic_tsum} in
+\modulepath{PolynomialCombExactness.lean}; its normalized source identity is
+\nolinkurl{tsum_shifted_polynomial_eq_integral}.  Both retain the bounded-Fabius and
+Fabius-specification hypotheses.  Status: \textbf{Lean-proved}.}
 \end{catalogueentry}
 
 \begin{catalogueentry}{pade}{Padé approximation}
@@ -2562,6 +2712,48 @@ neither interpolant.}
 \entryfield{Cardinal infinite grids}{An infinite cardinal function $L$ satisfying
 $L(k)=\delta_{0k}$ for $k\in\IntegerNumbers$ is a different object and requires a
 function space and convergence mode for $\sum_kf(k)L(x-k)$.}
+\entryfield{Finite Rvachev decoder}{Let \(s\) be a finite index set,
+\(v:s\to\RealNumbers\) a node map, and \(\ell_i\) the Lagrange basis polynomial for
+\(i\in s\).  With \(\mathscr D_{\RvachevUp}\) the Rvachev deconvolution operator,
+\(M\in\PositiveIntegers\), and \(k\in\IntegerNumbers\), define
+\[
+ D_{k i}^{s,v,M}
+ \DefinitionEquals
+ (\mathscr D_{\RvachevUp}\ell_i)(k/M).
+\]
+For nodal data \(y:s\to\RealNumbers\), the corresponding atom coefficient is
+\[
+ a_k^{s,v,y,M}
+ \DefinitionEquals
+ \frac1M\sum_{i\in s}D_{k i}^{s,v,M}y_i.
+\]
+The superscripts display the finite node family, node locations, data, and mesh; a source
+that suppresses them must declare those objects in the immediately governing scope.}
+\entryfield{Exact finite synthesis}{For a bounded Fabius object \(F\) satisfying the
+Fabius specification, \(i\in s\), \(M\ne0\),
+\(|s|-1\le\TwoAdicValuation(M)\), and \(x\in[-1,1]\),
+\[
+ \frac1M\sum_{-2M<k<2M}
+ D_{k i}^{s,v,M}\,\RvachevUp_F(x-k/M)=\ell_i(x).
+\]
+The index set is the open integer interval \(-2M<k<2M\), including neither endpoint.
+Summing against \(y_i\) reconstructs the complete Lagrange interpolant from the
+coefficients \(a_k^{s,v,y,M}\).  Node injectivity is unnecessary for the polynomial
+reconstruction identity but is required for the Kronecker-delta cardinal interpretation;
+the unit decoder-row-sum theorem additionally assumes \(s\ne\varnothing\).}
+\entryfield{Lean crosswalk}{\lean{lagrangeRvachevDecoder} and
+\lean{lagrangeRvachevAtomCoefficient} in \modulepath{LagrangeRvachevSynthesis.lean}
+implement the two displayed definitions.  The exact reconstruction, node-evaluation,
+coefficient/deconvolution, full-interpolation, and row-sum results are its named
+\nolinkurl{normalized_sum_Ioo_lagrangeRvachevDecoder_mul_shifted_rvachevUp},
+\nolinkurl{normalized_sum_Ioo_lagrangeRvachevDecoder_eval_node},
+\nolinkurl{lagrangeRvachevAtomCoefficient_eq_deconvolved_interpolate},
+\nolinkurl{sum_Ioo_lagrangeRvachevAtomCoefficient_mul_shifted_rvachevUp}, and
+\nolinkurl{sum_lagrangeRvachevDecoder_eq_one} theorems.  Lean's definitions remain total at
+\(M=0\) through field division; the reconstruction theorem requires \(M\ne0\).  No
+optimized decoder, bundled matrix inverse, Gaussian \(q\)-binomial closed form, or
+minimum-variation solution is supplied.  Status: \textbf{Lean-proved with the displayed
+hypotheses}.}
 \end{catalogueentry}
 
 \begin{catalogueentry}{sampling}{Sampling, reconstruction, and band limitation}
@@ -2709,8 +2901,12 @@ $L^2(\Omega)=\bigoplus_{n\ge0}\mathcal H_n$ is relative to a specified probabili
 structure.  $J_n$ denotes the orthogonal projection onto $\mathcal H_n$ only within that
 scope.}
 \entryfield{Cumulant generating function}{For an MGF nonzero near zero,
-$K_X(t)=\log\MomentGeneratingFunction X(t)
-=\sum_{r\ge1}\kappa_r(X)t^r/r!$, with the analytic logarithm normalized by $K_X(0)=0$.}
+\[
+ K_X(t)=\log\MomentGeneratingFunction X(t)
+ =\sum_{r\ge1}\kappa_r(X)\frac{t^r}{r!},
+ \qquad K_X(0)=0,
+\]
+where the analytic logarithm is the branch normalized by the displayed value at zero.}
 \entryfield{Standardization}{For variance $\sigma^2>0$,
 $Z=(X-\Expectation X)/\sigma$.  Standardized cumulants are
 $\lambda_r=\kappa_r(X)/\sigma^r$ for $r\ge3$.}
@@ -2998,6 +3194,144 @@ in the same scope.\\
 \end{longtable}
 \endgroup
 
+\begin{catalogueentry}{inverse-synthesis-local-namespace}
+{Finite-spline, Fourier-product, and endpoint-kernel notation in the inverse-synthesis
+volume}
+\entryfield{Scope}{The commands \commandname{FiniteSpline},
+\commandname{FiniteSplineInverse}, \commandname{Fn}, \commandname{Gn},
+\commandname{PhiAng}, \commandname{PhiCyc}, and \commandname{EndpointKernel} are local to
+the standalone inverse-analyticity, asymptotics, and computability volume and its included
+chapters.  They are not shared-API commands, and their meanings end with that standalone
+document.}
+\entryfield{Finite-prefix probability data}{For \(k\in\PositiveIntegers\), let
+\(U_1,U_2,\ldots\) be independent random variables uniformly distributed on
+\([-1,1]\), set
+\[
+ S_k\DefinitionEquals\sum_{j=1}^{k}2^{-j}U_j,
+\]
+and let \(p_k:\RealNumbers\to[0,\infty)\) be the Lebesgue density of \(S_k\).}
+\entryfield{Finite spline family}{\commandname{FiniteSpline}\texttt{\{k\}} has TeX
+arity one and prints \(F_k^{\mathrm{spl}}\).  Its mathematical argument is
+\(k\in\PositiveIntegers\), and
+\[
+ F_k^{\mathrm{spl}}:[0,1]\longrightarrow[0,\infty),\qquad
+ F_k^{\mathrm{spl}}(x)\DefinitionEquals p_k(x-1).
+\]
+The superscript \(\mathrm{spl}\) marks the finite convolution prefix and is never an
+iteration exponent.}
+\entryfield{Exact box-spline form}{For \(x\in[0,1]\), the same finite spline is the
+explicit Thue--Morse box spline
+\[
+ F_k^{\mathrm{spl}}(x)
+ =\frac{2^{\binom{k}{2}}}{(k-1)!}
+ \sum_{j=0}^{2^k-1}(-1)^{s_2(j)}
+ \PositivePart{x-2^{-k}-j2^{1-k}}^{k-1},
+ \qquad s_2(j)\DefinitionEquals\BinaryDigitSum(j).
+\]
+Here \(\BinaryDigitSum(j)\) is the number of one-bits in the nonnegative integer \(j\),
+and \(\PositivePart{t}\DefinitionEquals\max\{t,0\}\).  Thus neither the Thue--Morse
+sign nor the truncation at zero is implicit.}
+\entryfield{Local inverse family}{\commandname{FiniteSplineInverse}\texttt{\{k\}} has
+TeX arity one and prints \(G_k^{\mathrm{spl}}\).  On a stated interval
+\(J\subset(0,1)\) on which \(F_k^{\mathrm{spl}}\) is strictly increasing, it denotes the
+branch
+\[
+ G_k^{\mathrm{spl}}:
+ F_k^{\mathrm{spl}}(J)\longrightarrow J,\qquad
+ G_k^{\mathrm{spl}}\DefinitionEquals
+ \left(F_k^{\mathrm{spl}}\big|_J\right)^{-1}.
+\]
+No inverse value is implied unless the branch interval and monotonicity hypothesis have
+been supplied.  In the asymptotic uses, \(J\) is a fixed compact subinterval of
+\((0,1)\), and the branch exists for all sufficiently large \(k\).}
+\entryfield{Fixed-index aliases}{\commandname{Fn} and \commandname{Gn} each have TeX
+arity zero.  With an ambient \(n\in\PositiveIntegers\), they expand respectively to
+\(F_n^{\mathrm{spl}}\) and \(G_n^{\mathrm{spl}}\).  They do not denote the forward
+composition iterate \(F^{\circ n}\), the inverse composition iterate
+\((F^{-1})^{\circ n}\), or either globally catalogued Fabius inverse.}
+\entryfield{Finite-prefix use family}{The spline and local-inverse symbols are used for
+finite-prefix approximation, uniform inverse-transfer asymptotics, and Richardson
+extrapolation.  The prefix depth, evaluation variable, and---for the inverse---the
+selected monotone branch interval are ambient mathematical data, not additional TeX
+arguments.}
+\entryfield{Angular-frequency product}{\commandname{PhiAng} has TeX arity zero; its
+evaluation variable is external.  It prints \(\Phi_{\mathrm{ang}}\) and denotes the entire
+extension of
+\[
+ \Phi_{\mathrm{ang}}(\xi)
+ \DefinitionEquals\FourierAngular{\RvachevUp}(\xi)
+ =\prod_{j=1}^{\infty}\SincRad(2^{-j}\xi),
+ \qquad \xi\in\ComplexNumbers,
+\]
+where \(\SincRad z=\sin z/z\) for \(z\ne0\) and \(\SincRad0=1\).}
+\entryfield{Cycles-per-unit product}{\commandname{PhiCyc} has TeX arity zero and an
+external variable.  It prints \(\Phi_{2\pi}\) and denotes the same entire transform in
+the cycles-per-unit coordinate:
+\[
+ \Phi_{2\pi}(z)
+ \DefinitionEquals\FourierTwoPi{\RvachevUp}(z)
+ =\Phi_{\mathrm{ang}}(2\pi z)
+ =\prod_{j=0}^{\infty}\SincPi(z/2^j),
+ \qquad z\in\ComplexNumbers.
+\]
+Thus neither the factor \(2\pi\) nor the transform normalization is suppressed.}
+\entryfield{Fourier-product use families}{\(\Phi_{\mathrm{ang}}\) is used for
+reciprocal-sinc coefficients, moment-generating/Fourier rotation, and polynomial
+deconvolution.  \(\Phi_{2\pi}\) is used for integer zero multiplicities, differentiated
+transform identities, moments, and dyadic self-sampling.  Both symbols suppress the
+fixed normalized Rvachev up-function, but their printed subscripts make the coordinate
+normalization explicit; they are never silently interchanged.}
+\entryfield{Endpoint variables}{For the endpoint regime \(y\downarrow0\), set
+\(L=\log2\), \(T=\log(1/y)\), \(\rho=\sqrt{2T/L}\), \(z=\rho^{-1}\),
+\(\ell=\log\rho\), \(\beta=L^{-1}+1/2\), and
+\(\theta=\rho+\beta\pmod 1\).  The phase functions \(\Psi,A_1,A_2,\ldots\) are the fixed
+one-periodic coefficient functions in the forward expansion
+\[
+ \log F(x)=-\frac L2\lambda^2+L\beta\lambda-\frac12\log\lambda
+ +C_{\sharp}+\Psi(\lambda)
+ +\sum_{j=1}^{N-1}\frac{A_j(\lambda)}{\lambda^j}
+ +\BigO_N(\lambda^{-N}),
+\]
+where \(\lambda=-\LambertW_{-1}(-Lx)/L\) and the remainder is uniform in the real phase.}
+\entryfield{Endpoint kernel}{\commandname{EndpointKernel} has TeX arity zero and prints
+\(\mathcal K\); both displayed arguments are mathematical arguments external to the
+macro.  In the formal two-scale coefficient algebra generated by \(\ell\), the
+one-periodic functions above, and their derivatives, define
+\[
+ \begin{aligned}
+ \mathcal R(z,w)={}&-\frac L2\beta^2+\frac L2w^2+\frac12\ell
+ +\frac12\log(1+\beta z+zw)-C_{\sharp}-\Psi(\theta+w)\\
+ &-\sum_{j\ge1}
+ \frac{A_j(\theta+w)z^j}{(1+\beta z+zw)^j},\\
+ \mathcal K(z,w)\DefinitionEquals{}&-\frac1L\mathcal R(z,w).
+ \end{aligned}
+\]
+The inverse endpoint correction \(D\in z\mathscr A[\ell][[z]]\) is then characterized by
+\(D=z\mathcal K(z,D)\).  Here \(w\) is the second formal argument; it is not a hidden
+function of \(z\) until the fixed-point substitution \(w=D\) is made.
+The same source later writes \(\mathcal K_W=-\mathcal R_W/L\) for a distinct
+Wright--omega-carrier kernel.  The form
+\commandname{EndpointKernel}\texttt{\_W} prints that local symbol; it does not denote
+\(\mathcal K(z,W)\), a derivative, or an automatically shared subscripted family.}
+\entryfield{Endpoint-kernel use family}{The kernel is used in the Lagrange diagonal
+formulas for the fixed point, the all-orders inverse-endpoint recursion, and comparison
+with the distinct Wright--omega carrier.  Its suppressed ambient data are
+\(L,\beta,\ell,\theta,C_{\sharp},\Psi\), the full coefficient sequence
+\((A_j)_{j\ge1}\), and the chosen two-scale coefficient algebra.}
+\entryfield{Script composition}{\commandname{FiniteSpline},
+\commandname{FiniteSplineInverse}, \commandname{Fn}, and \commandname{Gn} already own a
+subscript and the superscript \(\mathrm{spl}\); a derivative or further order must group
+the whole object, as in \((F_n^{\mathrm{spl}})^{(m)}\).  \commandname{PhiAng} and
+\commandname{PhiCyc} already own their normalization subscripts; powers and derivatives
+may follow the grouped object, but no second raw subscript may be appended.
+\commandname{EndpointKernel} owns no script, yet any local suffix such as \(_W\) must be
+declared as a new semantic object rather than inferred as evaluation or differentiation.}
+\entryfield{Status}{The finite-prefix objects and the two Fourier products are exact
+definitions.  The endpoint kernel is an exact formal definition inside the volume's
+human-proved all-orders coefficient construction; convergence or analytic equality is
+asserted only where a separate theorem supplies it.}
+\end{catalogueentry}
+
 \subsection{Accents, scripts, and overloaded punctuation}
 
 \begin{catalogueentry}{accent-collisions}{Hats, tildes, bars, stars, primes, and scripts}
@@ -3040,8 +3374,8 @@ quantiles, transform hats, and any future decorated semantic command.}
 \label{sec:local-non-fourier-hats}
 
 This register inventories every distinct command named by an active
-\texttt{LOCAL-NON-FOURIER-HAT:} declaration.  There are 33 marked declarations
-and 31 distinct command names; the two Bailey-pair commands are each declared in two
+\texttt{LOCAL-NON-FOURIER-HAT:} declaration.  There are 35 marked declarations
+and 33 distinct command names; the two Bailey-pair commands are each declared in two
 document scopes.  The phrase \emph{prints a wide hat over \(X\)} describes literal output
 without reintroducing a generic accent command.  TeX arguments, mathematical arguments,
 and scripts appended by a caller are distinguished explicitly.  These commands are
@@ -3133,13 +3467,13 @@ let \(f\) be holomorphic on a neighborhood of \(\overline\Omega\), assume
 \(0\notin f(\partial\Omega)\), and decompose the positively oriented boundary into
 finitely many \(C^3\) panels \(\gamma_k:[0,1]\to\partial\Omega\).  Define
 \[
- g_k(s)=
+ \begin{aligned}
+ g_k(s)&=
  \frac{f'(\gamma_k(s))\gamma_k'(s)}{f(\gamma_k(s))},
- \qquad
- Q=\sum_k\frac{g_k(0)+g_k(1)}2,
- \qquad
- M_k\ge\sup_{0\le s\le1}\AbsoluteValue{g_k''(s)},
- \qquad E=\frac1{12}\sum_kM_k.
+ &Q&=\sum_k\frac{g_k(0)+g_k(1)}2,\\
+ M_k&\ge\sup_{0\le s\le1}\AbsoluteValue{g_k''(s)},
+ &E&=\frac1{12}\sum_kM_k.
+ \end{aligned}
 \]
 The panelwise trapezoid estimate gives
 \[
@@ -3249,6 +3583,70 @@ compose it with a second raw subscript or conflicting superscript.
 
 \subsubsection{Inverse, sampling, and prediction constructions}
 
+\paragraph{\localaccentname{FactorialScaledInverseTransferCoefficient}}
+TeX arity is one; argument \(1\) is the coefficient index
+\(m\in\{1,\ldots,J-1\}\).  The command prints a wide hat over \(c\) with
+subscript \(m\).  The evaluation variable \(y\) is external to the macro and
+is suppressed at the bare-symbol use sites.
+
+Fix \(0<\eta<1/2\), \(J\in\PositiveIntegers\), \(q=1/4\), and
+\(\varepsilon_n=q^n\).  In the uniform inverse-transfer expansion
+\[
+ G_n^{\mathrm{spl}}(y)
+ =
+ \FabiusQuantile(y)
+ +\sum_{j=1}^{J-1}c_j(y)\varepsilon_n^j
+ +\BigO_{\eta,J}(\varepsilon_n^J),
+ \qquad y\in[\eta,1-\eta],
+\]
+the theorem constructs
+\[
+ c_m\in C^\infty([\eta,1-\eta];\RealNumbers)
+ \qquad(1\le m\le J-1).
+\]
+With \(x=\FabiusQuantile(y)\), the accented coefficient is exactly
+\[
+ \widehat c_m(y)\DefinitionEquals m!\,c_m(y).
+\]
+The source normally suppresses the displayed argument \(y\) and writes only
+\(\widehat c_m\) inside partial exponential Bell polynomials.
+
+More explicitly, put
+\[
+ a_j(x)\DefinitionEquals(-1)^j b_jF^{(2j)}(x),
+\]
+and let \(\mathcal B_{r,k}\) be the partial exponential Bell polynomial with
+\(\mathcal B_{0,0}=1\).  Then
+\[
+\begin{aligned}
+ c_m(y)=-\frac1{F'(x)}\Bigg[&
+ \frac1{m!}\sum_{k=2}^{m}F^{(k)}(x)
+ \mathcal B_{m,k}
+   (\widehat c_1,\ldots,\widehat c_{m-k+1})\\
+ &+\sum_{j=1}^{m}\frac1{(m-j)!}
+   \sum_{k=0}^{m-j}a_j^{(k)}(x)
+ \mathcal B_{m-j,k}
+   (\widehat c_1,\ldots,\widehat c_{m-j-k+1})
+ \Bigg],
+\end{aligned}
+\]
+where the term with \(m=j\) is interpreted as \(a_m(x)\).
+
+Status is an exact factorial rescaling inside the source's proved uniform
+inverse-transfer theorem.  The source supplies a proof but makes no Lean
+formalization claim.  The printed symbol suppresses \(y\), \(\eta\), \(J\),
+\(q\), the spline inverse \(G_n^{\mathrm{spl}}\), the base function \(F\),
+the perturbation coefficients \((a_j)\), and the Bell-polynomial convention.
+The accent means conversion from ordinary inverse-expansion coefficients to
+the factorial scaling used by exponential Bell polynomials.  It is not a
+Fourier transform and not the tomographic Fourier-coefficient estimator
+elsewhere printed as a hatted \(c\).
+
+The macro already owns the subscript \(m\).  An explicit evaluation may be
+written after the complete expansion as \(\widehat c_m(y)\); callers must not
+encode \(y\) as a second raw subscript.  Any derivative, superscript, or
+other decoration must group the complete expanded symbol.
+
 \paragraph{\localaccentname{FormalTaylorGerm}}
 TeX arity is one; argument \(1\) is a function or germ label, not the center or
 local variable.  The command prints a wide hat over that label.  For a smooth
@@ -3345,6 +3743,71 @@ coefficient field, and projection subspace are suppressed.  The accent means
 least-squares predictor.  The full target, including its own subscript, must
 be enclosed in the one argument; any subsequent decoration must group the
 complete expansion.
+
+\paragraph{\localaccentname{NestedLambertLogApproximation}}
+TeX arity is one; argument \(1\) is the iterate index
+\(r\in\{0,\ldots,n\}\).  The command prints a wide hat over \(T\) with
+subscript \(r\).  The endpoint input, recursion depth, truncation order, and
+evaluation phases are not TeX arguments.
+
+In its sole active scope, \(I=\FabiusQuantile\) on \((0,1)\).  Put
+\[
+ y_0=y,\qquad y_{r+1}=I(y_r),\qquad
+ T_r\DefinitionEquals\log(1/y_r),
+\]
+in the endpoint regime where every attained \(y_r\) is positive and belongs
+to the domain of \(I\).  The source does not assert a larger maximal domain
+for this construction.  For a fixed depth \(n\ge1\), put
+\[
+ q_n\DefinitionEquals T_0^{-2^{-n}},\qquad
+ \ell\DefinitionEquals\log T_0,
+\]
+and set \(L=\log2\) and \(\beta=L^{-1}+1/2\).  For a chosen truncation order
+\(N\in\PositiveIntegers\) and the one-step coefficient functions \(h_j\)
+supplied by the preceding all-orders theorem, define
+\[
+ \mathcal I_N(T)
+ \DefinitionEquals
+ L\rho+L\beta-\log\rho
+ -\sum_{j=1}^{N}
+   \frac{h_j(\log\rho,\rho+\beta)}{\rho^j},
+ \qquad
+ \rho\DefinitionEquals\sqrt{2T/L}.
+\]
+The accented sequence is the procedural recursion
+\[
+ \widehat T_0\DefinitionEquals T_0,
+\]
+followed, for each \(r\), by expansion of
+\(\mathcal I_N(\widehat T_r)\) in powers of \(q_n\) and deletion of every
+term whose \(q_n\)-exponent is at least \(N\); the retained expression is
+called \(\widehat T_{r+1}\).
+
+The source presents this construction inside the open
+\emph{Nested Lambert phase closure} problem.  It asks for, but does not prove,
+the uniform estimate
+\[
+ T_r-\widehat T_r
+ =
+ \BigO_{n,N}\!\left((1+\ell)^{D'_{n,N}}q_n^N\right)
+ \qquad(0\le r\le n),
+\]
+the phase-substitution bounds, nonconstant transport of each periodic phase,
+and closure or minimal enlargement of the exponent lattice
+\(q_n^{\IntegerNumbers}\).  Because that closure is itself part of the
+problem, the source does not yet supply a proved ambient formal-series ring
+or a proved global function domain and codomain for every \(\widehat T_r\).
+It intends real asymptotic expressions along the attained endpoint regime.
+No Lean formalization is claimed.
+
+The printed symbol suppresses \(y\), \(I\), \(n\), \(N\), \(T_0\), \(q_n\),
+\(\ell\), \(L\), \(\beta\), the coefficient family \((h_j)\), the phase
+vector, and the expansion/truncation convention.  The accent means recursive
+asymptotic truncation, not Fourier transformation and not the
+lacunary-product tail extrapolation elsewhere printed with a hatted \(T\).
+The macro already owns the subscript \(r\); callers must not append a second
+raw subscript.  Any further decoration must group the complete expanded
+symbol and receive a separate semantic declaration.
 
 \subsubsection{Omission marks, endpoint matrices, and lifted operators}
 
@@ -4380,7 +4843,7 @@ redundancy makes a PDF search by glyph useful while preserving a stable source-l
 identifier.
 
 \begingroup\small
-\begin{longtable}{@{}p{0.22\textwidth}p{0.38\textwidth}p{0.34\textwidth}@{}}
+\begin{longtable}{@{}L{0.22\textwidth}S{0.38\textwidth}L{0.34\textwidth}@{}}
 \toprule
 Rendered symbol family & Shared command(s) & Distinguishing data\\
 \midrule
@@ -4432,7 +4895,7 @@ arithmetic LCM, qualified order species, and principal complex branch.\\
 $\FallingFactorial{x}{n},\RisingFactorial{x}{n}$ &
 \commandname{FallingFactorial}, \commandname{RisingFactorial} & Unit-step falling versus
 rising products; both equal one at length zero.\\
-$\SupportOperator,\SupportOf{f},\TopologicalSupportOf{f}$ &
+$\SupportOperator,\SupportOf{f},\allowbreak\TopologicalSupportOf{f}$ &
 \commandname{SupportOperator}, \commandname{SupportOf},
 \commandname{TopologicalSupportOf} & Operator token, pointwise support, and its
 topological closure.\\
@@ -4506,7 +4969,7 @@ The following is the complete source-level index for version
 command name are mathematical arguments, not optional typography.
 
 \begingroup\small
-\begin{longtable}{@{}p{0.31\textwidth}p{0.09\textwidth}p{0.54\textwidth}@{}}
+\begin{longtable}{@{}S{0.35\textwidth}L{0.08\textwidth}L{0.51\textwidth}@{}}
 \toprule
 Command & Arity & Normative entry\\
 \midrule
@@ -4617,10 +5080,10 @@ The crosswalk maps semantic mathematical objects to actual current Lean declarat
 It does not imply that every identity printed in a frontier document has been formalized.
 A row marked ``notation only'' records precisely that no single global Lean object is
 asserted by the shared command.  Lean names are case-sensitive and module paths are
-relative to \path{Analysis/FabiusFunction/Lean/FabiusFunction/}.
+relative to \modulepath{Analysis/FabiusFunction/Lean/FabiusFunction/}.
 
 \begingroup\small
-\begin{longtable}{@{}p{0.24\textwidth}p{0.33\textwidth}p{0.37\textwidth}@{}}
+\begin{longtable}{@{}L{0.22\textwidth}S{0.40\textwidth}L{0.32\textwidth}@{}}
 \toprule
 Catalogue object & Lean declaration and module & Exact boundary\\
 \midrule
@@ -4629,37 +5092,60 @@ Catalogue object & Lean declaration and module & Exact boundary\\
 Catalogue object & Lean declaration and module & Exact boundary\\
 \midrule
 \endhead
-$\FabiusBounded$ & \lean{fabiusReal} in \path{Basic.lean}; canonical witness
-\lean{fabius} and proof \lean{fabius_spec} in \path{PaperStatements.lean} &
+$\FabiusBounded$ & \lean{fabiusReal} in \modulepath{Basic.lean}; canonical witness
+\lean{fabius} and proof \lean{fabius_spec} in \modulepath{PaperStatements.lean} &
 \lean{fabiusReal} is the real-valued view of a \lean{BoundedFabius}; the witness and
 \lean{IsFabius} proof select the canonical object.\\
-Abstract Fabius specification & \lean{IsFabius} in \path{Basic.lean} & The declaration's
+Abstract Fabius specification & \lean{IsFabius} in \modulepath{Basic.lean} & The declaration's
 actual type is authoritative for hypotheses; the catalogue summary does not manufacture
 a weaker premise-free theorem.\\
-$\RvachevUp$ & \lean{rvachevUp} in \path{Basic.lean} & Takes a
+$\RvachevUp$ & \lean{rvachevUp} in \modulepath{Basic.lean} & Takes a
 \lean{BoundedFabius} argument.  Evenness, bounds, and other properties are separate
 theorems, not fields silently attached to an arbitrary function.\\
-$\FabiusGlobal$ & \lean{extendedFabius} in \path{Basic.lean} & Takes a
+$\FabiusGlobal$ & \lean{extendedFabius} in \modulepath{Basic.lean} & Takes a
 \lean{BoundedFabius}; translate-cell and calculus results occur in later dedicated
 modules.\\
 $\FabiusQuantile$ and $\FabiusClampedQuantile$ & \lean{fabiusOrderIso} and
-\lean{fabiusInv} in \path{FabiusInverse.lean} & The formal definitions take both a
+\lean{fabiusInv} in \modulepath{FabiusInverse.lean} & The formal definitions take both a
 bounded object and its \lean{IsFabius} proof.  Domain behavior must be checked against
 the exact declaration before claiming ordinary versus clamped inverse laws.\\
-$\ThueMorseSign{n}$ & \lean{thueMorseSign} in \path{Arithmetic.lean} & Integer-valued
+\(F_n^{\mathrm{spl}}\) and its local inverse \(G_n^{\mathrm{spl}}\) &
+\lean{reportFiniteFabiusApproximant} in \modulepath{QuarterSplineLocalPolynomial.lean};
+\lean{fabiusUniformSpline} in \modulepath{FabiusUniformSpline.lean} &
+The exact index bridge identifies the report approximant at \(n\) with the uniform spline
+at \(n-1\).  Strict monotonicity is proved only for
+\(n\ge3\) on \([1/4,1/4+2^{-n}]\).  No global \(G_n^{\mathrm{spl}}\) is defined in Lean;
+the quantile theorem assumes a supplied local left inverse and is not \lean{fabiusInv}.\\
+\(\Phi_{\mathrm{ang}}\) and \(\Phi_{2\pi}\) & \lean{centeredSincProduct} in
+\modulepath{FourierLaplaceRotation.lean}; \lean{rvachevFourierProduct} in
+\modulepath{Basic.lean}; bridge
+\nolinkurl{centeredSincProduct_eq_rvachevFourierProduct} & The bridge is
+\(\operatorname{centeredSincProduct}(z)=
+\operatorname{rvachevFourierProduct}(z/(2\pi))\).  Identifying the product with the
+integral transform uses \nolinkurl{rvachevFourier_eq_product} and retains
+\(F:\lean{BoundedFabius}\) and \(h_F:\lean{IsFabius}\,F\).\\
+Endpoint kernel \(\mathcal K(z,w)\) & Notation only & Formal frontier construction in the
+two-scale endpoint coefficient algebra.  No exact current Lean definition of
+\(\mathcal K\), \(\mathcal R\), or its fixed-point algebra is claimed.\\
+$\ThueMorseSign{n}$ & \lean{thueMorseSign} in \modulepath{Arithmetic.lean} & Integer-valued
 sign sequence on \lean{Nat}; digit, recurrence, and product identities live in their
 named Thue--Morse modules.\\
-Exact full moments & \lean{moment} in \path{Arithmetic.lean};
-\lean{momentIntegral} in \path{Basic.lean} & Rational recurrence and real integral are
-distinct objects; \path{AnalyticMoments.lean} supplies bridge theorems with hypotheses.\\
-Exact half moments & \lean{halfMoment} in \path{Arithmetic.lean};
-\lean{halfMomentIntegral} in \path{Basic.lean} & Rational recurrence and real integral
+Prime-power Pascal-row valuations & \lean{primePowerChoose_padicValNat_add},
+\lean{primePowerChoose_padicValNat}, and \lean{twoPowChoose_padicValNat} in
+\modulepath{PrimePowerBinomialValuation.lean} & Arbitrary-prime formulas include
+\(j=p^m\) and \(m=0\); the dyadic theorem uses \(0<j<2^m\).  No theorem for the distinct
+endpoint-flat weights \(\binom{2^m-2}{j-1}\) is inferred.\\
+Exact full moments & \lean{moment} in \modulepath{Arithmetic.lean};
+\lean{momentIntegral} in \modulepath{Basic.lean} & Rational recurrence and real integral are
+distinct objects; \modulepath{AnalyticMoments.lean} supplies bridge theorems with hypotheses.\\
+Exact half moments & \lean{halfMoment} in \modulepath{Arithmetic.lean};
+\lean{halfMomentIntegral} in \modulepath{Basic.lean} & Rational recurrence and real integral
 are not identified by notation alone.\\
-$R_n^{\mathrm{Res}}$ & \lean{reshetnikov} in \path{Arithmetic.lean} & The Lean value is
+$R_n^{\mathrm{Res}}$ & \lean{reshetnikov} in \modulepath{Arithmetic.lean} & The Lean value is
 rational at the definition boundary; integrality, positivity, and oddness require their
 named theorems.\\
-$D_n^{\mathrm{dyad}}$ & \lean{dyadicDenominator} in \path{Arithmetic.lean} & A natural
-number definition; bounds and divisibility results occur in \path{DenominatorBound.lean}
+$D_n^{\mathrm{dyad}}$ & \lean{dyadicDenominator} in \modulepath{Arithmetic.lean} & A natural
+number definition; bounds and divisibility results occur in \modulepath{DenominatorBound.lean}
 and related modules.\\
 Number systems and elementary algebra & Mathlib types \lean{Nat}, \lean{Int},
 \lean{Rat}, \lean{Real}, \lean{Complex} and their standard APIs & Printed coercions are
@@ -4673,6 +5159,23 @@ states the corresponding measure equality.\\
 Fourier commands & Mathlib Fourier-transform APIs plus project-specific theorems in
 dedicated Fourier modules & The shared commands choose print normalization.  They are
 not names of one new Lean definition and do not erase Mathlib's hypotheses.\\
+Finite-node Lagrange--Rvachev decoder & \lean{lagrangeRvachevDecoder} and
+\lean{lagrangeRvachevAtomCoefficient} in \modulepath{LagrangeRvachevSynthesis.lean} &
+Exact synthesis uses \(M\ne0\), \(|s|-1\le\TwoAdicValuation(M)\), and \(x\in[-1,1]\).
+Node injectivity is required for cardinal evaluation, not polynomial reconstruction;
+row-sum normalization also requires a nonempty node family.\\
+Shifted dyadic polynomial self-sampling &
+\nolinkurl{integral_polynomial_mul_rvachevUp_eq_dyadic_tsum} in
+\modulepath{PolynomialCombExactness.lean} & Exact for every polynomial of degree at most
+\(N\), every real shift, and a bounded Fabius object satisfying \lean{IsFabius}.  Compact
+support makes the displayed bilateral sum finite; exactness failure at degree \(N+1\) is
+not claimed.\\
+Legendre Gaunt and zero-row Wigner square & \lean{legendreGauntAdmissible} and
+\lean{legendreWignerThreeJZeroSqRat} in \modulepath{LegendreGauntClosedForm.lean}; finite
+Rvachev Gram sums in \modulepath{FabiusLegendreGauntClosedForm.lean} & Only the total
+rational square for natural-number indices and zero magnetic row is defined.  No signed
+symbol, phase, half-integer/nonzero-magnetic theory, or general \(3j/6j/9j\) API is
+claimed; the real Gram formula retains \lean{IsFabius}.\\
 $\DyadicSigmaField_n$ & Notation only & Each document declares its generators and
 probability space; no single project-wide Lean filtration is asserted by the command.\\
 $\DecayOptimizationObjective{n}$ and $\LinearizedDecayObjective{n}$ & Notation only &
@@ -4698,10 +5201,10 @@ or a catalogue entry are not substitutes for inspecting the current declaration.
 \subsection{Snapshot boundary}
 
 The inventory below is the recursive active tree observed on 2026-08-31 at the
-source-validation checkpoint.  It excludes every path below \path{docs/archive/} and
+source-validation checkpoint.  It excludes every path below \modulepath{docs/archive/} and
 counts this catalogue exactly once.  It contains 160 mathematical content sources: 59
 standalone documents and 101 included or generated fragments.  The separate shared
-contract \path{docs/fabius-notation.tex} raises the total before this catalogue to 161
+contract \modulepath{docs/fabius-notation.tex} raises the total before this catalogue to 161
 active TeX files.  Including this standalone catalogue gives 162 active TeX files and
 60 standalone documents.  ``Standalone'' means that the uncommented source
 contains \commandname{documentclass}; every other content source is a fragment inheriting
@@ -4717,20 +5220,20 @@ Manifest group & Standalone & Fragments & Total\\
 Manifest group & Standalone & Fragments & Total\\
 \midrule
 \endhead
-\path{Fabius_Function_and_Rvachev_Up/} & 1 & 0 & 1\\
-\path{fabius_lean_walkthrough/} & 1 & 0 & 1\\
-\path{FabiusFunction_Mathematical_Glossary/} & 1 & 0 & 1\\
-\path{papers/} & 7 & 0 & 7\\
+\modulepath{Fabius_Function_and_Rvachev_Up/} & 1 & 0 & 1\\
+\modulepath{fabius_lean_walkthrough/} & 1 & 0 & 1\\
+\modulepath{FabiusFunction_Mathematical_Glossary/} & 1 & 0 & 1\\
+\modulepath{papers/} & 7 & 0 & 7\\
 Frontier synthesis root & 1 & 0 & 1\\
-\path{drafts/exponents-and-q-series/} & 11 & 16 & 27\\
-\path{drafts/frontier-compilations/} & 3 & 1 & 4\\
-\path{drafts/integration-and-transforms/} & 1 & 7 & 8\\
-\path{drafts/inverse-and-sampling/} & 8 & 37 & 45\\
-\path{drafts/lambert-w/} & 1 & 4 & 5\\
-\path{drafts/representations/} & 12 & 26 & 38\\
-\path{drafts/rvachev_up_fourier_decay/} & 1 & 0 & 1\\
-\path{drafts/spectra-and-arithmetic/} & 10 & 10 & 20\\
-\path{drafts/thue-morse/} & 1 & 0 & 1\\
+\modulepath{drafts/exponents-and-q-series/} & 11 & 16 & 27\\
+\modulepath{drafts/frontier-compilations/} & 3 & 1 & 4\\
+\modulepath{drafts/integration-and-transforms/} & 1 & 7 & 8\\
+\modulepath{drafts/inverse-and-sampling/} & 8 & 37 & 45\\
+\modulepath{drafts/lambert-w/} & 1 & 4 & 5\\
+\modulepath{drafts/representations/} & 12 & 26 & 38\\
+\modulepath{drafts/rvachev_up_fourier_decay/} & 1 & 0 & 1\\
+\modulepath{drafts/spectra-and-arithmetic/} & 10 & 10 & 20\\
+\modulepath{drafts/thue-morse/} & 1 & 0 & 1\\
 \midrule
 Mathematical content subtotal & 59 & 101 & 160\\
 Shared notation contract & 0 & 1 & 1\\
@@ -4742,7 +5245,7 @@ Active TeX total including catalogue & 60 & 102 & 162\\
 \endgroup
 
 The frontier paths in the table are all below
-\path{semi-formalized-research-frontiers/}; the root row is its standalone synthesis.
+\modulepath{semi-formalized-research-frontiers/}; the root row is its standalone synthesis.
 Counts describe files, not distinct mathematical claims or publication units.  Corrected
 and source-faithful historical-paper variants are counted separately because each is an
 active TeX source requiring an interpretable notation namespace.
@@ -4783,7 +5286,7 @@ listings.  Rendered-PDF inspection later closes the composition and layout gap.
 At shared-contract version \FabiusNotationVersion:
 
 \begin{itemize}
-\item \path{docs/fabius-notation.tex} defines exactly 91 shared commands.
+\item \modulepath{docs/fabius-notation.tex} defines exactly 91 shared commands.
 \item Every one of those 91 command names occurs in the canonical quick reference and
       in the alphabetical command index, with its exact arity.
 \item Every command belongs to a detailed normative entry defining its type-level role,
@@ -4795,8 +5298,8 @@ At shared-contract version \FabiusNotationVersion:
       decay objectives, and pointwise/topological support have distinct printed forms.
 \item The retired-alias index is exhaustive with respect to the audit's retired-command
       registry.  Ambiguous aliases map only after semantic classification.
-\item The active corpus has 33 validated \texttt{LOCAL-NON-FOURIER-HAT:}
-      marker/declaration pairs representing 31 distinct document-local command names.
+\item The active corpus has 35 validated \texttt{LOCAL-NON-FOURIER-HAT:}
+      marker/declaration pairs representing 33 distinct document-local command names.
       Every distinct name occurs exactly once in the exhaustive accent register, and the
       whole-corpus audit rejects missing, extra, or duplicate registry metadata.
 \item Symbols not promoted to the shared API remain governed by the local declaration
