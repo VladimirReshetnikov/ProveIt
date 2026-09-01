@@ -109,10 +109,10 @@ only 4,606 declarations and
 declarations, including 69 undocumented ones.  Run the script for the live
 numbers rather than copying these historical values.
 
-The post-merge 2026-08-31 inventory contains 619 modules and 8,438 lexically
+The current 2026-09-01 inventory contains 622 modules and 8,472 lexically
 visible public declarations, with zero missing module headers and zero missing
 doc comments.  Relative to the 610/8,318 activation checkpoint, the current
-tree adds nine modules and 120 declarations.  The initial exact union added
+tree adds twelve modules and 154 declarations.  The initial exact union added
 five modules and 67 declarations.  The branch-point geometry and
 asymptotics leaves contribute 17 declarations for the one-sided vertical
 tangents and leading signed square-root laws of both real Lambert branches.
@@ -154,7 +154,52 @@ The valuation tranche's new leaf
 `PrimePowerBinomialValuation.lean` contributes three theorems: the additive and
 subtraction forms for an arbitrary prime-power Pascal row, and the strict-
 interior dyadic-comb specialization.
-Finally, `LegendreGauntClosedForm.lean` contributes two definitions and
+The newly added leaf, `QPochhammerEntire.lean`, contributes no definitions
+and exactly four theorems:
+`hasProdLocallyUniformly_complexQPochhammerInf`,
+`complexQPochhammerInf_differentiable`,
+`complexQPochhammerInf_eq_zero_iff`, and
+`analyticOrderAt_complexQPochhammerInf_of_eq_zero`.  For each fixed complex
+strict contraction `q`, they give locally uniform convergence on the whole
+complex `a`-plane, entireness in `a`, the raw factor-zero locus (including
+`q = 0`), and analytic order one at every zero.  They neither divide by powers
+of `q` to parametrize those zeros nor assert joint holomorphy in `q`, local
+uniformity of the outer spectral product, or a global growth/order/type claim.
+The two subsequent q-Pochhammer leaves contribute thirty declarations.
+`QPochhammerDissection.lean` has no definitions and exactly two theorems,
+`finiteQPochhammerIn_dissection` and
+`finiteQPochhammerIn_dissection_remainder`; both are finite identities over
+every commutative ring, with the remainder theorem assuming exactly `u ≤ r`.
+`QPochhammerInfinite.lean` has one definition, `qPochhammerInfIn`, and exactly
+twenty-seven theorems:
+`qPochhammerInfIn_eq_tprod`, `summable_norm_mul_pow`,
+`one_sub_ne_zero_of_norm_lt_one`, `norm_mul_pow_self_lt_one`,
+`finiteQPochhammerIn_self_ne_zero`,
+`multipliable_one_sub_mul_pow_of_norm_lt_one`,
+`hasProd_qPochhammerInfIn`,
+`tendsto_finiteQPochhammerIn_qPochhammerInfIn`,
+`qPochhammerInfIn_eq_finite_mul_shift`, `qPochhammerInfIn_succ_shift`,
+`qPochhammerInfIn_eq_factor_mul`, `qPochhammerInfIn_dissection`,
+`qPochhammerInfIn_ne_zero`, `qPochhammerInfIn_eq_zero_iff`,
+`qPochhammerInfIn_self_ne_zero`, `qPochhammerInfIn_eq_tprod_smul`,
+`summable_norm_pow_of_norm_lt_one`, `isBigO_one_sub_sub_one`,
+`differentiable_finiteQPochhammerIn`,
+`qPochhammerInfIn_eq_zero_iff_exists_inv_pow`,
+`hasProdLocallyUniformly_qPochhammerInfIn`,
+`continuous_qPochhammerInfIn`,
+`pow_sq_mul_finiteQPochhammerIn_inv_pow_self`,
+`differentiable_qPochhammerInfIn`,
+`hasDerivAt_qPochhammerInfIn_of_mul_pow_eq_one`,
+`hasDerivAt_qPochhammerInfIn_inv_pow`, and
+`deriv_qPochhammerInfIn_inv_pow_ne_zero`.  These stratify the total
+topological-ring definition, strict-contraction complete-normed-ring
+product/shift/dissection and multiplicative-norm zero API, complete-field
+inverse-power zeros, locally compact field local uniformity and continuity,
+and complex entire and simple-zero derivative formulas.  They make no
+joint-nome holomorphy or global asymptotic claim; the separate four-theorem
+`QPochhammerEntire.lean` API retains analytic order one for
+`complexQPochhammerInf`, including `q=0`.
+The closed-form Gaunt leaf `LegendreGauntClosedForm.lean` contributes two definitions and
 twenty-five theorems: the total integer zero-row Wigner-square datum, its exact
 central-binomial and factorial forms, the all-degree Gaunt identification,
 sharp support, positivity and vanishing criteria, and the product-linearization
