@@ -183,8 +183,8 @@ The valuation tranche's new leaf
 `PrimePowerBinomialValuation.lean` contributes three theorems: the additive and
 subtraction forms for an arbitrary prime-power Pascal row, and the strict-
 interior dyadic-comb specialization.
-The newly added leaf, `QPochhammerEntire.lean`, contributes no definitions
-and exactly four theorems:
+The compatibility leaf, `QPochhammerEntire.lean`, contributes no definitions
+and retains exactly four legacy wrapper theorems:
 `hasProdLocallyUniformly_complexQPochhammerInf`,
 `complexQPochhammerInf_differentiable`,
 `complexQPochhammerInf_eq_zero_iff`, and
@@ -192,15 +192,16 @@ and exactly four theorems:
 strict contraction `q`, they give locally uniform convergence on the whole
 complex `a`-plane, entireness in `a`, the raw factor-zero locus (including
 `q = 0`), and analytic order one at every zero.  They neither divide by powers
-of `q` to parametrize those zeros nor assert joint holomorphy in `q`, local
+of `q` to parametrize those zeros, add a public bridge declaration, or assert
+joint holomorphy in `q`, local
 uniformity of the outer spectral product, or a global growth/order/type claim.
-The two subsequent q-Pochhammer leaves contribute thirty declarations.
+The two subsequent q-Pochhammer leaves contribute thirty-two declarations.
 `QPochhammerDissection.lean` has no definitions and exactly two theorems,
 `finiteQPochhammerIn_dissection` and
 `finiteQPochhammerIn_dissection_remainder`; both are finite identities over
 every commutative ring, with the remainder theorem assuming exactly `u ≤ r`.
 `QPochhammerInfinite.lean` has one definition, `qPochhammerInfIn`, and exactly
-twenty-seven theorems:
+twenty-nine theorems:
 `qPochhammerInfIn_eq_tprod`, `summable_norm_mul_pow`,
 `one_sub_ne_zero_of_norm_lt_one`, `norm_mul_pow_self_lt_one`,
 `finiteQPochhammerIn_self_ne_zero`,
@@ -219,23 +220,29 @@ twenty-seven theorems:
 `pow_sq_mul_finiteQPochhammerIn_inv_pow_self`,
 `differentiable_qPochhammerInfIn`,
 `hasDerivAt_qPochhammerInfIn_of_mul_pow_eq_one`,
-`hasDerivAt_qPochhammerInfIn_inv_pow`, and
-`deriv_qPochhammerInfIn_inv_pow_ne_zero`.  These stratify the total
+`hasDerivAt_qPochhammerInfIn_inv_pow`,
+`deriv_qPochhammerInfIn_inv_pow_ne_zero`,
+`deriv_qPochhammerInfIn_ne_zero_of_mul_pow_eq_one`, and
+`analyticOrderAt_qPochhammerInfIn_of_eq_zero`.  These stratify the total
 topological-ring definition, strict-contraction complete-normed-ring
 product/shift/dissection and multiplicative-norm zero API, complete-field
 inverse-power zeros, locally compact field local uniformity and continuity,
-and complex entire and simple-zero derivative formulas.  They make no
-joint-nome holomorphy or global asymptotic claim; the separate four-theorem
-`QPochhammerEntire.lean` API retains analytic order one for
-`complexQPochhammerInf`, including `q=0`.
+and complex entire, nonzero-derivative, and analytic-order-one formulas,
+including the raw-factor statements at `q=0`.  They make no joint-nome
+holomorphy or global asymptotic claim; the separate four-theorem
+`QPochhammerEntire.lean` API retains the legacy compatibility names for
+`complexQPochhammerInf` and adds no public bridge declaration.
 The final incoming seven-module increment consists of the four-theorem
 `GaussianBinomialAtNegOneDerivative.lean` leaf described above and six further
-q-series modules contributing exactly seventy declarations.
-`QBinomialTheoremInfinite.lean` contributes one definition and twenty-three
+q-series modules contributing exactly sixty-nine declarations.
+`QBinomialTheoremInfinite.lean` contributes one definition and twenty-two
 theorems: real comparison products and Gaussian majorants, fixed-column
 convergence, Tannery transfer, Euler's product and reciprocal expansions, and
 the infinite q-binomial theorem over complete normed fields under the stated
-strict nome and series-variable contractions.  `JacobiTripleProduct.lean`
+strict nome and series-variable contractions.  The reused theorem
+`finiteQPochhammerIn_zero_left` remains canonically owned by
+`GaussianBinomialAtOne.lean` and is not counted in this module.
+`JacobiTripleProduct.lean`
 contributes two definitions and twenty-five theorems: the exact finite
 polynomial identity over commutative rings, its Laurent field form, the
 complete-normed-field Jacobi sums for nonzero Laurent variable and strict
@@ -249,8 +256,10 @@ commutation hypotheses.  Finally, `RogersSzegoPolynomial.lean` contributes
 one definition and nine theorems: finite commutative-(semi)ring boundary and
 recurrence laws, plus the complete-normed-field generating series under
 `‖q‖ < 1`, `‖t‖ < 1`, and `‖z*t‖ < 1`.  These six module counts sum to
-70, and with the four q=-1 derivative declarations give the audited 74-name
-increment from 622/8,472 to 629/8,546.
+69, and with the four q=-1 derivative declarations give the deduplicated
+73-name incoming increment.  The two subsequent
+`QPochhammerInfinite.lean` theorems bring the live change from 622/8,472 to
+629/8,547 to 75 declarations.
 The closed-form Gaunt leaf `LegendreGauntClosedForm.lean` contributes two definitions and
 twenty-five theorems: the total integer zero-row Wigner-square datum, its exact
 central-binomial and factorial forms, the all-degree Gaunt identification,
