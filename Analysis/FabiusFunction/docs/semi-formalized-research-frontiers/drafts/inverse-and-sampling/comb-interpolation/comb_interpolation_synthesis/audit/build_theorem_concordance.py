@@ -170,6 +170,17 @@ LEAN_PROOFS = {
 # In particular, the Gaussian closed forms and Matrix-level packaging in the
 # paper are stronger than the declarations named here.
 LEAN_SUPPORT: dict[str, tuple[str, tuple[str, ...], str]] = {
+    "thm:weight-valuation": (
+        "FabiusFunction.PrimePowerBinomialValuation",
+        (
+            "Fabius.primePowerSubOneChoose_padicValNat",
+            "Fabius.primePowerSubTwoChoose_padicValNat",
+            "Fabius.twoPowSubTwoChoose_padicValNat",
+        ),
+        "Lean also proves the full generic-prime unit row p^m - 1, the exact "
+        "generic-prime companion valuation in row p^m - 2 for 0 < j < p^m, "
+        "and its dyadic specialization.",
+    ),
     "gq:thm:gaussian-Appell-decoder": (
         "FabiusFunction.LagrangeRvachevSynthesis",
         (
@@ -206,10 +217,13 @@ LEAN_SUPPORT: dict[str, tuple[str, tuple[str, ...], str]] = {
 
 LEAN_DISPOSITION_NOTES = {
     "thm:weight-valuation": (
-        "Exact Lean counterpart for the strict-interior dyadic formula only; "
-        "the companion assertion for choose(2^m - 2, j - 1) is stated "
-        "separately and remains unformalized. The same module proves an "
-        "arbitrary-prime form including the positive right endpoint."
+        "Exact Lean counterpart for the strict-interior dyadic formula. The "
+        "same module proves the arbitrary-prime p^m identity including the "
+        "positive right endpoint, the full p^m - 1 unit row "
+        "Fabius.primePowerSubOneChoose_padicValNat, the generic companion "
+        "identity Fabius.primePowerSubTwoChoose_padicValNat for "
+        "0 < j < p^m, and its exact dyadic wrapper "
+        "Fabius.twoPowSubTwoChoose_padicValNat."
     ),
 }
 
