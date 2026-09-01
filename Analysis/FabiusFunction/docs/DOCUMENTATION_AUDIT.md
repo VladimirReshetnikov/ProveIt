@@ -109,12 +109,12 @@ only 4,606 declarations and
 declarations, including 69 undocumented ones.  Run the script for the live
 numbers rather than copying these historical values.
 
-The live post-merge 2026-09-01 inventory contains 657 modules and 8,755
+The live post-merge 2026-09-01 inventory contains 659 modules and 8,768
 lexically visible public declarations, with zero missing module headers and
 zero missing doc comments.  Relative to the 610/8,318 activation checkpoint,
-the current tree adds forty-seven modules and 437 declarations.  Relative to
-the earlier 630/8,552 merged checkpoint, concurrent source work adds twenty-seven
-modules and 203 declarations.  The prime-power and outer-product tranches
+the current tree adds forty-nine modules and 450 declarations.  Relative to
+the earlier 630/8,552 merged checkpoint, concurrent source work adds twenty-nine
+modules and 216 declarations.  The prime-power and outer-product tranches
 account for one module and six declarations: the zero-definition/three-theorem
 `GeometricPochhammerNormalConvergence.lean` leaf and three additional theorems
 in `PrimePowerBinomialValuation.lean`.  The q-polish adds two theorems to
@@ -311,7 +311,7 @@ recurrence laws, plus the complete-normed-field generating series under
 from 622/8,472 to 629/8,547, a seven-module/75-declaration change.  The two
 inverse-computability modules then brought that feature snapshot to 631/8,556,
 a nine-module/84-declaration change.  Further incoming q-calculus leaves bring
-the live audit to the 657/8,755 census recorded above.
+the live audit to the 659/8,768 census recorded above.
 
 `GaussianBinomialPalindromic.lean` is an exhaustive zero-definition,
 twelve-theorem leaf: `Fabius.reflect_add_of_natDegree_le`,
@@ -340,6 +340,21 @@ q-Gauss identities, a ratio-defined complex-order q-Pochhammer API, general
 basic-hypergeometric terms and summability, and the division-free recursive
 q-multinomial interface.  The displayed contraction, nonvanishing, and
 denominator hypotheses remain part of these APIs.
+
+The source-only q-algebra increment adds `CentralQBinomialReduction.lean`
+0+6: `finiteQPochhammerIn_mul_neg`, `finiteQPochhammerIn_two_mul`,
+`finiteQPochhammerIn_map_ringHom`, `central_gaussianBinomial_sq_mul_int`,
+`central_gaussianBinomial_sq_mul`, and `central_gaussianBinomial_sq_div`;
+and `CyclotomicFactorization.lean` 0+7: `div_add_div_le_div`,
+`div_le_div_add_div_add_one`, `mem_range_and_mem_divisors_iff`,
+`finiteQPochhammerIn_X_eq_prod_cyclotomic`,
+`finiteQPochhammerIn_X_eq_gaussianBinomial_mul`,
+`prod_cyclotomic_pow_div_extend`, and
+`gaussianBinomial_X_eq_prod_cyclotomic`.  The first module gives the
+division-free central squared-base reduction over commutative rings and a
+field quotient under two nonvanishing hypotheses.  The second gives the
+finite-product cyclotomic factorization over commutative rings and the final
+Gaussian factorization over an integral domain.
 
 `EffectiveMonotoneInverse.lean` has exactly two public definitions,
 `Fabius.SequentiallyComputableOn` and `Fabius.unitClamp`, and exactly six
@@ -459,7 +474,16 @@ inventory.  `GaussianBinomialAtNegOneDerivative.lean` is 0+4, and
 `gaussianBinomial_universal_monic`,
 `coeff_zero_gaussianBinomial_universal`,
 `gaussianBinomial_universal_reflect`, and
-`coeff_gaussianBinomial_universal_symm`.  The
+`coeff_gaussianBinomial_universal_symm`.
+`CentralQBinomialReduction.lean` is 0+6: `finiteQPochhammerIn_mul_neg`,
+`finiteQPochhammerIn_two_mul`, `finiteQPochhammerIn_map_ringHom`,
+`central_gaussianBinomial_sq_mul_int`, `central_gaussianBinomial_sq_mul`,
+and `central_gaussianBinomial_sq_div`.  `CyclotomicFactorization.lean` is
+0+7: `div_add_div_le_div`, `div_le_div_add_div_add_one`,
+`mem_range_and_mem_divisors_iff`, `finiteQPochhammerIn_X_eq_prod_cyclotomic`,
+`finiteQPochhammerIn_X_eq_gaussianBinomial_mul`,
+`prod_cyclotomic_pow_div_extend`, and
+`gaussianBinomial_X_eq_prod_cyclotomic`.  The
 `JacobiTripleProduct.lean` 2-definition/25-theorem tranche contains the finite triple-product
 polynomial and field identities, the bilateral Jacobi `HasSum` forms, and the
 pentagonal and paired-pentagonal `HasSum` corollaries.  The
@@ -548,7 +572,7 @@ and 88-page notation-catalogue artifacts likewise predate their current merged
 sources.  Their package notices treat those PDFs as historical validation
 receipts, not parity claims, until fresh uninterrupted three-pass builds
 complete.  The inverse-computability receipt likewise requires refresh for the
-657/8,755 census.  The canonical inverse-theory publication retains a 134-page
+659/8,768 census.  The canonical inverse-theory publication retains a 134-page
 artifact synchronized at its latest-main source checkpoint; the merged
 effective-inversion tranche makes current parity pending.
 

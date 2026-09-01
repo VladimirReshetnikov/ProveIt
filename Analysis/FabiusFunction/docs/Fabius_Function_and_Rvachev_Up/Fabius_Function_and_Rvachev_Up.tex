@@ -3817,11 +3817,13 @@ because the underlying infinite product is totalized outside its admissible
 range.  No spectral-zeta recovery, cumulant-sample recovery, or
 identifiability of an underlying probability law is asserted; those remain
 open interfaces.  With the later concurrent source union, the live facade
-census is 657 modules and 8,755 public declarations.  The current TeX also
+census is 659 modules and 8,768 public declarations.  The current TeX also
 contains the six-theorem prime-power companion-row API and the
 zero-definition/three-theorem outer Pochhammer normal-convergence API, plus
 the two-module/nine-declaration effective-inverse tranche and six new
-q-calculus modules contributing 36 declarations.  These are
+q-calculus modules contributing 36 declarations, plus the two source-only
+central-reduction and cyclotomic-factorization modules contributing thirteen
+theorems.  These are
 source-only overlays; the retained 167-page PDF is explicitly historical and
 has not been regenerated for these additions.
 
@@ -6941,6 +6943,27 @@ exact degree, monicity, constant coefficient one, reflection in degree
 the existing row symmetry and reciprocal identities, this closes the canonical
 forward q-binomial structure theorem.  No declaration in this five-theorem
 surface says that the coefficient of \(q\) is one.
+
+Two further source-only modules have exhaustive finite-algebra inventories.
+\path{CentralQBinomialReduction.lean} has no definitions and six theorems:
+\lean{finiteQPochhammerIn_mul_neg}, \lean{finiteQPochhammerIn_two_mul},
+\lean{finiteQPochhammerIn_map_ringHom},
+\lean{central_gaussianBinomial_sq_mul_int},
+\lean{central_gaussianBinomial_sq_mul}, and
+\lean{central_gaussianBinomial_sq_div}.  They give sign pairing, even--odd
+dissection, naturality, the integral certificate and division-free central
+squared-base reduction over commutative rings, and its field quotient under
+the two displayed nonvanishing hypotheses.
+\path{CyclotomicFactorization.lean} has no definitions and seven theorems:
+\lean{div_add_div_le_div}, \lean{div_le_div_add_div_add_one},
+\lean{mem_range_and_mem_divisors_iff},
+\lean{finiteQPochhammerIn_X_eq_prod_cyclotomic},
+\lean{finiteQPochhammerIn_X_eq_gaussianBinomial_mul},
+\lean{prod_cyclotomic_pow_div_extend}, and
+\lean{gaussianBinomial_X_eq_prod_cyclotomic}.  These bound the cyclotomic
+exponents by zero and one, reorganize divisor indices, factor the finite
+q-product over commutative rings, and give the final Gaussian factorization
+over an integral domain.
 
 Four denominator-free product identities make this recursion especially useful downstream.
 For natural \(m,n\), and for \(k\le n\),
@@ -12594,6 +12617,7 @@ binomial theorem, and Rogers--Szeg\H{o} polynomials &
 \path{GaussianBinomialAtNegOneDerivative.lean},
 \path{GaussianBinomialPalindromic.lean},
 \path{GaussianBinomialPolynomialStructure.lean},
+\path{CentralQBinomialReduction.lean}, \path{CyclotomicFactorization.lean},
 \path{QBinomialTheoremInfinite.lean}, \path{JacobiTripleProduct.lean},
 \path{QPascalSummation.lean}, \path{GaussianBinomialContinuity.lean},
 \path{QuantumBinomial.lean}, \path{RogersSzegoPolynomial.lean}\\
@@ -12702,6 +12726,7 @@ Dyadic and \(q\)-binomial formulas &
 \path{QBinomialReciprocity.lean},
 \path{GaussianBinomialPalindromic.lean},
 \path{GaussianBinomialPolynomialStructure.lean},
+\path{CentralQBinomialReduction.lean}, \path{CyclotomicFactorization.lean},
 \path{QPochhammerElementaryIdentities.lean},
 \path{QBinomialCauchy.lean}, \path{QBinomialVandermonde.lean},
 \path{HalfQBinomial.lean},
