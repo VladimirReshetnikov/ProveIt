@@ -368,6 +368,9 @@ CURRENT_Q_STATUS_OVERRIDES = {
     "prop:dissection": "Lean-proved",
     "cor:dissection-remainder": "Lean-proved",
     "thm:poch-entire": "Lean-proved",
+    "prop:rogers-szego-recurrence": "Lean-proved",
+    "prop:rogers-szego-three-term": "Lean-proved",
+    "cor:rogers-szego-dilation": "Lean-proved",
 }
 
 Q_SOURCE_LINE_TARGETS = {
