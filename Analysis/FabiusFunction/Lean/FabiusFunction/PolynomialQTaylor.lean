@@ -57,11 +57,14 @@ variable {R : Type*} [CommSemiring R]
 /-- The `q`-factorial `[n]_q! = [1]_q [2]_q ⋯ [n]_q`. -/
 def qFactorial (q : R) (n : ℕ) : R := ∏ i ∈ range n, qInt q (i + 1)
 
+/-- The zeroth `q`-factorial is one. -/
 @[simp] theorem qFactorial_zero (q : R) : qFactorial q 0 = 1 := by simp [qFactorial]
 
+/-- Recurrence `[n+1]_q! = [n]_q! [n+1]_q`. -/
 theorem qFactorial_succ (q : R) (n : ℕ) : qFactorial q (n + 1) = qFactorial q n * qInt q (n + 1) := by
   simp [qFactorial, Finset.prod_range_succ]
 
+/-- The `q`-derivative of the constant polynomial one is zero. -/
 @[simp] theorem qDerivative_one (q : R) : qDerivative q (1 : R[X]) = 0 := by
   simpa using qDerivative_C q 1
 
@@ -115,9 +118,11 @@ variable {R : Type*} [CommRing R]
 noncomputable def qFallingPower (a q : R) (m : ℕ) : R[X] :=
   ∏ j ∈ range m, (X - C (q ^ j * a))
 
+/-- The zeroth `q`-falling power is one. -/
 @[simp] theorem qFallingPower_zero (a q : R) : qFallingPower a q 0 = 1 := by
   simp [qFallingPower]
 
+/-- Append the factor `X - q^m a` to a `q`-falling power of length `m`. -/
 theorem qFallingPower_succ (a q : R) (m : ℕ) :
     qFallingPower a q (m + 1) = qFallingPower a q m * (X - C (q ^ m * a)) := by
   simp [qFallingPower, Finset.prod_range_succ]
@@ -130,9 +135,12 @@ theorem qFallingPower_succ' (a q : R) (m : ℕ) :
   refine Finset.prod_congr rfl fun j _ => ?_
   rw [pow_succ, mul_assoc]
 
+/-- Every `q`-falling power is monic. -/
 theorem qFallingPower_monic (a q : R) (m : ℕ) : (qFallingPower a q m).Monic :=
   monic_prod_of_monic _ _ fun _ _ => monic_X_sub_C _
 
+/-- Over a nontrivial coefficient ring, a `q`-falling power of length `m`
+has natural degree `m`. -/
 theorem qFallingPower_natDegree [Nontrivial R] (a q : R) (m : ℕ) :
     (qFallingPower a q m).natDegree = m := by
   rw [qFallingPower, natDegree_prod_of_monic _ _ fun _ _ => monic_X_sub_C _]

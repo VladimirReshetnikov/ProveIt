@@ -437,6 +437,8 @@ import FabiusFunction.NotElementary
 import FabiusFunction.InverseBranch
 import FabiusFunction.InverseNotElementary
 import FabiusFunction.FabiusComputableSpline
+import FabiusFunction.EffectiveMonotoneInverse
+import FabiusFunction.FabiusInverseComputable
 import FabiusFunction.FabiusSaddleJetClosedForm
 import FabiusFunction.FabiusSaddleExponentClosedForm
 import FabiusFunction.FabiusSaddleJetStirling
@@ -489,6 +491,12 @@ import FabiusFunction.QPochhammerIntegerIndex
 import FabiusFunction.QPartialFractions
 import FabiusFunction.PolynomialQTaylor
 import FabiusFunction.GaussianBinomialUniversal
+import FabiusFunction.QPochhammerInfiniteBounds
+import FabiusFunction.HeineTransformation
+import FabiusFunction.QGaussSummation
+import FabiusFunction.QPochhammerComplexOrder
+import FabiusFunction.BasicHypergeometricSeries
+import FabiusFunction.QMultinomial
 
 set_option autoImplicit false
 

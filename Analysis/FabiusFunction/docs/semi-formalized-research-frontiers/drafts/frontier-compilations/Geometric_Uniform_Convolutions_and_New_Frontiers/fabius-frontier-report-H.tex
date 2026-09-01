@@ -61,7 +61,6 @@
 \DeclareMathOperator{Res}{Res}
 \DeclareMathOperator{erfc}{erfc}
 \newcommand{\eps}{\varepsilon}
-\newcommand{\Bell}{\mathcal B}
 \newcommand{\cP}{\mathcal P}
 \newcommand{\cA}{\mathcal A}
 \newcommand{\cB}{\mathcal B}
@@ -524,11 +523,11 @@ Classical Bernoulli polynomials invert averaging over one uniform random variabl
 $\Expectation[B_n(x+Z)]=x^n$.  The entire geometric convolution has a natural analogue.
 
 \begin{definition}[Geometric Bernoulli polynomials]
-Define $\Bell_{n,q}(x)$ by
+Define $\GeometricBernoulliPolynomial{n}{q}(x)$ by
 \begin{equation}
  \frac{e^{xt}}{M_q(t)}
  =\prod_{k=0}^{\infty}\frac{aq^kt}{e^{aq^kt}-1}\,e^{xt}
- =\sum_{n=0}^{\infty}\Bell_{n,q}(x)\frac{t^n}{n!}.
+ =\sum_{n=0}^{\infty}\GeometricBernoulliPolynomial{n}{q}(x)\frac{t^n}{n!}.
  \label{eq:geometric-Bernoulli-egf}
 \end{equation}
 The product converges near $t=0$, and the definition may equally be read as a formal
@@ -537,19 +536,19 @@ power-series identity.
 
 \begin{theorem}[Averaging inverse and $q$-difference law]
 \label{thm:geometric-Bernoulli}
-The polynomials $\Bell_{n,q}$ form an Appell sequence and satisfy
+The polynomials $\GeometricBernoulliPolynomial{n}{q}$ form an Appell sequence and satisfy
 \begin{align}
- \frac{\Differential}{\Differential x}\Bell_{n,q}(x)&=n\Bell_{n-1,q}(x),
+ \frac{\Differential}{\Differential x}\GeometricBernoulliPolynomial{n}{q}(x)&=n\GeometricBernoulliPolynomial{n-1}{q}(x),
  \label{eq:appell}\tag{A}\\
- \Expectation\,\Bell_{n,q}(x+V_q)&=x^n,
+ \Expectation\,\GeometricBernoulliPolynomial{n}{q}(x+V_q)&=x^n,
  \label{eq:averaging-inverse}\tag{B}\\
- \Bell_{n,q}(x+a)-\Bell_{n,q}(x)
- &=anq^{n-1}\Bell_{n-1,q}(x/q),
+ \GeometricBernoulliPolynomial{n}{q}(x+a)-\GeometricBernoulliPolynomial{n}{q}(x)
+ &=anq^{n-1}\GeometricBernoulliPolynomial{n-1}{q}(x/q),
  \label{eq:q-difference-Bernoulli}\tag{C}\\
- \Bell_{n,q}(1-x)&=(-1)^n\Bell_{n,q}(x).
+ \GeometricBernoulliPolynomial{n}{q}(1-x)&=(-1)^n\GeometricBernoulliPolynomial{n}{q}(x).
  \label{eq:Bernoulli-reflection}\tag{D}
 \end{align}
-As $q\downarrow0$, $\Bell_{n,q}(x)$ tends coefficientwise to the classical Bernoulli
+As $q\downarrow0$, $\GeometricBernoulliPolynomial{n}{q}(x)$ tends coefficientwise to the classical Bernoulli
 polynomial $B_n(x)$.
 \end{theorem}
 
@@ -574,20 +573,20 @@ $te^{xt}/(e^t-1)$.
 
 Writing $y=x-1/2$, $\sigma_q^2=\Variance(V_q)$, and $\kappa_{4,q}=\kappa_4(V_q)$ gives
 \begin{align}
- \Bell_{0,q}(x)&=1,\\
- \Bell_{1,q}(x)&=y,\\
- \Bell_{2,q}(x)&=y^2-\sigma_q^2,\\
- \Bell_{3,q}(x)&=y^3-3\sigma_q^2y,\\
- \Bell_{4,q}(x)&=y^4-6\sigma_q^2y^2+3\sigma_q^4-\kappa_{4,q}.
+ \GeometricBernoulliPolynomial{0}{q}(x)&=1,\\
+ \GeometricBernoulliPolynomial{1}{q}(x)&=y,\\
+ \GeometricBernoulliPolynomial{2}{q}(x)&=y^2-\sigma_q^2,\\
+ \GeometricBernoulliPolynomial{3}{q}(x)&=y^3-3\sigma_q^2y,\\
+ \GeometricBernoulliPolynomial{4}{q}(x)&=y^4-6\sigma_q^2y^2+3\sigma_q^4-\kappa_{4,q}.
 \end{align}
-More generally, $\Bell_{n,q}(x)$ is the complete Bell polynomial whose first argument
+More generally, $\GeometricBernoulliPolynomial{n}{q}(x)$ is the complete Bell polynomial whose first argument
 is $y$ and whose higher arguments are the negatives of the centered cumulants of
 $V_q$.
 
 \begin{corollary}[Exact moment inversion]
 For $m_j(q)=\Expectation V_q^j$,
 \begin{equation}
- \sum_{j=0}^{n}\binom njm_j(q)\Bell_{n-j,q}(x)=x^n.
+ \sum_{j=0}^{n}\binom njm_j(q)\GeometricBernoulliPolynomial{n-j}{q}(x)=x^n.
  \label{eq:moment-inversion}
 \end{equation}
 Thus the lower-triangular moment matrix of the geometric convolution has an explicit
@@ -1428,18 +1427,18 @@ The averaging operator
 \[
  (T_qp)(x)=\Expectation p(x+V_q)
 \]
-has inverse on polynomials given by $T_q^{-1}x^n=\Bell_{n,q}(x)$.  The fixed-point
+has inverse on polynomials given by $T_q^{-1}x^n=\GeometricBernoulliPolynomial{n}{q}(x)$.  The fixed-point
 decomposition factors it as an infinite product of uniform-averaging operators.
 
 \begin{problem}
-Develop the spectral and zero geometry of $\Bell_{n,q}$.  Questions include the
+Develop the spectral and zero geometry of $\GeometricBernoulliPolynomial{n}{q}$.  Questions include the
 location of nonreal zeros, interlacing under $n\mapsto n+1$, asymptotic zero measures as
 $n\to\infty$, and operator factorizations of $T_q^{-1}$ in terms of the $q$-difference
 law \eqref{eq:q-difference-Bernoulli}.
 \end{problem}
 
 \begin{conjecture}[Central zero rigidity]
-For each fixed $q\in(0,1)$, all real zeros of $\Bell_{n,q}$ are simple except for the
+For each fixed $q\in(0,1)$, all real zeros of $\GeometricBernoulliPolynomial{n}{q}$ are simple except for the
 forced central zero of odd degree, and the number of real zeros is eventually a fixed
 proportion of $n$ depending continuously on $q$.
 \end{conjecture}

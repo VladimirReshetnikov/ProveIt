@@ -183,6 +183,15 @@ RETIRED_COMMANDS = {
     "eulertwo": "SecondOrderEulerianNumber",
     "BellP": "ExponentialPartialBellPolynomial",
     "BellC": "ExponentialCompleteBellPolynomial",
+    "Bell": (
+        "BellNumber, ExponentialCompleteBellPolynomial, "
+        "ExponentialPartialBellPolynomial, or a semantically named "
+        "non-Bell family such as GeometricBernoulliPolynomial"
+    ),
+    "coeff": (
+        "CoefficientExtraction (variable and exponent explicit; "
+        "operand follows)"
+    ),
     "OrdinaryBellPolynomial": "OrdinaryPartialBellPolynomial",
     "OrdinaryBellSeriesOf": "OrdinaryGeneratingFunctionOf",
     "OrdinaryGeneratingSeriesOf": "OrdinaryGeneratingFunctionOf",
@@ -677,7 +686,7 @@ def main() -> int:
     roots = sum(bool(item["standalone"]) for item in file_info)
     report = {
         "schemaVersion": 2,
-        "notationVersion": "2026-08-31",
+        "notationVersion": "2026-09-01",
         "scope": "Analysis/FabiusFunction/docs/**/*.tex excluding docs/archive/**",
         "semanticMode": args.semantic,
         "inventory": {

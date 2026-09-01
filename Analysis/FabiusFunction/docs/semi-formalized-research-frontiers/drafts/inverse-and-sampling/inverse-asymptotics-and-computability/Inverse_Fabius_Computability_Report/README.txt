@@ -3,21 +3,23 @@ COMPUTABILITY OF THE INVERSE FABIUS FUNCTION
 
 CURRENT SOURCE AND RETAINED PDF CHECKPOINT (2026-09-01)
 -------------------------------------------------------
-The current TeX has 2937 lines and SHA-256
-174050673174fee0bea4b0434411b0e2e1e2b9eb011f759845bb9578d6c452ee.
+The current TeX has 2992 lines and SHA-256
+fde44c6ddf4f0e58a813e39a22a46eac62f71ea2f444fad74530d268b9cd9f00.
 It retains the Lagrange/synthesis crosswalk and local inverse-notation/source
-repairs, with the combined live audit updated to 629 modules and 8,546 public
-declarations.  Exactly three clean, strict, serial pdfLaTeX passes produced
-the retained 42-page A4 PDF (712,447 bytes; SHA-256
+repairs, with the combined live audit updated to 643 modules and 8,661 public
+declarations.  At an earlier source checkpoint, exactly three clean, strict,
+serial pdfLaTeX passes produced the retained 42-page A4 PDF (712,447 bytes;
+SHA-256
 dc8da9d476d6b5330aad0ac3253bab162ddcb944653b038bc0aede4be4fc3fe1).
-That PDF predates the present census update. A fresh three-pass render is
-required before publication synchronization is claimed again; the operational
-ledger already verifies the current distinct source and retained PDF.
+That PDF is explicitly stale against the current merged source. A fresh
+three-pass render is required before publication synchronization is claimed
+again; the operational ledger already verifies the current distinct source
+and retained PDF.
 
 Contents
 --------
 inverse_fabius_computability.tex
-    Complete 2937-line, canonically styled LaTeX source of the report.  Its
+    Complete 2992-line, canonically styled LaTeX source of the report. Its
     semantic merge unites the equality/rigidity, effective-continuity,
     logarithmic reciprocal-modulus, and Lagrange/synthesis crosswalks while
     retaining the local inverse-notation and source repairs.
@@ -71,9 +73,14 @@ through a stronger recurrence rather than the report's random-series event.
 `FabiusInverseLogarithmicModulus.lean` additionally formalizes the least
 logarithmic order, both composed denominators, the strict and closed
 reciprocal moduli, and effective uniform continuity with either logarithmic
-witness.  The probabilistic event proof, exact ceiling denominator,
-tolerant-bisection realizer, inverse sequential computability, combined
-computable-real-function theorem, and optimal input-bit law remain paper-level.
+witness. `EffectiveMonotoneInverse.lean` formalizes computable clamping, the
+three tolerant-comparison certificates, the fixed-depth bisection realizer,
+its uniform dyadic-name error, and the restricted sequential inverse theorem.
+`FabiusInverseComputable.lean` instantiates it and proves the combined
+computable-real-function theorem for the totalized inverse. The probabilistic
+event proof, exact ceiling denominator, the stronger abstract theorem deriving
+an inverse modulus from a computable positive gap sequence, and the optimal
+input-bit law remain paper-level.
 The explicit periodic inverse correction and explicit all-orders inverse
 reversion are imported research-frontier results, not Lean theorems.
 
@@ -81,10 +88,11 @@ The live formal corpus already proves the forward spline certificate and
 forward computability, strict density shape, the clamped inverse and its
 inverse identities/calculus, exact dyadic inverse evaluation, and the leading
 inverse endpoint equivalent.  The report names those exact declarations and
-keeps its remaining inverse-computability declarations unqualified and
-schematic.  The live union audit scans 629 Lean modules and 8,546 public
-declarations with zero documentation/header gaps.  No unqualified worldwide
-novelty claim is made.
+now crosswalks the completed inverse-computability layer declaration by
+declaration; only the stronger gap-derived abstract inversion statement keeps
+an explicit partial boundary. The live union audit scans 643 Lean modules and
+8,661 public declarations with zero documentation/header gaps.  No unqualified
+worldwide novelty claim is made.
 
 Reproducibility
 ---------------
@@ -134,10 +142,13 @@ moduli, and packages EffectivelyUniformContinuous with either witness.  The
 Delta package is the exact d(n), d(0)=1 construction stated in the report.
 
 The random-series box-event proof itself is not formalized: Lean proves its
-numerical conclusion through the stronger recurrence route.  The exact
-ceiling denominator d_* and its qualified fixed-target minimality, tolerant
-bisection, sequential computability, the combined computable-real-function
-theorem, and input-bit asymptotics remain open Lean work.  The report retains
+numerical conclusion through the stronger recurrence route. Tolerant
+bisection, restricted and totalized sequential computability, and the combined
+computable-real-function theorem are now formalized in
+`EffectiveMonotoneInverse.lean` and `FabiusInverseComputable.lean`. The exact
+ceiling denominator d_* and its qualified fixed-target minimality, the
+stronger abstract gap-to-modulus theorem, and input-bit asymptotics remain open
+Lean work. The report retains
 their complete human proofs and imported-source qualifications.  The scope
 correction for d_* remains in force: it is
 denominator-minimal for the fixed dyadic proxy 2^{-r(n)}, not for the weaker
@@ -145,7 +156,7 @@ target tolerance 1/n.
 
 Build and validation
 --------------------
-The current 2937-line source uses the repository's canonical
+The current 2992-line source uses the repository's canonical
 article/A4/27 mm/Libertinus style.  At the preceding source checkpoint, exactly
 three strict serial pdfLaTeX passes produced the retained 42-page PDF with
 populated title, author, subject, and keyword metadata.  All 42 pages are A4
@@ -154,5 +165,6 @@ embedded and subset, six are Libertinus, and no Type 3 font is used.  The
 final log has no errors, warnings, unresolved references or citations, rerun
 request, overfull box, or underfull box.  Pages 1, 21, and 42 were inspected
 visually.  Auxiliary sidecars were removed after validation.  The active
-six-entry ledger verifies the complete current payload, but the census-only
-source update means the PDF is no longer claimed to render that source.
+six-entry ledger verifies the complete current payload.  The current merged
+source and retained PDF are distinct: the retained PDF is explicitly stale and
+is not claimed to render that source.

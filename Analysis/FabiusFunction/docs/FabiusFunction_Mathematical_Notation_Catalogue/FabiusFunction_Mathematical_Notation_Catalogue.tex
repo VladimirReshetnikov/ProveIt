@@ -375,6 +375,10 @@ exponential-series normalization.\\
 \commandname{ExponentialCompleteBellPolynomial}\texttt{\{n\}} &
 \(\ExponentialCompleteBellPolynomial{n}\) & Sum over all partial exponential
 Bell polynomials of total weight \(n\).\\
+\commandname{GeometricBernoulliPolynomial}\texttt{\{n\}\{q\}} &
+\(\GeometricBernoulliPolynomial{n}{q}(x)\) & Monic Appell polynomial that
+inverts averaging by the geometric uniform convolution; the evaluation
+argument follows the command.\\
 \commandname{OrdinaryPartialBellPolynomial}\texttt{\{n\}\{k\}} &
 \(\OrdinaryPartialBellPolynomial{n}{k}\) & Partial Bell polynomial in the
 ordinary-series normalization.\\
@@ -2009,6 +2013,89 @@ exponential Bell normalization, whereas ordinary series composition uses the
 ordinary normalization.}
 \end{catalogueentry}
 
+\begin{catalogueentry}{geometric-bernoulli-appell-family}
+  {Geometric Bernoulli polynomials for geometric uniform convolution}
+\entryfield{Probability data}{Fix \(q\in(0,1)\), put \(a=1-q\), and let
+\(Z_0,Z_1,\ldots\) be independent random variables, each uniformly
+distributed on \([0,1]\).  Define
+\[
+ V_q\DefinitionEquals a\sum_{j=0}^{\infty}q^jZ_j.
+\]
+The series converges absolutely almost surely, satisfies \(0\le V_q\le1\),
+and has total deterministic weight
+\(a\sum_{j\ge0}q^j=1\).  Its moment-generating function is the entire
+function
+\[
+ M_q(t)\DefinitionEquals\Expectation\EulerE^{tV_q}
+ =\prod_{j=0}^{\infty}
+   \frac{\EulerE^{a q^jt}-1}{a q^jt},
+\]
+where every factor has its removable value \(1\) at \(t=0\).}
+\entryfield{Defining exponential generating function}{For
+\(n\in\NaturalNumbers\) and \(x\in\ComplexNumbers\), the canonical symbol
+\(\GeometricBernoulliPolynomial{n}{q}(x)\) is defined by
+\[
+ \frac{\EulerE^{xt}}{M_q(t)}
+ =\sum_{n=0}^{\infty}
+   \GeometricBernoulliPolynomial{n}{q}(x)\frac{t^n}{n!}.
+\]
+The identity may be read analytically near \(t=0\), where \(M_q(0)=1\), or
+formally in \(\ComplexNumbers[x][[t]]\).  It defines a monic polynomial of
+degree \(n\), with
+\(\GeometricBernoulliPolynomial{0}{q}(x)=1\).  The command arguments are the
+degree \(n\) and deformation parameter \(q\); the polynomial evaluation
+argument \(x\) follows the command.}
+\entryfield{Appell and averaging-inverse laws}{For \(n\ge1\),
+\[
+ \frac{\Differential}{\Differential x}
+ \GeometricBernoulliPolynomial{n}{q}(x)
+ =n\GeometricBernoulliPolynomial{n-1}{q}(x).
+\]
+For every \(n\in\NaturalNumbers\),
+\[
+ \Expectation\,
+ \GeometricBernoulliPolynomial{n}{q}(x+V_q)=x^n.
+\]
+Thus this family is the polynomial inverse of the averaging operator
+\(T_qp(x)=\Expectation p(x+V_q)\); it is not a Bell-polynomial family.}
+\entryfield{Difference and reflection laws}{The product decomposition
+\(M_q(t)=((\EulerE^{at}-1)/(at))M_q(qt)\) gives, for \(n\ge1\),
+\[
+ \GeometricBernoulliPolynomial{n}{q}(x+a)
+ -\GeometricBernoulliPolynomial{n}{q}(x)
+ =anq^{n-1}\GeometricBernoulliPolynomial{n-1}{q}(x/q).
+\]
+Since \(V_q\) and \(1-V_q\) have the same distribution,
+\[
+ \GeometricBernoulliPolynomial{n}{q}(1-x)
+ =(-1)^n\GeometricBernoulliPolynomial{n}{q}(x).
+\]}
+\entryfield{Cumulant representation}{Write the cumulant expansion as
+\[
+ \log M_q(t)=\sum_{j\ge1}\kappa_j(V_q)\frac{t^j}{j!}.
+\]
+Then
+\[
+ \GeometricBernoulliPolynomial{n}{q}(x)
+ =\ExponentialCompleteBellPolynomial{n}
+   \bigl(x-\kappa_1(V_q),-\kappa_2(V_q),\ldots,-\kappa_n(V_q)\bigr),
+ \qquad \kappa_1(V_q)=\tfrac12.
+\]
+This formula uses a complete exponential Bell polynomial to represent the
+Appell family; it does not identify the two families.}
+\entryfield{Classical limit}{As \(q\downarrow0\), \(a\to1\),
+\(V_q\) converges to one uniform random variable, and
+\[
+ \frac{\EulerE^{xt}}{M_q(t)}
+ \longrightarrow \frac{t\EulerE^{xt}}{\EulerE^t-1}.
+\]
+Consequently
+\(\GeometricBernoulliPolynomial{n}{q}(x)\) converges coefficientwise to the
+classical Bernoulli polynomial \(B_n(x)\) in this generating-function
+convention.  The endpoint \(q=0\) is a limit statement, not part of the
+declared parameter domain \((0,1)\).}
+\end{catalogueentry}
+
 \begin{catalogueentry}{eulerian-families}
   {Type-A, type-B, and second-order Eulerian numbers and row polynomials}
 \entryfield{Type-A number}{For \(n\ge1\),
@@ -2206,6 +2293,163 @@ where \(\CardinalityOf{\pi}\) is the number of blocks, and
 moment factors over blocks of \(\pi\), and M\"obius inversion on \(\Pi(S)\)
 recovers the corresponding joint cumulant.  The lattice endpoints are
 combinatorial objects; no numerical substitution for their glyphs is valid.}
+\end{catalogueentry}
+
+\begin{catalogueentry}{restricted-and-extended-combinatorial-families}
+  {Roman Stirling extensions, restricted partitions, Fubini numbers, Narayana
+   numbers, and generalized factorial coefficients}
+\entryfield{Why the qualifiers are structural}{Each family in this entry
+changes either the index domain, the admissible blocks, the order carried by
+blocks, or the coefficient basis.  Its decoration is therefore mathematical
+data.  None is an unqualified Stirling number, Bell number, Catalan number, or
+Gaussian binomial coefficient.}
+\entryfield{Roman Stirling extension}{The ordinary combinatorial triangles in
+\notelink{stirling-and-lah-families}{the Stirling-and-Lah entry} have
+nonnegative indices.  A report that
+explicitly announces the \emph{Roman extension} instead continues the
+triangular recurrences to integer indices and imposes the dualities
+\[
+ \UnsignedStirlingFirstKind{n}{k}
+ =\StirlingSecondKind{-k}{-n},
+ \qquad
+ \StirlingSecondKind{n}{k}
+ =\UnsignedStirlingFirstKind{-k}{-n}.
+\]
+These are defining equations for a reciprocal integer-indexed array.  When an
+index is negative, neither side retains its permutation-cycle or set-partition
+counting interpretation.  In the mixed quadrant \(n\ge1\), \(k\ge0\), the
+reports use
+\[
+ \UnsignedStirlingFirstKind{-n}{k}
+ =\frac1{n!}\sum_{j=1}^{n}
+   (-1)^{n-j}\binom{n}{j}\frac1{j^k}.
+\]
+The phrase \emph{Roman extension} must occur in the same scope; negative
+arguments do not silently change the default domain of the shared Stirling
+commands.}
+\entryfield{Negative-index Bell values}{Only after declaring that Roman
+extension, the reports define, for \(k\in\PositiveIntegers\),
+\[
+ \BellNumber{-k}
+ \DefinitionEquals
+ \sum_{n\ge1}\UnsignedStirlingFirstKind{-n}{k}
+ =\EulerE^{-1}\sum_{j\ge1}\frac1{j^k j!}.
+\]
+Both series converge absolutely.  This analytically continued sequence is not
+the cardinality of partitions of a negative-size set, and it is not obtained
+by substituting a negative integer into the Dobinski formula without the
+displayed definition.}
+\entryfield{\(r\)-Stirling numbers of the second kind}{For fixed
+\(r\in\NaturalNumbers\),
+\[
+ \StirlingSecondKind{n}{k}_{\!r}
+\]
+counts partitions of \(\{1,\ldots,n\}\) into \(k\) nonempty blocks such that
+the distinguished labels \(1,\ldots,r\) lie in pairwise distinct blocks.
+For \(n,k\in\NaturalNumbers\), its nonzero counting domain is
+\(n\ge r\) and \(r\le k\le n\); its boundary value is
+\(\StirlingSecondKind{r}{r}_{\!r}=1\); and it is zero outside that domain,
+including when \(n<r\), \(k<r\), or \(k>n\).  For \(n>r\),
+\[
+ \StirlingSecondKind{n}{k}_{\!r}
+ =k\StirlingSecondKind{n-1}{k}_{\!r}
+  +\StirlingSecondKind{n-1}{k-1}_{\!r}.
+\]
+The mixed bivariate EGF, including its shift by \(r\), is
+\[
+ \sum_{n\ge r}\sum_{k\ge r}
+ \StirlingSecondKind{n}{k}_{\!r}
+ y^k\frac{z^{n-r}}{(n-r)!}
+ =y^r\EulerE^{rz}\exp\!\bigl(y(\EulerE^z-1)\bigr).
+\]}
+\entryfield{Associated Stirling numbers}{For \(r\in\PositiveIntegers\),
+\(\mathsf{S}^{\ge r}(n,k)\) counts partitions of an \(n\)-element labelled
+set into \(k\) blocks, every block having size at least \(r\).  Set
+\(\mathsf{S}^{\ge r}(0,0)=1\); it is zero if \(n<rk\), if \(k<0\), if
+\(n<0\), or if \(k=0<n\).  Thus the empty set has one zero-block partition,
+whereas a nonempty set has none.  For \(n\ge0\),
+\[
+ \mathsf{S}^{\ge r}(n+1,k)
+ =k\mathsf{S}^{\ge r}(n,k)
+  +\binom{n}{r-1}\mathsf{S}^{\ge r}(n-r+1,k-1),
+\]
+where the zero extension interprets every out-of-domain term.  Equivalently,
+\[
+ \sum_{n\ge0}\mathsf{S}^{\ge r}(n,k)\frac{z^n}{n!}
+ =\frac1{k!}
+  \left(\EulerE^z-\sum_{j=0}^{r-1}\frac{z^j}{j!}\right)^k.
+\]
+The historical source glyph \(\mathsf{S}_r(n,k)\) is read with this
+minimum-block-size meaning only inside its declared section.}
+\entryfield{Reduced or gap Stirling numbers}{For \(d\in\PositiveIntegers\),
+\(\mathsf{S}^{[\mathrm{gap}\,d]}(n,k)\) counts partitions of
+\(\{1,\ldots,n\}\) into \(k\) blocks in which two labels in the same block
+differ by at least \(d\).  In the source range \(n\ge k\ge d\),
+\[
+ \mathsf{S}^{[\mathrm{gap}\,d]}(n,k)
+ =\StirlingSecondKind{n-d+1}{k-d+1}.
+\]
+The \(d=1\) specialization is the ordinary second-kind number.  Outside the
+stated range the combinatorial definition, not the displayed shifted formula,
+governs; no additional boundary values are inferred.}
+\entryfield{Fubini or ordered Bell numbers}{The visibly qualified number
+\(\mathsf{F}^{\mathrm{Fub}}_n\) counts linearly ordered lists of the blocks of
+a set partition.  For \(n\in\NaturalNumbers\),
+\[
+ \mathsf{F}^{\mathrm{Fub}}_n
+ =\sum_{k=0}^{n}k!\StirlingSecondKind{n}{k},
+ \qquad
+ \sum_{n\ge0}\mathsf{F}^{\mathrm{Fub}}_n\frac{z^n}{n!}
+ =\frac1{2-\EulerE^z},
+\]
+and
+\[
+ \mathsf{F}^{\mathrm{Fub}}_0=1,
+ \qquad
+ \mathsf{F}^{\mathrm{Fub}}_n
+ =\sum_{j=1}^{n}\binom{n}{j}\mathsf{F}^{\mathrm{Fub}}_{n-j}
+ \quad(n\ge1).
+\]
+It is not the unlabelled Bell number \(\BellNumber{n}\): ordering the blocks is
+the extra structure.}
+\entryfield{Narayana numbers}{For \(n\in\PositiveIntegers\) and
+\(1\le k\le n\), the Narayana number is
+\[
+ \mathsf{N}^{\mathrm{Nar}}_{n,k}
+ \DefinitionEquals
+ \frac1n\binom{n}{k}\binom{n}{k-1}.
+\]
+It counts Dyck paths of semilength \(n\) with exactly \(k\) peaks and satisfies
+\[
+ \sum_{k=1}^{n}\mathsf{N}^{\mathrm{Nar}}_{n,k}
+ =\CatalanNumber{n},
+ \qquad
+ \mathsf{N}^{\mathrm{Nar}}_{n,k}
+ =\mathsf{N}^{\mathrm{Nar}}_{n,n+1-k}.
+\]
+No value \(\mathsf{N}^{\mathrm{Nar}}_{0,0}\) is introduced by this convention;
+an empty Dyck path, when needed, is represented separately by the constant
+term of the relevant generating function.}
+\entryfield{Generalized factorial coefficients}{Let
+\(f\colon\NaturalNumbers\to\ComplexNumbers\), let
+\(x,t\in\ComplexNumbers\) with \(t\ne0\), and let \(n\ge1\) be an integer.
+The report-local product
+\[
+ (x)_{n;f,t}
+ \DefinitionEquals
+ \prod_{j=1}^{n-1}\left(x+\frac{f(j)}{t^j}\right)
+\]
+has degree \(n-1\), with the \(n=1\) empty product equal to \(1\).  Its
+coefficient triangle is
+\[
+ \genfrac{[}{]}{0pt}{}{n}{k}_{\!f,t}
+ \DefinitionEquals
+ \CoefficientExtraction{x}{k-1}(x)_{n;f,t},
+ \qquad 1\le k\le n.
+\]
+The four data \(n,k,f,t\) are all part of the object.  These brackets are not
+unsigned Stirling brackets, Gaussian binomials, or a \(q\)-Pochhammer symbol,
+and no \(n=0\) value is inferred without a separate declaration.}
 \end{catalogueentry}
 
 \begin{catalogueentry}{combinatorial-letter-collisions}
@@ -7541,6 +7785,57 @@ not a proved equality.\\
 \commandname{InvF} & \commandname{FabiusQuantile} or
 \commandname{FabiusClampedQuantile} & Decide from the input domain: $[0,1]$ for the
 ordinary inverse, all reals for the clamped totalization.\\
+\commandname{stirone} & \commandname{UnsignedStirlingFirstKind} & Preserve the
+upper and lower triangular indices; this is the unsigned cycle-count triangle.\\
+\commandname{stirtwo} & \commandname{StirlingSecondKind} & Preserve the upper
+and lower triangular indices; this is the set-partition triangle.\\
+\commandname{eulerian} & \commandname{TypeAEulerianNumber} & The legacy
+single-angle array is type A, not type B or second order.\\
+\commandname{eulertwo} & \commandname{SecondOrderEulerianNumber} & The legacy
+double-angle array counts descents of Stirling permutations.\\
+\commandname{BellP} & \commandname{ExponentialPartialBellPolynomial} & Supply
+the total degree and block/derivative count; retain the exponential factorial
+normalization.\\
+\commandname{BellC} & \commandname{ExponentialCompleteBellPolynomial} & Supply
+the total degree; do not replace it by a Bell number.\\
+\commandname{Bell} & \commandname{BellNumber},
+\commandname{ExponentialCompleteBellPolynomial},
+\commandname{ExponentialPartialBellPolynomial}, or a semantically named
+non-Bell family & Inspect the defining equation before using arity: a scalar
+indexed Bell sequence is a Bell number, while genuine one- and two-index Bell
+polynomial families are complete and partial exponential, respectively.  If
+the legacy glyph instead names another object---for example report H's
+geometric Bernoulli Appell family---rename that object
+\commandname{GeometricBernoulliPolynomial}; do not recast it as a Bell object.\\
+\commandname{coeff} & \commandname{CoefficientExtraction} & Supply the
+coefficient variable and exponent as the command's two explicit arguments;
+the series, polynomial, or other operand follows the command.\\
+\commandname{OrdinaryBellPolynomial} &
+\commandname{OrdinaryPartialBellPolynomial} & Preserve both indices and the
+ordinary-series, rather than exponential-series, normalization.\\
+\commandname{OrdinaryBellSeriesOf},
+\commandname{OrdinaryGeneratingSeriesOf} &
+\commandname{OrdinaryGeneratingFunctionOf} & Supply the coefficient-family
+argument and keep the ordinary generating convention explicit.\\
+\commandname{NormalizedInverseCoefficient} &
+\commandname{NormalizedReversionCoefficient} & Supply both the series family
+and coefficient index; this is compositional reversion, not a reciprocal.\\
+\commandname{NormalizedOrdinaryCoefficient} &
+\commandname{OrdinaryGeneratingCoefficient} & Supply both the coefficient
+family and index; this is not a reversion coefficient.\\
+\commandname{PosetMinimum}, \commandname{PosetMaximum} &
+\commandname{PartitionLatticeMinimum},
+\commandname{PartitionLatticeMaximum} & These aliases denoted the discrete and
+one-block partitions of a partition lattice, not numeric bounds or endpoints of
+an arbitrary poset.\\
+\commandname{TracePowerSum} & \commandname{TraceBellArgument} & Preserve the
+index and the scaling \(-(k-1)!\TraceOperator(A^k)\), not merely the raw trace.\\
+\commandname{cyc} & \commandname{CycleCountOperator} & Permutation cycle count
+only; a cyclic group or cycle-index polynomial remains locally typed.\\
+\commandname{setpart} & \commandname{SetPartitionOperator} & The set of set
+partitions of the following finite-set operand.\\
+\commandname{bitand} & \commandname{BitwiseAnd} & Bitwise AND of declared
+nonnegative integers, not set intersection or multiplication.\\
 \bottomrule
 \end{longtable}
 \endgroup
@@ -7672,6 +7967,9 @@ prime-power order \(q\).\\
 \commandname{CatalanNumber}, \commandname{GregoryCoefficient},
 \commandname{GenocchiNumber}, \commandname{GenocchiPolynomial} & Distinct
 Catalan, Gregory, and Genocchi families.\\
+\(\GeometricBernoulliPolynomial{n}{q}(x)\) &
+\commandname{GeometricBernoulliPolynomial} & Geometric-uniform-convolution
+Appell family; degree and deformation parameter are explicit.\\
 \(\BarnesGFunction\) & \commandname{BarnesGFunction} & Barnes \(G\)-function,
 not a Gregory or Genocchi coefficient.\\
 \(\BellHessenbergMatrixH{n},\BellHessenbergMatrixK{n}\) &
@@ -7861,6 +8159,8 @@ Command & Arity & Normative entry\\
 \notelink{combinatorial-letter-collisions}{Genocchi numbers}.\\
 \commandname{GenocchiPolynomial} & 1 &
 \notelink{combinatorial-letter-collisions}{Genocchi polynomials}.\\
+\commandname{GeometricBernoulliPolynomial} & 2 &
+\notelink{geometric-bernoulli-appell-family}{Geometric Bernoulli polynomials}.\\
 \commandname{GregoryCoefficient} & 1 &
 \notelink{combinatorial-letter-collisions}{Gregory coefficients}.\\
 \commandname{HurwitzZeta} & 2 &
