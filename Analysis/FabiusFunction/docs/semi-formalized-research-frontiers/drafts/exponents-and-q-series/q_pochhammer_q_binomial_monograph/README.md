@@ -127,7 +127,7 @@ entireness, zero-locus, reciprocal-power, and analytic-order results rather
 than duplicating their analytic proofs. In `QBinomialTheoremInfinite`,
 `finiteQPochhammerIn_zero_left` remains the unique declaration owned by
 `GaussianBinomialAtOne` and is imported rather than redeclared. The forward
-status ledger is 71 Exact, 84 Partial, 119 None, and 8 interface rows; the
+status ledger is 73 Exact, 84 Partial, 117 None, and 8 interface rows; the
 191-result pre-Fabius core is 36/29/123/3. The compound outer spectral-product
 theorem remains Partial: local uniformity for one symbol as a function of its
 argument at fixed contracting nome does not establish normal convergence of

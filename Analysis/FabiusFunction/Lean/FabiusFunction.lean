@@ -502,6 +502,8 @@ import FabiusFunction.JacksonIntegral
 import FabiusFunction.QPochhammerLogDerivative
 import FabiusFunction.QPochhammerOrderDerivative
 import FabiusFunction.JacobiCubic
+import FabiusFunction.CyclotomicFactorization
+import FabiusFunction.CentralQBinomialReduction
 import FabiusFunction.GaussianBinomialPalindromic
 import FabiusFunction.ThetaQuasiPeriodicity
 
