@@ -1,0 +1,795 @@
+\chapter{Bailey transforms and the Andrews--Gordon identities}\label{chap:bailey-andrews-gordon}
+
+\index{Bailey lemma}
+\index{Bailey chain}
+\index{Andrews--Gordon identities}
+\index{Rogers--Ramanujan continued fraction}
+
+The limiting Bailey lemma and the two Rogers--Ramanujan series--product
+identities already appear, with proofs, in
+\Cref{chap:bailey}.  This chapter does not duplicate those results.  It adds
+the genuinely stronger nonlimiting Bailey transform, the parameter-lowering
+operation which moves between Bailey chains, the combinatorial and
+continued-fraction forms of Rogers--Ramanujan theory, and every member of the
+Andrews--Gordon family.
+
+Throughout this chapter,
+\[
+  q\in\ComplexNumbers,\qquad 0<\AbsoluteValue q<1,
+\]
+and \((a_1,\ldots,a_s;q)_n\) abbreviates
+\(\prod_{\nu=1}^{s}(a_\nu;q)_n\).  Thus \((q;q)_n\ne0\).
+As in \Cref{chap:bailey}, a Bailey pair relative to \(a\) means the single
+canonical relation in \Cref{qg:def-bailey-pair}, equivalently
+\eqref{eq:bailey-pair}.  We recall the terminology here but do not introduce a
+second definition.
+
+Whenever a quotient is displayed below, its denominator is assumed nonzero.
+The individual statements spell out the only parameter restrictions beyond
+\(0<|q|<1\).
+
+\section{The full Bailey lemma}
+\label{qg:sec:full-bailey-lemma}
+
+\begin{theorem}[Full Bailey lemma]
+\label{qg:thm-bailey-lemma}
+Let \(a,\rho_1,\rho_2\in\ComplexNumbers\), with
+\(\rho_1\rho_2\ne0\), and suppose that
+\[
+  (aq;q)_m,\qquad
+  (aq/\rho_1;q)_m,\qquad
+  (aq/\rho_2;q)_m
+\]
+are nonzero for every \(m\ge1\).  Let \((\alpha,\beta)\) be a
+Bailey pair relative to \(a\), and put
+\[
+  A=\frac{aq}{\rho_1\rho_2}.
+\]
+Define
+\begin{align}
+ \alpha_n^\star
+ &=
+ \frac{(\rho_1,\rho_2;q)_n A^n}
+      {(aq/\rho_1,aq/\rho_2;q)_n}\,\alpha_n,
+ \label{qg:eq:full-bailey-alpha}\\
+ \beta_n^\star
+ &=
+ \sum_{j=0}^{n}
+ \frac{(\rho_1,\rho_2;q)_j(A;q)_{n-j}A^j}
+      {(q;q)_{n-j}(aq/\rho_1,aq/\rho_2;q)_n}\,\beta_j.
+ \label{qg:eq:full-bailey-beta}
+\end{align}
+Then \((\alpha^\star,\beta^\star)\) is a Bailey pair relative to
+\(a\).
+\end{theorem}
+
+\begin{proof}
+Insert \eqref{eq:bailey-pair} into
+\eqref{qg:eq:full-bailey-beta} and interchange the two finite sums.
+For fixed \(r\), set
+\[
+  N=n-r,\qquad j=r+k,\qquad c=aq^{2r+1}.
+\]
+The coefficient of \(\alpha_r\) is
+\begin{align}
+ &\frac{(\rho_1,\rho_2;q)_rA^r}
+ {(aq/\rho_1,aq/\rho_2;q)_n(aq;q)_{2r}}
+ \sum_{k=0}^{N}
+ \frac{(\rho_1q^r,\rho_2q^r;q)_k(A;q)_{N-k}A^k}
+ {(q;q)_k(q;q)_{N-k}(c;q)_k}.
+ \label{qg:eq:full-bailey-inner}
+\end{align}
+The finite reversal identity
+\begin{equation}
+ \frac{(A;q)_{N-k}}{(q;q)_{N-k}}
+ =
+ \frac{(A;q)_N}{(q;q)_N}
+ \frac{(q^{-N};q)_k}{(q^{1-N}/A;q)_k}
+ \left(\frac qA\right)^k
+ \label{qg:eq:finite-reversal}
+\end{equation}
+follows by reversing the last \(k\) factors in the two products.
+Consequently the sum in \eqref{qg:eq:full-bailey-inner} equals
+\[
+ \frac{(A;q)_N}{(q;q)_N}
+ {}_3\phi_2\!\left[
+ \begin{matrix}
+   \rho_1q^r,\rho_2q^r,q^{-N}\\
+   c,q^{1-N}/A
+ \end{matrix};q,q
+ \right].
+\]
+This series is balanced: if \(x=\rho_1q^r\) and
+\(y=\rho_2q^r\), then
+\[
+  \frac{xyq^{1-N}}c
+  =\frac{\rho_1\rho_2q^{-N}}a
+  =\frac{q^{1-N}}A.
+\]
+The already proved \(q\)-Pfaff--Saalsch\"utz summation
+\Cref{thm:q-pfaff} therefore evaluates the last display as
+\begin{equation}
+  \frac{(aq^{r+1}/\rho_1,aq^{r+1}/\rho_2;q)_N}
+       {(q;q)_N(c;q)_N}.
+  \label{qg:eq:full-bailey-inner-evaluation}
+\end{equation}
+
+Now use the product splittings
+\[
+ (aq/\rho_\nu;q)_n
+ =(aq/\rho_\nu;q)_r(aq^{r+1}/\rho_\nu;q)_N
+ \quad(\nu=1,2)
+\]
+and
+\[
+  (aq;q)_{2r}(aq^{2r+1};q)_N=(aq;q)_{n+r}.
+\]
+After cancellation, the coefficient
+\eqref{qg:eq:full-bailey-inner} becomes
+\[
+ \frac{1}{(q;q)_{n-r}(aq;q)_{n+r}}
+ \frac{(\rho_1,\rho_2;q)_rA^r}
+      {(aq/\rho_1,aq/\rho_2;q)_r}.
+\]
+The second factor is exactly the multiplier which defines
+\(\alpha_r^\star\) from \(\alpha_r\) in
+\eqref{qg:eq:full-bailey-alpha}.  Thus, after multiplication by
+\(\alpha_r\), the coefficient contribution is the Bailey kernel times
+\(\alpha_r^\star\).  Summing over \(r\) gives
+\[
+  \beta_n^\star
+  =\sum_{r=0}^{n}
+    \frac{\alpha_r^\star}
+         {(q;q)_{n-r}(aq;q)_{n+r}},
+\]
+which is the required Bailey-pair relation.
+
+The reversal and Pfaff--Saalsch\"utz calculation was written on the
+Zariski-open set where all temporary denominators are nonzero.  On that set
+it proves an identity of rational functions in \(a,\rho_1,\rho_2\).
+Multiplying by a common denominator turns it into a polynomial identity, so
+it holds identically.  Therefore the coefficient formula extends to every
+parameter choice satisfying the permanent nonvanishing assumptions in the
+theorem, including choices at which one of the temporary factors vanishes.
+\end{proof}
+
+\begin{remark}[The limiting theorem is not restated]
+\label{qg:rem:bailey-limiting-reference}
+Letting \(\rho_1,\rho_2\) tend to infinity in
+\Cref{qg:thm-bailey-lemma}, with \(n\) fixed, gives
+\[
+ \frac{(\rho_1,\rho_2;q)_n}
+      {(aq/\rho_1,aq/\rho_2;q)_n}
+ \left(\frac{aq}{\rho_1\rho_2}\right)^n
+ \longrightarrow a^nq^{n^2}.
+\]
+The beta summands have the corresponding finite limits.  The resulting pair
+transformation is precisely \Cref{thm:bailey-limit-finite}; its absolutely
+convergent infinite consequence is already
+\Cref{cor:bailey-limit-infinite}.  Thus the present theorem strictly supplies
+the two free parameters which the backbone's limiting form omits.
+\end{remark}
+
+\section{Lowering the relative parameter}
+\label{qg:sec:bailey-parameter-lowering}
+
+\begin{lemma}[Parameter-lowering shift]
+\label{qg:lem-bailey-lowering}
+Let \((\alpha,\beta)\) be a Bailey pair relative to \(a\), and assume
+\((a;q)_m\ne0\) for every \(m\ge1\).  Define
+\begin{align}
+ \widetilde\alpha_0&=\alpha_0,
+ \label{qg:eq:bailey-lowering-zero}\\
+ \widetilde\alpha_n
+ &=(1-a)\left(
+ \frac{\alpha_n}{1-aq^{2n}}
+ -\frac{aq^{2n-2}\alpha_{n-1}}{1-aq^{2n-2}}
+ \right)
+ \qquad(n\ge1),
+ \label{qg:eq:bailey-lowering-positive}\\
+ \widetilde\beta_n&=\beta_n.
+ \label{qg:eq:bailey-lowering-beta}
+\end{align}
+Then \((\widetilde\alpha,\widetilde\beta)\) is a Bailey pair
+relative to \(a/q\).
+\end{lemma}
+
+\begin{proof}
+A Bailey pair relative to \(a/q\) has kernel
+\[
+  \frac{1}{(q;q)_{n-j}(a;q)_{n+j}}.
+\]
+Substitute \eqref{qg:eq:bailey-lowering-zero} and
+\eqref{qg:eq:bailey-lowering-positive} into the sum against this
+kernel, and reindex the part containing \(\alpha_{j-1}\).  For fixed
+\(0\le r\le n\), the coefficient of \(\alpha_r\) is
+\begin{align*}
+ &\frac{1-a}{1-aq^{2r}}\,
+  \frac{1}{(q;q)_{n-r}(a;q)_{n+r}}\\
+ &\quad-
+ \frac{(1-a)aq^{2r}}{1-aq^{2r}}\,
+ \frac{1}{(q;q)_{n-r-1}(a;q)_{n+r+1}},
+\end{align*}
+where the second term is absent if \(r=n\).  Put both terms over
+\[
+ (q;q)_{n-r}(a;q)_{n+r+1}(1-aq^{2r}).
+\]
+Their numerator, apart from the common factor \(1-a\), is
+\[
+ (1-aq^{n+r})-aq^{2r}(1-q^{n-r})
+ =1-aq^{2r}.
+\]
+This formula also covers \(r=n\), because then \(1-q^{n-r}=0\).
+After cancellation, the coefficient is
+\[
+ \frac{1-a}{(q;q)_{n-r}(a;q)_{n+r+1}}
+ =
+ \frac{1}{(q;q)_{n-r}(aq;q)_{n+r}}.
+\]
+It is exactly the original Bailey kernel.  Therefore the transformed sum is
+\(\beta_n=\widetilde\beta_n\), proving the claim.
+\end{proof}
+
+\begin{remark}
+\Cref{qg:lem-bailey-lowering} is more general than the
+specialization needed below.  With \(a=q\), it changes a pair relative to
+\(q\) into a pair relative to \(1\) without changing its beta sequence.
+Moving that single shift to different depths of a Bailey chain is what
+creates the different linear tails in the Andrews--Gordon sums.
+\end{remark}
+
+\section{Iterating the limiting chain}
+\label{qg:sec:iterated-bailey-chain}
+
+Let \(S_a\) denote exactly the finite pair transformation proved in
+\Cref{thm:bailey-limit-finite}.  We use a superscript \(^{(t)}\) for
+the result of applying \(S_a\) \(t\) times.
+
+\begin{lemma}[Iterated Bailey chain]
+\label{qg:lem-bailey-chain-iterate}
+For every Bailey pair \((\alpha,\beta)\) relative to \(a\) and every
+\(t\in\NaturalNumbers\), put
+\((\alpha^{(0)},\beta^{(0)})=(\alpha,\beta)\).  For \(t\ge1\),
+\begin{align}
+ \alpha_n^{(t)}
+ &=a^{tn}q^{tn^2}\alpha_n,
+ \label{qg:eq:iterated-bailey-alpha}\\
+ \beta_n^{(t)}
+ &=
+ \sum_{n\ge r_1\ge\cdots\ge r_t\ge0}
+ \frac{
+   a^{r_1+\cdots+r_t}
+   q^{r_1^2+\cdots+r_t^2}\beta_{r_t}}
+ {(q;q)_{n-r_1}
+  \displaystyle\prod_{\ell=1}^{t-1}
+  (q;q)_{r_\ell-r_{\ell+1}}}.
+ \label{qg:eq:iterated-bailey-beta}
+\end{align}
+In particular, if \(\beta_n=\delta_{n,0}\), then
+\(\beta_n^{(1)}=1/(q;q)_n\), while for \(t\ge2\),
+\begin{equation}
+ \beta_n^{(t)}
+ =
+ \sum_{n\ge r_1\ge\cdots\ge r_{t-1}\ge0}
+ \frac{
+   a^{r_1+\cdots+r_{t-1}}
+   q^{r_1^2+\cdots+r_{t-1}^2}}
+ {(q;q)_{n-r_1}
+  \displaystyle\prod_{\ell=1}^{t-2}
+  (q;q)_{r_\ell-r_{\ell+1}}
+  (q;q)_{r_{t-1}}},
+ \label{qg:eq:iterated-bailey-unit-beta}
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+The case \(t=0\) is tautological.  One application of
+\Cref{thm:bailey-limit-finite} multiplies the alpha component by
+\(a^nq^{n^2}\), which proves
+\eqref{qg:eq:iterated-bailey-alpha} by induction.
+
+For the beta component, one application of the same transformation gives
+\eqref{qg:eq:iterated-bailey-beta} at depth \(1\), where the product is
+empty.  Suppose the formula holds at some depth \(t\ge1\).  The next
+application of \(S_a\) gives
+\[
+ \beta_n^{(t+1)}
+ =\sum_{j=0}^{n}
+   \frac{a^jq^{j^2}}{(q;q)_{n-j}}\,
+   \beta_j^{(t)}.
+\]
+Insert the induction hypothesis with \(j\) as its outer bound and rename
+\(j=r_1\).  This adds precisely the new outer inequality
+\(n\ge r_1\), the factor
+\(a^{r_1}q^{r_1^2}\), and the denominator
+\((q;q)_{n-r_1}\), yielding
+\eqref{qg:eq:iterated-bailey-beta} at depth \(t+1\).
+Finally, if \(\beta_{r_t}=\delta_{r_t,0}\), only \(r_t=0\)
+survives; deleting that forced index gives
+\eqref{qg:eq:iterated-bailey-unit-beta}.
+\end{proof}
+
+\section{Rogers--Ramanujan partitions and the continued fraction}
+\label{qg:sec:rogers-ramanujan-forms}
+
+Write
+\[
+ G(q)=\sum_{n\ge0}\frac{q^{n^2}}{(q;q)_n},
+ \qquad
+ H(q)=\sum_{n\ge0}\frac{q^{n^2+n}}{(q;q)_n}.
+\]
+Their product evaluations are exactly
+\Cref{thm:rogers-ramanujan}, so we use rather than restate that theorem.
+
+\begin{corollary}[Rogers--Ramanujan partition interpretations]
+\label{qg:cor-rr-partitions}
+For every \(N\ge0\):
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item the number of partitions of \(N\) whose successive parts differ by
+at least \(2\) equals the number of partitions of \(N\) into parts
+congruent to \(1\) or \(4\pmod 5\);
+\item the number of partitions of \(N\) whose successive parts differ by
+at least \(2\) and whose smallest part is at least \(2\) equals the number
+of partitions of \(N\) into parts congruent to \(2\) or \(3\pmod 5\).
+\end{enumerate}
+\end{corollary}
+
+\begin{proof}
+Fix the number \(n\) of parts.  A partition with successive differences at
+least \(2\) contains the staircase
+\[
+  (2n-1,2n-3,\ldots,3,1),
+\]
+whose size is \(n^2\).  Subtracting it componentwise leaves an arbitrary
+weakly decreasing \(n\)-tuple of nonnegative integers, equivalently a
+partition with at most \(n\) parts.  By
+\Cref{prop:bounded-partitions}, its generating function is
+\(1/(q;q)_n\).  Thus the generating function for the partitions in
+part~\textup{(i)} is \(G(q)\).
+
+If the smallest part must be at least \(2\), subtract instead
+\[
+  (2n,2n-2,\ldots,4,2),
+\]
+whose size is \(n^2+n\).  The remainder is again an arbitrary partition
+with at most \(n\) parts, so the generating function is \(H(q)\).
+
+By \Cref{thm:rogers-ramanujan}, \(G(q)\) is the reciprocal product over
+positive integers congruent to \(1\) or \(4\pmod5\), and \(H(q)\) is
+the reciprocal product over those congruent to \(2\) or \(3\pmod5\).
+Each reciprocal factor permits an arbitrary multiplicity of its part.
+All these products and series are holomorphic at \(q=0\) throughout the
+open unit disk.  The analytic identities there therefore imply, by
+uniqueness of Taylor expansions, equality coefficient by coefficient.
+This proves both claims.
+\end{proof}
+
+For each \(m\in\NaturalNumbers\), introduce the single family
+\begin{equation}
+  F_m(q)=\sum_{n\ge0}\frac{q^{n^2+mn}}{(q;q)_n}.
+  \label{qg:eq:rogers-family}
+\end{equation}
+Thus \(F_0=G\) and \(F_1=H\).
+
+\begin{lemma}[Rogers recurrence]
+\label{qg:lem-rogers-recurrence}
+For every \(m\in\NaturalNumbers\),
+\begin{equation}
+  F_m(q)=F_{m+1}(q)+q^{m+1}F_{m+2}(q).
+  \label{qg:eq:rogers-recurrence}
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+The \(n=0\) terms cancel when \(F_m-F_{m+1}\) is formed.  For
+\(n\ge1\), use
+\((1-q^n)/(q;q)_n=1/(q;q)_{n-1}\):
+\begin{align*}
+ F_m-F_{m+1}
+ &=\sum_{n\ge1}
+   \frac{q^{n^2+mn}(1-q^n)}{(q;q)_n}\\
+ &=\sum_{n\ge1}\frac{q^{n^2+mn}}{(q;q)_{n-1}}\\
+ &=q^{m+1}\sum_{r\ge0}
+   \frac{q^{r^2+(m+2)r}}{(q;q)_r}
+ =q^{m+1}F_{m+2},
+\end{align*}
+where \(r=n-1\).  Absolute convergence justifies the subtraction.
+\end{proof}
+
+\begin{theorem}[Rogers--Ramanujan continued fraction]
+\label{qg:thm-rrcf}
+For \(|q|<1\), the single-valued ratio satisfies
+\begin{equation}
+ \frac{F_1(q)}{F_0(q)}
+ =
+ \cfrac{1}{
+  1+\cfrac{q}{
+  1+\cfrac{q^2}{
+  1+\cfrac{q^3}{1+\ddots}}}},
+ \label{qg:eq:rogers-ramanujan-fraction}
+\end{equation}
+and the continued fraction converges locally uniformly in the unit disk.
+On any simply connected subdomain of \(0<|q|<1\), choose a branch of
+\(q^{1/5}\) and define
+\begin{equation}
+ R(q)
+ \coloneqq q^{1/5}\frac{F_1(q)}{F_0(q)}
+ =
+ q^{1/5}
+ \frac{(q,q^4;q^5)_\infty}
+      {(q^2,q^3;q^5)_\infty}.
+ \label{qg:eq:rogers-ramanujan-fraction-product}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+For \(N\in\NaturalNumbers\), consider the finite continuant
+\[
+ C_N
+ =1+\cfrac{q}{
+  1+\cfrac{q^2}{
+  \ddots+\cfrac{q^N}{1}}}
+ =\frac{P_N}{Q_N}.
+\]
+Its numerator and denominator satisfy
+\begin{align*}
+ P_{-1}=1,\quad P_0=1,\quad
+ P_N&=P_{N-1}+q^NP_{N-2},\\
+ Q_{-1}=0,\quad Q_0=1,\quad
+ Q_N&=Q_{N-1}+q^NQ_{N-2}.
+\end{align*}
+We claim
+\begin{align}
+ P_N
+ &=\sum_{j=0}^{\Floor{(N+1)/2}}
+   q^{j^2}\GaussianBinomial{N+1-j}{j}{q},
+ \label{qg:eq:continuant-P}\\
+ Q_N
+ &=\sum_{j=0}^{\Floor{N/2}}
+   q^{j^2+j}\GaussianBinomial{N-j}{j}{q}.
+ \label{qg:eq:continuant-Q}
+\end{align}
+The formulas give the displayed initial values.  For
+\eqref{qg:eq:continuant-P}, apply the second \(q\)-Pascal recurrence
+from \Cref{thm:qpascal}:
+\[
+ \GaussianBinomial{N+1-j}{j}{q}
+ =
+ \GaussianBinomial{N-j}{j}{q}
+ +q^{N+1-2j}\GaussianBinomial{N-j}{j-1}{q}.
+\]
+After multiplication by \(q^{j^2}\), the first term sums to
+\(P_{N-1}\).  In the second term put \(h=j-1\); its power is
+\[
+ j^2+N+1-2j=N+h^2,
+\]
+so it sums to \(q^NP_{N-2}\).  This proves
+\eqref{qg:eq:continuant-P} by induction.  The same argument, using
+\[
+ \GaussianBinomial{N-j}{j}{q}
+ =
+ \GaussianBinomial{N-1-j}{j}{q}
+ +q^{N-2j}\GaussianBinomial{N-1-j}{j-1}{q},
+\]
+proves \eqref{qg:eq:continuant-Q}; after \(h=j-1\), the second
+exponent is \(N+h^2+h\).
+
+For fixed \(j\),
+\[
+ \GaussianBinomial{N+1-j}{j}{q}
+ =\frac{(q^{N+2-2j};q)_j}{(q;q)_j}
+ \longrightarrow\frac1{(q;q)_j},
+\]
+and the analogous limit holds in
+\eqref{qg:eq:continuant-Q}.  The convergence may be passed through
+the sums locally uniformly.  Indeed, on \(|q|\le r<1\), every Gaussian
+coefficient occurring above is bounded in modulus by
+\[
+ C_r=\frac{(-r;r)_\infty}{(r;r)_\infty},
+\]
+because all powers in its numerator are positive; the remaining factors
+\(r^{j^2}\) and \(r^{j^2+j}\) are summable.  Dominated convergence gives
+\[
+  P_N\longrightarrow F_0(q),
+  \qquad
+  Q_N\longrightarrow F_1(q)
+\]
+locally uniformly.
+
+The products in \Cref{thm:rogers-ramanujan} show that \(F_0\) and
+\(F_1\) are nonzero for \(|q|<1\).  Let \(K_0\) be a compact subset of
+the unit disk.  Continuity and zero-freeness give
+\[
+  \eta_{K_0}=\min_{q\in K_0}|F_0(q)|>0.
+\]
+Uniform convergence \(P_N\to F_0\) gives
+\(|P_N-F_0|<\eta_{K_0}/2\) on \(K_0\) for all sufficiently large
+\(N\).  Those \(P_N\) are consequently zero-free on \(K_0\), and
+\[
+  C_N^{-1}=\frac{Q_N}{P_N}
+  \longrightarrow\frac{F_1(q)}{F_0(q)}.
+\]
+The convergence is uniform on \(K_0\).  We define each finite truncation by
+the rational continuant \(Q_N/P_N\); where the nested expression is defined,
+the two agree, and the continuant supplies its analytic continuation across
+removable intermediate singularities.  This proves
+\eqref{qg:eq:rogers-ramanujan-fraction} and its local uniform convergence.
+Finally, on any chosen fifth-root branch, taking the ratio of the two already
+proved product evaluations in \Cref{thm:rogers-ramanujan} and multiplying by
+\(q^{1/5}\) gives
+\eqref{qg:eq:rogers-ramanujan-fraction-product}.
+\end{proof}
+
+\begin{remark}[Schur-type finitizations]
+The polynomials \(P_N\) and \(Q_N\) in
+\eqref{qg:eq:continuant-P}--\eqref{qg:eq:continuant-Q} are Schur-type
+finitizations of \(F_0\) and \(F_1\).  Thus the same recurrence has three
+compatible realizations: a finite rational continuant, an exact finite sum of
+Gaussian polynomials, and, after \(N\to\infty\), a Rogers--Ramanujan series.
+The finite level is useful in its own right: it retains coefficient data,
+exhibits positivity, and permits exact induction before any analytic limit is
+taken.  This is a reusable proof pattern.  When a quotient of \(q\)-series is
+governed by a short recurrence, one should first look for its continuants and
+then for Gaussian-polynomial formulas for those continuants; convergence and
+the infinite identity may then emerge as the final step of finite algebra.
+\end{remark}
+
+\section{The full Andrews--Gordon family}
+\label{qg:sec:andrews-gordon}
+
+\begin{theorem}[Andrews--Gordon identities]
+\label{qg:thm-andrews-gordon}
+Let \(k,i\in\NaturalNumbers\) satisfy \(k\ge2\) and \(1\le i\le k\).  For
+\(n_1,\ldots,n_{k-1}\ge0\), put
+\[
+  N_j=n_j+n_{j+1}+\cdots+n_{k-1}
+  \qquad(1\le j\le k-1).
+\]
+Then
+\begin{equation}
+ \sum_{n_1,\ldots,n_{k-1}\ge0}
+ \frac{
+ q^{N_1^2+\cdots+N_{k-1}^2+N_i+\cdots+N_{k-1}}}
+ {(q;q)_{n_1}\cdots(q;q)_{n_{k-1}}}
+ =
+ \frac{(q^i,q^{2k+1-i},q^{2k+1};q^{2k+1})_\infty}
+      {(q;q)_\infty},
+ \label{qg:eq:andrews-gordon}
+\end{equation}
+where \(N_i+\cdots+N_{k-1}\) is the empty sum \(0\) when \(i=k\).
+\end{theorem}
+
+\begin{proof}
+Put
+\[
+  K=k-1,\qquad M=2k+1,
+\]
+and use decreasing variables
+\[
+  r_j=N_j\quad(1\le j\le K),\qquad r_{K+1}=0.
+\]
+Then \(n_j=r_j-r_{j+1}\), so the left side of
+\eqref{qg:eq:andrews-gordon} is
+\begin{equation}
+ \sum_{r_1\ge\cdots\ge r_K\ge0}
+ \frac{
+ q^{r_1^2+\cdots+r_K^2+r_i+\cdots+r_K}}
+ {(q;q)_{r_1-r_2}\cdots
+  (q;q)_{r_{K-1}-r_K}(q;q)_{r_K}}.
+ \label{qg:eq:andrews-gordon-decreasing}
+\end{equation}
+We derive this expression from the unit pair relative to \(q\) in
+\Cref{cor:unit-bailey-pairs}.
+
+\smallskip
+\noindent\emph{The case \(i=1\).}
+Apply \(S_q\) exactly \(K\) times, and then apply the infinite limiting
+identity \Cref{cor:bailey-limit-infinite}, still relative to \(q\).
+By \Cref{qg:lem-bailey-chain-iterate}, the beta side has \(K\)
+decreasing variables after the final outer summation.  Every one has weight
+\(q^{r_j^2+r_j}\); its denominator is exactly that in
+\eqref{qg:eq:andrews-gordon-decreasing}.  Hence the beta side is the
+desired sum for \(i=1\).
+
+The unit alpha sequence relative to \(q\), from
+\Cref{cor:unit-bailey-pairs}, is
+\[
+ \alpha_n^{\mathrm U}
+ =(-1)^nq^{\binom n2}\frac{1-q^{2n+1}}{1-q}.
+\]
+The \(K\) chain steps and the final limiting identity together multiply
+this by \(q^{k(n^2+n)}\).  Since
+\((q^2;q)_\infty=(q;q)_\infty/(1-q)\), the alpha side is
+\begin{align*}
+ \frac1{(q;q)_\infty}
+ \sum_{n\ge0}(-1)^n
+ q^{\{Mn^2+(M-2)n\}/2}(1-q^{2n+1})
+ &=
+ \frac1{(q;q)_\infty}
+ \sum_{m\in\IntegerNumbers}(-1)^m
+ q^{\{Mm^2+(M-2)m\}/2}.
+\end{align*}
+The term containing \(-q^{2n+1}\) becomes the negative-index term
+\(m=-n-1\).  Apply the Jacobi triple product
+\Cref{thm:jtp} with base \(q^M\) and parameter \(q^{M-1}\).
+The bilateral sum is
+\[
+  (q^{M-1},q,q^M;q^M)_\infty,
+\]
+which is the numerator in \eqref{qg:eq:andrews-gordon} for
+\(i=1\).
+
+\smallskip
+\noindent\emph{The cases \(2\le i\le k\).}
+Set
+\[
+  t=k-i+1,\qquad u=i-2.
+\]
+Thus \(t\ge1\), \(u\ge0\), and \(t+u=K\).  Starting with the same
+unit pair relative to \(q\), perform, in order,
+\[
+  \underbrace{S_q\circ\cdots\circ S_q}_{t\ \mathrm{times}},
+  \qquad
+  \text{the lowering shift of
+        \Cref{qg:lem-bailey-lowering}},
+  \qquad
+  \underbrace{S_1\circ\cdots\circ S_1}_{u\ \mathrm{times}},
+\]
+and finally apply \Cref{cor:bailey-limit-infinite} relative to \(1\).
+The lowering shift leaves beta unchanged.  The first \(S_q\), applied to
+the delta beta sequence, creates the terminal factor \(1/(q;q)_n\);
+the remaining \(t-1=k-i\) \(q\)-steps create the innermost variables,
+with weights \(q^{r_j^2+r_j}\).  The \(u\) subsequent \(1\)-steps and
+the final limiting sum create the outer \(u+1=i-1\) variables, with
+weights \(q^{r_j^2}\).  Thus the linear weights occur exactly for
+\(r_i,\ldots,r_K\), and the beta side is
+\eqref{qg:eq:andrews-gordon-decreasing}.
+
+It remains to compute the alpha side.  After the first \(t\) steps, write
+\[
+ \gamma_n=q^{t(n^2+n)}\alpha_n^{\mathrm U}.
+\]
+The lowering formula gives \(\delta_0=1\), while for \(n\ge1\),
+\begin{align}
+ \delta_n
+ &=(1-q)\left(
+   \frac{\gamma_n}{1-q^{2n+1}}
+   -\frac{q^{2n-1}\gamma_{n-1}}{1-q^{2n-1}}
+   \right)\notag\\
+ &=(-1)^n
+ q^{\{(2t+1)n^2-(2t-1)n\}/2}
+ \left(1+q^{(2t-1)n}\right).
+ \label{qg:eq:andrews-gordon-lowered-alpha}
+\end{align}
+For completeness, the two powers before factoring in the last line are
+\[
+ t(n^2+n)+\binom n2
+ \quad\text{and}\quad
+ 2n-1+t(n^2-n)+\binom{n-1}{2};
+\]
+their difference is \((2t-1)n\), which proves
+\eqref{qg:eq:andrews-gordon-lowered-alpha}.
+
+The \(u\) transformations \(S_1\) and the final limiting identity
+multiply \(\delta_n\) by \(q^{(u+1)n^2}=q^{(i-1)n^2}\).
+Since
+\[
+  2(t+i)-1=M,\qquad 2t-1=M-2i,
+\]
+the alpha side becomes
+\begin{multline*}
+ \frac1{(q;q)_\infty}
+ \left(
+ 1+\sum_{n\ge1}(-1)^n
+ q^{\{Mn^2-(M-2i)n\}/2}
+ \left(1+q^{(M-2i)n}\right)
+ \right)
+ \\
+ =
+ \frac1{(q;q)_\infty}
+ \sum_{m\in\IntegerNumbers}(-1)^m
+ q^{\{Mm^2-(M-2i)m\}/2}.
+\end{multline*}
+Here the two positive-index terms pair \(m=n\) with \(m=-n\).
+The Jacobi triple product with base \(q^M\) and parameter \(q^i\)
+evaluates the bilateral sum as
+\[
+  (q^i,q^{M-i},q^M;q^M)_\infty.
+\]
+This proves \eqref{qg:eq:andrews-gordon} in every case.
+
+All finite Bailey transformations above are finite rearrangements.  For
+\(|q|\le R<1\),
+\[
+  |(q;q)_m|
+  \ge\prod_{\nu=1}^{m}(1-R^\nu)
+  \ge(R;R)_\infty,
+\]
+uniformly in \(m\).  Since \(K=k-1\) is fixed, every multiple-series
+summand is therefore bounded by a constant depending only on \(R\) and
+\(K\), times \(R^{r_1^2+\cdots+r_K^2}\).  Dropping the monotonicity
+conditions gives the summable majorant
+\[
+  C_{R,K}\left(\sum_{n\ge0}R^{n^2}\right)^K.
+\]
+The alpha and bilateral sums are bounded similarly by
+\(C'_R R^{c n^2-Cn}\) with \(c>0\).  Hence all final series converge
+absolutely and locally uniformly, and every limiting passage used in the
+proof satisfies the convergence hypothesis of
+\Cref{cor:bailey-limit-infinite}.
+\end{proof}
+
+\begin{corollary}[The modulus-seven specialization]
+\label{qg:cor-andrews-gordon-mod7}
+For \(r,s\ge0\), put \(N_1=r+s\) and \(N_2=s\).  Then
+\begin{align}
+ \sum_{r,s\ge0}
+ \frac{q^{N_1^2+N_2^2+N_1+N_2}}
+      {(q;q)_r(q;q)_s}
+ &=
+ \frac1{(q^2,q^3,q^4,q^5;q^7)_\infty},
+ \label{qg:eq:andrews-gordon-mod-seven-one}\\
+ \sum_{r,s\ge0}
+ \frac{q^{N_1^2+N_2^2+N_2}}
+      {(q;q)_r(q;q)_s}
+ &=
+ \frac1{(q,q^3,q^4,q^6;q^7)_\infty},
+ \label{qg:eq:andrews-gordon-mod-seven-two}\\
+ \sum_{r,s\ge0}
+ \frac{q^{N_1^2+N_2^2}}
+      {(q;q)_r(q;q)_s}
+ &=
+ \frac1{(q,q^2,q^5,q^6;q^7)_\infty}.
+ \label{qg:eq:andrews-gordon-mod-seven-three}
+\end{align}
+Equivalently, the coefficient of \(q^n\) in the \(i\)-th sum
+\((i=1,2,3)\) counts partitions of \(n\) into parts not congruent to
+\(0\) or \(\pm i\pmod7\).
+\end{corollary}
+
+\begin{proof}
+Take \(k=3\) and respectively \(i=1,2,3\) in
+\Cref{qg:thm-andrews-gordon}.  The three numerator products are
+\[
+ (q,q^6,q^7;q^7)_\infty,\qquad
+ (q^2,q^5,q^7;q^7)_\infty,\qquad
+ (q^3,q^4,q^7;q^7)_\infty.
+\]
+Dissect
+\[
+ (q;q)_\infty=(q,q^2,q^3,q^4,q^5,q^6,q^7;q^7)_\infty
+\]
+and cancel the three displayed residue classes.  This gives
+\eqref{qg:eq:andrews-gordon-mod-seven-one}--
+\eqref{qg:eq:andrews-gordon-mod-seven-three}.  Each remaining reciprocal
+factor \(1/(1-q^m)\) records an arbitrary multiplicity of the part \(m\),
+and all these products and series are holomorphic at \(q=0\) throughout
+the open unit disk.  Since the analytic identities hold there, uniqueness
+of Taylor expansions proves the coefficient interpretation.
+\end{proof}
+
+\begin{remark}[Odd-modulus specialization map]
+The modulus in \Cref{qg:thm-andrews-gordon} is \(2k+1\).  Consequently
+\(k=4\) gives four identities of odd modulus \(9\), and \(k=13\) gives
+thirteen identities of odd modulus \(27\).  These are direct specializations
+of the theorem just proved and require no new product argument.  Modulus \(14\)
+does not arise by ``substituting \(14\) for \(2k+1\)'': no integral \(k\)
+satisfies that equation.  Its natural setting is the parity-sensitive
+even-modulus theory of Bressoud, whose extra parity condition is absent from
+the Andrews--Gordon sums above.  Constructing an equally elementary
+Bailey-lattice route to that theory is the
+\hyperref[qg:prob-even-modulus-lowering]{even-modulus lowering open problem}
+recorded in the next chapter.
+\end{remark}
+
+\begin{remark}[Logical dependencies]
+\label{qg:rem:bailey-andrews-gordon-dependencies}
+No external identity is being used as an unproved black box in this chapter.
+The full Bailey lemma reduces to the proved
+\(q\)-Pfaff--Saalsch\"utz summation \Cref{thm:q-pfaff}; the
+continued fraction reduces to the proved \(q\)-Pascal recurrence and
+\Cref{thm:rogers-ramanujan}; and the Andrews--Gordon products reduce to
+the proved Jacobi triple product \Cref{thm:jtp}.  The limiting Bailey
+results invoked above are precisely the finite and infinite theorems already
+proved in \Cref{chap:bailey}.
+\end{remark}

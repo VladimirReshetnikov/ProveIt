@@ -1,0 +1,959 @@
+% Certification and frontier chapter.  Every correctness assertion below is
+% accompanied by a proof; conjectures are confined to the final frontier
+% section and include explicit proof obligations.
+
+% LOCAL-NON-FOURIER-HAT: \CertifiedEnclosureCenter denotes a certified numerical enclosure center approximating the exact quantity supplied as the argument.
+\newcommand{\CertifiedEnclosureCenter}[1]{\widehat{#1}}
+% LOCAL-NON-FOURIER-HAT: \FormalGevreySeriesSymbol denotes a formal Gevrey series before Borel transformation, not a Fourier transform.
+\newcommand{\FormalGevreySeriesSymbol}[1]{\widehat{#1}}
+
+\chapter{Certification and research frontiers}
+\label{chap:certification-and-frontiers}
+
+\section{Branch-aware numerical certification}
+\label{sec:certification-frontiers}
+
+An inverse approximation is not a certificate.  A certificate must identify
+the forward map, the active parameter, the target, the domain containing the
+selected branch, and the arithmetic enclosure used to control every discarded
+tail and rounding error.  In the complex setting it must additionally record
+the continuation path and every logarithm or fractional-power determination.
+Changing any one of these data can change the inverse being computed.
+
+The basic workflow is therefore:
+\begin{enumerate}
+\item choose a coordinate in which the selected sheet is regular;
+\item evaluate the forward map and its derivatives with outward-rounded
+      enclosures, including explicit infinite tails;
+\item obtain a candidate from an asymptotic expansion, continuation, or a
+      floating-point solve;
+\item prove existence and uniqueness in a real interval or complex disk;
+\item if all sheets are required, certify the remaining zero count by the
+      argument principle.
+\end{enumerate}
+The candidate-generation step may be heuristic.  The last two steps are not.
+
+\subsection{Certified tails for infinite products}
+\label{sec:certified-product-tails}
+
+The next estimate controls the value and the first two argument derivatives
+with one truncation index.
+
+\begin{theorem}[Complex \(q\)-Pochhammer tail]
+\label{thm:qpoch-tail-certificate}
+Let \(a,q\in\ComplexNumbers\), put \(\rho=\lvert q\rvert<1\), and choose \(N\in\NaturalNumbers\) so that
+\[
+  \eta:=\lvert a\rvert\rho^N<1.
+\]
+The tail
+\[
+  T_N(a,q):=\prod_{j=N}^{\infty}(1-aq^j)
+\]
+is nonzero and has the logarithm
+\[
+  L_N(a,q):=-\sum_{j=N}^{\infty}\sum_{k=1}^{\infty}
+                 \frac{(aq^j)^k}{k}.
+\]
+With
+\[
+  B_N:=\frac{\lvert a\rvert\rho^N}
+              {(1-\eta)(1-\rho)},
+\]
+one has
+\begin{align}
+ \lvert L_N(a,q)\rvert&\le B_N,
+ &\lvert T_N(a,q)-1\rvert&\le \EulerE^{B_N}-1,
+ \label{eq:qpoch-tail-value}\\
+ \lvert\partial_aL_N(a,q)\rvert
+   &\le\frac{\rho^N}{(1-\eta)(1-\rho)},
+ &\lvert\partial_a^2L_N(a,q)\rvert
+   &\le\frac{\rho^{2N}}{(1-\eta)^2(1-\rho^2)}.
+ \label{eq:qpoch-tail-derivatives}
+\end{align}
+More explicitly, suppose interval arithmetic certifies scalar bounds
+\[
+ \rho\le\bar\rho<1,\qquad \eta\le\bar\eta<1.
+\]
+Then the value bounds hold with
+\[
+ \bar B_N:=\frac{\bar\eta}
+ {(1-\bar\eta)(1-\bar\rho)}
+\]
+in place of \(B_N\), and the two derivative bounds hold after replacing
+their right-hand sides respectively by
+\[
+ \frac{\bar\rho^N}{(1-\bar\eta)(1-\bar\rho)},
+ \qquad
+ \frac{\bar\rho^{2N}}{(1-\bar\eta)^2(1-\bar\rho^2)}.
+\]
+For interval balls \(\mathcal A\) and \(\mathcal Q\) of possible \(a\) and
+\(q\), it suffices to certify
+\[
+ \bar\rho\ge\sup_{q\in\mathcal Q}\lvert q\rvert,\qquad
+ \bar\eta\ge
+   \left(\sup_{a\in\mathcal A}\lvert a\rvert\right)\bar\rho^N,
+\]
+with both upper endpoints still strictly below one.
+\end{theorem}
+
+\begin{proof}
+For \(\lvert z\rvert<1\), the power-series logarithm gives
+\[
+ \left\lvert-\log(1-z)\right\rvert
+ \le\sum_{k\ge1}\lvert z\rvert^k
+ =\frac{\lvert z\rvert}{1-\lvert z\rvert}.
+\]
+For \(j\ge N\), \(\lvert aq^j\rvert\le\eta\).  Hence
+\[
+ \lvert L_N(a,q)\rvert
+ \le \sum_{j\ge N}\frac{\lvert a\rvert\rho^j}{1-\eta}
+ =B_N.
+\]
+The majorant is summable, so the logarithmic series converges absolutely and
+the product converges to \(T_N=\EulerE^{L_N}\).  No tail factor vanishes because
+\(\lvert aq^j\rvert<1\).  The elementary estimate
+\(\lvert\EulerE^z-1\rvert\le\EulerE^{\lvert z\rvert}-1\) proves the second bound in
+\eqref{eq:qpoch-tail-value}.
+
+On a slightly smaller neighbourhood of the given \(a\), the differentiated
+series have the summable majorants used below; termwise differentiation is
+therefore legitimate.  Explicitly,
+\[
+ \partial_aL_N=-\sum_{j\ge N}\frac{q^j}{1-aq^j},
+ \qquad
+ \partial_a^2L_N=-\sum_{j\ge N}\frac{q^{2j}}{(1-aq^j)^2}.
+\]
+Using \(\lvert1-aq^j\rvert\ge1-\eta\) and summing the two geometric series
+gives \eqref{eq:qpoch-tail-derivatives}.  Each factor in the three displayed
+majorants is monotone in \(\rho\) and \(\eta\) on \([0,1)\), so substituting
+\(\bar\rho,\bar\eta\) proves the interval versions.
+\end{proof}
+
+Near a zero of a finite prefix, that factor should be removed symbolically.
+The theorem then controls the nonvanishing tail without hiding the local zero
+inside a logarithmic sum.
+
+The Rvachev Fourier product has an equally simple real-axis certificate.  We
+use \(\SincRad x=\sin(x)/x\) for \(x\ne0\) and \(\SincRad(0)=1\).
+
+\begin{theorem}[Geometric sinc-product tail]
+\label{thm:sinc-tail-certificate}
+Let \(0<q<1\), \(t\in\RealNumbers\), and \(w_j=(1-q)q^j\).  Then
+\[
+ S_N(t):=\prod_{j=N}^{\infty}\SincRad(w_jt)
+\]
+converges, and
+\begin{equation}
+ \lvert S_N(t)-1\rvert
+ \le \exp\!\left(
+   \frac{t^2(1-q)^2q^{2N}}{6(1-q^2)}
+ \right)-1.
+ \label{eq:sinc-tail-certificate}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Taylor's formula with integral remainder gives, for real \(x\),
+\[
+ \lvert\sin x-x\rvert
+ \le\int_0^{\lvert x\rvert}(\lvert x\rvert-u)u\,\Differential u
+ =\frac{\lvert x\rvert^3}{6}.
+\]
+Consequently \(\lvert\SincRad x-1\rvert\le x^2/6\), with the value at zero
+understood by continuity.  Put \(u_j=\SincRad(w_jt)-1\).  For a finite product,
+\[
+ \left\lvert\prod_{j=N}^{M}(1+u_j)-1\right\rvert
+ \le\prod_{j=N}^{M}(1+\lvert u_j\rvert)-1
+ \le\exp\!\left(\sum_{j=N}^{M}\lvert u_j\rvert\right)-1.
+\]
+Moreover,
+\[
+ \sum_{j\ge N}\lvert u_j\rvert
+ \le\frac{t^2}{6}\sum_{j\ge N}w_j^2
+ =\frac{t^2(1-q)^2q^{2N}}{6(1-q^2)}.
+\]
+The summability proves convergence of the product, and passage to the limit in
+the finite-product inequality proves \eqref{eq:sinc-tail-certificate}.
+\end{proof}
+
+\subsection{Real branches: brackets, residuals, and interval Newton}
+\label{sec:real-branch-certification}
+
+On a real branch, monotonicity is the cleanest existence and uniqueness
+certificate.  Newton acceleration may be used inside the bracket, but it is
+the bracket that carries the proof.
+
+\begin{theorem}[Monotone branch certificate]
+\label{thm:monotone-branch-certificate}
+Let \(f:[\alpha,\beta]\to\RealNumbers\) be continuous and strictly monotone, and let
+\(y\) lie between \(f(\alpha)\) and \(f(\beta)\).  Then there is a unique
+\(x_*\in[\alpha,\beta]\) with \(f(x_*)=y\).  Sign-preserving bisection produces
+nested brackets \(X_r\) containing \(x_*\) with
+\[
+ \operatorname{length}(X_r)=2^{-r}(\beta-\alpha).
+\]
+If \(f\) is differentiable and
+\(\lvert f'(x)\rvert\ge m>0\) throughout the original bracket, then every
+\(x_0\in[\alpha,\beta]\) satisfies
+\begin{equation}
+ \lvert x_0-x_*\rvert\le
+ \frac{\lvert f(x_0)-y\rvert}{m}.
+ \label{eq:real-residual-transfer}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+The intermediate value theorem gives existence, and strict monotonicity gives
+uniqueness.  At each bisection step, one of the two half-intervals still has
+endpoint values bracketing \(y\); choosing it preserves \(x_*\) and halves the
+length.  Finally, the mean-value theorem gives
+\[
+ f(x_0)-f(x_*)=f'(\xi)(x_0-x_*)
+\]
+for some \(\xi\) between \(x_0\) and \(x_*\).  Taking absolute values and using
+the derivative lower bound proves \eqref{eq:real-residual-transfer}.
+\end{proof}
+
+The residual estimate assumes that the root already exists.  The general
+arbitrary-target interval-Newton theorem
+\Cref{thm:uq-interval-newton-certificate} certifies existence, uniqueness,
+and enclosure as soon as the derivative interval is separated from zero.
+This is exactly the one-dimensional test formerly repeated here.
+
+Directed rounding is essential here.  A derivative sampled at many points is
+not an interval extension of \(f'(X)\), and an ordinary floating-point
+inclusion is not a mathematical inclusion.
+
+\subsection{Complex disks: contraction, Rouch\'e, and total zero counts}
+\label{sec:complex-branch-certification}
+
+The complex analogue of interval Newton is particularly transparent in one
+variable.  It certifies a selected sheet and gives a constructive refinement
+map.
+
+\begin{theorem}[Complex Krawczyk disk]
+\label{thm:complex-krawczyk-disk}
+Let \(f\) be holomorphic on a neighbourhood of the closed disk
+\(D=\{z:\lvert z-z_0\rvert\le r\}\), where \(r>0\), and let
+\(A\in\ComplexNumbers\setminus\{0\}\).  If
+\[
+ \kappa:=\sup_{z\in D}\lvert1-Af'(z)\rvert<1,
+ \qquad
+ \lvert Af(z_0)\rvert\le(1-\kappa)r,
+\]
+then \(f\) has exactly one zero in \(D\).  If the second inequality is strict,
+the zero lies in the open disk.
+\end{theorem}
+
+\begin{proof}
+Set \(T(z)=z-Af(z)\).  The disk is convex, and integration along the line
+segment from \(w\) to \(z\) gives
+\[
+ \lvert T(z)-T(w)\rvert
+ \le\kappa\lvert z-w\rvert.
+\]
+Also, for \(z\in D\),
+\[
+ \lvert T(z)-z_0\rvert
+ \le\lvert T(z)-T(z_0)\rvert+\lvert Af(z_0)\rvert
+ \le\kappa r+(1-\kappa)r=r.
+\]
+Thus \(T\) is a contraction of the complete metric space \(D\) into itself.
+The contraction theorem supplies a unique fixed point \(z_*\).  Since
+\(A\ne0\), \(T(z_*)=z_*\) is equivalent to \(f(z_*)=0\).  Every zero is a fixed
+point, so there are no others.  Under the strict second inequality the
+displayed estimate is strict on the boundary, hence \(z_*\) is interior.
+\end{proof}
+
+When a second-derivative bound is sharper than an enclosure of the Newton map,
+apply the arbitrary-target Rouch\'e certificate
+\Cref{thm:uq-rouche-disk-certificate}.  Its specialization to target zero is
+exactly the one-zero disk test formerly repeated here.
+
+Disjoint one-zero disks do not by themselves prove that every inverse sheet
+has been found.  A validated argument-principle count closes that gap.
+
+\begin{theorem}[Validated argument-principle count]
+\label{thm:validated-argument-principle}
+Let \(\Omega\) be a bounded Jordan domain, let \(f\) be holomorphic on a
+neighbourhood of \(\overline\Omega\), and suppose interval evaluation proves
+\(0\notin f(\partial\Omega)\).  Write the positively oriented boundary as a
+finite concatenation of \(C^3\) panels
+\(\gamma_k:[0,1]\to\partial\Omega\), and put
+\[
+ g_k(s):=\frac{f'(\gamma_k(s))\gamma_k'(s)}{f(\gamma_k(s))}.
+\]
+Suppose validated bounds
+\(M_k\ge\sup_{0\le s\le1}\lvert g_k''(s)\rvert\) are available.  Let
+\[
+ Q:=\sum_k\frac{g_k(0)+g_k(1)}2,
+ \qquad
+ E:=\frac1{12}\sum_kM_k.
+\]
+Suppose outward-rounded arithmetic provides
+\(\CertifiedEnclosureCenter{Q}\in\ComplexNumbers\) and \(\varepsilon_Q\ge0\) with
+\(\lvert Q-\CertifiedEnclosureCenter{Q}\rvert\le\varepsilon_Q\).  If the closed disk
+\[
+\left\{z:\left\lvert z-\frac{\CertifiedEnclosureCenter{Q}}{2\pi\ImaginaryUnit}\right\rvert
+       \le\frac{E+\varepsilon_Q}{2\pi}\right\}
+\]
+contains exactly one integer \(n\), then \(f\) has exactly \(n\) zeros in
+\(\Omega\), counted with multiplicity.
+\end{theorem}
+
+\begin{proof}
+For a twice continuously differentiable complex-valued function \(g\) on
+\([0,1]\), two integrations by parts give the trapezoidal remainder formula
+\[
+ \int_0^1g(s)\,\Differential s-\frac{g(0)+g(1)}2
+ =-\frac12\int_0^1s(1-s)g''(s)\,\Differential s.
+\]
+Since \(\int_0^1s(1-s)\,\Differential s=1/6\), its modulus is at most
+\(\sup\lvert g''\rvert/12\).  Summing over the panels gives
+\[
+ \left\lvert\int_{\partial\Omega}\frac{f'(z)}{f(z)}\,\Differential z-Q\right\rvert
+ \le E.
+\]
+The boundary nonvanishing hypothesis makes the argument principle applicable,
+so
+\[
+ \frac1{2\pi\ImaginaryUnit}\int_{\partial\Omega}\frac{f'(z)}{f(z)}\,\Differential z
+\]
+is the integer equal to the number of zeros of \(f\) in \(\Omega\).  The
+quadrature and rounding bounds, followed by the triangle inequality, place
+this integer in the displayed disk.  If that disk contains only \(n\), the
+zero count is \(n\).
+\end{proof}
+
+In practice, interval balls for \(f(\gamma_k([0,1]))\) certify boundary
+nonvanishing, automatic differentiation bounds \(g_k''\), and panel
+subdivision reduces \(E\).  Counting one zero in each selected disk and then
+the same total number in a containing contour certifies both uniqueness and
+completeness.  For a meromorphic forward map, the same integral counts zeros
+minus poles; the poles and their multiplicities must be enclosed and added
+back explicitly.
+
+\subsection{Asymptotic truncation is part of the certificate}
+\label{sec:asymptotic-truncation-discipline}
+
+An \(O(t^{N+1})\) printed in a manuscript has no numerical content until its
+constant, domain, and branch are known.  For a convergent Taylor expansion,
+Cauchy's estimate supplies all three.
+
+\begin{theorem}[Cauchy tail bound]
+\label{thm:cauchy-truncation-tail}
+Let \(H\) be holomorphic on a neighbourhood of
+\(\{z:\lvert z\rvert\le R\}\), let
+\(M\ge\max_{\lvert z\rvert=R}\lvert H(z)\rvert\), and write
+\(H(z)=\sum_{j\ge0}c_jz^j\).  For \(N\in\NaturalNumbers\), \(0\le r<R\), and
+\(\lvert z\rvert\le r\),
+\[
+ \left\lvert H(z)-\sum_{j=0}^{N}c_jz^j\right\rvert
+ \le M\frac{(r/R)^{N+1}}{1-r/R}.
+\]
+\end{theorem}
+
+\begin{proof}
+Cauchy's coefficient formula gives \(\lvert c_j\rvert\le M/R^j\).  Hence
+\[
+ \left\lvert\sum_{j>N}c_jz^j\right\rvert
+ \le M\sum_{j>N}(r/R)^j
+ =M\frac{(r/R)^{N+1}}{1-r/R}.
+\]
+\end{proof}
+
+For an inverse expansion, it is usually sharper to certify its forward
+residual than to bound inverse coefficients separately.  Apply
+\Cref{prop:uq-asymptotic-residual-transfer} to each fixed parameter $s$, with
+$G(y_s)=p(s)$, $\widetilde G(y_s)=p_N(s)$, and $m(y_s)=m_s$.  It gives the
+branch-specific estimate
+\[
+ \lvert p_N(s)-p(s)\rvert
+ \le \frac{\lvert F_s(p_N(s))-y_s\rvert}{m_s}
+ \le \frac{E_N(s)}{m_s}.
+\]
+
+At a fold, \(m_s\) tends to zero in the original coordinate.  One must first
+pass to the square-root coordinate in which the sheet is regular, or use a
+Rouch\'e or Krawczyk disk.  Reporting a large residual quotient in the singular
+coordinate does not certify the branch.
+
+Divergent asymptotic series require a different discipline.  The elementary
+calculation below explains optimal truncation for a Gevrey-one envelope.
+
+\begin{proposition}[Optimal index for a Gevrey-one remainder envelope]
+\label{prop:gevrey-least-term}
+Let \(A,C>0\) and \(t\ne0\).  For every \(N\in\NaturalNumbers\), define the candidate
+remainder envelope
+\[
+ E_N(t)=C(A\lvert t\rvert)^{N+1}(N+1)!.
+\]
+Suppose the actual remainder after truncation at \(N\) has been proved to
+have modulus at most \(E_N(t)\) for every \(N\).  Then
+\[
+ \frac{E_{N+1}(t)}{E_N(t)}=A\lvert t\rvert(N+2).
+\]
+Put \(x=(A\lvert t\rvert)^{-1}-2\).  The certified envelope decreases
+exactly when \(N<x\), is unchanged when \(N=x\), and increases when \(N>x\).
+If \(A\lvert t\rvert>1/2\), its unique minimizing index is \(N=0\).  If
+\(A\lvert t\rvert=1/2\), the minimizing indices are \(0\) and \(1\).  If
+\(A\lvert t\rvert<1/2\) and \(x\notin\NaturalNumbers\), the unique minimizing index is
+\(\Ceiling{x}\); if \(x\in\NaturalNumbers\), the minimizing indices are \(x\) and
+\(x+1\).
+\end{proposition}
+
+\begin{proof}
+Cancel the common factors in \(E_{N+1}/E_N\).  The monotonicity and location of
+the discrete minimum follow immediately from whether this ratio is below or
+above one.
+\end{proof}
+
+This proposition is not permission to assume a Gevrey bound.  Such a bound
+must first be proved uniformly in the stated sector.  A defensible asymptotic
+certificate therefore records the coordinate and sheet, the allowed domain,
+the remainder constants, the chosen truncation order, the outward-rounded
+forward residual, and the final real or complex root enclosure.  Merely
+observing that successive terms initially decrease is evidence, not proof.
+
+\section{Two archived conjectures that are theorems}
+\label{sec:upgraded-conjectures}
+
+Two claims repeatedly presented as conjectural in the source reports need no
+numerical evidence.  In their natural precise forms they are elementary
+theorems.
+
+\subsection{Total cumulants identify the geometric uniform law}
+
+Let \(\varepsilon_0,\varepsilon_1,\ldots\) be independent random variables,
+each uniform on \([-1,1]\), and put
+\[
+ X_{\mu,c,q}=\mu+c\sum_{j=0}^{\infty}q^j\varepsilon_j,
+ \qquad
+ \mu\in\RealNumbers,\quad c>0,\quad 0<q<1.
+\]
+The series converges absolutely almost surely: with probability one all the
+inequalities \(\lvert\varepsilon_j\rvert\le1\) hold, and then its absolute value is
+bounded by \(\sum_jq^j\).
+
+This is exactly the raw-series convention
+\(\widetilde W_{\mu,a,q}\) of
+\cref{eq:fr-raw-scale-family}, with \(a=c\).  The complete proof therefore
+appears once, in \cref{thm:fr-total-identifiability}.  Its raw-scale clause
+proves the full bijection from \((\mu,c,q)\) to mean, positive variance, and
+standardized fourth cumulant, together with all three inverse formulas.  This
+subsection records the source normalization and its disposition; it does not
+state or prove the same identifiability result a second time.
+Thus total cumulants identify the exact three-parameter model.  Stability
+under noisy cumulants, missing observations, or a perturbed digit law is a
+different problem; it becomes a theorem or conjecture only after the
+perturbation model and metric are specified.
+
+\subsection{A transcendental value determines the Gaussian rectangle}
+
+For integers \(a,b\ge0\), write
+\[
+ G_{a,b}(Q)=\genfrac{[}{]}{0pt}{}{a+b}{a}_{Q}.
+\]
+This is the generating polynomial for partitions whose Ferrers diagrams fit
+inside an \(a\)-by-\(b\) rectangle.
+
+\begin{theorem}[Uniqueness at a transcendental base]
+\label{thm:transcendental-gaussian-uniqueness}
+Let \(q\in\ComplexNumbers\) be transcendental over \(\RationalNumbers\).  If
+\[
+ 0<k<n,\qquad 0<k'<n',\qquad
+ \genfrac{[}{]}{0pt}{}{n}{k}_{q}
+   =\genfrac{[}{]}{0pt}{}{n'}{k'}_{q},
+\]
+then \(n'=n\) and either \(k'=k\) or \(k'=n-k\).
+\end{theorem}
+
+\begin{proof}
+Transcendence says that evaluation at \(q\) is injective on
+\(\IntegerNumbers[Q]\).  The asserted equality of values is therefore an equality of
+Gaussian polynomials.  Put
+\[
+ a=k,\quad b=n-k,\quad
+ m=\min(a,b),\quad M=\max(a,b),
+\]
+and define \(a',b',m',M'\) similarly.
+
+The coefficient of \(Q^d\) in \(G_{a,b}\) counts partitions of \(d\) fitting
+inside the rectangle.  Every partition of \(d\le m\) has at most \(m\) parts
+and largest part at most \(m\), so these coefficients equal the unrestricted
+partition numbers \(p(d)\).  At \(d=m+1\), at least one partition is excluded:
+if \(a=m\), the partition \(1+\cdots+1\) with \(m+1\) parts is too tall; if
+\(b=m\), the one-part partition \((m+1)\) is too wide.  Hence \(m+1\) is the
+first degree at which the coefficient is smaller than \(p(d)\).  Equality of
+the two polynomials therefore gives \(m=m'\).
+
+The degree of \(G_{a,b}\) is \(ab=mM\), so equality of degrees and positivity
+of \(m\) give \(M=M'\).  Thus the unordered pairs
+\(\{a,b\}\) and \(\{a',b'\}\) agree.  Since \(n=a+b\) and \(k=a\), this says
+exactly that \(n'=n\) and \(k'=k\) or \(k'=n-k\).
+\end{proof}
+
+\section{Precisely stated open frontiers}
+\label{sec:precise-open-frontiers}
+
+The following list keeps only assertions with a definite truth value.  Each
+conjecture states its domain, normalization, and branch, followed by the
+present evidence and the missing mathematical obligation.
+
+\subsection{\texorpdfstring{Generic monodromy of finite \(q\)-products}{Generic monodromy of finite q-products}}
+
+Set
+\[
+ P_{n,q}(a)=\prod_{j=0}^{n-1}(1-aq^j).
+\]
+The group-theoretic implication needed for this frontier is already a
+theorem.
+
+\begin{theorem}[Simple, distinct critical values force full monodromy]
+\label{thm:simple-critical-values-monodromy}
+Let \(P\in\ComplexNumbers[a]\) have degree \(n\ge2\).  Suppose \(P'\) has \(n-1\)
+simple zeros and their images under \(P\) are pairwise distinct.  Then the
+monodromy group of \(P(a)-y=0\) over
+\(\ComplexNumbers\setminus\{\text{critical values of }P\}\) is \(S_n\).
+\end{theorem}
+
+\begin{proof}
+Near a simple critical point, the holomorphic Morse lemma identifies the map
+with \(z\mapsto z^2\) in local coordinates.  A small loop around its critical
+value therefore exchanges precisely the two colliding sheets and fixes the
+others: its monodromy is a transposition.  Distinct critical values give one
+such branch cycle for each critical point.  Small positively oriented loops
+around the finite critical values generate the fundamental group of their
+complement; the loop at infinity is the inverse of their product.  Hence
+these transpositions generate the monodromy group.
+
+The cover is connected.  Algebraically, this follows because
+\(P(a)-y\) is irreducible in \(\ComplexNumbers(y)[a]\): viewed in \(\ComplexNumbers[a,y]\), it has
+degree one in \(y\), and any factor independent of \(y\) would divide the
+coefficient \(-1\); Gauss's lemma then gives irreducibility over \(\ComplexNumbers(y)\).
+Hence the monodromy action is transitive.
+
+Associate a graph to the sheets, with an edge for every generating
+transposition.  Its connected components are exactly the orbits of the group
+they generate, so transitivity makes the graph connected.  The edge
+transpositions of a connected graph generate all of \(S_n\).  Thus the
+monodromy group is \(S_n\).
+\end{proof}
+
+\begin{conjecture}[Generic finite \(q\)-Pochhammer monodromy]
+\label{conj:generic-pochhammer-monodromy}
+For every \(n\ge3\) there is a nonzero polynomial \(E_n\in\IntegerNumbers[q]\) such that,
+whenever \(q\in\ComplexNumbers\) and \(qE_n(q)\ne0\), the critical points of \(P_{n,q}\)
+are simple and their critical values are pairwise distinct.  In particular,
+the monodromy group is then \(S_n\).
+\end{conjecture}
+
+Simplicity is controlled by the discriminant of \(P'_{n,q}\), and coincidence
+of two critical values by a second resultant or discriminant, all with integer
+coefficients in \(q\).  The real obligation is to show that their product is
+not the zero polynomial for every \(n\).  Once that is known, every excluded
+nonzero parameter is algebraic.  A single exact specialization with simple
+critical points and distinct critical values for each \(n\), or a uniform
+symbolic argument, would suffice.  Floating-point plots cannot establish this
+nonvanishing.
+
+\subsection{Continuous Gaussian monotonicity}
+
+For \(0<q<1\) and \(u>0\), use the standard normalization
+\[
+ \Gamma_q(u)
+  =(1-q)^{1-u}
+    \prod_{j=0}^{\infty}\frac{1-q^{j+1}}{1-q^{u+j}}.
+\]
+For \(x>y>0\), define the continuous Gaussian coefficient by
+\[
+ \mathcal G_q(x,y)=
+ \begin{cases}
+ \displaystyle
+ \frac{\Gamma_q(x+1)}
+      {\Gamma_q(y+1)\Gamma_q(x-y+1)},&0<q<1,\\[1.2ex]
+ \displaystyle
+ \frac{\Gamma(x+1)}
+      {\Gamma(y+1)\Gamma(x-y+1)},&q=1,\\[1.2ex]
+ \displaystyle
+ q^{y(x-y)}\mathcal G_{1/q}(x,y),&q>1.
+ \end{cases}
+\]
+The last line fixes the reciprocal-base normalization rather than leaving it
+implicit.
+
+\begin{conjecture}[Continuous Gaussian monotonicity]
+\label{conj:continuous-gaussian-monotonicity}
+For every pair \(x>y>0\), the function
+\[
+ q\longmapsto\mathcal G_q(x,y)
+\]
+is strictly increasing on \((0,1)\).
+\end{conjecture}
+
+For integral \(x=n\) and \(y=k\), this is immediate from the nonnegative
+coefficients of the Gaussian polynomial, with strictness because
+\(0<k<n\).  There is also rigorous local evidence at the upper endpoint.
+Apply \cref{thm:qs-qgamma-one} at \(x+1\), \(y+1\), and \(x-y+1\).
+Its linear coefficient satisfies
+\[
+ c_1(x+1)-c_1(y+1)-c_1(x-y+1)
+ =-\frac{y(x-y)}2.
+\]
+Consequently, if \(q=\EulerE^{-t}\), then
+\[
+ \log\frac{\mathcal G_{\EulerE^{-t}}(x,y)}{\mathcal G_1(x,y)}
+  =-\frac{y(x-y)}2t+O(t^2),
+\]
+so \(\mathcal G_{\EulerE^{-t}}(x,y)<\mathcal G_1(x,y)\) for every sufficiently
+small \(t>0\).  A global proof must establish the sign of the
+\(q\)-derivative of the displayed
+\(q\)-gamma quotient, most likely by reorganizing the resulting Lambert
+series into a manifestly positive expression.  Conversely, one
+outward-rounded interval evaluation showing a negative derivative would be a
+rigorous counterexample.
+
+\subsection{A complete-Bernstein principal inverse}
+
+Fix \(0<q<1\) and let
+\[
+ P_q(a)=(a;q)_\infty=\prod_{j=0}^{\infty}(1-aq^j),
+ \qquad a<1.
+\]
+Every factor is positive.  Locally uniform differentiation of the logarithm
+gives
+\[
+ \frac{P_q'(a)}{P_q(a)}
+  =-\sum_{j=0}^{\infty}\frac{q^j}{1-aq^j}<0.
+\]
+Moreover, \(P_q(a)\to0\) as \(a\uparrow1\), while
+\(P_q(a)\to\infty\) as \(a\to-\infty\).  For the latter limit, retain any
+fixed number of factors and then let that finite product tend to infinity.
+Thus \(P_q\) has a decreasing inverse
+\[
+ A_q:(0,\infty)\longrightarrow(-\infty,1),
+ \qquad
+ X_q(y)=1-A_q(y)>0.
+\]
+The first two Bernstein signs are theorems.  Indeed, if
+\(r_j=q^j/(1-aq^j)>0\), then
+\[
+ \frac{P_q''(a)}{P_q(a)}
+  =\left(\sum_{j\ge0}r_j\right)^2-\sum_{j\ge0}r_j^2
+  =2\sum_{0\le i<j}r_ir_j>0.
+\]
+Implicit differentiation now gives
+\[
+ A_q'(y)=\frac1{P_q'(A_q(y))}<0,\qquad
+ A_q''(y)
+  =-\frac{P_q''(A_q(y))}{P_q'(A_q(y))^3}>0,
+\]
+and therefore \(X_q'(y)>0\) and \(X_q''(y)<0\).
+
+\begin{conjecture}[Complete-Bernstein principal inverse]
+\label{conj:complete-bernstein-principal-inverse}
+For every \(0<q<1\), \(X_q\) is a complete Bernstein function.  Equivalently,
+there exist \(\alpha_q,\beta_q\ge0\) and a positive measure \(\nu_q\) on
+\((0,\infty)\), with
+\[
+ \int_{(0,\infty)}\frac{\nu_q(ds)}{1+s}<\infty,
+\]
+such that
+\[
+ X_q(y)=\alpha_q+\beta_qy+
+        \int_{(0,\infty)}\frac{y}{y+s}\,\nu_q(ds)
+ \qquad (y>0).
+\]
+\end{conjecture}
+
+The conjecture implies all alternating derivative inequalities
+\((-1)^{r-1}X_q^{(r)}(y)\ge0\) for \(r\ge1\).  The two proved signs above and
+the higher signs observed in formal series reversion are evidence, not a
+proof of the infinite family.  The decisive obligation is a Pick continuation
+of \(X_q\) to the slit plane, or an explicit positive representing measure.
+Notice also that the endpoint above forces
+\(\alpha_q=X_q(0+)=0\) if the conjecture holds.
+
+\subsection{\texorpdfstring{The minimum of the \(q\)-gamma function}{The minimum of the q-gamma function}}
+
+The existence and uniqueness of the minimizer are not conjectural: they are
+the first assertion of \Cref{thm:qs-qgamma-minimum}, whose proof also gives the
+complete two-branch description of every real level above the minimum.  Write
+$x_q^\ast=x_q$ and \(m_q=\Gamma_q(x_q^\ast)\).
+
+\begin{conjecture}[Monotonic motion of the \(q\)-gamma minimum]
+\label{conj:qgamma-monotone-minimizer}
+On \(0<q<1\), the minimizer \(x_q^\ast\) is strictly increasing and the
+minimum value \(m_q\) is strictly decreasing.
+\end{conjecture}
+
+The archived safeguarded-Newton computations, which are numerical evidence
+rather than interval certificates, give
+\[
+\begin{array}{c|cccc}
+q&0.05&0.20&0.60&0.95\\ \hline
+x_q^\ast&1.37998346149&1.42196580342&1.45066979499&1.46060675866\\
+m_q&0.98270463141&0.95376342969&0.91169489999&0.88840573828
+\end{array}
+\]
+and exhibit both proposed signs.  They are compatible with the formal
+\(q\downarrow0\) asymptotics and the classical-gamma limit as
+\(q\uparrow1\).  A proof requires sign control of the implicit derivative
+\[
+ \frac{d x_q^\ast}{dq}
+   =-\frac{\partial_q\psi_q(x_q^\ast)}
+           {\partial_x\psi_q(x_q^\ast)}
+\]
+and, by the envelope identity,
+\[
+ \frac{d}{dq}\log m_q
+   =\partial_q\log\Gamma_q(x_q^\ast).
+\]
+The denominators are already positive by the theorem; the two numerators
+remain the substantive Lambert-series inequalities.
+
+\subsection{Cyclotomic resurgence with fixed normalization}
+
+Let \(\zeta\) be a primitive \(m\)-th root of unity and, for
+\(\Re t>0\) and \(\lvert a\rvert<1\), take the logarithm determined by the
+absolutely convergent series
+\[
+ L_a(t)
+  =\PrincipalLogarithm(a;\zeta \EulerE^{-t})_\infty
+  =-\sum_{r=1}^{\infty}
+     \frac{a^r}{r(1-\zeta^re^{-rt})}.
+\]
+The singular action and constant term forced by this normalization are
+\[
+ S_{-1}(a)=-\frac{\operatorname{Li}_2(a^m)}{m^2},
+\]
+\[
+ S_0(a)
+  =\frac{1}{2m}\log(1-a^m)
+   -\sum_{\substack{r\ge1\\m\nmid r}}
+      \frac{a^r}{r(1-\zeta^r)}.
+\]
+A formal series \(\FormalGevreySeriesSymbol{R}(t)=\sum_{n\ge0}c_nt^n\) is
+\emph{Gevrey one} here if
+\(\lvert c_n\rvert\le CA^n n!\) for some \(C,A>0\).  Its formal Borel
+transform is
+\[
+\mathscr B\FormalGevreySeriesSymbol{R}(\xi)
+  =\sum_{n\ge0}\frac{c_{n+1}}{n!}\xi^n;
+\]
+the constant \(c_0\) is carried separately by Borel--Laplace summation.
+
+\begin{conjecture}[Cyclotomic resurgent inverse]
+\label{conj:cyclotomic-resurgent-inverse}
+Let \(K\Subset\{a:\lvert a\rvert<1\}\) and
+\(0<\delta<\pi/2\).  Uniformly for \(a\in K\), as \(t\to0\) in
+\(\lvert\arg t\rvert\le\pi/2-\delta\), the normalized function
+\[
+ R_a(t)=L_a(t)-\frac{S_{-1}(a)}{t}-S_0(a)
+\]
+has a Gevrey-one asymptotic expansion.  Its Borel transform admits endless
+analytic continuation: for each \(a\in K\), there is a locally finite set
+\(\Sigma_{a,\zeta}\subset\ComplexNumbers\), with \(0\notin\Sigma_{a,\zeta}\), such that the
+germ at zero continues along every path in
+\(\ComplexNumbers\setminus\Sigma_{a,\zeta}\) issuing from zero.  In every direction whose
+open Borel ray avoids \(\Sigma_{a,\zeta}\) and for which the Laplace integral
+converges, its Borel sum equals the exact \(R_a(t)\).
+
+Moreover, fix \(a_0\in\operatorname{int}K\), and let \(v(t)\to0\) be a
+resurgent germ on a non-Stokes sector.  Let \(a(t)\in K\), with
+\(a(t)\to a_0\), be the chosen local solution of
+\[
+ L_{a(t)}(t)=L_{a_0}(t)+v(t).
+\]
+If \(\partial_aL_{a(t)}(t)\) is bounded away from zero on every closed
+subsector under consideration, then \(a(t)\) is resurgent, and its Stokes
+automorphisms are obtained from those of \(L\) and \(v\) by the same local
+implicit inversion.  Exponentiating the displayed equation gives the
+corresponding statement for the chosen branch of the product inverse.
+\end{conjecture}
+
+The exact Lambert-series identity for \(L_a\), its residue-class splitting,
+and the Bernoulli expansion of the \(m\)-divisible terms explain
+\(S_{-1}\), \(S_0\), and the observed Gevrey growth.  They do not prove
+endless continuation or locate every Borel singularity.  The remaining
+obligations are uniform factorial remainder bounds on \(K\), analytic
+continuation and growth estimates in the Borel plane, identification of the
+Stokes set, equality of Borel sums with the convergent product, and a
+quantitative implicit-function argument for the inverse clause.
+
+\subsection{Editorial disposition of the remaining proposals}
+
+Several former conjectures were deliberately not carried forward.
+
+\begin{itemize}
+\item The proposed finite-CDF inversion statement combined an elementary
+  simple-fold theorem with an unproved analyticity assertion about a specific
+  density.  The fold theorem is covered by the branch-aware certificates
+  above; any density claim must name the density and regularity hypothesis.
+\item The phrase \emph{generic Gaussian monodromy has the permitted group}
+  did not define either the parameter space or the permitted group.  The
+  finite-product conjecture above is its falsifiable replacement.
+\item Broad inverse-universality and positivity-after-normalization claims did
+  not specify a topology, scaling, normalization, or limiting class.
+\item Total cumulant identifiability and discrete Gaussian uniqueness at a
+  transcendental base were upgraded to
+  Theorems~\ref{thm:fr-total-identifiability}
+  and~\ref{thm:transcendental-gaussian-uniqueness}.
+\end{itemize}
+
+The omitted themes may still motivate research programs, but they are not
+mathematical assertions until their quantifiers and normalizations are fixed.
+
+\section{Lean source-status map}
+\label{sec:lean-certification-map}
+
+This section is a source-presence crosswalk, not compilation evidence.  The
+declarations below occur in the indicated Lean source modules; no fresh build
+status is asserted by this table.  A source declaration supports exactly the
+topic stated in the last column; it does not silently formalize the stronger
+complex certification theorems or conjectures of this chapter.  Module names
+suppress the common
+\nolinkurl{FabiusFunction.} prefix, and declaration names suppress the common
+\nolinkurl{Fabius.} namespace; the two \nolinkurl{Bell.} declarations retain
+their different namespace explicitly.  Every displayed suffix otherwise
+matches the source exactly.
+
+\begingroup
+\small
+\setlength{\tabcolsep}{4pt}
+\renewcommand{\arraystretch}{1.18}
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.21\textwidth}>{\raggedright\arraybackslash}p{0.45\textwidth}>{\raggedright\arraybackslash}p{0.29\textwidth}@{}}
+\toprule
+Lean module & Exact source declarations & Legitimate human crosswalk \\
+\midrule
+\endfirsthead
+\toprule
+Lean module & Exact source declarations & Legitimate human crosswalk \\
+\midrule
+\endhead
+\midrule
+\multicolumn{3}{r@{}}{\small\itshape Continued on the next page}\\
+\endfoot
+\bottomrule
+\endlastfoot
+\nolinkurl{FabiusInverse}
+&
+\nolinkurl{fabiusReal_fabiusInv};
+\nolinkurl{fabiusInv_fabiusReal};
+\nolinkurl{strictMonoOn_fabiusInv};
+\nolinkurl{continuous_fabiusInv};
+\nolinkurl{fabiusInv_hasDerivAt}
+&
+Two-sided inversion on the proved domain, strict monotonicity, continuity,
+and the regular inverse derivative. \\
+
+\nolinkurl{FabiusInverseEffectiveContinuity}
+&
+\nolinkurl{abs_fabiusInv_sub_lt_inverse_two_pow_of_lt_factorialDenominator};
+\nolinkurl{fabiusInv_effectivelyUniformContinuous}
+&
+An explicit factorial-denominator inverse modulus and effective uniform
+continuity. \\
+
+\nolinkurl{FabiusInverseLogarithmicModulus}
+&
+\nolinkurl{abs_fabiusInv_sub_lt_inv_nat_of_lt_logarithmicFactorialDenominator};
+\nolinkurl{fabiusInv_effectivelyUniformContinuous_logarithmic};
+\nolinkurl{fabiusInv_effectivelyUniformContinuous_logarithmicDelta}
+&
+The later logarithmic inverse moduli, including the delta formulation. \\
+
+\nolinkurl{LambertWBranchPointGeometry};
+\nolinkurl{LambertWBranchPointAsymptotics}
+&
+\nolinkurl{tendsto_deriv_principalLambertW_branchPoint_atTop};
+\nolinkurl{tendsto_deriv_lowerLambertW_branchPoint_atBot};
+\nolinkurl{principalLambertW_not_differentiableAt_branchPoint};
+\nolinkurl{lowerLambertW_not_differentiableAt_branchPoint};
+\nolinkurl{principalLambertW_add_one_isEquivalent_branchPoint};
+\nolinkurl{lowerLambertW_add_one_isEquivalent_branchPoint}
+&
+The opposite vertical tangents, failure of finite differentiability, and the
+signed leading square-root laws at the real Lambert-\(W\) branch point.  They
+identify the correct signed leading square-root scale for a possible
+regularization; they establish neither a regularized analytic coordinate
+chart nor a higher Puiseux remainder bound. \\
+
+\nolinkurl{GeometricUniformLaw}
+&
+\nolinkurl{hasSum_geometricUniformWeight};
+\nolinkurl{geometricUniformSeries_mem_Icc};
+\nolinkurl{geometricUniformDistribution_selfSimilar};
+\nolinkurl{geometricUniformDistribution_support_eq_Icc}
+&
+Convergence, support, and self-similarity of Lean's normalized \([0,1]\)
+geometric uniform law.  If
+\(Z=(1-q)\sum_{j\ge0}q^jV_j\) and \(U_j=2V_j-1\), then
+\(\sum_{j\ge0}q^jU_j=(2Z-1)/(1-q)\).  This affine rescaling underlies
+Theorem~\ref{thm:fr-total-identifiability}. \\
+
+\nolinkurl{GeometricSincCharacteristicFunction}
+&
+\nolinkurl{charFun_geometricUniformDistribution_eq_phase_mul_geometricSincProduct};
+\nolinkurl{charFun_geometricUniformDistribution_eq_phase_mul_geometricReciprocalGamma}
+&
+The sinc-product characteristic function and its reciprocal-gamma form. \\
+
+\nolinkurl{SincZetaRemainder};
+\nolinkurl{FabiusComputability}
+&
+\nolinkurl{norm_sincZeta_tail_le};
+\nolinkurl{rvachevFourierProduct_eq_prefix_mul_correction_mul_tail};
+\nolinkurl{abs_uniformPartialCDF_sub_fabiusReal_le};
+\nolinkurl{fabiusEffectiveUniformModulus}
+&
+Certified sinc-product and CDF tails and an effective forward Fabius modulus.
+These are nearby formal certificates, not the general-purpose complex
+Theorems~\ref{thm:qpoch-tail-certificate}--\ref{thm:validated-argument-principle}. \\
+
+\nolinkurl{QPochhammerElementaryIdentities};
+\nolinkurl{QBinomialReciprocity}
+&
+\nolinkurl{finiteQPochhammerIn_base_reversal};
+\nolinkurl{finiteQPochhammerIn_inv_base_reversal};
+\nolinkurl{gaussianBinomial_adjacent_mul};
+\nolinkurl{gaussianBinomial_reciprocity};
+\nolinkurl{gaussianBinomial_neg_one_eq_zero_of_odd_degree};
+\nolinkurl{gaussianBinomial_neg_one_even_odd_eq_zero}
+&
+Finite base reversal, adjacent ratios, Gaussian reciprocity, and the
+odd-degree vanishing mechanism at \(q=-1\). \\
+
+\nolinkurl{GaussianBinomialAtNegOne}
+&
+\nolinkurl{gaussianBinomial_neg_one_even_even};
+\nolinkurl{gaussianBinomial_neg_one_odd_even};
+\nolinkurl{gaussianBinomial_neg_one_odd_odd};
+\nolinkurl{finiteQPochhammerIn_neg_one_even};
+\nolinkurl{finiteQPochhammerIn_neg_one_odd}
+&
+The remaining parity evaluations for Gaussian coefficients and the finite
+\(q\)-Pochhammer formulas at \(q=-1\); together with the preceding row these
+form the complete parity atlas. \\
+
+\nolinkurl{BellPolynomialInversion};
+\nolinkurl{QuadraticAsymptoticInversion}
+&
+\nolinkurl{Bell.complete_cumulant};
+\nolinkurl{Bell.cumulant_complete};
+\nolinkurl{quadratic_asymptotic_inversion}
+&
+Mutual moment--cumulant inversion and the proved quadratic asymptotic
+inversion schema. \\
+\end{longtable}
+\endgroup
+
+No declaration in this audited source crosswalk is cited as proving the exact
+statements of the general
+\(q\)-Pochhammer derivative-tail theorem, interval Newton theorem, complex
+Krawczyk theorem, Rouch\'e disk theorem, validated argument principle,
+total-cumulant parameter-identification theorem, or transcendental Gaussian
+uniqueness theorem as stated here.  They are complete human-readable proofs
+in this chapter, not claimed Lean milestones.  Likewise, no Lean counterpart
+is claimed for the five conjectures in
+Section~\ref{sec:precise-open-frontiers}.

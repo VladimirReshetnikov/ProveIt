@@ -1,18 +1,16 @@
 # Validation record
 
 This record separates completed inventory and canonical-publication checks
-from outstanding reproducibility work. The structural validator, retained
-incoming publication PDF, and single exhaustive root ledger were complete at
-the recorded publication checkpoint; full numerical replay and fresh-checkout
-reproduction remain separate. The immutable source baseline is
-`73f0b373126ef22a3b5dccadfa7b99d61d445345`.
+from outstanding reproducibility work. The immutable source baseline is
+`73f0b373126ef22a3b5dccadfa7b99d61d445345`; full numerical replay and
+fresh-checkout reproduction remain separate.
 
-After that incoming publication checkpoint, the source-only Lean crosswalk for
-`thm:weight-valuation` updated `chapters/03_additive_dyadic.tex` and the
-theorem concordance. The canonical validator and the single exhaustive root
-ledger were refreshed, but the PDF was intentionally not rebuilt. Consequently
-the PDF measurements below validate the retained incoming publication artifact,
-not render synchronization with the current chapter bytes.
+After the incoming publication checkpoint, the Lean crosswalk for
+`thm:weight-valuation` updated `chapters/03_additive_dyadic.tex` and the theorem
+concordance. The live q-series master was later renamed, so
+`chapters/01_geometric_core.tex` and `chapters/99_bibliography.tex` were updated
+to its stable publication path. The current PDF was rebuilt after those edits
+and is synchronized with the current chapter bytes.
 
 ## Completed source and evidence checks
 
@@ -62,7 +60,29 @@ The complete row-level audit is
 are historical manifests, mismatches are reported rather than silently
 rewritten. They do not certify the current canonical payloads.
 
-## Completed incoming publication-artifact gates
+## Current synchronized publication checkpoint
+
+- Exactly three strict serial pdfLaTeX passes were run after the final path
+  edits with `SOURCE_DATE_EPOCH=1788242400`. The first pass refreshed the
+  cross-reference state; passes two and three were byte-identical, each writing
+  the final 2,934,621-byte artifact with SHA-256
+  `00070eafd0734681a7dd125cb64e4c898710c01dc8c8220362550567843bce00`.
+- The current PDF has 156 pages. Every page is A4 (595.276 by 841.89 points),
+  has rotation zero, and contains extractable text. The PDF is readable,
+  unencrypted version 1.5 with no JavaScript or structural suspect flag.
+- All 33 font rows are embedded and subset Type 1 faces; seven are Libertinus
+  and none is Type 3.
+- The final log has no TeX error, undefined reference or citation, rerun
+  request, duplicate destination, or overfull box. Its 36 package warnings
+  (24 hyperref, 11 caption, and one amsmath) and six underfull boxes are the
+  same benign classes documented at the incoming checkpoint.
+- Poppler rendered all 156 pages. Six complete contact sheets were reviewed;
+  pages 10, 125, 155, and 156 were additionally inspected at full resolution
+  because they contain the renamed master reference, the valuation crosswalk,
+  or the updated bibliography URL. No clipping, overlap, corrupt image,
+  missing glyph, or unintended blank page was found.
+
+## Historical incoming publication-artifact gates
 
 - `python audit/validate_canonical.py` passes the canonical nine-file TeX
   graph, environment balance, 212 result environments (149 proof-required),
@@ -133,10 +153,8 @@ The provenance chapter's statement that the nine predecessor packages retain
 concordance begins with the four peer manuscripts; the earlier nine packages
 retain original bytes, source-hash prefixes, and package-level contribution
 summaries, not a second theorem-by-theorem concordance. The accurate scope is
-recorded in `../PROVENANCE.md`. Correcting the TeX sentence would require
-another paired PDF rebuild. This branch deliberately leaves that provenance
-chapter and the retained PDF bytes supplied by main unchanged because PDF
-generation was skipped at the user's direction.
+recorded in `../PROVENANCE.md`. This path-maintenance rebuild deliberately
+leaves that separate wording limitation unchanged in both source and PDF.
 
 ## Required publication procedure
 
@@ -144,7 +162,6 @@ After the final TeX edit, use the exact three-pass command sequence in the
 canonical README's [build section](../README.md#build-the-canonical-article).
 Then inspect the final log for errors, unresolved references, rerun requests,
 and overfull boxes; inspect PDF metadata and fonts; render every page; and
-visually examine every rendered page. The measured result of that procedure is
-recorded above for the incoming publication-source snapshot. The retained PDF
-was not rebuilt after the later source-only valuation crosswalk and is not
-synchronized with the current additive-dyadic chapter.
+visually examine every rendered page. The current synchronized result of that
+procedure is recorded above; the earlier incoming-artifact measurements remain
+below as historical provenance.
