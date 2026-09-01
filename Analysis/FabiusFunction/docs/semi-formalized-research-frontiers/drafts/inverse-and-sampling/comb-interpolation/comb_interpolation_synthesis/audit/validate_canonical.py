@@ -22,6 +22,8 @@ from pathlib import Path, PurePosixPath
 
 import build_historical_ledger_audit as historical
 import build_companion_payloads as companion
+import build_package_checksums as package_checksums
+import build_post_pin_disposition as post_pin
 import build_source_disposition as disposition
 import build_theorem_concordance as concordance
 from extract_source_results import SOURCE_FIELDS
@@ -32,6 +34,7 @@ MASTER = PACKAGE / "comb_interpolation_synthesis.tex"
 PIN = PACKAGE / "audit" / "SOURCE_REVISION"
 CONCORDANCE = PACKAGE / "theorem_concordance.csv"
 DISPOSITION = PACKAGE / "source_disposition.csv"
+POST_PIN_DISPOSITION = PACKAGE / "post_pin_disposition.csv"
 HISTORICAL = PACKAGE / "assets" / "HISTORICAL_LEDGER_AUDIT.csv"
 
 EXPECTED_DISPOSITION_ROWS = 180
@@ -569,6 +572,43 @@ def validate_source_disposition(blobs: dict[str, bytes], audit: Audit) -> None:
     )
 
 
+def validate_post_pin_disposition(audit: Audit) -> None:
+    fields, rows = read_csv(POST_PIN_DISPOSITION, audit)
+    try:
+        source, reconciliation, expected = post_pin.build_rows()
+    except (OSError, RuntimeError, ValueError, subprocess.CalledProcessError) as error:
+        audit.fail(f"cannot reproduce post-pin disposition: {error}")
+        return
+    expected_fields = list(post_pin.FIELDS)
+    if fields != expected_fields:
+        audit.fail(
+            f"post-pin disposition header: expected {expected_fields!r}, found {fields!r}"
+        )
+    compare_rows("post-pin disposition", rows, expected, expected_fields, audit)
+    if len(rows) != 23:
+        audit.fail(f"post-pin disposition row count: expected 23, found {len(rows)}")
+    if len({row.get("path", "") for row in rows}) != len(rows):
+        audit.fail("post-pin disposition contains duplicate paths")
+
+    retained = {
+        (row.get("path", ""), row.get("destination", ""))
+        for row in rows
+        if row.get("disposition") == "retained-post-pin-evidence"
+    }
+    expected_retained = set(companion.MAINLINE_FILES)
+    if retained != expected_retained:
+        audit.fail(
+            "post-pin retained evidence differs from companion provenance: "
+            f"expected {sorted(expected_retained)}, found {sorted(retained)}"
+        )
+    audit.note(
+        f"post-pin reconciliation ({len(rows)} rows; "
+        f"{sum(row.get('change_kind') == 'added' for row in rows)} added, "
+        f"{sum(row.get('change_kind') == 'modified' for row in rows)} modified; "
+        f"{source[:12]} -> {reconciliation[:12]})"
+    )
+
+
 def expected_historical_rows(blobs: dict[str, bytes]) -> list[dict[str, str]]:
     prefix = disposition.SOURCE_ROOT.as_posix() + "/"
 
@@ -696,18 +736,28 @@ def validate_companion_payloads(audit: Audit) -> None:
     for path in sorted(actual_files - expected_files):
         audit.fail(f"unmapped companion payload is present: {display(path)}")
 
-    expected_sha = companion.sha_ledger_bytes()
-    if not companion.SHA_OUTPUT.is_file():
-        audit.fail(f"missing live SHA ledger: {display(companion.SHA_OUTPUT)}")
-    elif companion.SHA_OUTPUT.read_bytes() != expected_sha:
-        audit.fail(f"live SHA ledger is stale: {display(companion.SHA_OUTPUT)}")
-    ledger_rows = expected_sha.decode("utf-8").splitlines()
-    if any(line.endswith("  SHA256SUMS") for line in ledger_rows):
-        audit.fail("live SHA ledger incorrectly includes itself")
     audit.note(
         f"companion payloads ({len(rows)} provenance rows, "
-        f"{len(expected_files)} physical payloads, {len(ledger_rows)} SHA rows)"
+        f"{len(expected_files)} physical payloads)"
     )
+
+
+def validate_package_checksums(audit: Audit) -> None:
+    try:
+        expected = package_checksums.ledger_bytes()
+    except (OSError, RuntimeError, ValueError, subprocess.CalledProcessError) as error:
+        audit.fail(f"cannot reproduce package checksum ledger: {error}")
+        return
+    if not package_checksums.OUTPUT.is_file():
+        audit.fail(f"missing package checksum ledger: {display(package_checksums.OUTPUT)}")
+        return
+    if package_checksums.OUTPUT.read_bytes() != expected:
+        audit.fail(f"package checksum ledger is stale: {display(package_checksums.OUTPUT)}")
+        return
+    rows = expected.decode("utf-8").splitlines()
+    if any(line.endswith("  ./SHA256SUMS") for line in rows):
+        audit.fail("package checksum ledger incorrectly includes itself")
+    audit.note(f"package checksum ledger ({len(rows)} exhaustive rows)")
 
 
 def validate_concordance(commit: str, labels: set[str], audit: Audit) -> None:
@@ -811,9 +861,11 @@ def main() -> int:
     validate_assets(files, audit)
     validate_hygiene(files, audit)
     validate_source_disposition(blobs, audit)
+    validate_post_pin_disposition(audit)
     validate_historical_ledger(blobs, audit)
     validate_companion_payloads(audit)
     validate_concordance(commit, labels, audit)
+    validate_package_checksums(audit)
     return audit.finish()
 
 

@@ -5692,6 +5692,22 @@ These three declarations exhaust the public surface of
 \path{CentralBinomialValuation.lean} and give the direct formal crosswalk for
 the central-binomial theorem in the Thue--Morse atlas.
 
+The prime-power row identity is available directly at the valuation level.
+For every prime (p), exponent (m), and (0<j\le p^m),
+\begin{equation}
+ \nu_p\!\binom{p^m}{j}+\nu_p(j)=m,
+ \qquad
+ \nu_p\!\binom{p^m}{j}=m-\nu_p(j).
+ \label{eq:prime-power-binomial-valuation}
+\end{equation}
+The identities in \eqref{eq:prime-power-binomial-valuation} are
+\lean{primePowerChoose_padicValNat_add} and
+\lean{primePowerChoose_padicValNat}.  They include the right endpoint
+(j=p^m) and the boundary (m=0).  The strict dyadic-comb specialization
+(0<j<2^m) is \lean{twoPowChoose_padicValNat}.  These three declarations
+exhaust \path{PrimePowerBinomialValuation.lean}; no endpoint-flat
+\(\binom{2^m-2}{j-1}\) valuation or valuation-histogram theorem is claimed.
+
 \subsection{Bernoulli recurrences}
 
 The formal development also proves Bernoulli convolution and recurrence forms for both
@@ -11787,7 +11803,8 @@ Moments and exact arithmetic &
 \path{PolynomialExpectationCumulant.lean}, \path{RvachevMomentAppell.lean},
 \path{WeightedScaleMultiplicity.lean}, \path{BaseDigitMultiplicity.lean},
 \path{ExactInversePower.lean}, \path{Parity.lean}, \path{TwoAdic.lean},
-\path{CentralBinomialValuation.lean}\\
+\path{CentralBinomialValuation.lean},
+\path{PrimePowerBinomialValuation.lean}\\
 Universal exponential, Bell, and endpoint-transfer algebra &
 \path{SaddleExpansionAlgebra.lean}, \path{ExponentialPartition.lean},
 \path{ExponentialBell.lean},
