@@ -45,6 +45,7 @@ theorem reflect_add_of_natDegree_le (f : R[X]) {M m : ℕ} (hf : f.natDegree ≤
   conv_lhs => rw [← mul_one f]
   rw [reflect_mul f 1 hf (natDegree_one.le.trans (Nat.zero_le m)), ← C_1, reflect_C, C_1, one_mul]
 
+/-- Reflecting the constant polynomial one in degree `N` gives `X ^ N`. -/
 theorem reflect_one' (N : ℕ) : reflect N (1 : R[X]) = X ^ N := by
   rw [← C_1, reflect_C, C_1, one_mul]
 

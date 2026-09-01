@@ -39,20 +39,20 @@ embedding, complete page rendering, contact-sheet review, and full-resolution
 inspection. PDFs retained beneath `assets/` are research figures, not
 manuscripts.
 
-The live source now postdates that receipt. Its 14,132-line, 659,897-byte TeX
+The live source now postdates that receipt. Its 14,201-line, 663,950-byte TeX
 source has SHA-256
-`046f018324a681bc49dc391e482e3577fe60d708e4052170f1c4f5098566989e`.
+`fe19f8a028a7310d4604a3ab78db5325b58df3d0004dbe1922acb5cdec8928fb`.
 It incorporates exhaustive crosswalks for `QPochhammerEntire` (zero
 definitions and five theorems), `QPochhammerInfinite` (one definition and
 twenty-nine theorems), `QPochhammerDissection` (zero definitions and two
-theorems), and `GaussianBinomialPolynomialStructure` (zero definitions and
-five theorems). The `QPochhammerEntire.lean` leaf proves the fixed-nome
+theorems), and `GaussianBinomialPalindromic` (zero definitions and twelve
+theorems). The `QPochhammerEntire.lean` leaf proves the fixed-nome
 single-symbol locally uniform product and differentiability, the
 division-free factor-zero criterion including `q = 0`, the reciprocal-power
 zero lattice for nonzero nome, and simple analytic order at every zero. The
-forward status inventory is 66 exact / 77 partial / 131 none / 8 interface;
-the 191-result pre-Fabius core is 38 / 28 / 122 / 3 and the
-q-integer/Gaussian chapter is 7 / 0 / 2 / 0. The five-publication concordance
+forward status inventory is 70 exact / 82 partial / 122 none / 8 interface;
+the original 191-result pre-Fabius core is 36 / 29 / 123 / 3 and the
+q-integer/Gaussian chapter is 8 / 0 / 1 / 0. The five-publication concordance
 has 65 Lean-proved, 413 human-proved frontier, 60 not-applicable, and 9
 conjecture rows.
 No normal-convergence claim is made for the additional outer product indexed

@@ -109,12 +109,12 @@ only 4,606 declarations and
 declarations, including 69 undocumented ones.  Run the script for the live
 numbers rather than copying these historical values.
 
-The live post-merge 2026-09-01 inventory contains 644 modules and 8,666
+The live post-merge 2026-09-01 inventory contains 653 modules and 8,735
 lexically visible public declarations, with zero missing module headers and
 zero missing doc comments.  Relative to the
-610/8,318 activation checkpoint, the current tree adds 34 modules and 348
-declarations; relative to the branch's prior 622/8,472 snapshot, it adds 22
-modules and 194 declarations.  The earlier additions, the inverse-computability
+610/8,318 activation checkpoint, the current tree adds 43 modules and 417
+declarations; relative to the branch's prior 622/8,472 snapshot, it adds 31
+modules and 263 declarations.  The earlier additions, the inverse-computability
 closure, and the incoming q-series tranches are itemized below.  The branch-point geometry and
 asymptotics leaves contribute 17 declarations for the one-sided vertical
 tangents and leading signed square-root laws of both real Lambert branches.
@@ -282,20 +282,25 @@ recurrence laws, plus the complete-normed-field generating series under
 from 622/8,472 to 629/8,547, a seven-module/75-declaration change.  The two
 inverse-computability modules then brought that feature snapshot to 631/8,556,
 a nine-module/84-declaration change.  Further incoming q-calculus leaves bring
-the live audit to the 644/8,666 census recorded above.
+the live audit to the 653/8,735 census recorded above.
 
-`GaussianBinomialPolynomialStructure.lean` is an exhaustive zero-definition,
-five-theorem leaf: `Fabius.natDegree_gaussianBinomial_universal`,
-`Fabius.gaussianBinomial_universal_monic`,
-`Fabius.coeff_zero_gaussianBinomial_universal`,
-`Fabius.gaussianBinomial_universal_reflect`, and
-`Fabius.coeff_gaussianBinomial_universal_symm`.  Under `k ≤ n` the universal
-natural-coefficient Gaussian polynomial has exact degree `k*(n-k)`, is monic,
-has constant coefficient one, and equals its reflection in that degree; the
-last theorem gives coefficient symmetry when `d ≤ k*(n-k)`.  Together with
-the existing row symmetry and reciprocal identities, this closes the canonical
-forward q-binomial structure theorem.  It does not prove that the coefficient
-of `q` is one, so that separate stronger clause remains open.
+`GaussianBinomialPalindromic.lean` is an exhaustive zero-definition,
+twelve-theorem leaf: `Fabius.reflect_add_of_natDegree_le`,
+`Fabius.reflect_one'`, `Fabius.gaussianBinomial_natDegree_le`,
+`Fabius.gaussianBinomial_zero_left`, `Fabius.gaussianBinomial_diag'`,
+`Fabius.reflect_gaussianBinomial`,
+`Fabius.coeff_gaussianBinomial_reflect`,
+`Fabius.coeff_gaussianBinomial_zero`,
+`Fabius.coeff_gaussianBinomial_top`, `Fabius.gaussianBinomial_natDegree`,
+`Fabius.gaussianBinomial_monic`, and
+`Fabius.two_mul_derivative_gaussianBinomial_eval_one`.  Over every
+commutative semiring it supplies generic reflection helpers, the Gaussian
+degree bound, zero and diagonal values, exact reflection in degree `k*(n-k)`,
+constant and top coefficients one, bounded-index coefficient symmetry, and
+the division-free derivative-at-one mean identity.  Exact degree and monicity
+require only a nontrivial semiring.  With existing row symmetry and reciprocity
+this keeps the canonical forward q-binomial structure theorem exact.  It does
+not prove that the coefficient of `q` is one.
 
 `EffectiveMonotoneInverse.lean` has exactly two public definitions,
 `Fabius.SequentiallyComputableOn` and `Fabius.unitClamp`, and exactly six
@@ -399,12 +404,14 @@ inventory.  `GaussianBinomialAtNegOneDerivative.lean` is 0+4, and
 `GaussianBinomialContinuity.lean` is 0+3:
 `continuous_gaussianBinomial`, `tendsto_gaussianBinomial_nhds_one`, and
 `gaussianBinomial_eq_finiteQPochhammerIn_div`.
-`GaussianBinomialPolynomialStructure.lean` is 0+5:
-`natDegree_gaussianBinomial_universal`,
-`gaussianBinomial_universal_monic`,
-`coeff_zero_gaussianBinomial_universal`,
-`gaussianBinomial_universal_reflect`, and
-`coeff_gaussianBinomial_universal_symm`.  The
+`GaussianBinomialPalindromic.lean` is 0+12:
+`reflect_add_of_natDegree_le`, `reflect_one'`,
+`gaussianBinomial_natDegree_le`, `gaussianBinomial_zero_left`,
+`gaussianBinomial_diag'`, `reflect_gaussianBinomial`,
+`coeff_gaussianBinomial_reflect`, `coeff_gaussianBinomial_zero`,
+`coeff_gaussianBinomial_top`, `gaussianBinomial_natDegree`,
+`gaussianBinomial_monic`, and
+`two_mul_derivative_gaussianBinomial_eval_one`.  The
 `JacobiTripleProduct.lean` 2-definition/25-theorem tranche contains the finite triple-product
 polynomial and field identities, the bilateral Jacobi `HasSum` forms, and the
 pentagonal and paired-pentagonal `HasSum` corollaries.  The
@@ -475,7 +482,7 @@ Frontiers, 41-page New Frontiers, and 88-page notation-catalogue artifacts
 likewise predate their current merged sources.  Their package notices treat
 those PDFs as historical validation receipts, not parity claims, until fresh
 uninterrupted three-pass builds complete.  The inverse-computability receipt
-likewise requires refresh for the 644/8,666 census.  The canonical inverse-theory
+likewise requires refresh for the 653/8,735 census.  The canonical inverse-theory
 publication retains a 134-page artifact synchronized at its latest-main source
 checkpoint; the merged effective-inversion tranche makes current parity pending.
 

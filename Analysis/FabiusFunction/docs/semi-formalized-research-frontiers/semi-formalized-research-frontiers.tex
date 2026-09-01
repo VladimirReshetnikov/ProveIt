@@ -335,8 +335,8 @@ The retained PDF contains the 31 August 2026 Legendre Gaunt--Wigner-square
 closed-form overlay.  This source additionally contains the 1 September 2026
 five-theorem fixed-nome q-Pochhammer entire-function overlay and the later
 zero-definition/six-theorem generalized Rvachev identifiability overlay
-described in the audit map below.  The live source census is 644 facade-reachable
-modules and 8,666 public declarations.  The retained
+described in the audit map below.  The live source census is 653 facade-reachable
+modules and 8,735 public declarations.  The retained
 237-page A4 PDF, SHA-256
 \nolinkurl{21180fa05a754b52a057495464674e9d6ac26a51488c2c770730c641b5ffe887},
 predates these source-only overlays and the expanded ledger and is therefore a
@@ -550,13 +550,17 @@ Gaussian-binomial continuity and classical limit &
 \nolinkurl{tendsto_gaussianBinomial_nhds_one},
 \nolinkurl{gaussianBinomial_eq_finiteQPochhammerIn_div} &
 \nolinkurl{GaussianBinomialContinuity.lean}; zero definitions and three theorems \\
-Universal Gaussian-polynomial degree and palindromicity &
-\nolinkurl{natDegree_gaussianBinomial_universal},
-\nolinkurl{gaussianBinomial_universal_monic},
-\nolinkurl{coeff_zero_gaussianBinomial_universal},
-\nolinkurl{gaussianBinomial_universal_reflect},
-\nolinkurl{coeff_gaussianBinomial_universal_symm} &
-\nolinkurl{GaussianBinomialPolynomialStructure.lean}; zero definitions and five theorems \\
+Generic Gaussian-polynomial degree, palindromicity, and mean &
+\nolinkurl{reflect_add_of_natDegree_le}, \nolinkurl{reflect_one'},
+\nolinkurl{gaussianBinomial_natDegree_le},
+\nolinkurl{gaussianBinomial_zero_left}, \nolinkurl{gaussianBinomial_diag'},
+\nolinkurl{reflect_gaussianBinomial},
+\nolinkurl{coeff_gaussianBinomial_reflect},
+\nolinkurl{coeff_gaussianBinomial_zero},
+\nolinkurl{coeff_gaussianBinomial_top},
+\nolinkurl{gaussianBinomial_natDegree}, \nolinkurl{gaussianBinomial_monic},
+\nolinkurl{two_mul_derivative_gaussianBinomial_eval_one} &
+\nolinkurl{GaussianBinomialPalindromic.lean}; zero definitions and twelve theorems \\
 Quantum binomial theorem &
 \nolinkurl{quantumPlane_mul_pow}, \nolinkurl{quantum_binomial} &
 \nolinkurl{QuantumBinomial.lean}; zero definitions and two noncommutative theorems \\
@@ -2074,19 +2078,24 @@ contains no generic ring-valued concatenation or dissection theorem.  Neither
 API proves joint holomorphy in \(q\) or an outside-disk reciprocal theory.
 
 \paragraph{Exact latest q-series tranche.}
-The downstream \path{GaussianBinomialPolynomialStructure.lean} has no public
-definitions and exactly five public theorems:
-\lean{natDegree_gaussianBinomial_universal},
-\lean{gaussianBinomial_universal_monic},
-\lean{coeff_zero_gaussianBinomial_universal},
-\lean{gaussianBinomial_universal_reflect}, and
-\lean{coeff_gaussianBinomial_universal_symm}.  For \(k\le n\), the universal
-natural-coefficient Gaussian polynomial has exact natural degree \(k(n-k)\),
-is monic, has constant coefficient one, and equals its reflection in that
-degree.  If \(d\le k(n-k)\), its degree-\(d\) and degree-\(k(n-k)-d\)
-coefficients agree.  With the existing row symmetry and reciprocal identities,
-this closes the canonical forward q-binomial structure theorem.  It does not
-prove that the coefficient of \(q\) is one.
+The downstream \path{GaussianBinomialPalindromic.lean} has no public
+definitions and exactly twelve public theorems:
+\lean{reflect_add_of_natDegree_le}, \lean{reflect_one'},
+\lean{gaussianBinomial_natDegree_le},
+\lean{gaussianBinomial_zero_left}, \lean{gaussianBinomial_diag'},
+\lean{reflect_gaussianBinomial},
+\lean{coeff_gaussianBinomial_reflect},
+\lean{coeff_gaussianBinomial_zero},
+\lean{coeff_gaussianBinomial_top},
+\lean{gaussianBinomial_natDegree}, \lean{gaussianBinomial_monic}, and
+\lean{two_mul_derivative_gaussianBinomial_eval_one}.  Over every commutative
+semiring these give generic reflection helpers, the Gaussian degree bound,
+zero and diagonal values, reflection in degree \(k(n-k)\), constant and top
+coefficients one, bounded-index coefficient reversal, and the division-free
+mean identity.  Exact degree and monicity require only nontriviality.  With
+existing row symmetry and reciprocity, this keeps the canonical forward
+q-binomial structure theorem exact.  It does not prove that the coefficient
+of \(q\) is one.
 
 Six further facade-reachable modules contribute exactly four definitions and
 sixty-five theorems.  The small public inventories are
@@ -4270,9 +4279,9 @@ commuting Gaussian-binomial interface.\\
 \path{GaussianBinomialContinuity.lean} &
 The exhaustive zero-definition, three-theorem continuity, \(q\to1\), and
 finite-Pochhammer quotient interface.\\
-\path{GaussianBinomialPolynomialStructure.lean} &
-The exhaustive zero-definition, five-theorem universal degree, monicity,
-constant-coefficient, reflection, and bounded-index coefficient-symmetry interface.\\
+\path{GaussianBinomialPalindromic.lean} &
+The exhaustive zero-definition, twelve-theorem generic reflection, degree,
+boundary coefficient, palindromicity, exact-degree/monicity, and mean interface.\\
 \path{QuantumBinomial.lean} &
 The exhaustive zero-definition, two-theorem quantum-plane and noncommutative
 q-binomial interface.\\
@@ -10304,7 +10313,7 @@ Module & Role in the present article \\
 \path{DyadicClosedForm.lean} & Exact Thue--Morse/even-moment formula for arbitrary dyadic numerators. \\
 \path{HalfQBinomial.lean} & Finite $q$-Pochhammer and Gaussian-binomial calculus at $q=1/2$, including the interpolation annihilation row. \\
 \path{QBinomialReciprocity.lean} & Exactly four public theorems: \lean{gaussianBinomial_reciprocity_units}, \lean{gaussianBinomial_reciprocity}, \lean{gaussianBinomial_neg_one_eq_zero_of_odd_degree}, and \lean{gaussianBinomial_neg_one_even_odd_eq_zero}.  They give unit-valued reciprocity over every commutative semiring, its nonzero-element semifield wrapper, odd-degree vanishing at \(q=-1\) over every commutative ring, and the total even-row/odd-column specialization.  The two reciprocity identities are total above the diagonal by zero extension; no quotient, cancellation, domain, characteristic, topology, or convergence assumption is used. \\
-\path{GaussianBinomialPolynomialStructure.lean} & Exactly five public theorems and no definitions: exact universal natural degree, monicity, constant coefficient one, reflection at degree \(k(n-k)\), and bounded-index coefficient palindromicity; no coefficient-of-\(q\) theorem is asserted. \\
+\path{GaussianBinomialPalindromic.lean} & Exactly twelve public theorems and no definitions: generic reflection helpers, Gaussian degree bound, zero/diagonal values, reflection, constant/top coefficients, coefficient symmetry, division-free mean, and exact degree/monicity over a nontrivial commutative semiring; no coefficient-of-\(q\) theorem is asserted. \\
 \path{QPochhammerElementaryIdentities.lean} & Exactly 13 public theorems: unit-valued ring reversals, root-safe terminating and adjacent cross identities, and field quotient forms with their exact nonzero-denominator hypotheses; the cross identities are total by zero extension, while the adjacent quotients retain \(k<n\). \\
 \path{QDifferenceAnnihilation.lean} & Exactly four public theorems: the scaled inverse-Gaussian characteristic polynomial, its complete geometric monomial moments, scalar-extension top-coefficient extraction, and strict-degree \(q\)-difference annihilation; \cref{dyadicq:rem:scaled-qdiff}. \\
 \path{GeometricQBinomialLagrange.lean} & Denominator-free geometric Lagrange numerators and residual moments, including the global identification of the numerator with the scaled inverse kernel at base and scale \(q\); normalized quotient results retain their distinct-node field hypotheses. \\

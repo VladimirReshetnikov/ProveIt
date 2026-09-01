@@ -110,14 +110,14 @@ fonts. The files under `assets/experiments/**/figures/` remain research
 figures, not publication manuscripts.
 
 The current master TeX is a source-only successor to that checkpoint. Its
-14,132-line, 659,897-byte source has SHA-256
-`046f018324a681bc49dc391e482e3577fe60d708e4052170f1c4f5098566989e`.
+14,201-line, 663,950-byte source has SHA-256
+`fe19f8a028a7310d4604a3ab78db5325b58df3d0004dbe1922acb5cdec8928fb`.
 It includes exhaustive crosswalks for `QPochhammerEntire` (zero definitions
 and five legacy compatibility theorems), `QPochhammerInfinite` (one definition
 and twenty-nine theorems), `QPochhammerDissection` (zero definitions and two
 theorems), `QBinomialTheoremInfinite` (one definition and twenty-two
-theorems), and `GaussianBinomialPolynomialStructure` (zero definitions and
-five theorems), together with expanded Euler, Jacobi, and Rogers--Szegő
+theorems), and `GaussianBinomialPalindromic` (zero definitions and twelve
+theorems), together with expanded Euler, Jacobi, and Rogers--Szegő
 material.
 The two newest generic theorems are
 `deriv_qPochhammerInfIn_ne_zero_of_mul_pow_eq_one`, which gives a nonzero
@@ -129,13 +129,14 @@ entireness, zero-locus, reciprocal-power, and analytic-order results rather
 than duplicating their analytic proofs. In `QBinomialTheoremInfinite`,
 `finiteQPochhammerIn_zero_left` remains the unique declaration owned by
 `GaussianBinomialAtOne` and is imported rather than redeclared. The forward
-status ledger is 66 Exact, 77 Partial, 131 None, and 8 interface rows; the
-191-result pre-Fabius core is 38/28/122/3, and the q-integer/Gaussian chapter
-is 7/0/2/0.  The completed source concordance records 65 Lean-proved rows,
+status ledger is 70 Exact, 82 Partial, 122 None, and 8 interface rows; the
+original 191-result pre-Fabius core is 36/29/123/3, and the
+q-integer/Gaussian chapter is 8/0/1/0.  The completed source concordance records 65 Lean-proved rows,
 413 human-proved frontier rows, 60 not-applicable rows, and 9 conjectures.
-The five new universal-polynomial declarations give exact degree, monicity,
-constant coefficient one, reflection, and coefficient palindromicity; they
-promote `thm:qbinom-structure` to Exact.  The independent inverse-source
+The twelve-theorem `GaussianBinomialPalindromic` API gives exact degree,
+monicity, constant and top coefficients, reflection, coefficient
+palindromicity, and the division-free mean identity over generic commutative
+semirings; it promotes `thm:qbinom-structure` to Exact.  The independent inverse-source
 proposition `prop:gq-positive-palindromic` remains Partial because its
 coefficient-of-`q`-equals-one clause has no Lean counterpart. The compound
 outer spectral-product theorem remains Partial: local uniformity for one
