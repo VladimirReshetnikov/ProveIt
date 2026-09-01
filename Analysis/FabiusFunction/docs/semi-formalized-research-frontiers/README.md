@@ -21,6 +21,26 @@ The canonical frontier artifacts are:
 - [`semi-formalized-research-frontiers.tex`](semi-formalized-research-frontiers.tex)
 - [`semi-formalized-research-frontiers.pdf`](semi-formalized-research-frontiers.pdf)
 
+> **Source/PDF synchronization.** The current TeX includes the 31 August 2026
+> Legendre Gaunt--Wigner-square closed-form overlay. The retained 236-page A4
+> PDF (SHA-256
+> `8b491f9296204f56b9477064531ad7546d55ea1ea0786b7d3f6425076f5fcf76`)
+> was not rebuilt for that source-only update. It is a historical render and
+> must not be cited as displaying the current overlay.
+
+The current finite-moment/Legendre/Gaunt crosswalk covers eleven modules with
+20 public definitions and 109 public theorems, 129 declarations in all. The
+new leaves are `LegendreGauntClosedForm.lean` (2 definitions, 25 theorems) and
+`FabiusLegendreGauntClosedForm.lean` (0 definitions, 3 theorems). They define
+the parity-and-weak-triangle support and the total rational square of the
+integer-index zero-row Wigner datum, prove the central-binomial and factorial
+forms, identify both rational and real Legendre Gaunt coefficients with twice
+that square, characterize their exact zero/positive support, and rewrite the
+finite rational and real up-law Gram-entry sums accordingly. This is a
+square-level result only: it chooses no signed Wigner symbol or phase and adds
+no half-integer, nonzero-magnetic-index, general `3j`/`6j`/`9j`, orthogonality,
+recoupling, or infinite-series theory.
+
 The volume consolidates the eleven former standalone research notebooks into
 six thematic syntheses, followed by the later primary-exposition gap register:
 reusable probability/discrete/asymptotic engines, repeated integration, the

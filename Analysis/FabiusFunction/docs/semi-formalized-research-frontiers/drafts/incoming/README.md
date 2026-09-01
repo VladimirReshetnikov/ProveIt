@@ -81,10 +81,11 @@ Most recent processed batch (all filed and removed on 2026-08-30):
   are deferred until after publication of this archival checkpoint.
 - `geometric_comb_interpolation_report-3.zip` (1,296,171 bytes; SHA-256
   `89c9de31b9b78b614c13d5a3ff24ae41b73ef6704a9daef77ba724b396e90fa0`)
-  was a unique arrival, not a reship, and became the quick-gate archival package
-  [`../inverse-and-sampling/comb-interpolation/geometric_comb_interpolation_report-3/`](../inverse-and-sampling/comb-interpolation/geometric_comb_interpolation_report-3/).
-  Its submitted TeX/PDF remain unchanged; deeper audit, numerical replay,
-  canonicalization, and rebuild are deliberately deferred.
+  was a unique arrival, not a reship, and was first filed as a quick-gate
+  archival package. It was later absorbed into the canonical
+  [`comb_interpolation_synthesis/`](../inverse-and-sampling/comb-interpolation/comb_interpolation_synthesis/),
+  whose pinned-source audit and companion-evidence index preserve its source
+  results and unique reproducibility payloads.
 - `Fabius_Zero_Bias_Frontier_Report.zip` (1,300,870 bytes; SHA-256
   `fb8bbf8e34a2f5eb4e5bbe7b06b22566502be7583696f01960a6e41d25b518ee`)
   became
@@ -112,12 +113,12 @@ Most recent processed batch (all filed and removed on 2026-08-30):
 - `inverse_q_analogs_report.zip` (894,405 bytes; SHA-256
   `471ee715022df77f2c5f45b86c213e50e980478eee1a6fc48dd91556cdaeb627`)
   was absorbed into the canonical consolidation
-  [`../exponents-and-q-series/inverse_q_analogs_and_series/`](../exponents-and-q-series/inverse_q_analogs_and_series/),
+  [`../exponents-and-q-series/q_pochhammer_q_binomial_monograph/`](../exponents-and-q-series/q_pochhammer_q_binomial_monograph/),
   whose provenance and asset-disposition ledgers preserve the arrival.
 - `q_pochhammer_q_binomial_expansions_report.zip` (730,285 bytes; SHA-256
   `e8c6e5be4512abc0bacfd904e3f0027b35fd5e47e916a6ad11cc76b2893b3a07`)
   was absorbed into the canonical consolidation
-  [`../exponents-and-q-series/inverse_q_analogs_and_series/`](../exponents-and-q-series/inverse_q_analogs_and_series/),
+  [`../exponents-and-q-series/q_pochhammer_q_binomial_monograph/`](../exponents-and-q-series/q_pochhammer_q_binomial_monograph/),
   whose provenance and asset-disposition ledgers preserve the arrival.
 
 The immediately preceding processed archive was
