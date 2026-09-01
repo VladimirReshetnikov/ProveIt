@@ -109,11 +109,11 @@ only 4,606 declarations and
 declarations, including 69 undocumented ones.  Run the script for the live
 numbers rather than copying these historical values.
 
-The post-merge 2026-08-31 inventory contains 616 modules and 8,401 lexically
+The post-merge 2026-08-31 inventory contains 617 modules and 8,428 lexically
 visible public declarations, with zero missing module headers and zero missing
 doc comments.  Relative to the 610/8,318 activation checkpoint, the current
-tree adds six modules and 83 declarations.  The initial exact union added five
-modules and 67 declarations.  The branch-point geometry and
+tree adds seven modules and 110 declarations.  The initial exact union added
+five modules and 67 declarations.  The branch-point geometry and
 asymptotics leaves contribute 17 declarations for the one-sided vertical
 tangents and leading signed square-root laws of both real Lambert branches.
 The two Legendre--Gaunt modules contribute 25: four definitions and twelve
@@ -135,19 +135,26 @@ addition to `RvachevDerivativeDistribution.lean`, the all-depth
 theorems `intervalIntegral_comp_normalized_iteratedDeriv_rvachev` and
 `map_normalized_iteratedDeriv_rvachev_restrict_Icc`.  The last pair gives the
 exact symmetric half-mixture first against continuous Banach-valued tests and
-then as a restricted-Lebesgue Borel pushforward equality.  The final nine
+then as a restricted-Lebesgue Borel pushforward equality.  The next nine
 declarations are the two definitions and seven theorems of
 `LagrangeRvachevSynthesis.lean`: the generic finite-node decoder and atom
 coefficient, degree bounds, cardinal synthesis, componentwise biorthogonality,
 linear coefficient identity, exact finite interpolation loop, and unit row
 mass.  This inventory claim does not extend to a geometric Gaussian
 closed-form decoder, a matrix wrapper, or an optimal/minimum-variation decoder
-theorem.  The baseline records zero missing headers and zero missing doc
-comments.  The subsequent
+theorem.  The subsequent
 `integral_polynomial_mul_rvachevUp_eq_dyadic_tsum` theorem in
 `PolynomialCombExactness.lean` packages the polynomial-times-Rvachev integral
-as the corresponding dyadic shifted-polynomial sum, bringing the live total to
-8,401.  Every future source addition must preserve the full invariant
+as the corresponding dyadic shifted-polynomial sum and contributes one further
+declaration.
+Finally, `LegendreGauntClosedForm.lean` contributes two definitions and
+twenty-five theorems: the total integer zero-row Wigner-square datum, its exact
+central-binomial and factorial forms, the all-degree Gaunt identification,
+sharp support, positivity and vanishing criteria, and the product-linearization
+coefficient bridge.  It makes no signed-symbol, phase, half-integer,
+nonzero-magnetic-index, or general Wigner recoupling claim.  The baseline
+records zero missing headers and zero missing doc comments, so every future
+source addition must preserve the full invariant
 rather than merely avoid worsening a historical backlog.  Run the script for
 live numbers after merging concurrent source work.
 

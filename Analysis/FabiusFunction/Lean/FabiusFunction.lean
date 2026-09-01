@@ -385,6 +385,7 @@ import FabiusFunction.LaplacePeriodicSecondOrder
 import FabiusFunction.FabiusTranslatedLegendreSeries
 import FabiusFunction.FabiusLegendreLeastSquares
 import FabiusFunction.LegendreGaunt
+import FabiusFunction.LegendreGauntClosedForm
 import FabiusFunction.FabiusLegendreEnergy
 import FabiusFunction.FabiusLegendreRationalEnergy
 import FabiusFunction.FabiusLegendreGaunt
