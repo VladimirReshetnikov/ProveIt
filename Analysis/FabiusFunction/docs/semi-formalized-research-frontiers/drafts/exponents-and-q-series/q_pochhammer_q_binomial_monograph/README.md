@@ -111,8 +111,8 @@ fonts. The files under `assets/experiments/**/figures/` remain research
 figures, not publication manuscripts.
 
 The current master TeX is a source-only successor to that checkpoint. Its
-14,172-line, 662,701-byte source has SHA-256
-`5c3f2505062265d3ce9d0023564ed45c3b0486afa62fa3d6a7846894f3476af2`.
+14,210-line, 664,923-byte source has SHA-256
+`71d9619aac8787effe4d7e0342dddab6aeb795aab7f1b9a0d0064c1c2d41a90a`.
 It includes exhaustive crosswalks for `QPochhammerEntire` (zero definitions
 and five legacy compatibility theorems), `QPochhammerInfinite` (one definition
 and twenty-nine theorems), `QPochhammerDissection` (zero definitions and two
@@ -124,7 +124,10 @@ definitions and three theorems). The newer inventory also includes
 definition and four theorems), `BasicHypergeometricSeries` (two definitions
 and five theorems), `HeineTransformation` (two definitions and five theorems),
 and `QGaussSummation` (two theorems), as well as expanded Euler, Jacobi, and
-Rogers--Szegő material.
+Rogers--Szegő material. The latest inventory adds
+`GaussianBinomialPalindromic` (twelve theorems), `QExponential` (three
+definitions and eight theorems), `JacksonIntegral` (one definition and seven
+theorems), and `ThetaQuasiPeriodicity` (one definition and six theorems).
 The two newest generic theorems are
 `deriv_qPochhammerInfIn_ne_zero_of_mul_pow_eq_one`, which gives a nonzero
 derivative at every raw factor zero `a*q^j = 1` including `q = 0`, and
@@ -135,13 +138,17 @@ entireness, zero-locus, reciprocal-power, and analytic-order results rather
 than duplicating their analytic proofs. In `QBinomialTheoremInfinite`,
 `finiteQPochhammerIn_zero_left` remains the unique declaration owned by
 `GaussianBinomialAtOne` and is imported rather than redeclared. The forward
-status ledger is 67 Exact, 80 Partial, 127 None, and 8 interface rows; the
+status ledger is 69 Exact, 83 Partial, 122 None, and 8 interface rows; the
 191-result pre-Fabius core is 36/29/123/3. The compound outer spectral-product
 theorem remains Partial even though the three-theorem outer-product leaf proves
 local-uniform (normal) convergence for every complex strict contraction, its
 nome-`1/4` Rvachev specialization, and the bounded-Fabius Fourier
 specialization. Its named centered/MGF packaging and exterior reciprocal
 formula, pole divisor, and zero--pole exchange remain outside Lean.
+The new status changes record the exact q-exponential eigenfunction and
+Jackson integration-by-parts subclaims, and Partial formalizations of the
+q-exponential factorization, Jackson fundamental theorem, and theta
+quasi-periodicity; the remaining clauses named in their rows stay explicit.
 
 No PDF was generated for this source-only crosswalk update. The 347-page PDF
 therefore remains a source-pinned historical artifact, while the root package

@@ -14,8 +14,8 @@ natural-boundary program.
 
 The current live Exponents synthesis source is
 `Exponents_and_q_Series_Frontiers/Exponents_and_q_Series_Frontiers.tex`
-(16,372 lines, 737,804 bytes, SHA-256
-`d2f23a691372c70643ee859bf202dda4930bcbade835d7abb6bb849e8a048da9`).
+(16,371 lines, 737,767 bytes, SHA-256
+`2e2a7f423dd85e64201043de56349e533eb040b395b1a5e6c2ae8d5b2c99ce9b`).
 It now includes the exact Lean crosswalk from integer-zero multiplicities to
 the exponent sequence, constructive dyadic-order first differences, and full
 generalized-product rigidity.  It also records the zero-definition,
@@ -31,19 +31,17 @@ outside-disk reciprocal formula, pole divisor, and zero--pole exchange remain
 Partial, as do zeta-quotient,
 cumulant/analytic-sample, and probability-law identifiability.
 
-The retained historical PDF has 238 A4 pages and 6,316,535 bytes, with SHA-256
-`df7b9ad69e0310b17988dd42cc22559cf22ff26027395c005c374ad51f9e62aa`.
-It was built from the earlier 16,270-line, 731,389-byte source SHA-256
-`2adbe7b1e450a858bb02e80e6b4c4c6420060733f2ae1fe25eb61b6546f58e0f`,
-with 41-input closure SHA-256
-`98fc1f42ff94bf2e23b8fac0285fe43c637ee6d8326cb6a71530113991c7a7c0`.
-Exactly three guarded serial passes produced 228, 238, and 238 pages, with no
-input drift or TeX/Lean/Lake interleave. The final log had no blocking
-diagnostics; all 238 pages were text-bearing; all 1,190 page boxes matched A4;
-all 42 Type-1 font rows were embedded and subsetted, including 11 Libertinus
-rows, with no Type-3 font. Fresh visual inspection of physical pages 1, 164,
-220, 224--227, 236, and 238 was clean. A fresh source-pinned render is pending;
-the PDF was intentionally not regenerated during this source-only update.
+The retained historical PDF has 238 A4 pages and 6,953,898 bytes, with SHA-256
+`fa719a8ea68d3c474928b9fae7449f827eb35a5452613f2b660d8e88ba27267e`.
+It was built in exactly three serial passes from the preceding 16,274-line,
+731,692-byte source SHA-256
+`4be184dc95f7c9d7665e5edf56cd22dc66bdacbc2f113b03b700468836018f8b`,
+producing 228, 238, and 238 pages. Basic A4, text-extraction, embedded-font, and
+no-Type-3 checks passed. The larger PDF batch stopped before a fresh full log,
+page-box, and visual publication audit, and the current TeX has since changed.
+The child ledgers therefore record current TeX and historical PDF as distinct
+payloads, not as a synchronized publication pair. A fresh final-source render
+and full validation remain pending.
 
 See the parent [topic index](../README.md) for detailed status and the
 [draft manifest](../../MANIFEST.md) for consolidation provenance.

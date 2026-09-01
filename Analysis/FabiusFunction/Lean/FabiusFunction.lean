@@ -497,6 +497,10 @@ import FabiusFunction.QGaussSummation
 import FabiusFunction.QPochhammerComplexOrder
 import FabiusFunction.BasicHypergeometricSeries
 import FabiusFunction.QMultinomial
+import FabiusFunction.QExponential
+import FabiusFunction.JacksonIntegral
+import FabiusFunction.GaussianBinomialPalindromic
+import FabiusFunction.ThetaQuasiPeriodicity
 
 set_option autoImplicit false
 
@@ -624,6 +628,15 @@ q-Pochhammer symbol, general basic-hypergeometric terms with their convergence
 criteria, and a division-free recursive q-multinomial coefficient.  These six
 modules expose exactly six definitions and thirty theorems; their explicit
 strict-contraction, nonvanishing, and denominator hypotheses are retained.
+
+Four companion modules add exactly five definitions and thirty-three theorems.
+They prove the degree, monicity, palindromicity, endpoint coefficients, and
+division-free mean identity for Gaussian polynomials; define the q-derivative
+and both q-exponentials with their product and eigenfunction laws; prove both
+directions of Jackson's fundamental theorem and integration by parts; and give
+the bilateral-theta product, quasi-periodicity, and exact zero criterion.  The
+analytic declarations retain their stated strict-contraction, nonzero-variable,
+convergence, and nonvanishing hypotheses.
 
 The zeta–Lambert tail calculus of the Thue–Morse frontier results is
 formalized end to end.  The engine is the Euler log transform: for any

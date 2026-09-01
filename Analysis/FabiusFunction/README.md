@@ -77,7 +77,7 @@ That primary exposition is deliberately proof-backed: every mathematical claim
 in it must have a proved counterpart in the Lean development.
 
 > **Artifact status (2026-09-01).**  The live facade union contains exactly
-> 649 source modules and 8,697 public declarations.  The documentation audit
+> 653 source modules and 8,735 public declarations.  The documentation audit
 > reports no missing module headers or declaration comments.  Its q-series union retains
 > `QPochhammerEntire` 0+5, `GeometricPochhammerNormalConvergence` 0+3,
 > `QPochhammerDissection` 0+2,
@@ -88,7 +88,9 @@ in it must have a proved counterpart in the Lean development.
 > `QuantumBinomial` 0+2, `RogersSzegoPolynomial` 1+9,
 > `QPochhammerInfiniteBounds` 0+5, `HeineTransformation` 2+5,
 > `QGaussSummation` 0+2, `QPochhammerComplexOrder` 1+4,
-> `BasicHypergeometricSeries` 2+5, and `QMultinomial` 1+9.  The retained
+> `BasicHypergeometricSeries` 2+5, `QMultinomial` 1+9,
+> `GaussianBinomialPalindromic` 0+12, `JacksonIntegral` 1+7,
+> `QExponential` 3+8, and `ThetaQuasiPeriodicity` 1+6.  The retained
 > primary exposition, Lean walkthrough, canonical frontier, Representation
 > Frontiers, filed New Frontiers, notation catalogue, Integration-and-Transform
 > master, comb-interpolation, and q-series synthesis PDFs contain respectively
@@ -113,22 +115,28 @@ notebook, and the primary-exposition gap register are preserved in the canonical
 That volume labels claims still awaiting literal Lean counterparts and records
 their exact outstanding proof obligations.
 
-Non-elementarity is treated in
-[*The Fabius Function and Its Inverse are Not Elementary*](docs/semi-formalized-research-frontiers/drafts/inverse-and-sampling/analyticity-and-elementarity/Non_Elementarity_of_the_Fabius_Function/Non_Elementarity_of_the_Fabius_Function.tex)
-([PDF](docs/semi-formalized-research-frontiers/drafts/inverse-and-sampling/analyticity-and-elementarity/Non_Elementarity_of_the_Fabius_Function/Non_Elementarity_of_the_Fabius_Function.pdf)):
-the class of elementary functions of one real variable is formalized, every
-member of it is proved real analytic on a dense open subset of the line, and
-this is combined with nowhere analyticity to show that no elementary function
-agrees with the Fabius function on any subset of `[0,1]` with nonempty
-interior.  The
-same conclusion is proved for a class the inductive definition does not
-reach — any continuous branch of a polynomial equation whose coefficients are
-elementary and whose leading coefficient vanishes nowhere — which covers the
-algebraic functions that are not expressible by radicals.  The inverse Fabius
-function is treated too: it is real analytic at no point of `[0,1]` either,
-hence not elementary, and neither it nor the Fabius function is reachable once
-the class is closed under continuous inverse branches at any depth — a class
-containing the Lambert `W` function.
+Inverse analyticity, non-elementarity, endpoint asymptotics, dyadic
+self-sampling, and effective inverse computation are treated together in
+[*Inverse Fabius Theory: Analyticity, Asymptotics, Computability, and Dyadic
+Sampling*](docs/semi-formalized-research-frontiers/drafts/inverse-and-sampling/Inverse_Fabius_Analyticity_Asymptotics_and_Computability/inverse_fabius_theory.tex)
+([PDF](docs/semi-formalized-research-frontiers/drafts/inverse-and-sampling/Inverse_Fabius_Analyticity_Asymptotics_and_Computability/inverse_fabius_theory.pdf)).
+Its
+[theorem concordance](docs/semi-formalized-research-frontiers/drafts/inverse-and-sampling/Inverse_Fabius_Analyticity_Asymptotics_and_Computability/theorem_concordance.csv)
+distinguishes exact Lean counterparts from human-proved frontier results,
+conjectures, open problems, and non-theorem source material; its
+[provenance ledger](docs/semi-formalized-research-frontiers/drafts/inverse-and-sampling/Inverse_Fabius_Analyticity_Asymptotics_and_Computability/PROVENANCE.md)
+records the five retired source packages and their immutable recovery points.
+
+On the formal side, the class of elementary functions of one real variable is
+proved real analytic on a dense open subset of the line, and this is combined
+with nowhere analyticity to show that no elementary function agrees with the
+Fabius function on any subset of `[0,1]` with nonempty interior. The same
+conclusion holds for the stated class of continuous algebraic branches, which
+also reaches algebraic functions not expressible by radicals. The inverse
+Fabius function is nowhere real analytic on `[0,1]`, hence is not elementary;
+neither it nor the Fabius function becomes representable after closing the
+class under continuous inverse branches at any depth, a closure that includes
+the Lambert `W` function.
 
 The development contains executable exact arithmetic.  The evaluator and its
 analytic correctness at every dyadic, the canonical function's existence and
@@ -400,6 +408,7 @@ Padé/J-fractions, infinite Jacobi theory, and asymptotics also remain open.
 | Quantum-plane binomial expansion | `FabiusFunction.QuantumBinomial` | Retained 0+2 theorem inventory: `quantumPlane_mul_pow` and `quantum_binomial`. |
 | Rogers--Szegő recurrences and generating series | `FabiusFunction.RogersSzegoPolynomial` | Retained 1-definition/9-theorem inventory: the zero, row-sum, successor, dilation, and three-term laws, the Gaussian successor factor identity, summability and Euler antidiagonal convolution, and `hasSum_rogersSzego_generating`. |
 | Latest q-calculus closure: bounds, Heine/q-Gauss, complex order, basic hypergeometric series, and q-multinomials | `FabiusFunction.QPochhammerInfiniteBounds`, `FabiusFunction.HeineTransformation`, `FabiusFunction.QGaussSummation`, `FabiusFunction.QPochhammerComplexOrder`, `FabiusFunction.BasicHypergeometricSeries`, `FabiusFunction.QMultinomial` | Exhaustive module counts are respectively 0+5, 2+5, 0+2, 1+4, 2+5, and 1+9: six definitions and thirty theorems.  The APIs preserve their explicit strict-contraction, nonvanishing, and denominator hypotheses; the q-multinomial recursion and cleared product identity are division-free, while quotient statements remain conditional. |
+| Gaussian palindromicity, q-exponentials, Jackson integration, and theta quasi-periodicity | `FabiusFunction.GaussianBinomialPalindromic`, `FabiusFunction.QExponential`, `FabiusFunction.JacksonIntegral`, `FabiusFunction.ThetaQuasiPeriodicity` | Exhaustive module counts are 0+12, 3+8, 1+7, and 1+6: five definitions and thirty-three theorems.  They give the degree, monicity, coefficient reversal, and mean identity for Gaussian polynomials; the two q-exponentials and their q-derivative laws; Jackson's fundamental theorem and integration by parts; and the bilateral-theta product, quasi-periodicity, and exact zero criterion.  The analytic statements retain their explicit strict-contraction, nonzero-variable, convergence, and nonvanishing hypotheses. |
 
 The frontier-facing focused imports above expose exact finite or formal
 algebra, and their names should not be read as stronger analytic conclusions.

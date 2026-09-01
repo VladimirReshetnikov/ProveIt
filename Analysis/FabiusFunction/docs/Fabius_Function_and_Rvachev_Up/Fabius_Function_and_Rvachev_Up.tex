@@ -3817,7 +3817,7 @@ because the underlying infinite product is totalized outside its admissible
 range.  No spectral-zeta recovery, cumulant-sample recovery, or
 identifiability of an underlying probability law is asserted; those remain
 open interfaces.  With the later concurrent source union, the live facade
-census is 649 modules and 8,697 public declarations.  The current TeX also
+census is 653 modules and 8,735 public declarations.  The current TeX also
 contains the six-theorem prime-power companion-row API and the
 zero-definition/three-theorem outer Pochhammer normal-convergence API, plus
 the two-module/nine-declaration effective-inverse tranche and six new
@@ -3834,6 +3834,15 @@ The six q-calculus module counts are
 \path{QMultinomial.lean} (1+9).  They supply bounds, Heine and q-Gauss,
 complex order, general basic-hypergeometric summability, and the recursive
 q-multinomial API under their displayed hypotheses.
+
+The four subsequent module counts are
+\path{GaussianBinomialPalindromic.lean} (0+12),
+\path{JacksonIntegral.lean} (1+7),
+\path{QExponential.lean} (3+8), and
+\path{ThetaQuasiPeriodicity.lean} (1+6).  Their five definitions and
+thirty-three theorems add Gaussian-polynomial degree and palindromicity,
+q-exponential and q-derivative laws, Jackson integration, and bilateral-theta
+quasi-periodicity and zeros, with all analytic hypotheses displayed.
 
 On the real axis the origin is the unique global point of unit modulus:
 \begin{equation}
@@ -5306,35 +5315,6 @@ mass ceiling denominator or a tolerant-bisection realizer.  The downstream
 modules below supply the realizer, \lean{SequentiallyComputable}, and the
 combined \lean{IsComputableRealFunction} theorem; input-bit asymptotics remain
 open.
-
-\subsection{Tolerant inversion and computability of the total inverse}
-\label{sec:fabius-inverse-computable}
-
-The generic module \path{EffectiveMonotoneInverse.lean} has exactly two public
-definitions and six public theorems.  The definitions are
-\lean{SequentiallyComputableOn} and \lean{unitClamp}; the theorem inventory is
-\lean{unitClamp_sequentiallyComputable},
-\lean{tolerantDifference_error},
-\lean{tolerantDifference_safe_updates},
-\lean{tolerantDifference_inconclusive},
-\lean{tolerantBisection_correct}, and
-\lean{effectiveInversionOn_Icc}.  Given a computably dyadically approximable
-strict monotone bijection of \([0,1]\), a computable positive denominator, and
-the corresponding reciprocal inverse modulus, tolerant bisection transforms
-every uniform fast dyadic input name into an inverse name at the same requested
-precision.  A certified large signed difference safely updates one end of the
-bracket; an inconclusive comparison already certifies the inverse error.  Thus
-the construction never decides equality of computable reals.
-
-The specialization \path{FabiusInverseComputable.lean} has no public
-definitions and exactly one public theorem,
-\lean{fabiusInv_isComputableRealFunction}.  For every bounded Fabius witness it
-uses the centered-spline forward evaluator, the logarithmic Delta inverse
-modulus, and the generic bisection theorem to obtain sequential computability
-on the unit interval.  Clamping input names then proves the statement for the
-total inverse on all of \(\RealNumbers\), while the same logarithmic modulus
-supplies effective uniform continuity.  This closes computability, but not an
-exact least endpoint-mass denominator or an input-bit running-time theorem.
 
 \subsection{Fixed-depth tolerant inversion and computability of the total inverse}
 \label{sec:fabius-inverse-computable}
