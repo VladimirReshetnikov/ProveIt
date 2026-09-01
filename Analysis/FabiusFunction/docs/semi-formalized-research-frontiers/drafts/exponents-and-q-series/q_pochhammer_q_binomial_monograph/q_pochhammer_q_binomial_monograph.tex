@@ -12467,8 +12467,8 @@ inside the proof below does not formalize the result the proof concludes.
   than a mathematical claim.
 \end{description}
 
-Of the 282 labelled forward results, 65 are \statusexact, 80 are
-\statuspartial, 129 are \statusnone, and 8 are \statusna.  The original
+Of the 282 labelled forward results, 67 are \statusexact, 80 are
+\statuspartial, 127 are \statusnone, and 8 are \statusna.  The original
 191-result pre-Fabius core had 36 \statusexact, 29 \statuspartial, 123
 \statusnone, and 3 \statusna{} entries.  The four integrated guide chapters
 add 31 human-proved but not Lean-formalized assertions and five labelled
@@ -12942,15 +12942,15 @@ inferred from a related finite identity.
 \toprule
 Chapter & \statusexact & \statuspartial & \statusnone & \statusna\\
 \midrule
-The algebra of $q$-shifted factorials & 10 & 2 & 3 & 0\\
-$q$-integers and Gaussian coefficients & 6 & 1 & 2 & 0\\
+The algebra of $q$-shifted factorials & 11 & 1 & 3 & 0\\
+$q$-integers and Gaussian coefficients & 7 & 1 & 1 & 0\\
 Finite $q$-binomial theorems and inversion & 9 & 1 & 0 & 0\\
 Weighted binomial coefficients and symmetric functions & 3 & 2 & 3 & 0\\
 Partitions, words, paths, and inversion statistics & 3 & 1 & 5 & 0\\
 Finite fields, Grassmannians, and rank enumeration & 0 & 1 & 5 & 0\\
 Symmetry and unimodality & 0 & 0 & 3 & 0\\
 The infinite $q$-binomial theorem & 1 & 1 & 2 & 0\\
-Basic hypergeometric series & 1 & 2 & 6 & 0\\
+Basic hypergeometric series & 1 & 3 & 5 & 0\\
 Euler telescoping and very-well-poised summations & 0 & 0 & 4 & 0\\
 Bilateral series and Ramanujan's \texorpdfstring{${}_1\psi_1$}{1psi1} sum & 0 & 0 & 2 & 0\\
 $q$-difference calculus and the quantum binomial & 5 & 0 & 5 & 0\\
@@ -12971,7 +12971,7 @@ Half-base arithmetic and Prouhet--Thue--Morse cancellation & 6 & 3 & 0 & 0\\
 Geometric uniform sums, $q$-cumulants, and the Fabius--Rvachev functions & 2 & 11 & 0 & 0\\
 Dyadic Gaussian--Thue--Morse structure and the values of $F$ & 6 & 44 & 6 & 0\\
 \midrule
-\textbf{Forward total} & 65 & 80 & 129 & 8\\
+\textbf{Forward total} & 67 & 80 & 127 & 8\\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -13067,11 +13067,15 @@ $\ComplexNumbers$-only module \texttt{QPochhammerEntire} retains five legacy
 compatibility wrappers that transfer these generic facts to
 \texttt{complexQPochhammerInf}, including $q=0$, and give the reciprocal-power
 zero lattice for $q\ne0$, without duplicate analytic proofs}\\[2pt]
-\Cref{prop:complex-concat} & \statuspartial &
-\texttt{qPochhammerInfIn\_\allowbreak{}eq\_\allowbreak{}finite\_\allowbreak{}mul\_\allowbreak{}shift},
-\texttt{qPochhammerInfIn\_\allowbreak{}succ\_\allowbreak{}shift}\newline
-{\footnotesize\texttt{QPochhammerInfinite}; exact for nonnegative integral
-shifts, not for arbitrary complex \(\alpha,\beta\)}\\[2pt]
+\Cref{prop:complex-concat} & \statusexact &
+\texttt{qPochhammerC\_\allowbreak{}add},
+\texttt{qPochhammerC\_\allowbreak{}add\_\allowbreak{}one},
+\texttt{qPochhammerC\_\allowbreak{}natCast}\newline
+{\footnotesize\texttt{QPochhammerComplexOrder}; with the principal branch of
+$q^\alpha$, each identity under the nonvanishing hypothesis that makes its
+right-hand side defined; the integral case is
+\texttt{qPochhammerInfIn\_\allowbreak{}eq\_\allowbreak{}finite\_\allowbreak{}mul\_\allowbreak{}shift}
+of \texttt{QPochhammerInfinite}}\\[2pt]
 \Cref{prop:order-derivative} & \statusnone & ---\\[2pt]
 \Cref{thm:lambert-log} & \statuspartial &
 \texttt{tsum\_\allowbreak{}log\_\allowbreak{}one\_\allowbreak{}sub\_\allowbreak{}geom},
@@ -13122,7 +13126,14 @@ including above-row zero extension}\\[2pt]
 \texttt{continuous\_\allowbreak{}gaussianBinomial}\newline
 {\footnotesize\texttt{GaussianBinomialContinuity}; in every topological
 semiring, by continuity of the Gaussian coefficient in its base}\\[2pt]
-\Cref{prop:qmult-factor} & \statusnone & ---\\[2pt]
+\Cref{prop:qmult-factor} & \statusexact &
+\texttt{finiteQPochhammerIn\_\allowbreak{}self\_\allowbreak{}sum\_\allowbreak{}eq\_\allowbreak{}qMultinomial\_\allowbreak{}mul},
+\texttt{qMultinomial\_\allowbreak{}eq\_\allowbreak{}div},
+\texttt{qMultinomial\_\allowbreak{}eq\_\allowbreak{}eval₂\_\allowbreak{}universal}\newline
+{\footnotesize\texttt{QMultinomial}; the product of Gaussian coefficients is
+the definition there, the factorial form is proved division-free over every
+commutative ring and as a quotient over every field with $(q;q)_n\ne0$, and
+polynomiality with natural coefficients is naturality of the recurrence}\\[2pt]
 \Cref{prop:adjacent-ratio} & \statusexact &
 \texttt{gaussianBinomial\_\allowbreak{}adjacent\_\allowbreak{}div},
 \texttt{gaussianBinomial\_\allowbreak{}row\_\allowbreak{}adjacent\_\allowbreak{}div}\newline
@@ -13261,7 +13272,15 @@ the first for every $z$, the second for $\lVert z\rVert<1$}\\[2pt]
 \midrule
 \multicolumn{3}{@{}l}{\itshape Basic hypergeometric series}\\
 \midrule
-\Cref{prop:phi-convergence} & \statusnone & ---\\[2pt]
+\Cref{prop:phi-convergence} & \statuspartial &
+\texttt{summable\_\allowbreak{}basicHypergeometricTerm\_\allowbreak{}of\_\allowbreak{}le},
+\texttt{summable\_\allowbreak{}basicHypergeometricTerm\_\allowbreak{}of\_\allowbreak{}eq},
+\texttt{norm\_\allowbreak{}basicHypergeometricTerm\_\allowbreak{}le}\newline
+{\footnotesize\texttt{BasicHypergeometricSeries}; (i) and the convergence
+half of (ii), in every complete normed field, from a uniform geometric
+domination of the terms valid for $r\le s+1$ whenever no denominator product
+$(b_j;q)_\infty$ vanishes; the divergence half of (ii) and (iii) are not
+formalized}\\[2pt]
 \Cref{thm:classical-hypergeometric-limit} & \statusnone & ---\\[2pt]
 \Cref{thm:heine} & \statuspartial &
 \texttt{heine\_\allowbreak{}transformation},
