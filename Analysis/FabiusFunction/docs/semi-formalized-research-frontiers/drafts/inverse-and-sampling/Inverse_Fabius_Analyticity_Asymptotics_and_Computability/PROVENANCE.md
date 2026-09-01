@@ -1,9 +1,15 @@
 # Provenance ledger
 
-The canonical volume consolidates five peer inputs at repository revision
-`0a0cdabeb72a6f7d67cfdfb76d02a8f7381c7bf7`.  That revision is stored in
-`audit/SOURCE_REVISION` and remains the immutable source for the result
-extractor even after the superseded layouts are retired.
+## Immutable source snapshot
+
+The canonical volume was extracted from five peer inputs at repository revision
+`0a0cdabeb72a6f7d67cfdfb76d02a8f7381c7bf7`. That exact revision is stored in
+[`audit/SOURCE_REVISION`](audit/SOURCE_REVISION) and remains the immutable
+source for the 194-row result extractor and the 88-row source-asset audit.
+Later notation normalization in the live packages did not change this
+extraction pin.
+
+## Immediate inputs
 
 | Source package | Main source at the pin | Lines | SHA-256 | Principal role |
 | --- | --- | ---: | --- | --- |

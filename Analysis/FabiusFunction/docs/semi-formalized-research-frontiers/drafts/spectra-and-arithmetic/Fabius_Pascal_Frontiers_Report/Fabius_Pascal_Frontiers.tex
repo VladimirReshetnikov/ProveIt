@@ -66,7 +66,6 @@
 \newcommand{\ZetaR}{\mathcal Z}
 \newcommand{\Ar}{\mathcal A}
 \newcommand{\Mr}{\mathcal M}
-\newcommand{\Bell}{\mathcal B}
 \newcommand{\New}{\textcolor{provedgreen}{\textsf{new relative to audited repository}}}
 \newcommand{\Conj}{\textcolor{conjpurple}{\textsf{conjectural}}}
 \newcommand{\Known}{\textsf{repository baseline}}
@@ -344,11 +343,11 @@ Define
 \end{equation}
 Then
 \begin{equation}\label{eq:Bell-coeff}
- C_{r,n}=\frac{1}{n!}\Bell_n(x_{r,1},\ldots,x_{r,n}),
+ C_{r,n}=\frac{1}{n!}\ExponentialCompleteBellPolynomial{n}(x_{r,1},\ldots,x_{r,n}),
  \qquad
  x_{r,k}=(-1)^{k+1}(k-1)!\ZetaR_r(2k),
 \end{equation}
-where $\Bell_n$ is the complete exponential Bell polynomial, and
+where $\ExponentialCompleteBellPolynomial{n}$ is the complete exponential Bell polynomial, and
 \begin{equation}\label{eq:C-moment}
  C_{r,n}=\frac{(2\pi)^{2n}}{(2n)!}m_{r,2n}.
 \end{equation}
@@ -1481,7 +1480,7 @@ Combining \eqref{eq:Bell-coeff} and \eqref{eq:C-moment} gives the explicit
 closed formula
 \begin{equation}\label{eq:moment-Bell}
  m_{r,2n}=\frac{(2n)!}{(2\pi)^{2n}n!}
- \Bell_n\!\left(
+ \ExponentialCompleteBellPolynomial{n}\!\left(
  \ZetaR_r(2),-1!\ZetaR_r(4),\ldots,
  (-1)^{n+1}(n-1)!\ZetaR_r(2n)
  \right).

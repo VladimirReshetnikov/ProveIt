@@ -186,7 +186,6 @@ fractional and inverse-layer-cake checkpoint \nolinkurl{37eab3c56}}
 \newcommand{\Bcal}{\mathcal B}
 \newcommand{\Toperator}{\mathfrak T}
 \newcommand{\Qoperator}{\mathfrak Q}
-\newcommand{\coeff}[2]{\left[#1^{#2}\right]}
 \newcommand{\anloc}{\mathcal A}
 \newcommand{\Gcal}{\mathcal G}
 \newcommand{\Pcal}{\mathcal P}
@@ -338,8 +337,9 @@ five-theorem fixed-nome q-Pochhammer entire-function overlay and the later
 zero-definition/six-theorem generalized Rvachev identifiability overlay
 described in the audit map below, as well as the six-theorem prime-power
 companion-row and zero-definition/three-theorem outer Pochhammer
-normal-convergence overlays.  The live source census is 641 facade-reachable
-modules and 8,650 public declarations.  The retained
+normal-convergence overlays, the effective-inverse closure, and the latest
+six-module q-calculus tranche.  The live source census is 649 facade-reachable
+modules and 8,697 public declarations.  The retained
 237-page A4 PDF, SHA-256
 \nolinkurl{21180fa05a754b52a057495464674e9d6ac26a51488c2c770730c641b5ffe887},
 predates these source-only overlays and the expanded ledger and is therefore a
@@ -549,9 +549,9 @@ Finite q-Pochhammer dissection &
 theorems over every commutative ring, with the remainder theorem assuming
 exactly \(u\le r\) \\
 Generic infinite q-Pochhammer product &
-\nolinkurl{qPochhammerInfIn}; all twenty-seven public theorem names and their
+\nolinkurl{qPochhammerInfIn}; all twenty-nine public theorem names and their
 hypothesis boundaries are listed in the exact crosswalk below &
-\nolinkurl{QPochhammerInfinite.lean}; one definition and exactly twenty-seven
+\nolinkurl{QPochhammerInfinite.lean}; one definition and exactly twenty-nine
 theorems, distinct from the complex analytic-order wrapper above \\
 Infinite q-binomial theorem and Euler expansions &
 \nolinkurl{gaussianMajorant}, \nolinkurl{hasSum_qBinomial_theorem},
@@ -780,7 +780,8 @@ below \(1/n\), and each denominator separately witnesses
 \nolinkurl{EffectivelyUniformContinuous}.  The exact endpoint-mass ceiling
 denominator, tolerant bisection, \nolinkurl{SequentiallyComputable}, the
 combined \nolinkurl{IsComputableRealFunction} theorem, and input-bit
-asymptotics remain open. &
+asymptotics remain outside this logarithmic-modulus leaf; the next two rows
+record the downstream realizer closure. &
 \nolinkurl{inverseFabiusLogarithmicOrder},
 \nolinkurl{inverseFabiusLogarithmicFactorialDenominator},
 \nolinkurl{inverseFabiusLogarithmicDeltaDenominator};
@@ -800,6 +801,31 @@ asymptotics remain open. &
 \nolinkurl{fabiusInv_effectivelyUniformContinuous_logarithmic},
 \nolinkurl{fabiusInv_effectivelyUniformContinuous_logarithmicDelta} &
 \nolinkurl{FabiusInverseLogarithmicModulus.lean} \\
+Fixed-depth effective monotone inversion (two definitions and six theorems).
+At requested output precision \(p\), a natural-recursive controller performs
+exactly \(p\) dyadic updates.  At depth \(s\), its bracket index \(j\)
+represents \([j2^{-s},(j+1)2^{-s}]\), and it compares forward and target
+dyadic names at precision \(p+d(p)+3+s\) with a four-numerator-unit margin.
+A certified sign selects one half; an inconclusive comparison stores the
+midpoint and doubles that stored numerator on every remaining step, preserving
+its real value while advancing to denominator \(2^p\).  The generic theorem
+assumes a positive computable denominator and its strict inverse-modulus
+implication; it does not derive that modulus from the paper's gap sequence. &
+\nolinkurl{SequentiallyComputableOn},
+\nolinkurl{unitClamp};
+\nolinkurl{unitClamp_sequentiallyComputable},
+\nolinkurl{tolerantDifference_error},
+\nolinkurl{tolerantDifference_safe_updates},
+\nolinkurl{tolerantDifference_inconclusive},
+\nolinkurl{tolerantBisection_correct},
+\nolinkurl{effectiveInversionOn_Icc} &
+\nolinkurl{EffectiveMonotoneInverse.lean} \\
+Computability of the totalized Fabius inverse (zero definitions and one
+theorem).  The unit-interval realizer uses the computable centered-spline
+oracle and the Delta denominator; the computable unit clamp totalizes it, and
+the logarithmic-Delta modulus supplies effective uniform continuity. &
+\nolinkurl{fabiusInv_isComputableRealFunction} &
+\nolinkurl{FabiusInverseComputable.lean} \\
 Lower-Lambert coordinate & \nolinkurl{fabiusLambertPhase} & \nolinkurl{FabiusLambertSaddle.lean} \\
 Raw real Lambert curvature (the first 13 declarations of the exact 36-name
 curvature inventory).  For \(z>-e^{-1}\), the principal branch has the
@@ -2216,9 +2242,17 @@ cumulant-sample reconstruction, or underlying probability-law
 identifiability is formalized; those remain open.  This one-module,
 six-declaration overlay raised its historical census from 629/8,546 to
 630/8,552.  With later concurrent integration, including the six-theorem
-prime-power companion row and zero-definition/three-theorem outer Pochhammer
-normal-convergence leaf, the live source census is 641/8,650.  These additions
+prime-power companion row, zero-definition/three-theorem outer Pochhammer
+normal-convergence leaf, two-module effective-inverse closure, and six-module
+q-calculus tranche, the live source census is 649/8,697.  These additions
 are source-only, and the retained 237-page PDF remains explicitly historical.
+The newest six module counts are
+\path{QPochhammerInfiniteBounds.lean} (0+5),
+\path{HeineTransformation.lean} (2+5),
+\path{QGaussSummation.lean} (0+2),
+\path{QPochhammerComplexOrder.lean} (1+4),
+\path{BasicHypergeometricSeries.lean} (2+5), and
+\path{QMultinomial.lean} (1+9).
 
 The earlier compiler-validated checkpoint \texttt{e6f535e5d} supplied the two modules that
 promote the
@@ -16178,6 +16212,15 @@ exact global differentiability and $C^\infty$ loci, and endpoint quotient diverg
 \texttt{InverseNotElementary.lean} &
 Exact analytic locus of the totalized inverse and the analytic-density
 obstructions used in its non-elementarity theorem. & \Formalized\\
+\texttt{EffectiveMonotoneInverse.lean} &
+Exact two-definition/six-theorem generic surface for the computable unit
+clamp, tolerant difference certificates, fixed-depth dyadic bisection, and
+sequential inversion on \([0,1]\) from a supplied positive computable inverse
+modulus.  The modulus is assumed, not derived from a gap sequence. & \Formalized\\
+\texttt{FabiusInverseComputable.lean} &
+The zero-definition/one-theorem specialization proving
+\texttt{fabiusInv\_isComputableRealFunction} for the total clamped inverse. &
+\Formalized\\
 \texttt{FabiusSaddleJet}\\\texttt{ClosedForm.lean} &
 Operator solution of the recursive periodic jets and the harmonic-number
 constant term. & \Formalized\\
@@ -16270,6 +16313,38 @@ strict-threshold biconditional.  This module does not supply the report's closed
 \(\Delta_r\) lower bound, recursive-modulus wrapper, tolerant-bisection realizer,
 sequential computability theorem, combined computable-real-function theorem, or input-bit
 asymptotics.
+
+Those realizer conclusions are supplied downstream.  The exhaustive public
+surface of \path{EffectiveMonotoneInverse.lean} is the two definitions
+\path{Fabius.SequentiallyComputableOn} and \path{Fabius.unitClamp}, and the
+six theorems
+\path{Fabius.unitClamp_sequentiallyComputable},
+\path{Fabius.tolerantDifference_error},
+\path{Fabius.tolerantDifference_safe_updates},
+\path{Fabius.tolerantDifference_inconclusive},
+\path{Fabius.tolerantBisection_correct}, and
+\path{Fabius.effectiveInversionOn_Icc}.  Its natural recursion has the
+requested output precision \(p\) as a fixed iteration bound.  A live bracket
+index at depth \(s\) names the adjacent dyadic interval of width \(2^{-s}\);
+a certified sign halves it, whereas an inconclusive comparison freezes a
+certified midpoint and doubles its numerator through the remaining grids.
+The final code is therefore on the \(2^{-p}\) grid whether or not the success
+branch was taken.  The comparison scale \(q=p+d(p)+3+s\) absorbs both oracle
+errors, and the four-unit signed-numerator margin implements the three-way
+comparison without deciding equality of represented reals.
+
+The hypotheses of \path{Fabius.effectiveInversionOn_Icc} include the
+computable positive denominator \(d\) and the strict inverse-modulus
+implication at \(d(p)^{-1}\).  This reusable theorem consumes that certificate;
+it does not construct \(d\) from the gap sequence in the paper.  The separate
+\path{FabiusInverseComputable.lean} has zero public definitions and the single
+public theorem \path{Fabius.fabiusInv_isComputableRealFunction}.  It
+instantiates the generic theorem with the centered-spline evaluator and Delta
+denominator, clamps arbitrary computable input names, and imports the
+logarithmic-Delta effective-continuity theorem.  Hence the conclusion is the
+full \path{IsComputableRealFunction} statement for the totalized inverse.
+Together the two modules expose exactly these nine declarations and no
+input-bit or running-time asymptotic.
 
 The inverse interface is centered around
 \begin{lstlisting}[style=pseudo]

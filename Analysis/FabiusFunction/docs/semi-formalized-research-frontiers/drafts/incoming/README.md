@@ -152,16 +152,24 @@ The preceding 2026-08-30 processed batch was filed and removed as follows:
   [`../representations/Fabius_Zero_Bias_Frontier_Report/`](../representations/Fabius_Zero_Bias_Frontier_Report/).
 - `Inverse_Fabius_Computability_Report.zip` (689,198 bytes; SHA-256
   `755d77354490d25d4f327419d0345623e91ea49dd4ba681ba97c84a0b686b8c1`)
-  became
-  [`../inverse-and-sampling/inverse-asymptotics-and-computability/Inverse_Fabius_Computability_Report/`](../inverse-and-sampling/inverse-asymptotics-and-computability/Inverse_Fabius_Computability_Report/).
+  was first filed at the historical path
+  `../inverse-and-sampling/inverse-asymptotics-and-computability/Inverse_Fabius_Computability_Report/`
+  and was later absorbed into the canonical
+  [*Inverse Fabius Theory*](../inverse-and-sampling/Inverse_Fabius_Analyticity_Asymptotics_and_Computability/).
+  Its arrival ledger, source disposition, and recovery revision remain in the
+  canonical provenance package.
 - `fabius_frontier_report_bundle-D.zip` (1,508,514 bytes; SHA-256
   `39f3638f52f19955b88b7a865a60b76d9ce31154d98967d1400a6ad97396fa9a`)
   became
   [`../frontier-compilations/Geometric_Uniform_Frontier_Directions/`](../frontier-compilations/Geometric_Uniform_Frontier_Directions/).
 - `inverse_fabius_iterates_nowhere_analytic.zip` (1,137,032 bytes; SHA-256
   `8b1c05d59e120ecd20d69cd5aeb0009639f2f3b9a6c9fef32bdf82270eee16bd`)
-  became
-  [`../inverse-and-sampling/analyticity-and-elementarity/inverse_fabius_iterates_nowhere_analytic/`](../inverse-and-sampling/analyticity-and-elementarity/inverse_fabius_iterates_nowhere_analytic/).
+  was first filed at the historical path
+  `../inverse-and-sampling/analyticity-and-elementarity/inverse_fabius_iterates_nowhere_analytic/`
+  and was later absorbed into the canonical
+  [*Inverse Fabius Theory*](../inverse-and-sampling/Inverse_Fabius_Analyticity_Asymptotics_and_Computability/).
+  Its immutable arrival ledger, hostile audit, retained inverse-facing assets,
+  and forward-report reconciliation boundary remain in the canonical package.
 - `inverse_q_analogs_report.zip` (894,405 bytes; SHA-256
   `471ee715022df77f2c5f45b86c213e50e980478eee1a6fc48dd91556cdaeb627`)
   was absorbed into the canonical consolidation

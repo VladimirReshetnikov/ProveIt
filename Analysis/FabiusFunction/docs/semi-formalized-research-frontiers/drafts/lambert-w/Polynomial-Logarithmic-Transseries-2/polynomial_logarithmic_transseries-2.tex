@@ -169,7 +169,6 @@
 % Mathematical notation.
 \newcommand{\K}{\mathbb{K}}
 \newcommand{\val}{\nu}
-\newcommand{\Bell}{\operatorname{B}}
 \newcommand{\rev}[1]{\CompositionalInverseOf{#1}}
 \newcommand{\recip}[1]{\MultiplicativeInverseOf{#1}}
 \newcommand{\stirlingone}[2]{\genfrac{[}{]}{0pt}{}{#1}{#2}}
@@ -984,11 +983,11 @@ The coefficient of \(t^n\) in \(U^r\) is
  =\sum_{j_1+\cdots+j_r=n}u_{j_1}\cdots u_{j_r},
 \end{equation}
 where all \(j_i\ge1\).  Equivalently, in terms of the partial exponential Bell
-polynomial \(\Bell_{n,r}\),
+polynomial \(\ExponentialPartialBellPolynomial{n}{r}\),
 \begin{equation}\label{eq:bell-coeff}
  [t^n]U^r
  =\frac{r!}{n!}\,
- \Bell_{n,r}\bigl(1!u_1,2!u_2,\ldots,(n-r+1)!u_{n-r+1}\bigr).
+ \ExponentialPartialBellPolynomial{n}{r}\bigl(1!u_1,2!u_2,\ldots,(n-r+1)!u_{n-r+1}\bigr).
 \end{equation}
 We will use this identity to expand \(\log(1+U)\), exponentials, and composition
 systematically.
@@ -1419,7 +1418,7 @@ Write
 By \cref{eq:bell-coeff},
 \[
  [t^m]\delta^r
- =\frac{r!}{m!}\Bell_{m,r}
+ =\frac{r!}{m!}\ExponentialPartialBellPolynomial{m}{r}
  \bigl(1!\delta_1,2!\delta_2,\ldots\bigr).
 \]
 Consequently, the coefficient of t-order \(N\) in
@@ -1430,13 +1429,13 @@ Consequently, the coefficient of t-order \(N\) in
  ={}&\sum_{n=n_0}^{N}\lambda^{-n}
  \frac1{(N-n)!}
  \sum_{r=0}^{N-n}
- \Bell_{N-n,r}
+ \ExponentialPartialBellPolynomial{N-n}{r}
  \bigl(1!\delta_1,2!\delta_2,\ldots\bigr)\\
  &\hspace{8em}\times
  (\Dop-n)^r f_n(L+\log\lambda),
 \end{split}
 \end{equation}
-with \(\Bell_{0,0}=1\) and \(\Bell_{m,0}=0\) for \(m>0\).  This is a closed,
+with \(\ExponentialPartialBellPolynomial{0}{0}=1\) and \(\ExponentialPartialBellPolynomial{m}{0}=0\) for \(m>0\).  This is a closed,
 finite formula for every coefficient.
 
 \begin{algorithm}[Regular composition to t-order \(N\)]\label{alg:regular-composition}
@@ -3200,7 +3199,7 @@ The direct composition algorithm builds powers \(\delta^r\).  If many outer
 blocks share the same inner argument, precompute
 \[
  C_{m,r}=[t^m]\frac{\delta^r}{r!}
- =\frac1{m!}\Bell_{m,r}
+ =\frac1{m!}\ExponentialPartialBellPolynomial{m}{r}
  (1!\delta_1,2!\delta_2,\ldots).
 \]
 Then \cref{eq:composition-bell} becomes a matrix-like contraction between the
@@ -4381,9 +4380,9 @@ mysterious.
 
 \section{Definition}
 The partial exponential Bell polynomials
-\(\Bell_{n,k}(x_1,x_2,\ldots)\) are defined by
+\(\ExponentialPartialBellPolynomial{n}{k}(x_1,x_2,\ldots)\) are defined by
 \begin{equation}\label{eq:bell-definition}
- \Bell_{n,k}(x_1,x_2,\ldots)
+ \ExponentialPartialBellPolynomial{n}{k}(x_1,x_2,\ldots)
  =\sum
  \frac{n!}{m_1!m_2!\cdots}
  \prod_{j\ge1}\left(\frac{x_j}{j!}\right)^{m_j},
@@ -4396,37 +4395,37 @@ where the sum runs over all nonnegative integer sequences satisfying
 \]
 Only \(x_1,\ldots,x_{n-k+1}\) can occur.  The conventions are
 \[
- \Bell_{0,0}=1,
+ \ExponentialPartialBellPolynomial{0}{0}=1,
  \qquad
- \Bell_{n,0}=0\quad(n>0).
+ \ExponentialPartialBellPolynomial{n}{0}=0\quad(n>0).
 \]
 
 Their exponential generating function is
 \begin{equation}\label{eq:bell-egf}
  \frac1{k!}\left(\sum_{j\ge1}x_j\frac{t^j}{j!}\right)^k
- =\sum_{n\ge k}\Bell_{n,k}(x_1,x_2,\ldots)\frac{t^n}{n!}.
+ =\sum_{n\ge k}\ExponentialPartialBellPolynomial{n}{k}(x_1,x_2,\ldots)\frac{t^n}{n!}.
 \end{equation}
 This identity is exactly what is needed for powers of a t-series.
 
 \section{First values}
 The first nonzero partial Bell polynomials are
 \begin{align*}
- \Bell_{1,1}&=x_1,\\
- \Bell_{2,1}&=x_2,
- &\Bell_{2,2}&=x_1^2,\\
- \Bell_{3,1}&=x_3,
- &\Bell_{3,2}&=3x_1x_2,
- &\Bell_{3,3}&=x_1^3,\\
- \Bell_{4,1}&=x_4,
- &\Bell_{4,2}&=4x_1x_3+3x_2^2,\\
- \Bell_{4,3}&=6x_1^2x_2,
- &\Bell_{4,4}&=x_1^4.
+ \ExponentialPartialBellPolynomial{1}{1}&=x_1,\\
+ \ExponentialPartialBellPolynomial{2}{1}&=x_2,
+ &\ExponentialPartialBellPolynomial{2}{2}&=x_1^2,\\
+ \ExponentialPartialBellPolynomial{3}{1}&=x_3,
+ &\ExponentialPartialBellPolynomial{3}{2}&=3x_1x_2,
+ &\ExponentialPartialBellPolynomial{3}{3}&=x_1^3,\\
+ \ExponentialPartialBellPolynomial{4}{1}&=x_4,
+ &\ExponentialPartialBellPolynomial{4}{2}&=4x_1x_3+3x_2^2,\\
+ \ExponentialPartialBellPolynomial{4}{3}&=6x_1^2x_2,
+ &\ExponentialPartialBellPolynomial{4}{4}&=x_1^4.
 \end{align*}
 A useful recurrence is
 \begin{equation}\label{eq:bell-recurrence}
- \Bell_{n,k}
+ \ExponentialPartialBellPolynomial{n}{k}
  =\sum_{j=1}^{n-k+1}
- \binom{n-1}{j-1}x_j\Bell_{n-j,k-1}.
+ \binom{n-1}{j-1}x_j\ExponentialPartialBellPolynomial{n-j}{k-1}.
 \end{equation}
 It follows by singling out the block containing a distinguished labeled
 element in the combinatorial interpretation, or directly from the generating
@@ -4441,12 +4440,12 @@ Set \(x_j=j!u_j\) in \cref{eq:bell-egf}.  Then
 \[
  \frac{U(t)^k}{k!}
  =\sum_{n\ge k}\frac1{n!}
- \Bell_{n,k}(1!u_1,2!u_2,\ldots)t^n.
+ \ExponentialPartialBellPolynomial{n}{k}(1!u_1,2!u_2,\ldots)t^n.
 \]
 Therefore
 \begin{equation}\label{eq:bell-U-power}
  [t^n]U^k
- =\frac{k!}{n!}\Bell_{n,k}(1!u_1,2!u_2,\ldots).
+ =\frac{k!}{n!}\ExponentialPartialBellPolynomial{n}{k}(1!u_1,2!u_2,\ldots).
 \end{equation}
 
 \section{Logarithm and exponential coefficients}
@@ -4458,13 +4457,13 @@ Hence
 \begin{equation}\label{eq:bell-log-coeff}
  [t^n]\log(1+U)
  =\frac1{n!}\sum_{k=1}^n(-1)^{k+1}(k-1)!
- \Bell_{n,k}(1!u_1,2!u_2,\ldots).
+ \ExponentialPartialBellPolynomial{n}{k}(1!u_1,2!u_2,\ldots).
 \end{equation}
 Similarly, if \(V=\sum_{j\ge1}v_jt^j\),
 \begin{equation}\label{eq:bell-exp-coeff}
  [t^n]\EulerE^V
  =\frac1{n!}\sum_{k=0}^n
- \Bell_{n,k}(1!v_1,2!v_2,\ldots).
+ \ExponentialPartialBellPolynomial{n}{k}(1!v_1,2!v_2,\ldots).
 \end{equation}
 The sum over \(k\) is the complete exponential Bell polynomial.
 
@@ -4484,7 +4483,7 @@ has coefficient
  \mathopen{:}\EulerE^{\delta(\Dop-n)}\mathclose{:}f
  \right)
  =\frac1{m!}\sum_{r=0}^m
- \Bell_{m,r}(1!\delta_1,2!\delta_2,\ldots)
+ \ExponentialPartialBellPolynomial{m}{r}(1!\delta_1,2!\delta_2,\ldots)
  (\Dop-n)^rf.
 \end{equation}
 After multiplying by \(\lambda^{-n}t^n\) and summing over outer blocks, one
@@ -4495,7 +4494,7 @@ Bell polynomials also express ordinary higher derivatives of a composite:
 \begin{equation}\label{eq:faa-di-bruno}
  \frac{\Differential^n}{\Differential x^n}f(g(x))
  =\sum_{k=1}^nf^{(k)}(g(x))
- \Bell_{n,k}\bigl(g'(x),g''(x),\ldots,g^{(n-k+1)}(x)\bigr).
+ \ExponentialPartialBellPolynomial{n}{k}\bigl(g'(x),g''(x),\ldots,g^{(n-k+1)}(x)\bigr).
 \end{equation}
 The composition formula in this article is a close formal relative: Bell
 polynomials collect repeated powers of the logarithmic increment, while the
@@ -4880,7 +4879,7 @@ Symbol & Meaning \\
 \(G=\lambda X(1+u)\). \\
 \(\mathopen{:}\EulerE^{\delta(\Dop-n)}\mathclose{:}\) & Normal-ordered shifted
 Taylor operator. \\
-\(\Bell_{n,k}\) & Partial exponential Bell polynomial. \\
+\(\ExponentialPartialBellPolynomial{n}{k}\) & Partial exponential Bell polynomial. \\
 \(\stirlingone{n}{k}\) & Unsigned Stirling number of the first kind. \\
 \(\LambertPolynomial{n}(L)\) & n-th Lambert polynomial in the expansion of \(W\). \\
 \(X=\xi_k\) & Branch coordinate \(\PrincipalLogarithm z+2\pi\ImaginaryUnit k\) for \(W_k(z)\). \\

@@ -1023,6 +1023,49 @@ effective uniform continuity.  This is a computability certificate for every
 bounded Fabius witness, not an exact least endpoint-mass denominator or an
 input-bit running-time theorem.
 
+The next two modules close the realizer gap.  The exhaustive public surface of
+\nolinkurl{EffectiveMonotoneInverse.lean} is exactly two definitions,
+\nolinkurl{SequentiallyComputableOn} and \nolinkurl{unitClamp}, followed by
+exactly six theorems:
+\nolinkurl{unitClamp_sequentiallyComputable},
+\nolinkurl{tolerantDifference_error},
+\nolinkurl{tolerantDifference_safe_updates},
+\nolinkurl{tolerantDifference_inconclusive},
+\nolinkurl{tolerantBisection_correct}, and
+\nolinkurl{effectiveInversionOn_Icc}.  The implementation runs exactly \(p\)
+dyadic steps for requested precision \(p\).  At depth \(s\), a natural index
+\(j\) represents the bracket
+\([j2^{-s},(j+1)2^{-s}]\), and the two names are queried at precision
+\(q=p+d(p)+3+s\).  Their signed numerators are compared with a four-unit
+margin.  A certified sign selects the corresponding half; an inconclusive
+comparison records the midpoint, and every remaining fixed step doubles its
+numerator so that its real value is unchanged while its denominator advances
+to \(2^p\).  Thus equality of represented reals is never tested.  A run with
+no inconclusive branch ends in a bracket of width \(2^{-p}\), while an
+inconclusive branch is certified by the assumed inverse modulus.
+
+The generic theorem assumes a computable dyadic forward evaluator, strict
+monotonicity, both maps of \([0,1]\), inverse identities there, a positive
+computable denominator \(d\), and
+\[
+ |u-v|<d(p)^{-1}\Longrightarrow |g(u)-g(v)|<2^{-p}.
+\]
+It consumes this inverse modulus; it does not derive one from the positive gap
+sequence in the inverse-computability paper.  The hard-coded unit interval is
+also significant: no arbitrary-endpoint algorithm is asserted without
+computable endpoint data.
+
+The specialization \nolinkurl{FabiusInverseComputable.lean} has no public
+definition and exactly one public theorem,
+\nolinkurl{fabiusInv_isComputableRealFunction}.  The sequential clause uses
+the centered-spline evaluator, the Delta denominator, tolerant bisection on
+\([0,1]\), and the computable \(1\)-Lipschitz clamp.  Its effective-uniform-
+continuity clause is
+\nolinkurl{fabiusInv_effectivelyUniformContinuous_logarithmicDelta}.
+Consequently the totalized inverse, not merely its unit-interval restriction,
+satisfies \nolinkurl{IsComputableRealFunction}.  These two modules expose all
+nine declarations just listed and no input-bit or running-time asymptotic.
+
 The separate smooth bridge \nolinkurl{FabiusInverseQuarterJet.lean} identifies
 the complete inverse jet at the quarter anchor.  For
 \(G(y)=\operatorname{fabiusInv}(F,h_F,y)\),
@@ -3983,7 +4026,7 @@ The separately named half-sum theorem says that, under the explicit hypotheses
 Those dominance hypotheses matter because all indices and subtractions in the Lean
 statement are natural-number operations.
 
-For \(G^{\RationalNumbers}_{ijk}=\nolinkurl{legendreGauntRat}(i,j,k)\), the public
+For \(G^{\RationalNumbers}_{ijk}=\mathtt{legendreGauntRat}(i,j,k)\), the public
 boundary formulas are
 \[
  G^{\RationalNumbers}_{i,j,i+j}
@@ -3997,13 +4040,13 @@ boundary formulas are
 The identification is global, not merely a necessary support statement:
 \[
  G^{\RationalNumbers}_{ijk}=2W^2_{ijk},\qquad
- \nolinkurl{legendreGaunt}(i,j,k)=2(W^2_{ijk}:\RealNumbers).
+ \mathtt{legendreGaunt}(i,j,k)=2(W^2_{ijk}:\RealNumbers).
 \]
 For each of \(W^2_{ijk}\), \(G^{\RationalNumbers}_{ijk}\), and the real Gaunt integral,
 the API separately proves positivity exactly on \(\mathsf A\), zero exactly off
 \(\mathsf A\), and global nonnegativity.  Finally,
 \[
- \nolinkurl{legendreProductLinearizationCoeffRat}(i,j,k)
+ \mathtt{legendreProductLinearizationCoeffRat}(i,j,k)
  =(2k+1)W^2_{ijk},
 \]
 and that coefficient is positive exactly on \(\mathsf A(i,j,k)\).
@@ -4056,16 +4099,19 @@ The first two are unconditional rational identities:
 \]
 first for \nolinkurl{rvachevLegendreGramEntryRat} and then entrywise for
 \nolinkurl{rvachevLegendreGramMatrixRat}.  The third requires
-\(F:\nolinkurl{BoundedFabius}\) and \(h_F:\nolinkurl{IsFabius F}\), and for
+\(F:\mathtt{BoundedFabius}\) and \(h_F:\mathtt{IsFabius\ F}\), and for
 \(i,j:\operatorname{Fin}n\) states
 \[
- \nolinkurl{upLegendreGramMatrix}(F,n,i,j)
- =2\sum_{r=0}^{\Floor{((i:\NaturalNumbers)+(j:\NaturalNumbers))/2}}
- \nolinkurl{rvachevLegendreCoefficient}(F,r)
- \left(W^2_{(i:\NaturalNumbers),(j:\NaturalNumbers),2r}:\RealNumbers\right).
+ \begin{aligned}
+ \mathtt{upLegendreGramMatrix}(F,n,i,j)
+ &=2\sum_{r=0}^{\Floor{((i:\NaturalNumbers)+(j:\NaturalNumbers))/2}}
+   \mathtt{rvachevLegendreCoefficient}(F,r)\\
+ &\qquad{}\times
+   \left(W^2_{(i:\NaturalNumbers),(j:\NaturalNumbers),2r}:\RealNumbers\right).
+ \end{aligned}
 \]
 All three sums are finite, with Lean's actual index set
-\(\nolinkurl{range}(\Floor{(i+j)/2}+1)\).  Their proofs simply substitute the global
+\(\mathtt{range}(\Floor{(i+j)/2}+1)\).  Their proofs simply substitute the global
 Gaunt identity into the three predecessor sums and move the scalar \(2\) outside.
 
 The boundary of this API is deliberate and exact.  It defines only a total rational
@@ -5137,7 +5183,7 @@ General geometric-sinc Pochhammer factorization & \nolinkurl{complexQPochhammerI
 Outer geometric spectral Pochhammer normal convergence & \nolinkurl{hasProdLocallyUniformly_geometricSincProduct_complexQPochhammerInf}, \nolinkurl{hasProdLocallyUniformly_rvachevFourierProduct_complexQPochhammerInf}, \nolinkurl{hasProdLocallyUniformly_rvachevFourier_complexQPochhammerInf} & Exhaustive zero-definition/three-theorem surface of \nolinkurl{GeometricPochhammerNormalConvergence.lean}; the general theorem assumes exactly \(\lVert q\rVert<1\), includes \(q=0\), and the last two are dyadic Rvachev/Fabius specializations; the centered/MGF and outside-disk/pole clauses remain open \\
 Fixed-nome entire Pochhammer symbol and simple zero lattice & \nolinkurl{hasProdLocallyUniformly_complexQPochhammerInf}, \nolinkurl{complexQPochhammerInf_differentiable}, \nolinkurl{complexQPochhammerInf_eq_zero_iff}, \nolinkurl{complexQPochhammerInf_eq_zero_iff_eq_inv_pow}, \nolinkurl{analyticOrderAt_complexQPochhammerInf_of_eq_zero} & \nolinkurl{QPochhammerEntire.lean}; zero definitions and five theorems, including the \(q=0\)-safe factor-zero form and the reciprocal-power lattice under \(q\ne0\) \\
 Finite q-Pochhammer residue-class dissection & \nolinkurl{finiteQPochhammerIn_dissection}, \nolinkurl{finiteQPochhammerIn_dissection_remainder} & Exhaustive zero-definition/two-theorem surface of \nolinkurl{QPochhammerDissection.lean}; arbitrary commutative ring, all natural \(r,n\), and remainder boundary \(u\le r\), with no hypothesis on \(q\) \\
-Generic infinite q-Pochhammer product & \nolinkurl{qPochhammerInfIn} and the twenty-nine theorems listed exhaustively in the current-tree discussion above & \nolinkurl{QPochhammerInfinite.lean}; total topological-ring definition, complete-normed-ring convergence/concatenation/dissection, multiplicative-norm zero locus, locally compact field continuity, complex entireness, nonzero raw-factor derivatives, and analytic order one, including (q=0); distinct from the \nolinkurl{complexQPochhammerInf} compatibility wrapper \\
+Generic infinite q-Pochhammer product & \nolinkurl{qPochhammerInfIn} and the twenty-nine theorems listed exhaustively in the current-tree discussion above & \nolinkurl{QPochhammerInfinite.lean}; total topological-ring definition, complete-normed-ring convergence/concatenation/dissection, multiplicative-norm zero locus, locally compact field continuity, complex entireness, nonzero raw-factor derivatives, and analytic order one, including \(q=0\); distinct from the \nolinkurl{complexQPochhammerInf} compatibility wrapper \\
 Infinite q-binomial theorem and Euler expansions & \nolinkurl{gaussianMajorant}, \nolinkurl{hasSum_qBinomial_theorem}, \nolinkurl{hasSum_euler_product}, \nolinkurl{hasSum_euler_reciprocal} & \nolinkurl{QBinomialTheoremInfinite.lean}; one definition and twenty-two theorems, listed exhaustively above \\
 Jacobi triple product and pentagonal sums & \nolinkurl{thetaExponent}, \nolinkurl{pentagonalExponent}, \nolinkurl{hasSum_jacobi_triple_product}, \nolinkurl{hasSum_pentagonal}, \nolinkurl{hasSum_pentagonal_pairs} & \nolinkurl{JacobiTripleProduct.lean}; two definitions and twenty-five theorems, listed exhaustively above \\
 Finite q-Pascal summations & \nolinkurl{sum_gaussianBinomial_succ_mul}, \nolinkurl{sum_gaussianBinomial_succ_mul'}, \nolinkurl{Commute.gaussianBinomial_left}, \nolinkurl{Commute.gaussianBinomial_right} & Exhaustive zero-definition/four-theorem surface of \nolinkurl{QPascalSummation.lean} \\
@@ -5156,6 +5202,8 @@ Inverse curvature & \nolinkurl{deriv_deriv_fabiusInv}, \nolinkurl{deriv_deriv_fa
 Exact inverse modulus & \nolinkurl{fabiusIntervalMass}, \nolinkurl{strictMonoOn_fabiusIntervalMass_firstHalf}, \nolinkurl{fabiusIntervalMass_eq_fabiusReal_iff}, \nolinkurl{fabiusInv_sub_eq_sub_iff_of_mem_Icc}, \nolinkurl{abs_fabiusInv_sub_le}, \nolinkurl{abs_fabiusInv_sub_eq_iff_of_mem_Icc}, \nolinkurl{sSup_abs_fabiusInv_sub_eq}, \nolinkurl{forall_abs_fabiusInv_sub_lt_iff} & \nolinkurl{InverseModulus.lean}; strict and equality refinements are unit-interval qualified where clamping requires it \\
 Effective dyadic inverse modulus & \nolinkurl{inverseFabiusFactorialDenominator}, \nolinkurl{inverseFabiusDeltaDenominator}, \nolinkurl{fabiusInv_effectivelyUniformContinuous} & \nolinkurl{FabiusInverseEffectiveContinuity.lean}; explicit primitive-recursive continuity modulus, not an inverse realizer \\
 Logarithmic reciprocal inverse modulus & \nolinkurl{inverseFabiusLogarithmicOrder}, \nolinkurl{inverseFabiusLogarithmicFactorialDenominator}, \nolinkurl{inverseFabiusLogarithmicDeltaDenominator}, \nolinkurl{fabiusInv_effectivelyUniformContinuous_logarithmic}, \nolinkurl{fabiusInv_effectivelyUniformContinuous_logarithmicDelta} & \nolinkurl{FabiusInverseLogarithmicModulus.lean}; least binary-length selector and two primitive-recursive witnesses, not an inverse realizer \\
+Fixed-depth effective monotone inversion & \nolinkurl{SequentiallyComputableOn}, \nolinkurl{unitClamp}, \nolinkurl{unitClamp_sequentiallyComputable}, \nolinkurl{tolerantDifference_error}, \nolinkurl{tolerantDifference_safe_updates}, \nolinkurl{tolerantDifference_inconclusive}, \nolinkurl{tolerantBisection_correct}, \nolinkurl{effectiveInversionOn_Icc} & \nolinkurl{EffectiveMonotoneInverse.lean}; exact two-definition/six-theorem public surface, with a fixed \(p\)-step dyadic controller and a supplied positive computable inverse modulus rather than a modulus derived from a gap sequence \\
+Computable totalized Fabius inverse & \nolinkurl{fabiusInv_isComputableRealFunction} & \nolinkurl{FabiusInverseComputable.lean}; zero definitions and one theorem combining clamped tolerant-bisection sequential computability with logarithmic-Delta effective uniform continuity \\
 Actual quarter inverse jet & \nolinkurl{iteratedDeriv_centeredFabiusInv_quarter_eq_quadraticInverse}, \nolinkurl{iteratedDeriv_fabiusInv_five_seventy_two_succ} & \nolinkurl{FabiusInverseQuarterJet.lean}; equality of jets, not local analytic equality \\
 Centered Thue--Morse mixed differences & \nolinkurl{symmetricMixedDifference}, \nolinkurl{symmetricMixedDifference_polynomial_eq_coeff_card}, \nolinkurl{symmetricDyadicMixedDifference_eq_sum_thueMorseSign_smul} & \nolinkurl{ThueMorseSymmetricDifference.lean}; finite algebraic identities, with no analytic limit claim \\
 Uniform spline \(S_p\) & \nolinkurl{fabiusUniformSpline} & \nolinkurl{FabiusUniformSpline.lean} and \nolinkurl{FabiusComputability.lean} \\
@@ -5225,6 +5273,8 @@ Module & Role in the development \\
 \nolinkurl{InverseModulus.lean} & Exhaustive one-definition/thirty-one-theorem structural inverse-modulus layer: global weak and maximal strict fixed-length increment shape, exact endpoint minimizers, constrained-superadditivity equality, unit-interval inverse-gap rigidity, global sharp modulus bounds and attained suprema, and effective injectivity.  The inverse equality loci are deliberately not global because of the clamped tails. \\
 \nolinkurl{FabiusInverseEffectiveContinuity.lean} & Exhaustive two-definition/twelve-theorem effective inverse-continuity layer: primitive-recursive factorial and report denominators, recurrence and endpoint-mass lower bounds, strict and closed global inverse moduli, and \nolinkurl{EffectivelyUniformContinuous}; the inverse remains noncomputable and no sequential realizer or combined computable-function theorem is supplied. \\
 \nolinkurl{FabiusInverseLogarithmicModulus.lean} & Three definitions and fifteen theorems: the primitive-recursive least binary-length order, its exact \nolinkurl{Nat.log2} formula and minimality, factorial and Delta denominators at that order, strict/closed-input reciprocal moduli, and an effective-uniform-continuity theorem for either witness; no exact endpoint-mass ceiling, tolerant-bisection realizer, sequential computability, combined computable-real-function theorem, or input-bit asymptotic. \\
+\nolinkurl{EffectiveMonotoneInverse.lean} & Exactly two public definitions and six theorems: sequential computability on a set, the computable unit clamp, the difference certificate and its safe-update and inconclusive-success consequences, fixed-depth dyadic tolerant-bisection correctness, and the abstract unit-interval inversion theorem.  The abstract theorem assumes a positive computable inverse modulus and does not derive it from a paper gap sequence. \\
+\nolinkurl{FabiusInverseComputable.lean} & Zero public definitions and exactly one theorem, \nolinkurl{fabiusInv_isComputableRealFunction}: the total inverse preserves computable real sequences by clamping and tolerant bisection and has the logarithmic-Delta effective continuity modulus. \\
 \nolinkurl{FabiusInverseQuarterJet.lean} & Full smooth derivative jet of the centered inverse at \(5/72\), identified with the factorial-scaled coefficients of the quadratic compositional inverse; this is not a local analytic identity. \\
 \nolinkurl{ImplicitPowerSeries.lean} & Nonmonic complete-adic lifting and residue-class uniqueness, with arbitrary-base and zero-constant formal implicit-root specializations over power-series rings; it does not construct or analytically realize a Fabius inverse germ. \\
 \nolinkurl{QuarterCatalanGerm.lean} & The explicit scaled quarter Catalan formal germ, its functional equation and uniqueness, and the forward/reverse rescaling bridge from \nolinkurl{dyadicGermTwo} to \nolinkurl{QuadraticInverse.inverse}. \\
@@ -5569,6 +5619,14 @@ the exact endpoint-mass ceiling, tolerant bisection, sequential computability,
 combined computable-real-function theorem, and input-bit asymptotics remain
 outside that leaf.  No aggregate checkpoint is fabricated for this merged
 surface.
+The still later compiled current-tree tranche
+\nolinkurl{EffectiveMonotoneInverse.lean} and
+\nolinkurl{FabiusInverseComputable.lean} has exactly the two-definition,
+six-theorem and zero-definition, one-theorem surfaces inventoried above.  It
+closes fixed-depth tolerant bisection, sequential computability of the
+clamped inverse, and the combined computable-real-function theorem.  The
+generic theorem assumes its inverse modulus rather than deriving it from the
+paper's gap sequence, and no input-bit asymptotic is added.
 The seven activation rows and the finite-Taylor and square-summable discussions in
 Section~\ref{ch:probability} record source checkpoint
 \nolinkurl{a345425d21d90e680bf15e34093af42c69c08a83}, published 31 August
@@ -5584,9 +5642,9 @@ Lean audits of the previously recorded new or refactored declarations,
 \nolinkurl{propext}, \nolinkurl{Classical.choice}, and \nolinkurl{Quot.sound}
 for each.  At that upstream checkpoint, static inspection found all 610 modules
 below \nolinkurl{FabiusFunction/} reachable from the facade and every one of
-the 105 activation declarations documented.  The live merged-tree census is
-641 modules and 8,650 public declarations, all reachable from the facade under
-the current static audit.  The historical mainline census before the latest
+the 105 activation declarations documented.  The live current-tree audit scans
+649 modules and 8,697 public declarations, with no missing module headers or
+declaration comments.  At the retained historical mainline checkpoint before the latest
 six-module q-series tranche was 623 modules and 8,476 declarations.  Its
 immediately preceding census, after the Rvachev Appell and original
 four-theorem \nolinkurl{QPochhammerEntire.lean} tranche but before the generic
@@ -5632,14 +5690,23 @@ reciprocal-lattice theorem, they explain the exact 623/8,476 to 629/8,546
 q-series increment.  The subsequent zero-definition/six-theorem
 \nolinkurl{GeneralizedRvachevIdentifiability.lean} leaf raises that census by
 one module and six declarations to the historical 630/8,552 checkpoint.
-Subsequent concurrent integration raises the live static census to
-641/8,650.  Within that later union,
-\nolinkurl{GeometricPochhammerNormalConvergence.lean} contributes no
-definitions and three theorems, and
-\nolinkurl{PrimePowerBinomialValuation.lean} gains the unit-row, generic
-companion-row, and dyadic companion theorems.  No aggregate facade build is
-claimed for this current-tree census.  The retained PDF and the title-page pin
-remain historical receipts and do not claim parity with the merged source.
+Subsequent integration adds the zero-definition/three-theorem
+\nolinkurl{GeometricPochhammerNormalConvergence.lean} leaf, expands
+\nolinkurl{PrimePowerBinomialValuation.lean} from three to six theorems, adds
+the two-definition/six-theorem \nolinkurl{EffectiveMonotoneInverse.lean}
+module and the one-theorem \nolinkurl{FabiusInverseComputable.lean} module,
+and adds two theorems to \nolinkurl{QPochhammerInfinite.lean}.  The six newest
+q-calculus modules contribute another 36 declarations, bringing the current
+source census to 649/8,697.  No aggregate facade build is claimed for this
+current-tree census.  The retained PDF and the title-page pin remain historical
+receipts and do not claim parity with the merged source.
+
+Those six counts are \nolinkurl{QPochhammerInfiniteBounds.lean} (0+5),
+\nolinkurl{HeineTransformation.lean} (2+5),
+\nolinkurl{QGaussSummation.lean} (0+2),
+\nolinkurl{QPochhammerComplexOrder.lean} (1+4),
+\nolinkurl{BasicHypergeometricSeries.lean} (2+5), and
+\nolinkurl{QMultinomial.lean} (1+9).
 \end{remark}
 
 \section{Corrections and critical distinctions}\label{app:corrections}

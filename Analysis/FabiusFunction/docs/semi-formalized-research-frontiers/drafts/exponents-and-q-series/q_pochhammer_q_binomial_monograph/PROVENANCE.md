@@ -44,14 +44,19 @@ and was built in three serial passes from the 14,072-line, 656,200-byte source
 with SHA-256
 `062b7230d95ff8bd52b11253c6c3c8820d6f6a82e4307ae5d82a1d793c00c517`.
 
-The live source now postdates that receipt. Its 14,131-line, 659,907-byte TeX
+The live source now postdates that receipt. Its 14,172-line, 662,701-byte TeX
 source has SHA-256
-`29651bd102f4167b952957df74c1098a22c2becbec6de6bc769d9361a7aef6c8`.
+`5c3f2505062265d3ce9d0023564ed45c3b0486afa62fa3d6a7846894f3476af2`.
 It incorporates exhaustive crosswalks for `QPochhammerEntire` (zero
-definitions and five theorems), `QPochhammerInfinite` (one definition and
-twenty-nine theorems), and `QPochhammerDissection` (zero definitions and two
-theorems), plus `GeometricPochhammerNormalConvergence` (zero definitions and
-three theorems). The `QPochhammerEntire.lean` leaf proves the fixed-nome
+definitions and five legacy compatibility theorems), `QPochhammerInfinite`
+(one definition and twenty-nine theorems), and `QPochhammerDissection` (zero
+definitions and two theorems), plus `GeometricPochhammerNormalConvergence`
+(zero definitions and three theorems). It also inventories `QMultinomial`
+(one definition and seven theorems), `QPochhammerInfiniteBounds` (five
+theorems), `QPochhammerComplexOrder` (one definition and four theorems),
+`BasicHypergeometricSeries` (two definitions and five theorems),
+`HeineTransformation` (two definitions and five theorems), and
+`QGaussSummation` (two theorems). The `QPochhammerEntire.lean` leaf proves the fixed-nome
 single-symbol locally uniform product and differentiability, the
 division-free factor-zero criterion including `q = 0`, the reciprocal-power
 zero lattice for nonzero nome, and simple analytic order at every zero. The
@@ -65,7 +70,7 @@ complex strict contraction, including `q = 0`, and gives the dyadic Rvachev
 product and bounded-Fabius Fourier specializations. The compound
 `thm:qF-spectral` row remains Partial because its named centered/MGF packaging
 and exterior reciprocal, pole-divisor, and zero--pole clauses are absent. The
-forward status inventory remains 64 exact / 78 partial / 132 none / 8
+forward status inventory is 67 exact / 80 partial / 127 none / 8
 interface; the 191-result pre-Fabius core remains 36 / 29 / 123 / 3. No PDF
 was generated for this source-only update, so the retained 347-page artifact
 is historical and must not be treated as rendering the current source.

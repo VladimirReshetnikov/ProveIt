@@ -491,6 +491,12 @@ import FabiusFunction.QPochhammerIntegerIndex
 import FabiusFunction.QPartialFractions
 import FabiusFunction.PolynomialQTaylor
 import FabiusFunction.GaussianBinomialUniversal
+import FabiusFunction.QPochhammerInfiniteBounds
+import FabiusFunction.HeineTransformation
+import FabiusFunction.QGaussSummation
+import FabiusFunction.QPochhammerComplexOrder
+import FabiusFunction.BasicHypergeometricSeries
+import FabiusFunction.QMultinomial
 
 set_option autoImplicit false
 
@@ -611,6 +617,13 @@ input names to `[0,1]`, and combining it with the logarithmic Delta modulus
 proves `fabiusInv_isComputableRealFunction` for every bounded Fabius witness.
 This is a computability certificate for the total inverse, not an input-bit
 running-time theorem or an exact least endpoint-mass denominator.
+
+The q-calculus surface further includes finite-prefix infinite-product bounds,
+the Heine transformation and q-Gauss summation, a ratio-defined complex-order
+q-Pochhammer symbol, general basic-hypergeometric terms with their convergence
+criteria, and a division-free recursive q-multinomial coefficient.  These six
+modules expose exactly six definitions and thirty theorems; their explicit
+strict-contraction, nonvanishing, and denominator hypotheses are retained.
 
 The zeta–Lambert tail calculus of the Thue–Morse frontier results is
 formalized end to end.  The engine is the Euler log transform: for any

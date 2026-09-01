@@ -19,9 +19,10 @@ old flat layout; the **Previous path** column below is the map. Documents
 were moved verbatim — no `.tex` content was changed by the reorganization,
 so no PDF was rebuilt for it.
 
-**Current artifact checkpoint (2026-09-01).** The live Lean audit is 641
-facade-reachable modules and 8,650 public declarations, with no missing module
-headers or declaration documentation. Several PDFs below are retained,
+**Current artifact checkpoint (2026-09-01).** The live Lean audit scans 643
+source modules and 8,661 public declarations, with no missing module headers or
+declaration comments.
+Several PDFs below are retained,
 readable publication checkpoints rather than renders of the final merged TeX.
 In particular, the primary exposition, Lean walkthrough, canonical frontier,
 Integration-and-Transform master, notation catalogue, Representation master,
@@ -37,22 +38,39 @@ for Exponents. The
 listed page counts are artifact receipts, not claims of current source/PDF
 synchronization except where a package explicitly records it.
 
+The inverse-computability row below retains its detailed arrival history, but
+its latest source-only checkpoint supersedes the older inline boundary: the
+current report is 2,992 lines (SHA-256
+`359ac1239788d1d7af25214a6be26e421f716db6d1c254692469bddd2d25833a`).
+`EffectiveMonotoneInverse.lean` now proves the certified fixed-depth
+tolerant-bisection realizer and restricted sequential inversion, while
+`FabiusInverseComputable.lean` proves the totalized inverse is an
+`IsComputableRealFunction`. The retained 42-page PDF remains historical; the
+exact ceiling modulus, gap-to-modulus abstract strengthening, and input-bit
+asymptotics remain outside Lean.
+
 The two canonical syntheses have newer, source-pinned publication receipts.
 The retained q-series PDF is the 347-page, 2,996,319-byte A4 artifact with
 SHA-256
 `29b422a39c42be37bd1487d4245c44e55706720c545dd015957644e47014bd48`,
 built from the 14,072-line, 656,200-byte source with SHA-256
 `062b7230d95ff8bd52b11253c6c3c8820d6f6a82e4307ae5d82a1d793c00c517`.
-The live q-series source is now 14,115 lines and 658,674 bytes, with SHA-256
-`4f679c347aa5fa2488e1888b21b50a19d3257dbe2e200219e0b302c2ecc2c231`.
-It adds the zero-definition, three-theorem
+The live q-series source is now 14,172 lines and 662,701 bytes, with SHA-256
+`5c3f2505062265d3ce9d0023564ed45c3b0486afa62fa3d6a7846894f3476af2`.
+Six finite/infinite q-series modules contribute 69 public declarations for
+continuity at `q = 1`, Euler and q-binomial sums, Jacobi's triple product,
+q-Pascal summation, the noncommutative q-binomial theorem, and Rogers--Szegő
+polynomials. The local reciprocal-power zero-lattice theorem completes
+`QPochhammerEntire.lean` to five theorems, and two further general-product
+theorems complete `QPochhammerInfinite.lean` to one definition and 29
+theorems. The source also adds the zero-definition, three-theorem
 `GeometricPochhammerNormalConvergence.lean` crosswalk: the outer spectral
 product's locally uniform convergence is exact for every complex strict
 contraction, including `q = 0`, with dyadic Rvachev and bounded-Fabius Fourier
 specializations. The compound centered/MGF and exterior reciprocal/pole
-theorem remains Partial. The forward status ledger remains 64 Exact / 78
-Partial / 132 None / 8 interface rows. No PDF was generated for this
-source-only update, so the retained 347-page artifact is historical. The comb synthesis also
+theorem remains Partial. The forward status ledger is 67 Exact / 80 Partial /
+127 None / 8 interface rows. No PDF was generated for this source-only update,
+so the retained 347-page artifact is historical. The comb synthesis also
 has a later chapter-03 notation edit: its retained 158-page, 2,456,105-byte
 A4 PDF has SHA-256
 `81d249c8b2bb124836c858bd8e0ef9c8764606a2f9655a798d69e7565b1759b4`;
@@ -79,8 +97,8 @@ in the linked q-series registry remain unchanged by this merge.
 
 For the final source-only union, package-local READMEs and ledgers record the
 current q-series and Exponents source fingerprints. The live Exponents TeX is
-16,371 lines and 737,633 bytes with SHA-256
-`6102be1da3d7262d80da1dbd0de4ccb049e77a14018fe38afe4ba2b60fe1a66a`;
+16,372 lines and 737,804 bytes with SHA-256
+`d2f23a691372c70643ee859bf202dda4930bcbade835d7abb6bb849e8a048da9`;
 it includes the exact zero-order/exponent identifiability and constructive
 first-difference crosswalk from the new zero-definition, six-theorem Lean
 module, while zeta-quotient, cumulant/analytic-sample, and probability-law
@@ -244,13 +262,19 @@ rows (projection SHA-256
 `ff123825f7516adb1edfd9e738f9021d38c03960f0ea134554ede9e14cd8459f`),
 and the reviewed `theorem_concordance.csv` preserves those ten immutable
 source fields for all 194 rows. The structural validator passes with 748
-labels and 588 references. Its current dispositions are 39 Lean-proved,
-106 human-proved frontier results, 10 conjectures, 15 open problems, and 24
+labels and 588 references. Its current dispositions are 47 Lean-proved,
+98 human-proved frontier results, 10 conjectures, 15 open problems, and 24
 nonassertoric rows. In particular,
 the centered Appell deconvolution, positive-degree Appell mean-zero, and
 arbitrarily phased polynomial-deconvolution rows now have exact named Lean
 counterparts, while the Appell lattice theorem remains human-proved because
 its degree-`N+1` superconvergent-phase clause is not formalized.
+Eight inverse-computability rows are now exact as well: the main combined
+theorem, the three tolerant-comparison certificates, fixed-depth bisection,
+restricted sequential inversion, computable clamping, and the totalized
+sequential corollary. The broader abstract inversion row remains human-proved
+because the generic Lean theorem accepts a computable inverse modulus rather
+than deriving it from the manuscript's positive gap sequence.
 `ASSET_DISPOSITION.csv` accounts for 88 source-group files; the deduplicated
 asset tree is present, and its exhaustive live `assets/SHA256SUMS` ledger
 verifies all 61 retained payloads. The canonical PDF is still absent, so the

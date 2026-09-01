@@ -286,20 +286,20 @@ partition form
 \label{ao:thm:direct-gn}
 With $x_j=j!\,d_j$ and the partial Bell normalization
 $(\sum_jd_jz^{j})^{k}
-=\sum_{n\ge k}\frac{k!}{n!}\Bell_{n,k}(x_1,x_2,\dots)z^{n}$,
+=\sum_{n\ge k}\frac{k!}{n!}\ExponentialPartialBellPolynomial{n}{k}(x_1,x_2,\dots)z^{n}$,
 \begin{equation}
  \boxed{\;
- g_n=\frac1{n!}\sum_{k=1}^{n}(-L)^{k}\Bell_{n,k}
- +\frac{\beta}{(n-1)!}\sum_{k=0}^{n-1}(-L)^{k}\Bell_{n-1,k}
- +\frac1{(n-1)!}\sum_{k=1}^{n-1}k\,(-L)^{k-1}\Bell_{n-1,k},
+ g_n=\frac1{n!}\sum_{k=1}^{n}(-L)^{k}\ExponentialPartialBellPolynomial{n}{k}
+ +\frac{\beta}{(n-1)!}\sum_{k=0}^{n-1}(-L)^{k}\ExponentialPartialBellPolynomial{n-1}{k}
+ +\frac1{(n-1)!}\sum_{k=1}^{n-1}k\,(-L)^{k-1}\ExponentialPartialBellPolynomial{n-1}{k},
  \;}
  \label{ao:eq:gn-direct}
 \end{equation}
-all $\Bell_{m,k}=\Bell_{m,k}(x_1,x_2,\dots)$; combined with
+all $\ExponentialPartialBellPolynomial{m}{k}=\ExponentialPartialBellPolynomial{m}{k}(x_1,x_2,\dots)$; combined with
 \eqref{ao:eq:diagonal-dn} this is a nonrecursive finite formula for the
 arbitrary-order multiplicative coefficient.  The
 logarithmic-to-multiplicative conversion is the complete-Bell
-identity $g_n=\frac1{n!}\Bell_n(1!h_1,\dots,n!h_n)$, i.e.\
+identity $g_n=\frac1{n!}\ExponentialCompleteBellPolynomial{n}(1!h_1,\dots,n!h_n)$, i.e.\
 $ng_n=\sum_{j\le n}jh_jg_{n-j}$.
 \end{theorem}
 
@@ -804,7 +804,7 @@ Stirling numbers $s(k,j)$,
  H_k:=y^{k}f^{(k)}(y)=\sum_{j=1}^{k}s(k,j)\,E^{j}f,
  \qquad
  \frac{y^{r}G^{(r)}(y)}{G(y)}
- =\Bell_r\bigl(H_1,H_2,\dots,H_r\bigr),
+ =\ExponentialCompleteBellPolynomial{r}\bigl(H_1,H_2,\dots,H_r\bigr),
  \label{ao:eq:stirling-bell}
 \end{equation}
 a closed finite algorithm assembling every ordinary derivative from

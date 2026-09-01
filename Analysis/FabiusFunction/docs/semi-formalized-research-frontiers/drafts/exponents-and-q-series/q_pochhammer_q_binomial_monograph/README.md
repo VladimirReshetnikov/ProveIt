@@ -110,31 +110,38 @@ embedded and subsetted, including 5 Libertinus rows, with no Type-3
 fonts. The files under `assets/experiments/**/figures/` remain research
 figures, not publication manuscripts.
 
-The live master source now postdates that retained PDF. Its
-14,131-line, 659,907-byte source has SHA-256
-`29651bd102f4167b952957df74c1098a22c2becbec6de6bc769d9361a7aef6c8`.
+The current master TeX is a source-only successor to that checkpoint. Its
+14,172-line, 662,701-byte source has SHA-256
+`5c3f2505062265d3ce9d0023564ed45c3b0486afa62fa3d6a7846894f3476af2`.
 It includes exhaustive crosswalks for `QPochhammerEntire` (zero definitions
-and five theorems), `QPochhammerInfinite` (one definition and twenty-nine
-theorems), and `QPochhammerDissection` (zero definitions and two theorems),
-together with `GeometricPochhammerNormalConvergence` (zero definitions and
-three theorems) and expanded Euler, infinite-q-binomial, Jacobi, and
+and five legacy compatibility theorems), `QPochhammerInfinite` (one definition
+and twenty-nine theorems), `QPochhammerDissection` (zero definitions and two
+theorems), and `QBinomialTheoremInfinite` (one definition and twenty-two
+theorems), together with `GeometricPochhammerNormalConvergence` (zero
+definitions and three theorems). The newer inventory also includes
+`QMultinomial` (one definition and seven theorems),
+`QPochhammerInfiniteBounds` (five theorems), `QPochhammerComplexOrder` (one
+definition and four theorems), `BasicHypergeometricSeries` (two definitions
+and five theorems), `HeineTransformation` (two definitions and five theorems),
+and `QGaussSummation` (two theorems), as well as expanded Euler, Jacobi, and
 Rogers--Szegő material.
-The `QPochhammerEntire` crosswalk records fixed-nome local uniformity and
-entireness, the division-free factor-zero criterion valid at `q = 0`, the
-reciprocal-power zero lattice for nonzero nome, and simple analytic order at
-every zero. The generic `QPochhammerInfinite` surface now also proves actual
-derivative nonvanishing from every raw factor equation, including `q = 0`,
-and analytic order exactly one at every zero; `QPochhammerEntire` retains the
-legacy complex-wrapper names. The `QBinomialTheoremInfinite` inventory is one
-definition and twenty-two theorems: `finiteQPochhammerIn_zero_left` remains the single
-declaration owned by `GaussianBinomialAtOne` and is imported rather than
-redeclared. The forward status ledger is 64 Exact, 78 Partial, 132 None, and
-8 interface rows; the 191-result pre-Fabius core is 36/29/123/3. The compound outer spectral-product
-theorem remains Partial even though the new three-theorem leaf now proves the
-outer product's local-uniform (normal) convergence for every complex strict
-contraction, its nome-`1/4` Rvachev specialization, and the bounded-Fabius
-Fourier specialization. The named centered/MGF packaging and the exterior
-reciprocal formula, pole divisor, and zero--pole exchange remain outside Lean.
+The two newest generic theorems are
+`deriv_qPochhammerInfIn_ne_zero_of_mul_pow_eq_one`, which gives a nonzero
+derivative at every raw factor zero `a*q^j = 1` including `q = 0`, and
+`analyticOrderAt_qPochhammerInfIn_of_eq_zero`, which gives analytic order
+exactly one at every zero. The `QPochhammerEntire` wrappers retain the older
+`complexQPochhammerInf` names by transferring the generic local-uniformity,
+entireness, zero-locus, reciprocal-power, and analytic-order results rather
+than duplicating their analytic proofs. In `QBinomialTheoremInfinite`,
+`finiteQPochhammerIn_zero_left` remains the unique declaration owned by
+`GaussianBinomialAtOne` and is imported rather than redeclared. The forward
+status ledger is 67 Exact, 80 Partial, 127 None, and 8 interface rows; the
+191-result pre-Fabius core is 36/29/123/3. The compound outer spectral-product
+theorem remains Partial even though the three-theorem outer-product leaf proves
+local-uniform (normal) convergence for every complex strict contraction, its
+nome-`1/4` Rvachev specialization, and the bounded-Fabius Fourier
+specialization. Its named centered/MGF packaging and exterior reciprocal
+formula, pole divisor, and zero--pole exchange remain outside Lean.
 
 No PDF was generated for this source-only crosswalk update. The 347-page PDF
 therefore remains a source-pinned historical artifact, while the root package
