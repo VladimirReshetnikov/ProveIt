@@ -28,24 +28,34 @@ checksum ledger. Their superseded PDFs were retired with the donor packages
 and are not canonical renderings of this larger source. The former forward
 and inverse manuscript PDFs were removed for the same reason. The merged
 master retains one canonical publication checkpoint,
-`q_pochhammer_q_binomial_monograph.pdf`: a reproducible 335-page A4 artifact
-built from the then-current source SHA-256
-`9b7ac11a815efa7f3c6ea08b9626c06143fd6b0d633fef6edfc8bc21c2f6783a`
-by exactly three successful serial passes at fixed source epoch `1788242400`.
-The build gate pinned `origin/main` at
-`8a7d03dc379638a6cbda302074b2feba27c21961`; the 2,163,339-byte PDF has
-SHA-256
-`91c649d0c69628e134e71f1be6c39c3cbc96b91bfc63e456011083cf0e882f03`.
+`q_pochhammer_q_binomial_monograph.pdf`: a reproducible 340-page A4 artifact
+built from the then-current 13,690-line, 628,147-byte source with SHA-256
+`da420f5b2622cd088af43cea0ac448105c9f6af65cf1734de6535e3427f8e052`.
+Exactly three guarded serial passes produced 331, 340, and 340 pages. The
+2,180,191-byte PDF has SHA-256
+`e64a4ef65a9fcce3a4f211f2125b0f8440910cf4527635f76975b0967800e667`.
 The validation record in `README.md` distinguishes compilation, font
 embedding, complete page rendering, contact-sheet review, and full-resolution
 inspection. PDFs retained beneath `assets/` are research figures, not
 manuscripts.
 
-The live source now postdates that receipt: it incorporates the exhaustive
-`QPochhammerEntire`, `QPochhammerInfinite`, and `QPochhammerDissection` Lean
-crosswalks. The 335-page PDF therefore remains a historical publication
-checkpoint until the final source receives a fresh exact three-pass build and
-the package checksum ledger is regenerated.
+The live source now postdates that receipt. Its 13,941-line, 647,940-byte TeX
+source has SHA-256
+`619d45dad475fd869c294aeed1f1eac6b99d9b3cfef6a9487383ee3e92931bbe`.
+It incorporates exhaustive crosswalks for `QPochhammerEntire` (zero
+definitions and five theorems), `QPochhammerInfinite` (one definition and
+twenty-seven theorems), and `QPochhammerDissection` (zero definitions and two
+theorems). The `QPochhammerEntire.lean` leaf proves the fixed-nome
+single-symbol locally uniform product and differentiability, the
+division-free factor-zero criterion including `q = 0`, the reciprocal-power
+zero lattice for nonzero nome, and simple analytic order at every zero. Only
+`thm:poch-entire` is promoted by that leaf. The forward status inventory is
+51 exact / 78 partial / 145 none / 8 interface; the 191-result pre-Fabius core
+is 36 / 29 / 123 / 3 and the q-shifted-factorial chapter is 6 / 1 / 8 / 0.
+No normal-convergence claim is made for the additional outer product indexed
+by spectral scale. No PDF was generated for this source-only update, so the
+retained 340-page artifact is historical and must not be treated as rendering
+the current source.
 
 The former q-Pochhammer/q-binomial monograph arrived in commit
 `47172bc03ec078961d8b023dfe156ecd712efb65`. Its pre-repair source SHA-256 was

@@ -114,21 +114,31 @@ physical pages 1, 247, 313, 314, 319, 338, and 340 was clean. The files under
 `assets/experiments/**/figures/` remain research figures, not publication
 manuscripts.
 
-The live source now includes exhaustive crosswalks for
-`QPochhammerEntire` (four legacy compatibility wrappers),
-`QPochhammerInfinite` (one definition and twenty-nine theorems), and
-`QPochhammerDissection` (two theorems), together with expanded Euler,
-infinite-q-binomial, Jacobi, and Rogers--Szegő material.  The two newest
-generic theorems are
+The current master TeX is a source-only successor to that checkpoint. Its
+14,088-line, 657,425-byte source has SHA-256
+`791152ff41477e4f187d18edab195f1aa1232e9fbcafbbd536a62b24a7b8e799`.
+It includes exhaustive crosswalks for `QPochhammerEntire` (zero definitions
+and five legacy compatibility theorems), `QPochhammerInfinite` (one definition
+and twenty-nine theorems), `QPochhammerDissection` (zero definitions and two
+theorems), and `QBinomialTheoremInfinite` (one definition and twenty-two
+theorems), together with expanded Euler, Jacobi, and Rogers--Szegő material.
+The two newest generic theorems are
 `deriv_qPochhammerInfIn_ne_zero_of_mul_pow_eq_one`, which gives a nonzero
 derivative at every raw factor zero `a*q^j = 1` including `q = 0`, and
 `analyticOrderAt_qPochhammerInfIn_of_eq_zero`, which gives analytic order
-exactly one at every zero.  The unchanged `QPochhammerEntire` declarations
-retain the older `complexQPochhammerInf` names by transferring these generic
-facts, not by duplicating their analytic proofs.  `QBinomialTheoremInfinite`
-has one definition and twenty-two theorems; `finiteQPochhammerIn_zero_left`
-is canonically declared in `GaussianBinomialAtOne` and is only imported there,
-not redeclared.
-Those post-checkpoint source changes mean that the retained PDF does not render
-the live source. Publication synchronization requires a fresh exact three-pass
+exactly one at every zero. The `QPochhammerEntire` wrappers retain the older
+`complexQPochhammerInf` names by transferring the generic local-uniformity,
+entireness, zero-locus, reciprocal-power, and analytic-order results rather
+than duplicating their analytic proofs. In `QBinomialTheoremInfinite`,
+`finiteQPochhammerIn_zero_left` remains the unique declaration owned by
+`GaussianBinomialAtOne` and is imported rather than redeclared. The forward
+status ledger is 64 Exact, 78 Partial, 132 None, and 8 interface rows; the
+191-result pre-Fabius core is 36/29/123/3. The compound outer spectral-product
+theorem remains Partial: local uniformity for one symbol as a function of its
+argument at fixed contracting nome does not establish normal convergence of
+the additional product over spectral scales.
+
+No PDF was rebuilt for this source-only update. The retained 340-page PDF is
+therefore a historical publication checkpoint, and exact source/PDF parity is
+not claimed. Publication synchronization requires a fresh exact three-pass
 build followed by regeneration of the root package checksum ledger.

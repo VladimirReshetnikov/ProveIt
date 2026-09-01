@@ -4,15 +4,17 @@ COMPUTABILITY OF THE INVERSE FABIUS FUNCTION
 CURRENT SOURCE AND RETAINED PDF CHECKPOINT (2026-09-01)
 -------------------------------------------------------
 The current TeX has 2992 lines and SHA-256
-359ac1239788d1d7af25214a6be26e421f716db6d1c254692469bddd2d25833a.
+fde44c6ddf4f0e58a813e39a22a46eac62f71ea2f444fad74530d268b9cd9f00.
 It retains the Lagrange/synthesis crosswalk and local inverse-notation/source
-repairs, with the combined live audit updated to 631 modules and 8,556 public
-declarations.  Exactly three clean, strict, serial pdfLaTeX passes produced
-the retained 42-page A4 PDF (712,447 bytes; SHA-256
+repairs, with the combined live audit updated to 643 modules and 8,661 public
+declarations.  At an earlier source checkpoint, exactly three clean, strict,
+serial pdfLaTeX passes produced the retained 42-page A4 PDF (712,447 bytes;
+SHA-256
 dc8da9d476d6b5330aad0ac3253bab162ddcb944653b038bc0aede4be4fc3fe1).
-That PDF predates the present census update. A fresh three-pass render is
-required before publication synchronization is claimed again; the operational
-ledger already verifies the current distinct source and retained PDF.
+That PDF is explicitly stale against the current merged source. A fresh
+three-pass render is required before publication synchronization is claimed
+again; the operational ledger already verifies the current distinct source
+and retained PDF.
 
 Contents
 --------
@@ -88,9 +90,9 @@ inverse identities/calculus, exact dyadic inverse evaluation, and the leading
 inverse endpoint equivalent.  The report names those exact declarations and
 now crosswalks the completed inverse-computability layer declaration by
 declaration; only the stronger gap-derived abstract inversion statement keeps
-an explicit partial boundary. The live union audit scans 631 Lean modules and 8,556 public
-declarations with zero documentation/header gaps.  No unqualified worldwide
-novelty claim is made.
+an explicit partial boundary. The live union audit scans 643 Lean modules and
+8,661 public declarations with zero documentation/header gaps.  No unqualified
+worldwide novelty claim is made.
 
 Reproducibility
 ---------------
@@ -163,5 +165,6 @@ embedded and subset, six are Libertinus, and no Type 3 font is used.  The
 final log has no errors, warnings, unresolved references or citations, rerun
 request, overfull box, or underfull box.  Pages 1, 21, and 42 were inspected
 visually.  Auxiliary sidecars were removed after validation.  The active
-six-entry ledger verifies the complete current payload, but the census-only
-source update means the PDF is no longer claimed to render that source.
+six-entry ledger verifies the complete current payload.  The current merged
+source and retained PDF are distinct: the retained PDF is explicitly stale and
+is not claimed to render that source.

@@ -177,6 +177,23 @@ RETIRED_COMMANDS = {
     "extF": "FabiusGlobal",
     "Fext": "FabiusGlobal",
     "InvF": "FabiusClampedQuantile or FabiusQuantile",
+    "stirone": "UnsignedStirlingFirstKind",
+    "stirtwo": "StirlingSecondKind",
+    "eulerian": "TypeAEulerianNumber",
+    "eulertwo": "SecondOrderEulerianNumber",
+    "BellP": "ExponentialPartialBellPolynomial",
+    "BellC": "ExponentialCompleteBellPolynomial",
+    "OrdinaryBellPolynomial": "OrdinaryPartialBellPolynomial",
+    "OrdinaryBellSeriesOf": "OrdinaryGeneratingFunctionOf",
+    "OrdinaryGeneratingSeriesOf": "OrdinaryGeneratingFunctionOf",
+    "NormalizedInverseCoefficient": "NormalizedReversionCoefficient",
+    "NormalizedOrdinaryCoefficient": "OrdinaryGeneratingCoefficient",
+    "PosetMinimum": "PartitionLatticeMinimum",
+    "PosetMaximum": "PartitionLatticeMaximum",
+    "TracePowerSum": "TraceBellArgument",
+    "cyc": "CycleCountOperator",
+    "setpart": "SetPartitionOperator",
+    "bitand": "BitwiseAnd",
 }
 
 DECL_RE = re.compile(
