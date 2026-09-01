@@ -65,8 +65,9 @@ is the canonical union of the additive-dyadic and geometric-comb manuscripts.
 It preserves the distinct modal, Mellin, regular-variation, spline,
 reciprocal-product, Euler--Maclaurin, Ruffa, Thue--Morse, and interpolation
 results while stating their common Gaussian--Pascal and Jackson--Newton spine
-once. Its 180-row source disposition, 151-row historical-ledger audit, and
-156-page certified publication are documented in that package.
+once. Its 180-row source disposition and 151-row historical-ledger audit pass;
+the retained 158-page PDF is a historical checkpoint pending a fresh render of
+the current notation-normalized source.
 
 [`fabius_information_frontier/`](fabius_information_frontier/) remains an
 archival information-geometry intake. Its arrival and operational ledgers
