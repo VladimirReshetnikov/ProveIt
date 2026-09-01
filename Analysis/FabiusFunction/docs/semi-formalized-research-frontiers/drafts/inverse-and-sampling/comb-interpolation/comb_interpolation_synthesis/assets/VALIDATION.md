@@ -12,13 +12,15 @@ local general-$q$/endpoint-jet, Lagrange,
 `FabiusFunction.PrimePowerBinomialValuation`, reference-appendix, and driver
 revisions in `chapters/03_additive_dyadic.tex`,
 `chapters/90_reference_appendices.tex`, and
-`comb_interpolation_synthesis.tex`. The repository-wide documentation census
-at this merge checkpoint is 623 Lean modules and 8,476 public declarations.
-The checked-in PDF was built from the immediately preceding source graph and
-passed the complete publication gate recorded below. A later canonical-notation
-edit in `chapters/03_additive_dyadic.tex` requires a fresh exact three-pass
-render. The root `SHA256SUMS` is the single exhaustive package ledger and
-verifies the current source and retained PDF as distinct payloads; there is no
+`comb_interpolation_synthesis.tex`, followed by the exact generic-prime and
+dyadic companion-row valuation crosswalk. The repository-wide documentation
+census recorded at the earlier merge checkpoint was 629 Lean modules and 8,546
+public declarations. The checked-in PDF was built from the earlier source graph
+and passed the complete publication gate recorded below. Later
+canonical-notation and companion-row edits in
+`chapters/03_additive_dyadic.tex` require a fresh exact three-pass render. The
+root `SHA256SUMS` is the single exhaustive package ledger and verifies the
+current source and retained PDF as distinct payloads; there is no
 `assets/SHA256SUMS`.
 
 ## Completed source and evidence checks
@@ -68,6 +70,35 @@ The complete row-level audit is
 [`HISTORICAL_LEDGER_AUDIT.csv`](HISTORICAL_LEDGER_AUDIT.csv). Because these
 are historical manifests, mismatches are reported rather than silently
 rewritten. They do not certify the current canonical payloads.
+
+## Current source-only companion-row valuation checkpoint
+
+- The existing strict-interior dyadic comb-weight theorem remains crosswalked
+  exactly to `Fabius.twoPowChoose_padicValNat`; the arbitrary-prime row-$p^m$
+  declarations and their positive right endpoint remain unchanged.
+- The chapter now proves the stronger companion proposition.  For every prime
+  $p$, all columns $0\le r<p^m$ in row $p^m-1$ are $p$-adic units, and for the
+  essential strict range $0<j<p^m$,
+  $v_p\binom{p^m-2}{j-1}=v_p(j)$.  Its exact compiled declaration crosswalk is
+  `Fabius.primePowerSubOneChoose_padicValNat`,
+  `Fabius.primePowerSubTwoChoose_padicValNat`, and
+  `Fabius.twoPowSubTwoChoose_padicValNat`, respectively.  The last declaration
+  is the dyadic specialization used for the endpoint-flat weights.
+- The concordance generator checks all three new identifiers in
+  `FabiusFunction.PrimePowerBinomialValuation` while preserving the existing
+  `Fabius.twoPowChoose_padicValNat` declaration as the primary exact mapping
+  for source row `thm:weight-valuation`.  The curated concordance remains 232
+  rows with source projection
+  `a065b161c80786829033f1efd39bb5d1e4c521b9b9c4446959a73729a55718e0`.
+  This is an identifier-presence check, not a Lean build or theorem-type check.
+- The source validator passes the nine-file TeX graph, environment and proof
+  discipline (213 result environments, 150 proof-required), 801 labels, 783
+  references, 62 bibliography keys, all disposition and evidence audits, the
+  concordance, and the exhaustive package ledger.
+- No PDF was rebuilt.  The retained 158-page PDF remains the validated
+  historical checkpoint with 2,456,105 bytes and SHA-256
+  `81d249c8b2bb124836c858bd8e0ef9c8764606a2f9655a798d69e7565b1759b4`;
+  the root ledger records it separately from the current source.
 
 ## Retained semantic-union publication checkpoint
 

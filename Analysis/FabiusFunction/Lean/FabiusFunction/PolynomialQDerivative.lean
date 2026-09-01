@@ -48,8 +48,10 @@ variable {R : Type*} [Semiring R]
 /-- The `q`-integer `[n]_q = 1 + q + ⋯ + q^{n-1}`. -/
 def qInt (q : R) (n : ℕ) : R := ∑ i ∈ range n, q ^ i
 
+/-- The zeroth `q`-integer is zero. -/
 @[simp] theorem qInt_zero (q : R) : qInt q 0 = 0 := by simp [qInt]
 
+/-- The first `q`-integer is one. -/
 @[simp] theorem qInt_one (q : R) : qInt q 1 = 1 := by simp [qInt]
 
 /-- `[n+1]_q = [n]_q + q^n`. -/
@@ -94,25 +96,31 @@ noncomputable def qDerivative (q : R) : R[X] →ₗ[R] R[X] where
       simp only [mul_sum, ← C_mul', mul_assoc, RingHom.map_mul, forall_const,
         zero_mul, RingHom.map_zero, sum]
 
+/-- Unfold the coefficientwise definition of the polynomial `q`-derivative. -/
 theorem qDerivative_apply (q : R) (p : R[X]) :
     qDerivative q p = p.sum fun n a => C (a * qInt q n) * X ^ (n - 1) := rfl
 
+/-- The `q`-derivative of `a Xⁿ` is `a [n]_q Xⁿ⁻¹`. -/
 @[simp] theorem qDerivative_monomial (q : R) (n : ℕ) (a : R) :
     qDerivative q (monomial n a) = C (a * qInt q n) * X ^ (n - 1) := by
   rw [qDerivative_apply, sum_monomial_index]
   simp
 
+/-- The `q`-derivative of a constant polynomial is zero. -/
 @[simp] theorem qDerivative_C (q a : R) : qDerivative q (C a) = 0 := by
   rw [← monomial_zero_left, qDerivative_monomial]
   simp
 
+/-- The `q`-derivative of `Xⁿ` is `[n]_q Xⁿ⁻¹`. -/
 @[simp] theorem qDerivative_X_pow (q : R) (n : ℕ) :
     qDerivative q (X ^ n) = C (qInt q n) * X ^ (n - 1) := by
   rw [← monomial_one_right_eq_X_pow, qDerivative_monomial, one_mul]
 
+/-- The `q`-derivative of `X` is one. -/
 @[simp] theorem qDerivative_X (q : R) : qDerivative q X = 1 := by
   simpa using qDerivative_X_pow q 1
 
+/-- The `q`-derivative of `a Xⁿ`, written using `C a * X ^ n`. -/
 theorem qDerivative_C_mul_X_pow (q a : R) (n : ℕ) :
     qDerivative q (C a * X ^ n) = C (a * qInt q n) * X ^ (n - 1) := by
   rw [C_mul_X_pow_eq_monomial, qDerivative_monomial]

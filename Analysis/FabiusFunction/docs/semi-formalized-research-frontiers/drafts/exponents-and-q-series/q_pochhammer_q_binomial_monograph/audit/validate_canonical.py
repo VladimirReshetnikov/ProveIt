@@ -124,6 +124,17 @@ CITE_RE = re.compile(r"\\cite(?:\[[^]]*\])?\{([^}]+)\}")
 BIBITEM_RE = re.compile(r"\\bibitem(?:\[[^]]*\])?\{([^}]+)\}")
 INPUT_RE = re.compile(r"\\input\{([^}]+)\}")
 COMMENT_RE = re.compile(r"(?<!\\)%.*$")
+BY_CHAPTER_ROW_RE = re.compile(
+    r"^(.*?)\s*&\s*(\d+)\s*&\s*(\d+)\s*&\s*(\d+)\s*&\s*(\d+)\\\\\s*$",
+    re.MULTILINE,
+)
+FORWARD_STATUS_NARRATIVE_RE = re.compile(
+    r"Of the (\d+) labelled forward results, (\d+) are\s+\\statusexact,\s*"
+    r"(\d+) are\s+\\statuspartial,\s*(\d+) are\s+\\statusnone,\s*"
+    r"and (\d+) are\s+\\statusna\.",
+    re.DOTALL,
+)
+FORWARD_STATUS_KEYS = ("exact", "partial", "none", "na")
 
 
 def without_comments(text: str) -> str:
@@ -298,6 +309,102 @@ def check_citations(texts: list[tuple[Path, str]], failures: list[str]) -> int:
         if key and key not in bib_locations:
             failures.append(f"{location}: unresolved citation {key}")
     return len(citations)
+
+
+def check_forward_status_ledger(
+    master_text: str, failures: list[str]
+) -> tuple[int, Counter[str]]:
+    """Cross-check the forward chapter summary against every result row."""
+
+    clean = without_comments(master_text)
+    try:
+        after_chapter = clean.split(r"\section{By chapter}", 1)[1]
+        by_chapter, by_result = after_chapter.split(r"\section{By result}", 1)
+    except IndexError:
+        failures.append("forward status ledger sections are missing or out of order")
+        return 0, Counter()
+
+    declared: dict[str, tuple[int, int, int, int]] = {}
+    declared_total: tuple[int, int, int, int] | None = None
+    for match in BY_CHAPTER_ROW_RE.finditer(by_chapter):
+        name = " ".join(match.group(1).split())
+        values = tuple(int(value) for value in match.groups()[1:])
+        if name == r"\textbf{Forward total}":
+            declared_total = values
+        elif name != "Chapter":
+            if name in declared:
+                failures.append(f"duplicate forward chapter status row: {name}")
+            declared[name] = values
+
+    actual: dict[str, Counter[str]] = {}
+    current: str | None = None
+    for line in by_result.splitlines():
+        if line.startswith(r"\multicolumn{3}") and r"{\itshape " in line:
+            heading = line.split(r"{\itshape ", 1)[1]
+            if not heading.endswith(r"}\\"):
+                failures.append(f"malformed forward result heading: {line.strip()}")
+                current = None
+                continue
+            current = " ".join(heading[:-3].split())
+            if current in actual:
+                failures.append(f"duplicate forward result heading: {current}")
+            actual[current] = Counter()
+            continue
+        if current is not None:
+            actual[current].update(
+                re.findall(r"\\status(exact|partial|none|na)", line)
+            )
+
+    declared_names = set(declared)
+    actual_names = set(actual)
+    if declared_names != actual_names:
+        missing = sorted(declared_names - actual_names)
+        extra = sorted(actual_names - declared_names)
+        failures.append(
+            "forward status chapter/result headings differ: "
+            f"missing={missing!r}, extra={extra!r}"
+        )
+    for name in sorted(declared_names & actual_names):
+        actual_values = tuple(actual[name][key] for key in FORWARD_STATUS_KEYS)
+        if declared[name] != actual_values:
+            failures.append(
+                f"forward status mismatch for {name}: "
+                f"chapter={declared[name]!r}, result_rows={actual_values!r}"
+            )
+
+    result_total = Counter(
+        {
+            key: sum(section[key] for section in actual.values())
+            for key in FORWARD_STATUS_KEYS
+        }
+    )
+    result_values = tuple(result_total[key] for key in FORWARD_STATUS_KEYS)
+    if declared_total is None:
+        failures.append("forward status table has no total row")
+    elif declared_total != result_values:
+        failures.append(
+            f"forward status total mismatch: chapter={declared_total!r}, "
+            f"result_rows={result_values!r}"
+        )
+
+    narrative = FORWARD_STATUS_NARRATIVE_RE.search(clean)
+    if narrative is None:
+        failures.append("forward status narrative total is missing")
+    else:
+        narrative_row_count = int(narrative.group(1))
+        narrative_values = tuple(int(narrative.group(i)) for i in range(2, 6))
+        result_row_count = sum(result_values)
+        if narrative_row_count != result_row_count:
+            failures.append(
+                f"forward narrative row count is {narrative_row_count}, "
+                f"but result table has {result_row_count}"
+            )
+        if narrative_values != result_values:
+            failures.append(
+                f"forward narrative status total is {narrative_values!r}, "
+                f"but result table has {result_values!r}"
+            )
+    return len(actual), result_total
 
 
 def check_concordance(
@@ -601,6 +708,9 @@ def main() -> int:
 
     failures: list[str] = []
     check_retired_source_trees(failures)
+    forward_chapters, forward_statuses = check_forward_status_ledger(
+        MASTER.read_text(encoding="utf-8"), failures
+    )
     chapter_paths = check_master_inputs(failures)
     paths = [MASTER, *chapter_paths]
     texts = [(path, path.read_text(encoding="utf-8")) for path in paths]
@@ -646,6 +756,13 @@ def main() -> int:
     )
     print(f"archival identity records: {len(ARCHIVAL_RECORD_LABELS)}")
     print(f"retired source trees: {len(RETIRED_SOURCE_DIRS)} absent")
+    print(
+        f"forward status ledger: chapters={forward_chapters}, "
+        + ", ".join(
+            f"{status}={forward_statuses[status]}"
+            for status in FORWARD_STATUS_KEYS
+        )
+    )
     print(
         "canonical results: "
         + ", ".join(f"{kind}={result_counts[kind]}" for kind in sorted(result_counts))
