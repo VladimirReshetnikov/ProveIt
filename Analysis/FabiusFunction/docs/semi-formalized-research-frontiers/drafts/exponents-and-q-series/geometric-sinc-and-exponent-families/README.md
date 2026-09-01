@@ -14,8 +14,8 @@ natural-boundary program.
 
 The current live Exponents synthesis source is
 `Exponents_and_q_Series_Frontiers/Exponents_and_q_Series_Frontiers.tex`
-(16,353 lines, 736,736 bytes, SHA-256
-`ac929bb9a79e69ab59e253fa1acd6a1d97c5ee35bdac07dc22f22a1ec5c56bb3`).
+(16,352 lines, 736,693 bytes, SHA-256
+`10aaa650902a48834021a7713ee8ec15eea3c9c15b5617ff276e423480474eb7`).
 It now includes the exact Lean crosswalk from integer-zero multiplicities to
 the exponent sequence, constructive dyadic-order first differences, and full
 generalized-product rigidity.  It also records the zero-definition,

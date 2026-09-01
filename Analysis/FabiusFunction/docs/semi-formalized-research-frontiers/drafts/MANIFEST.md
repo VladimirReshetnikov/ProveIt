@@ -82,7 +82,7 @@ their source dispositions. Their content and provenance now live in the single
 root-level `q_pochhammer_q_binomial_monograph/`; every retired layout remains
 recoverable from its pinned revision and Git history. The remaining standalone
 q-series reports retain their thematic subgroup paths. In particular,
-Exponents has a 16,353-line current source and a retained 238-page PDF.  That
+Exponents has a 16,352-line current source and a retained 238-page PDF.  That
 PDF is the three-pass artifact built from the preceding 16,274-line source;
 basic structural and font checks passed, but the larger batch stopped before a
 fresh full log, page-box, and visual publication audit.  It therefore remains a
@@ -101,8 +101,8 @@ in the linked q-series registry remain unchanged by this merge.
 
 For the final source-only union, package-local READMEs and ledgers record the
 current q-series and Exponents source fingerprints. The live Exponents TeX is
-16,353 lines and 736,736 bytes with SHA-256
-`ac929bb9a79e69ab59e253fa1acd6a1d97c5ee35bdac07dc22f22a1ec5c56bb3`;
+16,352 lines and 736,693 bytes with SHA-256
+`10aaa650902a48834021a7713ee8ec15eea3c9c15b5617ff276e423480474eb7`;
 it includes the exact zero-order/exponent identifiability and constructive
 first-difference crosswalk from the new zero-definition, six-theorem Lean
 module, while zeta-quotient, cumulant/analytic-sample, and probability-law

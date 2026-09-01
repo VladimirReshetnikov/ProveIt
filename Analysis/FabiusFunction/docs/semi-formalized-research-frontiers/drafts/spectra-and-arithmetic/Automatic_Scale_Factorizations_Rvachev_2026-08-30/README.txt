@@ -24,14 +24,19 @@ From this directory:
     pdflatex -interaction=nonstopmode -halt-on-error automatic_scale_factorizations.tex
 
 The Python script requires Python 3.11+, NumPy, SciPy, Matplotlib, and mpmath.
-The current repository report was compiled in exactly those three serial
+The retained repository report was compiled in exactly those three serial
 pdfLaTeX passes.  It selects the retained PNG plot companions so the 22-page
 A4 PDF keeps Libertinus prose, embeds and subsets every font, and contains no
 Type 3 font; the vector-PDF plot companions remain reproducibility payloads.
-The synchronized PDF is 920,804 bytes with SHA-256
+The retained historical PDF is 920,804 bytes with SHA-256
 `fd5069812cad0e9a4f618721fd60534a5ecf8694631043dc133a5e2ca54c5f8b`;
-the 1,684-line source has SHA-256
+its 1,684-line build source had SHA-256
 `c705aefb011dc99fcba48aca2bbbf5fde2fb8c65c720b6ab06bfc9fd24193e5f`.
+The live TeX changed after that render during notation normalization and now
+has 1,682 lines, 62,451 bytes, and SHA-256
+`5d3ff04bf649e76bfff6affbc04cac9f57a8df0eb3ccdf90c00e4e01f6614f2f`.
+A fresh three-pass build is therefore required before PDF/source
+synchronization is claimed.
 Every page is A4 at rotation zero, contains extractable non-whitespace text,
 and rendered cleanly in the page 1/11/22 visual sample.  The PDF carries
 title, author, subject, and keyword metadata.  All 23 font rows are embedded
