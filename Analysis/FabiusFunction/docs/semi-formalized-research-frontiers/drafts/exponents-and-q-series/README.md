@@ -13,9 +13,9 @@ overlap:
   contains the central exponent/geometric-sinc synthesis and its
   negative/reciprocal and cyclotomic companion reports.
 
-The retained [`q-pochhammer-and-inversion/`](q-pochhammer-and-inversion/)
-index records historical source locations; it no longer contains a live
-package. Every live package appears exactly once. The former three
+The former `q-pochhammer-and-inversion/` locations are recorded in pinned
+history; no live index or package remains at that path. Every live package
+appears exactly once. The former three
 general-q-series guides, forward q-Pochhammer/q-binomial monograph, and
 inverse-q synthesis have been dispositioned into
 [`q_pochhammer_q_binomial_monograph/`](q_pochhammer_q_binomial_monograph/).
@@ -496,8 +496,8 @@ remain research frontiers. These fractional-Volterra API claims were checked at 
 
 Geometric-sinc subgroup member:
 [`Exponents_and_q_Series_Frontiers/`](geometric-sinc-and-exponent-families/Exponents_and_q_Series_Frontiers/)
-(current source-only TeX: 16,262 lines and 731,016 bytes, SHA-256
-`3775ab95d61542a21add7402c477386722d12c829416f48646fd9cb495ab962e`;
+(current source-only TeX: 16,262 lines and 731,058 bytes, SHA-256
+`9eeddec194d71c9d5d4fae84ffc2e0267ee6f910a30c582f0bb1df8105696ce0`;
 retained historical PDF: 237 A4 pp and 6,313,577 bytes, SHA-256
 `7599ebc1dc137dbc0d3891e7fade43678abac255e2fa78627111ff0555b5681d`;
 across seven parts; both parent ledgers verify the current TeX and retained

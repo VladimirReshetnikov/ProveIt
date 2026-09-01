@@ -4477,12 +4477,12 @@ that half-line integral with the Self-Reconstruction report's unscaled
 $\prod_{j\ge0}\SincRad^2(\pi\xi/2^j)$ formula and its $1/(2\pi)$-scaled sine-quotient formula
 indexed from one.
 
-At compiled source checkpoint \texttt{a3854643d}, the Rvachev moment--Appell concordance is
+The current Rvachev moment--Appell source concordance is
 \path{RvachevMomentAppell.lean}.  Its six public definitions are
 \lean{rvachevRawMomentRat}, \lean{rvachevReciprocalMomentRat},
 \lean{rvachevAppellPolynomialRat}, \lean{rvachevAppellPolynomial}, and
 \lean{rvachevDeconvolvedPolynomial}, together with
-\lean{rvachevDeconvolutionLinearMap}.  Its thirty public theorems are
+\lean{rvachevDeconvolutionLinearMap}.  Its thirty-three public theorems are
 \lean{rvachevRawMomentRat_zero}, \lean{rvachevRawMomentRat_even},
 \lean{rvachevRawMomentRat_odd}, \lean{rvachevReciprocalMomentRat_zero},
 \lean{binomialConv_rvachevRawMomentRat_reciprocal},
@@ -4510,7 +4510,10 @@ At compiled source checkpoint \texttt{a3854643d}, the Rvachev moment--Appell con
 \lean{rvachevDeconvolvedPolynomial_eq_zero_iff},
 \lean{rvachevDeconvolutionLinearMap_injective},
 \lean{rvachevDeconvolvedPolynomial_injective}, and
-\lean{integral_eval_rvachevDeconvolvedPolynomial_add_mul_rvachev}.  They package the full
+\lean{integral_eval_rvachevDeconvolvedPolynomial_add_mul_rvachev},
+\lean{integral_eval_rvachevDeconvolvedPolynomial_sub_mul_rvachev},
+\lean{integral_eval_rvachevAppellPolynomial_sub_mul_rvachev}, and
+\lean{integral_eval_rvachevAppellPolynomial_mul_rvachev_eq_zero}.  They package the full
 rational raw-moment sequence, its formal binomial-convolution reciprocal and complete-Bell
 description, rational and real monic Appell families of exact degree, and coefficientwise
 polynomial deconvolution as a real linear map preserving zero, addition, scalar
@@ -4518,19 +4521,27 @@ multiplication, finite sums, and constant-polynomial multiplication.  It sends a
 and $X^n$ to the correspondingly scaled and unscaled Rvachev--Appell polynomial.  Its
 triangular top term is unchanged, so it preserves exact natural degree and leading
 coefficient, has trivial kernel, and is injective as both the packaged linear map and the
-underlying operation.  Rvachev smoothing recovers the original polynomial.  This reciprocal-moment
+underlying operation.  Besides additive smoothing, reflection invariance of the density gives
+the exact centered convolution of every deconvolved polynomial, the corresponding Appell
+identity recovers $x^n$, and every positive-degree Rvachev--Appell polynomial has zero mean.
+This reciprocal-moment
 Appell family is not the dyadic
 $\operatorname{App}_n$ family fixed in the global notation convention above.
 
-At compiled source checkpoint \texttt{a3854643d},
-\path{RvachevPolynomialSynthesis.lean} exports no public definitions and exactly four public
+The current \path{RvachevPolynomialSynthesis.lean} source exports no public definitions and exactly five public
 theorems: \lean{tsum_rvachevDeconvolvedPolynomial_mul_shifted_rvachevUp},
 \lean{normalized_tsum_rvachevDeconvolvedPolynomial_mul_shifted_rvachevUp},
 \lean{sum_Ioo_rvachevDeconvolvedPolynomial_mul_shifted_rvachevUp}, and
-\lean{normalized_sum_Ioo_rvachevDeconvolvedPolynomial_mul_shifted_rvachevUp}.  For every
-nonzero natural mesh $M$ and polynomial of degree at most $v_2(M)$, these give the global
+\lean{normalized_sum_Ioo_rvachevDeconvolvedPolynomial_mul_shifted_rvachevUp}, together with
+\lean{normalized_tsum_shifted_rvachevDeconvolvedPolynomial_mul_rvachevUp}.  For every
+nonzero natural mesh $M$ and polynomial of degree at most $\TwoAdicValuation(M)$, these give the global
 raw and normalized \texttt{tsum} identities and, on $[-1,1]$, their exact finite
-$k\in(-2M,2M)$ forms.
+$k\in(-2M,2M)$ forms.  The fifth theorem gives arbitrary real phase $\theta$:
+the normalized sum samples
+$\mathscr D_{\RvachevUp}P\bigl(x-(\theta+k)/M\bigr)$ against
+$\RvachevUp\bigl((\theta+k)/M\bigr)$ and recovers $P(x)$.  Its exact range is
+$\deg P\leq \TwoAdicValuation(M)$; it does not prove the separate degree-$(N+1)$
+superconvergent-phase extension in the stronger lattice-reproduction manuscript theorem.
 
 At the focused-build checkpoint of 30 August 2026,
 \path{CompositeMeshSharpness.lean} exports one public definition,
@@ -4542,8 +4553,8 @@ At the focused-build checkpoint of 30 August 2026,
 \lean{two_pow_le_of_rvachevCombExactThrough},
 \lean{isLeast_rvachevCombExactThrough}, and
 \lean{isLeast_rvachevCombExactThrough_even}.  Universal shifted-comb exactness through
-degree $d$ holds for a nonzero natural mesh $M$ exactly when $d\le v_2(M)$, equivalently
-when $2^d\mid M$.  The monomial of degree $v_2(M)+1$ fails at some real shift, $2^d$ is
+degree $d$ holds for a nonzero natural mesh $M$ exactly when $d\le \TwoAdicValuation(M)$, equivalently
+when $2^d\mid M$.  The monomial of degree $\TwoAdicValuation(M)+1$ fails at some real shift, $2^d$ is
 the least universally exact mesh, and $4^N$ is the least mesh for the complete polynomial
 space through degree $2N$.  These statements do not assert minimality for an individual
 Legendre polynomial, one fixed $S_N$, or a target-adapted mesh.
@@ -4561,7 +4572,7 @@ definitions: \lean{rvachevLegendreDeconvolutionPolynomial},
 \lean{rvachevLegendreTranslateBlock_eq_rvachevLegendreBlock},
 \lean{intervalIntegral_rvachevLegendreTranslateBlock_mul}, and
 \lean{sum_rvachevLegendreAtomCoefficient_mul_gram}.  For
-$Q_d=\mathcal D_{\RvachevUp}P_d$, the first two prove exact natural degree $d$ and the explicit unchanged
+$Q_d=\mathscr D_{\RvachevUp}P_d$, the first two prove exact natural degree $d$ and the explicit unchanged
 leading coefficient $2^{-d}\binom{2d}{d}$.  The remaining theorems specialize the exact finite
 synthesis to mesh $2^d$, then to $4^n$ for the even mode, identify each literal finite
 translate block with the existing polynomial block on $[-1,1]$, and prove both its complete
@@ -4601,7 +4612,7 @@ At compiled source checkpoint \texttt{a3854643d}, the focused-build
 \lean{tendsto_rvachevLegendrePartialSumTranslateBlock}.  They close the literal outer
 translate-block series with pointwise and supremum-norm absolute summability and pointwise
 and uniform \texttt{HasSum}/\texttt{tsum} forms.  They also identify
-$C_N=\mathcal D_{\RvachevUp}S_N$ with the finite sum of deconvolved modes, prove that $C_N$ has the
+$C_N=\mathscr D_{\RvachevUp}S_N$ with the finite sum of deconvolved modes, prove that $C_N$ has the
 same natural degree and leading coefficient as $S_N$ (including degenerate visible-degree
 drops), expand its common-mesh
 coefficients, prove global and finite synthesis at mesh $4^N$, and identify the resulting
@@ -4611,8 +4622,8 @@ interval supremum norm; raw \texttt{TendstoUniformlyOn}, norm-error-to-zero, and
 forms are exported as well.  No rate, coefficientwise limit, or uniform convergence outside
 $[-1,1]$ is asserted.
 
-These five modules have public definition/theorem inventories $6/30$, $0/4$, $1/7$,
-$6/7$, and $5/25$, respectively, for exactly $91$ public declarations.  Universal
+These five modules have public definition/theorem inventories $6/33$, $0/5$, $1/7$,
+$6/7$, and $5/25$, respectively, for exactly $95$ public declarations.  Universal
 whole-space mesh sharpness is now proved, but minimality for an individual Legendre mode,
 block, or partial sum is not.  Their APIs also do not prove an analytic
 reciprocal-MGF or Appell generating-series identity, a literal differential-series

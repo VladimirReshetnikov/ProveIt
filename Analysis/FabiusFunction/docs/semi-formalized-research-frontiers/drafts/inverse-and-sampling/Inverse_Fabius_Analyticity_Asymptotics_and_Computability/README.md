@@ -24,11 +24,18 @@ Status language is strict:
 - `Conjecture` or `open problem` means that a genuine proof obligation
   remains.
 
-`theorem_concordance.csv` will record the disposition of every source result
-environment.  `PROVENANCE.md` records source and asset lineage, while
-`audit/SOURCE_REVISION` pins the immutable pre-consolidation tree used by the
-reproducible extractor.
+`theorem_concordance.csv` records the disposition of all 194 source-result
+environments while preserving the ten immutable source fields reproduced from
+`audit/SOURCE_REVISION`.  Its current totals are 39 Lean-proved, 106
+human-proved frontier results, 10 conjectures, 15 open problems, and 24
+nonassertoric rows.  The centered Appell deconvolution, positive-degree Appell
+mean-zero, and arbitrarily phased polynomial-deconvolution rows now have exact
+named Lean counterparts.  The Appell lattice theorem remains human-proved:
+Lean covers its arbitrary-phase `0 <= n <= N` formula, but not its additional
+degree-`N+1` clause at the parity-selected superconvergent phases.  The static
+canonical validator passes.  `PROVENANCE.md` records source and asset lineage.
 
-The five source packages remain live during review.  They will be removed
-only after every result and unique reproducibility asset has a canonical
-disposition and the matching canonical PDF has passed the publication gate.
+The canonical PDF is still absent, so the publication gate is not complete.
+The five source packages remain live until that matching artifact has passed
+the gate; their retained PDFs remain historical/source artifacts rather than
+a rendering of this canonical master.

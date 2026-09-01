@@ -109,10 +109,10 @@ only 4,606 declarations and
 declarations, including 69 undocumented ones.  Run the script for the live
 numbers rather than copying these historical values.
 
-The post-merge 2026-09-01 inventory contains 620 modules and 8,439 lexically
+The post-merge 2026-09-01 inventory contains 622 modules and 8,473 lexically
 visible public declarations, with zero missing module headers and zero missing
 doc comments.  Relative to the 610/8,318 activation checkpoint, the current
-tree adds ten modules and 121 declarations.  The initial exact union added
+tree adds twelve modules and 155 declarations.  The initial exact union added
 five modules and 67 declarations.  The branch-point geometry and
 asymptotics leaves contribute 17 declarations for the one-sided vertical
 tangents and leading signed square-root laws of both real Lambert branches.
@@ -147,7 +147,10 @@ theorem.  The subsequent
 `integral_polynomial_mul_rvachevUp_eq_dyadic_tsum` theorem in
 `PolynomialCombExactness.lean` packages the polynomial-times-Rvachev integral
 as the corresponding dyadic shifted-polynomial sum and contributes one further
-declaration.  The valuation tranche's new leaf
+declaration.  The subsequent centered Appell/deconvolution and arbitrary-phase
+polynomial-reproduction tranche contributes four declarations: three in
+`RvachevMomentAppell.lean` and one in `RvachevPolynomialSynthesis.lean`.
+The valuation tranche's new leaf
 `PrimePowerBinomialValuation.lean` contributes three theorems: the additive and
 subtraction forms for an arbitrary prime-power Pascal row, and the strict-
 interior dyadic-comb specialization.
@@ -204,6 +207,23 @@ zero.  The raw factor criterion includes `q = 0`; no joint holomorphy,
 outside-disk reciprocal formula, outer spectral-product normal convergence,
 or centered characteristic-function/MGF package is counted in this leaf.
 
+The same merged tree adds the complementary general q-product leaves.
+`QPochhammerDissection.lean` contributes no definitions and two theorems,
+`finiteQPochhammerIn_dissection` and
+`finiteQPochhammerIn_dissection_remainder`, for exact full-period and remainder
+residue-class decompositions over an arbitrary commutative ring.
+`QPochhammerInfinite.lean` contributes one definition and twenty-seven
+theorems.  Its surface includes convergence and finite-prefix limits in
+complete normed commutative rings, concatenation and residue-class dissection,
+factor and reciprocal-power zero criteria, locally uniform parameter
+convergence and continuity over complete locally compact normed fields, and
+entireness with explicit nonzero derivatives at every reciprocal-power zero
+over `ℂ`.  These two leaves therefore contribute thirty declarations.  Their
+generic `qPochhammerInfIn` is distinct from the older
+`complexQPochhammerInf`; the five-theorem `QPochhammerEntire` API above remains
+the analytic-order layer for the latter symbol, and no named equality bridge
+between the two definitions is counted.
+
 The audited formula contract is equally exact.  Admissibility is even total
 degree plus the three weak triangle inequalities, equivalently
 `i=b+c`, `j=a+c`, `k=a+b`.  If `C_n=choose (2*n) n` and `s=a+b+c`, then the
@@ -242,23 +262,19 @@ future source addition must preserve the full invariant
 rather than merely avoid worsening a historical backlog.  Run the script for
 live numbers after merging concurrent source work.
 
-The primary exposition and Lean walkthrough PDFs were rebuilt upstream in
-fresh, guarded three-pass Libertinus cycles on 2026-08-31.  They contain 166
-and 126 A4 pages and include the prime-power valuation and exhaustive
-30-declaration closed-form Gaunt crosswalks.  All fonts in these two artifacts
-are embedded and subset, with no Type 3 font.  The merged TeX sources retain
-those results and add expanded formula-and-proof ledgers plus the five-theorem
-fixed-nome q-Pochhammer entire-function overlay, so exact post-merge source/PDF
-synchronization is not claimed.
-The retained 236-page canonical frontier, 376-page Integration and Transform
-Frontiers, 301-page Representation Frontiers, and 41-page filed New Frontiers
-PDFs predate the closed-form and q-Pochhammer-entire tranches and are not
-synchronized with their current sources.  Earlier checks of the canonical and
-filed artifacts, including the
-filed package's historical 20-entry ledger, do not establish current parity.
-Those four PDFs retain explicit pending-build disclosures and await content
-rebuilds; the primary and walkthrough await parity rebuilds for the expanded
-source commentary and q-Pochhammer overlay.
+The retained primary exposition and Lean walkthrough PDFs are the last
+validated 166- and 126-page A4 renders and include the prime-power valuation
+and exhaustive 30-declaration closed-form Gaunt crosswalks.  Their merged TeX
+sources now also contain the reflected Appell/deconvolution results, expanded
+formula-and-proof commentary, and the five-theorem fixed-nome q-Pochhammer
+entire-function overlay, so both PDFs await a post-merge three-pass rebuild.
+The retained 236-page canonical-frontier, 376-page Integration and Transform
+Frontiers, 301-page Representation Frontiers, 41-page filed New Frontiers,
+and 71-page notation-catalogue PDFs likewise predate their current sources.
+The filed package's mixed 20-row ledger verifies its current source and
+retained PDF as separate payloads and does not establish parity.  Package-local
+notices record the remaining rebuild debt, including the historical q-series
+renders.
 
 ### What the review pass caught
 

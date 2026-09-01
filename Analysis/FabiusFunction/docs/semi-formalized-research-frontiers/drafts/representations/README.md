@@ -720,11 +720,11 @@ full real-axis squared Fourier mass with twice `A_2`, the positive-half-line
 mass with `A_2`, and certify the report's Fourier-product and infinite-sinc
 integrals with their exact normalizations and index ranges.
 
-At compiled source checkpoint `a3854643d`, `RvachevMomentAppell.lean` exports six
+The current `RvachevMomentAppell.lean` source exports six
 public definitions: `rvachevRawMomentRat`, `rvachevReciprocalMomentRat`,
 `rvachevAppellPolynomialRat`, `rvachevAppellPolynomial`, and
 `rvachevDeconvolvedPolynomial`, together with
-`rvachevDeconvolutionLinearMap`.  Its thirty public theorems are
+`rvachevDeconvolutionLinearMap`.  Its thirty-three public theorems are
 `rvachevRawMomentRat_zero`, `rvachevRawMomentRat_even`,
 `rvachevRawMomentRat_odd`, `rvachevReciprocalMomentRat_zero`,
 `binomialConv_rvachevRawMomentRat_reciprocal`,
@@ -751,7 +751,10 @@ public definitions: `rvachevRawMomentRat`, `rvachevReciprocalMomentRat`,
 `rvachevDeconvolvedPolynomial_eq_zero_iff`,
 `rvachevDeconvolutionLinearMap_injective`,
 `rvachevDeconvolvedPolynomial_injective`, and
-`integral_eval_rvachevDeconvolvedPolynomial_add_mul_rvachev`.  This is the
+`integral_eval_rvachevDeconvolvedPolynomial_add_mul_rvachev`,
+`integral_eval_rvachevDeconvolvedPolynomial_sub_mul_rvachev`,
+`integral_eval_rvachevAppellPolynomial_sub_mul_rvachev`, and
+`integral_eval_rvachevAppellPolynomial_mul_rvachev_eq_zero`.  This is the
 exact rational raw-moment, formal reciprocal/Bell, reciprocal-moment Appell,
 and polynomial-smoothing/deconvolution foundation used by the report.  The
 deconvolution is now packaged as a real linear map, preserves zero, addition,
@@ -760,17 +763,28 @@ polynomials, and sends a monomial and `X^n` to the correspondingly scaled and
 unscaled Rvachev--Appell polynomial.  Its triangular top term is exact: it
 preserves the coefficient in the original `natDegree`, exact `natDegree`, and
 `leadingCoeff`; its kernel is trivial; and both the packaged linear map and
-the underlying raw operation are injective.
+the underlying raw operation are injective.  In addition to the additive
+`x + y` smoothing law, evenness of the Rvachev density now gives the exact
+centered `x - y` convolution for every deconvolved polynomial, its Appell
+specialization recovers `x^n`, and every positive-degree Rvachev--Appell
+polynomial has mean zero under that density.
 
-At compiled checkpoint `a3854643d`, `RvachevPolynomialSynthesis.lean` exports
-no public definitions and exactly four public theorems:
+The current `RvachevPolynomialSynthesis.lean` source exports no public
+definitions and exactly five public theorems:
 `tsum_rvachevDeconvolvedPolynomial_mul_shifted_rvachevUp`,
 `normalized_tsum_rvachevDeconvolvedPolynomial_mul_shifted_rvachevUp`,
 `sum_Ioo_rvachevDeconvolvedPolynomial_mul_shifted_rvachevUp`, and
-`normalized_sum_Ioo_rvachevDeconvolvedPolynomial_mul_shifted_rvachevUp`.
+`normalized_sum_Ioo_rvachevDeconvolvedPolynomial_mul_shifted_rvachevUp`,
+together with
+`normalized_tsum_shifted_rvachevDeconvolvedPolynomial_mul_rvachevUp`.
 They prove the global raw and normalized sums for every nonzero natural mesh
 `M` with `deg P ≤ v₂(M)`, and on `[-1,1]` the exact finite open-index form
-`-2M < k < 2M`.
+`-2M < k < 2M`.  The fifth theorem gives the arbitrarily phased normalized
+identity for every real `theta`: it samples the reflected translates
+`D(P)(x - (theta + k)/M)` against `up((theta + k)/M)` and recovers `P(x)`.
+This proves the base degree bound `deg P ≤ v₂(M)` at every phase; it does
+not prove the separate `N + 1` superconvergent-phase extension advertised by
+the stronger lattice-reproduction manuscript theorem.
 
 The focused-build `CompositeMeshSharpness.lean` module exports one public
 definition, `rvachevCombExactThrough`, and seven public theorems:
@@ -851,8 +865,8 @@ norm; raw `TendstoUniformlyOn`, norm-error-to-zero, and pointwise corollaries
 are also exported.  No convergence rate, coefficientwise limit, or uniform
 convergence outside `[-1,1]` is asserted.
 
-These five modules have public definition/theorem inventories `6/30`, `0/4`,
-`1/7`, `6/7`, and `5/25`, for exactly 91 public declarations.  Universal
+These five modules have public definition/theorem inventories `6/33`, `0/5`,
+`1/7`, `6/7`, and `5/25`, for exactly 95 public declarations.  Universal
 whole-space mesh sharpness is now certified, but target-specific minimality
 for an individual Legendre mode or partial sum is not.  The modules also do
 not certify analytic

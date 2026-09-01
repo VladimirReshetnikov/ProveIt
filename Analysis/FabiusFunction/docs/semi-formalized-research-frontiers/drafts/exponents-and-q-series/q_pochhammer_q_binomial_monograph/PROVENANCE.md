@@ -37,8 +37,8 @@ inspection. PDFs retained beneath `assets/` are research figures, not
 manuscripts.
 
 The 1 September 2026 source-only overlay is newer than that PDF. Its current
-13,490-line, 618,041-byte TeX source has SHA-256
-`36c961525f1609b6eabf8c4d6382811324bc6f7deb5b4ef0da432c367cce2b09`.
+13,640-line, 625,280-byte TeX source has SHA-256
+`9e40aca60dc15444df84cef0e4596e6fbdfc7828d3c9b274060230dcc3e7feaf`.
 The zero-definition, five-theorem `QPochhammerEntire.lean` leaf proves the
 fixed-nome single-symbol local-uniform product, differentiability, the
 division-free factor-zero criterion, the reciprocal-power zero lattice for a

@@ -112,8 +112,10 @@ byte-identical to their already reviewed versions. The files under
 `assets/experiments/**/figures/` remain research figures, not publication
 manuscripts.
 
-The current master TeX is a source-only successor to that checkpoint.  It
-contains later notation repairs and the exact five-theorem
+The current master TeX is a source-only successor to that checkpoint.  Its
+13,640-line, 625,280-byte source has SHA-256
+`9e40aca60dc15444df84cef0e4596e6fbdfc7828d3c9b274060230dcc3e7feaf`.
+It contains later notation repairs and the exact five-theorem
 `FabiusFunction.QPochhammerEntire` crosswalk: fixed-nome local uniformity and
 entireness, both division-free and reciprocal-power zero descriptions, and
 simple analytic order at every zero.  Consequently the retained 334-page PDF

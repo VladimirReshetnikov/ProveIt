@@ -1024,7 +1024,7 @@ For fixed $x$, the map $y\mapsto\Acal_n(x-y)$ is a polynomial of degree $n$.  Ap
 
 More generally, for a polynomial $p$ define its Rvachev deconvolution
 \begin{equation}
- \mathscr D_up
+ \mathscr D_{\RvachevUp}p
  :=M(D)^{-1}p
  =\exp\!\left(-\sum_{r\ge1}\kappa_{2r}
  \frac{D^{2r}}{(2r)!}\right)p.
@@ -1037,7 +1037,7 @@ The exponential truncates because $p$ is a polynomial.
 If $\deg p\le N$, then
 \begin{equation}
  p(x)=2^{-N}\sum_{k\in\IntegerNumbers}
- (\mathscr D_up)\!\left(x-\frac{k+\theta}{2^N}\right)
+ (\mathscr D_{\RvachevUp}p)\!\left(x-\frac{k+\theta}{2^N}\right)
  u\!\left(\frac{k+\theta}{2^N}\right).
  \label{is:p3:eq:general-deconvolution-reproduction}
 \end{equation}
@@ -1046,12 +1046,35 @@ If $\deg p\le N$, then
 \begin{proof}
 Write $p(x)=\sum_{n=0}^{N}c_nx^n$.  The defining generating function gives
 $M(D)^{-1}x^n=\Acal_n(x)$, hence
-$\mathscr D_up=\sum_{n=0}^{N}c_n\Acal_n$.  Apply
+$\mathscr D_{\RvachevUp}p=\sum_{n=0}^{N}c_n\Acal_n$.  Apply
 \Cref{is:p3:thm:Appell-lattice-reproduction} to each monomial and sum with
 coefficients $c_n$.  Every sum is finite because $u$ is compactly supported,
 so the interchange is purely finite and yields
 \eqref{is:p3:eq:general-deconvolution-reproduction}.
 \end{proof}
+
+\begin{statusbox}[Lean status of Appell deconvolution and lattice reproduction]
+Three source rows in this section now have exact compiled counterparts.
+The centered identity \cref{is:p3:thm:Appell-deconvolution} is
+\path{Fabius.integral_eval_rvachevAppellPolynomial_sub_mul_rvachev}; its
+general polynomial companion is
+\path{Fabius.integral_eval_rvachevDeconvolvedPolynomial_sub_mul_rvachev}.
+The mean-zero corollary \cref{is:p3:cor:Appell-mean-zero} is
+\path{Fabius.integral_eval_rvachevAppellPolynomial_mul_rvachev_eq_zero}, and
+\cref{is:p3:cor:polynomial-deconvolution} is
+\path{Fabius.normalized_tsum_shifted_rvachevDeconvolvedPolynomial_mul_rvachevUp}.
+Compact support reduces the first two whole-line integrals to the displayed
+interval \([-1,1]\).  The last declaration has the same nonzero natural mesh,
+degree bound, arbitrary real phase, normalized physical-coordinate nodes, and
+conclusion as the paper.
+
+Only the principal \(0\le n\le N\) clause of
+\cref{is:p3:thm:Appell-lattice-reproduction} is formalized: specialize the
+last declaration to \(M=2^N\) and \(P=X^n\).  The same paper theorem also
+asserts degree \(N+1\) at the parity-selected superconvergent phases, and that
+stronger clause has no exact Lean counterpart.  The whole labelled lattice
+theorem therefore remains a human-proved frontier result.
+\end{statusbox}
 
 \begin{resultbox}[Fourth frontier bridge]
 The forward moment Appell family packages convolution by the up-law; the reciprocal family $\Acal_n$ packages deconvolution.  The same positive dyadic samples that integrate ordinary polynomials now reproduce ordinary monomials from translates of $\Acal_n$.  This simultaneously connects the Fourier zeros, Bernoulli cumulants, complete Bell polynomials, and finite rational Fabius values.
