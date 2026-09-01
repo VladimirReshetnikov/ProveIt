@@ -4547,6 +4547,25 @@ Pair $m=-n$ with $m=n+1$ for $n\ge0$.  Their sum is
 Cancelling the common minus sign proves the identity.
 \end{proof}
 
+% ed.: remark added to record the proof used by the formalization.
+\begin{remark}[A derivative-free proof]\label{rem:jacobi-cubic-formalization}
+The formalization avoids differentiating the bilateral series.  Pairing
+$k=n+1$ with $k=-n$ in \eqref{eq:jtp-minus} (both have
+$\binom k2=\binom{n+1}2$) and dividing by $1-z$ gives, for $z\ne0,1$,
+\[
+ \frac{(z;q)_\infty(q/z;q)_\infty(q;q)_\infty}{1-z}
+ =\sum_{n\ge0}(-1)^{n+1}q^{\binom{n+1}2}
+ \Bigl(-z^{-n}\sum_{i=0}^{2n}z^i\Bigr),
+\]
+since $z^{n+1}-z^{-n}=-z^{-n}(1-z^{2n+1})$ and
+$1-z^{2n+1}=(1-z)\sum_{i\le 2n}z^i$.  The left side equals
+$(qz;q)_\infty(q/z;q)_\infty(q;q)_\infty$, which tends to $(q;q)_\infty^3$ as
+$z\to1$ by continuity of the infinite product; on the right each term tends
+to $(-1)^n(2n+1)q^{\binom{n+1}2}$, and for $\lvert z-1\rvert<\tfrac12$ the
+terms are dominated by $\lvert q\rvert^{\binom n2}(27\lvert q\rvert/2)^n$, so
+Tannery's theorem passes the limit through the sum.
+\end{remark}
+
 \section{A theta form of the \texorpdfstring{$q$}{q}-gamma reflection product}
 
 \begin{corollary}\label{cor:qgamma-theta}
@@ -12471,8 +12490,8 @@ inside the proof below does not formalize the result the proof concludes.
   than a mathematical claim.
 \end{description}
 
-Of the 282 labelled forward results, 69 are \statusexact, 83 are
-\statuspartial, 122 are \statusnone, and 8 are \statusna.  The original
+Of the 282 labelled forward results, 71 are \statusexact, 84 are
+\statuspartial, 119 are \statusnone, and 8 are \statusna.  The original
 191-result pre-Fabius core had 36 \statusexact, 29 \statuspartial, 123
 \statusnone, and 3 \statusna{} entries.  The four integrated guide chapters
 add 31 human-proved but not Lean-formalized assertions and five labelled
@@ -12946,8 +12965,8 @@ inferred from a related finite identity.
 \toprule
 Chapter & \statusexact & \statuspartial & \statusnone & \statusna\\
 \midrule
-The algebra of $q$-shifted factorials & 11 & 1 & 3 & 0\\
-$q$-integers and Gaussian coefficients & 7 & 1 & 1 & 0\\
+The algebra of $q$-shifted factorials & 11 & 2 & 2 & 0\\
+$q$-integers and Gaussian coefficients & 8 & 1 & 0 & 0\\
 Finite $q$-binomial theorems and inversion & 9 & 1 & 0 & 0\\
 Weighted binomial coefficients and symmetric functions & 3 & 2 & 3 & 0\\
 Partitions, words, paths, and inversion statistics & 3 & 1 & 5 & 0\\
@@ -12959,7 +12978,7 @@ Euler telescoping and very-well-poised summations & 0 & 0 & 4 & 0\\
 Bilateral series and Ramanujan's \texorpdfstring{${}_1\psi_1$}{1psi1} sum & 0 & 0 & 2 & 0\\
 $q$-difference calculus and the quantum binomial & 7 & 2 & 1 & 0\\
 The $q$-gamma and $q$-beta functions & 1 & 1 & 6 & 0\\
-Jacobi's triple product & 4 & 2 & 2 & 0\\
+Jacobi's triple product & 5 & 2 & 1 & 0\\
 Theta modularity, lattice dissection, and sums of squares & 0 & 0 & 14 & 4\\
 Partitions and product--sum identities & 0 & 0 & 4 & 0\\
 Bailey pairs and the Rogers--Ramanujan identities & 1 & 0 & 6 & 0\\
@@ -12975,7 +12994,7 @@ Half-base arithmetic and Prouhet--Thue--Morse cancellation & 6 & 3 & 0 & 0\\
 Geometric uniform sums, $q$-cumulants, and the Fabius--Rvachev functions & 2 & 11 & 0 & 0\\
 Dyadic Gaussian--Thue--Morse structure and the values of $F$ & 6 & 44 & 6 & 0\\
 \midrule
-\textbf{Forward total} & 69 & 83 & 122 & 8\\
+\textbf{Forward total} & 71 & 84 & 119 & 8\\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -13080,16 +13099,24 @@ $q^\alpha$, each identity under the nonvanishing hypothesis that makes its
 right-hand side defined; the integral case is
 \texttt{qPochhammerInfIn\_\allowbreak{}eq\_\allowbreak{}finite\_\allowbreak{}mul\_\allowbreak{}shift}
 of \texttt{QPochhammerInfinite}}\\[2pt]
-\Cref{prop:order-derivative} & \statusnone & ---\\[2pt]
+\Cref{prop:order-derivative} & \statuspartial &
+\texttt{hasDerivAt\_\allowbreak{}qPochhammerC},
+\texttt{hasDerivAt\_\allowbreak{}qPochhammerInfIn\_\allowbreak{}mul\_\allowbreak{}cpow}\newline
+{\footnotesize\texttt{QPochhammerOrderDerivative}; the derivative in the
+order with the displayed logarithmic form, at every $\alpha$ with
+$\lVert aq^\alpha\rVert<1$ (principal branch); holomorphy on a general open
+$U$ avoiding the poles and the local uniformity are not formalized}\\[2pt]
 \Cref{thm:lambert-log} & \statuspartial &
 \texttt{tsum\_\allowbreak{}log\_\allowbreak{}one\_\allowbreak{}sub\_\allowbreak{}geom},
-\texttt{tsum\_\allowbreak{}log\_\allowbreak{}one\_\allowbreak{}sub\_\allowbreak{}geom\_\allowbreak{}real},
 \texttt{exp\_\allowbreak{}neg\_\allowbreak{}tsum\_\allowbreak{}lambert\_\allowbreak{}eq\_\allowbreak{}qPochhammerInfIn},
-\texttt{hasSum\_\allowbreak{}lambert\_\allowbreak{}log\_\allowbreak{}complex}\newline
-{\footnotesize\texttt{EulerLogTransform}; \texttt{LambertSeriesLog}; the
-series identity with the principal logarithms of the factors, its real
-form, and its exponential form $\exp(-\sum_m a^m/(m(1-q^m)))=(a;q)_\infty$;
-the two derivative formulas and the local uniformity are not formalized}\\[2pt]
+\texttt{hasDerivAt\_\allowbreak{}qPochhammerInfIn},
+\texttt{hasDerivAt\_\allowbreak{}qPochhammerInfIn\_\allowbreak{}lambert},
+\texttt{tsum\_\allowbreak{}neg\_\allowbreak{}pow\_\allowbreak{}div\_\allowbreak{}one\_\allowbreak{}sub\_\allowbreak{}mul\_\allowbreak{}pow\_\allowbreak{}eq}\newline
+{\footnotesize\texttt{EulerLogTransform}; \texttt{LambertSeriesLog};
+\texttt{QPochhammerLogDerivative}; the series identity with principal
+logarithms, its exponential form, and both derivative formulas for
+$\lvert a\rvert<1$ by termwise differentiation on discs; the local uniformity
+is used in the proofs but not stated as a separate result}\\[2pt]
 \Cref{cor:divisor-sum} & \statusnone & ---\\[2pt]
 \Cref{thm:poch-dilog} & \statusnone & ---\\[2pt]
 \Cref{prop:classical-poch-limit} & \statusexact &
@@ -13111,15 +13138,22 @@ the quotient form in any field with $(q;q)_k\ne0$, the cleared form in every
 commutative ring}\\[2pt]
 \Cref{thm:qpascal} & \statusexact & \texttt{gaussianBinomial\_\allowbreak{}succ\_\allowbreak{}succ\_\allowbreak{}alt}\newline{\footnotesize\texttt{FiniteQBinomialCore}}\\[2pt]
 \Cref{cor:positivity} & \statusexact &
-\texttt{gaussianBinomial\_\allowbreak{}eq\_\allowbreak{}eval₂\_\allowbreak{}universal}\newline
+\texttt{gaussianBinomial\_\allowbreak{}eq\_\allowbreak{}eval	extsubscript{2}\_\allowbreak{}universal}\newline
 {\footnotesize\texttt{GaussianBinomialUniversal}; $[n,k]_q$ is the value at
 $q$ of the universal polynomial $[n,k]_X\in\NaturalNumbers[X]$, in every
 commutative semiring, by naturality of the $q$-Pascal recurrence}\\[2pt]
-\Cref{thm:qbinom-structure} & \statuspartial &
+\Cref{thm:qbinom-structure} & \statusexact &
 \texttt{gaussianBinomial\_\allowbreak{}symm},
-\texttt{gaussianBinomial\_\allowbreak{}reciprocity\_\allowbreak{}units}\newline
+\texttt{gaussianBinomial\_\allowbreak{}reciprocity\_\allowbreak{}units},
+\texttt{gaussianBinomial\_\allowbreak{}natDegree},
+\texttt{coeff\_\allowbreak{}gaussianBinomial\_\allowbreak{}zero},
+\texttt{coeff\_\allowbreak{}gaussianBinomial\_\allowbreak{}top},
+\texttt{reflect\_\allowbreak{}gaussianBinomial}\newline
 {\footnotesize\texttt{FiniteQBinomialCore}; \texttt{QBinomialReciprocity};
-items (i)--(ii) exact, polynomial degree and coefficient reversal still open}\\[2pt]
+\texttt{GaussianBinomialPalindromic}; (iii) and (iv) for the universal
+polynomial $[n,k]_X$ over every commutative semiring, palindromicity as
+$\operatorname{reflect}_{k(n-k)}[n,k]_X=[n,k]_X$ by induction from the two
+$q$-Pascal recurrences}\\[2pt]
 \Cref{cor:qbinom-neg-one-odd} & \statusexact &
 \texttt{gaussianBinomial\_\allowbreak{}neg\_\allowbreak{}one\_\allowbreak{}eq\_\allowbreak{}zero\_\allowbreak{}of\_\allowbreak{}odd\_\allowbreak{}degree},
 \texttt{gaussianBinomial\_\allowbreak{}neg\_\allowbreak{}one\_\allowbreak{}even\_\allowbreak{}odd\_\allowbreak{}eq\_\allowbreak{}zero}\newline
@@ -13133,7 +13167,7 @@ semiring, by continuity of the Gaussian coefficient in its base}\\[2pt]
 \Cref{prop:qmult-factor} & \statusexact &
 \texttt{finiteQPochhammerIn\_\allowbreak{}self\_\allowbreak{}sum\_\allowbreak{}eq\_\allowbreak{}qMultinomial\_\allowbreak{}mul},
 \texttt{qMultinomial\_\allowbreak{}eq\_\allowbreak{}div},
-\texttt{qMultinomial\_\allowbreak{}eq\_\allowbreak{}eval₂\_\allowbreak{}universal}\newline
+\texttt{qMultinomial\_\allowbreak{}eq\_\allowbreak{}eval	extsubscript{2}\_\allowbreak{}universal}\newline
 {\footnotesize\texttt{QMultinomial}; the product of Gaussian coefficients is
 the definition there, the factorial form is proved division-free over every
 commutative ring and as a quotient over every field with $(q;q)_n\ne0$, and
@@ -13144,7 +13178,12 @@ polynomiality with natural coefficients is naturality of the recurrence}\\[2pt]
 {\footnotesize\texttt{QPochhammerElementaryIdentities}; exact displayed
 denominators and \(k<n\), with both root-safe cross-multiplied forms exported
 totally for all \(n,k\) by zero extension}\\[2pt]
-\Cref{thm:qbinom-moments} & \statusnone & ---\\[2pt]
+\Cref{thm:qbinom-moments} & \statuspartial &
+\texttt{two\_\allowbreak{}mul\_\allowbreak{}derivative\_\allowbreak{}gaussianBinomial\_\allowbreak{}eval\_\allowbreak{}one}\newline
+{\footnotesize\texttt{GaussianBinomialPalindromic}; the mean and the
+derivative formula in the division-free form
+$2\,([n,k]_X)'(1)=k(n-k)\binom nk$, over every commutative semiring, from
+palindromicity; the variance is not formalized}\\[2pt]
 \midrule
 \multicolumn{3}{@{}l}{\itshape Finite $q$-binomial theorems and inversion}\\
 \midrule
@@ -13437,7 +13476,12 @@ $\sum_{n\in\IntegerNumbers}(-1)^nq^{n(3n-1)/2}$ with the exponent
 \texttt{pentagonalExponent}, and the paired one-sided form, in any complete
 normed field including $q=0$}\\[2pt]
 \Cref{cor:euler-partition-recurrence} & \statusnone & ---\\[2pt]
-\Cref{thm:jacobi-cubic} & \statusnone & ---\\[2pt]
+\Cref{thm:jacobi-cubic} & \statusexact &
+\texttt{hasSum\_\allowbreak{}jacobi\_\allowbreak{}cubic}\newline
+{\footnotesize\texttt{JacobiCubic}; as a \texttt{HasSum} over
+$\ComplexNumbers$, with the exponent written $\binom{n+1}{2}$; proved by a
+difference quotient at $z=1$ and Tannery's theorem instead of termwise
+differentiation; see \Cref{rem:jacobi-cubic-formalization}}\\[2pt]
 \Cref{cor:qgamma-theta} & \statusexact &
 \texttt{hasSum\_\allowbreak{}theta\_\allowbreak{}qGamma\_\allowbreak{}reflection}\newline
 {\footnotesize\texttt{QGamma}; the theta series is stated as a
