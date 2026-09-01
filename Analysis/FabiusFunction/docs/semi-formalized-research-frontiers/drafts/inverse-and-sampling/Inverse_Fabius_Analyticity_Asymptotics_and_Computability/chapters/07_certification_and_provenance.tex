@@ -31,8 +31,8 @@ source rows to one stronger surviving result.
 
 The normalization in the shifted self-sampling theorem is matched exactly by
 the Lean declaration
-\texttt{Fabius.integral\_polynomial\_mul\_rvachevUp\_eq\_dyadic\_tsum}
-in \texttt{FabiusFunction.PolynomialCombExactness}.  It has the same
+\path{Fabius.integral_polynomial_mul_rvachevUp_eq_dyadic_tsum}
+in \path{FabiusFunction.PolynomialCombExactness}.  It has the same
 whole-line integral, dyadic mesh factor, arbitrary real phase, polynomial
 degree bound, sampling nodes, and Rvachev-density weights; compact support
 reduces its integral to \([-1,1]\).  Thus no informal rescaling bridge is
@@ -42,10 +42,10 @@ Five canonical results were added after the immutable source snapshot and
 therefore do not alter the \(194\)-row totals.  Three are Lean-proved:
 the derivative-distribution theorem, the complete geometric-Lagrange residual
 theorem (by
-\texttt{Fabius.sum\_geometricLagrangeWeight\_mul\_pow\_of\_pos} and
-\texttt{Fabius.completeHomogeneousEval\_geometric}), and the finite-product
+\path{Fabius.sum_geometricLagrangeWeight_mul_pow_of_pos} and
+\path{Fabius.completeHomogeneousEval_geometric}), and the finite-product
 loss lemma (by
-\texttt{Fabius.one\_sub\_sum\_range\_le\_prod\_range\_one\_sub}).
+\path{Fabius.one_sub_sum_range_le_prod_range_one_sub}).
 The base-\(b\) density proposition is a new human-proved strengthening, and
 the dyadic singularity atlas is explicitly an open problem.  All five
 dispositions and their exact formalization boundaries are recorded in the
@@ -53,7 +53,7 @@ Lean crosswalk.
 
 The source theorem \cref{is:p2:thm:Catalan-quarter} illustrates why the count
 uses whole-statement rather than partial-clause certification.  The declaration
-\texttt{Fabius.iteratedDeriv\_fabiusInv\_five\_seventy\_two\_succ}
+\path{Fabius.iteratedDeriv_fabiusInv_five_seventy_two_succ}
 formalizes its all-order Catalan derivative formula, but not the packaged
 quarter jet, quadratic algebraic shadow, and large-order asymptotic as one
 finite exact family.  The complete canonical theorem therefore remains
@@ -118,3 +118,20 @@ replay of retained exact computations, three serial \LaTeX{} passes, and
 visual inspection of the rendered PDF.  Lean validation, when required by a
 source change, is serialized separately; no PDF or source-level claim is
 treated as compiler evidence.
+
+For the new arbitrary-phase polynomial self-sampling result, the focused
+command
+\path{lake build +FabiusFunction.PolynomialCombExactness}
+completed successfully after a serialized replay of its (3474)-job
+dependency graph.  The terminal exit code was zero, and the target module
+contains no placeholder proof.  This compiler evidence is narrower than an
+umbrella-library build but exact for the declaration used in the crosswalk.
+
+At the same editorial checkpoint,
+\path{audit/validate_canonical.py} verified all nine chapter inputs,
+(748) distinct labels, (588) references, and all (194) immutable source
+rows with no incomplete disposition.  The independent asset check verified
+all (88) source-file dispositions, all (63) deduplicated live payloads,
+and no duplicate canonical payload.  These checks establish structural and
+provenance completeness; they do not replace mathematical proof or visual
+inspection.
