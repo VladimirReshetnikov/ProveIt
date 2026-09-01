@@ -477,6 +477,11 @@ import FabiusFunction.QPascalSummation
 import FabiusFunction.GaussianBinomialContinuity
 import FabiusFunction.QuantumBinomial
 import FabiusFunction.RogersSzegoPolynomial
+import FabiusFunction.PolynomialQDerivative
+import FabiusFunction.PolynomialQLeibniz
+import FabiusFunction.QGamma
+import FabiusFunction.LambertSeriesLog
+import FabiusFunction.QPochhammerDerivative
 
 set_option autoImplicit false
 
