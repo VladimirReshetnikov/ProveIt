@@ -313,10 +313,11 @@ eight parts):
 
 > **Source/PDF synchronization.** The current consolidated TeX includes the
 > 31 August 2026 Legendre Gaunt--Wigner-square closed-form overlay. The
-> retained 301-page A4 PDF (SHA-256
-> `1f18c8be00bf79fcf79138cfcb0d7a0e83750710098eb674c751ff2401d3d6d3`)
-> was not rebuilt for that source-only update. It is a historical render and
-> does not display the current overlay.
+> retained 301-page, 3,608,573-byte A4 PDF has SHA-256
+> `5d44e25f7069fe2ea7091090521e290cab560355c3e29a35105eed7d3cc6d7ca`.
+> It is a readable historical artifact, not a certified rendering of the
+> current master. Exact three-pass, log, font, page-box, and visual parity are
+> deferred until a fresh rebuild.
 
 - **Part I** — *Resolvent, Continued-Fraction, and Transform
   Representations of the Fabius–Rvachev System* (Jacobi coefficients,

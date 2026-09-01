@@ -68,7 +68,6 @@
 \newtheorem{warning}[theorem]{Warning}
 
 \newcommand{\eps}{\varepsilon}
-\newcommand{\Mell}{\mathcal M}
 \newcommand{\repo}{\texttt{ProveIt}}
 
 \newenvironment{statusbox}[1]{%
@@ -146,7 +145,7 @@ supported convolution roots of either factor as well as of the original Rvachev 
 
 For the signed log-moment correction we obtain the Mellin transform
 \[
- \Mell J(s)=-\Gamma(s)\zeta(s+1)E(2^s),
+ \MellinTransformSymbol J(s)=-\Gamma(s)\zeta(s+1)E(2^s),
  \qquad -2<\Re s<-1,
 \]
 and hence a natural boundary at $\Re s=0$.  The natural-boundary ingredient itself is
@@ -994,7 +993,7 @@ Set
 \label{lem:mellin-h}
 For $-2<\Re s<-1$,
 \begin{equation}
- \Mell h(s):=\int_0^\infty h(t)t^{s-1}\Differential t
+ \MellinTransformSymbol h(s):=\int_0^\infty h(t)t^{s-1}\Differential t
  =\frac{\pi^{s+1}\zeta(-s)}{s\sin(\pi s/2)}
  =-2^{-s}\Gamma(s)\zeta(s+1).
  \label{eq:mellin-h}
@@ -1019,13 +1018,13 @@ first expression.  The second is the functional equation of the zeta function.
 \label{thm:mellin-decomposition}
 For $-2<\Re s<-1$,
 \begin{align}
- \Mell K_0(s)
+ \MellinTransformSymbol K_0(s)
  &=-\frac{\Gamma(s)\zeta(s+1)}{1-2^s},
  \label{eq:mellin-K0}\\
- \Mell J(s)
+ \MellinTransformSymbol J(s)
  &=-\Gamma(s)\zeta(s+1)E(2^s),
  \label{eq:mellin-J}\\
- \Mell K_\sigma(s)
+ \MellinTransformSymbol K_\sigma(s)
  &=-\frac12\Gamma(s)\zeta(s+1)
  \left(\frac1{1-2^s}+\sigma E(2^s)\right).
  \label{eq:mellin-Ksigma}
@@ -1035,7 +1034,7 @@ For $-2<\Re s<-1$,
 \begin{proof}
 Mellin scaling gives
 \(
- \Mell[h(t/2^n)](s)=2^{ns}\Mell h(s).
+ \MellinTransformSymbol[h(t/2^n)](s)=2^{ns}\MellinTransformSymbol h(s).
 \)
 Therefore
 \[

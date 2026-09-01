@@ -108,8 +108,6 @@
 }
 
 \newcommand{\F}{F}
-\newcommand{\fall}[2]{#1^{\underline{#2}}}
-\newcommand{\rise}[2]{#1^{\overline{#2}}}
 \newcommand{\Jn}{\mathcal J}
 \newcommand{\RL}{\mathcal I}
 \newcommand{\M}{\mathcal M}
@@ -998,7 +996,7 @@ exponent \(\alpha\), every integer order \(n\geq1\), and \(0<x\leq1\), we prove
 a locally uniformly and absolutely convergent Newton--Volterra expansion
 \[
  \frac1{(n-1)!}\int_0^x(x-t)^{n-1}t^\alpha F(t)\Differential t
- =\sum_{r\geq0}(-1)^r\binom{n+r-1}{r}\fall{\alpha}{r}
+ =\sum_{r\geq0}(-1)^r\binom{n+r-1}{r}\FallingFactorial{\alpha}{r}
  x^{\alpha-r}2^{\binom{n+r}{2}}F\!\left(\frac{x}{2^{n+r}}\right).
 \]
 Endpoint flatness makes this an entire function of \(\alpha\), including all
@@ -1419,13 +1417,13 @@ Let \(E\) be a real normed vector space, let \(a,x\in\RealNumbers\), let
 \begin{equation}
  \boxed{\quad
  \Jn_{n,a}[P(t)f(t)](x)
- =\sum_{r=0}^{\deg_{\!N}P}(-1)^r\rise nr P^{[r]}(x)
+ =\sum_{r=0}^{\deg_{\!N}P}(-1)^r\RisingFactorial{n}{r} P^{[r]}(x)
    \Jn_{n+r,a}f(x).
  \quad}                                                       \label{p1:eq:polynomial-commutator}
 \end{equation}
 Here \(P^{[r]}\) is the \(r\)-th Hasse derivative,
-\(\deg_{\!N}\) is the natural degree, and \(\rise nr\) is the rising
-factorial, with \(\rise 00=1\) and \(\rise 0r=0\) for \(r>0\).
+\(\deg_{\!N}\) is the natural degree, and \(\RisingFactorial{n}{r}\) is the rising
+factorial, with \(\RisingFactorial{0}{0}=1\) and \(\RisingFactorial{0}{r}=0\) for \(r>0\).
 Consequently \eqref{p1:eq:polynomial-commutator} includes the order-zero
 identity without a separate exception.
 \end{theorem}
@@ -1438,10 +1436,10 @@ Taylor's finite polynomial identity about the upper endpoint is
 \]
 Linearity reduces the claim to the kernel-raising identity
 \[
- \Jn_{n,a}[(x-t)^rf(t)](x)=\rise nr\,\Jn_{n+r,a}f(x).
+ \Jn_{n,a}[(x-t)^rf(t)](x)=\RisingFactorial{n}{r}\,\Jn_{n+r,a}f(x).
 \]
 For positive \(n\), this follows by combining the powers of \(x-t\) and the
-factorial identity \((n-1)!\rise nr=(n+r-1)!\).  For \(n=0\), evaluation at
+factorial identity \((n-1)!\RisingFactorial{n}{r}=(n+r-1)!\).  For \(n=0\), evaluation at
 \(t=x\) agrees with the stated zero rising-factorial convention.  This proves
 all orders at once.
 \end{proof}
@@ -1458,7 +1456,7 @@ Let \(n\geq1\), let \(x>0\), and suppose the displayed integrals converge.
 Then for every complex \(\alpha\),
 \begin{equation}
  \Jn_n[t^\alpha f(t)](x)
- =\sum_{r=0}^{\infty}(-1)^r\binom{n+r-1}{r}\fall{\alpha}{r}
+ =\sum_{r=0}^{\infty}(-1)^r\binom{n+r-1}{r}\FallingFactorial{\alpha}{r}
  x^{\alpha-r}(\Jn_{n+r}f)(x),                                 \label{p1:eq:general-commutator}
 \end{equation}
 whenever termwise integration is justified.  Independently of this
@@ -1478,7 +1476,7 @@ every real oriented endpoint \(x\):
 Inside the Volterra kernel, expand about the upper endpoint:
 \[
  t^\alpha=x^\alpha\left(1-\frac{x-t}{x}\right)^\alpha
- =\sum_{r\geq0}(-1)^r\frac{\fall{\alpha}{r}}{r!}
+ =\sum_{r\geq0}(-1)^r\frac{\FallingFactorial{\alpha}{r}}{r!}
  x^{\alpha-r}(x-t)^r.
 \]
 After integration, the factor multiplying \(\Jn_{n+r}f\) is
@@ -1518,7 +1516,7 @@ has the absolutely and locally uniformly convergent expansion
 \begin{equation}
  \boxed{\begin{aligned}
  \Jn_n[t^\alpha F(t)](x)
- ={}&\sum_{r=0}^{\infty}(-1)^r\binom{n+r-1}{r}\fall{\alpha}{r}
+ ={}&\sum_{r=0}^{\infty}(-1)^r\binom{n+r-1}{r}\FallingFactorial{\alpha}{r}
  2^{\binom{n+r}{2}}x^{\alpha-r}
  F\!\left(\frac{x}{2^{n+r}}\right).
  \end{aligned}}                                                \label{p1:eq:master-alpha-n}
@@ -1537,7 +1535,7 @@ The natural-power specialization has the stronger all-order form: for every
 \begin{equation}
  \boxed{\quad
  \Jn_n[t^pF(t)](x)
- =\sum_{r=0}^{p}(-1)^r\binom pr\rise nr x^{p-r}
+ =\sum_{r=0}^{p}(-1)^r\binom pr\RisingFactorial{n}{r} x^{p-r}
  2^{\binom{n+r}{2}}F\!\left(\frac{x}{2^{n+r}}\right).
  \quad}                                                       \label{p1:eq:finite-p-n-all-order}
 \end{equation}
@@ -1562,7 +1560,7 @@ Indeed, this is the beta integral obtained by replacing \(F(t)\) with
 \eqref{p1:eq:general-commutator}, with \(m=n+r\), is therefore at most
 \begin{equation}
  C_MM!x^{\Rea\alpha+n+M}
- \binom{n+r-1}{r}\frac{|\fall{\alpha}{r}|}{(n+r+M)!}.           \label{p1:eq:term-bound}
+ \binom{n+r-1}{r}\frac{|\FallingFactorial{\alpha}{r}|}{(n+r+M)!}.           \label{p1:eq:term-bound}
 \end{equation}
 On a compact set of \(\alpha\)'s, the falling factorial is bounded by
 \(C\,r!r^B\) for some fixed \(B\).  Since
@@ -1617,17 +1615,17 @@ For the ordinary primitive \(n=1\), repeated integration by parts gives an
 especially transparent exact remainder.  For every integer \(N\geq0\),
 \begin{align}
  \int_0^xt^\alpha F(t)\Differential t
- ={}&\sum_{r=0}^{N}(-1)^r\fall{\alpha}{r}
+ ={}&\sum_{r=0}^{N}(-1)^r\FallingFactorial{\alpha}{r}
  x^{\alpha-r}(\Jn_{r+1}F)(x)+R_N(\alpha,x),                    \label{p1:eq:partial-alpha}\\
  R_N(\alpha,x)
- ={}&(-1)^{N+1}\fall{\alpha}{N+1}
+ ={}&(-1)^{N+1}\FallingFactorial{\alpha}{N+1}
  \int_0^xt^{\alpha-N-1}(\Jn_{N+1}F)(t)\Differential t.                  \label{p1:eq:remainder-alpha}
 \end{align}
 If \(M> -\Rea\alpha-1\), \eqref{p1:eq:J-flat-bound} yields
 \begin{equation}
  |R_N(\alpha,x)|
  \leq
- \frac{|\fall{\alpha}{N+1}|C_MM!}
+ \frac{|\FallingFactorial{\alpha}{N+1}|C_MM!}
  {(N+M+1)!(\Rea\alpha+M+1)}
  x^{\Rea\alpha+M+1}.                                         \label{p1:eq:remainder-bound}
 \end{equation}
@@ -2014,7 +2012,7 @@ On \(0\leq x\leq1\), \(\RvachevUp(x)=1-F(x)\), so for
 \begin{equation}
  \int_0^xt^\alpha\RvachevUp(t)\Differential t
  =\frac{x^{\alpha+1}}{\alpha+1}
- -\sum_{r\geq0}(-1)^r\fall\alpha r
+ -\sum_{r\geq0}(-1)^r\FallingFactorial{\alpha}{r}
  2^{\binom{r+1}{2}}x^{\alpha-r}
  F\!\left(\frac{x}{2^{r+1}}\right).                            \label{p1:eq:up-positive-alpha}
 \end{equation}
@@ -2159,11 +2157,11 @@ For \(p\in\NaturalNumbers\),
  2^{\binom{n-j+1}{2}}\FabiusGlobal(2^{n-j}x).                            \label{p1:eq:derivative-signed-p}
 \end{equation}
 For arbitrary \(\alpha\in\ComplexNumbers\) and \(x>0\), replace
-\(p!/(p-j)!\) by \(\fall\alpha j\) and sum through \(j=n\).
+\(p!/(p-j)!\) by \(\FallingFactorial{\alpha}{j}\) and sum through \(j=n\).
 For the bounded function, use
 \begin{equation}
  D^n[x^\alpha F(x)]
- =\sum_{j=0}^{n}\binom nj\fall\alpha j x^{\alpha-j}F^{(n-j)}(x),
+ =\sum_{j=0}^{n}\binom nj\FallingFactorial{\alpha}{j} x^{\alpha-j}F^{(n-j)}(x),
                                                                     \label{p1:eq:derivative-bounded-alpha}
 \end{equation}
 with \eqref{p1:eq:F-derivative-up}.  An identical Leibniz formula combined with
@@ -2223,7 +2221,7 @@ Let \(\Rea\nu>0\), \(0<x\leq1\), and \(\alpha\in\ComplexNumbers\).  Then
 \begin{equation}
  \boxed{\quad
  \RL^\nu[t^\alpha F(t)](x)
- =\sum_{r\geq0}(-1)^r\frac{\rise\nu r}{r!}\fall\alpha r
+ =\sum_{r\geq0}(-1)^r\frac{\RisingFactorial{\nu}{r}}{r!}\FallingFactorial{\alpha}{r}
  x^{\alpha-r}(\RL^{\nu+r}F)(x).
  \quad}                                                        \label{p1:eq:fractional-alpha}
 \end{equation}
@@ -2250,12 +2248,12 @@ At \(x=1\),
 Expand \(t^\alpha\) about \(x\) exactly as in
 \cref{p1:thm:commutator}.  Raising the kernel power from \(\nu-1\) to
 \(\nu+r-1\) contributes
-\(\Gamma(\nu+r)/\Gamma(\nu)=\rise\nu r\).  The flatness estimate used in
+\(\Gamma(\nu+r)/\Gamma(\nu)=\RisingFactorial{\nu}{r}\).  The flatness estimate used in
 \cref{p1:thm:newton-volterra}, with gamma functions replacing factorials, proves
 normal convergence.  Formula \eqref{p1:eq:fractional-one-alpha} follows from
 \eqref{p1:eq:fractional-one} and
 \[
- \frac{\rise\nu r}{r!}\fall\alpha r
+ \frac{\RisingFactorial{\nu}{r}}{r!}\FallingFactorial{\alpha}{r}
  \frac1{\Gamma(\nu+r+1)}
  =\frac1{\Gamma(\nu)}\binom\alpha r\frac1{\nu+r}.
 \]
@@ -3030,7 +3028,7 @@ For a first negative-power example,
 For a fractional example,
 \begin{equation}
  \int_0^xt^{1/2}F(t)\Differential t
- =\sum_{r\geq0}(-1)^r\fall{1/2}{r}
+ =\sum_{r\geq0}(-1)^r\FallingFactorial{1/2}{r}
  2^{\binom{r+1}{2}}x^{1/2-r}
  F\!\left(\frac{x}{2^{r+1}}\right).                            \label{p1:eq:sample-half}
 \end{equation}
@@ -3766,7 +3764,7 @@ $\alpha\in\ComplexNumbers$, because $F$ is flat at zero.
 For every $\alpha\in\ComplexNumbers$ and $0<x\le1$,
 \begin{equation}
  \boxed{
- I_\alpha(x)=\sum_{k=0}^{\infty}(-1)^k\fall{\alpha}{k}
+ I_\alpha(x)=\sum_{k=0}^{\infty}(-1)^k\FallingFactorial{\alpha}{k}
  2^{\binom{k+1}{2}}x^{\alpha-k}F(x/2^{k+1}).}              \label{p2:eq:complex-series}
 \end{equation}
 The series is absolutely convergent and locally uniformly convergent in
@@ -3776,7 +3774,7 @@ $\alpha$.  For $\alpha=p\in\NaturalNumbers$ it terminates at $k=p$ and reduces t
 
 For every $N\ge1$ the exact remainder after $N$ terms is
 \begin{equation}
- R_N(\alpha,x)=(-1)^N\fall{\alpha}{N}
+ R_N(\alpha,x)=(-1)^N\FallingFactorial{\alpha}{N}
  \int_0^xt^{\alpha-N}A_N(t)\Differential t.                          \label{p2:eq:complex-remainder}
 \end{equation}
 \end{theorem}
@@ -3787,11 +3785,11 @@ $N$ terms and \eqref{p2:eq:complex-remainder}.  Choose $s$ so that
 $\Re\alpha+s+1>0$.  By \cref{p2:lem:volterra-flatness},
 \begin{equation}
  \AbsoluteValue{R_N(\alpha,x)}
- \le \frac{C_s\AbsoluteValue{\fall{\alpha}{N}}}{(s+1)_N}
+ \le \frac{C_s\AbsoluteValue{\FallingFactorial{\alpha}{N}}}{(s+1)_N}
  \frac{x^{\Re\alpha+s+1}}{\Re\alpha+s+1}.                \label{p2:eq:R-bound}
 \end{equation}
 For nonintegral $\alpha$,
-$\fall{\alpha}{N}=(-1)^N\Gamma(N-\alpha)/\Gamma(-\alpha)$, so the quotient
+$\FallingFactorial{\alpha}{N}=(-1)^N\Gamma(N-\alpha)/\Gamma(-\alpha)$, so the quotient
 in \eqref{p2:eq:R-bound} is $\BigO(N^{-\Re\alpha-s-1})$.  For nonnegative integer
 $\alpha$ it vanishes identically for large $N$.  Uniform gamma-ratio estimates
 on compact $\alpha$-sets, with the polynomial definition of the falling
@@ -3844,7 +3842,7 @@ $\FabiusGlobal$, is valid for every $x>0$ because the dilation equation is globa
 
 \subsection{Negative integer powers}
 When $\alpha=-m$, $m\in\NaturalNumbers$, the two signs cancel because
-$\fall{-m}{k}=(-1)^k\rise{m}{k}$.
+$\FallingFactorial{-m}{k}=(-1)^k\RisingFactorial{m}{k}$.
 
 \begin{corollary}[Positive-term negative-power series]
 \label{p2:cor:negative-series}
@@ -3852,7 +3850,7 @@ For $m\in\NaturalNumbers$ and $0<x\le1$,
 \begin{equation}
  \boxed{
  \int_0^x\frac{F(t)}{t^m}\Differential t
- =\sum_{k=0}^{\infty}\rise{m}{k}
+ =\sum_{k=0}^{\infty}\RisingFactorial{m}{k}
  2^{\binom{k+1}{2}}x^{-m-k}F(x/2^{k+1}).}                 \label{p2:eq:negative-series}
 \end{equation}
 All terms are nonnegative.  In particular,
@@ -3879,18 +3877,18 @@ Termwise differentiation in \eqref{p2:eq:complex-series} gives
  &=\sum_{k\ge0}(-1)^k2^{\binom{k+1}{2}}F(x/2^{k+1})x^{\alpha-k} \notag\\
  &\quad\times\sum_{\ell=0}^{r}\binom r\ell
  (\log x)^{r-\ell}\frac{\Differential^\ell}{\Differential\alpha^\ell}
- \fall{\alpha}{k}.                                       \label{p2:eq:log-series}
+ \FallingFactorial{\alpha}{k}.                                       \label{p2:eq:log-series}
 \end{align}
 The derivative may be written without singularities through signed Stirling
 numbers $s(k,j)$:
 \begin{equation}
- \frac{\Differential^\ell}{\Differential\alpha^\ell}\fall{\alpha}{k}
- =\sum_{j=\ell}^{k}s(k,j)\fall{j}{\ell}\alpha^{j-\ell}.  \label{p2:eq:stirling-derivative}
+ \frac{\Differential^\ell}{\Differential\alpha^\ell}\FallingFactorial{\alpha}{k}
+ =\sum_{j=\ell}^{k}s(k,j)\FallingFactorial{j}{\ell}\alpha^{j-\ell}.  \label{p2:eq:stirling-derivative}
 \end{equation}
 Away from the removable roots $0,1,\ldots,k-1$, it also has the Bell form
 \begin{equation}
- \frac{\Differential^\ell}{\Differential\alpha^\ell}\fall{\alpha}{k}
- =\fall{\alpha}{k}\,
+ \frac{\Differential^\ell}{\Differential\alpha^\ell}\FallingFactorial{\alpha}{k}
+ =\FallingFactorial{\alpha}{k}\,
  \mathcal B_\ell(h_1,\ldots,h_\ell),                     \label{p2:eq:bell-derivative}
 \end{equation}
 where $\mathcal B_\ell$ is the complete exponential Bell polynomial and
@@ -3900,7 +3898,7 @@ where $\mathcal B_\ell$ is the complete exponential Bell polynomial and
 This supplies a direct antiderivative connection to the Bell-polynomial
 machinery used elsewhere in the corpus for saddle and inverse expansions.
 
-At $\alpha=0$, $\frac{\Differential}{\Differential\alpha}\fall{\alpha}{k}|_{\alpha=0}
+At $\alpha=0$, $\frac{\Differential}{\Differential\alpha}\FallingFactorial{\alpha}{k}|_{\alpha=0}
 =(-1)^{k-1}(k-1)!$ for $k\ge1$, so
 \begin{equation}
  \boxed{
@@ -3923,7 +3921,7 @@ Define
 The function $\Mellin_F$ is entire and
 \begin{equation}
  \boxed{
- \Mellin_F(s)=\sum_{k=0}^{\infty}(-1)^k\fall{s-1}{k}
+ \Mellin_F(s)=\sum_{k=0}^{\infty}(-1)^k\FallingFactorial{s-1}{k}
  2^{\binom{k+1}{2}}F(2^{-k-1}).}                          \label{p2:eq:Mellin-series}
 \end{equation}
 For $\Re s>0$,
@@ -4146,7 +4144,7 @@ For $p\in\NaturalNumbers$ and all $x\in\RealNumbers$,
 For $x>0$ and $\alpha\in\ComplexNumbers$,
 \begin{equation}
  \int_0^xt^\alpha\FabiusGlobal(t)\Differential t
- =\sum_{k=0}^{\infty}(-1)^k\fall{\alpha}{k}
+ =\sum_{k=0}^{\infty}(-1)^k\FallingFactorial{\alpha}{k}
  2^{\binom{k+1}{2}}x^{\alpha-k}\FabiusGlobal(x/2^{k+1}),    \label{p2:eq:global-complex}
 \end{equation}
 with absolute, locally uniform convergence.
@@ -4796,11 +4794,11 @@ $s+\sigma_-+1>1$.  By \cref{p2:lem:volterra-flatness}, the absolute value of the
 $k$th term of \eqref{p2:eq:complex-series} is bounded by
 \begin{equation}
  C_s x^{\sigma_-+s+1}
- \frac{\AbsoluteValue{\fall{\alpha}{k}}}{(s+1)_{k+1}}.              \label{p2:eq:uniform-term-bound}
+ \frac{\AbsoluteValue{\FallingFactorial{\alpha}{k}}}{(s+1)_{k+1}}.              \label{p2:eq:uniform-term-bound}
 \end{equation}
 On a compact set, the Pochhammer polynomial admits a uniform estimate
 \begin{equation}
- \AbsoluteValue{\fall{\alpha}{k}}\le C_K\,\Gamma(k-\sigma_-+c_K)   \label{p2:eq:pochhammer-uniform}
+ \AbsoluteValue{\FallingFactorial{\alpha}{k}}\le C_K\,\Gamma(k-\sigma_-+c_K)   \label{p2:eq:pochhammer-uniform}
 \end{equation}
 for a fixed harmless $c_K$.  Gamma-ratio asymptotics then give a summable
 majorant $C_{K,s}k^{-s-\sigma_- -2+c_K}$ after increasing $s$ if necessary.
@@ -5022,10 +5020,10 @@ then $J_0=\FabiusGlobal$ and $J_{m+1}'=J_m$.  Consequently every polynomial weig
 finitely many integrations by parts.  For $p\in\NaturalNumbers$, $n\ge1$, and $0\le x\le1$ we prove
 \[
  I_0^n[x^pF(x)]
- =\sum_{k=0}^{p}(-1)^k\binom pk\rise nk
+ =\sum_{k=0}^{p}(-1)^k\binom pk\RisingFactorial{n}{k}
  2^{\binom{n+k}{2}}x^{p-k}F(x/2^{n+k}),
 \]
-where $I_0^n$ is the normalized $n$-fold primitive and $\rise nk$ is a rising factorial.
+where $I_0^n$ is the normalized $n$-fold primitive and $\RisingFactorial{n}{k}$ is a rising factorial.
 The ordinary antiderivative is the case $n=1$.  A piecewise formula extends the result to
 the globally bounded $F$.
 
@@ -5033,7 +5031,7 @@ For an arbitrary complex exponent $\alpha$, the finite formula becomes a normall
 convergent Mellin--Newton series
 \[
  I_0^n[x^\alpha F(x)]
- =\sum_{k\ge0}(-1)^k\binom\alpha k\rise nk
+ =\sum_{k\ge0}(-1)^k\binom\alpha k\RisingFactorial{n}{k}
  2^{\binom{n+k}{2}}x^{\alpha-k}F(x/2^{n+k}).
 \]
 It is entire in $\alpha$, terminates exactly at nonnegative integers, and becomes a
@@ -5270,11 +5268,11 @@ For a base point $a$ we similarly write
 \end{equation}
 We use
 \begin{equation}
- \fall zk=z(z-1)\cdots(z-k+1),\qquad
- \rise zk=z(z+1)\cdots(z+k-1),                               \label{p3:eq:factorials}
+ \FallingFactorial{z}{k}=z(z-1)\cdots(z-k+1),\qquad
+ \RisingFactorial{z}{k}=z(z+1)\cdots(z+k-1),                               \label{p3:eq:factorials}
 \end{equation}
 with either product equal to $1$ at $k=0$.  Hence
-$\binom zk=\fall zk/k!$ and $\rise nk=(n+k-1)!/(n-1)!$ for $n\in\PositiveIntegers$.
+$\binom zk=\FallingFactorial{z}{k}/k!$ and $\RisingFactorial{n}{k}=(n+k-1)!/(n-1)!$ for $n\in\PositiveIntegers$.
 
 \section{The dyadic primitive ladder}
 \label{p3:sec:ladder}
@@ -5343,7 +5341,7 @@ If $X$ has distribution function $F$, Tonelli and symmetry yield
 This estimate is the convergence engine for the complex-exponent theory.  Notice the exact
 cancellation that will later occur:
 \begin{equation}
- \frac{\rise nk}{(n+k)!}=\frac1{(n-1)!(n+k)}.                 \label{p3:eq:rising-cancel}
+ \frac{\RisingFactorial{n}{k}}{(n+k)!}=\frac1{(n-1)!(n+k)}.                 \label{p3:eq:rising-cancel}
 \end{equation}
 
 \section{Polynomial weights: terminating closed forms}
@@ -5358,7 +5356,7 @@ extension is used consistently,
 \begin{equation}
  \boxed{
  I_0^n[P\FabiusGlobal](x)
- =\sum_{k=0}^{d}(-1)^k\frac{\rise nk}{k!}P^{(k)}(x)
+ =\sum_{k=0}^{d}(-1)^k\frac{\RisingFactorial{n}{k}}{k!}P^{(k)}(x)
  2^{\binom{n+k}{2}}\FabiusGlobal(x/2^{n+k}).}
  \label{p3:eq:poly-primitive}
 \end{equation}
@@ -5369,7 +5367,7 @@ For $0\le x\le1$, $\FabiusGlobal$ may be replaced by the bounded $F$ throughout.
 Write $J_m=I_0^m\FabiusGlobal$.  Repeated integration by parts gives
 \[
  I_0^n[P\FabiusGlobal]
- =\sum_{k\ge0}(-1)^k\frac{\rise nk}{k!}P^{(k)}J_{n+k}.
+ =\sum_{k\ge0}(-1)^k\frac{\RisingFactorial{n}{k}}{k!}P^{(k)}J_{n+k}.
 \]
 The coefficient can be proved by induction on $k$: each new integration transfers a
 derivative to $P$ and multiplies the Cauchy-kernel order by $(n+k)/(k+1)$.  Since
@@ -5386,7 +5384,7 @@ For $p\in\NaturalNumbers$, $n\ge1$, and $0\le x\le1$,
 \begin{equation}
  \boxed{
  I_0^n[x^pF(x)]
- =\sum_{k=0}^{p}(-1)^k\binom pk\rise nk
+ =\sum_{k=0}^{p}(-1)^k\binom pk\RisingFactorial{n}{k}
  2^{\binom{n+k}{2}}x^{p-k}F(x/2^{n+k}).}
  \label{p3:eq:monomial-nfold}
 \end{equation}
@@ -5394,7 +5392,7 @@ In particular, an ordinary antiderivative is
 \begin{equation}
  \boxed{
  \int x^pF(x)\,\Differential x
- =\sum_{k=0}^{p}(-1)^k\fall pk
+ =\sum_{k=0}^{p}(-1)^k\FallingFactorial{p}{k}
  2^{\binom{k+1}{2}}x^{p-k}F(x/2^{k+1})+C.}
  \label{p3:eq:monomial-antiderivative}
 \end{equation}
@@ -5502,7 +5500,7 @@ For every $n\ge1$, $0<x\le1$, and $\alpha\in\ComplexNumbers$,
 \begin{equation}
  \boxed{
  I_0^n[t^\alpha F(t)](x)
- =\sum_{k=0}^{\infty}(-1)^k\binom\alpha k\rise nk
+ =\sum_{k=0}^{\infty}(-1)^k\binom\alpha k\RisingFactorial{n}{k}
  2^{\binom{n+k}{2}}x^{\alpha-k}F(x/2^{n+k}).}
  \label{p3:eq:fractional-series}
 \end{equation}
@@ -5519,12 +5517,12 @@ In the Cauchy kernel \eqref{p3:eq:I0n}, write
 \]
 On $[\epsilon,x]$ the binomial series is uniformly convergent.  Its $k$th integrated term is
 \[
- (-1)^k\binom\alpha kx^{\alpha-k}\rise nk J_{n+k}(x),
+ (-1)^k\binom\alpha kx^{\alpha-k}\RisingFactorial{n}{k} J_{n+k}(x),
 \]
 which is the term in \eqref{p3:eq:fractional-series}.  To pass to zero and prove normal
 convergence, apply \cref{p3:lem:J-bound} and \eqref{p3:eq:rising-cancel}:
 \begin{align}
- \left|\binom\alpha k\rise nkx^{\alpha-k}J_{n+k}(x)\right|
+ \left|\binom\alpha k\RisingFactorial{n}{k}x^{\alpha-k}J_{n+k}(x)\right|
  &\le
  \frac{x^{\Re\alpha+n}}{(n-1)!}
  \left|\binom\alpha k\right|\frac{d_{n+k}}{n+k}.              \label{p3:eq:normal-bound}
@@ -5538,7 +5536,7 @@ For $n=1$ this reads
 \begin{equation}
  \boxed{
  A_\alpha(x)=
- \sum_{k=0}^{\infty}(-1)^k\fall\alpha k
+ \sum_{k=0}^{\infty}(-1)^k\FallingFactorial{\alpha}{k}
  2^{\binom{k+1}{2}}x^{\alpha-k}F(x/2^{k+1}).}
  \label{p3:eq:A-series}
 \end{equation}
@@ -5547,10 +5545,10 @@ flatness makes it globally convergent for every complex exponent.
 
 \subsection{Negative powers and positivity}
 
-For $m\in\PositiveIntegers$, $(-1)^k\fall{-m}k=\rise mk$, so
+For $m\in\PositiveIntegers$, $(-1)^k\FallingFactorial{-m}{k}=\RisingFactorial{m}{k}$, so
 \begin{equation}
  \boxed{
- A_{-m}(x)=\sum_{k=0}^{\infty}\rise mk
+ A_{-m}(x)=\sum_{k=0}^{\infty}\RisingFactorial{m}{k}
  2^{\binom{k+1}{2}}x^{-m-k}F(x/2^{k+1}).}
  \label{p3:eq:negative-integer-series}
 \end{equation}
@@ -5584,13 +5582,13 @@ Then \eqref{p3:eq:fractional-series} is a Newton series in $\alpha$.
 For $k\in\NaturalNumbers$,
 \begin{equation}
  \Delta^kB_{n,x}(0)
- =(-1)^k\rise nk2^{\binom{n+k}{2}}x^{-k}F(x/2^{n+k}),         \label{p3:eq:forward-difference}
+ =(-1)^k\RisingFactorial{n}{k}2^{\binom{n+k}{2}}x^{-k}F(x/2^{n+k}),         \label{p3:eq:forward-difference}
 \end{equation}
 where $\Delta h(\alpha)=h(\alpha+1)-h(\alpha)$.  Equivalently,
 \begin{equation}
  \boxed{
  F(x/2^{n+k})=
- \frac{(-1)^kx^k}{\rise nk2^{\binom{n+k}{2}}}
+ \frac{(-1)^kx^k}{\RisingFactorial{n}{k}2^{\binom{n+k}{2}}}
  \Delta^kB_{n,x}(0).}
  \label{p3:eq:recover-dyadic}
 \end{equation}
@@ -5655,7 +5653,7 @@ For $\Re\alpha>-1$, Stieltjes integration by parts gives
 Both sides extend entirely because of endpoint flatness, proving the first equality and the
 removable value.  The second equality is \eqref{p3:eq:fractional-series} at $n=x=1$, followed by
 $2^{\binom{k+1}{2}}F(2^{-k-1})=d_{k+1}/(k+1)!$ and
-$\fall\alpha k=k!\binom\alpha k$.  The integer and negative-integer cases follow.
+$\FallingFactorial{\alpha}{k}=k!\binom\alpha k$.  The integer and negative-integer cases follow.
 \end{proof}
 
 The complete $n$-fold primitive has an equally clean series.
@@ -5864,7 +5862,7 @@ Consequently, for $p\in\NaturalNumbers$ and $n\ge1$,
 \begin{equation}
  \boxed{
  I_{-1}^n[t^p\RvachevUp(t)](x)
- =\sum_{k=0}^{p}(-1)^k\binom pk\rise nk
+ =\sum_{k=0}^{p}(-1)^k\binom pk\RisingFactorial{n}{k}
  2^{\binom{n+k}{2}}x^{p-k}F((x+1)/2^{n+k}).}
  \label{p3:eq:up-monomial}
 \end{equation}
@@ -5910,7 +5908,7 @@ For $n\in\NaturalNumbers$, $\alpha\in\ComplexNumbers$, and $0<x<1$,
 \begin{equation}
  \boxed{
  \frac{\Differential^n}{\Differential x^n}\bigl(x^\alpha F(x)\bigr)
- =\sum_{j=0}^{n}\binom nj\fall\alpha{n-j}
+ =\sum_{j=0}^{n}\binom nj\FallingFactorial{\alpha}{n-j}
  x^{\alpha-n+j}2^{\binom{j+1}{2}}\FabiusGlobal(2^jx).}
  \label{p3:eq:weighted-derivative}
 \end{equation}
@@ -5981,7 +5979,7 @@ More generally, for $p\in\PositiveIntegers$,
 \begin{align}
  \int_0^yQ(v)^p\,\Differential v
  ={}&yq^p
- -p\sum_{k=0}^{p-1}(-1)^k\fall{p-1}k
+ -p\sum_{k=0}^{p-1}(-1)^k\FallingFactorial{p-1}{k}
  2^{\binom{k+1}{2}}q^{p-1-k}F(q/2^{k+1}).                   \label{p3:eq:inverse-integer}
 \end{align}
 Differentiating \eqref{p3:eq:inverse-master} at $\alpha=0$ gives
@@ -6094,7 +6092,7 @@ For $0<y<1$ and $q=Q(y)$,
 Fa\`a di Bruno's formula then gives
 \begin{equation}
  \frac{\Differential^n}{\Differential y^n}Q(y)^\alpha
- =\sum_{k=1}^n\fall\alpha kQ(y)^{\alpha-k}
+ =\sum_{k=1}^n\FallingFactorial{\alpha}{k}Q(y)^{\alpha-k}
  B_{n,k}\bigl(Q',Q'',\ldots,Q^{(n-k+1)}\bigr),               \label{p3:eq:inverse-power-derivative}
 \end{equation}
 where $B_{n,k}$ are partial Bell polynomials.  Combining
@@ -6115,7 +6113,7 @@ For $p,r\in\NaturalNumbers$ and $n\ge1$,
  \boxed{
  I_0^n[x^pF(x)](2^{-r})
  =2^{-r(n+p)-\binom r2}
- \sum_{k=0}^{p}(-1)^k\binom pk\rise nk
+ \sum_{k=0}^{p}(-1)^k\binom pk\RisingFactorial{n}{k}
  \frac{d_{r+n+k}}{(r+n+k)!}.}
  \label{p3:eq:dyadic-primitive}
 \end{equation}
@@ -6145,7 +6143,7 @@ For $p\in\PositiveIntegers$ and $r\in\NaturalNumbers$,
  =2^{-rp-\binom r2}
  \left[
  \frac{d_r}{r!}
- -p\sum_{k=0}^{p-1}(-1)^k\fall{p-1}k
+ -p\sum_{k=0}^{p-1}(-1)^k\FallingFactorial{p-1}{k}
  \frac{d_{r+k+1}}{(r+k+1)!}
  \right].}
  \label{p3:eq:dyadic-inverse-area}
@@ -6611,7 +6609,7 @@ Object & Exact representation\\
 \midrule
 \endhead
 $\displaystyle I_0^n[x^pF]$
-& $\displaystyle\sum_{k=0}^p(-1)^k\binom pk\rise nk
+& $\displaystyle\sum_{k=0}^p(-1)^k\binom pk\RisingFactorial{n}{k}
 2^{\binom{n+k}{2}}x^{p-k}F(x/2^{n+k})$\\[0.7em]
 $\displaystyle I_0^n[x^\alpha F]$
 & Same sum over $k\ge0$ with $\binom pk$ replaced by $\binom\alpha k$; normally convergent.\\[0.7em]
@@ -6623,7 +6621,7 @@ $\displaystyle I_0^n[x^\alpha F](1)$
 $\displaystyle I_0^n[x^p(1-F)]$
 & $\displaystyle p!x^{p+n}/(p+n)!-I_0^n[x^pF]$ on $[0,1]$\\[0.7em]
 $\displaystyle I_{-1}^n[x^p\RvachevUp]$
-& $\displaystyle\sum_{k=0}^p(-1)^k\binom pk\rise nk2^{\binom{n+k}{2}}
+& $\displaystyle\sum_{k=0}^p(-1)^k\binom pk\RisingFactorial{n}{k}2^{\binom{n+k}{2}}
  x^{p-k}F((x+1)/2^{n+k})$\\[0.7em]
 $\displaystyle\int_0^yQ(v)^\alpha\,dv$
 & $\displaystyle yQ(y)^\alpha-\alpha A_{\alpha-1}(Q(y))$\\[0.7em]
@@ -10768,8 +10766,6 @@ chapters on Bernoulli numbers, Bell polynomials, orthogonal polynomials, and asy
 % extra macros for part 6
 \newcommand{\FF}{\mathscr F}
 \newcommand{\Iop}{\mathcal I}
-\newcommand{\Lap}{\mathcal L}
-\newcommand{\Mell}{\mathcal M}
 \newcommand{\Qm}{Q_m}
 \newcommand{\An}{A_n}
 \newcommand{\absPartvv}[1]{\lvert#1\rvert}
@@ -11242,7 +11238,7 @@ studied in the repository; the new contribution here is the finite antiderivativ
 
 For \(\alpha\in\ComplexNumbers\), write
 \(
- \fall{\alpha}{k}=\alpha(\alpha-1)\cdots(\alpha-k+1)
+ \FallingFactorial{\alpha}{k}=\alpha(\alpha-1)\cdots(\alpha-k+1)
 \)
 and use the real logarithm to define \(x^\alpha=e^{\alpha\log x}\) for \(x>0\).
 
@@ -11253,7 +11249,7 @@ For every \(\alpha\in\ComplexNumbers\), every integer \(n\ge1\), and every \(x>0
  \boxed{
  \frac1{(n-1)!}\int_0^x(x-t)^{n-1}t^\alpha F(t)\Differential t
  =\sum_{k=0}^{\infty}(-1)^k\binom{n+k-1}{k}
-   \fall{\alpha}{k}x^{\alpha-k}\mathcal A_{n+k}(x).
+   \FallingFactorial{\alpha}{k}x^{\alpha-k}\mathcal A_{n+k}(x).
  }                                                        \label{p6:eq:complex-power-series}
 \end{equation}
 The integral and series are locally uniform entire functions of \(\alpha\).  If
@@ -11264,7 +11260,7 @@ regularization because \(F\) is flat at zero.
 
 \begin{proof}
 Repeated integration by parts gives the first \(N\) terms and a remainder containing
-\(\fall{\alpha}{N+1}\) times a higher primitive.  Flatness implies that for every
+\(\FallingFactorial{\alpha}{N+1}\) times a higher primitive.  Flatness implies that for every
 integer \(r\ge0\) there is \(C_r\) such that \(0\le F(t)\le C_rt^r\) on \([0,x]\).
 Consequently
 \begin{equation}
@@ -11280,7 +11276,7 @@ with respect to \(\alpha\).
 The first-order case is especially transparent:
 \begin{equation}
  \int_0^xt^\alpha F(t)\Differential t
- =\sum_{k=0}^{\infty}(-1)^k\fall{\alpha}{k}
+ =\sum_{k=0}^{\infty}(-1)^k\FallingFactorial{\alpha}{k}
    x^{\alpha-k}2^{k(k+1)/2}F(x/2^{k+1}).                  \label{p6:eq:complex-first-primitive}
 \end{equation}
 It is a convergent self-similar transseries whose scales descend geometrically while its
@@ -11357,7 +11353,7 @@ For \(\alpha\in\ComplexNumbers\), \(0<y<1\), and \(q=I(y)\),
  \int_0^yI(v)^\alpha\Differential v
  &=yq^\alpha-\alpha\int_0^qx^{\alpha-1}F(x)\Differential x          \label{p6:eq:inverse-power-basic}\\
  &=yq^\alpha-\alpha\sum_{k=0}^{\infty}(-1)^k
-   \fall{\alpha-1}{k}q^{\alpha-1-k}
+   \FallingFactorial{\alpha-1}{k}q^{\alpha-1-k}
    2^{k(k+1)/2}F(q/2^{k+1}).                              \label{p6:eq:inverse-power-series}
 \end{align}
 The series terminates when \(\alpha\) is a nonnegative integer.
@@ -11461,7 +11457,7 @@ historical \(x>-1\) convention.  For positive integer \(\beta=n\),
 \label{p6:prop:fractional-up-transform}
 Let \(V_\beta(y)=U_\beta(y-1)\), \(y>0\).  For \(\RePart s>0\),
 \begin{equation}
- \Lap[V_\beta](s)=s^{-\beta}e^{-s}M(s).                   \label{p6:eq:fractional-up-laplace}
+ \LaplaceTransformSymbol[V_\beta](s)=s^{-\beta}e^{-s}M(s).                   \label{p6:eq:fractional-up-laplace}
 \end{equation}
 For \(x>1\),
 \begin{equation}
@@ -11572,11 +11568,11 @@ with \(e^{-\pi\ImaginaryUnit\xi}\FourierTwoPi{\RvachevUp}(\xi/2)-1\).
 
 Use the conventional one-sided Laplace transform
 \(
- \Lap_-[f](s)=\int_0^\infty e^{-st}f(t)\Differential t
+ \LaplaceTransformSymbol_-[f](s)=\int_0^\infty e^{-st}f(t)\Differential t
 \).
 Equation \eqref{p6:eq:F-laplace}, with \(s\mapsto-s\), gives
 \begin{equation}
- \Lap_-[F\IndicatorOf{[0,1]}](s)
+ \LaplaceTransformSymbol_-[F\IndicatorOf{[0,1]}](s)
  =\frac{e^{-s/2}M(s/2)-e^{-s}}{s}.                         \label{p6:eq:F-conventional-Laplace}
 \end{equation}
 For \(0<x<1\) and any admissible Bromwich line \(\RePart s=c>0\), the causal primitive
@@ -11584,7 +11580,7 @@ therefore has the representation
 \begin{equation}
  \mathcal A_n(x)
  =\frac1{2\pi\ImaginaryUnit}\int_{c-\ImaginaryUnit\infty}^{c+\ImaginaryUnit\infty}
-   e^{sx}s^{-n}\Lap_-[F\IndicatorOf{[0,1]}](s)\Differential s.         \label{p6:eq:Bromwich-primitive}
+   e^{sx}s^{-n}\LaplaceTransformSymbol_-[F\IndicatorOf{[0,1]}](s)\Differential s.         \label{p6:eq:Bromwich-primitive}
 \end{equation}
 The exact scaled formula \(\mathcal A_n(x)=A_nF(x/2^n)\) is thus a nontrivial collapse
 of a Bromwich integral on the unit interval.  At fractional order, the analogous
@@ -12137,7 +12133,7 @@ In particular, the first mode is nonzero, so \(P\) has minimal period one.
 For \(\alpha\in\RealNumbers\), define the Laplace fractional operator
 \(\mathbf D^\alpha\) on \(\FF\) by
 \begin{equation}
- \Lap[\mathbf D^\alpha\FF](s)=s^\alpha L(s),              \label{p6:eq:fractional-Laplace-def}
+ \LaplaceTransformSymbol[\mathbf D^\alpha\FF](s)=s^\alpha L(s),              \label{p6:eq:fractional-Laplace-def}
 \end{equation}
 using the principal positive power for \(s>0\).  For positive \(\alpha\) this agrees
 with the Riemann--Liouville derivative because all initial data vanish; for negative
@@ -12151,7 +12147,7 @@ Let \(\alpha\in\RealNumbers\), and define
 \end{equation}
 Then
 \begin{equation}
- \frac{\Lap[T_\alpha\FF](s)}{\Lap[\mathbf D^\alpha\FF](s)}
+ \frac{\LaplaceTransformSymbol[T_\alpha\FF](s)}{\LaplaceTransformSymbol[\mathbf D^\alpha\FF](s)}
  =\frac{P(\log_2s-\alpha)}{P(\log_2s)}.                  \label{p6:eq:fractional-defect}
 \end{equation}
 Consequently
@@ -12164,7 +12160,7 @@ Consequently
 \begin{proof}
 Scaling in the Laplace transform gives
 \[
- \Lap[T_\alpha\FF](s)
+ \LaplaceTransformSymbol[T_\alpha\FF](s)
  =2^{\alpha(\alpha-1)/2}L(s/2^\alpha).
 \]
 Substitute \eqref{p6:eq:L-periodic}; all quadratic and power factors cancel, leaving
@@ -12418,7 +12414,7 @@ For convenience, the main computational identities are collected here.
  \int_0^1\Phi(\absPartvv{F^{(m)}}/Q_m)\Differential x&=\int_0^1\Phi(F)\Differential x,\\
  \int_0^1I'(y)^p\Differential y&=2^{1-p}\int_0^1F(x)^{1-p}\Differential x\quad(p\le1),\\
  \int_0^1e^{sx}F(x)\Differential x&=\frac{e^s-e^{s/2}M(s/2)}s,\\
- \Lap[U_\beta(\cdot-1)](s)&=s^{-\beta}e^{-s}M(s).
+ \LaplaceTransformSymbol[U_\beta(\cdot-1)](s)&=s^{-\beta}e^{-s}M(s).
 \end{align*}
 
 \section{Reproducibility files}
@@ -13502,7 +13498,7 @@ $B_n(1-x)=(-1)^nB_n(x)$ and $Y\overset d=1-Y$.
 For $n\ge1$, the Mellin transform of $F^{(n)}$ is the entire identity
 \begin{equation}
  \int_0^1x^pF^{(n)}(x)\Differential x
- =(-1)^{n-1}\fall{p}{n-1}\mu(p-n+1),
+ =(-1)^{n-1}\FallingFactorial{p}{n-1}\mu(p-n+1),
  \qquad p\in\ComplexNumbers.
  \label{p7:eq:F-derivative-moments}
 \end{equation}
@@ -13510,7 +13506,7 @@ For integer $p<n-1$, the falling factorial vanishes.  For integers $p,n\ge0$,
 \begin{equation}
  \int_{-1}^{1}x^p\RvachevUp^{(n)}(x)\Differential x
  =\begin{cases}
- (-1)^n\fall p n\,m_{p-n},&p\ge n,\\
+ (-1)^n\FallingFactorial{p}{n}\,m_{p-n},&p\ge n,\\
  0,&p<n.
  \end{cases}
  \label{p7:eq:up-derivative-moments}
@@ -15646,7 +15642,7 @@ and, for \(n\ge1\),
 \begin{equation}
  \boxed{
  \int_0^1x^pF^{(n)}(x)\Differential x
- =(-1)^{n-1}\fall{p}{n-1}\,m(p-n+1),}
+ =(-1)^{n-1}\FallingFactorial{p}{n-1}\,m(p-n+1),}
  \label{p8:eq:F-derivative-moments}
 \end{equation}
 initially where the integration-by-parts calculation is classical and then by
@@ -17383,7 +17379,7 @@ Newton--Volterra series locally normally convergent in $(a,x)$:
 \begin{equation}
  \frac1{(n-1)!}\int_0^x(x-t)^{n-1}t^aF(t)\Differential t
  =\sum_{r=0}^{\infty}(-1)^r
- \binom{n+r-1}{r}\fall{a}{r}
+ \binom{n+r-1}{r}\FallingFactorial{a}{r}
  x^{a-r}2^{\binom{n+r}{2}}
  F\!\left(\frac{x}{2^{n+r}}\right).
  \label{p9:eq:weighted-newton-volterra}
@@ -17907,9 +17903,9 @@ and the probabilistic formula \cref{p9:eq:RL-F-prob} gives
 At $x=1$, symmetry yields
 \begin{equation}
  I_{0+}^\alpha F(1)
- =\frac{\Mell(\alpha)}{\Gamma(\alpha+1)},
+ =\frac{\MellinTransformSymbol(\alpha)}{\Gamma(\alpha+1)},
  \qquad
- \Mell(s)=\Expectation Y^s=\int_0^1Q(y)^s\Differential y,
+ \MellinTransformSymbol(s)=\Expectation Y^s=\int_0^1Q(y)^s\Differential y,
  \label{p9:eq:RL-endpoint-Mellin}
 \end{equation}
 so endpoint fractional integration is exactly the entire inverse-moment
@@ -18481,10 +18477,10 @@ Let $G$ be absolutely continuous on $[0,1]$.  Then
 Examples include
 \begin{align}
  \int_0^1x^{s-1}F(x)\Differential x
- &=\frac{1-\Mell(s)}s,
+ &=\frac{1-\MellinTransformSymbol(s)}s,
  \label{p9:eq:Mellin-F}\\
  \int_0^1x^{s-1}\RvachevUp(x)\Differential x
- &=\frac{\Mell(s)}s,
+ &=\frac{\MellinTransformSymbol(s)}s,
  \label{p9:eq:Mellin-half-up}\\
  \int_0^1\EulerE^{tx}F(x)\Differential x
  &=\frac{\EulerE^t-P(t)}t,
@@ -23641,7 +23637,7 @@ D. V. Widder,
 % Part-XII member macros (new to the volume; identical duplicates of
 % volume-level macros -- F, Up, E, Pp, R, C, N, dd, ii, PV, sinc, Li,
 % Var, Cov, supp, sgn, RePart, ImPart -- and the member's unused 1-arg
-% \fall variant dropped)
+% falling-factorial variant dropped)
 \definecolor{oliveink}{RGB}{62,73,45}
 \definecolor{softgray}{RGB}{90,90,90}
 \newcommand{\G}{G}

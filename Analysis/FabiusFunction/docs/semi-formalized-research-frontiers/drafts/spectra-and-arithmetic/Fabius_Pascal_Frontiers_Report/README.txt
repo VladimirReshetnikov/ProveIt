@@ -94,8 +94,15 @@ The program exits with an exception if an exact identity or internal
 consistency test fails. Its outputs are deterministic; the archived files were
 regenerated in a clean temporary directory and matched byte-for-byte.
 
-Validation performed
---------------------
+Retained-PDF validation
+-----------------------
+The evidence below applies to the source checkpoint with SHA-256
+`bca454a58c26fd2c77eeefe719a218b008e91a4694f0a4205403f9e392c0bad9`
+and its exact PDF.  The current 1,926-line source has SHA-256
+`3184333a5a4348754652e6c727f2e015d2c415147b5adc1405f5d10704020964`;
+it changed after the render, so this section does not claim current source/PDF
+synchronization.
+
 - The LaTeX source was rebuilt from a clean auxiliary state in exactly three
   serial passes.
 - The final log contains no undefined citations/references, rerun requests,
@@ -111,8 +118,8 @@ Validation performed
 - The Python file passes bytecode compilation and a clean rerun reproduces all
   archived numerical tables exactly.
 
-The synchronized PDF is 754,892 bytes with SHA-256
+The retained PDF is 754,892 bytes with SHA-256
 `bd54f7ee169fa04a97f498abf1b076cf62e37f189a20a98cacee650326db454f`.
-The 1,926-line source has SHA-256
+Its rendered 1,926-line source checkpoint had SHA-256
 `bca454a58c26fd2c77eeefe719a218b008e91a4694f0a4205403f9e392c0bad9`.
 Pages 1, 3, 13, and 26 were sampled visually after the final pass.

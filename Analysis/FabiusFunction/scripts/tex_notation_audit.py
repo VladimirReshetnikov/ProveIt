@@ -15,6 +15,9 @@ for focused migration work; explicit archive paths are still rejected.
 ``--semantic`` adds the deliberately broader source-review gate for raw hats,
 delimiters, number systems, indicators, digit sums, and asymptotic operators.
 Those findings require classification rather than blind replacement.
+Whole-corpus runs also require every shared command to occur exactly once in
+the catalogue's quick-reference, rendered-symbol, and alphabetical indexes,
+with the final index in exact command-name order.
 
 Examples::
 
@@ -41,6 +44,10 @@ from typing import Iterable
 
 CANONICAL_INPUT = "fabius-notation.tex"
 CATALOGUE_PREFIX = "FabiusFunction_Mathematical_Notation_Catalogue/"
+CATALOGUE_INPUT = (
+    CATALOGUE_PREFIX
+    + "FabiusFunction_Mathematical_Notation_Catalogue.tex"
+)
 HISTORICAL_NOTATION_MARKER = "HISTORICAL-NOTATION-SCOPE"
 LOCAL_NON_FOURIER_HAT_MARKER = "LOCAL-NON-FOURIER-HAT:"
 RAW_HAT_PATTERN = r"\\(?:widehat|hat)(?![A-Za-z@])"
@@ -177,6 +184,10 @@ RETIRED_COMMANDS = {
     "extF": "FabiusGlobal",
     "Fext": "FabiusGlobal",
     "InvF": "FabiusClampedQuantile or FabiusQuantile",
+    "fall": "FallingFactorial (base and length explicit)",
+    "rise": "RisingFactorial (base and length explicit)",
+    "Lap": "LaplaceTransformSymbol",
+    "Mell": "MellinTransformSymbol",
     "stirone": "UnsignedStirlingFirstKind",
     "stirtwo": "StirlingSecondKind",
     "eulerian": "TypeAEulerianNumber",
@@ -215,6 +226,9 @@ DECLARE_OPERATOR_RE = re.compile(
 COMMAND_RE = re.compile(r"\\(?P<name>[A-Za-z@]+)")
 DOCUMENTCLASS_RE = re.compile(r"(?m)^[^%\n]*\\documentclass(?:\[[^]]*\])?\{")
 INPUT_RE = re.compile(r"\\(?:input|include)\s*\{([^}]+)\}")
+COMMANDNAME_RE = re.compile(
+    r"\\commandname\s*\{\s*(?P<name>[A-Za-z@]+)\s*\}"
+)
 
 
 @dataclass(frozen=True)
@@ -461,6 +475,126 @@ def audit_local_accent_catalogue(files: list[Path], docs: Path) -> list[Finding]
     return findings
 
 
+def audit_shared_command_indexes(docs: Path) -> list[Finding]:
+    """Keep all three catalogue indexes synchronized with the shared API.
+
+    The quick-reference and rendered-symbol indexes are semantic lookup
+    tables, while the final command index is alphabetical.  Every command
+    declared by ``fabius-notation.tex`` must occur exactly once in each table;
+    catalogue-only presentation helpers and retired aliases are not members of
+    this API.
+    """
+    contract_path = docs / CANONICAL_INPUT
+    catalogue_path = docs / CATALOGUE_INPUT
+    contract = strip_comments(contract_path.read_text(encoding="utf-8-sig"))
+    catalogue = strip_comments(catalogue_path.read_text(encoding="utf-8-sig"))
+    findings: list[Finding] = []
+
+    declaration_matches = list(DECL_RE.finditer(contract))
+    declaration_locations: dict[str, list[int]] = defaultdict(list)
+    for match in declaration_matches:
+        declaration_locations[match.group("name")].append(match.start())
+    for name, offsets in sorted(declaration_locations.items()):
+        if len(offsets) <= 1:
+            continue
+        findings.append(Finding(
+            CANONICAL_INPUT,
+            line_number(contract, offsets[1]),
+            "shared-command-duplicate",
+            f"shared contract defines \\{name} {len(offsets)} times; expected once",
+        ))
+
+    expected = set(declaration_locations)
+    section_specs = (
+        (
+            "quick-reference",
+            r"\section{Canonical quick reference}",
+            r"\section{Foundational mathematical grammar}",
+            False,
+        ),
+        (
+            "rendered-symbol",
+            r"\subsection{Rendered-symbol index}",
+            r"\subsection{Alphabetical shared-command index}",
+            False,
+        ),
+        (
+            "alphabetical",
+            r"\subsection{Alphabetical shared-command index}",
+            r"\section{Lean crosswalk and formalization boundary}",
+            True,
+        ),
+    )
+
+    for label, start_marker, end_marker, require_order in section_specs:
+        start = catalogue.find(start_marker)
+        end = catalogue.find(end_marker, start + len(start_marker)) if start >= 0 else -1
+        if start < 0 or end < 0:
+            offset = max(start, 0)
+            findings.append(Finding(
+                CATALOGUE_INPUT,
+                line_number(catalogue, offset),
+                "catalogue-index-structure",
+                (
+                    f"cannot delimit {label} command index between "
+                    f"{start_marker!r} and {end_marker!r}"
+                ),
+            ))
+            continue
+
+        segment = catalogue[start:end]
+        matches = list(COMMANDNAME_RE.finditer(segment))
+        names = [match.group("name") for match in matches]
+        counts = Counter(names)
+        first_offsets: dict[str, int] = {}
+        for match in matches:
+            first_offsets.setdefault(match.group("name"), start + match.start())
+
+        for name in sorted(expected - counts.keys()):
+            findings.append(Finding(
+                CATALOGUE_INPUT,
+                line_number(catalogue, start),
+                "catalogue-index-missing",
+                f"{label} index has no row for shared command \\{name}",
+            ))
+        for name in sorted(counts.keys() - expected):
+            findings.append(Finding(
+                CATALOGUE_INPUT,
+                line_number(catalogue, first_offsets[name]),
+                "catalogue-index-extra",
+                f"{label} index lists non-shared command \\{name}",
+            ))
+        for name, count in sorted(counts.items()):
+            if count <= 1:
+                continue
+            findings.append(Finding(
+                CATALOGUE_INPUT,
+                line_number(catalogue, first_offsets[name]),
+                "catalogue-index-duplicate",
+                f"{label} index lists \\{name} {count} times; expected once",
+            ))
+
+        if require_order and counts == Counter({name: 1 for name in expected}):
+            sorted_names = sorted(names)
+            if names != sorted_names:
+                mismatch = next(
+                    index
+                    for index, (actual, wanted) in enumerate(zip(names, sorted_names))
+                    if actual != wanted
+                )
+                findings.append(Finding(
+                    CATALOGUE_INPUT,
+                    line_number(catalogue, start + matches[mismatch].start()),
+                    "catalogue-index-order",
+                    (
+                        f"alphabetical index has \\{names[mismatch]} at position "
+                        f"{mismatch + 1}; expected \\{sorted_names[mismatch]}"
+                    ),
+                ))
+
+    return findings
+
+
 def input_targets(text: str) -> list[str]:
     return [match.group(1).strip() for match in INPUT_RE.finditer(text)]
 
@@ -680,6 +814,7 @@ def main() -> int:
     }
     if whole_corpus:
         findings.extend(audit_local_accent_catalogue(files, docs))
+        findings.extend(audit_shared_command_indexes(docs))
 
     finding_dicts = [asdict(item) for item in findings]
     finding_counts = Counter(item.code for item in findings)
