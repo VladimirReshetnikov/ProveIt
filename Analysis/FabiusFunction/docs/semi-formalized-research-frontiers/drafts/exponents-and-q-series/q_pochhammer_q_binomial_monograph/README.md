@@ -1,0 +1,1 @@
+A renamed copy of `Analysis\FabiusFunction\docs\semi-formalized-research-frontiers\drafts\exponents-and-q-series\q-pochhammer-and-inversion\q_series_and_inverse_analogs\q_series_and_inverse_analogs.{tex,pdf}`
