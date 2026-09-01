@@ -375,6 +375,10 @@ exponential-series normalization.\\
 \commandname{ExponentialCompleteBellPolynomial}\texttt{\{n\}} &
 \(\ExponentialCompleteBellPolynomial{n}\) & Sum over all partial exponential
 Bell polynomials of total weight \(n\).\\
+\commandname{GeometricBernoulliPolynomial}\texttt{\{n\}\{q\}} &
+\(\GeometricBernoulliPolynomial{n}{q}(x)\) & Monic Appell polynomial that
+inverts averaging by the geometric uniform convolution; the evaluation
+argument follows the command.\\
 \commandname{OrdinaryPartialBellPolynomial}\texttt{\{n\}\{k\}} &
 \(\OrdinaryPartialBellPolynomial{n}{k}\) & Partial Bell polynomial in the
 ordinary-series normalization.\\
@@ -2007,6 +2011,89 @@ functions \(f,g\) and \(n\ge1\),
 The \(n=0\) case is simply \(f(g(x))\).  Derivatives therefore use the
 exponential Bell normalization, whereas ordinary series composition uses the
 ordinary normalization.}
+\end{catalogueentry}
+
+\begin{catalogueentry}{geometric-bernoulli-appell-family}
+  {Geometric Bernoulli polynomials for geometric uniform convolution}
+\entryfield{Probability data}{Fix \(q\in(0,1)\), put \(a=1-q\), and let
+\(Z_0,Z_1,\ldots\) be independent random variables, each uniformly
+distributed on \([0,1]\).  Define
+\[
+ V_q\DefinitionEquals a\sum_{j=0}^{\infty}q^jZ_j.
+\]
+The series converges absolutely almost surely, satisfies \(0\le V_q\le1\),
+and has total deterministic weight
+\(a\sum_{j\ge0}q^j=1\).  Its moment-generating function is the entire
+function
+\[
+ M_q(t)\DefinitionEquals\Expectation\EulerE^{tV_q}
+ =\prod_{j=0}^{\infty}
+   \frac{\EulerE^{a q^jt}-1}{a q^jt},
+\]
+where every factor has its removable value \(1\) at \(t=0\).}
+\entryfield{Defining exponential generating function}{For
+\(n\in\NaturalNumbers\) and \(x\in\ComplexNumbers\), the canonical symbol
+\(\GeometricBernoulliPolynomial{n}{q}(x)\) is defined by
+\[
+ \frac{\EulerE^{xt}}{M_q(t)}
+ =\sum_{n=0}^{\infty}
+   \GeometricBernoulliPolynomial{n}{q}(x)\frac{t^n}{n!}.
+\]
+The identity may be read analytically near \(t=0\), where \(M_q(0)=1\), or
+formally in \(\ComplexNumbers[x][[t]]\).  It defines a monic polynomial of
+degree \(n\), with
+\(\GeometricBernoulliPolynomial{0}{q}(x)=1\).  The command arguments are the
+degree \(n\) and deformation parameter \(q\); the polynomial evaluation
+argument \(x\) follows the command.}
+\entryfield{Appell and averaging-inverse laws}{For \(n\ge1\),
+\[
+ \frac{\Differential}{\Differential x}
+ \GeometricBernoulliPolynomial{n}{q}(x)
+ =n\GeometricBernoulliPolynomial{n-1}{q}(x).
+\]
+For every \(n\in\NaturalNumbers\),
+\[
+ \Expectation\,
+ \GeometricBernoulliPolynomial{n}{q}(x+V_q)=x^n.
+\]
+Thus this family is the polynomial inverse of the averaging operator
+\(T_qp(x)=\Expectation p(x+V_q)\); it is not a Bell-polynomial family.}
+\entryfield{Difference and reflection laws}{The product decomposition
+\(M_q(t)=((\EulerE^{at}-1)/(at))M_q(qt)\) gives, for \(n\ge1\),
+\[
+ \GeometricBernoulliPolynomial{n}{q}(x+a)
+ -\GeometricBernoulliPolynomial{n}{q}(x)
+ =anq^{n-1}\GeometricBernoulliPolynomial{n-1}{q}(x/q).
+\]
+Since \(V_q\) and \(1-V_q\) have the same distribution,
+\[
+ \GeometricBernoulliPolynomial{n}{q}(1-x)
+ =(-1)^n\GeometricBernoulliPolynomial{n}{q}(x).
+\]}
+\entryfield{Cumulant representation}{Write the cumulant expansion as
+\[
+ \log M_q(t)=\sum_{j\ge1}\kappa_j(V_q)\frac{t^j}{j!}.
+\]
+Then
+\[
+ \GeometricBernoulliPolynomial{n}{q}(x)
+ =\ExponentialCompleteBellPolynomial{n}
+   \bigl(x-\kappa_1(V_q),-\kappa_2(V_q),\ldots,-\kappa_n(V_q)\bigr),
+ \qquad \kappa_1(V_q)=\tfrac12.
+\]
+This formula uses a complete exponential Bell polynomial to represent the
+Appell family; it does not identify the two families.}
+\entryfield{Classical limit}{As \(q\downarrow0\), \(a\to1\),
+\(V_q\) converges to one uniform random variable, and
+\[
+ \frac{\EulerE^{xt}}{M_q(t)}
+ \longrightarrow \frac{t\EulerE^{xt}}{\EulerE^t-1}.
+\]
+Consequently
+\(\GeometricBernoulliPolynomial{n}{q}(x)\) converges coefficientwise to the
+classical Bernoulli polynomial \(B_n(x)\) in this generating-function
+convention.  The endpoint \(q=0\) is a limit statement, not part of the
+declared parameter domain \((0,1)\).}
 \end{catalogueentry}
 
 \begin{catalogueentry}{eulerian-families}
@@ -7880,6 +7967,9 @@ prime-power order \(q\).\\
 \commandname{CatalanNumber}, \commandname{GregoryCoefficient},
 \commandname{GenocchiNumber}, \commandname{GenocchiPolynomial} & Distinct
 Catalan, Gregory, and Genocchi families.\\
+\(\GeometricBernoulliPolynomial{n}{q}(x)\) &
+\commandname{GeometricBernoulliPolynomial} & Geometric-uniform-convolution
+Appell family; degree and deformation parameter are explicit.\\
 \(\BarnesGFunction\) & \commandname{BarnesGFunction} & Barnes \(G\)-function,
 not a Gregory or Genocchi coefficient.\\
 \(\BellHessenbergMatrixH{n},\BellHessenbergMatrixK{n}\) &
@@ -8069,6 +8159,8 @@ Command & Arity & Normative entry\\
 \notelink{combinatorial-letter-collisions}{Genocchi numbers}.\\
 \commandname{GenocchiPolynomial} & 1 &
 \notelink{combinatorial-letter-collisions}{Genocchi polynomials}.\\
+\commandname{GeometricBernoulliPolynomial} & 2 &
+\notelink{geometric-bernoulli-appell-family}{Geometric Bernoulli polynomials}.\\
 \commandname{GregoryCoefficient} & 1 &
 \notelink{combinatorial-letter-collisions}{Gregory coefficients}.\\
 \commandname{HurwitzZeta} & 2 &
