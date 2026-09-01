@@ -5282,6 +5282,78 @@ denominator or a tolerant-bisection realizer, and it makes no
 \lean{SequentiallyComputable}, combined \lean{IsComputableRealFunction}, or
 input-bit asymptotic claim.
 
+\subsection{Fixed-depth tolerant inversion and computability of the total inverse}
+\label{sec:fabius-inverse-computable}
+
+The missing realizer is supplied by the generic unit-interval module
+\path{EffectiveMonotoneInverse.lean}.  Its exhaustive public surface consists
+of exactly two definitions,
+\lean{SequentiallyComputableOn} and \lean{unitClamp}, and exactly six theorems,
+\lean{unitClamp_sequentiallyComputable},
+\lean{tolerantDifference_error},
+\lean{tolerantDifference_safe_updates},
+\lean{tolerantDifference_inconclusive},
+\lean{tolerantBisection_correct}, and
+\lean{effectiveInversionOn_Icc}.  Thus all helper state, midpoint-code, and
+recursion declarations used by the implementation remain private.
+
+The bisection is a fixed-depth natural recursion, not a search for a decidable
+comparison of represented reals.  For requested output precision \(p\), a
+state at depth \(s\) either carries a bracket index \(j\), representing
+\([j2^{-s},(j+1)2^{-s}]\), or a certified midpoint numerator at denominator
+\(2^s\).  With \(d\) the supplied positive computable denominator, the
+comparison precision is
+
+\begin{equation}
+ q=p+d(p)+3+s,
+ \qquad \delta=8\,2^{-q}.                              \label{eq:tolerant-bisection-grid}
+\end{equation}
+
+The midpoint \((2j+1)2^{-(s+1)}\) is fed to the forward oracle by an exactly
+equal dyadic code at its required input grid.  The forward and target names
+give a difference certificate of radius \(\delta/4\).  Comparing their signed
+natural numerators with a margin of four output-grid units therefore has three
+total branches: a certified positive difference keeps the left half, a
+certified negative difference keeps the right half, and an inconclusive
+comparison records the midpoint as already close enough by the inverse
+modulus.  During the remaining recursion steps a recorded numerator is merely
+doubled, preserving its real value while moving it to the next dyadic grid.
+After exactly \(p\) steps it is consequently a numerator at denominator
+\(2^p\).  If no comparison was inconclusive, the certified bracket has width
+\(2^{-p}\).  This is the fixed-depth semantics proved uniformly by
+\lean{tolerantBisection_correct}; equality at a midpoint can never cause
+nontermination.
+
+The abstract theorem \lean{effectiveInversionOn_Icc} assumes a computable
+dyadic forward evaluator, strict monotonicity and both interval maps, an
+\lean{InvOn} pair on \([0,1]\), a positive computable denominator \(d\), and
+the implication
+\[
+ |u-v|<d(p)^{-1}\Longrightarrow |g(u)-g(v)|<2^{-p}.
+\]
+It concludes \lean{SequentiallyComputableOn} for \(g\) on the unit interval.
+This is deliberately an inverse-modulus consumer: it does not derive \(d\), or
+the displayed implication, from the paper's positive gap sequence.  In
+particular, the name \lean{effectiveInversionOn_Icc} does not claim an
+arbitrary-endpoint interval algorithm without computable endpoint data.
+
+The concrete module \path{FabiusInverseComputable.lean} has no public
+definition and exactly one public theorem,
+\lean{fabiusInv_isComputableRealFunction}.  It instantiates tolerant bisection
+with \lean{fabiusHasComputableDyadicApproximation}, the unit-interval inverse
+identities, and \lean{inverseFabiusDeltaDenominator}; it then applies the
+computable \(1\)-Lipschitz clamp to arbitrary input names.  This proves the
+\lean{SequentiallyComputable} clause for the totalized inverse.  The theorem's
+second clause is
+\lean{fabiusInv_effectivelyUniformContinuous_logarithmicDelta}, so the final
+result is the full statement
+\[
+ \lean{IsComputableRealFunction}\,(\lean{fabiusInv}\,F\,h_F).
+\]
+Together these two modules expose exactly nine public declarations.  They do
+not add a running-time or input-bit asymptotic theorem, and the generic module
+continues to assume rather than synthesize its inverse modulus.
+
 \subsection{Precise non-elementarity}
 
 The inductive predicate \lean{IsElementary} contains constants and the identity and is
@@ -12441,6 +12513,11 @@ Analyticity, inverse, effective inverse continuity, elementary obstruction &
 \path{FabiusInverseLogarithmicModulus.lean},
 \path{ElementaryFunction.lean}, \path{NotElementary.lean},
 \path{InverseBranch.lean}, \path{InverseNotElementary.lean}\\
+Effective monotone inversion and total inverse computability (exactly two
+definitions and six theorems in the generic module, followed by zero
+definitions and one theorem in the Fabius specialization) &
+\path{EffectiveMonotoneInverse.lean},
+\path{FabiusInverseComputable.lean}\\
 Moments and exact arithmetic &
 \path{Arithmetic.lean}, \path{AnalyticMoments.lean},
 \path{MomentPowerSeries.lean}, \path{UnitLaplaceMomentBounds.lean},
