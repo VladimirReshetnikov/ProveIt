@@ -37,15 +37,15 @@ lattice when the nome is nonzero, and analytic order one at every zero.  This
 promotes only `thm:poch-entire` in the consolidated q-series monograph.  The
 same current source also crosswalks the generic infinite/dissection API and
 the later Euler, q-binomial, Jacobi, quantum-binomial, and Rogers--Szegő
-tranche. Its 282-result forward status totals are now 48 exact / 77 partial /
-149 none / 8 interface, with 42 / 33 / 112 / 3 in the 190-result pre-Fabius
+tranche. Its 282-result forward status totals are now 51 exact / 78 partial /
+145 none / 8 interface, with 36 / 29 / 123 / 3 in the 191-result pre-Fabius
 core and 6 / 1 / 8 / 0 in the q-shifted-factorial chapter. It does not claim
 normal convergence of the additional outer product indexed by spectral scale.
 
-The monograph's current 13,914-line, 646,156-byte source has SHA-256
-`bf270b5f522b159576d91121110239bdf6797640e1ac307111a1895ac0c70109`.
-Its retained 335-page A4 PDF (2,163,339 bytes; SHA-256
-`91c649d0c69628e134e71f1be6c39c3cbc96b91bfc63e456011083cf0e882f03`)
+The monograph's current 13,941-line, 647,940-byte source has SHA-256
+`619d45dad475fd869c294aeed1f1eac6b99d9b3cfef6a9487383ee3e92931bbe`.
+Its retained 340-page A4 PDF (2,180,191 bytes; SHA-256
+`e64a4ef65a9fcce3a4f211f2125b0f8440910cf4527635f76975b0967800e667`)
 renders an earlier explicitly pinned source. It remains a reproducible
 historical publication checkpoint, but must not be cited as displaying the
 current theorem promotions until a new PDF is built and inspected.

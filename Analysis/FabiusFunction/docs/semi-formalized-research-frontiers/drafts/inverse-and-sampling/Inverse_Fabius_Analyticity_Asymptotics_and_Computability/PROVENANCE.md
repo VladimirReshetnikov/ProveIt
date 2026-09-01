@@ -18,9 +18,10 @@ earlier reports; the all-orders source consolidates three independent endpoint
 asymptotics packages; the computability source arrived as a single five-file
 package.  The inverse-iterate source is a derived companion to a forward
 iterate report elsewhere in the corpus and carries reproducible numerical
-assets.  Their internal provenance ledgers and archived source hashes will be
-retained here when the asset audit is complete.  Git history remains the
-byte-level archive for material that is deliberately not migrated.
+assets.  Their internal provenance ledgers and archived source hashes are
+retained in the canonical asset tree and its nested integrity ledger.  Git
+history remains the byte-level archive for material that is deliberately not
+migrated.
 
 The five inputs are not successive editions.  They overlap in normalization,
 nowhere analyticity, inverse regularity, endpoint inversion, Lambert
@@ -28,3 +29,30 @@ coordinates, Bell-polynomial reversion, and Lean status, but each also contains
 unique results.  The canonical volume therefore uses a neutral title and
 records semantic provenance result by result instead of choosing one input
 wholesale.
+
+## Canonical publication artifact
+
+The validated publication pair is `inverse_fabius_theory.tex` and
+`inverse_fabius_theory.pdf`.  The final source contains 296 lines and 11,625
+bytes and has SHA-256
+`7b8cea5ff685db3bb676e08f8e3b3c6586a7702f8bf3a85298fb9ced00054d25`.
+Its exhaustive 23-input closure has SHA-256
+`0c856dd3329d53e2155616dfff8f9e503bd6a0f449622f0eae4e9cc84b548ee4`.
+That closure comprises the master, the shared repository notation file, all
+nine canonical chapter files, three generated TeX fragments, and nine
+publication PNG figures.
+
+The matching final PDF has 134 A4 pages and 2,027,726 bytes, with SHA-256
+`22bc68d855ad04dde9654e9fbd20b3ba7f05a33e3c5df0e5b80bb8991c94b41d`.
+Exactly three guarded final-source pdfLaTeX passes returned zero and produced
+127, 134, and 134 pages.  The input closure remained unchanged before and
+after every pass, with no TeX/Lean/Lake interleave.  The detailed log, text,
+page-box, font, fresh visual, and package-cleanliness results are recorded in
+`VALIDATION.md`.  Root `SHA256SUMS` is the exhaustive current package ledger;
+it includes `assets/SHA256SUMS` as a permanent payload while leaving that
+independently useful nested asset ledger unchanged.
+
+Publication validation changes no historical claim, source pin, concordance
+row, disposition, asset lineage, or arrival checksum recorded above.  It
+certifies only that the stated final PDF is the reviewed rendering of the
+exact source closure identified here.

@@ -1821,7 +1821,79 @@ This includes \(q=0\) and individual zero factors; the last two declarations are
 dyadic Rvachev-product and bounded-Fabius Fourier specializations.  The compound frontier
 still lacks a named centered/MGF wrapper, the outside-disk reciprocal formula and
 zero--pole exchange, and a named local-uniform/normal-convergence theorem for the
-Pochhammer-product right-hand side.
+outer Pochhammer product over the spectral index.
+
+The downstream zero-definition, four-theorem leaf
+\path{QPochhammerEntire.lean} has the exhaustive public surface
+\lean{hasProdLocallyUniformly_complexQPochhammerInf},
+\lean{complexQPochhammerInf_differentiable},
+\lean{complexQPochhammerInf_eq_zero_iff}, and
+\lean{analyticOrderAt_complexQPochhammerInf_of_eq_zero}.
+For each fixed complex \(q\) satisfying exactly \(\lVert q\rVert<1\), the
+factors \(a\mapsto1-aq^j\) converge locally uniformly on the whole complex
+\(a\)-plane to \(\lean{complexQPochhammerInf}\), which is entire in \(a\).
+The third theorem gives the exact raw locus
+\[
+ \lean{complexQPochhammerInf}(a,q)=0
+ \quad\Longleftrightarrow\quad
+ \exists j\in\NaturalNumbers,\;1-aq^j=0,
+\]
+and the fourth gives analytic order one at every such zero.  This
+division-free form includes \(q=0\), with its unique zero \(a=1\).  There is no
+division-based parametrization \(a=q^{-j}\), joint holomorphy theorem in \(q\),
+locally uniform theorem for the outer spectral product, or global
+entire-function growth, order, type, or asymptotic claim.
+
+The finite and general-ring companion layers are separate.
+\path{QPochhammerDissection.lean} has zero definitions and exactly two
+theorems, \lean{finiteQPochhammerIn_dissection} and
+\lean{finiteQPochhammerIn_dissection_remainder}.  Over every commutative ring,
+they give the exact residue-class split at length \(rn\) and, under exactly
+\(u\le r\), the partial-period split with lengths \(n+1\) for \(s<u\) and
+\(n\) for \(u\le s<r\).  They assume nothing about the nome and use no
+topology, division, cancellation, or nonvanishing premise.
+
+\path{QPochhammerInfinite.lean} has one public definition,
+\lean{qPochhammerInfIn}, and exactly twenty-seven public theorems:
+\lean{qPochhammerInfIn_eq_tprod},
+\lean{summable_norm_mul_pow},
+\lean{one_sub_ne_zero_of_norm_lt_one},
+\lean{norm_mul_pow_self_lt_one},
+\lean{finiteQPochhammerIn_self_ne_zero},
+\lean{multipliable_one_sub_mul_pow_of_norm_lt_one},
+\lean{hasProd_qPochhammerInfIn},
+\lean{tendsto_finiteQPochhammerIn_qPochhammerInfIn},
+\lean{qPochhammerInfIn_eq_finite_mul_shift},
+\lean{qPochhammerInfIn_succ_shift},
+\lean{qPochhammerInfIn_eq_factor_mul},
+\lean{qPochhammerInfIn_dissection},
+\lean{qPochhammerInfIn_ne_zero},
+\lean{qPochhammerInfIn_eq_zero_iff},
+\lean{qPochhammerInfIn_self_ne_zero},
+\lean{qPochhammerInfIn_eq_tprod_smul},
+\lean{summable_norm_pow_of_norm_lt_one},
+\lean{isBigO_one_sub_sub_one},
+\lean{differentiable_finiteQPochhammerIn},
+\lean{qPochhammerInfIn_eq_zero_iff_exists_inv_pow},
+\lean{hasProdLocallyUniformly_qPochhammerInfIn},
+\lean{continuous_qPochhammerInfIn},
+\lean{pow_sq_mul_finiteQPochhammerIn_inv_pow_self},
+\lean{differentiable_qPochhammerInfIn},
+\lean{hasDerivAt_qPochhammerInfIn_of_mul_pow_eq_one},
+\lean{hasDerivAt_qPochhammerInfIn_inv_pow}, and
+\lean{deriv_qPochhammerInfIn_inv_pow_ne_zero}.
+The definition is total in a topological commutative ring.  For
+\(\lVert q\rVert<1\), the complete commutative normed-ring layer with
+\(\lVert1\rVert=1\) proves the product, finite-prefix limit, shift,
+factor-removal, and positive-modulus dissection laws; adding a multiplicative
+norm gives the raw zero locus \(aq^j=1\).  Complete normed fields admit the
+inverse-power locus when \(q\ne0\), and local compactness gives locally uniform
+convergence and continuity in \(a\) for fixed \(q\).  The complex layer gives
+entireness and the factor-zero derivative; for \(q\ne0\), it gives the closed
+inverse-power derivative and its nonvanishing.  There is no joint-\(q\)
+holomorphy or global growth/order/type/asymptotic claim.  The preceding
+\path{QPochhammerEntire.lean} remains the separate
+\lean{complexQPochhammerInf} analytic-order-one API, including \(q=0\).
 
 \begin{theorem}[Entire fixed-nome Pochhammer symbol and simple zero lattice]
 \label{integration:thm:qpochhammer-entire}
@@ -4048,6 +4120,11 @@ normed commutative rings; the factor-zero locus under a multiplicative norm;
 locally compact field continuity; and complex entireness with an explicit
 nonzero reciprocal-zero derivative when \(q\ne0\).  It supplies no
 \texttt{analyticOrderAt} theorem and does not replace the preceding wrapper.\\
+\path{GaussianBinomialAtNegOneDerivative.lean} &
+The zero-definition, four-theorem first-jet interface at \(q=-1\): two exact
+Gaussian derivative evaluations and simple-root multiplicity for the
+even-row/odd-column locus, first over \(\IntegerNumbers\) and then over
+characteristic-zero commutative rings under the strict interior hypothesis.\\
 \path{QBinomialTheoremInfinite.lean} &
 The exhaustive one-definition, twenty-two-theorem dominated-limit and
 infinite q-binomial interface, including Euler's product and reciprocal sums.\\

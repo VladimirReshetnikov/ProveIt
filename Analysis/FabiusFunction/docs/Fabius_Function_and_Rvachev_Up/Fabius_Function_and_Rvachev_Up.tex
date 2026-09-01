@@ -3103,102 +3103,15 @@ argument, the flattened paired Euler product, and
 \eqref{eq:geometric-complex-qpochhammer}.  The final two declarations fix the
 dyadic scale and hence the Pochhammer nome \(1/4\); their complex argument is
 unrestricted, and the Fourier-transform form assumes exactly a bounded witness
-and \lean{IsFabius}.  This factorization module itself does not classify the
-single-symbol zero lattice or its multiplicities; the next theorem records the
-separate fixed-nome leaf that now closes exactly that problem.  Neither leaf
-constructs a reciprocal zero--pole factorization, derives spectral-zeta,
-Mellin, or logarithmic-derivative consequences, proves local-uniform or normal
-convergence of the rearranged outer Pochhammer product or joint holomorphy in
-\(q\), names the frontier's centered \(\psi_q\) or \(M_q\), or supplies an
-outside \(\lVert q\rVert>1\) reciprocal formula.
-\end{proof}
-
-\begin{theorem}[Entire fixed-nome Pochhammer symbol and simple zero lattice]
-\label{thm:complex-qpochhammer-entire}
-Fix \(q\in\ComplexNumbers\) with \(\lVert q\rVert<1\), and write
-\[
- P_q(a):=(a;q)_{\infty,\ComplexNumbers}
-       =\prod_{j=0}^{\infty}(1-aq^j).
-\]
-Then the finite prefixes converge locally uniformly on the whole \(a\)-plane,
-\begin{equation}
- \prod_{j=0}^{n-1}(1-aq^j)\longrightarrow P_q(a)
- \quad\text{locally uniformly for }a\in\ComplexNumbers,       \label{eq:qpochhammer-locally-uniform}
-\end{equation}
-and \(P_q\) is entire.  Its zero set has the division-free description
-\begin{equation}
- P_q(a)=0\quad\Longleftrightarrow\quad
- \exists j\in\NaturalNumbers:\ 1-aq^j=0.                    \label{eq:qpochhammer-factor-zero}
-\end{equation}
-If \(q\ne0\), this is equivalently the exact reciprocal-power lattice
-\begin{equation}
- P_q(a)=0\quad\Longleftrightarrow\quad
- \exists j\in\NaturalNumbers:\ a=(q^j)^{-1}.                \label{eq:qpochhammer-zero-lattice}
-\end{equation}
-Every zero is simple:
-\begin{equation}
- P_q(a)=0\quad\Longrightarrow\quad
- \OrderOperator_{z=a}P_q(z)=1.                               \label{eq:qpochhammer-simple-zero}
-\end{equation}
-The factor form \eqref{eq:qpochhammer-factor-zero}, unlike the reciprocal-power
-form, includes \(q=0\): only the index-zero factor can then vanish, so the sole
-zero is \(a=1\), and \eqref{eq:qpochhammer-simple-zero} says it is simple.
-\end{theorem}
-
-\begin{proof}[Human proof and exact Lean crosswalk]
-Apply the summable-scale product engine to the entire factor \(f(w)=1-w\) and
-the scales \(q^j\).  The geometric series
-\(\sum_j\lVert q^j\rVert\) converges, while
-\(f(w)-1=-w=O(w)\) at zero.  The locally uniform product theorem therefore
-gives \eqref{eq:qpochhammer-locally-uniform}; the holomorphic specialization,
-using \(f(0)=1\), makes its product \(P_q\) entire.  The generic no-hidden-zero
-theorem for products at summable scales says that this product vanishes exactly
-when one of its factors does, which is
-\eqref{eq:qpochhammer-factor-zero}.  When \(q\ne0\), the equation
-\(1-aq^j=0\) is \(aq^j=1\), hence \(a=(q^j)^{-1}\); conversely the nonzero power
-\(q^j\) cancels against its inverse.  This proves
-\eqref{eq:qpochhammer-zero-lattice} without changing the \(q=0\)-safe primary
-statement.
-
-It remains to see why no two factors collide and why the surviving cofactor is
-nonzero.  Suppose \(1-aq^j=1-aq^k=0\).  If \(q=0\), either equality forces its
-index to be zero.  If \(q\ne0\), then \(a\ne0\), cancellation gives
-\(q^j=q^k\), and taking norms reduces this to
-\(\lVert q\rVert^j=\lVert q\rVert^k\).  Since
-\(0<\lVert q\rVert<1\), its natural powers are injective, so \(j=k\).
-Splitting the product immediately after this unique index gives, for every
-\(z\in\ComplexNumbers\),
-\begin{equation}
- P_q(z)=(z-a)U(z),\qquad
- U(z)=-q^j\,(z;q)_j\,P_q\!\left(zq^{j+1}\right).             \label{eq:qpochhammer-local-cofactor}
-\end{equation}
-The function \(U\) is entire: its first variable factor is constant, its
-finite Pochhammer prefix is a polynomial, and its tail is the composition of
-the entire \(P_q\) with a linear map.  At \(z=a\), the constant \(q^j\) is
-nonzero (also when \(q=0\), because then \(j=0\)); every prefix factor is
-nonzero by uniqueness of \(j\); and the tail is nonzero, since a tail zero
-would shift to another zero factor with index \(j+1+k\).  Thus \(U(a)\ne0\),
-and the analytic factorization \eqref{eq:qpochhammer-local-cofactor} gives
-order one.
-
-The exhaustive public surface of \path{QPochhammerEntire.lean} has no
-definitions and exactly five theorems:
-\lean{hasProdLocallyUniformly_complexQPochhammerInf},
-\lean{complexQPochhammerInf_differentiable},
-\lean{complexQPochhammerInf_eq_zero_iff},
-\lean{complexQPochhammerInf_eq_zero_iff_eq_inv_pow}, and
-\lean{analyticOrderAt_complexQPochhammerInf_of_eq_zero}.
-They prove, in that order, local uniformity, entireness, the total factor-zero
-criterion, its nonzero-nome reciprocal-power form, and simplicity.  Their
-scope is one fixed nome and one Pochhammer symbol.  They do not prove joint
-holomorphy in \((a,q)\), a reciprocal outside-disk formula, local-uniform or
-normal convergence of the outer product in
-\eqref{eq:geometric-complex-qpochhammer}, or a centered
-characteristic-function/MGF package.
-
-This five-theorem overlay is a source-only update.  The retained 167-page PDF
-predates it and remains a historical render until the documented three-pass
-Libertinus rebuild is performed.
+and \lean{IsFabius}.  Taken alone, these declarations do not classify the
+Pochhammer zero set or its multiplicities, construct a reciprocal zero--pole
+factorization, derive spectral-zeta, Mellin, or logarithmic-derivative
+consequences, prove local-uniform or normal convergence of the outer
+Pochhammer product over the spectral index, name the frontier's centered
+\(\psi_q\) or \(M_q\), or supply an outside \(\lVert q\rVert>1\) reciprocal
+formula.  The next theorem records the downstream fixed-nome analytic and
+zero-set API, including its division-free \(q=0\) boundary and the
+reciprocal-power description when \(q\ne0\).
 \end{proof}
 
 \begin{theorem}[Entire complex q-Pochhammer factors and their simple zeros]
@@ -12057,13 +11970,12 @@ Legendre-series/integral interchange or infinite expansion, root or quadrature t
 Christoffel reconstruction or Pad\'e approximation, and named values for the individual
 entries of the displayed low-order \(G_3\).
 
-\begin{boxedremark}\textbf{Source/PDF version notice.}\space
-The locally validated 167-page PDF in this directory contains the exhaustive combined
-two-definition, twenty-eight-theorem closed-form surface from the preceding merged
-source.  The present post-replay TeX union retains that material and adds the expanded
-formula-and-proof ledger below.  The PDF therefore predates the current union:
-source/PDF parity is not claimed, and a fresh uninterrupted three-pass Libertinus rebuild
-is pending.
+\begin{boxedremark}\textbf{Source/PDF parity convention.}\space
+This source contains the exhaustive two-definition, twenty-eight-theorem closed-form
+inventory and the expanded formula-and-proof ledger below.  Source/PDF parity is
+certified only by the repository metadata for a successful final-source build of this
+exact TeX checkpoint; the page count, checksum, and validation facts in that build
+receipt are authoritative.
 \end{boxedremark}
 
 For a formula-level audit of the preceding inventory, the core
@@ -12414,12 +12326,16 @@ Pochhammer wrapper and its analytic-order-one factor theory, and the latest
 infinite q-binomial, Jacobi, q-Pascal, continuity, quantum-binomial, and
 Rogers--Szeg\H{o} polynomial APIs &
 \path{ScaledInfiniteProducts.lean}, \path{GeometricReciprocalGamma.lean},
-\path{QPochhammerDissection.lean}, \path{QPochhammerInfinite.lean},
-\path{RvachevPochhammerFactorization.lean}, \path{QPochhammerEntire.lean},
+\path{RvachevPochhammerFactorization.lean}, \path{QPochhammerDissection.lean},
+\path{QPochhammerInfinite.lean}, \path{QPochhammerEntire.lean},
+\path{ReciprocalIntegerGammaZeros.lean}, \path{DyadicGammaOrder.lean}\\
+Gaussian (q=-1) first jets, Euler and infinite q-binomial expansions, Jacobi
+and pentagonal products, q-Pascal summation, Gaussian continuity, the quantum
+binomial theorem, and Rogers--Szeg\H{o} polynomials &
+\path{GaussianBinomialAtNegOneDerivative.lean},
 \path{QBinomialTheoremInfinite.lean}, \path{JacobiTripleProduct.lean},
 \path{QPascalSummation.lean}, \path{GaussianBinomialContinuity.lean},
-\path{QuantumBinomial.lean}, \path{RogersSzegoPolynomial.lean},
-\path{ReciprocalIntegerGammaZeros.lean}, \path{DyadicGammaOrder.lean}\\
+\path{QuantumBinomial.lean}, \path{RogersSzegoPolynomial.lean}\\
 Reciprocal-Gamma first jets and the Thue--Morse Gamma tower &
 \path{ReciprocalGammaJets.lean}, \path{ThueMorseGammaTower.lean}\\
 Local all-order jet calculus &

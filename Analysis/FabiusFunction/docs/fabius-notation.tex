@@ -27,7 +27,7 @@
 \makeatother
 
 % Version stamp used by the catalogue and by static audits.
-\newcommand{\FabiusNotationVersion}{2026-08-31}
+\newcommand{\FabiusNotationVersion}{2026-09-01}
 
 % Number systems.  NaturalNumbers is explicitly the nonnegative convention.
 \newcommand{\NaturalNumbers}{\mathbb{N}_{0}}
@@ -147,6 +147,13 @@
 % Named special functions.
 \newcommand{\Polylogarithm}{\operatorname{Li}}
 \newcommand{\LambertW}{W}
+\newcommand{\WrightOmega}{\omega}
+\newcommand{\LambertPolynomial}[1]{%
+  \mathsf{L}^{\mathrm{Lam}}_{#1}%
+}
+\newcommand{\ScaledLambertPolynomial}[1]{%
+  \mathsf{L}^{\mathrm{Lam,sc}}_{#1}%
+}
 \newcommand{\GammaFunction}{\Gamma}
 \newcommand{\RiemannZeta}{\zeta}
 
@@ -156,3 +163,32 @@
 \newcommand{\LittleO}{o}
 \newcommand{\BigOAt}[2]{\mathcal{O}_{#2}\!\left(#1\right)}
 \newcommand{\LittleOAt}[2]{o_{#2}\!\left(#1\right)}
+
+% Polynomial--logarithmic transseries.  These names expose the algebraic
+% operation or coefficient completion; the rendered subscripts keep the four
+% genuinely different classes distinct.  The formal-O token is valuation
+% filtration notation, not an analytic estimate and not, in a Laurent ring, an
+% ideal-quotient congruence.
+\newcommand{\MultiplicativeInverseOf}[1]{#1^{-1}}
+\newcommand{\CompositionalInverseOf}[1]{%
+  #1^{\langle -1\rangle_{\circ}}%
+}
+\newcommand{\FormalBigO}{\mathcal{O}^{\mathrm{form}}}
+\newcommand{\FormalBigOAt}[2]{%
+  \FormalBigO_{#2}\!\left(#1\right)%
+}
+\newcommand{\PolynomialLogPowerSeriesRing}[1]{%
+  \mathscr{PL}_{\mathrm{pow},#1}%
+}
+\newcommand{\PolynomialLogLaurentRing}[1]{%
+  \mathscr{PL}_{\mathrm{poly},#1}%
+}
+\newcommand{\RationalLogLaurentField}[1]{%
+  \mathscr{PL}_{\mathrm{rat},#1}%
+}
+\newcommand{\IteratedLaurentLogField}[1]{%
+  \mathscr{PL}_{\mathrm{itLaur},#1}%
+}
+\newcommand{\NearIdentityPolynomialLogGroup}[1]{%
+  \mathcal{G}_{\mathrm{poly},#1}%
+}
