@@ -132,7 +132,7 @@
 \large Canonical symbols, exact definitions, local namespaces, and historical aliases}
 \author{Encyclopedic companion to Vladimir Reshetnikov's \texttt{ProveIt} formalization}
 \date{Notation contract \FabiusNotationVersion\\
-\small Active corpus at the validation snapshot: 162 recursively inventoried
+\small Active corpus at the validation snapshot: 174 recursively inventoried
 \texttt{.tex} sources}
 
 \begin{document}
@@ -144,7 +144,7 @@ This catalogue is the normative dictionary for mathematical notation in the acti
 global extension, and Rvachev's up-function; fixes number-system, probability, transform,
 binary, $q$-series, asymptotic, fractional-calculus, approximation, and operator
 conventions; and records every recurring collision discovered by a recursive audit of the
-current 162-source active \texttt{.tex} corpus.  Each entry states its type, domain,
+current 174-source active \texttt{.tex} corpus.  Each entry states its type, domain,
 codomain, indices, parameters, normalization, exceptional values, and formalization
 status.  No phrase such as ``with the usual convention'' supplies missing data: when two
 usual conventions exist, both are defined and their conversion is printed.  Historical
@@ -335,6 +335,9 @@ Rising factorial $\prod_{j=0}^{n-1}(x+j)$, equal to one when $n=0$.\\
 its operand and ambient space must follow.\\
 \commandname{SupportOf}\texttt{\{f\}} & $\SupportOf{f}$ & Pointwise support
 $\{x:f(x)\ne0\}$.\\
+\commandname{CoefficientSupportOf}\texttt{\{F\}} &
+\(\CoefficientSupportOf{F}\) & Set of exponent indices or monomials carrying
+nonzero coefficients; the ambient index set is stated locally.\\
 \commandname{TopologicalSupportOf}\texttt{\{f\}} & $\TopologicalSupportOf{f}$ & Closure
 of the pointwise support.\\
 \commandname{Convolution} & $f\Convolution g$ & Convolution, with the underlying group and
@@ -422,6 +425,36 @@ explicit base.\\
 subscript.\\
 \commandname{LambertW} & $\LambertW$ & Lambert $W$; a branch subscript is mandatory when
 more than one branch is possible.\\
+\commandname{WrightOmega} & $\WrightOmega$ & Wright omega, the inverse of
+\(y\mapsto y+\log y\) on the declared real or complex branch.\\
+\commandname{LambertPolynomial}\texttt{\{n\}} &
+\(\LambertPolynomial{n}\) & Canonical zero-based Lambert polynomial;
+\(\LambertPolynomial{0}(u)=-u\), and the evaluation variable follows outside
+the one-argument command.\\
+\commandname{ScaledLambertPolynomial}\texttt{\{n\}} &
+\(\ScaledLambertPolynomial{n}\) & Factorially scaled Lambert polynomial
+\(n!\LambertPolynomial{n}\) for \(n\ge1\); the evaluation variable follows the
+command.\\
+\commandname{MultiplicativeInverseOf}\texttt{\{F\}} &
+\(\MultiplicativeInverseOf{F}\) & Inverse of a unit \(F\) under multiplication.\\
+\commandname{CompositionalInverseOf}\texttt{\{F\}} &
+\(\CompositionalInverseOf{F}\) & Inverse of an admissible map \(F\) under
+composition; distinct from a reciprocal and a time-\((-1)\) iterate.\\
+\commandname{PolynomialLogPowerSeriesRing}\texttt{\{K\}} &
+\(\PolynomialLogPowerSeriesRing{K}\) & Polynomial-log power-series ring
+\(K[L][[t]]\), with \(t=X^{-1}\) and \(L=\log X\).\\
+\commandname{PolynomialLogLaurentRing}\texttt{\{K\}} &
+\(\PolynomialLogLaurentRing{K}\) & Polynomial-log Laurent ring
+\(K[L]((t))\), generally not a field.\\
+\commandname{RationalLogLaurentField}\texttt{\{K\}} &
+\(\RationalLogLaurentField{K}\) & Laurent-series field \(K(L)((t))\)
+with exact rational dependence on \(L\).\\
+\commandname{IteratedLaurentLogField}\texttt{\{K\}} &
+\(\IteratedLaurentLogField{K}\) & Iterated Laurent field
+\(K((L^{-1}))((t))\), with the completion order shown.\\
+\commandname{NearIdentityPolynomialLogGroup}\texttt{\{K\}} &
+\(\NearIdentityPolynomialLogGroup{K}\) & Near-identity composition group
+\(\SetOf{X+A:A\in K[L][[t]]}\), subject to admissibility.\\
 \commandname{GammaFunction} & $\GammaFunction$ & Euler Gamma function.\\
 \commandname{RiemannZeta} & $\RiemannZeta$ & Riemann zeta function or its meromorphic
 continuation, as stated.\\
@@ -434,6 +467,12 @@ sentence.\\
 regime $a$ printed.\\
 \commandname{LittleOAt}\texttt{\{g\}\{a\}} & $\LittleOAt{g}{a}$ & Little-$o$ with
 limiting regime $a$ printed.\\
+\commandname{FormalBigO} (operator token; 0 TeX arguments) &
+\(\FormalBigO\) & Formal valuation-tail operator; it is not an analytic
+estimate and, in a Laurent ring, not an ideal-quotient congruence.\\
+\commandname{FormalBigOAt}\texttt{\{t^N\}\{t\}} &
+\(\FormalBigOAt{t^N}{t}\) & Formal tail whose omitted difference has
+\(t\)-valuation at least \(N\).\\
 \bottomrule
 \end{longtable}
 \endgroup
@@ -3795,6 +3834,917 @@ Mesh and phase reproduction are in
 convergence or infinite differential-operator expansion is claimed.}
 \end{catalogueentry}
 
+\begin{catalogueentry}{polynomial-logarithmic-ambient}
+  {Polynomial--logarithmic variables, coefficient classes, and completions}
+\entryfield{Commands}{The shared semantic commands are
+\commandname{PolynomialLogPowerSeriesRing},
+\commandname{PolynomialLogLaurentRing},
+\commandname{RationalLogLaurentField},
+\commandname{IteratedLaurentLogField}, and
+\commandname{NearIdentityPolynomialLogGroup}.  Their arguments name the
+coefficient field.  A document-local calligraphic letter is not a synonym for
+any of these commands unless that document explicitly defines it.}
+\entryfield{Base data}{Fix a field \(K\) of characteristic zero, a large
+variable \(X\), and the generators
+\[
+ t\DefinitionEquals X^{-1},
+ \qquad
+ L\DefinitionEquals\log X.
+\]
+For real asymptotics the default regime is \(X\to+\infty\).  For complex
+asymptotics a sector and a branch of \(\log\) must be supplied.  In the formal
+algebra, \(t\) and \(L\) are independent generators; their analytic relation is
+recorded by the distinguished derivation \(D_Xt=-t^2\) and \(D_XL=t\).
+The letters \(x,\ell,\lambda\) used in individual reports are local
+renamings of \(X,L\), not additional global generators.}
+\entryfield{Polynomial-log power-series ring}{Define
+\[
+ \PolynomialLogPowerSeriesRing{K}
+ \DefinitionEquals K[L][[t]].
+\]
+An element is a unique series
+\[
+ F=\sum_{n\ge0}p_n(L)t^n,
+ \qquad p_n\in K[L].
+\]
+Each coefficient block is a finite polynomial in \(L\); no uniform bound on
+\(\deg_Lp_n\) is implicit.  The ideal of strictly positive outer order is
+\(tK[L][[t]]\).}
+\entryfield{Polynomial-log Laurent ring}{Define
+\[
+ \PolynomialLogLaurentRing{K}
+ \DefinitionEquals K[L]((t))
+ =\bigcup_{m\ge0}t^{-m}K[L][[t]].
+\]
+Every element has a unique representation
+\[
+ F=\sum_{n\ge n_0}p_n(L)t^n,
+ \qquad n_0\in\IntegerNumbers,\quad p_n\in K[L].
+\]
+Only finitely many negative powers of \(t\) may occur.  Equivalently, only
+finitely many positive powers of \(X\) occur.  This ring is an integral domain
+but, in general, not a field.}
+\entryfield{Unit criterion}{For nonzero
+\[
+ F=t^{n_0}\bigl(p_{n_0}(L)+p_{n_0+1}(L)t+\cdots\bigr),
+\]
+\(F\) is a unit of \(\PolynomialLogLaurentRing{K}\) exactly when
+\(p_{n_0}(L)\in K^\times\), that is, when its leading coefficient block is a
+nonzero scalar.  A nonzero polynomial such as \(L+1\) is not a unit in
+\(K[L]\).  Special divisibility may keep a particular quotient in the
+polynomial-log ring, but there is no unconditional division theorem by an
+arbitrary nonzero leading polynomial.}
+\entryfield{Rational-log Laurent field}{Unrestricted exact division of
+nonzero coefficient blocks is performed in
+\[
+ \RationalLogLaurentField{K}
+ \DefinitionEquals K(L)((t)).
+\]
+This field retains rational dependence on \(L\) exactly.  A scalar such as a
+chosen value of \(\log c\) must belong to \(K\); otherwise \(K\) must first be
+extended.}
+\entryfield{Iterated Laurent-log field}{Expanding rational functions at
+\(L=\infty\) gives
+\[
+ \IteratedLaurentLogField{K}
+ \DefinitionEquals K((L^{-1}))((t)).
+\]
+An element has the form
+\[
+ \sum_{n\ge n_0}t^n
+   \sum_{j\ge j_n}a_{n,j}L^{-j}.
+\]
+For each fixed outer level \(n\), the inner Laurent series contains only
+finitely many positive powers of \(L\), but it may contain infinitely many
+negative powers.  The iteration order is part of the type:
+\[
+ K((L^{-1}))((t))\ne K((t))((L^{-1}))
+\]
+in general, because the two fields impose different support conditions.
+The embedding
+\(K(L)((t))\hookrightarrow K((L^{-1}))((t))\) means Laurent expansion of
+each rational coefficient at \(L=\infty\); it changes an exact coefficient
+such as \(1/(L+1)\) into
+\(L^{-1}-L^{-2}+L^{-3}-\cdots\).}
+\entryfield{Completion order and finite data}{A finite representation in the
+iterated field needs an outer \(t\)-cutoff and an inner \(L^{-1}\)-cutoff, or
+one explicitly defined staircase in the lexicographic monomial order.  An
+outer cutoff alone does not make an infinite Laurent-log coefficient block
+finite.}
+\entryfield{Puiseux-log extension}{For a fixed
+\(s\in\PositiveIntegers\),
+\[
+ K[L]\bigl((t^{1/s})\bigr)
+\]
+allows exponents in \(s^{-1}\IntegerNumbers\).  Formally,
+\[
+ D_X\!\left(t^\alpha p(L)\right)
+ =t^{\alpha+1}\bigl(p'(L)-\alpha p(L)\bigr),
+ \qquad \alpha\in s^{-1}\IntegerNumbers.
+\]
+An analytic realization additionally requires a branch of \(X^{1/s}\).
+The union over all \(s\) allows rational exponents but has no single
+denominator bound.}
+\entryfield{Hahn power-log extension}{Let \(\Gamma\) be an ordered additive
+subgroup of \(\RealNumbers\).  A Hahn power-log series has schematic form
+\[
+ \sum_{\alpha\in S}p_\alpha(L)t^\alpha,
+ \qquad p_\alpha\in K[L],
+\]
+where \(S\subseteq\Gamma\) is well ordered in the direction of increasing
+smallness.  The support condition is what makes multiplication locally finite.
+If complex exponents are admitted, ordering merely by real part is
+insufficient: a tie-breaking order and a support convention must be stated.}
+\entryfield{Near-identity group}{Define
+\[
+ \NearIdentityPolynomialLogGroup{K}
+ \DefinitionEquals
+ \SetOf{X+A:A\in\PolynomialLogPowerSeriesRing{K}}.
+\]
+Under the admissibility hypotheses in
+\notelink{polynomial-logarithmic-composition}{the composition entry}, this is
+a group under composition.  It is not a multiplicative group of coefficient
+series.}
+\end{catalogueentry}
+
+\begin{catalogueentry}{polynomial-logarithmic-leading-data}
+  {Coefficient support, dominance, valuation, and leading data}
+\entryfield{Coefficient support command}{The shared command is
+\commandname{CoefficientSupportOf}.  It is distinct from
+\commandname{SupportOf}, which is reserved for pointwise function support.
+For
+\[
+ F=\sum_{n\ge n_0}p_n(L)t^n
+  =\sum_{\substack{n\in\IntegerNumbers\\j\in\NaturalNumbers}}
+     a_{n,j}t^nL^j,
+\]
+define
+\[
+ \CoefficientSupportOf{F}
+ \DefinitionEquals
+ \SetOf{(n,j)\in\IntegerNumbers\times\NaturalNumbers:a_{n,j}\ne0}.
+\]
+Every fiber over a fixed \(n\) is finite, and the projection to the
+\(n\)-coordinate is bounded below.  The zero series has empty coefficient
+support.  This is support in an exponent-index set, not the pointwise support
+of a function on a topological space.}
+\entryfield{Dominance order}{On the positive ray as \(X\to+\infty\),
+\[
+ t^nL^j\succ t^mL^k
+ \quad\Longleftrightarrow\quad
+ n<m
+ \quad\text{or}\quad
+ (n=m\ \text{and}\ j>k).
+\]
+Thus outer inverse-power order is compared first; logarithmic degree refines
+only a fixed outer block.  Negative powers of \(L\) belong to an enlarged
+Laurent-log coefficient field, not to \(K[L]((t))\).}
+\entryfield{Outer valuation}{For nonzero
+\(F=\sum_{n\ge n_0}p_n(L)t^n\), define
+\[
+ \nu_t(F)\DefinitionEquals
+ \min\SetOf{n\in\IntegerNumbers:p_n\ne0},
+ \qquad
+ \nu_t(0)\DefinitionEquals+\infty.
+\]
+For nonzero inputs,
+\[
+ \nu_t(FG)=\nu_t(F)+\nu_t(G),
+ \qquad
+ \nu_t(F+G)\ge
+ \min\SetOf{\nu_t(F),\nu_t(G)}.
+\]
+The second inequality may be strict when the leading blocks cancel.}
+\entryfield{Leading block, monomial, and scalar}{Let
+\[
+ p_{\nu_t(F)}(L)=aL^d+\text{lower powers},
+ \qquad a\in K^\times.
+\]
+Then the leading coefficient block is the whole polynomial
+\(p_{\nu_t(F)}\); the leading monomial is
+\(t^{\nu_t(F)}L^d\); and the scalar leading coefficient is \(a\).
+These are three different objects.  For \(F=0\), the degree, leading monomial,
+and leading coefficient are undefined unless a separate extended convention
+is declared.}
+\entryfield{Rank-two valuation}{The refined monomial valuation is
+\[
+ v(t^nL^j)=(n,-j)
+\]
+with lexicographic order.  Hence for nonzero \(F\),
+\[
+ v(F)=\bigl(\nu_t(F),-\deg_Lp_{\nu_t(F)}\bigr).
+\]
+The negative sign makes larger logarithmic degree more dominant within a fixed
+outer block.}
+\entryfield{Log-degree profile}{Extend absent coefficient blocks by zero and
+define
+\[
+ d_F(n)=
+ \begin{cases}
+   \deg_Lp_n,&p_n\ne0,\\
+   -\infty,&p_n=0.
+ \end{cases}
+\]
+The profile \(d_F\) is additional data; it is not recoverable from the coarse
+number \(\nu_t(F)\).  Linear bounds such as \(d_F(n)\le an+b\) are hypotheses
+or proved invariants, never part of the ring definition.}
+\entryfield{Hahn support}{For a Hahn extension the support is a subset of the
+chosen exponent group and must be well ordered.  Multiplication uses
+Minkowski addition of supports.  Well ordering or the relevant local-finiteness
+condition ensures that every output coefficient receives only finitely many
+contributions.}
+\end{catalogueentry}
+
+\begin{catalogueentry}{polynomial-logarithmic-truncation}
+  {Exclusive truncation, formal tails, analytic remainders, and summability}
+\entryfield{Exclusive outer truncation}{For \(N\in\IntegerNumbers\), define
+\[
+ \operatorname{Trunc}_{<N}F
+ \DefinitionEquals
+ \sum_{n<N}p_n(L)t^n.
+\]
+It keeps every logarithmic monomial in every retained coefficient block.  If
+\(N\le n_0\), the sum is empty and equals \(0\).  The zero series also truncates
+to \(0\).  “Through outer order \(t^{N-1}\)” is the exclusive cutoff
+\(<N\).}
+\entryfield{Inclusive outer truncation}{The report-6 local notation
+\[
+ [F]_{\le N}\DefinitionEquals\sum_{n\le N}p_n(L)t^n
+\]
+is inclusive.  Therefore
+\[
+ [F]_{\le N}=\operatorname{Trunc}_{<N+1}F.
+\]
+Any transfer between reports must account for this one-block difference.}
+\entryfield{Formal tail command}{The command
+\commandname{FormalBigOAt} is defined by
+\[
+ F=G+\FormalBigOAt{t^N}{t}
+ \quad\Longleftrightarrow\quad
+ \nu_t(F-G)\ge N
+ \quad\Longleftrightarrow\quad
+ F-G\in t^NK[L][[t]].
+\]
+It asserts coefficient agreement below outer order \(N\).  It asserts no
+numerical bound, convergence, uniformity in \(L\), or analytic realization.
+The token \commandname{FormalBigO} is the same operator without supplied
+arguments.}
+\entryfield{Why the Laurent tail is not an ideal}{In
+\(\PolynomialLogLaurentRing{K}=K[L]((t))\), \(t\) is a unit.  Therefore the
+principal ideal generated by \(t^N\) is the whole Laurent ring.  The subset
+\(t^NK[L][[t]]\) is an additive valuation-filtration tail, not an ideal under
+arbitrary Laurent multiplication.  Consequently:
+\begin{itemize}
+\item in \(K[L][[t]]\), reduction modulo the ideal \((t^N)\) is a genuine ring
+quotient;
+\item in \(K[L]((t))\), use \(\nu_t(F-G)\ge N\),
+\(\FormalBigOAt{t^N}{t}\), or equality of exclusive truncations;
+\item quotient-algebra language becomes legitimate after removing the finite
+Laurent principal part and restricting to a power-series tail ring.
+\end{itemize}}
+\entryfield{Coefficient extraction}{For the double expansion above,
+\[
+ [t^n]F=p_n(L),
+ \qquad
+ [t^nL^j]F=a_{n,j}.
+\]
+An absent coefficient is \(0\).  Bracket argument order is not uniform in
+the source reports: one local macro prints \([M]F\), another prints
+\([F]_M\).  Shared prose must state the series and monomial roles explicitly.}
+\entryfield{Separate logarithmic cutoff}{Bounding \(\deg_Lp_n\) is an
+additional approximation, not part of the outer \(t\)-adic topology.
+Discarding a high power of \(L\) in a retained \(t\)-block requires an explicit
+degree bound.  An iterated Laurent-log coefficient requires a second inner
+cutoff or a defined two-dimensional staircase.}
+\entryfield{Analytic big-O command}{For actual functions on a domain \(S\),
+\[
+ R(X)=\BigOAt{A(X)}{X\to\infty,\ X\in S}
+\]
+means that there exist \(C>0\) and a sufficiently late part of the stated
+domain such that
+\(\AbsoluteValue{R(X)}\le C\AbsoluteValue{A(X)}\) there.  In complex work the
+sector, closed subsector if uniformity is intended, and every logarithmic or
+fractional-power branch are part of the statement.  The limit must not be
+left to context.}
+\entryfield{Three different O-roles}{The corpus distinguishes:
+\[
+ \FormalBigOAt{t^N}{t}
+ \quad\text{(formal valuation tail)},\qquad
+ \BigOAt{A(X)}{X\to\infty}
+ \quad\text{(analytic estimate)},\qquad
+ \BigO(N^2)
+ \quad\text{(algorithmic complexity)}.
+\]
+No one of these meanings may be inferred from the other two.}
+\entryfield{Completeness and summability}{A sequence is \(t\)-adically Cauchy
+when every coefficient block below every fixed cutoff eventually stabilizes.
+A family \((S_r)_{r\ge0}\) is formally summable when
+\(\nu_t(S_r)\to+\infty\); below any cutoff only finitely many members then
+contribute.  This coefficientwise property is the formal substitute for
+numerical convergence.  On a Laurent ring, a Cauchy sequence must also have a
+common eventual lower support bound; otherwise it need not define a Laurent
+series with a finite principal part.}
+\end{catalogueentry}
+
+\begin{catalogueentry}{polynomial-logarithmic-differential}
+  {Large-variable differentiation and shifted logarithmic operators}
+\entryfield{Distinguished derivation}{With \(t=X^{-1}\) and \(L=\log X\),
+\[
+ D_X=t\,\partial_L-t^2\,\partial_t.
+\]
+Here \(\partial_t\) and \(\partial_L\) are formal partial derivatives holding
+the other generator fixed.  The formula is the unique derivation satisfying
+\(D_Xt=-t^2\) and \(D_XL=t\).}
+\entryfield{One coefficient block}{For
+\(n\in\IntegerNumbers\) and \(p\in K[L]\),
+\[
+ D_X\bigl(t^np(L)\bigr)
+ =t^{n+1}\bigl(\partial_L-n\bigr)p(L).
+\]
+The Euler derivation preserves outer order:
+\[
+ XD_X\bigl(t^np(L)\bigr)
+ =t^n\bigl(\partial_L-n\bigr)p(L).
+\]}
+\entryfield{Repeated derivative operator}{For
+\(k\in\NaturalNumbers\), define
+\[
+ \Delta_{n,k}
+ \DefinitionEquals
+ \prod_{j=0}^{k-1}(\partial_L-n-j),
+ \qquad
+ \Delta_{n,0}\DefinitionEquals1.
+\]
+The \(k=0\) product is empty and acts as the identity.  The factors commute
+because each is a polynomial in \(\partial_L\).  Then
+\[
+ D_X^k\bigl(t^np(L)\bigr)
+ =t^{n+k}\Delta_{n,k}p(L).
+\]}
+\entryfield{Valuation behavior}{For nonzero \(F\),
+\[
+ \nu_t(D_XF)\ge\nu_t(F)+1.
+\]
+Equality can fail through annihilation or cancellation.  If the leading term
+is \(at^nL^d\), then:
+\begin{itemize}
+\item if \(n\ne0\), the derivative begins with
+\(-na\,t^{n+1}L^d\);
+\item if \(n=0\) and \(d>0\), it begins with
+\(ad\,tL^{d-1}\);
+\item if \(n=d=0\), the leading constant is annihilated and the next
+nonconstant term decides the order.
+\end{itemize}
+In particular, \(D_XK=0\) and
+\(D_X(K[L][[t]])\subseteq tK[L][[t]]\).}
+\entryfield{Formal partial versus analytic derivative}{The formal
+\(\partial_t\) used for coefficient extraction holds \(L\) fixed.  It is not
+the analytic derivative with respect to \(t\) after substituting
+\(L=-\log t\).  Likewise, a bare \(D\) may denote \(D_X\), \(\partial_L\), or
+differentiation in a Lambert-polynomial dummy variable; the differentiated
+variable must be printed.}
+\entryfield{Antiderivative resonance}{Solving
+\[
+ (\partial_L-n)p(L)=q(L)
+\]
+for a polynomial \(p\) is triangular and unique when \(n\ne0\).  When \(n=0\)
+it reduces to polynomial integration and introduces an arbitrary scalar
+constant.  This is the formal source of the constant of integration and must
+be handled separately at the resonant block.}
+\end{catalogueentry}
+
+\begin{catalogueentry}{polynomial-logarithmic-composition}
+  {Admissible composition and near-identity substitution}
+\entryfield{Monomial-leading inner argument}{Let
+\[
+ F(Y)=\sum_{n\ge a}p_n(\log Y)Y^{-n}
+\]
+and
+\[
+ G(X)=cX^\rho(1+U(X)),
+ \qquad
+ c\in K^\times,\quad
+ \rho\in\PositiveIntegers,\quad
+ U\in tK[L][[t]].
+\]
+Choose a value of \(\log c\) in the coefficient field and put
+\(V=\log(1+U)\).  Then
+\[
+ (F\circ G)(X)
+ =
+ \sum_{n\ge a}
+ p_n\!\left(\rho L+\log c+V\right)
+ c^{-n}t^{\rho n}(1+U)^{-n}.
+\]
+Every coefficient below a fixed outer cutoff is a finite sum.  If
+\(\rho=r/s>0\) is rational, the result belongs to a Puiseux-log extension
+after adjoining \(t^{1/s}\); a general ordered real exponent requires a Hahn
+exponent group.}
+\entryfield{Generator substitution}{For
+\[
+ G=X+H=X(1+tH),
+ \qquad H\in K[L][[t]],
+\]
+composition changes both generators:
+\[
+ t\circ G=\frac{t}{1+tH},
+ \qquad
+ L\circ G=L+\log(1+tH).
+\]
+The substitution \(t\mapsto t+H\) is incorrect because \(t\) denotes
+\(X^{-1}\), not \(X\).  Updating \(L\) while leaving \(t\) fixed is also
+incorrect.}
+\entryfield{Exact formal Taylor formula}{For
+\(F\in K[L]((t))\) and \(H\in K[L][[t]]\),
+\[
+ F\circ(X+H)
+ =
+ \sum_{k\ge0}\frac{H^k}{k!}D_X^kF.
+\]
+This is an exact identity of formal series, not an analytic approximation.
+If \(a=\nu_t(F)\), then only finitely many \(k\), in particular
+\(k\le N-a\), can affect the coefficient of \(t^N\).}
+\entryfield{Finite coefficient formula}{Write
+\[
+ F=\sum_{n\ge a}p_n(L)t^n,
+ \qquad
+ H^k=\sum_{m\ge0}h_{k,m}(L)t^m,
+\]
+with \(h_{0,0}=1\) and \(h_{0,m}=0\) for \(m>0\).  Then
+\[
+ [t^r]\bigl(F\circ(X+H)\bigr)
+ =
+ \sum_{\substack{n\ge a,\ k,m\ge0\\n+k+m=r}}
+ \frac{h_{k,m}(L)}{k!}\Delta_{n,k}p_n(L).
+\]
+The displayed affine constraint makes the sum finite.}
+\entryfield{Convolution-polynomial boundary cases}{If
+\(H=\sum_{j\ge0}h_jt^j\), define
+\[
+ C_{m,r}
+ \DefinitionEquals
+ \sum_{\substack{j_1,\ldots,j_r\ge0\\j_1+\cdots+j_r=m}}
+ h_{j_1}\cdots h_{j_r}.
+\]
+The empty-product conventions are
+\[
+ C_{0,0}=1,\qquad C_{m,0}=0\quad(m>0).
+\]
+Equivalently, \(H^r=\sum_{m\ge0}C_{m,r}t^m\), and
+\[
+ C_{m,r+1}=\sum_{j=0}^{m}h_jC_{m-j,r}.
+\]
+If \(h_0=0\), then \(C_{m,r}=0\) whenever \(m<r\).}
+\entryfield{Associativity domain}{The identity
+\((F\circ G)\circ H=F\circ(G\circ H)\) is asserted only when every displayed
+composition exists in the selected support class.  For substitution maps,
+right substitution reverses the apparent order of operator composition.
+Formal closure is a theorem about support and local finiteness, not a license
+to compose arbitrary transseries.}
+\entryfield{Analytic admissibility}{For analytic realizations, the image of
+the inner map must eventually lie in the outer expansion's ray or sector,
+must avoid every relevant logarithmic branch cut, and must carry the omitted
+outer remainder below the requested output order.  These conditions are
+additional to the formal coefficient calculation.}
+\end{catalogueentry}
+
+\begin{catalogueentry}{polynomial-logarithmic-reversion}
+  {Compositional inverse, multiplicative reciprocal, and residual certificates}
+\entryfield{Commands}{The shared commands are
+\commandname{MultiplicativeInverseOf} and
+\commandname{CompositionalInverseOf}.  They render
+\[
+ \MultiplicativeInverseOf{F}=F^{-1},
+ \qquad
+ \CompositionalInverseOf{F}
+ =F^{\langle-1\rangle_\circ}.
+\]
+The first is inverse under multiplication and satisfies
+\(F\MultiplicativeInverseOf{F}=1\).  The second is inverse under composition
+and satisfies
+\[
+ F\circ\CompositionalInverseOf{F}
+ =
+ \CompositionalInverseOf{F}\circ F
+ =X.
+\]
+Negative monomial powers, the branch label \(W_{-1}\), inverse transforms, and
+time-\((-1)\) iterates are not instances of either replacement merely because
+they contain the glyph \(-1\).}
+\entryfield{Near-identity inverse}{For
+\(F=X+A\in\NearIdentityPolynomialLogGroup{K}\), there is a unique
+\(\CompositionalInverseOf{F}=X+B\) in the same group.  The correction \(B\)
+is the unique fixed point
+\[
+ B=-A\circ(X+B).
+\]
+Starting with \(B_0=0\), the error gains at least one outer block per iteration
+because \(D_XA\in tK[L][[t]]\).}
+\entryfield{Lagrange--Bürmann formula}{The formal inverse is
+\[
+ \CompositionalInverseOf{(X+A)}(X)
+ =
+ X+\sum_{r\ge1}\frac{(-1)^r}{r!}
+ D_X^{\,r-1}\!\left(A(X)^r\right).
+\]
+The sum starts at \(r=1\), where the derivative order is zero.  The \(r\)-th
+summand has outer order at least \(r-1\), which makes the family formally
+summable.}
+\entryfield{Coefficient formula}{If
+\[
+ A^r=\sum_{m\ge0}A_{r,m}(L)t^m,
+ \qquad
+ \CompositionalInverseOf{F}
+ =X+\sum_{N\ge0}b_N(L)t^N,
+\]
+then
+\[
+ b_N(L)=
+ \sum_{r=1}^{N+1}\frac{(-1)^r}{r!}
+ \left[
+   \prod_{s=N-r+1}^{N-1}(\partial_L-s)
+ \right]
+ A_{r,N-r+1}(L).
+\]
+When the lower product bound exceeds the upper bound, in particular at
+\(r=1\), the product is empty and acts as the identity.}
+\entryfield{Residual with all arguments explicit}{For an ambient map \(F\)
+and a candidate inverse \(H\), define
+\[
+ \operatorname{Err}_{\mathrm{rev}}(F,H)
+ \DefinitionEquals F\circ H-X.
+\]
+A report-local one-argument macro may hide \(F\) in a subscript; shared prose
+must supply both \(F\) and \(H\) because the residual is not determined by
+\(H\) alone.}
+\entryfield{Finite certificate}{For
+\[
+ G_N=X+\sum_{j=0}^{N}b_j(L)t^j,
+\]
+\(G_N\) is a right inverse through outer block \(N\) exactly when
+\[
+ F\circ G_N-X=\FormalBigOAt{t^{N+1}}{t}.
+\]
+The left certificate is
+\[
+ G_N\circ F-X=\FormalBigOAt{t^{N+1}}{t}.
+\]
+An exact one-sided inverse in the group is two-sided by uniqueness.  At finite
+precision both residuals are useful because they detect different
+substitution-order mistakes.}
+\entryfield{Triangular correction}{If
+\[
+ F\circ G_N-X
+ =r_N(L)t^N+\FormalBigOAt{t^{N+1}}{t},
+\]
+then
+\[
+ G_{N+1}=G_N-r_N(L)t^N
+\]
+removes the residual at level \(N\) when the leading slope is \(1\).  For a
+leading slope \(a\in K^\times\), divide the correction by \(a\).}
+\entryfield{Newton reversion}{Newton's update is
+\[
+ G_{\mathrm{new}}
+ =
+ G-\frac{F\circ G-X}{(D_XF)\circ G}.
+\]
+For \(F=X+A\), the denominator is
+\(1+\FormalBigOAt{t}{t}\) and is therefore a unit.  The residual order
+approximately doubles when all intermediate arithmetic carries sufficient
+guard precision.}
+\entryfield{Analytic residual transfer}{If \(f\) is continuously
+differentiable and one-to-one on an interval, \(x_*=f^{\langle-1\rangle_\circ}(y)\),
+and \(\AbsoluteValue{f'(x)}\ge m>0\) between \(x_N\) and \(x_*\), then
+\[
+ \AbsoluteValue{x_N-x_*}
+ \le\frac{\AbsoluteValue{f(x_N)-y}}{m}.
+\]
+This analytic theorem requires injectivity and a derivative lower bound; a
+formal residual alone does not prove existence of an analytic inverse branch.}
+\end{catalogueentry}
+
+\begin{catalogueentry}{wright-omega-lambert-polynomials}
+  {Wright omega, the canonical Lambert polynomials, and Stirling coefficients}
+\entryfield{Commands}{The shared commands are
+\commandname{WrightOmega},
+\commandname{LambertPolynomial}, and
+\commandname{ScaledLambertPolynomial}.  The polynomial command takes only an
+index; its evaluation argument is written after the command.}
+\entryfield{Real Wright omega}{The map
+\(y\mapsto y+\log y\) is a bijection from \((0,\infty)\) to
+\(\RealNumbers\).  Its real inverse is
+\[
+ \WrightOmega(x)+\log\WrightOmega(x)=x,
+ \qquad
+ \WrightOmega(x)=\LambertW_0(\EulerE^x).
+\]
+The real function is defined for every \(x\in\RealNumbers\); the
+polynomial-log expansion below concerns \(x\to+\infty\).  Complex Wright
+omega requires an unwinding-number or analytic-continuation convention.}
+\entryfield{Canonical zero-based family}{For
+\(n\in\NaturalNumbers\), define
+\[
+ \LambertPolynomial{n}(u)
+ \DefinitionEquals
+ \frac{(-1)^{n+1}}{(n+1)!}
+ \left[
+   \prod_{j=0}^{n-1}(\partial_u-j)
+ \right]u^{n+1}.
+\]
+At \(n=0\) the product is empty, so
+\[
+ \LambertPolynomial{0}(u)=-u.
+\]
+For \(n\ge1\), the first values are
+\[
+ \LambertPolynomial{1}(u)=u,\qquad
+ \LambertPolynomial{2}(u)=\frac{u^2}{2}-u,\qquad
+ \LambertPolynomial{3}(u)=\frac{u^3}{3}-\frac32u^2+u.
+\]}
+\entryfield{Omega expansion}{With \(L=\log x\),
+\[
+ \WrightOmega(x)
+ \sim
+ x+\sum_{n\ge0}\frac{\LambertPolynomial{n}(L)}{x^n}
+ =
+ x-L+\sum_{n\ge1}\frac{\LambertPolynomial{n}(L)}{x^n}.
+\]
+The two displays are identical.  The former is the canonical zero-based
+normalization; the latter merely separates the \(n=0\) logarithmic block.}
+\entryfield{Recurrence and boundary values}{For \(n\in\NaturalNumbers\),
+\[
+ \LambertPolynomial{n+1}(u)
+ =
+ -\LambertPolynomial{n}(u)
+ +n\int_0^u\LambertPolynomial{n}(v)\,\Differential v.
+\]
+Equivalently,
+\[
+ \LambertPolynomial{n+1}'(u)
+ =n\LambertPolynomial{n}(u)-\LambertPolynomial{n}'(u),
+ \qquad
+ \LambertPolynomial{n}(0)=0.
+\]
+For \(n\ge1\),
+\[
+ \deg\LambertPolynomial{n}=n,\quad
+ [u^n]\LambertPolynomial{n}=\frac1n,\quad
+ \LambertPolynomial{n}'(0)=(-1)^{n-1}.
+\]
+The statement \(\deg\LambertPolynomial{0}=0\) would be false because
+\(\LambertPolynomial{0}=-u\) has degree \(1\); therefore the degree law is
+intentionally restricted to \(n\ge1\).}
+\entryfield{Signed and unsigned Stirling numbers}{Define signed Stirling
+numbers of the first kind by
+\[
+ z^{\underline n}
+ =z(z-1)\cdots(z-n+1)
+ =\sum_{k=0}^{n}s(n,k)z^k.
+\]
+The \(n=0\) product is empty, so \(s(0,0)=1\).  Set
+\(s(n,k)=0\) for \(k<0\) or \(k>n\).  Then
+\[
+ s(n+1,k)=s(n,k-1)-ns(n,k),
+ \qquad
+ \UnsignedStirlingFirstKind{n}{k}
+ =(-1)^{n-k}s(n,k).
+\]
+The bracket glyph here denotes an unsigned cycle number only when its two
+arguments are integer indices; it is neither coefficient extraction nor a
+Gaussian binomial coefficient.}
+\entryfield{Explicit coefficients}{For \(n\ge1\),
+\[
+ \LambertPolynomial{n}(u)
+ =
+ \sum_{m=1}^{n}
+ (-1)^{n-m}
+ \UnsignedStirlingFirstKind{n}{n-m+1}
+ \frac{u^m}{m!}.
+\]
+If
+\(\LambertPolynomial{n}(u)=\sum_{m=1}^{n}\lambda_{n,m}u^m\), then
+\[
+ \lambda_{n,m}
+ =
+ (-1)^{n-m}\frac1{m!}
+ \UnsignedStirlingFirstKind{n}{n-m+1},
+\]
+with \(\lambda_{n,0}=\lambda_{n,n+1}=0\) and
+\(\lambda_{1,1}=1\).}
+\entryfield{Scaled family}{For \(n\ge1\),
+\[
+ \ScaledLambertPolynomial{n}(u)
+ \DefinitionEquals n!\LambertPolynomial{n}(u)
+ \in\IntegerNumbers[u].
+\]
+Its recurrence is
+\[
+ \ScaledLambertPolynomial{n+1}(u)
+ =-(n+1)\ScaledLambertPolynomial{n}(u)
+ +n(n+1)\int_0^u
+   \ScaledLambertPolynomial{n}(v)\,\Differential v.
+\]
+The scaled family is a storage normalization; it does not define a different
+asymptotic coefficient sequence.}
+\entryfield{Generating equation}{If
+\[
+ Q(s,u)=\sum_{n\ge1}\LambertPolynomial{n}(u)s^n,
+\]
+then \(Q(0,u)=0\) and
+\[
+ Q=-\log(1-su+sQ).
+\]
+This equation determines the positive-index coefficient family uniquely in
+the formal power-series ring \(K[u][[s]]\).}
+\end{catalogueentry}
+
+\begin{catalogueentry}{lambert-branch-expansions}
+  {Lambert \(W\) branches, lower-branch scaling, and analytic status}
+\entryfield{Large complex branch coordinates}{Fix an integer branch label
+\(k\), a branch of the logarithm, and a sector on which
+\[
+ \xi_k\DefinitionEquals\PrincipalLogarithm z
+      +2\pi\ImaginaryUnit k,
+ \qquad
+ \ell_k\DefinitionEquals
+ \log_{\mathcal B_k}(\xi_k)
+\]
+are defined and \(\AbsoluteValue{\xi_k}\to\infty\).  Then the formal
+large-branch expansion is
+\[
+ \LambertW_k(z)
+ \sim
+ \xi_k-\ell_k+
+ \sum_{n\ge1}\frac{\LambertPolynomial{n}(\ell_k)}{\xi_k^n}
+ =
+ \xi_k+
+ \sum_{n\ge0}\frac{\LambertPolynomial{n}(\ell_k)}{\xi_k^n}.
+\]
+The polynomial family is branch-independent; the coordinates
+\(\xi_k,\ell_k\), their branches, and the analytic domain are not.}
+\entryfield{Formal versus analytic assertion}{A finite polynomial sum in
+\(\xi_k^{-1}\) is a formal truncation until an analytic theorem supplies an
+estimate such as
+\[
+ \LambertW_k(z)-\left(
+ \xi_k-\ell_k+
+ \sum_{n=1}^{N}
+ \frac{\LambertPolynomial{n}(\ell_k)}{\xi_k^n}
+ \right)
+ =
+ \BigOAt{\ell_k^{N+1}/\xi_k^{N+1}}
+        {\AbsoluteValue{\xi_k}\to\infty,\ \xi_k\in S_k}.
+\]
+The sector \(S_k\), distance from branch cuts, and compatibility of the two
+logarithms are hypotheses.  A formal residual does not by itself establish a
+uniform analytic constant.}
+\entryfield{Residual correction}{For
+\[
+ w_N=\xi_k-\ell_k+
+ \sum_{n=1}^{N}\frac{\LambertPolynomial{n}(\ell_k)}{\xi_k^n},
+ \qquad
+ R_N=w_N+\log_{\mathcal B_k}(w_N)-\xi_k,
+\]
+one Newton correction is
+\[
+ \delta_N=-\frac{R_N}{1+1/w_N}.
+\]
+Taylor's theorem transfers a sufficiently small residual to an inverse error
+only in a region avoiding \(w=0\) and the chosen logarithmic cut.}
+\entryfield{Principal real branch}{For \(z\to+\infty\), take
+\(\xi_0=\log z>0\) and \(\ell_0=\log\log z\) with the real logarithm.  This
+specialization yields the familiar principal-branch expansion of
+\(\LambertW_0(z)\).}
+\entryfield{Lower real branch near zero}{The report-6 local symbol
+\[
+ \varepsilon_{\mathrm{br}}>0,\qquad
+ \varepsilon_{\mathrm{br}}\to0
+\]
+is a branch-point-independent small parameter for
+\(\LambertW_{-1}(-\varepsilon_{\mathrm{br}})\).  Put
+\[
+ S=\log(1/\varepsilon_{\mathrm{br}}),\qquad L=\log S.
+\]
+Then the large variable is \(S\), and the expansion of the negative branch is
+obtained from the inverse of \(u\mapsto u-\log u\).  Its alternating signs do
+not define a second Lambert-polynomial family.}
+\entryfield{Square-root branch point}{At \(z=-\EulerE^{-1}\), the derivative
+of \(w\mapsto w\EulerE^w\) vanishes at \(w=-1\); the inverse is therefore not
+an ordinary power-log series in \(z+\EulerE^{-1}\).  A local coordinate such
+as
+\[
+ p=\sqrt{2(1+\EulerE z)}
+\]
+produces a Puiseux series with the sign distinguishing the two local branches.
+The square-root branch and continuation path must be stated.}
+\entryfield{Convergence boundary}{The polynomial recurrence and every
+finite residual identity are formal algebra.  Convergence or asymptotic
+validity of the infinite series is a separate analytic claim.  A statement of
+analytic validity must name the branch, limiting sector or ray, and remainder
+estimate; the notation catalogue does not promote an unverified source claim
+to a theorem.}
+\end{catalogueentry}
+
+\begin{catalogueentry}{polynomial-logarithmic-local-roles}
+  {Precision records, epsilon roles, and collision policy in the six reports}
+\entryfield{Approximation marker}{The report-6 local command
+\(\commandname{ApproximationOf}\{F\}\) prints
+\[
+ F_{\mathrm{approx}}.
+\]
+It denotes a declared approximate or truncated representative of \(F\); it
+does not specify the cutoff, error norm, or formal valuation.  Those data must
+be supplied separately.  It is not a hat accent and is not synonymous with
+an estimator unless a statistical model is declared.}
+\entryfield{Inclusive truncation marker}{The same report's local
+\(\commandname{trunc}\{F\}\{N\}\) prints \([F]_{\le N}\) and is inclusive.
+Other reports use exclusive \(\operatorname{Trunc}_{<N}F\).  The relation is
+\([F]_{\le N}=\operatorname{Trunc}_{<N+1}F\).}
+\entryfield{Nested inverse-log scale}{For
+\[
+ L_0=X,\qquad L_{j+1}=\log L_j,
+\]
+the report-6 local symbol
+\[
+ \varepsilon_{\mathrm{log},j}
+ \DefinitionEquals L_j^{-1}
+\]
+is the reciprocal of the \(j\)-th iterated logarithm.  Its subscript
+\(\mathrm{log},j\) is semantic and must not be dropped when other epsilon
+roles coexist.}
+\entryfield{Lower-branch epsilon}{The symbol
+\(\varepsilon_{\mathrm{br}}\) is the positive small argument in
+\(\LambertW_{-1}(-\varepsilon_{\mathrm{br}})\), with
+\(\varepsilon_{\mathrm{br}}\to0^+\).  It is not an error tolerance.}
+\entryfield{Newton residual scale}{The symbol
+\(\varepsilon_{\mathrm{Newt}}\) denotes a local residual scale in an analytic
+Newton estimate.  Under a nonvanishing derivative, one normalized Newton step
+changes a first-order residual scale to a quadratic scale
+\(\varepsilon_{\mathrm{Newt}}^2\).  This is neither the branch parameter nor
+an inverse-log generator.}
+\entryfield{Coefficient bracket collision}{The glyph \([\,\cdot\,]\) has
+four unrelated roles in the broader corpus:
+\[
+ [t^n]F,\qquad [F]_{\le N},\qquad
+ \UnsignedStirlingFirstKind{n}{k},\qquad
+ \GaussianBinomial{n}{k}{q}.
+\]
+They mean coefficient extraction, inclusive truncation, an unsigned Stirling
+cycle number, and a Gaussian binomial coefficient, respectively.  Argument
+types and semantic macros disambiguate them.}
+\entryfield{Letter \(L\) collision}{In this namespace \(L=\log X\) is a
+logarithmic coordinate.  The Lambert family is always written
+\(\LambertPolynomial{n}\), never as a bare \(L_n\).  A local pair
+\(L_1=\log z\), \(L_2=\log L_1\) denotes iterated logarithms, not the first two
+Lambert polynomials.}
+\entryfield{Generic versus Lambert coefficients}{A generic coefficient block
+is \(p_n(L)\).  The distinguished Lambert coefficient is
+\(\LambertPolynomial{n}(L)\).  The bare family \(P_n\) is not globally
+reserved because several source reports used it for both roles.}
+\entryfield{Outer \(t\) versus q-series base}{The polynomial-logarithmic outer
+coordinate is \(t=X^{-1}\).  A free \(q\) is reserved for a genuine q-series
+base when q-series notation is present.  A bound summation index, rational
+exponent, or locally declared scalar may still be named \(q\), but it acquires
+no q-series meaning from the letter alone.}
+\entryfield{Inverse collision}{A reciprocal is
+\(\MultiplicativeInverseOf{F}\); a compositional inverse is
+\(\CompositionalInverseOf{F}\).  The glyph \(F^{[-1]}\) may denote a
+time-\((-1)\) iterate only in an explicitly declared iteration context and
+must not be silently identified with reversion.}
+\entryfield{Derivative collision}{Write \(D_X\), \(\partial_L\),
+\(\partial_t\), or \(\partial_u\) according to the differentiated variable.
+The formal partial \(\partial_t\) holds \(L\) fixed; it is not the analytic
+derivative after \(L=-\log t\).}
+\entryfield{Class-name collision}{The six reports formerly assigned the same
+bare calligraphic letters to different rings.  Shared text uses the exact
+semantic commands:
+\[
+\begin{array}{c|c}
+\text{command}&\text{defined class}\\
+\hline
+\PolynomialLogPowerSeriesRing{K}&K[L][[t]]\\
+\PolynomialLogLaurentRing{K}&K[L]((t))\\
+\RationalLogLaurentField{K}&K(L)((t))\\
+\IteratedLaurentLogField{K}&K((L^{-1}))((t))\\
+\NearIdentityPolynomialLogGroup{K}&
+ \SetOf{X+A:A\in K[L][[t]]}.
+\end{array}
+\]
+A document-local shorthand may expand to one of these commands, but the bare
+glyph has no corpus-wide type.}
+\entryfield{Sparse implementation record}{A finite one-log representative is
+a sparse map \(n\mapsto p_n(L)\) together with:
+\begin{itemize}
+\item the smallest and largest retained outer exponents;
+\item the coefficient field and logarithmic-degree policy;
+\item any inner cutoff for Laurent-log coefficients;
+\item branch and exponent-group metadata;
+\item the declared formal tail or analytic error certificate.
+\end{itemize}
+No finite record stores the infinite object itself.}
+\end{catalogueentry}
+
 \begin{catalogueentry}{lagrange-cardinal}{Lagrange and cardinal interpolation}
 \entryfield{Nodes}{Let $x_0,\ldots,x_N$ be pairwise distinct scalars.  The cardinal
 polynomial at node $j$ is
@@ -6016,6 +6966,9 @@ set-builder delimiters, and inner-product/declared duality delimiters.\\
 $\DefinitionEquals,\Sign,\IdentityOperator$ & \commandname{DefinitionEquals},
 \commandname{Sign}, \commandname{IdentityOperator} & Definition relation, real sign,
 and identity map.\\
+\(\MultiplicativeInverseOf{F},\CompositionalInverseOf{F}\) &
+\commandname{MultiplicativeInverseOf}, \commandname{CompositionalInverseOf} &
+Inverse under multiplication versus inverse under composition.\\
 $\SpanOperator,\TraceOperator,\RankOperator,\DiagonalOperator$ &
 \commandname{SpanOperator}, \commandname{TraceOperator}, \commandname{RankOperator},
 \commandname{DiagonalOperator} & Linear-algebra operators with an explicit field and
@@ -6031,6 +6984,8 @@ $\SupportOperator,\SupportOf{f},\allowbreak\TopologicalSupportOf{f}$ &
 \commandname{SupportOperator}, \commandname{SupportOf},
 \commandname{TopologicalSupportOf} & Operator token, pointwise support, and its
 topological closure.\\
+\(\CoefficientSupportOf{F}\) & \commandname{CoefficientSupportOf} &
+Coefficient-exponent support in an explicitly stated index set.\\
 $\Convolution,\MetricDistance,\TotalVariationOf{a},\TotalVariationDistance$ &
 \commandname{Convolution}, \commandname{MetricDistance},
 \commandname{TotalVariationOf}, \commandname{TotalVariationDistance} &
@@ -6087,9 +7042,26 @@ $\Polylogarithm,\LambertW,\GammaFunction,\RiemannZeta$ &
 \commandname{Polylogarithm}, \commandname{LambertW}, \commandname{GammaFunction},
 \commandname{RiemannZeta} & Named special functions; order, branch, and continuation
 domains printed as applicable.\\
+\(\WrightOmega,\LambertPolynomial{n},\ScaledLambertPolynomial{n}\) &
+\commandname{WrightOmega}, \commandname{LambertPolynomial},
+\commandname{ScaledLambertPolynomial} & Wright omega, canonical zero-based Lambert
+polynomial, and its factorial scaling.\\
+\(\PolynomialLogPowerSeriesRing{K},\PolynomialLogLaurentRing{K},
+\RationalLogLaurentField{K},\IteratedLaurentLogField{K}\) &
+\commandname{PolynomialLogPowerSeriesRing},
+\commandname{PolynomialLogLaurentRing},
+\commandname{RationalLogLaurentField},
+\commandname{IteratedLaurentLogField} & Power-series, polynomial-coefficient Laurent,
+rational-coefficient Laurent, and iterated Laurent-log classes.\\
+\(\NearIdentityPolynomialLogGroup{K}\) &
+\commandname{NearIdentityPolynomialLogGroup} & Near-identity composition group over
+the named coefficient field.\\
 $\BigO,\LittleO,\BigOAt{g}{a},\LittleOAt{g}{a}$ & \commandname{BigO},
 \commandname{LittleO}, \commandname{BigOAt}, \commandname{LittleOAt} & Token-only and
 explicit-limit asymptotic operators.\\
+\(\FormalBigO,\FormalBigOAt{t^N}{t}\) &
+\commandname{FormalBigO}, \commandname{FormalBigOAt} & Formal valuation-tail token and
+argument-bearing form; neither is an analytic estimate.\\
 \bottomrule
 \end{longtable}
 \endgroup
@@ -6117,7 +7089,11 @@ Command & Arity & Normative entry\\
 \commandname{CardinalityOf} & 1 & \notelink{semantic-delimiters}{Semantic delimiters}.\\
 \commandname{Ceiling} & 1 & \notelink{rounding-positive-part}{Rounding and positive part}.\\
 \commandname{CharacteristicFunction} & 1 & \notelink{characteristic-function}{Characteristic functions}.\\
+\commandname{CoefficientSupportOf} & 1 &
+\notelink{polynomial-logarithmic-leading-data}{Coefficient support}.\\
 \commandname{ComplexNumbers} & 0 & \notelink{number-systems}{Number systems}.\\
+\commandname{CompositionalInverseOf} & 1 &
+\notelink{polynomial-logarithmic-reversion}{Compositional inverse}.\\
 \commandname{ConvergesInLaw} & 0 & \notelink{law}{Law and weak convergence}.\\
 \commandname{Convolution} & 0 & \notelink{convolution}{Convolution}.\\
 \commandname{Covariance} & 0 & \notelink{expectation}{Expectation and moments}.\\
@@ -6137,6 +7113,10 @@ Command & Arity & Normative entry\\
 \commandname{FabiusQuantile} & 0 & \notelink{fabius-quantile}{Fabius inverses}.\\
 \commandname{FallingFactorial} & 2 & \notelink{powers-factorials}{Powers and factorials}.\\
 \commandname{Floor} & 1 & \notelink{rounding-positive-part}{Rounding and positive part}.\\
+\commandname{FormalBigO} & 0 &
+\notelink{polynomial-logarithmic-truncation}{Formal valuation tails}.\\
+\commandname{FormalBigOAt} & 2 &
+\notelink{polynomial-logarithmic-truncation}{Formal valuation tails}.\\
 \commandname{FourierAngular} & 1 & \notelink{fourier-angular}{Angular Fourier transform}.\\
 \commandname{FourierAngularOperator} & 0 & \notelink{fourier-angular}{Angular Fourier transform}.\\
 \commandname{FourierAngularTransformOf} & 1 & \notelink{fourier-angular}{Angular Fourier transform}.\\
@@ -6155,6 +7135,10 @@ Command & Arity & Normative entry\\
 \commandname{IntegerNumbers} & 0 & \notelink{number-systems}{Number systems}.\\
 \commandname{InverseFourierAngularOperator} & 0 & \notelink{fourier-angular}{Angular Fourier transform}.\\
 \commandname{InverseFourierTwoPiOperator} & 0 & \notelink{fourier-two-pi}{$2\pi$ Fourier transform}.\\
+\commandname{IteratedLaurentLogField} & 1 &
+\notelink{polynomial-logarithmic-ambient}{Iterated Laurent-log field}.\\
+\commandname{LambertPolynomial} & 1 &
+\notelink{wright-omega-lambert-polynomials}{Canonical Lambert polynomials}.\\
 \commandname{LambertW} & 0 & \notelink{lambert-w}{Lambert (W)}.\\
 \commandname{LaplaceTransformOf} & 1 & \notelink{laplace-transform}{Laplace transforms}.\\
 \commandname{LaplaceTransformSymbol} & 0 & \notelink{laplace-transform}{Laplace transforms}.\\
@@ -6168,11 +7152,19 @@ Command & Arity & Normative entry\\
 \commandname{MellinTransformSymbol} & 0 & \notelink{mellin-transform}{Mellin transform}.\\
 \commandname{MetricDistance} & 0 & \notelink{scalar-size}{Absolute value, norm, distance}.\\
 \commandname{MomentGeneratingFunction} & 1 & \notelink{mgf}{Moment-generating functions}.\\
+\commandname{MultiplicativeInverseOf} & 1 &
+\notelink{polynomial-logarithmic-reversion}{Multiplicative reciprocal}.\\
 \commandname{NaturalNumbers} & 0 & \notelink{number-systems}{Number systems}.\\
+\commandname{NearIdentityPolynomialLogGroup} & 1 &
+\notelink{polynomial-logarithmic-ambient}{Near-identity polynomial-log group}.\\
 \commandname{Norm} & 1 & \notelink{scalar-size}{Absolute value, norm, distance}.\\
 \commandname{OrderOperator} & 0 & \notelink{logarithm-order}{Logarithm and order}.\\
 \commandname{PadicValuation} & 1 & \notelink{padic-valuation}{Valuations}.\\
 \commandname{Polylogarithm} & 0 & \notelink{polylog-gamma-zeta}{Polylogarithm}.\\
+\commandname{PolynomialLogLaurentRing} & 1 &
+\notelink{polynomial-logarithmic-ambient}{Polynomial-log Laurent ring}.\\
+\commandname{PolynomialLogPowerSeriesRing} & 1 &
+\notelink{polynomial-logarithmic-ambient}{Polynomial-log power-series ring}.\\
 \commandname{PositiveIntegers} & 0 & \notelink{number-systems}{Number systems}.\\
 \commandname{PositivePart} & 1 & \notelink{rounding-positive-part}{Rounding and positive part}.\\
 \commandname{PrincipalLogarithm} & 0 & \notelink{logarithm-order}{Logarithm and order}.\\
@@ -6180,12 +7172,16 @@ Command & Arity & Normative entry\\
 \commandname{QInteger} & 2 & \notelink{q-integer}{(q)-integers}.\\
 \commandname{QPochhammer} & 3 & \notelink{q-pochhammer}{(q)-Pochhammer symbols}.\\
 \commandname{RankOperator} & 0 & \notelink{matrix-operators}{Matrix operators}.\\
+\commandname{RationalLogLaurentField} & 1 &
+\notelink{polynomial-logarithmic-ambient}{Rational-log Laurent field}.\\
 \commandname{RationalNumbers} & 0 & \notelink{number-systems}{Number systems}.\\
 \commandname{RealNumbers} & 0 & \notelink{number-systems}{Number systems}.\\
 \commandname{ResidueOperator} & 0 & \notelink{residue}{Residues}.\\
 \commandname{RiemannZeta} & 0 & \notelink{polylog-gamma-zeta}{Zeta functions}.\\
 \commandname{RisingFactorial} & 2 & \notelink{powers-factorials}{Powers and factorials}.\\
 \commandname{RvachevUp} & 0 & \notelink{rvachev-up}{Rvachev up-function}.\\
+\commandname{ScaledLambertPolynomial} & 1 &
+\notelink{wright-omega-lambert-polynomials}{Scaled Lambert polynomials}.\\
 \commandname{SetOf} & 1 & \notelink{semantic-delimiters}{Semantic delimiters}.\\
 \commandname{Sign} & 0 & \notelink{rounding-positive-part}{Rounding and positive part}.\\
 \commandname{SincPi} & 0 & \notelink{sinc}{Sinc normalizations}.\\
@@ -6201,6 +7197,8 @@ Command & Arity & Normative entry\\
 \commandname{TraceOperator} & 0 & \notelink{matrix-operators}{Matrix operators}.\\
 \commandname{TwoAdicValuation} & 0 & \notelink{padic-valuation}{Valuations}.\\
 \commandname{Variance} & 0 & \notelink{expectation}{Expectation and moments}.\\
+\commandname{WrightOmega} & 0 &
+\notelink{wright-omega-lambert-polynomials}{Wright omega}.\\
 \bottomrule
 \end{longtable}
 \endgroup
@@ -6334,11 +7332,11 @@ or a catalogue entry are not substitutes for inspecting the current declaration.
 
 The inventory below is the recursive active tree observed on 2026-09-01 at the
 source-validation checkpoint.  It excludes every path below \modulepath{docs/archive/} and
-counts this catalogue exactly once.  It contains 166 mathematical content sources: 61
+counts this catalogue exactly once.  It contains 172 mathematical content sources: 67
 standalone documents and 105 included or generated fragments.  The separate shared
-contract \modulepath{docs/fabius-notation.tex} raises the total before this catalogue to 167
-active TeX files.  Including this standalone catalogue gives 168 active TeX files and
-62 standalone documents.  ``Standalone'' means that the uncommented source
+contract \modulepath{docs/fabius-notation.tex} raises the total before this catalogue to 173
+active TeX files.  Including this standalone catalogue gives 174 active TeX files and
+68 standalone documents.  ``Standalone'' means that the uncommented source
 contains \commandname{documentclass}; every other content source is a fragment inheriting
 its root preamble.
 
@@ -6357,22 +7355,22 @@ Manifest group & Standalone & Fragments & Total\\
 \modulepath{FabiusFunction_Mathematical_Glossary/} & 1 & 0 & 1\\
 \modulepath{papers/} & 7 & 0 & 7\\
 Frontier synthesis root & 1 & 0 & 1\\
+\modulepath{drafts/combinatorial-coefficient-calculus/} & 6 & 0 & 6\\
 \modulepath{drafts/exponents-and-q-series/} & 7 & 20 & 27\\
 \modulepath{drafts/frontier-compilations/} & 3 & 1 & 4\\
 \modulepath{drafts/integration-and-transforms/} & 1 & 7 & 8\\
-\modulepath{drafts/incoming/} & 6 & 0 & 6\\
 \modulepath{drafts/inverse-and-sampling/} & 8 & 37 & 45\\
-\modulepath{drafts/lambert-w/} & 1 & 4 & 5\\
+\modulepath{drafts/lambert-w/} & 7 & 4 & 11\\
 \modulepath{drafts/representations/} & 12 & 26 & 38\\
 \modulepath{drafts/rvachev_up_fourier_decay/} & 1 & 0 & 1\\
 \modulepath{drafts/spectra-and-arithmetic/} & 10 & 10 & 20\\
 \modulepath{drafts/thue-morse/} & 1 & 0 & 1\\
 \midrule
-Mathematical content subtotal & 61 & 105 & 166\\
+Mathematical content subtotal & 67 & 105 & 172\\
 Shared notation contract & 0 & 1 & 1\\
 This catalogue & 1 & 0 & 1\\
 \midrule
-Active TeX total including catalogue & 62 & 106 & 168\\
+Active TeX total including catalogue & 68 & 106 & 174\\
 \bottomrule
 \end{longtable}
 \endgroup
