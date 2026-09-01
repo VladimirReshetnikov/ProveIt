@@ -25,12 +25,17 @@ is now a canonical-source draft for five of these live source packages. Its
 master TeX and nine chapters are present, as are the pinned 194-row raw
 source-result inventory, the 88-row source-asset disposition, and a
 deduplicated asset tree whose exhaustive 61-row live checksum ledger passes.
-The raw inventory is not the reviewed theorem concordance:
-`theorem_concordance.csv` is absent, the source validator therefore cannot
-complete, and no canonical PDF exists. The five source packages remain
-authoritative and live; their retained PDFs keep their separately documented
-historical/current status until the reviewed result-disposition and canonical
-PDF publication gates both pass.
+The reviewed `theorem_concordance.csv` preserves all ten immutable source
+fields across its 194 rows and classifies 39 as Lean-proved, 106 as
+human-proved frontier results, 10 as conjectures, 15 as open problems, and 24
+as nonassertoric.  Its three newly exact rows are centered Appell
+deconvolution, positive-degree Appell mean-zero, and arbitrarily phased
+polynomial deconvolution.  The Appell lattice row remains human-proved because
+Lean covers its `0 <= n <= N` formula but not its extra degree-`N+1`
+superconvergent-phase clause.  The static source validator passes.  No
+canonical PDF exists yet, so the publication gate remains incomplete and the
+five source packages stay live; their retained PDFs keep their separately
+documented historical/current status.
 
 ## Non-comb source-only merge status (2026-08-31)
 

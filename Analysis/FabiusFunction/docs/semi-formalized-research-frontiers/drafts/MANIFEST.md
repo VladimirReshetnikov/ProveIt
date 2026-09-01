@@ -47,9 +47,10 @@ recorded in its row below; full numerical replay and fresh-checkout
 reproduction remain separate work.  Its subsequent source-only valuation
 crosswalk is validated and ledgered but was not rendered; the retained
 156-page PDF therefore remains the incoming Lagrange-synthesis publication
-artifact.  The
-primary exposition likewise gained the prime-power valuation crosswalk
-source-only; its retained 165-page Lagrange-synthesis PDF was not rebuilt.
+artifact.  The primary exposition, Lean walkthrough, and canonical frontier
+volume now have source-only reflected Appell/deconvolution crosswalk updates;
+their retained 166-, 126-, and 236-page PDFs, respectively, await the
+post-merge rebuild.
 
 New Frontiers-2 has likewise completed the synchronized post-union render and
 fixed 20-row ledger recorded below. Its final 41-page artifact supersedes the
@@ -146,14 +147,20 @@ canonical-source draft for five live inputs pinned at
 chapter files. The reproducible raw source-result inventory passes 194/194
 rows (projection SHA-256
 `ff123825f7516adb1edfd9e738f9021d38c03960f0ea134554ede9e14cd8459f`),
-but it is not a reviewed theorem concordance and its canonical-disposition
-fields remain pending. `ASSET_DISPOSITION.csv` accounts for 88 source-group
-files; the deduplicated asset tree is present, and its exhaustive live
-`assets/SHA256SUMS` ledger verifies all 61 retained payloads. The required
-`theorem_concordance.csv` and canonical PDF are absent, so the source validator
-cannot complete and no publication gate is claimed. PDFs retained in the five
-source packages or migrated as evidence are historical/source assets, not a
-rendering of the canonical master. All five inputs therefore remain live.
+and the reviewed `theorem_concordance.csv` preserves those ten immutable
+source fields for all 194 rows.  Its current dispositions are 39 Lean-proved,
+106 human-proved frontier results, 10 conjectures, 15 open problems, and 24
+nonassertoric rows; the static canonical validator passes.  In particular,
+the centered Appell deconvolution, positive-degree Appell mean-zero, and
+arbitrarily phased polynomial-deconvolution rows now have exact named Lean
+counterparts, while the Appell lattice theorem remains human-proved because
+its degree-`N+1` superconvergent-phase clause is not formalized.
+`ASSET_DISPOSITION.csv` accounts for 88 source-group files; the deduplicated
+asset tree is present, and its exhaustive live `assets/SHA256SUMS` ledger
+verifies all 61 retained payloads. The canonical PDF is still absent, so the
+publication gate is not complete. PDFs retained in the five source packages
+or migrated as evidence are historical/source assets, not a rendering of the
+canonical master. All five inputs therefore remain live.
 
 | Directory | Document | Previous path |
 | --- | --- | --- |
