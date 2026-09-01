@@ -406,7 +406,7 @@ reason that all operations below can be performed to finite order.
 For \(N\in\IntegerNumbers\), define the inverse-power truncation
 \begin{equation}\label{eq:truncation}
   \TransseriesTruncateBelow{F}{N}=\sum_{n<N}p_n(\ell)t^n,
-  \qquad F=G+\FormalBigO_t(t^N)
+  \qquad F=G+\FormalBigOAt{t^N}{t}
   \Longleftrightarrow F-G\in t^N\K[\ell][[t]].
 \end{equation}
 A computation ``through order \(x^{-N+1}\)'' means equality after applying
@@ -979,7 +979,7 @@ Either these formulas or \eqref{eq:composition-coefficient} gives
  +\left(-\ell^3+\frac32\ell^2\right)t^2\\
  &+\left(\ell^4-\frac83\ell^3+\ell^2\right)t^3\\
  &+\left(-\ell^5+\frac{41}{12}\ell^4-2\ell^3\right)t^4
- +\FormalBigO_t(t^5).
+ +\FormalBigOAt{t^5}{t}.
 \end{align*}
 The increasing log degree is not accidental: every expansion of
 \(\log(1+\ell t)\) supplies another factor of \(\ell\).
@@ -987,9 +987,9 @@ The increasing log degree is not accidental: every expansion of
 
 \subsection{Composition by an affine perturbation}
 
-For \(G=cx+d+\FormalBigO_t(t)\), factor
+For \(G=cx+d+\FormalBigOAt{t}{t}\), factor
 \[
-  G=cx\left(1+\frac{d}{cx}+\FormalBigO_t(t^2)\right).
+  G=cx\left(1+\frac{d}{cx}+\FormalBigOAt{t^2}{t}\right).
 \]
 Then
 \begin{align*}
@@ -1060,7 +1060,7 @@ Let
   \Gnear=\left\{x+A(x):A\in\PL_{\ge0}\right\}.
 \end{equation}
 Every member satisfies \(x+A\as x\) and has formal derivative
-\(1+A'=1+\FormalBigO_t(t)\).
+\(1+A'=1+\FormalBigOAt{t}{t}\).
 \end{definition}
 
 \begin{theorem}[Group theorem]\label{thm:near-group}
@@ -1105,7 +1105,7 @@ points agree modulo \(t^N\) for all \(N\).
 
 This is the PL specialization of the fixed-point mechanism used for
 well-based transseries compositional inverses \cite{EdgarComposition}.  Here the
-contraction is visible in the elementary fact \(A'=\FormalBigO_t(t)\).
+contraction is visible in the elementary fact \(A'=\FormalBigOAt{t}{t}\).
 
 \subsection{Picard iteration}
 
@@ -1123,14 +1123,14 @@ coefficients and is not the fastest high-order algorithm.
 
 Suppose an approximation \(G_N=x+B_N\) satisfies
 \begin{equation}\label{eq:residual-order-N}
-  F\circ G_N-x=r_N(\ell)t^N+\FormalBigO_t(t^{N+1}).
+  F\circ G_N-x=r_N(\ell)t^N+\FormalBigOAt{t^{N+1}}{t}.
 \end{equation}
-Because \(F'\circ G_N=1+\FormalBigO_t(t)\), adding
+Because \(F'\circ G_N=1+\FormalBigOAt{t}{t}\), adding
 \(-r_Nt^N\) to \(G_N\) removes the residual at level \(N\):
 \begin{equation}\label{eq:triangular-update}
   G_{N+1}=G_N-r_N(\ell)t^N
   \quad\Longrightarrow\quad
-  F\circ G_{N+1}=x+\FormalBigO_t(t^{N+1}).
+  F\circ G_{N+1}=x+\FormalBigOAt{t^{N+1}}{t}.
 \end{equation}
 Thus inverse coefficients can be found one polynomial at a time.  No linear
 system larger than a scalar identity is needed because the leading derivative is
@@ -1146,7 +1146,7 @@ The formal Newton step is
   =G-\frac{F\circ G-x}{F'\circ G}.
 }
 \end{equation}
-The denominator is a unit because \(F'=1+\FormalBigO_t(t)\).  If
+The denominator is a unit because \(F'=1+\FormalBigOAt{t}{t}\).  If
 \(F\circ G-x\in t^N\PL_{\ge0}\), Taylor expansion around \(G\) shows that the
 new residual is in \(t^{2N+1}\PL_{\ge0}\) (the exact exponent can improve with
 additional valuation information).  Hence a precision-doubling implementation
@@ -1155,13 +1155,13 @@ uses truncation cutoffs
 the newly required precision.
 
 \begin{proof}[Residual estimate]
-Let \(R=F\circ G-x\) and \(C=-R/(F'\circ G)\).  Since \(C=\FormalBigO_t(t^N)\),
+Let \(R=F\circ G-x\) and \(C=-R/(F'\circ G)\).  Since \(C=\FormalBigOAt{t^N}{t}\),
 \[
  F\circ(G+C)-x
  =R+(F'\circ G)C+\frac12(F''\circ G)C^2+\cdots.
 \]
-The first two terms cancel.  Now \(F''=A''=\FormalBigO_t(t^2)\), so the quadratic
-remainder is at least \(\FormalBigO_t(t^{2N+2})\); allowing coarse bounds and Laurent
+The first two terms cancel.  Now \(F''=A''=\FormalBigOAt{t^2}{t}\), so the quadratic
+remainder is at least \(\FormalBigOAt{t^{2N+2}}{t}\); allowing coarse bounds and Laurent
 shifts gives the stated precision-doubling behavior.  Every higher Taylor term
 is still smaller.
 \end{proof}
@@ -1291,7 +1291,7 @@ Then, with \(\ell=\log x\), its inverse begins
  &+\frac{a^3(\ell^2/2-\ell)+ab(1-\ell)}{x^2}\nonumber\\
  &+\frac{a^4(\ell^3/3-3\ell^2/2+\ell)
           +a^2b(-\ell^2+3\ell-1)-b^2}{x^3}
- +\FormalBigO_t(t^4).
+ +\FormalBigOAt{t^4}{t}.
  \label{eq:generic-ab-inverse}
 \end{align}
 Setting \(b=0\) isolates the rescaled Lambert pattern; setting \(a=0\)
@@ -1660,7 +1660,7 @@ For \(\WrightOmega(x)=\LambertW(\EulerE^x)\),
 \end{equation}
 Once \(\WrightOmega\) is known as a PL series, the right side is computed by the
 reciprocal recurrence of \cref{sec:mul-div}.  Since
-\(1+\WrightOmega=x\bigl(1+\FormalBigO_t(t)\bigr)\), its reciprocal lies in \(\PL\);
+\(1+\WrightOmega=x\bigl(1+\FormalBigOAt{t}{t}\bigr)\), its reciprocal lies in \(\PL\);
 the leading omitted coefficient is polynomial in \(\ell\).
 This provides a strong independent check on the differentiated Lambert
 polynomial expansion.
@@ -1925,7 +1925,7 @@ The exact initialization convention for \(p\) depends on whether the constant
 correction is counted as level zero.  The invariant that matters is verified,
 not assumed:
 \[
-  F\circ G-x=\FormalBigO_t(t^p).
+  F\circ G-x=\FormalBigOAt{t^p}{t}.
 \]
 After each step, recompute the residual order in debug builds.  This catches
 nearly every indexing error in derivative shifts and cutoffs.
@@ -2368,7 +2368,7 @@ operations in \(y\).  Suppose an approximation \(Y_0\in\PL\) satisfies
 \]
 and the partial derivative
 \[
-  \Phi_y(x,Y_0)=c+\FormalBigO_t(t),
+  \Phi_y(x,Y_0)=c+\FormalBigOAt{t}{t},
   \qquad c\in\K^\times,
 \]
 is a unit.  Then the Newton iteration
@@ -2404,13 +2404,13 @@ Expanding \(U-U^2/2+U^3/3-U^4/4+\cdots\) gives
  +\left(\frac{\ell^2}{2}-1\right)t^2
  +\left(-\frac{2\ell^3}{3}+\ell\right)t^3\nonumber\\
  &+\left(\frac{\ell^4}{4}-\frac12\right)t^4
- +\FormalBigO_t(t^5).
+ +\FormalBigOAt{t^5}{t}.
  \label{eq:worked-log-result}
 \end{align}
 Every coefficient at order \(t^N\) uses only powers \(U^r\) with \(r\le N\).
 
 If the parenthesis in \eqref{eq:worked-log-F} were replaced by
-\(\ell+1+\FormalBigO_t(t)\), the logarithm would begin with \(\log\ell\) and leave the
+\(\ell+1+\FormalBigOAt{t}{t}\), the logarithm would begin with \(\log\ell\) and leave the
 one-log ring.  The difference is entirely in the leading coefficient.
 
 \subsection{Triangular construction of \(\WrightOmega(x)\)}
@@ -2437,7 +2437,7 @@ The next correction is therefore \(\LambertPolynomial{3}(\ell)t^3\).  In general
 \]
 then
 \begin{equation}\label{eq:Lambert-residual-staircase}
-  f(G_N)-x=-\LambertPolynomial{N}(\ell)t^N+\FormalBigO_t(t^{N+1}).
+  f(G_N)-x=-\LambertPolynomial{N}(\ell)t^N+\FormalBigOAt{t^{N+1}}{t}.
 \end{equation}
 This identity offers another characterization of the Lambert polynomials and a
 simple residual test for generated tables.
@@ -2459,7 +2459,7 @@ asymptotic to \(x\) is
  2a^4\ell^3-9a^4\ell^2+6a^4\ell
  -6a^2b\ell^2+18a^2b\ell-6a^2b\nonumber\\
  &\hspace{31mm}-12ac\ell+6ac-6b^2\Bigr)
- +\FormalBigO_t(t^4).
+ +\FormalBigOAt{t^4}{t}.
  \label{eq:worked-abc-inverse}
 \end{align}
 Several structural checks are visible:
@@ -2824,9 +2824,9 @@ had first nonzero term \(q(\ell)t^m\) with \(m\le N\), then Taylor expansion of
 \(F\) at \(G\) would give
 \[
   F\circ G_N-F\circ G
-  =(F'\circ G)q(\ell)t^m+\FormalBigO_t(t^{m+1}).
+  =(F'\circ G)q(\ell)t^m+\FormalBigOAt{t^{m+1}}{t}.
 \]
-Because \(F'\circ G=1+\FormalBigO_t(t)\), the coefficient at level \(m\) would be
+Because \(F'\circ G=1+\FormalBigOAt{t}{t}\), the coefficient at level \(m\) would be
 \(q\ne0\), contradicting \eqref{eq:inverse-certificate}.  Hence
 \(G_N-G\in t^{N+1}\PL_{\ge0}\).
 \end{proof}
