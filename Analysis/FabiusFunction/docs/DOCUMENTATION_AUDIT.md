@@ -109,10 +109,10 @@ only 4,606 declarations and
 declarations, including 69 undocumented ones.  Run the script for the live
 numbers rather than copying these historical values.
 
-The post-merge 2026-08-31 inventory contains 619 modules and 8,435 lexically
+The post-merge 2026-08-31 inventory contains 620 modules and 8,438 lexically
 visible public declarations, with zero missing module headers and zero missing
 doc comments.  Relative to the 610/8,318 activation checkpoint, the exact
-union adds nine modules and 117 declarations.  The branch-point geometry and
+union adds ten modules and 120 declarations.  The branch-point geometry and
 asymptotics leaves contribute 17 declarations for the one-sided vertical
 tangents and leading signed square-root laws of both real Lambert branches.
 The two Legendre--Gaunt modules contribute 25: four definitions and twelve
@@ -148,7 +148,10 @@ optimal/minimum-variation decoder theorem.  The subsequent
 `integral_polynomial_mul_rvachevUp_eq_dyadic_tsum` theorem in
 `PolynomialCombExactness.lean` packages the polynomial-times-Rvachev integral
 as the corresponding dyadic shifted-polynomial sum and contributes one further
-declaration.
+declaration.  The valuation tranche's new leaf
+`PrimePowerBinomialValuation.lean` contributes three theorems: the additive and
+subtraction forms for an arbitrary prime-power Pascal row, and the strict-
+interior dyadic-comb specialization.
 Finally, `LegendreGauntClosedForm.lean` contributes two definitions and
 twenty-five theorems: the total integer zero-row Wigner-square datum, its exact
 central-binomial and factorial forms, the all-degree Gaunt identification,
@@ -163,15 +166,17 @@ future source addition must preserve the full invariant
 rather than merely avoid worsening a historical backlog.  Run the script for
 live numbers after merging concurrent source work.
 
-The primary exposition and Lean walkthrough were rebuilt from their current
-sources in fresh, uninterrupted three-pass Libertinus cycles on 2026-08-31 and
-contain 165 and 125 A4 pages.  The canonical frontier and filed New Frontiers
-PDFs were likewise rebuilt from their final merged sources and contain 236 and
-41 A4 pages.  All fonts in these four refreshed artifacts are embedded and
-subset, no Type 3 font remains, and the filed package's 20-entry ledger verifies
-20/20.  Frontier packages that still have a source newer than their retained
-PDF carry an explicit local pending-build disclosure rather than relying on
-this global audit note.
+The primary exposition's retained 165-page PDF and the 125-page Lean
+walkthrough were rebuilt in fresh, uninterrupted three-pass Libertinus cycles
+on 2026-08-31.  The primary exposition has since received the source-only
+valuation addition and therefore carries an explicit pending-build disclosure;
+the walkthrough remains synchronized.  The canonical frontier and filed New
+Frontiers PDFs were rebuilt from their final merged sources and contain 236 and
+41 A4 pages.  All fonts in these four artifacts are embedded and subset, no
+Type 3 font remains, and the filed package's 20-entry ledger verifies 20/20.
+Frontier packages that still have a source newer than their retained PDF carry
+an explicit local pending-build disclosure rather than relying on this global
+audit note.
 
 ### What the review pass caught
 

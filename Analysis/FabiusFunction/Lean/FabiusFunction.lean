@@ -127,6 +127,7 @@ import FabiusFunction.ThueMorseValuation
 import FabiusFunction.DyadicZeroMultiplicity
 import FabiusFunction.PascalDyadicMultiplicity
 import FabiusFunction.CentralBinomialValuation
+import FabiusFunction.PrimePowerBinomialValuation
 import FabiusFunction.ThueMorseDigits
 import FabiusFunction.ThueMorseEnumerators
 import FabiusFunction.ThueMorseRarefied
