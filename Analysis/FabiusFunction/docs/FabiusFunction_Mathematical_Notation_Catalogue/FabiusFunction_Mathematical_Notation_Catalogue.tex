@@ -81,6 +81,9 @@
 \DeclareRobustCommand{\repo}{\modulepath{Analysis/FabiusFunction}}
 \newcommand{\lean}[1]{%
   \ifmmode\text{\nolinkurl{#1}}\else\mbox{\nolinkurl{#1}}\fi}
+\newcommand{\leanline}[1]{%
+  \par\nopagebreak[3]\smallskip
+  \noindent\hspace*{1.5em}{\footnotesize\lean{#1}}\par\nopagebreak[2]}
 \DeclareRobustCommand{\commandname}[1]{\texttt{\textbackslash#1}}
 % Machine-readable token for the exhaustive document-local accent register.
 \DeclareRobustCommand{\localaccentname}[1]{\commandname{#1}}
@@ -114,7 +117,7 @@
   \Needspace{6\baselineskip}%
   \par\addvspace{1.05\baselineskip}%
   \phantomsection\hypertarget{notation:#1}{}%
-  \noindent{\large\bfseries #2}\par\smallskip
+  \noindent{\large\bfseries\RaggedRight #2\par}\smallskip
 }{%
   \par\nopagebreak[2]\vspace{0.2\baselineskip}%
   \noindent\color{rulegray}\rule{\linewidth}{0.3pt}\color{black}%
@@ -165,11 +168,12 @@ inherit the namespace of their standalone parent document.
 \tableofcontents
 \newpage
 
-% Major catalogue divisions always open on a fresh page.  Besides improving
-% navigation, this keeps the running section mark faithful to the page's
-% opening content rather than to a section introduced near its foot.
-\let\cataloguesection\section
-\renewcommand{\section}{\clearpage\cataloguesection}
+% Keep each heading with enough opening material to identify the new scope,
+% without forcing a nearly empty predecessor page merely because a major
+% division follows.  The running mark still changes at the actual heading.
+\AddToHook{cmd/section/before}{\Needspace{12\baselineskip}}
+\AddToHook{cmd/subsection/before}{\Needspace{9\baselineskip}}
+\AddToHook{cmd/subsubsection/before}{\Needspace{9\baselineskip}}
 
 \section{Scope contract and how to use this catalogue}
 
@@ -840,7 +844,7 @@ legacy inverse macro occur in older prose.  They are local or historical only.}
 function.}
 \entryfield{Role}{It packages the exact tails, reflection, smoothness/differentiability, and
 left-half differential law required by the formal development.  A theorem quantified over
-an arbitrary $f$ with \lean{IsFabius f} is more general than a theorem stated only for
+an arbitrary $f$ with \lean{IsFabius}~\(f\) is more general than a theorem stated only for
 $\FabiusBounded$.}
 \entryfield{Authority}{The Lean declaration's type is authoritative for its precise fields,
 coercions, and domains.  A prose summary is not permission to omit a hypothesis.}
@@ -1517,10 +1521,13 @@ $n_{\mathrm{odd}}$ odd.}
 The right endpoint \(j=p^m\) and the boundary \(m=0\) are included.  The strict
 dyadic-comb specialization has \(0<j<2^m\).  These formulas do not cover the distinct
 endpoint-flat weights \(\binom{2^m-2}{j-1}\).}
-\entryfield{Lean crosswalk}{\nolinkurl{primePowerChoose_padicValNat_add} and
-\nolinkurl{primePowerChoose_padicValNat} in
-\nolinkurl{PrimePowerBinomialValuation.lean} prove the arbitrary-prime identities;
-\nolinkurl{twoPowChoose_padicValNat} is the strict dyadic specialization.  Lean's
+\entryfield{Lean crosswalk}{In \modulepath{PrimePowerBinomialValuation.lean}, the
+arbitrary-prime identities are the declarations
+\leanline{primePowerChoose_padicValNat_add}
+\leanline{primePowerChoose_padicValNat}
+The strict dyadic specialization is
+\leanline{twoPowChoose_padicValNat}
+Lean's
 \lean{padicValNat} is totalized in \(\NaturalNumbers\), so its exact zero behavior is the
 declaration's behavior rather than the extended-value convention above.  Status:
 \textbf{Lean-proved}.}
@@ -2173,7 +2180,7 @@ The series is entire; $z$ may be complex.}
 \]
 The empty product gives $N_0^{(c)}=1$.  Historical prose used a capital-letter
 sequence that collided with Fabius functions; new prose uses the semantic superscript.}
-\entryfield{Lean declarations}{\lean{moment n} and \lean{momentIntegral n}.}
+\entryfield{Lean declarations}{\lean{moment}~\(n\) and \lean{momentIntegral}~\(n\).}
 \entryfield{Lean modules and status}{Exact arithmetic results are in
 \modulepath{Arithmetic.lean}; analytic results are in
 \modulepath{AnalyticMoments.lean}.  Status: \textbf{Lean-proved}.}
@@ -2209,7 +2216,7 @@ sequence is recorded as a retired alias rather than reused.}
 \entryfield{Two-adic value}{For $n\ge1$, the reduced numerator and denominator of
 $2d_n$ are odd, equivalently $\TwoAdicValuation(d_n)=-1$ for the rational valuation
 extended additively to quotients.}
-\entryfield{Lean crosswalk}{\lean{halfMoment n} and \lean{halfMomentIntegral n}.
+\entryfield{Lean crosswalk}{\lean{halfMoment}~\(n\) and \lean{halfMomentIntegral}~\(n\).
 Status: \textbf{Lean-proved}.}
 \end{catalogueentry}
 
@@ -2227,7 +2234,7 @@ polynomial remainders, resolvents, and recurrence polynomials.}
 \entryfield{Factors}{The power of two is triangular, the factorial is $(2n)!$, and the
 Mersenne-type product stops at $\Floor{n/2}$.  Removing or shifting any of these produces
 a different normalization.}
-\entryfield{Lean crosswalk}{\lean{reshetnikov n} and the corresponding integrality,
+\entryfield{Lean crosswalk}{\lean{reshetnikov}~\(n\) and the corresponding integrality,
 positivity, and oddness theorems in \modulepath{Arithmetic.lean} and
 \modulepath{PaperStatements.lean}.  Status: \textbf{Lean-proved}.}
 \end{catalogueentry}
@@ -2251,7 +2258,7 @@ values after applying the exact reflection/translation relation.}
 \entryfield{Collision policy}{A bare $D_n$ is never globally canonical: it also denotes
 determinants and asymptotic main terms.  The semantic superscript is required outside a
 single-purpose local scope.}
-\entryfield{Lean declaration}{\lean{dyadicDenominator n}.}
+\entryfield{Lean declaration}{\lean{dyadicDenominator}~\(n\).}
 \entryfield{Lean modules and status}{The definition is in \modulepath{Arithmetic.lean}.
 \par\noindent Bounds are in \modulepath{DenominatorBound.lean}.  Status:
 \textbf{Lean-proved}.}
@@ -2385,9 +2392,9 @@ symbol, and no Wigner orthogonality or recoupling theory.}
 \entryfield{Lean crosswalk}{\lean{legendreGauntAdmissible} and
 \lean{legendreWignerThreeJZeroSqRat} in \modulepath{LegendreGauntClosedForm.lean}
 implement the support predicate and total square datum.  The central identities are
-\nolinkurl{legendreGauntRat_eq_two_mul_wignerThreeJZeroSqRat},
-\nolinkurl{legendreGaunt_eq_two_mul_wignerThreeJZeroSqRat}, and
-\nolinkurl{legendreProductLinearizationCoeffRat_eq_mul_wignerThreeJZeroSqRat}.
+\leanline{legendreGauntRat_eq_two_mul_wignerThreeJZeroSqRat}
+\leanline{legendreGaunt_eq_two_mul_wignerThreeJZeroSqRat}
+\leanline{legendreProductLinearizationCoeffRat_eq_mul_wignerThreeJZeroSqRat}
 \modulepath{FabiusLegendreGauntClosedForm.lean} supplies the finite rational and real
 Rvachev Gram-entry sums, with \lean{IsFabius} required for the analytic real formula.
 Status: \textbf{Lean-proved with the displayed hypotheses}.}
@@ -2504,10 +2511,12 @@ The right side is formally a bilateral infinite sum, but compact support makes i
 The theorem proves exactness for every polynomial of degree at most \(N\); it does not
 assert failure in degree \(N+1\), so it does not by itself establish that the degree of
 exactness is exactly \(N\).}
-\entryfield{Lean crosswalk}{The displayed rule is
-\nolinkurl{integral_polynomial_mul_rvachevUp_eq_dyadic_tsum} in
-\modulepath{PolynomialCombExactness.lean}; its normalized source identity is
-\nolinkurl{tsum_shifted_polynomial_eq_integral}.  Both retain the bounded-Fabius and
+\entryfield{Lean crosswalk}{In \modulepath{PolynomialCombExactness.lean}, the displayed
+rule is the declaration
+\leanline{integral_polynomial_mul_rvachevUp_eq_dyadic_tsum}
+Its normalized source identity is
+\leanline{tsum_shifted_polynomial_eq_integral}
+Both retain the bounded-Fabius and
 Fabius-specification hypotheses.  Status: \textbf{Lean-proved}.}
 \end{catalogueentry}
 
@@ -2744,12 +2753,13 @@ the unit decoder-row-sum theorem additionally assumes \(s\ne\varnothing\).}
 \entryfield{Lean crosswalk}{\lean{lagrangeRvachevDecoder} and
 \lean{lagrangeRvachevAtomCoefficient} in \modulepath{LagrangeRvachevSynthesis.lean}
 implement the two displayed definitions.  The exact reconstruction, node-evaluation,
-coefficient/deconvolution, full-interpolation, and row-sum results are its named
-\nolinkurl{normalized_sum_Ioo_lagrangeRvachevDecoder_mul_shifted_rvachevUp},
-\nolinkurl{normalized_sum_Ioo_lagrangeRvachevDecoder_eval_node},
-\nolinkurl{lagrangeRvachevAtomCoefficient_eq_deconvolved_interpolate},
-\nolinkurl{sum_Ioo_lagrangeRvachevAtomCoefficient_mul_shifted_rvachevUp}, and
-\nolinkurl{sum_lagrangeRvachevDecoder_eq_one} theorems.  Lean's definitions remain total at
+coefficient/deconvolution, full-interpolation, and row-sum results are the named theorems
+\leanline{normalized_sum_Ioo_lagrangeRvachevDecoder_mul_shifted_rvachevUp}
+\leanline{normalized_sum_Ioo_lagrangeRvachevDecoder_eval_node}
+\leanline{lagrangeRvachevAtomCoefficient_eq_deconvolved_interpolate}
+\leanline{sum_Ioo_lagrangeRvachevAtomCoefficient_mul_shifted_rvachevUp}
+\leanline{sum_lagrangeRvachevDecoder_eq_one}
+Lean's definitions remain total at
 \(M=0\) through field division; the reconstruction theorem requires \(M\ne0\).  No
 optimized decoder, bundled matrix inverse, Gaussian \(q\)-binomial closed form, or
 minimum-variation solution is supplied.  Status: \textbf{Lean-proved with the displayed
@@ -3386,6 +3396,7 @@ duplicate register entry.
 
 \subsubsection{Extensions, certified data, and formal series}
 
+\Needspace{20\baselineskip}
 \paragraph{\localaccentname{ClampedExtensionOf}}
 TeX arity is one; argument \(1\) is a continuous function \(f\) on
 \(I=[0,1]\).  The command prints a wide hat over \(f\).  Its mathematical value is
@@ -3480,6 +3491,7 @@ The panelwise trapezoid estimate gives
  \AbsoluteValue{\oint_{\partial\Omega}\frac{f'(z)}{f(z)}\,\Differential z-Q}
  \le E.
 \]
+\par\Needspace{10\baselineskip}\noindent
 Outward-rounded arithmetic supplies \(Q_{\mathrm{num}}\) and
 \(\varepsilon_Q\).  The resulting certified zero-count disk has center
 \(Q_{\mathrm{num}}/(2\pi\ImaginaryUnit)\) and radius
@@ -5119,10 +5131,10 @@ the quantile theorem assumes a supplied local left inverse and is not \lean{fabi
 \(\Phi_{\mathrm{ang}}\) and \(\Phi_{2\pi}\) & \lean{centeredSincProduct} in
 \modulepath{FourierLaplaceRotation.lean}; \lean{rvachevFourierProduct} in
 \modulepath{Basic.lean}; bridge
-\nolinkurl{centeredSincProduct_eq_rvachevFourierProduct} & The bridge is
+\lean{centeredSincProduct_eq_}\allowbreak\lean{rvachevFourierProduct} & The bridge is
 \(\operatorname{centeredSincProduct}(z)=
 \operatorname{rvachevFourierProduct}(z/(2\pi))\).  Identifying the product with the
-integral transform uses \nolinkurl{rvachevFourier_eq_product} and retains
+integral transform uses \lean{rvachevFourier_eq_product} and retains
 \(F:\lean{BoundedFabius}\) and \(h_F:\lean{IsFabius}\,F\).\\
 Endpoint kernel \(\mathcal K(z,w)\) & Notation only & Formal frontier construction in the
 two-scale endpoint coefficient algebra.  No exact current Lean definition of
@@ -5165,7 +5177,7 @@ Exact synthesis uses \(M\ne0\), \(|s|-1\le\TwoAdicValuation(M)\), and \(x\in[-1,
 Node injectivity is required for cardinal evaluation, not polynomial reconstruction;
 row-sum normalization also requires a nonempty node family.\\
 Shifted dyadic polynomial self-sampling &
-\nolinkurl{integral_polynomial_mul_rvachevUp_eq_dyadic_tsum} in
+\lean{integral_polynomial_mul_}\allowbreak\lean{rvachevUp_eq_dyadic_tsum} in
 \modulepath{PolynomialCombExactness.lean} & Exact for every polynomial of degree at most
 \(N\), every real shift, and a bounded Fabius object satisfying \lean{IsFabius}.  Compact
 support makes the displayed bilateral sum finite; exactness failure at degree \(N+1\) is
@@ -5211,7 +5223,7 @@ contains \commandname{documentclass}; every other content source is a fragment i
 its root preamble.
 
 \begingroup\small
-\begin{longtable}{@{}p{0.48\textwidth}r r r@{}}
+\begin{longtable}{@{}L{0.46\textwidth}@{\hspace{1.5em}}r@{\hspace{1.5em}}r@{\hspace{1.5em}}r@{}}
 \toprule
 Manifest group & Standalone & Fragments & Total\\
 \midrule
