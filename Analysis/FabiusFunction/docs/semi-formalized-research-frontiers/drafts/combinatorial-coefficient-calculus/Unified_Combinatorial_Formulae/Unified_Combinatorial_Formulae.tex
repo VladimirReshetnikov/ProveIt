@@ -6,6 +6,7 @@
 \usepackage{microtype}
 \usepackage[a4paper,margin=27mm,headheight=15pt]{geometry}
 \usepackage{amsmath,amssymb,amsthm,mathtools}
+\input{../../../../fabius-notation.tex}
 \usepackage{bm}
 \usepackage{mathrsfs}
 \usepackage{booktabs,longtable,array,tabularx}
@@ -79,41 +80,8 @@
   title={Editorial normalization},fonttitle=\bfseries,#1
 }
 
-\newcommand{\N}{\mathbb N}
-\newcommand{\Z}{\mathbb Z}
-\newcommand{\Q}{\mathbb Q}
-\newcommand{\R}{\mathbb R}
-\newcommand{\C}{\mathbb C}
-\newcommand{\F}{\mathbb F}
-\newcommand{\Bell}[1]{\mathsf B_{#1}}
-\newcommand{\BellP}[2]{\mathcal B_{#1,#2}}
-\newcommand{\BellC}[1]{\mathcal B_{#1}}
 \newcommand{\BerP}[2]{\mathrm B_{#1}(#2)}
 \newcommand{\EulP}[2]{\mathrm E_{#1}(#2)}
-\newcommand{\GenP}[2]{\mathrm G_{#1}(#2)}
-\newcommand{\OBellP}[2]{\widehat{\mathcal B}_{#1,#2}}
-\newcommand{\stirone}[2]{\genfrac{[}{]}{0pt}{}{#1}{#2}}
-\newcommand{\stirtwo}[2]{\genfrac{\{} {\}}{0pt}{}{#1}{#2}}
-\newcommand{\eulerian}[2]{\genfrac{\langle}{\rangle}{0pt}{}{#1}{#2}}
-\newcommand{\eulertwo}[2]{\left\langle\!\left\langle\genfrac{}{}{0pt}{}{#1}{#2}\right\rangle\!\right\rangle}
-\newcommand{\falling}[2]{#1^{\underline{#2}}}
-\newcommand{\rising}[2]{#1^{\overline{#2}}}
-\newcommand{\coeff}[2]{[#1^{#2}]}
-\newcommand{\res}{\operatorname*{Res}}
-\newcommand{\Li}{\operatorname{Li}}
-\newcommand{\Var}{\operatorname{Var}}
-\newcommand{\E}{\mathbb E}
-\newcommand{\1}{\mathbf 1}
-\newcommand{\wt}{\operatorname{wt}}
-\newcommand{\cyc}{\operatorname{cyc}}
-\newcommand{\setpart}{\operatorname{Part}}
-\newcommand{\dd}{\,\mathrm d}
-\newcommand{\bitand}{\mathbin{\&}}
-\DeclareMathOperator{\tr}{tr}
-\DeclareMathOperator{\lcm}{lcm}
-\DeclareMathOperator{\sgn}{sgn}
-\DeclareMathOperator{\id}{id}
-\DeclareMathOperator{\diag}{diag}
 
 \title{\Huge\bfseries A Unified Calculus of Combinatorial Formulae\\[4mm]
 \Large Stirling, Bell, Eulerian, Bernoulli, and Catalan Structures;\\
@@ -156,7 +124,7 @@ Wikipedia and MathWorld folders and from primary online references: coordinate-f
 and multivariate Fa\`a di Bruno formulas, Good's inversion theorem, partition-lattice
 M\"obius inversion, Sheffer and Riordan theory, Bernoulli--Euler--Genocchi and Cauchy
 polynomials, complementary Bell numbers, Euler--Maclaurin summation, Darboux formulas,
-Pochhammer parameter derivatives, polygamma and Barnes $G$ functions, Kepler's
+Pochhammer parameter derivatives, polygamma and Barnes $\BarnesGFunction$ functions, Kepler's
 equation, Narayana numbers, and associahedral face enumeration. A final concordance
 records the role of each draft, the deduplication rules, and independent consistency
 checks.
@@ -185,8 +153,8 @@ identities.
 \begin{auditbox}
 Three systematic repairs are used throughout.
 \begin{enumerate}
-\item Bell numbers are denoted $\Bell n$, complete exponential Bell polynomials by
-      $\BellC n$, partial Bell polynomials by $\BellP nk$, and Bernoulli numbers by
+\item Bell numbers are denoted $\BellNumber n$, complete exponential Bell polynomials by
+      $\ExponentialCompleteBellPolynomial n$, partial Bell polynomials by $\ExponentialPartialBellPolynomial nk$, and Bernoulli numbers by
       $\beta_n$.
 \item Type-$B$ Eulerian numbers are indexed by descents in positions
       $0,1,\ldots,n-1$ with $\pi_0=0$.  This removes the one-step shift in one formula
@@ -202,22 +170,22 @@ Three systematic repairs are used throughout.
 
 \chapter*{Notation}
 \addcontentsline{toc}{chapter}{Notation}
-For $n\in\N$, write
+For $n\in\NaturalNumbers$, write
 \[
- \falling{x}{n}=x(x-1)\cdots(x-n+1),\qquad
- \rising{x}{n}=x(x+1)\cdots(x+n-1),
+ \FallingFactorial{x}{n}=x(x-1)\cdots(x-n+1),\qquad
+ \RisingFactorial{x}{n}=x(x+1)\cdots(x+n-1),
 \]
 with both expressions equal to $1$ when $n=0$.  Coefficient extraction is denoted by
-$\coeff z n F(z)$, and $\res_z F(z)\dd z$ means the coefficient of $z^{-1}$ in a
+$\CoefficientExtraction z n F(z)$, and $\ResidueOperator_z F(z)\Differential z$ means the coefficient of $z^{-1}$ in a
 formal Laurent series.  Our principal arrays are
 \[
- s(n,k),\qquad \stirone nk=(-1)^{n-k}s(n,k),\qquad
- \stirtwo nk,\qquad \eulerian nk,
+ \SignedStirlingFirstKind{n}{k},\qquad \UnsignedStirlingFirstKind nk=(-1)^{n-k}\SignedStirlingFirstKind{n}{k},\qquad
+ \StirlingSecondKind nk,\qquad \TypeAEulerianNumber nk,
 \]
-where $s(n,k)$ is the signed first-kind Stirling number, $\stirone nk$ its unsigned
-version, $\stirtwo nk$ the second-kind Stirling number, and $\eulerian nk$ the
-ordinary Eulerian number.  Bell numbers are $\Bell n$; exponential partial and
-complete Bell polynomials are $\BellP nk$ and $\BellC n$.
+where $\SignedStirlingFirstKind{n}{k}$ is the signed first-kind Stirling number, $\UnsignedStirlingFirstKind nk$ its unsigned
+version, $\StirlingSecondKind nk$ the second-kind Stirling number, and $\TypeAEulerianNumber nk$ the
+ordinary Eulerian number.  Bell numbers are $\BellNumber n$; exponential partial and
+complete Bell polynomials are $\ExponentialPartialBellPolynomial nk$ and $\ExponentialCompleteBellPolynomial n$.
 
 Unless stated otherwise, sums over an impossible index range are zero, and
 $0^0=1$ in coefficient formulae.  Bernoulli numbers use
@@ -234,7 +202,7 @@ $0^0=1$ in coefficient formulae.  Bernoulli numbers use
 \label{ch:formal}
 
 \section{Formal series as an algebraic environment}
-Let $R$ be a commutative $\Q$-algebra.  The ring $R[[z]]$ consists of expressions
+Let $R$ be a commutative $\RationalNumbers$-algebra.  The ring $R[[z]]$ consists of expressions
 $F(z)=\sum_{n\ge0}f_nz^n$ with termwise addition and Cauchy multiplication.  A series
 is invertible precisely when $f_0$ is invertible in $R$.  If $G(0)=0$, then the
 composition $F(G(z))$ is well-defined because each coefficient receives only
@@ -243,13 +211,13 @@ finitely many contributions.
 \begin{lemma}[Coefficient rules]\label{lem:coeff-rules}
 For $F(z)=\sum f_nz^n$ and $G(z)=\sum g_nz^n$,
 \begin{align}
- \coeff z n F(z)G(z)&=\sum_{j=0}^n f_jg_{n-j},\label{eq:cauchy}\\
- \coeff z n F'(z)&=(n+1)f_{n+1},\label{eq:der-coeff}\\
- \coeff z n \frac{F(z)}{1-az}&=\sum_{j=0}^n a^{n-j}f_j.\label{eq:geom-conv}
+ \CoefficientExtraction z n F(z)G(z)&=\sum_{j=0}^n f_jg_{n-j},\label{eq:cauchy}\\
+ \CoefficientExtraction z n F'(z)&=(n+1)f_{n+1},\label{eq:der-coeff}\\
+ \CoefficientExtraction z n \frac{F(z)}{1-az}&=\sum_{j=0}^n a^{n-j}f_j.\label{eq:geom-conv}
 \end{align}
 If $F$ is analytic on $|z|\le r$, then also
 \begin{equation}\label{eq:cauchy-coeff}
- f_n=\frac{1}{2\pi i}\int_{|z|=r}\frac{F(z)}{z^{n+1}}\dd z,
+ f_n=\frac{1}{2\pi i}\int_{|z|=r}\frac{F(z)}{z^{n+1}}\Differential z,
  \qquad |f_n|\le r^{-n}\max_{|z|=r}|F(z)|.
 \end{equation}
 \end{lemma}
@@ -262,10 +230,10 @@ bound follows by estimating the contour integral by its length $2\pi r$.
 
 \section{Formal residues}
 For a Laurent series $A(z)$, set
-$\res_z A(z)\dd z=\coeff z{-1}A(z)$.  Then
+$\ResidueOperator_z A(z)\Differential z=\CoefficientExtraction z{-1}A(z)$.  Then
 \begin{equation}\label{eq:res-coeff}
- \coeff z n F(z)=\res_z\frac{F(z)}{z^{n+1}}\dd z,
- \qquad \res_z A'(z)\dd z=0.
+ \CoefficientExtraction z n F(z)=\ResidueOperator_z\frac{F(z)}{z^{n+1}}\Differential z,
+ \qquad \ResidueOperator_z A'(z)\Differential z=0.
 \end{equation}
 The second identity is simply the fact that the derivative of $z^m$ has no
 $z^{-1}$ term.
@@ -274,7 +242,7 @@ $z^{-1}$ term.
 Let $u=u(z)\in zR[[z]]$ have invertible linear coefficient.  For every Laurent series
 $A$ for which the composition is defined,
 \begin{equation}\label{eq:formal-res-subst}
- \res_z A(u(z))u'(z)\dd z=\res_u A(u)\dd u.
+ \ResidueOperator_z A(u(z))u'(z)\Differential z=\ResidueOperator_u A(u)\Differential u.
 \end{equation}
 \end{theorem}
 \begin{proof}
@@ -294,12 +262,12 @@ Lagrange inversion; no analytic contour is needed until one asks about convergen
 For a sequence $(a_n)$, its ordinary and exponential generating functions are
 \[
  A(z)=\sum_{n\ge0}a_nz^n,
- \qquad \widehat A(z)=\sum_{n\ge0}a_n\frac{z^n}{n!}.
+ \qquad \ExponentialGeneratingFunctionOf{A}(z)=\sum_{n\ge0}a_n\frac{z^n}{n!}.
 \]
 Ordinary multiplication gives unweighted convolution.  Exponential multiplication
 gives binomial convolution:
 \begin{equation}\label{eq:egf-product}
- \widehat A(z)\widehat B(z)
+ \ExponentialGeneratingFunctionOf{A}(z)\ExponentialGeneratingFunctionOf{B}(z)
  =\sum_{n\ge0}\left(\sum_{j=0}^n\binom nj a_jb_{n-j}\right)\frac{z^n}{n!}.
 \end{equation}
 This binomial factor is the number of ways to choose which labels belong to the
@@ -309,26 +277,26 @@ first component.
 Let $E$ be the shift operator $(Ef)(x)=f(x+1)$ and
 $\Delta=E-1$.  Then
 \begin{equation}\label{eq:finite-diff-falling}
- \Delta\falling{x}{k}=k\falling{x}{k-1},
+ \Delta\FallingFactorial{x}{k}=k\FallingFactorial{x}{k-1},
  \qquad
- \sum_{i=0}^{n-1}\falling{i}{k}=\frac{\falling{n}{k+1}}{k+1}.
+ \sum_{i=0}^{n-1}\FallingFactorial{i}{k}=\frac{\FallingFactorial{n}{k+1}}{k+1}.
 \end{equation}
 \begin{proof}
 The first follows from
-$\falling{x+1}{k}-\falling{x}{k}=k\falling{x}{k-1}$ after factoring the common
+$\FallingFactorial{x+1}{k}-\FallingFactorial{x}{k}=k\FallingFactorial{x}{k-1}$ after factoring the common
 product.  Summing this telescoping identity gives the second formula.
 \end{proof}
 
 \begin{theorem}[Newton expansion]\label{thm:newton-expansion}
 Every polynomial $p$ of degree at most $d$ has the unique expansion
 \begin{equation}\label{eq:newton-expansion}
- p(x)=\sum_{k=0}^d\frac{\Delta^kp(0)}{k!}\falling{x}{k}
+ p(x)=\sum_{k=0}^d\frac{\Delta^kp(0)}{k!}\FallingFactorial{x}{k}
      =\sum_{k=0}^d\Delta^kp(0)\binom{x}{k}.
 \end{equation}
 \end{theorem}
 \begin{proof}
 The factorial polynomials form a basis because their degrees are distinct and their
-leading coefficients are one.  If $p=\sum a_k\falling{x}{k}$, applying $\Delta^j$
+leading coefficients are one.  If $p=\sum a_k\FallingFactorial{x}{k}$, applying $\Delta^j$
 and setting $x=0$ kills terms with $k>j$ by a remaining factor $x$, kills terms
 with $k<j$ by excessive differencing, and gives $j!a_j$ for $k=j$.
 \end{proof}
@@ -336,8 +304,8 @@ with $k<j$ by excessive differencing, and gives $j!a_j$ for $k=j$.
 \section{Labelled products and the exponential formula}
 A labelled combinatorial class is one whose atoms carry distinct labels.  Suppose a
 connected component of size $j$ has total weight $x_j$.  A set of $k$ such components
-with total size $n$ has weight enumerator $\BellP nk(x_1,x_2,\ldots)$; a set of any
-number of components has enumerator $\BellC n(x_1,\ldots,x_n)$.
+with total size $n$ has weight enumerator $\ExponentialPartialBellPolynomial nk(x_1,x_2,\ldots)$; a set of any
+number of components has enumerator $\ExponentialCompleteBellPolynomial n(x_1,\ldots,x_n)$.
 
 \begin{theorem}[The exponential formula]\label{thm:exponential-formula}
 Let
@@ -347,13 +315,13 @@ Let
 Then
 \begin{align}
  \frac{C(z)^k}{k!}
-  &=\sum_{n\ge k}\BellP nk(x_1,\ldots,x_{n-k+1})\frac{z^n}{n!},
+  &=\sum_{n\ge k}\ExponentialPartialBellPolynomial nk(x_1,\ldots,x_{n-k+1})\frac{z^n}{n!},
   \label{eq:partial-bell-egf}\\
  e^{uC(z)}
-  &=\sum_{n\ge k\ge0}\BellP nk(x_1,\ldots)u^k\frac{z^n}{n!},
+  &=\sum_{n\ge k\ge0}\ExponentialPartialBellPolynomial nk(x_1,\ldots)u^k\frac{z^n}{n!},
   \label{eq:bivariate-bell-egf}\\
  e^{C(z)}
-  &=\sum_{n\ge0}\BellC n(x_1,\ldots,x_n)\frac{z^n}{n!}.
+  &=\sum_{n\ge0}\ExponentialCompleteBellPolynomial n(x_1,\ldots,x_n)\frac{z^n}{n!}.
   \label{eq:complete-bell-egf}
 \end{align}
 \end{theorem}
@@ -388,24 +356,24 @@ blocks of equal size.
 
 \section{First-kind numbers: cycles and factorial coefficients}
 \begin{definition}
-The signed Stirling numbers of the first kind $s(n,k)$ and the unsigned numbers
-$\stirone nk$ are defined by
+The signed Stirling numbers of the first kind $\SignedStirlingFirstKind{n}{k}$ and the unsigned numbers
+$\UnsignedStirlingFirstKind nk$ are defined by
 \begin{align}
- \falling{x}{n}&=\sum_{k=0}^n s(n,k)x^k,\label{eq:signed-first-def}\\
- \rising{x}{n}&=\sum_{k=0}^n\stirone nkx^k,\label{eq:unsigned-first-def}\\
- s(n,k)&=(-1)^{n-k}\stirone nk.\label{eq:first-sign}
+ \FallingFactorial{x}{n}&=\sum_{k=0}^n \SignedStirlingFirstKind{n}{k}x^k,\label{eq:signed-first-def}\\
+ \RisingFactorial{x}{n}&=\sum_{k=0}^n\UnsignedStirlingFirstKind nkx^k,\label{eq:unsigned-first-def}\\
+ \SignedStirlingFirstKind{n}{k}&=(-1)^{n-k}\UnsignedStirlingFirstKind nk.\label{eq:first-sign}
 \end{align}
 \end{definition}
 The sign relation follows from
-$\rising{x}{n}=(-1)^n\falling{-x}{n}$.
+$\RisingFactorial{x}{n}=(-1)^n\FallingFactorial{-x}{n}$.
 
 \begin{theorem}[Permutation interpretation]\label{thm:first-cycle}
-$\stirone nk$ is the number of permutations of $[n]$ having exactly $k$ cycles.
+$\UnsignedStirlingFirstKind nk$ is the number of permutations of $[n]$ having exactly $k$ cycles.
 Consequently,
 \begin{equation}\label{eq:first-recurrence}
- \stirone{n+1}{k}=n\stirone nk+\stirone n{k-1},
+ \UnsignedStirlingFirstKind{n+1}{k}=n\UnsignedStirlingFirstKind nk+\UnsignedStirlingFirstKind n{k-1},
 \end{equation}
-with $\stirone00=1$ and zero boundary values outside $0\le k\le n$.
+with $\UnsignedStirlingFirstKind00=1$ and zero boundary values outside $0\le k\le n$.
 \end{theorem}
 \begin{proof}
 Given a permutation of $[n+1]$ with $k$ cycles, either $n+1$ is a singleton cycle,
@@ -413,29 +381,29 @@ leaving a permutation of $[n]$ with $k-1$ cycles, or it is inserted immediately
 after one of the $n$ existing elements in the cyclic notation of a permutation of
 $[n]$ with $k$ cycles.  These alternatives are disjoint and reversible.
 The same recurrence follows algebraically by multiplying
-$\rising{x}{n}$ by $x+n$ and comparing coefficients.
+$\RisingFactorial{x}{n}$ by $x+n$ and comparing coefficients.
 \end{proof}
 
-For $n=3$, the cycle counts are $\stirone33=1$, $\stirone32=3$, and
-$\stirone31=2$, corresponding to the identity, the three transpositions, and the two
+For $n=3$, the cycle counts are $\UnsignedStirlingFirstKind33=1$, $\UnsignedStirlingFirstKind32=3$, and
+$\UnsignedStirlingFirstKind31=2$, corresponding to the identity, the three transpositions, and the two
 $3$-cycles.  Summing over the possible number of cycles gives
 \begin{equation}\label{eq:first-row-sum}
- \sum_{k=0}^n\stirone nk=n!,
+ \sum_{k=0}^n\UnsignedStirlingFirstKind nk=n!,
 \end{equation}
 which also follows from \cref{eq:unsigned-first-def} at $x=1$.
 
 \section{Second-kind numbers: set partitions and surjections}
 \begin{definition}
-The Stirling number of the second kind $\stirtwo nk$ is the number of partitions of
+The Stirling number of the second kind $\StirlingSecondKind nk$ is the number of partitions of
 $[n]$ into exactly $k$ nonempty blocks.
 \end{definition}
 
 \begin{theorem}[Second-kind recurrence]\label{thm:second-recurrence}
 For $n,k\ge0$,
 \begin{equation}\label{eq:second-recurrence}
- \stirtwo{n+1}{k}=k\stirtwo nk+\stirtwo n{k-1},
+ \StirlingSecondKind{n+1}{k}=k\StirlingSecondKind nk+\StirlingSecondKind n{k-1},
 \end{equation}
-with $\stirtwo00=1$ and zero boundary values outside $0\le k\le n$.
+with $\StirlingSecondKind00=1$ and zero boundary values outside $0\le k\le n$.
 \end{theorem}
 \begin{proof}
 In a partition of $[n+1]$ into $k$ blocks, the new label either joins one of the $k$
@@ -446,12 +414,12 @@ $[n]$ into $k-1$ blocks.
 \begin{theorem}[Surjection formula]\label{thm:second-explicit}
 For all $n,k\ge0$,
 \begin{equation}\label{eq:second-explicit}
- \stirtwo nk=\frac1{k!}\sum_{j=0}^k(-1)^{k-j}\binom kjj^n
+ \StirlingSecondKind nk=\frac1{k!}\sum_{j=0}^k(-1)^{k-j}\binom kjj^n
  =\sum_{j=0}^k\frac{(-1)^{k-j}j^n}{(k-j)!j!}.
 \end{equation}
 \end{theorem}
 \begin{proof}
-There are $k!\stirtwo nk$ surjections from $[n]$ onto a fixed $k$-element codomain:
+There are $k!\StirlingSecondKind nk$ surjections from $[n]$ onto a fixed $k$-element codomain:
 a set partition into fibres followed by an ordering of the fibres.  Inclusion--
 exclusion over the set of omitted codomain values gives
 $\sum_{j=0}^k(-1)^{k-j}\binom kjj^n$.  Division by $k!$ proves the formula.
@@ -459,9 +427,9 @@ $\sum_{j=0}^k(-1)^{k-j}\binom kjj^n$.  Division by $k!$ proves the formula.
 
 The simple diagonals follow at once:
 \begin{equation}\label{eq:second-simple}
- \stirtwo nn=1,\qquad \stirtwo n1=1\ (n\ge1),\qquad
- \stirtwo n{n-1}=\binom n2,\qquad
- \stirtwo n2=2^{n-1}-1.
+ \StirlingSecondKind nn=1,\qquad \StirlingSecondKind n1=1\ (n\ge1),\qquad
+ \StirlingSecondKind n{n-1}=\binom n2,\qquad
+ \StirlingSecondKind n2=2^{n-1}-1.
 \end{equation}
 The last identity chooses a nonempty proper subset as one block and divides by two
 for exchanging the blocks.
@@ -477,30 +445,30 @@ conjectures; in fact they are exact identities.
 \label{thm:second-reverse-recurrences}
 For $1\le k<n$,
 \begin{align}
- \stirtwo nk
- &=\frac{k^n}{k!}-\sum_{r=1}^{k-1}\frac{\stirtwo nr}{(k-r)!},
+ \StirlingSecondKind nk
+ &=\frac{k^n}{k!}-\sum_{r=1}^{k-1}\frac{\StirlingSecondKind nr}{(k-r)!},
  \label{eq:second-triangular-explicit}\\
- (n-k)\stirtwo nk
+ (n-k)\StirlingSecondKind nk
  &=\sum_{j=2}^{n-k+1}(j-2)!\binom{-k}{j}
-   \stirtwo n{k+j-1},
+   \StirlingSecondKind n{k+j-1},
  \label{eq:second-reverse-row}\\
- (n-k)\stirtwo nk
+ (n-k)\StirlingSecondKind nk
  &=\sum_{j=2}^{n-k+1}(-1)^j\binom nj
-   \stirtwo{n-j+1}{k}.
+   \StirlingSecondKind{n-j+1}{k}.
  \label{eq:second-reverse-column}
 \end{align}
-The terminal value in either reverse recursion is $\stirtwo nn=1$.
+The terminal value in either reverse recursion is $\StirlingSecondKind nn=1$.
 \end{theorem}
 \begin{proof}
 Substitute $x=k$ in the basis identity
-$k^n=\sum_r\stirtwo nr\falling{k}{r}$.  Since
-$\falling{k}{r}=k!/(k-r)!$ for $r\le k$, division by $k!$ and isolation of the
+$k^n=\sum_r\StirlingSecondKind nr\FallingFactorial{k}{r}$.  Since
+$\FallingFactorial{k}{r}=k!/(k-r)!$ for $r\le k$, division by $k!$ and isolation of the
 $r=k$ term gives \eqref{eq:second-triangular-explicit}.
 
 For the row reversal, use the bivariate exponential generating function
 \[
  F(x,y)=\exp\!\bigl(y(e^x-1)\bigr)
- =\sum_{n,k\ge0}\stirtwo nk\frac{x^n}{n!}y^k,
+ =\sum_{n,k\ge0}\StirlingSecondKind nk\frac{x^n}{n!}y^k,
  \qquad u=e^x-1.
 \]
 The generating function of the left side of
@@ -522,7 +490,7 @@ coefficients proves \eqref{eq:second-reverse-row}.
 
 For the column reversal fix $k$ and put
 \[
- F_k(x)=\sum_{n\ge k}\stirtwo nk\frac{x^n}{n!}
+ F_k(x)=\sum_{n\ge k}\StirlingSecondKind nk\frac{x^n}{n!}
        =\frac{(e^x-1)^k}{k!}.
 \]
 The two sides of \eqref{eq:second-reverse-column}, after multiplication by
@@ -543,26 +511,26 @@ unsigned first-kind triangle.
 \label{thm:first-reverse-recurrences}
 For $1\le k<n$,
 \begin{align}
- (n-k)\stirone nk
+ (n-k)\UnsignedStirlingFirstKind nk
  &=\sum_{j=2}^{n-k+1}(-1)^j\binom{-k}{j}
-   \stirone n{k+j-1},
+   \UnsignedStirlingFirstKind n{k+j-1},
  \label{eq:first-reverse-row}\\
- (n-k)\stirone nk
+ (n-k)\UnsignedStirlingFirstKind nk
  &=\sum_{j=2}^{n-k+1}(j-2)!\binom nj
-   \stirone{n-j+1}{k}.
+   \UnsignedStirlingFirstKind{n-j+1}{k}.
  \label{eq:first-reverse-column}
 \end{align}
 \end{theorem}
 \begin{proof}
-Let $C_n(y)=\rising{y}{n}=\sum_r\stirone nr y^r$.  Since
+Let $C_n(y)=\RisingFactorial{y}{n}=\sum_r\UnsignedStirlingFirstKind nr y^r$.  Since
 \[
- C_n(1+y)=\frac{\rising{y}{n+1}}{y},
+ C_n(1+y)=\frac{\RisingFactorial{y}{n+1}}{y},
 \]
 the coefficient of $y^{k-1}$ on the two sides is, respectively,
 \[
- \sum_{r\ge k-1}\binom r{k-1}\stirone nr
+ \sum_{r\ge k-1}\binom r{k-1}\UnsignedStirlingFirstKind nr
  \quad\text{and}\quad
- \stirone{n+1}{k}=n\stirone nk+\stirone n{k-1}.
+ \UnsignedStirlingFirstKind{n+1}{k}=n\UnsignedStirlingFirstKind nk+\UnsignedStirlingFirstKind n{k-1}.
 \]
 Remove the terms $r=k-1$ and $r=k$ and put $r=k+j-1$.  Because
 $(-1)^j\binom{-k}{j}=\binom{k+j-1}{j}$, the remainder is precisely
@@ -570,7 +538,7 @@ $(-1)^j\binom{-k}{j}=\binom{k+j-1}{j}$, the remainder is precisely
 
 For fixed $k$, set
 \[
- C_k(x)=\sum_{n\ge k}\stirone nk\frac{x^n}{n!}
+ C_k(x)=\sum_{n\ge k}\UnsignedStirlingFirstKind nk\frac{x^n}{n!}
        =\frac{[-\log(1-x)]^k}{k!}.
 \]
 The exponential generating function of the right side of
@@ -610,7 +578,7 @@ The first rows are
 6&0&1&31&90&65&15&1
 \end{array}
 \]
-for $\stirone nk$ and $\stirtwo nk$, respectively.
+for $\UnsignedStirlingFirstKind nk$ and $\StirlingSecondKind nk$, respectively.
 
 \chapter{Factorial bases and inverse matrices}
 \label{ch:bases}
@@ -619,14 +587,14 @@ for $\stirone nk$ and $\stirtwo nk$, respectively.
 \begin{theorem}[Stirling basis transformations]\label{thm:stirling-basis}
 For every $n\ge0$,
 \begin{align}
- \falling{x}{n}&=\sum_{k=0}^ns(n,k)x^k,\label{eq:fall-to-power}\\
- \rising{x}{n}&=\sum_{k=0}^n\stirone nkx^k,\label{eq:rise-to-power}\\
- x^n&=\sum_{k=0}^n\stirtwo nk\falling{x}{k},\label{eq:power-to-fall}\\
- x^n&=\sum_{k=0}^n(-1)^{n-k}\stirtwo nk\rising{x}{k}.\label{eq:power-to-rise}
+ \FallingFactorial{x}{n}&=\sum_{k=0}^ns(n,k)x^k,\label{eq:fall-to-power}\\
+ \RisingFactorial{x}{n}&=\sum_{k=0}^n\UnsignedStirlingFirstKind nkx^k,\label{eq:rise-to-power}\\
+ x^n&=\sum_{k=0}^n\StirlingSecondKind nk\FallingFactorial{x}{k},\label{eq:power-to-fall}\\
+ x^n&=\sum_{k=0}^n(-1)^{n-k}\StirlingSecondKind nk\RisingFactorial{x}{k}.\label{eq:power-to-rise}
 \end{align}
 Equivalently,
 \begin{equation}\label{eq:binomial-basis}
- x^n=\sum_{k=0}^n\stirtwo nk k!\binom{x}{k},\qquad
+ x^n=\sum_{k=0}^n\StirlingSecondKind nk k!\binom{x}{k},\qquad
  \binom{x}{n}=\frac1{n!}\sum_{k=0}^ns(n,k)x^k.
 \end{equation}
 \end{theorem}
@@ -635,11 +603,11 @@ The first two identities are definitions.  In the Newton expansion
 \cref{eq:newton-expansion} for $p(x)=x^n$, one has
 \[
  \Delta^kx^n\big|_{x=0}=\sum_{j=0}^k(-1)^{k-j}\binom kjj^n
- =k!\stirtwo nk
+ =k!\StirlingSecondKind nk
 \]
 by \cref{eq:second-explicit}.  This gives \cref{eq:power-to-fall}.  Replacing $x$
 by $-x$ and multiplying by $(-1)^n$ gives \cref{eq:power-to-rise}.  Division of
-$\falling{x}{n}$ by $n!$ gives the second binomial-basis formula.
+$\FallingFactorial{x}{n}$ by $n!$ gives the second binomial-basis formula.
 \end{proof}
 
 
@@ -647,32 +615,32 @@ $\falling{x}{n}$ by $n!$ gives the second binomial-basis formula.
 \label{cor:shifted-stirling-evaluations}
 For every $n\ge0$,
 \begin{align}
- \sum_{k=1}^{n+1}\stirtwo{n+1}{k}\falling{x-1}{k-1}&=x^n,
+ \sum_{k=1}^{n+1}\StirlingSecondKind{n+1}{k}\FallingFactorial{x-1}{k-1}&=x^n,
  \label{eq:shifted-power-to-fall}\\
- \sum_{k=0}^{n}\stirtwo nk\falling{n}{k}&=n^n.
+ \sum_{k=0}^{n}\StirlingSecondKind nk\FallingFactorial{n}{k}&=n^n.
  \label{eq:stirling-n-to-n}
 \end{align}
 \end{corollary}
 \begin{proof}
 Apply \eqref{eq:power-to-fall} with exponent $n+1$ and use
-$\falling{x}{k}=x\falling{x-1}{k-1}$.  Both sides are divisible by $x$ as
+$\FallingFactorial{x}{k}=x\FallingFactorial{x-1}{k-1}$.  Both sides are divisible by $x$ as
 polynomials, and cancellation gives \eqref{eq:shifted-power-to-fall}.  Formula
 \eqref{eq:stirling-n-to-n} is \eqref{eq:power-to-fall} evaluated at $x=n$.
 \end{proof}
 \begin{corollary}[Inverse matrices]\label{cor:stirling-inverse}
-The lower triangular matrices $s=(s(n,k))$ and $S=(\stirtwo nk)$ are mutual inverses:
+The lower triangular matrices $s=(\SignedStirlingFirstKind{n}{k})$ and $S=(\StirlingSecondKind nk)$ are mutual inverses:
 \begin{align}
- \sum_{j=k}^ns(n,j)\stirtwo jk&=\delta_{nk},\label{eq:stirling-inv1}\\
- \sum_{j=k}^n\stirtwo nj s(j,k)&=\delta_{nk}.\label{eq:stirling-inv2}
+ \sum_{j=k}^ns(n,j)\StirlingSecondKind jk&=\delta_{nk},\label{eq:stirling-inv1}\\
+ \sum_{j=k}^n\StirlingSecondKind nj \SignedStirlingFirstKind{j}{k}&=\delta_{nk}.\label{eq:stirling-inv2}
 \end{align}
 Equivalently,
 \begin{align}
- \sum_{j=k}^n(-1)^{n-j}\stirone nj\stirtwo jk&=\delta_{nk},\\
- \sum_{j=k}^n(-1)^{j-k}\stirtwo nj\stirone jk&=\delta_{nk}.
+ \sum_{j=k}^n(-1)^{n-j}\UnsignedStirlingFirstKind nj\StirlingSecondKind jk&=\delta_{nk},\\
+ \sum_{j=k}^n(-1)^{j-k}\StirlingSecondKind nj\UnsignedStirlingFirstKind jk&=\delta_{nk}.
 \end{align}
 \end{corollary}
 \begin{proof}
-Expand $\falling{x}{n}$ into powers and each power back into falling factorials.
+Expand $\FallingFactorial{x}{n}$ into powers and each power back into falling factorials.
 Uniqueness of coordinates in the factorial basis gives the first matrix product.
 The reverse substitution gives the second.
 \end{proof}
@@ -682,12 +650,12 @@ The factorial basis makes discrete antidifferentiation immediate.  Combining
 \cref{eq:power-to-fall,eq:finite-diff-falling} yields
 \begin{equation}\label{eq:power-sum-stirling}
  \sum_{i=0}^{N}i^m
- =\sum_{k=0}^m\stirtwo mk\frac{\falling{N+1}{k+1}}{k+1}.
+ =\sum_{k=0}^m\StirlingSecondKind mk\frac{\FallingFactorial{N+1}{k+1}}{k+1}.
 \end{equation}
 For $m=4$ this is
 \[
- \frac12\falling{N+1}{2}+\frac73\falling{N+1}{3}
- +\frac64\falling{N+1}{4}+\frac15\falling{N+1}{5},
+ \frac12\FallingFactorial{N+1}{2}+\frac73\FallingFactorial{N+1}{3}
+ +\frac64\FallingFactorial{N+1}{4}+\frac15\FallingFactorial{N+1}{5},
 \]
 which expands to the familiar quartic power-sum polynomial.
 
@@ -701,20 +669,20 @@ integer-valued random variables.
 If $X$ has the Poisson distribution of mean $\lambda$, then
 \begin{equation}
 \label{eq:poisson-stirling-moments}
- \E X^n=\sum_{k=0}^{n}\stirtwo nk\lambda^k.
+ \Expectation X^n=\sum_{k=0}^{n}\StirlingSecondKind nk\lambda^k.
 \end{equation}
-In particular, $\E X^n=\Bell n$ when $\lambda=1$.
+In particular, $\Expectation X^n=\BellNumber n$ when $\lambda=1$.
 \end{theorem}
 \begin{proof}
 The $k$th falling-factorial moment is
 \[
- \E\falling{X}{k}
- =e^{-\lambda}\sum_{r\ge k}\frac{\falling r k\lambda^r}{r!}
+ \Expectation\FallingFactorial{X}{k}
+ =e^{-\lambda}\sum_{r\ge k}\frac{\FallingFactorial r k\lambda^r}{r!}
  =\lambda^ke^{-\lambda}\sum_{q\ge0}\frac{\lambda^q}{q!}
  =\lambda^k.
 \]
 Take expectations in the basis identity
-$X^n=\sum_k\stirtwo nk\falling Xk$.
+$X^n=\sum_k\StirlingSecondKind nk\FallingFactorial Xk$.
 \end{proof}
 
 \begin{theorem}[Moments of the number of fixed points]
@@ -723,19 +691,19 @@ Let $Y_m$ be the number of fixed points of a uniformly random permutation of
 $[m]$.  Then
 \begin{equation}
 \label{eq:fixed-point-stirling-moments}
- \E Y_m^n=\sum_{k=0}^{m}\stirtwo nk
- =\sum_{k=0}^{\min(m,n)}\stirtwo nk.
+ \Expectation Y_m^n=\sum_{k=0}^{m}\StirlingSecondKind nk
+ =\sum_{k=0}^{\min(m,n)}\StirlingSecondKind nk.
 \end{equation}
-Thus, when $m\ge n$, the moment equals the Bell number $\Bell n$.
+Thus, when $m\ge n$, the moment equals the Bell number $\BellNumber n$.
 \end{theorem}
 \begin{proof}
-The random variable $\falling{Y_m}{k}$ counts ordered $k$-tuples of distinct fixed
-points.  There are $\falling m k$ candidate tuples, and a specified tuple is fixed
+The random variable $\FallingFactorial{Y_m}{k}$ counts ordered $k$-tuples of distinct fixed
+points.  There are $\FallingFactorial m k$ candidate tuples, and a specified tuple is fixed
 with probability $(m-k)!/m!$.  Hence
 \[
- \E\falling{Y_m}{k}=1\quad(0\le k\le m),
+ \Expectation\FallingFactorial{Y_m}{k}=1\quad(0\le k\le m),
  \qquad
- \E\falling{Y_m}{k}=0\quad(k>m).
+ \Expectation\FallingFactorial{Y_m}{k}=0\quad(k>m).
 \]
 Taking expectations in \eqref{eq:power-to-fall} proves the formula.  The upper
 limit $m$ is essential: it records the finite size of the permutation, even when
@@ -745,36 +713,36 @@ $n>m$.
 \begin{definition}
 For $1\le k\le n$, the unsigned Lah number is
 \begin{equation}\label{eq:lah-def}
- L(n,k)=\binom{n-1}{k-1}\frac{n!}{k!},
+ \LahNumber nk=\binom{n-1}{k-1}\frac{n!}{k!},
 \end{equation}
-with $L(0,0)=1$ and zero otherwise outside the triangle.
+with $\LahNumber00=1$ and zero otherwise outside the triangle.
 \end{definition}
-Combinatorially, $L(n,k)$ counts partitions of $[n]$ into $k$ nonempty linearly
+Combinatorially, $\LahNumber nk$ counts partitions of $[n]$ into $k$ nonempty linearly
 ordered lists, with the collection of lists unordered.
 
 \begin{theorem}[Conversion between rising and falling factorials]\label{thm:lah-conv}
 \begin{align}
- \rising{x}{n}&=\sum_{k=0}^nL(n,k)\falling{x}{k},\label{eq:lah-rise-fall}\\
- \falling{x}{n}&=\sum_{k=0}^n(-1)^{n-k}L(n,k)\rising{x}{k},\label{eq:lah-fall-rise}\\
- \sum_{j=k}^n(-1)^{j-k}L(n,j)L(j,k)&=\delta_{nk}.\label{eq:lah-inv}
+ \RisingFactorial{x}{n}&=\sum_{k=0}^nL(n,k)\FallingFactorial{x}{k},\label{eq:lah-rise-fall}\\
+ \FallingFactorial{x}{n}&=\sum_{k=0}^n(-1)^{n-k}\LahNumber nk\RisingFactorial{x}{k},\label{eq:lah-fall-rise}\\
+ \sum_{j=k}^n(-1)^{j-k}\LahNumber nj\LahNumber jk&=\delta_{nk}.\label{eq:lah-inv}
 \end{align}
 Moreover,
 \begin{equation}\label{eq:lah-stirling-product}
- L(n,k)=\sum_{j=k}^n\stirone nj\stirtwo jk.
+ \LahNumber nk=\sum_{j=k}^n\UnsignedStirlingFirstKind nj\StirlingSecondKind jk.
 \end{equation}
 \end{theorem}
 \begin{proof}
 A direct generating-function calculation gives
 \[
- \sum_{n\ge k}L(n,k)\frac{z^n}{n!}
+ \sum_{n\ge k}\LahNumber nk\frac{z^n}{n!}
  =\frac1{k!}\left(\frac{z}{1-z}\right)^k.
 \]
 Therefore
 \[
- \sum_{n\ge0}\left(\sum_kL(n,k)\falling{x}{k}\right)\frac{z^n}{n!}
+ \sum_{n\ge0}\left(\sum_kL(n,k)\FallingFactorial{x}{k}\right)\frac{z^n}{n!}
  =\sum_{k\ge0}\binom{x}{k}\left(\frac{z}{1-z}\right)^k
  =(1-z)^{-x}
- =\sum_{n\ge0}\rising{x}{n}\frac{z^n}{n!},
+ =\sum_{n\ge0}\RisingFactorial{x}{n}\frac{z^n}{n!},
 \]
 proving \cref{eq:lah-rise-fall}.  Replace $x$ by $-x$ to obtain the inverse formula,
 and compose the two transformations to obtain \cref{eq:lah-inv}.  Finally, expand a
@@ -784,7 +752,7 @@ by second-kind numbers; uniqueness gives \cref{eq:lah-stirling-product}.
 
 The inequalities
 \begin{equation}\label{eq:stirling-lah-ineq}
- \stirtwo nk\le\stirone nk\le L(n,k)
+ \StirlingSecondKind nk\le\UnsignedStirlingFirstKind nk\le \LahNumber nk
 \end{equation}
 follow from explicit injections: a set partition may be canonically turned into a
 permutation with one cycle per block by writing each block with its smallest member
@@ -799,16 +767,16 @@ permutations with $k$ cycles into unordered collections of $k$ lists.
 \begin{theorem}[Column generating functions]\label{thm:stirling-egfs}
 For every fixed $k\ge0$,
 \begin{align}
- \sum_{n\ge k}s(n,k)\frac{z^n}{n!}
+ \sum_{n\ge k}\SignedStirlingFirstKind{n}{k}\frac{z^n}{n!}
    &=\frac{\log(1+z)^k}{k!},\label{eq:signed-first-egf}\\
- \sum_{n\ge k}\stirone nk\frac{z^n}{n!}
+ \sum_{n\ge k}\UnsignedStirlingFirstKind nk\frac{z^n}{n!}
    &=\frac{[-\log(1-z)]^k}{k!},\label{eq:unsigned-first-egf}\\
- \sum_{n\ge k}\stirtwo nk\frac{z^n}{n!}
+ \sum_{n\ge k}\StirlingSecondKind nk\frac{z^n}{n!}
    &=\frac{(e^z-1)^k}{k!}.\label{eq:second-egf}
 \end{align}
 The bivariate second-kind generating function is
 \begin{equation}\label{eq:second-double-egf}
- \sum_{k\ge0}\sum_{n\ge k}\stirtwo nk y^k\frac{z^n}{n!}
+ \sum_{k\ge0}\sum_{n\ge k}\StirlingSecondKind nk y^k\frac{z^n}{n!}
  =\exp\!\bigl(y(e^z-1)\bigr).
 \end{equation}
 \end{theorem}
@@ -829,7 +797,7 @@ $k$ with weight $y^k$ proves \cref{eq:second-double-egf}.
 Differentiating \cref{eq:signed-first-egf} gives the useful identity
 \begin{equation}\label{eq:log-over-one-plus}
  \frac{\log(1+z)^m}{1+z}
- =m!\sum_{r\ge0}s(r+1,m+1)\frac{z^r}{r!},\qquad |z|<1,
+ =m!\sum_{r\ge0}\SignedStirlingFirstKind{r+1}{m+1}\frac{z^r}{r!},\qquad |z|<1,
 \end{equation}
 which is valid formally as well.
 
@@ -837,19 +805,19 @@ which is valid formally as well.
 \begin{theorem}[Fixed-$k$ ordinary generating function]\label{thm:second-ogf}
 For $k\ge0$,
 \begin{equation}\label{eq:second-ogf}
- \sum_{n\ge k}\stirtwo nk x^{n-k}
+ \sum_{n\ge k}\StirlingSecondKind nk x^{n-k}
  =\prod_{j=1}^k\frac1{1-jx}
- =\frac1{x^{k+1}\falling{1/x}{k+1}}.
+ =\frac1{x^{k+1}\FallingFactorial{1/x}{k+1}}.
 \end{equation}
 Consequently,
 \begin{equation}\label{eq:second-complete-symmetric}
- \stirtwo nk=h_{n-k}(1,2,\ldots,k)
+ \StirlingSecondKind nk=h_{n-k}(1,2,\ldots,k)
  =\sum_{c_1+\cdots+c_k=n-k}1^{c_1}2^{c_2}\cdots k^{c_k},
 \end{equation}
 where $h_r$ is a complete homogeneous symmetric polynomial.
 \end{theorem}
 \begin{proof}
-Let $F_k(x)=\sum_{r\ge0}\stirtwo{k+r}{k}x^r$.  The recurrence
+Let $F_k(x)=\sum_{r\ge0}\StirlingSecondKind{k+r}{k}x^r$.  The recurrence
 \cref{eq:second-recurrence}, with $n=k+r-1$, gives
 $F_k(x)=(1-kx)^{-1}F_{k-1}(x)$ and $F_0=1$.  Iteration proves the product.
 Expanding each geometric factor independently proves the complete-homogeneous sum.
@@ -858,57 +826,57 @@ The factorial form follows by direct factorization.
 
 A useful rearrangement of the count of all maps $[n]\to[k]$ is
 \begin{equation}\label{eq:second-alternate-rec}
- \stirtwo nk=\frac{k^n}{k!}-\sum_{r=1}^{k-1}\frac{\stirtwo nr}{(k-r)!}.
+ \StirlingSecondKind nk=\frac{k^n}{k!}-\sum_{r=1}^{k-1}\frac{\StirlingSecondKind nr}{(k-r)!}.
 \end{equation}
 Indeed, a map using exactly $r$ values can be chosen in
-$\binom kr r!\stirtwo nr$ ways; divide the identity
-$k^n=\sum_r\binom kr r!\stirtwo nr$ by $k!$.
+$\binom kr r!\StirlingSecondKind nr$ ways; divide the identity
+$k^n=\sum_r\binom kr r!\StirlingSecondKind nr$ by $k!$.
 
 \section{The Stirling transform}
 \begin{theorem}[Stirling transform and its inverse]\label{thm:stirling-transform}
 Let
 \[
- g_n=\sum_{k=0}^n\stirtwo nk f_k.
+ g_n=\sum_{k=0}^n\StirlingSecondKind nk f_k.
 \]
 Then
 \begin{equation}\label{eq:stirling-transform-inverse}
  f_n=\sum_{k=0}^ns(n,k)g_k
- =\sum_{k=0}^n(-1)^{n-k}\stirone nkg_k.
+ =\sum_{k=0}^n(-1)^{n-k}\UnsignedStirlingFirstKind nkg_k.
 \end{equation}
 For exponential generating functions,
 \begin{equation}\label{eq:stirling-transform-egf}
- \widehat G(z)=\widehat F(e^z-1),\qquad
- \widehat F(z)=\widehat G(\log(1+z)).
+ \ExponentialGeneratingFunctionOf{G}(z)=\ExponentialGeneratingFunctionOf{F}(e^z-1),\qquad
+ \ExponentialGeneratingFunctionOf{F}(z)=\ExponentialGeneratingFunctionOf{G}(\log(1+z)).
 \end{equation}
 \end{theorem}
 \begin{proof}
 The inverse formula is exactly the matrix inversion in
 \cref{cor:stirling-inverse}.  For the generating function,
 \[
- \widehat G(z)=\sum_kf_k\sum_{n\ge k}\stirtwo nk\frac{z^n}{n!}
- =\sum_kf_k\frac{(e^z-1)^k}{k!}=\widehat F(e^z-1).
+ \ExponentialGeneratingFunctionOf{G}(z)=\sum_kf_k\sum_{n\ge k}\StirlingSecondKind nk\frac{z^n}{n!}
+ =\sum_kf_k\frac{(e^z-1)^k}{k!}=\ExponentialGeneratingFunctionOf{F}(e^z-1).
 \]
 Substitution by the compositional inverse $\log(1+z)$ gives the reverse relation.
 \end{proof}
 
 \section{Differential-operator normal ordering}
 Let $D=d/dx$.  The Euler operator $xD$ is diagonal on monomials:
-$(xD)x^m=mx^m$.  The operator $x^kD^k$ has eigenvalue $\falling m k$.
+$(xD)x^m=mx^m$.  The operator $x^kD^k$ has eigenvalue $\FallingFactorial m k$.
 Thus the scalar basis changes lift verbatim to operators.
 
 \begin{theorem}[Stirling normal-ordering identities]\label{thm:normal-order}
 For $n\ge0$,
 \begin{align}
- (xD)^n&=\sum_{k=0}^n\stirtwo nk x^kD^k,\label{eq:normal1}\\
+ (xD)^n&=\sum_{k=0}^n\StirlingSecondKind nk x^kD^k,\label{eq:normal1}\\
  x^nD^n&=\sum_{k=0}^ns(n,k)(xD)^k
-        =\falling{xD}{n}.\label{eq:normal2}
+        =\FallingFactorial{xD}{n}.\label{eq:normal2}
 \end{align}
 \end{theorem}
 \begin{proof}
 Both sides of \cref{eq:normal1} act on $x^m$ as multiplication by
-$m^n=\sum_k\stirtwo nk\falling mk$.  Since monomials span the polynomial ring, the
+$m^n=\sum_k\StirlingSecondKind nk\FallingFactorial mk$.  Since monomials span the polynomial ring, the
 operators are equal.  The inverse relation is proved identically using
-$\falling mn=\sum_ks(n,k)m^k$.
+$\FallingFactorial mn=\sum_ks(n,k)m^k$.
 \end{proof}
 
 Because $E=e^D$ and $\Delta=e^D-1$, substitution of the mutually inverse series
@@ -916,10 +884,10 @@ $D=\log(1+\Delta)$ and $\Delta=e^D-1$ gives, whenever the operator series conver
 (or formally on polynomials),
 \begin{align}
  \frac{D^k}{k!}
-   &=\sum_{n\ge k}\frac{s(n,k)}{n!}\Delta^n,
+   &=\sum_{n\ge k}\frac{\SignedStirlingFirstKind{n}{k}}{n!}\Delta^n,
    \label{eq:der-from-diff}\\
  \frac{\Delta^k}{k!}
-   &=\sum_{n\ge k}\frac{\stirtwo nk}{n!}D^n.
+   &=\sum_{n\ge k}\frac{\StirlingSecondKind nk}{n!}D^n.
    \label{eq:diff-from-der}
 \end{align}
 These are the derivative--finite-difference transformations listed in the archive.
@@ -930,7 +898,7 @@ These are the derivative--finite-difference transformations listed in the archiv
 \section{Elementary and complete symmetric descriptions}
 From \cref{eq:unsigned-first-def},
 \begin{equation}\label{eq:first-elementary}
- \stirone n{n-r}=e_r(0,1,\ldots,n-1)
+ \UnsignedStirlingFirstKind n{n-r}=e_r(0,1,\ldots,n-1)
  =\sum_{0\le i_1<\cdots<i_r<n}i_1\cdots i_r.
 \end{equation}
 Together with \cref{eq:second-complete-symmetric}, this identifies the first-kind
@@ -939,9 +907,9 @@ complete homogeneous symmetric functions.
 
 The first few near-diagonals are
 \begin{align}
- \stirone n{n-1}&=\binom n2,\label{eq:first-diag1}\\
- \stirone n{n-2}&=\frac{3n-1}{4}\binom n3,\label{eq:first-diag2}\\
- \stirone n{n-3}&=\binom n2\binom n4.\label{eq:first-diag3}
+ \UnsignedStirlingFirstKind n{n-1}&=\binom n2,\label{eq:first-diag1}\\
+ \UnsignedStirlingFirstKind n{n-2}&=\frac{3n-1}{4}\binom n3,\label{eq:first-diag2}\\
+ \UnsignedStirlingFirstKind n{n-3}&=\binom n2\binom n4.\label{eq:first-diag3}
 \end{align}
 \begin{proof}
 The first is $e_1(0,\ldots,n-1)$.  Newton's identities
@@ -955,22 +923,22 @@ $3$, $2+2$ for the second diagonal and $4$, $3+2$, $2+2+2$ for the third.
 Factoring $(n-1)!$ from
 $(x+1)(x+2)\cdots(x+n-1)$ gives
 \begin{equation}\label{eq:first-harmonic-elementary}
- \frac{\stirone n{k+1}}{(n-1)!}
+ \frac{\UnsignedStirlingFirstKind n{k+1}}{(n-1)!}
  =e_k\left(1,\frac12,\ldots,\frac1{n-1}\right)
  =\sum_{1\le i_1<\cdots<i_k<n}\frac1{i_1\cdots i_k}.
 \end{equation}
 Write $H_n^{(r)}=\sum_{j=1}^nj^{-r}$ and $H_n=H_n^{(1)}$.  Newton's identities now
 give
 \begin{align}
- \stirone n2&=(n-1)!H_{n-1},\label{eq:first-H1}\\
- \stirone n3&=\frac{(n-1)!}{2}\left(H_{n-1}^2-H_{n-1}^{(2)}\right),\label{eq:first-H2}\\
- \stirone n4&=\frac{(n-1)!}{6}\left(H_{n-1}^3-3H_{n-1}H_{n-1}^{(2)}
+ \UnsignedStirlingFirstKind n2&=(n-1)!H_{n-1},\label{eq:first-H1}\\
+ \UnsignedStirlingFirstKind n3&=\frac{(n-1)!}{2}\left(H_{n-1}^2-H_{n-1}^{(2)}\right),\label{eq:first-H2}\\
+ \UnsignedStirlingFirstKind n4&=\frac{(n-1)!}{6}\left(H_{n-1}^3-3H_{n-1}H_{n-1}^{(2)}
                    +2H_{n-1}^{(3)}\right).\label{eq:first-H3}
 \end{align}
 More generally,
 \begin{equation}\label{eq:first-harmonic-bell}
- \frac{\stirone{n+1}{k+1}}{n!}
- =\frac1{k!}\BellC{k}\bigl(H_n,-1!H_n^{(2)},2!H_n^{(3)},\ldots,
+ \frac{\UnsignedStirlingFirstKind{n+1}{k+1}}{n!}
+ =\frac1{k!}\ExponentialCompleteBellPolynomial{k}\bigl(H_n,-1!H_n^{(2)},2!H_n^{(3)},\ldots,
               (-1)^{k-1}(k-1)!H_n^{(k)}\bigr).
 \end{equation}
 \begin{proof}
@@ -983,25 +951,25 @@ and apply the complete Bell-polynomial generating function
 \cref{eq:complete-bell-egf}.
 \end{proof}
 
-If $w(n,k)=k!\,\stirone n{k+1}/(n-1)!$, then complete Bell recurrence yields
+If $w(n,k)=k!\,\UnsignedStirlingFirstKind n{k+1}/(n-1)!$, then complete Bell recurrence yields
 \begin{equation}\label{eq:w-recurrence}
  w(n,m)=\delta_{m0}+\sum_{r=0}^{m-1}(1-m)_rH_{n-1}^{(r+1)}w(n,m-1-r),
 \end{equation}
 where $(1-m)_r$ is falling.  Conversely, taking a logarithm recovers the harmonic
 power sums:
 \begin{equation}\label{eq:harmonic-inversion}
- H_n^{(m)}=-m\coeff xm
- \log\left(1+\sum_{k\ge1}\frac{\stirone{n+1}{k+1}}{n!}(-x)^k\right).
+ H_n^{(m)}=-m\CoefficientExtraction xm
+ \log\left(1+\sum_{k\ge1}\frac{\UnsignedStirlingFirstKind{n+1}{k+1}}{n!}(-x)^k\right).
 \end{equation}
 For example,
 \begin{align}
  (n!)^2H_n^{(2)}
- &=\stirone{n+1}{2}^{\!2}
-   -2\stirone{n+1}{1}\stirone{n+1}{3},\label{eq:H2-invert}\\
+ &=\UnsignedStirlingFirstKind{n+1}{2}^{\!2}
+   -2\UnsignedStirlingFirstKind{n+1}{1}\UnsignedStirlingFirstKind{n+1}{3},\label{eq:H2-invert}\\
  (n!)^3H_n^{(3)}
- &=\stirone{n+1}{2}^{\!3}
-   -3\stirone{n+1}{1}\stirone{n+1}{2}\stirone{n+1}{3}
-   +3\stirone{n+1}{1}^{\!2}\stirone{n+1}{4}.
+ &=\UnsignedStirlingFirstKind{n+1}{2}^{\!3}
+   -3\UnsignedStirlingFirstKind{n+1}{1}\UnsignedStirlingFirstKind{n+1}{2}\UnsignedStirlingFirstKind{n+1}{3}
+   +3\UnsignedStirlingFirstKind{n+1}{1}^{\!2}\UnsignedStirlingFirstKind{n+1}{4}.
  \label{eq:H3-invert}
 \end{align}
 
@@ -1011,31 +979,31 @@ The following paired identities expose the parallel structure of the two triangl
 \begin{theorem}[First- and second-kind summations]\label{thm:paired-sums}
 For valid nonnegative indices,
 \begin{align}
- \stirone{n+1}{k+1}
-   &=\sum_{j=k}^n\stirone nj\binom jk
-    =\sum_{j=k}^n\frac{n!}{j!}\stirone jk,\label{eq:first-two-sums}\\
- \stirtwo{n+1}{k+1}
-   &=\sum_{j=k}^n\binom nj\stirtwo jk
-    =\sum_{j=k}^n(k+1)^{n-j}\stirtwo jk,\label{eq:second-two-sums}\\
- \stirone{n+k+1}{n}
-   &=\sum_{j=0}^k(n+j)\stirone{n+j}{j},\label{eq:first-hockey}\\
- \stirtwo{n+k+1}{k}
-   &=\sum_{j=0}^kj\stirtwo{n+j}{j}.\label{eq:second-hockey}
+ \UnsignedStirlingFirstKind{n+1}{k+1}
+   &=\sum_{j=k}^n\UnsignedStirlingFirstKind nj\binom jk
+    =\sum_{j=k}^n\frac{n!}{j!}\UnsignedStirlingFirstKind jk,\label{eq:first-two-sums}\\
+ \StirlingSecondKind{n+1}{k+1}
+   &=\sum_{j=k}^n\binom nj\StirlingSecondKind jk
+    =\sum_{j=k}^n(k+1)^{n-j}\StirlingSecondKind jk,\label{eq:second-two-sums}\\
+ \UnsignedStirlingFirstKind{n+k+1}{n}
+   &=\sum_{j=0}^k(n+j)\UnsignedStirlingFirstKind{n+j}{j},\label{eq:first-hockey}\\
+ \StirlingSecondKind{n+k+1}{k}
+   &=\sum_{j=0}^kj\StirlingSecondKind{n+j}{j}.\label{eq:second-hockey}
 \end{align}
 Moreover, for $\ell,m\ge0$,
 \begin{align}
- \binom{\ell+m}{\ell}\stirone n{\ell+m}
- &=\sum_j\binom nj\stirone j\ell\stirone{n-j}m,
+ \binom{\ell+m}{\ell}\UnsignedStirlingFirstKind n{\ell+m}
+ &=\sum_j\binom nj\UnsignedStirlingFirstKind j\ell\UnsignedStirlingFirstKind{n-j}m,
  \label{eq:first-convolution}\\
- \binom{\ell+m}{\ell}\stirtwo n{\ell+m}
- &=\sum_j\binom nj\stirtwo j\ell\stirtwo{n-j}m.
+ \binom{\ell+m}{\ell}\StirlingSecondKind n{\ell+m}
+ &=\sum_j\binom nj\StirlingSecondKind j\ell\StirlingSecondKind{n-j}m.
  \label{eq:second-convolution}
 \end{align}
 \end{theorem}
 \begin{proof}
 For the first equality in \cref{eq:first-two-sums}, mark $k$ cycles of a permutation
 of $[n]$ and insert $n+1$ into the canonical construction; algebraically it is the
-coefficient of $x^k$ in $\frac{d}{dx}\rising{x}{n}$.  The second equality follows by
+coefficient of $x^k$ in $\frac{d}{dx}\RisingFactorial{x}{n}$.  The second equality follows by
 iterating recurrence \cref{eq:first-recurrence} in the $n$ direction.  For
 \cref{eq:second-two-sums}, distinguish the elements outside the block containing
 $n+1$ for the first equality, and add the $n-k$ remaining elements one at a time to
@@ -1048,11 +1016,11 @@ which of the total $\ell+m$ components were marked.
 
 Binomial inversion of the first identity in \cref{eq:first-two-sums} gives
 \begin{equation}\label{eq:first-inverted-sum}
- \stirone nm=\sum_{k=m}^n(-1)^{k-m}\binom km\stirone{n+1}{k+1}.
+ \UnsignedStirlingFirstKind nm=\sum_{k=m}^n(-1)^{k-m}\binom km\UnsignedStirlingFirstKind{n+1}{k+1}.
 \end{equation}
 The alternative form
 \begin{equation}\label{eq:first-factorial-sum}
- \stirone{n+1}{m+1}=\sum_{k=m}^n\frac{n!}{k!}\stirone km
+ \UnsignedStirlingFirstKind{n+1}{m+1}=\sum_{k=m}^n\frac{n!}{k!}\UnsignedStirlingFirstKind km
 \end{equation}
 is the second equality in \cref{eq:first-two-sums}.  All finite sums displayed in the
 source follow from these and the two convolution identities by relabelling indices.
@@ -1060,17 +1028,17 @@ source follow from these and the two convolution identities by relabelling indic
 \section{Symmetric cross-formulae}
 The archive records a striking symmetric pair.  For $0\le k\le n$,
 \begin{align}
- \stirone nk
+ \UnsignedStirlingFirstKind nk
  &=\sum_{j=n}^{2n-k}(-1)^{j-k}\binom{j-1}{k-1}\binom{2n-k}{j}
-      \stirtwo{j-k}{j-n},\label{eq:symmetric-cross1}\\
- \stirtwo nk
+      \StirlingSecondKind{j-k}{j-n},\label{eq:symmetric-cross1}\\
+ \StirlingSecondKind nk
  &=\sum_{j=n}^{2n-k}(-1)^{j-k}\binom{j-1}{k-1}\binom{2n-k}{j}
-      \stirone{j-k}{j-n}.\label{eq:symmetric-cross2}
+      \UnsignedStirlingFirstKind{j-k}{j-n}.\label{eq:symmetric-cross2}
 \end{align}
 \begin{proof}
 Set $r=n-k$ and use the symmetric-function descriptions
-$\stirone nk=e_r(0,1,\ldots,n-1)$ and
-$\stirtwo nk=h_r(1,2,\ldots,k)$.  The involution $\omega$ on the ring of symmetric
+$\UnsignedStirlingFirstKind nk=e_r(0,1,\ldots,n-1)$ and
+$\StirlingSecondKind nk=h_r(1,2,\ldots,k)$.  The involution $\omega$ on the ring of symmetric
 functions sends $e_r$ to $h_r$ and is implemented on generating functions by
 $E(t)H(-t)=1$.  Expand the finite alphabets after adjoining and removing the common
 arithmetic progression, then apply the binomial translation formula
@@ -1092,7 +1060,7 @@ nevertheless gives a completely explicit double sum.
 For $1\le k\le n$,
 \begin{equation}
 \label{eq:first-double-sum}
- \stirone nk
+ \UnsignedStirlingFirstKind nk
  =\sum_{j=n}^{2n-k}\binom{j-1}{k-1}\binom{2n-k}{j}
    \sum_{m=0}^{j-n}
    \frac{(-1)^{m+n-k}m^{j-k}}{m!\,(j-n-m)!}.
@@ -1102,7 +1070,7 @@ For $1\le k\le n$,
 Start from \eqref{eq:symmetric-cross1} and apply
 \eqref{eq:second-explicit} with upper index $j-k$ and lower index $j-n$:
 \[
- \stirtwo{j-k}{j-n}
+ \StirlingSecondKind{j-k}{j-n}
  =\sum_{m=0}^{j-n}
    \frac{(-1)^{j-n-m}m^{j-k}}{(j-n-m)!\,m!}.
 \]
@@ -1112,7 +1080,7 @@ $2(j-m-n+k)$.  Substitution proves \eqref{eq:first-double-sum}.
 \end{proof}
 
 \section{A partition formula for signed near-diagonal coefficients}
-The near-diagonal coefficient $s(n,n-p)$ is a polynomial in $n$ of degree $2p$.
+The near-diagonal coefficient $\SignedStirlingFirstKind{n}{n-p}$ is a polynomial in $n$ of degree $2p$.
 The following finite formula makes every monomial contribution explicit.
 
 \begin{theorem}[Near-diagonal partition formula]
@@ -1120,7 +1088,7 @@ The following finite formula makes every monomial contribution explicit.
 Let $n\ge1$ and $0\le p\le n-1$.  Then
 \begin{equation}
 \label{eq:signed-near-diagonal-partition}
- s(n,n-p)=\frac{1}{(n-p-1)!}
+ \SignedStirlingFirstKind{n}{n-p}=\frac{1}{(n-p-1)!}
  \sum_{\substack{k_1,\ldots,k_p\ge0\\
                   \sum_{r=1}^{p}r k_r=p}}
  (-1)^K
@@ -1128,13 +1096,13 @@ Let $n\ge1$ and $0\le p\le n-1$.  Then
  {\displaystyle\prod_{r=1}^{p}k_r!\,(r+1)!^{k_r}},
  \qquad K=\sum_{r=1}^{p}k_r.
 \end{equation}
-For $p=0$ the sum and product are empty and the formula reads $s(n,n)=1$.
+For $p=0$ the sum and product are empty and the formula reads $\SignedStirlingFirstKind{n}{n}=1$.
 \end{theorem}
 \begin{proof}
 The signed first-kind exponential generating function gives
 \begin{equation}
 \label{eq:near-diagonal-log-coefficient}
- s(n,n-p)=\frac{n!}{(n-p)!}
+ \SignedStirlingFirstKind{n}{n-p}=\frac{n!}{(n-p)!}
  [z^p]\left(\frac{\log(1+z)}{z}\right)^{n-p}.
 \end{equation}
 Put $t=\log(1+z)$ and
@@ -1152,7 +1120,7 @@ Lagrange--B\"urmann formula applied to $H(t)=\phi(t)^{n-p}$ gives
 The same conclusion is immediate for $p=0$.  Hence
 \begin{equation}
 \label{eq:near-diagonal-bernoulli-power}
- s(n,n-p)=\frac{(n-1)!}{(n-p-1)!}
+ \SignedStirlingFirstKind{n}{n-p}=\frac{(n-1)!}{(n-p-1)!}
  [t^p]\left(\frac{t}{e^t-1}\right)^n.
 \end{equation}
 Now write
@@ -1179,7 +1147,7 @@ Insert this in \eqref{eq:near-diagonal-bernoulli-power} to obtain
 \end{proof}
 
 The unsigned value is
-$\stirone n{n-p}=(-1)^p s(n,n-p)$.  For $p=1,2,3$ the theorem reduces to the
+$\UnsignedStirlingFirstKind n{n-p}=(-1)^p \SignedStirlingFirstKind{n}{n-p}$.  For $p=1,2,3$ the theorem reduces to the
 closed forms in \cref{eq:first-diag1,eq:first-diag2,eq:first-diag3}; its advantage is that it works
 at arbitrary fixed distance from the diagonal without a new case analysis.
 \chapter{Congruences and extensions to negative indices}
@@ -1188,27 +1156,27 @@ at arbitrary fixed distance from the diagonal without a new case analysis.
 \section{Congruences for first-kind numbers}
 For a prime $p$,
 \begin{equation}\label{eq:prime-first-divisibility}
- p\mid\stirone pk\qquad(1<k<p).
+ p\mid\UnsignedStirlingFirstKind pk\qquad(1<k<p).
 \end{equation}
-Indeed, in $\F_p[x]$,
+Indeed, in $\FiniteField_p[x]$,
 \[
- \rising{x}{p}=\prod_{a\in\F_p}(x+a)=x^p-x,
+ \RisingFactorial{x}{p}=\prod_{a\in\FiniteField_p}(x+a)=x^p-x,
 \]
 so every intermediate coefficient vanishes.
 
 More generally, reducing each factor modulo $2$ or $3$ gives exact coefficient rules:
 \begin{align}
- \stirone nm
- &\equiv \coeff xm x^{\lceil n/2\rceil}(x+1)^{\lfloor n/2\rfloor}
-  =\binom{\lfloor n/2\rfloor}{m-\lceil n/2\rceil}\pmod2,
+ \UnsignedStirlingFirstKind nm
+ &\equiv \CoefficientExtraction xm x^{\Ceiling{n/2}}(x+1)^{\Floor{n/2}}
+  =\binom{\Floor{n/2}}{m-\Ceiling{n/2}}\pmod2,
  \label{eq:first-mod2}\\
- \stirone nm
- &\equiv \coeff xm
- x^{\lceil n/3\rceil}(x+1)^{\lceil(n-1)/3\rceil}(x+2)^{\lfloor n/3\rfloor}
+ \UnsignedStirlingFirstKind nm
+ &\equiv \CoefficientExtraction xm
+ x^{\Ceiling{n/3}}(x+1)^{\Ceiling{(n-1)/3}}(x+2)^{\Floor{n/3}}
  \pmod3.\label{eq:first-mod3}
 \end{align}
 \begin{proof}
-Use $\rising{x}{n}=\prod_{j=0}^{n-1}(x+j)$ and count how often each residue class
+Use $\RisingFactorial{x}{n}=\prod_{j=0}^{n-1}(x+j)$ and count how often each residue class
 occurs among $0,1,\ldots,n-1$.  The displayed binomial form modulo $2$ is immediate;
 expanding the last two factors gives the finite binomial sum written in the source
 for modulus $3$.
@@ -1218,24 +1186,24 @@ For fixed $m$, expansion of \cref{eq:first-mod2} yields the source's first four
 parity formulae.  They are most cleanly read as integer-valued expressions multiplied
 by Iverson brackets; for example
 \[
- \stirone n1\equiv 2^{n-2}[n\ge2]+[n=1]\pmod2,
+ \UnsignedStirlingFirstKind n1\equiv 2^{n-2}[n\ge2]+[n=1]\pmod2,
 \]
 and similarly the quoted expressions for $m=2,3,4$.  Formula
 \cref{eq:first-mod2} is both shorter and proves all of them simultaneously.
 
 \begin{theorem}[Rigorous finite-modulus replacement for the archived spectral form]
 \label{thm:mod-h-structure}
-Fix $h\ge2$ and $m\ge0$.  The sequence $n\mapsto\stirone nm\bmod h$ is generated by
+Fix $h\ge2$ and $m\ge0$.  The sequence $n\mapsto\UnsignedStirlingFirstKind nm\bmod h$ is generated by
 the coefficient of $x^m$ in
 \begin{equation}\label{eq:mod-h-block-product}
  \left(\prod_{r=0}^{h-1}(x+r)\right)^q\prod_{r=0}^{s-1}(x+r),
  \qquad n=qh+s,
 \end{equation}
-and therefore satisfies a linear recurrence over $\Z/h\Z$ and is eventually an
+and therefore satisfies a linear recurrence over $\IntegerNumbers/h\IntegerNumbers$ and is eventually an
 exponential-polynomial sequence over any finite splitting extension.
 \end{theorem}
 \begin{proof}
-Group the factors of $\rising{x}{n}$ into blocks of $h$ consecutive integers and
+Group the factors of $\RisingFactorial{x}{n}$ into blocks of $h$ consecutive integers and
 reduce each block modulo $h$.  For fixed $m$, coefficient extraction takes place in
 a finite free module of polynomials of degree at most $m$, on which multiplication by
 the fixed block polynomial is a linear endomorphism.  Cayley--Hamilton supplies a
@@ -1249,35 +1217,35 @@ $p_{h,i}^{[m]}$.
 \begin{theorem}[Parity criterion]\label{thm:second-parity}
 Let
 \[
- z=n-\left\lceil\frac{k+1}{2}\right\rceil,
- \qquad w=\left\lfloor\frac{k-1}{2}\right\rfloor.
+ z=n-\Ceiling{\frac{k+1}{2}},
+ \qquad w=\Floor{\frac{k-1}{2}}.
 \]
 Then
 \begin{equation}\label{eq:second-parity-binomial}
- \stirtwo nk\equiv\binom zw\pmod2.
+ \StirlingSecondKind nk\equiv\binom zw\pmod2.
 \end{equation}
 Equivalently,
 \begin{equation}\label{eq:second-parity-bit}
- \stirtwo nk\equiv1\pmod2
+ \StirlingSecondKind nk\equiv1\pmod2
  \quad\Longleftrightarrow\quad
- (n-k)\bitand\left\lfloor\frac{k-1}{2}\right\rfloor=0.
+ (n-k)\BitwiseAnd\Floor{\frac{k-1}{2}}=0.
 \end{equation}
-In particular, $\stirtwo{2n}{n}$ is odd precisely when $n$ is a power of two.
+In particular, $\StirlingSecondKind{2n}{n}$ is odd precisely when $n$ is a power of two.
 \end{theorem}
 \begin{proof}
 Reduce the ordinary generating function \cref{eq:second-ogf} modulo $2$.  The even
 factors become $1$, while every odd $j$ contributes $(1-x)^{-1}$.  There are
-$\lceil k/2\rceil$ odd integers from $1$ to $k$, so
+$\Ceiling{k/2}$ odd integers from $1$ to $k$, so
 \[
- \sum_{r\ge0}\stirtwo{k+r}{k}x^r
- \equiv(1-x)^{-\lceil k/2\rceil}.
+ \sum_{r\ge0}\StirlingSecondKind{k+r}{k}x^r
+ \equiv(1-x)^{-\Ceiling{k/2}}.
 \]
 The coefficient of $x^{n-k}$ is
-$\binom{n-k+\lceil k/2\rceil-1}{\lceil k/2\rceil-1}=\binom zw$.
+$\binom{n-k+\Ceiling{k/2}-1}{\Ceiling{k/2}-1}=\binom zw$.
 Lucas's theorem modulo $2$ says $\binom zw$ is odd exactly when every $1$-bit of $w$
-is also a $1$-bit of $z$, equivalently when $w\bitand(z-w)=0$; here $z-w=n-k$.
+is also a $1$-bit of $z$, equivalently when $w\BitwiseAnd(z-w)=0$; here $z-w=n-k$.
 Putting $k=n$ in \cref{eq:second-parity-bit} gives
-$n\bitand\lfloor(n-1)/2\rfloor=0$, which is equivalent to $n$ having one $1$-bit.
+$n\BitwiseAnd\Floor{(n-1)/2}=0$, which is equivalent to $n$ having one $1$-bit.
 \end{proof}
 
 \section{Roman extension and negative Bell values}
@@ -1286,19 +1254,19 @@ nonnegative triangle.  The one used in the archive is the \emph{Roman} extension
 continue the two triangular recurrences wherever they determine a value and impose
 the duality
 \begin{equation}\label{eq:roman-duality}
- \stirone nk=\stirtwo{-k}{-n},\qquad
- \stirtwo nk=\stirone{-k}{-n}.
+ \UnsignedStirlingFirstKind nk=\StirlingSecondKind{-k}{-n},\qquad
+ \StirlingSecondKind nk=\UnsignedStirlingFirstKind{-k}{-n}.
 \end{equation}
 These identities are definitions of a coherent reciprocal array, not assertions
 about the original finite counting problems.
 
 For $n\ge1$ and $k\ge0$, the mixed quadrant admits the finite expression
 \begin{equation}\label{eq:negative-first-explicit}
- \stirone{-n}{k}=\frac1{n!}\sum_{j=1}^n(-1)^{n-j}\binom nj\frac1{j^k}.
+ \UnsignedStirlingFirstKind{-n}{k}=\frac1{n!}\sum_{j=1}^n(-1)^{n-j}\binom nj\frac1{j^k}.
 \end{equation}
 For example,
 \begin{equation}\label{eq:negative-first-five}
- \stirone{-5}{k}=\frac1{120}
+ \UnsignedStirlingFirstKind{-5}{k}=\frac1{120}
  \left(5-\frac{10}{2^k}+\frac{10}{3^k}-\frac5{4^k}+\frac1{5^k}\right).
 \end{equation}
 \begin{proof}
@@ -1314,11 +1282,11 @@ first-kind recurrence and the required boundary value.  Uniqueness proves
 
 Define negative Bell values by
 \begin{equation}\label{eq:negative-bell-def}
- \Bell{-k}:=\sum_{n\ge1}\stirone{-n}{k}\qquad(k\ge1).
+ \BellNumber{-k}:=\sum_{n\ge1}\UnsignedStirlingFirstKind{-n}{k}\qquad(k\ge1).
 \end{equation}
 Then absolute convergence and \cref{eq:negative-first-explicit} give
 \begin{equation}\label{eq:negative-dobinski}
- \Bell{-k}=e^{-1}\sum_{j\ge1}\frac1{j^k j!}.
+ \BellNumber{-k}=e^{-1}\sum_{j\ge1}\frac1{j^k j!}.
 \end{equation}
 \begin{proof}
 Interchange the absolutely convergent sums and write $n=j+r$:
@@ -1328,7 +1296,7 @@ Interchange the absolutely convergent sums and write $n=j+r$:
 \]
 For $k=1$ this also yields
 \[
- \Bell{-1}=e^{-1}\int_0^1\frac{e^t-1}{t}\dd t
+ \BellNumber{-1}=e^{-1}\int_0^1\frac{e^t-1}{t}\Differential t
  =0.4848291\ldots,
 \]
 since $(e^t-1)/t=\sum_{j\ge1}t^{j-1}/j!$.
@@ -1341,16 +1309,16 @@ since $(e^t-1)/t=\sum_{j\ge1}t^{j-1}/j!$.
 \begin{theorem}[Fixed column and fixed diagonal]\label{thm:stirling-simple-asymp}
 For fixed $k\ge1$,
 \begin{equation}\label{eq:second-fixed-column-asymp}
- \stirtwo nk\sim\frac{k^n}{k!}\qquad(n\to\infty).
+ \StirlingSecondKind nk\sim\frac{k^n}{k!}\qquad(n\to\infty).
 \end{equation}
 For fixed $r\ge0$,
 \begin{equation}\label{eq:both-near-diagonal-asymp}
- \stirone{n+r}{n}\sim\stirtwo{n+r}{n}
+ \UnsignedStirlingFirstKind{n+r}{n}\sim\StirlingSecondKind{n+r}{n}
  \sim\frac{n^{2r}}{2^rr!}\qquad(n\to\infty).
 \end{equation}
 Finally, uniformly for $k=o(\log n)$,
 \begin{equation}\label{eq:first-small-column-asymp}
- \stirone{n+1}{k+1}
+ \UnsignedStirlingFirstKind{n+1}{k+1}
  \sim\frac{n!}{k!}(\log n+\gamma)^k.
 \end{equation}
 \end{theorem}
@@ -1364,7 +1332,7 @@ $\frac1{r!}(1+2+\cdots+n)^r\sim n^{2r}/(2^rr!)$; terms with a collision lose at 
 one power of $n$.  For \cref{eq:first-small-column-asymp}, apply Cauchy's coefficient
 formula to
 \[
- \frac{\stirone{n+1}{k+1}}{n!}=\coeff tk
+ \frac{\UnsignedStirlingFirstKind{n+1}{k+1}}{n!}=\CoefficientExtraction tk
  \exp\left(H_nt-\frac{H_n^{(2)}}2t^2+\frac{H_n^{(3)}}3t^3-\cdots\right).
 \]
 The saddle for the first exponential is $t=k/H_n=o(1)$.  Uniformly on the saddle
@@ -1376,7 +1344,7 @@ $H_n=\log n+\gamma+o(1)$.  Hence the coefficient is asymptotic to $H_n^k/k!$.
 For $n\ge2$ and $1\le k\le n-1$, the archive states
 \begin{equation}\label{eq:second-bounds}
  \frac{k^2+k+2}{2}\,k^{n-k-1}-1
- \le\stirtwo nk
+ \le\StirlingSecondKind nk
  \le\frac12\binom nk k^{n-k}.
 \end{equation}
 \begin{proof}
@@ -1402,29 +1370,30 @@ proof of the displayed estimate.
 For fixed $n$, package a row of the second-kind triangle into the Touchard
 polynomial
 \[
- T_n(x)=\sum_{k=0}^{n}\stirtwo nk x^k.
+ \TouchardPolynomial n(x)=\sum_{k=0}^{n}\StirlingSecondKind nk x^k.
 \]
 The recurrence \eqref{eq:second-recurrence} is equivalent to
 \begin{equation}
 \label{eq:touchard-differential-recurrence-shape}
- T_{n+1}(x)=x\bigl(T_n(x)+T_n'(x)\bigr),
- \qquad T_0(x)=1.
+ \TouchardPolynomial{n+1}(x)=x\bigl(\TouchardPolynomial n(x)
+ +\bigl(\TouchardPolynomial n\bigr)'(x)\bigr),
+ \qquad \TouchardPolynomial0(x)=1.
 \end{equation}
 
 \begin{theorem}[Real-rootedness and strict log-concavity]
 \label{thm:stirling-row-log-concavity}
-For every $n\ge1$, all zeros of $T_n$ are real, simple, and nonpositive.  Hence
+For every $n\ge1$, all zeros of $\TouchardPolynomial n$ are real, simple, and nonpositive.  Hence
 \begin{equation}
 \label{eq:stirling-row-strict-log-concavity}
- \stirtwo nk^2>\stirtwo n{k-1}\stirtwo n{k+1}
+ \StirlingSecondKind nk^2>\StirlingSecondKind n{k-1}\StirlingSecondKind n{k+1}
  \qquad(1<k<n),
 \end{equation}
 and the row
-$\stirtwo n1,\ldots,\stirtwo nn$ is unimodal.  Its maximum is attained at either
+$\StirlingSecondKind n1,\ldots,\StirlingSecondKind nn$ is unimodal.  Its maximum is attained at either
 one index or two consecutive indices.
 \end{theorem}
 \begin{proof}
-The assertion is clear for $T_1(x)=x$.  Suppose $f=T_n$ has simple zeros
+The assertion is clear for $\TouchardPolynomial1(x)=x$.  Suppose $f=\TouchardPolynomial n$ has simple zeros
 \[
  r_1<r_2<\cdots<r_n=0.
 \]
@@ -1444,15 +1413,15 @@ Induction proves real-rootedness and interlacing.
 Newton's inequalities for a degree-$n$ polynomial with real nonpositive zeros say
 that its normalized coefficients are log-concave:
 \[
- \left(\frac{\stirtwo nk}{\binom nk}\right)^2
+ \left(\frac{\StirlingSecondKind nk}{\binom nk}\right)^2
  \ge
- \frac{\stirtwo n{k-1}}{\binom n{k-1}}
- \frac{\stirtwo n{k+1}}{\binom n{k+1}}.
+ \frac{\StirlingSecondKind n{k-1}}{\binom n{k-1}}
+ \frac{\StirlingSecondKind n{k+1}}{\binom n{k+1}}.
 \]
 The binomial-factor quotient is strictly larger than $1$, and all interior
 coefficients are positive, giving \eqref{eq:stirling-row-strict-log-concavity}.
 Consequently the successive ratios
-$\stirtwo n{k+1}/\stirtwo nk$ strictly decrease.  They can cross $1$ only once;
+$\StirlingSecondKind n{k+1}/\StirlingSecondKind nk$ strictly decrease.  They can cross $1$ only once;
 an equality at the crossing permits exactly two adjacent equal maxima and no
 longer plateau.
 \end{proof}
@@ -1466,7 +1435,7 @@ As $n\to\infty$,
 \begin{align}
  k_n&\sim\frac{n}{\log n},
  \label{eq:stirling-mode-asymptotic}\\
- \log\stirtwo n{k_n}
+ \log\StirlingSecondKind n{k_n}
  &=n\log n-n\log\log n-n
    +O\!\left(\frac{n\log\log n}{\log n}\right).
  \label{eq:stirling-maximum-log}
@@ -1477,26 +1446,26 @@ Two elementary estimates suffice.  Label the $k$ blocks of a partition to obtain
 at most $k^n$ surjections, whence
 \begin{equation}
 \label{eq:stirling-mode-upper}
- \stirtwo nk\le\frac{k^n}{k!}.
+ \StirlingSecondKind nk\le\frac{k^n}{k!}.
 \end{equation}
 Conversely, require the first $k$ labels to lie in distinct blocks and assign each
 of the remaining labels to one of them.  This injection gives
 \begin{equation}
 \label{eq:stirling-mode-lower}
- \stirtwo nk\ge k^{n-k}.
+ \StirlingSecondKind nk\ge k^{n-k}.
 \end{equation}
-Take $k_0=\lfloor n/\log n\rfloor$.  The lower estimate and
+Take $k_0=\Floor{n/\log n}$.  The lower estimate and
 $\log k_0=\log n-\log\log n+O(\log n/n)$ give
 \begin{equation}
 \label{eq:stirling-mode-lower-log}
- \log\stirtwo n{k_0}
+ \log\StirlingSecondKind n{k_0}
  \ge n\log n-n\log\log n-n
      +O\!\left(\frac{n\log\log n}{\log n}\right).
 \end{equation}
 
 For the upper estimate, Stirling's formula, uniformly for $1\le k\le n$, gives
 \[
- \log\stirtwo nk
+ \log\StirlingSecondKind nk
  \le n\log k-k\log k+k+O(\log n).
 \]
 The continuous majorant on the right is maximized when
@@ -1512,7 +1481,7 @@ It remains to localize the maximizing index.  Put
 $k=c n/\log n$, with $c$ bounded away from $0$ and $\infty$.  Comparing the last
 upper bound with \eqref{eq:stirling-mode-lower-log} gives
 \[
- \log\stirtwo nk-\log\stirtwo n{k_0}
+ \log\StirlingSecondKind nk-\log\StirlingSecondKind n{k_0}
  \le n(\log c-c+1)+o(n).
 \]
 The function $\log c-c+1$ is strictly negative for $c\ne1$.  Values outside every
@@ -1529,7 +1498,7 @@ Let $v=n/k>1$ and let $G\in(0,1)$ be the unique solution
 Equivalently, if $r=v-G$, then $r/(1-e^{-r})=v$.
 Saddle-point extraction from $(e^z-1)^k/k!$ gives
 \begin{equation}\label{eq:second-uniform-asymp}
- \stirtwo nk
+ \StirlingSecondKind nk
  \sim
  \sqrt{\frac{v-1}{v(1-G)}}
  \left(\frac{v-1}{v-G}\right)^{n-k}
@@ -1542,8 +1511,8 @@ particular explicit error theorem.
 \begin{proof}[Derivation]
 By \cref{eq:second-egf},
 \[
- \stirtwo nk=\frac{n!}{2\pi i k!}\int
- \exp\bigl(k\log(e^z-1)-n\log z\bigr)\frac{\dd z}{z}.
+ \StirlingSecondKind nk=\frac{n!}{2\pi i k!}\int
+ \exp\bigl(k\log(e^z-1)-n\log z\bigr)\frac{\Differential z}{z}.
 \]
 The positive saddle $r$ solves
 $ke^r/(e^r-1)=n/r$, or $r/(1-e^{-r})=v$.  Put $G=v-r$ to obtain
@@ -1560,57 +1529,57 @@ function.
 \begin{theorem}[Stirling--zeta identities]\label{thm:stirling-zeta}
 For $i\ge1$,
 \begin{align}
- \sum_{n=i}^\infty\frac{\stirone ni}{n\,n!}&=\zeta(i+1),
+ \sum_{n=i}^\infty\frac{\UnsignedStirlingFirstKind ni}{n\,n!}&=\RiemannZeta(i+1),
  \label{eq:first-zeta}\\
- \sum_{n=i}^\infty\frac{\stirone ni}{n\,\rising v n}&=\zeta(i+1,v),
+ \sum_{n=i}^\infty\frac{\UnsignedStirlingFirstKind ni}{n\,\RisingFactorial v n}&=\HurwitzZeta{i+1}{v},
  \qquad \Re v>0.\label{eq:first-hurwitz}
 \end{align}
 \end{theorem}
 \begin{proof}
 Integrate \cref{eq:unsigned-first-egf} after division by $x$:
 \[
- \sum_{n\ge i}\frac{\stirone ni}{n\,n!}
- =\frac1{i!}\int_0^1\frac{[-\log(1-x)]^i}{x}\dd x.
+ \sum_{n\ge i}\frac{\UnsignedStirlingFirstKind ni}{n\,n!}
+ =\frac1{i!}\int_0^1\frac{[-\log(1-x)]^i}{x}\Differential x.
 \]
 With $u=-\log(1-x)$ this becomes
-$\frac1{i!}\int_0^\infty u^i/(e^u-1)\dd u=\zeta(i+1)$.
+$\frac1{i!}\int_0^\infty u^i/(e^u-1)\Differential u=\RiemannZeta(i+1)$.
 For the Hurwitz form use
-$1/\rising v n=\Gamma(v)/\Gamma(v+n)$ and the beta integral
+$1/\RisingFactorial v n=\Gamma(v)/\Gamma(v+n)$ and the beta integral
 \[
- \frac1{\rising v n}=\frac1{(n-1)!}\int_0^1t^{v-1}(1-t)^{n-1}\dd t,
+ \frac1{\RisingFactorial v n}=\frac1{(n-1)!}\int_0^1t^{v-1}(1-t)^{n-1}\Differential t,
 \]
 then sum \cref{eq:unsigned-first-egf} under the integral and use the standard
-Mellin integral for $\zeta(i+1,v)$.
+Mellin integral for $\HurwitzZeta{i+1}{v}$.
 \end{proof}
 
 A repeated partial-fraction expansion of $x^{-k}$ around $1-x$ gives, for
 $k\ge3$ and $\Re z>k-1$,
 \begin{multline}\label{eq:log-power-integral}
- \int_0^1\frac{\log^z(1-x)}{x^k}\dd x
+ \int_0^1\frac{\log^z(1-x)}{x^k}\Differential x
  =\frac{(-1)^z\Gamma(z+1)}{(k-1)!}
- \sum_{r=1}^{k-1}s(k-1,r)\\
- {}\times\sum_{m=0}^r\binom rm(k-2)^{r-m}\zeta(z+1-m),
+ \sum_{r=1}^{k-1}\SignedStirlingFirstKind{k-1}{r}\\
+ {}\times\sum_{m=0}^r\binom rm(k-2)^{r-m}\RiemannZeta(z+1-m),
 \end{multline}
 with the principal interpretation of $(-1)^z$ when $z$ is not integral.
 \begin{proof}
 Substitute $u=-\log(1-x)$, expand
 $(1-e^{-u})^{-k}$ after $k-1$ integrations by parts, and express the resulting
 polynomial in the Euler operator $uD$ in the ordinary-power basis by
-$s(k-1,r)$.  Each term is a Mellin integral
-$\int_0^\infty u^{z-m}/(e^u-1)\dd u=\Gamma(z+1-m)\zeta(z+1-m)$; simplifying gamma
+$\SignedStirlingFirstKind{k-1}{r}$.  Each term is a Mellin integral
+$\int_0^\infty u^{z-m}/(e^u-1)\Differential u=\Gamma(z+1-m)\RiemannZeta(z+1-m)$; simplifying gamma
 ratios yields \cref{eq:log-power-integral}.
 \end{proof}
 
 The more elaborate Hurwitz expansion in the archive,
 \begin{multline}\label{eq:hurwitz-finite-difference-expansion}
- \zeta(s,v)=\frac{k!}{\falling{s-k}{k}}
- \sum_{n\ge0}\frac{\stirone{n+k}{n}}{(n+k)!}\\
+ \HurwitzZeta{s}{v}=\frac{k!}{\FallingFactorial{s-k}{k}}
+ \sum_{n\ge0}\frac{\UnsignedStirlingFirstKind{n+k}{n}}{(n+k)!}\\
  {}\times\sum_{\ell=0}^{n+k-1}(-1)^\ell\binom{n+k-1}{\ell}
  (\ell+v)^{k-s},
 \end{multline}
 for $k\ge1$ (initially in the common domain of absolute convergence, then by
 analytic continuation), follows by applying \cref{eq:der-from-diff} to the
-$k$-fold antiderivative of $(x+v)^{-s}$ and summing over $x\in\N$.  The inner sum is
+$k$-fold antiderivative of $(x+v)^{-s}$ and summing over $x\in\NaturalNumbers$.  The inner sum is
 a finite difference, while the outer coefficient is the first-kind conversion
 coefficient.  This derivation also supplies the convergence conditions suppressed in
 the compact archived display.
@@ -1625,7 +1594,7 @@ mechanism.  All three arise from the same substitution
  \qquad
  x=\frac{-\log(1-u)}{2\pi},
  \qquad
- \frac{\dd x}{e^{2\pi x}-1}=\frac{\dd u}{2\pi u}.
+ \frac{\Differential x}{e^{2\pi x}-1}=\frac{\Differential u}{2\pi u}.
 \end{equation}
 We first record the coefficient estimate that justifies integration at the endpoint
 $u=1$.
@@ -1668,7 +1637,7 @@ Binet's second formula, valid for $z>0$, is
 \label{eq:binet-second}
  \log\Gamma(z)
  =\left(z-\frac12\right)\log z-z+\frac12\log(2\pi)
- +2\int_0^\infty\frac{\arctan(x/z)}{e^{2\pi x}-1}\,\dd x.
+ +2\int_0^\infty\frac{\arctan(x/z)}{e^{2\pi x}-1}\,\Differential x.
 \end{equation}
 It follows, for example, by applying the Abel--Plana summation formula to
 $w\mapsto\log(z+w)$, subtracting the elementary integral and endpoint terms, and
@@ -1685,9 +1654,9 @@ For real $z>1/6$,
  \log\Gamma(z)
  =\left(z-\frac12\right)\log z-z+\frac12\log(2\pi)\\
  {}+\frac1\pi\sum_{n=1}^{\infty}\frac1{n\,n!}
- \sum_{\ell=0}^{\lfloor n/2\rfloor}
+ \sum_{\ell=0}^{\Floor{n/2}}
  \frac{(-1)^\ell(2\ell)!}{(2\pi z)^{2\ell+1}}
- \stirone n{2\ell+1}.
+ \UnsignedStirlingFirstKind n{2\ell+1}.
 \end{multline}
 The series is locally uniformly convergent in $z>1/6$, and termwise
 differentiation gives
@@ -1696,9 +1665,9 @@ differentiation gives
  \psi(z)=\frac{\Gamma'(z)}{\Gamma(z)}
  =\log z-\frac1{2z}\\
  {}-\frac1{\pi z}\sum_{n=1}^{\infty}\frac1{n\,n!}
- \sum_{\ell=0}^{\lfloor n/2\rfloor}
+ \sum_{\ell=0}^{\Floor{n/2}}
  \frac{(-1)^\ell(2\ell+1)!}{(2\pi z)^{2\ell+1}}
- \stirone n{2\ell+1}.
+ \UnsignedStirlingFirstKind n{2\ell+1}.
 \end{multline}
 \end{theorem}
 \begin{proof}
@@ -1708,13 +1677,13 @@ Put $L(u)=-\log(1-u)$.  The formal Taylor series of the composite function is
  &=\sum_{\ell\ge0}\frac{(-1)^\ell}{2\ell+1}
    \frac{L(u)^{2\ell+1}}{(2\pi z)^{2\ell+1}}\notag\\
  &=\sum_{n\ge1}\frac{u^n}{n!}
-   \sum_{\ell=0}^{\lfloor n/2\rfloor}
+   \sum_{\ell=0}^{\Floor{n/2}}
    \frac{(-1)^\ell(2\ell)!}{(2\pi z)^{2\ell+1}}
-   \stirone n{2\ell+1},
+   \UnsignedStirlingFirstKind n{2\ell+1},
  \label{eq:arctan-log-stirling-expansion}
 \end{align}
 where the second line uses
-$L(u)^r/r!=\sum_{n\ge r}\stirone nr u^n/n!$.
+$L(u)^r/r!=\sum_{n\ge r}\UnsignedStirlingFirstKind nr u^n/n!$.
 For $z>1/6$, the analytic continuation of this composite from $u=0$ has no
 singularity in $|u|<1$.  Indeed, the possible arctangent branch points would
 require $\log(1-u)=\pm2\pi iz$; when $1/6<z<1/4$ their solutions have modulus
@@ -1732,8 +1701,8 @@ compact subinterval of $(1/6,\infty)$.  We may divide the Taylor coefficients by
 $n$ and sum at $u=1$.  Substituting \eqref{eq:logarithmic-binet-substitution} in
 \eqref{eq:binet-second} now gives
 \[
- 2\int_0^\infty\frac{\arctan(x/z)}{e^{2\pi x}-1}\dd x
- =\frac1\pi\int_0^1\arctan\frac{L(u)}{2\pi z}\frac{\dd u}{u},
+ 2\int_0^\infty\frac{\arctan(x/z)}{e^{2\pi x}-1}\Differential x
+ =\frac1\pi\int_0^1\arctan\frac{L(u)}{2\pi z}\frac{\Differential u}{u},
 \]
 and termwise integration of
 \eqref{eq:arctan-log-stirling-expansion} proves
@@ -1752,7 +1721,7 @@ positive arguments.
 Define the Stieltjes constants by the Laurent expansion
 \begin{equation}
 \label{eq:stieltjes-definition}
- \zeta(s)=\frac1{s-1}+\sum_{m=0}^{\infty}
+ \RiemannZeta(s)=\frac1{s-1}+\sum_{m=0}^{\infty}
  \frac{(-1)^m\gamma_m}{m!}(s-1)^m.
 \end{equation}
 
@@ -1765,9 +1734,9 @@ For every integer $m\ge0$,
  \gamma_m={}&\frac12\delta_{m0}
  +\frac{(-1)^m m!}{\pi}
  \sum_{n=1}^{\infty}\frac1{n\,n!}\\
- &\times\sum_{k=0}^{\lfloor n/2\rfloor}
+ &\times\sum_{k=0}^{\Floor{n/2}}
  \frac{(-1)^k}{(2\pi)^{2k+1}}
- \stirone{2k+2}{m+1}\stirone n{2k+1}.
+ \UnsignedStirlingFirstKind{2k+2}{m+1}\UnsignedStirlingFirstKind n{2k+1}.
 \end{aligned}
 \end{equation}
 The outer series converges absolutely.
@@ -1776,8 +1745,8 @@ The outer series converges absolutely.
 The Abel--Plana formula applied to $(1+w)^{-s}$ gives Hermite's representation
 \begin{equation}
 \label{eq:hermite-zeta}
- \zeta(s)=\frac1{s-1}+\frac12+\frac1i\int_0^\infty
- \frac{(1-ix)^{-s}-(1+ix)^{-s}}{e^{2\pi x}-1}\,\dd x,
+ \RiemannZeta(s)=\frac1{s-1}+\frac12+\frac1i\int_0^\infty
+ \frac{(1-ix)^{-s}-(1+ix)^{-s}}{e^{2\pi x}-1}\,\Differential x,
  \qquad \Re s>0,
 \end{equation}
 with the pole omitted at $s=1$.  Expand the two powers at $s=1$ and compare with
@@ -1789,18 +1758,18 @@ convergent integral yields
  \left\{
  \frac{\log^m(1-ix)}{1-ix}
  -\frac{\log^m(1+ix)}{1+ix}
- \right\}\dd x.
+ \right\}\Differential x.
 \end{equation}
 
 Differentiate the signed first-kind generating function to obtain, for $|w|<1$,
 \begin{equation}
 \label{eq:log-power-over-linear}
  \frac{\log^m(1+w)}{1+w}
- =m!\sum_{r\ge m}s(r+1,m+1)\frac{w^r}{r!}.
+ =m!\sum_{r\ge m}\SignedStirlingFirstKind{r+1}{m+1}\frac{w^r}{r!}.
 \end{equation}
 Only odd powers survive after replacing $w$ by $-ix$ and $ix$ and taking the
 difference.  Since
-$s(2k+2,m+1)=(-1)^{m+1}\stirone{2k+2}{m+1}$, one finds
+$\SignedStirlingFirstKind{2k+2}{m+1}=(-1)^{m+1}\UnsignedStirlingFirstKind{2k+2}{m+1}$, one finds
 \begin{multline}
 \label{eq:stieltjes-odd-expansion}
  \frac1i\left\{
@@ -1808,13 +1777,13 @@ $s(2k+2,m+1)=(-1)^{m+1}\stirone{2k+2}{m+1}$, one finds
  -\frac{\log^m(1+ix)}{1+ix}
  \right\}\\
  =2(-1)^m m!\sum_{k\ge0}
- \frac{(-1)^k\stirone{2k+2}{m+1}}{(2k+1)!}\,x^{2k+1}.
+ \frac{(-1)^k\UnsignedStirlingFirstKind{2k+2}{m+1}}{(2k+1)!}\,x^{2k+1}.
 \end{multline}
 Now make the substitution \eqref{eq:logarithmic-binet-substitution}.  For every
 $k$,
 \[
  \frac{L(u)^{2k+1}}{(2k+1)!}
- =\sum_{n\ge2k+1}\stirone n{2k+1}\frac{u^n}{n!}.
+ =\sum_{n\ge2k+1}\UnsignedStirlingFirstKind n{2k+1}\frac{u^n}{n!}.
 \]
 The composite integrand in \eqref{eq:jensen-franel-stieltjes} is analytic in the
 unit disk and, as $u\to1$, is
@@ -1824,53 +1793,53 @@ unit disk and, as $u\to1$, is
 Hence \cref{lem:logarithmic-transfer} permits absolute termwise integration after
 division by $u$.  The Jacobian contributes $1/(2\pi)$, the factor $2$ in
 \eqref{eq:stieltjes-odd-expansion} cancels it to $1/\pi$, and
-$\int_0^1u^{n-1}\dd u=1/n$.  Collecting the finite contributions to each
+$\int_0^1u^{n-1}\Differential u=1/n$.  Collecting the finite contributions to each
 coefficient $u^n$ gives exactly \eqref{eq:stieltjes-stirling-series}.
 \end{proof}
 
 For $m=0$, the theorem is a convergent Stirling-number expansion of the
 Euler--Mascheroni constant.  The factors
-$\stirone{2k+2}{m+1}$ show that, at every fixed outer index $n$, only finitely many
+$\UnsignedStirlingFirstKind{2k+2}{m+1}$ show that, at every fixed outer index $n$, only finitely many
 orders of logarithmic differentiation contribute; this is the same triangularity
 that underlies Fa\`a di Bruno's formula and series reversion.
 \section{Gregory coefficients and derivatives of logarithmic powers}
-The Gregory coefficients $G_n$ are defined by
+The Gregory coefficients $\GregoryCoefficient n$ are defined by
 \[
- \frac{z}{\log(1+z)}=1+\sum_{n\ge1}G_nz^n.
+ \frac{z}{\log(1+z)}=1+\sum_{n\ge1}\GregoryCoefficient n z^n.
 \]
 Multiplying by the first-kind expansion of powers of $\log(1+z)$ gives
 \begin{equation}\label{eq:gregory-stirling}
- n!G_n=\sum_{\ell=0}^n\frac{s(n,\ell)}{\ell+1}.
+ n!\GregoryCoefficient n=\sum_{\ell=0}^n\frac{\SignedStirlingFirstKind{n}{\ell}}{\ell+1}.
 \end{equation}
 Indeed,
-$z/\log(1+z)=\int_0^1(1+z)^t\dd t$ and comparison with
-$(1+z)^t=\sum_n\sum_\ell s(n,\ell)t^\ell z^n/n!$ proves the claim.
+$z/\log(1+z)=\int_0^1(1+z)^t\Differential t$ and comparison with
+$(1+z)^t=\sum_n\sum_\ell \SignedStirlingFirstKind{n}{\ell}t^\ell z^n/n!$ proves the claim.
 
 For arbitrary $\mu$ and $n\ge1$,
 \begin{equation}\label{eq:log-power-derivative}
- \frac{\dd^n}{\dd x^n}(\log x)^\mu
- =x^{-n}\sum_{k=1}^n\falling\mu k\,s(n,n-k+1)(\log x)^{\mu-k}.
+ \frac{\Differential^n}{\Differential x^n}(\log x)^\mu
+ =x^{-n}\sum_{k=1}^n\FallingFactorial\mu k\,\SignedStirlingFirstKind{n}{n-k+1}(\log x)^{\mu-k}.
 \end{equation}
 \begin{proof}
 Write $D_x=x^{-1}D_t$ with $t=\log x$.  Then
-$D_x^n=x^{-n}\falling{D_t}{n}$, as follows inductively from
+$D_x^n=x^{-n}\FallingFactorial{D_t}{n}$, as follows inductively from
 $x^{-1}D_t\,x^{-m}=x^{-m-1}(D_t-m)$.  Expand
-$\falling{D_t}{n}$ by signed first-kind numbers and apply powers of $D_t$ to
+$\FallingFactorial{D_t}{n}$ by signed first-kind numbers and apply powers of $D_t$ to
 $t^\mu$; reindexing gives the displayed form.
 \end{proof}
 
 \section{Generalized factorial coefficients}
-Given $f:\N\to\C$ and $t\ne0$, define
+Given $f:\NaturalNumbers\to\ComplexNumbers$ and $t\ne0$, define
 \begin{equation}\label{eq:generalized-factorial-product}
  (x)_{n,f,t}:=\prod_{j=1}^{n-1}\left(x+\frac{f(j)}{t^j}\right),
  \qquad
- \stirone nk_{f,t}:=\coeff{x}{k-1}(x)_{n,f,t}.
+ \UnsignedStirlingFirstKind nk_{f,t}:=\CoefficientExtraction{x}{k-1}(x)_{n,f,t}.
 \end{equation}
 Multiplication by the last factor immediately yields
 \begin{equation}\label{eq:generalized-first-recurrence}
- \stirone nk_{f,t}
- =f(n-1)t^{1-n}\stirone{n-1}{k}_{f,t}
-  +\stirone{n-1}{k-1}_{f,t},
+ \UnsignedStirlingFirstKind nk_{f,t}
+ =f(n-1)t^{1-n}\UnsignedStirlingFirstKind{n-1}{k}_{f,t}
+  +\UnsignedStirlingFirstKind{n-1}{k-1}_{f,t},
 \end{equation}
 with the usual delta boundary convention.  The generalized harmonic sums
 $F_n^{(r)}(t)=\sum_{j\le n}t^j/f(j)^r$ enter the coefficients through the same
@@ -1896,7 +1865,7 @@ look.
 \section{\texorpdfstring{$r$}{r}-Stirling numbers of the second kind}
 For fixed $r\ge0$, let
 \[
- \stirtwo nk_{\!r}
+ \StirlingSecondKind nk_{\!r}
 \]
 denote the number of partitions of $[n]$ into $k$ nonempty blocks in which the
 labels $1,\ldots,r$ lie in distinct blocks.  The definition is meaningful for
@@ -1907,10 +1876,10 @@ $n\ge r$ and forces $k\ge r$.
 For $n>r$,
 \begin{equation}
 \label{eq:r-stirling-recurrence}
- \stirtwo nk_{\!r}
- =k\stirtwo{n-1}{k}_{\!r}+\stirtwo{n-1}{k-1}_{\!r},
+ \StirlingSecondKind nk_{\!r}
+ =k\StirlingSecondKind{n-1}{k}_{\!r}+\StirlingSecondKind{n-1}{k-1}_{\!r},
 \end{equation}
-with $\stirtwo rr_{\!r}=1$ and the natural zero boundary conditions.
+with $\StirlingSecondKind rr_{\!r}=1$ and the natural zero boundary conditions.
 \end{theorem}
 \begin{proof}
 Because $n>r$, the new label $n$ is not one of the distinguished labels.  It either
@@ -1924,7 +1893,7 @@ The same labelled-component argument gives the mixed exponential generating
 function
 \begin{equation}
 \label{eq:r-stirling-egf}
- \sum_{n\ge r}\sum_{k\ge r}\stirtwo nk_{\!r}
+ \sum_{n\ge r}\sum_{k\ge r}\StirlingSecondKind nk_{\!r}
  y^k\frac{z^{n-r}}{(n-r)!}
  =y^re^{rz}\exp\!\bigl(y(e^z-1)\bigr).
 \end{equation}
@@ -1976,9 +1945,9 @@ such that two labels in the same block always differ by at least $d$.
 For $n\ge k\ge d$,
 \begin{equation}
 \label{eq:reduced-stirling}
- \mathsf S^{[d]}(n,k)=\stirtwo{n-d+1}{k-d+1}.
+ \mathsf S^{[d]}(n,k)=\StirlingSecondKind{n-d+1}{k-d+1}.
 \end{equation}
-In particular $\mathsf S^{[1]}(n,k)=\stirtwo nk$.
+In particular $\mathsf S^{[1]}(n,k)=\StirlingSecondKind nk$.
 \end{theorem}
 \begin{proof}
 Join two vertices $i,j\in[n]$ when $0<|i-j|<d$, and call the resulting graph
@@ -1987,21 +1956,21 @@ $\mathsf S^{[d]}(n,k)$.  A proper coloring can therefore be obtained by choosing
 such a partition and assigning distinct colors to its blocks, so
 \begin{equation}
 \label{eq:reduced-chromatic-falling}
- \chi_{G_{n,d}}(q)=\sum_k\mathsf S^{[d]}(n,k)\falling qk.
+ \chi_{G_{n,d}}(q)=\sum_k\mathsf S^{[d]}(n,k)\FallingFactorial qk.
 \end{equation}
 Color the vertices in their natural order.  The first $d-1$ vertices must receive
 distinct colors; every subsequent vertex sees the preceding $d-1$ vertices, which
 form a clique, and hence has $q-d+1$ choices.  Thus
 \[
  \chi_{G_{n,d}}(q)
- =\falling q{d-1}(q-d+1)^{n-d+1}.
+ =\FallingFactorial q{d-1}(q-d+1)^{n-d+1}.
 \]
 Apply the ordinary Stirling basis expansion to the last power:
 \begin{align*}
  \chi_{G_{n,d}}(q)
- &=\falling q{d-1}
-   \sum_{r\ge0}\stirtwo{n-d+1}{r}\falling{q-d+1}{r}\\
- &=\sum_{r\ge0}\stirtwo{n-d+1}{r}\falling q{r+d-1}.
+ &=\FallingFactorial q{d-1}
+   \sum_{r\ge0}\StirlingSecondKind{n-d+1}{r}\FallingFactorial{q-d+1}{r}\\
+ &=\sum_{r\ge0}\StirlingSecondKind{n-d+1}{r}\FallingFactorial q{r+d-1}.
 \end{align*}
 Comparison with \eqref{eq:reduced-chromatic-falling} gives
 $k=r+d-1$ and proves \eqref{eq:reduced-stirling}.
@@ -2013,12 +1982,12 @@ $k=r+d-1$ and proves \eqref{eq:reduced-stirling}.
 
 \section{Definition, initial values, and equivalence relations}
 \begin{definition}
-For $n\ge0$, the \emph{$n$th Bell number} $\Bell n$ is the number of partitions of
+For $n\ge0$, the \emph{$n$th Bell number} $\BellNumber n$ is the number of partitions of
 an $n$-element labelled set into nonempty, pairwise disjoint blocks.  Thus
 \[
- \Bell0=\Bell1=1,
+ \BellNumber0=\BellNumber1=1,
  \qquad
- (\Bell n)_{n\ge0}=1,1,2,5,15,52,203,877,4140,\ldots .
+ (\BellNumber n)_{n\ge0}=1,1,2,5,15,52,203,877,4140,\ldots .
 \]
 The empty set has one partition, namely the empty family of blocks.
 \end{definition}
@@ -2031,7 +2000,7 @@ where vertical bars separate blocks.
 
 \begin{proposition}
 Partitions of a set $S$ are in natural bijection with equivalence relations on $S$.
-Consequently $\Bell n$ also counts equivalence relations on an $n$-element set.
+Consequently $\BellNumber n$ also counts equivalence relations on an $n$-element set.
 \end{proposition}
 \begin{proof}
 Given a partition $\pi$, declare $x\sim_\pi y$ when $x$ and $y$ lie in the same
@@ -2050,7 +2019,7 @@ collision with the Bell notation, write them as $\mathsf F_n$.
 \label{thm:ordered-bell}
 For $n\ge0$,
 \begin{align}
- \mathsf F_n&=\sum_{k=0}^{n}k!\stirtwo nk,
+ \mathsf F_n&=\sum_{k=0}^{n}k!\StirlingSecondKind nk,
  \label{eq:ordered-bell-stirling}\\
  \sum_{n\ge0}\mathsf F_n\frac{z^n}{n!}
  &=\frac{1}{2-e^z},
@@ -2085,7 +2054,7 @@ which contrasts with the unordered Bell sequence by recording the order of the
 blocks rather than only their underlying family.
 \section{Squarefree factorizations, rhyme schemes, and restricted-growth words}
 \begin{proposition}
-If $N=p_1\cdots p_n$ is squarefree, then $\Bell n$ is the number of unordered
+If $N=p_1\cdots p_n$ is squarefree, then $\BellNumber n$ is the number of unordered
 factorizations of $N$ into integers greater than $1$.
 \end{proposition}
 \begin{proof}
@@ -2127,8 +2096,8 @@ and reinserts it in any of the $n$ positions.  There are $n^n$ sequences of $n$
 such operations.
 
 \begin{theorem}[Return-to-order shuffles]
-Exactly $\Bell n$ of those $n^n$ operation sequences return an initially ordered
-deck to its original order.  Hence the return probability is $\Bell n/n^n$.
+Exactly $\BellNumber n$ of those $n^n$ operation sequences return an initially ordered
+deck to its original order.  Hence the return probability is $\BellNumber n/n^n$.
 \end{theorem}
 \begin{proof}
 Reverse time.  A reversed operation chooses an arbitrary card and moves it to the
@@ -2153,7 +2122,7 @@ $23\!\mathord{-}\!1$ consists of an adjacent ascent followed later by a smaller
 entry.
 
 \begin{theorem}
-The permutations of $[n]$ avoiding $23\!\mathord{-}\!1$ are counted by $\Bell n$.
+The permutations of $[n]$ avoiding $23\!\mathord{-}\!1$ are counted by $\BellNumber n$.
 The same is true for each pattern in
 \[
  1\!\mathord{-}\!23,\ 12\!\mathord{-}\!3,\ 32\!\mathord{-}\!1,
@@ -2214,16 +2183,16 @@ Its first rows are
 \begin{theorem}
 For $0\le k\le n$,
 \begin{equation}\label{eq:bell-triangle-closed}
- a_{n,k}=\sum_{j=0}^{k}\binom{k}{j}\Bell{n-j}.
+ a_{n,k}=\sum_{j=0}^{k}\binom{k}{j}\BellNumber{n-j}.
 \end{equation}
-Consequently the left edge is $a_{n,0}=\Bell n$ and the right edge is
-$a_{n,n}=\Bell{n+1}$.
+Consequently the left edge is $a_{n,0}=\BellNumber n$ and the right edge is
+$a_{n,n}=\BellNumber{n+1}$.
 \end{theorem}
 \begin{proof}
 The formula is immediate for $k=0$.  Pascal's identity gives
 \[
  a_{n,k-1}+a_{n-1,k-1}
- =\sum_j\left(\binom{k-1}{j}+\binom{k-1}{j-1}\right)\Bell{n-j},
+ =\sum_j\left(\binom{k-1}{j}+\binom{k-1}{j-1}\right)\BellNumber{n-j},
 \]
 which is \eqref{eq:bell-triangle-closed}.  For $k=n$, reverse the index and use
 the Bell recurrence proved in \cref{thm:bell-binomial-recurrence} below.
@@ -2235,7 +2204,7 @@ the Bell recurrence proved in \cref{thm:bell-binomial-recurrence} below.
 \begin{theorem}[Binomial recurrence]\label{thm:bell-binomial-recurrence}
 For $n\ge0$,
 \begin{equation}\label{eq:bell-binomial-recurrence}
- \Bell{n+1}=\sum_{k=0}^{n}\binom nk\Bell k.
+ \BellNumber{n+1}=\sum_{k=0}^{n}\binom nk\BellNumber k.
 \end{equation}
 \end{theorem}
 \begin{proof}
@@ -2246,13 +2215,13 @@ arbitrarily; the block containing $0$ is then forced.
 
 \begin{theorem}[Stirling decomposition]
 \begin{equation}\label{eq:bell-stirling-sum}
- \Bell n=\sum_{k=0}^{n}\stirtwo nk
+ \BellNumber n=\sum_{k=0}^{n}\StirlingSecondKind nk
  =\sum_{k=0}^{n}\frac1{k!}\sum_{i=0}^{k}(-1)^{k-i}\binom ki i^n.
 \end{equation}
 \end{theorem}
 \begin{proof}
 The first equality groups partitions by their number of blocks.  Substitute the
-inclusion--exclusion formula for $\stirtwo nk$ from
+inclusion--exclusion formula for $\StirlingSecondKind nk$ from
 \cref{eq:second-explicit} to obtain the second equality.
 \end{proof}
 
@@ -2260,13 +2229,13 @@ inclusion--exclusion formula for $\stirtwo nk$ from
 \begin{theorem}[Spivey's identity]\label{thm:spivey}
 For $m,n\ge0$,
 \begin{equation}\label{eq:spivey}
- \Bell{m+n}=\sum_{k=0}^{n}\sum_{j=0}^{m}
- \stirtwo mj\binom nk j^{\,n-k}\Bell k.
+ \BellNumber{m+n}=\sum_{k=0}^{n}\sum_{j=0}^{m}
+ \StirlingSecondKind mj\binom nk j^{\,n-k}\BellNumber k.
 \end{equation}
 \end{theorem}
 \begin{proof}
 Partition the first $m$ labels into $j$ blocks.  Of the final $n$ labels, choose
-$k$ whose blocks contain no old label and partition them in $\Bell k$ ways.  Each
+$k$ whose blocks contain no old label and partition them in $\BellNumber k$ ways.  Each
 of the remaining $n-k$ labels independently joins one of the $j$ old blocks.  This
 classification is unique and gives the summand.
 \end{proof}
@@ -2276,41 +2245,41 @@ below.  The second is a useful shifted form.
 \begin{theorem}[Bell inversion identities]\label{thm:bell-inversions}
 For $n,k\ge0$,
 \begin{align}
- \Bell n&=\sum_{j=0}^{n}(-1)^{n-j}\binom nj\Bell{j+1},
+ \BellNumber n&=\sum_{j=0}^{n}(-1)^{n-j}\binom nj\BellNumber{j+1},
  \label{eq:bell-inversion-one}\\
- \sum_{j=0}^{n}\binom nj\Bell{k+j}
- &=\sum_{i=0}^{k}(-1)^{k-i}\binom ki\Bell{n+i+1}.
+ \sum_{j=0}^{n}\binom nj\BellNumber{k+j}
+ &=\sum_{i=0}^{k}(-1)^{k-i}\binom ki\BellNumber{n+i+1}.
  \label{eq:bell-inversion-two}
 \end{align}
 \end{theorem}
 \begin{proof}
 The first formula is ordinary binomial inversion.  For the second let $X$ be a
 Poisson random variable of mean $1$; \cref{thm:dobinski} below gives
-$\E X^r=\Bell r$.  The left side is
-$\E[X^k(X+1)^n]$.  Poisson summation by parts,
+$\Expectation X^r=\BellNumber r$.  The left side is
+$\Expectation[X^k(X+1)^n]$.  Poisson summation by parts,
 \begin{equation}\label{eq:poisson-sbp}
- \E[Xh(X)]=\E[h(X+1)],
+ \Expectation[Xh(X)]=\Expectation[h(X+1)],
 \end{equation}
 iterated $k$ times in the equivalent form
-$\E[X^{n+1}(X-1)^k]=\E[(X+1)^nX^k]$, turns it into the right side after expanding
+$\Expectation[X^{n+1}(X-1)^k]=\Expectation[(X+1)^nX^k]$, turns it into the right side after expanding
 $(X-1)^k$.
 \end{proof}
 
 The first-kind Stirling numbers package all repeated shifts at once.
 \begin{theorem}[Weighted Bell shift]\label{thm:weighted-bell-shift}
-For $a,b\in\C$ and $k,n\ge0$,
+For $a,b\in\ComplexNumbers$ and $k,n\ge0$,
 \begin{multline}\label{eq:weighted-bell-shift}
- \sum_{j=0}^{n}\binom nj a^j b^{n-j}\Bell j\\
- =\sum_{i=0}^{k}(-1)^{k-i}\stirone ki
-   \sum_{j=0}^{n}\binom nj a^j(b-ak)^{n-j}\Bell{j+i}.
+ \sum_{j=0}^{n}\binom nj a^j b^{n-j}\BellNumber j\\
+ =\sum_{i=0}^{k}(-1)^{k-i}\UnsignedStirlingFirstKind ki
+   \sum_{j=0}^{n}\binom nj a^j(b-ak)^{n-j}\BellNumber{j+i}.
 \end{multline}
 In particular,
 \begin{align}
- \sum_{j=0}^{n}\binom nj a^j b^{n-j}\Bell j
- &=\sum_{j=0}^{n}\binom nj a^j(b-a)^{n-j}\Bell{j+1},
+ \sum_{j=0}^{n}\binom nj a^j b^{n-j}\BellNumber j
+ &=\sum_{j=0}^{n}\binom nj a^j(b-a)^{n-j}\BellNumber{j+1},
  \label{eq:weighted-bell-k1}\\
- \sum_{j=0}^{n}\binom nj k^{n-j}\Bell j
- &=\sum_{i=0}^{k}(-1)^{k-i}\stirone ki\Bell{n+i}.
+ \sum_{j=0}^{n}\binom nj k^{n-j}\BellNumber j
+ &=\sum_{i=0}^{k}(-1)^{k-i}\UnsignedStirlingFirstKind ki\BellNumber{n+i}.
  \label{eq:weighted-bell-special}
 \end{align}
 \end{theorem}
@@ -2321,10 +2290,10 @@ By Dobiński's formula, the left side of
  e^{-1}\sum_{m\ge0}\frac{(am+b)^n}{m!}.
 \]
 On the right, use
-$\sum_i(-1)^{k-i}\stirone ki m^i=\falling mk$ inside the same Poisson sum.  It
+$\sum_i(-1)^{k-i}\UnsignedStirlingFirstKind ki m^i=\FallingFactorial mk$ inside the same Poisson sum.  It
 becomes
 \[
- e^{-1}\sum_{m\ge0}\frac{\falling mk\,[a m+b-ak]^n}{m!}
+ e^{-1}\sum_{m\ge0}\frac{\FallingFactorial mk\,[a m+b-ak]^n}{m!}
  =e^{-1}\sum_{r\ge0}\frac{(ar+b)^n}{r!},
 \]
 after $m=r+k$.  The special cases follow by setting $k=1$, and then $a=1,b=k$.
@@ -2334,7 +2303,7 @@ after $m=r+k$.  The special cases follow by setting $k=1$, and then $a=1,b=k$.
 \begin{theorem}\label{thm:bell-egf}
 The Bell exponential generating function is
 \begin{equation}\label{eq:bell-egf}
- \mathscr B(z):=\sum_{n\ge0}\Bell n\frac{z^n}{n!}
+ \mathscr B(z):=\sum_{n\ge0}\BellNumber n\frac{z^n}{n!}
  =\exp(e^z-1),
  \qquad
  \mathscr B'(z)=e^z\mathscr B(z).
@@ -2353,9 +2322,9 @@ the series.
 \begin{theorem}[Dobiński]\label{thm:dobinski}
 For every $n\ge0$,
 \begin{equation}\label{eq:dobinski}
- \Bell n=e^{-1}\sum_{m=0}^{\infty}\frac{m^n}{m!}.
+ \BellNumber n=e^{-1}\sum_{m=0}^{\infty}\frac{m^n}{m!}.
 \end{equation}
-Equivalently, if $X\sim\operatorname{Poisson}(1)$, then $\Bell n=\E X^n$.
+Equivalently, if $X\sim\operatorname{Poisson}(1)$, then $\BellNumber n=\Expectation X^n$.
 \end{theorem}
 \begin{proof}
 Expand the outer exponential in \eqref{eq:bell-egf}:
@@ -2371,8 +2340,8 @@ statement is the defining moment sum of a Poisson$(1)$ variable.
 \begin{corollary}[Cauchy integral]
 For every positively oriented circle $\gamma$ around $0$,
 \begin{equation}\label{eq:bell-cauchy}
- \Bell n=\frac{n!}{2\pi i e}\int_\gamma
-       \frac{e^{e^z}}{z^{n+1}}\,\dd z.
+ \BellNumber n=\frac{n!}{2\pi i e}\int_\gamma
+       \frac{e^{e^z}}{z^{n+1}}\,\Differential z.
 \end{equation}
 \end{corollary}
 \begin{proof}
@@ -2382,20 +2351,20 @@ Apply Cauchy's coefficient formula to $e^{-1}e^{e^z}$.
 \chapter{Congruences, shape, and growth of Bell numbers}
 
 \section{Touchard congruences}
-It is useful to refine $\Bell n$ to the Touchard polynomial
+It is useful to refine $\BellNumber n$ to the Touchard polynomial
 \[
- T_n(x)=\sum_{k=0}^{n}\stirtwo nk x^k,
- \qquad T_n(1)=\Bell n.
+ \TouchardPolynomial n(x)=\sum_{k=0}^{n}\StirlingSecondKind nk x^k,
+ \qquad \TouchardPolynomial n(1)=\BellNumber n.
 \]
 
 \begin{theorem}[Polynomial Touchard congruence]\label{thm:touchard-poly}
 For a prime $p$,
 \begin{equation}\label{eq:touchard-poly}
- T_{n+p}(x)\equiv T_{n+1}(x)+x^pT_n(x)\pmod p.
+ \TouchardPolynomial{n+p}(x)\equiv \TouchardPolynomial{n+1}(x)+x^p\TouchardPolynomial n(x)\pmod p.
 \end{equation}
 Consequently
 \begin{equation}\label{eq:touchard}
- \Bell{n+p}\equiv\Bell n+\Bell{n+1}\pmod p.
+ \BellNumber{n+p}\equiv\BellNumber n+\BellNumber{n+1}\pmod p.
 \end{equation}
 \end{theorem}
 \begin{proof}
@@ -2407,18 +2376,18 @@ form $p$ singleton blocks, independently of a partition of the other labels; thi
 contributes $x^pT_n(x)$.  Otherwise rotational invariance forces the rotating labels
 to lie in one common block, possibly together with old labels.  Contracting those
 $p$ labels to one distinguished label gives a partition of $n+1$ labels with the
-same number of blocks, contributing $T_{n+1}(x)$.  This proves the polynomial
+same number of blocks, contributing $\TouchardPolynomial{n+1}(x)$.  This proves the polynomial
 congruence; set $x=1$.
 \end{proof}
 
 \begin{theorem}[Prime-power shift]\label{thm:bell-prime-power-shift}
 For a prime $p$ and $m\ge1$,
 \begin{equation}\label{eq:bell-prime-power-shift}
- \Bell{n+p^m}\equiv m\Bell n+\Bell{n+1}\pmod p.
+ \BellNumber{n+p^m}\equiv m\BellNumber n+\BellNumber{n+1}\pmod p.
 \end{equation}
 More precisely,
 \begin{equation}\label{eq:touchard-prime-power-poly}
- T_{n+p^m}(x)\equiv T_{n+1}(x)+T_n(x)\sum_{r=1}^{m}x^{p^r}
+ \TouchardPolynomial{n+p^m}(x)\equiv \TouchardPolynomial{n+1}(x)+\TouchardPolynomial n(x)\sum_{r=1}^{m}x^{p^r}
  \pmod p.
 \end{equation}
 \end{theorem}
@@ -2426,11 +2395,11 @@ More precisely,
 Let the additive cyclic group of order $p^m$ act regularly on $p^m$ new labels.
 A partition fixed by the whole group induces a block system for this regular
 action.  Apart from the case in which all new labels join one invariant block
-(which contracts to one label and contributes $T_{n+1}$), the blocks on the new
+(which contracts to one label and contributes $\TouchardPolynomial{n+1}$), the blocks on the new
 orbit are the cosets of the unique subgroup of index $p^r$ for some
 $1\le r\le m$; they contribute $p^r$ blocks and cannot mix with old labels.
 Thus the fixed weighted partitions contribute
-$T_{n+1}+T_n\sum_{r=1}^m x^{p^r}$.  Every other orbit has cardinality divisible by
+$\TouchardPolynomial{n+1}+\TouchardPolynomial n\sum_{r=1}^m x^{p^r}$.  Every other orbit has cardinality divisible by
 $p$, proving \eqref{eq:touchard-prime-power-poly}.  Fermat's congruence
 $x^{p^r}\equiv x$ modulo $p$ at $x=1$ gives
 \eqref{eq:bell-prime-power-shift}.
@@ -2445,13 +2414,13 @@ Modulo a prime $p$, the Bell sequence is periodic, and its period divides
 \end{theorem}
 \begin{proof}
 Touchard's recurrence says that the shift operator $E$ on the sequence satisfies
-$E^p-E-1=0$ over $\F_p$.  The polynomial $q(t)=t^p-t-1$ is separable because
+$E^p-E-1=0$ over $\FiniteField_p$.  The polynomial $q(t)=t^p-t-1$ is separable because
 $q'(t)=-1$.  If $\alpha$ is any root in a splitting field, then
-$\alpha^p=\alpha+1$ and hence $\alpha^{p^j}=\alpha+j$ for $j\in\F_p$.  Taking the
+$\alpha^p=\alpha+1$ and hence $\alpha^{p^j}=\alpha+j$ for $j\in\FiniteField_p$.  Taking the
 product over $j$ gives
 \[
- \alpha^{N_p}=\prod_{j\in\F_p}\alpha^{p^j}
- =\prod_{j\in\F_p}(\alpha+j)=\alpha^p-\alpha=1.
+ \alpha^{N_p}=\prod_{j\in\FiniteField_p}\alpha^{p^j}
+ =\prod_{j\in\FiniteField_p}(\alpha+j)=\alpha^p-\alpha=1.
 \]
 Thus every eigenvalue of $E$ is an $N_p$th root of unity.  Separability makes $E$
 diagonalizable over the splitting field, so $E^{N_p}=1$ on every solution of the
@@ -2470,14 +2439,14 @@ The same recurrence permits a compact machine-checkable certificate.
 \begin{theorem}\label{thm:bell-log-shape}
 For $n\ge1$,
 \begin{equation}\label{eq:bell-log-shape}
- 1\le \frac{\Bell{n-1}\Bell{n+1}}{\Bell n^2}\le\frac{n+1}{n}.
+ 1\le \frac{\BellNumber{n-1}\BellNumber{n+1}}{\BellNumber n^2}\le\frac{n+1}{n}.
 \end{equation}
-Thus $(\Bell n)$ is log-convex, whereas $(\Bell n/n!)$ is log-concave.
+Thus $(\BellNumber n)$ is log-convex, whereas $(\BellNumber n/n!)$ is log-concave.
 \end{theorem}
 \begin{proof}
 For the left inequality, let $X\sim\operatorname{Poisson}(1)$.  Cauchy--Schwarz
 applied to $X^{(n-1)/2}$ and $X^{(n+1)/2}$ gives
-$(\E X^n)^2\le \E X^{n-1}\E X^{n+1}$.
+$(\Expectation X^n)^2\le \Expectation X^{n-1}\Expectation X^{n+1}$.
 
 For completeness we prove the normalized inequality through the following
 convolution lemma.  If nonnegative $(z_j)_{j\ge1}$ is log-concave without internal
@@ -2502,7 +2471,7 @@ For $A(t)=e^{e^t-1}$ we have
 $\sum_{j\ge1}t^j/j!=\sum_{j\ge1}z_jt^j/j$ with
 $z_j=1/(j-1)!$.  This sequence is log-concave, since
 $z_j^2/(z_{j-1}z_{j+1})=j/(j-1)$.  Hence
-$(\Bell n/n!)^2\ge(\Bell{n-1}/(n-1)!)(\Bell{n+1}/(n+1)!)$, which is the right
+$(\BellNumber n/n!)^2\ge(\BellNumber{n-1}/(n-1)!)(\BellNumber{n+1}/(n+1)!)$, which is the right
 inequality in \eqref{eq:bell-log-shape}.
 \end{proof}
 
@@ -2512,18 +2481,18 @@ bounds in the archive.
 \begin{lemma}\label{lem:bell-coeff-upper}
 For $t>0$,
 \begin{equation}\label{eq:bell-coeff-upper}
- \Bell n\le n!\,t^{-n}\exp(e^t-1).
+ \BellNumber n\le n!\,t^{-n}\exp(e^t-1).
 \end{equation}
 For $n\ge2$, put $L=\log(n+1)$ and $t=\log(n/L)$.  Then
 \begin{equation}\label{eq:bell-ratio-upper}
- \Bell n^{1/n}\frac{L}{n}
+ \BellNumber n^{1/n}\frac{L}{n}
  \le \frac{L}{t}
  \exp\!\left(-1+\frac1L+\frac{\log n}{2n}\right).
 \end{equation}
 \end{lemma}
 \begin{proof}
 Because all coefficients of $\mathscr B$ are nonnegative,
-$\Bell n t^n/n!\le\mathscr B(t)$, proving the first claim.  Use
+$\BellNumber n t^n/n!\le\mathscr B(t)$, proving the first claim.  Use
 $e^t=n/L$ and the elementary Stirling bound
 $n!\le e\sqrt n\,(n/e)^n$; the factors $e^{-1/n}$ and $e^{1/n}$ cancel and give
 \eqref{eq:bell-ratio-upper}.
@@ -2532,7 +2501,7 @@ $n!\le e\sqrt n\,(n/e)^n$; the factors $e^{-1/n}$ and $e^{1/n}$ cancel and give
 \begin{theorem}[Uniform numerical bounds]\label{thm:bell-numerical-bounds}
 For every $n\ge1$,
 \begin{equation}\label{eq:bell-0792}
- \Bell n<\left(\frac{0.792\,n}{\log(n+1)}\right)^n.
+ \BellNumber n<\left(\frac{0.792\,n}{\log(n+1)}\right)^n.
 \end{equation}
 Define, for $x>1$,
 \begin{equation}\label{eq:bell-dx}
@@ -2542,7 +2511,7 @@ For every $\varepsilon>0$ there is
 $n_0(\varepsilon)=\max\{e^4,d^{-1}(\varepsilon)\}$ such that, for
 $n>n_0(\varepsilon)$,
 \begin{equation}\label{eq:bell-e06}
- \Bell n<\left(\frac{e^{-0.6+\varepsilon}n}{\log(n+1)}\right)^n.
+ \BellNumber n<\left(\frac{e^{-0.6+\varepsilon}n}{\log(n+1)}\right)^n.
 \end{equation}
 \end{theorem}
 \begin{proof}
@@ -2575,7 +2544,7 @@ Let $r=W(n)$, so that $re^r=n$, and put $A=n(1+r)$.
 \begin{theorem}[Leading Bell asymptotic]\label{thm:bell-leading-asymptotic}
 As $n\to\infty$,
 \begin{align}
- \Bell n
+ \BellNumber n
  &\sim \frac{n!\exp(e^r-1)}{r^n\sqrt{2\pi n(1+r)}}
  \label{eq:bell-saddle-leading}\\
  &\sim \frac1{\sqrt n}\left(\frac{n}{W(n)}\right)^{n+1/2}
@@ -2587,14 +2556,14 @@ As $n\to\infty$,
 In \eqref{eq:bell-cauchy} take the circle $z=re^{i\theta}$.  The coefficient
 integral becomes
 \[
- \frac{\Bell n}{n!}=
+ \frac{\BellNumber n}{n!}=
  \frac{e^{e^r-1}}{2\pi r^n}
  \int_{-\pi}^{\pi}
- \exp\!\left(e^{re^{i\theta}}-e^r-in\theta\right)\dd\theta.
+ \exp\!\left(e^{re^{i\theta}}-e^r-in\theta\right)\Differential\theta.
 \]
 The linear term vanishes because $re^r=n$; the quadratic term is
 $-A\theta^2/2$.  On $|\theta|\le A^{-2/5}$, Taylor expansion is uniform and the
-scaled integral tends to $\int_{\R}e^{-u^2/2}\dd u/\sqrt A$.  Outside that arc,
+scaled integral tends to $\int_{\RealNumbers}e^{-u^2/2}\Differential u/\sqrt A$.  Outside that arc,
 $\Re(e^{re^{i\theta}}-e^r)\le-cA\theta^2$ on the intermediate range and is
 $\le-c'e^r$ on the remaining compact range, so the contribution is negligible.
 This proves \eqref{eq:bell-saddle-leading}.  Stirling's formula and $e^r=n/r$
@@ -2603,7 +2572,7 @@ simplify it to \eqref{eq:bell-W-asymptotic}.
 
 The archived refined expansion used undefined symbols.  The following construction
 makes every coefficient unambiguous.  Let
-$T_j(r)=\sum_{q=0}^j\stirtwo jq r^q$ be the Touchard polynomial and let
+$\TouchardPolynomial j(r)=\sum_{q=0}^j\StirlingSecondKind jq r^q$ be the Touchard polynomial and let
 $Z\sim N(0,1)$.  For an integer $h=O(r)$ define
 \begin{equation}\label{eq:bell-saddle-correction-generator}
  \mathcal R_{r,h}(Z)=\exp\!\left(
@@ -2618,7 +2587,7 @@ with $C_0=1$.
 \begin{theorem}[Uniform Moser--Wyman scheme]\label{thm:bell-refined-saddle}
 For every fixed $M$ and $|h|\le Cr$,
 \begin{equation}\label{eq:bell-refined-saddle}
- \Bell{n+h}=\frac{(n+h)!\exp(e^r-1)}{r^{n+h}\sqrt{2\pi A}}
+ \BellNumber{n+h}=\frac{(n+h)!\exp(e^r-1)}{r^{n+h}\sqrt{2\pi A}}
  \left(\sum_{q=0}^{M-1}C_q(r,h)+O_C(e^{-Mr}P_M(r))\right),
 \end{equation}
 where $P_M$ is an explicitly computable polynomial.  The first correction is
@@ -2626,7 +2595,7 @@ where $P_M$ is an explicitly computable polynomial.  The first correction is
  C_1(r,h)=
  -\frac{h^2}{2A}-\frac{h e^rT_3(r)}{2A^2}
  +\frac{e^rT_4(r)}{8A^2}
- -\frac{5e^{2r}T_3(r)^2}{24A^3}.
+ -\frac{5e^{2r}\TouchardPolynomial3(r)^2}{24A^3}.
 \end{equation}
 In particular the coefficient of $e^{-qr}$ is a polynomial in $h$ of degree at
 most $2q$, with rational functions of $r$ as coefficients.
@@ -2638,7 +2607,7 @@ exactly the formal series \eqref{eq:bell-saddle-correction-generator}.  Watson's
 lemma with a Gaussian majorant permits termwise integration on the central arc;
 the complementary arcs have the same exponential bound uniformly for
 $|h|\le Cr$.  Odd Gaussian moments vanish, so only integral powers of $e^{-r}$
-remain.  Since $\E Z^2=1$, $\E Z^4=3$, and $\E Z^6=15$, the terms from the square
+remain.  Since $\Expectation Z^2=1$, $\Expectation Z^4=3$, and $\Expectation Z^6=15$, the terms from the square
 of the $h$-term, its product with the cubic term, the quartic term, and the square
 of the cubic term give \eqref{eq:bell-first-correction}.  The same finite
 bookkeeping defines every subsequent $C_q$ and bounds the omitted Taylor
@@ -2648,7 +2617,7 @@ remainder.
 \begin{corollary}[de Bruijn logarithmic expansion]\label{cor:bell-debruijn}
 As $n\to\infty$,
 \begin{multline}\label{eq:bell-debruijn}
- \frac{\log\Bell n}{n}
+ \frac{\log\BellNumber n}{n}
  =\log n-\log\log n-1
  +\frac{\log\log n}{\log n}+\frac1{\log n}\\
  +\frac12\left(\frac{\log\log n}{\log n}\right)^2
@@ -2668,9 +2637,9 @@ terms; the prefactor contributes only $O(\log n/n)$.
 \end{proof}
 
 \section{Bell primes and verifiable computation}
-A \emph{Bell prime} is a prime value of $\Bell n$.  The archive records the early
+A \emph{Bell prime} is a prime value of $\BellNumber n$.  The archive records the early
 indices found by computation.  Such a list is not a symbolic theorem, but each
-entry has a rigorous certificate: compute $\Bell n$ by the integer recurrence
+entry has a rigorous certificate: compute $\BellNumber n$ by the integer recurrence
 \eqref{eq:bell-binomial-recurrence}, apply a probable-prime filter, and attach an
 ECPP or Pratt-style primality certificate.  Composite entries are certified by one
 nontrivial factor.  This distinction between an identity and a finite certified
@@ -2685,29 +2654,29 @@ computation will also be used for tabulated values later.
 \begin{definition}[Partial exponential Bell polynomial]
 For $0\le k\le n$, define
 \begin{equation}\label{eq:partial-bell-definition}
- \BellP nk(x_1,\ldots,x_{n-k+1})
+ \ExponentialPartialBellPolynomial nk(x_1,\ldots,x_{n-k+1})
  =n!\!\sum_{\substack{j_1+j_2+\cdots=k\\
                        j_1+2j_2+3j_3+\cdots=n}}
  \prod_{i\ge1}\frac{x_i^{j_i}}{(i!)^{j_i}j_i!}.
 \end{equation}
 Only $i\le n-k+1$ can occur.  The complete exponential Bell polynomial is
 \begin{equation}\label{eq:complete-bell-definition}
- \BellC n(x_1,\ldots,x_n)=\sum_{k=0}^{n}\BellP nk(x_1,\ldots,x_{n-k+1}),
- \qquad \BellC0=1.
+ \ExponentialCompleteBellPolynomial n(x_1,\ldots,x_n)=\sum_{k=0}^{n}\ExponentialPartialBellPolynomial nk(x_1,\ldots,x_{n-k+1}),
+ \qquad \ExponentialCompleteBellPolynomial0=1.
 \end{equation}
 \end{definition}
 
 \begin{definition}[Partial ordinary Bell polynomial]
 \begin{equation}\label{eq:ordinary-bell-definition}
- \OBellP nk(x_1,\ldots,x_{n-k+1})
+ \OrdinaryPartialBellPolynomial nk(x_1,\ldots,x_{n-k+1})
  =\sum_{\substack{j_1+j_2+\cdots=k\\
                        j_1+2j_2+\cdots=n}}
  \frac{k!}{j_1!j_2!\cdots}\prod_{i\ge1}x_i^{j_i}.
 \end{equation}
 Equivalently,
 \begin{equation}\label{eq:ordinary-exponential-scaling}
- \OBellP nk(x_1,x_2,\ldots)
- =\frac{k!}{n!}\BellP nk(1!x_1,2!x_2,\ldots).
+ \OrdinaryPartialBellPolynomial nk(x_1,x_2,\ldots)
+ =\frac{k!}{n!}\ExponentialPartialBellPolynomial nk(1!x_1,2!x_2,\ldots).
 \end{equation}
 \end{definition}
 \begin{proof}[Proof of \eqref{eq:ordinary-exponential-scaling}]
@@ -2721,8 +2690,8 @@ Give each block of size $i$ a weight $x_i$, and define the weight of a partition
 the product of its block weights.
 
 \begin{theorem}[Weighted-partition interpretation]\label{thm:bell-poly-partitions}
-$\BellP nk$ is the total weight of partitions of an $n$-element labelled set into
-exactly $k$ blocks, and $\BellC n$ is the total weight of all its partitions.
+$\ExponentialPartialBellPolynomial nk$ is the total weight of partitions of an $n$-element labelled set into
+exactly $k$ blocks, and $\ExponentialCompleteBellPolynomial n$ is the total weight of all its partitions.
 \end{theorem}
 \begin{proof}
 Fix multiplicities $j_i$, where $j_i$ blocks have size $i$.  The number of such
@@ -2737,9 +2706,9 @@ blocks of equal size.  Multiplication by $\prod_i x_i^{j_i}$ and summation gives
 
 Thus
 \begin{align*}
- \BellP{3}{2}(x_1,x_2)&=3x_1x_2,\\
- \BellP{6}{2}(x_1,\ldots,x_5)&=6x_1x_5+15x_2x_4+10x_3^2,\\
- \BellP{6}{3}(x_1,\ldots,x_4)&=15x_1^2x_4+60x_1x_2x_3+15x_2^3.
+ \ExponentialPartialBellPolynomial{3}{2}(x_1,x_2)&=3x_1x_2,\\
+ \ExponentialPartialBellPolynomial{6}{2}(x_1,\ldots,x_5)&=6x_1x_5+15x_2x_4+10x_3^2,\\
+ \ExponentialPartialBellPolynomial{6}{3}(x_1,\ldots,x_4)&=15x_1^2x_4+60x_1x_2x_3+15x_2^3.
 \end{align*}
 The monomials correspond to integer partitions of $n$ into $k$ parts, while their
 coefficients count the labelled set partitions having the prescribed block sizes.
@@ -2753,18 +2722,18 @@ Put
 One has
 \begin{align}
  \frac{X(t)^k}{k!}
- &=\sum_{n\ge k}\BellP nk(x_1,\ldots)\frac{t^n}{n!},\\
+ &=\sum_{n\ge k}\ExponentialPartialBellPolynomial nk(x_1,\ldots)\frac{t^n}{n!},\\
  \exp(uX(t))
- &=\sum_{n\ge k\ge0}\BellP nk(x_1,\ldots)u^k\frac{t^n}{n!},\\
+ &=\sum_{n\ge k\ge0}\ExponentialPartialBellPolynomial nk(x_1,\ldots)u^k\frac{t^n}{n!},\\
  \exp(X(t))
- &=\sum_{n\ge0}\BellC n(x_1,\ldots,x_n)\frac{t^n}{n!}.
+ &=\sum_{n\ge0}\ExponentialCompleteBellPolynomial n(x_1,\ldots,x_n)\frac{t^n}{n!}.
 \end{align}
-For $\widehat X(t)=\sum_{j\ge1}x_jt^j$,
+For $\OrdinaryGeneratingFunctionOf{X}(t)=\sum_{j\ge1}x_jt^j$,
 \begin{align}
- \widehat X(t)^k&=\sum_{n\ge k}\OBellP nk(x_1,\ldots)t^n,
+ \OrdinaryGeneratingFunctionOf{X}(t)^k&=\sum_{n\ge k}\OrdinaryPartialBellPolynomial nk(x_1,\ldots)t^n,
  \label{eq:ordinary-bell-ogf}\\
- e^{u\widehat X(t)}
- &=\sum_{n\ge k\ge0}\OBellP nk(x_1,\ldots)t^n\frac{u^k}{k!}.
+ e^{u\OrdinaryGeneratingFunctionOf{X}(t)}
+ &=\sum_{n\ge k\ge0}\OrdinaryPartialBellPolynomial nk(x_1,\ldots)t^n\frac{u^k}{k!}.
  \label{eq:ordinary-bell-bivariate}
 \end{align}
 \end{theorem}
@@ -2788,35 +2757,35 @@ gluing blocks.
 \section{Tables and low-degree polynomials}
 The nonzero partial polynomials through $n=6$ are
 \begin{align*}
-\BellP11&=x_1,\\
-\BellP21&=x_2,\qquad \BellP22=x_1^2,\\
-\BellP31&=x_3,\qquad \BellP32=3x_1x_2,\qquad \BellP33=x_1^3,\\
-\BellP41&=x_4,\qquad \BellP42=4x_1x_3+3x_2^2,\\
-\BellP43&=6x_1^2x_2,\qquad \BellP44=x_1^4,\\
-\BellP51&=x_5,\qquad \BellP52=5x_1x_4+10x_2x_3,\\
-\BellP53&=10x_1^2x_3+15x_1x_2^2,\\
-\BellP54&=10x_1^3x_2,\qquad \BellP55=x_1^5,\\
-\BellP61&=x_6,\qquad \BellP62=6x_1x_5+15x_2x_4+10x_3^2,\\
-\BellP63&=15x_1^2x_4+60x_1x_2x_3+15x_2^3,\\
-\BellP64&=20x_1^3x_3+45x_1^2x_2^2,\\
-\BellP65&=15x_1^4x_2,\qquad \BellP66=x_1^6.
+\ExponentialPartialBellPolynomial11&=x_1,\\
+\ExponentialPartialBellPolynomial21&=x_2,\qquad \ExponentialPartialBellPolynomial22=x_1^2,\\
+\ExponentialPartialBellPolynomial31&=x_3,\qquad \ExponentialPartialBellPolynomial32=3x_1x_2,\qquad \ExponentialPartialBellPolynomial33=x_1^3,\\
+\ExponentialPartialBellPolynomial41&=x_4,\qquad \ExponentialPartialBellPolynomial42=4x_1x_3+3x_2^2,\\
+\ExponentialPartialBellPolynomial43&=6x_1^2x_2,\qquad \ExponentialPartialBellPolynomial44=x_1^4,\\
+\ExponentialPartialBellPolynomial51&=x_5,\qquad \ExponentialPartialBellPolynomial52=5x_1x_4+10x_2x_3,\\
+\ExponentialPartialBellPolynomial53&=10x_1^2x_3+15x_1x_2^2,\\
+\ExponentialPartialBellPolynomial54&=10x_1^3x_2,\qquad \ExponentialPartialBellPolynomial55=x_1^5,\\
+\ExponentialPartialBellPolynomial61&=x_6,\qquad \ExponentialPartialBellPolynomial62=6x_1x_5+15x_2x_4+10x_3^2,\\
+\ExponentialPartialBellPolynomial63&=15x_1^2x_4+60x_1x_2x_3+15x_2^3,\\
+\ExponentialPartialBellPolynomial64&=20x_1^3x_3+45x_1^2x_2^2,\\
+\ExponentialPartialBellPolynomial65&=15x_1^4x_2,\qquad \ExponentialPartialBellPolynomial66=x_1^6.
 \end{align*}
 Every coefficient is supplied by \eqref{eq:partial-bell-definition}, so the table
 is a computation from the theorem rather than an independent assertion.
 
 The first complete polynomials are
 \begin{align*}
- \BellC0={}&1,\\
- \BellC1={}&x_1,\\
- \BellC2={}&x_1^2+x_2,\\
- \BellC3={}&x_1^3+3x_1x_2+x_3,\\
- \BellC4={}&x_1^4+6x_1^2x_2+3x_2^2+4x_1x_3+x_4,\\
- \BellC5={}&x_1^5+10x_1^3x_2+15x_1x_2^2+10x_1^2x_3
+ \ExponentialCompleteBellPolynomial0={}&1,\\
+ \ExponentialCompleteBellPolynomial1={}&x_1,\\
+ \ExponentialCompleteBellPolynomial2={}&x_1^2+x_2,\\
+ \ExponentialCompleteBellPolynomial3={}&x_1^3+3x_1x_2+x_3,\\
+ \ExponentialCompleteBellPolynomial4={}&x_1^4+6x_1^2x_2+3x_2^2+4x_1x_3+x_4,\\
+ \ExponentialCompleteBellPolynomial5={}&x_1^5+10x_1^3x_2+15x_1x_2^2+10x_1^2x_3
  +10x_2x_3+5x_1x_4+x_5,\\
- \BellC6={}&x_1^6+15x_1^4x_2+45x_1^2x_2^2+15x_2^3
+ \ExponentialCompleteBellPolynomial6={}&x_1^6+15x_1^4x_2+45x_1^2x_2^2+15x_2^3
  +20x_1^3x_3+60x_1x_2x_3+10x_3^2\\
  &+15x_1^2x_4+15x_2x_4+6x_1x_5+x_6,\\
- \BellC7={}&x_1^7+21x_1^5x_2+105x_1^3x_2^2+105x_1x_2^3
+ \ExponentialCompleteBellPolynomial7={}&x_1^7+21x_1^5x_2+105x_1^3x_2^2+105x_1x_2^3
  +35x_1^4x_3+210x_1^2x_2x_3\\
  &+70x_1x_3^2+105x_2^2x_3+35x_1^3x_4+105x_1x_2x_4
  +35x_3x_4\\
@@ -2829,14 +2798,14 @@ The first complete polynomials are
 \begin{theorem}[Complete and partial recurrences]\label{thm:bell-poly-recurrences}
 For $n\ge0$,
 \begin{align}
- \BellC{n+1}(x_1,\ldots,x_{n+1})
- &=\sum_{i=0}^{n}\binom ni x_{i+1}\BellC{n-i}(x_1,\ldots,x_{n-i}),
+ \ExponentialCompleteBellPolynomial{n+1}(x_1,\ldots,x_{n+1})
+ &=\sum_{i=0}^{n}\binom ni x_{i+1}\ExponentialCompleteBellPolynomial{n-i}(x_1,\ldots,x_{n-i}),
  \label{eq:complete-bell-recurrence}\\
- \BellP{n+1}{k+1}
- &=\sum_{i=0}^{n-k}\binom ni x_{i+1}\BellP{n-i}{k},
+ \ExponentialPartialBellPolynomial{n+1}{k+1}
+ &=\sum_{i=0}^{n-k}\binom ni x_{i+1}\ExponentialPartialBellPolynomial{n-i}{k},
  \label{eq:partial-bell-recurrence}
 \end{align}
-with $\BellP00=1$, $\BellP n0=0$ for $n>0$, and $\BellP0k=0$ for $k>0$.
+with $\ExponentialPartialBellPolynomial00=1$, $\ExponentialPartialBellPolynomial n0=0$ for $n>0$, and $\ExponentialPartialBellPolynomial0k=0$ for $k>0$.
 \end{theorem}
 \begin{proof}
 In a weighted partition of $[n+1]$, inspect the block containing the distinguished
@@ -2848,9 +2817,9 @@ or forgetting the total block count yields the two formulas.
 \begin{theorem}[Block-colour convolution]\label{thm:bell-partial-convolution}
 For $k_1,k_2\ge0$,
 \begin{equation}\label{eq:bell-partial-convolution}
- \BellP n{k_1+k_2}(x)
+ \ExponentialPartialBellPolynomial n{k_1+k_2}(x)
  =\frac{k_1!k_2!}{(k_1+k_2)!}
- \sum_{i=0}^{n}\binom ni\BellP i{k_1}(x)\BellP{n-i}{k_2}(x).
+ \sum_{i=0}^{n}\binom ni\ExponentialPartialBellPolynomial i{k_1}(x)\ExponentialPartialBellPolynomial{n-i}{k_2}(x).
 \end{equation}
 \end{theorem}
 \begin{proof}
@@ -2863,9 +2832,9 @@ factor $(k_1!k_2!)/(k_1+k_2)!$ and the binomial EGF convolution.
 \begin{theorem}\label{thm:bell-near-diagonal}
 For $1\le a<n$,
 \begin{multline}\label{eq:bell-near-diagonal}
- \BellP n{n-a}(x_1,\ldots,x_{a+1})\\
+ \ExponentialPartialBellPolynomial n{n-a}(x_1,\ldots,x_{a+1})\\
  =\sum_{j=a+1}^{2a}\frac{j!}{a!}\binom nj x_1^{n-j}
- \BellP a{j-a}\!\left(\frac{x_2}{2},\frac{x_3}{3},\ldots,
+ \ExponentialPartialBellPolynomial a{j-a}\!\left(\frac{x_2}{2},\frac{x_3}{3},\ldots,
  \frac{x_{2a-j+2}}{2a-j+2}\right).
 \end{multline}
 \end{theorem}
@@ -2884,17 +2853,17 @@ $n!x_1^{n-j}\prod_{r\ge2}x_r^{j_r}/((r!)^{j_r}j_r!)$.
 
 The first cases, obtained by listing integer partitions of the excess, are
 \begin{align}
- \BellP n1&=x_n, &
- \BellP n2&=\frac12\sum_{j=1}^{n-1}\binom njx_jx_{n-j},
+ \ExponentialPartialBellPolynomial n1&=x_n, &
+ \ExponentialPartialBellPolynomial n2&=\frac12\sum_{j=1}^{n-1}\binom njx_jx_{n-j},
  \label{eq:bell-edge-first}\\
- \BellP nn&=x_1^n, &
- \BellP n{n-1}&=\binom n2x_1^{n-2}x_2,\\
- \BellP n{n-2}&=\binom n3x_1^{n-3}x_3
+ \ExponentialPartialBellPolynomial nn&=x_1^n, &
+ \ExponentialPartialBellPolynomial n{n-1}&=\binom n2x_1^{n-2}x_2,\\
+ \ExponentialPartialBellPolynomial n{n-2}&=\binom n3x_1^{n-3}x_3
  +3\binom n4x_1^{n-4}x_2^2,\\
- \BellP n{n-3}&=\binom n4x_1^{n-4}x_4
+ \ExponentialPartialBellPolynomial n{n-3}&=\binom n4x_1^{n-4}x_4
  +10\binom n5x_1^{n-5}x_2x_3
  +15\binom n6x_1^{n-6}x_2^3,\\
- \BellP n{n-4}&=\binom n5x_1^{n-5}x_5
+ \ExponentialPartialBellPolynomial n{n-4}&=\binom n5x_1^{n-5}x_5
  +5\binom n6x_1^{n-6}(3x_2x_4+2x_3^2)\notag\\
  &\quad+105\binom n7x_1^{n-7}x_2^2x_3
  +105\binom n8x_1^{n-8}x_2^4.
@@ -2907,17 +2876,17 @@ Their coefficients are the corresponding block-size counts from
 \begin{theorem}[Derivative identities]\label{thm:bell-poly-derivatives}
 For $i\ge1$,
 \begin{align}
- \frac{\partial\BellC n}{\partial x_i}
- &=\binom ni\BellC{n-i},
+ \frac{\partial\ExponentialCompleteBellPolynomial n}{\partial x_i}
+ &=\binom ni\ExponentialCompleteBellPolynomial{n-i},
  \label{eq:complete-bell-derivative}\\
- \frac{\partial\BellP nk}{\partial x_i}
- &=\binom ni\BellP{n-i}{k-1}.
+ \frac{\partial\ExponentialPartialBellPolynomial nk}{\partial x_i}
+ &=\binom ni\ExponentialPartialBellPolynomial{n-i}{k-1}.
  \label{eq:partial-bell-derivative}
 \end{align}
 Consequently, for differentiable $a_i(x)$,
 \begin{equation}\label{eq:bell-poly-chain}
- \frac{\dd}{\dd x}\BellP nk(a_1(x),\ldots)
- =\sum_{i=1}^{n-k+1}\binom ni a_i'(x)\BellP{n-i}{k-1}(a_1(x),\ldots).
+ \frac{\Differential}{\Differential x}\ExponentialPartialBellPolynomial nk(a_1(x),\ldots)
+ =\sum_{i=1}^{n-k+1}\binom ni a_i'(x)\ExponentialPartialBellPolynomial{n-i}{k-1}(a_1(x),\ldots).
 \end{equation}
 \end{theorem}
 \begin{proof}
@@ -2937,29 +2906,29 @@ coefficient identity.
 \begin{theorem}\label{thm:bell-quadratic-differential}
 For $n\ge2$,
 \begin{align}
- \BellC n=\frac1{n-1}\Bigg[&
+ \ExponentialCompleteBellPolynomial n=\frac1{n-1}\Bigg[&
  \sum_{i=2}^{n}\sum_{j=1}^{i-1}(i-1)\binom{i-2}{j-1}x_jx_{i-j}
-       \frac{\partial\BellC{n-1}}{\partial x_{i-1}}\notag\\
+       \frac{\partial\ExponentialCompleteBellPolynomial{n-1}}{\partial x_{i-1}}\notag\\
  &+\sum_{i=2}^{n}\sum_{j=1}^{i-1}\frac{x_{i+1}}{\binom ij}
-       \frac{\partial^2\BellC{n-1}}{\partial x_j\partial x_{i-j}}
- +\sum_{i=2}^{n}x_i\frac{\partial\BellC{n-1}}{\partial x_{i-1}}
+       \frac{\partial^2\ExponentialCompleteBellPolynomial{n-1}}{\partial x_j\partial x_{i-j}}
+ +\sum_{i=2}^{n}x_i\frac{\partial\ExponentialCompleteBellPolynomial{n-1}}{\partial x_{i-1}}
  \Bigg].
  \label{eq:bell-quadratic-differential}
 \end{align}
 Terms containing unavailable variables or negative-index Bell polynomials are zero.
 \end{theorem}
 \begin{proof}
-Let $F(t)=e^{X(t)}=\sum_m\BellC m t^m/m!$.  After using
+Let $F(t)=e^{X(t)}=\sum_m\ExponentialCompleteBellPolynomial m t^m/m!$.  After using
 \eqref{eq:complete-bell-derivative}, the first double sum is
 \[
- (n-1)!\coeff{t}{n-1}\bigl(tX'(t)^2F(t)\bigr).
+ (n-1)!\CoefficientExtraction{t}{n-1}\bigl(tX'(t)^2F(t)\bigr).
 \]
 The second is
-$(n-1)!\coeff{t}{n-1}((tX''-X'+x_1)F)$, and the last is
-$(n-1)!\coeff{t}{n-1}((X'-x_1)F)$.  Their sum is therefore
+$(n-1)!\CoefficientExtraction{t}{n-1}((tX''-X'+x_1)F)$, and the last is
+$(n-1)!\CoefficientExtraction{t}{n-1}((X'-x_1)F)$.  Their sum is therefore
 \[
- (n-1)!\coeff{t}{n-1}t(X''+X'^2)F
- =(n-1)!\coeff{t}{n-1}tF''=(n-1)\BellC n.
+ (n-1)!\CoefficientExtraction{t}{n-1}t(X''+X'^2)F
+ =(n-1)!\CoefficientExtraction{t}{n-1}tF''=(n-1)\ExponentialCompleteBellPolynomial n.
 \]
 Division by $n-1$ proves the formula.
 \end{proof}
@@ -2970,19 +2939,19 @@ Division by $n-1$ proves the formula.
 \begin{theorem}\label{thm:bell-poly-specializations}
 For admissible $n,k$,
 \begin{align}
- \BellP nk(0!,1!,\ldots,(n-k)!)&=\stirone nk,
+ \ExponentialPartialBellPolynomial nk(0!,1!,\ldots,(n-k)!)&=\UnsignedStirlingFirstKind nk,
  \label{eq:bell-first-specialization}\\
- \BellC n(0!,1!,\ldots,(n-1)!)&=n!,
+ \ExponentialCompleteBellPolynomial n(0!,1!,\ldots,(n-1)!)&=n!,
  \label{eq:bell-factorial-complete}\\
- \BellP nk(1,1,\ldots,1)&=\stirtwo nk,
+ \ExponentialPartialBellPolynomial nk(1,1,\ldots,1)&=\StirlingSecondKind nk,
  \label{eq:bell-second-specialization}\\
- \BellC n(1,1,\ldots,1)&=\Bell n,
+ \ExponentialCompleteBellPolynomial n(1,1,\ldots,1)&=\BellNumber n,
  \label{eq:bell-number-specialization}\\
- \BellP nk(1!,2!,\ldots,(n-k+1)!)
- &=\binom{n-1}{k-1}\frac{n!}{k!}=L(n,k),
+ \ExponentialPartialBellPolynomial nk(1!,2!,\ldots,(n-k+1)!)
+ &=\binom{n-1}{k-1}\frac{n!}{k!}=\LahNumber nk,
  \label{eq:bell-lah-specialization}\\
- T_n(x)&=\BellC n(x,x,\ldots,x)
- =\sum_{k=0}^{n}\stirtwo nkx^k.
+ \TouchardPolynomial n(x)&=\ExponentialCompleteBellPolynomial n(x,x,\ldots,x)
+ =\sum_{k=0}^{n}\StirlingSecondKind nkx^k.
  \label{eq:touchard-bell-specialization}
 \end{align}
 \end{theorem}
@@ -2996,19 +2965,19 @@ The resulting coefficient formulae are exactly the column EGFs for unsigned
 first-kind Stirling numbers, second-kind Stirling numbers, and Lah numbers proved
 earlier.  Summing over $k$ yields \eqref{eq:bell-factorial-complete} and
 \eqref{eq:bell-number-specialization}.  Finally $x_j=x$ gives
-$\exp(x(e^t-1))$, the EGF of $T_n(x)$.
+$\exp(x(e^t-1))$, the EGF of $\TouchardPolynomial n(x)$.
 \end{proof}
 
 \section{Homogeneity and a useful evaluation}
 \begin{theorem}[Bigraded homogeneity]\label{thm:bell-bihomogeneous}
 For scalars $\alpha,\beta$,
 \begin{equation}\label{eq:bell-bihomogeneous}
- \BellP nk(\alpha\beta x_1,\alpha\beta^2x_2,\ldots)
- =\alpha^k\beta^n\BellP nk(x_1,x_2,\ldots).
+ \ExponentialPartialBellPolynomial nk(\alpha\beta x_1,\alpha\beta^2x_2,\ldots)
+ =\alpha^k\beta^n\ExponentialPartialBellPolynomial nk(x_1,x_2,\ldots).
 \end{equation}
 Moreover,
 \begin{equation}\label{eq:bell-linear-arguments}
- \BellP nk(1,2,3,\ldots,n-k+1)=\binom nk k^{n-k}.
+ \ExponentialPartialBellPolynomial nk(1,2,3,\ldots,n-k+1)=\binom nk k^{n-k}.
 \end{equation}
 \end{theorem}
 \begin{proof}
@@ -3025,8 +2994,8 @@ $n!k^{n-k}/(k!(n-k)!)=\binom nk k^{n-k}$.
 \section{Addition and shifted-zero identities}
 \begin{theorem}[Complete Bell addition formula]\label{thm:complete-bell-addition}
 \begin{equation}\label{eq:complete-bell-addition}
- \BellC n(x_1+y_1,\ldots,x_n+y_n)
- =\sum_{i=0}^{n}\binom ni\BellC{n-i}(x)\BellC i(y).
+ \ExponentialCompleteBellPolynomial n(x_1+y_1,\ldots,x_n+y_n)
+ =\sum_{i=0}^{n}\binom ni\ExponentialCompleteBellPolynomial{n-i}(x)\ExponentialCompleteBellPolynomial i(y).
 \end{equation}
 \end{theorem}
 \begin{proof}
@@ -3038,11 +3007,11 @@ convolution.
 \begin{theorem}[Insertion of $q$ leading zeros]\label{thm:bell-leading-zeros}
 For $q\ge0$,
 \begin{multline}\label{eq:bell-leading-zeros}
- \BellP nk\!\left(
+ \ExponentialPartialBellPolynomial nk\!\left(
  \frac{x_{q+1}}{\binom{q+1}{q}},
  \frac{x_{q+2}}{\binom{q+2}{q}},\ldots\right)\\
  =\frac{n!(q!)^k}{(n+qk)!}
- \BellP{n+qk}{k}(\underbrace{0,\ldots,0}_{q\text{ entries}},
+ \ExponentialPartialBellPolynomial{n+qk}{k}(\underbrace{0,\ldots,0}_{q\text{ entries}},
  x_{q+1},x_{q+2},\ldots).
 \end{multline}
 \end{theorem}
@@ -3061,12 +3030,12 @@ $t^n$ in \eqref{eq:partial-bell-egf} gives the factorial factor displayed.
 \begin{theorem}[Bell transform and its inverse]\label{thm:bell-transform-inverse}
 Suppose
 \begin{equation}\label{eq:bell-transform-y}
- y_n=\BellC n(x_1,\ldots,x_n)=\sum_{k=1}^{n}\BellP nk(x_1,\ldots).
+ y_n=\ExponentialCompleteBellPolynomial n(x_1,\ldots,x_n)=\sum_{k=1}^{n}\ExponentialPartialBellPolynomial nk(x_1,\ldots).
 \end{equation}
 Then
 \begin{equation}\label{eq:bell-transform-x}
  x_n=\sum_{k=1}^{n}(-1)^{k-1}(k-1)!
- \BellP nk(y_1,\ldots,y_{n-k+1}).
+ \ExponentialPartialBellPolynomial nk(y_1,\ldots,y_{n-k+1}).
 \end{equation}
 \end{theorem}
 \begin{proof}
@@ -3081,18 +3050,18 @@ Use \eqref{eq:partial-bell-egf} to extract the coefficient of $t^n/n!$.
 
 More generally, if $f$ and $g=f^{-1}$ are locally inverse and
 \begin{equation}\label{eq:general-bell-transform}
- y_n=\sum_{k=0}^{n}f^{(k)}(a)\BellP nk(x_1,\ldots),
+ y_n=\sum_{k=0}^{n}f^{(k)}(a)\ExponentialPartialBellPolynomial nk(x_1,\ldots),
 \end{equation}
 then
 \begin{equation}\label{eq:general-bell-inverse}
- x_n=\sum_{k=0}^{n}g^{(k)}(f(a))\BellP nk(y_1,\ldots).
+ x_n=\sum_{k=0}^{n}g^{(k)}(f(a))\ExponentialPartialBellPolynomial nk(y_1,\ldots).
 \end{equation}
 Indeed, these are the derivative coefficients of $f\circ u$ and
 $g\circ f\circ u=u$; a complete proof is given with Fa\`a di Bruno's formula in
 \cref{eq:faa-bell}.
 
 \section{Two Hessenberg determinants}
-For $n\ge1$, define $H_n=(h_{ij})$ and $K_n=(k_{ij})$ by
+For $n\ge1$, define $\BellHessenbergMatrixH n=(h_{ij})$ and $\BellHessenbergMatrixK n=(k_{ij})$ by
 \[
  h_{ij}=\begin{cases}
  \binom{n-i}{j-i}x_{j-i+1},&j\ge i,\\
@@ -3104,7 +3073,7 @@ For $n\ge1$, define $H_n=(h_{ij})$ and $K_n=(k_{ij})$ by
  -(i-1),&j=i-1,\\0,&j<i-1.
  \end{cases}
 \]
-Thus $H_n$ begins with
+Thus $\BellHessenbergMatrixH n$ begins with
 \[
 \begin{bmatrix}
  x_1&\binom{n-1}{1}x_2&\binom{n-1}{2}x_3&\cdots&x_n\\
@@ -3114,28 +3083,30 @@ Thus $H_n$ begins with
  0&\cdots&0&-1&x_1
 \end{bmatrix},
 \]
-while $K_n$ has first row
+while $\BellHessenbergMatrixK n$ has first row
 $x_1,x_2/1!,\ldots,x_n/(n-1)!$ and subdiagonal
 $-1,-2,\ldots,-(n-1)$.
 
 \begin{theorem}[Bell determinants]\label{thm:bell-determinants}
 \begin{equation}\label{eq:bell-determinants}
- \BellC n(x_1,\ldots,x_n)=\det H_n=\det K_n.
+ \ExponentialCompleteBellPolynomial n(x_1,\ldots,x_n)
+ =\det \BellHessenbergMatrixH n=\det \BellHessenbergMatrixK n.
 \end{equation}
 \end{theorem}
 \begin{proof}
-Expansion of the upper Hessenberg determinant $\det H_n$ along its first row gives
+Expansion of the upper Hessenberg determinant $\det \BellHessenbergMatrixH n$ along its first row gives
 \[
  D_n=\sum_{j=1}^{n}\binom{n-1}{j-1}x_jD_{n-j},\qquad D_0=1;
 \]
 the cofactor sign is cancelled by the product of the $j-1$ entries $-1$ on the
 subdiagonal.  This is exactly \eqref{eq:complete-bell-recurrence}, so
-$D_n=\BellC n$.
+$D_n=\ExponentialCompleteBellPolynomial n$.
 
 Let $J$ reverse the coordinate order and let
-$D=\diag(0!,1!,\ldots,(n-1)!)$.  A direct entrywise calculation gives
+$D=\DiagonalOperator(0!,1!,\ldots,(n-1)!)$.  A direct entrywise calculation gives
 \[
- K_n=D(JH_n^{\mathsf T}J)D^{-1}.
+ \BellHessenbergMatrixK n
+ =D\bigl(J(\BellHessenbergMatrixH n)^{\mathsf T}J\bigr)D^{-1}.
 \]
 Indeed,
 $\frac{(i-1)!}{(j-1)!}\binom{j-1}{i-1}=1/(j-i)!$ above the diagonal, and the
@@ -3154,7 +3125,7 @@ multiplication of the EGFs $X(t)$ and $Y(t)$.
 \begin{theorem}\label{thm:diamond-bell}
 If $x^{k\diamondsuit}$ denotes the $k$-fold diamond power, then
 \begin{equation}\label{eq:diamond-bell}
- \BellP nk(x_1,\ldots,x_{n-k+1})=\frac{(x^{k\diamondsuit})_n}{k!}.
+ \ExponentialPartialBellPolynomial nk(x_1,\ldots,x_{n-k+1})=\frac{(x^{k\diamondsuit})_n}{k!}.
 \end{equation}
 \end{theorem}
 \begin{proof}
@@ -3167,7 +3138,7 @@ For example,
 \]
 and
 $(x^{3\diamondsuit})_4=36x_1^2x_2$, whence
-$\BellP43=6x_1^2x_2$.
+$\ExponentialPartialBellPolynomial43=6x_1^2x_2$.
 
 \chapter{Applications of Bell polynomials}
 
@@ -3176,16 +3147,16 @@ Let $e_n$ be the elementary symmetric function and
 $p_n=\sum_i u_i^n$ the power sum in an alphabet $u_1,u_2,\ldots$.
 \begin{theorem}\label{thm:bell-symmetric-functions}
 \begin{align}
- e_n&=\frac1{n!}\BellC n(p_1,-1!p_2,2!p_3,\ldots,(-1)^{n-1}(n-1)!p_n)
+ e_n&=\frac1{n!}\ExponentialCompleteBellPolynomial n(p_1,-1!p_2,2!p_3,\ldots,(-1)^{n-1}(n-1)!p_n)
  \label{eq:elementary-via-bell}\\
- &=\frac{(-1)^n}{n!}\BellC n(-p_1,-1!p_2,-2!p_3,\ldots,-(n-1)!p_n),
+ &=\frac{(-1)^n}{n!}\ExponentialCompleteBellPolynomial n(-p_1,-1!p_2,-2!p_3,\ldots,-(n-1)!p_n),
  \notag\\
  p_n&=\frac{(-1)^{n-1}}{(n-1)!}
  \sum_{k=1}^{n}(-1)^{k-1}(k-1)!
- \BellP nk(1!e_1,2!e_2,\ldots)
+ \ExponentialPartialBellPolynomial nk(1!e_1,2!e_2,\ldots)
  \label{eq:powersum-via-bell}\\
  &=(-1)^n n\sum_{k=1}^{n}\frac1k
- \OBellP nk(-e_1,-e_2,\ldots).
+ \OrdinaryPartialBellPolynomial nk(-e_1,-e_2,\ldots).
  \notag
 \end{align}
 \end{theorem}
@@ -3204,14 +3175,14 @@ The exponential form follows from \eqref{eq:ordinary-exponential-scaling}.
 
 \begin{corollary}[Determinant from traces]\label{cor:det-traces-bell}
 For an $n\times n$ matrix $A$, set
-$s_k=-(k-1)!\tr(A^k)$.  Then
+$\TraceBellArgument{k}=-(k-1)!\TraceOperator(A^k)$.  Then
 \begin{equation}\label{eq:det-traces-bell}
- \det A=\frac{(-1)^n}{n!}\BellC n(s_1,s_2,\ldots,s_n).
+ \det A=\frac{(-1)^n}{n!}\ExponentialCompleteBellPolynomial n(\TraceBellArgument{1},\TraceBellArgument{2},\ldots,\TraceBellArgument{n}).
 \end{equation}
 \end{corollary}
 \begin{proof}
 Apply \eqref{eq:elementary-via-bell} to the eigenvalues of $A$, using
-$e_n=\det A$ and $p_k=\tr(A^k)$.  Both sides are polynomial in the matrix entries,
+$e_n=\det A$ and $p_k=\TraceOperator(A^k)$.  Both sides are polynomial in the matrix entries,
 so the argument remains valid for nondiagonalizable matrices.
 \end{proof}
 
@@ -3220,7 +3191,7 @@ Let $a_j$ mark cycles of length $j$ in a permutation.
 \begin{theorem}\label{thm:cycle-index-bell}
 The cycle index of the symmetric group is
 \begin{equation}\label{eq:cycle-index-bell}
- Z(S_n)=\frac1{n!}\BellC n(0!a_1,1!a_2,\ldots,(n-1)!a_n).
+ Z(S_n)=\frac1{n!}\ExponentialCompleteBellPolynomial n(0!a_1,1!a_2,\ldots,(n-1)!a_n).
 \end{equation}
 \end{theorem}
 \begin{proof}
@@ -3232,15 +3203,15 @@ $\exp(\sum_{j\ge1}a_jt^j/j)$; comparison with
 \end{proof}
 
 \section{Moments and cumulants}
-Let $M(t)=\E e^{tX}=\sum_{n\ge0}\mu'_nt^n/n!$ and
+Let $M(t)=\Expectation e^{tX}=\sum_{n\ge0}\mu'_nt^n/n!$ and
 $K(t)=\log M(t)=\sum_{n\ge1}\kappa_nt^n/n!$.
 \begin{theorem}[Moment--cumulant relations]\label{thm:moment-cumulant}
 \begin{align}
- \mu'_n&=\BellC n(\kappa_1,\ldots,\kappa_n)
- =\sum_{k=1}^{n}\BellP nk(\kappa_1,\ldots),
+ \mu'_n&=\ExponentialCompleteBellPolynomial n(\kappa_1,\ldots,\kappa_n)
+ =\sum_{k=1}^{n}\ExponentialPartialBellPolynomial nk(\kappa_1,\ldots),
  \label{eq:moments-from-cumulants}\\
  \kappa_n&=\sum_{k=1}^{n}(-1)^{k-1}(k-1)!
- \BellP nk(\mu'_1,\ldots,\mu'_{n-k+1}).
+ \ExponentialPartialBellPolynomial nk(\mu'_1,\ldots,\mu'_{n-k+1}).
  \label{eq:cumulants-from-moments}
 \end{align}
 \end{theorem}
@@ -3256,7 +3227,7 @@ The probabilists' Hermite polynomials are defined by
 \]
 Comparison with \eqref{eq:complete-bell-egf} gives and proves
 \begin{equation}\label{eq:hermite-bell}
- \operatorname{He}_n(x)=\BellC n(x,-1,0,\ldots,0).
+ \operatorname{He}_n(x)=\ExponentialCompleteBellPolynomial n(x,-1,0,\ldots,0).
 \end{equation}
 In particular, the usual recurrence and differential equation follow by
 differentiating this generating function.
@@ -3265,8 +3236,8 @@ differentiating this generating function.
 Let
 $h(t)=\sum_{j\ge1}a_jt^j/j!$ with $a_1\ne0$, and define
 \begin{equation}\label{eq:binomial-type-bell}
- p_n(x)=\BellC n(a_1x,a_2x,\ldots,a_nx)
- =\sum_{k=0}^{n}\BellP nk(a_1,\ldots,a_{n-k+1})x^k.
+ p_n(x)=\ExponentialCompleteBellPolynomial n(a_1x,a_2x,\ldots,a_nx)
+ =\sum_{k=0}^{n}\ExponentialPartialBellPolynomial nk(a_1,\ldots,a_{n-k+1})x^k.
 \end{equation}
 
 \begin{theorem}\label{thm:binomial-type-bell}
@@ -3292,7 +3263,7 @@ gives \eqref{eq:delta-operator}.
 \begin{auditbox}
 In some sources the symbol $B_n(x)$ denotes the Touchard polynomial, in others a
 complete Bell polynomial, a Bernoulli polynomial, or a binary-tree sequence.  The
-notations $T_n$, $\BellC n$, $\beta_n(x)$, and $C_n$ are kept separate here; this
+notations $\TouchardPolynomial n$, $\ExponentialCompleteBellPolynomial n$, $\beta_n(x)$, and $\CatalanNumber n$ are kept separate here; this
 is essential when the objects occur in the same inversion formula.
 \end{auditbox}
 
@@ -3305,25 +3276,25 @@ is essential when the objects occur in the same inversion formula.
 For a permutation $\pi=\pi_1\cdots\pi_n$, a descent is an index
 $i\in\{1,\ldots,n-1\}$ with $\pi_i>\pi_{i+1}$.
 \begin{definition}
-The Eulerian number $\eulerian nk=A(n,k)$ counts permutations of $[n]$ with
+The Eulerian number $\TypeAEulerianNumber nk=A(n,k)$ counts permutations of $[n]$ with
 exactly $k$ descents.  Put
 \[
- A_0(t)=1,
+ \TypeAEulerianPolynomial0(t)=1,
  \qquad
- A_n(t)=\sum_{k=0}^{n-1}\eulerian nk t^k\quad(n\ge1).
+ \TypeAEulerianPolynomial n(t)=\sum_{k=0}^{n-1}\TypeAEulerianNumber nk t^k\quad(n\ge1).
 \]
 Outside $0\le k<n$ the number is zero.
 \end{definition}
 
 \begin{theorem}[Eulerian recurrence]\label{thm:eulerian-recurrence}
 \begin{equation}\label{eq:eulerian-recurrence}
- \eulerian nk=(k+1)\eulerian{n-1}{k}
- +(n-k)\eulerian{n-1}{k-1}.
+ \TypeAEulerianNumber nk=(k+1)\TypeAEulerianNumber{n-1}{k}
+ +(n-k)\TypeAEulerianNumber{n-1}{k-1}.
 \end{equation}
 Equivalently,
 \begin{equation}\label{eq:eulerian-poly-recurrence}
- A_n(t)=\bigl(1+(n-1)t\bigr)A_{n-1}(t)
-       +t(1-t)A_{n-1}'(t).
+ \TypeAEulerianPolynomial n(t)=\bigl(1+(n-1)t\bigr)\TypeAEulerianPolynomial{n-1}(t)
+       +t(1-t)\bigl(\TypeAEulerianPolynomial{n-1}\bigr)'(t).
 \end{equation}
 \end{theorem}
 \begin{proof}
@@ -3338,21 +3309,21 @@ terms containing $k$ to obtain \eqref{eq:eulerian-poly-recurrence}.
 Complementation $\pi_i\mapsto n+1-\pi_i$ interchanges descents and ascents.
 Therefore
 \begin{equation}\label{eq:eulerian-symmetry}
- \eulerian nk=\eulerian n{n-1-k},
+ \TypeAEulerianNumber nk=\TypeAEulerianNumber n{n-1-k},
  \qquad
- A_n(t)=t^{n-1}A_n(t^{-1}).
+ \TypeAEulerianPolynomial n(t)=t^{n-1}\TypeAEulerianPolynomial n(t^{-1}).
 \end{equation}
-In particular $\eulerian n0=\eulerian n{n-1}=1$ and
-$\sum_k\eulerian nk=n!$.  The next diagonal is
+In particular $\TypeAEulerianNumber n0=\TypeAEulerianNumber n{n-1}=1$ and
+$\sum_k\TypeAEulerianNumber nk=n!$.  The next diagonal is
 \begin{equation}\label{eq:eulerian-k1}
- \eulerian n1=2^n-(n+1),
+ \TypeAEulerianNumber n1=2^n-(n+1),
 \end{equation}
 which follows either from the recurrence or from the explicit formula below.
 
 \section{Exponential generating function and explicit formula}
 \begin{theorem}[Eulerian EGF]\label{thm:eulerian-egf}
 \begin{equation}\label{eq:eulerian-egf}
- \sum_{n\ge0}A_n(t)\frac{x^n}{n!}
+ \sum_{n\ge0}\TypeAEulerianPolynomial n(t)\frac{x^n}{n!}
  =\frac{t-1}{t-e^{(t-1)x}}
  =\frac{(1-t)e^{(1-t)x}}{1-te^{(1-t)x}}.
 \end{equation}
@@ -3375,11 +3346,11 @@ Expanding the denominator geometrically gives the central power-series identity.
 For $n\ge0$,
 \begin{equation}\label{eq:eulerian-power-series}
  \sum_{m=0}^{\infty}(m+1)^n t^m
- =\frac{A_n(t)}{(1-t)^{n+1}}.
+ =\frac{\TypeAEulerianPolynomial n(t)}{(1-t)^{n+1}}.
 \end{equation}
 Consequently,
 \begin{equation}\label{eq:eulerian-explicit}
- \eulerian nk=\sum_{j=0}^{k}(-1)^j\binom{n+1}{j}(k+1-j)^n.
+ \TypeAEulerianNumber nk=\sum_{j=0}^{k}(-1)^j\binom{n+1}{j}(k+1-j)^n.
 \end{equation}
 \end{theorem}
 \begin{proof}
@@ -3395,7 +3366,7 @@ $(1-t)^{n+1}$ and extract $t^k$ to obtain
 \begin{theorem}[A second polynomial recurrence]\label{thm:eulerian-binomial-recurrence}
 For $n>1$,
 \begin{equation}\label{eq:eulerian-binomial-recurrence}
- A_n(t)=\sum_{k=0}^{n-1}\binom nk A_k(t)(t-1)^{n-1-k}.
+ \TypeAEulerianPolynomial n(t)=\sum_{k=0}^{n-1}\binom nk \TypeAEulerianPolynomial k(t)(t-1)^{n-1-k}.
 \end{equation}
 \end{theorem}
 \begin{proof}
@@ -3411,7 +3382,7 @@ left sides.
 \begin{theorem}[Worpitzky]\label{thm:worpitzky}
 For every indeterminate $x$ and $n\ge1$,
 \begin{equation}\label{eq:worpitzky}
- x^n=\sum_{k=0}^{n-1}\eulerian nk\binom{x+k}{n}.
+ x^n=\sum_{k=0}^{n-1}\TypeAEulerianNumber nk\binom{x+k}{n}.
 \end{equation}
 \end{theorem}
 \begin{proof}
@@ -3432,7 +3403,7 @@ $\binom{x+k}{n}$ words for each permutation with $k$ descents.
 For $m,n\ge1$,
 \begin{equation}\label{eq:eulerian-power-sum}
  \sum_{r=1}^{m}r^n
- =\sum_{k=0}^{n-1}\eulerian nk\binom{m+k+1}{n+1}.
+ =\sum_{k=0}^{n-1}\TypeAEulerianNumber nk\binom{m+k+1}{n+1}.
 \end{equation}
 \end{corollary}
 \begin{proof}
@@ -3442,12 +3413,12 @@ terms vanish for $0\le k<n$.
 \end{proof}
 
 \section{Negative polylogarithms}
-For $|z|<1$, $\Li_{-n}(z)=\sum_{m\ge1}m^nz^m$.  Shifting $m$ in
+For $|z|<1$, $\Polylogarithm_{-n}(z)=\sum_{m\ge1}m^nz^m$.  Shifting $m$ in
 \eqref{eq:eulerian-power-series} gives
 \begin{equation}\label{eq:negative-polylog-eulerian}
- \Li_{-n}(z)=\frac{zA_n(z)}{(1-z)^{n+1}}
+ \Polylogarithm_{-n}(z)=\frac{zA_n(z)}{(1-z)^{n+1}}
  =\frac{1}{(1-z)^{n+1}}
-   \sum_{k=0}^{n-1}\eulerian nk z^{n-k},
+   \sum_{k=0}^{n-1}\TypeAEulerianNumber nk z^{n-k},
 \end{equation}
 where the second equality uses symmetry \eqref{eq:eulerian-symmetry}.  Since the
 right side is rational, it also supplies the meromorphic continuation of the
@@ -3456,44 +3427,44 @@ negative polylogarithm.
 \section{Eulerian and Stirling bases}
 \begin{theorem}\label{thm:eulerian-stirling}
 \begin{equation}\label{eq:eulerian-stirling}
- A_n(t)=\sum_{k=0}^{n}\stirtwo nk k!(t-1)^{n-k}.
+ \TypeAEulerianPolynomial n(t)=\sum_{k=0}^{n}\StirlingSecondKind nk k!(t-1)^{n-k}.
 \end{equation}
 \end{theorem}
 \begin{proof}
-Use $m^n=\sum_k\stirtwo nk\falling mk$ in
+Use $m^n=\sum_k\StirlingSecondKind nk\FallingFactorial mk$ in
 $\sum_{m\ge0}m^nt^m$.  Since
-$\sum_{m\ge0}\falling mk t^m=k!t^k/(1-t)^{k+1}$, multiplication by
+$\sum_{m\ge0}\FallingFactorial mk t^m=k!t^k/(1-t)^{k+1}$, multiplication by
 $(1-t)^{n+1}/t$ yields
-$A_n(t)=\sum_k\stirtwo nk k!t^{k-1}(1-t)^{n-k}$.  Replacing $t$ by $1/t$ and
+$\TypeAEulerianPolynomial n(t)=\sum_k\StirlingSecondKind nk k!t^{k-1}(1-t)^{n-k}$.  Replacing $t$ by $1/t$ and
 using \eqref{eq:eulerian-symmetry}, or simply expanding around $t=1$, gives the
 equivalent displayed form.
 \end{proof}
 
 \section{An Irwin--Hall integral and hypersimplex volumes}
 \begin{theorem}\label{thm:eulerian-irwin-hall}
-For every function $f:\R\to\C$ for which the following finite sum is defined,
+For every function $f:\RealNumbers\to\ComplexNumbers$ for which the following finite sum is defined,
 \begin{equation}\label{eq:eulerian-irwin-hall}
- \sum_{k=0}^{n-1}\eulerian nk f(k)
- =n!\int_{[0,1]^n}f\!\left(\left\lfloor x_1+\cdots+x_n\right\rfloor\right)
- \dd x_1\cdots\dd x_n.
+ \sum_{k=0}^{n-1}\TypeAEulerianNumber nk f(k)
+ =n!\int_{[0,1]^n}f\!\left(\Floor{x_1+\cdots+x_n}\right)
+ \Differential x_1\cdots\Differential x_n.
 \end{equation}
 In particular, the slab
 \[
  \Delta_{n,k}=\{x\in[0,1]^n:k\le x_1+\cdots+x_n<k+1\}
 \]
-has volume $\eulerian nk/n!$.
+has volume $\TypeAEulerianNumber nk/n!$.
 \end{theorem}
 \begin{proof}
 The volume of $\{x\in[0,1]^n:\sum x_i<y\}$ is obtained from the simplex
 $\{x_i\ge0:\sum x_i<y\}$ by inclusion--exclusion over coordinates exceeding $1$:
 \[
- V_n(y)=\frac1{n!}\sum_{j=0}^{\lfloor y\rfloor}(-1)^j\binom nj(y-j)^n.
+ V_n(y)=\frac1{n!}\sum_{j=0}^{\Floor{y}}(-1)^j\binom nj(y-j)^n.
 \]
 Thus the volume of the $k$th slab is $V_n(k+1)-V_n(k)$.  Combining adjacent terms
 by Pascal's identity gives
 \[
  \frac1{n!}\sum_{j=0}^{k}(-1)^j\binom{n+1}{j}(k+1-j)^n
- =\frac1{n!}\eulerian nk
+ =\frac1{n!}\TypeAEulerianNumber nk
 \]
 by \eqref{eq:eulerian-explicit}.  Summing $f(k)$ times these volumes proves the
 integral identity.
@@ -3503,14 +3474,14 @@ integral identity.
 \begin{theorem}\label{thm:eulerian-alternating}
 For $n>0$,
 \begin{equation}\label{eq:eulerian-alternating}
- \sum_{k=0}^{n-1}(-1)^k\eulerian nk
+ \sum_{k=0}^{n-1}(-1)^k\TypeAEulerianNumber nk
  =2^{n+1}(2^{n+1}-1)\frac{\beta_{n+1}}{n+1}.
 \end{equation}
 For $n>1$,
 \begin{align}
- \sum_{k=0}^{n-1}\frac{(-1)^k\eulerian nk}{\binom{n-1}{k}}&=0,
+ \sum_{k=0}^{n-1}\frac{(-1)^k\TypeAEulerianNumber nk}{\binom{n-1}{k}}&=0,
  \label{eq:eulerian-reciprocal-zero}\\
- \sum_{k=0}^{n-1}\frac{(-1)^k\eulerian nk}{\binom nk}&=(n+1)\beta_n.
+ \sum_{k=0}^{n-1}\frac{(-1)^k\TypeAEulerianNumber nk}{\binom nk}&=(n+1)\beta_n.
  \label{eq:eulerian-reciprocal-bernoulli}
 \end{align}
 \end{theorem}
@@ -3525,21 +3496,21 @@ which proves \eqref{eq:eulerian-alternating}.
 
 For the remaining identities use
 \[
- \binom{n-1}{k}^{-1}=n\int_0^1u^k(1-u)^{n-k-1}\dd u,
+ \binom{n-1}{k}^{-1}=n\int_0^1u^k(1-u)^{n-k-1}\Differential u,
  \quad
- \binom nk^{-1}=(n+1)\int_0^1u^k(1-u)^{n-k}\dd u.
+ \binom nk^{-1}=(n+1)\int_0^1u^k(1-u)^{n-k}\Differential u.
 \]
 Substitute $t=-u/(1-u)$ in \eqref{eq:eulerian-stirling}; then
 \begin{equation}\label{eq:eulerian-beta-transform}
  (1-u)^nA_n\!\left(-\frac{u}{1-u}\right)
- =\sum_{j=0}^{n}(-1)^{n-j}\stirtwo njj!(1-u)^j.
+ =\sum_{j=0}^{n}(-1)^{n-j}\StirlingSecondKind njj!(1-u)^j.
 \end{equation}
 For the first integral divide by $1-u$ and integrate.  The result is
-$n\sum_{j=1}^n(-1)^{n-j}\stirtwo nj(j-1)!=0$ for $n>1$, because it is the
+$n\sum_{j=1}^n(-1)^{n-j}\StirlingSecondKind nj(j-1)!=0$ for $n>1$, because it is the
 coefficient of $x^n/n!$ in
 $\log(1+(e^x-1))=x$.  For the second integral one obtains
-$(n+1)\sum_j(-1)^{n-j}\stirtwo njj!/(j+1)$.  The standard Stirling formula
-$\beta_n=\sum_j(-1)^jj!\stirtwo nj/(j+1)$ proves the claim; for odd $n>1$ both
+$(n+1)\sum_j(-1)^{n-j}\StirlingSecondKind njj!/(j+1)$.  The standard Stirling formula
+$\beta_n=\sum_j(-1)^jj!\StirlingSecondKind nj/(j+1)$ proves the claim; for odd $n>1$ both
 sides vanish, and for even $n$ the signs coincide.
 \end{proof}
 
@@ -3547,11 +3518,11 @@ sides vanish, and for even $n$ the signs coincide.
 
 \section{The cube and its Ehrhart numerator}
 For a lattice polytope $P$ of dimension $d$, its Ehrhart series has the form
-$\sum_{m\ge0}|mP\cap\Z^d|t^m=h^*(t)/(1-t)^{d+1}$.
-For the unit cube $C=[0,1]^n$ one has $|mC\cap\Z^n|=(m+1)^n$; hence
+$\sum_{m\ge0}|mP\cap\IntegerNumbers^d|t^m=h^*(t)/(1-t)^{d+1}$.
+For the unit cube $C=[0,1]^n$ one has $|mC\cap\IntegerNumbers^n|=(m+1)^n$; hence
 \eqref{eq:eulerian-power-series} proves:
 \begin{theorem}\label{unif:thm-cube-ehrhart}
-The $h^*$-polynomial of the standard $n$-cube is $A_n(t)$, so its $h^*$-vector is
+The $h^*$-polynomial of the standard $n$-cube is $\TypeAEulerianPolynomial n(t)$, so its $h^*$-vector is
 the $n$th Eulerian row.
 \end{theorem}
 \begin{proof}
@@ -3563,32 +3534,32 @@ series is
 The Eulerian power-series identity, with the summation index shifted by one,
 gives
 \[
- \sum_{m\ge0}(m+1)^nt^m=\frac{A_n(t)}{(1-t)^{n+1}}.
+ \sum_{m\ge0}(m+1)^nt^m=\frac{\TypeAEulerianPolynomial n(t)}{(1-t)^{n+1}}.
 \]
 Comparing this with the defining Ehrhart form
-$\sum_{m\ge0}|mC\cap\Z^n|t^m=h^*(t)/(1-t)^{n+1}$ proves
-$h^*(t)=A_n(t)$.
+$\sum_{m\ge0}|mC\cap\IntegerNumbers^n|t^m=h^*(t)/(1-t)^{n+1}$ proves
+$h^*(t)=\TypeAEulerianPolynomial n(t)$.
 \end{proof}
 
 The regions $\Delta_{n,k}$ in \cref{thm:eulerian-irwin-hall} are half-open
 hypersimplices.  Their normalized volumes are $n!\operatorname{vol}\Delta_{n,k}
-=\eulerian nk$.
+=\TypeAEulerianNumber nk$.
 
 \section{The permutohedron}
 The type-$A$ permutohedron is the convex hull of the permutations of
 $(1,2,\ldots,n)$; its dimension is $n-1$.  Faces of its braid fan are indexed by
-ordered set partitions.  There are $k!\stirtwo nk$ ordered partitions into $k$
+ordered set partitions.  There are $k!\StirlingSecondKind nk$ ordered partitions into $k$
 blocks.
 
 \begin{theorem}
 The $h$-polynomial of the simple polytope dual to the type-$A$ permutohedron is
-$A_n(t)$.
+$\TypeAEulerianPolynomial n(t)$.
 \end{theorem}
 \begin{proof}
 For a simple $(n-1)$-polytope the $h$-polynomial is the transform
 $h(t)=\sum_F(t-1)^{\dim F}$ over faces of the dual simplicial complex.  Grouping
 braid-fan faces by their $k$ ordered blocks gives
-$\sum_k k!\stirtwo nk(t-1)^{n-k}$, which is $A_n(t)$ by
+$\sum_k k!\StirlingSecondKind nk(t-1)^{n-k}$, which is $\TypeAEulerianPolynomial n(t)$ by
 \eqref{eq:eulerian-stirling}.
 \end{proof}
 
@@ -3598,8 +3569,8 @@ $\sum_k k!\stirtwo nk(t-1)^{n-k}$, which is $A_n(t)$ by
 A signed permutation is a word $\pi_1\cdots\pi_n$ whose absolute values form a
 permutation of $[n]$.  Put $\pi_0=0$ and call
 $i\in\{0,\ldots,n-1\}$ a type-$B$ descent when $\pi_i>\pi_{i+1}$.
-Let $E_B(n,k)$ count signed permutations with $k$ such descents, and set
-$M_n(t)=\sum_{k=0}^{n}E_B(n,k)t^k$.
+Let $\TypeBEulerianNumber nk$ count signed permutations with $k$ such descents, and set
+$\TypeBEulerianPolynomial n(t)=\sum_{k=0}^{n}\TypeBEulerianNumber nk t^k$.
 
 \begin{auditbox}
 The archived display reverses the two entries in the descent inequality and pairs
@@ -3610,11 +3581,11 @@ $1,6,1$ for $n=2$ and the midpoint-Eulerian generating function below.
 
 \begin{theorem}[Type-$B$ recurrence and Worpitzky series]\label{thm:typeB-eulerian}
 \begin{align}
- E_B(n,k)&=(2k+1)E_B(n-1,k)+(2n-2k+1)E_B(n-1,k-1),
+ \TypeBEulerianNumber nk&=(2k+1)\TypeBEulerianNumber{n-1}k+(2n-2k+1)\TypeBEulerianNumber{n-1}{k-1},
  \label{eq:typeB-recurrence}\\
- \sum_{m\ge0}(2m+1)^nt^m&=\frac{M_n(t)}{(1-t)^{n+1}},
+ \sum_{m\ge0}(2m+1)^nt^m&=\frac{\TypeBEulerianPolynomial n(t)}{(1-t)^{n+1}},
  \label{eq:typeB-power-series}\\
- E_B(n,k)&=\sum_{j=0}^{k}(-1)^j\binom{n+1}{j}
+ \TypeBEulerianNumber nk&=\sum_{j=0}^{k}(-1)^j\binom{n+1}{j}
              \bigl(2(k-j)+1\bigr)^n.
  \label{eq:typeB-explicit}
 \end{align}
@@ -3634,7 +3605,7 @@ $-m<\cdots<-1<0<1<\cdots<m$ by their signed sorting permutation.  If that
 permutation has $k$ type-$B$ descents, stars and bars gives
 $\binom{m+n-k}{n}$ compatible weakly increasing absolute levels.  Hence
 \[
- (2m+1)^n=\sum_{k=0}^{n}E_B(n,k)\binom{m+n-k}{n}.
+ (2m+1)^n=\sum_{k=0}^{n}\TypeBEulerianNumber nk\binom{m+n-k}{n}.
 \]
 Multiply by $t^m$, sum in $m$, and use
 $\sum_{m\ge0}\binom{m+n-k}{n}t^m=t^k/(1-t)^{n+1}$ to obtain
@@ -3649,20 +3620,21 @@ ordered partitions.
 \section{Stirling permutations and second-order Eulerian numbers}
 A \emph{Stirling permutation of order $n$} is a permutation of the multiset
 $\{1,1,2,2,\ldots,n,n\}$ such that all entries between the two copies of $i$ are
-larger than $i$.  Let $\eulertwo nk$ count those with $k$ ordinary descents and put
+larger than $i$.  Let $\SecondOrderEulerianNumber nk$ count those with $k$ ordinary descents and put
 \[
- P_n(t)=\sum_{k=0}^{n-1}\eulertwo nk t^k,
- \qquad P_0(t)=1.
+ \SecondOrderEulerianPolynomial n(t)=\sum_{k=0}^{n-1}\SecondOrderEulerianNumber nk t^k,
+ \qquad \SecondOrderEulerianPolynomial0(t)=1.
 \]
 
 \begin{theorem}[Second-order recurrence]\label{thm:second-eulerian-recurrence}
 \begin{align}
- \eulertwo nk&=(2n-k-1)\eulertwo{n-1}{k-1}
- +(k+1)\eulertwo{n-1}{k},
+ \SecondOrderEulerianNumber nk&=(2n-k-1)\SecondOrderEulerianNumber{n-1}{k-1}
+ +(k+1)\SecondOrderEulerianNumber{n-1}{k},
  \label{eq:second-eulerian-recurrence}\\
- P_{n+1}(t)&=(2nt+1)P_n(t)-t(t-1)P_n'(t),
+ \SecondOrderEulerianPolynomial{n+1}(t)&=(2nt+1)\SecondOrderEulerianPolynomial n(t)
+ -t(t-1)\bigl(\SecondOrderEulerianPolynomial n\bigr)'(t),
  \label{eq:second-eulerian-poly-recurrence}\\
- P_n(1)&=(2n-1)!!.
+ \SecondOrderEulerianPolynomial n(1)&=(2n-1)!!.
  \label{eq:second-eulerian-row-sum}
 \end{align}
 \end{theorem}
@@ -3678,11 +3650,11 @@ the total count is $(2n-1)!!$.
 
 The differential recurrence has two useful equivalent forms:
 \begin{align}
- (t-1)^{-2n-2}P_{n+1}(t)
- &=\left(t(1-t)^{-2n-1}P_n(t)\right)',
+ (t-1)^{-2n-2}\SecondOrderEulerianPolynomial{n+1}(t)
+ &=\left(t(1-t)^{-2n-1}\SecondOrderEulerianPolynomial n(t)\right)',
  \label{eq:second-eulerian-differential-form}\\
  u_{n+1}(t)&=\left(\frac{t}{1-t}u_n(t)\right)',
- \quad u_n(t)=(t-1)^{-2n}P_n(t),\quad u_0=1.
+ \quad u_n(t)=(t-1)^{-2n}\SecondOrderEulerianPolynomial n(t),\quad u_0=1.
  \label{eq:second-eulerian-u}
 \end{align}
 They follow by the product rule from
@@ -3691,7 +3663,7 @@ They follow by the product rule from
 \begin{theorem}[Diagonal Stirling generating function]\label{thm:second-eulerian-stirling-gf}
 For $n\ge1$,
 \begin{equation}\label{eq:second-eulerian-stirling-gf}
- \sum_{m=0}^{\infty}\stirtwo{n+m}{m}t^m
+ \sum_{m=0}^{\infty}\StirlingSecondKind{n+m}{m}t^m
  =\frac{tP_n(t)}{(1-t)^{2n+1}}.
 \end{equation}
 \end{theorem}
@@ -3714,29 +3686,29 @@ the near-diagonals of the unsigned first-kind triangle.
 For $p,m\ge0$,
 \begin{equation}
 \label{eq:second-eulerian-first-diagonal}
- \stirone m{m-p}
- =\sum_{j=0}^{p}\eulertwo pj\binom{m+j}{2p},
+ \UnsignedStirlingFirstKind m{m-p}
+ =\sum_{j=0}^{p}\SecondOrderEulerianNumber pj\binom{m+j}{2p},
 \end{equation}
 where an out-of-range first-kind number is zero.  Equivalently, the polynomial
 continuation in a variable $x$ satisfies
 \[
- \stirone{x}{x-p}
- =\sum_{j=0}^{p}\eulertwo pj\binom{x+j}{2p}.
+ \UnsignedStirlingFirstKind{x}{x-p}
+ =\sum_{j=0}^{p}\SecondOrderEulerianNumber pj\binom{x+j}{2p}.
 \]
 The first instances are
 \begin{align*}
- \stirone{x}{x-1}&=\binom{x}{2},\\
- \stirone{x}{x-2}&=\binom{x}{4}+2\binom{x+1}{4},\\
- \stirone{x}{x-3}&=\binom{x}{6}+8\binom{x+1}{6}
+ \UnsignedStirlingFirstKind{x}{x-1}&=\binom{x}{2},\\
+ \UnsignedStirlingFirstKind{x}{x-2}&=\binom{x}{4}+2\binom{x+1}{4},\\
+ \UnsignedStirlingFirstKind{x}{x-3}&=\binom{x}{6}+8\binom{x+1}{6}
                     +6\binom{x+2}{6}.
 \end{align*}
 \end{theorem}
 \begin{proof}
 For fixed $p$ define
 \[
- D_p(t)=\sum_{m\ge0}\stirone m{m-p}t^m.
+ D_p(t)=\sum_{m\ge0}\UnsignedStirlingFirstKind m{m-p}t^m.
 \]
-Writing $a_{m,p}=\stirone m{m-p}$, the first-kind recurrence becomes
+Writing $a_{m,p}=\UnsignedStirlingFirstKind m{m-p}$, the first-kind recurrence becomes
 $a_{m,p}=a_{m-1,p}+(m-1)a_{m-1,p-1}$.  Therefore
 \begin{equation}
 \label{eq:first-diagonal-ogf-recurrence}
@@ -3745,7 +3717,7 @@ $a_{m,p}=a_{m-1,p}+(m-1)a_{m-1,p-1}$.  Therefore
 \end{equation}
 Let
 \[
- Q_p(t)=t^{2p}P_p(t^{-1}).
+ Q_p(t)=t^{2p}\SecondOrderEulerianPolynomial p(t^{-1}).
 \]
 The polynomial recurrence \eqref{eq:second-eulerian-poly-recurrence} is equivalent,
 after the substitution $t\mapsto t^{-1}$, to
@@ -3756,14 +3728,14 @@ It follows inductively from \eqref{eq:first-diagonal-ogf-recurrence} that
 \begin{equation}
 \label{eq:first-diagonal-second-eulerian-ogf}
  D_p(t)=\frac{Q_p(t)}{(1-t)^{2p+1}}
- =\frac{t^{2p}P_p(t^{-1})}{(1-t)^{2p+1}}.
+ =\frac{t^{2p}\SecondOrderEulerianPolynomial p(t^{-1})}{(1-t)^{2p+1}}.
 \end{equation}
-Since $P_p(u)=\sum_{j=0}^{p}\eulertwo pj u^j$, coefficient extraction gives
+Since $\SecondOrderEulerianPolynomial p(u)=\sum_{j=0}^{p}\SecondOrderEulerianNumber pj u^j$, coefficient extraction gives
 \[
  [t^m]D_p(t)
- =\sum_{j=0}^{p}\eulertwo pj
+ =\sum_{j=0}^{p}\SecondOrderEulerianNumber pj
    [t^{m-2p+j}](1-t)^{-2p-1}
- =\sum_{j=0}^{p}\eulertwo pj\binom{m+j}{2p},
+ =\sum_{j=0}^{p}\SecondOrderEulerianNumber pj\binom{m+j}{2p},
 \]
 which is \eqref{eq:second-eulerian-first-diagonal}.  Both sides are polynomials in
 $m$ of degree at most $2p$, so the same identity gives the stated polynomial
@@ -3780,7 +3752,7 @@ For a block $B\subseteq[n]$, write $|B|$ for its size.
 For $n\ge0$ and sufficiently differentiable $f,g$,
 \begin{equation}\label{eq:faa-partition}
  D^n(f\circ g)(x)=
- \sum_{\pi\in\setpart([n])}
+ \sum_{\pi\in\SetPartitionOperator([n])}
  f^{(|\pi|)}(g(x))\prod_{B\in\pi}g^{(|B|)}(x).
 \end{equation}
 For $n=0$, the empty partition contributes $f(g(x))$.
@@ -3811,7 +3783,7 @@ Equivalently,
 \begin{equation}\label{eq:faa-bell}
  D^n f(g(x))=
  \sum_{k=0}^{n}f^{(k)}(g(x))
- \BellP nk\bigl(g'(x),g''(x),\ldots,g^{(n-k+1)}(x)\bigr).
+ \ExponentialPartialBellPolynomial nk\bigl(g'(x),g''(x),\ldots,g^{(n-k+1)}(x)\bigr).
 \end{equation}
 \end{theorem}
 \begin{proof}
@@ -3839,7 +3811,7 @@ Because every derivative of $e^u$ equals $e^u$, summing the partial Bell
 polynomials in \eqref{eq:faa-bell} yields
 \begin{equation}\label{eq:exp-faa}
  D^n e^{g(x)}=e^{g(x)}
- \BellC n\bigl(g'(x),g''(x),\ldots,g^{(n)}(x)\bigr).
+ \ExponentialCompleteBellPolynomial n\bigl(g'(x),g''(x),\ldots,g^{(n)}(x)\bigr).
 \end{equation}
 When $g$ is a cumulant generating function, this is precisely the
 moment--cumulant relation of \cref{thm:moment-cumulant}.
@@ -3852,7 +3824,7 @@ $\partial_B=\prod_{j\in B}\partial/\partial x_j$.
 If $y=g(x_1,\ldots,x_n)$, then
 \begin{equation}\label{eq:faa-multivariate}
  \frac{\partial^n}{\partial x_1\cdots\partial x_n}f(y)
- =\sum_{\pi\in\setpart([n])}f^{(|\pi|)}(y)
+ =\sum_{\pi\in\SetPartitionOperator([n])}f^{(|\pi|)}(y)
    \prod_{B\in\pi}\partial_B y.
 \end{equation}
 \end{theorem}
@@ -3898,7 +3870,7 @@ For $n\ge1$,
  \binom{k}{\pi_1,\ldots,\pi_n}
  b_1^{\pi_1}\cdots b_n^{\pi_n}
  \label{eq:ordinary-composition-multiplicities}\\
- &=\sum_{k=1}^{n}a_k\OBellP nk(b_1,\ldots,b_{n-k+1}),
+ &=\sum_{k=1}^{n}a_k\OrdinaryPartialBellPolynomial nk(b_1,\ldots,b_{n-k+1}),
  \label{eq:ordinary-composition-bell}
 \end{align}
 and $c_0=a_0$.
@@ -3916,7 +3888,7 @@ exponentially normalized, one obtains the exponential formula.  If
 $A(x)=1+\sum_{n\ge1}a_nx^n$, then
 \begin{equation}\label{eq:reciprocal-ordinary-bell}
  [x^n]\frac1{A(x)}
- =\sum_{k=1}^{n}(-1)^k\OBellP nk(a_1,\ldots,a_{n-k+1})
+ =\sum_{k=1}^{n}(-1)^k\OrdinaryPartialBellPolynomial nk(a_1,\ldots,a_{n-k+1})
  \qquad(n\ge1),
 \end{equation}
 by taking $F(u)=1/(1-u)$ and $G(x)=-\sum_{n\ge1}a_nx^n$.
@@ -3930,11 +3902,11 @@ Let
 \]
 \begin{theorem}[Exponential composition]\label{thm:exponential-composition}
 \begin{equation}\label{eq:exponential-composition}
- c_n=\sum_{k=0}^{n}b_k\BellP nk(a_1,\ldots,a_{n-k+1}).
+ c_n=\sum_{k=0}^{n}b_k\ExponentialPartialBellPolynomial nk(a_1,\ldots,a_{n-k+1}).
 \end{equation}
 Equivalently,
 \begin{equation}\label{eq:exponential-composition-partitions}
- c_n=\sum_{\pi\in\setpart([n])}b_{|\pi|}\prod_{B\in\pi}a_{|B|}.
+ c_n=\sum_{\pi\in\SetPartitionOperator([n])}b_{|\pi|}\prod_{B\in\pi}a_{|B|}.
 \end{equation}
 \end{theorem}
 \begin{proof}
@@ -3947,7 +3919,7 @@ blocks.
 Taking $b_k=1$ gives the complete Bell-polynomial exponential identity
 \begin{equation}\label{eq:exp-complete-bell-again}
  \exp\!\left(\sum_{j\ge1}a_j\frac{x^j}{j!}\right)
- =\sum_{n\ge0}\BellC n(a_1,\ldots,a_n)\frac{x^n}{n!}.
+ =\sum_{n\ge0}\ExponentialCompleteBellPolynomial n(a_1,\ldots,a_n)\frac{x^n}{n!}.
 \end{equation}
 If the series converge, \eqref{eq:exponential-composition} is exactly
 \eqref{eq:faa-bell} evaluated at the expansion point; formally, no convergence
@@ -3957,7 +3929,7 @@ notion is needed.
 \index{Lagrange inversion}
 
 \section{Formal theorem}
-Let $R$ be a commutative $\Q$-algebra and let $\phi(w)\in R[[w]]$ have invertible
+Let $R$ be a commutative $\RationalNumbers$-algebra and let $\phi(w)\in R[[w]]$ have invertible
 constant term.  There is a unique $g(z)\in zR[[z]]$ satisfying
 \begin{equation}\label{eq:lagrange-functional}
  g(z)=z\phi(g(z)).
@@ -3968,34 +3940,34 @@ depends only on coefficients of $g$ below degree $n$.
 \begin{theorem}[Lagrange--Bürmann]\label{thm:lagrange-burmann}
 For $n\ge1$ and every formal series $H$,
 \begin{align}
- \coeff zn H(g(z))
- &=\frac1n\coeff w{n-1}H'(w)\phi(w)^n,
+ \CoefficientExtraction zn H(g(z))
+ &=\frac1n\CoefficientExtraction w{n-1}H'(w)\phi(w)^n,
  \label{eq:lagrange-burmann}\\
- &=\coeff wn H(w)\phi(w)^{n-1}\bigl(\phi(w)-w\phi'(w)\bigr).
+ &=\CoefficientExtraction wn H(w)\phi(w)^{n-1}\bigl(\phi(w)-w\phi'(w)\bigr).
  \label{eq:lagrange-burmann-alt}
 \end{align}
 In particular,
 \begin{equation}\label{eq:lagrange-basic}
- \coeff zn g(z)=\frac1n\coeff w{n-1}\phi(w)^n.
+ \CoefficientExtraction zn g(z)=\frac1n\CoefficientExtraction w{n-1}\phi(w)^n.
 \end{equation}
 \end{theorem}
 \begin{proof}
 Put $f(w)=w/\phi(w)$, so that $f(g(z))=z$.  Formal residues and the change of
 variables theorem \cref{thm:res-subst} give
 \begin{align*}
- \coeff zn H(g(z))
- &=\res_z H(g(z))z^{-n-1}\dd z\\
- &=\res_w H(w)f(w)^{-n-1}f'(w)\dd w\\
- &=-\frac1n\res_w H(w)(f(w)^{-n})'\dd w\\
- &=\frac1n\res_w H'(w)f(w)^{-n}\dd w,
+ \CoefficientExtraction zn H(g(z))
+ &=\ResidueOperator_z H(g(z))z^{-n-1}\Differential z\\
+ &=\ResidueOperator_w H(w)f(w)^{-n-1}f'(w)\Differential w\\
+ &=-\frac1n\ResidueOperator_w H(w)(f(w)^{-n})'\Differential w\\
+ &=\frac1n\ResidueOperator_w H'(w)f(w)^{-n}\Differential w,
 \end{align*}
 where the residue of a derivative is zero.  Since
 $f(w)^{-n}=w^{-n}\phi(w)^n$, this is
 \eqref{eq:lagrange-burmann}.  Applying the same zero-residue rule to
 $H(w)\phi(w)^nw^{-n}$ gives
 \[
- \frac1n\res H'\phi^nw^{-n}
- =\res H\phi^nw^{-n-1}-\res H\phi^{n-1}\phi'w^{-n},
+ \frac1n\ResidueOperator H'\phi^nw^{-n}
+ =\ResidueOperator H\phi^nw^{-n-1}-\ResidueOperator H\phi^{n-1}\phi'w^{-n},
 \]
 which is \eqref{eq:lagrange-burmann-alt}.  Take $H(w)=w$ for
 \eqref{eq:lagrange-basic}.
@@ -4010,19 +3982,19 @@ inverse $g$ is analytic near $b$ and has
 \end{equation}
 where
 \begin{equation}\label{eq:analytic-lagrange-coeff}
- g_n=\left.\frac{\dd^{n-1}}{\dd w^{n-1}}
+ g_n=\left.\frac{\Differential^{n-1}}{\Differential w^{n-1}}
  \left(\frac{w-a}{f(w)-f(a)}\right)^n\right|_{w=a}.
 \end{equation}
 The series has a positive radius of convergence.
 \end{theorem}
 \begin{proof}
 The analytic inverse-function theorem gives an analytic local inverse and therefore
-a convergent Taylor series.  Put $u=w-a$, $\zeta=z-b$, and
+a convergent Taylor series.  Put $u=w-a$, $\LagrangeShiftCoordinate=z-b$, and
 \[
  \phi(u)=\frac{u}{f(a+u)-f(a)};
 \]
 its constant term is $1/f'(a)$.  The inverse displacement satisfies
-$u=\zeta\phi(u)$.  Formula \eqref{eq:lagrange-basic}, multiplied by $n!$, is
+$u=\LagrangeShiftCoordinate\phi(u)$.  Formula \eqref{eq:lagrange-basic}, multiplied by $n!$, is
 exactly \eqref{eq:analytic-lagrange-coeff}.
 \end{proof}
 
@@ -4042,26 +4014,26 @@ Suppose
 \]
 Define
 \begin{equation}\label{eq:fhat}
- \widehat f_j=\frac{f_{j+1}}{(j+1)f_1}.
+ \NormalizedReversionCoefficient{f}{j}=\frac{f_{j+1}}{(j+1)f_1}.
 \end{equation}
 \begin{theorem}[Explicit inverse coefficients]\label{thm:inverse-bell-coeff}
 One has $g_1=f_1^{-1}$ and, for $n\ge2$,
 \begin{equation}\label{eq:inverse-bell-coeff}
- g_n=\frac1{f_1^n}\sum_{k=1}^{n-1}(-1)^k\rising nk
- \BellP{n-1}{k}(\widehat f_1,\ldots,\widehat f_{n-k}).
+ g_n=\frac1{f_1^n}\sum_{k=1}^{n-1}(-1)^k\RisingFactorial nk
+ \ExponentialPartialBellPolynomial{n-1}{k}(\NormalizedReversionCoefficient{f}{1},\ldots,\NormalizedReversionCoefficient{f}{n-k}).
 \end{equation}
 \end{theorem}
 \begin{proof}
 Write
 \[
  \frac{f(w)}{f_1w}=1+U(w),
- \qquad U(w)=\sum_{j\ge1}\widehat f_j\frac{w^j}{j!}.
+ \qquad U(w)=\sum_{j\ge1}\NormalizedReversionCoefficient{f}{j}\frac{w^j}{j!}.
 \]
 By \eqref{eq:lagrange-basic},
-$g_n=(n-1)!\coeff w{n-1}(w/f(w))^n$.  Now
+$g_n=(n-1)!\CoefficientExtraction w{n-1}(w/f(w))^n$.  Now
 \[
  (1+U)^{-n}=\sum_{k\ge0}(-1)^k\binom{n+k-1}{k}U^k
- =\sum_{k\ge0}(-1)^k\frac{\rising nk}{k!}U^k.
+ =\sum_{k\ge0}(-1)^k\frac{\RisingFactorial nk}{k!}U^k.
 \]
 Apply \eqref{eq:partial-bell-egf} and extract degree $n-1$; the $k=0$ term
 vanishes when $n\ge2$.
@@ -4076,16 +4048,17 @@ Let
  A(x)=x+\sum_{n\ge1}a_nx^{n+1},\qquad
  B(x)=A^{\langle-1\rangle}(x)=x+\sum_{n\ge1}b_nx^{n+1}.
 \end{equation}
-Use the indexing in which the associahedron $K_n$ has dimension $n-1$ and its
+Use the indexing in which the associahedron $\AssociahedronByDimension{n-1}$ has dimension $n-1$ and its
 faces are plane rooted trees with $n+1$ leaves and internal arities at least $2$.
 If an internal vertex has arity $i+1$, give it weight $a_i$; let $a_F$ be the
 product of all vertex weights.  Equivalently, if
-$F\cong K_{i_1}\times\cdots\times K_{i_m}$, then
+$F\cong \AssociahedronByDimension{i_1-1}\times\cdots\times
+\AssociahedronByDimension{i_m-1}$, then
 $a_F=a_{i_1}\cdots a_{i_m}$.
 
 \begin{theorem}[Associahedral inversion]\label{thm:associahedral-inversion}
 \begin{equation}\label{eq:associahedral-inversion}
- b_n=\sum_{F\text{ a face of }K_n}(-1)^{n-\dim F}a_F.
+ b_n=\sum_{F\text{ a face of }\AssociahedronByDimension{n-1}}(-1)^{n-\dim F}a_F.
 \end{equation}
 \end{theorem}
 \begin{proof}
@@ -4095,7 +4068,7 @@ The equation $A(B)=x$ is
 \]
 Iterating it recursively expands $b_n$ as a sum over plane rooted trees with
 $n+1$ leaves: every internal vertex of arity $i+1$ contributes $-a_i$.
-A face $F$ of $K_n$ is exactly such a tree after contracting a chosen set of
+A face $F$ of $\AssociahedronByDimension{n-1}$ is exactly such a tree after contracting a chosen set of
 internal edges.  If it has $m$ internal vertices, then
 $\dim F=n-m$, so its sign is $(-1)^m=(-1)^{n-\dim F}$ and its weight is $a_F$.
 Thus the tree expansion is the alternating face sum.
@@ -4108,7 +4081,7 @@ For example,
  b_3&=-a_3+5a_2a_1-5a_1^3,\\
  b_4&=-a_4+6a_3a_1+3a_2^2-21a_2a_1^2+14a_1^4.
 \end{align*}
-For $K_4$, the coefficients $1,6,3,21,14$ count respectively the whole
+For $\AssociahedronByDimension3$, the coefficients $1,6,3,21,14$ count respectively the whole
 3-polytope, its six pentagonal and three square facets, its edges, and its
 vertices.
 
@@ -4138,7 +4111,7 @@ and the series converges absolutely also on $|z|=R_p$.
 \begin{proof}
 By \eqref{eq:lagrange-basic},
 \[
- \coeff znx(z)=\frac1n\coeff w{n-1}(1-w^{p-1})^{-n}.
+ \CoefficientExtraction znx(z)=\frac1n\CoefficientExtraction w{n-1}(1-w^{p-1})^{-n}.
 \]
 This vanishes unless $n-1=(p-1)k$.  In that case the coefficient is
 $\frac1n\binom{n+k-1}{k}=\binom{pk}{k}/((p-1)k+1)$, proving the series.
@@ -4196,18 +4169,18 @@ $0.0655<z<112.63$.  Taking $\xi=-1$ yields a convergent evaluation of
 $W(1)=0.567143\ldots$.
 
 \section{Binary trees and Catalan numbers}
-Let $C_n$ count rooted ordered full binary trees with $n$ internal vertices, and
-let $B(z)=\sum_{n\ge0}C_nz^n$.  Removing the root gives
+Let $\CatalanNumber n$ count rooted ordered full binary trees with $n$ internal vertices, and
+let $B(z)=\sum_{n\ge0}\CatalanNumber n z^n$.  Removing the root gives
 \begin{equation}\label{eq:binary-tree-functional}
  B(z)=1+zB(z)^2.
 \end{equation}
 Put $C(z)=B(z)-1$; then $C=z(1+C)^2$.  Lagrange inversion gives
 \begin{equation}\label{eq:catalan-lagrange}
- C_n=\coeff znC(z)=\frac1n\coeff w{n-1}(1+w)^{2n}
+ \CatalanNumber n=\CoefficientExtraction znC(z)=\frac1n\CoefficientExtraction w{n-1}(1+w)^{2n}
  =\frac1n\binom{2n}{n-1}=\frac1{n+1}\binom{2n}{n}.
 \end{equation}
 This simultaneously proves the functional equation, its unique formal solution,
-and the Catalan closed form.  The symbol $C_n$ is used here to avoid confusing
+and the Catalan closed form.  The semantic label $\CatalanNumber n$ avoids confusing
 these binary-tree numbers with Bell numbers.
 
 \chapter{Lagrange's reversion theorem in shifted form}
@@ -4245,13 +4218,13 @@ Summation proves the first formula; take $g(z)=z$ for the second.
 
 \section{The delta-function proof decoded}
 The archive also gives a distributional derivation.  Assume temporarily that
-$x,y\in\R$, the equation $z-x-yf(z)=0$ has one simple root $v$, and
+$x,y\in\RealNumbers$, the equation $z-x-yf(z)=0$ has one simple root $v$, and
 $1-yf'(v)>0$.  The elementary change-of-variables rule for the Dirac delta gives
 \begin{equation}\label{eq:delta-root}
- g(v)=\int_{\R}\delta(yf(z)-z+x)g(z)(1-yf'(z))\,\dd z.
+ g(v)=\int_{\RealNumbers}\delta(yf(z)-z+x)g(z)(1-yf'(z))\,\Differential z.
 \end{equation}
 Using
-$\delta(s)=\int_{\R}e^{iks}\dd k/(2\pi)$ and expanding only in the formal
+$\delta(s)=\int_{\RealNumbers}e^{iks}\Differential k/(2\pi)$ and expanding only in the formal
 parameter $y$,
 \begin{align}
  g(v)
@@ -4276,7 +4249,7 @@ is valid in the stated orientation-preserving neighbourhood.
 \section{Endpoint expansion}
 Consider
 \begin{equation}\label{eq:laplace-integral}
- I(\lambda)=\int_a^b e^{-\lambda f(x)}g(x)\,\dd x,
+ I(\lambda)=\int_a^b e^{-\lambda f(x)}g(x)\,\Differential x,
  \qquad \lambda\to+\infty,
 \end{equation}
 where the endpoint $a$ is the unique relevant minimum and, with $t=x-a$,
@@ -4288,7 +4261,7 @@ where the endpoint $a$ is the unique relevant minimum and, with $t=x-a$,
  &\beta>0.
  \label{eq:laplace-g-expansion}
 \end{align}
-Let $\OBellP{k}{j}$ denote the ordinary Bell polynomial.
+Let $\OrdinaryPartialBellPolynomial{k}{j}$ denote the ordinary Bell polynomial.
 
 \begin{theorem}[Laplace--Erd\'elyi coefficient formula]
 \label{thm:laplace-bell}
@@ -4306,7 +4279,7 @@ where
  \sum_{k=0}^{n}b_{n-k}
  \sum_{j=0}^{k}
  \binom{-\frac{n+\beta}{\alpha}}{j}
- \frac{\OBellP{k}{j}(a_1,\ldots,a_{k-j+1})}{a_0^j}.
+ \frac{\OrdinaryPartialBellPolynomial{k}{j}(a_1,\ldots,a_{k-j+1})}{a_0^j}.
 \end{equation}
 \end{theorem}
 \begin{proof}
@@ -4333,11 +4306,11 @@ Put $\rho=(n+\beta)/\alpha$.  The ordinary Bell expansion yields
  \sum_{j\ge0}\binom{-\rho}{j}
  \left(\sum_{r\ge1}\frac{a_r}{a_0}t^r\right)^j\\
  &=a_0^{-\rho}\sum_{j=0}^{k}\binom{-\rho}{j}a_0^{-j}
- \OBellP{k}{j}(a_1,\ldots,a_{k-j+1}).
+ \OrdinaryPartialBellPolynomial{k}{j}(a_1,\ldots,a_{k-j+1}).
 \end{align*}
 Thus $c_n=d_n/\alpha$ is \eqref{eq:laplace-cn}.  Finally
 \[
- \int_0^\infty e^{-\lambda s^\alpha}s^{n+\beta-1}\dd s
+ \int_0^\infty e^{-\lambda s^\alpha}s^{n+\beta-1}\Differential s
  =\frac1\alpha\Gamma\!\left(\frac{n+\beta}{\alpha}\right)
  \lambda^{-(n+\beta)/\alpha},
 \]
@@ -4394,14 +4367,14 @@ If $g(x)\ne0$, then
 \begin{equation}\label{unif:eq-reciprocal-derivative}
  D^r\!\left(\frac1g\right)
  =\sum_{k=0}^{r}(-1)^k k!\,
- \frac{\BellP{r}{k}(g',g'',\ldots,g^{(r-k+1)})}{g^{k+1}},
+ \frac{\ExponentialPartialBellPolynomial{r}{k}(g',g'',\ldots,g^{(r-k+1)})}{g^{k+1}},
 \end{equation}
-where $\BellP00=1$. Consequently,
+where $\ExponentialPartialBellPolynomial00=1$. Consequently,
 \begin{equation}\label{unif:eq-higher-quotient}
  D^n\!\left(\frac fg\right)
  =\sum_{r=0}^{n}\binom nr f^{(n-r)}
  \sum_{k=0}^{r}(-1)^k k!\,
- \frac{\BellP{r}{k}(g',g'',\ldots)}{g^{k+1}}.
+ \frac{\ExponentialPartialBellPolynomial{r}{k}(g',g'',\ldots)}{g^{k+1}}.
 \end{equation}
 \end{proposition}
 \begin{proof}
@@ -4447,11 +4420,11 @@ Bell-polynomial form. For three scalar functions one may write
 \begin{align}
  D^n f(g(h(x)))
  &=\sum_{k=0}^{n}f^{(k)}(g(h(x)))
- \BellP{n}{k}\bigl((g\circ h)',(g\circ h)'',\ldots\bigr),
+ \ExponentialPartialBellPolynomial{n}{k}\bigl((g\circ h)',(g\circ h)'',\ldots\bigr),
  \label{unif:eq-three-composition-outer}\\
  (g\circ h)^{(j)}
  &=\sum_{\ell=0}^{j}g^{(\ell)}(h(x))
- \BellP{j}{\ell}(h',h'',\ldots).
+ \ExponentialPartialBellPolynomial{j}{\ell}(h',h'',\ldots).
  \label{unif:eq-three-composition-inner}
 \end{align}
 The nested partitions show directly why both parenthesizations of a multiple
@@ -4467,7 +4440,7 @@ $g'=1/f'(g)$ and, for $n\ge2$,
 \begin{equation}\label{unif:eq-inverse-derivative-recursion}
  g^{(n)}=-\frac1{f'(g)}
  \sum_{k=2}^{n}f^{(k)}(g)
- \BellP{n}{k}(g',g'',\ldots,g^{(n-k+1)}).
+ \ExponentialPartialBellPolynomial{n}{k}(g',g'',\ldots,g^{(n-k+1)}).
 \end{equation}
 The first cases are
 \begin{align}
@@ -4482,7 +4455,7 @@ where derivatives of $f$ are evaluated at $g(y)$.
 Differentiate $f(g(y))=y$. For $n\ge2$, Fa\`a di Bruno gives
 \[
  0=\sum_{k=1}^{n}f^{(k)}(g)
- \BellP{n}{k}(g',g'',\ldots,g^{(n-k+1)}).
+ \ExponentialPartialBellPolynomial{n}{k}(g',g'',\ldots,g^{(n-k+1)}).
 \]
 The term $k=1$ is $f'(g)g^{(n)}$; isolating it proves the recursion. The four
 low-order formulas follow by substituting the corresponding partial Bell
@@ -4587,15 +4560,15 @@ phenomena in one structure.
 \label{unif:thm-partition-mobius}
 For a partition $\pi\in\Pi_n$,
 \begin{equation}\label{unif:eq-partition-mobius}
- \mu(\pi,\widehat1)=(-1)^{|\pi|-1}(|\pi|-1)!.
+ \mu(\pi,\PartitionLatticeMaximum)=(-1)^{|\pi|-1}(|\pi|-1)!.
 \end{equation}
 \end{theorem}
 \begin{proof}
-The interval $[\pi,\widehat1]$ is isomorphic to the partition lattice on the
+The interval $[\pi,\PartitionLatticeMaximum]$ is isomorphic to the partition lattice on the
 $|\pi|$ blocks of $\pi$, so let
-$\mu_m=\mu_{\Pi_m}(\widehat0,\widehat1)$. Every interval
-$[\widehat0,\sigma]$ is a product of partition lattices, hence
-$\mu(\widehat0,\sigma)=\prod_{B\in\sigma}\mu_{|B|}$. The defining M\"obius
+$\mu_m=\mu_{\Pi_m}(\PartitionLatticeMinimum,\PartitionLatticeMaximum)$. Every interval
+$[\PartitionLatticeMinimum,\sigma]$ is a product of partition lattices, hence
+$\mu(\PartitionLatticeMinimum,\sigma)=\prod_{B\in\sigma}\mu_{|B|}$. The defining M\"obius
 relation says that the sum of these products over $\Pi_m$ is $1$ for
 $m=0,1$ and $0$ for $m\ge2$. If
 $M(z)=\sum_{m\ge1}\mu_mz^m/m!$, the exponential formula gives
@@ -4709,7 +4682,7 @@ The Bell-polynomial matrix is the special case $(1,f)$:
 \begin{equation}\label{unif:eq-bell-riordan}
  \frac{n!}{k!}[z^n]
  \left(\sum_{j\ge1}x_j\frac{z^j}{j!}\right)^k
- =\BellP{n}{k}(x_1,x_2,\ldots).
+ =\ExponentialPartialBellPolynomial{n}{k}(x_1,x_2,\ldots).
 \end{equation}
 The second-kind and signed first-kind Stirling matrices correspond to
 $f(z)=e^z-1$ and $f(z)=\log(1+z)$. Since these series are compositional
@@ -4829,8 +4802,8 @@ series-reversion computations.
 
 The supplied MathWorld dossier contains several polynomial families that are
 closely related but conventionally assigned overlapping names. Bell numbers
-remain $\Bell n$ and Bernoulli numbers remain $\beta_n$; write
-$\BerP n x$, $\EulP n x$, and $\GenP n x$ for Bernoulli, Euler, and Genocchi
+remain $\BellNumber n$ and Bernoulli numbers remain $\beta_n$; write
+$\BerP n x$, $\EulP n x$, and $\GenocchiPolynomial n(x)$ for Bernoulli, Euler, and Genocchi
 polynomials.
 
 \section{Bernoulli polynomials}
@@ -4848,7 +4821,7 @@ For $n\ge0$,
 \begin{align}
  \BerP n x&=\sum_{k=0}^{n}\binom nk\beta_kx^{n-k},
  \label{unif:eq-bernoulli-explicit}\\
- \frac{\dd}{\dd x}\BerP n x&=n\BerP{n-1}x,
+ \frac{\Differential}{\Differential x}\BerP n x&=n\BerP{n-1}x,
  \label{unif:eq-bernoulli-appell}\\
  \BerP n{x+1}-\BerP n x&=nx^{n-1}\quad(n\ge1),
  \label{unif:eq-bernoulli-difference}\\
@@ -4859,7 +4832,7 @@ For every positive integer $m$,
 \begin{equation}\label{unif:eq-bernoulli-multiplication}
  \BerP n{mx}=m^{n-1}\sum_{r=0}^{m-1}\BerP n{x+r/m},
 \end{equation}
-and for $p\ge0$, $N\in\N$,
+and for $p\ge0$, $N\in\NaturalNumbers$,
 \begin{equation}\label{unif:eq-faulhaber-shifted}
  \sum_{j=0}^{N-1}(x+j)^p
  =\frac{\BerP{p+1}{x+N}-\BerP{p+1}x}{p+1}.
@@ -4890,7 +4863,7 @@ Define
  &=\sum_{n\ge0}\EulP n x\frac{t^n}{n!},
  \label{unif:eq-euler-polynomial-egf}\\
  \frac{2te^{xt}}{e^t+1}
- &=\sum_{n\ge0}\GenP n x\frac{t^n}{n!}.
+ &=\sum_{n\ge0}\GenocchiPolynomial n(x)\frac{t^n}{n!}.
  \label{unif:eq-genocchi-polynomial-egf}
 \end{align}
 
@@ -4904,9 +4877,9 @@ Define
  \EulP n x&=\frac{2^{n+1}}{n+1}
  \left(\BerP{n+1}{(x+1)/2}-\BerP{n+1}{x/2}\right),
  \label{unif:eq-euler-bernoulli}\\
- \GenP n x&=n\EulP{n-1}x\quad(n\ge1),
+ \GenocchiPolynomial n(x)&=n\EulP{n-1}x\quad(n\ge1),
  \label{unif:eq-genocchi-euler}\\
- \GenP n0&=2(1-2^n)\beta_n.
+ \GenocchiPolynomial n(0)&=2(1-2^n)\beta_n.
  \label{unif:eq-genocchi-bernoulli}
 \end{align}
 Moreover,
@@ -4943,29 +4916,29 @@ the second kind, are defined by
  \frac{t}{\log(1+t)}(1+t)^x
  =\sum_{n\ge0}b_n(x)\frac{t^n}{n!}.
 \end{equation}
-Their values $b_n=b_n(0)$ satisfy $b_n=n!G_n$ for the Gregory coefficients in
+Their values $b_n=b_n(0)$ satisfy $b_n=n!\GregoryCoefficient n$ for the Gregory coefficients in
 the earlier chapter.
 
 \begin{theorem}[Integral, Stirling, and Sheffer formulas]
 \label{unif:thm-cauchy-polynomials}
 \begin{align}
- b_n(x)&=\int_0^1\falling{x+u}{n}\dd u,
+ b_n(x)&=\int_0^1\FallingFactorial{x+u}{n}\Differential u,
  \label{unif:eq-cauchy-integral}\\
- b_n&=\sum_{k=0}^{n}\frac{s(n,k)}{k+1},
+ b_n&=\sum_{k=0}^{n}\frac{\SignedStirlingFirstKind{n}{k}}{k+1},
  \label{unif:eq-cauchy-stirling}\\
  b_n(x+1)-b_n(x)&=nb_{n-1}(x),
  \label{unif:eq-cauchy-difference}\\
- \frac{\dd}{\dd x}b_n(x)&=n\falling x{n-1},
+ \frac{\Differential}{\Differential x}b_n(x)&=n\FallingFactorial x{n-1},
  \label{unif:eq-cauchy-derivative}\\
- b_n(x+y)&=\sum_{k=0}^{n}\binom nk b_k(x)\falling y{n-k}.
+ b_n(x+y)&=\sum_{k=0}^{n}\binom nk b_k(x)\FallingFactorial y{n-k}.
  \label{unif:eq-cauchy-sheffer}
 \end{align}
 \end{theorem}
 \begin{proof}
 Integrate
-$(1+t)^{x+u}=\sum_n\falling{x+u}{n}t^n/n!$ from $u=0$ to $1$. The left side
+$(1+t)^{x+u}=\sum_n\FallingFactorial{x+u}{n}t^n/n!$ from $u=0$ to $1$. The left side
 becomes $(1+t)^xt/\log(1+t)$, proving the integral. At $x=0$, expand
-$\falling un=\sum_ks(n,k)u^k$ and integrate to get the Stirling sum. The
+$\FallingFactorial un=\sum_ks(n,k)u^k$ and integrate to get the Stirling sum. The
 difference of the EGFs at $x+1$ and $x$ is $t$ times the original EGF.
 Differentiation with respect to $x$ gives $t(1+t)^x$, yielding the derivative.
 Finally, factor the EGF at $x+y$ into the EGF at $x$ times $(1+t)^y$.
@@ -4998,7 +4971,7 @@ Integrate term by term and use the zero constant term.
 
 Define
 \begin{equation}\label{unif:eq-complementary-bell-definition}
- C_n=\sum_{k=0}^{n}(-1)^k\stirtwo nk=T_n(-1).
+ \ComplementaryBellNumber n=\sum_{k=0}^{n}(-1)^k\StirlingSecondKind nk=\TouchardPolynomial n(-1).
 \end{equation}
 This is the signed difference between set partitions with an even and an odd
 number of blocks.
@@ -5006,11 +4979,11 @@ number of blocks.
 \begin{theorem}[Generating function, recurrence, and Dobi\'nski form]
 \label{unif:thm-complementary-bell}
 \begin{align}
- \sum_{n\ge0}C_n\frac{z^n}{n!}&=\exp(1-e^z),
+ \sum_{n\ge0}\ComplementaryBellNumber n\frac{z^n}{n!}&=\exp(1-e^z),
  \label{unif:eq-complementary-bell-egf}\\
- C_{n+1}&=-\sum_{j=0}^{n}\binom njC_j,
+ \ComplementaryBellNumber{n+1}&=-\sum_{j=0}^{n}\binom nj\ComplementaryBellNumber j,
  \label{unif:eq-complementary-bell-recurrence}\\
- C_n&=e\sum_{m\ge0}\frac{(-1)^m m^n}{m!}.
+ \ComplementaryBellNumber n&=e\sum_{m\ge0}\frac{(-1)^m m^n}{m!}.
  \label{unif:eq-complementary-bell-dobinski}
 \end{align}
 The initial values are
@@ -5039,7 +5012,7 @@ $\widetilde B_m'=m\widetilde B_{m-1}$.
 Let $a<b$ be integers and $f\in C^{2p}([a,b])$. Then
 \begin{align}
  \sum_{k=a}^{b}f(k)
- &=\int_a^b f(x)\dd x+\frac{f(a)+f(b)}2
+ &=\int_a^b f(x)\Differential x+\frac{f(a)+f(b)}2
  \notag\\
  &\quad+\sum_{r=1}^{p}\frac{\beta_{2r}}{(2r)!}
  \bigl(f^{(2r-1)}(b)-f^{(2r-1)}(a)\bigr)+R_p,
@@ -5048,12 +5021,12 @@ Let $a<b$ be integers and $f\in C^{2p}([a,b])$. Then
 where
 \begin{equation}\label{unif:eq-em-remainder}
  R_p=-\frac1{(2p)!}\int_a^b
- \widetilde B_{2p}(x)f^{(2p)}(x)\dd x.
+ \widetilde B_{2p}(x)f^{(2p)}(x)\Differential x.
 \end{equation}
 Moreover,
 \begin{equation}\label{unif:eq-em-bound}
- |R_p|\le\frac{2\zeta(2p)}{(2\pi)^{2p}}
- \int_a^b|f^{(2p)}(x)|\dd x.
+ |R_p|\le\frac{2\RiemannZeta(2p)}{(2\pi)^{2p}}
+ \int_a^b|f^{(2p)}(x)|\Differential x.
 \end{equation}
 \end{theorem}
 \begin{proof}
@@ -5080,7 +5053,7 @@ The Fourier expansion
  \sum_{m\ge1}\frac{\cos(2\pi mx)}{m^{2p}}
 \]
 implies
-$|\widetilde B_{2p}(x)|/(2p)!\le2\zeta(2p)/(2\pi)^{2p}$.
+$|\widetilde B_{2p}(x)|/(2p)!\le2\RiemannZeta(2p)/(2\pi)^{2p}$.
 Substitution into the exact remainder proves the bound.
 \end{proof}
 
@@ -5119,7 +5092,7 @@ Then
 \begin{align}
  f(z)=f(z_0)+\frac1{\phi^{(n)}(0)}\Bigg[&
  (-1)^n\Delta^{n+1}\int_0^1\phi(t)
- f^{(n+1)}(z_0+t\Delta)\dd t
+ f^{(n+1)}(z_0+t\Delta)\Differential t
  \notag\\
  &+\sum_{k=1}^{n}(-1)^{k-1}\Delta^k
  \bigl(\phi^{(n-k)}(1)f^{(k)}(z)
@@ -5198,13 +5171,13 @@ Together with \eqref{unif:eq-square-root-transfer}, this explains the ubiquitous
 $n^{-3/2}$ factor in coefficients of inverse functions at a simple critical
 value. The full dented-domain transfer theorem is due to Flajolet and Odlyzko.
 
-\chapter{Pochhammer symbols, polygamma functions, and Barnes' \texorpdfstring{$G$}{G}}
+\chapter{Pochhammer symbols, polygamma functions, and Barnes' \texorpdfstring{$\BarnesGFunction$}{G}}
 
 \section{Rising factorials and parameter derivatives}
 
 For the rising Pochhammer symbol,
 \begin{equation}\label{unif:eq-pochhammer-gamma}
- (a)_n=\rising an=\frac{\Gamma(a+n)}{\Gamma(a)}.
+ (a)_n=\RisingFactorial an=\frac{\Gamma(a+n)}{\Gamma(a)}.
 \end{equation}
 
 \begin{theorem}[Binomial and Vandermonde formulas]
@@ -5232,7 +5205,7 @@ Let $\psi=\Gamma'/\Gamma$. Define
 For $r\ge0$,
 \begin{equation}\label{unif:eq-pochhammer-bell-derivative}
  \frac{\partial^r}{\partial a^r}(a)_n
- =(a)_n\BellC r(L_1(a,n),\ldots,L_r(a,n)).
+ =(a)_n\ExponentialCompleteBellPolynomial r(L_1(a,n),\ldots,L_r(a,n)).
 \end{equation}
 \end{theorem}
 \begin{proof}
@@ -5274,14 +5247,14 @@ $\Gamma(z)\Gamma(1-z)=\pi/\sin(\pi z)$ to obtain reflection.
 
 Thus
 \begin{equation}\label{unif:eq-polygamma-hurwitz}
- \psi^{(m)}(z)=(-1)^{m+1}m!\zeta(m+1,z).
+ \psi^{(m)}(z)=(-1)^{m+1}m!\HurwitzZeta{m+1}{z}.
 \end{equation}
 
-\section{Barnes' \texorpdfstring{$G$}{G}-function}
+\section{Barnes' \texorpdfstring{$\BarnesGFunction$}{G}-function}
 
 Define
 \begin{align}
- G(z+1)&=(2\pi)^{z/2}
+ \BarnesGFunction(z+1)&=(2\pi)^{z/2}
  \exp\left(-\frac{z+(1+\gamma)z^2}{2}\right)
  \notag\\
  &\quad\times\prod_{n=1}^{\infty}
@@ -5295,11 +5268,11 @@ Define
 The product converges locally uniformly, defines an entire function, and
 satisfies
 \begin{equation}\label{unif:eq-barnes-functional}
- G(z+1)=\Gamma(z)G(z),\qquad G(1)=1.
+ \BarnesGFunction(z+1)=\Gamma(z)\BarnesGFunction(z),\qquad \BarnesGFunction(1)=1.
 \end{equation}
 Hence
 \begin{equation}\label{unif:eq-barnes-integers}
- G(n+1)=\prod_{k=1}^{n-1}k!.
+ \BarnesGFunction(n+1)=\prod_{k=1}^{n-1}k!.
 \end{equation}
 \end{theorem}
 \begin{proof}
@@ -5317,7 +5290,7 @@ asymptotic to $N!N^z$, so the ratio tends to
 \[
  \lim_{N\to\infty}\frac{N!N^z}{(z+1)\cdots(z+N)}=\Gamma(z+1).
 \]
-Thus $G(z+2)=\Gamma(z+1)G(z+1)$, equivalent to the stated recurrence.
+Thus $\BarnesGFunction(z+2)=\Gamma(z+1)\BarnesGFunction(z+1)$, equivalent to the stated recurrence.
 Iteration gives the integer product.
 \end{proof}
 
@@ -5325,9 +5298,9 @@ Iteration gives the integer product.
 \label{unif:thm-barnes-asymptotic}
 For fixed $p\ge1$ and $z\to+\infty$,
 \begin{align}
- \log G(z+1)
+ \log \BarnesGFunction(z+1)
  &=\frac{z^2}{2}\log z-\frac{3z^2}{4}
- +\frac z2\log(2\pi)-\frac1{12}\log z+\zeta'(-1)
+ +\frac z2\log(2\pi)-\frac1{12}\log z+\RiemannZeta'(-1)
  \notag\\
  &\quad+\sum_{k=1}^{p-1}
  \frac{\beta_{2k+2}}{4k(k+1)z^{2k}}+O(z^{-2p}).
@@ -5337,7 +5310,7 @@ For fixed $p\ge1$ and $z\to+\infty$,
 \begin{proof}
 For an integer $N$,
 \[
- \log G(N+1)=N\log\Gamma(N)-\sum_{j=1}^{N-1}j\log j.
+ \log \BarnesGFunction(N+1)=N\log\Gamma(N)-\sum_{j=1}^{N-1}j\log j.
 \]
 The first term is expanded by \eqref{unif:eq-stirling-expansion}. To expand
 the second, apply Euler--Maclaurin to $x^{-s}$, continue the resulting finite
@@ -5345,7 +5318,7 @@ formula to a neighborhood of $s=-1$, and differentiate there. This gives
 \begin{align*}
  \sum_{j=1}^{N-1}j\log j
  &=\left(\frac{N^2}{2}-\frac N2+\frac1{12}\right)\log N
- -\frac{N^2}{4}+\frac1{12}-\zeta'(-1)\\
+ -\frac{N^2}{4}+\frac1{12}-\RiemannZeta'(-1)\\
  &\quad-\sum_{k=1}^{p-1}
  \frac{\beta_{2k+2}}{(2k)(2k+1)(2k+2)N^{2k}}
  +O(N^{-2p}).
@@ -5407,7 +5380,7 @@ $1-e\cos E>0$.
 The solution satisfies
 \begin{align}
  E&=M+\sum_{n\ge1}\frac{e^n}{n!}
- \frac{\dd^{n-1}}{\dd M^{n-1}}\sin^nM,
+ \frac{\Differential^{n-1}}{\Differential M^{n-1}}\sin^nM,
  \label{unif:eq-kepler-lagrange}\\
  E&=M+2\sum_{n\ge1}\frac{J_n(ne)}{n}\sin(nM).
  \label{unif:eq-kepler-bessel}
@@ -5418,17 +5391,17 @@ Set $u=E-M$. Then $u=e\sin(M+u)$, and Lagrange--B\"urmann in the parameter
 $e$ gives
 \[
  [e^n]u=\frac1n[t^{n-1}]\sin^n(M+t)
- =\frac1{n!}\frac{\dd^{n-1}}{\dd M^{n-1}}\sin^nM.
+ =\frac1{n!}\frac{\Differential^{n-1}}{\Differential M^{n-1}}\sin^nM.
 \]
 For the Fourier form, $u(M)$ is odd and $2\pi$-periodic. If
 $u=\sum_{n\ge1}b_n\sin(nM)$, integration by parts and $u(\pm\pi)=0$ give
 \[
- b_n=\frac1{\pi n}\int_{-\pi}^{\pi}E'(M)\cos(nM)\dd M.
+ b_n=\frac1{\pi n}\int_{-\pi}^{\pi}E'(M)\cos(nM)\Differential M.
 \]
-Change variables using $M=E-e\sin E$ and $E'(M)\dd M=\dd E$:
+Change variables using $M=E-e\sin E$ and $E'(M)\Differential M=\Differential E$:
 \[
  b_n=\frac1{\pi n}\int_{-\pi}^{\pi}
- \cos(nE-ne\sin E)\dd E=\frac{2J_n(ne)}n,
+ \cos(nE-ne\sin E)\Differential E=\frac{2J_n(ne)}n,
 \]
 by the standard integer-order Bessel integral. This proves the second series.
 \end{proof}
@@ -5484,19 +5457,22 @@ refine binary trees by several equidistributed statistics.
 
 \section{All faces of the associahedron}
 
-Use the normalization of the earlier associahedral inversion theorem: $K_n$
+Use the normalization of the earlier associahedral inversion theorem:
+$\AssociahedronByDimension{n-1}$
 has dimension $n-1$, vertices indexed by full plane binary trees with $n+1$
 leaves, and general faces indexed by plane rooted trees with $n+1$ leaves and
 internal arity at least $2$.
 
-\begin{theorem}[Face numbers of $K_n$]
+\begin{theorem}[Face numbers of $\AssociahedronByDimension{n-1}$]
 \label{unif:thm-associahedron-f-vector}
 For $0\le d\le n-1$, the number of $d$-dimensional faces is
 \begin{equation}\label{unif:eq-associahedron-f-vector}
- f_d(K_n)=\frac1{n-d}\binom{2n-d}{n-1-d}\binom{n-1}{d}.
+ f_d(\AssociahedronByDimension{n-1})
+ =\frac1{n-d}\binom{2n-d}{n-1-d}\binom{n-1}{d}.
 \end{equation}
-In particular, $f_0(K_n)=C_n$, $f_{n-2}(K_n)=n(n+1)/2-1$, and
-$f_{n-1}(K_n)=1$.
+In particular, $f_0(\AssociahedronByDimension{n-1})=\CatalanNumber n$,
+$f_{n-2}(\AssociahedronByDimension{n-1})=n(n+1)/2-1$, and
+$f_{n-1}(\AssociahedronByDimension{n-1})=1$.
 \end{theorem}
 \begin{proof}
 Let $T(z,u)$ count plane rooted trees, with $z$ marking leaves and $u$ marking
@@ -5517,7 +5493,7 @@ If a tree has $L$ leaves and $m$ internal vertices, Lagrange inversion yields
  \left(\frac{1-t}{1-(1+u)t}\right)^L\\
  &=\frac1L\binom{L+m-1}{m}\binom{L-2}{m-1}.
 \end{align*}
-A face of $K_n$ has $L=n+1$ leaves. If it has $m$ internal vertices, its
+A face of $\AssociahedronByDimension{n-1}$ has $L=n+1$ leaves. If it has $m$ internal vertices, its
 dimension is $d=n-m$. Substitute $L=n+1$ and $m=n-d$ and simplify:
 \[
  \frac1{n+1}\binom{2n-d}{n-d}\binom{n-1}{d}
@@ -5526,7 +5502,7 @@ dimension is $d=n-m$. Substitute $L=n+1$ and $m=n-d$ and simplify:
 This is \eqref{unif:eq-associahedron-f-vector}.
 \end{proof}
 
-For $K_4$, the formula gives $14$ vertices, $21$ edges, $9$ facets, and one
+For $\AssociahedronByDimension3$, the formula gives $14$ vertices, $21$ edges, $9$ facets, and one
 three-dimensional body, agreeing with the coefficients appearing in the
 fourth inverse-series polynomial.
 
@@ -5625,11 +5601,11 @@ Mathematica notebooks for Bell and complementary Bell numbers, Bernoulli and
 Euler polynomial families, Bernoulli polynomials of the second kind,
 Dobi\'nski's formula, Euler--Maclaurin summation, Darboux's weighted formula,
 Pochhammer symbols, polygamma functions, Genocchi numbers, Catalan numbers, and
-Barnes' $G$-function. These were integrated in the new parts on Bernoulli
+Barnes' $\BarnesGFunction$-function. These were integrated in the new parts on Bernoulli
 families, summation, factorial special functions, and Catalan geometry.
 
 Online primary references were consulted for Good's multivariate inversion,
-multivariate Fa\`a di Bruno, singularity analysis, Barnes' $G$-function, the
+multivariate Fa\`a di Bruno, singularity analysis, Barnes' $\BarnesGFunction$-function, the
 Riordan group, Bernoulli numbers of the second kind, and Loday's associahedron
 realization. Their role is bibliographic and confirmatory; the formulas used in
 the article are derived in the text.
@@ -5719,9 +5695,9 @@ Stirling matrices. This check is independent of the factorial-basis proof.
 
 \paragraph{Bernoulli--Euler--Genocchi check.}
 Multiplying
-$\GenP n x=n\EulP{n-1}x$ by $t^n/n!$ recovers the Genocchi EGF, while
+$\GenocchiPolynomial n(x)=n\EulP{n-1}x$ by $t^n/n!$ recovers the Genocchi EGF, while
 substitution of \eqref{unif:eq-euler-bernoulli} recovers
-$\GenP n0=2(1-2^n)\beta_n$. Thus the two routes through the generating-function
+$\GenocchiPolynomial n(0)=2(1-2^n)\beta_n$. Thus the two routes through the generating-function
 triangle agree coefficientwise.
 
 \section{Boundary conventions}
@@ -5900,7 +5876,7 @@ I.~V. Blagouchine,
 
 \bibitem{MathWorldDossier}
 E.~W. Weisstein, editor,
-selected entries from \emph{Wolfram MathWorld}: Barnes $G$-function, Bell and
+selected entries from \emph{Wolfram MathWorld}: Barnes $\BarnesGFunction$-function, Bell and
 complementary Bell numbers, Bernoulli and Euler polynomials, Bernoulli
 polynomials of the second kind, Catalan and Genocchi numbers, Darboux's formula,
 Euler--Maclaurin summation, Pochhammer symbols, and polygamma functions.

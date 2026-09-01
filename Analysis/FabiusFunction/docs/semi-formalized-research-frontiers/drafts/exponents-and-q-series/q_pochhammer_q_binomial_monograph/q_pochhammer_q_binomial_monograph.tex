@@ -136,7 +136,6 @@
 \newcommand{\GeneralizedQNumber}[2]{\left[#1\right]_{#2}}
 \newcommand{\QFallingPower}[4]{\left(#1-#2\right)_{#3}^{\langle #4\rangle}}
 \newcommand{\JacksonDifferential}[2]{\mathop{}\!\mathrm d_{#1}#2}
-\newcommand{\FiniteField}[1]{\mathbb F_{#1}}
 \newcommand{\InversionNumber}[1]{\operatorname{inv}(#1)}
 \newcommand{\LatticePathArea}[1]{\operatorname{area}(#1)}
 \newcommand{\WeightCharacter}[2]{\operatorname{ch}_{#2}\!\left(#1\right)}
@@ -2410,24 +2409,24 @@ geometric sum $1+z+\cdots+z^{n}$, as it must be.
 \section{Counting subspaces}
 
 Write a prime power as $Q=p^e$, where $p$ is prime and
-$e\in\PositiveIntegers$.  The symbol $\FiniteField{Q}$ denotes a field with
+$e\in\PositiveIntegers$.  The symbol $\FiniteField_{Q}$ denotes a field with
 $Q$ elements, unique up to field isomorphism but not by a distinguished
-isomorphism.  For $n\in\NaturalNumbers$, $\FiniteField{Q}^{n}$ is its
+isomorphism.  For $n\in\NaturalNumbers$, $\FiniteField_{Q}^{n}$ is its
 $n$-fold Cartesian product and $n$-dimensional vector space; at $n=0$ this is
 the one-element zero space.  For $r\in\NaturalNumbers$,
-$\mathrm{GL}_r(\FiniteField{Q})$ is the group of invertible
-$r\times r$ matrices, with $\mathrm{GL}_0(\FiniteField{Q})$ the trivial
+$\mathrm{GL}_r(\FiniteField_{Q})$ is the group of invertible
+$r\times r$ matrices, with $\mathrm{GL}_0(\FiniteField_{Q})$ the trivial
 group.
 
 \begin{theorem}[Gaussian coefficients count subspaces]\label{thm:subspace-count}
-Let $Q$ be a prime power.  The number of $k$-dimensional linear subspaces of $\FiniteField{Q}^{n}$ is
+Let $Q$ be a prime power.  The number of $k$-dimensional linear subspaces of $\FiniteField_{Q}^{n}$ is
 \[
  \GaussianBinomial{n}{k}{Q}.
 \]
 \end{theorem}
 
 \begin{proof}
-Count ordered linearly independent $k$-tuples in $\FiniteField{Q}^{n}$.  The first vector may be any nonzero vector, the second any vector outside the span of the first, and so on, giving
+Count ordered linearly independent $k$-tuples in $\FiniteField_{Q}^{n}$.  The first vector may be any nonzero vector, the second any vector outside the span of the first, and so on, giving
 \[
  (Q^n-1)(Q^n-Q)\cdots(Q^n-Q^{k-1}).
 \]
@@ -2444,7 +2443,7 @@ ordered bases.  Dividing and cancelling $Q^i$ in corresponding factors yields
 \end{proof}
 
 \begin{theorem}[Geometric Pascal recurrence]\label{thm:geometric-pascal}
-Let $H$ be a fixed hyperplane in $\FiniteField{Q}^{n}$.  Then
+Let $H$ be a fixed hyperplane in $\FiniteField_{Q}^{n}$.  Then
 \[
  \GaussianBinomial{n}{k}{Q}
  =\GaussianBinomial{n-1}{k}{Q}+Q^{n-k}\GaussianBinomial{n-1}{k-1}{Q}.
@@ -2452,7 +2451,7 @@ Let $H$ be a fixed hyperplane in $\FiniteField{Q}^{n}$.  Then
 \end{theorem}
 
 \begin{proof}
-A $k$-subspace $U$ is either contained in $H$ or not.  The contained subspaces contribute $\GaussianBinomial{n-1}{k}{Q}$.  If $U\not\subseteq H$, then $W=U\cap H$ has dimension $k-1$.  Fixing $W$, the quotient $\FiniteField{Q}^{n}/W$ has dimension $n-k+1$, and $H/W$ is a hyperplane.  The subspace $U/W$ is a line not contained in $H/W$.  The total number of lines in $\FiniteField{Q}^{n-k+1}$ minus those in its hyperplane is
+A $k$-subspace $U$ is either contained in $H$ or not.  The contained subspaces contribute $\GaussianBinomial{n-1}{k}{Q}$.  If $U\not\subseteq H$, then $W=U\cap H$ has dimension $k-1$.  Fixing $W$, the quotient $\FiniteField_{Q}^{n}/W$ has dimension $n-k+1$, and $H/W$ is a hyperplane.  The subspace $U/W$ is a line not contained in $H/W$.  The total number of lines in $\FiniteField_{Q}^{n-k+1}$ minus those in its hyperplane is
 \[
  \frac{Q^{n-k+1}-1}{Q-1}-\frac{Q^{n-k}-1}{Q-1}=Q^{n-k}.
 \]
@@ -2464,7 +2463,7 @@ There are $\GaussianBinomial{n-1}{k-1}{Q}$ choices for $W$, proving the formula.
 \begin{theorem}[Partial flags]\label{thm:flag-count}
 Let $d_i=n_1+\cdots+n_i$.  The number of flags
 \[
- 0=V_0\subset V_1\subset\cdots\subset V_r=\FiniteField{Q}^{n},
+ 0=V_0\subset V_1\subset\cdots\subset V_r=\FiniteField_{Q}^{n},
  \qquad \dim(V_i/V_{i-1})=n_i,
 \]
 is
@@ -2474,20 +2473,20 @@ is
 \end{theorem}
 
 \begin{proof}
-Choose $V_1$ in $\GaussianBinomial{n}{n_1}{Q}$ ways.  In the quotient $\FiniteField{Q}^{n}/V_1$, choose $V_2/V_1$ in $\GaussianBinomial{n-n_1}{n_2}{Q}$ ways, and continue.  The product is the factorization in \Cref{prop:qmult-factor}.
+Choose $V_1$ in $\GaussianBinomial{n}{n_1}{Q}$ ways.  In the quotient $\FiniteField_{Q}^{n}/V_1$, choose $V_2/V_1$ in $\GaussianBinomial{n-n_1}{n_2}{Q}$ ways, and continue.  The product is the factorization in \Cref{prop:qmult-factor}.
 \end{proof}
 
 \section{Matrices of fixed rank}
 
 \begin{theorem}[Rank enumeration]\label{thm:rank-matrices}
-The number of $m\times n$ matrices of rank $r$ over $\FiniteField{Q}$ is
+The number of $m\times n$ matrices of rank $r$ over $\FiniteField_{Q}$ is
 \[
  N_{m,n,r}(Q)
- =\GaussianBinomial{m}{r}{Q}\GaussianBinomial{n}{r}{Q}\AbsoluteValue{\mathrm{GL}_r(\FiniteField{Q})},
+ =\GaussianBinomial{m}{r}{Q}\GaussianBinomial{n}{r}{Q}\AbsoluteValue{\mathrm{GL}_r(\FiniteField_{Q})},
 \]
 where
 \[
- \AbsoluteValue{\mathrm{GL}_r(\FiniteField{Q})}=\prod_{i=0}^{r-1}(Q^r-Q^i).
+ \AbsoluteValue{\mathrm{GL}_r(\FiniteField_{Q})}=\prod_{i=0}^{r-1}(Q^r-Q^i).
 \]
 Equivalently,
 \[
@@ -2510,7 +2509,7 @@ choices for $V$.  Two pairs $(U,V)$ and $(U',V')$ give the same $A$ exactly when
 \[
  U'=UG,\qquad V'=G^{-1}V
 \]
-for a unique $G\in\mathrm{GL}_r(\FiniteField{Q})$.  Thus every matrix is counted $\AbsoluteValue{\mathrm{GL}_r}$ times.  Substituting the subspace-count formulas gives the first expression.
+for a unique $G\in\mathrm{GL}_r(\FiniteField_{Q})$.  Thus every matrix is counted $\AbsoluteValue{\mathrm{GL}_r}$ times.  Substituting the subspace-count formulas gives the first expression.
 \end{proof}
 
 \section{Schubert cells and a topological meaning}
@@ -2531,7 +2530,7 @@ Fix the standard flag in $\ComplexNumbers^n$.  Every $k$-plane has a unique row-
 \end{proof}
 
 \begin{remark}[The ``same polynomial'' principle]
-For a prime power $Q$, evaluating $\GaussianBinomial{n}{k}{q}$ at $q=Q$ counts rational points of a Grassmannian over $\FiniteField{Q}$.  Evaluating it at $q=t^2$ records the even Betti numbers of the complex Grassmannian.  This is an elementary instance of the broad principle that polynomial point counts over finite fields often shadow topological invariants over $\ComplexNumbers$.
+For a prime power $Q$, evaluating $\GaussianBinomial{n}{k}{q}$ at $q=Q$ counts rational points of a Grassmannian over $\FiniteField_{Q}$.  Evaluating it at $q=t^2$ records the even Betti numbers of the complex Grassmannian.  This is an elementary instance of the broad principle that polynomial point counts over finite fields often shadow topological invariants over $\ComplexNumbers$.
 \end{remark}
 
 \section{Growth over finite fields}
@@ -8537,8 +8536,8 @@ Comparing \eqref{eq:halfbase-two-reciprocity} with \eqref{eq:halfbase-gaussian} 
 \[
  \GaussianBinomial{n}{k}{2}=\frac{\mathfrak m_n}{\mathfrak m_k\,\mathfrak m_{n-k}},
 \]
-and by \Cref{thm:subspace-count} it counts the $k$-dimensional subspaces of $\FiniteField{2}^{n}$.  Thus the half-base Gaussian row is a finite-geometric count divided by an explicit power of two, and the exponent of that power is $k(n-k)$, the dimension of the Grassmannian.  In the same way \eqref{eq:halfbase-factorial} exhibits $(1/2;1/2)_n$ as a power-of-two normalization of a product of Mersenne numbers, with $\TwoAdicValuation\!\left(\QPochhammer{1/2}{1/2}{n}\right)=-\binom{n+1}{2}$ because $\mathfrak m_n$ is odd.
-% ed.: an incoming draft restated reciprocity and the $\FiniteField{2}$-subspace count in
+and by \Cref{thm:subspace-count} it counts the $k$-dimensional subspaces of $\FiniteField_{2}^{n}$.  Thus the half-base Gaussian row is a finite-geometric count divided by an explicit power of two, and the exponent of that power is $k(n-k)$, the dimension of the Grassmannian.  In the same way \eqref{eq:halfbase-factorial} exhibits $(1/2;1/2)_n$ as a power-of-two normalization of a product of Mersenne numbers, with $\TwoAdicValuation\!\left(\QPochhammer{1/2}{1/2}{n}\right)=-\binom{n+1}{2}$ because $\mathfrak m_n$ is odd.
+% ed.: an incoming draft restated reciprocity and the $\FiniteField_{2}$-subspace count in
 % ed.: place; both are cross-referenced here instead.
 \end{remark}
 
@@ -10584,7 +10583,7 @@ The transport statement \Cref{thm:universal-functoriality}(iii) is what licenses
 \index{incidence algebra}
 \index{subspace lattice}
 
-Counting is only the first half of the finite-field picture.  The subspaces of $\FiniteField{Q}^{n}$ form a lattice, and its M\"obius function is again a Gaussian datum: a sign and a quadratic power of $Q$.  This is the structural reason for the shape of the inverse kernel in \Cref{thm:qbinomial-inversion}.
+Counting is only the first half of the finite-field picture.  The subspaces of $\FiniteField_{Q}^{n}$ form a lattice, and its M\"obius function is again a Gaussian datum: a sign and a quadratic power of $Q$.  This is the structural reason for the shape of the inverse kernel in \Cref{thm:qbinomial-inversion}.
 
 For an ambient vector space $V$, the notation
 $\SubspaceMobius{V}{U}{W}$ denotes the interval-poset M\"obius function on
@@ -10598,7 +10597,7 @@ the subspace lattice $\mathcal L(V)$.  It is characterized by
 It is neither the arithmetic M\"obius function nor a measure.
 
 \begin{theorem}[M\"obius function of the subspace lattice]\label{thm:subspace-mobius}
-Let $Q$ be a prime power and let $V$ be a $d$-dimensional vector space over $\FiniteField{Q}$.  In the lattice of subspaces of $V$, ordered by inclusion,
+Let $Q$ be a prime power and let $V$ be a $d$-dimensional vector space over $\FiniteField_{Q}$.  In the lattice of subspaces of $V$, ordered by inclusion,
 \begin{equation}\label{eq:subspace-mobius}
  \SubspaceMobius{V}{0}{V}=(-1)^dQ^{\binom d2}.
 \end{equation}

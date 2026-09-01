@@ -147,6 +147,79 @@
 }
 \newcommand{\QInteger}[2]{\left[#1\right]_{#2}}
 
+% Combinatorial coefficient calculus.  Semantic labels separate the several
+% bracket, angle-bracket, Bell, L, T, and hat conventions that otherwise
+% collide across the corpus.  An operand follows CoefficientExtraction.
+\newcommand{\SignedStirlingFirstKind}[2]{%
+  s\!\left(#1,#2\right)%
+}
+\newcommand{\UnsignedStirlingFirstKind}[2]{%
+  \genfrac{[}{]}{0pt}{}{#1}{#2}%
+}
+\newcommand{\StirlingSecondKind}[2]{%
+  \genfrac{\{} {\}}{0pt}{}{#1}{#2}%
+}
+\newcommand{\LahNumber}[2]{\mathsf{L}^{\mathrm{Lah}}_{#1,#2}}
+\newcommand{\TypeAEulerianNumber}[2]{%
+  \genfrac{\langle}{\rangle}{0pt}{}{#1}{#2}%
+}
+\newcommand{\TypeBEulerianNumber}[2]{%
+  \mathsf{E}^{\mathrm{Eul},B}_{#1,#2}%
+}
+\newcommand{\SecondOrderEulerianNumber}[2]{%
+  \left\langle\!\left\langle
+    \genfrac{}{}{0pt}{}{#1}{#2}
+  \right\rangle\!\right\rangle
+}
+\newcommand{\BellNumber}[1]{\mathsf{B}^{\mathrm{Bell}}_{#1}}
+\newcommand{\ExponentialPartialBellPolynomial}[2]{%
+  \mathcal{B}^{\mathrm{exp}}_{#1,#2}%
+}
+\newcommand{\ExponentialCompleteBellPolynomial}[1]{%
+  \mathcal{B}^{\mathrm{exp}}_{#1}%
+}
+\newcommand{\OrdinaryPartialBellPolynomial}[2]{%
+  \mathcal{B}^{\mathrm{ord}}_{#1,#2}%
+}
+\newcommand{\TouchardPolynomial}[1]{\mathsf{T}^{\mathrm{Tou}}_{#1}}
+\newcommand{\CoefficientExtraction}[2]{\left[#1^{#2}\right]}
+\newcommand{\CycleCountOperator}{\operatorname{cyc}}
+\newcommand{\SetPartitionOperator}{\operatorname{Part}}
+\newcommand{\BitwiseAnd}{\mathbin{\&}}
+\newcommand{\ExponentialGeneratingFunctionOf}[1]{#1^{\mathrm{egf}}}
+\newcommand{\OrdinaryGeneratingFunctionOf}[1]{#1^{\mathrm{ogf}}}
+\newcommand{\NormalizedReversionCoefficient}[2]{%
+  #1^{\mathrm{rev,norm}}_{#2}%
+}
+\newcommand{\OrdinaryGeneratingCoefficient}[2]{#1^{\mathrm{ogf}}_{#2}}
+\newcommand{\PartitionLatticeMinimum}{\bot_{\Pi}}
+\newcommand{\PartitionLatticeMaximum}{\top_{\Pi}}
+\newcommand{\TraceBellArgument}[1]{s^{\mathrm{tr}}_{#1}}
+\newcommand{\FiniteField}{\mathbb{F}}
+\newcommand{\CatalanNumber}[1]{\mathsf{C}^{\mathrm{Cat}}_{#1}}
+\newcommand{\ComplementaryBellNumber}[1]{%
+  \mathsf{B}^{\mathrm{comp}}_{#1}%
+}
+\newcommand{\GregoryCoefficient}[1]{\mathsf{G}^{\mathrm{Greg}}_{#1}}
+\newcommand{\GenocchiNumber}[1]{\mathsf{G}^{\mathrm{Gen}}_{#1}}
+\newcommand{\GenocchiPolynomial}[1]{\mathsf{G}^{\mathrm{Gen}}_{#1}}
+\newcommand{\BarnesGFunction}{\mathrm{G}_{\mathrm{Barnes}}}
+\newcommand{\BellHessenbergMatrixH}[1]{\mathsf{H}^{\mathrm{Bell}}_{#1}}
+\newcommand{\BellHessenbergMatrixK}[1]{\mathsf{K}^{\mathrm{Bell}}_{#1}}
+\newcommand{\AssociahedronByDimension}[1]{%
+  \mathsf{K}^{\mathrm{Assoc}}_{\dim=#1}%
+}
+\newcommand{\LagrangeShiftCoordinate}{\zeta_{\mathrm{Lag}}}
+\newcommand{\TypeAEulerianPolynomial}[1]{%
+  \mathsf{E}^{\mathrm{Eul},A}_{#1}%
+}
+\newcommand{\TypeBEulerianPolynomial}[1]{%
+  \mathsf{E}^{\mathrm{Eul},B}_{#1}%
+}
+\newcommand{\SecondOrderEulerianPolynomial}[1]{%
+  \mathsf{E}^{\mathrm{Eul},2}_{#1}%
+}
+
 % Named special functions.
 \newcommand{\Polylogarithm}{\operatorname{Li}}
 \newcommand{\LambertW}{W}
@@ -159,6 +232,7 @@
 }
 \newcommand{\GammaFunction}{\Gamma}
 \newcommand{\RiemannZeta}{\zeta}
+\newcommand{\HurwitzZeta}[2]{\zeta\!\left(#1,#2\right)}
 
 % Asymptotics.  BigO and LittleO are operator tokens for existing formula
 % grammar; prefer the At forms so that the limiting regime is printed.
