@@ -108,7 +108,7 @@ J(A;B,C,D,E,F)
 \end{align*}
 Define also
 \begin{align*}
-R(A;B,C,D,E,F)
+\JacksonPrefactor(A;B,C,D,E,F)
 :={}&
 \frac{\Pi(A,A/(EF),A^2/(BCDE),A^2/(BCDF))}
 {\Pi(A/E,A/F,A^2/(BCD),A^2/(BCDEF))}
@@ -126,7 +126,8 @@ We first prove the seed transformation
 \begin{equation}
 \label{qg:eq:jackson-seed}
  J(A;B,C,D,E,F)
- =R(A;B,C,D,E,F)\,J\bigl(\sigma(A;B,C,D,E,F)\bigr).
+ =\JacksonPrefactor(A;B,C,D,E,F)\,
+  J\bigl(\sigma(A;B,C,D,E,F)\bigr).
 \end{equation}
 
 Let $D_0,N_0$ be respectively the denominator and numerator products in the
@@ -180,7 +181,7 @@ The coefficients of $F$ and $F^{-1}$ already have ratio $\lambda$, so the
 equality at $F=1$ forces $s_0=\lambda s_1$.  This proves
 \eqref{qg:eq:jackson-delta-transform}.  A second direct cancellation gives
 \[
- R(A;B,C,D,E,F)\frac{D_0}{D_1}=\lambda.
+ \JacksonPrefactor(A;B,C,D,E,F)\frac{D_0}{D_1}=\lambda.
 \]
 Since $J=\Delta_0/D_0$ and
 $J\circ\sigma=\Delta_1/D_1$, the seed transformation
@@ -198,7 +199,8 @@ Apply the seed transformation twice.  Its second iterate is
 \end{equation}
 Substitution and cancellation in the two prefactors gives
 \begin{align*}
-&R(A;B,C,D,E,F)\,R\bigl(\sigma(A;B,C,D,E,F)\bigr)\\
+&\JacksonPrefactor(A;B,C,D,E,F)\,
+ \JacksonPrefactor\bigl(\sigma(A;B,C,D,E,F)\bigr)\\
 &\quad=
 \frac{\Pi(A,D,A^2/(BCDE),A^2/(BCDF),
  A^2/(BDEF),A^2/(CDEF))}
@@ -214,7 +216,9 @@ J(\sigma^2)
  \frac{(1-A^2/(BCDEF))(1-A^3/(BCDEF))}
  {(1-A^2/(BDEF))(1-A^2/(CDEF))}.
 \end{align*}
-Thus $J=R(R\circ\sigma)(J\circ\sigma^2)$ is precisely
+Thus
+$J=\JacksonPrefactor\,(\JacksonPrefactor\circ\sigma)\,(J\circ\sigma^2)$
+is precisely
 \eqref{qg:eq:jackson-rational}.  Every step took place in the rational-function
 field, so the final specialization assertion follows by applying a field
 homomorphism wherever the displayed denominators remain nonzero.
@@ -250,11 +254,12 @@ terms in the displayed identity are defined.
 \end{theorem}
 
 \begin{proof}
-Work first in the field $K=\RationalNumbers(q,a,b,c,d)$.  Let $F(n,k)$ be the
+Work first in the field $K=\RationalNumbers(q,a,b,c,d)$.  Let
+$\JacksonNormalizedSummand{n}{k}$ be the
 $k$th summand divided by the product on the right-hand side of
 \eqref{qg:eq:jackson-8phi7}; explicitly,
 \begin{align*}
-F(n,k)&=
+\JacksonNormalizedSummand{n}{k}&=
  \frac{(aq/b,aq/c,aq/d,aq/(bcd);q)_n}
  {(aq,aq/(bc),aq/(bd),aq/(cd);q)_n}
  \frac{1-aq^{2k}}{1-a}q^k\\
@@ -262,7 +267,7 @@ F(n,k)&=
  \frac{(a,b,c,d,a^2q^{n+1}/(bcd),q^{-n};q)_k}
  {(q,aq/b,aq/c,aq/d,bcdq^{-n}/a,aq^{n+1};q)_k}.
 \end{align*}
-Set $F(n,k)=0$ outside $0\le k\le n$.  Define
+Set $\JacksonNormalizedSummand{n}{k}=0$ outside $0\le k\le n$.  Define
 \begin{align*}
 u_k={}&(1-aq^k)(1-bq^k)(1-cq^k)(1-dq^k)
  \left(1-\frac{a^2q^{n+k+1}}{bcd}\right)
@@ -329,7 +334,8 @@ multivariate expansion.  Put
 We claim that
 \begin{equation}
 \label{qg:eq:jackson-direct-difference}
- F(n+1,k)-F(n,k)=\mathcal C_{n,k}\mathcal B_{n,k}
+ \JacksonNormalizedSummand{n+1}{k}-\JacksonNormalizedSummand{n}{k}
+ =\mathcal C_{n,k}\mathcal B_{n,k}
  \qquad(0\le k\le n+1).
 \end{equation}
 For $0\le k\le n$, repeated use of
@@ -338,17 +344,19 @@ For $0\le k\le n$, repeated use of
 \]
 gives
 \begin{align*}
-\frac{F(n+1,k)}{F(n,k)}-1
+\frac{\JacksonNormalizedSummand{n+1}{k}}
+     {\JacksonNormalizedSummand{n}{k}}-1
 ={}&-\frac{\mathcal B_{n,k}}
 {(1-q^{-n+k-1})(1-aq^{n+1}/(bc))(1-aq^{n+1}/(bd))}\\
 &\quad\times
 \frac1{(1-aq^{n+1}/(cd))(1-a^2q^{n+1}/(bcd))
 (1-aq^{n+k+1})}.
 \end{align*}
-Multiplying by the displayed formula for $F(n,k)$ and cancelling one initial
+Multiplying by the displayed formula for $\JacksonNormalizedSummand{n}{k}$
+and cancelling one initial
 and one terminal factor in each shifted factorial gives
 \eqref{qg:eq:jackson-direct-difference}.  For $k=n+1$ one has
-$(q^{-n};q)_{n+1}=0$, so $F(n,n+1)=0$; the second summand of
+$(q^{-n};q)_{n+1}=0$, so $\JacksonNormalizedSummand{n}{n+1}=0$; the second summand of
 \(\mathcal B_{n,n+1}\) also vanishes, and direct cancellation in the first
 summand gives the same formula.
 
@@ -380,7 +388,7 @@ Together with \eqref{qg:eq:jackson-direct-difference}, this proves the exact
 finite-difference certificate
 \begin{equation}
 \label{qg:eq:jackson-finite-difference}
- F(n+1,k)-F(n,k)
+ \JacksonNormalizedSummand{n+1}{k}-\JacksonNormalizedSummand{n}{k}
  =D_n\frac{w_k}{w_0}
  \frac{u_0u_1\cdots u_{k-1}}{v_1v_2\cdots v_k}.
 \end{equation}
@@ -389,9 +397,11 @@ Use \Cref{qg:lem-euler-telescope} with upper index $n+1$.  Since
 $u_{n+1}=v_0=0$, its right-hand side is zero.  Summing
 \eqref{qg:eq:jackson-finite-difference} over $0\le k\le n+1$ therefore gives
 \[
- \sum_kF(n+1,k)=\sum_kF(n,k).
+ \sum_k\JacksonNormalizedSummand{n+1}{k}
+ =\sum_k\JacksonNormalizedSummand{n}{k}.
 \]
-At $n=0$ only $k=0$ occurs and $F(0,0)=1$.  Hence the normalized sum is $1$
+At $n=0$ only $k=0$ occurs and
+$\JacksonNormalizedSummand{0}{0}=1$.  Hence the normalized sum is $1$
 for every $n$, which is exactly \eqref{qg:eq:jackson-8phi7} in $K$.
 
 Finally, clear only the denominators occurring in the original identity.
