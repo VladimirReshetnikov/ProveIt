@@ -116,7 +116,14 @@ It includes exhaustive crosswalks for `QPochhammerEntire` (zero definitions
 and five legacy compatibility theorems), `QPochhammerInfinite` (one definition
 and twenty-nine theorems), `QPochhammerDissection` (zero definitions and two
 theorems), and `QBinomialTheoremInfinite` (one definition and twenty-two
-theorems), together with expanded Euler, Jacobi, and Rogers--Szegő material.
+theorems), together with `GeometricPochhammerNormalConvergence` (zero
+definitions and three theorems). The newer inventory also includes
+`QMultinomial` (one definition and seven theorems),
+`QPochhammerInfiniteBounds` (five theorems), `QPochhammerComplexOrder` (one
+definition and four theorems), `BasicHypergeometricSeries` (two definitions
+and five theorems), `HeineTransformation` (two definitions and five theorems),
+and `QGaussSummation` (two theorems), as well as expanded Euler, Jacobi, and
+Rogers--Szegő material.
 The two newest generic theorems are
 `deriv_qPochhammerInfIn_ne_zero_of_mul_pow_eq_one`, which gives a nonzero
 derivative at every raw factor zero `a*q^j = 1` including `q = 0`, and
@@ -129,12 +136,14 @@ than duplicating their analytic proofs. In `QBinomialTheoremInfinite`,
 `GaussianBinomialAtOne` and is imported rather than redeclared. The forward
 status ledger is 73 Exact, 84 Partial, 117 None, and 8 interface rows; the
 191-result pre-Fabius core is 36/29/123/3. The compound outer spectral-product
-theorem remains Partial: local uniformity for one symbol as a function of its
-argument at fixed contracting nome does not establish normal convergence of
-the additional product over spectral scales.
+theorem remains Partial even though the three-theorem outer-product leaf proves
+local-uniform (normal) convergence for every complex strict contraction, its
+nome-`1/4` Rvachev specialization, and the bounded-Fabius Fourier
+specialization. Its named centered/MGF packaging and exterior reciprocal
+formula, pole divisor, and zero--pole exchange remain outside Lean.
 
-Source and PDF were synchronized by this build, and the root package checksum
-ledger (`SHA256SUMS`) was regenerated with `audit/build_package_checksums.py`
-afterwards. PDFs are rebuilt in batches, at most about once per hour, so
-source-only commits may precede the next synchronization; the ledger and the
-figures above always describe the retained PDF.
+No PDF was generated for this source-only crosswalk update. The 347-page PDF
+therefore remains a source-pinned historical artifact, while the root package
+checksum ledger records the live source and retained PDF as distinct payloads.
+PDFs are rebuilt in batches, at most about once per hour; synchronization is
+claimed only after a fresh guarded build.

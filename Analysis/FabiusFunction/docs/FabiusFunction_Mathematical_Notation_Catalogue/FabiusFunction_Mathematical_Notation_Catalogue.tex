@@ -523,10 +523,25 @@ the argument and zero convention are stated locally.\\
 \commandname{TwoAdicValuation} & $\TwoAdicValuation$ & Two-adic valuation.\\
 \commandname{QPochhammer}\texttt{\{a\}\{q\}\{n\}} & $\QPochhammer{a}{q}{n}$ & Finite
 or infinite $q$-shifted factorial with explicit base and length.\\
+\commandname{GeneralizedQPochhammer}\texttt{\{a\}\{q\}\{\string\nu\}} &
+$\GeneralizedQPochhammer{a}{q}{\nu}$ & Integer- or complex-order
+$q$-shifted factorial with an explicit logarithm branch and nonvanishing
+denominator when the order is not a natural number.\\
 \commandname{GaussianBinomial}\texttt{\{n\}\{k\}\{q\}} &
 $\GaussianBinomial{n}{k}{q}$ & Gaussian binomial coefficient with explicit base.\\
+\commandname{GeneralizedGaussianBinomial}\texttt{\{\string\alpha\}
+\{\string\beta\}\{q\}} &
+$\GeneralizedGaussianBinomial{\alpha}{\beta}{q}$ & Generalized Gaussian
+coefficient in the explicitly declared finite-product/rational,
+branch-dependent, or meromorphic regime.\\
+\commandname{QMultinomial}\texttt{\{n\}\{n\string_1,\string\ldots,n\string_r\}\{q\}} &
+$\QMultinomial{n}{n_1,\ldots,n_r}{q}$ & Gaussian multinomial coefficient;
+the complete lower list and base are explicit.\\
 \commandname{QInteger}\texttt{\{n\}\{q\}} & $\QInteger{n}{q}$ & $q$-integer with
 explicit base.\\
+\commandname{GeneralizedQNumber}\texttt{\{z\}\{q\}} &
+$\GeneralizedQNumber{z}{q}$ & Branch-dependent generalized $q$-number for
+a declared scalar or complex exponent.\\
 \commandname{Polylogarithm} & $\Polylogarithm$ & Polylogarithm with order supplied as a
 subscript.\\
 \commandname{LambertW} & $\LambertW$ & Lambert $W$; a branch subscript is mandatory when
@@ -2644,24 +2659,46 @@ literal index \(\infty\) denotes
 an infinite product, not an extended-natural argument to the finite definition.}
 \entryfield{Positive and negative integer indices}{For \(m\in\PositiveIntegers\),
 \[
- (a;q)_{-m}
- \DefinitionEquals\frac{1}{(aq^{-m};q)_m}
- =\frac{(-q/a)^m q^{\binom m2}}{(q/a;q)_m},
+ \GeneralizedQPochhammer{a}{q}{-m}
+ \DefinitionEquals\frac{1}{\QPochhammer{aq^{-m}}{q}{m}}
+ =\frac{(-q/a)^m q^{\binom m2}}{\QPochhammer{q/a}{q}{m}},
 \]
 where all displayed denominators are nonzero.  Together with the finite definition this
-gives \((a;q)_{m+n}=(a;q)_m(aq^m;q)_n\) for integer indices whenever both sides are
-defined.}
+gives
+\(\GeneralizedQPochhammer{a}{q}{m+n}
+=\GeneralizedQPochhammer{a}{q}{m}
+ \GeneralizedQPochhammer{aq^m}{q}{n}\)
+for integer indices whenever all three factors are defined.  For
+\(n\in\NaturalNumbers\),
+\(\GeneralizedQPochhammer{a}{q}{n}=\QPochhammer{a}{q}{n}\); the two command
+names record whether the governing domain is finite-natural or generalized.}
 \entryfield{Complex order}{Fix \(q\in\ComplexNumbers\setminus\{0\}\), \(|q|<1\), and a
 logarithm value \(L_q\) satisfying \(\exp(L_q)=q\).  Put
 \(q^\nu=\exp(\nu L_q)\).  For
 \(\nu\in\ComplexNumbers\),
 \[
- (a;q)_\nu
- \DefinitionEquals\frac{(a;q)_\infty}{(aq^\nu;q)_\infty}
+ \GeneralizedQPochhammer{a}{q}{\nu}
+ \DefinitionEquals
+ \frac{\QPochhammer{a}{q}{\infty}}
+      {\QPochhammer{aq^\nu}{q}{\infty}}
 \]
 where the denominator is nonzero.  Changing the branch can change \(q^\nu\), hence the
 value.  For \(\nu\in\IntegerNumbers\) the definition agrees with the integer-index
 convention on their common domain.}
+\entryfield{Complex concatenation and unit shift}{With the logarithm branch fixed
+as above, and whenever every displayed factor is defined,
+\[
+ \GeneralizedQPochhammer{a}{q}{\alpha+\beta}
+ =\GeneralizedQPochhammer{a}{q}{\alpha}
+  \GeneralizedQPochhammer{aq^\alpha}{q}{\beta}.
+\]
+Taking \(\beta=1\) gives
+\[
+ \GeneralizedQPochhammer{a}{q}{\alpha+1}
+ =(1-aq^\alpha)\GeneralizedQPochhammer{a}{q}{\alpha}.
+\]
+Both identities use the same chosen value of \(\log q\); changing branches in
+only one factor would change the statement.}
 \entryfield{The base \(q=0\)}{For finite indices,
 \((a;0)_0=1\) and \((a;0)_n=1-a\) for \(n\ge1\), using \(0^0=1\) in the first factor and
 \(0^j=0\) for \(j>0\).  Negative and complex orders at \(q=0\) are not inferred from
@@ -2673,9 +2710,11 @@ formulas containing \(q^{-m}\) or a logarithm of \(q\).}
 \]
 This is a finite product identity over a commutative ring and needs no division.}
 \entryfield{Retired signatures}{Former two-argument macros hid the base and are retired.
-The shared \commandname{QPochhammer} always receives \((a,q,n)\) in that order.
-Monograph-local extensions render the same glyph but declare integer or complex order at
-the governing definition.}
+The shared \commandname{QPochhammer} always receives \((a,q,n)\) in that order
+and is used for a finite-natural length or the literal infinite-product index.
+The shared \commandname{GeneralizedQPochhammer} has the same argument order and
+visible glyph, but its third argument is a declared integer or complex order
+governed by the preceding branch and denominator conditions.}
 \end{catalogueentry}
 
 \begin{catalogueentry}{q-integer}{\(q\)-integers and \(q\)-factorials}
@@ -2701,18 +2740,27 @@ canonical \commandname{QInteger}.}
 logarithm value \(L_q\) satisfying \(\exp(L_q)=q\).  For \(z\in\ComplexNumbers\), define
 \(q^z=\exp(zL_q)\).  If \(q\in(0,1)\), the default is the real logarithm
 \(L_q=\log q<0\).}
-\entryfield{Definition}{The monograph-local command
+\entryfield{Definition}{The shared command
 \commandname{GeneralizedQNumber}\texttt{\{z\}\{q\}} prints
 \[
- [z]_q\DefinitionEquals\frac{1-q^z}{1-q}.
+ \GeneralizedQNumber{z}{q}\DefinitionEquals\frac{1-q^z}{1-q}.
 \]
-At \(q=1\), the separately assigned continuous value is \([z]_1=z\).  For
+At \(q=1\), the separately assigned continuous value is
+\(\GeneralizedQNumber{z}{1}=z\).  For
 \(z=n\in\NaturalNumbers\), this agrees with \(\QInteger n q\).}
-\entryfield{Zeros and branch dependence}{For \(q\ne1\), \([z]_q=0\) exactly when
+\entryfield{The excluded base \(q=0\)}{For an arbitrary complex exponent \(z\),
+the branch formula requires \(q\ne0\), and this catalogue assigns no canonical
+value to \(0^z\) or to \(\GeneralizedQNumber{z}{0}\).  If
+\(z=n\in\NaturalNumbers\), the finite polynomial convention belongs instead to
+\commandname{QInteger}: \(\QInteger{0}{0}=0\) and
+\(\QInteger{n}{0}=1\) for \(n\ge1\).}
+\entryfield{Zeros and branch dependence}{For \(q\ne1\),
+\(\GeneralizedQNumber{z}{q}=0\) exactly when
 \(\exp(zL_q)=1\).  In the real regime \(0<q<1\) and \(z\in\RealNumbers\), this means
 \(z=0\).  For complex \(z\), changing \(L_q\) can change both the function and its zero
 lattice.}
-\entryfield{Inverse on a chosen branch}{If \(w=[z]_q\), then
+\entryfield{Inverse on a chosen branch}{If
+\(w=\GeneralizedQNumber{z}{q}\), then
 \[
  q^z=1-(1-q)w,\qquad
  z=\frac{\log_{\!*}(1-(1-q)w)}{L_q},
@@ -2721,7 +2769,8 @@ where \(\log_{\!*}\) is a specifically chosen local branch and its domain exclud
 and the branch cut.  The formula produces one inverse branch, not a global single-valued
 inverse on \(\ComplexNumbers\).}
 \entryfield{Classical limit}{For fixed \(z\) and a compatible logarithm branch near
-\(q=1\), \([z]_q\to z\).  A uniform limit over unbounded \(z\)-sets is not implicit.}
+\(q=1\), \(\GeneralizedQNumber{z}{q}\to z\).  A uniform limit over unbounded
+\(z\)-sets is not implicit.}
 \end{catalogueentry}
 
 \begin{catalogueentry}{q-falling-power}{\(q\)-falling powers and \(q\)-Newton bases}
@@ -2786,34 +2835,52 @@ evaluation, not substitution into the displayed rational quotient.}
 
 \begin{catalogueentry}{generalized-gaussian-binomial}{Generalized Gaussian binomial
 coefficients}
-\entryfield{Complex upper parameter}{Fix a nonzero complex base \(q\), a logarithm value
-\(L_q\), and \(q^\alpha=\exp(\alpha L_q)\).  For
+\entryfield{Finite-product/rational definition}{Fix a nonzero complex base
+\(q\), a logarithm value \(L_q\), and
+\(q^\alpha=\exp(\alpha L_q)\).  For
 \(\alpha\in\ComplexNumbers\) and \(k\in\NaturalNumbers\), define
 \[
- \genfrac{[}{]}{0pt}{}{\alpha}{k}_{q}
+ \GeneralizedGaussianBinomial{\alpha}{k}{q}
  \DefinitionEquals
- \frac{(q^{\alpha-k+1};q)_k}{(q;q)_k},
+ \frac{\QPochhammer{q^{\alpha-k+1}}{q}{k}}
+      {\QPochhammer{q}{q}{k}},
 \]
-where the denominator is nonzero.  The monograph-local command is
-\par\smallskip\noindent
-{\small\commandname{GeneralizedGaussianBinomial}}.
-\par\smallskip\noindent
-Its arguments are the upper parameter, lower parameter, and base, in that order.}
+where the denominator is nonzero.  The shared
+\commandname{GeneralizedGaussianBinomial} receives the upper parameter, lower
+parameter, and base, in that order.  For an integral upper parameter this is a
+rational identity in \(q\); for a nonintegral upper parameter it also depends on
+the chosen logarithm branch.}
 \entryfield{Integer specialization}{When \(\alpha=n\in\NaturalNumbers\) and
-\(0\le k\le n\), the generalized expression equals
-\(\GaussianBinomial n k q\).  For \(k>n\), the canonical finite Gaussian coefficient is
-the zero polynomial by definition; this boundary convention is not silently extended to
-arbitrary complex \(\alpha\).}
-\entryfield{Two complex arguments}{A separately declared meromorphic continuation may use
+\(k\in\NaturalNumbers\), the generalized expression equals
+\(\GaussianBinomial n k q\) for every \(k\), including \(k>n\), where both sides
+are the zero polynomial.  At a base where the displayed rational quotient is
+formally \(0/0\), this is polynomial evaluation after cancellation, not literal
+division.  The out-of-range zero convention is not silently extended to an
+arbitrary complex upper parameter.}
+\entryfield{Two complex arguments}{For the two-complex-argument definition, fix
+\(0<q<1\) and use the real logarithm, so
+\(q^z=\exp(z\log q)\).  For
+\(\alpha,\beta\in\ComplexNumbers\), define
 \[
- \genfrac{[}{]}{0pt}{}{\alpha}{\beta}_{q}
+ \GeneralizedGaussianBinomial{\alpha}{\beta}{q}
  \DefinitionEquals
- \frac{\Gamma_q(\alpha+1)}
+ \frac{
+   \QPochhammer{q^{\beta+1}}{q}{\infty}
+   \QPochhammer{q^{\alpha-\beta+1}}{q}{\infty}}
+  {\QPochhammer{q}{q}{\infty}
+   \QPochhammer{q^{\alpha+1}}{q}{\infty}},
+\]
+whenever the denominator is nonzero.  Equivalently, using the
+\notelink{q-gamma-beta}{catalogue's \(q\)-gamma convention},
+\[
+ \GeneralizedGaussianBinomial{\alpha}{\beta}{q}
+ =\frac{\Gamma_q(\alpha+1)}
  {\Gamma_q(\beta+1)\Gamma_q(\alpha-\beta+1)}
 \]
-in a regime where the named \(q\)-gamma function and quotient are defined.  This is not a
-polynomial in \(q\), depends on the \(q\)-gamma convention, and has no automatic
-out-of-range zero rule.}
+wherever that meromorphic quotient is defined.  This is not a polynomial in
+\(q\), and it has no automatic out-of-range zero rule.  When
+\(\beta=k\in\NaturalNumbers\), tail cancellation recovers the preceding
+finite-product definition.}
 \entryfield{No implicit regime change}{Polynomial identities, rational identities,
 branch-dependent complex formulas, and meromorphic continuations are four distinct
 claims.  A source moving between them states the domain and continuation theorem rather
@@ -2826,20 +2893,25 @@ path area}
 \(n,n_1,\ldots,n_r\in\NaturalNumbers\), and
 \(n_1+\cdots+n_r=n\),
 \[
- \genfrac{[}{]}{0pt}{}{n}{n_1,\ldots,n_r}_{q}
+ \QMultinomial{n}{n_1,\ldots,n_r}{q}
  \DefinitionEquals
- \frac{(q;q)_n}{(q;q)_{n_1}\cdots(q;q)_{n_r}},
+ \frac{\QPochhammer{q}{q}{n}}
+      {\QPochhammer{q}{q}{n_1}\cdots\QPochhammer{q}{q}{n_r}},
 \]
 interpreted as its polynomial in \(q\).  For \(r=0\), the constraint forces \(n=0\) and
-the value is \(1\).  If an input is negative or the sum constraint fails, the expression
-is undefined unless that source separately declares a zero extension.}
+the value is \(1\); for \(r=1\), the constraint forces \(n_1=n\) and the value is
+again \(1\).  The quotient represents an element of \(\IntegerNumbers[q]\), so
+evaluation at a root of unity or any other base means polynomial evaluation
+after cancellation, not literal division by possibly vanishing factors.  If an
+input is negative or the sum constraint fails, the expression is undefined
+unless that source separately declares a zero extension.}
 \entryfield{Factorization}{For a valid composition,
 \[
- \genfrac{[}{]}{0pt}{}{n}{n_1,\ldots,n_r}_{q}
- =\genfrac{[}{]}{0pt}{}{n}{n_1}_{q}
-  \genfrac{[}{]}{0pt}{}{n-n_1}{n_2,\ldots,n_r}_{q}.
+ \QMultinomial{n}{n_1,\ldots,n_r}{q}
+ =\GaussianBinomial{n}{n_1}{q}
+  \QMultinomial{n-n_1}{n_2,\ldots,n_r}{q}.
 \]
-The monograph-local \commandname{QMultinomial} receives \(n\), the complete lower list,
+The shared \commandname{QMultinomial} receives \(n\), the complete lower list,
 and \(q\); the list length and sum are not macro-inferred data.}
 \entryfield{Word inversion statistic}{Let \(W(n_1,\ldots,n_r)\) be the words on the
 ordered alphabet \(1<\cdots<r\) in which \(i\) occurs \(n_i\) times.  For
@@ -8015,6 +8087,16 @@ zero convention local.\\
 $\QPochhammer{a}{q}{n},\GaussianBinomial{n}{k}{q},\QInteger{n}{q}$ &
 \commandname{QPochhammer}, \commandname{GaussianBinomial}, \commandname{QInteger} & Every
 base and finite/infinite length explicit.\\
+\(\GeneralizedQPochhammer{a}{q}{\nu},
+  \GeneralizedGaussianBinomial{\alpha}{\beta}{q},
+  \GeneralizedQNumber{z}{q}\) &
+\commandname{GeneralizedQPochhammer},
+\commandname{GeneralizedGaussianBinomial},
+\commandname{GeneralizedQNumber} & Generalized \(q\)-families whose integer or complex
+order, analytic regime, and branch data are declared locally.\\
+\(\QMultinomial{n}{n_1,\ldots,n_r}{q}\) &
+\commandname{QMultinomial} & Gaussian multinomial with the complete lower list and base
+explicit.\\
 \(\Polylogarithm,\LambertW,\GammaFunction,\RiemannZeta,
   \HurwitzZeta{s}{a}\) &
 \commandname{Polylogarithm}, \commandname{LambertW}, \commandname{GammaFunction},
@@ -8134,6 +8216,12 @@ Command & Arity & Normative entry\\
 \commandname{FractionalPart} & 1 & \notelink{rounding-positive-part}{Rounding and positive part}.\\
 \commandname{GammaFunction} & 0 & \notelink{polylog-gamma-zeta}{Gamma function}.\\
 \commandname{GaussianBinomial} & 3 & \notelink{gaussian-binomial}{Gaussian binomial}.\\
+\commandname{GeneralizedGaussianBinomial} & 3 &
+\notelink{generalized-gaussian-binomial}{Generalized Gaussian binomial}.\\
+\commandname{GeneralizedQNumber} & 2 &
+\notelink{generalized-q-number}{Generalized \(q\)-numbers}.\\
+\commandname{GeneralizedQPochhammer} & 3 &
+\notelink{q-pochhammer}{Generalized \(q\)-Pochhammer symbols}.\\
 \commandname{GenocchiNumber} & 1 &
 \notelink{combinatorial-letter-collisions}{Genocchi numbers}.\\
 \commandname{GenocchiPolynomial} & 1 &
@@ -8202,6 +8290,8 @@ Command & Arity & Normative entry\\
 \commandname{PrincipalLogarithm} & 0 & \notelink{logarithm-order}{Logarithm and order}.\\
 \commandname{Probability} & 0 & \notelink{probability-space}{Probability spaces}.\\
 \commandname{QInteger} & 2 & \notelink{q-integer}{(q)-integers}.\\
+\commandname{QMultinomial} & 3 &
+\notelink{q-multinomial-path-area}{\(q\)-multinomial coefficients}.\\
 \commandname{QPochhammer} & 3 & \notelink{q-pochhammer}{(q)-Pochhammer symbols}.\\
 \commandname{RankOperator} & 0 & \notelink{matrix-operators}{Matrix operators}.\\
 \commandname{RationalLogLaurentField} & 1 &
