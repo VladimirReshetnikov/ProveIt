@@ -405,7 +405,7 @@ Lean's natural-number division and remainder operations require explicit control
 
 \subsection{Prime-power Pascal-row valuations}
 The exhaustive public surface of \nolinkurl{PrimePowerBinomialValuation.lean}
-consists of three theorems.  For a prime \(p\), a natural exponent \(m\), and
+consists of six theorems and no definitions.  For a prime \(p\), a natural exponent \(m\), and
 \(0<j\leq p^m\),
 \[
   \nu_p\!\binom{p^m}{j}+\nu_p(j)=m,
@@ -415,8 +415,18 @@ consists of three theorems.  For a prime \(p\), a natural exponent \(m\), and
 These are \nolinkurl{primePowerChoose_padicValNat_add} and
 \nolinkurl{primePowerChoose_padicValNat}; they include \(j=p^m\) and the
 boundary \(m=0\).  The strict dyadic specialization \(0<j<2^m\) is
-\nolinkurl{twoPowChoose_padicValNat}.  No endpoint-flat
-\(\binom{2^m-2}{j-1}\) valuation or valuation-histogram theorem is claimed.
+\nolinkurl{twoPowChoose_padicValNat}.  The companion declarations are
+\nolinkurl{primePowerSubOneChoose_padicValNat},
+\nolinkurl{primePowerSubTwoChoose_padicValNat}, and
+\nolinkurl{twoPowSubTwoChoose_padicValNat}.  They state
+\[
+ \nu_p\!\binom{p^m-1}{j}=0\quad(0\le j<p^m),
+ \qquad
+ \nu_p\!\binom{p^m-2}{j-1}=\nu_p(j)\quad(0<j<p^m),
+\]
+and specialize the second identity to \(p=2\).  The strict upper bound is
+essential because at \(j=p^m\) the companion binomial coefficient is zero.
+Only valuation-histogram counts remain outside this module.
 
 \subsection{Product normalizations}
 Several finite products recur in moment denominators.  The arithmetic module names them rather than expanding them at every use.  Principal examples include variants of
@@ -927,8 +937,10 @@ the corresponding elementary-denominator forms are
 Finally \nolinkurl{fabiusInv_effectivelyUniformContinuous} packages the
 reciprocal-precision condition as \nolinkurl{EffectivelyUniformContinuous}.
 These two definitions and twelve theorems are the module's complete public
-surface.  It does not provide a tolerant-bisection realizer, sequential
-computability, or a combined \nolinkurl{IsComputableRealFunction} theorem.
+surface.  This leaf itself does not provide a tolerant-bisection realizer,
+sequential computability, or a combined
+\nolinkurl{IsComputableRealFunction} theorem; the downstream effective-
+inversion modules below now supply all three.
 
 The downstream \nolinkurl{FabiusInverseLogarithmicModulus.lean} replaces the
 coarse choice \(r=n\) by
@@ -980,10 +992,36 @@ separately package the factorial and report-exact Delta witnesses for
 \nolinkurl{EffectivelyUniformContinuous}.
 
 These three definitions and fifteen theorems are the complete public surface.
-The module does not construct the exact endpoint-mass ceiling denominator or
-a tolerant-bisection realizer, and it proves no
-\nolinkurl{SequentiallyComputable}, combined
-\nolinkurl{IsComputableRealFunction}, or input-bit asymptotic statement.
+This module itself does not construct the exact endpoint-mass ceiling
+denominator or a tolerant-bisection realizer.  The downstream modules below
+prove \nolinkurl{SequentiallyComputable} and the combined
+\nolinkurl{IsComputableRealFunction} statement; no input-bit asymptotic is
+claimed.
+
+The generic \nolinkurl{EffectiveMonotoneInverse.lean} layer has exactly two
+public definitions and six theorems.  Its definitions are
+\nolinkurl{SequentiallyComputableOn} and \nolinkurl{unitClamp}; its theorems
+are \nolinkurl{unitClamp_sequentiallyComputable},
+\nolinkurl{tolerantDifference_error},
+\nolinkurl{tolerantDifference_safe_updates},
+\nolinkurl{tolerantDifference_inconclusive},
+\nolinkurl{tolerantBisection_correct}, and
+\nolinkurl{effectiveInversionOn_Icc}.  For a computably dyadically
+approximable strict monotone bijection of \([0,1]\), a computable positive
+reciprocal inverse modulus makes its inverse sequentially computable on that
+interval.  The comparison is genuinely three-way: a certified large signed
+difference updates the bracket, while the inconclusive branch already proves
+the requested inverse approximation, so equality of computable reals is never
+decided.
+
+The specialization \nolinkurl{FabiusInverseComputable.lean} has no public
+definitions and exactly one theorem,
+\nolinkurl{fabiusInv_isComputableRealFunction}.  Tolerant bisection supplies
+the sequential clause on \([0,1]\), input clamping extends it to the total
+inverse on \(\RealNumbers\), and the logarithmic Delta modulus supplies
+effective uniform continuity.  This is a computability certificate for every
+bounded Fabius witness, not an exact least endpoint-mass denominator or an
+input-bit running-time theorem.
 
 The next two modules close the realizer gap.  The exhaustive public surface of
 \nolinkurl{EffectiveMonotoneInverse.lean} is exactly two definitions,
@@ -1174,13 +1212,13 @@ No. & Declaration & Formal content \\
 \end{longtable}
 
 The boundary is important.  The two denominator definitions and their
-primitive-recursion proofs are executable, but \nolinkurl{fabiusInv} itself
-is still a \emph{noncomputable} order-isomorphism inverse.  An effective
-modulus alone is not a name-producing algorithm.  This module proves neither
+primitive-recursion proofs are executable, while the definition
+\nolinkurl{fabiusInv} remains noncomputable.  An effective modulus alone is
+not a name-producing algorithm, so this module by itself proves neither
 \nolinkurl{SequentiallyComputable} nor a combined
-\nolinkurl{IsComputableRealFunction} theorem for the inverse, and it supplies
-no logarithmic selector \(r(n)\), exact least/ceiling denominator, tolerant
-bisection realizer, or input-bit complexity bound.
+\nolinkurl{IsComputableRealFunction} theorem.  The later logarithmic and
+tolerant-bisection modules provide the selector and name-producing algorithm;
+the exact least/ceiling denominator and input-bit complexity remain open.
 
 \subsection{Generic formal implicit roots versus inverse-Fabius germs}
 \nolinkurl{ImplicitPowerSeries.lean} isolates a purely formal root engine.
@@ -1506,10 +1544,13 @@ The argument differs for odd and even indices.  Odd-index statements reduce to t
 
 The later leaf \nolinkurl{PrimePowerBinomialValuation.lean} exposes the
 prime-power Pascal-row identity directly through \nolinkurl{padicValNat}.  Its
-exhaustive public API consists of exactly three theorems:
+exhaustive public API consists of exactly six theorems and no definitions:
 \nolinkurl{primePowerChoose_padicValNat_add},
 \nolinkurl{primePowerChoose_padicValNat}, and
-\nolinkurl{twoPowChoose_padicValNat}.  For every prime \(p\), exponent \(m\), and
+\nolinkurl{twoPowChoose_padicValNat}, together with
+\nolinkurl{primePowerSubOneChoose_padicValNat},
+\nolinkurl{primePowerSubTwoChoose_padicValNat}, and
+\nolinkurl{twoPowSubTwoChoose_padicValNat}.  For every prime \(p\), exponent \(m\), and
 \(0<j\le p^m\), the first two state
 \[
  \nu_p\!\binom{p^m}{j}+\nu_p(j)=m,
@@ -1518,8 +1559,11 @@ exhaustive public API consists of exactly three theorems:
 \]
 The generic surface includes \(j=p^m\) and \(m=0\), excluding only \(j=0\)
 because the valuation is totalized there.  The third theorem is the strict
-dyadic-comb specialization \(0<j<2^m\).  No endpoint-flat
-\(\binom{2^m-2}{j-1}\) companion or valuation-histogram count is proved.
+dyadic-comb specialization \(0<j<2^m\).  The new generic companions prove
+that row \(p^m-1\) consists of \(p\)-adic units for \(j<p^m\), and that
+\(\nu_p\binom{p^m-2}{j-1}=\nu_p(j)\) for exactly \(0<j<p^m\); the last theorem
+is its dyadic wrapper.  The upper endpoint is excluded because that binomial
+coefficient is zero there.  No valuation-histogram count is proved.
 
 \subsection{Denominator bounds}
 \nolinkurl{DenominatorBound.lean} and \nolinkurl{HalfMomentDenominator.lean} assemble divisibility results into explicit bounds.  Rather than attempting to compute the reduced denominator directly, the proof supplies a common denominator known to clear every term in a recurrence.  The reduced denominator then divides that common denominator by the universal property of rational normalization.
@@ -1949,9 +1993,14 @@ contracting-nome convergence API, the declarations
 \]
 The identity includes \(q=0\) and individual zero factors; its final two theorems are the
 dyadic nome-\(1/4\) Rvachev-product and bounded-Fabius Fourier specializations.  A named
-centered/MGF wrapper, the outside-disk reciprocal formula and zero--pole exchange, and a
-named local-uniform/normal-convergence theorem for the outer Pochhammer product over the
-spectral index remain outside this module.  The downstream
+centered/MGF wrapper and the outside-disk reciprocal formula and zero--pole exchange remain
+outside this module.  The zero-definition, three-theorem module
+\nolinkurl{GeometricPochhammerNormalConvergence.lean} supplies the missing outer-product
+local uniformity: \nolinkurl{hasProdLocallyUniformly_geometricSincProduct_complexQPochhammerInf}
+works for every complex \(\lVert q\rVert<1\), including \(q=0\), and the other two theorems
+are the nome-\(1/4\) Rvachev-product and bounded-Fabius specializations.  This closes only
+that normal-convergence clause; the compound spectral theorem remains partial because the
+centered/MGF, outside-disk, pole-divisor, and zero--pole clauses are still absent.  The downstream
 \nolinkurl{QPochhammerEntire.lean} closes the locally uniform, entire, zero-locus, and
 simple-zero API for each inner Pochhammer function of \(a\), as detailed below.
 Rapid-decay bounds, Fourier inversion, a named centered family or MGF wrapper, explicit
@@ -1999,11 +2048,12 @@ factors.  The final declarations
 \(q=1/2\), nome \(1/4\), first for the standalone Rvachev product and then for
 every bounded \nolinkurl{IsFabius} witness.  This factorization module itself
 does not classify the single-symbol zero lattice or multiplicities; the next
-leaf closes that fixed-nome problem.  Neither module constructs a reciprocal
-zero--pole factorization, establishes local-uniform or normal convergence of
-the rearranged outer Pochhammer product or joint holomorphy in \(q\), supplies
-a centered characteristic-function/MGF package, or treats
-\(\lVert q\rVert>1\).
+leaf closes that fixed-nome problem.  The separate
+\nolinkurl{GeometricPochhammerNormalConvergence.lean} leaf establishes locally
+uniform convergence of the rearranged outer Pochhammer product.  These modules
+still do not construct a reciprocal zero--pole factorization, prove joint
+holomorphy in \(q\), supply a centered characteristic-function/MGF package,
+or treat \(\lVert q\rVert>1\).
 
 \subsubsection{Entire fixed-nome q-Pochhammer symbol and simple zeros}
 \label{ch:qpochhammer-entire}
@@ -2062,12 +2112,15 @@ factor with index \(j+1+k\).  Hence \(U(a)\ne0\), which is exactly analytic
 order one.
 
 This is a fixed-\(q\), single-symbol result.  It proves no joint holomorphy in
-\((a,q)\), outside-disk reciprocal formula, local-uniform or normal convergence
-of the outer spectral product
-\(\prod_k(z^2/(k+1)^2;q^2)_\infty\), or centered characteristic-function/MGF
-wrapper.  This subsection is source-only: the retained 126-page walkthrough
-PDF predates the five-theorem overlay and is a historical render until the
-documented three-pass Libertinus rebuild is performed.
+\((a,q)\), outside-disk reciprocal formula, or centered characteristic-function/MGF
+wrapper.  The separate three-theorem normal-convergence leaf proves the
+locally uniform outer spectral product
+\(\prod_k(z^2/(k+1)^2;q^2)_\infty\) and its two dyadic specializations, but
+does not close those other compound spectral clauses.  This subsection is
+source-only: the retained 126-page walkthrough PDF predates both the
+five-theorem fixed-nome overlay and the outer-product convergence overlay and
+is a historical render until the documented three-pass Libertinus rebuild is
+performed.
 
 Two further modules supply the finite and general-ring layers without
 replacing that \nolinkurl{complexQPochhammerInf} interface.
@@ -2079,7 +2132,7 @@ and, under exactly \(u\le r\), its partial-period form with lengths \(n+1\)
 for \(s<u\) and \(n\) for \(u\le s<r\).  No restriction on \(q\), topology,
 division, cancellation, or nonvanishing is present.
 
-The one-definition, twenty-seven-theorem module
+The one-definition, twenty-nine-theorem module
 \nolinkurl{QPochhammerInfinite.lean} has the exhaustive public surface
 \nolinkurl{qPochhammerInfIn};
 \nolinkurl{qPochhammerInfIn_eq_tprod},
@@ -2107,8 +2160,10 @@ The one-definition, twenty-seven-theorem module
 \nolinkurl{pow_sq_mul_finiteQPochhammerIn_inv_pow_self},
 \nolinkurl{differentiable_qPochhammerInfIn},
 \nolinkurl{hasDerivAt_qPochhammerInfIn_of_mul_pow_eq_one},
-\nolinkurl{hasDerivAt_qPochhammerInfIn_inv_pow}, and
-\nolinkurl{deriv_qPochhammerInfIn_inv_pow_ne_zero}.
+\nolinkurl{hasDerivAt_qPochhammerInfIn_inv_pow},
+\nolinkurl{deriv_qPochhammerInfIn_inv_pow_ne_zero},
+\nolinkurl{deriv_qPochhammerInfIn_ne_zero_of_mul_pow_eq_one}, and
+\nolinkurl{analyticOrderAt_qPochhammerInfIn_of_eq_zero}.
 The total definition needs only a topological commutative ring.  For
 \(\lVert q\rVert<1\), completeness, a commutative normed-ring structure, and
 \(\lVert1\rVert=1\) support the product, finite-prefix limit, shift and
@@ -5120,15 +5175,16 @@ Inverse-power table \(F(2^{-n})\) & \nolinkurl{fabiusInversePowTwoTable}, \nolin
 Total dyadic evaluator & \nolinkurl{fabiusDyadicValue} & \nolinkurl{Arithmetic.lean}; analytic correctness wrapper in \nolinkurl{PaperStatements.lean} \\
 Dyadic common denominator \(D_n\) & \nolinkurl{dyadicDenominator} & \nolinkurl{Arithmetic.lean} and \nolinkurl{DenominatorBound.lean} \\
 Reshetnikov quantity \(R_n\) & \nolinkurl{reshetnikov} & \nolinkurl{Arithmetic.lean} and \nolinkurl{PaperStatements.lean} \\
-Prime-power Pascal-row valuation & \nolinkurl{primePowerChoose_padicValNat_add}, \nolinkurl{primePowerChoose_padicValNat}, \nolinkurl{twoPowChoose_padicValNat} & Exhaustive three-theorem surface of \nolinkurl{PrimePowerBinomialValuation.lean}; generic additive/subtraction forms include \(j=p^m\) and \(m=0\), while the dyadic-comb wrapper assumes \(0<j<2^m\) \\
+Prime-power Pascal-row valuation & \nolinkurl{primePowerChoose_padicValNat_add}, \nolinkurl{primePowerChoose_padicValNat}, \nolinkurl{primePowerSubOneChoose_padicValNat}, \nolinkurl{primePowerSubTwoChoose_padicValNat}, \nolinkurl{twoPowChoose_padicValNat}, \nolinkurl{twoPowSubTwoChoose_padicValNat} & Exhaustive zero-definition/six-theorem surface of \nolinkurl{PrimePowerBinomialValuation.lean}; the row-\(p^m\) formulas include \(j=p^m\) and \(m=0\), row \(p^m-1\) is a unit row for \(j<p^m\), and the row-\(p^m-2\) formula and its dyadic wrapper assume exactly \(0<j<p^m\) \\
 Generic continuous-CDF and density extraction & \nolinkurl{continuous_cdf_of_nullSingleton}, \nolinkurl{cdf_reflection_sub}, \nolinkurl{measure_eq_withDensity_of_cdf_hasDerivAt} & \nolinkurl{ContinuousCDF.lean} \\
 Affine independent-copy operator and uniqueness & \nolinkurl{affineIndependentCopyLaw}, \nolinkurl{affineIndependentCopyLaw_isProbabilityMeasure}, \nolinkurl{affineIndependentCopyLaw_eq_map_prod}, \nolinkurl{charFun_affineIndependentCopyLaw}, \nolinkurl{charFun_eq_mul_charFun_of_affineIndependentCopy_fixedPoint}, \nolinkurl{charFun_iterate_of_affineIndependentCopy_fixedPoint}, \nolinkurl{eq_of_charFun_affine_recurrence}, \nolinkurl{affineIndependentCopyLaw_fixedPoint_unique}, \nolinkurl{affineIndependentCopy_map_fixedPoint_unique} & \nolinkurl{AffineIndependentCopy.lean}; arbitrary measurable digit space and second-countable Borel real inner-product target, with completeness only for the three uniqueness declarations \\
 Geometric uniform law \(\mu_q\) & \nolinkurl{geometricUniformDistribution}, \nolinkurl{geometricUniformDistribution_selfSimilar}, \nolinkurl{geometricUniformDistribution_support_eq_Icc}, \nolinkurl{eq_geometricUniformDistribution_of_selfSimilar} & \nolinkurl{GeometricUniformLaw.lean} and \nolinkurl{GeometricUniformUniqueness.lean}; the characterization holds for \(\lvert q\rvert<1\) without support, density, or moment assumptions \\
 Fixed half--quarter multisection & \nolinkurl{evenCoordinates}, \nolinkurl{oddCoordinates}, \nolinkurl{geometricUniformSeries_one_half_multisection}, \nolinkurl{geometricUniformDistribution_one_half_multisection}, \nolinkurl{geometricUniformDistribution_one_half_conv_one_quarter} & \nolinkurl{GeometricUniformMultisection.lean}; fixed normalized two-section only \\
 General geometric-sinc Pochhammer factorization & \nolinkurl{complexQPochhammerInf}, \nolinkurl{summable_norm_sineTerm_qpow_pair}, \nolinkurl{geometricSincProduct_eq_tprod_pair}, \nolinkurl{geometricSincProduct_eq_tprod_complexQPochhammerInf}, \nolinkurl{rvachevFourierProduct_eq_tprod_complexQPochhammerInf}, \nolinkurl{rvachevFourier_eq_tprod_complexQPochhammerInf} & \nolinkurl{RvachevPochhammerFactorization.lean}; one definition and nine theorems, with the three additional symbol-convergence theorems listed in the text above \\
+Outer geometric spectral Pochhammer normal convergence & \nolinkurl{hasProdLocallyUniformly_geometricSincProduct_complexQPochhammerInf}, \nolinkurl{hasProdLocallyUniformly_rvachevFourierProduct_complexQPochhammerInf}, \nolinkurl{hasProdLocallyUniformly_rvachevFourier_complexQPochhammerInf} & Exhaustive zero-definition/three-theorem surface of \nolinkurl{GeometricPochhammerNormalConvergence.lean}; the general theorem assumes exactly \(\lVert q\rVert<1\), includes \(q=0\), and the last two are dyadic Rvachev/Fabius specializations; the centered/MGF and outside-disk/pole clauses remain open \\
 Fixed-nome entire Pochhammer symbol and simple zero lattice & \nolinkurl{hasProdLocallyUniformly_complexQPochhammerInf}, \nolinkurl{complexQPochhammerInf_differentiable}, \nolinkurl{complexQPochhammerInf_eq_zero_iff}, \nolinkurl{complexQPochhammerInf_eq_zero_iff_eq_inv_pow}, \nolinkurl{analyticOrderAt_complexQPochhammerInf_of_eq_zero} & \nolinkurl{QPochhammerEntire.lean}; zero definitions and five theorems, including the \(q=0\)-safe factor-zero form and the reciprocal-power lattice under \(q\ne0\) \\
 Finite q-Pochhammer residue-class dissection & \nolinkurl{finiteQPochhammerIn_dissection}, \nolinkurl{finiteQPochhammerIn_dissection_remainder} & Exhaustive zero-definition/two-theorem surface of \nolinkurl{QPochhammerDissection.lean}; arbitrary commutative ring, all natural \(r,n\), and remainder boundary \(u\le r\), with no hypothesis on \(q\) \\
-Generic infinite q-Pochhammer product & \nolinkurl{qPochhammerInfIn} and the twenty-nine theorems listed exhaustively in the current-tree discussion above & \nolinkurl{QPochhammerInfinite.lean}; total topological-ring definition, complete-normed-ring convergence/concatenation/dissection, multiplicative-norm zero locus, locally compact field continuity, complex entireness, explicit nonzero derivatives at reciprocal-power and raw factor zeros, and analytic order one; distinct from the \nolinkurl{complexQPochhammerInf} wrapper \\
+Generic infinite q-Pochhammer product & \nolinkurl{qPochhammerInfIn} and the twenty-nine theorems listed exhaustively in the current-tree discussion above & \nolinkurl{QPochhammerInfinite.lean}; total topological-ring definition, complete-normed-ring convergence/concatenation/dissection, multiplicative-norm zero locus, locally compact field continuity, complex entireness, nonzero raw-factor derivatives, and analytic order one, including \(q=0\); distinct from the \nolinkurl{complexQPochhammerInf} compatibility wrapper \\
 Infinite q-binomial theorem and Euler expansions & \nolinkurl{gaussianMajorant}, \nolinkurl{hasSum_qBinomial_theorem}, \nolinkurl{hasSum_euler_product}, \nolinkurl{hasSum_euler_reciprocal} & \nolinkurl{QBinomialTheoremInfinite.lean}; one definition and twenty-two theorems, listed exhaustively above \\
 Jacobi triple product and pentagonal sums & \nolinkurl{thetaExponent}, \nolinkurl{pentagonalExponent}, \nolinkurl{hasSum_jacobi_triple_product}, \nolinkurl{hasSum_pentagonal}, \nolinkurl{hasSum_pentagonal_pairs} & \nolinkurl{JacobiTripleProduct.lean}; two definitions and twenty-five theorems, listed exhaustively above \\
 Finite q-Pascal summations & \nolinkurl{sum_gaussianBinomial_succ_mul}, \nolinkurl{sum_gaussianBinomial_succ_mul'}, \nolinkurl{Commute.gaussianBinomial_left}, \nolinkurl{Commute.gaussianBinomial_right} & Exhaustive zero-definition/four-theorem surface of \nolinkurl{QPascalSummation.lean} \\
@@ -5250,7 +5306,7 @@ Module & Role in the development \\
 \nolinkurl{NormalizedEvenMoments.lean} & Natural numerator and common-denominator formula for even centered moments. \\
 \nolinkurl{Parity.lean} & Lucas-theorem parity analysis and oddness of natural moment numerators. \\
 \nolinkurl{TwoAdic.lean} & Reduced numerator/denominator parity and exact two-adic valuation consequences. \\
-\nolinkurl{PrimePowerBinomialValuation.lean} & Three exhaustive theorems for prime-power Pascal-row valuations: the additive and subtraction forms for \(0<j\le p^m\), including \(m=0\) and \(j=p^m\), and the strict-interior dyadic specialization; no endpoint-flat or histogram result. \\
+\nolinkurl{PrimePowerBinomialValuation.lean} & No definitions and six exhaustive theorems for prime-power Pascal rows: additive/subtraction forms for \(0<j\le p^m\), the unit row \(p^m-1\), the exact companion \(\nu_p\binom{p^m-2}{j-1}=\nu_p(j)\) for \(0<j<p^m\), and both dyadic wrappers; no histogram result. \\
 \nolinkurl{DenominatorBound.lean} & Common-denominator divisibility and explicit denominator bounds for source-facing arithmetic results. \\
 \nolinkurl{HalfMomentDenominator.lean} & Denominator control specialized to half moments and inverse-power values. \\
 \nolinkurl{BernoulliRecurrences.lean} & Translation of moment recurrences into Bernoulli-number identities used by the arithmetic paper. \\
@@ -5277,9 +5333,10 @@ Module & Role in the development \\
 \nolinkurl{GeometricReciprocalGamma.lean} & Locally uniform convergence, pointwise multipliability and \nolinkurl{HasProd}, and entireness of the geometric sinc product, together with its reciprocal-Gamma reflection factorization. \\
 \nolinkurl{GeometricSincCharacteristicFunction.lean} & The four-theorem, zero-definition surface: two exact phase-bearing bridges from the geometric-uniform characteristic function to the rescaled geometric sinc product and paired reciprocal-Gamma factors, plus locally uniform convergence of the full phase-bearing prefixes on the real frequency line and uniform convergence on every compact real frequency set, for every \(\lvert q\rvert<1\), including zero and negative ratios. \\
 \nolinkurl{RvachevPochhammerFactorization.lean} & One definition and nine theorems: the total complex infinite Pochhammer product and its strict-contraction convergence API, absolute summability and paired scale--zero product, the global \(S_q(z)=\prod_{k\ge0}(z^2/(k+1)^2;q^2)_\infty\) factorization for complex \(\lVert q\rVert<1\), and its two dyadic Rvachev/Fabius specializations. \\
-\nolinkurl{QPochhammerEntire.lean} & No definitions and five theorems: for each fixed complex \(\lVert q\rVert<1\), locally uniform convergence in \(a\), entireness of \(a\mapsto(a;q)_\infty\), the total factor-zero criterion, the reciprocal-power lattice when \(q\ne0\), and analytic order one at every zero.  The \(q=0\)-safe theorem remains division-free; no outer-product normal convergence, joint holomorphy, or centered/MGF wrapper is asserted. \\
+\nolinkurl{QPochhammerEntire.lean} & No definitions and five theorems: for each fixed complex \(\lVert q\rVert<1\), locally uniform convergence in \(a\), entireness of \(a\mapsto(a;q)_\infty\), the total factor-zero criterion, the reciprocal-power lattice when \(q\ne0\), and analytic order one at every zero.  The \(q=0\)-safe theorem remains division-free; no joint holomorphy or centered/MGF wrapper is asserted. \\
+\nolinkurl{GeometricPochhammerNormalConvergence.lean} & No definitions and three theorems: locally uniform convergence on \(\ComplexNumbers\) of the outer spectral Pochhammer product to \(S_q\) for every \(\lVert q\rVert<1\), including \(q=0\), and the dyadic Rvachev/Fabius specializations.  The compound centered/MGF, outside-disk reciprocal, pole-divisor, and zero--pole clauses remain unproved. \\
 \nolinkurl{QPochhammerDissection.lean} & Exactly two theorems and no public definitions: finite exact residue-class dissection over every commutative ring, and its remainder form under \(u\le r\), including all empty and \(u=r\) boundaries. \\
-\nolinkurl{QPochhammerInfinite.lean} & One definition and exactly twenty-nine theorems: the total generic \(q\)-Pochhammer \texttt{tprod}; strict-contraction summability, multipliability, finite-prefix convergence, concatenation, factor removal and positive-modulus dissection in complete normed commutative rings; the exact factor-zero locus under a multiplicative norm; locally uniform convergence and continuity over complete locally compact normed fields; complex entireness, explicit nonzero derivatives at reciprocal-power and raw factor zeros, and analytic order one at every zero. \\
+\nolinkurl{QPochhammerInfinite.lean} & One definition and exactly twenty-nine theorems: the total generic \(q\)-Pochhammer \texttt{tprod}; strict-contraction summability, multipliability, finite-prefix convergence, concatenation, factor removal and positive-modulus dissection in complete normed commutative rings; the exact factor-zero locus under a multiplicative norm; locally uniform convergence and continuity over complete locally compact normed fields; complex entireness, nonzero derivatives at raw factor zeros (including \(q=0\)), reciprocal-power derivative formulas for \(q\ne0\), and analytic order one at every zero. \\
 \nolinkurl{QBinomialTheoremInfinite.lean} & One definition and exactly twenty-two theorems: dominated passage from finite Gaussian coefficients, positivity and nonvanishing controls, the infinite q-binomial theorem, and Euler product and reciprocal expansions. \\
 \nolinkurl{JacobiTripleProduct.lean} & Two definitions and exactly twenty-five theorems: theta and pentagonal exponents, finite and infinite Jacobi triple products, and Euler pentagonal sums. \\
 \nolinkurl{QPascalSummation.lean} & Exactly four theorems and no public definitions: two finite Gaussian-binomial summations and the left and right commuting q-binomial identities. \\
@@ -5587,7 +5644,7 @@ Lean audits of the previously recorded new or refactored declarations,
 for each.  At that upstream checkpoint, static inspection found all 610 modules
 below \nolinkurl{FabiusFunction/} reachable from the facade and every one of
 the 105 activation declarations documented.  The live current-tree audit scans
-643 modules and 8,661 public declarations, with no missing module headers or
+649 modules and 8,697 public declarations, with no missing module headers or
 declaration comments.  At the retained historical mainline checkpoint before the latest
 six-module q-series tranche was 623 modules and 8,476 declarations.  Its
 immediately preceding census, after the Rvachev Appell and original
@@ -5600,7 +5657,8 @@ declarations), the two Legendre--Gaunt leaves (twenty-five),
 three half--quarter laws), and the four-declaration
 \nolinkurl{GaussianBinomialAtNegOneDerivative.lean} leaf.  It also adds the
 two-definition/seven-theorem \nolinkurl{LagrangeRvachevSynthesis.lean} leaf,
-the three-theorem \nolinkurl{PrimePowerBinomialValuation.lean} leaf, the
+the historical three-theorem surface of
+\nolinkurl{PrimePowerBinomialValuation.lean} (now expanded to six), the
 two-definition/twenty-five-theorem \nolinkurl{LegendreGauntClosedForm.lean}
 core, and its zero-definition/three-theorem
 \nolinkurl{FabiusLegendreGauntClosedForm.lean} wrapper.  Existing modules add
@@ -5632,14 +5690,24 @@ Those six modules contribute sixty-nine declarations; together with the added
 reciprocal-lattice theorem, they explain the exact 623/8,476 to 629/8,546
 q-series increment.  The subsequent zero-definition/six-theorem
 \nolinkurl{GeneralizedRvachevIdentifiability.lean} leaf raises that census by
-one module and six declarations to 630/8,552.
-The later effective-inversion closure adds the two-definition/six-theorem
-\nolinkurl{EffectiveMonotoneInverse.lean} module and the one-theorem
-\nolinkurl{FabiusInverseComputable.lean} module.  Additional merged q-calculus
-leaves account for the remainder of the current 643/8,661 source census.
-No aggregate facade build is claimed for this current-tree census.  The retained
-PDF and the title-page pin remain historical receipts and do not claim parity
-with the merged source.
+one module and six declarations to the historical 630/8,552 checkpoint.
+Subsequent integration adds the zero-definition/three-theorem
+\nolinkurl{GeometricPochhammerNormalConvergence.lean} leaf, expands
+\nolinkurl{PrimePowerBinomialValuation.lean} from three to six theorems, adds
+the two-definition/six-theorem \nolinkurl{EffectiveMonotoneInverse.lean}
+module and the one-theorem \nolinkurl{FabiusInverseComputable.lean} module,
+and adds two theorems to \nolinkurl{QPochhammerInfinite.lean}.  The six newest
+q-calculus modules contribute another 36 declarations, bringing the current
+source census to 649/8,697.  No aggregate facade build is claimed for this
+current-tree census.  The retained PDF and the title-page pin remain historical
+receipts and do not claim parity with the merged source.
+
+Those six counts are \nolinkurl{QPochhammerInfiniteBounds.lean} (0+5),
+\nolinkurl{HeineTransformation.lean} (2+5),
+\nolinkurl{QGaussSummation.lean} (0+2),
+\nolinkurl{QPochhammerComplexOrder.lean} (1+4),
+\nolinkurl{BasicHypergeometricSeries.lean} (2+5), and
+\nolinkurl{QMultinomial.lean} (1+9).
 \end{remark}
 
 \section{Corrections and critical distinctions}\label{app:corrections}

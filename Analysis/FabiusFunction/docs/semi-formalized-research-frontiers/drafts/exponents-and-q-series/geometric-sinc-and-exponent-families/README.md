@@ -18,8 +18,18 @@ The current live Exponents synthesis source is
 `ac929bb9a79e69ab59e253fa1acd6a1d97c5ee35bdac07dc22f22a1ec5c56bb3`).
 It now includes the exact Lean crosswalk from integer-zero multiplicities to
 the exponent sequence, constructive dyadic-order first differences, and full
-generalized-product rigidity; zeta-quotient, cumulant/analytic-sample, and
-probability-law identifiability remain Partial in Lean.
+generalized-product rigidity.  It also records the zero-definition,
+three-theorem `GeometricPochhammerNormalConvergence.lean` API: the outer
+nome-`q^2` Pochhammer product converges locally uniformly for every complex
+strict contraction, including `q = 0`, with dyadic Rvachev-product and
+bounded-Fabius Fourier specializations.  Its exact declarations are
+`Fabius.hasProdLocallyUniformly_geometricSincProduct_complexQPochhammerInf`,
+`Fabius.hasProdLocallyUniformly_rvachevFourierProduct_complexQPochhammerInf`,
+and `Fabius.hasProdLocallyUniformly_rvachevFourier_complexQPochhammerInf`.
+The compound centered/MGF and
+outside-disk reciprocal formula, pole divisor, and zero--pole exchange remain
+Partial, as do zeta-quotient,
+cumulant/analytic-sample, and probability-law identifiability.
 
 The retained historical PDF has 238 A4 pages and 6,953,898 bytes, with SHA-256
 `fa719a8ea68d3c474928b9fae7449f827eb35a5452613f2b660d8e88ba27267e`.

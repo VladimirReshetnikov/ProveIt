@@ -33,7 +33,7 @@ Documented pre-replay checkpoints include 167 pages
 for the primary exposition, 126 for the walkthrough, 237 for the canonical
 frontier, 377 for the Integration master, 88 for the notation catalogue, 301
 for Representation, 41 for New Frontiers-2, 42 for inverse computability, 158
-for the comb synthesis, 340 for the consolidated q-series synthesis, and 238
+for the comb synthesis, 347 for the consolidated q-series synthesis, and 238
 for Exponents. The
 listed page counts are artifact receipts, not claims of current source/PDF
 synchronization except where a package explicitly records it.
@@ -50,21 +50,27 @@ exact ceiling modulus, gap-to-modulus abstract strengthening, and input-bit
 asymptotics remain outside Lean.
 
 The two canonical syntheses have newer, source-pinned publication receipts.
-The q-series master was rebuilt from source SHA-256
-`ec9455ecd789b0dbca777a5f5df49c4cfefa51d8e8e8719a7a29296eab4afe65`
-into a 340-page, 2,180,191-byte A4 PDF with SHA-256
-`e64a4ef65a9fcce3a4f211f2125b0f8440910cf4527635f76975b0967800e667`.
-That receipt includes the 28-declaration `QPochhammerInfinite.lean`, the
-two-theorem `QPochhammerDissection.lean`, and the first four
-`QPochhammerEntire.lean` theorems. Six subsequent finite/infinite q-series
-modules contribute another 69 public declarations for continuity at `q = 1`,
-Euler and q-binomial sums, Jacobi's triple product, q-Pascal summation, the
-noncommutative q-binomial theorem, and Rogers--Szegő polynomials. The local
-reciprocal-power zero-lattice theorem completes `QPochhammerEntire.lean` to
-five theorems, and two further general-product theorems complete
-`QPochhammerInfinite.lean` to one definition and 29 theorems. The final merged
-TeX is therefore newer than that receipt and requires
-another strict three-pass build and ledger refresh. The comb synthesis also
+The retained q-series PDF is the 347-page, 2,996,319-byte A4 artifact with
+SHA-256
+`29b422a39c42be37bd1487d4245c44e55706720c545dd015957644e47014bd48`,
+built from the 14,072-line, 656,200-byte source with SHA-256
+`062b7230d95ff8bd52b11253c6c3c8820d6f6a82e4307ae5d82a1d793c00c517`.
+The live q-series source is now 14,172 lines and 662,701 bytes, with SHA-256
+`5c3f2505062265d3ce9d0023564ed45c3b0486afa62fa3d6a7846894f3476af2`.
+Six finite/infinite q-series modules contribute 69 public declarations for
+continuity at `q = 1`, Euler and q-binomial sums, Jacobi's triple product,
+q-Pascal summation, the noncommutative q-binomial theorem, and Rogers--Szegő
+polynomials. The local reciprocal-power zero-lattice theorem completes
+`QPochhammerEntire.lean` to five theorems, and two further general-product
+theorems complete `QPochhammerInfinite.lean` to one definition and 29
+theorems. The source also adds the zero-definition, three-theorem
+`GeometricPochhammerNormalConvergence.lean` crosswalk: the outer spectral
+product's locally uniform convergence is exact for every complex strict
+contraction, including `q = 0`, with dyadic Rvachev and bounded-Fabius Fourier
+specializations. The compound centered/MGF and exterior reciprocal/pole
+theorem remains Partial. The forward status ledger is 67 Exact / 80 Partial /
+127 None / 8 interface rows. No PDF was generated for this source-only update,
+so the retained 347-page artifact is historical. The comb synthesis also
 has a later chapter-03 notation edit: its retained 158-page, 2,456,105-byte
 A4 PDF has SHA-256
 `81d249c8b2bb124836c858bd8e0ef9c8764606a2f9655a798d69e7565b1759b4`;
