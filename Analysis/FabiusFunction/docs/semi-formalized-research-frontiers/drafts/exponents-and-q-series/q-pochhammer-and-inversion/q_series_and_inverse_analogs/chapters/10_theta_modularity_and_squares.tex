@@ -63,6 +63,17 @@ which combine to the right side of
 \eqref{eq:qg-quintuple-product}.
 \end{proof}
 
+\begin{remark}[Coefficient dissection and root-system products]
+The proof illustrates a mechanism that persists in higher-rank product
+identities.  Multiplying two Jacobi factors first produces a lattice sum;
+fixing the exponent of $z$ restricts that lattice to an affine slice; and the
+remaining one-dimensional theta factor then uses its zeros and
+quasi-periodicity to distinguish residue classes.  In Macdonald-type
+root-system products, higher-dimensional lattice cosets and Weyl symmetries
+play analogous roles.  This is a structural comparison, not an invocation or
+proof of a root-system identity.
+\end{remark}
+
 \section{Jacobi theta functions and the heat equation}
 
 Let $\tau$ lie in the upper half-plane and put
@@ -485,6 +496,26 @@ remaining factor is $y^kq^{bk^2}$.  Absolute convergence justifies the
 partition and rearrangement.
 \end{proof}
 
+\begin{remark}[Sublattice cosets and diagonalization]
+For fixed $k$, the linear part of the change of variables is
+\[
+ \binom{n}{m-k}
+ =\begin{pmatrix}1&-b\\1&a\end{pmatrix}\binom{r}{s},
+\]
+whose determinant is $a+b$.  Its image is the index-$(a+b)$ sublattice on
+which the second coordinate minus the first is divisible by $a+b$.
+Translating this image by $(0,k)$ gives the coset
+$m-n\equiv k\pmod{a+b}$, and the values $k=0,\ldots,a+b-1$ give all cosets.
+Equivalently, this is the rank-two Smith-normal-form description of the
+congruence map $(n,m)\mapsto m-n\pmod{a+b}$.  At the same time, the mixed
+$rs$ term in
+$an^2+bm^2$ cancels under this basis change.  The remaining linear terms,
+which depend on the coset representative $k$, are absorbed into the arguments
+of the two theta series.  Thus Schr\"oter dissection is simultaneously a
+sublattice decomposition and a diagonalization of the quadratic form; this
+remark records the mechanism and asserts no additional identity.
+\end{remark}
+
 \section{Theta powers and sums of squares}
 
 Let $r_d(n)$ be the number of ordered $d$-tuples
@@ -511,6 +542,18 @@ exactly once.  Analytically, absolute convergence permits the Cauchy product.
 Formally, a fixed coefficient receives only finitely many contributions because
 $x_j^2\le n$ whenever the tuple contributes to $q^n$.
 \end{proof}
+
+\begin{warning}[Generating functions are not coefficient evaluations]
+The proposition identifies $r_d(n)$ as a theta-power coefficient, but by
+itself gives no divisor-sum formula for that coefficient.  In particular, the
+classical evaluations of $r_6(n)$ and $r_8(n)$ require additional input:
+one proves modularity of the relevant theta powers, determines a basis (or a
+dimension bound) for the appropriate modular-form space, decomposes into
+Eisenstein and possible cusp components, and only then compares Fourier
+coefficients.  Such evaluations must not be inferred from the Cauchy-product
+argument alone.  The separate two- and four-square proofs below supply their
+own additional arithmetic and analytic input.
+\end{warning}
 
 Define the real Dirichlet character modulo $4$ by
 \[

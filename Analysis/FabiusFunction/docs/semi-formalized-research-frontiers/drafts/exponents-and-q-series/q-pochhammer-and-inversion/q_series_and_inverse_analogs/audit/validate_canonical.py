@@ -38,6 +38,15 @@ CONCORDANCE = PACKAGE / "theorem_concordance.csv"
 SOURCE_REVISION = PACKAGE / "audit" / "SOURCE_REVISION"
 MERGE_CONCORDANCE = PACKAGE / "source_concordance.csv"
 MERGE_SOURCE_REVISION = PACKAGE / "audit" / "MERGE_SOURCE_REVISION"
+EXPONENTS_ROOT = PACKAGE.parents[1]
+RETIRED_GUIDE_ROOT = EXPONENTS_ROOT / "general-q-series-guides"
+RETIRED_SOURCE_DIRS = (
+    PACKAGE.parent / "q_pochhammer_q_binomial_monograph",
+    PACKAGE.parent / "inverse_q_analogs_and_series",
+    RETIRED_GUIDE_ROOT / "q-series-proof-oriented-article",
+    RETIRED_GUIDE_ROOT / "q_series_from_first_principles",
+    RETIRED_GUIDE_ROOT / "q_series_monograph",
+)
 MERGE_PACKAGE_GROUPS = {
     package: group for package, group, _paths, _expected in MERGE_SOURCE_GROUPS
 }
@@ -87,10 +96,29 @@ FORBIDDEN = (
     "=======",
     ">>>>>>>",
 )
+ARCHIVAL_RECORD_LABELS = {
+    "qg:eq-record-b9-1",
+    "qg:eq-record-b9-2",
+    "qg:eq-record-b9-3",
+    "qg:eq-record-d27-1",
+    "qg:eq-record-d27-2",
+    "qg:eq-record-d27-3",
+    "qg:eq-record-d27-4",
+    "qg:eq-record-r14-1",
+    "qg:eq-record-r14-2",
+    "qg:eq-record-r14-3",
+    "qg:eq-record-rs-1",
+    "qg:eq-record-rs-2",
+    "qg:eq-record-rs-3",
+    "qg:eq-record-js",
+    "qg:eq-record-fine",
+}
 
 BEGIN_END_RE = re.compile(r"\\(begin|end)\{([^}]+)\}")
 LABEL_RE = re.compile(r"\\label\{([^}]+)\}")
 REF_RE = re.compile(r"\\(?:[cC]ref|ref|eqref)\{([^}]+)\}")
+CITE_RE = re.compile(r"\\cite(?:\[[^]]*\])?\{([^}]+)\}")
+BIBITEM_RE = re.compile(r"\\bibitem(?:\[[^]]*\])?\{([^}]+)\}")
 INPUT_RE = re.compile(r"\\input\{([^}]+)\}")
 COMMENT_RE = re.compile(r"(?<!\\)%.*$")
 
@@ -188,6 +216,16 @@ def check_master_inputs(failures: list[str]) -> list[Path]:
     return chapter_paths
 
 
+def check_retired_source_trees(failures: list[str]) -> None:
+    for path in RETIRED_SOURCE_DIRS:
+        if path.exists():
+            failures.append(f"retired source tree is live again: {path}")
+    if RETIRED_GUIDE_ROOT.exists():
+        failures.append(
+            f"obsolete general-guide navigation tree is live again: {RETIRED_GUIDE_ROOT}"
+        )
+
+
 def check_labels_and_refs(
     texts: list[tuple[Path, str]], failures: list[str]
 ) -> tuple[set[str], int]:
@@ -211,6 +249,29 @@ def check_labels_and_refs(
         if label and label not in label_locations:
             failures.append(f"{location}: unresolved reference {label}")
     return set(label_locations), len(references)
+
+
+def check_citations(texts: list[tuple[Path, str]], failures: list[str]) -> int:
+    bib_locations: dict[str, list[str]] = {}
+    citations: list[tuple[str, str]] = []
+    for path, text in texts:
+        clean = without_comments(text)
+        for match in BIBITEM_RE.finditer(clean):
+            bib_locations.setdefault(match.group(1), []).append(
+                f"{path.name}:{line_of(clean, match.start())}"
+            )
+        for match in CITE_RE.finditer(clean):
+            for key in match.group(1).split(","):
+                citations.append(
+                    (key.strip(), f"{path.name}:{line_of(clean, match.start())}")
+                )
+    for key, locations in sorted(bib_locations.items()):
+        if len(locations) > 1:
+            failures.append(f"duplicate bibliography key {key}: {', '.join(locations)}")
+    for key, location in citations:
+        if key and key not in bib_locations:
+            failures.append(f"{location}: unresolved citation {key}")
+    return len(citations)
 
 
 def check_concordance(
@@ -365,6 +426,11 @@ def check_merge_concordance(
         else:
             group_counts[group] += 1
 
+        if group == "guides" and not destinations:
+            failures.append(
+                f"{key}: retired guide result has no explicit canonical destination"
+            )
+
         if status not in CANONICAL_STATUSES:
             failures.append(f"{key}: unknown merge canonical status {status!r}")
         for destination in destinations:
@@ -499,6 +565,7 @@ def main() -> int:
     args = parser.parse_args()
 
     failures: list[str] = []
+    check_retired_source_trees(failures)
     chapter_paths = check_master_inputs(failures)
     paths = [MASTER, *chapter_paths]
     texts = [(path, path.read_text(encoding="utf-8")) for path in paths]
@@ -512,6 +579,13 @@ def main() -> int:
                 failures.append(f"{path.name}: forbidden construction marker {marker!r}")
 
     canonical_labels, ref_count = check_labels_and_refs(texts, failures)
+    citation_count = check_citations(texts, failures)
+    missing_archival_records = sorted(ARCHIVAL_RECORD_LABELS - canonical_labels)
+    if missing_archival_records:
+        failures.append(
+            "missing archival identity-record labels: "
+            + ", ".join(missing_archival_records)
+        )
     source_commit, reproduced_rows = check_source_snapshot(failures)
     row_count, source_counts, incomplete = check_concordance(
         args.allow_incomplete_concordance, canonical_labels, failures
@@ -531,7 +605,12 @@ def main() -> int:
 
     print(f"master: {MASTER.name}")
     print(f"chapters: {len(chapter_paths)}")
-    print(f"labels/references: {len(canonical_labels)}/{ref_count}")
+    print(
+        f"labels/references/citations: "
+        f"{len(canonical_labels)}/{ref_count}/{citation_count}"
+    )
+    print(f"archival identity records: {len(ARCHIVAL_RECORD_LABELS)}")
+    print(f"retired source trees: {len(RETIRED_SOURCE_DIRS)} absent")
     print(
         "canonical results: "
         + ", ".join(f"{kind}={result_counts[kind]}" for kind in sorted(result_counts))

@@ -2,12 +2,16 @@
 
 ## Current five-publication synthesis
 
-This neutral package combines two peer canonical publications and three
-overlapping general guides. The immutable pre-retirement snapshot is commit
+This neutral package combines material from two former, coequal canonical
+publications and three retired general-guide donors. The immutable
+pre-retirement snapshot of all five source packages is commit
 `9560165ae2eb33590404a090ab26bd3ca715f32f`, recorded in
-`audit/MERGE_SOURCE_REVISION`.
+`audit/MERGE_SOURCE_REVISION`; the completed `source_concordance.csv` gives a
+reviewed disposition for all 547 source result environments. Directory names
+in the table are historical paths in that pinned snapshot, not live package
+paths.
 
-| Historical live package | Role in this synthesis |
+| Historical source package | Role in this synthesis |
 | --- | --- |
 | `q_pochhammer_q_binomial_monograph/` | Forward algebraic, combinatorial, analytic, arithmetic, geometric-interpolation, Thue--Morse, and Fabius--Rvachev backbone. |
 | `inverse_q_analogs_and_series/` | Universal and branch-aware inversion, asymptotic transfer, certification, inverse observables, five labelled conjectures, and the six-package provenance/assets preserved below. |
@@ -19,17 +23,62 @@ The three guides arrived respectively in commits
 `1360db6064c676f83bceb23bece5ed304dd09ce8`,
 `c167e550348bfb33b4297684100d55dfb48b8c1a`, and
 `1f0f98390d551725fc7d2274638dbd7de86ee346`. They had no unique non-document
-assets: each live package consisted only of TeX, PDF, and a repository
-checksum ledger. Their superseded PDFs are not canonical renderings of this
-larger source and are retired with the donor packages.
+assets: each donor package consisted only of TeX, PDF, and a repository
+checksum ledger. Their superseded PDFs were retired with the donor packages
+and are not canonical renderings of this larger source. The former forward
+and inverse manuscript PDFs were removed for the same reason. By explicit
+user direction, no canonical publication PDF was generated from the merged
+master; PDFs retained beneath `assets/` are research figures, not manuscripts.
 
 The former q-Pochhammer/q-binomial monograph arrived in commit
 `47172bc03ec078961d8b023dfe156ecd712efb65`. Its pre-repair source SHA-256 was
 `9c6aec1066e71bedc612703c12d29b44d44e166e3d72a25566b86d89291c95be`;
 the detailed seven-sibling consolidation and correction history remains in the
-repository draft manifest. The current five-publication concordance is kept
+repository draft manifest. The completed five-publication concordance is kept
 separate from the older inverse-source concordance so neither immutable audit
 domain is silently reinterpreted.
+
+## Five-publication result inventory
+
+`audit/extract_merge_sources.py` inventories every theorem-style environment
+from the five source publications at `audit/MERGE_SOURCE_REVISION`. The pinned
+snapshot contains exactly 547 environments:
+
+| Historical source package | Result environments |
+| --- | ---: |
+| `q_pochhammer_q_binomial_monograph/` | 276 |
+| `inverse_q_analogs_and_series/` | 103 |
+| `general-q-series-guides/q-series-proof-oriented-article/` | 63 |
+| `general-q-series-guides/q_series_from_first_principles/` | 43 |
+| `general-q-series-guides/q_series_monograph/` | 62 |
+| **Total** | **547** |
+
+By source kind these are 237 theorems, 76 propositions, 50 lemmas, 114
+corollaries, 45 definitions, 10 examples, 7 conjectures, 6 problems, and 2
+algorithms. The immutable ten-field source projection has SHA-256
+`f2e8eb72de37e7f0e05e1d9bee126ebe369cd96ed7882c75ddbdf1015d9494a4`.
+Every one of the 168 guide rows has a reviewed disposition and an explicit
+canonical destination label. This includes historical-status destinations for
+the retired Borwein-sign conjecture and the donor's already-developed
+bilateral-Bailey-lattice prompt.
+
+The concordance is deliberately result-level: it does not pretend to be a
+byte archive of repeated proof prose, remarks, formula tables, bibliographies,
+or publication renderings. The pinned Git revision supplies that complete
+archival role. The canonical source supplies the reviewed statements, strongest
+proved forms, complete retained proofs, useful explanatory material, and
+precisely delimited open problems.
+
+Before donor retirement, a separate semantic audit covered all 23 guide
+remark environments, 96 section or subsection headings, five longtables, and
+53 bibliography entries, rather than relying on theorem extraction alone. It
+identified and transferred fifteen non-theorem product-identity source records,
+their exact finite quality-control boundary, the missing Rogers--Ramanujan and
+Andrews--Gordon formula-atlas entries, six compact proof or discovery insights,
+and the literature needed to correct two outdated open-status claims. The
+remaining convergence ledgers, notation indexes, proof-completeness tables,
+central formula rows, and repeated explanations were represented by stronger
+canonical statements or existing dependency and formalization appendices.
 
 The remainder of this ledger preserves the earlier six-package inverse-q
 consolidation. Historical names, archive hashes, source paths, and the pinned
@@ -103,9 +152,10 @@ conditional-radicals statements are represented in the source concordance and
 the corrected canonical proofs.  The late audit's stronger assertion that the
 order-five Maxwell collision was proved is not promoted: it treats a large
 secondary-discriminant factorization as exact symbolic output without a
-retained certificate.  Chapter 2 proves the elementary uniqueness statement
-for the displayed reciprocal polynomial but correctly keeps the Maxwell-factor
-identification uncertified.  The exact reship
+retained certificate.  The canonical *Finite q-Pochhammer inversion* chapter
+proves the elementary uniqueness statement for the displayed reciprocal
+polynomial but correctly keeps the Maxwell-factor identification uncertified.
+The exact reship
 `Fabius_Rvachev_Frontier_Report_2026-08-30-E.zip`, with outer SHA-256
 `174bf733156cd874cf4f9321c6ab71ca44f311856cc01dc158ddf83dc00cf813`,
 was byte-identical to the filed package after documented line-ending
@@ -219,12 +269,17 @@ and the six-package concordance above. The former
 separate neighboring publication.
 
 `Cyclotomic_q_Fabius_Rvachev_Frontier/` remains a separate natural-boundary
-and blow-up volume.  Its radial root-of-unity layer overlaps Chapters 3 and 6,
+and blow-up volume. Its radial root-of-unity layer overlaps
+[*Infinite q-Pochhammer inverse geometry*](chapters/03_infinite_q_pochhammer.tex)
+and
+[*Cyclotomic and Fabius--Rvachev recovery*](chapters/06_cyclotomic_fabius.tex),
 but its condensation, Gould--Hopper, polyharmonic, and natural-boundary
-programs are broader than inverse-q branch theory.  Likewise,
+programs are broader than inverse-q branch theory. Likewise,
 `Exponents_and_q_Series_Frontiers/` owns the geometric-uniform/Fabius
 deformation and signed/reciprocal parameter-orbit program, and
-`inverse-and-sampling/comb-interpolation/comb_interpolation_synthesis/` owns the detailed
-interpolation and stability theory behind the short geometric-comb application
-in Chapter 6.  These explicit boundaries prevent the six-source concordance
-from being misread as a claim to have absorbed those broader volumes.
+`inverse-and-sampling/comb-interpolation/comb_interpolation_synthesis/` owns
+the detailed interpolation and stability theory behind the short
+geometric-comb application in
+[*Cyclotomic and Fabius--Rvachev recovery*](chapters/06_cyclotomic_fabius.tex).
+These explicit boundaries prevent the six-source concordance from being
+misread as a claim to have absorbed those broader volumes.

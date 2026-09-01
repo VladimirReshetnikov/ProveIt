@@ -6234,6 +6234,22 @@ The prescribed steps reverse the equalities in
 \Cref{lem:integer-qpochhammer-translation}.  After denominator clearing, equality is decidable by polynomial arithmetic.  Therefore the search code may be treated as a conjecture generator while the emitted certificate is checked independently.
 \end{proof}
 
+\begin{remark}[Bailey inversion as a discovery engine]
+The same certificate-first philosophy makes Bailey-pair discovery
+deterministic.  Begin with a plausible beta sequence, apply the triangular
+Bailey inversion of \Cref{thm:bailey-inversion} to compute its unique candidate
+alpha sequence, factor that expression, and test whether the result has a
+short theta-like form.  If the final bilateral exponent is
+\((Mn^2+Bn)/2\), the coefficient of (n^2) predicts product modulus (M),
+while the linear term predicts the two nontrivial residue classes.  This is a
+search heuristic, not a proof: the recovered pair must still be verified by
+the finite inversion identity, and every limiting transform must satisfy its
+convergence hypotheses.  For finite positivity questions one should retain
+the Gaussian-polynomial form as long as possible, because reciprocity,
+unimodality, and coefficientwise signs can be obscured when an infinite limit
+is taken too early.
+\end{remark}
+
 \begin{historicalnote}
 Recent formal libraries reinforce the same separation of concerns.  Eberl's Isabelle development~\cite{Eberl2024QAnalogues} formalizes Gaussian polynomials, finite and infinite $q$-Pochhammer symbols, Euler expansions, the $q$-binomial theorem, and $q$-Vandermonde.  The Lean developments cited earlier and the Fabius-function repository~\cite{ReshetnikovProveIt2026} similarly distinguish denominator-free polynomial recurrences from analytic infinite products.  This architecture is exactly what makes automated discovery compatible with proof-level reliability.
 \end{historicalnote}
@@ -11906,6 +11922,21 @@ Ramanujan ${}_1\psi_1$ & ${}_1\psi_1(a;b;q,z)=(q,b/a,az,q/(az);q)_\infty/(b,q/a,
 Finite triple product & $(z;q)_N(q/z;q)_N=\sum_{k=-N}^{N}(-1)^kq^{\binom k2}\GaussianBinomial{2N}{N+k}{q}z^k$ & \Cref{thm:finite-jtp}\\[1pt]
 
 Jacobi triple product & $\sum_{n\in\IntegerNumbers}(-1)^nq^{\binom n2}z^n=(q,z,q/z;q)_\infty$ & \Cref{thm:jtp}\\[1pt]
+Rogers--Ramanujan pair &
+$\displaystyle\sum_{n\ge0}\frac{q^{n^2}}{(q;q)_n}=\frac1{(q,q^4;q^5)_\infty}$,
+$\displaystyle\sum_{n\ge0}\frac{q^{n^2+n}}{(q;q)_n}=\frac1{(q^2,q^3;q^5)_\infty}$
+& \Cref{thm:rogers-ramanujan}\\[1pt]
+Andrews--Gordon family &
+$\displaystyle\sum_{n_1,\ldots,n_{k-1}\ge0}
+\frac{q^{\sum_jN_j^2+\sum_{j=i}^{k-1}N_j}}
+{\prod_j(q;q)_{n_j}}
+=\frac{(q^i,q^{2k+1-i},q^{2k+1};q^{2k+1})_\infty}
+{(q;q)_\infty}$, $N_j=n_j+\cdots+n_{k-1}$
+& \Cref{qg:thm-andrews-gordon}\\[1pt]
+Rogers--Ramanujan fraction &
+$\displaystyle\frac{F_1(q)}{F_0(q)}
+=\cfrac1{1+\cfrac q{1+\cfrac{q^2}{1+\ddots}}}$
+& \Cref{qg:thm-rrcf}\\[1pt]
 Pentagonal theorem & $(q;q)_\infty=\sum_{n\in\IntegerNumbers}(-1)^nq^{n(3n-1)/2}$ & \Cref{thm:pentagonal}\\[1pt]
 $q$-derivative & $D_qf(x)=(f(x)-f(qx))/((1-q)x)$ & \Cref{prop:qderivative-rules}\\[1pt]
 Jackson integral & $\int_0^af(x)\,\Differential_qx=(1-q)a\sum_{n\ge0}q^nf(aq^n)$ & \Cref{thm:q-fundamental}\\[1pt]
@@ -13191,6 +13222,12 @@ NIST Digital Library of Mathematical Functions,
 Chapter 17, ``$q$-Hypergeometric and Related Functions,''
 F.~W.~J. Olver et al., editors, \url{https://dlmf.nist.gov/17}, accessed August 2026.
 
+\bibitem{DousseJouhetKonan2025}
+J.~Dousse, F.~Jouhet, and I.~Konan,
+Bilateral Bailey lattices and Andrews--Gordon type identities,
+\emph{SIGMA} \textbf{21} (2025), 032, 32 pages,
+\url{https://doi.org/10.3842/SIGMA.2025.032}.
+
 \bibitem{Fine1988}
 N.~J. Fine,
 \emph{Basic Hypergeometric Series and Applications},
@@ -13256,6 +13293,13 @@ I.~G. Macdonald,
 \emph{Symmetric Functions and Hall Polynomials}, second edition,
 Oxford Mathematical Monographs, Oxford University Press, 1995.
 
+\bibitem{McLaughlinSillsZimmer}
+J.~McLaughlin, A.~V. Sills, and P.~Zimmer,
+Rogers--Ramanujan--Slater type identities,
+\emph{Electronic Journal of Combinatorics}, Dynamic Survey DS15,
+first published 2012, updated survey edition,
+\url{https://doi.org/10.37236/36}.
+
 \bibitem{O'Hara1990}
 K.~M. O'Hara,
 Unimodality of Gaussian coefficients: a constructive proof,
@@ -13291,6 +13335,13 @@ L.~J. Slater,
 \emph{Generalized Hypergeometric Functions},
 Cambridge University Press, 1966.
 
+\bibitem{Slater1952}
+L.~J. Slater,
+Further identities of the Rogers--Ramanujan type,
+\emph{Proceedings of the London Mathematical Society} (2)
+\textbf{54} (1952), 147--167,
+\url{https://doi.org/10.1112/plms/s2-54.2.147}.
+
 \bibitem{Stanley2012}
 R.~P. Stanley,
 \emph{Enumerative Combinatorics}, Volume 1, second edition,
@@ -13305,6 +13356,19 @@ Cambridge Studies in Advanced Mathematics 62, Cambridge University Press, 1999.
 A.~Straub,
 A $q$-analog of Ljunggren's binomial congruence,
 \emph{DMTCS Proceedings}, FPSAC 2011, 897--902; arXiv:1103.3258.
+
+\bibitem{Wang2022}
+C.~Wang,
+An analytic proof of the Borwein conjecture,
+\emph{Advances in Mathematics} \textbf{394} (2022), Article 108028,
+54 pages,
+\url{https://doi.org/10.1016/j.aim.2021.108028}.
+
+\bibitem{WangKrattenthaler2022}
+C.~Wang and C.~Krattenthaler,
+An asymptotic approach to Borwein-type sign pattern theorems,
+preprint, arXiv:2201.12415, 2022,
+\url{https://arxiv.org/abs/2201.12415}.
 
 \bibitem{Zeilberger1989}
 D.~Zeilberger,

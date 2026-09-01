@@ -3520,67 +3520,6 @@ printed symbol.  The accent means formal asymptotic series prior to Borel
 transformation.  The series name, including any semantic script, must be placed
 inside the one argument; any subsequent decoration must group the expansion.
 
-\subsubsection{Bailey-pair transforms}
-
-\paragraph{\localaccentname{BaileyTransformedAlpha}}
-TeX arity is zero.  The command prints a wide hat over \(\alpha\); the index
-\(n\) is an external source-level subscript rather than a TeX argument.
-Let \(a,q\in\ComplexNumbers\) and let
-\(\alpha,\beta:\NaturalNumbers\to\ComplexNumbers\) be a Bailey pair
-relative to \(a\), so
-\[
- \beta_n
- =
- \sum_{r=0}^{n}
- \frac{\alpha_r}
- {(q;q)_{n-r}(aq;q)_{n+r}}.
-\]
-Both active document scopes define the transformed alpha sequence by
-\[
- \alpha_n^{\mathrm B}
- \DefinitionEquals
- a^nq^{n^2}\alpha_n.
-\]
-The \(q\)-series monograph calls this the alpha component of a Bailey-chain
-step and also uses it for the transformed unit pair in the
-Rogers--Ramanujan proof.  The proof-oriented article calls the same formula
-the alpha component of the weak Bailey-lemma transformed pair and abbreviates
-\((z;q)_n\) by \((z)_n\) locally.  Status is an exact finite transformation;
-in analytic limiting statements the standing convention is
-\(q\in\ComplexNumbers\), \(0<\AbsoluteValue{q}<1\), with all displayed
-denominators nonzero.  The source pair, \(a\), \(q\), coefficient field,
-denominator hypotheses, and index are suppressed.  The accent means Bailey
-transformation, not Fourier transformation.  Appending the single external
-subscript is currently valid because the zero-argument expansion itself owns
-no script, but it is fragile: no second subscript or simultaneous replacement
-superscript may be appended, and any future scripted macro body would require
-an indexed wrapper.
-
-\paragraph{\localaccentname{BaileyTransformedBeta}}
-TeX arity is zero.  The command prints a wide hat over \(\beta\); the index
-\(n\) is appended externally and is not a TeX argument.  For a Bailey pair
-\((\alpha,\beta)\) relative to \(a\), with \(a,q\in\ComplexNumbers\), its exact transformed beta component is
-\[
- \beta_n^{\mathrm B}
- \DefinitionEquals
- \sum_{j=0}^{n}
- \frac{a^jq^{j^2}}{(q;q)_{n-j}}\beta_j.
-\]
-Together with
-\(\alpha_n^{\mathrm B}=a^nq^{n^2}\alpha_n\), this is again a Bailey pair
-relative to \(a\).  In the monograph it appears in the Bailey-chain step, in
-the limiting weak Bailey lemma through \(\beta_N^{\mathrm B}\), and after
-transforming the unit pair, where
-\(\beta_n^{\mathrm B}=1/(q;q)_n\).  In the proof-oriented article the same
-formula is the beta component of its weak Bailey-lemma corollary, with
-\((z)_n=(z;q)_n\) in that local section.  Status is an exact finite
-transformation, with convergence assumptions added only when a subsequent
-infinite limit is taken.  The input pair, \(a\), \(q\), coefficient field,
-nonvanishing denominators, and index are suppressed.  The accent means Bailey
-transformation.  The external \texttt{\_n} or \texttt{\_N} convention is safe
-only while the zero-argument expansion remains unscripted; callers must not
-compose it with a second raw subscript or conflicting superscript.
-
 \subsubsection{Inverse, sampling, and prediction constructions}
 
 \paragraph{\localaccentname{FactorialScaledInverseTransferCoefficient}}
