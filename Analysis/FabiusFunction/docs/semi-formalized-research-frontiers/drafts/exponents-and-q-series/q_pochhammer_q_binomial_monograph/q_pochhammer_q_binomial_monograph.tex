@@ -9962,8 +9962,8 @@ $q=0$ and negative contractions.  The additional declarations
 of the full prefixes on the real frequency line and uniform convergence on
 every compact real frequency set.  There is still no named centered
 or MGF bridge and no outside formula or zero--pole exchange; named
-local-uniform or normal convergence of the Pochhammer-product right-hand
-side and a packaged complex-frequency full-prefix statement are also
+local-uniform or normal convergence of the outer Pochhammer product over the
+spectral index and a packaged complex-frequency full-prefix statement are also
 absent.  Thus \Cref{thm:qF-spectral} remains only partially formalized.
 
 \begin{remark}[The nome, and where the $q$-objects finally appear]\label{rem:qF-nome}
@@ -12151,8 +12151,8 @@ inside the proof below does not formalize the result the proof concludes.
   than a mathematical claim.
 \end{description}
 
-Of the 284 labelled forward results, 42 are \statusexact, 74 are
-\statuspartial, 160 are \statusnone, and 8 are \statusna.  The original
+Of the 284 labelled forward results, 45 are \statusexact, 75 are
+\statuspartial, 156 are \statusnone, and 8 are \statusna.  The original
 191-result pre-Fabius core had 36 \statusexact, 29 \statuspartial, 123
 \statusnone, and 3 \statusna{} entries.  The four integrated guide chapters
 add 31 human-proved but not Lean-formalized assertions and five labelled
@@ -12177,24 +12177,30 @@ claims are now exact as well: their field forms record \(a\ne0\), \(q\ne0\),
 and every displayed nonzero denominator, while their cleared and
 cross-multiplied polynomial forms remain valid at roots of unity; both
 adjacent cross identities are total in all natural indices by zero extension.
-The former
-claim that every infinite \(q\)-Pochhammer symbol in
-the development was a finite \texttt{Finset.range} product is now false:
-\texttt{Fabius.qPochhammerInf} from \texttt{LimitConditionNumber.lean} is the genuine real
-\(\prod'_{j\ge0}(1-aq^j)\); for \(0\le q<1\) the factors are multipliable for
-every real \(a\), the finite symbols converge to it, and the positive-factor
-specializations used for \((q;q)_\infty\) and \((-q;q)_\infty\) are strictly
-positive.  This real contractive-base product layer does not formalize the
-book's general complex analytic or basic-hypergeometric infinite-product
-theory.  The separate \texttt{RvachevPochhammerFactorization} module now
-defines the complex symbol and proves its pointwise convergence for every
-contracting complex nome.  It also identifies every geometric sinc product
-at a strict complex contraction with the corresponding nome-\(q^2\)
-Pochhammer product, pointwise and globally in the complex argument; only its
-final two Rvachev wrappers fix the nome to \(1/4\).  This does not supply the
-book's named centered/MGF wrapper, outside-disk reciprocal formula, or
-local-uniform/normal-convergence theorem for the Pochhammer-product
-right-hand side.
+The former claim that every infinite \(q\)-Pochhammer symbol in the
+development was a finite \texttt{Finset.range} product is now false in two
+independent ways.  The real \texttt{Fabius.qPochhammerInf} from
+\texttt{LimitConditionNumber.lean} supplies the positivity layer used for
+\((q;q)_\infty\) and \((-q;q)_\infty\).  More generally,
+\texttt{QPochhammerInfinite.lean} defines
+\texttt{Fabius.qPochhammerInfIn} in a topological commutative ring and proves,
+under the precise complete normed-ring or field hypotheses of each result,
+factor multipliability, convergence of finite prefixes, finite-shift and
+single-factor decompositions, residue-class dissection, the exact factor-zero
+locus, fixed-\(q\) local uniformity and continuity in \(a\), complex
+entire-ness, and the explicit nonzero derivative at every \(q^{-j}\).
+\texttt{QPochhammerDissection.lean} separately proves the finite exact and
+remainder dissections over every commutative ring.
+
+The separate \texttt{RvachevPochhammerFactorization} module defines the
+complex symbol used by the spectral bridge and identifies every geometric
+sinc product at a strict complex contraction with the corresponding
+nome-\(q^2\) Pochhammer product, pointwise and globally in the complex
+argument; only its final two Rvachev wrappers fix the nome to \(1/4\).  None
+of these modules supplies the book's named centered/MGF wrapper,
+outside-disk reciprocal formula, joint holomorphy in \((a,q)\), explicit
+uniform-in-\(q\) tail bounds and derivative kernels, or local-uniform
+convergence of the outer Pochhammer product over the spectral index.
 
 The promoted, strengthened, and new finite-$q$ and weighted
 symmetric-function rows in this edition were statically checked against the
@@ -12212,6 +12218,9 @@ compatibility spelling of the primary identity;\\
 \path{QDifferenceAnnihilation.lean}: four theorems;\\
 \path{QBinomialInversionSpecializations.lean}: two definitions and four theorems;\\
 \path{QPochhammerElementaryIdentities.lean}: 13 theorems;\\
+\path{QPochhammerDissection.lean}: two theorems;\\
+\path{QPochhammerInfinite.lean}: one definition and 27 theorems;\\
+\path{QPochhammerEntire.lean}: four theorems;\\
 \path{QBinomialReciprocity.lean}: four theorems;\\
 \path{GaussianBinomialAtNegOne.lean}: five theorems;\\
 \path{RvachevPochhammerFactorization.lean}: one definition and nine theorems;\\
@@ -12277,6 +12286,54 @@ displayed Gaussian and linear-factor denominators, retain \(k<n\), and do not
 require \(q\ne0\); the two adjacent cross identities are total in all
 \(n,k\), including on and above the row boundary.
 
+\item The two theorems of \path{QPochhammerDissection.lean} are
+\path{Fabius.finiteQPochhammerIn_dissection} and
+\path{Fabius.finiteQPochhammerIn_dissection_remainder}.  Both hold over every
+commutative ring, without a hypothesis on \(q\).  The first is the exact
+residue-class dissection at length \(rn\); the second is the exact remainder
+formula at length \(rn+u\), with the slightly stronger boundary \(u\le r\).
+
+\item \path{QPochhammerInfinite.lean} has the one definition
+\path{Fabius.qPochhammerInfIn} and exactly 27 theorems.  Its elementary and
+convergence declarations are
+\path{Fabius.qPochhammerInfIn_eq_tprod},
+\path{Fabius.summable_norm_mul_pow},
+\path{Fabius.one_sub_ne_zero_of_norm_lt_one},
+\path{Fabius.norm_mul_pow_self_lt_one},
+\path{Fabius.finiteQPochhammerIn_self_ne_zero},
+\path{Fabius.multipliable_one_sub_mul_pow_of_norm_lt_one},
+\path{Fabius.hasProd_qPochhammerInfIn},
+\path{Fabius.tendsto_finiteQPochhammerIn_qPochhammerInfIn},
+\path{Fabius.qPochhammerInfIn_eq_finite_mul_shift},
+\path{Fabius.qPochhammerInfIn_succ_shift},
+\path{Fabius.qPochhammerInfIn_eq_factor_mul}, and
+\path{Fabius.qPochhammerInfIn_dissection}.  The zero-set and parameter
+declarations are
+\path{Fabius.qPochhammerInfIn_ne_zero},
+\path{Fabius.qPochhammerInfIn_eq_zero_iff},
+\path{Fabius.qPochhammerInfIn_self_ne_zero},
+\path{Fabius.qPochhammerInfIn_eq_tprod_smul},
+\path{Fabius.summable_norm_pow_of_norm_lt_one},
+\path{Fabius.isBigO_one_sub_sub_one},
+\path{Fabius.differentiable_finiteQPochhammerIn},
+\path{Fabius.qPochhammerInfIn_eq_zero_iff_exists_inv_pow},
+\path{Fabius.hasProdLocallyUniformly_qPochhammerInfIn},
+\path{Fabius.continuous_qPochhammerInfIn},
+\path{Fabius.pow_sq_mul_finiteQPochhammerIn_inv_pow_self},
+\path{Fabius.differentiable_qPochhammerInfIn},
+\path{Fabius.hasDerivAt_qPochhammerInfIn_of_mul_pow_eq_one},
+\path{Fabius.hasDerivAt_qPochhammerInfIn_inv_pow}, and
+\path{Fabius.deriv_qPochhammerInfIn_inv_pow_ne_zero}.  Algebraic convergence,
+finite shifts, and infinite dissection hold in a complete normed commutative
+ring with \(\lVert1\rVert=1\) and \(\lVert q\rVert<1\); the no-hidden-zero
+statements additionally use a multiplicative norm.  Over a complete field
+with \(q\ne0\), the zeros are exactly \(q^{-j}\).  Local uniformity in \(a\)
+uses a complete locally compact normed field; over \(\ComplexNumbers\) the
+map is entire and its displayed derivative at every \(q^{-j}\) is nonzero.
+These results are all for fixed \(q\): they do not assert joint holomorphy in
+\((a,q)\), explicit uniform-in-\(q\) tail inequalities, or the logarithmic
+derivative kernels of \Cref{thm:poch-entire}.
+
 \item \path{RvachevPochhammerFactorization.lean} has the one definition
 \path{Fabius.complexQPochhammerInf} and exactly nine theorems:
 \path{Fabius.complexQPochhammerInf_eq_tprod},
@@ -12303,7 +12360,7 @@ specialize to the fixed nome
 \path{IsFabius}.  What remains outside the API from
 \Cref{thm:qF-spectral} is its named centered/MGF packaging, outside-disk
 reciprocal and zero--pole clauses, and named local-uniform or normal
-convergence of the Pochhammer-product right-hand side.
+convergence of the outer Pochhammer product over the spectral index.
 
 \item The final geometric-sinc tranche contributes four public theorems in
 \path{GeometricReciprocalGamma.lean}, namely
@@ -12336,7 +12393,8 @@ These are exact subclaims of
 label is promoted, because no declaration packages the former's
 complex-frequency full phase-prefix convergence or the latter's centered/MGF
 wrapper, reciprocal outside-disk formula, zero--pole exchange, and named
-local-uniform or normal convergence of the Pochhammer-product right-hand side.
+local-uniform or normal convergence of the outer Pochhammer product over the
+spectral index.
 
 \item The six theorems of \path{GeometricCompleteHomogeneous.lean} are
 \path{Fabius.completeHomogeneousEval_geometric},
@@ -12489,7 +12547,7 @@ inferred from a related finite identity.
 \toprule
 Chapter & \statusexact & \statuspartial & \statusnone & \statusna\\
 \midrule
-The algebra of $q$-shifted factorials & 3 & 1 & 11 & 0\\
+The algebra of $q$-shifted factorials & 6 & 2 & 7 & 0\\
 $q$-integers and Gaussian coefficients & 3 & 2 & 4 & 0\\
 Finite $q$-binomial theorems and inversion & 9 & 1 & 0 & 0\\
 Weighted binomial coefficients and symmetric functions & 3 & 2 & 3 & 0\\
@@ -12518,7 +12576,7 @@ Half-base arithmetic and Prouhet--Thue--Morse cancellation & 6 & 3 & 0 & 0\\
 Geometric uniform sums, $q$-cumulants, and the Fabius--Rvachev functions & 2 & 11 & 0 & 0\\
 Dyadic Gaussian--Thue--Morse structure and the values of $F$ & 6 & 45 & 6 & 0\\
 \midrule
-\textbf{Forward total} & 42 & 74 & 160 & 8\\
+\textbf{Forward total} & 45 & 75 & 156 & 8\\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -12541,8 +12599,18 @@ Result & Status & Lean counterpart\\
 \multicolumn{3}{@{}l}{\itshape The algebra of $q$-shifted factorials}\\
 \midrule
 \Cref{prop:concat} & \statusexact & \texttt{finiteQPochhammerIn\_\allowbreak{}add}\newline{\footnotesize\texttt{FiniteQBinomialCore}}\\[2pt]
-\Cref{prop:dissection} & \statusnone & ---\\[2pt]
-\Cref{cor:dissection-remainder} & \statusnone & ---\\[2pt]
+\Cref{prop:dissection} & \statusexact &
+\texttt{finiteQPochhammerIn\_\allowbreak{}dissection},
+\texttt{qPochhammerInfIn\_\allowbreak{}dissection}\newline
+{\footnotesize\texttt{QPochhammerDissection};
+\texttt{QPochhammerInfinite}; the finite identity holds over every
+commutative ring, and the infinite identity assumes exactly a positive
+dissection length and a contracting nome in a complete normed commutative
+ring}\\[2pt]
+\Cref{cor:dissection-remainder} & \statusexact &
+\texttt{finiteQPochhammerIn\_\allowbreak{}dissection\_\allowbreak{}remainder}\newline
+{\footnotesize\texttt{QPochhammerDissection}; strengthened from \(u<r\) to
+\(u\le r\), over every commutative ring}\\[2pt]
 \Cref{prop:base-reversal} & \statusexact &
 \texttt{finiteQPochhammerIn\_\allowbreak{}base\_\allowbreak{}reversal},
 \texttt{finiteQPochhammerIn\_\allowbreak{}inv\_\allowbreak{}base\_\allowbreak{}reversal}\newline
@@ -12557,8 +12625,23 @@ quotient additionally assuming \((q;q)_{N-k}\ne0\); root-safe numerator and
 cleared forms are also exported}\\[2pt]
 \Cref{thm:partial-fraction} & \statusnone & ---\\[2pt]
 \Cref{prop:logder-finite} & \statusnone & ---\\[2pt]
-\Cref{thm:poch-entire} & \statusnone & ---\\[2pt]
-\Cref{prop:complex-concat} & \statusnone & ---\\[2pt]
+\Cref{thm:poch-entire} & \statusexact &
+\texttt{tendsto\_\allowbreak{}finiteQPochhammerIn\_\allowbreak{}qPochhammerInfIn},
+\texttt{hasProdLocallyUniformly\_\allowbreak{}qPochhammerInfIn},
+\texttt{differentiable\_\allowbreak{}qPochhammerInfIn},
+\texttt{qPochhammerInfIn\_\allowbreak{}eq\_\allowbreak{}zero\_\allowbreak{}iff\_\allowbreak{}exists\_\allowbreak{}inv\_\allowbreak{}pow},
+\texttt{hasDerivAt\_\allowbreak{}qPochhammerInfIn\_\allowbreak{}inv\_\allowbreak{}pow},
+\texttt{deriv\_\allowbreak{}qPochhammerInfIn\_\allowbreak{}inv\_\allowbreak{}pow\_\allowbreak{}ne\_\allowbreak{}zero}\newline
+{\footnotesize\texttt{QPochhammerInfinite}; fixed-\(q\) local uniformity,
+entire-ness, the exact \(q^{-j}\) zero set, and the explicit nonzero
+derivative are proved under \(q\ne0\), \(\lVert q\rVert<1\);
+\texttt{QPochhammerEntire} retains the parallel division-free
+\texttt{complexQPochhammerInf} API including \(q=0\)}\\[2pt]
+\Cref{prop:complex-concat} & \statuspartial &
+\texttt{qPochhammerInfIn\_\allowbreak{}eq\_\allowbreak{}finite\_\allowbreak{}mul\_\allowbreak{}shift},
+\texttt{qPochhammerInfIn\_\allowbreak{}succ\_\allowbreak{}shift}\newline
+{\footnotesize\texttt{QPochhammerInfinite}; exact for nonnegative integral
+shifts, not for arbitrary complex \(\alpha,\beta\)}\\[2pt]
 \Cref{prop:order-derivative} & \statusnone & ---\\[2pt]
 \Cref{thm:lambert-log} & \statuspartial & \texttt{tsum\_\allowbreak{}log\_\allowbreak{}one\_\allowbreak{}sub\_\allowbreak{}geom}\newline{\footnotesize\texttt{EulerLogTransform}}\\[2pt]
 \Cref{cor:divisor-sum} & \statusnone & ---\\[2pt]

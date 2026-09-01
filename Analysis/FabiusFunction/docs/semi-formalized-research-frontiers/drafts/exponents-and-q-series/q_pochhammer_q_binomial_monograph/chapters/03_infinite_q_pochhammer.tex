@@ -78,6 +78,19 @@ bounded by convergent geometric series with at most a polynomial factor in
 proves all three identities.
 \end{proof}
 
+\paragraph{Lean boundary.}
+For fixed \(q\), \lean{QPochhammerInfinite.lean} proves finite-prefix and
+locally uniform convergence in \(a\), complex entire-ness, the exact zeros,
+and their simplicity through
+\lean{tendsto_finiteQPochhammerIn_qPochhammerInfIn},
+\lean{hasProdLocallyUniformly_qPochhammerInfIn},
+\lean{differentiable_qPochhammerInfIn},
+\lean{qPochhammerInfIn_eq_zero_iff_exists_inv_pow}, and
+\lean{deriv_qPochhammerInfIn_inv_pow_ne_zero}.  The stronger joint
+\((a,q)\)-holomorphy, explicit uniform-in-\(q\) tail bounds, and derivative
+kernels in \cref{thm:ip-normal-convergence} remain human-proved, so the
+compound theorem is only partially formalized.
+
 \begin{lemma}[Lambert logarithm]
 \label{lem:ip-lambert-log}
 For \(|a|<1\) and \(|q|<1\),
@@ -191,6 +204,13 @@ Implicit differentiation gives \cref{eq:ip-principal-first}.  Since
 for \(a<1\), a second differentiation gives
 \cref{eq:ip-principal-second} and proves convexity.
 \end{proof}
+
+\paragraph{Lean boundary.}
+The zero and derivative subclaim is exact through
+\lean{hasDerivAt_qPochhammerInfIn_inv_pow} and
+\lean{deriv_qPochhammerInfIn_inv_pow_ne_zero}.  The real inverse germs,
+monotonicity and convexity, uniqueness of the gap critical point, and sheet
+counts in \cref{thm:ip-real-atlas} remain human-proved.
 
 \subsection{Endpoint and central inverse jets}
 

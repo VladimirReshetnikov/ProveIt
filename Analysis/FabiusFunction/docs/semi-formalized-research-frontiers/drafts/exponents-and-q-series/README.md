@@ -747,8 +747,8 @@ and a 1,582,997-byte, 213-page PDF (SHA-256
 Those figures identify a retired historical artifact; they are not build
 claims about the current canonical source.
 
-The current forward formalization crosswalk has 284 labelled results: 42
-exact, 74 partial, 160 with no counterpart, and 8 interface-only. The original
+The current forward formalization crosswalk has 284 labelled results: 45
+exact, 75 partial, 156 with no counterpart, and 8 interface-only. The original
 191-result pre-Fabius core had 36 exact, 29 partial, 123 with no counterpart,
 and 3 interface-only entries. The four integrated guide chapters add 31
 human-proved but not Lean-formalized assertions and five labelled definitions;
@@ -756,8 +756,9 @@ the later Fabius bridge contributes the remaining 57 rows. Its pointwise
 inside-`q^2` Pochhammer factorization is now formal for every complex strict
 contraction, while the compound spectral theorem remains partial at its named
 centered/MGF wrappers, reciprocal outside-disk clause, and named local-uniform
-or normal convergence of the Pochhammer-product right-hand side. The algebra of
-q-shifted factorials now accounts for 3 exact, 1 partial, and 11
+or normal convergence of the outer Pochhammer product over its spectral
+index. The algebra of q-shifted factorials now accounts for 6 exact, 2
+partial, and 7
 unformalized results; the q-integer and Gaussian-coefficient chapter for
 3 exact, 2 partial, and 4 unformalized results. The finite
 q-binomial/inversion chapter now accounts for 9 exact, 1 partial, and 0
@@ -785,9 +786,12 @@ compatibility spelling of its primary identity),
 `QDifferenceAnnihilation.lean` (four theorems),
 `QBinomialInversionSpecializations.lean` (two definitions, four theorems),
 `QPochhammerElementaryIdentities.lean` (13 theorems),
+`QPochhammerDissection.lean` (two theorems),
+`QPochhammerInfinite.lean` (one definition, 27 theorems),
 `QBinomialReciprocity.lean` (four theorems),
-`GaussianBinomialAtNegOne.lean` (five theorems), and
-`RvachevPochhammerFactorization.lean` (one definition, nine theorems).
+`GaussianBinomialAtNegOne.lean` (five theorems),
+`RvachevPochhammerFactorization.lean` (one definition, nine theorems), and
+`QPochhammerEntire.lean` (four theorems).
 The five `GaussianBinomialAtNegOne` theorems are
 `gaussianBinomial_neg_one_even_even`,
 `gaussianBinomial_neg_one_odd_even`,
@@ -814,13 +818,16 @@ finite-support `finsum` over all integers. The ledger also now records the
 genuine real infinite product `qPochhammerInf` and its contractive-base
 convergence/positivity layer, replacing the stale claim that every infinite
 q-Pochhammer in the development was merely a finite `Finset.range` product.
-The separate complex symbol now has its own contractive-nome convergence
-API, and the geometric sinc product has a global spectral factorization for
-every complex strict contraction with nome `q^2`; only the two final Rvachev
-wrappers specialize to nome `1/4`. The compound spectral theorem in the
-Fabius bridge remains partial because its named centered/MGF wrapper,
-outside-disk reciprocal formula, and local-uniform/normal-convergence
-packaging are not all formalized.
+For every fixed complex strict contraction, the separate complex symbol now
+has locally uniform convergence on the whole parameter plane, is entire in
+that parameter, has exactly its displayed factor zeros (including at the
+degenerate nome zero), and every zero has analytic order one. The geometric
+sinc product has a global spectral factorization for every complex strict
+contraction with nome `q^2`; only the two final Rvachev wrappers specialize to
+nome `1/4`. The compound spectral theorem in the Fabius bridge remains
+partial because its named centered/MGF wrapper, outside-disk reciprocal
+formula, and local-uniform/normal-convergence packaging for the outer
+spectral product are not all formalized.
 The complementary formal surfaces of
 `CompleteHomogeneousGenerating.lean` and
 `SymmetricFunctionGenerating.lean` prove both the finite elementary product
@@ -919,10 +926,38 @@ specializations, `geometricSincProduct_eq_tprod_complexQPochhammerInf` proves
 globally for every complex `q,z` with `‖q‖ < 1` that
 `S_q(z) = ∏'_k (z^2/(k+1)^2;q^2)_∞`; the paired-index and absolute-summability
 theorems justify the exchange of scale and spectral-zero indices, including
-`q = 0`, negative and nonreal contractions, and zero factors.  The
+`q = 0`, negative and nonreal contractions, and zero factors.
+
+`QPochhammerDissection.lean` proves
+`Fabius.finiteQPochhammerIn_dissection` and
+`Fabius.finiteQPochhammerIn_dissection_remainder` over every commutative ring;
+the latter allows the stronger boundary `u <= r`. `QPochhammerInfinite.lean`
+adds the generic definition `Fabius.qPochhammerInfIn` and 27 theorems. For a
+fixed contracting nome they include finite-prefix convergence, natural-number
+finite shifts, factor removal, infinite dissection, and the exact zero locus;
+over the complex numbers they include local uniformity in `a`, entire-ness,
+and an explicit nonzero derivative at every zero `q^(-j)`. Thus the finite
+dissection and remainder rows are exact, while the arbitrary-complex-order
+concatenation row is only partial. The module proves neither joint `(a,q)`
+holomorphy nor the canonical chapter's explicit uniform-in-`q` tails and
+derivative kernels.
+
+`QPochhammerEntire.lean` adds exactly the four theorems
+`Fabius.hasProdLocallyUniformly_complexQPochhammerInf`,
+`Fabius.complexQPochhammerInf_differentiable`,
+`Fabius.complexQPochhammerInf_eq_zero_iff`, and
+`Fabius.analyticOrderAt_complexQPochhammerInf_of_eq_zero`. For each fixed
+complex `q` with `‖q‖ < 1`, these prove local uniform convergence of the
+defining factors on the whole complex `a`-plane, entire-ness in `a`, the raw
+factor-zero locus `∃ j, 1 - a*q^j = 0`, and analytic order one at every zero.
+The division-free zero statement includes `q = 0`; the module asserts neither
+joint holomorphy in `q` nor local uniformity of the outer spectral product.
+
+The
 eight-theorem sinc-product tranche above
 supplies the general-`q` uncentered real-frequency bridge, locally uniform
 entire `S_q`, and real-frequency local and compact uniform convergence of the
 full phase-bearing prefixes.  There is still no named centered or MGF
 wrapper, no outside-disk reciprocal formula, and no named local-uniform or
-normal-convergence theorem for the Pochhammer-product right-hand side.
+normal-convergence theorem for the outer Pochhammer product over the spectral
+index.
