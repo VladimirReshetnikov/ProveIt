@@ -1,0 +1,725 @@
+\chapter{Inverse \texorpdfstring{\(q\)}{q}-special functions}
+\label{chap:inverse-q-special-functions}
+
+\section{\texorpdfstring{\(q\)-numbers}{q-numbers}}
+\label{sec:qs-qnumbers}
+
+Fix a logarithm value \(\ell_q\) of
+\(q\in\ComplexNumbers\setminus\{0,1\}\), put
+\(q^x=\EulerE^{x\ell_q}\), and define
+\[
+  [x]_q:=\frac{1-q^x}{1-q}.
+\]
+
+\begin{proposition}[Exact inverse in the exponent]
+\label{prop:qs-qnumber-x}
+Let \(w=1-(1-q)y\ne0\), and fix one logarithm value \(\ell_w\) of \(w\).
+Then, for every \(k\in\IntegerNumbers\),
+\[
+  x_k=\frac{\ell_w+2\pi\ImaginaryUnit k}{\ell_q}
+\]
+solves \([x_k]_q=y\), and every solution is obtained in this way.
+\end{proposition}
+
+\begin{proof}
+The equation \([x]_q=y\) is equivalent to
+\[
+  \EulerE^{x\ell_q}=w.
+\]
+The complete preimage of \(w\) under the exponential is
+\(\ell_w+2\pi\ImaginaryUnit\IntegerNumbers\).  Since \(q\ne1\), one has
+\(\ell_q\ne0\), so division by \(\ell_q\) gives precisely the displayed
+solutions.  Conversely, exponentiating any one of them recovers the equation.
+\end{proof}
+
+For an integer \(m\ge2\),
+\[
+  [m]_q=1+q+\cdots+q^{m-1},
+\]
+so inversion in the base is an algebraic covering.
+
+\begin{proposition}[Distinguished base jets of the \(q\)-number]
+\label{prop:qs-qnumber-jets}
+Fix an integer \(m\ge2\), and let \(u=y-1\).  The inverse branch through
+\(q=0\) satisfies
+\[
+\begin{array}{rll}
+ m=2:&q=u,&\text{exactly},\\
+ m=3:&q=u-u^2+2u^3+\BigO(u^4),&\\
+ m\ge4:&q=u-u^2+u^3+\BigO(u^4).&
+\end{array}
+\]
+For a fixed complex \(x\) and \(q=\EulerE^{-t}\to1\),
+\[
+  [x]_{\EulerE^{-t}}
+  =x+\frac{x(1-x)}2t
+   +\frac{x(2x^2-3x+1)}{12}t^2
+   -\frac{x^2(x-1)^2}{24}t^3+\BigO(t^4).
+\]
+If \(x\notin\{0,1\}\), its base inverse is
+\[
+  t=\frac{2(y-x)}{x(1-x)}
+   +\frac{2(2x-1)}{3x^2(x-1)^2}(y-x)^2
+   +\BigO((y-x)^3).
+\]
+\end{proposition}
+
+\begin{proof}
+At zero, the forward series begins \(u=q\) for \(m=2\),
+\(u=q+q^2\) for \(m=3\), and \(u=q+q^2+q^3+\BigO(q^4)\) for
+\(m\ge4\).  Direct substitution of
+\(q=u+Au^2+Bu^3+\cdots\) gives the three formulas.
+
+For \(q=\EulerE^{-t}\), divide the Taylor series of
+\(1-\EulerE^{-xt}\) by that of \(1-\EulerE^{-t}\), or equivalently use
+\[
+  [x]_{\EulerE^{-t}}
+  =x\exp\left(
+    -\frac{x-1}{2}t+
+    \sum_{r\ge1}
+    \frac{B_{2r}(x^{2r}-1)}{2r(2r)!}t^{2r}
+  \right).
+\]
+Expansion through degree three gives the stated forward jet.  Reversion of
+\(\delta:=y-x=a t+b t^2+\cdots\), where
+\[
+  a=\frac{x(1-x)}2,\qquad
+  b=\frac{x(x-1)(2x-1)}{12},
+\]
+gives \(t=\delta/a-b\delta^2/a^3+\cdots\), which is the displayed inverse.
+For \(x=0\) or \(1\), the forward function is identically \(0\) or \(1\), so
+base recovery is impossible rather than singular of finite order.
+\end{proof}
+
+\begin{proposition}[Alternating and reciprocal \(q\)-number branches]
+\label{prop:qs-qnumber-alternating}
+For \(r\ge1\),
+\[
+  [2r]_{-1}=0,\qquad
+  \left.\frac{\partial}{\partial q}[2r]_q\right|_{q=-1}=r,
+\]
+and
+\[
+  [2r+1]_{-1}=1,\qquad
+  \left.\frac{\partial}{\partial q}[2r+1]_q\right|_{q=-1}=-r.
+\]
+For every integer \(m\ge2\), at infinity,
+\[
+  [m]_q=q^{m-1}(1+q^{-1}+\cdots+q^{-(m-1)}),
+\]
+so the inverse at a large target has \(m-1\) Puiseux determinations, indexed
+by the choices of \(y^{1/(m-1)}\).
+\end{proposition}
+
+\begin{proof}
+Evaluate \(\sum_{j=0}^{m-1}q^j\) and its derivative
+\(\sum_{j=1}^{m-1}jq^{j-1}\) at \(-1\), pairing consecutive terms.
+The reciprocal identity is obtained by factoring out \(q^{m-1}\).  Its
+parenthesized factor tends to one, so the finite-ramification normal form of
+\cref{thm:uq-finite-ramification} gives exactly \(m-1\) inverse
+determinations.
+\end{proof}
+
+\section{\texorpdfstring{\(q\)-factorials and their exact ramification}{q-factorials and their exact ramification}}
+\label{sec:qs-qfactorials}
+
+For \(n\in\NaturalNumbers\), put
+\[
+  [n]_q!:=\prod_{j=1}^{n}[j]_q.
+\]
+
+\begin{proposition}[Zero-base factorial inverse]
+\label{prop:qs-qfactorial-zero}
+For \(n\ge2\),
+\[
+  [n]_q!
+  =1+(n-1)q+\frac{(n-2)(n+1)}2q^2+\BigO(q^3).
+\]
+Consequently, with \(u=y-1\),
+\[
+  q=\frac{u}{n-1}
+   -\frac{(n-2)(n+1)}{2(n-1)^3}u^2+\BigO(u^3).
+\]
+\end{proposition}
+
+\begin{proof}
+In the product
+\[
+  [n]_q!=\prod_{j=2}^{n}(1+q+\cdots+q^{j-1}),
+\]
+the coefficient of \(q\) is \(n-1\).  A term of degree two is obtained
+either by choosing \(q\) from two distinct factors, in
+\(\binom{n-1}{2}\) ways, or by choosing \(q^2\) from one of the
+\(n-2\) factors with \(j\ge3\).  Their sum is
+\((n-2)(n+1)/2\).  Reversion of
+\(u=(n-1)q+Aq^2+\cdots\) proves the inverse formula.
+\end{proof}
+
+\begin{theorem}[Exact root-of-unity ramification of \(q\)-factorials]
+\label{thm:qs-qfactorial-root}
+For every \(n\ge0\), let \(\zeta\ne1\) be a primitive \(d\)-th root of
+unity.  Then
+\[
+  \OrderOperator_{q=\zeta}[n]_q!
+  =\Floor{\frac nd}.
+\]
+If \(n\ge2\), put \(M=\Floor{n/2}\ge1\).  Then
+\[
+  [n]_q!=M!(q+1)^M\bigl(1+\BigO(q+1)\bigr)
+  \qquad(q\to-1),
+\]
+and the inverse at target zero has the \(M\) branches
+\[
+  q=-1+\omega_M^j\left(\frac{y}{M!}\right)^{1/M}
+    +\BigO(y^{2/M}),
+  \qquad 0\le j<M.
+\]
+For \(n=0,1\), one has \([n]_q!\equiv1\), so there is no inverse at target
+zero.
+\end{theorem}
+
+\begin{proof}
+Because \(\zeta\ne1\), the denominator in
+\([j]_q=(1-q^j)/(1-q)\) is nonzero at \(\zeta\).  The numerator has a
+simple zero there exactly when \(d\mid j\).  Exactly
+\(\Floor{n/d}\) factors therefore vanish, each simply.
+
+For \(d=2\) and \(n\ge2\), the even factors satisfy
+\[
+  [2r]_q=r(q+1)+\BigO((q+1)^2),
+\]
+while the odd factors tend to one.  Multiplying \(r=1,\ldots,M\) gives the
+coefficient \(M!\).  Applying
+\cref{thm:uq-finite-ramification} to the resulting exact zero order gives the
+Puiseux branches and their remainder.
+\end{proof}
+
+For \(n\ge2\), write \(N=\binom n2>0\).  One also has
+\[
+  [n]_q!=q^N\left(1+\frac{n-1}{q}+\BigO(q^{-2})\right),
+\]
+and the same logarithmic coefficient comparison as in
+\cref{thm:gq-large-inverse} yields, on each choice
+\(Y=y^{1/N}\to\infty\),
+\[
+  q=Y-\frac{n-1}{N}+\BigO(Y^{-1})
+   =Y-\frac2n+\BigO(Y^{-1}).
+\]
+For \(n=0,1\), the forward function is constant and has no large-target
+inverse.
+
+\section{\texorpdfstring{The \(q\)-gamma function}{The q-gamma function}}
+\label{sec:qs-qgamma}
+
+For \(0<q<1\) and \(x>0\), define
+\[
+  \Gamma_q(x)
+  =(1-q)^{1-x}\frac{(q;q)_\infty}{(q^x;q)_\infty}.
+\]
+It satisfies
+\[
+  \Gamma_q(x+1)=[x]_q\Gamma_q(x),
+  \qquad
+  \Gamma_q(1)=\Gamma_q(2)=1.
+\]
+
+\begin{proposition}[Exact generalized expansion at \(q=0\)]
+\label{prop:qs-qgamma-zero}
+For \(0<q<1\) and \(x>0\),
+\[
+  \log\Gamma_q(x)
+  =\sum_{m\ge1}\frac{q^{mx}}{m(1-q^m)}
+   -\sum_{m\ge1}\frac{q^m}{m(1-q^m)}
+   -(1-x)\sum_{m\ge1}\frac{q^m}{m}.
+\]
+All three series converge absolutely.  Expanding
+\((1-q^m)^{-1}=\sum_{r\ge0}q^{mr}\) gives a convergent generalized power
+series with exponents in
+\[
+  \{m(x+r):m\ge1,\ r\ge0\}\cup\NaturalNumbers.
+\]
+For rational \(x\) it is a Puiseux series; for irrational \(x\), its natural
+ordering is a generalized-power ordering rather than an ordinary Taylor
+ordering.  Before coincident exponents are collected, the \((m,r)=(1,0)\)
+term of the first double series contributes \(q^x\), while the two
+integer-power series contribute \(-(2-x)q\) at exponent one.  These are
+bookkeeping contributions, not necessarily the first two terms in the
+ordered generalized-power expansion.  Whenever exponents coincide, all
+contributions at that exponent must be collected.
+\end{proposition}
+
+\begin{proof}
+Take logarithms in the product definition and use the absolutely convergent
+Lambert identity
+\[
+  \log(a;q)_\infty
+  =-\sum_{m\ge1}\frac{a^m}{m(1-q^m)}
+\]
+from \cref{lem:ip-lambert-log}, together with
+\(\log(1-q)=-\sum_{m\ge1}q^m/m\).  Absolute convergence permits expansion of
+each geometric denominator and rearrangement.  The displayed exponent set is
+then immediate.  The \((m,r)=(1,0)\) term and the integer exponent-one terms
+give the two stated uncollected contributions; collecting all terms with a
+common exponent is essential when collisions occur.
+\end{proof}
+
+The logarithmic derivative and its derivative are
+\[
+  \psi_q(x)
+  =-\log(1-q)+(\log q)
+    \sum_{j\ge0}\frac{q^{x+j}}{1-q^{x+j}},
+\]
+\[
+  \psi_q'(x)
+  =(\log q)^2
+    \sum_{j\ge0}\frac{q^{x+j}}{(1-q^{x+j})^2}>0.
+\]
+Termwise differentiation is justified locally uniformly for \(x>0\).
+
+\begin{theorem}[Unique \(q\)-gamma minimum and two real inverse branches]
+\label{thm:qs-qgamma-minimum}
+For every \(0<q<1\), there is a unique \(x_q>0\) with
+\(\psi_q(x_q)=0\).  The function \(\Gamma_q\) strictly decreases on
+\((0,x_q)\), strictly increases on \((x_q,\infty)\), and tends to infinity
+at both endpoints.  Thus each target strictly above
+\(\Gamma_q(x_q)\) has exactly two positive argument inverses, the minimum has
+one double inverse point, and smaller targets have none.  The two branches
+meet in a square-root fold.
+\end{theorem}
+
+\begin{proof}
+The formula above makes \(\psi_q\) strictly increasing.  As \(x\downarrow0\),
+the \(j=0\) summand is asymptotic to
+\[
+  (\log q)\frac1{-x\log q}=-\frac1x,
+\]
+so \(\psi_q(x)\to-\infty\).  As \(x\to\infty\), the series tends to zero and
+\(\psi_q(x)\to-\log(1-q)>0\).  Hence it has one zero.
+
+Since \(\Gamma_q'/\Gamma_q=\psi_q\), the derivative has the asserted signs.
+The factor \((q^x;q)_\infty\) has a simple zero at \(x=0\), so
+\(\Gamma_q(x)\to\infty\) there.  As \(x\to\infty\), the denominator tends to
+one while \((1-q)^{1-x}\to\infty\).  The branch count follows by continuity
+and strict monotonicity.  At the minimum,
+\[
+  (\log\Gamma_q)''(x_q)=\psi_q'(x_q)>0,
+\]
+so Taylor's theorem and \cref{thm:uq-finite-ramification} give the
+square-root fold.
+\end{proof}
+
+\begin{theorem}[All-order \(q\to1\) expansion of \(\Gamma_q\)]
+\label{thm:qs-qgamma-one}
+Let \(q=\EulerE^{-t}\), with \(t\to0\) in a closed subsector of
+\(|\arg t|<\pi/2\).  Uniformly for \(x\) in compact subsets of
+\(\Re x>0\),
+\[
+  \log\Gamma_{\EulerE^{-t}}(x)
+  \sim\log\Gamma(x)+c_1(x)t+\sum_{r\ge1}c_{2r}(x)t^{2r},
+\]
+where
+\[
+  c_1(x)=\frac{(x-1)(2-x)}4
+\]
+and
+\[
+  c_{2r}(x)
+  =\frac{B_{2r}}{2r(2r)!}
+   \left(1-x+\frac{B_{2r+1}(x)}{2r+1}\right).
+\]
+No odd algebraic power beyond \(t^1\) occurs.
+\end{theorem}
+
+\begin{proof}
+Insert the all-order coalescing expansion of
+\((q^x;q)_\infty\) from \cref{thm:ip-qx-expansion} into
+\[
+  \log\Gamma_q(x)
+  =(1-x)\log(1-q)+\log(q;q)_\infty-\log(q^x;q)_\infty.
+\]
+Use the \(x=1\) specialization for \((q;q)_\infty\) and
+\[
+  \log\frac{1-\EulerE^{-t}}{t}
+  =-\frac t2+\sum_{r\ge1}
+   \frac{B_{2r}}{2r(2r)!}t^{2r}.
+\]
+The \(t^{-1}\), logarithmic, and constant normalization terms cancel,
+leaving \(\log\Gamma(x)\).  The linear coefficient simplifies to
+\[
+  \frac1{24}-\frac{B_2(x)}4-\frac{1-x}{2}
+  =\frac{(x-1)(2-x)}4.
+\]
+At every even order, the \(x=1\) Bernoulli-polynomial term vanishes and the
+remaining two terms combine to \(c_{2r}(x)\).  The expansions invoked above
+are locally uniform with uniform differentiated remainders, so subtraction
+preserves the asserted uniform asymptotic meaning.
+\end{proof}
+
+In particular,
+\[
+  c_2(x)=\frac{(x-2)(x-1)(2x+3)}{144},
+\]
+and, for fixed \(x\notin\{1,2\}\), if
+\[
+  v=\log\frac{y}{\Gamma(x)},
+\]
+ordinary reversion gives
+\[
+  t=\frac{v}{c_1(x)}
+   -\frac{c_2(x)}{c_1(x)^3}v^2
+   +\frac{2c_2(x)^2}{c_1(x)^5}v^3+\BigO(v^4),
+  \qquad q=\EulerE^{-t}.
+\]
+At \(x=1,2\), \(\Gamma_q(x)\equiv1\), so there is no base inverse.
+
+\section{\texorpdfstring{\(q\)-digamma inversion}{q-digamma inversion}}
+\label{sec:qs-qdigamma}
+
+\begin{proposition}[Global argument inverse and the exceptional reciprocal fold]
+\label{prop:qs-qdigamma-inverse}
+For fixed \(0<q<1\), the function \(\psi_q\) is a strictly increasing
+bijection
+\[
+  (0,\infty)\longrightarrow(-\infty,-\log(1-q)).
+\]
+For \(q=\EulerE^{-t}\),
+\[
+  \psi_{\EulerE^{-t}}(x)
+  \sim\psi(x)+\frac{3-2x}{4}t
+  +\sum_{r\ge1}c_{2r}'(x)t^{2r}.
+\]
+At fixed \(x\ne3/2\), base inversion at \(q=1\) is ordinary.  At \(x=3/2\),
+\[
+  \psi_{\EulerE^{-t}}(3/2)-\psi(3/2)
+  =-\frac{t^2}{288}+\BigO(t^4),
+\]
+so, within the original domain \(0<q<1\), \(q=1\) is a one-sided quadratic
+endpoint.  More precisely, if
+\[
+ \Delta=\psi_{\EulerE^{-t}}(3/2)-\psi(3/2),
+\]
+then the unique local inverse with \(t\downarrow0\) is
+\[
+ t=\sqrt{-288\Delta}\,\bigl(1+\BigO(\Delta)\bigr),
+ \qquad \Delta\uparrow0,\quad \Delta<0.
+\]
+
+There is also a natural genuine two-sided statement.  Extend the standard
+normalization to \(q>1\) by
+\[
+ \Gamma_q(x):=q^{(x-1)(x-2)/2}\Gamma_{1/q}(x),
+ \qquad \psi_q(x):=\partial_x\log\Gamma_q(x),
+\]
+and use the classical functions at \(q=1\).  Then
+\[
+ \psi_q(x)=\psi_{1/q}(x)+\left(x-\frac32\right)\log q.
+\]
+In particular, \(t\mapsto\psi_{\EulerE^{-t}}(3/2)\) is reciprocal-even,
+is \(C^2\) at \(t=0\), and has a genuine two-sided quadratic fold there.
+Its branches are \(t=\pm\sqrt{-288\Delta}(1+\BigO(\Delta))\), equivalently
+\(q=\EulerE^{\mp\sqrt{-288\Delta}(1+\BigO(\Delta))}\).
+\end{proposition}
+
+\begin{proof}
+Strict increase and the two endpoint limits were proved in
+\cref{thm:qs-qgamma-minimum}; these give the bijection.  Differentiate
+\cref{thm:qs-qgamma-one} termwise in \(x\), which is permitted by its compact
+local uniformity.  The linear coefficient
+\((3-2x)/4\) vanishes only at \(3/2\).  Direct differentiation of
+\[
+  c_2(x)=\frac{(x-2)(x-1)(2x+3)}{144}
+\]
+gives \(c_2'(3/2)=-1/288\).  The inverse function theorem handles the
+nonexceptional points.  The differentiated remainder in
+\cref{thm:qs-qgamma-one} gives, at the exceptional point,
+\[
+ \partial_t\psi_{\EulerE^{-t}}(3/2)
+ =-\frac{t}{144}+\BigO(t^3)<0
+\]
+for all sufficiently small \(t>0\).  Hence the physical one-sided inverse
+exists and is locally unique.  Factoring the forward relation as
+\(\Delta=-t^2(1+\BigO(t^2))/288\) and taking the positive square root gives
+its displayed expansion.
+
+The twice-differentiated remainder likewise gives
+\[
+ \partial_t^2\psi_{\EulerE^{-t}}(3/2)
+ =-\frac1{144}+\BigO(t^2).
+\]
+For the reciprocal extension, logarithmic differentiation in \(x\) gives
+the stated identity for \(\psi_q\).  At \(x=3/2\) its correction term
+vanishes, so replacing \(q\) by \(1/q\), or \(t\) by \(-t\), changes
+nothing.  The one-sided expansion and its differentiated remainder patch
+with this exact reflection to a \(C^2\) function at zero, with second
+derivative \(-1/144\).  The reflected positive and negative solutions are
+therefore the asserted two branches.  This real argument requires no
+holomorphic continuation across the boundary \(|q|=1\).
+\end{proof}
+
+\section{\texorpdfstring{\(q\)-beta coordinate and base inverses}{q-beta coordinate and base inverses}}
+\label{sec:qs-qbeta}
+
+For \(x,y>0\) and initially \(0<q<1\), define
+\[
+  B_q(x,y):=\frac{\Gamma_q(x)\Gamma_q(y)}{\Gamma_q(x+y)}.
+\]
+
+\begin{theorem}[Coordinate monotonicity and base type change]
+\label{thm:qs-qbeta}
+For every \(0<q<1\), \(B_q(x,y)\) is strictly decreasing in either positive
+coordinate while the other is fixed.  Hence each coordinate inverse is
+unique on its range.
+
+As \(q=\EulerE^{-t}\to1\),
+\[
+  \log\frac{B_{\EulerE^{-t}}(x,y)}{B(x,y)}
+  =b_1(x,y)t+b_2(x,y)t^2+\BigO(t^4),
+\]
+where
+\[
+  b_1(x,y)=\frac{xy-1}{2},
+  \qquad
+  b_2(x,y)=-\frac{x^2y+xy^2-xy-1}{24}.
+\]
+The base inverse is ordinary when \(xy\ne1\).  On \(xy=1\),
+\[
+  b_2(x,1/x)=-\frac{(x-1)^2}{24x};
+\]
+For \(x\ne1\), this is a one-sided quadratic endpoint in the original
+domain.  If
+\[
+ \Delta=\log\frac{B_{\EulerE^{-t}}(x,1/x)}{B(x,1/x)},
+\]
+then its unique local inverse with \(t\downarrow0\) is
+\[
+ t=\sqrt{-\frac{24x}{(x-1)^2}\Delta}\,
+ \bigl(1+\BigO(\Delta)\bigr),
+ \qquad \Delta\uparrow0,\quad \Delta<0.
+\]
+Under the reciprocal extension of \(\Gamma_q\) from
+\cref{prop:qs-qdigamma-inverse},
+\[
+ B_q(x,y)=q^{1-xy}B_{1/q}(x,y).
+\]
+Consequently, on \(xy=1\) the extended beta function is exactly
+reciprocal-even and the one-sided endpoint becomes a genuine two-sided
+quadratic fold.  At \((x,y)=(1,1)\), the identity \(B_q(1,1)\equiv1\)
+makes the base completely unidentifiable.
+\end{theorem}
+
+\begin{proof}
+The logarithmic coordinate derivatives are
+\[
+  \partial_x\log B_q(x,y)=\psi_q(x)-\psi_q(x+y)<0,
+\]
+\[
+  \partial_y\log B_q(x,y)=\psi_q(y)-\psi_q(x+y)<0,
+\]
+because \(\psi_q\) is strictly increasing.  This proves strict coordinate
+monotonicity and uniqueness of each coordinate inverse.
+
+Subtract the \(x+y\) instance of \cref{thm:qs-qgamma-one} from the sum of its
+\(x\) and \(y\) instances.  Elementary expansion of \(c_1\) and \(c_2\)
+gives the displayed \(b_1,b_2\); no cubic term exists because the
+\(q\)-gamma expansion has no odd term beyond the linear one.  The inverse
+function theorem applies when \(b_1\ne0\).  On \(xy=1\), substitution gives
+the stated negative \(b_2\), nonzero unless \(x=1\).  Uniform differentiated
+remainders give
+\[
+ \partial_t\Delta
+ =-\frac{(x-1)^2}{12x}t+\BigO(t^3)<0
+\]
+for sufficiently small \(t>0\).  Thus the one-sided inverse exists and is
+unique, and taking the positive square root in
+\(\Delta=-(x-1)^2t^2/(24x)+\BigO(t^4)\) gives its displayed expansion.
+The twice-differentiated remainder is
+\[
+ \partial_t^2\Delta
+ =-\frac{(x-1)^2}{12x}+\BigO(t^2),
+\]
+which will control the regularity at the reflected endpoint.
+
+For \(q>1\), substitution of the reciprocal \(q\)-gamma normalization into
+the definition of \(B_q\) gives an exponent
+\[
+ \frac{(x-1)(x-2)+(y-1)(y-2)-(x+y-1)(x+y-2)}2
+ =1-xy,
+\]
+which proves the reciprocal identity.  On \(xy=1\) it gives exact evenness
+under \(t\mapsto-t\); the differentiated one-sided remainder patches to a
+\(C^2\) function with nonzero second derivative, and reflection supplies
+the second branch.  At \((1,1)\),
+\(\Gamma_q(1)=\Gamma_q(2)=1\) proves the exact constant identity.
+\end{proof}
+
+\begin{warning}
+The claim that \(q\)-beta is always strictly decreasing in its base is false:
+\(B_q(1,1)=1\) for every base.  The theorem above is the corrected statement.
+It proves strictness in the two shape coordinates and gives the exact
+base-inverse type change.
+\end{warning}
+
+\section{\texorpdfstring{Euler \(q\)-exponentials}{Euler q-exponentials}}
+\label{sec:qs-qexponentials}
+
+It is useful to separate the product variable from the classical-limit
+scaling:
+\[
+  \mathsf e_q(z):=\frac1{(z;q)_\infty},
+  \qquad
+  \mathsf E_q(z):=(-z;q)_\infty,
+\]
+\[
+  e_q(x):=\mathsf e_q((1-q)x),
+  \qquad
+  E_q(x):=\mathsf E_q((1-q)x).
+\]
+
+\begin{proposition}[Exact inverse reduction and \(q\to1\) generator]
+\label{prop:qs-qexponential}
+Let \(|q|<1\).  If \(A_q\) is a selected argument-inverse branch of
+\(a\mapsto(a;q)_\infty\), then
+\[
+  \mathsf e_q^{-1}(y)=A_q(y^{-1}),
+  \qquad
+  \mathsf E_q^{-1}(y)=-A_q(y).
+\]
+Writing \(h=1-q\), suppose additionally that \(|hx|<1\), and choose the
+logarithms determined by their power series at \(x=0\).  Then the scaled
+functions satisfy the absolutely convergent identities
+\[
+  \log e_q(x)
+  =\sum_{m\ge1}\frac{h^m x^m}{m(1-(1-h)^m)},
+\]
+\[
+  \log E_q(x)
+  =\sum_{m\ge1}\frac{(-1)^{m+1}h^m x^m}
+                       {m(1-(1-h)^m)}.
+\]
+For every fixed \(x\), the condition \(|hx|<1\) holds for all sufficiently
+small positive \(h\).  In the resulting \(h\downarrow0\) asymptotic
+expansion, only finitely many indices \(m\) contribute at each fixed order.
+\end{proposition}
+
+\begin{proof}
+The inverse formulas are immediate after rewriting the two target equations
+as \((z;q)_\infty=y^{-1}\) and \((-z;q)_\infty=y\), with the selected branch
+data retained.  Apply \cref{lem:ip-lambert-log} with
+\(a=\pm hx\) and \(q=1-h\), remembering the minus sign introduced by the
+reciprocal in \(e_q\).  Since the \(m\)-th summand begins at order
+\(h^{m-1}\) after the denominator is expanded, only finitely many \(m\) can
+affect any prescribed coefficient.  For completeness, fix \(K\ge0\), take
+real \(0<h<1\), and shrink \(h\) until \(h|x|\le1/2\).  Since
+\(1-(1-h)^m\ge h\), the tail satisfies
+\[
+ \sum_{m\ge K+2}
+ \left|\frac{h^mx^m}{m(1-(1-h)^m)}\right|
+ \leq\frac1h\sum_{m\ge K+2}\frac{(h|x|)^m}{m}
+ =\BigO(h^{K+1}).
+\]
+The alternating numerator obeys the same bound.  The finitely many terms
+with \(m\le K+1\) may be expanded individually, proving the asserted
+coefficientwise asymptotic statement with a genuine remainder estimate.
+\end{proof}
+
+For example,
+\[
+  \log e_q(x)
+  =x+\frac{x^2}{4}h+
+   \left(\frac{x^2}{8}+\frac{x^3}{9}\right)h^2+\BigO(h^3),
+\]
+\[
+  \log E_q(x)
+  =x-\frac{x^2}{4}h+
+   \left(-\frac{x^2}{8}+\frac{x^3}{9}\right)h^2+\BigO(h^3).
+\]
+Bell exponentiation gives the functions themselves, while
+\(\mathsf e_q(z)\mathsf E_q(-z)=1\) is exact.
+
+\section{Basic hypergeometric argument inversion}
+\label{sec:qs-hypergeometric}
+
+\begin{theorem}[Universal local series-variable inverse]
+\label{thm:qs-hypergeometric-inverse}
+Let a basic hypergeometric function, after all removable parameter
+cancellations, have a convergent local series
+\[
+  F(z;\bm a,\bm b,q)
+  =1+c_1z+c_2z^2+c_3z^3+\cdots,
+  \qquad c_1\ne0.
+\]
+Then its argument inverse at \(y=1\) is
+\[
+  z=\frac{y-1}{c_1}
+   -\frac{c_2}{c_1^3}(y-1)^2
+   +\left(\frac{2c_2^2}{c_1^5}-\frac{c_3}{c_1^4}\right)(y-1)^3
+   +\BigO((y-1)^4).
+\]
+All higher coefficients are given by the analytic Lagrange--Bürmann formula.
+\end{theorem}
+
+\begin{proof}
+The condition \(c_1\ne0\) gives a local analytic inverse.  Put
+\(u=y-1\) and
+\[
+  z=A u+B u^2+C u^3+\BigO(u^4).
+\]
+Substitution in \(u=c_1z+c_2z^2+c_3z^3+\cdots\) yields
+\[
+  c_1A=1,\qquad
+  c_1B+c_2A^2=0,\qquad
+  c_1C+2c_2AB+c_3A^3=0.
+\]
+Solving gives the displayed coefficients.  The all-order statement is
+\cref{thm:uq-analytic-lagrange}.
+\end{proof}
+
+If a numerator parameter reaches \(q^{-N}\), the series truncates and the
+argument inverse becomes an algebraic covering.  If a denominator parameter
+approaches the same truncation locus, common finite \(q\)-Pochhammer factors
+must be cancelled before applying the theorem; otherwise a removable
+singularity is misclassified as a branch point.
+
+\section{Multiplicative theta products}
+\label{sec:qs-theta}
+
+For \(0<|q|<1\), let
+\[
+  \vartheta(z;q)
+  :=(z;q)_\infty(q/z;q)_\infty(q;q)_\infty,
+  \qquad z\in\ComplexNumbers^\times.
+\]
+
+\begin{proposition}[Simple theta zero atlas]
+\label{prop:qs-theta-zeros}
+The zeros of \(z\mapsto\vartheta(z;q)\) are exactly
+\(z=q^m\), \(m\in\IntegerNumbers\), and every zero is simple.  Hence the inverse at target
+zero is ordinary on every sheet:
+\[
+  z=q^m+\frac{y}{\partial_z\vartheta(q^m;q)}+\BigO(y^2).
+\]
+Moreover,
+\[
+  \vartheta(qz;q)=-z^{-1}\vartheta(z;q),
+\]
+so one zero derivative determines all the others.
+\end{proposition}
+
+\begin{proof}
+The factor \((z;q)_\infty\) has one simple vanishing factor precisely at
+\(z=q^{-j}\), \(j\ge0\).  The factor \((q/z;q)_\infty\) has one simple
+vanishing factor precisely at \(z=q^{j+1}\), \(j\ge0\).  Because
+\(|q|<1\), the two lists do not overlap, and every other factor is nonzero.
+Their union is \(\{q^m:m\in\IntegerNumbers\}\), proving the zero and multiplicity claims.
+The local inverse formula is the analytic inverse function theorem.
+
+Finally,
+\[
+  (qz;q)_\infty=\frac{(z;q)_\infty}{1-z},
+  \qquad
+  (1/z;q)_\infty=(1-z^{-1})(q/z;q)_\infty.
+\]
+Multiplying and using
+\((1-z^{-1})/(1-z)=-z^{-1}\) proves quasi-periodicity.  Differentiating it
+at a zero transports the derivative normalization.
+\end{proof}

@@ -91,17 +91,20 @@ pdflatex -interaction=nonstopmode -halt-on-error comb_interpolation_synthesis.te
 ```
 
 A successful command is not, by itself, the complete publication gate. The
-retained incoming publication artifact's build-source and PDF hashes, page,
-font, log, and visual-inspection facts are recorded once in
+current canonical artifact's PDF hash, page, font, log, and visual-inspection
+facts are recorded once in
 [`assets/VALIDATION.md`](assets/VALIDATION.md). Keeping those mutable
 measurements in one record prevents status drift between README files.
 
-The later source-only crosswalk of `thm:weight-valuation` to
-`Fabius.twoPowChoose_padicValNat` changed
-`chapters/03_additive_dyadic.tex` but, by explicit instruction, did not rebuild
-the PDF. These measurements therefore describe the retained incoming
-publication artifact and do not assert render synchronization with the current
-chapter.
+Later edits changed `chapters/03_additive_dyadic.tex` to crosswalk
+`thm:weight-valuation` to `Fabius.twoPowChoose_padicValNat`, and changed
+`chapters/01_geometric_core.tex` and `chapters/99_bibliography.tex` to point to
+the consolidated q-series synthesis at its stable publication path. The PDF
+was then rebuilt in exactly three strict serial passes at fixed source epoch
+`1788242400`; passes two and three were byte-identical. The current 156-page,
+2,934,621-byte artifact has SHA-256
+`00070eafd0734681a7dd125cb64e4c898710c01dc8c8220362550567843bce00`
+and is synchronized with those sources.
 
 ## Reproduce the computational evidence
 
@@ -138,9 +141,8 @@ declaration name occurs in its nominated module; it is not a live Lean census
 or theorem-type checker. Three concordance rows are exact Lean crosswalks; the
 compound decoder and biorthogonality rows remain human-proved with narrower
 partial-support notes. The root `SHA256SUMS` is the exhaustive ledger for every
-other permanent package file. The retained incoming publication PDF's
-measurements and inspections are recorded only in
-[`assets/VALIDATION.md`](assets/VALIDATION.md); it predates the source-only
-valuation crosswalk and is not synchronized with the current chapter. A
-fresh-checkout reproduction and a full rerun of every retained numerical
-script remain separate reproducibility work.
+other permanent package file. The synchronized canonical PDF's measurements
+and inspections are recorded only in
+[`assets/VALIDATION.md`](assets/VALIDATION.md). A fresh-checkout reproduction
+and a full rerun of every retained numerical script remain separate
+reproducibility work.

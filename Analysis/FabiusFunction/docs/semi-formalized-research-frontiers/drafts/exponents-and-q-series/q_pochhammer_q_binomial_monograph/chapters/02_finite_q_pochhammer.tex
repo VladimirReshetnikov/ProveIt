@@ -1,0 +1,592 @@
+\chapter{Finite \texorpdfstring{\(q\)}{q}-Pochhammer inversion}
+\label{chap:finite-q-pochhammer-inversion}
+
+\section{The finite product as an inverse covering}
+\label{fp-finite-covering}
+
+Fix \(n\geq1\) and write
+\[
+ P_n(a,q):=\QPochhammer{a}{q}{n}=\prod_{j=0}^{n-1}(1-aq^j).
+\]
+Throughout, \(\QInteger{n}{q}\) and \(\GaussianBinomial{n}{r}{q}\) denote their polynomial
+continuations at \(q=0,1\) and at roots of unity; no quotient with a vanishing
+denominator is being used there.
+This section consolidates the finite-product results that were repeated in the
+six source reports.  The results are human-proved frontier results: no Lean
+formalization is claimed here.  We first invert in \(a\), then in \(q\), and
+keep the two branch geometries separate.
+
+Whenever no factor vanishes, logarithmic differentiation gives
+\begin{align}
+ \partial_a\log P_n(a,q)
+  &=-\sum_{j=0}^{n-1}\frac{q^j}{1-aq^j},
+  \label{fp-a-logder}\\
+ \partial_q\log P_n(a,q)
+  &=-a\sum_{j=1}^{n-1}\frac{j q^{j-1}}{1-aq^j}.
+  \label{fp-q-logder}
+\end{align}
+Both identities also hold after clearing denominators at a zero.  They will be
+used only on zero-free sets, where the logarithms are unambiguous locally.
+
+\subsection{Argument inversion at the unit level}
+
+Euler's finite \(q\)-binomial identity is
+\begin{equation}
+ P_n(a,q)=\sum_{r=0}^{n}(-1)^r q^{\binom r2}
+ \GaussianBinomial{n}{r}{q}a^r.
+ \label{fp-finite-q-binomial}
+\end{equation}
+Set \(s=1-y\) and
+\[
+ b_r=(-1)^{r+1}q^{\binom r2}\GaussianBinomial{n}{r}{q},
+ \qquad f(a)=1-P_n(a,q)=\sum_{r\geq1}b_ra^r.
+\]
+
+\begin{theorem}[All-order argument inverse at \(y=1\)]
+\label{fp-unit-inverse}
+If \(\QInteger{n}{q}=b_1\ne0\), there is a unique analytic branch \(a=a(s)\) with
+\(a(0)=0\) and \(P_n(a(s),q)=1-s\).  Its coefficients are
+\begin{equation}
+ [s^m]a(s)=\frac1m[z^{m-1}]
+ \left(\frac{z}{1-P_n(z,q)}\right)^m,
+ \qquad m\geq1.
+ \label{fp-unit-lagrange}
+\end{equation}
+In particular,
+\begin{align}
+ a={}&\frac{s}{\QInteger{n}{q}}
+ +\frac{q\GaussianBinomial{n}{2}{q}}{\QInteger{n}{q}^3}s^2 \notag\\
+ &+\left(
+ \frac{2q^2\GaussianBinomial{n}{2}{q}^{\,2}}{\QInteger{n}{q}^5}
+ -\frac{q^3\GaussianBinomial{n}{3}{q}}{\QInteger{n}{q}^4}
+ \right)s^3+\BigO(s^4).
+ \label{fp-unit-first-terms}
+\end{align}
+\end{theorem}
+
+\begin{proof}
+The linear coefficient of \(f\) is \(f'(0)=\QInteger{n}{q}\ne0\), so the analytic
+inverse-function theorem supplies one and only one local branch.  Rewrite
+\(s=f(a)\) as \(a=s\phi(a)\), where \(\phi(a)=a/f(a)\).  Lagrange inversion
+gives \([s^m]a=m^{-1}[z^{m-1}]\phi(z)^m\), which is
+\cref{fp-unit-lagrange}.  Finally
+\[
+ s=\QInteger{n}{q}a-q\GaussianBinomial{n}{2}{q}a^2
+   +q^3\GaussianBinomial{n}{3}{q}a^3+\BigO(a^4).
+\]
+Substitute \(a=A_1s+A_2s^2+A_3s^3+\cdots\) and compare coefficients.  This
+gives
+\[
+ A_1=\QInteger{n}{q}^{-1},\quad
+ A_2=\frac{q\GaussianBinomial{n}{2}{q}}{\QInteger{n}{q}^3},\quad
+ A_3=\frac{2q^2\GaussianBinomial{n}{2}{q}^{\,2}}{\QInteger{n}{q}^5}
+       -\frac{q^3\GaussianBinomial{n}{3}{q}}{\QInteger{n}{q}^4},
+\]
+proving both displayed claims.
+\end{proof}
+
+\subsection{All zero sheets and the complete real atlas}
+
+For \(q\ne0\), the argument zeros are \(a_j=q^{-j}\), \(0\leq j<n\).
+They are distinct precisely when \(q^r\ne1\) for \(1\leq r<n\).
+
+\begin{proposition}[Exact normalization at every simple zero]
+\label{fp-zero-normalization}
+Assume \(q\ne0\) and \(q^r\ne1\) for \(1\leq r<n\).  Then
+\begin{equation}
+ \partial_aP_n(q^{-j},q)=
+ (-1)^{j+1}q^{-j(j-1)/2}
+ \QPochhammer{q}{q}{j}\QPochhammer{q}{q}{n-1-j}.
+ \label{fp-zero-derivative}
+\end{equation}
+Consequently the inverse sheet through \((y,a)=(0,q^{-j})\) begins
+\begin{equation}
+ a(y)=q^{-j}+
+ \frac{(-1)^{j+1}q^{j(j-1)/2}}
+ {\QPochhammer{q}{q}{j}\QPochhammer{q}{q}{n-1-j}}\,y+\BigO(y^2).
+ \label{fp-zero-inverse}
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+Differentiate the unique vanishing factor:
+\[
+ \partial_aP_n(q^{-j},q)
+ =-q^j\prod_{\ell\ne j}(1-q^{\ell-j}).
+\]
+For \(\ell<j\), write
+\(1-q^{\ell-j}=-q^{-(j-\ell)}(1-q^{j-\ell})\).  Their product is
+\((-1)^jq^{-j(j+1)/2}\QPochhammer{q}{q}{j}\), while the factors with
+\(\ell>j\) give \(\QPochhammer{q}{q}{n-1-j}\).  Multiplication by \(-q^j\) proves
+\cref{fp-zero-derivative}.  Its nonvanishing permits ordinary analytic
+inversion, and division by the derivative gives \cref{fp-zero-inverse}.
+\end{proof}
+
+\begin{theorem}[Complete real argument atlas]
+\label{fp-real-atlas}
+Let \(q>0\), \(q\ne1\), and order the zeros increasingly as
+\(r_0<\cdots<r_{n-1}\).  Then:
+\begin{enumerate}
+\item \(P_n(\,\cdot\,,q)\) is positive and strictly decreasing on
+  \((-\infty,r_0)\), and maps that interval bijectively onto
+  \((0,\infty)\).
+\item Every gap \((r_j,r_{j+1})\) contains exactly one critical point
+  \(c_j\).  It is simple, so the two inverse sheets meeting at
+  \(P_n(c_j,q)\) have square-root ramification.
+\item There is no critical point on \((r_{n-1},\infty)\).
+\end{enumerate}
+For \(n\ge2\), the maximal real intervals on which
+\(P_n(\,\cdot\,,q)\) is one-to-one are
+\[
+ (-\infty,c_0],\qquad
+ [c_{j-1},c_j]\quad(1\leq j\leq n-2),\qquad
+ [c_{n-2},\infty).
+\]
+Each contains exactly one simple zero \(r_j\), and together they exhaust the
+maximal real injective branches; their interiors are the maximal open domains
+of regular real inversion.  Equivalently, each zero-free gap
+\((r_j,r_{j+1})\) consists of two half-branches meeting at the fold \(c_j\).
+When \(n=1\), the sole maximal branch is all of \(\RealNumbers\).
+\end{theorem}
+
+\begin{proof}
+Since \(1-aq^j=-q^j(a-q^{-j})\), away from the roots
+\begin{equation}
+ \frac{\partial_aP_n(a,q)}{P_n(a,q)}
+ =\sum_{j=0}^{n-1}\frac1{a-r_j},
+ \qquad
+ \frac{\Differential}{\Differential a}\frac{\partial_aP_n}{P_n}
+ =-\sum_{j=0}^{n-1}\frac1{(a-r_j)^2}<0.
+ \label{fp-root-logder}
+\end{equation}
+On the leftmost interval every summand in the first expression is negative.
+All product factors are positive there, the product tends to \(+\infty\) at
+\(-\infty\), and it tends to zero at \(r_0\); this proves the first item.
+On \((r_j,r_{j+1})\), the logarithmic derivative decreases continuously from
+\(+\infty\) to \(-\infty\), so it has exactly one zero.  At that zero,
+\(P_n''/P_n\) equals the strictly negative second expression in
+\cref{fp-root-logder}; hence \(P_n''\ne0\).  Taylor's formula and reversion of
+its first nonzero quadratic term give two square-root sheets.  To the right of
+the largest root every summand in \cref{fp-root-logder} is positive.  The
+preceding argument, together with the nonvanishing derivatives at the simple
+zeros, proves that \(c_0,\ldots,c_{n-2}\) are all the real zeros of
+\(\partial_aP_n\).  Its sign is therefore fixed and nonzero on each component
+of their complement.  The function is strictly monotone on the closure of
+each such component.  Because every \(c_j\) is a strict local extremum, no
+closure can be extended past one of its finite endpoints while preserving
+injectivity.  These closures are therefore precisely the maximal injective
+intervals, while their interiors are the maximal regular inverse domains.
+The interlacing
+\(c_{j-1}<r_j<c_j\), with the evident one-sided versions at the extremes,
+shows that each contains exactly one simple zero; analytic inversion continues
+through that zero.  For \(n=1\), the polynomial is linear and the same
+conclusion is immediate.
+\end{proof}
+
+Put \(N=\binom n2\), \(A_n=(-1)^nq^N\), and
+\(e_1=\sum_{j=0}^{n-1}q^{-j}\).  Factoring the leading power of \(a\) gives
+\[
+ P_n(a,q)=A_na^n\left(1-\frac{e_1}{a}+\BigO(a^{-2})\right).
+\]
+Thus, on each choice \(T=(y/A_n)^{1/n}\),
+\begin{equation}
+ a=T+\frac{e_1}{n}+\BigO(T^{-1}).
+ \label{fp-argument-infinity}
+\end{equation}
+Indeed, substitution of \(a=T+c+\BigO(T^{-1})\) makes the coefficient of
+\(T^{-1}\) equal to \(nc-e_1\), which forces \(c=e_1/n\).
+
+\subsection{Cyclotomic collisions in the argument}
+
+\begin{theorem}[Exact root-of-unity factorization and ramification]
+\label{fp-cyclotomic-argument}
+Let \(\zeta\) be primitive of order \(d\), and write \(n=Md+r\) with
+\(0\leq r<d\).  Then
+\begin{equation}
+ \QPochhammer{a}{\zeta}{n}=(1-a^d)^M\QPochhammer{a}{\zeta}{r}.
+ \label{fp-root-block}
+\end{equation}
+At \(a_s=\zeta^{-s}\), \(0\leq s<d\), the zero multiplicity is
+\begin{equation}
+ \nu_s=M+\IndicatorOf{s<r}.
+ \label{fp-root-multiplicity}
+\end{equation}
+For every \(s\) with \(\nu_s\ge1\), the point \(a_s\) is a zero of
+multiplicity \(\nu_s\).  On the ramified cover of a sufficiently small
+punctured target neighborhood, the inverse at target zero then has exactly
+\(\nu_s\) local Puiseux sheets coalescing at \(a_s\).  Equivalently, after
+choosing a \(\nu_s\)-th root on a simply connected punctured target domain,
+these are the \(\nu_s\) determinations obtained by multiplying that root by
+the \(\nu_s\)-th roots of unity.  When \(\nu_s=0\), \(a_s\) is not a zero
+and contributes no inverse germ at target zero.
+At the unit target \(y=1\), the branch through \(a=0\) is regular when
+\(r>0\).  When \(r=0\), it has the \(d\) local sheets
+\begin{equation}
+ a=\omega\left(\frac{1-y}{M}\right)^{1/d}
+   +\BigO((1-y)^{2/d}),\qquad \omega^d=1.
+ \label{fp-unit-cyclotomic-puiseux}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Partition the indices into \(M\) complete residue blocks modulo \(d\) and one
+residual block.  Each complete block contributes
+\(\prod_{j=0}^{d-1}(1-a\zeta^j)=1-a^d\), proving
+\cref{fp-root-block}.  A factor vanishes at \(a_s\) exactly when its index is
+congruent to \(s\pmod d\).  That residue occurs \(M\) times in the complete
+blocks and once more precisely when \(s<r\), proving
+\cref{fp-root-multiplicity}.  When \(\nu_s\ge1\), removing the nonvanishing
+factors leaves a nonzero constant times \((a-a_s)^{\nu_s}\), whose equation
+with \(y\) has \(\nu_s\) Puiseux determinations.  When \(\nu_s=0\), no factor
+vanishes at \(a_s\), so there is no inverse germ over target zero there.
+
+At \(a=0\), the derivative is
+\(-\sum_{j=0}^{n-1}\zeta^j=-\sum_{j=0}^{r-1}\zeta^j\), which is nonzero for
+\(r>0\).  If \(r=0\), \cref{fp-root-block} gives
+\(\QPochhammer{a}{\zeta}{n}=(1-a^d)^M=1-Ma^d+\BigO(a^{2d})\); solving its leading equation
+gives \cref{fp-unit-cyclotomic-puiseux}.
+\end{proof}
+
+At \(q=-1\), this includes
+\[
+ \QPochhammer{a}{-1}{2M}=(1-a^2)^M,\qquad
+ \QPochhammer{a}{-1}{2M+1}=(1-a)(1-a^2)^M.
+\]
+For even order every argument sheet is obtained from
+\(a=\pm\sqrt{1-\eta y^{1/M}}\), where \(\eta^M=1\).
+
+\section{Finite-product inversion in the base}
+\label{fp-base-inversion}
+
+\subsection{The canonical real base branch}
+
+\begin{theorem}[Global finite base inverse on \(0\leq q\leq1\)]
+\label{fp-global-base}
+Let \(n\geq2\).
+\begin{enumerate}
+\item If \(0<a<1\), then \(q\mapsto P_n(a,q)\) is strictly decreasing from
+  \(1-a\) to \((1-a)^n\).  Every
+  \((1-a)^n<y<1-a\) has exactly one inverse \(q\in(0,1)\).
+\item If \(a<0\), the map is strictly increasing from \(1-a\) to
+  \((1-a)^n\).  Every \(1-a<y<(1-a)^n\) has exactly one inverse
+  \(q\in(0,1)\).
+\end{enumerate}
+For \(a=0\), \(a=1\), or \(n=1\), the map is constant in \(q\).
+\end{theorem}
+
+\begin{proof}
+For \(0<q<1\), every denominator in \cref{fp-q-logder} is positive.  Its sign
+is therefore \(-\Sign(a)\), and the nonzero derivative proves strict
+monotonicity.  Direct substitution gives \(P_n(a,0)=1-a\) and
+\(P_n(a,1)=(1-a)^n\).  Continuity and strict monotonicity now give the stated
+ranges and uniqueness.  The three constant cases follow immediately.
+\end{proof}
+
+\subsection{\texorpdfstring{All-order inversion at \(q=0\)}{All-order inversion at q=0}}
+
+Assume \(n\geq2\) and \(a\notin\{0,1\}\), and normalize the target by
+\begin{equation}
+ \eta=\frac{(1-a)-y}{a(1-a)}.
+ \label{fp-small-base-coordinate}
+\end{equation}
+Define \(F_{n,a}(q)=(1-P_n(a,q)/(1-a))/a\).  Then
+\(F_{n,a}(q)=q+\BigO(q^2)\), and \(P_n(a,q)=y\) is precisely
+\(F_{n,a}(q)=\eta\).
+
+\begin{theorem}[Exact coefficient engine at \(q=0\)]
+\label{fp-small-base-engine}
+The inverse branch \(q=Q_{n,a}(\eta)\) is analytic at zero and satisfies
+\begin{equation}
+ [\eta^m]Q_{n,a}(\eta)=\frac1m[z^{m-1}]
+ \left(\frac{z}{F_{n,a}(z)}\right)^m.
+ \label{fp-small-base-lagrange}
+\end{equation}
+Moreover,
+\begin{equation}
+ \log\frac{P_n(a,q)}{1-a}=\sum_{r\geq1}\ell_r^{(n)}(a)q^r,\qquad
+ \ell_r^{(n)}(a)=
+ -\sum_{\substack{d\mid r\\1\leq d\leq n-1}}
+ \frac{a^{r/d}}{r/d}.
+ \label{fp-small-base-divisor}
+\end{equation}
+For \(n\geq6\),
+\begin{equation}
+ q=\eta-\eta^2+(1+a)\eta^3-(1+4a)\eta^4
+ +(1+11a+3a^2)\eta^5+\BigO(\eta^6).
+ \label{fp-small-base-five}
+\end{equation}
+For \(n=2\), \(q=\eta\) exactly; for \(n=3\), the cubic coefficient is
+\(2+a\); and for every \(n\geq4\) it is \(1+a\).
+\end{theorem}
+
+\begin{proof}
+The coefficient of \(q\) in \(F_{n,a}\) is one, so analytic inversion and
+Lagrange's formula give \cref{fp-small-base-lagrange}.  For the divisor
+formula, expand
+\[
+ \log\frac{P_n(a,q)}{1-a}
+ =-\sum_{j=1}^{n-1}\sum_{m\geq1}\frac{a^mq^{jm}}m.
+\]
+The coefficient of \(q^r\) comes from \(jm=r\), proving
+\cref{fp-small-base-divisor}.
+
+When \(n\geq6\), subset expansion gives
+\[
+ F_{n,a}(q)=q+q^2+(1-a)q^3+(1-a)q^4+(1-2a)q^5+\BigO(q^6).
+\]
+Substitute \(q=\eta+A_2\eta^2+\cdots+A_5\eta^5\) and compare powers.
+Successively,
+\(A_2=-1\), \(A_3=1+a\), \(A_4=-(1+4a)\), and
+\(A_5=1+11a+3a^2\).  The same calculation with the available positive
+indices gives the stated low-order exceptions.
+\end{proof}
+
+\subsection{\texorpdfstring{The complete logarithmic jet at \(q=1\)}{The complete logarithmic jet at q=1}}
+
+Put \(q=\EulerE^{-t}\), \(S_m(n)=\sum_{j=0}^{n-1}j^m\), and choose the local
+logarithm of \(y/(1-a)^n\).
+
+\begin{theorem}[All-order regular base inverse at \(q=1\)]
+\label{fp-unit-base-inverse}
+Let \(n\geq2\) and \(a\in\ComplexNumbers\setminus\{0,1\}\).  With
+\[
+ u=\log\frac{y}{(1-a)^n},\qquad
+ c_m=\frac{(-1)^{m+1}}{m!}\Polylogarithm_{1-m}(a)S_m(n),
+\]
+the forward germ and its inverse are
+\begin{align}
+ u&=\sum_{m\geq1}c_mt^m,
+ \label{fp-unit-base-forward}\\
+ t&=\frac{u}{c_1}-\frac{c_2}{c_1^3}u^2
+ +\left(\frac{2c_2^2}{c_1^5}-\frac{c_3}{c_1^4}\right)u^3
+ +\BigO(u^4),\qquad q=\EulerE^{-t}.
+ \label{fp-unit-base-reverse}
+\end{align}
+Here \(c_1=a\binom n2/(1-a)\ne0\), and all subsequent inverse coefficients
+are obtained uniquely by triangular coefficient comparison.
+\end{theorem}
+
+\begin{proof}
+For \(|a|<1\),
+\[
+ \log(1-a\EulerE^{-x})
+ =-\sum_{r\geq1}\frac{a^r\EulerE^{-rx}}r
+ =\log(1-a)+\sum_{m\geq1}
+   \frac{(-1)^{m+1}}{m!}\Polylogarithm_{1-m}(a)x^m.
+\]
+Substitute \(x=jt\) and sum over \(0\leq j<n\).  Both sides are analytic in
+\(a\) away from \(a=1\), and the nonpositive-index polylogarithms are rational,
+so analytic continuation proves the formula for every stated \(a\).
+Since \(S_1(n)=\binom n2\), the linear coefficient is nonzero.  Substitution
+of \(t=A_1u+A_2u^2+A_3u^3+\cdots\) gives
+\(A_1=c_1^{-1}\), \(A_2=-c_2c_1^{-3}\), and
+\(A_3=2c_2^2c_1^{-5}-c_3c_1^{-4}\).  Every later equation is linear in the
+new coefficient.
+\end{proof}
+
+For \(n\geq2\), holding \(y\ne0\) fixed while \(q\to1\) gives a useful mixed
+inverse.  Choose \(r=y^{1/n}\), put \(a_0=1-r\), and keep that root
+determination fixed.
+Substitution in the logarithm of the level equation gives
+\begin{equation}
+ a(t)=a_0+\frac{n-1}{2}a_0t+
+ \frac{a_0(n-1)\bigl(2n-4-3a_0(n-1)\bigr)}
+ {24(1-a_0)}t^2+\BigO(t^3).
+ \label{fp-fixed-target-argument}
+\end{equation}
+Indeed, writing \(a=a_0+At+Bt^2\) makes the constant term
+\(n\log(1-a_0)=\log y\); the linear and quadratic equations give
+\(A=(n-1)a_0/2\) and the displayed \(B\).
+
+\subsection{\texorpdfstring{The exceptional slice \(q=-1\)}{The exceptional slice q=-1}}
+\label{fp-minus-one-section}
+
+\begin{theorem}[Complete zero-free criticality at \(q=-1\)]
+\label{fp-minus-one-criticality}
+Let \(n\geq3\) and \(a\notin\{0,\pm1\}\).  Then
+\(\partial_qP_n(a,-1)=0\) if and only if
+\begin{equation}
+ a=a_*(n)=
+ \begin{cases}
+  1/(n-1),&n\text{ even},\\
+  -1/n,&n\text{ odd}.
+ \end{cases}
+ \label{fp-minus-one-parameter}
+\end{equation}
+For \(n=2s\), \(s\geq2\),
+\begin{align}
+ y_*&=\left(\frac{4s(s-1)}{(2s-1)^2}\right)^s,
+ \label{fp-minus-one-even-value}\\
+ L_2&:=\partial_q^2\log P_{2s}(a_*,-1)
+ =-\frac{(s+1)(2s-1)^2}{12s(s-1)}.
+ \label{fp-minus-one-even-second}
+\end{align}
+For \(n=2s+1\), \(s\geq2\),
+\begin{align}
+ y_*&=\left(\frac{2s+2}{2s+1}\right)^{s+1}
+      \left(\frac{2s}{2s+1}\right)^s,
+ \label{fp-minus-one-odd-value}\\
+ L_2&=-\frac{(s-1)(2s+1)^2}{12s(s+1)}.
+ \label{fp-minus-one-odd-second}
+\end{align}
+All these slices are quadratic folds, with local inverse
+\begin{equation}
+ q=-1\pm\sqrt{\frac{2(y-y_*)}{y_*L_2}}+\BigO(y-y_*).
+ \label{fp-minus-one-fold}
+\end{equation}
+Within this zero-free family, the sole higher degeneracy is
+\begin{equation}
+ P_3(-1/3,q)=\frac{32}{27}+\frac4{27}(q+1)^3.
+ \label{fp-minus-one-cubic}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Let \(L=\log P_n\).  At \(q=-1\), separation of even and odd indices in
+\cref{fp-q-logder} gives
+\[
+ L_q(a,-1)=a\left(\frac{E}{1-a}-\frac{O}{1+a}\right),
+\]
+where \(E\) and \(O\) are the sums of the positive even and odd indices below
+\(n\).  For \(n=2s\), \(E=s(s-1)\), \(O=s^2\), giving
+\(a=1/(2s-1)\).  For \(n=2s+1\), \(E=s(s+1)\), \(O=s^2\), giving
+\(a=-1/(2s+1)\).  Substitution in
+\(P_n(a,-1)=(1-a)^{\Ceiling{n/2}}(1+a)^{\Floor{n/2}}\) gives the
+two critical values.
+
+Differentiating \cref{fp-q-logder} once more gives
+\[
+ L_{qq}=-a\sum_{j=1}^{n-1}\left(
+ \frac{j(j-1)q^{j-2}}{1-aq^j}
+ +\frac{aj^2q^{2j-2}}{(1-aq^j)^2}\right).
+\]
+For completeness, the four parity sums needed here are
+\[
+\begin{array}{c|cc}
+ &\displaystyle\sum j(j-1)&\displaystyle\sum j^2\\ \hline
+ 2,4,\ldots,2(s-1)&
+ \dfrac{s(s-1)(4s-5)}3&
+ \dfrac{2s(s-1)(2s-1)}3\\[0.7em]
+ 1,3,\ldots,2s-1&
+ \dfrac{s(s-1)(4s+1)}3&
+ \dfrac{s(4s^2-1)}3\\[0.7em]
+ 2,4,\ldots,2s&
+ \dfrac{s(s+1)(4s-1)}3&
+ \dfrac{2s(s+1)(2s+1)}3 .
+\end{array}
+\]
+At \(q=-1\), the first summand in \(L_{qq}\) uses the even row with a plus
+sign and the odd row with a minus sign, whereas its \(j^2\) summand uses both
+rows with a plus sign.  For \(n=2s\), insert the first two rows and
+\(a=1/(2s-1)\); for \(n=2s+1\), insert the last two rows and
+\(a=-1/(2s+1)\).  Cancelling the common factors gives exactly
+\cref{fp-minus-one-even-second,fp-minus-one-odd-second}.  The even expression
+never vanishes for \(s\geq2\); the odd expression vanishes only at \(s=1\),
+where direct multiplication proves \cref{fp-minus-one-cubic}.
+At a critical point \(P_{qq}=P_nL_{qq}=y_*L_2\ne0\).  Taylor expansion and
+reversion of the quadratic term give \cref{fp-minus-one-fold}.
+\end{proof}
+
+The exclusions in \cref{fp-minus-one-criticality} are structural, not hidden
+exceptions.  At \(a=0\) the product is identically one, and at \(a=1\) it is
+identically zero.  At \(a=-1\),
+\[
+ P_n(-1,q)=\prod_{j=0}^{n-1}(1+q^j)
+\]
+has at \(q=-1\) a zero of exact order \(r=\Floor{n/2}\), because
+exactly the odd-indexed factors vanish and each does so simply.  More
+precisely, with \(e=\Ceiling{n/2}\) and
+\(J_n=\prod_{\substack{1\leq j<n\\j\ {\rm odd}}}j\),
+\begin{equation}
+ P_n(-1,q)=2^eJ_n(q+1)^r+\BigO((q+1)^{r+1}).
+ \label{fp-minus-one-zero-slice}
+\end{equation}
+Indeed, every even-indexed factor tends to two and
+\(1+q^j=j(q+1)+\BigO((q+1)^2)\) for odd \(j\).  Thus, on the ramified target
+cover,
+\[
+ q=-1+\omega\left(\frac{y}{2^eJ_n}\right)^{1/r}
+ +\BigO(y^{2/r}),\qquad \omega^r=1.
+\]
+This zero-target cyclotomic ramification is the repeated-factor phenomenon
+seen in \cref{fp-cyclotomic-argument}; it is different from the nonzero-level
+critical points classified above.
+
+\begin{corollary}[The cubic slice lies on a Morse saddle]
+\label{fp-minus-one-morse}
+For every odd \(n=2s+1\), \(s\geq1\), the point
+\((a,q)=(-1/(2s+1),-1)\) is a nondegenerate saddle of
+\((a,q)\mapsto P_n(a,q)\).  Thus \cref{fp-minus-one-cubic} is a tangent
+one-dimensional slice, not a cusp of the full parameter surface.
+\end{corollary}
+
+\begin{proof}
+At this point both \(L_a\) and \(L_q\) vanish.  Direct differentiation of
+\(L=\sum_{j=0}^{2s}\log(1-aq^j)\), followed by the parity sums, gives
+\begin{align*}
+ L_{aa}&=-\frac{(2s+1)^3}{4s(s+1)},&
+ L_{aq}&=-\frac{(2s+1)^2}{4(s+1)},&
+ L_{qq}&=-\frac{(s-1)(2s+1)^2}{12s(s+1)}.
+\end{align*}
+For instance,
+\[
+ L_{aa}=-\frac{s+1}{(1-a)^2}-\frac{s}{(1+a)^2},\qquad
+ L_{aq}=\frac{s(s+1)}{(1-a)^2}-\frac{s^2}{(1+a)^2},
+\]
+which yield the first two entries after substituting \(a=-1/(2s+1)\); the
+third is \cref{fp-minus-one-odd-second}.  Hence
+\begin{equation}
+ \det\operatorname{Hess}L
+ =-\frac{(2s+1)^4(s^2+s+1)}{48s^2(s+1)^2}<0.
+ \label{fp-minus-one-hessian}
+\end{equation}
+Since \(P_n\ne0\) and its gradient vanishes, its Hessian is \(P_n\) times that
+of \(L\).  It is therefore also nonsingular and indefinite.
+\end{proof}
+
+\subsection{Reciprocal-base inversion at infinity}
+
+Let \(n\geq2\), \(a\notin\{0,1\}\), \(N=\binom n2\),
+\(C=(1-a)(-a)^{n-1}\), and
+\[
+ H(z)=\prod_{j=1}^{n-1}(1-a^{-1}z^j).
+\]
+The exact factorization \(P_n(a,q)=Cq^NH(q^{-1})\) converts infinity into an
+ordinary point.
+
+\begin{theorem}[All-order finite base inverse at infinity]
+\label{fp-base-infinity}
+Choose an \(N\)-th root \(x=(C/y)^{1/N}\).  The corresponding branch
+\(s=q^{-1}\) is the convergent solution of
+\begin{equation}
+ s=xH(s)^{1/N},\qquad
+ [x^m]s(x)=\frac1m[z^{m-1}]H(z)^{m/N}.
+ \label{fp-infinity-lagrange}
+\end{equation}
+In particular,
+\begin{equation}
+ q=x^{-1}+\frac1{aN}+\BigO(x).
+ \label{fp-infinity-first}
+\end{equation}
+All \(N\) complex sheets arise from the \(N\) choices of \(x\).
+\end{theorem}
+
+\begin{proof}
+The level equation is \(y=Cs^{-N}H(s)\), hence
+\(x=sH(s)^{-1/N}\), equivalently the first equation in
+\cref{fp-infinity-lagrange}.  Since \(H(0)=1\), a consistent analytic
+\(N\)-th root exists near zero and the analytic inverse-function theorem gives
+a unique convergent branch.  Lagrange inversion proves the coefficient
+formula.  Finally \(H(s)=1-a^{-1}s+\BigO(s^2)\), so
+\(s=x-a^{-1}x^2/N+\BigO(x^3)\).  Taking the reciprocal gives
+\cref{fp-infinity-first}.
+\end{proof}
+
+\begin{warning}[Claims deliberately not promoted]
+The source reports contain exact-looking secondary-discriminant factorizations
+for a proposed first Maxwell collision at \(n=5\).  No independent exact
+certificate for the large factorization is currently part of the canonical
+package, so that special assertion is not stated here as a theorem.  The
+proved branch atlas remains valid, and a certified resultant/Sturm computation
+would suffice to add the collision theorem later.
+\end{warning}
