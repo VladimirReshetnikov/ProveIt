@@ -109,10 +109,10 @@ only 4,606 declarations and
 declarations, including 69 undocumented ones.  Run the script for the live
 numbers rather than copying these historical values.
 
-The post-merge 2026-08-31 inventory contains 618 modules and 8,432 lexically
+The post-merge 2026-08-31 inventory contains 619 modules and 8,435 lexically
 visible public declarations, with zero missing module headers and zero missing
 doc comments.  Relative to the 610/8,318 activation checkpoint, the exact
-union adds eight modules and 114 declarations.  The branch-point geometry and
+union adds nine modules and 117 declarations.  The branch-point geometry and
 asymptotics leaves contribute 17 declarations for the one-sided vertical
 tangents and leading signed square-root laws of both real Lambert branches.
 The two Legendre--Gaunt modules contribute 25: four definitions and twelve
@@ -155,8 +155,11 @@ central-binomial and factorial forms, the all-degree Gaunt identification,
 sharp support, positivity and vanishing criteria, and the product-linearization
 coefficient bridge.  It makes no signed-symbol, phase, half-integer,
 nonzero-magnetic-index, or general Wigner recoupling claim.  The baseline
-records zero missing headers and zero missing doc comments, so every future
-source addition must preserve the full invariant
+also includes the three finite rational-entry, rational-matrix, and real-matrix
+Wigner-square sum corollaries in `FabiusLegendreGauntClosedForm.lean`.  These
+two new leaves therefore contribute thirty declarations in total.  The
+baseline records zero missing headers and zero missing doc comments, so every
+future source addition must preserve the full invariant
 rather than merely avoid worsening a historical backlog.  Run the script for
 live numbers after merging concurrent source work.
 
