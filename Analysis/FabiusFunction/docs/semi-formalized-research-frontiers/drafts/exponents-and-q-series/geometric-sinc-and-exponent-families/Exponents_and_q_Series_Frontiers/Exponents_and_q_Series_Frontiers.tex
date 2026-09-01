@@ -656,6 +656,25 @@ two coordinate systems is arithmetic rather than analytic: $m_a(m)$ is a sum of 
 over $h\le\TwoAdicValuation(m)$, so it is nonzero exactly when some $a_h$ with $2^h\mid m$ is
 (\lean{Fabius.weightedScaleMultiplicity\_two\_ne\_zero\_iff}).
 
+The divisor now also has an exact inverse.  The zero-definition, six-theorem module
+\path{GeneralizedRvachevIdentifiability.lean} proves, for every admissible exponent
+sequence,
+\[
+ \OrderOperator_{z=2^n}\Phi_a=\sum_{h=0}^{n}a_h
+\]
+(\lean{Fabius.analyticOrderAt\_generalizedRvachevProduct\_two\_pow}), decodes $a_0$ from
+the order at $z=1$ and every $a_{n+1}$ by the consecutive first difference
+(\lean{Fabius.exponent\_zero\_eq\_toNat\_analyticOrderAt\_generalizedRvachevProduct},
+\lean{Fabius.exponent\_succ\_eq\_toNat\_analyticOrderAt\_generalizedRvachevProduct}), and
+therefore proves both dyadic-order injectivity
+(\lean{Fabius.exponentSequence\_eq\_of\_analyticOrderAt\_two\_pow\_eq}) and full-product
+rigidity
+(\lean{Fabius.generalizedRvachevProduct\_eq\_iff}).  Its arithmetic core
+\lean{Fabius.weightSequence\_eq\_of\_weightedScaleMultiplicity\_base\_pow\_eq} works at
+every base $b>1$ and for weights in any additive cancellative commutative monoid.  The
+sample indexed by $n=0$ is $z=1$, not the origin: every generalized product equals $1$ at
+$z=0$.
+
 At the \emph{constant} weight the sharper integer-indexed form remains available:
 \lean{Fabius.analyticOrderAt\_generalizedRvachevProduct\_one} reads
 $\OrderOperator_{z=m}\Phi_{\ConstantWeightSequence}=m_{\ConstantWeightSequence}(\lvert m\rvert)$ for every nonzero integer $m$, chaining
@@ -1133,6 +1152,23 @@ interior point $0$, hence the generating functions coincide.  The explicit limit
 by peeling off one Taylor coefficient at a time; the remaining tail converges absolutely
 because $A(1/4)<\infty$.
 \end{proof}
+
+\paragraph{Lean crosswalk.}
+Items~1 and 2, including the constructive recovery formula
+\eqref{p1:eq:a-from-zero}, are machine-checked exactly.  Together,
+\path{GeneralizedZeroDivisor.lean} and the zero-definition, six-theorem
+\path{GeneralizedRvachevIdentifiability.lean} identify $m_a(2^n)$ with the analytic order
+of $\Phi_a$ at $z=2^n$, recover the head at $z=1$, recover each successor exponent by an
+exact first difference, prove that equality of all dyadic order samples forces equality of
+the exponent sequences, and prove
+$\Phi_a=\Phi_c\Longleftrightarrow a=c$ for two admissible sequences.  Thus the
+zero-order/exponent half of this theorem, and the stronger full-function rigidity statement,
+are exact Lean results.  The spectral-zeta quotient in item~3 has formalized component
+infrastructure, but its identifiability equivalence as packaged here is still Partial.  The
+cumulant identity and coefficient-peeling/analytic-sample uniqueness from
+$A(4^{-j})$ in item~4, as well as construction and identifiability of the associated
+probability law, also remain Partial in Lean.  The manuscript proof status
+\statusproved{} is unchanged; this paragraph records only the machine-checked boundary.
 
 \begin{remark}
 The limits in \eqref{p1:eq:a0-limit}--\eqref{p1:eq:av-limit} are mathematically exact but
@@ -3163,8 +3199,12 @@ are no longer Phase~I obligations.
       and the product identity themselves are already formalized.
 \item Derive cumulants from the uniform Bernoulli expansion and moments from the existing
       Bell-polynomial library.
-\item Formalize identifiability first from zero multiplicities, then from analytic samples
-      $A(4^{-j})$.
+\item The zero-multiplicity stage of identifiability is now complete in
+      \path{GeneralizedRvachevIdentifiability.lean}: dyadic analytic orders recover $a_0$
+      and every successor by exact first differences, and equality of the full products is
+      equivalent to equality of admissible exponent sequences.  Formalizing uniqueness from
+      the analytic samples $A(4^{-j})$, and connecting those samples to cumulants and a
+      constructed probability law, remains open.
 \item Build polynomial exponent sequences from Newton expansions and prove the entire
       cancellation behind \eqref{p1:eq:newton-Phi-factorization}.
 \end{enumerate}
@@ -3222,10 +3262,15 @@ Pascal--Rvachev exponents.
 
 Three consequences seem especially durable.
 
-First, the spectral and probabilistic data are identifiable: the zero divisor or the full
-even-cumulant sequence determines the hidden dyadic convolution law.  The
-Gaussian-$q$-binomial Richardson transform makes that statement constructive and supplies
-certified alternating bounds.
+First, the spectral and probabilistic data are identifiable at the manuscript level: the
+zero divisor or the full even-cumulant sequence determines the hidden dyadic convolution
+law.  Lean now verifies the zero-divisor side constructively and more sharply: the orders at
+$1,2,4,\ldots$ recover the exponent sequence by exact first differences, and the full
+generalized product determines and is determined by that sequence.  The spectral-zeta
+quotient equivalence, cumulant and analytic-sample identifiability, and probability-law
+construction remain Partial in Lean.  On the manuscript side, the Gaussian-$q$-binomial
+Richardson transform makes cumulant recovery constructive and supplies certified alternating
+bounds.
 
 Second, nonnegative integer-valued polynomials form a rich positive-definite quotient sector.
 Negative Pascal exponents are not pathologies when they recombine into a nonnegative scale
@@ -15334,11 +15379,38 @@ Theorems \path{tendstoLocallyUniformly_prefix_sinc_charFun} and
 uniform convergence of the full phase-bearing prefixes on \(\RealNumbers\) and its
 explicit uniform-on-every-compact-set form.
 
-There is still no named centered $\psi_q$ or MGF wrapper, no
-outside-$\AbsoluteValue q>1$ reciprocal formula or zero--pole exchange, and no named
-local-uniform or normal-convergence theorem for the outer Pochhammer product
-over the spectral index \(k\).  Consequently the compound label
-\cref{p7:thm:sinc-poch} remains only partially formalized.
+The source-only module \path{QPochhammerEntire.lean} now closes the exact
+fixed-symbol analytic layer without adding a second definition: its API has
+zero public definitions and five public theorems.  For arbitrary
+$a,q\in\ComplexNumbers$ with $\lVert q\rVert<1$,
+\path{hasProdLocallyUniformly_complexQPochhammerInf} proves locally uniform
+convergence on the whole $a$-plane, and
+\path{complexQPochhammerInf_differentiable} proves that
+$a\mapsto(a;q)_\infty$ is entire.  The division-free statement
+\path{complexQPochhammerInf_eq_zero_iff} identifies its zeros exactly with
+the displayed factor zeros
+\[
+ (a;q)_\infty=0
+ \quad\Longleftrightarrow\quad
+ \exists j\in\NaturalNumbers,\ 1-aq^j=0.
+\]
+This spelling includes the degenerate nome $q=0$.  Under the necessary
+additional hypothesis $q\ne0$,
+\path{complexQPochhammerInf_eq_zero_iff_eq_inv_pow} gives the literal
+reciprocal-power lattice $a=(q^j)^{-1}$; and
+\path{analyticOrderAt_complexQPochhammerInf_of_eq_zero} proves analytic
+order one at every factor zero, including the sole zero $a=1$ when $q=0$.
+
+These five theorems concern one fixed Pochhammer symbol as a function of its
+argument.  They do not by themselves establish locally uniform (normal)
+convergence of the \emph{outer} product over $k$ on the right-hand side of
+\eqref{p7:eq:sinc-poch}.  There is also still no named centered $\psi_q$ or
+MGF wrapper, and no outside-$\AbsoluteValue q>1$ reciprocal formula or
+zero--pole exchange.  Consequently the compound label
+\cref{p7:thm:sinc-poch} remains only partially formalized: its fixed-symbol
+inside-disk analytic and divisor layer is exact, while the centered/MGF
+bridges, the outer-$k$ normal-convergence statement, and the outside-disk
+reciprocal layer remain frontier obligations.
 \end{statusbox}
 
 The nome is $q^2$, not $q$: centering makes every factor even, and evenness

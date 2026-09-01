@@ -136,7 +136,6 @@
 \newcommand{\GeneralizedQNumber}[2]{\left[#1\right]_{#2}}
 \newcommand{\QFallingPower}[4]{\left(#1-#2\right)_{#3}^{\langle #4\rangle}}
 \newcommand{\JacksonDifferential}[2]{\mathop{}\!\mathrm d_{#1}#2}
-\newcommand{\FiniteField}[1]{\mathbb F_{#1}}
 \newcommand{\InversionNumber}[1]{\operatorname{inv}(#1)}
 \newcommand{\LatticePathArea}[1]{\operatorname{area}(#1)}
 \newcommand{\WeightCharacter}[2]{\operatorname{ch}_{#2}\!\left(#1\right)}
@@ -649,6 +648,25 @@ converges uniformly on $K$; equivalently, one may apply uniform convergence to t
 \]
 with $g_j$ entire.  Differentiating at $a_0$, where $1-a_0q^j=0$, leaves only $-q^j g_j(a_0)$.  This is nonzero: $(a_0;q)_j=\prod_{i<j}(1-q^{i-j})$ has no vanishing factor because $\AbsoluteValue{q^{i-j}}>1$ for $i<j$, and $(a_0q^{j+1};q)_\infty=(q;q)_\infty\ne0$ by (ii).  For $q\ne0$ the closed form follows from $(q^{-j};q)_j=(-1)^jq^{-\binom{j+1}2}(q;q)_j$ (\Cref{cor:qminusN} with $N=k=j$), since $j-\binom{j+1}2=-\binom j2$.
 \end{proof}
+
+This theorem has an exact Lean counterpart in
+\path{FabiusFunction.QPochhammerEntire}.  For a fixed complex nome with
+$\Norm q<1$, the declaration
+\texttt{hasProdLocallyUniformly\_complexQPochhammerInf} proves locally
+uniform convergence on the whole $a$-plane and
+\texttt{complexQPochhammerInf\_differentiable} proves entirety.  The
+division-free theorem \texttt{complexQPochhammerInf\_eq\_zero\_iff} says
+that the product vanishes exactly when some factor $1-aq^j$ vanishes; it
+remains valid at $q=0$.  Under the present theorem's hypothesis $q\ne0$,
+\texttt{complexQPochhammerInf\_eq\_zero\_iff\_eq\_inv\_pow} gives the
+literal lattice $a=(q^j)^{-1}$.  Finally,
+\texttt{analyticOrderAt\_complexQPochhammerInf\_of\_eq\_zero} proves that
+every zero has analytic order one.  Its proof splits the infinite product
+into the first $j+1$ factors and a shifted tail; uniqueness of the vanishing
+factor makes both complementary factors nonzero, leaving a nonzero analytic
+unit times $a-q^{-j}$.  The Lean result is slightly stronger than the
+displayed theorem because its division-free and simple-order layers also
+cover $q=0$, where the sole zero is $a=1$.
 
 \begin{remark}[The generality of the convergence statements]\label{rem:poch-entire-generality}
 Only the norm of the coefficient ring enters into (i) and (ii).  The formalization defines $(a;q)_\infty=\prod'_{j\ge0}(1-aq^j)$ in an arbitrary topological commutative ring; for $\AbsoluteValue q<1$ in any complete normed commutative ring with $\AbsoluteValue1=1$ the factors are multipliable, the finite symbols $(a;q)_n$ converge to $(a;q)_\infty$, and the concatenation and dissection identities hold.  When the norm is moreover multiplicative, the zero criterion (ii) holds verbatim.  Over any complete, locally compact normed field the convergence is locally uniform in $a$, so $a\mapsto(a;q)_\infty$ is continuous; holomorphy and the derivative formula (iii) are stated for $\ComplexNumbers$.
@@ -2455,24 +2473,24 @@ geometric sum $1+z+\cdots+z^{n}$, as it must be.
 \section{Counting subspaces}
 
 Write a prime power as $Q=p^e$, where $p$ is prime and
-$e\in\PositiveIntegers$.  The symbol $\FiniteField{Q}$ denotes a field with
+$e\in\PositiveIntegers$.  The symbol $\FiniteField_{Q}$ denotes a field with
 $Q$ elements, unique up to field isomorphism but not by a distinguished
-isomorphism.  For $n\in\NaturalNumbers$, $\FiniteField{Q}^{n}$ is its
+isomorphism.  For $n\in\NaturalNumbers$, $\FiniteField_{Q}^{n}$ is its
 $n$-fold Cartesian product and $n$-dimensional vector space; at $n=0$ this is
 the one-element zero space.  For $r\in\NaturalNumbers$,
-$\mathrm{GL}_r(\FiniteField{Q})$ is the group of invertible
-$r\times r$ matrices, with $\mathrm{GL}_0(\FiniteField{Q})$ the trivial
+$\mathrm{GL}_r(\FiniteField_{Q})$ is the group of invertible
+$r\times r$ matrices, with $\mathrm{GL}_0(\FiniteField_{Q})$ the trivial
 group.
 
 \begin{theorem}[Gaussian coefficients count subspaces]\label{thm:subspace-count}
-Let $Q$ be a prime power.  The number of $k$-dimensional linear subspaces of $\FiniteField{Q}^{n}$ is
+Let $Q$ be a prime power.  The number of $k$-dimensional linear subspaces of $\FiniteField_{Q}^{n}$ is
 \[
  \GaussianBinomial{n}{k}{Q}.
 \]
 \end{theorem}
 
 \begin{proof}
-Count ordered linearly independent $k$-tuples in $\FiniteField{Q}^{n}$.  The first vector may be any nonzero vector, the second any vector outside the span of the first, and so on, giving
+Count ordered linearly independent $k$-tuples in $\FiniteField_{Q}^{n}$.  The first vector may be any nonzero vector, the second any vector outside the span of the first, and so on, giving
 \[
  (Q^n-1)(Q^n-Q)\cdots(Q^n-Q^{k-1}).
 \]
@@ -2489,7 +2507,7 @@ ordered bases.  Dividing and cancelling $Q^i$ in corresponding factors yields
 \end{proof}
 
 \begin{theorem}[Geometric Pascal recurrence]\label{thm:geometric-pascal}
-Let $H$ be a fixed hyperplane in $\FiniteField{Q}^{n}$.  Then
+Let $H$ be a fixed hyperplane in $\FiniteField_{Q}^{n}$.  Then
 \[
  \GaussianBinomial{n}{k}{Q}
  =\GaussianBinomial{n-1}{k}{Q}+Q^{n-k}\GaussianBinomial{n-1}{k-1}{Q}.
@@ -2497,7 +2515,7 @@ Let $H$ be a fixed hyperplane in $\FiniteField{Q}^{n}$.  Then
 \end{theorem}
 
 \begin{proof}
-A $k$-subspace $U$ is either contained in $H$ or not.  The contained subspaces contribute $\GaussianBinomial{n-1}{k}{Q}$.  If $U\not\subseteq H$, then $W=U\cap H$ has dimension $k-1$.  Fixing $W$, the quotient $\FiniteField{Q}^{n}/W$ has dimension $n-k+1$, and $H/W$ is a hyperplane.  The subspace $U/W$ is a line not contained in $H/W$.  The total number of lines in $\FiniteField{Q}^{n-k+1}$ minus those in its hyperplane is
+A $k$-subspace $U$ is either contained in $H$ or not.  The contained subspaces contribute $\GaussianBinomial{n-1}{k}{Q}$.  If $U\not\subseteq H$, then $W=U\cap H$ has dimension $k-1$.  Fixing $W$, the quotient $\FiniteField_{Q}^{n}/W$ has dimension $n-k+1$, and $H/W$ is a hyperplane.  The subspace $U/W$ is a line not contained in $H/W$.  The total number of lines in $\FiniteField_{Q}^{n-k+1}$ minus those in its hyperplane is
 \[
  \frac{Q^{n-k+1}-1}{Q-1}-\frac{Q^{n-k}-1}{Q-1}=Q^{n-k}.
 \]
@@ -2509,7 +2527,7 @@ There are $\GaussianBinomial{n-1}{k-1}{Q}$ choices for $W$, proving the formula.
 \begin{theorem}[Partial flags]\label{thm:flag-count}
 Let $d_i=n_1+\cdots+n_i$.  The number of flags
 \[
- 0=V_0\subset V_1\subset\cdots\subset V_r=\FiniteField{Q}^{n},
+ 0=V_0\subset V_1\subset\cdots\subset V_r=\FiniteField_{Q}^{n},
  \qquad \dim(V_i/V_{i-1})=n_i,
 \]
 is
@@ -2519,20 +2537,20 @@ is
 \end{theorem}
 
 \begin{proof}
-Choose $V_1$ in $\GaussianBinomial{n}{n_1}{Q}$ ways.  In the quotient $\FiniteField{Q}^{n}/V_1$, choose $V_2/V_1$ in $\GaussianBinomial{n-n_1}{n_2}{Q}$ ways, and continue.  The product is the factorization in \Cref{prop:qmult-factor}.
+Choose $V_1$ in $\GaussianBinomial{n}{n_1}{Q}$ ways.  In the quotient $\FiniteField_{Q}^{n}/V_1$, choose $V_2/V_1$ in $\GaussianBinomial{n-n_1}{n_2}{Q}$ ways, and continue.  The product is the factorization in \Cref{prop:qmult-factor}.
 \end{proof}
 
 \section{Matrices of fixed rank}
 
 \begin{theorem}[Rank enumeration]\label{thm:rank-matrices}
-The number of $m\times n$ matrices of rank $r$ over $\FiniteField{Q}$ is
+The number of $m\times n$ matrices of rank $r$ over $\FiniteField_{Q}$ is
 \[
  N_{m,n,r}(Q)
- =\GaussianBinomial{m}{r}{Q}\GaussianBinomial{n}{r}{Q}\AbsoluteValue{\mathrm{GL}_r(\FiniteField{Q})},
+ =\GaussianBinomial{m}{r}{Q}\GaussianBinomial{n}{r}{Q}\AbsoluteValue{\mathrm{GL}_r(\FiniteField_{Q})},
 \]
 where
 \[
- \AbsoluteValue{\mathrm{GL}_r(\FiniteField{Q})}=\prod_{i=0}^{r-1}(Q^r-Q^i).
+ \AbsoluteValue{\mathrm{GL}_r(\FiniteField_{Q})}=\prod_{i=0}^{r-1}(Q^r-Q^i).
 \]
 Equivalently,
 \[
@@ -2555,7 +2573,7 @@ choices for $V$.  Two pairs $(U,V)$ and $(U',V')$ give the same $A$ exactly when
 \[
  U'=UG,\qquad V'=G^{-1}V
 \]
-for a unique $G\in\mathrm{GL}_r(\FiniteField{Q})$.  Thus every matrix is counted $\AbsoluteValue{\mathrm{GL}_r}$ times.  Substituting the subspace-count formulas gives the first expression.
+for a unique $G\in\mathrm{GL}_r(\FiniteField_{Q})$.  Thus every matrix is counted $\AbsoluteValue{\mathrm{GL}_r}$ times.  Substituting the subspace-count formulas gives the first expression.
 \end{proof}
 
 \section{Schubert cells and a topological meaning}
@@ -2576,7 +2594,7 @@ Fix the standard flag in $\ComplexNumbers^n$.  Every $k$-plane has a unique row-
 \end{proof}
 
 \begin{remark}[The ``same polynomial'' principle]
-For a prime power $Q$, evaluating $\GaussianBinomial{n}{k}{q}$ at $q=Q$ counts rational points of a Grassmannian over $\FiniteField{Q}$.  Evaluating it at $q=t^2$ records the even Betti numbers of the complex Grassmannian.  This is an elementary instance of the broad principle that polynomial point counts over finite fields often shadow topological invariants over $\ComplexNumbers$.
+For a prime power $Q$, evaluating $\GaussianBinomial{n}{k}{q}$ at $q=Q$ counts rational points of a Grassmannian over $\FiniteField_{Q}$.  Evaluating it at $q=t^2$ records the even Betti numbers of the complex Grassmannian.  This is an elementary instance of the broad principle that polynomial point counts over finite fields often shadow topological invariants over $\ComplexNumbers$.
 \end{remark}
 
 \section{Growth over finite fields}
@@ -8582,8 +8600,8 @@ Comparing \eqref{eq:halfbase-two-reciprocity} with \eqref{eq:halfbase-gaussian} 
 \[
  \GaussianBinomial{n}{k}{2}=\frac{\mathfrak m_n}{\mathfrak m_k\,\mathfrak m_{n-k}},
 \]
-and by \Cref{thm:subspace-count} it counts the $k$-dimensional subspaces of $\FiniteField{2}^{n}$.  Thus the half-base Gaussian row is a finite-geometric count divided by an explicit power of two, and the exponent of that power is $k(n-k)$, the dimension of the Grassmannian.  In the same way \eqref{eq:halfbase-factorial} exhibits $(1/2;1/2)_n$ as a power-of-two normalization of a product of Mersenne numbers, with $\TwoAdicValuation\!\left(\QPochhammer{1/2}{1/2}{n}\right)=-\binom{n+1}{2}$ because $\mathfrak m_n$ is odd.
-% ed.: an incoming draft restated reciprocity and the $\FiniteField{2}$-subspace count in
+and by \Cref{thm:subspace-count} it counts the $k$-dimensional subspaces of $\FiniteField_{2}^{n}$.  Thus the half-base Gaussian row is a finite-geometric count divided by an explicit power of two, and the exponent of that power is $k(n-k)$, the dimension of the Grassmannian.  In the same way \eqref{eq:halfbase-factorial} exhibits $(1/2;1/2)_n$ as a power-of-two normalization of a product of Mersenne numbers, with $\TwoAdicValuation\!\left(\QPochhammer{1/2}{1/2}{n}\right)=-\binom{n+1}{2}$ because $\mathfrak m_n$ is odd.
+% ed.: an incoming draft restated reciprocity and the $\FiniteField_{2}$-subspace count in
 % ed.: place; both are cross-referenced here instead.
 \end{remark}
 
@@ -10629,7 +10647,7 @@ The transport statement \Cref{thm:universal-functoriality}(iii) is what licenses
 \index{incidence algebra}
 \index{subspace lattice}
 
-Counting is only the first half of the finite-field picture.  The subspaces of $\FiniteField{Q}^{n}$ form a lattice, and its M\"obius function is again a Gaussian datum: a sign and a quadratic power of $Q$.  This is the structural reason for the shape of the inverse kernel in \Cref{thm:qbinomial-inversion}.
+Counting is only the first half of the finite-field picture.  The subspaces of $\FiniteField_{Q}^{n}$ form a lattice, and its M\"obius function is again a Gaussian datum: a sign and a quadratic power of $Q$.  This is the structural reason for the shape of the inverse kernel in \Cref{thm:qbinomial-inversion}.
 
 For an ambient vector space $V$, the notation
 $\SubspaceMobius{V}{U}{W}$ denotes the interval-poset M\"obius function on
@@ -10643,7 +10661,7 @@ the subspace lattice $\mathcal L(V)$.  It is characterized by
 It is neither the arithmetic M\"obius function nor a measure.
 
 \begin{theorem}[M\"obius function of the subspace lattice]\label{thm:subspace-mobius}
-Let $Q$ be a prime power and let $V$ be a $d$-dimensional vector space over $\FiniteField{Q}$.  In the lattice of subspaces of $V$, ordered by inclusion,
+Let $Q$ be a prime power and let $V$ be a $d$-dimensional vector space over $\FiniteField_{Q}$.  In the lattice of subspaces of $V$, ordered by inclusion,
 \begin{equation}\label{eq:subspace-mobius}
  \SubspaceMobius{V}{0}{V}=(-1)^dQ^{\binom d2}.
 \end{equation}
@@ -12504,9 +12522,11 @@ contracting complex nome.  It also identifies every geometric sinc product
 at a strict complex contraction with the corresponding nome-\(q^2\)
 Pochhammer product, pointwise and globally in the complex argument; only its
 final two Rvachev wrappers fix the nome to \(1/4\).  The downstream
-\texttt{QPochhammerEntire} module now proves locally uniform convergence in
-the symbol variable, entireness, the exact factor-zero locus, and simplicity
-of every zero for every strict complex contraction, including \(q=0\).  The
+five-theorem \texttt{QPochhammerEntire} module now proves locally uniform
+convergence in the symbol variable, entireness, the exact division-free
+factor-zero locus, the reciprocal-power zero lattice for nonzero \(q\), and
+analytic order one at every zero for every strict complex contraction.  The
+factor-zero and simple-order results include the boundary \(q=0\).  The
 combined interface still does not supply the book's named centered/MGF
 wrapper, outside-disk reciprocal formula, or local-uniform/normal-convergence
 theorem for the \emph{outer rearranged} Pochhammer-product right-hand side.
@@ -12532,13 +12552,16 @@ compatibility spelling of the primary identity;\\
 \path{QPochhammerElementaryIdentities.lean}: 13 theorems;\\
 \path{QPochhammerDissection.lean}: two theorems;\\
 \path{QPochhammerInfinite.lean}: one definition and 27 theorems;\\
-\path{QPochhammerEntire.lean}: four theorems;\\
+\path{QPochhammerEntire.lean}: five theorems;\\
+\path{QBinomialTheoremInfinite.lean}: one definition and 22 theorems; its
+use of \path{Fabius.finiteQPochhammerIn_zero_left} imports the unique
+declaration from \path{GaussianBinomialAtOne.lean};\\
 \path{QBinomialReciprocity.lean}: four theorems;\\
 \path{GaussianBinomialAtNegOne.lean}: five theorems;\\
 \path{QPochhammerDissection.lean}: zero definitions and two theorems;\\
 \path{QPochhammerInfinite.lean}: one definition and twenty-seven theorems;\\
 \path{RvachevPochhammerFactorization.lean}: one definition and nine theorems;\\
-\path{QPochhammerEntire.lean}: zero definitions and four theorems;\\
+\path{QPochhammerEntire.lean}: zero definitions and five theorems;\\
 \path{GeometricCompleteHomogeneous.lean}: six theorems;\\
 \path{GeometricLagrangeCompleteHomogeneous.lean}: five theorems;\\
 \path{GeometricLagrangeQMoments.lean}: one definition and 37 theorems;\\
@@ -12695,11 +12718,12 @@ specialize to the fixed nome
 reciprocal and zero--pole clauses, and named local-uniform or normal
 convergence of the outer Pochhammer product over the spectral index.
 
-\item The zero-definition, four-theorem module
+\item The zero-definition, five-theorem module
 \path{QPochhammerEntire.lean} consists exactly of
 \path{Fabius.hasProdLocallyUniformly_complexQPochhammerInf},
 \path{Fabius.complexQPochhammerInf_differentiable},
-\path{Fabius.complexQPochhammerInf_eq_zero_iff}, and
+\path{Fabius.complexQPochhammerInf_eq_zero_iff},
+\path{Fabius.complexQPochhammerInf_eq_zero_iff_eq_inv_pow}, and
 \path{Fabius.analyticOrderAt_complexQPochhammerInf_of_eq_zero}.
 For every complex \(q\) under exactly \(\lVert q\rVert<1\), the first theorem
 gives locally uniform convergence on the whole \(a\)-plane to
@@ -12710,12 +12734,11 @@ The third is the division-free equivalence
  \quad\Longleftrightarrow\quad
  \exists j\in\NaturalNumbers,\;1-aq^j=0,
 \]
-while the fourth says that every zero has analytic order one.  Consequently
-these four theorems cover all of \Cref{thm:poch-entire}: its printed premise
-\(0<\AbsoluteValue q<1\) makes \(q\ne0\), so the factor equation is equivalent
-to \(a=q^{-j}\), and analytic order one is precisely simplicity.  The Lean
-surface is stronger at the boundary \(q=0\), where the same factor form remains
-valid and the sole zero is \(a=1\).  It asserts nothing for
+the fourth gives the literal reciprocal-power lattice \(a=(q^j)^{-1}\) when
+\(q\ne0\), and the fifth says that every zero has analytic order one.  Thus
+the five theorems cover all of \Cref{thm:poch-entire}; the division-free third
+and simple-order fifth theorem also cover the boundary \(q=0\), where the sole
+zero is \(a=1\).  The Lean surface asserts nothing for
 \(\lVert q\rVert\ge1\), no joint holomorphy in \(q\), closed derivative or
 growth formula, reciprocal meromorphic continuation, or local-uniform
 convergence of the separate outer product over spectral indices.
@@ -13016,6 +13039,7 @@ differentiable parameter}\\[2pt]
 \texttt{hasProdLocallyUniformly\_\allowbreak{}complexQPochhammerInf},
 \texttt{complexQPochhammerInf\_\allowbreak{}differentiable},
 \texttt{complexQPochhammerInf\_\allowbreak{}eq\_\allowbreak{}zero\_\allowbreak{}iff},
+\texttt{complexQPochhammerInf\_\allowbreak{}eq\_\allowbreak{}zero\_\allowbreak{}iff\_\allowbreak{}eq\_\allowbreak{}inv\_\allowbreak{}pow},
 \texttt{analyticOrderAt\_\allowbreak{}complexQPochhammerInf\_\allowbreak{}of\_\allowbreak{}eq\_\allowbreak{}zero}\newline
 {\footnotesize\texttt{QPochhammerInfinite}; convergence, concatenation, and the
 zero criterion in every complete normed commutative ring (multiplicative norm
@@ -13025,7 +13049,8 @@ over $\ComplexNumbers$; see \Cref{rem:poch-entire-generality}.  The parallel
 $\ComplexNumbers$-only module \texttt{QPochhammerEntire} proves the same
 convergence, holomorphy, and factor-zero locus for
 \texttt{complexQPochhammerInf}, including $q=0$, together with analytic order
-one at every zero}\\[2pt]
+one at every zero; for $q\ne0$ it also gives the literal reciprocal-power zero
+lattice}\\[2pt]
 \Cref{prop:complex-concat} & \statuspartial &
 \texttt{qPochhammerInfIn\_\allowbreak{}eq\_\allowbreak{}finite\_\allowbreak{}mul\_\allowbreak{}shift},
 \texttt{qPochhammerInfIn\_\allowbreak{}succ\_\allowbreak{}shift}\newline
