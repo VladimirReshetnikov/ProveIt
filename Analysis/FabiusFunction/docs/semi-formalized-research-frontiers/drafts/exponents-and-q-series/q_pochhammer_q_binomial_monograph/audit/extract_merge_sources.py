@@ -76,6 +76,13 @@ Q_STATUS_RE = re.compile(
     re.DOTALL,
 )
 
+# Formalization statuses can advance after the immutable merge-source pin.
+Q_STATUS_OVERRIDES = {
+    "prop:dissection": "Lean-proved",
+    "cor:dissection-remainder": "Lean-proved",
+    "thm:poch-entire": "Lean-proved",
+}
+
 AUDIT_DIR = Path(__file__).resolve().parent
 PACKAGE_ROOT = AUDIT_DIR.parent
 PIN_FILE = AUDIT_DIR / "MERGE_SOURCE_REVISION"
@@ -618,6 +625,7 @@ def inventory_revision(
         for row in package_rows:
             groups[row["source_key"]] = group
         rows.extend(package_rows)
+    q_statuses.update(Q_STATUS_OVERRIDES)
     return commit, rows, groups, q_statuses
 
 
