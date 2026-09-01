@@ -495,6 +495,8 @@ import FabiusFunction.QPochhammerInfiniteBounds
 import FabiusFunction.HeineTransformation
 import FabiusFunction.QGaussSummation
 import FabiusFunction.QPochhammerComplexOrder
+import FabiusFunction.BasicHypergeometricSeries
+import FabiusFunction.QMultinomial
 
 set_option autoImplicit false
 
