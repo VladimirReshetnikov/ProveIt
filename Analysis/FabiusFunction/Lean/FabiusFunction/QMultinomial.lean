@@ -46,8 +46,10 @@ def qMultinomial (q : R) : List ℕ → R
   | [] => 1
   | n :: l => gaussianBinomial q (n + l.sum) n * qMultinomial q l
 
+/-- The `q`-multinomial coefficient of the empty composition is one. -/
 @[simp] theorem qMultinomial_nil (q : R) : qMultinomial q [] = 1 := rfl
 
+/-- The defining recursion for a nonempty `q`-multinomial composition. -/
 theorem qMultinomial_cons (q : R) (n : ℕ) (l : List ℕ) :
     qMultinomial q (n :: l) = gaussianBinomial q (n + l.sum) n * qMultinomial q l := rfl
 
@@ -55,6 +57,7 @@ theorem qMultinomial_cons (q : R) (n : ℕ) (l : List ℕ) :
 theorem gaussianBinomial_diag (q : R) (n : ℕ) : gaussianBinomial q n n = 1 := by
   rw [← gaussianBinomial_symm q le_rfl, Nat.sub_self, gaussianBinomial_zero_right]
 
+/-- A one-part `q`-multinomial coefficient is one. -/
 @[simp] theorem qMultinomial_singleton (q : R) (n : ℕ) : qMultinomial q [n] = 1 := by
   simp [qMultinomial_cons]
 

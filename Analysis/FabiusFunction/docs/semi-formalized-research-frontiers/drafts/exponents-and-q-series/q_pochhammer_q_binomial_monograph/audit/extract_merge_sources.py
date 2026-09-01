@@ -368,9 +368,17 @@ CURRENT_Q_STATUS_OVERRIDES = {
     "prop:dissection": "Lean-proved",
     "cor:dissection-remainder": "Lean-proved",
     "thm:poch-entire": "Lean-proved",
+    "cor:qbinom-classical": "Lean-proved",
     "prop:rogers-szego-recurrence": "Lean-proved",
     "prop:rogers-szego-three-term": "Lean-proved",
     "cor:rogers-szego-dilation": "Lean-proved",
+    "thm:quantum-binomial": "Lean-proved",
+    "prop:logder-finite": "Lean-proved",
+    "prop:qbinom-products": "Lean-proved",
+    "prop:qderivative-rules": "Lean-proved",
+    "thm:q-leibniz": "Lean-proved",
+    "prop:qgamma-reflection": "Lean-proved",
+    "cor:qgamma-theta": "Lean-proved",
 }
 
 Q_SOURCE_LINE_TARGETS = {

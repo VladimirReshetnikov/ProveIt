@@ -109,13 +109,27 @@ only 4,606 declarations and
 declarations, including 69 undocumented ones.  Run the script for the live
 numbers rather than copying these historical values.
 
-The live post-merge 2026-09-01 inventory contains 643 modules and 8,661
-lexically visible public declarations, with zero missing module headers and
-zero missing doc comments.  Relative to the
-610/8,318 activation checkpoint, the current tree adds 33 modules and 343
-declarations; relative to the branch's prior 622/8,472 snapshot, it adds 21
-modules and 189 declarations.  The earlier additions, the inverse-computability
-closure, and the incoming q-series tranches are itemized below.  The branch-point geometry and
+The authoritative live 2026-09-01 lexical inventory contains 649 modules and
+8,698 public declarations, with zero missing module headers and zero missing
+doc comments.  Relative to the 610/8,318 activation checkpoint, the exact
+union adds 39 modules and 380 declarations; relative to the 634/8,589
+q-calculus checkpoint, it adds 15 modules and 109 declarations; relative to
+the 641/8,652 documentation union, it adds eight modules and 46 declarations.
+These are tree-union comparisons, not claims of a single linear history.
+
+The retained q-series surface includes the Gaussian-continuity,
+Jacobi/pentagonal, infinite-q-binomial, q-Pascal, quantum-binomial,
+Rogers--Szegő, polynomial Jackson/q-Leibniz, finite-Pochhammer derivative,
+Lambert-series, real-q-gamma, finite/infinite Pochhammer, classical-limit,
+normal-convergence, q-Taylor, q-partial-fraction, integer-index, Heine,
+q-Gauss, complex-order, uniform-bound, basic-hypergeometric, and q-multinomial
+modules.  The unconditional `complexQPochhammerInf_eq_qPochhammerInfIn`
+bridge remains in `RvachevPochhammerFactorization`; the generic analytic-order
+theorem is canonically owned by `QPochhammerInfinite`; and
+`QPochhammerEntire` is the five-theorem legacy compatibility layer.  The
+contemporaneous `JacobiTripleProduct.thetaCoeff_pair_eq` edit only renames an
+unused proof binder and changes no public declaration or count.  The
+branch-point geometry and
 asymptotics leaves contribute 17 declarations for the one-sided vertical
 tangents and leading signed square-root laws of both real Lambert branches.
 The two Legendre--Gaunt modules contribute 25: four definitions and twelve
@@ -197,10 +211,6 @@ sequence from its double.  Spectral-zeta, cumulant-sample, and generalized
 probability-law identifiability are not included.
 The merged q-series leaves are inventoried below from the live source tree;
 those counts supersede the intermediate pre-union q-series subtotal.
-The valuation tranche's new leaf
-`PrimePowerBinomialValuation.lean` contributes three theorems: the additive and
-subtraction forms for an arbitrary prime-power Pascal row, and the strict-
-interior dyadic-comb specialization.
 The compatibility leaf, `QPochhammerEntire.lean`, contributes no definitions
 and retains exactly five theorems:
 `hasProdLocallyUniformly_complexQPochhammerInf`,
@@ -310,6 +320,68 @@ with the logarithmic-Delta effective-uniform-continuity witness.  This closes
 the total inverse computability certificate without asserting a practical
 running-time or input-bit complexity bound.
 
+The five-module q-calculus increment is exhaustively accounted for as follows.
+`PolynomialQDerivative.lean` has the two definitions `qInt` and `qDerivative`
+and the seventeen theorems `qInt_zero`, `qInt_one`, `qInt_succ`, `qInt_succ'`,
+`qInt_add`, `qInt_one_left`, `one_sub_mul_qInt`, `qDerivative_apply`,
+`qDerivative_monomial`, `qDerivative_C`, `qDerivative_X_pow`, `qDerivative_X`,
+`qDerivative_C_mul_X_pow`, `eval_qDerivative_mul`,
+`qDerivative_comp_C_mul_X`, `qDerivative_mul`, and `qDerivative_mul'`.
+The q-integer definition and its first six laws need only a semiring;
+`one_sub_mul_qInt` and the division-free evaluation identity use a commutative
+ring; the coefficientwise linear map, monomial/scaling laws, and both product
+rules use a commutative semiring.  Every nome is allowed, including zero and
+one; there is no analytic-function or limiting derivative claim.
+
+`PolynomialQLeibniz.lean` has no definition and the four theorems
+`comp_C_mul_X_comp_C_mul_X`, `qDerivative_C_mul`,
+`qDerivative_iterate_comp_C_mul_X`, and `qDerivative_iterate_mul`.  Every one
+holds over an arbitrary commutative semiring, for arbitrary nome and every
+natural iteration order including zero, with no division, topology, or
+nonvanishing assumption.
+
+`QPochhammerDerivative.lean` has no definition and the three theorems
+`hasDerivAt_finiteQPochhammerIn`,
+`hasDerivAt_finiteQPochhammerIn_of_ne_zero`, and
+`hasDerivAt_finiteQPochhammerIn_comp`.  They work over every nontrivially
+normed field with arbitrary nome and finite order.  The cofactor formula is
+unconditional; the logarithmic rewrite assumes exactly that every displayed
+factor is nonzero; the chain rule assumes exactly the supplied pointwise
+`HasDerivAt`.  No infinite-product derivative is added.
+
+`LambertSeriesLog.lean` has no definition and the four theorems
+`one_le_norm_natCast_add_one`, `summable_lambert_series`,
+`hasSum_lambert_log_complex`, and
+`exp_neg_tsum_lambert_eq_qPochhammerInfIn`.  Apart from the unconditional
+natural-cast norm helper, they assume exactly complex `a,q` with `‖a‖ < 1`
+and `‖q‖ < 1`; they give absolute summability, the `HasSum` against principal
+factor logarithms, and the branch-free exponential product identity.  They do
+not assert a principal logarithm of the product, a norm-one boundary, or
+analytic continuation.
+
+`QGamma.lean` has the two total real definitions `qGamma` and `qNumber` and
+the ten theorems `norm_lt_one_of_pos_of_lt_one`,
+`qPochhammerInfIn_rpow_pos`, `qPochhammerInfIn_self_pos`, `qGamma_pos`,
+`qGamma_one`, `qGamma_add_one`, `qGamma_nat_succ`, `qNumber_natCast`,
+`qGamma_mul_qGamma_one_sub`, and `hasSum_theta_qGamma_reflection`.
+Positivity, the value at one, recurrence, and natural factorial product use
+`0 < q < 1`, with `0 < x` additionally where displayed.  The natural-cast
+q-number bridge assumes only `q ≠ 1`; the totalized algebraic reflection
+product assumes only `q < 1` and arbitrary real `x`; its theta `HasSum` form
+assumes `0 < q < 1` and `0 < x < 1`.  This module supplies no complex
+continuation, classical-gamma limit, pole, log-convexity, uniqueness, or
+digamma result.
+
+The valuation leaf `PrimePowerBinomialValuation.lean` now contributes no
+definitions and exactly six theorems: `primePowerChoose_padicValNat_add`,
+`primePowerChoose_padicValNat`, `primePowerSubOneChoose_padicValNat`,
+`primePowerSubTwoChoose_padicValNat`, `twoPowChoose_padicValNat`, and
+`twoPowSubTwoChoose_padicValNat`.  The first two are the additive and
+subtraction forms for an arbitrary prime-power Pascal row.  The third says
+every column `j < p^m` in row `p^m-1` is a `p`-adic unit, including `m = 0`.
+The fourth identifies the row-`p^m-2`, column-`j-1` valuation with `v_p(j)`
+under exactly `0 < j < p^m`; the last two are the strict-interior dyadic
+specializations.  No valuation-histogram count is included.
 The closed-form Gaunt leaf `LegendreGauntClosedForm.lean` contributes two definitions and
 twenty-five theorems: the total integer zero-row Wigner-square datum, its exact
 central-binomial and factorial forms, the all-degree Gaunt identification,
@@ -349,18 +421,19 @@ names are `rvachevLegendreGramEntryRat_eq_two_mul_sum_wignerThreeJZeroSqRat`,
 `rvachevLegendreGramMatrixRat_apply_eq_two_mul_sum_wignerThreeJZeroSqRat`, and
 `upLegendreGramMatrix_apply_eq_two_mul_sum_wignerThreeJZeroSqRat`.
 
-The new `QPochhammerEntire.lean` leaf contributes no public definitions and
-five public theorems:
+The canonical fixed-nome inventory is `QPochhammerEntire.lean`: no public
+definitions and exactly six public theorems,
 `hasProdLocallyUniformly_complexQPochhammerInf`,
 `complexQPochhammerInf_differentiable`,
 `complexQPochhammerInf_eq_zero_iff`,
-`complexQPochhammerInf_eq_zero_iff_eq_inv_pow`, and
-`analyticOrderAt_complexQPochhammerInf_of_eq_zero`.  For a fixed complex
+`complexQPochhammerInf_eq_zero_iff_eq_inv_pow`,
+`analyticOrderAt_complexQPochhammerInf_of_eq_zero`, and
+`analyticOrderAt_qPochhammerInfIn_of_eq_zero`.  For a fixed complex
 strict contraction `q`, they give locally uniform convergence in the symbol
 variable, entireness, the division-free factor-zero criterion, the exact
 reciprocal-power zero lattice when `q ≠ 0`, and analytic order one at every
-zero.  The raw factor criterion includes `q = 0`; no joint holomorphy,
-outside-disk reciprocal formula, outer spectral-product normal convergence,
+zero under both public product names.  The raw factor criterion and both order
+theorems include `q = 0`; no joint holomorphy, outside-disk reciprocal formula,
 or centered characteristic-function/MGF package is counted in this leaf.
 
 The same merged tree adds the complementary general q-product leaves.
@@ -378,8 +451,10 @@ factor zero, and analytic order one at every zero over `ℂ`.  These two leaves
 therefore contribute thirty-two declarations.  Their
 generic `qPochhammerInfIn` is distinct from the older
 `complexQPochhammerInf`; the five-theorem `QPochhammerEntire` API above remains
-the analytic-order layer for the latter symbol, and no named equality bridge
-between the two definitions is counted.
+the legacy compatibility layer, while the generic analytic-order theorem is
+canonically owned by `QPochhammerInfinite`.  The named equality bridge
+`complexQPochhammerInf_eq_qPochhammerInfIn` is counted in the separate
+one-definition/ten-theorem `RvachevPochhammerFactorization.lean` surface.
 
 The synchronized q-series API also retains the full `origin/main` theorem
 inventory.  `GaussianBinomialAtNegOneDerivative.lean` is 0+4, and
@@ -400,6 +475,81 @@ tranche covers the zero, row-sum, and successor laws, dilation and three-term
 recurrences, the Euler antidiagonal convolution, and
 `hasSum_rogersSzego_generating`.  None of these retained APIs is replaced by
 the fixed-nome `QPochhammerEntire` layer.
+
+The cumulative seven-module closure is also exhaustive.  The already listed
+`GeneralizedRvachevIdentifiability.lean` contributes `0+6` declarations.
+`GeometricPochhammerNormalConvergence.lean` contributes no definitions and
+three theorems:
+`hasProdLocallyUniformly_geometricSincProduct_complexQPochhammerInf`,
+`hasProdLocallyUniformly_rvachevFourierProduct_complexQPochhammerInf`, and
+`hasProdLocallyUniformly_rvachevFourier_complexQPochhammerInf`.  The first
+assumes exactly complex `‖q‖ < 1` and proves locally uniform convergence on all
+of `ℂ` of the outer Pochhammer product, including `q = 0`; the second is the
+unconditional dyadic specialization and the third additionally assumes a
+bounded Fabius witness and `IsFabius`.  It proves no joint normality in `(q,z)`
+or boundary theorem at `‖q‖ = 1`.
+
+`ClassicalPochhammerLimit.lean` contributes no definitions and five theorems:
+`ascPochhammer_eval_eq_prod_range`,
+`tendsto_one_sub_div_one_sub_of_hasDerivAt`,
+`tendsto_finiteQPochhammerIn_div_pow_of_hasDerivAt`,
+`tendsto_finiteQPochhammerIn_cpow_div_pow`, and
+`tendsto_finiteQPochhammerIn_rpow_div_pow`.  The rising-product identity is
+commutative-semiring algebra.  The generic punctured-neighborhood limit works
+over every nontrivially normed field under exactly `HasDerivAt f c 1` and
+`f 1 = 1`; the complex-principal-power and real-power forms are valid for
+every exponent and finite order.  No rate, uniformity, infinite-product limit,
+or classical-gamma limit is counted.
+
+`GaussianBinomialUniversal.lean` contributes no definitions and exactly two
+theorems, `gaussianBinomial_eq_eval₂_universal` and
+`gaussianBinomial_eq_eval_map_universal`.  Over every commutative semiring and
+for arbitrary `q,n,k`, they identify `[n,k]_q` with evaluation of the universal
+polynomial in `ℕ[X]`, directly or after coefficient mapping.  No degree,
+unimodality, log-concavity, or factorization result is added.
+
+`PolynomialQTaylor.lean` contributes two definitions, `qFactorial` and
+`qFallingPower`, and eighteen theorems: `qFactorial_zero`,
+`qFactorial_succ`, `qDerivative_one`, `qDerivative_iterate_add`,
+`qDerivative_iterate_C_mul`, `qDerivative_iterate_sum`,
+`qDerivative_iterate_C_mul_X_pow`,
+`qDerivative_iterate_eq_zero_of_natDegree_le`, `qFallingPower_zero`,
+`qFallingPower_succ`, `qFallingPower_succ'`, `qFallingPower_monic`,
+`qFallingPower_natDegree`, `qFallingPower_eval_self`,
+`qDerivative_qFallingPower_succ`, `qDerivative_iterate_qFallingPower`,
+`prod_qInt_sub_eq_qFactorial`, and `qTaylor`.  The factorial and iterator
+algebra are commutative-semiring results, the falling-power layer is over a
+commutative ring, and exact degree also assumes nontriviality.  The field-valued
+Taylor theorem assumes exactly `[j]_q ≠ 0` for `1 ≤ j ≤ N` and
+`f.natDegree ≤ N`.  It is a finite polynomial identity, not an analytic
+expansion, remainder estimate, convergence theorem, or `q → 1` result.
+
+`QPartialFractions.lean` contributes the definition `partialFractionCoeff` and
+five theorems: `prod_erase_one_sub_inv_pow_mul_pow`,
+`finiteQPochhammerIn_self_ne_zero_of_le`,
+`partialFractionCoeff_mul_prod_eq_one`,
+`sum_partialFractionCoeff_mul_prod_erase`, and
+`one_div_finiteQPochhammerIn_eq_sum`.  Over a field, `(q;q)_n ≠ 0` suffices for
+the polynomial identity and includes `q = 0`; the pointwise reciprocal formula
+also assumes every displayed pole factor nonzero.  The two normalization
+helpers state their explicit `q ≠ 0` and index hypotheses.  There is no
+infinite expansion, repeated-pole theory, or convergence claim.
+
+`QPochhammerIntegerIndex.lean` contributes the definitions `qIntervalProd` and
+`finiteQPochhammerZ` and fifteen theorems: `Ico_int_eq_image_range`,
+`prod_Ico_int_eq_prod_range`, `qIntervalProd_of_le`, `qIntervalProd_of_lt`,
+`qIntervalProd_self`, `qIntervalProd_symm`, `qIntervalProd_trans_of_le`,
+`qIntervalProd_trans`, `finiteQPochhammerZ_natCast`,
+`finiteQPochhammerZ_neg_natCast`, `prod_Ico_add_zpow`,
+`qIntervalProd_add_eq`, `finiteQPochhammerZ_add`,
+`finiteQPochhammerZ_add_one`, and `finiteQPochhammerZ_neg_natCast_eq`.
+The ordered cocycle is unconditional; the all-order cocycle assumes its two
+factors nonzero.  Translation and concatenation require `q ≠ 0`, concatenation
+also requires both factors nonzero, the one-step shift requires its two
+displayed nonzero factors, and the closed negative-index form requires
+`a ≠ 0` and `q ≠ 0`.  Empty intervals and natural/negative-natural indices are
+included; no continuation in the index or root-of-unity regularization is
+claimed.
 
 The audited formula contract is equally exact.  Admissibility is even total
 degree plus the three weak triangle inequalities, equivalently
@@ -443,22 +593,16 @@ The additional declaration in `PolynomialCombExactness.lean` is
 physical-coordinate self-sampling quadrature for every real polynomial whose
 natural degree is at most the dyadic level and every real phase.
 
-The retained comb-interpolation synthesis PDF is a validated 158-page A4
-historical receipt: the current source includes a post-render update to its
-additive-dyadic chapter, so a fresh parity build remains pending.  The rebuilt
-Integration-and-Transform master retains a historical 377-page PDF.  The canonical
-q-series synthesis is a validated 340-page historical receipt: that artifact
-contains the general finite/infinite q-Pochhammer crosswalks and six q-series
-modules, while the merged fifth fixed-nome theorem and two later general
-q-Pochhammer theorems make final parity pending.  The retained 167-page primary,
-126-page walkthrough, 237-page canonical frontier, 301-page Representation
-Frontiers, 41-page New Frontiers, and 88-page notation-catalogue artifacts
-likewise predate their current merged sources.  Their package notices treat
-those PDFs as historical validation receipts, not parity claims, until fresh
-uninterrupted three-pass builds complete.  The inverse-computability receipt
-likewise requires refresh for the 643/8,661 census.  The canonical inverse-theory
-publication retains a 134-page artifact synchronized at its latest-main source
-checkpoint; the merged effective-inversion tranche makes current parity pending.
+Every committed PDF in this documentation family is a historical validation
+receipt and remains rebuild-pending.  This includes the comb-interpolation,
+Integration-and-Transform, canonical q-series, primary exposition, walkthrough,
+canonical frontier, Representation Frontiers, New Frontiers, notation catalogue,
+inverse-computability, and inverse-theory artifacts.  Their page counts describe
+receipts rendered at earlier source checkpoints; none is a parity claim for the
+present 649-module, 8,698-declaration union.  Fresh uninterrupted parity builds
+are required after the merged q-series, q-calculus, Pochhammer-limit,
+normal-convergence, integer-index, partial-fraction, identifiability, valuation,
+Heine, q-Gauss, complex-order, basic-hypergeometric, and q-multinomial updates.
 
 ### What the review pass caught
 

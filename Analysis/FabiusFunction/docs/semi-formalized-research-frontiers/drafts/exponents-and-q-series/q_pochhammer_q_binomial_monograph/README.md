@@ -15,7 +15,10 @@ specialist part. The three general q-series guides were donor manuscripts:
 their repeated results map to one strongest canonical statement, while only
 genuinely stronger or independent material was transplanted. The completed
 `source_concordance.csv` assigns every one of the 547 source result
-environments a reviewed disposition. All five source-publication trees are
+environments a reviewed disposition. With the current exact promotions, the
+canonical-status totals are 70 Lean-proved rows, 408 human-proved frontier
+result rows, 60 not-applicable rows, and 9 conjecture rows. All five
+source-publication trees are
 therefore historical inputs preserved by the pinned revision and repository
 history, not parallel live packages.
 
@@ -97,44 +100,74 @@ useful because it preserves the migrated experiment and research-figure
 boundary.
 
 The retained `q_pochhammer_q_binomial_monograph.pdf` is a 347-page A4
-build of the current master source (14,072 lines, 656,200 bytes,
-SHA-256 `062b7230d95ff8bd52b11253c6c3c8820d6f6a82e4307ae5d82a1d793c00c517`).
+publication checkpoint. It was built from a 14,072-line, 656,200-byte master
+with SHA-256
+`062b7230d95ff8bd52b11253c6c3c8820d6f6a82e4307ae5d82a1d793c00c517`.
 The PDF is 2,996,319 bytes with SHA-256
 `29b422a39c42be37bd1487d4245c44e55706720c545dd015957644e47014bd48`.
-It was built by exactly three serial
-`pdflatex -interaction=nonstopmode -halt-on-error` passes, which produced 337,
-347, and 347 pages, with `makeindex` run on the `.idx` file after each pass.
-The final log scan found three overfull boxes, all in the single paragraph of the QPochhammerEntire crosswalk (source lines 652--670) whose long declaration names lack break points. All pages are A4. `pdffonts` reports 42 font rows, all
-embedded and subsetted, including 5 Libertinus rows, with no Type-3
-fonts. The files under `assets/experiments/**/figures/` remain research
-figures, not publication manuscripts.
+Exactly three serial
+`pdflatex -interaction=nonstopmode -halt-on-error` passes produced 337, 347,
+and 347 pages, with `makeindex` run after each pass. The final log recorded
+three overfull boxes in the long `QPochhammerEntire` crosswalk paragraph.
+All pages are A4, and all 42 reported font rows are embedded and subsetted,
+including five Libertinus rows, with no Type-3 font.
 
-The current master TeX is a source-only successor to that checkpoint. Its
-14,088-line, 657,425-byte source has SHA-256
-`791152ff41477e4f187d18edab195f1aa1232e9fbcafbbd536a62b24a7b8e799`.
-It includes exhaustive crosswalks for `QPochhammerEntire` (zero definitions
-and five legacy compatibility theorems), `QPochhammerInfinite` (one definition
-and twenty-nine theorems), `QPochhammerDissection` (zero definitions and two
-theorems), and `QBinomialTheoremInfinite` (one definition and twenty-two
-theorems), together with expanded Euler, Jacobi, and Rogers--Szegő material.
-The two newest generic theorems are
-`deriv_qPochhammerInfIn_ne_zero_of_mul_pow_eq_one`, which gives a nonzero
-derivative at every raw factor zero `a*q^j = 1` including `q = 0`, and
-`analyticOrderAt_qPochhammerInfIn_of_eq_zero`, which gives analytic order
-exactly one at every zero. The `QPochhammerEntire` wrappers retain the older
-`complexQPochhammerInf` names by transferring the generic local-uniformity,
-entireness, zero-locus, reciprocal-power, and analytic-order results rather
-than duplicating their analytic proofs. In `QBinomialTheoremInfinite`,
-`finiteQPochhammerIn_zero_left` remains the unique declaration owned by
-`GaussianBinomialAtOne` and is imported rather than redeclared. The forward
-status ledger is 64 Exact, 78 Partial, 132 None, and 8 interface rows; the
-191-result pre-Fabius core is 36/29/123/3. The compound outer spectral-product
-theorem remains Partial: local uniformity for one symbol as a function of its
-argument at fixed contracting nome does not establish normal convergence of
-the additional product over spectral scales.
+That PDF and source were synchronized at the named build checkpoint, but the
+merged master now includes later API and crosswalk changes. The retained PDF
+is therefore a verified historical artifact, not a render of the live TeX.
+The earlier 345-page receipt (source SHA-256
+`7389b325c08df9c731942b1f67b58511d1b7624a4b03153ee23fa3edcd9dcfa3`,
+PDF SHA-256
+`6d5477affdff8eb9711232c3ab7b1ad53dda3ad9a866e8fc031f5e787fcffc59`)
+remains recorded in `PROVENANCE.md`. Files under
+`assets/experiments/**/figures/` remain research figures rather than
+publication manuscripts.
 
-Source and PDF were synchronized by this build, and the root package checksum
-ledger (`SHA256SUMS`) was regenerated with `audit/build_package_checksums.py`
-afterwards. PDFs are rebuilt in batches, at most about once per hour, so
-source-only commits may precede the next synchronization; the ledger and the
-figures above always describe the retained PDF.
+An independent lexical audit of the live facade union finds exactly 649
+source modules and 8,698 public declarations, with no missing module headers
+or declaration doc comments. The reviewed 547-row source concordance records
+70 Lean-proved rows, 408 human-proved frontier-result rows, 60 not-applicable
+rows, and 9 conjecture rows.
+
+The merged q-series surface includes `RvachevPochhammerFactorization` (one
+definition and ten theorems), `QPochhammerEntire` (zero definitions and five
+legacy compatibility theorems), `QPochhammerInfinite` (one definition and
+twenty-nine theorems), `QPochhammerDissection` (zero definitions and two
+theorems), and `GeometricPochhammerNormalConvergence` (zero definitions and
+three theorems). The public
+`complexQPochhammerInf_eq_qPochhammerInfIn` bridge is unconditional. The
+generic `analyticOrderAt_qPochhammerInfIn_of_eq_zero` theorem lives in
+`QPochhammerInfinite`, requires exactly `‖q‖ < 1` and a zero hypothesis, and
+includes `q = 0`; it is not duplicated in `QPochhammerEntire`.
+
+The finite and analytic q-series crosswalk also includes
+`GaussianBinomialContinuity` (three theorems), `JacobiTripleProduct` (two
+definitions and twenty-five theorems), `QBinomialTheoremInfinite` (one
+definition and twenty-two theorems), `QPascalSummation` (four theorems),
+`QuantumBinomial` (two theorems), and `RogersSzegoPolynomial` (one definition
+and nine theorems). `finiteQPochhammerIn_zero_left` remains uniquely owned by
+`GaussianBinomialAtOne` and is only imported by
+`QBinomialTheoremInfinite`.
+
+The q-calculus tranche comprises `LambertSeriesLog` (four theorems),
+`PolynomialQDerivative` (two definitions and seventeen theorems),
+`PolynomialQLeibniz` (four theorems), `QGamma` (two definitions and ten
+theorems), and `QPochhammerDerivative` (three theorems). The exact-promotion
+tranche comprises `QPochhammerIntegerIndex` (two definitions and fourteen
+theorems), `ClassicalPochhammerLimit` (five theorems),
+`GaussianBinomialUniversal` (two theorems), `PolynomialQTaylor` (two
+definitions and fifteen theorems), and `QPartialFractions` (one definition
+and five theorems).
+
+The latest 37c q-series additions are `BasicHypergeometricSeries` (two
+definitions and five theorems) and `QMultinomial` (one definition and nine
+theorems). The former supplies uniform term bounds and the formalized
+convergence half of the basic-hypergeometric classification; the latter gives
+the Gaussian-product definition, functorial universal-polynomial form, and
+division-free and quotient factorial identities.
+
+The live master, this README, and the extractor postdate the retained PDF.
+The root `SHA256SUMS` is intentionally a partial operational ledger: it
+verifies stable payloads and the historical PDF only. A final source freeze,
+fresh publication build, and full checksum regeneration are required before
+source/PDF synchronization or a complete release ledger may be claimed.

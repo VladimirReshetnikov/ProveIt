@@ -15294,9 +15294,11 @@ $q^2$-Pochhammer symbol.  Outside the disk, apply this to $1/C_{1/q}$.
 
 \begin{statusbox}{Lean crosswalk: general complex sinc--Pochhammer factorization}
 The current formal API does not prove the whole compound statement
-\cref{p7:thm:sinc-poch}.  It defines the complex symbol through
-\path{complexQPochhammerInf} and exposes exactly the nine theorems
+\cref{p7:thm:sinc-poch}.  The module
+\path{RvachevPochhammerFactorization.lean} contains exactly one definition,
+\path{complexQPochhammerInf}, and exactly the ten theorems
 \path{complexQPochhammerInf_eq_tprod},
+\path{complexQPochhammerInf_eq_qPochhammerInfIn},
 \path{multipliable_one_sub_mul_pow_complex},
 \path{hasProd_complexQPochhammerInf},
 \path{tendsto_finiteQPochhammerIn_complex},
@@ -15304,10 +15306,11 @@ The current formal API does not prove the whole compound statement
 \path{geometricSincProduct_eq_tprod_pair},
 \path{geometricSincProduct_eq_tprod_complexQPochhammerInf},
 \path{rvachevFourierProduct_eq_tprod_complexQPochhammerInf}, and
-\path{rvachevFourier_eq_tprod_complexQPochhammerInf} in
-\path{RvachevPochhammerFactorization.lean}.  The first three convergence
-results after the definitional equality allow arbitrary complex $a$ and
-require exactly $\lVert q\rVert<1$.
+\path{rvachevFourier_eq_tprod_complexQPochhammerInf}.  The first two
+equalities are unconditional; in particular, the second identifies the
+historical complex symbol with \path{qPochhammerInfIn}.  The following three
+convergence results allow arbitrary complex $a$ and require exactly
+$\lVert q\rVert<1$.
 The generic \path{QPochhammerDissection.lean} proves the exact finite
 residue-class formulas through
 \path{finiteQPochhammerIn_dissection} and
@@ -15327,11 +15330,12 @@ derivatives under their stated field hypotheses.  The division-free theorem
 nonvanishing whenever $aq^j=1$, including $q=0$, and
 \path{analyticOrderAt_qPochhammerInfIn_of_eq_zero} states that every zero has
 analytic order exactly one, also including $q=0$.
-The companion \path{QPochhammerEntire.lean} retains exactly the four legacy
+The companion \path{QPochhammerEntire.lean} retains exactly the five legacy
 compatibility wrappers
 \path{hasProdLocallyUniformly_complexQPochhammerInf},
 \path{complexQPochhammerInf_differentiable},
 \path{complexQPochhammerInf_eq_zero_iff}, and
+\path{complexQPochhammerInf_eq_zero_iff_eq_inv_pow}, and
 \path{analyticOrderAt_complexQPochhammerInf_of_eq_zero}.
 For each fixed complex strict contraction $q$, they transfer the generic
 \path{qPochhammerInfIn} results to the older \path{complexQPochhammerInf}
@@ -15339,7 +15343,9 @@ names, without duplicate analytic proofs.  They expose locally uniform
 convergence on the whole complex $a$-plane and entire-ness in $a$, identify
 the zero set in the division-free form
 \(\exists j,\ 1-aq^j=0\), including \(q=0\), and give analytic order one at
-every zero.  Neither API asserts joint holomorphy in \(q\), explicit
+every zero.  The generic-name analytic-order theorem assumes exactly
+$\lVert q\rVert<1$ together with \path{qPochhammerInfIn a q = 0}, and also
+includes $q=0$.  Neither API asserts joint holomorphy in \(q\), explicit
 uniform-in-\(q\) tail or derivative-kernel bounds, or local uniformity of the
 outer spectral product over \(k\).
 \end{statusbox}

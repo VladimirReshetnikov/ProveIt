@@ -21,34 +21,47 @@ The canonical frontier artifacts are:
 - [`semi-formalized-research-frontiers.tex`](semi-formalized-research-frontiers.tex)
 - [`semi-formalized-research-frontiers.pdf`](semi-formalized-research-frontiers.pdf)
 
-> **Source/PDF synchronization.** The retained 237-page A4 PDF includes the
-> 31 August 2026 Legendre Gaunt--Wigner-square closed-form overlay. Its
-> PDF (SHA-256
+> **Source/PDF synchronization.** Two retained canonical-frontier renders are
+> publication checkpoints, not renders of the present TeX.  The earlier
+> 237-page A4 PDF (SHA-256
 > `21180fa05a754b52a057495464674e9d6ac26a51488c2c770730c641b5ffe887`)
-> source predates the later q-Pochhammer overlay and expanded ledger, so it is
-> a historical render and must not be cited as displaying the final source union.
+> includes the 31 August 2026 Legendre Gaunt--Wigner-square overlay.  After the
+> `c5633206e` notation sync, exactly three clean serial passes over source
+> SHA-256
+> `8daa2e6ee194f3f98799699beb56761289a0a1bd0f94745c0ebc7fefad6c454f`
+> produced a later 243-page, 1,789,269-byte A4 PDF with SHA-256
+> `45552dfbaa48ecd3183830b403cd651a979a57b50d2da6c3ff58af2ac1f02549`.
+> That render passed the recorded page, text, rotation, Type-1 embedding,
+> Libertinus, and no-Type-3 checks.  The live TeX has advanced since both
+> builds, so a fresh three-pass build and inspection are pending.
 
-The 1 September 2026 source-only q-Pochhammer overlay is likewise newer than
-the retained PDFs.  The new `QPochhammerEntire.lean` leaf has zero definitions
-and five theorems: for a fixed complex nome with norm less than one it proves
-local uniform convergence of the infinite product, differentiability in the
-symbol, the division-free factor-zero criterion, the reciprocal-power zero
-lattice when the nome is nonzero, and analytic order one at every zero.  This
-promotes only `thm:poch-entire` in the consolidated q-series monograph.  The
-same current source also crosswalks the generic infinite/dissection API and
-the later Euler, q-binomial, Jacobi, quantum-binomial, and Rogers--Szegő
-tranche. Its 282-result forward status totals are now 51 exact / 78 partial /
-145 none / 8 interface, with 36 / 29 / 123 / 3 in the 191-result pre-Fabius
-core and 6 / 1 / 8 / 0 in the q-shifted-factorial chapter. It does not claim
-normal convergence of the additional outer product indexed by spectral scale.
+The live Lean audit now contains exactly 641 facade-reachable modules and
+8,652 public declarations, with no missing module headers or declaration
+documentation.  The q-Pochhammer topology now includes all six public
+theorems in `QPochhammerEntire.lean`: parameter-local uniform convergence,
+complex differentiability, the division-free zero criterion, the
+nonzero-nome reciprocal-power lattice, analytic order one for the historical
+complex symbol, and the corresponding generic-symbol analytic-order theorem.
+`GeometricPochhammerNormalConvergence.lean` adds three facade-reachable
+theorems and closes the formerly open local-uniform outer spectral-product
+boundary for the geometric sinc product, the standalone Rvachev Fourier
+product, and every bounded Fabius witness.  The six-theorem
+`GeneralizedRvachevIdentifiability.lean` recovers exponent sequences from
+dyadic zero orders.  The five later leaves
+`ClassicalPochhammerLimit.lean`, `GaussianBinomialUniversal.lean`,
+`PolynomialQTaylor.lean`, `QPartialFractions.lean`, and
+`QPochhammerIntegerIndex.lean` contribute another 50 public declarations
+(five definitions and 45 theorems) for the classical limit, universal
+Gaussian polynomial, q-Taylor calculus, partial fractions, and integer-index
+symbols.
 
-The monograph's current 13,941-line, 647,940-byte source has SHA-256
-`619d45dad475fd869c294aeed1f1eac6b99d9b3cfef6a9487383ee3e92931bbe`.
-Its retained 340-page A4 PDF (2,180,191 bytes; SHA-256
+The q-series publication receipts remain reproducible history rather than
+current render claims.  In particular, the retained 340-page A4 PDF
+(2,180,191 bytes; SHA-256
 `e64a4ef65a9fcce3a4f211f2125b0f8440910cf4527635f76975b0967800e667`)
-renders an earlier explicitly pinned source. It remains a reproducible
-historical publication checkpoint, but must not be cited as displaying the
-current theorem promotions until a new PDF is built and inspected.
+and the later source/PDF checkpoints recorded in the package README predate
+the final `6c7a69be9` source union.  They must not be cited as displaying the
+new theorem promotions until the live source is rebuilt and inspected.
 
 The current finite-moment/Legendre/Gaunt crosswalk covers eleven modules with
 20 public definitions and 109 public theorems, 129 declarations in all. The
