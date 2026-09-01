@@ -499,6 +499,9 @@ import FabiusFunction.BasicHypergeometricSeries
 import FabiusFunction.QMultinomial
 import FabiusFunction.QExponential
 import FabiusFunction.JacksonIntegral
+import FabiusFunction.QPochhammerLogDerivative
+import FabiusFunction.QPochhammerOrderDerivative
+import FabiusFunction.JacobiCubic
 import FabiusFunction.GaussianBinomialPalindromic
 import FabiusFunction.ThetaQuasiPeriodicity
 
