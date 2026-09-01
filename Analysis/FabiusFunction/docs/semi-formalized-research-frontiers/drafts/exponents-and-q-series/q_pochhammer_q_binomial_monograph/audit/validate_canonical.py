@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Intentionally source-only gate for the canonical q-series synthesis.
+"""Source-structure gate for the canonical q-series synthesis.
 
 The checker reads TeX and CSV sources directly and verifies structural,
 proof-coverage, label, status, and revision-pinned provenance invariants.  It
@@ -33,17 +33,19 @@ from extract_merge_sources import (
 
 
 PACKAGE = Path(__file__).resolve().parents[1]
-MASTER = PACKAGE / "q_series_and_inverse_analogs.tex"
+MASTER = PACKAGE / "q_pochhammer_q_binomial_monograph.tex"
 CHAPTER_DIR = PACKAGE / "chapters"
 CONCORDANCE = PACKAGE / "theorem_concordance.csv"
 SOURCE_REVISION = PACKAGE / "audit" / "SOURCE_REVISION"
 MERGE_CONCORDANCE = PACKAGE / "source_concordance.csv"
 MERGE_SOURCE_REVISION = PACKAGE / "audit" / "MERGE_SOURCE_REVISION"
-EXPONENTS_ROOT = PACKAGE.parents[1]
+EXPONENTS_ROOT = PACKAGE.parent
 RETIRED_GUIDE_ROOT = EXPONENTS_ROOT / "general-q-series-guides"
 RETIRED_SOURCE_DIRS = (
-    PACKAGE.parent / "q_pochhammer_q_binomial_monograph",
-    PACKAGE.parent / "inverse_q_analogs_and_series",
+    EXPONENTS_ROOT
+    / "q-pochhammer-and-inversion"
+    / "q_pochhammer_q_binomial_monograph",
+    EXPONENTS_ROOT / "q-pochhammer-and-inversion" / "inverse_q_analogs_and_series",
     RETIRED_GUIDE_ROOT / "q-series-proof-oriented-article",
     RETIRED_GUIDE_ROOT / "q_series_from_first_principles",
     RETIRED_GUIDE_ROOT / "q_series_monograph",

@@ -18,7 +18,7 @@ The canonical package keeps each kind of record in one place:
   routes the unique retained scripts, data, outputs, and figures.
 
 The geometric q-series layer also cross-links to the forward-theory part of
-the source-only canonical
-[`q_series_and_inverse_analogs`](../../exponents-and-q-series/q-pochhammer-and-inversion/q_series_and_inverse_analogs/)
-synthesis. No canonical publication PDF was generated for that synthesis;
-its retained figure PDFs are research assets only.
+the canonical
+[`q_pochhammer_q_binomial_monograph`](../../exponents-and-q-series/q_pochhammer_q_binomial_monograph/)
+synthesis and its 334-page publication PDF. Its retained figure PDFs are
+research assets only.

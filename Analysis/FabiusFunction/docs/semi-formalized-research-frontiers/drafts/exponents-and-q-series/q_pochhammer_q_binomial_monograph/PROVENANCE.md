@@ -2,7 +2,7 @@
 
 ## Current five-publication synthesis
 
-This neutral package combines material from two former, coequal canonical
+This canonical package combines material from two former, coequal canonical
 publications and three retired general-guide donors. The immutable
 pre-retirement snapshot of all five source packages is commit
 `9560165ae2eb33590404a090ab26bd3ca715f32f`, recorded in
@@ -28,7 +28,7 @@ checksum ledger. Their superseded PDFs were retired with the donor packages
 and are not canonical renderings of this larger source. The former forward
 and inverse manuscript PDFs were removed for the same reason. The merged
 master now has one canonical publication rendering,
-`q_series_and_inverse_analogs.pdf`: a reproducible 334-page A4 artifact built
+`q_pochhammer_q_binomial_monograph.pdf`: a reproducible 334-page A4 artifact built
 by three byte-identical serial passes at fixed source epoch `1788242400`, with
 SHA-256
 `aa75c32926fb0d5b20d831f9df0be584073f1cbc4232c25facbd21d98b9f680d`.
@@ -195,9 +195,14 @@ this section.
 For that reason the earlier six-package consolidation chose the neutral
 `inverse_q_analogs_and_series/` directory: promoting the broadest precursor in
 place would have falsely suggested that its five peers were merely earlier
-editions. The present, wider merger applies the same principle again through
-the neutral `q_series_and_inverse_analogs/` name. The old directory name is a
-historical source location, not the current package identity.
+editions. The wider merger initially used the similarly neutral
+`q_series_and_inverse_analogs/` name. Commit
+`7a002460dabbd2094f11be980f4929e2506ec022` then placed exact copies of the
+master and PDF at the previously published `q_pochhammer_q_binomial_monograph/`
+URL as a temporary compatibility measure. The canonical package now occupies
+that published path directly, so the stable URL and the live repository
+identity agree. The same-stem path beneath `q-pochhammer-and-inversion/` remains
+only a historical source location in the pinned pre-retirement snapshot.
 
 ## Source-result inventory
 
@@ -280,9 +285,9 @@ as retirements in the asset-disposition audit.
 This synthesis is canonical both for forward q-algebra, combinatorics,
 summation, arithmetic, interpolation, and Fabius--Rvachev product theory and
 for branch-specified inverse maps, singular inverse regimes, certification,
-and the six-package concordance above. The former
-`q_pochhammer_q_binomial_monograph/` is now its forward backbone rather than a
-separate neighboring publication.
+and the six-package concordance above. The former historical package at
+`q-pochhammer-and-inversion/q_pochhammer_q_binomial_monograph/` is now its
+forward backbone rather than a separate neighboring publication.
 
 `Cyclotomic_q_Fabius_Rvachev_Frontier/` remains a separate natural-boundary
 and blow-up volume. Its radial root-of-unity layer overlaps

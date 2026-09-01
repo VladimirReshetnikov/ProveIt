@@ -105,12 +105,12 @@ Most recent processed batch (all filed and removed on 2026-08-30):
 - `inverse_q_analogs_report.zip` (894,405 bytes; SHA-256
   `471ee715022df77f2c5f45b86c213e50e980478eee1a6fc48dd91556cdaeb627`)
   was absorbed into the canonical consolidation
-  [`../exponents-and-q-series/q-pochhammer-and-inversion/q_series_and_inverse_analogs/`](../exponents-and-q-series/q-pochhammer-and-inversion/q_series_and_inverse_analogs/),
+  [`../exponents-and-q-series/q_pochhammer_q_binomial_monograph/`](../exponents-and-q-series/q_pochhammer_q_binomial_monograph/),
   whose provenance and asset-disposition ledgers preserve the arrival.
 - `q_pochhammer_q_binomial_expansions_report.zip` (730,285 bytes; SHA-256
   `e8c6e5be4512abc0bacfd904e3f0027b35fd5e47e916a6ad11cc76b2893b3a07`)
   was absorbed into the canonical consolidation
-  [`../exponents-and-q-series/q-pochhammer-and-inversion/q_series_and_inverse_analogs/`](../exponents-and-q-series/q-pochhammer-and-inversion/q_series_and_inverse_analogs/),
+  [`../exponents-and-q-series/q_pochhammer_q_binomial_monograph/`](../exponents-and-q-series/q_pochhammer_q_binomial_monograph/),
   whose provenance and asset-disposition ledgers preserve the arrival.
 
 The immediately preceding processed archive was

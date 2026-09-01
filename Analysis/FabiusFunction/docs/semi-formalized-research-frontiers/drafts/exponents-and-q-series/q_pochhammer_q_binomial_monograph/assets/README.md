@@ -19,7 +19,7 @@ The mathematical status is deliberately strict:
 `ASSET_DISPOSITION.csv` is the completed path-by-path migration ledger.  Its
 source paths are historical paths formerly relative to the surrounding
 `exponents-and-q-series/` directory; destination paths are relative to the
-canonical `q_series_and_inverse_analogs/` directory.  The inventory covered
+canonical `q_pochhammer_q_binomial_monograph/` directory.  The inventory covered
 all 77 files in the six source packages: 39 were retained as reproducibility
 assets and 38 were retired as superseded reports, duplicate renderings,
 package metadata, or build byproducts.  No content-based deletion was inferred
