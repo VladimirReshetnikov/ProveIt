@@ -12724,8 +12724,8 @@ inside the proof below does not formalize the result the proof concludes.
   than a mathematical claim.
 \end{description}
 
-Of the 282 labelled forward results, 129 are \statusexact, 82 are
-\statuspartial, 63 are \statusnone, and 8 are \statusna.  The original
+Of the 282 labelled forward results, 131 are \statusexact, 82 are
+\statuspartial, 61 are \statusnone, and 8 are \statusna.  The original
 191-result pre-Fabius core had 36 \statusexact, 29 \statuspartial, 123
 \statusnone, and 3 \statusna{} entries.  The four integrated guide chapters
 add 31 human-proved but not Lean-formalized assertions and five labelled
@@ -13297,7 +13297,7 @@ Jacobi's triple product & 6 & 2 & 0 & 0\\
 Theta modularity, lattice dissection, and sums of squares & 0 & 0 & 14 & 4\\
 Partitions and product--sum identities & 4 & 0 & 0 & 0\\
 Bailey pairs and the Rogers--Ramanujan identities & 7 & 0 & 0 & 0\\
-Bailey transforms and the Andrews--Gordon identities & 0 & 0 & 8 & 1\\
+Bailey transforms and the Andrews--Gordon identities & 2 & 0 & 6 & 1\\
 Cyclotomic factorization and congruences & 6 & 1 & 2 & 0\\
 Negative upper indices and geometric Newton interpolation & 8 & 0 & 1 & 0\\
 Central $q$-binomial sums and Lambert series & 1 & 0 & 6 & 0\\
@@ -13309,7 +13309,7 @@ Half-base arithmetic and Prouhet--Thue--Morse cancellation & 6 & 3 & 0 & 0\\
 Geometric uniform sums, $q$-cumulants, and the Fabius--Rvachev functions & 2 & 11 & 0 & 0\\
 Dyadic Gaussian--Thue--Morse structure and the values of $F$ & 7 & 44 & 5 & 0\\
 \midrule
-\textbf{Forward total} & 129 & 82 & 63 & 8\\
+\textbf{Forward total} & 131 & 82 & 61 & 8\\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -14742,8 +14742,21 @@ $N$, each step being the one-term telescoping}\\[2pt]
 \midrule
 \Cref{qg:def-bailey-pair} & \statusna & notation only\\[2pt]
 \Cref{qg:thm-bailey-lemma} & \statusnone & ---\\[2pt]
-\Cref{qg:lem-bailey-lowering} & \statusnone & ---\\[2pt]
-\Cref{qg:lem-bailey-chain-iterate} & \statusnone & ---\\[2pt]
+\Cref{qg:lem-bailey-lowering} & \statusexact &
+\texttt{isBaileyPair\_\allowbreak{}baileyLowered},
+\texttt{baileyLowered\_\allowbreak{}coeff\_\allowbreak{}lt},
+\texttt{baileyLowered\_\allowbreak{}coeff\_\allowbreak{}eq}\newline
+{\footnotesize\texttt{BaileyLowering}; in any field with $q\ne0$, $(q;q)_m\ne0$ and
+$(a;q)_m\ne0$ for all $m$; the coefficient identities of the proof are the two
+named lemmas}\\[2pt]
+\Cref{qg:lem-bailey-chain-iterate} & \statusexact &
+\texttt{IsBaileyPair.chain},
+\texttt{baileyChainAlpha},
+\texttt{baileyChainBeta},
+\texttt{baileyChainBeta\_\allowbreak{}unit\_\allowbreak{}one}\newline
+{\footnotesize\texttt{BaileyChain}; the $t$-fold multiple sum is represented by the
+nested recursion $\beta^{(t+1)}_n=\sum_{j\le n}a^jq^{j^2}\beta^{(t)}_j/(q;q)_{n-j}$,
+exactly as the inductive proof in the text unfolds it}\\[2pt]
 \Cref{qg:cor-rr-partitions} & \statusnone & ---\\[2pt]
 \Cref{qg:lem-rogers-recurrence} & \statusnone & ---\\[2pt]
 \Cref{qg:thm-rrcf} & \statusnone & ---\\[2pt]
