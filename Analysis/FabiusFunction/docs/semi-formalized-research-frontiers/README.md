@@ -28,6 +28,18 @@ The canonical frontier artifacts are:
 > source predates the later q-Pochhammer overlay and expanded ledger, so it is
 > a historical render and must not be cited as displaying the final source union.
 
+The current source-only superconvergence overlay is also newer than every
+retained frontier PDF. `RvachevSuperconvergentSynthesis.lean` contributes one
+definition and eight theorems for arbitrary nonzero natural meshes: it
+packages the parity-selected phases, exactness through degree `v₂(M)+1`,
+physical-coordinate quadrature, deconvolved-polynomial synthesis, and the
+explicit Rvachev--Appell specialization. In the canonical inverse synthesis
+this promotes exactly `is:p3:cor:forced-superconvergence` and
+`is:p3:thm:Appell-lattice-reproduction`, bringing its 194 immutable rows to
+49 Lean-proved / 96 human-proved / 10 conjectural / 15 open / 24
+nonassertoric. The live documentation census is 670 modules and 8,852 public
+declarations with no gaps; no PDF was rebuilt for this source-only update.
+
 The 1 September 2026 source-only q-Pochhammer overlay is likewise newer than
 the retained PDFs.  The new `QPochhammerEntire.lean` leaf has zero definitions
 and five theorems: for a fixed complex nome with norm less than one it proves
@@ -36,16 +48,19 @@ symbol, the division-free factor-zero criterion, the reciprocal-power zero
 lattice when the nome is nonzero, and analytic order one at every zero.  This
 promotes only `thm:poch-entire` in the consolidated q-series monograph.  The
 same current source also crosswalks the generic infinite/dissection API and
-the later Euler, q-binomial, Jacobi, quantum-binomial, and Rogers--Szegő
-tranche. Its 282-result forward status totals are now 51 exact / 78 partial /
-145 none / 8 interface, with 36 / 29 / 123 / 3 in the 191-result pre-Fabius
-core and 6 / 1 / 8 / 0 in the q-shifted-factorial chapter. It does not claim
-normal convergence of the additional outer product indexed by spectral scale.
+the later Euler, q-binomial, Jacobi, quantum-binomial, Rogers--Szegő,
+cyclotomic-divisibility, q-Catalan, primitive-root-block, q-Lucas, Jackson
+q-beta, geometric Newton-interpolation, integer/complex upper Gaussian, and
+q-Pfaff--Saalschütz, and noncommutative q-multinomial tranches. Its 282-result forward
+status totals are now 88 exact / 83 partial / 103 none / 8 interface. The
+outer spectral product now has an exact
+locally-uniform/normal-convergence theorem; the compound centered/MGF and
+exterior reciprocal/pole layers remain partial.
 
-The monograph's current 13,941-line, 647,940-byte source has SHA-256
-`619d45dad475fd869c294aeed1f1eac6b99d9b3cfef6a9487383ee3e92931bbe`.
-Its retained 340-page A4 PDF (2,180,191 bytes; SHA-256
-`e64a4ef65a9fcce3a4f211f2125b0f8440910cf4527635f76975b0967800e667`)
+The monograph's current 14,449-line, 679,492-byte source has SHA-256
+`ed3baa67195e142531234170e67d04a04e356905523333ad95d667f0ddddcc8c`.
+Its retained 354-page A4 PDF (3,030,302 bytes; SHA-256
+`1050a9a3b0b7a8df8e7de0870946ae64940d7d7839a2f20427be0ebe14b0ba8c`)
 renders an earlier explicitly pinned source. It remains a reproducible
 historical publication checkpoint, but must not be cited as displaying the
 current theorem promotions until a new PDF is built and inspected.
@@ -162,15 +177,15 @@ asset dispositions, and the deduplicated live asset ledger covers 63 retained
 payloads. The former package paths, source hashes, nested lineage, and recovery
 revisions remain in the package's
 [`PROVENANCE.md`](drafts/inverse-and-sampling/Inverse_Fabius_Analyticity_Asymptotics_and_Computability/PROVENANCE.md).
-Its synchronized 133-page A4 publication has SHA-256
-`83a2cc2050e4f6c0c6ea26b472c09f05d4c77d2d84d4ba47e316d8176e7c11c6`;
-the package README records the clean three-pass build, font preflight, and
-all-page visual inspection.
-The reviewed concordance classifies 39 source rows as Lean-proved and 106 as
-human-proved frontier results. Its three newest exact matches are centered
-Appell deconvolution, positive-degree Appell mean-zero, and arbitrary-phase
-polynomial deconvolution; the degree-`N+1` superconvergent phase in the Appell
-lattice theorem remains explicitly human-proved.
+Its retained 134-page, 2,027,726-byte A4 publication has SHA-256
+`22bc68d855ad04dde9654e9fbd20b3ba7f05a33e3c5df0e5b80bb8991c94b41d`.
+It is a fully reviewed historical checkpoint, but the current source changed
+after that render and therefore requires a fresh three-pass build before
+synchronization is claimed. The reviewed concordance classifies 49 source rows
+as Lean-proved and 96 as human-proved frontier results. Its two newest exact
+matches are the forced parity-selected superconvergence corollary and the full
+Appell lattice-reproduction theorem, including its degree-`N+1` selected-phase
+clause.
 
 Later the same day the groups other than the Fourier-decay corpus were
 **consolidated into volumes**, in two styles: the original members were

@@ -262,6 +262,7 @@ import FabiusFunction.LagrangeRvachevSynthesis
 import FabiusFunction.CombFirstDefect
 import FabiusFunction.CompositeMeshSharpness
 import FabiusFunction.CombDefectSeries
+import FabiusFunction.RvachevSuperconvergentSynthesis
 import FabiusFunction.CauchySurvival
 import FabiusFunction.CauchyHigherPowers
 import FabiusFunction.MonomialCombFourier
@@ -511,6 +512,10 @@ import FabiusFunction.CyclotomicDivisibility
 import FabiusFunction.QCatalan
 import FabiusFunction.QBetaIntegral
 import FabiusFunction.NewtonInterpolation
+import FabiusFunction.GaussianBinomialInteger
+import FabiusFunction.GaussianBinomialComplexOrder
+import FabiusFunction.QPfaffSaalschutz
+import FabiusFunction.QuantumMultinomial
 import FabiusFunction.GaussianBinomialPalindromic
 import FabiusFunction.ThetaQuasiPeriodicity
 
@@ -634,6 +639,19 @@ proves `fabiusInv_isComputableRealFunction` for every bounded Fabius witness.
 This is a computability certificate for the total inverse, not an input-bit
 running-time theorem or an exact least endpoint-mass denominator.
 
+The parity-selected Rvachev synthesis layer exports exactly one definition and
+eight theorems.  `IsRvachevSuperconvergentPhase` selects the endpoint phases
+`0, 1/2` when `v₂(M)+1` is odd and the quarter phases `1/4, 3/4` when it is
+even; `isRvachevSuperconvergentPhase_two_pow_iff` specializes this to endpoint
+phases for even dyadic level and quarter phases for odd dyadic level.  The two
+quarter-phase monomial theorems, the unified monomial and polynomial theorems,
+the physical-coordinate quadrature theorem, and the deconvolved-polynomial and
+Appell specializations prove exactness through degree `v₂(M)+1` for every
+nonzero natural mesh.  This is stronger than the manuscript's dyadic-only
+form.  The predicate names exact real representatives, not all translates
+modulo integers, and the API asserts neither uniqueness of the selected phases
+nor maximality, positivity, or rationality of the resulting quadrature.
+
 The q-calculus surface further includes finite-prefix infinite-product bounds,
 the Heine transformation and q-Gauss summation, a ratio-defined complex-order
 q-Pochhammer symbol, general basic-hypergeometric terms with their convergence
@@ -664,6 +682,12 @@ ring or integral-domain contexts.  `CentralQBinomialReduction` proves the
 sign-pairing and even--odd dissection identities and reduces `[2k,k]_(q²)` to
 finite q-Pochhammer products, with the quotient form retaining both explicit
 nonvanishing-denominator hypotheses.
+
+Four root-of-unity and q-Catalan companions add one definition and twenty-five
+theorems: `CyclotomicDivisibility` 0+3, `PrimitiveRootBlock` 0+3,
+`QCatalan` 1+11, and `QLucas` 0+8.  They prove the cyclotomic carry criterion,
+complete primitive-root blocks, the q-Lucas theorem over integral domains, and
+MacMahon's integral q-Catalan polynomial with its degree and value at one.
 The zeta–Lambert tail calculus of the Thue–Morse frontier results is
 formalized end to end.  The engine is the Euler log transform: for any
 absolutely summable family with all norms below one, over any index type,
@@ -737,6 +761,35 @@ audits' optimized cubic test function through the Collatz–Wielandt bracket
 with the two positivity checks discharged by 32-piece subdivided Bernstein
 certificates — integer coefficients verified by `ring` normalization, no
 Sturm sequences — on a general piecewise-positivity engine for `[0,1]`.
+
+The Newton-interpolation and Jackson-q-beta tail contributes three definitions
+and twenty-one theorems.  `NewtonInterpolation` has two definitions and
+thirteen theorems: triangular Newton coefficients and polynomials,
+interpolation and uniqueness, the divided-difference formula, and its explicit
+geometric-grid specialization.  `QBetaIntegral` has one definition and eight
+theorems: for `0 < q < 1` and positive arguments it evaluates the Jackson
+q-beta integral in infinite-product and q-gamma forms and derives symmetry,
+positivity, and both successor recurrences.  The hypotheses are retained
+explicitly; no endpoint or `q → 1` limiting theorem is asserted.
+
+Three further q-series modules contribute two definitions and eighteen
+theorems.  `GaussianBinomialInteger` (1+10) defines Gaussian coefficients with
+integer upper index, proves both q-Pascal recurrences and negative-index
+reflection, and derives the reciprocal finite q-binomial series.
+`GaussianBinomialComplexOrder` (1+5) uses principal complex powers to extend
+the upper index and packages the generalized reciprocal and finite q-binomial
+series.  `QPfaffSaalschutz` (0+3) proves the terminating balanced `₃φ₂`
+summation algebraically over a field.  The nonzero nome and parameters,
+strict-contraction bounds, and finite-product nonvanishing assumptions remain
+explicit; no boundary or limiting extension is asserted.
+
+`QuantumMultinomial` adds no definitions and exactly five theorems.  It
+decomposes tuple antidiagonals, transports Gaussian symmetry to every
+semiring, proves q-multinomial coefficients commute with every element that
+the nome does, and derives the ordered noncommutative q-multinomial expansion
+when `q` commutes with each variable and `x_j * x_i = q * (x_i * x_j)` for
+`i < j`.  The result is finite and division-free and requires no ambient
+commutativity or analytic convergence premise.
 
 The probabilistic layer is closed at the level of measures.  The up-measure
 `μ_up = up·Leb` satisfies the refinement equation

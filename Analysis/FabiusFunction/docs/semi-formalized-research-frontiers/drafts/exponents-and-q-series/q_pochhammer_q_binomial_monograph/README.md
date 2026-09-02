@@ -96,25 +96,22 @@ It checks every permanent package file except the self-referential root
 useful because it preserves the migrated experiment and research-figure
 boundary.
 
-The retained `q_pochhammer_q_binomial_monograph.pdf` is a historical
-348-page A4 publication checkpoint. It was built from the then-current
-14,158-line, 661,835-byte master source with SHA-256
-`79ee5e60a6c7e42a91c58dcd9bcae56173cc6b4aa3e54739a461943f705f3904`.
-The PDF has 3,002,729 bytes and SHA-256
-`8bf14b52d8a0fc0abc4d54cca503fd47a2df37cf76ee1bb4e442bea1fd2a4aa7`.
-It was produced by exactly three serial
-`pdflatex -interaction=nonstopmode -halt-on-error` passes, which produced 338,
-348, and 348 pages, with `makeindex` run on the `.idx` file after each pass.
-The final log scan found three overfull boxes, all in the single paragraph of
-the `QPochhammerEntire` crosswalk in that historical source, whose long
-declaration names lack break points. All pages are A4. `pdffonts` reports 42
-font rows, all embedded and subsetted, including five Libertinus rows, with no
-Type-3 fonts. The files under `assets/experiments/**/figures/` remain research
+The retained `q_pochhammer_q_binomial_monograph.pdf` is a 354-page A4
+build of the upstream source checkpoint (14,381 lines, 675,239 bytes,
+SHA-256 `240bff72fb47562e9a8fd87085b5a3a96d738189714518db17988f7c4ac15d31`).
+The PDF is 3,030,302 bytes with SHA-256
+`1050a9a3b0b7a8df8e7de0870946ae64940d7d7839a2f20427be0ebe14b0ba8c`.
+It was built by exactly three serial
+`pdflatex -interaction=nonstopmode -halt-on-error` passes, which produced 343,
+354, and 354 pages, with `makeindex` run on the `.idx` file after each pass.
+The final log scan found three overfull boxes, all in the single paragraph of the `QPochhammerEntire` crosswalk, whose long declaration names lack break points. All pages are A4. `pdffonts` reports 42 font rows, all
+embedded and subsetted, including 5 Libertinus rows, with no Type-3
+fonts. The files under `assets/experiments/**/figures/` remain research
 figures, not publication manuscripts.
 
 The current master TeX is a source-only successor to that checkpoint: it has
-14,316 lines, 671,065 bytes, and SHA-256
-`38c15e63a4676ba64f35a6e89dee558eb3989787bb7c6528a943bc3d47d46e4d`.
+14,449 lines, 679,492 bytes, and SHA-256
+`ed3baa67195e142531234170e67d04a04e356905523333ad95d667f0ddddcc8c`.
 The regenerated root `SHA256SUMS` ledger records the same identity. The
 historical source identity above must not be reused for the live source, and
 the retained PDF does not claim render parity with the current TeX.
@@ -129,6 +126,7 @@ theorems), `GaussianBinomialPolynomialStructure` (zero definitions and five
 theorems), and `GeometricPochhammerNormalConvergence` (zero
 definitions and three theorems). The wider inventory also includes
 `QMultinomial` (one definition and nine theorems),
+`QuantumMultinomial` (zero definitions and five theorems),
 `QPochhammerInfiniteBounds` (zero definitions and five theorems),
 `QPochhammerComplexOrder` (one definition and four theorems),
 `BasicHypergeometricSeries` (two definitions and five theorems),
@@ -140,7 +138,16 @@ and six theorems), `QPochhammerLogDerivative` (zero definitions and ten
 theorems), `QPochhammerOrderDerivative` (zero definitions and three theorems),
 `JacobiCubic` (zero definitions and two theorems),
 `CentralQBinomialReduction` (zero definitions and six theorems), and
-`CyclotomicFactorization` (zero definitions and seven theorems), together with
+`CyclotomicFactorization` (zero definitions and seven theorems).  The newest
+cyclotomic tail consists exhaustively of `CyclotomicDivisibility` (zero
+definitions and three theorems), `PrimitiveRootBlock` (zero definitions and
+three theorems), `QCatalan` (one definition and eleven theorems), and `QLucas`
+(zero definitions and eight theorems).  The latest analytic and interpolation
+tail adds `QBetaIntegral` (one definition and eight theorems) and
+`NewtonInterpolation` (two definitions and thirteen theorems).  The newest
+tail adds `GaussianBinomialInteger` (one definition and ten theorems),
+`GaussianBinomialComplexOrder` (one definition and five theorems), and
+`QPfaffSaalschutz` (zero definitions and three theorems), together with
 expanded Euler, Jacobi, and Rogers--Szegő material.
 
 The two newest generic theorems are
@@ -153,7 +160,7 @@ entireness, zero-locus, reciprocal-power, and analytic-order results rather
 than duplicating their analytic proofs. In `QBinomialTheoremInfinite`,
 `finiteQPochhammerIn_zero_left` remains the unique declaration owned by
 `GaussianBinomialAtOne` and is imported rather than redeclared. The forward
-status ledger is 81 Exact, 85 Partial, 108 None, and 8 interface rows; the
+status ledger is 88 Exact, 83 Partial, 103 None, and 8 interface rows; the
 191-result pre-Fabius core is 36/29/123/3. The compound outer spectral-product
 theorem remains Partial even though the three-theorem outer-product leaf proves
 local-uniform (normal) convergence for every complex strict contraction, its
@@ -176,9 +183,22 @@ domain for the Gaussian form, with the exponent bounds stated explicitly. The
 half-base Gaussian valuation row remains Partial: Lean proves the reciprocal
 identity and symmetry used in the argument, while the concluding odd-integer
 valuation statement is still outside the formal surface.
+The Jackson q-beta evaluation and both recurrences are Exact over the stated
+real domain `0 < q < 1`, `0 < x`, `0 < y`.  The geometric Newton formula and
+its triangular-coefficient corollary are Exact via the generic field-valued
+interpolation API and its geometric-grid specialization.
+The terminating q-Pfaff--Saalschütz row is Exact under its explicit field and
+nonvanishing hypotheses.  The integer-index Gaussian definition, reflection,
+two Pascal laws, and reciprocal series are Exact; so are the upper-parameter
+and generalized complex-order series on their stated norm domains.  The
+separate complex-parameter property and classical-specialization rows remain
+None and are not inferred from those series identities.
+The quantum-multinomial row is Exact over every semiring under the stated
+pairwise q-commutation laws and commutation of q with each variable; neither
+centrality of q nor commutativity of the ambient semiring is claimed.
 
-No PDF was generated while resolving this merge. The root package checksum
-ledger records the live source and retained historical PDF as distinct
-payloads.
-PDFs are rebuilt in batches, at most about once per hour; synchronization is
-claimed only after a fresh guarded build.
+Source and PDF were synchronized by this build, and the root package checksum
+ledger (`SHA256SUMS`) was regenerated with `audit/build_package_checksums.py`
+afterwards. PDFs are rebuilt in batches, at most about once per hour, so
+source-only commits may precede the next synchronization; the ledger and the
+figures above always describe the retained PDF.

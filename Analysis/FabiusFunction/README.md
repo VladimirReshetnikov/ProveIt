@@ -77,7 +77,7 @@ That primary exposition is deliberately proof-backed: every mathematical claim
 in it must have a proved counterpart in the Lean development.
 
 > **Artifact status (2026-09-01).**  The live facade union contains exactly
-> 659 source modules and 8,768 public declarations.  The documentation audit
+> 670 source modules and 8,852 public declarations.  The documentation audit
 > reports no missing module headers or declaration comments.  Its q-series union retains
 > `QPochhammerEntire` 0+5, `GeometricPochhammerNormalConvergence` 0+3,
 > `QPochhammerDissection` 0+2,
@@ -95,12 +95,16 @@ in it must have a proved counterpart in the Lean development.
 > `QExponential` 3+8, `ThetaQuasiPeriodicity` 1+6,
 > `GaussianBinomialPolynomialStructure` 0+5, `JacobiCubic` 0+2,
 > `QPochhammerLogDerivative` 0+10, `QPochhammerOrderDerivative` 0+3,
-> `CentralQBinomialReduction` 0+6, and `CyclotomicFactorization` 0+7.
+> `CentralQBinomialReduction` 0+6, `CyclotomicFactorization` 0+7,
+> `CyclotomicDivisibility` 0+3, `PrimitiveRootBlock` 0+3, `QCatalan` 1+11,
+> `QLucas` 0+8, `QBetaIntegral` 1+8, `NewtonInterpolation` 2+13,
+> `GaussianBinomialInteger` 1+10, `GaussianBinomialComplexOrder` 1+5,
+> `QPfaffSaalschutz` 0+3, and `QuantumMultinomial` 0+5.
 > The retained
 > primary exposition, Lean walkthrough, canonical frontier, Representation
 > Frontiers, filed New Frontiers, notation catalogue, Integration-and-Transform
 > master, comb-interpolation, and q-series synthesis PDFs contain respectively
-> 167, 126, 237, 301, 41, 88, 377, 158, and 348 A4 pages.  Their current TeX
+> 167, 126, 237, 301, 41, 88, 377, 158, and 354 A4 pages.  Their current TeX
 > sources contain post-render unions, including the centered
 > Appell/deconvolution, arbitrary-phase synthesis, Lagrange--Rvachev,
 > prime-power companion-row, outer Pochhammer normal convergence, total
@@ -341,7 +345,8 @@ Padé/J-fractions, infinite Jacobi theory, and asymptotics also remain open.
 | Actual quarter inverse Catalan jet | `FabiusFunction.FabiusInverseQuarterJet` | Exhaustive public surface: `iteratedDeriv_centeredFabiusInv_quarter_eq_quadraticInverse`, `iteratedDeriv_fabiusInv_five_seventy_two_succ`.  For every bounded Fabius solution, the full centered derivative jet at `5/72 = F(1/4)` equals the factorial-scaled coefficient sequence of `QuadraticInverse.inverse 4`; in particular `G^(m+1)(5/72) = (m+1)! (-4)^m C_m`.  This is equality of all jets, not local analytic equality: it neither erases the known nonanalytic flat defect nor proves that defect is nonzero by a named remainder theorem. |
 | Finite polynomial integrals from raw moments and formal cumulants | `FabiusFunction.PolynomialExpectationCumulant` | `integral_eval₂_eq_sum_moment`, `integral_eval₂_eq_sum_completeBell_momentCumulant_with_mass_correction`, `integral_eval₂_eq_sum_completeBell_momentCumulant_of_moment_zero_eq_one`, `integral_eval₂_eq_sum_completeBell_momentCumulant` |
 | Rvachev raw moments, centered Appell convolution, and triangular injective polynomial deconvolution | `FabiusFunction.RvachevMomentAppell` | Exhaustive public surface: six definitions and exactly 33 theorems, enumerated below in source order.  It packages rational raw and reciprocal moments, rational and real monic Appell families of exact degree, and coefficientwise deconvolution as an injective real linear map preserving the top coefficient, natural degree, and leading coefficient.  Smoothing recovers every polynomial in both the additive and centered `x-y` forms; positive-degree Appell polynomials have Rvachev mean zero.  It proves no analytic reciprocal-MGF or Appell generating-series identity, literal differential-operator expansion, parity theorem for the reciprocal/deconvolution families, or displayed low-coefficient table. |
-| Exact shifted-up polynomial synthesis, including arbitrary-phase self-sampling | `FabiusFunction.RvachevPolynomialSynthesis` | Exhaustive public surface: zero definitions and exactly five theorems, `tsum_rvachevDeconvolvedPolynomial_mul_shifted_rvachevUp`, `normalized_tsum_rvachevDeconvolvedPolynomial_mul_shifted_rvachevUp`, `sum_Ioo_rvachevDeconvolvedPolynomial_mul_shifted_rvachevUp`, `normalized_sum_Ioo_rvachevDeconvolvedPolynomial_mul_shifted_rvachevUp`, and `normalized_tsum_shifted_rvachevDeconvolvedPolynomial_mul_rvachevUp`.  For every nonzero natural mesh `M` and `P.natDegree ≤ v₂(M)`, the first four give global and exact finite `k ∈ (-2M,2M)` synthesis on `[-1,1]`; the fifth reconstructs `P.eval x` for arbitrary real phase and real `x`.  At `M=2^N` this reaches every degree at most `N`, but not the proposed parity-selected degree-`N+1` superconvergence or odd-`N` quarter-phase extension. |
+| Exact shifted-up polynomial synthesis, including arbitrary-phase self-sampling | `FabiusFunction.RvachevPolynomialSynthesis` | Exhaustive public surface: zero definitions and exactly five theorems, `tsum_rvachevDeconvolvedPolynomial_mul_shifted_rvachevUp`, `normalized_tsum_rvachevDeconvolvedPolynomial_mul_shifted_rvachevUp`, `sum_Ioo_rvachevDeconvolvedPolynomial_mul_shifted_rvachevUp`, `normalized_sum_Ioo_rvachevDeconvolvedPolynomial_mul_shifted_rvachevUp`, and `normalized_tsum_shifted_rvachevDeconvolvedPolynomial_mul_rvachevUp`.  For every nonzero natural mesh `M` and `P.natDegree ≤ v₂(M)`, the first four give global and exact finite `k ∈ (-2M,2M)` synthesis on `[-1,1]`; the fifth reconstructs `P.eval x` for arbitrary real phase and real `x`.  At `M=2^N` this arbitrary-phase layer reaches every degree at most `N`; the adjacent parity-selected layer adds one degree at its selected phases. |
+| Parity-selected one-extra-degree Rvachev quadrature and Appell synthesis | `FabiusFunction.RvachevSuperconvergentSynthesis` | Exhaustive public surface: one definition, `IsRvachevSuperconvergentPhase`, and exactly eight theorems, `isRvachevSuperconvergentPhase_two_pow_iff`, `tsum_quarter_monomial_eq_integral_of_even_deg`, `tsum_three_quarters_monomial_eq_integral_of_even_deg`, `tsum_shifted_monomial_eq_integral_superconvergent`, `tsum_shifted_polynomial_eq_integral_superconvergent`, `integral_polynomial_mul_rvachevUp_eq_normalized_tsum_superconvergent`, `normalized_tsum_shifted_rvachevDeconvolvedPolynomial_mul_rvachevUp_superconvergent`, and `normalized_tsum_shifted_rvachevAppellPolynomial_mul_rvachevUp_superconvergent`.  For every nonzero natural mesh `M`, the selected endpoint or quarter phases give exactness through degree `v₂(M)+1`, physical-coordinate quadrature, deconvolved-polynomial reconstruction, and the Appell monomial specialization.  On `M=2^N`, even `N` selects `0,1/2` and odd `N` selects `1/4,3/4`.  This generic-mesh theorem is stronger than the dyadic manuscript form.  The predicate records exact real representatives, not integer translates or a complete classification; no maximality, positivity, or rationality theorem is claimed. |
 | Shifted dyadic polynomial comb exactness and normalized self-sampling quadrature | `FabiusFunction.PolynomialCombExactness` | Exhaustive public surface: zero definitions and exactly three theorems, `finite_support_comb`, `tsum_shifted_polynomial_eq_integral`, and `integral_polynomial_mul_rvachevUp_eq_dyadic_tsum`.  For every bounded Fabius solution, natural level `m`, real phase `theta`, and arbitrary real weight function `g`, the sampled product `g(theta+k) * up(2^-m * (theta+k))` has finite integer support.  Every real polynomial `P` with `P.natDegree <= m` therefore satisfies the corresponding whole-line shifted comb identity.  In physical coordinates, for every natural `N`, arbitrary real phase, and `P.natDegree <= N`, its integral against `up` equals `2^-N` times the integer sum over nodes `2^-N * (theta+k)` weighted by `up` at those same nodes.  The statements include level zero; the sums are finite by compact support, and no phase rationality, positivity, infinite-support convergence, or optimal-mesh claim is imposed. |
 | Generic finite-node Lagrange--Rvachev decoder, cardinal biorthogonality, and exact interpolation loop | `FabiusFunction.LagrangeRvachevSynthesis` | Exhaustive public surface: two definitions, `lagrangeRvachevDecoder` and `lagrangeRvachevAtomCoefficient`; and seven theorems, `natDegree_lagrangeBasis_le_card_sub_one`, `natDegree_lagrangeInterpolate_le_card_sub_one`, `normalized_sum_Ioo_lagrangeRvachevDecoder_mul_shifted_rvachevUp`, `normalized_sum_Ioo_lagrangeRvachevDecoder_eval_node`, `lagrangeRvachevAtomCoefficient_eq_deconvolved_interpolate`, `sum_Ioo_lagrangeRvachevAtomCoefficient_mul_shifted_rvachevUp`, and `sum_lagrangeRvachevDecoder_eq_one`.  The degree bounds and polynomial reconstruction need no distinct-node hypothesis; componentwise Kronecker biorthogonality requires distinct nodes and evaluation inside `[-1,1]`, while the row-sum theorem additionally requires a nonempty node set.  This closes the reusable generic finite-node synthesis loop, not a geometric Gaussian closed-form decoder, bundled matrix/right-inverse wrapper, or optimal/minimum-variation decoder theorem. |
 | Sharp universal composite-mesh exactness and least natural meshes | `FabiusFunction.CompositeMeshSharpness` | Exhaustive public surface: `exists_shift_tsum_shifted_monomial_ne_integral_nat_real`, `rvachevCombExactThrough`, `rvachevCombExactThrough_iff_padicValNat`, `rvachevCombExactThrough_iff_pow_two_dvd`, `rvachevCombExactThrough_two_pow`, `two_pow_le_of_rvachevCombExactThrough`, `isLeast_rvachevCombExactThrough`, `isLeast_rvachevCombExactThrough_even`.  The `IsLeast` results quantify over meshes exact for the whole real polynomial space through the stated degree; they do not assert minimality for an individual Legendre polynomial, a fixed Legendre partial sum, or a target-adapted mesh. |
@@ -419,6 +424,10 @@ Padé/J-fractions, infinite Jacobi theory, and asymptotics also remain open.
 | Gaussian palindromicity, q-exponentials, Jackson integration, and theta quasi-periodicity | `FabiusFunction.GaussianBinomialPalindromic`, `FabiusFunction.QExponential`, `FabiusFunction.JacksonIntegral`, `FabiusFunction.ThetaQuasiPeriodicity` | Exhaustive module counts are 0+12, 3+8, 1+7, and 1+6: five definitions and thirty-three theorems.  They give the degree, monicity, coefficient reversal, and mean identity for Gaussian polynomials; the two q-exponentials and their q-derivative laws; Jackson's fundamental theorem and integration by parts; and the bilateral-theta product, quasi-periodicity, and exact zero criterion.  The analytic statements retain their explicit strict-contraction, nonzero-variable, convergence, and nonvanishing hypotheses. |
 | Universal Gaussian structure, q-Pochhammer derivatives, and Jacobi's cubic identity | `FabiusFunction.GaussianBinomialPolynomialStructure`, `FabiusFunction.QPochhammerLogDerivative`, `FabiusFunction.QPochhammerOrderDerivative`, `FabiusFunction.JacobiCubic` | Exhaustive module counts are 0+5, 0+10, 0+3, and 0+2: twenty theorems and no definitions.  They give universal Gaussian degree, monicity, constant coefficient, and reflection symmetry over `ℕ[X]`; derivative and Lambert-series formulas for the infinite q-Pochhammer product on the unit disc; the complex-order derivative under a nonzero nome and `‖a*q^α‖ < 1`; and Jacobi's cubic identity for `‖q‖ < 1`. |
 | Cyclotomic factorization and central Gaussian reduction | `FabiusFunction.CyclotomicFactorization`, `FabiusFunction.CentralQBinomialReduction` | Exhaustive module counts are 0+7 and 0+6: thirteen theorems and no definitions.  The first factors `(X;X)_n` and `[n,k]_X` into cyclotomic polynomials, with the Gaussian factorization stated over an integral domain.  The second proves finite-symbol sign pairing, even--odd dissection, ring-hom naturality, and the division-free central identity `[2k,k]_(q²)(q²;q²)_k=(q;q²)_k(-q;q)_(2k)` over every commutative ring; its quotient corollary assumes both denominators are nonzero. |
+| Root-of-unity Gaussian arithmetic, q-Lucas, and MacMahon q-Catalan | `FabiusFunction.CyclotomicDivisibility`, `FabiusFunction.PrimitiveRootBlock`, `FabiusFunction.QCatalan`, `FabiusFunction.QLucas` | Exhaustive counts are 0+3, 0+3, 1+11, and 0+8: one definition and twenty-five theorems.  The tranche proves the cyclotomic carry criterion, Gaussian values and complete q-Pochhammer blocks at primitive roots, the q-Lucas theorem over integral domains, and the integral q-Catalan polynomial with degree `n(n-1)` and Catalan specialization at `q=1`. |
+| Newton interpolation and the Jackson q-beta integral | `FabiusFunction.NewtonInterpolation`, `FabiusFunction.QBetaIntegral` | Exhaustive counts are 2+13 and 1+8: three definitions and twenty-one theorems.  The Newton module constructs triangular coefficients and interpolants, proves evaluation, uniqueness, divided differences, and the explicit geometric-grid denominator formula.  The q-beta module defines the Jackson integral, proves its infinite-product and q-gamma evaluations for `0<q<1` and positive arguments, and derives symmetry, positivity, and both successor recurrences. |
+| Integer/complex upper Gaussian coefficients and q-Pfaff--Saalschütz | `FabiusFunction.GaussianBinomialInteger`, `FabiusFunction.GaussianBinomialComplexOrder`, `FabiusFunction.QPfaffSaalschutz` | Exhaustive counts are 1+10, 1+5, and 0+3: two definitions and eighteen theorems.  The first module extends Gaussian coefficients to integer upper indices, proves both q-Pascal laws and negative-index reflection, and derives the reciprocal finite q-binomial series.  The second uses principal complex powers to package complex upper indices and the generalized reciprocal and finite q-binomial series.  The third proves the terminating balanced `₃φ₂` summation algebraically over a field.  All nonzero-nome, strict-contraction, and displayed denominator hypotheses remain explicit. |
+| Noncommutative q-multinomial theorem | `FabiusFunction.QuantumMultinomial` | Exhaustive count: zero definitions and five theorems.  Over an arbitrary semiring, pairwise relations `x_j*x_i = q*(x_i*x_j)` for `i<j`, together with commutation of `q` with every `x_i`, expand a power of the finite sum into ordered monomials weighted by `qMultinomial`.  The supporting API decomposes tuple antidiagonals, transports Gaussian symmetry to semirings, and proves coefficient commutation.  The result is finite and division-free; it makes no convergence claim. |
 
 The frontier-facing focused imports above expose exact finite or formal
 algebra, and their names should not be read as stronger analytic conclusions.
@@ -742,9 +751,30 @@ for arbitrary real phase `θ` and real `x`: it samples `up` at
 `M⁻¹ * (θ + k)`, evaluates the deconvolved polynomial at
 `x - M⁻¹ * (θ + k)`, and reconstructs `P.eval x`.  Taking
 `M = 2 ^ N` formalizes arbitrary-phase polynomial reproduction through every
-degree `n ≤ N`.  It does not formalize the Appell-lattice extension to degree
-`N + 1` at parity-selected superconvergent phases, including the odd-`N`
-quarter phases.
+degree `n ≤ N`.
+
+The compiled `RvachevSuperconvergentSynthesis.lean` extension exports exactly
+one public definition and eight public theorems.  Its definition
+`Fabius.IsRvachevSuperconvergentPhase` selects `0,1/2` when `v₂(M)+1` is odd
+and `1/4,3/4` when it is even.  The theorem
+`Fabius.isRvachevSuperconvergentPhase_two_pow_iff` rewrites this at
+`M=2^N` as endpoint phases for even `N` and quarter phases for odd `N`.
+The remaining seven theorems are
+`Fabius.tsum_quarter_monomial_eq_integral_of_even_deg`,
+`Fabius.tsum_three_quarters_monomial_eq_integral_of_even_deg`,
+`Fabius.tsum_shifted_monomial_eq_integral_superconvergent`,
+`Fabius.tsum_shifted_polynomial_eq_integral_superconvergent`,
+`Fabius.integral_polynomial_mul_rvachevUp_eq_normalized_tsum_superconvergent`,
+`Fabius.normalized_tsum_shifted_rvachevDeconvolvedPolynomial_mul_rvachevUp_superconvergent`,
+and
+`Fabius.normalized_tsum_shifted_rvachevAppellPolynomial_mul_rvachevUp_superconvergent`.
+For every nonzero natural mesh they prove exactness through degree
+`v₂(M)+1`, including physical-coordinate quadrature, deconvolved-polynomial
+reconstruction, and the explicit Appell specialization.  This arbitrary-`M`
+result is stronger than the dyadic-only manuscript claim.  The selected
+phases are exact representatives rather than a modulo-integer wrapper or a
+classification, and the module proves neither maximality nor positivity or
+rationality of the quadrature.
 
 The current-tree module `LagrangeRvachevSynthesis.lean` exports exactly two
 public definitions, `Fabius.lagrangeRvachevDecoder` and
@@ -851,10 +881,10 @@ interval supremum norm; the module also exports the raw `TendstoUniformlyOn`
 form, convergence of the supremum-norm error to zero, and the pointwise
 corollary on `[-1,1]`.
 
-The six modules in this tranche have respectively `6/33`, `0/5`, `2/7`,
-`1/7`, `6/7`, and `5/25` public definition/theorem inventories, for exactly
-104 public
-declarations in total.  Universal whole-space mesh sharpness is now proved,
+The seven modules in this tranche have respectively `6/33`, `0/5`, `1/8`,
+`2/7`, `1/7`, `6/7`, and `5/25` public definition/theorem inventories, for
+exactly 113 public declarations in total.  The added `1/8` inventory is
+`RvachevSuperconvergentSynthesis`.  Universal whole-space mesh sharpness is now proved,
 but target-specific minimality for an individual Legendre polynomial or
 partial sum is not.  The modules also do not assert an
 analytic reciprocal-MGF or Appell generating-series realization of

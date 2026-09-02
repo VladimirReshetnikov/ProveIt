@@ -24,7 +24,7 @@ denominators evaluate to `(-1)^j q^{C(j,2) + j(k-j)} (q;q)_j (q;q)_{k-j}` (note
 
 ## Main declarations
 
-* `newtonCoeff`, `newtonCoeff_eq` (the triangular reconstruction), `newtonPoly`.
+* `newtonCoeff`, `newtonCoeff_eq` (the triangular reconstruction), `newtonInterpolant`.
 * `eval_newtonPoly`: `P_n(v_i) = y_i`, needing only that `v_i` differs from the earlier nodes.
 * `newtonPoly_eq_interpolate`, `eq_newtonPoly_of_eval_eq`: uniqueness.
 * `newtonCoeff_eq_sum`: the divided-difference formula.
@@ -69,20 +69,20 @@ theorem newtonCoeff_mul_prod (v y : ℕ → F) {k : ℕ} (hk : ∏ j ∈ range k
   rw [newtonCoeff_eq, div_mul_cancel₀ _ hk]
 
 /-- **The Newton polynomial** `P_n = ∑_{k≤n} c_k ∏_{j<k} (X - v_j)`. -/
-noncomputable def newtonPoly (v y : ℕ → F) (n : ℕ) : F[X] :=
+noncomputable def newtonInterpolant (v y : ℕ → F) (n : ℕ) : F[X] :=
   ∑ k ∈ range (n + 1), C (newtonCoeff v y k) * nodal (range k) v
 
 /-- `P_{n+1} = P_n + c_{n+1} ∏_{j≤n} (X - v_j)`. -/
 theorem newtonPoly_succ (v y : ℕ → F) (n : ℕ) :
-    newtonPoly v y (n + 1) =
-      newtonPoly v y n + C (newtonCoeff v y (n + 1)) * nodal (range (n + 1)) v :=
+    newtonInterpolant v y (n + 1) =
+      newtonInterpolant v y n + C (newtonCoeff v y (n + 1)) * nodal (range (n + 1)) v :=
   sum_range_succ _ _
 
 /-- **Newton interpolation**: `P_n(v_i) = y_i` for `i ≤ n`, provided `v_i` differs from the
 earlier nodes `v_0, …, v_{i-1}`. -/
 theorem eval_newtonPoly (v y : ℕ → F) {n i : ℕ} (hi : i ≤ n)
-    (hne : ∏ j ∈ range i, (v i - v j) ≠ 0) : (newtonPoly v y n).eval (v i) = y i := by
-  unfold newtonPoly
+    (hne : ∏ j ∈ range i, (v i - v j) ≠ 0) : (newtonInterpolant v y n).eval (v i) = y i := by
+  unfold newtonInterpolant
   rw [eval_finsetSum]
   simp only [eval_mul, eval_C, eval_nodal]
   rw [← sum_range_add_sum_Ico _ (Nat.succ_le_succ hi), sum_range_succ,
@@ -94,8 +94,8 @@ theorem eval_newtonPoly (v y : ℕ → F) {n i : ℕ} (hi : i ≤ n)
 
 /-- `deg P_n ≤ n`. -/
 theorem degree_newtonPoly_lt (v y : ℕ → F) (n : ℕ) :
-    (newtonPoly v y n).degree < (n + 1 : ℕ) := by
-  unfold newtonPoly
+    (newtonInterpolant v y n).degree < (n + 1 : ℕ) := by
+  unfold newtonInterpolant
   refine (degree_sum_le _ _).trans_lt ?_
   rw [Finset.sup_lt_iff (WithBot.bot_lt_coe _)]
   intro k hk
@@ -108,7 +108,7 @@ theorem degree_newtonPoly_lt (v y : ℕ → F) (n : ℕ) :
 
 /-- For distinct nodes, the Newton polynomial is the Lagrange interpolant. -/
 theorem newtonPoly_eq_interpolate (v y : ℕ → F) {n : ℕ} (hvs : Set.InjOn v (range (n + 1))) :
-    newtonPoly v y n = interpolate (range (n + 1)) v y := by
+    newtonInterpolant v y n = interpolate (range (n + 1)) v y := by
   refine eq_interpolate_of_eval_eq y hvs ?_ fun i hi => ?_
   · rw [card_range]
     exact degree_newtonPoly_lt v y n
@@ -124,14 +124,14 @@ theorem newtonPoly_eq_interpolate (v y : ℕ → F) {n : ℕ} (hvs : Set.InjOn v
 nodes `v_i` is the Newton polynomial. -/
 theorem eq_newtonPoly_of_eval_eq (v y : ℕ → F) {n : ℕ} (hvs : Set.InjOn v (range (n + 1)))
     {P : F[X]} (hP : P.degree < (n + 1 : ℕ))
-    (heval : ∀ i ∈ range (n + 1), P.eval (v i) = y i) : P = newtonPoly v y n := by
+    (heval : ∀ i ∈ range (n + 1), P.eval (v i) = y i) : P = newtonInterpolant v y n := by
   rw [newtonPoly_eq_interpolate v y hvs]
   exact eq_interpolate_of_eval_eq y hvs (by rwa [card_range]) heval
 
 /-- The top coefficient of `P_n` is `c_n`. -/
 theorem coeff_newtonPoly_self (v y : ℕ → F) (n : ℕ) :
-    (newtonPoly v y n).coeff n = newtonCoeff v y n := by
-  unfold newtonPoly
+    (newtonInterpolant v y n).coeff n = newtonCoeff v y n := by
+  unfold newtonInterpolant
   rw [finsetSum_coeff, sum_range_succ, sum_eq_zero (s := range n) (fun k hk => ?_), zero_add,
     coeff_C_mul]
   · have h := (nodal_monic (s := range n) (v := v)).coeff_natDegree
@@ -146,7 +146,7 @@ theorem coeff_newtonPoly_self (v y : ℕ → F) (n : ℕ) :
 theorem newtonCoeff_eq_sum (v y : ℕ → F) {k : ℕ} (hvs : Set.InjOn v (range (k + 1))) :
     newtonCoeff v y k =
       ∑ j ∈ range (k + 1), y j / ∏ r ∈ (range (k + 1)).erase j, (v j - v r) := by
-  have h := coeff_eq_sum hvs (P := newtonPoly v y k)
+  have h := coeff_eq_sum hvs (P := newtonInterpolant v y k)
     (by rw [card_range]; exact degree_newtonPoly_lt v y k)
   rw [card_range, Nat.add_sub_cancel, coeff_newtonPoly_self] at h
   rw [h, newtonPoly_eq_interpolate v y hvs]
