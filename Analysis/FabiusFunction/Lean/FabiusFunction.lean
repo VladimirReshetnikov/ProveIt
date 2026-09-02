@@ -31,6 +31,8 @@ import FabiusFunction.EulerianEGF
 import FabiusFunction.BernoulliAppell
 import FabiusFunction.StirlingShiftedEvaluations
 import FabiusFunction.StirlingTransformEGF
+import FabiusFunction.StirlingSummations
+import FabiusFunction.StirlingNormalOrder
 import FabiusFunction.SymmetricFunctionTransform
 import FabiusFunction.SymmetricFunctionGenerating
 import FabiusFunction.FiniteQBinomialCore

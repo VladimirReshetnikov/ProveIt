@@ -158,6 +158,23 @@ STATUS = {
    r"\lean{Fabius.partialBell_mul_left}, \lean{Fabius.partialBell_pow_mul}, "
    r"\lean{Fabius.partialBell_bihomogeneous} (\lean{BellHomogeneity}), over every commutative "
    r"semiring"),
+ 'thm:normal-order': ('Lean',
+   r"\lean{Fabius.iterate_X_mul_derivative} (\cref{eq:normal1}) and "
+   r"\lean{Fabius.xkDk_eq_sum_signedStirlingFirst} (\cref{eq:normal2}, by Stirling inversion) in "
+   r"\lean{StirlingNormalOrder}, as identities of operators applied to an arbitrary polynomial "
+   r"over any commutative ring; the falling-factorial form $\FallingFactorial{xD}{n}$ and the "
+   r"operator series \cref{eq:der-from-diff,eq:diff-from-der} are not formalized"),
+ 'thm:paired-sums': ('Lean',
+   r"\lean{StirlingSummations}: \cref{eq:first-two-sums} is "
+   r"\lean{Fabius.stirlingFirst_succ_succ_eq_sum_choose} and "
+   r"\lean{Fabius.stirlingFirst_succ_succ_eq_sum_descFactorial}, \cref{eq:second-two-sums} is "
+   r"\lean{Fabius.stirlingSecond_succ_succ_eq_sum} (\lean{BellStirling}) and "
+   r"\lean{Fabius.stirlingSecond_succ_succ_eq_sum_pow}, the hockey sticks "
+   r"\cref{eq:first-hockey,eq:second-hockey} are \lean{Fabius.stirlingFirst_add_succ_eq_sum} and "
+   r"\lean{Fabius.stirlingSecond_add_succ_eq_sum} (with lower index $k$ in the first-kind case, "
+   r"correcting a misprint), and the convolutions "
+   r"\cref{eq:first-convolution,eq:second-convolution} are "
+   r"\lean{Fabius.choose_mul_stirlingFirst_add} and \lean{Fabius.choose_mul_stirlingSecond_add}"),
  'cor:shifted-stirling-evaluations': ('Lean',
    r"\cref{eq:shifted-power-to-fall} is "
    r"\lean{Fabius.X_pow_eq_sum_stirlingSecond_succ_mul_descPochhammer_comp} in $R[x]$ over any "

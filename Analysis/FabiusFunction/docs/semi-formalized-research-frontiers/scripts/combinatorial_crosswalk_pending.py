@@ -532,6 +532,56 @@ that $x$ is a non-zero-divisor in $R[x]$ (\lean{Fabius.X_mul_cancel}).
 \lean{Fabius.pow_self_eq_sum_stirlingSecond_mul_descFactorial}.""")),
 ]
 
+PENDING += [
+ # --- thm:paired-sums ---
+ (r"""which of the total $\ell+m$ components were marked.
+\end{proof}
+""",
+  remark(r"""% ed.: crosswalk added 2026-09-01; the first-kind hockey stick is stated with
+% lower index $k$, correcting the misprint $n$ (see the editorial note in the
+% statement).
+All six identities are in module \lean{StirlingSummations}, over the natural
+numbers.  The first equality of \cref{eq:first-two-sums} is
+\lean{Fabius.stirlingFirst_succ_succ_eq_sum_choose}, proved as the coefficient
+of $x^{k+1}$ in $\RisingFactorial{x}{n+1}=x\,(x+1)\cdots(x+n)$, and the second
+is \lean{Fabius.stirlingFirst_succ_succ_eq_sum_descFactorial} (with
+$n!/j!=\FallingFactorial{n}{n-j}$); the first equality of
+\cref{eq:second-two-sums} is \lean{Fabius.stirlingSecond_succ_succ_eq_sum}
+(module \lean{BellStirling}) and the second
+\lean{Fabius.stirlingSecond_succ_succ_eq_sum_pow}, both iterated recurrences.
+The hockey sticks \cref{eq:first-hockey,eq:second-hockey} are
+\lean{Fabius.stirlingFirst_add_succ_eq_sum} and
+\lean{Fabius.stirlingSecond_add_succ_eq_sum}, telescoping the recurrences by
+induction on $k$.  The convolutions
+\cref{eq:first-convolution,eq:second-convolution} are
+\lean{Fabius.choose_mul_stirlingFirst_add} and
+\lean{Fabius.choose_mul_stirlingSecond_add}, specializations of the
+block-colour convolution of partial Bell polynomials
+(\cref{thm:bell-partial-convolution}, \lean{Fabius.factorial_mul_partialBell_add})
+to the weights $(j-1)!$ and $1$.""")),
+]
+
+PENDING += [
+ # --- thm:normal-order ---
+ (r"""operators are equal.  The inverse relation is proved identically using
+$\FallingFactorial mn=\sum_k\SignedStirlingFirstKind{n}{k}m^k$.
+\end{proof}
+""",
+  remark(r"""% ed.: crosswalk added 2026-09-01; the Lean proof of \cref{eq:normal1} is by
+% induction on $n$, not by evaluation on monomials.
+Module \lean{StirlingNormalOrder} proves both identities applied to an
+arbitrary polynomial $p$ over any commutative ring: \cref{eq:normal1} is
+\lean{Fabius.iterate_X_mul_derivative}, $(xD)^np=\sum_k\StirlingSecondKind nk
+x^kD^kp$, by induction on $n$ from
+$xD(x^kD^kp)=k\,x^kD^kp+x^{k+1}D^{k+1}p$ (\lean{Fabius.X_mul_derivative_xkDk})
+and the recurrence $\StirlingSecondKind{n+1}{k}=k\StirlingSecondKind nk
++\StirlingSecondKind n{k-1}$; \cref{eq:normal2} is
+\lean{Fabius.xkDk_eq_sum_signedStirlingFirst}, obtained from it by Stirling
+inversion (\lean{Fabius.stirling_inversion}).  The falling-factorial form
+$\FallingFactorial{xD}{n}$ and the operator series
+\cref{eq:der-from-diff,eq:diff-from-der} are not formalized.""")),
+]
+
 applied = 0
 for anchor, text in PENDING:
     if text.strip() in s:
