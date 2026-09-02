@@ -66,22 +66,12 @@ def odiousEnum (n : ℕ) : ℕ :=
 /-- The Thue--Morse bit of an even index. -/
 theorem thueMorseBit_two_mul (n : ℕ) :
     thueMorseBit (2 * n) = thueMorseBit n := by
-  have h1 := thueMorseSign_eq_one_sub_two_mul_bit (2 * n)
-  have h2 := thueMorseSign_eq_one_sub_two_mul_bit n
-  have hs : thueMorseSign (2 * n) = thueMorseSign n := thueMorseSign_two_mul n
-  have b1 := thueMorseBit_le_one (2 * n)
-  have b2 := thueMorseBit_le_one n
-  omega
+  simp only [thueMorseBit, binaryWeight_two_mul]
 
 /-- The Thue--Morse bit of an odd index. -/
 theorem thueMorseBit_two_mul_add_one (n : ℕ) :
     thueMorseBit (2 * n + 1) = 1 - thueMorseBit n := by
-  have h1 := thueMorseSign_eq_one_sub_two_mul_bit (2 * n + 1)
-  have h2 := thueMorseSign_eq_one_sub_two_mul_bit n
-  have hs : thueMorseSign (2 * n + 1) = -thueMorseSign n :=
-    thueMorseSign_two_mul_add_one n
-  have b1 := thueMorseBit_le_one (2 * n + 1)
-  have b2 := thueMorseBit_le_one n
+  simp only [thueMorseBit, binaryWeight_two_mul_add_one]
   omega
 
 /-- The evil enumeration lands on evil numbers. -/

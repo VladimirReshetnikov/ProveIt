@@ -1731,6 +1731,44 @@ spellings may occur in quotations.  Normative prose uses \commandname{BinaryDigi
 an unsubscripted weight is especially unsafe because it can denote an integration weight.}
 \end{catalogueentry}
 
+\begin{catalogueentry}{base-q-digits}{Base-\(q\) digits, digit sums, digit characters,
+and digit power sums}
+\entryfield{Digits}{For an integer base $q\ge2$ and $n\in\NaturalNumbers$, the $j$-th
+base-$q$ digit is
+\[
+ d_j(n)\DefinitionEquals\Floor{n/q^{j}}\bmod q\in\{0,\dots,q-1\},\qquad j\in\NaturalNumbers,
+\]
+so that $n=\sum_{j\ge0}d_j(n)\,q^{j}$.  At $q=2$ this is the bit $b_j(n)$ of the
+\hyperlink{notation:binary-weight}{binary-weight entry}.  The base is always written
+explicitly; it is never inferred from context.}
+\entryfield{Digit sum}{$s_q(n)\DefinitionEquals\sum_{j\ge0}d_j(n)$.  At $q=2$ normative
+prose writes $\BinaryDigitSum(n)$, not $s_2(n)$; a document that abbreviates
+$s_2\DefinitionEquals\BinaryDigitSum$ must say so once.  These are plain-math
+conventions, not shared commands.}
+\entryfield{Digit window}{A statement over the block $0\le n<q^{m}$ may use the window
+product $\prod_{j<m}w\bigl(d_j(n)\bigr)$ for a digit weight $w$; leading zeros inside
+the window are weighted by $w(0)$, which is why identities stated with the window need
+no normalisation $w(0)=1$, whereas $s_q$ ignores leading zeros.}
+\entryfield{Digit character}{For $\zeta$ in a commutative ring, $u_n\DefinitionEquals
+\zeta^{s_q(n)}$.  The recursion $u_{qn+r}=\zeta^{r}u_n$ ($r<q$) and the digit product
+$\sum_{n<q^{m}}u_nz^{n}=\prod_{j<m}\sum_{r<q}\zeta^{r}z^{rq^{j}}$ hold for every $\zeta$;
+the hypothesis that $\zeta$ be a nontrivial $q$-th root of unity, $\sum_{r<q}\zeta^{r}=0$,
+enters only through the vanishing of each factor at $z=1$.  At $q=2$, $\zeta=-1$ gives
+$u_n=\ThueMorseSign n$.}
+\entryfield{Digit power sums}{$P_d(m)\DefinitionEquals\sum_{n<q^{m}}u_n\,n^{d}$.  Under
+$\sum_{r<q}\zeta^{r}=0$, $P_d(m)=0$ for $d<m$ (Prouhet cancellation), and with
+$\zeta^{q}=1$ the sharp value is
+$(\zeta-1)^{m}P_m(m)=m!\,q^{m(m+1)/2}$, stated division-free so that it holds in any
+commutative ring.}
+\entryfield{Lean crosswalk}{\lean{digitAt} is $d_j(n)$, \lean{windowWeight} the window
+product, \lean{digitPowerSum} is $P_d(m)$; the digit product is
+\lean{sum_zeta_pow_digits_sum_mul_pow} and its arbitrary-weight form
+\lean{sum_windowWeight_mul_pow} (\modulepath{BaseDigitProduct.lean}); cancellation and the
+sharp moment are \lean{digitPowerSum_eq_zero_of_lt} and
+\lean{sub_one_pow_mul_digitPowerSum_self} (\modulepath{BaseDigitProuhet.lean}).  The
+digit sum itself is Mathlib's \lean{(Nat.digits q n).sum}.}
+\end{catalogueentry}
+
 \begin{catalogueentry}{thue-morse}{Thue--Morse bit and sign sequences}
 \entryfield{Bit sequence}{$t_n\DefinitionEquals\BinaryDigitSum(n)\bmod2\in\{0,1\}$ for
 $n\in\NaturalNumbers$.}
@@ -1756,9 +1794,73 @@ $\ThueMorseSign{2n+1}=-\ThueMorseSign n$.}
 \]
 At $N=0$ both sides are $1$: the sum contains the sole term $n=0$ and the product is
 empty.}
+\entryfield{Rademacher--sine representation}{For every $n\in\NaturalNumbers$,
+\[
+ \ThueMorseSign n=\prod_{j=0}^{\infty}
+ \Sign\Bigl(\sin\frac{\pi(n+\frac12)}{2^{j}}\Bigr),
+\]
+and the $j$-th factor equals $(-1)^{b_j(n)}$ exactly.  Every factor with $2^{j}>n$ is
+$1$, so the product has finite multiplicative support and is asserted without a
+convergence hypothesis.  The half-unit shift is essential: the unshifted product
+$\prod_{j}\Sign(\sin(\pi n/2^{j}))$ contains the factor $\Sign(\sin\pi n)=0$ at $j=0$
+and is identically zero.}
+\entryfield{Square wave}{For every $x\in\RealNumbers$,
+$\sin(\pi x)=(-1)^{\Floor{x}}\sin(\pi\FractionalPart{x})$; the identity holds at the
+integers as well, where both sides vanish.  Off the integers
+$\sin(\pi\FractionalPart{x})>0$, hence $\Sign(\sin\pi x)=(-1)^{\Floor{x}}$ there.  At the
+Rademacher points $x=(n+\frac12)/2^{j}$ one has $\Floor{x}=\Floor{n/2^{j}}$ and
+$\FractionalPart{x}\ne0$.}
 \entryfield{Lean crosswalk}{The formal sign sequence uses declarations in
 \modulepath{ThueMorse.lean} and related prefix modules.  Exact theorem names are recorded in
-the crosswalk appendix; prose identities are not upgraded beyond their verified status.}
+the crosswalk appendix; prose identities are not upgraded beyond their verified status.
+The Rademacher--sine representation is \lean{thueMorseSign_eq_tprod_sign_sin} with factor
+law \lean{sign_sin_rademacherPoint}, and the factored square wave is
+\lean{sin_pi_mul_eq_neg_one_zpow_floor}, all in \modulepath{RademacherSine.lean}.}
+\end{catalogueentry}
+
+\begin{catalogueentry}{thue-morse-autocorrelation}{Thue--Morse autocorrelations, normalized
+and limiting}
+\entryfield{Window and dyadic autocorrelation}{For $N,k\in\NaturalNumbers$,
+$R_N(k)\DefinitionEquals\sum_{n<N}\ThueMorseSign n\,\ThueMorseSign{n+k}$, and at the dyadic
+window $A_m(k)\DefinitionEquals R_{2^{m}}(k)$.  These are integers; $R_N(0)=N$ and
+$|R_N(k)|\le N$.}
+\entryfield{Exact recursions}{$R_{2K}(2r)=2R_K(r)$ and $R_{2K}(2r+1)=-(R_K(r)+R_K(r+1))$
+for every even window; nothing uses that the window is a power of two.}
+\entryfield{Normalized and limiting values}{$\eta_m(k)\DefinitionEquals A_m(k)/2^{m}\in[-1,1]$,
+so that $\eta_{m+1}(2r)=\eta_m(r)$ and $\eta_{m+1}(2r+1)=-(\eta_m(r)+\eta_m(r+1))/2$
+exactly.  The limit $\eta(k)\DefinitionEquals\lim_{m\to\infty}\eta_m(k)$ exists for every
+$k$ and is the unique solution of $\eta(0)=1$, $\eta(2r)=\eta(r)$,
+$\eta(2r+1)=-(\eta(r)+\eta(r+1))/2$; in particular $\eta(1)=\eta(2)=-\tfrac13$,
+$\eta(3)=\tfrac13$, $\eta(5)=0$.  The symbol $\eta$ is document-local to the Thue--Morse
+spectral discussion; it is not a shared command and must not be reused for a different
+sequence in the same document.}
+\entryfield{Lean crosswalk}{\lean{thueMorseWindowAutocorrelation} is $R_N(k)$,
+\lean{thueMorseAutocorrelation} is $A_m(k)$ (\modulepath{ThueMorseAutocorrelation.lean});
+\lean{normalizedAutocorrelation} is $\eta_m(k)$, \lean{limitingAutocorrelation} is
+$\eta(k)$ defined by the recursion, and \lean{tendsto_normalizedAutocorrelation} is the
+convergence (\modulepath{ThueMorseAutocorrelationLimit.lean}).}
+\end{catalogueentry}
+
+\begin{catalogueentry}{thue-morse-block-sum}{Thue--Morse block sums and the nested dyadic
+integral}
+\entryfield{Block sum}{For $f:\RealNumbers\to\RealNumbers$, $x,h\in\RealNumbers$ and
+$m\in\NaturalNumbers$, the block sum is
+$\sum_{n<2^{m}}\ThueMorseSign n\,f(x+nh)$.  It is the $m$-fold dyadic difference
+$\prod_{j<m}(I-T_{2^{j}h})f$ evaluated at $x$, with $T_a$ the translation by $a$.}
+\entryfield{Nested dyadic integral}{The iterated integral
+$\int_0^{h}\int_0^{2h}\cdots\int_0^{2^{m-1}h}g(x+t_0+\cdots+t_{m-1})\,dt_{m-1}\cdots dt_0$
+is written with the outermost variable on $[0,h]$ and the step doubling inward; its box
+volume is $h^{m}2^{0+1+\cdots+(m-1)}=h^{m}2^{\binom m2}$.  Because the integrand depends
+only on the sum of the variables, any other nesting order gives the same value, but the
+displayed order is the one the recursion produces.}
+\entryfield{Cubature identity}{For $f$ of class $C^{m}$ and every real $x$, $h$, the block
+sum equals $(-1)^{m}$ times the nested dyadic integral of $f^{(m)}$; no sign condition on
+$h$ is needed for the identity.  Consequences stated with $h\ge0$: the block sum is
+nonnegative when $(-1)^{m}f^{(m)}\ge0$ on $[x,x+(2^{m}-1)h]$, and is bounded by
+$C\,h^{m}2^{\binom m2}$ when $|f^{(m)}|\le C$ there.}
+\entryfield{Lean crosswalk}{\lean{thueMorseBlockSum}, \lean{nestedDyadicIntegral},
+\lean{thueMorseBlockSum_eq_nestedDyadicIntegral}, \lean{thueMorseBlockSum_nonneg},
+\lean{abs_thueMorseBlockSum_le}, all in \modulepath{ThueMorseCubature.lean}.}
 \end{catalogueentry}
 
 \begin{catalogueentry}{padic-valuation}{\(p\)-adic and \(2\)-adic valuations}

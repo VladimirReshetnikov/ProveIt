@@ -32,14 +32,18 @@ closed integer form, plus the reflection principle behind the third.
   that fixed-point law says the centered moment is killed by `2`.  This is
   the characteristic-free parity statement; no invalid cancellation of `2`
   is hidden in it.
-* `sum_thueMorseSign_mul_midpoint_pow_eq_zero` — the **parity selection
-  rule over `ℚ`: centered at the block midpoint `c_m = (2^m - 1)/2`, the
-  signed power sum of exponent `r` vanishes whenever `m + r` is odd.  It is
-  the torsion-free corollary of the ring-valued statement above.  Below the
-  first surviving degree the centered sums already vanish for every `r`, of
-  either parity (`thueMorseTranslatedPowerSum_eq_zero_of_lt`); the content
-  of the rule is the range `r > m`, where it is a cancellation invisible in
-  the uncentered Prouhet statement, valid for arbitrarily large `r`.
+* `sum_thueMorseSign_mul_midpoint_pow_eq_zero_field` — the **parity
+  selection rule over any field of characteristic zero**: centered at
+  the block midpoint `c_m = (2^m - 1)/2`, the signed power sum of
+  exponent `r` vanishes whenever `m + r` is odd.  It is the torsion-free
+  corollary of the ring-valued statement above, obtained by cancelling
+  `2 ≠ 0`.
+* `sum_thueMorseSign_mul_midpoint_pow_eq_zero` — its instance over
+  `ℚ`.  Below the first surviving degree the centered sums already
+  vanish for every `r`, of either parity
+  (`thueMorseTranslatedPowerSum_eq_zero_of_lt`); the content of the rule
+  is the range `r > m`, where it is a cancellation invisible in the
+  uncentered Prouhet statement, valid for arbitrarily large `r`.
 * `sum_thueMorseSign_mul_midpoint_pow_self` — at `r = m` the centered
   moment equals `(-1)^m · 2^(C(m,2)) · m!`, exactly the uncentered sharp
   value: translation to the midpoint costs nothing at the first surviving
@@ -261,29 +265,44 @@ theorem two_mul_sum_thueMorseSign_mul_centered_pow_eq_zero
     (2 : R) * S = S + S := by ring
     _ = 0 := hsum
 
+/-- **Midpoint parity selection rule, over any field of characteristic
+zero.**  Centered at `c_m = (2^m - 1)/2`, the signed power sums vanish
+whenever `m + r` is odd: `∑_{n<2^m} ε(n)·(n - c_m)^r = 0`.  This is
+`two_mul_sum_thueMorseSign_mul_centered_pow_eq_zero` with the factor
+`2` cancelled, which is legitimate exactly because `2 ≠ 0` in
+characteristic zero; `sum_thueMorseSign_mul_midpoint_pow_eq_zero` is
+the rational instance. -/
+theorem sum_thueMorseSign_mul_midpoint_pow_eq_zero_field
+    {R : Type*} [Field R] [CharZero R] (m r : ℕ) (h : Odd (m + r)) :
+    ∑ n ∈ range (2 ^ m),
+        ((thueMorseSign n : ℤ) : R) *
+          ((n : R) - ((2 : R) ^ m - 1) / 2) ^ r = 0 := by
+  have h1 : (1 : ℕ) ≤ 2 ^ m := Nat.one_le_two_pow
+  have hc :
+      ((2 : R) ^ m - 1) / 2 + ((2 : R) ^ m - 1) / 2 =
+        ((2 ^ m - 1 : ℕ) : R) := by
+    push_cast [Nat.cast_sub h1]
+    ring
+  have htwo := two_mul_sum_thueMorseSign_mul_centered_pow_eq_zero
+    (R := R) (((2 : R) ^ m - 1) / 2) m r hc h
+  exact (mul_eq_zero.mp htwo).resolve_left two_ne_zero
+
 /-- **Midpoint parity selection rule.**  Centered at `c_m = (2^m - 1)/2`,
 the signed power sums vanish whenever `m + r` is odd:
 `∑_{n<2^m} ε(n)·(n - c_m)^r = 0`.  For `r < m` the centered sum vanishes
 already by Prouhet cancellation, of either parity, so the hypothesis buys
 nothing there (and at `r = m` it cannot hold); the content of the rule is
 the range `r > m`, a cancellation with no uncentered analogue.  This is the
-rational specialization of
-`two_mul_sum_thueMorseSign_mul_centered_pow_eq_zero`, with the nonzero factor
-`2` cancelled. -/
+rational instance of
+`sum_thueMorseSign_mul_midpoint_pow_eq_zero_field`, i.e.
+`two_mul_sum_thueMorseSign_mul_centered_pow_eq_zero` with the nonzero
+factor `2` cancelled. -/
 theorem sum_thueMorseSign_mul_midpoint_pow_eq_zero (m r : ℕ)
     (h : Odd (m + r)) :
     ∑ n ∈ range (2 ^ m),
         ((thueMorseSign n : ℤ) : ℚ) *
-          ((n : ℚ) - ((2 : ℚ) ^ m - 1) / 2) ^ r = 0 := by
-  have h1 : (1 : ℕ) ≤ 2 ^ m := Nat.one_le_two_pow
-  have hc :
-      ((2 : ℚ) ^ m - 1) / 2 + ((2 : ℚ) ^ m - 1) / 2 =
-        ((2 ^ m - 1 : ℕ) : ℚ) := by
-    push_cast [Nat.cast_sub h1]
-    ring
-  have htwo := two_mul_sum_thueMorseSign_mul_centered_pow_eq_zero
-    (R := ℚ) (((2 : ℚ) ^ m - 1) / 2) m r hc h
-  exact (mul_eq_zero.mp htwo).resolve_left (by norm_num)
+          ((n : ℚ) - ((2 : ℚ) ^ m - 1) / 2) ^ r = 0 :=
+  sum_thueMorseSign_mul_midpoint_pow_eq_zero_field m r h
 
 /-- **The sharp centered moment.**  At `r = m` the midpoint-centered moment
 equals the uncentered sharp Prouhet value `(-1)^m · 2^(C(m,2)) · m!`:
