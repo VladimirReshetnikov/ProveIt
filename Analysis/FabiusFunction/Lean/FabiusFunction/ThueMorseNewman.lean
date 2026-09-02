@@ -23,22 +23,29 @@ one-step system
 
 and composing two steps collapses, via `T₀+T₁+T₂ = E`, to
 
-`T₀(4M+s) = 3·T₀(M) - E(M) + c_s(M)`  (`s = 0,1,2,3`),
+`T_r(4M) = 3·T_r(M) - E(M)`   for every residue class `r`,
 
-where the correction `c_s(M)` is a sum of at most three single signs
-supported on **pairwise disjoint** residue classes of `M` — so
-`|c_s(M)| ≤ 1`.  Hence `T₀(4M+s) ≥ 3·1 - 1 - 1 = 1` and the induction
-closes.  The three-fold amplification absorbs all boundary noise: this
-is Newman's phenomenon in its purest form.
+while a window of at most three consecutive integers meets each residue
+class at most once, so `|T_r(4M+s) - T_r(4M)| ≤ 1` for `s < 4`.  Hence
+`T₀(4M+s) ≥ 3·1 - 1 - 1 = 1` and the induction closes.  The three-fold
+amplification absorbs all boundary noise: this is Newman's phenomenon
+in its purest form — and the same bracket, applied to the class
+`r = 1`, gives the mirror-image negativity theorem
+(`ThueMorseNewmanResidues`).
 
 * `thueMorseResidueSum` — the sign sum along a residue class.
 * `thueMorseResidueSum_three_zero_two_mul` (and companions) — the
   one-step parity system.
-* `thueMorseResidueSum_three_zero_four_mul_add_bracket` — **the
-  base-four step bracket** `|T₀(4M+s) - 3·T₀(M)| ≤ 2` for `s < 4`: the
-  whole boundary analysis, isolated once.  It drives the positivity
-  theorem below and the quantitative bounds of
-  `ThueMorseNewmanQuantitative`.
+* `abs_thueMorseResidueSum_add_sub_le_one` — **the window lemma**, for
+  any modulus `q`: a window of length `s ≤ q` meets each residue class
+  at most once, so `|T_r(a+s) - T_r(a)| ≤ 1`.
+* `thueMorseResidueSum_three_four_mul` — **the two-step collapse**
+  `T_r(4M) = 3·T_r(M) - E(M)` for every residue class `r < 3`.
+* `thueMorseResidueSum_three_four_mul_add_bracket` — **the base-four
+  step bracket** `|T_r(4M+s) - 3·T_r(M)| ≤ 2` for every `r < 3` and
+  `s < 4`: collapse plus window lemma.  It drives the positivity theorem
+  below and the quantitative bounds of `ThueMorseNewmanQuantitative`,
+  and, for `r = 1`, the negativity theorem of `ThueMorseNewmanResidues`.
 * `newman_positivity` — **Newman's theorem** (`eq:newman-positivity`).
 -/
 
@@ -143,100 +150,117 @@ theorem thueMorseResidueSum_three_one_two_mul (M : ℕ) :
       if_pos h, if_neg (by omega : ¬j % 3 = 0)]
     ring
 
-/-- **The base-four step bracket**: for every `M` and every `s < 4`,
-`3·T₀(M) - 2 ≤ T₀(4M+s) ≤ 3·T₀(M) + 2`.
+/-- Parity split of the residue-two sum:
+`T₂(2M) = T₁(M) - T₂(M)`, from the other two splits and
+`T₀ + T₁ + T₂ = E` with `E(2M) = 0`. -/
+theorem thueMorseResidueSum_three_two_two_mul (M : ℕ) :
+    thueMorseResidueSum 3 2 (2 * M) =
+      thueMorseResidueSum 3 1 M - thueMorseResidueSum 3 2 M := by
+  have h := thueMorseResidueSum_three_add (2 * M)
+  rw [sum_thueMorseSign_two_mul, thueMorseResidueSum_three_zero_two_mul,
+    thueMorseResidueSum_three_one_two_mul] at h
+  linarith
 
-Composing two parity steps gives `T₀(4M) = 3·T₀(M) - E(M)` with
-`|E(M)| ≤ 1`, and the boundary terms `T₀(4M+s) - T₀(4M)` are at most
-three single signs supported on pairwise disjoint residue classes of
-`M`, so they contribute at most one in absolute value.  This bracket is
-the entire arithmetic content of Newman's phenomenon: the three-fold
-amplification against a bounded error. -/
+/-- **The two-step collapse** for every residue class modulo three:
+`T_r(4M) = 3·T_r(M) - E(M)`, by composing two parity splits and using
+`T₀ + T₁ + T₂ = E`. -/
+theorem thueMorseResidueSum_three_four_mul (r : ℕ) (hr : r < 3) (M : ℕ) :
+    thueMorseResidueSum 3 r (4 * M) =
+      3 * thueMorseResidueSum 3 r M - ∑ n ∈ range M, thueMorseSign n := by
+  have hsum := thueMorseResidueSum_three_add M
+  have h0 := thueMorseResidueSum_three_zero_two_mul M
+  have h1 := thueMorseResidueSum_three_one_two_mul M
+  have h2 := thueMorseResidueSum_three_two_two_mul M
+  have h4 : 4 * M = 2 * (2 * M) := by ring
+  interval_cases r
+  · have ha := thueMorseResidueSum_three_zero_two_mul (2 * M)
+    rw [← h4] at ha
+    linarith
+  · have ha := thueMorseResidueSum_three_one_two_mul (2 * M)
+    rw [← h4] at ha
+    linarith
+  · have ha := thueMorseResidueSum_three_two_two_mul (2 * M)
+    rw [← h4] at ha
+    linarith
+
+/-- **The window lemma**, for any modulus `q`: a window of `s ≤ q`
+consecutive integers meets each residue class at most once, so a
+residue sum changes by at most one sign across it:
+`|T_r(a+s) - T_r(a)| ≤ 1`. -/
+theorem abs_thueMorseResidueSum_add_sub_le_one (q r a s : ℕ) (hs : s ≤ q) :
+    |thueMorseResidueSum q r (a + s) - thueMorseResidueSum q r a| ≤ 1 := by
+  have hdiff : thueMorseResidueSum q r (a + s) - thueMorseResidueSum q r a =
+      ∑ j ∈ (range s).filter (fun j => (a + j) % q = r),
+        thueMorseSign (a + j) := by
+    rw [thueMorseResidueSum, thueMorseResidueSum, Finset.sum_range_add,
+      add_sub_cancel_left, Finset.sum_filter]
+  rw [hdiff]
+  have hcard : ∀ i ∈ (range s).filter (fun j => (a + j) % q = r),
+      ∀ j ∈ (range s).filter (fun j => (a + j) % q = r), i = j := by
+    intro i hi j hj
+    rw [Finset.mem_filter, Finset.mem_range] at hi hj
+    have hmod : (a + i) % q = (a + j) % q := hi.2.trans hj.2.symm
+    rcases Nat.lt_trichotomy i j with h | h | h
+    · exfalso
+      have hdvd : q ∣ (a + j) - (a + i) :=
+        (Nat.modEq_iff_dvd' (by omega)).mp hmod
+      have := Nat.le_of_dvd (by omega) hdvd
+      omega
+    · exact h
+    · exfalso
+      have hdvd : q ∣ (a + i) - (a + j) :=
+        (Nat.modEq_iff_dvd' (by omega)).mp hmod.symm
+      have := Nat.le_of_dvd (by omega) hdvd
+      omega
+  rcases Finset.eq_empty_or_nonempty
+      ((range s).filter (fun j => (a + j) % q = r)) with h | ⟨j, hj⟩
+  · rw [h, Finset.sum_empty]
+    norm_num
+  · have hsingle : (range s).filter (fun j => (a + j) % q = r) = {j} := by
+      rw [Finset.eq_singleton_iff_unique_mem]
+      exact ⟨hj, fun y hy => hcard y hy j hj⟩
+    rw [hsingle, Finset.sum_singleton]
+    exact (abs_thueMorseSign _).le
+
+/-- **The base-four step bracket** for every residue class: for every
+`r < 3`, every `M` and every `s < 4`,
+`3·T_r(M) - 2 ≤ T_r(4M+s) ≤ 3·T_r(M) + 2`.
+
+It is the two-step collapse `T_r(4M) = 3·T_r(M) - E(M)` with
+`|E(M)| ≤ 1`, plus the window lemma `|T_r(4M+s) - T_r(4M)| ≤ 1`.  This
+bracket is the entire arithmetic content of Newman's phenomenon: the
+three-fold amplification against a bounded error. -/
+theorem thueMorseResidueSum_three_four_mul_add_bracket (r : ℕ) (hr : r < 3)
+    (M s : ℕ) (hs : s < 4) :
+    3 * thueMorseResidueSum 3 r M - 2 ≤
+        thueMorseResidueSum 3 r (4 * M + s) ∧
+      thueMorseResidueSum 3 r (4 * M + s) ≤
+        3 * thueMorseResidueSum 3 r M + 2 := by
+  have hE := abs_le.mp (abs_sum_thueMorseSign_le_one M)
+  have h4M := thueMorseResidueSum_three_four_mul r hr M
+  have hw := abs_le.mp
+    (abs_thueMorseResidueSum_add_sub_le_one 3 r (4 * M) s (by omega))
+  constructor <;> linarith [hE.1, hE.2, hw.1, hw.2]
+
+/-- The base-four step bracket for the residue class zero. -/
 theorem thueMorseResidueSum_three_zero_four_mul_add_bracket (M s : ℕ)
     (hs : s < 4) :
     3 * thueMorseResidueSum 3 0 M - 2 ≤
         thueMorseResidueSum 3 0 (4 * M + s) ∧
       thueMorseResidueSum 3 0 (4 * M + s) ≤
-        3 * thueMorseResidueSum 3 0 M + 2 := by
-  have hE := abs_le.mp (abs_sum_thueMorseSign_le_one M)
-  -- the two-step collapse `T₀(4M) = 3T₀(M) - E(M)`
-  have h2M := thueMorseResidueSum_three_zero_two_mul M
-  have h1M := thueMorseResidueSum_three_one_two_mul M
-  have hsum := thueMorseResidueSum_three_add M
-  have h4M : thueMorseResidueSum 3 0 (4 * M) =
-      3 * thueMorseResidueSum 3 0 M -
-        ∑ n ∈ range M, thueMorseSign n := by
-    have ha := thueMorseResidueSum_three_zero_two_mul (2 * M)
-    rw [show 2 * (2 * M) = 4 * M by ring] at ha
-    linarith [ha, h2M, h1M, hsum]
-  -- single-sign helpers
-  have hsA : thueMorseSign (2 * M) = thueMorseSign M :=
-    thueMorseSign_two_mul M
-  have hsB : thueMorseSign (4 * M) = thueMorseSign M := by
-    rw [show 4 * M = 2 * (2 * M) by ring, thueMorseSign_two_mul,
-      thueMorseSign_two_mul]
-  have hsC : thueMorseSign (4 * M + 2) = -thueMorseSign M := by
-    rw [show 4 * M + 2 = 2 * (2 * M + 1) by ring,
-      thueMorseSign_two_mul, thueMorseSign_two_mul_add_one]
-  -- the successor decompositions up to `4M+3`
-  have hS1 := thueMorseResidueSum_succ 3 0 (4 * M)
-  have hS2 : thueMorseResidueSum 3 0 (4 * M + 2) =
-      thueMorseResidueSum 3 0 (2 * M + 1) -
-        thueMorseResidueSum 3 1 (2 * M + 1) := by
-    have h := thueMorseResidueSum_three_zero_two_mul (2 * M + 1)
-    rwa [show 2 * (2 * M + 1) = 4 * M + 2 by ring] at h
-  have hT0 := thueMorseResidueSum_succ 3 0 (2 * M)
-  have hT1 := thueMorseResidueSum_succ 3 1 (2 * M)
-  have hS3 := thueMorseResidueSum_succ 3 0 (4 * M + 2)
-  -- case split on the last two binary digits
-  have hcase : s = 0 ∨ s = 1 ∨ s = 2 ∨ s = 3 := by omega
-  rcases hcase with rfl | rfl | rfl | rfl
-  · -- `s = 0`: pure amplification
-    rw [add_zero, h4M]
-    constructor <;> linarith [hE.1, hE.2]
-  · -- `s = 1`: one boundary sign
-    rw [hS1, h4M, hsB]
-    rcases (by omega : 4 * M % 3 = 0 ∨ ¬4 * M % 3 = 0)
-      with hc | hc
-    · rw [if_pos hc]
-      rcases thueMorseSign_eq_one_or_neg_one M with hε | hε <;>
-        rw [hε] <;> constructor <;> linarith [hE.1, hE.2]
-    · rw [if_neg hc]
-      constructor <;> linarith [hE.1, hE.2]
-  · -- `s = 2`: two boundary signs on disjoint residues
-    rw [hS2, hT0, hT1, h2M, h1M, hsA]
-    rcases (by omega : M % 3 = 0 ∨ M % 3 = 1 ∨ M % 3 = 2)
-      with h3 | h3 | h3
-    · rw [if_pos (show 2 * M % 3 = 0 by omega),
-        if_neg (show ¬2 * M % 3 = 1 by omega)]
-      rcases thueMorseSign_eq_one_or_neg_one M with hε | hε <;>
-        rw [hε] <;> constructor <;> linarith [hE.1, hE.2, hsum]
-    · rw [if_neg (show ¬2 * M % 3 = 0 by omega),
-        if_neg (show ¬2 * M % 3 = 1 by omega)]
-      constructor <;> linarith [hE.1, hE.2, hsum]
-    · rw [if_neg (show ¬2 * M % 3 = 0 by omega),
-        if_pos (show 2 * M % 3 = 1 by omega)]
-      rcases thueMorseSign_eq_one_or_neg_one M with hε | hε <;>
-        rw [hε] <;> constructor <;> linarith [hE.1, hE.2, hsum]
-  · -- `s = 3`: three boundary signs on disjoint residues
-    rw [hS3, hS2, hT0, hT1, h2M, h1M, hsA, hsC]
-    rcases (by omega : M % 3 = 0 ∨ M % 3 = 1 ∨ M % 3 = 2)
-      with h3 | h3 | h3
-    · rw [if_pos (show 2 * M % 3 = 0 by omega),
-        if_neg (show ¬2 * M % 3 = 1 by omega),
-        if_neg (show ¬(4 * M + 2) % 3 = 0 by omega)]
-      rcases thueMorseSign_eq_one_or_neg_one M with hε | hε <;>
-        rw [hε] <;> constructor <;> linarith [hE.1, hE.2, hsum]
-    · rw [if_neg (show ¬2 * M % 3 = 0 by omega),
-        if_neg (show ¬2 * M % 3 = 1 by omega),
-        if_pos (show (4 * M + 2) % 3 = 0 by omega)]
-      rcases thueMorseSign_eq_one_or_neg_one M with hε | hε <;>
-        rw [hε] <;> constructor <;> linarith [hE.1, hE.2, hsum]
-    · rw [if_neg (show ¬2 * M % 3 = 0 by omega),
-        if_pos (show 2 * M % 3 = 1 by omega),
-        if_neg (show ¬(4 * M + 2) % 3 = 0 by omega)]
-      rcases thueMorseSign_eq_one_or_neg_one M with hε | hε <;>
-        rw [hε] <;> constructor <;> linarith [hE.1, hE.2, hsum]
+        3 * thueMorseResidueSum 3 0 M + 2 :=
+  thueMorseResidueSum_three_four_mul_add_bracket 0 (by norm_num) M s hs
+
+/-- The base-four step bracket at the cutoff `N` itself, written with
+`N = 4·(N/4) + N%4`, for every residue class `r < 3`. -/
+theorem thueMorseResidueSum_three_bracket (r : ℕ) (hr : r < 3) (N : ℕ) :
+    3 * thueMorseResidueSum 3 r (N / 4) - 2 ≤
+        thueMorseResidueSum 3 r N ∧
+      thueMorseResidueSum 3 r N ≤
+        3 * thueMorseResidueSum 3 r (N / 4) + 2 := by
+  have h := thueMorseResidueSum_three_four_mul_add_bracket r hr (N / 4)
+    (N % 4) (Nat.mod_lt _ (by norm_num))
+  rwa [Nat.div_add_mod] at h
 
 /-- The base-four step bracket at the cutoff `N` itself, written with
 `N = 4·(N/4) + N%4`. -/
@@ -244,10 +268,8 @@ theorem thueMorseResidueSum_three_zero_bracket (N : ℕ) :
     3 * thueMorseResidueSum 3 0 (N / 4) - 2 ≤
         thueMorseResidueSum 3 0 N ∧
       thueMorseResidueSum 3 0 N ≤
-        3 * thueMorseResidueSum 3 0 (N / 4) + 2 := by
-  have h := thueMorseResidueSum_three_zero_four_mul_add_bracket (N / 4)
-    (N % 4) (Nat.mod_lt _ (by norm_num))
-  rwa [Nat.div_add_mod] at h
+        3 * thueMorseResidueSum 3 0 (N / 4) + 2 :=
+  thueMorseResidueSum_three_bracket 0 (by norm_num) N
 
 /-- The first four values `T₀(0..3) = 0, 1, 1, 1`. -/
 theorem thueMorseResidueSum_three_zero_of_lt_four (N : ℕ) (hN : N < 4) :
