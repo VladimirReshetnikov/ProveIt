@@ -96,8 +96,8 @@ It checks every permanent package file except the self-referential root
 useful because it preserves the migrated experiment and research-figure
 boundary.
 
-The retained `q_pochhammer_q_binomial_monograph.pdf` is a 354-page A4
-build of the upstream source checkpoint (14,381 lines, 675,239 bytes,
+The retained `q_pochhammer_q_binomial_monograph.pdf` is a historical 354-page
+A4 build of its recorded source checkpoint (14,381 lines, 675,239 bytes,
 SHA-256 `240bff72fb47562e9a8fd87085b5a3a96d738189714518db17988f7c4ac15d31`).
 The PDF is 3,030,302 bytes with SHA-256
 `1050a9a3b0b7a8df8e7de0870946ae64940d7d7839a2f20427be0ebe14b0ba8c`.
@@ -111,12 +111,19 @@ subsetted, including five Libertinus rows, with no Type-3
 fonts. The files under `assets/experiments/**/figures/` remain research
 figures, not publication manuscripts.
 
-The current master TeX is a source-only successor to that checkpoint: it has
-14,449 lines, 679,492 bytes, and SHA-256
-`ed3baa67195e142531234170e67d04a04e356905523333ad95d667f0ddddcc8c`.
-The regenerated root `SHA256SUMS` ledger records the same identity. The
-historical source identity above must not be reused for the live source, and
-the retained PDF does not claim render parity with the current TeX.
+The current live master is a source-only successor to that checkpoint: it has
+14,516 lines, 682,778 bytes, and SHA-256
+`3184b1ed82998f7a9a903cbd0e95a6836cbeab2edd3194e5dc35c7243b9b9618`.
+It adds the explicit document-local `\BellBlockMultiplicity{r}` and
+`\MacMahonQCatalanPolynomial{n}{q}` families and normalizes the newly merged
+Jackson, Gaussian-binomial, q-integer, and q-Pochhammer status formulas, while
+retaining the newest feature, crosswalk, and provenance expansion catalogued
+below. No PDF was regenerated after those changes. The regenerated root
+`SHA256SUMS` ledger records the live source identity; the historical source
+identity above must not be reused for it. Thus the PDF and its recorded
+14,381-line build source form the retained synchronized checkpoint, while the
+current master and retained PDF are distinct ledger payloads pending a fresh
+three-pass build and do not claim render parity.
 
 The current source includes exhaustive crosswalks for `QPochhammerEntire`
 (zero definitions

@@ -59,15 +59,21 @@ exact endpoint-mass ceiling minimality and input-bit asymptotics remain outside
 Lean.
 
 The two canonical syntheses have source/artifact receipts. The current
-q-series source has 14,449 lines, 679,492 bytes, and SHA-256
-`ed3baa67195e142531234170e67d04a04e356905523333ad95d667f0ddddcc8c`.
+q-series source has 14,516 lines, 682,778 bytes, and SHA-256
+`3184b1ed82998f7a9a903cbd0e95a6836cbeab2edd3194e5dc35c7243b9b9618`.
 Its retained PDF is a historical 354-page, 3,030,302-byte A4 artifact with
 SHA-256
 `1050a9a3b0b7a8df8e7de0870946ae64940d7d7839a2f20427be0ebe14b0ba8c`,
 built from the preceding 14,381-line, 675,239-byte source with SHA-256
-`240bff72e95ddf9609f6c5aba7f5285ef2ce4ec60e0a2e73d9a50138989e58dd`.
-The current TeX is a source-only successor to that build checkpoint. The two
-payloads are distinct, and no render parity is claimed.
+`240bff72fb47562e9a8fd87085b5a3a96d738189714518db17988f7c4ac15d31`.
+The live TeX adds the Bell-block and MacMahon q-Catalan notation successor as
+well as later formalization crosswalks, so it is source-only relative to that
+build; the two payloads are distinct and no render parity is claimed.  The
+still earlier 348-page artifact checkpoint also remains historical evidence:
+its PDF SHA-256 is
+`8bf14b52d8a0fc0abc4d54cca503fd47a2df37cf76ee1bb4e442bea1fd2a4aa7`,
+and its 14,158-line, 661,835-byte build source had SHA-256
+`79ee5e60a6c7e42a91c58dcd9bcae56173cc6b4aa3e54739a461943f705f3904`.
 Six finite/infinite q-series modules contribute 69 public declarations for
 continuity at `q = 1`, Euler and q-binomial sums, Jacobi's triple product,
 q-Pascal summation, the noncommutative q-binomial theorem, and Rogers--Szegő
@@ -111,8 +117,8 @@ product's locally uniform convergence is exact for every complex strict
 contraction, including `q = 0`, with dyadic Rvachev and bounded-Fabius Fourier
 specializations. The compound centered/MGF and exterior reciprocal/pole
 theorem remains Partial. The forward status ledger covers 282 labelled
-results: 88 Exact / 83 Partial / 103 None / 8 N/A interface rows. No PDF was
-generated locally for this source-only merge, so the incoming 354-page artifact
+results: 90 Exact / 84 Partial / 100 None / 8 N/A interface rows. No PDF was
+generated for this source-only merge, so the retained 354-page artifact
 remains historical. The comb synthesis also
 has a later chapter-03 notation edit: its retained 158-page, 2,456,105-byte
 A4 PDF has SHA-256
