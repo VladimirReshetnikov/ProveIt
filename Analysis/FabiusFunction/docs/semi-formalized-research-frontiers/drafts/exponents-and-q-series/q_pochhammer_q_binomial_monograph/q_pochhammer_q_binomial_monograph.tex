@@ -12865,7 +12865,7 @@ inside the proof below does not formalize the result the proof concludes.
   than a mathematical claim.
 \end{description}
 
-Of the 282 labelled forward results, 149 are \statusexact, 82 are
+Of the 282 labelled forward results, 150 are \statusexact, 81 are
 \statuspartial, 43 are \statusnone, and 8 are \statusna.  The original
 191-result pre-Fabius core had 36 \statusexact, 29 \statuspartial, 123
 \statusnone, and 3 \statusna{} entries.  The four integrated guide chapters
@@ -13432,7 +13432,7 @@ The infinite $q$-binomial theorem & 3 & 0 & 1 & 0\\
 Basic hypergeometric series & 7 & 2 & 0 & 0\\
 Euler telescoping and very-well-poised summations & 1 & 0 & 3 & 0\\
 Bilateral series and Ramanujan's \texorpdfstring{${}_1\psi_1$}{1psi1} sum & 2 & 0 & 0 & 0\\
-$q$-difference calculus and the quantum binomial & 9 & 1 & 0 & 0\\
+$q$-difference calculus and the quantum binomial & 10 & 0 & 0 & 0\\
 The $q$-gamma and $q$-beta functions & 7 & 1 & 0 & 0\\
 Jacobi's triple product & 8 & 0 & 0 & 0\\
 Theta modularity, lattice dissection, and sums of squares & 2 & 1 & 11 & 4\\
@@ -13450,7 +13450,7 @@ Half-base arithmetic and Prouhet--Thue--Morse cancellation & 6 & 3 & 0 & 0\\
 Geometric uniform sums, $q$-cumulants, and the Fabius--Rvachev functions & 2 & 11 & 0 & 0\\
 Dyadic Gaussian--Thue--Morse structure and the values of $F$ & 7 & 45 & 4 & 0\\
 \midrule
-\textbf{Forward total} & 149 & 82 & 43 & 8\\
+\textbf{Forward total} & 150 & 81 & 43 & 8\\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -14079,13 +14079,25 @@ each $x_i$, no centrality of $q$ or ambient commutative ring required; the
 sum runs over \texttt{Finset.Nat.antidiagonalTuple} and the ordered monomial
 is a \texttt{List} product; the symmetry $[n,n-k]_q=[n,k]_q$ is transported
 to every semiring from the universal polynomial}\\[2pt]
-\Cref{cor:qexp-factor} & \statuspartial &
-\texttt{hasSum\_\allowbreak{}qExp},
-\texttt{hasSum\_\allowbreak{}qExpBig},
-\texttt{qExp\_\allowbreak{}mul\_\allowbreak{}qExpBig\_\allowbreak{}neg}\newline
-{\footnotesize\texttt{QExponential}; the two series, their product formulas
-on the stated domains, and $e_q(x)E_q(-x)=1$, in every complete normed field;
-the noncommutative factorization $e_q(X+Y)=e_q(X)e_q(Y)$ is not formalized}\\[2pt]
+\Cref{cor:qexp-factor} & \statusexact &
+\texttt{qExp}, \texttt{qExpBig},
+\texttt{hasSum\_\allowbreak{}qExp}, \texttt{hasSum\_\allowbreak{}qExpBig},
+\texttt{qExp\_\allowbreak{}mul\_\allowbreak{}qExpBig\_\allowbreak{}neg},
+\texttt{qExp\_\allowbreak{}factor\_\allowbreak{}degree},
+\texttt{gaussianBinomial\_\allowbreak{}mul\_\allowbreak{}qFactorial\_\allowbreak{}mul\_\allowbreak{}qFactorial},
+\texttt{gaussianBinomial\_\allowbreak{}mul\_\allowbreak{}finiteQPochhammer\_\allowbreak{}mul}\newline
+{\footnotesize\texttt{QExponential}, \texttt{QExponentialFactorization}; the two series, their
+product formulas on the stated domains and $e_q(x)E_q(-x)=1$, in every complete normed field.
+The noncommutative factorization is proved in the graded sense the statement asks for: for every
+$n$, the degree-$n$ component of $e_q(X+Y)$ equals that of $e_q(X)e_q(Y)$, for arbitrary $X,Y$ in
+an arbitrary algebra over a field subject only to $YX=q\,XY$, given $q\ne1$ and
+$[j]_q!\ne0$ for $j\le n$.  A graded identity holds exactly when all its components do, so this is
+the assertion; no formal-power-series object over a noncommutative coefficient ring is
+constructed, none being available.  The scalar step the printed proof leaves implicit,
+$\GaussianBinomial{n}{k}{q}[k]_q![n-k]_q!=[n]_q!$, is now explicit, and rests on the
+division-free ring identity
+$\GaussianBinomial{n}{k}{q}(q;q)_k(q;q)_{n-k}=(q;q)_n$, which holds over every commutative ring
+with no hypothesis on $q$ at all}\\[2pt]
 \Cref{prop:qexp-eigen} & \statusexact &
 \texttt{qDeriv\_\allowbreak{}qExp},
 \texttt{qDeriv\_\allowbreak{}qExpBig}\newline

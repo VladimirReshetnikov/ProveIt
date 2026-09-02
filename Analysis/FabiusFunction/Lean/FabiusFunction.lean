@@ -603,6 +603,7 @@ import FabiusFunction.IntegerParameterTranslation
 import FabiusFunction.MultisetInversions
 import FabiusFunction.GeometricSimplexReindex
 import FabiusFunction.RatioExpansion
+import FabiusFunction.QExponentialFactorization
 import FabiusFunction.LambertTailLimit
 import FabiusFunction.SubspaceCount
 import FabiusFunction.AndrewsGordonFreeIndices
