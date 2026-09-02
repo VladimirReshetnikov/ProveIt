@@ -3817,10 +3817,11 @@ because the underlying infinite product is totalized outside its admissible
 range.  No spectral-zeta recovery, cumulant-sample recovery, or
 identifiability of an underlying probability law is asserted; those remain
 open interfaces.  With the later concurrent source union, the live facade
-census is 659 modules and 8,768 public declarations.  The current TeX also
+census is 660 modules and 8,778 public declarations.  The current TeX also
 contains the six-theorem prime-power companion-row API and the
 zero-definition/three-theorem outer Pochhammer normal-convergence API, plus
-the two-module/nine-declaration effective-inverse tranche and six new
+the two-module/nine-declaration fixed-depth effective-inverse tranche, the
+eight-declaration rational-gap inverse module, and six new
 q-calculus modules contributing 36 declarations, plus the two source-only
 central-reduction and cyclotomic-factorization modules contributing thirteen
 theorems.  These are
@@ -3837,11 +3838,12 @@ The six q-calculus module counts are
 complex order, general basic-hypergeometric summability, and the recursive
 q-multinomial API under their displayed hypotheses.
 The four subsequent module counts are
-\path{GaussianBinomialPalindromic.lean} (0+12),
+\path{GaussianBinomialPalindromic.lean} (0+14),
 \path{JacksonIntegral.lean} (1+7),
 \path{QExponential.lean} (3+8), and
 \path{ThetaQuasiPeriodicity.lean} (1+6).  Their five definitions and
-thirty-three theorems add Gaussian-polynomial degree and palindromicity,
+thirty-five theorems add Gaussian-polynomial degree, palindromicity, and the
+total linear-coefficient classifier,
 q-exponential and q-derivative laws, Jackson integration, and bilateral-theta
 quasi-periodicity and zeros, with all analytic hypotheses displayed.
 
@@ -5384,10 +5386,45 @@ the implication
  |u-v|<d(p)^{-1}\Longrightarrow |g(u)-g(v)|<2^{-p}.
 \]
 It concludes \lean{SequentiallyComputableOn} for \(g\) on the unit interval.
-This is deliberately an inverse-modulus consumer: it does not derive \(d\), or
-the displayed implication, from the paper's positive gap sequence.  In
+This theorem is deliberately an inverse-modulus consumer.  The adjacent
+gap-to-modulus layer below derives such a \(d\) from a supplied computable
+positive rational lower bound for every dyadic forward gap.  In
 particular, the name \lean{effectiveInversionOn_Icc} does not claim an
 arbitrary-endpoint interval algorithm without computable endpoint data.
+
+The module \path{EffectiveGapInverse.lean} exposes exactly eight public
+declarations: \lean{EffectivelyUniformContinuousOn}, the structure
+\lean{ComputablePositiveRationalSequence},
+\lean{ComputablePositiveRationalSequence.value},
+\lean{ComputablePositiveRationalSequence.reciprocalDenominator},
+\lean{ComputablePositiveRationalSequence.reciprocalDenominator_spec},
+\lean{inverseModulus_of_positiveRationalGap},
+\lean{effectiveInversionOn_Icc_of_computablePositiveRationalGap}, and
+\lean{clampedEffectiveInversion_of_computablePositiveRationalGap}.  Its
+sequence consists of computable positive natural numerators and denominators.
+The natural number
+\[
+ \frac{\lean{denominator}(p)}{\lean{numerator}(p)}+1
+\]
+is computable and positive, and its reciprocal is strictly below the encoded
+rational value.  If \(f\) is strictly increasing on \([0,1]\), \(g\) maps that
+interval to itself and is inverse to \(f\) there, and
+\[
+ \alpha(p)\le f(x+2^{-p})-f(x)
+ \qquad (0\le x\le 1-2^{-p}),
+\]
+then \lean{inverseModulus_of_positiveRationalGap} gives the corresponding
+\(2^{-p}\) inverse modulus.  Adding a computable dyadic evaluator for \(f\)
+and the interval map for \(f\) proves both
+\lean{SequentiallyComputableOn} and
+\lean{EffectivelyUniformContinuousOn} for \(g\) on \([0,1]\).
+The final theorem proves exactly
+\[
+ \lean{IsComputableRealFunction}\,(x\mapsto g(\lean{unitClamp}(x))).
+\]
+This clamped extension agrees with \(g\) on \([0,1]\); it does not assert
+computability or continuity of the unclamped values of an arbitrary \(g\)
+outside the unit interval.
 
 The concrete module \path{FabiusInverseComputable.lean} has no public
 definition and exactly one public theorem,
@@ -5402,9 +5439,11 @@ result is the full statement
 \[
  \lean{IsComputableRealFunction}\,(\lean{fabiusInv}\,F\,h_F).
 \]
-Together these two modules expose exactly nine public declarations.  They do
-not add a running-time or input-bit asymptotic theorem, and the generic module
-continues to assume rather than synthesize its inverse modulus.
+The fixed-depth module and Fabius specialization expose exactly nine public
+declarations, while the rational-gap module adds the eight declarations above.
+None adds a running-time or input-bit asymptotic theorem.  The generic
+fixed-depth theorem still consumes its modulus; the gap theorem constructs one
+only after the positive rational gap sequence is supplied.
 
 \subsection{Precise non-elementarity}
 
@@ -6902,7 +6941,7 @@ algebraic identities: they use no quotient formula, cancellation, integral-domai
 characteristic, topology, or convergence hypothesis.
 
 The downstream \path{GaussianBinomialPalindromic.lean} has no public
-definitions and exactly twelve public theorems:
+definitions and exactly fourteen public theorems:
 \lean{reflect_add_of_natDegree_le}, \lean{reflect_one'},
 \lean{gaussianBinomial_natDegree_le},
 \lean{gaussianBinomial_zero_left}, \lean{gaussianBinomial_diag'},
@@ -6910,8 +6949,10 @@ definitions and exactly twelve public theorems:
 \lean{coeff_gaussianBinomial_reflect},
 \lean{coeff_gaussianBinomial_zero},
 \lean{coeff_gaussianBinomial_top},
-\lean{gaussianBinomial_natDegree}, \lean{gaussianBinomial_monic}, and
-\lean{two_mul_derivative_gaussianBinomial_eval_one}.  Over every commutative
+\lean{gaussianBinomial_natDegree}, \lean{gaussianBinomial_monic},
+\lean{two_mul_derivative_gaussianBinomial_eval_one},
+\lean{coeff_gaussianBinomial_one_of_pos_of_lt}, and
+\lean{coeff_gaussianBinomial_one}.  Over every commutative
 semiring the module supplies the two generic reflection helpers, the Gaussian
 degree bound, zero and diagonal values, reflection in degree \(k(n-k)\),
 constant and top coefficients one, bounded-index coefficient reversal, and
@@ -6920,11 +6961,15 @@ the division-free derivative-at-one mean identity
  2\GaussianBinomial{n}{k}{X}'\big|_{X=1}
  = k(n-k)\binom nk .
 \]
-Exact degree and monicity require only that the commutative semiring be
-nontrivial.  Together with the existing row symmetry and reciprocal
-identities, this keeps the canonical forward q-binomial structure theorem
-exact.  No declaration in this surface says that the coefficient of \(q\)
-is one.
+The interior linear coefficient theorem assumes exactly \(0<k<n\) and gives
+coefficient one.  The total theorem classifies it as
+\[
+ [X^1]\GaussianBinomial{n}{k}{X}
+ =\begin{cases}1,&0<k<n,\\0,&\text{otherwise},\end{cases}
+\]
+thereby covering \(k=0\), \(k=n\), and \(n<k\).  Both results hold over every
+commutative semiring, without nontriviality; exact degree and monicity alone
+require the semiring to be nontrivial.
 
 The companion \path{GaussianBinomialPolynomialStructure.lean} has no public
 definitions and exactly five public theorems:
@@ -6937,8 +6982,9 @@ exact degree, monicity, constant coefficient one, reflection in degree
 \(k(n-k)\), and bounded-index coefficient symmetry for
 \(\GaussianBinomial{n}{k}{X}\in\NaturalNumbers[X]\).  Together with
 the existing row symmetry and reciprocal identities, this closes the canonical
-forward q-binomial structure theorem.  No declaration in this five-theorem
-surface says that the coefficient of \(q\) is one.
+forward q-binomial structure theorem.  The adjacent fourteen-theorem module
+supplies the complete linear-coefficient classifier over every commutative
+semiring.
 
 Two further source-only modules have exhaustive finite-algebra inventories.
 \path{CentralQBinomialReduction.lean} has no definitions and six theorems:
@@ -12642,6 +12688,7 @@ Analyticity, inverse, effective inverse continuity, elementary obstruction &
 \path{FabiusInverseEffectiveContinuity.lean},
 \path{FabiusInverseLogarithmicModulus.lean},
 \path{EffectiveMonotoneInverse.lean},
+\path{EffectiveGapInverse.lean},
 \path{FabiusInverseComputable.lean},
 \path{ElementaryFunction.lean}, \path{NotElementary.lean},
 \path{InverseBranch.lean}, \path{InverseNotElementary.lean}\\
@@ -12650,6 +12697,9 @@ definitions and six theorems in the generic module, followed by zero
 definitions and one theorem in the Fabius specialization) &
 \path{EffectiveMonotoneInverse.lean},
 \path{FabiusInverseComputable.lean}\\
+Effective inversion from computable positive rational dyadic gaps (exactly
+eight public declarations, including the clamped total extension) &
+\path{EffectiveGapInverse.lean}\\
 Moments and exact arithmetic &
 \path{Arithmetic.lean}, \path{AnalyticMoments.lean},
 \path{MomentPowerSeries.lean}, \path{UnitLaplaceMomentBounds.lean},

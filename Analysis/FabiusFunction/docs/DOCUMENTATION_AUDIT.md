@@ -109,21 +109,22 @@ only 4,606 declarations and
 declarations, including 69 undocumented ones.  Run the script for the live
 numbers rather than copying these historical values.
 
-The live post-merge 2026-09-01 inventory contains 659 modules and 8,768
+The live post-merge 2026-09-01 inventory contains 660 modules and 8,778
 lexically visible public declarations, with zero missing module headers and
 zero missing doc comments.  Relative to the 610/8,318 activation checkpoint,
-the current tree adds forty-nine modules and 450 declarations.  Relative to
-the earlier 630/8,552 merged checkpoint, concurrent source work adds twenty-nine
-modules and 216 declarations.  The prime-power and outer-product tranches
+the current tree adds fifty modules and 460 declarations.  Relative to
+the earlier 630/8,552 merged checkpoint, concurrent source work adds thirty
+modules and 226 declarations.  The prime-power and outer-product tranches
 account for one module and six declarations: the zero-definition/three-theorem
 `GeometricPochhammerNormalConvergence.lean` leaf and three additional theorems
 in `PrimePowerBinomialValuation.lean`.  The q-polish adds two theorems to
 `QPochhammerInfinite.lean`, the two-module effective-inverse tranche
 contributes nine declarations, the first six q-calculus modules contribute
-36 declarations, and the four newest leaves contribute 38 declarations.
-Those leaves are `GaussianBinomialPalindromic.lean` 0+12,
+36 declarations, and four later leaves originally contributed 38 declarations
+and now expose 40 after the two Gaussian additions.
+Those leaves are `GaussianBinomialPalindromic.lean` 0+14,
 `JacksonIntegral.lean` 1+7, `QExponential.lean` 3+8, and
-`ThetaQuasiPeriodicity.lean` 1+6: five definitions and thirty-three theorems.
+`ThetaQuasiPeriodicity.lean` 1+6: five definitions and thirty-five theorems.
 Four still newer q-series leaves contribute twenty theorems and no definitions:
 `GaussianBinomialPolynomialStructure.lean` 0+5, `JacobiCubic.lean` 0+2,
 `QPochhammerLogDerivative.lean` 0+10, and
@@ -131,6 +132,9 @@ Four still newer q-series leaves contribute twenty theorems and no definitions:
 The two newest algebra leaves add thirteen theorems and no definitions:
 `CentralQBinomialReduction.lean` 0+6 and
 `CyclotomicFactorization.lean` 0+7.
+The two added Gaussian linear-coefficient theorems and the eight-declaration
+`EffectiveGapInverse.lean` leaf account for the final ten declarations and
+one module.
 The older 622/8,472, 623/8,476, 629/8,546, 630/8,552,
 641/8,650, and 643/8,661 values below are historical checkpoints, not
 descriptions of the live tree.  The earlier additions and q-series tranches are
@@ -325,26 +329,32 @@ a nine-module/84-declaration change.  The six further incoming q-calculus
 leaves contribute 36 declarations and brought the intermediate audit to
 649/8,697.  The four subsequent leaves contribute 38 declarations and bring
 that audit to 653/8,735.  The next four leaves contribute twenty declarations
-and bring that audit to 657/8,755.  The final two leaves contribute thirteen
-declarations and bring the live audit to the 659/8,768 census recorded above.
+and bring that audit to 657/8,755.  The final two algebra leaves contribute
+thirteen declarations and brought the audit to 659/8,768.  Two Gaussian
+linear-coefficient theorems then brought it to 659/8,770, and the
+eight-declaration `EffectiveGapInverse.lean` leaf brings the live audit to the
+660/8,778 census recorded above.
 
 `GaussianBinomialPalindromic.lean` is an exhaustive zero-definition,
-twelve-theorem leaf: `Fabius.reflect_add_of_natDegree_le`,
+fourteen-theorem leaf: `Fabius.reflect_add_of_natDegree_le`,
 `Fabius.reflect_one'`, `Fabius.gaussianBinomial_natDegree_le`,
 `Fabius.gaussianBinomial_zero_left`, `Fabius.gaussianBinomial_diag'`,
 `Fabius.reflect_gaussianBinomial`,
 `Fabius.coeff_gaussianBinomial_reflect`,
 `Fabius.coeff_gaussianBinomial_zero`,
 `Fabius.coeff_gaussianBinomial_top`, `Fabius.gaussianBinomial_natDegree`,
-`Fabius.gaussianBinomial_monic`, and
-`Fabius.two_mul_derivative_gaussianBinomial_eval_one`.  Over every
+`Fabius.gaussianBinomial_monic`,
+`Fabius.two_mul_derivative_gaussianBinomial_eval_one`,
+`Fabius.coeff_gaussianBinomial_one_of_pos_of_lt`, and
+`Fabius.coeff_gaussianBinomial_one`.  Over every
 commutative semiring it supplies generic reflection helpers, the Gaussian
 degree bound, zero and diagonal values, exact reflection in degree `k*(n-k)`,
 constant and top coefficients one, bounded-index coefficient symmetry, and
-the division-free derivative-at-one mean identity.  Exact degree and monicity
-require only a nontrivial semiring.  With existing row symmetry and reciprocity
-this keeps the canonical forward q-binomial structure theorem exact.  It does
-not prove that the coefficient of `q` is one.
+the division-free derivative-at-one mean identity.  The interior linear
+coefficient is one under exactly `0 < k` and `k < n`; the total classifier is
+`if 0 < k ∧ k < n then 1 else 0`, so the boundary cases `k = 0`, `k = n`,
+and `n < k` are explicit.  Both coefficient theorems hold over every
+commutative semiring; exact degree and monicity alone require nontriviality.
 
 That increment is exhaustively counted as
 `QPochhammerInfiniteBounds.lean` 0+5, `HeineTransformation.lean` 2+5,
@@ -355,10 +365,11 @@ q-Gauss identities, a ratio-defined complex-order q-Pochhammer API, general
 basic-hypergeometric terms and summability, and the division-free recursive
 q-multinomial interface.  The displayed contraction, nonvanishing, and
 denominator hypotheses remain part of these APIs.
-The final four-module increment is exhaustively counted as
-`GaussianBinomialPalindromic.lean` 0+12, `JacksonIntegral.lean` 1+7,
+The four-module increment is now exhaustively counted as
+`GaussianBinomialPalindromic.lean` 0+14, `JacksonIntegral.lean` 1+7,
 `QExponential.lean` 3+8, and `ThetaQuasiPeriodicity.lean` 1+6.  It adds the
-degree, monicity, coefficient-reversal, and division-free mean theory of the
+degree, monicity, coefficient-reversal, division-free mean theory, and total
+linear-coefficient classifier of the
 Gaussian polynomial; q-exponentials and their q-derivative laws; Jackson's
 fundamental theorem and integration by parts; and the bilateral theta product,
 quasi-periodicity, and zero criterion.  Their analytic declarations keep the
@@ -410,10 +421,30 @@ comparisons update the bracket, while the third, inconclusive branch certifies
 the current midpoint.  Doubling an accepted numerator through remaining
 depths and using the final left endpoint in the no-hit case yield a uniform
 dyadic name at denominator `2^p` with error at most `2^-p`.  The abstract Lean
-theorem assumes a computable positive reciprocal inverse modulus.  It does not
-formalize the canonical report's stronger gap-to-modulus theorem, which starts
-from a computable positive gap sequence and also derives effective uniform
+theorem consumes a computable positive reciprocal inverse modulus.  The
+adjacent `EffectiveGapInverse.lean` module constructs one from computable
+positive rational dyadic-gap lower bounds and also derives effective uniform
 continuity.
+
+`EffectiveGapInverse.lean` has exactly eight public declarations:
+`Fabius.EffectivelyUniformContinuousOn`, the structure
+`Fabius.ComputablePositiveRationalSequence`,
+`Fabius.ComputablePositiveRationalSequence.value`,
+`Fabius.ComputablePositiveRationalSequence.reciprocalDenominator`,
+`Fabius.ComputablePositiveRationalSequence.reciprocalDenominator_spec`,
+`Fabius.inverseModulus_of_positiveRationalGap`,
+`Fabius.effectiveInversionOn_Icc_of_computablePositiveRationalGap`, and
+`Fabius.clampedEffectiveInversion_of_computablePositiveRationalGap`.  The
+structure packages computable positive natural numerators and denominators.
+Its reciprocal denominator is `denominator p / numerator p + 1`, whose
+reciprocal lies strictly below the represented rational value.  For a strict
+increasing inverse pair on `[0,1]`, the hypothesis is the uniform dyadic-gap
+lower bound `α.value p ≤ f (x + 2^-p) - f x` for every
+`x ∈ [0,1-2^-p]`.  With a computable dyadic oracle for `f` and interval maps
+for both functions, the module proves sequential computability and effective
+uniform continuity of `g` on `[0,1]`.  Its total computable-real-function
+conclusion is exactly `fun x => g (unitClamp x)`: it agrees with `g` on the
+unit interval but asserts nothing about the unclamped values of `g` outside it.
 
 `FabiusInverseComputable.lean` has zero public definitions and exactly one
 public theorem, `Fabius.fabiusInv_isComputableRealFunction`.  It instantiates
@@ -503,14 +534,15 @@ inventory.  `GaussianBinomialAtNegOneDerivative.lean` is 0+4, and
 `GaussianBinomialContinuity.lean` is 0+3:
 `continuous_gaussianBinomial`, `tendsto_gaussianBinomial_nhds_one`, and
 `gaussianBinomial_eq_finiteQPochhammerIn_div`.
-`GaussianBinomialPalindromic.lean` is 0+12:
+`GaussianBinomialPalindromic.lean` is 0+14:
 `reflect_add_of_natDegree_le`, `reflect_one'`,
 `gaussianBinomial_natDegree_le`, `gaussianBinomial_zero_left`,
 `gaussianBinomial_diag'`, `reflect_gaussianBinomial`,
 `coeff_gaussianBinomial_reflect`, `coeff_gaussianBinomial_zero`,
 `coeff_gaussianBinomial_top`, `gaussianBinomial_natDegree`,
-`gaussianBinomial_monic`, and
-`two_mul_derivative_gaussianBinomial_eval_one`.
+`gaussianBinomial_monic`, `two_mul_derivative_gaussianBinomial_eval_one`,
+`coeff_gaussianBinomial_one_of_pos_of_lt`, and
+`coeff_gaussianBinomial_one`.
 `GaussianBinomialPolynomialStructure.lean` is 0+5:
 `natDegree_gaussianBinomial_universal`,
 `gaussianBinomial_universal_monic`,
@@ -583,7 +615,7 @@ The additional declaration in `PolynomialCombExactness.lean` is
 physical-coordinate self-sampling quadrature for every real polynomial whose
 natural degree is at most the dyadic level and every real phase.
 
-The effective-inverse tranche contributes two modules and nine public
+The fixed-depth effective-inverse tranche contributes two modules and nine public
 declarations.  `EffectiveMonotoneInverse.lean` is exactly 2+6: the definitions
 `SequentiallyComputableOn` and `unitClamp`; the clamping theorem
 `unitClamp_sequentiallyComputable`; the three certified tolerant-comparison
@@ -598,7 +630,10 @@ is exactly 0+1: `fabiusInv_isComputableRealFunction` combines that sequential
 realizer with the logarithmic Delta modulus for every bounded Fabius witness.
 Clamping makes the theorem about the total inverse on all real inputs.  These
 results are computability certificates, not an input-bit running-time bound or
-an exact least endpoint-mass denominator.
+an exact least endpoint-mass denominator.  The later
+`EffectiveGapInverse.lean` module contributes the eight declarations listed
+above and supplies the generic rational-gap-to-modulus bridge; its clamped
+extension boundary remains explicit.
 
 The retained comb-interpolation synthesis PDF is a validated 158-page A4
 historical receipt: the current source includes a post-render update to its
@@ -615,7 +650,7 @@ and 88-page notation-catalogue artifacts likewise predate their current merged
 sources.  Their package notices treat those PDFs as historical validation
 receipts, not parity claims, until fresh uninterrupted three-pass builds
 complete.  The inverse-computability receipt likewise requires refresh for the
-659/8,768 census.  The canonical inverse-theory publication retains a 134-page
+660/8,778 census.  The canonical inverse-theory publication retains a 134-page
 artifact synchronized at its latest-main source checkpoint; the merged
 effective-inversion tranche makes current parity pending.
 
