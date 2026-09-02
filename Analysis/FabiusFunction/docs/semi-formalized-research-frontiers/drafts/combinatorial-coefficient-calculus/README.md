@@ -28,7 +28,7 @@ mode this package is now expected to pass.
 
 | Directory | Document |
 | --- | --- |
-| `Combinatorial_Coefficient_Calculus/` | **Canonical:** *Combinatorial Coefficient Calculus* — 8,890-line, 385,679-byte source and the 173-page A4 PDF built from it |
+| `Combinatorial_Coefficient_Calculus/` | **Canonical:** *Combinatorial Coefficient Calculus* — 8,928-line, 388,563-byte source and the 173-page A4 PDF built from it |
 
 Unlike every earlier state of this package, the filed PDF renders the filed
 TeX: both come from the same three-pass `pdflatex` run, so the former

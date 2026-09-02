@@ -233,7 +233,7 @@ formalization status per result.
 
 | Directory | Document | Previous path / provenance |
 | --- | --- | --- |
-| `Combinatorial_Coefficient_Calculus/` | **Canonical, consolidation complete:** *Combinatorial Coefficient Calculus* — 8,890-line/385,679-byte source and the 173-page A4 PDF built from it in the same run | Six-source provenance, closure, and disposition ledgers in the package; original non-suffixed arrival was `incoming/Combinatorial_Coefficient_Calculus.zip` (SHA-256 `a22479ac8f58e1710117af9d0a3f515c7d24ec250548f537520c9f9024f4321a`); the five retired donors are identified in `SOURCE_CLOSURE.sha256` |
+| `Combinatorial_Coefficient_Calculus/` | **Canonical, consolidation complete:** *Combinatorial Coefficient Calculus* — 8,928-line/388,563-byte source and the 173-page A4 PDF built from it in the same run | Six-source provenance, closure, and disposition ledgers in the package; original non-suffixed arrival was `incoming/Combinatorial_Coefficient_Calculus.zip` (SHA-256 `a22479ac8f58e1710117af9d0a3f515c7d24ec250548f537520c9f9024f4321a`); the five retired donors are identified in `SOURCE_CLOSURE.sha256` |
 
 ## exponents-and-q-series — `exponents-and-q-series/`
 
