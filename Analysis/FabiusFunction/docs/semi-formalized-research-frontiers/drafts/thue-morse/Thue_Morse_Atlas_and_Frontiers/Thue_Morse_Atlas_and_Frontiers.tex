@@ -6281,6 +6281,17 @@ The integrand is positive on \((0,1)\).  Equation \eqref{p1:eq:H-dyadic} is
 \eqref{p1:eq:Dirichlet-dyadic} at \(s=1\).
 \end{proof}
 
+\emph{Formal status.}  The series \eqref{p1:eq:H-definition} is the value at \(\sigma=1\)
+of \lean{Fabius.thueMorseDirichlet} in \path{ThueMorseDirichlet.lean}, the limit of the
+partial sums \lean{Fabius.dirichletPartial}, whose conditional convergence for every
+\(\sigma>0\), \(a>0\) is \lean{Fabius.tendsto\_thueMorseDirichlet}; the dyadic law
+\eqref{p1:eq:H-dyadic} is the case \(\sigma=1\) of
+\lean{Fabius.thueMorseDirichlet\_dyadic}, where the factor \(2^{-\sigma}\) becomes the
+\(\tfrac12\) displayed.  The integral representation \eqref{p1:eq:H-integral} and the
+positivity \(H(a)>0\) are not formalized: they rest on the Mellin identity
+\eqref{p1:eq:Mellin-integral}, whose sum--integral interchange is conditional rather than
+dominated on \((0,1)\).
+
 \section[Thue--Morse exponent products]{Infinite products with Thue--Morse exponents}
 \label{p1:sec:exponent-products}
 
