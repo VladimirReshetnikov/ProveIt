@@ -76,6 +76,17 @@ for full in list(defined) + list(namespaces):
 
 # 2. Citations.  Dotted names are captured whole.
 CITE = re.compile(r"Fabius\.((?:[A-Za-z0-9_'\\]|\.(?=[A-Za-z_]))+)")
+# Ledger-style citations `\decl{name}` (Fourier-decay, Integration, Lambert W
+# volumes): a bare declaration name understood in namespace `Fabius`, or a
+# module path `FabiusFunction.Foo`.  A bare name resolves through the
+# suffix-qualified spellings; a module path must be an existing file.
+DECL = re.compile(r"\\decl\{([^}]*)\}")
+modules = set()
+for root, _dirs, files in os.walk(LEAN):
+    for fn in files:
+        if fn.endswith('.lean'):
+            rel = os.path.relpath(os.path.join(root, fn[:-5]), LEAN)
+            modules.add('FabiusFunction.' + rel.replace(os.sep, '.'))
 SECTION = re.compile(r'^\s*\\(?:chapter|section)\*?\{([^}]*)\}')
 cited = {}
 for root, _dirs, files in os.walk(DOCS):
@@ -103,6 +114,14 @@ for root, _dirs, files in os.walk(DOCS):
                     name = name.rstrip('\\').rstrip('.')
                     if not name:
                         continue
+                    cited.setdefault(name, []).append(
+                        (os.path.relpath(path, DOCS), i))
+                for m in DECL.finditer(citation_line):
+                    name = m.group(1).replace('\\_', '_').strip()
+                    if not name or name in modules:
+                        continue
+                    if name.startswith('Fabius.'):
+                        name = name[len('Fabius.'):]
                     cited.setdefault(name, []).append(
                         (os.path.relpath(path, DOCS), i))
 
