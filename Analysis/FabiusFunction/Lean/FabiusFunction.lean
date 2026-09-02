@@ -33,6 +33,8 @@ import FabiusFunction.StirlingShiftedEvaluations
 import FabiusFunction.StirlingTransformEGF
 import FabiusFunction.StirlingSummations
 import FabiusFunction.StirlingNormalOrder
+import FabiusFunction.BinomialType
+import FabiusFunction.BellLeadingZeros
 import FabiusFunction.SymmetricFunctionTransform
 import FabiusFunction.SymmetricFunctionGenerating
 import FabiusFunction.FiniteQBinomialCore

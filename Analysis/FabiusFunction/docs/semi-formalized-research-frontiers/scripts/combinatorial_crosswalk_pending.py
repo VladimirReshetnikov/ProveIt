@@ -582,6 +582,65 @@ $\FallingFactorial{xD}{n}$ and the operator series
 \cref{eq:der-from-diff,eq:diff-from-der} are not formalized.""")),
 ]
 
+PENDING += [
+ # --- thm:binomial-type-bell ---
+ (r"""$h^{-1}(D_x)\EulerE^{xh(t)}=h^{-1}(h(t))\EulerE^{xh(t)}=t \EulerE^{xh(t)}$; coefficient comparison
+gives \eqref{eq:delta-operator}.
+\end{proof}
+""",
+  remark(r"""% ed.: crosswalk added 2026-09-01.
+Module \lean{BinomialType} defines \lean{Fabius.binomialTypePoly} by
+\cref{eq:binomial-type-bell} as the complete Bell polynomial at the weights
+$a_jx$ (\lean{Fabius.binomialTypePoly_eq_sum} is the expansion in partial Bell
+polynomials).  \cref{eq:binomial-type-egf} is
+\lean{Fabius.exp_subst_smul_bellWeightSeries_eq_egfA_binomialTypePoly}, the
+bivariate exponential formula of \cref{thm:exponential-formula}, and
+\cref{eq:binomial-type-identity} is \lean{Fabius.binomialTypePoly_add}, which
+is the addition law $\ExponentialCompleteBellPolynomial n(\kappa+\eta)
+=\sum_k\binom nk\ExponentialCompleteBellPolynomial k(\kappa)
+\ExponentialCompleteBellPolynomial{n-k}(\eta)$ (\lean{Bell.complete_add}) at
+$\kappa=xa$, $\eta=ya$, valid over any commutative ring and without the
+hypothesis $a_1\ne0$.  The delta operator \cref{eq:delta-operator} is not
+formalized.""")),
+]
+
+PENDING += [
+ # --- thm:merged-sheffer ---
+ (r"""eigenvalue $t$; multiplication of the EGF by $t$ and coefficient comparison
+gives the lowering law.
+\end{proof}
+""",
+  remark(r"""% ed.: crosswalk added 2026-09-01.
+In module \lean{BinomialType} the Sheffer sequence is
+\lean{Fabius.shefferPoly}, the binomial convolution
+$s_n=\sum_k\binom nkc_kp_{n-k}$ of the coefficients $c_k$ of $g$ with the
+binomial-type sequence $p_n$ of \cref{thm:binomial-type-bell}, so that
+\lean{Fabius.egfA_mul_exp_subst_smul_bellWeightSeries} is the generating
+function $g(t)\EulerE^{xB(t)}$.  \cref{eq:merged-sheffer-addition} is
+\lean{Fabius.shefferPoly_add}: the binomial identity of $p_n$ in convolution
+form (\lean{Fabius.binomialTypePoly_add'}) and the associativity of the
+binomial convolution (\lean{Bell.binomialConv_assoc}), over any commutative
+ring.  The lowering law \cref{eq:merged-sheffer-lowering} is not
+formalized.""")),
+]
+
+PENDING += [
+ # --- thm:bell-leading-zeros ---
+ (r"""$t^n$ in \eqref{eq:partial-bell-egf} gives the factorial factor displayed.
+\end{proof}
+""",
+  remark(r"""% ed.: crosswalk added 2026-09-01; the Lean proof is this proof made formal.
+\lean{Fabius.partialBell_leadingZeros} (module \lean{BellLeadingZeros}) is
+\cref{eq:bell-leading-zeros} over any $\RationalNumbers$-algebra, for the
+zero-padded weights \lean{Fabius.leadingZeros} ($x_j$ replaced by $0$ for
+$j\le q$) and the rescaled weights \lean{Fabius.qScaled}
+($i\mapsto x_{q+i}/\binom{q+i}{q}$): the weight series of the former is
+$t^q/q!$ times that of the latter (\lean{Fabius.bellWeightSeries_leadingZeros}),
+and comparing the coefficients of $t^{n+qk}$ in the $k$th powers through
+\cref{eq:partial-bell-egf} (\lean{Fabius.bellWeightSeries_pow}) gives the
+factorial factor.""")),
+]
+
 applied = 0
 for anchor, text in PENDING:
     if text.strip() in s:

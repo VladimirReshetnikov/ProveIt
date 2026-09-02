@@ -158,6 +158,24 @@ STATUS = {
    r"\lean{Fabius.partialBell_mul_left}, \lean{Fabius.partialBell_pow_mul}, "
    r"\lean{Fabius.partialBell_bihomogeneous} (\lean{BellHomogeneity}), over every commutative "
    r"semiring"),
+ 'thm:bell-leading-zeros': ('Lean',
+   r"\lean{Fabius.partialBell_leadingZeros} (\lean{BellLeadingZeros}), over any "
+   r"$\RationalNumbers$-algebra, with the zero-padded weights \lean{Fabius.leadingZeros} and the "
+   r"rescaled weights \lean{Fabius.qScaled}; the proof compares the weight series "
+   r"(\lean{Fabius.bellWeightSeries_leadingZeros}) exactly as in the text"),
+ 'thm:merged-sheffer': ('partial',
+   r"\cref{eq:merged-sheffer-addition} is \lean{Fabius.shefferPoly_add} (\lean{BinomialType}), "
+   r"for \lean{Fabius.shefferPoly} $=c\star p$ (binomial convolution of the coefficients of $g$ "
+   r"with the binomial-type sequence), with generating function "
+   r"\lean{Fabius.egfA_mul_exp_subst_smul_bellWeightSeries}; the lowering law "
+   r"\cref{eq:merged-sheffer-lowering} is not formalized"),
+ 'thm:binomial-type-bell': ('partial',
+   r"with \lean{Fabius.binomialTypePoly} defined by \cref{eq:binomial-type-bell} "
+   r"(\lean{BinomialType}): \cref{eq:binomial-type-egf} is "
+   r"\lean{Fabius.exp_subst_smul_bellWeightSeries_eq_egfA_binomialTypePoly} and "
+   r"\cref{eq:binomial-type-identity} is \lean{Fabius.binomialTypePoly_add} (from the addition "
+   r"law \lean{Bell.complete_add}), over any commutative ring; the delta operator "
+   r"\cref{eq:delta-operator} is not formalized"),
  'thm:normal-order': ('Lean',
    r"\lean{Fabius.iterate_X_mul_derivative} (\cref{eq:normal1}) and "
    r"\lean{Fabius.xkDk_eq_sum_signedStirlingFirst} (\cref{eq:normal2}, by Stirling inversion) in "
