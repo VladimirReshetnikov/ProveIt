@@ -16,11 +16,33 @@
 > LAKE_JOBS=1 lake build +FabiusFunction.Basic
 > ```
 >
-> `LAKE_JOBS` bounds the number of `lean.exe` processes, which is what
-> exhausts RAM. Lake `5.0.0` accepts neither `-j` nor `--jobs`, so the
-> environment variable is the only control. Measured 2026-08-27: a facade
-> build over a stale dependency set spawned **11 concurrent `lean.exe`**,
-> and **exactly one** under `LAKE_JOBS=1`.
+> **Corrected 2026-09-02: `LAKE_JOBS` does not bound anything here.** Lake
+> `5.0.0-src+8c9756b` accepts neither `-j` (`unknown short option '-j'`) nor
+> `--jobs`, and the environment variable is not read either. Measured on this
+> machine with `LAKE_JOBS=1` exported and every `lean.exe` attributed by
+> `ParentProcessId` to the invoking `lake`: an umbrella build with 136 modules
+> pending went `0 → 1 → 12` workers across two 30-second samples, all twelve
+> children of that lake, and had to be killed. The jump is a **burst**, not a
+> ramp, and `lake` spends about a minute in trace checking before spawning
+> anything, so an early sample sees nothing and proves nothing.
+>
+> Setting the variable costs nothing, so the command below keeps it, but **do
+> not rely on it**. The only thing that actually bounds the worker count is the
+> rule in "Building Lean" below: one module per invocation, and only when its
+> dependencies are already compiled, so there is nothing to parallelize.
+>
+> An earlier measurement (2026-08-27: 11 concurrent `lean.exe` on a stale
+> facade, exactly one under `LAKE_JOBS=1`) is **not** confirmation of the flag
+> and needs recheck. A same-day test on `+FabiusFunction.AssociatedStirling`
+> that peaked at two workers turned out to prove nothing at all: that module's
+> closure is a near-linear chain, so at no point were more than two modules
+> simultaneously ready to compile, and the peak was forced by the dependency
+> graph rather than by any limit. **A concurrency test needs a target with
+> genuine independent breadth, not merely several uncompiled modules.**
+>
+> Serialization is necessary but not sufficient: even at one worker a single
+> `lean.exe` reached 1090 MB here and free RAM fell to 1.97 GB, so the
+> out-of-memory symptoms below stay reachable with a correct driver.
 >
 > **Do not also set `LEAN_NUM_THREADS=0`.** That bounds the threads *inside*
 > a process, which is not the resource under pressure, and `0` does not mean
