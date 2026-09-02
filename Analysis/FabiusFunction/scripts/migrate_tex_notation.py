@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Apply the mechanically safe part of the Fabius TeX notation migration.
+r"""Apply the mechanically safe part of the Fabius TeX notation migration.
 
 This helper performs only transformations whose old command has one semantic
 meaning and the same TeX argument shape as its canonical replacement.  It:
@@ -17,6 +17,11 @@ The opt-in ``--combinatorial-calculus`` profile applies the reviewed,
 argument-shape-preserving renames shared by the six combinatorial coefficient
 calculus reports.  It also removes their superseded one-line local definitions
 and the corresponding non-Fourier-hat markers.
+
+The opt-in ``--formal-bigo-filtration`` profile rewrites a reviewed formal-tail
+spelling such as ``\FormalBigO_t(E)`` to the explicit two-argument command
+``\FormalBigOAt{E}{t}``.  Its balanced-parenthesis parser preserves nested
+operands and rejects any occurrence whose wrapper is not understood.
 
 The command is dry-run by default and accepts one or more explicit files or
 directories.  ``--apply`` is required to write.  Archive paths are rejected.
@@ -254,6 +259,75 @@ def split_code_comment(line: str) -> tuple[str, str]:
     return (line, "") if offset is None else (line[:offset], line[offset:])
 
 
+def rewrite_formal_bigo_at(code: str, filtration: str) -> tuple[str, int]:
+    r"""Make one reviewed formal filtration variable explicit.
+
+    TeX tokenizes ``\FormalBigO_t`` as the shared zero-argument command
+    ``\FormalBigO`` followed by a subscript.  The canonical replacement owns
+    both the omitted expression and filtration variable.  Scan balanced round
+    parentheses instead of using a regular expression so operands containing
+    calls such as ``\min(...)`` remain intact.
+    """
+
+    token = rf"\FormalBigO_{filtration}"
+    output: list[str] = []
+    cursor = 0
+    substitutions = 0
+    while True:
+        start = code.find(token, cursor)
+        if start < 0:
+            output.append(code[cursor:])
+            break
+
+        after = start + len(token)
+        if after < len(code) and (code[after].isalpha() or code[after] == "@"):
+            output.append(code[cursor:after])
+            cursor = after
+            continue
+
+        wrapper = after
+        while wrapper < len(code) and code[wrapper] in " \t":
+            wrapper += 1
+
+        scalable = re.match(r"\\!\s*\\left\s*\(", code[wrapper:])
+        if scalable is not None:
+            opening = wrapper + scalable.end() - 1
+        elif wrapper < len(code) and code[wrapper] == "(":
+            opening = wrapper
+        else:
+            raise ValueError(
+                f"unsupported formal-tail wrapper after {token}: "
+                f"{code[start:start + 80]!r}"
+            )
+
+        depth = 0
+        closing: int | None = None
+        for index in range(opening, len(code)):
+            if code[index] == "(":
+                depth += 1
+            elif code[index] == ")":
+                depth -= 1
+                if depth == 0:
+                    closing = index
+                    break
+        if closing is None:
+            raise ValueError(f"unbalanced formal-tail operand after {token}")
+
+        operand = code[opening + 1 : closing]
+        if scalable is not None:
+            right = re.search(r"\\right\s*$", operand)
+            if right is None:
+                raise ValueError(f"scalable formal-tail wrapper lacks \\right after {token}")
+            operand = operand[: right.start()]
+
+        output.append(code[cursor:start])
+        output.append(rf"\FormalBigOAt{{{operand}}}{{{filtration}}}")
+        cursor = closing + 1
+        substitutions += 1
+
+    return "".join(output), substitutions
+
+
 def declaration_name(code: str, extra_names: set[str]) -> str | None:
     patterns = dict(DECL_PATTERNS)
     for name in extra_names:
@@ -321,6 +395,7 @@ def transform(
     gaussian_binomial_three: bool,
     ordinary_rising_poch: bool,
     combinatorial_calculus: bool,
+    formal_bigo_filtration: str | None,
 ) -> tuple[str, dict[str, int], bool]:
     text, added = add_input(text, path, docs)
     renames = dict(SAFE_RENAMES)
@@ -413,6 +488,11 @@ def transform(
                 counts["ordinary-coefficient-implicit-x"] = (
                     counts.get("ordinary-coefficient-implicit-x", 0) + substitutions
                 )
+        if formal_bigo_filtration is not None:
+            code, substitutions = rewrite_formal_bigo_at(code, formal_bigo_filtration)
+            if substitutions:
+                key = f"formal-bigo-{formal_bigo_filtration}"
+                counts[key] = counts.get(key, 0) + substitutions
         for old, new in renames.items():
             pattern = re.compile(r"\\" + re.escape(old) + r"(?![A-Za-z@])")
             code, substitutions = pattern.subn(r"\\" + new, code)
@@ -487,6 +567,14 @@ def main() -> int:
             "combinatorial-coefficient-calculus reports"
         ),
     )
+    parser.add_argument(
+        "--formal-bigo-filtration",
+        choices=("t", "r", "x"),
+        help=(
+            "semantically assert the selected formal-tail subscript and rewrite "
+            "its balanced parenthesized operands to FormalBigOAt"
+        ),
+    )
     args = parser.parse_args()
     docs, archive = repository_paths()
     try:
@@ -511,6 +599,7 @@ def main() -> int:
                 gaussian_binomial_three=args.gaussian_binomial_three,
                 ordinary_rising_poch=args.ordinary_rising_poch,
                 combinatorial_calculus=args.combinatorial_calculus,
+                formal_bigo_filtration=args.formal_bigo_filtration,
             )
         except ValueError as error:
             print(str(error), file=sys.stderr)
@@ -567,6 +656,12 @@ def main() -> int:
         elif name == "ordinary-coefficient-implicit-x":
             print(
                 f"  {count:6d}  make the ordinary coefficient family x explicit"
+            )
+        elif name.startswith("formal-bigo-"):
+            filtration = name.removeprefix("formal-bigo-")
+            print(
+                f"  {count:6d}  \\FormalBigO_{filtration}(...) -> "
+                f"\\FormalBigOAt{{...}}{{{filtration}}}"
             )
         elif name == "sinc":
             target = "SincRad" if args.sinc_normalization == "rad" else "SincPi"

@@ -433,7 +433,7 @@ A formal series is an algebraic object.  The statement
 will mean that the two formal coefficient arrays agree, not that two infinite
 numerical sums converge.  We write
 \[
- A=B+\FormalBigO_t(t^N),\qquad t=X^{-1},
+ A=B+\FormalBigOAt{t^N}{t},\qquad t=X^{-1},
 \]
 when the coefficients of \(t^n\) agree for every \(n<N\).  This is a
 \emph{formal} big-O notation.
@@ -556,7 +556,7 @@ The t-adic valuation satisfies
 \]
 The valuation-tail notation
 \[
- A=B+\FormalBigO_t(t^N)
+ A=B+\FormalBigOAt{t^N}{t}
 \]
 means \(\val_t(A-B)\ge N\).  The truncation operator is
 \begin{equation}\label{eq:truncation}
@@ -822,10 +822,10 @@ The output is \([AB]_{<N}\).
 \begin{workedbox}
 Take
 \[
- A=1+(L-1)t+(L^2+2)t^2+\FormalBigO_t(t^3),
+ A=1+(L-1)t+(L^2+2)t^2+\FormalBigOAt{t^3}{t},
 \]
 \[
- B=1-(L+2)t+(3L-1)t^2+\FormalBigO_t(t^3).
+ B=1-(L+2)t+(3L-1)t^2+\FormalBigOAt{t^3}{t}.
 \]
 The coefficient of \(t\) is
 \[
@@ -837,7 +837,7 @@ The coefficient of \(t^2\) is
 \]
 Therefore
 \[
- AB=1-3t+(2L+3)t^2+\FormalBigO_t(t^3).
+ AB=1-3t+(2L+3)t^2+\FormalBigOAt{t^3}{t}.
 \]
 The leading logarithmic squares cancel even though neither factor has constant
 coefficients.
@@ -863,11 +863,11 @@ Modulo \(t^N\), the sum stops at \(m=N-1\).
 \begin{example}[Square root]
 Let
 \[
- A=1+2Lq+(L^2+1)t^2+\FormalBigO_t(t^3).
+ A=1+2Lq+(L^2+1)t^2+\FormalBigOAt{t^3}{t}.
 \]
 Using \((1+U)^{1/2}=1+U/2-U^2/8+\cdots\),
 \[
- A^{1/2}=1+Lq+\frac12t^2+\FormalBigO_t(t^3),
+ A^{1/2}=1+Lq+\frac12t^2+\FormalBigOAt{t^3}{t},
 \]
 because the \(L^2t^2\) contributions cancel.
 \end{example}
@@ -1068,7 +1068,7 @@ then
 \begin{workedbox}
 Let
 \[
- A=1+Lq+(L^2+1)t^2+\FormalBigO_t(t^4),
+ A=1+Lq+(L^2+1)t^2+\FormalBigOAt{t^4}{t},
 \]
 with the t-cubic coefficient taken to be zero.  The recurrence gives
 \[
@@ -1084,7 +1084,7 @@ and
 \]
 Hence
 \[
- \frac1A=1-Lq-t^2+(L^3+2L)t^3+\FormalBigO_t(t^4).
+ \frac1A=1-Lq-t^2+(L^3+2L)t^3+\FormalBigOAt{t^4}{t}.
 \]
 Direct multiplication is the quickest verification.
 \end{workedbox}
@@ -1136,7 +1136,7 @@ we find
 \]
 Thus
 \[
- \frac CA=1+(L+2)t+(1-L)t^2+\FormalBigO_t(t^3).
+ \frac CA=1+(L+2)t+(1-L)t^2+\FormalBigOAt{t^3}{t}.
 \]
 \end{example}
 
@@ -1218,12 +1218,12 @@ signal that iterated logarithms may be required.
 \begin{workedbox}
 Let
 \[
- A=1+Lq+(2-L)t^2+\FormalBigO_t(t^3).
+ A=1+Lq+(2-L)t^2+\FormalBigOAt{t^3}{t}.
 \]
 Then \(U=Lt+(2-L)t^2\), and
 \[
- \log A=U-\frac{U^2}{2}+\FormalBigO_t(t^3)
- =Lq+\left(2-L-\frac{L^2}{2}\right)t^2+\FormalBigO_t(t^3).
+ \log A=U-\frac{U^2}{2}+\FormalBigOAt{t^3}{t}
+ =Lq+\left(2-L-\frac{L^2}{2}\right)t^2+\FormalBigOAt{t^3}{t}.
 \]
 \end{workedbox}
 
@@ -1288,11 +1288,11 @@ part remains t-adic.
 Every reciprocal or quotient should be checked by multiplication.  If
 \(B_N\) is intended as the reciprocal of \(A\) through order \(t^{N-1}\), verify
 \begin{equation}\label{eq:recip-residual-test}
- AB_N-1=\FormalBigO_t(t^N).
+ AB_N-1=\FormalBigOAt{t^N}{t}.
 \end{equation}
 For \(Q_N=C/A\), verify
 \[
- AQ_N-C=\FormalBigO_t(t^N).
+ AQ_N-C=\FormalBigOAt{t^N}{t}.
 \]
 These tests detect off-by-one truncation errors, failures to normalize
 polynomials, and accidental use of \(L\) as an independent variable.
@@ -1462,7 +1462,7 @@ Take
 \]
 Here \(\lambda=2\), \(u=Lt\), and
 \[
- \delta=\log(1+Lq)=Lq-\frac{L^2}{2}t^2+\FormalBigO_t(t^3).
+ \delta=\log(1+Lq)=Lq-\frac{L^2}{2}t^2+\FormalBigOAt{t^3}{t}.
 \]
 Directly,
 \[
@@ -1471,19 +1471,19 @@ Directly,
 Also,
 \[
  G^{-1}=\frac{t}{2}\EulerE^{-\delta}
- =\frac t2\left(1-Lq+\frac{3L^2}{2}t^2+\FormalBigO_t(t^3)\right).
+ =\frac t2\left(1-Lq+\frac{3L^2}{2}t^2+\FormalBigOAt{t^3}{t}\right).
 \]
 Therefore, through t-order two,
 \begin{align*}
  F(G)
 ={}&L+\log2+Lt-\frac{L^2}{2}t^2\\
 &+\frac t2\bigl(L+\log2+\delta\bigr)^2\EulerE^{-\delta}
- +\FormalBigO_t(t^3)\\
+ +\FormalBigOAt{t^3}{t}\\
 ={}&L+\log2
  +\left[L+\frac12(L+\log2)^2\right]t\\
 &+\left[-\frac{L^2}{2}
  +L(L+\log2)-\frac L2(L+\log2)^2\right]t^2
- +\FormalBigO_t(t^3).
+ +\FormalBigOAt{t^3}{t}.
 \end{align*}
 The shifted-operator formula produces the same result without separately
 expanding the logarithmic coefficient and the reciprocal power.
@@ -1492,7 +1492,7 @@ expanding the logarithmic coefficient and the reciprocal power.
 The most important case for series reversal is
 \begin{equation}\label{eq:near-identity-inner}
  G(X)=X+A(L)+\frac{B(L)}X+\frac{C(L)}{X^2}
-      +\frac{D(L)}{X^3}+\FormalBigO_t(t^4).
+      +\frac{D(L)}{X^3}+\FormalBigOAt{t^4}{t}.
 \end{equation}
 Factoring out \(X\) gives
 \[
@@ -1505,7 +1505,7 @@ Thus
  ={}&At+\left(B-\frac{A^2}{2}\right)t^2
  +\left(C-AB+\frac{A^3}{3}\right)t^3\\
  &+\left(D-AC-\frac{B^2}{2}+A^2B-\frac{A^4}{4}\right)t^4
- +\FormalBigO_t(t^5).
+ +\FormalBigOAt{t^5}{t}.
 \end{split}
 \end{equation}
 Every capital letter here is a polynomial in \(L\), and the products are
@@ -1521,7 +1521,7 @@ Let the outer series be
 and let \(G\) be as in \cref{eq:near-identity-inner}.  Write
 \[
  F(G(X))=X+h_0(L)+\frac{h_1(L)}X+\frac{h_2(L)}{X^2}
- +\frac{h_3(L)}{X^3}+\FormalBigO_t(t^4).
+ +\frac{h_3(L)}{X^3}+\FormalBigOAt{t^4}{t}.
 \]
 Primes below mean derivatives with respect to \(L\), and all uncapitalized
 functions are evaluated at \(L\).
@@ -1575,7 +1575,7 @@ and
 \]
 Thus
 \[
- F(G)=X+\left(L-\frac{L^2}{2}\right)X^{-2}+\FormalBigO_t(t^3).
+ F(G)=X+\left(L-\frac{L^2}{2}\right)X^{-2}+\FormalBigOAt{t^3}{t}.
 \]
 Adding
 \[
@@ -1763,7 +1763,7 @@ unchanged at its own t-order.
 Let \(F\in\NearIdentityPolynomialLogGroup{\K}\), let \(G\in\NearIdentityPolynomialLogGroup{\K}\), and let
 \(H=C(L)X^{-N}\) with \(N\ge0\).  Then
 \begin{equation}\label{eq:leading-correction}
- F(G+H)=F(G)+C(L)X^{-N}+\FormalBigO_t(t^{N+1}).
+ F(G+H)=F(G)+C(L)X^{-N}+\FormalBigOAt{t^{N+1}}{t}.
 \end{equation}
 \end{lemma}
 \begin{proof}
@@ -1771,8 +1771,8 @@ The formal Taylor formula gives
 \[
  F(G+H)=F(G)+(F'\compose G)H+\frac12(F''\compose G)H^2+\cdots.
 \]
-For \(F\in\NearIdentityPolynomialLogGroup{\K}\), \(F'=1+\FormalBigO_t(t)\), while \(F''=\FormalBigO_t(t^2)\).  Thus the
-linear term is \(H+\FormalBigO_t(t^{N+1})\), and all higher Taylor terms have t-order
+For \(F\in\NearIdentityPolynomialLogGroup{\K}\), \(F'=1+\FormalBigOAt{t}{t}\), while \(F''=\FormalBigOAt{t^2}{t}\).  Thus the
+linear term is \(H+\FormalBigOAt{t^{N+1}}{t}\), and all higher Taylor terms have t-order
 strictly greater than \(N\).
 \end{proof}
 
@@ -1787,12 +1787,12 @@ Construct
 \]
 inductively so that
 \[
- F\compose G_N=X+\FormalBigO_t(t^{N+1}).
+ F\compose G_N=X+\FormalBigOAt{t^{N+1}}{t}.
 \]
 At order zero, choose \(A_0\) to cancel the t-zero residual.  Suppose the
 coefficients through \(A_{N-1}\) have been chosen and
 \[
- F\compose G_{N-1}=X+r_N(L)t^N+\FormalBigO_t(t^{N+1}).
+ F\compose G_{N-1}=X+r_N(L)t^N+\FormalBigOAt{t^{N+1}}{t}.
 \]
 By \cref{lem:leading-correction}, replacing \(G_{N-1}\) by
 \(G_N=G_{N-1}-r_Nt^N\) cancels the residual at order \(N\) without altering
@@ -1826,7 +1826,7 @@ To compute \(G=\rev{F}\) through t-order \(N\):
  G_n=G_{n-1}-r_n(L)t^n.
 \]
 \end{enumerate}
-Then \(F\compose G_N=X+\FormalBigO_t(t^{N+1})\).
+Then \(F\compose G_N=X+\FormalBigOAt{t^{N+1}}{t}\).
 \end{algorithm}
 
 This algorithm is ideal for derivations and verification because it exposes the
@@ -1837,12 +1837,12 @@ so a high-order implementation should switch to Newton iteration.
 Let
 \begin{equation}\label{eq:F-four-blocks}
  F(X)=X+a(L)+\frac{b(L)}X+\frac{c(L)}{X^2}
-      +\frac{d(L)}{X^3}+\FormalBigO_t(t^4),
+      +\frac{d(L)}{X^3}+\FormalBigOAt{t^4}{t},
 \end{equation}
 and write
 \begin{equation}\label{eq:G-four-blocks}
  \rev{F}(X)=X+A(L)+\frac{B(L)}X+\frac{C(L)}{X^2}
-      +\frac{D(L)}{X^3}+\FormalBigO_t(t^4).
+      +\frac{D(L)}{X^3}+\FormalBigOAt{t^4}{t}.
 \end{equation}
 
 \begin{theorem}[Reversal through fourth block]\label{thm:inverse-coefficients}
@@ -1879,7 +1879,7 @@ This makes the formulas directly evaluable.
 \section{A parameterized example}
 Consider
 \begin{equation}\label{eq:param-inverse-example}
- F(X)=X+\alpha L+\frac{\beta}{X}+\FormalBigO_t(t^2),
+ F(X)=X+\alpha L+\frac{\beta}{X}+\FormalBigOAt{t^2}{t},
 \end{equation}
 where \(\alpha,\beta\in\K\).  Here \(a=\alpha L\), \(a'=\alpha\), and
 \(b=\beta\).  The inverse begins
@@ -1888,11 +1888,11 @@ where \(\alpha,\beta\in\K\).  Here \(a=\alpha L\), \(a'=\alpha\), and
  \rev{F}(X)={}&X-\alpha L
  +\frac{\alpha^2L-\beta}{X}\\
  &+\frac{\alpha^3(\tfrac12L^2-L)-\alpha\beta L+\alpha\beta}{X^2}
- +\FormalBigO_t(t^3).
+ +\FormalBigOAt{t^3}{t}.
 \end{split}
 \end{equation}
 A direct substitution into \cref{eq:param-inverse-example} verifies that the
-residual is \(\FormalBigO_t(t^3)\).
+residual is \(\FormalBigOAt{t^3}{t}\).
 
 \section{The Lagrange--Bürmann reversion formula at infinity}
 There is also a closed differential expression for all coefficients.  Write
@@ -1943,7 +1943,7 @@ Let \(G\) approximate \(\rev{F}\).  Newton's correction for the equation
  G_{\mathrm{new}}
  =G-\frac{F\compose G-X}{F'\compose G}.
 \end{equation}
-The denominator is a unit because \(F'=1+\FormalBigO_t(t)\).
+The denominator is a unit because \(F'=1+\FormalBigOAt{t}{t}\).
 
 \begin{theorem}[Precision doubling for reversion]\label{thm:newton-reversion}
 Suppose
@@ -1986,9 +1986,9 @@ A practical schedule is:
 \section{Left and right residuals}
 To verify a computed inverse \(G_N\), check both
 \begin{equation}\label{eq:two-residuals}
- F\compose G_N-X=\FormalBigO_t(t^{N+1}),
+ F\compose G_N-X=\FormalBigOAt{t^{N+1}}{t},
  \qquad
- G_N\compose F-X=\FormalBigO_t(t^{N+1}).
+ G_N\compose F-X=\FormalBigOAt{t^{N+1}}{t}.
 \end{equation}
 In exact formal algebra, one side and uniqueness imply the other.  In software,
 the two computations exercise different code paths and are therefore valuable
@@ -2312,7 +2312,7 @@ For a truncation \(W_N\), define the logarithmic residual
 \begin{equation}\label{eq:W-residual}
  \mathcal R_N=W_N+\log W_N-X.
 \end{equation}
-Formal construction gives \(\mathcal R_N=\FormalBigO_t(t^{N+1})\).  Since the derivative
+Formal construction gives \(\mathcal R_N=\FormalBigOAt{t^{N+1}}{t}\).  Since the derivative
 of \(w+\log w-X\) is \(1+1/w\), one Newton correction is
 \begin{equation}\label{eq:W-newton-correction}
  W_N^{\mathrm{new}}
@@ -2406,7 +2406,7 @@ first blocks are
 \begin{split}
  y={}&X-\alpha L+\frac{\alpha^2L-\beta}{X}\\
  &+\frac{\alpha^3(\tfrac12L^2-L)-\alpha\beta L+\alpha\beta-\gamma L}{X^2}
- +\FormalBigO_t(t^3).
+ +\FormalBigOAt{t^3}{t}.
 \end{split}
 \end{equation}
 This illustrates the practical value of universal reversal formulas: once the
@@ -3043,7 +3043,7 @@ A truncated formal series is not merely an expression; it is an expression plus
 a guarantee:
 \[
  A_N=[A]_{<N},
- \qquad A=A_N+\FormalBigO_t(t^N).
+ \qquad A=A_N+\FormalBigOAt{t^N}{t}.
 \]
 Every operation should compute the strongest guaranteed output precision from
 the input precisions.  If both inputs are known modulo \(t^N\) and have
@@ -3380,9 +3380,9 @@ Use exact coefficients so every comparison is symbolic.
 \subsection{Reciprocal and quotient residuals}
 Verify
 \[
- A\recip{A}=1+\FormalBigO_t(t^N),
+ A\recip{A}=1+\FormalBigOAt{t^N}{t},
  \qquad
- A(C/A)=C+\FormalBigO_t(t^N).
+ A(C/A)=C+\FormalBigOAt{t^N}{t}.
 \]
 Include tests whose leading coefficient is a nonconstant polynomial and confirm
 that the polynomial-only domain rejects them while the rational domain accepts
@@ -3474,10 +3474,10 @@ identities and independent Lambert polynomial formulas provide strong tests.
 \section{A complete quotient calculation}
 Let
 \begin{align*}
- N={}&1+(2L-1)t+(L^2+3)t^2+(L^3-L)t^3+\FormalBigO_t(t^4),\\
- D={}&1+(L+1)t+(2L-1)t^2+L^2t^3+\FormalBigO_t(t^4).
+ N={}&1+(2L-1)t+(L^2+3)t^2+(L^3-L)t^3+\FormalBigOAt{t^4}{t},\\
+ D={}&1+(L+1)t+(2L-1)t^2+L^2t^3+\FormalBigOAt{t^4}{t}.
 \end{align*}
-Seek \(Q=N/D=\sum_{n=0}^3d_nt^n+\FormalBigO_t(t^4)\).  Since the leading coefficient of
+Seek \(Q=N/D=\sum_{n=0}^3d_nt^n+\FormalBigOAt{t^4}{t}\).  Since the leading coefficient of
 \(D\) is one, \cref{eq:quotient-recurrence} becomes
 \[
  d_n=N_n-\sum_{k=1}^nD_kd_{n-k}.
@@ -3502,7 +3502,7 @@ and
 Therefore
 \begin{equation}\label{eq:worked-quotient}
  \frac ND=1+(L-2)t+(6-L)t^2
- +(L^3-2L^2-L-8)t^3+\FormalBigO_t(t^4).
+ +(L^3-2L^2-L-8)t^3+\FormalBigOAt{t^4}{t}.
 \end{equation}
 Multiplying \cref{eq:worked-quotient} by \(D\) reproduces \(N\) through
 t-order three.
@@ -3510,11 +3510,11 @@ t-order three.
 \section{Logarithm followed by exponential}
 Take
 \[
- A=1+Lq+(2-L)t^2+(L^2+1)t^3+\FormalBigO_t(t^4).
+ A=1+Lq+(2-L)t^2+(L^2+1)t^3+\FormalBigOAt{t^4}{t}.
 \]
 Set \(U=A-1\).  Since
 \[
- \log(1+U)=U-\frac{U^2}{2}+\frac{U^3}{3}+\FormalBigO_t(t^4),
+ \log(1+U)=U-\frac{U^2}{2}+\frac{U^3}{3}+\FormalBigOAt{t^4}{t},
 \]
 we find
 \begin{equation}\label{eq:worked-log}
@@ -3522,12 +3522,12 @@ we find
  \log A={}&Lt+
  \left(2-L-\frac{L^2}{2}\right)t^2\\
  &+\left(2L^2-L-2+\frac{L^3}{3}\right)t^3
- +\FormalBigO_t(t^4).
+ +\FormalBigOAt{t^4}{t}.
 \end{split}
 \end{equation}
 Let the right side be \(V\).  Expanding
 \[
- \EulerE^V=1+V+\frac{V^2}{2}+\frac{V^3}{6}+\FormalBigO_t(t^4)
+ \EulerE^V=1+V+\frac{V^2}{2}+\frac{V^3}{6}+\FormalBigOAt{t^4}{t}
 \]
 returns the original \(A\).  This round-trip test simultaneously checks
 multiplication, truncation, logarithm, and exponential routines.
@@ -3542,21 +3542,21 @@ Let
 From \cref{eq:h0,eq:h1},
 \[
  F\compose G
- =X+(a+A)+Aa'X^{-1}+\FormalBigO_t(t^2),
+ =X+(a+A)+Aa'X^{-1}+\FormalBigOAt{t^2}{t},
 \]
 while
 \[
  G\compose F
- =X+(a+A)+aA'X^{-1}+\FormalBigO_t(t^2).
+ =X+(a+A)+aA'X^{-1}+\FormalBigOAt{t^2}{t}.
 \]
 Hence the first commutator block is
 \begin{equation}\label{eq:composition-commutator}
  F\compose G-G\compose F
- =(Aa'-aA')X^{-1}+\FormalBigO_t(t^2).
+ =(Aa'-aA')X^{-1}+\FormalBigOAt{t^2}{t}.
 \end{equation}
 For \(a=L^2\) and \(A=L\), this becomes
 \[
- F\compose G-G\compose F=L^2X^{-1}+\FormalBigO_t(t^2).
+ F\compose G-G\compose F=L^2X^{-1}+\FormalBigOAt{t^2}{t}.
 \]
 The noncommutativity is created entirely by the change in the logarithmic
 argument.
@@ -3577,7 +3577,7 @@ Let
 \]
 and
 \[
- G(X)=X+(1-L)+\frac{L^2}{X}+\FormalBigO_t(t^2).
+ G(X)=X+(1-L)+\frac{L^2}{X}+\FormalBigOAt{t^2}{t}.
 \]
 Thus
 \[
@@ -3602,7 +3602,7 @@ Therefore
  F(G(X))={}&X+(L^2-L)+\frac{-L^2+4L}{X}\\
  &+\frac{L^3+5L^2-7L+4}{X^2}\\
  &+\frac{\tfrac43L^4-L^3-8L^2+\tfrac{41}{3}L-6}{X^3}
- +\FormalBigO_t(t^4).
+ +\FormalBigOAt{t^4}{t}.
 \end{split}
 \end{equation}
 A direct expansion of \(\log G\), \(G^{-1}\), and \(G^{-2}\) gives the same
@@ -3611,7 +3611,7 @@ answer but requires substantially more intermediate algebra.
 \section{Reversing a perturbed logarithmic map}
 Consider
 \begin{equation}\label{eq:worked-F-perturbed}
- F(X)=X+L+\frac{L^2+1}{X}+\FormalBigO_t(t^2).
+ F(X)=X+L+\frac{L^2+1}{X}+\FormalBigOAt{t^2}{t}.
 \end{equation}
 Here
 \[
@@ -3632,7 +3632,7 @@ Hence
  \rev F(X)={}&X-L+\frac{-L^2+L-1}{X}\\
  &+\frac{-L^3+\tfrac72L^2-2L+1}{X^2}\\
  &+\frac{-2L^4+\tfrac{25}{3}L^3-\tfrac{21}{2}L^2+6L-2}{X^3}
- +\FormalBigO_t(t^4).
+ +\FormalBigOAt{t^4}{t}.
 \end{split}
 \end{equation}
 This example shows that the Lambert polynomials are not a universal answer by
@@ -3688,17 +3688,17 @@ For \(F(Y)=Y+\log Y\), start with
 \]
 As calculated earlier,
 \[
- F(G_1)-X=\left(L-\frac{L^2}{2}\right)X^{-2}+\FormalBigO_t(t^3).
+ F(G_1)-X=\left(L-\frac{L^2}{2}\right)X^{-2}+\FormalBigOAt{t^3}{t}.
 \]
 Also
 \[
- F'(G_1)=1+\frac1{G_1}=1+X^{-1}+\FormalBigO_t(t^2).
+ F'(G_1)=1+\frac1{G_1}=1+X^{-1}+\FormalBigOAt{t^2}{t}.
 \]
 The Newton correction is therefore
 \begin{align*}
  -\frac{F(G_1)-X}{F'(G_1)}
- &=-\left(L-\frac{L^2}{2}\right)X^{-2}+\FormalBigO_t(t^3)\\
- &=\frac{L(L-2)}{2X^2}+\FormalBigO_t(t^3),
+ &=-\left(L-\frac{L^2}{2}\right)X^{-2}+\FormalBigOAt{t^3}{t}\\
+ &=\frac{L(L-2)}{2X^2}+\FormalBigOAt{t^3}{t},
 \end{align*}
 which inserts \(\LambertPolynomial{2}/X^2\).  If the residual and denominator are carried to
 higher order before division, the same Newton step determines several further
@@ -4048,7 +4048,7 @@ A useful final formula should state:
 \begin{enumerate}
 \item the limit, such as \(X\to+\infty\) or \(z\to\infty\) in a sector;
 \item the chosen branch of every logarithm and inverse;
-\item the formal truncation order, stated with \(\FormalBigO_t(t^N)\);
+\item the formal truncation order, stated with \(\FormalBigOAt{t^N}{t}\);
 \item any analytic remainder, stated separately with its limit, domain, and
       logarithmic factor;
 \item whether the series is known to converge or is only asymptotic.
@@ -4061,7 +4061,7 @@ For example,
 with \(X=\log z\), \(L=\log X\), and \(z\to+\infty\), is an analytic
 statement.  The notation
 \[
- W=X-L+\sum_{n=1}^N\LambertPolynomial{n}(L)t^n+\FormalBigO_t(t^{N+1})
+ W=X-L+\sum_{n=1}^N\LambertPolynomial{n}(L)t^n+\FormalBigOAt{t^{N+1}}{t}
 \]
 is a formal block statement.
 
@@ -4187,7 +4187,7 @@ logarithmic depth.
 \section{Misreading a formal remainder}
 The statement
 \[
- A=B+\FormalBigO_t(t^N)
+ A=B+\FormalBigOAt{t^N}{t}
 \]
 means coefficient agreement below t-order \(N\).  It does not by itself assert
 an analytic bound with a constant.  Conversely,
@@ -4506,12 +4506,12 @@ its power prefactor.
 \section{Inner expansions}
 Let
 \[
- G=X+A+Bq+Ct^2+Dt^3+\FormalBigO_t(t^4)
+ G=X+A+Bq+Ct^2+Dt^3+\FormalBigOAt{t^4}{t}
  =X(1+u),
 \]
 where
 \[
- u=Aq+Bt^2+Ct^3+Dt^4+\FormalBigO_t(t^5).
+ u=Aq+Bt^2+Ct^3+Dt^4+\FormalBigOAt{t^5}{t}.
 \]
 The logarithmic increment is
 \begin{equation}\label{eq:appendix-delta}
@@ -4519,15 +4519,15 @@ The logarithmic increment is
  \delta={}&At+\left(B-\frac{A^2}{2}\right)t^2
  +\left(C-AB+\frac{A^3}{3}\right)t^3\\
  &+\left(D-AC-\frac{B^2}{2}+A^2B-\frac{A^4}{4}\right)t^4
- +\FormalBigO_t(t^5).
+ +\FormalBigOAt{t^5}{t}.
 \end{split}
 \end{equation}
 The reciprocal powers needed through t-order three are
 \begin{align}
  G^{-1}={}&t-At^2+(A^2-B)t^3
- +(-A^3+2AB-C)t^4+\FormalBigO_t(t^5),\label{eq:Ginv-app}\\
- G^{-2}={}&t^2-2At^3+(3A^2-2B)t^4+\FormalBigO_t(t^5),\label{eq:Ginv2-app}\\
- G^{-3}={}&t^3-3At^4+\FormalBigO_t(t^5).\label{eq:Ginv3-app}
+ +(-A^3+2AB-C)t^4+\FormalBigOAt{t^5}{t},\label{eq:Ginv-app}\\
+ G^{-2}={}&t^2-2At^3+(3A^2-2B)t^4+\FormalBigOAt{t^5}{t},\label{eq:Ginv2-app}\\
+ G^{-3}={}&t^3-3At^4+\FormalBigOAt{t^5}{t}.\label{eq:Ginv3-app}
 \end{align}
 
 \section{Outer coefficient Taylor expansions}
@@ -4535,14 +4535,14 @@ For a coefficient function \(a\),
 \begin{equation}\label{eq:a-taylor-app}
  a(L+\delta)
  =a+a'\delta+\frac12a''\delta^2+\frac16a'''\delta^3
- +\FormalBigO_t(t^4).
+ +\FormalBigOAt{t^4}{t}.
 \end{equation}
 For \(b,c,d\), fewer derivatives are needed after multiplication by
 \(G^{-1},G^{-2},G^{-3}\):
 \begin{align*}
- b(L+\delta)&=b+b'\delta+\frac12b''\delta^2+\FormalBigO_t(t^3),\\
- c(L+\delta)&=c+c'\delta+\FormalBigO_t(t^2),\\
- d(L+\delta)&=d+\FormalBigO_t(t).
+ b(L+\delta)&=b+b'\delta+\frac12b''\delta^2+\FormalBigOAt{t^3}{t},\\
+ c(L+\delta)&=c+c'\delta+\FormalBigOAt{t^2}{t},\\
+ d(L+\delta)&=d+\FormalBigOAt{t}{t}.
 \end{align*}
 Substitute \cref{eq:appendix-delta} and collect.  For example,
 \begin{align*}
@@ -4557,7 +4557,7 @@ Substitute \cref{eq:appendix-delta} and collect.  For example,
  +A\left(B-\frac{A^2}{2}\right)a''
  +\frac{A^3}{6}a'''
  \Biggr]t^3
- +\FormalBigO_t(t^4).
+ +\FormalBigOAt{t^4}{t}.
 \end{align*}
 
 \section{Collecting the outer series}
@@ -4649,7 +4649,7 @@ Identify the smallest new logarithmic symbol forced by the composition.
 \begin{exercise}[Reversion]
 Use the universal formulas to reverse
 \[
- F(X)=X+2L+\frac3X+\FormalBigO_t(t^2)
+ F(X)=X+2L+\frac3X+\FormalBigOAt{t^2}{t}
 \]
 through t-order two.
 \end{exercise}
@@ -4703,7 +4703,7 @@ The t-cubic coefficient is
 \]
 Thus the product is
 \[
- 1+3t^2+(L^3+2L)t^3+\FormalBigO_t(t^4).
+ 1+3t^2+(L^3+2L)t^3+\FormalBigOAt{t^4}{t}.
 \]
 
 \subsection*{Solution 2}
@@ -4724,7 +4724,7 @@ Therefore
 \[
  \frac1{1+(L+1)t+Lt^2}
  =1-(L+1)t+(L^2+L+1)t^2
- -(L^3+L^2+L+1)t^3+\FormalBigO_t(t^4).
+ -(L^3+L^2+L+1)t^3+\FormalBigOAt{t^4}{t}.
 \]
 
 \subsection*{Solution 3}
@@ -4746,13 +4746,13 @@ Hence
 \subsection*{Solution 4}
 Put \(U=(L-1)t+(L+2)t^2\).  Then
 \[
- \log(1+U)=U-\frac12U^2+\FormalBigO_t(t^3),
+ \log(1+U)=U-\frac12U^2+\FormalBigOAt{t^3}{t},
 \]
 so
 \[
  \log(1+U)
  =(L-1)t+
- \left(L+2-\frac{(L-1)^2}{2}\right)t^2+\FormalBigO_t(t^3).
+ \left(L+2-\frac{(L-1)^2}{2}\right)t^2+\FormalBigOAt{t^3}{t}.
 \]
 
 \subsection*{Solution 5}
@@ -4770,7 +4770,7 @@ vanish.  The universal formulas give
 Thus
 \[
  F(G)=X+(L^2-L)-\frac{2L^2}{X}
- +\frac{-L^3+L^2}{X^2}+\FormalBigO_t(t^3).
+ +\frac{-L^3+L^2}{X^2}+\FormalBigOAt{t^3}{t}.
 \]
 
 \subsection*{Solution 6}
@@ -4796,7 +4796,7 @@ Also
 Hence
 \[
  \rev F(X)=X-2L+\frac{4L-3}{X}
- +\frac{4L^2-14L+6}{X^2}+\FormalBigO_t(t^3).
+ +\frac{4L^2-14L+6}{X^2}+\FormalBigOAt{t^3}{t}.
 \]
 
 \subsection*{Solution 8}
@@ -4869,7 +4869,7 @@ Symbol & Meaning \\
 \(\RationalLogLaurentField{\K}\) & Rational-log coefficient field \(\K(L)((t))\). \\
 \(\val_t A\) & Lowest t-exponent of a nonzero series. \\
 \([A]_{<N}\) & Truncation to t-exponents below \(N\). \\
-\(\FormalBigO_t(t^N)\) & Formal t-adic remainder of valuation at least \(N\). \\
+\(\FormalBigOAt{t^N}{t}\) & Formal t-adic remainder of valuation at least \(N\). \\
 \(\Dop\) & Derivative \(\Differential/\Differential L\). \\
 \(\Delta_n\) & Shifted derivative \(\Dop-n\). \\
 \(\recip A\) & Multiplicative inverse \(1/A\). \\

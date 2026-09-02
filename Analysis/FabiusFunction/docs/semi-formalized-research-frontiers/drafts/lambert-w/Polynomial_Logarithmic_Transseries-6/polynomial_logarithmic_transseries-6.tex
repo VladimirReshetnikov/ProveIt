@@ -410,7 +410,7 @@ For $F=\sum_{n\ge n_0}p_n(L)t^n\ne0$, define
 \[
  \nu_tF=n_0.
 \]
-Write $F=\FormalBigO_t(t^N)$ when $\nu_tF\ge N$.  This is a formal block statement,
+Write $F=\FormalBigOAt{t^N}{t}$ when $\nu_tF\ge N$.  This is a formal block statement,
 not the analytic estimate
 $\AbsoluteValue{F}\le C\AbsoluteValue{t}^N$.
 \end{definition}
@@ -421,7 +421,7 @@ The truncation through block $N$ is
 \]
 and
 \[
- F=G+\FormalBigO_t(t^{N+1})
+ F=G+\FormalBigOAt{t^{N+1}}{t}
  \quad\Longleftrightarrow\quad
  \trunc{F}{N}=\trunc{G}{N}.
 \]
@@ -576,11 +576,11 @@ the coefficient of $t^N$ in $FG$ depends only on the blocks
  B_{m_0},\ldots,B_{N-n_0}.
 \]
 Consequently, if
-$F=\ApproximationOf{F}+\FormalBigO_t(t^{p})$ and
-$G=\ApproximationOf{G}+\FormalBigO_t(t^{q})$, then
+$F=\ApproximationOf{F}+\FormalBigOAt{t^{p}}{t}$ and
+$G=\ApproximationOf{G}+\FormalBigOAt{t^{q}}{t}$, then
 \begin{equation}\label{eq:mult-error-rule}
  FG-\ApproximationOf{F}\ApproximationOf{G}
- =\FormalBigO_t\!\left(t^{\min(p+m_0,q+n_0)}\right).
+ =\FormalBigOAt{t^{\min(p+m_0,q+n_0)}}{t}.
 \end{equation}
 \end{theorem}
 \begin{proof}
@@ -632,8 +632,8 @@ cancellation at the largest power of $L$.
 \section{A complete multiplication example}
 Take
 \begin{align*}
- F&=1+(L+1)t+(L^2-L)t^2+(2L+3)t^3+\FormalBigO_t(t^4),\\
- G&=1-Lt+(2L-1)t^2+(L^2+1)t^3+\FormalBigO_t(t^4).
+ F&=1+(L+1)t+(L^2-L)t^2+(2L+3)t^3+\FormalBigOAt{t^4}{t},\\
+ G&=1-Lt+(2L-1)t^2+(L^2+1)t^3+\FormalBigOAt{t^4}{t}.
 \end{align*}
 The blocks are computed one at a time:
 \begin{align*}
@@ -646,7 +646,7 @@ The blocks are computed one at a time:
 \end{align*}
 Therefore
 \begin{equation}\label{eq:product-example}
- FG=1+t+(L-1)t^2+(-L^3+4L^2+2L+3)t^3+\FormalBigO_t(t^4).
+ FG=1+t+(L-1)t^2+(-L^3+4L^2+2L+3)t^3+\FormalBigOAt{t^4}{t}.
 \end{equation}
 The calculation illustrates why a block representation is preferable to a
 flat list of monomials: the outer convolution is transparent, and all
@@ -808,7 +808,7 @@ $N\ge1$:
 If $q_0,\ldots,q_N$ are defined by \eqref{eq:quotient-recurrence}, then
 \[
  B\sum_{n=0}^{N}q_nt^n
- =A+\FormalBigO_t(t^{N+1}).
+ =A+\FormalBigOAt{t^{N+1}}{t}.
 \]
 They are the unique blocks with this property.
 \end{theorem}
@@ -823,7 +823,7 @@ $B$ would have first block $b_0ct^r\ne0$, a contradiction.
 \section{A reciprocal example}
 Let
 \[
- B=1-Lt+(2L-1)t^2+(L^2+1)t^3+\FormalBigO_t(t^4).
+ B=1-Lt+(2L-1)t^2+(L^2+1)t^3+\FormalBigOAt{t^4}{t}.
 \]
 Applying \eqref{eq:reciprocal-recurrence} gives
 \begin{align*}
@@ -838,20 +838,20 @@ zero.  Hence
 \begin{align}\label{eq:reciprocal-example}
  B^{-1}={}&1+Lt+(L^2-2L+1)t^2
  +(L^3-5L^2+2L-1)t^3\notag\\
- &+(L^4-8L^3+7L^2-6L+1)t^4+\FormalBigO_t(t^5).
+ &+(L^4-8L^3+7L^2-6L+1)t^4+\FormalBigOAt{t^5}{t}.
 \end{align}
 Multiplication by $B$ checks the result block by block.
 
 \section{A quotient example}
 With
 \begin{align*}
- A&=1+(L+1)t+(L^2-L)t^2+(2L+3)t^3+\FormalBigO_t(t^4),\\
- B&=1-Lt+(2L-1)t^2+(L^2+1)t^3+\FormalBigO_t(t^4),
+ A&=1+(L+1)t+(L^2-L)t^2+(2L+3)t^3+\FormalBigOAt{t^4}{t},\\
+ B&=1-Lt+(2L-1)t^2+(L^2+1)t^3+\FormalBigOAt{t^4}{t},
 \end{align*}
 recurrence \eqref{eq:quotient-recurrence} yields
 \begin{align}\label{eq:quotient-example}
  \frac AB={}&1+(2L+1)t+(3L^2-2L+1)t^2\notag\\
- &+(3L^3-7L^2+3L+3)t^3+\FormalBigO_t(t^4).
+ &+(3L^3-7L^2+3L+3)t^3+\FormalBigOAt{t^4}{t}.
 \end{align}
 A reliable implementation should verify the quotient by multiplying the
 right-hand side by the divisor to the requested order.  This residual check
@@ -945,7 +945,7 @@ force a fractional outer exponent lattice; irrational $\alpha$ requires a
 more general ordered exponent group.
 
 \begin{proposition}[Finite determination of a binomial power]
-If $S=\FormalBigO_t(t^q)$ with $q>0$, then the coefficient of $t^N$ in
+If $S=\FormalBigOAt{t^q}{t}$ with $q>0$, then the coefficient of $t^N$ in
 $(1+S)^\alpha$ receives contributions only from powers
 $r\le\Floor{N/q}$.  Hence \eqref{eq:general-power} is
 coefficientwise finite.
@@ -1226,12 +1226,12 @@ This example shows how differentiation's shift by one outer block makes many
 linear differential equations triangular.
 
 \section{Why differentiation controls composition and inversion}
-If $A=\FormalBigO_t(1)$ contains no $X$ term, then
+If $A=\FormalBigOAt{1}{t}$ contains no $X$ term, then
 \begin{equation}\label{eq:A-derivative-small}
- \D A=\FormalBigO_t(t).
+ \D A=\FormalBigOAt{t}{t}.
 \end{equation}
-Consequently, changing an argument by an error $E=\FormalBigO_t(t^r)$ changes
-$A$ by roughly $A'E=\FormalBigO_t(t^{r+1})$.  This one-block gain is the mechanism
+Consequently, changing an argument by an error $E=\FormalBigOAt{t^r}{t}$ changes
+$A$ by roughly $A'E=\FormalBigOAt{t^{r+1}}{t}$.  This one-block gain is the mechanism
 behind the contraction used for compositional inversion.  Repeated derivatives
 also show that the $n$th Lagrange--B\"urmann term contributes no earlier than
 block $n-1$.
@@ -1304,7 +1304,7 @@ Therefore near-identity composition is a well-defined operation on
 $\PLfield$.
 \end{theorem}
 \begin{proof}
-Because $U=\FormalBigO_t(t)$, the coefficient of $t^r$ in $(1+U)^{-n}$ or
+Because $U=\FormalBigOAt{t}{t}$, the coefficient of $t^r$ in $(1+U)^{-n}$ or
 $\log(1+U)$ depends on finitely many powers of $U$.  A coefficient polynomial
 $p_n$ has finite degree, so its substitution at
 $L+\log(1+U)$ is a finite Taylor polynomial in the logarithmic increment.
@@ -1323,10 +1323,10 @@ Here $U=Lt$.  The transformed generators are
  \log G
  &=L+\log(1+Lt)\\
  &=L+Lt-\frac12L^2t^2+\frac13L^3t^3
-   -\frac14L^4t^4+\FormalBigO_t(t^5),\\
+   -\frac14L^4t^4+\FormalBigOAt{t^5}{t},\\
  \frac1G
  &=t(1+Lt)^{-1}\\
- &=t-Lt^2+L^2t^3-L^3t^4+\FormalBigO_t(t^5).
+ &=t-Lt^2+L^2t^3-L^3t^4+\FormalBigOAt{t^5}{t}.
 \end{align*}
 Therefore
 \begin{equation}\label{eq:composition-example}
@@ -1334,7 +1334,7 @@ Therefore
  =L+(L+1)t-\left(L+\frac12L^2\right)t^2
  +\left(L^2+\frac13L^3\right)t^3
  -\left(L^3+\frac14L^4\right)t^4
- +\FormalBigO_t(t^5).
+ +\FormalBigOAt{t^5}{t}.
 \end{equation}
 One may check the same result by Taylor composition in the next chapter.
 
@@ -1472,13 +1472,13 @@ growth.
 \section{Low-order composition formulas}
 Write
 \begin{align}\label{eq:F-G-coeff-notation}
- F(X)&=X+f_0(L)+t f_1(L)+t^2f_2(L)+t^3f_3(L)+\FormalBigO_t(t^4),\\
- G(X)&=X+g_0(L)+t g_1(L)+t^2g_2(L)+t^3g_3(L)+\FormalBigO_t(t^4).
+ F(X)&=X+f_0(L)+t f_1(L)+t^2f_2(L)+t^3f_3(L)+\FormalBigOAt{t^4}{t},\\
+ G(X)&=X+g_0(L)+t g_1(L)+t^2g_2(L)+t^3g_3(L)+\FormalBigOAt{t^4}{t}.
 \end{align}
 Let
 \[
  H=F\compose G
- =X+h_0+t h_1+t^2h_2+t^3h_3+\FormalBigO_t(t^4).
+ =X+h_0+t h_1+t^2h_2+t^3h_3+\FormalBigOAt{t^4}{t}.
 \]
 Primes below mean derivatives with respect to $L$.
 
@@ -1547,7 +1547,7 @@ Then
 \end{align*}
 Therefore
 \begin{equation}\label{eq:composition-noncommutative}
- F\compose G-G\compose F=-L^2t+\FormalBigO_t(t^2).
+ F\compose G-G\compose F=-L^2t+\FormalBigOAt{t^2}{t}.
 \end{equation}
 At first order, the commutator is governed by the vector-field bracket
 $f_0g_0'-g_0f_0'$.  This is the beginning of the Lie-theoretic structure
@@ -1603,15 +1603,15 @@ transseries treated by Edgar \cite{EdgarComposition}.
 
 \section{Filtration by contact order}
 For $F=X+A$ and $G=X+B$, say that they agree through contact order $r$ when
-$A-B=\FormalBigO_t(t^r)$.  If $H=X+C$ is fixed, then
+$A-B=\FormalBigOAt{t^r}{t}$.  If $H=X+C$ is fixed, then
 \begin{equation}\label{eq:composition-continuity-left}
- F-G=\FormalBigO_t(t^r)
+ F-G=\FormalBigOAt{t^r}{t}
  \quad\Longrightarrow\quad
- H\compose F-H\compose G=\FormalBigO_t(t^r),
+ H\compose F-H\compose G=\FormalBigOAt{t^r}{t},
 \end{equation}
-and, because $H'=1+\FormalBigO_t(t)$,
+and, because $H'=1+\FormalBigOAt{t}{t}$,
 \begin{equation}\label{eq:composition-continuity-right}
- F\compose H-G\compose H=\FormalBigO_t(t^r).
+ F\compose H-G\compose H=\FormalBigOAt{t^r}{t}.
 \end{equation}
 This filtration makes composition continuous and allows infinite coefficient
 constructions by stabilization.
@@ -1620,13 +1620,13 @@ constructions by stabilization.
 Let $F=X+f(L)$ and $G=X+g(L)$ with no inverse-power corrections.  Using
 \eqref{eq:h1},
 \begin{align*}
- F\compose G&=X+f+g+t\,g f'+\FormalBigO_t(t^2),\\
- G\compose F&=X+f+g+t\,f g'+\FormalBigO_t(t^2).
+ F\compose G&=X+f+g+t\,g f'+\FormalBigOAt{t^2}{t},\\
+ G\compose F&=X+f+g+t\,f g'+\FormalBigOAt{t^2}{t}.
 \end{align*}
 Hence
 \begin{equation}\label{eq:first-commutator}
  F\compose G-G\compose F
- =t(gf'-fg')+\FormalBigO_t(t^2).
+ =t(gf'-fg')+\FormalBigOAt{t^2}{t}.
 \end{equation}
 The bilinear operation $[f,g]=gf'-fg'$ is the usual bracket of one-dimensional
 vector fields after the change of independent variable $L=\log X$.
@@ -1658,12 +1658,12 @@ composition also legitimizes recursive and operator-logarithmic constructions.
 \section{Coefficient stabilization under iteration}
 Suppose a map $\Phi$ satisfies
 \begin{equation}\label{eq:contraction-general}
- U-V=\FormalBigO_t(t^r)
+ U-V=\FormalBigOAt{t^r}{t}
  \quad\Longrightarrow\quad
- \Phi(U)-\Phi(V)=\FormalBigO_t(t^{r+1}).
+ \Phi(U)-\Phi(V)=\FormalBigOAt{t^{r+1}}{t}.
 \end{equation}
 Then the iterates $U_{n+1}=\Phi(U_n)$ stabilize one additional block per step:
-$U_{n+1}-U_n=\FormalBigO_t(t^n)$ after a suitable initialization.  This is the
+$U_{n+1}-U_n=\FormalBigOAt{t^n}{t}$ after a suitable initialization.  This is the
 formal analogue of a contraction mapping, but no numerical norm is needed.
 The ordered filtration supplies the notion of increasing precision.
 
@@ -1814,9 +1814,9 @@ The derivative of $A$ has outer order at least one.  Therefore changing its
 argument by a block-$r$ error changes the value only at block $r+1$ or later.
 
 \begin{lemma}[Filtered Lipschitz gain]\label{lem:inverse-contraction}
-If $B-C=\FormalBigO_t(t^r)$, with $B,C\in\mathcal C_L[[t]]$, then
+If $B-C=\FormalBigOAt{t^r}{t}$, with $B,C\in\mathcal C_L[[t]]$, then
 \begin{equation}\label{eq:inverse-contraction}
- A(Y+B)-A(Y+C)=\FormalBigO_t(t^{r+1}).
+ A(Y+B)-A(Y+C)=\FormalBigOAt{t^{r+1}}{t}.
 \end{equation}
 \end{lemma}
 \begin{proof}
@@ -1846,13 +1846,13 @@ compositional inverse $G=Y+B$.
 The first difference $B_1-B_0=-A(Y)$ has outer order at least zero.
 By \cref{lem:inverse-contraction},
 \[
- B_{n+1}-B_n=\FormalBigO_t(t^n).
+ B_{n+1}-B_n=\FormalBigOAt{t^n}{t}.
 \]
 Hence each fixed block eventually stops changing, which defines a formal
 limit $B$.  Composition is continuous in the filtration, so the limit
 satisfies the fixed-point equation.  If $B$ and $C$ were two solutions and
 their first difference occurred at block $r$, then
-$B-C=\Phi(B)-\Phi(C)=\FormalBigO_t(t^{r+1})$, a contradiction.
+$B-C=\Phi(B)-\Phi(C)=\FormalBigOAt{t^{r+1}}{t}$, a contradiction.
 \end{proof}
 
 \section{Why a bad rearrangement may fail}
@@ -1893,7 +1893,7 @@ Thus $G\compose F=G\compose H=Y$.  The inverse is two-sided.
 
 \begin{summarybox}
 For $F=X+A$ with $A=\LittleO(X)$ in the polynomial--logarithmic scale, the equation
-$B=-A(Y+B)$ is contractive in outer order because $A'=\FormalBigO_t(t)$.  Simple
+$B=-A(Y+B)$ is contractive in outer order because $A'=\FormalBigOAt{t}{t}$.  Simple
 iteration stabilizes one new block at every step and proves both existence and
 uniqueness of the compositional inverse.
 \end{summarybox}
@@ -1928,14 +1928,14 @@ known residual and then sets the next inverse block equal to its negative.
 \section{Universal triangular algorithm}
 Suppose $G_{<n}=Y+\sum_{j=0}^{n-1}g_jt^j$ already satisfies
 \[
- F\compose G_{<n}=Y+r_nt^n+\FormalBigO_t(t^{n+1}).
+ F\compose G_{<n}=Y+r_nt^n+\FormalBigOAt{t^{n+1}}{t}.
 \]
 Adding $g_nt^n$ to $G$ changes $F(G)$ by
 \[
- F'(G_{<n})g_nt^n+\FormalBigO_t(t^{n+1})
- =g_nt^n+\FormalBigO_t(t^{n+1}),
+ F'(G_{<n})g_nt^n+\FormalBigOAt{t^{n+1}}{t}
+ =g_nt^n+\FormalBigOAt{t^{n+1}}{t},
 \]
-because $F'=1+\FormalBigO_t(t)$.  Hence
+because $F'=1+\FormalBigOAt{t}{t}$.  Hence
 \begin{equation}\label{eq:triangular-next-block}
  g_n=-r_n.
 \end{equation}
@@ -1959,11 +1959,11 @@ $G\leftarrow Y$\;
 \section{A seven-parameter example}
 Consider
 \begin{equation}\label{eq:parametric-F}
- F(X)=X+aL+b+(cL+d)t+(eL^2+fL+g)t^2+\FormalBigO_t(t^3).
+ F(X)=X+aL+b+(cL+d)t+(eL^2+fL+g)t^2+\FormalBigOAt{t^3}{t}.
 \end{equation}
 The inverse has the form
 \[
- G(Y)=Y+g_0(L)+g_1(L)t+g_2(L)t^2+\FormalBigO_t(t^3),
+ G(Y)=Y+g_0(L)+g_1(L)t+g_2(L)t^2+\FormalBigOAt{t^3}{t},
 \]
 with
 \begin{align}
@@ -1989,7 +1989,7 @@ formulas gives
  F\compinv(Y)
  =Y-L+(L-q)t
  +\left(\frac12L^2-(q+1)L+q\right)t^2
- +\FormalBigO_t(t^3).
+ +\FormalBigOAt{t^3}{t}.
 \end{equation}
 At $q=0$ this begins the Wright omega, hence Lambert-$\LambertW$, expansion developed
 in Part~\ref{part:lambert}.
@@ -2003,7 +2003,7 @@ preallocated dense representation, however, the degree bound supplied by
 composition formulas can substantially reduce memory.
 
 \begin{summarybox}
-Series reversal is triangular because $F'=1+\FormalBigO_t(t)$.  Once an approximate
+Series reversal is triangular because $F'=1+\FormalBigOAt{t}{t}$.  Once an approximate
 inverse is correct through block $n-1$, the block-$n$ residual is canceled by
 subtracting exactly that coefficient from the inverse.  Universal low-order
 formulas and residual cancellation provide complementary symbolic methods.
@@ -2023,16 +2023,16 @@ Newton's correction is
  G_{\mathrm{new}}
  =G-\frac{F\compose G-Y}{F'\compose G}.
 \end{equation}
-The denominator is a unit because $F'=1+\FormalBigO_t(t)$.
+The denominator is a unit because $F'=1+\FormalBigOAt{t}{t}$.
 
 \begin{theorem}[Precision doubling]\label{thm:newton-doubling}
-If $R=\FormalBigO_t(t^m)$, then the residual after
+If $R=\FormalBigOAt{t^m}{t}$, then the residual after
 \eqref{eq:newton-compositional} is at least
-$\FormalBigO_t(t^{2m+2})$ when $m\ge0$.  In particular, the number of correct outer
+$\FormalBigOAt{t^{2m+2}}{t}$ when $m\ge0$.  In particular, the number of correct outer
 blocks approximately doubles at each step.
 \end{theorem}
 \begin{proof}
-Put $C=-R/(F'\compose G)$.  Then $C=\FormalBigO_t(t^m)$.  Taylor expansion gives
+Put $C=-R/(F'\compose G)$.  Then $C=\FormalBigOAt{t^m}{t}$.  Taylor expansion gives
 \begin{align*}
  F\compose(G+C)-Y
  &=R+(F'\compose G)C
@@ -2226,7 +2226,7 @@ For $F=X+a\log X$, take $A=aL$.  Then
  &=Y-aL+a^2Lt
  +a^3\left(\frac12L^2-L\right)t^2\\
  &\quad+a^4\left(\frac13L^3-\frac32L^2+L\right)t^3
- +\FormalBigO_t(t^4).
+ +\FormalBigOAt{t^4}{t}.
 \end{align*}
 The factor $a^{n+1}$ at block $t^n$ follows from the homogeneity of
 $\D^{n}(aL)^{n+1}$.  Setting $a=1$ gives the Wright omega expansion.
@@ -3029,20 +3029,20 @@ unless another variable is explicitly introduced.
 \section{A product and a quotient in logarithmic blocks}
 Consider
 \begin{align*}
- A&=1+(L+1)t+(L^2-L)t^2+\FormalBigO_t(t^3),\\
- B&=1+(2L-1)t+(3-L)t^2+\FormalBigO_t(t^3).
+ A&=1+(L+1)t+(L^2-L)t^2+\FormalBigOAt{t^3}{t},\\
+ B&=1+(2L-1)t+(3-L)t^2+\FormalBigOAt{t^3}{t}.
 \end{align*}
 The product is obtained by block convolution:
 \begin{align*}
  AB
  &=1+\bigl[(L+1)+(2L-1)\bigr]t\\
  &\quad+\bigl[(L^2-L)+(L+1)(2L-1)+(3-L)\bigr]t^2
-   +\FormalBigO_t(t^3)\\
- &=1+3Lt+(3L^2-L+2)t^2+\FormalBigO_t(t^3).
+   +\FormalBigOAt{t^3}{t}\\
+ &=1+3Lt+(3L^2-L+2)t^2+\FormalBigOAt{t^3}{t}.
 \end{align*}
 For the quotient, write
 \[
- \frac AB=1+Q_1t+Q_2t^2+\FormalBigO_t(t^3).
+ \frac AB=1+Q_1t+Q_2t^2+\FormalBigOAt{t^3}{t}.
 \]
 The triangular division rule gives
 \[
@@ -3057,7 +3057,7 @@ and
 Consequently
 \begin{equation}\label{eq:worked-quotient}
  \frac AB
- =1+(2-L)t+(3L^2-5L-1)t^2+\FormalBigO_t(t^3).
+ =1+(2-L)t+(3L^2-5L-1)t^2+\FormalBigOAt{t^3}{t}.
 \end{equation}
 A reliable check is multiplication by the divisor. Substituting
 \eqref{eq:worked-quotient} into $B(A/B)$ recovers $A$ through $t^2$. This
@@ -3188,9 +3188,9 @@ and perform
  G_{j+1}
  =G_j-\frac{F(G_j)-Y}{F'(G_j)}.
 \end{equation}
-If $F(G_j)-Y=\FormalBigO_t(t^m)$ and
-$F'(G_j)=1+\FormalBigO_t(t)$, the next residual is typically
-$\FormalBigO_t(t^{2m})$. Thus the working precision can be doubled at
+If $F(G_j)-Y=\FormalBigOAt{t^m}{t}$ and
+$F'(G_j)=1+\FormalBigOAt{t}{t}$, the next residual is typically
+$\FormalBigOAt{t^{2m}}{t}$. Thus the working precision can be doubled at
 each stage:
 \[
  t,\quad t^2,\quad t^4,\quad t^8,\quad\ldots.
@@ -3278,7 +3278,7 @@ asked to store an infinite object.
 \section{Sparse block representation}
 A truncated one-logarithm transseries
 \[
- T=\sum_{n=n_0}^{N}p_n(L)t^n+\FormalBigO_t(t^{N+1})
+ T=\sum_{n=n_0}^{N}p_n(L)t^n+\FormalBigOAt{t^{N+1}}{t}
 \]
 can be stored as a sparse map
 \[
