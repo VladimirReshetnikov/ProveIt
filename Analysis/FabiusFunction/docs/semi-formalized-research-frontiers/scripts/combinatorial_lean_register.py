@@ -356,6 +356,12 @@ STATUS = {
    r"(\lean{Fabius.shift_pow_period}, via the Fermat product "
    r"\lean{Fabius.prod_range_X_add_C_natCast}); \lean{Fabius.bell_period_dvd_sum_prime_pow}: "
    r"the least period divides $N_p$."),
+ 'thm:weighted-bell-shift': ('Lean',
+   r"\lean{Fabius.weighted_bell_shift} is \cref{eq:weighted-bell-shift}, "
+   r"\lean{Fabius.weighted_bell_shift_one} is \cref{eq:weighted-bell-k1} and "
+   r"\lean{Fabius.sum_signedStirlingFirst_mul_bell_eq} is \cref{eq:weighted-bell-special}, "
+   r"over any commutative ring, from the umbral shift \lean{Fabius.bellUmbra_descPochhammer_mul} "
+   r"(module \lean{BellUmbra})."),
  'thm:touchard-poly': ('Lean',
    r"\cref{eq:touchard-poly} is \lean{Fabius.touchardPolynomial_add_prime} "
    r"(\lean{TouchardPolyCongruence}), an identity in $(\mathbb Z/p)[x]$, read off from Spivey's "
