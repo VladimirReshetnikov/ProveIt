@@ -376,6 +376,11 @@ STATUS = {
    r"$C=1+zC^2$ is \lean{Fabius.catalanSeries_eq} and its uniqueness among power series "
    r"\lean{Fabius.eq_catalanSeries_of_eq_one_add_X_mul_sq} (module "
    r"\lean{CatalanGeneratingFunction}); the square-root closed form is not formalized."),
+ 'thm:first-reverse-recurrences': ('Lean',
+   r"\cref{eq:first-reverse-row} is \lean{Fabius.first_reverse_row} and "
+   r"\cref{eq:first-reverse-column} is \lean{Fabius.first_reverse_column} (module "
+   r"\lean{StirlingFirstReverse}), the first from the rising factorial, the second by "
+   r"comparing exponential generating functions (\lean{Fabius.egfA_first_reverse_column})."),
  'thm:touchard-poly': ('Lean',
    r"\cref{eq:touchard-poly} is \lean{Fabius.touchardPolynomial_add_prime} "
    r"(\lean{TouchardPolyCongruence}), an identity in $(\mathbb Z/p)[x]$, read off from Spivey's "

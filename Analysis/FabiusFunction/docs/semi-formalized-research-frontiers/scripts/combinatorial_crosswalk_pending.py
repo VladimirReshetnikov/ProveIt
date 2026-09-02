@@ -973,6 +973,32 @@ $F=1+zF^2$ equals $C(z)$, since the equation determines each coefficient from
 the earlier ones.  The closed form with $\sqrt{1-4z}$ is not formalized.""")),
 ]
 
+PENDING += [
+ # --- thm:first-reverse-recurrences ---
+ (r"""which follows immediately from the displayed formula for $C_k$.
+\end{proof}
+""",
+  remark(r"""% ed.: crosswalk added 2026-09-02; both formal proofs follow the text.
+\cref{eq:first-reverse-row} is \lean{Fabius.first_reverse_row} (module
+\lean{StirlingFirstReverse}), with the summation index written as $j=i+2$,
+$0\le i<n-k$, and $(-1)^j\binom{-k}{j}$ replaced by $\binom{k+j-1}{j}$: the
+coefficient identity
+$\UnsignedStirlingFirstKind{n+1}{k+1}=\sum_r\binom rk\UnsignedStirlingFirstKind nr$
+is \lean{Fabius.stirlingFirst_succ_succ_eq_sum_choose}, from
+$\RisingFactorial{x}{n+1}=x\,\RisingFactorial{x+1}{n}$
+(Mathlib's \lean{ascPochhammer_succ_left}), and removing the terms $r=k-1,k$
+gives the recurrence.  \cref{eq:first-reverse-column} is
+\lean{Fabius.first_reverse_column}, stated as
+$(n-k)\UnsignedStirlingFirstKind nk=\sum_{j=2}^{n}\binom nj(j-2)!\,\UnsignedStirlingFirstKind{n-j+1}{k}$
+(the extra terms vanish); the formal proof compares exponential generating
+functions over a $\mathbb Q$-algebra exactly as in the text:
+\lean{Fabius.egfA_kernel} is $\sum_{j\ge2}x^j/(j(j-1))=x+(1-x)\log(1-x)$,
+\lean{Fabius.one_sub_X_mul_negLog_mul_derivative_egfA_stirlingFirst} is
+$-(1-x)\log(1-x)\,C_k'=kC_k$, and \lean{Fabius.egfA_first_reverse_column}
+is the resulting identity $xC_k'-kC_k=\bigl(x+(1-x)\log(1-x)\bigr)C_k'$,
+from which \lean{Fabius.seq_eq_of_egfA_eq} extracts the coefficients.""")),
+]
+
 applied = 0
 for anchor, text in PENDING:
     if text.strip() in s:
