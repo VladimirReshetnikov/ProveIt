@@ -78,6 +78,55 @@ the symmetry \cref{eq:eulerian-symmetry} is not formalized.  The power sums of
 in the form $\sum_{r=0}^{m}r^{n+1}=\sum_{k}\TypeAEulerianNumber{n+1}{k}\binom{m+k+1}{n+2}$.""")),
 ]
 
+PENDING += [
+ # --- thm:bell-poly-specializations ---
+ (r"""earlier.  Summing over $k$ yields \eqref{eq:bell-factorial-complete} and
+\eqref{eq:bell-number-specialization}.  Finally $x_j=x$ gives
+$\exp(x(\EulerE^t-1))$, the EGF of $\TouchardPolynomial{n}(x)$.
+\end{proof}
+""",
+  remark(r"""% ed.: crosswalk added 2026-09-01; the Lean proofs follow the text exactly
+% (column generating functions compared coefficientwise), except for the
+% second-kind case, which is proved directly from the vertical recurrence.
+In Lean the partial Bell polynomials \lean{Fabius.partialBell} are defined by the
+pointing recurrence of \cref{thm:bell-poly-recurrences} over any commutative
+semiring (module \lean{PartialBellPolynomials}), and the column generating
+function of \cref{thm:bell-poly-egf} is \lean{Fabius.bellWeightSeries_pow}
+(module \lean{BellGeneratingFunctions}), proved by induction on $k$ from the
+first-order equation $Y'=(k+1)X'\,Y_k$ and the uniqueness of its solution.
+The specializations are then read off exactly as in the text:
+\cref{eq:bell-first-specialization} is \lean{Fabius.partialBell_factorial_pred}
+(comparing with \lean{Fabius.negLogOneSub_pow}), \cref{eq:bell-lah-specialization}
+is \lean{Fabius.partialBell_factorial} (comparing with the Lah column
+generating function $(t/(1-t))^k=\sum_n k!\LahNumber{n}{k}t^n/n!$,
+\lean{Fabius.X_mul_mkOne_pow}, proved here by the same first-order method),
+\cref{eq:bell-second-specialization} is \lean{Fabius.partialBell_one} (directly
+from the vertical recurrence of the second kind), and
+\cref{eq:bell-number-specialization} is \lean{Fabius.bell_complete_one}.  The
+complete polynomials are Mathlib-free \lean{Bell.complete}, related to the
+partial ones by \lean{Fabius.bell_complete_eq_sum_partialBell}; their
+generating function $\exp X(t)$ is \lean{Fabius.exp_subst_bellWeightSeries},
+from the equation $Y'=X'Y$, $Y(0)=1$
+(\lean{Fabius.eq_zero_of_derivative_eq_mul}).  The factorial row sum
+\cref{eq:bell-factorial-complete} and the Touchard identity
+\cref{eq:touchard-bell-specialization} are not formalized.""")),
+
+ # --- thm:bell-egf ---
+ (r"""coefficient comparison in that equation gives
+\eqref{eq:bell-binomial-recurrence} and $\mathscr B(0)=1$, so it uniquely determines
+the series.
+\end{proof}
+""",
+  remark(r"""% ed.: crosswalk added 2026-09-01.
+The identity $\mathscr B(z)=\exp(\EulerE^z-1)$ is \lean{Fabius.exp_subst_exp_sub_one}
+(module \lean{BellGeneratingFunctions}), stated as the substitution of
+Mathlib's exponential series into itself minus one, over any commutative
+$\mathbb Q$-algebra; it is the case $x=(1,1,\ldots)$ of the complete Bell
+generating function \lean{Fabius.exp_subst_bellWeightSeries}, whose Lean proof
+is the uniqueness argument of this proof: both sides satisfy
+$Y'=\EulerE^z\,Y$ with $Y(0)=1$.""")),
+]
+
 applied = 0
 for anchor, text in PENDING:
     if text.strip() in s:
