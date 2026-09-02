@@ -71,6 +71,7 @@ import FabiusFunction.StirlingFirstDiagonal
 import FabiusFunction.DiamondPower
 import FabiusFunction.OrdinaryBellBivariate
 import FabiusFunction.BinomialInversionEGF
+import FabiusFunction.EulerianPolynomialRecurrence
 import FabiusFunction.SymmetricFunctionTransform
 import FabiusFunction.SymmetricFunctionGenerating
 import FabiusFunction.FiniteQBinomialCore
