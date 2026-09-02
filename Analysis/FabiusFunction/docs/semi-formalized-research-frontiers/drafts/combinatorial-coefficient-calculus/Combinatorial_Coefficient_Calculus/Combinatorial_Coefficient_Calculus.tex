@@ -2235,6 +2235,28 @@ $1,\ldots,r$ is preserved in both constructions, and deletion of $n$ reverses
 them.
 \end{proof}
 
+\begin{remark}[Formal crosswalk]
+% ed.: crosswalk added 2026-09-02; Lean takes the recurrence as the definition.
+Module \lean{RStirling} defines $\StirlingSecondKind nk_{\!r}$ by the
+recurrence \cref{eq:r-stirling-recurrence} with $\StirlingSecondKind rr_{\!r}=1$
+and the zero boundary (\lean{Fabius.rStirling}, in the shifted indices
+$T_r(n,k)=\StirlingSecondKind{n+r}{k+r}_{\!r}$ as \lean{Fabius.rStirlingShift});
+the count of partitions with $1,\dots,r$ in distinct blocks is not
+formalized.  The recurrence is \lean{Fabius.rStirling_succ_succ} (for
+$n\ge r$).  Since the recurrence says that $n\mapsto T_r(n,k)$ is the binomial
+convolution of $j\mapsto r^j$ with $j\mapsto\StirlingSecondKind jk$
+(\lean{Fabius.rStirlingShift_eq_binomialConv}, by induction with the shift
+rule \lean{Bell.binomialConv_succ}), one gets the explicit formula
+$\StirlingSecondKind{n+r}{k+r}_{\!r}=\sum_j\binom nj\StirlingSecondKind jk r^{n-j}$
+(\lean{Fabius.rStirlingShift_eq_sum}, \lean{Fabius.rStirling_eq_sum}), and the
+mixed generating function \cref{eq:r-stirling-egf} follows from the product
+rule for exponential generating functions:
+\lean{Fabius.egfA_rStirlingPoly} is
+$\sum_n\bigl(\sum_k\StirlingSecondKind{n+r}{k+r}_{\!r}y^k\bigr)z^n/n!
+=\EulerE^{rz}\exp\bigl(y(\EulerE^z-1)\bigr)$ in $\mathbb Q[y][[z]]$, which is
+\cref{eq:r-stirling-egf} after multiplication by $y^r$.
+\end{remark}
+
 The same labelled-component argument gives the mixed exponential generating
 function
 \begin{equation}
@@ -6783,6 +6805,40 @@ $v=1-u$ in the integral representation:
 \end{align*}
 \end{proof}
 
+\begin{remark}[Formal crosswalk]
+% ed.: crosswalk added 2026-09-02; the algebraic identities are formal, the integral ones are not.
+Module \lean{CauchyPolynomials} defines $b_n(x)$ directly by
+\cref{eq:merged-bernoulli-second-egf}, as $n!$ times the $n$-th coefficient of
+$t(1+t)^x/\log(1+t)$ in $\mathbb Q[x][[t]]$ (\lean{Fabius.cauchyPoly}), the
+factor $t/\log(1+t)$ being the power-series inverse of the Gregory series
+\lean{Fabius.logDivSeries}.  The supporting object is the falling-factorial
+generating function $(1+t)^u=\sum_n\FallingFactorial un t^n/n!$ over any
+$\mathbb Q$-algebra (\lean{Fabius.fallingSeries}, module
+\lean{FallingFactorialSeries}), characterised by $(1+t)F'=uF$ with $F(0)=1$;
+from that characterisation one gets the product law
+$(1+t)^u(1+t)^v=(1+t)^{u+v}$ (\lean{Fabius.fallingSeries_mul}), hence the
+Vandermonde identity for falling factorials
+(\lean{Fabius.descPochhammer_eval_add}), and, in $\mathbb Q[x][[t]]$, the
+$x$-derivative $\partial_x(1+t)^x=\log(1+t)\,(1+t)^x$
+(\lean{Fabius.Dx_fallingPoly}, with $\partial_x$ the coefficientwise
+derivative \lean{Fabius.Dx}).
+Consequently \cref{eq:merged-cauchy-derivative} is
+\lean{Fabius.derivative_cauchyPoly_succ}, \cref{eq:merged-cauchy-difference}
+is \lean{Fabius.cauchyPoly_succ_eval_add_one_sub},
+\cref{eq:merged-cauchy-addition} is \lean{Fabius.cauchyPoly_eval_add} and
+\cref{eq:merged-cauchy-explicit} is \lean{Fabius.cauchyPoly_succ_eq}.
+\cref{eq:merged-cauchy-stirling-numbers} is \lean{Fabius.cauchyPoly_eval_zero},
+proved with the formal integral $\int_0^1p(u)\Differential u=\sum_kp_k/(k+1)$
+as a linear functional on $\mathbb Q[u]$ (\lean{Fabius.intPoly}), for which
+$\int_0^1p'=p(1)-p(0)$ (\lean{Fabius.intPoly_derivative}); applying it
+coefficientwise to $\partial_x(1+t)^x$ gives
+$\int_0^1(1+t)^u\Differential u=t/\log(1+t)$
+(\lean{Fabius.mapIntPoly_fallingPoly}), which is
+\cref{eq:merged-cauchy-integral} in formal form, although the analytic
+integral representation itself is not formalized.  The reflection
+\cref{eq:merged-cauchy-reflection} is not formalized.
+\end{remark}
+
 \begin{remark}
 The first polynomials, useful for checking the normalization, are
 \[
@@ -9352,7 +9408,7 @@ coefficient calculus rather than a catalogue of isolated identities.
 
 \section{Lean formalization register}
 \label{sec:lean-register}
-Every theorem-like environment of this monograph is listed here with the status of its formalization in the Lean development \path{Analysis/FabiusFunction/Lean/FabiusFunction} (Mathlib \texttt{v4.32.0}).  \emph{Lean} means that a public, compiled declaration proves the exact statement or a more general one (the generalization is then noted next to the result); \emph{partial} means that a named part of the statement is proved and the rest is named; \emph{none} means that no Lean counterpart exists yet.  A citation, a numerical check, or a plausible derivation does not count.  The register is generated from the source and must be regenerated when results are added.  Current totals: 50 Lean, 26 partial, 125 none, of 201 results.
+Every theorem-like environment of this monograph is listed here with the status of its formalization in the Lean development \path{Analysis/FabiusFunction/Lean/FabiusFunction} (Mathlib \texttt{v4.32.0}).  \emph{Lean} means that a public, compiled declaration proves the exact statement or a more general one (the generalization is then noted next to the result); \emph{partial} means that a named part of the statement is proved and the rest is named; \emph{none} means that no Lean counterpart exists yet.  A citation, a numerical check, or a plausible derivation does not count.  The register is generated from the source and must be regenerated when results are added.  Current totals: 50 Lean, 28 partial, 123 none, of 201 results.
 
 \begin{footnotesize}
 \begin{longtable}{@{}p{0.16\textwidth}p{0.22\textwidth}p{0.08\textwidth}p{0.40\textwidth}@{}}
@@ -9399,7 +9455,7 @@ Result & Title & Status & Lean declarations (module) \\
 \Cref{lem:logarithmic-transfer} & Logarithmic transfer estimate & none &  \\
 \Cref{thm:gamma-stirling-series} & Convergent Stirling series for $\log\GammaFunction$ and $\psi$ & none &  \\
 \Cref{thm:stieltjes-stirling-series} & Stirling series for the Stieltjes constants & none &  \\
-\Cref{thm:r-stirling-recurrence} & $r$-Stirling recurrence & none &  \\
+\Cref{thm:r-stirling-recurrence} & $r$-Stirling recurrence & partial & With $\StirlingSecondKind nk_{\!r}$ defined by the recurrence (\lean{Fabius.rStirling}, module \lean{RStirling}): \cref{eq:r-stirling-recurrence} is \lean{Fabius.rStirling_succ_succ}, the explicit formula $\StirlingSecondKind{n+r}{k+r}_{\!r}=\sum_j\binom nj\StirlingSecondKind jk r^{n-j}$ is \lean{Fabius.rStirlingShift_eq_sum} and \cref{eq:r-stirling-egf} is \lean{Fabius.egfA_rStirlingPoly}; the distinct-blocks count is not formalized. \\
 \Cref{thm:associated-stirling-recurrence} & Associated recurrence & partial & With $\mathsf S_r$ defined as the partial Bell polynomial with weights $[j\ge r]$ (\lean{Fabius.associatedStirling}, module \lean{AssociatedStirling}): \cref{eq:associated-stirling-recurrence} is \lean{Fabius.associatedStirling_succ_succ} and \cref{eq:associated-stirling-egf} is \lean{Fabius.egfA_associatedStirling}; the block-size count is not formalized. \\
 \Cref{thm:reduced-stirling} & Reduction formula & none &  \\
 proposition (unlabelled, no.~1) &  & none &  \\
@@ -9502,7 +9558,7 @@ corollary (unlabelled, no.~9) &  & none &  \\
 \Cref{thm:merged-norlund-calculus} & Appell, difference, and convolution calculus & partial & For natural orders $\alpha,\gamma\in\mathbb N$ (module \lean{NorlundPolynomials}, $\beta_n^{(a)}$ defined by \lean{Fabius.norlund}): \cref{eq:merged-norlund-appell} is \lean{Fabius.derivative_norlund_succ}, \cref{eq:merged-norlund-translation} is \lean{Fabius.norlund_eval_add}, \cref{eq:merged-norlund-difference} is \lean{Fabius.norlund_succ_eval_add_one_sub} and \cref{eq:merged-norlund-convolution} is \lean{Fabius.norlund_add_eval_add}; complex orders are not formalized. \\
 \Cref{thm:merged-norlund-bell-diagonal} & Bell-polynomial construction and the N\"orlund diagonal & none &  \\
 \Cref{thm:merged-genocchi} & Bernoulli--Euler--Genocchi relations & Lean & with \lean{Fabius.genocchi} defined by $2(1-2^n)\beta_n$, the generating function \cref{eq:merged-genocchi-egf} is \lean{Fabius.egf_genocchi_mul_exp_add_one} (\lean{GenocchiNumbers}), i.e. the first equality of \cref{eq:merged-genocchi}, and the second equality is \lean{Fabius.genocchi_succ_eq} (\lean{EulerPolynomials}); \lean{Fabius.genocchi_one}, \lean{Fabius.genocchi_two}, \lean{Fabius.genocchi_odd} give the initial values and the parity \\
-\Cref{thm:merged-cauchy-polynomials} & Integral, Stirling, difference, addition, and reflection formulas & none &  \\
+\Cref{thm:merged-cauchy-polynomials} & Integral, Stirling, difference, addition, and reflection formulas & partial & Module \lean{CauchyPolynomials} defines $b_n$ by \cref{eq:merged-bernoulli-second-egf} (\lean{Fabius.cauchyPoly}): \cref{eq:merged-cauchy-derivative} is \lean{Fabius.derivative_cauchyPoly_succ}, \cref{eq:merged-cauchy-difference} is \lean{Fabius.cauchyPoly_succ_eval_add_one_sub}, \cref{eq:merged-cauchy-addition} is \lean{Fabius.cauchyPoly_eval_add}, \cref{eq:merged-cauchy-explicit} is \lean{Fabius.cauchyPoly_succ_eq} and \cref{eq:merged-cauchy-stirling-numbers} is \lean{Fabius.cauchyPoly_eval_zero}; the integral representation \cref{eq:merged-cauchy-integral} and the reflection \cref{eq:merged-cauchy-reflection} are not formalized. \\
 proposition (unlabelled, no.~6) &  & none &  \\
 \Cref{thm:merged-periodic-bernoulli-fourier} & Fourier expansion with exact convergence qualifications & none &  \\
 \Cref{thm:merged-euler-maclaurin} & Euler--Maclaurin with remainder & none &  \\
