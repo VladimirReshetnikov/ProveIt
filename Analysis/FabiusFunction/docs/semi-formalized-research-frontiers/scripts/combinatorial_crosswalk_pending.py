@@ -269,7 +269,7 @@ and $g\cdot(h\circ f)=1$ then $[g,f]\,[h,\overline f]$ is the identity array
 \lean{Fabius.expRiordan_one_X}.  The Stirling examples are
 \lean{Fabius.expRiordan_one_exp_sub_one} ($[1,\EulerE^t-1]$ has entries
 $\StirlingSecondKind nk$) and \lean{Fabius.expRiordan_one_log}
-($[1,\log(1+t)]$ has entries $\StirlingFirstKindSigned nk$).""")),
+($[1,\log(1+t)]$ has entries $\SignedStirlingFirstKind{n}{k}$).""")),
 ]
 
 PENDING += [
