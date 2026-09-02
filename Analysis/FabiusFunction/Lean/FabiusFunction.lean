@@ -518,6 +518,9 @@ import FabiusFunction.GaussianBinomialComplexOrder
 import FabiusFunction.QPfaffSaalschutz
 import FabiusFunction.QuantumMultinomial
 import FabiusFunction.GaussianBinomialBounds
+import FabiusFunction.BinaryWordInversions
+import FabiusFunction.BoxPartitions
+import FabiusFunction.TelescopingCertificate
 import FabiusFunction.GaussianBinomialPalindromic
 import FabiusFunction.ThetaQuasiPeriodicity
 
