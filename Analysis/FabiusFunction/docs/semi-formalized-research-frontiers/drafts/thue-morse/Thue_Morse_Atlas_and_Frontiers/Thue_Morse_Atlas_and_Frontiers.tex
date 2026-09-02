@@ -3617,10 +3617,16 @@ Exponentiation gives the product inequality.
 and \((-1)^mf^{(m)}\ge0\) on \([x,x+(2^m-1)h]\) --- the interval that actually contains
 every argument \(x+t_0+\cdots+t_{m-1}\) --- the block sum is nonnegative, by
 \lean{Fabius.nestedDyadicIntegral\_nonneg} applied to \((-1)^mf^{(m)}\) through
-\lean{Fabius.nestedDyadicIntegral\_const\_mul}.  The two applications
-\eqref{p1:eq:reciprocal-power-positive} and \eqref{p1:eq:log-product-sign}, which need the
-explicit derivatives of \((a+y)^{-s}\) and \(\log(a+y)\) and \emph{strict} positivity of
-the nested integral, are not formalized.
+\lean{Fabius.nestedDyadicIntegral\_const\_mul}.  The \emph{strict} form is formal as
+well: for \(h>0\) and \((-1)^mf^{(m)}>0\) on the same interval the block sum is strictly
+positive (\lean{Fabius.thueMorseBlockSum\_pos}), by induction through the one-step
+reduction \(\sum_{n<2^{m+1}}\eps_nf(x+nh)=-\int_0^h\sum_{n<2^m}\eps_nf'(x+t+2nh)\,\Differential t\)
+(\lean{Fabius.thueMorseBlockSum\_succ\_eq\_neg\_integral}), whose integrand is a finite sum
+of continuous functions and so needs no parametric-integral theory for its integrability.
+What remains informal in the two applications \eqref{p1:eq:reciprocal-power-positive} and
+\eqref{p1:eq:log-product-sign} is only the computation of the explicit derivatives of
+\((a+y)^{-s}\) and \(\log(a+y)\); their signs then feed
+\lean{Fabius.thueMorseBlockSum\_pos} directly.
 
 \subsection{Arbitrary translation weights}
 \label{p1:sec:arbitrary-weights}
