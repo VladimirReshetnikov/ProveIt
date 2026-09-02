@@ -38,6 +38,10 @@ XREF = re.compile(r'\\(?:[cC]ref|ref|eqref)\{([^}]*)\}')
 # A unit of a ledger: a paragraph, or a row of a table (ended by \\).
 UNIT_SPLIT = re.compile(r'\n\s*\n|\\\\\s*\n')
 ITEM_SPLIT = re.compile(r'\\item\b')
+# A result environment with its body, for the placement check.
+ENV_BODY = re.compile(
+    r'\\begin\{(theorem|proposition|lemma|corollary)\}(.*?)\\end\{\1\}', re.S)
+FORMAL_PARA = re.compile(r'\\emph\{Formal (?:version|versions|status)')
 OPEN = re.compile(
     r'not formalized|unformalized|no Lean counterpart|not yet formalized'
     r'|remains open|is not proved|not proved (?:here|anywhere)'
@@ -151,7 +155,16 @@ def survey(path):
     # one that crosswalks in a dedicated section, where "0 cited" inside
     # result spans says nothing about coverage.
     total_cites = len(LEAN.findall(text))
-    return covered, disclaimed, gap, gaps, total_cites
+    # Placement hygiene: a crosswalk paragraph must not sit inside the
+    # result environment it describes (between \begin{theorem} and
+    # \end{theorem}); that happened once when a script anchored on the
+    # display inside a proposition.
+    inside = []
+    for m in ENV_BODY.finditer(text):
+        if FORMAL_PARA.search(m.group(2)):
+            lab = re.search(r'\\label\{([^}]*)\}', m.group(2))
+            inside.append(lab.group(1) if lab else '(no label)')
+    return covered, disclaimed, gap, gaps, total_cites, inside
 
 
 def main(argv):
@@ -168,9 +181,14 @@ def main(argv):
     total = [0, 0, 0]
     print('== crosswalk coverage of volume results ==')
     for path in paths:
-        covered, disclaimed, gap, gaps, cites = survey(path)
+        covered, disclaimed, gap, gaps, cites, inside = survey(path)
         if covered + disclaimed + gap == 0:
             continue
+        if inside:
+            print()
+            print('%s' % os.path.relpath(path, HERE))
+            for lab in inside:
+                print('   MISPLACED  crosswalk paragraph inside the environment of %s' % lab)
         total[0] += covered
         total[1] += disclaimed
         total[2] += gap

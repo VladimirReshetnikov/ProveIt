@@ -999,16 +999,6 @@ Consequently
   \tau(n)=\frac{1-\eps_n}{2}.
   \label{p1:eq:fractional-cos}
 \end{equation}
-
-\emph{Formal version.}  Equation \eqref{p1:eq:fractional-weight} is
-\lean{Fabius.tsum\_fract\_natCast\_div\_two\_pow} in \path{DigitDefectCounting.lean},
-\(\sum_{h\ge0}\{N/2^h\}=S_2(N)\); the index \(h=0\) contributes nothing, so the sum
-there and the sum here agree, and \(S_2\) is \(\BinaryDigitSum\) by definition of the latter.  It
-sits in a defect-counting file rather than a Thue--Morse one because that is the role
-it plays: it is the regression test that fixes the \emph{sign} of the weighted defect
-series \lean{Fabius.tsum\_mul\_natCast\_div\_two\_pow} against Legendre's classical
-count.  The pointwise ingredient, \(\{N/2^h\}=(N\bmod 2^h)/2^h\), is
-\lean{Fabius.fract\_natCast\_div\_two\_pow}.
 \end{proposition}
 
 \begin{proof}
@@ -1020,6 +1010,16 @@ The geometric series gives \(\sum_{j\ge1}n/2^j=n\).  Subtract
  =\BinaryDigitSum(n).
 \]
 \end{proof}
+
+\emph{Formal version.}  Equation \eqref{p1:eq:fractional-weight} is
+\lean{Fabius.tsum\_fract\_natCast\_div\_two\_pow} in \path{DigitDefectCounting.lean},
+\(\sum_{h\ge0}\{N/2^h\}=S_2(N)\); the index \(h=0\) contributes nothing, so the sum
+there and the sum here agree, and \(S_2\) is \(\BinaryDigitSum\) by definition of the latter.  It
+sits in a defect-counting file rather than a Thue--Morse one because that is the role
+it plays: it is the regression test that fixes the \emph{sign} of the weighted defect
+series \lean{Fabius.tsum\_mul\_natCast\_div\_two\_pow} against Legendre's classical
+count.  The pointwise ingredient, \(\{N/2^h\}=(N\bmod 2^h)/2^h\), is
+\lean{Fabius.fract\_natCast\_div\_two\_pow}.
 
 \subsection{Square waves and a sine-sign product}
 
@@ -2650,9 +2650,14 @@ identity of formal power series with integer coefficients, with
 \(A\) as \lean{Fabius.rulerSeries} built on the ruler coefficient
 \lean{Fabius.rulerCoeff} of \path{ThueMorseHessenberg.lean}.  Its coefficient of \(z^n\) is
 exactly the ruler-convolution recurrence of \cref{p1:thm:ruler-convolution}, from which it
-is derived; no convergence enters.  The two readings the theorem also offers --- the
-\(\RationalNumbers\)-logarithm itself, and the analytic identity for \(|z|<1\) --- are not formalized:
-the first is a coefficientwise integration of the display above, the second its evaluation.
+is derived; no convergence enters.  The \(\RationalNumbers\)-logarithm itself is formal as
+well: for the corpus's recursively defined formal logarithm (\path{RulerLogSeries.lean}),
+\lean{Fabius.logCoeff\_thueMorseSign} gives \([z^k]\log E(z)=-a_k/k\) for every \(k\ge1\)
+(\lean{Fabius.logCoeff\_thueMorseSign\_of\_pos} in the explicit form
+\(-(2^{\TwoAdicValuation(k)+1}-1)/k\)), obtained from the rational form of the display above,
+\lean{Fabius.X\_mul\_derivative\_thueMorseSeriesRat}, by the uniqueness of the recursive
+logarithm.  Only the analytic reading for \(|z|<1\), the evaluation of these identities at a
+point, is not formalized.
 
 \subsection{A nonlocal convolution recurrence}
 
@@ -3576,7 +3581,12 @@ theory.  The bound \eqref{p1:eq:finite-difference-bound} is
 \([x,x+(2^m-1)h]\) and the box volume written as \(2^{0+1+\cdots+(m-1)}h^m\); the exponent is
 \(\binom m2\) by \lean{Fabius.sum\_range\_id\_eq\_choose\_two}.  It follows from the
 volume bound \lean{Fabius.abs\_nestedDyadicIntegral\_le} on the nested integral.  The
-unit-cube form \eqref{p1:eq:unit-cube-cubature} is not formalized.
+unit-cube form \eqref{p1:eq:unit-cube-cubature} is
+\lean{Fabius.thueMorseBlockSum\_eq\_nestedUnitIntegral}, with the box integral written as
+the nested unit-cube integral \lean{Fabius.nestedUnitIntegral} (outermost variable
+\(u_0\), step doubling inward); the rescaling \(t_j=2^jh\,u_j\) is performed one level at a
+time in \lean{Fabius.nestedDyadicIntegral\_eq\_unit}, which produces the box volume
+\(h^m2^{0+1+\cdots+(m-1)}\).
 
 \begin{corollary}[Sign for completely monotone kernels]
 \label{p1:cor:complete-monotone}
@@ -4052,6 +4062,27 @@ turns the normalized product into
 Use the defining generating function \eqref{p1:eq:Bell-definition} and compare
 coefficients.
 \end{proof}
+
+\emph{Formal versions.}  \Cref{p1:thm:Bell-moments} is
+\lean{Fabius.thueMorsePowerSum\_eq\_completeBellPolynomial} in
+\path{BellPolynomialMoments.lean}, for every \(m\ge0\) and \(r\ge0\), with the exponent
+written as the Gauss sum \(0+1+\cdots+(m-1)=\binom m2\), \(M_{m,n}\) as
+\lean{Fabius.thueMorsePowerSum}, the complete exponential Bell polynomial as
+\lean{Fabius.completeBellPolynomial} of \path{MomentCumulantAlgebra.lean}, and the cumulants
+as \lean{Fabius.blockCumulant}, whose closed forms \eqref{p1:eq:kappa-one}--\eqref{p1:eq:kappa-odd}
+are \lean{Fabius.blockCumulant\_one}, \lean{Fabius.blockCumulant\_even} and
+\lean{Fabius.blockCumulant\_odd}.  The proof is the one above, run entirely in
+\(\RationalNumbers[[y]]\) with no logarithm ever taken: the expansion
+\eqref{p1:eq:log-expm1} is \lean{Fabius.expm1Div\_logCoeff\_eq\_bernoulli}, the identification of
+the recursively defined formal logarithm of \((\EulerE^{y}-1)/y\) with
+\(B'_n/(n\,n!)\) (second Bernoulli numbers), obtained from
+\(yG'=(B'(y)-1)G\) and Mathlib's \(B'(y)(\EulerE^{y}-1)=y\EulerE^{y}\) by the uniqueness of
+the recursive logarithm; the logarithm of the product \eqref{p1:eq:moment-Bell-factor} is the
+sum of the rescaled logarithms (\lean{Fabius.logCoeff\_prod\_range} and the corpus's
+\lean{Fabius.SaddleExpansion.logCoeff\_rescale}); and the coefficient comparison is the EGF
+dictionary \lean{Fabius.coeff\_sum\_thueMorseSign\_exp\_pow} against
+\lean{Fabius.prod\_one\_sub\_exp\_two\_pow} of \path{ThueMorseMoments.lean}.  The case
+\(r=0\) recovers \eqref{p1:eq:moment-layer0} as \lean{Fabius.thueMorsePowerSum\_self'}.
 
 The first three nonzero layers are
 \begin{align}
@@ -6002,9 +6033,20 @@ for every modulus), the parity system is
 companion, the three sums recombine to the prefix sum by
 \lean{Fabius.thueMorseResidueSum\_three\_add}, and the prefix-sum
 bound \(|E|\le1\) is \lean{Fabius.abs\_sum\_thueMorseSign\_le\_one}.
-The quantitative bounds \(\tfrac1{20}X^{\log_43}\le
-N_3(X)\le5X^{\log_43}\) and Coquet's oscillation remain literature
-imports.  Rarefactions
+The quantitative bounds are formal as well, and with better constants than
+Newman's: \lean{Fabius.newman\_quantitative} in \path{ThueMorseNewmanQuantitative.lean} gives
+\(\tfrac19N^{\log_43}\le N_3(N)\le2N^{\log_43}\) for \emph{every} integer \(N\ge1\)
+(\lean{Fabius.newman\_lower\_bound}, \lean{Fabius.newman\_upper\_bound}), which implies the
+displayed \(\tfrac1{20}\) and \(5\) at once.  Underneath are two integer brackets ---
+\(3^k+1\le N_3(N)\) for \(N\ge4\cdot4^k\)
+(\lean{Fabius.three\_pow\_add\_one\_le\_thueMorseResidueSum\_three\_zero}) and
+\(N_3(N)+1\le2\cdot3^k\) for \(N<4^{k+1}\)
+(\lean{Fabius.thueMorseResidueSum\_three\_zero\_add\_one\_le}) --- obtained from the same
+base-four step, now isolated as
+\lean{Fabius.thueMorseResidueSum\_three\_zero\_four\_mul\_add\_bracket} in
+\path{ThueMorseNewman.lean}, with the exponent \(\log_43\) entering only through
+\(\bigl(4^j\bigr)^{\log_43}=3^j\).  Coquet's oscillation remains a literature import.
+Rarefactions
 along other progressions and for generalized digit characters were analyzed
 by Drmota and Skalba \cite{p1:drmotaSkalba2000} and Drmota and Stoll
 \cite{p1:drmotaStoll2008}; a recent automata-theoretic treatment mechanizes
