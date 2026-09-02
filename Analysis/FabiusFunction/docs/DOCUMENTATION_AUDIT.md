@@ -119,8 +119,19 @@ account for one module and six declarations: the zero-definition/three-theorem
 `GeometricPochhammerNormalConvergence.lean` leaf and three additional theorems
 in `PrimePowerBinomialValuation.lean`.  The q-polish adds two theorems to
 `QPochhammerInfinite.lean`, the two-module effective-inverse tranche
-contributes nine declarations, and the six newest q-calculus modules contribute
-36 declarations.  The older 622/8,472, 623/8,476, 629/8,546, 630/8,552,
+contributes nine declarations, the first six q-calculus modules contribute
+36 declarations, and the four newest leaves contribute 38 declarations.
+Those leaves are `GaussianBinomialPalindromic.lean` 0+12,
+`JacksonIntegral.lean` 1+7, `QExponential.lean` 3+8, and
+`ThetaQuasiPeriodicity.lean` 1+6: five definitions and thirty-three theorems.
+Four still newer q-series leaves contribute twenty theorems and no definitions:
+`GaussianBinomialPolynomialStructure.lean` 0+5, `JacobiCubic.lean` 0+2,
+`QPochhammerLogDerivative.lean` 0+10, and
+`QPochhammerOrderDerivative.lean` 0+3.
+The two newest algebra leaves add thirteen theorems and no definitions:
+`CentralQBinomialReduction.lean` 0+6 and
+`CyclotomicFactorization.lean` 0+7.
+The older 622/8,472, 623/8,476, 629/8,546, 630/8,552,
 641/8,650, and 643/8,661 values below are historical checkpoints, not
 descriptions of the live tree.  The earlier additions and q-series tranches are
 itemized below.  The branch-point geometry and
@@ -310,8 +321,12 @@ recurrence laws, plus the complete-normed-field generating series under
 `QPochhammerInfinite.lean` theorems brought that historical feature snapshot
 from 622/8,472 to 629/8,547, a seven-module/75-declaration change.  The two
 inverse-computability modules then brought that feature snapshot to 631/8,556,
-a nine-module/84-declaration change.  Further incoming q-calculus leaves bring
-the live audit to the 659/8,768 census recorded above.
+a nine-module/84-declaration change.  The six further incoming q-calculus
+leaves contribute 36 declarations and brought the intermediate audit to
+649/8,697.  The four subsequent leaves contribute 38 declarations and bring
+that audit to 653/8,735.  The next four leaves contribute twenty declarations
+and bring that audit to 657/8,755.  The final two leaves contribute thirteen
+declarations and bring the live audit to the 659/8,768 census recorded above.
 
 `GaussianBinomialPalindromic.lean` is an exhaustive zero-definition,
 twelve-theorem leaf: `Fabius.reflect_add_of_natDegree_le`,
@@ -340,6 +355,33 @@ q-Gauss identities, a ratio-defined complex-order q-Pochhammer API, general
 basic-hypergeometric terms and summability, and the division-free recursive
 q-multinomial interface.  The displayed contraction, nonvanishing, and
 denominator hypotheses remain part of these APIs.
+The final four-module increment is exhaustively counted as
+`GaussianBinomialPalindromic.lean` 0+12, `JacksonIntegral.lean` 1+7,
+`QExponential.lean` 3+8, and `ThetaQuasiPeriodicity.lean` 1+6.  It adds the
+degree, monicity, coefficient-reversal, and division-free mean theory of the
+Gaussian polynomial; q-exponentials and their q-derivative laws; Jackson's
+fundamental theorem and integration by parts; and the bilateral theta product,
+quasi-periodicity, and zero criterion.  Their analytic declarations keep the
+displayed strict-contraction, nonzero-variable, convergence, and nonvanishing
+hypotheses.
+
+The still newer four-module increment is exhaustively counted as
+`GaussianBinomialPolynomialStructure.lean` 0+5, `JacobiCubic.lean` 0+2,
+`QPochhammerLogDerivative.lean` 0+10, and
+`QPochhammerOrderDerivative.lean` 0+3.  Its twenty theorems add universal
+Gaussian polynomial structure over `ℕ[X]`, Jacobi's cubic identity, the
+q-Pochhammer logarithmic derivative and Lambert-series form on the unit disc,
+and the derivative with respect to complex order.  The strict-contraction,
+unit-disc, nonzero-nome, and shifted-argument hypotheses remain explicit.
+
+The final two-module increment is exhaustively counted as
+`CentralQBinomialReduction.lean` 0+6 and
+`CyclotomicFactorization.lean` 0+7.  It adds finite q-Pochhammer sign pairing,
+even--odd dissection and ring-hom naturality; the division-free central
+Gaussian reduction and its conditional quotient form; and the cyclotomic
+factorizations of `(X;X)_n` and `[n,k]_X`.  The quotient theorem retains both
+nonzero-denominator hypotheses, and the Gaussian cyclotomic factorization
+retains its integral-domain assumption.
 
 The source-only q-algebra increment adds `CentralQBinomialReduction.lean`
 0+6: `finiteQPochhammerIn_mul_neg`, `finiteQPochhammerIn_two_mul`,
@@ -565,7 +607,8 @@ Integration-and-Transform master retains a historical 377-page PDF.  The canonic
 q-series synthesis is a validated 340-page historical receipt.  It contains
 the earlier general finite/infinite q-Pochhammer crosswalks and six q-series
 modules; the merged fifth fixed-nome theorem, two later general
-q-Pochhammer theorems, and the six newest q-calculus modules make final parity
+q-Pochhammer theorems, and the sixteen newest q-series/q-calculus modules make
+final parity
 pending.  The retained 167-page primary, 126-page walkthrough, 237-page
 canonical frontier, 301-page Representation Frontiers, 41-page New Frontiers,
 and 88-page notation-catalogue artifacts likewise predate their current merged

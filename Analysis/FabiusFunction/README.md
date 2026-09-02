@@ -92,7 +92,13 @@ in it must have a proved counterpart in the Lean development.
 > `QuantumBinomial` 0+2, `RogersSzegoPolynomial` 1+9,
 > `QPochhammerInfiniteBounds` 0+5, `HeineTransformation` 2+5,
 > `QGaussSummation` 0+2, `QPochhammerComplexOrder` 1+4,
-> `BasicHypergeometricSeries` 2+5, and `QMultinomial` 1+9.  The retained
+> `BasicHypergeometricSeries` 2+5, `QMultinomial` 1+9,
+> `GaussianBinomialPalindromic` 0+12, `JacksonIntegral` 1+7,
+> `QExponential` 3+8, `ThetaQuasiPeriodicity` 1+6,
+> `GaussianBinomialPolynomialStructure` 0+5, `JacobiCubic` 0+2,
+> `QPochhammerLogDerivative` 0+10, `QPochhammerOrderDerivative` 0+3,
+> `CentralQBinomialReduction` 0+6, and `CyclotomicFactorization` 0+7.
+> The retained
 > primary exposition, Lean walkthrough, canonical frontier, Representation
 > Frontiers, filed New Frontiers, notation catalogue, Integration-and-Transform
 > master, comb-interpolation, and q-series synthesis PDFs contain respectively
@@ -414,6 +420,9 @@ Padé/J-fractions, infinite Jacobi theory, and asymptotics also remain open.
 | Quantum-plane binomial expansion | `FabiusFunction.QuantumBinomial` | Retained 0+2 theorem inventory: `quantumPlane_mul_pow` and `quantum_binomial`. |
 | Rogers--Szegő recurrences and generating series | `FabiusFunction.RogersSzegoPolynomial` | Retained 1-definition/9-theorem inventory: the zero, row-sum, successor, dilation, and three-term laws, the Gaussian successor factor identity, summability and Euler antidiagonal convolution, and `hasSum_rogersSzego_generating`. |
 | Latest q-calculus closure: bounds, Heine/q-Gauss, complex order, basic hypergeometric series, and q-multinomials | `FabiusFunction.QPochhammerInfiniteBounds`, `FabiusFunction.HeineTransformation`, `FabiusFunction.QGaussSummation`, `FabiusFunction.QPochhammerComplexOrder`, `FabiusFunction.BasicHypergeometricSeries`, `FabiusFunction.QMultinomial` | Exhaustive module counts are respectively 0+5, 2+5, 0+2, 1+4, 2+5, and 1+9: six definitions and thirty theorems.  The APIs preserve their explicit strict-contraction, nonvanishing, and denominator hypotheses; the q-multinomial recursion and cleared product identity are division-free, while quotient statements remain conditional. |
+| Gaussian palindromicity, q-exponentials, Jackson integration, and theta quasi-periodicity | `FabiusFunction.GaussianBinomialPalindromic`, `FabiusFunction.QExponential`, `FabiusFunction.JacksonIntegral`, `FabiusFunction.ThetaQuasiPeriodicity` | Exhaustive module counts are 0+12, 3+8, 1+7, and 1+6: five definitions and thirty-three theorems.  They give the degree, monicity, coefficient reversal, and mean identity for Gaussian polynomials; the two q-exponentials and their q-derivative laws; Jackson's fundamental theorem and integration by parts; and the bilateral-theta product, quasi-periodicity, and exact zero criterion.  The analytic statements retain their explicit strict-contraction, nonzero-variable, convergence, and nonvanishing hypotheses. |
+| Universal Gaussian structure, q-Pochhammer derivatives, and Jacobi's cubic identity | `FabiusFunction.GaussianBinomialPolynomialStructure`, `FabiusFunction.QPochhammerLogDerivative`, `FabiusFunction.QPochhammerOrderDerivative`, `FabiusFunction.JacobiCubic` | Exhaustive module counts are 0+5, 0+10, 0+3, and 0+2: twenty theorems and no definitions.  They give universal Gaussian degree, monicity, constant coefficient, and reflection symmetry over `ℕ[X]`; derivative and Lambert-series formulas for the infinite q-Pochhammer product on the unit disc; the complex-order derivative under a nonzero nome and `‖a*q^α‖ < 1`; and Jacobi's cubic identity for `‖q‖ < 1`. |
+| Cyclotomic factorization and central Gaussian reduction | `FabiusFunction.CyclotomicFactorization`, `FabiusFunction.CentralQBinomialReduction` | Exhaustive module counts are 0+7 and 0+6: thirteen theorems and no definitions.  The first factors `(X;X)_n` and `[n,k]_X` into cyclotomic polynomials, with the Gaussian factorization stated over an integral domain.  The second proves finite-symbol sign pairing, even--odd dissection, ring-hom naturality, and the division-free central identity `[2k,k]_(q²)(q²;q²)_k=(q;q²)_k(-q;q)_(2k)` over every commutative ring; its quotient corollary assumes both denominators are nonzero. |
 
 The frontier-facing focused imports above expose exact finite or formal
 algebra, and their names should not be read as stronger analytic conclusions.

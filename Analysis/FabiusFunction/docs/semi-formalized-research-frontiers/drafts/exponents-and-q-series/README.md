@@ -25,8 +25,8 @@ publication built from source SHA-256
 `79ee5e60a6c7e42a91c58dcd9bcae56173cc6b4aa3e54739a461943f705f3904`.
 The merged source incorporates the later five-theorem
 `QPochhammerEntire.lean`, `QPochhammerInfinite.lean`, and
-`QPochhammerDissection.lean` surfaces, together with the latest six-module
-q-series tranche and the zero-definition, three-theorem
+`QPochhammerDissection.lean` surfaces, together with the subsequent q-series
+module tranches and the zero-definition, three-theorem
 `GeometricPochhammerNormalConvergence.lean` leaf, in its formalization
 crosswalk. That source is a source-only successor to the fresh artifact receipt
 and requires a later synchronized three-pass build. Retained PDFs under its `assets/` tree are
@@ -101,22 +101,22 @@ Current packages and retained intake records:
   Its retained `q_pochhammer_q_binomial_monograph.pdf` is a 348-page A4
   rendering of 3,002,729 bytes, with SHA-256
   `8bf14b52d8a0fc0abc4d54cca503fd47a2df37cf76ee1bb4e442bea1fd2a4aa7`.
-  Exactly three guarded serial passes produced that pair; all 348 pages, A4
-  boxes, text extraction, embedded/subset Type-1 fonts including Libertinus,
-  absence of Type-3 fonts, and targeted visual review passed. The current
-  post-merge source has 14,294 lines and 669,417 bytes, with SHA-256
-  `697238ad7c03ba7611f03524de3445e152da2ea3bff18cca3cbb07986fb09ab2`.
+  Exactly three guarded serial passes produced 338, 348, and 348 pages; all
+  348 final pages, A4 geometry, text extraction, embedded/subset Type-1 fonts
+  including Libertinus, absence of Type-3 fonts, and targeted visual review
+  passed. The current source-only successor has 14,316 lines and 671,038
+  bytes, with SHA-256
+  `a57d84c46deb5a191acad9824abc5945470bc43c6b1f7f0a20c7ee11aa6609da`.
   It carries the five-theorem `QPochhammerEntire.lean`, the generic
-  `QPochhammerInfinite.lean` and `QPochhammerDissection.lean` APIs, the latest
-  six-module q-series tranche, the zero-definition/twelve-theorem
-  `GaussianBinomialPalindromic.lean` surface, the zero-definition/five-theorem
-  `GaussianBinomialPolynomialStructure.lean` surface, and the three-theorem
-  `GeometricPochhammerNormalConvergence.lean` outer-product API. The forward crosswalk is
-  now 71 Exact, 84 Partial, 119 None, and 8 interface rows; the source ledger
-  is 65 Lean-proved, 413 human-proved frontier, 60 not applicable, and 9
-  conjectures. It postdates the fresh build checkpoint, so the validated
-  348-page PDF remains an explicit source-pinned artifact; the operational
-  ledger records the actual current hashes of both. PDF files retained
+  `QPochhammerInfinite.lean` and `QPochhammerDissection.lean` APIs, both
+  Gaussian structure modules, `CentralQBinomialReduction.lean`,
+  `CyclotomicFactorization.lean`, the subsequent q-series module tranches,
+  and the three-theorem `GeometricPochhammerNormalConvergence.lean`
+  outer-product API. The forward crosswalk is now 73 Exact, 84 Partial, 117
+  None, and 8 interface rows; the source ledger is 65 Lean-proved, 413
+  human-proved frontier, 60 not applicable, and 9 conjectures. No PDF was
+  generated locally for this source-only merge, so the retained 348-page PDF
+  remains an explicit source-pinned historical artifact. PDF files retained
   beneath `assets/` are vector research figures, not manuscript builds.
   Manuscript result labels and numerical checks remain
   distinct from Lean verification.
@@ -799,10 +799,10 @@ claims about the current canonical source. The canonical synthesis's newer
 and is now a source-pinned receipt because the semantic-union source, including
 the outer-normal-convergence crosswalk, postdates that fresh build checkpoint.
 
-The latest source-audited forward formalization crosswalk has 282 labelled
-results: 71 exact, 84 partial, 119 with no counterpart, and 8 interface-only.
-The original 191-result pre-Fabius core has 36 exact, 29 partial, 123 with
-no counterpart, and 3 interface-only entries. The four integrated-guide chapters add 31
+The latest validated forward formalization ledger has 282 rows: 73 Exact, 84
+Partial, 117 with no counterpart, and 8 interface-only. The original
+191-result pre-Fabius core had 36 exact, 29 partial, 123 with no counterpart,
+and 3 interface-only entries. The four integrated-guide chapters add 31
 human-proved but not Lean-formalized assertions and five labelled definitions;
 the later Fabius bridge contributes the remaining rows. Its pointwise
 inside-`q^2` Pochhammer factorization and the outer product's locally uniform
@@ -842,17 +842,24 @@ compatibility spelling of its primary identity),
 `QBinomialReciprocity.lean` (four theorems),
 `GaussianBinomialPalindromic.lean` (zero definitions, twelve theorems),
 `GaussianBinomialPolynomialStructure.lean` (zero definitions, five theorems),
+`CentralQBinomialReduction.lean` (zero definitions, six theorems),
+`CyclotomicFactorization.lean` (zero definitions, seven theorems),
 `GaussianBinomialAtNegOne.lean` (five theorems),
 `RvachevPochhammerFactorization.lean` (one definition, nine theorems), and
-`QPochhammerEntire.lean` (five legacy compatibility wrappers), and
-`GeometricPochhammerNormalConvergence.lean` (zero definitions, three theorems).
+`QPochhammerEntire.lean` (zero definitions; four legacy compatibility
+wrappers plus one analytic-order compatibility theorem),
+`GeometricPochhammerNormalConvergence.lean` (zero definitions, three
+theorems), `QPochhammerLogDerivative.lean` (zero definitions, ten theorems),
+`QPochhammerOrderDerivative.lean` (zero definitions, three theorems), and
+`JacobiCubic.lean` (zero definitions, two theorems).
 The direct structure theorems in `GaussianBinomialPalindromic` are
 `gaussianBinomial_natDegree`, `gaussianBinomial_monic`,
 `coeff_gaussianBinomial_zero`, `reflect_gaussianBinomial`, and
 `coeff_gaussianBinomial_reflect`. The same generic commutative-semiring API
 exports the top coefficient, degree bound, boundary evaluations, and the
 division-free mean identity
-`two_mul_derivative_gaussianBinomial_eval_one`. The inverse-source proposition
+`two_mul_derivative_gaussianBinomial_eval_one`. The `cor:positivity` and
+`thm:qbinom-structure` rows are Exact. The inverse-source proposition
 `prop:gq-positive-palindromic` remains partial because its assertion that the
 coefficient of `q` is one is not formalized.
 The five `GaussianBinomialAtNegOne` theorems are
@@ -1114,3 +1121,13 @@ status changes make the q-exponential eigenfunction and Jackson
 integration-by-parts subclaims Exact; q-exponential factorization, the Jackson
 fundamental theorem, and theta quasi-periodicity remain Partial at the
 unformalized clauses stated in their rows.
+
+The subsequent tail adds `QPochhammerLogDerivative.lean` (ten theorems),
+`QPochhammerOrderDerivative.lean` (three theorems), `JacobiCubic.lean` (two
+theorems), `CentralQBinomialReduction.lean` (six theorems), and
+`CyclotomicFactorization.lean` (seven theorems). The last two modules make the
+central-reduction and cyclotomic-Pochhammer rows Exact: the central identity is
+division-free over every commutative ring with a field/nonzero-denominator
+quotient wrapper, while the factorial cyclotomic factorization holds over every
+commutative ring and the Gaussian factorization over every integral domain,
+with the exponent bounded in `{0,1}` by the proved divisibility inequalities.

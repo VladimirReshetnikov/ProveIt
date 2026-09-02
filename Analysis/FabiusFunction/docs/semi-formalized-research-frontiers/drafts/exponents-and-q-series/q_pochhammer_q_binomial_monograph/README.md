@@ -97,7 +97,8 @@ useful because it preserves the migrated experiment and research-figure
 boundary.
 
 The retained `q_pochhammer_q_binomial_monograph.pdf` is a 348-page A4
-build of the current master source (14,158 lines, 661,835 bytes,
+historical build of the immediately preceding master source (14,158 lines,
+661,835 bytes,
 SHA-256 `79ee5e60a6c7e42a91c58dcd9bcae56173cc6b4aa3e54739a461943f705f3904`).
 The PDF is 3,002,729 bytes with SHA-256
 `8bf14b52d8a0fc0abc4d54cca503fd47a2df37cf76ee1bb4e442bea1fd2a4aa7`.
@@ -110,8 +111,8 @@ fonts. The files under `assets/experiments/**/figures/` remain research
 figures, not publication manuscripts.
 
 The current master TeX is a source-only successor to that checkpoint. Its
-14,310-line, 670,626-byte source has SHA-256
-`526cd2e3b406105d84aa5ae8dd66bea8adc9cd6101a04741b03f76ff6333973a`.
+14,316-line, 671,038-byte source has SHA-256
+`a57d84c46deb5a191acad9824abc5945470bc43c6b1f7f0a20c7ee11aa6609da`.
 It includes exhaustive crosswalks for `QPochhammerEntire` (zero definitions
 and five legacy compatibility theorems), `QPochhammerInfinite` (one definition
 and twenty-nine theorems), `QPochhammerDissection` (zero definitions and two
@@ -125,7 +126,14 @@ definitions and three theorems). The newer inventory also includes
 definition and four theorems), `BasicHypergeometricSeries` (two definitions
 and five theorems), `HeineTransformation` (two definitions and five theorems),
 and `QGaussSummation` (two theorems), as well as expanded Euler, Jacobi, and
-Rogers--Szegő material.
+Rogers--Szegő material. The latest inventory adds
+`GaussianBinomialPalindromic` (twelve theorems), `QExponential` (three
+definitions and eight theorems), `JacksonIntegral` (one definition and seven
+theorems), `ThetaQuasiPeriodicity` (one definition and six theorems),
+`QPochhammerLogDerivative` (ten theorems),
+`QPochhammerOrderDerivative` (three theorems), and `JacobiCubic` (two
+theorems). The current tail adds `CentralQBinomialReduction` (six theorems)
+and `CyclotomicFactorization` (seven theorems).
 The two newest generic theorems are
 `deriv_qPochhammerInfIn_ne_zero_of_mul_pow_eq_one`, which gives a nonzero
 derivative at every raw factor zero `a*q^j = 1` including `q = 0`, and
@@ -144,17 +152,30 @@ The twelve-theorem `GaussianBinomialPalindromic` API and five-theorem
 `GaussianBinomialPolynomialStructure` API give exact degree,
 monicity, constant and top coefficients, reflection, coefficient
 palindromicity, and the division-free mean identity over generic commutative
-semirings; it promotes `thm:qbinom-structure` to Exact.  The independent inverse-source
+semirings; `cor:positivity` and `thm:qbinom-structure` are Exact. The independent inverse-source
 proposition `prop:gq-positive-palindromic` remains Partial because its
 coefficient-of-`q`-equals-one clause has no Lean counterpart. The compound
 outer spectral-product theorem remains Partial even though the three-theorem
 outer-product leaf proves local-uniform (normal) convergence for every complex
-strict contraction, including `q = 0`; its named centered/MGF packaging and
-exterior reciprocal, pole-divisor, and zero--pole clauses remain outside Lean.
+strict contraction, including `q = 0`, together with the nome-`1/4` Rvachev
+and bounded-Fabius Fourier specializations. Its named centered/MGF packaging,
+exterior reciprocal formula, pole divisor, and zero--pole exchange remain
+outside Lean.
+The new status changes record the exact q-exponential eigenfunction and
+Jackson integration-by-parts subclaims, and Partial formalizations of the
+q-exponential factorization, Jackson fundamental theorem, and theta
+quasi-periodicity; the remaining clauses named in their rows stay explicit.
+The incoming tail further makes the full elementary Gaussian-polynomial
+structure and Jacobi's cubic identity Exact, while adding Partial order
+derivative and Gaussian-moment rows; the Lambert logarithm row remains
+Partial with both displayed derivative formulas now formalized.
+The central-reduction row is now Exact through a division-free commutative-ring
+identity and its field quotient wrapper; the cyclotomic-factorization row is
+Exact over every commutative ring for the factorial form and every integral
+domain for the Gaussian form, with the exponent bounds stated explicitly.
 
 The retained PDF and its named checkpoint source were synchronized by that
-build.  The current source now postdates the checkpoint, and the root package
-checksum ledger (`SHA256SUMS`) records the actual hashes of both.  No PDF was
-built for this source-only formalization crosswalk update; the 348-page PDF
-remains a historical, source-pinned artifact until the next synchronized
-three-pass build.
+build. The current source now postdates the checkpoint, and the root package
+checksum ledger (`SHA256SUMS`) records the actual hashes of both. No PDF was
+generated locally while resolving this merge; the 348-page PDF remains a
+historical, source-pinned artifact until the next synchronized guarded build.

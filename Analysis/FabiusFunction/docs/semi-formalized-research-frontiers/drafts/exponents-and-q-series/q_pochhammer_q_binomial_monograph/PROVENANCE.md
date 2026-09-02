@@ -44,9 +44,9 @@ and was built in three serial passes from the 14,158-line, 661,835-byte source
 with SHA-256
 `79ee5e60a6c7e42a91c58dcd9bcae56173cc6b4aa3e54739a461943f705f3904`.
 
-The live source now postdates that receipt. Its 14,294-line, 669,417-byte TeX
+The live source now postdates that receipt. Its 14,316-line, 671,038-byte TeX
 source has SHA-256
-`697238ad7c03ba7611f03524de3445e152da2ea3bff18cca3cbb07986fb09ab2`.
+`a57d84c46deb5a191acad9824abc5945470bc43c6b1f7f0a20c7ee11aa6609da`.
 It incorporates exhaustive crosswalks for `QPochhammerEntire` (zero
 definitions and five theorems), `QPochhammerInfinite` (one definition and
 twenty-nine theorems), `QPochhammerDissection` (zero definitions and two
@@ -58,20 +58,39 @@ theorems), `QPochhammerInfiniteBounds` (five theorems),
 `QPochhammerComplexOrder` (one definition and four theorems),
 `BasicHypergeometricSeries` (two definitions and five theorems),
 `HeineTransformation` (two definitions and five theorems), and
-`QGaussSummation` (two theorems). The `QPochhammerEntire.lean` leaf proves the fixed-nome
+`QGaussSummation` (two theorems). The next tranche adds
+`GaussianBinomialPalindromic` (twelve theorems), `QExponential` (three
+definitions and eight theorems), `JacksonIntegral` (one definition and seven
+theorems), `ThetaQuasiPeriodicity` (one definition and six theorems),
+`QPochhammerLogDerivative` (ten theorems),
+`QPochhammerOrderDerivative` (three theorems), and `JacobiCubic` (two
+theorems). The current tail adds `CentralQBinomialReduction` (six theorems)
+and `CyclotomicFactorization` (seven theorems). The
+`QPochhammerEntire.lean` leaf proves the fixed-nome
 single-symbol locally uniform product and differentiability, the
 division-free factor-zero criterion including `q = 0`, the reciprocal-power
 zero lattice for nonzero nome, and simple analytic order at every zero. The
-three-theorem outer-product leaf proves local-uniform normal convergence for
-every complex strict contraction, including `q = 0`, while the compound
-`thm:qF-spectral` row remains Partial at its named centered/MGF and exterior
-reciprocal clauses. The forward status inventory is 71 exact / 84 partial / 119 none / 8 interface;
-the original 191-result pre-Fabius core is 36 / 29 / 123 / 3 and the
+generic `QPochhammerInfinite.lean` surface now owns actual derivative
+nonvanishing from every raw factor equation, including `q = 0`, and analytic
+order exactly one at every zero; `QPochhammerEntire.lean` preserves the legacy
+complex-wrapper naming surface. Only `thm:poch-entire` is promoted by those
+single-symbol results. The newer three-theorem leaf proves
+the additional outer product's local-uniform (normal) convergence for every
+complex strict contraction, including `q = 0`, and gives the dyadic Rvachev
+product and bounded-Fabius Fourier specializations. The compound
+`thm:qF-spectral` row remains Partial because its named centered/MGF packaging
+and exterior reciprocal, pole-divisor, and zero--pole clauses are absent. The
+forward status inventory is 73 exact / 84 partial / 117 none / 8
+interface; the 191-result pre-Fabius core remains 36 / 29 / 123 / 3, and the
 q-integer/Gaussian chapter is 8 / 1 / 0 / 0. The five-publication concordance
 has 65 Lean-proved, 413 human-proved frontier, 60 not-applicable, and 9
-conjecture rows.
-No PDF was generated locally for this source-only merge update, so the
-retained 348-page artifact is historical and must not be treated as rendering
+conjecture rows. The `cor:positivity` and `thm:qbinom-structure` rows are
+Exact, with both Gaussian structure APIs supporting the latter, while
+`prop:gq-positive-palindromic` remains
+Partial because its coefficient-of-`q`-equals-one clause has no Lean
+counterpart. The central-reduction and cyclotomic-factorization rows are
+Exact. No PDF was generated locally while resolving this merge, so the
+supplied 348-page artifact is historical and must not be treated as rendering
 the current source.
 
 The former q-Pochhammer/q-binomial monograph arrived in commit
