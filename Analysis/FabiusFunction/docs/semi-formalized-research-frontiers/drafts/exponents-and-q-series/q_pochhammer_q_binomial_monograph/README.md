@@ -90,18 +90,16 @@ validation state. Deleted checksum manifests must not be recreated. Historical
 SHA-256 values recorded directly in this README and in `PROVENANCE.md` remain
 provenance receipts for the named artifacts.
 
-The retained `q_pochhammer_q_binomial_monograph.pdf` is a historical 354-page
-A4 build of its recorded source checkpoint (14,381 lines, 675,239 bytes,
-SHA-256 `240bff72fb47562e9a8fd87085b5a3a96d738189714518db17988f7c4ac15d31`).
-The PDF is 3,030,302 bytes with SHA-256
-`1050a9a3b0b7a8df8e7de0870946ae64940d7d7839a2f20427be0ebe14b0ba8c`.
+The retained `q_pochhammer_q_binomial_monograph.pdf` is a 358-page A4
+build of the current master source (14,577 lines, 686,989 bytes,
+SHA-256 `2ecd957cad53d4d9af9ac77bbef17ea845b1bfe13ad3d29bf3a63b0bd88bbcf4`).
+The PDF is 3,047,395 bytes with SHA-256
+`101fcb08d488b7d6bfca5cd8bf83112e740477f8bf85cfa8b981da54ee311e8c`.
 It was built by exactly three serial
-`pdflatex -interaction=nonstopmode -halt-on-error` passes, which produced 343,
-354, and 354 pages, with `makeindex` run on the `.idx` file after each pass.
-The final log scan found three overfull boxes, all in the single paragraph of
-the `QPochhammerEntire` crosswalk, whose long declaration names lack break
-points. All pages are A4. `pdffonts` reports 42 font rows, all embedded and
-subsetted, including five Libertinus rows, with no Type-3
+`pdflatex -interaction=nonstopmode -halt-on-error` passes, which produced 358,
+358, and 358 pages, with `makeindex` run on the `.idx` file after each pass.
+The final log scan found three overfull boxes, all in the single paragraph of the `QPochhammerEntire` crosswalk, whose long declaration names lack break points. All pages are A4. `pdffonts` reports 42 font rows, all
+embedded and subsetted, including 5 Libertinus rows, with no Type-3
 fonts. The files under `assets/experiments/**/figures/` remain research
 figures, not publication manuscripts.
 
@@ -217,6 +215,6 @@ reciprocal-product expansions, the complex upper-parameter series, and the
 generalized q-binomial theorem. The remaining complex-Gaussian property and
 classical-limit rows stay unformalized.
 
-No PDF was generated locally while resolving this merge. The retained
-354-page artifact remains the validated historical checkpoint described
-above. No deleted checksum manifest was recreated.
+Source and PDF were synchronized by this build. PDFs are rebuilt in batches,
+at most about once per hour, so source-only commits may precede the next
+synchronization; the figures above always describe the retained PDF.
