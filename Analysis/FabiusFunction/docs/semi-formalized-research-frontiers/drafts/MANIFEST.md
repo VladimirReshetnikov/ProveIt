@@ -52,9 +52,11 @@ current report is 2,992 lines (SHA-256
 `EffectiveMonotoneInverse.lean` now proves the certified fixed-depth
 tolerant-bisection realizer and restricted sequential inversion, while
 `FabiusInverseComputable.lean` proves the totalized inverse is an
-`IsComputableRealFunction`. The retained 42-page PDF remains historical; the
-exact ceiling modulus, gap-to-modulus abstract strengthening, and input-bit
-asymptotics remain outside Lean.
+`IsComputableRealFunction`. `EffectiveGapInverse.lean` additionally derives a
+computable reciprocal inverse modulus and effective continuity from computable
+positive rational forward gaps. The retained 42-page PDF remains historical;
+exact endpoint-mass ceiling minimality and input-bit asymptotics remain outside
+Lean.
 
 The two canonical syntheses have source/artifact receipts. The current
 q-series source has 14,449 lines, 679,492 bytes, and SHA-256
@@ -351,9 +353,11 @@ Rvachev--Appell specialization.
 Eight inverse-computability rows are now exact as well: the main combined
 theorem, the three tolerant-comparison certificates, fixed-depth bisection,
 restricted sequential inversion, computable clamping, and the totalized
-sequential corollary. The broader abstract inversion row remains human-proved
-because the generic Lean theorem accepts a computable inverse modulus rather
-than deriving it from the manuscript's positive gap sequence.
+sequential corollary. `FabiusFunction.EffectiveGapInverse` closes the abstract
+inversion row by deriving the reciprocal modulus from computable positive
+rational forward gaps and proving subset sequential computability plus
+effective uniform continuity; its companion theorem packages the clamped total
+inverse.
 `ASSET_DISPOSITION.csv` accounts for 88 source-group files; the deduplicated
 asset tree is present, and its exhaustive live `assets/SHA256SUMS` ledger
 verifies every retained payload. The retained 134-page, 2,027,726-byte A4 PDF

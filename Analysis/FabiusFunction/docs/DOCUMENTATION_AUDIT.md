@@ -135,10 +135,11 @@ account for one module and six declarations: the zero-definition/three-theorem
 in `PrimePowerBinomialValuation.lean`.  The q-polish adds two theorems to
 `QPochhammerInfinite.lean`, the two-module effective-inverse tranche
 contributes nine declarations, the first six q-calculus modules contribute
-36 declarations, and the four newest leaves contribute 38 declarations.
-Those leaves are `GaussianBinomialPalindromic.lean` 0+12,
+36 declarations, and four later leaves originally contributed 38 declarations
+and now expose 40 after the two Gaussian additions.
+Those leaves are `GaussianBinomialPalindromic.lean` 0+14,
 `JacksonIntegral.lean` 1+7, `QExponential.lean` 3+8, and
-`ThetaQuasiPeriodicity.lean` 1+6: five definitions and thirty-three theorems.
+`ThetaQuasiPeriodicity.lean` 1+6: five definitions and thirty-five theorems.
 Four still newer q-series leaves contribute twenty theorems and no definitions:
 `GaussianBinomialPolynomialStructure.lean` 0+5, `JacobiCubic.lean` 0+2,
 `QPochhammerLogDerivative.lean` 0+10, and
@@ -384,10 +385,11 @@ q-Gauss identities, a ratio-defined complex-order q-Pochhammer API, general
 basic-hypergeometric terms and summability, and the division-free recursive
 q-multinomial interface.  The displayed contraction, nonvanishing, and
 denominator hypotheses remain part of these APIs.
-The final four-module increment is exhaustively counted as
-`GaussianBinomialPalindromic.lean` 0+12, `JacksonIntegral.lean` 1+7,
+The four-module increment is now exhaustively counted as
+`GaussianBinomialPalindromic.lean` 0+14, `JacksonIntegral.lean` 1+7,
 `QExponential.lean` 3+8, and `ThetaQuasiPeriodicity.lean` 1+6.  It adds the
-degree, monicity, coefficient-reversal, and division-free mean theory of the
+degree, monicity, coefficient-reversal, division-free mean theory, and total
+linear-coefficient classifier of the
 Gaussian polynomial; q-exponentials and their q-derivative laws; Jackson's
 fundamental theorem and integration by parts; and the bilateral theta product,
 quasi-periodicity, and zero criterion.  Their analytic declarations keep the
@@ -412,6 +414,82 @@ factorizations of `(X;X)_n` and `[n,k]_X`.  The quotient theorem retains both
 nonzero-denominator hypotheses, and the Gaussian cyclotomic factorization
 retains its integral-domain assumption.
 
+The source-only q-algebra increment adds `CentralQBinomialReduction.lean`
+0+6: `finiteQPochhammerIn_mul_neg`, `finiteQPochhammerIn_two_mul`,
+`finiteQPochhammerIn_map_ringHom`, `central_gaussianBinomial_sq_mul_int`,
+`central_gaussianBinomial_sq_mul`, and `central_gaussianBinomial_sq_div`;
+and `CyclotomicFactorization.lean` 0+7: `div_add_div_le_div`,
+`div_le_div_add_div_add_one`, `mem_range_and_mem_divisors_iff`,
+`finiteQPochhammerIn_X_eq_prod_cyclotomic`,
+`finiteQPochhammerIn_X_eq_gaussianBinomial_mul`,
+`prod_cyclotomic_pow_div_extend`, and
+`gaussianBinomial_X_eq_prod_cyclotomic`.  The first module gives the
+division-free central squared-base reduction over commutative rings and a
+field quotient under two nonvanishing hypotheses.  The second gives the
+finite-product cyclotomic factorization over commutative rings and the final
+Gaussian factorization over an integral domain.
+
+The latest finite-q tranche is exhaustive.  `PrimitiveRootBlock.lean` is
+0+3: `Fabius.gaussianBinomial_isPrimitiveRoot_eq_zero`,
+`Fabius.neg_one_pow_mul_pow_choose_two`, and
+`Fabius.finiteQPochhammerIn_isPrimitiveRoot`.  In a commutative integral
+domain, a primitive `d`-th root `ζ` kills `[d,k]_ζ` for `0 < k < d`; for
+`0 < d`, the top phase is `(-1)^d * ζ^(choose d 2) = -1` and the complete
+block is `(y;ζ)_d = 1-y^d`.
+
+`QLucas.lean` is 0+8: `Fabius.two_mul_choose_two`,
+`Fabius.add_mul_add_sub_one`, `Fabius.choose_two_add`,
+`Fabius.coeff_finiteQPochhammerIn_neg_X`,
+`Fabius.finiteQPochhammerIn_neg_X_block`, `Fabius.coeff_block_pow_mul`,
+`Fabius.pow_choose_two_add_mul_eq`, and
+`Fabius.gaussianBinomial_q_lucas`.  The first three are natural-number
+quadratic identities.  The coefficient, block, and phase lemmas prove
+`[a*d+b,r*d+s]_ζ = choose(a,r) * [b,s]_ζ` when `0 < d`, `ζ` is a primitive
+`d`-th root in a commutative integral domain, and `b,s < d`.
+
+`CyclotomicDivisibility.lean` is 0+3:
+`Fabius.cyclotomic_exponent_eq_one_iff`,
+`Fabius.cyclotomic_dvd_gaussianBinomial_iff`, and
+`Fabius.gaussianBinomial_mul_isPrimitiveRoot`.  For `k ≤ n` and `0 < d`, the
+Gaussian cyclotomic exponent equals one exactly when `n % d < k % d`; over
+`ℚ[X]` that is exactly the criterion for `Φ_d` to divide `[n,k]_X`.  In a
+commutative integral domain, a primitive `n`-th root with `0 < n` gives
+`[a*n,b*n]_ζ = choose(a,b)`.
+
+`QCatalan.lean` is 1+11.  Its definition is `Fabius.qCatalan`; its theorems
+are `Fabius.map_qInt`, `Fabius.qInt_X_monic`, `Fabius.qInt_X_natDegree`,
+`Fabius.X_sub_one_mul_qInt`, `Fabius.qInt_X_eq_prod_cyclotomic`,
+`Fabius.qInt_X_dvd_gaussianBinomial_rat`,
+`Fabius.qInt_X_dvd_gaussianBinomial_int`,
+`Fabius.qInt_X_mul_qCatalan`, `Fabius.qCatalan_natDegree`,
+`Fabius.qCatalan_eval_one_mul`, and `Fabius.qCatalan_eval_one`.  Semiring
+naturality and the commutative-ring q-integer identities yield
+`[n+1]_X ∣ [2*n,n]_X` over `ℚ[X]` and `ℤ[X]`; the integral quotient has degree
+`n*(n-1)`, satisfies `(n+1) C_n(1) = choose(2*n,n)`, and evaluates to the
+ordinary Catalan number.
+
+`NewtonInterpolation.lean` is 2+13.  Its definitions are
+`Fabius.newtonCoeff` and `Fabius.nodeNewtonPoly`; its theorems are
+`Fabius.newtonCoeff_eq`, `Fabius.newtonCoeff_zero`,
+`Fabius.newtonCoeff_mul_prod`, `Fabius.nodeNewtonPoly_succ`,
+`Fabius.eval_nodeNewtonPoly`, `Fabius.degree_nodeNewtonPoly_lt`,
+`Fabius.nodeNewtonPoly_eq_interpolate`,
+`Fabius.eq_nodeNewtonPoly_of_eval_eq`,
+`Fabius.coeff_nodeNewtonPoly_self`, `Fabius.newtonCoeff_eq_sum`,
+`Fabius.nodal_range_pow`, `Fabius.prod_erase_pow_sub_pow`, and
+`Fabius.newtonCoeff_pow_eq_sum`.  Over a field these give triangular Newton
+reconstruction, finite-node interpolation and uniqueness, divided differences,
+and the geometric-power-node specialization, retaining each finite-node
+injectivity, nonzero-product, `q ≠ 0`, and index hypothesis.
+
+`QBetaIntegral.lean` is 1+8.  Its definition is `Fabius.qBeta`; its theorems
+are `Fabius.qNumber_pos`, `Fabius.qBeta_term_eq`, `Fabius.qBeta_eq_prod`,
+`Fabius.qBeta_eq_qGamma`, `Fabius.qBeta_comm`, `Fabius.qBeta_pos`,
+`Fabius.qBeta_add_one_left`, and `Fabius.qBeta_add_one_right`.  Under
+`0 < q < 1` and the displayed positive real arguments, they evaluate the
+Jackson q-beta integral as an infinite-product and q-Gamma quotient and prove
+symmetry, positivity, and both recurrences.
+
 `EffectiveMonotoneInverse.lean` has exactly two public definitions,
 `Fabius.SequentiallyComputableOn` and `Fabius.unitClamp`, and exactly six
 public theorems: `Fabius.unitClamp_sequentiallyComputable`,
@@ -424,10 +502,30 @@ comparisons update the bracket, while the third, inconclusive branch certifies
 the current midpoint.  Doubling an accepted numerator through remaining
 depths and using the final left endpoint in the no-hit case yield a uniform
 dyadic name at denominator `2^p` with error at most `2^-p`.  The abstract Lean
-theorem assumes a computable positive reciprocal inverse modulus.  It does not
-formalize the canonical report's stronger gap-to-modulus theorem, which starts
-from a computable positive gap sequence and also derives effective uniform
+theorem consumes a computable positive reciprocal inverse modulus.  The
+adjacent `EffectiveGapInverse.lean` module constructs one from computable
+positive rational dyadic-gap lower bounds and also derives effective uniform
 continuity.
+
+`EffectiveGapInverse.lean` has exactly eight public declarations:
+`Fabius.EffectivelyUniformContinuousOn`, the structure
+`Fabius.ComputablePositiveRationalSequence`,
+`Fabius.ComputablePositiveRationalSequence.value`,
+`Fabius.ComputablePositiveRationalSequence.reciprocalDenominator`,
+`Fabius.ComputablePositiveRationalSequence.reciprocalDenominator_spec`,
+`Fabius.inverseModulus_of_positiveRationalGap`,
+`Fabius.effectiveInversionOn_Icc_of_computablePositiveRationalGap`, and
+`Fabius.clampedEffectiveInversion_of_computablePositiveRationalGap`.  The
+structure packages computable positive natural numerators and denominators.
+Its reciprocal denominator is `denominator p / numerator p + 1`, whose
+reciprocal lies strictly below the represented rational value.  For a strict
+increasing inverse pair on `[0,1]`, the hypothesis is the uniform dyadic-gap
+lower bound `α.value p ≤ f (x + 2^-p) - f x` for every
+`x ∈ [0,1-2^-p]`.  With a computable dyadic oracle for `f` and interval maps
+for both functions, the module proves sequential computability and effective
+uniform continuity of `g` on `[0,1]`.  Its total computable-real-function
+conclusion is exactly `fun x => g (unitClamp x)`: it agrees with `g` on the
+unit interval but asserts nothing about the unclamped values of `g` outside it.
 
 `FabiusInverseComputable.lean` has zero public definitions and exactly one
 public theorem, `Fabius.fabiusInv_isComputableRealFunction`.  It instantiates
@@ -517,20 +615,35 @@ inventory.  `GaussianBinomialAtNegOneDerivative.lean` is 0+4, and
 `GaussianBinomialContinuity.lean` is 0+3:
 `continuous_gaussianBinomial`, `tendsto_gaussianBinomial_nhds_one`, and
 `gaussianBinomial_eq_finiteQPochhammerIn_div`.
-`GaussianBinomialPalindromic.lean` is 0+12:
+`GaussianBinomialPalindromic.lean` is 0+14:
 `reflect_add_of_natDegree_le`, `reflect_one'`,
 `gaussianBinomial_natDegree_le`, `gaussianBinomial_zero_left`,
 `gaussianBinomial_diag'`, `reflect_gaussianBinomial`,
 `coeff_gaussianBinomial_reflect`, `coeff_gaussianBinomial_zero`,
 `coeff_gaussianBinomial_top`, `gaussianBinomial_natDegree`,
-`gaussianBinomial_monic`, and
-`two_mul_derivative_gaussianBinomial_eval_one`.
+`gaussianBinomial_monic`, `two_mul_derivative_gaussianBinomial_eval_one`,
+`coeff_gaussianBinomial_one_of_pos_of_lt`, and
+`coeff_gaussianBinomial_one`.
 `GaussianBinomialPolynomialStructure.lean` is 0+5:
 `natDegree_gaussianBinomial_universal`,
 `gaussianBinomial_universal_monic`,
 `coeff_zero_gaussianBinomial_universal`,
 `gaussianBinomial_universal_reflect`, and
-`coeff_gaussianBinomial_universal_symm`.  The
+`coeff_gaussianBinomial_universal_symm`.
+`CentralQBinomialReduction.lean` is 0+6: `finiteQPochhammerIn_mul_neg`,
+`finiteQPochhammerIn_two_mul`, `finiteQPochhammerIn_map_ringHom`,
+`central_gaussianBinomial_sq_mul_int`, `central_gaussianBinomial_sq_mul`,
+and `central_gaussianBinomial_sq_div`.  `CyclotomicFactorization.lean` is
+0+7: `div_add_div_le_div`, `div_le_div_add_div_add_one`,
+`mem_range_and_mem_divisors_iff`, `finiteQPochhammerIn_X_eq_prod_cyclotomic`,
+`finiteQPochhammerIn_X_eq_gaussianBinomial_mul`,
+`prod_cyclotomic_pow_div_extend`, and
+`gaussianBinomial_X_eq_prod_cyclotomic`.  The
+`PrimitiveRootBlock.lean` 0+3, `QLucas.lean` 0+8,
+`CyclotomicDivisibility.lean` 0+3, and `QCatalan.lean` 1+11 surfaces are
+listed exhaustively above.  The
+`NewtonInterpolation.lean` 2+13 and `QBetaIntegral.lean` 1+8 surfaces are
+also listed exhaustively above.  The
 `JacobiTripleProduct.lean` 2-definition/25-theorem tranche contains the finite triple-product
 polynomial and field identities, the bilateral Jacobi `HasSum` forms, and the
 pentagonal and paired-pentagonal `HasSum` corollaries.  The
@@ -588,7 +701,7 @@ The additional declaration in `PolynomialCombExactness.lean` is
 physical-coordinate self-sampling quadrature for every real polynomial whose
 natural degree is at most the dyadic level and every real phase.
 
-The effective-inverse tranche contributes two modules and nine public
+The fixed-depth effective-inverse tranche contributes two modules and nine public
 declarations.  `EffectiveMonotoneInverse.lean` is exactly 2+6: the definitions
 `SequentiallyComputableOn` and `unitClamp`; the clamping theorem
 `unitClamp_sequentiallyComputable`; the three certified tolerant-comparison
@@ -603,7 +716,10 @@ is exactly 0+1: `fabiusInv_isComputableRealFunction` combines that sequential
 realizer with the logarithmic Delta modulus for every bounded Fabius witness.
 Clamping makes the theorem about the total inverse on all real inputs.  These
 results are computability certificates, not an input-bit running-time bound or
-an exact least endpoint-mass denominator.
+an exact least endpoint-mass denominator.  The later
+`EffectiveGapInverse.lean` module contributes the eight declarations listed
+above and supplies the generic rational-gap-to-modulus bridge; its clamped
+extension boundary remains explicit.
 
 The retained comb-interpolation synthesis PDF is a validated 158-page A4
 historical receipt: the current source includes a post-render update to its
