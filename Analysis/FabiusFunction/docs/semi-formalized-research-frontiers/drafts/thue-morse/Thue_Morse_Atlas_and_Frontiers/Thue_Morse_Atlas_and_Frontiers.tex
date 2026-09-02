@@ -6666,8 +6666,29 @@ corresponding base-\(q\) integer and the coefficient is \(\zeta\) raised to
 its digit sum.
 \end{proof}
 
+\emph{Formal versions.}  \Cref{p1:thm:base-q-product} is formal in
+\path{BaseDigitProduct.lean}, and in a form that needs no root of unity at all.  The
+recursion \eqref{p1:eq:base-q-recursion} is
+\lean{Fabius.zeta\_pow\_digits\_sum\_mul\_add}, resting on the digit-sum law
+\(s_q(qn+r)=r+s_q(n)\) for \(r<q\) (\lean{Fabius.digits\_sum\_mul\_add}); the product
+\eqref{p1:eq:base-q-product} is \lean{Fabius.sum\_zeta\_pow\_digits\_sum\_mul\_pow}.  Both
+hold for \emph{every} \(\zeta\) in a commutative semiring: the hypothesis \(\zeta^q=1\) is
+never used, because the identity is a statement about assembling an integer from
+independently chosen digits, not about \(\zeta\).  The formal proof makes this explicit by
+first proving the product for an \emph{arbitrary} digit weight \(w:\NaturalNumbers\to R\),
+\[
+  \sum_{n<q^m}\Bigl(\prod_{j<m}w\bigl(d_j(n)\bigr)\Bigr)z^n
+  =\prod_{j<m}\Bigl(\sum_{r<q}w(r)\,z^{rq^j}\Bigr),
+\]
+where \(d_j(n)=\Floor{n/q^j}\bmod q\) is the \(j\)-th base-\(q\) digit
+(\lean{Fabius.sum\_windowWeight\_mul\_pow}, with \lean{Fabius.digitAt} and
+\lean{Fabius.windowWeight}); the theorem in the text is the case \(w(r)=\zeta^r\), and the
+bridge from the digit window to \(s_q(n)\) is \lean{Fabius.sum\_digitAt\_eq\_digits\_sum}.
+
 Each factor vanishes at \(z=1\), since
-\(1+\zeta+\cdots+\zeta^{q-1}=0\).
+\(1+\zeta+\cdots+\zeta^{q-1}=0\)
+(\lean{Fabius.geom\_sum\_eq\_zero\_of\_pow\_eq\_one} in an integral domain, from
+\(\zeta^q=1\), \(\zeta\ne1\)).
 
 \begin{theorem}[Generalized Prouhet cancellation and sharp moment]
 \label{p1:thm:base-q-Prouhet}
@@ -6699,6 +6720,13 @@ where the finite geometric sum was differentiated.  Multiplying the \(m\)
 linear terms yields
 \(q^{1+2+\cdots+m}/(\zeta-1)^m\); coefficient extraction contributes \(m!\).
 \end{proof}
+
+\emph{Formal status.}  Only the degree-zero case of \eqref{p1:eq:base-q-Prouhet} is
+formal so far: \lean{Fabius.sum\_zeta\_pow\_digits\_sum\_eq\_zero} in
+\path{BaseDigitProduct.lean} gives \(\sum_{n<q^m}\zeta^{s_q(n)}=0\) for \(m\ge1\) under
+the single hypothesis \(\sum_{r<q}\zeta^r=0\), by evaluating the digit product at \(z=1\).
+The cancellation for polynomials of positive degree below \(m\), and the sharp moment
+\eqref{p1:eq:base-q-sharp-moment}, are not yet formalized.
 
 For \(q=2\) and \(\zeta=-1\), the sequence is \(u_n=\eps_n\) and
 \eqref{p1:eq:base-q-sharp-moment} becomes
