@@ -14,6 +14,8 @@ import FabiusFunction.EulerianNumbers
 import FabiusFunction.PartialBellPolynomials
 import FabiusFunction.BellGeneratingFunctions
 import FabiusFunction.BellComposition
+import FabiusFunction.BernoulliStirling
+import FabiusFunction.BellHomogeneity
 import FabiusFunction.SymmetricFunctionTransform
 import FabiusFunction.SymmetricFunctionGenerating
 import FabiusFunction.FiniteQBinomialCore
