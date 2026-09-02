@@ -48,6 +48,8 @@ import FabiusFunction.TypeBEulerian
 import FabiusFunction.SecondOrderEulerian
 import FabiusFunction.ShiftOperatorCharP
 import FabiusFunction.BellUmbra
+import FabiusFunction.StirlingParity
+import FabiusFunction.CatalanGeneratingFunction
 import FabiusFunction.SymmetricFunctionTransform
 import FabiusFunction.SymmetricFunctionGenerating
 import FabiusFunction.FiniteQBinomialCore
