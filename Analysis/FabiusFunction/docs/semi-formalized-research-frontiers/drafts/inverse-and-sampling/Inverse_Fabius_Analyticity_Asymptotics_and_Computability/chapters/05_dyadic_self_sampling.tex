@@ -29,17 +29,17 @@ where
 \]
 The product is entire.  If $m\in\IntegerNumbers\setminus\{0\}$, then
 \begin{equation}
- \OrderOperator_{\xi=m}\PhiCyc=1+\nu_2(m).
+ \OrderOperator_{\xi=m}\PhiCyc=1+\TwoAdicValuation(m).
  \label{is:p3:eq:integer-multiplicity}
 \end{equation}
-Indeed, the factors indexed by $0\le j\le\nu_2(m)$ vanish simply and all later factors are nonzero.
+Indeed, the factors indexed by $0\le j\le\TwoAdicValuation(m)$ vanish simply and all later factors are nonzero.
 
 This foundation is now formal rather than merely inherited from the human
 corpus.  The standalone product is entire by
 \path{Fabius.rvachevFourierProduct_differentiable}; for every nonzero
 integer \(m\), Lean proves
 \[
- \OrderOperator_{\xi=m}\PhiCyc=1+\nu_2(|m|)
+ \OrderOperator_{\xi=m}\PhiCyc=1+\TwoAdicValuation(|m|)
 \]
 as \path{Fabius.analyticOrderAt_rvachevFourierProduct_int}, together with
 all lower derivative vanishings and the exact nonzero leading derivative
@@ -167,7 +167,7 @@ Differentiating \eqref{is:p3:eq:Phi-product},
 The term $\ell=0$ is $\mu_r$.  If $\ell\ne0$, then \eqref{is:p3:eq:integer-multiplicity} gives
 \[
  \OrderOperator_{\xi=2^N\ell}\PhiCyc
- =N+1+\nu_2(\ell)>r,
+ =N+1+\TwoAdicValuation(\ell)>r,
 \]
 so $\PhiCyc^{(r)}(2^N\ell)=0$.  Thus every nonzero alias vanishes, proving the identity for monomials and hence for all polynomials of degree at most $N$.
 \end{proof}
@@ -270,7 +270,7 @@ Apply shifted Poisson summation to $f_z(x)=\EulerE^{zx}u(x)$.  Its Fourier trans
  =\PhiCyc\!\left(\xi+\frac{\iu z}{2\pi}\right).
 \]
 The zero-frequency term is $M(z)$, giving \eqref{is:p3:eq:master-alias}.  Compact support and smoothness imply the local normal convergence needed to differentiate termwise.  At $z=0$, the summand indexed by $\ell\ne0$ has order
-$N+1+\nu_2(\ell)$, so the full sum begins at order $N+1$.
+$N+1+\TwoAdicValuation(\ell)$, so the full sum begins at order $N+1$.
 \end{proof}
 
 \begin{corollary}[Valuation filtration of polynomial errors]
@@ -290,7 +290,7 @@ Thus the excess degree $r-N$ exposes exactly the first $r-N$ layers of the $2$-a
 
 \begin{proof}
 In the coefficient formula obtained from \eqref{is:p3:eq:master-alias}, an alias $\ell$ can contribute only if
-$N+1+\nu_2(\ell)\le r$.  Write $\ell=2^aq$ with $q$ odd.
+$N+1+\TwoAdicValuation(\ell)\le r$.  Write $\ell=2^aq$ with $q$ odd.
 \end{proof}
 
 \begin{remark}
@@ -303,7 +303,7 @@ The integer zero jets can be organized in a form that makes Bell polynomials app
 
 \begin{proposition}[Exact local factorization]
 \label{is:p3:prop:local-factorization}
-Let $m=2^{d-1}q\ne0$, where $q$ is odd and $d=1+\nu_2(m)$.  Then, for $w$ near $0$,
+Let $m=2^{d-1}q\ne0$, where $q$ is odd and $d=1+\TwoAdicValuation(m)$.  Then, for $w$ near $0$,
 \begin{equation}
  \boxed{\displaystyle
  \PhiCyc(m+w)
@@ -352,7 +352,7 @@ germ form is
 The cofactor is analytic and nonzero at the local origin, so Lean proves the exact order, every
 lower-jet vanishing, and the leading identity
 \eqref{is:p3:eq:first-zero-jet}.  More generally, if that cofactor is denoted by
-\(U_m\) and \(d=1+\nu_2(|m|)\), Lean proves every higher jet as
+\(U_m\) and \(d=1+\TwoAdicValuation(|m|)\), Lean proves every higher jet as
 \[
  \PhiCyc^{(d+r)}(m)=\binom{d+r}{d}d!\,U_m^{(r)}(0)
  \qquad(r\in\NaturalNumbers)
@@ -488,12 +488,12 @@ Hence the first quadrature defect is a Thue--Morse-signed half-integer spectral 
 \begin{proof}
 On the positive real axis, $\PhiCyc$ changes sign whenever an integer zero has odd multiplicity.  At the point $(2j+1)/2=j+1/2$, the total number of zero crossings, counted with multiplicity, is
 \[
- \sum_{m=1}^{j}\bigl(1+\nu_2(m)\bigr)
- =j+\nu_2(j!)
+ \sum_{m=1}^{j}\bigl(1+\TwoAdicValuation(m)\bigr)
+ =j+\TwoAdicValuation(j!)
  =2j-\BinaryDigitSum(j),
 \]
 where the last equality is Legendre's formula
-$\nu_2(j!)=j-\BinaryDigitSum(j)$.  Its parity is therefore
+$\TwoAdicValuation(j!)=j-\BinaryDigitSum(j)$.  Its parity is therefore
 $\BinaryDigitSum(j)$.  Since $\PhiCyc(1/2)>0$, the claimed sign follows.
 \end{proof}
 

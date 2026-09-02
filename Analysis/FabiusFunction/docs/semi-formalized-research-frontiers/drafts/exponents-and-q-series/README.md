@@ -106,8 +106,9 @@ Current packages and retained intake records:
   `240bff72e95ddf9609f6c5aba7f5285ef2ce4ec60e0a2e73d9a50138989e58dd`.
   Its A4 boxes, text extraction, embedded/subset Type-1 fonts including
   Libertinus, absence of Type-3 fonts, and targeted visual review passed at
-  that checkpoint. Because the current TeX is newer, no render parity is
-  claimed.
+  that checkpoint. The current TeX adds explicit Bell-multiplicity and
+  MacMahon q-Catalan notation and normalizes the merged status formulas;
+  because it is newer, no current render parity is claimed.
   It carries the five-theorem `QPochhammerEntire.lean`, the generic
   `QPochhammerInfinite.lean` and `QPochhammerDissection.lean` APIs, and the
   subsequent q-series module tranches, plus the three-theorem
@@ -516,8 +517,8 @@ remain research frontiers. These fractional-Volterra API claims were checked at 
 
 Geometric-sinc subgroup member:
 [`Exponents_and_q_Series_Frontiers/`](geometric-sinc-and-exponent-families/Exponents_and_q_Series_Frontiers/)
-(current semantic-union TeX: 16,369 lines and 737,768 bytes, SHA-256
-`4313bddb87a0f248a8bad4bd5e5a7cfbb25da51d1b994abc0c9d4c62525ca78c`;
+(current semantic-union TeX: 16,369 lines and 737,912 bytes, SHA-256
+`a4aecd625f7eb405de866e2b368bbdc648fb0f9e11b423cb936a2f319d195f02`;
 retained PDF: 238 A4 pages and 6,953,898 bytes, SHA-256
 `fa719a8ea68d3c474928b9fae7449f827eb35a5452613f2b660d8e88ba27267e`;
 across seven parts). Exactly three serial passes from the preceding 16,274-line,
@@ -538,7 +539,10 @@ spectral product converges locally uniformly for every complex strict
 contraction, including `q = 0`, with dyadic Rvachev-product and bounded-Fabius
 Fourier specializations. The compound centered/MGF and exterior reciprocal
 formula, pole divisor, and zero--pole exchange remain Partial. Final-source
-rendering and full publication validation remain pending. This is the
+rendering and full publication validation remain pending.  The current TeX
+also replaces all raw dyadic-valuation spellings by the shared
+`\TwoAdicValuation` command; this notation-only successor is not represented
+by the retained PDF. This is the
 2026-08-28 consolidation of the two former drafts (Part I:
 Newton-basis frontiers; Part II: q-binomial Richardson), joined the
 same day by the eighth-wave report as **Part III** — *Finite Dyadic

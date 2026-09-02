@@ -36,9 +36,12 @@ paper results is claimed to have an exact Lean counterpart.
 ## Maintained files
 
 - `Fabius_Rvachev_Shape_Divisibility_Stein_Geometry.tex` is the canonical
-  A4/Libertinus article source.
-- `Fabius_Rvachev_Shape_Divisibility_Stein_Geometry.pdf` is its required
-  same-stem generated artifact.
+  A4/Libertinus article source. The current live file has 2,057 lines and
+  83,124 bytes; its SHA-256 is
+  `975ec7078562d88ba76c870ef1d90363380cbe422507762c305695b61f1c9bec`.
+- `Fabius_Rvachev_Shape_Divisibility_Stein_Geometry.pdf` is the retained
+  same-stem generated artifact from the preceding source checkpoint. It is not
+  a rendering of the current live source; a rebuild is pending.
 - `rvachev_frontier_experiments.py` deterministically writes LF-normalized CSV
   and text output plus four metadata-stable PNG figures.
 - `numerical_output/*.png` are the raster companions embedded by the normalized
@@ -47,8 +50,10 @@ paper results is claimed to have an exact Lean counterpart.
   high-resolution inspection; all fonts are embedded and subset, with no Type 3.
 - `requirements.txt` records minimum top-level dependency versions, not a full
   environment lock.
-- `SHA256SUMS.txt` is the package ledger and must be refreshed only after the
-  normalized three-pass PDF build and final payload freeze.
+- `SHA256SUMS.txt` is the mixed current-source/retained-artifact package ledger.
+  Refresh current source and metadata rows after source-only changes, and
+  refresh the PDF row only after a normalized three-pass rebuild and final
+  artifact freeze.
 
 ## Numerical reproduction
 
@@ -92,12 +97,15 @@ Then verify A4 geometry, embedded/subset Libertinus prose fonts, zero Type-3
 fonts, resolved references, page count, rendered pages, and the refreshed live
 ledger before committing.
 
-The current source was rebuilt from a clean auxiliary state on 2026-08-31 in
-exactly three strict serial passes, producing 32, 34, and 34 pages. The
-2,057-line, 83,064-byte TeX source has SHA-256
+The retained PDF was rebuilt from a clean auxiliary state on 2026-08-31 in
+exactly three strict serial passes, producing 32, 34, and 34 pages. Its frozen
+2,057-line, 83,064-byte TeX input had SHA-256
 `ffb8a392291276e001fe433c936b83bb167275d8991d5f06848389c029648581`;
-the synchronized 790,142-byte PDF has SHA-256
+the resulting 790,142-byte PDF has SHA-256
 `e5c5b8dd1023dc57ae8a64fd5f463f62e079b99e32830a14f4268fea2e4a9478`.
+The current live TeX identified above is 60 bytes newer, so the retained PDF
+and the following build observations are historical checkpoint evidence, not
+current source/render parity.
 All 34 pages are A4 with zero rotation and nonblank extractable text, and the
 title, author, subject, and keyword metadata are complete. All 20 font entries
 are embedded and subset, seven are Libertinus, and none is Type 3. The final
@@ -105,5 +113,6 @@ log has no LaTeX/package warning, overfull box, TeX error, unresolved
 reference/citation, or rerun request; its six underfull notices are benign.
 The title/status page, all four embedded PNG figures on pages 25--26, and the
 final references page were rendered and inspected. Build sidecars were
-removed, and the exhaustive 18-entry live ledger was refreshed only after
-this final payload freeze.
+removed, and the then-current exhaustive 18-entry ledger was refreshed only
+after that artifact freeze. The current ledger now hashes the newer live TeX
+and README alongside the byte-identical retained PDF.

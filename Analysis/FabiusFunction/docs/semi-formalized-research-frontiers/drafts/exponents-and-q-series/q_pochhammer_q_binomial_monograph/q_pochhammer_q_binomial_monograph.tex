@@ -135,6 +135,9 @@
 \newcommand{\LatticePathArea}[1]{\operatorname{area}(#1)}
 \newcommand{\WeightCharacter}[2]{\operatorname{ch}_{#2}\!\left(#1\right)}
 \newcommand{\CyclotomicValuation}[3]{\nu^{\mathrm{cyc}}_{#1,#2}\!\left(#3\right)}
+\newcommand{\BellBlockMultiplicity}[1]{m^{\mathrm{Bell}}_{#1}}
+\newcommand{\MacMahonQCatalanPolynomial}[2]{%
+  C^{\mathrm{Mac}}_{#1}\!\left(#2\right)}
 \newcommand{\SubspaceMobius}[3]{\mu_{\mathcal L(#1)}\!\left(#2,#3\right)}
 \newcommand{\MultiplicativeTheta}[2]{\vartheta_{\mathrm{mult}}\!\left(#1;#2\right)}
 \newcommand{\BilateralTheta}[2]{\Theta_{\mathrm{bil}}\!\left(#1;#2\right)}
@@ -5048,9 +5051,23 @@ The degrees add to $4+6+4+6=20=4(10-4)$, as required by reciprocity.
 \index{Catalan number!$q$-analogue}
 For $n\ge0$ put
 \[
- C_n(q)\DefinitionEquals\frac1{\QInteger{n+1}{q}}\GaussianBinomial{2n}{n}{q}.
+ \MacMahonQCatalanPolynomial{n}{q}
+ \DefinitionEquals
+ \frac{\GaussianBinomial{2n}{n}{q}}{\QInteger{n+1}{q}}.
 \]
-Then $C_n(q)\in\IntegerNumbers[q]$; it has degree $n(n-1)$, and $C_n(1)=\frac1{n+1}\binom{2n}{n}$.
+The displayed quotient initially denotes an element of $\RationalNumbers(q)$;
+the assertion is that it is the unique exact polynomial quotient in
+$\IntegerNumbers[q]$, so values at zeros of $\QInteger{n+1}{q}$ mean values of
+that polynomial continuation, not literal division by zero.  At the boundary
+$n=0$ one has
+$\MacMahonQCatalanPolynomial{0}{q}=1$.  The specialization $q=1$ is polynomial
+evaluation and gives
+\[
+ \MacMahonQCatalanPolynomial{n}{1}
+ =\frac1{n+1}\binom{2n}{n}.
+\]
+For general $n$, the polynomial
+$\MacMahonQCatalanPolynomial{n}{q}\in\IntegerNumbers[q]$ has degree $n(n-1)$.
 \end{corollary}
 
 \begin{proof}
@@ -5064,6 +5081,8 @@ Since $q^{N}-1=\prod_{d\mid N}\Phi_d(q)$ and $\Phi_1(q)=q-1$,
  \QInteger{n+1}{q}=\frac{q^{\,n+1}-1}{q-1}
  =\prod_{\substack{d\mid n+1\\ d>1}}\Phi_d(q).
 \]
+The middle quotient is read literally for $q\ne1$ and by its removable
+polynomial continuation $1+q+\cdots+q^n$ at $q=1$.
 Hence $\CyclotomicValuation{d}{q}{\QInteger{n+1}{q}}=1$ exactly for those $d>1$ dividing $n+1$, and
 $\CyclotomicValuation{d}{q}{\QInteger{n+1}{q}}=0$ for every other $d$, the case $d=1$ included: indeed
 $\QInteger{n+1}{q}$ takes the value $n+1\ne0$ at $q=1$, so $q-1$ does not divide it.
@@ -5083,22 +5102,28 @@ $\CyclotomicValuation{d}{q}{\GaussianBinomial{2n}{n}{q}}=1$.  Combining the two 
  \ge\CyclotomicValuation{d}{q}{\QInteger{n+1}{q}}
  \qquad\text{for every }d\ge1,
 \]
-so $\QInteger{n+1}{q}$ divides $\GaussianBinomial{2n}{n}{q}$ in $\RationalNumbers[q]$ and $C_n\in\RationalNumbers[q]$.
+so $\QInteger{n+1}{q}$ divides $\GaussianBinomial{2n}{n}{q}$ in $\RationalNumbers[q]$ and
+$\MacMahonQCatalanPolynomial{n}{q}\in\RationalNumbers[q]$.
 Moreover $\QInteger{n+1}{q}=1+q+\cdots+q^{n}$ is monic and
 $\GaussianBinomial{2n}{n}{q}\in\IntegerNumbers[q]$ by \Cref{cor:positivity}, so division with remainder
 in $\IntegerNumbers[q]$ produces a quotient in $\IntegerNumbers[q]$; by uniqueness of the quotient in
-$\RationalNumbers[q]$ that quotient is $C_n$, whence $C_n\in\IntegerNumbers[q]$.
+$\RationalNumbers[q]$ that quotient is
+$\MacMahonQCatalanPolynomial{n}{q}$, whence
+$\MacMahonQCatalanPolynomial{n}{q}\in\IntegerNumbers[q]$.
 
 Finally, $\deg\GaussianBinomial{2n}{n}{q}=n\cdot n=n^2$ by
 \Cref{thm:qbinom-structure}(iii) and $\deg\QInteger{n+1}{q}=n$, so
-$\deg C_n=n^2-n$.  Evaluating the polynomial identity
-$\QInteger{n+1}{q}\,C_n(q)=\GaussianBinomial{2n}{n}{q}$ at $q=1$ and using
-\Cref{cor:qbinom-classical} gives $(n+1)C_n(1)=\binom{2n}{n}$.
+$\deg_q\MacMahonQCatalanPolynomial{n}{q}=n^2-n$.  Evaluating the polynomial identity
+$\QInteger{n+1}{q}\,\MacMahonQCatalanPolynomial{n}{q}
+=\GaussianBinomial{2n}{n}{q}$ at $q=1$ and using
+\Cref{cor:qbinom-classical} gives
+$(n+1)\MacMahonQCatalanPolynomial{n}{1}=\binom{2n}{n}$.
 \end{proof}
 
 \begin{remark}\label{rem:q-catalan-positivity}
 The argument above establishes integrality and says nothing about signs.  The
-coefficients of $C_n(q)$ are in fact nonnegative --- $C_n$ enumerates the
+coefficients of $\MacMahonQCatalanPolynomial{n}{q}$ are in fact nonnegative ---
+$\MacMahonQCatalanPolynomial{n}{q}$ enumerates the
 Dyck paths of semilength $n$ by a suitable major-index statistic, for which
 see \cite{Stanley1999} --- but that is a combinatorial theorem and not a
 consequence of cyclotomic divisibility.  Compare \Cref{cor:path-area}, where
@@ -8443,11 +8468,15 @@ cumulants \eqref{eq:halfbase-cumulants}.  Then for every $n\ge0$
  F\bigl(2^{-n}\bigr)
  =\frac{2^{-\binom n2}}{n!}\,\mathcal B_n(\kappa_1,\ldots,\kappa_n)
  =2^{-\binom n2}
- \sum_{\substack{\nu_1,\ldots,\nu_n\ge0\\ \nu_1+2\nu_2+\cdots+n\nu_n=n}}
- \prod_{r=1}^{n}\frac1{\nu_r!}\left(\frac{\kappa_r}{r!}\right)^{\nu_r}.
+ \sum_{\substack{
+   (\BellBlockMultiplicity{r})_{1\le r\le n}\in\NaturalNumbers^n\\
+   \sum_{r=1}^{n}r\,\BellBlockMultiplicity{r}=n}}
+ \prod_{r=1}^{n}\frac1{\BellBlockMultiplicity{r}!}
+ \left(\frac{\kappa_r}{r!}\right)^{\BellBlockMultiplicity{r}}.
 \end{equation}
 Only $\kappa_1$ and the even $\kappa_r$ contribute, and every value $F(2^{-n})$ is
-rational.
+rational.  For $n=0$, the indexing set consists of the unique empty vector in
+$\NaturalNumbers^0$; its weighted sum is $0$, and the associated empty product is $1$.
 \end{corollary}
 
 \begin{proof}
@@ -13572,7 +13601,9 @@ not formalized}\\[2pt]
 \texttt{qBeta\_\allowbreak{}comm},
 \texttt{qBeta\_\allowbreak{}pos}\newline
 {\footnotesize\texttt{QBetaIntegral}; $B_q(x,y)$ as the Jackson integral
-$\int_0^1 t^{x-1}(qt;q)_\infty/(q^yt;q)_\infty\,d_qt$ over $\RealNumbers$ for
+$\displaystyle\int_0^1 t^{x-1}
+ \frac{\QPochhammer{qt}{q}{\infty}}{\QPochhammer{q^y t}{q}{\infty}}
+ \,\JacksonDifferential{q}{t}$ over $\RealNumbers$ for
 $0<q<1$ and $x,y>0$; the term-by-term tail cancellation, the infinite
 $q$-binomial summation, and the gamma quotient, with symmetry and positivity}\\[2pt]
 \Cref{cor:qbeta-recurrence} & \statusexact &
@@ -13670,24 +13701,34 @@ exponent bound $e_d\le1$ of \texttt{CyclotomicFactorization}}\\[2pt]
 \texttt{qInt\_\allowbreak{}X\_\allowbreak{}mul\_\allowbreak{}qCatalan},
 \texttt{qCatalan\_\allowbreak{}natDegree},
 \texttt{qCatalan\_\allowbreak{}eval\_\allowbreak{}one}\newline
-{\footnotesize\texttt{QCatalan}; $C_n(X)\in\IntegerNumbers[X]$ as the exact
-quotient $[2n,n]_X/[n+1]_X$, the divisibility from the carry criterion and
+{\footnotesize\texttt{QCatalan};
+$\MacMahonQCatalanPolynomial{n}{X}\in\IntegerNumbers[X]$ as the unique exact
+polynomial quotient
+$\GaussianBinomial{2n}{n}{X}/\QInteger{n+1}{X}$, with
+$\MacMahonQCatalanPolynomial{0}{X}=1$; the divisibility from the carry criterion and
 the coprimality of distinct cyclotomic polynomials over
 $\RationalNumbers$ transported to $\IntegerNumbers[X]$ by monicity, the
-degree $n(n-1)$, and $C_n(1)=\operatorname{catalan}(n)$}\\[2pt]
+degree $n(n-1)$, and the polynomial specialization
+$\MacMahonQCatalanPolynomial{n}{1}=\operatorname{catalan}(n)$; here the
+rational presentation $(X^{n+1}-1)/(X-1)$ of the $q$-integer is understood
+at $X=1$ by removable polynomial continuation}\\[2pt]
 \Cref{lem:root-block} & \statusexact &
 \texttt{finiteQPochhammerIn\_\allowbreak{}isPrimitiveRoot},
 \texttt{gaussianBinomial\_\allowbreak{}isPrimitiveRoot\_\allowbreak{}eq\_\allowbreak{}zero}\newline
 {\footnotesize\texttt{PrimitiveRootBlock}; over every integral domain, in the
 form $\prod_{j<d}(1-y\zeta^j)=1-y^d$, derived from the finite $q$-binomial
-theorem at $q=\zeta$ and the vanishing of $[d,k]_\zeta$ for $0<k<d$ (a
+theorem at $q=\zeta$ and the vanishing of
+$\GaussianBinomial{d}{k}{\zeta}$ for $0<k<d$ (a
 consequence of the cyclotomic factorization), rather than from a root count}\\[2pt]
 \Cref{thm:q-lucas} & \statusexact &
 \texttt{gaussianBinomial\_\allowbreak{}q\_\allowbreak{}lucas},
 \texttt{coeff\_\allowbreak{}block\_\allowbreak{}pow\_\allowbreak{}mul},
 \texttt{pow\_\allowbreak{}choose\_\allowbreak{}two\_\allowbreak{}add\_\allowbreak{}mul\_\allowbreak{}eq}\newline
 {\footnotesize\texttt{QLucas}; the congruence is formalized in its evaluated
-form $[ad+b,rd+s]_\zeta=\binom ar[b,s]_\zeta$ at every primitive $d$th root
+form
+$\GaussianBinomial{ad+b}{rd+s}{\zeta}
+ =\binom{a}{r}\GaussianBinomial{b}{s}{\zeta}$
+at every primitive $d$th root
 of unity $\zeta$ of every integral domain, by the coefficient comparison of
 the proof, including the phase identity; the $\bmod\ \Phi_d$ statement over
 $\RationalNumbers$ is equivalent to it by the minimal-polynomial argument
@@ -13705,7 +13746,8 @@ classes, including total above-row zero extension}\\[2pt]
 \Cref{cor:babbage-derivative} & \statuspartial &
 \texttt{gaussianBinomial\_\allowbreak{}mul\_\allowbreak{}isPrimitiveRoot}\newline
 {\footnotesize\texttt{CyclotomicDivisibility}; the value
-$[an,bn]_\zeta=\binom ab$ from the $q$-Lucas theorem, at every primitive
+$\GaussianBinomial{an}{bn}{\zeta}=\binom{a}{b}$ from the $q$-Lucas theorem,
+at every primitive
 $n$th root of unity of every integral domain; the derivative clause is not
 formalized}\\[2pt]
 \midrule
@@ -13768,8 +13810,11 @@ polynomial identity is \texttt{FiniteQBinomialCore}}\\[2pt]
 {\footnotesize\texttt{NewtonInterpolation}; Newton interpolation at arbitrary
 nodes of any field (existence, uniqueness, and the divided-difference
 coefficients via Mathlib's Lagrange interpolant), then specialized to the
-grid $1,q,\dots,q^n$: the basis $\prod_{r<k}(X-q^r)=(-1)^kq^{\binom k2}(X;q^{-1})_k$
-and the denominators $(-1)^jq^{\binom j2+j(k-j)}(q;q)_j(q;q)_{k-j}$, whose
+grid $1,q,\dots,q^n$: the basis
+$\prod_{r<k}(X-q^r)=(-1)^kq^{\binom k2}\QPochhammer{X}{q^{-1}}{k}$
+and the denominators
+$(-1)^jq^{\binom j2+j(k-j)}
+ \QPochhammer{q}{q}{j}\QPochhammer{q}{q}{k-j}$, whose
 exponent equals $jk-\binom{j+1}{2}$}\\[2pt]
 \Cref{cor:geometric-triangular} & \statusexact &
 \texttt{newtonCoeff},

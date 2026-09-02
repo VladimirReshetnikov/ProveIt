@@ -3752,7 +3752,7 @@ Let \(a:\NaturalNumbers\to\NaturalNumbers\) satisfy
  \label{eq:generalized-rvachev-product-identifiability}
 \end{equation}
 The complete generalized zero-divisor theorem and
-\(\nu_2(2^n)=n\) give the sparse but lossless sampling formula
+\(\TwoAdicValuation(2^n)=n\) give the sparse but lossless sampling formula
 \begin{equation}
  \boxed{\quad
  \OrderOperator_{z=2^n}\Phi_a(z)
@@ -6200,29 +6200,29 @@ Lucas parity is packaged as
 \lean{momentNumerator_odd}.  For every \(n\ge1\), the reduced numerator and denominator of
 \(2d_n\) are both odd, equivalently
 \begin{equation}
- \nu_2(d_n)=-1.                                            \label{eq:half-moment-valuation}
+ \TwoAdicValuation(d_n)=-1.                                            \label{eq:half-moment-valuation}
 \end{equation}
 This is \lean{two_mul_halfMoment_num_den_odd} together with
 \lean{halfMoment_padicVal_two}.
 
 Consequently, for \(n\ge1\),
 \begin{equation}
- \nu_2\!\left(F(2^{-n})\right)
- =-\binom n2-1-\nu_2(n!),                                  \label{eq:valuation-inverse}
+ \TwoAdicValuation\!\left(F(2^{-n})\right)
+ =-\binom n2-1-\TwoAdicValuation(n!),                                  \label{eq:valuation-inverse}
 \end{equation}
 by \lean{fabiusAtInverseTwoPow_padicVal_two}.  The binary form uses the proved Legendre
 identity
 \begin{equation}
- \nu_2(n!)=n-\BinaryDigitSum(n),                                       \label{eq:legendre-v2}
+ \TwoAdicValuation(n!)=n-\BinaryDigitSum(n),                                       \label{eq:legendre-v2}
 \end{equation}
 namely \lean{factorial_padicVal_two}; the combined declaration is
 \lean{fabiusAtInverseTwoPow_padicVal_two_closed} in \path{TwoAdic.lean}.
 
 The central-binomial specialization gives, for every \(n\ge0\),
 \begin{align}
- \nu_2\!\binom{2n}{n}&=\BinaryDigitSum(n),
+ \TwoAdicValuation\!\binom{2n}{n}&=\BinaryDigitSum(n),
                                                    \label{eq:central-binomial-valuation}\\
- \varepsilon_n&=(-1)^{\nu_2\binom{2n}{n}}.
+ \varepsilon_n&=(-1)^{\TwoAdicValuation\binom{2n}{n}}.
                                                    \label{eq:central-binomial-sign}
 \end{align}
 These are \lean{padicValNat_two_centralBinom} and

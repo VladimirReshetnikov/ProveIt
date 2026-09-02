@@ -29,18 +29,20 @@ zero-bias transformations are classical.
 ## Package contents
 
 - `Zero_Bias_Towers_and_Spectral_Peeling.tex` — current 1,926-line,
-  72,171-byte A4/27 mm/Libertinus source; SHA-256
-  `80b3d01e7555d322781fedf671f1984279cb8e997d964f96942cb117db79b9b2`.
-- `Zero_Bias_Towers_and_Spectral_Peeling.pdf` — validated 26-page three-pass
-  render of that exact source; SHA-256
+  72,231-byte A4/27 mm/Libertinus source; SHA-256
+  `5b0eb2cf61123d5c9a6bd7ec5fdef5f7f09b2130ea02e3437d54f6dac2e27e42`.
+- `Zero_Bias_Towers_and_Spectral_Peeling.pdf` — retained validated 26-page
+  three-pass render of the preceding frozen source checkpoint; SHA-256
   `e7698059db2a24985b90258683af4fde277235159379fc7b294583dbb6bf0f37`.
+  It is not a rendering of the current live source; a rebuild is pending.
 - `zero_bias_tower_experiments.py` — 839-line exact/numerical experiment.
 - `requirements.txt` — pinned publication environment.
 - `data/` — three exact/released tables and three floating-point tables.
 - `figures/` — five figures in PDF and PNG form; regenerated PDFs use
   embedded/subset TrueType outlines and no Type 3 fonts.
-- `INTAKE_AUDIT.md` — provenance, replay drift, mathematical-status, and
-  current synchronized-source/PDF validation record.
+- `INTAKE_AUDIT.md` — immutable provenance, replay drift, mathematical-status,
+  and 2026-08-31 synchronized-source/PDF validation record. That record
+  predates the current source-only notation edit.
 - `ARRIVAL_SHA256SUMS` — immutable 21-entry delivered-payload ledger.
 - `SHA256SUMS` — validated normalized-package ledger (excluding itself).
 
@@ -75,8 +77,12 @@ pdflatex -interaction=nonstopmode -halt-on-error -file-line-error \
   Zero_Bias_Towers_and_Spectral_Peeling.tex
 ```
 
-The current PDF's final clean build on 2026-08-31 used exactly those three
-serial passes from clean auxiliaries, producing 25, 26, and 26 pages. Its
+The retained PDF's final clean build on 2026-08-31 used exactly those three
+serial passes from clean auxiliaries, producing 25, 26, and 26 pages from the
+then-current 1,926-line, 72,171-byte source with SHA-256
+`80b3d01e7555d322781fedf671f1984279cb8e997d964f96942cb117db79b9b2`.
+The live source identified above is 60 bytes newer and has not been rebuilt;
+the following observations apply only to the retained PDF checkpoint. Its
 final build log has no
 errors, undefined references, rerun requests, duplicate destinations, or
 overfull boxes; five benign underfull cells in the claim-status table were
@@ -85,4 +91,5 @@ font rows are embedded and subset, five are Libertinus, and neither the report
 nor its five vector figures contains Type 3 fonts. Title, author, subject, and
 keywords metadata are present. Physical pages 1, 13, 18--20, 22, and 26 were
 visually checked, including all five figures and the repaired running heads.
-The exhaustive live ledger passes in full.
+The exhaustive mixed current-source/retained-artifact ledger passes in full;
+that verification does not assert source/PDF rendering parity.
