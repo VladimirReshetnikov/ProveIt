@@ -83,7 +83,7 @@ theorem X_mul_massSeries_expm1Div :
     (X : PowerSeries ℚ) * massSeries expm1DivCoefficient = exp ℚ - 1 := by
   ext n
   rcases n with _ | n
-  · simp [coeff_zero_X_mul, coeff_exp]
+  · simp [coeff_zero_X_mul, coeff_exp, massSeries, expm1DivCoefficient]
   · rw [coeff_succ_X_mul, coeff_massSeries, map_sub, coeff_exp, coeff_one,
       if_neg (Nat.succ_ne_zero n)]
     simp [expm1DivCoefficient]
@@ -94,14 +94,11 @@ theorem X_mul_derivative_massSeries_expm1Div :
       = exp ℚ - massSeries expm1DivCoefficient := by
   ext n
   rcases n with _ | n
-  · simp [coeff_zero_X_mul, coeff_exp, expm1DivCoefficient]
+  · simp [coeff_zero_X_mul, coeff_exp, massSeries, expm1DivCoefficient]
   · rw [coeff_succ_X_mul, coeff_derivative, coeff_massSeries, map_sub, coeff_exp, coeff_massSeries]
-    simp only [expm1DivCoefficient, Algebra.id.map_eq_id, RingHom.id_apply]
-    have h : ((n + 1 + 1).factorial : ℚ) = (n + 2) * (n + 1).factorial := by
-      rw [Nat.factorial_succ]
-      push_cast
-      ring
-    rw [h]
+    simp only [expm1DivCoefficient, Algebra.algebraMap_self, RingHom.id_apply]
+    rw [Nat.factorial_succ (n + 1)]
+    push_cast
     have hne : ((n + 1).factorial : ℚ) ≠ 0 := by exact_mod_cast (Nat.factorial_pos _).ne'
     field_simp
     ring
@@ -111,7 +108,7 @@ theorem X_mul_derivative_bernoulliLog :
     (X : PowerSeries ℚ) * d⁄dX ℚ (mk bernoulliLogCoefficient) = bernoulli'PowerSeries ℚ - 1 := by
   ext n
   rcases n with _ | n
-  · simp [coeff_zero_X_mul, coeff_bernoulli'PowerSeries_rat]
+  · simp [coeff_zero_X_mul, bernoulli'PowerSeries, bernoulli'_zero]
   · rw [coeff_succ_X_mul, coeff_derivative, coeff_mk, map_sub, coeff_bernoulli'PowerSeries_rat,
       coeff_one, if_neg (Nat.succ_ne_zero n)]
     simp only [bernoulliLogCoefficient, Nat.succ_ne_zero, if_false]
@@ -162,7 +159,7 @@ theorem expm1Div_logCoeff_eq_bernoulli (n : ℕ) :
 /-! ## Logarithm of a finite product -/
 
 /-- The coefficient family of a power series. -/
-def coeffFamily (F : PowerSeries ℚ) : ℕ → ℚ := fun n => coeff n F
+noncomputable def coeffFamily (F : PowerSeries ℚ) : ℕ → ℚ := fun n => coeff n F
 
 @[simp] theorem massSeries_coeffFamily (F : PowerSeries ℚ) : massSeries (coeffFamily F) = F := by
   ext n
@@ -225,6 +222,7 @@ theorem blockCumulant_one (m : ℕ) : blockCumulant m 1 = ((2 : ℚ) ^ m - 1) / 
     pow_one, one_ne_zero, if_false, bernoulli'_one]
   rw [← sum_mul, geom_sum_eq (by norm_num : (2 : ℚ) ≠ 1)]
   norm_num
+  ring
 
 /-- `κ_{2ℓ}^{(m)} = B_{2ℓ}/(2ℓ) · (4^{ℓm} - 1)/(4^ℓ - 1)` for `ℓ ≥ 1`. -/
 theorem blockCumulant_even (m ℓ : ℕ) (hℓ : 1 ≤ ℓ) :
@@ -238,19 +236,18 @@ theorem blockCumulant_even (m ℓ : ℕ) (hℓ : 1 ≤ ℓ) :
     rw [← pow_mul, show (4 : ℚ) = 2 ^ 2 by norm_num, ← pow_mul, ← pow_mul]
     ring_nf
   simp_rw [hpow]
-  rw [← sum_mul, geom_sum_eq (a := (4 : ℚ) ^ ℓ) ?_ m, ← pow_mul]
-  · have hfac : ((2 * ℓ).factorial : ℚ) ≠ 0 := by exact_mod_cast (Nat.factorial_pos _).ne'
-    have h4 : (4 : ℚ) ^ ℓ - 1 ≠ 0 := by
-      have : (1 : ℚ) < 4 ^ ℓ := one_lt_pow₀ (by norm_num) (by omega)
-      linarith
-    have hl : (2 * ℓ : ℚ) ≠ 0 := by
-      have : (0 : ℚ) < ℓ := by exact_mod_cast hℓ
-      linarith
-    push_cast
-    field_simp
-    ring
-  · have : (1 : ℚ) < 4 ^ ℓ := one_lt_pow₀ (by norm_num) (by omega)
+  have h4' : (4 : ℚ) ^ ℓ ≠ 1 := by
+    have : (1 : ℚ) < 4 ^ ℓ := one_lt_pow₀ (by norm_num) (by omega)
     exact ne_of_gt this
+  rw [← sum_mul, geom_sum_eq h4' m, ← pow_mul]
+  have hfac : ((2 * ℓ).factorial : ℚ) ≠ 0 := by exact_mod_cast (Nat.factorial_pos _).ne'
+  have h4 : (4 : ℚ) ^ ℓ - 1 ≠ 0 := sub_ne_zero.mpr h4'
+  have hl : (2 * ℓ : ℚ) ≠ 0 := by
+    have : (0 : ℚ) < ℓ := by exact_mod_cast hℓ
+    linarith
+  push_cast
+  field_simp
+  ring
 
 /-- `κ_{2ℓ+1}^{(m)} = 0` for `ℓ ≥ 1`. -/
 theorem blockCumulant_odd (m ℓ : ℕ) (hℓ : 1 ≤ ℓ) : blockCumulant m (2 * ℓ + 1) = 0 := by
@@ -313,22 +310,27 @@ theorem thueMorsePowerSum_eq_completeBellPolynomial (m r : ℕ) :
       smul_eq_mul, coeffFamily]
   -- read off the coefficient
   rw [thueMorsePowerSum_eq_sum_range]
-  have hcoeff : coeff (m + r) ((-1 : PowerSeries ℚ) ^ m * X ^ m * (C (2 ^ ∑ i ∈ range m, i) * P))
-      = (-1) ^ m * 2 ^ (∑ i ∈ range m, i) * coeff r P := by
-    rw [show ((-1 : PowerSeries ℚ) ^ m * X ^ m * (C (2 ^ ∑ i ∈ range m, i) * P))
-        = C ((-1) ^ m * 2 ^ (∑ i ∈ range m, i)) * (X ^ m * P) by
-          rw [map_mul, map_pow, map_neg, map_one, map_pow]; ring,
-      coeff_C_mul, show m + r = r + m by ring, coeff_X_pow_mul]
-  rw [hcoeff] at hegf
+  set c : ℚ := 2 ^ (∑ i ∈ range m, i) with hc
+  have hcoeff : ∀ c' : ℚ, coeff (m + r) ((-1 : PowerSeries ℚ) ^ m * X ^ m * (C c' * P))
+      = (-1) ^ m * c' * coeff r P := by
+    intro c'
+    have hC : ((-1 : PowerSeries ℚ) ^ m * X ^ m * (C c' * P))
+        = C ((-1) ^ m * c') * (X ^ m * P) := by
+      rw [map_mul, map_pow, map_neg, map_one]
+      ring
+    rw [hC, coeff_C_mul, show m + r = r + m by ring, coeff_X_pow_mul]
+  rw [← map_pow, hcoeff] at hegf
   have hfac : ((m + r).factorial : ℚ) ≠ 0 := by exact_mod_cast (Nat.factorial_pos _).ne'
   have hr : (r.factorial : ℚ) ≠ 0 := by exact_mod_cast (Nat.factorial_pos _).ne'
-  rw [hbell]
   have hsum : ∑ n ∈ range (2 ^ m), (thueMorseSign n : ℚ) * (n : ℚ) ^ (m + r)
-      = ((m + r).factorial : ℚ) * ((-1) ^ m * 2 ^ (∑ i ∈ range m, i) * coeff r P) := by
+      = ((m + r).factorial : ℚ) * ((-1) ^ m * c * coeff r P) := by
+    rw [eq_div_iff hfac] at hegf
     rw [← hegf]
+    ring
+  have hr' : (((m + r).factorial : ℚ) / r.factorial) * ((r.factorial : ℚ) * coeff r P)
+      = ((m + r).factorial : ℚ) * coeff r P := by
     field_simp
-  rw [hsum]
-  field_simp
+  rw [hsum, hbell, mul_assoc ((-1 : ℚ) ^ m * c), hr']
   ring
 
 /-- The `r = 0` case: `M_{m,m} = (-1)^m 2^{C(m,2)} m!`, recovering
