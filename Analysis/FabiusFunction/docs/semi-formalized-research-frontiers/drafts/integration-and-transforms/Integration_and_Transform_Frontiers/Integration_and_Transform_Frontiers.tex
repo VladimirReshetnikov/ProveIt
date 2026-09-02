@@ -3169,7 +3169,6 @@ L.~Comtet,
 
 
 % extra macros for part 2
-\newcommand{\Mellin}{\mathcal M}
 \newcommand{\Vol}{\mathcal J}
 \newcommand{\repo}{\nolinkurl{Analysis/FabiusFunction/docs}}
 \newcommand{\decl}[1]{\nolinkurl{#1}}
@@ -3232,7 +3231,7 @@ For arbitrary $\alpha\in\ComplexNumbers$ the terminating sum becomes an absolute
 locally uniformly convergent series.  Endpoint flatness is strong enough that
 this series is exact for every complex exponent, including all negative
 powers, rather than merely asymptotic.  Consequently
-$\Mellin_F(s)=\int_0^1x^{s-1}F(x)\Differential x$ is entire and has an explicit dyadic
+$\MellinTransformOf{F}(s)=\int_0^1x^{s-1}F(x)\Differential x$ is entire and has an explicit dyadic
 Newton-type expansion.  Differentiation in $s$ produces logarithmic weights,
 with coefficients expressible through signed Stirling numbers or complete Bell
 polynomials.
@@ -3913,32 +3912,32 @@ At $\alpha=0$, $\frac{\Differential}{\Differential\alpha}\FallingFactorial{\alph
 
 Define
 \begin{equation}
- \Mellin_F(s)=\int_0^1x^{s-1}F(x)\Differential x.                   \label{p2:eq:Mellin-def}
+ \MellinTransformOf{F}(s)=\int_0^1x^{s-1}F(x)\Differential x.                   \label{p2:eq:Mellin-def}
 \end{equation}
 
 \begin{theorem}[Entire Mellin series]
 \label{p2:thm:mellin-entire}
-The function $\Mellin_F$ is entire and
+The function $\MellinTransformOf{F}$ is entire and
 \begin{equation}
  \boxed{
- \Mellin_F(s)=\sum_{k=0}^{\infty}(-1)^k\FallingFactorial{s-1}{k}
+ \MellinTransformOf{F}(s)=\sum_{k=0}^{\infty}(-1)^k\FallingFactorial{s-1}{k}
  2^{\binom{k+1}{2}}F(2^{-k-1}).}                          \label{p2:eq:Mellin-series}
 \end{equation}
 For $\Re s>0$,
 \begin{equation}
- \Mellin_F(s)=\frac{1-\Expectation X^s}{s}.                        \label{p2:eq:Mellin-prob}
+ \MellinTransformOf{F}(s)=\frac{1-\Expectation X^s}{s}.                        \label{p2:eq:Mellin-prob}
 \end{equation}
 Since $s\mapsto\Expectation X^s$ is entire, this quotient continues to every
 $s\in\ComplexNumbers$; its singularity at $s=0$ is removable, with
 \begin{equation}
- \Mellin_F(0)=-\Expectation\log X.                                 \label{p2:eq:Mellin-zero}
+ \MellinTransformOf{F}(0)=-\Expectation\log X.                                 \label{p2:eq:Mellin-zero}
 \end{equation}
 \end{theorem}
 
 \begin{proof}
 Use \cref{p2:thm:complex-series} with $\alpha=s-1$.  For $\Re s>0$, integration
 by parts against $\Differential F$ gives
-$\Expectation X^s=1-s\Mellin_F(s)$.  Both sides are entire, so the identity
+$\Expectation X^s=1-s\MellinTransformOf{F}(s)$.  Both sides are entire, so the identity
 continues to all $s$; l'Hopital's rule gives \eqref{p2:eq:Mellin-zero}.
 \end{proof}
 
@@ -3946,10 +3945,10 @@ continues to all $s$; l'Hopital's rule gives \eqref{p2:eq:Mellin-zero}.
 \label{p2:prop:mellin-cm}
 For every real $s$ and $r\in\NaturalNumbers$,
 \begin{equation}
- (-1)^r\Mellin_F^{(r)}(s)
+ (-1)^r\MellinTransformOf{F}^{(r)}(s)
  =\int_0^1x^{s-1}(-\log x)^rF(x)\Differential x>0.                  \label{p2:eq:Mellin-cm}
 \end{equation}
-Consequently $\Mellin_F$ is strictly completely monotone on the entire real
+Consequently $\MellinTransformOf{F}$ is strictly completely monotone on the entire real
 axis and strictly log-convex there.
 \end{proposition}
 
@@ -3963,7 +3962,7 @@ $x^{s-1}F(x)\Differential x$.
 The change of variables $x=\EulerE^{-u}$ gives the bilateral-strength Laplace
 representation
 \begin{equation}
- \Mellin_F(s)=\int_0^\infty\EulerE^{-su}F(\EulerE^{-u})\Differential u,       \label{p2:eq:Mellin-Laplace}
+ \MellinTransformOf{F}(s)=\int_0^\infty\EulerE^{-su}F(\EulerE^{-u})\Differential u,       \label{p2:eq:Mellin-Laplace}
 \end{equation}
 which converges for every real $s$ because $F(\EulerE^{-u})$ decays faster than every
 ordinary exponential.  Thus the inverse-dyadic values in
@@ -9131,8 +9130,6 @@ Cambridge University Press, 2009.
 
 
 % extra macros for part 5
-\newcommand{\falling}[2]{#1^{\underline{#2}}}
-\newcommand{\rising}[2]{#1^{\overline{#2}}}
 \newcommand{\repoPartii}{\texttt{ProveIt}}
 \newcommand{\newresultPartii}{\par\medskip\noindent\textcolor{deepblue}{\textbf{Frontier contribution.}}\ }
 \definecolor{deepblue}{RGB}{22,55,92}
@@ -9508,7 +9505,7 @@ Iterate \eqref{p5:eq:A-recurrence}.  At the $j$th step the falling factorial con
 \[
  2^{jp-j(j-1)/2}\,2^{-j(p-j)}=2^{j(j+1)/2}.
 \]
-The process terminates because $\falling{p}{p+1}=0$.  Formula \eqref{p5:eq:A-tail} follows from $F=1$ on $[1,\infty)$.
+The process terminates because $\FallingFactorial{p}{p+1}=0$.  Formula \eqref{p5:eq:A-tail} follows from $F=1$ on $[1,\infty)$.
 \end{proof}
 
 \begin{remark}
@@ -9530,13 +9527,13 @@ Fix $0<x\le1$.  For every $\nu\in\ComplexNumbers$,
 \begin{equation}\label{p5:eq:complex-weight-series}
 \boxed{
  A_\nu(x)=
- \sum_{j=0}^{\infty}(-1)^j\falling{\nu}{j}
+ \sum_{j=0}^{\infty}(-1)^j\FallingFactorial{\nu}{j}
  2^{\binom{j+1}{2}}x^{\nu-j}
  F\!\left(\frac{x}{2^{j+1}}\right).}
 \end{equation}
 The series converges absolutely and locally uniformly in $\nu$.  After $N$ terms the exact remainder is
 \begin{equation}\label{p5:eq:complex-weight-remainder}
- R_N=(-1)^N\falling{\nu}{N}
+ R_N=(-1)^N\FallingFactorial{\nu}{N}
  2^{N\nu-\binom N2}A_{\nu-N}(x/2^N).
 \end{equation}
 Consequently the sum is entire in $\nu$ and may be differentiated termwise on compact subsets of the $\nu$-plane.
@@ -9551,13 +9548,13 @@ Iterating \eqref{p5:eq:A-recurrence} $N$ times gives the displayed partial sum a
 \end{align}
 After changing variables in \eqref{p5:eq:complex-weight-remainder},
 \[
- R_N=(-1)^N\falling{\nu}{N}
+ R_N=(-1)^N\FallingFactorial{\nu}{N}
  \int_0^x u^{\nu-N}
  \bigl[2^{\binom N2}F(u/2^N)\bigr]\Differential u.
 \]
 For $\nu$ in a fixed compact set, choose $M$ so that $\Re\nu+M>-1$ uniformly.  Bound \eqref{p5:eq:flatness-factorial-bound} then gives
 \[
- |R_N|\le C_{M,K,x}\frac{|\falling{\nu}{N}|}{(N+M)!}.
+ |R_N|\le C_{M,K,x}\frac{|\FallingFactorial{\nu}{N}|}{(N+M)!}.
 \]
 The quotient tends to zero faster than a chosen inverse power of $N$, locally uniformly in $\nu$; at nonnegative integral $\nu$ it eventually vanishes identically.  This also proves normal convergence.
 \end{proof}
@@ -9566,7 +9563,7 @@ The quotient tends to zero faster than a chosen inverse power of $N$, locally un
 For $m\in\NaturalNumbers$ and $0<x\le1$,
 \begin{equation}\label{p5:eq:negative-power-series}
  \int_0^x\frac{F(t)}{t^m}\Differential t
- =\sum_{j=0}^{\infty}\rising{m}{j}
+ =\sum_{j=0}^{\infty}\RisingFactorial{m}{j}
  2^{\binom{j+1}{2}}x^{-m-j}
  F\!\left(\frac{x}{2^{j+1}}\right).
 \end{equation}
@@ -9575,7 +9572,7 @@ Thus every negative-power antiderivative is finite despite its apparently singul
 
 \begin{proof}
 Insert $\nu=-m$ in \eqref{p5:eq:complex-weight-series} and use
-$\falling{-m}{j}=(-1)^j\rising{m}{j}$.
+$\FallingFactorial{-m}{j}=(-1)^j\RisingFactorial{m}{j}$.
 \end{proof}
 
 \begin{corollary}[Weights against $\RvachevUp$]\label{p5:cor:up-complex-weight}
@@ -9773,20 +9770,20 @@ This produces an interpolation formula that reconstructs every complex moment fr
 For every $\nu\in\ComplexNumbers$,
 \begin{equation}\label{p5:eq:newton-MF}
  \frac{1-D(\nu+1)}{\nu+1}
- =\sum_{j=0}^{\infty}(-1)^j\falling{\nu}{j}
+ =\sum_{j=0}^{\infty}(-1)^j\FallingFactorial{\nu}{j}
  \frac{d_{j+1}}{(j+1)!},
 \end{equation}
 with the left side interpreted removably at $\nu=-1$.  Equivalently, for every $z\in\ComplexNumbers$,
 \begin{equation}\label{p5:eq:newton-D}
 \boxed{
  D(z)=1-z\sum_{j=0}^{\infty}(-1)^j
- \falling{z-1}{j}\frac{d_{j+1}}{(j+1)!}.}
+ \FallingFactorial{z-1}{j}\frac{d_{j+1}}{(j+1)!}.}
 \end{equation}
 The series converges locally uniformly on $\ComplexNumbers$.
 \end{corollary}
 
 \begin{proof}
-Set $x=1$ in \eqref{p5:eq:complex-weight-series}, use \eqref{p5:eq:dyadic-moment-value}, and combine with \eqref{p5:eq:mellin-F}.  Normal convergence was proved in \cref{p5:thm:complex-weight-series}.  It can also be seen directly: endpoint flatness at $1$ makes $d_n=O_M(n^{-M})$ for every $M$, whereas $\falling{z-1}{j}/j!$ has at most polynomial growth on compact $z$-sets.
+Set $x=1$ in \eqref{p5:eq:complex-weight-series}, use \eqref{p5:eq:dyadic-moment-value}, and combine with \eqref{p5:eq:mellin-F}.  Normal convergence was proved in \cref{p5:thm:complex-weight-series}.  It can also be seen directly: endpoint flatness at $1$ makes $d_n=O_M(n^{-M})$ for every $M$, whereas $\FallingFactorial{z-1}{j}/j!$ has at most polynomial growth on compact $z$-sets.
 \end{proof}
 
 \begin{corollary}[A rapidly convergent logarithmic constant]\label{p5:cor:log-constant-series}
@@ -9801,7 +9798,7 @@ The decimal is numerical, while the series identity is exact.
 
 \begin{proof}
 Put $z=0$ in \eqref{p5:eq:newton-MF}; then
-$(-1)^j\falling{-1}{j}=j!$.  The probabilistic identity
+$(-1)^j\FallingFactorial{-1}{j}=j!$.  The probabilistic identity
 $\sum_{n\ge1}d_n/n=\Expectation[-\log(1-X)]=\Expectation[-\log X]$
 provides an independent check using symmetry.
 \end{proof}
@@ -10671,11 +10668,11 @@ For convenience, the central formulas are collected here:
  &=\sum_{j=0}^{p}(-1)^j\frac{p!}{(p-j)!}
  2^{\binom{j+1}{2}}x^{p-j}F(x/2^{j+1}),\\
  A_\nu(x)
- &=\sum_{j\ge0}(-1)^j\falling{\nu}{j}
+ &=\sum_{j\ge0}(-1)^j\FallingFactorial{\nu}{j}
  2^{\binom{j+1}{2}}x^{\nu-j}F(x/2^{j+1}),\\
  \mathcal M_F(z)&=\frac{1-D(z)}z,
  \qquad \mathcal M_{\RvachevUp,+}(z)=\frac{D(z)}z,\\
- D(z)&=1-z\sum_{j\ge0}(-1)^j\falling{z-1}{j}
+ D(z)&=1-z\sum_{j\ge0}(-1)^j\FallingFactorial{z-1}{j}
  \frac{d_{j+1}}{(j+1)!},\\
  B(s)&=\prod_{j\ge1}\frac{1-e^{-s/2^j}}{s/2^j},\\
  \int_0^yG(t)^p\Differential t&=yG(y)^p-pA_{p-1}(G(y)),\\
@@ -14356,7 +14353,7 @@ and
 \end{equation}
 By \cref{p7:eq:inverse-Mellin},
 \begin{equation}
- \Mellin_G(s):=\int_0^1y^{s-1}G(y)\Differential y=\frac{1-A(s)}s.
+ \MellinTransformOf{G}(s):=\int_0^1y^{s-1}G(y)\Differential y=\frac{1-A(s)}s.
  \label{p7:eq:MG-A}
 \end{equation}
 
@@ -14389,11 +14386,11 @@ Take $n$th roots and then $\varepsilon\downarrow0$.
 
 \begin{theorem}[Gevrey-2 but nonanalytic inverse Mellin boundary]
 \label{p7:thm:Gevrey-barrier}
-The functions $A(s)$ and $\Mellin_G(s)$ have derivatives of every order from the right at
+The functions $A(s)$ and $\MellinTransformOf{G}(s)$ have derivatives of every order from the right at
 $s=0$, with
 \begin{align}
  A^{(n)}(0+)&=(-1)^na_n,\label{p7:eq:A-derivatives-zero}\\
- \Mellin_G^{(n)}(0+)&=-\frac{A^{(n+1)}(0+)}{n+1}.
+ \MellinTransformOf{G}^{(n)}(0+)&=-\frac{A^{(n+1)}(0+)}{n+1}.
  \label{p7:eq:MG-derivatives-zero}
 \end{align}
 Their formal Taylor series at $0$ have radius of convergence zero.  More precisely, the
@@ -14676,7 +14673,7 @@ provide independent symbolic checks of the moment table.
 For $\Ree s<0$, $F(x)^s=\exp(|\Ree s|Q(x))$.  With $x=\EulerE^{-u}$ and
 $Q(\EulerE^{-u})\sim cu^2$, the integrand behaves like
 $\exp(|\Ree s|cu^2-u)$, which is not integrable.  Thus $A(s)$ has a genuine natural boundary
-for its defining integral at $\Ree s=0$.  The transform $\Mellin_G(s)$ itself remains finite at
+for its defining integral at $\Ree s=0$.  The transform $\MellinTransformOf{G}(s)$ itself remains finite at
 $s=0$, but its derivatives exhibit the same Gevrey-2 growth and it cannot cross the boundary
 analytically.
 
@@ -15385,15 +15382,15 @@ The decimals are checks, not claimed closed constants.
 \label{p8:thm:mellin-triad}
 For \(\Re s>0\),
 \begin{align}
- \Mellin[\RvachevUp|_{[0,1]}](s)
+ \MellinTransformOf{\RvachevUp|_{[0,1]}}(s)
  &=\int_0^1x^{s-1}\RvachevUp(x)\Differential x
  =\frac{m(s)}s,
  \label{p8:eq:Mellin-up}\\
- \Mellin[F](s)
+ \MellinTransformOf{F}(s)
  &=\int_0^1x^{s-1}F(x)\Differential x
  =\frac{1-m(s)}s,
  \label{p8:eq:Mellin-F}\\
- \Mellin[F'](s)
+ \MellinTransformOf{F'}(s)
  &=\int_0^1x^{s-1}F'(x)\Differential x
  =m(s-1).
  \label{p8:eq:Mellin-density}

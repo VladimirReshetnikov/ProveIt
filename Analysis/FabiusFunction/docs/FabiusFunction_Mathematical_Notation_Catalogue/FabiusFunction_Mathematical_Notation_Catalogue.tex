@@ -7801,7 +7801,7 @@ modulus; do not use for set cardinality.\\
 \commandname{norm} & \commandname{Norm} & Declare the normed space and norm species.\\
 \commandname{floor}, \commandname{ceil} & \commandname{Floor},
 \commandname{Ceiling} & Preserve exact endpoint inequalities.\\
-\commandname{pospart} & \commandname{PositivePart} & Ordered-scalar positive part with
+\commandname{pospart}, \commandname{pos} & \commandname{PositivePart} & Ordered-scalar positive part with
 value zero on nonpositive inputs.\\
 \commandname{set} & \commandname{SetOf} & Supply the ambient type and predicate/list
 grammar.\\
@@ -7826,9 +7826,9 @@ not a proved equality.\\
 \commandname{InvF} & \commandname{FabiusQuantile} or
 \commandname{FabiusClampedQuantile} & Decide from the input domain: $[0,1]$ for the
 ordinary inverse, all reals for the clamped totalization.\\
-\commandname{fall} & \commandname{FallingFactorial} & Supply the base and
+\commandname{fall}, \commandname{falling} & \commandname{FallingFactorial} & Supply the base and
 nonnegative length as two explicit arguments; the length-zero product is one.\\
-\commandname{rise} & \commandname{RisingFactorial} & Supply the base and
+\commandname{rise}, \commandname{rising} & \commandname{RisingFactorial} & Supply the base and
 nonnegative length as two explicit arguments; the length-zero product is one.\\
 \commandname{Lap} & \commandname{LaplaceTransformSymbol} & Bare transform
 symbol only; use \commandname{LaplaceTransformOf} when the transformed operand
@@ -7836,6 +7836,11 @@ belongs inside the semantic command.\\
 \commandname{Mell} & \commandname{MellinTransformSymbol} & Bare transform
 symbol only; use \commandname{MellinTransformOf} when the transformed operand
 belongs inside the semantic command.\\
+\commandname{Mellin} & \commandname{MellinTransformSymbol} or
+\commandname{MellinTransformOf} & Use the symbol command only for a bare operator token
+or transform-arrow label.  When the operand is present---whether formerly bracketed,
+postfixed, or encoded as a subscript---put that operand inside
+\commandname{MellinTransformOf}.\\
 \commandname{stirone} & \commandname{UnsignedStirlingFirstKind} & Preserve the
 upper and lower triangular indices; this is the unsigned cycle-count triangle.\\
 \commandname{stirtwo} & \commandname{StirlingSecondKind} & Preserve the upper

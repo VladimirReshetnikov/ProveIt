@@ -13345,8 +13345,6 @@ source TeX included in the repository as \texttt{Lacunary\_products.tex}.
 \newcommand{\suppPartcc}{\SupportOperator}
 \newcommand{\vtwoPartcc}{\TwoAdicValuation}
 \newcommand{\wtPartcc}{\BinaryDigitSum}
-\newcommand{\Mellin}{\mathcal M}
-\newcommand{\falling}[2]{(#1)_{\underline{#2}}}
 \newcommand{\statusE}{\textsf{[E]}}
 \newcommand{\statusN}{\textsf{[N]}}
 \newcommand{\statusC}{\textsf{[C]}}
@@ -14048,7 +14046,7 @@ $n$ & $\vtwoPartcc(n)$ & $\OrderOperator_{z=n}\Phi$ & coefficient of $\EulerE^{-
 \statusN\ For $\Re w>0$,
 \begin{equation}
  \boxed{
- \Mellin\mathcal E(w):=\int_0^\infty\mathcal E(s)s^{w-1}\Differential s
+ \MellinTransformOf{\mathcal E}(w):=\int_0^\infty\mathcal E(s)s^{w-1}\Differential s
  =\frac{\Gamma(w)\zeta(w+1)}{1-2^{-w}}.}                   \label{p9:eq:Mellin-tail}
 \end{equation}
 Equivalently, the Mellin transform of $R(s)=sT'(s)=-s\mathcal E'(s)$ is
@@ -14217,11 +14215,11 @@ Thus $\kappa_n(s)$ is the $n$th cumulant of $X$ under the tilted law.
 \statusN\ For $n\ge1$,
 \begin{equation}
  \boxed{
- K_n(s)=(-1)^n\falling Dn
+ K_n(s)=(-1)^n\FallingFactorial{D}{n}
  \left[-\frac L2u(u-1)+P(u)-T(s)\right],
  \qquad u=\log_2s,}                                       \label{p9:eq:falling-Euler}
 \end{equation}
-where $\falling Dn=D(D-1)\cdots(D-n+1)$.  If
+where $\FallingFactorial{D}{n}=D(D-1)\cdots(D-n+1)$.  If
 $h(s)=\log(1-\EulerE^{-s})-\log s$, then
 \begin{equation}
  \boxed{K_n(2s)=K_n(s)+(-1)^ns^nh^{(n)}(s).}               \label{p9:eq:Kn-dilation}
@@ -14239,7 +14237,7 @@ and
 \end{theorem}
 
 \begin{proof}
-The operator identity $s^n\frac{\Differential^n}{\Differential s^n}=\falling Dn$ proves
+The operator identity $s^n\frac{\Differential^n}{\Differential s^n}=\FallingFactorial{D}{n}$ proves
 \eqref{p9:eq:falling-Euler}.  Differentiate \eqref{p9:eq:Lambda-dilation} $n$ times to obtain
 \eqref{p9:eq:Kn-dilation}.  Since $K_2=s^2\Lambda''=A-DA$, substitution of
 \eqref{p9:eq:A-decomp} gives \eqref{p9:eq:variance-exact}.  Strict positivity follows because
@@ -14530,7 +14528,7 @@ The central relationships can be read as the following chain:
  \Theta(q)=\prod(1-q^{2^j})
  &\xrightarrow{\ q=\EulerE^{-s}\ }&
  \mathcal E(s)=-\log\Theta(\EulerE^{-s})
- &\xrightarrow{\ \Mellin\ }&
+ &\xrightarrow{\ \MellinTransformSymbol\ }&
  \dfrac{\Gamma(w)\zeta(w+1)}{1-2^{-w}}\\[1.2em]
  &&\Big\updownarrow&&\Big\downarrow\text{ residues}\\[-0.2em]
  \Phi(z)=\prod\SincRad(\pi z/2^j)
