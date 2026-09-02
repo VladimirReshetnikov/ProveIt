@@ -2941,6 +2941,18 @@ Equality is attained only by the denominator-three doubling orbit.
 Insert \eqref{p2:eq:sqrt3-bound} into \eqref{p2:eq:kappa-aq}.
 \end{proof}
 
+\paragraph{Lean status.}
+The inequality \eqref{p2:eq:kappa-minimum} is \path{Fabius.rational_ray_exponent_ge_min}
+in \path{CyclicSineProductBound.lean}, stated with $\kappa_{a,q}$ written out as
+$\tfrac12+\log(2\pi)/\log2-\log A_{a,q}/(d\log2)$ and $A_{a,q}$ as the explicit product
+of moduli, for odd $q>1$, $(a,q)=1$, and any $d$ with $2^{d}\equiv1\pmod q$.  The
+positivity $A_{a,q}>0$ that makes the logarithm meaningful is
+\path{Fabius.prod_norm_one_sub_exp_orbit_pos}: no factor vanishes because $a2^{j}/q$ is
+never an integer when $q$ is odd and coprime to $a$
+(\path{Fabius.orbit_point_not_int}, via $1-\EulerE^{2\pi\ImaginaryUnit x}\ne0$ off the
+integers, \path{Fabius.one_sub_exp_two_pi_mul_I_ne_zero}).  The equality clause is not
+formalized.
+
 \begin{remark}[A spectral interpretation]
 The arithmetic exponents form a spectrum of cycle averages of
 $\log|2\sin(\pi t)|$. The theorem identifies the exact lower endpoint without
