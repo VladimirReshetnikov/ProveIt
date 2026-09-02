@@ -45,9 +45,7 @@ the earlier six-package inverse provenance is not silently reinterpreted.
 
 The migrated `assets/` tree preserves six experiment programs, nineteen
 CSV/TXT outputs, and fourteen vector figures selected by the historical
-77-row `assets/ASSET_DISPOSITION.csv`. Its active `assets/SHA256SUMS` has 43
-entries because it also covers asset metadata and environment files; this is
-not a contradiction with the 39 retained historical payloads.
+77-row `assets/ASSET_DISPOSITION.csv`.
 
 ## Validation state
 
@@ -85,16 +83,9 @@ It compares all coefficients through degree 100 using integer arithmetic:
 1,515 equalities in total. This is a transcription-quality gate, explicitly
 not an infinite proof of any recorded identity.
 
-The exhaustive package checksum gate is:
-
-```text
-python audit/build_package_checksums.py --check
-```
-
-It checks every permanent package file except the self-referential root
-`SHA256SUMS` ledger itself. The nested asset ledger remains independently
-useful because it preserves the migrated experiment and research-figure
-boundary.
+Checksum ledgers have been abolished repository-wide; no `SHA256SUMS` file is
+kept for this package or its assets, and no checksum gate is part of its
+validation state.
 
 The retained `q_pochhammer_q_binomial_monograph.pdf` is a 354-page A4
 build of the upstream source checkpoint (14,381 lines, 675,239 bytes,
@@ -112,9 +103,8 @@ figures, not publication manuscripts.
 The current master TeX is a source-only successor to that checkpoint: it has
 14,449 lines, 679,492 bytes, and SHA-256
 `ed3baa67195e142531234170e67d04a04e356905523333ad95d667f0ddddcc8c`.
-The regenerated root `SHA256SUMS` ledger records the same identity. The
-historical source identity above must not be reused for the live source, and
-the retained PDF does not claim render parity with the current TeX.
+The historical source identity above must not be reused for the live source,
+and the retained PDF does not claim render parity with the current TeX.
 
 The current source includes exhaustive crosswalks for `QPochhammerEntire`
 (zero definitions
@@ -197,8 +187,6 @@ The quantum-multinomial row is Exact over every semiring under the stated
 pairwise q-commutation laws and commutation of q with each variable; neither
 centrality of q nor commutativity of the ambient semiring is claimed.
 
-Source and PDF were synchronized by this build, and the root package checksum
-ledger (`SHA256SUMS`) was regenerated with `audit/build_package_checksums.py`
-afterwards. PDFs are rebuilt in batches, at most about once per hour, so
-source-only commits may precede the next synchronization; the ledger and the
-figures above always describe the retained PDF.
+Source and PDF were synchronized by this build. PDFs are rebuilt in batches,
+at most about once per hour, so source-only commits may precede the next
+synchronization; the figures above always describe the retained PDF.
