@@ -4798,6 +4798,23 @@ partitions by block sizes is exactly the coefficient expansion of $\EulerE^K$ an
 $\log M$.
 \end{proof}
 
+\begin{example}[The first cumulants]\label{ex:merged-first-cumulants}
+Expanding \eqref{eq:merged-moment-cumulant-backward} over the partitions of
+$[n]$ for $n\leq4$, and grouping by block-size type, gives
+\begin{align}
+ \kappa_1&=m_1,                                                    \notag\\
+ \kappa_2&=m_2-m_1^2,                                              \notag\\
+ \kappa_3&=m_3-3m_2m_1+2m_1^3,                                     \notag\\
+ \kappa_4&=m_4-4m_3m_1-3m_2^2+12m_2m_1^2-6m_1^4.                   \label{eq:merged-first-cumulants}
+\end{align}
+For a random variable these are the mean, the variance, the third central
+moment, and the fourth cumulant whose vanishing characterizes the Gaussian
+among laws with moments.  The coefficients are read off the partition lattice:
+$\Pi_4$ has one partition of type $4$, four of type $3+1$, three of type
+$2+2$, six of type $2+1+1$ and one of type $1+1+1+1$, and the Möbius weights
+$(-1)^{|\pi|-1}(|\pi|-1)!$ are $1,-1,-1,2,-6$ respectively.
+\end{example}
+
 \section{Sheffer sequences}
 
 \begin{definition}
@@ -5039,6 +5056,54 @@ $\ExponentialPartialBellPolynomial42=4x_1x_3+3x_2^2$, and
 $\ExponentialPartialBellPolynomial43=6x_1^2x_2$, then simplifying.
 \end{proof}
 
+Recursion \eqref{eq:merged-inverse-derivative} expresses $g^{(n)}$ through the
+lower derivatives of $g$.  The following closed operator form expresses it
+through $f$ alone, with no reference to $g$ except in the final evaluation
+point.  It is the shortest route to a symbolic table of inverse derivatives,
+since each order costs one differentiation rather than one Bell-polynomial
+expansion.
+
+\begin{theorem}[Inverse-derivative operator]
+\label{thm:merged-inverse-derivative-operator}
+With $g=f^{-1}$ locally and $f'\ne0$ near the point in question, for every
+$n\geq1$
+\begin{equation}
+ g^{(n)}(y)=\left.
+   \left(\frac1{f'(x)}\frac{\Differential}{\Differential x}\right)^{n-1}
+   \frac1{f'(x)}\right|_{x=g(y)}.                                  \label{eq:merged-inverse-derivative-operator}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Along the inverse curve $x=g(y)$ one has $\Differential y/\Differential x=f'(x)$
+with $f'(x)\ne0$, so differentiation with respect to $y$ of any quantity
+expressed in $x$ is
+\[
+ \frac{\Differential}{\Differential y}
+ =\frac{\Differential x}{\Differential y}\frac{\Differential}{\Differential x}
+ =\frac1{f'(x)}\frac{\Differential}{\Differential x}.
+\]
+Now induct on $n$.  For $n=1$, $g'(y)=1/f'(g(y))$, which is
+\eqref{eq:merged-inverse-derivative-operator} with the operator applied zero
+times.  If \eqref{eq:merged-inverse-derivative-operator} holds for $n$, apply
+$\Differential/\Differential y$ to both sides and use the displayed operator
+identity on the right; this prefixes one more factor
+$(1/f')\,\Differential/\Differential x$ and gives the case $n+1$.
+\end{proof}
+
+\begin{example}
+Applying \eqref{eq:merged-inverse-derivative-operator} twice reproduces the
+first entries of \eqref{eq:merged-inverse-first-four}:
+\[
+ \frac1{f'}\frac{\Differential}{\Differential x}\frac1{f'}
+ =-\frac{f''}{(f')^3},
+ \qquad
+ \frac1{f'}\frac{\Differential}{\Differential x}
+ \left(-\frac{f''}{(f')^3}\right)
+ =\frac{3(f'')^2-f'f'''}{(f')^5}.
+\]
+\end{example}
+
 \section{Several nested functions}
 
 For a chain $f_1\circ\cdots\circ f_r$, repeated use of
@@ -5199,6 +5264,51 @@ This proves \eqref{eq:merged-bivariate-fuss}, including values where $A=0$ by
 polynomial continuation.  Multiplying and dividing by $A$
 when $A\ne0$ gives \eqref{eq:merged-bivariate-fuss-rational}.  The case
 $m=n=0$ is immediate from $S(0,0)=1$.
+\end{proof}
+
+In the previous example the two branches carry the same argument $S$, so the
+Good determinant collapses to a single term.  The next example is genuinely
+coupled: each series feeds the other, the determinant has two terms, and the
+answer is a difference of two products of binomial coefficients.  It shows the
+determinant doing work that no one-variable Lagrange inversion performs.
+
+\begin{example}[A coupled two-series system]\label{ex:merged-coupled-pair}
+Let $u$ and $v$ be the unique formal solutions of
+\begin{equation}
+ u=x(1+v),\qquad v=y(1+u).                                        \label{eq:merged-coupled-system}
+\end{equation}
+Then for all integers $m,n,p,q\geq0$,
+\begin{equation}
+ \CoefficientExtraction{x}{m}\CoefficientExtraction{y}{n}u^pv^q
+ =\binom{n}{m-p}\binom{m}{n-q}
+  -\binom{n-1}{m-p-1}\binom{m-1}{n-q-1},                          \label{eq:merged-coupled-coefficients}
+\end{equation}
+with the convention that a binomial coefficient with a negative entry, or with
+a lower entry exceeding the upper one, is zero.
+\end{example}
+
+\begin{proof}
+Here $\phi_1(U,V)=1+V$ and $\phi_2(U,V)=1+U$.  The only nonvanishing partial
+derivatives are $\partial\phi_1/\partial V=1$ and
+$\partial\phi_2/\partial U=1$, so the determinant in \eqref{eq:merged-good} is
+\[
+ \det\begin{pmatrix}
+  1 & -\dfrac{V}{1+V}\\[6pt]
+  -\dfrac{U}{1+U} & 1
+ \end{pmatrix}
+ =1-\frac{UV}{(1+U)(1+V)}.
+\]
+Applying \cref{thm:merged-good} with $F(U,V)=U^pV^q$ and exponents $(m,n)$
+gives
+\[
+ \CoefficientExtraction{U}{m}\CoefficientExtraction{V}{n}\Bigl(
+   U^pV^q(1+V)^m(1+U)^n
+   -U^{p+1}V^{q+1}(1+V)^{m-1}(1+U)^{n-1}\Bigr),
+\]
+since the determinant's second term cancels one factor from each of
+$(1+U)^n$ and $(1+V)^m$.  Each of the two summands factors as a product of a
+$U$-extraction and a $V$-extraction, which yields
+\eqref{eq:merged-coupled-coefficients}.
 \end{proof}
 
 \begin{proposition}[Characteristic determinant]
@@ -5407,7 +5517,8 @@ The exponential generating function for Stirling numbers is
  =k!\sum_{n\geq k}\StirlingSecondKind nk\frac{t^n}{n!}.
 \]
 Substitution and comparison of $t^n/n!$ prove
-\eqref{eq:merged-bernoulli-stirling}.
+\eqref{eq:merged-bernoulli-stirling}.  \Cref{thm:merged-bernoulli-difference}
+below re-proves it as the value at $x=0$ of a polynomial identity.
 
 Because $\TouchardPolynomial{n}$ is a polynomial, the first integral may be
 evaluated term by term:
@@ -5438,6 +5549,52 @@ convergent: for $0<x\leq1$,
 \]
 whereas $E_1(x)\leq\EulerE^{-x}/x$ for $x\geq1$.
 \end{proof}
+
+Formula \eqref{eq:merged-bernoulli-stirling} is the specialization at $x=0$ of
+a polynomial identity in $x$, which is worth recording separately: it expresses
+the whole Bernoulli polynomial in the finite-difference basis, and it makes the
+Bernoulli--Stirling formula a corollary of the elementary evaluation
+$\Delta^k0^n=k!\StirlingSecondKind nk$.
+
+\begin{theorem}[Bernoulli polynomials from finite differences]
+\label{thm:merged-bernoulli-difference}
+Let $\Delta$ denote the forward difference in $x$, so that
+$\Delta^kx^n=\sum_{j=0}^k(-1)^{k-j}\binom kj(x+j)^n$.  Then for every
+$n\in\NaturalNumbers$,
+\begin{equation}
+ \beta_n(x)=\sum_{k=0}^{n}\frac{(-1)^k}{k+1}\Delta^kx^n.           \label{eq:merged-bernoulli-newton-basis}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+In $R[[t]]$ with $R=\RationalNumbers[x]$, substitute $u\mapsto u(\EulerE^t-1)$
+in the geometric series and integrate over $u\in[0,1]$:
+\[
+ \int_0^1\frac{\Differential u}{1+u(\EulerE^t-1)}
+ =\left[\frac{\log\bigl(1+u(\EulerE^t-1)\bigr)}{\EulerE^t-1}\right]_{u=0}^{u=1}
+ =\frac{t}{\EulerE^t-1},
+\]
+the manipulation being legitimate termwise because $\EulerE^t-1\in tR[[t]]$, so
+that only finitely many terms of
+$\sum_{k\geq0}(-1)^ku^k(\EulerE^t-1)^k$ contribute to each power of $t$.
+Expanding that series and using $\int_0^1u^k\Differential u=1/(k+1)$ gives
+\[
+ \frac{t\EulerE^{xt}}{\EulerE^t-1}
+ =\sum_{k\geq0}\frac{(-1)^k}{k+1}\EulerE^{xt}(\EulerE^t-1)^k.
+\]
+Finally $\EulerE^{xt}(\EulerE^t-1)^k
+=\sum_{j=0}^k(-1)^{k-j}\binom kj\EulerE^{(x+j)t}$, whose coefficient of
+$t^n/n!$ is $\sum_{j=0}^k(-1)^{k-j}\binom kj(x+j)^n=\Delta^kx^n$.  Comparing
+coefficients of $t^n/n!$, and noting that $\Delta^kx^n=0$ for $k>n$ since
+$\Delta$ lowers the degree, yields \eqref{eq:merged-bernoulli-newton-basis}.
+\end{proof}
+
+\begin{corollary}
+Setting $x=0$ in \eqref{eq:merged-bernoulli-newton-basis} and using
+$\Delta^k0^n=k!\StirlingSecondKind nk$ recovers
+\eqref{eq:merged-bernoulli-stirling}, independently of the Stirling
+generating function used above.
+\end{corollary}
 
 \section{N\"orlund's generalized Bernoulli polynomials}
 \label{sec:merged-norlund-polynomials}
@@ -6671,6 +6828,116 @@ diagonals.  Its dimension is the number of diagonals still free, so substitute
 $d=N-3-j$ in \eqref{eq:merged-kirkman-cayley} and simplify.
 \end{proof}
 
+\section{The associahedral \texorpdfstring{$h$}{h}-polynomial}
+
+The face vector \eqref{eq:merged-associahedron-f} is unwieldy, but its face
+transform is not: the Narayana numbers of \cref{thm:merged-narayana} reappear
+as the $h$-vector.  This is the associahedral counterpart of
+\cref{thm:permutohedron-h-polynomial}, where the Eulerian numbers played the
+same role for the permutohedron.
+
+\begin{theorem}[Associahedral \texorpdfstring{$h$}{h}-polynomial]
+\label{thm:merged-associahedron-h}
+For $N\geq3$,
+\begin{equation}
+ h_{\AssociahedronByDimension{N-3}}(t)=\sum_{r=0}^{N-3}N(N-2,r+1)\,t^r
+ =\sum_{r=0}^{N-3}\frac1{N-2}\binom{N-2}{r}\binom{N-2}{r+1}t^r.  \label{eq:merged-associahedron-h}
+\end{equation}
+In particular the $h$-vector is the $(N-2)$nd Narayana row, its coefficients are
+palindromic, and $h(1)=\CatalanNumber{N-2}$ is the number of vertices.
+\end{theorem}
+
+\begin{proof}
+Write $n=N-1$, so that $\AssociahedronByDimension{N-3}$ has dimension $n-2$, and
+record \eqref{eq:merged-associahedron-f} in the equivalent form
+\begin{equation}
+ f_d=\frac1n\binom{n-2}{d}\binom{2n-d-2}{n-1},                    \label{eq:merged-associahedron-f-alt}
+\end{equation}
+which agrees with \eqref{eq:merged-associahedron-f} after cancelling
+factorials.  By the face transform of
+\cref{thm:permutohedron-h-polynomial},
+\[
+ h(t)=\sum_{d=0}^{n-2}f_d\,(t-1)^{d},
+\]
+the sum being over nonempty faces, so
+\[
+ \CoefficientExtraction tr h=\sum_{d=r}^{n-2}(-1)^{d-r}\binom dr f_d.
+\]
+Using $\binom dr\binom{n-2}{d}=\binom{n-2}{r}\binom{n-2-r}{d-r}$ and
+substituting $j=d-r$, $M=n-2-r$,
+\[
+ \CoefficientExtraction tr h
+ =\frac1n\binom{n-2}{r}\sum_{j=0}^{M}(-1)^j\binom Mj
+   \binom{2n-r-j-2}{n-1}.
+\]
+The alternating Vandermonde identity
+\begin{equation}
+ \sum_{j=0}^{M}(-1)^j\binom Mj\binom{R-j}{S}=\binom{R-M}{S-M}    \label{eq:merged-alternating-vandermonde}
+\end{equation}
+follows by extracting $\CoefficientExtraction xS$ from
+\[
+ (1+x)^R\left(1-\frac1{1+x}\right)^M=x^M(1+x)^{R-M},
+\]
+the left side expanding as $\sum_j(-1)^j\binom Mj(1+x)^{R-j}$.  Applying
+\eqref{eq:merged-alternating-vandermonde} with $R=2n-r-2$, $S=n-1$ and
+$M=n-2-r$ gives $\binom{n}{r+1}$, whence
+\[
+ \CoefficientExtraction tr h=\frac1n\binom{n-2}{r}\binom n{r+1}
+ =\frac{(n-2)!\,(n-1)!}{r!\,(r+1)!\,(n-2-r)!\,(n-1-r)!}
+ =\frac1{n-1}\binom{n-1}{r}\binom{n-1}{r+1},
+\]
+the middle expression being obtained by writing out both binomial
+coefficients, and the last by reading the same factorial quotient backwards.
+With $n-1=N-2$ this is $N(N-2,r+1)$ by \eqref{eq:merged-narayana}.
+
+Palindromicity is the Narayana symmetry $N(m,k)=N(m,m+1-k)$ recorded after
+\cref{thm:merged-narayana}, and it is the Dehn--Sommerville relation for this
+polytope.  Finally $h(1)=\sum_kN(N-2,k)=\CatalanNumber{N-2}$, which is $f_0$
+as it must be for a simple polytope.
+\end{proof}
+
+\begin{example}
+For $N=5$ the pentagon $\AssociahedronByDimension2$ has $f=(5,5,1)$ and
+$h(t)=1+3t+t^2$; for $N=6$ the three-dimensional associahedron has
+$f=(14,21,9,1)$ and $h(t)=1+6t+6t^2+t^3$.  Both $h$-vectors are Narayana rows,
+and both sum to a Catalan number.
+\end{example}
+
+\section{Loday's realization}
+
+The associahedron is not merely a combinatorial object.  Loday's coordinates
+realize it as an explicit lattice polytope inside a hyperplane, which is the
+form in which it is normally drawn.
+
+\begin{definition}\label{def:merged-loday-coordinates}
+Let $T$ be a rooted binary tree with $n$ internal vertices, hence $n+1$ leaves.
+For the $i$th internal vertex in infix order, let $\ell_i$ and $r_i$ be the
+numbers of leaves in its left and right subtrees, and put
+\begin{equation}
+ M(T)=(\ell_1r_1,\ldots,\ell_nr_n)\in\RealNumbers^n.               \label{eq:merged-loday-point}
+\end{equation}
+\end{definition}
+
+\begin{proposition}[Loday's constant hyperplane]
+\label{prop:merged-loday-hyperplane}
+For every rooted binary tree $T$ with $n$ internal vertices,
+\begin{equation}
+ \sum_{i=1}^{n}\ell_ir_i=\binom{n+1}{2}.                          \label{eq:merged-loday-hyperplane}
+\end{equation}
+Consequently all $\CatalanNumber n$ points $M(T)$ lie in one affine hyperplane
+of $\RealNumbers^n$, and their convex hull has dimension at most $n-1$; it is
+Loday's realization of $\AssociahedronByDimension{n-1}$.
+\end{proposition}
+
+\begin{proof}
+At the $i$th internal vertex, the product $\ell_ir_i$ counts the unordered
+pairs of leaves having one leaf in each of its two child subtrees --- that is,
+exactly the pairs whose lowest common ancestor is that vertex.  Every unordered
+pair of distinct leaves has a unique lowest common ancestor, and is therefore
+counted at exactly one internal vertex.  Summing over $i$ counts every pair of
+the $n+1$ leaves once, which is $\binom{n+1}2$.
+\end{proof}
+
 \section{The Tamari order}
 
 Orient the elementary rotation by
@@ -7542,6 +7809,54 @@ $G(w)=\sum_{n\geq1}g_nw^n$ has
 This is Lagrange--Bürmann with outer function $H(z)=z$.  The coefficient
 $g_n$ depends only on $a_1,\ldots,a_n$, so every truncation is exact through
 its declared order.
+\end{proof}
+
+The next proposition is an independent check on
+\cref{alg:merged-lagrange-reversion}, on the Bell-polynomial inverse
+coefficients of \cref{thm:inverse-bell-coeff}, and on the derivative recursion
+of \cref{thm:merged-inverse-derivative}: it obtains the same coefficients by
+undetermined coefficients alone, using no inversion theorem whatever.  Two
+routes to the same fourth nontrivial order is the kind of redundancy this
+chapter exists to supply.
+
+\begin{proposition}[Direct reversion through degree five]
+\label{prop:merged-low-order-reversion}
+Let
+\[
+ F(z)=z+a_2z^2+a_3z^3+a_4z^4+a_5z^5+\BigO(z^6)
+\]
+over a commutative $\RationalNumbers$-algebra.  Then its compositional inverse
+is
+\begin{align}
+ \CompositionalInverseOf F(z)
+ ={}&z-a_2z^2+(2a_2^2-a_3)z^3
+  +(-5a_2^3+5a_2a_3-a_4)z^4                                        \notag\\
+ &+(14a_2^4-21a_2^2a_3+3a_3^2+6a_2a_4-a_5)z^5+\BigO(z^6).          \label{eq:merged-low-order-reversion}
+\end{align}
+\end{proposition}
+
+\begin{proof}
+Write $G(z)=z+b_2z^2+b_3z^3+b_4z^4+b_5z^5+\BigO(z^6)$ and expand $F(G(z))$.
+Since $G^k=z^k(1+b_2z+b_3z^2+\cdots)^k$, the coefficients of
+$z^2,z^3,z^4,z^5$ in $F(G(z))$ are respectively
+\begin{align*}
+ &b_2+a_2,\\
+ &b_3+2a_2b_2+a_3,\\
+ &b_4+a_2(2b_3+b_2^2)+3a_3b_2+a_4,\\
+ &b_5+a_2(2b_4+2b_2b_3)+a_3(3b_3+3b_2^2)+4a_4b_2+a_5.
+\end{align*}
+Requiring $F(G(z))=z$ sets each of these to zero.  The system is triangular in
+$b_2,b_3,b_4,b_5$ and solves successively:
+\begin{align*}
+ b_2&=-a_2,\\
+ b_3&=-2a_2b_2-a_3=2a_2^2-a_3,\\
+ b_4&=-a_2(2b_3+b_2^2)-3a_3b_2-a_4=-5a_2^3+5a_2a_3-a_4,\\
+ b_5&=-a_2(2b_4+2b_2b_3)-a_3(3b_3+3b_2^2)-4a_4b_2-a_5\\
+    &=14a_2^4-21a_2^2a_3+3a_3^2+6a_2a_4-a_5,
+\end{align*}
+which is \eqref{eq:merged-low-order-reversion}.  Triangularity is what makes
+the argument work over any commutative $\RationalNumbers$-algebra: no division
+occurs, because $F$ was normalized to have leading coefficient $1$.
 \end{proof}
 
 \begin{algorithm}[Reciprocal Newton iteration]
