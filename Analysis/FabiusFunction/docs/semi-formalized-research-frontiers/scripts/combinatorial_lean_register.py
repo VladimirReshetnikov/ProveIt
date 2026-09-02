@@ -414,6 +414,13 @@ STATUS = {
    r"\cref{eq:associated-stirling-recurrence} is \lean{Fabius.associatedStirling_succ_succ} and "
    r"\cref{eq:associated-stirling-egf} is \lean{Fabius.egfA_associatedStirling}; the block-size "
    r"count is not formalized."),
+ 'thm:r-stirling-recurrence': ('partial',
+   r"With $\StirlingSecondKind nk_{\!r}$ defined by the recurrence (\lean{Fabius.rStirling}, "
+   r"module \lean{RStirling}): \cref{eq:r-stirling-recurrence} is "
+   r"\lean{Fabius.rStirling_succ_succ}, the explicit formula "
+   r"$\StirlingSecondKind{n+r}{k+r}_{\!r}=\sum_j\binom nj\StirlingSecondKind jk r^{n-j}$ is "
+   r"\lean{Fabius.rStirlingShift_eq_sum} and \cref{eq:r-stirling-egf} is "
+   r"\lean{Fabius.egfA_rStirlingPoly}; the distinct-blocks count is not formalized."),
  'thm:touchard-poly': ('Lean',
    r"\cref{eq:touchard-poly} is \lean{Fabius.touchardPolynomial_add_prime} "
    r"(\lean{TouchardPolyCongruence}), an identity in $(\mathbb Z/p)[x]$, read off from Spivey's "
