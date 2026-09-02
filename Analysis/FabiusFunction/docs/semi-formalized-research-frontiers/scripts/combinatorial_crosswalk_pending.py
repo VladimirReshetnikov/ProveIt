@@ -641,6 +641,50 @@ and comparing the coefficients of $t^{n+qk}$ in the $k$th powers through
 factorial factor.""")),
 ]
 
+PENDING += [
+ # --- thm:merged-genocchi ---
+ (r"""$t$ gives the second equality.  Parity and initial values follow immediately.
+\end{proof}
+""",
+  remark(r"""% ed.: crosswalk added 2026-09-01.
+Module \lean{GenocchiNumbers} takes the first equality of
+\cref{eq:merged-genocchi} as the definition, \lean{Fabius.genocchi}
+$=2(1-2^n)\beta_n$, and proves the defining generating function
+\cref{eq:merged-genocchi-egf} as \lean{Fabius.egf_genocchi_mul_exp_add_one},
+$\bigl(\sum_n\GenocchiNumber{n}t^n/n!\bigr)(\EulerE^t+1)=2t$ over any
+$\RationalNumbers$-algebra, by exactly the displayed partial-fraction
+identity: the series is $2\mathscr B(t)-2\mathscr B(2t)$
+(\lean{Fabius.egf_genocchi_eq}), and Mathlib's
+\lean{bernoulliPowerSeries_mul_exp_sub_one} rescaled to $2t$ gives
+$(\sum_n\GenocchiNumber{n}t^n/n!)(\EulerE^t+1)(\EulerE^t-1)=2t(\EulerE^t-1)$,
+after which $\EulerE^t-1=t\cdot(\text{unit})$ is cancelled.  The parity
+statement is \lean{Fabius.genocchi_odd} and the initial values are
+\lean{Fabius.genocchi_one} and \lean{Fabius.genocchi_two}; the Euler-polynomial
+equality is not formalized.""")),
+]
+
+PENDING += [
+ # --- thm:eulerian-alternating ---
+ (r"""sides vanish, and for even $n$ the signs coincide.
+\end{proof}
+""",
+  remark(r"""% ed.: crosswalk added 2026-09-01; the formal proof avoids $\tanh$ as a
+% function and works with the Bernoulli generating function.
+\cref{eq:eulerian-alternating} is \lean{Fabius.sum_neg_one_pow_mul_eulerianNumber}
+(module \lean{EulerianAlternating}), for $n\ge1$.  Evaluating the Eulerian
+generating function \cref{thm:eulerian-egf} at $t=-1$ gives
+$E(x)(1+\EulerE^{-2x})=2$ for $E(x)=\sum_n\TypeAEulerianPolynomial{n}(-1)x^n/n!$
+(\lean{Fabius.egfA_eulerianPolynomial_eval_neg_one_mul}); with
+$\mathscr B(t)=t/(\EulerE^t-1)$ one has
+$\mathscr B(4x)(\EulerE^{2x}+1)=2\mathscr B(2x)$
+(\lean{Fabius.rescale_four_bernoulli_mul}), hence
+$xE(x)=2x-\mathscr B(2x)+\mathscr B(4x)$
+(\lean{Fabius.X_mul_egfA_eulerianPolynomial_eval_neg_one}), which is the
+displayed expansion of $\tanh x$; comparing the coefficients of $x^{n+1}$
+gives the formula.  The two reciprocal-binomial identities are not
+formalized.""")),
+]
+
 applied = 0
 for anchor, text in PENDING:
     if text.strip() in s:
