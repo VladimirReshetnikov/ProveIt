@@ -92,32 +92,21 @@ validation state. Deleted checksum manifests must not be recreated. Historical
 SHA-256 values recorded directly in this README and in `PROVENANCE.md` remain
 provenance receipts for the named artifacts.
 
-The retained `q_pochhammer_q_binomial_monograph.pdf` is a 358-page A4
-build of the current master source (14,577 lines, 686,989 bytes,
-SHA-256 `2ecd957cad53d4d9af9ac77bbef17ea845b1bfe13ad3d29bf3a63b0bd88bbcf4`).
-The PDF is 3,047,395 bytes with SHA-256
-`101fcb08d488b7d6bfca5cd8bf83112e740477f8bf85cfa8b981da54ee311e8c`.
+The retained `q_pochhammer_q_binomial_monograph.pdf` is a 361-page A4
+build of the current master source (14,767 lines, 700,102 bytes,
+SHA-256 `e0c2464347a8986d0703f179bb2eebbe4cbb448b7b40eec33c1282f030e29d68`).
+The PDF is 3,069,619 bytes with SHA-256
+`84834d5ee94ebcf4fc42b331a3ecdff76ff7ad60e45fcc7ecfe50d5de019f69a`.
 It was built by exactly three serial
-`pdflatex -interaction=nonstopmode -halt-on-error` passes, which produced 358,
-358, and 358 pages, with `makeindex` run on the `.idx` file after each pass.
-The final log scan found three overfull boxes, all in the single paragraph of the `QPochhammerEntire` crosswalk, whose long declaration names lack break points. All pages are A4. `pdffonts` reports 42 font rows, all
+`pdflatex -interaction=nonstopmode -halt-on-error` passes, which produced 361,
+361, and 361 pages, with `makeindex` run on the `.idx` file after each pass.
+The build log reports three overfull hboxes, all in the single paragraph at source lines 650--668 of the front matter (the widest by 42pt), and no undefined references or citations. All pages are A4. `pdffonts` reports 42 font rows, all
 embedded and subsetted, including 5 Libertinus rows, with no Type-3
 fonts. The files under `assets/experiments/**/figures/` remain research
 figures, not publication manuscripts.
 
-The current live master is a source-only successor to that checkpoint: it has
-14,578 lines and 687,067 bytes. It combines the q-beta, collision-free
-Newton-interpolation, integer/complex-order Gaussian,
-q-Pfaff--Saalschuetz, quantum-multinomial, Gaussian reciprocity/growth, and
-coefficient-closure crosswalks.
-It adds the explicit document-local `\BellBlockMultiplicity{r}` and
-`\MacMahonQCatalanPolynomial{n}{q}` families and normalizes the newly merged
-Jackson, Gaussian-binomial, q-integer, and q-Pochhammer status formulas, while
-retaining the newest feature, crosswalk, and provenance expansion catalogued
-below. No PDF was regenerated after those changes. Thus the PDF and its
-recorded 14,381-line build source form the retained synchronized checkpoint,
-while the current master and retained PDF are distinct payloads pending a
-fresh three-pass build and do not claim render parity.
+The retained PDF was built from the master source described above, so the
+identities recorded there belong to one synchronized source/PDF pair.
 
 The current source includes exhaustive crosswalks for `QPochhammerEntire`
 (zero definitions
@@ -180,7 +169,7 @@ entireness, zero-locus, reciprocal-power, and analytic-order results rather
 than duplicating their analytic proofs. In `QBinomialTheoremInfinite`,
 `finiteQPochhammerIn_zero_left` remains the unique declaration owned by
 `GaussianBinomialAtOne` and is imported rather than redeclared. The forward
-status ledger is 112 Exact, 84 Partial, 78 None, and 8 interface rows; the
+status ledger is 114 Exact, 83 Partial, 77 None, and 8 interface rows; the
 original 191-result pre-Fabius core is 36/29/123/3, and the
 completed source concordance records 66 Lean-proved rows, 412 human-proved
 frontier rows, 60 not-applicable rows, and 9 conjectures.
