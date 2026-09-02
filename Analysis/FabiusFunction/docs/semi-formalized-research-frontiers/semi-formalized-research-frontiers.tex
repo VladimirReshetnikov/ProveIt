@@ -336,8 +336,9 @@ described in the audit map below, the retained q-series and five-module
 q-calculus inventories, and the complete seven-module Pochhammer-limit,
 normal-convergence, universal-polynomial, q-Taylor, partial-fraction,
 integer-index, generalized-identifiability, and subsequent q-calculus,
-theta, derivative, and Gaussian-polynomial closures.  The live facade
-contains exactly 657 source modules and 8,756 public declarations, with no
+theta, derivative, Gaussian-polynomial, central-reduction, and cyclotomic-
+factorization closures.  The live facade contains exactly 659 source modules
+and 8,769 public declarations, with no
 documentation gaps.  The retained 243-page A4 PDF, SHA-256
 \nolinkurl{45552dfbaa48ecd3183830b403cd651a979a57b50d2da6c3ff58af2ac1f02549},
 is a historical validation receipt and is rebuild-pending; its page count and
@@ -573,6 +574,17 @@ Gaussian-binomial continuity and classical limit &
 \nolinkurl{tendsto_gaussianBinomial_nhds_one},
 \nolinkurl{gaussianBinomial_eq_finiteQPochhammerIn_div} &
 \nolinkurl{GaussianBinomialContinuity.lean}; zero definitions and three theorems \\
+Generic Gaussian-polynomial degree, palindromicity, and mean &
+\nolinkurl{reflect_add_of_natDegree_le}, \nolinkurl{reflect_one'},
+\nolinkurl{gaussianBinomial_natDegree_le},
+\nolinkurl{gaussianBinomial_zero_left}, \nolinkurl{gaussianBinomial_diag'},
+\nolinkurl{reflect_gaussianBinomial},
+\nolinkurl{coeff_gaussianBinomial_reflect},
+\nolinkurl{coeff_gaussianBinomial_zero},
+\nolinkurl{coeff_gaussianBinomial_top},
+\nolinkurl{gaussianBinomial_natDegree}, \nolinkurl{gaussianBinomial_monic},
+\nolinkurl{two_mul_derivative_gaussianBinomial_eval_one} &
+\nolinkurl{GaussianBinomialPalindromic.lean}; zero definitions and twelve theorems \\
 Universal Gaussian-polynomial degree and palindromicity &
 \nolinkurl{natDegree_gaussianBinomial_universal},
 \nolinkurl{gaussianBinomial_universal_monic},
@@ -2037,18 +2049,38 @@ nonzero.  With \(q\ne0\),
 and \lean{deriv_qPochhammerInfIn_inv_pow_ne_zero} proves the displayed
 coefficient nonzero.  Its literal conclusion is coefficient nonvanishing;
 the preceding \texttt{HasDerivAt} declaration supplies the derivative
-identification.  Finally,
-\lean{analyticOrderAt_qPochhammerInfIn_of_eq_zero} gives analytic order one
-at every zero, including the nome \(q=0\).  The same conclusion for the
-historical wrapper name is
-\lean{analyticOrderAt_complexQPochhammerInf_of_eq_zero} in the distinct
-five-theorem \path{QPochhammerEntire.lean} compatibility leaf.  Conversely
-that leaf contains no generic ring-valued concatenation or dissection
-theorem.  Neither API proves joint holomorphy in \(q\) or an outside-disk
-reciprocal theory.
+identification.  The division-free theorem
+\lean{deriv_qPochhammerInfIn_ne_zero_of_mul_pow_eq_one} strengthens this to
+nonvanishing of the actual derivative at every raw factor zero, including
+\(q=0\), and \lean{analyticOrderAt_qPochhammerInfIn_of_eq_zero} concludes that
+every zero of the generic product has analytic order exactly one.  The
+separate public name \lean{complexQPochhammerInf} has the corresponding
+compatibility theorem \lean{analyticOrderAt_complexQPochhammerInf_of_eq_zero},
+also including \(q=0\); conversely the five-theorem wrapper contains no generic
+ring-valued concatenation or dissection theorem.  Neither API proves joint
+holomorphy in \(q\) or an outside-disk reciprocal theory.
 
 \paragraph{Exact latest q-series tranche.}
-The downstream \path{GaussianBinomialPolynomialStructure.lean} has no public
+The downstream \path{GaussianBinomialPalindromic.lean} has no public
+definitions and exactly twelve public theorems:
+\lean{reflect_add_of_natDegree_le}, \lean{reflect_one'},
+\lean{gaussianBinomial_natDegree_le},
+\lean{gaussianBinomial_zero_left}, \lean{gaussianBinomial_diag'},
+\lean{reflect_gaussianBinomial},
+\lean{coeff_gaussianBinomial_reflect},
+\lean{coeff_gaussianBinomial_zero},
+\lean{coeff_gaussianBinomial_top},
+\lean{gaussianBinomial_natDegree}, \lean{gaussianBinomial_monic}, and
+\lean{two_mul_derivative_gaussianBinomial_eval_one}.  Over every commutative
+semiring these give generic reflection helpers, the Gaussian degree bound,
+zero and diagonal values, reflection in degree \(k(n-k)\), constant and top
+coefficients one, bounded-index coefficient reversal, and the division-free
+mean identity.  Exact degree and monicity require only nontriviality.  With
+existing row symmetry and reciprocity, this keeps the canonical forward
+q-binomial structure theorem exact.  It does not prove that the coefficient
+of \(q\) is one.
+
+The companion \path{GaussianBinomialPolynomialStructure.lean} has no public
 definitions and exactly five public theorems:
 \lean{natDegree_gaussianBinomial_universal},
 \lean{gaussianBinomial_universal_monic},
@@ -2198,7 +2230,7 @@ alone does not retain exponent sizes, and sampling product values at dyadic
 zeros records only vanishing.  No spectral-zeta reconstruction,
 cumulant-sample reconstruction, or underlying probability-law
 identifiability is formalized; those remain open.  This one-module,
-six-declaration overlay is part of the live 657-module, 8,756-declaration
+six-declaration overlay is part of the live 659-module, 8,769-declaration
 source union.  The retained 243-page PDF is explicitly historical and does
 not certify parity with this source union.
 
@@ -2384,6 +2416,30 @@ leaf has no definitions and five theorems:
 \(\NaturalNumbers[X]\) under \(k\le n\) and supplies the exact universal
 degree, monicity, constant coefficient, reflection, and bounded-index
 coefficient symmetry.
+
+\path{CentralQBinomialReduction.lean} has no definitions and exactly six
+theorems: \lean{finiteQPochhammerIn_mul_neg},
+\lean{finiteQPochhammerIn_two_mul},
+\lean{finiteQPochhammerIn_map_ringHom},
+\lean{central_gaussianBinomial_sq_mul_int},
+\lean{central_gaussianBinomial_sq_mul}, and
+\lean{central_gaussianBinomial_sq_div}.  The first five are polynomial or
+commutative-ring identities and make the central Gaussian reduction without
+division.  The quotient wrapper is over a field and assumes exactly that the
+two displayed finite q-Pochhammer denominators are nonzero.
+
+\path{CyclotomicFactorization.lean} has no definitions and exactly seven
+theorems: \lean{div_add_div_le_div},
+\lean{div_le_div_add_div_add_one},
+\lean{mem_range_and_mem_divisors_iff},
+\lean{finiteQPochhammerIn_X_eq_prod_cyclotomic},
+\lean{finiteQPochhammerIn_X_eq_gaussianBinomial_mul},
+\lean{prod_cyclotomic_pow_div_extend}, and
+\lean{gaussianBinomial_X_eq_prod_cyclotomic}.  The two floor inequalities put
+every Gaussian cyclotomic exponent in \(\{0,1\}\).  The shifted-factorial
+factorization and factorial identity hold over every commutative ring; only
+the final cancellation to the Gaussian factorization requires an integral
+domain, and all Gaussian statements retain \(k\le n\).
 
 The earlier compiler-validated checkpoint \texttt{e6f535e5d} supplied the two modules that
 promote the
@@ -4466,6 +4522,16 @@ The exhaustive zero-definition, twelve-theorem commutative-semiring interface
 for degree bounds, reflection, coefficient symmetry, boundary coefficients,
 and the division-free first moment; exact degree and monicity add
 nontriviality.\\
+\path{CentralQBinomialReduction.lean} &
+The exhaustive zero-definition, six-theorem sign-pairing, even--odd
+dissection, ring-hom naturality, and central-Gaussian-reduction interface.  Its
+multiplication form is division-free over commutative rings; only the field
+quotient wrapper assumes the two finite q-Pochhammer denominators nonzero.\\
+\path{CyclotomicFactorization.lean} &
+The exhaustive zero-definition, seven-theorem floor-exponent,
+divisor-indexing, shifted-factorial, and Gaussian cyclotomic-factorization
+interface.  The factorial layer is commutative-ring-level; the final Gaussian
+cancellation assumes an integral domain and \(k\le n\).\\
 \path{RogersSzegoPolynomial.lean} &
 The one-definition, nine-theorem Rogers--Szeg\H{o} interface: finite
 commutative-(semi)ring boundary and recurrence laws and the complete-normed-field
@@ -10559,6 +10625,7 @@ Module & Role in the present article \\
 \path{LambertSeriesLog.lean} & Zero definitions and exactly four theorems: \lean{one_le_norm_natCast_add_one}, \lean{summable_lambert_series}, \lean{hasSum_lambert_log_complex}, and \lean{exp_neg_tsum_lambert_eq_qPochhammerInfIn}.  Apart from the unconditional norm helper, they assume exactly complex \(\lVert a\rVert<1\) and \(\lVert q\rVert<1\), and prove absolute summability, a principal-factor-log \texttt{HasSum}, and the branch-free exponential identity.  No norm-one boundary, principal log of the product, analytic continuation, or differentiated Lambert series is asserted. \\
 \path{QGamma.lean} & Two total real definitions, \lean{qGamma} and \lean{qNumber}, and exactly ten theorems: \lean{norm_lt_one_of_pos_of_lt_one}, \lean{qPochhammerInfIn_rpow_pos}, \lean{qPochhammerInfIn_self_pos}, \lean{qGamma_pos}, \lean{qGamma_one}, \lean{qGamma_add_one}, \lean{qGamma_nat_succ}, \lean{qNumber_natCast}, \lean{qGamma_mul_qGamma_one_sub}, and \lean{hasSum_theta_qGamma_reflection}.  The positive recurrence API uses \(0<q<1\) and displayed \(x>0\); the natural bridge only \(q\ne1\); reflection only \(q<1\) and arbitrary real \(x\); theta form \(0<q<1\), \(0<x<1\).  Complex continuation, poles, the classical-gamma limit, log-convexity/uniqueness, and q-digamma calculus remain outside Lean. \\
 \path{QBinomialReciprocity.lean} & Exactly four public theorems: \lean{gaussianBinomial_reciprocity_units}, \lean{gaussianBinomial_reciprocity}, \lean{gaussianBinomial_neg_one_eq_zero_of_odd_degree}, and \lean{gaussianBinomial_neg_one_even_odd_eq_zero}.  They give unit-valued reciprocity over every commutative semiring, its nonzero-element semifield wrapper, odd-degree vanishing at \(q=-1\) over every commutative ring, and the total even-row/odd-column specialization.  The two reciprocity identities are total above the diagonal by zero extension; no quotient, cancellation, domain, characteristic, topology, or convergence assumption is used. \\
+\path{GaussianBinomialPalindromic.lean} & Exactly twelve public theorems and no definitions: generic reflection helpers, Gaussian degree bound, zero/diagonal values, reflection, constant/top coefficients, coefficient symmetry, division-free mean, and exact degree/monicity over a nontrivial commutative semiring; no coefficient-of-\(q\) theorem is asserted. \\
 \path{GaussianBinomialPolynomialStructure.lean} & Exactly five public theorems and no definitions: exact universal natural degree, monicity, constant coefficient one, reflection at degree \(k(n-k)\), and bounded-index coefficient palindromicity; no coefficient-of-\(q\) theorem is asserted. \\
 \path{QPochhammerElementaryIdentities.lean} & Exactly 13 public theorems: unit-valued ring reversals, root-safe terminating and adjacent cross identities, and field quotient forms with their exact nonzero-denominator hypotheses; the cross identities are total by zero extension, while the adjacent quotients retain \(k<n\). \\
 \path{QDifferenceAnnihilation.lean} & Exactly four public theorems: the scaled inverse-Gaussian characteristic polynomial, its complete geometric monomial moments, scalar-extension top-coefficient extraction, and strict-degree \(q\)-difference annihilation; \cref{dyadicq:rem:scaled-qdiff}. \\

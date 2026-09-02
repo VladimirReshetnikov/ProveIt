@@ -69,15 +69,18 @@ with SHA-256
 The package now retains the subsequent upstream 348-page, 3,002,729-byte A4
 PDF with SHA-256
 `8bf14b52d8a0fc0abc4d54cca503fd47a2df37cf76ee1bb4e442bea1fd2a4aa7`.
-Its guarded build used three serial passes producing 338, 348, and 348 pages.
+It was built from the then-current 14,158-line, 661,835-byte source with
+SHA-256
+`79ee5e60a6c7e42a91c58dcd9bcae56173cc6b4aa3e54739a461943f705f3904`;
+its guarded build used three serial passes producing 338, 348, and 348 pages.
 The merged TeX postdates that build, so the retained PDF is historical and no
 source/PDF parity is claimed.
 
 The live source now postdates the retained 348-page upstream receipt. An
-independent lexical audit of its facade union finds 657 source modules and
-8,756 public
+independent lexical audit of its facade union finds 659 source modules and
+8,769 public
 declarations, with no missing module headers or declaration doc comments.
-Its 282-row canonical forward ledger records 71 exact, 84 partial, 119
+Its 282-row canonical forward ledger records 73 exact, 84 partial, 117
 no-counterpart, and 8
 not-applicable results. The exhaustive q-series API
 overlay includes `RvachevPochhammerFactorization` (one definition, ten
@@ -118,10 +121,10 @@ reciprocal, pole-divisor, or centered/MGF packaging.
 
 The checkpoint union additionally retains `BasicHypergeometricSeries` (two
 definitions and five theorems), `HeineTransformation` (two definitions and
-five theorems), `QGaussSummation` (two theorems),
-`QPochhammerInfiniteBounds` (five theorems), `QPochhammerComplexOrder` (one
-definition and four theorems), and `QMultinomial` (one definition and nine
-theorems).
+five theorems), `QGaussSummation` (zero definitions and two theorems),
+`QPochhammerInfiniteBounds` (zero definitions and five theorems),
+`QPochhammerComplexOrder` (one definition and four theorems), and
+`QMultinomial` (one definition and nine theorems).
 
 The incoming eight-module union adds 58 public declarations:
 `GaussianBinomialPalindromic` (zero definitions and twelve theorems),
@@ -131,9 +134,19 @@ six theorems), `JacobiCubic` (zero definitions and two theorems),
 `QPochhammerLogDerivative` (zero definitions and ten theorems),
 `QPochhammerOrderDerivative` (zero definitions and three theorems), and
 `GaussianBinomialPolynomialStructure` (zero definitions and five theorems).
-The master inventories every declaration in these modules. In particular,
+The two-module tail adds `CentralQBinomialReduction` (zero definitions and six
+theorems) and `CyclotomicFactorization` (zero definitions and seven theorems).
+The master inventories every declaration in all ten modules. The central
+reduction is exact both in its division-free commutative-ring form and its
+field quotient form under the stated nonvanishing hypotheses. The
+cyclotomic shifted-factorial factorization is exact over every commutative
+ring and the Gaussian factorization over every integral domain, with both
+exponent bounds formalized. These promote `lem:central-reduction` and
+`thm:cyclotomic-pochhammer` from no counterpart to exact. In particular,
 `thm:qbinom-structure` is exact and `thm:qbinom-moments` is partial because
-the formal mean identity does not include the variance.
+the formal mean identity does not include the variance. The half-base Gaussian
+valuation row remains partial because its concluding odd-integer valuation
+statement is not formalized.
 
 The retained upstream PDF is historical after this merged TeX. The root
 `SHA256SUMS` is therefore an explicitly partial, pending operational ledger,

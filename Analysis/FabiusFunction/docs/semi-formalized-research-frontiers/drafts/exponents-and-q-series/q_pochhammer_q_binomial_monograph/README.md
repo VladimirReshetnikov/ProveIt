@@ -102,7 +102,10 @@ ledger regeneration. The nested asset ledger remains independently useful
 because it preserves the migrated experiment and research-figure boundary.
 
 The retained `q_pochhammer_q_binomial_monograph.pdf` is the upstream
-348-page A4 publication checkpoint. The PDF is 3,002,729 bytes with SHA-256
+348-page A4 publication checkpoint. It was built from the then-current
+14,158-line, 661,835-byte master source with SHA-256
+`79ee5e60a6c7e42a91c58dcd9bcae56173cc6b4aa3e54739a461943f705f3904`.
+The PDF is 3,002,729 bytes with SHA-256
 `8bf14b52d8a0fc0abc4d54cca503fd47a2df37cf76ee1bb4e442bea1fd2a4aa7`.
 Exactly three serial
 `pdflatex -interaction=nonstopmode -halt-on-error` passes produced 338, 348,
@@ -113,13 +116,13 @@ including five Libertinus rows, with no Type-3 font.
 
 The merged master includes later checkpoint and incoming API crosswalks, so
 the retained PDF is a verified historical artifact rather than a render of
-the live TeX. Earlier publication receipts remain recorded in
-`PROVENANCE.md`. Files under
+the live TeX. The immediately preceding synchronized 347-page receipt and
+earlier publication receipts remain recorded in `PROVENANCE.md`. Files under
 `assets/experiments/**/figures/` remain research figures rather than
 publication manuscripts.
 
-An independent lexical audit of the live facade union finds exactly 657
-source modules and 8,756 public declarations, with no missing module headers
+An independent lexical audit of the live facade union finds exactly 659
+source modules and 8,769 public declarations, with no missing module headers
 or declaration doc comments. The reviewed 547-row source concordance records
 73 Lean-proved rows, 405 human-proved frontier-result rows, 60 not-applicable
 rows, and 9 conjecture rows.
@@ -143,6 +146,13 @@ definition and twenty-two theorems), `QPascalSummation` (four theorems),
 and nine theorems). `finiteQPochhammerIn_zero_left` remains uniquely owned by
 `GaussianBinomialAtOne` and is only imported by
 `QBinomialTheoremInfinite`.
+
+The wider inventory includes `QPochhammerInfiniteBounds` (zero definitions
+and five theorems), `QPochhammerComplexOrder` (one definition and four
+theorems), `HeineTransformation` (two definitions and five theorems), and
+`QGaussSummation` (zero definitions and two theorems), as well as the expanded
+Euler, Jacobi, and Rogers--Szegő surfaces recorded declaration by declaration
+in the master.
 
 The q-calculus tranche comprises `LambertSeriesLog` (four theorems),
 `PolynomialQDerivative` (two definitions and seventeen theorems),
@@ -169,11 +179,23 @@ six theorems), `JacobiCubic` (zero definitions and two theorems),
 `QPochhammerLogDerivative` (zero definitions and ten theorems),
 `QPochhammerOrderDerivative` (zero definitions and three theorems), and
 `GaussianBinomialPolynomialStructure` (zero definitions and five theorems).
+The two-module tail adds `CentralQBinomialReduction` (zero definitions and six
+theorems) and `CyclotomicFactorization` (zero definitions and seven theorems).
+The former proves the central base-\(q^2\) reduction both division-free over
+every commutative ring and as a field quotient under the displayed
+nonvanishing hypotheses. The latter proves the universal shifted-factorial
+cyclotomic product over every commutative ring and the Gaussian cyclotomic
+product over every integral domain, together with the exponent bounds.
+
 The master contains an exhaustive declaration-by-declaration crosswalk for
-all eight. Its 282-row forward ledger is 71 Exact, 84 Partial, 119 None, and
-8 interface rows. In particular, `thm:qbinom-structure` is Exact and
+all ten modules. Its 282-row forward ledger is 73 Exact, 84 Partial, 117 None,
+and 8 interface rows: `lem:central-reduction` and
+`thm:cyclotomic-pochhammer` are the two new Exact promotions. In particular,
+`thm:qbinom-structure` is Exact and
 `thm:qbinom-moments` is Partial: palindromicity proves the mean identity, but
-the variance clause remains outside Lean.
+the variance clause remains outside Lean. The half-base Gaussian valuation row
+also remains Partial: Lean proves the reciprocal identity and symmetry used in
+the argument, but not its concluding odd-integer valuation statement.
 
 The live master, this README, and the extractor postdate the retained PDF.
 The root `SHA256SUMS` is intentionally a partial operational ledger: it

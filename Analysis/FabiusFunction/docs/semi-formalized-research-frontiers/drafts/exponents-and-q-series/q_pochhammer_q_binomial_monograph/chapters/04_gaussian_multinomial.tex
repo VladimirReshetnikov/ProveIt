@@ -56,15 +56,23 @@ nonempty \(k\times b\) rectangle.
 \begin{remark}[Partial Lean crosswalk]
 The universal-polynomial theorem
 \nolinkurl{gaussianBinomial_eq_eval₂_universal} supplies the nonnegative
-integral coefficients.  The five public theorems of
-\nolinkurl{GaussianBinomialPolynomialStructure}---
-\nolinkurl{natDegree_gaussianBinomial_universal},
-\nolinkurl{gaussianBinomial_universal_monic},
-\nolinkurl{coeff_zero_gaussianBinomial_universal},
-\nolinkurl{gaussianBinomial_universal_reflect}, and
-\nolinkurl{coeff_gaussianBinomial_universal_symm}---give exact degree,
+integral coefficients.  The direct structure theorems of the
+zero-definition, twelve-theorem
+\nolinkurl{GaussianBinomialPalindromic} module---
+\nolinkurl{gaussianBinomial_natDegree},
+\nolinkurl{gaussianBinomial_monic},
+\nolinkurl{coeff_gaussianBinomial_zero},
+\nolinkurl{reflect_gaussianBinomial}, and
+\nolinkurl{coeff_gaussianBinomial_reflect}---give exact degree,
 monicity, constant coefficient one, reflection, and coefficient
-palindromicity for every admissible column.  No current declaration proves
+palindromicity for every admissible column over generic commutative
+semirings.  The same API gives the top coefficient and the division-free
+mean identity \nolinkurl{two_mul_derivative_gaussianBinomial_eval_one}.
+The companion zero-definition, five-theorem
+\nolinkurl{GaussianBinomialPolynomialStructure} module exports the same
+degree, monic, constant, reflection, and palindrome facts specialized to
+\(\NaturalNumbers[X]\).
+No current declaration proves
 that the coefficient of \(q\) is one for the strict interior range
 \(0<k<n\).  Consequently
 \cref{prop:gq-positive-palindromic} remains a human-proved, partially

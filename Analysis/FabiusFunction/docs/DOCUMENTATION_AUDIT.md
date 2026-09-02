@@ -109,13 +109,15 @@ only 4,606 declarations and
 declarations, including 69 undocumented ones.  Run the script for the live
 numbers rather than copying these historical values.
 
-The authoritative live 2026-09-01 lexical inventory contains 657 modules and
-8,756 public declarations, with zero missing module headers and zero missing
-doc comments.  Relative to the 649/8,698 checkpoint, the exact union adds eight
-modules and 58 declarations.  Relative to the 610/8,318 activation checkpoint,
-it adds 47 modules and 438 declarations; relative to the 634/8,589 q-calculus
-checkpoint, it adds 23 modules and 167 declarations; relative to the 641/8,652
-documentation union, it adds sixteen modules and 104 declarations.  These are
+The authoritative live post-merge 2026-09-01 lexical inventory contains 659
+modules and 8,769 public declarations, with zero missing module headers and
+zero missing doc comments.  Relative to the 649/8,698 checkpoint, the exact
+tree union adds ten modules and 71 declarations.  Relative to the 610/8,318
+activation checkpoint it adds forty-nine modules and 451 declarations;
+relative to the 634/8,589 q-calculus checkpoint it adds twenty-five modules and
+180 declarations; relative to the 641/8,652 documentation union it adds
+eighteen modules and 117 declarations; and relative to the earlier 630/8,552
+merged checkpoint it adds twenty-nine modules and 217 declarations.  These are
 tree-union comparisons, not claims of a single linear history.
 
 The retained q-series surface includes the Gaussian-continuity,
@@ -123,17 +125,24 @@ Jacobi/pentagonal, infinite-q-binomial, q-Pascal, quantum-binomial,
 Rogers--Szegő, polynomial Jackson/q-Leibniz, finite-Pochhammer derivative,
 Lambert-series, real-q-gamma, finite/infinite Pochhammer, classical-limit,
 normal-convergence, q-Taylor, q-partial-fraction, integer-index, Heine,
-q-Gauss, complex-order, uniform-bound, basic-hypergeometric, and q-multinomial
-modules, together with the generic Gaussian-palindromic, Jackson-integral,
-q-exponential, bilateral-theta, Jacobi-cubic, Pochhammer-log-derivative, and
-Pochhammer-order-derivative leaves.  The unconditional
-`complexQPochhammerInf_eq_qPochhammerInfIn`
-bridge remains in `RvachevPochhammerFactorization`; the generic analytic-order
-theorem is canonically owned by `QPochhammerInfinite`; and
-`QPochhammerEntire` is the five-theorem legacy compatibility layer.  The
-contemporaneous `JacobiTripleProduct.thetaCoeff_pair_eq` edit only renames an
-unused proof binder and changes no public declaration or count.  The
-branch-point geometry and
+q-Gauss, complex-order, uniform-bound, basic-hypergeometric, q-multinomial,
+generic Gaussian-palindromic, Jackson-integral, q-exponential,
+bilateral-theta, Jacobi-cubic, Pochhammer-log-derivative,
+Pochhammer-order-derivative, central-Gaussian-reduction, and cyclotomic
+factorization modules.  The unconditional
+`complexQPochhammerInf_eq_qPochhammerInfIn` bridge remains in the exhaustive
+1+10 `RvachevPochhammerFactorization` surface; the generic analytic-order
+theorem is canonically owned by the exhaustive 1+29
+`QPochhammerInfinite` surface; `QPochhammerEntire` remains the five-theorem
+legacy compatibility layer; `QMultinomial` remains 1+9; and
+`GaussianBinomialPolynomialStructure` is 0+5, including its inline-attributed
+constant-coefficient theorem.  The two newest algebra leaves add thirteen
+theorems and no definitions: `CentralQBinomialReduction.lean` 0+6 and
+`CyclotomicFactorization.lean` 0+7.  Older census values below are historical
+checkpoints, not descriptions of the live tree.  The contemporaneous
+`JacobiTripleProduct.thetaCoeff_pair_eq` edit only renames an unused proof
+binder and changes no public declaration or count.  The branch-point geometry
+and
 asymptotics leaves contribute 17 declarations for the one-sided vertical
 tangents and leading signed square-root laws of both real Lambert branches.
 The two Legendre--Gaunt modules contribute 25: four definitions and twelve
@@ -321,8 +330,12 @@ recurrence laws, plus the complete-normed-field generating series under
 from 622/8,472 to 629/8,547, a seven-module/75-declaration change.  The two
 inverse-computability modules then brought that feature snapshot to 631/8,556,
 a nine-module/84-declaration change.  The six further incoming q-calculus
-leaves contribute 36 declarations and bring that branch to its historical
-649/8,697 pre-union census.
+leaves contribute 36 declarations and bring one historical branch to its
+649/8,697 pre-union census.  The corresponding checkpoint in the current
+audited tree union is 649/8,698.  The four subsequent leaves contribute 38
+declarations and bring that union to 653/8,736; the next four contribute twenty
+and bring it to 657/8,756; and the final two contribute thirteen and give the
+live 659/8,769 census recorded above.
 
 That increment is exhaustively counted as
 `QPochhammerInfiniteBounds.lean` 0+5, `HeineTransformation.lean` 2+5,
@@ -333,6 +346,65 @@ q-Gauss identities, a ratio-defined complex-order q-Pochhammer API, general
 basic-hypergeometric terms and summability, and the division-free recursive
 q-multinomial interface.  The displayed contraction, nonvanishing, and
 denominator hypotheses remain part of these APIs.
+The final four-module increment is exhaustively counted as
+`GaussianBinomialPalindromic.lean` 0+12, `JacksonIntegral.lean` 1+7,
+`QExponential.lean` 3+8, and `ThetaQuasiPeriodicity.lean` 1+6.  It adds the
+degree, monicity, coefficient-reversal, and division-free mean theory of the
+Gaussian polynomial; q-exponentials and their q-derivative laws; Jackson's
+fundamental theorem and integration by parts; and the bilateral theta product,
+quasi-periodicity, and zero criterion.  Their analytic declarations keep the
+displayed strict-contraction, nonzero-variable, convergence, and nonvanishing
+hypotheses.
+
+The still newer four-module increment is exhaustively counted as
+`GaussianBinomialPolynomialStructure.lean` 0+5, `JacobiCubic.lean` 0+2,
+`QPochhammerLogDerivative.lean` 0+10, and
+`QPochhammerOrderDerivative.lean` 0+3.  Its twenty theorems add universal
+Gaussian polynomial structure over `ℕ[X]`, Jacobi's cubic identity, the
+q-Pochhammer logarithmic derivative and Lambert-series form on the unit disc,
+and the derivative with respect to complex order.  The strict-contraction,
+unit-disc, nonzero-nome, and shifted-argument hypotheses remain explicit.
+
+The final two-module increment is exhaustively counted as
+`CentralQBinomialReduction.lean` 0+6 and
+`CyclotomicFactorization.lean` 0+7.  It adds finite q-Pochhammer sign pairing,
+even--odd dissection and ring-hom naturality; the division-free central
+Gaussian reduction and its conditional quotient form; and the cyclotomic
+factorizations of `(X;X)_n` and `[n,k]_X`.  The quotient theorem retains both
+nonzero-denominator hypotheses, and the Gaussian cyclotomic factorization
+retains its integral-domain assumption.
+
+The exhaustive six-theorem `CentralQBinomialReduction.lean` surface is
+`finiteQPochhammerIn_mul_neg`, `finiteQPochhammerIn_two_mul`,
+`finiteQPochhammerIn_map_ringHom`,
+`central_gaussianBinomial_sq_mul_int`,
+`central_gaussianBinomial_sq_mul`, and
+`central_gaussianBinomial_sq_div`.  The first three and the division-free
+central identity hold over commutative rings with no nonvanishing, division,
+positivity, or nontriviality premise, so the zero ring and the boundaries
+`n=0`, `k=0`, and `q=0` are included.  The cancellation proof is first made in
+`ℤ[X]` and then transported by the ring-hom naturality theorem.  Only the
+quotient form moves to a field and assumes exactly
+`finiteQPochhammerIn (-q) q (2*k) ≠ 0` and
+`finiteQPochhammerIn (q^2) (q^2) k ≠ 0`.  This finite algebra supplies no
+infinite-product, convergence, root-of-unity regularization, or asymptotic
+claim.
+
+The exhaustive seven-theorem `CyclotomicFactorization.lean` surface is
+`div_add_div_le_div`, `div_le_div_add_div_add_one`,
+`mem_range_and_mem_divisors_iff`,
+`finiteQPochhammerIn_X_eq_prod_cyclotomic`,
+`finiteQPochhammerIn_X_eq_gaussianBinomial_mul`,
+`prod_cyclotomic_pow_div_extend`, and
+`gaussianBinomial_X_eq_prod_cyclotomic`.  The two floor-division bounds assume
+exactly `k ≤ n` and `0 < d` and bound each Gaussian cyclotomic exponent between
+zero and one; the range/divisor exchange is total in `n,j,d`.  The shifted
+factorial factorization holds over every commutative ring, including the zero
+ring and `n=0`; the factorial/Gaussian bridge assumes exactly `k ≤ n`, and the
+product extension exactly `m ≤ n`.  The terminal Gaussian factorization
+assumes exactly `k ≤ n` and `[IsDomain R]`.  It makes no statement for `k>n`,
+at a specialized root of unity, about coefficient unimodality, or about
+asymptotics.
 
 `EffectiveMonotoneInverse.lean` has exactly two public definitions,
 `Fabius.SequentiallyComputableOn` and `Fabius.unitClamp`, and exactly six
@@ -505,6 +577,14 @@ inventory.  `GaussianBinomialAtNegOneDerivative.lean` is 0+4, and
 `GaussianBinomialContinuity.lean` is 0+3:
 `continuous_gaussianBinomial`, `tendsto_gaussianBinomial_nhds_one`, and
 `gaussianBinomial_eq_finiteQPochhammerIn_div`.
+`GaussianBinomialPalindromic.lean` is 0+12:
+`reflect_add_of_natDegree_le`, `reflect_one'`,
+`gaussianBinomial_natDegree_le`, `gaussianBinomial_zero_left`,
+`gaussianBinomial_diag'`, `reflect_gaussianBinomial`,
+`coeff_gaussianBinomial_reflect`, `coeff_gaussianBinomial_zero`,
+`coeff_gaussianBinomial_top`, `gaussianBinomial_natDegree`,
+`gaussianBinomial_monic`, and
+`two_mul_derivative_gaussianBinomial_eval_one`.
 `GaussianBinomialPolynomialStructure.lean` is 0+5:
 `natDegree_gaussianBinomial_universal`,
 `gaussianBinomial_universal_monic`,
@@ -720,20 +800,18 @@ results are computability certificates, not an input-bit running-time bound or
 an exact least endpoint-mass denominator.
 
 Every committed PDF in this documentation family is a historical validation
-receipt and remains rebuild-pending.  This includes the 158-page
-comb-interpolation synthesis, 377-page Integration-and-Transform master,
-340-page canonical q-series synthesis, 167-page primary exposition, 126-page
-walkthrough, 237-page canonical frontier, 301-page Representation Frontiers,
-41-page New Frontiers, 88-page notation catalogue, inverse-computability, and
-134-page inverse-theory artifacts.  Their page counts describe receipts
-rendered at earlier source checkpoints; none is a parity claim for the present
-657-module, 8,756-declaration union.  Fresh uninterrupted parity builds are
-required after the merged q-series, q-calculus, Pochhammer-limit,
-normal-convergence, integer-index, partial-fraction, identifiability, valuation,
-Heine, q-Gauss, complex-order, basic-hypergeometric, q-multinomial,
-Gaussian-palindromic, Jackson-integral, q-exponential, theta, Jacobi-cubic, and
-Pochhammer-derivative updates, as well as the retained effective-inversion
-tranche.
+receipt and remains rebuild-pending.  Package-local page counts describe
+artifacts rendered at earlier source checkpoints; none is a parity claim for
+the present 659-module, 8,769-declaration union.  This applies to the retained
+comb-interpolation, Integration-and-Transform, canonical q-series, primary,
+walkthrough, canonical-frontier, Representation Frontiers, New Frontiers,
+notation-catalogue, inverse-computability, and inverse-theory artifacts.  Fresh
+uninterrupted three-pass parity builds are required after the merged q-series,
+q-calculus, Pochhammer-limit, normal-convergence, integer-index,
+partial-fraction, identifiability, valuation, Heine, q-Gauss, complex-order,
+basic-hypergeometric, q-multinomial, Gaussian-palindromic, Jackson-integral,
+q-exponential, theta, Jacobi-cubic, Pochhammer-derivative, central-Gaussian,
+cyclotomic, and effective-inversion updates.
 
 ### What the review pass caught
 

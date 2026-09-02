@@ -20,7 +20,7 @@ were moved verbatim — no `.tex` content was changed by the reorganization,
 so no PDF was rebuilt for it.
 
 **Current artifact checkpoint (2026-09-01).** The live Lean audit contains
-exactly 657 facade-reachable modules and 8,756 public declarations, with no
+exactly 659 facade-reachable modules and 8,769 public declarations, with no
 missing module headers or declaration documentation. Page counts below are
 publication receipts, not claims that retained PDFs render the final merged
 TeX. The currently retained primary PDF is the 175-page incoming-branch
@@ -30,7 +30,7 @@ include 167- and 177-page primary expositions,
 377-page Integration master, 71- and 88-page notation-catalogue checkpoints,
 a 301-page Representation master, a 41-page New Frontiers-2 checkpoint, a
 42-page inverse-computability report, a 158-page comb synthesis, 335-, 340-,
-345-, and 347-page q-series syntheses, and 238-page Exponents renders. The
+345-, 347-, and 348-page q-series syntheses, and 238-page Exponents renders. The
 canonical inverse-theory PDF has not yet been published. Every live TeX that
 advanced after its named render requires a fresh three-pass build before
 source/PDF synchronization is claimed.
@@ -51,36 +51,43 @@ pre-`c3720b763` source SHA-256
 `9b7ac11a815efa7f3c6ea08b9626c06143fd6b0d633fef6edfc8bc21c2f6783a`
 produced a 335-page, 2,163,339-byte A4 PDF with SHA-256
 `91c649d0c69628e134e71f1be6c39c3cbc96b91bfc63e456011083cf0e882f03`.
-Repository history records the 340-page, 2,180,191-byte PDF with SHA-256
-`e64a4ef65a9fcce3a4f211f2125b0f8440910cf4527635f76975b0967800e667`,
-and the 345-page, 2,215,438-byte PDF with SHA-256
-`6d5477affdff8eb9711232c3ab7b1ad53dda3ad9a866e8fc031f5e787fcffc59`.
-The newest retained checkpoint is the 347-page, 2,996,319-byte PDF with
-SHA-256
-`29b422a39c42be37bd1487d4245c44e55706720c545dd015957644e47014bd48`,
-built from source SHA-256
-`062b7230d95ff8bd52b11253c6c3c8820d6f6a82e4307ae5d82a1d793c00c517`.
-All are historical because the live master contains later API and crosswalk
-changes.
+Repository history also records 340-, 345-, and 347-page receipts. The
+retained checkpoint is now the historical 348-page, 3,002,729-byte A4 PDF
+with SHA-256
+`8bf14b52d8a0fc0abc4d54cca503fd47a2df37cf76ee1bb4e442bea1fd2a4aa7`,
+built from the preceding 14,158-line, 661,835-byte source with SHA-256
+`79ee5e60a6c7e42a91c58dcd9bcae56173cc6b4aa3e54739a461943f705f3904`.
+The live master is a source-only successor, so no render parity is claimed.
 
 The current q-series topology records `RvachevPochhammerFactorization` as one
-definition and ten theorems, `QPochhammerEntire` as five compatibility
-theorems, and `QPochhammerInfinite` as one definition and twenty-nine
-theorems. The public generic-symbol bridge is unconditional, while analytic
-order and normal-convergence theorems retain their contraction and zero
-hypotheses. The finite/infinite, q-calculus, identifiability, normal-convergence,
-classical-limit, universal-polynomial, q-Taylor, partial-fraction, and
-integer-index tranches remain exhaustively crosswalked. The latest additions
-include `BasicHypergeometricSeries` (two definitions and five theorems) and
-`QMultinomial` (one definition and nine theorems, including the nil and
-singleton boundary theorems). The live master is newer than every named
-receipt.  The final eight-module source tranche adds five definitions and 53
-theorems across `GaussianBinomialPalindromic`, `JacksonIntegral`,
-`QExponential`, `ThetaQuasiPeriodicity`, `JacobiCubic`,
-`QPochhammerLogDerivative`, `QPochhammerOrderDerivative`, and
-`GaussianBinomialPolynomialStructure` (zero definitions and five theorems).
-The live master requires another strict three-pass build and ledger refresh. The
-comb synthesis separately
+definition and ten theorems, `QPochhammerEntire` as zero definitions and five
+theorems, `QPochhammerInfinite` as one definition and twenty-nine theorems,
+`QMultinomial` as one definition and nine theorems, and
+`GaussianBinomialPolynomialStructure` as zero definitions and five theorems.
+The public generic-symbol bridge is unconditional, while analytic-order and
+normal-convergence results retain their stated contraction and zero
+hypotheses. The finite/infinite, q-calculus, identifiability,
+normal-convergence, classical-limit, universal-polynomial, q-Taylor,
+partial-fraction, and integer-index tranches remain exhaustively crosswalked.
+
+The final two modules are `CentralQBinomialReduction.lean` (0+6), whose exact
+surface is `finiteQPochhammerIn_mul_neg`, `finiteQPochhammerIn_two_mul`,
+`finiteQPochhammerIn_map_ringHom`,
+`central_gaussianBinomial_sq_mul_int`,
+`central_gaussianBinomial_sq_mul`, and
+`central_gaussianBinomial_sq_div`, and `CyclotomicFactorization.lean` (0+7),
+whose exact surface is `div_add_div_le_div`,
+`div_le_div_add_div_add_one`, `mem_range_and_mem_divisors_iff`,
+`finiteQPochhammerIn_X_eq_prod_cyclotomic`,
+`finiteQPochhammerIn_X_eq_gaussianBinomial_mul`,
+`prod_cyclotomic_pow_div_extend`, and
+`gaussianBinomial_X_eq_prod_cyclotomic`. The central multiplication identity
+is division-free over commutative rings; only its quotient wrapper requires a
+field and two nonzero denominators. The shifted-factorial cyclotomic theorem is
+commutative-ring-level; the final Gaussian cancellation requires an integral
+domain and retains `k ≤ n`. The current 282-row forward ledger is 73 Exact /
+84 Partial / 117 None / 8 N/A. The live master requires another strict
+three-pass build and ledger refresh. The comb synthesis separately
 has a later chapter-03 notation edit: its retained 158-page, 2,456,105-byte
 A4 PDF has SHA-256
 `81d249c8b2bb124836c858bd8e0ef9c8764606a2f9655a798d69e7565b1759b4`;
@@ -199,7 +206,7 @@ arrival paths remain unchanged.
 | --- | --- | --- |
 | `q-fabius-parameter-deformations/Continuous_Parameter_Edgeworth_and_q_Gevrey_Frontier/` | *Continuous-Parameter Edgeworth Theory, Large Deviations, and Quadratic q-Gevrey Regularity at the Fabius--Rvachev Frontier* (29-page retained A4 PDF; 1,387 main-source lines at arrival and 1,372 currently). Landed 2026-08-30 in direct-arrival commit `52179f63fe955a64508915eedaa560de9f3056da` from the bare generic wrapper `drafts/incoming/Fabius_Rvachev_Frontier_Report_2026-08-30-G/` under this title-derived collision-safe name. Its manifest covers the full delivery, and its 19-entry payload ledger now verifies after three CSV rows were refreshed for CRLF-to-LF normalization. Its title and abstract concern Edgeworth/deviation regimes, Lambert endpoint asymptotics, and quadratic-exponential Denjoy--Carleman regularity. It remains standalone pending post-publication claim and experiment review, comparison, and a Lean crosswalk; manuscript proof labels do not establish Lean proof status | `drafts/incoming/Fabius_Rvachev_Frontier_Report_2026-08-30-G/`; renamed and filed here |
 | `q-fabius-parameter-deformations/fabius_q_frontiers_report/` | *Parameter-Flow, Gaussian, and Large-Deviation Frontiers for the q-Fabius--Rvachev Family* (23 A4 pp, 1,506 source lines; two scripts, four CSV tables, two captured outputs, and four PDF/PNG figure pairs). Landed 2026-08-30 as a bare directory in direct-arrival commit `8a184546747082cbd92ad4675fb61981c6b8c3b6`; no archive or outer hash was supplied. Its submitted ledger covers all 20 non-ledger payloads and now verifies after four CSV rows were refreshed for CRLF-to-LF normalization. All five PDFs are readable and unencrypted (27 pages total); its title and abstract concern q-transport, convex order, Gaussian/Edgeworth limits, large deviations, and a Lambert-W boundary. It remains standalone pending assessment, document-style normalization, comparison with the closely overlapping continuous-parameter report, and a Lean crosswalk; manuscript labels and numerical checks do not establish Lean verification | `drafts/incoming/fabius_q_frontiers_report/`; filed here and removed from the live inbox |
-| `q_pochhammer_q_binomial_monograph/` | *q-Series and Inverse q-Analogs: A Proof-Oriented Synthesis* — the single canonical publication for the former forward monograph, inverse-q synthesis, and three general q-series donor guides. The historical 260-row inverse concordance, 77-row asset disposition, and pinned merge-source provenance remain intact. The completed 547-row source concordance records 64 Lean-proved, 414 human-proved, 60 not-applicable, and 9 conjectural rows; the 282-row forward ledger records 53 exact, 77 partial, 144 without counterparts, and 8 interface rows. Its live API crosswalk includes `RvachevPochhammerFactorization` (1 definition + 10 theorems), `QPochhammerEntire` (0+5), `QPochhammerInfinite` (1+29), `QPochhammerDissection` (0+2), `GaussianBinomialContinuity` (0+3), `JacobiTripleProduct` (2+25), `QBinomialTheoremInfinite` (1+22), `QPascalSummation` (0+4), `QuantumBinomial` (0+2), `RogersSzegoPolynomial` (1+9), `GaussianBinomialPalindromic` (0+12), `JacksonIntegral` (1+7), `QExponential` (3+8), `ThetaQuasiPeriodicity` (1+6), `JacobiCubic` (0+2), `QPochhammerLogDerivative` (0+10), `QPochhammerOrderDerivative` (0+3), and `GaussianBinomialPolynomialStructure` (0+5). The generic-symbol bridge is unconditional; analytic order assumes `‖q‖ < 1` plus a zero and includes `q = 0`. After the `c5633206e` notation sync, exactly three guarded serial passes synchronized master SHA-256 `7389b325c08df9c731942b1f67b58511d1b7624a4b03153ee23fa3edcd9dcfa3` with the 345-page, 2,215,438-byte A4 PDF SHA-256 `6d5477affdff8eb9711232c3ab7b1ad53dda3ad9a866e8fc031f5e787fcffc59`; its exhaustive 70-row package ledger verifies the included chapter graph and receipts. Earlier 335-page (`91c649d0…`) and 340-page (`e64a4ef…`) source-pinned renders remain provenance only. | Former live publications: `general-q-series-guides/q-series-proof-oriented-article/`, `general-q-series-guides/q_series_from_first_principles/`, `general-q-series-guides/q_series_monograph/`, `q-pochhammer-and-inversion/q_pochhammer_q_binomial_monograph/`, and `q-pochhammer-and-inversion/inverse_q_analogs_and_series/`; all remain recoverable from pinned revisions and Git history |
+| `q_pochhammer_q_binomial_monograph/` | *q-Series and Inverse q-Analogs: A Proof-Oriented Synthesis* — the single canonical publication for forward q-Pochhammer, Gaussian, hypergeometric, theta, partition, Bailey, interpolation, Thue--Morse, and Fabius--Rvachev theory together with branch-aware inverse q-analogs, asymptotics, certification, and labelled frontiers. The former q-Pochhammer/q-binomial monograph supplies the forward backbone; the former inverse-q synthesis supplies its nine inverse chapters; and the three general q-series guides were reviewed as donor manuscripts, with repetitions collapsed into the strongest proved statement. The historical 260-row inverse theorem concordance, package/archive provenance, 77-row asset-disposition ledger, and unique reproducibility assets remain intact. `audit/MERGE_SOURCE_REVISION` separately pins the five-publication source surface used for this merge. The current source and retained historical 348-page PDF are the distinct, no-parity payloads fingerprinted in the exact checkpoint above; retained PDFs under `assets/` are research figures only. | Former live publications: `general-q-series-guides/q-series-proof-oriented-article/` (arrival commit `1360db6064c676f83bceb23bece5ed304dd09ce8`), `general-q-series-guides/q_series_from_first_principles/` (`c167e550348bfb33b4297684100d55dfb48b8c1a`), `general-q-series-guides/q_series_monograph/` (`1f0f98390d551725fc7d2274638dbd7de86ee346`), `q-pochhammer-and-inversion/q_pochhammer_q_binomial_monograph/`, and `q-pochhammer-and-inversion/inverse_q_analogs_and_series/`; all layouts remain recoverable from pinned revisions and Git history |
 | `geometric-sinc-and-exponent-families/Cyclotomic_q_Fabius_Rvachev_Frontier/` | *Cyclotomic Blow-Ups and Natural Boundaries for the q-Fabius--Rvachev Sinc Product* (25 pp and 1558 source lines at arrival; currently 29 A4 pp and 1896 source lines, with a 577-line deterministic high-precision experiment, five CSV tables, two further generated data files, and four PDF/PNG figure pairs). Landed 2026-08-30 from `drafts/incoming/Cyclotomic_q_Fabius_Rvachev_Frontier.zip` (outer SHA-256 `029da7d9ec96a0b2e5c4164c37f2b361dd015112bd0c6237263e3c538c5b0f64`) in its own collision-safe wrapper. The submitted checksum ledger covered all 22 non-ledger payloads, all of which verified on arrival; five CSV entries were refreshed after CRLF-to-LF repository normalization. Its title and abstract concern the complex geometric sinc product, radial root-of-unity expansions and a claimed natural boundary, cyclotomic blow-ups, Bell/moment condensation, and inverse frequency and q-branches. A post-publication revision crosswalks the global geometric-sinc q-Pochhammer factorization while leaving the cyclotomic asymptotic and natural-boundary layers manuscript-only; the refreshed active ledger verifies all 22 payloads. The current five PDFs have 33 pages in total (29 main plus four one-page figures). The main report remains Latin Modern with nine embedded/subset Type-3 figure-font rows, and the four standalone figures contain nine more; normalization remains deferred | arrived through `drafts/incoming/`; archive unpacked here and deleted |
 | *(exact reship; no second directory)* | `drafts/incoming/Fabius_Rvachev_Frontier_Report_2026-08-30-E.zip` (outer SHA-256 `174bf733156cd874cf4f9321c6ab71ca44f311856cc01dc158ddf83dc00cf813`) was processed on 2026-08-30 as an exact reship of `Fabius_Rvachev_Frontier_Report/`: the same 15-file set, with every non-CSV, non-ledger payload byte-identical and all three CSVs identical after the repository's existing CRLF-to-LF normalization. Its submitted 13-entry ledger again verified but again omitted `README.txt`; only its ledger bytes differ from the filed normalized package. No redundant wrapper was created, and no claim-level reassessment or experiment rerun was performed | duplicate archive verified and deleted; existing filed directory remains canonical |
 | `q-fabius-parameter-deformations/Fabius_Flat_Parameter_Response_Dynamics/` | *Flat Parameter Fronts, q-Susceptibility, and Smooth Dynamics: New Frontier Results in the Fabius–Rvachev System* (23 pp, 1792 source lines; with a 519-line deterministic exact/Monte-Carlo program, five CSV tables, and two PNG figures). Landed 2026-08-30 from `drafts/incoming/fabius_frontier_report_2026.zip` (outer SHA-256 `afdcf522589a7baad82c81a527c02dcc09e58455ab14c57a9c492e65563c647e`) and filed under a title-derived collision-safe directory. The submitted checksum ledger covers all 13 non-ledger payloads, all of which verified on arrival; five CSV entries were refreshed after CRLF-to-LF repository normalization. The manuscript concerns parameter susceptibility and tangent measures, flat q-parameter fronts, transform/moment/Legendre response, and Schröder/Böttcher-style Fabius dynamics. All 23 A4/Type-1 report pages rendered cleanly; blank author metadata and a nearly empty final bibliography page remain document-policy work. It remains standalone pending post-publication assessment and a Lean crosswalk; its 23 nonconjectural labels, four conjectures, and three problems record manuscript status only, and none of the new layers is thereby Lean-verified | arrived through `drafts/incoming/`; archive unpacked here and deleted |
@@ -231,12 +238,12 @@ No finite endpoint derivative is asserted.  An `O(z + exp(-1))` remainder after 
 | Directory | Document | Previous path |
 | --- | --- | --- |
 | `Lambert_W_Guide/` | *The Lambert W Function: A Real-Variable Guide* (62 A4 pp, consolidated edition, 2026-08-28) — editorial merge of the four independent treatments: the spine is the most complete article (branches, identities, exact branch-pair parametrization with Bernoulli gap expansions, derivative polynomials, integral calculus with all polynomial moments and Mellin integrals on both unbounded ends, local Taylor, Maclaurin with proved Lagrange–Bürmann, tree function/Cayley, signed Puiseux at the branch point with recurrences, unified Stirling-number logarithmic asymptotics for both branches, rigorous elementary bounds incl. Chatzigeorgiou's W₋₁ bracket, Padé and Euler continued fractions, Kalugin–Jeffrey–Corless cut integrals with complete monotonicity of W₀′, residual-certified branch-safe logarithmic Newton with monotone global starts, transcendental-equation catalogue, applications, Wright omega, complex-branch guide, problems with solutions, formula sheet); a complements section preserves the other three treatments' unique layers — the complete power-tower convergence theorem (exact interval e^{−e} ≤ a ≤ e^{1/e} with two-cycle exclusion and neutral endpoints), x^y = y^x, inverse-Taylor/Schröder corrections with branch-aware seeds, the logarithmic fixed-point iteration criterion (attracting iff \|W\|>1), branch-exchange involution, scaling identities, fixed points 2πin, unwinding-integer logarithm identity, closed Lagrange form of the Puiseux coefficients, square-root monodromy, the transcendence theorem (W_k(algebraic ≠ 0) is transcendental), a practitioner's toolkit (parameter gradients with the (1+w)^{−1} factor, differentiate-in-w, parametrize-by-w, floating-point hazards), further applications (patch residence via W₋₁, Wien displacement, linear-drag fall time, Schwarzschild tortoise inversion, π(x) < x/W₀(x)), and the r-Lambert/generalized-Lambert outlook; plus a corpus-role section and a four-way concordance appendix (all shared constants verified identical); the packages' figures/data/scripts live under `assets/` (absorbed article .tex sources deleted after merging; SHA-256 provenance in the document) | absorbed member packages deleted; git history is the archive |
-| `Polynomial-Logarithmic-Transseries-1/` | *Polynomial–Logarithmic Transseries: Algebra, Composition, Series Reversal, and the Lambert W Archetype* — current 4,020-line/186,981-byte source (`fe5057f4…54b1a14`) and retained historical 119-page/584,392-byte custom-size PDF (`a4fc4af0…69e886`); live ledger 2/2 | bare `incoming/Polynomial-Logarithmic-Transseries-1/`; direct-arrival commit `730e1763…95ab4f`; later source-only notation/remainder migration |
-| `Polynomial-Logarithmic-Transseries-2/` | *Polynomial-Logarithmic Transseries: Arithmetic, Division, Composition, and Series Reversal* — current 5,007-line/172,310-byte source (`c5f150b2…15c32`) and retained historical 102-page/571,108-byte custom-size PDF (`5e9ff596…bfc68e`); live ledger 2/2 | bare `incoming/Polynomial-Logarithmic-Transseries-2/`; direct-arrival commit `730e1763…95ab4f`; later source-only notation/remainder migration |
-| `Polynomial_Logarithmic_Transseries-3/` | *Polynomial-Logarithmic Transseries: Arithmetic, Composition, Series Reversal, and the Lambert W Expansion* — current 4,249-line/150,074-byte source (`de7c5875…4c0f1e`) and retained historical 87-page/510,663-byte Letter PDF (`3f7c4bc1…58a4af`); live ledger 2/2 | bare `incoming/Polynomial_Logarithmic_Transseries-3/`; direct-arrival commit `730e1763…95ab4f`; later source-only notation/remainder migration |
-| `Polynomial-Logarithmic-Transseries-4/` | *Polynomial-Logarithmic Transseries: Algebra, Composition, Reversion, and the Lambert W Function* — current 3,132-line/120,538-byte source (`e01272d5…8f483`) and retained historical 47-page/428,534-byte A4 PDF (`c2d75b35…45a3eb`); live ledger 2/2 | bare `incoming/Polynomial-Logarithmic-Transseries-4/`; direct-arrival commit `730e1763…95ab4f`; later source-only notation/remainder migration |
-| `Polynomial_Logarithmic_Transseries-5/` | *Polynomial-Logarithmic Transseries: Algebra, Composition, Series Reversal, and the Lambert W Function* — current 2,443-line/106,051-byte source (`aa8557ab…97083b`) and retained historical 44-page/389,188-byte Letter PDF (`189e95ab…58a2db`); live ledger 2/2 | bare `incoming/Polynomial_Logarithmic_Transseries-5/`; direct-arrival commit `730e1763…95ab4f`; later source-only notation/remainder migration |
-| `Polynomial_Logarithmic_Transseries-6/` | *Polynomial–Logarithmic Transseries: Algebra, Division, Composition, and Asymptotic Series Reversal* (cover adds “with Lambert's W function as the guiding example”) — current 4,389-line/155,691-byte source (`2020d6f9…a83646`) and retained historical 100-page/701,319-byte A4 PDF (`b5142bad…467aa`); live ledger 2/2 | bare `incoming/Polynomial_Logarithmic_Transseries-6/`; direct-arrival commit `730e1763…95ab4f`; later source-only notation/remainder migration |
+| `Polynomial-Logarithmic-Transseries-1/` | *Polynomial–Logarithmic Transseries: Algebra, Composition, Series Reversal, and the Lambert W Archetype* — current 4,020-line/187,071-byte source (`01a03e09…14f4e61`) and retained historical 119-page/584,392-byte custom-size PDF (`a4fc4af0…69e886`); live ledger 2/2 | bare `incoming/Polynomial-Logarithmic-Transseries-1/`; direct-arrival commit `730e1763…95ab4f`; later source-only notation/remainder migration |
+| `Polynomial-Logarithmic-Transseries-2/` | *Polynomial-Logarithmic Transseries: Arithmetic, Division, Composition, and Series Reversal* — current 5,006-line/173,396-byte source (`aa25baa0…8ef83e5`) and retained historical 102-page/571,108-byte custom-size PDF (`5e9ff596…bfc68e`); live ledger 2/2 | bare `incoming/Polynomial-Logarithmic-Transseries-2/`; direct-arrival commit `730e1763…95ab4f`; later source-only notation/remainder migration |
+| `Polynomial_Logarithmic_Transseries-3/` | *Polynomial-Logarithmic Transseries: Arithmetic, Composition, Series Reversal, and the Lambert W Expansion* — current 4,249-line/150,182-byte source (`0962c156…e6ad348`) and retained historical 87-page/510,663-byte Letter PDF (`3f7c4bc1…58a4af`); live ledger 2/2 | bare `incoming/Polynomial_Logarithmic_Transseries-3/`; direct-arrival commit `730e1763…95ab4f`; later source-only notation/remainder migration |
+| `Polynomial-Logarithmic-Transseries-4/` | *Polynomial-Logarithmic Transseries: Algebra, Composition, Reversion, and the Lambert W Function* — current 3,132-line/120,607-byte source (`387ca51f…32ff564`) and retained historical 47-page/428,534-byte A4 PDF (`c2d75b35…45a3eb`); live ledger 2/2 | bare `incoming/Polynomial-Logarithmic-Transseries-4/`; direct-arrival commit `730e1763…95ab4f`; later source-only notation/remainder migration |
+| `Polynomial_Logarithmic_Transseries-5/` | *Polynomial-Logarithmic Transseries: Algebra, Composition, Series Reversal, and the Lambert W Function* — current 2,443-line/106,141-byte source (`1149ae68…c8d26cc`) and retained historical 44-page/389,188-byte Letter PDF (`189e95ab…58a2db`); live ledger 2/2 | bare `incoming/Polynomial_Logarithmic_Transseries-5/`; direct-arrival commit `730e1763…95ab4f`; later source-only notation/remainder migration |
+| `Polynomial_Logarithmic_Transseries-6/` | *Polynomial–Logarithmic Transseries: Algebra, Division, Composition, and Asymptotic Series Reversal* (cover adds “with Lambert's W function as the guiding example”) — current 4,388-line/155,846-byte source (`df4e4bc5…47f8491`) and retained historical 100-page/701,319-byte A4 PDF (`b5142bad…467aa`); live ledger 2/2 | bare `incoming/Polynomial_Logarithmic-Transseries-6/`; direct-arrival commit `730e1763…95ab4f`; later source-only notation/remainder migration |
 
 The six retained arrival PDFs have embedded/subset fonts and no Type 3 font,
 but none uses Libertinus; two are custom 522-by-738-point, two are Letter, and

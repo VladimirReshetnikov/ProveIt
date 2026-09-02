@@ -127,13 +127,8 @@
 \crefname{warning}{warning}{warnings}
 \Crefname{warning}{Warning}{Warnings}
 
-% Document-local semantic commands.  Their names expose distinctions that the
-% identical traditional glyphs do not: finite versus generalized indices,
-% the base of a q-multinomial, and the typed combinatorial object involved.
-\newcommand{\QMultinomial}[3]{\genfrac{[}{]}{0pt}{}{#1}{#2}_{#3}}
-\newcommand{\GeneralizedQPochhammer}[3]{(#1;#2)_{#3}}
-\newcommand{\GeneralizedGaussianBinomial}[3]{\genfrac{[}{]}{0pt}{}{#1}{#2}_{#3}}
-\newcommand{\GeneralizedQNumber}[2]{\left[#1\right]_{#2}}
+% Remaining document-local semantic commands.  Their names expose the typed
+% combinatorial or analytic object when a traditional glyph would not.
 \newcommand{\QFallingPower}[4]{\left(#1-#2\right)_{#3}^{\langle #4\rangle}}
 \newcommand{\JacksonDifferential}[2]{\mathop{}\!\mathrm d_{#1}#2}
 \newcommand{\InversionNumber}[1]{\operatorname{inv}(#1)}
@@ -12513,7 +12508,7 @@ three views are complementary: the table below answers the Lean-status
 question for each labelled forward result, while the concordances preserve
 complete merger provenance without counting a repeated theorem twice.
 An independent lexical audit of the live Lean facade at this checkpoint finds
-657 source modules and 8,756 public declarations, with no missing module
+659 source modules and 8,769 public declarations, with no missing module
 headers or declaration doc comments.
 
 The classification is deliberately severe, and it is the same rule the
@@ -12537,8 +12532,8 @@ inside the proof below does not formalize the result the proof concludes.
   than a mathematical claim.
 \end{description}
 
-Of the 282 labelled forward results, 71 are \statusexact, 84 are
-\statuspartial, 119 are \statusnone, and 8 are \statusna.  The original
+Of the 282 labelled forward results, 73 are \statusexact, 84 are
+\statuspartial, 117 are \statusnone, and 8 are \statusna.  The original
 191-result pre-Fabius core had 36 \statusexact, 29 \statuspartial, 123
 \statusnone, and 3 \statusna{} entries.  The four integrated guide chapters
 add 31 human-proved but not Lean-formalized assertions and five labelled
@@ -12626,6 +12621,7 @@ statically checked against the complete public declaration lists:
 \path{QBinomialCauchy.lean}: one definition and five theorems, including the
 compatibility spelling of the primary identity;\\
 \path{QMultinomial.lean}: one definition and nine theorems;\\
+\path{CentralQBinomialReduction.lean}: zero definitions and six theorems;\\
 \path{SymmetricFunctionOrthogonality.lean}: one definition and six theorems;\\
 \path{CompleteHomogeneousGenerating.lean}: one definition and six theorems;\\
 \path{CompleteHomogeneousAsymptotics.lean}: one theorem;\\
@@ -12633,6 +12629,8 @@ compatibility spelling of the primary identity;\\
 \path{SymmetricFunctionTransform.lean}: four definitions and five theorems;\\
 \path{SymmetricFunctionGenerating.lean}: two definitions and six theorems;\\
 \path{QDifferenceAnnihilation.lean}: four theorems;\\
+\path{QExponential.lean}: three definitions and eight theorems;\\
+\path{JacksonIntegral.lean}: one definition and seven theorems;\\
 \path{QBinomialInversionSpecializations.lean}: two definitions and four theorems;\\
 \path{QPochhammerElementaryIdentities.lean}: 13 theorems;\\
 \path{QPochhammerIntegerIndex.lean}: two definitions and fourteen theorems;\\
@@ -12651,6 +12649,7 @@ theorems;\\
 \path{QPochhammerLogDerivative.lean}: zero definitions and ten theorems;\\
 \path{QPochhammerOrderDerivative.lean}: zero definitions and three theorems;\\
 \path{QBinomialReciprocity.lean}: four theorems;\\
+\path{CyclotomicFactorization.lean}: zero definitions and seven theorems;\\
 \path{GaussianBinomialPalindromic.lean}: zero definitions and twelve
 theorems;\\
 \path{GaussianBinomialPolynomialStructure.lean}: zero definitions and five
@@ -12670,8 +12669,6 @@ declaration from \path{GaussianBinomialAtOne.lean};\\
 \path{PolynomialQTaylor.lean}: two definitions and fifteen theorems;\\
 \path{QGamma.lean}: two definitions and ten theorems;\\
 \path{RogersSzegoPolynomial.lean}: one definition and nine theorems;\\
-\path{QExponential.lean}: three definitions and eight theorems;\\
-\path{JacksonIntegral.lean}: one definition and seven theorems;\\
 \path{ThetaQuasiPeriodicity.lean}: one definition and six theorems;\\
 \path{JacobiCubic.lean}: zero definitions and two theorems;\\
 \path{BasicHypergeometricSeries.lean}: two definitions and five theorems;\\
@@ -12695,6 +12692,34 @@ is not redeclared in \path{QBinomialTheoremInfinite.lean}.
 The added finite \(q\)-algebra and geometric layers have the following
 exhaustive public surfaces.
 \begin{itemize}
+\item The six theorems of \path{CentralQBinomialReduction.lean} are
+\path{Fabius.finiteQPochhammerIn_mul_neg},
+\path{Fabius.finiteQPochhammerIn_two_mul},
+\path{Fabius.finiteQPochhammerIn_map_ringHom},
+\path{Fabius.central_gaussianBinomial_sq_mul_int},
+\path{Fabius.central_gaussianBinomial_sq_mul}, and
+\path{Fabius.central_gaussianBinomial_sq_div}.  The first three provide the
+sign-pairing identity, the even--odd dissection, and naturality.  The next
+two prove the central reduction first in \(\IntegerNumbers[X]\) and then in
+every commutative ring; the last is its field quotient wrapper under exactly
+the two denominator nonvanishing hypotheses.  This is the exact counterpart
+of \Cref{lem:central-reduction}.
+
+\item The seven theorems of \path{CyclotomicFactorization.lean} are
+\path{Fabius.div_add_div_le_div},
+\path{Fabius.div_le_div_add_div_add_one},
+\path{Fabius.mem_range_and_mem_divisors_iff},
+\path{Fabius.finiteQPochhammerIn_X_eq_prod_cyclotomic},
+\path{Fabius.finiteQPochhammerIn_X_eq_gaussianBinomial_mul},
+\path{Fabius.prod_cyclotomic_pow_div_extend}, and
+\path{Fabius.gaussianBinomial_X_eq_prod_cyclotomic}.  They establish the
+two exponent bounds, the divisor-index exchange, the universal shifted-
+factorial product over every commutative ring, its Gaussian-factorial bridge,
+the range-extension identity, and the universal Gaussian factorization over
+every integral domain.  Together they make
+\Cref{thm:cyclotomic-pochhammer} exact while leaving its squarefreeness
+corollary outside Lean.
+
 \item The four theorems of \path{QBinomialReciprocity.lean} are
 \path{Fabius.gaussianBinomial_reciprocity_units},
 \path{Fabius.gaussianBinomial_reciprocity},
@@ -13358,9 +13383,9 @@ Theta modularity, lattice dissection, and sums of squares & 0 & 0 & 14 & 4\\
 Partitions and product--sum identities & 0 & 0 & 4 & 0\\
 Bailey pairs and the Rogers--Ramanujan identities & 1 & 0 & 6 & 0\\
 Bailey transforms and the Andrews--Gordon identities & 0 & 0 & 8 & 1\\
-Cyclotomic factorization and congruences & 1 & 0 & 8 & 0\\
+Cyclotomic factorization and congruences & 2 & 0 & 7 & 0\\
 Negative upper indices and geometric Newton interpolation & 0 & 2 & 7 & 0\\
-Central $q$-binomial sums and Lambert series & 0 & 0 & 7 & 0\\
+Central $q$-binomial sums and Lambert series & 1 & 0 & 6 & 0\\
 Asymptotic regimes and Bernoulli expansions & 0 & 2 & 6 & 0\\
 Exact limits, reciprocity, and research frontiers & 0 & 0 & 5 & 0\\
 Computation, certification, and formal proof architecture & 0 & 3 & 8 & 3\\
@@ -13369,7 +13394,7 @@ Half-base arithmetic and Prouhet--Thue--Morse cancellation & 6 & 3 & 0 & 0\\
 Geometric uniform sums, $q$-cumulants, and the Fabius--Rvachev functions & 2 & 11 & 0 & 0\\
 Dyadic Gaussian--Thue--Morse structure and the values of $F$ & 6 & 44 & 6 & 0\\
 \midrule
-\textbf{Forward total} & 71 & 84 & 119 & 8\\
+\textbf{Forward total} & 73 & 84 & 117 & 8\\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -13522,11 +13547,14 @@ commutative semiring, by naturality of the $q$-Pascal recurrence}\\[2pt]
 \texttt{gaussianBinomial\_\allowbreak{}symm},
 \texttt{gaussianBinomial\_\allowbreak{}reciprocity\_\allowbreak{}units},
 \texttt{gaussianBinomial\_\allowbreak{}natDegree},
+\texttt{gaussianBinomial\_\allowbreak{}monic},
 \texttt{coeff\_\allowbreak{}gaussianBinomial\_\allowbreak{}zero},
 \texttt{coeff\_\allowbreak{}gaussianBinomial\_\allowbreak{}top},
-\texttt{reflect\_\allowbreak{}gaussianBinomial}\newline
+\texttt{reflect\_\allowbreak{}gaussianBinomial},
+\texttt{coeff\_\allowbreak{}gaussianBinomial\_\allowbreak{}reflect}\newline
 {\footnotesize\texttt{FiniteQBinomialCore}; \texttt{QBinomialReciprocity};
-\texttt{GaussianBinomialPalindromic}; (iii) and (iv) for the universal
+\texttt{GaussianBinomialPalindromic};
+\texttt{GaussianBinomialPolynomialStructure}; (iii) and (iv) for the universal
 polynomial $[n,k]_X$ over every commutative semiring, palindromicity as
 $\operatorname{reflect}_{k(n-k)}[n,k]_X=[n,k]_X$ by induction from the two
 $q$-Pascal recurrences}\\[2pt]
@@ -13887,7 +13915,14 @@ differentiation; see \Cref{rem:jacobi-cubic-formalization}}\\[2pt]
 \midrule
 \multicolumn{3}{@{}l}{\itshape Cyclotomic factorization and congruences}\\
 \midrule
-\Cref{thm:cyclotomic-pochhammer} & \statusnone & ---\\[2pt]
+\Cref{thm:cyclotomic-pochhammer} & \statusexact &
+\texttt{finiteQPochhammerIn\_\allowbreak{}X\_\allowbreak{}eq\_\allowbreak{}prod\_\allowbreak{}cyclotomic},
+\texttt{gaussianBinomial\_\allowbreak{}X\_\allowbreak{}eq\_\allowbreak{}prod\_\allowbreak{}cyclotomic},
+\texttt{div\_\allowbreak{}le\_\allowbreak{}div\_\allowbreak{}add\_\allowbreak{}div\_\allowbreak{}add\_\allowbreak{}one}\newline
+{\footnotesize\texttt{CyclotomicFactorization}; for the universal polynomials
+in $R[X]$, the factorial factorization over every commutative ring and the
+Gaussian factorization over every integral domain, with
+$e_d(n,k)\in\{0,1\}$ as the two divisibility estimates}\\[2pt]
 \Cref{cor:squarefree-cyclotomic} & \statusnone & ---\\[2pt]
 \Cref{cor:q-catalan} & \statusnone & ---\\[2pt]
 \Cref{lem:root-block} & \statusnone & ---\\[2pt]
@@ -13918,7 +13953,14 @@ classes, including total above-row zero extension}\\[2pt]
 \midrule
 \multicolumn{3}{@{}l}{\itshape Central $q$-binomial sums and Lambert series}\\
 \midrule
-\Cref{lem:central-reduction} & \statusnone & ---\\[2pt]
+\Cref{lem:central-reduction} & \statusexact &
+\texttt{central\_\allowbreak{}gaussianBinomial\_\allowbreak{}sq\_\allowbreak{}div},
+\texttt{central\_\allowbreak{}gaussianBinomial\_\allowbreak{}sq\_\allowbreak{}mul}\newline
+{\footnotesize\texttt{CentralQBinomialReduction}; the quotient form over every
+field with nonvanishing denominators, from the division-free form
+$[2k,k]_{q^2}(q^2;q^2)_k=(q;q^2)_k(-q;q)_{2k}$ valid in every commutative
+ring (proved in $\IntegerNumbers[X]$ by cancellation and transported by
+naturality)}\\[2pt]
 \Cref{thm:regular-central-sum} & \statusnone & ---\\[2pt]
 \Cref{cor:regular-central-classical} & \statusnone & ---\\[2pt]
 \Cref{thm:singular-central} & \statusnone & ---\\[2pt]

@@ -2298,7 +2298,27 @@ declarations to the 649/8,698 checkpoint.  Their definition-plus-theorem
 counts are respectively 0+12, 1+7, 3+8, 1+6, 0+2, 0+10, 0+3, and 0+5 in the
 order documented below; the following inventories are exhaustive.
 
-The downstream \nolinkurl{GaussianBinomialPolynomialStructure.lean} has no
+The downstream \nolinkurl{GaussianBinomialPalindromic.lean} has no public
+definitions and exactly twelve public theorems:
+\nolinkurl{reflect_add_of_natDegree_le}, \nolinkurl{reflect_one'},
+\nolinkurl{gaussianBinomial_natDegree_le},
+\nolinkurl{gaussianBinomial_zero_left},
+\nolinkurl{gaussianBinomial_diag'}, \nolinkurl{reflect_gaussianBinomial},
+\nolinkurl{coeff_gaussianBinomial_reflect},
+\nolinkurl{coeff_gaussianBinomial_zero},
+\nolinkurl{coeff_gaussianBinomial_top},
+\nolinkurl{gaussianBinomial_natDegree},
+\nolinkurl{gaussianBinomial_monic}, and
+\nolinkurl{two_mul_derivative_gaussianBinomial_eval_one}.  Over every
+commutative semiring these give the general reflection helpers, the Gaussian
+degree bound, zero and diagonal values, reflection in degree \(k(n-k)\),
+constant and top coefficients one, bounded-index coefficient reversal, and
+the division-free mean identity.  Exact degree and monicity require only
+nontriviality.  With existing symmetry and reciprocity this keeps the canonical
+forward q-binomial structure theorem exact; it does not prove that the
+coefficient of \(q\) is one.
+
+The companion \nolinkurl{GaussianBinomialPolynomialStructure.lean} has no
 public definitions and exactly five public theorems:
 \nolinkurl{natDegree_gaussianBinomial_universal},
 \nolinkurl{gaussianBinomial_universal_monic},
@@ -5416,6 +5436,7 @@ Infinite q-binomial theorem and Euler expansions & \nolinkurl{gaussianMajorant},
 Jacobi triple product and pentagonal sums & \nolinkurl{thetaExponent}, \nolinkurl{pentagonalExponent}, \nolinkurl{hasSum_jacobi_triple_product}, \nolinkurl{hasSum_pentagonal}, \nolinkurl{hasSum_pentagonal_pairs} & \nolinkurl{JacobiTripleProduct.lean}; two definitions and twenty-five theorems, listed exhaustively above \\
 Finite q-Pascal summations & \nolinkurl{sum_gaussianBinomial_succ_mul}, \nolinkurl{sum_gaussianBinomial_succ_mul'}, \nolinkurl{Commute.gaussianBinomial_left}, \nolinkurl{Commute.gaussianBinomial_right} & Exhaustive zero-definition/four-theorem surface of \nolinkurl{QPascalSummation.lean} \\
 Continuity and classical limit of Gaussian binomials & \nolinkurl{continuous_gaussianBinomial}, \nolinkurl{tendsto_gaussianBinomial_nhds_one}, \nolinkurl{gaussianBinomial_eq_finiteQPochhammerIn_div} & Exhaustive zero-definition/three-theorem surface of \nolinkurl{GaussianBinomialContinuity.lean} \\
+Generic Gaussian-polynomial degree, palindromicity, and mean & \nolinkurl{reflect_add_of_natDegree_le}, \nolinkurl{reflect_one'}, \nolinkurl{gaussianBinomial_natDegree_le}, \nolinkurl{gaussianBinomial_zero_left}, \nolinkurl{gaussianBinomial_diag'}, \nolinkurl{reflect_gaussianBinomial}, \nolinkurl{coeff_gaussianBinomial_reflect}, \nolinkurl{coeff_gaussianBinomial_zero}, \nolinkurl{coeff_gaussianBinomial_top}, \nolinkurl{gaussianBinomial_natDegree}, \nolinkurl{gaussianBinomial_monic}, \nolinkurl{two_mul_derivative_gaussianBinomial_eval_one} & Exhaustive zero-definition/twelve-theorem surface of \nolinkurl{GaussianBinomialPalindromic.lean}; no linear-coefficient claim \\
 Universal Gaussian-polynomial degree and palindromicity & \nolinkurl{natDegree_gaussianBinomial_universal}, \nolinkurl{gaussianBinomial_universal_monic}, \nolinkurl{coeff_zero_gaussianBinomial_universal}, \nolinkurl{gaussianBinomial_universal_reflect}, \nolinkurl{coeff_gaussianBinomial_universal_symm} & Exhaustive zero-definition/five-theorem surface of \nolinkurl{GaussianBinomialPolynomialStructure.lean}; no linear-coefficient claim \\
 Semiring-valued Gaussian palindromicity and mean & \nolinkurl{reflect_add_of_natDegree_le}, \nolinkurl{reflect_one'}, \nolinkurl{gaussianBinomial_natDegree_le}, \nolinkurl{gaussianBinomial_zero_left}, \nolinkurl{gaussianBinomial_diag'}, \nolinkurl{reflect_gaussianBinomial}, \nolinkurl{coeff_gaussianBinomial_reflect}, \nolinkurl{coeff_gaussianBinomial_zero}, \nolinkurl{coeff_gaussianBinomial_top}, \nolinkurl{gaussianBinomial_natDegree}, \nolinkurl{gaussianBinomial_monic}, \nolinkurl{two_mul_derivative_gaussianBinomial_eval_one} & Exhaustive zero-definition/twelve-theorem surface of \nolinkurl{GaussianBinomialPalindromic.lean}; commutative semiring and \(k\le n\), with \(j\le k(n-k)\) for reversal and \texttt{Nontrivial} only for exact degree and monicity; the mean identity is division-free \\
 q-exponentials and functional q-derivative & \nolinkurl{qDeriv}, \nolinkurl{qExp}, \nolinkurl{qExpBig}, \nolinkurl{qFactorial_mul_one_sub_pow}, \nolinkurl{qFactorial_ne_zero}, \nolinkurl{qDeriv_mul}, \nolinkurl{hasSum_qExp}, \nolinkurl{hasSum_qExpBig}, \nolinkurl{qExp_mul_qExpBig_neg}, \nolinkurl{qDeriv_qExp}, \nolinkurl{qDeriv_qExpBig} & Exhaustive three-definition/eight-theorem surface of \nolinkurl{QExponential.lean}; algebraic factorial and total product rule, then \(\lVert q\rVert<1\), the small-domain condition \(\lVert(1-q)x\rVert<1\) only for \(e_q\), and \(x\ne0\) for both eigenfunction laws \\
@@ -5576,6 +5597,7 @@ Module & Role in the development \\
 \nolinkurl{JacobiTripleProduct.lean} & Two definitions and exactly twenty-five theorems: theta and pentagonal exponents, finite and infinite Jacobi triple products, and Euler pentagonal sums. \\
 \nolinkurl{QPascalSummation.lean} & Exactly four theorems and no public definitions: two finite Gaussian-binomial summations and the left and right commuting q-binomial identities. \\
 \nolinkurl{GaussianBinomialContinuity.lean} & Exactly three theorems and no public definitions: continuity, the classical \(q\to1\) limit, and the finite-Pochhammer quotient formula. \\
+\nolinkurl{GaussianBinomialPalindromic.lean} & Exactly twelve theorems and no public definitions: general reflection helpers; generic degree bound, boundary values, reflection, constant/top coefficients, coefficient symmetry, and mean identity; exact degree and monicity over a nontrivial commutative semiring. \\
 \nolinkurl{GaussianBinomialPolynomialStructure.lean} & Exactly five theorems and no public definitions: universal natural degree, monicity, constant coefficient one, exact reflection, and bounded-index coefficient symmetry. \\
 \nolinkurl{GaussianBinomialPalindromic.lean} & Exactly twelve theorems and no public definitions: reflection algebra, the semiring-valued degree bound, boundary values, palindromicity and coefficient reversal for \(k\le n\), exact degree and monicity under \texttt{Nontrivial}, and the division-free derivative-at-one identity. \\
 \nolinkurl{QExponential.lean} & Three definitions and exactly eight theorems: \(D_q,e_q,E_q\), the factorial identity and total product rule, both series and their reciprocal product under their exact convergence discs, and the two eigenfunction laws at \(x\ne0\). \\
@@ -5898,7 +5920,7 @@ Lean audits of the previously recorded new or refactored declarations,
 for each.  At that upstream checkpoint, static inspection found all 610 modules
 below \nolinkurl{FabiusFunction/} reachable from the facade and every one of
 the 105 activation declarations documented.  The live current-tree census is
-657 modules and 8,756 public declarations, all reachable from the facade under
+659 modules and 8,769 public declarations, all reachable from the facade under
 the current static audit, with no missing module headers or declaration
 comments.  The historical linear census after the Rvachev Appell and original
 four-theorem \nolinkurl{QPochhammerEntire.lean} tranche, but before the generic
@@ -5976,11 +5998,53 @@ public declarations.  The final eight modules documented exhaustively above---
 \nolinkurl{QPochhammerLogDerivative.lean},
 \nolinkurl{QPochhammerOrderDerivative.lean}, and
 \nolinkurl{GaussianBinomialPolynomialStructure.lean}---contribute exactly 58
-declarations and give the final 657/8,756 census with zero documentation gaps.
+declarations and give the intermediate 657/8,756 census with zero
+documentation gaps.
 No new result-status claim is inferred from this live static census.  No
 aggregate facade build is claimed for this union.  The retained
 PDF and title-page pin are historical receipts and remain rebuild-pending;
 they do not claim parity with the merged source.
+Those six counts are \nolinkurl{QPochhammerInfiniteBounds.lean} (0+5),
+\nolinkurl{HeineTransformation.lean} (2+5),
+\nolinkurl{QGaussSummation.lean} (0+2),
+\nolinkurl{QPochhammerComplexOrder.lean} (1+4),
+\nolinkurl{BasicHypergeometricSeries.lean} (2+5), and
+\nolinkurl{QMultinomial.lean} (1+9).
+
+The final two-module union adds thirteen theorems and no definitions.  The
+exhaustive \nolinkurl{CentralQBinomialReduction.lean} surface is
+\nolinkurl{finiteQPochhammerIn_mul_neg},
+\nolinkurl{finiteQPochhammerIn_two_mul},
+\nolinkurl{finiteQPochhammerIn_map_ringHom},
+\nolinkurl{central_gaussianBinomial_sq_mul_int},
+\nolinkurl{central_gaussianBinomial_sq_mul}, and
+\nolinkurl{central_gaussianBinomial_sq_div}.  Sign pairing, even--odd
+dissection, naturality, and the division-free identity
+\([2k,k]_{q^2}(q^2;q^2)_k=(q;q^2)_k(-q;q)_{2k}\) hold over every commutative
+ring, including the zero ring and the boundaries (n=0), (k=0), and
+(q=0).  The cancellation argument is first proved in \(\IntegerNumbers[X]\)
+and transported by naturality.  Only the field quotient form assumes the two
+displayed products \((-q;q)_{2k}\) and \((q^2;q^2)_k\) are nonzero; no
+infinite-product, convergence, or asymptotic theorem is present.
+
+The exhaustive \nolinkurl{CyclotomicFactorization.lean} surface is
+\nolinkurl{div_add_div_le_div},
+\nolinkurl{div_le_div_add_div_add_one},
+\nolinkurl{mem_range_and_mem_divisors_iff},
+\nolinkurl{finiteQPochhammerIn_X_eq_prod_cyclotomic},
+\nolinkurl{finiteQPochhammerIn_X_eq_gaussianBinomial_mul},
+\nolinkurl{prod_cyclotomic_pow_div_extend}, and
+\nolinkurl{gaussianBinomial_X_eq_prod_cyclotomic}.  The floor-division bounds
+assume exactly (k\le n) and (0<d) and place each Gaussian cyclotomic
+exponent in \(\{0,1\}\); the range/divisor exchange is total.  The
+\((X;X)_n\) factorization holds over every commutative ring, including the
+zero ring and (n=0); the factorial bridge assumes exactly (k\le n), and
+range extension exactly (m\le n).  The terminal Gaussian factorization
+assumes exactly (k\le n) and an integral-domain coefficient ring.  It gives
+no (k>n), root-of-unity evaluation, coefficient-unimodality, or asymptotic
+statement.  These two modules change the preceding 657/8,756 union to the
+live 659/8,769 census; the retained PDF remains a historical receipt pending
+a fresh uninterrupted parity build.
 \end{remark}
 
 \section{Corrections and critical distinctions}\label{app:corrections}
