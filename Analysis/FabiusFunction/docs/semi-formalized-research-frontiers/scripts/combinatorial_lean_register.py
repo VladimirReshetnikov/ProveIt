@@ -472,6 +472,12 @@ STATUS = {
    r"\lean{Fabius.Lagrange.coeff_solution_subst_derivative} and "
    r"\lean{Fabius.Lagrange.coeff_solution} are unconditional; uniqueness and "
    r"\cref{eq:lagrange-burmann-alt} are not formalized."),
+ 'thm:lambert-W-zero': ('partial',
+   r"The series \cref{eq:lambert-W-zero} is \lean{Fabius.coeff_lambertW} (module "
+   r"\lean{LambertWSeries}), for \lean{Fabius.lambertW} constructed as the Lagrange solution of "
+   r"$W=z\EulerE^{-W}$; the defining equation in the form $W\EulerE^W=z$ is "
+   r"\lean{Fabius.lambertW_mul_exp_subst}.  The radius of convergence $\EulerE^{-1}$ is analytic "
+   r"and is not formalized."),
  'thm:touchard-poly': ('Lean',
    r"\cref{eq:touchard-poly} is \lean{Fabius.touchardPolynomial_add_prime} "
    r"(\lean{TouchardPolyCongruence}), an identity in $(\mathbb Z/p)[x]$, read off from Spivey's "

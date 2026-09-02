@@ -1354,6 +1354,27 @@ $[z^{n-1}]\bigl(A(g)g'\bigr)=[w^{n-1}]\bigl(A\phi^n\bigr)$
 \lean{PowerSeries.derivative_subst} turns that into the displayed form.""")),
 ]
 
+PENDING += [
+ # --- thm:lambert-W-zero ---
+ (r"""point at $w=-1$, where $f(-1)=-\EulerE^{-1}$; this square-root branch point determines
+the radius.
+\end{proof}
+""",
+  remark(r"""% ed.: crosswalk added 2026-09-02; the series is Lean, the radius is not.
+Module \lean{LambertWSeries} constructs $W$ rather than assuming it:
+$W=z\EulerE^{-W}$ is the Lagrange functional equation with
+$\phi(w)=\EulerE^{-w}$, which is invertible with inverse $\EulerE^{w}$
+(\lean{Fabius.expNeg_mul_exp}), so \lean{Fabius.Lagrange.solution} applies and
+\lean{Fabius.lambertW} is its value.  The familiar form $W\EulerE^W=z$ is
+\lean{Fabius.lambertW_mul_exp_subst}, and \cref{eq:lambert-W-zero} is
+\lean{Fabius.coeff_lambertW}, in the equivalent shape
+$[z^{n+1}]W=(-(n+1))^n/(n+1)!$ that avoids a truncated subtraction; it follows
+from \cref{eq:lagrange-basic} together with
+$(\EulerE^{-w})^n=\EulerE^{-nw}$ (\lean{Fabius.expNeg_pow}).  The radius of
+convergence $\EulerE^{-1}$, and with it the branch-point argument above, is
+analytic and is not formalized.""")),
+]
+
 applied = 0
 for anchor, text in PENDING:
     if text.strip() in s:
