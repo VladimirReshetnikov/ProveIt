@@ -114,7 +114,7 @@ theorem coeff_sum_monomial_range {S : Type*} [Semiring S] (c : ℕ → S) (n m :
   rw [finsetSum_coeff]
   simp only [coeff_monomial]
   rw [Finset.sum_ite_eq']
-  simp [Finset.mem_range, Nat.lt_succ_iff]
+  simp [Finset.mem_range]
 
 /-- **Linear independence of a triangular polynomial family.**  If each `P k`
 has `X^k`-coefficient one and no coefficients above degree `k`, then a
@@ -170,6 +170,29 @@ theorem eq_of_sum_C_mul_eq_sum_C_mul {R : Type*} [CommRing R] (P : ℕ → R[X])
       ∑ k ∈ Finset.range (N + 1), C (b k) * P k) :
     ∀ k ≤ N, a k = b k :=
   eq_of_sum_smul_eq_sum_smul P hdiag hupper N a b (by simpa only [smul_eq_C_mul] using h)
+
+/-- Rearranging a triangular double expansion in a commutative ring: if the
+inner coefficients vanish above the diagonal, then
+`∑_j a j * ∑_{k ≤ j} b j k * P k = ∑_k (∑_j a j * b j k) * P k`. -/
+theorem sum_mul_sum_mul_eq {A : Type*} [CommRing A] (a : ℕ → A) (b : ℕ → ℕ → A) (P : ℕ → A)
+    (n : ℕ) (hb : ∀ j k, j < k → b j k = 0) :
+    ∑ j ∈ Finset.range (n + 1), a j * ∑ k ∈ Finset.range (j + 1), b j k * P k =
+      ∑ k ∈ Finset.range (n + 1), (∑ j ∈ Finset.range (n + 1), a j * b j k) * P k := by
+  have hinner : ∀ j ∈ Finset.range (n + 1),
+      ∑ k ∈ Finset.range (j + 1), b j k * P k = ∑ k ∈ Finset.range (n + 1), b j k * P k := by
+    intro j hj
+    have hjn : j < n + 1 := Finset.mem_range.mp hj
+    apply Finset.sum_subset (Finset.range_mono (show j + 1 ≤ n + 1 by omega))
+    intro k _ hk
+    have hjk : j < k := by
+      rw [Finset.mem_range, not_lt] at hk
+      omega
+    rw [hb j k hjk, zero_mul]
+  rw [Finset.sum_congr rfl (fun j hj => by rw [hinner j hj])]
+  simp_rw [Finset.mul_sum, ← mul_assoc]
+  rw [Finset.sum_comm]
+  refine Finset.sum_congr rfl fun k _ => ?_
+  rw [Finset.sum_mul]
 
 /-! ### First-kind numbers as coefficients of factorial polynomials -/
 
@@ -373,7 +396,7 @@ theorem X_pow_eq_sum_stirlingSecond_mul_ascPochhammer (R : Type*) [CommRing R] (
     (X_pow_eq_sum_stirlingSecond_mul_descPochhammer R n)
   simp only [X_pow_comp, finsetSum_comp, mul_comp, natCast_comp, descPochhammer_comp_neg_X] at h
   calc (X : R[X]) ^ n = (-1) ^ n * (-X) ^ n := by
-        rw [neg_pow X, ← mul_assoc, ← mul_pow]
+        rw [neg_pow (X : R[X]) n, ← mul_assoc, ← mul_pow]
         simp
     _ = (-1) ^ n * ∑ k ∈ Finset.range (n + 1),
           (Nat.stirlingSecond n k : R[X]) * ((-1) ^ k * ascPochhammer R k) := by rw [h]

@@ -42,7 +42,7 @@ namespace Fabius
 /-- `Finset.range (n + 1)` is the closed interval `Icc 0 n`. -/
 theorem range_succ_eq_Icc_zero (n : ℕ) : Finset.range (n + 1) = Finset.Icc 0 n := by
   ext k
-  simp [Finset.mem_range, Finset.mem_Icc, Nat.lt_succ_iff]
+  simp [Finset.mem_range, Finset.mem_Icc]
 
 /-- The alternating row sum of Pascal's triangle with the sign attached to
 the *complementary* index: `∑_{i ≤ m} (-1)^(m-i) C(m,i) = [m = 0]`. -/

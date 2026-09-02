@@ -72,7 +72,8 @@ theorem kernelMatrix_mul_apply (K L : ℕ → ℕ → R) (N : ℕ) (i j : Fin (N
         exact Finset.sum_congr rfl fun k _ => hterm k
     _ = ∑ m ∈ Finset.range (N + 1),
           (if (j : ℕ) ≤ m ∧ m ≤ (i : ℕ) then K i m * L m j else 0) :=
-        Fin.sum_univ_eq_sum_range _ (N + 1)
+        Fin.sum_univ_eq_sum_range
+          (fun m : ℕ => if (j : ℕ) ≤ m ∧ m ≤ (i : ℕ) then K i m * L m j else 0) (N + 1)
     _ = ∑ m ∈ (Finset.range (N + 1)).filter (fun m => (j : ℕ) ≤ m ∧ m ≤ (i : ℕ)),
           K i m * L m j := by
         rw [Finset.sum_filter]

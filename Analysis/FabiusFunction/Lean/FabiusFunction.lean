@@ -8,6 +8,7 @@ import FabiusFunction.TriangularKernelInverse
 import FabiusFunction.BinomialInversion
 import FabiusFunction.StirlingBasisChange
 import FabiusFunction.LahNumbers
+import FabiusFunction.BellStirling
 import FabiusFunction.SymmetricFunctionTransform
 import FabiusFunction.SymmetricFunctionGenerating
 import FabiusFunction.FiniteQBinomialCore

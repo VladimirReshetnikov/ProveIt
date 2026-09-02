@@ -1,3 +1,5 @@
+import Mathlib.Tactic.Zify
+import Mathlib.Tactic.LinearCombination
 import FabiusFunction.StirlingBasisChange
 
 /-!
@@ -102,7 +104,7 @@ theorem lahNumber_succ_succ_mul_factorial (n k : ℕ) :
         ← mul_assoc (lahNumber (n + 1) (j + 1)), hb, Nat.factorial_succ (n + 1),
         Nat.choose_succ_succ' n j]
       have hc := Nat.choose_succ_right_eq n j
-      rcases le_or_lt j n with hjn | hjn
+      rcases le_or_gt j n with hjn | hjn
       · obtain ⟨d, rfl⟩ : ∃ d, n = j + d := ⟨n - j, by omega⟩
         rw [Nat.add_sub_cancel_left] at hc
         zify at hc ⊢
@@ -135,15 +137,16 @@ theorem ascPochhammer_eq_sum_lahNumber_mul_descPochhammer (R : Type*) [CommRing 
       refine Finset.sum_congr rfl fun k _ => ?_
       rw [mul_assoc, descPochhammer_mul_X_add_natCast]
       ring
-    have hzero : (((n + 0 : ℕ) : R[X]) * lahNumber n 0) = 0 := by
-      cases n <;> simp
     have hsecond : ∑ k ∈ Finset.range (n + 1),
           (((n + k : ℕ) : R[X]) * lahNumber n k) * descPochhammer R k
         = ∑ k ∈ Finset.range (n + 1),
           (((n + (k + 1) : ℕ) : R[X]) * lahNumber n (k + 1)) * descPochhammer R (k + 1) := by
       rw [Finset.sum_range_succ', Finset.sum_range_succ,
         lahNumber_eq_zero_of_lt (Nat.lt_succ_self n)]
-      simp only [hzero, zero_mul, add_zero, Nat.cast_zero, mul_zero]
+      have hz : (((n + 0 : ℕ) : R[X]) * lahNumber n 0) * descPochhammer R 0 = 0 := by
+        cases n <;> simp
+      rw [hz]
+      simp
     have hrhs : ∑ k ∈ Finset.range (n + 2), (lahNumber (n + 1) k : R[X]) * descPochhammer R k
         = ∑ k ∈ Finset.range (n + 1),
             (((n + (k + 1) : ℕ) : R[X]) * lahNumber n (k + 1)) * descPochhammer R (k + 1)
@@ -177,29 +180,6 @@ theorem descPochhammer_eq_sum_lahNumber_mul_ascPochhammer (R : Type*) [CommRing 
         rw [neg_one_pow_sub_eq_neg_one_pow_add (Nat.lt_succ_iff.mp (Finset.mem_range.mp hk)),
           pow_add]
         ring
-
-/-- Rearranging a triangular double expansion in a commutative ring: if the
-inner coefficients vanish above the diagonal, then
-`∑_j a j * ∑_{k ≤ j} b j k * P k = ∑_k (∑_j a j * b j k) * P k`. -/
-theorem sum_mul_sum_mul_eq {A : Type*} [CommRing A] (a : ℕ → A) (b : ℕ → ℕ → A) (P : ℕ → A)
-    (n : ℕ) (hb : ∀ j k, j < k → b j k = 0) :
-    ∑ j ∈ Finset.range (n + 1), a j * ∑ k ∈ Finset.range (j + 1), b j k * P k =
-      ∑ k ∈ Finset.range (n + 1), (∑ j ∈ Finset.range (n + 1), a j * b j k) * P k := by
-  have hinner : ∀ j ∈ Finset.range (n + 1),
-      ∑ k ∈ Finset.range (j + 1), b j k * P k = ∑ k ∈ Finset.range (n + 1), b j k * P k := by
-    intro j hj
-    have hjn : j < n + 1 := Finset.mem_range.mp hj
-    apply Finset.sum_subset (Finset.range_mono (show j + 1 ≤ n + 1 by omega))
-    intro k _ hk
-    have hjk : j < k := by
-      rw [Finset.mem_range, not_lt] at hk
-      omega
-    rw [hb j k hjk, zero_mul]
-  rw [Finset.sum_congr rfl (fun j hj => by rw [hinner j hj])]
-  simp_rw [Finset.mul_sum, ← mul_assoc]
-  rw [Finset.sum_comm]
-  refine Finset.sum_congr rfl fun k _ => ?_
-  rw [Finset.sum_mul]
 
 /-- **Lah inversion:** `∑_{j ≤ n} (-1)^(j-k) L(n,j) L(j,k) = δ_{nk}`: the signed
 Lah matrix is its own inverse.  This is read off from the two conversion
