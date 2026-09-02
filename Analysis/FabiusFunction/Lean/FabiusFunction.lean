@@ -274,6 +274,7 @@ import FabiusFunction.WordComplexity
 import FabiusFunction.ThueMorseNewman
 import FabiusFunction.ThueMorseNewmanQuantitative
 import FabiusFunction.ThueMorseGelfond
+import FabiusFunction.ThueMorseGelfondSharpness
 import FabiusFunction.PeriodDoublingHankel
 import FabiusFunction.ThueMorseHankel
 import FabiusFunction.LacunaryRieszIntegral
