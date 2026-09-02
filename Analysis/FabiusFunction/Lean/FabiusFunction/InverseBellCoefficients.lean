@@ -59,6 +59,7 @@ variable (S : Type*) [CommRing S]
 noncomputable def negBinomSeries (d : ℕ) : S⟦X⟧ :=
   PowerSeries.mk fun k => (-1 : S) ^ k * ((d + k).choose d : S)
 
+/-- The coefficients of the negative binomial series. -/
 @[simp] theorem coeff_negBinomSeries (d k : ℕ) :
     coeff k (negBinomSeries S d) = (-1 : S) ^ k * ((d + k).choose d : S) :=
   coeff_mk _ _
@@ -215,6 +216,8 @@ noncomputable def reversion (hf : fc 1 * f₁inv = 1) : A⟦X⟧ :=
   Lagrange.solution (revWeight A fc f₁inv) (revCoWeight A fc f₁inv)
     (revWeight_mul_revCoWeight A fc f₁inv hf)
 
+/-- The unfolding lemma for `reversion`, needed because a definition taking arguments does
+not fold under `rw [← reversion]`. -/
 theorem reversion_def (hf : fc 1 * f₁inv = 1) :
     reversion A fc f₁inv hf =
       Lagrange.solution (revWeight A fc f₁inv) (revCoWeight A fc f₁inv)

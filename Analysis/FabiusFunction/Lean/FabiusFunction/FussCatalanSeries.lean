@@ -56,6 +56,9 @@ theorem fussPhi_pow (hq : q ≠ 0) (d : ℕ) :
 noncomputable def fussSolution (hq : q ≠ 0) : ℚ⟦X⟧ :=
   Lagrange.solution (fussPhi q hq) (1 - X ^ q) (fussPhi_mul q hq)
 
+/-- The unfolding lemma for `fussSolution`.  It is needed because a definition taking
+arguments does not fold under `rw [← fussSolution]`, so lemmas obtained from the Lagrange
+API mention the unfolded term while goals mention `fussSolution`. -/
 theorem fussSolution_def (hq : q ≠ 0) :
     fussSolution q hq = Lagrange.solution (fussPhi q hq) (1 - X ^ q) (fussPhi_mul q hq) := rfl
 

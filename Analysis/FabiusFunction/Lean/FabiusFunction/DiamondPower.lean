@@ -64,8 +64,10 @@ noncomputable def diamondPow (x : ℕ → A) : ℕ → (ℕ → A)
   | 0 => Bell.unitSeq A
   | k + 1 => Bell.binomialConv x (diamondPow x k)
 
+/-- The empty diamond product is the unit sequence. -/
 @[simp] theorem diamondPow_zero (x : ℕ → A) : diamondPow A x 0 = Bell.unitSeq A := rfl
 
+/-- One more diamond factor. -/
 theorem diamondPow_succ (x : ℕ → A) (k : ℕ) :
     diamondPow A x (k + 1) = Bell.binomialConv x (diamondPow A x k) := rfl
 
