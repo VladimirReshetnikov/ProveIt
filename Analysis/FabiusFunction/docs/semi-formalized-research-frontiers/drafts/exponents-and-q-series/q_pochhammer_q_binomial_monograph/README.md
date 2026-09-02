@@ -95,31 +95,44 @@ python audit/build_package_checksums.py --check
 ```
 
 It checks every permanent package file except the self-referential root
-`SHA256SUMS` ledger itself. During the present source-only merge the root
-ledger is explicitly partial and pending, so that command is expected to
-remain unsatisfied until the final source freeze, publication rebuild, and
-ledger regeneration. The nested asset ledger remains independently useful
-because it preserves the migrated experiment and research-figure boundary.
+`SHA256SUMS` ledger itself. The regenerated root ledger is exhaustive: all 70
+permanent package paths are covered, and the check above passes. The nested
+asset ledger remains independently useful because it preserves the migrated
+experiment and research-figure boundary.
 
-The retained `q_pochhammer_q_binomial_monograph.pdf` is the upstream
-348-page A4 publication checkpoint. It was built from the then-current
-14,158-line, 661,835-byte master source with SHA-256
-`79ee5e60a6c7e42a91c58dcd9bcae56173cc6b4aa3e54739a461943f705f3904`.
-The PDF is 3,002,729 bytes with SHA-256
-`8bf14b52d8a0fc0abc4d54cca503fd47a2df37cf76ee1bb4e442bea1fd2a4aa7`.
-Exactly three serial
-`pdflatex -interaction=nonstopmode -halt-on-error` passes produced 338, 348,
-and 348 pages, with `makeindex` run after each pass. The final log recorded
-three overfull boxes in the long `QPochhammerEntire` crosswalk paragraph.
-All pages are A4, and all 42 reported font rows are embedded and subsetted,
-including five Libertinus rows, with no Type-3 font.
+The current `q_pochhammer_q_binomial_monograph.pdf` is the synchronized
+357-page A4 publication. Its final 14,635-line, 688,123-byte master source has
+SHA-256
+`30a75dde89df2c1b7b5f5e2b7188ec4dfc17c498aa4ae6c65cf1c6062310ad6b`;
+the 2,270,834-byte PDF has SHA-256
+`3673b2cb7d617ccbcc9e3c32af17dbb9f4e8d8c16882d889d2a299bd128e0593`.
+After a clean sidecar state, exactly three serial
+`SOURCE_DATE_EPOCH=1788242400 pdflatex -interaction=nonstopmode
+-halt-on-error` passes produced 346, 357, and 357 pages. `imakeidx` invoked
+`makeindex` in each pass; the stable index accepted 164 entries, rejected
+none, and wrote 254 lines without warning.
 
-The merged master includes later checkpoint and incoming API crosswalks, so
-the retained PDF is a verified historical artifact rather than a render of
-the live TeX. The immediately preceding synchronized 347-page receipt and
-earlier publication receipts remain recorded in `PROVENANCE.md`. Files under
-`assets/experiments/**/figures/` remain research figures rather than
-publication manuscripts.
+The final log has no TeX errors, undefined references or citations, or rerun
+request. Its only layout diagnostics are the three known overfull boxes in
+the long `QPochhammerEntire` identifier paragraph at source lines 647--665.
+Every page is A4 with zero rotation, and an 18-dpi raster audit found ink on
+all 357 pages (the sparsest page still had 193 non-white pixels). The title,
+author, subject, and keyword metadata match the source; both PDF dates resolve
+to the fixed epoch, 2026-09-01 06:00:00 UTC. `pdffonts` reports 42 rows, all
+embedded and subsetted, including five Libertinus rows, with no Type-3 font.
+A representative contact sheet of pages 1, 5, 13, 140, 253, 273, 319, and 357
+was inspected for complete rendering, including the cover, contents,
+theorem-heavy pages, inverse material, the formalization appendix, and index.
+
+Before the build, both the local remote-tracking ref and remote
+`origin/main` were pinned to
+`5e3fe8fcb99d0662096fe39c436d51a6ec7c1169`; the clean working HEAD
+`191cce0e849a330f173c25be2b9f2f4cd7c2f211` had that checkpoint as a merge
+parent. The mandatory post-build check observed that `origin/main` had moved
+to `e6f3308dc377baa46aaa9463f0ae6fe9451d5ee2`. This receipt therefore attests
+the exact source/PDF hashes above; later upstream q-source edits require a new
+build after they are integrated. Files under `assets/experiments/**/figures/`
+remain research figures rather than publication manuscripts.
 
 An independent lexical audit of the live facade union finds exactly 659
 source modules and 8,769 public declarations, with no missing module headers
@@ -197,8 +210,7 @@ the variance clause remains outside Lean. The half-base Gaussian valuation row
 also remains Partial: Lean proves the reciprocal identity and symmetry used in
 the argument, but not its concluding odd-integer valuation statement.
 
-The live master, this README, and the extractor postdate the retained PDF.
-The root `SHA256SUMS` is intentionally a partial operational ledger: it
-verifies stable payloads and the historical PDF only. A final source freeze,
-fresh publication build, and full checksum regeneration are required before
-source/PDF synchronization or a complete release ledger may be claimed.
+The checked master and PDF are synchronized at the source and artifact hashes
+recorded above. The exhaustive root `SHA256SUMS` verifies every permanent
+package payload; any later source change invalidates this receipt and requires
+a fresh publication build and ledger regeneration.

@@ -66,17 +66,38 @@ SHA-256
 and was built in three serial passes from the 14,072-line, 656,200-byte source
 with SHA-256
 `062b7230d95ff8bd52b11253c6c3c8820d6f6a82e4307ae5d82a1d793c00c517`.
-The package now retains the subsequent upstream 348-page, 3,002,729-byte A4
+The package subsequently retained an upstream 348-page, 3,002,729-byte A4
 PDF with SHA-256
 `8bf14b52d8a0fc0abc4d54cca503fd47a2df37cf76ee1bb4e442bea1fd2a4aa7`.
 It was built from the then-current 14,158-line, 661,835-byte source with
 SHA-256
 `79ee5e60a6c7e42a91c58dcd9bcae56173cc6b4aa3e54739a461943f705f3904`;
 its guarded build used three serial passes producing 338, 348, and 348 pages.
-The merged TeX postdates that build, so the retained PDF is historical and no
-source/PDF parity is claimed.
+That receipt is now historical.
 
-The live source now postdates the retained 348-page upstream receipt. An
+The current synchronized publication was built after both the local
+remote-tracking ref and remote `origin/main` were pinned to
+`5e3fe8fcb99d0662096fe39c436d51a6ec7c1169`. The clean working merge
+checkpoint was `191cce0e849a330f173c25be2b9f2f4cd7c2f211`. After the two
+bounded pdfTeX-safe identifier rewrites, the exact 14,635-line,
+688,123-byte master source has SHA-256
+`30a75dde89df2c1b7b5f5e2b7188ec4dfc17c498aa4ae6c65cf1c6062310ad6b`.
+Starting from no TeX sidecars, exactly three serial passes of
+`SOURCE_DATE_EPOCH=1788242400 pdflatex -interaction=nonstopmode
+-halt-on-error` produced 346, 357, and 357 pages. The stable automatic index
+run accepted 164 entries, rejected none, and wrote 254 lines. The resulting
+357-page, 2,270,834-byte A4 PDF has SHA-256
+`3673b2cb7d617ccbcc9e3c32af17dbb9f4e8d8c16882d889d2a299bd128e0593`.
+All 357 pages have zero rotation and nonblank raster output. The final log has
+no errors, unresolved references or citations, or rerun request; only the
+three known long-identifier overfull boxes remain. All 42 font rows are
+embedded and subsetted, including five Libertinus rows, and none is Type 3.
+Representative pages 1, 5, 13, 140, 253, 273, 319, and 357 passed contact-sheet
+inspection. The post-build remote check observed `origin/main` at
+`e6f3308dc377baa46aaa9463f0ae6fe9451d5ee2`; any q-source changes from that
+later checkpoint require another rebuild after integration.
+
+An
 independent lexical audit of its facade union finds 659 source modules and
 8,769 public
 declarations, with no missing module headers or declaration doc comments.
@@ -148,13 +169,11 @@ the formal mean identity does not include the variance. The half-base Gaussian
 valuation row remains partial because its concluding odd-integer valuation
 statement is not formalized.
 
-The retained upstream PDF is historical after this merged TeX. The root
-`SHA256SUMS` is therefore an explicitly partial, pending operational ledger,
-not a release checksum set: it covers stable payloads and the historical PDF
-but deliberately omits changing source and bookkeeping files. Exact live
-source hashes and source/PDF parity will be recorded only after the final
-source is frozen, a fresh publication build succeeds, and the package ledger
-is regenerated.
+The current 357-page PDF renders the exact source hash recorded above. The
+regenerated root `SHA256SUMS` is an exhaustive 70-row release ledger covering
+every permanent package file, while the nested asset ledger retains its
+independent historical boundary. Source/PDF parity must be re-established
+after any later source integration.
 
 The former q-Pochhammer/q-binomial monograph arrived in commit
 `47172bc03ec078961d8b023dfe156ecd712efb65`. Its pre-repair source SHA-256 was
