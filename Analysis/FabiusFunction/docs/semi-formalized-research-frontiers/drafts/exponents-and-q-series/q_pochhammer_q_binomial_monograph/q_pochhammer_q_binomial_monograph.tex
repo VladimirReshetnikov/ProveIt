@@ -12568,8 +12568,8 @@ inside the proof below does not formalize the result the proof concludes.
   than a mathematical claim.
 \end{description}
 
-Of the 282 labelled forward results, 101 are \statusexact, 87 are
-\statuspartial, 86 are \statusnone, and 8 are \statusna.  The original
+Of the 282 labelled forward results, 103 are \statusexact, 87 are
+\statuspartial, 84 are \statusnone, and 8 are \statusna.  The original
 191-result pre-Fabius core had 36 \statusexact, 29 \statuspartial, 123
 \statusnone, and 3 \statusna{} entries.  The four integrated guide chapters
 add 31 human-proved but not Lean-formalized assertions and five labelled
@@ -13124,7 +13124,7 @@ inferred from a related finite identity.
 \toprule
 Chapter & \statusexact & \statuspartial & \statusnone & \statusna\\
 \midrule
-The algebra of $q$-shifted factorials & 11 & 2 & 2 & 0\\
+The algebra of $q$-shifted factorials & 12 & 2 & 1 & 0\\
 $q$-integers and Gaussian coefficients & 8 & 1 & 0 & 0\\
 Finite $q$-binomial theorems and inversion & 9 & 1 & 0 & 0\\
 Weighted binomial coefficients and symmetric functions & 3 & 3 & 2 & 0\\
@@ -13147,13 +13147,13 @@ Negative upper indices and geometric Newton interpolation & 8 & 0 & 1 & 0\\
 Central $q$-binomial sums and Lambert series & 1 & 0 & 6 & 0\\
 Asymptotic regimes and Bernoulli expansions & 1 & 3 & 4 & 0\\
 Exact limits, reciprocity, and research frontiers & 0 & 0 & 5 & 0\\
-Computation, certification, and formal proof architecture & 5 & 3 & 3 & 3\\
+Computation, certification, and formal proof architecture & 6 & 3 & 2 & 3\\
 Geometric interpolation and exact $q$-filters & 6 & 2 & 1 & 0\\
 Half-base arithmetic and Prouhet--Thue--Morse cancellation & 6 & 3 & 0 & 0\\
 Geometric uniform sums, $q$-cumulants, and the Fabius--Rvachev functions & 2 & 11 & 0 & 0\\
 Dyadic Gaussian--Thue--Morse structure and the values of $F$ & 6 & 44 & 6 & 0\\
 \midrule
-\textbf{Forward total} & 101 & 87 & 86 & 8\\
+\textbf{Forward total} & 103 & 87 & 84 & 8\\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -13276,7 +13276,16 @@ $U$ avoiding the poles and the local uniformity are not formalized}\\[2pt]
 logarithms, its exponential form, and both derivative formulas for
 $\lvert a\rvert<1$ by termwise differentiation on discs; the local uniformity
 is used in the proofs but not stated as a separate result}\\[2pt]
-\Cref{cor:divisor-sum} & \statusnone & ---\\[2pt]
+\Cref{cor:divisor-sum} & \statusexact &
+\texttt{neg\_\allowbreak{}mul\_\allowbreak{}deriv\_\allowbreak{}div\_\allowbreak{}qPochhammerInfIn\_\allowbreak{}self},
+\texttt{hasDerivAt\_\allowbreak{}qPochhammerInfIn\_\allowbreak{}self},
+\texttt{tsum\_\allowbreak{}lambert\_\allowbreak{}sigma\_\allowbreak{}one}\newline
+{\footnotesize\texttt{DivisorSumLambert}; the analytic form over
+$\ComplexNumbers$ for $\lVert q\rVert<1$: the derivative of $q\mapsto(q;q)_\infty$
+by termwise differentiation of $\sum_j\log(1-q^{j+1})$, and the Lambert
+series $\sum_{j\ge1}jq^j/(1-q^j)=\sum_{n\ge1}\sigma_1(n)q^n$ via Mathlib's
+divisor-antidiagonal rearrangement; the formal-power-series reading follows
+from the coefficient uniqueness of \texttt{PowerSeriesUniqueness}}\\[2pt]
 \Cref{thm:poch-dilog} & \statusnone & ---\\[2pt]
 \Cref{prop:classical-poch-limit} & \statusexact &
 \texttt{tendsto\_\allowbreak{}finiteQPochhammerIn\_\allowbreak{}cpow\_\allowbreak{}div\_\allowbreak{}pow},
@@ -14015,7 +14024,16 @@ specializes wherever both denominators are nonzero}\\[2pt]
 \Cref{lem:integer-qpochhammer-translation} & \statuspartial & \texttt{finiteQPochhammerIn\_\allowbreak{}self\_\allowbreak{}mul\_\allowbreak{}gaussianBinomial}\newline{\footnotesize\texttt{FiniteQBinomialCore}}\\[2pt]
 \Cref{thm:certified-integral-translation} & \statusnone & ---\\[2pt]
 \Cref{cor:identity-finder-certificate} & \statusnone & ---\\[2pt]
-\Cref{thm:formal-analytic-transfer} & \statusnone & ---\\[2pt]
+\Cref{thm:formal-analytic-transfer} & \statusexact &
+\texttt{eqOn\_\allowbreak{}of\_\allowbreak{}coeff\_\allowbreak{}eq},
+\texttt{eq\_\allowbreak{}of\_\allowbreak{}hasSum\_\allowbreak{}pow\_\allowbreak{}eq},
+\texttt{eq\_\allowbreak{}of\_\allowbreak{}hasSum\_\allowbreak{}pow\_\allowbreak{}frequently\_\allowbreak{}eq},
+\texttt{hasFPowerSeriesOnBall\_\allowbreak{}ofScalars\_\allowbreak{}of\_\allowbreak{}hasSum}\newline
+{\footnotesize\texttt{PowerSeriesUniqueness}; over $\ComplexNumbers$ with the
+series given as \texttt{HasSum} statements on $\lvert z\rvert<R$: equal
+coefficients give equal sums, and equal sums on the disk, or on a set
+accumulating at a point of the disk, give equal coefficients (via Mathlib's
+one-dimensional power-series uniqueness and the identity theorem)}\\[2pt]
 \Cref{prin:proof-architecture} & \statusna & \\[2pt]
 \Cref{prin:identity-tests} & \statuspartial &
 \texttt{gaussianBinomial\_succ\_succ\_alt},
