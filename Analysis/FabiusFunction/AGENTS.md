@@ -56,6 +56,13 @@ one whose violation has repeatedly destroyed build state, so it comes first.
 See [Building Lean](#building-lean) for the full serialization recipe.
 
 > [!IMPORTANT]
+> **Package-local `SHA256SUMS` ledgers are abolished.** Do not create or
+> restore any file whose basename is `SHA256SUMS` or starts with
+> `SHA256SUMS.`.  Preserve provenance in Git history and in the surviving
+> purpose-specific records; intake, consolidation, validation, and publication
+> workflows must not require or regenerate the retired ledgers.
+
+> [!IMPORTANT]
 > ## Incoming reports have a mandatory publication gate
 >
 > For every report delivered under
