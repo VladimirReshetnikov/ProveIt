@@ -96,8 +96,8 @@ It checks every permanent package file except the self-referential root
 useful because it preserves the migrated experiment and research-figure
 boundary.
 
-The retained `q_pochhammer_q_binomial_monograph.pdf` is a 354-page A4
-build of its recorded master source (14,381 lines, 675,239 bytes,
+The retained `q_pochhammer_q_binomial_monograph.pdf` is a historical 354-page
+A4 build of its recorded source checkpoint (14,381 lines, 675,239 bytes,
 SHA-256 `240bff72fb47562e9a8fd87085b5a3a96d738189714518db17988f7c4ac15d31`).
 The PDF is 3,030,302 bytes with SHA-256
 `1050a9a3b0b7a8df8e7de0870946ae64940d7d7839a2f20427be0ebe14b0ba8c`.
@@ -109,16 +109,19 @@ embedded and subsetted, including 5 Libertinus rows, with no Type-3
 fonts. The files under `assets/experiments/**/figures/` remain research
 figures, not publication manuscripts.
 
-The current live master is a source-only successor with 14,426 lines,
-677,040 bytes, and SHA-256
-`085a962fa040bbc27f2978184dffd20b3890cfd4c4734fcbfcbceda8bbf8c879`.
+The current live master is a source-only successor to that checkpoint: it has
+14,516 lines, 682,778 bytes, and SHA-256
+`3184b1ed82998f7a9a903cbd0e95a6836cbeab2edd3194e5dc35c7243b9b9618`.
 It adds the explicit document-local `\BellBlockMultiplicity{r}` and
 `\MacMahonQCatalanPolynomial{n}{q}` families and normalizes the newly merged
-Jackson, Gaussian-binomial, q-integer, and q-Pochhammer status formulas.  No
-PDF was regenerated after those changes.  Thus the PDF and its recorded
+Jackson, Gaussian-binomial, q-integer, and q-Pochhammer status formulas, while
+retaining the newest feature, crosswalk, and provenance expansion catalogued
+below. No PDF was regenerated after those changes. The regenerated root
+`SHA256SUMS` ledger records the live source identity; the historical source
+identity above must not be reused for it. Thus the PDF and its recorded
 14,381-line build source form the retained synchronized checkpoint, while the
 current master and retained PDF are distinct ledger payloads pending a fresh
-three-pass build.
+three-pass build and do not claim render parity.
 
 The current source includes exhaustive crosswalks for `QPochhammerEntire`
 (zero definitions
@@ -130,6 +133,7 @@ theorems), `GaussianBinomialPolynomialStructure` (zero definitions and five
 theorems), and `GeometricPochhammerNormalConvergence` (zero
 definitions and three theorems). The wider inventory also includes
 `QMultinomial` (one definition and nine theorems),
+`QuantumMultinomial` (zero definitions and five theorems),
 `QPochhammerInfiniteBounds` (zero definitions and five theorems),
 `QPochhammerComplexOrder` (one definition and four theorems),
 `BasicHypergeometricSeries` (two definitions and five theorems),
@@ -141,7 +145,16 @@ and six theorems), `QPochhammerLogDerivative` (zero definitions and ten
 theorems), `QPochhammerOrderDerivative` (zero definitions and three theorems),
 `JacobiCubic` (zero definitions and two theorems),
 `CentralQBinomialReduction` (zero definitions and six theorems), and
-`CyclotomicFactorization` (zero definitions and seven theorems), together with
+`CyclotomicFactorization` (zero definitions and seven theorems).  The newest
+cyclotomic tail consists exhaustively of `CyclotomicDivisibility` (zero
+definitions and three theorems), `PrimitiveRootBlock` (zero definitions and
+three theorems), `QCatalan` (one definition and eleven theorems), and `QLucas`
+(zero definitions and eight theorems).  The latest analytic and interpolation
+tail adds `QBetaIntegral` (one definition and eight theorems) and
+`NewtonInterpolation` (two definitions and thirteen theorems).  The newest
+tail adds `GaussianBinomialInteger` (one definition and ten theorems),
+`GaussianBinomialComplexOrder` (one definition and five theorems), and
+`QPfaffSaalschutz` (zero definitions and three theorems), together with
 expanded Euler, Jacobi, and Rogers--Szegő material.
 
 The two newest generic theorems are
@@ -154,7 +167,7 @@ entireness, zero-locus, reciprocal-power, and analytic-order results rather
 than duplicating their analytic proofs. In `QBinomialTheoremInfinite`,
 `finiteQPochhammerIn_zero_left` remains the unique declaration owned by
 `GaussianBinomialAtOne` and is imported rather than redeclared. The forward
-status ledger is 81 Exact, 85 Partial, 108 None, and 8 interface rows; the
+status ledger is 90 Exact, 84 Partial, 100 None, and 8 interface rows; the
 191-result pre-Fabius core is 36/29/123/3. The compound outer spectral-product
 theorem remains Partial even though the three-theorem outer-product leaf proves
 local-uniform (normal) convergence for every complex strict contraction, its
@@ -177,6 +190,19 @@ domain for the Gaussian form, with the exponent bounds stated explicitly. The
 half-base Gaussian valuation row remains Partial: Lean proves the reciprocal
 identity and symmetry used in the argument, while the concluding odd-integer
 valuation statement is still outside the formal surface.
+The Jackson q-beta evaluation and both recurrences are Exact over the stated
+real domain `0 < q < 1`, `0 < x`, `0 < y`.  The geometric Newton formula and
+its triangular-coefficient corollary are Exact via the generic field-valued
+interpolation API and its geometric-grid specialization.
+The terminating q-Pfaff--Saalschütz row is Exact under its explicit field and
+nonvanishing hypotheses.  The integer-index Gaussian definition, reflection,
+two Pascal laws, and reciprocal series are Exact; so are the upper-parameter
+and generalized complex-order series on their stated norm domains.  The
+separate complex-parameter property and classical-specialization rows remain
+None and are not inferred from those series identities.
+The quantum-multinomial row is Exact over every semiring under the stated
+pairwise q-commutation laws and commutation of q with each variable; neither
+centrality of q nor commutativity of the ambient semiring is claimed.
 
 Source and PDF were synchronized by this build, and the root package checksum
 ledger (`SHA256SUMS`) was regenerated with `audit/build_package_checksums.py`

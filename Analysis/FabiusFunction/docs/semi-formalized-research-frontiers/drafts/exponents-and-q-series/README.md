@@ -31,7 +31,7 @@ module tranches and the zero-definition, three-theorem
 crosswalk. That source is a source-only successor to the fresh artifact receipt
 and requires a later synchronized three-pass build. Retained PDFs under its `assets/` tree are
 research figures, not alternate manuscript renderings. The current Lean audit
-contains 644 facade-reachable modules and 8,666 public declarations, with no
+contains 670 facade-reachable modules and 8,852 public declarations, with no
 missing module headers or declaration documentation.
 
 ## Detailed package record
@@ -95,11 +95,11 @@ Current packages and retained intake records:
   figures. Pinned source revisions and Git history preserve every superseded
   layout and arrival fact.
 
-  The current `q_pochhammer_q_binomial_monograph.tex` has 14,426 lines,
-  677,040 bytes, and SHA-256
-  `085a962fa040bbc27f2978184dffd20b3890cfd4c4734fcbfcbceda8bbf8c879`.
-  Its retained `q_pochhammer_q_binomial_monograph.pdf` is a 354-page A4
-  artifact of 3,030,302 bytes, with SHA-256
+  The current `q_pochhammer_q_binomial_monograph.tex` has 14,516 lines,
+  682,778 bytes, and SHA-256
+  `3184b1ed82998f7a9a903cbd0e95a6836cbeab2edd3194e5dc35c7243b9b9618`.
+  Its retained `q_pochhammer_q_binomial_monograph.pdf` is a historical
+  354-page A4 artifact of 3,030,302 bytes, with SHA-256
   `1050a9a3b0b7a8df8e7de0870946ae64940d7d7839a2f20427be0ebe14b0ba8c`.
   That PDF was built in exactly three guarded serial passes (343, 354, and 354
   pages) from the preceding 14,381-line, 675,239-byte source with SHA-256
@@ -797,8 +797,8 @@ claims about the current canonical source. The canonical synthesis's current
 source and retained historical PDF are identified by the single exact receipt
 in the detailed package record above.
 
-The latest validated forward formalization ledger has 282 rows: 73 Exact, 84
-Partial, 117 with no counterpart, and 8 interface-only. The original
+The latest validated forward formalization ledger has 282 rows: 88 Exact, 83
+Partial, 103 with no counterpart, and 8 interface-only. The original
 191-result pre-Fabius core had 36 exact, 29 partial, 123 with no counterpart,
 and 3 interface-only entries. The four integrated-guide chapters add 31
 human-proved but not Lean-formalized assertions and five labelled definitions;
@@ -813,8 +813,8 @@ unformalized results; the q-integer and Gaussian-coefficient chapter for
 q-binomial/inversion chapter now accounts for 9 exact, 1 partial, and 0
 unformalized results; the weighted chapter for 3 exact, 2 partial, and 3
 unformalized results; and the basic-hypergeometric chapter for 1 exact, 3
-partial, and 5 unformalized results. The cyclotomic chapter now has 1 exact,
-0 partial, and 8 unformalized results. The exact rows include the primary and
+partial, and 5 unformalized results. The cyclotomic chapter now has 6 exact,
+1 partial, and 2 unformalized results. The exact rows include the primary and
 second q-Cauchy identities, both weighted-Pascal recurrences,
 elementary--complete orthogonality, and weighted symmetric-function inversion.
 Their adjacent strengthenings are recorded human-readably in the canonical
@@ -842,6 +842,16 @@ compatibility spelling of its primary identity),
 `GaussianBinomialPolynomialStructure.lean` (zero definitions, five theorems),
 `CentralQBinomialReduction.lean` (zero definitions, six theorems),
 `CyclotomicFactorization.lean` (zero definitions, seven theorems),
+`CyclotomicDivisibility.lean` (zero definitions, three theorems),
+`PrimitiveRootBlock.lean` (zero definitions, three theorems),
+`QCatalan.lean` (one definition, eleven theorems),
+`QLucas.lean` (zero definitions, eight theorems),
+`QBetaIntegral.lean` (one definition, eight theorems),
+`NewtonInterpolation.lean` (two definitions, thirteen theorems),
+`GaussianBinomialInteger.lean` (one definition, ten theorems),
+`GaussianBinomialComplexOrder.lean` (one definition, five theorems),
+`QPfaffSaalschutz.lean` (zero definitions, three theorems),
+`QuantumMultinomial.lean` (zero definitions, five theorems),
 `GaussianBinomialAtNegOne.lean` (five theorems),
 `RvachevPochhammerFactorization.lean` (one definition, nine theorems), and
 `QPochhammerEntire.lean` (zero definitions; four legacy compatibility
@@ -1119,3 +1129,25 @@ division-free over every commutative ring with a field/nonzero-denominator
 quotient wrapper, while the factorial cyclotomic factorization holds over every
 commutative ring and the Gaussian factorization over every integral domain,
 with the exponent bounded in `{0,1}` by the proved divisibility inequalities.
+The root-of-unity tail adds `CyclotomicDivisibility.lean` (three theorems),
+`PrimitiveRootBlock.lean` (three theorems), `QCatalan.lean` (one definition
+and eleven theorems), and `QLucas.lean` (eight theorems).  These twenty-six
+declarations prove the carry criterion, complete primitive-root block,
+q-Lucas theorem, and integral q-Catalan polynomial at their stated ring and
+primitive-root hypotheses.
+The newest analytic/algebraic tail adds `QBetaIntegral.lean` (one definition,
+eight theorems) and `NewtonInterpolation.lean` (two definitions, thirteen
+theorems). It formalizes the Jackson q-beta product and q-gamma evaluation,
+symmetry, positivity, and recurrences, together with generic Newton
+interpolation and its geometric-grid specialization; the interpolation
+polynomial is named `newtonInterpolant` to remain distinct from the older
+Newton-basis generating-function `newtonPoly`.
+The final three-module tail adds integer and principal-complex upper-index
+Gaussian coefficients and the terminating balanced q-Pfaff--Saalschütz sum:
+`GaussianBinomialInteger.lean` is 1+10,
+`GaussianBinomialComplexOrder.lean` is 1+5, and
+`QPfaffSaalschutz.lean` is 0+3. Their nonzero-nome,
+strict-contraction, and denominator hypotheses remain explicit.
+`QuantumMultinomial.lean` adds five theorems for antidiagonal tuple recursion,
+noncommutative Gaussian symmetry, and the ordered q-multinomial expansion for
+pairwise q-commuting variables.

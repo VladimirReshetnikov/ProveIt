@@ -19,7 +19,7 @@ only as reproducible checks.
 The package audit surfaces are:
 
 - [`theorem_concordance.csv`](theorem_concordance.csv): all 194 immutable
-  source-result rows, fully dispositioned as 39 Lean-proved, 106 human-proved
+  source-result rows, fully dispositioned as 49 Lean-proved, 96 human-proved
   frontier results, 10 conjectures, 15 open problems, and 24 non-applicable
   source environments;
 - [`LEAN_CROSSWALK.md`](LEAN_CROSSWALK.md): exact module and declaration
@@ -43,7 +43,7 @@ python -B audit/build_package_checksums.py --check
 
 `theorem_concordance.csv` records the disposition of all 194 source-result
 environments while preserving the ten immutable source fields reproduced from
-`audit/SOURCE_REVISION`.  Its current totals are 47 Lean-proved, 98
+`audit/SOURCE_REVISION`.  Its current totals are 49 Lean-proved, 96
 human-proved frontier results, 10 conjectures, 15 open problems, and 24
 nonassertoric rows.  Eight inverse-computability rows now have exact compiled
 counterparts: the main theorem, the three tolerant-difference branch
@@ -54,10 +54,15 @@ generic Lean theorem assumes a computable reciprocal inverse modulus rather
 than deriving that modulus and effective continuity from a computable positive
 gap sequence.  The centered Appell deconvolution, positive-degree Appell
 mean-zero, and arbitrarily phased polynomial-deconvolution rows also have exact
-named Lean counterparts.  The Appell lattice theorem remains human-proved:
-Lean covers its arbitrary-phase `0 <= n <= N` formula, but not its additional
-degree-`N+1` clause at the parity-selected superconvergent phases.  The static
-canonical validator passes.  `PROVENANCE.md` records source and asset lineage.
+named Lean counterparts.  The Appell lattice theorem is now Lean-proved:
+Lean covers both its arbitrary-phase `0 <= n <= N` formula and its
+degree-`N+1` clause at the parity-selected superconvergent phases.  The same
+compiled synthesis module gives the exact physical quadrature form of forced
+superconvergence, with the phase dictionary and existing positivity,
+rational-dyadic-value, and finite-support kernels.  This does not claim a
+classification of every superconvergent phase or sharpness beyond the stated
+degree.  The static canonical validator passes.  `PROVENANCE.md` records source
+and asset lineage.
 
 The package checksum inventory is defined by the Git index. Resolve unmerged
 paths and stage every intended permanent package file before generating or
@@ -71,11 +76,14 @@ at `93db15ad3c0645bd3cfd0a3e6e694e3c86a3aa2b`, a complete pre-retirement
 repository snapshot. The old paths are retained as provenance locators, not
 as live links.
 
-The three newest exact source-row matches are centered Appell deconvolution,
-positive-degree Appell mean-zero, and arbitrary-phase polynomial
-deconvolution. The Appell lattice theorem remains human-proved: Lean covers
-its arbitrary-phase `0 <= n <= N` formula, but not its additional degree-`N+1`
-clause at the parity-selected superconvergent phases.
+The five newest exact source-row matches are centered Appell deconvolution,
+positive-degree Appell mean-zero, arbitrary-phase polynomial deconvolution,
+forced superconvergence, and finite Appell lattice reproduction.  The latter
+two use `FabiusFunction.RvachevSuperconvergentSynthesis`: its phase dictionary
+specializes the selected phases at `M = 2^N`, its physical quadrature wrapper
+proves polynomial exactness through degree `N+1`, and its Appell wrapper proves
+the corresponding finite lattice identity.  These declarations do not assert
+an all-phase classification or a sharpness theorem.
 
 ## Inverse-asymptotics subgroup closure
 
@@ -87,7 +95,7 @@ masters contribute 152 of the 194 concordance rows:
 - `Inverse_Endpoint_All_Orders`: 29 rows; and
 - `Inverse_Fabius_Computability_Report`: 40 rows.
 
-Their canonical classifications are 23 exact Lean matches, 88 complete
+Their canonical classifications are 33 exact Lean matches, 78 complete
 human-proved frontier results, 18 non-live source environments (seven
 definitions, three algorithms, two examples, four editorial obligations, and
 two superseded source conjectures), nine explicitly retained conjectures, and
@@ -107,7 +115,7 @@ The canonical source surface is current and exhaustively inventoried:
 - `inverse_fabius_theory.tex`: 293 lines, 11,514 bytes, SHA-256
   `92fab1fae38bbcf86a45b51bfe7ff34e2801361df9d2f3d6aa3de4dc966eaa3c`;
 - its exhaustive 23-input source closure: SHA-256
-  `36e7941043153faee5b18220315e663d24131ddb323b67de7e0e8e2ceb0339b1`;
+  `aedf007c2cd150b1f83de6d8996b4bf31e267b3dbcec2d5cd4720f5d92122bdb`;
 - the retained `inverse_fabius_theory.pdf`: 134 A4 pages, 2,027,726 bytes,
   SHA-256
   `22bc68d855ad04dde9654e9fbd20b3ba7f05a33e3c5df0e5b80bb8991c94b41d`.
