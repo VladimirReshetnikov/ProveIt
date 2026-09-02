@@ -2666,6 +2666,26 @@ becomes
 after $m=r+k$.  The special cases follow by setting $k=1$, and then $a=1,b=k$.
 \end{proof}
 
+\begin{remark}[Formal crosswalk]
+% ed.: crosswalk added 2026-09-01; the Lean proof is algebraic, without Dobiński's series.
+\lean{Fabius.weighted_bell_shift} (module \lean{BellUmbra}) is
+\cref{eq:weighted-bell-shift}, \lean{Fabius.weighted_bell_shift_one} is
+\cref{eq:weighted-bell-k1} and \lean{Fabius.sum_signedStirlingFirst_mul_bell_eq}
+is \cref{eq:weighted-bell-special}, with $a,b$ in an arbitrary commutative
+ring and $(-1)^{k-i}\UnsignedStirlingFirstKind ki$ as the signed number
+\lean{Fabius.signedStirlingFirst}.  The formal proof replaces the Poisson sum
+by the Bell umbra, the linear functional $L$ on $R[x]$ with $L(x^n)=\BellNumber n$
+(\lean{Fabius.bellUmbra}): the binomial recurrence
+\cref{eq:bell-binomial-recurrence} says $L(xf(x))=L(f(x+1))$
+(\lean{Fabius.bellUmbra_X_mul}), induction on $k$ with
+$\FallingFactorial{x}{k+1}=x\,\FallingFactorial{x-1}{k}$ gives the umbral
+shift $L(\FallingFactorial xk f(x))=L(f(x+k))$
+(\lean{Fabius.bellUmbra_descPochhammer_mul}), and applying it to
+$f(x)=(ax+b-ak)^n$ gives $L((ax+b)^n)$ on the left, which is the binomial
+expansion of \cref{eq:weighted-bell-shift}.  In particular all factorial
+moments of the Bell umbra are $1$ (\lean{Fabius.bellUmbra_descPochhammer}).
+\end{remark}
+
 \section{Exponential generating function and differential equation}
 \begin{theorem}\label{thm:bell-egf}
 The Bell exponential generating function is
@@ -2821,6 +2841,27 @@ $x^{p^r}\equiv x$ modulo $p$ at $x=1$ gives
 \eqref{eq:bell-prime-power-shift}.
 \end{proof}
 
+\begin{remark}[Formal crosswalk]
+% ed.: crosswalk added 2026-09-01; the Lean proof runs through the shift operator rather than the group action.
+\lean{Fabius.bell_add_prime_pow_modEq} (module \lean{ShiftOperatorCharP}) is
+\cref{eq:bell-prime-power-shift} as a congruence of natural numbers, and
+\lean{Fabius.touchardPolynomial_add_prime_pow} is
+\cref{eq:touchard-prime-power-poly} as an identity in $\FiniteField_p[x]$.
+The formal proof does not use the group action above.  It takes Touchard's
+congruence in the operator form $E^p=E+c$, with $c=1$ for the Bell numbers
+and $c=x^p$ for the Touchard polynomials (the latter from
+\lean{Fabius.touchardPolynomial_add_prime}), and shows by induction on $m$,
+using the Frobenius identity $(u+v)^p=u^p+v^p$ in characteristic $p$, that
+$Y^{p^m}\equiv Y+\sum_{r<m}c^{p^r}$ modulo the polynomial $Y^p-Y-c$
+(\lean{Fabius.mk_X_pow_prime_pow}).  Since the shift $E$ acts linearly on
+sequences, every polynomial multiple of the characteristic polynomial
+annihilates every solution of the recurrence
+(\lean{Fabius.aeval_shiftEnd_eq_zero_of_dvd}), which gives the general
+statement \lean{Fabius.shift_pow_char_pow}: if $b_{n+p}=b_{n+1}+cb_n$ in a
+commutative ring of characteristic $p$, then
+$b_{n+p^m}=b_{n+1}+\bigl(\sum_{r=0}^{m-1}c^{p^r}\bigr)b_n$.
+\end{remark}
+
 \section{A universal period bound modulo a prime}
 \begin{theorem}\label{thm:bell-period-bound}
 Modulo a prime $p$, the Bell sequence is periodic, and its period divides
@@ -2842,6 +2883,25 @@ Thus every eigenvalue of $E$ is an $N_p$th root of unity.  Separability makes $E
 diagonalizable over the splitting field, so $E^{N_p}=1$ on every solution of the
 recurrence, in particular on the Bell sequence.
 \end{proof}
+
+\begin{remark}[Formal crosswalk]
+% ed.: crosswalk added 2026-09-01; the Lean proof avoids the splitting field.
+\lean{Fabius.bell_add_sum_prime_pow_modEq} (module \lean{ShiftOperatorCharP})
+states that $N_p=\sum_{j<p}p^j$ is a period,
+$\BellNumber{n+N_p}\equiv\BellNumber n\pmod p$ for every $n\ge0$, and
+\lean{Fabius.bell_period_dvd_sum_prime_pow} that the least positive period
+divides $N_p$ (by the general division argument
+\lean{Fabius.period_dvd_of_minimal}).  The formal proof stays in
+$\FiniteField_p[Y]$: from $Y^{p^j}\equiv Y+j$ modulo $q(Y)=Y^p-Y-1$
+(\lean{Fabius.mk_X_pow_prime_pow}) and the Fermat product
+$\prod_{j=0}^{p-1}(Y+j)=Y^p-Y$ (\lean{Fabius.prod_range_X_add_C_natCast}, from
+the factorization of $Y^p-Y$ over $\FiniteField_p$,
+\lean{Fabius.prod_univ_X_sub_C}) one gets $Y^{N_p}\equiv Y^p-Y=q(Y)+1\equiv1$,
+so $q(Y)$ divides $Y^{N_p}-1$, and the shift-operator transfer
+\lean{Fabius.aeval_shiftEnd_eq_zero_of_dvd} yields $E^{N_p}=1$ on every
+solution of the recurrence over $\FiniteField_p$
+(\lean{Fabius.shift_pow_period}); no diagonalization is needed.
+\end{remark}
 
 \begin{remark}
 A reported exact period is computational data, not a consequence of the divisibility
@@ -4434,6 +4494,21 @@ against $t^k$ gives the second.  At each stage there are $2n-1$ insertion gaps, 
 the total count is $(2n-1)!!$.
 \end{proof}
 
+\begin{remark}[Formal crosswalk]
+% ed.: crosswalk added 2026-09-01; Lean takes the recurrence as the definition.
+Module \lean{SecondOrderEulerian} defines \lean{Fabius.secondEulerian} by the
+recurrence \cref{eq:second-eulerian-recurrence} (in the form
+$\SecondOrderEulerianNumber{n+1}{k+1}=(2n-k)\SecondOrderEulerianNumber nk
++(k+2)\SecondOrderEulerianNumber n{k+1}$); the Stirling-permutation count is
+not formalized.  The polynomial recurrence
+\cref{eq:second-eulerian-poly-recurrence} is
+\lean{Fabius.secondEulerianSeries_succ}, an identity of formal power series
+in $t$ over any commutative ring, proved by comparing coefficients; the row
+sum \cref{eq:second-eulerian-row-sum} is
+\lean{Fabius.sum_secondEulerian_eq_doubleFactorial}, by induction from the
+recurrence.
+\end{remark}
+
 The differential recurrence has two useful equivalent forms:
 \begin{align}
  (t-1)^{-2n-2}\SecondOrderEulerianPolynomial{n+1}(t)
@@ -4460,6 +4535,18 @@ $F_1=t/(1-t)^3$.  If the displayed formula holds for $n$, differentiating
 $t\SecondOrderEulerianPolynomial{n}/(1-t)^{2n+1}$ and using
 \eqref{eq:second-eulerian-poly-recurrence} gives the formula for $n+1$.
 \end{proof}
+
+\begin{remark}[Formal crosswalk]
+% ed.: crosswalk added 2026-09-01; the Lean proof is this proof made formal.
+\lean{Fabius.one_sub_X_pow_mul_diagStirlingSeries} (module
+\lean{SecondOrderEulerian}) is \cref{eq:second-eulerian-stirling-gf} in the
+form $(1-t)^{2n+1}\sum_m\StirlingSecondKind{n+m}{m}t^m=t\SecondOrderEulerianPolynomial{n}(t)$
+in $R[[t]]$ over any commutative ring, for $n\ge1$: the base case is
+$F_1=t/(1-t)^3$ (\lean{Fabius.diagStirlingSeries_one}), the recurrence
+$(1-t)F_{n+1}=tF_n'$ is \lean{Fabius.one_sub_X_mul_diagStirlingSeries_succ},
+and the induction step differentiates the hypothesis and uses
+\cref{eq:second-eulerian-poly-recurrence}.
+\end{remark}
 
 
 \section{Second-order Eulerian interpolation of first-kind diagonals}
@@ -9092,7 +9179,7 @@ coefficient calculus rather than a catalogue of isolated identities.
 
 \section{Lean formalization register}
 \label{sec:lean-register}
-Every theorem-like environment of this monograph is listed here with the status of its formalization in the Lean development \path{Analysis/FabiusFunction/Lean/FabiusFunction} (Mathlib \texttt{v4.32.0}).  \emph{Lean} means that a public, compiled declaration proves the exact statement or a more general one (the generalization is then noted next to the result); \emph{partial} means that a named part of the statement is proved and the rest is named; \emph{none} means that no Lean counterpart exists yet.  A citation, a numerical check, or a plausible derivation does not count.  The register is generated from the source and must be regenerated when results are added.  Current totals: 42 Lean, 20 partial, 139 none, of 201 results.
+Every theorem-like environment of this monograph is listed here with the status of its formalization in the Lean development \path{Analysis/FabiusFunction/Lean/FabiusFunction} (Mathlib \texttt{v4.32.0}).  \emph{Lean} means that a public, compiled declaration proves the exact statement or a more general one (the generalization is then noted next to the result); \emph{partial} means that a named part of the statement is proved and the rest is named; \emph{none} means that no Lean counterpart exists yet.  A citation, a numerical check, or a plausible derivation does not count.  The register is generated from the source and must be regenerated when results are added.  Current totals: 46 Lean, 21 partial, 134 none, of 201 results.
 
 \begin{footnotesize}
 \begin{longtable}{@{}p{0.16\textwidth}p{0.22\textwidth}p{0.08\textwidth}p{0.40\textwidth}@{}}
@@ -9153,13 +9240,13 @@ theorem (unlabelled, no.~35) &  & none &  \\
 \Cref{thm:bell-stirling-sum} & Stirling decomposition & Lean & \lean{Fabius.bell_eq_sum_stirlingSecond}, \lean{Fabius.bell_eq_sum_sum_div_factorial} (\lean{BellStirling}) \\
 \Cref{thm:spivey} & Spivey's identity & Lean & \lean{Fabius.spivey} (\lean{BellShiftEGF}), read off from the shifted generating function \lean{Fabius.egfA_bell_add}: $\sum_n\BellNumber{n+m}t^n/n!=\TouchardPolynomial{m}(\EulerE^t)\,\EulerE^{\EulerE^t-1}$, proved by induction on $m$ from the Touchard recurrence \lean{Fabius.derivative_touchardExp}; the Touchard-polynomial version $\TouchardPolynomial{m+n}(x)=\sum_{j,k}\StirlingSecondKind mj x^j\binom nk\TouchardPolynomial{k}(x)j^{n-k}$ is \lean{Fabius.spivey_touchard} (\lean{TouchardShiftEGF}) \\
 \Cref{thm:bell-inversions} & Bell inversion identities & partial & \cref{eq:bell-inversion-one} is \lean{Fabius.bell_eq_sum_neg_one_pow_choose_bell_succ} (\lean{BellShiftEGF}), by \lean{Fabius.binomial_inversion_ring} applied to \lean{Fabius.bell_succ_eq_sum_choose}; \cref{eq:bell-inversion-two} is not formalized \\
-\Cref{thm:weighted-bell-shift} & Weighted Bell shift & none &  \\
+\Cref{thm:weighted-bell-shift} & Weighted Bell shift & Lean & \lean{Fabius.weighted_bell_shift} is \cref{eq:weighted-bell-shift}, \lean{Fabius.weighted_bell_shift_one} is \cref{eq:weighted-bell-k1} and \lean{Fabius.sum_signedStirlingFirst_mul_bell_eq} is \cref{eq:weighted-bell-special}, over any commutative ring, from the umbral shift \lean{Fabius.bellUmbra_descPochhammer_mul} (module \lean{BellUmbra}). \\
 \Cref{thm:bell-egf} &  & Lean & \lean{Fabius.exp_subst_exp_sub_one} (\lean{BellGeneratingFunctions}): $\exp\circ(e^z-1)=\sum_n B(n)z^n/n!$ as formal power series over any commutative $\mathbb Q$-algebra; the differential equation is the derivative of this substitution \\
 \Cref{thm:dobinski} & Dobiński & Lean & \lean{Fabius.dobinski} (\lean{BellStirling}), from the general Poisson moment identity \lean{Fabius.tsum_pow_mul_pow_div_factorial} \\
 corollary (unlabelled, no.~4) & Cauchy integral & none &  \\
 \Cref{thm:touchard-poly} & Polynomial Touchard congruence & Lean & \cref{eq:touchard-poly} is \lean{Fabius.touchardPolynomial_add_prime} (\lean{TouchardPolyCongruence}), an identity in $(\mathbb Z/p)[x]$, read off from Spivey's identity for Touchard polynomials (\lean{Fabius.touchardPolynomial_add_eq}) modulo $p$ with \lean{Fabius.stirlingSecond_prime_eq_zero_zmod} ($p\mid\StirlingSecondKind pk$ for $1<k<p$); \cref{eq:touchard} is \lean{Fabius.bell_add_prime_modEq} (\lean{TouchardCongruence}) \\
-\Cref{thm:bell-prime-power-shift} & Prime-power shift & none &  \\
-\Cref{thm:bell-period-bound} &  & none &  \\
+\Cref{thm:bell-prime-power-shift} & Prime-power shift & Lean & \lean{Fabius.bell_add_prime_pow_modEq} is \cref{eq:bell-prime-power-shift}; \lean{Fabius.touchardPolynomial_add_prime_pow} is \cref{eq:touchard-prime-power-poly} over $\FiniteField_p$; both from the operator identity \lean{Fabius.shift_pow_char_pow} (module \lean{ShiftOperatorCharP}). \\
+\Cref{thm:bell-period-bound} &  & Lean & \lean{Fabius.bell_add_sum_prime_pow_modEq}: $N_p$ is a period modulo $p$ (\lean{Fabius.shift_pow_period}, via the Fermat product \lean{Fabius.prod_range_X_add_C_natCast}); \lean{Fabius.bell_period_dvd_sum_prime_pow}: the least period divides $N_p$. \\
 \Cref{thm:bell-log-shape} &  & none &  \\
 \Cref{lem:bell-coeff-upper} &  & none &  \\
 \Cref{thm:bell-eventual-upper} & Eventual Bell upper bound & none &  \\
@@ -9199,8 +9286,8 @@ theorem (unlabelled, no.~76) &  & none &  \\
 \Cref{thm:permutohedron-h-polynomial} & The permutohedral $h$-polynomial & none &  \\
 \Cref{thm:typeB-eulerian} & Type-$B$ recurrence and Worpitzky series & partial & \lean{Fabius.typeBEulerian} (\lean{TypeBEulerian}) is defined by the recurrence \cref{eq:typeB-recurrence} (\lean{Fabius.typeBEulerian_succ_succ}); \cref{eq:typeB-power-series} is \lean{Fabius.one_sub_X_pow_mul_oddPowSeries} in $R[[t]]$ (from the type-$B$ Worpitzky identity \lean{Fabius.typeB_worpitzky}) and \cref{eq:typeB-explicit} is \lean{Fabius.typeBEulerian_eq_sum_int}; the signed-permutation count is not formalized \\
 \Cref{thm:typeB-permutohedron-h-polynomial} & The type-$B$ permutohedral $h$-polynomial & none &  \\
-\Cref{thm:second-eulerian-recurrence} & Second-order recurrence & none &  \\
-\Cref{thm:second-eulerian-stirling-gf} & Diagonal Stirling generating function & none &  \\
+\Cref{thm:second-eulerian-recurrence} & Second-order recurrence & partial & \lean{Fabius.secondEulerian} (\lean{SecondOrderEulerian}) is defined by the recurrence \cref{eq:second-eulerian-recurrence} (\lean{Fabius.secondEulerian_succ_succ}); the polynomial recurrence \cref{eq:second-eulerian-poly-recurrence} is \lean{Fabius.secondEulerianSeries_succ} (as power series) and the row sum \cref{eq:second-eulerian-row-sum} is \lean{Fabius.sum_secondEulerian_eq_doubleFactorial}; the Stirling-permutation count is not formalized \\
+\Cref{thm:second-eulerian-stirling-gf} & Diagonal Stirling generating function & Lean & \lean{Fabius.one_sub_X_pow_mul_diagStirlingSeries} (\lean{SecondOrderEulerian}), in $R[[t]]$ over any commutative ring, by the induction of the text: $(1-t)F_{n+1}=tF_n'$ (\lean{Fabius.one_sub_X_mul_diagStirlingSeries_succ}) and the polynomial recurrence \\
 \Cref{thm:second-eulerian-first-diagonal} & Second-order Eulerian diagonal formula & none &  \\
 \Cref{thm:faa-partition} & Fa\`a di Bruno, partition form & partial & the analytic statement is not formalized; its formal power-series analogue, the coefficients of $F(G(t))$ through partial Bell polynomials, is \lean{Fabius.egfA_subst_bellWeightSeries} (\lean{BellComposition}) \\
 \Cref{thm:faa-multiplicity} & Fa\`a di Bruno, multiplicity form & partial & the analytic statement is not formalized; the formal power-series analogue \lean{Fabius.egfA_subst_bellWeightSeries} carries the Bell-polynomial form, with the partial Bell polynomials defined by the pointing recurrence rather than by the multiplicity sum \\
