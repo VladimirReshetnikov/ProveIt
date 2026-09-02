@@ -12783,7 +12783,7 @@ inside the proof below does not formalize the result the proof concludes.
   than a mathematical claim.
 \end{description}
 
-Of the 282 labelled forward results, 140 are \statusexact, 82 are
+Of the 282 labelled forward results, 141 are \statusexact, 81 are
 \statuspartial, 52 are \statusnone, and 8 are \statusna.  The original
 191-result pre-Fabius core had 36 \statusexact, 29 \statuspartial, 123
 \statusnone, and 3 \statusna{} entries.  The four integrated guide chapters
@@ -13339,7 +13339,7 @@ inferred from a related finite identity.
 \toprule
 Chapter & \statusexact & \statuspartial & \statusnone & \statusna\\
 \midrule
-The algebra of $q$-shifted factorials & 12 & 2 & 1 & 0\\
+The algebra of $q$-shifted factorials & 13 & 1 & 1 & 0\\
 $q$-integers and Gaussian coefficients & 9 & 0 & 0 & 0\\
 Finite $q$-binomial theorems and inversion & 10 & 0 & 0 & 0\\
 Weighted binomial coefficients and symmetric functions & 3 & 3 & 2 & 0\\
@@ -13368,7 +13368,7 @@ Half-base arithmetic and Prouhet--Thue--Morse cancellation & 6 & 3 & 0 & 0\\
 Geometric uniform sums, $q$-cumulants, and the Fabius--Rvachev functions & 2 & 11 & 0 & 0\\
 Dyadic Gaussian--Thue--Morse structure and the values of $F$ & 7 & 45 & 4 & 0\\
 \midrule
-\textbf{Forward total} & 140 & 82 & 52 & 8\\
+\textbf{Forward total} & 141 & 81 & 52 & 8\\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -13483,17 +13483,21 @@ is meromorphic on $\mathbb C$, holomorphic and nonvanishing on every set avoidin
 $aq^{\alpha+j}=1$, and the derivative has the displayed logarithmic form at every $\alpha$ with
 $\lVert aq^\alpha\rVert<1$ (principal branch); the derivative formula at general non-pole
 $\alpha$ and the local uniformity of the series are not formalised}\\[2pt]
-\Cref{thm:lambert-log} & \statuspartial &
-\texttt{tsum\_\allowbreak{}log\_\allowbreak{}one\_\allowbreak{}sub\_\allowbreak{}geom},
+\Cref{thm:lambert-log} & \statusexact &
+\texttt{hasSum\_\allowbreak{}lambert\_\allowbreak{}log\_\allowbreak{}complex},
 \texttt{exp\_\allowbreak{}neg\_\allowbreak{}tsum\_\allowbreak{}lambert\_\allowbreak{}eq\_\allowbreak{}qPochhammerInfIn},
-\texttt{hasDerivAt\_\allowbreak{}qPochhammerInfIn},
+\texttt{hasDerivAt\_\allowbreak{}lambert\_\allowbreak{}series},
 \texttt{hasDerivAt\_\allowbreak{}qPochhammerInfIn\_\allowbreak{}lambert},
-\texttt{tsum\_\allowbreak{}neg\_\allowbreak{}pow\_\allowbreak{}div\_\allowbreak{}one\_\allowbreak{}sub\_\allowbreak{}mul\_\allowbreak{}pow\_\allowbreak{}eq}\newline
-{\footnotesize\texttt{EulerLogTransform}; \texttt{LambertSeriesLog};
-\texttt{QPochhammerLogDerivative}; the series identity with principal
-logarithms, its exponential form, and both derivative formulas for
-$\lvert a\rvert<1$ by termwise differentiation on discs; the local uniformity
-is used in the proofs but not stated as a separate result}\\[2pt]
+\texttt{tsum\_\allowbreak{}neg\_\allowbreak{}pow\_\allowbreak{}div\_\allowbreak{}one\_\allowbreak{}sub\_\allowbreak{}mul\_\allowbreak{}pow\_\allowbreak{}eq},
+\texttt{tendstoLocallyUniformlyOn\_\allowbreak{}lambert\_\allowbreak{}log},
+\texttt{tendstoLocallyUniformlyOn\_\allowbreak{}lambert\_\allowbreak{}deriv},
+\texttt{tendstoLocallyUniformlyOn\_\allowbreak{}lambert\_\allowbreak{}geom}\newline
+{\footnotesize\texttt{EulerLogTransform}, \texttt{LambertSeriesLog},
+\texttt{QPochhammerLogDerivative}, \texttt{LambertSeriesLocallyUniform}; the series
+identity with principal logarithms, its exponential form, both derivative formulas for
+$\lvert a\rvert<1$, and the locally uniform convergence of all three series on the open
+unit disc (uniform on every closed disc $\lvert a\rvert\le r<1$ by the Weierstrass
+$M$-test with the majorants $r^m/(1-\lvert q\rvert)$ and $\lvert q\rvert^j/(1-r)$)}\\[2pt]
 \Cref{cor:divisor-sum} & \statusexact &
 \texttt{neg\_\allowbreak{}mul\_\allowbreak{}deriv\_\allowbreak{}div\_\allowbreak{}qPochhammerInfIn\_\allowbreak{}self},
 \texttt{hasDerivAt\_\allowbreak{}qPochhammerInfIn\_\allowbreak{}self},
