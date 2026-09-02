@@ -537,6 +537,7 @@ import FabiusFunction.EvenZetaSeries
 import FabiusFunction.EvenZetaValues
 import FabiusFunction.SincZetaSeries
 import FabiusFunction.SincZetaDyadic
+import FabiusFunction.GeometricSincZeta
 import FabiusFunction.GeneralizedSincZeta
 import FabiusFunction.AlternatingNewtonCumulantKernel
 import FabiusFunction.ExponentialDiskMaximality
