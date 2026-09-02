@@ -62,7 +62,6 @@ theorem normalizedAutocorrelation_succ_odd (m r : ℕ) :
   push_cast
   have h : (2 : ℝ) ^ m ≠ 0 := by positivity
   field_simp
-  ring
 
 /-- The limiting autocorrelation `η(k)`, defined by the atlas's recursion
 `η(0) = 1`, `η(1) = -1/3`, `η(2r) = η(r)`, `η(2r+1) = -(η(r) + η(r+1))/2`. -/
@@ -96,10 +95,10 @@ theorem limitingAutocorrelation_two_mul_add_one (r : ℕ) :
   rcases r with _ | r
   · simp only [mul_zero, zero_add, limitingAutocorrelation_zero, limitingAutocorrelation_one]
     norm_num
-  · rw [show 2 * (r + 1) + 1 = (2 * r + 1) + 2 by ring, limitingAutocorrelation,
-      dif_neg (by omega)]
+  · have hodd : ¬ ((2 * r + 1) % 2 = 0) := by omega
     have e1 : (2 * r + 1 + 1) / 2 = r + 1 := by omega
-    rw [e1]
+    rw [show 2 * (r + 1) + 1 = (2 * r + 1) + 2 by ring]
+    simp only [limitingAutocorrelation, dif_neg hodd, e1]
 
 /-- The atlas's sample values `p1:eq:eta-samples`: `η(2) = -1/3`. -/
 theorem limitingAutocorrelation_two : limitingAutocorrelation 2 = -1 / 3 := by
