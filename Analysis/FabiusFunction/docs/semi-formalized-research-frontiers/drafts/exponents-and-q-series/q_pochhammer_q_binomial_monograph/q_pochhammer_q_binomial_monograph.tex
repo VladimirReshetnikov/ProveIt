@@ -12679,7 +12679,7 @@ inside the proof below does not formalize the result the proof concludes.
   than a mathematical claim.
 \end{description}
 
-Of the 282 labelled forward results, 122 are \statusexact, 83 are
+Of the 282 labelled forward results, 123 are \statusexact, 82 are
 \statuspartial, 69 are \statusnone, and 8 are \statusna.  The original
 191-result pre-Fabius core had 36 \statusexact, 29 \statuspartial, 123
 \statusnone, and 3 \statusna{} entries.  The four integrated guide chapters
@@ -13242,7 +13242,7 @@ Weighted binomial coefficients and symmetric functions & 3 & 3 & 2 & 0\\
 Partitions, words, paths, and inversion statistics & 7 & 2 & 0 & 0\\
 Finite fields, Grassmannians, and rank enumeration & 1 & 1 & 4 & 0\\
 Symmetry and unimodality & 0 & 0 & 3 & 0\\
-The infinite $q$-binomial theorem & 2 & 1 & 1 & 0\\
+The infinite $q$-binomial theorem & 3 & 0 & 1 & 0\\
 Basic hypergeometric series & 5 & 3 & 1 & 0\\
 Euler telescoping and very-well-poised summations & 1 & 0 & 3 & 0\\
 Bilateral series and Ramanujan's \texorpdfstring{${}_1\psi_1$}{1psi1} sum & 1 & 0 & 1 & 0\\
@@ -13264,7 +13264,7 @@ Half-base arithmetic and Prouhet--Thue--Morse cancellation & 6 & 3 & 0 & 0\\
 Geometric uniform sums, $q$-cumulants, and the Fabius--Rvachev functions & 2 & 11 & 0 & 0\\
 Dyadic Gaussian--Thue--Morse structure and the values of $F$ & 7 & 44 & 5 & 0\\
 \midrule
-\textbf{Forward total} & 122 & 83 & 69 & 8\\
+\textbf{Forward total} & 123 & 82 & 69 & 8\\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -13645,12 +13645,17 @@ is reused by import and is not owned by the six-theorem bounds leaf}\\[2pt]
 \midrule
 \multicolumn{3}{@{}l}{\itshape The infinite $q$-binomial theorem}\\
 \midrule
-\Cref{thm:infinite-qbinomial} & \statuspartial &
-\texttt{hasSum\_\allowbreak{}qBinomial\_\allowbreak{}theorem}\newline
-{\footnotesize\texttt{QBinomialTheoremInfinite}; the pointwise identity for
-every $a$, $\lVert z\rVert<1$, $\lVert q\rVert<1$ in any complete normed
-field, by the finite-to-infinite route of \Cref{rem:qbinomial-finite-route};
-the local uniformity in $(a,z)$ is not formalized}\\[2pt]
+\Cref{thm:infinite-qbinomial} & \statusexact &
+\texttt{hasSum\_\allowbreak{}qBinomial\_\allowbreak{}theorem},
+\texttt{tendstoUniformlyOn\_\allowbreak{}qBinomial\_\allowbreak{}of\_\allowbreak{}isCompact},
+\texttt{tendstoUniformlyOn\_\allowbreak{}qBinomial\_\allowbreak{}closedBall}\newline
+{\footnotesize\texttt{QBinomialTheoremInfinite},
+\texttt{QBinomialLocallyUniform}; the pointwise identity for every $a$,
+$\lVert z\rVert<1$, $\lVert q\rVert<1$ in any complete normed field, and the
+uniform convergence of the partial sums (indexed by finite sets of indices) on
+every compact subset of $\mathbb K\times\{\lVert z\rVert<1\}$, by the
+Weierstrass $M$-test on products of closed discs with the majorant
+$(-A;\lVert q\rVert)_\infty/(\lVert q\rVert;\lVert q\rVert)_\infty\,r^n$}\\[2pt]
 \Cref{cor:euler-infinite} & \statusexact &
 \texttt{hasSum\_\allowbreak{}euler\_\allowbreak{}product},
 \texttt{hasSum\_\allowbreak{}euler\_\allowbreak{}reciprocal}\newline
