@@ -194,6 +194,7 @@ import FabiusFunction.BaseDigitProuhet
 import FabiusFunction.RulerLogDerivative
 import FabiusFunction.BaseBProduct
 import FabiusFunction.ThueMorseCubature
+import FabiusFunction.ThueMorseAutocorrelationLimit
 import FabiusFunction.GeneralizedProuhetBlock
 import FabiusFunction.ProuhetBlockZeroOrder
 import FabiusFunction.BitPositionQBinomial

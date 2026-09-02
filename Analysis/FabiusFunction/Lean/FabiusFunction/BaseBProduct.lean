@@ -67,6 +67,5 @@ theorem tsum_thueMorseBit_div_pow_succ {b : ℝ} (hb : 1 < b) :
     have : b⁻¹ < 1 := (inv_lt_one₀ (by linarith)).mpr hb
     linarith
   field_simp
-  ring
 
 end Fabius
