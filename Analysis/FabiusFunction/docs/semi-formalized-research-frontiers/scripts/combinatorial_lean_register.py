@@ -362,6 +362,11 @@ STATUS = {
    r"\lean{Fabius.sum_signedStirlingFirst_mul_bell_eq} is \cref{eq:weighted-bell-special}, "
    r"over any commutative ring, from the umbral shift \lean{Fabius.bellUmbra_descPochhammer_mul} "
    r"(module \lean{BellUmbra})."),
+ 'thm:second-parity': ('partial',
+   r"\cref{eq:second-parity-binomial} is \lean{Fabius.stirlingSecond_modEq_choose_two} "
+   r"(module \lean{StirlingParity}), for $1\le k\le n$, from the column series modulo $2$, "
+   r"\lean{Fabius.stirlingColumnOGF_zmod_two}; the bitwise form \cref{eq:second-parity-bit} "
+   r"(Lucas) and the power-of-two criterion are not formalized."),
  'thm:touchard-poly': ('Lean',
    r"\cref{eq:touchard-poly} is \lean{Fabius.touchardPolynomial_add_prime} "
    r"(\lean{TouchardPolyCongruence}), an identity in $(\mathbb Z/p)[x]$, read off from Spivey's "

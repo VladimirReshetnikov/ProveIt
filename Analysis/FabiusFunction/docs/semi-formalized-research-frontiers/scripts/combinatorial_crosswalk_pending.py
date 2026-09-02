@@ -917,6 +917,28 @@ expansion of \cref{eq:weighted-bell-shift}.  In particular all factorial
 moments of the Bell umbra are $1$ (\lean{Fabius.bellUmbra_descPochhammer}).""")),
 ]
 
+PENDING += [
+ # --- thm:second-parity ---
+ (r"""Putting $k=n$ in \cref{eq:second-parity-bit} gives
+$n\BitwiseAnd\Floor{(n-1)/2}=0$, which is equivalent to $n$ having one $1$-bit.
+\end{proof}
+""",
+  remark(r"""% ed.: crosswalk added 2026-09-02; the Lean proof is the reduction of the column series modulo 2.
+\lean{Fabius.stirlingSecond_modEq_choose_two} (module \lean{StirlingParity})
+is \cref{eq:second-parity-binomial} for $1\le k\le n$, as the congruence
+$\StirlingSecondKind nk\equiv\binom{n-\lfloor(k+2)/2\rfloor}{\lfloor(k-1)/2\rfloor}\pmod2$
+of natural numbers (note $\Ceiling{(k+1)/2}=\lfloor(k+2)/2\rfloor$).  The
+formal proof is the one above: over $\FiniteField_2$ the product
+$\prod_{j=1}^{k}(1-jt)$ equals $(1-t)^{\lceil k/2\rceil}$
+(\lean{Fabius.prod_one_sub_mul_X_zmod_two}, by induction on $k$ with the
+parity of the new factor), so the column series of \cref{eq:second-ogf}
+becomes $(1-t)^{-\lceil k/2\rceil}$ (\lean{Fabius.stirlingColumnOGF_zmod_two})
+and its coefficients are the binomial coefficients
+(\lean{Fabius.stirlingSecond_add_zmod_two}).  The bitwise form
+\cref{eq:second-parity-bit} and the power-of-two criterion for
+$\StirlingSecondKind{2n}{n}$ rest on Lucas's theorem and are not formalized.""")),
+]
+
 applied = 0
 for anchor, text in PENDING:
     if text.strip() in s:
