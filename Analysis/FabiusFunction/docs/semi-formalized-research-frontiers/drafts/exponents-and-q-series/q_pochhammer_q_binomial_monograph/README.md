@@ -45,7 +45,8 @@ the earlier six-package inverse provenance is not silently reinterpreted.
 
 The migrated `assets/` tree preserves six experiment programs, nineteen
 CSV/TXT outputs, and fourteen vector figures selected by the historical
-77-row `assets/ASSET_DISPOSITION.csv`.
+77-row `assets/ASSET_DISPOSITION.csv`. That disposition ledger remains the
+authoritative inventory of the 39 retained historical payloads.
 
 ## Validation state
 
@@ -85,7 +86,9 @@ not an infinite proof of any recorded identity.
 
 Checksum ledgers have been abolished repository-wide; no `SHA256SUMS` file is
 kept for this package or its assets, and no checksum gate is part of its
-validation state.
+validation state. Deleted checksum manifests must not be recreated. Historical
+SHA-256 values recorded directly in this README and in `PROVENANCE.md` remain
+provenance receipts for the named artifacts.
 
 The retained `q_pochhammer_q_binomial_monograph.pdf` is a historical 354-page
 A4 build of its recorded source checkpoint (14,381 lines, 675,239 bytes,
@@ -103,8 +106,8 @@ fonts. The files under `assets/experiments/**/figures/` remain research
 figures, not publication manuscripts.
 
 The current live master is a source-only successor to that checkpoint: it has
-14,516 lines, 682,778 bytes, and SHA-256
-`3184b1ed82998f7a9a903cbd0e95a6836cbeab2edd3194e5dc35c7243b9b9618`.
+14,530 lines, 683,858 bytes, and SHA-256
+`b77e9ab54d9437485bab9ee36783cc1f1d5c36c347e67a5242953af8319650fc`.
 It adds the explicit document-local `\BellBlockMultiplicity{r}` and
 `\MacMahonQCatalanPolynomial{n}{q}` families and normalizes the newly merged
 Jackson, Gaussian-binomial, q-integer, and q-Pochhammer status formulas, while
@@ -122,7 +125,8 @@ and twenty-nine theorems), `QPochhammerDissection` (zero definitions and two
 theorems), `QBinomialTheoremInfinite` (one definition and twenty-two
 theorems), `GaussianBinomialPalindromic` (zero definitions and fourteen
 theorems), `GaussianBinomialPolynomialStructure` (zero definitions and five
-theorems), and `GeometricPochhammerNormalConvergence` (zero
+theorems), `GaussianBinomialBounds` (zero definitions and six theorems), and
+`GeometricPochhammerNormalConvergence` (zero
 definitions and three theorems). The wider inventory also includes
 `QMultinomial` (one definition and nine theorems),
 `QuantumMultinomial` (zero definitions and five theorems),
@@ -195,6 +199,10 @@ None and are not inferred from those series identities.
 The quantum-multinomial row is Exact over every semiring under the stated
 pairwise q-commutation laws and commutation of q with each variable; neither
 centrality of q nor commutativity of the ambient semiring is claimed.
+`GaussianBinomialBounds` owns six theorems. Its finite-product positivity
+input `finiteQPochhammerIn_self_pos` is the pre-existing generic declaration
+from `GeneralQConditionNumber`, reused through an import and therefore not
+counted as a seventh theorem of the bounds leaf.
 
 The complete root block, evaluated q-Lucas theorem, square-free cyclotomic
 criterion, and q-Catalan row are Exact. The primitive-root value in the
@@ -207,6 +215,8 @@ also Exact. The terminating q-Pfaff--Saalschütz sum and quantum multinomial
 are Exact, as are the integer-index Gaussian definition and Pascal laws, both
 reciprocal-product expansions, the complex upper-parameter series, and the
 generalized q-binomial theorem. The remaining complex-Gaussian property and
-classical-limit rows stay unformalized. No PDF was generated locally while resolving this merge: the
-supplied 354-page artifact is the validated upstream receipt described above,
-while the merged source is its source-only successor.
+classical-limit rows stay unformalized.
+
+No PDF was generated locally while resolving this merge. The retained
+354-page artifact remains the validated historical checkpoint described
+above. No deleted checksum manifest was recreated.

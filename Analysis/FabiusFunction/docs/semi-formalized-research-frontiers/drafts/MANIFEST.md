@@ -19,8 +19,8 @@ old flat layout; the **Previous path** column below is the map. Documents
 were moved verbatim — no `.tex` content was changed by the reorganization,
 so no PDF was rebuilt for it.
 
-**Current artifact checkpoint (2026-09-01).** The live Lean audit scans 670
-source modules and 8,852 public declarations, with no missing module headers or
+**Current artifact checkpoint (2026-09-01).** The live Lean audit scans 671
+source modules and 8,858 public declarations, with no missing module headers or
 declaration comments.
 Several PDFs below are retained,
 readable publication checkpoints rather than renders of the final merged TeX.
@@ -108,6 +108,9 @@ nonzero and denominator hypotheses.
 `QuantumMultinomial.lean` adds five theorems: antidiagonal tuple recursion,
 noncommutative Gaussian symmetry, and the ordered q-multinomial theorem for
 pairwise q-commuting variables.
+`GaussianBinomialBounds.lean` adds six theorems: evaluated reciprocity,
+nonnegative-nome lower and strict-contraction upper bounds, and the resulting
+dimension-dominant two-sided estimates for real nomes greater than one.
 The local reciprocal-power zero-lattice theorem completes
 `QPochhammerEntire.lean` to five theorems, and two further general-product
 theorems complete `QPochhammerInfinite.lean` to one definition and 29
@@ -213,7 +216,7 @@ claimed as Lean verification.
 | Directory | Document | Previous path / provenance |
 | --- | --- | --- |
 | `Combinatorial_Coefficient_Calculus-2/` | *Combinatorial Coefficient Calculus* — current 6,862-line/277,653-byte source (`0b4176a2…8c93f6`) and retained historical 147-page A4 PDF; pair ledger verifies 2/2 | `incoming/Combinatorial_Coefficient_Calculus-2.zip` (1,096,487 bytes; SHA-256 `a0ca605c1d3f1ee3e00eac1d69a8181e786dd414407a1b3b6db1a60f74d8766d`) |
-| `Combinatorial_Coefficient_Calculus/` | **Canonical consolidation in progress:** *Combinatorial Coefficient Calculus* — current 7,397-line/298,685-byte source (`71ce453c…3fce72`) and retained historical 143-page A4 arrival PDF; no render-parity claim | Six-source provenance and disposition ledgers in the package; original non-suffixed arrival was `incoming/Combinatorial_Coefficient_Calculus.zip` (SHA-256 `a22479ac8f58e1710117af9d0a3f515c7d24ec250548f537520c9f9024f4321a`) |
+| `Combinatorial_Coefficient_Calculus/` | **Canonical consolidation in progress:** *Combinatorial Coefficient Calculus* — current 7,397-line/298,691-byte source (`d0f62493…7e4946`) and retained historical 143-page A4 arrival PDF; no render-parity claim | Six-source provenance and disposition ledgers in the package; original non-suffixed arrival was `incoming/Combinatorial_Coefficient_Calculus.zip` (SHA-256 `a22479ac8f58e1710117af9d0a3f515c7d24ec250548f537520c9f9024f4321a`) |
 | `Combinatorial_Formulae_and_Inversion_Theorems/` | *Combinatorial Formulae and Inversion Theorems* — current 7,036-line/283,111-byte source (`f070ad09…4670b3`) and retained historical 140-page A4 PDF; pair ledger verifies 2/2 | `incoming/Combinatorial_Formulae_and_Inversion_Theorems.zip` (1,101,493 bytes; SHA-256 `dae561780a4442a9f11acb7edf1ec508daca1db237db01fabf77c695ec924960`) |
 | `Unified_Combinatorial_Coefficient_Calculus/` | *Unified Combinatorial Coefficient Calculus* — current 6,687-line/262,376-byte source (`9566ce29…8f8947`) and retained historical 144-page A4 PDF; pair ledger verifies 2/2 | `incoming/Unified_Combinatorial_Coefficient_Calculus.zip` (1,083,495 bytes; SHA-256 `c4217b088444eb3e4bf24a7542d360f02dfb8e240418b562a155ad0c251ab559`) |
 | `Unified_Combinatorial_Formulae/` | *A Unified Calculus of Combinatorial Formulae* — current 5,898-line/232,717-byte source (`089c6ece…c81bb3`) and retained historical 130-page A4 PDF; pair ledger verifies 2/2 | `incoming/Unified_Combinatorial_Formulae.zip` (1,015,842 bytes; SHA-256 `611b14cfda15357b679a05d9586811d8fb39f6fe7d971f00424da2bb848a5594`) |

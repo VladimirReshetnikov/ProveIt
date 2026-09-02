@@ -1,6 +1,7 @@
 import FabiusFunction.GaussianBinomialPalindromic
 import FabiusFunction.GaussianBinomialContinuity
 import FabiusFunction.GaussianBinomialUniversal
+import FabiusFunction.GeneralQConditionNumber
 import FabiusFunction.QBinomialTheoremInfinite
 
 /-!
@@ -75,16 +76,6 @@ theorem one_le_gaussianBinomial {q : K} (hq : 0 ≤ q) {n k : ℕ} (hk : k ≤ n
 end Ordered
 
 section Real
-
-/-- `(q;q)_k > 0` for `0 ≤ q < 1`. -/
-theorem finiteQPochhammerIn_self_pos {q : ℝ} (hq0 : 0 ≤ q) (hq1 : q < 1) (k : ℕ) :
-    0 < finiteQPochhammerIn q q k := by
-  unfold finiteQPochhammerIn
-  refine Finset.prod_pos fun j _ => ?_
-  have h : q * q ^ j ≤ q := by
-    calc q * q ^ j ≤ q * 1 := by gcongr; exact pow_le_one₀ hq0 hq1.le
-      _ = q := mul_one q
-  linarith
 
 /-- `(q^m;q)_k ≤ 1` for `0 ≤ q ≤ 1`. -/
 theorem finiteQPochhammerIn_pow_le_one {q : ℝ} (hq0 : 0 ≤ q) (hq1 : q ≤ 1) (m k : ℕ) :
