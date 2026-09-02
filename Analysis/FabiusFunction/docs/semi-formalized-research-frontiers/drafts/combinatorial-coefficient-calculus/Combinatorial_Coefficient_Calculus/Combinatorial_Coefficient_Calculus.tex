@@ -6286,15 +6286,30 @@ $\phi^{(n-m)}(0)=(-1)^{n-m}n!/m!$.
 
 \section{Algebraic singularities}
 
-\begin{lemma}[Exact binomial coefficient]
+\begin{lemma}[Exact algebraic coefficient, including polynomial cases]
 \label{lem:merged-singular-binomial}
-For $R\ne0$,
+Let $R\in\ComplexNumbers\setminus\{0\}$,
+$\alpha\in\ComplexNumbers$, and $n\in\NaturalNumbers$.  Then the Taylor
+germ at the origin satisfies
 \begin{equation}
  [z^n](1-z/R)^{-\alpha}
- =R^{-n}\frac{\Gamma(n+\alpha)}{\Gamma(\alpha)\Gamma(n+1)},         \label{eq:merged-singular-binomial}
+ =R^{-n}\frac{\RisingFactorial{\alpha}{n}}{n!}
+ =R^{-n}(-1)^n\binom{-\alpha}{n}.                                  \label{eq:merged-singular-binomial}
 \end{equation}
-where $1/\Gamma(\alpha)$ supplies continuation at nonpositive integers.  For
-fixed admissible $\alpha$,
+If $\alpha\notin\{0,-1,-2,\ldots\}$, this is also the ordinary gamma quotient
+\begin{equation}
+ R^{-n}\frac{\Gamma(n+\alpha)}{\Gamma(\alpha)\Gamma(n+1)}.          \label{eq:merged-singular-binomial-gamma}
+\end{equation}
+If instead $\alpha=-m$ with $m\in\{0,1,2,\ldots\}$, the germ is the
+polynomial $(1-z/R)^m$, and hence
+\begin{equation}
+ [z^n](1-z/R)^m=
+ \begin{cases}
+  R^{-n}(-1)^n\binom mn,&0\leq n\leq m,\\
+  0,&n>m.
+ \end{cases}                                                        \label{eq:merged-singular-binomial-polynomial}
+\end{equation}
+For fixed $\alpha\notin\{0,-1,-2,\ldots\}$,
 \begin{equation}
  [z^n](1-z/R)^{-\alpha}
  =\frac{R^{-n}n^{\alpha-1}}{\Gamma(\alpha)}
@@ -6303,51 +6318,191 @@ fixed admissible $\alpha$,
 \end{lemma}
 
 \begin{proof}
-The exact formula is the generalized binomial series.  Subtract the Stirling
-expansions of $\log\Gamma(n+\alpha)$ and $\log\Gamma(n+1)$ and exponentiate
-to obtain the ratio expansion.
+The generalized binomial theorem gives
+$(-1)^n\binom{-\alpha}{n}=\RisingFactorial{\alpha}{n}/n!$; this
+polynomial identity in $\alpha$ proves the first formula without any excluded
+parameters.  Away from the poles of $\Gamma(\alpha)$, its functional equation
+identifies the rising factorial with
+$\Gamma(n+\alpha)/\Gamma(\alpha)$.  At $\alpha=-m$ the binomial theorem is
+the finite expansion of $(1-z/R)^m$, giving the displayed cases rather than an
+undefined quotient of gamma poles.  Finally, subtract the Stirling expansions
+of $\log\Gamma(n+\alpha)$ and $\log\Gamma(n+1)$ and exponentiate to obtain the
+ratio expansion for the nonexceptional parameters.
 \end{proof}
 
-\begin{theorem}[Darboux transfer]
+\begin{theorem}[Darboux transfer with an analytic multiplier]
 \label{thm:merged-darboux-transfer}
-Let $0<R<\rho$, let $h$ be analytic in $|z|<\rho$, and fix $J\geq1$.  Then
+Let $\rho\in\ComplexNumbers\setminus\{0\}$, let $h$ be analytic in
+$|z|<r$ for some $r>|\rho|$, and fix $J\geq1$.  Then, for every
+$\alpha\in\ComplexNumbers$, as $n\to\infty$,
 \begin{align}
- [z^n]h(z)(1-z/R)^{-\alpha}
-={}&R^{-n}\sum_{j=0}^{J-1}\frac{(-R)^jh^{(j)}(R)}{j!}
- \frac{\Gamma(n+\alpha-j)}{\Gamma(\alpha-j)\Gamma(n+1)}            \notag\\
- &+O\!\left(R^{-n}n^{\Re\alpha-J-1}\right).                       \label{eq:merged-darboux-transfer}
+ [z^n]h(z)(1-z/\rho)^{-\alpha}
+={}&\rho^{-n}\sum_{j=0}^{J-1}\frac{(-\rho)^jh^{(j)}(\rho)}{j!}
+ \frac{\RisingFactorial{\alpha-j}{n}}{n!}                         \notag\\
+ &+O\!\left(|\rho|^{-n}(n+1)^{\Re\alpha-J-1}\right).             \label{eq:merged-darboux-transfer}
 \end{align}
-In particular, if $h(R)\ne0$,
+Every summand is literal, including the case in which $\alpha-j$ is a
+nonpositive integer and therefore contributes only finitely many coefficients.
+In particular, if $h(\rho)\ne0$ and
+$\alpha\notin\{0,-1,-2,\ldots\}$,
 \begin{equation}
- [z^n]h(z)(1-z/R)^{-\alpha}
- \sim\frac{h(R)}{\Gamma(\alpha)}R^{-n}n^{\alpha-1}.                \label{eq:merged-basic-transfer}
+ [z^n]h(z)(1-z/\rho)^{-\alpha}
+ \sim\frac{h(\rho)}{\Gamma(\alpha)}\rho^{-n}n^{\alpha-1}.         \label{eq:merged-basic-transfer}
 \end{equation}
 \end{theorem}
 
 \begin{proof}
 Taylor-expand
-$h(z)=\sum_{j<J}h^{(j)}(R)(z-R)^j/j!+(z-R)^Jq(z)$.  Since
-$(z-R)^j=(-R)^j(1-z/R)^j$, the finite terms give the displayed gamma ratios.
-Choose $r$ with $R<r<\rho$; Cauchy's estimate gives $[z^k]q=O(r^{-k})$.
-Convolving this geometric bound with
-$[z^m](1-z/R)^{J-\alpha}=O(R^{-m}(m+1)^{\Re\alpha-J-1})$ gives the remainder,
-because $R/r<1$.  The leading case follows from the gamma-ratio asymptotic.
+$h(z)=\sum_{j<J}h^{(j)}(\rho)(z-\rho)^j/j!+(z-\rho)^Jq(z)$, where the
+removable value at $\rho$ makes $q$ analytic in the same disk.  Since
+$(z-\rho)^j=(-\rho)^j(1-z/\rho)^j$, the finite terms follow exactly from
+Lemma~\ref{lem:merged-singular-binomial}.
+
+Choose $s$ with $|\rho|<s<r$ and write $q(z)=\sum_{k\geq0}q_kz^k$.
+Cauchy's estimate gives $q_k=O(s^{-k})$.  For fixed
+$\beta\in\ComplexNumbers$, the exact
+binomial lemma and its two parameter cases give
+\[
+ \left|\frac{\RisingFactorial{\beta}{m}}{m!}\right|
+ =O\!\left((m+1)^{\Re\beta-1}\right);
+\]
+when $\beta$ is a nonpositive integer the left side simply has finite support.
+Set $\beta=\alpha-J$ in the convolution for the remainder.  For $k\leq n/2$,
+the factor $(n-k+1)^{\Re\beta-1}$ is bounded by a constant times
+$(n+1)^{\Re\beta-1}$ and the remaining geometric series has ratio
+$|\rho|/s<1$.  For $k>n/2$, put $\sigma=\Re\beta-1$.  Since
+$(n-k+1)^\sigma\leq(n+1)^{\max(\sigma,0)}$, this part of the sum is
+\[
+ O\!\left((|\rho|/s)^{n/2}(n+1)^{\max(\sigma,0)+1}\right)
+ =O\!\left((n+1)^\sigma\right),
+\]
+because exponential decay dominates every positive or negative fixed power
+of $n$.  This proves the error term.  Taking $J=1$ and applying the
+nonexceptional gamma-ratio asymptotic proves the final equivalence.
 \end{proof}
 
+\begin{theorem}[Finite-smoothness Darboux subtraction]
+\label{thm:merged-darboux-finite-smoothness}
+Let $R>0$ and let $N\geq1$ be an integer.  For $1\leq\nu\leq N$, let
+\[
+ \rho_\nu\in\ComplexNumbers,\qquad |\rho_\nu|=R,\qquad
+ c_\nu,\lambda_\nu\in\ComplexNumbers.
+\]
+Let $F$ be analytic in $|z|<R$, and suppose that throughout this disk one has
+the global decomposition
+\begin{equation}
+ F(z)=\sum_{\nu=1}^{N}c_\nu
+       \left(1-\frac z{\rho_\nu}\right)^{\lambda_\nu}+E(z),
+ \qquad |\rho_\nu|=R,                                               \label{eq:merged-darboux-subtraction-decomposition}
+\end{equation}
+where each algebraic factor denotes its Taylor branch at the origin and $E$ is
+analytic in $|z|<R$.  Let
+\[
+ \mathcal N=\{\nu:\lambda_\nu\notin\{0,1,2,\ldots\}\},\qquad
+ \mathcal P=\{\nu:\lambda_\nu=m_\nu\in\{0,1,2,\ldots\}\}.
+\]
+Then, for every $n\in\NaturalNumbers$, the exact coefficient identity is
+\begin{align}
+ [z^n]F(z)={}&
+ \sum_{\nu\in\mathcal N}c_\nu\rho_\nu^{-n}
+ \frac{\Gamma(n-\lambda_\nu)}
+      {\Gamma(-\lambda_\nu)\Gamma(n+1)}                            \notag\\
+ &+\sum_{\substack{\nu\in\mathcal P\\ n\leq m_\nu}}
+ c_\nu\rho_\nu^{-n}(-1)^n\binom{m_\nu}{n}
+ +[z^n]E(z).                                                        \label{eq:merged-darboux-subtraction}
+\end{align}
+Consequently, the minimal remainder hypothesis
+\begin{equation}
+ [z^n]E(z)=O\!\left(R^{-n}(n+1)^{-p}\right),\qquad n\to\infty,      \label{eq:merged-darboux-coefficient-remainder}
+\end{equation}
+for some integer $p\geq1$ permits the last term in
+\eqref{eq:merged-darboux-subtraction} to be replaced by that error.
+
+A sufficient, directly checkable condition for
+\eqref{eq:merged-darboux-coefficient-remainder} is the following.  Suppose $E$
+extends continuously to $|z|\leq R$, and put
+\[
+ \varepsilon(\theta)=E\!\left(R\EulerE^{\ImaginaryUnit\theta}\right).
+\]
+Assume $\varepsilon\in C^{p-1}([-\pi,\pi])$, its $(p-1)$st derivative is
+absolutely continuous, $\varepsilon^{(p)}\in L^1([-\pi,\pi])$, and
+\[
+ \varepsilon^{(q)}(-\pi)=\varepsilon^{(q)}(\pi),\qquad 0\leq q<p.
+\]
+Then, for $n\geq1$,
+\begin{equation}
+ \left|[z^n]E(z)\right|
+ \leq\frac{R^{-n}}{2\pi n^p}
+       \left\|\varepsilon^{(p)}\right\|_{L^1([-\pi,\pi])}.        \label{eq:merged-darboux-boundary-remainder}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Apply Lemma~\ref{lem:merged-singular-binomial} with
+$\alpha=-\lambda_\nu$.  The nonpolynomial indices give honest gamma
+quotients; a polynomial index gives exactly the finite second sum.  Linearity
+of coefficient extraction proves \eqref{eq:merged-darboux-subtraction}, and
+the direct remainder hypothesis proves its asymptotic version.
+
+For the boundary criterion, Cauchy's formula first on $|z|=r<R$ and then
+uniform convergence as $r\uparrow R$ give
+\begin{equation}
+ [z^n]E(z)=\frac{R^{-n}}{2\pi}
+ \int_{-\pi}^{\pi}\varepsilon(\theta)
+ \EulerE^{-\ImaginaryUnit n\theta}\,\Differential\theta.          \label{eq:merged-darboux-boundary-fourier}
+\end{equation}
+Integrate by parts $p$ times.  Absolute continuity justifies the last step,
+and every boundary term vanishes by periodic matching, so
+\[
+ [z^n]E(z)=\frac{R^{-n}}{2\pi(\ImaginaryUnit n)^p}
+ \int_{-\pi}^{\pi}\varepsilon^{(p)}(\theta)
+ \EulerE^{-\ImaginaryUnit n\theta}\,\Differential\theta.
+\]
+Taking absolute values proves
+\eqref{eq:merged-darboux-boundary-remainder}.
+\end{proof}
+
+\begin{remark}
+Polynomial exponents must be separated rather than encoded by an undefined
+ratio of gamma poles; after their finite coefficient support ends they do not
+affect any tail asymptotic.  The word \emph{global} in
+\eqref{eq:merged-darboux-subtraction-decomposition} is equally essential for
+the boundary criterion: a merely local expansion near one singular point does
+not define a remainder on the whole circle and therefore cannot by itself
+justify the Fourier integration-by-parts estimate.
+\end{remark}
+
 \begin{corollary}[Multiple dominant points]
-If finitely many local singular models occur at points $\rho_j$ of common
-modulus $R$ and the remainder is analytic past that circle, their coefficient
-contributions add:
+Let $R>0$ and $\varepsilon>0$, and let $j$ range over a finite index set.
+For every $j$, let
+\[
+ \rho_j,\alpha_j\in\ComplexNumbers,\qquad
+ |\rho_j|=R,\qquad
+ \alpha_j\notin\{0,-1,-2,\ldots\},
+\]
+and let $h_j$ be analytic in $|z|<R+\varepsilon$ with
+$h_j(\rho_j)\ne0$.  Suppose that, as Taylor germs at the origin,
+\[
+ F(z)=\sum_jh_j(z)(1-z/\rho_j)^{-\alpha_j}+E(z),
+\]
+where $E$ is analytic in $|z|<R+\varepsilon$.  Then, as $n\to\infty$, the
+dominant contributions add:
 \begin{equation}
  [z^n]F(z)=\sum_j\frac{h_j(\rho_j)}{\Gamma(\alpha_j)}
- \rho_j^{-n}n^{\alpha_j-1}(1+O(n^{-1})).                            \label{eq:merged-multiple-transfer}
+ \rho_j^{-n}n^{\alpha_j-1}(1+O(n^{-1}))
+ +O\!\left((R+\varepsilon/2)^{-n}\right).                           \label{eq:merged-multiple-transfer}
 \end{equation}
 Complex conjugate points therefore produce periodic or oscillatory terms.
+Any model with $\alpha_j\in\{0,-1,-2,\ldots\}$ is analytic in
+$|z|<R+\varepsilon$ and may therefore be absorbed into $E$.  Its coefficients
+are exponentially smaller than $R^{-n}$; they need not have finite support
+unless the analytic multiplier $h_j$ is itself a polynomial.
 \end{corollary}
 
 \begin{proof}
-Subtract the finite singular models and apply Cauchy's estimate to the analytic
-remainder; then apply Theorem~\ref{thm:merged-darboux-transfer} term by term.
+Apply Theorem~\ref{thm:merged-darboux-transfer} with $J=1$ to each model.
+Cauchy's estimate on $|z|=R+\varepsilon/2$ gives the exponentially smaller
+bound for $E$.
 \end{proof}
 
 \begin{proposition}[Logarithmic and meromorphic cases]
