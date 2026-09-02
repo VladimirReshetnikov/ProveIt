@@ -529,6 +529,7 @@ import FabiusFunction.BilateralSeriesConvergence
 import FabiusFunction.QGammaLogDerivative
 import FabiusFunction.PowerSeriesUniqueness
 import FabiusFunction.DivisorSumLambert
+import FabiusFunction.ReciprocalQBinomialAnalytic
 import FabiusFunction.GaussianBinomialPalindromic
 import FabiusFunction.ThetaQuasiPeriodicity
 
