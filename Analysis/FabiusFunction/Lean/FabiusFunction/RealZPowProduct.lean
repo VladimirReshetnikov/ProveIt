@@ -60,6 +60,11 @@ theorem exp_neg_mul_log {b : ℝ} (hb : 0 < b) (c : ℝ) :
   congr 1
   ring
 
+/-- The first-power case: `exp (-log b) = 1 / b`. -/
+theorem exp_neg_log {b : ℝ} (hb : 0 < b) :
+    Real.exp (-Real.log b) = 1 / b := by
+  rw [Real.exp_neg, Real.exp_log hb, one_div]
+
 /-- The half-power case: `exp (-log b / 2) = 1 / √b`. -/
 theorem exp_neg_log_div_two {b : ℝ} (hb : 0 < b) :
     Real.exp (-Real.log b / 2) = 1 / Real.sqrt b := by

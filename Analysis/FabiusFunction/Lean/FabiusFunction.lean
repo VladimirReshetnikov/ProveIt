@@ -273,6 +273,7 @@ import FabiusFunction.ThueMorseComputability
 import FabiusFunction.WordComplexity
 import FabiusFunction.ThueMorseNewman
 import FabiusFunction.ThueMorseNewmanQuantitative
+import FabiusFunction.ThueMorseNewmanResidues
 import FabiusFunction.ThueMorseGelfond
 import FabiusFunction.ThueMorseGelfondSharpness
 import FabiusFunction.PeriodDoublingHankel

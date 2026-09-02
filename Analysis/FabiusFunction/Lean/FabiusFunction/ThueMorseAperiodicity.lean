@@ -48,26 +48,36 @@ theorem thueMorseSign_two_pow_add (m x : ℕ) (hx : x < 2 ^ m) :
     thueMorseSign (2 ^ m + x) = -thueMorseSign x :=
   thueMorseSign_add_pow_two m x hx
 
-/-- An eventual period of the signed Thue--Morse sequence is a global
-period: the block-flip identity transports periodicity from beyond any
-threshold back to the whole sequence. -/
-theorem thueMorseSign_period_of_eventually (p N : ℕ)
-    (h : ∀ n, N ≤ n → thueMorseSign (n + p) = thueMorseSign n) :
-    ∀ r, thueMorseSign (r + p) = thueMorseSign r := by
+/-- **Eventual periods are global periods under a block-flip law.**  If
+a sequence satisfies `f (2^m + x) = g (f x)` for `x < 2^m` with `g`
+injective, then any period valid from some threshold on is a period of
+the whole sequence: transport the periodicity from the block starting
+at a large `2^m` back to the origin through `g`. -/
+theorem eventually_periodic_of_block_flip {α : Type*} (f : ℕ → α)
+    (g : α → α) (hg : Function.Injective g)
+    (hflip : ∀ m x, x < 2 ^ m → f (2 ^ m + x) = g (f x))
+    {p N : ℕ} (h : ∀ n, N ≤ n → f (n + p) = f n) :
+    ∀ r, f (r + p) = f r := by
   intro r
-  obtain ⟨m, hm⟩ : ∃ m, N ≤ 2 ^ m ∧ r + p < 2 ^ m := by
+  obtain ⟨m, hmN, hmr⟩ : ∃ m, N ≤ 2 ^ m ∧ r + p < 2 ^ m := by
     refine ⟨N + r + p, ?_, ?_⟩
     · exact le_of_lt (lt_of_le_of_lt (by omega : N ≤ N + r + p)
         Nat.lt_two_pow_self)
     · calc r + p ≤ N + r + p := by omega
         _ < 2 ^ (N + r + p) := Nat.lt_two_pow_self
-  obtain ⟨hmN, hmr⟩ := hm
   have hper := h (2 ^ m + r) (le_trans hmN (by omega))
-  rw [show 2 ^ m + r + p = 2 ^ m + (r + p) by ring,
-    thueMorseSign_two_pow_add m (r + p) hmr,
-    thueMorseSign_two_pow_add m r (by omega)] at hper
-  have := neg_injective hper
-  exact this
+  rw [show 2 ^ m + r + p = 2 ^ m + (r + p) by ring, hflip m (r + p) hmr,
+    hflip m r (by omega)] at hper
+  exact hg hper
+
+/-- An eventual period of the signed Thue--Morse sequence is a global
+period: the block-flip identity `ε(2^m + x) = -ε(x)` transports
+periodicity from beyond any threshold back to the whole sequence. -/
+theorem thueMorseSign_period_of_eventually (p N : ℕ)
+    (h : ∀ n, N ≤ n → thueMorseSign (n + p) = thueMorseSign n) :
+    ∀ r, thueMorseSign (r + p) = thueMorseSign r :=
+  eventually_periodic_of_block_flip thueMorseSign Neg.neg neg_injective
+    thueMorseSign_two_pow_add h
 
 /-- **Aperiodicity.**  The signed Thue--Morse sequence is not eventually
 periodic: no positive period is valid from any threshold on.  This is the
