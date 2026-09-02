@@ -72,6 +72,7 @@ import FabiusFunction.DiamondPower
 import FabiusFunction.OrdinaryBellBivariate
 import FabiusFunction.BinomialInversionEGF
 import FabiusFunction.EulerianPolynomialRecurrence
+import FabiusFunction.BellFactorialRowSum
 import FabiusFunction.SymmetricFunctionTransform
 import FabiusFunction.SymmetricFunctionGenerating
 import FabiusFunction.FiniteQBinomialCore
