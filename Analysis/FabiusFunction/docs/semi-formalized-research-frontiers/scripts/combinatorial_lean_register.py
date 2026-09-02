@@ -63,7 +63,7 @@ STATUS = {
  'cor:stirling-inverse': ('Lean',
    r"\lean{Fabius.sum_range_stirlingSecond_mul_signedStirlingFirst}, "
    r"\lean{Fabius.sum_range_signedStirlingFirst_mul_stirlingSecond} and their "
-   r"\lean{Icc} forms (\lean{StirlingBasisChange})"),
+   r"\lean{Finset.Icc} forms (\lean{StirlingBasisChange})"),
  'thm:lah-conv': ('Lean',
    r"\lean{Fabius.ascPochhammer_eq_sum_lahNumber_mul_descPochhammer}, "
    r"\lean{Fabius.descPochhammer_eq_sum_lahNumber_mul_ascPochhammer}, "
@@ -326,6 +326,11 @@ STATUS = {
    r"(\lean{EulerPolynomials}), the Euler reflection \cref{eq:merged-euler-reflection} is "
    r"\lean{Fabius.eulerPolynomial_eval_one_sub} and $\mathsf E_{2m+1}(1/2)=0$ is "
    r"\lean{Fabius.eulerPolynomial_eval_half_odd} (\lean{EulerReflection})"),
+ 'thm:touchard-poly': ('partial',
+   r"\cref{eq:touchard} is \lean{Fabius.bell_add_prime_modEq} (\lean{TouchardCongruence}), "
+   r"proved from Spivey's identity modulo $p$ with \lean{Fabius.stirlingSecond_prime_eq_zero_zmod} "
+   r"($p\mid\StirlingSecondKind pk$ for $1<k<p$, from the surjection formula and Fermat); the "
+   r"polynomial congruence \cref{eq:touchard-poly} is not formalized"),
  'thm:faa-partition': ('partial',
    r"the analytic statement is not formalized; its formal power-series analogue, the "
    r"coefficients of $F(G(t))$ through partial Bell polynomials, is "

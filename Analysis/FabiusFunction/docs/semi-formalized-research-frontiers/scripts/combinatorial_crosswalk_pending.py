@@ -766,6 +766,26 @@ and $\EulerE^{t/q}-1$ is $t$ times a unit, which is cancelled.
 \cref{eq:merged-bernoulli-half} is \lean{Fabius.bernoulli_eval_half}.""")),
 ]
 
+PENDING += [
+ # --- thm:touchard-poly ---
+ (r"""same number of blocks, contributing $\TouchardPolynomial{n+1}(x)$.  This proves the polynomial
+congruence; set $x=1$.
+\end{proof}
+""",
+  remark(r"""% ed.: crosswalk added 2026-09-01; the formal proof is arithmetic, not the
+% group action above.
+\cref{eq:touchard} is \lean{Fabius.bell_add_prime_modEq} (module
+\lean{TouchardCongruence}), stated as $\BellNumber{n+p}\equiv\BellNumber n
++\BellNumber{n+1}\pmod p$ for every prime $p$.  The Lean proof reads Spivey's
+identity (\cref{thm:spivey}, \lean{Fabius.spivey}) with $m=p$ in
+$\mathbb Z/p$: the Stirling numbers $\StirlingSecondKind pj$ with $1<j<p$
+vanish modulo $p$ (\lean{Fabius.stirlingSecond_prime_eq_zero_zmod}, from the
+surjection formula \cref{thm:second-explicit} and Fermat's little theorem),
+the term $j=1$ is $\sum_k\binom nk\BellNumber k=\BellNumber{n+1}$, and in
+the term $j=p$ only $k=n$ survives because $p^{n-k}\equiv0$ for $k<n$.  The
+polynomial congruence \cref{eq:touchard-poly} is not formalized.""")),
+]
+
 applied = 0
 for anchor, text in PENDING:
     if text.strip() in s:

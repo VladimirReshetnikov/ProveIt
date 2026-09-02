@@ -41,6 +41,7 @@ import FabiusFunction.EulerPolynomials
 import FabiusFunction.EulerReflection
 import FabiusFunction.FaulhaberOffset
 import FabiusFunction.RaabeMultiplication
+import FabiusFunction.TouchardCongruence
 import FabiusFunction.SymmetricFunctionTransform
 import FabiusFunction.SymmetricFunctionGenerating
 import FabiusFunction.FiniteQBinomialCore
