@@ -97,6 +97,41 @@ STATUS = {
    r"\lean{Fabius.binomial_inversion_ring_iff} (commutative rings) "
    r"(\lean{BinomialInversion}); the kernel orthogonality is "
    r"\lean{Fabius.sum_Icc_neg_one_pow_choose_mul_choose}; the EGF form is not formalized"),
+ 'thm:bell-poly-recurrences': ('Lean',
+   r"\lean{Fabius.partialBell} is defined by \cref{eq:partial-bell-recurrence} "
+   r"(\lean{Fabius.partialBell_succ_succ}, \lean{Fabius.partialBell_succ_succ_eq_binomialConv}); "
+   r"\cref{eq:complete-bell-recurrence} is Mathlib-free \lean{Bell.complete_succ} together with "
+   r"\lean{Fabius.bell_complete_eq_sum_partialBell} (\lean{PartialBellPolynomials}, "
+   r"\lean{BellPolynomialInversion}); the boundary values are \lean{Fabius.partialBell_zero_succ}, "
+   r"\lean{Fabius.partialBell_succ_zero}, \lean{Fabius.partialBell_eq_zero_of_lt}"),
+ 'thm:bell-poly-egf': ('partial',
+   r"the first identity is \lean{Fabius.bellWeightSeries_pow} and the third "
+   r"\lean{Fabius.exp_subst_bellWeightSeries} (\lean{BellGeneratingFunctions}), as formal power "
+   r"series over any commutative $\mathbb Q$-algebra; the bivariate forms and the ordinary "
+   r"Bell polynomials are not formalized"),
+ 'thm:bell-poly-specializations': ('partial',
+   r"\cref{eq:bell-first-specialization} is \lean{Fabius.partialBell_factorial_pred}, "
+   r"\cref{eq:bell-second-specialization} is \lean{Fabius.partialBell_one}, "
+   r"\cref{eq:bell-number-specialization} is \lean{Fabius.bell_complete_one}, "
+   r"\cref{eq:bell-lah-specialization} is \lean{Fabius.partialBell_factorial} "
+   r"(\lean{PartialBellPolynomials}, \lean{BellGeneratingFunctions}); the factorial row sum "
+   r"\cref{eq:bell-factorial-complete} and the Touchard form are not formalized"),
+ 'thm:complete-bell-addition': ('Lean',
+   r"\lean{Bell.complete_add} (\lean{BellPolynomialInversion}), over every commutative semiring"),
+ 'thm:bell-transform-inverse': ('partial',
+   r"the inversion is \lean{Bell.complete_cumulant} and \lean{Bell.cumulant_complete} "
+   r"(\lean{BellPolynomialInversion}), with the inverse sequence given recursively by "
+   r"\lean{Bell.cumulant} over every commutative ring; the closed form "
+   r"\cref{eq:bell-transform-x} through partial Bell polynomials is not formalized"),
+ 'thm:moment-cumulant': ('partial',
+   r"the moment--cumulant inversion is \lean{Fabius.completeBellPolynomial_momentCumulant} and "
+   r"\lean{Fabius.momentCumulant_completeBellPolynomial} (\lean{MomentCumulantAlgebra}) and, "
+   r"division-free, \lean{Bell.complete_cumulant}; the closed form of "
+   r"\cref{eq:cumulants-from-moments} is not formalized"),
+ 'thm:bell-egf': ('Lean',
+   r"\lean{Fabius.exp_subst_exp_sub_one} (\lean{BellGeneratingFunctions}): "
+   r"$\exp\circ(e^z-1)=\sum_n B(n)z^n/n!$ as formal power series over any commutative "
+   r"$\mathbb Q$-algebra; the differential equation is the derivative of this substitution"),
  'thm:eulerian-recurrence': ('partial',
    r"\lean{Fabius.eulerianNumber} is defined by this recurrence "
    r"(\lean{Fabius.eulerianNumber_succ_left}, \lean{Fabius.eulerianNumber_succ_succ}, "
