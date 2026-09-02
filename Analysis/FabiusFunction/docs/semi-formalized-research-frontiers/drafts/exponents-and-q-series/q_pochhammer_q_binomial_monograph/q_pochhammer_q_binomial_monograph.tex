@@ -3370,6 +3370,37 @@ For \eqref{eq:qchu2}, let $b\to0$ in \Cref{thm:q-pfaff}, with its other numerato
 by comparing the leading factors of the two degree-$n$ polynomials in $1/b$.
 \end{proof}
 
+\begin{remark}[An algebraic proof of \eqref{eq:qchu1}]\label{rem:qchu1-cauchy}
+% ed.: added; this is the proof that the Lean development uses
+% ed.: (\texttt{finiteQPochhammerIn\_div\_eq\_sum\_chu}), and it makes the
+% ed.: first sum as elementary as the second.
+Neither the $q$-Gauss sum nor the rational-extension argument is needed for
+\eqref{eq:qchu1}: after multiplication by $(c;q)_n$ it is the $q$-Cauchy
+identity of \Cref{thm:q-cauchy} read at base $q^{-1}$.  Indeed, by
+\Cref{prop:base-reversal},
+$(q^{-n};q)_k/(q;q)_k=(-1)^kq^{\binom k2-nk}\GaussianBinomial nkq$ and
+$(c;q)_k^{-1}=(cq^k;q)_{n-k}/(c;q)_n$, so \eqref{eq:qchu1} is equivalent to
+\begin{equation}\label{eq:qchu1-cleared}
+ (c/a;q)_n=\sum_{k=0}^{n}\GaussianBinomial nkq(-1)^kq^{\binom k2}
+ \Bigl(\frac ca\Bigr)^{k}(a;q)_k\,(cq^k;q)_{n-k}.
+\end{equation}
+Now apply \Cref{thm:q-cauchy} with the base $q^{-1}$ in place of $q$ and with
+$u=a^{-1}$, $v=cq^{n-1}$, and transcribe every factor back to the base $q$:
+$\GaussianBinomial nk{q^{-1}}=q^{-k(n-k)}\GaussianBinomial nkq$
+(\Cref{thm:qbinom-structure}(ii)),
+$(a^{-1};q^{-1})_k=(-1)^ka^{-k}q^{-\binom k2}(a;q)_k$
+(\Cref{prop:base-reversal}), $(cq^{n-1};q^{-1})_{n-k}=(cq^k;q)_{n-k}$
+(reverse the order of the factors), and the left side
+$(a^{-1}cq^{n-1};q^{-1})_n=(c/a;q)_n$ likewise.  Since
+$k(n-1)=k(n-k)+2\binom k2$, the powers of $q$ collect to exactly
+$q^{\binom k2}$, and the $k$-th summand of the transcribed identity is the
+$k$-th summand of \eqref{eq:qchu1-cleared}.  Thus \eqref{eq:qchu1} holds in
+every field with $q\ne0$, $a\ne0$, $(q;q)_n\ne0$ and $(c;q)_n\ne0$, with no
+limiting process; combined with \Cref{prop:qchu2-by-reversal} the same is
+true of \eqref{eq:qchu2} (with the additional hypothesis $(a;q)_n\ne0$ that
+the reversal uses).
+\end{remark}
+
 % -----------------------------------------------------------------
 % INSERTION 1 of 1 for this item.
 % Chapter: \ref{chap:basic-hypergeometric} ("Basic hypergeometric series"),
@@ -12568,8 +12599,8 @@ inside the proof below does not formalize the result the proof concludes.
   than a mathematical claim.
 \end{description}
 
-Of the 282 labelled forward results, 106 are \statusexact, 85 are
-\statuspartial, 83 are \statusnone, and 8 are \statusna.  The original
+Of the 282 labelled forward results, 112 are \statusexact, 84 are
+\statuspartial, 78 are \statusnone, and 8 are \statusna.  The original
 191-result pre-Fabius core had 36 \statusexact, 29 \statuspartial, 123
 \statusnone, and 3 \statusna{} entries.  The four integrated guide chapters
 add 31 human-proved but not Lean-formalized assertions and five labelled
@@ -13125,14 +13156,14 @@ inferred from a related finite identity.
 Chapter & \statusexact & \statuspartial & \statusnone & \statusna\\
 \midrule
 The algebra of $q$-shifted factorials & 12 & 2 & 1 & 0\\
-$q$-integers and Gaussian coefficients & 8 & 1 & 0 & 0\\
+$q$-integers and Gaussian coefficients & 9 & 0 & 0 & 0\\
 Finite $q$-binomial theorems and inversion & 10 & 0 & 0 & 0\\
 Weighted binomial coefficients and symmetric functions & 3 & 3 & 2 & 0\\
-Partitions, words, paths, and inversion statistics & 6 & 2 & 1 & 0\\
+Partitions, words, paths, and inversion statistics & 7 & 2 & 0 & 0\\
 Finite fields, Grassmannians, and rank enumeration & 1 & 1 & 4 & 0\\
 Symmetry and unimodality & 0 & 0 & 3 & 0\\
 The infinite $q$-binomial theorem & 1 & 1 & 2 & 0\\
-Basic hypergeometric series & 3 & 3 & 3 & 0\\
+Basic hypergeometric series & 5 & 3 & 1 & 0\\
 Euler telescoping and very-well-poised summations & 0 & 0 & 4 & 0\\
 Bilateral series and Ramanujan's \texorpdfstring{${}_1\psi_1$}{1psi1} sum & 1 & 0 & 1 & 0\\
 $q$-difference calculus and the quantum binomial & 8 & 2 & 0 & 0\\
@@ -13147,13 +13178,13 @@ Negative upper indices and geometric Newton interpolation & 8 & 0 & 1 & 0\\
 Central $q$-binomial sums and Lambert series & 1 & 0 & 6 & 0\\
 Asymptotic regimes and Bernoulli expansions & 1 & 3 & 4 & 0\\
 Exact limits, reciprocity, and research frontiers & 0 & 0 & 5 & 0\\
-Computation, certification, and formal proof architecture & 6 & 3 & 2 & 3\\
-Geometric interpolation and exact $q$-filters & 6 & 2 & 1 & 0\\
+Computation, certification, and formal proof architecture & 7 & 2 & 2 & 3\\
+Geometric interpolation and exact $q$-filters & 7 & 2 & 0 & 0\\
 Half-base arithmetic and Prouhet--Thue--Morse cancellation & 6 & 3 & 0 & 0\\
 Geometric uniform sums, $q$-cumulants, and the Fabius--Rvachev functions & 2 & 11 & 0 & 0\\
-Dyadic Gaussian--Thue--Morse structure and the values of $F$ & 6 & 44 & 6 & 0\\
+Dyadic Gaussian--Thue--Morse structure and the values of $F$ & 6 & 45 & 5 & 0\\
 \midrule
-\textbf{Forward total} & 106 & 85 & 83 & 8\\
+\textbf{Forward total} & 112 & 84 & 78 & 8\\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -13349,12 +13380,18 @@ polynomiality with natural coefficients is naturality of the recurrence}\\[2pt]
 {\footnotesize\texttt{QPochhammerElementaryIdentities}; exact displayed
 denominators and \(k<n\), with both root-safe cross-multiplied forms exported
 totally for all \(n,k\) by zero extension}\\[2pt]
-\Cref{thm:qbinom-moments} & \statuspartial &
+\Cref{thm:qbinom-moments} & \statusexact &
+\texttt{meanAtOne\_\allowbreak{}gaussianBinomial\_\allowbreak{}X},
+\texttt{varAtOne\_\allowbreak{}gaussianBinomial\_\allowbreak{}X},
+\texttt{eval\_\allowbreak{}one\_\allowbreak{}derivative\_\allowbreak{}gaussianBinomial\_\allowbreak{}X},
 \texttt{two\_\allowbreak{}mul\_\allowbreak{}derivative\_\allowbreak{}gaussianBinomial\_\allowbreak{}eval\_\allowbreak{}one}\newline
-{\footnotesize\texttt{GaussianBinomialPalindromic}; the mean and the
-derivative formula in the division-free form
-$2\,([n,k]_X)'(1)=k(n-k)\binom nk$, over every commutative semiring, from
-palindromicity; the variance is not formalized}\\[2pt]
+{\footnotesize\texttt{GaussianBinomialCumulants}: the mean and variance as the
+first two cumulant functionals $P'(1)/P(1)$ and
+$P''(1)/P(1)+P'(1)/P(1)-(P'(1)/P(1))^2$ of the generating polynomial
+$[n,k]_X$ over any field of characteristic zero, by additivity of cumulants on
+the factorization $[n,k]_X\prod_{j<k}[j+1]_X=\prod_{j<k}[n-k+1+j]_X$ and the
+uniform-distribution values for the $q$-integers; the derivative formula both
+in this form and division-free (\texttt{GaussianBinomialPalindromic})}\\[2pt]
 \midrule
 \multicolumn{3}{@{}l}{\itshape Finite $q$-binomial theorems and inversion}\\
 \midrule
@@ -13475,7 +13512,17 @@ word bijection; the count $\binom{m+k}{k}$ at $q=1$}\\[2pt]
 encoding ($0$ east, $1$ north), the area is defined as the pairs (north step,
 later east step), shown equal to the sum of starting heights of east steps
 and to the inversion number; over every semiring}\\[2pt]
-\Cref{thm:qmult-inversions} & \statusnone & ---\\[2pt]
+\Cref{thm:qmult-inversions} & \statusexact &
+\texttt{qMultinomial\_\allowbreak{}ofFn\_\allowbreak{}eq\_\allowbreak{}sum\_\allowbreak{}pow\_\allowbreak{}inversions},
+\texttt{multisetInversionGF\_\allowbreak{}eq\_\allowbreak{}qMultinomialVec},
+\texttt{inversions\_\allowbreak{}cons},
+\texttt{qMultinomialVec\_\allowbreak{}recurrence}\newline
+{\footnotesize\texttt{MultisetInversions}; words are maps
+$\{0,\dots,N-1\}\to\{0,\dots,r-1\}$ with prescribed letter counts, the
+inversion number counts pairs $i<j$ with $w_j<w_i$, and both sides satisfy the
+first-letter recursion $G(c)=\sum_a q^{c_0+\cdots+c_{a-1}}G(c-e_a)$, the
+$q$-multinomial side by the $q$-Pascal rule; over every commutative
+semiring}\\[2pt]
 \Cref{prop:rogers-szego-recurrence} & \statusexact &
 \texttt{rogersSzego\_\allowbreak{}zero},
 \texttt{rogersSzego\_\allowbreak{}succ},
@@ -13572,7 +13619,16 @@ denominators nonzero, derived algebraically from
 \texttt{finite\_\allowbreak{}qCauchy\_\allowbreak{}second\_\allowbreak{}identity}
 exactly as in the proof; $q^{-n}$ is $(q^n)^{-1}$ and $abq^{1-n}/c$ is
 $abq/(cq^n)$}\\[2pt]
-\Cref{cor:q-chu} & \statusnone & ---\\[2pt]
+\Cref{cor:q-chu} & \statusexact &
+\texttt{q\_\allowbreak{}chu\_\allowbreak{}vandermonde\_\allowbreak{}first},
+\texttt{q\_\allowbreak{}chu\_\allowbreak{}vandermonde\_\allowbreak{}second},
+\texttt{finiteQPochhammerIn\_\allowbreak{}div\_\allowbreak{}eq\_\allowbreak{}sum\_\allowbreak{}chu}\newline
+{\footnotesize\texttt{QChuVandermonde}; both sums for the terminating sum
+\texttt{twoPhiOneFinite} in any field with $q\ne0$, $(q;q)_n\ne0$ and the
+displayed denominators nonzero (the second sum also assumes $(a;q)_n\ne0$,
+as its reversal derivation does); the first sum is proved algebraically as the
+finite $q$-Cauchy identity at base $q^{-1}$ with $u=1/a$, $v=cq^{n-1}$, so
+neither the $q$-Gauss sum nor the rational-extension argument is needed}\\[2pt]
 \Cref{lem:2phi1-reversal} & \statusexact &
 \texttt{twoPhiOneFinite\_\allowbreak{}reversal},
 \texttt{finiteQPochhammerIn\_\allowbreak{}sub\_\allowbreak{}eq},
@@ -13583,7 +13639,12 @@ additional explicit hypothesis $(q;q)_n\ne0$ for the denominators; the
 terminating sum is \texttt{twoPhiOneFinite}, with $q^{-n}=(q^n)^{-1}$ and
 $q^{1-n}=q(q^n)^{-1}$; the four symbols are reversed by the general rule
 $(x;q)_{n-i}\,(-xq^{n-i})^i q^{\binom i2}(q^{1-n}/x;q)_i=(x;q)_n$}\\[2pt]
-\Cref{prop:qchu2-by-reversal} & \statusnone & ---\\[2pt]
+\Cref{prop:qchu2-by-reversal} & \statusexact &
+\texttt{q\_\allowbreak{}chu\_\allowbreak{}vandermonde\_\allowbreak{}second}\newline
+{\footnotesize\texttt{QChuVandermonde}; the proof is the reversal argument of the
+text: \texttt{twoPhiOneFinite\_\allowbreak{}reversal} applied to
+\texttt{q\_\allowbreak{}chu\_\allowbreak{}vandermonde\_\allowbreak{}first} at the reflected
+parameters $a=q^{1-n}/C$, $c=q^{1-n}/A$, $z=cq^n/a$; no limiting process}\\[2pt]
 \midrule
 \multicolumn{3}{@{}l}{\itshape Bilateral series and Ramanujan's \texorpdfstring{${}_1\psi_1$}{1psi1} sum}\\
 \midrule
@@ -14034,7 +14095,15 @@ Mathlib's \texttt{Polynomial.eq\_of\_infinite\_eval\_eq}}\\[2pt]
 \texttt{safe\_\allowbreak{}specialization}\newline
 {\footnotesize\texttt{TelescopingCertificate}; the cleared identity
 specializes wherever both denominators are nonzero}\\[2pt]
-\Cref{lem:integer-qpochhammer-translation} & \statuspartial & \texttt{finiteQPochhammerIn\_\allowbreak{}self\_\allowbreak{}mul\_\allowbreak{}gaussianBinomial}\newline{\footnotesize\texttt{FiniteQBinomialCore}}\\[2pt]
+\Cref{lem:integer-qpochhammer-translation} & \statusexact &
+\texttt{finiteQPochhammerIn\_\allowbreak{}pow\_\allowbreak{}succ\_\allowbreak{}div\_\allowbreak{}self},
+\texttt{finiteQPochhammerIn\_\allowbreak{}inv\_\allowbreak{}pow\_\allowbreak{}div\_\allowbreak{}self},
+\texttt{finiteQPochhammerIn\_\allowbreak{}pow\_\allowbreak{}succ\_\allowbreak{}eq\_\allowbreak{}div},
+\texttt{finiteQPochhammerIn\_\allowbreak{}self\_\allowbreak{}mul\_\allowbreak{}gaussianBinomial}\newline
+{\footnotesize\texttt{IntegerParameterTranslation}; the three rules in any
+field under the displayed nonvanishing hypotheses ($(q;q)_n\ne0$, resp.
+$q\ne0$ and $(q;q)_k\ne0$, resp. $(q;q)_a\ne0$), with $q^{-m}=(q^m)^{-1}$;
+the division-free form is \texttt{FiniteQBinomialCore}}\\[2pt]
 \Cref{thm:certified-integral-translation} & \statusnone & ---\\[2pt]
 \Cref{cor:identity-finder-certificate} & \statusnone & ---\\[2pt]
 \Cref{thm:formal-analytic-transfer} & \statusexact &
@@ -14064,7 +14133,16 @@ tests are formalized separately, but not the six-part falsification principle}\\
 \Cref{cor:scaled-geometric-moments} & \statuspartial & \texttt{sum\_\allowbreak{}geometricLagrangeWeight\_\allowbreak{}mul\_\allowbreak{}scaled\_\allowbreak{}geometric\_\allowbreak{}pow\_\allowbreak{}of\_\allowbreak{}pos}\newline{\footnotesize\texttt{GeometricResidualMoments}}\\[2pt]
 \Cref{thm:geometric-filter-diagonal} & \statusexact & \texttt{coeff\_\allowbreak{}geometricSeriesFilter}\newline{\footnotesize\texttt{GeometricPowerSeriesFilter}}\\[2pt]
 \Cref{cor:geometric-richardson} & \statuspartial & \texttt{geometricLagrangeAnalyticSeriesFilter\_\allowbreak{}eq\_\allowbreak{}constant\_\allowbreak{}add\_\allowbreak{}gaussian\_\allowbreak{}tsum}\newline{\footnotesize\texttt{AnalyticSeriesFilter}}\\[2pt]
-\Cref{thm:geometric-filter-bound} & \statusnone & ---\\[2pt]
+\Cref{thm:geometric-filter-bound} & \statusexact &
+\texttt{norm\_\allowbreak{}geometricFilter\_\allowbreak{}sub\_\allowbreak{}le},
+\texttt{hasSum\_\allowbreak{}geometricFilter},
+\texttt{sum\_\allowbreak{}geometricLagrangeWeight\_\allowbreak{}mul\_\allowbreak{}pow\_\allowbreak{}eq},
+\texttt{gaussianBinomial\_\allowbreak{}le\_\allowbreak{}inv\_\allowbreak{}finiteQPochhammerIn}\newline
+{\footnotesize\texttt{GeometricFilterBound}; over $\ComplexNumbers$ with real
+$0<q<1$, the series $f$ given by its coefficients with
+$\lVert a_m\rVert\le MR^{-m}$; the filter of the series is the
+moment-weighted series, and the bound follows from
+$0\le[m-1,n]_q\le1/(q;q)_n$; the exponent is written $n(n+1)/2$}\\[2pt]
 \midrule
 \multicolumn{3}{@{}l}{\itshape Half-base arithmetic and Prouhet--Thue--Morse cancellation}\\
 \midrule
@@ -14212,7 +14290,16 @@ not the displayed $\Psi_k$ normalization dictionary}\\[2pt]
 \texttt{iteratedDeriv\_fabiusReal\_inv\_two\_pow\_all}\newline
 {\footnotesize\texttt{FabiusQBinomialTaylor}; \texttt{BoundedDerivatives}; the
 two pieces are not the proposition's single Taylor-polynomial identity}\\[2pt]
-\Cref{lem:geometric-simplex} & \statusnone & ---\\[2pt]
+\Cref{lem:geometric-simplex} & \statuspartial &
+\texttt{hasSum\_\allowbreak{}geometric\_\allowbreak{}simplex\_\allowbreak{}increments},
+\texttt{hasSum\_\allowbreak{}prod\_\allowbreak{}fin\_\allowbreak{}pi},
+\texttt{sum\_\allowbreak{}prefix\_\allowbreak{}mul\_\allowbreak{}eq\_\allowbreak{}sum\_\allowbreak{}mul\_\allowbreak{}tailSum}\newline
+{\footnotesize\texttt{GeometricSimplexSum}; the sum in the increment
+parametrization $j_h=\sum_{k\le h}(i_k+1)$, $i\in\NaturalNumbers^{\ell}$, for
+$\lVert q\rVert<1$ in any complete normed field, from the general product
+formula $\sum_{i}\prod_k g_k(i_k)=\prod_k\sum_n g_k(n)$ for absolutely
+convergent series; the reindexing to strictly increasing sequences is not
+stated in Lean}\\[2pt]
 \Cref{thm:fabius-composition} & \statuspartial &
 \texttt{fabiusAtInverseTwoPow\_eq\_composition\_formula}\newline
 {\footnotesize\texttt{FabiusInverseDyadicClosedForm}; only the half-base

@@ -538,6 +538,12 @@ import FabiusFunction.DivisorSumLambert
 import FabiusFunction.ReciprocalQBinomialAnalytic
 import FabiusFunction.TwoPhiOneReversal
 import FabiusFunction.QGammaLogConvex
+import FabiusFunction.QChuVandermonde
+import FabiusFunction.GeometricFilterBound
+import FabiusFunction.GaussianBinomialCumulants
+import FabiusFunction.GeometricSimplexSum
+import FabiusFunction.IntegerParameterTranslation
+import FabiusFunction.MultisetInversions
 import FabiusFunction.GaussianBinomialPalindromic
 import FabiusFunction.ThetaQuasiPeriodicity
 
