@@ -6086,7 +6086,23 @@ displayed \(\tfrac1{20}\) and \(5\) at once.  Underneath are two integer bracket
 base-four step, now isolated as
 \lean{Fabius.thueMorseResidueSum\_three\_zero\_four\_mul\_add\_bracket} in
 \path{ThueMorseNewman.lean}, with the exponent \(\log_43\) entering only through
-\(\bigl(4^j\bigr)^{\log_43}=3^j\).  Coquet's oscillation remains a literature import.
+\(\bigl(4^j\bigr)^{\log_43}=3^j\).  The base-four step is in fact formal for
+\emph{every} residue class: \(T_r(4M)=3T_r(M)-E(M)\) for \(r<3\)
+(\lean{Fabius.thueMorseResidueSum\_three\_four\_mul}) and the bracket
+\(|T_r(4M+s)-3T_r(M)|\le2\) (\lean{Fabius.thueMorseResidueSum\_three\_bracket}), the
+latter through a window lemma valid for every modulus \(q\),
+\(|T^{(q)}_r(a+s)-T^{(q)}_r(a)|\le1\) for \(s\le q\)
+(\lean{Fabius.abs\_thueMorseResidueSum\_add\_sub\_le\_one}).  What the other two classes
+do with the same step is \path{ThueMorseNewmanResidues.lean}: the class \(1\bmod3\) has a
+one-sided law of the opposite sign, \(T_1(N)\le-1\) for \(N\ge2\)
+(\lean{Fabius.thueMorseResidueSum\_three\_one\_le\_neg\_one}) with
+\(N^{\log_43}/27\le-T_1(N)\le2N^{\log_43}\)
+(\lean{Fabius.newman\_residue\_one\_lower\_bound},
+\lean{Fabius.newman\_residue\_one\_upper\_bound}); all three classes obey
+\(|T_r(N)|\le2N^{\log_43}\) (\lean{Fabius.abs\_thueMorseResidueSum\_three\_le}); and the
+class \(2\bmod3\) has no one-sided law at all, since \(T_2(2^{2j+1})=0\)
+(\lean{Fabius.thueMorseResidueSum\_three\_two\_two\_pow\_odd}).  Coquet's oscillation
+remains a literature import.
 Rarefactions
 along other progressions and for generalized digit characters were analyzed
 by Drmota and Skalba \cite{p1:drmotaSkalba2000} and Drmota and Stoll
