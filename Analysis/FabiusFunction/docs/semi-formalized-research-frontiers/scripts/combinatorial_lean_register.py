@@ -165,12 +165,17 @@ STATUS = {
    r"$x\tanh x=x-\mathscr B(2x)+\mathscr B(4x)$ "
    r"(\lean{Fabius.X_mul_egfA_eulerianPolynomial_eval_neg_one}); the two reciprocal-binomial "
    r"identities are not formalized"),
- 'thm:merged-genocchi': ('partial',
+ 'thm:merged-genocchi': ('Lean',
    r"with \lean{Fabius.genocchi} defined by $2(1-2^n)\beta_n$, the generating function "
    r"\cref{eq:merged-genocchi-egf} is \lean{Fabius.egf_genocchi_mul_exp_add_one} "
-   r"(\lean{GenocchiNumbers}), i.e. the first equality of \cref{eq:merged-genocchi}; "
+   r"(\lean{GenocchiNumbers}), i.e. the first equality of \cref{eq:merged-genocchi}, and the "
+   r"second equality is \lean{Fabius.genocchi_succ_eq} (\lean{EulerPolynomials}); "
    r"\lean{Fabius.genocchi_one}, \lean{Fabius.genocchi_two}, \lean{Fabius.genocchi_odd} give the "
-   r"initial values and the parity; the Euler-polynomial equality is not formalized"),
+   r"initial values and the parity"),
+ 'thm:merged-alternating-sums': ('Lean',
+   r"\lean{Fabius.sum_neg_one_pow_mul_pow_eq_eulerPolynomial} (\lean{EulerPolynomials}), in the "
+   r"form $\sum_{j<N}(-1)^j(x+j)^p=\bigl(\mathsf E_p(x)-(-1)^N\mathsf E_p(x+N)\bigr)/2$, valid "
+   r"for all $N\ge0$, by induction from the difference identity"),
  'thm:bell-leading-zeros': ('Lean',
    r"\lean{Fabius.partialBell_leadingZeros} (\lean{BellLeadingZeros}), over any "
    r"$\RationalNumbers$-algebra, with the zero-padded weights \lean{Fabius.leadingZeros} and the "
@@ -303,24 +308,29 @@ STATUS = {
    r"$\Delta^k0^n=k!\StirlingSecondKind nk$ is \lean{Fabius.factorial_mul_stirlingSecond_eq_sum} "
    r"(\lean{StirlingBasisChange}); the finite-difference route through "
    r"\cref{thm:merged-bernoulli-difference} is not formalized"),
- 'thm:merged-appell': ('partial',
-   r"for the Bernoulli polynomials: the derivative identity is Mathlib's "
-   r"\lean{Polynomial.derivative_bernoulli}, the translation formula "
-   r"\cref{eq:merged-appell-translation} is \lean{Fabius.bernoulli_eval_add} "
-   r"(\lean{BernoulliAppell}, via the Hasse derivatives "
-   r"\lean{Fabius.hasseDeriv_bernoulli} and the Taylor expansion), and the explicit formula "
-   r"\cref{eq:merged-bernoulli-explicit} is the definition \lean{Polynomial.bernoulli_def}; "
-   r"the Euler polynomials are not formalized"),
- 'thm:merged-bernoulli-euler-basic': ('partial',
+ 'thm:merged-appell': ('Lean',
+   r"Bernoulli: the derivative identity is Mathlib's \lean{Polynomial.derivative_bernoulli}, "
+   r"the translation formula is \lean{Fabius.bernoulli_eval_add} (\lean{BernoulliAppell}) and "
+   r"the explicit formula \cref{eq:merged-bernoulli-explicit} is the definition "
+   r"\lean{Polynomial.bernoulli_def}; Euler: \lean{Fabius.eulerPolynomial} "
+   r"(\lean{EulerPolynomials}, defined from $2/(\EulerE^t+1)$ as an Appell sequence), "
+   r"\lean{Fabius.derivative_eulerPolynomial} and \lean{Fabius.eulerPolynomial_eval_add}, both "
+   r"translation formulas being instances of the general Appell lemma "
+   r"\lean{Fabius.appell_eval_add}"),
+ 'thm:merged-bernoulli-euler-basic': ('Lean',
    r"Mathlib: the difference identity \cref{eq:merged-bernoulli-difference} is "
    r"\lean{Polynomial.bernoulli_eval_one_add}, the reflection "
    r"\cref{eq:merged-bernoulli-reflection} is \lean{Polynomial.bernoulli_eval_one_sub}, and "
-   r"$\beta_{2m+1}=0$ is \lean{bernoulli_eq_zero_of_odd}; the Euler-polynomial statements are "
-   r"not formalized"),
- 'thm:merged-faulhaber': ('partial',
-   r"the case $x=0$ is Mathlib's \lean{Polynomial.sum_range_pow_eq_bernoulli_sub} (and "
-   r"\lean{sum_range_pow}, \lean{sum_Ico_pow} in the Bernoulli-number form); the offset $x$ "
-   r"is not formalized"),
+   r"$\beta_{2m+1}=0$ is \lean{bernoulli_eq_zero_of_odd}; the Euler difference identity "
+   r"\cref{eq:merged-euler-difference} is \lean{Fabius.eulerPolynomial_eval_add_one_add} "
+   r"(\lean{EulerPolynomials}), the Euler reflection \cref{eq:merged-euler-reflection} is "
+   r"\lean{Fabius.eulerPolynomial_eval_one_sub} and $\mathsf E_{2m+1}(1/2)=0$ is "
+   r"\lean{Fabius.eulerPolynomial_eval_half_odd} (\lean{EulerReflection})"),
+ 'thm:merged-faulhaber': ('Lean',
+   r"\lean{Fabius.sum_range_add_pow_eq_bernoulli_sub} (\lean{FaulhaberOffset}), telescoping "
+   r"Mathlib's \lean{Polynomial.bernoulli_eval_one_add}; the case $x=0$ is also Mathlib's "
+   r"\lean{Polynomial.sum_range_pow_eq_bernoulli_sub} (and \lean{sum_range_pow}, "
+   r"\lean{sum_Ico_pow} in the Bernoulli-number form)"),
  'thm:eulerian-recurrence': ('partial',
    r"\lean{Fabius.eulerianNumber} is defined by this recurrence "
    r"(\lean{Fabius.eulerianNumber_succ_left}, \lean{Fabius.eulerianNumber_succ_succ}, "
