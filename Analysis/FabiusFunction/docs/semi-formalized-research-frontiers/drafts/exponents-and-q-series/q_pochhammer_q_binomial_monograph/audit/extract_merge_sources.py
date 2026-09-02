@@ -398,6 +398,7 @@ Q_REDIRECT_NOTES = {
 }
 
 INVERSE_STATUS_OVERRIDES = {
+    "prop:gq-positive-palindromic": "Lean-proved",
     "prop:qs-qnumber-jets": "human-proved frontier result",
     "thm:monotone-branch-certificate": "human-proved frontier result",
 }

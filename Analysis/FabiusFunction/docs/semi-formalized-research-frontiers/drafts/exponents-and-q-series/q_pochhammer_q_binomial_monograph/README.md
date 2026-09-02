@@ -111,13 +111,13 @@ fonts. The files under `assets/experiments/**/figures/` remain research
 figures, not publication manuscripts.
 
 The current master TeX is a source-only successor to that checkpoint. Its
-14,316-line, 671,038-byte source has SHA-256
-`a57d84c46deb5a191acad9824abc5945470bc43c6b1f7f0a20c7ee11aa6609da`.
+14,325-line, 671,679-byte source has SHA-256
+`a059f3766b3ad25184b27d189a86dd7a56eec4acdd24d7d390c8784d0389474a`.
 It includes exhaustive crosswalks for `QPochhammerEntire` (zero definitions
 and five legacy compatibility theorems), `QPochhammerInfinite` (one definition
 and twenty-nine theorems), `QPochhammerDissection` (zero definitions and two
 theorems), `QBinomialTheoremInfinite` (one definition and twenty-two
-theorems), `GaussianBinomialPalindromic` (zero definitions and twelve
+theorems), `GaussianBinomialPalindromic` (zero definitions and fourteen
 theorems), `GaussianBinomialPolynomialStructure` (zero definitions and five
 theorems), and `GeometricPochhammerNormalConvergence` (zero
 definitions and three theorems). The newer inventory also includes
@@ -127,7 +127,7 @@ definition and four theorems), `BasicHypergeometricSeries` (two definitions
 and five theorems), `HeineTransformation` (two definitions and five theorems),
 and `QGaussSummation` (two theorems), as well as expanded Euler, Jacobi, and
 Rogers--Szegő material. The latest inventory adds
-`GaussianBinomialPalindromic` (twelve theorems), `QExponential` (three
+`GaussianBinomialPalindromic` (fourteen theorems), `QExponential` (three
 definitions and eight theorems), `JacksonIntegral` (one definition and seven
 theorems), `ThetaQuasiPeriodicity` (one definition and six theorems),
 `QPochhammerLogDerivative` (ten theorems),
@@ -146,15 +146,18 @@ than duplicating their analytic proofs. In `QBinomialTheoremInfinite`,
 `GaussianBinomialAtOne` and is imported rather than redeclared. The forward
 status ledger is 73 Exact, 84 Partial, 117 None, and 8 interface rows; the
 original 191-result pre-Fabius core is 36/29/123/3, and the
-q-integer/Gaussian chapter is 8/1/0/0.  The completed source concordance records 65 Lean-proved rows,
-413 human-proved frontier rows, 60 not-applicable rows, and 9 conjectures.
-The twelve-theorem `GaussianBinomialPalindromic` API and five-theorem
+q-integer/Gaussian chapter is 8/1/0/0. The completed source concordance records
+66 Lean-proved rows, 412 human-proved frontier rows, 60 not-applicable rows,
+and 9 conjectures.
+The fourteen-theorem `GaussianBinomialPalindromic` API and five-theorem
 `GaussianBinomialPolynomialStructure` API give exact degree,
 monicity, constant and top coefficients, reflection, coefficient
 palindromicity, and the division-free mean identity over generic commutative
-semirings; `cor:positivity` and `thm:qbinom-structure` are Exact. The independent inverse-source
-proposition `prop:gq-positive-palindromic` remains Partial because its
-coefficient-of-`q`-equals-one clause has no Lean counterpart. The compound
+semirings. Its new `coeff_gaussianBinomial_one_of_pos_of_lt` and
+`coeff_gaussianBinomial_one` theorems prove the strict-interior coefficient
+of `q` is one and give the total formula with every boundary zero. Thus
+`cor:positivity`, `thm:qbinom-structure`, and the inverse-source proposition
+`prop:gq-positive-palindromic` are Exact. The compound
 outer spectral-product theorem remains Partial even though the three-theorem
 outer-product leaf proves local-uniform (normal) convergence for every complex
 strict contraction, including `q = 0`, together with the nome-`1/4` Rvachev

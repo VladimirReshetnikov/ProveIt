@@ -104,16 +104,16 @@ Current packages and retained intake records:
   Exactly three guarded serial passes produced 338, 348, and 348 pages; all
   348 final pages, A4 geometry, text extraction, embedded/subset Type-1 fonts
   including Libertinus, absence of Type-3 fonts, and targeted visual review
-  passed. The current source-only successor has 14,316 lines and 671,038
+  passed. The current source-only successor has 14,325 lines and 671,679
   bytes, with SHA-256
-  `a57d84c46deb5a191acad9824abc5945470bc43c6b1f7f0a20c7ee11aa6609da`.
+  `a059f3766b3ad25184b27d189a86dd7a56eec4acdd24d7d390c8784d0389474a`.
   It carries the five-theorem `QPochhammerEntire.lean`, the generic
   `QPochhammerInfinite.lean` and `QPochhammerDissection.lean` APIs, both
   Gaussian structure modules, `CentralQBinomialReduction.lean`,
   `CyclotomicFactorization.lean`, the subsequent q-series module tranches,
   and the three-theorem `GeometricPochhammerNormalConvergence.lean`
   outer-product API. The forward crosswalk is now 73 Exact, 84 Partial, 117
-  None, and 8 interface rows; the source ledger is 65 Lean-proved, 413
+  None, and 8 interface rows; the source ledger is 66 Lean-proved, 412
   human-proved frontier, 60 not applicable, and 9 conjectures. No PDF was
   generated locally for this source-only merge, so the retained 348-page PDF
   remains an explicit source-pinned historical artifact. PDF files retained
@@ -840,7 +840,7 @@ compatibility spelling of its primary identity),
 `QPochhammerDissection.lean` (two theorems),
 `QPochhammerInfinite.lean` (one definition, 29 theorems),
 `QBinomialReciprocity.lean` (four theorems),
-`GaussianBinomialPalindromic.lean` (zero definitions, twelve theorems),
+`GaussianBinomialPalindromic.lean` (zero definitions, fourteen theorems),
 `GaussianBinomialPolynomialStructure.lean` (zero definitions, five theorems),
 `CentralQBinomialReduction.lean` (zero definitions, six theorems),
 `CyclotomicFactorization.lean` (zero definitions, seven theorems),
@@ -858,10 +858,12 @@ The direct structure theorems in `GaussianBinomialPalindromic` are
 `coeff_gaussianBinomial_reflect`. The same generic commutative-semiring API
 exports the top coefficient, degree bound, boundary evaluations, and the
 division-free mean identity
-`two_mul_derivative_gaussianBinomial_eval_one`. The `cor:positivity` and
-`thm:qbinom-structure` rows are Exact. The inverse-source proposition
-`prop:gq-positive-palindromic` remains partial because its assertion that the
-coefficient of `q` is one is not formalized.
+`two_mul_derivative_gaussianBinomial_eval_one`. The new
+`coeff_gaussianBinomial_one_of_pos_of_lt` and
+`coeff_gaussianBinomial_one` theorems give coefficient one in every strict
+interior column and zero on every boundary. The `cor:positivity`,
+`thm:qbinom-structure`, and inverse-source
+`prop:gq-positive-palindromic` rows are therefore Exact.
 The five `GaussianBinomialAtNegOne` theorems are
 `gaussianBinomial_neg_one_even_even`,
 `gaussianBinomial_neg_one_odd_even`,
@@ -1114,7 +1116,7 @@ q-Gauss specialization, with each analytic-continuation boundary retained at
 its audited status.
 
 The newest four-module inventory adds `GaussianBinomialPalindromic.lean`
-(12 theorems), `JacksonIntegral.lean` (one definition, seven theorems),
+(14 theorems), `JacksonIntegral.lean` (one definition, seven theorems),
 `QExponential.lean` (three definitions, eight theorems), and
 `ThetaQuasiPeriodicity.lean` (one definition, six theorems). The resulting
 status changes make the q-exponential eigenfunction and Jackson

@@ -49,13 +49,13 @@ and was built in three serial passes from the 14,158-line, 661,835-byte source
 with SHA-256
 `79ee5e60a6c7e42a91c58dcd9bcae56173cc6b4aa3e54739a461943f705f3904`.
 
-The live source now postdates that receipt. Its 14,316-line, 671,038-byte TeX
+The live source now postdates that receipt. Its 14,325-line, 671,679-byte TeX
 source has SHA-256
-`a57d84c46deb5a191acad9824abc5945470bc43c6b1f7f0a20c7ee11aa6609da`.
+`a059f3766b3ad25184b27d189a86dd7a56eec4acdd24d7d390c8784d0389474a`.
 It incorporates exhaustive crosswalks for `QPochhammerEntire` (zero
 definitions and five theorems), `QPochhammerInfinite` (one definition and
 twenty-nine theorems), `QPochhammerDissection` (zero definitions and two
-theorems), `GaussianBinomialPalindromic` (zero definitions and twelve
+theorems), `GaussianBinomialPalindromic` (zero definitions and fourteen
 theorems), `GaussianBinomialPolynomialStructure` (zero definitions and five
 theorems), and `GeometricPochhammerNormalConvergence` (zero definitions and
 three theorems). It also inventories `QMultinomial` (one definition and seven
@@ -64,7 +64,7 @@ theorems), `QPochhammerInfiniteBounds` (five theorems),
 `BasicHypergeometricSeries` (two definitions and five theorems),
 `HeineTransformation` (two definitions and five theorems), and
 `QGaussSummation` (two theorems). The next tranche adds
-`GaussianBinomialPalindromic` (twelve theorems), `QExponential` (three
+`GaussianBinomialPalindromic` (fourteen theorems), `QExponential` (three
 definitions and eight theorems), `JacksonIntegral` (one definition and seven
 theorems), `ThetaQuasiPeriodicity` (one definition and six theorems),
 `QPochhammerLogDerivative` (ten theorems),
@@ -88,13 +88,13 @@ and exterior reciprocal, pole-divisor, and zero--pole clauses are absent. The
 forward status inventory is 73 exact / 84 partial / 117 none / 8
 interface; the 191-result pre-Fabius core remains 36 / 29 / 123 / 3, and the
 q-integer/Gaussian chapter is 8 / 1 / 0 / 0. The five-publication concordance
-has 65 Lean-proved, 413 human-proved frontier, 60 not-applicable, and 9
-conjecture rows. The `cor:positivity` and `thm:qbinom-structure` rows are
-Exact, with both Gaussian structure APIs supporting the latter, while
-`prop:gq-positive-palindromic` remains
-Partial because its coefficient-of-`q`-equals-one clause has no Lean
-counterpart. The central-reduction and cyclotomic-factorization rows are
-Exact. No PDF was generated locally while resolving this merge, so the
+has 66 Lean-proved, 412 human-proved frontier, 60 not-applicable, and 9
+conjecture rows. The `cor:positivity`, `thm:qbinom-structure`, and
+`prop:gq-positive-palindromic` rows are Exact: both Gaussian structure APIs
+support the structure row, and the fourteen-theorem generic API now gives
+the strict-interior coefficient-of-`q` formula and all boundary zeros. The
+central-reduction and cyclotomic-factorization rows are Exact. No PDF was
+generated locally while resolving this merge, so the
 supplied 348-page artifact is historical and must not be treated as rendering
 the current source.
 
