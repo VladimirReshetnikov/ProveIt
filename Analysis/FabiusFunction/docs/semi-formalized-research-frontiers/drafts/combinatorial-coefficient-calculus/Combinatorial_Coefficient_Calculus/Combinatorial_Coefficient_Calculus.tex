@@ -2726,14 +2726,167 @@ of \cref{eq:bell-ratio-upper} is exactly $R(n)$, so raising the resulting
 inequality to the $n$th power proves \cref{eq:bell-eventual-upper}.
 \end{proof}
 
-\begin{remark}[Why the decimal all-$n$ claim is not retained]
-The six arrivals also assert the sharper numerical constant $0.792$ for every
-$n\ge1$, but their common proof replaces a nontrivial derivative calculation and
-the cases $n\le38$ by decimal assertions.  No directed-rounding ledger or exact
-factorization of the derivative was supplied.  That statement may well be true,
-but the submitted argument is not a complete certificate, so it is not promoted to
-a theorem here.  The preceding result is asymptotically sharper and has neither an
-undefined generalized inverse nor a hidden finite computation.
+\section{The sharp numerical constant}
+All six arrivals also assert the sharper numerical bound with the decimal
+constant $0.792$ valid for \emph{every} $n\ge1$.  Their common argument
+replaced both a monotonicity claim and the range $n\le38$ by unsupported
+decimal assertions, with no directed-rounding ledger and no exact treatment of
+the finite range.  The statement itself is a theorem of Berend and
+Tassa~\cite{BerendTassa2010}.  This section proves it, splitting the two gaps
+the arrivals left open: the tail is settled by a monotonicity lemma for the
+majorant already constructed in \cref{lem:bell-coeff-upper}, and the finite
+range by an exact integer certificate that involves no floating-point
+arithmetic at all.
+
+\begin{lemma}[The coefficient majorant is decreasing]
+\label{lem:bell-majorant-decreasing}
+For $x\ge15$ put
+\begin{equation}
+ L=\log(x+1),\qquad
+ t=\log\frac{x}{L},\qquad
+ \bar R(x)=\frac Lt\exp\!\left(-1+\frac1L+\frac{\log x}{2x}\right).
+                                                                  \label{eq:bell-majorant}
+\end{equation}
+Then $\bar R$ is positive and strictly decreasing on $[15,\infty)$, and
+$\bar R(x)\to\EulerE^{-1}$ as $x\to\infty$.
+\end{lemma}
+
+\begin{proof}
+Write $\bar R=\varphi\psi$ with $\varphi=L/t$ and
+$\psi=\exp\bigl(-1+1/L+\log x/(2x)\bigr)$.  On $[15,\infty)$ one has
+$L>\EulerE>1$ and $x/L>1$, so $t>0$ and both factors are positive.  It is
+enough to show that each is strictly decreasing.
+
+\emph{The factor $\psi$.}  The map $x\mapsto1/\log(x+1)$ is strictly
+decreasing, and
+\[
+ \frac{\Differential}{\Differential x}\frac{\log x}{2x}=\frac{1-\log x}{2x^2}<0
+ \qquad(x>\EulerE).
+\]
+Hence the exponent is strictly decreasing on $[3,\infty)$, and so is $\psi$.
+
+\emph{The factor $\varphi$.}  Since $t=\log x-\log L$,
+\begin{equation}
+ \frac1\varphi=\frac{\log x-\log L}{L}
+ =\frac{\log x}{\log(x+1)}-\frac{\log L}{L}.                      \label{eq:bell-majorant-split}
+\end{equation}
+The first term of \eqref{eq:bell-majorant-split} is strictly increasing:
+\[
+ \frac{\Differential}{\Differential x}\frac{\log x}{\log(x+1)}
+ =\frac{(x+1)\log(x+1)-x\log x}{x(x+1)\log^2(x+1)}>0,
+\]
+because $s\mapsto s\log s$ is strictly increasing on $[1,\infty)$.  The second
+term is strictly decreasing, since $u\mapsto(\log u)/u$ is strictly decreasing
+for $u>\EulerE$ and
+\[
+ L=\log(x+1)>\EulerE
+ \iff x+1>\EulerE^{\EulerE}=15.154\ldots,
+\]
+which holds for every $x\ge15$.  Therefore $1/\varphi$ is strictly increasing
+and $\varphi$ strictly decreasing on $[15,\infty)$.  A product of two positive
+strictly decreasing functions is strictly decreasing.
+
+\emph{The limit.}  As $x\to\infty$, $\log(x+1)/\log x\to1$ and
+$\log L/\log x\to0$, so $1/\varphi\to1$ by \eqref{eq:bell-majorant-split};
+also $1/L\to0$ and $\log x/(2x)\to0$, so $\psi\to\EulerE^{-1}$.
+\end{proof}
+
+\begin{theorem}[Uniform numerical Bell bound]\label{thm:bell-numerical-bound}
+For every $n\ge1$,
+\begin{equation}
+ \BellNumber n<\left(\frac{0.792\,n}{\log(n+1)}\right)^n.        \label{eq:bell-numerical-bound}
+\end{equation}
+Equivalently, writing
+$R_n=\bigl(\BellNumber n\bigr)^{1/n}\log(n+1)/n$, one has $R_n<0.792$ for all
+$n\ge1$.
+\end{theorem}
+
+\begin{proof}
+Raising \eqref{eq:bell-numerical-bound} to the power $1/n$ shows that it is
+equivalent to $R_n<0.792$, so it suffices to bound $R_n$.  The two ranges are
+treated separately, and the split point $39$ is forced: the majorant
+\eqref{eq:bell-majorant} satisfies $\bar R(38)=0.79411\ldots>0.792$, so no
+argument through $\bar R$ alone can reach below $n=39$.
+
+\emph{The tail $n\ge39$.}  The right side of \cref{eq:bell-ratio-upper} is
+exactly $\bar R(n)$, so $R_n\le\bar R(n)$ for every $n\ge2$.  By
+\cref{lem:bell-majorant-decreasing}, $\bar R$ is decreasing on $[15,\infty)$,
+hence $R_n\le\bar R(n)\le\bar R(39)$ for all $n\ge39$.  Evaluating
+\eqref{eq:bell-majorant} at $x=39$ with every operation rounded outward at six
+decimals gives the ledger
+\[
+ \begin{array}{ll}
+  \log40\in[3.688879,\;3.688880], &
+  \log39\in[3.663561,\;3.663562],\\[2pt]
+  \log\log40\in[1.305322,\;1.305323], &
+  t\in[2.358238,\;2.358240],\\[2pt]
+  L/t\in[1.564250,\;1.564253], &
+  1/L\in[0.271084,\;0.271086],\\[2pt]
+  (\log39)/78\in[0.046968,\;0.046969], &
+  \text{exponent}\in[-0.681948,\;-0.681945],\\[2pt]
+  \EulerE^{\text{exponent}}\in[0.505631,\;0.505633], &
+  \bar R(39)\in[0.790933,\;0.790938].
+ \end{array}
+\]
+Each entry is obtained from the entries above it by interval arithmetic with
+outward rounding, so the last line is a rigorous enclosure.  In particular
+$\bar R(39)<0.7910<0.792$, and the tail is proved.
+
+\emph{The finite range $1\le n\le38$.}  Put
+\begin{equation}
+ A_n=\bigl\lceil10^6\log(n+1)\bigr\rceil.                       \label{eq:bell-cert-An}
+\end{equation}
+Since $\log(n+1)$ is irrational for $n\ge1$, the ceiling is strict:
+$A_n/10^6>\log(n+1)$.  Consequently
+\[
+ R_n=\bigl(\BellNumber n\bigr)^{1/n}\frac{\log(n+1)}{n}
+ <\bigl(\BellNumber n\bigr)^{1/n}\frac{A_n}{10^6n},
+\]
+and therefore $R_n<792/1000$ follows from
+$\bigl(\BellNumber n\bigr)^{1/n}A_n\cdot1000\le792\cdot10^6n$, that is, after
+raising to the $n$th power and cancelling $1000^n$, from the inequality
+between positive integers
+\begin{equation}
+ \BellNumber n\,A_n^{\,n}<(792000\,n)^n.                         \label{eq:bell-cert}
+\end{equation}
+No irrational quantity occurs in \eqref{eq:bell-cert}: the Bell numbers are the
+integers generated by \cref{thm:bell-binomial-recurrence}, and the $A_n$ are
+the integers
+\[
+ \begin{array}{llll}
+  A_{1}=693148 & A_{2}=1098613 & A_{3}=1386295 & A_{4}=1609438\\
+  A_{5}=1791760 & A_{6}=1945911 & A_{7}=2079442 & A_{8}=2197225\\
+  A_{9}=2302586 & A_{10}=2397896 & A_{11}=2484907 & A_{12}=2564950\\
+  A_{13}=2639058 & A_{14}=2708051 & A_{15}=2772589 & A_{16}=2833214\\
+  A_{17}=2890372 & A_{18}=2944439 & A_{19}=2995733 & A_{20}=3044523\\
+  A_{21}=3091043 & A_{22}=3135495 & A_{23}=3178054 & A_{24}=3218876\\
+  A_{25}=3258097 & A_{26}=3295837 & A_{27}=3332205 & A_{28}=3367296\\
+  A_{29}=3401198 & A_{30}=3433988 & A_{31}=3465736 & A_{32}=3496508\\
+  A_{33}=3526361 & A_{34}=3555349 & A_{35}=3583519 & A_{36}=3610918\\
+  A_{37}=3637587 & A_{38}=3663562 &&
+ \end{array}
+\]
+Inequality \eqref{eq:bell-cert} holds for each $n$ in the range.  Its relative
+slack $1-\BellNumber n A_n^{\,n}/(792000\,n)^n$ is smallest at $n=4$, where it
+equals $0.000811\ldots$; it is $0.006889\ldots$ at $n=3$, exceeds $0.013$ for
+$5\le n\le10$, and increases from $0.310\ldots$ at $n=11$ to $0.986\ldots$ at
+$n=38$.  This completes the finite range and the proof.
+\end{proof}
+
+\begin{remark}[The constant is essentially best possible]
+The sequence $R_n$ attains its maximum at $n=4$, where $\BellNumber4=15$ and
+\[
+ R_4=\frac{15^{1/4}\log5}{4}=0.7918392970\ldots,
+\]
+so $0.792-\max_nR_n<1.61\cdot10^{-4}$ and the constant in
+\eqref{eq:bell-numerical-bound} cannot be replaced by anything below
+$R_4$.  This also explains the tightness of the certificate at $n=4$: the
+sole reason a six-decimal logarithm suffices there is that
+$\lceil10^6\log5\rceil/10^6$ overshoots $\log5$ by less than $10^{-6}$, while
+the slack in \eqref{eq:bell-cert} is of order $10^{-3}$.  By contrast
+\cref{thm:bell-eventual-upper} is asymptotically far sharper, since
+$R_n\to\EulerE^{-1}=0.3678\ldots$; the two statements are complementary rather
+than competing.
 \end{remark}
 
 \section{Saddle-point asymptotics and Lambert \texorpdfstring{$W$}{W}}
@@ -7795,6 +7948,12 @@ proposition (unlabelled, no.~9) & Recurrence uniqueness & none &  \\
 E.~T. Bell,
 ``Exponential polynomials,''
 \emph{Annals of Mathematics}, second series, vol.~35 (1934), pp.~258--277.
+
+\bibitem{BerendTassa2010}
+D.~Berend and T.~Tassa,
+``Improved bounds on Bell numbers and on moments of sums of random
+variables,''
+\emph{Probability and Mathematical Statistics}, vol.~30 (2010), pp.~185--205.
 
 \bibitem{BenderRichmond1998}
 E.~A. Bender and L.~B. Richmond,
