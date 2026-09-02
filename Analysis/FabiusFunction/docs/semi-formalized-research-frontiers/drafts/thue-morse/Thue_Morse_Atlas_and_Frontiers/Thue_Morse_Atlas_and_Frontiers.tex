@@ -8924,6 +8924,29 @@ Set $m=0$ in \eqref{p2:eq:Q-all-orders} and identify coefficients.  The Bernoull
 from the classical evaluation of $\zeta(2r)$.
 \end{proof}
 
+\emph{Formal versions.}  The Bernoulli form of \eqref{p2:eq:cumulants} is formal for every
+even order, by a route that never takes a logarithm: with the corpus's index
+$\tilde\kappa_r=\kappa_{2r}$ (\leanPartx{Fabius.centeredRvachevEvenCumulant}, the cumulants
+of the centered up-law computed from its executable moments),
+\leanPartx{Fabius.centeredRvachevEvenCumulant\_eq\_bernoulliMersenne\_formula} in
+\path{SinhDivBernoulliLog.lean} is $\kappa_{2r}=2^{2r-1}B_{2r}/(r(4^r-1))$ for all $r\ge1$.
+The mechanism is the exact coefficient identity
+$(4^r-1)\,\tilde\kappa_r=[X^r]\log\bigl(\sinh\sqrt X/\sqrt X\bigr)$ of
+\path{CenteredMomentCumulants.lean} together with the closed form
+\leanPartx{Fabius.sinhDivLogCoefficient\_eq\_bernoulli\_formula},
+$[X^r]\log(\sinh\sqrt X/\sqrt X)=2^{2r-1}B_{2r}/(r\,(2r)!)$, itself reduced to the finite
+identity $\sum_{s=1}^{r}2^{2s-1}\binom{2r+1}{2s}B_{2s}=r$
+(\leanPartx{Fabius.weightedEvenBernoulliChooseSum}) --- the odd Bernoulli polynomial
+$B_{2r+1}$ evaluated at $\tfrac12$ --- and to the uniqueness of the recursively defined formal
+logarithm.  The vanishing of the odd cumulants is
+\leanPartx{Fabius.centeredRvachevFullCumulant\_eq\_zero\_of\_odd}
+(\path{CenteredMomentParity.lean}), the first values \eqref{p2:eq:cumulants-first} are
+\leanPartx{Fabius.centeredRvachevEvenCumulant\_one} and
+\leanPartx{Fabius.centeredRvachevEvenCumulant\_two}, and the moment recurrence the formula
+implies is \leanPartx{Fabius.moment\_bernoulliMersenne\_recurrence}.  The $\zeta(2r)$ form of
+the display, which is the Bernoulli form plus Euler's evaluation of $\zeta(2r)$, is not
+separately formalized.
+
 The first even moments, obtained from the complete Bell polynomials in the cumulants, are
 \begin{equation}
  \mu_2=\frac19,\qquad
