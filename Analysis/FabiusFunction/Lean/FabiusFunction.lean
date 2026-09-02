@@ -526,6 +526,14 @@ import FabiusFunction.GaussianBinomialBounds
 import FabiusFunction.BinaryWordInversions
 import FabiusFunction.BoxPartitions
 import FabiusFunction.TelescopingCertificate
+import FabiusFunction.VandermondeAlternant
+import FabiusFunction.CyclotomicFactorList
+import FabiusFunction.QGammaMultiplication
+import FabiusFunction.ComplexGaussianBinomial
+import FabiusFunction.BilateralSeriesConvergence
+import FabiusFunction.QGammaLogDerivative
+import FabiusFunction.PowerSeriesUniqueness
+import FabiusFunction.DivisorSumLambert
 import FabiusFunction.GaussianBinomialPalindromic
 import FabiusFunction.ThetaQuasiPeriodicity
 
