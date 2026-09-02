@@ -1380,7 +1380,7 @@ polynomial
 The recurrence \eqref{eq:second-recurrence} is equivalent to
 \begin{equation}
 \label{eq:touchard-differential-recurrence-shape}
- \TouchardPolynomial{n+1}(x)=x\bigl(\TouchardPolynomial{n}(x)+\TouchardPolynomial{n}'(x)\bigr),
+ \TouchardPolynomial{n+1}(x)=x\bigl(\TouchardPolynomial{n}(x)+{\TouchardPolynomial{n}}'(x)\bigr),
  \qquad \TouchardPolynomial{0}(x)=1.
 \end{equation}
 
@@ -2498,7 +2498,7 @@ The same recurrence permits a compact machine-checkable certificate.
 \begin{theorem}\label{thm:bell-log-shape}
 For $n\ge1$,
 \begin{equation}\label{eq:bell-log-shape}
- 1\le \frac{\BellNumber{n-1}\BellNumber{n+1}}{\BellNumber n^2}\le\frac{n+1}{n}.
+ 1\le \frac{\BellNumber{n-1}\BellNumber{n+1}}{{\BellNumber n}^2}\le\frac{n+1}{n}.
 \end{equation}
 Thus $(\BellNumber n)$ is log-convex, whereas $(\BellNumber n/n!)$ is log-concave.
 \end{theorem}
@@ -2544,7 +2544,7 @@ For $t>0$,
 \end{equation}
 For $n\ge2$, put $L=\log(n+1)$ and $t=\log(n/L)$.  Then
 \begin{equation}\label{eq:bell-ratio-upper}
- \BellNumber n^{1/n}\frac{L}{n}
+ {\BellNumber n}^{1/n}\frac{L}{n}
  \le \frac{L}{t}
  \exp\!\left(-1+\frac1L+\frac{\log n}{2n}\right).
 \end{equation}
@@ -3134,7 +3134,7 @@ $D_n=\ExponentialCompleteBellPolynomial n$.
 Let $J$ reverse the coordinate order and let
 $D=\DiagonalOperator(0!,1!,\ldots,(n-1)!)$.  A direct entrywise calculation gives
 \[
- \BellHessenbergMatrixK{n}=D(J\BellHessenbergMatrixH{n}^{\mathsf T}J)D^{-1}.
+ \BellHessenbergMatrixK{n}=D(J{\BellHessenbergMatrixH{n}}^{\mathsf T}J)D^{-1}.
 \]
 Indeed,
 $\frac{(i-1)!}{(j-1)!}\binom{j-1}{i-1}=1/(j-i)!$ above the diagonal, and the
@@ -3323,7 +3323,7 @@ Outside $0\le k<n$ the number is zero.
 Equivalently,
 \begin{equation}\label{eq:eulerian-poly-recurrence}
  \TypeAEulerianPolynomial{n}(t)=\bigl(1+(n-1)t\bigr)\TypeAEulerianPolynomial{n-1}(t)
-       +t(1-t)\TypeAEulerianPolynomial{n-1}'(t).
+       +t(1-t){\TypeAEulerianPolynomial{n-1}}'(t).
 \end{equation}
 \end{theorem}
 \begin{proof}
@@ -3688,7 +3688,7 @@ larger than $i$.  Let $\SecondOrderEulerianNumber nk$ count those with $k$ ordin
  \SecondOrderEulerianNumber nk&=(2n-k-1)\SecondOrderEulerianNumber{n-1}{k-1}
  +(k+1)\SecondOrderEulerianNumber{n-1}{k},
  \label{eq:second-eulerian-recurrence}\\
- \SecondOrderEulerianPolynomial{n+1}(t)&=(2nt+1)\SecondOrderEulerianPolynomial{n}(t)-t(t-1)\SecondOrderEulerianPolynomial{n}'(t),
+ \SecondOrderEulerianPolynomial{n+1}(t)&=(2nt+1)\SecondOrderEulerianPolynomial{n}(t)-t(t-1){\SecondOrderEulerianPolynomial{n}}'(t),
  \label{eq:second-eulerian-poly-recurrence}\\
  \SecondOrderEulerianPolynomial{n}(1)&=(2n-1)!!.
  \label{eq:second-eulerian-row-sum}
@@ -5800,7 +5800,7 @@ With compatible logarithm branches,
 \begin{proof}
 Logarithmic differentiation of the product gives
 \[
- \frac{\BarnesGFunction'(z+1)}{\BarnesGFunction(z+1)}
+ \frac{{\BarnesGFunction}'(z+1)}{\BarnesGFunction(z+1)}
  =\frac12\log(2\pi)-z-\frac12+z\psi(z+1),
 \]
 where the simplification uses the digamma partial fractions.  The derivative
@@ -7174,7 +7174,7 @@ silently promoted to an identity.
 \section{Disposition of the Bell-number decimal table}
 
 The arrivals contain a six-decimal table for
-$R_n=\BellNumber n^{1/n}\log(n+1)/n$ and describe its entries as directed
+$R_n={\BellNumber n}^{1/n}\log(n+1)/n$ and describe its entries as directed
 interval bounds.  They do not supply the interval endpoints before rounding,
 the rounding implementation, a replay script, or a checksum-pinned output.
 Consequently the table is not an exact certificate and is omitted from the
