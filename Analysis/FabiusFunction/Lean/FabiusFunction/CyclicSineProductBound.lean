@@ -28,6 +28,9 @@ division-free as `A_{a,q} ≤ (√3)^d`.
   whenever `2^d ≡ 1 (mod q)`.
 * `prod_norm_one_sub_exp_orbit_le` — **`p2:eq:sqrt3-bound`, division-free**:
   `∏_{j<d} ‖1 - e^{2πi a 2^j/q}‖ ≤ (√3)^d`.
+* `prod_norm_one_sub_exp_orbit_pos` — `A_{a,q} > 0` for odd `q` coprime to `a`.
+* `rational_ray_exponent_ge_min` — **`p2:eq:kappa-minimum`**, the sharp lower
+  bound `κ_min` for the rational-ray exponent.
 
 The equality case (`q = 3` only) is not proved here.
 -/
@@ -127,5 +130,81 @@ theorem prod_norm_one_sub_exp_orbit_le {q d : ℕ} (hd : 0 < d) (hq : 0 < q) (a 
     _ ≤ 2 ^ d * (Real.sqrt 3 / 2) ^ d := by gcongr
     _ = Real.sqrt 3 ^ d := by
         rw [div_pow, mul_div_cancel₀ _ (by positivity)]
+
+/-! ## The rational-ray exponent and its sharp minimum -/
+
+/-- A factor `1 - e^{2πi x}` vanishes only at integral `x`. -/
+theorem one_sub_exp_two_pi_mul_I_ne_zero {x : ℝ} (hx : ∀ n : ℤ, x ≠ n) :
+    (1 : ℂ) - Complex.exp (((2 * π * x : ℝ) : ℂ) * Complex.I) ≠ 0 := by
+  intro h
+  have h1 : Complex.exp (((2 * π * x : ℝ) : ℂ) * Complex.I) = 1 := by
+    linear_combination -h
+  obtain ⟨n, hn⟩ := Complex.exp_eq_one_iff.mp h1
+  apply hx n
+  have hpi : (π : ℂ) ≠ 0 := by exact_mod_cast Real.pi_ne_zero
+  have hI : Complex.I ≠ 0 := Complex.I_ne_zero
+  have : ((x : ℝ) : ℂ) = (n : ℂ) := by
+    have h2 : ((2 * π * x : ℝ) : ℂ) * Complex.I = (n : ℂ) * (2 * π * Complex.I) := hn
+    push_cast at h2
+    have h3 : (x : ℂ) * (2 * π * Complex.I) = (n : ℂ) * (2 * π * Complex.I) := by
+      linear_combination h2
+    exact mul_right_cancel₀ (by simp [hpi, hI]) h3
+  exact_mod_cast this
+
+/-- For `q` coprime to `a 2^j`, the orbit point `a 2^j / q` is not an integer
+unless `q = 1`. -/
+theorem orbit_point_not_int {q a j : ℕ} (hq : 1 < q) (hcop : Nat.Coprime q (a * 2 ^ j)) :
+    ∀ n : ℤ, ((a : ℝ) * 2 ^ j / q) ≠ n := by
+  intro n hn
+  have hqR : (q : ℝ) ≠ 0 := by exact_mod_cast (by omega : q ≠ 0)
+  have h : ((a * 2 ^ j : ℕ) : ℝ) = (n : ℝ) * q := by
+    push_cast
+    rw [← hn]
+    field_simp
+  have hdvd : (q : ℤ) ∣ ((a * 2 ^ j : ℕ) : ℤ) := ⟨n, by exact_mod_cast h.trans (mul_comm _ _)⟩
+  have hdvdN : q ∣ a * 2 ^ j := by exact_mod_cast hdvd
+  have h1 : Nat.gcd q (a * 2 ^ j) = q := Nat.gcd_eq_left hdvdN
+  rw [Nat.Coprime.gcd_eq_one hcop] at h1
+  omega
+
+/-- `A_{a,q} > 0`: no factor of the cycle multiplier vanishes when `q` is
+coprime to `a` and odd. -/
+theorem prod_norm_one_sub_exp_orbit_pos {q d a : ℕ} (hq : 1 < q) (hodd : Odd q)
+    (hcop : Nat.Coprime a q) :
+    0 < ∏ j ∈ range d, ‖(1 : ℂ) - Complex.exp (((2 * π * (a * 2 ^ j / q) : ℝ) : ℂ) * Complex.I)‖ := by
+  refine prod_pos fun j _ => norm_pos_iff.mpr ?_
+  refine one_sub_exp_two_pi_mul_I_ne_zero (orbit_point_not_int hq ?_)
+  exact Nat.Coprime.mul_right hcop.symm
+    (Nat.Coprime.pow_right _ (Nat.coprime_two_right.mpr hodd))
+
+/-- **`p2:eq:kappa-minimum`.**  Writing the rational-ray exponent as
+`κ_{a,q} = 1/2 + log(2π)/log 2 − log A_{a,q}/(d log 2)`, every closed
+doubling orbit of an odd denominator coprime to `a` satisfies
+
+`κ_{a,q} ≥ 1/2 + log(2π/√3)/log 2 = κ_min`. -/
+theorem rational_ray_exponent_ge_min {q d a : ℕ} (hd : 0 < d) (hq : 1 < q) (hodd : Odd q)
+    (hcop : Nat.Coprime a q) (hcyc : 2 ^ d % q = 1) :
+    1 / 2 + Real.log (2 * π / Real.sqrt 3) / Real.log 2
+      ≤ 1 / 2 + Real.log (2 * π) / Real.log 2
+        - Real.log (∏ j ∈ range d,
+            ‖(1 : ℂ) - Complex.exp (((2 * π * (a * 2 ^ j / q) : ℝ) : ℂ) * Complex.I)‖)
+          / (d * Real.log 2) := by
+  set A := ∏ j ∈ range d,
+    ‖(1 : ℂ) - Complex.exp (((2 * π * (a * 2 ^ j / q) : ℝ) : ℂ) * Complex.I)‖ with hA
+  have hApos : 0 < A := prod_norm_one_sub_exp_orbit_pos hq hodd hcop
+  have hAle : A ≤ Real.sqrt 3 ^ d := prod_norm_one_sub_exp_orbit_le hd (by omega) a hcyc
+  have h3 : (0 : ℝ) < Real.sqrt 3 := by positivity
+  have hlog2 : 0 < Real.log 2 := Real.log_pos (by norm_num)
+  have hdR : (0 : ℝ) < d := by exact_mod_cast hd
+  have hlogA : Real.log A ≤ d * Real.log (Real.sqrt 3) := by
+    rw [← Real.log_pow]
+    exact Real.log_le_log hApos hAle
+  have hdiv : Real.log (2 * π / Real.sqrt 3) = Real.log (2 * π) - Real.log (Real.sqrt 3) :=
+    Real.log_div (by positivity) h3.ne'
+  rw [hdiv, sub_div]
+  have key : Real.log A / (d * Real.log 2) ≤ Real.log (Real.sqrt 3) / Real.log 2 := by
+    rw [div_le_div_iff₀ (by positivity) hlog2]
+    nlinarith [hlogA, hlog2]
+  linarith
 
 end Fabius
