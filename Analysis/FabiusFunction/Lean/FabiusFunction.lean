@@ -641,6 +641,14 @@ proves `fabiusInv_isComputableRealFunction` for every bounded Fabius witness.
 This is a computability certificate for the total inverse, not an input-bit
 running-time theorem or an exact least endpoint-mass denominator.
 
+The adjacent `EffectiveGapInverse` module has four definitions and four
+theorems.  It derives the required inverse modulus, sequential computability,
+and effective uniform continuity from computable positive rational lower
+bounds for every dyadic forward gap, and proves total computability exactly for
+the unit-clamped extension.  Together with `EffectiveMonotoneInverse` (2+6)
+and `FabiusInverseComputable` (0+1), this effective-inverse union contains
+three modules and seventeen public declarations.
+
 The parity-selected Rvachev synthesis layer exports exactly one definition and
 eight theorems.  `IsRvachevSuperconvergentPhase` selects the endpoint phases
 `0, 1/2` when `v₂(M)+1` is odd and the quarter phases `1/4, 3/4` when it is
@@ -792,6 +800,13 @@ the nome does, and derives the ordered noncommutative q-multinomial expansion
 when `q` commutes with each variable and `x_j * x_i = q * (x_i * x_j)` for
 `i < j`.  The result is finite and division-free and requires no ambient
 commutativity or analytic convergence premise.
+
+`GaussianBinomialBounds` adds no definitions and exactly six theorems.  It
+evaluates Gaussian reciprocity over fields, proves the constant-term lower
+bound for nonnegative nomes and the infinite-q-Pochhammer upper bound for real
+strict contractions, and transfers these to dimension-dominant two-sided
+bounds at every real `Q > 1`.  The index premise `k ≤ n` and the displayed
+nonzero, order, and strict-contraction hypotheses remain explicit.
 
 The probabilistic layer is closed at the level of measures.  The up-measure
 `μ_up = up·Leb` satisfies the refinement equation

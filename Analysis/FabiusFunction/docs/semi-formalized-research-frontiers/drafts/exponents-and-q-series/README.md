@@ -94,8 +94,8 @@ Current packages and retained intake records:
   figures. Pinned source revisions and Git history preserve every superseded
   layout and arrival fact.
 
-  The current `q_pochhammer_q_binomial_monograph.tex` has 14,526 lines and
-  683,497 bytes. Its retained `q_pochhammer_q_binomial_monograph.pdf` is a
+  The current `q_pochhammer_q_binomial_monograph.tex` has 14,531 lines and
+  683,936 bytes. Its retained `q_pochhammer_q_binomial_monograph.pdf` is a
   historical 354-page A4 artifact of 3,030,302 bytes, with SHA-256
   `1050a9a3b0b7a8df8e7de0870946ae64940d7d7839a2f20427be0ebe14b0ba8c`.
   That PDF was built in exactly three guarded serial passes (343, 354, and 354
@@ -163,7 +163,7 @@ theorem labels do not by themselves assert Lean formalization.
   was filed on 2026-08-30 from `fabius_frontier_report_2026.zip` (803,598 bytes;
   SHA-256
   `afdcf522589a7baad82c81a527c02dcc09e58455ab14c57a9c492e65563c647e`).
-  Its immutable 13-entry arrival ledger verifies 13/13. The current PDF was
+  Its immutable 13-entry arrival digest receipt records 13/13. The current PDF was
   rebuilt from the final source. The pinned replay reproduced the two exact
   algebra tables, common-random-number table, and two figures byte-for-byte;
   the two Monte-Carlo tables differed only at documented last-bit levels far
@@ -857,6 +857,7 @@ compatibility spelling of its primary identity),
 `GaussianBinomialComplexOrder.lean` (one definition, five theorems),
 `QPfaffSaalschutz.lean` (zero definitions, three theorems),
 `QuantumMultinomial.lean` (zero definitions, five theorems),
+`GaussianBinomialBounds.lean` (zero definitions, six theorems),
 `GaussianBinomialAtNegOne.lean` (five theorems),
 `RvachevPochhammerFactorization.lean` (one definition, nine theorems), and
 `QPochhammerEntire.lean` (zero definitions; four legacy compatibility
@@ -1171,7 +1172,9 @@ pairwise q-commuting variables.
 `GaussianBinomialBounds.lean` adds six theorems and reuses the stronger
 `finiteQPochhammerIn_self_pos` from `GeneralQConditionNumber`: evaluated
 reciprocity, the finite bounds for `0 <= q < 1`, and the dimension-dominant
-lower and upper bounds for `q > 1`. The exact finite-growth row is closed, while the compound
+lower and upper bounds for `q > 1`. The imported positivity theorem is not
+counted as a declaration of the bounds leaf. The exact finite-growth row is
+closed, while the compound
 greater-than-one row remains Partial at its asymptotic clauses. The
 primitive-root value in the Babbage corollary is exact, while its derivative
 clause keeps that compound row Partial.

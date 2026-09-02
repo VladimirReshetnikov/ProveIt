@@ -3913,9 +3913,13 @@ definitions and six theorems:
 \lean{finiteQPochhammerIn_pow_le_one},
 \lean{gaussianBinomial_le_inv_qPochhammerInfIn},
 \lean{pow_le_gaussianBinomial_of_one_lt}, and
-\lean{gaussianBinomial_le_pow_div_of_one_lt}.  It proves the uniform
-\(0\le q<1\) bound and its reciprocal dimension-dominant bounds for \(Q>1\),
-with every nonzero-base, index, and order hypothesis explicit.  Its proof
+\lean{gaussianBinomial_le_pow_div_of_one_lt}.  It evaluates Gaussian
+reciprocity over fields, proves the constant-term lower bound and the uniform
+infinite-q-Pochhammer upper bound for nonnegative real strict contractions,
+and transfers them to reciprocal dimension-dominant two-sided bounds for
+every real \(Q>1\).  The index condition \(k\le n\), nonzero nome for
+reciprocity, and all order and strict-contraction hypotheses remain explicit.
+Its proof
 reuses the stronger ordered-field theorem
 \lean{finiteQPochhammerIn_self_pos} from
 \path{GeneralQConditionNumber.lean} rather than exporting a duplicate.
@@ -5447,8 +5451,9 @@ positive rational lower bound for every dyadic forward gap.  In
 particular, the name \lean{effectiveInversionOn_Icc} does not claim an
 arbitrary-endpoint interval algorithm without computable endpoint data.
 
-The module \path{EffectiveGapInverse.lean} exposes exactly eight public
-declarations: \lean{EffectivelyUniformContinuousOn}, the structure
+The module \path{EffectiveGapInverse.lean} exposes exactly four public
+definitions and four public theorems: \lean{EffectivelyUniformContinuousOn},
+the structure
 \lean{ComputablePositiveRationalSequence},
 \lean{ComputablePositiveRationalSequence.value},
 \lean{ComputablePositiveRationalSequence.reciprocalDenominator},
@@ -12832,7 +12837,7 @@ definitions and one theorem in the Fabius specialization) &
 \path{EffectiveMonotoneInverse.lean},
 \path{FabiusInverseComputable.lean}\\
 Effective inversion from computable positive rational dyadic gaps (exactly
-eight public declarations, including the clamped total extension) &
+four definitions and four theorems, including the clamped total extension) &
 \path{EffectiveGapInverse.lean}\\
 Moments and exact arithmetic &
 \path{Arithmetic.lean}, \path{AnalyticMoments.lean},

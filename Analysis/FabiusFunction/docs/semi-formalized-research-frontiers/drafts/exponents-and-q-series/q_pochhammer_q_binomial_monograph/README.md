@@ -45,10 +45,10 @@ the earlier six-package inverse provenance is not silently reinterpreted.
 
 The migrated `assets/` tree preserves six experiment programs, nineteen
 CSV/TXT outputs, and fourteen vector figures selected by the historical
-77-row `assets/ASSET_DISPOSITION.csv`. That disposition record, the pinned
-source revisions, and repository history preserve the boundary between the 39
-retained historical payloads and the accompanying metadata and environment
-files. No live SHA checksum ledger is maintained.
+77-row `assets/ASSET_DISPOSITION.csv`. That disposition ledger remains the
+authoritative inventory of the 39 retained historical payloads; the pinned
+source revisions and repository history preserve their digest receipts. No
+live checksum manifest is maintained.
 
 ## Validation state
 
@@ -86,6 +86,12 @@ It compares all coefficients through degree 100 using integer arithmetic:
 1,515 equalities in total. This is a transcription-quality gate, explicitly
 not an infinite proof of any recorded identity.
 
+Checksum ledgers have been abolished repository-wide; no checksum manifest is
+kept for this package or its assets, and no checksum gate is part of its
+validation state. Deleted checksum manifests must not be recreated. Historical
+SHA-256 values recorded directly in this README and in `PROVENANCE.md` remain
+provenance receipts for the named artifacts.
+
 The retained `q_pochhammer_q_binomial_monograph.pdf` is a historical 354-page
 A4 build of its recorded source checkpoint (14,381 lines, 675,239 bytes,
 SHA-256 `240bff72fb47562e9a8fd87085b5a3a96d738189714518db17988f7c4ac15d31`).
@@ -102,7 +108,7 @@ fonts. The files under `assets/experiments/**/figures/` remain research
 figures, not publication manuscripts.
 
 The current live master is a source-only successor to that checkpoint: it has
-14,526 lines and 683,497 bytes. It combines the q-beta, collision-free
+14,531 lines and 683,936 bytes. It combines the q-beta, collision-free
 Newton-interpolation, integer/complex-order Gaussian,
 q-Pfaff--Saalschuetz, quantum-multinomial, Gaussian reciprocity/growth, and
 coefficient-closure crosswalks.
@@ -111,9 +117,9 @@ It adds the explicit document-local `\BellBlockMultiplicity{r}` and
 Jackson, Gaussian-binomial, q-integer, and q-Pochhammer status formulas, while
 retaining the newest feature, crosswalk, and provenance expansion catalogued
 below. No PDF was regenerated after those changes. Thus the PDF and its
-recorded 14,381-line build source form the retained synchronized checkpoint;
-the current master and retained PDF do not claim render parity pending a
-fresh three-pass build.
+recorded 14,381-line build source form the retained synchronized checkpoint,
+while the current master and retained PDF are distinct payloads pending a
+fresh three-pass build and do not claim render parity.
 
 The current source includes exhaustive crosswalks for `QPochhammerEntire`
 (zero definitions
@@ -122,7 +128,8 @@ and twenty-nine theorems), `QPochhammerDissection` (zero definitions and two
 theorems), `QBinomialTheoremInfinite` (one definition and twenty-two
 theorems), `GaussianBinomialPalindromic` (zero definitions and fourteen
 theorems), `GaussianBinomialPolynomialStructure` (zero definitions and five
-theorems), and `GeometricPochhammerNormalConvergence` (zero
+theorems), `GaussianBinomialBounds` (zero definitions and six theorems), and
+`GeometricPochhammerNormalConvergence` (zero
 definitions and three theorems). The wider inventory also includes
 `QMultinomial` (one definition and nine theorems),
 `QuantumMultinomial` (zero definitions and five theorems),
@@ -218,6 +225,10 @@ None and are not inferred from those series identities.
 The quantum-multinomial row is Exact over every semiring under the stated
 pairwise q-commutation laws and commutation of q with each variable; neither
 centrality of q nor commutativity of the ambient semiring is claimed.
+`GaussianBinomialBounds` owns six theorems. Its finite-product positivity
+input `finiteQPochhammerIn_self_pos` is the pre-existing generic declaration
+from `GeneralQConditionNumber`, reused through an import and therefore not
+counted as a seventh theorem of the bounds leaf.
 
 The complete root block, evaluated q-Lucas theorem, square-free cyclotomic
 criterion, and q-Catalan row are Exact. The primitive-root value in the
@@ -230,6 +241,8 @@ also Exact. The terminating q-Pfaff--Saalschütz sum and quantum multinomial
 are Exact, as are the integer-index Gaussian definition and Pascal laws, both
 reciprocal-product expansions, the complex upper-parameter series, and the
 generalized q-binomial theorem. The remaining complex-Gaussian property and
-classical-limit rows stay unformalized. No PDF was generated locally while resolving this merge: the
-supplied 354-page artifact is the validated upstream receipt described above,
-while the merged source is its source-only successor.
+classical-limit rows stay unformalized.
+
+No PDF was generated locally while resolving this merge. The retained
+354-page artifact remains the validated historical checkpoint described
+above. No deleted checksum manifest was recreated.

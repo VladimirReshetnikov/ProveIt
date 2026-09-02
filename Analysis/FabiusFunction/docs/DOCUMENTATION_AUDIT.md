@@ -133,8 +133,8 @@ outer-product tranches
 account for one module and six declarations: the zero-definition/three-theorem
 `GeometricPochhammerNormalConvergence.lean` leaf and three additional theorems
 in `PrimePowerBinomialValuation.lean`.  The q-polish adds two theorems to
-`QPochhammerInfinite.lean`, the two-module effective-inverse tranche
-contributes nine declarations, the first six q-calculus modules contribute
+`QPochhammerInfinite.lean`, the three-module effective-inverse union
+contributes seventeen declarations, the first six q-calculus modules contribute
 36 declarations, and four later leaves originally contributed 38 declarations
 and now expose 40 after the two Gaussian additions.
 Those leaves are `GaussianBinomialPalindromic.lean` 0+14,
@@ -174,12 +174,17 @@ theorems.  It decomposes natural tuple antidiagonals, transports Gaussian
 symmetry to arbitrary semirings, proves q-multinomial coefficient commutation,
 and establishes the ordered noncommutative q-multinomial expansion from the
 displayed pairwise q-commutation laws.  The API is finite and division-free.
-Finally, `GaussianBinomialBounds.lean` contributes six theorems and no
-definitions: field reciprocity, finite product comparison, the
-uniform `0 ≤ q < 1` bound, and its dimension-dominant `Q > 1` lower and upper
-bounds, all with their explicit index and order hypotheses.  It reuses the
-stronger ordered-field `finiteQPochhammerIn_self_pos` theorem from
-`GeneralQConditionNumber.lean`.
+Finally, `GaussianBinomialBounds.lean` has no definitions and exactly
+six theorems: `gaussianBinomial_inv`, `one_le_gaussianBinomial`,
+`finiteQPochhammerIn_pow_le_one`,
+`gaussianBinomial_le_inv_qPochhammerInfIn`,
+`pow_le_gaussianBinomial_of_one_lt`, and
+`gaussianBinomial_le_pow_div_of_one_lt`.  They give evaluated field
+reciprocity, the nonnegative strict-contraction bounds, and the resulting
+dimension-dominant real bounds for `Q > 1`, with `k ≤ n` and all nonzero and
+order hypotheses explicit.  The module reuses the stronger ordered-field
+`finiteQPochhammerIn_self_pos` theorem from `GeneralQConditionNumber.lean`
+rather than exporting a duplicate.
 The older 622/8,472, 623/8,476, 629/8,546, 630/8,552,
 641/8,650, and 643/8,661 values below are historical checkpoints, not
 descriptions of the live tree.  The earlier additions and q-series tranches are
@@ -753,7 +758,7 @@ The additional declaration in `PolynomialCombExactness.lean` is
 physical-coordinate self-sampling quadrature for every real polynomial whose
 natural degree is at most the dyadic level and every real phase.
 
-The fixed-depth effective-inverse tranche contributes two modules and nine public
+The effective-inverse union contributes three modules and seventeen public
 declarations.  `EffectiveMonotoneInverse.lean` is exactly 2+6: the definitions
 `SequentiallyComputableOn` and `unitClamp`; the clamping theorem
 `unitClamp_sequentiallyComputable`; the three certified tolerant-comparison
@@ -768,9 +773,9 @@ is exactly 0+1: `fabiusInv_isComputableRealFunction` combines that sequential
 realizer with the logarithmic Delta modulus for every bounded Fabius witness.
 Clamping makes the theorem about the total inverse on all real inputs.  These
 results are computability certificates, not an input-bit running-time bound or
-an exact least endpoint-mass denominator.  The later
-`EffectiveGapInverse.lean` module contributes the eight declarations listed
-above and supplies the generic rational-gap-to-modulus bridge; its clamped
+an exact least endpoint-mass denominator.  The third module,
+`EffectiveGapInverse.lean`, contributes 4+4, the eight declarations listed
+above, and supplies the generic rational-gap-to-modulus bridge; its clamped
 extension boundary remains explicit.
 
 The retained comb-interpolation synthesis PDF is a validated 158-page A4
@@ -780,7 +785,8 @@ Integration-and-Transform master retains a historical 377-page PDF.  The canonic
 q-series synthesis is a validated 354-page historical receipt.  It contains
 the earlier general finite/infinite q-Pochhammer crosswalks and six q-series
 modules; the merged fifth fixed-nome theorem, two later general
-q-Pochhammer theorems, and the later q-series/q-calculus/interpolation modules make
+q-Pochhammer theorems, and the twenty-five newest
+q-series/q-calculus/interpolation modules make
 final parity
 pending.  The retained 167-page primary, 126-page walkthrough, 237-page
 canonical frontier, 301-page Representation Frontiers, 41-page New Frontiers,
