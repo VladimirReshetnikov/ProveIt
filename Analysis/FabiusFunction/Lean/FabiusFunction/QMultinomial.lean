@@ -38,7 +38,7 @@ namespace Fabius
 
 section Semiring
 
-variable {R : Type*} [CommSemiring R]
+variable {R : Type*} [Semiring R]
 
 /-- The `q`-multinomial coefficient `[n; n₁,…,n_r]_q = ∏_j [n_j + ⋯ + n_r, n_j]_q` of the
 composition given by a list, as a product of Gaussian coefficients. -/
@@ -53,6 +53,12 @@ def qMultinomial (q : R) : List ℕ → R
 q-multinomial coefficient of the remaining composition. -/
 theorem qMultinomial_cons (q : R) (n : ℕ) (l : List ℕ) :
     qMultinomial q (n :: l) = gaussianBinomial q (n + l.sum) n * qMultinomial q l := rfl
+
+end Semiring
+
+section CommSemiring
+
+variable {R : Type*} [CommSemiring R]
 
 /-- The diagonal Gaussian coefficient is one. -/
 theorem gaussianBinomial_diag (q : R) (n : ℕ) : gaussianBinomial q n n = 1 := by
@@ -83,7 +89,7 @@ theorem qMultinomial_eq_eval₂_universal (q : R) (l : List ℕ) :
   rw [Polynomial.coe_eval₂RingHom, Polynomial.eval₂_X] at h
   exact h.symm
 
-end Semiring
+end CommSemiring
 
 section Ring
 

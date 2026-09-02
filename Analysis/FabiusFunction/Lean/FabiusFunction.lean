@@ -511,6 +511,9 @@ import FabiusFunction.CyclotomicDivisibility
 import FabiusFunction.QCatalan
 import FabiusFunction.QBetaIntegral
 import FabiusFunction.NewtonInterpolation
+import FabiusFunction.GaussianBinomialInteger
+import FabiusFunction.GaussianBinomialComplexOrder
+import FabiusFunction.QPfaffSaalschutz
 import FabiusFunction.GaussianBinomialPalindromic
 import FabiusFunction.ThetaQuasiPeriodicity
 
