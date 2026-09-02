@@ -5741,7 +5741,11 @@ The rarefied sums are finitely many samples of the trigonometric polynomial
   \label{p1:eq:gelfond-lower}
 \end{equation}
 since the factors have modulus \(|1-\omega|=|1-\omega^2|=\sqrt3\) in every
-position.  Gelfond's theorem \cite{p1:gelfond1968} --- proved below --- shows this
+position.  (The attainment is formal:
+\lean{Fabius.norm\_sum\_thueMorseSign\_exp\_two\_pi\_div\_three} in
+\path{ThueMorseGelfond.lean} evaluates the modulus at the frequency \(2\pi/3\) ---
+the atlas's \(x=\tfrac13\) --- to exactly \((\sqrt3)^m\) for every \(m\ge0\), not merely
+as a lower bound.)  Gelfond's theorem \cite{p1:gelfond1968} --- proved below --- shows this
 is sharp up to a bounded factor:
 \begin{equation}
   \boxed{
@@ -5808,6 +5812,16 @@ so \(\log_43\) is the optimal uniform growth exponent of Thue--Morse
 exponential sums \cite{p1:gelfond1968,p1:queffelec2018}.  At \(x=0\) the sum
 collapses to the bounded prefix values --- the supremum and the special
 value differ by a full power of \(N\).
+
+\emph{Formal version.}  Equation~\eqref{p1:eq:gelfond-general} is formal with an explicit constant
+and for every \(N\), not only asymptotically: \lean{Fabius.gelfond\_general\_bound} in
+\path{ThueMorseGelfond.lean} gives
+\(\bigl|\sum_{n<N}\eps_n\EulerE^{\ImaginaryUnit nx}\bigr|\le(\sqrt3+1)(\sqrt3)^{\Floor{\log_2N}}\)
+uniformly in the real frequency \(x\), by the blockwise decomposition described above
+(\lean{Fabius.norm\_sum\_thueMorseSign\_exp\_le\_of\_lt\_two\_pow}), and
+\lean{Fabius.gelfond\_general\_bound\_rpow} rewrites the right side as
+\((\sqrt3+1)\,N^{\log_43}\), which is the displayed \(\BigO(N^{\log_43})\) with the
+implied constant made \(\sqrt3+1\).
 
 \subsection{A matrix recursion for odd moduli}
 
