@@ -3929,7 +3929,14 @@ particular, multiplying by a series with a pole of order $r$, that is with
 valuation $-r$, costs exactly $r$ blocks of precision.
 \end{checkpointbox}
 
-\begin{corollary}[Truncated product]
+% ed.: the bracketed title duplicated that of \cref{plt:prop:trunc-product}.
+% ed.: The two statements are not the same result: the ring-chapter proposition
+% ed.: is the law on \(\PLlau\) at the canonical cutoffs, this one is the law
+% ed.: over an arbitrary logarithmically graded coefficient ring at arbitrary
+% ed.: sufficient cutoffs, together with optimality and sharpness.  The titles
+% ed.: now say so; see \cref{plt:rmk:mul-leading-restated}.
+\begin{corollary}[Truncated product over a general coefficient ring, at
+arbitrary sufficient cutoffs]
 \label{plt:cor:mul-truncated-product}
 Let $F,G\in R((t))$ be nonzero with $a=\ordt F$, $b=\ordt G$, and let
 $N\in\IntegerNumbers$.  Then for all integers $P\ge N-b$ and $Q\ge N-a$,
@@ -4117,7 +4124,10 @@ when accompanied by a proved degree bound such as
 \subsection{Leading data and the leading-term law}
 \label{plt:sec:mul-leading}
 
-\begin{definition}[Leading data]
+% ed.: retitled to distinguish it from \cref{plt:def:lead-leading-data}, which
+% ed.: is the same data on the four ambient classes; only the coefficient ring
+% ed.: differs.  See \cref{plt:rmk:mul-leading-restated}.
+\begin{definition}[Leading data over a logarithmically graded domain]
 \label{plt:def:mul-leading-data}
 Let $R$ be a logarithmically graded domain over $\K$ and let
 $F=\sum_{n\ge n_0}p_nt^n\in R((t))$ be nonzero with
@@ -4314,7 +4324,11 @@ multiplication fact and is not repeated here.
 \subsection{Degree and support bounds}
 \label{plt:sec:mul-degree}
 
-\begin{definition}[Log-degree profile]
+% ed.: retitled to distinguish it from \cref{plt:def:lead-profile}, which is
+% ed.: the same function on \(\PLlau\), where the blocks are polynomials and
+% ed.: the codomain is \(\NaturalNumbers\cup\SetOf{-\infty}\).  See
+% ed.: \cref{plt:rmk:mul-leading-restated}.
+\begin{definition}[Log-degree profile on the four classes]
 \label{plt:def:mul-profile}
 For $F=\sum_np_nt^n$ in one of the four classes, the \emph{log-degree
 profile} is the function $\dprofile{F}\colon\IntegerNumbers\to
@@ -4589,7 +4603,13 @@ $[t^0](FG)=\LamP{0}(L)^2=L^2$ has degree $2$.
 Infinite sums enter through powers, so we first record the exact sense in
 which they are legitimate.
 
-\begin{definition}[Summable family]
+% ed.: retitled, and its relation to \cref{plt:def:trunc-summable} made
+% ed.: explicit: the condition is verbatim the one of the ring chapter, read
+% ed.: over the coefficient ring $R$ instead of $\K[L]$, which
+% ed.: \cref{plt:rmk:trunc-summability-classes} already licenses.  Only the
+% ed.: two clauses of \cref{plt:lem:mul-summable} are used below, so they are
+% ed.: the only ones recorded here.
+\begin{definition}[Summable family over a logarithmically graded domain]
 \label{plt:def:mul-summable}
 Let $R$ be a logarithmically graded domain over $\K$.  A family
 $(S_i)_{i\in I}$ in $R((t))$ is \emph{summable} if for every
@@ -5033,7 +5053,11 @@ the actual finite sum obtained by substituting the generators.  Equivalently,
 $f-\Trunc{F}{N}=\BigOAt{X^{-N}(\log X)^{M_N}}{X\to+\infty,\ X\in S}$.
 \end{definition}
 
-\begin{lemma}[Basic properties of $\approx$]
+% ed.: retitled: ``Basic properties of a scale'' in the differential part
+% ed.: (\cref{plt:lem:dif-scale-basic}) is about the coefficient field of a
+% ed.: power--log scale, not about the relation $\approx$ between a function
+% ed.: and a series.  The two lemmas share nothing but the word ``basic''.
+\begin{lemma}[Basic properties of the expansion relation $\approx$]
 \label{plt:lem:mul-asymptotic-basic}
 Let $f,g\colon S\to\ComplexNumbers$ and $F,G\in\PLlau$.
 \begin{enumerate}
@@ -6560,7 +6584,20 @@ over \(\K\), because the outer order of the \(r\)-th power grows with \(r\).
 All six sources state this; we record it once, in the form that also delivers
 the finite-determination statement that a computation actually needs.
 
-\begin{lemma}[Summable families]\label{plt:lem:dif-summable}
+% ed.: retitled.  Three ``Summable families'' statements stood in the volume
+% ed.: with the same bracketed title.  This one is the blockwise assembly
+% ed.: principle for a sequence in a Laurent ring over any of the coefficient
+% ed.: rings used here; \cref{plt:lem:cmp-summable} is the corresponding
+% ed.: statement for an arbitrary index set in a Hahn ring with real
+% ed.: exponents, and \cref{plt:thm:trunc-summability} is the full calculus on
+% ed.: \(\PLlau\).  On \(\PLlau\) the present lemma is the sequence case of
+% ed.: \cref{plt:thm:trunc-summability}\,(i),(iv),(v); it is stated again
+% ed.: because it is applied below in the \(L^{-1}\)-adic order and in a Hahn
+% ed.: ambient, neither of which that theorem covers.  The hypothesis
+% ed.: \(\inf_{r}\ordt F_{r}>-\infty\) is redundant for a sequence with
+% ed.: \(\ordt F_{r}\to+\infty\) and is kept only because the proof uses it.
+\begin{lemma}[Summable sequences and blockwise assembly]
+\label{plt:lem:dif-summable}
 Let \((F_{r})_{r\ge0}\) be a family in \(\PLlau\) with
 \(\ordt F_{r}\to+\infty\) and \(\inf_{r}\ordt F_{r}>-\infty\).  Then for each
 \(n\in\IntegerNumbers\) only finitely many \(r\) have \([t^{n}]F_{r}\ne0\), the
@@ -6587,7 +6624,13 @@ double sum that may be reordered.  No step used that the coefficients are
 polynomials.
 \end{proof}
 
-\begin{proposition}[The substitution homomorphism]
+% ed.: retitled.  This is substitution of a small series into a \emph{scalar}
+% ed.: power series, \(\K[[z]]\to\PLpow\).  The composition part has a
+% ed.: different theorem under the same name,
+% ed.: \cref{plt:thm:cmp-substitution-hom}, which substitutes a
+% ed.: monomial-leading transseries into a transseries; neither implies the
+% ed.: other.
+\begin{proposition}[Substitution of a small series into a scalar power series]
 \label{plt:prop:dif-substitution}
 Let \(U\in\PLpow\) with \(q\DefinitionEquals\ordt U\ge1\).  For
 \(\Phi=\sum_{r\ge0}c_{r}z^{r}\in\K[[z]]\) put
@@ -6628,7 +6671,12 @@ The next statement is what a computation uses.  The sources give only its
 first half -- that few powers contribute -- and leave implicit which blocks of
 \(U\) must be known; both halves are needed to certify a truncated result.
 
-\begin{theorem}[Finite determination]\label{plt:thm:dif-finite-determination}
+% ed.: retitled: the composition part states a different theorem under the
+% ed.: same name (\cref{plt:thm:cmp-finite-determination}, finite
+% ed.: determination of \(F\compose G\)).  The present one is about
+% ed.: \(\Phi(U)\) with \(\Phi\) a scalar power series.
+\begin{theorem}[Finite determination of a substituted scalar series]
+\label{plt:thm:dif-finite-determination}
 Let \(U\in\PLpow\) with \(\ordt U=q\ge1\) and \(\Phi=\sum_{r}c_{r}z^{r}\in
 \K[[z]]\).  For \(N\le0\), \(\Trunc{\Phi(U)}{N}=0\).  For \(N\ge1\), put
 \(m=\Floor{(N-1)/q}\).  Then
@@ -6931,7 +6979,11 @@ Thus \(\PLlau=\mathcal H(\K[L],\IntegerNumbers)\),
 \(\PLit=\mathcal H(\K((L^{-1})),\IntegerNumbers)\), and the Puiseux-log ring
 \(\K[L]((t^{1/s}))\) is \(\mathcal H(\K[L],s^{-1}\IntegerNumbers)\).
 
-\begin{lemma}[Basic properties of a scale]\label{plt:lem:dif-scale-basic}
+% ed.: retitled to separate it from
+% ed.: \cref{plt:lem:mul-asymptotic-basic}, which collects the basic
+% ed.: properties of the relation \(\approx\) between a function and a series.
+\begin{lemma}[Basic properties of a power--log scale]
+\label{plt:lem:dif-scale-basic}
 Let \(\mathcal H=\mathcal H(C,\Gamma)\) be a power--log scale.
 \begin{enumerate}
 \item \(\mathcal H\) is an integral domain, \(\ordt\) is additive on nonzero
@@ -8066,6 +8118,26 @@ forces \(p\in\K\).  The statement for \(\K((L^{-1}))\) is
 because \(\operatorname{res}(L^{-1})=1\).
 \end{proof}
 
+% ed.: the motivation part proves the same dichotomy in the weaker form it
+% ed.: needs there (\cref{plt:lem:mot-block-antiderivative}, on \(\K[L]\)
+% ed.: only, with no closed form).  Rather than restate it, the two lemmas
+% ed.: above are identified with it here, so that a reader meets the resonance
+% ed.: once as a mechanism and once in the form the antiderivative theorem
+% ed.: consumes.
+\begin{remark}[The same dichotomy as in the motivation part]
+\label{plt:rmk:dif-resonance-restated}
+\Cref{plt:lem:dif-triangular} and \cref{plt:lem:dif-resonant} are the
+nonresonant and resonant halves of
+\cref{plt:lem:mot-block-antiderivative}, sharpened in the two ways the
+antiderivative theorem needs: the nonresonant inverse is given in closed form
+by \cref{plt:eq:dif-nonresonant-inverse}, and both halves are proved on
+\(\K((L^{-1}))\) as well as on \(\K[L]\), where the resonant image acquires
+the codimension-one residue obstruction.  Nothing about the mechanism is new:
+the unique resonant outer level is still \(n=0\) for \(\partial_{L}-n\),
+equivalently the level \(n=1\) of the series being antidifferentiated, and it
+is still the only level at which the logarithmic degree can rise.
+\end{remark}
+
 \subsection{Antiderivatives in the polynomial--logarithmic class}
 \label{plt:sec:dif-antiderivative}
 
@@ -8503,7 +8575,14 @@ exponent support, so that \(\ordt(F)=\min E(F)\) and
 \(\PLlau\), and for \(\Gamma=s^{-1}\IntegerNumbers\) it is the Puiseux-log ring
 \(\K[L]((t^{1/s}))\).
 
-\begin{lemma}[Summable families]\label{plt:lem:cmp-summable}
+% ed.: retitled.  This is the summability criterion in a Hahn ring with real
+% ed.: exponents, for an arbitrary index set, together with the notion of a
+% ed.: map compatible with summable families that the rest of the part uses.
+% ed.: It is not \cref{plt:lem:dif-summable} (sequences in a Laurent ring)
+% ed.: and not \cref{plt:thm:trunc-summability} (the calculus on \(\PLlau\));
+% ed.: for \(\Gamma=\IntegerNumbers\) it restricts to the latter.
+\begin{lemma}[Summable families in a polynomial--logarithmic Hahn ring]
+\label{plt:lem:cmp-summable}
 Let \(\mathcal A=\K[L][[t^\Gamma]]\) and let \((S_i)_{i\in I}\) be a family in
 \(\mathcal A\) such that
 \begin{equation}\label{plt:eq:cmp-summability-criterion}
@@ -8646,7 +8725,11 @@ enlarged; and if \(\K\subseteq\ComplexNumbers\) contains \(2\pi\ImaginaryUnit\),
 then \(c\) admits several admissible logarithms, which give genuinely
 different substitutions (\cref{plt:rmk:cmp-branch-matters}).
 
-\begin{theorem}[Substitution homomorphism]\label{plt:thm:cmp-substitution-hom}
+% ed.: retitled to separate it from \cref{plt:prop:dif-substitution}, which
+% ed.: substitutes a small series into a scalar power series.  The present
+% ed.: theorem substitutes a monomial-leading transseries into a transseries.
+\begin{theorem}[Substitution homomorphism of a monomial-leading argument]
+\label{plt:thm:cmp-substitution-hom}
 Let \(G\) be as in \cref{plt:def:cmp-admissible-inner}.  For
 \(F=\sum_{n\ge n_0}p_n(L)t^n\in\PLlau\) the family
 \begin{equation}\label{plt:eq:cmp-master}
@@ -8787,7 +8870,11 @@ The practical content of \cref{plt:thm:cmp-substitution-hom} is that each
 output block is a finite algebraic expression in finitely many input blocks,
 with an explicit and \emph{triangular} precision budget.
 
-\begin{theorem}[Finite determination]\label{plt:thm:cmp-finite-determination}
+% ed.: retitled: \cref{plt:thm:dif-finite-determination} carries the same name
+% ed.: for a different statement, the finite determination of \(\Phi(U)\) with
+% ed.: \(\Phi\) a scalar power series.
+\begin{theorem}[Finite determination of a composition]
+\label{plt:thm:cmp-finite-determination}
 Let \(G\) be as in \cref{plt:def:cmp-admissible-inner}, let
 \(F=\sum_{n\ge a}p_n(L)t^n\in\PLlau\) with \(a=\ordt(F)\), and let
 \(N\in\IntegerNumbers\).  Then
@@ -10550,33 +10637,28 @@ series.
 
 We shall use the formal exponential and logarithm on \(1+t\PLpow\) constantly.
 
-\begin{lemma}[Formal exponential and logarithm]\label{plt:lem:grp-explog}
-The assignments
-\[
-  \exp(u)=\sum_{k\ge0}\frac{u^k}{k!},
-  \qquad
-  \log(1+u)=\sum_{k\ge1}\frac{(-1)^{k+1}}{k}u^k
-\]
-are mutually inverse bijections between \(t\PLpow\) and \(1+t\PLpow\), and
-\[
-  \log\bigl((1+u)(1+v)\bigr)=\log(1+u)+\log(1+v),
-  \qquad u,v\in t\PLpow .
-\]
-\end{lemma}
-
-\begin{proof}
-Both series are formally summable: \(\ordt(u^k)\ge k\), so below any outer
-cutoff only finitely many terms contribute, and \(\PLpow\) is \(t\)-adically
-complete.  The three identities
-\(\log(\exp u)=u\), \(\exp(\log(1+u))=1+u\) and
-\(\log((1+u)(1+v))=\log(1+u)+\log(1+v)\) hold in the power-series ring
-\(\RationalNumbers[[u]]\), respectively \(\RationalNumbers[[u,v]]\), and every
-coefficient identity involved is an identity of rational numbers.  Because
-\(\RationalNumbers\subseteq\K\) and the substitution
-\(\RationalNumbers[[u,v]]\to\PLpow\) sending \(u,v\) to elements of \(t\PLpow\)
-is a continuous \(\RationalNumbers\)-algebra homomorphism, the identities
-transport.
-\end{proof}
+% ed.: this lemma was stated and proved twice in the volume, here and as
+% ed.: \cref{plt:lem:cmp-exp-log} in the composition part, with the same
+% ed.: transport-of-identities proof.  The composition-part statement is the
+% ed.: stronger of the two --- it is set in an arbitrary polynomial-logarithmic
+% ed.: Hahn ring, and it adds the additivity of \(\exp\), the law
+% ed.: \(\log(P^{n})=n\log P\) for all \(n\in\IntegerNumbers\), and the
+% ed.: commutation with any homomorphism compatible with summable families,
+% ed.: all of which are used below.  The restatement and its proof are deleted
+% ed.: and replaced by this pointer; the label is kept so that the citations
+% ed.: to it elsewhere in the volume continue to resolve.
+\begin{remark}[Formal exponential and logarithm: where they are proved]
+\label{plt:lem:grp-explog}
+The assignments \(u\mapsto\exp u\) and \(1+u\mapsto\log(1+u)\), given by the
+usual series, are mutually inverse bijections between \(t\PLpow\) and
+\(1+t\PLpow\), and they carry products to sums.  This is
+\cref{plt:lem:cmp-exp-log} applied to the Hahn ring
+\(\mathcal A=\PLlau\) with \(\Gamma=\IntegerNumbers\) and
+\(\mathfrak m=t\PLpow\); every reference to the present remark below is a
+reference to that lemma, whose extra clauses --- additivity of \(\exp\),
+\(\log(P^{\,n})=n\log P\) for \(n\in\IntegerNumbers\), and commutation with a
+homomorphism compatible with summable families --- are used here as well.
+\end{remark}
 
 \subsection{Substitution, and the exact Taylor formula}
 
@@ -10667,65 +10749,48 @@ summand reaches outer order \(n_0\).  Hence
  =\log(1+\Phi_G(u))\).
 \end{proof}
 
-\begin{theorem}[Exact formal Taylor formula]\label{plt:thm:grp-taylor}
-For every \(F\in\PLlau\) and every \(A\in\PLpow\),
-\begin{equation}\label{plt:eq:grp-taylor}
-  F\compose(X+A)=\sum_{k\ge0}\frac{A^k}{k!}\,\DX^kF .
-\end{equation}
-The family on the right is formally summable; if \(a=\ordt(F)\), only the
-indices \(k\le N-a\) affect the coefficient of \(t^N\).  This is an identity of
-formal series and carries no analytic content.
-\end{theorem}
-
-\begin{proof}
-Write \(T_A(F)\DefinitionEquals\sum_{k\ge0}\frac{A^k}{k!}\DX^kF\).  By
-\eqref{plt:eq:grp-block-derivative}, \(\ordt(\DX^kF)\ge\ordt(F)+k\), and
-\(\ordt(A^k)\ge0\), so \(\ordt(A^k\DX^kF/k!)\ge a+k\): the family is summable,
-the stated cutoff on \(k\) holds, and \(T_A\) is a \(\K\)-linear map
-\(\PLlau\to\PLlau\) with \(T_A(t^N\PLpow)\subseteq t^N\PLpow\), hence
-continuous.
-
-% ed.: S3 asserts that both sides of the Taylor formula "are continuous algebra
-% homomorphisms in F" and concludes from agreement on the generators.  That the
-% normally ordered operator T_A is multiplicative is exactly the point at issue
-% and is not proved there; the Leibniz computation below supplies it.
-\(T_A\) is multiplicative: by the Leibniz rule for the derivation \(\DX\),
-\[
-  T_A(F\widetilde F)
-  =\sum_{k\ge0}\frac{A^k}{k!}\sum_{j=0}^k\binom kj\DX^jF\,\DX^{k-j}\widetilde F
-  =\Bigl(\sum_{j\ge0}\frac{A^j}{j!}\DX^jF\Bigr)
-   \Bigl(\sum_{i\ge0}\frac{A^i}{i!}\DX^i\widetilde F\Bigr)
-  =T_A(F)\,T_A(\widetilde F).
-\]
-It is essential that every power of \(A\) stands to the \emph{left} of every
-\(\DX\); see \cref{plt:rmk:grp-normal-ordering}.
-
-Now evaluate \(T_A\) on the generators.  From \(\DX t=-t^2\) one gets
-\(\DX^kt=(-1)^kk!\,t^{k+1}\), so
-\[
-  T_A(t)=\sum_{k\ge0}\frac{A^k}{k!}(-1)^kk!\,t^{k+1}
-  =t\sum_{k\ge0}(-tA)^k=\frac{t}{1+tA}.
-\]
-From \(\DX L=t\) one gets \(\DX^kL=(-1)^{k-1}(k-1)!\,t^k\) for \(k\ge1\), so
-\[
-  T_A(L)=L+\sum_{k\ge1}\frac{(-1)^{k-1}}{k}(tA)^k=L+\log(1+tA).
-\]
-Thus \(T_A\) and \(\Phi_{X+A}\) are continuous \(\K\)-algebra endomorphisms of
-\(\PLlau\) agreeing on \(t\), on \(t^{-1}\) (invert the previous line, using
-multiplicativity) and on \(L\); hence they agree on the subalgebra
-\(\K[L][t,t^{-1}]\).  Every \(F\in\PLlau\) is the \(t\)-adic limit of its
-truncations \(\Trunc{F}{N}\in\K[L][t,t^{-1}]\), and both maps are continuous,
-so they agree on \(\PLlau\).
-\end{proof}
+% ed.: the exact formal Taylor formula was stated and proved twice, here and
+% ed.: as \cref{plt:thm:tay-formula} in the composition part, where an entire
+% ed.: subsection (the Taylor operator, its summability budget, its
+% ed.: multiplicativity, and the generator-determination lemma) is built to
+% ed.: prove it.  The statements are identical, so the restatement and its
+% ed.: proof are deleted in favour of a pointer; the label is kept because the
+% ed.: reversion part and the algorithms part cite it.  The repair recorded
+% ed.: here --- S3 concludes from agreement on the generators without proving
+% ed.: that the normally ordered operator is multiplicative --- is carried out
+% ed.: at the surviving site, in \cref{plt:lem:tay-homomorphism}.
+\begin{remark}[Exact formal Taylor formula]\label{plt:thm:grp-taylor}
+For every \(F\in\PLlau\) and every \(A\in\PLpow\) the family
+\((A^k\DX^kF/k!)_{k\ge0}\) is formally summable and
+\(F\compose(X+A)=\sum_{k\ge0}A^k\DX^kF/k!\); if \(a=\ordt(F)\), only the
+indices \(k\le N-a\) affect the coefficient of \(t^N\).  This is
+\cref{plt:thm:tay-formula}, equation \eqref{plt:eq:cmp-taylor}, proved there;
+it is an identity of formal series and carries no analytic content.  Every
+citation of the present remark is a citation of that theorem.  Two features of
+its proof are used repeatedly below: the operator
+\(T_A=\sum_{k\ge0}\frac{A^k}{k!}\DX^k\) is a \emph{continuous} \(\K\)-algebra
+endomorphism of \(\PLlau\) (\cref{plt:lem:tay-homomorphism}), and two such
+endomorphisms agreeing on \(t\) and \(L\) are equal
+(\cref{plt:lem:tay-determined}).
+\end{remark}
 
 The single most useful consequence is a gain of one outer block whenever a
 near-identity argument is perturbed.
 
-\begin{corollary}[Filtered gain]\label{plt:cor:grp-gain}
+% ed.: the Lipschitz bound was printed as \(\ordt(B-C)+1\), dropping the
+% ed.: summand \(\ordt(A)\) that the proof below already produces.  The
+% ed.: sharper form is what the reversion part needs (it is what makes the
+% ed.: Newton estimate of \cref{plt:thm:rev-newton-doubling} come out), and it
+% ed.: was stated there a second time as a separate lemma.  The inequality is
+% ed.: corrected here and the restatement in the reversion part is deleted;
+% ed.: every use of the weaker form below is unaffected, since
+% ed.: \(\ordt(A)\ge0\) on \(\PLpow\).
+\begin{corollary}[Filtered gain, and the Lipschitz contraction]
+\label{plt:cor:grp-gain}
 Let \(A,B,C\in\PLpow\).  Then
 \begin{align}
   \ordt\bigl(A\compose(X+B)-A\compose(X+C)\bigr)
-  &\ \ge\ \ordt(B-C)+1,\label{plt:eq:grp-gain-lipschitz}\\
+  &\ \ge\ \ordt(A)+\ordt(B-C)+1,\label{plt:eq:grp-gain-lipschitz}\\
   \ordt\bigl(A\compose(X+B)-A\bigr)
   &\ \ge\ \ordt(A)+\ordt(B)+1,\label{plt:eq:grp-gain-absolute}
 \end{align}
@@ -10741,7 +10806,9 @@ By \cref{plt:thm:grp-taylor},
 \(A\compose(X+B)-A\compose(X+C)=\sum_{k\ge1}\frac{B^k-C^k}{k!}\DX^kA\).
 Since \(B^k-C^k=(B-C)\sum_{i=0}^{k-1}B^iC^{k-1-i}\) and all factors have
 nonnegative valuation, \(\ordt(B^k-C^k)\ge\ordt(B-C)\); and
-\(\ordt(\DX^kA)\ge\ordt(A)+k\ge k\ge1\).  This gives
+\(\ordt(\DX^kA)\ge\ordt(A)+k\).  Hence the \(k\)-th summand has
+\(\ordt\ge\ordt(B-C)+\ordt(A)+k\), and the minimum over \(k\ge1\) is attained
+at \(k=1\); this gives
 \eqref{plt:eq:grp-gain-lipschitz}.  Taking \(C=0\) and using
 \(\ordt(B^k)\ge k\,\ordt(B)\) gives, for the \(k\)-th term, the bound
 \(\ordt(A)+k(1+\ordt(B))\), which is \(\ge\ordt(A)+\ordt(B)+1\) for \(k\ge1\)
@@ -10784,8 +10851,8 @@ The group is not abelian.
 \(F\compose G=X+\bigl(B+A\compose G\bigr)\) with correction in \(\PLpow\).
 
 \emph{(2)} Both \(\Phi_H\circ\Phi_G\) and \(\Phi_{G\compose H}\) are
-continuous \(\K\)-algebra endomorphisms of \(\PLlau\), so by the density
-argument used in \cref{plt:thm:grp-taylor} it suffices to check them on \(t\)
+continuous \(\K\)-algebra endomorphisms of \(\PLlau\), so by
+\cref{plt:lem:tay-determined} it suffices to check them on \(t\)
 and \(L\).  Write \(G=X+A\), \(H=X+B\).  Since \(\Phi_H\) is a ring
 homomorphism with \(\Phi_H(X)=H\) and \(\Phi_H(A)=A\compose H\),
 \begin{equation}\label{plt:eq:grp-phi-of-G}
@@ -10820,35 +10887,33 @@ operator identity to \(F\) gives
 \(\Phi_X=\mathrm{id}\) because \(A=0\) makes \(R=1\), \(V=0\) in
 \eqref{plt:eq:grp-substitution}.
 
-\emph{(4)} \emph{Existence of a right inverse.}  Consider
-\(\Psi:\PLpow\to\PLpow\), \(\Psi(B)=-A\compose(X+B)\).  By
-\eqref{plt:eq:grp-gain-lipschitz},
-\(\ordt(\Psi(B)-\Psi(C))\ge\ordt(B-C)+1\).  Put \(B_0=0\) and
-\(B_{j+1}=\Psi(B_j)\).  Then \(\ordt(B_1-B_0)=\ordt(A)\ge0\) and, inductively,
-\(\ordt(B_{j+1}-B_j)\ge j\), so \((B_j)\) is \(t\)-adically Cauchy.  Since
-\(\PLpow\) is \(t\)-adically complete, \(B_j\to B\), and \(\Psi\) is continuous
-by the same estimate, so \(B=\Psi(B)\), i.e.
+% ed.: the Picard construction of the inverse was carried out twice in the
+% ed.: volume: here, and again --- with the sharp rate
+% ed.: \(\ordt(B_{j+1}-B_{j})\ge(j+1)\alpha+j\), the first-order form of the
+% ed.: inverse, and the uniqueness of the two-sided inverse --- as
+% ed.: \cref{plt:thm:rev-existence}.  The two constructions are the same
+% ed.: iteration; the reversion part proves strictly more.  The duplicate is
+% ed.: deleted and item (4) is derived from the reversion theorem, which makes
+% ed.: the dependency of the group's inverses on Part~IV explicit instead of
+% ed.: hiding it behind two independent proofs.  There is no circularity:
+% ed.: \cref{plt:thm:rev-existence} uses items (1)--(3) of the present theorem
+% ed.: and the gain estimate \cref{plt:cor:grp-gain}, and nothing else from
+% ed.: this section.
+\emph{(4)}  By (1)--(3), \((\Gnear,\compose)\) is a monoid with identity
+\(X\), and by \eqref{plt:eq:grp-closure} an element \(G=X+B\) of \(\Gnear\)
+satisfies \(F\compose G=X\) if and only if
 \begin{equation}\label{plt:eq:grp-inverse-fixed-point}
   B=-A\compose(X+B).
 \end{equation}
-Setting \(G=X+B\) and using \eqref{plt:eq:grp-closure},
-\(F\compose G=X+B+A\compose G=X\).  If \(B'\) is another fixed point then
-\(\ordt(B-B')\ge\ordt(B-B')+1\), forcing \(\ordt(B-B')=+\infty\), i.e.\
-\(B=B'\).
-
-\emph{From right to two-sided.}  By (1)--(3), \((\Gnear,\compose)\) is a monoid
-with identity \(X\), and every element has a right inverse.  Given \(F\), pick
-a right inverse \(G\) of \(F\) and a right inverse \(H\) of \(G\).  Then
-\[
-  F=F\compose X=F\compose(G\compose H)=(F\compose G)\compose H
-   =X\compose H=H,
-\]
-so \(G\compose F=G\compose H=X\).  Thus \(G\) is two-sided, and a two-sided
-inverse in a monoid is unique.
-
-\emph{Valuation.}  From \eqref{plt:eq:grp-inverse-fixed-point} and
-\cref{plt:prop:grp-substitution}(4),
-\(\ordt(B)=\ordt(A\compose(X+B))=\ordt(A)\).
+\Cref{plt:thm:rev-existence} --- proved from items (1)--(3) above,
+\cref{plt:cor:grp-gain}, and the \(t\)-adic completeness of \(\PLpow\), so that
+the present item may cite it --- says that
+\eqref{plt:eq:grp-inverse-fixed-point} has exactly one solution
+\(B\in\PLpow\), that the resulting \(G=X+B\) is the unique element of
+\(\Gnear\) with \(F\compose G=X\), that it satisfies \(G\compose F=X\) as well
+and is the unique element of \(\Gnear\) doing so, and that
+\(\ordt(B)=\ordt(A)\) with \([t^{\ordt(A)}]B=-[t^{\ordt(A)}]A\).  Writing
+\(\CompositionalInverseOf{F}=\rev{F}=G\) gives (4).
 
 \emph{Noncommutativity} is \cref{plt:ex:grp-noncommutative}.
 \end{proof}
@@ -10865,21 +10930,28 @@ Hence \(F\compose G-G\compose F=t-\frac12t^2+\FormalBigOAt{t^3}{t}\neq0\).
 
 \begin{remark}[Direction of the dependency on Part~IV]
 \label{plt:rmk:grp-dependency}
-The proof of \cref{plt:thm:grp-group} is self-contained: it uses only
-\cref{plt:thm:grp-taylor}, \cref{plt:cor:grp-gain} and the \(t\)-adic
-completeness of \(\PLpow\).  Nothing in this section depends on Part~IV, and
-in particular the existence and uniqueness of \(\CompositionalInverseOf{F}\)
-is established \emph{here}.  Part~IV develops the same fixed point
-quantitatively: \cref{plt:thm:rev-existence} sharpens the convergence estimate
-of the present proof from \(\ordt(B_{j+1}-B_j)\ge j\) to
-\(\ordt(B_{j+1}-B_j)\ge(j+1)\alpha+j\) with \(\alpha=\ordt(A)\), adds the
-first-order form \(\CompositionalInverseOf{F}=X-A+\FormalBigOAt{t^{2\alpha+1}}{t}\),
-and supplies the Lagrange--B\"urmann coefficient formula together with the
-algorithms that compute it; \cref{plt:cor:rev-group} there restates the present
-theorem from that vantage point.  The two proofs are logically independent, so
-neither part may be read as presupposing the other: the recursion
-\eqref{plt:eq:grp-inverse-fixed-point} is the Picard iteration of Part~IV, and
-the reader who wants only the group law needs nothing beyond this section.
+% ed.: this remark previously asserted that the section is independent of
+% ed.: Part~IV and that inverses are established here.  That was true only
+% ed.: because the same Picard construction was written out twice.  With the
+% ed.: duplicate removed, the dependency is one-directional and is stated as
+% ed.: such.
+Items (1)--(3) of \cref{plt:thm:grp-group} are proved here from
+\cref{plt:prop:grp-substitution} and \cref{plt:lem:tay-determined} alone, and
+\cref{plt:cor:grp-gain} needs nothing beyond \cref{plt:thm:grp-taylor}.  Item
+(4) is different: the existence, uniqueness, two-sidedness and leading data of
+\(\CompositionalInverseOf{F}\) are proved once in the volume, in
+\cref{plt:thm:rev-existence}, and item (4) cites that theorem.  The
+dependency runs in one direction only.  Part~IV takes items (1)--(3) and
+\cref{plt:cor:grp-gain} as given --- they are the imports recorded in
+\cref{plt:rmk:rev-imports} --- and from them constructs the solution of
+\eqref{plt:eq:grp-inverse-fixed-point} by Picard iteration with the sharp rate
+\(\ordt(B_{j+1}-B_j)\ge(j+1)\alpha+j\), \(\alpha=\ordt(A)\); it adds the
+first-order form
+\(\CompositionalInverseOf{F}=X-A+\FormalBigOAt{t^{2\alpha+1}}{t}\)
+(\cref{plt:cor:rev-first-order}), the residual certificates, the
+Lagrange--B\"urmann coefficient formula and the algorithms that compute it.  A
+reader who wants only the group law therefore needs, beyond this section, the
+existence half of Part~IV and nothing else.
 \end{remark}
 
 \begin{remark}[Substitution reverses order]\label{plt:rmk:grp-anti}
@@ -11903,7 +11975,9 @@ continuous algebra homomorphism \(\Phi_H\) to
 \(\log(uv)=\log u+\log v\) gives the identity at level \(j+1\); the case
 \(j+1=1\) is the computation displayed in the proof of
 \cref{plt:thm:grp-group}(2).  With these, the fixed-point construction of
-inverses and the monoid argument are unchanged.
+inverses (\cref{plt:thm:rev-existence}, whose proof uses only the gain
+estimate \cref{plt:cor:grp-gain} and \(t\)-adic completeness, both available
+verbatim in \(\mathcal L_r[[t]]\)) and the monoid argument are unchanged.
 
 For the final assertion take \(r=2\), \(G=X+1\in\mathcal N_2\) and
 \(F=L_2\in\K[L_1,L_2]\).  Then
@@ -12156,7 +12230,7 @@ whose precise shape is used below.
 where \(\shiftop{n}{k}=\prod_{j=0}^{k-1}(\partial_L-n-j)\) and
 \(\shiftop{n}{0}=1\) is the empty product.
 
-\emph{(I2) Exact formal Taylor formula} (\cref{plt:thm:grp-taylor}).  For \(S\in\PLlau\) and
+\emph{(I2) Exact formal Taylor formula} (\cref{plt:thm:tay-formula}).  For \(S\in\PLlau\) and
 \(P\in\PLpow\) the family \(\bigl(P^k\DX^kS/k!\bigr)_{k\ge0}\) is formally
 summable and
 \begin{equation}\label{plt:eq:rev-taylor}
@@ -12164,8 +12238,20 @@ summable and
 \end{equation}
 This is an identity of formal series; it carries no analytic content.
 
-\emph{(I3) Associativity and chain rule}
-(\cref{plt:thm:grp-group}, \cref{plt:thm:cmp-chain-rule}).  \((S\compose H_1)\compose H_2
+% ed.: the closure of \(\Gnear\) under composition was stated and proved a
+% ed.: second time in this part, as a separate lemma.  It is item (1) of the
+% ed.: group theorem, proved there from the substitution proposition, so it is
+% ed.: imported here with the other three standing facts.  Note that only
+% ed.: items (1)--(3) of that theorem are imported: its item (4) cites
+% ed.: \cref{plt:thm:rev-existence} below, and importing it here would be
+% ed.: circular.
+\emph{(I3) Closure, associativity and chain rule}
+(\cref{plt:thm:grp-group}\,(1)--(3), \cref{plt:thm:cmp-chain-rule}).  For
+\(F=X+A\) and \(G=X+B\) in \(\Gnear\),
+\begin{equation}\label{plt:eq:rev-closure}
+ F\compose G=X+B+A\compose G\in\Gnear ;
+\end{equation}
+\((S\compose H_1)\compose H_2
 =S\compose(H_1\compose H_2)\) whenever all three displayed composites exist in
 the ambient class; this covers near-identity inner arguments and monomial
 inner arguments \(cX\) for which a value of \(\log c\) lies in \(\K\).  The
@@ -12218,19 +12304,13 @@ In \eqref{plt:eq:rev-taylor} the term \(k=0\) is \(S\).  For \(k\ge1\),
 created and the block at level \(m\) is unchanged.
 \end{proof}
 
-\begin{lemma}[Closure of the near-identity class]
-\label{plt:lem:rev-closure}
-If \(F=X+A\) and \(G=X+B\) lie in \(\Gnear\), then
-\(F\compose G=X+B+A\compose G\in\Gnear\).
-\end{lemma}
-
-\begin{proof}
-Substituting, \(F\compose G=G+A\compose G=X+B+A\compose G\).  By
-\eqref{plt:eq:rev-taylor}, \(A\compose G=\sum_{k\ge0}B^k\DX^kA/k!\); every
-summand lies in \(\PLpow\) because \(\ordt(A)\ge0\), \(\ordt(B)\ge0\) and
-\cref{plt:lem:rev-deriv-gain} applies, and the family is summable by (I2).
-Hence \(A\compose G\in\PLpow\) and \(B+A\compose G\in\PLpow\).
-\end{proof}
+% ed.: the closure lemma stated here duplicated \cref{plt:thm:grp-group}\,(1),
+% ed.: which is proved in the composition-group part with the same one-line
+% ed.: argument.  It is deleted; closure is now imported as part of (I3) and
+% ed.: appears as \eqref{plt:eq:rev-closure}.  For the record, the argument is
+% ed.: that \(F\compose G=G+A\compose G\) and that
+% ed.: \(A\compose G=\sum_{k\ge0}B^k\DX^kA/k!\) has all summands in
+% ed.: \(\PLpow\) by \cref{plt:lem:rev-deriv-gain}.
 
 The next lemma re-expands a composition around a shifted base point without
 inverting anything.  It may therefore be used inside the existence proof, and
@@ -18080,6 +18160,93 @@ $6$ & $-\frac{49}{120}$ &  & \\
 \end{tabular}
 \end{table}
 
+
+\subsection{An end-to-end numerical validation}
+\label{plt:sec:numeric-validation}
+
+The tables above and the identities of \cref{plt:sec:lambert-polynomials} are
+algebraic.  A coefficient table can be internally consistent and still be
+wrong in sign, because a sign error propagates through every identity that
+derives one normalization from another.  The following check is independent of
+all of them: it solves the defining equation numerically and compares.
+
+Let \(\WrightOmega_{N}(x)=x+\sum_{n=0}^{N}\LamP{n}(L)x^{-n}\) with
+\(L=\log x\), the truncation of \cref{plt:thm:om-expansion}.  Solving
+\(y+\log y=x\) to fifty significant digits by Newton's method and comparing
+gives the following.  The residual column is
+\(\WrightOmega_{N}+\log\WrightOmega_{N}-x\) computed numerically; the predicted
+column is \(-\LamP{N+1}(L)x^{-(N+1)}\), which is what
+\cref{plt:eq:om-residual} asserts the residual must be to leading order.
+
+\begin{table}[htbp]\centering\small
+\caption{Observed versus predicted residual of the truncated Wright-omega
+expansion.  The ratio tends to \(1\) as \(x\) grows, which is the content of
+\cref{plt:eq:om-residual}; the departure at \(x=50\) is the omitted
+\(\FormalBigOAt{t^{N+2}}{t}\) block making itself felt.}
+\label{plt:tab:omega-residual}
+\begin{tabular}{@{}r r l l r@{}}
+\toprule
+\(x\) & \(N\) & observed residual & predicted & ratio\\
+\midrule
+$50$   & $1$ & $-1.534239\times10^{-3}$  & $-1.495976\times10^{-3}$  & $1.0256$\\
+$50$   & $2$ & $-5.859441\times10^{-6}$  & $-7.300570\times10^{-6}$  & $0.8026$\\
+$50$   & $3$ & $+1.599261\times10^{-6}$  & $+1.473299\times10^{-6}$  & $1.0855$\\
+$50$   & $4$ & $+9.405048\times10^{-8}$  & $+8.979402\times10^{-8}$  & $1.0474$\\
+\addlinespace
+$200$  & $1$ & $-2.211720\times10^{-4}$  & $-2.184442\times10^{-4}$  & $1.0125$\\
+$200$  & $2$ & $-1.606059\times10^{-6}$  & $-1.596060\times10^{-6}$  & $1.0063$\\
+$200$  & $3$ & $-1.802138\times10^{-9}$  & $-2.030332\times10^{-9}$  & $0.8876$\\
+$200$  & $4$ & $+2.386204\times10^{-10}$ & $+2.316867\times10^{-10}$ & $1.0299$\\
+\addlinespace
+$1000$ & $1$ & $-1.701321\times10^{-5}$  & $-1.695079\times10^{-5}$  & $1.0037$\\
+$1000$ & $2$ & $-4.535166\times10^{-8}$  & $-4.520477\times10^{-8}$  & $1.0032$\\
+$1000$ & $3$ & $-1.013683\times10^{-10}$ & $-1.011740\times10^{-10}$ & $1.0019$\\
+$1000$ & $4$ & $-9.250010\times10^{-14}$ & $-9.319150\times10^{-14}$ & $0.9926$\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Two features of the table are worth reading carefully, because both are
+predictions of the theory rather than accidents.
+
+First, the residual \emph{changes sign} between \(N=2\) and \(N=3\) at
+\(x=50\) and between \(N=3\) and \(N=4\) at \(x=200\).  That is not
+instability: by \cref{plt:cor:lambert-coefficients} the coefficients of
+\(\LamP{n}\) alternate, so the leading residual
+\(-\LamP{N+1}(L)x^{-(N+1)}\) changes sign with \(N\) whenever \(L\) is small
+enough that the top coefficient does not yet dominate.  A sign error anywhere
+in the chain would break this pattern rather than reproduce it.
+
+Second, at \(x=1000\) the error falls by roughly three orders of magnitude per
+added block:
+
+\begin{center}\small
+\begin{tabular}{@{}r l r l@{}}
+\toprule
+\(N\) & \(\AbsoluteValue{\WrightOmega_{N}-\WrightOmega}\) &
+\(N\) & \(\AbsoluteValue{\WrightOmega_{N}-\WrightOmega}\)\\
+\midrule
+$0$ & $6.924751\times10^{-3}$  & $4$ & $9.240705\times10^{-14}$\\
+$1$ & $1.699609\times10^{-5}$  & $5$ & $7.844485\times10^{-16}$\\
+$2$ & $4.530604\times10^{-8}$  & $6$ & $6.759229\times10^{-18}$\\
+$3$ & $1.012664\times10^{-10}$ & & \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{warningbox}[title={What this table does \emph{not} show}]
+\label{plt:rmk:numeric-not-convergence}
+Improvement through \(N=6\) at one value of \(x\) is not convergence.  The
+series of \cref{plt:thm:om-expansion} diverges for every fixed \(x\): by
+\cref{plt:cor:lambert-coefficients} the leading coefficient of \(\LamP{n}\) is
+\(1/n\) while its degree is \(n\), so for fixed \(x\) the terms eventually
+grow.  What the table exhibits is asymptotic behaviour --- for each fixed
+\(N\), the error is \(\BigOAt{L^{N+2}/x^{N+2}}{x\to\infty}\) --- and the
+correct reading of the second table is a statement about \(N\) small relative
+to \(\log x\), not a limit in \(N\).  Section~\ref{plt:sec:poincare} makes the
+distinction precise.
+\end{warningbox}
+
 % ---- fragment 19-notation ----
 \section{Notation, and a concordance with the six sources}
 \label{plt:sec:notation}
@@ -18324,17 +18491,22 @@ Valuation, leading data, and the degree  & ``equivalently'' was wrong: additivit
 \cref{plt:rmk:trunc-bridge} & the label kind "box" is not in the normative list of kinds; these boxed statements are remarks, so each label is renamed to the "rmk" kind.\\
 \cref{plt:rmk:trunc-bridge} & the volume regime is \textbackslash (X\textbackslash to+\textbackslash infty\textbackslash ) on the positive ray; the generic row printed the weaker \textbackslash (X\textbackslash to\textbackslash infty\textbackslash ).\\
 \cref{plt:prop:mul-monomial} & the four classes were displayed on one line, which overfills the text block by about 45pt; set as a two-by-two array instead.\\
+\cref{plt:cor:mul-truncated-product} & the bracketed title duplicated that of \textbackslash cref\{plt:prop:trunc-product\}. The two statements are not the same result: the ring-chapter proposition is the law on \textbackslash (\textbackslash PLlau\textbackslash ) at the canonical cutoffs, this one is the law over an arbitrary logarithmically graded coefficient ring at arbitrary sufficient cutoffs, together with optimality and sharpness. The titles now say so; see \textbackslash cref\{plt:rmk:mul-leading-restated\}.\\
 Multiplication: convolution of logarithm & the optimality of \$(N-b,N-a)\$ was asserted unconditionally. For \$N\textbackslash le a+b\$ both sides of \textbackslash eqref\{plt:eq:mul-truncated-product\} vanish whatever \$P,Q\$ are, so no pair is forced and there is nothing to be optimal about; the clause is now stated under \$N>a+b\$, which is what the argument actually establishes.\\
 \cref{plt:cor:mul-error-rule} & the source bounds the third term by \$P+Q\$ and asserts \$P+Q\textbackslash ge N\$. That inequality does not follow from \$P\textbackslash ge N-b\$ and \$Q\textbackslash ge N-a\$: for \$a=b=0\$ and \$N=P=Q=-5\$ one has \$P+Q=-10<N\$. The repair is to bound \$\textbackslash ordt H\$ by \$b\$ rather than by \$Q\$, which is legitimate because every block of \$H\$ is a block of \$G\$.\\
 \cref{plt:cor:mul-error-rule} & S6, Theorem "Closure and finite determination", eq. (mult-error-rule). The source states the conclusion as O(t\textasciicircum \{min(p+m\_0, q+n\_0)\}) without any hypothesis relating p,q to the valuations n\_0,m\_0, and its proof silently bounds ord(E*Gtilde) by p+m\_0 and ord(Ftilde*H) by q+n\_0, which requires ord(Gtilde) >= m\_0 and ord(Ftilde) >= n\_0. Neither follows from the stated hypotheses. The corrected statement carries the third entry p+q, and the hypotheses p >= n\_0, q >= m\_0 under which the source's form is recovered. Note that these hypotheses are sufficient but not necessary: the third entry is redundant exactly when p >= a or q >= b.\\
+\cref{plt:def:mul-leading-data} & retitled to distinguish it from \textbackslash cref\{plt:def:lead-leading-data\}, which is the same data on the four ambient classes; only the coefficient ring differs. See \textbackslash cref\{plt:rmk:mul-leading-restated\}.\\
 \cref{plt:rmk:mul-leading-restated} & the leading data, the rank-two valuation, the log-degree profile, the exclusive truncation law and the summability calculus are all introduced in the ring chapter. Restating them here without saying so would leave two definitions of the same symbols standing in one volume. This remark records that the restatements are verbatim generalizations over the coefficient ring and agree with the originals.\\
 \cref{plt:thm:mul-leading-law} & the first equivalence of the display was left unargued. It is not a theorem of this section at all: \$\textbackslash succdom\$ is defined by the right-hand condition in \textbackslash cref\{plt:def:ring-dominance\}, so only the analytic equivalence needs an argument, and that argument restates \textbackslash cref\{plt:lem:ring-dominance-analytic\} for integer exponents.\\
 \cref{plt:cor:mul-unit-necessary} & the statement asserts that neither \$\textbackslash PLpow\$ nor \$\textbackslash PLlau\$ is a field, but the argument as given covers only \$\textbackslash PLlau\$. One line closes it.\\
+\cref{plt:def:mul-profile} & retitled to distinguish it from \textbackslash cref\{plt:def:lead-profile\}, which is the same function on \textbackslash (\textbackslash PLlau\textbackslash ), where the blocks are polynomials and the codomain is \textbackslash (\textbackslash NaturalNumbers\textbackslash cup\textbackslash SetOf\{-\textbackslash infty\}\textbackslash ). See \textbackslash cref\{plt:rmk:mul-leading-restated\}.\\
 \cref{plt:cor:mul-degree-equality} & the criterion was stated as an unconditional ``if and only if''. It fails in the degenerate case \$P\_N=\textbackslash emptyset\$ (equivalently \$M=-\textbackslash infty\$): there \$[t\textasciicircum N](FG)=0\$, so equality holds although the empty sum \textbackslash eqref\{plt:eq:mul-top-coefficient\} is zero. The criterion is now confined to \$M\$ finite and the degenerate case is recorded separately.\\
 \cref{plt:cor:mul-degree-equality} & S6, Proposition "Degree and support bounds", asserts equality "whenever the maximizing blocks are nonzero" under the hypothesis that all coefficients are nonnegative over an ordered field. That hypothesis is far stronger than necessary and the quoted sufficient condition is stated ambiguously (a zero block has degree -infinity and cannot maximize at all). The criterion below is exact and the positivity hypothesis has been reduced to the leading coefficients of the maximizing blocks only.\\
 \cref{plt:ex:mul-degree-sharp} & condition (3) as first drafted omitted \$P\_N\textbackslash ne\textbackslash emptyset\$; over an ordered field its hypotheses are satisfied vacuously when \$P\_N\$ is empty, and the conclusion would then be the false assertion that the sum \textbackslash eqref\{plt:eq:mul-top-coefficient\} is nonzero.\\
 \cref{plt:rmk:mul-profile-not-closed} & the inclusion \$\textbackslash mathfrak A\_\textbackslash alpha\textbackslash subseteq\textbackslash mathfrak A\_\{\textbackslash alpha''\}\$ for \$\textbackslash alpha\textbackslash le\textbackslash alpha''\$ was used without proof. On the Laurent ring it is not immediate: for \$n<0\$ a larger slope gives a \textbackslash emph\{smaller\} bound, so the constant has to be increased, and that is possible only because the support is bounded below. The argument is supplied here.\\
+\cref{plt:def:mul-summable} & retitled, and its relation to \textbackslash cref\{plt:def:trunc-summable\} made explicit: the condition is verbatim the one of the ring chapter, read over the coefficient ring \$R\$ instead of \$\textbackslash K[L]\$, which \textbackslash cref\{plt:rmk:trunc-summability-classes\} already licenses. Only the two clauses of \textbackslash cref\{plt:lem:mul-summable\} are used below, so they are the only ones recorded here.\\
 \cref{plt:rmk:mul-summable-vs-cauchy} & the source calls the two infima ``finite by (1)''; part\textasciitilde (1) gives only \$>-\textbackslash infty\$, and the value \$+\textbackslash infty\$ does occur, namely when every member of the family is zero. That case is disposed of separately.\\
+\cref{plt:lem:mul-asymptotic-basic} & retitled: ``Basic properties of a scale'' in the differential part (\textbackslash cref\{plt:lem:dif-scale-basic\}) is about the coefficient field of a power--log scale, not about the relation \$\textbackslash approx\$ between a function and a series. The two lemmas share nothing but the word ``basic''.\\
 \cref{plt:rmk:mul-analytic-hypotheses} & the three-term estimate was set on one display line, overfilling the text block by about 53pt; broken across two lines.\\
 \cref{plt:cor:div-unit-group} & S5 and S6 assert the nonunit direction by citing the general power-series unit criterion; the additivity step that makes it valid on the Laurent ring is supplied here explicitly.\\
 \cref{plt:ex:div-nonunit} & the direct-product step was justified by "the three subgroups pairwise intersect trivially", which does not imply an internal direct product for three subgroups (the Klein four-group refutes it); the isomorphism is read off instead from surjectivity plus the uniqueness just proved.\\
@@ -18354,16 +18526,24 @@ Multiplication: convolution of logarithm & the optimality of \$(N-b,N-a)\$ was a
 \cref{plt:rmk:div-scalar-cost} & S6 gives the cost as O(N\textasciicircum 2 d\textasciicircum 2) "if the typical coefficient degree is d"; under the affine log-degree profile that actually occurs there is no such constant d, and the honest count is quartic in N.\\
 Units, reciprocals, and division & the catalogue asserts that the two iteration orders differ "in general"; no source proves it, and the witnesses above supply the proof.\\
 Units, reciprocals, and division & "beats the recurrence only when block multiplication is subquadratic" asserts the unproved converse; only the two extreme regimes are established.\\
+\cref{plt:lem:dif-summable} & retitled. Three ``Summable families'' statements stood in the volume with the same bracketed title. This one is the blockwise assembly principle for a sequence in a Laurent ring over any of the coefficient rings used here; \textbackslash cref\{plt:lem:cmp-summable\} is the corresponding statement for an arbitrary index set in a Hahn ring with real exponents, and \textbackslash cref\{plt:thm:trunc-summability\} is the full calculus on \textbackslash (\textbackslash PLlau\textbackslash ). On \textbackslash (\textbackslash PLlau\textbackslash ) the present lemma is the sequence case of \textbackslash cref\{plt:thm:trunc-summability\}\textbackslash ,(i),(iv),(v); it is stated again because it is applied below in the \textbackslash (L\textasciicircum \{-1\}\textbackslash )-adic order and in a Hahn ambient, neither of which that theorem covers. The hypothesis \textbackslash (\textbackslash inf\_\{r\}\textbackslash ordt F\_\{r\}>-\textbackslash infty\textbackslash ) is redundant for a sequence with \textbackslash (\textbackslash ordt F\_\{r\}\textbackslash to+\textbackslash infty\textbackslash ) and is kept only because the proof uses it.\\
+\cref{plt:prop:dif-substitution} & retitled. This is substitution of a small series into a \textbackslash emph\{scalar\} power series, \textbackslash (\textbackslash K[[z]]\textbackslash to\textbackslash PLpow\textbackslash ). The composition part has a different theorem under the same name, \textbackslash cref\{plt:thm:cmp-substitution-hom\}, which substitutes a monomial-leading transseries into a transseries; neither implies the other.\\
+\cref{plt:thm:dif-finite-determination} & retitled: the composition part states a different theorem under the same name (\textbackslash cref\{plt:thm:cmp-finite-determination\}, finite determination of \textbackslash (F\textbackslash compose G\textbackslash )). The present one is about \textbackslash (\textbackslash Phi(U)\textbackslash ) with \textbackslash (\textbackslash Phi\textbackslash ) a scalar power series.\\
 \cref{plt:def:dif-exp-extension} & S3 states the analogous expansion with U\textasciicircum 4 = O(t\textasciicircum 4) as the reason for stopping at r = 3; the correct reason is that r*q >= N kills the term, which is the general statement proved above and matters as soon as q > 1.\\
+\cref{plt:lem:dif-scale-basic} & retitled to separate it from \textbackslash cref\{plt:lem:mul-asymptotic-basic\}, which collects the basic properties of the relation \textbackslash (\textbackslash approx\textbackslash ) between a function and a series.\\
 \cref{plt:cor:dif-exp-three-ways} & S4 and S6 note only that a "large part" other than an integral multiple of L may require new monomials. The decisive point, which no source states, is that a logarithmic derivative has positive L\textasciicircum \{-1\}-order, whereas the derivative of a nonaffine polynomial has order at most -1.\\
 \cref{plt:lem:dif-image-laurent} & no source identifies the image of \textbackslash partial\_L on Laurent-log coefficients, although S5 and S6 both assert closure of the class under antiderivatives and then remark vaguely that "new logarithmic levels can be forced" once inverse powers of L are admitted. The converse of the preceding lemma is what makes that remark precise, so it is proved here and used both for the logarithm boundary and for the antiderivative obstruction.\\
 \cref{plt:cor:dif-log-unit} & S6 states this example with a leading factor L\textasciicircum \{-2\}, which is not an element of K[L]((t)); the phenomenon is the same, and the general statement is that the coefficient of Lambda is -omega of the leading coefficient.\\
 \cref{plt:prop:dif-block} & the notation catalogue and four of the six sources assert that D\_X is "the unique derivation" with the two generator values, with no hypothesis. The argument above needs a bound on delta on the power-series part; without one, the passage from the dense subring to the completion is not available.\\
 \cref{plt:thm:dif-repeated} & notation reconciliation. Two sources write Delta\_n for the single factor partial\_L - n and never introduce the second index; the normative two-index operator is used here throughout.\\
 \cref{plt:cor:dif-budget} & S1 prints the identity as X\textasciicircum k d\textasciicircum k/dX\textasciicircum k P(log X) = sum\_j s(k,j) P\textasciicircum \{(j)\} with the sum starting at j = 1; that is correct only for k >= 1, since s(0,0) = 1. The range j = 0..k with the empty-product convention is uniform.\\
+\cref{plt:rmk:dif-resonance-restated} & the motivation part proves the same dichotomy in the weaker form it needs there (\textbackslash cref\{plt:lem:mot-block-antiderivative\}, on \textbackslash (\textbackslash K[L]\textbackslash ) only, with no closed form). Rather than restate it, the two lemmas above are identified with it here, so that a reader meets the resonance once as a mechanism and once in the form the antiderivative theorem consumes.\\
 \cref{plt:ex:dif-antiderivative} & S6 concludes only that "the polynomial-logarithmic ring is closed under termwise antiderivatives, up to an arbitrary constant", and S3 writes the weaker (and redundant) inclusion int P dX subset P + K. The correct statement is surjectivity of D\_X on K[L]((t)) with kernel K, which is what the block system actually proves and what is needed downstream.\\
+\cref{plt:lem:cmp-summable} & retitled. This is the summability criterion in a Hahn ring with real exponents, for an arbitrary index set, together with the notion of a map compatible with summable families that the rest of the part uses. It is not \textbackslash cref\{plt:lem:dif-summable\} (sequences in a Laurent ring) and not \textbackslash cref\{plt:thm:trunc-summability\} (the calculus on \textbackslash (\textbackslash PLlau\textbackslash )); for \textbackslash (\textbackslash Gamma=\textbackslash IntegerNumbers\textbackslash ) it restricts to the latter.\\
 \cref{plt:rmk:cmp-lower-bound-automatic} & the catalogue warns that a t-adically Cauchy *sequence* in a Laurent ring may fail to converge without a common lower support bound. For *families* satisfying (plt:eq:cmp-summability-criterion) the bound is automatic, as the proof shows; the two statements are not in conflict.\\
+\cref{plt:thm:cmp-substitution-hom} & retitled to separate it from \textbackslash cref\{plt:prop:dif-substitution\}, which substitutes a small series into a scalar power series. The present theorem substitutes a monomial-leading transseries into a transseries.\\
 \cref{plt:cor:cmp-pure-power} & the draft deduced "compatible with summable families" from (plt:lem:cmp-summable) directly, but that lemma only supplies the valuation half of the definition; the interchange Phi\_G(sum S\_i) = sum Phi\_G(S\_i) needs the argument below. It is used by (plt:lem:tay-determined) and by the associativity proof, so it is supplied here.\\
+\cref{plt:thm:cmp-finite-determination} & retitled: \textbackslash cref\{plt:thm:dif-finite-determination\} carries the same name for a different statement, the finite determination of \textbackslash (\textbackslash Phi(U)\textbackslash ) with \textbackslash (\textbackslash Phi\textbackslash ) a scalar power series.\\
 \cref{plt:prop:cmp-block-recurrence} & S2 writes the operator in (its) power-leading formula as ":e\textasciicircum \{delta(D-n)\}:" with D previously declared to be d/dL, while the identity requires differentiation in the *argument* of the coefficient polynomial. We print partial\_z for the dummy variable and evaluate afterwards. an earlier draft of this warningbox described the discrepancy as "a spurious factor rho\textasciicircum k". That is false as soon as n != 0: the chain rule turns (d\_z - n)\textasciicircum k into (rho d\_z - n)\textasciicircum k, and the two are proportional only when n = 0. Corrected below, with a numerical witness.\\
 \cref{plt:prop:cmp-near-monoid} & the sources state the rule in words; the numerical demonstration of the two standard mistakes is supplied here so that the size of the error is visible.\\
 \cref{plt:lem:cmp-realization-basic} & the exclusive normalization is used throughout; a source using the inclusive cutoff states the same condition as f - sum\_\{n<=N\} = o(X\textasciicircum \{-N\}), which is (plt:eq:cmp-realization) at N+1.\\
@@ -18374,15 +18554,21 @@ The formal Taylor formula & as in (plt:thm:cmp-substitution-hom), the earlier te
 \cref{plt:prop:tay-convolution} & the two index orders in the corpus are transposes of each other; the collision is silent because both symbols are two-index arrays of polynomials.\\
 \cref{plt:ex:tay-four-block} & the source that supplies this example specifies F only modulo Y\textasciicircum \{-3\} and G only modulo t\textasciicircum 2, yet quotes h\_3, which depends on the coefficient of Y\textasciicircum \{-3\} in F and on the coefficients of t\textasciicircum 2, t\textasciicircum 3 in G. The data are restated here as exact finite series, which is what the quoted answer actually assumes.\\
 \cref{plt:lem:grp-explog} & S6 writes \$F/X = 1+tA = 1+o(1)\$ "formally". A little-o symbol with no regime attached is not a formal statement; the three O-roles must not be conflated. The correct formal assertion is \$tA \textbackslash in t\textbackslash PLpow\$, equivalently \$1+tA-1=\textbackslash FormalBigOAt\{t\}\{t\}\$, equivalently \$tA\textbackslash precdom1\$.\\
-\cref{plt:cor:grp-gain} & S3 asserts that both sides of the Taylor formula "are continuous algebra homomorphisms in F" and concludes from agreement on the generators. That the normally ordered operator T\_A is multiplicative is exactly the point at issue and is not proved there; the Leibniz computation below supplies it.\\
+\cref{plt:lem:grp-explog} & this lemma was stated and proved twice in the volume, here and as \textbackslash cref\{plt:lem:cmp-exp-log\} in the composition part, with the same transport-of-identities proof. The composition-part statement is the stronger of the two --- it is set in an arbitrary polynomial-logarithmic Hahn ring, and it adds the additivity of \textbackslash (\textbackslash exp\textbackslash ), the law \textbackslash (\textbackslash log(P\textasciicircum \{n\})=n\textbackslash log P\textbackslash ) for all \textbackslash (n\textbackslash in\textbackslash IntegerNumbers\textbackslash ), and the commutation with any homomorphism compatible with summable families, all of which are used below. The restatement and its proof are deleted and replaced by this pointer; the label is kept so that the citations to it elsewhere in the volume continue to resolve.\\
+\cref{plt:thm:grp-taylor} & the exact formal Taylor formula was stated and proved twice, here and as \textbackslash cref\{plt:thm:tay-formula\} in the composition part, where an entire subsection (the Taylor operator, its summability budget, its multiplicativity, and the generator-determination lemma) is built to prove it. The statements are identical, so the restatement and its proof are deleted in favour of a pointer; the label is kept because the reversion part and the algorithms part cite it. The repair recorded here --- S3 concludes from agreement on the generators without proving that the normally ordered operator is multiplicative --- is carried out at the surviving site, in \textbackslash cref\{plt:lem:tay-homomorphism\}.\\
+\cref{plt:cor:grp-gain} & the Lipschitz bound was printed as \textbackslash (\textbackslash ordt(B-C)+1\textbackslash ), dropping the summand \textbackslash (\textbackslash ordt(A)\textbackslash ) that the proof below already produces. The sharper form is what the reversion part needs (it is what makes the Newton estimate of \textbackslash cref\{plt:thm:rev-newton-doubling\} come out), and it was stated there a second time as a separate lemma. The inequality is corrected here and the restatement in the reversion part is deleted; every use of the weaker form below is unaffected, since \textbackslash (\textbackslash ordt(A)\textbackslash ge0\textbackslash ) on \textbackslash (\textbackslash PLpow\textbackslash ).\\
 \cref{plt:thm:grp-group} & S4 proves the contraction step with a formal "mean value" identity A o (X+B) - A o (X+C) = (B-C)\textbackslash int\_0\textasciicircum 1 A' o (X+C+s(B-C)) ds. The integrand is a composition with a series carrying an auxiliary parameter s, and neither its existence nor the legitimacy of the term-by-term integration is established there. Corollary \textbackslash ref\{plt:cor:grp-gain\} replaces it by the exact Taylor difference, which needs nothing beyond Theorem \textbackslash ref\{plt:thm:grp-taylor\}.\\
 \cref{plt:ex:grp-noncommutative} & S5 proves associativity by "introducing finite truncations mod t\textasciicircum N", for which "ordinary substitution is associative". Truncation is not a ring retraction compatible with substitution, and the claim that a truncated composite equals the truncation of the composite is precisely what needs proof. S1 proposes the correct route (check on the generators) but does not carry out the verification for L; the display above is that verification.\\
+\cref{plt:ex:grp-noncommutative} & the Picard construction of the inverse was carried out twice in the volume: here, and again --- with the sharp rate \textbackslash (\textbackslash ordt(B\_\{j+1\}-B\_\{j\})\textbackslash ge(j+1)\textbackslash alpha+j\textbackslash ), the first-order form of the inverse, and the uniqueness of the two-sided inverse --- as \textbackslash cref\{plt:thm:rev-existence\}. The two constructions are the same iteration; the reversion part proves strictly more. The duplicate is deleted and item (4) is derived from the reversion theorem, which makes the dependency of the group's inverses on Part\textasciitilde IV explicit instead of hiding it behind two independent proofs. There is no circularity: \textbackslash cref\{plt:thm:rev-existence\} uses items (1)--(3) of the present theorem and the gain estimate \textbackslash cref\{plt:cor:grp-gain\}, and nothing else from this section.\\
+\cref{plt:rmk:grp-anti} & this remark previously asserted that the section is independent of Part\textasciitilde IV and that inverses are established here. That was true only because the same Picard construction was written out twice. With the duplicate removed, the dependency is one-directional and is stated as such.\\
 \cref{plt:prop:grp-limit} & S6 states the two continuity relations for the contact filtration but justifies the right-composition one by "H' = 1 + O(t)". That is the reason for a gain in the *left* argument; the right-hand estimate is the exact isometry of Proposition \textbackslash ref\{plt:prop:grp-substitution\}(4) and needs no derivative hypothesis at all.\\
 \cref{plt:prop:grp-graded} & S6 calls the group "pro-unipotent at finite truncation". No algebraic group structure is available here (the graded pieces are the infinite dimensional space K[L]), and none is needed: Propositions \textbackslash ref\{plt:prop:grp-limit\} and \textbackslash ref\{plt:prop:grp-commutator\} give the exact provable statement, namely that Gnear is the inverse limit of nilpotent quotients.\\
 \cref{plt:rmk:grp-normal-ordering} & S6 introduces log(S\_F) as a power series in S\_F - I and writes the fractional iterate as "F\textasciicircum \{[s]\} = X S\_F\textasciicircum s". Three things are missing there: that S\_F - I raises the filtration (true: (S\_F-I)H = H o F - H has ordt >= ordt(H)+1 by Corollary \textbackslash ref\{plt:cor:grp-gain\}); that S\_F\textasciicircum s is again a *substitution* operator, i.e. that F\textasciicircum \{[s]\} exists in Gnear at all; and the notation, which should be S\_F\textasciicircum s(X), not a product. Theorem \textbackslash ref\{plt:thm:grp-exp\} and Corollary \textbackslash ref\{plt:cor:grp-iteration\} supply all three.\\
 \cref{plt:prop:grp-dilation} & S4's closure table records only the rational case ("c x\textasciicircum \{r/s\}: Puiseux-log series") and S1 says "arbitrary real beta require a Hahn support", neither separating the three regimes nor proving that each enlargement is necessary. Corollary \textbackslash ref\{plt:cor:grp-power-regimes\} does both.\\
 \cref{plt:thm:grp-multilog-group} & S2 says only that "the rational field K(L\_1,...,L\_r), or a Laurent-monomial field, repairs this defect". Proposition \textbackslash ref\{plt:prop:grp-tower-derivation\} identifies the minimal repair inside the Laurent-monomial family and shows that L\_r itself need not be inverted.\\
 \cref{plt:rmk:rev-imports} & report 6 states its reversion algorithms with the inclusive cutoff [F]\_\{\textbackslash le N\}; every cutoff index taken from that source is shifted by one here.\\
+\cref{plt:lem:rev-deriv-gain} & the closure of \textbackslash (\textbackslash Gnear\textbackslash ) under composition was stated and proved a second time in this part, as a separate lemma. It is item (1) of the group theorem, proved there from the substitution proposition, so it is imported here with the other three standing facts. Note that only items (1)--(3) of that theorem are imported: its item (4) cites \textbackslash cref\{plt:thm:rev-existence\} below, and importing it here would be circular.\\
+\cref{plt:lem:rev-shifted-taylor} & the closure lemma stated here duplicated \textbackslash cref\{plt:thm:grp-group\}\textbackslash ,(1), which is proved in the composition-group part with the same one-line argument. It is deleted; closure is now imported as part of (I3) and appears as \textbackslash eqref\{plt:eq:rev-closure\}. For the record, the argument is that \textbackslash (F\textbackslash compose G=G+A\textbackslash compose G\textbackslash ) and that \textbackslash (A\textbackslash compose G=\textbackslash sum\_\{k\textbackslash ge0\}B\textasciicircum k\textbackslash DX\textasciicircum kA/k!\textbackslash ) has all summands in \textbackslash (\textbackslash PLpow\textbackslash ) by \textbackslash cref\{plt:lem:rev-deriv-gain\}.\\
 \cref{plt:thm:rev-existence} & all six sources call this a contraction; none says in what sense. The statement is about nu\_t, not about coefficient size, and the constant term alpha = nu\_t(A) is absent from every source formulation.\\
 \cref{plt:cor:rev-group} & the group statement is announced in the composition-group part of this volume (theorem plt:thm:grp-group, item (4)); the existence, uniqueness and two-sidedness of the inverse are proved here and nowhere else, so that announcement should cite plt:thm:rev-existence rather than repeat a proof.\\
 \cref{plt:prop:rev-derivative-certificate} & report 1 asserts that at finite order the two residuals "need not have identical first omitted blocks"; for an exact G\_N in the group that is false.\\
@@ -18593,7 +18779,7 @@ neighbouring theorem, that is recorded as a neighbour and not as coverage.
 This volume is an editorial consolidation, carried out on 2~September 2026, of
 six independently written article packages that arrived together as bare
 directories in the direct-arrival commit
-\texttt{730e1763291099cd50ca1e20ed2c62c38d95ab4f} and were filed on
+\texttt{730e1763291099cd\allowbreak 50ca1e20ed2c62c3\allowbreak 8d95ab4f} and were filed on
 1~September 2026 as standalone quick-gate receipts.  No archive or checksum
 ledger accompanied them.  All six treat the same subject -- the algebra,
 division, composition, and asymptotic reversion of polynomial--logarithmic
@@ -18633,44 +18819,44 @@ Source & Lines & Bytes & SHA-256 \\
 \multicolumn{4}{@{}l}{\textbf{S1} \(=\)
   \texttt{Polynomial-Logarithmic-Transseries-1.tex}} \\
 \quad intake    & 4{,}020 & 187{,}071 &
-  \texttt{01a03e0934d05b8b94369da9656fc0da4dde9b7c559b4e0738075484e14f4e61} \\
+  \texttt{01a03e0934d05b8b\allowbreak 94369da9656fc0da\allowbreak 4dde9b7c559b4e07\allowbreak 38075484e14f4e61} \\
 \quad absorbed  & 4{,}020 & 187{,}074 &
-  \texttt{4fd42b7e344c485f8d878279dc3b9a6d5dc326a9c739114e443fd9c07a5eb2b8} \\
+  \texttt{4fd42b7e344c485f\allowbreak 8d878279dc3b9a6d\allowbreak 5dc326a9c739114e\allowbreak 443fd9c07a5eb2b8} \\
 \addlinespace
 \multicolumn{4}{@{}l}{\textbf{S2} \(=\)
   \texttt{polynomial\_logarithmic\_transseries-2.tex}} \\
 \quad intake    & 5{,}006 & 173{,}396 &
-  \texttt{aa25baa03099472df765d35c03a2bb265dbe9af5aab500ec0a4a04a378ef83e5} \\
+  \texttt{aa25baa03099472d\allowbreak f765d35c03a2bb26\allowbreak 5dbe9af5aab500ec\allowbreak 0a4a04a378ef83e5} \\
 \quad absorbed  & 5{,}006 & 173{,}399 &
-  \texttt{d172b81453a805366f056f6114bb6df6fdf781146641320185530940754bdefe} \\
+  \texttt{d172b81453a80536\allowbreak 6f056f6114bb6df6\allowbreak fdf7811466413201\allowbreak 85530940754bdefe} \\
 \addlinespace
 \multicolumn{4}{@{}l}{\textbf{S3} \(=\)
   \texttt{Polynomial\_Logarithmic\_Transseries-3.tex}} \\
 \quad intake    & 4{,}249 & 150{,}182 &
-  \texttt{0962c15683cb4610d45961c227f6e9b102d66ee37073432d1943d31a1e6ad348} \\
+  \texttt{0962c15683cb4610\allowbreak d45961c227f6e9b1\allowbreak 02d66ee37073432d\allowbreak 1943d31a1e6ad348} \\
 \quad absorbed  & 4{,}249 & 150{,}185 &
-  \texttt{d2a8bd25d71cc41fc81c1c75fb66ca75496b8425ac496ce105d3220e1ea07e3f} \\
+  \texttt{d2a8bd25d71cc41f\allowbreak c81c1c75fb66ca75\allowbreak 496b8425ac496ce1\allowbreak 05d3220e1ea07e3f} \\
 \addlinespace
 \multicolumn{4}{@{}l}{\textbf{S4} \(=\)
   \texttt{Polynomial-Logarithmic-Transseries-4.tex}} \\
 \quad intake    & 3{,}132 & 120{,}607 &
-  \texttt{387ca51f94292a996fb339ec6dfb3477f68575255b2aaaf539fcffb1c32ff564} \\
+  \texttt{387ca51f94292a99\allowbreak 6fb339ec6dfb3477\allowbreak f68575255b2aaaf5\allowbreak 39fcffb1c32ff564} \\
 \quad absorbed  & 3{,}132 & 120{,}610 &
-  \texttt{37026b625cf7b2fd106005b8c89f720b8b724f99a5446ed84ca52531c6e2b18f} \\
+  \texttt{37026b625cf7b2fd\allowbreak 106005b8c89f720b\allowbreak 8b724f99a5446ed8\allowbreak 4ca52531c6e2b18f} \\
 \addlinespace
 \multicolumn{4}{@{}l}{\textbf{S5} \(=\)
   \texttt{Polynomial\_Logarithmic\_Transseries-5.tex}} \\
 \quad intake    & 2{,}443 & 106{,}141 &
-  \texttt{1149ae6884e63dc77b747c786d0455419b6c79cdd3b33dc915bf3875cc8d26cc} \\
+  \texttt{1149ae6884e63dc7\allowbreak 7b747c786d045541\allowbreak 9b6c79cdd3b33dc9\allowbreak 15bf3875cc8d26cc} \\
 \quad absorbed  & 2{,}443 & 106{,}144 &
-  \texttt{187bd510f33ea4296f0247b286d0fcae6200ce0b5bd175c6c8706a37652dc17a} \\
+  \texttt{187bd510f33ea429\allowbreak 6f0247b286d0fcae\allowbreak 6200ce0b5bd175c6\allowbreak c8706a37652dc17a} \\
 \addlinespace
 \multicolumn{4}{@{}l}{\textbf{S6} \(=\)
   \texttt{polynomial\_logarithmic\_transseries-6.tex}} \\
 \quad intake    & 4{,}388 & 155{,}846 &
-  \texttt{df4e4bc5932a59e4ed265b32d8463edc65f67cbd2735b34902acf479647f8491} \\
+  \texttt{df4e4bc5932a59e4\allowbreak ed265b32d8463edc\allowbreak 65f67cbd2735b349\allowbreak 02acf479647f8491} \\
 \quad absorbed  & 4{,}388 & 155{,}849 &
-  \texttt{16978aae6fb1e458e236cac9807ab81bb5314fdb087a2504a416867a4d43b4c4} \\
+  \texttt{16978aae6fb1e458\allowbreak e236cac9807ab81b\allowbreak b5314fdb087a2504\allowbreak a416867a4d43b4c4} \\
 \bottomrule
 \end{tabularx}
 \end{table}
