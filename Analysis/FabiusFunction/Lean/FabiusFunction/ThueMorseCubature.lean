@@ -178,4 +178,56 @@ theorem thueMorseBlockSum_nonneg (m : ℕ) (f : ℝ → ℝ) (hf : ContDiff ℝ 
   rw [thueMorseBlockSum_eq_nestedDyadicIntegral m f hf x h, ← nestedDyadicIntegral_const_mul]
   exact nestedDyadicIntegral_nonneg m _ x h hh hsign
 
+/-! ## The finite-difference bound -/
+
+/-- The nested dyadic integral of a function bounded by `C` on
+`[x, x + (2^m - 1) h]` is bounded by `C` times the box volume
+`h^m 2^{0+1+⋯+(m-1)}` (`h ≥ 0`). -/
+theorem abs_nestedDyadicIntegral_le (m : ℕ) (g : ℝ → ℝ) (C : ℝ) :
+    ∀ x h : ℝ, 0 ≤ h → (∀ y ∈ Set.Icc x (x + (2 ^ m - 1) * h), |g y| ≤ C) →
+      |nestedDyadicIntegral m g x h| ≤ C * (2 ^ (∑ i ∈ range m, i) * h ^ m) := by
+  induction m with
+  | zero =>
+      intro x h _ hg
+      simpa using hg x ⟨le_refl x, by simp⟩
+  | succ m ih =>
+      intro x h hh hg
+      rw [nestedDyadicIntegral_succ]
+      have hb : ∀ t ∈ Set.uIoc (0 : ℝ) h,
+          ‖nestedDyadicIntegral m g (x + t) (2 * h)‖
+            ≤ C * (2 ^ (∑ i ∈ range m, i) * (2 * h) ^ m) := by
+        intro t ht
+        rw [Set.uIoc_of_le hh] at ht
+        rw [Real.norm_eq_abs]
+        refine ih (x + t) (2 * h) (by linarith) fun y hy => hg y ⟨?_, ?_⟩
+        · linarith [ht.1, hy.1]
+        · have h2 : (2 : ℝ) ^ (m + 1) = 2 * 2 ^ m := by ring
+          rw [h2]
+          nlinarith [ht.2, hy.2, hh, (by positivity : (0 : ℝ) ≤ 2 ^ m)]
+      have hI := norm_integral_le_of_norm_le_const hb
+      rw [Real.norm_eq_abs, sub_zero, abs_of_nonneg hh] at hI
+      calc |∫ t in (0 : ℝ)..h, nestedDyadicIntegral m g (x + t) (2 * h)|
+          ≤ C * (2 ^ (∑ i ∈ range m, i) * (2 * h) ^ m) * h := hI
+        _ = C * (2 ^ (∑ i ∈ range (m + 1), i) * h ^ (m + 1)) := by
+            rw [sum_range_succ, pow_add, mul_pow, pow_succ]
+            ring
+
+/-- **The finite-difference bound** (`p1:eq:finite-difference-bound`): if
+`|f^{(m)}| ≤ C` on `[x, x + (2^m - 1) h]` and `h ≥ 0`, then
+
+`|∑_{n<2^m} ε_n f(x + n h)| ≤ C · 2^{0+1+⋯+(m-1)} h^m`. -/
+theorem abs_thueMorseBlockSum_le (m : ℕ) (f : ℝ → ℝ) (hf : ContDiff ℝ m f) (x h : ℝ)
+    (hh : 0 ≤ h) (C : ℝ)
+    (hC : ∀ y ∈ Set.Icc x (x + (2 ^ m - 1) * h), |iteratedDeriv m f y| ≤ C) :
+    |thueMorseBlockSum m f x h| ≤ C * (2 ^ (∑ i ∈ range m, i) * h ^ m) := by
+  rw [thueMorseBlockSum_eq_nestedDyadicIntegral m f hf x h, abs_mul, abs_pow, abs_neg, abs_one,
+    one_pow, one_mul]
+  exact abs_nestedDyadicIntegral_le m _ C x h hh hC
+
+/-- The Gauss sum in the exponent is the binomial coefficient:
+`0 + 1 + ⋯ + (m-1) = C(m, 2)`. -/
+theorem sum_range_id_eq_choose_two (m : ℕ) : ∑ i ∈ range m, i = m.choose 2 := by
+  rw [Nat.choose_two_right]
+  exact (Nat.div_eq_of_eq_mul_left two_pos (Finset.sum_range_id_mul_two m).symm).symm
+
 end Fabius
