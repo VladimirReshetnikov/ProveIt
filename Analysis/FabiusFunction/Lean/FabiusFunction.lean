@@ -16,6 +16,9 @@ import FabiusFunction.BellGeneratingFunctions
 import FabiusFunction.BellComposition
 import FabiusFunction.BernoulliStirling
 import FabiusFunction.BellHomogeneity
+import FabiusFunction.StirlingOrdinaryGF
+import FabiusFunction.EulerianGeneratingFunctions
+import FabiusFunction.ExponentialRiordan
 import FabiusFunction.SymmetricFunctionTransform
 import FabiusFunction.SymmetricFunctionGenerating
 import FabiusFunction.FiniteQBinomialCore

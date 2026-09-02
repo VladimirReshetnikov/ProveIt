@@ -42,7 +42,10 @@
 \setlist{itemsep=2pt,topsep=4pt,parsep=1pt}
 \allowdisplaybreaks[3]
 \raggedbottom
-\emergencystretch=1em
+% Long Lean declaration names, forty-character commit hashes, and unbreakable
+% inline formulas leave some paragraphs with no good break point.  The notation
+% catalogue uses 2em for the same reason.
+\emergencystretch=2em
 \setcounter{tocdepth}{2}
 \setcounter{secnumdepth}{3}
 
@@ -1651,10 +1654,10 @@ Then
  =\sqrt{\frac{v-1}{v(1-G)}}
  \left(\frac{v-1}{v-G}\right)^{n-k}
  \frac{k^n}{n^k}\EulerE^{k(1-G)}\binom nk
- \left(1+O_{\delta,M}\!\left(k^{-1}\right)\right).
+ \left(1+\BigO_{\delta,M}\!\left(k^{-1}\right)\right).
 \end{equation}
 Since $n/k$ remains in a compact subinterval of $(1,\infty)$, the remainder may
-equivalently be written $O_{\delta,M}(n^{-1})$.
+equivalently be written $\BigO_{\delta,M}(n^{-1})$.
 \end{theorem}
 
 \begin{proof}
@@ -1703,14 +1706,14 @@ $\Re\Phi_v(\theta)\le-c\theta^2$ for $|\theta|\le\eta$, uniformly in $v$.
 On $|\theta|\le k^{-2/5}$, expand $\Phi_v$ through degree four and put
 $u=\sqrt{k b(v)}\,\theta$.  The cubic term is odd and cancels between the two
 halves of the conjugate-symmetric contour.  The quartic term, the square of the
-cubic term, and the Taylor remainder contribute $O_{\delta,M}(k^{-1})$ relative
+cubic term, and the Taylor remainder contribute $\BigO_{\delta,M}(k^{-1})$ relative
 to the Gaussian integral.  The preceding quadratic and geometric drops make the
 rest of the contour exponentially smaller.  Hence
 \[
  \StirlingSecondKind nk
  =\frac{n!}{k!}\frac{(\EulerE^r-1)^k}{r^n}
    \frac{1}{\sqrt{2\pi k v(1-G)}}
-   \left(1+O_{\delta,M}(k^{-1})\right).
+   \left(1+\BigO_{\delta,M}(k^{-1})\right).
 \]
 Finally $G=v\EulerE^{-r}$, $r=v-G$, and the uniform Stirling expansion of
 $(n-k)!$ (valid because $(n-k)/k=v-1\in[\delta,M-1]$) transforms this display
@@ -2912,10 +2915,16 @@ $n=38$.  This completes the finite range and the proof.
 
 \begin{remark}[The constant is essentially best possible]
 The sequence $R_n$ attains its maximum at $n=4$, where $\BellNumber4=15$ and
-\[
- R_4=\frac{15^{1/4}\log5}{4}=0.7918392970\ldots,
-\]
-so $0.792-\max_nR_n<1.61\cdot10^{-4}$ and the constant in
+\begin{equation}
+ R_4=\frac{15^{1/4}\log5}{4}=0.7918392970\ldots.                  \label{eq:bell-max-ratio}
+\end{equation}
+That this is the global maximum needs a word, since the certificate
+\eqref{eq:bell-cert} proves only $R_n<0.792$ and not $R_n\le R_4$.  For
+$n\ge39$ the tail argument already gives the stronger
+$R_n\le\bar R(39)<0.7910<R_4$; for $n\le38$ it is the direct evaluation of
+$38$ numbers, whose three largest values are
+$R_3=0.790176\ldots$, $R_4=0.791839\ldots$ and $R_5=0.789787\ldots$.  Hence
+$0.792-\max_nR_n<1.61\cdot10^{-4}$, and the constant in
 \eqref{eq:bell-numerical-bound} cannot be replaced by anything below
 $R_4$.  This also explains the tightness of the certificate at $n=4$: the
 sole reason a six-decimal logarithm suffices there is that
@@ -3380,6 +3389,23 @@ $x_j=j$ gives $X(t)=te^t$; hence
 The coefficient of $t^n/n!$ is
 $n!k^{n-k}/(k!(n-k)!)=\binom nk k^{n-k}$.
 \end{proof}
+
+\begin{remark}[Formal crosswalk]
+% ed.: crosswalk added 2026-09-01; the Lean proof is by induction on the
+% pointing recurrence, over every commutative semiring.
+\cref{eq:bell-bihomogeneous} is \lean{Fabius.partialBell_bihomogeneous}, assembled
+from the degree homogeneity \lean{Fabius.partialBell_mul_left}
+($\ExponentialPartialBellPolynomial nk(\alpha x)=\alpha^k\ExponentialPartialBellPolynomial nk(x)$)
+and the weighted homogeneity \lean{Fabius.partialBell_pow_mul}
+($\ExponentialPartialBellPolynomial nk(\beta^jx_j)=\beta^n\ExponentialPartialBellPolynomial nk(x)$),
+module \lean{BellHomogeneity}; both are proved by induction on the pointing
+recurrence rather than from the monomial expansion.  As a consequence the
+Touchard specialization \cref{eq:touchard-bell-specialization} of
+\cref{thm:bell-poly-specializations} is \lean{Fabius.bell_complete_const} and
+\lean{Fabius.bell_complete_const_eq_touchard_eval}, and the Touchard generating
+function $\exp(x(\EulerE^t-1))$ is \lean{Fabius.exp_subst_smul_exp_sub_one}.
+\cref{eq:bell-linear-arguments} is not formalized.
+\end{remark}
 
 \section{Addition and shifted-zero identities}
 \begin{theorem}[Complete Bell addition formula]\label{thm:complete-bell-addition}
@@ -4925,8 +4951,12 @@ $[n]$ for $n\leq4$, and grouping by block-size type, gives
  \kappa_4&=m_4-4m_3m_1-3m_2^2+12m_2m_1^2-6m_1^4.                   \label{eq:merged-first-cumulants}
 \end{align}
 For a random variable these are the mean, the variance, the third central
-moment, and the fourth cumulant whose vanishing characterizes the Gaussian
-among laws with moments.  The coefficients are read off the partition lattice:
+moment, and the fourth cumulant, whose normalization $\kappa_4/\kappa_2^2$ is
+the excess kurtosis.  All cumulants beyond the second vanish for a Gaussian
+law; the vanishing of $\kappa_4$ alone does not characterize it, and by
+Marcinkiewicz's theorem no finite set of cumulant conditions does --- only
+$\kappa_n=0$ for every $n\geq3$.  The coefficients are read off the partition
+lattice:
 $\Pi_4$ has one partition of type $4$, four of type $3+1$, three of type
 $2+2$, six of type $2+1+1$ and one of type $1+1+1+1$, and the Möbius weights
 $(-1)^{|\pi|-1}(|\pi|-1)!$ are $1,-1,-1,2,-6$ respectively.
@@ -5726,6 +5756,23 @@ convergent: for $0<x\leq1$,
  E_1(x)\leq\log(1/x)+\int_1^\infty\frac{\EulerE^{-v}}v\Differential v,
 \]
 whereas $E_1(x)\leq\EulerE^{-x}/x$ for $x\geq1$.
+% ed.: crosswalk added 2026-09-01.
+\begin{remark}[Formal crosswalk]
+\cref{eq:merged-bernoulli-stirling} is \lean{Fabius.bernoulli_eq_sum_stirlingSecond}
+(module \lean{BernoulliStirling}) for Mathlib's Bernoulli numbers
+\lean{bernoulli}, whose convention $B_1=-1/2$ matches the generating function
+$t/(\EulerE^t-1)$ used here.  The Lean proof is the first paragraph of this
+proof made formal: Mathlib's \lean{bernoulliPowerSeries_mul_exp_sub_one}
+gives $\mathscr B(t)(\EulerE^t-1)=t$, \lean{Fabius.log_subst_exp_sub_one}
+gives $t=\log(1+y)$ at $y=\EulerE^t-1$, cancelling the non-zero-divisor
+$\EulerE^t-1=t\cdot(\EulerE^t-1)/t$ identifies $\mathscr B$ with
+$\log(1+y)/y$ composed with $\EulerE^t-1$
+(\lean{Fabius.bernoulliPowerSeries_eq_logDivSeries_subst}), and the
+coefficients are read off by the exponential composition theorem
+(\lean{Fabius.egfA_subst_bellWeightSeries}) with the Stirling specialization of
+the partial Bell polynomials.  The two integral representations are not
+formalized.
+\end{remark}
 \end{proof}
 
 Formula \eqref{eq:merged-bernoulli-stirling} is the specialization at $x=0$ of
@@ -5745,17 +5792,18 @@ $n\in\NaturalNumbers$,
 \end{theorem}
 
 \begin{proof}
-In $R[[t]]$ with $R=\RationalNumbers[x]$, substitute $u\mapsto u(\EulerE^t-1)$
-in the geometric series and integrate over $u\in[0,1]$:
-\[
- \int_0^1\frac{\Differential u}{1+u(\EulerE^t-1)}
- =\left[\frac{\log\bigl(1+u(\EulerE^t-1)\bigr)}{\EulerE^t-1}\right]_{u=0}^{u=1}
- =\frac{t}{\EulerE^t-1},
-\]
-the manipulation being legitimate termwise because $\EulerE^t-1\in tR[[t]]$, so
-that only finitely many terms of
-$\sum_{k\geq0}(-1)^ku^k(\EulerE^t-1)^k$ contribute to each power of $t$.
-Expanding that series and using $\int_0^1u^k\Differential u=1/(k+1)$ gives
+The proof of \cref{thm:merged-bernoulli-stirling-touchard} already established,
+by formal composition of $\log(1+y)/y$ with $y=\EulerE^t-1\in t\RationalNumbers[[t]]$,
+that
+\begin{equation}
+ \frac{t}{\EulerE^t-1}=\sum_{k\geq0}\frac{(-1)^k}{k+1}(\EulerE^t-1)^k
+                                                                  \label{eq:merged-gregory-composition}
+\end{equation}
+in $\RationalNumbers[[t]]$; the composition is legitimate, and the sum
+contributes to each power of $t$ only finitely often, because
+$(\EulerE^t-1)^k\in t^k\RationalNumbers[[t]]$.  Multiplying
+\eqref{eq:merged-gregory-composition} by $\EulerE^{xt}$ in
+$\RationalNumbers[x][[t]]$ gives
 \[
  \frac{t\EulerE^{xt}}{\EulerE^t-1}
  =\sum_{k\geq0}\frac{(-1)^k}{k+1}\EulerE^{xt}(\EulerE^t-1)^k.
@@ -6506,8 +6554,13 @@ pointwise.  On a compact subset of $\{\Re z>0\}$ one has
 $\delta\le\Re z\le M$ for some $0<\delta\le M$, whence
 $|t^{z-1}|=t^{\Re z-1}\le t^{\delta-1}+t^{M-1}$, an integrable majorant
 against $\EulerE^{-t}$ on $(0,\infty)$.  Dominated convergence therefore gives
-$\GammaFunction_N(z)\to\int_0^\infty\EulerE^{-t}t^{z-1}\Differential t=\GammaFunction(z)$,
-uniformly on that compact set, which is
+$\GammaFunction_N(z)\to\int_0^\infty\EulerE^{-t}t^{z-1}\Differential t=\GammaFunction(z)$
+for each fixed $z$ with $\Re z>0$.  The convergence is in fact locally uniform,
+but that does not follow from dominated convergence alone: each
+$\GammaFunction_N$ is holomorphic on $\{\Re z>0\}$, and the same majorant bounds
+the whole family uniformly on each compact subset, so Vitali's theorem upgrades
+pointwise convergence of a locally bounded holomorphic family to local uniform
+convergence.  This is
 \eqref{eq:merged-euler-gamma-limit}.
 
 For the product, invert \eqref{eq:merged-euler-gamma-finite}:
@@ -6673,7 +6726,7 @@ Consequently $\BarnesGFunction(n)=1!2!\cdots(n-2)!$ for $n\geq2$.
 
 \begin{proof}
 The logarithm of the $k$th factor is
-$k\log(1+z/k)-z+z^2/(2k)=z^3/(3k^2)+O_K(k^{-3})$ on a compact set $K$,
+$k\log(1+z/k)-z+z^2/(2k)=z^3/(3k^2)+\BigO_K(k^{-3})$ on a compact set $K$,
 so the product converges normally and defines an entire function with the
 prescribed integral-multiplicity zeros.  At $z=0$ it equals $1$.  Divide the
 finite products at $z$ and $z-1$, rearrange before taking the limit, and use
@@ -6730,7 +6783,7 @@ integer $p\geq1$, as $x\to+\infty$ through positive real values,
  +\frac{x}{2}\log(2\pi)-\frac1{12}\log x
  +\frac1{12}-\log A                                                \notag\\
  &+\sum_{k=1}^{p-1}\frac{\beta_{2k+2}}
- {2k(2k+2)x^{2k}}+O_p(x^{-2p}).                                   \label{eq:merged-barnes-standard-asymptotic}
+ {2k(2k+2)x^{2k}}+\BigO_p(x^{-2p}).                                   \label{eq:merged-barnes-standard-asymptotic}
 \end{align}
 Equivalently, retaining the exact gamma factor,
 \begin{align}
@@ -6738,7 +6791,7 @@ Equivalently, retaining the exact gamma factor,
  ={}&\frac{x^2}{4}+x\log\GammaFunction(x+1)
  -\left(\frac{x(x+1)}2+\frac1{12}\right)\log x-\log A            \notag\\
  &+\sum_{k=1}^{p-1}\frac{\beta_{2k+2}}
- {2k(2k+1)(2k+2)x^{2k}}+O_p(x^{-2p}).                             \label{eq:merged-barnes-asymptotic}
+ {2k(2k+1)(2k+2)x^{2k}}+\BigO_p(x^{-2p}).                             \label{eq:merged-barnes-asymptotic}
 \end{align}
 An empty sum is understood when $p=1$.
 \end{theorem}
@@ -6771,8 +6824,9 @@ formula yields
  =\left(t+\frac12\right)\log t-t+\frac12\log(2\pi)
  +\sum_{r=1}^{p}\frac{\beta_{2r}}
  {2r(2r-1)t^{2r-1}}+R_p(t),
- \qquad R_p(t)=O_p(t^{-2p-1}).                                   \label{eq:merged-stirling-integrable-rem}
+                                                                  \label{eq:merged-stirling-integrable-rem}
 \end{equation}
+where $R_p(t)=\BigO_p(t^{-2p-1})$.
 Indeed, the arctangent remainder gives the explicit bound
 \[
  |R_p(t)|\leq\frac{2}{(2p+1)t^{2p+1}}
@@ -6796,7 +6850,7 @@ explicit:
  xR_p(x)-\int_1^xR_p(t)\Differential t
  =-\int_1^\infty R_p(t)\Differential t
    +xR_p(x)+\int_x^\infty R_p(t)\Differential t
- =D_p+O_p(x^{-2p}).
+ =D_p+\BigO_p(x^{-2p}).
 \]
 Thus the improper integral contributes only a constant and the asserted next
 order.  Collecting the elementary antiderivatives and putting $k=r-1$ gives
@@ -6841,7 +6895,7 @@ For every fixed integer $p\geq1$, as $n\to\infty$ through positive integers,
  ={}&\left(\frac{n^2}{2}+\frac n2+\frac1{12}\right)\log n
  -\frac{n^2}{4}+\log A                                             \notag\\
  &-\sum_{k=1}^{p-1}\frac{\beta_{2k+2}}
- {2k(2k+1)(2k+2)n^{2k}}+O_p(n^{-2p}).                             \label{eq:merged-hyperfactorial-log-asymptotic}
+ {2k(2k+1)(2k+2)n^{2k}}+\BigO_p(n^{-2p}).                             \label{eq:merged-hyperfactorial-log-asymptotic}
 \end{align}
 In particular,
 \begin{equation}
@@ -7100,8 +7154,21 @@ record \eqref{eq:merged-associahedron-f} in the equivalent form
 \begin{equation}
  f_d=\frac1n\binom{n-2}{d}\binom{2n-d-2}{n-1},                    \label{eq:merged-associahedron-f-alt}
 \end{equation}
-which agrees with \eqref{eq:merged-associahedron-f} after cancelling
-factorials.  By the face transform of
+which agrees with \eqref{eq:merged-associahedron-f}.  Indeed, rewriting
+\eqref{eq:merged-associahedron-f} with $n=N-1$ and taking the complement in the
+middle binomial coefficient turns it into
+\[
+ f_d=\frac1{n-1-d}\binom{n-2}{d}\binom{2n-2-d}{n},
+\]
+and the adjacent-coefficient ratio
+$\binom Mk\big/\binom M{k-1}=(M-k+1)/k$ with $M=2n-2-d$ and $k=n$ gives
+\[
+ \binom{2n-2-d}{n}=\frac{n-1-d}{n}\binom{2n-2-d}{n-1},
+\]
+so the factor $n-1-d$ cancels and \eqref{eq:merged-associahedron-f-alt}
+follows.  The point of the second form is that its prefactor $1/n$ does not
+depend on $d$, which is what makes the alternating sum below collapse.  By the
+face transform of
 \cref{thm:permutohedron-h-polynomial},
 \[
  h(t)=\sum_{d=0}^{n-2}f_d\,(t-1)^{d},
@@ -7172,8 +7239,7 @@ For every rooted binary tree $T$ with $n$ internal vertices,
  \sum_{i=1}^{n}\ell_ir_i=\binom{n+1}{2}.                          \label{eq:merged-loday-hyperplane}
 \end{equation}
 Consequently all $\CatalanNumber n$ points $M(T)$ lie in one affine hyperplane
-of $\RealNumbers^n$, and their convex hull has dimension at most $n-1$; it is
-Loday's realization of $\AssociahedronByDimension{n-1}$.
+of $\RealNumbers^n$, so their convex hull has dimension at most $n-1$.
 \end{proposition}
 
 \begin{proof}
@@ -7184,6 +7250,16 @@ pair of distinct leaves has a unique lowest common ancestor, and is therefore
 counted at exactly one internal vertex.  Summing over $i$ counts every pair of
 the $n+1$ leaves once, which is $\binom{n+1}2$.
 \end{proof}
+
+\begin{remark}
+Loday's theorem identifies that convex hull with
+$\AssociahedronByDimension{n-1}$: the points $M(T)$ are exactly its vertices,
+and its normal fan is the fan of the Tamari lattice.  Only the hyperplane
+statement is proved here.  What \eqref{eq:merged-loday-hyperplane} does supply
+unaided is the dimension bound, which is what makes the realization plausible:
+$\CatalanNumber n$ points in $\RealNumbers^n$ could a priori span the whole
+space, and the associahedron has dimension $n-1$.
+\end{remark}
 
 \section{The Tamari order}
 
@@ -8318,7 +8394,7 @@ hypotheses have already been established, never as a parallel appendix.
 
 The exact source hashes and every topic- and claim-level decision are maintained
 in the package's external provenance and disposition ledgers.  Git revision
-\texttt{55038f2fc7d20a483a48125f086a6c8488e45530} is the immutable
+\path{55038f2fc7d20a483a48125f086a6c8488e45530} is the immutable
 pre-consolidation source pin.
 
 \section{Closure of the merge}
@@ -8532,7 +8608,7 @@ coefficient calculus rather than a catalogue of isolated identities.
 
 \section{Lean formalization register}
 \label{sec:lean-register}
-Every theorem-like environment of this monograph is listed here with the status of its formalization in the Lean development \path{Analysis/FabiusFunction/Lean/FabiusFunction} (Mathlib \texttt{v4.32.0}).  \emph{Lean} means that a public, compiled declaration proves the exact statement or a more general one (the generalization is then noted next to the result); \emph{partial} means that a named part of the statement is proved and the rest is named; \emph{none} means that no Lean counterpart exists yet.  A citation, a numerical check, or a plausible derivation does not count.  The register is generated from the source and must be regenerated when results are added.  Current totals: 18 Lean, 7 partial, 176 none, of 201 results.
+Every theorem-like environment of this monograph is listed here with the status of its formalization in the Lean development \path{Analysis/FabiusFunction/Lean/FabiusFunction} (Mathlib \texttt{v4.32.0}).  \emph{Lean} means that a public, compiled declaration proves the exact statement or a more general one (the generalization is then noted next to the result); \emph{partial} means that a named part of the statement is proved and the rest is named; \emph{none} means that no Lean counterpart exists yet.  A citation, a numerical check, or a plausible derivation does not count.  The register is generated from the source and must be regenerated when results are added.  Current totals: 19 Lean, 8 partial, 174 none, of 201 results.
 
 \begin{footnotesize}
 \begin{longtable}{@{}p{0.16\textwidth}p{0.22\textwidth}p{0.08\textwidth}p{0.48\textwidth}@{}}
@@ -8615,7 +8691,7 @@ corollary (unlabelled, no.~4) & Cauchy integral & none &  \\
 \Cref{thm:bell-poly-derivatives} & Derivative identities & none &  \\
 \Cref{thm:bell-quadratic-differential} &  & none &  \\
 \Cref{thm:bell-poly-specializations} &  & partial & \cref{eq:bell-first-specialization} is \lean{Fabius.partialBell_factorial_pred}, \cref{eq:bell-second-specialization} is \lean{Fabius.partialBell_one}, \cref{eq:bell-number-specialization} is \lean{Fabius.bell_complete_one}, \cref{eq:bell-lah-specialization} is \lean{Fabius.partialBell_factorial} (\lean{PartialBellPolynomials}, \lean{BellGeneratingFunctions}); the factorial row sum \cref{eq:bell-factorial-complete} and the Touchard form are not formalized \\
-\Cref{thm:bell-bihomogeneous} & Bigraded homogeneity & none &  \\
+\Cref{thm:bell-bihomogeneous} & Bigraded homogeneity & Lean & \lean{Fabius.partialBell_mul_left}, \lean{Fabius.partialBell_pow_mul}, \lean{Fabius.partialBell_bihomogeneous} (\lean{BellHomogeneity}), over every commutative semiring \\
 \Cref{thm:complete-bell-addition} & Complete Bell addition formula & Lean & \lean{Bell.complete_add} (\lean{BellPolynomialInversion}), over every commutative semiring \\
 \Cref{thm:bell-leading-zeros} & Insertion of $q$ leading zeros & none &  \\
 \Cref{thm:bell-transform-inverse} & Bell transform and its inverse & Lean & \cref{eq:bell-transform-x} is \lean{Fabius.bell_transform_inverse} (\lean{BellComposition}), from $X=\log(1+Y)$ formalized as \lean{Fabius.log_subst_exp_sub_one} and the composition theorem; the recursive inversion over every commutative ring is \lean{Bell.complete_cumulant} and \lean{Bell.cumulant_complete} (\lean{BellPolynomialInversion}); the general form \cref{eq:general-bell-inverse} is not formalized \\
@@ -8676,7 +8752,7 @@ corollary (unlabelled, no.~9) &  & none &  \\
 \Cref{thm:merged-faulhaber} & Faulhaber with an offset & none &  \\
 \Cref{thm:merged-alternating-sums} & Alternating power sums & none &  \\
 \Cref{thm:merged-raabe} & Raabe multiplication & none &  \\
-\Cref{thm:merged-bernoulli-stirling-touchard} & Bernoulli--Stirling formula and Touchard moments & none &  \\
+\Cref{thm:merged-bernoulli-stirling-touchard} & Bernoulli--Stirling formula and Touchard moments & partial & \cref{eq:merged-bernoulli-stirling} is \lean{Fabius.bernoulli_eq_sum_stirlingSecond} (\lean{BernoulliStirling}) for Mathlib's \lean{bernoulli} (with $B_1=-1/2$), from \lean{Fabius.bernoulliPowerSeries_eq_logDivSeries_subst}: the Bernoulli generating function is $\log(1+u)/u$ at $u=\EulerE^t-1$; the two integral representations are not formalized \\
 \Cref{thm:merged-bernoulli-difference} & Bernoulli polynomials from finite differences & none &  \\
 \Cref{cor:merged-bernoulli-stirling-second-proof} & Second proof of the Bernoulli--Stirling formula & none &  \\
 \Cref{thm:merged-norlund-calculus} & Appell, difference, and convolution calculus & none &  \\

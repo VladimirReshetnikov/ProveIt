@@ -151,6 +151,45 @@ STATUS = {
    r"\lean{Fabius.partialBell_mul_left}, \lean{Fabius.partialBell_pow_mul}, "
    r"\lean{Fabius.partialBell_bihomogeneous} (\lean{BellHomogeneity}), over every commutative "
    r"semiring"),
+ 'thm:second-ogf': ('Lean',
+   r"\lean{Fabius.prod_one_sub_mul_X_mul_stirlingColumnOGF} and "
+   r"\lean{Fabius.stirlingColumnOGF_eq_prod_mk_pow} (\lean{StirlingOrdinaryGF}): the column "
+   r"series $\sum_r\StirlingSecondKind{k+r}{k}x^r$ times $\prod_{j\le k}(1-jx)$ is $1$, and "
+   r"equals the product of the geometric series $\sum_r j^rx^r$, in $R[[x]]$ for every "
+   r"commutative ring $R$; the complete-homogeneous coefficient formula is the coefficient "
+   r"extraction of the latter and is not stated separately"),
+ 'thm:eulerian-power-series': ('Lean',
+   r"\lean{Fabius.one_sub_X_pow_mul_succPowSeries} (the identity "
+   r"$(1-t)^{n+1}\sum_m(m+1)^nt^m=\TypeAEulerianPolynomial{n}(t)$ in $R[[t]]$) and "
+   r"\lean{Fabius.eulerianNumber_eq_sum_int} (\lean{EulerianGeneratingFunctions}); the "
+   r"symmetry \cref{eq:eulerian-symmetry} is \lean{Fabius.eulerianNumber_symm} and "
+   r"\cref{eq:eulerian-k1} is \lean{Fabius.eulerianNumber_one_right}"),
+ 'thm:merged-riordan': ('Lean',
+   r"\lean{Fabius.expRiordan_action}, \lean{Fabius.expRiordan_mul}, "
+   r"\lean{Fabius.expRiordan_mul_inverse} (\lean{ExponentialRiordan}), for exponential Riordan "
+   r"arrays $[g,f]$ over any $\RationalNumbers$-algebra, with the inverse law in the form "
+   r"$[g,f]\,[h,\overline f]=[1,t]$ whenever $g\,(h\circ f)=1$; the Stirling examples are "
+   r"\lean{Fabius.expRiordan_one_exp_sub_one} and \lean{Fabius.expRiordan_one_log}"),
+ 'cor:merged-bernoulli-stirling-second-proof': ('partial',
+   r"the conclusion is \lean{Fabius.bernoulli_eq_sum_stirlingSecond} and the evaluation "
+   r"$\Delta^k0^n=k!\StirlingSecondKind nk$ is \lean{Fabius.factorial_mul_stirlingSecond_eq_sum} "
+   r"(\lean{StirlingBasisChange}); the finite-difference route through "
+   r"\cref{thm:merged-bernoulli-difference} is not formalized"),
+ 'thm:merged-appell': ('partial',
+   r"for the Bernoulli polynomials Mathlib has the derivative identity "
+   r"\lean{Polynomial.derivative_bernoulli} and the explicit formula "
+   r"\cref{eq:merged-bernoulli-explicit} as the definition \lean{Polynomial.bernoulli_def}; "
+   r"translation and the Euler polynomials are not formalized"),
+ 'thm:merged-bernoulli-euler-basic': ('partial',
+   r"Mathlib: the difference identity \cref{eq:merged-bernoulli-difference} is "
+   r"\lean{Polynomial.bernoulli_eval_one_add}, the reflection "
+   r"\cref{eq:merged-bernoulli-reflection} is \lean{Polynomial.bernoulli_eval_one_sub}, and "
+   r"$\beta_{2m+1}=0$ is \lean{bernoulli_eq_zero_of_odd}; the Euler-polynomial statements are "
+   r"not formalized"),
+ 'thm:merged-faulhaber': ('partial',
+   r"the case $x=0$ is Mathlib's \lean{Polynomial.sum_range_pow_eq_bernoulli_sub} (and "
+   r"\lean{sum_range_pow}, \lean{sum_Ico_pow} in the Bernoulli-number form); the offset $x$ "
+   r"is not formalized"),
  'thm:eulerian-recurrence': ('partial',
    r"\lean{Fabius.eulerianNumber} is defined by this recurrence "
    r"(\lean{Fabius.eulerianNumber_succ_left}, \lean{Fabius.eulerianNumber_succ_succ}, "
@@ -224,7 +263,7 @@ table.append(
  '%d Lean, %d partial, %d none, of %d results.' % (n_lean, n_part, n_none, len(rows)))
 table.append('')
 table.append('\\begin{footnotesize}')
-table.append('\\begin{longtable}{@{}p{0.16\\textwidth}p{0.22\\textwidth}p{0.08\\textwidth}p{0.48\\textwidth}@{}}')
+table.append('\\begin{longtable}{@{}p{0.16\\textwidth}p{0.22\\textwidth}p{0.08\\textwidth}p{0.40\\textwidth}@{}}')
 table.append('\\toprule')
 table.append('Result & Title & Status & Lean declarations (module) \\\\')
 table.append('\\midrule')

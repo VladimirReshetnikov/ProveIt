@@ -212,6 +212,64 @@ formalized.
 """),
 ]
 
+PENDING += [
+ # --- thm:second-ogf ---
+ (r"""The factorial form follows by direct factorization.
+\end{proof}
+""",
+  remark(r"""% ed.: crosswalk added 2026-09-01.
+The product formula is \lean{Fabius.prod_one_sub_mul_X_mul_stirlingColumnOGF}
+(module \lean{StirlingOrdinaryGF}): in $R[[x]]$, for every commutative ring
+$R$, the column series $\sum_{r\ge0}\StirlingSecondKind{k+r}{k}x^r$ times
+$\prod_{j=1}^k(1-jx)$ equals $1$, proved exactly as above from the column
+recurrence $(1-kx)F_k=F_{k-1}$ (\lean{Fabius.one_sub_mul_X_mul_stirlingColumnOGF_succ}).
+The expansion of each geometric factor is
+\lean{Fabius.stirlingColumnOGF_eq_prod_mk_pow}, which identifies the column
+series with $\prod_{j=1}^k\sum_{r\ge0}j^rx^r$; the complete-homogeneous
+coefficient formula \cref{eq:second-complete-symmetric} is the coefficient
+extraction of that product and is not stated separately.""")),
+
+ # --- thm:eulerian-power-series ---
+ (r"""\eqref{eq:eulerian-explicit}.  Formula \eqref{eq:eulerian-k1} is its case $k=1$.
+\end{proof}
+""",
+  remark(r"""% ed.: crosswalk added 2026-09-01; the Lean route avoids the EGF and goes
+% through Worpitzky's identity instead.
+\cref{eq:eulerian-power-series} is \lean{Fabius.one_sub_X_pow_mul_succPowSeries}
+(module \lean{EulerianGeneratingFunctions}), stated in $R[[t]]$ over any
+commutative ring $R$ as $(1-t)^{n+1}\sum_{m\ge0}(m+1)^nt^m
+=\sum_{k}\TypeAEulerianNumber nk\,t^k$.  The formal proof reads Worpitzky's
+identity \cref{thm:worpitzky} column by column: $(m+1)^n=\sum_k
+\TypeAEulerianNumber nk\binom{m+1+k}{n}$ and $\sum_m\binom{m+d}{d}t^m
+=(1-t)^{-d-1}$ (Mathlib's \lean{PowerSeries.mk_one_pow_eq_mk_choose_add})
+give the identity with $t^{n-1-k}$ in place of $t^k$, and the symmetry
+\cref{eq:eulerian-symmetry}, formalized as \lean{Fabius.eulerianNumber_symm}
+by induction on the recurrence, reverses the exponents.  The explicit formula
+\cref{eq:eulerian-explicit} is its $k$-th coefficient,
+\lean{Fabius.eulerianNumber_eq_sum_int}, and \cref{eq:eulerian-k1} is
+\lean{Fabius.eulerianNumber_one_right}.""")),
+
+ # --- thm:merged-riordan ---
+ (r"""$\overline f$ gives the inverse.
+\end{proof}
+""",
+  remark(r"""% ed.: crosswalk added 2026-09-01.
+Module \lean{ExponentialRiordan} defines \lean{Fabius.expRiordan}
+$[g,f]_{n,k}=\frac{n!}{k!}[t^n]\,g(t)f(t)^k$ over any
+$\RationalNumbers$-algebra.  \cref{eq:merged-riordan-action} is
+\lean{Fabius.expRiordan_action} (for $f$ with zero constant term, using the
+truncation lemma \lean{Fabius.coeff_mul_subst_eq}: only $k\le n$ contributes
+to the $n$-th coefficient of $g\,A(f)$), the product law
+\cref{eq:merged-riordan-product} is \lean{Fabius.expRiordan_mul}, and the
+inverse law \cref{eq:merged-riordan-inverse} is
+\lean{Fabius.expRiordan_mul_inverse} in the form: if $\overline f\circ f=t$
+and $g\cdot(h\circ f)=1$ then $[g,f]\,[h,\overline f]$ is the identity array
+\lean{Fabius.expRiordan_one_X}.  The Stirling examples are
+\lean{Fabius.expRiordan_one_exp_sub_one} ($[1,\EulerE^t-1]$ has entries
+$\StirlingSecondKind nk$) and \lean{Fabius.expRiordan_one_log}
+($[1,\log(1+t)]$ has entries $\StirlingFirstKindSigned nk$).""")),
+]
+
 applied = 0
 for anchor, text in PENDING:
     if text.strip() in s:
