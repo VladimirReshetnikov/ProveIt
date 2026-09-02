@@ -110,8 +110,8 @@ fonts. The files under `assets/experiments/**/figures/` remain research
 figures, not publication manuscripts.
 
 The current master TeX is a source-only successor to that checkpoint: it has
-14,449 lines, 679,492 bytes, and SHA-256
-`ed3baa67195e142531234170e67d04a04e356905523333ad95d667f0ddddcc8c`.
+14,476 lines, 681,416 bytes, and SHA-256
+`0465683358e0145a436345bc097ad10cea52f25ab46d017f4c9304a7d64822da`.
 The regenerated root `SHA256SUMS` ledger records the same identity. The
 historical source identity above must not be reused for the live source, and
 the retained PDF does not claim render parity with the current TeX.
@@ -123,7 +123,8 @@ and twenty-nine theorems), `QPochhammerDissection` (zero definitions and two
 theorems), `QBinomialTheoremInfinite` (one definition and twenty-two
 theorems), `GaussianBinomialPalindromic` (zero definitions and twelve
 theorems), `GaussianBinomialPolynomialStructure` (zero definitions and five
-theorems), and `GeometricPochhammerNormalConvergence` (zero
+theorems), `GaussianBinomialBounds` (zero definitions and six theorems), and
+`GeometricPochhammerNormalConvergence` (zero
 definitions and three theorems). The wider inventory also includes
 `QMultinomial` (one definition and nine theorems),
 `QuantumMultinomial` (zero definitions and five theorems),
@@ -196,9 +197,11 @@ None and are not inferred from those series identities.
 The quantum-multinomial row is Exact over every semiring under the stated
 pairwise q-commutation laws and commutation of q with each variable; neither
 centrality of q nor commutativity of the ambient semiring is claimed.
+`GaussianBinomialBounds` owns six theorems. Its finite-product positivity
+input `finiteQPochhammerIn_self_pos` is the pre-existing generic declaration
+from `GeneralQConditionNumber`, reused through an import and therefore not
+counted as a seventh theorem of the bounds leaf.
 
-Source and PDF were synchronized by this build, and the root package checksum
-ledger (`SHA256SUMS`) was regenerated with `audit/build_package_checksums.py`
-afterwards. PDFs are rebuilt in batches, at most about once per hour, so
-source-only commits may precede the next synchronization; the ledger and the
-figures above always describe the retained PDF.
+The retained PDF remains the historical checkpoint described above. The root
+package checksum ledger (`SHA256SUMS`) is regenerated after source-only
+updates; it records the live source and retained PDF as distinct artifacts.

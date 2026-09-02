@@ -109,12 +109,12 @@ only 4,606 declarations and
 declarations, including 69 undocumented ones.  Run the script for the live
 numbers rather than copying these historical values.
 
-The live post-merge 2026-09-01 inventory contains 670 modules and 8,852
+The live post-merge 2026-09-01 inventory contains 671 modules and 8,858
 lexically visible public declarations, with zero missing module headers and
 zero missing doc comments.  Relative to the 610/8,318 activation checkpoint,
-the current tree adds sixty modules and 534 declarations.  Relative to
-the earlier 630/8,552 merged checkpoint, concurrent source work adds forty
-modules and 300 declarations.  The final one-definition/eight-theorem
+the current tree adds sixty-one modules and 540 declarations.  Relative to
+the earlier 630/8,552 merged checkpoint, concurrent source work adds forty-one
+modules and 306 declarations.  The final one-definition/eight-theorem
 `RvachevSuperconvergentSynthesis.lean` leaf contributes
 `IsRvachevSuperconvergentPhase`,
 `isRvachevSuperconvergentPhase_two_pow_iff`,
@@ -169,6 +169,15 @@ theorems.  It decomposes natural tuple antidiagonals, transports Gaussian
 symmetry to arbitrary semirings, proves q-multinomial coefficient commutation,
 and establishes the ordered noncommutative q-multinomial expansion from the
 displayed pairwise q-commutation laws.  The API is finite and division-free.
+The latest `GaussianBinomialBounds.lean` leaf has no definitions and exactly
+six theorems: `gaussianBinomial_inv`, `one_le_gaussianBinomial`,
+`finiteQPochhammerIn_pow_le_one`,
+`gaussianBinomial_le_inv_qPochhammerInfIn`,
+`pow_le_gaussianBinomial_of_one_lt`, and
+`gaussianBinomial_le_pow_div_of_one_lt`.  They give evaluated field
+reciprocity, the nonnegative strict-contraction bounds, and the resulting
+dimension-dominant real bounds for `Q > 1`, with `k ≤ n` and all nonzero and
+order hypotheses explicit.
 The older 622/8,472, 623/8,476, 629/8,546, 630/8,552,
 641/8,650, and 643/8,661 values below are historical checkpoints, not
 descriptions of the live tree.  The earlier additions and q-series tranches are
@@ -373,7 +382,8 @@ and twenty-one theorems, yielding the intermediate 666/8,827 census.  The
 integer/complex upper Gaussian and q-Pfaff--Saalschuetz leaves then add two
 definitions and eighteen theorems, yielding the intermediate 669/8,847 census.
 The zero-definition/five-theorem noncommutative q-multinomial leaf then
-yields the live 670/8,852 census.
+yields the intermediate 670/8,852 census.  The zero-definition/six-theorem
+Gaussian reciprocity-and-bounds leaf yields the live 671/8,858 census.
 
 That increment is exhaustively counted as
 `QPochhammerInfiniteBounds.lean` 0+5, `HeineTransformation.lean` 2+5,
@@ -612,7 +622,7 @@ Integration-and-Transform master retains a historical 377-page PDF.  The canonic
 q-series synthesis is a validated 354-page historical receipt.  It contains
 the earlier general finite/infinite q-Pochhammer crosswalks and six q-series
 modules; the merged fifth fixed-nome theorem, two later general
-q-Pochhammer theorems, and the twenty-four newest
+q-Pochhammer theorems, and the twenty-five newest
 q-series/q-calculus/interpolation modules make
 final parity
 pending.  The retained 167-page primary, 126-page walkthrough, 237-page
@@ -621,7 +631,7 @@ and 88-page notation-catalogue artifacts likewise predate their current merged
 sources.  Their package notices treat those PDFs as historical validation
 receipts, not parity claims, until fresh uninterrupted three-pass builds
 complete.  The inverse-computability receipt likewise requires refresh for the
-670/8,852 census.  The canonical inverse-theory publication retains a 134-page
+671/8,858 census.  The canonical inverse-theory publication retains a 134-page
 artifact synchronized at its latest-main source checkpoint; the merged
 effective-inversion and superconvergent-synthesis tranches make current parity
 pending.

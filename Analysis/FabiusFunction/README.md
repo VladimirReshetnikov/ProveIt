@@ -77,7 +77,7 @@ That primary exposition is deliberately proof-backed: every mathematical claim
 in it must have a proved counterpart in the Lean development.
 
 > **Artifact status (2026-09-01).**  The live facade union contains exactly
-> 670 source modules and 8,852 public declarations.  The documentation audit
+> 671 source modules and 8,858 public declarations.  The documentation audit
 > reports no missing module headers or declaration comments.  Its q-series union retains
 > `QPochhammerEntire` 0+5, `GeometricPochhammerNormalConvergence` 0+3,
 > `QPochhammerDissection` 0+2,
@@ -99,7 +99,8 @@ in it must have a proved counterpart in the Lean development.
 > `CyclotomicDivisibility` 0+3, `PrimitiveRootBlock` 0+3, `QCatalan` 1+11,
 > `QLucas` 0+8, `QBetaIntegral` 1+8, `NewtonInterpolation` 2+13,
 > `GaussianBinomialInteger` 1+10, `GaussianBinomialComplexOrder` 1+5,
-> `QPfaffSaalschutz` 0+3, and `QuantumMultinomial` 0+5.
+> `QPfaffSaalschutz` 0+3, `QuantumMultinomial` 0+5, and
+> `GaussianBinomialBounds` 0+6.
 > The retained
 > primary exposition, Lean walkthrough, canonical frontier, Representation
 > Frontiers, filed New Frontiers, notation catalogue, Integration-and-Transform
@@ -428,6 +429,7 @@ Padé/J-fractions, infinite Jacobi theory, and asymptotics also remain open.
 | Newton interpolation and the Jackson q-beta integral | `FabiusFunction.NewtonInterpolation`, `FabiusFunction.QBetaIntegral` | Exhaustive counts are 2+13 and 1+8: three definitions and twenty-one theorems.  The Newton module constructs triangular coefficients and interpolants, proves evaluation, uniqueness, divided differences, and the explicit geometric-grid denominator formula.  The q-beta module defines the Jackson integral, proves its infinite-product and q-gamma evaluations for `0<q<1` and positive arguments, and derives symmetry, positivity, and both successor recurrences. |
 | Integer/complex upper Gaussian coefficients and q-Pfaff--Saalschütz | `FabiusFunction.GaussianBinomialInteger`, `FabiusFunction.GaussianBinomialComplexOrder`, `FabiusFunction.QPfaffSaalschutz` | Exhaustive counts are 1+10, 1+5, and 0+3: two definitions and eighteen theorems.  The first module extends Gaussian coefficients to integer upper indices, proves both q-Pascal laws and negative-index reflection, and derives the reciprocal finite q-binomial series.  The second uses principal complex powers to package complex upper indices and the generalized reciprocal and finite q-binomial series.  The third proves the terminating balanced `₃φ₂` summation algebraically over a field.  All nonzero-nome, strict-contraction, and displayed denominator hypotheses remain explicit. |
 | Noncommutative q-multinomial theorem | `FabiusFunction.QuantumMultinomial` | Exhaustive count: zero definitions and five theorems.  Over an arbitrary semiring, pairwise relations `x_j*x_i = q*(x_i*x_j)` for `i<j`, together with commutation of `q` with every `x_i`, expand a power of the finite sum into ordered monomials weighted by `qMultinomial`.  The supporting API decomposes tuple antidiagonals, transports Gaussian symmetry to semirings, and proves coefficient commutation.  The result is finite and division-free; it makes no convergence claim. |
+| Gaussian reciprocity and dimension-dominant bounds | `FabiusFunction.GaussianBinomialBounds` | Exhaustive count: zero definitions and six theorems.  `gaussianBinomial_inv` evaluates reciprocity over a field under `q ≠ 0` and `k ≤ n`; `one_le_gaussianBinomial`, `finiteQPochhammerIn_pow_le_one`, and `gaussianBinomial_le_inv_qPochhammerInfIn` give the nonnegative strict-contraction bounds; `pow_le_gaussianBinomial_of_one_lt` and `gaussianBinomial_le_pow_div_of_one_lt` transfer them to two-sided real bounds for `Q > 1`. |
 
 The frontier-facing focused imports above expose exact finite or formal
 algebra, and their names should not be read as stronger analytic conclusions.

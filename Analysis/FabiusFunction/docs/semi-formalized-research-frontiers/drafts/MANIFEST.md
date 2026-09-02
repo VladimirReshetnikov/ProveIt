@@ -19,8 +19,8 @@ old flat layout; the **Previous path** column below is the map. Documents
 were moved verbatim — no `.tex` content was changed by the reorganization,
 so no PDF was rebuilt for it.
 
-**Current artifact checkpoint (2026-09-01).** The live Lean audit scans 670
-source modules and 8,852 public declarations, with no missing module headers or
+**Current artifact checkpoint (2026-09-01).** The live Lean audit scans 671
+source modules and 8,858 public declarations, with no missing module headers or
 declaration comments.
 Several PDFs below are retained,
 readable publication checkpoints rather than renders of the final merged TeX.
@@ -93,6 +93,9 @@ nonzero and denominator hypotheses.
 `QuantumMultinomial.lean` adds five theorems: antidiagonal tuple recursion,
 noncommutative Gaussian symmetry, and the ordered q-multinomial theorem for
 pairwise q-commuting variables.
+`GaussianBinomialBounds.lean` adds six theorems: evaluated reciprocity,
+nonnegative-nome lower and strict-contraction upper bounds, and the resulting
+dimension-dominant two-sided estimates for real nomes greater than one.
 The local reciprocal-power zero-lattice theorem completes
 `QPochhammerEntire.lean` to five theorems, and two further general-product
 theorems complete `QPochhammerInfinite.lean` to one definition and 29

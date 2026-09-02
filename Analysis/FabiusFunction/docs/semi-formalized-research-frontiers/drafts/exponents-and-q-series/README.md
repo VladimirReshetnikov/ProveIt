@@ -31,7 +31,7 @@ module tranches and the zero-definition, three-theorem
 crosswalk. That source is a source-only successor to the fresh artifact receipt
 and requires a later synchronized three-pass build. Retained PDFs under its `assets/` tree are
 research figures, not alternate manuscript renderings. The current Lean audit
-contains 670 facade-reachable modules and 8,852 public declarations, with no
+contains 671 facade-reachable modules and 8,858 public declarations, with no
 missing module headers or declaration documentation.
 
 ## Detailed package record
@@ -848,6 +848,7 @@ compatibility spelling of its primary identity),
 `GaussianBinomialComplexOrder.lean` (one definition, five theorems),
 `QPfaffSaalschutz.lean` (zero definitions, three theorems),
 `QuantumMultinomial.lean` (zero definitions, five theorems),
+`GaussianBinomialBounds.lean` (zero definitions, six theorems),
 `GaussianBinomialAtNegOne.lean` (five theorems),
 `RvachevPochhammerFactorization.lean` (one definition, nine theorems), and
 `QPochhammerEntire.lean` (zero definitions; four legacy compatibility
@@ -1147,3 +1148,6 @@ strict-contraction, and denominator hypotheses remain explicit.
 `QuantumMultinomial.lean` adds five theorems for antidiagonal tuple recursion,
 noncommutative Gaussian symmetry, and the ordered q-multinomial expansion for
 pairwise q-commuting variables.
+`GaussianBinomialBounds.lean` adds six theorems: field reciprocity, the
+nonnegative-nome lower bound and strict-contraction q-Pochhammer upper bound,
+and the corresponding dimension-dominant two-sided real bounds for `Q > 1`.

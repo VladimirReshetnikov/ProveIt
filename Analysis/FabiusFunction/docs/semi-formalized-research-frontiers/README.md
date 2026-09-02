@@ -37,7 +37,7 @@ explicit Rvachev--Appell specialization. In the canonical inverse synthesis
 this promotes exactly `is:p3:cor:forced-superconvergence` and
 `is:p3:thm:Appell-lattice-reproduction`, bringing its 194 immutable rows to
 49 Lean-proved / 96 human-proved / 10 conjectural / 15 open / 24
-nonassertoric. The live documentation census is 670 modules and 8,852 public
+nonassertoric. The live documentation census is 671 modules and 8,858 public
 declarations with no gaps; no PDF was rebuilt for this source-only update.
 
 The 1 September 2026 source-only q-Pochhammer overlay is likewise newer than

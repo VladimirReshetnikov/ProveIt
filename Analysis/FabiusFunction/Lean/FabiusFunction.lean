@@ -792,6 +792,13 @@ when `q` commutes with each variable and `x_j * x_i = q * (x_i * x_j)` for
 `i < j`.  The result is finite and division-free and requires no ambient
 commutativity or analytic convergence premise.
 
+`GaussianBinomialBounds` adds no definitions and exactly six theorems.  It
+evaluates Gaussian reciprocity over fields, proves the constant-term lower
+bound for nonnegative nomes and the infinite-q-Pochhammer upper bound for real
+strict contractions, and transfers these to dimension-dominant two-sided
+bounds at every real `Q > 1`.  The index premise `k ≤ n` and the displayed
+nonzero, order, and strict-contraction hypotheses remain explicit.
+
 The probabilistic layer is closed at the level of measures.  The up-measure
 `μ_up = up·Leb` satisfies the refinement equation
 `μ_up = Uniform[-½,½] ∗ (μ_up ∘ (·/2)⁻¹)` and its iterate, the
