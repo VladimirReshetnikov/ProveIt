@@ -506,6 +506,10 @@ import FabiusFunction.QPochhammerOrderDerivative
 import FabiusFunction.JacobiCubic
 import FabiusFunction.CyclotomicFactorization
 import FabiusFunction.CentralQBinomialReduction
+import FabiusFunction.PrimitiveRootBlock
+import FabiusFunction.QLucas
+import FabiusFunction.CyclotomicDivisibility
+import FabiusFunction.QCatalan
 import FabiusFunction.GaussianBinomialPalindromic
 import FabiusFunction.ThetaQuasiPeriodicity
 
@@ -672,6 +676,12 @@ ring or integral-domain contexts.  `CentralQBinomialReduction` proves the
 sign-pairing and even--odd dissection identities and reduces `[2k,k]_(q²)` to
 finite q-Pochhammer products, with the quotient form retaining both explicit
 nonvanishing-denominator hypotheses.
+
+Four root-of-unity and q-Catalan companions add one definition and twenty-five
+theorems: `CyclotomicDivisibility` 0+3, `PrimitiveRootBlock` 0+3,
+`QCatalan` 1+11, and `QLucas` 0+8.  They prove the cyclotomic carry criterion,
+complete primitive-root blocks, the q-Lucas theorem over integral domains, and
+MacMahon's integral q-Catalan polynomial with its degree and value at one.
 The zeta–Lambert tail calculus of the Thue–Morse frontier results is
 formalized end to end.  The engine is the Euler log transform: for any
 absolutely summable family with all norms below one, over any index type,

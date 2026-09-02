@@ -77,7 +77,7 @@ That primary exposition is deliberately proof-backed: every mathematical claim
 in it must have a proved counterpart in the Lean development.
 
 > **Artifact status (2026-09-01).**  The live facade union contains exactly
-> 660 source modules and 8,777 public declarations.  The documentation audit
+> 664 source modules and 8,803 public declarations.  The documentation audit
 > reports no missing module headers or declaration comments.  Its q-series union retains
 > `QPochhammerEntire` 0+5, `GeometricPochhammerNormalConvergence` 0+3,
 > `QPochhammerDissection` 0+2,
@@ -95,7 +95,9 @@ in it must have a proved counterpart in the Lean development.
 > `QExponential` 3+8, `ThetaQuasiPeriodicity` 1+6,
 > `GaussianBinomialPolynomialStructure` 0+5, `JacobiCubic` 0+2,
 > `QPochhammerLogDerivative` 0+10, `QPochhammerOrderDerivative` 0+3,
-> `CentralQBinomialReduction` 0+6, and `CyclotomicFactorization` 0+7.
+> `CentralQBinomialReduction` 0+6, `CyclotomicFactorization` 0+7,
+> `CyclotomicDivisibility` 0+3, `PrimitiveRootBlock` 0+3, `QCatalan` 1+11,
+> and `QLucas` 0+8.
 > The retained
 > primary exposition, Lean walkthrough, canonical frontier, Representation
 > Frontiers, filed New Frontiers, notation catalogue, Integration-and-Transform
@@ -420,6 +422,7 @@ Padé/J-fractions, infinite Jacobi theory, and asymptotics also remain open.
 | Gaussian palindromicity, q-exponentials, Jackson integration, and theta quasi-periodicity | `FabiusFunction.GaussianBinomialPalindromic`, `FabiusFunction.QExponential`, `FabiusFunction.JacksonIntegral`, `FabiusFunction.ThetaQuasiPeriodicity` | Exhaustive module counts are 0+12, 3+8, 1+7, and 1+6: five definitions and thirty-three theorems.  They give the degree, monicity, coefficient reversal, and mean identity for Gaussian polynomials; the two q-exponentials and their q-derivative laws; Jackson's fundamental theorem and integration by parts; and the bilateral-theta product, quasi-periodicity, and exact zero criterion.  The analytic statements retain their explicit strict-contraction, nonzero-variable, convergence, and nonvanishing hypotheses. |
 | Universal Gaussian structure, q-Pochhammer derivatives, and Jacobi's cubic identity | `FabiusFunction.GaussianBinomialPolynomialStructure`, `FabiusFunction.QPochhammerLogDerivative`, `FabiusFunction.QPochhammerOrderDerivative`, `FabiusFunction.JacobiCubic` | Exhaustive module counts are 0+5, 0+10, 0+3, and 0+2: twenty theorems and no definitions.  They give universal Gaussian degree, monicity, constant coefficient, and reflection symmetry over `ℕ[X]`; derivative and Lambert-series formulas for the infinite q-Pochhammer product on the unit disc; the complex-order derivative under a nonzero nome and `‖a*q^α‖ < 1`; and Jacobi's cubic identity for `‖q‖ < 1`. |
 | Cyclotomic factorization and central Gaussian reduction | `FabiusFunction.CyclotomicFactorization`, `FabiusFunction.CentralQBinomialReduction` | Exhaustive module counts are 0+7 and 0+6: thirteen theorems and no definitions.  The first factors `(X;X)_n` and `[n,k]_X` into cyclotomic polynomials, with the Gaussian factorization stated over an integral domain.  The second proves finite-symbol sign pairing, even--odd dissection, ring-hom naturality, and the division-free central identity `[2k,k]_(q²)(q²;q²)_k=(q;q²)_k(-q;q)_(2k)` over every commutative ring; its quotient corollary assumes both denominators are nonzero. |
+| Root-of-unity Gaussian arithmetic, q-Lucas, and MacMahon q-Catalan | `FabiusFunction.CyclotomicDivisibility`, `FabiusFunction.PrimitiveRootBlock`, `FabiusFunction.QCatalan`, `FabiusFunction.QLucas` | Exhaustive counts are 0+3, 0+3, 1+11, and 0+8: one definition and twenty-five theorems.  The tranche proves the cyclotomic carry criterion, Gaussian values and complete q-Pochhammer blocks at primitive roots, the q-Lucas theorem over integral domains, and the integral q-Catalan polynomial with degree `n(n-1)` and Catalan specialization at `q=1`. |
 
 The frontier-facing focused imports above expose exact finite or formal
 algebra, and their names should not be read as stronger analytic conclusions.

@@ -31,7 +31,7 @@ module tranches and the zero-definition, three-theorem
 crosswalk. That source is a source-only successor to the fresh artifact receipt
 and requires a later synchronized three-pass build. Retained PDFs under its `assets/` tree are
 research figures, not alternate manuscript renderings. The current Lean audit
-contains 660 facade-reachable modules and 8,777 public declarations, with no
+contains 664 facade-reachable modules and 8,803 public declarations, with no
 missing module headers or declaration documentation.
 
 ## Detailed package record
@@ -95,9 +95,9 @@ Current packages and retained intake records:
   figures. Pinned source revisions and Git history preserve every superseded
   layout and arrival fact.
 
-  The current `q_pochhammer_q_binomial_monograph.tex` has 14,316 lines,
-  671,065 bytes, and SHA-256
-  `38c15e63a4676ba64f35a6e89dee558eb3989787bb7c6528a943bc3d47d46e4d`.
+  The current `q_pochhammer_q_binomial_monograph.tex` has 14,355 lines,
+  673,735 bytes, and SHA-256
+  `117c9a70552241ef57bd878f69e07c9af8105a22afb45f57d25348125469e79c`.
   Its retained `q_pochhammer_q_binomial_monograph.pdf` is a historical
   348-page A4 artifact of 3,002,729 bytes, with SHA-256
   `8bf14b52d8a0fc0abc4d54cca503fd47a2df37cf76ee1bb4e442bea1fd2a4aa7`.
@@ -793,8 +793,8 @@ claims about the current canonical source. The canonical synthesis's current
 source and retained historical PDF are identified by the single exact receipt
 in the detailed package record above.
 
-The latest validated forward formalization ledger has 282 rows: 73 Exact, 84
-Partial, 117 with no counterpart, and 8 interface-only. The original
+The latest validated forward formalization ledger has 282 rows: 77 Exact, 85
+Partial, 112 with no counterpart, and 8 interface-only. The original
 191-result pre-Fabius core had 36 exact, 29 partial, 123 with no counterpart,
 and 3 interface-only entries. The four integrated-guide chapters add 31
 human-proved but not Lean-formalized assertions and five labelled definitions;
@@ -809,8 +809,8 @@ unformalized results; the q-integer and Gaussian-coefficient chapter for
 q-binomial/inversion chapter now accounts for 9 exact, 1 partial, and 0
 unformalized results; the weighted chapter for 3 exact, 2 partial, and 3
 unformalized results; and the basic-hypergeometric chapter for 1 exact, 3
-partial, and 5 unformalized results. The cyclotomic chapter now has 1 exact,
-0 partial, and 8 unformalized results. The exact rows include the primary and
+partial, and 5 unformalized results. The cyclotomic chapter now has 6 exact,
+1 partial, and 2 unformalized results. The exact rows include the primary and
 second q-Cauchy identities, both weighted-Pascal recurrences,
 elementary--complete orthogonality, and weighted symmetric-function inversion.
 Their adjacent strengthenings are recorded human-readably in the canonical
@@ -838,6 +838,10 @@ compatibility spelling of its primary identity),
 `GaussianBinomialPolynomialStructure.lean` (zero definitions, five theorems),
 `CentralQBinomialReduction.lean` (zero definitions, six theorems),
 `CyclotomicFactorization.lean` (zero definitions, seven theorems),
+`CyclotomicDivisibility.lean` (zero definitions, three theorems),
+`PrimitiveRootBlock.lean` (zero definitions, three theorems),
+`QCatalan.lean` (one definition, eleven theorems),
+`QLucas.lean` (zero definitions, eight theorems),
 `GaussianBinomialAtNegOne.lean` (five theorems),
 `RvachevPochhammerFactorization.lean` (one definition, nine theorems), and
 `QPochhammerEntire.lean` (zero definitions; four legacy compatibility
@@ -1115,3 +1119,9 @@ division-free over every commutative ring with a field/nonzero-denominator
 quotient wrapper, while the factorial cyclotomic factorization holds over every
 commutative ring and the Gaussian factorization over every integral domain,
 with the exponent bounded in `{0,1}` by the proved divisibility inequalities.
+The root-of-unity tail adds `CyclotomicDivisibility.lean` (three theorems),
+`PrimitiveRootBlock.lean` (three theorems), `QCatalan.lean` (one definition
+and eleven theorems), and `QLucas.lean` (eight theorems).  These twenty-six
+declarations prove the carry criterion, complete primitive-root block,
+q-Lucas theorem, and integral q-Catalan polynomial at their stated ring and
+primitive-root hypotheses.

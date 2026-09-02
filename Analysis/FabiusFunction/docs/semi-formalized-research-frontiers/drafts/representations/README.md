@@ -805,7 +805,7 @@ Thus `is:p3:cor:forced-superconvergence` and
 `is:p3:thm:Appell-lattice-reproduction` are now exact in the canonical inverse
 concordance. This source postdates the retained Representation and inverse
 PDFs, which remain historical artifacts rather than renders of the promotion.
-The corresponding live documentation census is 660 modules and 8,777 public
+The corresponding live documentation census is 664 modules and 8,803 public
 declarations with no gaps.
 
 The focused-build `CompositeMeshSharpness.lean` module exports one public

@@ -109,12 +109,12 @@ only 4,606 declarations and
 declarations, including 69 undocumented ones.  Run the script for the live
 numbers rather than copying these historical values.
 
-The live post-merge 2026-09-01 inventory contains 660 modules and 8,777
+The live post-merge 2026-09-01 inventory contains 664 modules and 8,803
 lexically visible public declarations, with zero missing module headers and
 zero missing doc comments.  Relative to the 610/8,318 activation checkpoint,
-the current tree adds fifty modules and 459 declarations.  Relative to
-the earlier 630/8,552 merged checkpoint, concurrent source work adds thirty
-modules and 225 declarations.  The final one-definition/eight-theorem
+the current tree adds fifty-four modules and 485 declarations.  Relative to
+the earlier 630/8,552 merged checkpoint, concurrent source work adds thirty-four
+modules and 251 declarations.  The final one-definition/eight-theorem
 `RvachevSuperconvergentSynthesis.lean` leaf contributes
 `IsRvachevSuperconvergentPhase`,
 `isRvachevSuperconvergentPhase_two_pow_iff`,
@@ -146,6 +146,10 @@ Four still newer q-series leaves contribute twenty theorems and no definitions:
 The two newest algebra leaves add thirteen theorems and no definitions:
 `CentralQBinomialReduction.lean` 0+6 and
 `CyclotomicFactorization.lean` 0+7.
+The four latest q-algebra modules contribute twenty-six declarations:
+`CyclotomicDivisibility.lean` 0+3, `PrimitiveRootBlock.lean` 0+3,
+`QCatalan.lean` 1+11, and `QLucas.lean` 0+8.  They add the carry criterion,
+primitive-root block formula, q-Lucas theorem, and integral q-Catalan API.
 The older 622/8,472, 623/8,476, 629/8,546, 630/8,552,
 641/8,650, and 643/8,661 values below are historical checkpoints, not
 descriptions of the live tree.  The earlier additions and q-series tranches are
@@ -343,7 +347,8 @@ that audit to 653/8,735.  The next four leaves contribute twenty declarations
 and bring that audit to 657/8,755.  The final two q leaves contribute thirteen
 declarations and bring that intermediate audit to 659/8,768.  The
 superconvergent synthesis leaf then adds one module and nine declarations,
-yielding the live 660/8,777 census recorded above.
+yielding 660/8,777.  The four newest q modules add one definition and
+twenty-five theorems, yielding the live 664/8,803 census recorded above.
 
 That increment is exhaustively counted as
 `QPochhammerInfiniteBounds.lean` 0+5, `HeineTransformation.lean` 2+5,
@@ -582,7 +587,7 @@ Integration-and-Transform master retains a historical 377-page PDF.  The canonic
 q-series synthesis is a validated 348-page historical receipt.  It contains
 the earlier general finite/infinite q-Pochhammer crosswalks and six q-series
 modules; the merged fifth fixed-nome theorem, two later general
-q-Pochhammer theorems, and the sixteen newest q-series/q-calculus modules make
+q-Pochhammer theorems, and the twenty newest q-series/q-calculus modules make
 final parity
 pending.  The retained 167-page primary, 126-page walkthrough, 237-page
 canonical frontier, 301-page Representation Frontiers, 41-page New Frontiers,
@@ -590,7 +595,7 @@ and 88-page notation-catalogue artifacts likewise predate their current merged
 sources.  Their package notices treat those PDFs as historical validation
 receipts, not parity claims, until fresh uninterrupted three-pass builds
 complete.  The inverse-computability receipt likewise requires refresh for the
-660/8,777 census.  The canonical inverse-theory publication retains a 134-page
+664/8,803 census.  The canonical inverse-theory publication retains a 134-page
 artifact synchronized at its latest-main source checkpoint; the merged
 effective-inversion and superconvergent-synthesis tranches make current parity
 pending.

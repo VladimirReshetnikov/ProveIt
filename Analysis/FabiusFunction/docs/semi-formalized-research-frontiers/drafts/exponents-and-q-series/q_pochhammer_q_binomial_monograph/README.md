@@ -113,8 +113,8 @@ Type-3 fonts. The files under `assets/experiments/**/figures/` remain research
 figures, not publication manuscripts.
 
 The current master TeX is a source-only successor to that checkpoint: it has
-14,316 lines, 671,065 bytes, and SHA-256
-`38c15e63a4676ba64f35a6e89dee558eb3989787bb7c6528a943bc3d47d46e4d`.
+14,355 lines, 673,735 bytes, and SHA-256
+`117c9a70552241ef57bd878f69e07c9af8105a22afb45f57d25348125469e79c`.
 The regenerated root `SHA256SUMS` ledger records the same identity. The
 historical source identity above must not be reused for the live source, and
 the retained PDF does not claim render parity with the current TeX.
@@ -140,8 +140,12 @@ and six theorems), `QPochhammerLogDerivative` (zero definitions and ten
 theorems), `QPochhammerOrderDerivative` (zero definitions and three theorems),
 `JacobiCubic` (zero definitions and two theorems),
 `CentralQBinomialReduction` (zero definitions and six theorems), and
-`CyclotomicFactorization` (zero definitions and seven theorems), together with
-expanded Euler, Jacobi, and Rogers--Szegő material.
+`CyclotomicFactorization` (zero definitions and seven theorems).  The newest
+cyclotomic tail consists exhaustively of `CyclotomicDivisibility` (zero
+definitions and three theorems), `PrimitiveRootBlock` (zero definitions and
+three theorems), `QCatalan` (one definition and eleven theorems), and `QLucas`
+(zero definitions and eight theorems), together with expanded Euler, Jacobi,
+and Rogers--Szegő material.
 
 The two newest generic theorems are
 `deriv_qPochhammerInfIn_ne_zero_of_mul_pow_eq_one`, which gives a nonzero
@@ -153,7 +157,7 @@ entireness, zero-locus, reciprocal-power, and analytic-order results rather
 than duplicating their analytic proofs. In `QBinomialTheoremInfinite`,
 `finiteQPochhammerIn_zero_left` remains the unique declaration owned by
 `GaussianBinomialAtOne` and is imported rather than redeclared. The forward
-status ledger is 73 Exact, 84 Partial, 117 None, and 8 interface rows; the
+status ledger is 77 Exact, 85 Partial, 112 None, and 8 interface rows; the
 191-result pre-Fabius core is 36/29/123/3. The compound outer spectral-product
 theorem remains Partial even though the three-theorem outer-product leaf proves
 local-uniform (normal) convergence for every complex strict contraction, its

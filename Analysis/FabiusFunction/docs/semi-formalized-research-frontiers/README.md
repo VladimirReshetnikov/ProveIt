@@ -37,7 +37,7 @@ explicit Rvachev--Appell specialization. In the canonical inverse synthesis
 this promotes exactly `is:p3:cor:forced-superconvergence` and
 `is:p3:thm:Appell-lattice-reproduction`, bringing its 194 immutable rows to
 49 Lean-proved / 96 human-proved / 10 conjectural / 15 open / 24
-nonassertoric. The live documentation census is 660 modules and 8,777 public
+nonassertoric. The live documentation census is 664 modules and 8,803 public
 declarations with no gaps; no PDF was rebuilt for this source-only update.
 
 The 1 September 2026 source-only q-Pochhammer overlay is likewise newer than
@@ -48,16 +48,17 @@ symbol, the division-free factor-zero criterion, the reciprocal-power zero
 lattice when the nome is nonzero, and analytic order one at every zero.  This
 promotes only `thm:poch-entire` in the consolidated q-series monograph.  The
 same current source also crosswalks the generic infinite/dissection API and
-the later Euler, q-binomial, Jacobi, quantum-binomial, and Rogers--Szegő
-tranche. Its 282-result forward status totals are now 51 exact / 78 partial /
-145 none / 8 interface, with 36 / 29 / 123 / 3 in the 191-result pre-Fabius
-core and 6 / 1 / 8 / 0 in the q-shifted-factorial chapter. It does not claim
-normal convergence of the additional outer product indexed by spectral scale.
+the later Euler, q-binomial, Jacobi, quantum-binomial, Rogers--Szegő,
+cyclotomic-divisibility, q-Catalan, primitive-root-block, and q-Lucas
+tranches. Its 282-result forward status totals are now 77 exact / 85 partial /
+112 none / 8 interface. The outer spectral product now has an exact
+locally-uniform/normal-convergence theorem; the compound centered/MGF and
+exterior reciprocal/pole layers remain partial.
 
-The monograph's current 13,941-line, 647,940-byte source has SHA-256
-`619d45dad475fd869c294aeed1f1eac6b99d9b3cfef6a9487383ee3e92931bbe`.
-Its retained 340-page A4 PDF (2,180,191 bytes; SHA-256
-`e64a4ef65a9fcce3a4f211f2125b0f8440910cf4527635f76975b0967800e667`)
+The monograph's current 14,355-line, 673,735-byte source has SHA-256
+`117c9a70552241ef57bd878f69e07c9af8105a22afb45f57d25348125469e79c`.
+Its retained 348-page A4 PDF (3,002,729 bytes; SHA-256
+`8bf14b52d8a0fc0abc4d54cca503fd47a2df37cf76ee1bb4e442bea1fd2a4aa7`)
 renders an earlier explicitly pinned source. It remains a reproducible
 historical publication checkpoint, but must not be cited as displaying the
 current theorem promotions until a new PDF is built and inspected.
