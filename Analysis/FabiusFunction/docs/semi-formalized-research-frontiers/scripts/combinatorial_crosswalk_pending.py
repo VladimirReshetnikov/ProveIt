@@ -1061,6 +1061,73 @@ $(\EulerE^{(x+1)t}-\EulerE^{xt})\,t/(\EulerE^t-1)=t\EulerE^{xt}$.  Complex
 orders, which need $\exp(\alpha\log(t/(\EulerE^t-1)))$, are not formalized.""")),
 ]
 
+PENDING += [
+ # --- thm:bell-poly-derivatives ---
+ (r"""gives \eqref{eq:complete-bell-derivative}.  The ordinary chain rule then gives
+\eqref{eq:bell-poly-chain}.
+\end{proof}
+""",
+  remark(r"""% ed.: crosswalk added 2026-09-02; the Lean proof differentiates the column theorem coefficientwise.
+\lean{Fabius.pderiv_partialBell_succ} (module \lean{BellDerivative}) is
+\cref{eq:partial-bell-derivative} and \lean{Fabius.pderiv_bellComplete} is
+\cref{eq:complete-bell-derivative}, both as identities in the polynomial ring
+$\mathbb Q[x_1,x_2,\dots]$ with Mathlib's partial derivative
+\lean{MvPolynomial.pderiv}, for $i\ge1$ and $k\ge1$ (for $k=0$ the derivative
+vanishes, \lean{Fabius.pderiv_partialBell_zero}).  The formal proof is the one
+above: a derivation of the coefficient ring acts coefficientwise on power
+series and is again a derivation (\lean{Fabius.coeffDerivation}), so applying
+$\partial/\partial x_i$ to the column theorem
+\lean{Fabius.bellWeightSeries_pow} and using
+$\partial X(t)/\partial x_i=t^i/i!$
+(\lean{Fabius.coeffDerivation_pderiv_bellWeightSeries}) gives the identity by
+coefficient comparison; the complete-polynomial form follows by summing over
+$k$.  The chain rule \cref{eq:bell-poly-chain} is analytic and is not
+formalized.""")),
+]
+
+PENDING += [
+ # --- thm:merged-moment-cumulant ---
+ (r"""partitions by block sizes is exactly the coefficient expansion of $\EulerE^K$ and
+$\log M$.
+\end{proof}
+""",
+  remark(r"""% ed.: crosswalk added 2026-09-02; the formal statement is the block-size (Bell polynomial) form.
+Module \lean{BellPolynomialInversion} defines the complete Bell polynomials
+\lean{Bell.complete} by the recurrence $m_{n+1}=\sum_k\binom nk\kappa_{k+1}m_{n-k}$
+(the sum over partitions grouped by the block containing $n+1$) and the
+cumulant sequence \lean{Bell.cumulant} by the inverse recurrence, and proves
+that the two constructions are mutually inverse
+(\lean{Bell.complete_cumulant} for $m_0=1$, \lean{Bell.cumulant_complete}
+for $\kappa_0=0$), over any commutative ring; the generating-function form
+$M=\EulerE^K$ is \lean{Fabius.exp_subst_bellWeightSeries} (module
+\lean{BellGeneratingFunctions}), where $K$ is the weight series
+\lean{Fabius.bellWeightSeries}.  The sums over the partition lattice
+\cref{eq:merged-moment-cumulant-forward,eq:merged-moment-cumulant-backward}
+and the identity $K=\log M$ are not formalized.""")),
+]
+
+PENDING += [
+ # --- thm:associated-stirling-recurrence ---
+ (r"""power divided by $k!$.
+\end{proof}
+""",
+  remark(r"""% ed.: crosswalk added 2026-09-02; Lean takes the weighted Bell polynomial as the definition.
+Module \lean{AssociatedStirling} defines $\mathsf S_r(n,k)$ as the partial
+Bell polynomial $\ExponentialPartialBellPolynomial nk$ with the weights
+$x_j=[j\ge r]$ (\lean{Fabius.associatedStirling}); the count of partitions
+with all blocks of size at least $r$ is not formalized.  With this definition
+\cref{eq:associated-stirling-egf} is \lean{Fabius.egfA_associatedStirling},
+immediate from the column theorem \lean{Fabius.bellWeightSeries_pow} once the
+weight series is identified with $\EulerE^z-\sum_{j<r}z^j/j!$
+(\lean{Fabius.bellWeightSeries_assocWeight}), and
+\cref{eq:associated-stirling-recurrence} is
+\lean{Fabius.associatedStirling_succ_succ}, obtained by differentiating the
+generating function: $W'=W+z^{r-1}/(r-1)!$
+(\lean{Fabius.derivative_bellWeightSeries_assocWeight}) gives
+$F_k'=kF_k+F_{k-1}z^{r-1}/(r-1)!$ for $F_k=W^k/k!$, and the coefficient of
+$z^n/n!$ is the recurrence.""")),
+]
+
 applied = 0
 for anchor, text in PENDING:
     if text.strip() in s:
