@@ -5962,34 +5962,52 @@ $D^k\cos u=\cos(u+k\pi/2)$ in Fa\`a di Bruno's formula.
 
 \section{Diagonal identities furnished by inverse functions}
 
-\begin{proposition}[Inverse sine and tangent diagonals]
-For $m\geq0$,
+\begin{theorem}[Four classical inverse series and their diagonals]
+\label{thm:merged-four-inverse-series}
+For $|y|<1$,
 \begin{align}
  \arcsin y
  &=\sum_{m\geq0}\frac1{2m+1}\binom{2m}{m}
       \frac{y^{2m+1}}{4^m},                                       \label{eq:merged-arcsin-series}\\
+ \arctan y
+ &=\sum_{m\ge0}\frac{(-1)^m}{2m+1}y^{2m+1},                       \label{eq:merged-arctan-series}\\
+ \operatorname{arsinh}y
+ &=\sum_{m\ge0}\frac{(-1)^m}{2m+1}\binom{2m}{m}
+      \frac{y^{2m+1}}{4^m},                                       \label{eq:merged-arsinh-series}\\
+ \operatorname{artanh}y
+ &=\sum_{m\ge0}\frac{y^{2m+1}}{2m+1}.                             \label{eq:merged-artanh-series}
+\end{align}
+Their inverse pairs give, for every $m\ge0$,
+\begin{align}
  [x^{2m}]\left(\frac{x}{\sin x}\right)^{2m+1}
  &=\frac1{4^m}\binom{2m}{m},                                      \label{eq:merged-sine-diagonal}\\
  [x^{2m}]\left(\frac{x}{\tan x}\right)^{2m+1}
- &=(-1)^m.                                                         \label{eq:merged-tangent-diagonal}
+ &=(-1)^m,                                                         \label{eq:merged-tangent-diagonal}\\
+ [x^{2m}]\left(\frac{x}{\sinh x}\right)^{2m+1}
+ &=(-1)^m\frac1{4^m}\binom{2m}{m},                                \label{eq:merged-sinh-diagonal}\\
+ [x^{2m}]\left(\frac{x}{\tanh x}\right)^{2m+1}
+ &=1.                                                              \label{eq:merged-tanh-diagonal}
 \end{align}
-\end{proposition}
+\end{theorem}
 
 \begin{proof}
-The binomial theorem gives
-$(1-y^2)^{-1/2}=\sum_{m\geq0}\binom{2m}{m}y^{2m}/4^m$; integrating
-from $0$ to $y$ proves \eqref{eq:merged-arcsin-series}.  Apply analytic
-Lagrange inversion to the inverse pair $y=\sin x$, $x=\arcsin y$:
+The derivatives of the four inverse functions are, in the displayed order,
 \[
- [y^{2m+1}]\arcsin y
- =\frac1{2m+1}[x^{2m}]
-   \left(\frac{x}{\sin x}\right)^{2m+1}.
+ (1-y^2)^{-1/2},\qquad (1+y^2)^{-1},\qquad
+ (1+y^2)^{-1/2},\qquad (1-y^2)^{-1}.
 \]
-Comparison with \eqref{eq:merged-arcsin-series} proves
-\eqref{eq:merged-sine-diagonal}.  Similarly,
-$\arctan y=\sum_{m\geq0}(-1)^my^{2m+1}/(2m+1)$ follows by integrating
-$(1+y^2)^{-1}$.  Lagrange inversion for $y=\tan x$ then gives
-\eqref{eq:merged-tangent-diagonal}.
+The generalized binomial theorem and the geometric series expand these four
+functions for $|y|<1$; termwise integration from $0$ to $y$ gives
+\cref{eq:merged-arcsin-series,eq:merged-arctan-series,
+eq:merged-arsinh-series,eq:merged-artanh-series}.
+
+If $g=f^{\langle-1\rangle}$, $f(0)=0$, and $f'(0)=1$, Lagrange inversion gives
+\[
+ [y^n]g(y)=\frac1n[x^{n-1}]\left(\frac{x}{f(x)}\right)^n.
+\]
+Apply this identity with $f=\sin,\tan,\sinh,\tanh$ and $n=2m+1$, then compare
+with the four inverse coefficients just computed.  This proves all four
+diagonal identities.
 \end{proof}
 
 \begin{proposition}[Exponential--logarithmic diagonals]
@@ -6036,6 +6054,75 @@ which is \eqref{eq:merged-offset-lagrange}.  The analytic statement follows
 from the analytic inverse-function theorem exactly as in
 Theorem~\ref{thm:analytic-lagrange}.
 \end{proof}
+
+\section{Quadratic critical points and square-root inverses}
+
+\begin{theorem}[Local square-root inverse]
+\label{thm:merged-square-root-inverse}
+Let $f$ be holomorphic near $a\in\ComplexNumbers$ and suppose
+\[
+ f(a)=b,\qquad f'(a)=0,\qquad f''(a)\ne0.
+\]
+Then, after choosing a local square root of $w-b$, the two solutions of
+$f(z)=w$ near $a$ have convergent Puiseux expansions
+\begin{equation}
+ z=a+\sum_{m\ge1}c_m(w-b)^{m/2}.                                  \label{eq:merged-square-root-inverse}
+\end{equation}
+Passing from one branch to the other changes the sign of every odd-indexed
+$c_m$ and leaves every even-indexed $c_m$ fixed.  In particular,
+\begin{equation}
+ c_1=\pm\sqrt{\frac{2}{f''(a)}}.                                  \label{eq:merged-square-root-leading}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Put $z=a+u$.  Taylor expansion and the double zero at $u=0$ give the analytic
+factorization
+\[
+ f(a+u)-b=u^2h(u),\qquad h(0)=\frac12f''(a)\ne0.
+\]
+On a sufficiently small disk, $h$ has an analytic square root.  Set
+$v=u\sqrt{h(u)}$.  Its derivative at zero is $\sqrt{h(0)}\ne0$, so the
+analytic inverse-function theorem supplies a convergent analytic inverse
+$u=\chi(v)$.  Because $v^2=w-b$, the two local solutions are
+$z=a+\chi(\sqrt{w-b})$ and $z=a+\chi(-\sqrt{w-b})$.  Expanding $\chi$
+proves the parity assertion and \cref{eq:merged-square-root-inverse}.  Finally
+$\chi'(0)=1/\sqrt{h(0)}=\sqrt{2/f''(a)}$, with the sign determined by the
+chosen square-root branch, which proves \cref{eq:merged-square-root-leading}.
+\end{proof}
+
+\begin{corollary}[Universal coefficient signature]
+\label{cor:merged-square-root-coefficients}
+Let $g(w)$ be analytic at zero and suppose that $\rho\ne0$ is its unique
+singularity of smallest modulus.  Assume that in a slit neighborhood of $\rho$
+one can write
+\[
+ g(w)=H(w)+(1-w/\rho)^{1/2}K(w),
+\]
+where $H$ and $K$ extend analytically to $|w|<|\rho|+\eta$ for some $\eta>0$
+and $K(\rho)=\lambda\ne0$.  Then
+\begin{equation}
+ [w^n]g(w)\sim-\frac{\lambda}{2\sqrt\pi}\rho^{-n}n^{-3/2}.        \label{eq:merged-square-root-coefficients}
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+The analytic part $H$ has coefficients $O((|\rho|+\eta')^{-n})$ for any
+$0<\eta'<\eta$.  In the remaining term put $w=\rho u$ and apply
+\cref{thm:merged-darboux-transfer} with $R=1$, exponent
+$\alpha=-1/2$, and analytic multiplier $K(\rho u)$.  Since
+$\Gamma(-1/2)=-2\sqrt\pi$, its leading term is exactly
+\cref{eq:merged-square-root-coefficients}.
+\end{proof}
+
+\begin{remark}
+The theorem explains the ubiquitous exponent $n^{-3/2}$ in inverse-function
+coefficients.  For $f(z)=z\EulerE^z$, the critical point $z=-1$ maps to
+$-\EulerE^{-1}$ and produces the first branch point of Lambert $W$; the
+Catalan equation has the analogous quadratic critical value $1/4$.  Formal
+reversion determines coefficients locally, whereas the nearest analytic
+critical value determines their eventual scale.
+\end{remark}
 
 \chapter{Kepler's equation as a complete reversion example}
 \label{ch:merged-kepler}
@@ -6282,6 +6369,26 @@ $G(w)=\sum_{n\geq1}g_nw^n$ has
 This is Lagrange--Bürmann with outer function $H(z)=z$.  The coefficient
 $g_n$ depends only on $a_1,\ldots,a_n$, so every truncation is exact through
 its declared order.
+\end{proof}
+
+\begin{algorithm}[Reciprocal Newton iteration]
+\label{alg:merged-newton-reciprocal}
+Suppose $A(0)$ is invertible and $AC_m\equiv1\pmod{z^m}$.  Define
+\begin{equation}
+ C_{2m}=C_m(2-AC_m)\pmod{z^{2m}}.                                 \label{eq:merged-newton-reciprocal}
+\end{equation}
+Then $AC_{2m}\equiv1\pmod{z^{2m}}$: one Newton step doubles the number of
+known reciprocal coefficients.
+\end{algorithm}
+
+\begin{proof}
+Write $AC_m=1-E$ with $E\in z^mR[[z]]$.  Then
+\[
+ A C_m(2-AC_m)=(1-E)(1+E)=1-E^2.
+\]
+Since $E^2\in z^{2m}R[[z]]$, reduction modulo $z^{2m}$ proves the claim.
+Only addition and multiplication are used once the initial inverse of $A(0)$
+has been chosen.
 \end{proof}
 
 \begin{algorithm}[Newton reversion]
