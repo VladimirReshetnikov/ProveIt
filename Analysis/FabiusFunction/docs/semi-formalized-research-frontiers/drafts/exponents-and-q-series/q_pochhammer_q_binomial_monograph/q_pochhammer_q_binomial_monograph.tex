@@ -4439,7 +4439,7 @@ Its zeros are the simple points $z=-q^m$, $m\in\IntegerNumbers$.
 \end{corollary}
 
 \begin{proof}
-The functional equation follows either from reindexing the bilateral series or from the proof above.  The product in \eqref{eq:jtp-plus} vanishes exactly when $1+zq^j=0$ or $1+q^{j+1}/z=0$, which together give $z=-q^m$ for $m\in\IntegerNumbers$.  Exactly one factor vanishes at each such point.
+The functional equation follows either from reindexing the bilateral series or from the proof above.  The product in \eqref{eq:jtp-plus} vanishes exactly when $1+zq^j=0$ or $1+q^{j+1}/z=0$, which together give $z=-q^m$ for $m\in\IntegerNumbers$.  Exactly one factor vanishes at each such point: at $z_0=-q^{-j}$ ($j\ge0$) it is the factor $u(z)=1+zq^{j}$ of $(-z;q)_\infty$, and at $z_0=-q^{j+1}$ it is the factor $u(z)=1+q^{j+1}/z$ of $(-q/z;q)_\infty$.  Writing $\BilateralTheta{z}{q}=u(z)G(z)$ near $z_0$, where $G$ collects the remaining factors, $G$ is holomorphic on $z\ne0$ and $G(z_0)\ne0$ (its finitely many finite factors are $1-q^{i-j}$ with $i<j$, and its infinite factors are $(q;q)_\infty$ and $(q^{j+1};q)_\infty$), so $\BilateralTheta{\cdot}{q}$ has derivative $u'(z_0)G(z_0)\ne0$ at $z_0$, with $u'(z_0)=q^{j}$, respectively $-q^{j+1}/z_0^{2}$.  Hence every zero is simple.
 \end{proof}
 
 % Chapter: \ref{chap:jtp} ("Jacobi's triple product").  A new section placed
@@ -12783,7 +12783,7 @@ inside the proof below does not formalize the result the proof concludes.
   than a mathematical claim.
 \end{description}
 
-Of the 282 labelled forward results, 140 are \statusexact, 82 are
+Of the 282 labelled forward results, 142 are \statusexact, 80 are
 \statuspartial, 52 are \statusnone, and 8 are \statusna.  The original
 191-result pre-Fabius core had 36 \statusexact, 29 \statuspartial, 123
 \statusnone, and 3 \statusna{} entries.  The four integrated guide chapters
@@ -13339,7 +13339,7 @@ inferred from a related finite identity.
 \toprule
 Chapter & \statusexact & \statuspartial & \statusnone & \statusna\\
 \midrule
-The algebra of $q$-shifted factorials & 12 & 2 & 1 & 0\\
+The algebra of $q$-shifted factorials & 13 & 1 & 1 & 0\\
 $q$-integers and Gaussian coefficients & 9 & 0 & 0 & 0\\
 Finite $q$-binomial theorems and inversion & 10 & 0 & 0 & 0\\
 Weighted binomial coefficients and symmetric functions & 3 & 3 & 2 & 0\\
@@ -13352,7 +13352,7 @@ Euler telescoping and very-well-poised summations & 1 & 0 & 3 & 0\\
 Bilateral series and Ramanujan's \texorpdfstring{${}_1\psi_1$}{1psi1} sum & 2 & 0 & 0 & 0\\
 $q$-difference calculus and the quantum binomial & 9 & 1 & 0 & 0\\
 The $q$-gamma and $q$-beta functions & 7 & 0 & 1 & 0\\
-Jacobi's triple product & 7 & 1 & 0 & 0\\
+Jacobi's triple product & 8 & 0 & 0 & 0\\
 Theta modularity, lattice dissection, and sums of squares & 1 & 1 & 12 & 4\\
 Partitions and product--sum identities & 4 & 0 & 0 & 0\\
 Bailey pairs and the Rogers--Ramanujan identities & 7 & 0 & 0 & 0\\
@@ -13368,7 +13368,7 @@ Half-base arithmetic and Prouhet--Thue--Morse cancellation & 6 & 3 & 0 & 0\\
 Geometric uniform sums, $q$-cumulants, and the Fabius--Rvachev functions & 2 & 11 & 0 & 0\\
 Dyadic Gaussian--Thue--Morse structure and the values of $F$ & 7 & 45 & 4 & 0\\
 \midrule
-\textbf{Forward total} & 140 & 82 & 52 & 8\\
+\textbf{Forward total} & 142 & 80 & 52 & 8\\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -13483,17 +13483,21 @@ is meromorphic on $\mathbb C$, holomorphic and nonvanishing on every set avoidin
 $aq^{\alpha+j}=1$, and the derivative has the displayed logarithmic form at every $\alpha$ with
 $\lVert aq^\alpha\rVert<1$ (principal branch); the derivative formula at general non-pole
 $\alpha$ and the local uniformity of the series are not formalised}\\[2pt]
-\Cref{thm:lambert-log} & \statuspartial &
-\texttt{tsum\_\allowbreak{}log\_\allowbreak{}one\_\allowbreak{}sub\_\allowbreak{}geom},
+\Cref{thm:lambert-log} & \statusexact &
+\texttt{hasSum\_\allowbreak{}lambert\_\allowbreak{}log\_\allowbreak{}complex},
 \texttt{exp\_\allowbreak{}neg\_\allowbreak{}tsum\_\allowbreak{}lambert\_\allowbreak{}eq\_\allowbreak{}qPochhammerInfIn},
-\texttt{hasDerivAt\_\allowbreak{}qPochhammerInfIn},
+\texttt{hasDerivAt\_\allowbreak{}lambert\_\allowbreak{}series},
 \texttt{hasDerivAt\_\allowbreak{}qPochhammerInfIn\_\allowbreak{}lambert},
-\texttt{tsum\_\allowbreak{}neg\_\allowbreak{}pow\_\allowbreak{}div\_\allowbreak{}one\_\allowbreak{}sub\_\allowbreak{}mul\_\allowbreak{}pow\_\allowbreak{}eq}\newline
-{\footnotesize\texttt{EulerLogTransform}; \texttt{LambertSeriesLog};
-\texttt{QPochhammerLogDerivative}; the series identity with principal
-logarithms, its exponential form, and both derivative formulas for
-$\lvert a\rvert<1$ by termwise differentiation on discs; the local uniformity
-is used in the proofs but not stated as a separate result}\\[2pt]
+\texttt{tsum\_\allowbreak{}neg\_\allowbreak{}pow\_\allowbreak{}div\_\allowbreak{}one\_\allowbreak{}sub\_\allowbreak{}mul\_\allowbreak{}pow\_\allowbreak{}eq},
+\texttt{tendstoLocallyUniformlyOn\_\allowbreak{}lambert\_\allowbreak{}log},
+\texttt{tendstoLocallyUniformlyOn\_\allowbreak{}lambert\_\allowbreak{}deriv},
+\texttt{tendstoLocallyUniformlyOn\_\allowbreak{}lambert\_\allowbreak{}geom}\newline
+{\footnotesize\texttt{EulerLogTransform}, \texttt{LambertSeriesLog},
+\texttt{QPochhammerLogDerivative}, \texttt{LambertSeriesLocallyUniform}; the series
+identity with principal logarithms, its exponential form, both derivative formulas for
+$\lvert a\rvert<1$, and the locally uniform convergence of all three series on the open
+unit disc (uniform on every closed disc $\lvert a\rvert\le r<1$ by the Weierstrass
+$M$-test with the majorants $r^m/(1-\lvert q\rvert)$ and $\lvert q\rvert^j/(1-r)$)}\\[2pt]
 \Cref{cor:divisor-sum} & \statusexact &
 \texttt{neg\_\allowbreak{}mul\_\allowbreak{}deriv\_\allowbreak{}div\_\allowbreak{}qPochhammerInfIn\_\allowbreak{}self},
 \texttt{hasDerivAt\_\allowbreak{}qPochhammerInfIn\_\allowbreak{}self},
@@ -14032,13 +14036,17 @@ dissections of infinite symbols are separate lemmas}\\[2pt]
 \eqref{eq:jtp-plus} as \texttt{HasSum} over $\IntegerNumbers$, for every
 $z\ne0$ and $\lVert q\rVert<1$ in any complete normed field, with the exponent
 \texttt{thetaExponent}}\\[2pt]
-\Cref{cor:theta-quasi} & \statuspartial &
+\Cref{cor:theta-quasi} & \statusexact &
 \texttt{bilateralTheta\_\allowbreak{}mul\_\allowbreak{}left},
-\texttt{bilateralTheta\_\allowbreak{}eq\_\allowbreak{}zero\_\allowbreak{}iff}\newline
-{\footnotesize\texttt{ThetaQuasiPeriodicity}; the functional equation by
-reindexing the bilateral series, and the zero set $\{-q^m: m\in\IntegerNumbers\}$
-from the product form, in every complete normed field with $q\ne0$; the
-simplicity of the zeros is not formalized}\\[2pt]
+\texttt{bilateralTheta\_\allowbreak{}eq\_\allowbreak{}zero\_\allowbreak{}iff},
+\texttt{exists\_\allowbreak{}hasDerivAt\_\allowbreak{}bilateralTheta\_\allowbreak{}zero},
+\texttt{deriv\_\allowbreak{}bilateralTheta\_\allowbreak{}ne\_\allowbreak{}zero}\newline
+{\footnotesize\texttt{ThetaQuasiPeriodicity}, \texttt{ThetaSimpleZeros}; the functional
+equation by reindexing the bilateral series and the zero set $\{-q^m: m\in\IntegerNumbers\}$
+from the product form, in every complete normed field with $q\ne0$; over $\mathbb C$ the
+zeros are simple: at every $-q^m$ the theta function has a nonzero derivative, obtained by
+isolating the vanishing factor of the triple product
+(\texttt{hasDerivAt\_\allowbreak{}of\_\allowbreak{}eventuallyEq\_\allowbreak{}mul})}\\[2pt]
 \Cref{thm:finite-jtp} & \statusexact &
 \texttt{finite\_\allowbreak{}triple\_\allowbreak{}product},
 \texttt{finite\_\allowbreak{}triple\_\allowbreak{}product\_\allowbreak{}poly}\newline

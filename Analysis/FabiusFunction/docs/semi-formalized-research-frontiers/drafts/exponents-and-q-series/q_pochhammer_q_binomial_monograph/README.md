@@ -92,15 +92,15 @@ validation state. Deleted checksum manifests must not be recreated. Historical
 SHA-256 values recorded directly in this README and in `PROVENANCE.md` remain
 provenance receipts for the named artifacts.
 
-The retained `q_pochhammer_q_binomial_monograph.pdf` is a 366-page A4
-build of the current master source (15,102 lines, 722,435 bytes,
-SHA-256 `ff3b09f7c7cc959e4b0c36900cd00e6ccbbd667232d4e2a1ba0349924fec141a`).
-The PDF is 3,115,575 bytes with SHA-256
-`167ada66a6ef95439375c6ba2f984d7c8a301738fb0a0b9d2038600c1b6e0220`.
+The retained `q_pochhammer_q_binomial_monograph.pdf` is a 367-page A4
+build of the current master source (15,190 lines, 728,116 bytes,
+SHA-256 `a65126f7fb10f207aa2cb9fdefe96c5f6f9210dcddd14cf3bfcd5653b351ae41`).
+The PDF is 3,122,835 bytes with SHA-256
+`fd0585ac96ccb78a6a559a2cc2b3a5f019affcf90c7f200687571b69b783bad9`.
 It was built by exactly three serial
-`pdflatex -interaction=nonstopmode -halt-on-error` passes, which produced 366,
-366, and 366 pages, with `makeindex` run on the `.idx` file after each pass.
-Each pass reported four overfull boxes: the three preexisting ones at source lines 650-668 and one new one from an inline formula in the Bailey-chain chapter's new remark, which is being converted to a display for the next build; no undefined references remain. All pages are A4. `pdffonts` reports 43 font rows, all
+`pdflatex -interaction=nonstopmode -halt-on-error` passes, which produced 367,
+367, and 367 pages, with `makeindex` run on the `.idx` file after each pass.
+3 overfull hboxes All pages are A4. `pdffonts` reports 43 font rows, all
 embedded and subsetted, including 5 Libertinus rows, with no Type-3
 fonts. The files under `assets/experiments/**/figures/` remain research
 figures, not publication manuscripts.
@@ -169,7 +169,7 @@ entireness, zero-locus, reciprocal-power, and analytic-order results rather
 than duplicating their analytic proofs. In `QBinomialTheoremInfinite`,
 `finiteQPochhammerIn_zero_left` remains the unique declaration owned by
 `GaussianBinomialAtOne` and is imported rather than redeclared. The forward
-status ledger is 140 Exact, 82 Partial, 52 None, and 8 interface rows; the
+status ledger is 142 Exact, 80 Partial, 52 None, and 8 interface rows; the
 original 191-result pre-Fabius core is 36/29/123/3, and the
 completed source concordance records 66 Lean-proved rows, 412 human-proved
 frontier rows, 60 not-applicable rows, and 9 conjectures.
