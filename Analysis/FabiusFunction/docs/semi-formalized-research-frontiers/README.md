@@ -37,7 +37,7 @@ explicit Rvachev--Appell specialization. In the canonical inverse synthesis
 this promotes exactly `is:p3:cor:forced-superconvergence` and
 `is:p3:thm:Appell-lattice-reproduction`, bringing its 194 immutable rows to
 49 Lean-proved / 96 human-proved / 10 conjectural / 15 open / 24
-nonassertoric. The live documentation census is 666 modules and 8,827 public
+nonassertoric. The live documentation census is 669 modules and 8,847 public
 declarations with no gaps; no PDF was rebuilt for this source-only update.
 
 The 1 September 2026 source-only q-Pochhammer overlay is likewise newer than
@@ -50,16 +50,17 @@ promotes only `thm:poch-entire` in the consolidated q-series monograph.  The
 same current source also crosswalks the generic infinite/dissection API and
 the later Euler, q-binomial, Jacobi, quantum-binomial, Rogers--Szegő,
 cyclotomic-divisibility, q-Catalan, primitive-root-block, q-Lucas, Jackson
-q-beta, and geometric Newton-interpolation tranches. Its 282-result forward
-status totals are now 81 exact / 85 partial / 108 none / 8 interface. The
+q-beta, geometric Newton-interpolation, integer/complex upper Gaussian, and
+q-Pfaff--Saalschütz tranches. Its 282-result forward
+status totals are now 87 exact / 83 partial / 104 none / 8 interface. The
 outer spectral product now has an exact
 locally-uniform/normal-convergence theorem; the compound centered/MGF and
 exterior reciprocal/pole layers remain partial.
 
-The monograph's current 14,387-line, 675,649-byte source has SHA-256
-`4272833a3b686030538dc9494551044b2141ad29e9ead32b8b2b6591a58e27b3`.
-Its retained 348-page A4 PDF (3,002,729 bytes; SHA-256
-`8bf14b52d8a0fc0abc4d54cca503fd47a2df37cf76ee1bb4e442bea1fd2a4aa7`)
+The monograph's current 14,438-line, 678,798-byte source has SHA-256
+`b0b993302adc5e5122b660bd3d413fa352ada9619f2eb9a854603acb3d3e1971`.
+Its retained 354-page A4 PDF (3,030,302 bytes; SHA-256
+`1050a9a3b0b7a8df8e7de0870946ae64940d7d7839a2f20427be0ebe14b0ba8c`)
 renders an earlier explicitly pinned source. It remains a reproducible
 historical publication checkpoint, but must not be cited as displaying the
 current theorem promotions until a new PDF is built and inspected.

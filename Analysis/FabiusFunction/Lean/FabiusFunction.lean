@@ -512,6 +512,9 @@ import FabiusFunction.CyclotomicDivisibility
 import FabiusFunction.QCatalan
 import FabiusFunction.QBetaIntegral
 import FabiusFunction.NewtonInterpolation
+import FabiusFunction.GaussianBinomialInteger
+import FabiusFunction.GaussianBinomialComplexOrder
+import FabiusFunction.QPfaffSaalschutz
 import FabiusFunction.GaussianBinomialPalindromic
 import FabiusFunction.ThetaQuasiPeriodicity
 
@@ -767,6 +770,17 @@ theorems: for `0 < q < 1` and positive arguments it evaluates the Jackson
 q-beta integral in infinite-product and q-gamma forms and derives symmetry,
 positivity, and both successor recurrences.  The hypotheses are retained
 explicitly; no endpoint or `q → 1` limiting theorem is asserted.
+
+Three further q-series modules contribute two definitions and eighteen
+theorems.  `GaussianBinomialInteger` (1+10) defines Gaussian coefficients with
+integer upper index, proves both q-Pascal recurrences and negative-index
+reflection, and derives the reciprocal finite q-binomial series.
+`GaussianBinomialComplexOrder` (1+5) uses principal complex powers to extend
+the upper index and packages the generalized reciprocal and finite q-binomial
+series.  `QPfaffSaalschutz` (0+3) proves the terminating balanced `₃φ₂`
+summation algebraically over a field.  The nonzero nome and parameters,
+strict-contraction bounds, and finite-product nonvanishing assumptions remain
+explicit; no boundary or limiting extension is asserted.
 
 The probabilistic layer is closed at the level of measures.  The up-measure
 `μ_up = up·Leb` satisfies the refinement equation

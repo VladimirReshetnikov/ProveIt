@@ -31,7 +31,7 @@ module tranches and the zero-definition, three-theorem
 crosswalk. That source is a source-only successor to the fresh artifact receipt
 and requires a later synchronized three-pass build. Retained PDFs under its `assets/` tree are
 research figures, not alternate manuscript renderings. The current Lean audit
-contains 666 facade-reachable modules and 8,827 public declarations, with no
+contains 669 facade-reachable modules and 8,847 public declarations, with no
 missing module headers or declaration documentation.
 
 ## Detailed package record
@@ -95,15 +95,15 @@ Current packages and retained intake records:
   figures. Pinned source revisions and Git history preserve every superseded
   layout and arrival fact.
 
-  The current `q_pochhammer_q_binomial_monograph.tex` has 14,387 lines,
-  675,649 bytes, and SHA-256
-  `4272833a3b686030538dc9494551044b2141ad29e9ead32b8b2b6591a58e27b3`.
+  The current `q_pochhammer_q_binomial_monograph.tex` has 14,438 lines,
+  678,798 bytes, and SHA-256
+  `b0b993302adc5e5122b660bd3d413fa352ada9619f2eb9a854603acb3d3e1971`.
   Its retained `q_pochhammer_q_binomial_monograph.pdf` is a historical
-  348-page A4 artifact of 3,002,729 bytes, with SHA-256
-  `8bf14b52d8a0fc0abc4d54cca503fd47a2df37cf76ee1bb4e442bea1fd2a4aa7`.
-  That PDF was built in exactly three guarded serial passes (338, 348, and 348
-  pages) from the preceding 14,158-line, 661,835-byte source with SHA-256
-  `79ee5e60a6c7e42a91c58dcd9bcae56173cc6b4aa3e54739a461943f705f3904`.
+  354-page A4 artifact of 3,030,302 bytes, with SHA-256
+  `1050a9a3b0b7a8df8e7de0870946ae64940d7d7839a2f20427be0ebe14b0ba8c`.
+  That PDF was built from the preceding 14,381-line, 675,239-byte source with
+  SHA-256
+  `240bff72e95ddf9609f6c5aba7f5285ef2ce4ec60e0a2e73d9a50138989e58dd`.
   Its A4 boxes, text extraction, embedded/subset Type-1 fonts including
   Libertinus, absence of Type-3 fonts, and targeted visual review passed at
   that checkpoint. Because the current TeX is newer, no render parity is
@@ -793,8 +793,8 @@ claims about the current canonical source. The canonical synthesis's current
 source and retained historical PDF are identified by the single exact receipt
 in the detailed package record above.
 
-The latest validated forward formalization ledger has 282 rows: 81 Exact, 85
-Partial, 108 with no counterpart, and 8 interface-only. The original
+The latest validated forward formalization ledger has 282 rows: 87 Exact, 83
+Partial, 104 with no counterpart, and 8 interface-only. The original
 191-result pre-Fabius core had 36 exact, 29 partial, 123 with no counterpart,
 and 3 interface-only entries. The four integrated-guide chapters add 31
 human-proved but not Lean-formalized assertions and five labelled definitions;
@@ -844,6 +844,9 @@ compatibility spelling of its primary identity),
 `QLucas.lean` (zero definitions, eight theorems),
 `QBetaIntegral.lean` (one definition, eight theorems),
 `NewtonInterpolation.lean` (two definitions, thirteen theorems),
+`GaussianBinomialInteger.lean` (one definition, ten theorems),
+`GaussianBinomialComplexOrder.lean` (one definition, five theorems),
+`QPfaffSaalschutz.lean` (zero definitions, three theorems),
 `GaussianBinomialAtNegOne.lean` (five theorems),
 `RvachevPochhammerFactorization.lean` (one definition, nine theorems), and
 `QPochhammerEntire.lean` (zero definitions; four legacy compatibility
@@ -1134,3 +1137,9 @@ symmetry, positivity, and recurrences, together with generic Newton
 interpolation and its geometric-grid specialization; the interpolation
 polynomial is named `newtonInterpolant` to remain distinct from the older
 Newton-basis generating-function `newtonPoly`.
+The final three-module tail adds integer and principal-complex upper-index
+Gaussian coefficients and the terminating balanced q-Pfaff--Saalschütz sum:
+`GaussianBinomialInteger.lean` is 1+10,
+`GaussianBinomialComplexOrder.lean` is 1+5, and
+`QPfaffSaalschutz.lean` is 0+3. Their nonzero-nome,
+strict-contraction, and denominator hypotheses remain explicit.

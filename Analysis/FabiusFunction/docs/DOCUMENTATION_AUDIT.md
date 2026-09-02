@@ -109,12 +109,12 @@ only 4,606 declarations and
 declarations, including 69 undocumented ones.  Run the script for the live
 numbers rather than copying these historical values.
 
-The live post-merge 2026-09-01 inventory contains 666 modules and 8,827
+The live post-merge 2026-09-01 inventory contains 669 modules and 8,847
 lexically visible public declarations, with zero missing module headers and
 zero missing doc comments.  Relative to the 610/8,318 activation checkpoint,
-the current tree adds fifty-six modules and 509 declarations.  Relative to
-the earlier 630/8,552 merged checkpoint, concurrent source work adds thirty-six
-modules and 275 declarations.  The final one-definition/eight-theorem
+the current tree adds fifty-nine modules and 529 declarations.  Relative to
+the earlier 630/8,552 merged checkpoint, concurrent source work adds thirty-nine
+modules and 295 declarations.  The final one-definition/eight-theorem
 `RvachevSuperconvergentSynthesis.lean` leaf contributes
 `IsRvachevSuperconvergentPhase`,
 `isRvachevSuperconvergentPhase_two_pow_iff`,
@@ -156,6 +156,14 @@ evaluates the Jackson q-beta integral as both an infinite-product quotient and
 a q-gamma quotient, with positivity, symmetry, and successor recurrences; the
 latter supplies triangular Newton coefficients and polynomials, interpolation
 and uniqueness, divided differences, and the geometric-grid specialization.
+The latest three q modules contribute two definitions and eighteen theorems:
+`GaussianBinomialInteger.lean` 1+10,
+`GaussianBinomialComplexOrder.lean` 1+5, and
+`QPfaffSaalschutz.lean` 0+3.  They extend Gaussian coefficients to integer
+and principal-branch complex upper parameters, derive the associated finite
+and reciprocal q-binomial series, and prove the terminating balanced
+q-Pfaff--Saalschuetz summation over a field.  Their nonzero-nome,
+strict-contraction, and finite-product nonvanishing hypotheses remain explicit.
 The older 622/8,472, 623/8,476, 629/8,546, 630/8,552,
 641/8,650, and 643/8,661 values below are historical checkpoints, not
 descriptions of the live tree.  The earlier additions and q-series tranches are
@@ -356,7 +364,10 @@ superconvergent synthesis leaf then adds one module and nine declarations,
 yielding 660/8,777.  The four newest q modules add one definition and
 twenty-five theorems, yielding the intermediate 664/8,803 census.
 The Jackson q-beta and Newton interpolation leaves then add three definitions
-and twenty-one theorems, yielding the live 666/8,827 census recorded above.
+and twenty-one theorems, yielding the intermediate 666/8,827 census.  The
+integer/complex upper Gaussian and q-Pfaff--Saalschuetz leaves then add two
+definitions and eighteen theorems, yielding the live 669/8,847 census recorded
+above.
 
 That increment is exhaustively counted as
 `QPochhammerInfiniteBounds.lean` 0+5, `HeineTransformation.lean` 2+5,
@@ -592,10 +603,11 @@ The retained comb-interpolation synthesis PDF is a validated 158-page A4
 historical receipt: the current source includes a post-render update to its
 additive-dyadic chapter, so a fresh parity build remains pending.  The rebuilt
 Integration-and-Transform master retains a historical 377-page PDF.  The canonical
-q-series synthesis is a validated 348-page historical receipt.  It contains
+q-series synthesis is a validated 354-page historical receipt.  It contains
 the earlier general finite/infinite q-Pochhammer crosswalks and six q-series
 modules; the merged fifth fixed-nome theorem, two later general
-q-Pochhammer theorems, and the twenty newest q-series/q-calculus modules make
+q-Pochhammer theorems, and the twenty-three newest
+q-series/q-calculus/interpolation modules make
 final parity
 pending.  The retained 167-page primary, 126-page walkthrough, 237-page
 canonical frontier, 301-page Representation Frontiers, 41-page New Frontiers,
@@ -603,7 +615,7 @@ and 88-page notation-catalogue artifacts likewise predate their current merged
 sources.  Their package notices treat those PDFs as historical validation
 receipts, not parity claims, until fresh uninterrupted three-pass builds
 complete.  The inverse-computability receipt likewise requires refresh for the
-666/8,827 census.  The canonical inverse-theory publication retains a 134-page
+669/8,847 census.  The canonical inverse-theory publication retains a 134-page
 artifact synchronized at its latest-main source checkpoint; the merged
 effective-inversion and superconvergent-synthesis tranches make current parity
 pending.
