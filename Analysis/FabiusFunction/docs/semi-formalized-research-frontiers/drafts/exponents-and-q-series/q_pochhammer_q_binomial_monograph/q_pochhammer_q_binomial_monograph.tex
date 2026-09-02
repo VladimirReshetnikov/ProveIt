@@ -3413,8 +3413,11 @@ the reversal uses).
 
 \begin{lemma}[Reversal of a terminating ${}_2\phi_1$]\label{lem:2phi1-reversal}
 \index{basic hypergeometric series!reversal of a terminating sum}
-Let $n\in\NaturalNumbers$, let $q\ne0$, and let $a$, $c$, $z$ be nonzero with
+Let $n\in\NaturalNumbers$, let $q\ne0$ with $(q;q)_n\ne0$, and let $a$, $c$, $z$ be nonzero with
 $(c;q)_n\ne0$ and $(q^{1-n}/a;q)_n\ne0$.  Then
+% ed.: the hypothesis $(q;q)_n\ne0$ (no denominator $(q;q)_j$, $j\le n$,
+% ed.: vanishes) was implicit in the original statement; it is needed for
+% ed.: both sides to be defined and is used by the Lean proof.
 \begin{equation}
  {}_2\phi_1\!\left[
  \begin{matrix}q^{-n},a\\c\end{matrix};q,z\right]
@@ -12599,8 +12602,8 @@ inside the proof below does not formalize the result the proof concludes.
   than a mathematical claim.
 \end{description}
 
-Of the 282 labelled forward results, 114 are \statusexact, 83 are
-\statuspartial, 77 are \statusnone, and 8 are \statusna.  The original
+Of the 282 labelled forward results, 115 are \statusexact, 83 are
+\statuspartial, 76 are \statusnone, and 8 are \statusna.  The original
 191-result pre-Fabius core had 36 \statusexact, 29 \statuspartial, 123
 \statusnone, and 3 \statusna{} entries.  The four integrated guide chapters
 add 31 human-proved but not Lean-formalized assertions and five labelled
@@ -13162,7 +13165,7 @@ Weighted binomial coefficients and symmetric functions & 3 & 3 & 2 & 0\\
 Partitions, words, paths, and inversion statistics & 7 & 2 & 0 & 0\\
 Finite fields, Grassmannians, and rank enumeration & 1 & 1 & 4 & 0\\
 Symmetry and unimodality & 0 & 0 & 3 & 0\\
-The infinite $q$-binomial theorem & 1 & 1 & 2 & 0\\
+The infinite $q$-binomial theorem & 2 & 1 & 1 & 0\\
 Basic hypergeometric series & 5 & 3 & 1 & 0\\
 Euler telescoping and very-well-poised summations & 1 & 0 & 3 & 0\\
 Bilateral series and Ramanujan's \texorpdfstring{${}_1\psi_1$}{1psi1} sum & 1 & 0 & 1 & 0\\
@@ -13184,7 +13187,7 @@ Half-base arithmetic and Prouhet--Thue--Morse cancellation & 6 & 3 & 0 & 0\\
 Geometric uniform sums, $q$-cumulants, and the Fabius--Rvachev functions & 2 & 11 & 0 & 0\\
 Dyadic Gaussian--Thue--Morse structure and the values of $F$ & 7 & 44 & 5 & 0\\
 \midrule
-\textbf{Forward total} & 114 & 83 & 77 & 8\\
+\textbf{Forward total} & 115 & 83 & 76 & 8\\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -13576,7 +13579,17 @@ the local uniformity in $(a,z)$ is not formalized}\\[2pt]
 \texttt{hasSum\_\allowbreak{}euler\_\allowbreak{}reciprocal}\newline
 {\footnotesize\texttt{QBinomialTheoremInfinite}; every complete normed field;
 the first for every $z$, the second for $\lVert z\rVert<1$}\\[2pt]
-\Cref{cor:ratio-expansion} & \statusnone & ---\\[2pt]
+\Cref{cor:ratio-expansion} & \statusexact &
+\texttt{hasSum\_\allowbreak{}ratio\_\allowbreak{}expansion},
+\texttt{hasSum\_\allowbreak{}prod\_\allowbreak{}powerSeries},
+\texttt{hasSum\_\allowbreak{}regroup\_\allowbreak{}antidiagonalTuple},
+\texttt{hasSum\_\allowbreak{}prod\_\allowbreak{}fin\_\allowbreak{}pi}\newline
+{\footnotesize\texttt{RatioExpansion}, \texttt{GeometricSimplexSum}; in any
+complete normed field with $\lVert q\rVert<1$ and $\lVert b_jz\rVert<1$, as the
+Cauchy product of the $r+s$ absolutely convergent Euler expansions, the
+coefficient $c_N$ being the sum over $\mathtt{antidiagonalTuple}\,(r+s)\,N$ of
+the products of the concatenated (\texttt{Fin.append}) coefficient families;
+the case $s=0$ has no restriction on $z$}\\[2pt]
 \Cref{prop:formal-qbinomial} & \statusnone & ---\\[2pt]
 \midrule
 \multicolumn{3}{@{}l}{\itshape Basic hypergeometric series}\\
