@@ -1,5 +1,6 @@
 import FabiusFunction.ThueMorseBitSupport
 import FabiusFunction.ThueMorseBooleanCube
+import Mathlib.Algebra.Ring.GeomSum
 import Mathlib.Data.Nat.Bitwise
 
 /-!
@@ -12,13 +13,18 @@ atlas's one-point Walsh spectrum together with the plain character
 orthogonality it refines, both as specializations of one general Walsh
 character sum, on top of a small reusable bit toolkit.
 
-* `sum_range_two_pow` and `testBit_two_pow_sub_one` — the all-ones word:
-  `∑_{j<m} 2^j = 2^m - 1`, whose bits are exactly the positions below
+* `sum_range_two_pow`, `sum_range_two_pow_cast` and
+  `testBit_two_pow_sub_one` — the all-ones word: `∑_{j<m} 2^j = 2^m - 1`
+  in `ℕ` and in any ring, whose bits are exactly the positions below
   `m`.
 * `eq_of_testBit_eq_of_lt_two_pow`, `eq_zero_iff_forall_testBit` and
   `eq_two_pow_sub_one_iff_forall_testBit` — **bounded digit
   extensionality**: below `2^m` a number is determined by its bits below
   `m`, and the two extreme digit patterns pin down `0` and `2^m - 1`.
+* `exists_testBit_eq_not_of_not_forall`, `exists_testBit_of_ne_zero` and
+  `exists_not_testBit_of_ne_two_pow_sub_one` — the contrapositives as
+  witnesses: a number below `2^m` that is not `0` (not `2^m - 1`) has a
+  set (a clear) bit below `m`.
 * `land_sum_two_pow` — masking a sum of distinct two-powers:
   `a &&& ∑_{j∈T} 2^j = ∑_{j∈T, bit_j(a)=1} 2^j`, for every finite `T`.
 * `thueMorseSign_eq_neg_one_pow_land` — `ε` as a Walsh character:
@@ -44,7 +50,9 @@ The Walsh kernel transports the sum across the Boolean-cube kernel
 masked character sum then factors both weight powers over bit positions,
 where position `j` contributes `y·(bit_j(a) ? z : 1)`.  The two spectral
 statements differ only in which digit pattern of `a` makes every factor
-`1 + x j` equal to `2`, so they share a single two-branch argument.
+`1 + x j` equal to `2`, so they share a single two-branch argument,
+`prod_one_add_mul_ite_testBit`, parametrized by the sign `y` and the
+digit pattern.
 -/
 
 set_option autoImplicit false
@@ -57,12 +65,14 @@ namespace Fabius
 
 /-- The geometric sum of two-powers: `∑_{j<m} 2^j = 2^m - 1`. -/
 theorem sum_range_two_pow (m : ℕ) : ∑ j ∈ range m, 2 ^ j = 2 ^ m - 1 := by
-  induction m with
-  | zero => simp
-  | succ m ih =>
-      have h1 : (1 : ℕ) ≤ 2 ^ m := Nat.one_le_two_pow
-      rw [Finset.sum_range_succ, ih, pow_succ]
-      omega
+  simpa using Nat.geomSum_eq (m := 2) (by norm_num) m
+
+/-- The geometric sum of two-powers in an arbitrary ring:
+`∑_{j<m} 2^j = 2^m - 1`, with no truncated subtraction. -/
+theorem sum_range_two_pow_cast {R : Type*} [Ring R] (m : ℕ) :
+    ∑ j ∈ range m, (2 : R) ^ j = 2 ^ m - 1 := by
+  have h := geom_sum_mul (2 : R) m
+  rwa [show (2 : R) - 1 = 1 by norm_num, mul_one] at h
 
 /-- The binary digits of `2^m - 1` are exactly the positions below `m`.
 This is Lean core's `Nat.testBit_two_pow_sub_one`, kept under the corpus
@@ -109,6 +119,34 @@ theorem eq_two_pow_sub_one_iff_forall_testBit {m a : ℕ} (ha : a < 2 ^ m) :
     refine eq_of_testBit_eq_of_lt_two_pow ha hb fun j hj => ?_
     rw [h j hj, testBit_two_pow_sub_one]
     exact (decide_eq_true hj).symm
+
+/-- A digit pattern that fails somewhere in the window fails at an
+explicit position: if not every bit of `a` below `m` equals `b`, some
+bit below `m` equals `!b`. -/
+theorem exists_testBit_eq_not_of_not_forall {m a : ℕ} (b : Bool)
+    (h : ¬ ∀ j < m, a.testBit j = b) :
+    ∃ j, j < m ∧ a.testBit j = !b := by
+  push Not at h
+  obtain ⟨j, hjm, hjb⟩ := h
+  exact ⟨j, hjm, Bool.eq_not_of_ne hjb⟩
+
+/-- A nonzero number below `2^m` has a set bit below `m`: the witness
+form of `eq_zero_iff_forall_testBit`. -/
+theorem exists_testBit_of_ne_zero {m a : ℕ} (ha : a < 2 ^ m)
+    (h0 : a ≠ 0) : ∃ j, j < m ∧ a.testBit j = true := by
+  obtain ⟨j, hjm, hjb⟩ := exists_testBit_eq_not_of_not_forall false
+    (mt (eq_zero_iff_forall_testBit ha).mpr h0)
+  exact ⟨j, hjm, hjb⟩
+
+/-- A number below `2^m` other than the all-ones word has a clear bit
+below `m`: the witness form of
+`eq_two_pow_sub_one_iff_forall_testBit`. -/
+theorem exists_not_testBit_of_ne_two_pow_sub_one {m a : ℕ}
+    (ha : a < 2 ^ m) (h : a ≠ 2 ^ m - 1) :
+    ∃ j, j < m ∧ a.testBit j = false := by
+  obtain ⟨j, hjm, hjb⟩ := exists_testBit_eq_not_of_not_forall true
+    (mt (eq_two_pow_sub_one_iff_forall_testBit ha).mpr h)
+  exact ⟨j, hjm, hjb⟩
 
 /-! ### Masked two-power sums -/
 
@@ -246,6 +284,38 @@ private theorem prod_one_add_eq_zero (m : ℕ) (x : ℕ → ℤ) {j : ℕ}
   rw [hx]
   norm_num
 
+/-- The shared two-branch core of the two spectral statements.  With the
+sign `y` and the digit pattern `b` matched so that a position whose bit
+is `b` contributes the factor `2` and a position whose bit is `!b`
+contributes the factor `0`, the product
+`∏_{j<m} (1 + y·(bit_j(a) ? -1 : 1))` is `2^m` when every bit of `a`
+below `m` is `b` and `0` otherwise.  The branching proposition `P` is
+abstract so that each caller keeps its own `if a = 0` or
+`if a = 2^m - 1`, with its own decidability instance. -/
+private theorem prod_one_add_mul_ite_testBit (m a : ℕ) (y : ℤ)
+    (b : Bool) (P : Prop) [Decidable P]
+    (hP : P ↔ ∀ j < m, a.testBit j = b)
+    (h2 : 1 + y * (if b then (-1 : ℤ) else 1) = 2)
+    (h0 : 1 + y * (if !b then (-1 : ℤ) else 1) = 0) :
+    ∏ j ∈ range m, (1 + y * (if a.testBit j then (-1 : ℤ) else 1)) =
+      if P then (2 ^ m : ℤ) else 0 := by
+  by_cases hp : P
+  · rw [if_pos hp]
+    refine prod_one_add_eq_two_pow m
+      (fun j => y * (if a.testBit j then (-1 : ℤ) else 1))
+      fun j hj => ?_
+    show y * (if a.testBit j then (-1 : ℤ) else 1) = 1
+    rw [hP.mp hp j hj]
+    exact add_left_cancel (a := 1) (h2.trans (by norm_num))
+  · rw [if_neg hp]
+    obtain ⟨j, hjm, hjb⟩ :=
+      exists_testBit_eq_not_of_not_forall b (mt hP.mpr hp)
+    refine prod_one_add_eq_zero m
+      (fun j => y * (if a.testBit j then (-1 : ℤ) else 1)) hjm ?_
+    show y * (if a.testBit j then (-1 : ℤ) else 1) = -1
+    rw [hjb]
+    exact add_left_cancel (a := 1) (h0.trans (by norm_num))
+
 /-- **Character orthogonality on the dyadic block.**  For `a < 2^m`,
 `∑_{n<2^m} (-1)^wt(a &&& n)` is `2^m` when `a = 0` and `0` otherwise:
 a nontrivial Walsh character sums to zero over the Boolean group. -/
@@ -259,22 +329,8 @@ theorem sum_neg_one_pow_binaryWeight_land (m a : ℕ) (ha : a < 2 ^ m) :
     rw [one_pow, one_mul]
   rw [Finset.sum_congr rfl hone,
     sum_pow_binaryWeight_mul_pow_binaryWeight_land (1 : ℤ) (-1 : ℤ) m a]
-  by_cases h0 : a = 0
-  · rw [if_pos h0]
-    refine prod_one_add_eq_two_pow m
-      (fun j => (1 : ℤ) * (if a.testBit j then (-1 : ℤ) else 1))
-      fun j hj => ?_
-    norm_num [(eq_zero_iff_forall_testBit ha).mp h0 j hj]
-  · rw [if_neg h0]
-    obtain ⟨j, hjm, hjbit⟩ : ∃ j, j < m ∧ a.testBit j = true := by
-      by_contra hcon
-      refine h0 ((eq_zero_iff_forall_testBit ha).mpr fun i hi => ?_)
-      by_cases hb : a.testBit i = true
-      · exact absurd ⟨i, hi, hb⟩ hcon
-      · simpa using hb
-    exact prod_one_add_eq_zero m
-      (fun j => (1 : ℤ) * (if a.testBit j then (-1 : ℤ) else 1)) hjm
-      (by norm_num [hjbit])
+  exact prod_one_add_mul_ite_testBit m a 1 false (a = 0)
+    (eq_zero_iff_forall_testBit ha) (by norm_num) (by norm_num)
 
 /-- **The Walsh transform of the Thue–Morse block is a point mass.**  For
 `a < 2^m`, `∑_{n<2^m} ε(n)·(-1)^wt(a &&& n)` is `2^m` at the all-ones
@@ -290,22 +346,8 @@ theorem sum_thueMorseSign_mul_walsh (m a : ℕ) (ha : a < 2 ^ m) :
     rw [thueMorseSign]
   rw [Finset.sum_congr rfl hsign,
     sum_pow_binaryWeight_mul_pow_binaryWeight_land (-1 : ℤ) (-1 : ℤ) m a]
-  by_cases hall : a = 2 ^ m - 1
-  · rw [if_pos hall]
-    refine prod_one_add_eq_two_pow m
-      (fun j => (-1 : ℤ) * (if a.testBit j then (-1 : ℤ) else 1))
-      fun j hj => ?_
-    norm_num [(eq_two_pow_sub_one_iff_forall_testBit ha).mp hall j hj]
-  · rw [if_neg hall]
-    obtain ⟨j, hjm, hjbit⟩ : ∃ j, j < m ∧ a.testBit j = false := by
-      by_contra hcon
-      refine hall ((eq_two_pow_sub_one_iff_forall_testBit ha).mpr
-        fun i hi => ?_)
-      by_cases hb : a.testBit i = true
-      · exact hb
-      · exact absurd ⟨i, hi, by simpa using hb⟩ hcon
-    exact prod_one_add_eq_zero m
-      (fun j => (-1 : ℤ) * (if a.testBit j then (-1 : ℤ) else 1)) hjm
-      (by norm_num [hjbit])
+  exact prod_one_add_mul_ite_testBit m a (-1) true (a = 2 ^ m - 1)
+    (eq_two_pow_sub_one_iff_forall_testBit ha) (by norm_num)
+    (by norm_num)
 
 end Fabius
