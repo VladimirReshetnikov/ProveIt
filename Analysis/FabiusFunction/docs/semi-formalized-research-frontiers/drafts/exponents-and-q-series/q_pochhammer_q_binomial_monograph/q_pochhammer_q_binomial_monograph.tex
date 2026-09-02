@@ -12724,7 +12724,7 @@ inside the proof below does not formalize the result the proof concludes.
   than a mathematical claim.
 \end{description}
 
-Of the 282 labelled forward results, 136 are \statusexact, 85 are
+Of the 282 labelled forward results, 137 are \statusexact, 84 are
 \statuspartial, 53 are \statusnone, and 8 are \statusna.  The original
 191-result pre-Fabius core had 36 \statusexact, 29 \statuspartial, 123
 \statusnone, and 3 \statusna{} entries.  The four integrated guide chapters
@@ -13288,7 +13288,7 @@ Partitions, words, paths, and inversion statistics & 7 & 2 & 0 & 0\\
 Finite fields, Grassmannians, and rank enumeration & 1 & 1 & 4 & 0\\
 Symmetry and unimodality & 0 & 0 & 3 & 0\\
 The infinite $q$-binomial theorem & 3 & 0 & 1 & 0\\
-Basic hypergeometric series & 5 & 3 & 1 & 0\\
+Basic hypergeometric series & 6 & 2 & 1 & 0\\
 Euler telescoping and very-well-poised summations & 1 & 0 & 3 & 0\\
 Bilateral series and Ramanujan's \texorpdfstring{${}_1\psi_1$}{1psi1} sum & 1 & 0 & 1 & 0\\
 $q$-difference calculus and the quantum binomial & 9 & 1 & 0 & 0\\
@@ -13309,7 +13309,7 @@ Half-base arithmetic and Prouhet--Thue--Morse cancellation & 6 & 3 & 0 & 0\\
 Geometric uniform sums, $q$-cumulants, and the Fabius--Rvachev functions & 2 & 11 & 0 & 0\\
 Dyadic Gaussian--Thue--Morse structure and the values of $F$ & 7 & 45 & 4 & 0\\
 \midrule
-\textbf{Forward total} & 136 & 85 & 53 & 8\\
+\textbf{Forward total} & 137 & 84 & 53 & 8\\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -13721,15 +13721,19 @@ the case $s=0$ has no restriction on $z$}\\[2pt]
 \midrule
 \multicolumn{3}{@{}l}{\itshape Basic hypergeometric series}\\
 \midrule
-\Cref{prop:phi-convergence} & \statuspartial &
+\Cref{prop:phi-convergence} & \statusexact &
 \texttt{summable\_\allowbreak{}basicHypergeometricTerm\_\allowbreak{}of\_\allowbreak{}le},
 \texttt{summable\_\allowbreak{}basicHypergeometricTerm\_\allowbreak{}of\_\allowbreak{}eq},
-\texttt{norm\_\allowbreak{}basicHypergeometricTerm\_\allowbreak{}le}\newline
-{\footnotesize\texttt{BasicHypergeometricSeries}; (i) and the convergence
-half of (ii), in every complete normed field, from a uniform geometric
-domination of the terms valid for $r\le s+1$ whenever no denominator product
-$(b_j;q)_\infty$ vanishes; the divergence half of (ii) and (iii) are not
-formalized}\\[2pt]
+\texttt{not\_\allowbreak{}summable\_\allowbreak{}basicHypergeometricTerm\_\allowbreak{}of\_\allowbreak{}eq},
+\texttt{not\_\allowbreak{}summable\_\allowbreak{}basicHypergeometricTerm\_\allowbreak{}of\_\allowbreak{}lt},
+\texttt{not\_\allowbreak{}tendsto\_\allowbreak{}basicHypergeometricTerm\_\allowbreak{}of\_\allowbreak{}lt}\newline
+{\footnotesize\texttt{BasicHypergeometricSeries}, \texttt{BasicHypergeometricDivergence}; in
+every complete normed field with $0<\lVert q\rVert<1$: (i) and the convergence half of (ii)
+from a uniform geometric domination of the terms; the divergence half of (ii) (for
+$\lVert z\rVert>1$) by the ratio test, the ratio of consecutive terms tending to $z$
+(\texttt{basicHypergeometricTerm\_\allowbreak{}succ}); (iii) made precise: for $r>s+1$, $z\ne0$
+and a nonterminating series ($1-a_iq^n\ne0$ for all $i,n$) the terms eventually at least
+double in norm, so they do not tend to zero and the series diverges}\\[2pt]
 \Cref{thm:classical-hypergeometric-limit} & \statusnone & ---\\[2pt]
 \Cref{thm:heine} & \statuspartial &
 \texttt{heine\_\allowbreak{}transformation},
