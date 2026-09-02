@@ -552,6 +552,8 @@ import FabiusFunction.IntegerParameterTranslation
 import FabiusFunction.MultisetInversions
 import FabiusFunction.GeometricSimplexReindex
 import FabiusFunction.RatioExpansion
+import FabiusFunction.QBohrMollerup
+import FabiusFunction.PartitionMultiplicity
 import FabiusFunction.EulerTelescoping
 import FabiusFunction.GaussianBinomialPalindromic
 import FabiusFunction.ThetaQuasiPeriodicity
