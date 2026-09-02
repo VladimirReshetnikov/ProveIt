@@ -96,28 +96,30 @@ It checks every permanent package file except the self-referential root
 useful because it preserves the migrated experiment and research-figure
 boundary.
 
-The retained `q_pochhammer_q_binomial_monograph.pdf` is a historical
-348-page A4 publication checkpoint. It was built from the then-current
-14,158-line, 661,835-byte master source with SHA-256
-`79ee5e60a6c7e42a91c58dcd9bcae56173cc6b4aa3e54739a461943f705f3904`.
-The PDF has 3,002,729 bytes and SHA-256
-`8bf14b52d8a0fc0abc4d54cca503fd47a2df37cf76ee1bb4e442bea1fd2a4aa7`.
-It was produced by exactly three serial
-`pdflatex -interaction=nonstopmode -halt-on-error` passes, which produced 338,
-348, and 348 pages, with `makeindex` run on the `.idx` file after each pass.
+The retained `q_pochhammer_q_binomial_monograph.pdf` is a 354-page A4
+build checkpoint made from the then-current source (14,381 lines, 675,239 bytes,
+SHA-256 `240bff72fb47562e9a8fd87085b5a3a96d738189714518db17988f7c4ac15d31`).
+The PDF is 3,030,302 bytes with SHA-256
+`1050a9a3b0b7a8df8e7de0870946ae64940d7d7839a2f20427be0ebe14b0ba8c`.
+It was built by exactly three serial
+`pdflatex -interaction=nonstopmode -halt-on-error` passes, which produced 343,
+354, and 354 pages, with `makeindex` run on the `.idx` file after each pass.
 The final log scan found three overfull boxes, all in the single paragraph of
-the `QPochhammerEntire` crosswalk in that historical source, whose long
-declaration names lack break points. All pages are A4. `pdffonts` reports 42
-font rows, all embedded and subsetted, including five Libertinus rows, with no
-Type-3 fonts. The files under `assets/experiments/**/figures/` remain research
+the `QPochhammerEntire` crosswalk, whose long declaration names lack break
+points. All pages are A4. `pdffonts` reports 42 font rows, all embedded and
+subsetted, including five Libertinus rows, with no Type-3
+fonts. The files under `assets/experiments/**/figures/` remain research
 figures, not publication manuscripts.
 
 The current master TeX is a source-only successor to that checkpoint: it has
-14,360 lines, 674,111 bytes, and SHA-256
-`4156d8dc83070bbdef4345a4bbd304a6002b1041c8a7476aa3e51e20d7936032`.
-The regenerated root `SHA256SUMS` ledger records the same identity. The
-historical source identity above must not be reused for the live source, and
-the retained PDF does not claim render parity with the current TeX.
+14,390 lines, 675,892 bytes, and SHA-256
+`cd8e5830fca13f85fb614d4ce7e0b6c1c99a6da54c660c76df2c6890def69ae3`.
+It combines the incoming q-beta and Newton-interpolation crosswalks with the
+Gaussian coefficient closure already on this branch. The regenerated root
+`SHA256SUMS` ledger records the live source and retained PDF separately; the
+PDF remains pinned to source SHA-256
+`240bff72fb47562e9a8fd87085b5a3a96d738189714518db17988f7c4ac15d31`
+and does not claim render parity with the merged TeX.
 
 The current source includes exhaustive crosswalks for `QPochhammerEntire`
 (zero definitions
@@ -145,7 +147,15 @@ expanded Euler, Jacobi, and Rogers--Szegő material. The newest arithmetic
 surfaces are `PrimitiveRootBlock` (zero definitions and three public theorems),
 `QLucas` (zero definitions and eight public theorems), `QCatalan` (one definition and
 eleven theorems), and `CyclotomicDivisibility` (zero definitions and three
-theorems).
+theorems). The incoming formal surfaces also include `NewtonInterpolation`
+and `QBetaIntegral`, covering arbitrary-node and geometric-grid Newton
+interpolation, the Jackson q-beta product, its q-gamma quotient, positivity,
+symmetry, and recurrences.
+The collision-free polynomial API is `nodeNewtonPoly`,
+`nodeNewtonPoly_succ`, `eval_nodeNewtonPoly`,
+`degree_nodeNewtonPoly_lt`, `nodeNewtonPoly_eq_interpolate`,
+`eq_nodeNewtonPoly_of_eval_eq`, and `coeff_nodeNewtonPoly_self`; the remaining
+eight Newton declarations retain their incoming names.
 
 The two newest generic theorems are
 `deriv_qPochhammerInfIn_ne_zero_of_mul_pow_eq_one`, which gives a nonzero
@@ -157,7 +167,7 @@ entireness, zero-locus, reciprocal-power, and analytic-order results rather
 than duplicating their analytic proofs. In `QBinomialTheoremInfinite`,
 `finiteQPochhammerIn_zero_left` remains the unique declaration owned by
 `GaussianBinomialAtOne` and is imported rather than redeclared. The forward
-status ledger is 77 Exact, 85 Partial, 112 None, and 8 interface rows; the
+status ledger is 81 Exact, 85 Partial, 108 None, and 8 interface rows; the
 original 191-result pre-Fabius core is 36/29/123/3, and the
 completed source concordance records 66 Lean-proved rows, 412 human-proved
 frontier rows, 60 not-applicable rows, and 9 conjectures.
@@ -197,7 +207,8 @@ criterion, and q-Catalan row are Exact. The primitive-root value in the
 Babbage corollary is formalized over every integral domain, while its
 derivative clause keeps that compound row Partial.
 
-No PDF was generated while resolving this merge. The root package checksum
-ledger records the live source and retained historical PDF as distinct
-payloads. The 348-page artifact remains source-pinned to its named historical
-checkpoint; synchronization is claimed only after a fresh guarded build.
+The geometric Newton interpolation and divided-difference rows are Exact. The
+Jackson q-beta product/q-gamma evaluation and its two recurrence formulas are
+also Exact. No PDF was generated locally while resolving this merge: the
+supplied 354-page artifact is the validated upstream receipt described above,
+while the merged source is its source-only successor.

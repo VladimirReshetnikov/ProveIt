@@ -109,7 +109,7 @@ only 4,606 declarations and
 declarations, including 69 undocumented ones.  Run the script for the live
 numbers rather than copying these historical values.
 
-The live post-merge 2026-09-01 inventory contains 664 modules and 8,804
+The live post-merge 2026-09-01 inventory contains 666 modules and 8,828
 lexically visible public declarations, with zero missing module headers and
 zero missing doc comments.  Relative to the 610/8,318 activation checkpoint,
 the current tree adds fifty-four modules and 486 declarations.  Relative to
@@ -137,7 +137,8 @@ The two added Gaussian linear-coefficient theorems and the eight-declaration
 one module.
 The latest finite-q tranche adds four modules and 26 declarations:
 `PrimitiveRootBlock.lean` 0+3, `QLucas.lean` 0+8,
-`CyclotomicDivisibility.lean` 0+3, and `QCatalan.lean` 1+11.
+`CyclotomicDivisibility.lean` 0+3, `QCatalan.lean` 1+11,
+`NewtonInterpolation.lean` 2+13, and `QBetaIntegral.lean` 1+8.
 The older 622/8,472, 623/8,476, 629/8,546, 630/8,552,
 641/8,650, and 643/8,661 values below are historical checkpoints, not
 descriptions of the live tree.  The earlier additions and q-series tranches are
@@ -337,7 +338,7 @@ thirteen declarations and brought the audit to 659/8,768.  Two Gaussian
 linear-coefficient theorems then brought it to 659/8,770, and the
 eight-declaration `EffectiveGapInverse.lean` leaf brought the audit to
 660/8,778.  The four-module, 26-declaration finite-q tranche brings the live
-audit to the 664/8,804 census recorded above.
+audit to the 666/8,828 census recorded above.
 
 `GaussianBinomialPalindromic.lean` is an exhaustive zero-definition,
 fourteen-theorem leaf: `Fabius.reflect_add_of_natDegree_le`,
@@ -451,6 +452,28 @@ naturality and the commutative-ring q-integer identities yield
 `[n+1]_X ∣ [2*n,n]_X` over `ℚ[X]` and `ℤ[X]`; the integral quotient has degree
 `n*(n-1)`, satisfies `(n+1) C_n(1) = choose(2*n,n)`, and evaluates to the
 ordinary Catalan number.
+
+`NewtonInterpolation.lean` is 2+13.  Its definitions are
+`Fabius.newtonCoeff` and `Fabius.nodeNewtonPoly`; its theorems are
+`Fabius.newtonCoeff_eq`, `Fabius.newtonCoeff_zero`,
+`Fabius.newtonCoeff_mul_prod`, `Fabius.nodeNewtonPoly_succ`,
+`Fabius.eval_nodeNewtonPoly`, `Fabius.degree_nodeNewtonPoly_lt`,
+`Fabius.nodeNewtonPoly_eq_interpolate`,
+`Fabius.eq_nodeNewtonPoly_of_eval_eq`,
+`Fabius.coeff_nodeNewtonPoly_self`, `Fabius.newtonCoeff_eq_sum`,
+`Fabius.nodal_range_pow`, `Fabius.prod_erase_pow_sub_pow`, and
+`Fabius.newtonCoeff_pow_eq_sum`.  Over a field these give triangular Newton
+reconstruction, finite-node interpolation and uniqueness, divided differences,
+and the geometric-power-node specialization, retaining each finite-node
+injectivity, nonzero-product, `q ≠ 0`, and index hypothesis.
+
+`QBetaIntegral.lean` is 1+8.  Its definition is `Fabius.qBeta`; its theorems
+are `Fabius.qNumber_pos`, `Fabius.qBeta_term_eq`, `Fabius.qBeta_eq_prod`,
+`Fabius.qBeta_eq_qGamma`, `Fabius.qBeta_comm`, `Fabius.qBeta_pos`,
+`Fabius.qBeta_add_one_left`, and `Fabius.qBeta_add_one_right`.  Under
+`0 < q < 1` and the displayed positive real arguments, they evaluate the
+Jackson q-beta integral as an infinite-product and q-Gamma quotient and prove
+symmetry, positivity, and both recurrences.
 
 `EffectiveMonotoneInverse.lean` has exactly two public definitions,
 `Fabius.SequentiallyComputableOn` and `Fabius.unitClamp`, and exactly six
@@ -604,6 +627,8 @@ and `central_gaussianBinomial_sq_div`.  `CyclotomicFactorization.lean` is
 `PrimitiveRootBlock.lean` 0+3, `QLucas.lean` 0+8,
 `CyclotomicDivisibility.lean` 0+3, and `QCatalan.lean` 1+11 surfaces are
 listed exhaustively above.  The
+`NewtonInterpolation.lean` 2+13 and `QBetaIntegral.lean` 1+8 surfaces are
+also listed exhaustively above.  The
 `JacobiTripleProduct.lean` 2-definition/25-theorem tranche contains the finite triple-product
 polynomial and field identities, the bilateral Jacobi `HasSum` forms, and the
 pentagonal and paired-pentagonal `HasSum` corollaries.  The
@@ -696,7 +721,7 @@ and 88-page notation-catalogue artifacts likewise predate their current merged
 sources.  Their package notices treat those PDFs as historical validation
 receipts, not parity claims, until fresh uninterrupted three-pass builds
 complete.  The inverse-computability receipt likewise requires refresh for the
-664/8,804 census.  The canonical inverse-theory publication retains a 134-page
+666/8,828 census.  The canonical inverse-theory publication retains a 134-page
 artifact synchronized at its latest-main source checkpoint; the merged
 effective-inversion tranche makes current parity pending.
 
