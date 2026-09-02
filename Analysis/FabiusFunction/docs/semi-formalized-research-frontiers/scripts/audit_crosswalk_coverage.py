@@ -105,7 +105,9 @@ def ledger(text):
     merged = []
     carry = ''
     for para in paras:
-        if SECTION.match(para.strip()):
+        # A heading, or a paragraph that ends by introducing a list
+        # ("... is now explicit:"), governs what follows it.
+        if SECTION.match(para.strip()) or para.strip().endswith(':'):
             carry = carry + '\n' + para
             continue
         merged.append(carry + '\n' + para)
