@@ -102,6 +102,11 @@
 
 \newcommand{\Wz}{\LambertW_{0}}
 \newcommand{\Wm}{\LambertW_{-1}}
+% Crosswalk macros, as in the other frontier volumes: a Lean module or
+% declaration name, typeset verbatim.
+\newcommand{\lean}[1]{%
+  \ifmmode\text{\texttt{\detokenize{#1}}}\else\nolinkurl{#1}\fi}
+\newcommand{\decl}[1]{\nolinkurl{#1}}
 \newcommand{\stirling}[2]{\genfrac{[}{]}{0pt}{}{#1}{#2}}
 \newcommand{\brak}[1]{\left(#1\right)}
 % LOCAL-NON-FOURIER-HAT: \LambertRootApproximation denotes a numerical approximation to the exact Lambert root on the selected real branch.
@@ -4346,6 +4351,117 @@ Residual certificate &
 \(I\) between \(w\) and the root avoids \(-1\).\\
 \bottomrule
 \end{longtable}
+
+\section{Lean formalization crosswalk}\label{app:lean-crosswalk}
+
+The repository's Lean library carries a two-branch development of the real
+Lambert function, and several of the foundational statements of this guide
+are exact theorems there.  This appendix records the correspondence, in the
+discipline of the other frontier volumes: a row names declarations, all in
+namespace \lean{Fabius}, and a row is listed only when the Lean statement
+has the displayed mathematical content.  Where the Lean statement is
+weaker, more general, or differently normalized than the guide's, the
+difference is stated.  Everything not listed here is unformalized.
+
+The two branches are \decl{principalLambertW} (\(\Wz\), totalized, intended
+domain \([-1/\EulerE,\infty)\); module \lean{PrincipalLambertW}) and
+\decl{lowerLambertW} (\(\Wm\), intended domain \([-1/\EulerE,0)\); module
+\lean{LowerLambertW}).  Both are defined as the logarithm of an inverse of
+\(u\mapsto u\log u\) on the appropriate ray, so ``\(W(x)\)'' is a total
+real function whose values off the intended domain are junk; every theorem
+below carries the domain hypothesis explicitly.
+
+\begin{longtable}{@{}p{0.30\textwidth}p{0.42\textwidth}p{0.22\textwidth}@{}}
+\toprule
+Statement in this guide & Exact Lean declaration(s) & Remarks\\
+\midrule
+\endfirsthead
+\toprule
+Statement in this guide & Exact Lean declaration(s) & Remarks\\
+\midrule
+\endhead
+\Cref{thm:realbranches}: \(\Wz\) is a strictly increasing bijection
+\([-1/\EulerE,\infty)\to[-1,\infty)\), \(\Wm\) a strictly decreasing
+bijection \([-1/\EulerE,0)\to(-\infty,-1]\), and every real solution of
+\(w\EulerE^w=x\) is one of the two &
+\decl{principalLambertW\_strictMonoOn},
+\decl{principalLambertW\_image\_Ioi}, \decl{principalLambertW\_image\_Icc},
+\decl{neg\_one\_le\_principalLambertW},
+\decl{lowerLambertW\_strictAntiOn}, \decl{lowerLambertW\_image},
+\decl{lowerLambertW\_le\_neg\_one},
+\decl{eq\_principalLambertW\_or\_eq\_lowerLambertW} &
+The last, in module \lean{LambertBranchDichotomy}, is the dichotomy:
+\(w\EulerE^w=z\) forces \(w=\Wz(z)\) or \(w=\Wm(z)\).  The images are
+stated for the open ray \((-1/\EulerE,\infty)\) and the interval
+\([-1/\EulerE,0]\) on the principal side and the open interval
+\((-1/\EulerE,0)\) on the lower side; the endpoint values are separate
+lemmas.\\
+\addlinespace
+\Cref{cor:inverse}: \(\Wz(a\EulerE^a)=a\) for \(a\geq-1\) and
+\(\Wm(a\EulerE^a)=a\) for \(a\leq-1\) &
+\decl{principalLambertW\_unique},
+\decl{lowerLambertW\_unique\_of\_mem\_Ico}; the defining equations
+\(W(x)\EulerE^{W(x)}=x\) are \decl{principalLambertW\_mul\_exp} and
+\decl{lowerLambertW\_mul\_exp\_of\_mem\_Ico} &
+Stated as uniqueness: any \(w\geq-1\) with \(w\EulerE^w=z\) equals
+\(\Wz(z)\), and dually for \(w\leq-1\).\\
+\addlinespace
+\Cref{thm:derivatives}, first and second derivatives &
+\decl{deriv\_principalLambertW}, \decl{deriv\_deriv\_principalLambertW}
+(module \lean{LambertWCurvature});
+\decl{deriv\_lowerLambertW}, \decl{deriv\_deriv\_lowerLambertW} &
+The principal-branch first derivative is in the form
+\eqref{eq:firstder}, the lower-branch one in the form
+\eqref{eq:firstder-x}; both second derivatives are in the exponential form
+\eqref{eq:secondder-exp}.  \(\Wz'(0)=1\) is
+\decl{principalLambertW\_isEquivalent\_zero}, stated as
+\(\Wz(z)\sim z\) at \(0\).  Positivity of \(\Wz'\) is
+\decl{deriv\_principalLambertW\_pos}.\\
+\addlinespace
+\Cref{thm:curvature}: \(\Wz\) strictly concave; \(\Wm\) strictly convex on
+\((-1/\EulerE,-2/\EulerE^2)\), inflection at \(-2/\EulerE^2\), strictly
+concave on \((-2/\EulerE^2,0)\) &
+\decl{strictConcaveOn\_principalLambertW},
+\decl{strictConvexOn\_lowerLambertW\_left},
+\decl{strictConcaveOn\_lowerLambertW\_right},
+\decl{deriv\_deriv\_lowerLambertW\_eq\_zero\_iff} &
+Lean's concavity of \(\Wz\) is on the closed ray \([-1/\EulerE,\infty)\),
+slightly more than stated here; the lower-branch pieces are on the closed
+interval \([-1/\EulerE,-2/\EulerE^2]\) and the half-open
+\([-2/\EulerE^2,0)\).  The inflection is stated as
+\(\Wm''(x)=0\iff x=-2/\EulerE^2\) on the open domain.\\
+\addlinespace
+\Cref{thm:maclaurin}, \Cref{thm:cayley}: the Maclaurin coefficients
+\((-n)^{n-1}/n!\) &
+\decl{coeff\_lambertW} (module \lean{LambertWSeries}) &
+A statement about the \emph{formal} series over \(\mathbb{Q}\): the
+compositional inverse of \(X\EulerE^{X}\) has \((n+1)\)-st coefficient
+\((-(n+1))^n/(n+1)!\).  It is obtained from the library's
+Lagrange--B\"urmann inversion (\Cref{thm:lagrange}), and carries no
+statement about convergence, the radius \(1/\EulerE\), or the endpoint;
+those remain unformalized.\\
+\addlinespace
+\Cref{thm:puiseux}, leading term: \(\Wz(x)+1\sim q\) and
+\(\Wm(x)+1\sim-q\) as \(x\downarrow-1/\EulerE\), with
+\(q=\sqrt{2(1+\EulerE x)}\) &
+\decl{principalLambertW\_add\_one\_isEquivalent\_branchPoint},
+\decl{lowerLambertW\_add\_one\_isEquivalent\_branchPoint} (module
+\lean{LambertWBranchPointAsymptotics}); non-differentiability at the branch
+point, \decl{principalLambertW\_not\_differentiableAt\_branchPoint} and
+\decl{lowerLambertW\_not\_differentiableAt\_branchPoint} (module
+\lean{LambertWBranchPointGeometry}) &
+Only the leading square-root term is formal; the full signed Puiseux series
+and its coefficients are not.\\
+\bottomrule
+\end{longtable}
+
+Not formalized, in the order they appear above: the addition identity of
+\Cref{prop:addition}, the exact branch pairing of \Cref{sec:pairing}, the
+polynomial recurrence for higher derivatives (\Cref{thm:higherder}), the
+antiderivatives and moments of \Cref{sec:integrals}, the local Taylor
+expansion, convergence of the Maclaurin series, the full Puiseux and
+logarithmic asymptotic expansions, the rigorous elementary bounds of
+\Cref{sec:bounds}, and everything from \Cref{sec:rational} onward.
 
 \section{Concordance of the four merged treatments}\label{app:concordance}
 
