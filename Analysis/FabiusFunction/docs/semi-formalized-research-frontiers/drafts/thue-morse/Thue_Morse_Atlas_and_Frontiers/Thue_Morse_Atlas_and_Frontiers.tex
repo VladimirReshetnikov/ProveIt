@@ -6741,12 +6741,28 @@ linear terms yields
 \(q^{1+2+\cdots+m}/(\zeta-1)^m\); coefficient extraction contributes \(m!\).
 \end{proof}
 
-\emph{Formal status.}  Only the degree-zero case of \eqref{p1:eq:base-q-Prouhet} is
-formal so far: \lean{Fabius.sum\_zeta\_pow\_digits\_sum\_eq\_zero} in
-\path{BaseDigitProduct.lean} gives \(\sum_{n<q^m}\zeta^{s_q(n)}=0\) for \(m\ge1\) under
-the single hypothesis \(\sum_{r<q}\zeta^r=0\), by evaluating the digit product at \(z=1\).
-The cancellation for polynomials of positive degree below \(m\), and the sharp moment
-\eqref{p1:eq:base-q-sharp-moment}, are not yet formalized.
+\emph{Formal versions.}  Both displays are formal in \path{BaseDigitProuhet.lean}, with
+\(P_d(m)=\sum_{n<q^m}\zeta^{s_q(n)}n^d\) as \lean{Fabius.digitPowerSum}.  The cancellation
+\eqref{p1:eq:base-q-Prouhet} is \lean{Fabius.digitPowerSum\_eq\_zero\_of\_lt} for monomials,
+\(P_d(m)=0\) for \(d<m\), and \lean{Fabius.sum\_zeta\_pow\_digits\_sum\_mul\_eval\_eq\_zero}
+for an arbitrary polynomial of degree below \(m\); both take the single hypothesis
+\(\sum_{r<q}\zeta^r=0\) over any commutative semiring, and \(\zeta^q=1\) is not used.
+The sharp moment \eqref{p1:eq:base-q-sharp-moment} is proved division-free, as
+\((\zeta-1)^mP_m(m)=m!\,q^{0+1+\cdots+m}\) in any commutative ring
+(\lean{Fabius.sub\_one\_pow\_mul\_digitPowerSum\_self}), and then in the displayed form
+with \(/(\zeta-1)^m\) and the Gauss sum evaluated, in a field with \(\zeta\ne1\)
+(\lean{Fabius.digitPowerSum\_self\_eq\_div}).  The engine is the one-step recursion
+\lean{Fabius.digitPowerSum\_succ}, obtained by splitting \([0,q^{m+1})\) into \(q\) blocks
+\(q^mr+a\), where the digit sum adds \(r\) (\lean{Fabius.digits\_sum\_pow\_mul\_add}) and
+the binomial theorem expands \((a+q^mr)^d\); in that expansion every \(P_i(m)\) with
+\(i<d\) vanishes by induction, so for \(d\le m\) only \(i=d\) survives with coefficient
+\(\sum_r\zeta^r=0\), while at \(d=m+1\) the survivor \(i=m\) carries
+\((m+1)q^m\sum_rr\zeta^r\).  The root-of-unity derivative \eqref{p1:eq:root-unity-derivative}
+is the telescoping identity \lean{Fabius.geom\_sum\_mul\_weighted},
+\((\zeta-1)\sum_{r<q}r\zeta^r=(q-1)\zeta^q+1-\sum_{r<q}\zeta^r\) for \emph{every}
+\(\zeta\), specialized in \lean{Fabius.sub\_one\_mul\_sum\_mul\_pow}.  The degree-zero case
+is also available on its own as \lean{Fabius.sum\_zeta\_pow\_digits\_sum\_eq\_zero} in
+\path{BaseDigitProduct.lean}, by evaluating the digit product at \(z=1\).
 
 For \(q=2\) and \(\zeta=-1\), the sequence is \(u_n=\eps_n\) and
 \eqref{p1:eq:base-q-sharp-moment} becomes
