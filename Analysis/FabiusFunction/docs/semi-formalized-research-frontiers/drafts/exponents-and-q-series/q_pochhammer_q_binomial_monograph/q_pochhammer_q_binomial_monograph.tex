@@ -5616,7 +5616,7 @@ For an integer $N$ and $k\ge0$, define
 \[
  \GeneralizedGaussianBinomial{N}{k}{q}
  :=\frac{(q^{N-k+1};q)_k}{(q;q)_k}.
- \tag{17.1}\label{eq:generalized-gaussian}
+ \label{eq:generalized-gaussian}
 \]
 For $N\ge0$ this agrees with the usual Gaussian coefficient, including the value $0$ when $k>N$.
 \end{definition}
@@ -5627,7 +5627,7 @@ For $m\ge1$ and $k\ge0$,
  \GeneralizedGaussianBinomial{-m}{k}{q}
  =(-1)^kq^{-mk-\binom k2}
    \GaussianBinomial{m+k-1}{k}{q}.
- \tag{17.2}\label{eq:negative-reflection}
+ \label{eq:negative-reflection}
 \]
 \end{proposition}
 
@@ -5649,10 +5649,10 @@ For every integer $N$ and every $k\ge1$,
  \GeneralizedGaussianBinomial{N}{k}{q}
  &=\GeneralizedGaussianBinomial{N-1}{k-1}{q}
    +q^k\GeneralizedGaussianBinomial{N-1}{k}{q},
- \tag{17.3}\label{eq:general-pascal-a}\\
+ \label{eq:general-pascal-a}\\
  &=q^{N-k}\GeneralizedGaussianBinomial{N-1}{k-1}{q}
    +\GeneralizedGaussianBinomial{N-1}{k}{q}.
- \tag{17.4}\label{eq:general-pascal-b}
+ \label{eq:general-pascal-b}
 \end{align}
 Both formulas are identities in $\RationalNumbers(q)$.
 \end{theorem}
@@ -5684,7 +5684,7 @@ For $m\ge1$ and $\AbsoluteValue z<1$,
  =\sum_{k=0}^{\infty}\GaussianBinomial{m+k-1}{k}{q} z^k
  =\sum_{k=0}^{\infty}(-1)^kq^{mk+\binom k2}
    \GeneralizedGaussianBinomial{-m}{k}{q}z^k.
- \tag{17.5}\label{eq:negative-reciprocal-series}
+ \label{eq:negative-reciprocal-series}
 \]
 The first equality also holds in the formal power-series ring $\IntegerNumbers[q][[z]]$.
 \end{corollary}
@@ -5699,7 +5699,7 @@ When a branch of $q^\alpha$ has been fixed, it is often convenient to define
 \[
  \GeneralizedGaussianBinomial{\alpha}{k}{q}
  =\frac{(q^{\alpha-k+1};q)_k}{(q;q)_k}.
- \tag{17.6}\label{eq:complex-upper-gaussian}
+ \label{eq:complex-upper-gaussian}
 \]
 The proofs of the Pascal recurrences are purely algebraic in $q^\alpha$ and therefore remain valid.  A related, and usually more analytic, expansion is the following.
 
@@ -5709,7 +5709,7 @@ For $\AbsoluteValue q<1$, $\AbsoluteValue z<1$, and any parameter $\alpha$ for w
  \frac{(q^{\alpha+1}z;q)_\infty}{(z;q)_\infty}
  =\sum_{k=0}^{\infty}
    \GeneralizedGaussianBinomial{\alpha+k}{k}{q} z^k.
- \tag{17.7}\label{eq:upper-parameter-series}
+ \label{eq:upper-parameter-series}
 \]
 \end{theorem}
 
@@ -5732,7 +5732,7 @@ For $\alpha,\beta\in\ComplexNumbers$, define
  \GeneralizedGaussianBinomial{\alpha}{\beta}{q}
  :=\frac{(q^{\beta+1},q^{\alpha-\beta+1};q)_\infty}
  {(q,q^{\alpha+1};q)_\infty},
- \tag{17.8}\label{eq:complex-gaussian}
+ \label{eq:complex-gaussian}
 \]
 whenever the denominator is nonzero.
 \end{definition}
@@ -5743,18 +5743,18 @@ Wherever the expressions are defined,
  \GeneralizedGaussianBinomial{\alpha}{\beta}{q}
  &=\frac{\Gamma_q(\alpha+1)}
  {\Gamma_q(\beta+1)\Gamma_q(\alpha-\beta+1)},
- \tag{17.9}\label{eq:complex-gaussian-gamma}\\
+ \label{eq:complex-gaussian-gamma}\\
  \GeneralizedGaussianBinomial{\alpha}{\beta}{q}
  &=\GeneralizedGaussianBinomial{\alpha}{\alpha-\beta}{q},
- \tag{17.10}\label{eq:complex-gaussian-symmetry}\\
+ \label{eq:complex-gaussian-symmetry}\\
  \GeneralizedGaussianBinomial{\alpha+1}{\beta}{q}
  &=q^\beta\GeneralizedGaussianBinomial{\alpha}{\beta}{q}
    +\GeneralizedGaussianBinomial{\alpha}{\beta-1}{q},
- \tag{17.11}\label{eq:complex-pascal-a}\\
+ \label{eq:complex-pascal-a}\\
  &=\GeneralizedGaussianBinomial{\alpha}{\beta}{q}
    +q^{\alpha+1-\beta}
     \GeneralizedGaussianBinomial{\alpha}{\beta-1}{q}.
- \tag{17.12}\label{eq:complex-pascal-b}
+ \label{eq:complex-pascal-b}
 \end{align}
 If $\beta=k\in\NaturalNumbers$, this definition agrees with \eqref{eq:complex-upper-gaussian}.
 \end{theorem}
@@ -5800,7 +5800,10 @@ proves \eqref{eq:complex-pascal-b}.
 \end{proof}
 
 \begin{corollary}[Classical generalized binomial]\label{cor:complex-gaussian-classical}
-If $\alpha>\beta>-1$ are real, then
+Let $\alpha,\beta$ be real with $\alpha+1>0$, $\beta+1>0$ and $\alpha-\beta+1>0$ --- in
+particular whenever $\alpha>\beta>-1$, though these three conditions are strictly weaker and are
+all the proof uses ($\alpha=-\tfrac12$, $\beta=\tfrac15$ satisfies them but not $\alpha>\beta$).
+Then
 \[
  \lim_{q\to1^-}\GeneralizedGaussianBinomial{\alpha}{\beta}{q}
  =\frac{\Gamma(\alpha+1)}
@@ -5809,7 +5812,13 @@ If $\alpha>\beta>-1$ are real, then
 \end{corollary}
 
 \begin{proof}
-Apply the locally uniform $q$-gamma limit in \Cref{thm:qgamma-classical-limit} to \eqref{eq:complex-gaussian-gamma}.
+By \eqref{eq:complex-gaussian-gamma} the coefficient is a quotient of $\Gamma_q$ evaluated at the
+three \emph{fixed} points $\alpha+1$, $\beta+1$ and $\alpha-\beta+1$, so only the pointwise limit
+of \Cref{thm:qgamma-classical-limit} is needed: apply it at each of the three points and pass to
+the limit in the quotient, which is legitimate because the limiting denominator
+$\Gamma(\beta+1)\Gamma(\alpha-\beta+1)$ is nonzero, both factors being positive.  Local uniformity
+is not required here, and only the three positivity conditions $\alpha+1>0$, $\beta+1>0$,
+$\alpha-\beta+1>0$ are used.
 \end{proof}
 
 \begin{theorem}[Generalized finite and reciprocal $q$-binomial theorems]\label{thm:generalized-qbinomial}
@@ -5818,14 +5827,14 @@ Let $0<q<1$.  If $\AbsoluteValue{zq^\alpha}<1$, then
  \GeneralizedQPochhammer{z}{q}{\alpha}
  =\sum_{k=0}^{\infty}(-1)^kq^{\binom k2}
    \GeneralizedGaussianBinomial{\alpha}{k}{q} z^k.
- \tag{17.13}\label{eq:generalized-finite-qbinomial}
+ \label{eq:generalized-finite-qbinomial}
 \]
 If $\AbsoluteValue z<1$, then
 \[
  \frac1{\GeneralizedQPochhammer{z}{q}{\alpha}}
  =\sum_{k=0}^{\infty}
    \GeneralizedGaussianBinomial{\alpha+k-1}{k}{q} z^k.
- \tag{17.14}\label{eq:generalized-reciprocal-qbinomial}
+ \label{eq:generalized-reciprocal-qbinomial}
 \]
 For a nonnegative integral $\alpha$, the first series terminates and becomes Euler's finite theorem; in that case the restriction $\AbsoluteValue{zq^\alpha}<1$ can be removed because both sides are polynomials.  For a positive integral $\alpha$, the second becomes the reciprocal finite theorem.
 \end{theorem}
@@ -5871,17 +5880,17 @@ It has the Newton expansion
 \[
  P(x)=\sum_{k=0}^{n}c_k\prod_{r=0}^{k-1}(x-q^r)
  =\sum_{k=0}^{n}c_k(-1)^kq^{\binom k2}(x;q^{-1})_k,
- \tag{17.15}\label{eq:geometric-newton}
+ \label{eq:geometric-newton}
 \]
 where
 \begin{align}
  c_k
  &=\sum_{j=0}^{k}
  \frac{y_j}{\prod_{\substack{0\le r\le k\\r\ne j}}(q^j-q^r)}
- \tag{17.16}\label{eq:geometric-divided-difference}\\
+ \label{eq:geometric-divided-difference}\\
  &=\sum_{j=0}^{k}
  \frac{(-1)^j q^{-jk+\binom{j+1}{2}}}{(q;q)_j(q;q)_{k-j}}\,y_j.
- \tag{17.17}\label{eq:geometric-divided-difference-explicit}
+ \label{eq:geometric-divided-difference-explicit}
 \end{align}
 \end{theorem}
 
@@ -5921,7 +5930,7 @@ The coefficients in \eqref{eq:geometric-newton} can be recovered successively by
  \qquad
  c_k=\frac{y_k-\sum_{r=0}^{k-1}c_r\prod_{j=0}^{r-1}(q^k-q^j)}
  {\prod_{j=0}^{k-1}(q^k-q^j)}.
- \tag{17.18}\label{eq:triangular-newton}
+ \label{eq:triangular-newton}
 \]
 \end{corollary}
 
@@ -6368,7 +6377,8 @@ For fixed $m\ge0$,
 \end{proposition}
 
 \begin{proof}
-For $0<q<1$, set $a_r(q)=q^r/[r]_q$.  These numbers are positive and decrease with $r$, since
+For $0<q<1$ and $r\ge1$, set $a_r(q)=q^r/[r]_q$.  (The restriction $r\ge1$ is needed:
+$[0]_q=0$, so $a_0$ is undefined.)  These numbers are positive and decrease with $r$, since
 \[
  \frac{a_{r+1}(q)}{a_r(q)}=q\frac{[r]_q}{[r+1]_q}<1.
 \]
@@ -6377,7 +6387,29 @@ Moreover,
  a_r(q)=\frac{q^r}{1+q+\cdots+q^{r-1}}
  \le\frac1r,
 \]
-because every summand in the denominator is at least $q^{r-1}$.  The alternating-series remainder after $N$ terms therefore has absolute value at most $a_{N+1}(q)\le1/(N+1)$, uniformly in $q$.  For each fixed $r$, $a_r(q)\to1/r$ as $q\to1^-$.  First pass to the limit in a finite partial sum and then let $N\to\infty$.  The result is the tail of the alternating harmonic series,
+because every summand $q^{i}$ in the denominator has $i\le r-1<r$ and $0<q<1$, hence is at
+least $q^{r}$; so $[r]_q\ge rq^{r}$ and $a_r(q)\le1/r$ directly.  (Bounding the summands below by
+$q^{r-1}$ instead would give only $a_r(q)\le q/r$, and one would still have to discard the factor
+$q<1$.)
+
+Since the terms $a_r(q)$ are positive and antitone in $r$ and tend to $0$, the alternating series
+test applies for each fixed $q$, and the remainder after $N$ terms of the series
+$\sum_{r\ge2m+1}(-1)^{r-1}a_r(q)$ is bounded by its first omitted term, namely
+$a_{2m+1+N}(q)\le1/(2m+1+N)$ --- \emph{uniformly in} $q$.  Note the index: the series starts at
+$r=2m+1$, so after $N$ terms the first omitted one is $a_{2m+1+N}$, not $a_{N+1}$.  The same bound
+holds in the limit, at $q=1$, where $a_r(1)=1/r$.
+
+Write $T(q)$ for the sum, $S_N(q)$ for its $N$th partial sum and $L=\sum_{r\ge2m+1}(-1)^{r-1}/r$.
+Each $S_N$ is a finite sum of functions continuous at $q=1$, hence continuous there.  Given
+$\varepsilon>0$, choose $N$ with $1/(2m+1+N)<\varepsilon/3$, which bounds both
+$\AbsoluteValue{T(q)-S_N(q)}$ for every $q$ and $\AbsoluteValue{L-S_N(1)}$; then choose $\delta>0$
+with $\AbsoluteValue{S_N(q)-S_N(1)}<\varepsilon/3$ for $1-\delta<q<1$.  For such $q$,
+\[
+ \AbsoluteValue{T(q)-L}
+ \le\AbsoluteValue{T(q)-S_N(q)}+\AbsoluteValue{S_N(q)-S_N(1)}+\AbsoluteValue{S_N(1)-L}
+ <\varepsilon .
+\]
+Hence $T(q)\to L$, which is the tail of the alternating harmonic series,
 \[
  \sum_{r=2m+1}^{\infty}\frac{(-1)^{r-1}}r
  =\log2-\overline H_{2m}.
