@@ -999,6 +999,68 @@ is the resulting identity $xC_k'-kC_k=\bigl(x+(1-x)\log(1-x)\bigr)C_k'$,
 from which \lean{Fabius.seq_eq_of_egfA_eq} extracts the coefficients.""")),
 ]
 
+PENDING += [
+ # --- thm:merged-bernoulli-difference ---
+ (r"""yields \eqref{eq:merged-bernoulli-newton-basis}.
+\end{proof}
+""",
+  remark(r"""% ed.: crosswalk added 2026-09-02; the Lean proof follows the text, with the composition truncated.
+\lean{Fabius.bernoulli_eq_sum_fwdDiff} (module \lean{BernoulliNewtonBasis}) is
+\cref{eq:merged-bernoulli-newton-basis} as an identity in $\mathbb Q[x]$,
+with $\Delta^kx^n$ written out as $\sum_{j=0}^k(-1)^{k-j}\binom kj(x+j)^n$.
+The formal proof works in $\mathbb Q[x][[t]]$: Mathlib's
+\lean{Polynomial.bernoulli_generating_function} and
+\lean{bernoulliPowerSeries_mul_exp_sub_one} give
+$\sum_n\beta_n(x)t^n/n!=\EulerE^{xt}\cdot t/(\EulerE^t-1)$
+(\lean{Fabius.bernoulliPolySeries_eq}), the composition
+\cref{eq:merged-gregory-composition} is used only through its truncation
+$t/(\EulerE^t-1)\equiv\sum_{k\le n}\frac{(-1)^k}{k+1}(\EulerE^t-1)^k$ modulo
+$t^{n+1}$ (\lean{Fabius.X_pow_dvd_bernoulliPowerSeries_sub_gregory}, whose
+coefficients are compared through the Bernoulli--Stirling formula
+\lean{Fabius.bernoulli_eq_sum_stirlingSecond} and
+$(\EulerE^t-1)^k=k!\sum_nS(n,k)t^n/n!$), and
+$\EulerE^{xt}(\EulerE^t-1)^k=\sum_j(-1)^{k-j}\binom kj\EulerE^{(x+j)t}$ is the
+binomial theorem for Mathlib's \lean{PowerSeries.exp_mul_exp_eq_exp_add}.""")),
+
+ # --- cor:merged-bernoulli-stirling-second-proof ---
+ (r"""which is \eqref{eq:merged-bernoulli-stirling}.
+\end{proof}
+""",
+  remark(r"""% ed.: crosswalk added 2026-09-02.
+\lean{Fabius.bernoulli_eq_sum_fwdDiff_zero} (module \lean{BernoulliNewtonBasis})
+is the evaluation at $x=0$,
+$\beta_n=\sum_{k\le n}\frac{(-1)^k}{k+1}\sum_{j\le k}(-1)^{k-j}\binom kjj^n$,
+and the surjection formula $\Delta^k0^n=k!\StirlingSecondKind nk$ is
+\lean{Fabius.factorial_mul_stirlingSecond_eq_sum}, so that the two together
+are \lean{Fabius.bernoulli_eq_sum_stirlingSecond}.  (In the formal development
+the Newton-basis identity itself is derived through the Bernoulli--Stirling
+formula, so it is not an independent second proof there.)""")),
+]
+
+PENDING += [
+ # --- thm:merged-norlund-calculus ---
+ (r"""functions of orders $\alpha$ and $\gamma$ proves the convolution identity.
+\end{proof}
+""",
+  remark(r"""% ed.: crosswalk added 2026-09-02; natural orders only.
+Module \lean{NorlundPolynomials} defines $\beta_n^{(a)}(x)$ for natural
+orders $a\in\mathbb N$ by \cref{eq:merged-norlund-egf} with the $a$-th power
+of Mathlib's \lean{bernoulliPowerSeries} (\lean{Fabius.norlund}), so that
+$\beta_n^{(0)}=x^n$ and $\beta_n^{(1)}=\beta_n$ (\lean{Fabius.norlund_zero},
+\lean{Fabius.norlund_one}).  For $a,c\in\mathbb N$ and rational $x,y$:
+\cref{eq:merged-norlund-appell} is \lean{Fabius.derivative_norlund_succ},
+proved by differentiating the coefficients of $G(t)\EulerE^{xt}$ in $x$
+(\lean{Fabius.derivative_coeff_succ_map_C_mul_rescale_exp});
+\cref{eq:merged-norlund-convolution} is \lean{Fabius.norlund_add_eval_add},
+from the product of the two exponential generating functions
+(\lean{Fabius.egfA_norlund_eval}, \lean{Fabius.egfA_mul});
+\cref{eq:merged-norlund-translation} is its case $\gamma=0$
+(\lean{Fabius.norlund_eval_add}); and \cref{eq:merged-norlund-difference} is
+\lean{Fabius.norlund_succ_eval_add_one_sub}, from
+$(\EulerE^{(x+1)t}-\EulerE^{xt})\,t/(\EulerE^t-1)=t\EulerE^{xt}$.  Complex
+orders, which need $\exp(\alpha\log(t/(\EulerE^t-1)))$, are not formalized.""")),
+]
+
 applied = 0
 for anchor, text in PENDING:
     if text.strip() in s:
