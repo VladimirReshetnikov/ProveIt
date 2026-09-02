@@ -169,7 +169,7 @@ entireness, zero-locus, reciprocal-power, and analytic-order results rather
 than duplicating their analytic proofs. In `QBinomialTheoremInfinite`,
 `finiteQPochhammerIn_zero_left` remains the unique declaration owned by
 `GaussianBinomialAtOne` and is imported rather than redeclared. The forward
-status ledger is 129 Exact, 82 Partial, 63 None, and 8 interface rows; the
+status ledger is 131 Exact, 82 Partial, 61 None, and 8 interface rows; the
 original 191-result pre-Fabius core is 36/29/123/3, and the
 completed source concordance records 66 Lean-proved rows, 412 human-proved
 frontier rows, 60 not-applicable rows, and 9 conjectures.
