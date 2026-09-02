@@ -1155,6 +1155,46 @@ $\sum_n\bigl(\sum_k\StirlingSecondKind{n+r}{k+r}_{\!r}y^k\bigr)z^n/n!
 \cref{eq:r-stirling-egf} after multiplication by $y^r$.""")),
 ]
 
+PENDING += [
+ # --- thm:merged-cauchy-polynomials ---
+ (r""" &=(-1)^n\int_0^1\FallingFactorial{x+v}{n}\Differential v
+ =(-1)^n b_n(x).
+\end{align*}
+\end{proof}
+""",
+  remark(r"""% ed.: crosswalk added 2026-09-02; the algebraic identities are formal, the integral ones are not.
+Module \lean{CauchyPolynomials} defines $b_n(x)$ directly by
+\cref{eq:merged-bernoulli-second-egf}, as $n!$ times the $n$-th coefficient of
+$t(1+t)^x/\log(1+t)$ in $\mathbb Q[x][[t]]$ (\lean{Fabius.cauchyPoly}), the
+factor $t/\log(1+t)$ being the power-series inverse of the Gregory series
+\lean{Fabius.logDivSeries}.  The supporting object is the falling-factorial
+generating function $(1+t)^u=\sum_n\FallingFactorial un t^n/n!$ over any
+$\mathbb Q$-algebra (\lean{Fabius.fallingSeries}, module
+\lean{FallingFactorialSeries}), characterised by $(1+t)F'=uF$ with $F(0)=1$;
+from that characterisation one gets the product law
+$(1+t)^u(1+t)^v=(1+t)^{u+v}$ (\lean{Fabius.fallingSeries_mul}), hence the
+Vandermonde identity for falling factorials
+(\lean{Fabius.descPochhammer_eval_add}), and, in $\mathbb Q[x][[t]]$, the
+$x$-derivative $\partial_x(1+t)^x=\log(1+t)\,(1+t)^x$
+(\lean{Fabius.Dx_fallingPoly}, with $\partial_x$ the coefficientwise
+derivative \lean{Fabius.Dx}).
+Consequently \cref{eq:merged-cauchy-derivative} is
+\lean{Fabius.derivative_cauchyPoly_succ}, \cref{eq:merged-cauchy-difference}
+is \lean{Fabius.cauchyPoly_succ_eval_add_one_sub},
+\cref{eq:merged-cauchy-addition} is \lean{Fabius.cauchyPoly_eval_add} and
+\cref{eq:merged-cauchy-explicit} is \lean{Fabius.cauchyPoly_succ_eq}.
+\cref{eq:merged-cauchy-stirling-numbers} is \lean{Fabius.cauchyPoly_eval_zero},
+proved with the formal integral $\int_0^1p(u)\Differential u=\sum_kp_k/(k+1)$
+as a linear functional on $\mathbb Q[u]$ (\lean{Fabius.intPoly}), for which
+$\int_0^1p'=p(1)-p(0)$ (\lean{Fabius.intPoly_derivative}); applying it
+coefficientwise to $\partial_x(1+t)^x$ gives
+$\int_0^1(1+t)^u\Differential u=t/\log(1+t)$
+(\lean{Fabius.mapIntPoly_fallingPoly}), which is
+\cref{eq:merged-cauchy-integral} in formal form, although the analytic
+integral representation itself is not formalized.  The reflection
+\cref{eq:merged-cauchy-reflection} is not formalized.""")),
+]
+
 applied = 0
 for anchor, text in PENDING:
     if text.strip() in s:

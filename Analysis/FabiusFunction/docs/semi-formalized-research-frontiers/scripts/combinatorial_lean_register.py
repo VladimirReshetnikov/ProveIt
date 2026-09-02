@@ -416,6 +416,16 @@ STATUS = {
    r"$\StirlingSecondKind{n+r}{k+r}_{\!r}=\sum_j\binom nj\StirlingSecondKind jk r^{n-j}$ is "
    r"\lean{Fabius.rStirlingShift_eq_sum} and \cref{eq:r-stirling-egf} is "
    r"\lean{Fabius.egfA_rStirlingPoly}; the distinct-blocks count is not formalized."),
+ 'thm:merged-cauchy-polynomials': ('partial',
+   r"Module \lean{CauchyPolynomials} defines $b_n$ by \cref{eq:merged-bernoulli-second-egf} "
+   r"(\lean{Fabius.cauchyPoly}): \cref{eq:merged-cauchy-derivative} is "
+   r"\lean{Fabius.derivative_cauchyPoly_succ}, \cref{eq:merged-cauchy-difference} is "
+   r"\lean{Fabius.cauchyPoly_succ_eval_add_one_sub}, \cref{eq:merged-cauchy-addition} is "
+   r"\lean{Fabius.cauchyPoly_eval_add}, \cref{eq:merged-cauchy-explicit} is "
+   r"\lean{Fabius.cauchyPoly_succ_eq} and \cref{eq:merged-cauchy-stirling-numbers} is "
+   r"\lean{Fabius.cauchyPoly_eval_zero}; the integral representation "
+   r"\cref{eq:merged-cauchy-integral} and the reflection \cref{eq:merged-cauchy-reflection} "
+   r"are not formalized."),
  'thm:touchard-poly': ('Lean',
    r"\cref{eq:touchard-poly} is \lean{Fabius.touchardPolynomial_add_prime} "
    r"(\lean{TouchardPolyCongruence}), an identity in $(\mathbb Z/p)[x]$, read off from Spivey's "
