@@ -346,6 +346,16 @@ STATUS = {
    r"(from the type-$B$ Worpitzky identity \lean{Fabius.typeB_worpitzky}) and "
    r"\cref{eq:typeB-explicit} is \lean{Fabius.typeBEulerian_eq_sum_int}; the signed-permutation "
    r"count is not formalized"),
+ 'thm:bell-prime-power-shift': ('Lean',
+   r"\lean{Fabius.bell_add_prime_pow_modEq} is \cref{eq:bell-prime-power-shift}; "
+   r"\lean{Fabius.touchardPolynomial_add_prime_pow} is \cref{eq:touchard-prime-power-poly} "
+   r"over $\FiniteField_p$; both from the operator identity \lean{Fabius.shift_pow_char_pow} "
+   r"(module \lean{ShiftOperatorCharP})."),
+ 'thm:bell-period-bound': ('Lean',
+   r"\lean{Fabius.bell_add_sum_prime_pow_modEq}: $N_p$ is a period modulo $p$ "
+   r"(\lean{Fabius.shift_pow_period}, via the Fermat product "
+   r"\lean{Fabius.prod_range_X_add_C_natCast}); \lean{Fabius.bell_period_dvd_sum_prime_pow}: "
+   r"the least period divides $N_p$."),
  'thm:touchard-poly': ('Lean',
    r"\cref{eq:touchard-poly} is \lean{Fabius.touchardPolynomial_add_prime} "
    r"(\lean{TouchardPolyCongruence}), an identity in $(\mathbb Z/p)[x]$, read off from Spivey's "
