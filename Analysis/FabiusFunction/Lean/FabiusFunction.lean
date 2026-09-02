@@ -537,6 +537,8 @@ import FabiusFunction.QGammaLogDerivative
 import FabiusFunction.PowerSeriesUniqueness
 import FabiusFunction.DivisorSumLambert
 import FabiusFunction.ReciprocalQBinomialAnalytic
+import FabiusFunction.TwoPhiOneReversal
+import FabiusFunction.QGammaLogConvex
 import FabiusFunction.GaussianBinomialPalindromic
 import FabiusFunction.ThetaQuasiPeriodicity
 
