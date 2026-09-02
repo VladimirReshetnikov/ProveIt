@@ -23,8 +23,8 @@ computation.
 
 Its
 [`theorem_concordance.csv`](Inverse_Fabius_Analyticity_Asymptotics_and_Computability/theorem_concordance.csv)
-fully dispositions all 194 immutable source-result rows: 39 are Lean-proved,
-106 are human-proved frontier results, 10 are conjectures, 15 are open
+fully dispositions all 194 immutable source-result rows: 48 are Lean-proved,
+97 are human-proved frontier results, 10 are conjectures, 15 are open
 problems, and 24 are non-applicable source environments.
 [`LEAN_CROSSWALK.md`](Inverse_Fabius_Analyticity_Asymptotics_and_Computability/LEAN_CROSSWALK.md)
 records exact module/declaration matches and separately classifies five
@@ -33,9 +33,9 @@ post-snapshot additions without changing those source totals.
 accounts for all 88 source-subgroup files, and the live asset ledger covers 63
 retained, deduplicated payloads.
 
-The three newest exact source-row matches are centered Appell deconvolution,
-positive-degree Appell mean-zero, and arbitrary-phase polynomial
-deconvolution. The Appell lattice theorem remains human-proved because Lean
+The four newest exact source-row matches are abstract effective inversion,
+centered Appell deconvolution, positive-degree Appell mean-zero, and
+arbitrary-phase polynomial deconvolution. The Appell lattice theorem remains human-proved because Lean
 covers its arbitrary-phase `0 <= n <= N` formula but not its additional
 degree-`N+1` superconvergent-phase clause.
 
@@ -76,12 +76,15 @@ labels do not by themselves establish current Lean verification.
 
 ## Formalization notes
 
-The latest effective-inverse layer gives eight inverse-computability rows exact
+The latest effective-inverse layer gives nine inverse-computability rows exact
 compiled counterparts: the main computability theorem, the three tolerant
-difference branch certificates, the branch-selection theorem, tolerant
-bisection, the totalized clamped inverse, and its effective modulus.  The
-canonical theorem concordance now classifies all 194 inherited rows as 47
-Lean-proved, 98 human-proved frontier results, 10 conjectures, 15 open problems,
+difference branch certificates, tolerant bisection, restricted and totalized
+sequential inversion, computable clamping, and abstract inversion from
+computable positive rational gaps.  The principal new declaration is
+`Fabius.effectiveInversionOn_Icc_of_computablePositiveRationalGap`; its clamped
+wrapper yields a total computable real function.  The canonical theorem
+concordance now classifies all 194 inherited rows as 48 Lean-proved, 97
+human-proved frontier results, 10 conjectures, 15 open problems,
 and 24 nonassertoric environments.  The retired source layouts remain immutable
 provenance only; these updates live in the canonical synthesis and crosswalk.
 

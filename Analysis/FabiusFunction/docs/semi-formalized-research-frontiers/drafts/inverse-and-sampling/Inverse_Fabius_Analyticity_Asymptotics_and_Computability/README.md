@@ -19,7 +19,7 @@ only as reproducible checks.
 The package audit surfaces are:
 
 - [`theorem_concordance.csv`](theorem_concordance.csv): all 194 immutable
-  source-result rows, fully dispositioned as 39 Lean-proved, 106 human-proved
+  source-result rows, fully dispositioned as 48 Lean-proved, 97 human-proved
   frontier results, 10 conjectures, 15 open problems, and 24 non-applicable
   source environments;
 - [`LEAN_CROSSWALK.md`](LEAN_CROSSWALK.md): exact module and declaration
@@ -43,16 +43,18 @@ python -B audit/build_package_checksums.py --check
 
 `theorem_concordance.csv` records the disposition of all 194 source-result
 environments while preserving the ten immutable source fields reproduced from
-`audit/SOURCE_REVISION`.  Its current totals are 47 Lean-proved, 98
+`audit/SOURCE_REVISION`.  Its current totals are 48 Lean-proved, 97
 human-proved frontier results, 10 conjectures, 15 open problems, and 24
-nonassertoric rows.  Eight inverse-computability rows now have exact compiled
+nonassertoric rows.  Nine inverse-computability rows now have exact compiled
 counterparts: the main theorem, the three tolerant-difference branch
 certificates, tolerant-bisection correctness, unit-interval sequential
 inversion, computable clamping, and sequential computability of the totalized
-inverse.  The abstract inversion theorem remains human-proved because the
-generic Lean theorem assumes a computable reciprocal inverse modulus rather
-than deriving that modulus and effective continuity from a computable positive
-gap sequence.  The centered Appell deconvolution, positive-degree Appell
+inverse.  `FabiusFunction.EffectiveGapInverse` closes the ninth, abstract row:
+it derives a computable reciprocal inverse modulus from computable positive
+rational gap data and concludes both subset sequential computability and
+effective uniform continuity; its companion theorem packages the clamped
+inverse as a total computable real function.  The centered Appell
+deconvolution, positive-degree Appell
 mean-zero, and arbitrarily phased polynomial-deconvolution rows also have exact
 named Lean counterparts.  The Appell lattice theorem remains human-proved:
 Lean covers its arbitrary-phase `0 <= n <= N` formula, but not its additional
@@ -71,9 +73,9 @@ at `93db15ad3c0645bd3cfd0a3e6e694e3c86a3aa2b`, a complete pre-retirement
 repository snapshot. The old paths are retained as provenance locators, not
 as live links.
 
-The three newest exact source-row matches are centered Appell deconvolution,
-positive-degree Appell mean-zero, and arbitrary-phase polynomial
-deconvolution. The Appell lattice theorem remains human-proved: Lean covers
+The four newest exact source-row matches are abstract effective inversion,
+centered Appell deconvolution, positive-degree Appell mean-zero, and
+arbitrary-phase polynomial deconvolution. The Appell lattice theorem remains human-proved: Lean covers
 its arbitrary-phase `0 <= n <= N` formula, but not its additional degree-`N+1`
 clause at the parity-selected superconvergent phases.
 
@@ -87,7 +89,7 @@ masters contribute 152 of the 194 concordance rows:
 - `Inverse_Endpoint_All_Orders`: 29 rows; and
 - `Inverse_Fabius_Computability_Report`: 40 rows.
 
-Their canonical classifications are 23 exact Lean matches, 88 complete
+Their canonical classifications are 24 exact Lean matches, 87 complete
 human-proved frontier results, 18 non-live source environments (seven
 definitions, three algorithms, two examples, four editorial obligations, and
 two superseded source conjectures), nine explicitly retained conjectures, and
