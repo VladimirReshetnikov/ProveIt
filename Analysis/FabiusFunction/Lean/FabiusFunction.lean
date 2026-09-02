@@ -515,6 +515,7 @@ import FabiusFunction.NewtonInterpolation
 import FabiusFunction.GaussianBinomialInteger
 import FabiusFunction.GaussianBinomialComplexOrder
 import FabiusFunction.QPfaffSaalschutz
+import FabiusFunction.QuantumMultinomial
 import FabiusFunction.GaussianBinomialPalindromic
 import FabiusFunction.ThetaQuasiPeriodicity
 
@@ -781,6 +782,14 @@ series.  `QPfaffSaalschutz` (0+3) proves the terminating balanced `₃φ₂`
 summation algebraically over a field.  The nonzero nome and parameters,
 strict-contraction bounds, and finite-product nonvanishing assumptions remain
 explicit; no boundary or limiting extension is asserted.
+
+`QuantumMultinomial` adds no definitions and exactly five theorems.  It
+decomposes tuple antidiagonals, transports Gaussian symmetry to every
+semiring, proves q-multinomial coefficients commute with every element that
+the nome does, and derives the ordered noncommutative q-multinomial expansion
+when `q` commutes with each variable and `x_j * x_i = q * (x_i * x_j)` for
+`i < j`.  The result is finite and division-free and requires no ambient
+commutativity or analytic convergence premise.
 
 The probabilistic layer is closed at the level of measures.  The up-measure
 `μ_up = up·Leb` satisfies the refinement equation

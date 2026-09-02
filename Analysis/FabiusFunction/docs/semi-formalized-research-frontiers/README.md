@@ -37,7 +37,7 @@ explicit Rvachev--Appell specialization. In the canonical inverse synthesis
 this promotes exactly `is:p3:cor:forced-superconvergence` and
 `is:p3:thm:Appell-lattice-reproduction`, bringing its 194 immutable rows to
 49 Lean-proved / 96 human-proved / 10 conjectural / 15 open / 24
-nonassertoric. The live documentation census is 669 modules and 8,847 public
+nonassertoric. The live documentation census is 670 modules and 8,852 public
 declarations with no gaps; no PDF was rebuilt for this source-only update.
 
 The 1 September 2026 source-only q-Pochhammer overlay is likewise newer than
@@ -51,14 +51,14 @@ same current source also crosswalks the generic infinite/dissection API and
 the later Euler, q-binomial, Jacobi, quantum-binomial, Rogers--Szegő,
 cyclotomic-divisibility, q-Catalan, primitive-root-block, q-Lucas, Jackson
 q-beta, geometric Newton-interpolation, integer/complex upper Gaussian, and
-q-Pfaff--Saalschütz tranches. Its 282-result forward
-status totals are now 87 exact / 83 partial / 104 none / 8 interface. The
+q-Pfaff--Saalschütz, and noncommutative q-multinomial tranches. Its 282-result forward
+status totals are now 88 exact / 83 partial / 103 none / 8 interface. The
 outer spectral product now has an exact
 locally-uniform/normal-convergence theorem; the compound centered/MGF and
 exterior reciprocal/pole layers remain partial.
 
-The monograph's current 14,438-line, 678,798-byte source has SHA-256
-`b0b993302adc5e5122b660bd3d413fa352ada9619f2eb9a854603acb3d3e1971`.
+The monograph's current 14,449-line, 679,492-byte source has SHA-256
+`ed3baa67195e142531234170e67d04a04e356905523333ad95d667f0ddddcc8c`.
 Its retained 354-page A4 PDF (3,030,302 bytes; SHA-256
 `1050a9a3b0b7a8df8e7de0870946ae64940d7d7839a2f20427be0ebe14b0ba8c`)
 renders an earlier explicitly pinned source. It remains a reproducible

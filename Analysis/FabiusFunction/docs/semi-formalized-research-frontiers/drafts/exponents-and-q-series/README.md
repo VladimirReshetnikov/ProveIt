@@ -31,7 +31,7 @@ module tranches and the zero-definition, three-theorem
 crosswalk. That source is a source-only successor to the fresh artifact receipt
 and requires a later synchronized three-pass build. Retained PDFs under its `assets/` tree are
 research figures, not alternate manuscript renderings. The current Lean audit
-contains 669 facade-reachable modules and 8,847 public declarations, with no
+contains 670 facade-reachable modules and 8,852 public declarations, with no
 missing module headers or declaration documentation.
 
 ## Detailed package record
@@ -95,9 +95,9 @@ Current packages and retained intake records:
   figures. Pinned source revisions and Git history preserve every superseded
   layout and arrival fact.
 
-  The current `q_pochhammer_q_binomial_monograph.tex` has 14,438 lines,
-  678,798 bytes, and SHA-256
-  `b0b993302adc5e5122b660bd3d413fa352ada9619f2eb9a854603acb3d3e1971`.
+  The current `q_pochhammer_q_binomial_monograph.tex` has 14,449 lines,
+  679,492 bytes, and SHA-256
+  `ed3baa67195e142531234170e67d04a04e356905523333ad95d667f0ddddcc8c`.
   Its retained `q_pochhammer_q_binomial_monograph.pdf` is a historical
   354-page A4 artifact of 3,030,302 bytes, with SHA-256
   `1050a9a3b0b7a8df8e7de0870946ae64940d7d7839a2f20427be0ebe14b0ba8c`.
@@ -793,8 +793,8 @@ claims about the current canonical source. The canonical synthesis's current
 source and retained historical PDF are identified by the single exact receipt
 in the detailed package record above.
 
-The latest validated forward formalization ledger has 282 rows: 87 Exact, 83
-Partial, 104 with no counterpart, and 8 interface-only. The original
+The latest validated forward formalization ledger has 282 rows: 88 Exact, 83
+Partial, 103 with no counterpart, and 8 interface-only. The original
 191-result pre-Fabius core had 36 exact, 29 partial, 123 with no counterpart,
 and 3 interface-only entries. The four integrated-guide chapters add 31
 human-proved but not Lean-formalized assertions and five labelled definitions;
@@ -847,6 +847,7 @@ compatibility spelling of its primary identity),
 `GaussianBinomialInteger.lean` (one definition, ten theorems),
 `GaussianBinomialComplexOrder.lean` (one definition, five theorems),
 `QPfaffSaalschutz.lean` (zero definitions, three theorems),
+`QuantumMultinomial.lean` (zero definitions, five theorems),
 `GaussianBinomialAtNegOne.lean` (five theorems),
 `RvachevPochhammerFactorization.lean` (one definition, nine theorems), and
 `QPochhammerEntire.lean` (zero definitions; four legacy compatibility
@@ -1143,3 +1144,6 @@ Gaussian coefficients and the terminating balanced q-Pfaff--Saalschütz sum:
 `GaussianBinomialComplexOrder.lean` is 1+5, and
 `QPfaffSaalschutz.lean` is 0+3. Their nonzero-nome,
 strict-contraction, and denominator hypotheses remain explicit.
+`QuantumMultinomial.lean` adds five theorems for antidiagonal tuple recursion,
+noncommutative Gaussian symmetry, and the ordered q-multinomial expansion for
+pairwise q-commuting variables.

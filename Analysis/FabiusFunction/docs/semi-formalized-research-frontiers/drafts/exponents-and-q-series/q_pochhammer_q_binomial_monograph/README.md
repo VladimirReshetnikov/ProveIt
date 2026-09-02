@@ -110,8 +110,8 @@ fonts. The files under `assets/experiments/**/figures/` remain research
 figures, not publication manuscripts.
 
 The current master TeX is a source-only successor to that checkpoint: it has
-14,438 lines, 678,798 bytes, and SHA-256
-`b0b993302adc5e5122b660bd3d413fa352ada9619f2eb9a854603acb3d3e1971`.
+14,449 lines, 679,492 bytes, and SHA-256
+`ed3baa67195e142531234170e67d04a04e356905523333ad95d667f0ddddcc8c`.
 The regenerated root `SHA256SUMS` ledger records the same identity. The
 historical source identity above must not be reused for the live source, and
 the retained PDF does not claim render parity with the current TeX.
@@ -126,6 +126,7 @@ theorems), `GaussianBinomialPolynomialStructure` (zero definitions and five
 theorems), and `GeometricPochhammerNormalConvergence` (zero
 definitions and three theorems). The wider inventory also includes
 `QMultinomial` (one definition and nine theorems),
+`QuantumMultinomial` (zero definitions and five theorems),
 `QPochhammerInfiniteBounds` (zero definitions and five theorems),
 `QPochhammerComplexOrder` (one definition and four theorems),
 `BasicHypergeometricSeries` (two definitions and five theorems),
@@ -159,7 +160,7 @@ entireness, zero-locus, reciprocal-power, and analytic-order results rather
 than duplicating their analytic proofs. In `QBinomialTheoremInfinite`,
 `finiteQPochhammerIn_zero_left` remains the unique declaration owned by
 `GaussianBinomialAtOne` and is imported rather than redeclared. The forward
-status ledger is 87 Exact, 83 Partial, 104 None, and 8 interface rows; the
+status ledger is 88 Exact, 83 Partial, 103 None, and 8 interface rows; the
 191-result pre-Fabius core is 36/29/123/3. The compound outer spectral-product
 theorem remains Partial even though the three-theorem outer-product leaf proves
 local-uniform (normal) convergence for every complex strict contraction, its
@@ -192,6 +193,9 @@ two Pascal laws, and reciprocal series are Exact; so are the upper-parameter
 and generalized complex-order series on their stated norm domains.  The
 separate complex-parameter property and classical-specialization rows remain
 None and are not inferred from those series identities.
+The quantum-multinomial row is Exact over every semiring under the stated
+pairwise q-commutation laws and commutation of q with each variable; neither
+centrality of q nor commutativity of the ambient semiring is claimed.
 
 Source and PDF were synchronized by this build, and the root package checksum
 ledger (`SHA256SUMS`) was regenerated with `audit/build_package_checksums.py`

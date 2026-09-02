@@ -12521,8 +12521,8 @@ inside the proof below does not formalize the result the proof concludes.
   than a mathematical claim.
 \end{description}
 
-Of the 282 labelled forward results, 87 are \statusexact, 83 are
-\statuspartial, 104 are \statusnone, and 8 are \statusna.  The original
+Of the 282 labelled forward results, 88 are \statusexact, 83 are
+\statuspartial, 103 are \statusnone, and 8 are \statusna.  The original
 191-result pre-Fabius core had 36 \statusexact, 29 \statuspartial, 123
 \statusnone, and 3 \statusna{} entries.  The four integrated guide chapters
 add 31 human-proved but not Lean-formalized assertions and five labelled
@@ -12602,6 +12602,7 @@ complete public declaration lists:
 \path{QBinomialCauchy.lean}: one definition and five theorems, including the
 compatibility spelling of the primary identity;\\
 \path{QMultinomial.lean}: one definition and nine theorems;\\
+\path{QuantumMultinomial.lean}: zero definitions and five theorems;\\
 \path{CentralQBinomialReduction.lean}: zero definitions and six theorems;\\
 \path{SymmetricFunctionOrthogonality.lean}: one definition and six theorems;\\
 \path{CompleteHomogeneousGenerating.lean}: one definition and six theorems;\\
@@ -13078,7 +13079,7 @@ The infinite $q$-binomial theorem & 1 & 1 & 2 & 0\\
 Basic hypergeometric series & 2 & 3 & 4 & 0\\
 Euler telescoping and very-well-poised summations & 0 & 0 & 4 & 0\\
 Bilateral series and Ramanujan's \texorpdfstring{${}_1\psi_1$}{1psi1} sum & 0 & 0 & 2 & 0\\
-$q$-difference calculus and the quantum binomial & 7 & 2 & 1 & 0\\
+$q$-difference calculus and the quantum binomial & 8 & 2 & 0 & 0\\
 The $q$-gamma and $q$-beta functions & 3 & 1 & 4 & 0\\
 Jacobi's triple product & 5 & 2 & 1 & 0\\
 Theta modularity, lattice dissection, and sums of squares & 0 & 0 & 14 & 4\\
@@ -13096,7 +13097,7 @@ Half-base arithmetic and Prouhet--Thue--Morse cancellation & 6 & 3 & 0 & 0\\
 Geometric uniform sums, $q$-cumulants, and the Fabius--Rvachev functions & 2 & 11 & 0 & 0\\
 Dyadic Gaussian--Thue--Morse structure and the values of $F$ & 6 & 44 & 6 & 0\\
 \midrule
-\textbf{Forward total} & 87 & 83 & 104 & 8\\
+\textbf{Forward total} & 88 & 83 & 103 & 8\\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -13503,7 +13504,17 @@ $N$, rather than invoking a basis}\\[2pt]
 \texttt{quantumPlane\_\allowbreak{}mul\_\allowbreak{}pow}\newline
 {\footnotesize\texttt{QuantumBinomial}; every semiring, with $q$ assumed only
 to commute with $X$ and $Y$; see \Cref{rem:quantum-binomial-generality}}\\[2pt]
-\Cref{cor:quantum-multinomial} & \statusnone & ---\\[2pt]
+\Cref{cor:quantum-multinomial} & \statusexact &
+\texttt{quantum\_\allowbreak{}multinomial},
+\texttt{sum\_\allowbreak{}antidiagonalTuple\_\allowbreak{}succ},
+\texttt{gaussianBinomial\_\allowbreak{}symm'},
+\texttt{Commute.qMultinomial\_\allowbreak{}left}\newline
+{\footnotesize\texttt{QuantumMultinomial}; in any semiring, for
+$x_0,\dots,x_{r-1}$ with $x_jx_i=qx_ix_j$ ($i<j$) and $q$ commuting with
+each $x_i$, no centrality of $q$ or ambient commutative ring required; the
+sum runs over \texttt{Finset.Nat.antidiagonalTuple} and the ordered monomial
+is a \texttt{List} product; the symmetry $[n,n-k]_q=[n,k]_q$ is transported
+to every semiring from the universal polynomial}\\[2pt]
 \Cref{cor:qexp-factor} & \statuspartial &
 \texttt{hasSum\_\allowbreak{}qExp},
 \texttt{hasSum\_\allowbreak{}qExpBig},

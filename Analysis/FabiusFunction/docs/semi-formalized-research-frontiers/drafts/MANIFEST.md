@@ -19,8 +19,8 @@ old flat layout; the **Previous path** column below is the map. Documents
 were moved verbatim — no `.tex` content was changed by the reorganization,
 so no PDF was rebuilt for it.
 
-**Current artifact checkpoint (2026-09-01).** The live Lean audit scans 669
-source modules and 8,847 public declarations, with no missing module headers or
+**Current artifact checkpoint (2026-09-01).** The live Lean audit scans 670
+source modules and 8,852 public declarations, with no missing module headers or
 declaration comments.
 Several PDFs below are retained,
 readable publication checkpoints rather than renders of the final merged TeX.
@@ -50,8 +50,8 @@ exact ceiling modulus, gap-to-modulus abstract strengthening, and input-bit
 asymptotics remain outside Lean.
 
 The two canonical syntheses have source/artifact receipts. The current
-q-series source has 14,438 lines, 678,798 bytes, and SHA-256
-`b0b993302adc5e5122b660bd3d413fa352ada9619f2eb9a854603acb3d3e1971`.
+q-series source has 14,449 lines, 679,492 bytes, and SHA-256
+`ed3baa67195e142531234170e67d04a04e356905523333ad95d667f0ddddcc8c`.
 Its retained PDF is a historical 354-page, 3,030,302-byte A4 artifact with
 SHA-256
 `1050a9a3b0b7a8df8e7de0870946ae64940d7d7839a2f20427be0ebe14b0ba8c`,
@@ -90,6 +90,9 @@ five theorems), and `QPfaffSaalschutz.lean` (three theorems). It extends
 Gaussian coefficients to integer and principal-complex upper indices and
 proves the terminating balanced q-Pfaff--Saalschütz sum under its explicit
 nonzero and denominator hypotheses.
+`QuantumMultinomial.lean` adds five theorems: antidiagonal tuple recursion,
+noncommutative Gaussian symmetry, and the ordered q-multinomial theorem for
+pairwise q-commuting variables.
 The local reciprocal-power zero-lattice theorem completes
 `QPochhammerEntire.lean` to five theorems, and two further general-product
 theorems complete `QPochhammerInfinite.lean` to one definition and 29
@@ -99,7 +102,7 @@ product's locally uniform convergence is exact for every complex strict
 contraction, including `q = 0`, with dyadic Rvachev and bounded-Fabius Fourier
 specializations. The compound centered/MGF and exterior reciprocal/pole
 theorem remains Partial. The forward status ledger covers 282 labelled
-results: 87 Exact / 83 Partial / 104 None / 8 N/A interface rows. No PDF was
+results: 88 Exact / 83 Partial / 103 None / 8 N/A interface rows. No PDF was
 generated locally for this source-only merge, so the incoming 354-page artifact
 remains historical. The comb synthesis also
 has a later chapter-03 notation edit: its retained 158-page, 2,456,105-byte
