@@ -85,7 +85,7 @@ The current canonical master `inverse_fabius_theory.tex` has 293 lines and
 11,514 bytes and SHA-256
 `92fab1fae38bbcf86a45b51bfe7ff34e2801361df9d2f3d6aa3de4dc966eaa3c`.
 Its exhaustive 23-input source closure has SHA-256
-`239ba326027a555b5f33a7b94c07dc33a28f5a01ec55df0b24d7afd75327d372`;
+`f8326a0cf839589521a4c06e66512e4684119859706c8b4984d1950b295056cf`;
 the closure comprises the master, shared notation, all nine chapters, three
 generated TeX fragments, and nine publication figures.
 

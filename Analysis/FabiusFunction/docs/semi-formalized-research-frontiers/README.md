@@ -28,6 +28,18 @@ The canonical frontier artifacts are:
 > source predates the later q-Pochhammer overlay and expanded ledger, so it is
 > a historical render and must not be cited as displaying the final source union.
 
+The current source-only superconvergence overlay is also newer than every
+retained frontier PDF. `RvachevSuperconvergentSynthesis.lean` contributes one
+definition and eight theorems for arbitrary nonzero natural meshes: it
+packages the parity-selected phases, exactness through degree `v₂(M)+1`,
+physical-coordinate quadrature, deconvolved-polynomial synthesis, and the
+explicit Rvachev--Appell specialization. In the canonical inverse synthesis
+this promotes exactly `is:p3:cor:forced-superconvergence` and
+`is:p3:thm:Appell-lattice-reproduction`, bringing its 194 immutable rows to
+49 Lean-proved / 96 human-proved / 10 conjectural / 15 open / 24
+nonassertoric. The live documentation census is 660 modules and 8,777 public
+declarations with no gaps; no PDF was rebuilt for this source-only update.
+
 The 1 September 2026 source-only q-Pochhammer overlay is likewise newer than
 the retained PDFs.  The new `QPochhammerEntire.lean` leaf has zero definitions
 and five theorems: for a fixed complex nome with norm less than one it proves
@@ -162,15 +174,15 @@ asset dispositions, and the deduplicated live asset ledger covers 63 retained
 payloads. The former package paths, source hashes, nested lineage, and recovery
 revisions remain in the package's
 [`PROVENANCE.md`](drafts/inverse-and-sampling/Inverse_Fabius_Analyticity_Asymptotics_and_Computability/PROVENANCE.md).
-Its synchronized 133-page A4 publication has SHA-256
-`83a2cc2050e4f6c0c6ea26b472c09f05d4c77d2d84d4ba47e316d8176e7c11c6`;
-the package README records the clean three-pass build, font preflight, and
-all-page visual inspection.
-The reviewed concordance classifies 39 source rows as Lean-proved and 106 as
-human-proved frontier results. Its three newest exact matches are centered
-Appell deconvolution, positive-degree Appell mean-zero, and arbitrary-phase
-polynomial deconvolution; the degree-`N+1` superconvergent phase in the Appell
-lattice theorem remains explicitly human-proved.
+Its retained 134-page, 2,027,726-byte A4 publication has SHA-256
+`22bc68d855ad04dde9654e9fbd20b3ba7f05a33e3c5df0e5b80bb8991c94b41d`.
+It is a fully reviewed historical checkpoint, but the current source changed
+after that render and therefore requires a fresh three-pass build before
+synchronization is claimed. The reviewed concordance classifies 49 source rows
+as Lean-proved and 96 as human-proved frontier results. Its two newest exact
+matches are the forced parity-selected superconvergence corollary and the full
+Appell lattice-reproduction theorem, including its degree-`N+1` selected-phase
+clause.
 
 Later the same day the groups other than the Fourier-decay corpus were
 **consolidated into volumes**, in two styles: the original members were

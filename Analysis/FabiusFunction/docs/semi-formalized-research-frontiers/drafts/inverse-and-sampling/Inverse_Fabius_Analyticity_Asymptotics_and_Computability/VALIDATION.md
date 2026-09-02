@@ -10,7 +10,7 @@ below are **not** asserted to form a synchronized source/PDF pair.
 | Item | Size | SHA-256 |
 | --- | ---: | --- |
 | `inverse_fabius_theory.tex` | 293 lines; 11,514 bytes | `92fab1fae38bbcf86a45b51bfe7ff34e2801361df9d2f3d6aa3de4dc966eaa3c` |
-| `SOURCE_CLOSURE.sha256` | Exhaustive ledger of 23 permanent build inputs | `239ba326027a555b5f33a7b94c07dc33a28f5a01ec55df0b24d7afd75327d372` |
+| `SOURCE_CLOSURE.sha256` | Exhaustive ledger of 23 permanent build inputs | `f8326a0cf839589521a4c06e66512e4684119859706c8b4984d1950b295056cf` |
 | `inverse_fabius_theory.pdf` | 134 A4 pages; 2,027,726 bytes | `22bc68d855ad04dde9654e9fbd20b3ba7f05a33e3c5df0e5b80bb8991c94b41d` |
 
 The first two rows identify the current source surface.  The third identifies
@@ -93,8 +93,8 @@ claiming byte identity between intermediate pass artifacts.
 - Root `SHA256SUMS` contains exactly 90 rows, one for every permanent package
   file except the self-referential ledger itself.
 - The root ledger includes the nested `assets/SHA256SUMS` as a permanent file.
-  That 63-row asset ledger remains byte-identical, with SHA-256
-  `a745240295306ceef87c90f944cb76f7b127cba3945cf3f3293a706894d08a0f`.
+  That 63-row asset ledger passes its canonical generator, with SHA-256
+  `b274fe39cde808c34e82789136af51616e9177f424763b3eec153bc18e10fa3c`.
 - Python byte-code caches and other transient files are excluded from the root
   ledger and are not publication payloads.
 

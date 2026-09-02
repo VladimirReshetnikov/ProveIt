@@ -789,8 +789,24 @@ They prove the global raw and normalized sums for every nonzero natural mesh
 identity for every real `theta`: it samples the reflected translates
 `D(P)(x - (theta + k)/M)` against `up((theta + k)/M)` and recovers `P(x)`.
 This proves the base degree bound `deg P ≤ v₂(M)` at every phase; it does
-not prove the separate `N + 1` superconvergent-phase extension advertised by
-the stronger lattice-reproduction manuscript theorem.
+not by itself prove the separate `N + 1` superconvergent-phase extension
+advertised by the stronger lattice-reproduction manuscript theorem.
+
+The subsequent source-only `RvachevSuperconvergentSynthesis.lean` module
+closes that extension with one public definition and eight public theorems.
+`IsRvachevSuperconvergentPhase` selects endpoints at even dyadic exponent and
+quarter points at odd dyadic exponent; the theorem
+`isRvachevSuperconvergentPhase_two_pow_iff` exposes that specialization.
+The module proves quarter and three-quarter threshold cancellation, unified
+threshold-monomial and degree-`v₂(M)+1` polynomial exactness, generic-mesh
+physical-coordinate quadrature, deconvolved-polynomial synthesis, and
+`normalized_tsum_shifted_rvachevAppellPolynomial_mul_rvachevUp_superconvergent`.
+Thus `is:p3:cor:forced-superconvergence` and
+`is:p3:thm:Appell-lattice-reproduction` are now exact in the canonical inverse
+concordance. This source postdates the retained Representation and inverse
+PDFs, which remain historical artifacts rather than renders of the promotion.
+The corresponding live documentation census is 660 modules and 8,777 public
+declarations with no gaps.
 
 The focused-build `CompositeMeshSharpness.lean` module exports one public
 definition, `rvachevCombExactThrough`, and seven public theorems:

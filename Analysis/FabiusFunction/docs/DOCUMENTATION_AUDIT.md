@@ -109,12 +109,27 @@ only 4,606 declarations and
 declarations, including 69 undocumented ones.  Run the script for the live
 numbers rather than copying these historical values.
 
-The live post-merge 2026-09-01 inventory contains 659 modules and 8,768
+The live post-merge 2026-09-01 inventory contains 660 modules and 8,777
 lexically visible public declarations, with zero missing module headers and
 zero missing doc comments.  Relative to the 610/8,318 activation checkpoint,
-the current tree adds forty-nine modules and 450 declarations.  Relative to
-the earlier 630/8,552 merged checkpoint, concurrent source work adds twenty-nine
-modules and 216 declarations.  The prime-power and outer-product tranches
+the current tree adds fifty modules and 459 declarations.  Relative to
+the earlier 630/8,552 merged checkpoint, concurrent source work adds thirty
+modules and 225 declarations.  The final one-definition/eight-theorem
+`RvachevSuperconvergentSynthesis.lean` leaf contributes
+`IsRvachevSuperconvergentPhase`,
+`isRvachevSuperconvergentPhase_two_pow_iff`,
+`tsum_quarter_monomial_eq_integral_of_even_deg`,
+`tsum_three_quarters_monomial_eq_integral_of_even_deg`,
+`tsum_shifted_monomial_eq_integral_superconvergent`,
+`tsum_shifted_polynomial_eq_integral_superconvergent`,
+`integral_polynomial_mul_rvachevUp_eq_normalized_tsum_superconvergent`,
+`normalized_tsum_shifted_rvachevDeconvolvedPolynomial_mul_rvachevUp_superconvergent`,
+and
+`normalized_tsum_shifted_rvachevAppellPolynomial_mul_rvachevUp_superconvergent`.
+It proves the stronger arbitrary-nonzero-`M` degree-`v₂(M)+1` result at the
+selected exact phase representatives; it does not classify phases modulo
+integers or prove maximality, positivity, or rationality.  The prime-power and
+outer-product tranches
 account for one module and six declarations: the zero-definition/three-theorem
 `GeometricPochhammerNormalConvergence.lean` leaf and three additional theorems
 in `PrimePowerBinomialValuation.lean`.  The q-polish adds two theorems to
@@ -325,8 +340,10 @@ a nine-module/84-declaration change.  The six further incoming q-calculus
 leaves contribute 36 declarations and brought the intermediate audit to
 649/8,697.  The four subsequent leaves contribute 38 declarations and bring
 that audit to 653/8,735.  The next four leaves contribute twenty declarations
-and bring that audit to 657/8,755.  The final two leaves contribute thirteen
-declarations and bring the live audit to the 659/8,768 census recorded above.
+and bring that audit to 657/8,755.  The final two q leaves contribute thirteen
+declarations and bring that intermediate audit to 659/8,768.  The
+superconvergent synthesis leaf then adds one module and nine declarations,
+yielding the live 660/8,777 census recorded above.
 
 That increment is exhaustively counted as
 `QPochhammerInfiniteBounds.lean` 0+5, `HeineTransformation.lean` 2+5,
@@ -565,9 +582,10 @@ and 88-page notation-catalogue artifacts likewise predate their current merged
 sources.  Their package notices treat those PDFs as historical validation
 receipts, not parity claims, until fresh uninterrupted three-pass builds
 complete.  The inverse-computability receipt likewise requires refresh for the
-659/8,768 census.  The canonical inverse-theory publication retains a 134-page
+660/8,777 census.  The canonical inverse-theory publication retains a 134-page
 artifact synchronized at its latest-main source checkpoint; the merged
-effective-inversion tranche makes current parity pending.
+effective-inversion and superconvergent-synthesis tranches make current parity
+pending.
 
 ### What the review pass caught
 

@@ -338,8 +338,8 @@ zero-definition/six-theorem generalized Rvachev identifiability overlay
 described in the audit map below, as well as the six-theorem prime-power
 companion-row and zero-definition/three-theorem outer Pochhammer
 normal-convergence overlays, the effective-inverse closure, and the latest
-sixteen-module q-series/q-calculus union.  The live source census is 659
-facade-reachable modules and 8,768 public declarations.  The retained
+sixteen-module q-series/q-calculus union.  The live source census is 660
+facade-reachable modules and 8,777 public declarations.  The retained
 237-page A4 PDF, SHA-256
 \nolinkurl{21180fa05a754b52a057495464674e9d6ac26a51488c2c770730c641b5ffe887},
 predates these source-only overlays and the expanded ledger and is therefore a
@@ -2265,7 +2265,8 @@ six-declaration overlay raised its historical census from 629/8,546 to
 630/8,552.  With later concurrent integration, including the six-theorem
 prime-power companion row, zero-definition/three-theorem outer Pochhammer
 normal-convergence leaf, two-module effective-inverse closure, and sixteen-module
-q-series/q-calculus union, the live source census is 659/8,768.  These additions
+q-series/q-calculus union and the parity-selected Rvachev synthesis leaf, the
+live source census is 660/8,777.  These additions
 are source-only, and the retained 237-page PDF remains explicitly historical.
 The newest six module counts are
 \path{QPochhammerInfiniteBounds.lean} (0+5),
@@ -5065,8 +5066,29 @@ $k\in(-2M,2M)$ forms.  The fifth theorem gives arbitrary real phase $\theta$:
 the normalized sum samples
 $\mathscr D_{\RvachevUp}P\bigl(x-(\theta+k)/M\bigr)$ against
 $\RvachevUp\bigl((\theta+k)/M\bigr)$ and recovers $P(x)$.  Its exact range is
-$\deg P\leq \TwoAdicValuation(M)$; it does not prove the separate degree-$(N+1)$
-superconvergent-phase extension in the stronger lattice-reproduction manuscript theorem.
+$\deg P\leq \TwoAdicValuation(M)$ at arbitrary phase.
+
+The compiled \path{RvachevSuperconvergentSynthesis.lean} module exports exactly
+one definition and eight theorems.  The definition
+\lean{IsRvachevSuperconvergentPhase} selects $0,1/2$ when
+$\TwoAdicValuation(M)+1$ is odd and $1/4,3/4$ when it is even.
+\lean{isRvachevSuperconvergentPhase_two_pow_iff} gives the dyadic form: even
+$N$ selects endpoint phases and odd $N$ quarter phases.  The other seven
+theorems are
+\lean{tsum_quarter_monomial_eq_integral_of_even_deg},
+\lean{tsum_three_quarters_monomial_eq_integral_of_even_deg},
+\lean{tsum_shifted_monomial_eq_integral_superconvergent},
+\lean{tsum_shifted_polynomial_eq_integral_superconvergent},
+\lean{integral_polynomial_mul_rvachevUp_eq_normalized_tsum_superconvergent},
+\lean{normalized_tsum_shifted_rvachevDeconvolvedPolynomial_mul_rvachevUp_superconvergent},
+and
+\lean{normalized_tsum_shifted_rvachevAppellPolynomial_mul_rvachevUp_superconvergent}.
+For every nonzero natural $M$, they prove selected-phase exactness through
+degree $\TwoAdicValuation(M)+1$, physical quadrature, deconvolved-polynomial
+reconstruction, and the Appell monomial specialization.  This arbitrary-$M$
+result is stronger than the dyadic-only manuscript claim.  It names exact
+phase representatives, not congruence classes or a complete classification,
+and proves no maximality, positivity, or rationality theorem.
 
 At the focused-build checkpoint of 30 August 2026,
 \path{CompositeMeshSharpness.lean} exports one public definition,

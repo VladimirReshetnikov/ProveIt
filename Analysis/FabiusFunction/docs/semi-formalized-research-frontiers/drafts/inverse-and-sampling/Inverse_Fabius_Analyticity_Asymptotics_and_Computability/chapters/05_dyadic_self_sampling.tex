@@ -689,6 +689,29 @@ All four phase families are positive; at these dyadic phases they are rational.
 If $N$ is even, $r=N+1$ is odd, and every sine in \eqref{is:p3:eq:first-defect-odd} vanishes at $\theta=0,1/2$.  If $N$ is odd, $r$ is even, and every cosine in \eqref{is:p3:eq:first-defect-even} vanishes at $\theta=1/4,3/4$ because $m$ is odd.
 \end{proof}
 
+\begin{statusbox}[Lean status of parity-selected superconvergence]
+\Cref{is:p3:cor:forced-superconvergence} now has an exact compiled
+counterpart.  The predicate
+\path{Fabius.IsRvachevSuperconvergentPhase} records the four selected
+phases, and
+\path{Fabius.isRvachevSuperconvergentPhase_two_pow_iff} specializes it at
+the mesh $M=2^N$ to precisely the even-$N$ endpoint/midpoint pair and the
+odd-$N$ quarter-phase pair above.  The physical-coordinate statement
+\path{Fabius.integral_polynomial_mul_rvachevUp_eq_normalized_tsum_superconvergent}
+then gives the displayed $2^{-N}$-normalized rule for every real polynomial
+of degree at most $N+1$.
+
+The positivity and rationality clauses use already compiled kernels rather
+than a new classification theorem: \path{Fabius.rvachevUp_nonneg} gives
+nonnegative weights,
+\path{Fabius.rvachev_pos_iff_mem_Ioo} gives strict positivity at exactly the
+interior nodes, and \path{Fabius.rvachevDyadic_cast}, together with the
+zero-off-support theorem \path{Fabius.rvachevUp_eq_zero_iff_not_mem_Ioo},
+identifies every dyadic sample with a rational value.  This finite family
+matches every clause of the corollary.  It does not classify all possible
+superconvergent phases or assert sharpness beyond the selected families.
+\end{statusbox}
+
 \subsection{Classification of the superconvergent phases}
 
 The first harmonic does more than suggest the correct phases: from level two onward it proves that there are no others.
@@ -1068,12 +1091,17 @@ interval \([-1,1]\).  The last declaration has the same nonzero natural mesh,
 degree bound, arbitrary real phase, normalized physical-coordinate nodes, and
 conclusion as the paper.
 
-Only the principal \(0\le n\le N\) clause of
-\cref{is:p3:thm:Appell-lattice-reproduction} is formalized: specialize the
-last declaration to \(M=2^N\) and \(P=X^n\).  The same paper theorem also
-asserts degree \(N+1\) at the parity-selected superconvergent phases, and that
-stronger clause has no exact Lean counterpart.  The whole labelled lattice
-theorem therefore remains a human-proved frontier result.
+The full finite-lattice theorem is now formalized by an explicit two-part
+family.  For arbitrary phase and $0\le n\le N$, specialize
+\path{Fabius.normalized_tsum_shifted_rvachevDeconvolvedPolynomial_mul_rvachevUp}
+to $M=2^N$ and $P=X^n$.  At a selected phase, including the endpoint and
+midpoint pair for even $N$ and the quarter pair for odd $N$,
+\path{Fabius.normalized_tsum_shifted_rvachevAppellPolynomial_mul_rvachevUp_superconvergent}
+proves the same formula through $n=N+1$; the exact phase dictionary is
+\path{Fabius.isRvachevSuperconvergentPhase_two_pow_iff}.  Finally,
+\path{Fabius.finite_support_comb} supplies the asserted finiteness.  Thus
+\cref{is:p3:thm:Appell-lattice-reproduction} is Lean-proved.  No uniqueness
+or sharpness assertion about the selected phases is included in this status.
 \end{statusbox}
 
 \begin{resultbox}[Fourth frontier bridge]

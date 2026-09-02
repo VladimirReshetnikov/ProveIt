@@ -31,7 +31,7 @@ module tranches and the zero-definition, three-theorem
 crosswalk. That source is a source-only successor to the fresh artifact receipt
 and requires a later synchronized three-pass build. Retained PDFs under its `assets/` tree are
 research figures, not alternate manuscript renderings. The current Lean audit
-contains 644 facade-reachable modules and 8,666 public declarations, with no
+contains 660 facade-reachable modules and 8,777 public declarations, with no
 missing module headers or declaration documentation.
 
 ## Detailed package record

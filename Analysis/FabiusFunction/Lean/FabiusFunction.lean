@@ -262,6 +262,7 @@ import FabiusFunction.LagrangeRvachevSynthesis
 import FabiusFunction.CombFirstDefect
 import FabiusFunction.CompositeMeshSharpness
 import FabiusFunction.CombDefectSeries
+import FabiusFunction.RvachevSuperconvergentSynthesis
 import FabiusFunction.CauchySurvival
 import FabiusFunction.CauchyHigherPowers
 import FabiusFunction.MonomialCombFourier
@@ -627,6 +628,19 @@ input names to `[0,1]`, and combining it with the logarithmic Delta modulus
 proves `fabiusInv_isComputableRealFunction` for every bounded Fabius witness.
 This is a computability certificate for the total inverse, not an input-bit
 running-time theorem or an exact least endpoint-mass denominator.
+
+The parity-selected Rvachev synthesis layer exports exactly one definition and
+eight theorems.  `IsRvachevSuperconvergentPhase` selects the endpoint phases
+`0, 1/2` when `v₂(M)+1` is odd and the quarter phases `1/4, 3/4` when it is
+even; `isRvachevSuperconvergentPhase_two_pow_iff` specializes this to endpoint
+phases for even dyadic level and quarter phases for odd dyadic level.  The two
+quarter-phase monomial theorems, the unified monomial and polynomial theorems,
+the physical-coordinate quadrature theorem, and the deconvolved-polynomial and
+Appell specializations prove exactness through degree `v₂(M)+1` for every
+nonzero natural mesh.  This is stronger than the manuscript's dyadic-only
+form.  The predicate names exact real representatives, not all translates
+modulo integers, and the API asserts neither uniqueness of the selected phases
+nor maximality, positivity, or rationality of the resulting quadrature.
 
 The q-calculus surface further includes finite-prefix infinite-product bounds,
 the Heine transformation and q-Gauss summation, a ratio-defined complex-order

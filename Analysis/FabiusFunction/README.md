@@ -77,7 +77,7 @@ That primary exposition is deliberately proof-backed: every mathematical claim
 in it must have a proved counterpart in the Lean development.
 
 > **Artifact status (2026-09-01).**  The live facade union contains exactly
-> 659 source modules and 8,768 public declarations.  The documentation audit
+> 660 source modules and 8,777 public declarations.  The documentation audit
 > reports no missing module headers or declaration comments.  Its q-series union retains
 > `QPochhammerEntire` 0+5, `GeometricPochhammerNormalConvergence` 0+3,
 > `QPochhammerDissection` 0+2,
@@ -340,7 +340,8 @@ Padé/J-fractions, infinite Jacobi theory, and asymptotics also remain open.
 | Actual quarter inverse Catalan jet | `FabiusFunction.FabiusInverseQuarterJet` | Exhaustive public surface: `iteratedDeriv_centeredFabiusInv_quarter_eq_quadraticInverse`, `iteratedDeriv_fabiusInv_five_seventy_two_succ`.  For every bounded Fabius solution, the full centered derivative jet at `5/72 = F(1/4)` equals the factorial-scaled coefficient sequence of `QuadraticInverse.inverse 4`; in particular `G^(m+1)(5/72) = (m+1)! (-4)^m C_m`.  This is equality of all jets, not local analytic equality: it neither erases the known nonanalytic flat defect nor proves that defect is nonzero by a named remainder theorem. |
 | Finite polynomial integrals from raw moments and formal cumulants | `FabiusFunction.PolynomialExpectationCumulant` | `integral_eval₂_eq_sum_moment`, `integral_eval₂_eq_sum_completeBell_momentCumulant_with_mass_correction`, `integral_eval₂_eq_sum_completeBell_momentCumulant_of_moment_zero_eq_one`, `integral_eval₂_eq_sum_completeBell_momentCumulant` |
 | Rvachev raw moments, centered Appell convolution, and triangular injective polynomial deconvolution | `FabiusFunction.RvachevMomentAppell` | Exhaustive public surface: six definitions and exactly 33 theorems, enumerated below in source order.  It packages rational raw and reciprocal moments, rational and real monic Appell families of exact degree, and coefficientwise deconvolution as an injective real linear map preserving the top coefficient, natural degree, and leading coefficient.  Smoothing recovers every polynomial in both the additive and centered `x-y` forms; positive-degree Appell polynomials have Rvachev mean zero.  It proves no analytic reciprocal-MGF or Appell generating-series identity, literal differential-operator expansion, parity theorem for the reciprocal/deconvolution families, or displayed low-coefficient table. |
-| Exact shifted-up polynomial synthesis, including arbitrary-phase self-sampling | `FabiusFunction.RvachevPolynomialSynthesis` | Exhaustive public surface: zero definitions and exactly five theorems, `tsum_rvachevDeconvolvedPolynomial_mul_shifted_rvachevUp`, `normalized_tsum_rvachevDeconvolvedPolynomial_mul_shifted_rvachevUp`, `sum_Ioo_rvachevDeconvolvedPolynomial_mul_shifted_rvachevUp`, `normalized_sum_Ioo_rvachevDeconvolvedPolynomial_mul_shifted_rvachevUp`, and `normalized_tsum_shifted_rvachevDeconvolvedPolynomial_mul_rvachevUp`.  For every nonzero natural mesh `M` and `P.natDegree ≤ v₂(M)`, the first four give global and exact finite `k ∈ (-2M,2M)` synthesis on `[-1,1]`; the fifth reconstructs `P.eval x` for arbitrary real phase and real `x`.  At `M=2^N` this reaches every degree at most `N`, but not the proposed parity-selected degree-`N+1` superconvergence or odd-`N` quarter-phase extension. |
+| Exact shifted-up polynomial synthesis, including arbitrary-phase self-sampling | `FabiusFunction.RvachevPolynomialSynthesis` | Exhaustive public surface: zero definitions and exactly five theorems, `tsum_rvachevDeconvolvedPolynomial_mul_shifted_rvachevUp`, `normalized_tsum_rvachevDeconvolvedPolynomial_mul_shifted_rvachevUp`, `sum_Ioo_rvachevDeconvolvedPolynomial_mul_shifted_rvachevUp`, `normalized_sum_Ioo_rvachevDeconvolvedPolynomial_mul_shifted_rvachevUp`, and `normalized_tsum_shifted_rvachevDeconvolvedPolynomial_mul_rvachevUp`.  For every nonzero natural mesh `M` and `P.natDegree ≤ v₂(M)`, the first four give global and exact finite `k ∈ (-2M,2M)` synthesis on `[-1,1]`; the fifth reconstructs `P.eval x` for arbitrary real phase and real `x`.  At `M=2^N` this arbitrary-phase layer reaches every degree at most `N`; the adjacent parity-selected layer adds one degree at its selected phases. |
+| Parity-selected one-extra-degree Rvachev quadrature and Appell synthesis | `FabiusFunction.RvachevSuperconvergentSynthesis` | Exhaustive public surface: one definition, `IsRvachevSuperconvergentPhase`, and exactly eight theorems, `isRvachevSuperconvergentPhase_two_pow_iff`, `tsum_quarter_monomial_eq_integral_of_even_deg`, `tsum_three_quarters_monomial_eq_integral_of_even_deg`, `tsum_shifted_monomial_eq_integral_superconvergent`, `tsum_shifted_polynomial_eq_integral_superconvergent`, `integral_polynomial_mul_rvachevUp_eq_normalized_tsum_superconvergent`, `normalized_tsum_shifted_rvachevDeconvolvedPolynomial_mul_rvachevUp_superconvergent`, and `normalized_tsum_shifted_rvachevAppellPolynomial_mul_rvachevUp_superconvergent`.  For every nonzero natural mesh `M`, the selected endpoint or quarter phases give exactness through degree `v₂(M)+1`, physical-coordinate quadrature, deconvolved-polynomial reconstruction, and the Appell monomial specialization.  On `M=2^N`, even `N` selects `0,1/2` and odd `N` selects `1/4,3/4`.  This generic-mesh theorem is stronger than the dyadic manuscript form.  The predicate records exact real representatives, not integer translates or a complete classification; no maximality, positivity, or rationality theorem is claimed. |
 | Shifted dyadic polynomial comb exactness and normalized self-sampling quadrature | `FabiusFunction.PolynomialCombExactness` | Exhaustive public surface: zero definitions and exactly three theorems, `finite_support_comb`, `tsum_shifted_polynomial_eq_integral`, and `integral_polynomial_mul_rvachevUp_eq_dyadic_tsum`.  For every bounded Fabius solution, natural level `m`, real phase `theta`, and arbitrary real weight function `g`, the sampled product `g(theta+k) * up(2^-m * (theta+k))` has finite integer support.  Every real polynomial `P` with `P.natDegree <= m` therefore satisfies the corresponding whole-line shifted comb identity.  In physical coordinates, for every natural `N`, arbitrary real phase, and `P.natDegree <= N`, its integral against `up` equals `2^-N` times the integer sum over nodes `2^-N * (theta+k)` weighted by `up` at those same nodes.  The statements include level zero; the sums are finite by compact support, and no phase rationality, positivity, infinite-support convergence, or optimal-mesh claim is imposed. |
 | Generic finite-node Lagrange--Rvachev decoder, cardinal biorthogonality, and exact interpolation loop | `FabiusFunction.LagrangeRvachevSynthesis` | Exhaustive public surface: two definitions, `lagrangeRvachevDecoder` and `lagrangeRvachevAtomCoefficient`; and seven theorems, `natDegree_lagrangeBasis_le_card_sub_one`, `natDegree_lagrangeInterpolate_le_card_sub_one`, `normalized_sum_Ioo_lagrangeRvachevDecoder_mul_shifted_rvachevUp`, `normalized_sum_Ioo_lagrangeRvachevDecoder_eval_node`, `lagrangeRvachevAtomCoefficient_eq_deconvolved_interpolate`, `sum_Ioo_lagrangeRvachevAtomCoefficient_mul_shifted_rvachevUp`, and `sum_lagrangeRvachevDecoder_eq_one`.  The degree bounds and polynomial reconstruction need no distinct-node hypothesis; componentwise Kronecker biorthogonality requires distinct nodes and evaluation inside `[-1,1]`, while the row-sum theorem additionally requires a nonempty node set.  This closes the reusable generic finite-node synthesis loop, not a geometric Gaussian closed-form decoder, bundled matrix/right-inverse wrapper, or optimal/minimum-variation decoder theorem. |
 | Sharp universal composite-mesh exactness and least natural meshes | `FabiusFunction.CompositeMeshSharpness` | Exhaustive public surface: `exists_shift_tsum_shifted_monomial_ne_integral_nat_real`, `rvachevCombExactThrough`, `rvachevCombExactThrough_iff_padicValNat`, `rvachevCombExactThrough_iff_pow_two_dvd`, `rvachevCombExactThrough_two_pow`, `two_pow_le_of_rvachevCombExactThrough`, `isLeast_rvachevCombExactThrough`, `isLeast_rvachevCombExactThrough_even`.  The `IsLeast` results quantify over meshes exact for the whole real polynomial space through the stated degree; they do not assert minimality for an individual Legendre polynomial, a fixed Legendre partial sum, or a target-adapted mesh. |
@@ -740,9 +741,30 @@ for arbitrary real phase `θ` and real `x`: it samples `up` at
 `M⁻¹ * (θ + k)`, evaluates the deconvolved polynomial at
 `x - M⁻¹ * (θ + k)`, and reconstructs `P.eval x`.  Taking
 `M = 2 ^ N` formalizes arbitrary-phase polynomial reproduction through every
-degree `n ≤ N`.  It does not formalize the Appell-lattice extension to degree
-`N + 1` at parity-selected superconvergent phases, including the odd-`N`
-quarter phases.
+degree `n ≤ N`.
+
+The compiled `RvachevSuperconvergentSynthesis.lean` extension exports exactly
+one public definition and eight public theorems.  Its definition
+`Fabius.IsRvachevSuperconvergentPhase` selects `0,1/2` when `v₂(M)+1` is odd
+and `1/4,3/4` when it is even.  The theorem
+`Fabius.isRvachevSuperconvergentPhase_two_pow_iff` rewrites this at
+`M=2^N` as endpoint phases for even `N` and quarter phases for odd `N`.
+The remaining seven theorems are
+`Fabius.tsum_quarter_monomial_eq_integral_of_even_deg`,
+`Fabius.tsum_three_quarters_monomial_eq_integral_of_even_deg`,
+`Fabius.tsum_shifted_monomial_eq_integral_superconvergent`,
+`Fabius.tsum_shifted_polynomial_eq_integral_superconvergent`,
+`Fabius.integral_polynomial_mul_rvachevUp_eq_normalized_tsum_superconvergent`,
+`Fabius.normalized_tsum_shifted_rvachevDeconvolvedPolynomial_mul_rvachevUp_superconvergent`,
+and
+`Fabius.normalized_tsum_shifted_rvachevAppellPolynomial_mul_rvachevUp_superconvergent`.
+For every nonzero natural mesh they prove exactness through degree
+`v₂(M)+1`, including physical-coordinate quadrature, deconvolved-polynomial
+reconstruction, and the explicit Appell specialization.  This arbitrary-`M`
+result is stronger than the dyadic-only manuscript claim.  The selected
+phases are exact representatives rather than a modulo-integer wrapper or a
+classification, and the module proves neither maximality nor positivity or
+rationality of the quadrature.
 
 The current-tree module `LagrangeRvachevSynthesis.lean` exports exactly two
 public definitions, `Fabius.lagrangeRvachevDecoder` and

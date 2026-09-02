@@ -3817,7 +3817,7 @@ because the underlying infinite product is totalized outside its admissible
 range.  No spectral-zeta recovery, cumulant-sample recovery, or
 identifiability of an underlying probability law is asserted; those remain
 open interfaces.  With the later concurrent source union, the live facade
-census is 659 modules and 8,768 public declarations.  The current TeX also
+census is 660 modules and 8,777 public declarations.  The current TeX also
 contains the six-theorem prime-power companion-row API and the
 zero-definition/three-theorem outer Pochhammer normal-convergence API, plus
 the two-module/nine-declaration effective-inverse tranche and six new
@@ -3848,7 +3848,7 @@ The four newest module counts are
 \path{JacobiCubic.lean} (0+2),
 \path{QPochhammerLogDerivative.lean} (0+10), and
 \path{QPochhammerOrderDerivative.lean} (0+3).  Their twenty theorems add
-universal Gaussian polynomial structure over \(\mathbb N[X]\), Jacobi's cubic
+universal Gaussian polynomial structure over \(\NaturalNumbers[X]\), Jacobi's cubic
 identity, the q-Pochhammer logarithmic derivative and Lambert-series form, and
 the derivative with respect to complex order under the displayed hypotheses.
 
@@ -5835,10 +5835,31 @@ contribute.  The theorem assumes exactly \(M\ne0\) and
 \(\deg P\le \TwoAdicValuation(M)\).  Thus the specialization \(M=2^N\)
 formalizes arbitrary-phase reproduction of every polynomial
 \(P\in\RealNumbers[X]\) with \(\deg P\le N\), equivalently every monomial
-\(X^n\) for \(0\le n\le N\).  The Appell-lattice extension to degree
-\(N+1\) remains outside Lean and uses the phases
-\(\theta\equiv0,1/2\pmod1\) for even \(N\), or
-\(\theta\equiv1/4,3/4\pmod1\) for odd \(N\).
+\(X^n\) for \(0\le n\le N\).
+
+The compiled module \path{RvachevSuperconvergentSynthesis.lean} adds exactly
+one public definition and eight public theorems.  Its definition
+\lean{IsRvachevSuperconvergentPhase} selects \(0,1/2\) when
+\(\TwoAdicValuation(M)+1\) is odd and \(1/4,3/4\) when it is even.
+The theorem \lean{isRvachevSuperconvergentPhase_two_pow_iff} rewrites this for
+\(M=2^N\): even \(N\) selects the endpoint phases and odd \(N\) the quarter
+phases.  The remaining seven theorems are
+\lean{tsum_quarter_monomial_eq_integral_of_even_deg},
+\lean{tsum_three_quarters_monomial_eq_integral_of_even_deg},
+\lean{tsum_shifted_monomial_eq_integral_superconvergent},
+\lean{tsum_shifted_polynomial_eq_integral_superconvergent},
+\lean{integral_polynomial_mul_rvachevUp_eq_normalized_tsum_superconvergent},
+\lean{normalized_tsum_shifted_rvachevDeconvolvedPolynomial_mul_rvachevUp_superconvergent},
+and
+\lean{normalized_tsum_shifted_rvachevAppellPolynomial_mul_rvachevUp_superconvergent}.
+For every nonzero natural \(M\), they prove selected-phase monomial and
+polynomial identities through degree \(\TwoAdicValuation(M)+1\), physical
+quadrature, deconvolved-polynomial reconstruction, and the Appell
+specialization.  This arbitrary-\(M\) result is stronger than the
+manuscript's dyadic-only claim.  The phase predicate uses exact real
+representatives rather than congruence classes modulo one, and the module
+asserts neither a complete phase classification nor maximality, positivity,
+or rationality of the quadrature.
 
 The current-tree module \path{LagrangeRvachevSynthesis.lean} has the exact
 public inventory of two definitions,
@@ -11324,17 +11345,18 @@ supremum norm.  The API also provides the raw
 to zero, and the pointwise corollary at every \(x\in[-1,1]\).  It asserts no
 rate, coefficientwise limit, or uniform convergence outside this interval.
 
-The six modules \path{RvachevMomentAppell.lean},
+The seven modules \path{RvachevMomentAppell.lean},
 \path{RvachevPolynomialSynthesis.lean},
+\path{RvachevSuperconvergentSynthesis.lean},
 \path{LagrangeRvachevSynthesis.lean},
 \path{CompositeMeshSharpness.lean},
 \path{FabiusLegendreTranslateBlocks.lean}, and
 \path{FabiusLegendreTranslateSeries.lean} therefore have public
-definition/theorem inventories $6/33$, $0/5$, $2/7$, $1/7$, $6/7$, and $5/25$,
-respectively: exactly $104$ public declarations.  The fourth module proves
+definition/theorem inventories $6/33$, $0/5$, $1/8$, $2/7$, $1/7$, $6/7$,
+and $5/25$, respectively: exactly $113$ public declarations.  The fifth module proves
 least-mesh sharpness only for universal exactness on the complete polynomial
 space through a degree cutoff.  It does not prove minimality for an individual
-Legendre polynomial or a particular partial sum.  The six modules also do not
+Legendre polynomial or a particular partial sum.  The seven modules also do not
 prove a geometric closed form or bundled matrix form for the finite-node
 decoder, decoder optimality, rationality of the atom rows, equality of the fixed-scale and separately
 scaled coefficient vectors, an unconditional
@@ -12727,6 +12749,7 @@ Legendre expansion and computability &
 \path{FabiusLegendreRationalEnergy.lean},
 \path{FabiusSquareEnergyFourier.lean},
 \path{RvachevPolynomialSynthesis.lean},
+\path{RvachevSuperconvergentSynthesis.lean},
 \path{CompositeMeshSharpness.lean},
 \path{FabiusLegendreTranslateBlocks.lean},
 \path{FabiusLegendreTranslateSeries.lean},
