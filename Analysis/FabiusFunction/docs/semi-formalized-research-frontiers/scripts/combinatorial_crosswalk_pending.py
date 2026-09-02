@@ -1231,6 +1231,42 @@ for any binomial-type two-term recurrence).  The general $q$-factor form
 $n$ into $q$ parts, is not formalized.""")),
 ]
 
+PENDING += [
+ # --- thm:merged-norlund-bell-diagonal ---
+ (r"""The middle equality is \cref{thm:res-subst}.  Multiplication by $n!$ proves
+the polynomial diagonal.  Replace $n$ by $n-1$ and set $x=0$ to obtain the
+number diagonal; division by $(n-1)!$ gives the coefficient identity.
+\end{proof}
+""",
+  remark(r"""% ed.: crosswalk added 2026-09-02; the Lean proof avoids residues entirely.
+Module \lean{NorlundDiagonal} formalizes the three diagonal displays for
+natural orders: \cref{eq:merged-norlund-polynomial-diagonal} is
+\lean{Fabius.norlund_diagonal}, in the form
+$\beta_n^{(n+1)}(x)=\FallingFactorial{x-1}{n}$ with Mathlib's
+\lean{descPochhammer}; \cref{eq:merged-norlund-number-diagonal} is
+\lean{Fabius.norlund_eval_zero_diagonal}; and
+\cref{eq:merged-norlund-diagonal} is
+\lean{Fabius.coeff_bernoulliPowerSeries_pow_succ}.
+The formal proof does not use \cref{thm:res-subst}, and needs no residue
+calculus.  It rests instead on the Riccati equation
+$t\,\frac{\Differential}{\Differential t}\!\left(\frac{t}{\EulerE^t-1}\right)
+=\frac{t}{\EulerE^t-1}-\left(\frac{t}{\EulerE^t-1}\right)^2-\frac{t^2}{\EulerE^t-1}$
+(\lean{Fabius.X_mul_derivative_bernoulliPowerSeries}, obtained by
+differentiating $B(\EulerE^t-1)=t$), which converts into the order-lowering
+relation
+$(a+1)\beta_{n+1}^{(a+2)}(x+1)=(a-n)\beta_{n+1}^{(a+1)}(x)+(n+1)x\beta_n^{(a+1)}(x)$
+(\lean{Fabius.norlund_series_step} as generating functions,
+\lean{Fabius.norlund_step} coefficientwise).  Taking $a=n$ annihilates the
+first term and leaves $\beta_{n+1}^{(n+2)}(x+1)=x\beta_n^{(n+1)}(x)$
+(\lean{Fabius.norlund_diagonal_step}); induction on $n$ against
+$\FallingFactorial{x-1}{n+1}=(x-1)\FallingFactorial{x-2}{n}$ then gives the
+closed form, and $x=0$ with
+$\FallingFactorial{-1}{n}=(-1)^nn!$ (\lean{Fabius.descPochhammer_eval_neg_one})
+gives the other two.  Complex orders are not formalized, nor is the
+Bell-polynomial construction
+\cref{eq:merged-norlund-bell,eq:merged-norlund-bell-explicit}.""")),
+]
+
 applied = 0
 for anchor, text in PENDING:
     if text.strip() in s:

@@ -439,6 +439,13 @@ STATUS = {
    r"\lean{Fabius.derivative_iterate_mul} (module \lean{IteratedLeibniz}): "
    r"$(\Differential/\Differential t)^n(fg)=\sum_k\binom nk f^{(k)}g^{(n-k)}$ in $R[[t]]$ over any "
    r"commutative ring; the general $q$-factor multinomial form is not formalized."),
+ 'thm:merged-norlund-bell-diagonal': ('partial',
+   r"The three diagonal displays are formalized for natural orders (module "
+   r"\lean{NorlundDiagonal}): \cref{eq:merged-norlund-polynomial-diagonal} is "
+   r"\lean{Fabius.norlund_diagonal}, \cref{eq:merged-norlund-number-diagonal} is "
+   r"\lean{Fabius.norlund_eval_zero_diagonal} and \cref{eq:merged-norlund-diagonal} is "
+   r"\lean{Fabius.coeff_bernoulliPowerSeries_pow_succ}; the Bell-polynomial construction "
+   r"\cref{eq:merged-norlund-bell,eq:merged-norlund-bell-explicit} is not formalized."),
  'thm:touchard-poly': ('Lean',
    r"\cref{eq:touchard-poly} is \lean{Fabius.touchardPolynomial_add_prime} "
    r"(\lean{TouchardPolyCongruence}), an identity in $(\mathbb Z/p)[x]$, read off from Spivey's "

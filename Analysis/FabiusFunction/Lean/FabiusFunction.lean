@@ -60,6 +60,7 @@ import FabiusFunction.FallingFactorialSeries
 import FabiusFunction.CauchyPolynomials
 import FabiusFunction.CoefficientRules
 import FabiusFunction.IteratedLeibniz
+import FabiusFunction.NorlundDiagonal
 import FabiusFunction.SymmetricFunctionTransform
 import FabiusFunction.SymmetricFunctionGenerating
 import FabiusFunction.FiniteQBinomialCore
