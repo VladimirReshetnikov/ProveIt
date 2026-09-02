@@ -126,22 +126,40 @@ A mathematically oriented reader should begin with Sections~\ref{ch:objects}, \r
 \end{boxedremark}
 
 \begin{boxedremark}\textbf{Artifact status (1 September 2026).}\space
-The live facade contains exactly 657 source modules and 8,756 public
+The live facade contains exactly 665 source modules and 8,819 public
 declarations, with no missing module headers or declaration comments in the
-current static audit.  This is the 649/8,698 checkpoint plus eight modules and
-58 declarations.  The Pochhammer ownership census is
+current static audit.  This is the 649/8,698 checkpoint plus sixteen modules
+and 121 declarations.  The Pochhammer ownership census is
 \nolinkurl{RvachevPochhammerFactorization.lean} (1+10),
 \nolinkurl{QPochhammerEntire.lean} (0+5), and
 \nolinkurl{QPochhammerInfinite.lean} (1+29), while
-\nolinkurl{QMultinomial.lean} remains 1+9.  The final eight-module increment is
+\nolinkurl{QMultinomial.lean} remains 1+9.  The eight-module increment is
 \nolinkurl{GaussianBinomialPalindromic.lean} (0+12),
 \nolinkurl{JacksonIntegral.lean} (1+7), \nolinkurl{QExponential.lean} (3+8),
 \nolinkurl{ThetaQuasiPeriodicity.lean} (1+6), \nolinkurl{JacobiCubic.lean}
 (0+2), \nolinkurl{QPochhammerLogDerivative.lean} (0+10),
 \nolinkurl{QPochhammerOrderDerivative.lean} (0+3), and
-\nolinkurl{GaussianBinomialPolynomialStructure.lean} (0+5).  The committed
-PDF remains a historical \nolinkurl{c5633206e}-era validation receipt and is
-rebuild-pending; it does not certify parity for the present TeX file.
+\nolinkurl{GaussianBinomialPolynomialStructure.lean} (0+5).  The next pair is
+\nolinkurl{CentralQBinomialReduction.lean} (0+6) and
+\nolinkurl{CyclotomicFactorization.lean} (0+7).  The final six modules are
+\nolinkurl{CyclotomicDivisibility.lean} (0+3),
+\nolinkurl{PrimitiveRootBlock.lean} (0+3), \nolinkurl{QLucas.lean} (0+8),
+\nolinkurl{QCatalan.lean} (1+11), \nolinkurl{NewtonInterpolation.lean} (2+13),
+and \nolinkurl{QBetaIntegral.lean} (1+8), four definitions and 46 theorems.
+The rigorous forward q-monograph ledger is 80 Exact, 86 Partial, 108 None,
+and 8 interface rows.  In particular, \nolinkurl{thm:q-lucas} is Partial:
+Lean proves the evaluated primitive-root identity, while the manuscript's
+polynomial congruence modulo \(\Phi_d\) still needs a minimal-polynomial lift.
+The new Exact rows are \nolinkurl{lem:root-block},
+\nolinkurl{cor:squarefree-cyclotomic}, \nolinkurl{cor:q-catalan},
+\nolinkurl{thm:qbeta}, \nolinkurl{cor:qbeta-recurrence},
+\nolinkurl{thm:geometric-newton}, and
+\nolinkurl{cor:geometric-triangular}.  The row
+\nolinkurl{cor:babbage-derivative} also remains Partial: its value is
+formalized, but its derivative is not.
+The committed 150-page PDF predates this six-module union and remains a
+historical validation receipt pending a fresh uninterrupted parity rebuild;
+it does not certify parity for the present TeX file.
 \end{boxedremark}
 
 \section*{Scope and conventions}
@@ -1724,7 +1742,8 @@ interfaces remain open.  The zero-definition/six-theorem module
 the head and successor decoders, the dyadic-order uniqueness theorem, its
 general-base additive-cancellation core, and
 \nolinkurl{generalizedRvachevProduct_eq_iff}.  This is a source-only overlay;
-the retained 126-page walkthrough PDF is historical and was not rebuilt.
+the retained 150-page walkthrough PDF is historical and predates the current
+source union.
 
 \subsection{Fourier injectivity and uniqueness}
 If two original candidates satisfy the same hypotheses, the iteration argument gives the same Fourier transform for both.  The source then uses injectivity of the Fourier transform on Schwartz functions to conclude equality.  The final transition is:
@@ -2291,9 +2310,9 @@ only changes the unused binder name in
 type and the two-definition/twenty-five-theorem module inventory are
 unchanged.
 
-\subsubsection{Final eight-module q-series tranche}
+\subsubsection{Eight-module q-series tranche}
 
-The final tranche adds eight facade-reachable modules and exactly 58 public
+This tranche adds eight facade-reachable modules and exactly 58 public
 declarations to the 649/8,698 checkpoint.  Their definition-plus-theorem
 counts are respectively 0+12, 1+7, 3+8, 1+6, 0+2, 0+10, 0+3, and 0+5 in the
 order documented below; the following inventories are exhaustive.
@@ -5436,8 +5455,13 @@ Infinite q-binomial theorem and Euler expansions & \nolinkurl{gaussianMajorant},
 Jacobi triple product and pentagonal sums & \nolinkurl{thetaExponent}, \nolinkurl{pentagonalExponent}, \nolinkurl{hasSum_jacobi_triple_product}, \nolinkurl{hasSum_pentagonal}, \nolinkurl{hasSum_pentagonal_pairs} & \nolinkurl{JacobiTripleProduct.lean}; two definitions and twenty-five theorems, listed exhaustively above \\
 Finite q-Pascal summations & \nolinkurl{sum_gaussianBinomial_succ_mul}, \nolinkurl{sum_gaussianBinomial_succ_mul'}, \nolinkurl{Commute.gaussianBinomial_left}, \nolinkurl{Commute.gaussianBinomial_right} & Exhaustive zero-definition/four-theorem surface of \nolinkurl{QPascalSummation.lean} \\
 Continuity and classical limit of Gaussian binomials & \nolinkurl{continuous_gaussianBinomial}, \nolinkurl{tendsto_gaussianBinomial_nhds_one}, \nolinkurl{gaussianBinomial_eq_finiteQPochhammerIn_div} & Exhaustive zero-definition/three-theorem surface of \nolinkurl{GaussianBinomialContinuity.lean} \\
-Generic Gaussian-polynomial degree, palindromicity, and mean & \nolinkurl{reflect_add_of_natDegree_le}, \nolinkurl{reflect_one'}, \nolinkurl{gaussianBinomial_natDegree_le}, \nolinkurl{gaussianBinomial_zero_left}, \nolinkurl{gaussianBinomial_diag'}, \nolinkurl{reflect_gaussianBinomial}, \nolinkurl{coeff_gaussianBinomial_reflect}, \nolinkurl{coeff_gaussianBinomial_zero}, \nolinkurl{coeff_gaussianBinomial_top}, \nolinkurl{gaussianBinomial_natDegree}, \nolinkurl{gaussianBinomial_monic}, \nolinkurl{two_mul_derivative_gaussianBinomial_eval_one} & Exhaustive zero-definition/twelve-theorem surface of \nolinkurl{GaussianBinomialPalindromic.lean}; no linear-coefficient claim \\
 Universal Gaussian-polynomial degree and palindromicity & \nolinkurl{natDegree_gaussianBinomial_universal}, \nolinkurl{gaussianBinomial_universal_monic}, \nolinkurl{coeff_zero_gaussianBinomial_universal}, \nolinkurl{gaussianBinomial_universal_reflect}, \nolinkurl{coeff_gaussianBinomial_universal_symm} & Exhaustive zero-definition/five-theorem surface of \nolinkurl{GaussianBinomialPolynomialStructure.lean}; no linear-coefficient claim \\
+Cyclotomic carry divisibility & \nolinkurl{cyclotomic_exponent_eq_one_iff}, \nolinkurl{cyclotomic_dvd_gaussianBinomial_iff}, \nolinkurl{gaussianBinomial_mul_isPrimitiveRoot} & Exhaustive zero-definition/three-theorem surface of \nolinkurl{CyclotomicDivisibility.lean}; \(k\le n\), \(0<d\) for the carry tests, and \(0<n\) plus primitivity for the arbitrary multiple-index value \\
+Primitive-root block & \nolinkurl{gaussianBinomial_isPrimitiveRoot_eq_zero}, \nolinkurl{neg_one_pow_mul_pow_choose_two}, \nolinkurl{finiteQPochhammerIn_isPrimitiveRoot} & Exhaustive zero-definition/three-theorem surface of \nolinkurl{PrimitiveRootBlock.lean}; finite integral-domain algebra under the exact interior-index or positive-order hypotheses \\
+Evaluated q-Lucas identity & \nolinkurl{two_mul_choose_two}, \nolinkurl{add_mul_add_sub_one}, \nolinkurl{choose_two_add}, \nolinkurl{coeff_finiteQPochhammerIn_neg_X}, \nolinkurl{finiteQPochhammerIn_neg_X_block}, \nolinkurl{coeff_block_pow_mul}, \nolinkurl{pow_choose_two_add_mul_eq}, \nolinkurl{gaussianBinomial_q_lucas} & Exhaustive zero-definition/eight-theorem surface of \nolinkurl{QLucas.lean}; \(b,s<d\), positive primitive-root order, and no \(r\le a\) or \(s\le b\); polynomial-congruence row \nolinkurl{thm:q-lucas} remains Partial \\
+MacMahon q-Catalan polynomial & \nolinkurl{qCatalan}; \nolinkurl{map_qInt}, \nolinkurl{qInt_X_monic}, \nolinkurl{qInt_X_natDegree}, \nolinkurl{X_sub_one_mul_qInt}, \nolinkurl{qInt_X_eq_prod_cyclotomic}, \nolinkurl{qInt_X_dvd_gaussianBinomial_rat}, \nolinkurl{qInt_X_dvd_gaussianBinomial_int}, \nolinkurl{qInt_X_mul_qCatalan}, \nolinkurl{qCatalan_natDegree}, \nolinkurl{qCatalan_eval_one_mul}, \nolinkurl{qCatalan_eval_one} & Exhaustive one-definition/eleven-theorem surface of \nolinkurl{QCatalan.lean}; monic polynomial division over \(\IntegerNumbers[X]\), including \(n=0\) \\
+Newton interpolation & \nolinkurl{newtonCoeff}, \nolinkurl{newtonInterpolant}; the thirteen \nolinkurl{newtonCoeff_*}, \nolinkurl{newtonPoly_*}, nodal, and geometric coefficient theorems inventoried below & Exhaustive two-definition/thirteen-theorem surface of \nolinkurl{NewtonInterpolation.lean}; finite field algebra with local denominator or finite-node injectivity hypotheses; the definition name preserves the older scalar-sequence \nolinkurl{Fabius.newtonPoly} \\
+Jackson q-beta integral & \nolinkurl{qBeta}; \nolinkurl{qNumber_pos}, \nolinkurl{qBeta_term_eq}, \nolinkurl{qBeta_eq_prod}, \nolinkurl{qBeta_eq_qGamma}, \nolinkurl{qBeta_comm}, \nolinkurl{qBeta_pos}, \nolinkurl{qBeta_add_one_left}, \nolinkurl{qBeta_add_one_right} & Exhaustive one-definition/eight-theorem surface of \nolinkurl{QBetaIntegral.lean}; theorem domain \(0<q<1\), positive beta parameters except for the arbitrary-\(x\) term identity \\
 Semiring-valued Gaussian palindromicity and mean & \nolinkurl{reflect_add_of_natDegree_le}, \nolinkurl{reflect_one'}, \nolinkurl{gaussianBinomial_natDegree_le}, \nolinkurl{gaussianBinomial_zero_left}, \nolinkurl{gaussianBinomial_diag'}, \nolinkurl{reflect_gaussianBinomial}, \nolinkurl{coeff_gaussianBinomial_reflect}, \nolinkurl{coeff_gaussianBinomial_zero}, \nolinkurl{coeff_gaussianBinomial_top}, \nolinkurl{gaussianBinomial_natDegree}, \nolinkurl{gaussianBinomial_monic}, \nolinkurl{two_mul_derivative_gaussianBinomial_eval_one} & Exhaustive zero-definition/twelve-theorem surface of \nolinkurl{GaussianBinomialPalindromic.lean}; commutative semiring and \(k\le n\), with \(j\le k(n-k)\) for reversal and \texttt{Nontrivial} only for exact degree and monicity; the mean identity is division-free \\
 q-exponentials and functional q-derivative & \nolinkurl{qDeriv}, \nolinkurl{qExp}, \nolinkurl{qExpBig}, \nolinkurl{qFactorial_mul_one_sub_pow}, \nolinkurl{qFactorial_ne_zero}, \nolinkurl{qDeriv_mul}, \nolinkurl{hasSum_qExp}, \nolinkurl{hasSum_qExpBig}, \nolinkurl{qExp_mul_qExpBig_neg}, \nolinkurl{qDeriv_qExp}, \nolinkurl{qDeriv_qExpBig} & Exhaustive three-definition/eight-theorem surface of \nolinkurl{QExponential.lean}; algebraic factorial and total product rule, then \(\lVert q\rVert<1\), the small-domain condition \(\lVert(1-q)x\rVert<1\) only for \(e_q\), and \(x\ne0\) for both eigenfunction laws \\
 Jackson q-integration and parts & \nolinkurl{jacksonIntegral}, \nolinkurl{qDeriv_jacksonIntegral}, \nolinkurl{one_sub_mul_pow_mul_qDeriv}, \nolinkurl{tendsto_jackson_sum_qDeriv}, \nolinkurl{jacksonIntegral_qDeriv}, \nolinkurl{tendsto_jackson_sum_parts}, \nolinkurl{jackson_parts_of_tendsto}, \nolinkurl{jacksonIntegral_mul_qDeriv} & Exhaustive one-definition/seven-theorem surface of \nolinkurl{JacksonIntegral.lean}; first direction assumes \(q\ne1\), \(x\ne0\), and summability, while the converse and parts formulas distinguish partial-limit from summable forms and retain the explicit boundary limit \(l\) \\
@@ -5597,8 +5621,13 @@ Module & Role in the development \\
 \nolinkurl{JacobiTripleProduct.lean} & Two definitions and exactly twenty-five theorems: theta and pentagonal exponents, finite and infinite Jacobi triple products, and Euler pentagonal sums. \\
 \nolinkurl{QPascalSummation.lean} & Exactly four theorems and no public definitions: two finite Gaussian-binomial summations and the left and right commuting q-binomial identities. \\
 \nolinkurl{GaussianBinomialContinuity.lean} & Exactly three theorems and no public definitions: continuity, the classical \(q\to1\) limit, and the finite-Pochhammer quotient formula. \\
-\nolinkurl{GaussianBinomialPalindromic.lean} & Exactly twelve theorems and no public definitions: general reflection helpers; generic degree bound, boundary values, reflection, constant/top coefficients, coefficient symmetry, and mean identity; exact degree and monicity over a nontrivial commutative semiring. \\
 \nolinkurl{GaussianBinomialPolynomialStructure.lean} & Exactly five theorems and no public definitions: universal natural degree, monicity, constant coefficient one, exact reflection, and bounded-index coefficient symmetry. \\
+\nolinkurl{CyclotomicDivisibility.lean} & Exactly three theorems and no public definitions: exponent-one carry criterion, rational cyclotomic divisibility, and the arbitrary multiple-index primitive-root value, under the exact bounds recorded in the current-tree audit. \\
+\nolinkurl{PrimitiveRootBlock.lean} & Exactly three theorems and no public definitions: interior Gaussian vanishing, the top-term phase, and the complete finite root block over a commutative integral domain. \\
+\nolinkurl{QLucas.lean} & Exactly eight theorems and no public definitions: three natural choose-two identities, coefficient extraction, complete-block factorization, the bounded-degree coefficient lemma, the primitive-root phase, and evaluated q-Lucas.  It does not prove the manuscript polynomial congruence modulo \(\Phi_d\). \\
+\nolinkurl{QCatalan.lean} & One definition and exactly eleven theorems: q-integer naturality, degree and cyclotomic product, rational and integral divisibility, the monic quotient, its product identity and degree, and both \(q=1\) Catalan evaluations. \\
+\nolinkurl{NewtonInterpolation.lean} & Two definitions and exactly thirteen theorems: triangular Newton coefficients, the finite interpolant, evaluation/degree/Lagrange uniqueness, top coefficient and divided differences, and the geometric-grid basis and coefficient formulas.  Its definition \nolinkurl{newtonInterpolant} preserves the pre-existing scalar-sequence \nolinkurl{Fabius.newtonPoly}. \\
+\nolinkurl{QBetaIntegral.lean} & One definition and exactly eight theorems: the total real Jackson q-beta function, q-number positivity and term cancellation, product and q-gamma evaluations, symmetry, positivity, and both recurrences on \(0<q<1\), \(x,y>0\). \\
 \nolinkurl{GaussianBinomialPalindromic.lean} & Exactly twelve theorems and no public definitions: reflection algebra, the semiring-valued degree bound, boundary values, palindromicity and coefficient reversal for \(k\le n\), exact degree and monicity under \texttt{Nontrivial}, and the division-free derivative-at-one identity. \\
 \nolinkurl{QExponential.lean} & Three definitions and exactly eight theorems: \(D_q,e_q,E_q\), the factorial identity and total product rule, both series and their reciprocal product under their exact convergence discs, and the two eigenfunction laws at \(x\ne0\). \\
 \nolinkurl{JacksonIntegral.lean} & One definition and exactly seven theorems: the Jackson series, both fundamental-theorem directions, the unconditional telescoping term, and partial-limit and summable integration-by-parts forms; only the first direction requires \(q\ne1\) and a nonzero evaluation point. \\
@@ -5920,7 +5949,7 @@ Lean audits of the previously recorded new or refactored declarations,
 for each.  At that upstream checkpoint, static inspection found all 610 modules
 below \nolinkurl{FabiusFunction/} reachable from the facade and every one of
 the 105 activation declarations documented.  The live current-tree census is
-659 modules and 8,769 public declarations, all reachable from the facade under
+665 modules and 8,819 public declarations, all reachable from the facade under
 the current static audit, with no missing module headers or declaration
 comments.  The historical linear census after the Rvachev Appell and original
 four-theorem \nolinkurl{QPochhammerEntire.lean} tranche, but before the generic
@@ -5991,7 +6020,7 @@ declarations.  The simultaneous
 \nolinkurl{JacobiTripleProduct.thetaCoeff_pair_eq} edit only renames the unused
 proof binder \texttt{hi} to \texttt{\_hi}; its public type and module count do
 not change.  A subsequent audited checkpoint reached 649 modules and 8,698
-public declarations.  The final eight modules documented exhaustively above---
+public declarations.  The next eight modules documented exhaustively above---
 \nolinkurl{GaussianBinomialPalindromic.lean},
 \nolinkurl{JacksonIntegral.lean}, \nolinkurl{QExponential.lean},
 \nolinkurl{ThetaQuasiPeriodicity.lean}, \nolinkurl{JacobiCubic.lean},
@@ -6011,7 +6040,7 @@ Those six counts are \nolinkurl{QPochhammerInfiniteBounds.lean} (0+5),
 \nolinkurl{BasicHypergeometricSeries.lean} (2+5), and
 \nolinkurl{QMultinomial.lean} (1+9).
 
-The final two-module union adds thirteen theorems and no definitions.  The
+The following two-module union adds thirteen theorems and no definitions.  The
 exhaustive \nolinkurl{CentralQBinomialReduction.lean} surface is
 \nolinkurl{finiteQPochhammerIn_mul_neg},
 \nolinkurl{finiteQPochhammerIn_two_mul},
@@ -6043,8 +6072,125 @@ range extension exactly \(m\le n\).  The terminal Gaussian factorization
 assumes exactly \(k\le n\) and an integral-domain coefficient ring.  It gives
 no \(k>n\), root-of-unity evaluation, coefficient-unimodality, or asymptotic
 statement.  These two modules change the preceding 657/8,756 union to the
-live 659/8,769 census; the retained PDF remains a historical receipt pending
-a fresh uninterrupted parity build.
+intermediate 659/8,769 census.
+
+The exhaustive zero-definition/three-theorem
+\nolinkurl{CyclotomicDivisibility.lean} surface is
+\nolinkurl{cyclotomic_exponent_eq_one_iff},
+\nolinkurl{cyclotomic_dvd_gaussianBinomial_iff}, and
+\nolinkurl{gaussianBinomial_mul_isPrimitiveRoot}.  The first two assume
+exactly \(k\le n\) and \(0<d\), identify exponent one with the carry
+\(n\bmod d<k\bmod d\), and identify the same carry with divisibility by
+\(\Phi_d\) in \(\RationalNumbers[X]\).  The last works in a commutative
+integral domain, assumes exactly \(0<n\) and that \(\zeta\) is a primitive
+\(n\)-th root, and gives
+\([an,bn]_\zeta=\binom ab\) for arbitrary \(a,b\).  In particular \(b>a\)
+is included by Gaussian and ordinary-binomial zero extension.  The
+\(\{0,1\}\) exponent bound itself remains owned by
+\nolinkurl{CyclotomicFactorization.lean}.
+
+The exhaustive zero-definition/three-theorem
+\nolinkurl{PrimitiveRootBlock.lean} surface is
+\nolinkurl{gaussianBinomial_isPrimitiveRoot_eq_zero},
+\nolinkurl{neg_one_pow_mul_pow_choose_two}, and
+\nolinkurl{finiteQPochhammerIn_isPrimitiveRoot}.  In a commutative integral
+domain, the first assumes a primitive \(d\)-th root and exactly \(0<k<d\),
+which already forces \(0<d\), and proves \([d,k]_\zeta=0\).  The phase and
+complete-block theorems explicitly assume \(0<d\) and primitivity; the latter
+is total in \(y\), including \(y=0\), and gives
+\((y;\zeta)_d=1-y^d\).  This is finite algebra only, with no convergence or
+limiting-root assertion.
+
+The exhaustive zero-definition/eight-theorem \nolinkurl{QLucas.lean} surface
+is \nolinkurl{two_mul_choose_two},
+\nolinkurl{add_mul_add_sub_one}, \nolinkurl{choose_two_add},
+\nolinkurl{coeff_finiteQPochhammerIn_neg_X},
+\nolinkurl{finiteQPochhammerIn_neg_X_block},
+\nolinkurl{coeff_block_pow_mul},
+\nolinkurl{pow_choose_two_add_mul_eq}, and
+\nolinkurl{gaussianBinomial_q_lucas}.  The first three are unconditional
+natural-number identities.  Coefficient extraction and
+\nolinkurl{coeff_block_pow_mul} require only a commutative ring; the latter
+assumes exactly \(s<d\) and \(\deg B<d\).  Block factorization and the phase
+identity use a commutative integral domain, \(0<d\), and a primitive \(d\)-th
+root.  Under the same structural hypotheses the terminal theorem assumes
+exactly \(b<d\) and \(s<d\), and proves
+\[
+ [ad+b,rd+s]_\zeta=\binom ar[b,s]_\zeta
+\]
+for arbitrary \(a,r\), without \(r\le a\) or \(s\le b\) because both
+coefficients zero-extend.  This is an evaluated identity, not the
+manuscript's polynomial congruence modulo \(\Phi_d\).  The missing
+minimal-polynomial lift is why forward row \nolinkurl{thm:q-lucas} remains
+Partial.
+
+The exhaustive \nolinkurl{QCatalan.lean} surface is the definition
+\nolinkurl{qCatalan} and eleven theorems:
+\nolinkurl{map_qInt}, \nolinkurl{qInt_X_monic},
+\nolinkurl{qInt_X_natDegree}, \nolinkurl{X_sub_one_mul_qInt},
+\nolinkurl{qInt_X_eq_prod_cyclotomic},
+\nolinkurl{qInt_X_dvd_gaussianBinomial_rat},
+\nolinkurl{qInt_X_dvd_gaussianBinomial_int},
+\nolinkurl{qInt_X_mul_qCatalan}, \nolinkurl{qCatalan_natDegree},
+\nolinkurl{qCatalan_eval_one_mul}, and
+\nolinkurl{qCatalan_eval_one}.  Naturality is semiring-level; monicity and
+degree require a nontrivial commutative ring; and
+\((X-1)[n+1]_X=X^{n+1}-1\) holds in every commutative ring, including the
+zero ring.  Cyclotomic product and divisibility are fixed in
+\(\RationalNumbers[X]\) and \(\IntegerNumbers[X]\).  For every \(n\),
+including zero, \nolinkurl{qCatalan} is defined by monic polynomial division,
+not field division, and satisfies
+\([n+1]_X C_n=[2n,n]_X\), degree \(n(n-1)\),
+\((n+1)C_n(1)=\binom{2n}{n}\), and \(C_n(1)=\operatorname{Catalan}(n)\).
+No coefficient positivity, unimodality, analytic continuation, or asymptotic
+result is asserted.
+
+The exhaustive \nolinkurl{NewtonInterpolation.lean} surface has two
+definitions, \nolinkurl{newtonCoeff} and \nolinkurl{newtonInterpolant}, and
+thirteen theorems:
+\nolinkurl{newtonCoeff_eq}, \nolinkurl{newtonCoeff_zero},
+\nolinkurl{newtonCoeff_mul_prod}, \nolinkurl{newtonPoly_succ},
+\nolinkurl{eval_newtonPoly}, \nolinkurl{degree_newtonPoly_lt},
+\nolinkurl{newtonPoly_eq_interpolate},
+\nolinkurl{eq_newtonPoly_of_eval_eq},
+\nolinkurl{coeff_newtonPoly_self}, \nolinkurl{newtonCoeff_eq_sum},
+\nolinkurl{nodal_range_pow}, \nolinkurl{prod_erase_pow_sub_pow}, and
+\nolinkurl{newtonCoeff_pow_eq_sum}.  The polynomial definition is named
+\nolinkurl{newtonInterpolant} to preserve the established scalar-sequence
+\nolinkurl{Fabius.newtonPoly} API; theorem names retain their compatibility
+spellings.  Everything is finite algebra over an arbitrary field.  The
+definitions, successor law, degree bound, and top coefficient are total even
+at repeated nodes.  The multiplied triangular step assumes its displayed
+denominator product nonzero.  Evaluation assumes \(i\le n\) and only
+\(\prod_{j<i}(v_i-v_j)\ne0\).  Lagrange equality and divided differences
+assume injectivity of \(v\) on the relevant finite range; uniqueness also
+assumes \(\deg P<n+1\) and all displayed node values.  On geometric nodes,
+\nolinkurl{nodal_range_pow} assumes \(q\ne0\), the erased-product formula only
+\(j\le k\), and the explicit coefficient formula injectivity of
+\(j\mapsto q^j\) on the finite range.  No infinite interpolation or
+convergence theorem is present.
+
+The exhaustive \nolinkurl{QBetaIntegral.lean} surface is the total real
+definition \nolinkurl{qBeta} and eight theorems:
+\nolinkurl{qNumber_pos}, \nolinkurl{qBeta_term_eq},
+\nolinkurl{qBeta_eq_prod}, \nolinkurl{qBeta_eq_qGamma},
+\nolinkurl{qBeta_comm}, \nolinkurl{qBeta_pos},
+\nolinkurl{qBeta_add_one_left}, and
+\nolinkurl{qBeta_add_one_right}.  The q-number positivity theorem assumes
+exactly \(0<q<1\) and \(z>0\).  The term identity assumes \(0<q<1\),
+\(y>0\), arbitrary real \(x\), and arbitrary natural \(n\).  The remaining
+six theorems assume exactly \(0<q<1\) and \(x,y>0\), giving the product
+evaluation, q-gamma quotient, symmetry, positivity, and both unit-shift
+recurrences.  The total definition supplies no theorem at \(q=0\) or \(q=1\),
+with a zero parameter, for complex continuation, or for the classical limit.
+
+Thus the first four new leaves contribute one definition and 25 theorems,
+changing 659/8,769 to 663/8,795; the Newton/q-beta pair contributes three
+definitions and 21 theorems, giving the live 665/8,819 census.  The rigorous
+forward q-monograph totals are 80 Exact, 86 Partial, 108 None, and 8 interface
+rows.  The retained 150-page PDF and the other checkpoint PDFs are historical
+receipts predating this union and remain pending fresh uninterrupted parity
+rebuilds.
 \end{remark}
 
 \section{Corrections and critical distinctions}\label{app:corrections}

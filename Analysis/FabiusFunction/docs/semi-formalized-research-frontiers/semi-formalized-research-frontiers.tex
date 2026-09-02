@@ -336,12 +336,14 @@ q-calculus inventories, and the complete seven-module Pochhammer-limit,
 normal-convergence, universal-polynomial, q-Taylor, partial-fraction,
 integer-index, generalized-identifiability, and subsequent q-calculus,
 theta, derivative, Gaussian-polynomial, central-reduction, and cyclotomic-
-factorization closures.  The live facade contains exactly 659 source modules
-and 8,769 public declarations, with no
-documentation gaps.  The retained 243-page A4 PDF, SHA-256
-\nolinkurl{45552dfbaa48ecd3183830b403cd651a979a57b50d2da6c3ff58af2ac1f02549},
-is a historical validation receipt and is rebuild-pending; its page count and
-digest do not certify source/PDF parity for the present TeX file.
+factorization closures, followed by primitive-root, q-Lucas, cyclotomic-
+divisibility, q-Catalan, finite-Newton, and q-beta layers.  The live facade
+contains exactly 665 source modules and 8,819 public declarations, with no
+documentation gaps.  The retained 253-page A4 PDF, SHA-256
+\nolinkurl{cd2a099e1f517d17ca345a52cdac5753899364652223ed8b7802c52d38c2a299},
+is the validated pre-aed receipt for the 659-module/8,769-declaration source.
+It is historical and rebuild-pending; its page count and digest do not certify
+source/PDF parity for the present TeX file.
 \end{boxedremark}
 
 \tableofcontents
@@ -1973,7 +1975,7 @@ characteristic-function/MGF package.  The separate three-theorem module above
 proves local-uniform convergence of the outer product in
 \eqref{integration:eq:geometric-sinc-pochhammer}, but none of those remaining
 compound spectral clauses.  This is a source-only overlay: the retained
-243-page canonical PDF remains a historical render and does not certify
+253-page pre-aed canonical PDF remains a historical render and does not certify
 source/PDF parity until a fresh rebuild is performed.  The generic-name
 analytic-order theorem is owned by \path{QPochhammerInfinite.lean}.
 
@@ -2229,8 +2231,8 @@ alone does not retain exponent sizes, and sampling product values at dyadic
 zeros records only vanishing.  No spectral-zeta reconstruction,
 cumulant-sample reconstruction, or underlying probability-law
 identifiability is formalized; those remain open.  This one-module,
-six-declaration overlay is part of the live 659-module, 8,769-declaration
-source union.  The retained 243-page PDF is explicitly historical and does
+six-declaration overlay is part of the live 665-module, 8,819-declaration
+source union.  The retained 253-page pre-aed PDF is explicitly historical and does
 not certify parity with this source union.
 
 \paragraph{Exact seven-module q-Pochhammer closure overlay.}
@@ -2441,6 +2443,81 @@ every Gaussian cyclotomic exponent in \(\{0,1\}\).  The shifted-factorial
 factorization and factorial identity hold over every commutative ring; only
 the final cancellation to the Gaussian factorization requires an integral
 domain, and all Gaussian statements retain \(k\le n\).
+
+The following six facade-reachable modules add exactly four definitions and
+forty-six theorems.  \path{PrimitiveRootBlock.lean} has no definitions and the
+three theorems \lean{gaussianBinomial_isPrimitiveRoot_eq_zero},
+\lean{neg_one_pow_mul_pow_choose_two}, and
+\lean{finiteQPochhammerIn_isPrimitiveRoot}.  They work over a commutative
+integral domain at a primitive \(d\)-th root: interior vanishing assumes
+exactly \(0<k<d\), and the phase and full-block formulas explicitly assume
+\(0<d\).
+
+\path{QLucas.lean} has no definitions and the eight theorems
+\lean{two_mul_choose_two}, \lean{add_mul_add_sub_one},
+\lean{choose_two_add}, \lean{coeff_finiteQPochhammerIn_neg_X},
+\lean{finiteQPochhammerIn_neg_X_block}, \lean{coeff_block_pow_mul},
+\lean{pow_choose_two_add_mul_eq}, and
+\lean{gaussianBinomial_q_lucas}.  The first three are natural-number
+identities and the two coefficient formulas need only a commutative ring.
+The block, phase, and q-Lucas statements use an integral domain, \(0<d\), and
+a primitive root; q-Lucas also assumes \(b,s<d\).  Lean proves the evaluated
+primitive-root identity, not a named polynomial congruence modulo \(\Phi_d\),
+so the manuscript q-Lucas row is Partial.
+
+\path{CyclotomicDivisibility.lean} has no definitions and the three theorems
+\lean{cyclotomic_exponent_eq_one_iff},
+\lean{cyclotomic_dvd_gaussianBinomial_iff}, and
+\lean{gaussianBinomial_mul_isPrimitiveRoot}.  Carry and divisibility assume
+\(k\le n\) and \(0<d\), with divisibility specifically in
+\(\RationalNumbers[X]\).  The multiple-index value works over a commutative
+integral domain and assumes \(0<n\).  Together with the earlier exponent bound
+these declarations prove the squarefreeness row, but there is no separately
+named squarefree theorem.  The Babbage-derivative row remains Partial because
+only its value is formalized.
+
+\path{QCatalan.lean} has the definition \lean{qCatalan} and the eleven
+theorems \lean{map_qInt}, \lean{qInt_X_monic}, \lean{qInt_X_natDegree},
+\lean{X_sub_one_mul_qInt}, \lean{qInt_X_eq_prod_cyclotomic},
+\lean{qInt_X_dvd_gaussianBinomial_rat},
+\lean{qInt_X_dvd_gaussianBinomial_int},
+\lean{qInt_X_mul_qCatalan}, \lean{qCatalan_natDegree},
+\lean{qCatalan_eval_one_mul}, and \lean{qCatalan_eval_one}.  Functoriality is
+semiring-level; monicity and degree use a nontrivial commutative ring.  The
+noncomputable \(\IntegerNumbers[X]\) quotient exists for every \(n\), including
+zero, has degree \(n(n-1)\), and evaluates at one to the Catalan number.  No
+coefficient-nonnegativity or unimodality theorem is asserted.
+
+\path{NewtonInterpolation.lean} has the definitions \lean{newtonCoeff} and
+\lean{newtonInterpolant} and the thirteen theorems
+\lean{newtonCoeff_eq}, \lean{newtonCoeff_zero},
+\lean{newtonCoeff_mul_prod}, \lean{newtonPoly_succ},
+\lean{eval_newtonPoly}, \lean{degree_newtonPoly_lt},
+\lean{newtonPoly_eq_interpolate}, \lean{eq_newtonPoly_of_eval_eq},
+\lean{coeff_newtonPoly_self}, \lean{newtonCoeff_eq_sum},
+\lean{nodal_range_pow}, \lean{prod_erase_pow_sub_pow}, and
+\lean{newtonCoeff_pow_eq_sum}.  This is finite interpolation over a field.
+Evaluation needs the relevant earlier-node difference product nonzero;
+uniqueness and divided differences use finite-range injectivity.  The
+geometric basis assumes \(q\ne0\), and its coefficient sum assumes injectivity
+of \(j\mapsto q^j\).  The name \lean{newtonInterpolant} preserves the established
+scalar-sequence \lean{newtonPoly} API.  There is no topology or convergence
+claim.
+
+\path{QBetaIntegral.lean} has the total real definition \lean{qBeta} and the
+eight theorems \lean{qNumber_pos}, \lean{qBeta_term_eq},
+\lean{qBeta_eq_prod}, \lean{qBeta_eq_qGamma}, \lean{qBeta_comm},
+\lean{qBeta_pos}, \lean{qBeta_add_one_left}, and
+\lean{qBeta_add_one_right}.  Evaluation, the q-gamma identity, symmetry,
+positivity, and both recurrences assume \(0<q<1\) and \(x,y>0\); term
+cancellation assumes \(y>0\) and arbitrary real \(x\).  Complex continuation
+and the classical limit remain outside Lean.
+
+The 282-row forward ledger is therefore 80 Exact, 86 Partial, 108 None, and
+8 N/A.  Seven rows move from None to Exact---the primitive-root block,
+squarefreeness, q-Catalan, q-beta evaluation and recurrence, geometric Newton,
+and its triangular corollary---while q-Lucas and the Babbage derivative move
+from None to Partial at the boundaries just stated.
 
 The earlier compiler-validated checkpoint \texttt{e6f535e5d} supplied the two modules that
 promote the
@@ -4533,6 +4610,36 @@ The exhaustive zero-definition, seven-theorem floor-exponent,
 divisor-indexing, shifted-factorial, and Gaussian cyclotomic-factorization
 interface.  The factorial layer is commutative-ring-level; the final Gaussian
 cancellation assumes an integral domain and \(k\le n\).\\
+\path{PrimitiveRootBlock.lean} &
+The exhaustive zero-definition, three-theorem primitive-root interface:
+interior Gaussian vanishing for \(0<k<d\), the top phase, and the complete
+q-Pochhammer block over a commutative integral domain; the latter two state
+\(0<d\) explicitly.\\
+\path{QLucas.lean} &
+The exhaustive zero-definition, eight-theorem arithmetic, coefficient,
+root-block, phase, and evaluated q-Lucas interface.  Its final theorem assumes
+an integral domain, \(0<d\), a primitive \(d\)-th root, and \(b,s<d\); it does
+not state the polynomial congruence modulo \(\Phi_d\).\\
+\path{CyclotomicDivisibility.lean} &
+The exhaustive zero-definition, three-theorem carry, rational-polynomial
+cyclotomic-divisibility, and multiple-index primitive-root interface.  The
+first two retain \(k\le n\), \(0<d\); the last uses an integral domain and
+\(0<n\).\\
+\path{QCatalan.lean} &
+The exhaustive one-definition, eleven-theorem q-integer factorization and
+integral q-Catalan quotient interface, for every natural index including zero;
+degree and evaluation at one are exact, while coefficient positivity and
+unimodality are not asserted.\\
+\path{NewtonInterpolation.lean} &
+The exhaustive two-definition, thirteen-theorem finite field-interpolation
+interface.  It uses the compatibility name \lean{newtonInterpolant}; node
+evaluation and uniqueness expose their nonvanishing/injectivity hypotheses,
+and the geometric formulas require \(q\ne0\) or finite-range power
+injectivity as stated.\\
+\path{QBetaIntegral.lean} &
+The exhaustive one-definition, eight-theorem real Jackson q-beta interface:
+product and q-gamma evaluations, symmetry, positivity, and recurrences for
+\(0<q<1\), \(x,y>0\), with no complex continuation or classical-limit claim.\\
 \path{RogersSzegoPolynomial.lean} &
 The one-definition, nine-theorem Rogers--Szeg\H{o} interface: finite
 commutative-(semi)ring boundary and recurrence laws and the complete-normed-field

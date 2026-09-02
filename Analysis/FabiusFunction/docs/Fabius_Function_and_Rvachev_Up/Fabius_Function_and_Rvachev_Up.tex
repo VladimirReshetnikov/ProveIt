@@ -197,18 +197,20 @@ an exact Lean theorem are kept in the companion volume under
 \end{abstract}
 
 \begin{boxedremark}\textbf{Artifact status (1 September 2026).}\space
-The live facade contains exactly 659 source modules and 8,769 public
-declarations: 49 modules and 451 declarations beyond the 610/8,318 activation
-checkpoint, and ten modules and 71 declarations beyond the 649/8,698
+The live facade contains exactly 665 source modules and 8,819 public
+declarations: 55 modules and 501 declarations beyond the 610/8,318 activation
+checkpoint, and 16 modules and 121 declarations beyond the 649/8,698
 publication-union checkpoint.  This source includes the earlier finite and
 infinite q-series APIs together with the final Gaussian-palindromic, Jackson
 integral, q-exponential, theta, Jacobi-cubic, logarithmic-derivative,
 order-derivative, universal-polynomial, central-reduction, and cyclotomic-
-factorization tranche.  The retained 175-page A4
-PDF selected from the incoming branch, SHA-256
-\nolinkurl{58d0ee5327e4efe0915c27ebba88f9017dc7d142d715676119c2a780ae14e82a},
-predates this semantic union.  It is a historical publication receipt, not a
-render of the present TeX; a fresh strict build is pending.
+factorization tranche, followed by primitive-root blocks, q-Lucas evaluation,
+cyclotomic divisibility, q-Catalan polynomials, finite Newton interpolation,
+and the real Jackson q-beta integral.  The retained 189-page A4 PDF, SHA-256
+\nolinkurl{de0fc11a0ee45cd5a8942385aea543ec456b869a09e560878b021363a657796c},
+is the validated pre-aed checkpoint for the 659-module/8,769-declaration
+source.  It is a historical publication receipt, not a render of the present
+TeX; a fresh strict build is pending.
 \end{boxedremark}
 
 \tableofcontents
@@ -3983,15 +3985,15 @@ because the underlying infinite product is totalized outside its admissible
 range.  No spectral-zeta recovery, cumulant-sample recovery, or
 identifiability of an underlying probability law is asserted; those remain
 open interfaces.  With the final concurrent source union, the live facade
-census is exactly 659 modules and 8,769 public declarations.  The current TeX
+census is exactly 665 modules and 8,819 public declarations.  The current TeX
 contains the six-theorem prime-power companion-row API, the
 zero-definition/three-theorem outer Pochhammer normal-convergence API, the
 two-module/nine-declaration effective-inverse tranche, the preceding six
 q-series modules, and the final eight-module/fifty-eight-declaration tranche
 below, followed by the two-module/thirteen-theorem central-reduction and
-cyclotomic-factorization layer.  These are source-only overlays; the retained
-175-page incoming-branch PDF is explicitly historical and has not been
-regenerated for this union.
+cyclotomic-factorization layer and the six-module/fifty-declaration extension
+recorded next.  These are source-only overlays; the retained 189-page pre-aed
+PDF is explicitly historical and has not been regenerated for this union.
 
 The six q-calculus module counts are
 \path{QPochhammerInfiniteBounds.lean} (0+5),
@@ -4052,6 +4054,82 @@ show that each Gaussian cyclotomic exponent is zero or one.  The shifted-
 factorial factorization and factorial identity work over every commutative
 ring; only the final cancellation to the Gaussian factorization requires an
 integral domain, and all Gaussian statements retain \(k\le n\).
+
+The six post-factorization modules add exactly four definitions and forty-six
+theorems.  The exhaustive surface of \path{PrimitiveRootBlock.lean} (0+3) is
+\lean{gaussianBinomial_isPrimitiveRoot_eq_zero},
+\lean{neg_one_pow_mul_pow_choose_two}, and
+\lean{finiteQPochhammerIn_isPrimitiveRoot}.  They work over a commutative
+integral domain at a primitive \(d\)-th root: interior Gaussian vanishing has
+exactly \(0<k<d\), while the phase and complete-block formulas explicitly
+assume \(0<d\).
+
+The exhaustive surface of \path{QLucas.lean} (0+8) is
+\lean{two_mul_choose_two}, \lean{add_mul_add_sub_one},
+\lean{choose_two_add}, \lean{coeff_finiteQPochhammerIn_neg_X},
+\lean{finiteQPochhammerIn_neg_X_block}, \lean{coeff_block_pow_mul},
+\lean{pow_choose_two_add_mul_eq}, and
+\lean{gaussianBinomial_q_lucas}.  The first three are natural-number
+identities; the two coefficient formulas are commutative-ring identities.
+The complete block, phase, and q-Lucas formulas use an integral domain, a
+primitive root, and \(0<d\); q-Lucas additionally assumes \(b,s<d\).  Its
+formal endpoint is the evaluated identity
+\([ad+b,rd+s]_{\zeta}=\binom{a}{r}[b,s]_{\zeta}\), not a named polynomial
+congruence modulo \(\Phi_d\).
+
+The exhaustive surface of \path{CyclotomicDivisibility.lean} (0+3) is
+\lean{cyclotomic_exponent_eq_one_iff},
+\lean{cyclotomic_dvd_gaussianBinomial_iff}, and
+\lean{gaussianBinomial_mul_isPrimitiveRoot}.  The carry and divisibility
+criteria assume \(k\le n\) and \(0<d\); the divisibility theorem is specifically
+in \(\RationalNumbers[X]\).  The multiple-index primitive-root value is over a
+commutative integral domain and assumes \(0<n\).  These declarations, together
+with the earlier exponent bound, justify the squarefreeness row, but there is
+no separately named squarefree theorem; the Babbage-derivative row remains
+Partial because its value, but not its derivative, is formalized.
+
+The exhaustive surface of \path{QCatalan.lean} (1+11) is
+\lean{map_qInt}, \lean{qInt_X_monic}, \lean{qInt_X_natDegree},
+\lean{X_sub_one_mul_qInt}, \lean{qInt_X_eq_prod_cyclotomic},
+\lean{qInt_X_dvd_gaussianBinomial_rat},
+\lean{qInt_X_dvd_gaussianBinomial_int}, the definition
+\lean{qCatalan}, and \lean{qInt_X_mul_qCatalan},
+\lean{qCatalan_natDegree}, \lean{qCatalan_eval_one_mul}, and
+\lean{qCatalan_eval_one}.  Ring maps already commute with q-integers at the
+semiring level; monicity and exact degree use a nontrivial commutative ring.
+The noncomputable \(\IntegerNumbers[X]\) quotient is defined for every
+\(n\), including zero, and has degree \(n(n-1)\) and Catalan value at one.
+No coefficient-nonnegativity or unimodality theorem is asserted.
+
+The exhaustive surface of \path{NewtonInterpolation.lean} (2+13) consists of
+the definitions \lean{newtonCoeff} and \lean{newtonInterpolant}, followed by
+\lean{newtonCoeff_eq}, \lean{newtonCoeff_zero},
+\lean{newtonCoeff_mul_prod}, \lean{newtonPoly_succ},
+\lean{eval_newtonPoly}, \lean{degree_newtonPoly_lt},
+\lean{newtonPoly_eq_interpolate}, \lean{eq_newtonPoly_of_eval_eq},
+\lean{coeff_newtonPoly_self}, \lean{newtonCoeff_eq_sum},
+\lean{nodal_range_pow}, \lean{prod_erase_pow_sub_pow}, and
+\lean{newtonCoeff_pow_eq_sum}.  This is entirely finite interpolation over a
+field.  Evaluation needs the relevant earlier-node difference product
+nonzero; uniqueness and divided differences use injectivity on the displayed
+finite range.  The geometric basis assumes \(q\ne0\), and its coefficient sum
+assumes injectivity of \(j\mapsto q^j\).  The definition name
+\lean{newtonInterpolant} preserves the established scalar-sequence
+\lean{newtonPoly} API from \path{NewtonBasisGeneratingFunction.lean}.  No
+topological or convergence claim is present.
+
+Finally, \path{QBetaIntegral.lean} (1+8) has the total real definition
+\lean{qBeta} and the theorems \lean{qNumber_pos}, \lean{qBeta_term_eq},
+\lean{qBeta_eq_prod}, \lean{qBeta_eq_qGamma}, \lean{qBeta_comm},
+\lean{qBeta_pos}, \lean{qBeta_add_one_left}, and
+\lean{qBeta_add_one_right}.  The evaluation, q-gamma identity, symmetry,
+positivity, and recurrences assume exactly \(0<q<1\) and \(x,y>0\); the term
+cancellation assumes \(y>0\) with arbitrary real \(x\).  No complex
+continuation or classical-limit theorem is asserted.  On the 282 labelled
+forward rows the resulting ledger is 80 Exact, 86 Partial, 108 None, and 8
+N/A.  In particular, q-Lucas is Partial: Lean proves the evaluated
+primitive-root identity, while the manuscript's polynomial congruence modulo
+\(\Phi_d\) still needs a minimal-polynomial lift.
 
 \paragraph{Final q-calculus, theta, and derivative tranche.}
 Eight facade-reachable modules add exactly five definitions and fifty-three
@@ -12853,12 +12931,17 @@ Gaussian continuity, the quantum binomial theorem, Rogers--Szeg\H{o}
 polynomials, polynomial and function-level Jackson calculus, Jackson
 integration, q-exponentials, finite and infinite q-Pochhammer derivatives,
 the complex Lambert logarithm, order derivatives, central Gaussian reduction,
-cyclotomic factorization, and the real q-gamma API &
+primitive-root blocks, q-Lucas evaluation, cyclotomic factorization and
+divisibility, q-Catalan polynomials, finite Newton interpolation, and the real
+q-gamma and q-beta APIs &
 \path{GaussianBinomialAtNegOneDerivative.lean},
 \path{GaussianBinomialPalindromic.lean},
 \path{GaussianBinomialPolynomialStructure.lean},
 \path{CentralQBinomialReduction.lean},
 \path{CyclotomicFactorization.lean},
+\path{PrimitiveRootBlock.lean}, \path{QLucas.lean},
+\path{CyclotomicDivisibility.lean}, \path{QCatalan.lean},
+\path{NewtonInterpolation.lean}, \path{QBetaIntegral.lean},
 \path{QBinomialTheoremInfinite.lean}, \path{JacobiTripleProduct.lean},
 \path{JacobiCubic.lean}, \path{ThetaQuasiPeriodicity.lean},
 \path{QPascalSummation.lean}, \path{GaussianBinomialContinuity.lean},
@@ -13127,6 +13210,8 @@ Dyadic and \(q\)-binomial formulas &
 \path{GaussianBinomialPolynomialStructure.lean},
 \path{CentralQBinomialReduction.lean},
 \path{CyclotomicFactorization.lean},
+\path{PrimitiveRootBlock.lean}, \path{QLucas.lean},
+\path{CyclotomicDivisibility.lean}, \path{QCatalan.lean},
 \path{QPochhammerElementaryIdentities.lean},
 \path{QBinomialCauchy.lean}, \path{QBinomialVandermonde.lean},
 \path{HalfQBinomial.lean},

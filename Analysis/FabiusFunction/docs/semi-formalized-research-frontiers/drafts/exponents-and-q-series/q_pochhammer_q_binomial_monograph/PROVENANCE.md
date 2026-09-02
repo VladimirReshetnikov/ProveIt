@@ -7,8 +7,8 @@ publications and three retired general-guide donors. The immutable
 pre-retirement snapshot of all five source packages is commit
 `9560165ae2eb33590404a090ab26bd3ca715f32f`, recorded in
 `audit/MERGE_SOURCE_REVISION`; the completed `source_concordance.csv` gives a
-reviewed disposition for all 547 source result environments. With the current
-exact promotions, its canonical-status distribution is 73 Lean-proved rows,
+reviewed disposition for all 547 source result environments. This immutable
+merger ledger's canonical-status distribution remains 73 Lean-proved rows,
 405 human-proved frontier result rows, 60 not-applicable rows, and 9
 conjecture rows.
 Directory names
@@ -75,7 +75,7 @@ SHA-256
 its guarded build used three serial passes producing 338, 348, and 348 pages.
 That receipt is now historical.
 
-The current synchronized publication was built after both the local
+The latest fully synchronized pre-aed publication receipt was built after both the local
 remote-tracking ref and remote `origin/main` were pinned to
 `5e3fe8fcb99d0662096fe39c436d51a6ec7c1169`. The clean working merge
 checkpoint was `191cce0e849a330f173c25be2b9f2f4cd7c2f211`. After the two
@@ -95,13 +95,15 @@ embedded and subsetted, including five Libertinus rows, and none is Type 3.
 Representative pages 1, 5, 13, 140, 253, 273, 319, and 357 passed contact-sheet
 inspection. The post-build remote check observed `origin/main` at
 `e6f3308dc377baa46aaa9463f0ae6fe9451d5ee2`; any q-source changes from that
-later checkpoint require another rebuild after integration.
+later checkpoint require another rebuild after integration. The subsequent
+source integration through `aed11fdf2738210f235490ba3477f134bba80aed`
+therefore makes this 357-page source/PDF pair historical provenance rather
+than a parity receipt for the live master. A new final build is pending.
 
-An
-independent lexical audit of its facade union finds 659 source modules and
-8,769 public
+An independent lexical audit of the live facade union finds 665 source modules and
+8,819 public
 declarations, with no missing module headers or declaration doc comments.
-Its 282-row canonical forward ledger records 73 exact, 84 partial, 117
+Its 282-row canonical forward ledger records 80 exact, 86 partial, 108
 no-counterpart, and 8
 not-applicable results. The exhaustive q-series API
 overlay includes `RvachevPochhammerFactorization` (one definition, ten
@@ -157,7 +159,13 @@ six theorems), `JacobiCubic` (zero definitions and two theorems),
 `GaussianBinomialPolynomialStructure` (zero definitions and five theorems).
 The two-module tail adds `CentralQBinomialReduction` (zero definitions and six
 theorems) and `CyclotomicFactorization` (zero definitions and seven theorems).
-The master inventories every declaration in all ten modules. The central
+The six-module aed union adds exactly 50 declarations:
+`PrimitiveRootBlock` (zero definitions and three theorems), `QLucas` (zero
+definitions and eight theorems), `CyclotomicDivisibility` (zero definitions
+and three theorems), `QCatalan` (one definition and eleven theorems),
+`NewtonInterpolation` (two definitions and thirteen theorems), and
+`QBetaIntegral` (one definition and eight theorems). The master inventories
+every declaration in these six modules and the prior ten-module tail. The central
 reduction is exact both in its division-free commutative-ring form and its
 field quotient form under the stated nonvanishing hypotheses. The
 cyclotomic shifted-factorial factorization is exact over every commutative
@@ -169,11 +177,60 @@ the formal mean identity does not include the variance. The half-base Gaussian
 valuation row remains partial because its concluding odd-integer valuation
 statement is not formalized.
 
-The current 357-page PDF renders the exact source hash recorded above. The
-regenerated root `SHA256SUMS` is an exhaustive 70-row release ledger covering
-every permanent package file, while the nested asset ledger retains its
-independent historical boundary. Source/PDF parity must be re-established
-after any later source integration.
+The complete new surfaces are as follows. `PrimitiveRootBlock` contains
+exactly `gaussianBinomial_isPrimitiveRoot_eq_zero`,
+`neg_one_pow_mul_pow_choose_two`, and
+`finiteQPochhammerIn_isPrimitiveRoot`; over a commutative integral domain they
+give the interior Gaussian vanishing, phase, and complete block under the
+displayed positivity and primitive-root assumptions. `QLucas` contains
+exactly `two_mul_choose_two`, `add_mul_add_sub_one`, `choose_two_add`,
+`coeff_finiteQPochhammerIn_neg_X`, `finiteQPochhammerIn_neg_X_block`,
+`coeff_block_pow_mul`, `pow_choose_two_add_mul_eq`, and
+`gaussianBinomial_q_lucas`. Its terminal theorem assumes a primitive `d`th
+root in a commutative integral domain, `0 < d`, and `b,s < d`; it proves only
+the evaluated identity. No Lean declaration supplies the minimal-polynomial
+lift to the manuscript's congruence modulo `Φ_d`, so `thm:q-lucas` is partial.
+
+`CyclotomicDivisibility` contains exactly
+`cyclotomic_exponent_eq_one_iff`,
+`cyclotomic_dvd_gaussianBinomial_iff`, and
+`gaussianBinomial_mul_isPrimitiveRoot`. The carry statements assume `k ≤ n`
+and `0 < d`, the divisibility theorem is literally over `ℚ[X]`, and the
+primitive-root value needs `0 < n`; it does not prove the Babbage derivative.
+`QCatalan` contains the definition `qCatalan` and exactly
+`map_qInt`, `qInt_X_monic`, `qInt_X_natDegree`, `X_sub_one_mul_qInt`,
+`qInt_X_eq_prod_cyclotomic`, `qInt_X_dvd_gaussianBinomial_rat`,
+`qInt_X_dvd_gaussianBinomial_int`, `qInt_X_mul_qCatalan`,
+`qCatalan_natDegree`, `qCatalan_eval_one_mul`, and `qCatalan_eval_one`. It
+formalizes the integral quotient, degree, and value at one for every natural
+index, but not coefficient positivity.
+
+`NewtonInterpolation` contains the definitions `newtonCoeff` and
+`newtonInterpolant` and exactly `newtonCoeff_eq`, `newtonCoeff_zero`,
+`newtonCoeff_mul_prod`, `newtonPoly_succ`, `eval_newtonPoly`,
+`degree_newtonPoly_lt`, `newtonPoly_eq_interpolate`,
+`eq_newtonPoly_of_eval_eq`, `coeff_newtonPoly_self`, `newtonCoeff_eq_sum`,
+`nodal_range_pow`, `prod_erase_pow_sub_pow`, and
+`newtonCoeff_pow_eq_sum`. These are finite statements over an arbitrary
+field: evaluation needs the prefix product nonzero, interpolation and divided
+differences need finite-range injectivity, the geometric basis needs `q ≠ 0`,
+and the denominator identity needs `j ≤ k`. The `newtonInterpolant` name
+preserves the established scalar-sequence `Fabius.newtonPoly` API while the
+theorem compatibility names remain unchanged. `QBetaIntegral` contains the
+definition `qBeta` and exactly `qNumber_pos`, `qBeta_term_eq`,
+`qBeta_eq_prod`, `qBeta_eq_qGamma`, `qBeta_comm`, `qBeta_pos`,
+`qBeta_add_one_left`, and `qBeta_add_one_right`. The definition is total on
+real parameters; its main theorems assume `0 < q < 1` and `x,y > 0`, while
+the term identity needs only `y > 0` and leaves `x` arbitrary. It claims no
+complex continuation or classical limit.
+
+The retained 357-page PDF and source hashes above remain an exact historical
+pre-aed pair. They do not describe live-source parity after the six-module
+integration. The root `SHA256SUMS` is deliberately `PARTIAL/PENDING`: it
+retains only verified stable rows and the historical PDF row, while omitting
+the mutable README, provenance, and live master. The nested asset ledger keeps
+its independent historical boundary. Final source/PDF parity and the
+exhaustive 70-row release ledger require a fresh build.
 
 The former q-Pochhammer/q-binomial monograph arrived in commit
 `47172bc03ec078961d8b023dfe156ecd712efb65`. Its pre-repair source SHA-256 was

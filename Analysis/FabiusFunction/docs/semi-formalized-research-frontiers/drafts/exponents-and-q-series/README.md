@@ -36,12 +36,16 @@ definitions and 53 theorems across `GaussianBinomialPalindromic.lean`,
 `JacksonIntegral.lean`, `QExponential.lean`, `ThetaQuasiPeriodicity.lean`,
 `JacobiCubic.lean`, `QPochhammerLogDerivative.lean`,
 `QPochhammerOrderDerivative.lean`, and
-`GaussianBinomialPolynomialStructure.lean`. The final source-only extension is
+`GaussianBinomialPolynomialStructure.lean`. The next source-only extension is
 `CentralQBinomialReduction.lean` (0+6) together with
-`CyclotomicFactorization.lean` (0+7). A fresh three-pass render and ledger
-refresh are pending. Retained PDFs under its `assets/` tree are research
+`CyclotomicFactorization.lean` (0+7). The latest extension adds
+`PrimitiveRootBlock.lean` (0+3), `QLucas.lean` (0+8),
+`CyclotomicDivisibility.lean` (0+3), `QCatalan.lean` (1+11),
+`NewtonInterpolation.lean` (2+13), and `QBetaIntegral.lean` (1+8): four
+definitions and 46 theorems. A fresh three-pass render and ledger refresh are
+pending. Retained PDFs under its `assets/` tree are research
 figures, not alternate manuscript renderings. The current Lean audit contains
-exactly 659 facade-reachable modules and 8,769 public declarations, with no
+exactly 665 facade-reachable modules and 8,819 public declarations, with no
 missing module headers or declaration documentation.
 
 ## Detailed package record
@@ -97,8 +101,8 @@ Current packages and retained intake records:
   inverse lineage. The completed
   [`source_concordance.csv`](q_pochhammer_q_binomial_monograph/source_concordance.csv)
   gives a reviewed disposition for all 547 source result environments from the
-  five merged publications. Its canonical destinations comprise 70 Lean-proved
-  rows, 408 human-proved
+  five merged publications. Its canonical destinations comprise 73 Lean-proved
+  rows, 405 human-proved
   frontier results, 60 not-applicable rows, and 9 conjectures. The historical
   [`theorem_concordance.csv`](q_pochhammer_q_binomial_monograph/theorem_concordance.csv)
   continues to account for all 260 inverse-source result environments, and
@@ -107,20 +111,19 @@ Current packages and retained intake records:
   figures. Pinned source revisions and Git history preserve every superseded
   layout and arrival fact.
 
-  The earlier 335-, 340-, 345-, and 347-page synchronized pairs remain
+  The earlier 335-, 340-, 345-, 347-, and 348-page synchronized pairs remain
   historical provenance. The retained
-  `q_pochhammer_q_binomial_monograph.pdf` is the later historical 348-page A4
-  artifact of 3,002,729 bytes, with SHA-256
-  `8bf14b52d8a0fc0abc4d54cca503fd47a2df37cf76ee1bb4e442bea1fd2a4aa7`.
-  It was built in exactly three guarded serial passes (338, 348, and 348 pages)
-  from the preceding 14,158-line, 661,835-byte source with SHA-256
-  `79ee5e60a6c7e42a91c58dcd9bcae56173cc6b4aa3e54739a461943f705f3904`.
+  `q_pochhammer_q_binomial_monograph.pdf` is the validated pre-aed 357-page A4
+  artifact, with SHA-256
+  `3673b2cb7d617ccbcc9e3c32af17dbb9f4e8d8c16882d889d2a299bd128e0593`.
   Its A4 boxes, text extraction, embedded/subset Type-1 fonts including
   Libertinus, absence of Type-3 fonts, and targeted visual review passed at
   that checkpoint. The current TeX is newer and includes the generic
   infinite/dissection API, five compatibility wrappers, outer normal
   convergence, exponent identifiability, the complete q-series/q-calculus
-  union, and the central-reduction and cyclotomic-factorization modules.
+  union, and the central-reduction and cyclotomic-factorization modules. That
+  PDF validates the preceding 659-module/8,769-declaration source and omits
+  the latest six-module/fifty-declaration extension.
   Consequently the source and retained PDF are distinct payloads and no render
   parity is claimed. The current source fingerprint is intentionally deferred
   until the pending final-source build and ledger refresh. PDF files retained
@@ -825,8 +828,8 @@ claims about the current canonical source. The canonical synthesis's current
 source and retained historical PDF are identified by the single exact receipt
 in the detailed package record above.
 
-The latest validated forward formalization ledger has 282 rows: 73 Exact, 84
-Partial, 117 with no counterpart, and 8 N/A interface rows. The original
+The latest validated forward formalization ledger has 282 rows: 80 Exact, 86
+Partial, 108 with no counterpart, and 8 N/A interface rows. The original
 191-result pre-Fabius core had 36 exact, 29 partial, 123 with no counterpart,
 and 3 interface-only entries. The four integrated-guide chapters add 31
 human-proved but not Lean-formalized assertions and five labelled definitions;
@@ -841,8 +844,10 @@ unformalized results; the q-integer and Gaussian-coefficient chapter for
 q-binomial/inversion chapter now accounts for 9 exact, 1 partial, and 0
 unformalized results; the weighted chapter for 3 exact, 2 partial, and 3
 unformalized results; and the basic-hypergeometric chapter for 1 exact, 3
-partial, and 5 unformalized results. The cyclotomic chapter now has 1 exact,
-0 partial, and 8 unformalized results. The exact rows include the primary and
+partial, and 5 unformalized results. The cyclotomic chapter now has 6 exact,
+1 partial, and 2 unformalized results; q-gamma/q-beta has 3 exact, 1 partial,
+and 4 unformalized results; and negative upper indices/geometric Newton has 2
+exact, 2 partial, and 5 unformalized results. The exact rows include the primary and
 second q-Cauchy identities, both weighted-Pascal recurrences,
 elementary--complete orthogonality, and weighted symmetric-function inversion.
 Their adjacent strengthenings are recorded human-readably in the canonical
@@ -870,6 +875,12 @@ compatibility spelling of its primary identity),
 `GaussianBinomialPolynomialStructure.lean` (zero definitions, five theorems),
 `CentralQBinomialReduction.lean` (zero definitions, six theorems),
 `CyclotomicFactorization.lean` (zero definitions, seven theorems),
+`PrimitiveRootBlock.lean` (zero definitions, three theorems),
+`QLucas.lean` (zero definitions, eight theorems),
+`CyclotomicDivisibility.lean` (zero definitions, three theorems),
+`QCatalan.lean` (one definition, eleven theorems),
+`NewtonInterpolation.lean` (two definitions, thirteen theorems),
+`QBetaIntegral.lean` (one definition, eight theorems),
 `GaussianBinomialAtNegOne.lean` (five theorems),
 `RvachevPochhammerFactorization.lean` (one definition, ten theorems),
 `QPochhammerEntire.lean` (zero definitions, five theorems),
@@ -880,7 +891,7 @@ compatibility spelling of its primary identity),
 `QPascalSummation.lean` (zero definitions, four theorems),
 `QuantumBinomial.lean` (zero definitions, two theorems), and
 `RogersSzegoPolynomial.lean` (one definition, nine theorems), together with
-the final source-union modules `JacksonIntegral.lean` (1+7), `QExponential.lean` (3+8),
+the earlier source-union modules `JacksonIntegral.lean` (1+7), `QExponential.lean` (3+8),
 `ThetaQuasiPeriodicity.lean` (1+6), `JacobiCubic.lean` (0+2),
 `QPochhammerLogDerivative.lean` (0+10),
 and `QPochhammerOrderDerivative.lean` (0+3).
@@ -893,8 +904,9 @@ The five `GaussianBinomialAtNegOne` theorems are
 `gaussianBinomial_neg_one_even_odd_eq_zero` theorem from
 `QBinomialReciprocity` prove the forward backbone's complete `q = -1` value
 formula over every commutative ring, for all natural parameters including
-above-row zero extension. The `q`-Lucas theorem used by the printed proof remains
-unformalized; the status promotion concerns the corollary's exact statement.
+above-row zero extension. Lean now proves the evaluated-root q-Lucas identity
+in `gaussianBinomial_q_lucas`, but not the printed polynomial congruence modulo
+`Φ_d`; that row is therefore Partial pending the minimal-polynomial lift.
 The q-difference annihilation row is exact through
 `qDifference_sum_eval₂_eq_zero_of_degree_lt`, with the stronger
 characteristic-polynomial, all-moment, and scalar-extension top-coefficient
@@ -1193,7 +1205,72 @@ factorization and factorial identity hold over every commutative ring; only
 the final cancellation to the Gaussian factorization requires an integral
 domain, and the Gaussian statements retain `k ≤ n`.
 
-The live audit across the facade is exactly 659 modules and 8,769 public
+`PrimitiveRootBlock.lean` has zero definitions and exactly three theorems:
+`gaussianBinomial_isPrimitiveRoot_eq_zero`,
+`neg_one_pow_mul_pow_choose_two`, and
+`finiteQPochhammerIn_isPrimitiveRoot`. They work over a commutative integral
+domain at a primitive `d`th root. Interior Gaussian vanishing assumes exactly
+`0 < k < d`; the phase and complete root block explicitly assume `0 < d`.
+
+`QLucas.lean` has zero definitions and exactly eight theorems:
+`two_mul_choose_two`, `add_mul_add_sub_one`, `choose_two_add`,
+`coeff_finiteQPochhammerIn_neg_X`, `finiteQPochhammerIn_neg_X_block`,
+`coeff_block_pow_mul`, `pow_choose_two_add_mul_eq`, and
+`gaussianBinomial_q_lucas`. The first three are identities in `ℕ`; the two
+coefficient formulas need only a commutative ring. Complete-block, phase, and
+q-Lucas statements use an integral domain, `0 < d`, and a primitive `d`th
+root; q-Lucas also assumes `b,s < d`. Its exact endpoint is the evaluated-root
+identity, not a named polynomial congruence modulo `Φ_d`.
+
+`CyclotomicDivisibility.lean` has zero definitions and exactly three theorems:
+`cyclotomic_exponent_eq_one_iff`,
+`cyclotomic_dvd_gaussianBinomial_iff`, and
+`gaussianBinomial_mul_isPrimitiveRoot`. Carry and divisibility require
+`k ≤ n` and `0 < d`, with the divisibility equivalence specifically in
+`ℚ[X]`. The multiple-index root value is over a commutative integral domain
+and requires `0 < n`. These results plus the earlier exponent bound prove the
+squarefreeness row, but no separately named squarefree theorem exists. The
+Babbage-derivative row is Partial: the value is formalized, the derivative is
+not.
+
+`QCatalan.lean` has the one definition `qCatalan` and exactly eleven theorems:
+`map_qInt`, `qInt_X_monic`, `qInt_X_natDegree`, `X_sub_one_mul_qInt`,
+`qInt_X_eq_prod_cyclotomic`, `qInt_X_dvd_gaussianBinomial_rat`,
+`qInt_X_dvd_gaussianBinomial_int`, `qInt_X_mul_qCatalan`,
+`qCatalan_natDegree`, `qCatalan_eval_one_mul`, and `qCatalan_eval_one`.
+Functoriality is semiring-level; monicity and degree use a nontrivial
+commutative ring. The noncomputable `divByMonic` quotient in `ℤ[X]` is defined
+for every `n`, including zero, has degree `n(n-1)`, and evaluates at one to the
+Catalan number. No coefficient nonnegativity or unimodality is asserted.
+
+`NewtonInterpolation.lean` has the two definitions `newtonCoeff` and
+`newtonInterpolant` and exactly thirteen theorems: `newtonCoeff_eq`,
+`newtonCoeff_zero`, `newtonCoeff_mul_prod`, `newtonPoly_succ`,
+`eval_newtonPoly`, `degree_newtonPoly_lt`, `newtonPoly_eq_interpolate`,
+`eq_newtonPoly_of_eval_eq`, `coeff_newtonPoly_self`, `newtonCoeff_eq_sum`,
+`nodal_range_pow`, `prod_erase_pow_sub_pow`, and
+`newtonCoeff_pow_eq_sum`. This is finite interpolation over a field.
+Evaluation assumes the relevant earlier-node difference product is nonzero;
+uniqueness and divided differences assume finite-range injectivity. The
+geometric basis assumes `q ≠ 0`, and its coefficient sum assumes injectivity
+of `j ↦ q^j`. The name `newtonInterpolant` preserves the established
+scalar-sequence `Fabius.newtonPoly` API. No topology or convergence is used.
+
+`QBetaIntegral.lean` has the total real definition `qBeta` and exactly eight
+theorems: `qNumber_pos`, `qBeta_term_eq`, `qBeta_eq_prod`,
+`qBeta_eq_qGamma`, `qBeta_comm`, `qBeta_pos`, `qBeta_add_one_left`, and
+`qBeta_add_one_right`. Product and q-gamma evaluation, symmetry, positivity,
+and both recurrences assume `0 < q < 1` and `x,y > 0`; term cancellation
+assumes `y > 0` with arbitrary real `x`. No complex continuation or classical
+limit is formalized.
+
+These six modules promote seven forward rows from None to Exact: the root
+block, squarefreeness, q-Catalan, q-beta evaluation, q-beta recurrence,
+geometric Newton, and its triangular corollary. Q-Lucas and the Babbage
+derivative move from None to Partial for the exact boundaries above. Thus the
+282-row ledger is 80 Exact / 86 Partial / 108 None / 8 N/A.
+
+The live audit across the facade is exactly 665 modules and 8,819 public
 declarations. The Exponents TeX contains these semantic-union crosswalk
 additions, but its retained 238-page PDF predates them and remains
 rebuild-pending.

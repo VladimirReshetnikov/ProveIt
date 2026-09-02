@@ -11,7 +11,7 @@ see its
 or [rendered PDF](Fabius_Function_and_Rvachev_Up/Fabius_Function_and_Rvachev_Up.pdf).
 
 > **Artifact status (2026-09-01).**  The live facade union contains exactly
-> 659 source modules and 8,769 public declarations.  The live audit reports no
+> 665 source modules and 8,819 public declarations.  The live audit reports no
 > missing module headers or declaration comments.  This crosswalk records all
 > 30 declarations in `LegendreGauntClosedForm.lean` and
 > `FabiusLegendreGauntClosedForm.lean`, together with the prime-power,
@@ -31,14 +31,28 @@ or [rendered PDF](Fabius_Function_and_Rvachev_Up/Fabius_Function_and_Rvachev_Up.
 > `BasicHypergeometricSeries` 2+5, `QMultinomial` 1+9,
 > `JacksonIntegral` 1+7,
 > `QExponential` 3+8, `ThetaQuasiPeriodicity` 1+6,
-> `GaussianBinomialPolynomialStructure` 0+5, `JacobiCubic` 0+2,
+> `JacobiCubic` 0+2,
 > `QPochhammerLogDerivative` 0+10, `QPochhammerOrderDerivative` 0+3,
-> `CentralQBinomialReduction` 0+6, and `CyclotomicFactorization` 0+7.
+> `CentralQBinomialReduction` 0+6, `CyclotomicFactorization` 0+7,
+> `CyclotomicDivisibility` 0+3, `PrimitiveRootBlock` 0+3, `QLucas` 0+8,
+> `QCatalan` 1+11, `NewtonInterpolation` 2+13, and `QBetaIntegral` 1+8.
+> The last six modules add four definitions and 46 theorems, bringing the
+> increase over the 649/8,698 checkpoint to sixteen modules and 121
+> declarations.  The rigorous forward q-monograph ledger is 80 Exact, 86
+> Partial, 108 None, and 8 interface rows.  `thm:q-lucas` is Partial, not
+> Exact: Lean proves the evaluated primitive-root identity, whereas the
+> manuscript states a polynomial congruence modulo `Φ_d` whose
+> minimal-polynomial lift remains unformalized.  The new Exact rows are
+> `lem:root-block`, `cor:squarefree-cyclotomic`, `cor:q-catalan`, `thm:qbeta`,
+> `cor:qbeta-recurrence`, `thm:geometric-newton`, and
+> `cor:geometric-triangular`.  `cor:babbage-derivative` also remains Partial:
+> its value is formalized, but its derivative is not.
 > The retained primary exposition, Lean walkthrough, canonical frontier,
 > Representation Frontiers, filed New Frontiers, notation catalogue,
 > comb-interpolation synthesis, and q-series synthesis PDFs contain respectively
-> 167, 126, 237, 301, 41, 88, 158, and 348 pages.  Their current TeX sources
-> contain post-render unions, so those PDFs are historical validation receipts
+> 167, 150, 237, 301, 41, 88, 158, and 357 pages.  The 150-page walkthrough
+> and the other committed PDFs predate this newest union.  Their current TeX
+> sources contain post-render unions, so those PDFs are historical validation receipts
 > rather than source/PDF-parity claims.  The Integration-and-Transform master
 > likewise retains a historical 377-page PDF; all of these documents await fresh uninterrupted
 > three-pass rebuilds.
@@ -229,6 +243,12 @@ prefixes on the real frequency line and uniform convergence on its compact sets.
 | Universal Gaussian structure, q-Pochhammer derivatives, and Jacobi's cubic identity | Exhaustive counts are `GaussianBinomialPolynomialStructure` 0+5, `QPochhammerLogDerivative` 0+10, `QPochhammerOrderDerivative` 0+3, and `JacobiCubic` 0+2: twenty theorems and no definitions.  The results give exact universal Gaussian degree, monicity, constant coefficient, and coefficient reversal over `ℕ[X]`; differentiate the infinite q-Pochhammer product and identify its Lambert-series logarithmic derivative for `‖q‖<1`, `‖a‖<1`; differentiate the complex-order symbol under `q≠0` and `‖a*q^α‖<1`; and prove Jacobi's cubic `HasSum` identity for a strict-contraction nome. | Principal entry points: `Fabius.natDegree_gaussianBinomial_universal`, `Fabius.gaussianBinomial_universal_reflect`, `Fabius.hasDerivAt_qPochhammerInfIn_lambert`, `Fabius.hasDerivAt_qPochhammerC`, `Fabius.hasSum_jacobi_cubic` |
 | Central Gaussian reduction at base `q²` | `CentralQBinomialReduction.lean` has no public definitions and exactly six public theorems.  Sign pairing, even--odd dissection, finite-symbol ring-hom naturality, and the division-free identity `[2k,k]_(q²)(q²;q²)_k=(q;q²)_k(-q;q)_(2k)` hold over every commutative ring without nonvanishing, division, positivity, or nontriviality assumptions, including the zero ring and the boundaries `n=0`, `k=0`, and `q=0`.  The cancellation proof is first made in `ℤ[X]`.  Only the field quotient form assumes exactly `(-q;q)_(2k)≠0` and `(q²;q²)_k≠0`.  No infinite-product, convergence, root-of-unity regularization, or asymptotic theorem is asserted. | `Fabius.finiteQPochhammerIn_mul_neg`, `Fabius.finiteQPochhammerIn_two_mul`, `Fabius.finiteQPochhammerIn_map_ringHom`, `Fabius.central_gaussianBinomial_sq_mul_int`, `Fabius.central_gaussianBinomial_sq_mul`, `Fabius.central_gaussianBinomial_sq_div` |
 | Cyclotomic factorization of finite q-factorials and Gaussian polynomials | `CyclotomicFactorization.lean` has no public definitions and exactly seven public theorems.  The two floor-division bounds assume exactly `k≤n` and `0<d` and show the displayed Gaussian cyclotomic exponent is zero or one; the range/divisor exchange is total.  `(X;X)_n=(-1)^n∏_(1≤d≤n)Φ_d(X)^(n/d)` holds over every commutative ring, including the zero ring and `n=0`; the factorial bridge assumes exactly `k≤n`, and product extension exactly `m≤n`.  The terminal `[n,k]_X` factorization assumes exactly `k≤n` and an integral-domain coefficient ring.  No `k>n`, specialized root-of-unity, coefficient-unimodality, or asymptotic theorem is asserted. | `Fabius.div_add_div_le_div`, `Fabius.div_le_div_add_div_add_one`, `Fabius.mem_range_and_mem_divisors_iff`, `Fabius.finiteQPochhammerIn_X_eq_prod_cyclotomic`, `Fabius.finiteQPochhammerIn_X_eq_gaussianBinomial_mul`, `Fabius.prod_cyclotomic_pow_div_extend`, `Fabius.gaussianBinomial_X_eq_prod_cyclotomic` |
+| Cyclotomic carry divisibility and multiple-index primitive-root value | `CyclotomicDivisibility.lean` has no public definitions and exactly three public theorems.  The carry/exponent and rational-polynomial divisibility equivalences assume exactly `k≤n` and `0<d`.  Over a commutative integral domain, `gaussianBinomial_mul_isPrimitiveRoot` assumes exactly `0<n` and `IsPrimitiveRoot ζ n`, and proves `[a*n,b*n]_ζ=(a.choose b:R)` for arbitrary `a,b`, including `b>a` by zero extension.  The `{0,1}` exponent bound itself remains in `CyclotomicFactorization.lean`; no coefficient or analytic conclusion is added. | `Fabius.cyclotomic_exponent_eq_one_iff`, `Fabius.cyclotomic_dvd_gaussianBinomial_iff`, `Fabius.gaussianBinomial_mul_isPrimitiveRoot` |
+| Complete primitive-root block | `PrimitiveRootBlock.lean` has no public definitions and exactly three public theorems, all over a commutative integral domain.  Interior vanishing assumes `IsPrimitiveRoot ζ d` and exactly `0<k<d`, which implies `0<d`.  The phase and complete-block identities explicitly assume `0<d` and `IsPrimitiveRoot ζ d`; `(y;ζ)_d=1-y^d` is total in `y`, including `y=0`.  These are finite algebraic statements, not convergence or limiting-root results. | `Fabius.gaussianBinomial_isPrimitiveRoot_eq_zero`, `Fabius.neg_one_pow_mul_pow_choose_two`, `Fabius.finiteQPochhammerIn_isPrimitiveRoot` |
+| Evaluated q-Lucas theorem at a primitive root | `QLucas.lean` has no public definitions and exactly eight public theorems.  The first three are unconditional natural arithmetic.  Coefficient extraction and `coeff_block_pow_mul` need only a commutative ring; the latter assumes exactly `s<d` and `B.natDegree<d`.  Block factorization and the phase identity use a commutative integral domain with `0<d` and `IsPrimitiveRoot ζ d`.  The terminal theorem additionally assumes exactly `b<d` and `s<d`, and gives `[a*d+b,r*d+s]_ζ=(a.choose r:R)[b,s]_ζ` for arbitrary `a,r`, without `r≤a` or `s≤b` because the coefficients zero-extend.  This is only an evaluated identity.  The manuscript's polynomial congruence modulo `Φ_d` and its minimal-polynomial lift remain unformalized, so `thm:q-lucas` is Partial. | `Fabius.two_mul_choose_two`, `Fabius.add_mul_add_sub_one`, `Fabius.choose_two_add`, `Fabius.coeff_finiteQPochhammerIn_neg_X`, `Fabius.finiteQPochhammerIn_neg_X_block`, `Fabius.coeff_block_pow_mul`, `Fabius.pow_choose_two_add_mul_eq`, `Fabius.gaussianBinomial_q_lucas` |
+| MacMahon q-Catalan polynomial | `QCatalan.lean` has one public definition and exactly eleven public theorems.  Naturality is semiring-level; monicity and degree require a nontrivial commutative ring; `(X-1)[n+1]_X=X^(n+1)-1` holds in every commutative ring, including the zero ring.  Cyclotomic product and divisibility are fixed in `ℚ[X]` and `ℤ[X]`.  For every `n`, including zero, `qCatalan n` is the monic quotient `/ₘ`, not field division, and satisfies `[n+1]_X C_n=[2n,n]_X`, degree `n(n-1)`, `(n+1)C_n(1)=choose(2n,n)`, and `C_n(1)=catalan n`.  No coefficient positivity/unimodality or analytic/asymptotic result is claimed. | Definition: `Fabius.qCatalan`.  Theorems: `Fabius.map_qInt`, `Fabius.qInt_X_monic`, `Fabius.qInt_X_natDegree`, `Fabius.X_sub_one_mul_qInt`, `Fabius.qInt_X_eq_prod_cyclotomic`, `Fabius.qInt_X_dvd_gaussianBinomial_rat`, `Fabius.qInt_X_dvd_gaussianBinomial_int`, `Fabius.qInt_X_mul_qCatalan`, `Fabius.qCatalan_natDegree`, `Fabius.qCatalan_eval_one_mul`, `Fabius.qCatalan_eval_one` |
+| Newton interpolation and geometric nodes | `NewtonInterpolation.lean` has two public definitions and exactly thirteen public theorems over an arbitrary field.  The definitions, successor law, degree bound, and top coefficient are total even at repeated nodes.  The multiplied triangular step assumes its denominator product nonzero; node evaluation assumes `i≤n` and only `∏j<i(v i-v j)≠0`.  Lagrange equality and divided differences assume `InjOn v (range(k+1))`; uniqueness also assumes `P.degree<n+1` and the displayed evaluations.  On geometric nodes, the nodal-basis identity assumes `q≠0`, the erased-product formula only `j≤k`, and the explicit coefficient formula power-map injectivity.  The incoming polynomial definition is named `newtonInterpolant` to preserve the established scalar-sequence `Fabius.newtonPoly`; theorem names retain their compatibility spellings.  No infinite interpolation or convergence result is claimed. | Definitions: `Fabius.newtonCoeff`, `Fabius.newtonInterpolant`.  Theorems: `Fabius.newtonCoeff_eq`, `Fabius.newtonCoeff_zero`, `Fabius.newtonCoeff_mul_prod`, `Fabius.newtonPoly_succ`, `Fabius.eval_newtonPoly`, `Fabius.degree_newtonPoly_lt`, `Fabius.newtonPoly_eq_interpolate`, `Fabius.eq_newtonPoly_of_eval_eq`, `Fabius.coeff_newtonPoly_self`, `Fabius.newtonCoeff_eq_sum`, `Fabius.nodal_range_pow`, `Fabius.prod_erase_pow_sub_pow`, `Fabius.newtonCoeff_pow_eq_sum` |
+| Jackson q-beta integral | `QBetaIntegral.lean` has one public definition and exactly eight public theorems.  `qBeta` is total on real `q,x,y`.  Positivity of `[z]_q` assumes exactly `0<q<1` and `z>0`; the term identity assumes `0<q<1`, `y>0`, arbitrary real `x`, and arbitrary natural `n`.  The other six theorems assume exactly `0<q<1` and `x,y>0`, giving the product evaluation, q-gamma quotient, symmetry, positivity, and both unit-shift recurrences.  No endpoint `q=0,1`, zero-parameter, complex-continuation, or classical-limit theorem is asserted. | Definition: `Fabius.qBeta`.  Theorems: `Fabius.qNumber_pos`, `Fabius.qBeta_term_eq`, `Fabius.qBeta_eq_prod`, `Fabius.qBeta_eq_qGamma`, `Fabius.qBeta_comm`, `Fabius.qBeta_pos`, `Fabius.qBeta_add_one_left`, `Fabius.qBeta_add_one_right` |
 | Reciprocal-integer geometric reciprocal-Gamma zero set | For every natural base `b ≥ 2`, the entire product `G_(1/b)` vanishes exactly at the embedded strictly negative natural numbers, independently of `b`, and is nonzero at every embedded nonnegative natural number.  Its pointwise inverse is meromorphic.  These four theorems exhaust `ReciprocalIntegerGammaZeros.lean`; they identify the zero set but do not determine the general-base collision order. | `Fabius.norm_inv_natCast_lt_one`, `Fabius.geometricReciprocalGamma_inv_natCast_eq_zero_iff`, `Fabius.geometricReciprocalGamma_inv_natCast_ne_zero_of_nonneg`, `Fabius.geometricGamma_inv_natCast_meromorphic` |
 | Exact dyadic reciprocal-Gamma zero set and zero/pole orders | The dyadic reciprocal product vanishes exactly at the strictly negative integers and is nonzero at every nonnegative integer.  At a negative integer `m`, its complex analytic order is `1 + padicValNat 2 m.natAbs`; equivalently, at `-n` for `n ≠ 0` it is `1 + padicValNat 2 n`.  The meromorphic inverse has the negative of that order, Mathlib's encoding of a pole of positive order `1+v₂(n)`.  At checkpoint `71ab6f6728fceb753c88d8b0573077a59acf2682` these theorems did not yet establish the separate simple-zero derivative coefficient of `1/Γ`; the next row records the later closure. | `Fabius.dyadicReciprocalGamma_eq_zero_iff`, `Fabius.dyadicReciprocalGamma_int_ne_zero_of_nonneg`, `Fabius.dyadicReciprocalGamma_nat_ne_zero`, `Fabius.dyadicGamma_meromorphic`, `Fabius.analyticOrderAt_dyadicReciprocalGamma_int_of_neg`, `Fabius.analyticOrderAt_dyadicReciprocalGamma_neg_nat`, `Fabius.meromorphicOrderAt_dyadicGamma_int_of_neg`, `Fabius.meromorphicOrderAt_dyadicGamma_neg_nat` |
 | Reciprocal-Gamma first jets at all nonpositive integers | At source commit `0ba35abd4`, proved for every natural `r` with no additional hypothesis: `(Γ⁻¹)'(-r)=(-1)^r r!`, the reciprocal-Gamma zero at `-r` has analytic order one, and `Γ(s)⁻¹/(s+r)` tends to the same nonzero coefficient in the punctured neighborhood of `-r`; the origin theorem is retained as a compatibility name.  These declarations concern the entire reciprocal function `s ↦ (Complex.Gamma s)⁻¹`.  They do not assign a value or derivative to raw `Complex.Gamma` at one of its poles. | `Fabius.deriv_Gamma_inv_neg_nat`, `Fabius.hasDerivAt_Gamma_inv_neg_nat`, `Fabius.hasDerivAt_Gamma_inv_zero`, `Fabius.analyticOrderAt_Gamma_inv_neg_nat`, `Fabius.tendsto_Gamma_inv_div_add_nat` |
@@ -359,7 +379,9 @@ The q-series union above retains exhaustive inventories for
 unconditional complex/generic bridge belongs to the Rvachev factorization
 module; the complex-name analytic-order theorem belongs to the entire leaf;
 the raw-factor derivative nonvanishing and generic-name analytic-order
-theorems belong to the infinite-product engine.
+theorems belong to the infinite-product engine.  The final forward-status
+ledger is 80 Exact, 86 Partial, 108 None, and 8 interface rows; evaluated
+q-Lucas does not change `thm:q-lucas` from Partial to Exact.
 
 The five q-calculus modules contribute exactly 42 declarations:
 `PolynomialQDerivative` `2+17`, `PolynomialQLeibniz` `0+4`,
@@ -386,10 +408,18 @@ theorems, 58 declarations total.  The inline-attribute declaration
 In particular, the fixed-nome inventory includes
 `complexQPochhammerInf_eq_zero_iff_eq_inv_pow`; the unconditional
 complex/generic bridge is counted in `RvachevPochhammerFactorization`, not in
-the fixed-nome leaf.  The final algebra addition is
+the fixed-nome leaf.  The next algebra addition is
 `CentralQBinomialReduction` 0+6 plus `CyclotomicFactorization` 0+7, thirteen
 theorems and no definitions.  Their exhaustive names and exact algebraic
 boundaries appear in the dedicated rows above.
+
+The final six-module union is `CyclotomicDivisibility` 0+3,
+`PrimitiveRootBlock` 0+3, `QLucas` 0+8, `QCatalan` 1+11,
+`NewtonInterpolation` 2+13, and `QBetaIntegral` 1+8: four definitions and 46
+theorems.  Their exhaustive names, hypotheses, zero-extension behavior, and
+finite-versus-analytic boundaries appear in the dedicated rows above.  This
+brings the live union from 659/8,769 to 665/8,819; none of the six modules is
+a result of the two original Fabius papers mapped by this file.
 
 The total complex finite-product row exhausts `ThueMorseComplexProductBridge.lean`:
 exactly two definitions and eighteen theorems.
