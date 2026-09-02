@@ -2265,6 +2265,50 @@ is field-level and assumes its two denominators are nonzero.
 the divisor reindexing, commutative-ring finite-product identities, and the
 integral-domain Gaussian cyclotomic factorization.
 
+Four further modules form the exhaustive root-of-unity and q-Catalan layer.
+\nolinkurl{PrimitiveRootBlock.lean} is 0+3:
+\nolinkurl{gaussianBinomial_isPrimitiveRoot_eq_zero},
+\nolinkurl{neg_one_pow_mul_pow_choose_two}, and
+\nolinkurl{finiteQPochhammerIn_isPrimitiveRoot}.  In a commutative integral
+domain, a primitive \(d\)-th root \(\zeta\) kills the interior coefficients
+\(\GaussianBinomial{d}{k}{\zeta}\); for \(d>0\), its top phase is \(-1\) and
+the complete block is \((y;\zeta)_d=1-y^d\).
+
+\nolinkurl{QLucas.lean} is 0+8:
+\nolinkurl{two_mul_choose_two}, \nolinkurl{add_mul_add_sub_one},
+\nolinkurl{choose_two_add}, \nolinkurl{coeff_finiteQPochhammerIn_neg_X},
+\nolinkurl{finiteQPochhammerIn_neg_X_block},
+\nolinkurl{coeff_block_pow_mul}, \nolinkurl{pow_choose_two_add_mul_eq}, and
+\nolinkurl{gaussianBinomial_q_lucas}.  Its natural quadratic, polynomial
+coefficient, block, and phase identities prove
+\[
+ \GaussianBinomial{ad+b}{rd+s}{\zeta}
+ =\binom ar\GaussianBinomial{b}{s}{\zeta}
+\]
+when \(d>0\), \(\zeta\) is a primitive \(d\)-th root in a commutative integral
+domain, and \(b,s<d\).
+
+\nolinkurl{CyclotomicDivisibility.lean} is 0+3:
+\nolinkurl{cyclotomic_exponent_eq_one_iff},
+\nolinkurl{cyclotomic_dvd_gaussianBinomial_iff}, and
+\nolinkurl{gaussianBinomial_mul_isPrimitiveRoot}.  For \(k\le n\) and \(d>0\),
+the exponent is one exactly when \(n\bmod d<k\bmod d\); over
+\(\RationalNumbers[X]\) this is the exact divisibility criterion for
+\(\Phi_d\).  A primitive \(n\)-th root in a commutative integral domain also
+gives \(\GaussianBinomial{an}{bn}{\zeta}=\binom ab\) when \(n>0\).
+
+\nolinkurl{QCatalan.lean} is 1+11.  Its definition is
+\nolinkurl{qCatalan}; its theorems are \nolinkurl{map_qInt},
+\nolinkurl{qInt_X_monic}, \nolinkurl{qInt_X_natDegree},
+\nolinkurl{X_sub_one_mul_qInt}, \nolinkurl{qInt_X_eq_prod_cyclotomic},
+\nolinkurl{qInt_X_dvd_gaussianBinomial_rat},
+\nolinkurl{qInt_X_dvd_gaussianBinomial_int},
+\nolinkurl{qInt_X_mul_qCatalan}, \nolinkurl{qCatalan_natDegree},
+\nolinkurl{qCatalan_eval_one_mul}, and \nolinkurl{qCatalan_eval_one}.
+The q-integer identities give \([n+1]_X\mid\GaussianBinomial{2n}{n}{X}\)
+over both \(\RationalNumbers[X]\) and \(\Integers[X]\); the integral quotient
+has degree \(n(n-1)\) and evaluates at one to the ordinary Catalan number.
+
 Six further facade-reachable modules contribute exactly seventy public
 declarations.  The small-module inventories are exhaustive:
 \nolinkurl{GaussianBinomialContinuity.lean} has the three theorems
@@ -5279,6 +5323,10 @@ Generic Gaussian-polynomial degree, palindromicity, mean, and linear coefficient
 Universal Gaussian-polynomial degree and palindromicity & \nolinkurl{natDegree_gaussianBinomial_universal}, \nolinkurl{gaussianBinomial_universal_monic}, \nolinkurl{coeff_zero_gaussianBinomial_universal}, \nolinkurl{gaussianBinomial_universal_reflect}, \nolinkurl{coeff_gaussianBinomial_universal_symm} & Exhaustive zero-definition/five-theorem surface of \nolinkurl{GaussianBinomialPolynomialStructure.lean}; the adjacent generic theorem supplies the linear-coefficient classifier \\
 Central squared-base Gaussian reduction & \nolinkurl{finiteQPochhammerIn_mul_neg}, \nolinkurl{finiteQPochhammerIn_two_mul}, \nolinkurl{finiteQPochhammerIn_map_ringHom}, \nolinkurl{central_gaussianBinomial_sq_mul_int}, \nolinkurl{central_gaussianBinomial_sq_mul}, \nolinkurl{central_gaussianBinomial_sq_div} & Exhaustive zero-definition/six-theorem surface of \nolinkurl{CentralQBinomialReduction.lean} \\
 Cyclotomic q-factorizations & \nolinkurl{div_add_div_le_div}, \nolinkurl{div_le_div_add_div_add_one}, \nolinkurl{mem_range_and_mem_divisors_iff}, \nolinkurl{finiteQPochhammerIn_X_eq_prod_cyclotomic}, \nolinkurl{finiteQPochhammerIn_X_eq_gaussianBinomial_mul}, \nolinkurl{prod_cyclotomic_pow_div_extend}, \nolinkurl{gaussianBinomial_X_eq_prod_cyclotomic} & Exhaustive zero-definition/seven-theorem surface of \nolinkurl{CyclotomicFactorization.lean} \\
+Primitive-root Gaussian block & \nolinkurl{gaussianBinomial_isPrimitiveRoot_eq_zero}, \nolinkurl{neg_one_pow_mul_pow_choose_two}, \nolinkurl{finiteQPochhammerIn_isPrimitiveRoot} & Exhaustive zero-definition/three-theorem surface of \nolinkurl{PrimitiveRootBlock.lean}; interior vanishing, top phase, and complete block in a commutative integral domain \\
+The q-Lucas theorem & \nolinkurl{two_mul_choose_two}, \nolinkurl{add_mul_add_sub_one}, \nolinkurl{choose_two_add}, \nolinkurl{coeff_finiteQPochhammerIn_neg_X}, \nolinkurl{finiteQPochhammerIn_neg_X_block}, \nolinkurl{coeff_block_pow_mul}, \nolinkurl{pow_choose_two_add_mul_eq}, \nolinkurl{gaussianBinomial_q_lucas} & Exhaustive zero-definition/eight-theorem surface of \nolinkurl{QLucas.lean}; positive primitive-root order and residue bounds remain explicit \\
+Cyclotomic carry criterion & \nolinkurl{cyclotomic_exponent_eq_one_iff}, \nolinkurl{cyclotomic_dvd_gaussianBinomial_iff}, \nolinkurl{gaussianBinomial_mul_isPrimitiveRoot} & Exhaustive zero-definition/three-theorem surface of \nolinkurl{CyclotomicDivisibility.lean}; rational-polynomial divisibility and integral-domain primitive-root value \\
+MacMahon q-Catalan polynomial & \nolinkurl{qCatalan}; \nolinkurl{map_qInt}, \nolinkurl{qInt_X_monic}, \nolinkurl{qInt_X_natDegree}, \nolinkurl{X_sub_one_mul_qInt}, \nolinkurl{qInt_X_eq_prod_cyclotomic}, \nolinkurl{qInt_X_dvd_gaussianBinomial_rat}, \nolinkurl{qInt_X_dvd_gaussianBinomial_int}, \nolinkurl{qInt_X_mul_qCatalan}, \nolinkurl{qCatalan_natDegree}, \nolinkurl{qCatalan_eval_one_mul}, \nolinkurl{qCatalan_eval_one} & Exhaustive one-definition/eleven-theorem surface of \nolinkurl{QCatalan.lean}; integral quotient, degree \(n(n-1)\), and Catalan value at one \\
 Quantum binomial theorem & \nolinkurl{quantumPlane_mul_pow}, \nolinkurl{quantum_binomial} & Exhaustive zero-definition/two-theorem noncommutative surface of \nolinkurl{QuantumBinomial.lean} \\
 Rogers--Szeg\H{o} polynomials & \nolinkurl{rogersSzego}, \nolinkurl{rogersSzego_succ}, \nolinkurl{rogersSzego_three_term}, \nolinkurl{hasSum_rogersSzego_generating} & \nolinkurl{RogersSzegoPolynomial.lean}; one definition and nine theorems, listed exhaustively above \\
 Geometric CDF \(F_q\) and density \(f_q\) & \nolinkurl{geometricUniformCDF}, \nolinkurl{geometricUniformDensity}, \nolinkurl{geometricUniformDensity_zero}, \nolinkurl{geometricUniformDensity_nonpos_of_neg}, \nolinkurl{volume_withDensity_geometricUniformDensity_eq_zero_of_nonpos}, \nolinkurl{geometricUniformDistribution_ne_withDensity_geometricUniformDensity_of_nonpos}, \nolinkurl{geometricUniformCDF_hasDerivAt}, \nolinkurl{geometricUniformDistribution_eq_withDensity}, \nolinkurl{contDiff_geometricUniformCDF}, \nolinkurl{contDiff_geometricUniformDensity} & \nolinkurl{GeometricUniformCDF.lean} \\
@@ -5437,6 +5485,10 @@ Module & Role in the development \\
 \nolinkurl{GaussianBinomialPolynomialStructure.lean} & Exactly five theorems and no public definitions: universal natural degree, monicity, constant coefficient one, exact reflection, and bounded-index coefficient symmetry. \\
 \nolinkurl{CentralQBinomialReduction.lean} & Exactly six theorems and no definitions: sign pairing, even--odd dissection, naturality, integral and commutative-ring division-free central reduction, and a field quotient under two nonvanishing hypotheses. \\
 \nolinkurl{CyclotomicFactorization.lean} & Exactly seven theorems and no definitions: quotient bounds, divisor reindexing, finite-product and factorial identities over commutative rings, interval-product extension, and Gaussian cyclotomic factorization over an integral domain. \\
+\nolinkurl{PrimitiveRootBlock.lean} & Exactly three theorems and no definitions: primitive-root interior Gaussian vanishing, the top phase, and the complete finite q-Pochhammer block. \\
+\nolinkurl{QLucas.lean} & Exactly eight theorems and no definitions: three natural quadratic identities, signed-product coefficient and block formulas, the primitive-root phase, and q-Lucas. \\
+\nolinkurl{CyclotomicDivisibility.lean} & Exactly three theorems and no definitions: the carry characterization of exponent one, the rational-polynomial divisibility iff, and the multiple-index primitive-root value. \\
+\nolinkurl{QCatalan.lean} & Exactly one definition and eleven theorems: q-integer naturality, degree and cyclotomic identities, rational and integral divisibility, and the integral q-Catalan quotient with its degree and value at one. \\
 \nolinkurl{QuantumBinomial.lean} & Exactly two theorems and no public definitions: the quantum-plane power lemma and the noncommutative quantum binomial theorem. \\
 \nolinkurl{RogersSzegoPolynomial.lean} & One definition and exactly nine theorems: the Rogers--Szeg\H{o} polynomial, its initial values, dilation and three-term recurrences, and its generating series. \\
 \nolinkurl{GeometricUniformCDF.lean} & The named \(F_q\) and explicit \(f_q\), conditioning and interval-integral equations, pointwise derivative and exact positive-ratio \nolinkurl{withDensity} law, continuity, reflection, exterior zeros, ordinary/topological support containments, compact support, and \(C^\infty\) regularity under their exact parameter hypotheses.  It also proves that the selected total formula is zero at \(q=0\), nonpositive for \(q<0\), yields the zero clamped measure for \(q\le0\), and cannot represent \(\mu_q\) on the nonpositive contraction range. \\
@@ -5743,7 +5795,7 @@ Lean audits of the previously recorded new or refactored declarations,
 for each.  At that upstream checkpoint, static inspection found all 610 modules
 below \nolinkurl{FabiusFunction/} reachable from the facade and every one of
 the 105 activation declarations documented.  The live current-tree audit scans
-660 modules and 8,778 public declarations, with no missing module headers or
+664 modules and 8,804 public declarations, with no missing module headers or
 declaration comments.  At the retained historical mainline checkpoint before the latest
 six-module q-series tranche was 623 modules and 8,476 declarations.  Its
 immediately preceding census, after the Rvachev Appell and original
@@ -5801,11 +5853,15 @@ modules initially contributed 38 more, the next four contribute twenty, and
 the final two algebra leaves contribute thirteen.  Two later linear-coefficient
 theorems enlarge \nolinkurl{GaussianBinomialPalindromic.lean} to 0+14, and
 \nolinkurl{EffectiveGapInverse.lean} contributes one module and eight
+declarations.  The subsequent \nolinkurl{PrimitiveRootBlock.lean} 0+3,
+\nolinkurl{QLucas.lean} 0+8,
+\nolinkurl{CyclotomicDivisibility.lean} 0+3, and
+\nolinkurl{QCatalan.lean} 1+11 tranche contributes four modules and 26
 declarations.  The merged \nolinkurl{GaussianBinomialPalindromic.lean},
 \nolinkurl{GaussianBinomialPolynomialStructure.lean},
 \nolinkurl{CentralQBinomialReduction.lean}, and
 \nolinkurl{CyclotomicFactorization.lean} surfaces are inventoried above.  The
-current source census is 660/8,778.  No aggregate facade build is claimed for this
+current source census is 664/8,804.  No aggregate facade build is claimed for this
 current-tree census.  The retained PDF and the title-page pin remain historical
 receipts and do not claim parity with the merged source.
 
@@ -5838,6 +5894,13 @@ The final two counts are
 finite-symbol sign pairing and even--odd dissection, the central Gaussian
 reduction, and cyclotomic factorizations.  The quotient and integral-domain
 hypotheses remain explicit.
+The four latest finite-q counts are
+\nolinkurl{PrimitiveRootBlock.lean} (0+3),
+\nolinkurl{QLucas.lean} (0+8),
+\nolinkurl{CyclotomicDivisibility.lean} (0+3), and
+\nolinkurl{QCatalan.lean} (1+11).  Their one definition and twenty-five
+theorems give primitive-root blocks, q-Lucas, the cyclotomic carry criterion,
+and the integral q-Catalan polynomial with exact degree and Catalan value.
 \end{remark}
 
 \section{Corrections and critical distinctions}\label{app:corrections}

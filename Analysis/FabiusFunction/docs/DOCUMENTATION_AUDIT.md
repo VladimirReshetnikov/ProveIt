@@ -109,12 +109,12 @@ only 4,606 declarations and
 declarations, including 69 undocumented ones.  Run the script for the live
 numbers rather than copying these historical values.
 
-The live post-merge 2026-09-01 inventory contains 660 modules and 8,778
+The live post-merge 2026-09-01 inventory contains 664 modules and 8,804
 lexically visible public declarations, with zero missing module headers and
 zero missing doc comments.  Relative to the 610/8,318 activation checkpoint,
-the current tree adds fifty modules and 460 declarations.  Relative to
-the earlier 630/8,552 merged checkpoint, concurrent source work adds thirty
-modules and 226 declarations.  The prime-power and outer-product tranches
+the current tree adds fifty-four modules and 486 declarations.  Relative to
+the earlier 630/8,552 merged checkpoint, concurrent source work adds thirty-four
+modules and 252 declarations.  The prime-power and outer-product tranches
 account for one module and six declarations: the zero-definition/three-theorem
 `GeometricPochhammerNormalConvergence.lean` leaf and three additional theorems
 in `PrimePowerBinomialValuation.lean`.  The q-polish adds two theorems to
@@ -135,6 +135,9 @@ The two newest algebra leaves add thirteen theorems and no definitions:
 The two added Gaussian linear-coefficient theorems and the eight-declaration
 `EffectiveGapInverse.lean` leaf account for the final ten declarations and
 one module.
+The latest finite-q tranche adds four modules and 26 declarations:
+`PrimitiveRootBlock.lean` 0+3, `QLucas.lean` 0+8,
+`CyclotomicDivisibility.lean` 0+3, and `QCatalan.lean` 1+11.
 The older 622/8,472, 623/8,476, 629/8,546, 630/8,552,
 641/8,650, and 643/8,661 values below are historical checkpoints, not
 descriptions of the live tree.  The earlier additions and q-series tranches are
@@ -332,8 +335,9 @@ that audit to 653/8,735.  The next four leaves contribute twenty declarations
 and bring that audit to 657/8,755.  The final two algebra leaves contribute
 thirteen declarations and brought the audit to 659/8,768.  Two Gaussian
 linear-coefficient theorems then brought it to 659/8,770, and the
-eight-declaration `EffectiveGapInverse.lean` leaf brings the live audit to the
-660/8,778 census recorded above.
+eight-declaration `EffectiveGapInverse.lean` leaf brought the audit to
+660/8,778.  The four-module, 26-declaration finite-q tranche brings the live
+audit to the 664/8,804 census recorded above.
 
 `GaussianBinomialPalindromic.lean` is an exhaustive zero-definition,
 fourteen-theorem leaf: `Fabius.reflect_add_of_natDegree_le`,
@@ -408,6 +412,45 @@ division-free central squared-base reduction over commutative rings and a
 field quotient under two nonvanishing hypotheses.  The second gives the
 finite-product cyclotomic factorization over commutative rings and the final
 Gaussian factorization over an integral domain.
+
+The latest finite-q tranche is exhaustive.  `PrimitiveRootBlock.lean` is
+0+3: `Fabius.gaussianBinomial_isPrimitiveRoot_eq_zero`,
+`Fabius.neg_one_pow_mul_pow_choose_two`, and
+`Fabius.finiteQPochhammerIn_isPrimitiveRoot`.  In a commutative integral
+domain, a primitive `d`-th root `ζ` kills `[d,k]_ζ` for `0 < k < d`; for
+`0 < d`, the top phase is `(-1)^d * ζ^(choose d 2) = -1` and the complete
+block is `(y;ζ)_d = 1-y^d`.
+
+`QLucas.lean` is 0+8: `Fabius.two_mul_choose_two`,
+`Fabius.add_mul_add_sub_one`, `Fabius.choose_two_add`,
+`Fabius.coeff_finiteQPochhammerIn_neg_X`,
+`Fabius.finiteQPochhammerIn_neg_X_block`, `Fabius.coeff_block_pow_mul`,
+`Fabius.pow_choose_two_add_mul_eq`, and
+`Fabius.gaussianBinomial_q_lucas`.  The first three are natural-number
+quadratic identities.  The coefficient, block, and phase lemmas prove
+`[a*d+b,r*d+s]_ζ = choose(a,r) * [b,s]_ζ` when `0 < d`, `ζ` is a primitive
+`d`-th root in a commutative integral domain, and `b,s < d`.
+
+`CyclotomicDivisibility.lean` is 0+3:
+`Fabius.cyclotomic_exponent_eq_one_iff`,
+`Fabius.cyclotomic_dvd_gaussianBinomial_iff`, and
+`Fabius.gaussianBinomial_mul_isPrimitiveRoot`.  For `k ≤ n` and `0 < d`, the
+Gaussian cyclotomic exponent equals one exactly when `n % d < k % d`; over
+`ℚ[X]` that is exactly the criterion for `Φ_d` to divide `[n,k]_X`.  In a
+commutative integral domain, a primitive `n`-th root with `0 < n` gives
+`[a*n,b*n]_ζ = choose(a,b)`.
+
+`QCatalan.lean` is 1+11.  Its definition is `Fabius.qCatalan`; its theorems
+are `Fabius.map_qInt`, `Fabius.qInt_X_monic`, `Fabius.qInt_X_natDegree`,
+`Fabius.X_sub_one_mul_qInt`, `Fabius.qInt_X_eq_prod_cyclotomic`,
+`Fabius.qInt_X_dvd_gaussianBinomial_rat`,
+`Fabius.qInt_X_dvd_gaussianBinomial_int`,
+`Fabius.qInt_X_mul_qCatalan`, `Fabius.qCatalan_natDegree`,
+`Fabius.qCatalan_eval_one_mul`, and `Fabius.qCatalan_eval_one`.  Semiring
+naturality and the commutative-ring q-integer identities yield
+`[n+1]_X ∣ [2*n,n]_X` over `ℚ[X]` and `ℤ[X]`; the integral quotient has degree
+`n*(n-1)`, satisfies `(n+1) C_n(1) = choose(2*n,n)`, and evaluates to the
+ordinary Catalan number.
 
 `EffectiveMonotoneInverse.lean` has exactly two public definitions,
 `Fabius.SequentiallyComputableOn` and `Fabius.unitClamp`, and exactly six
@@ -558,6 +601,9 @@ and `central_gaussianBinomial_sq_div`.  `CyclotomicFactorization.lean` is
 `finiteQPochhammerIn_X_eq_gaussianBinomial_mul`,
 `prod_cyclotomic_pow_div_extend`, and
 `gaussianBinomial_X_eq_prod_cyclotomic`.  The
+`PrimitiveRootBlock.lean` 0+3, `QLucas.lean` 0+8,
+`CyclotomicDivisibility.lean` 0+3, and `QCatalan.lean` 1+11 surfaces are
+listed exhaustively above.  The
 `JacobiTripleProduct.lean` 2-definition/25-theorem tranche contains the finite triple-product
 polynomial and field identities, the bilateral Jacobi `HasSum` forms, and the
 pentagonal and paired-pentagonal `HasSum` corollaries.  The
@@ -642,7 +688,7 @@ Integration-and-Transform master retains a historical 377-page PDF.  The canonic
 q-series synthesis is a validated 348-page historical receipt.  It contains
 the earlier general finite/infinite q-Pochhammer crosswalks and six q-series
 modules; the merged fifth fixed-nome theorem, two later general
-q-Pochhammer theorems, and the sixteen newest q-series/q-calculus modules make
+q-Pochhammer theorems, and the twenty newest q-series/q-calculus modules make
 final parity
 pending.  The retained 167-page primary, 126-page walkthrough, 237-page
 canonical frontier, 301-page Representation Frontiers, 41-page New Frontiers,
@@ -650,7 +696,7 @@ and 88-page notation-catalogue artifacts likewise predate their current merged
 sources.  Their package notices treat those PDFs as historical validation
 receipts, not parity claims, until fresh uninterrupted three-pass builds
 complete.  The inverse-computability receipt likewise requires refresh for the
-660/8,778 census.  The canonical inverse-theory publication retains a 134-page
+664/8,804 census.  The canonical inverse-theory publication retains a 134-page
 artifact synchronized at its latest-main source checkpoint; the merged
 effective-inversion tranche makes current parity pending.
 

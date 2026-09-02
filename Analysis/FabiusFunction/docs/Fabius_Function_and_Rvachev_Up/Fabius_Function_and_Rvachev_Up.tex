@@ -3817,14 +3817,16 @@ because the underlying infinite product is totalized outside its admissible
 range.  No spectral-zeta recovery, cumulant-sample recovery, or
 identifiability of an underlying probability law is asserted; those remain
 open interfaces.  With the later concurrent source union, the live facade
-census is 660 modules and 8,778 public declarations.  The current TeX also
+census is 664 modules and 8,804 public declarations.  The current TeX also
 contains the six-theorem prime-power companion-row API and the
 zero-definition/three-theorem outer Pochhammer normal-convergence API, plus
 the two-module/nine-declaration fixed-depth effective-inverse tranche, the
 eight-declaration rational-gap inverse module, and six new
 q-calculus modules contributing 36 declarations, plus the two source-only
 central-reduction and cyclotomic-factorization modules contributing thirteen
-theorems.  These are
+theorems, and the four-module root-of-unity, q-Lucas, cyclotomic-divisibility,
+and q-Catalan tranche contributing one definition and twenty-five theorems.
+These are
 source-only overlays; the retained 167-page PDF is explicitly historical and
 has not been regenerated for these additions.
 
@@ -3864,6 +3866,16 @@ the central Gaussian reduction, and the cyclotomic factorizations of
 \((X;X)_n\) and \([n,k]_X\).  The quotient reduction retains its two
 nonzero-denominator hypotheses, while the Gaussian cyclotomic factorization
 retains its integral-domain assumption.
+
+The four latest finite-q module counts are
+\path{PrimitiveRootBlock.lean} (0+3), \path{QLucas.lean} (0+8),
+\path{CyclotomicDivisibility.lean} (0+3), and \path{QCatalan.lean} (1+11).
+Their one definition and twenty-five theorems add complete primitive-root
+blocks, the q-Lucas theorem, the cyclotomic carry criterion and multiple-index
+primitive-root evaluation, and MacMahon's integral q-Catalan polynomial with
+its exact degree and value at one.  Positivity of the root order, primitive-root,
+integral-domain, index-bound, and divisibility hypotheses remain explicit in
+the statements below.
 
 On the real axis the origin is the unique global point of unit modulus:
 \begin{equation}
@@ -6977,14 +6989,16 @@ definitions and exactly five public theorems:
 \lean{gaussianBinomial_universal_monic},
 \lean{coeff_zero_gaussianBinomial_universal},
 \lean{gaussianBinomial_universal_reflect}, and
-\lean{coeff_gaussianBinomial_universal_symm}.  For \(k\le n\), these state
-exact degree, monicity, constant coefficient one, reflection in degree
-\(k(n-k)\), and bounded-index coefficient symmetry for
-\(\GaussianBinomial{n}{k}{X}\in\NaturalNumbers[X]\).  Together with
-the existing row symmetry and reciprocal identities, this closes the canonical
-forward q-binomial structure theorem.  The adjacent fourteen-theorem module
-supplies the complete linear-coefficient classifier over every commutative
-semiring.
+\lean{coeff_gaussianBinomial_universal_symm}.  For \(k\le n\), these state that
+the universal natural-coefficient polynomial
+\(\GaussianBinomial{n}{k}{X}\in\NaturalNumbers[X]\) has exact natural degree
+\(k(n-k)\), is monic, has constant coefficient one, and is fixed by reflection
+in that degree.  Under the additional bound \(d\le k(n-k)\), the last theorem
+identifies the coefficients in degrees \(d\) and \(k(n-k)-d\).  Together with
+the row symmetry and reciprocal identities above, this supplies the universal
+natural-coefficient-polynomial form of the same structure theorem.  The
+adjacent fourteen-theorem module supplies the complete linear-coefficient
+classifier over every commutative semiring.
 
 Two further source-only modules have exhaustive finite-algebra inventories.
 \path{CentralQBinomialReduction.lean} has no definitions and six theorems:
@@ -7006,6 +7020,57 @@ the two displayed nonvanishing hypotheses.
 exponents by zero and one, reorganize divisor indices, factor the finite
 q-product over commutative rings, and give the final Gaussian factorization
 over an integral domain.
+
+Four further modules supply the exhaustive root-of-unity and q-Catalan layer.
+The zero-definition/three-theorem \path{PrimitiveRootBlock.lean} surface is
+\lean{gaussianBinomial_isPrimitiveRoot_eq_zero},
+\lean{neg_one_pow_mul_pow_choose_two}, and
+\lean{finiteQPochhammerIn_isPrimitiveRoot}.  In a commutative integral domain,
+a primitive \(d\)-th root \(\zeta\) makes
+\(\GaussianBinomial{d}{k}{\zeta}=0\) for \(0<k<d\); for \(d>0\), its top phase is
+\((-1)^d\zeta^{\binom d2}=-1\), and consequently
+\((y;\zeta)_d=1-y^d\).
+
+The zero-definition/eight-theorem \path{QLucas.lean} surface is
+\lean{two_mul_choose_two}, \lean{add_mul_add_sub_one},
+\lean{choose_two_add}, \lean{coeff_finiteQPochhammerIn_neg_X},
+\lean{finiteQPochhammerIn_neg_X_block}, \lean{coeff_block_pow_mul},
+\lean{pow_choose_two_add_mul_eq}, and \lean{gaussianBinomial_q_lucas}.
+The first three are natural-number quadratic identities.  The polynomial
+coefficient and block formulas compare the finite q-binomial expansion with
+complete primitive-root blocks.  If \(d>0\), \(\zeta\) is a primitive
+\(d\)-th root in a commutative integral domain, and \(b,s<d\), the final theorem is
+\[
+ \GaussianBinomial{ad+b}{rd+s}{\zeta}
+   =\binom ar\GaussianBinomial{b}{s}{\zeta}.
+\]
+
+The zero-definition/three-theorem \path{CyclotomicDivisibility.lean} surface is
+\lean{cyclotomic_exponent_eq_one_iff},
+\lean{cyclotomic_dvd_gaussianBinomial_iff}, and
+\lean{gaussianBinomial_mul_isPrimitiveRoot}.  For \(k\le n\) and \(d>0\), the
+Gaussian cyclotomic exponent equals one exactly when
+\(n\bmod d<k\bmod d\); over \(\RationalNumbers[X]\) this is exactly the
+criterion for \(\Phi_d\) to divide \(\GaussianBinomial{n}{k}{X}\).  In a
+commutative integral domain, a primitive \(n\)-th root with \(n>0\) also gives
+\(\GaussianBinomial{an}{bn}{\zeta}=\binom ab\).
+
+Finally, \path{QCatalan.lean} has the single noncomputable definition
+\lean{qCatalan} and exactly eleven theorems:
+\lean{map_qInt}, \lean{qInt_X_monic}, \lean{qInt_X_natDegree},
+\lean{X_sub_one_mul_qInt}, \lean{qInt_X_eq_prod_cyclotomic},
+\lean{qInt_X_dvd_gaussianBinomial_rat},
+\lean{qInt_X_dvd_gaussianBinomial_int},
+\lean{qInt_X_mul_qCatalan}, \lean{qCatalan_natDegree},
+\lean{qCatalan_eval_one_mul}, and \lean{qCatalan_eval_one}.  The semiring-level
+naturality theorem and commutative-ring q-integer formulas lead to
+\([n+1]_X\mid\GaussianBinomial{2n}{n}{X}\) over both
+\(\RationalNumbers[X]\) and \(\Integers[X]\).  Thus the integral polynomial
+\[
+ C_n(X)=\frac{\GaussianBinomial{2n}{n}{X}}{[n+1]_X}
+\]
+has natural degree \(n(n-1)\), satisfies
+\((n+1)C_n(1)=\binom{2n}{n}\), and evaluates to the ordinary Catalan number.
 
 Four denominator-free product identities make this recursion especially useful downstream.
 For natural \(m,n\), and for \(k\le n\),
@@ -12653,13 +12718,17 @@ Rogers--Szeg\H{o} polynomial APIs &
 \path{GeometricPochhammerNormalConvergence.lean},
 \path{ReciprocalIntegerGammaZeros.lean}, \path{DyadicGammaOrder.lean}\\
 Gaussian (q=-1) first jets, generic and universal Gaussian-polynomial degree,
-palindromicity, and mean, Euler and infinite q-binomial expansions, Jacobi and
-pentagonal products, q-Pascal summation, Gaussian continuity, the quantum
-binomial theorem, and Rogers--Szeg\H{o} polynomials &
+palindromicity, mean and linear coefficient, central/cyclotomic factorization,
+primitive-root blocks, q-Lucas and q-Catalan theory, Euler and infinite
+q-binomial expansions, Jacobi and pentagonal products, q-Pascal summation,
+Gaussian continuity, the quantum binomial theorem, and Rogers--Szeg\H{o}
+polynomials &
 \path{GaussianBinomialAtNegOneDerivative.lean},
 \path{GaussianBinomialPalindromic.lean},
 \path{GaussianBinomialPolynomialStructure.lean},
 \path{CentralQBinomialReduction.lean}, \path{CyclotomicFactorization.lean},
+\path{PrimitiveRootBlock.lean}, \path{QLucas.lean},
+\path{CyclotomicDivisibility.lean}, \path{QCatalan.lean},
 \path{QBinomialTheoremInfinite.lean}, \path{JacobiTripleProduct.lean},
 \path{QPascalSummation.lean}, \path{GaussianBinomialContinuity.lean},
 \path{QuantumBinomial.lean}, \path{RogersSzegoPolynomial.lean}\\
@@ -12773,6 +12842,8 @@ Dyadic and \(q\)-binomial formulas &
 \path{GaussianBinomialPalindromic.lean},
 \path{GaussianBinomialPolynomialStructure.lean},
 \path{CentralQBinomialReduction.lean}, \path{CyclotomicFactorization.lean},
+\path{PrimitiveRootBlock.lean}, \path{QLucas.lean},
+\path{CyclotomicDivisibility.lean}, \path{QCatalan.lean},
 \path{QPochhammerElementaryIdentities.lean},
 \path{QBinomialCauchy.lean}, \path{QBinomialVandermonde.lean},
 \path{HalfQBinomial.lean},

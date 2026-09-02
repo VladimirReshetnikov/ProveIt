@@ -201,7 +201,6 @@ fractional and inverse-layer-cake checkpoint \nolinkurl{37eab3c56}}
 \newcommand{\fract}[1]{\left\{#1\right\}}
 \newcommand{\Deltah}{\Delta_h}
 \newcommand{\Btri}[1]{\binom{#1}{2}}
-\newcommand{\pos}[1]{\left(#1\right)_{+}}
 \newcommand{\Unif}{\operatorname{Unif}}
 \newcommand{\Mmain}{\mathcal M}
 \newcommand{\CoeffMass}{\mathcal C}
@@ -341,7 +340,8 @@ normal-convergence overlays, the effective-inverse closure, and the latest
 sixteen-module q-series/q-calculus union, including its two newest finite-q
 algebra modules, the completed Gaussian linear-coefficient classifier, and
 the eight-declaration rational-gap inverse module.  The live source census is
-660 facade-reachable modules and 8,778 public declarations.  The retained
+augmented by the four-module, 26-declaration primitive-root/q-Lucas/q-Catalan
+tranche: 664 facade-reachable modules and 8,804 public declarations.  The retained
 237-page A4 PDF, SHA-256
 \nolinkurl{21180fa05a754b52a057495464674e9d6ac26a51488c2c770730c641b5ffe887},
 predates these source-only overlays and the expanded ledger and is therefore a
@@ -596,6 +596,32 @@ Universal Gaussian-polynomial degree and palindromicity &
 \nolinkurl{gaussianBinomial_universal_reflect},
 \nolinkurl{coeff_gaussianBinomial_universal_symm} &
 \nolinkurl{GaussianBinomialPolynomialStructure.lean}; zero definitions and five theorems \\
+Primitive-root Gaussian block &
+\nolinkurl{gaussianBinomial_isPrimitiveRoot_eq_zero},
+\nolinkurl{neg_one_pow_mul_pow_choose_two},
+\nolinkurl{finiteQPochhammerIn_isPrimitiveRoot} &
+\nolinkurl{PrimitiveRootBlock.lean}; zero definitions and three theorems \\
+The q-Lucas theorem &
+\nolinkurl{two_mul_choose_two}, \nolinkurl{add_mul_add_sub_one},
+\nolinkurl{choose_two_add}, \nolinkurl{coeff_finiteQPochhammerIn_neg_X},
+\nolinkurl{finiteQPochhammerIn_neg_X_block},
+\nolinkurl{coeff_block_pow_mul}, \nolinkurl{pow_choose_two_add_mul_eq},
+\nolinkurl{gaussianBinomial_q_lucas} &
+\nolinkurl{QLucas.lean}; zero definitions and eight theorems \\
+Cyclotomic carry criterion and primitive-root multiple value &
+\nolinkurl{cyclotomic_exponent_eq_one_iff},
+\nolinkurl{cyclotomic_dvd_gaussianBinomial_iff},
+\nolinkurl{gaussianBinomial_mul_isPrimitiveRoot} &
+\nolinkurl{CyclotomicDivisibility.lean}; zero definitions and three theorems \\
+MacMahon q-Catalan polynomial &
+\nolinkurl{qCatalan}; \nolinkurl{map_qInt}, \nolinkurl{qInt_X_monic},
+\nolinkurl{qInt_X_natDegree}, \nolinkurl{X_sub_one_mul_qInt},
+\nolinkurl{qInt_X_eq_prod_cyclotomic},
+\nolinkurl{qInt_X_dvd_gaussianBinomial_rat},
+\nolinkurl{qInt_X_dvd_gaussianBinomial_int},
+\nolinkurl{qInt_X_mul_qCatalan}, \nolinkurl{qCatalan_natDegree},
+\nolinkurl{qCatalan_eval_one_mul}, \nolinkurl{qCatalan_eval_one} &
+\nolinkurl{QCatalan.lean}; one definition and eleven theorems \\
 Quantum binomial theorem &
 \nolinkurl{quantumPlane_mul_pow}, \nolinkurl{quantum_binomial} &
 \nolinkurl{QuantumBinomial.lean}; zero definitions and two noncommutative theorems \\
@@ -2163,6 +2189,43 @@ definitions and seven theorems: \lean{div_add_div_le_div},
 divisor reindexing, finite-product identities over commutative rings, and the
 Gaussian cyclotomic factorization over an integral domain.
 
+The four-module root-of-unity/q-Catalan tranche is also exhaustive.
+\path{PrimitiveRootBlock.lean} is 0+3:
+\lean{gaussianBinomial_isPrimitiveRoot_eq_zero},
+\lean{neg_one_pow_mul_pow_choose_two}, and
+\lean{finiteQPochhammerIn_isPrimitiveRoot}.  In a commutative integral domain,
+a primitive \(d\)-th root kills \(\GaussianBinomial{d}{k}{\zeta}\) for
+\(0<k<d\); under \(d>0\), the top phase is \,\(-1\) and
+\((y;\zeta)_d=1-y^d\).
+
+\path{QLucas.lean} is 0+8: \lean{two_mul_choose_two},
+\lean{add_mul_add_sub_one}, \lean{choose_two_add},
+\lean{coeff_finiteQPochhammerIn_neg_X},
+\lean{finiteQPochhammerIn_neg_X_block}, \lean{coeff_block_pow_mul},
+\lean{pow_choose_two_add_mul_eq}, and \lean{gaussianBinomial_q_lucas}.
+For \(d>0\), a primitive \(d\)-th root in a commutative integral domain, and
+\(b,s<d\), the conclusion is
+\(\GaussianBinomial{ad+b}{rd+s}{\zeta}=\binom ar
+\GaussianBinomial{b}{s}{\zeta}\).
+
+\path{CyclotomicDivisibility.lean} is 0+3:
+\lean{cyclotomic_exponent_eq_one_iff},
+\lean{cyclotomic_dvd_gaussianBinomial_iff}, and
+\lean{gaussianBinomial_mul_isPrimitiveRoot}.  For \(k\le n\), \(d>0\), the
+exponent-one and rational-polynomial divisibility criteria are exactly
+\(n\bmod d<k\bmod d\); a positive-order primitive root in a commutative
+integral domain gives \(\GaussianBinomial{an}{bn}{\zeta}=\binom ab\).
+
+\path{QCatalan.lean} is 1+11: the definition \lean{qCatalan}, followed by
+\lean{map_qInt}, \lean{qInt_X_monic}, \lean{qInt_X_natDegree},
+\lean{X_sub_one_mul_qInt}, \lean{qInt_X_eq_prod_cyclotomic},
+\lean{qInt_X_dvd_gaussianBinomial_rat},
+\lean{qInt_X_dvd_gaussianBinomial_int}, \lean{qInt_X_mul_qCatalan},
+\lean{qCatalan_natDegree}, \lean{qCatalan_eval_one_mul}, and
+\lean{qCatalan_eval_one}.  The integral quotient exists because
+\([n+1]_X\mid\GaussianBinomial{2n}{n}{X}\), has degree \(n(n-1)\), and
+evaluates at one to the ordinary Catalan number.
+
 Six further facade-reachable modules contribute exactly four definitions and
 sixty-five theorems.  The small public inventories are
 \lean{continuous_gaussianBinomial},
@@ -2305,8 +2368,9 @@ prime-power companion row, zero-definition/three-theorem outer Pochhammer
 normal-convergence leaf, two-module fixed-depth effective-inverse closure, the
 eight-declaration rational-gap inverse leaf, and the sixteen-module
 q-series/q-calculus union, including its two newest finite-q algebra modules
-and the two added Gaussian linear-coefficient theorems,
-the live source census is 660/8,778.  These additions
+and the two added Gaussian linear-coefficient theorems, followed by the
+four-module, 26-declaration root-of-unity/q-Catalan tranche,
+the live source census is 664/8,804.  These additions
 are source-only, and the retained 237-page PDF remains explicitly historical.
 The newest six module counts are
 \path{QPochhammerInfiniteBounds.lean} (0+5),
@@ -2338,6 +2402,13 @@ The final two module counts are
 finite-symbol sign pairing and even--odd dissection, the central Gaussian
 reduction, and cyclotomic factorizations, with the quotient-denominator and
 integral-domain assumptions retained explicitly.
+
+The four latest finite-q module counts are
+\path{PrimitiveRootBlock.lean} (0+3), \path{QLucas.lean} (0+8),
+\path{CyclotomicDivisibility.lean} (0+3), and \path{QCatalan.lean} (1+11).
+Their one definition and twenty-five theorems give complete primitive-root
+blocks, q-Lucas, the cyclotomic carry criterion, and the integral q-Catalan
+polynomial with exact degree and Catalan value at one.
 
 The earlier compiler-validated checkpoint \texttt{e6f535e5d} supplied the two modules that
 promote the
@@ -4406,6 +4477,14 @@ constant-coefficient, reflection, and bounded-index coefficient-symmetry interfa
 The exhaustive zero-definition, six-theorem central squared-base reduction interface.\\
 \path{CyclotomicFactorization.lean} &
 The exhaustive zero-definition, seven-theorem finite-product and Gaussian cyclotomic-factorization interface.\\
+\path{PrimitiveRootBlock.lean} &
+The exhaustive zero-definition, three-theorem primitive-root Gaussian-vanishing, phase, and complete-block interface.\\
+\path{QLucas.lean} &
+The exhaustive zero-definition, eight-theorem natural quadratic, block-coefficient, phase, and q-Lucas interface.\\
+\path{CyclotomicDivisibility.lean} &
+The exhaustive zero-definition, three-theorem cyclotomic carry, rational divisibility, and primitive-root multiple-value interface.\\
+\path{QCatalan.lean} &
+The exhaustive one-definition, eleven-theorem integral q-Catalan divisibility, degree, and value-at-one interface.\\
 \path{QuantumBinomial.lean} &
 The exhaustive zero-definition, two-theorem quantum-plane and noncommutative
 q-binomial interface.\\
@@ -5358,7 +5437,7 @@ A Math Stack Exchange question asks for a closed form for the sequence
  f_n(x)=2\int_{-1}^{x}\bigl(f_{n-1}(2t+1)-f_{n-1}(2t-1)\bigr)\Differential t.
 \]
 The first integration produces the piecewise linear tent
-$f_1(x)=\pos{1-|x|}$, and the subsequent iterates visually converge very rapidly to
+$f_1(x)=\PositivePart{1-|x|}$, and the subsequent iterates visually converge very rapidly to
 Rvachev's compactly supported $C^\infty$ up-function.  This report gives a complete
 finite-stage description and a sharp convergence theorem.
 
@@ -5376,7 +5455,7 @@ $n\ge1$,
 \[
  f_n(x)=\frac{2^{n(n+1)/2-1}}{n!}
  \sum_{j=0}^{2^n}\bigl(\tau_n(j)-\tau_n(j-1)\bigr)
- \pos{x+1-\frac{j}{2^{n-1}}}^{n},
+ \PositivePart{x+1-\frac{j}{2^{n-1}}}^{n},
 \]
 where $\tau_n(j)=(-1)^{\BinaryDigitSum(j)}$ on $0\le j<2^n$ and is zero outside that range.
 The $n$th derivative is therefore a rescaled Thue--Morse step function.
@@ -5430,13 +5509,13 @@ There is a small indexing issue in the informal description of the construction.
 literal seed $f_0$ in \eqref{repeated2:eq:original-recurrence} is piecewise constant; the first iterate
 is the piecewise linear function
 \begin{equation}
- f_1(x)=\pos{1-|x|}.
+ f_1(x)=\PositivePart{1-|x|}.
  \label{repeated2:eq:tent}
 \end{equation}
 When one says that the up-function arises by ``repeatedly integrating a piecewise linear
 function,'' the natural indexing is therefore
 \begin{equation}
- g_m=f_{m+1},\qquad g_0(x)=\pos{1-|x|}.
+ g_m=f_{m+1},\qquad g_0(x)=\PositivePart{1-|x|}.
  \label{repeated2:eq:linear-indexing}
 \end{equation}
 Both indexings will be retained: $f_n$ matches the question, while $g_m$ matches the
@@ -5467,14 +5546,14 @@ For every $n\ge1$ and $x\in\RealNumbers$,
  \boxed{\displaystyle
  f_n(x)=\frac{2^{n(n+1)/2-1}}{n!}
  \sum_{j=0}^{2^n}\Delta\tau_n(j)
- \pos{x+1-\frac{j}{2^{n-1}}}^{n}.}
+ \PositivePart{x+1-\frac{j}{2^{n-1}}}^{n}.}
  \label{repeated2:eq:exact-iterate-intro}
 \end{equation}
 Equivalently,
 \begin{equation}
  f_n(x)=\frac{1}{2n!\,2^{n(n-1)/2}}
  \sum_{j=0}^{2^n}\Delta\tau_n(j)
- \pos{2^nx+2^n-2j}^{n}.
+ \PositivePart{2^nx+2^n-2j}^{n}.
  \label{repeated2:eq:exact-iterate-mse-scaling}
 \end{equation}
 The knots are
@@ -5491,7 +5570,7 @@ In the tent indexing \eqref{repeated2:eq:linear-indexing}, \cref{repeated2:thm:e
  \boxed{\displaystyle
  g_m(x)=\frac{2^{m(m+3)/2}}{(m+1)!}
  \sum_{j=0}^{2^{m+1}}\Delta\tau_{m+1}(j)
- \pos{x+1-\frac{j}{2^m}}^{m+1}.}
+ \PositivePart{x+1-\frac{j}{2^m}}^{m+1}.}
  \label{repeated2:eq:exact-tent-indexing}
 \end{equation}
 Thus the $m$th repeated integration of the tent is a degree-$(m+1)$ spline on the dyadic
@@ -5790,7 +5869,7 @@ $V_1+\cdots+V_m$ is
  b_{\bm a}(x)=
  \frac{1}{2^m(m-1)!\prod_{i=1}^{m}a_i}
  \sum_{\varepsilon\in\{0,1\}^m}(-1)^{|\varepsilon|}
- \pos{x+A-2\sum_{i=1}^{m}\varepsilon_i a_i}^{m-1}.
+ \PositivePart{x+A-2\sum_{i=1}^{m}\varepsilon_i a_i}^{m-1}.
  \label{repeated2:eq:general-box-spline}
 \end{equation}
 \end{lemma}
@@ -5912,7 +5991,7 @@ For $0\le r\le n-1$, differentiating \eqref{repeated2:eq:exact-iterate-intro} gi
  f_n^{(r)}(x)=
  \frac{2^{n(n+1)/2-1}}{(n-r)!}
  \sum_{j=0}^{2^n}\Delta\tau_n(j)
- \pos{x+1-\frac{j}{2^{n-1}}}^{n-r}.
+ \PositivePart{x+1-\frac{j}{2^{n-1}}}^{n-r}.
  \label{repeated2:eq:finite-spline-derivatives}
 \end{equation}
 The formula is also valid away from the knots for $r=n$.  If
@@ -5937,7 +6016,7 @@ The first three functions are
 \begin{align}
  f_0(x)&=\frac12\IndicatorOf{(-1,1)}(x),
  \label{repeated2:eq:f0-explicit}\\
- f_1(x)&=\pos{1-|x|},
+ f_1(x)&=\PositivePart{1-|x|},
  \label{repeated2:eq:f1-explicit}\\
  f_2(x)&=
  \begin{cases}
@@ -5950,7 +6029,7 @@ The first three functions are
 The next one already displays the full Thue--Morse organization compactly:
 \begin{equation}
  f_3(x)=\frac{16}{3}\sum_{j=0}^{8}\Delta\tau_3(j)
- \pos{x+1-\frac j4}^{3}.
+ \PositivePart{x+1-\frac j4}^{3}.
  \label{repeated2:eq:f3-truncated-power}
 \end{equation}
 
@@ -6580,7 +6659,7 @@ $a_nX'$ by a single uniform coordinate $a_nU$.
 \label{repeated2:def:comparison-kernel}
 For $t\in\RealNumbers$, define
 \begin{equation}
- K(t)=\Expectation\pos{U-t}-\Expectation\pos{X-t}.
+ K(t)=\Expectation\PositivePart{U-t}-\Expectation\PositivePart{X-t}.
  \label{repeated2:eq:K-definition}
 \end{equation}
 \end{definition}
@@ -6662,15 +6741,15 @@ $X\stackrel d=(X'+U)/2$ and convexity,
 \]
 Since $X'$ has the same law as $X$, this rearranges to
 $\Expectation\phi(X)\le\Expectation\phi(U)$.  Thus $X$ is below $U$ in convex order.  Applying this to
-$\phi_t(y)=\pos{y-t}$ gives $K(t)\ge0$.
+$\phi_t(y)=\PositivePart{y-t}$ gives $K(t)\ge0$.
 
 For $0\le t\le1$,
 \[
- \Expectation\pos{U-t}=\frac{(1-t)^2}{4}.
+ \Expectation\PositivePart{U-t}=\frac{(1-t)^2}{4}.
 \]
 Also, by \eqref{repeated2:eq:X-tail-F},
 \begin{align*}
- \Expectation\pos{X-t}
+ \Expectation\PositivePart{X-t}
  &=\int_t^1\Probability(X>s)\Differential s
  =\int_t^1F\left(\frac{1-s}{2}\right)\Differential s\\
  &=2\int_0^{(1-t)/2}F(y)\Differential y
@@ -6726,7 +6805,7 @@ Let $h'$ be absolutely continuous on $[-1,1]$.  Then
 \begin{proof}
 For $y\in[-1,1]$,
 \[
- h(y)=h(-1)+h'(-1)(y+1)+\int_{-1}^{1}\pos{y-t}h''(t)\Differential t.
+ h(y)=h(-1)+h'(-1)(y+1)+\int_{-1}^{1}\PositivePart{y-t}h''(t)\Differential t.
 \]
 Take expectations first with $y=U$ and then with $y=X$.  The constant terms cancel, and
 the linear terms cancel because both random variables have mean zero.  Fubini's theorem
@@ -7127,7 +7206,7 @@ piecewise-linear formulation.
 
 \begin{corollary}[Repeated integration starting from the tent]
 \label{repeated2:cor:tent-indexed-rate}
-Let $g_0(x)=\pos{1-|x|}$ and $g_{m+1}=Tg_m$.  For every $r\ge0$,
+Let $g_0(x)=\PositivePart{1-|x|}$ and $g_{m+1}=Tg_m$.  For every $r\ge0$,
 \begin{equation}
  \Norm{g_r-\RvachevUp}_{C^r}
  =\frac{13}{72}2^{\binom{r+1}{2}},
@@ -10443,6 +10522,10 @@ Module & Role in the present article \\
 \path{GaussianBinomialPolynomialStructure.lean} & Exactly five public theorems and no definitions: exact universal natural degree, monicity, constant coefficient one, reflection at degree \(k(n-k)\), and bounded-index coefficient palindromicity; the adjacent generic module supplies the complete linear-coefficient classifier. \\
 \path{CentralQBinomialReduction.lean} & Exactly six public theorems and no definitions: sign pairing, even--odd dissection, naturality, integral and general division-free central reduction, and the field quotient under two nonvanishing hypotheses. \\
 \path{CyclotomicFactorization.lean} & Exactly seven public theorems and no definitions: floor-quotient bounds, divisor reindexing, commutative-ring finite-product identities, interval extension, and Gaussian cyclotomic factorization over an integral domain. \\
+\path{PrimitiveRootBlock.lean} & Exactly three public theorems and no definitions: \lean{gaussianBinomial_isPrimitiveRoot_eq_zero}, \lean{neg_one_pow_mul_pow_choose_two}, and \lean{finiteQPochhammerIn_isPrimitiveRoot}; in a commutative integral domain they give interior vanishing and, for positive primitive-root order, the top phase and complete block. \\
+\path{QLucas.lean} & Exactly eight public theorems and no definitions: \lean{two_mul_choose_two}, \lean{add_mul_add_sub_one}, \lean{choose_two_add}, \lean{coeff_finiteQPochhammerIn_neg_X}, \lean{finiteQPochhammerIn_neg_X_block}, \lean{coeff_block_pow_mul}, \lean{pow_choose_two_add_mul_eq}, and \lean{gaussianBinomial_q_lucas}.  The final theorem assumes only positive primitive-root order and the residue bounds \(b,s<d\), not \(r\le a\) or \(s\le b\). \\
+\path{CyclotomicDivisibility.lean} & Exactly three public theorems and no definitions: \lean{cyclotomic_exponent_eq_one_iff}, \lean{cyclotomic_dvd_gaussianBinomial_iff}, and \lean{gaussianBinomial_mul_isPrimitiveRoot}.  The carry criterion assumes \(k\le n\), \(d>0\); divisibility is in \(\RationalNumbers[X]\); the primitive-root value needs no \(b\le a\). \\
+\path{QCatalan.lean} & Exactly one public definition, \lean{qCatalan}, and eleven theorems: \lean{map_qInt}, \lean{qInt_X_monic}, \lean{qInt_X_natDegree}, \lean{X_sub_one_mul_qInt}, \lean{qInt_X_eq_prod_cyclotomic}, \lean{qInt_X_dvd_gaussianBinomial_rat}, \lean{qInt_X_dvd_gaussianBinomial_int}, \lean{qInt_X_mul_qCatalan}, \lean{qCatalan_natDegree}, \lean{qCatalan_eval_one_mul}, and \lean{qCatalan_eval_one}.  The integral \path{divByMonic} quotient is defined for every natural \(n\); coefficient positivity, palindromicity, and a combinatorial interpretation are not asserted. \\
 \path{QPochhammerElementaryIdentities.lean} & Exactly 13 public theorems: unit-valued ring reversals, root-safe terminating and adjacent cross identities, and field quotient forms with their exact nonzero-denominator hypotheses; the cross identities are total by zero extension, while the adjacent quotients retain \(k<n\). \\
 \path{QDifferenceAnnihilation.lean} & Exactly four public theorems: the scaled inverse-Gaussian characteristic polynomial, its complete geometric monomial moments, scalar-extension top-coefficient extraction, and strict-degree \(q\)-difference annihilation; \cref{dyadicq:rem:scaled-qdiff}. \\
 \path{GeometricQBinomialLagrange.lean} & Denominator-free geometric Lagrange numerators and residual moments, including the global identification of the numerator with the scaled inverse kernel at base and scale \(q\); normalized quotient results retain their distinct-node field hypotheses. \\
