@@ -846,6 +846,53 @@ and the induction step differentiates the hypothesis and uses
 \cref{eq:second-eulerian-poly-recurrence}.""")),
 ]
 
+PENDING += [
+ # --- thm:bell-prime-power-shift ---
+ (r"""$x^{p^r}\equiv x$ modulo $p$ at $x=1$ gives
+\eqref{eq:bell-prime-power-shift}.
+\end{proof}
+""",
+  remark(r"""% ed.: crosswalk added 2026-09-01; the Lean proof runs through the shift operator rather than the group action.
+\lean{Fabius.bell_add_prime_pow_modEq} (module \lean{ShiftOperatorCharP}) is
+\cref{eq:bell-prime-power-shift} as a congruence of natural numbers, and
+\lean{Fabius.touchardPolynomial_add_prime_pow} is
+\cref{eq:touchard-prime-power-poly} as an identity in $\FiniteField_p[x]$.
+The formal proof does not use the group action above.  It takes Touchard's
+congruence in the operator form $E^p=E+c$, with $c=1$ for the Bell numbers
+and $c=x^p$ for the Touchard polynomials (the latter from
+\lean{Fabius.touchardPolynomial_add_prime}), and shows by induction on $m$,
+using the Frobenius identity $(u+v)^p=u^p+v^p$ in characteristic $p$, that
+$Y^{p^m}\equiv Y+\sum_{r<m}c^{p^r}$ modulo the polynomial $Y^p-Y-c$
+(\lean{Fabius.mk_X_pow_prime_pow}).  Since the shift $E$ acts linearly on
+sequences, every polynomial multiple of the characteristic polynomial
+annihilates every solution of the recurrence
+(\lean{Fabius.aeval_shiftEnd_eq_zero_of_dvd}), which gives the general
+statement \lean{Fabius.shift_pow_char_pow}: if $b_{n+p}=b_{n+1}+cb_n$ in a
+commutative ring of characteristic $p$, then
+$b_{n+p^m}=b_{n+1}+\bigl(\sum_{r=0}^{m-1}c^{p^r}\bigr)b_n$.""")),
+
+ # --- thm:bell-period-bound ---
+ (r"""recurrence, in particular on the Bell sequence.
+\end{proof}
+""",
+  remark(r"""% ed.: crosswalk added 2026-09-01; the Lean proof avoids the splitting field.
+\lean{Fabius.bell_add_sum_prime_pow_modEq} (module \lean{ShiftOperatorCharP})
+states that $N_p=\sum_{j<p}p^j$ is a period,
+$\BellNumber{n+N_p}\equiv\BellNumber n\pmod p$ for every $n\ge0$, and
+\lean{Fabius.bell_period_dvd_sum_prime_pow} that the least positive period
+divides $N_p$ (by the general division argument
+\lean{Fabius.period_dvd_of_minimal}).  The formal proof stays in
+$\FiniteField_p[Y]$: from $Y^{p^j}\equiv Y+j$ modulo $q(Y)=Y^p-Y-1$
+(\lean{Fabius.mk_X_pow_prime_pow}) and the Fermat product
+$\prod_{j=0}^{p-1}(Y+j)=Y^p-Y$ (\lean{Fabius.prod_range_X_add_C_natCast}, from
+the factorization of $Y^p-Y$ over $\FiniteField_p$,
+\lean{Fabius.prod_univ_X_sub_C}) one gets $Y^{N_p}\equiv Y^p-Y=q(Y)+1\equiv1$,
+so $q(Y)$ divides $Y^{N_p}-1$, and the shift-operator transfer
+\lean{Fabius.aeval_shiftEnd_eq_zero_of_dvd} yields $E^{N_p}=1$ on every
+solution of the recurrence over $\FiniteField_p$
+(\lean{Fabius.shift_pow_period}); no diagonalization is needed.""")),
+]
+
 applied = 0
 for anchor, text in PENDING:
     if text.strip() in s:
