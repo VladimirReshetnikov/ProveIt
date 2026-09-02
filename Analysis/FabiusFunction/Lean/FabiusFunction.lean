@@ -505,6 +505,10 @@ import FabiusFunction.QPochhammerOrderDerivative
 import FabiusFunction.JacobiCubic
 import FabiusFunction.CyclotomicFactorization
 import FabiusFunction.CentralQBinomialReduction
+import FabiusFunction.PrimitiveRootBlock
+import FabiusFunction.QLucas
+import FabiusFunction.CyclotomicDivisibility
+import FabiusFunction.QCatalan
 import FabiusFunction.GaussianBinomialPalindromic
 import FabiusFunction.ThetaQuasiPeriodicity
 
