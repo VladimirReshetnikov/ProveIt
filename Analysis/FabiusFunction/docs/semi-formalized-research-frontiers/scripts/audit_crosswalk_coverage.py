@@ -43,31 +43,48 @@ SECTION = re.compile(r'\\(?:sub)*section\*?\{', re.M)
 
 
 def spans(text):
-    """Each result, paired with the rest of its (sub)section.
+    """Each result, paired with the rest of its (sub)section, and with
+    the prose that precedes it back to the previous result or
+    sectioning command.
 
     These volumes put one crosswalk postscript per subsection, covering
     every result in it -- so the span must run to the next sectioning
     command, not to the next result.  Cutting at the next result made
     `p1:thm:primitive-recursive` look uncited because a lemma follows it
     and the shared crosswalk lands after the lemma.
+
+    The *preamble* handles the other convention, where a narrative
+    paragraph before a theorem says "\\cref{thm} holds as \\lean{...}".
+    It is credited only when it names the result's own label, so a
+    postscript belonging to the previous result is never mistaken for
+    coverage of the next one.
     """
     marks = [(m.start(), m.group(1), m.group(2)) for m in ENV.finditer(text)]
     cuts = [m.start() for m in SECTION.finditer(text)]
+    prev_end = 0
     for start, kind, label in marks:
         stop = len(text)
         for c in cuts:
             if c > start:
                 stop = c
                 break
-        yield kind, label, text[start:stop]
+        pre_from = prev_end
+        for c in cuts:
+            if c < start:
+                pre_from = max(pre_from, c)
+        yield kind, label, text[start:stop], text[pre_from:start]
+        e = text.find('\\end{%s}' % kind, start)
+        prev_end = e if e >= 0 else start
 
 
 def survey(path):
     text = io.open(path, encoding='utf-8', errors='replace').read()
     covered = disclaimed = gap = 0
     gaps = []
-    for kind, label, span in spans(text):
-        if LEAN.search(span):
+    for kind, label, span, pre in spans(text):
+        named = label and re.search(
+            r'\\[cC]?ref\{' + re.escape(label) + r'\}', pre)
+        if LEAN.search(span) or (named and LEAN.search(pre)):
             covered += 1
         elif OPEN.search(span):
             disclaimed += 1
