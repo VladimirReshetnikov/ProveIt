@@ -74,6 +74,7 @@ import FabiusFunction.BinomialInversionEGF
 import FabiusFunction.EulerianPolynomialRecurrence
 import FabiusFunction.BellFactorialRowSum
 import FabiusFunction.BellInversionTwo
+import FabiusFunction.StirlingSecondReverseColumn
 import FabiusFunction.SymmetricFunctionTransform
 import FabiusFunction.SymmetricFunctionGenerating
 import FabiusFunction.FiniteQBinomialCore
