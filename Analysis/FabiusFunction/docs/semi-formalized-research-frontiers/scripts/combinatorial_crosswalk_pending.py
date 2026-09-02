@@ -1195,6 +1195,42 @@ integral representation itself is not formalized.  The reflection
 \cref{eq:merged-cauchy-reflection} is not formalized.""")),
 ]
 
+PENDING += [
+ # --- lem:coeff-rules ---
+ (r"""bound follows by estimating the contour integral by its length $2\pi r$.
+\end{proof}
+""",
+  remark(r"""% ed.: crosswalk added 2026-09-02; the three formal rules are Lean, the analytic one is not.
+Module \lean{CoefficientRules} proves the three formal rules over an arbitrary
+commutative ring: \cref{eq:cauchy} is
+\lean{Fabius.PowerSeries.coeff_mul_eq_sum_range}, \cref{eq:der-coeff} is
+\lean{Fabius.PowerSeries.coeff_derivative_eq}, and \cref{eq:geom-conv} is
+\lean{Fabius.PowerSeries.coeff_mul_geomSeries}, where $F/(1-az)$ is read as
+$F\cdot\sum_na^nz^n$; that the geometric series really is the reciprocal of
+$1-az$ is \lean{Fabius.PowerSeries.one_sub_C_mul_X_mul_geomSeries}, and
+\lean{Fabius.PowerSeries.eq_mul_geomSeries_iff} lets the same rule be applied
+to a series presented by the equation $(1-az)G=F$, which is how it is used in
+the Stirling column arguments.  The analytic Cauchy coefficient formula and
+bound \cref{eq:cauchy-coeff} are not formalized.""")),
+
+ # --- thm:merged-multinomial-leibniz ---
+ (r"""$\prod_r f_r^{(j_r)}(x)/j_r!$.  Multiplication by $n!$ proves
+\eqref{eq:merged-multinomial-leibniz}.
+\end{proof}
+""",
+  remark(r"""% ed.: crosswalk added 2026-09-02; two factors only, in the formal reading.
+The proof above offers two readings, analytic near $x$ and formal in a new
+variable $h$; the formal one is the one that is formalized, and only for two
+factors.  \lean{Fabius.derivative_iterate_mul} (module \lean{IteratedLeibniz})
+is $(\Differential/\Differential t)^n(fg)=\sum_{k=0}^n\binom nk
+f^{(k)}g^{(n-k)}$ for formal power series over any commutative ring, proved by
+induction on $n$ from Pascal's rule in convolution form
+(\lean{Fabius.sum_pascal_split}, stated for an arbitrary sequence and reusable
+for any binomial-type two-term recurrence).  The general $q$-factor form
+\cref{eq:merged-multinomial-leibniz}, whose index set is the compositions of
+$n$ into $q$ parts, is not formalized.""")),
+]
+
 applied = 0
 for anchor, text in PENDING:
     if text.strip() in s:

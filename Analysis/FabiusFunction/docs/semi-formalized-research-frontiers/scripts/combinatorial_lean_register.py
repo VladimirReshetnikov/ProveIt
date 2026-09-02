@@ -76,7 +76,7 @@ STATUS = {
    r"\lean{Fabius.log_pow} (\lean{StirlingGeneratingFunctions}), as formal power series "
    r"over any commutative $\mathbb Q$-algebra; the bivariate generating function "
    r"\cref{eq:second-double-egf} is not formalized"),
- 'thm:stirling-transform': ('partial',
+ 'thm:stirling-transform': ('Lean',
    r"the inversion formula is \lean{Fabius.stirling_inversion}, "
    r"\lean{Fabius.stirling_inversion_symm}, \lean{Fabius.stirling_inversion_iff} "
    r"(\lean{StirlingBasisChange}), for sequences in any additive commutative group; "
@@ -95,7 +95,7 @@ STATUS = {
    r"the moment series $\sum_m m^n\lambda^m/m! = e^{\lambda}\sum_k S(n,k)\lambda^k$ is "
    r"\lean{Fabius.tsum_pow_mul_pow_div_factorial} (\lean{BellStirling}) for every real "
    r"$\lambda$; the probabilistic phrasing is not formalized"),
- 'thm:merged-binomial-inversion': ('Lean',
+ 'thm:merged-binomial-inversion': ('partial',
    r"\lean{Fabius.binomial_inversion_iff} (additive commutative groups) and "
    r"\lean{Fabius.binomial_inversion_ring_iff} (commutative rings) "
    r"(\lean{BinomialInversion}); the kernel orthogonality is "
@@ -113,7 +113,8 @@ STATUS = {
    r"series over any commutative $\mathbb Q$-algebra; the bivariate form is "
    r"\lean{Fabius.exp_subst_smul_bellWeightSeries} (\lean{ExponentialFormula}) and the ordinary "
    r"Bell polynomials are \lean{Fabius.ordPartialBell} with "
-   r"\lean{Fabius.coeff_pow_eq_ordPartialBell} (\lean{OrdinaryBellComposition})"),
+   r"\lean{Fabius.coeff_pow_eq_ordPartialBell} (\lean{OrdinaryBellComposition}); the ordinary "
+   r"bivariate identity \cref{eq:ordinary-bell-bivariate} is not formalized"),
  'thm:bell-poly-specializations': ('partial',
    r"\cref{eq:bell-first-specialization} is \lean{Fabius.partialBell_factorial_pred}, "
    r"\cref{eq:bell-second-specialization} is \lean{Fabius.partialBell_one}, "
@@ -135,8 +136,9 @@ STATUS = {
    r"\cref{eq:bell-transform-x} is \lean{Fabius.bell_transform_inverse} (\lean{BellComposition}), "
    r"from $X=\log(1+Y)$ formalized as \lean{Fabius.log_subst_exp_sub_one} and the composition "
    r"theorem; the recursive inversion over every commutative ring is \lean{Bell.complete_cumulant} "
-   r"and \lean{Bell.cumulant_complete} (\lean{BellPolynomialInversion}); the general form "
-   r"\cref{eq:general-bell-inverse} is not formalized"),
+   r"and \lean{Bell.cumulant_complete} (\lean{BellPolynomialInversion}).  The more general "
+   r"locally-inverse transform \cref{eq:general-bell-inverse}, which the text states after "
+   r"this theorem rather than inside it, is not formalized"),
  'thm:moment-cumulant': ('Lean',
    r"\cref{eq:moments-from-cumulants} is \lean{Fabius.bell_complete_eq_sum_partialBell} with "
    r"\lean{Fabius.exp_subst_bellWeightSeries}, and \cref{eq:cumulants-from-moments} is "
@@ -194,7 +196,7 @@ STATUS = {
    r"\cref{eq:binomial-type-identity} is \lean{Fabius.binomialTypePoly_add} (from the addition "
    r"law \lean{Bell.complete_add}), over any commutative ring; the delta operator "
    r"\cref{eq:delta-operator} is not formalized"),
- 'thm:normal-order': ('Lean',
+ 'thm:normal-order': ('partial',
    r"\lean{Fabius.iterate_X_mul_derivative} (\cref{eq:normal1}) and "
    r"\lean{Fabius.xkDk_eq_sum_signedStirlingFirst} (\cref{eq:normal2}, by Stirling inversion) in "
    r"\lean{StirlingNormalOrder}, as identities of operators applied to an arbitrary polynomial "
@@ -280,7 +282,7 @@ STATUS = {
    r"(\lean{ExponentialFormula}), \cref{eq:complete-bell-egf} is "
    r"\lean{Fabius.exp_subst_bellWeightSeries}, all as substitutions of formal power series "
    r"over any $\RationalNumbers$-algebra"),
- 'thm:ordered-bell': ('Lean',
+ 'thm:ordered-bell': ('partial',
    r"\lean{Fabius.fubini} is defined by \cref{eq:ordered-bell-stirling}; "
    r"\cref{eq:ordered-bell-egf} is \lean{Fabius.two_sub_exp_mul_egfA_fubini} (via "
    r"\lean{Fabius.egfA_fubini}: the generating function is $1/(1-u)$ at $u=\EulerE^t-1$) and "
@@ -426,6 +428,17 @@ STATUS = {
    r"\lean{Fabius.cauchyPoly_eval_zero}; the integral representation "
    r"\cref{eq:merged-cauchy-integral} and the reflection \cref{eq:merged-cauchy-reflection} "
    r"are not formalized."),
+ 'lem:coeff-rules': ('partial',
+   r"The three formal rules are \lean{Fabius.PowerSeries.coeff_mul_eq_sum_range} "
+   r"(\cref{eq:cauchy}), \lean{Fabius.PowerSeries.coeff_derivative_eq} (\cref{eq:der-coeff}) and "
+   r"\lean{Fabius.PowerSeries.coeff_mul_geomSeries} (\cref{eq:geom-conv}), over any commutative "
+   r"ring (module \lean{CoefficientRules}); the analytic Cauchy coefficient formula "
+   r"\cref{eq:cauchy-coeff} is not formalized."),
+ 'thm:merged-multinomial-leibniz': ('partial',
+   r"The two-factor case, in the formal reading the proof itself sanctions, is "
+   r"\lean{Fabius.derivative_iterate_mul} (module \lean{IteratedLeibniz}): "
+   r"$(\Differential/\Differential t)^n(fg)=\sum_k\binom nk f^{(k)}g^{(n-k)}$ in $R[[t]]$ over any "
+   r"commutative ring; the general $q$-factor multinomial form is not formalized."),
  'thm:touchard-poly': ('Lean',
    r"\cref{eq:touchard-poly} is \lean{Fabius.touchardPolynomial_add_prime} "
    r"(\lean{TouchardPolyCongruence}), an identity in $(\mathbb Z/p)[x]$, read off from Spivey's "
