@@ -1,6 +1,7 @@
 import FabiusFunction.BaseDigitProduct
 import Mathlib.Algebra.Polynomial.Eval.Degree
 import Mathlib.Algebra.BigOperators.Intervals
+import Mathlib.Tactic.LinearCombination
 
 /-!
 # Generalized Prouhet cancellation and the sharp moment in base `q`
@@ -208,8 +209,8 @@ theorem sub_one_pow_mul_digitPowerSum_self {R : Type*} [CommRing R] {q : ℕ} (h
           = (m + 1 : R) * (q : R) ^ m * (∑ r ∈ range q, (r : R) * ζ ^ r) *
               digitPowerSum ζ q m m := by
         rw [digitPowerSum_succ hq, sum_congr rfl fun r hr => by rw [hinner r hr]]
-        simp_rw [mul_add, sum_add_distrib, ← sum_mul, hζ, zero_mul, add_zero, sum_mul]
-        rw [sum_mul]
+        simp_rw [mul_add, sum_add_distrib, ← sum_mul, hζ, zero_mul, add_zero]
+        rw [mul_sum, sum_mul]
         refine sum_congr rfl fun r _ => ?_
         ring
       rw [hrec, pow_succ, sum_range_succ, pow_add, Nat.factorial_succ]
@@ -229,7 +230,7 @@ theorem sub_one_pow_mul_digitPowerSum_self {R : Type*} [CommRing R] {q : ℕ} (h
 theorem sum_range_succ_id_eq (m : ℕ) : ∑ i ∈ range (m + 1), i = m * (m + 1) / 2 := by
   have h := Finset.sum_range_id_mul_two (m + 1)
   rw [Nat.add_sub_cancel] at h
-  exact (Nat.div_eq_of_eq_mul_left two_pos (by rw [← h]; ring)).symm
+  exact (Nat.div_eq_of_eq_mul_left two_pos (by rw [mul_comm]; exact h.symm)).symm
 
 /-- **`p1:eq:base-q-sharp-moment`** in a field: for a nontrivial `q`-th root
 of unity `ζ`,

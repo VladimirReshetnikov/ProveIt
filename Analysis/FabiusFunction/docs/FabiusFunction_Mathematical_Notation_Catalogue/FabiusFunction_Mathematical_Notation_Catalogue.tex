@@ -1818,6 +1818,51 @@ law \lean{sign_sin_rademacherPoint}, and the factored square wave is
 \lean{sin_pi_mul_eq_neg_one_zpow_floor}, all in \modulepath{RademacherSine.lean}.}
 \end{catalogueentry}
 
+\begin{catalogueentry}{thue-morse-autocorrelation}{Thue--Morse autocorrelations, normalized
+and limiting}
+\entryfield{Window and dyadic autocorrelation}{For $N,k\in\NaturalNumbers$,
+$R_N(k)\DefinitionEquals\sum_{n<N}\ThueMorseSign n\,\ThueMorseSign{n+k}$, and at the dyadic
+window $A_m(k)\DefinitionEquals R_{2^{m}}(k)$.  These are integers; $R_N(0)=N$ and
+$|R_N(k)|\le N$.}
+\entryfield{Exact recursions}{$R_{2K}(2r)=2R_K(r)$ and $R_{2K}(2r+1)=-(R_K(r)+R_K(r+1))$
+for every even window; nothing uses that the window is a power of two.}
+\entryfield{Normalized and limiting values}{$\eta_m(k)\DefinitionEquals A_m(k)/2^{m}\in[-1,1]$,
+so that $\eta_{m+1}(2r)=\eta_m(r)$ and $\eta_{m+1}(2r+1)=-(\eta_m(r)+\eta_m(r+1))/2$
+exactly.  The limit $\eta(k)\DefinitionEquals\lim_{m\to\infty}\eta_m(k)$ exists for every
+$k$ and is the unique solution of $\eta(0)=1$, $\eta(2r)=\eta(r)$,
+$\eta(2r+1)=-(\eta(r)+\eta(r+1))/2$; in particular $\eta(1)=\eta(2)=-\tfrac13$,
+$\eta(3)=\tfrac13$, $\eta(5)=0$.  The symbol $\eta$ is document-local to the Thue--Morse
+spectral discussion; it is not a shared command and must not be reused for a different
+sequence in the same document.}
+\entryfield{Lean crosswalk}{\lean{thueMorseWindowAutocorrelation} is $R_N(k)$,
+\lean{thueMorseAutocorrelation} is $A_m(k)$ (\modulepath{ThueMorseAutocorrelation.lean});
+\lean{normalizedAutocorrelation} is $\eta_m(k)$, \lean{limitingAutocorrelation} is
+$\eta(k)$ defined by the recursion, and \lean{tendsto_normalizedAutocorrelation} is the
+convergence (\modulepath{ThueMorseAutocorrelationLimit.lean}).}
+\end{catalogueentry}
+
+\begin{catalogueentry}{thue-morse-block-sum}{Thue--Morse block sums and the nested dyadic
+integral}
+\entryfield{Block sum}{For $f:\RealNumbers\to\RealNumbers$, $x,h\in\RealNumbers$ and
+$m\in\NaturalNumbers$, the block sum is
+$\sum_{n<2^{m}}\ThueMorseSign n\,f(x+nh)$.  It is the $m$-fold dyadic difference
+$\prod_{j<m}(I-T_{2^{j}h})f$ evaluated at $x$, with $T_a$ the translation by $a$.}
+\entryfield{Nested dyadic integral}{The iterated integral
+$\int_0^{h}\int_0^{2h}\cdots\int_0^{2^{m-1}h}g(x+t_0+\cdots+t_{m-1})\,dt_{m-1}\cdots dt_0$
+is written with the outermost variable on $[0,h]$ and the step doubling inward; its box
+volume is $h^{m}2^{0+1+\cdots+(m-1)}=h^{m}2^{\binom m2}$.  Because the integrand depends
+only on the sum of the variables, any other nesting order gives the same value, but the
+displayed order is the one the recursion produces.}
+\entryfield{Cubature identity}{For $f$ of class $C^{m}$ and every real $x$, $h$, the block
+sum equals $(-1)^{m}$ times the nested dyadic integral of $f^{(m)}$; no sign condition on
+$h$ is needed for the identity.  Consequences stated with $h\ge0$: the block sum is
+nonnegative when $(-1)^{m}f^{(m)}\ge0$ on $[x,x+(2^{m}-1)h]$, and is bounded by
+$C\,h^{m}2^{\binom m2}$ when $|f^{(m)}|\le C$ there.}
+\entryfield{Lean crosswalk}{\lean{thueMorseBlockSum}, \lean{nestedDyadicIntegral},
+\lean{thueMorseBlockSum_eq_nestedDyadicIntegral}, \lean{thueMorseBlockSum_nonneg},
+\lean{abs_thueMorseBlockSum_le}, all in \modulepath{ThueMorseCubature.lean}.}
+\end{catalogueentry}
+
 \begin{catalogueentry}{padic-valuation}{\(p\)-adic and \(2\)-adic valuations}
 \entryfield{Nonzero integers}{Fix a prime $p$.  Every nonzero
 $n\in\IntegerNumbers$ has a unique factorization

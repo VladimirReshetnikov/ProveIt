@@ -2589,6 +2589,15 @@ Set \(z=1/b\) in \eqref{p1:eq:T-from-E} and
 \eqref{p1:eq:infinite-product}, then multiply by \(1/b\).
 \end{proof}
 
+\emph{Formal versions.}  Both displays are in \path{BaseBProduct.lean}, for every real
+\(b>1\): the signed companion \eqref{p1:eq:signed-base-b} is
+\lean{Fabius.tsum\_thueMorseSign\_div\_pow\_succ} and the boxed
+\eqref{p1:eq:base-b-product} is \lean{Fabius.tsum\_thueMorseBit\_div\_pow\_succ}, each stated
+with the genuine infinite sum \(\sum'\) and infinite product \(\prod'\).  Both are the real
+infinite product \lean{Fabius.tsum\_thueMorseSign\_mul\_pow} of
+\path{ThueMorseInfiniteProduct.lean} at \(x=1/b\), the second after writing
+\(\tau(n)=(1-\eps_n)/2\) and summing the geometric series.
+
 For \(b=2\), \(\Theta_2=0.0110100110010110\ldots{}_2\) is the classical
 Prouhet--Thue--Morse constant.  Mahler's theory implies its transcendence; that
 deep arithmetic result is separate from the elementary product identity
@@ -2628,6 +2637,22 @@ As a formal series, and analytically for \(|z|<1\),
 
 This representation contains no explicit binary digit sum.  The coefficient
 sequence \((a_k)\) is a simple transform of the ruler sequence.
+
+\emph{Formal version.}  \Cref{p1:thm:log-E} is formal in its denominator-free form.  A
+formal logarithm carries the denominators \(1/k\) and so lives over \(\RationalNumbers\); differentiating
+\eqref{p1:eq:log-E} and clearing \(E\) gives the equivalent identity
+\[
+  z\,E'(z)=-A(z)\,E(z),\qquad A(z)=\sum_{k\ge1}a_kz^k,
+\]
+which holds over \(\IntegerNumbers\), and that is
+\lean{Fabius.X\_mul\_derivative\_thueMorseSeries} in \path{RulerLogDerivative.lean}, an
+identity of formal power series with integer coefficients, with
+\(A\) as \lean{Fabius.rulerSeries} built on the ruler coefficient
+\lean{Fabius.rulerCoeff} of \path{ThueMorseHessenberg.lean}.  Its coefficient of \(z^n\) is
+exactly the ruler-convolution recurrence of \cref{p1:thm:ruler-convolution}, from which it
+is derived; no convergence enters.  The two readings the theorem also offers --- the
+\(\RationalNumbers\)-logarithm itself, and the analytic identity for \(|z|<1\) --- are not formalized:
+the first is a coefficientwise integration of the display above, the second its evaluation.
 
 \subsection{A nonlocal convolution recurrence}
 
@@ -3534,6 +3559,25 @@ Apply
 \(h^m2^{0+1+\cdots+(m-1)}\).
 \end{proof}
 
+\emph{Formal version.}  The nested-integral display \eqref{p1:eq:integral-cubature} is
+\lean{Fabius.thueMorseBlockSum\_eq\_nestedDyadicIntegral} in \path{ThueMorseCubature.lean},
+for every \(f\) of class \(C^m\) on the whole line and every real \(x\), \(h\) (the sign of
+\(h\) plays no role in the identity itself): the block sum
+\lean{Fabius.thueMorseBlockSum} equals \((-1)^m\) times
+\lean{Fabius.nestedDyadicIntegral} of \(f^{(m)}\), the nested integral being defined
+recursively with the outermost variable on \([0,h]\) and the step doubling inward, exactly
+as displayed.  The proof is the induction sketched above, run for all base points at once:
+splitting the block by its low bit (\lean{Fabius.thueMorseBlockSum\_succ}) turns each
+pair into \(-\int_0^hf'(x+2nh+t)\Differential t\), and the integrand of the outer integral
+is then the block sum of length \(2^m\) for \(f'\) at base point \(x+t\) with step \(2h\)
+--- a finite sum of continuous functions, so the interchange needs no parametric-integral
+theory.  The bound \eqref{p1:eq:finite-difference-bound} is
+\lean{Fabius.abs\_thueMorseBlockSum\_le}, with the sup taken over
+\([x,x+(2^m-1)h]\) and the box volume written as \(2^{0+1+\cdots+(m-1)}h^m\); the exponent is
+\(\binom m2\) by \lean{Fabius.sum\_range\_id\_eq\_choose\_two}.  It follows from the
+volume bound \lean{Fabius.abs\_nestedDyadicIntegral\_le} on the nested integral.  The
+unit-cube form \eqref{p1:eq:unit-cube-cubature} is not formalized.
+
 \begin{corollary}[Sign for completely monotone kernels]
 \label{p1:cor:complete-monotone}
 If \((-1)^mf^{(m)}\ge0\) on the interval, then
@@ -3567,6 +3611,16 @@ Use \(f(y)=(a+y)^{-s}\), for which
 \(f^{(m)}(y)=(-1)^{m-1}(m-1)!/(a+y)^m\), so the integral is strictly negative.
 Exponentiation gives the product inequality.
 \end{proof}
+
+\emph{Formal version.}  The sign statement \eqref{p1:eq:complete-monotone-sign} is
+\lean{Fabius.thueMorseBlockSum\_nonneg} in \path{ThueMorseCubature.lean}: for \(h\ge0\)
+and \((-1)^mf^{(m)}\ge0\) on \([x,x+(2^m-1)h]\) --- the interval that actually contains
+every argument \(x+t_0+\cdots+t_{m-1}\) --- the block sum is nonnegative, by
+\lean{Fabius.nestedDyadicIntegral\_nonneg} applied to \((-1)^mf^{(m)}\) through
+\lean{Fabius.nestedDyadicIntegral\_const\_mul}.  The two applications
+\eqref{p1:eq:reciprocal-power-positive} and \eqref{p1:eq:log-product-sign}, which need the
+explicit derivatives of \((a+y)^{-s}\) and \(\log(a+y)\) and \emph{strict} positivity of
+the nested integral, are not formalized.
 
 \subsection{Arbitrary translation weights}
 \label{p1:sec:arbitrary-weights}
@@ -5169,9 +5223,9 @@ shifts with closed forms are formal as well ---
 \(\eta_m(0)\to1\), \(\eta_m(1)\to-\tfrac13\), \(\eta_m(2)\to-\tfrac13\)
 (\lean{Fabius.tendsto\_thueMorseAutocorrelation\_zero\_shift},
 \lean{Fabius.tendsto\_thueMorseAutocorrelation\_one},
-\lean{Fabius.tendsto\_thueMorseAutocorrelation\_two}) --- but the
-existence of the limit at a \emph{general} shift \(k\), and its
-spectral consequences, remain analytic frontiers.
+\lean{Fabius.tendsto\_thueMorseAutocorrelation\_two}); the existence of the
+limit at a \emph{general} shift \(k\) is \cref{p1:thm:limiting-autocorrelation} below, now
+formal as well, while its spectral consequences remain analytic frontiers.
 
 \begin{theorem}[Limiting autocorrelation]
 \label{p1:thm:limiting-autocorrelation}
@@ -5213,6 +5267,24 @@ smaller index \(r\).  If \(k=2r+1>1\), both \(r\) and \(r+1\) are smaller
 than \(k\), so the odd recurrence and the induction hypothesis give
 convergence.  Pass to the limit and evaluate recursively.
 \end{proof}
+
+\emph{Formal version.}  \Cref{p1:thm:limiting-autocorrelation} is formal in
+\path{ThueMorseAutocorrelationLimit.lean}, with exactly the proof above.  The normalized
+sequence \(\eta_m(k)\) is \lean{Fabius.normalizedAutocorrelation}, and the two finite
+recursions hold \emph{exactly} at every scale,
+\(\eta_{m+1}(2r)=\eta_m(r)\) and \(\eta_{m+1}(2r+1)=-(\eta_m(r)+\eta_m(r+1))/2\)
+(\lean{Fabius.normalizedAutocorrelation\_succ\_even},
+\lean{Fabius.normalizedAutocorrelation\_succ\_odd}); the limit \(\eta(k)\) is
+\emph{defined} by the recursion
+\eqref{p1:eq:eta-zero}--\eqref{p1:eq:eta-odd} (\lean{Fabius.limitingAutocorrelation}, with
+\lean{Fabius.limitingAutocorrelation\_two\_mul} and
+\lean{Fabius.limitingAutocorrelation\_two\_mul\_add\_one} as its laws), so the
+characterization is by construction and the theorem is the convergence
+\eqref{p1:eq:eta-limit-definition}, \lean{Fabius.tendsto\_normalizedAutocorrelation}, by
+strong induction on \(k\) with the two formal base cases \(k=0,1\) of
+\path{ThueMorseAutocorrelation.lean}.  The samples \eqref{p1:eq:eta-samples} are
+\lean{Fabius.limitingAutocorrelation\_one}, \lean{Fabius.limitingAutocorrelation\_two},
+\lean{Fabius.limitingAutocorrelation\_three}, \lean{Fabius.limitingAutocorrelation\_five}.
 
 The numbers \(\eta(k)\) are the Fourier coefficients of
 \(\mu_{\mathrm{TM}}\).  Thus the substitution recursion, autocorrelation, and
@@ -5741,7 +5813,11 @@ The rarefied sums are finitely many samples of the trigonometric polynomial
   \label{p1:eq:gelfond-lower}
 \end{equation}
 since the factors have modulus \(|1-\omega|=|1-\omega^2|=\sqrt3\) in every
-position.  Gelfond's theorem \cite{p1:gelfond1968} --- proved below --- shows this
+position.  (The attainment is formal:
+\lean{Fabius.norm\_sum\_thueMorseSign\_exp\_two\_pi\_div\_three} in
+\path{ThueMorseGelfond.lean} evaluates the modulus at the frequency \(2\pi/3\) ---
+the atlas's \(x=\tfrac13\) --- to exactly \((\sqrt3)^m\) for every \(m\ge0\), not merely
+as a lower bound.)  Gelfond's theorem \cite{p1:gelfond1968} --- proved below --- shows this
 is sharp up to a bounded factor:
 \begin{equation}
   \boxed{
@@ -5808,6 +5884,16 @@ so \(\log_43\) is the optimal uniform growth exponent of Thue--Morse
 exponential sums \cite{p1:gelfond1968,p1:queffelec2018}.  At \(x=0\) the sum
 collapses to the bounded prefix values --- the supremum and the special
 value differ by a full power of \(N\).
+
+\emph{Formal version.}  Equation~\eqref{p1:eq:gelfond-general} is formal with an explicit constant
+and for every \(N\), not only asymptotically: \lean{Fabius.gelfond\_general\_bound} in
+\path{ThueMorseGelfond.lean} gives
+\(\bigl|\sum_{n<N}\eps_n\EulerE^{\ImaginaryUnit nx}\bigr|\le(\sqrt3+1)(\sqrt3)^{\Floor{\log_2N}}\)
+uniformly in the real frequency \(x\), by the blockwise decomposition described above
+(\lean{Fabius.norm\_sum\_thueMorseSign\_exp\_le\_of\_lt\_two\_pow}), and
+\lean{Fabius.gelfond\_general\_bound\_rpow} rewrites the right side as
+\((\sqrt3+1)\,N^{\log_43}\), which is the displayed \(\BigO(N^{\log_43})\) with the
+implied constant made \(\sqrt3+1\).
 
 \subsection{A matrix recursion for odd moduli}
 
@@ -6266,6 +6352,17 @@ Set \(s=1\) in \eqref{p1:eq:Mellin-integral} and substitute \(x=\EulerE^{-t}\).
 The integrand is positive on \((0,1)\).  Equation \eqref{p1:eq:H-dyadic} is
 \eqref{p1:eq:Dirichlet-dyadic} at \(s=1\).
 \end{proof}
+
+\emph{Formal status.}  The series \eqref{p1:eq:H-definition} is the value at \(\sigma=1\)
+of \lean{Fabius.thueMorseDirichlet} in \path{ThueMorseDirichlet.lean}, the limit of the
+partial sums \lean{Fabius.dirichletPartial}, whose conditional convergence for every
+\(\sigma>0\), \(a>0\) is \lean{Fabius.tendsto\_thueMorseDirichlet}; the dyadic law
+\eqref{p1:eq:H-dyadic} is the case \(\sigma=1\) of
+\lean{Fabius.thueMorseDirichlet\_dyadic}, where the factor \(2^{-\sigma}\) becomes the
+\(\tfrac12\) displayed.  The integral representation \eqref{p1:eq:H-integral} and the
+positivity \(H(a)>0\) are not formalized: they rest on the Mellin identity
+\eqref{p1:eq:Mellin-integral}, whose sum--integral interchange is conditional rather than
+dominated on \((0,1)\).
 
 \section[Thue--Morse exponent products]{Infinite products with Thue--Morse exponents}
 \label{p1:sec:exponent-products}
@@ -6727,12 +6824,28 @@ linear terms yields
 \(q^{1+2+\cdots+m}/(\zeta-1)^m\); coefficient extraction contributes \(m!\).
 \end{proof}
 
-\emph{Formal status.}  Only the degree-zero case of \eqref{p1:eq:base-q-Prouhet} is
-formal so far: \lean{Fabius.sum\_zeta\_pow\_digits\_sum\_eq\_zero} in
-\path{BaseDigitProduct.lean} gives \(\sum_{n<q^m}\zeta^{s_q(n)}=0\) for \(m\ge1\) under
-the single hypothesis \(\sum_{r<q}\zeta^r=0\), by evaluating the digit product at \(z=1\).
-The cancellation for polynomials of positive degree below \(m\), and the sharp moment
-\eqref{p1:eq:base-q-sharp-moment}, are not yet formalized.
+\emph{Formal versions.}  Both displays are formal in \path{BaseDigitProuhet.lean}, with
+\(P_d(m)=\sum_{n<q^m}\zeta^{s_q(n)}n^d\) as \lean{Fabius.digitPowerSum}.  The cancellation
+\eqref{p1:eq:base-q-Prouhet} is \lean{Fabius.digitPowerSum\_eq\_zero\_of\_lt} for monomials,
+\(P_d(m)=0\) for \(d<m\), and \lean{Fabius.sum\_zeta\_pow\_digits\_sum\_mul\_eval\_eq\_zero}
+for an arbitrary polynomial of degree below \(m\); both take the single hypothesis
+\(\sum_{r<q}\zeta^r=0\) over any commutative semiring, and \(\zeta^q=1\) is not used.
+The sharp moment \eqref{p1:eq:base-q-sharp-moment} is proved division-free, as
+\((\zeta-1)^mP_m(m)=m!\,q^{0+1+\cdots+m}\) in any commutative ring
+(\lean{Fabius.sub\_one\_pow\_mul\_digitPowerSum\_self}), and then in the displayed form
+with \(/(\zeta-1)^m\) and the Gauss sum evaluated, in a field with \(\zeta\ne1\)
+(\lean{Fabius.digitPowerSum\_self\_eq\_div}).  The engine is the one-step recursion
+\lean{Fabius.digitPowerSum\_succ}, obtained by splitting \([0,q^{m+1})\) into \(q\) blocks
+\(q^mr+a\), where the digit sum adds \(r\) (\lean{Fabius.digits\_sum\_pow\_mul\_add}) and
+the binomial theorem expands \((a+q^mr)^d\); in that expansion every \(P_i(m)\) with
+\(i<d\) vanishes by induction, so for \(d\le m\) only \(i=d\) survives with coefficient
+\(\sum_r\zeta^r=0\), while at \(d=m+1\) the survivor \(i=m\) carries
+\((m+1)q^m\sum_rr\zeta^r\).  The root-of-unity derivative \eqref{p1:eq:root-unity-derivative}
+is the telescoping identity \lean{Fabius.geom\_sum\_mul\_weighted},
+\((\zeta-1)\sum_{r<q}r\zeta^r=(q-1)\zeta^q+1-\sum_{r<q}\zeta^r\) for \emph{every}
+\(\zeta\), specialized in \lean{Fabius.sub\_one\_mul\_sum\_mul\_pow}.  The degree-zero case
+is also available on its own as \lean{Fabius.sum\_zeta\_pow\_digits\_sum\_eq\_zero} in
+\path{BaseDigitProduct.lean}, by evaluating the digit product at \(z=1\).
 
 For \(q=2\) and \(\zeta=-1\), the sequence is \(u_n=\eps_n\) and
 \eqref{p1:eq:base-q-sharp-moment} becomes

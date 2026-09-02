@@ -32,10 +32,17 @@ ENV = re.compile(
     r'(?:\[[^\]]*\])?'
     r'\s*(?:\\label(?:\[[^\]]*\])?\{([^}]*)\})?',
     re.S)
-LEAN = re.compile(r'\\lean(?:Part|Partx)?\{')
+LEAN = re.compile(r'\\(?:lean(?:Part|Partx)?|decl)\{')
+# Labels named by a cross-reference: \cref{a,b}, \Cref{a}, \ref{a}, \eqref{a}.
+XREF = re.compile(r'\\(?:[cC]ref|ref|eqref)\{([^}]*)\}')
+# A unit of a ledger: a paragraph, or a row of a table (ended by \\).
+UNIT_SPLIT = re.compile(r'\n\s*\n|\\\\\s*\n')
+ITEM_SPLIT = re.compile(r'\\item\b')
 OPEN = re.compile(
     r'not formalized|unformalized|no Lean counterpart|not yet formalized'
-    r'|remains open|is not proved|not proved (?:here|anywhere)',
+    r'|remains open|is not proved|not proved (?:here|anywhere)'
+    r'|awaiting (?:full )?(?:Lean )?formalization|analytic premises remain'
+    r'|remains? (?:an )?analytic frontiers?|not yet formal\b',
     re.I)
 
 
@@ -77,16 +84,64 @@ def spans(text):
         prev_end = e if e >= 0 else start
 
 
+def ledger(text):
+    """Labels covered by a crosswalk ledger anywhere in the file.
+
+    Some volumes crosswalk in a dedicated appendix -- a table whose rows
+    pair Lean declarations with `\\Cref{...}` pointers at the results they
+    formalize, or paragraphs doing the same in prose.  A result named by a
+    cross-reference in any paragraph or table row that also cites Lean is
+    covered, wherever that unit sits.
+    """
+    covered = set()
+    disclaimed = set()
+    # Two levels: a paragraph (or table row) sets the disclaimer context
+    # for the `\item`s it contains -- "still awaiting formalization:" is
+    # said once above the list, not in every item -- while each item cites
+    # or names results on its own.
+    paras = UNIT_SPLIT.split(text)
+    # A sectioning heading such as "Human theorems still awaiting full
+    # Lean formalization" governs the paragraph that follows it.
+    merged = []
+    carry = ''
+    for para in paras:
+        # A heading, or a paragraph that ends by introducing a list
+        # ("... is now explicit:"), governs what follows it.
+        if SECTION.match(para.strip()) or para.strip().endswith(':'):
+            carry = carry + '\n' + para
+            continue
+        merged.append(carry + '\n' + para)
+        carry = ''
+    for para in merged:
+        opens_para = bool(OPEN.search(para))
+        for unit in ITEM_SPLIT.split(para):
+            cites = bool(LEAN.search(unit))
+            opens = opens_para or bool(OPEN.search(unit))
+            if not (cites or opens):
+                continue
+            for m in XREF.finditer(unit):
+                for lab in m.group(1).split(','):
+                    lab = lab.strip()
+                    if not lab:
+                        continue
+                    if cites:
+                        covered.add(lab)
+                    else:
+                        disclaimed.add(lab)
+    return covered, disclaimed
+
+
 def survey(path):
     text = io.open(path, encoding='utf-8', errors='replace').read()
     covered = disclaimed = gap = 0
     gaps = []
+    led, dis = ledger(text)
     for kind, label, span, pre in spans(text):
         named = label and re.search(
             r'\\[cC]?ref\{' + re.escape(label) + r'\}', pre)
-        if LEAN.search(span) or (named and LEAN.search(pre)):
+        if LEAN.search(span) or (named and LEAN.search(pre)) or (label and label in led):
             covered += 1
-        elif OPEN.search(span):
+        elif OPEN.search(span) or (label and label in dis):
             disclaimed += 1
         else:
             gap += 1
