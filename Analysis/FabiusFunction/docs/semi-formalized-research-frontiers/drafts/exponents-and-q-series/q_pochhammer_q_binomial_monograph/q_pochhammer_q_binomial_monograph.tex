@@ -12521,8 +12521,8 @@ inside the proof below does not formalize the result the proof concludes.
   than a mathematical claim.
 \end{description}
 
-Of the 282 labelled forward results, 77 are \statusexact, 85 are
-\statuspartial, 112 are \statusnone, and 8 are \statusna.  The original
+Of the 282 labelled forward results, 81 are \statusexact, 85 are
+\statuspartial, 108 are \statusnone, and 8 are \statusna.  The original
 191-result pre-Fabius core had 36 \statusexact, 29 \statuspartial, 123
 \statusnone, and 3 \statusna{} entries.  The four integrated guide chapters
 add 31 human-proved but not Lean-formalized assertions and five labelled
@@ -13070,14 +13070,14 @@ Basic hypergeometric series & 1 & 3 & 5 & 0\\
 Euler telescoping and very-well-poised summations & 0 & 0 & 4 & 0\\
 Bilateral series and Ramanujan's \texorpdfstring{${}_1\psi_1$}{1psi1} sum & 0 & 0 & 2 & 0\\
 $q$-difference calculus and the quantum binomial & 7 & 2 & 1 & 0\\
-The $q$-gamma and $q$-beta functions & 1 & 1 & 6 & 0\\
+The $q$-gamma and $q$-beta functions & 3 & 1 & 4 & 0\\
 Jacobi's triple product & 5 & 2 & 1 & 0\\
 Theta modularity, lattice dissection, and sums of squares & 0 & 0 & 14 & 4\\
 Partitions and product--sum identities & 0 & 0 & 4 & 0\\
 Bailey pairs and the Rogers--Ramanujan identities & 1 & 0 & 6 & 0\\
 Bailey transforms and the Andrews--Gordon identities & 0 & 0 & 8 & 1\\
 Cyclotomic factorization and congruences & 6 & 1 & 2 & 0\\
-Negative upper indices and geometric Newton interpolation & 0 & 2 & 7 & 0\\
+Negative upper indices and geometric Newton interpolation & 2 & 2 & 5 & 0\\
 Central $q$-binomial sums and Lambert series & 1 & 0 & 6 & 0\\
 Asymptotic regimes and Bernoulli expansions & 0 & 2 & 6 & 0\\
 Exact limits, reciprocity, and research frontiers & 0 & 0 & 5 & 0\\
@@ -13087,7 +13087,7 @@ Half-base arithmetic and Prouhet--Thue--Morse cancellation & 6 & 3 & 0 & 0\\
 Geometric uniform sums, $q$-cumulants, and the Fabius--Rvachev functions & 2 & 11 & 0 & 0\\
 Dyadic Gaussian--Thue--Morse structure and the values of $F$ & 6 & 44 & 6 & 0\\
 \midrule
-\textbf{Forward total} & 77 & 85 & 112 & 8\\
+\textbf{Forward total} & 81 & 85 & 108 & 8\\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -13529,8 +13529,20 @@ not formalized}\\[2pt]
 \Cref{prop:qgamma-convex} & \statusnone & ---\\[2pt]
 \Cref{thm:q-bohr-mollerup} & \statusnone & ---\\[2pt]
 \Cref{thm:qgamma-classical-limit} & \statusnone & ---\\[2pt]
-\Cref{thm:qbeta} & \statusnone & ---\\[2pt]
-\Cref{cor:qbeta-recurrence} & \statusnone & ---\\[2pt]
+\Cref{thm:qbeta} & \statusexact &
+\texttt{qBeta},
+\texttt{qBeta\_\allowbreak{}eq\_\allowbreak{}prod},
+\texttt{qBeta\_\allowbreak{}eq\_\allowbreak{}qGamma},
+\texttt{qBeta\_\allowbreak{}comm},
+\texttt{qBeta\_\allowbreak{}pos}\newline
+{\footnotesize\texttt{QBetaIntegral}; $B_q(x,y)$ as the Jackson integral
+$\int_0^1 t^{x-1}(qt;q)_\infty/(q^yt;q)_\infty\,d_qt$ over $\RealNumbers$ for
+$0<q<1$ and $x,y>0$; the term-by-term tail cancellation, the infinite
+$q$-binomial summation, and the gamma quotient, with symmetry and positivity}\\[2pt]
+\Cref{cor:qbeta-recurrence} & \statusexact &
+\texttt{qBeta\_\allowbreak{}add\_\allowbreak{}one\_\allowbreak{}left},
+\texttt{qBeta\_\allowbreak{}add\_\allowbreak{}one\_\allowbreak{}right}\newline
+{\footnotesize\texttt{QBetaIntegral}}\\[2pt]
 \Cref{thm:qgamma-multiplication} & \statusnone & ---\\[2pt]
 \Cref{prop:qgamma-reflection} & \statusexact &
 \texttt{qGamma\_\allowbreak{}mul\_\allowbreak{}qGamma\_\allowbreak{}one\_\allowbreak{}sub}\newline
@@ -13670,8 +13682,26 @@ formalized}\\[2pt]
 \Cref{thm:complex-gaussian-properties} & \statusnone & ---\\[2pt]
 \Cref{cor:complex-gaussian-classical} & \statusnone & ---\\[2pt]
 \Cref{thm:generalized-qbinomial} & \statuspartial & \texttt{finite\_\allowbreak{}qBinomial\_\allowbreak{}theorem}\newline{\footnotesize\texttt{FiniteQBinomialCore}}\\[2pt]
-\Cref{thm:geometric-newton} & \statusnone & ---\\[2pt]
-\Cref{cor:geometric-triangular} & \statusnone & ---\\[2pt]
+\Cref{thm:geometric-newton} & \statusexact &
+\texttt{newtonPoly},
+\texttt{eval\_\allowbreak{}newtonPoly},
+\texttt{eq\_\allowbreak{}newtonPoly\_\allowbreak{}of\_\allowbreak{}eval\_\allowbreak{}eq},
+\texttt{newtonCoeff\_\allowbreak{}eq\_\allowbreak{}sum},
+\texttt{nodal\_\allowbreak{}range\_\allowbreak{}pow},
+\texttt{prod\_\allowbreak{}erase\_\allowbreak{}pow\_\allowbreak{}sub\_\allowbreak{}pow},
+\texttt{newtonCoeff\_\allowbreak{}pow\_\allowbreak{}eq\_\allowbreak{}sum}\newline
+{\footnotesize\texttt{NewtonInterpolation}; Newton interpolation at arbitrary
+nodes of any field (existence, uniqueness, and the divided-difference
+coefficients via Mathlib's Lagrange interpolant), then specialized to the
+grid $1,q,\dots,q^n$: the basis $\prod_{r<k}(X-q^r)=(-1)^kq^{\binom k2}(X;q^{-1})_k$
+and the denominators $(-1)^jq^{\binom j2+j(k-j)}(q;q)_j(q;q)_{k-j}$, whose
+exponent equals $jk-\binom{j+1}{2}$}\\[2pt]
+\Cref{cor:geometric-triangular} & \statusexact &
+\texttt{newtonCoeff},
+\texttt{newtonCoeff\_\allowbreak{}eq},
+\texttt{newtonCoeff\_\allowbreak{}zero}\newline
+{\footnotesize\texttt{NewtonInterpolation}; the triangular formula is the
+definition of the Newton coefficients, for arbitrary nodes}\\[2pt]
 \midrule
 \multicolumn{3}{@{}l}{\itshape Central $q$-binomial sums and Lambert series}\\
 \midrule

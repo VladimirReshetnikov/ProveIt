@@ -509,6 +509,8 @@ import FabiusFunction.PrimitiveRootBlock
 import FabiusFunction.QLucas
 import FabiusFunction.CyclotomicDivisibility
 import FabiusFunction.QCatalan
+import FabiusFunction.QBetaIntegral
+import FabiusFunction.NewtonInterpolation
 import FabiusFunction.GaussianBinomialPalindromic
 import FabiusFunction.ThetaQuasiPeriodicity
 
