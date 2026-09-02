@@ -2589,6 +2589,15 @@ Set \(z=1/b\) in \eqref{p1:eq:T-from-E} and
 \eqref{p1:eq:infinite-product}, then multiply by \(1/b\).
 \end{proof}
 
+\emph{Formal versions.}  Both displays are in \path{BaseBProduct.lean}, for every real
+\(b>1\): the signed companion \eqref{p1:eq:signed-base-b} is
+\lean{Fabius.tsum\_thueMorseSign\_div\_pow\_succ} and the boxed
+\eqref{p1:eq:base-b-product} is \lean{Fabius.tsum\_thueMorseBit\_div\_pow\_succ}, each stated
+with the genuine infinite sum \(\sum'\) and infinite product \(\prod'\).  Both are the real
+infinite product \lean{Fabius.tsum\_thueMorseSign\_mul\_pow} of
+\path{ThueMorseInfiniteProduct.lean} at \(x=1/b\), the second after writing
+\(\tau(n)=(1-\eps_n)/2\) and summing the geometric series.
+
 For \(b=2\), \(\Theta_2=0.0110100110010110\ldots{}_2\) is the classical
 Prouhet--Thue--Morse constant.  Mahler's theory implies its transcendence; that
 deep arithmetic result is separate from the elementary product identity
@@ -2628,6 +2637,22 @@ As a formal series, and analytically for \(|z|<1\),
 
 This representation contains no explicit binary digit sum.  The coefficient
 sequence \((a_k)\) is a simple transform of the ruler sequence.
+
+\emph{Formal version.}  \Cref{p1:thm:log-E} is formal in its denominator-free form.  A
+formal logarithm carries the denominators \(1/k\) and so lives over \(\Q\); differentiating
+\eqref{p1:eq:log-E} and clearing \(E\) gives the equivalent identity
+\[
+  z\,E'(z)=-A(z)\,E(z),\qquad A(z)=\sum_{k\ge1}a_kz^k,
+\]
+which holds over \(\Z\), and that is
+\lean{Fabius.X\_mul\_derivative\_thueMorseSeries} in \path{RulerLogDerivative.lean}, an
+identity of formal power series with integer coefficients, with
+\(A\) as \lean{Fabius.rulerSeries} built on the ruler coefficient
+\lean{Fabius.rulerCoeff} of \path{ThueMorseHessenberg.lean}.  Its coefficient of \(z^n\) is
+exactly the ruler-convolution recurrence of \cref{p1:thm:ruler-convolution}, from which it
+is derived; no convergence enters.  The two readings the theorem also offers --- the
+\(\Q\)-logarithm itself, and the analytic identity for \(|z|<1\) --- are not formalized:
+the first is a coefficientwise integration of the display above, the second its evaluation.
 
 \subsection{A nonlocal convolution recurrence}
 
