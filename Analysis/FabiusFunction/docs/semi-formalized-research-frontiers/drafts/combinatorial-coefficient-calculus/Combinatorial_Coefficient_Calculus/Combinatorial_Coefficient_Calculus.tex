@@ -258,7 +258,7 @@ $A$ for which the composition is defined,
 By linearity it suffices to take $A(u)=u^m$.  If $m\ne-1$, then
 $u(z)^mu'(z)=\frac{1}{m+1}(u(z)^{m+1})'$ has residue zero.  For $m=-1$,
 $u'(z)/u(z)=z^{-1}+H(z)$ with $H\in R[[z]]$, because
-$u(z)=az(1+O(z))$.  Thus both sides have residue $1$.
+$u(z)=az(1+\BigO(z))$.  Thus both sides have residue $1$.
 \end{proof}
 
 \begin{masterbox}
@@ -1215,7 +1215,7 @@ The signed first-kind exponential generating function gives
 \begin{equation}
 \label{eq:near-diagonal-log-coefficient}
  \SignedStirlingFirstKind{n}{n-p}=\frac{n!}{(n-p)!}
- [z^p]\left(\frac{\log(1+z)}{z}\right)^{n-p}.
+ \CoefficientExtraction{z}{p}\left(\frac{\log(1+z)}{z}\right)^{n-p}.
 \end{equation}
 Put $t=\log(1+z)$ and
 \[
@@ -1224,16 +1224,16 @@ Put $t=\log(1+z)$ and
 Then $t=z\phi(t)$ and $t/z=\phi(t)$.  For $p\ge1$, the
 Lagrange--B\"urmann formula applied to $H(t)=\phi(t)^{n-p}$ gives
 \begin{align*}
- [z^p]H(t(z))
- &=\frac1p[t^{p-1}]H'(t)\phi(t)^p\\
- &=\frac{n-p}{p}[t^{p-1}]\phi'(t)\phi(t)^{n-1}\\
- &=\frac{n-p}{n}[t^p]\phi(t)^n.
+ \CoefficientExtraction{z}{p}H(t(z))
+ &=\frac1p\CoefficientExtraction{t}{p-1}H'(t)\phi(t)^p\\
+ &=\frac{n-p}{p}\CoefficientExtraction{t}{p-1}\phi'(t)\phi(t)^{n-1}\\
+ &=\frac{n-p}{n}\CoefficientExtraction{t}{p}\phi(t)^n.
 \end{align*}
 The same conclusion is immediate for $p=0$.  Hence
 \begin{equation}
 \label{eq:near-diagonal-bernoulli-power}
  \SignedStirlingFirstKind{n}{n-p}=\frac{(n-1)!}{(n-p-1)!}
- [t^p]\left(\frac{t}{\EulerE^t-1}\right)^n.
+ \CoefficientExtraction{t}{p}\left(\frac{t}{\EulerE^t-1}\right)^n.
 \end{equation}
 Now write
 \[
@@ -1243,12 +1243,12 @@ Now write
 \]
 The negative-binomial expansion yields
 \[
- (n-1)![t^p](1+A)^{-n}
- =\sum_{K\ge0}(-1)^K\frac{(n+K-1)!}{K!}[t^p]A(t)^K.
+ (n-1)!\CoefficientExtraction{t}{p}(1+A)^{-n}
+ =\sum_{K\ge0}(-1)^K\frac{(n+K-1)!}{K!}\CoefficientExtraction{t}{p}A(t)^K.
 \]
 Finally, the multinomial theorem gives
 \[
- [t^p]A(t)^K
+ \CoefficientExtraction{t}{p}A(t)^K
  =\sum_{\substack{k_1+\cdots+k_p=K\\
                    \sum r k_r=p}}
    \frac{K!}{\prod_{r=1}^{p}k_r!}
@@ -1428,7 +1428,7 @@ For fixed $r\ge0$,
  \UnsignedStirlingFirstKind{n+r}{n}\sim\StirlingSecondKind{n+r}{n}
  \sim\frac{n^{2r}}{2^rr!}\qquad(n\to\infty).
 \end{equation}
-Finally, uniformly for $k=o(\log n)$,
+Finally, uniformly for $k=\LittleO(\log n)$,
 \begin{equation}\label{eq:first-small-column-asymp}
  \UnsignedStirlingFirstKind{n+1}{k+1}
  \sim\frac{n!}{k!}(\log n+\gamma)^k.
@@ -1447,9 +1447,9 @@ formula to
  \frac{\UnsignedStirlingFirstKind{n+1}{k+1}}{n!}=\CoefficientExtraction tk
  \exp\left(H_nt-\frac{H_n^{(2)}}2t^2+\frac{H_n^{(3)}}3t^3-\cdots\right).
 \]
-The saddle for the first exponential is $t=k/H_n=o(1)$.  Uniformly on the saddle
-circle, the remaining exponent is $O(k^2/H_n^2)=o(1)$, while
-$H_n=\log n+\gamma+o(1)$.  Hence the coefficient is asymptotic to $H_n^k/k!$.
+The saddle for the first exponential is $t=k/H_n=\LittleO(1)$.  Uniformly on the saddle
+circle, the remaining exponent is $\BigO(k^2/H_n^2)=\LittleO(1)$, while
+$H_n=\log n+\gamma+\LittleO(1)$.  Hence the coefficient is asymptotic to $H_n^k/k!$.
 \end{proof}
 
 \section{Bounds for second-kind numbers}
@@ -1566,7 +1566,7 @@ of the remaining labels to one of them.  This injection gives
  \StirlingSecondKind nk\ge k^{n-k}.
 \end{equation}
 Take $k_0=\Floor{n/\log n}$.  The lower estimate and
-$\log k_0=\log n-\log\log n+O(\log n/n)$ give
+$\log k_0=\log n-\log\log n+\BigO(\log n/n)$ give
 \begin{equation}
 \label{eq:stirling-mode-lower-log}
  \log\StirlingSecondKind n{k_0}
@@ -1577,12 +1577,12 @@ $\log k_0=\log n-\log\log n+O(\log n/n)$ give
 For the upper estimate, Stirling's formula, uniformly for $1\le k\le n$, gives
 \[
  \log\StirlingSecondKind nk
- \le n\log k-k\log k+k+O(\log n).
+ \le n\log k-k\log k+k+\BigO(\log n).
 \]
 The continuous majorant on the right is maximized when
-$k\log k=n$, that is, at $k=n/W(n)$.  Since
+$k\log k=n$, that is, at $k=n/\LambertW(n)$.  Since
 \[
- W(n)=\log n-\log\log n
+ \LambertW(n)=\log n-\log\log n
       +O\!\left(\frac{\log\log n}{\log n}\right),
 \]
 its maximum is the right side of \eqref{eq:stirling-maximum-log}.  Together with
@@ -1593,11 +1593,11 @@ $k=c n/\log n$, with $c$ bounded away from $0$ and $\infty$.  Comparing the last
 upper bound with \eqref{eq:stirling-mode-lower-log} gives
 \[
  \log\StirlingSecondKind nk-\log\StirlingSecondKind n{k_0}
- \le n(\log c-c+1)+o(n).
+ \le n(\log c-c+1)+\LittleO(n).
 \]
 The function $\log c-c+1$ is strictly negative for $c\ne1$.  Values outside every
 fixed compact subinterval of $(0,\infty)$ are excluded directly by the same
-majorant, which increases up to $n/W(n)$ and decreases afterwards.  Therefore any
+majorant, which increases up to $n/\LambertW(n)$ and decreases afterwards.  Therefore any
 maximizing $k$ satisfies $k/(n/\log n)\to1$, proving
 \eqref{eq:stirling-mode-asymptotic}.
 \end{proof}
@@ -1710,7 +1710,7 @@ Integrate \cref{eq:unsigned-first-egf} after division by $x$:
 With $u=-\log(1-x)$ this becomes
 $\frac1{i!}\int_0^\infty u^i/(\EulerE^u-1)\Differential u=\RiemannZeta(i+1)$.
 For the Hurwitz form use
-$1/\RisingFactorial v n=\Gamma(v)/\Gamma(v+n)$ and the beta integral
+$1/\RisingFactorial v n=\GammaFunction(v)/\GammaFunction(v+n)$ and the beta integral
 \[
  \frac1{\RisingFactorial v n}=\frac1{(n-1)!}\int_0^1t^{v-1}(1-t)^{n-1}\Differential t,
 \]
@@ -1722,7 +1722,7 @@ A repeated partial-fraction expansion of $x^{-k}$ around $1-x$ gives, for
 $k\ge3$ and $\Re z>k-1$,
 \begin{multline}\label{eq:log-power-integral}
  \int_0^1\frac{\log^z(1-x)}{x^k}\Differential x
- =\frac{(-1)^z\Gamma(z+1)}{(k-1)!}
+ =\frac{(-1)^z\GammaFunction(z+1)}{(k-1)!}
  \sum_{r=1}^{k-1}\SignedStirlingFirstKind{k-1}{r}\\
  {}\times\sum_{m=0}^r\binom rm(k-2)^{r-m}\RiemannZeta(z+1-m),
 \end{multline}
@@ -1732,7 +1732,7 @@ Substitute $u=-\log(1-x)$, expand
 $(1-\EulerE^{-u})^{-k}$ after $k-1$ integrations by parts, and express the resulting
 polynomial in the Euler operator $uD$ in the ordinary-power basis by
 $\SignedStirlingFirstKind{k-1}{r}$.  Each term is a Mellin integral
-$\int_0^\infty u^{z-m}/(\EulerE^u-1)\Differential u=\Gamma(z+1-m)\RiemannZeta(z+1-m)$; simplifying gamma
+$\int_0^\infty u^{z-m}/(\EulerE^u-1)\Differential u=\GammaFunction(z+1-m)\RiemannZeta(z+1-m)$; simplifying gamma
 ratios yields \cref{eq:log-power-integral}.
 \end{proof}
 
@@ -1751,7 +1751,7 @@ coefficient.  This derivation also supplies the convergence conditions suppresse
 the compact archived display.
 
 
-\section{Convergent Stirling series for \texorpdfstring{$\log\Gamma$}{log Gamma}, \texorpdfstring{$\psi$}{psi}, and the Stieltjes constants}
+\section{Convergent Stirling series for \texorpdfstring{$\log\GammaFunction$}{log Gamma}, \texorpdfstring{$\psi$}{psi}, and the Stieltjes constants}
 The source archive lists three nested Stirling series without their convergence
 mechanism.  All three arise from the same substitution
 \begin{equation}
@@ -1790,7 +1790,7 @@ of the cut $[1,\infty)$.  The part separated from $1$ is exponentially small.
 On the local part put $u=1-w/n$.  The constant $h_0$ has no positive-index
 coefficients, while the jump of
 $1/\log(1/(1-u))$ across the cut is
-$O(\log^{-2}n)$; multiplication by a power of $\log\log(1/(1-u))$ contributes at
+$\BigO(\log^{-2}n)$; multiplication by a power of $\log\log(1/(1-u))$ contributes at
 most $(1+\log\log n)^M$.  The Cauchy kernel contributes $n^{-1}\EulerE^w$, and the two
 rays of the keyhole have an integrable exponential majorant.  This gives
 \eqref{eq:logarithmic-transfer}.  Division by another factor $n$ makes the
@@ -1801,7 +1801,7 @@ resulting majorant summable.
 Binet's second formula, valid for $z>0$, is
 \begin{equation}
 \label{eq:binet-second}
- \log\Gamma(z)
+ \log\GammaFunction(z)
  =\left(z-\frac12\right)\log z-z+\frac12\log(2\pi)
  +2\int_0^\infty\frac{\arctan(x/z)}{\EulerE^{2\pi x}-1}\,\Differential x.
 \end{equation}
@@ -1812,12 +1812,12 @@ recovers the usual Binet integral for the digamma function, so the normalization
 also proves \eqref{eq:binet-second} rather than merely determining it up to a
 constant.
 
-\begin{theorem}[Convergent Stirling series for $\log\Gamma$ and $\psi$]
+\begin{theorem}[Convergent Stirling series for $\log\GammaFunction$ and $\psi$]
 \label{thm:gamma-stirling-series}
 For real $z>1/6$,
 \begin{multline}
 \label{eq:gamma-stirling-series}
- \log\Gamma(z)
+ \log\GammaFunction(z)
  =\left(z-\frac12\right)\log z-z+\frac12\log(2\pi)\\
  {}+\frac1\pi\sum_{n=1}^{\infty}\frac1{n\,n!}
  \sum_{\ell=0}^{\Floor{n/2}}
@@ -1828,7 +1828,7 @@ The series is locally uniformly convergent in $z>1/6$, and termwise
 differentiation gives
 \begin{multline}
 \label{eq:digamma-stirling-series}
- \psi(z)=\frac{\Gamma'(z)}{\Gamma(z)}
+ \psi(z)=\frac{\GammaFunction'(z)}{\GammaFunction(z)}
  =\log z-\frac1{2z}\\
  {}-\frac1{\pi z}\sum_{n=1}^{\infty}\frac1{n\,n!}
  \sum_{\ell=0}^{\Floor{n/2}}
@@ -2737,15 +2737,15 @@ undefined generalized inverse nor a hidden finite computation.
 \end{remark}
 
 \section{Saddle-point asymptotics and Lambert \texorpdfstring{$W$}{W}}
-Let $r=W(n)$, so that $re^r=n$, and put $A=n(1+r)$.
+Let $r=\LambertW(n)$, so that $re^r=n$, and put $A=n(1+r)$.
 \begin{theorem}[Leading Bell asymptotic]\label{thm:bell-leading-asymptotic}
 As $n\to\infty$,
 \begin{align}
  \BellNumber n
  &\sim \frac{n!\exp(\EulerE^r-1)}{r^n\sqrt{2\pi n(1+r)}}
  \label{eq:bell-saddle-leading}\\
- &\sim \frac1{\sqrt n}\left(\frac{n}{W(n)}\right)^{n+1/2}
-       \exp\!\left(\frac{n}{W(n)}-n-1\right).
+ &\sim \frac1{\sqrt n}\left(\frac{n}{\LambertW(n)}\right)^{n+1/2}
+       \exp\!\left(\frac{n}{\LambertW(n)}-n-1\right).
  \label{eq:bell-W-asymptotic}
 \end{align}
 \end{theorem}
@@ -2805,7 +2805,7 @@ $r+\log r=\log n$ gives
  +O\!\left(\frac{(\log\log n)^2}{(\log n)^2}\right).
 \]
 Substitution and one further Taylor expansion of $\log r$ produce the displayed
-terms; the prefactor contributes only $O(\log n/n)$.
+terms; the prefactor contributes only $\BigO(\log n/n)$.
 \end{proof}
 
 \section{Bell primes and verifiable computation}
@@ -3930,9 +3930,9 @@ It follows inductively from \eqref{eq:first-diagonal-ogf-recurrence} that
 \end{equation}
 Since $\SecondOrderEulerianPolynomial{p}(u)=\sum_{j=0}^{p}\SecondOrderEulerianNumber pj u^j$, coefficient extraction gives
 \[
- [t^m]D_p(t)
+ \CoefficientExtraction{t}{m}D_p(t)
  =\sum_{j=0}^{p}\SecondOrderEulerianNumber pj
-   [t^{m-2p+j}](1-t)^{-2p-1}
+   \CoefficientExtraction{t}{m-2p+j}(1-t)^{-2p-1}
  =\sum_{j=0}^{p}\SecondOrderEulerianNumber pj\binom{m+j}{2p},
 \]
 which is \eqref{eq:second-eulerian-first-diagonal}.  Both sides are polynomials in
@@ -4085,7 +4085,7 @@ Two useful specializations are immediate.  If $F(u)=\EulerE^u$ and the series ar
 exponentially normalized, one obtains the exponential formula.  If
 $A(x)=1+\sum_{n\ge1}a_nx^n$, then
 \begin{equation}\label{eq:reciprocal-ordinary-bell}
- [x^n]\frac1{A(x)}
+ \CoefficientExtraction{x}{n}\frac1{A(x)}
  =\sum_{k=1}^{n}(-1)^k\OrdinaryPartialBellPolynomial nk(a_1,\ldots,a_{n-k+1})
  \qquad(n\ge1),
 \end{equation}
@@ -4196,7 +4196,7 @@ $u=\LagrangeShiftCoordinate\phi(u)$.  Formula \eqref{eq:lagrange-basic}, multipl
 exactly \eqref{eq:analytic-lagrange-coeff}.
 \end{proof}
 
-If $f'(a)=0$ but $f(w)-f(a)=c(w-a)^q+O((w-a)^{q+1})$ with $c\ne0$, factor
+If $f'(a)=0$ but $f(w)-f(a)=c(w-a)^q+\BigO((w-a)^{q+1})$ with $c\ne0$, factor
 $f(w)-f(a)=(w-a)^qU(w)$ with $U(a)=c$.  Choosing one of the $q$ values of
 $c^{-1/q}$ reduces the equation to ordinary inversion in the variable
 $(z-f(a))^{1/q}$.  Thus the inverse has $q$ local Puiseux branches.  This is the
@@ -4322,12 +4322,12 @@ $Ck^{-3/2}R_p^{-((p-1)k+1)}$, which proves absolute convergence on the boundary.
 \end{proof}
 
 \section{Lambert's \texorpdfstring{$W$}{W} function at the origin}
-The Lambert function satisfies $W(z)\EulerE^{W(z)}=z$.
+The Lambert function satisfies $\LambertW(z)\EulerE^{\LambertW(z)}=z$.
 \begin{theorem}\label{thm:lambert-W-zero}
 On its principal branch near $0$,
 \begin{equation}\label{eq:lambert-W-zero}
- W(z)=\sum_{n=1}^{\infty}(-n)^{n-1}\frac{z^n}{n!}
- =z-z^2+\frac32z^3-\frac83z^4+O(z^5),
+ \LambertW(z)=\sum_{n=1}^{\infty}(-n)^{n-1}\frac{z^n}{n!}
+ =z-z^2+\frac32z^3-\frac83z^4+\BigO(z^5),
 \end{equation}
 with radius of convergence $\EulerE^{-1}$.
 \end{theorem}
@@ -4339,16 +4339,16 @@ point at $w=-1$, where $f(-1)=-\EulerE^{-1}$; this square-root branch point dete
 the radius.
 \end{proof}
 
-\section{A rapidly useful expansion around \texorpdfstring{$W(e)=1$}{W(e)=1}}
-Put $\xi=\log z-1$ and $u=W(z)-1$.  Then
+\section{A rapidly useful expansion around \texorpdfstring{$\LambertW(e)=1$}{W(e)=1}}
+Put $\xi=\log z-1$ and $u=\LambertW(z)-1$.  Then
 \begin{equation}\label{eq:lambert-near-e-implicit}
  u+\log(1+u)=\xi.
 \end{equation}
 Reversion gives
 \begin{equation}\label{eq:lambert-near-e}
- W(\EulerE^{1+\xi})=1+\frac{\xi}{2}+\frac{\xi^2}{16}
+ \LambertW(\EulerE^{1+\xi})=1+\frac{\xi}{2}+\frac{\xi^2}{16}
  -\frac{\xi^3}{192}-\frac{\xi^4}{3072}
- +\frac{13\xi^5}{61440}+O(\xi^6).
+ +\frac{13\xi^5}{61440}+\BigO(\xi^6).
 \end{equation}
 \begin{proof}
 The derivative at $u=0$ of the left side of
@@ -4363,7 +4363,7 @@ images $-2\pm \ImaginaryUnit\pi$.  Therefore the radius in the $\xi$-plane is
 $\sqrt{4+\pi^2}$.  For positive real $z$, the expansion converges whenever
 $|\log z-1|<\sqrt{4+\pi^2}$, approximately
 $0.0655<z<112.63$.  Taking $\xi=-1$ yields a convergent evaluation of
-$W(1)=0.567143\ldots$.
+$\LambertW(1)=0.567143\ldots$.
 
 \section{Binary trees and Catalan numbers}
 Let $\CatalanNumber{n}$ count rooted ordered full binary trees with $n$ internal vertices, and
@@ -4407,7 +4407,7 @@ Put $u=v-x$.  Then $u=y\phi(u)$ with $\phi(u)=f(x+u)$, treating $x$ as a
 coefficient parameter.  Apply \eqref{eq:lagrange-burmann} to
 $H(u)=g(x+u)$:
 \[
- [y^k]g(v)=\frac1k[u^{k-1}]g'(x+u)f(x+u)^k
+ \CoefficientExtraction{y}{k}g(v)=\frac1k\CoefficientExtraction{u}{k-1}g'(x+u)f(x+u)^k
  =\frac1{k!}D_x^{k-1}(g'(x)f(x)^k).
 \]
 Summation proves the first formula; take $g(z)=z$ for the second.
@@ -4467,7 +4467,7 @@ lemma,
 \begin{equation}\label{eq:laplace-asymptotic}
  I(\lambda)\sim \EulerE^{-\lambda f(a)}
  \sum_{n=0}^{\infty}
- \Gamma\!\left(\frac{n+\beta}{\alpha}\right)
+ \GammaFunction\!\left(\frac{n+\beta}{\alpha}\right)
  \frac{c_n}{\lambda^{(n+\beta)/\alpha}},
 \end{equation}
 where
@@ -4491,15 +4491,15 @@ Expand
 A generalized Lagrange--Bürmann calculation, first for integral $\beta$ and then
 by formal continuation in the exponent, gives
 \[
- d_n=\sum_{k=0}^{n}b_{n-k}[t^k]A(t)^{-(n+\beta)/\alpha}.
+ d_n=\sum_{k=0}^{n}b_{n-k}\CoefficientExtraction{t}{k}A(t)^{-(n+\beta)/\alpha}.
 \]
 Indeed, apply \eqref{eq:lagrange-burmann} to an antiderivative of
 $t^{m+\beta-1}$ and differentiate back after substitution.
 
 Put $\rho=(n+\beta)/\alpha$.  The ordinary Bell expansion yields
 \begin{align*}
- [t^k]A(t)^{-\rho}
- &=a_0^{-\rho}[t^k]
+ \CoefficientExtraction{t}{k}A(t)^{-\rho}
+ &=a_0^{-\rho}\CoefficientExtraction{t}{k}
  \sum_{j\ge0}\binom{-\rho}{j}
  \left(\sum_{r\ge1}\frac{a_r}{a_0}t^r\right)^j\\
  &=a_0^{-\rho}\sum_{j=0}^{k}\binom{-\rho}{j}a_0^{-j}
@@ -4508,7 +4508,7 @@ Put $\rho=(n+\beta)/\alpha$.  The ordinary Bell expansion yields
 Thus $c_n=d_n/\alpha$ is \eqref{eq:laplace-cn}.  Finally
 \[
  \int_0^\infty \EulerE^{-\lambda s^\alpha}s^{n+\beta-1}\Differential s
- =\frac1\alpha\Gamma\!\left(\frac{n+\beta}{\alpha}\right)
+ =\frac1\alpha\GammaFunction\!\left(\frac{n+\beta}{\alpha}\right)
  \lambda^{-(n+\beta)/\alpha},
 \]
 and Watson's lemma controls the replacement of the finite endpoint interval by
@@ -4696,7 +4696,7 @@ Thus $x(x-na)^{n-1}$ is a sequence of binomial type.
 \begin{proof}
 Lagrange--Bürmann gives
 \[
- [t^n]\EulerE^{xT(t)}=\frac{x}{n}[w^{n-1}]\EulerE^{xw}\EulerE^{-anw}
+ \CoefficientExtraction{t}{n}\EulerE^{xT(t)}=\frac{x}{n}\CoefficientExtraction{w}{n-1}\EulerE^{xw}\EulerE^{-anw}
  =\frac{x(x-na)^{n-1}}{n!}.
 \]
 An EGF of the form $\EulerE^{xB(t)}$ satisfies the binomial identity by
@@ -4709,7 +4709,7 @@ multiplication at $x$ and $y$.
 Over a commutative $\RationalNumbers$-algebra, let $g(0)$ and $f'(0)$ be
 units and let $f(0)=0$.  Define
 \begin{equation}
- R_{n,k}=\frac{n!}{k!}[t^n]g(t)f(t)^k.                              \label{eq:merged-riordan-entry}
+ R_{n,k}=\frac{n!}{k!}\CoefficientExtraction{t}{n}g(t)f(t)^k.                              \label{eq:merged-riordan-entry}
 \end{equation}
 The resulting lower-triangular matrix is denoted $[g,f]$.
 \end{definition}
@@ -5538,7 +5538,7 @@ Define the even ordinary-series coefficients $\beta_{2m}^{\sharp}$ by
 \begin{proposition}
 For even $n\geq2$,
 \begin{equation}
- \beta_n^{\sharp}=\frac{\beta_n}{2n^2\Gamma(n)},                    \label{eq:merged-modified-bernoulli}
+ \beta_n^{\sharp}=\frac{\beta_n}{2n^2\GammaFunction(n)},                    \label{eq:merged-modified-bernoulli}
 \end{equation}
 and odd coefficients vanish.  In particular,
 $\beta_2^{\sharp}=1/48$, $\beta_4^{\sharp}=-1/5760$, and
@@ -5740,7 +5740,7 @@ For each fixed integer $M\geq1$, as $n\to\infty$ through positive integers,
 \begin{equation}
  \log(n!)=\left(n+\frac12\right)\log n-n+\frac12\log(2\pi)
  +\sum_{r=1}^{M-1}\frac{\beta_{2r}}{2r(2r-1)n^{2r-1}}
- +O(n^{-(2M-1)}).                                                    \label{eq:merged-stirling-em}
+ +\BigO(n^{-(2M-1)}).                                                    \label{eq:merged-stirling-em}
 \end{equation}
 \end{corollary}
 
@@ -5767,7 +5767,7 @@ The rising Pochhammer symbol is
 \label{thm:merged-pochhammer}
 Where defined meromorphically,
 \begin{equation}
- (a)_n=\frac{\Gamma(a+n)}{\Gamma(a)},                               \label{eq:merged-pochhammer-gamma}
+ (a)_n=\frac{\GammaFunction(a+n)}{\GammaFunction(a)},                               \label{eq:merged-pochhammer-gamma}
 \end{equation}
 and, formally in $z$ and analytically for $|z|<1$,
 \begin{equation}
@@ -5776,7 +5776,7 @@ and, formally in $z$ and analytically for $|z|<1$,
 \end{theorem}
 
 \begin{proof}
-Iterate $\Gamma(w+1)=w\Gamma(w)$ to obtain the quotient.  For the series, let
+Iterate $\GammaFunction(w+1)=w\GammaFunction(w)$ to obtain the quotient.  For the series, let
 $F=\sum(a)_nz^n/n!$.  The recurrence $(a)_{n+1}=(a+n)(a)_n$ gives
 $(1-z)F'=aF$ and $F(0)=1$, whose unique formal solution is $(1-z)^{-a}$.
 The ratio test gives analytic convergence in the unit disk.
@@ -5821,7 +5821,7 @@ agreement off the zeros supplies the polynomial continuation.
 
 \section{Digamma and polygamma series}
 
-Define $\psi=\Gamma'/\Gamma$ and $\psi^{(m)}=D^m\psi$.
+Define $\psi=\GammaFunction'/\GammaFunction$ and $\psi^{(m)}=D^m\psi$.
 
 \begin{theorem}[Partial fractions]
 \label{thm:merged-polygamma-series}
@@ -5837,7 +5837,7 @@ Away from nonpositive integers,
 \begin{proof}
 Logarithmically differentiate Weierstrass' product
 \[
- \frac1{\Gamma(z)}=ze^{\gamma z}
+ \frac1{\GammaFunction(z)}=ze^{\gamma z}
  \prod_{k\geq1}\left(1+\frac zk\right)\EulerE^{-z/k}.
 \]
 Normal convergence on compact sets away from the poles justifies the first
@@ -5870,9 +5870,9 @@ For $z\notin\IntegerNumbers$,
 \end{theorem}
 
 \begin{proof}
-Multiplying the Weierstrass products for $1/\Gamma(1+z)$ and
-$1/\Gamma(1-z)$ and using Euler's sine product gives
-$\Gamma(z)\Gamma(1-z)=\pi/\sin(\pi z)$.  Logarithmic differentiation proves
+Multiplying the Weierstrass products for $1/\GammaFunction(1+z)$ and
+$1/\GammaFunction(1-z)$ and using Euler's sine product gives
+$\GammaFunction(z)\GammaFunction(1-z)=\pi/\sin(\pi z)$.  Logarithmic differentiation proves
 the first formula; differentiating it $m$ more times proves the second.
 \end{proof}
 
@@ -5880,8 +5880,8 @@ the first formula; differentiating it $m$ more times proves the second.
 \label{thm:merged-gauss-multiplication}
 For $q\in\PositiveIntegers$,
 \begin{equation}
- \Gamma(qz)=(2\pi)^{(1-q)/2}q^{qz-1/2}
- \prod_{r=0}^{q-1}\Gamma\!\left(z+\frac rq\right).                 \label{eq:merged-gauss-multiplication}
+ \GammaFunction(qz)=(2\pi)^{(1-q)/2}q^{qz-1/2}
+ \prod_{r=0}^{q-1}\GammaFunction\!\left(z+\frac rq\right).                 \label{eq:merged-gauss-multiplication}
 \end{equation}
 Hence
 \begin{align}
@@ -5895,13 +5895,13 @@ Hence
 \begin{proof}
 Define
 \[
- Q(z)=\frac{q^{qz-1/2}\prod_{r=0}^{q-1}\Gamma(z+r/q)}{\Gamma(qz)}.
+ Q(z)=\frac{q^{qz-1/2}\prod_{r=0}^{q-1}\GammaFunction(z+r/q)}{\GammaFunction(qz)}.
 \]
 The gamma recurrence shows $Q(z+1/q)=Q(z)$.  Stirling's formula in a right
 half-plane gives $Q(z)\to(2\pi)^{(q-1)/2}$ as $\Re z\to+\infty$ in a fixed
 horizontal strip.  Periodicity therefore makes $Q$ equal to that constant;
 meromorphic continuation extends the identity throughout its domain.  Solving
-for $\Gamma(qz)$ proves \eqref{eq:merged-gauss-multiplication}.  Logarithmic
+for $\GammaFunction(qz)$ proves \eqref{eq:merged-gauss-multiplication}.  Logarithmic
 differentiation gives the digamma identity and further differentiation gives
 the polygamma identity.
 \end{proof}
@@ -5933,7 +5933,7 @@ The normally convergent product
 \end{align}
 defines an entire function satisfying
 \begin{equation}
- \BarnesGFunction(1)=1,\qquad \BarnesGFunction(z+1)=\Gamma(z)\BarnesGFunction(z).                                \label{eq:merged-barnes-recurrence}
+ \BarnesGFunction(1)=1,\qquad \BarnesGFunction(z+1)=\GammaFunction(z)\BarnesGFunction(z).                                \label{eq:merged-barnes-recurrence}
 \end{equation}
 Consequently $\BarnesGFunction(n)=1!2!\cdots(n-2)!$ for $n\geq2$.
 \end{theorem}
@@ -5945,7 +5945,7 @@ so the product converges normally and defines an entire function with the
 prescribed integral-multiplicity zeros.  At $z=0$ it equals $1$.  Divide the
 finite products at $z$ and $z-1$, rearrange before taking the limit, and use
 Weierstrass' gamma product; all quadratic convergence factors cancel and the
-limit is $\Gamma(z)$.  Normal convergence justifies passage to the limit,
+limit is $\GammaFunction(z)$.  Normal convergence justifies passage to the limit,
 proving the recurrence.  Iteration gives the integer values.
 \end{proof}
 
@@ -5954,7 +5954,7 @@ proving the recurrence.  Iteration gives the integer values.
 With compatible logarithm branches,
 \begin{equation}
  \log \BarnesGFunction(z+1)=\frac z2\log(2\pi)-\frac{z(z+1)}2
- +z\log\Gamma(z+1)-\int_0^z\log\Gamma(t+1)\Differential t.                   \label{eq:merged-alexeiewsky}
+ +z\log\GammaFunction(z+1)-\int_0^z\log\GammaFunction(t+1)\Differential t.                   \label{eq:merged-alexeiewsky}
 \end{equation}
 \end{theorem}
 
@@ -6002,7 +6002,7 @@ integer $p\geq1$, as $x\to+\infty$ through positive real values,
 Equivalently, retaining the exact gamma factor,
 \begin{align}
  \log \BarnesGFunction(x+1)
- ={}&\frac{x^2}{4}+x\log\Gamma(x+1)
+ ={}&\frac{x^2}{4}+x\log\GammaFunction(x+1)
  -\left(\frac{x(x+1)}2+\frac1{12}\right)\log x-\log A            \notag\\
  &+\sum_{k=1}^{p-1}\frac{\beta_{2k+2}}
  {2k(2k+1)(2k+2)x^{2k}}+O_p(x^{-2p}).                             \label{eq:merged-barnes-asymptotic}
@@ -6014,7 +6014,7 @@ An empty sum is understood when $p=1$.
 The gamma recurrence and Binet's formula \eqref{eq:binet-second} give, for
 $t>0$,
 \[
- \log\Gamma(t+1)
+ \log\GammaFunction(t+1)
  =\left(t+\frac12\right)\log t-t+\frac12\log(2\pi)
  +2\int_0^\infty\frac{\arctan(x/t)}{\EulerE^{2\pi x}-1}\Differential x.
 \]
@@ -6034,7 +6034,7 @@ gives
 Together with \eqref{eq:merged-even-zeta-bernoulli}, substitution in Binet's
 formula yields
 \begin{equation}
- \log\Gamma(t+1)
+ \log\GammaFunction(t+1)
  =\left(t+\frac12\right)\log t-t+\frac12\log(2\pi)
  +\sum_{r=1}^{p}\frac{\beta_{2r}}
  {2r(2r-1)t^{2r-1}}+R_p(t),
@@ -6083,12 +6083,12 @@ The result is
 \[
  \sum_{k=1}^n k\log k
  =\left(\frac{n^2}{2}+\frac n2+\frac1{12}\right)\log n
-  -\frac{n^2}{4}+\frac1{12}-C+o(1).
+  -\frac{n^2}{4}+\frac1{12}-C+\LittleO(1).
 \]
 Hence the limit in \eqref{eq:merged-glaisher} exists,
 $\log A=1/12-C$, and so $C=1/12-\log A$.
 
-Finally expand the exact $x\log\Gamma(x+1)$ in
+Finally expand the exact $x\log\GammaFunction(x+1)$ in
 \eqref{eq:merged-barnes-asymptotic}.  At order $x^{-2k}$ the difference
 between the coefficient in
 \eqref{eq:merged-barnes-standard-asymptotic} and the gamma contribution is
@@ -6114,7 +6114,7 @@ In particular,
 \begin{equation}
  \prod_{k=1}^n k^k
  =A\,n^{n^2/2+n/2+1/12}\EulerE^{-n^2/4}
- \left(1+\frac1{720n^2}+O(n^{-4})\right).                         \label{eq:merged-hyperfactorial-asymptotic}
+ \left(1+\frac1{720n^2}+\BigO(n^{-4})\right).                         \label{eq:merged-hyperfactorial-asymptotic}
 \end{equation}
 \end{corollary}
 
@@ -6378,7 +6378,7 @@ definition, and acyclicity gives antisymmetry.
 \label{thm:merged-raney}
 If $T=1+zT^p$, then for integers $p,r\geq1$ and $n\geq0$,
 \begin{equation}
- [z^n]T(z)^r=\frac{r}{pn+r}\binom{pn+r}{n}.                         \label{eq:merged-raney}
+ \CoefficientExtraction{z}{n}T(z)^r=\frac{r}{pn+r}\binom{pn+r}{n}.                         \label{eq:merged-raney}
 \end{equation}
 \end{theorem}
 
@@ -6386,7 +6386,7 @@ If $T=1+zT^p$, then for integers $p,r\geq1$ and $n\geq0$,
 The case $n=0$ is immediate.  For $n\geq1$, put
 $Y=T-1=z(1+Y)^p$.  Lagrange--Bürmann applied to $(1+Y)^r$ gives
 \[
- [z^n]T^r=\frac rn[w^{n-1}](1+w)^{pn+r-1}
+ \CoefficientExtraction{z}{n}T^r=\frac rn\CoefficientExtraction{w}{n-1}(1+w)^{pn+r-1}
  =\frac r{pn+r}\binom{pn+r}{n}.
 \]
 \end{proof}
@@ -6453,18 +6453,18 @@ Let $R\in\ComplexNumbers\setminus\{0\}$,
 $\alpha\in\ComplexNumbers$, and $n\in\NaturalNumbers$.  Then the Taylor
 germ at the origin satisfies
 \begin{equation}
- [z^n](1-z/R)^{-\alpha}
+ \CoefficientExtraction{z}{n}(1-z/R)^{-\alpha}
  =R^{-n}\frac{\RisingFactorial{\alpha}{n}}{n!}
  =R^{-n}(-1)^n\binom{-\alpha}{n}.                                  \label{eq:merged-singular-binomial}
 \end{equation}
 If $\alpha\notin\{0,-1,-2,\ldots\}$, this is also the ordinary gamma quotient
 \begin{equation}
- R^{-n}\frac{\Gamma(n+\alpha)}{\Gamma(\alpha)\Gamma(n+1)}.          \label{eq:merged-singular-binomial-gamma}
+ R^{-n}\frac{\GammaFunction(n+\alpha)}{\GammaFunction(\alpha)\GammaFunction(n+1)}.          \label{eq:merged-singular-binomial-gamma}
 \end{equation}
 If instead $\alpha=-m$ with $m\in\{0,1,2,\ldots\}$, the germ is the
 polynomial $(1-z/R)^m$, and hence
 \begin{equation}
- [z^n](1-z/R)^m=
+ \CoefficientExtraction{z}{n}(1-z/R)^m=
  \begin{cases}
   R^{-n}(-1)^n\binom mn,&0\leq n\leq m,\\
   0,&n>m.
@@ -6472,9 +6472,9 @@ polynomial $(1-z/R)^m$, and hence
 \end{equation}
 For fixed $\alpha\notin\{0,-1,-2,\ldots\}$,
 \begin{equation}
- [z^n](1-z/R)^{-\alpha}
- =\frac{R^{-n}n^{\alpha-1}}{\Gamma(\alpha)}
- \left(1+\frac{\alpha(\alpha-1)}{2n}+O(n^{-2})\right).              \label{eq:merged-singular-binomial-asymp}
+ \CoefficientExtraction{z}{n}(1-z/R)^{-\alpha}
+ =\frac{R^{-n}n^{\alpha-1}}{\GammaFunction(\alpha)}
+ \left(1+\frac{\alpha(\alpha-1)}{2n}+\BigO(n^{-2})\right).              \label{eq:merged-singular-binomial-asymp}
 \end{equation}
 \end{lemma}
 
@@ -6482,12 +6482,12 @@ For fixed $\alpha\notin\{0,-1,-2,\ldots\}$,
 The generalized binomial theorem gives
 $(-1)^n\binom{-\alpha}{n}=\RisingFactorial{\alpha}{n}/n!$; this
 polynomial identity in $\alpha$ proves the first formula without any excluded
-parameters.  Away from the poles of $\Gamma(\alpha)$, its functional equation
+parameters.  Away from the poles of $\GammaFunction(\alpha)$, its functional equation
 identifies the rising factorial with
-$\Gamma(n+\alpha)/\Gamma(\alpha)$.  At $\alpha=-m$ the binomial theorem is
+$\GammaFunction(n+\alpha)/\GammaFunction(\alpha)$.  At $\alpha=-m$ the binomial theorem is
 the finite expansion of $(1-z/R)^m$, giving the displayed cases rather than an
 undefined quotient of gamma poles.  Finally, subtract the Stirling expansions
-of $\log\Gamma(n+\alpha)$ and $\log\Gamma(n+1)$ and exponentiate to obtain the
+of $\log\GammaFunction(n+\alpha)$ and $\log\GammaFunction(n+1)$ and exponentiate to obtain the
 ratio expansion for the nonexceptional parameters.
 \end{proof}
 
@@ -6497,7 +6497,7 @@ Let $\rho\in\ComplexNumbers\setminus\{0\}$, let $h$ be analytic in
 $|z|<r$ for some $r>|\rho|$, and fix $J\geq1$.  Then, for every
 $\alpha\in\ComplexNumbers$, as $n\to\infty$,
 \begin{align}
- [z^n]h(z)(1-z/\rho)^{-\alpha}
+ \CoefficientExtraction{z}{n}h(z)(1-z/\rho)^{-\alpha}
 ={}&\rho^{-n}\sum_{j=0}^{J-1}\frac{(-\rho)^jh^{(j)}(\rho)}{j!}
  \frac{\RisingFactorial{\alpha-j}{n}}{n!}                         \notag\\
  &+O\!\left(|\rho|^{-n}(n+1)^{\Re\alpha-J-1}\right).             \label{eq:merged-darboux-transfer}
@@ -6507,8 +6507,8 @@ nonpositive integer and therefore contributes only finitely many coefficients.
 In particular, if $h(\rho)\ne0$ and
 $\alpha\notin\{0,-1,-2,\ldots\}$,
 \begin{equation}
- [z^n]h(z)(1-z/\rho)^{-\alpha}
- \sim\frac{h(\rho)}{\Gamma(\alpha)}\rho^{-n}n^{\alpha-1}.         \label{eq:merged-basic-transfer}
+ \CoefficientExtraction{z}{n}h(z)(1-z/\rho)^{-\alpha}
+ \sim\frac{h(\rho)}{\GammaFunction(\alpha)}\rho^{-n}n^{\alpha-1}.         \label{eq:merged-basic-transfer}
 \end{equation}
 \end{theorem}
 
@@ -6520,7 +6520,7 @@ $(z-\rho)^j=(-\rho)^j(1-z/\rho)^j$, the finite terms follow exactly from
 Lemma~\ref{lem:merged-singular-binomial}.
 
 Choose $s$ with $|\rho|<s<r$ and write $q(z)=\sum_{k\geq0}q_kz^k$.
-Cauchy's estimate gives $q_k=O(s^{-k})$.  For fixed
+Cauchy's estimate gives $q_k=\BigO(s^{-k})$.  For fixed
 $\beta\in\ComplexNumbers$, the exact
 binomial lemma and its two parameter cases give
 \[
@@ -6564,17 +6564,17 @@ analytic in $|z|<R$.  Let
 \]
 Then, for every $n\in\NaturalNumbers$, the exact coefficient identity is
 \begin{align}
- [z^n]F(z)={}&
+ \CoefficientExtraction{z}{n}F(z)={}&
  \sum_{\nu\in\mathcal N}c_\nu\rho_\nu^{-n}
- \frac{\Gamma(n-\lambda_\nu)}
-      {\Gamma(-\lambda_\nu)\Gamma(n+1)}                            \notag\\
+ \frac{\GammaFunction(n-\lambda_\nu)}
+      {\GammaFunction(-\lambda_\nu)\GammaFunction(n+1)}                            \notag\\
  &+\sum_{\substack{\nu\in\mathcal P\\ n\leq m_\nu}}
  c_\nu\rho_\nu^{-n}(-1)^n\binom{m_\nu}{n}
- +[z^n]E(z).                                                        \label{eq:merged-darboux-subtraction}
+ +\CoefficientExtraction{z}{n}E(z).                                                        \label{eq:merged-darboux-subtraction}
 \end{align}
 Consequently, the minimal remainder hypothesis
 \begin{equation}
- [z^n]E(z)=O\!\left(R^{-n}(n+1)^{-p}\right),\qquad n\to\infty,      \label{eq:merged-darboux-coefficient-remainder}
+ \CoefficientExtraction{z}{n}E(z)=O\!\left(R^{-n}(n+1)^{-p}\right),\qquad n\to\infty,      \label{eq:merged-darboux-coefficient-remainder}
 \end{equation}
 for some integer $p\geq1$ permits the last term in
 \eqref{eq:merged-darboux-subtraction} to be replaced by that error.
@@ -6592,7 +6592,7 @@ absolutely continuous, $\varepsilon^{(p)}\in L^1([-\pi,\pi])$, and
 \]
 Then, for $n\geq1$,
 \begin{equation}
- \left|[z^n]E(z)\right|
+ \left|\CoefficientExtraction{z}{n}E(z)\right|
  \leq\frac{R^{-n}}{2\pi n^p}
        \left\|\varepsilon^{(p)}\right\|_{L^1([-\pi,\pi])}.        \label{eq:merged-darboux-boundary-remainder}
 \end{equation}
@@ -6608,14 +6608,14 @@ the direct remainder hypothesis proves its asymptotic version.
 For the boundary criterion, Cauchy's formula first on $|z|=r<R$ and then
 uniform convergence as $r\uparrow R$ give
 \begin{equation}
- [z^n]E(z)=\frac{R^{-n}}{2\pi}
+ \CoefficientExtraction{z}{n}E(z)=\frac{R^{-n}}{2\pi}
  \int_{-\pi}^{\pi}\varepsilon(\theta)
  \EulerE^{-\ImaginaryUnit n\theta}\,\Differential\theta.          \label{eq:merged-darboux-boundary-fourier}
 \end{equation}
 Integrate by parts $p$ times.  Absolute continuity justifies the last step,
 and every boundary term vanishes by periodic matching, so
 \[
- [z^n]E(z)=\frac{R^{-n}}{2\pi(\ImaginaryUnit n)^p}
+ \CoefficientExtraction{z}{n}E(z)=\frac{R^{-n}}{2\pi(\ImaginaryUnit n)^p}
  \int_{-\pi}^{\pi}\varepsilon^{(p)}(\theta)
  \EulerE^{-\ImaginaryUnit n\theta}\,\Differential\theta.
 \]
@@ -6649,8 +6649,8 @@ $h_j(\rho_j)\ne0$.  Suppose that, as Taylor germs at the origin,
 where $E$ is analytic in $|z|<R+\varepsilon$.  Then, as $n\to\infty$, the
 dominant contributions add:
 \begin{equation}
- [z^n]F(z)=\sum_j\frac{h_j(\rho_j)}{\Gamma(\alpha_j)}
- \rho_j^{-n}n^{\alpha_j-1}(1+O(n^{-1}))
+ \CoefficientExtraction{z}{n}F(z)=\sum_j\frac{h_j(\rho_j)}{\GammaFunction(\alpha_j)}
+ \rho_j^{-n}n^{\alpha_j-1}(1+\BigO(n^{-1}))
  +O\!\left((R+\varepsilon/2)^{-n}\right).                           \label{eq:merged-multiple-transfer}
 \end{equation}
 Complex conjugate points therefore produce periodic or oscillatory terms.
@@ -6669,7 +6669,7 @@ bound for $E$.
 \begin{proposition}[Logarithmic and meromorphic cases]
 For $n\geq1$,
 \begin{equation}
- [z^n]\log\frac1{1-z/R}=\frac{R^{-n}}n.                             \label{eq:merged-log-transfer}
+ \CoefficientExtraction{z}{n}\log\frac1{1-z/R}=\frac{R^{-n}}n.                             \label{eq:merged-log-transfer}
 \end{equation}
 If a meromorphic function has principal parts
 $c_{j,m}(1-z/\rho_j)^{-m}$ at its poles of smallest modulus, then its
@@ -6692,7 +6692,7 @@ Cauchy's estimate to what remains.
 As $n\to\infty$,
 \begin{equation}
  \CatalanNumber{n}=\frac{4^n}{\sqrt\pi\,n^{3/2}}
- \left(1-\frac9{8n}+\frac{145}{128n^2}+O(n^{-3})\right).            \label{eq:merged-catalan-asymp}
+ \left(1-\frac9{8n}+\frac{145}{128n^2}+\BigO(n^{-3})\right).            \label{eq:merged-catalan-asymp}
 \end{equation}
 \end{theorem}
 
@@ -6700,11 +6700,11 @@ As $n\to\infty$,
 Use $\CatalanNumber{n}=(n+1)^{-1}\binom{2n}{n}$ and
 \[
  \binom{2n}{n}=\frac{4^n}{\sqrt{\pi n}}
- \left(1-\frac1{8n}+\frac1{128n^2}+O(n^{-3})\right),
+ \left(1-\frac1{8n}+\frac1{128n^2}+\BigO(n^{-3})\right),
 \]
 which follows from Stirling's expansion.  Multiply by
-$(n+1)^{-1}=n^{-1}(1-n^{-1}+n^{-2}+O(n^{-3}))$.
-Alternatively, $C(z)=2-2\sqrt{1-4z}+O(1-4z)$ near $z=1/4$, and Darboux
+$(n+1)^{-1}=n^{-1}(1-n^{-1}+n^{-2}+\BigO(n^{-3}))$.
+Alternatively, $C(z)=2-2\sqrt{1-4z}+\BigO(1-4z)$ near $z=1/4$, and Darboux
 transfer with $\alpha=-1/2$ gives the leading term directly.
 \end{proof}
 
@@ -6815,13 +6815,13 @@ For $|y|<1$,
 \end{align}
 Their inverse pairs give, for every $m\ge0$,
 \begin{align}
- [x^{2m}]\left(\frac{x}{\sin x}\right)^{2m+1}
+ \CoefficientExtraction{x}{2m}\left(\frac{x}{\sin x}\right)^{2m+1}
  &=\frac1{4^m}\binom{2m}{m},                                      \label{eq:merged-sine-diagonal}\\
- [x^{2m}]\left(\frac{x}{\tan x}\right)^{2m+1}
+ \CoefficientExtraction{x}{2m}\left(\frac{x}{\tan x}\right)^{2m+1}
  &=(-1)^m,                                                         \label{eq:merged-tangent-diagonal}\\
- [x^{2m}]\left(\frac{x}{\sinh x}\right)^{2m+1}
+ \CoefficientExtraction{x}{2m}\left(\frac{x}{\sinh x}\right)^{2m+1}
  &=(-1)^m\frac1{4^m}\binom{2m}{m},                                \label{eq:merged-sinh-diagonal}\\
- [x^{2m}]\left(\frac{x}{\tanh x}\right)^{2m+1}
+ \CoefficientExtraction{x}{2m}\left(\frac{x}{\tanh x}\right)^{2m+1}
  &=1.                                                              \label{eq:merged-tanh-diagonal}
 \end{align}
 \end{theorem}
@@ -6834,12 +6834,12 @@ The derivatives of the four inverse functions are, in the displayed order,
 \]
 The generalized binomial theorem and the geometric series expand these four
 functions for $|y|<1$; termwise integration from $0$ to $y$ gives
-\cref{eq:merged-arcsin-series,eq:merged-arctan-series,
+\cref{eq:merged-arcsin-series,eq:merged-arctan-series,%
 eq:merged-arsinh-series,eq:merged-artanh-series}.
 
 If $g=f^{\langle-1\rangle}$, $f(0)=0$, and $f'(0)=1$, Lagrange inversion gives
 \[
- [y^n]g(y)=\frac1n[x^{n-1}]\left(\frac{x}{f(x)}\right)^n.
+ \CoefficientExtraction{y}{n}g(y)=\frac1n\CoefficientExtraction{x}{n-1}\left(\frac{x}{f(x)}\right)^n.
 \]
 Apply this identity with $f=\sin,\tan,\sinh,\tanh$ and $n=2m+1$, then compare
 with the four inverse coefficients just computed.  This proves all four
@@ -6880,8 +6880,8 @@ Let $u(t)$ be the unique formal solution of
 \end{equation}
 Then for every formal $H$ and $n\geq1$,
 \begin{equation}
- [t^n]H(u(t))
- =\frac1n[z^{n-1}]H'(a+z)\Phi(a+z)^n.                              \label{eq:merged-offset-lagrange}
+ \CoefficientExtraction{t}{n}H(u(t))
+ =\frac1n\CoefficientExtraction{z}{n-1}H'(a+z)\Phi(a+z)^n.                              \label{eq:merged-offset-lagrange}
 \end{equation}
 The same formula holds analytically in a sufficiently small neighbourhood
 when $H$ and $\Phi$ are analytic.
@@ -6892,7 +6892,7 @@ Put $w=u-a$ and $\phi(w)=\Phi(a+w)$.  Then $w=t\phi(w)$, so
 Theorem~\ref{thm:lagrange-burmann}, applied to the outer series
 $K(w)=H(a+w)$, gives
 \[
- [t^n]K(w(t))=\frac1n[z^{n-1}]K'(z)\phi(z)^n,
+ \CoefficientExtraction{t}{n}K(w(t))=\frac1n\CoefficientExtraction{z}{n-1}K'(z)\phi(z)^n,
 \]
 which is \eqref{eq:merged-offset-lagrange}.  The analytic statement follows
 from the analytic inverse-function theorem exactly as in
@@ -6946,16 +6946,16 @@ one can write
 where $H$ and $K$ extend analytically to $|w|<|\rho|+\eta$ for some $\eta>0$
 and $K(\rho)=\lambda\ne0$.  Then
 \begin{equation}
- [w^n]g(w)\sim-\frac{\lambda}{2\sqrt\pi}\rho^{-n}n^{-3/2}.        \label{eq:merged-square-root-coefficients}
+ \CoefficientExtraction{w}{n}g(w)\sim-\frac{\lambda}{2\sqrt\pi}\rho^{-n}n^{-3/2}.        \label{eq:merged-square-root-coefficients}
 \end{equation}
 \end{corollary}
 
 \begin{proof}
-The analytic part $H$ has coefficients $O((|\rho|+\eta')^{-n})$ for any
+The analytic part $H$ has coefficients $\BigO((|\rho|+\eta')^{-n})$ for any
 $0<\eta'<\eta$.  In the remaining term put $w=\rho u$ and apply
 \cref{thm:merged-darboux-transfer} with $R=1$, exponent
 $\alpha=-1/2$, and analytic multiplier $K(\rho u)$.  Since
-$\Gamma(-1/2)=-2\sqrt\pi$, its leading term is exactly
+$\GammaFunction(-1/2)=-2\sqrt\pi$, its leading term is exactly
 \cref{eq:merged-square-root-coefficients}.
 \end{proof}
 
@@ -7186,11 +7186,11 @@ which gives $c_{n+1}=a_n/(n+1)$.
 
 \begin{algorithm}[Composition power table]
 \label{alg:merged-composition}
-Assume $B(0)=0$ and set $p_{k,n}=[z^n]B(z)^k$.  Initialize
+Assume $B(0)=0$ and set $p_{k,n}=\CoefficientExtraction{z}{n}B(z)^k$.  Initialize
 $p_{0,0}=1$, $p_{0,n}=0$ for $n>0$, and use
 \begin{equation}
  p_{k,n}=\sum_{j=1}^{n}b_jp_{k-1,n-j},\qquad
- [z^n]A(B(z))=\sum_{k=0}^{n}a_kp_{k,n}.                            \label{eq:merged-alg-composition}
+ \CoefficientExtraction{z}{n}A(B(z))=\sum_{k=0}^{n}a_kp_{k,n}.                            \label{eq:merged-alg-composition}
 \end{equation}
 \end{algorithm}
 
@@ -7205,7 +7205,7 @@ each degree.
 If $F(z)=a_1z+a_2z^2+\cdots$ with invertible $a_1$, then its inverse
 $G(w)=\sum_{n\geq1}g_nw^n$ has
 \begin{equation}
- g_n=\frac1n[z^{n-1}]\left(\frac z{F(z)}\right)^n.                 \label{eq:merged-alg-lagrange-reversion}
+ g_n=\frac1n\CoefficientExtraction{z}{n-1}\left(\frac z{F(z)}\right)^n.                 \label{eq:merged-alg-lagrange-reversion}
 \end{equation}
 \end{algorithm}
 
@@ -7245,16 +7245,16 @@ Then $F(G_{2m})\equiv w\pmod{w^{2m}}$.
 \end{algorithm}
 
 \begin{proof}
-Put $E=F(G_m)-w=O(w^m)$ and $\Delta=-E/F'(G_m)=O(w^m)$.  Taylor's formula
+Put $E=F(G_m)-w=\BigO(w^m)$ and $\Delta=-E/F'(G_m)=\BigO(w^m)$.  Taylor's formula
 in the formal ring gives
-$F(G_m+\Delta)=F(G_m)+F'(G_m)\Delta+O(\Delta^2)=w+O(w^{2m})$.
+$F(G_m+\Delta)=F(G_m)+F'(G_m)\Delta+\BigO(\Delta^2)=w+\BigO(w^{2m})$.
 The denominator is invertible because its constant term is $a_1$.
 \end{proof}
 
 \begin{remark}[Arithmetic complexity]
 The triangular product, reciprocal, exponential, and logarithm recurrences use
-$O(N^2)$ scalar operations through degree $N$; a direct composition table uses
-$O(N^3)$.  Faster multiplication and Newton iteration reduce asymptotic cost,
+$\BigO(N^2)$ scalar operations through degree $N$; a direct composition table uses
+$\BigO(N^3)$.  Faster multiplication and Newton iteration reduce asymptotic cost,
 but the triangular forms are preferable for symbolic audits because every
 coefficient carries a short dependency certificate.
 \end{remark}
@@ -7626,7 +7626,7 @@ Result & Title & Status & Lean declarations (module) \\
 \Cref{thm:stirling-uniform-saddle} & Uniform Stirling saddle estimate & none &  \\
 \Cref{thm:stirling-zeta} & Stirling--zeta identities & none &  \\
 \Cref{lem:logarithmic-transfer} & Logarithmic transfer estimate & none &  \\
-\Cref{thm:gamma-stirling-series} & Convergent Stirling series for $\log\Gamma$ and $\psi$ & none &  \\
+\Cref{thm:gamma-stirling-series} & Convergent Stirling series for $\log\GammaFunction$ and $\psi$ & none &  \\
 \Cref{thm:stieltjes-stirling-series} & Stirling series for the Stieltjes constants & none &  \\
 \Cref{thm:r-stirling-recurrence} & $r$-Stirling recurrence & none &  \\
 \Cref{thm:associated-stirling-recurrence} & Associated recurrence & none &  \\
