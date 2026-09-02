@@ -12724,8 +12724,8 @@ inside the proof below does not formalize the result the proof concludes.
   than a mathematical claim.
 \end{description}
 
-Of the 282 labelled forward results, 134 are \statusexact, 85 are
-\statuspartial, 55 are \statusnone, and 8 are \statusna.  The original
+Of the 282 labelled forward results, 136 are \statusexact, 85 are
+\statuspartial, 53 are \statusnone, and 8 are \statusna.  The original
 191-result pre-Fabius core had 36 \statusexact, 29 \statuspartial, 123
 \statusnone, and 3 \statusna{} entries.  The four integrated guide chapters
 add 31 human-proved but not Lean-formalized assertions and five labelled
@@ -13291,10 +13291,10 @@ The infinite $q$-binomial theorem & 3 & 0 & 1 & 0\\
 Basic hypergeometric series & 5 & 3 & 1 & 0\\
 Euler telescoping and very-well-poised summations & 1 & 0 & 3 & 0\\
 Bilateral series and Ramanujan's \texorpdfstring{${}_1\psi_1$}{1psi1} sum & 1 & 0 & 1 & 0\\
-$q$-difference calculus and the quantum binomial & 8 & 2 & 0 & 0\\
+$q$-difference calculus and the quantum binomial & 9 & 1 & 0 & 0\\
 The $q$-gamma and $q$-beta functions & 6 & 1 & 1 & 0\\
 Jacobi's triple product & 7 & 1 & 0 & 0\\
-Theta modularity, lattice dissection, and sums of squares & 0 & 1 & 13 & 4\\
+Theta modularity, lattice dissection, and sums of squares & 1 & 1 & 12 & 4\\
 Partitions and product--sum identities & 4 & 0 & 0 & 0\\
 Bailey pairs and the Rogers--Ramanujan identities & 7 & 0 & 0 & 0\\
 Bailey transforms and the Andrews--Gordon identities & 4 & 3 & 1 & 1\\
@@ -13307,9 +13307,9 @@ Computation, certification, and formal proof architecture & 7 & 2 & 2 & 3\\
 Geometric interpolation and exact $q$-filters & 7 & 2 & 0 & 0\\
 Half-base arithmetic and Prouhet--Thue--Morse cancellation & 6 & 3 & 0 & 0\\
 Geometric uniform sums, $q$-cumulants, and the Fabius--Rvachev functions & 2 & 11 & 0 & 0\\
-Dyadic Gaussian--Thue--Morse structure and the values of $F$ & 7 & 44 & 5 & 0\\
+Dyadic Gaussian--Thue--Morse structure and the values of $F$ & 7 & 45 & 4 & 0\\
 \midrule
-\textbf{Forward total} & 134 & 85 & 55 & 8\\
+\textbf{Forward total} & 136 & 85 & 53 & 8\\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -13861,14 +13861,15 @@ the noncommutative factorization $e_q(X+Y)=e_q(X)e_q(Y)$ is not formalized}\\[2p
 {\footnotesize\texttt{QExponential}; for $x\ne0$, with $D_q$ acting on
 functions as the difference quotient, proved from the tail identity
 $(a;q)_\infty=(1-a)(aq;q)_\infty$ rather than termwise from the series}\\[2pt]
-\Cref{thm:q-fundamental} & \statuspartial &
+\Cref{thm:q-fundamental} & \statusexact &
 \texttt{qDeriv\_\allowbreak{}jacksonIntegral},
-\texttt{tendsto\_\allowbreak{}jackson\_\allowbreak{}sum\_\allowbreak{}qDeriv},
+\texttt{tendsto\_\allowbreak{}qDeriv\_\allowbreak{}jacksonIntegral\_\allowbreak{}nhdsWithin},
 \texttt{jacksonIntegral\_\allowbreak{}qDeriv}\newline
-{\footnotesize\texttt{JacksonIntegral}; $D_qF=f$ at every $x\ne0$ where the
-series is summable, and the converse for partial sums (and for summable
-series), in every complete normed field; the continuous extension at $0$ is
-not formalized}\\[2pt]
+{\footnotesize\texttt{JacksonIntegral}, \texttt{JacksonFundamentalExtension}; $D_qF=f$ at
+every $x\ne0$ where the Jackson series is summable, the continuous extension
+$D_qF\to f(0)$ as $x\to0$ when $f$ is continuous at $0$ (with the series summable at every
+point, as when it converges locally uniformly), and the converse for partial sums and for
+summable series, in every complete normed field}\\[2pt]
 \Cref{cor:q-integration-parts} & \statusexact &
 \texttt{jackson\_\allowbreak{}parts\_\allowbreak{}of\_\allowbreak{}tendsto},
 \texttt{jacksonIntegral\_\allowbreak{}mul\_\allowbreak{}qDeriv}\newline
@@ -14554,7 +14555,18 @@ strictly increasing sequences}\\[2pt]
 \texttt{fabiusAtInverseTwoPow\_eq\_composition\_formula}\newline
 {\footnotesize\texttt{FabiusInverseDyadicClosedForm}; only the half-base
 specialization is formalized}\\[2pt]
-\Cref{thm:fabius-hessenberg} & \statusnone & ---\\[2pt]
+\Cref{thm:fabius-hessenberg} & \statuspartial &
+\texttt{det\_\allowbreak{}hessenbergMatrix},
+\texttt{hessenbergMatrix\_\allowbreak{}mulVec},
+\texttt{hessenbergMatrix\_\allowbreak{}adjugate\_\allowbreak{}zero\_\allowbreak{}last}\newline
+{\footnotesize\texttt{HessenbergDeterminant}; for arbitrary coefficients $\beta$ over any
+commutative ring, $\det\mathcal H_n=\alpha_n$ with $\alpha$ defined by
+$\alpha_0=1$, $\alpha_n=\sum_{k<n}\beta_{n,k}\alpha_k$, proved through the adjugate
+(the recurrence reads $\mathcal H_n\alpha=\alpha_ne_n$, and the cofactor
+$\operatorname{adj}(\mathcal H_n)_{0,n}$ is the determinant of a lower-triangular matrix with
+diagonal $-1$ up to the sign $(-1)^{n-1}$).  Not formalised: the identification of this
+$\alpha_n$ with $\mathbb E X^n/n!$ and with $2^{\binom n2}F(2^{-n})$, which rests on
+\Cref{lem:fabius-moment-dilation,thm:fabius-half-moment}}\\[2pt]
 \Cref{cor:fabius-fourier-formula} & \statuspartial &
 \texttt{rvachev\_fourier\_inversion\_analytic},
 \texttt{rvachevFourier\_eq\_product}\newline
@@ -14746,7 +14758,18 @@ $d\ge0$ and $\lVert q\rVert<1$ in any complete normed field, with $r_d(n)$ the c
 of the finite set of ordered integer $d$-tuples of squares summing to $n$; the $d$-fold
 theta product is the sum over $\mathbb Z^d$ regrouped by the value of $\sum x_k^2$.  The
 coefficientwise identity in $\mathbb Z[[q]]$ is not stated separately}\\[2pt]
-\Cref{qg:lem-gaussian-ufd} & \statusnone & ---\\[2pt]
+\Cref{qg:lem-gaussian-ufd} & \statusexact &
+\texttt{gaussianInt\_\allowbreak{}two\_\allowbreak{}eq},
+\texttt{gaussianInt\_\allowbreak{}irreducible\_\allowbreak{}of\_\allowbreak{}mod\_\allowbreak{}four\_\allowbreak{}eq\_\allowbreak{}three},
+\texttt{gaussianInt\_\allowbreak{}exists\_\allowbreak{}prime\_\allowbreak{}mul\_\allowbreak{}star},
+\texttt{irreducible\_\allowbreak{}of\_\allowbreak{}norm\_\allowbreak{}natAbs\_\allowbreak{}prime}\newline
+{\footnotesize\texttt{GaussianIntegerPrimes}; the Euclidean structure of $\mathbb Z[i]$ for the
+norm and its unique factorisation are Mathlib's
+(\texttt{GaussianInt.instEuclideanDomain}, the principal-ideal-domain route); (i) by
+computation, (ii) from Mathlib's
+\texttt{GaussianInt.prime\_of\_nat\_prime\_of\_mod\_four\_eq\_three}, (iii) from Fermat's
+two-square theorem \texttt{Nat.Prime.sq\_add\_sq} and the norm argument, with uniqueness up to a
+unit and conjugation from primality}\\[2pt]
 \Cref{qg:thm-two-square} & \statusnone & ---\\[2pt]
 \Cref{qg:cor-two-square-lambert} & \statusnone & ---\\[2pt]
 \Cref{qg:thm-four-square} & \statusnone & ---\\[2pt]
