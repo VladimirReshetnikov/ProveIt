@@ -92,15 +92,15 @@ validation state. Deleted checksum manifests must not be recreated. Historical
 SHA-256 values recorded directly in this README and in `PROVENANCE.md` remain
 provenance receipts for the named artifacts.
 
-The retained `q_pochhammer_q_binomial_monograph.pdf` is a 363-page A4
-build of the current master source (15,011 lines, 715,660 bytes,
-SHA-256 `d78d39f64bf0712a8e75642a06d7157f605ca51e2ca1b78ecbdaaa2b314e376f`).
-The PDF is 3,101,576 bytes with SHA-256
-`98b50c638403c3d403f861beb93df4202b75df262c3656263394715aea857ae4`.
+The retained `q_pochhammer_q_binomial_monograph.pdf` is a 366-page A4
+build of the current master source (15,102 lines, 722,435 bytes,
+SHA-256 `ff3b09f7c7cc959e4b0c36900cd00e6ccbbd667232d4e2a1ba0349924fec141a`).
+The PDF is 3,115,575 bytes with SHA-256
+`167ada66a6ef95439375c6ba2f984d7c8a301738fb0a0b9d2038600c1b6e0220`.
 It was built by exactly three serial
-`pdflatex -interaction=nonstopmode -halt-on-error` passes, which produced 357,
-363, and 363 pages, with `makeindex` run on the `.idx` file after each pass.
-Each pass reported three overfull boxes, the preexisting ones at source lines 650-668; no undefined references remain. All pages are A4. `pdffonts` reports 43 font rows, all
+`pdflatex -interaction=nonstopmode -halt-on-error` passes, which produced 366,
+366, and 366 pages, with `makeindex` run on the `.idx` file after each pass.
+Each pass reported four overfull boxes: the three preexisting ones at source lines 650-668 and one new one from an inline formula in the Bailey-chain chapter's new remark, which is being converted to a display for the next build; no undefined references remain. All pages are A4. `pdffonts` reports 43 font rows, all
 embedded and subsetted, including 5 Libertinus rows, with no Type-3
 fonts. The files under `assets/experiments/**/figures/` remain research
 figures, not publication manuscripts.
