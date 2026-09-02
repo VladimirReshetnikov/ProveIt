@@ -33,6 +33,11 @@ NS_END = re.compile(r"^\s*end\s+([A-Za-z_][A-Za-z0-9_.']*)\s*$")
 # 1. Corpus: fully qualified declarations, and every namespace path.
 defined = set()
 namespaces = set()
+# Names declared `private`: they exist in the source but cannot be
+# referred to from any other module, so citing one from a document is a
+# broken pointer for a reader who tries to `#check` it.
+PRIVATE = re.compile(r'^\s*(?:@\[[^\]]*\]\s*)?private\s')
+private_decls = set()
 for root, _dirs, files in os.walk(LEAN):
     for fn in sorted(files):
         if not fn.endswith('.lean'):
@@ -54,7 +59,11 @@ for root, _dirs, files in os.walk(LEAN):
                     continue
                 m = DECL.match(line)
                 if m:
-                    defined.add('.'.join(stack + [m.group(1)]))
+                    full = '.'.join(stack + [m.group(1)])
+                    if PRIVATE.match(line):
+                        private_decls.add(full)
+                    else:
+                        defined.add(full)
 
 # A declaration named `A.b` inside `namespace N` is also reachable as
 # `N.A.b`; record every suffix-qualified spelling so citations that
@@ -99,7 +108,17 @@ for root, _dirs, files in os.walk(DOCS):
 
 missing = {n: locs for n, locs in cited.items() if n not in resolvable}
 
-print('corpus declarations found: %d' % len(defined))
+# A cited name that exists only as a `private` declaration is reported
+# separately: the fix is to make it public (or cite the public copy),
+# not to hunt for a typo.
+private_resolvable = set()
+for full in private_decls:
+    parts = full.split('.')
+    for i in range(len(parts)):
+        private_resolvable.add('.'.join(parts[i:]))
+
+print('corpus declarations found: %d  (+%d private, not citable)'
+      % (len(defined), len(private_decls)))
 print('corpus namespaces found:   %d' % len(namespaces))
 print('distinct Fabius.* names cited in docs: %d' % len(cited))
 print('cited but NOT found in corpus: %d' % len(missing))
@@ -107,6 +126,7 @@ print()
 for n in sorted(missing):
     locs = missing[n]
     where = '; '.join('%s:%d' % (f, l) for f, l in locs[:3])
-    print('MISSING  %-58s  %s' % (n, where))
+    tag = 'PRIVATE ' if n in private_resolvable else 'MISSING '
+    print('%s %-58s  %s' % (tag, n, where))
 
 sys.exit(1 if missing else 0)

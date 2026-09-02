@@ -1725,7 +1725,7 @@ rearrangement \(\operatorname{rem}_3(\nu(n))=\tau(n)+1\) is
 The closing remark that the residue is never zero is
 \lean{Fabius.card\_oddBinomialIndices\_mod\_three\_ne\_zero}.  The arithmetic underneath
 all four is the two-cycle of powers of two modulo three,
-\lean{Fabius.two\_pow\_mod\_three\_eq\_mod\_two\_add\_one}, \(2^r\bmod3=(r\bmod2)+1\).
+\lean{Fabius.two\_pow\_mod\_three} (in \path{SignedRowSum.lean}; \path{ThueMorseBinomialLog.lean} keeps a private copy), \(2^r\bmod3=(r\bmod2)+1\).
 
 A form using exactly the row signs of the source formula can be written without
 the odd-count notation.  Put
@@ -1763,12 +1763,18 @@ weight is even or odd.  Also
 sine is therefore zero or \(3/4\).
 \end{proof}
 
-\emph{Formal status.}  Neither display of \cref{p1:cor:mod-three-sine} is formalized: the
-signed row sum \(S(n)\) of \eqref{p1:eq:S-pascal-exact} has no Lean counterpart yet, and
-both formulas are rewritings of \cref{p1:thm:mod-three} through it.  What is formal is
-everything the proof uses apart from \(S(n)\) itself --- the residue law of
-\cref{p1:thm:mod-three} and the two-cycle
-\lean{Fabius.two\_pow\_mod\_three\_eq\_mod\_two\_add\_one}.
+\emph{Formal versions.}  The signed row sum is \lean{Fabius.signedRowSum} in
+\path{SignedRowSum.lean}, and \eqref{p1:eq:S-pascal-exact} is
+\lean{Fabius.signedRowSum\_eq}, obtained from the full-row sum
+\(\sum_{k=0}^{n}(-1)^{\binom nk}=(n+1)-2^{\BinaryDigitSum(n)+1}\)
+(\lean{Fabius.sum\_range\_neg\_one\_pow\_choose}) by removing the \(k=0\) term.  The
+residue display \eqref{p1:eq:pascal-mod3} is
+\lean{Fabius.thueMorseBit\_eq\_two\_mul\_add\_signedRowSum\_emod\_three}, and the sine
+display \eqref{p1:eq:pascal-sine} is
+\lean{Fabius.thueMorseBit\_eq\_sin\_sq\_pi\_sub\_signedRowSum\_div\_three}; the latter
+rests on \(n-S(n)=6k+2\tau(n)\) with \(k\) exhibited explicitly
+(\lean{Fabius.two\_pow\_succ\_sub\_two\_eq}) and on \(\sin^2(2\pi/3)=3/4\)
+(\lean{Fabius.sin\_sq\_two\_pi\_div\_three}).
 
 The logarithmic and residue formulas are two shadows of the same invariant
 \(\nu(n)\): the first reads the exponent of a power of two; the second reads
@@ -6666,8 +6672,29 @@ corresponding base-\(q\) integer and the coefficient is \(\zeta\) raised to
 its digit sum.
 \end{proof}
 
+\emph{Formal versions.}  \Cref{p1:thm:base-q-product} is formal in
+\path{BaseDigitProduct.lean}, and in a form that needs no root of unity at all.  The
+recursion \eqref{p1:eq:base-q-recursion} is
+\lean{Fabius.zeta\_pow\_digits\_sum\_mul\_add}, resting on the digit-sum law
+\(s_q(qn+r)=r+s_q(n)\) for \(r<q\) (\lean{Fabius.digits\_sum\_mul\_add}); the product
+\eqref{p1:eq:base-q-product} is \lean{Fabius.sum\_zeta\_pow\_digits\_sum\_mul\_pow}.  Both
+hold for \emph{every} \(\zeta\) in a commutative semiring: the hypothesis \(\zeta^q=1\) is
+never used, because the identity is a statement about assembling an integer from
+independently chosen digits, not about \(\zeta\).  The formal proof makes this explicit by
+first proving the product for an \emph{arbitrary} digit weight \(w:\NaturalNumbers\to R\),
+\[
+  \sum_{n<q^m}\Bigl(\prod_{j<m}w\bigl(d_j(n)\bigr)\Bigr)z^n
+  =\prod_{j<m}\Bigl(\sum_{r<q}w(r)\,z^{rq^j}\Bigr),
+\]
+where \(d_j(n)=\Floor{n/q^j}\bmod q\) is the \(j\)-th base-\(q\) digit
+(\lean{Fabius.sum\_windowWeight\_mul\_pow}, with \lean{Fabius.digitAt} and
+\lean{Fabius.windowWeight}); the theorem in the text is the case \(w(r)=\zeta^r\), and the
+bridge from the digit window to \(s_q(n)\) is \lean{Fabius.sum\_digitAt\_eq\_digits\_sum}.
+
 Each factor vanishes at \(z=1\), since
-\(1+\zeta+\cdots+\zeta^{q-1}=0\).
+\(1+\zeta+\cdots+\zeta^{q-1}=0\)
+(\lean{Fabius.geom\_sum\_eq\_zero\_of\_pow\_eq\_one} in an integral domain, from
+\(\zeta^q=1\), \(\zeta\ne1\)).
 
 \begin{theorem}[Generalized Prouhet cancellation and sharp moment]
 \label{p1:thm:base-q-Prouhet}
@@ -6699,6 +6726,13 @@ where the finite geometric sum was differentiated.  Multiplying the \(m\)
 linear terms yields
 \(q^{1+2+\cdots+m}/(\zeta-1)^m\); coefficient extraction contributes \(m!\).
 \end{proof}
+
+\emph{Formal status.}  Only the degree-zero case of \eqref{p1:eq:base-q-Prouhet} is
+formal so far: \lean{Fabius.sum\_zeta\_pow\_digits\_sum\_eq\_zero} in
+\path{BaseDigitProduct.lean} gives \(\sum_{n<q^m}\zeta^{s_q(n)}=0\) for \(m\ge1\) under
+the single hypothesis \(\sum_{r<q}\zeta^r=0\), by evaluating the digit product at \(z=1\).
+The cancellation for polynomials of positive degree below \(m\), and the sharp moment
+\eqref{p1:eq:base-q-sharp-moment}, are not yet formalized.
 
 For \(q=2\) and \(\zeta=-1\), the sequence is \(u_n=\eps_n\) and
 \eqref{p1:eq:base-q-sharp-moment} becomes
