@@ -12525,8 +12525,8 @@ inside the proof below does not formalize the result the proof concludes.
   than a mathematical claim.
 \end{description}
 
-Of the 282 labelled forward results, 81 are \statusexact, 85 are
-\statuspartial, 108 are \statusnone, and 8 are \statusna.  The original
+Of the 282 labelled forward results, 88 are \statusexact, 83 are
+\statuspartial, 103 are \statusnone, and 8 are \statusna.  The original
 191-result pre-Fabius core had 36 \statusexact, 29 \statuspartial, 123
 \statusnone, and 3 \statusna{} entries.  The four integrated guide chapters
 add 31 human-proved but not Lean-formalized assertions and five labelled
@@ -13075,10 +13075,10 @@ Partitions, words, paths, and inversion statistics & 3 & 1 & 5 & 0\\
 Finite fields, Grassmannians, and rank enumeration & 0 & 1 & 5 & 0\\
 Symmetry and unimodality & 0 & 0 & 3 & 0\\
 The infinite $q$-binomial theorem & 1 & 1 & 2 & 0\\
-Basic hypergeometric series & 1 & 3 & 5 & 0\\
+Basic hypergeometric series & 2 & 3 & 4 & 0\\
 Euler telescoping and very-well-poised summations & 0 & 0 & 4 & 0\\
 Bilateral series and Ramanujan's \texorpdfstring{${}_1\psi_1$}{1psi1} sum & 0 & 0 & 2 & 0\\
-$q$-difference calculus and the quantum binomial & 7 & 2 & 1 & 0\\
+$q$-difference calculus and the quantum binomial & 8 & 2 & 0 & 0\\
 The $q$-gamma and $q$-beta functions & 3 & 1 & 4 & 0\\
 Jacobi's triple product & 5 & 2 & 1 & 0\\
 Theta modularity, lattice dissection, and sums of squares & 0 & 0 & 14 & 4\\
@@ -13086,7 +13086,7 @@ Partitions and product--sum identities & 0 & 0 & 4 & 0\\
 Bailey pairs and the Rogers--Ramanujan identities & 1 & 0 & 6 & 0\\
 Bailey transforms and the Andrews--Gordon identities & 0 & 0 & 8 & 1\\
 Cyclotomic factorization and congruences & 6 & 1 & 2 & 0\\
-Negative upper indices and geometric Newton interpolation & 2 & 2 & 5 & 0\\
+Negative upper indices and geometric Newton interpolation & 7 & 0 & 2 & 0\\
 Central $q$-binomial sums and Lambert series & 1 & 0 & 6 & 0\\
 Asymptotic regimes and Bernoulli expansions & 0 & 2 & 6 & 0\\
 Exact limits, reciprocity, and research frontiers & 0 & 0 & 5 & 0\\
@@ -13096,7 +13096,7 @@ Half-base arithmetic and Prouhet--Thue--Morse cancellation & 6 & 3 & 0 & 0\\
 Geometric uniform sums, $q$-cumulants, and the Fabius--Rvachev functions & 2 & 11 & 0 & 0\\
 Dyadic Gaussian--Thue--Morse structure and the values of $F$ & 6 & 44 & 6 & 0\\
 \midrule
-\textbf{Forward total} & 81 & 85 & 108 & 8\\
+\textbf{Forward total} & 88 & 83 & 103 & 8\\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -13448,7 +13448,16 @@ formalized}\\[2pt]
 \Cref{lem:cauchy-II} & \statusexact &
 \texttt{finite\_\allowbreak{}qCauchy\_\allowbreak{}second\_\allowbreak{}identity}\newline
 {\footnotesize\texttt{QBinomialCauchy}; arbitrary commutative ring and all parameters/degrees}\\[2pt]
-\Cref{thm:q-pfaff} & \statusnone & ---\\[2pt]
+\Cref{thm:q-pfaff} & \statusexact &
+\texttt{q\_\allowbreak{}pfaff\_\allowbreak{}saalschutz},
+\texttt{q\_\allowbreak{}pfaff\_\allowbreak{}saalschutz\_\allowbreak{}term},
+\texttt{finiteQPochhammerIn\_\allowbreak{}ne\_\allowbreak{}zero\_\allowbreak{}of\_\allowbreak{}le}\newline
+{\footnotesize\texttt{QPfaffSaalschutz}; the terminating sum as a finite
+identity in any field with $q\ne0$, nonzero $a,b,c$, and the four displayed
+denominators nonzero, derived algebraically from
+\texttt{finite\_\allowbreak{}qCauchy\_\allowbreak{}second\_\allowbreak{}identity}
+exactly as in the proof; $q^{-n}$ is $(q^n)^{-1}$ and $abq^{1-n}/c$ is
+$abq/(cq^n)$}\\[2pt]
 \Cref{cor:q-chu} & \statusnone & ---\\[2pt]
 \Cref{lem:2phi1-reversal} & \statusnone & ---\\[2pt]
 \Cref{prop:qchu2-by-reversal} & \statusnone & ---\\[2pt]
@@ -13494,7 +13503,17 @@ $N$, rather than invoking a basis}\\[2pt]
 \texttt{quantumPlane\_\allowbreak{}mul\_\allowbreak{}pow}\newline
 {\footnotesize\texttt{QuantumBinomial}; every semiring, with $q$ assumed only
 to commute with $X$ and $Y$; see \Cref{rem:quantum-binomial-generality}}\\[2pt]
-\Cref{cor:quantum-multinomial} & \statusnone & ---\\[2pt]
+\Cref{cor:quantum-multinomial} & \statusexact &
+\texttt{quantum\_\allowbreak{}multinomial},
+\texttt{sum\_\allowbreak{}antidiagonalTuple\_\allowbreak{}succ},
+\texttt{gaussianBinomial\_\allowbreak{}symm'},
+\texttt{Commute.qMultinomial\_\allowbreak{}left}\newline
+{\footnotesize\texttt{QuantumMultinomial}; in any semiring, for
+$x_0,\dots,x_{r-1}$ with $x_jx_i=qx_ix_j$ ($i<j$) and $q$ commuting with
+each $x_i$, no centrality of $q$ or ambient commutative ring required; the
+sum runs over \texttt{Finset.Nat.antidiagonalTuple} and the ordered monomial
+is a \texttt{List} product; the symmetry $[n,n-k]_q=[n,k]_q$ is transported
+to every semiring from the universal polynomial}\\[2pt]
 \Cref{cor:qexp-factor} & \statuspartial &
 \texttt{hasSum\_\allowbreak{}qExp},
 \texttt{hasSum\_\allowbreak{}qExpBig},
@@ -13684,13 +13703,52 @@ formalized}\\[2pt]
 \midrule
 \multicolumn{3}{@{}l}{\itshape Negative upper indices and geometric Newton interpolation}\\
 \midrule
-\Cref{prop:negative-gaussian} & \statusnone & ---\\[2pt]
-\Cref{thm:generalized-pascal} & \statuspartial & \texttt{gaussianBinomial\_\allowbreak{}succ\_\allowbreak{}succ}\newline{\footnotesize\texttt{FiniteQBinomialCore}}\\[2pt]
-\Cref{cor:reciprocal-product-negative} & \statusnone & ---\\[2pt]
-\Cref{thm:upper-parameter-series} & \statusnone & ---\\[2pt]
+\Cref{prop:negative-gaussian} & \statusexact &
+\texttt{gaussianBinomialZ},
+\texttt{gaussianBinomialZ\_\allowbreak{}natCast},
+\texttt{gaussianBinomialZ\_\allowbreak{}neg\_\allowbreak{}natCast},
+\texttt{finiteQPochhammerIn\_\allowbreak{}inv\_\allowbreak{}base\_\allowbreak{}eq}\newline
+{\footnotesize\texttt{GaussianBinomialInteger}; the integer-index coefficient
+$(q^{N-k+1};q)_k/(q;q)_k$ in any field with $q\ne0$, its agreement with the
+Gaussian coefficient for $N\ge0$ (including the value $0$ above the diagonal),
+and the reflection for every $m\ge0$ (the case $m=0$ reads $0=0$ for
+$k\ge1$), with $q^{-mk-\binom k2}$ written as the inverse of a natural
+power}\\[2pt]
+\Cref{thm:generalized-pascal} & \statusexact &
+\texttt{gaussianBinomialZ\_\allowbreak{}succ},
+\texttt{gaussianBinomialZ\_\allowbreak{}succ'},
+\texttt{gaussianBinomial\_\allowbreak{}succ\_\allowbreak{}succ}\newline
+{\footnotesize\texttt{GaussianBinomialInteger}; both Pascal laws for every
+integer upper index in any field with $q\ne0$ and $(q;q)_k\ne0$, not only in
+$\RationalNumbers(q)$; \texttt{FiniteQBinomialCore} for natural
+indices over any semiring}\\[2pt]
+\Cref{cor:reciprocal-product-negative} & \statusexact &
+\texttt{hasSum\_\allowbreak{}reciprocal\_\allowbreak{}finiteQPochhammerIn},
+\texttt{hasSum\_\allowbreak{}reciprocal\_\allowbreak{}finiteQPochhammerIn\_\allowbreak{}neg},
+\texttt{finiteQPochhammerIn\_\allowbreak{}pow\_\allowbreak{}div}\newline
+{\footnotesize\texttt{GaussianBinomialInteger}; both expansions as
+\texttt{HasSum} statements in any complete normed field for $\lVert q\rVert<1$,
+$\lVert z\rVert<1$, and every $m\ge0$; the formal version is
+\texttt{prod\_\allowbreak{}one\_\allowbreak{}sub\_\allowbreak{}qPow\_\allowbreak{}X\_\allowbreak{}mul\_\allowbreak{}gaussianBinomialGeneratingSeries}
+(\texttt{SymmetricFunctionGenerating})}\\[2pt]
+\Cref{thm:upper-parameter-series} & \statusexact &
+\texttt{gaussianBinomialC},
+\texttt{hasSum\_\allowbreak{}gaussianBinomialC\_\allowbreak{}add}\newline
+{\footnotesize\texttt{GaussianBinomialComplexOrder}; complex $\alpha$ with the
+principal branch of $q^\alpha$, $\lVert q\rVert<1$, $\lVert z\rVert<1$}\\[2pt]
 \Cref{thm:complex-gaussian-properties} & \statusnone & ---\\[2pt]
 \Cref{cor:complex-gaussian-classical} & \statusnone & ---\\[2pt]
-\Cref{thm:generalized-qbinomial} & \statuspartial & \texttt{finite\_\allowbreak{}qBinomial\_\allowbreak{}theorem}\newline{\footnotesize\texttt{FiniteQBinomialCore}}\\[2pt]
+\Cref{thm:generalized-qbinomial} & \statusexact &
+\texttt{hasSum\_\allowbreak{}qPochhammerC},
+\texttt{hasSum\_\allowbreak{}qPochhammerC\_\allowbreak{}inv},
+\texttt{gaussianBinomialC\_\allowbreak{}natCast},
+\texttt{finite\_\allowbreak{}qBinomial\_\allowbreak{}theorem}\newline
+{\footnotesize\texttt{GaussianBinomialComplexOrder}; both series over
+$\ComplexNumbers$ for the complex-order symbol \texttt{qPochhammerC}, under
+$\lVert q\rVert<1$, $q\ne0$, $\lVert zq^\alpha\rVert<1$ (finite form) and
+$\lVert z\rVert<1$ (reciprocal form); the integral specializations follow
+from \texttt{gaussianBinomialC\_\allowbreak{}natCast}, and the terminating
+polynomial identity is \texttt{FiniteQBinomialCore}}\\[2pt]
 \Cref{thm:geometric-newton} & \statusexact &
 \texttt{nodeNewtonPoly},
 \texttt{eval\_\allowbreak{}nodeNewtonPoly},

@@ -112,9 +112,10 @@ fonts. The files under `assets/experiments/**/figures/` remain research
 figures, not publication manuscripts.
 
 The current master TeX is a source-only successor to that checkpoint: it has
-14,390 lines, 675,892 bytes, and SHA-256
-`cd8e5830fca13f85fb614d4ce7e0b6c1c99a6da54c660c76df2c6890def69ae3`.
-It combines the incoming q-beta and Newton-interpolation crosswalks with the
+14,448 lines, 679,446 bytes, and SHA-256
+`fa91f1e7935146b5e7e705b45e9db26cede71aa03a2bb49bfca0fa39674c1962`.
+It combines the incoming q-beta, Newton-interpolation, integer/complex-order
+Gaussian, q-Pfaff--Saalschütz, and quantum-multinomial crosswalks with the
 Gaussian coefficient closure already on this branch. The regenerated root
 `SHA256SUMS` ledger records the live source and retained PDF separately; the
 PDF remains pinned to source SHA-256
@@ -156,6 +157,9 @@ The collision-free polynomial API is `nodeNewtonPoly`,
 `degree_nodeNewtonPoly_lt`, `nodeNewtonPoly_eq_interpolate`,
 `eq_nodeNewtonPoly_of_eval_eq`, and `coeff_nodeNewtonPoly_self`; the remaining
 eight Newton declarations retain their incoming names.
+The newest finite-q surfaces are `GaussianBinomialInteger`,
+`GaussianBinomialComplexOrder`, `QPfaffSaalschutz`, and
+`QuantumMultinomial`.
 
 The two newest generic theorems are
 `deriv_qPochhammerInfIn_ne_zero_of_mul_pow_eq_one`, which gives a nonzero
@@ -167,7 +171,7 @@ entireness, zero-locus, reciprocal-power, and analytic-order results rather
 than duplicating their analytic proofs. In `QBinomialTheoremInfinite`,
 `finiteQPochhammerIn_zero_left` remains the unique declaration owned by
 `GaussianBinomialAtOne` and is imported rather than redeclared. The forward
-status ledger is 81 Exact, 85 Partial, 108 None, and 8 interface rows; the
+status ledger is 88 Exact, 83 Partial, 103 None, and 8 interface rows; the
 original 191-result pre-Fabius core is 36/29/123/3, and the
 completed source concordance records 66 Lean-proved rows, 412 human-proved
 frontier rows, 60 not-applicable rows, and 9 conjectures.
@@ -209,6 +213,10 @@ derivative clause keeps that compound row Partial.
 
 The geometric Newton interpolation and divided-difference rows are Exact. The
 Jackson q-beta product/q-gamma evaluation and its two recurrence formulas are
-also Exact. No PDF was generated locally while resolving this merge: the
+also Exact. The terminating q-Pfaff--Saalschütz sum and quantum multinomial
+are Exact, as are the integer-index Gaussian definition and Pascal laws, both
+reciprocal-product expansions, the complex upper-parameter series, and the
+generalized q-binomial theorem. The remaining complex-Gaussian property and
+classical-limit rows stay unformalized. No PDF was generated locally while resolving this merge: the
 supplied 354-page artifact is the validated upstream receipt described above,
 while the merged source is its source-only successor.
