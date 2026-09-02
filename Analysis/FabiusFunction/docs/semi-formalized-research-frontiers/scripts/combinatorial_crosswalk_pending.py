@@ -1128,6 +1128,33 @@ $F_k'=kF_k+F_{k-1}z^{r-1}/(r-1)!$ for $F_k=W^k/k!$, and the coefficient of
 $z^n/n!$ is the recurrence.""")),
 ]
 
+PENDING += [
+ # --- thm:r-stirling-recurrence ---
+ (r"""$1,\ldots,r$ is preserved in both constructions, and deletion of $n$ reverses
+them.
+\end{proof}
+""",
+  remark(r"""% ed.: crosswalk added 2026-09-02; Lean takes the recurrence as the definition.
+Module \lean{RStirling} defines $\StirlingSecondKind nk_{\!r}$ by the
+recurrence \cref{eq:r-stirling-recurrence} with $\StirlingSecondKind rr_{\!r}=1$
+and the zero boundary (\lean{Fabius.rStirling}, in the shifted indices
+$T_r(n,k)=\StirlingSecondKind{n+r}{k+r}_{\!r}$ as \lean{Fabius.rStirlingShift});
+the count of partitions with $1,\dots,r$ in distinct blocks is not
+formalized.  The recurrence is \lean{Fabius.rStirling_succ_succ} (for
+$n\ge r$).  Since the recurrence says that $n\mapsto T_r(n,k)$ is the binomial
+convolution of $j\mapsto r^j$ with $j\mapsto\StirlingSecondKind jk$
+(\lean{Fabius.rStirlingShift_eq_binomialConv}, by induction with the shift
+rule \lean{Bell.binomialConv_succ}), one gets the explicit formula
+$\StirlingSecondKind{n+r}{k+r}_{\!r}=\sum_j\binom nj\StirlingSecondKind jk r^{n-j}$
+(\lean{Fabius.rStirlingShift_eq_sum}, \lean{Fabius.rStirling_eq_sum}), and the
+mixed generating function \cref{eq:r-stirling-egf} follows from the product
+rule for exponential generating functions:
+\lean{Fabius.egfA_rStirlingPoly} is
+$\sum_n\bigl(\sum_k\StirlingSecondKind{n+r}{k+r}_{\!r}y^k\bigr)z^n/n!
+=\EulerE^{rz}\exp\bigl(y(\EulerE^z-1)\bigr)$ in $\mathbb Q[y][[z]]$, which is
+\cref{eq:r-stirling-egf} after multiplication by $y^r$.""")),
+]
+
 applied = 0
 for anchor, text in PENDING:
     if text.strip() in s:
