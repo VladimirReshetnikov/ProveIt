@@ -109,12 +109,12 @@ only 4,606 declarations and
 declarations, including 69 undocumented ones.  Run the script for the live
 numbers rather than copying these historical values.
 
-The live post-merge 2026-09-01 inventory contains 664 modules and 8,803
+The live post-merge 2026-09-01 inventory contains 666 modules and 8,827
 lexically visible public declarations, with zero missing module headers and
 zero missing doc comments.  Relative to the 610/8,318 activation checkpoint,
-the current tree adds fifty-four modules and 485 declarations.  Relative to
-the earlier 630/8,552 merged checkpoint, concurrent source work adds thirty-four
-modules and 251 declarations.  The final one-definition/eight-theorem
+the current tree adds fifty-six modules and 509 declarations.  Relative to
+the earlier 630/8,552 merged checkpoint, concurrent source work adds thirty-six
+modules and 275 declarations.  The final one-definition/eight-theorem
 `RvachevSuperconvergentSynthesis.lean` leaf contributes
 `IsRvachevSuperconvergentPhase`,
 `isRvachevSuperconvergentPhase_two_pow_iff`,
@@ -150,6 +150,12 @@ The four latest q-algebra modules contribute twenty-six declarations:
 `CyclotomicDivisibility.lean` 0+3, `PrimitiveRootBlock.lean` 0+3,
 `QCatalan.lean` 1+11, and `QLucas.lean` 0+8.  They add the carry criterion,
 primitive-root block formula, q-Lucas theorem, and integral q-Catalan API.
+The newest two modules contribute three definitions and twenty-one theorems:
+`QBetaIntegral.lean` 1+8 and `NewtonInterpolation.lean` 2+13.  The former
+evaluates the Jackson q-beta integral as both an infinite-product quotient and
+a q-gamma quotient, with positivity, symmetry, and successor recurrences; the
+latter supplies triangular Newton coefficients and polynomials, interpolation
+and uniqueness, divided differences, and the geometric-grid specialization.
 The older 622/8,472, 623/8,476, 629/8,546, 630/8,552,
 641/8,650, and 643/8,661 values below are historical checkpoints, not
 descriptions of the live tree.  The earlier additions and q-series tranches are
@@ -348,7 +354,9 @@ and bring that audit to 657/8,755.  The final two q leaves contribute thirteen
 declarations and bring that intermediate audit to 659/8,768.  The
 superconvergent synthesis leaf then adds one module and nine declarations,
 yielding 660/8,777.  The four newest q modules add one definition and
-twenty-five theorems, yielding the live 664/8,803 census recorded above.
+twenty-five theorems, yielding the intermediate 664/8,803 census.
+The Jackson q-beta and Newton interpolation leaves then add three definitions
+and twenty-one theorems, yielding the live 666/8,827 census recorded above.
 
 That increment is exhaustively counted as
 `QPochhammerInfiniteBounds.lean` 0+5, `HeineTransformation.lean` 2+5,
@@ -595,7 +603,7 @@ and 88-page notation-catalogue artifacts likewise predate their current merged
 sources.  Their package notices treat those PDFs as historical validation
 receipts, not parity claims, until fresh uninterrupted three-pass builds
 complete.  The inverse-computability receipt likewise requires refresh for the
-664/8,803 census.  The canonical inverse-theory publication retains a 134-page
+666/8,827 census.  The canonical inverse-theory publication retains a 134-page
 artifact synchronized at its latest-main source checkpoint; the merged
 effective-inversion and superconvergent-synthesis tranches make current parity
 pending.

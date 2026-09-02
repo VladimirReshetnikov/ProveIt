@@ -19,8 +19,8 @@ old flat layout; the **Previous path** column below is the map. Documents
 were moved verbatim — no `.tex` content was changed by the reorganization,
 so no PDF was rebuilt for it.
 
-**Current artifact checkpoint (2026-09-01).** The live Lean audit scans 664
-source modules and 8,803 public declarations, with no missing module headers or
+**Current artifact checkpoint (2026-09-01).** The live Lean audit scans 666
+source modules and 8,827 public declarations, with no missing module headers or
 declaration comments.
 Several PDFs below are retained,
 readable publication checkpoints rather than renders of the final merged TeX.
@@ -50,8 +50,8 @@ exact ceiling modulus, gap-to-modulus abstract strengthening, and input-bit
 asymptotics remain outside Lean.
 
 The two canonical syntheses have source/artifact receipts. The current
-q-series source has 14,355 lines, 673,735 bytes, and SHA-256
-`117c9a70552241ef57bd878f69e07c9af8105a22afb45f57d25348125469e79c`.
+q-series source has 14,387 lines, 675,649 bytes, and SHA-256
+`4272833a3b686030538dc9494551044b2141ad29e9ead32b8b2b6591a58e27b3`.
 Its retained PDF is a historical 348-page, 3,002,729-byte A4 artifact with
 SHA-256
 `8bf14b52d8a0fc0abc4d54cca503fd47a2df37cf76ee1bb4e442bea1fd2a4aa7`,
@@ -79,6 +79,11 @@ The root-of-unity tail adds `CyclotomicDivisibility.lean` (three theorems),
 `PrimitiveRootBlock.lean` (three theorems), `QCatalan.lean` (one definition
 and eleven theorems), and `QLucas.lean` (eight theorems), for one definition
 and twenty-five theorems in all.
+The newest analytic/algebraic tail adds `QBetaIntegral.lean` (one definition
+and eight theorems) and `NewtonInterpolation.lean` (two definitions and
+thirteen theorems). The latter uses the collision-safe public definition
+`newtonInterpolant`, alongside its generic and geometric-grid reconstruction
+theorems.
 The local reciprocal-power zero-lattice theorem completes
 `QPochhammerEntire.lean` to five theorems, and two further general-product
 theorems complete `QPochhammerInfinite.lean` to one definition and 29
@@ -88,7 +93,7 @@ product's locally uniform convergence is exact for every complex strict
 contraction, including `q = 0`, with dyadic Rvachev and bounded-Fabius Fourier
 specializations. The compound centered/MGF and exterior reciprocal/pole
 theorem remains Partial. The forward status ledger covers 282 labelled
-results: 77 Exact / 85 Partial / 112 None / 8 N/A interface rows. No PDF was
+results: 81 Exact / 85 Partial / 108 None / 8 N/A interface rows. No PDF was
 generated for this source-only update, so the retained 348-page artifact
 remains historical. The comb synthesis also
 has a later chapter-03 notation edit: its retained 158-page, 2,456,105-byte

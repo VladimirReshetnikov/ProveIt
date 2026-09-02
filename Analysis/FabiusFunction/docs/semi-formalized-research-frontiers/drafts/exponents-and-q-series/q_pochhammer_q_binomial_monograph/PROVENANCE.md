@@ -36,9 +36,9 @@ SHA-256
 `79ee5e60a6c7e42a91c58dcd9bcae56173cc6b4aa3e54739a461943f705f3904`;
 exactly three guarded serial passes produced 338, 348, and 348 pages.
 
-The live source now postdates that receipt: it has 14,355 lines, 673,735 bytes,
+The live source now postdates that receipt: it has 14,387 lines, 675,649 bytes,
 and SHA-256
-`117c9a70552241ef57bd878f69e07c9af8105a22afb45f57d25348125469e79c`.
+`4272833a3b686030538dc9494551044b2141ad29e9ead32b8b2b6591a58e27b3`.
 The regenerated root `SHA256SUMS` ledger records the same identity; the
 retained PDF therefore does not claim render parity with the current TeX. The
 validation record in `README.md` distinguishes compilation, font embedding,
@@ -65,7 +65,12 @@ theorems), `ThetaQuasiPeriodicity` (one definition and six theorems),
 `QPochhammerOrderDerivative` (zero definitions and three theorems), and
 `JacobiCubic` (zero definitions and two theorems). The current tail adds
 `CentralQBinomialReduction` (zero definitions and six theorems) and
-`CyclotomicFactorization` (zero definitions and seven theorems). The
+`CyclotomicFactorization` (zero definitions and seven theorems), followed by
+`CyclotomicDivisibility` (zero definitions and three theorems),
+`PrimitiveRootBlock` (zero definitions and three theorems), `QCatalan` (one
+definition and eleven theorems), and `QLucas` (zero definitions and eight
+theorems). The latest tail adds `QBetaIntegral` (one definition and eight
+theorems) and `NewtonInterpolation` (two definitions and thirteen theorems). The
 `QPochhammerEntire.lean` leaf proves the fixed-nome
 single-symbol locally uniform product and differentiability, the
 division-free factor-zero criterion including `q = 0`, the reciprocal-power
@@ -80,15 +85,19 @@ complex strict contraction, including `q = 0`, and gives the dyadic Rvachev
 product and bounded-Fabius Fourier specializations. The compound
 `thm:qF-spectral` row remains Partial because its named centered/MGF packaging
 and exterior reciprocal, pole-divisor, and zero--pole clauses are absent. The
-forward status inventory covers 282 labelled results: 77 Exact / 85 Partial /
-112 None / 8 N/A; the 191-result pre-Fabius core remains 36 / 29 / 123 / 3.
+forward status inventory covers 282 labelled results: 81 Exact / 85 Partial /
+108 None / 8 N/A; the 191-result pre-Fabius core remains 36 / 29 / 123 / 3.
 The central-reduction row is Exact through its division-free commutative-ring
 identity and field quotient wrapper. The cyclotomic-factorization row is Exact
 for the factorial form over every commutative ring and the Gaussian form over
 every integral domain, with the exponent bounds explicit. The half-base
 Gaussian valuation row remains Partial because its concluding odd-integer
-valuation statement has not yet been formalized. No PDF was generated while
-resolving this merge, so the retained 348-page artifact remains historical.
+valuation statement has not yet been formalized. The q-beta integral and
+recurrence rows are Exact on their stated positive real domain, and the
+geometric Newton and triangular-coefficient rows are Exact through the generic
+field-valued interpolation module and its geometric-grid specialization. No
+PDF was generated while resolving this merge, so the retained 348-page
+artifact remains historical.
 
 The former q-Pochhammer/q-binomial monograph arrived in commit
 `47172bc03ec078961d8b023dfe156ecd712efb65`. Its pre-repair source SHA-256 was

@@ -113,8 +113,8 @@ Type-3 fonts. The files under `assets/experiments/**/figures/` remain research
 figures, not publication manuscripts.
 
 The current master TeX is a source-only successor to that checkpoint: it has
-14,355 lines, 673,735 bytes, and SHA-256
-`117c9a70552241ef57bd878f69e07c9af8105a22afb45f57d25348125469e79c`.
+14,387 lines, 675,649 bytes, and SHA-256
+`4272833a3b686030538dc9494551044b2141ad29e9ead32b8b2b6591a58e27b3`.
 The regenerated root `SHA256SUMS` ledger records the same identity. The
 historical source identity above must not be reused for the live source, and
 the retained PDF does not claim render parity with the current TeX.
@@ -144,8 +144,10 @@ theorems), `QPochhammerOrderDerivative` (zero definitions and three theorems),
 cyclotomic tail consists exhaustively of `CyclotomicDivisibility` (zero
 definitions and three theorems), `PrimitiveRootBlock` (zero definitions and
 three theorems), `QCatalan` (one definition and eleven theorems), and `QLucas`
-(zero definitions and eight theorems), together with expanded Euler, Jacobi,
-and Rogers--Szegő material.
+(zero definitions and eight theorems).  The latest analytic and interpolation
+tail adds `QBetaIntegral` (one definition and eight theorems) and
+`NewtonInterpolation` (two definitions and thirteen theorems), together with
+expanded Euler, Jacobi, and Rogers--Szegő material.
 
 The two newest generic theorems are
 `deriv_qPochhammerInfIn_ne_zero_of_mul_pow_eq_one`, which gives a nonzero
@@ -157,7 +159,7 @@ entireness, zero-locus, reciprocal-power, and analytic-order results rather
 than duplicating their analytic proofs. In `QBinomialTheoremInfinite`,
 `finiteQPochhammerIn_zero_left` remains the unique declaration owned by
 `GaussianBinomialAtOne` and is imported rather than redeclared. The forward
-status ledger is 77 Exact, 85 Partial, 112 None, and 8 interface rows; the
+status ledger is 81 Exact, 85 Partial, 108 None, and 8 interface rows; the
 191-result pre-Fabius core is 36/29/123/3. The compound outer spectral-product
 theorem remains Partial even though the three-theorem outer-product leaf proves
 local-uniform (normal) convergence for every complex strict contraction, its
@@ -180,6 +182,10 @@ domain for the Gaussian form, with the exponent bounds stated explicitly. The
 half-base Gaussian valuation row remains Partial: Lean proves the reciprocal
 identity and symmetry used in the argument, while the concluding odd-integer
 valuation statement is still outside the formal surface.
+The Jackson q-beta evaluation and both recurrences are Exact over the stated
+real domain `0 < q < 1`, `0 < x`, `0 < y`.  The geometric Newton formula and
+its triangular-coefficient corollary are Exact via the generic field-valued
+interpolation API and its geometric-grid specialization.
 
 No PDF was generated while resolving this merge. The root package checksum
 ledger records the live source and retained historical PDF as distinct

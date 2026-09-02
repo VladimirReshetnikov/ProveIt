@@ -510,6 +510,8 @@ import FabiusFunction.PrimitiveRootBlock
 import FabiusFunction.QLucas
 import FabiusFunction.CyclotomicDivisibility
 import FabiusFunction.QCatalan
+import FabiusFunction.QBetaIntegral
+import FabiusFunction.NewtonInterpolation
 import FabiusFunction.GaussianBinomialPalindromic
 import FabiusFunction.ThetaQuasiPeriodicity
 
@@ -755,6 +757,16 @@ audits' optimized cubic test function through the Collatz–Wielandt bracket
 with the two positivity checks discharged by 32-piece subdivided Bernstein
 certificates — integer coefficients verified by `ring` normalization, no
 Sturm sequences — on a general piecewise-positivity engine for `[0,1]`.
+
+The Newton-interpolation and Jackson-q-beta tail contributes three definitions
+and twenty-one theorems.  `NewtonInterpolation` has two definitions and
+thirteen theorems: triangular Newton coefficients and polynomials,
+interpolation and uniqueness, the divided-difference formula, and its explicit
+geometric-grid specialization.  `QBetaIntegral` has one definition and eight
+theorems: for `0 < q < 1` and positive arguments it evaluates the Jackson
+q-beta integral in infinite-product and q-gamma forms and derives symmetry,
+positivity, and both successor recurrences.  The hypotheses are retained
+explicitly; no endpoint or `q → 1` limiting theorem is asserted.
 
 The probabilistic layer is closed at the level of measures.  The up-measure
 `μ_up = up·Leb` satisfies the refinement equation

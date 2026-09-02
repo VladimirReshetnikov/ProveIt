@@ -31,7 +31,7 @@ module tranches and the zero-definition, three-theorem
 crosswalk. That source is a source-only successor to the fresh artifact receipt
 and requires a later synchronized three-pass build. Retained PDFs under its `assets/` tree are
 research figures, not alternate manuscript renderings. The current Lean audit
-contains 664 facade-reachable modules and 8,803 public declarations, with no
+contains 666 facade-reachable modules and 8,827 public declarations, with no
 missing module headers or declaration documentation.
 
 ## Detailed package record
@@ -95,9 +95,9 @@ Current packages and retained intake records:
   figures. Pinned source revisions and Git history preserve every superseded
   layout and arrival fact.
 
-  The current `q_pochhammer_q_binomial_monograph.tex` has 14,355 lines,
-  673,735 bytes, and SHA-256
-  `117c9a70552241ef57bd878f69e07c9af8105a22afb45f57d25348125469e79c`.
+  The current `q_pochhammer_q_binomial_monograph.tex` has 14,387 lines,
+  675,649 bytes, and SHA-256
+  `4272833a3b686030538dc9494551044b2141ad29e9ead32b8b2b6591a58e27b3`.
   Its retained `q_pochhammer_q_binomial_monograph.pdf` is a historical
   348-page A4 artifact of 3,002,729 bytes, with SHA-256
   `8bf14b52d8a0fc0abc4d54cca503fd47a2df37cf76ee1bb4e442bea1fd2a4aa7`.
@@ -793,8 +793,8 @@ claims about the current canonical source. The canonical synthesis's current
 source and retained historical PDF are identified by the single exact receipt
 in the detailed package record above.
 
-The latest validated forward formalization ledger has 282 rows: 77 Exact, 85
-Partial, 112 with no counterpart, and 8 interface-only. The original
+The latest validated forward formalization ledger has 282 rows: 81 Exact, 85
+Partial, 108 with no counterpart, and 8 interface-only. The original
 191-result pre-Fabius core had 36 exact, 29 partial, 123 with no counterpart,
 and 3 interface-only entries. The four integrated-guide chapters add 31
 human-proved but not Lean-formalized assertions and five labelled definitions;
@@ -842,6 +842,8 @@ compatibility spelling of its primary identity),
 `PrimitiveRootBlock.lean` (zero definitions, three theorems),
 `QCatalan.lean` (one definition, eleven theorems),
 `QLucas.lean` (zero definitions, eight theorems),
+`QBetaIntegral.lean` (one definition, eight theorems),
+`NewtonInterpolation.lean` (two definitions, thirteen theorems),
 `GaussianBinomialAtNegOne.lean` (five theorems),
 `RvachevPochhammerFactorization.lean` (one definition, nine theorems), and
 `QPochhammerEntire.lean` (zero definitions; four legacy compatibility
@@ -1125,3 +1127,10 @@ and eleven theorems), and `QLucas.lean` (eight theorems).  These twenty-six
 declarations prove the carry criterion, complete primitive-root block,
 q-Lucas theorem, and integral q-Catalan polynomial at their stated ring and
 primitive-root hypotheses.
+The newest analytic/algebraic tail adds `QBetaIntegral.lean` (one definition,
+eight theorems) and `NewtonInterpolation.lean` (two definitions, thirteen
+theorems). It formalizes the Jackson q-beta product and q-gamma evaluation,
+symmetry, positivity, and recurrences, together with generic Newton
+interpolation and its geometric-grid specialization; the interpolation
+polynomial is named `newtonInterpolant` to remain distinct from the older
+Newton-basis generating-function `newtonPoly`.
