@@ -116,18 +116,27 @@ STATUS = {
    r"\cref{eq:bell-lah-specialization} is \lean{Fabius.partialBell_factorial} "
    r"(\lean{PartialBellPolynomials}, \lean{BellGeneratingFunctions}); the factorial row sum "
    r"\cref{eq:bell-factorial-complete} and the Touchard form are not formalized"),
+ 'thm:bell-partial-convolution': ('Lean',
+   r"\lean{Fabius.factorial_mul_partialBell_add} (\lean{BellComposition}), in the division-free "
+   r"form $(k_1+k_2)!\,B_{n,k_1+k_2}=k_1!k_2!\sum_i\binom ni B_{i,k_1}B_{n-i,k_2}$"),
+ 'thm:exponential-composition': ('Lean',
+   r"\lean{Fabius.egfA_subst_bellWeightSeries} (\lean{BellComposition}): substitution of "
+   r"exponential generating functions over any commutative $\mathbb Q$-algebra"),
  'thm:complete-bell-addition': ('Lean',
    r"\lean{Bell.complete_add} (\lean{BellPolynomialInversion}), over every commutative semiring"),
- 'thm:bell-transform-inverse': ('partial',
-   r"the inversion is \lean{Bell.complete_cumulant} and \lean{Bell.cumulant_complete} "
-   r"(\lean{BellPolynomialInversion}), with the inverse sequence given recursively by "
-   r"\lean{Bell.cumulant} over every commutative ring; the closed form "
-   r"\cref{eq:bell-transform-x} through partial Bell polynomials is not formalized"),
- 'thm:moment-cumulant': ('partial',
-   r"the moment--cumulant inversion is \lean{Fabius.completeBellPolynomial_momentCumulant} and "
-   r"\lean{Fabius.momentCumulant_completeBellPolynomial} (\lean{MomentCumulantAlgebra}) and, "
-   r"division-free, \lean{Bell.complete_cumulant}; the closed form of "
-   r"\cref{eq:cumulants-from-moments} is not formalized"),
+ 'thm:bell-transform-inverse': ('Lean',
+   r"\cref{eq:bell-transform-x} is \lean{Fabius.bell_transform_inverse} (\lean{BellComposition}), "
+   r"from $X=\log(1+Y)$ formalized as \lean{Fabius.log_subst_exp_sub_one} and the composition "
+   r"theorem; the recursive inversion over every commutative ring is \lean{Bell.complete_cumulant} "
+   r"and \lean{Bell.cumulant_complete} (\lean{BellPolynomialInversion}); the general form "
+   r"\cref{eq:general-bell-inverse} is not formalized"),
+ 'thm:moment-cumulant': ('Lean',
+   r"\cref{eq:moments-from-cumulants} is \lean{Fabius.bell_complete_eq_sum_partialBell} with "
+   r"\lean{Fabius.exp_subst_bellWeightSeries}, and \cref{eq:cumulants-from-moments} is "
+   r"\lean{Fabius.bell_transform_inverse} (\lean{BellComposition}); the recursive forms are "
+   r"\lean{Fabius.completeBellPolynomial_momentCumulant}, "
+   r"\lean{Fabius.momentCumulant_completeBellPolynomial} (\lean{MomentCumulantAlgebra}) and "
+   r"\lean{Bell.complete_cumulant}"),
  'thm:bell-egf': ('Lean',
    r"\lean{Fabius.exp_subst_exp_sub_one} (\lean{BellGeneratingFunctions}): "
    r"$\exp\circ(e^z-1)=\sum_n B(n)z^n/n!$ as formal power series over any commutative "
