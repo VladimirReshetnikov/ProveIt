@@ -4387,7 +4387,7 @@ in the final monomial integral.
 
 The concrete triangular arrays developed earlier are instances of a larger
 calculus.  This chapter collects the genuinely nonduplicate material from the
-five drafts: incidence-algebra inversion, the partition-lattice Möbius
+six supplied manuscripts: incidence-algebra inversion, the partition-lattice Möbius
 function, Sheffer sequences, and exponential Riordan arrays.  These viewpoints
 explain why changes of basis, labelled decomposition, and formal substitution
 repeatedly lead to the same matrices.
@@ -4487,12 +4487,19 @@ $\log M$.
 \section{Sheffer sequences}
 
 \begin{definition}
-A polynomial sequence $(s_n(x))_{n\geq0}$ is Sheffer for $(A,B)$ when
+Let $R$ be a commutative $\RationalNumbers$-algebra.  A polynomial sequence
+$(s_n(x))_{n\geq0}$ over $R$ is \emph{Sheffer for $(A,B)$} when
 \begin{equation}
  \sum_{n\geq0}s_n(x)\frac{t^n}{n!}=A(t)\EulerE^{xB(t)},                   \label{eq:merged-sheffer-egf}
 \end{equation}
-where $A(0)\ne0$, $B(0)=0$, and $B'(0)\ne0$.  It is of binomial type when
-$A=1$, and Appell when $B(t)=t$.
+where $A(t)\in R[[t]]$ has invertible constant coefficient and
+$B(t)\in tR[[t]]$ has invertible linear coefficient.  Thus $A$ is a unit and
+$B$ is a delta series with a unique compositional inverse $\overline B$.
+The associated sequence $(p_n(x))_{n\geq0}$ is defined by
+\[
+ \sum_{n\geq0}p_n(x)\frac{t^n}{n!}=\EulerE^{xB(t)}.
+\]
+The sequence is of binomial type when $A=1$, and Appell when $B(t)=t$.
 \end{definition}
 
 \begin{theorem}[Addition and lowering]
@@ -4538,7 +4545,8 @@ multiplication at $x$ and $y$.
 \section{Exponential Riordan arrays}
 
 \begin{definition}
-For $g(0)\ne0$, $f(0)=0$, and $f'(0)\ne0$, define
+Over a commutative $\RationalNumbers$-algebra, let $g(0)$ and $f'(0)$ be
+units and let $f(0)=0$.  Define
 \begin{equation}
  R_{n,k}=\frac{n!}{k!}[t^n]g(t)f(t)^k.                              \label{eq:merged-riordan-entry}
 \end{equation}
@@ -4579,9 +4587,9 @@ $\sum_{j\geq1}x_jt^j/j!$.
 \chapter{Complementary Bell numbers and signed partition calculus}
 \label{ch:merged-complementary-bell}
 
-The MathWorld material includes the complementary Bell numbers, which are the
-set-partition transform at block weight $-1$.  They are especially useful as a
-clean example of signed labelled enumeration.
+One supplied manuscript isolates the complementary Bell numbers, which are
+the set-partition transform at block weight $-1$.  They are especially useful
+as a clean example of signed labelled enumeration.
 
 \begin{definition}
 Define
@@ -4741,9 +4749,10 @@ machinery.
 \chapter{Good's multivariate Lagrange inversion formula}
 \label{ch:merged-good}
 
-Let $\bm w=(w_1,\ldots,w_d)$ be determined formally by
+Let $R$ be a commutative $\RationalNumbers$-algebra, and let
+$\bm w=(w_1,\ldots,w_d)$ be determined formally by
 \begin{equation}
- w_i=t_i\phi_i(\bm w),\qquad \phi_i(\bm0)\ne0.                     \label{eq:merged-good-system}
+ w_i=t_i\phi_i(\bm w),\qquad \phi_i(\bm0)\in R^\times.            \label{eq:merged-good-system}
 \end{equation}
 For a multi-index $\bm n$, write
 $\bm t^{\bm n}=\prod_it_i^{n_i}$.
@@ -4752,7 +4761,7 @@ $\bm t^{\bm n}=\prod_it_i^{n_i}$.
 \label{lem:merged-multiresidue}
 Let
 \[
- T_i(\bm x)=x_iU_i(\bm x),\qquad U_i(\bm0)\ne0\quad(1\leq i\leq d).
+ T_i(\bm x)=x_iU_i(\bm x),\qquad U_i(\bm0)\in R^\times\quad(1\leq i\leq d).
 \]
 Then, for every formal Laurent series for which either side is defined
 coefficientwise,
@@ -4910,9 +4919,9 @@ inverse map; see also Bender and Richmond's asymptotic formulation
 \label{ch:merged-bernoulli-euler}
 
 Bernoulli numbers already appeared in the Eulerian and power-sum chapters.
-The MathWorld material adds the surrounding polynomial calculus, Euler and
-Genocchi families, Bernoulli polynomials of the second kind, and the
-Euler--Maclaurin formula.  These families also illustrate the Sheffer
+Across the six supplied manuscripts, the distinct surrounding material is the
+polynomial calculus, the Euler and Genocchi families, Bernoulli polynomials of
+the second kind, and the Euler--Maclaurin formula.  These families also illustrate the Sheffer
 framework: ordinary Bernoulli and Euler polynomials are Appell sequences,
 whereas the second-kind Bernoulli polynomials are Sheffer for the forward
 difference operator.  Our convention is $\beta_1=-1/2$, in agreement with the
@@ -5034,6 +5043,200 @@ Coefficient comparison gives the multiplication formula.  Set $q=2,x=0$ and
 solve for the half-value.
 \end{proof}
 
+\section{Stirling and Touchard representations}
+\label{sec:merged-bernoulli-stirling-touchard}
+
+The ordinary Bernoulli numbers form a particularly simple signed Stirling
+transform.  The same identity has a useful integral form in terms of the
+Touchard polynomial
+\[
+ \TouchardPolynomial{n}(z):=\sum_{k=0}^{n}\StirlingSecondKind nk z^k.
+\]
+The integral representation below packages the factor $k!/(k+1)$ as a
+moment; compare the classical Stirling and exponential-polynomial treatments
+in \cite{Comtet1974,Bell1934}.
+
+\begin{theorem}[Bernoulli--Stirling formula and Touchard moments]
+\label{thm:merged-bernoulli-stirling-touchard}
+For every $n\in\NaturalNumbers$,
+\begin{equation}
+ \beta_n=\sum_{k=0}^{n}(-1)^k\frac{k!}{k+1}\StirlingSecondKind nk .
+ \label{eq:merged-bernoulli-stirling}
+\end{equation}
+Let
+\begin{equation}
+ E_1(x):=\int_1^\infty \frac{\EulerE^{-xt}}{t}\Differential t
+        =\int_x^\infty\frac{\EulerE^{-v}}{v}\Differential v,
+ \qquad x>0.                                                       \label{eq:merged-exponential-integral-one}
+\end{equation}
+Then
+\begin{align}
+ \beta_n
+ &=\int_0^1\int_0^\infty
+     \EulerE^{-s}\TouchardPolynomial{n}(-us)
+     \Differential s\,\Differential u,                            \label{eq:merged-bernoulli-touchard-double-integral}\\
+ &=\int_0^\infty E_1(x)\TouchardPolynomial{n}(-x)\Differential x. \label{eq:merged-bernoulli-touchard-integral}
+\end{align}
+Both integrals are absolutely convergent.
+\end{theorem}
+
+\begin{proof}
+Put $y=\EulerE^t-1$.  Since $t=\log(1+y)$, formal composition gives
+\[
+ \frac{t}{\EulerE^t-1}
+ =\frac{\log(1+y)}{y}
+ =\sum_{k\geq0}\frac{(-1)^k}{k+1}y^k.
+\]
+The exponential generating function for Stirling numbers is
+\[
+ (\EulerE^t-1)^k
+ =k!\sum_{n\geq k}\StirlingSecondKind nk\frac{t^n}{n!}.
+\]
+Substitution and comparison of $t^n/n!$ prove
+\eqref{eq:merged-bernoulli-stirling}.
+
+Because $\TouchardPolynomial{n}$ is a polynomial, the first integral may be
+evaluated term by term:
+\begin{align*}
+ \int_0^1\int_0^\infty
+ \EulerE^{-s}\TouchardPolynomial{n}(-us)\Differential s\,\Differential u
+ &=\sum_{k=0}^{n}(-1)^k\StirlingSecondKind nk
+ \left(\int_0^1u^k\Differential u\right)
+ \left(\int_0^\infty s^k\EulerE^{-s}\Differential s\right)\\
+ &=\sum_{k=0}^{n}(-1)^k\frac{k!}{k+1}\StirlingSecondKind nk.
+\end{align*}
+Absolute convergence follows from
+$|\TouchardPolynomial{n}(-us)|\leq C_n(1+s^n)$ for $0\leq u\leq1$.
+
+For the single integral, Tonelli's theorem gives, for every $k\geq0$,
+\begin{align*}
+ \int_0^\infty x^kE_1(x)\Differential x
+ &=\int_1^\infty\frac{\Differential t}{t}
+   \int_0^\infty x^k\EulerE^{-tx}\Differential x
+ =k!\int_1^\infty t^{-k-2}\Differential t
+ =\frac{k!}{k+1}.
+\end{align*}
+Termwise integration of the finite Touchard polynomial gives
+\eqref{eq:merged-bernoulli-touchard-integral}.  The integral is absolutely
+convergent: for $0<x\leq1$,
+\[
+ E_1(x)\leq\log(1/x)+\int_1^\infty\frac{\EulerE^{-v}}v\Differential v,
+\]
+whereas $E_1(x)\leq\EulerE^{-x}/x$ for $x\geq1$.
+\end{proof}
+
+\section{N\"orlund's generalized Bernoulli polynomials}
+\label{sec:merged-norlund-polynomials}
+
+The ordinary Bernoulli polynomials sit inside the two-parameter N\"orlund
+family \cite{Norlund1924}.  The order parameter makes convolution visible and
+turns an isolated exponential diagonal into a polynomial identity.
+
+\begin{definition}[Generalized Bernoulli polynomials]
+\label{def:merged-norlund-polynomials}
+For $\alpha,x\in\ComplexNumbers$, define $\beta_n^{(\alpha)}(x)$ by
+\begin{equation}
+ \left(\frac{t}{\EulerE^t-1}\right)^\alpha\EulerE^{xt}
+ =\sum_{n\geq0}\beta_n^{(\alpha)}(x)\frac{t^n}{n!}.                \label{eq:merged-norlund-egf}
+\end{equation}
+Formally, the power means
+$\exp(\alpha\log(t/(\EulerE^t-1)))$, whose inner logarithm has constant
+term zero.  Analytically, the formula holds for $|t|<2\pi$, using the unique
+holomorphic logarithm of $t/(\EulerE^t-1)$ that vanishes at $t=0$.  Thus
+$\beta_n^{(0)}(x)=x^n$ and $\beta_n^{(1)}(x)=\beta_n(x)$.
+\end{definition}
+
+\begin{theorem}[Appell, difference, and convolution calculus]
+\label{thm:merged-norlund-calculus}
+For $\alpha,x,y\in\ComplexNumbers$ and $n\geq1$,
+\begin{align}
+ \frac{\Differential}{\Differential x}\beta_n^{(\alpha)}(x)
+ &=n\beta_{n-1}^{(\alpha)}(x),                                    \label{eq:merged-norlund-appell}\\
+ \beta_n^{(\alpha)}(x+y)
+ &=\sum_{k=0}^{n}\binom nk\beta_k^{(\alpha)}(x)y^{n-k},           \label{eq:merged-norlund-translation}\\
+ \beta_n^{(\alpha)}(x+1)-\beta_n^{(\alpha)}(x)
+ &=n\beta_{n-1}^{(\alpha-1)}(x).                                 \label{eq:merged-norlund-difference}
+\end{align}
+More generally, for $\alpha,\gamma,x,y\in\ComplexNumbers$ and $n\geq0$,
+\begin{equation}
+ \beta_n^{(\alpha+\gamma)}(x+y)
+ =\sum_{k=0}^{n}\binom nk
+   \beta_k^{(\alpha)}(x)\beta_{n-k}^{(\gamma)}(y).                \label{eq:merged-norlund-convolution}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Differentiating \eqref{eq:merged-norlund-egf} with respect to $x$ multiplies
+its left side by $t$.  Replacing $x$ by $x+y$ multiplies it by
+$\EulerE^{yt}$.  These observations and the exponential Cauchy product prove
+the first two formulas.  For the difference identity,
+\[
+ \left(\frac{t}{\EulerE^t-1}\right)^\alpha
+ (\EulerE^{(x+1)t}-\EulerE^{xt})
+ =t\left(\frac{t}{\EulerE^t-1}\right)^{\alpha-1}\EulerE^{xt}.
+\]
+Coefficient comparison proves the third formula.  Multiplying the generating
+functions of orders $\alpha$ and $\gamma$ proves the convolution identity.
+\end{proof}
+
+\begin{theorem}[Bell-polynomial construction and the N\"orlund diagonal]
+\label{thm:merged-norlund-bell-diagonal}
+Put
+\begin{equation}
+ c_1(\alpha,x):=x-\frac{\alpha}{2},\qquad
+ c_j(\alpha,x):=-\frac{\alpha\beta_j}{j}\quad(j\geq2).            \label{eq:merged-norlund-cumulants}
+\end{equation}
+Then $\beta_0^{(\alpha)}(x)=1$, and for $n\geq1$,
+\begin{align}
+ \beta_n^{(\alpha)}(x)
+ &=\ExponentialCompleteBellPolynomial n
+   \bigl(c_1(\alpha,x),\ldots,c_n(\alpha,x)\bigr)                 \label{eq:merged-norlund-bell}\\
+ &=\sum_{\substack{m_1,\ldots,m_n\geq0\\m_1+2m_2+\cdots+nm_n=n}}
+ \frac{n!}{\displaystyle\prod_{j=1}^{n}m_j!\,(j!)^{m_j}}
+ \prod_{j=1}^{n}c_j(\alpha,x)^{m_j}.                             \label{eq:merged-norlund-bell-explicit}
+\end{align}
+The diagonal order has the closed form
+\begin{equation}
+ \boxed{\displaystyle\beta_n^{(n+1)}(x)=\FallingFactorial{x-1}{n}.} \label{eq:merged-norlund-polynomial-diagonal}
+\end{equation}
+Consequently, for $n\geq1$,
+\begin{align}
+ \beta_{n-1}^{(n)}(0)&=(-1)^{n-1}(n-1)!,                          \label{eq:merged-norlund-number-diagonal}\\
+ \CoefficientExtraction t{n-1}
+ \left(\frac{t}{\EulerE^t-1}\right)^n&=(-1)^{n-1}.              \label{eq:merged-norlund-diagonal}
+\end{align}
+\end{theorem}
+
+\begin{proof}
+The Bernoulli generating function gives
+\[
+ \frac{\Differential}{\Differential t}\log\frac{t}{\EulerE^t-1}
+ =-\frac12-\sum_{j\geq2}\beta_j\frac{t^{j-1}}{j!}.
+\]
+The logarithm vanishes at $t=0$, so
+\begin{equation}
+ \log\frac{t}{\EulerE^t-1}
+ =-\frac t2-\sum_{j\geq2}\frac{\beta_j}{j}\frac{t^j}{j!}.       \label{eq:merged-log-bernoulli-kernel}
+\end{equation}
+Thus \eqref{eq:merged-norlund-egf} is
+$\exp(\sum_{j\geq1}c_j(\alpha,x)t^j/j!)$.
+The complete Bell-polynomial generating function
+\cref{thm:bell-poly-egf} proves the first formula; expanding the Bell
+polynomial proves the second.
+
+For the diagonal, set $z=\EulerE^t-1$ in a formal residue:
+\begin{align*}
+ \frac{\beta_n^{(n+1)}(x)}{n!}
+ &=\ResidueOperator_t
+   \frac{\EulerE^{xt}}{(\EulerE^t-1)^{n+1}}\Differential t
+ =\ResidueOperator_z\frac{(1+z)^{x-1}}{z^{n+1}}\Differential z\\
+ &=\CoefficientExtraction z n(1+z)^{x-1}=\binom{x-1}{n}.
+\end{align*}
+The middle equality is \cref{thm:res-subst}.  Multiplication by $n!$ proves
+the polynomial diagonal.  Replace $n$ by $n-1$ and set $x=0$ to obtain the
+number diagonal; division by $(n-1)!$ gives the coefficient identity.
+\end{proof}
+
 \section{Genocchi numbers}
 
 \begin{definition}
@@ -5062,43 +5265,104 @@ and compare Bernoulli coefficients.  Multiplying the Euler EGF at $x=0$ by
 $t$ gives the second equality.  Parity and initial values follow immediately.
 \end{proof}
 
-\section{Bernoulli polynomials of the second kind}
+\section{Bernoulli polynomials of the second kind and Cauchy polynomials}
+\label{sec:merged-cauchy-polynomials}
 
-The historical terminology is not uniform.  We use the Roman--MathWorld
-normalization, also called Cauchy polynomials of the first kind.
+The historical names are not uniform.  The family below is commonly called
+the \emph{Bernoulli polynomials of the second kind} and also the
+\emph{Cauchy polynomials of the first kind}.  Some supplied manuscripts call
+it the Cauchy family ``of the second kind,'' but that phrase is also used for
+a distinct reciprocal-log normalization.  We therefore use the neutral
+symbol $b_n(x)$ and regard the generating function, rather than the name, as
+authoritative; see \cite{Norlund1924}.
 
 \begin{definition}
+\label{def:merged-cauchy-polynomials}
 Define $b_n(x)$ by
 \begin{equation}
  \frac{t(1+t)^x}{\log(1+t)}
  =\sum_{n\geq0}b_n(x)\frac{t^n}{n!}.                               \label{eq:merged-bernoulli-second-egf}
 \end{equation}
+This is a formal identity with
+$(1+t)^x=\sum_{n\geq0}\FallingFactorial{x}{n}t^n/n!$.  Analytically it
+holds for $|t|<1$, with the branch determined near $t=0$.
 \end{definition}
 
-\begin{theorem}[Integral representation and finite difference]
+\begin{theorem}[Integral, Stirling, difference, addition, and reflection formulas]
 \label{thm:merged-cauchy-polynomials}
-For $n\geq0$,
+For every $n\geq0$,
 \begin{align}
- b_n(x)&=\int_0^1\FallingFactorial{x+u}{n}\Differential u,                             \label{eq:merged-cauchy-integral}\\
- b_n(x+1)-b_n(x)&=n b_{n-1}(x)\qquad(n\geq1).                       \label{eq:merged-cauchy-difference}
+ b_n(x)&=\int_0^1\FallingFactorial{x+u}{n}\Differential u,          \label{eq:merged-cauchy-integral}\\
+ b_n(0)&=\sum_{k=0}^{n}\frac{\SignedStirlingFirstKind{n}{k}}{k+1}. \label{eq:merged-cauchy-stirling-numbers}
 \end{align}
+For $n\geq1$,
+\begin{align}
+ b_n'(x)&=n\FallingFactorial{x}{n-1},                              \label{eq:merged-cauchy-derivative}\\
+ b_n(x+1)-b_n(x)&=n b_{n-1}(x),                                   \label{eq:merged-cauchy-difference}\\
+ b_n(x+y)&=\sum_{k=0}^{n}\binom nk
+ b_k(x)\FallingFactorial{y}{n-k},                                 \label{eq:merged-cauchy-addition}\\
+ b_n(x)&=b_n(0)+\sum_{k=1}^{n}\frac nk
+ \SignedStirlingFirstKind{n-1}{k-1}x^k.                           \label{eq:merged-cauchy-explicit}
+\end{align}
+Finally, for every $n\geq0$,
+\begin{equation}
+ \boxed{\displaystyle b_n(n-2-x)=(-1)^n b_n(x).}                  \label{eq:merged-cauchy-reflection}
+\end{equation}
+Thus $b_n$ is even or odd about $(n-2)/2$ according as $n$ is even or odd.
 \end{theorem}
 
 \begin{proof}
-Integrate the falling-factorial binomial expansion:
+Coefficientwise integration of the falling-factorial binomial series gives
 \[
- \int_0^1(1+t)^{x+u}\Differential u
+ \sum_{n\geq0}
+ \left(\int_0^1\FallingFactorial{x+u}{n}\Differential u\right)
+ \frac{t^n}{n!}
+ =\int_0^1(1+t)^{x+u}\Differential u
  =(1+t)^x\frac{t}{\log(1+t)}.
 \]
-Coefficient comparison proves the integral.  Replacing $x$ by $x+1$ in the
-EGF and subtracting multiplies it by $t$, proving the difference law.
+This proves the integral representation.  At $x=0$, expand
+$\FallingFactorial{u}{n}=\sum_k\SignedStirlingFirstKind{n}{k}u^k$
+and integrate to obtain the Stirling formula.
+
+Differentiating the defining EGF with respect to $x$ cancels its logarithm:
+\[
+ \sum_{n\geq0}b_n'(x)\frac{t^n}{n!}
+ =t(1+t)^x.
+\]
+Coefficient comparison proves the derivative formula.  Replacing $x$ by
+$x+1$ and subtracting multiplies the EGF by $t$, proving the difference
+formula.  Factoring
+\[
+ \frac{t(1+t)^{x+y}}{\log(1+t)}
+ =\frac{t(1+t)^x}{\log(1+t)}(1+t)^y
+\]
+proves addition by the exponential Cauchy product.  Expanding
+$b_n'(x)=n\sum_{j=0}^{n-1}\SignedStirlingFirstKind{n-1}{j}x^j$
+and integrating from $0$ to $x$ proves the explicit polynomial formula.
+
+For reflection, use
+$\FallingFactorial{n-1-y}{n}=(-1)^n\FallingFactorial{y}{n}$ and put
+$v=1-u$ in the integral representation:
+\begin{align*}
+ b_n(n-2-x)
+ &=\int_0^1\FallingFactorial{n-2-x+u}{n}\Differential u
+ =\int_0^1\FallingFactorial{n-1-(x+v)}{n}\Differential v\\
+ &=(-1)^n\int_0^1\FallingFactorial{x+v}{n}\Differential v
+ =(-1)^n b_n(x).
+\end{align*}
 \end{proof}
 
 \begin{remark}
-The EGF has Sheffer form with
-$A(t)=t/\log(1+t)$ and $B(t)=\log(1+t)$.  Hence the lowering operator is the
-forward difference $\EulerE^D-1$.  The first numbers $b_n=b_n(0)$ are
-$1,1/2,-1/6,1/4,-19/30,9/4,\ldots$.
+The first polynomials, useful for checking the normalization, are
+\[
+ b_0(x)=1,\quad b_1(x)=x+\frac12,\quad b_2(x)=x^2-\frac16,
+\]
+\[
+ b_3(x)=x^3-\frac32x^2+\frac14,\qquad
+ b_4(x)=x^4-4x^3+4x^2-\frac{19}{30}.
+\]
+In particular $b_n(0)=1,1/2,-1/6,1/4,-19/30,\ldots$, which distinguishes
+this normalization from the other Cauchy families.
 \end{remark}
 
 \section{A modified Bernoulli normalization}
@@ -5134,13 +5398,143 @@ Integrating termwise gives
 $\beta_{2m}^{\sharp}=\beta_{2m}/(4m(2m)!)$, which is the displayed formula.
 \end{proof}
 
+\section{Periodic Bernoulli functions and Fourier expansion}
+\label{sec:merged-periodic-bernoulli}
+
+The value of the first periodic Bernoulli function at its jumps must be
+chosen separately: a Fourier series converges at a jump to the midpoint of
+the two one-sided limits.
+
+\begin{definition}[Periodic Bernoulli functions]
+\label{def:merged-periodic-bernoulli}
+For $n\geq2$, put $\widetilde\beta_n(x):=\beta_n(\{x\})$.  For $n=1$, put
+\begin{equation}
+ \widetilde\beta_1(x):=
+ \begin{cases}
+  \{x\}-\dfrac12,&x\notin\IntegerNumbers,\\[1mm]
+  0,&x\in\IntegerNumbers.
+ \end{cases}                                                       \label{eq:merged-periodic-bernoulli-one-def}
+\end{equation}
+Thus $\widetilde\beta_n$ is continuous and $1$-periodic for $n\geq2$,
+whereas $\widetilde\beta_1$ is the midpoint-normalized periodic sawtooth.
+\end{definition}
+
+\begin{theorem}[Fourier expansion with exact convergence qualifications]
+\label{thm:merged-periodic-bernoulli-fourier}
+For $n\geq2$ and every real $x$,
+\begin{equation}
+ \widetilde\beta_n(x)
+ =-n!\sum_{k\in\IntegerNumbers\setminus\{0\}}
+ \frac{\EulerE^{2\pi ikx}}{(2\pi ik)^n}.                          \label{eq:merged-periodic-bernoulli-fourier-complex}
+\end{equation}
+The series converges absolutely and uniformly.  In degree one,
+\begin{equation}
+ \widetilde\beta_1(x)
+ =-\lim_{N\to\infty}\sum_{0<|k|\leq N}
+ \frac{\EulerE^{2\pi ikx}}{2\pi ik}
+ =-\frac1\pi\sum_{k=1}^{\infty}\frac{\sin(2\pi kx)}{k}.         \label{eq:merged-periodic-bernoulli-fourier-one}
+\end{equation}
+The symmetric complex series and the paired sine series converge at every
+real $x$, and their value at an integer is $0$.  The complex series is nowhere
+absolutely convergent, and its symmetric partial sums do not converge
+uniformly.  (The paired sine series is trivially zero at half-integers, so it
+would be incorrect to call that particular scalar series conditional there.)
+
+Pairing positive and negative frequencies gives, for $m\geq1$,
+\begin{align}
+ \widetilde\beta_{2m}(x)
+ &=(-1)^{m+1}\frac{2(2m)!}{(2\pi)^{2m}}
+ \sum_{k=1}^{\infty}\frac{\cos(2\pi kx)}{k^{2m}},                 \label{eq:merged-periodic-bernoulli-fourier-even}\\
+ \widetilde\beta_{2m+1}(x)
+ &=(-1)^{m+1}\frac{2(2m+1)!}{(2\pi)^{2m+1}}
+ \sum_{k=1}^{\infty}\frac{\sin(2\pi kx)}{k^{2m+1}}.             \label{eq:merged-periodic-bernoulli-fourier-odd}
+\end{align}
+In particular,
+\begin{equation}
+ \boxed{\displaystyle
+ \RiemannZeta(2m)=(-1)^{m+1}
+ \frac{(2\pi)^{2m}}{2(2m)!}\,\beta_{2m}.}                        \label{eq:merged-even-zeta-bernoulli}
+\end{equation}
+For $n\geq2$,
+\begin{equation}
+ \sup_{x\in\RealNumbers}|\widetilde\beta_n(x)|
+ \leq\frac{2n!\RiemannZeta(n)}{(2\pi)^n}.                        \label{eq:merged-periodic-bernoulli-sup}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+For $0<r<1$ and $0<x<1$, the logarithm series gives
+\[
+ \sum_{k=1}^{\infty}\frac{r^k\EulerE^{2\pi ikx}}k
+ =-\log(1-r\EulerE^{2\pi ix}).
+\]
+Taking imaginary parts and then letting $r\uparrow1$ yields
+\[
+ \sum_{k=1}^{\infty}\frac{\sin(2\pi kx)}k
+ =\pi\left(\frac12-x\right),
+\]
+because $\arg(1-\EulerE^{2\pi ix})=\pi x-\pi/2$.  Dirichlet's test gives
+the same ordinary-series limit: $1/k$ decreases to zero and the sine partial
+sums are bounded for fixed nonintegral $x$.  At an integer every sine term is
+zero.  The complex series is nowhere absolutely convergent because the sum of
+the moduli of its terms is a constant multiple of $\sum_{k\geq1}1/k$.  Its
+symmetric partial sums are continuous, whereas their pointwise limit has
+jumps at the integers; hence convergence cannot be uniform.  This proves the
+degree-one statement and its convergence claims.
+
+For $n\geq1$, let
+\[
+ c_k^{(n)}=\int_0^1\beta_n(x)\EulerE^{-2\pi ikx}\Differential x.
+\]
+The mean coefficient is zero, because the Appell identity gives
+\[
+ \int_0^1\beta_n(x)\Differential x
+ =\frac{\beta_{n+1}(1)-\beta_{n+1}(0)}{n+1}=0.
+\]
+For $k\ne0$ and $n\geq2$, the endpoint values agree, so integration by parts
+and $\beta_n'=n\beta_{n-1}$ give
+$c_k^{(n)}=n c_k^{(n-1)}/(2\pi ik)$.  Direct integration gives
+$c_k^{(1)}=-1/(2\pi ik)$; hence
+\begin{equation}
+ c_k^{(n)}=-\frac{n!}{(2\pi ik)^n}\qquad(k\ne0).                  \label{eq:merged-periodic-bernoulli-coefficients}
+\end{equation}
+
+For $n\geq2$, the claimed series is absolutely and uniformly convergent by
+comparison with $2n!\sum_{k\geq1}k^{-n}/(2\pi)^n$.  It defines a continuous
+$1$-periodic function with exactly the coefficients just computed.  To make
+the reconstruction step explicit, let $h$ be its difference from
+$\widetilde\beta_n$.  Every Fourier coefficient of $h$ is zero, so every
+Fejér mean is zero:
+\[
+ \sigma_Nh(x)=\sum_{|k|\leq N}
+ \left(1-\frac{|k|}{N+1}\right)\widehat h(k)\EulerE^{2\pi ikx}=0.
+\]
+But $\sigma_Nh=h*K_N$, where
+\[
+ K_N(y)=\frac1{N+1}
+ \left(\frac{\sin\pi(N+1)y}{\sin\pi y}\right)^2.
+\]
+The Fejér kernels are nonnegative, have integral one, and concentrate at
+zero.  Uniform continuity of $h$ therefore gives $\sigma_Nh\to h$ uniformly,
+so $h=0$.
+
+Pairing $k$ and $-k$ proves the sine and cosine formulas.  Put $x=0$ in the
+even formula to obtain the zeta identity.  Taking absolute values term by
+term in the complex formula proves the supremum bound.
+\end{proof}
+
 \section{Euler--Maclaurin summation}
 
-Put $P_r(x)=\beta_r(\{x\})/r!$, with $\{x\}$ the fractional part.
+Put
+\[
+ P_r(x):=\frac{\widetilde\beta_r(x)}{r!}.
+\]
+The value assigned to $P_1$ at an integer does not affect the integrals below.
 
 \begin{theorem}[Euler--Maclaurin with remainder]
 \label{thm:merged-euler-maclaurin}
-Let $a<b$ be integers and $f\in C^{2m}([a,b])$.  Then
+Let $m\geq1$ be an integer, let $a<b$ be integers, and let
+$f\in C^{2m}([a,b])$.  Then
 \begin{align}
  \sum_{k=a}^{b}f(k)
  ={}&\int_a^b f(x)\Differential x+\frac{f(a)+f(b)}2                           \notag\\
@@ -5171,18 +5565,17 @@ numbers beyond $\beta_1$ vanish.  The surviving boundary terms and final
 integral are exactly \eqref{eq:merged-euler-maclaurin} and
 \eqref{eq:merged-euler-maclaurin-rem}.
 
-The periodic Bernoulli function has absolutely convergent Fourier series
+By \eqref{eq:merged-periodic-bernoulli-sup},
 \[
- \frac{\beta_{2m}(\{x\})}{(2m)!}
- =(-1)^{m+1}\frac{2}{(2\pi)^{2m}}
-   \sum_{q\geq1}\frac{\cos(2\pi qx)}{q^{2m}}.
+ \sup_{x\in\RealNumbers}|P_{2m}(x)|
+ \leq\frac{2\RiemannZeta(2m)}{(2\pi)^{2m}}.
 \]
-Taking absolute values gives the supremum bound used in
+Substitution in \eqref{eq:merged-euler-maclaurin-rem} proves
 \eqref{eq:merged-euler-maclaurin-bound}.
 \end{proof}
 
 \begin{corollary}[Stirling's expansion]
-For fixed $M$,
+For each fixed integer $M\geq1$, as $n\to\infty$ through positive integers,
 \begin{equation}
  \log(n!)=\left(n+\frac12\right)\log n-n+\frac12\log(2\pi)
  +\sum_{r=1}^{M-1}\frac{\beta_{2r}}{2r(2r-1)n^{2r-1}}
@@ -5426,35 +5819,162 @@ For $n\geq1$,
 In $(n!)^n/\BarnesGFunction(n+1)$, the exponent of $k$ is $n-(n-k)=k$.
 \end{proof}
 
-\begin{theorem}[Barnes asymptotics]
+\begin{theorem}[Barnes asymptotics on the positive ray]
 \label{thm:merged-barnes-asymptotic}
-As $z\to\infty$ in $|\arg z|\leq\pi-\delta$,
-\begin{align}
- \log \BarnesGFunction(z+1)\sim{}&\frac14z^2+z\log\Gamma(z+1)
- -\left(\frac12z(z+1)+\frac1{12}\right)\log z-\log A              \notag\\
- &+\sum_{k\geq1}\frac{\beta_{2k+2}}
- {2k(2k+1)(2k+2)z^{2k}},                                           \label{eq:merged-barnes-asymptotic}
-\end{align}
-where $A$ is the Glaisher--Kinkelin constant.  Equivalently,
+The limit
 \begin{equation}
- \log A=\lim_{n\to\infty}\left\{
+ \log A:=\lim_{n\to\infty}\left\{
  \sum_{k=1}^{n}k\log k-
  \left(\frac{n^2}{2}+\frac n2+\frac1{12}\right)\log n
- +\frac{n^2}{4}\right\}.                                         \label{eq:merged-glaisher}
+ +\frac{n^2}{4}\right\}                                         \label{eq:merged-glaisher}
 \end{equation}
+exists and defines the Glaisher--Kinkelin constant $A$.  For every fixed
+integer $p\geq1$, as $x\to+\infty$ through positive real values,
+\begin{align}
+ \log \BarnesGFunction(x+1)
+ ={}&\frac{x^2}{2}\log x-\frac{3x^2}{4}
+ +\frac{x}{2}\log(2\pi)-\frac1{12}\log x
+ +\frac1{12}-\log A                                                \notag\\
+ &+\sum_{k=1}^{p-1}\frac{\beta_{2k+2}}
+ {2k(2k+2)x^{2k}}+O_p(x^{-2p}).                                   \label{eq:merged-barnes-standard-asymptotic}
+\end{align}
+Equivalently, retaining the exact gamma factor,
+\begin{align}
+ \log \BarnesGFunction(x+1)
+ ={}&\frac{x^2}{4}+x\log\Gamma(x+1)
+ -\left(\frac{x(x+1)}2+\frac1{12}\right)\log x-\log A            \notag\\
+ &+\sum_{k=1}^{p-1}\frac{\beta_{2k+2}}
+ {2k(2k+1)(2k+2)x^{2k}}+O_p(x^{-2p}).                             \label{eq:merged-barnes-asymptotic}
+\end{align}
+An empty sum is understood when $p=1$.
 \end{theorem}
 
 \begin{proof}
-Insert Stirling's Euler--Maclaurin expansion for $\log\Gamma(t+1)$ into
-\eqref{eq:merged-alexeiewsky} and integrate termwise.  The integrated
-Bernoulli terms, after shifting the index, are exactly the displayed inverse
-even powers; the integrated remainder has the next Poincaré order uniformly
-in each closed sector.  The remaining integration constant is independent of
-$z$.  Evaluate at positive integers using
-$\log \BarnesGFunction(n+1)=\sum_{j=1}^{n-1}\log(j!)$ and summation by parts; comparison with
-\eqref{eq:merged-glaisher} identifies it as $-\log A$.  This is the standard
-DLMF normalization of Barnes' $G$-function \cite{NISTDLMF}.
+The gamma recurrence and Binet's formula \eqref{eq:binet-second} give, for
+$t>0$,
+\[
+ \log\Gamma(t+1)
+ =\left(t+\frac12\right)\log t-t+\frac12\log(2\pi)
+ +2\int_0^\infty\frac{\arctan(x/t)}{\EulerE^{2\pi x}-1}\Differential x.
+\]
+For $u\geq0$, the exact finite expansion
+\[
+ \arctan u
+ =\sum_{r=1}^{p}\frac{(-1)^{r-1}u^{2r-1}}{2r-1}
+ +(-1)^p\int_0^u\frac{v^{2p}}{1+v^2}\Differential v
+\]
+has remainder of absolute value at most $u^{2p+1}/(2p+1)$.  Expanding
+$(\EulerE^{2\pi x}-1)^{-1}$ as a geometric series and integrating termwise
+gives
+\[
+ \int_0^\infty\frac{x^{2r-1}}{\EulerE^{2\pi x}-1}\Differential x
+ =\frac{(2r-1)!\RiemannZeta(2r)}{(2\pi)^{2r}}.
+\]
+Together with \eqref{eq:merged-even-zeta-bernoulli}, substitution in Binet's
+formula yields
+\begin{equation}
+ \log\Gamma(t+1)
+ =\left(t+\frac12\right)\log t-t+\frac12\log(2\pi)
+ +\sum_{r=1}^{p}\frac{\beta_{2r}}
+ {2r(2r-1)t^{2r-1}}+R_p(t),
+ \qquad R_p(t)=O_p(t^{-2p-1}).                                   \label{eq:merged-stirling-integrable-rem}
+\end{equation}
+Indeed, the arctangent remainder gives the explicit bound
+\[
+ |R_p(t)|\leq\frac{2}{(2p+1)t^{2p+1}}
+ \int_0^\infty\frac{x^{2p+1}}{\EulerE^{2\pi x}-1}\Differential x.
+\]
+
+Split the integral in Alexeiewsky's identity
+\eqref{eq:merged-alexeiewsky} at $1$, substitute
+\eqref{eq:merged-stirling-integrable-rem} on $[1,x]$, and integrate the
+finite elementary sum.  The term $r=1$ supplies
+$-\frac1{12}\log x$ and a constant.  For $r\geq2$, the contribution of
+$a_rt^{-(2r-1)}$, where
+$a_r=\beta_{2r}/(2r(2r-1))$, is
+\[
+ xa_rx^{-(2r-1)}-\int_1^x a_rt^{-(2r-1)}\Differential t
+ =\frac{\beta_{2r}}{2r(2r-2)}x^{-2r+2}+C_r.
+\]
+The remainder is equally controlled, but this point is worth making
+explicit:
+\[
+ xR_p(x)-\int_1^xR_p(t)\Differential t
+ =-\int_1^\infty R_p(t)\Differential t
+   +xR_p(x)+\int_x^\infty R_p(t)\Differential t
+ =D_p+O_p(x^{-2p}).
+\]
+Thus the improper integral contributes only a constant and the asserted next
+order.  Collecting the elementary antiderivatives and putting $k=r-1$ gives
+\eqref{eq:merged-barnes-standard-asymptotic}, initially with a constant
+$C_p$ in place of $1/12-\log A$.  Comparing the formulas for $p$ and $p+1$
+and letting $x\to\infty$ shows $C_{p+1}=C_p$, since the extra inverse-power
+term and both remainders tend to zero.  Denote the common constant by $C$.
+
+It remains to identify $C$ without assuming the existence of the limit in
+\eqref{eq:merged-glaisher}.  At a positive integer $n$, the exact recurrence
+for $\BarnesGFunction$ gives
+\[
+ \prod_{k=1}^n k^k=\frac{(n!)^n}{\BarnesGFunction(n+1)}.
+\]
+Subtract the Barnes expansion with $p=1$ from $n$ times Stirling's expansion.
+The result is
+\[
+ \sum_{k=1}^n k\log k
+ =\left(\frac{n^2}{2}+\frac n2+\frac1{12}\right)\log n
+  -\frac{n^2}{4}+\frac1{12}-C+o(1).
+\]
+Hence the limit in \eqref{eq:merged-glaisher} exists,
+$\log A=1/12-C$, and so $C=1/12-\log A$.
+
+Finally expand the exact $x\log\Gamma(x+1)$ in
+\eqref{eq:merged-barnes-asymptotic}.  At order $x^{-2k}$ the difference
+between the coefficient in
+\eqref{eq:merged-barnes-standard-asymptotic} and the gamma contribution is
+\[
+ \frac{\beta_{2k+2}}{2k(2k+2)}
+ -\frac{\beta_{2k+2}}{(2k+1)(2k+2)}
+ =\frac{\beta_{2k+2}}{2k(2k+1)(2k+2)}.
+\]
+This proves the equivalent gamma-relative form and its remainder.
 \end{proof}
+
+\begin{corollary}[Complete hyperfactorial expansion]
+\label{cor:merged-hyperfactorial-asymptotic}
+For every fixed integer $p\geq1$, as $n\to\infty$ through positive integers,
+\begin{align}
+ \log\prod_{k=1}^n k^k
+ ={}&\left(\frac{n^2}{2}+\frac n2+\frac1{12}\right)\log n
+ -\frac{n^2}{4}+\log A                                             \notag\\
+ &-\sum_{k=1}^{p-1}\frac{\beta_{2k+2}}
+ {2k(2k+1)(2k+2)n^{2k}}+O_p(n^{-2p}).                             \label{eq:merged-hyperfactorial-log-asymptotic}
+\end{align}
+In particular,
+\begin{equation}
+ \prod_{k=1}^n k^k
+ =A\,n^{n^2/2+n/2+1/12}\EulerE^{-n^2/4}
+ \left(1+\frac1{720n^2}+O(n^{-4})\right).                         \label{eq:merged-hyperfactorial-asymptotic}
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+Use the exact identity
+$\prod_{k=1}^n k^k=(n!)^n/\BarnesGFunction(n+1)$, insert Stirling's expansion
+and \eqref{eq:merged-barnes-standard-asymptotic}, and subtract.  The
+coefficient at $n^{-2k}$ is
+$-\beta_{2k+2}/(2k(2k+1)(2k+2))$.  Since
+$\beta_4=-1/30$, the first logarithmic correction is $1/(720n^2)$;
+exponentiating changes the error only at order $n^{-4}$.
+\end{proof}
+
+\begin{remark}[Complex-sector status]
+The analogous expansion is classical uniformly in closed sectors
+$|\arg z|\leq\pi-\delta$ \cite{NISTDLMF}, but proving that stronger statement
+requires a sector-uniform complex Stirling remainder and control of the
+integration path.  The positive-real theorem above is the full conclusion of
+the human-readable proof supplied here; no unproved sector-uniformity is being
+smuggled into its error term.
+\end{remark}
 
 \begin{remark}
 Polynomial identities such as the Pochhammer derivative formula are formal
@@ -5471,7 +5991,7 @@ compendium.
 \label{ch:merged-catalan-refinements}
 
 The earlier Lagrange chapter derived the Catalan and Fuss--Catalan formulas.
-The Wikipedia and MathWorld dossiers add refinements and geometric models.
+The distinct donor chapters add refinements and geometric models.
 We fix the convention that $\AssociahedronByDimension{N-3}$ is the associahedron attached to a
 convex $N$-gon; hence $\dim\AssociahedronByDimension{N-3}=N-3$.  This eliminates the two-unit
 index shifts common in sources that index instead by dimension or number of
@@ -5713,7 +6233,7 @@ $Y=T-1=z(1+Y)^p$.  Lagrange--Bürmann applied to $(1+Y)^r$ gives
 \chapter{Darboux's finite formula and transfer from singularities}
 \label{ch:merged-darboux}
 
-The MathWorld entry emphasizes an exact finite integration identity, while
+One donor chapter emphasizes an exact finite integration identity, while
 analytic combinatorics uses Darboux's principle to transfer local singular
 expansions to coefficient asymptotics.  Both are proved here; the latter is
 stated in a form sufficient for the Catalan and inverse-function examples
@@ -5885,7 +6405,7 @@ systems require the characteristic determinant and often a saddle analysis.
 \chapter{Higher product rules, quotients, and elementary inverse series}
 \label{ch:merged-further-calculus}
 
-The five drafts contain several useful consequences of the two master
+The supplied manuscripts contain several useful consequences of the two master
 composition theorems that do not belong to a single classical triangle.  They
 are collected here rather than repeated in the Bell-polynomial and inversion
 chapters.
@@ -6010,20 +6530,28 @@ with the four inverse coefficients just computed.  This proves all four
 diagonal identities.
 \end{proof}
 
-\begin{proposition}[Exponential--logarithmic diagonals]
+\begin{proposition}[Logarithmic diagonal]
+\label{prop:merged-cauchy-diagonal}
 For $n\geq1$,
-\begin{align}
- [x^{n-1}]\left(\frac{x}{\EulerE^x-1}\right)^n&=(-1)^{n-1},              \label{eq:merged-norlund-diagonal}\\
- [x^{n-1}]\left(\frac{x}{\log(1+x)}\right)^n&=\frac1{(n-1)!}.     \label{eq:merged-cauchy-diagonal}
-\end{align}
+\begin{equation}
+ \CoefficientExtraction x{n-1}
+ \left(\frac{x}{\log(1+x)}\right)^n
+ =\frac1{(n-1)!}.                                                  \label{eq:merged-cauchy-diagonal}
+\end{equation}
 \end{proposition}
 
 \begin{proof}
-The inverse of $\EulerE^x-1$ is $\log(1+y)$, whose coefficient of $y^n$ is
-$(-1)^{n-1}/n$.  Formula \eqref{eq:lagrange-basic} therefore gives
-\eqref{eq:merged-norlund-diagonal}.  Conversely, the inverse of
-$\log(1+x)$ is $\EulerE^y-1$, whose coefficient of $y^n$ is $1/n!$; the same
-formula gives \eqref{eq:merged-cauchy-diagonal}.
+The compositional inverse of $\log(1+x)$ is $\EulerE^y-1$, whose coefficient
+of $y^n$ is $1/n!$.  Lagrange inversion therefore gives
+\[
+ \frac1n\CoefficientExtraction x{n-1}
+ \left(\frac{x}{\log(1+x)}\right)^n
+ =\CoefficientExtraction y n(\EulerE^y-1)=\frac1{n!}.
+\]
+Multiplication by $n$ proves \eqref{eq:merged-cauchy-diagonal}.  The parallel
+exponential diagonal is already the specialization
+\eqref{eq:merged-norlund-diagonal} of the stronger N\"orlund polynomial
+identity.
 \end{proof}
 
 \section{Expansion about a nonzero equilibrium}
@@ -6827,6 +7355,11 @@ R.~F. Boisvert, C.~W. Clark, B.~R. Miller, B.~V. Saunders,
 H.~S. Cohl, and M.~A. McClain, editors,
 \emph{NIST Digital Library of Mathematical Functions},
 National Institute of Standards and Technology.
+
+\bibitem{Norlund1924}
+N.~E. N\"orlund,
+\emph{Vorlesungen \"uber Differenzenrechnung},
+Springer, Berlin, 1924.
 
 \bibitem{Riordan1958}
 J. Riordan,
