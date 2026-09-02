@@ -446,6 +446,21 @@ STATUS = {
    r"\lean{Fabius.norlund_eval_zero_diagonal} and \cref{eq:merged-norlund-diagonal} is "
    r"\lean{Fabius.coeff_bernoulliPowerSeries_pow_succ}; the Bell-polynomial construction "
    r"\cref{eq:merged-norlund-bell,eq:merged-norlund-bell-explicit} is not formalized."),
+ 'thm:merged-narayana': ('partial',
+   r"Module \lean{NarayanaNumbers} defines $N(n,k)$ by the division-free determinant "
+   r"$\binom nk\binom{n-1}{k-1}-\binom n{k-1}\binom{n-1}k$ over $\IntegerNumbers$ "
+   r"(\lean{Fabius.narayana}), which vanishes outside $1\le k\le n$ without a side condition: "
+   r"\cref{eq:merged-narayana} is \lean{Fabius.narayana_mul} in the cleared form "
+   r"$nN(n,k)=\binom nk\binom n{k-1}$, the symmetry is \lean{Fabius.narayana_symm} and the row "
+   r"sum $\sum_kN(n,k)=\CatalanNumber n$ is \lean{Fabius.sum_narayana}; the peak-counting "
+   r"interpretation and the bivariate generating function \cref{eq:merged-narayana-gf} are not "
+   r"formalized."),
+ 'thm:mod-h-structure': ('partial',
+   r"\cref{eq:mod-h-block-product} is \lean{Fabius.stirlingFirst_cast_eq_coeff_block} (module "
+   r"\lean{StirlingFirstModH}), together with the rising-factorial product form "
+   r"\lean{Fabius.ascPochhammer_eq_prod_range}; the eventual vanishing that makes the spectral "
+   r"reading vacuous is \lean{Fabius.stirlingFirst_cast_eq_zero_of_lt}.  The linear recurrence "
+   r"over $\IntegerNumbers/h\IntegerNumbers$ and the Jordan decomposition are not formalized."),
  'thm:touchard-poly': ('Lean',
    r"\cref{eq:touchard-poly} is \lean{Fabius.touchardPolynomial_add_prime} "
    r"(\lean{TouchardPolyCongruence}), an identity in $(\mathbb Z/p)[x]$, read off from Spivey's "

@@ -1267,6 +1267,57 @@ Bell-polynomial construction
 \cref{eq:merged-norlund-bell,eq:merged-norlund-bell-explicit}.""")),
 ]
 
+PENDING += [
+ # --- thm:merged-narayana ---
+ (r"""Setting $u=1$ gives the Catalan equation, and the closed formula is symmetric
+under $k\leftrightarrow n+1-k$.
+\end{proof}
+""",
+  remark(r"""% ed.: crosswalk added 2026-09-02; Lean takes the determinant form as the definition.
+Module \lean{NarayanaNumbers} defines $N(n,k)$ over $\IntegerNumbers$ by the
+division-free determinant
+$\binom nk\binom{n-1}{k-1}-\binom n{k-1}\binom{n-1}k$
+(\lean{Fabius.narayana}).  That shape is chosen so that no side condition is
+needed: it vanishes identically outside $1\le k\le n$, whereas the quotient
+$\frac1n\binom nk\binom n{k-1}$ read with truncated subtraction would give
+$N(1,0)=1$ and poison both the symmetry and the row sum.
+\cref{eq:merged-narayana} is then \lean{Fabius.narayana_mul} in the cleared
+form $nN(n,k)=\binom nk\binom n{k-1}$, proved from
+$k\binom nk=(n-k+1)\binom n{k-1}$ and $n\binom{n-1}k=(n-k)\binom nk$;
+the symmetry $N(n,k)=N(n,n+1-k)$ is \lean{Fabius.narayana_symm}, obtained by
+cancelling $n$ against that cleared form; and
+$\sum_kN(n,k)=\CatalanNumber n$ is \lean{Fabius.sum_narayana}, from
+Vandermonde's identity in the form
+$\sum_j\binom nj\binom n{j+1}=\binom{2n}{n-1}$
+(\lean{Fabius.sum_choose_mul_choose_succ}) together with
+$n\CatalanNumber n=\binom{2n}{n-1}$ (\lean{Fabius.succ_mul_catalan_succ}).
+The peak-counting interpretation and the bivariate generating function
+\cref{eq:merged-narayana-gf}, which the proof above obtains by Lagrange
+inversion, are not formalized.""")),
+
+ # --- thm:mod-h-structure ---
+ (r"""by the archived formula involving unspecified roots $\omega_{h,i}$ and polynomials
+$p_{h,i}^{[m]}$.
+\end{proof}
+""",
+  remark(r"""% ed.: crosswalk added 2026-09-02; part A is Lean, and the vanishing above is now a theorem.
+\lean{Fabius.stirlingFirst_cast_eq_coeff_block} (module \lean{StirlingFirstModH})
+is \cref{eq:mod-h-block-product}: with $n=qh+s$,
+$\UnsignedStirlingFirstKind nm\equiv[x^m]\bigl(\prod_{r<h}(x+r)\bigr)^q\prod_{r<s}(x+r)$
+modulo $h$.  It follows from the product form of the rising factorial,
+$\RisingFactorial xn=\prod_{j<n}(x+j)$
+(\lean{Fabius.ascPochhammer_eq_prod_range}, which the corpus previously had only
+in evaluated form), by splitting the product into $q$ blocks of length $h$ and
+reducing each index modulo $h$.
+The editorial remark below is also a theorem:
+\lean{Fabius.stirlingFirst_cast_eq_zero_of_lt} proves that
+$\UnsignedStirlingFirstKind{qh+s}{m}\equiv0\pmod h$ whenever $m<q$, because the
+block polynomial has constant term $\prod_{r<h}r=0$ in
+$\IntegerNumbers/h\IntegerNumbers$, so $x^q$ divides its $q$th power.  The
+linear recurrence over $\IntegerNumbers/h\IntegerNumbers$ and the Jordan
+decomposition are not formalized.""")),
+]
+
 applied = 0
 for anchor, text in PENDING:
     if text.strip() in s:

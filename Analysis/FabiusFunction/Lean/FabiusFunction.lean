@@ -61,6 +61,8 @@ import FabiusFunction.CauchyPolynomials
 import FabiusFunction.CoefficientRules
 import FabiusFunction.IteratedLeibniz
 import FabiusFunction.NorlundDiagonal
+import FabiusFunction.NarayanaNumbers
+import FabiusFunction.StirlingFirstModH
 import FabiusFunction.SymmetricFunctionTransform
 import FabiusFunction.SymmetricFunctionGenerating
 import FabiusFunction.FiniteQBinomialCore
