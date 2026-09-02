@@ -787,7 +787,20 @@ Thus the order of summation may be exchanged:
  \sum_{j\ge0}\log(1-aq^j)
  =-\sum_{m\ge1}\frac{a^m}{m}\sum_{j\ge0}q^{jm}.
 \]
-The geometric sum gives the first formula.  Local uniform convergence permits termwise differentiation.  Expanding $(1-aq^j)^{-1}$ geometrically gives the second form of the derivative.
+The geometric sum gives the first formula.
+
+For the local uniformity, note that on a closed disc $\AbsoluteValue a\le r<1$ the three series
+are dominated termwise by $r^{m}/(1-\AbsoluteValue q)$, $r^{m-1}/(1-\AbsoluteValue q)$ and
+$\AbsoluteValue q^{j}/(1-r)$ respectively, all summable and independent of $a$; by the
+Weierstrass $M$-test each converges uniformly there, hence locally uniformly on
+$\AbsoluteValue a<1$, since every compact subset lies in such a disc.  The summands are
+holomorphic in $a$, so Weierstrass's theorem permits termwise differentiation, which gives the
+first form of the derivative.
+
+For the second form, expand $(1-aq^j)^{-1}=\sum_{m\ge0}a^mq^{jm}$ and interchange once more; the
+interchange is justified by the same absolute-convergence estimate as above, now in the form
+$\sum_{j\ge0}\sum_{m\ge0}\AbsoluteValue a^m\AbsoluteValue q^{j(m+1)}
+ =\sum_{m\ge0}\AbsoluteValue a^m/(1-\AbsoluteValue q^{m+1})<\infty$.
 \end{proof}
 
 \begin{remark}[Branches]\label{rem:lambert-log-branch}
@@ -3210,26 +3223,34 @@ additional restrictions $\AbsoluteValue b<1$ (so that Heine's transformation app
 $(c/b;q)_\infty\ne0$.
 
 The full domain is reached without analytic continuation, by letting $n\to\infty$ in the
-$q$-Pfaff--Saalsch\"utz sum of \Cref{thm:q-pfaff} written in its Cauchy form.  Put
-$z=c/(ab)$ and divide the second finite Cauchy identity (\Cref{lem:cauchy-II}) at
-$c\mapsto z$ by $(c;q)_n(z;q)_n$:
+Cauchy form of the $q$-Pfaff--Saalsch\"utz sum, namely in \Cref{lem:cauchy-II} itself.  That
+lemma is a polynomial identity valid in every commutative ring and carries none of the
+nonvanishing hypotheses of \Cref{thm:q-pfaff}, so nothing here depends on the latter.  Put
+$z=c/(ab)$ and divide \Cref{lem:cauchy-II} at $c\mapsto z$ by $(c;q)_n(z;q)_n$, both nonzero
+because $(c;q)_\infty\ne0$ and $\AbsoluteValue z<1$ make every prefix nonzero:
 \[
  \sum_{k=0}^{n}\GaussianBinomial{n}{k}{q}
  \frac{(a;q)_k(b;q)_k\,z^{k}\,(z;q)_{n-k}\,(cq^{k};q)_{n-k}}{(c;q)_n\,(z;q)_n}
  =\frac{(c/a;q)_n\,(c/b;q)_n}{(c;q)_n\,(z;q)_n}.
 \]
 As $n\to\infty$ with $k$ fixed, $\GaussianBinomial{n}{k}{q}\to1/(q;q)_k$,
-$(z;q)_{n-k}\to(z;q)_\infty$ and $(cq^{k};q)_{n-k}\to(cq^{k};q)_\infty=(c;q)_\infty/(c;q)_k$,
+$(z;q)_{n-k}\to(z;q)_\infty$ and $(cq^{k};q)_{n-k}\to(cq^{k};q)_\infty=(c;q)_\infty/(c;q)_k$
+(the prefix $(c;q)_k$ is nonzero, again because $(c;q)_\infty\ne0$),
 so the $k$th summand tends to the $k$th term of ${}_2\phi_1(a,b;c;q,z)$, while the right
 side tends to $(c/a,c/b;q)_\infty/(c,z;q)_\infty$.  The summands are dominated uniformly in
 $n$ by $K\AbsoluteValue z^{k}$, because the Gaussian coefficients are bounded uniformly in
 $n$ and $k$ (as in the proof of \Cref{thm:infinite-qbinomial}),
 $\AbsoluteValue{(x;q)_m}\le(-\AbsoluteValue x;\AbsoluteValue q)_\infty$ for every prefix,
 and $1/\AbsoluteValue{(c;q)_n}$, $1/\AbsoluteValue{(z;q)_n}$ are bounded since
-$(c;q)_\infty\ne0$ and $\AbsoluteValue z<1$.  Tannery's theorem (dominated convergence for
-series) therefore gives the identity for all $a,b\ne0$ with $(c;q)_\infty\ne0$ and
-$\AbsoluteValue{c/(ab)}<1$, in any complete normed field; no hypothesis on $b$ or on
-$(c/b;q)_\infty$ is needed.
+$(c;q)_\infty\ne0$ and $\AbsoluteValue z<1$.  The bound must be uniform in $k$ as well as in
+$n$, which the prefix estimate alone does not give: applied to $(cq^{k};q)_{n-k}$ it yields
+$(-\AbsoluteValue{cq^{k}};\AbsoluteValue q)_\infty$, and one uses the monotonicity
+$(-\AbsoluteValue{cq^{k}};\AbsoluteValue q)_\infty\le(-\AbsoluteValue c;\AbsoluteValue q)_\infty$,
+valid because $\AbsoluteValue{cq^{k}}\le\AbsoluteValue c$.  Tannery's theorem (dominated
+convergence for series) therefore gives the identity for all $a,b\ne0$ with $(c;q)_\infty\ne0$
+and $\AbsoluteValue{c/(ab)}<1$, in any complete normed field; no restriction on
+$\AbsoluteValue b$ and no hypothesis on $(c/b;q)_\infty$ is needed, though $b\ne0$ is of course
+retained, since $z=c/(ab)$ is otherwise undefined.
 \end{proof}
 
 \section{A second finite Cauchy identity}
@@ -3654,9 +3675,13 @@ nonvanishing ($bq^{j}\ne1$ and $q^{j+1}\ne a$ for all $j\ge0$),
 
 \begin{proof}
 We first prove the formula for $b=q^{m+1}$, where $m\in\NaturalNumbers$.
-In that case
-$1/\GeneralizedQPochhammer{b}{q}{n}=0$ for $n<-m$ in the limiting sense,
-so shift $n=k-m$:
+In that case $\GeneralizedQPochhammer{b}{q}{n}=\GeneralizedQPochhammer{q^{m+1}}{q}{n}$ has a
+vanishing reciprocal for $n<-m$: for $n=-k$ with $k>m$ the symbol
+$\GeneralizedQPochhammer{q^{m+1}}{q}{-k}=1/(q^{m+1-k};q)_k$ has a vanishing denominator, the
+factor with exponent $m+1-k+i=0$, so the corresponding term of the series is $0$.  (This is the
+same value the cleared form below obtains honestly, from $(q^{m+1+n};q)_\infty=0$.)  Shift
+$n=k-m$; the division below by $(aq^{-m};q)_m$ is legitimate because $(q/a;q)_\infty\ne0$ makes
+every prefix $(q/a;q)_m$ nonzero, and $(aq^{-m};q)_m$ is a unit multiple of it by the reversal:
 \begin{align*}
  \sum_{n\in\IntegerNumbers}
  \frac{\GeneralizedQPochhammer{a}{q}{n}}
@@ -3683,7 +3708,7 @@ we obtain
  \frac{(q;q)_m}{(q/a;q)_m}
  \frac{(q/(az);q)_m(az;q)_\infty}{(z;q)_\infty}.
 \]
-On the other hand, substituting $b=q^{m+1}$ in the proposed product and cancelling tails gives exactly the same expression:
+On the other hand, substituting $b=q^{m+1}$ in the proposed product gives
 \[
  \frac{(q;q)_\infty}{(q^{m+1};q)_\infty}
  \frac{(q^{m+1}/a;q)_\infty}{(q/a;q)_\infty}
@@ -3699,7 +3724,13 @@ $(b;q)_\infty(bq^{-k};q)_k=(bq^{-k};q)_\infty$), so the \emph{cleared series}
 \[
  S(b)=\sum_{n\in\IntegerNumbers}\GeneralizedQPochhammer{a}{q}{n}\,z^{n}\,(bq^{n};q)_\infty
 \]
-equals $(b;q)_\infty$ times the ${}_1\psi_1$ series whenever $(b;q)_\infty\ne0$, and its
+agrees termwise with $(b;q)_\infty$ times the ${}_1\psi_1$ series for \emph{every}
+$n\in\IntegerNumbers$.  At the exceptional indices, where
+$\GeneralizedQPochhammer{b}{q}{n}=0$ --- these occur only for $b\in\{q,q^2,q^3,\ldots\}$, which
+the hypotheses permit and which are exactly the interpolation points used below --- both sides
+vanish: $\GeneralizedQPochhammer{b}{q}{-k}=1/(bq^{-k};q)_k$ has a vanishing denominator
+precisely when some factor $1-bq^{i-k}$ vanishes with $i<k$, and that same factor occurs in
+$(bq^{-k};q)_\infty$, so the cleared term vanishes too.  Its
 terms are entire functions of $b$.  On every disk $\AbsoluteValue b\le r$ with
 $0<r<\AbsoluteValue{az}$ it is dominated by a geometric series uniformly in $b$: for $n\ge0$
 the $n$th term has modulus at most
@@ -4431,15 +4462,32 @@ so $c_0=1$.  Thus
 \end{proof}
 
 \begin{corollary}[Quasi-periodicity and zeros]\label{cor:theta-quasi}
-The theta function satisfies
+Let $0<\AbsoluteValue q<1$ and $z\ne0$.  The theta function satisfies
 \[
  \BilateralTheta{qz}{q}=z^{-1}\BilateralTheta{z}{q}.
 \]
-Its zeros are the simple points $z=-q^m$, $m\in\IntegerNumbers$.
+Its zeros, among $z\ne0$, are the simple points $z=-q^m$, $m\in\IntegerNumbers$.
+The hypothesis $q\ne0$ cannot be dropped: at $q=0$ only the terms $n=0,1$ survive, so
+$\BilateralTheta{z}{0}=1+z$, whose zero set is $\{-1\}$, while $-q^m$ is $0$ for $m\ge1$ and
+undefined for $m<0$.
 \end{corollary}
 
 \begin{proof}
-The functional equation follows either from reindexing the bilateral series or from the proof above.  The product in \eqref{eq:jtp-plus} vanishes exactly when $1+zq^j=0$ or $1+q^{j+1}/z=0$, which together give $z=-q^m$ for $m\in\IntegerNumbers$.  Exactly one factor vanishes at each such point: at $z_0=-q^{-j}$ ($j\ge0$) it is the factor $u(z)=1+zq^{j}$ of $(-z;q)_\infty$, and at $z_0=-q^{j+1}$ it is the factor $u(z)=1+q^{j+1}/z$ of $(-q/z;q)_\infty$.  Writing $\BilateralTheta{z}{q}=u(z)G(z)$ near $z_0$, where $G$ collects the remaining factors, $G$ is holomorphic on $z\ne0$ and $G(z_0)\ne0$ (its finitely many finite factors are $1-q^{i-j}$ with $i<j$, and its infinite factors are $(q;q)_\infty$ and $(q^{j+1};q)_\infty$), so $\BilateralTheta{\cdot}{q}$ has derivative $u'(z_0)G(z_0)\ne0$ at $z_0$, with $u'(z_0)=q^{j}$, respectively $-q^{j+1}/z_0^{2}$.  Hence every zero is simple.
+The functional equation follows either from reindexing the bilateral series or from the proof above.  The product in \eqref{eq:jtp-plus} vanishes exactly when $1+zq^j=0$ or $1+q^{j+1}/z=0$, which together give $z=-q^m$ for $m\in\IntegerNumbers$.  Exactly one factor vanishes at each such point: at $z_0=-q^{-j}$ ($j\ge0$) it is the factor $u(z)=1+zq^{j}$ of $(-z;q)_\infty$, and at $z_0=-q^{j+1}$ it is the factor $u(z)=1+q^{j+1}/z$ of $(-q/z;q)_\infty$.  That exactly one factor vanishes needs the two checks that $\AbsoluteValue q<1$ supplies.  At
+$z_0=-q^{-j}$ a second factor $1+z_0q^{i}$ of $(-z;q)_\infty$ would give $q^{i-j}=1$ with
+$i\ne j$, impossible since $0<\AbsoluteValue q<1$ forces $\AbsoluteValue{q^{i-j}}\ne1$; and a
+factor $1+q^{i+1}/z_0$ of $(-q/z;q)_\infty$ would give $q^{i+j+1}=1$ with $i+j+1\ge1$, equally
+impossible.  The symmetric checks apply at $z_0=-q^{j+1}$.  (The two families
+$\{-q^{-j}\}_{j\ge0}$ and $\{-q^{j+1}\}_{j\ge0}$ are disjoint, by modulus.)
+
+Writing $\BilateralTheta{z}{q}=u(z)G(z)$ near $z_0$, where $G$ collects the remaining factors,
+$G$ is holomorphic on $z\ne0$, and $G(z_0)\ne0$.  Indeed $G(z_0)$ is a product of finitely many
+factors $1-q^{i-j}$ with $i<j$, each nonzero because $\AbsoluteValue{q^{i-j}}>1$, together with
+two infinite products $(q;q)_\infty$ and $(q^{j+1};q)_\infty$, each nonzero because
+$\AbsoluteValue{q^{i+1}}<1$ and $\AbsoluteValue{q^{j+1+i}}<1$ for all $i\ge0$; note that
+$(q;q)_\infty$ occurs twice, once as the third factor of the triple product and once as the
+shifted symbol.  Hence $\BilateralTheta{\cdot}{q}$ has derivative $u'(z_0)G(z_0)\ne0$ at $z_0$,
+with $u'(z_0)=q^{j}$, respectively $-q^{j+1}/z_0^{2}$, so every zero is simple.
 \end{proof}
 
 % Chapter: \ref{chap:jtp} ("Jacobi's triple product").  A new section placed
@@ -13479,25 +13527,35 @@ of \texttt{QPochhammerInfinite}}\\[2pt]
 \texttt{differentiableOn\_\allowbreak{}qPochhammerC},
 \texttt{qPochhammerC\_\allowbreak{}ne\_\allowbreak{}zero}\newline
 {\footnotesize\texttt{QPochhammerOrderDerivative}, \texttt{QGammaMeromorphic}; $\alpha\mapsto(a;q)_\alpha$
-is meromorphic on $\mathbb C$, holomorphic and nonvanishing on every set avoiding the poles
-$aq^{\alpha+j}=1$, and the derivative has the displayed logarithmic form at every $\alpha$ with
+is meromorphic on $\mathbb C$ and holomorphic on every open set avoiding the poles
+$aq^{\alpha+j}=1$, and is nonvanishing there under the proposition's standing hypothesis
+$(a;q)_\infty\ne0$ (\texttt{qPochhammerC\_\allowbreak{}ne\_\allowbreak{}zero}); without that
+hypothesis the symbol can vanish identically, as at $a=1$.  The derivative has the displayed
+logarithmic form at every $\alpha$ with
 $\lVert aq^\alpha\rVert<1$ (principal branch); the derivative formula at general non-pole
 $\alpha$ and the local uniformity of the series are not formalised}\\[2pt]
 \Cref{thm:lambert-log} & \statusexact &
+\texttt{tsum\_\allowbreak{}log\_\allowbreak{}one\_\allowbreak{}sub\_\allowbreak{}geom},
 \texttt{hasSum\_\allowbreak{}lambert\_\allowbreak{}log\_\allowbreak{}complex},
 \texttt{exp\_\allowbreak{}neg\_\allowbreak{}tsum\_\allowbreak{}lambert\_\allowbreak{}eq\_\allowbreak{}qPochhammerInfIn},
+\texttt{hasDerivAt\_\allowbreak{}tsum\_\allowbreak{}log\_\allowbreak{}one\_\allowbreak{}sub\_\allowbreak{}mul\_\allowbreak{}pow},
 \texttt{hasDerivAt\_\allowbreak{}lambert\_\allowbreak{}series},
+\texttt{hasDerivAt\_\allowbreak{}qPochhammerInfIn},
 \texttt{hasDerivAt\_\allowbreak{}qPochhammerInfIn\_\allowbreak{}lambert},
 \texttt{tsum\_\allowbreak{}neg\_\allowbreak{}pow\_\allowbreak{}div\_\allowbreak{}one\_\allowbreak{}sub\_\allowbreak{}mul\_\allowbreak{}pow\_\allowbreak{}eq},
 \texttt{tendstoLocallyUniformlyOn\_\allowbreak{}lambert\_\allowbreak{}log},
 \texttt{tendstoLocallyUniformlyOn\_\allowbreak{}lambert\_\allowbreak{}deriv},
 \texttt{tendstoLocallyUniformlyOn\_\allowbreak{}lambert\_\allowbreak{}geom}\newline
 {\footnotesize\texttt{EulerLogTransform}, \texttt{LambertSeriesLog},
-\texttt{QPochhammerLogDerivative}, \texttt{LambertSeriesLocallyUniform}; the series
-identity with principal logarithms, its exponential form, both derivative formulas for
-$\lvert a\rvert<1$, and the locally uniform convergence of all three series on the open
-unit disc (uniform on every closed disc $\lvert a\rvert\le r<1$ by the Weierstrass
-$M$-test with the majorants $r^m/(1-\lvert q\rvert)$ and $\lvert q\rvert^j/(1-r)$)}\\[2pt]
+\texttt{QPochhammerLogDerivative}, \texttt{LambertSeriesLocallyUniform}; the series identity
+with the branch of \Cref{rem:lambert-log-branch} (the sum of the principal logarithms of the
+factors) and its branch-free exponential form; the derivative of that logarithm
+(\texttt{hasDerivAt\_\allowbreak{}tsum\_\allowbreak{}log\_\allowbreak{}one\_\allowbreak{}sub\_\allowbreak{}mul\_\allowbreak{}pow})
+and the corresponding derivative of the product itself, in both series forms, stated on
+$\lvert a\rvert<r<1$ and hence on $\lvert a\rvert<1$; and the locally uniform convergence of
+all three series on the open unit disc, uniform on every closed disc $\lvert a\rvert\le r<1$
+by the Weierstrass $M$-test with the majorants $r^{m+1}/(1-\lvert q\rvert)$,
+$r^{m}/(1-\lvert q\rvert)$ and $\lvert q\rvert^{j}/(1-r)$}\\[2pt]
 \Cref{cor:divisor-sum} & \statusexact &
 \texttt{neg\_\allowbreak{}mul\_\allowbreak{}deriv\_\allowbreak{}div\_\allowbreak{}qPochhammerInfIn\_\allowbreak{}self},
 \texttt{hasDerivAt\_\allowbreak{}qPochhammerInfIn\_\allowbreak{}self},
@@ -13814,12 +13872,16 @@ analytic-continuation clause is not formalized}\\[2pt]
 \texttt{q\_\allowbreak{}gauss\_\allowbreak{}summation\_\allowbreak{}full},
 \texttt{summable\_\allowbreak{}q\_\allowbreak{}gauss\_\allowbreak{}term},
 \texttt{q\_\allowbreak{}gauss\_\allowbreak{}summation}\newline
-{\footnotesize\texttt{QGaussFullDomain}, \texttt{QGaussSummation}; on the full domain
-$\lVert c/(ab)\rVert<1$ with $a,b\ne0$ and $(c;q)_\infty\ne0$, in every complete normed
-field, as the Tannery limit of the $q$-Pfaff--Saalsch\"utz sum in its Cauchy form (no
-restriction on $\lVert b\rVert$ and no hypothesis on $(c/b;q)_\infty$); the Heine route
-of the first proof is \texttt{q\_\allowbreak{}gauss\_\allowbreak{}summation}, on
-$\lVert b\rVert<1$}\\[2pt]
+{\footnotesize\texttt{QGaussFullDomain}, \texttt{QGaussSummation}; for $\lVert q\rVert<1$
+(including $q=0$) on the full domain $\lVert c/(ab)\rVert<1$ with $a,b\ne0$ and
+$(c;q)_\infty\ne0$, in every complete normed field, as the Tannery limit of the second finite
+$q$-Cauchy identity \texttt{finite\_\allowbreak{}qCauchy\_\allowbreak{}second\_\allowbreak{}identity}
+(\Cref{lem:cauchy-II}) at $c\mapsto c/(ab)$ --- this is the Cauchy form of the
+$q$-Pfaff--Saalsch\"utz sum, but it is used with none of the nonvanishing hypotheses of
+\texttt{q\_\allowbreak{}pfaff\_\allowbreak{}saalschutz}, which the proof does not invoke --- so
+with no restriction on $\lVert b\rVert$ and no hypothesis on $(c/b;q)_\infty$; the Heine route
+of the first proof is \texttt{q\_\allowbreak{}gauss\_\allowbreak{}summation}, which additionally
+requires $\lVert b\rVert<1$ and $(c/b;q)_\infty\ne0$}\\[2pt]
 \Cref{lem:cauchy-II} & \statusexact &
 \texttt{finite\_\allowbreak{}qCauchy\_\allowbreak{}second\_\allowbreak{}identity}\newline
 {\footnotesize\texttt{QBinomialCauchy}; arbitrary commutative ring and all parameters/degrees}\\[2pt]
@@ -13866,8 +13928,11 @@ parameters $a=q^{1-n}/C$, $c=q^{1-n}/A$, $z=cq^n/a$; no limiting process}\\[2pt]
 \texttt{onePsiOneTerm},
 \texttt{onePsiOne},
 \texttt{summable\_\allowbreak{}onePsiOneTerm},
+\texttt{summable\_\allowbreak{}norm\_\allowbreak{}onePsiOneTerm},
 \texttt{finiteQPochhammerZ\_\allowbreak{}div\_\allowbreak{}neg\_\allowbreak{}natCast}\newline
-{\footnotesize\texttt{BilateralSeriesConvergence}; absolute convergence in
+{\footnotesize\texttt{BilateralSeriesConvergence}; unconditional summability and, since the
+norms are summable as well
+(\texttt{summable\_\allowbreak{}norm\_\allowbreak{}onePsiOneTerm}), absolute convergence in
 any complete normed field for $\lVert b/a\rVert<\lVert z\rVert<1$, with
 $q\ne0$, $a,b\ne0$, $bq^j\ne1$ and $q^{j+1}\ne a$ for all $j\ge0$ (the
 denominator factors of both tails); by geometric domination rather than the
@@ -13885,7 +13950,10 @@ $\sum_n(a;q)_nz^n(bq^n;q)_\infty$ (\texttt{onePsiOneCleared}), whose terms are e
 and which is dominated by a geometric series on every disc $\lvert b\rvert<r<\lvert az\rvert$
 (\texttt{exists\_\allowbreak{}summable\_\allowbreak{}majorant\_\allowbreak{}onePsiOneCleared});
 the cleared identity (\texttt{hasSum\_\allowbreak{}onePsiOneCleared}) needs no hypothesis on
-$(b;q)_\infty$}\\[2pt]
+$(b;q)_\infty$; at the permitted values $b=q^{j}$ ($j\ge1$) the negative-index denominators
+$\GeneralizedQPochhammer{b}{q}{-k}$ are poles and the corresponding terms are $0$ under the
+formalization's division convention $x/0=0$, which is the value the text obtains as a
+limit}\\[2pt]
 \midrule
 \multicolumn{3}{@{}l}{\itshape $q$-difference calculus and the quantum binomial}\\
 \midrule
@@ -13970,13 +14038,19 @@ second half of the fundamental theorem}\\[2pt]
 \texttt{qGamma\_\allowbreak{}one}, \texttt{qGamma\_\allowbreak{}add\_\allowbreak{}one},
 \texttt{qGamma\_\allowbreak{}nat\_\allowbreak{}succ},
 \texttt{meromorphicOn\_\allowbreak{}qGammaC},
+\texttt{differentiableOn\_\allowbreak{}qGammaC},
+\texttt{qGammaC\_\allowbreak{}ofReal},
 \texttt{qGammaC\_\allowbreak{}add\_\allowbreak{}one}\newline
 {\footnotesize\texttt{QGamma}, \texttt{QGammaMeromorphic}; the three real identities for $x>0$
-and $0<q<1$, with $[x]_q$ as \texttt{qNumber}; the complex $\Gamma_q(z)=(q;q)_\infty(1-q)^{1-z}/(q^z;q)_\infty$
-(\texttt{qGammaC}) is meromorphic on $\mathbb C$, holomorphic off the zeros of $(q^z;q)_\infty$
-(\texttt{differentiableOn\_\allowbreak{}qGammaC}), and satisfies
-$\Gamma_q(z+1)=\frac{1-q^z}{1-q}\Gamma_q(z)$ at every non-pole $z$, the meromorphic
-continuation of the recurrence}\\[2pt]
+and $0<q<1$, with $[x]_q$ as \texttt{qNumber}; the complex
+$\Gamma_q(z)=(q;q)_\infty(1-q)^{1-z}/(q^z;q)_\infty$ (\texttt{qGammaC}, principal branch) is
+meromorphic on $\mathbb C$ as a quotient of entire functions and holomorphic off the zeros of
+$(q^z;q)_\infty$; it is genuinely a continuation of the real function, since
+\texttt{qGammaC\_\allowbreak{}ofReal} identifies the \texttt{Complex.cpow} definition with the
+\texttt{Real.rpow} one at real arguments; and it satisfies
+$\Gamma_q(z+1)=\frac{1-q^z}{1-q}\Gamma_q(z)$ at every $z$ with $(q^z;q)_\infty\ne0$.  That
+hypothesis is necessary, not decorative: where $q^z=1$ the two sides differ under the
+formalization's division convention}\\[2pt]
 \Cref{prop:qgamma-convex} & \statusexact &
 \texttt{hasDerivAt\_\allowbreak{}log\_\allowbreak{}qGamma},
 \texttt{hasDerivAt\_\allowbreak{}deriv\_\allowbreak{}log\_\allowbreak{}qGamma},
@@ -14041,11 +14115,12 @@ $z\ne0$ and $\lVert q\rVert<1$ in any complete normed field, with the exponent
 \texttt{bilateralTheta\_\allowbreak{}eq\_\allowbreak{}zero\_\allowbreak{}iff},
 \texttt{exists\_\allowbreak{}hasDerivAt\_\allowbreak{}bilateralTheta\_\allowbreak{}zero},
 \texttt{deriv\_\allowbreak{}bilateralTheta\_\allowbreak{}ne\_\allowbreak{}zero}\newline
-{\footnotesize\texttt{ThetaQuasiPeriodicity}, \texttt{ThetaSimpleZeros}; the functional
-equation by reindexing the bilateral series and the zero set $\{-q^m: m\in\IntegerNumbers\}$
-from the product form, in every complete normed field with $q\ne0$; over $\mathbb C$ the
-zeros are simple: at every $-q^m$ the theta function has a nonzero derivative, obtained by
-isolating the vanishing factor of the triple product
+{\footnotesize\texttt{ThetaQuasiPeriodicity}, \texttt{ThetaSimpleZeros}; for
+$\lVert q\rVert<1$, $q\ne0$ and $z\ne0$ in every complete normed field: the functional equation
+by reindexing the bilateral series, and the zero set $\{-q^m: m\in\IntegerNumbers\}$ (among
+$z\ne0$) from the product form.  Over $\mathbb C$, under the same hypotheses, the zeros are
+simple: at every $-q^m$ the theta function has a nonzero derivative, obtained by isolating the
+vanishing factor of the triple product
 (\texttt{hasDerivAt\_\allowbreak{}of\_\allowbreak{}eventuallyEq\_\allowbreak{}mul})}\\[2pt]
 \Cref{thm:finite-jtp} & \statusexact &
 \texttt{finite\_\allowbreak{}triple\_\allowbreak{}product},

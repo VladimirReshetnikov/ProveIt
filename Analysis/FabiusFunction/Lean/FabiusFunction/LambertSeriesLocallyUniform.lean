@@ -15,8 +15,8 @@ For `‖q‖ < 1` the three series of thm:lambert-log,
 converge uniformly on every closed disc `‖a‖ ≤ r < 1` (`tendstoUniformlyOn_lambert_log`,
 `tendstoUniformlyOn_lambert_deriv`, `tendstoUniformlyOn_lambert_geom`), hence locally
 uniformly on the open unit disc (`tendstoLocallyUniformlyOn_lambert_log`, …).  The uniform
-statements are Weierstrass M-tests with the explicit majorants `r^m/(1-‖q‖)` and
-`‖q‖^j/(1-r)`.
+statements are Weierstrass M-tests with the explicit majorants `r^{m+1}/(1-‖q‖)`,
+`r^m/(1-‖q‖)` and `‖q‖^j/(1-r)` respectively.
 -/
 
 set_option autoImplicit false
