@@ -5223,9 +5223,9 @@ shifts with closed forms are formal as well ---
 \(\eta_m(0)\to1\), \(\eta_m(1)\to-\tfrac13\), \(\eta_m(2)\to-\tfrac13\)
 (\lean{Fabius.tendsto\_thueMorseAutocorrelation\_zero\_shift},
 \lean{Fabius.tendsto\_thueMorseAutocorrelation\_one},
-\lean{Fabius.tendsto\_thueMorseAutocorrelation\_two}) --- but the
-existence of the limit at a \emph{general} shift \(k\), and its
-spectral consequences, remain analytic frontiers.
+\lean{Fabius.tendsto\_thueMorseAutocorrelation\_two}); the existence of the
+limit at a \emph{general} shift \(k\) is \cref{p1:thm:limiting-autocorrelation} below, now
+formal as well, while its spectral consequences remain analytic frontiers.
 
 \begin{theorem}[Limiting autocorrelation]
 \label{p1:thm:limiting-autocorrelation}
@@ -5267,6 +5267,24 @@ smaller index \(r\).  If \(k=2r+1>1\), both \(r\) and \(r+1\) are smaller
 than \(k\), so the odd recurrence and the induction hypothesis give
 convergence.  Pass to the limit and evaluate recursively.
 \end{proof}
+
+\emph{Formal version.}  \Cref{p1:thm:limiting-autocorrelation} is formal in
+\path{ThueMorseAutocorrelationLimit.lean}, with exactly the proof above.  The normalized
+sequence \(\eta_m(k)\) is \lean{Fabius.normalizedAutocorrelation}, and the two finite
+recursions hold \emph{exactly} at every scale,
+\(\eta_{m+1}(2r)=\eta_m(r)\) and \(\eta_{m+1}(2r+1)=-(\eta_m(r)+\eta_m(r+1))/2\)
+(\lean{Fabius.normalizedAutocorrelation\_succ\_even},
+\lean{Fabius.normalizedAutocorrelation\_succ\_odd}); the limit \(\eta(k)\) is
+\emph{defined} by the recursion
+\eqref{p1:eq:eta-zero}--\eqref{p1:eq:eta-odd} (\lean{Fabius.limitingAutocorrelation}, with
+\lean{Fabius.limitingAutocorrelation\_two\_mul} and
+\lean{Fabius.limitingAutocorrelation\_two\_mul\_add\_one} as its laws), so the
+characterization is by construction and the theorem is the convergence
+\eqref{p1:eq:eta-limit-definition}, \lean{Fabius.tendsto\_normalizedAutocorrelation}, by
+strong induction on \(k\) with the two formal base cases \(k=0,1\) of
+\path{ThueMorseAutocorrelation.lean}.  The samples \eqref{p1:eq:eta-samples} are
+\lean{Fabius.limitingAutocorrelation\_one}, \lean{Fabius.limitingAutocorrelation\_two},
+\lean{Fabius.limitingAutocorrelation\_three}, \lean{Fabius.limitingAutocorrelation\_five}.
 
 The numbers \(\eta(k)\) are the Fourier coefficients of
 \(\mu_{\mathrm{TM}}\).  Thus the substitution recursion, autocorrelation, and
