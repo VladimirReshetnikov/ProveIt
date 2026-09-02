@@ -328,6 +328,13 @@ STATUS = {
    r"(\lean{EulerPolynomials}), the Euler reflection \cref{eq:merged-euler-reflection} is "
    r"\lean{Fabius.eulerPolynomial_eval_one_sub} and $\mathsf E_{2m+1}(1/2)=0$ is "
    r"\lean{Fabius.eulerPolynomial_eval_half_odd} (\lean{EulerReflection})"),
+ 'thm:typeB-eulerian': ('partial',
+   r"\lean{Fabius.typeBEulerian} (\lean{TypeBEulerian}) is defined by the recurrence "
+   r"\cref{eq:typeB-recurrence} (\lean{Fabius.typeBEulerian_succ_succ}); "
+   r"\cref{eq:typeB-power-series} is \lean{Fabius.one_sub_X_pow_mul_oddPowSeries} in $R[[t]]$ "
+   r"(from the type-$B$ Worpitzky identity \lean{Fabius.typeB_worpitzky}) and "
+   r"\cref{eq:typeB-explicit} is \lean{Fabius.typeBEulerian_eq_sum_int}; the signed-permutation "
+   r"count is not formalized"),
  'thm:touchard-poly': ('Lean',
    r"\cref{eq:touchard-poly} is \lean{Fabius.touchardPolynomial_add_prime} "
    r"(\lean{TouchardPolyCongruence}), an identity in $(\mathbb Z/p)[x]$, read off from Spivey's "
