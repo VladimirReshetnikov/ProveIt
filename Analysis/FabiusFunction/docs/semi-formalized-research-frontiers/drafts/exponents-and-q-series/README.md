@@ -21,8 +21,8 @@ inverse-q synthesis have been dispositioned into
 [`q_pochhammer_q_binomial_monograph/`](q_pochhammer_q_binomial_monograph/).
 Their earlier names, arrival hashes, and publication facts remain provenance,
 not parallel live documents. The current canonical TeX postdates its retained
-historical 348-page PDF; the exact source and artifact receipt appears once in
-the detailed package record below. Its crosswalk preserves the generic
+historical PDF; the exact source and artifact receipt appears once in the
+detailed package record below. Its crosswalk preserves the generic
 `QPochhammerInfinite.lean` and `QPochhammerDissection.lean` layers, the
 five-theorem `QPochhammerEntire.lean`, the three-theorem outer-product
 normal-convergence leaf, the six-theorem exponent-identifiability leaf, the
@@ -39,10 +39,9 @@ definitions and 53 theorems across `GaussianBinomialPalindromic.lean`,
 `GaussianBinomialPolynomialStructure.lean`. The final source-only extension is
 `CentralQBinomialReduction.lean` (0+6) together with
 `CyclotomicFactorization.lean` (0+7). A fresh three-pass render and ledger
-refresh are pending. Retained PDFs
-under its `assets/` tree are research figures, not alternate manuscript
-renderings. The current Lean audit contains exactly 659 facade-reachable
-modules and 8,769 public declarations, with no
+refresh are pending. Retained PDFs under its `assets/` tree are research
+figures, not alternate manuscript renderings. The current Lean audit contains
+exactly 659 facade-reachable modules and 8,769 public declarations, with no
 missing module headers or declaration documentation.
 
 ## Detailed package record
@@ -118,14 +117,13 @@ Current packages and retained intake records:
   `79ee5e60a6c7e42a91c58dcd9bcae56173cc6b4aa3e54739a461943f705f3904`.
   Its A4 boxes, text extraction, embedded/subset Type-1 fonts including
   Libertinus, absence of Type-3 fonts, and targeted visual review passed at
-  that checkpoint. The live source has since advanced through the full
-  semantic union, including the generic
-  infinite/dissection API, the five compatibility wrappers, outer normal
-  convergence, exponent identifiability, both earlier q-series tranches, and
-  the newest q-series, q-calculus, theta, logarithmic-derivative, and
-  order-derivative, central-reduction, and cyclotomic-factorization modules.
-  Consequently the retained PDF is not a render of the live TeX; a fresh
-  three-pass render and ledger refresh are pending. PDF files retained
+  that checkpoint. The current TeX is newer and includes the generic
+  infinite/dissection API, five compatibility wrappers, outer normal
+  convergence, exponent identifiability, the complete q-series/q-calculus
+  union, and the central-reduction and cyclotomic-factorization modules.
+  Consequently the source and retained PDF are distinct payloads and no render
+  parity is claimed. The current source fingerprint is intentionally deferred
+  until the pending final-source build and ledger refresh. PDF files retained
   beneath `assets/` are vector research figures, not manuscript builds.
   Manuscript result labels and numerical checks remain
   distinct from Lean verification.
@@ -800,8 +798,8 @@ volume's Part VII; their figures/data are likewise under `assets/`.)
 
 Canonical forward/inverse publication:
 [`q_pochhammer_q_binomial_monograph/`](q_pochhammer_q_binomial_monograph/)
-(retained historical 348-page canonical A4 publication PDF; final-source
-crosswalk rebuild pending) — *q-Series and Inverse q-Analogs:
+(current TeX with a retained historical A4 publication checkpoint; exact
+receipt in the detailed package record above) — *q-Series and Inverse q-Analogs:
 A Proof-Oriented Synthesis*. Its forward backbone proves from first principles
 the shifted-factorial, Gaussian, hypergeometric, theta, partition, Bailey,
 cyclotomic, interpolation, and Fabius--Rvachev machinery consumed by Parts II,
@@ -818,11 +816,9 @@ pre-consolidation rendered checkpoint had 13,117 source lines (SHA-256
 and a 1,582,997-byte, 213-page PDF (SHA-256
 `7ee6f8f6d8e72228a5b20daa119caa4d834b11063f910b526897b2677a2ede7b`).
 Those figures identify a retired historical artifact; they are not build
-claims about the current canonical source. The canonical synthesis's newer
-348-page PDF renders source SHA-256
-`79ee5e60a6c7e42a91c58dcd9bcae56173cc6b4aa3e54739a461943f705f3904`
-and is now a source-pinned receipt because the semantic-union source, including
-the outer-normal-convergence crosswalk, postdates that fresh build checkpoint.
+claims about the current canonical source. The canonical synthesis's current
+source and retained historical PDF are identified by the single exact receipt
+in the detailed package record above.
 
 The latest validated forward formalization ledger has 282 rows: 73 Exact, 84
 Partial, 117 with no counterpart, and 8 N/A interface rows. The original
@@ -917,8 +913,8 @@ sinc product has a global spectral factorization for every complex strict
 contraction with nome `q^2`; only the two final Rvachev wrappers specialize to
 nome `1/4`. The compound spectral theorem in the Fabius bridge remains
 partial because its named centered/MGF wrapper, outside-disk reciprocal
-formula, pole divisor, and zero--pole exchange are not formalized; the
-outer-product local-uniform/normal-convergence clause itself is exact.
+formula, pole divisor, and zero--pole exchange are not formalized. Its outer
+local-uniform/normal-convergence clause is exact.
 The complementary formal surfaces of
 `CompleteHomogeneousGenerating.lean` and
 `SymmetricFunctionGenerating.lean` prove both the finite elementary product
