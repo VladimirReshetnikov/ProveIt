@@ -1195,6 +1195,186 @@ integral representation itself is not formalized.  The reflection
 \cref{eq:merged-cauchy-reflection} is not formalized.""")),
 ]
 
+PENDING += [
+ # --- lem:coeff-rules ---
+ (r"""bound follows by estimating the contour integral by its length $2\pi r$.
+\end{proof}
+""",
+  remark(r"""% ed.: crosswalk added 2026-09-02; the three formal rules are Lean, the analytic one is not.
+Module \lean{CoefficientRules} proves the three formal rules over an arbitrary
+commutative ring: \cref{eq:cauchy} is
+\lean{Fabius.PowerSeries.coeff_mul_eq_sum_range}, \cref{eq:der-coeff} is
+\lean{Fabius.PowerSeries.coeff_derivative_eq}, and \cref{eq:geom-conv} is
+\lean{Fabius.PowerSeries.coeff_mul_geomSeries}, where $F/(1-az)$ is read as
+$F\cdot\sum_na^nz^n$; that the geometric series really is the reciprocal of
+$1-az$ is \lean{Fabius.PowerSeries.one_sub_C_mul_X_mul_geomSeries}, and
+\lean{Fabius.PowerSeries.eq_mul_geomSeries_iff} lets the same rule be applied
+to a series presented by the equation $(1-az)G=F$, which is how it is used in
+the Stirling column arguments.  The analytic Cauchy coefficient formula and
+bound \cref{eq:cauchy-coeff} are not formalized.""")),
+
+ # --- thm:merged-multinomial-leibniz ---
+ (r"""$\prod_r f_r^{(j_r)}(x)/j_r!$.  Multiplication by $n!$ proves
+\eqref{eq:merged-multinomial-leibniz}.
+\end{proof}
+""",
+  remark(r"""% ed.: crosswalk added 2026-09-02; two factors only, in the formal reading.
+The proof above offers two readings, analytic near $x$ and formal in a new
+variable $h$; the formal one is the one that is formalized, and only for two
+factors.  \lean{Fabius.derivative_iterate_mul} (module \lean{IteratedLeibniz})
+is $(\Differential/\Differential t)^n(fg)=\sum_{k=0}^n\binom nk
+f^{(k)}g^{(n-k)}$ for formal power series over any commutative ring, proved by
+induction on $n$ from Pascal's rule in convolution form
+(\lean{Fabius.sum_pascal_split}, stated for an arbitrary sequence and reusable
+for any binomial-type two-term recurrence).  The general $q$-factor form
+\cref{eq:merged-multinomial-leibniz}, whose index set is the compositions of
+$n$ into $q$ parts, is not formalized.""")),
+]
+
+PENDING += [
+ # --- thm:merged-norlund-bell-diagonal ---
+ (r"""The middle equality is \cref{thm:res-subst}.  Multiplication by $n!$ proves
+the polynomial diagonal.  Replace $n$ by $n-1$ and set $x=0$ to obtain the
+number diagonal; division by $(n-1)!$ gives the coefficient identity.
+\end{proof}
+""",
+  remark(r"""% ed.: crosswalk added 2026-09-02; the Lean proof avoids residues entirely.
+Module \lean{NorlundDiagonal} formalizes the three diagonal displays for
+natural orders: \cref{eq:merged-norlund-polynomial-diagonal} is
+\lean{Fabius.norlund_diagonal}, in the form
+$\beta_n^{(n+1)}(x)=\FallingFactorial{x-1}{n}$ with Mathlib's
+\lean{descPochhammer}; \cref{eq:merged-norlund-number-diagonal} is
+\lean{Fabius.norlund_eval_zero_diagonal}; and
+\cref{eq:merged-norlund-diagonal} is
+\lean{Fabius.coeff_bernoulliPowerSeries_pow_succ}.
+The formal proof does not use \cref{thm:res-subst}, and needs no residue
+calculus.  It rests instead on the Riccati equation
+$t\,\frac{\Differential}{\Differential t}\!\left(\frac{t}{\EulerE^t-1}\right)
+=\frac{t}{\EulerE^t-1}-\left(\frac{t}{\EulerE^t-1}\right)^2-\frac{t^2}{\EulerE^t-1}$
+(\lean{Fabius.X_mul_derivative_bernoulliPowerSeries}, obtained by
+differentiating $B(\EulerE^t-1)=t$), which converts into the order-lowering
+relation
+$(a+1)\beta_{n+1}^{(a+2)}(x+1)=(a-n)\beta_{n+1}^{(a+1)}(x)+(n+1)x\beta_n^{(a+1)}(x)$
+(\lean{Fabius.norlund_series_step} as generating functions,
+\lean{Fabius.norlund_step} coefficientwise).  Taking $a=n$ annihilates the
+first term and leaves $\beta_{n+1}^{(n+2)}(x+1)=x\beta_n^{(n+1)}(x)$
+(\lean{Fabius.norlund_diagonal_step}); induction on $n$ against
+$\FallingFactorial{x-1}{n+1}=(x-1)\FallingFactorial{x-2}{n}$ then gives the
+closed form, and $x=0$ with
+$\FallingFactorial{-1}{n}=(-1)^nn!$ (\lean{Fabius.descPochhammer_eval_neg_one})
+gives the other two.  Complex orders are not formalized, nor is the
+Bell-polynomial construction
+\cref{eq:merged-norlund-bell,eq:merged-norlund-bell-explicit}.""")),
+]
+
+PENDING += [
+ # --- thm:merged-narayana ---
+ (r"""Setting $u=1$ gives the Catalan equation, and the closed formula is symmetric
+under $k\leftrightarrow n+1-k$.
+\end{proof}
+""",
+  remark(r"""% ed.: crosswalk added 2026-09-02; Lean takes the determinant form as the definition.
+Module \lean{NarayanaNumbers} defines $N(n,k)$ over $\IntegerNumbers$ by the
+division-free determinant
+$\binom nk\binom{n-1}{k-1}-\binom n{k-1}\binom{n-1}k$
+(\lean{Fabius.narayana}).  That shape is chosen so that no side condition is
+needed: it vanishes identically outside $1\le k\le n$, whereas the quotient
+$\frac1n\binom nk\binom n{k-1}$ read with truncated subtraction would give
+$N(1,0)=1$ and poison both the symmetry and the row sum.
+\cref{eq:merged-narayana} is then \lean{Fabius.narayana_mul} in the cleared
+form $nN(n,k)=\binom nk\binom n{k-1}$, proved from
+$k\binom nk=(n-k+1)\binom n{k-1}$ and $n\binom{n-1}k=(n-k)\binom nk$;
+the symmetry $N(n,k)=N(n,n+1-k)$ is \lean{Fabius.narayana_symm}, obtained by
+cancelling $n$ against that cleared form; and
+$\sum_kN(n,k)=\CatalanNumber n$ is \lean{Fabius.sum_narayana}, from
+Vandermonde's identity in the form
+$\sum_j\binom nj\binom n{j+1}=\binom{2n}{n-1}$
+(\lean{Fabius.sum_choose_mul_choose_succ}) together with
+$n\CatalanNumber n=\binom{2n}{n-1}$ (\lean{Fabius.succ_mul_catalan_succ}).
+The peak-counting interpretation and the bivariate generating function
+\cref{eq:merged-narayana-gf}, which the proof above obtains by Lagrange
+inversion, are not formalized.""")),
+
+ # --- thm:mod-h-structure ---
+ (r"""by the archived formula involving unspecified roots $\omega_{h,i}$ and polynomials
+$p_{h,i}^{[m]}$.
+\end{proof}
+""",
+  remark(r"""% ed.: crosswalk added 2026-09-02; part A is Lean, and the vanishing above is now a theorem.
+\lean{Fabius.stirlingFirst_cast_eq_coeff_block} (module \lean{StirlingFirstModH})
+is \cref{eq:mod-h-block-product}: with $n=qh+s$,
+$\UnsignedStirlingFirstKind nm\equiv[x^m]\bigl(\prod_{r<h}(x+r)\bigr)^q\prod_{r<s}(x+r)$
+modulo $h$.  It follows from the product form of the rising factorial,
+$\RisingFactorial xn=\prod_{j<n}(x+j)$
+(\lean{Fabius.ascPochhammer_eq_prod_range}, which the corpus previously had only
+in evaluated form), by splitting the product into $q$ blocks of length $h$ and
+reducing each index modulo $h$.
+The editorial remark below is also a theorem:
+\lean{Fabius.stirlingFirst_cast_eq_zero_of_lt} proves that
+$\UnsignedStirlingFirstKind{qh+s}{m}\equiv0\pmod h$ whenever $m<q$, because the
+block polynomial has constant term $\prod_{r<h}r=0$ in
+$\IntegerNumbers/h\IntegerNumbers$, so $x^q$ divides its $q$th power.  The
+linear recurrence over $\IntegerNumbers/h\IntegerNumbers$ and the Jordan
+decomposition are not formalized.""")),
+]
+
+PENDING += [
+ # --- thm:lagrange-burmann ---
+ (r"""which is \eqref{eq:lagrange-burmann-alt}.  Take $H(w)=w$ for
+\eqref{eq:lagrange-basic}.
+\end{proof}
+""",
+  remark(r"""% ed.: crosswalk added 2026-09-02; the Lean proof is algebraic, with no residue calculus.
+Module \lean{LagrangeInversion} formalizes \cref{eq:lagrange-burmann} as
+\lean{Fabius.Lagrange.coeff_subst_derivative}, in the division-free form
+$n[z^n]H(g)=[w^{n-1}]H'(w)\phi(w)^n$, and \cref{eq:lagrange-basic} as
+\lean{Fabius.Lagrange.coeff_subst_id}, over an arbitrary commutative
+$\RationalNumbers$-algebra.  The core lemmas take $g$ in the shape $g=z\,u$ with $u=\phi(g)$ and $u$
+invertible, and the solution is then \emph{constructed} rather than assumed:
+\lean{Fabius.Lagrange.solution} builds it as the compositional inverse of
+$z\psi(z)$, where $\psi$ is the power-series inverse of $\phi$, and
+\lean{Fabius.Lagrange.solution_eq} proves it satisfies
+\cref{eq:lagrange-functional}.  So
+\lean{Fabius.Lagrange.coeff_solution_subst_derivative} and
+\lean{Fabius.Lagrange.coeff_solution} are unconditional statements about a
+witness, not conditional ones.  Uniqueness of $g$ and
+\cref{eq:lagrange-burmann-alt} are not formalized.
+The proof above is unavailable in Lean, because it runs through
+\cref{thm:res-subst}, which is itself unformalized.  The formal proof is
+purely algebraic and rests on one cancellation: writing $v$ for the inverse of
+$u$, one has $v^{M+1}g'=v^M-\frac1Mz(v^M)'$, whose $M$th coefficient vanishes
+for every $M\ge1$ (\lean{Fabius.Lagrange.coeff_pow_succ_mul_derivative_eq_zero}),
+while $vg'$ has constant term $1$
+(\lean{Fabius.Lagrange.coeff_inv_mul_derivative}).  Substituting
+$A(g)=(A\phi^n)(g)\,v^n$ into the truncated substitution expansion
+\lean{Fabius.coeff_mul_subst_eq} therefore collapses the sum to its single
+surviving term, which is
+$[z^{n-1}]\bigl(A(g)g'\bigr)=[w^{n-1}]\bigl(A\phi^n\bigr)$
+(\lean{Fabius.Lagrange.coeff_subst_mul_derivative}); the chain rule
+\lean{PowerSeries.derivative_subst} turns that into the displayed form.""")),
+]
+
+PENDING += [
+ # --- thm:lambert-W-zero ---
+ (r"""point at $w=-1$, where $f(-1)=-\EulerE^{-1}$; this square-root branch point determines
+the radius.
+\end{proof}
+""",
+  remark(r"""% ed.: crosswalk added 2026-09-02; the series is Lean, the radius is not.
+Module \lean{LambertWSeries} constructs $W$ rather than assuming it:
+$W=z\EulerE^{-W}$ is the Lagrange functional equation with
+$\phi(w)=\EulerE^{-w}$, which is invertible with inverse $\EulerE^{w}$
+(\lean{Fabius.expNeg_mul_exp}), so \lean{Fabius.Lagrange.solution} applies and
+\lean{Fabius.lambertW} is its value.  The familiar form $W\EulerE^W=z$ is
+\lean{Fabius.lambertW_mul_exp_subst}, and \cref{eq:lambert-W-zero} is
+\lean{Fabius.coeff_lambertW}, in the equivalent shape
+$[z^{n+1}]W=(-(n+1))^n/(n+1)!$ that avoids a truncated subtraction; it follows
+from \cref{eq:lagrange-basic} together with
+$(\EulerE^{-w})^n=\EulerE^{-nw}$ (\lean{Fabius.expNeg_pow}).  The radius of
+convergence $\EulerE^{-1}$, and with it the branch-point argument above, is
+analytic and is not formalized.""")),
+]
+
 applied = 0
 for anchor, text in PENDING:
     if text.strip() in s:

@@ -198,11 +198,20 @@ requirement to build Lean one module at a time.
 > LAKE_JOBS=1 lake build <one target>
 > ```
 >
-> `LAKE_JOBS` bounds the number of `lean.exe` processes, which is what
-> exhausts RAM. Lake `5.0.0` accepts neither `-j` nor `--jobs`, so the
-> environment variable is the only control. Measured 2026-08-27: a facade
-> build over a stale dependency set spawned **11 concurrent `lean.exe`**,
-> and **exactly one** under `LAKE_JOBS=1`.
+> **Corrected 2026-09-02: `LAKE_JOBS` does not bound anything here.** Lake
+> `5.0.0-src+8c9756b` accepts neither `-j` (`unknown short option '-j'`) nor
+> `--jobs`, and it does not read the environment variable either. Measured with
+> `LAKE_JOBS=1` exported and every `lean.exe` attributed by `ParentProcessId`
+> to the invoking `lake`: a build with 136 modules pending went `0 → 1 → 12`
+> workers across two 30-second samples, all twelve children of that lake. The
+> jump is a burst rather than a ramp, and `lake` spends about a minute in trace
+> checking before spawning anything, so an early sample proves nothing.
+> Keeping the variable costs nothing, but the only real control is the rule
+> below: **one module per invocation, and only when its dependencies are
+> already compiled.** The 2026-08-27 figures are left here as history and need
+> recheck; a later test that peaked at two workers proved nothing, because the
+> chosen target's dependency chain was near-linear and never had more than two
+> modules ready at once.
 >
 > **Do not set `LEAN_NUM_THREADS=0`.** It does not mean "auto" &mdash; it
 > serializes elaboration *inside* the one process, and it is not what limits
@@ -249,10 +258,10 @@ machine it must be **serialized**: build one module per `lake build`
 invocation, in topological order. Parallel Lean workers exhaust RAM and report
 `failed to read file '...olean'`, which looks like corruption but is not; the
 same module compiles on a serial retry. `lake build -j1` is not a workaround
-(Lake 5.0.0 removed `-j` and rejects `--jobs`), which is why `LAKE_JOBS=1` is
-set in the environment instead, as the caution above describes (and
-`LEAN_NUM_THREADS` is left alone &mdash; `0` serializes elaboration for a
-~30&times; slowdown). The
+(Lake 5.0.0 removed `-j` and rejects `--jobs`), and neither is `LAKE_JOBS=1`,
+which this toolchain ignores &mdash; see the corrected caution above. Serializing
+the invocations is the whole of the remedy (and `LEAN_NUM_THREADS` is left
+alone &mdash; `0` serializes elaboration for a ~30&times; slowdown). The
 [`Analysis/FabiusFunction` agent guide](Analysis/FabiusFunction/AGENTS.md)
 has the driver and the retry rule.
 
