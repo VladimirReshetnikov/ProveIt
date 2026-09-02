@@ -37,6 +37,9 @@ import FabiusFunction.BinomialType
 import FabiusFunction.BellLeadingZeros
 import FabiusFunction.GenocchiNumbers
 import FabiusFunction.EulerianAlternating
+import FabiusFunction.EulerPolynomials
+import FabiusFunction.EulerReflection
+import FabiusFunction.FaulhaberOffset
 import FabiusFunction.SymmetricFunctionTransform
 import FabiusFunction.SymmetricFunctionGenerating
 import FabiusFunction.FiniteQBinomialCore

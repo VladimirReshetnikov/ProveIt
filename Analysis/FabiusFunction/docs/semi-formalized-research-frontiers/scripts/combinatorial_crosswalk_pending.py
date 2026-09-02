@@ -512,8 +512,12 @@ $\beta_n^{(k)}=n^{\underline k}\beta_{n-k}$
 $\binom nk\beta_{n-k}$ (\lean{Fabius.hasseDeriv_bernoulli}), and Mathlib's
 \lean{Polynomial.taylor} expands $\beta_n(x+y)=\sum_k\beta_n^{[k]}(x)y^k$.
 The explicit formula \cref{eq:merged-bernoulli-explicit} is Mathlib's
-definition \lean{Polynomial.bernoulli_def}.  The Euler polynomials are not
-formalized.""")),
+definition \lean{Polynomial.bernoulli_def}.  For the Euler polynomials,
+\lean{Fabius.derivative_eulerPolynomial} and \lean{Fabius.eulerPolynomial_eval_add}
+(module \lean{EulerPolynomials}) are the derivative and translation identities,
+the latter an instance of the general Appell lemma \lean{Fabius.appell_eval_add}
+(an Appell sequence with $\deg p_n\le n$ satisfies the translation formula, by
+the Taylor expansion).""")),
 ]
 
 PENDING += [
@@ -660,7 +664,8 @@ $(\sum_n\GenocchiNumber{n}t^n/n!)(\EulerE^t+1)(\EulerE^t-1)=2t(\EulerE^t-1)$,
 after which $\EulerE^t-1=t\cdot(\text{unit})$ is cancelled.  The parity
 statement is \lean{Fabius.genocchi_odd} and the initial values are
 \lean{Fabius.genocchi_one} and \lean{Fabius.genocchi_two}; the Euler-polynomial
-equality is not formalized.""")),
+equality $\GenocchiNumber{n+1}=(n+1)\mathsf E_n(0)$ is \lean{Fabius.genocchi_succ_eq}
+(module \lean{EulerPolynomials}), from the two generating functions.""")),
 ]
 
 PENDING += [
@@ -683,6 +688,60 @@ $xE(x)=2x-\mathscr B(2x)+\mathscr B(4x)$
 displayed expansion of $\tanh x$; comparing the coefficients of $x^{n+1}$
 gives the formula.  The two reciprocal-binomial identities are not
 formalized.""")),
+]
+
+PENDING += [
+ # --- thm:merged-bernoulli-euler-basic ---
+ (r"""forces every odd $\beta_n$ beyond $\beta_1$ to vanish.  Euler reflection at
+$x=1/2$ proves the last assertion.
+\end{proof}
+""",
+  remark(r"""% ed.: crosswalk added 2026-09-01.
+For the Bernoulli polynomials the difference identity
+\cref{eq:merged-bernoulli-difference} is Mathlib's
+\lean{Polynomial.bernoulli_eval_one_add}, the reflection
+\cref{eq:merged-bernoulli-reflection} is \lean{Polynomial.bernoulli_eval_one_sub},
+and $\beta_{2m+1}=0$ is \lean{bernoulli_eq_zero_of_odd}.  For the Euler
+polynomials of module \lean{EulerPolynomials} (defined by
+\lean{Fabius.eulerPolynomial}, $\mathsf E_n(x)=\sum_k\binom nk\mathsf E_k(0)x^{n-k}$
+with $\mathsf E_k(0)$ the coefficients of $2/(\EulerE^t+1)$), the difference
+identity \cref{eq:merged-euler-difference} is
+\lean{Fabius.eulerPolynomial_eval_add_one_add}, proved as in the text by
+comparing the coefficients of $(\EulerE^t+1)\sum_n\mathsf E_n(x)t^n/n!=2\EulerE^{xt}$
+(\lean{Fabius.sum_choose_mul_eulerPolynomial_add}) and translating
+(\lean{Fabius.eulerPolynomial_eval_add}).  The Euler reflection
+\cref{eq:merged-euler-reflection} is \lean{Fabius.eulerPolynomial_eval_one_sub}
+(module \lean{EulerReflection}), proved as in the text: the substitutions
+$x\mapsto1-x$ and $t\mapsto-t$ turn the generating-function identity into the
+same identity $F\,(\EulerE^t+1)=2\EulerE^t\EulerE^{-xt}$, and the unit
+$\EulerE^t+1$ is cancelled; $\mathsf E_{2m+1}(1/2)=0$ is
+\lean{Fabius.eulerPolynomial_eval_half_odd}.""")),
+
+ # --- thm:merged-alternating-sums ---
+ (r"""interior Euler terms cancel in pairs, leaving the two endpoints.
+\end{proof}
+""",
+  remark(r"""% ed.: crosswalk added 2026-09-01.
+\lean{Fabius.sum_neg_one_pow_mul_pow_eq_eulerPolynomial} (module
+\lean{EulerPolynomials}) is \cref{eq:merged-alternating-sums} in the form
+$\sum_{j=0}^{N-1}(-1)^j(x+j)^p=\bigl(\mathsf E_p(x)-(-1)^N\mathsf E_p(x+N)\bigr)/2$,
+which agrees with the displayed formula for $N\ge1$ and gives $0$ for $N=0$;
+the formal proof is the induction on $N$ from the difference identity
+\lean{Fabius.eulerPolynomial_eval_add_one_add}.""")),
+]
+
+PENDING += [
+ # --- thm:merged-faulhaber ---
+ (r"""Apply \eqref{eq:merged-bernoulli-difference} to $\beta_{p+1}(x+j)$ and sum;
+the left side telescopes.
+\end{proof}
+""",
+  remark(r"""% ed.: crosswalk added 2026-09-01.
+\lean{Fabius.sum_range_add_pow_eq_bernoulli_sub} (module \lean{FaulhaberOffset})
+is \cref{eq:merged-faulhaber} for all $N\ge0$ and rational $x$, proved by
+exactly this telescoping, with the difference identity taken from Mathlib
+(\lean{Polynomial.bernoulli_eval_one_add}); the case $x=0$ is also Mathlib's
+\lean{Polynomial.sum_range_pow_eq_bernoulli_sub}.""")),
 ]
 
 applied = 0
