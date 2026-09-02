@@ -54,11 +54,11 @@ theorem X_mul_derivative_thueMorseSeriesRat :
         (if k = 0 then (0 : ℚ) else (rulerCoeff k : ℚ)) * (thueMorseSign (n + 1 - k) : ℚ)
         = ∑ k ∈ Icc 1 (n + 1),
             (((2 : ℤ) ^ (padicValNat 2 k + 1) - 1) * thueMorseSign (n + 1 - k) : ℤ) := by
-      rw [← Int.cast_sum]
       push_cast
       refine sum_congr rfl fun k hk => ?_
-      rw [if_neg (by have := (mem_Icc.mp hk).1; omega)]
-      rfl
+      rw [if_neg (by have := (mem_Icc.mp hk).1; omega), rulerCoeff]
+      push_cast
+      ring
     rw [hsum]
     have h := ruler_convolution (n + 1)
     have h' : ((n + 1 : ℕ) : ℚ) * (thueMorseSign (n + 1) : ℚ)
