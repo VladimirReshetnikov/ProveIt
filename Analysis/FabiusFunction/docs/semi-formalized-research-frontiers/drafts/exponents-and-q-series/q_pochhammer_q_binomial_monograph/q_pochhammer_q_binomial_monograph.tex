@@ -12724,8 +12724,8 @@ inside the proof below does not formalize the result the proof concludes.
   than a mathematical claim.
 \end{description}
 
-Of the 282 labelled forward results, 131 are \statusexact, 82 are
-\statuspartial, 61 are \statusnone, and 8 are \statusna.  The original
+Of the 282 labelled forward results, 132 are \statusexact, 84 are
+\statuspartial, 58 are \statusnone, and 8 are \statusna.  The original
 191-result pre-Fabius core had 36 \statusexact, 29 \statuspartial, 123
 \statusnone, and 3 \statusna{} entries.  The four integrated guide chapters
 add 31 human-proved but not Lean-formalized assertions and five labelled
@@ -13297,7 +13297,7 @@ Jacobi's triple product & 6 & 2 & 0 & 0\\
 Theta modularity, lattice dissection, and sums of squares & 0 & 0 & 14 & 4\\
 Partitions and product--sum identities & 4 & 0 & 0 & 0\\
 Bailey pairs and the Rogers--Ramanujan identities & 7 & 0 & 0 & 0\\
-Bailey transforms and the Andrews--Gordon identities & 2 & 0 & 6 & 1\\
+Bailey transforms and the Andrews--Gordon identities & 3 & 2 & 3 & 1\\
 Cyclotomic factorization and congruences & 6 & 1 & 2 & 0\\
 Negative upper indices and geometric Newton interpolation & 8 & 0 & 1 & 0\\
 Central $q$-binomial sums and Lambert series & 1 & 0 & 6 & 0\\
@@ -13309,7 +13309,7 @@ Half-base arithmetic and Prouhet--Thue--Morse cancellation & 6 & 3 & 0 & 0\\
 Geometric uniform sums, $q$-cumulants, and the Fabius--Rvachev functions & 2 & 11 & 0 & 0\\
 Dyadic Gaussian--Thue--Morse structure and the values of $F$ & 7 & 44 & 5 & 0\\
 \midrule
-\textbf{Forward total} & 131 & 82 & 61 & 8\\
+\textbf{Forward total} & 132 & 84 & 58 & 8\\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -14741,7 +14741,14 @@ $N$, each step being the one-term telescoping}\\[2pt]
 \multicolumn{3}{@{}l}{\itshape Bailey transforms and the Andrews--Gordon identities}\\
 \midrule
 \Cref{qg:def-bailey-pair} & \statusna & notation only\\[2pt]
-\Cref{qg:thm-bailey-lemma} & \statusnone & ---\\[2pt]
+\Cref{qg:thm-bailey-lemma} & \statusexact &
+\texttt{IsBaileyPair.transform},
+\texttt{bailey\_\allowbreak{}full\_\allowbreak{}inner\_\allowbreak{}sum}\newline
+{\footnotesize\texttt{BaileyLemmaFull}; in any field with $\rho_1\rho_2\ne0$ and the
+permanent nonvanishing hypotheses of the statement; the inner sum is evaluated by the
+second finite Cauchy identity (\texttt{finite\_\allowbreak{}qCauchy\_\allowbreak{}second\_\allowbreak{}identity}) with
+$x=\rho_1q^r$, $y=\rho_2q^r$, $z=A$, a polynomial identity, so the temporary denominators
+and the Zariski-density step of the text's reversal route are not needed}\\[2pt]
 \Cref{qg:lem-bailey-lowering} & \statusexact &
 \texttt{isBaileyPair\_\allowbreak{}baileyLowered},
 \texttt{baileyLowered\_\allowbreak{}coeff\_\allowbreak{}lt},
@@ -14760,8 +14767,25 @@ exactly as the inductive proof in the text unfolds it}\\[2pt]
 \Cref{qg:cor-rr-partitions} & \statusnone & ---\\[2pt]
 \Cref{qg:lem-rogers-recurrence} & \statusnone & ---\\[2pt]
 \Cref{qg:thm-rrcf} & \statusnone & ---\\[2pt]
-\Cref{qg:thm-andrews-gordon} & \statusnone & ---\\[2pt]
-\Cref{qg:cor-andrews-gordon-mod7} & \statusnone & ---\\[2pt]
+\Cref{qg:thm-andrews-gordon} & \statuspartial &
+\texttt{hasSum\_\allowbreak{}andrewsGordon\_\allowbreak{}one},
+\texttt{hasSum\_\allowbreak{}andrewsGordon\_\allowbreak{}of\_\allowbreak{}two\_\allowbreak{}le},
+\texttt{norm\_\allowbreak{}baileyChainBeta\_\allowbreak{}le}\newline
+{\footnotesize\texttt{AndrewsGordon}, \texttt{AndrewsGordonOne}, \texttt{BaileyChainBounds};
+for every $k\ge2$ and $1\le i\le k$, $\lVert q\rVert<1$ in any complete normed field, the
+identity is proved in the decreasing-variable form
+\eqref{qg:eq:andrews-gordon-decreasing}, with the multiple sum represented by the nested
+Bailey-chain recursion (\texttt{baileyChainBeta}): the case $i=1$ with $K=k-1$ chain steps
+relative to $q$, the cases $2\le i\le k$ with $t=k-i+1$ steps relative to $q$, the lowering
+shift, and $u=i-2$ steps relative to $1$, each followed by the infinite limiting lemma and
+Jacobi's triple product with base $q^{2k+1}$; the convergence is supplied by the polynomial
+growth bound along the chain.  Not formalised: the reindexing $n_j=r_j-r_{j+1}$ back to the
+independent summation indices of \eqref{qg:eq:andrews-gordon}}\\[2pt]
+\Cref{qg:cor-andrews-gordon-mod7} & \statuspartial &
+\texttt{hasSum\_\allowbreak{}andrewsGordon\_\allowbreak{}one},
+\texttt{hasSum\_\allowbreak{}andrewsGordon\_\allowbreak{}of\_\allowbreak{}two\_\allowbreak{}le}\newline
+{\footnotesize the instances $K=2$, respectively $(t,u)=(2,0)$ and $(1,1)$, of the
+nested-form theorems; the same reindexing caveat as for \Cref{qg:thm-andrews-gordon}}\\[2pt]
 \midrule
 \multicolumn{3}{@{}l}{\itshape Exact limits, reciprocity, and research frontiers}\\
 \midrule
