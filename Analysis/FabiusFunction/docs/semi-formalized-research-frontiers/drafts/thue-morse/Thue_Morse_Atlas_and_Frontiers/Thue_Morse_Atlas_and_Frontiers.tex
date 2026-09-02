@@ -1714,6 +1714,19 @@ By \eqref{p1:eq:glaisher-count}, \(\nu(n)=2^{\BinaryDigitSum(n)}\).  Its residue
 \(\BinaryDigitSum(n)\) is even and two when it is odd.
 \end{proof}
 
+\emph{Formal versions.}  Both displays of \eqref{p1:eq:odd-count-mod3} are in
+\path{ThueMorseBinomialLog.lean}, with \(\nu(n)\) read as the cardinality of
+\lean{Fabius.oddBinomialIndices}: the bit form \(\tau(n)=\operatorname{rem}_3(\nu(n))-1\) is
+\lean{Fabius.thueMorseBit\_eq\_card\_oddBinomialIndices\_mod\_three\_sub\_one}, its
+rearrangement \(\operatorname{rem}_3(\nu(n))=\tau(n)+1\) is
+\lean{Fabius.card\_oddBinomialIndices\_mod\_three\_eq\_bit\_add\_one}, and the sign form
+\(\eps_n=3-2\operatorname{rem}_3(\nu(n))\) is
+\lean{Fabius.thueMorseSign\_eq\_three\_sub\_two\_mul\_card\_oddBinomialIndices\_mod\_three}.
+The closing remark that the residue is never zero is
+\lean{Fabius.card\_oddBinomialIndices\_mod\_three\_ne\_zero}.  The arithmetic underneath
+all four is the two-cycle of powers of two modulo three,
+\lean{Fabius.two\_pow\_mod\_three\_eq\_mod\_two\_add\_one}, \(2^r\bmod3=(r\bmod2)+1\).
+
 A form using exactly the row signs of the source formula can be written without
 the odd-count notation.  Put
 \begin{equation}
@@ -1749,6 +1762,13 @@ weight is even or odd.  Also
 \(n-S(n)=2^{\BinaryDigitSum(n)+1}-2\), congruent to zero or two modulo three; the squared
 sine is therefore zero or \(3/4\).
 \end{proof}
+
+\emph{Formal status.}  Neither display of \cref{p1:cor:mod-three-sine} is formalized: the
+signed row sum \(S(n)\) of \eqref{p1:eq:S-pascal-exact} has no Lean counterpart yet, and
+both formulas are rewritings of \cref{p1:thm:mod-three} through it.  What is formal is
+everything the proof uses apart from \(S(n)\) itself --- the residue law of
+\cref{p1:thm:mod-three} and the two-cycle
+\lean{Fabius.two\_pow\_mod\_three\_eq\_mod\_two\_add\_one}.
 
 The logarithmic and residue formulas are two shadows of the same invariant
 \(\nu(n)\): the first reads the exponent of a power of two; the second reads
