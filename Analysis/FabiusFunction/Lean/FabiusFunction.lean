@@ -67,6 +67,7 @@ import FabiusFunction.LagrangeInversion
 import FabiusFunction.LambertWSeries
 import FabiusFunction.FussCatalanSeries
 import FabiusFunction.InverseBellCoefficients
+import FabiusFunction.StirlingFirstDiagonal
 import FabiusFunction.SymmetricFunctionTransform
 import FabiusFunction.SymmetricFunctionGenerating
 import FabiusFunction.FiniteQBinomialCore
