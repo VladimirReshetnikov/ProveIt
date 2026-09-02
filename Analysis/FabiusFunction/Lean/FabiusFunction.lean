@@ -47,6 +47,7 @@ import FabiusFunction.TouchardPolyCongruence
 import FabiusFunction.TypeBEulerian
 import FabiusFunction.SecondOrderEulerian
 import FabiusFunction.ShiftOperatorCharP
+import FabiusFunction.BellUmbra
 import FabiusFunction.SymmetricFunctionTransform
 import FabiusFunction.SymmetricFunctionGenerating
 import FabiusFunction.FiniteQBinomialCore

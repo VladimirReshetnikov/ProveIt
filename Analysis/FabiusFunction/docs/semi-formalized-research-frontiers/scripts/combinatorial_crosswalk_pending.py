@@ -893,6 +893,30 @@ solution of the recurrence over $\FiniteField_p$
 (\lean{Fabius.shift_pow_period}); no diagonalization is needed.""")),
 ]
 
+PENDING += [
+ # --- thm:weighted-bell-shift ---
+ (r"""after $m=r+k$.  The special cases follow by setting $k=1$, and then $a=1,b=k$.
+\end{proof}
+""",
+  remark(r"""% ed.: crosswalk added 2026-09-01; the Lean proof is algebraic, without Dobiński's series.
+\lean{Fabius.weighted_bell_shift} (module \lean{BellUmbra}) is
+\cref{eq:weighted-bell-shift}, \lean{Fabius.weighted_bell_shift_one} is
+\cref{eq:weighted-bell-k1} and \lean{Fabius.sum_signedStirlingFirst_mul_bell_eq}
+is \cref{eq:weighted-bell-special}, with $a,b$ in an arbitrary commutative
+ring and $(-1)^{k-i}\UnsignedStirlingFirstKind ki$ as the signed number
+\lean{Fabius.signedStirlingFirst}.  The formal proof replaces the Poisson sum
+by the Bell umbra, the linear functional $L$ on $R[x]$ with $L(x^n)=\BellNumber n$
+(\lean{Fabius.bellUmbra}): the binomial recurrence
+\cref{eq:bell-binomial-recurrence} says $L(xf(x))=L(f(x+1))$
+(\lean{Fabius.bellUmbra_X_mul}), induction on $k$ with
+$\FallingFactorial{x}{k+1}=x\,\FallingFactorial{x-1}{k}$ gives the umbral
+shift $L(\FallingFactorial xk f(x))=L(f(x+k))$
+(\lean{Fabius.bellUmbra_descPochhammer_mul}), and applying it to
+$f(x)=(ax+b-ak)^n$ gives $L((ax+b)^n)$ on the left, which is the binomial
+expansion of \cref{eq:weighted-bell-shift}.  In particular all factorial
+moments of the Bell umbra are $1$ (\lean{Fabius.bellUmbra_descPochhammer}).""")),
+]
+
 applied = 0
 for anchor, text in PENDING:
     if text.strip() in s:
