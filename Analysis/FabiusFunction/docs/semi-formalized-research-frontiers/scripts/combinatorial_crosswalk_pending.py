@@ -811,6 +811,41 @@ in $R[[t]]$ over any commutative ring, exactly as in the text; and
 \lean{Fabius.typeBEulerian_eq_sum_int}.""")),
 ]
 
+PENDING += [
+ # --- thm:second-eulerian-recurrence ---
+ (r"""against $t^k$ gives the second.  At each stage there are $2n-1$ insertion gaps, so
+the total count is $(2n-1)!!$.
+\end{proof}
+""",
+  remark(r"""% ed.: crosswalk added 2026-09-01; Lean takes the recurrence as the definition.
+Module \lean{SecondOrderEulerian} defines \lean{Fabius.secondEulerian} by the
+recurrence \cref{eq:second-eulerian-recurrence} (in the form
+$\SecondOrderEulerianNumber{n+1}{k+1}=(2n-k)\SecondOrderEulerianNumber nk
++(k+2)\SecondOrderEulerianNumber n{k+1}$); the Stirling-permutation count is
+not formalized.  The polynomial recurrence
+\cref{eq:second-eulerian-poly-recurrence} is
+\lean{Fabius.secondEulerianSeries_succ}, an identity of formal power series
+in $t$ over any commutative ring, proved by comparing coefficients; the row
+sum \cref{eq:second-eulerian-row-sum} is
+\lean{Fabius.sum_secondEulerian_eq_doubleFactorial}, by induction from the
+recurrence.""")),
+
+ # --- thm:second-eulerian-stirling-gf ---
+ (r"""$t\SecondOrderEulerianPolynomial{n}/(1-t)^{2n+1}$ and using
+\eqref{eq:second-eulerian-poly-recurrence} gives the formula for $n+1$.
+\end{proof}
+""",
+  remark(r"""% ed.: crosswalk added 2026-09-01; the Lean proof is this proof made formal.
+\lean{Fabius.one_sub_X_pow_mul_diagStirlingSeries} (module
+\lean{SecondOrderEulerian}) is \cref{eq:second-eulerian-stirling-gf} in the
+form $(1-t)^{2n+1}\sum_m\StirlingSecondKind{n+m}{m}t^m=t\SecondOrderEulerianPolynomial{n}(t)$
+in $R[[t]]$ over any commutative ring, for $n\ge1$: the base case is
+$F_1=t/(1-t)^3$ (\lean{Fabius.diagStirlingSeries_one}), the recurrence
+$(1-t)F_{n+1}=tF_n'$ is \lean{Fabius.one_sub_X_mul_diagStirlingSeries_succ},
+and the induction step differentiates the hypothesis and uses
+\cref{eq:second-eulerian-poly-recurrence}.""")),
+]
+
 applied = 0
 for anchor, text in PENDING:
     if text.strip() in s:

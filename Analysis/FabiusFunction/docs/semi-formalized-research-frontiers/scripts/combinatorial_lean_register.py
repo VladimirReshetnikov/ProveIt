@@ -328,6 +328,17 @@ STATUS = {
    r"(\lean{EulerPolynomials}), the Euler reflection \cref{eq:merged-euler-reflection} is "
    r"\lean{Fabius.eulerPolynomial_eval_one_sub} and $\mathsf E_{2m+1}(1/2)=0$ is "
    r"\lean{Fabius.eulerPolynomial_eval_half_odd} (\lean{EulerReflection})"),
+ 'thm:second-eulerian-recurrence': ('partial',
+   r"\lean{Fabius.secondEulerian} (\lean{SecondOrderEulerian}) is defined by the recurrence "
+   r"\cref{eq:second-eulerian-recurrence} (\lean{Fabius.secondEulerian_succ_succ}); the polynomial "
+   r"recurrence \cref{eq:second-eulerian-poly-recurrence} is \lean{Fabius.secondEulerianSeries_succ} "
+   r"(as power series) and the row sum \cref{eq:second-eulerian-row-sum} is "
+   r"\lean{Fabius.sum_secondEulerian_eq_doubleFactorial}; the Stirling-permutation count is not "
+   r"formalized"),
+ 'thm:second-eulerian-stirling-gf': ('Lean',
+   r"\lean{Fabius.one_sub_X_pow_mul_diagStirlingSeries} (\lean{SecondOrderEulerian}), in $R[[t]]$ "
+   r"over any commutative ring, by the induction of the text: $(1-t)F_{n+1}=tF_n'$ "
+   r"(\lean{Fabius.one_sub_X_mul_diagStirlingSeries_succ}) and the polynomial recurrence"),
  'thm:typeB-eulerian': ('partial',
    r"\lean{Fabius.typeBEulerian} (\lean{TypeBEulerian}) is defined by the recurrence "
    r"\cref{eq:typeB-recurrence} (\lean{Fabius.typeBEulerian_succ_succ}); "
