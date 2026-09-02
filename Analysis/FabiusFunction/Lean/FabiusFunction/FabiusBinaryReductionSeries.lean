@@ -580,24 +580,26 @@ private lemma binaryTail_mem_Icc_half
   exact ⟨binaryTail_nonneg x N hx0,
     (binaryTail_lt x N).le.trans (inverse_two_pow_le_half N hN)⟩
 
-/-- Geometric bound on the residual: for `0 ≤ x` and `1 ≤ N` its
-norm is at most `2 * 2 ^ (-N)`.  The hypothesis `1 ≤ N` places the
-tail inside `[0, 1/2]`, where `fabiusReal F y ≤ 2 * y`. -/
+/-- Geometric bound on the residual: for `0 ≤ x` and every scale `N`,
+including `N = 0`, its norm is at most `2 * 2 ^ (-N)`.  The tail lies in
+`[0, 2⁻ᴺ)` at every scale, and `fabiusReal F y ≤ 2 * y` holds for every
+`y ≥ 0`, so no lower bound on `N` is needed. -/
 theorem norm_binaryReductionRemainder_le
     (F : BoundedFabius) (hF : IsFabius F)
-    (x : ℝ) (hx0 : 0 ≤ x) (N : ℕ) (hN : 1 ≤ N) :
+    (x : ℝ) (hx0 : 0 ≤ x) (N : ℕ) :
     ‖binaryReductionRemainder F x N‖ ≤
       2 * ((2 : ℝ) ^ N)⁻¹ := by
-  have htailHalf := binaryTail_mem_Icc_half x hx0 N hN
+  have htail0 := binaryTail_nonneg x N hx0
   have htailUnit : binaryTail x N ∈ Icc (0 : ℝ) 1 :=
-    ⟨htailHalf.1, htailHalf.2.trans (by norm_num)⟩
+    ⟨htail0, (binaryTail_lt x N).le.trans
+      (inv_le_one_of_one_le₀ (one_le_pow₀ (by norm_num)))⟩
   have hE := extendedFabius_eq_fabiusReal F hF htailUnit
   rw [binaryReductionRemainder, norm_mul, norm_pow]
   norm_num
   rw [hE, abs_of_nonneg (fabiusReal_nonneg F _)]
   calc
     fabiusReal F (binaryTail x N) ≤ 2 * binaryTail x N :=
-      fabiusReal_le_two_mul F hF htailHalf.1
+      fabiusReal_le_two_mul F hF htail0
     _ ≤ 2 * ((2 : ℝ) ^ N)⁻¹ := by
       nlinarith [(binaryTail_lt x N).le]
 
@@ -605,51 +607,37 @@ theorem norm_binaryReductionRemainder_le
 nonnegative half-line and is immediate on the nonpositive half-line. -/
 theorem norm_binaryReductionRemainder_le_all
     (F : BoundedFabius) (hF : IsFabius F)
-    (x : ℝ) (N : ℕ) (hN : 1 ≤ N) :
+    (x : ℝ) (N : ℕ) :
     ‖binaryReductionRemainder F x N‖ ≤
       2 * ((2 : ℝ) ^ N)⁻¹ := by
   rcases le_total 0 x with hx | hx
-  · exact norm_binaryReductionRemainder_le F hF x hx N hN
+  · exact norm_binaryReductionRemainder_le F hF x hx N
   · rw [binaryReductionRemainder_eq_zero_of_nonpos F hF N hx]
     simp only [norm_zero]
     positivity
 
 /-- The binary-reduction residual satisfies its geometric bound at every
-real input and every natural scale, including scale zero. -/
+real input and every natural scale.  Historically this carried a separate
+`N = 0` case; now that the scale hypothesis is gone from the bound above, it
+is the same statement as `norm_binaryReductionRemainder_le_all` and is kept
+under its established name. -/
 theorem norm_binaryReductionRemainder_le_total
     (F : BoundedFabius) (hF : IsFabius F)
     (x : ℝ) (N : ℕ) :
     ‖binaryReductionRemainder F x N‖ ≤
-      2 * ((2 : ℝ) ^ N)⁻¹ := by
-  cases N with
-  | zero =>
-      rcases le_total 0 x with hx | hx
-      · have htailLt : binaryTail x 0 < 1 := by
-          simpa using binaryTail_lt x 0
-        have htailUnit : binaryTail x 0 ∈ Icc (0 : ℝ) 1 :=
-          ⟨binaryTail_nonneg x 0 hx, htailLt.le⟩
-        have hE := extendedFabius_eq_fabiusReal F hF htailUnit
-        rw [binaryReductionRemainder, norm_mul, norm_pow]
-        norm_num
-        rw [hE, abs_of_nonneg (fabiusReal_nonneg F _)]
-        linarith [fabiusReal_le_one F (binaryTail x 0)]
-      · rw [binaryReductionRemainder_eq_zero_of_nonpos F hF 0 hx,
-          norm_zero]
-        norm_num
-  | succ N =>
-      exact norm_binaryReductionRemainder_le_all
-        F hF x (N + 1) (by omega)
+      2 * ((2 : ℝ) ^ N)⁻¹ :=
+  norm_binaryReductionRemainder_le_all F hF x N
 
 /-- Uniform quantitative error for the finite binary-reduction telescope.
 After retaining the scales `0, ..., N`, the error is at most `2 * 2⁻ᴺ`,
 independently of the nonnegative input `x`. -/
 theorem norm_extendedFabius_sub_globalBinaryReductionSum_le
     (F : BoundedFabius) (hF : IsFabius F)
-    (x : ℝ) (hx0 : 0 ≤ x) (N : ℕ) (hN : 1 ≤ N) :
+    (x : ℝ) (hx0 : 0 ≤ x) (N : ℕ) :
     ‖extendedFabius F x -
         ∑ m ∈ Finset.range (N + 1), globalBinaryReductionSummand x m‖ ≤
       2 * ((2 : ℝ) ^ N)⁻¹ := by
-  have hrem := norm_binaryReductionRemainder_le F hF x hx0 N hN
+  have hrem := norm_binaryReductionRemainder_le F hF x hx0 N
   have hid := extendedFabius_eq_globalBinaryReductionSum_add_remainder
     F hF x hx0 N
   rw [hid]
@@ -660,29 +648,26 @@ inputs it is the residual estimate; on nonpositive inputs both the signed
 extension and every finite summand vanish exactly. -/
 theorem norm_globalBinaryReductionSum_sub_extendedFabius_le
     (F : BoundedFabius) (hF : IsFabius F)
-    (N : ℕ) (hN : 1 ≤ N) (x : ℝ) :
+    (N : ℕ) (x : ℝ) :
     ‖(∑ m ∈ Finset.range (N + 1), globalBinaryReductionSummand x m) -
         extendedFabius F x‖ ≤ 2 * ((2 : ℝ) ^ N)⁻¹ := by
   rw [norm_sub_rev]
-  have hrem := norm_binaryReductionRemainder_le_all F hF x N hN
+  have hrem := norm_binaryReductionRemainder_le_all F hF x N
   have hid :=
     extendedFabius_eq_globalBinaryReductionSum_add_remainder_all F hF x N
   rw [hid]
   simpa only [add_sub_cancel_left] using hrem
 
 /-- Uniform finite-telescope error at every real input and every natural
-scale, including scale zero. -/
+scale.  Once the scale hypothesis left
+`norm_globalBinaryReductionSum_sub_extendedFabius_le`, this became the same
+statement; it is kept under its established name. -/
 theorem norm_globalBinaryReductionSum_sub_extendedFabius_le_total
     (F : BoundedFabius) (hF : IsFabius F)
     (N : ℕ) (x : ℝ) :
     ‖(∑ m ∈ Finset.range (N + 1), globalBinaryReductionSummand x m) -
-        extendedFabius F x‖ ≤ 2 * ((2 : ℝ) ^ N)⁻¹ := by
-  rw [norm_sub_rev]
-  have hrem := norm_binaryReductionRemainder_le_total F hF x N
-  have hid :=
-    extendedFabius_eq_globalBinaryReductionSum_add_remainder_all F hF x N
-  rw [hid]
-  simpa only [add_sub_cancel_left] using hrem
+        extendedFabius F x‖ ≤ 2 * ((2 : ℝ) ^ N)⁻¹ :=
+  norm_globalBinaryReductionSum_sub_extendedFabius_le F hF N x
 
 /-- For `0 ≤ x` and `1 ≤ m` the outer summand at scale `m` is
 exactly one step of the residual telescope.  Restated for the

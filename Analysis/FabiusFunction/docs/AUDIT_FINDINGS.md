@@ -135,6 +135,17 @@ below rather than deleted.
 | Public analytic bridge for `fabiusAtInverseTwoPow` | `9458b1949` | Serialized `+FabiusFunction.DyadicAnalytic` and `+FabiusFunction.Paper05442` at integration merge `04d619814`, both exit 0. |
 | Strict sign of `gammaZetaConstant` and strict first-Stieltjes bound | `ec23d663f`, `991add419` | Serialized `+FabiusFunction.BoseFinitePartIntegral`, `+FabiusFunction.PeriodicMean`, and `+FabiusFunction.PaperFabiusAsymptotic` at `04d619814`, all exit 0. |
 | Four duplicated periodic dyadic-exponential helpers | `c7c2321bc` | Serialized `+FabiusFunction.PeriodicRegularity`, `+FabiusFunction.PeriodicSmooth`, and `+FabiusFunction.PaperFabiusAsymptotic` at `04d619814`, all exit 0. |
+| `rvachevUp_eq_one_sub_fabiusReal_of_nonneg`: the complementary-CDF identity on the whole nonnegative ray (hypothesis weakening, cluster lambert-asymptotics) | `fb30750ab` | Landed with the twenty-finding batch of 2026-08-25; the declaration is in `LaplaceTransform.lean`. |
+| `neg_one_pow_thueMorseBit_ring`: the sign identity over an arbitrary `[Ring R]` rather than `ℚ` (cluster thuemorse-qbinomial, first half of the entry) | `fb30750ab` | In `ThueMorseBinomialLog.lean`.  The entry's other half, dropping `1 ≤ N` from `norm_binaryReductionRemainder_le`, is recorded separately below. |
+| `remainder_eq_log_perturbation`, a byte-identical private copy across two Lambert modules, replaced by the public `dyadicLambertRemainder_eq_log_perturbation` | `1ca898aec`, `fb30750ab` | In `FabiusLambertPhase.lean`; the private copy in `FabiusLambertHigherExpansion.lean` is gone. |
+| Three verbatim "bounded range ⇒ explicit sup bound" copies in `PeriodicRegularity` and `FabiusLambertDerivativeBounds` | `fb30750ab` | No `isBounded_iff` unpacking remains in either module. |
+| `fabiusReal_le_two_mul_of_mem_Icc_half`, a weaker private re-proof of the public `fabiusReal_le_two_mul` | `942fd6b68` | Deleted; the call sites use `Regularity.fabiusReal_le_two_mul`. |
+| `self_le_two_pow` / `succ_le_two_pow` / `index_le_two_pow`, three private re-proofs of Mathlib's `Nat.lt_two_pow_self` | `7371bfec5`, `fb30750ab` | Deleted from `ThueMorsePrefix`, `Monotonicity`, and `NegativeLaplace`. |
+
+The six rows above were closed by other sessions without updating this table;
+they were reconciled on 2026-09-02 by checking that each proposed declaration
+exists (or each deleted one is gone) in current source and reading the commit
+that made the change.
 
 The original audit workstream's two builds ran on a peer's build slot at the
 SHAs named above, in a sparse detached worktree whose `.lake/packages` is a
