@@ -201,7 +201,6 @@ fractional and inverse-layer-cake checkpoint \nolinkurl{37eab3c56}}
 \newcommand{\fract}[1]{\left\{#1\right\}}
 \newcommand{\Deltah}{\Delta_h}
 \newcommand{\Btri}[1]{\binom{#1}{2}}
-\newcommand{\pos}[1]{\left(#1\right)_{+}}
 \newcommand{\Unif}{\operatorname{Unif}}
 \newcommand{\Mmain}{\mathcal M}
 \newcommand{\CoeffMass}{\mathcal C}
@@ -5303,7 +5302,7 @@ A Math Stack Exchange question asks for a closed form for the sequence
  f_n(x)=2\int_{-1}^{x}\bigl(f_{n-1}(2t+1)-f_{n-1}(2t-1)\bigr)\Differential t.
 \]
 The first integration produces the piecewise linear tent
-$f_1(x)=\pos{1-|x|}$, and the subsequent iterates visually converge very rapidly to
+$f_1(x)=\PositivePart{1-|x|}$, and the subsequent iterates visually converge very rapidly to
 Rvachev's compactly supported $C^\infty$ up-function.  This report gives a complete
 finite-stage description and a sharp convergence theorem.
 
@@ -5321,7 +5320,7 @@ $n\ge1$,
 \[
  f_n(x)=\frac{2^{n(n+1)/2-1}}{n!}
  \sum_{j=0}^{2^n}\bigl(\tau_n(j)-\tau_n(j-1)\bigr)
- \pos{x+1-\frac{j}{2^{n-1}}}^{n},
+ \PositivePart{x+1-\frac{j}{2^{n-1}}}^{n},
 \]
 where $\tau_n(j)=(-1)^{\BinaryDigitSum(j)}$ on $0\le j<2^n$ and is zero outside that range.
 The $n$th derivative is therefore a rescaled Thue--Morse step function.
@@ -5375,13 +5374,13 @@ There is a small indexing issue in the informal description of the construction.
 literal seed $f_0$ in \eqref{repeated2:eq:original-recurrence} is piecewise constant; the first iterate
 is the piecewise linear function
 \begin{equation}
- f_1(x)=\pos{1-|x|}.
+ f_1(x)=\PositivePart{1-|x|}.
  \label{repeated2:eq:tent}
 \end{equation}
 When one says that the up-function arises by ``repeatedly integrating a piecewise linear
 function,'' the natural indexing is therefore
 \begin{equation}
- g_m=f_{m+1},\qquad g_0(x)=\pos{1-|x|}.
+ g_m=f_{m+1},\qquad g_0(x)=\PositivePart{1-|x|}.
  \label{repeated2:eq:linear-indexing}
 \end{equation}
 Both indexings will be retained: $f_n$ matches the question, while $g_m$ matches the
@@ -5412,14 +5411,14 @@ For every $n\ge1$ and $x\in\RealNumbers$,
  \boxed{\displaystyle
  f_n(x)=\frac{2^{n(n+1)/2-1}}{n!}
  \sum_{j=0}^{2^n}\Delta\tau_n(j)
- \pos{x+1-\frac{j}{2^{n-1}}}^{n}.}
+ \PositivePart{x+1-\frac{j}{2^{n-1}}}^{n}.}
  \label{repeated2:eq:exact-iterate-intro}
 \end{equation}
 Equivalently,
 \begin{equation}
  f_n(x)=\frac{1}{2n!\,2^{n(n-1)/2}}
  \sum_{j=0}^{2^n}\Delta\tau_n(j)
- \pos{2^nx+2^n-2j}^{n}.
+ \PositivePart{2^nx+2^n-2j}^{n}.
  \label{repeated2:eq:exact-iterate-mse-scaling}
 \end{equation}
 The knots are
@@ -5436,7 +5435,7 @@ In the tent indexing \eqref{repeated2:eq:linear-indexing}, \cref{repeated2:thm:e
  \boxed{\displaystyle
  g_m(x)=\frac{2^{m(m+3)/2}}{(m+1)!}
  \sum_{j=0}^{2^{m+1}}\Delta\tau_{m+1}(j)
- \pos{x+1-\frac{j}{2^m}}^{m+1}.}
+ \PositivePart{x+1-\frac{j}{2^m}}^{m+1}.}
  \label{repeated2:eq:exact-tent-indexing}
 \end{equation}
 Thus the $m$th repeated integration of the tent is a degree-$(m+1)$ spline on the dyadic
@@ -5735,7 +5734,7 @@ $V_1+\cdots+V_m$ is
  b_{\bm a}(x)=
  \frac{1}{2^m(m-1)!\prod_{i=1}^{m}a_i}
  \sum_{\varepsilon\in\{0,1\}^m}(-1)^{|\varepsilon|}
- \pos{x+A-2\sum_{i=1}^{m}\varepsilon_i a_i}^{m-1}.
+ \PositivePart{x+A-2\sum_{i=1}^{m}\varepsilon_i a_i}^{m-1}.
  \label{repeated2:eq:general-box-spline}
 \end{equation}
 \end{lemma}
@@ -5857,7 +5856,7 @@ For $0\le r\le n-1$, differentiating \eqref{repeated2:eq:exact-iterate-intro} gi
  f_n^{(r)}(x)=
  \frac{2^{n(n+1)/2-1}}{(n-r)!}
  \sum_{j=0}^{2^n}\Delta\tau_n(j)
- \pos{x+1-\frac{j}{2^{n-1}}}^{n-r}.
+ \PositivePart{x+1-\frac{j}{2^{n-1}}}^{n-r}.
  \label{repeated2:eq:finite-spline-derivatives}
 \end{equation}
 The formula is also valid away from the knots for $r=n$.  If
@@ -5882,7 +5881,7 @@ The first three functions are
 \begin{align}
  f_0(x)&=\frac12\IndicatorOf{(-1,1)}(x),
  \label{repeated2:eq:f0-explicit}\\
- f_1(x)&=\pos{1-|x|},
+ f_1(x)&=\PositivePart{1-|x|},
  \label{repeated2:eq:f1-explicit}\\
  f_2(x)&=
  \begin{cases}
@@ -5895,7 +5894,7 @@ The first three functions are
 The next one already displays the full Thue--Morse organization compactly:
 \begin{equation}
  f_3(x)=\frac{16}{3}\sum_{j=0}^{8}\Delta\tau_3(j)
- \pos{x+1-\frac j4}^{3}.
+ \PositivePart{x+1-\frac j4}^{3}.
  \label{repeated2:eq:f3-truncated-power}
 \end{equation}
 
@@ -6525,7 +6524,7 @@ $a_nX'$ by a single uniform coordinate $a_nU$.
 \label{repeated2:def:comparison-kernel}
 For $t\in\RealNumbers$, define
 \begin{equation}
- K(t)=\Expectation\pos{U-t}-\Expectation\pos{X-t}.
+ K(t)=\Expectation\PositivePart{U-t}-\Expectation\PositivePart{X-t}.
  \label{repeated2:eq:K-definition}
 \end{equation}
 \end{definition}
@@ -6607,15 +6606,15 @@ $X\stackrel d=(X'+U)/2$ and convexity,
 \]
 Since $X'$ has the same law as $X$, this rearranges to
 $\Expectation\phi(X)\le\Expectation\phi(U)$.  Thus $X$ is below $U$ in convex order.  Applying this to
-$\phi_t(y)=\pos{y-t}$ gives $K(t)\ge0$.
+$\phi_t(y)=\PositivePart{y-t}$ gives $K(t)\ge0$.
 
 For $0\le t\le1$,
 \[
- \Expectation\pos{U-t}=\frac{(1-t)^2}{4}.
+ \Expectation\PositivePart{U-t}=\frac{(1-t)^2}{4}.
 \]
 Also, by \eqref{repeated2:eq:X-tail-F},
 \begin{align*}
- \Expectation\pos{X-t}
+ \Expectation\PositivePart{X-t}
  &=\int_t^1\Probability(X>s)\Differential s
  =\int_t^1F\left(\frac{1-s}{2}\right)\Differential s\\
  &=2\int_0^{(1-t)/2}F(y)\Differential y
@@ -6671,7 +6670,7 @@ Let $h'$ be absolutely continuous on $[-1,1]$.  Then
 \begin{proof}
 For $y\in[-1,1]$,
 \[
- h(y)=h(-1)+h'(-1)(y+1)+\int_{-1}^{1}\pos{y-t}h''(t)\Differential t.
+ h(y)=h(-1)+h'(-1)(y+1)+\int_{-1}^{1}\PositivePart{y-t}h''(t)\Differential t.
 \]
 Take expectations first with $y=U$ and then with $y=X$.  The constant terms cancel, and
 the linear terms cancel because both random variables have mean zero.  Fubini's theorem
@@ -7072,7 +7071,7 @@ piecewise-linear formulation.
 
 \begin{corollary}[Repeated integration starting from the tent]
 \label{repeated2:cor:tent-indexed-rate}
-Let $g_0(x)=\pos{1-|x|}$ and $g_{m+1}=Tg_m$.  For every $r\ge0$,
+Let $g_0(x)=\PositivePart{1-|x|}$ and $g_{m+1}=Tg_m$.  For every $r\ge0$,
 \begin{equation}
  \Norm{g_r-\RvachevUp}_{C^r}
  =\frac{13}{72}2^{\binom{r+1}{2}},

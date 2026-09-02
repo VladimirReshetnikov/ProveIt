@@ -23,6 +23,11 @@ spelling such as ``\FormalBigO_t(E)`` to the explicit two-argument command
 ``\FormalBigOAt{E}{t}``.  Its balanced-parenthesis parser preserves nested
 operands and rejects any occurrence whose wrapper is not understood.
 
+The opt-in ``--classical-analysis-aliases`` profile retires the reviewed
+``\falling``, ``\rising``, ``\pos``, and mixed-grammar ``\Mellin`` aliases.
+The Mellin migration recognizes only the application and bare-operator forms
+present in the audited corpus and fails closed if another form is encountered.
+
 The command is dry-run by default and accepts one or more explicit files or
 directories.  ``--apply`` is required to write.  Archive paths are rejected.
 
@@ -157,6 +162,35 @@ COMBINATORIAL_PROMOTED_LOCAL_ACCENTS = {
     "PartitionLatticeMinimum",
     "PartitionLatticeMaximum",
 }
+
+CLASSICAL_ANALYSIS_RENAMES = {
+    "falling": "FallingFactorial",
+    "rising": "RisingFactorial",
+    "pos": "PositivePart",
+}
+
+CLASSICAL_ANALYSIS_SHARED_DECLARATIONS = {"Mellin"}
+
+# These are complete for the reviewed active corpus.  They deliberately use
+# literal spellings rather than a permissive operand regex: bracketed Mellin
+# operands may themselves contain brackets, and inventing a partial TeX parser
+# here would be less safe than rejecting any future grammar for human review.
+CLASSICAL_MELLIN_REPLACEMENTS = (
+    (r"\Mellin[\log L_a](w)", r"\MellinTransformOf{\log L_a}(w)"),
+    (r"\Mellin\mathcal E(w)", r"\MellinTransformOf{\mathcal E}(w)"),
+    (r"\xrightarrow{\ \Mellin\ }", r"\xrightarrow{\ \MellinTransformSymbol\ }"),
+    (r"\Mellin_F", r"\MellinTransformOf{F}"),
+    (r"\Mellin_G", r"\MellinTransformOf{G}"),
+    (
+        r"\Mellin[\RvachevUp|_{[0,1]}]",
+        r"\MellinTransformOf{\RvachevUp|_{[0,1]}}",
+    ),
+    (r"\Mellin[F']", r"\MellinTransformOf{F'}"),
+    (r"\Mellin[F]", r"\MellinTransformOf{F}"),
+    (r"(\Mellin f)(z)", r"\MellinTransformOf{f}(z)"),
+    (r"\Mellin[f(q^kx)](z)", r"\MellinTransformOf{f(q^kx)}(z)"),
+    (r"\Mellin[\Gop_{n,q}f](z)", r"\MellinTransformOf{\Gop_{n,q}f}(z)"),
+)
 
 LOCAL_ACCENT_MARKER_RE = re.compile(
     r"^[ \t]*%[ \t]*LOCAL-NON-FOURIER-HAT:[ \t]*\\([A-Za-z@]+)\b"
@@ -328,6 +362,35 @@ def rewrite_formal_bigo_at(code: str, filtration: str) -> tuple[str, int]:
     return "".join(output), substitutions
 
 
+def rewrite_classical_analysis_aliases(code: str) -> tuple[str, dict[str, int]]:
+    r"""Rewrite the reviewed nonuniform falling-factorial and Mellin forms."""
+
+    counts: dict[str, int] = {}
+    code, substitutions = re.subn(
+        r"\\falling\s+D\s*n(?![A-Za-z@])",
+        r"\\FallingFactorial{D}{n}",
+        code,
+    )
+    if substitutions:
+        counts["falling-implicit-Dn"] = substitutions
+
+    mellin_substitutions = 0
+    for old, new in CLASSICAL_MELLIN_REPLACEMENTS:
+        occurrences = code.count(old)
+        if occurrences:
+            code = code.replace(old, new)
+            mellin_substitutions += occurrences
+    if mellin_substitutions:
+        counts["Mellin-application"] = mellin_substitutions
+
+    leftover = re.search(r"\\Mellin(?![A-Za-z@])", code)
+    if leftover is not None:
+        excerpt = code[leftover.start() : leftover.start() + 100]
+        raise ValueError(f"unsupported classical Mellin alias form: {excerpt!r}")
+
+    return code, counts
+
+
 def declaration_name(code: str, extra_names: set[str]) -> str | None:
     patterns = dict(DECL_PATTERNS)
     for name in extra_names:
@@ -396,6 +459,7 @@ def transform(
     ordinary_rising_poch: bool,
     combinatorial_calculus: bool,
     formal_bigo_filtration: str | None,
+    classical_analysis_aliases: bool = False,
 ) -> tuple[str, dict[str, int], bool]:
     text, added = add_input(text, path, docs)
     renames = dict(SAFE_RENAMES)
@@ -412,9 +476,13 @@ def transform(
         renames["poch"] = "RisingFactorial"
     if combinatorial_calculus:
         renames.update(COMBINATORIAL_CALCULUS_RENAMES)
-    shared_declarations = (
-        COMBINATORIAL_SHARED_DECLARATIONS if combinatorial_calculus else set()
-    )
+    if classical_analysis_aliases:
+        renames.update(CLASSICAL_ANALYSIS_RENAMES)
+    shared_declarations: set[str] = set()
+    if combinatorial_calculus:
+        shared_declarations.update(COMBINATORIAL_SHARED_DECLARATIONS)
+    if classical_analysis_aliases:
+        shared_declarations.update(CLASSICAL_ANALYSIS_SHARED_DECLARATIONS)
     extra_names = (set(renames) - set(SAFE_RENAMES)) | shared_declarations
     counts = {name: 0 for name in renames}
     output: list[str] = []
@@ -492,6 +560,10 @@ def transform(
             code, substitutions = rewrite_formal_bigo_at(code, formal_bigo_filtration)
             if substitutions:
                 key = f"formal-bigo-{formal_bigo_filtration}"
+                counts[key] = counts.get(key, 0) + substitutions
+        if classical_analysis_aliases:
+            code, profile_counts = rewrite_classical_analysis_aliases(code)
+            for key, substitutions in profile_counts.items():
                 counts[key] = counts.get(key, 0) + substitutions
         for old, new in renames.items():
             pattern = re.compile(r"\\" + re.escape(old) + r"(?![A-Za-z@])")
@@ -575,6 +647,14 @@ def main() -> int:
             "its balanced parenthesized operands to FormalBigOAt"
         ),
     )
+    parser.add_argument(
+        "--classical-analysis-aliases",
+        action="store_true",
+        help=(
+            "semantically assert the reviewed falling/rising/positive-part "
+            "aliases and the corpus-specific Mellin application grammar"
+        ),
+    )
     args = parser.parse_args()
     docs, archive = repository_paths()
     try:
@@ -600,6 +680,7 @@ def main() -> int:
                 ordinary_rising_poch=args.ordinary_rising_poch,
                 combinatorial_calculus=args.combinatorial_calculus,
                 formal_bigo_filtration=args.formal_bigo_filtration,
+                classical_analysis_aliases=args.classical_analysis_aliases,
             )
         except ValueError as error:
             print(str(error), file=sys.stderr)
@@ -662,6 +743,21 @@ def main() -> int:
             print(
                 f"  {count:6d}  \\FormalBigO_{filtration}(...) -> "
                 f"\\FormalBigOAt{{...}}{{{filtration}}}"
+            )
+        elif name == "falling-implicit-Dn":
+            print(
+                f"  {count:6d}  \\falling Dn -> "
+                r"\FallingFactorial{D}{n}"
+            )
+        elif name == "Mellin-application":
+            print(
+                f"  {count:6d}  reviewed \\Mellin applications -> "
+                r"\MellinTransformOf / \MellinTransformSymbol"
+            )
+        elif name in CLASSICAL_ANALYSIS_RENAMES:
+            print(
+                f"  {count:6d}  \\{name} -> "
+                f"\\{CLASSICAL_ANALYSIS_RENAMES[name]}"
             )
         elif name == "sinc":
             target = "SincRad" if args.sinc_normalization == "rad" else "SincPi"
