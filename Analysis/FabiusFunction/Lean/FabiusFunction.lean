@@ -356,6 +356,7 @@ import FabiusFunction.PolynomialCombExactness
 import FabiusFunction.SincProductShells
 import FabiusFunction.RvachevFixedMantissaRay
 import FabiusFunction.SharpGelfondBound
+import FabiusFunction.CyclicSineProductBound
 import FabiusFunction.SincProductPeakRay
 import FabiusFunction.DoublingCocycleIdentities
 import FabiusFunction.DiscreteLacunaryParseval
