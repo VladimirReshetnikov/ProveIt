@@ -4833,6 +4833,67 @@ The associated sequence $(p_n(x))_{n\geq0}$ is defined by
 The sequence is of binomial type when $A=1$, and Appell when $B(t)=t$.
 \end{definition}
 
+The definition above declares a sequence of binomial type by exhibiting a
+generating function.  The converse also holds, and it is the statement that
+makes the umbral formalism worth having: the binomial identity alone forces the
+exponential shape, so no sequence of binomial type escapes the theory.
+
+\begin{theorem}[Generating-function characterization of binomial type]
+\label{thm:merged-binomial-type-characterization}
+Let $K$ be a field of characteristic zero and let $(p_n)_{n\geq0}$ be
+polynomials in $K[x]$ with $p_0=1$.  The following are equivalent.
+\begin{enumerate}
+\item For all $x$ and $y$,
+\begin{equation}
+ p_n(x+y)=\sum_{k=0}^{n}\binom nkp_k(x)p_{n-k}(y)\qquad(n\geq0).   \label{eq:merged-binomial-type-law}
+\end{equation}
+\item There is a series $B(t)\in tK[[t]]$, necessarily unique, with
+\begin{equation}
+ \sum_{n\geq0}p_n(x)\frac{t^n}{n!}=\EulerE^{xB(t)}.                \label{eq:merged-binomial-type-egf}
+\end{equation}
+\end{enumerate}
+When these hold, $\deg p_n\leq n$ automatically, and $\deg p_n=n$ for every $n$
+if and only if $B'(0)\ne0$, that is, if and only if $B$ is a delta series.
+\end{theorem}
+
+\begin{proof}
+Suppose (2).  Then
+$\EulerE^{(x+y)B(t)}=\EulerE^{xB(t)}\EulerE^{yB(t)}$, and comparing
+coefficients of $t^n/n!$ in a product of exponential generating functions is
+exactly the binomial convolution \eqref{eq:merged-binomial-type-law}.
+
+Suppose (1), and put $P(x,t)=\sum_{n\geq0}p_n(x)t^n/n!\in K[x][[t]]$.  The
+binomial identity says precisely
+\begin{equation}
+ P(x+y,t)=P(x,t)\,P(y,t).                                          \label{eq:merged-binomial-type-functional}
+\end{equation}
+Setting $x=y=0$ gives $P(0,t)=P(0,t)^2$; since $P(0,t)$ has constant term
+$p_0=1$ it is a unit, so $P(0,t)=1$.  Every $P(x,t)$ likewise has constant
+term $1$, so $L(x,t)=\log P(x,t)$ is defined in $K[x][[t]]$, its coefficients
+being polynomials in $x$ because they are universal polynomials in
+$p_1(x),\ldots,p_n(x)$.  Taking logarithms in
+\eqref{eq:merged-binomial-type-functional},
+\[
+ L(x+y,t)=L(x,t)+L(y,t).
+\]
+Write $L(x,t)=\sum_{m\geq0}\ell_m(x)t^m$.  Each $\ell_m\in K[x]$ satisfies
+$\ell_m(x+y)=\ell_m(x)+\ell_m(y)$ identically in two indeterminates.  Writing
+$\ell_m(x)=\sum_jc_jx^j$ and comparing the mixed monomials $x^ay^b$ with
+$a,b\geq1$ forces $c_j=0$ for $j\geq2$ (the binomial coefficient
+$\binom ja\ne0$ in characteristic zero), while $x=y=0$ forces $c_0=0$.  Hence
+$\ell_m(x)=c_mx$ and $L(x,t)=xB(t)$ with $B(t)=\sum_mc_mt^m$.  Finally
+$\ell_0(x)=\log p_0(x)=0$, so $B\in tK[[t]]$, and exponentiating gives
+\eqref{eq:merged-binomial-type-egf}.  Uniqueness is immediate from
+$B(t)=\partial_xL(x,t)$, or equivalently from $B(t)=\sum_{n\geq1}p_n'(0)t^n/n!$.
+
+For the degree statement, expand
+$\EulerE^{xB(t)}=\sum_{k\geq0}x^kB(t)^k/k!$.  Since $B\in tK[[t]]$, the term
+$B(t)^k/k!$ contributes nothing below $t^k$, so $p_n$ has degree at most $n$
+and its coefficient of $x^n$ is $n!\cdot\CoefficientExtraction tn B(t)^n/n!=B'(0)^n$.
+Thus $\deg p_n=n$ for all $n$ exactly when $B'(0)\ne0$; and already
+$p_1(x)=B'(0)x$ shows that exact degree at $n=1$ forces $B'(0)\ne0$.
+\end{proof}
+
 \begin{theorem}[Addition and lowering]
 \label{thm:merged-sheffer}
 Let $p_n$ be the binomial-type sequence with EGF $\EulerE^{yB(t)}$.  Then
