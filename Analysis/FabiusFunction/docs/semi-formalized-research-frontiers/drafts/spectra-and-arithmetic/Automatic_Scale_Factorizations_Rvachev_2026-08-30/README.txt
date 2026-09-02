@@ -33,8 +33,11 @@ The retained historical PDF is 920,804 bytes with SHA-256
 its 1,684-line build source had SHA-256
 `c705aefb011dc99fcba48aca2bbbf5fde2fb8c65c720b6ab06bfc9fd24193e5f`.
 The live TeX changed after that render during notation normalization and now
-has 1,682 lines, 62,451 bytes, and SHA-256
-`5d3ff04bf649e76bfff6affbc04cac9f57a8df0eb3ccdf90c00e4e01f6614f2f`.
+has 1,682 lines, 62,490 bytes, and SHA-256
+`3e40fef5247ed3d7263ff885dc97159b456f26347614817fc18e087af647de90`.
+Its 62,490 current bytes use `\TwoAdicValuation` for the genuine dyadic
+valuation and `\rho_1,\rho_2` for the conjectural probability-factor pair,
+so the two formerly homographic roles are now explicit.
 A fresh three-pass build is therefore required before PDF/source
 synchronization is claimed.
 Every page is A4 at rotation zero, contains extractable non-whitespace text,

@@ -14,8 +14,8 @@ natural-boundary program.
 
 The current live Exponents synthesis source is
 `Exponents_and_q_Series_Frontiers/Exponents_and_q_Series_Frontiers.tex`
-(16,369 lines, 737,768 bytes, SHA-256
-`4313bddb87a0f248a8bad4bd5e5a7cfbb25da51d1b994abc0c9d4c62525ca78c`).
+(16,369 lines, 737,912 bytes, SHA-256
+`a4aecd625f7eb405de866e2b368bbdc648fb0f9e11b423cb936a2f319d195f02`).
 It now includes the exact Lean crosswalk from integer-zero multiplicities to
 the exponent sequence, constructive dyadic-order first differences, and full
 generalized-product rigidity.  It also records the zero-definition,
@@ -26,6 +26,9 @@ bounded-Fabius Fourier specializations.  Its exact declarations are
 `Fabius.hasProdLocallyUniformly_geometricSincProduct_complexQPochhammerInf`,
 `Fabius.hasProdLocallyUniformly_rvachevFourierProduct_complexQPochhammerInf`,
 and `Fabius.hasProdLocallyUniformly_rvachevFourier_complexQPochhammerInf`.
+The current notation-only successor also uses the shared
+`\TwoAdicValuation` command for every dyadic valuation; the retained PDF
+predates that source normalization.
 The compound centered/MGF and
 outside-disk reciprocal formula, pole divisor, and zero--pole exchange remain
 Partial, as do zeta-quotient,

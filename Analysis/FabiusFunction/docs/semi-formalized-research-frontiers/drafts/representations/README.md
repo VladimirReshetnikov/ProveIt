@@ -4,8 +4,8 @@ New standalone intake members:
 
 - [`fabius_dyadic_chaos_frontier/`](fabius_dyadic_chaos_frontier/),
   *Dyadic Sensitivity and Polynomial-Chaos Frontiers for the
-  Fabius--Rvachev Law* (34 A4 pp and 2,694 source lines at arrival; now 40 A4
-  pp and 3,172 source lines after repair and activation-series integration),
+  Fabius--Rvachev Law* (34 A4 pp and 2,694 source lines at arrival; retained
+  post-review PDF 40 A4 pp; current live source 3,153 lines),
   arrived in
   `fabius_dyadic_chaos_frontier.zip` (outer SHA-256
   `d57fd01c3991a6a7ecd6ba6e745729c745745d3265cb3cfd414aac1991b11b86`).
@@ -25,10 +25,17 @@ New standalone intake members:
   mode-set, Thue--Morse-domain, and Lambert-cutoff statements; replayed the
   deterministic experiment in the recorded and a newer compatible
   environment; and rebuilt the figures and report without Type 3 fonts.  The
-  current seven PDFs comprise 46 pages: a 40-page A4 report and six one-page
-  vector figures.  The active 33-entry checksum ledger covers every current
-  non-ledger file, including the preserved immutable arrival ledger
-  `fabius_dyadic_chaos_frontier/SHA256SUMS.arrival.txt`.
+  retained seven PDFs comprise 46 pages: a 40-page A4 report and six one-page
+  vector figures.  The current live TeX is 3,153 lines and 112,391 bytes with
+  SHA-256
+  `34241042a005ea529219aca0761c121760a2574324bbb2300c365012cc1435c2`.
+  It is newer than the retained report PDF, whose 819,265 bytes have SHA-256
+  `0be7f0943e8d5fb795878aa0b3ecb21af25680155ad214ee2f1598de50e705ea`;
+  a source-parity rebuild is pending. The active 33-entry mixed
+  current-source/retained-artifact checksum ledger covers every non-ledger
+  file, including the preserved immutable arrival ledger
+  `fabius_dyadic_chaos_frontier/SHA256SUMS.arrival.txt`, without asserting that
+  the retained PDF renders the current TeX.
 
   The [label-complete Lean crosswalk](fabius_dyadic_chaos_frontier/LEAN_CROSSWALK.md)
   inventories all 41 nonconjectural report results: 12 Unformalized, 20
@@ -130,7 +137,8 @@ of an existing draft; semantic consolidation is deferred to the post-
   status.
 - [`Fabius_Rvachev_Shape_Divisibility_Stein_Geometry/`](Fabius_Rvachev_Shape_Divisibility_Stein_Geometry/),
   *Shape, Divisibility, and Stein Geometry of the Fabius--Rvachev Law*
-  (34 A4 pp, 2,080 source lines; with a 466-line numerical experiment),
+  (34-page retained A4 PDF, 2,080 source lines at arrival, current live source
+  2,057 lines; with a 466-line numerical experiment),
   arrived on 2026-08-30 with all 14 submitted payload checksums
   verified; three CSV entries were then refreshed after repository-mandated
   LF normalization. Its strict log-concavity and reliability consequences,
@@ -145,13 +153,19 @@ of an existing draft; semantic consolidation is deferred to the post-
   values, rationality and mean identities, and proves a stronger two-term
   Lambert-periodic endpoint theorem than this intake leaves conjectural. The
   original bespoke 50-page Letter/Latin-Modern/Type-3 rendering remains in
-  repository history. The repaired title-derived pair has a 2,080-line
-  canonical A4/27 mm/Libertinus source and a 466-line deterministic numerical
-  script. The report embeds four metadata-stable PNG figures while retaining
+  repository history. The current title-derived TeX is a 2,057-line,
+  83,124-byte canonical A4/27 mm/Libertinus source with SHA-256
+  `975ec7078562d88ba76c870ef1d90363380cbe422507762c305695b61f1c9bec`;
+  the deterministic numerical script has 466 lines. The report embeds four
+  metadata-stable PNG figures while retaining
   normalized clean vector companions with embedded/subset fonts and no Type
-  3. Exactly three strict serial `pdflatex` passes produced the final 34-page
-  A4 PDF; all 20 report-font entries are embedded/subset, seven are Libertinus,
-  and none is Type 3. The exhaustive 18-entry live ledger passes. The only
+  3. Exactly three strict serial `pdflatex` passes from the preceding
+  83,064-byte source checkpoint produced the retained 790,142-byte, 34-page A4
+  PDF (SHA-256
+  `e5c5b8dd1023dc57ae8a64fd5f463f62e079b99e32830a14f4268fea2e4a9478`);
+  all 20 report-font entries are embedded/subset, seven are Libertinus, and
+  none is Type 3. The current mixed 18-entry ledger passes, but the retained
+  PDF is not a rendering of the newer live TeX. The only
   exact Lean inputs claimed here are `rvachev_not_analyticAt` and
   `canonical_rvachev_not_analyticAt`; the report crosswalks them separately
   from its Shape/Stein results. All suggested new declaration names remain
@@ -172,9 +186,14 @@ of an existing draft; semantic consolidation is deferred to the post-
   normalization, and the three floating tables differed only by measured
   last-place drift (maximum absolute difference `7.31e-14`).  Five plots were
   regenerated without Type 3 fonts.  The
-  normalized report uses the canonical A4/27 mm/Libertinus preamble and its
-  exactly-three-pass 26-page PDF has embedded/subset fonts throughout; the
-  current 23-entry ledger passes in full.
+  current live report source uses the canonical A4/27 mm/Libertinus preamble;
+  it has 1,926 lines, 72,231 bytes, and SHA-256
+  `5b0eb2cf61123d5c9a6bd7ec5fdef5f7f09b2130ea02e3437d54f6dac2e27e42`.
+  The retained exactly-three-pass 26-page PDF (771,261 bytes, SHA-256
+  `e7698059db2a24985b90258683af4fde277235159379fc7b294583dbb6bf0f37`)
+  has embedded/subset fonts throughout, but it predates the current source-only
+  notation edit. The mixed current-source/retained-artifact 23-entry ledger
+  passes in full without asserting render parity.
 - [`Fabius_Rvachev_Noncommutative_Frontiers/`](Fabius_Rvachev_Noncommutative_Frontiers/),
   *Noncommutative Cumulant Frontiers for the Fabius--Rvachev Law* (26 A4 pp,
   1336 source lines; with a 681-line experiment), arrived on 2026-08-30 with
@@ -192,7 +211,7 @@ of an existing draft; semantic consolidation is deferred to the post-
 - [`Fabius_Rvachev_New_Frontiers-2/`](Fabius_Rvachev_New_Frontiers-2/),
   *Fabius--Rvachev New Frontiers* (last synchronized artifact: 41 A4 pp from
   a 2,863-line source, with a 580-line high-precision experiment; the current
-  crosswalk edit is rebuild-pending), arrived on
+  2,978-line source overlays are rebuild-pending), arrived on
   2026-08-30 from a rootless archive with all 15 arrival payload checksums
   verified. Its native up-law
   orthogonal polynomials, Jacobi and Christoffel reconstruction, rational
@@ -241,10 +260,14 @@ of an existing draft; semantic consolidation is deferred to the post-
   Latin Modern or Type 3 fonts and no raster images. That historical extraction
   retained all 99 then-inventoried public names, including all 25 then-current
   Gaunt names; targeted page and vector-figure visuals pass; and the fixed
-  20-entry ledger verifies 20/20. Those facts describe the frozen
+  20-entry ledger verified 20/20 at that checkpoint. Those facts describe the frozen
   99-declaration checkpoint, not the current 129-declaration source. The
-  retained 41-page PDF, preflight, and ledger are stale for the current source;
-  a synchronized rebuild and refreshed receipts remain pending. The earlier
+  current live TeX has 2,978 lines and 122,235 bytes with SHA-256
+  `e0015e424fe577c4aee3ea473ace71b67b9f250d5a96569dccd6dd03ebe20c98`.
+  The retained 41-page PDF and its historical preflight are stale for that
+  source; a synchronized rebuild remains pending. The refreshed mixed
+  20-entry ledger hashes the live source/metadata and retained artifacts
+  independently and therefore does not assert render parity. The earlier
   39-page cleaned-vector and 41-page local Gaunt builds remain documented as
   historical checkpoints.
 - [`Fabius_Stein_Koopman_Frontier_Report/`](Fabius_Stein_Koopman_Frontier_Report/),

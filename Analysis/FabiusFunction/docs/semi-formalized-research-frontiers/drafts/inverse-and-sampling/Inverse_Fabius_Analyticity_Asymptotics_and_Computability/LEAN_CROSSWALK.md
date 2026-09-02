@@ -6,7 +6,7 @@ This document records the source-level Lean correspondence for the 194 immutable
 
 The audit inspected the actual Lean source files below Analysis/FabiusFunction/Lean/FabiusFunction. It did not infer coverage from .olean files, declaration names alone, generated documentation, or historical commit messages.
 
-The inverse-computability tranche was checked by focused compilation of `EffectiveMonotoneInverse`, `FabiusInverseComputable`, and the facade before this source-only bookkeeping pass. No Lean, Lake, or Git command was run during the bookkeeping update itself. Human-proved frontier result means that the canonical chapter contains a complete human-readable proof but the inspected Lean tree has only partial ingredients or no matching declaration.
+The inverse-computability tranches were checked by focused compilation of `EffectiveMonotoneInverse`, `EffectiveGapInverse`, `FabiusInverseComputable`, and the facade before this source-only bookkeeping pass. No Lean, Lake, or Git command was run during the bookkeeping update itself. Human-proved frontier result means that the canonical chapter contains a complete human-readable proof but the inspected Lean tree has only partial ingredients or no matching declaration.
 
 The first ten columns of theorem_concordance.csv remain field-for-field identical to audit/source_result_inventory.csv: 194 rows were compared and no immutable-field difference was found.
 
@@ -26,7 +26,7 @@ The first ten columns of theorem_concordance.csv remain field-for-field identica
 |---|---:|---:|---:|---:|---:|---:|
 | Inverse_and_Sampling_Frontiers | 83 | 10 | 50 | 2 | 10 | 11 |
 | Inverse_Endpoint_All_Orders | 29 | 1 | 20 | 6 | 0 | 2 |
-| Inverse_Fabius_Computability_Report | 40 | 22 | 8 | 1 | 4 | 5 |
+| Inverse_Fabius_Computability_Report | 40 | 23 | 7 | 1 | 4 | 5 |
 | inverse_fabius_iterates_nowhere_analytic | 24 | 2 | 17 | 1 | 1 | 3 |
 | Non_Elementarity_of_the_Fabius_Function | 18 | 14 | 1 | 0 | 0 | 3 |
 | **Total** | **194** | **49** | **96** | **10** | **15** | **24** |
@@ -101,6 +101,7 @@ The table below is generated from the 49 Lean-proved concordance rows. Declarati
 | Inverse_Fabius_Computability_Report:cor:G-sequential | co:cor:G-sequential | FabiusFunction.EffectiveMonotoneInverse | Fabius.effectiveInversionOn_Icc |
 | Inverse_Fabius_Computability_Report:lem:clamp-computable | co:lem:clamp-computable | FabiusFunction.EffectiveMonotoneInverse | Fabius.unitClamp_sequentiallyComputable |
 | Inverse_Fabius_Computability_Report:cor:GT-sequential | co:cor:GT-sequential | FabiusFunction.FabiusInverseComputable | Fabius.fabiusInv_isComputableRealFunction |
+| Inverse_Fabius_Computability_Report:thm:abstract-inversion | co:thm:abstract-inversion | FabiusFunction.EffectiveGapInverse | Fabius.effectiveInversionOn_Icc_of_computablePositiveRationalGap |
 | Inverse_Fabius_Computability_Report:lem:flatness-upper | co:lem:flatness-upper | FabiusFunction.SharpFlatness | Fabius.fabiusReal_le_two_pow_div_factorial_mul_pow |
 | Inverse_Fabius_Computability_Report:thm:no-holder | co:thm:no-holder | FabiusFunction.FabiusInverseAsymptotic | Fabius.not_exists_fabiusInv_le_const_mul_rpow_near_zero |
 | Inverse_Fabius_Computability_Report:cor:sub-holder | co:cor:sub-holder | FabiusFunction.FabiusInverseAsymptotic | Fabius.tendsto_fabiusInv_div_rpow_atTop_at_zero_right |
@@ -127,6 +128,7 @@ Several paper rows contain multiple clauses. For those rows, the principal decla
 - Density shape: `Fabius.strictMonoOn_deriv_fabiusReal_Icc`, `Fabius.strictAntiOn_deriv_fabiusReal_Icc`, and `Fabius.deriv_fabiusReal_one_sub` prove the two strict branches and reflection.
 - Inverse Fabius computability: `Fabius.fabiusInv_isComputableRealFunction` packages sequential computability of the totalized inverse together with the logarithmic-Delta effective-continuity witness. `Fabius.effectiveInversionOn_Icc` supplies the unit-interval realizer, while `Fabius.abs_fabiusInv_sub_lt_inverse_two_pow_of_lt_deltaDenominator`, `Fabius.inverseFabiusLogarithmicOrder_isLeast`, and `Fabius.fabiusInv_effectivelyUniformContinuous_logarithmicDelta` supply the headline theorem's explicit dyadic and reciprocal-modulus clauses.
 - Tolerant bisection: `Fabius.tolerantDifference_error`, `Fabius.tolerantDifference_safe_updates`, and `Fabius.tolerantDifference_inconclusive` certify the three comparison branches; `Fabius.tolerantBisection_correct` constructs the uniform computable output name, and `Fabius.unitClamp_sequentiallyComputable` supports totalization.
+- Abstract effective inversion: the eight public declarations are `Fabius.EffectivelyUniformContinuousOn`, `Fabius.ComputablePositiveRationalSequence`, `Fabius.ComputablePositiveRationalSequence.value`, `Fabius.ComputablePositiveRationalSequence.reciprocalDenominator`, `Fabius.ComputablePositiveRationalSequence.reciprocalDenominator_spec`, `Fabius.inverseModulus_of_positiveRationalGap`, `Fabius.effectiveInversionOn_Icc_of_computablePositiveRationalGap`, and `Fabius.clampedEffectiveInversion_of_computablePositiveRationalGap`.  The principal theorem derives the reciprocal inverse modulus from computable positive rational forward gaps and proves subset sequential computability plus subset effective uniform continuity; the last declaration is the clamped total `IsComputableRealFunction` wrapper.
 - Least interval mass: `Fabius.fabiusIntervalMass_reflect`, `Fabius.fabiusIntervalMass_eq_zero_of_add_nonpos`, `Fabius.fabiusIntervalMass_eq_zero_of_one_le`, `Fabius.strictMonoOn_fabiusIntervalMass_firstHalf`, `Fabius.strictAntiOn_fabiusIntervalMass_secondHalf`, `Fabius.fabiusReal_sub_le_sub`, `Fabius.fabiusIntervalMass_eq_fabiusReal_iff`, and `Fabius.fabiusReal_sub_eq_sub_iff` prove the global shape, minimum, and both equality formulations.
 - Global increment shape: `Fabius.monotoneOn_fabiusIntervalMass_firstHalf`, `Fabius.antitoneOn_fabiusIntervalMass_secondHalf`, `Fabius.fabiusReal_add_le`, and `Fabius.fabiusReal_add_eq_iff` prove the half-line shape, constrained superadditivity, and its equality locus.
 - Exact inverse modulus: `Fabius.sSup_abs_fabiusInv_sub_Icc_eq`, `Fabius.sSup_abs_fabiusInv_sub_eq`, `Fabius.fabiusInv_min_one`, `Fabius.abs_fabiusInv_sub_le`, `Fabius.fabiusInv_sub_le_sub`, `Fabius.fabiusInv_add_le`, `Fabius.fabiusInv_sub_eq_sub_iff_of_mem_Icc`, and `Fabius.abs_fabiusInv_sub_eq_iff_of_mem_Icc` prove the two exact suprema, saturation, pointwise and order-free gap inequalities, subadditivity, and equality loci.
@@ -187,7 +189,7 @@ The dyadic singularity atlas `is:p2:prob:dyadic-singularity-atlas` is explicitly
 | Area | Exact Lean core | Missing full bridge |
 |---|---|---|
 | Explicit all-orders inverse endpoint expansion | Full forward all-orders expansion, implicit pullback along the inverse, sharp leading inverse scale, Gamma-zeta periodic data | Explicit inverse coefficient reversion, diagonal formulas, inverse top jets, elasticity hierarchy, W-resummation, Gevrey/transseries theory |
-| Inverse computability | Forward computability, sharp inverse modulus, effective injectivity, explicit effective continuity, tolerant bisection, restricted inverse sequential computability, computable clamping, and the totalized `IsComputableRealFunction` theorem | Derivation of a computable inverse modulus and effective continuity from the abstract theorem's positive gap sequence, exact endpoint-mass ceiling minimality, and input-bit asymptotics |
+| Inverse computability | Forward computability, sharp inverse modulus, effective injectivity, explicit effective continuity, tolerant bisection, computable positive-rational gap encoding, derived reciprocal inverse modulus, restricted inverse sequential computability, subset effective uniform continuity, computable clamping, and totalized `IsComputableRealFunction` theorems | Exact endpoint-mass ceiling minimality and input-bit asymptotics |
 | Inverse iterates | Single-inverse nonanalyticity and exact PartitionDefect combinatorics | Every n > 1 iterate theorem, zero-radius transport, spine dominance, formal-reversion radius |
 | Dyadic inverse germs | Exact quarter quantile, analytic quarter germ, complete quarter inverse jet | General reduced-dyadic analytic shadow, nonzero flat remainder, all-dyadic inverse derivatives |
 | Appell and Bernoulli structure | Appell derivative/translation laws, moments, cumulants, continuous deconvolution, polynomial synthesis | Logistic dual, Barnes identifications, full finite-prefix collapse/recovery, some displayed Bernoulli recurrences |
@@ -203,7 +205,7 @@ The direct inverse-spine asymptotic remains the one inverse-iterate conjecture. 
 
 ## Highest-value next formalizations
 
-1. Extend the generic inverse theorem from a computable positive forward-gap sequence to a derived reciprocal inverse modulus and effective-uniform-continuity witness; the current theorem starts with that modulus already supplied.
+1. Formalize exact endpoint-mass ceiling minimality and the asymptotically sharp input-bit requirement on top of the existing inverse-modulus bounds.
 2. Build a generic asymptotic series-reversion layer with Bell-polynomial coefficient extraction, then instantiate it with the existing forward Lambert expansion.
 3. Prove positive convergence-radius preservation under formal compositional inversion and use it for the iterate Taylor-radius transport theorem.
 4. Formalize the Q-factorization and analytic spine estimates on top of PartitionDefect; the existing defect theorems do not by themselves prove iterate nonanalyticity.

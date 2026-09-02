@@ -36,9 +36,9 @@ SHA-256
 `240bff72fb47562e9a8fd87085b5a3a96d738189714518db17988f7c4ac15d31`;
 exactly three guarded serial passes produced 343, 354, and 354 pages.
 
-The live source now postdates that receipt: it has 14,476 lines, 681,416 bytes,
+The live source now postdates that receipt: it has 14,530 lines, 683,858 bytes,
 and SHA-256
-`0465683358e0145a436345bc097ad10cea52f25ab46d017f4c9304a7d64822da`.
+`b77e9ab54d9437485bab9ee36783cc1f1d5c36c347e67a5242953af8319650fc`.
 The regenerated root `SHA256SUMS` ledger records the same identity; the
 retained PDF therefore does not claim render parity with the current TeX. The
 validation record in `README.md` distinguishes compilation, font embedding,
@@ -49,7 +49,7 @@ The current source incorporates exhaustive crosswalks for
 `QPochhammerEntire` (zero definitions and five legacy compatibility theorems),
 `QPochhammerInfinite` (one definition and twenty-nine theorems),
 `QPochhammerDissection` (zero definitions and two theorems),
-`GaussianBinomialPalindromic` (zero definitions and twelve theorems),
+`GaussianBinomialPalindromic` (zero definitions and fourteen theorems),
 `GaussianBinomialPolynomialStructure` (zero definitions and five theorems),
 `GaussianBinomialBounds` (zero definitions and six theorems), and
 `GeometricPochhammerNormalConvergence` (zero definitions and three theorems).
@@ -60,8 +60,7 @@ and `QPochhammerComplexOrder` (one definition and four theorems),
 `BasicHypergeometricSeries` (two definitions and five theorems),
 `HeineTransformation` (two definitions and five theorems), and
 `QGaussSummation` (zero definitions and two theorems). The next tranche adds
-`QExponential` (three
-definitions and eight theorems), `JacksonIntegral` (one definition and seven
+`QExponential` (three definitions and eight theorems), `JacksonIntegral` (one definition and seven
 theorems), `ThetaQuasiPeriodicity` (one definition and six theorems),
 `QPochhammerLogDerivative` (zero definitions and ten theorems),
 `QPochhammerOrderDerivative` (zero definitions and three theorems), and

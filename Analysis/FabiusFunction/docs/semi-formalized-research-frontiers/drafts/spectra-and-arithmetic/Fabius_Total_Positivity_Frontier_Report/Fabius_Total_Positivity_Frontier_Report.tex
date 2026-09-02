@@ -78,7 +78,7 @@ The main proved results are as follows.  The coefficient sequence of $H$ is PF$_
 \]
 For $q=1/4$ these limits are $\EulerE^2$ and $1$.
 
-On the original Fourier side, the zero at the nonzero integer $N$ has multiplicity $\nu_2(N)+1$.  Consequently the multiplicity-weighted positive zero count is exactly $2N-\BinaryDigitSum(N)$, and, more strikingly,
+On the original Fourier side, the zero at the nonzero integer $N$ has multiplicity $\TwoAdicValuation(N)+1$.  Consequently the multiplicity-weighted positive zero count is exactly $2N-\BinaryDigitSum(N)$, and, more strikingly,
 \[
  \Sign\FourierTwoPi{\RvachevUp}(x)=\ThueMorseSign{\Floor{x}}
  \qquad(x>0,\ x\notin\IntegerNumbers).
@@ -206,7 +206,7 @@ This positive genus-zero product is the structural pivot of the report.
 
 \section{The dyadic zero divisor and exact Thue--Morse sign interpolation}\label{sec:zeros}
 
-Let $\nu_2(N)$ be the exponent of $2$ in the prime factorization of the positive integer $N$, and let $\BinaryDigitSum(N)$ be its binary digit sum.  Write
+Let $\TwoAdicValuation(N)$ be the exponent of $2$ in the prime factorization of the positive integer $N$, and let $\BinaryDigitSum(N)$ be its binary digit sum.  Write
 \[
  \ThueMorseSign{N}:=(-1)^{\BinaryDigitSum(N)}
 \]
@@ -215,12 +215,12 @@ for the $\{+1,-1\}$ form of the Thue--Morse sequence.
 \begin{theorem}[Exact zero multiplicities]\label{thm:zero-multiplicity}
 For every nonzero integer $N$,
 \begin{equation}\label{eq:zero-order}
- \OrderOperator_{z=N}\FourierTwoPi{\RvachevUp}(z)=\nu_2(\AbsoluteValue N)+1.
+ \OrderOperator_{z=N}\FourierTwoPi{\RvachevUp}(z)=\TwoAdicValuation(\AbsoluteValue N)+1.
 \end{equation}
-Equivalently, $H$ has a zero at $-\pi^2N^2$ of multiplicity $\nu_2(N)+1$ and has no other zeros.
+Equivalently, $H$ has a zero at $-\pi^2N^2$ of multiplicity $\TwoAdicValuation(N)+1$ and has no other zeros.
 \end{theorem}
 \begin{proof}
-The $j$th factor of \eqref{eq:up-product} vanishes at $z=N$ precisely when $N/2^j$ is a nonzero integer, i.e. when $0\le j\le\nu_2(N)$.  Each such sine zero is simple, and all other factors are nonzero.  This proves \eqref{eq:zero-order}.  The statement for $H$ follows either by substitution or directly from \eqref{eq:H-double-product}.
+The $j$th factor of \eqref{eq:up-product} vanishes at $z=N$ precisely when $N/2^j$ is a nonzero integer, i.e. when $0\le j\le\TwoAdicValuation(N)$.  Each such sine zero is simple, and all other factors are nonzero.  This proves \eqref{eq:zero-order}.  The statement for $H$ follows either by substitution or directly from \eqref{eq:H-double-product}.
 \end{proof}
 
 \begin{theorem}[Exact zero count and digit-sum discrepancy]\label{thm:zero-count}
@@ -236,9 +236,9 @@ The number of nonzero zeros in $[-R,R]$ is
 \begin{proof}
 By \cref{thm:zero-multiplicity},
 \[
- Z_+(R)=\sum_{n=1}^{M}(\nu_2(n)+1)=M+\nu_2(M!).
+ Z_+(R)=\sum_{n=1}^{M}(\TwoAdicValuation(n)+1)=M+\TwoAdicValuation(M!).
 \]
-Legendre's identity $\nu_2(M!)=M-\BinaryDigitSum(M)$ proves \eqref{eq:positive-zero-count}.  Evenness of the product gives \eqref{eq:total-zero-count}.
+Legendre's identity $\TwoAdicValuation(M!)=M-\BinaryDigitSum(M)$ proves \eqref{eq:positive-zero-count}.  Evenness of the product gives \eqref{eq:total-zero-count}.
 \end{proof}
 
 The parity consequence is stronger than a counting curiosity.
@@ -623,7 +623,7 @@ $\AbsoluteValue{\FourierTwoPi{\RvachevUp}(x)}\le1$.  Therefore
 \[
  \int_{\RealNumbers}\frac{\log^+\AbsoluteValue{\FourierTwoPi{\RvachevUp}(x)}}{1+x^2}\,\Differential x=0,
 \]
-which is the Cartwright integrability condition.  Finally, the zero multiplicities $\nu_2(N)+1$ are unbounded.  Standard sine-type functions have a uniformly separated zero divisor with uniformly bounded multiplicities (and in the usual definition, simple zeros), so $\FourierTwoPi{\RvachevUp}$ is not sine-type.
+which is the Cartwright integrability condition.  Finally, the zero multiplicities $\TwoAdicValuation(N)+1$ are unbounded.  Standard sine-type functions have a uniformly separated zero divisor with uniformly bounded multiplicities (and in the usual definition, simple zeros), so $\FourierTwoPi{\RvachevUp}$ is not sine-type.
 \end{proof}
 
 The exact count \eqref{eq:total-zero-count} refines the density predicted by the indicator: $Z(R)=4R+\BigO(\log R)$, with the entire error replaced by the explicit binary quantity
@@ -933,7 +933,7 @@ The imaginary square-root transform changes the viewpoint on the Fabius--Rvachev
  \boxed{
  H(x)=\FourierTwoPi{\RvachevUp}\!\left(\frac{\ImaginaryUnit\sqrt{x}}{\pi}\right)
  =\prod_{n=1}^{\infty}
-  \left(1+\frac{x}{\pi^2n^2}\right)^{\nu_2(n)+1}
+  \left(1+\frac{x}{\pi^2n^2}\right)^{\TwoAdicValuation(n)+1}
  =\sum_{n=0}^{\infty}\frac{4^nc_n}{(2n)!}x^n.}
 \]
 The left side remembers the compactly supported atomic function; the middle expression exposes the valuation-weighted divisor; the right side exposes the moments.  Laguerre--Pólya theory converts the divisor into a real-rootedness preserver, total positivity converts it into inequalities and positive minors, Bell polynomials convert its logarithm into exact recurrences, and Bernoulli tilting converts its coefficients into a local central-limit saddle.  Returning to the real Fourier axis, the same divisor makes the Thue--Morse sequence visible as a sign word.
@@ -981,7 +981,7 @@ They satisfy both the source moment recurrence and the new Bernoulli recurrence 
 Statement & Status & Basis \\
 \midrule
 \endhead
-Zero multiplicity $\nu_2(N)+1$ & Proved & Direct factor count.\\
+Zero multiplicity $\TwoAdicValuation(N)+1$ & Proved & Direct factor count.\\
 Exact count $2N-\BinaryDigitSum(N)$ & Proved & Legendre digit-sum identity.\\
 Thue--Morse sign interpolation & Proved & Parity of cumulative multiplicity.\\
 Finite base-$b$ multiplicity/digit identity & Lean-proved arithmetic & \path{BaseDigitMultiplicity.lean}; every $b>1$ and $N\ge0$, with no analytic zero or sign claim.\\

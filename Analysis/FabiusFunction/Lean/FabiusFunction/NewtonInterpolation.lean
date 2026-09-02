@@ -122,7 +122,8 @@ theorem newtonPoly_eq_interpolate (v y : ℕ → F) {n : ℕ} (hvs : Set.InjOn v
 
 /-- **Uniqueness**: a polynomial of degree `≤ n` taking the values `y_i` at `n+1` distinct
 nodes `v_i` is the Newton polynomial. -/
-theorem eq_newtonPoly_of_eval_eq (v y : ℕ → F) {n : ℕ} (hvs : Set.InjOn v (range (n + 1)))
+theorem eq_newtonPoly_of_eval_eq (v y : ℕ → F) {n : ℕ}
+    (hvs : Set.InjOn v (range (n + 1)))
     {P : F[X]} (hP : P.degree < (n + 1 : ℕ))
     (heval : ∀ i ∈ range (n + 1), P.eval (v i) = y i) : P = newtonInterpolant v y n := by
   rw [newtonPoly_eq_interpolate v y hvs]

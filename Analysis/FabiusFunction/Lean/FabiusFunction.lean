@@ -439,6 +439,7 @@ import FabiusFunction.InverseBranch
 import FabiusFunction.InverseNotElementary
 import FabiusFunction.FabiusComputableSpline
 import FabiusFunction.EffectiveMonotoneInverse
+import FabiusFunction.EffectiveGapInverse
 import FabiusFunction.FabiusInverseComputable
 import FabiusFunction.FabiusSaddleJetClosedForm
 import FabiusFunction.FabiusSaddleExponentClosedForm
@@ -639,6 +640,14 @@ input names to `[0,1]`, and combining it with the logarithmic Delta modulus
 proves `fabiusInv_isComputableRealFunction` for every bounded Fabius witness.
 This is a computability certificate for the total inverse, not an input-bit
 running-time theorem or an exact least endpoint-mass denominator.
+
+The adjacent `EffectiveGapInverse` module has four definitions and four
+theorems.  It derives the required inverse modulus, sequential computability,
+and effective uniform continuity from computable positive rational lower
+bounds for every dyadic forward gap, and proves total computability exactly for
+the unit-clamped extension.  Together with `EffectiveMonotoneInverse` (2+6)
+and `FabiusInverseComputable` (0+1), this effective-inverse union contains
+three modules and seventeen public declarations.
 
 The parity-selected Rvachev synthesis layer exports exactly one definition and
 eight theorems.  `IsRvachevSuperconvergentPhase` selects the endpoint phases

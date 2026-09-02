@@ -104,14 +104,16 @@ The PDF is 3,030,302 bytes with SHA-256
 It was built by exactly three serial
 `pdflatex -interaction=nonstopmode -halt-on-error` passes, which produced 343,
 354, and 354 pages, with `makeindex` run on the `.idx` file after each pass.
-The final log scan found three overfull boxes, all in the single paragraph of the `QPochhammerEntire` crosswalk, whose long declaration names lack break points. All pages are A4. `pdffonts` reports 42 font rows, all
-embedded and subsetted, including 5 Libertinus rows, with no Type-3
+The final log scan found three overfull boxes, all in the single paragraph of
+the `QPochhammerEntire` crosswalk, whose long declaration names lack break
+points. All pages are A4. `pdffonts` reports 42 font rows, all embedded and
+subsetted, including five Libertinus rows, with no Type-3
 fonts. The files under `assets/experiments/**/figures/` remain research
 figures, not publication manuscripts.
 
 The current master TeX is a source-only successor to that checkpoint: it has
-14,476 lines, 681,416 bytes, and SHA-256
-`0465683358e0145a436345bc097ad10cea52f25ab46d017f4c9304a7d64822da`.
+14,530 lines, 683,858 bytes, and SHA-256
+`b77e9ab54d9437485bab9ee36783cc1f1d5c36c347e67a5242953af8319650fc`.
 The regenerated root `SHA256SUMS` ledger records the same identity. The
 historical source identity above must not be reused for the live source, and
 the retained PDF does not claim render parity with the current TeX.
@@ -121,7 +123,7 @@ The current source includes exhaustive crosswalks for `QPochhammerEntire`
 and five legacy compatibility theorems), `QPochhammerInfinite` (one definition
 and twenty-nine theorems), `QPochhammerDissection` (zero definitions and two
 theorems), `QBinomialTheoremInfinite` (one definition and twenty-two
-theorems), `GaussianBinomialPalindromic` (zero definitions and twelve
+theorems), `GaussianBinomialPalindromic` (zero definitions and fourteen
 theorems), `GaussianBinomialPolynomialStructure` (zero definitions and five
 theorems), `GaussianBinomialBounds` (zero definitions and six theorems), and
 `GeometricPochhammerNormalConvergence` (zero
@@ -202,6 +204,21 @@ input `finiteQPochhammerIn_self_pos` is the pre-existing generic declaration
 from `GeneralQConditionNumber`, reused through an import and therefore not
 counted as a seventh theorem of the bounds leaf.
 
-The retained PDF remains the historical checkpoint described above. The root
-package checksum ledger (`SHA256SUMS`) is regenerated after source-only
-updates; it records the live source and retained PDF as distinct artifacts.
+The complete root block, evaluated q-Lucas theorem, square-free cyclotomic
+criterion, and q-Catalan row are Exact. The primitive-root value in the
+Babbage corollary is formalized over every integral domain, while its
+derivative clause keeps that compound row Partial.
+
+The geometric Newton interpolation and divided-difference rows are Exact. The
+Jackson q-beta product/q-gamma evaluation and its two recurrence formulas are
+also Exact. The terminating q-Pfaff--Saalschütz sum and quantum multinomial
+are Exact, as are the integer-index Gaussian definition and Pascal laws, both
+reciprocal-product expansions, the complex upper-parameter series, and the
+generalized q-binomial theorem. The remaining complex-Gaussian property and
+classical-limit rows stay unformalized.
+
+No PDF was generated locally while resolving this merge. The retained
+354-page artifact remains the validated historical checkpoint described
+above. The root package checksum ledger (`SHA256SUMS`) is regenerated after
+source-only updates and records the live source and retained PDF as distinct
+artifacts.
