@@ -437,7 +437,7 @@ operations manageable.
 
 For \(N\in\IntegerNumbers\), write
 \[
-  A=B+\FormalBigO_t(t^N)
+  A=B+\FormalBigOAt{t^N}{t}
   \quad\Longleftrightarrow\quad
   \ordt(A-B)\geq N.
 \]
@@ -732,7 +732,7 @@ Thus
 \begin{align}\label{eq:multworked}
  AB={}&(2+4\ell)+(-\ell-2)t
  +(-\ell^3+2\ell^2+10\ell+1)t^2\notag\\
- &+(3\ell^3-\ell^2-3\ell+3)t^3+\FormalBigO_t(t^4).
+ &+(3\ell^3-\ell^2-3\ell+3)t^3+\FormalBigOAt{t^4}{t}.
 \end{align}
 The calculation is ordinary polynomial arithmetic inside each block and
 ordinary series convolution across blocks.
@@ -829,15 +829,15 @@ Let
 \[
  U=(\ell+1)t+\ell^2t^2.
 \]
-Since \(U^4=\FormalBigO_t(t^4)\),
+Since \(U^4=\FormalBigOAt{t^4}{t}\),
 \begin{align*}
  \log(1+U)
- & =U-\frac{U^2}{2}+\frac{U^3}{3}+\FormalBigO_t(t^4)\\
+ & =U-\frac{U^2}{2}+\frac{U^3}{3}+\FormalBigOAt{t^4}{t}\\
  & =(\ell+1)t
  +\left(\frac{\ell^2}{2}-\ell-\frac12\right)t^2\\
  &\quad+
  \left(-\ell^3-\ell^2+\frac{(\ell+1)^3}{3}\right)t^3
- +\FormalBigO_t(t^4).
+ +\FormalBigOAt{t^4}{t}.
 \end{align*}
 Every operation was finite after the target order was fixed.
 \end{example}
@@ -946,7 +946,7 @@ Continuing,
  B^{-1}={}&1-(\ell+1)t+(2\ell+1)t^2
  +(\ell^3-\ell^2-4\ell+1)t^3\notag\\
  &+(-\ell^4-2\ell^3+5\ell^2+2\ell-3)t^4
- +\FormalBigO_t(t^5).
+ +\FormalBigOAt{t^5}{t}.
 \end{align}
 Multiplying \cref{eq:recipdenom} and \cref{eq:recipworked} is the simplest
 independent check.
@@ -976,8 +976,8 @@ Then
 \begin{equation}\label{eq:newtonreciprocalerror}
   1-BV_{\mathrm{new}}=(1-BV)^2.
 \end{equation}
-Thus, if \(BV=1+\FormalBigO_t(t^m)\), then
-\(BV_{\mathrm{new}}=1+\FormalBigO_t(t^{2m})\).  Each step is performed only to the
+Thus, if \(BV=1+\FormalBigOAt{t^m}{t}\), then
+\(BV_{\mathrm{new}}=1+\FormalBigOAt{t^{2m}}{t}\).  Each step is performed only to the
 new target precision, for example \(1,2,4,8,\ldots\) blocks.
 
 \begin{algorithm}[Newton reciprocal to order \(N\)]
@@ -1049,7 +1049,7 @@ The small object is \(V\), not the entire denominator.
 A truncated quotient \(C_{<N}\) is correct through order \(t^{N-1}\) exactly
 when
 \begin{equation}\label{eq:divisionresidual}
- BC_{<N}-A=\FormalBigO_t(t^N).
+ BC_{<N}-A=\FormalBigOAt{t^N}{t}.
 \end{equation}
 Residual checks are cheap, independent of the method used to compute \(C\), and
 should be part of every symbolic implementation.
@@ -1214,10 +1214,10 @@ Let
 The generator substitutions through order \(t^3\) are
 \begin{align*}
  t\compose G
- &=t-\ell t^2+\ell^2t^3+\FormalBigO_t(t^4),\\
+ &=t-\ell t^2+\ell^2t^3+\FormalBigOAt{t^4}{t},\\
  \ell\compose G
  &=\ell+\ell t-\frac{\ell^2}{2}t^2
-   +\frac{\ell^3}{3}t^3+\FormalBigO_t(t^4).
+   +\frac{\ell^3}{3}t^3+\FormalBigOAt{t^4}{t}.
 \end{align*}
 Substituting simultaneously and collecting blocks gives
 \begin{align}\label{eq:compositionworked}
@@ -1226,7 +1226,7 @@ Substituting simultaneously and collecting blocks gives
    +(-\ell^3+\ell^2-\ell)t^2\notag\\
  &+\left(
    \frac23\ell^4-2\ell^3+\frac72\ell^2+\ell+1
-   \right)t^3+\FormalBigO_t(t^4).
+   \right)t^3+\FormalBigOAt{t^4}{t}.
 \end{align}
 A sequential substitution can be wrong because the replacement for \(\ell\)
 contains \(t\), and the replacement for \(t\) contains \(\ell\).  Software
@@ -1296,7 +1296,7 @@ Thus
 \begin{equation}\label{eq:taylorfiniteN}
  F\compose(X+A)
  =\sum_{j=0}^{N-1}\frac{A^j}{j!}\D_X^jF
-   +\FormalBigO_t(t^N).
+   +\FormalBigOAt{t^N}{t}.
 \end{equation}
 If \(F\) begins at \(t^r\), only \(j<N-r\) are needed.  Every derivative and
 product should be truncated immediately; carrying higher blocks causes large
@@ -1590,7 +1590,7 @@ Given \(F=X+\phi\) and a target order \(N\):
 and append \(-c_nt^n\) to \(\psi_{<n}\).
 \item Return \(H=X+\psi_{<N}\).
 \end{enumerate}
-Then \(F\compose H=X+\FormalBigO_t(t^N)\).
+Then \(F\compose H=X+\FormalBigOAt{t^N}{t}\).
 \end{algorithm}
 
 Picard iteration and triangular extraction are the same mechanism organized
@@ -1618,12 +1618,12 @@ The denominator lies in \(1+t\Rring\) and is invertible by
 \begin{theorem}[Quadratic improvement]\label{thm:newtonreverse}
 Suppose \(H=X+\eta\) and
 \[
- F\compose H-X=\FormalBigO_t(t^m).
+ F\compose H-X=\FormalBigOAt{t^m}{t}.
 \]
 Then the Newton update \cref{eq:newtonreversion}, computed consistently to
 sufficient precision, satisfies
 \[
- F\compose H_{\mathrm{new}}-X=\FormalBigO_t(t^{2m}).
+ F\compose H_{\mathrm{new}}-X=\FormalBigOAt{t^{2m}}{t}.
 \]
 In this particular scale the order is often even higher because
 \(F''\in t^2\Rring\).
@@ -1653,7 +1653,7 @@ Start with any \(H_0=X+\eta_0\) correct modulo \(t\), usually
  H\leftarrow H-E/J,
 \]
 truncating every operation to the new precision.  Finish with a residual check
-\(F\compose H-X=\FormalBigO_t(t^N)\).
+\(F\compose H-X=\FormalBigOAt{t^N}{t}\).
 \end{algorithm}
 
 \section{Lagrange--Bürmann inversion at infinity}
@@ -1788,7 +1788,7 @@ formula \cref{eq:QnP} begins
  &+\frac{a(a\ell+b)}{6}
  \bigl(2a^2\ell^2-9a^2\ell+4ab\ell
        +6a^2-9ab+2b^2\bigr)t^3
- +\FormalBigO_t(t^4).
+ +\FormalBigOAt{t^4}{t}.
  \label{eq:affineloginverse}
 \end{align}
 This family has an exact Lambert representation.  Solving
@@ -1813,12 +1813,12 @@ The inverse has correction
    \frac{\ell^3}{3}-\frac32\ell^2+\ell
    -a\ell^2+3a\ell-a-a^2
    \right)t^3
- +\FormalBigO_t(t^4).
+ +\FormalBigOAt{t^4}{t}.
  \label{eq:inversewitha}
 \end{align}
 One may derive this by the Lagrange formula, triangular extraction, or Newton
 reversion.  Substitution into \(F\) verifies that the residual is
-\(\FormalBigO_t(t^4)\).
+\(\FormalBigOAt{t^4}{t}\).
 
 \section{Normalization beyond leading coefficient one}
 Suppose
@@ -1847,9 +1847,9 @@ In a noncommutative composition setting, checking only one side can seem
 insufficient.  The uniqueness theorem resolves the issue, but computationally
 it is cheap to check both
 \begin{align}
- F\compose H-X&=\FormalBigO_t(t^N),
+ F\compose H-X&=\FormalBigOAt{t^N}{t},
  \label{eq:rightresidual}\\
- H\compose F-X&=\FormalBigO_t(t^N).
+ H\compose F-X&=\FormalBigOAt{t^N}{t}.
  \label{eq:leftresidual}
 \end{align}
 The two residuals catch different implementation errors, especially incorrect
@@ -2162,7 +2162,7 @@ define
 \end{equation}
 The coefficient construction is equivalent to
 \begin{equation}\label{eq:omegaresidualorder}
- R_N=\FormalBigO_t(t^{N+1}).
+ R_N=\FormalBigOAt{t^{N+1}}{t}.
 \end{equation}
 This residual is often easier to compute than a direct comparison with an
 exact special-function value.  One Newton correction for
@@ -2573,7 +2573,7 @@ For example, with \(P(u)=u^2\),
  ={}&X-\ell^2+2\ell^3t
  +(\ell^5-5\ell^4)t^2\notag\\
  &+\left(\frac23\ell^7-7\ell^6+14\ell^5\right)t^3
- +\FormalBigO_t(t^4).
+ +\FormalBigOAt{t^4}{t}.
  \label{eq:quadraticloginverse}
 \end{align}
 The leading coefficients \(2,1,2/3\) agree with
@@ -3804,7 +3804,7 @@ Compute \(AB\) through order \(t^2\).
 \begin{exercise}[Reciprocal of a unit]
 Find \(C\) through order \(t^3\) such that
 \[
- \bigl(1+(\ell-1)t+\ell t^2\bigr)C=1+\FormalBigO_t(t^4).
+ \bigl(1+(\ell-1)t+\ell t^2\bigr)C=1+\FormalBigOAt{t^4}{t}.
 \]
 Explain why the reciprocal remains in \(\Rring\).
 \end{exercise}
@@ -3895,11 +3895,11 @@ The coefficient blocks are ordinary Cauchy products:
 \end{align*}
 Hence
 \[
- AB=1+3t+(2\ell+1)t^2+\FormalBigO_t(t^3).
+ AB=1+3t+(2\ell+1)t^2+\FormalBigOAt{t^3}{t}.
 \]
 
 \subsection*{Solution 2}
-Write \(C=1+c_1t+c_2t^2+c_3t^3+\FormalBigO_t(t^4)\).  Triangular coefficient
+Write \(C=1+c_1t+c_2t^2+c_3t^3+\FormalBigOAt{t^4}{t}\).  Triangular coefficient
 comparison gives
 \begin{align*}
  c_1&=1-\ell,\\
@@ -3910,7 +3910,7 @@ comparison gives
 Therefore
 \[
  C=1+(1-\ell)t+(\ell^2-3\ell+1)t^2
- +(-\ell^3+5\ell^2-5\ell+1)t^3+\FormalBigO_t(t^4).
+ +(-\ell^3+5\ell^2-5\ell+1)t^3+\FormalBigOAt{t^4}{t}.
 \]
 The leading coefficient of the divisor is the unit \(1\in\K\), so
 \cref{thm:unitcriterion} guarantees a reciprocal in \(\Rring\).
@@ -3932,17 +3932,17 @@ Indeed,
 The generator substitutions are
 \begin{align*}
  t\compose G&=\frac{t}{1+at}
- =t-at^2+a^2t^3+\FormalBigO_t(t^4),\\
+ =t-at^2+a^2t^3+\FormalBigOAt{t^4}{t},\\
  \ell\compose G&=\ell+\log(1+at)
  =\ell+at-\frac{a^2}{2}t^2+\frac{a^3}{3}t^3
- +\FormalBigO_t(t^4).
+ +\FormalBigOAt{t^4}{t}.
 \end{align*}
 Multiplying gives
 \[
  (t\ell)\compose(X+a)
  =t\ell+a(1-\ell)t^2
  +a^2\left(\ell-\frac32\right)t^3
- +\FormalBigO_t(t^4).
+ +\FormalBigOAt{t^4}{t}.
 \]
 
 \subsection*{Solution 5}
@@ -3962,7 +3962,7 @@ It cannot affect the truncation below \(t^N\) once this quantity is at least
 \subsection*{Solution 6}
 The Lagrange formula gives
 \[
- F\rev=X-P+Q_1t+Q_2t^2+\FormalBigO_t(t^3),
+ F\rev=X-P+Q_1t+Q_2t^2+\FormalBigOAt{t^3}{t},
 \]
 where
 \[
@@ -3979,7 +3979,7 @@ Therefore
  \boxed{
  F\rev=X-P+PP't+
  \left(\frac12P^2P'-P(P')^2-\frac12P^2P''\right)t^2
- +\FormalBigO_t(t^3).}
+ +\FormalBigOAt{t^3}{t}.}
 \end{equation*}
 
 \subsection*{Solution 7}
@@ -3987,7 +3987,7 @@ Set \(P=\ell^2\) in the preceding answer:
 \[
  (X+\ell^2)\rev
  =X-\ell^2+2\ell^3t+(\ell^5-5\ell^4)t^2
- +\FormalBigO_t(t^3).
+ +\FormalBigOAt{t^3}{t}.
 \]
 For \(d=2\), \cref{thm:degreeP} predicts degrees
 \(2(n+1)-1\), namely \(3\) and \(5\), and leading coefficients
@@ -4000,10 +4000,10 @@ Substitution in the fixed-point equation, or direct use of
  (X+\ell+at)\rev
  =X-\ell+(\ell-a)t
  +\left(\frac{\ell^2}{2}-\ell-a\ell+a\right)t^2
- +\FormalBigO_t(t^3).
+ +\FormalBigOAt{t^3}{t}.
 \]
 Composing this truncation with \(X+\ell+at\) leaves a residual
-\(\FormalBigO_t(t^3)\).
+\(\FormalBigOAt{t^3}{t}\).
 
 \subsection*{Solution 9}
 Successive integration gives

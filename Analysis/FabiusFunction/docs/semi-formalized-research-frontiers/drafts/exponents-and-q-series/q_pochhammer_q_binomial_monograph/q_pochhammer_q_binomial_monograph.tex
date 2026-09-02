@@ -12601,7 +12601,8 @@ complete public declaration lists:
 \small
 \path{QBinomialCauchy.lean}: one definition and five theorems, including the
 compatibility spelling of the primary identity;\\
-\path{QMultinomial.lean}: one definition and seven theorems;\\
+\path{QMultinomial.lean}: one definition and nine theorems;\\
+\path{CentralQBinomialReduction.lean}: zero definitions and six theorems;\\
 \path{SymmetricFunctionOrthogonality.lean}: one definition and six theorems;\\
 \path{CompleteHomogeneousGenerating.lean}: one definition and six theorems;\\
 \path{CompleteHomogeneousAsymptotics.lean}: one theorem;\\
@@ -12616,7 +12617,9 @@ compatibility spelling of the primary identity;\\
 \path{QPochhammerDissection.lean}: zero definitions and two theorems;\\
 \path{QPochhammerInfinite.lean}: one definition and twenty-nine theorems;\\
 \path{QPochhammerInfiniteBounds.lean}: zero definitions and five theorems;\\
+\path{QPochhammerLogDerivative.lean}: zero definitions and ten theorems;\\
 \path{QPochhammerComplexOrder.lean}: one definition and four theorems;\\
+\path{QPochhammerOrderDerivative.lean}: zero definitions and three theorems;\\
 \path{QPochhammerEntire.lean}: zero definitions and five legacy compatibility
 theorems;\\
 \path{GeometricPochhammerNormalConvergence.lean}: zero definitions and three
@@ -12627,8 +12630,13 @@ declaration from \path{GaussianBinomialAtOne.lean};\\
 \path{BasicHypergeometricSeries.lean}: two definitions and five theorems;\\
 \path{HeineTransformation.lean}: two definitions and five theorems;\\
 \path{QGaussSummation.lean}: zero definitions and two theorems;\\
+\path{ThetaQuasiPeriodicity.lean}: one definition and six theorems;\\
+\path{JacobiCubic.lean}: zero definitions and two theorems;\\
 \path{QBinomialReciprocity.lean}: four theorems;\\
+\path{CyclotomicFactorization.lean}: zero definitions and seven theorems;\\
 \path{GaussianBinomialPalindromic.lean}: zero definitions and twelve
+theorems;\\
+\path{GaussianBinomialPolynomialStructure.lean}: zero definitions and five
 theorems;\\
 \path{GaussianBinomialAtNegOne.lean}: five theorems;\\
 \path{RvachevPochhammerFactorization.lean}: one definition and nine theorems;\\
@@ -12673,7 +12681,14 @@ reflection in that exact degree, and coefficient palindromicity for the
 universal polynomial over every nontrivial commutative semiring where degree
 requires nontriviality.  The same module also exports
 \path{Fabius.coeff_gaussianBinomial_top} and
-\path{Fabius.two_mul_derivative_gaussianBinomial_eval_one}.  Together with symmetry,
+\path{Fabius.two_mul_derivative_gaussianBinomial_eval_one}.  The companion
+\path{GaussianBinomialPolynomialStructure.lean} exports the five
+\(\NaturalNumbers[X]\)-specialized declarations
+\path{Fabius.natDegree_gaussianBinomial_universal},
+\path{Fabius.gaussianBinomial_universal_monic},
+\path{Fabius.coeff_zero_gaussianBinomial_universal},
+\path{Fabius.gaussianBinomial_universal_reflect}, and
+\path{Fabius.coeff_gaussianBinomial_universal_symm}.  Together with symmetry,
 unit reciprocity, and the universal-evaluation theorem from
 \path{GaussianBinomialUniversal.lean}, this is the exact Lean counterpart of
 \Cref{cor:positivity,thm:qbinom-structure}.
@@ -13216,7 +13231,7 @@ the quotient form in any field with $(q;q)_k\ne0$, the cleared form in every
 commutative ring}\\[2pt]
 \Cref{thm:qpascal} & \statusexact & \texttt{gaussianBinomial\_\allowbreak{}succ\_\allowbreak{}succ\_\allowbreak{}alt}\newline{\footnotesize\texttt{FiniteQBinomialCore}}\\[2pt]
 \Cref{cor:positivity} & \statusexact &
-\texttt{gaussianBinomial\_\allowbreak{}eq\_\allowbreak{}eval	extsubscript{2}\_\allowbreak{}universal}\newline
+\texttt{gaussianBinomial\_\allowbreak{}eq\_\allowbreak{}eval\textsubscript{2}\_\allowbreak{}universal}\newline
 {\footnotesize\texttt{GaussianBinomialUniversal}; $[n,k]_q$ is the value at
 $q$ of the universal polynomial $[n,k]_X\in\NaturalNumbers[X]$, in every
 commutative semiring, by naturality of the $q$-Pascal recurrence}\\[2pt]
@@ -13224,11 +13239,14 @@ commutative semiring, by naturality of the $q$-Pascal recurrence}\\[2pt]
 \texttt{gaussianBinomial\_\allowbreak{}symm},
 \texttt{gaussianBinomial\_\allowbreak{}reciprocity\_\allowbreak{}units},
 \texttt{gaussianBinomial\_\allowbreak{}natDegree},
+\texttt{gaussianBinomial\_\allowbreak{}monic},
 \texttt{coeff\_\allowbreak{}gaussianBinomial\_\allowbreak{}zero},
 \texttt{coeff\_\allowbreak{}gaussianBinomial\_\allowbreak{}top},
-\texttt{reflect\_\allowbreak{}gaussianBinomial}\newline
+\texttt{reflect\_\allowbreak{}gaussianBinomial},
+\texttt{coeff\_\allowbreak{}gaussianBinomial\_\allowbreak{}reflect}\newline
 {\footnotesize\texttt{FiniteQBinomialCore}; \texttt{QBinomialReciprocity};
-\texttt{GaussianBinomialPalindromic}; (iii) and (iv) for the universal
+\texttt{GaussianBinomialPalindromic};
+\texttt{GaussianBinomialPolynomialStructure}; (iii) and (iv) for the universal
 polynomial $[n,k]_X$ over every commutative semiring, palindromicity as
 $\operatorname{reflect}_{k(n-k)}[n,k]_X=[n,k]_X$ by induction from the two
 $q$-Pascal recurrences}\\[2pt]
@@ -13245,7 +13263,7 @@ semiring, by continuity of the Gaussian coefficient in its base}\\[2pt]
 \Cref{prop:qmult-factor} & \statusexact &
 \texttt{finiteQPochhammerIn\_\allowbreak{}self\_\allowbreak{}sum\_\allowbreak{}eq\_\allowbreak{}qMultinomial\_\allowbreak{}mul},
 \texttt{qMultinomial\_\allowbreak{}eq\_\allowbreak{}div},
-\texttt{qMultinomial\_\allowbreak{}eq\_\allowbreak{}eval	extsubscript{2}\_\allowbreak{}universal}\newline
+\texttt{qMultinomial\_\allowbreak{}eq\_\allowbreak{}eval\textsubscript{2}\_\allowbreak{}universal}\newline
 {\footnotesize\texttt{QMultinomial}; the product of Gaussian coefficients is
 the definition there, the factorial form is proved division-free over every
 commutative ring and as a quotient over every field with $(q;q)_n\ne0$, and
