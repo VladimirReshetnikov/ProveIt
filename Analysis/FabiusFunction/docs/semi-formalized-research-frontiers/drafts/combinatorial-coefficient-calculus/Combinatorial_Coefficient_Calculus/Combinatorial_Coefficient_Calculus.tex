@@ -2915,10 +2915,16 @@ $n=38$.  This completes the finite range and the proof.
 
 \begin{remark}[The constant is essentially best possible]
 The sequence $R_n$ attains its maximum at $n=4$, where $\BellNumber4=15$ and
-\[
- R_4=\frac{15^{1/4}\log5}{4}=0.7918392970\ldots,
-\]
-so $0.792-\max_nR_n<1.61\cdot10^{-4}$ and the constant in
+\begin{equation}
+ R_4=\frac{15^{1/4}\log5}{4}=0.7918392970\ldots.                  \label{eq:bell-max-ratio}
+\end{equation}
+That this is the global maximum needs a word, since the certificate
+\eqref{eq:bell-cert} proves only $R_n<0.792$ and not $R_n\le R_4$.  For
+$n\ge39$ the tail argument already gives the stronger
+$R_n\le\bar R(39)<0.7910<R_4$; for $n\le38$ it is the direct evaluation of
+$38$ numbers, whose three largest values are
+$R_3=0.790176\ldots$, $R_4=0.791839\ldots$ and $R_5=0.789787\ldots$.  Hence
+$0.792-\max_nR_n<1.61\cdot10^{-4}$, and the constant in
 \eqref{eq:bell-numerical-bound} cannot be replaced by anything below
 $R_4$.  This also explains the tightness of the certificate at $n=4$: the
 sole reason a six-decimal logarithm suffices there is that
@@ -4945,8 +4951,12 @@ $[n]$ for $n\leq4$, and grouping by block-size type, gives
  \kappa_4&=m_4-4m_3m_1-3m_2^2+12m_2m_1^2-6m_1^4.                   \label{eq:merged-first-cumulants}
 \end{align}
 For a random variable these are the mean, the variance, the third central
-moment, and the fourth cumulant whose vanishing characterizes the Gaussian
-among laws with moments.  The coefficients are read off the partition lattice:
+moment, and the fourth cumulant, whose normalization $\kappa_4/\kappa_2^2$ is
+the excess kurtosis.  All cumulants beyond the second vanish for a Gaussian
+law; the vanishing of $\kappa_4$ alone does not characterize it, and by
+Marcinkiewicz's theorem no finite set of cumulant conditions does --- only
+$\kappa_n=0$ for every $n\geq3$.  The coefficients are read off the partition
+lattice:
 $\Pi_4$ has one partition of type $4$, four of type $3+1$, three of type
 $2+2$, six of type $2+1+1$ and one of type $1+1+1+1$, and the Möbius weights
 $(-1)^{|\pi|-1}(|\pi|-1)!$ are $1,-1,-1,2,-6$ respectively.
@@ -5782,17 +5792,18 @@ $n\in\NaturalNumbers$,
 \end{theorem}
 
 \begin{proof}
-In $R[[t]]$ with $R=\RationalNumbers[x]$, substitute $u\mapsto u(\EulerE^t-1)$
-in the geometric series and integrate over $u\in[0,1]$:
-\[
- \int_0^1\frac{\Differential u}{1+u(\EulerE^t-1)}
- =\left[\frac{\log\bigl(1+u(\EulerE^t-1)\bigr)}{\EulerE^t-1}\right]_{u=0}^{u=1}
- =\frac{t}{\EulerE^t-1},
-\]
-the manipulation being legitimate termwise because $\EulerE^t-1\in tR[[t]]$, so
-that only finitely many terms of
-$\sum_{k\geq0}(-1)^ku^k(\EulerE^t-1)^k$ contribute to each power of $t$.
-Expanding that series and using $\int_0^1u^k\Differential u=1/(k+1)$ gives
+The proof of \cref{thm:merged-bernoulli-stirling-touchard} already established,
+by formal composition of $\log(1+y)/y$ with $y=\EulerE^t-1\in t\RationalNumbers[[t]]$,
+that
+\begin{equation}
+ \frac{t}{\EulerE^t-1}=\sum_{k\geq0}\frac{(-1)^k}{k+1}(\EulerE^t-1)^k
+                                                                  \label{eq:merged-gregory-composition}
+\end{equation}
+in $\RationalNumbers[[t]]$; the composition is legitimate, and the sum
+contributes to each power of $t$ only finitely often, because
+$(\EulerE^t-1)^k\in t^k\RationalNumbers[[t]]$.  Multiplying
+\eqref{eq:merged-gregory-composition} by $\EulerE^{xt}$ in
+$\RationalNumbers[x][[t]]$ gives
 \[
  \frac{t\EulerE^{xt}}{\EulerE^t-1}
  =\sum_{k\geq0}\frac{(-1)^k}{k+1}\EulerE^{xt}(\EulerE^t-1)^k.
@@ -6543,8 +6554,13 @@ pointwise.  On a compact subset of $\{\Re z>0\}$ one has
 $\delta\le\Re z\le M$ for some $0<\delta\le M$, whence
 $|t^{z-1}|=t^{\Re z-1}\le t^{\delta-1}+t^{M-1}$, an integrable majorant
 against $\EulerE^{-t}$ on $(0,\infty)$.  Dominated convergence therefore gives
-$\GammaFunction_N(z)\to\int_0^\infty\EulerE^{-t}t^{z-1}\Differential t=\GammaFunction(z)$,
-uniformly on that compact set, which is
+$\GammaFunction_N(z)\to\int_0^\infty\EulerE^{-t}t^{z-1}\Differential t=\GammaFunction(z)$
+for each fixed $z$ with $\Re z>0$.  The convergence is in fact locally uniform,
+but that does not follow from dominated convergence alone: each
+$\GammaFunction_N$ is holomorphic on $\{\Re z>0\}$, and the same majorant bounds
+the whole family uniformly on each compact subset, so Vitali's theorem upgrades
+pointwise convergence of a locally bounded holomorphic family to local uniform
+convergence.  This is
 \eqref{eq:merged-euler-gamma-limit}.
 
 For the product, invert \eqref{eq:merged-euler-gamma-finite}:
@@ -7138,8 +7154,21 @@ record \eqref{eq:merged-associahedron-f} in the equivalent form
 \begin{equation}
  f_d=\frac1n\binom{n-2}{d}\binom{2n-d-2}{n-1},                    \label{eq:merged-associahedron-f-alt}
 \end{equation}
-which agrees with \eqref{eq:merged-associahedron-f} after cancelling
-factorials.  By the face transform of
+which agrees with \eqref{eq:merged-associahedron-f}.  Indeed, rewriting
+\eqref{eq:merged-associahedron-f} with $n=N-1$ and taking the complement in the
+middle binomial coefficient turns it into
+\[
+ f_d=\frac1{n-1-d}\binom{n-2}{d}\binom{2n-2-d}{n},
+\]
+and the adjacent-coefficient ratio
+$\binom Mk\big/\binom M{k-1}=(M-k+1)/k$ with $M=2n-2-d$ and $k=n$ gives
+\[
+ \binom{2n-2-d}{n}=\frac{n-1-d}{n}\binom{2n-2-d}{n-1},
+\]
+so the factor $n-1-d$ cancels and \eqref{eq:merged-associahedron-f-alt}
+follows.  The point of the second form is that its prefactor $1/n$ does not
+depend on $d$, which is what makes the alternating sum below collapse.  By the
+face transform of
 \cref{thm:permutohedron-h-polynomial},
 \[
  h(t)=\sum_{d=0}^{n-2}f_d\,(t-1)^{d},
@@ -7210,8 +7239,7 @@ For every rooted binary tree $T$ with $n$ internal vertices,
  \sum_{i=1}^{n}\ell_ir_i=\binom{n+1}{2}.                          \label{eq:merged-loday-hyperplane}
 \end{equation}
 Consequently all $\CatalanNumber n$ points $M(T)$ lie in one affine hyperplane
-of $\RealNumbers^n$, and their convex hull has dimension at most $n-1$; it is
-Loday's realization of $\AssociahedronByDimension{n-1}$.
+of $\RealNumbers^n$, so their convex hull has dimension at most $n-1$.
 \end{proposition}
 
 \begin{proof}
@@ -7222,6 +7250,16 @@ pair of distinct leaves has a unique lowest common ancestor, and is therefore
 counted at exactly one internal vertex.  Summing over $i$ counts every pair of
 the $n+1$ leaves once, which is $\binom{n+1}2$.
 \end{proof}
+
+\begin{remark}
+Loday's theorem identifies that convex hull with
+$\AssociahedronByDimension{n-1}$: the points $M(T)$ are exactly its vertices,
+and its normal fan is the fan of the Tamari lattice.  Only the hyperplane
+statement is proved here.  What \eqref{eq:merged-loday-hyperplane} does supply
+unaided is the dimension bound, which is what makes the realization plausible:
+$\CatalanNumber n$ points in $\RealNumbers^n$ could a priori span the whole
+space, and the associahedron has dimension $n-1$.
+\end{remark}
 
 \section{The Tamari order}
 
