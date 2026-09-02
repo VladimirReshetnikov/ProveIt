@@ -1852,7 +1852,7 @@ where the second line uses
 $L(u)^r/r!=\sum_{n\ge r}\UnsignedStirlingFirstKind nr u^n/n!$.
 For $z>1/6$, the analytic continuation of this composite from $u=0$ has no
 singularity in $|u|<1$.  Indeed, the possible arctangent branch points would
-require $\log(1-u)=\pm2\pi iz$; when $1/6<z<1/4$ their solutions have modulus
+require $\log(1-u)=\pm2\pi \ImaginaryUnit z$; when $1/6<z<1/4$ their solutions have modulus
 $2\sin(\pi z)>1$, and for $z\ge1/4$ the principal logarithm on the disk cannot
 have imaginary part $\pm2\pi z$.  The only boundary singularity relevant to the
 coefficient estimate is therefore $u=1$.
@@ -1879,7 +1879,7 @@ $(2\pi z)^{-2\ell-1}$ produces the factor $-(2\ell+1)/z$ and yields
 \end{proof}
 
 For complex $z$ with $\Re z>0$, the same proof works whenever the two points
-$1-\EulerE^{2\pi iz}$ and $1-\EulerE^{-2\pi iz}$ lie outside the closed unit disk; the stated
+$1-\EulerE^{2\pi \ImaginaryUnit z}$ and $1-\EulerE^{-2\pi \ImaginaryUnit z}$ lie outside the closed unit disk; the stated
 real half-line is the simplest connected domain containing all commonly used
 positive arguments.
 
@@ -1911,8 +1911,8 @@ The outer series converges absolutely.
 The Abel--Plana formula applied to $(1+w)^{-s}$ gives Hermite's representation
 \begin{equation}
 \label{eq:hermite-zeta}
- \RiemannZeta(s)=\frac1{s-1}+\frac12+\frac1i\int_0^\infty
- \frac{(1-ix)^{-s}-(1+ix)^{-s}}{\EulerE^{2\pi x}-1}\,\Differential x,
+ \RiemannZeta(s)=\frac1{s-1}+\frac12+\frac1{\ImaginaryUnit}\int_0^\infty
+ \frac{(1-\ImaginaryUnit x)^{-s}-(1+\ImaginaryUnit x)^{-s}}{\EulerE^{2\pi x}-1}\,\Differential x,
  \qquad \Re s>0,
 \end{equation}
 with the pole omitted at $s=1$.  Expand the two powers at $s=1$ and compare with
@@ -1920,10 +1920,10 @@ with the pole omitted at $s=1$.  Expand the two powers at $s=1$ and compare with
 convergent integral yields
 \begin{equation}
 \label{eq:jensen-franel-stieltjes}
- \gamma_m=\frac12\delta_{m0}+\frac1i\int_0^\infty\frac1{\EulerE^{2\pi x}-1}
+ \gamma_m=\frac12\delta_{m0}+\frac1{\ImaginaryUnit}\int_0^\infty\frac1{\EulerE^{2\pi x}-1}
  \left\{
- \frac{\log^m(1-ix)}{1-ix}
- -\frac{\log^m(1+ix)}{1+ix}
+ \frac{\log^m(1-\ImaginaryUnit x)}{1-\ImaginaryUnit x}
+ -\frac{\log^m(1+\ImaginaryUnit x)}{1+\ImaginaryUnit x}
  \right\}\Differential x.
 \end{equation}
 
@@ -1933,14 +1933,14 @@ Differentiate the signed first-kind generating function to obtain, for $|w|<1$,
  \frac{\log^m(1+w)}{1+w}
  =m!\sum_{r\ge m}\SignedStirlingFirstKind{r+1}{m+1}\frac{w^r}{r!}.
 \end{equation}
-Only odd powers survive after replacing $w$ by $-ix$ and $ix$ and taking the
+Only odd powers survive after replacing $w$ by $-\ImaginaryUnit x$ and $\ImaginaryUnit x$ and taking the
 difference.  Since
 $\SignedStirlingFirstKind{2k+2}{m+1}=(-1)^{m+1}\UnsignedStirlingFirstKind{2k+2}{m+1}$, one finds
 \begin{multline}
 \label{eq:stieltjes-odd-expansion}
- \frac1i\left\{
- \frac{\log^m(1-ix)}{1-ix}
- -\frac{\log^m(1+ix)}{1+ix}
+ \frac1{\ImaginaryUnit}\left\{
+ \frac{\log^m(1-\ImaginaryUnit x)}{1-\ImaginaryUnit x}
+ -\frac{\log^m(1+\ImaginaryUnit x)}{1+\ImaginaryUnit x}
  \right\}\\
  =2(-1)^m m!\sum_{k\ge0}
  \frac{(-1)^k\UnsignedStirlingFirstKind{2k+2}{m+1}}{(2k+1)!}\,x^{2k+1}.
@@ -2903,18 +2903,18 @@ As $n\to\infty$,
 \end{align}
 \end{theorem}
 \begin{proof}
-In \eqref{eq:bell-cauchy} take the circle $z=re^{i\theta}$.  The coefficient
+In \eqref{eq:bell-cauchy} take the circle $z=r\EulerE^{\ImaginaryUnit\theta}$.  The coefficient
 integral becomes
 \[
  \frac{\BellNumber n}{n!}=
  \frac{\EulerE^{\EulerE^r-1}}{2\pi r^n}
  \int_{-\pi}^{\pi}
- \exp\!\left(\EulerE^{re^{i\theta}}-\EulerE^r-in\theta\right)\Differential\theta.
+ \exp\!\left(\EulerE^{r\EulerE^{\ImaginaryUnit\theta}}-\EulerE^r-\ImaginaryUnit n\theta\right)\Differential\theta.
 \]
 The linear term vanishes because $re^r=n$; the quadratic term is
 $-A\theta^2/2$.  On $|\theta|\le A^{-2/5}$, Taylor expansion is uniform and the
 scaled integral tends to $\int_{\RealNumbers}\EulerE^{-u^2/2}\Differential u/\sqrt A$.  Outside that arc,
-$\Re(\EulerE^{re^{i\theta}}-\EulerE^r)\le-cA\theta^2$ on the intermediate range and is
+$\Re(\EulerE^{r\EulerE^{\ImaginaryUnit\theta}}-\EulerE^r)\le-cA\theta^2$ on the intermediate range and is
 $\le-c'\EulerE^r$ on the remaining compact range, so the contribution is negligible.
 This proves \eqref{eq:bell-saddle-leading}.  Stirling's formula and $\EulerE^r=n/r$
 simplify it to \eqref{eq:bell-W-asymptotic}.
@@ -4574,7 +4574,7 @@ $1-yf'(v)>0$.  The elementary change-of-variables rule for the Dirac delta gives
  g(v)=\int_{\RealNumbers}\delta(yf(z)-z+x)g(z)(1-yf'(z))\,\Differential z.
 \end{equation}
 Using
-$\delta(s)=\int_{\RealNumbers}\EulerE^{iks}\Differential k/(2\pi)$ and expanding only in the formal
+$\delta(s)=\int_{\RealNumbers}\EulerE^{\ImaginaryUnit ks}\Differential k/(2\pi)$ and expanding only in the formal
 parameter $y$,
 \begin{align}
  g(v)
@@ -5957,13 +5957,13 @@ For $n\geq2$ and every real $x$,
 \begin{equation}
  \widetilde\beta_n(x)
  =-n!\sum_{k\in\IntegerNumbers\setminus\{0\}}
- \frac{\EulerE^{2\pi ikx}}{(2\pi ik)^n}.                          \label{eq:merged-periodic-bernoulli-fourier-complex}
+ \frac{\EulerE^{2\pi \ImaginaryUnit kx}}{(2\pi \ImaginaryUnit k)^n}.                          \label{eq:merged-periodic-bernoulli-fourier-complex}
 \end{equation}
 The series converges absolutely and uniformly.  In degree one,
 \begin{equation}
  \widetilde\beta_1(x)
  =-\lim_{N\to\infty}\sum_{0<|k|\leq N}
- \frac{\EulerE^{2\pi ikx}}{2\pi ik}
+ \frac{\EulerE^{2\pi \ImaginaryUnit kx}}{2\pi \ImaginaryUnit k}
  =-\frac1\pi\sum_{k=1}^{\infty}\frac{\sin(2\pi kx)}{k}.         \label{eq:merged-periodic-bernoulli-fourier-one}
 \end{equation}
 The symmetric complex series and the paired sine series converge at every
@@ -5997,15 +5997,15 @@ For $n\geq2$,
 \begin{proof}
 For $0<r<1$ and $0<x<1$, the logarithm series gives
 \[
- \sum_{k=1}^{\infty}\frac{r^k\EulerE^{2\pi ikx}}k
- =-\log(1-r\EulerE^{2\pi ix}).
+ \sum_{k=1}^{\infty}\frac{r^k\EulerE^{2\pi \ImaginaryUnit kx}}k
+ =-\log(1-r\EulerE^{2\pi \ImaginaryUnit x}).
 \]
 Taking imaginary parts and then letting $r\uparrow1$ yields
 \[
  \sum_{k=1}^{\infty}\frac{\sin(2\pi kx)}k
  =\pi\left(\frac12-x\right),
 \]
-because $\arg(1-\EulerE^{2\pi ix})=\pi x-\pi/2$.  Dirichlet's test gives
+because $\arg(1-\EulerE^{2\pi \ImaginaryUnit x})=\pi x-\pi/2$.  Dirichlet's test gives
 the same ordinary-series limit: $1/k$ decreases to zero and the sine partial
 sums are bounded for fixed nonintegral $x$.  At an integer every sine term is
 zero.  The complex series is nowhere absolutely convergent because the sum of
@@ -6016,7 +6016,7 @@ degree-one statement and its convergence claims.
 
 For $n\geq1$, let
 \[
- c_k^{(n)}=\int_0^1\beta_n(x)\EulerE^{-2\pi ikx}\Differential x.
+ c_k^{(n)}=\int_0^1\beta_n(x)\EulerE^{-2\pi \ImaginaryUnit kx}\Differential x.
 \]
 The mean coefficient is zero, because the Appell identity gives
 \[
@@ -6025,10 +6025,10 @@ The mean coefficient is zero, because the Appell identity gives
 \]
 For $k\ne0$ and $n\geq2$, the endpoint values agree, so integration by parts
 and $\beta_n'=n\beta_{n-1}$ give
-$c_k^{(n)}=n c_k^{(n-1)}/(2\pi ik)$.  Direct integration gives
-$c_k^{(1)}=-1/(2\pi ik)$; hence
+$c_k^{(n)}=n c_k^{(n-1)}/(2\pi \ImaginaryUnit k)$.  Direct integration gives
+$c_k^{(1)}=-1/(2\pi \ImaginaryUnit k)$; hence
 \begin{equation}
- c_k^{(n)}=-\frac{n!}{(2\pi ik)^n}\qquad(k\ne0).                  \label{eq:merged-periodic-bernoulli-coefficients}
+ c_k^{(n)}=-\frac{n!}{(2\pi \ImaginaryUnit k)^n}\qquad(k\ne0).                  \label{eq:merged-periodic-bernoulli-coefficients}
 \end{equation}
 
 For $n\geq2$, the claimed series is absolutely and uniformly convergent by
@@ -6039,7 +6039,7 @@ $\widetilde\beta_n$.  Every Fourier coefficient of $h$ is zero, so every
 Fejér mean is zero:
 \[
  \sigma_Nh(x)=\sum_{|k|\leq N}
- \left(1-\frac{|k|}{N+1}\right)\FourierTwoPi{h}(k)\EulerE^{2\pi ikx}=0.
+ \left(1-\frac{|k|}{N+1}\right)\FourierTwoPi{h}(k)\EulerE^{2\pi \ImaginaryUnit kx}=0.
 \]
 But $\sigma_Nh=h*K_N$, where
 \[
@@ -6198,13 +6198,21 @@ and, formally in $z$ and analytically for $|z|<1$,
 \begin{equation}
  (1-z)^{-a}=\sum_{n\geq0}\frac{(a)_n}{n!}z^n.                      \label{eq:merged-binomial-series}
 \end{equation}
+Moreover, for all $m,n\in\NaturalNumbers$,
+\begin{equation}
+ (a)_{m+n}=(a)_m\,(a+m)_n,\qquad
+ \FallingFactorial{a}{m+n}=\FallingFactorial{a}{m}\FallingFactorial{a-m}{n}. \label{eq:merged-pochhammer-split}
+\end{equation}
 \end{theorem}
 
 \begin{proof}
 Iterate $\GammaFunction(w+1)=w\GammaFunction(w)$ to obtain the quotient.  For the series, let
 $F=\sum(a)_nz^n/n!$.  The recurrence $(a)_{n+1}=(a+n)(a)_n$ gives
 $(1-z)F'=aF$ and $F(0)=1$, whose unique formal solution is $(1-z)^{-a}$.
-The ratio test gives analytic convergence in the unit disk.
+The ratio test gives analytic convergence in the unit disk.  The splitting
+rules \eqref{eq:merged-pochhammer-split} are immediate from the definition:
+the product $a(a+1)\cdots(a+m+n-1)$ breaks after its $m$th factor, and the
+falling statement is the same identity read in the opposite direction.
 \end{proof}
 
 \begin{corollary}[Chu--Vandermonde]
@@ -6405,6 +6413,24 @@ Subtract the partial-fraction series at consecutive arguments; the series
 telescopes.  Iterate from $\psi(1)=-\gamma$, and set $z=1$ in the polygamma
 series.
 \end{proof}
+
+\begin{corollary}[Hurwitz-zeta form]\label{cor:merged-polygamma-hurwitz}
+For $m\geq1$ and $\Re z>0$,
+\begin{equation}
+ \psi^{(m)}(z)=(-1)^{m+1}m!\,\HurwitzZeta{m+1}{z}.                \label{eq:merged-polygamma-hurwitz}
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+The Hurwitz zeta function is $\HurwitzZeta sz=\sum_{k\geq0}(k+z)^{-s}$ for
+$\Re s>1$ and $\Re z>0$, which is precisely the series in
+\eqref{eq:merged-polygamma-series} at $s=m+1$.
+\end{proof}
+
+This is the bridge to the Stirling--Hurwitz sums of
+\cref{thm:stirling-zeta}: the same Hurwitz values occur there as the limits of
+first-kind Stirling series, and \eqref{eq:merged-polygamma-hurwitz} identifies
+them as polygamma values.
 
 \begin{theorem}[Reflection]
 \label{thm:merged-polygamma-reflection}
@@ -8313,7 +8339,7 @@ Result & Title & Status & Lean declarations (module) \\
 \Cref{thm:stirling-basis} & Stirling basis transformations & Lean & \lean{Fabius.ascPochhammer_eq_sum_monomial_stirlingFirst}, \lean{Fabius.descPochhammer_eq_sum_monomial_signedStirlingFirst}, \lean{Fabius.X_pow_eq_sum_stirlingSecond_mul_descPochhammer}, \lean{Fabius.X_pow_eq_sum_stirlingSecond_mul_ascPochhammer}, \lean{Fabius.pow_eq_sum_stirlingSecond_mul_factorial_mul_choose} (\lean{StirlingBasisChange}); polynomial identities over every commutative ring \\
 \Cref{cor:shifted-stirling-evaluations} & Shifted factorial evaluations & none &  \\
 \Cref{cor:stirling-inverse} & Inverse matrices & Lean & \lean{Fabius.sum_range_stirlingSecond_mul_signedStirlingFirst}, \lean{Fabius.sum_range_signedStirlingFirst_mul_stirlingSecond} and their \lean{Icc} forms (\lean{StirlingBasisChange}) \\
-\Cref{thm:poisson-stirling-moments} & Poisson moments & partial & the moment series $\sum_m m^n\lambda^m/m! = e^{\lambda}\sum_k S(n,k)\lambda^k$ is \lean{Fabius.tsum_pow_mul_pow_div_factorial} (\lean{BellStirling}) for every real $\lambda$; the probabilistic phrasing is not formalized \\
+\Cref{thm:poisson-stirling-moments} & Poisson moments & partial & the moment series $\sum_m m^n\lambda^m/m! = \EulerE^{\lambda}\sum_k S(n,k)\lambda^k$ is \lean{Fabius.tsum_pow_mul_pow_div_factorial} (\lean{BellStirling}) for every real $\lambda$; the probabilistic phrasing is not formalized \\
 \Cref{thm:fixed-point-stirling-moments} & Moments of the number of fixed points & none &  \\
 \Cref{thm:lah-conv} & Conversion between rising and falling factorials & Lean & \lean{Fabius.ascPochhammer_eq_sum_lahNumber_mul_descPochhammer}, \lean{Fabius.descPochhammer_eq_sum_lahNumber_mul_ascPochhammer}, \lean{Fabius.sum_range_lahNumber_mul_lahNumber}, \lean{Fabius.lahNumber_eq_sum_stirlingFirst_mul_stirlingSecond} (\lean{LahNumbers}); the closed form of the definition is \lean{Fabius.lahNumber_succ_succ_mul_factorial} \\
 \Cref{thm:stirling-egfs} & Column generating functions & none &  \\
