@@ -1021,6 +1021,34 @@ series \lean{Fabius.tsum\_mul\_natCast\_div\_two\_pow} against Legendre's classi
 count.  The pointwise ingredient, \(\{N/2^h\}=(N\bmod 2^h)/2^h\), is
 \lean{Fabius.fract\_natCast\_div\_two\_pow}.
 
+\paragraph{The total binary weight.}
+Summing the digit sum over an initial segment,
+\begin{equation}
+  S(N)=\sum_{n<N}\BinaryDigitSum(n),
+  \label{p1:eq:weight-total-definition}
+\end{equation}
+gives the classical Trollope--Delange quantity, whose main term is
+\(\tfrac12N\log_2N\).  The exact dyadic structure is elementary: doubling the range
+gives \(S(2M)=2S(M)+M\), so that \(2S(2^L)=L\,2^L\) exactly, and the top digit splits an
+arbitrary range as \(S(2^L+r)=S(2^L)+r+S(r)\) for \(r<2^L\).  Iterating the split yields the
+two-sided bracket \(N\Floor{\log_2N}\le2S(N)+N\) and \(2S(N)\le N(\Floor{\log_2N}+1)\), hence
+\begin{equation}
+  \Bigl|S(N)-\tfrac12N\log_2N\Bigr|\le N,
+  \label{p1:eq:weight-total-bracket}
+\end{equation}
+the \(\BigO(N)\) error term of Trollope--Delange with an explicit constant; the
+oscillating \(N\)-scale term itself (Delange's periodic function) is not pursued here.
+
+\emph{Formal versions.}  All of this is in \path{BinaryWeightTotals.lean}: \(S(N)\) is
+\lean{Fabius.binaryWeightTotal}; the doubling law is
+\lean{Fabius.binaryWeightTotal\_two\_mul}, the exact dyadic value
+\lean{Fabius.two\_mul\_binaryWeightTotal\_two\_pow}, and the top-digit split
+\lean{Fabius.binaryWeightTotal\_two\_pow\_add}; the two integer brackets are
+\lean{Fabius.le\_two\_mul\_binaryWeightTotal\_add} and
+\lean{Fabius.two\_mul\_binaryWeightTotal\_le} (with \(\Floor{\log_2N}\) as
+\lean{Nat.log}), and \eqref{p1:eq:weight-total-bracket} is
+\lean{Fabius.abs\_binaryWeightTotal\_sub\_le}, with the real \(\log_2N\).
+
 \subsection{Square waves and a sine-sign product}
 
 For nonintegral \(x\),
