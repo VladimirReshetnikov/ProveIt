@@ -4097,6 +4097,24 @@ Every factor indexed by $h$ contributes a simple zero at each positive multiple 
 Legendre's digit formula gives $\sum_{h\ge1}\Floor{N/2^h}=N-\BinaryDigitSum(N)$, proving \eqref{p3:eq:classical-count}.  Since $2N$ is even, \eqref{p3:eq:spectral-thue-morse} follows.  Finally, $\Phi_1(0)>0$, and crossing the zero at $n$ changes the sign exactly when $\mu_1(n)$ is odd.  Therefore the sign on $(N,N+1)$ is $(-1)^{\mathcal N_1(N)}$.
 \end{proof}
 
+\paragraph{Lean status.}
+\Cref{p3:thm:classical-count} is formal through two corpus statements.  The count
+\eqref{p3:eq:classical-count} is Legendre's digit formula in the form
+\(\sum_{h<M}\Floor{N/2^h}+\BinaryDigitSum(N)=2N\) for every \(M>\log_2N\),
+\path{Fabius.sum_range_div_two_pow_add_digitSum} in \path{DigitDefectCounting.lean}; the
+finite window is exactly the observation that all floors beyond \(h=\Floor{\log_2N}\)
+vanish, so \(\mathcal N_1(N)=\sum_{h<M}\Floor{N/2^h}\).  The parity statement
+\eqref{p3:eq:spectral-thue-morse} is
+\path{Fabius.neg_one_pow_sum_div_two_pow_const_one} in
+\path{DigitCharacterCongruence.lean}, \((-1)^{\sum_{h<m}\Floor{N/2^h}}=\ThueMorseSign N\)
+for \(N<2^m\), which is the mod-\(2\) shadow of the count without passing through the
+digit sum.  The identification of \(\mathcal N_1\) with the zero counting function of
+\(\Phi_1\) itself (each factor \(h\) contributing a simple zero at every positive multiple
+of \(2^h\)) is the zero-divisor description
+\path{Fabius.analyticOrderAt_generalizedRvachevProduct_int} at unit weight, in
+\path{GeneralizedZeroDivisor.lean}; the cumulative sum over \(n\le N\) is not separately
+stated.
+
 \begin{remark}
 The familiar sign law is therefore not merely an incidental binary identity.  It is a mod-$2$ shadow of an exact Weyl-type counting formula whose discrepancy from the linear main term is the binary digit sum.
 \end{remark}

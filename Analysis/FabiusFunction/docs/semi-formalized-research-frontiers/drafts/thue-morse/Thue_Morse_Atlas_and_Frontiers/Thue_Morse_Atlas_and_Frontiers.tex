@@ -5958,7 +5958,20 @@ uniformly in the real frequency \(x\), by the blockwise decomposition described 
 (\lean{Fabius.norm\_sum\_thueMorseSign\_exp\_le\_of\_lt\_two\_pow}), and
 \lean{Fabius.gelfond\_general\_bound\_rpow} rewrites the right side as
 \((\sqrt3+1)\,N^{\log_43}\), which is the displayed \(\BigO(N^{\log_43})\) with the
-implied constant made \(\sqrt3+1\).
+implied constant made \(\sqrt3+1\).  The exponent is also \emph{attained} at every length, not
+only along the dyadic subsequence: \lean{Fabius.gelfond\_general\_lower\_bound} in
+\path{ThueMorseGelfondSharpness.lean} gives
+\(N^{\log_43}/9\le\bigl|\sum_{n<N}\eps_n\omega^n\bigr|\) at the cube root of unity
+\(\omega=\EulerE^{2\pi\ImaginaryUnit/3}\) (\lean{Fabius.gelfondRoot}), and
+\lean{Fabius.gelfond\_general\_two\_sided} packages both bounds,
+\(N^{\log_43}/9\le|S_N(\omega)|\le(\sqrt3+1)N^{\log_43}\).  The lower bound comes from
+the residue-class decomposition \(S_N(\zeta)=T_0+\zeta T_1+\zeta^2T_2\) for any cube root
+of unity (\lean{Fabius.sum\_thueMorseSign\_mul\_pow\_eq\_residue}), the norm identity
+\(|a+\omega b+\omega^2c|^2=a^2+b^2+c^2-ab-bc-ca\)
+(\lean{Fabius.norm\_sq\_add\_gelfondRoot\_mul}), and the comparison
+\(N_3(N)\le|S_N(\omega)|\) with the residue count of
+\cref{p1:thm:mod3-rarefaction}
+(\lean{Fabius.thueMorseResidueSum\_three\_zero\_le\_norm\_sum}).
 
 \subsection{A matrix recursion for odd moduli}
 
