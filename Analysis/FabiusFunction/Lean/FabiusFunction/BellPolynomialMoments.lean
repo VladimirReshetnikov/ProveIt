@@ -247,7 +247,6 @@ theorem blockCumulant_even (m ℓ : ℕ) (hℓ : 1 ≤ ℓ) :
     linarith
   push_cast
   field_simp
-  ring
 
 /-- `κ_{2ℓ+1}^{(m)} = 0` for `ℓ ≥ 1`. -/
 theorem blockCumulant_odd (m ℓ : ℕ) (hℓ : 1 ≤ ℓ) : blockCumulant m (2 * ℓ + 1) = 0 := by
@@ -319,7 +318,7 @@ theorem thueMorsePowerSum_eq_completeBellPolynomial (m r : ℕ) :
       rw [map_mul, map_pow, map_neg, map_one]
       ring
     rw [hC, coeff_C_mul, show m + r = r + m by ring, coeff_X_pow_mul]
-  rw [← map_pow, hcoeff] at hegf
+  rw [hcoeff] at hegf
   have hfac : ((m + r).factorial : ℚ) ≠ 0 := by exact_mod_cast (Nat.factorial_pos _).ne'
   have hr : (r.factorial : ℚ) ≠ 0 := by exact_mod_cast (Nat.factorial_pos _).ne'
   have hsum : ∑ n ∈ range (2 ^ m), (thueMorseSign n : ℚ) * (n : ℚ) ^ (m + r)
