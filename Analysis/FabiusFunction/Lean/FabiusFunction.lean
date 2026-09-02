@@ -514,6 +514,7 @@ import FabiusFunction.NewtonInterpolation
 import FabiusFunction.GaussianBinomialInteger
 import FabiusFunction.GaussianBinomialComplexOrder
 import FabiusFunction.QPfaffSaalschutz
+import FabiusFunction.QuantumMultinomial
 import FabiusFunction.GaussianBinomialPalindromic
 import FabiusFunction.ThetaQuasiPeriodicity
 
