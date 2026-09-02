@@ -72,7 +72,7 @@ variable {A : Type*} [Semiring A]
 
 /-- Gaussian coefficients in any semiring are values of the universal polynomial
 `[n,k]_X ∈ ℕ[X]` (the natural-number coefficients commute with everything). -/
-theorem gaussianBinomial_eq_eval₂RingHom' (q : A) (n k : ℕ) :
+theorem gaussianBinomial_eq_evalRingHom_quantum (q : A) (n k : ℕ) :
     gaussianBinomial q n k =
       eval₂RingHom' (Nat.castRingHom A) q (fun a => by simpa using Nat.cast_commute a q)
         (gaussianBinomial (X : ℕ[X]) n k) := by
@@ -87,7 +87,8 @@ theorem gaussianBinomial_eq_eval₂RingHom' (q : A) (n k : ℕ) :
 /-- **Symmetry in every semiring**: `[n, n-k]_q = [n,k]_q`. -/
 theorem gaussianBinomial_symm' (q : A) {n k : ℕ} (hk : k ≤ n) :
     gaussianBinomial q n (n - k) = gaussianBinomial q n k := by
-  rw [gaussianBinomial_eq_eval₂RingHom' q n (n - k), gaussianBinomial_eq_eval₂RingHom' q n k,
+  rw [gaussianBinomial_eq_evalRingHom_quantum q n (n - k),
+    gaussianBinomial_eq_evalRingHom_quantum q n k,
     gaussianBinomial_symm (X : ℕ[X]) hk]
 
 /-- `q`-multinomial coefficients commute with every element that `q` commutes with. -/

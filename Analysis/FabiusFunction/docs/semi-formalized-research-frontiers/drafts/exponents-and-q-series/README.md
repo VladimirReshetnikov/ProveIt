@@ -31,7 +31,7 @@ module tranches and the zero-definition, three-theorem
 crosswalk. That source is a source-only successor to the fresh artifact receipt
 and requires a later synchronized three-pass build. Retained PDFs under its `assets/` tree are
 research figures, not alternate manuscript renderings. The current Lean audit
-contains 644 facade-reachable modules and 8,666 public declarations, with no
+contains 672 facade-reachable modules and 8,875 public declarations, with no
 missing module headers or declaration documentation.
 
 ## Detailed package record
@@ -95,15 +95,15 @@ Current packages and retained intake records:
   figures. Pinned source revisions and Git history preserve every superseded
   layout and arrival fact.
 
-  The current `q_pochhammer_q_binomial_monograph.tex` has 14,360 lines,
-  674,111 bytes, and SHA-256
-  `4156d8dc83070bbdef4345a4bbd304a6002b1041c8a7476aa3e51e20d7936032`.
+  The current `q_pochhammer_q_binomial_monograph.tex` has 14,481 lines,
+  681,698 bytes, and SHA-256
+  `5c9b4b461938d6f15511a4e825caf3974e448c9ab3a805f447471f8d008500ad`.
   Its retained `q_pochhammer_q_binomial_monograph.pdf` is a historical
-  348-page A4 artifact of 3,002,729 bytes, with SHA-256
-  `8bf14b52d8a0fc0abc4d54cca503fd47a2df37cf76ee1bb4e442bea1fd2a4aa7`.
-  That PDF was built in exactly three guarded serial passes (338, 348, and 348
-  pages) from the preceding 14,158-line, 661,835-byte source with SHA-256
-  `79ee5e60a6c7e42a91c58dcd9bcae56173cc6b4aa3e54739a461943f705f3904`.
+  354-page A4 artifact of 3,030,302 bytes, with SHA-256
+  `1050a9a3b0b7a8df8e7de0870946ae64940d7d7839a2f20427be0ebe14b0ba8c`.
+  That PDF was built from the preceding 14,381-line, 675,239-byte source with
+  SHA-256
+  `240bff72fb47562e9a8fd87085b5a3a96d738189714518db17988f7c4ac15d31`.
   Its A4 boxes, text extraction, embedded/subset Type-1 fonts including
   Libertinus, absence of Type-3 fonts, and targeted visual review passed at
   that checkpoint. Because the current TeX is newer, no render parity is
@@ -113,12 +113,14 @@ Current packages and retained intake records:
   Gaussian structure modules, `CentralQBinomialReduction.lean`,
   `CyclotomicFactorization.lean`, `PrimitiveRootBlock.lean`, `QLucas.lean`,
   `QCatalan.lean`, `CyclotomicDivisibility.lean`, the subsequent q-series
-  module tranches, and the three-theorem
+  module tranches including the q-beta, collision-free Newton,
+  integer/complex-order Gaussian, q-Pfaff--Saalschuetz, quantum-multinomial,
+  and Gaussian reciprocity/growth APIs, and the three-theorem
   `GeometricPochhammerNormalConvergence.lean` outer-product API. The forward
-  crosswalk is now 77 Exact, 85 Partial, 112 None, and 8 interface rows; the
+  crosswalk is now 90 Exact, 84 Partial, 100 None, and 8 interface rows; the
   source ledger is 66 Lean-proved, 412 human-proved frontier, 60 not
   applicable, and 9 conjectures. No PDF was generated locally while resolving
-  this source-only merge, so the retained 348-page artifact does not render
+  this source-only merge, so the retained 354-page artifact does not render
   the current source. PDF files retained
   beneath `assets/` are vector research figures, not manuscript builds.
   Manuscript result labels and numerical checks remain
@@ -800,8 +802,8 @@ claims about the current canonical source. The canonical synthesis's current
 source and retained historical PDF are identified by the single exact receipt
 in the detailed package record above.
 
-The latest validated forward formalization ledger has 282 rows: 77 Exact, 85
-Partial, 112 with no counterpart, and 8 interface-only. The original
+The latest validated forward formalization ledger has 282 rows: 90 Exact, 84
+Partial, 100 with no counterpart, and 8 interface-only. The original
 191-result pre-Fabius core had 36 exact, 29 partial, 123 with no counterpart,
 and 3 interface-only entries. The four integrated-guide chapters add 31
 human-proved but not Lean-formalized assertions and five labelled definitions;
@@ -841,14 +843,21 @@ compatibility spelling of its primary identity),
 `QPochhammerDissection.lean` (two theorems),
 `QPochhammerInfinite.lean` (one definition, 29 theorems),
 `QBinomialReciprocity.lean` (four theorems),
+`GaussianBinomialBounds.lean` (zero definitions, six theorems),
 `GaussianBinomialPalindromic.lean` (zero definitions, fourteen theorems),
 `GaussianBinomialPolynomialStructure.lean` (zero definitions, five theorems),
 `CentralQBinomialReduction.lean` (zero definitions, six theorems),
 `CyclotomicFactorization.lean` (zero definitions, seven theorems),
-`PrimitiveRootBlock.lean` (zero definitions, three public theorems),
-`QLucas.lean` (zero definitions, eight public theorems),
-`QCatalan.lean` (one definition, eleven theorems),
 `CyclotomicDivisibility.lean` (zero definitions, three theorems),
+`PrimitiveRootBlock.lean` (zero definitions, three theorems),
+`QCatalan.lean` (one definition, eleven theorems),
+`QLucas.lean` (zero definitions, eight theorems),
+`QBetaIntegral.lean` (one definition, eight theorems),
+`NewtonInterpolation.lean` (two definitions, thirteen theorems),
+`GaussianBinomialInteger.lean` (one definition, ten theorems),
+`GaussianBinomialComplexOrder.lean` (one definition, five theorems),
+`QPfaffSaalschutz.lean` (zero definitions, three theorems),
+`QuantumMultinomial.lean` (zero definitions, five theorems),
 `GaussianBinomialAtNegOne.lean` (five theorems),
 `RvachevPochhammerFactorization.lean` (one definition, nine theorems), and
 `QPochhammerEntire.lean` (zero definitions; four legacy compatibility
@@ -1138,11 +1147,32 @@ division-free over every commutative ring with a field/nonzero-denominator
 quotient wrapper, while the factorial cyclotomic factorization holds over every
 commutative ring and the Gaussian factorization over every integral domain,
 with the exponent bounded in `{0,1}` by the proved divisibility inequalities.
-
-The newest arithmetic tranche adds `PrimitiveRootBlock.lean` (three public
-theorems), `QLucas.lean` (eight public theorems), `QCatalan.lean` (one definition and eleven
-theorems), and `CyclotomicDivisibility.lean` (three theorems). It makes the
-complete root block, evaluated q-Lucas theorem, square-free cyclotomic
-criterion, and q-Catalan row Exact. The primitive-root value in the Babbage
-corollary is exact, while its derivative clause keeps that compound row
-Partial.
+The root-of-unity tail adds `CyclotomicDivisibility.lean` (three theorems),
+`PrimitiveRootBlock.lean` (three theorems), `QCatalan.lean` (one definition
+and eleven theorems), and `QLucas.lean` (eight theorems).  These twenty-six
+declarations prove the carry criterion, complete primitive-root block,
+q-Lucas theorem, and integral q-Catalan polynomial at their stated ring and
+primitive-root hypotheses.
+The newest analytic/algebraic tail adds `QBetaIntegral.lean` (one definition,
+eight theorems) and `NewtonInterpolation.lean` (two definitions, thirteen
+theorems). It formalizes the Jackson q-beta product and q-gamma evaluation,
+symmetry, positivity, and recurrences, together with generic Newton
+interpolation and its geometric-grid specialization; the interpolation
+polynomial is named `nodeNewtonPoly` to remain distinct from the older
+Newton-basis generating-function `newtonPoly`.
+The final three-module tail adds integer and principal-complex upper-index
+Gaussian coefficients and the terminating balanced q-Pfaff--Saalschütz sum:
+`GaussianBinomialInteger.lean` is 1+10,
+`GaussianBinomialComplexOrder.lean` is 1+5, and
+`QPfaffSaalschutz.lean` is 0+3. Their nonzero-nome,
+strict-contraction, and denominator hypotheses remain explicit.
+`QuantumMultinomial.lean` adds five theorems for antidiagonal tuple recursion,
+noncommutative Gaussian symmetry, and the ordered q-multinomial expansion for
+pairwise q-commuting variables.
+`GaussianBinomialBounds.lean` adds six theorems and reuses the stronger
+`finiteQPochhammerIn_self_pos` from `GeneralQConditionNumber`: evaluated
+reciprocity, the finite bounds for `0 <= q < 1`, and the dimension-dominant
+lower and upper bounds for `q > 1`. The exact finite-growth row is closed, while the compound
+greater-than-one row remains Partial at its asymptotic clauses. The
+primitive-root value in the Babbage corollary is exact, while its derivative
+clause keeps that compound row Partial.

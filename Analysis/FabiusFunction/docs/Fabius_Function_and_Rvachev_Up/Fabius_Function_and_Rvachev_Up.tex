@@ -3817,7 +3817,7 @@ because the underlying infinite product is totalized outside its admissible
 range.  No spectral-zeta recovery, cumulant-sample recovery, or
 identifiability of an underlying probability law is asserted; those remain
 open interfaces.  With the later concurrent source union, the live facade
-census is 664 modules and 8,804 public declarations.  The current TeX also
+census is 672 modules and 8,875 public declarations.  The current TeX also
 contains the six-theorem prime-power companion-row API and the
 zero-definition/three-theorem outer Pochhammer normal-convergence API, plus
 the two-module/nine-declaration fixed-depth effective-inverse tranche, the
@@ -3867,15 +3867,58 @@ the central Gaussian reduction, and the cyclotomic factorizations of
 nonzero-denominator hypotheses, while the Gaussian cyclotomic factorization
 retains its integral-domain assumption.
 
-The four latest finite-q module counts are
-\path{PrimitiveRootBlock.lean} (0+3), \path{QLucas.lean} (0+8),
-\path{CyclotomicDivisibility.lean} (0+3), and \path{QCatalan.lean} (1+11).
-Their one definition and twenty-five theorems add complete primitive-root
-blocks, the q-Lucas theorem, the cyclotomic carry criterion and multiple-index
-primitive-root evaluation, and MacMahon's integral q-Catalan polynomial with
-its exact degree and value at one.  Positivity of the root order, primitive-root,
-integral-domain, index-bound, and divisibility hypotheses remain explicit in
-the statements below.
+The four root-of-unity and q-Catalan module counts are
+\path{CyclotomicDivisibility.lean} (0+3),
+\path{PrimitiveRootBlock.lean} (0+3),
+\path{QCatalan.lean} (1+11), and
+\path{QLucas.lean} (0+8).  Their one definition and twenty-five theorems add
+the cyclotomic carry criterion, complete primitive-root q-Pochhammer blocks,
+q-Lucas over integral domains, and the integral q-Catalan polynomial with its
+exact degree and Catalan specialization.
+
+The newest interpolation and q-integral module counts are
+\path{NewtonInterpolation.lean} (3+19) and
+\path{QBetaIntegral.lean} (1+8).  Their four definitions and twenty-seven
+theorems construct triangular Newton coefficients and interpolants, prove
+evaluation, uniqueness, divided differences, and the geometric-grid formula,
+and evaluate the Jackson q-beta integral in product and q-gamma forms for
+\(0<q<1\) and positive arguments, with symmetry, positivity, and both
+successor recurrences.  The Newton count includes the node-qualified family
+and all seven definitionally identical \path{newtonInterpolant} compatibility
+declarations.  No endpoint or \(q\to1\) limit is claimed.
+
+The latest three q-series module counts are
+\path{GaussianBinomialInteger.lean} (1+10),
+\path{GaussianBinomialComplexOrder.lean} (1+5), and
+\path{QPfaffSaalschutz.lean} (0+3).  Their two definitions and eighteen
+theorems extend Gaussian coefficients to integer and principal-branch complex
+upper indices, prove the integer q-Pascal and negative-index reflection laws,
+derive the reciprocal finite and generalized complex-order q-binomial series,
+and establish the terminating balanced \({}_3\phi_2\) q-Pfaff--Saalsch\"utz
+summation over a field.  Nonzero nomes and parameters, strict-contraction
+bounds, and every finite-product nonvanishing premise remain explicit.
+
+The zero-definition/five-theorem module
+\path{QuantumMultinomial.lean} then decomposes natural tuple antidiagonals,
+transports Gaussian symmetry to arbitrary semirings, proves q-multinomial
+coefficient commutation, and establishes the ordered noncommutative
+q-multinomial theorem.  Its hypotheses are exactly that the nome commute with
+each variable and that \(x_jx_i=q(x_ix_j)\) for \(i<j\).  The statement is
+finite and division-free, with no ambient commutativity or convergence
+assumption.
+
+The final bound module \path{GaussianBinomialBounds.lean} has no public
+definitions and six theorems:
+\lean{gaussianBinomial_inv}, \lean{one_le_gaussianBinomial},
+\lean{finiteQPochhammerIn_pow_le_one},
+\lean{gaussianBinomial_le_inv_qPochhammerInfIn},
+\lean{pow_le_gaussianBinomial_of_one_lt}, and
+\lean{gaussianBinomial_le_pow_div_of_one_lt}.  It proves the uniform
+\(0\le q<1\) bound and its reciprocal dimension-dominant bounds for \(Q>1\),
+with every nonzero-base, index, and order hypothesis explicit.  Its proof
+reuses the stronger ordered-field theorem
+\lean{finiteQPochhammerIn_self_pos} from
+\path{GeneralQConditionNumber.lean} rather than exporting a duplicate.
 
 On the real axis the origin is the unique global point of unit modulus:
 \begin{equation}
@@ -5888,10 +5931,31 @@ contribute.  The theorem assumes exactly \(M\ne0\) and
 \(\deg P\le \TwoAdicValuation(M)\).  Thus the specialization \(M=2^N\)
 formalizes arbitrary-phase reproduction of every polynomial
 \(P\in\RealNumbers[X]\) with \(\deg P\le N\), equivalently every monomial
-\(X^n\) for \(0\le n\le N\).  The Appell-lattice extension to degree
-\(N+1\) remains outside Lean and uses the phases
-\(\theta\equiv0,1/2\pmod1\) for even \(N\), or
-\(\theta\equiv1/4,3/4\pmod1\) for odd \(N\).
+\(X^n\) for \(0\le n\le N\).
+
+The compiled module \path{RvachevSuperconvergentSynthesis.lean} adds exactly
+one public definition and eight public theorems.  Its definition
+\lean{IsRvachevSuperconvergentPhase} selects \(0,1/2\) when
+\(\TwoAdicValuation(M)+1\) is odd and \(1/4,3/4\) when it is even.
+The theorem \lean{isRvachevSuperconvergentPhase_two_pow_iff} rewrites this for
+\(M=2^N\): even \(N\) selects the endpoint phases and odd \(N\) the quarter
+phases.  The remaining seven theorems are
+\lean{tsum_quarter_monomial_eq_integral_of_even_deg},
+\lean{tsum_three_quarters_monomial_eq_integral_of_even_deg},
+\lean{tsum_shifted_monomial_eq_integral_superconvergent},
+\lean{tsum_shifted_polynomial_eq_integral_superconvergent},
+\lean{integral_polynomial_mul_rvachevUp_eq_normalized_tsum_superconvergent},
+\lean{normalized_tsum_shifted_rvachevDeconvolvedPolynomial_mul_rvachevUp_superconvergent},
+and
+\lean{normalized_tsum_shifted_rvachevAppellPolynomial_mul_rvachevUp_superconvergent}.
+For every nonzero natural \(M\), they prove selected-phase monomial and
+polynomial identities through degree \(\TwoAdicValuation(M)+1\), physical
+quadrature, deconvolved-polynomial reconstruction, and the Appell
+specialization.  This arbitrary-\(M\) result is stronger than the
+manuscript's dyadic-only claim.  The phase predicate uses exact real
+representatives rather than congruence classes modulo one, and the module
+asserts neither a complete phase classification nor maximality, positivity,
+or rationality of the quadrature.
 
 The current-tree module \path{LagrangeRvachevSynthesis.lean} has the exact
 public inventory of two definitions,
@@ -11481,17 +11545,18 @@ supremum norm.  The API also provides the raw
 to zero, and the pointwise corollary at every \(x\in[-1,1]\).  It asserts no
 rate, coefficientwise limit, or uniform convergence outside this interval.
 
-The six modules \path{RvachevMomentAppell.lean},
+The seven modules \path{RvachevMomentAppell.lean},
 \path{RvachevPolynomialSynthesis.lean},
+\path{RvachevSuperconvergentSynthesis.lean},
 \path{LagrangeRvachevSynthesis.lean},
 \path{CompositeMeshSharpness.lean},
 \path{FabiusLegendreTranslateBlocks.lean}, and
 \path{FabiusLegendreTranslateSeries.lean} therefore have public
-definition/theorem inventories $6/33$, $0/5$, $2/7$, $1/7$, $6/7$, and $5/25$,
-respectively: exactly $104$ public declarations.  The fourth module proves
+definition/theorem inventories $6/33$, $0/5$, $1/8$, $2/7$, $1/7$, $6/7$,
+and $5/25$, respectively: exactly $113$ public declarations.  The fifth module proves
 least-mesh sharpness only for universal exactness on the complete polynomial
 space through a degree cutoff.  It does not prove minimality for an individual
-Legendre polynomial or a particular partial sum.  The six modules also do not
+Legendre polynomial or a particular partial sum.  The seven modules also do not
 prove a geometric closed form or bundled matrix form for the finite-node
 decoder, decoder optimality, rationality of the atom rows, equality of the fixed-scale and separately
 scaled coefficient vectors, an unconditional
@@ -12898,6 +12963,7 @@ Legendre expansion and computability &
 \path{FabiusLegendreRationalEnergy.lean},
 \path{FabiusSquareEnergyFourier.lean},
 \path{RvachevPolynomialSynthesis.lean},
+\path{RvachevSuperconvergentSynthesis.lean},
 \path{CompositeMeshSharpness.lean},
 \path{FabiusLegendreTranslateBlocks.lean},
 \path{FabiusLegendreTranslateSeries.lean},

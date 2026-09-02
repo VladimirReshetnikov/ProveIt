@@ -96,8 +96,8 @@ It checks every permanent package file except the self-referential root
 useful because it preserves the migrated experiment and research-figure
 boundary.
 
-The retained `q_pochhammer_q_binomial_monograph.pdf` is a 354-page A4
-build checkpoint made from the then-current source (14,381 lines, 675,239 bytes,
+The retained `q_pochhammer_q_binomial_monograph.pdf` is a historical 354-page
+A4 build of the upstream source checkpoint (14,381 lines, 675,239 bytes,
 SHA-256 `240bff72fb47562e9a8fd87085b5a3a96d738189714518db17988f7c4ac15d31`).
 The PDF is 3,030,302 bytes with SHA-256
 `1050a9a3b0b7a8df8e7de0870946ae64940d7d7839a2f20427be0ebe14b0ba8c`.
@@ -112,13 +112,13 @@ fonts. The files under `assets/experiments/**/figures/` remain research
 figures, not publication manuscripts.
 
 The current master TeX is a source-only successor to that checkpoint: it has
-14,448 lines, 679,446 bytes, and SHA-256
-`fa91f1e7935146b5e7e705b45e9db26cede71aa03a2bb49bfca0fa39674c1962`.
-It combines the incoming q-beta, Newton-interpolation, integer/complex-order
-Gaussian, q-Pfaff--Saalschütz, and quantum-multinomial crosswalks with the
-Gaussian coefficient closure already on this branch. The regenerated root
-`SHA256SUMS` ledger records the live source and retained PDF separately; the
-PDF remains pinned to source SHA-256
+14,481 lines, 681,698 bytes, and SHA-256
+`5c9b4b461938d6f15511a4e825caf3974e448c9ab3a805f447471f8d008500ad`.
+It combines the q-beta, collision-free Newton-interpolation,
+integer/complex-order Gaussian, q-Pfaff--Saalschuetz,
+quantum-multinomial, Gaussian reciprocity/growth, and coefficient-closure
+crosswalks. The regenerated root `SHA256SUMS` ledger records the live source
+and retained PDF separately; the PDF remains pinned to source SHA-256
 `240bff72fb47562e9a8fd87085b5a3a96d738189714518db17988f7c4ac15d31`
 and does not claim render parity with the merged TeX.
 
@@ -132,6 +132,7 @@ theorems), `GaussianBinomialPolynomialStructure` (zero definitions and five
 theorems), and `GeometricPochhammerNormalConvergence` (zero
 definitions and three theorems). The wider inventory also includes
 `QMultinomial` (one definition and nine theorems),
+`QuantumMultinomial` (zero definitions and five theorems),
 `QPochhammerInfiniteBounds` (zero definitions and five theorems),
 `QPochhammerComplexOrder` (one definition and four theorems),
 `BasicHypergeometricSeries` (two definitions and five theorems),
@@ -143,23 +144,25 @@ and six theorems), `QPochhammerLogDerivative` (zero definitions and ten
 theorems), `QPochhammerOrderDerivative` (zero definitions and three theorems),
 `JacobiCubic` (zero definitions and two theorems),
 `CentralQBinomialReduction` (zero definitions and six theorems), and
-`CyclotomicFactorization` (zero definitions and seven theorems), together with
-expanded Euler, Jacobi, and Rogers--Szegő material. The newest arithmetic
-surfaces are `PrimitiveRootBlock` (zero definitions and three public theorems),
-`QLucas` (zero definitions and eight public theorems), `QCatalan` (one definition and
-eleven theorems), and `CyclotomicDivisibility` (zero definitions and three
-theorems). The incoming formal surfaces also include `NewtonInterpolation`
-and `QBetaIntegral`, covering arbitrary-node and geometric-grid Newton
-interpolation, the Jackson q-beta product, its q-gamma quotient, positivity,
-symmetry, and recurrences.
+`CyclotomicFactorization` (zero definitions and seven theorems). The newest
+cyclotomic surfaces are `CyclotomicDivisibility` (zero definitions and three
+theorems), `PrimitiveRootBlock` (zero definitions and three theorems),
+`QCatalan` (one definition and eleven theorems), and `QLucas` (zero
+definitions and eight theorems). The analytic and interpolation tail adds
+`QBetaIntegral` (one definition and eight theorems) and
+`NewtonInterpolation` (two definitions and thirteen theorems), covering the
+Jackson q-beta product and arbitrary-node/geometric-grid interpolation.
 The collision-free polynomial API is `nodeNewtonPoly`,
 `nodeNewtonPoly_succ`, `eval_nodeNewtonPoly`,
 `degree_nodeNewtonPoly_lt`, `nodeNewtonPoly_eq_interpolate`,
 `eq_nodeNewtonPoly_of_eval_eq`, and `coeff_nodeNewtonPoly_self`; the remaining
 eight Newton declarations retain their incoming names.
-The newest finite-q surfaces are `GaussianBinomialInteger`,
-`GaussianBinomialComplexOrder`, `QPfaffSaalschutz`, and
-`QuantumMultinomial`.
+The newest finite-q surfaces are `GaussianBinomialInteger` (one definition
+and ten theorems), `GaussianBinomialComplexOrder` (one definition and five
+theorems), `QPfaffSaalschutz` (zero definitions and three theorems),
+`QuantumMultinomial` (zero definitions and five theorems), and
+`GaussianBinomialBounds` (zero definitions and six theorems), together with
+expanded Euler, Jacobi, and Rogers--Szegő material.
 
 The two newest generic theorems are
 `deriv_qPochhammerInfIn_ne_zero_of_mul_pow_eq_one`, which gives a nonzero
@@ -171,7 +174,7 @@ entireness, zero-locus, reciprocal-power, and analytic-order results rather
 than duplicating their analytic proofs. In `QBinomialTheoremInfinite`,
 `finiteQPochhammerIn_zero_left` remains the unique declaration owned by
 `GaussianBinomialAtOne` and is imported rather than redeclared. The forward
-status ledger is 88 Exact, 83 Partial, 103 None, and 8 interface rows; the
+status ledger is 90 Exact, 84 Partial, 100 None, and 8 interface rows; the
 original 191-result pre-Fabius core is 36/29/123/3, and the
 completed source concordance records 66 Lean-proved rows, 412 human-proved
 frontier rows, 60 not-applicable rows, and 9 conjectures.
@@ -190,6 +193,10 @@ strict contraction, including `q = 0`, together with the nome-`1/4` Rvachev
 and bounded-Fabius Fourier specializations. Its named centered/MGF packaging,
 exterior reciprocal formula, pole divisor, and zero--pole exchange remain
 outside Lean.
+The six-theorem `GaussianBinomialBounds` surface reuses the stronger
+`finiteQPochhammerIn_self_pos` from `GeneralQConditionNumber` and supplies
+evaluated reciprocity and the exact finite growth bounds on both sides of `q = 1`; the
+compound greater-than-one row remains Partial only at its asymptotic clauses.
 The new status changes record the exact q-exponential eigenfunction and
 Jackson integration-by-parts subclaims, and Partial formalizations of the
 q-exponential factorization, Jackson fundamental theorem, and theta
@@ -205,6 +212,19 @@ domain for the Gaussian form, with the exponent bounds stated explicitly. The
 half-base Gaussian valuation row remains Partial: Lean proves the reciprocal
 identity and symmetry used in the argument, while the concluding odd-integer
 valuation statement is still outside the formal surface.
+The Jackson q-beta evaluation and both recurrences are Exact over the stated
+real domain `0 < q < 1`, `0 < x`, `0 < y`.  The geometric Newton formula and
+its triangular-coefficient corollary are Exact via the generic field-valued
+interpolation API and its geometric-grid specialization.
+The terminating q-Pfaff--Saalschütz row is Exact under its explicit field and
+nonvanishing hypotheses.  The integer-index Gaussian definition, reflection,
+two Pascal laws, and reciprocal series are Exact; so are the upper-parameter
+and generalized complex-order series on their stated norm domains.  The
+separate complex-parameter property and classical-specialization rows remain
+None and are not inferred from those series identities.
+The quantum-multinomial row is Exact over every semiring under the stated
+pairwise q-commutation laws and commutation of q with each variable; neither
+centrality of q nor commutativity of the ambient semiring is claimed.
 
 The complete root block, evaluated q-Lucas theorem, square-free cyclotomic
 criterion, and q-Catalan row are Exact. The primitive-root value in the

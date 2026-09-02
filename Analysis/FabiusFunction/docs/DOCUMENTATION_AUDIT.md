@@ -109,12 +109,27 @@ only 4,606 declarations and
 declarations, including 69 undocumented ones.  Run the script for the live
 numbers rather than copying these historical values.
 
-The live post-merge 2026-09-01 inventory contains 666 modules and 8,828
+The live post-merge 2026-09-01 inventory contains 672 modules and 8,875
 lexically visible public declarations, with zero missing module headers and
 zero missing doc comments.  Relative to the 610/8,318 activation checkpoint,
-the current tree adds fifty-four modules and 486 declarations.  Relative to
-the earlier 630/8,552 merged checkpoint, concurrent source work adds thirty-four
-modules and 252 declarations.  The prime-power and outer-product tranches
+the current tree adds sixty-two modules and 558 declarations.  Relative to
+the earlier 630/8,552 merged checkpoint, concurrent source work adds forty-two
+modules and 324 declarations.  The one-definition/eight-theorem
+`RvachevSuperconvergentSynthesis.lean` leaf contributes
+`IsRvachevSuperconvergentPhase`,
+`isRvachevSuperconvergentPhase_two_pow_iff`,
+`tsum_quarter_monomial_eq_integral_of_even_deg`,
+`tsum_three_quarters_monomial_eq_integral_of_even_deg`,
+`tsum_shifted_monomial_eq_integral_superconvergent`,
+`tsum_shifted_polynomial_eq_integral_superconvergent`,
+`integral_polynomial_mul_rvachevUp_eq_normalized_tsum_superconvergent`,
+`normalized_tsum_shifted_rvachevDeconvolvedPolynomial_mul_rvachevUp_superconvergent`,
+and
+`normalized_tsum_shifted_rvachevAppellPolynomial_mul_rvachevUp_superconvergent`.
+It proves the stronger arbitrary-nonzero-`M` degree-`v₂(M)+1` result at the
+selected exact phase representatives; it does not classify phases modulo
+integers or prove maximality, positivity, or rationality.  The prime-power and
+outer-product tranches
 account for one module and six declarations: the zero-definition/three-theorem
 `GeometricPochhammerNormalConvergence.lean` leaf and three additional theorems
 in `PrimePowerBinomialValuation.lean`.  The q-polish adds two theorems to
@@ -133,12 +148,38 @@ The two newest algebra leaves add thirteen theorems and no definitions:
 `CentralQBinomialReduction.lean` 0+6 and
 `CyclotomicFactorization.lean` 0+7.
 The two added Gaussian linear-coefficient theorems and the eight-declaration
-`EffectiveGapInverse.lean` leaf account for the final ten declarations and
+`EffectiveGapInverse.lean` leaf account for ten declarations and
 one module.
-The latest finite-q tranche adds four modules and 26 declarations:
+The finite-q tranche adds four modules and 26 declarations:
 `PrimitiveRootBlock.lean` 0+3, `QLucas.lean` 0+8,
-`CyclotomicDivisibility.lean` 0+3, `QCatalan.lean` 1+11,
-`NewtonInterpolation.lean` 2+13, and `QBetaIntegral.lean` 1+8.
+`CyclotomicDivisibility.lean` 0+3, and `QCatalan.lean` 1+11.  They add the carry criterion,
+primitive-root block formula, q-Lucas theorem, and integral q-Catalan API.
+The interpolation/q-beta pair now contributes four definitions and twenty-seven theorems:
+`QBetaIntegral.lean` 1+8 and `NewtonInterpolation.lean` 3+19.  The former
+evaluates the Jackson q-beta integral as both an infinite-product quotient and
+a q-gamma quotient, with positivity, symmetry, and successor recurrences; the
+latter supplies triangular Newton coefficients and the node-qualified polynomial,
+interpolation and uniqueness, divided differences, the geometric-grid specialization,
+and seven compatibility declarations for the `newtonInterpolant` family.
+The latest three q modules contribute two definitions and eighteen theorems:
+`GaussianBinomialInteger.lean` 1+10,
+`GaussianBinomialComplexOrder.lean` 1+5, and
+`QPfaffSaalschutz.lean` 0+3.  They extend Gaussian coefficients to integer
+and principal-branch complex upper parameters, derive the associated finite
+and reciprocal q-binomial series, and prove the terminating balanced
+q-Pfaff--Saalschuetz summation over a field.  Their nonzero-nome,
+strict-contraction, and finite-product nonvanishing hypotheses remain explicit.
+The latest `QuantumMultinomial.lean` leaf has no definitions and exactly five
+theorems.  It decomposes natural tuple antidiagonals, transports Gaussian
+symmetry to arbitrary semirings, proves q-multinomial coefficient commutation,
+and establishes the ordered noncommutative q-multinomial expansion from the
+displayed pairwise q-commutation laws.  The API is finite and division-free.
+Finally, `GaussianBinomialBounds.lean` contributes six theorems and no
+definitions: field reciprocity, finite product comparison, the
+uniform `0 ≤ q < 1` bound, and its dimension-dominant `Q > 1` lower and upper
+bounds, all with their explicit index and order hypotheses.  It reuses the
+stronger ordered-field `finiteQPochhammerIn_self_pos` theorem from
+`GeneralQConditionNumber.lean`.
 The older 622/8,472, 623/8,476, 629/8,546, 630/8,552,
 641/8,650, and 643/8,661 values below are historical checkpoints, not
 descriptions of the live tree.  The earlier additions and q-series tranches are
@@ -337,8 +378,15 @@ and bring that audit to 657/8,755.  The final two algebra leaves contribute
 thirteen declarations and brought the audit to 659/8,768.  Two Gaussian
 linear-coefficient theorems then brought it to 659/8,770, and the
 eight-declaration `EffectiveGapInverse.lean` leaf brought the audit to
-660/8,778.  The four-module, 26-declaration finite-q tranche brings the live
-audit to the 666/8,828 census recorded above.
+660/8,778.  The superconvergent synthesis leaf adds one module and nine
+declarations, yielding 661/8,787.  The four root-of-unity/q-Catalan modules
+add twenty-six declarations, yielding 665/8,813.  The original Jackson
+q-beta/Newton pair adds twenty-four declarations, yielding 667/8,837; the
+integer/complex upper Gaussian and q-Pfaff--Saalschuetz leaves add twenty,
+yielding 670/8,857; and the noncommutative q-multinomial leaf adds five,
+yielding 671/8,862.  `GaussianBinomialBounds.lean` adds six theorems,
+yielding 672/8,868, and the seven collision-free Newton compatibility names
+yield the live 672/8,875 census.
 
 `GaussianBinomialPalindromic.lean` is an exhaustive zero-definition,
 fourteen-theorem leaf: `Fabius.reflect_add_of_natDegree_le`,
@@ -453,8 +501,9 @@ naturality and the commutative-ring q-integer identities yield
 `n*(n-1)`, satisfies `(n+1) C_n(1) = choose(2*n,n)`, and evaluates to the
 ordinary Catalan number.
 
-`NewtonInterpolation.lean` is 2+13.  Its definitions are
-`Fabius.newtonCoeff` and `Fabius.nodeNewtonPoly`; its theorems are
+`NewtonInterpolation.lean` is 3+19.  Its definitions are
+`Fabius.newtonCoeff`, `Fabius.nodeNewtonPoly`, and the compatibility alias
+`Fabius.newtonInterpolant`; its theorems are
 `Fabius.newtonCoeff_eq`, `Fabius.newtonCoeff_zero`,
 `Fabius.newtonCoeff_mul_prod`, `Fabius.nodeNewtonPoly_succ`,
 `Fabius.eval_nodeNewtonPoly`, `Fabius.degree_nodeNewtonPoly_lt`,
@@ -462,10 +511,16 @@ ordinary Catalan number.
 `Fabius.eq_nodeNewtonPoly_of_eval_eq`,
 `Fabius.coeff_nodeNewtonPoly_self`, `Fabius.newtonCoeff_eq_sum`,
 `Fabius.nodal_range_pow`, `Fabius.prod_erase_pow_sub_pow`, and
-`Fabius.newtonCoeff_pow_eq_sum`.  Over a field these give triangular Newton
+`Fabius.newtonCoeff_pow_eq_sum`, together with compatibility forms
+`Fabius.newtonPoly_succ`, `Fabius.eval_newtonPoly`,
+`Fabius.degree_newtonPoly_lt`, `Fabius.newtonPoly_eq_interpolate`,
+`Fabius.eq_newtonPoly_of_eval_eq`, and `Fabius.coeff_newtonPoly_self`.
+Over a field these give triangular Newton
 reconstruction, finite-node interpolation and uniqueness, divided differences,
 and the geometric-power-node specialization, retaining each finite-node
-injectivity, nonzero-product, `q ≠ 0`, and index hypothesis.
+injectivity, nonzero-product, `q ≠ 0`, and index hypothesis.  The node-qualified
+family remains collision-free with `NewtonBasisGeneratingFunction.newtonPoly`;
+the compatibility family is definitionally identical.
 
 `QBetaIntegral.lean` is 1+8.  Its definition is `Fabius.qBeta`; its theorems
 are `Fabius.qNumber_pos`, `Fabius.qBeta_term_eq`, `Fabius.qBeta_eq_prod`,
@@ -474,6 +529,18 @@ are `Fabius.qNumber_pos`, `Fabius.qBeta_term_eq`, `Fabius.qBeta_eq_prod`,
 `0 < q < 1` and the displayed positive real arguments, they evaluate the
 Jackson q-beta integral as an infinite-product and q-Gamma quotient and prove
 symmetry, positivity, and both recurrences.
+
+`GaussianBinomialBounds.lean` is 0+6.  Its exhaustive theorem surface is
+`Fabius.gaussianBinomial_inv`, `Fabius.one_le_gaussianBinomial`,
+`Fabius.finiteQPochhammerIn_pow_le_one`,
+`Fabius.gaussianBinomial_le_inv_qPochhammerInfIn`,
+`Fabius.pow_le_gaussianBinomial_of_one_lt`, and
+`Fabius.gaussianBinomial_le_pow_div_of_one_lt`.  It evaluates Gaussian
+palindromicity as field reciprocity, bounds coefficients uniformly for
+`0 ≤ q < 1`, and transfers those bounds to the dimension-dominant regime
+`Q > 1`; every nonzero-base, index, and order hypothesis remains explicit.
+The proof reuses the stronger generic `Fabius.finiteQPochhammerIn_self_pos`
+from `GeneralQConditionNumber.lean` rather than exporting a duplicate.
 
 `EffectiveMonotoneInverse.lean` has exactly two public definitions,
 `Fabius.SequentiallyComputableOn` and `Fabius.unitClamp`, and exactly six
@@ -627,7 +694,7 @@ and `central_gaussianBinomial_sq_div`.  `CyclotomicFactorization.lean` is
 `PrimitiveRootBlock.lean` 0+3, `QLucas.lean` 0+8,
 `CyclotomicDivisibility.lean` 0+3, and `QCatalan.lean` 1+11 surfaces are
 listed exhaustively above.  The
-`NewtonInterpolation.lean` 2+13 and `QBetaIntegral.lean` 1+8 surfaces are
+`NewtonInterpolation.lean` 3+19 and `QBetaIntegral.lean` 1+8 surfaces are
 also listed exhaustively above.  The
 `JacobiTripleProduct.lean` 2-definition/25-theorem tranche contains the finite triple-product
 polynomial and field identities, the bilateral Jacobi `HasSum` forms, and the
@@ -710,10 +777,10 @@ The retained comb-interpolation synthesis PDF is a validated 158-page A4
 historical receipt: the current source includes a post-render update to its
 additive-dyadic chapter, so a fresh parity build remains pending.  The rebuilt
 Integration-and-Transform master retains a historical 377-page PDF.  The canonical
-q-series synthesis is a validated 348-page historical receipt.  It contains
+q-series synthesis is a validated 354-page historical receipt.  It contains
 the earlier general finite/infinite q-Pochhammer crosswalks and six q-series
 modules; the merged fifth fixed-nome theorem, two later general
-q-Pochhammer theorems, and the twenty newest q-series/q-calculus modules make
+q-Pochhammer theorems, and the later q-series/q-calculus/interpolation modules make
 final parity
 pending.  The retained 167-page primary, 126-page walkthrough, 237-page
 canonical frontier, 301-page Representation Frontiers, 41-page New Frontiers,
@@ -721,9 +788,10 @@ and 88-page notation-catalogue artifacts likewise predate their current merged
 sources.  Their package notices treat those PDFs as historical validation
 receipts, not parity claims, until fresh uninterrupted three-pass builds
 complete.  The inverse-computability receipt likewise requires refresh for the
-666/8,828 census.  The canonical inverse-theory publication retains a 134-page
+672/8,875 census.  The canonical inverse-theory publication retains a 134-page
 artifact synchronized at its latest-main source checkpoint; the merged
-effective-inversion tranche makes current parity pending.
+effective-inversion and superconvergent-synthesis tranches make current parity
+pending.
 
 ### What the review pass caught
 

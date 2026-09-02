@@ -27,6 +27,8 @@ denominators evaluate to `(-1)^j q^{C(j,2) + j(k-j)} (q;q)_j (q;q)_{k-j}` (note
 * `newtonCoeff`, `newtonCoeff_eq` (the triangular reconstruction), `nodeNewtonPoly`.
 * `eval_nodeNewtonPoly`: `P_n(v_i) = y_i`, needing only that `v_i` differs from the earlier nodes.
 * `nodeNewtonPoly_eq_interpolate`, `eq_nodeNewtonPoly_of_eval_eq`: uniqueness.
+* `newtonInterpolant` and the `newtonPoly_...` theorems: compatibility names
+  for the same node-interpolation API.
 * `newtonCoeff_eq_sum`: the divided-difference formula.
 * `nodal_range_pow`, `prod_erase_pow_sub_pow`, `newtonCoeff_pow_eq_sum`: the geometric grid.
 -/
@@ -142,6 +144,48 @@ theorem coeff_nodeNewtonPoly_self (v y : ℕ → F) (n : ℕ) :
   · rw [coeff_C_mul, coeff_eq_zero_of_natDegree_lt, mul_zero]
     rw [natDegree_nodal, card_range]
     exact mem_range.mp hk
+
+/-! ## Compatibility names for the interpolant API -/
+
+/-- Compatibility alias for `nodeNewtonPoly`.  The node-qualified name avoids
+the pre-existing scalar `newtonPoly` in `NewtonBasisGeneratingFunction`, while
+this name preserves the interpolation API. -/
+noncomputable def newtonInterpolant (v y : ℕ → F) (n : ℕ) : F[X] :=
+  nodeNewtonPoly v y n
+
+/-- Compatibility form of `nodeNewtonPoly_succ`. -/
+theorem newtonPoly_succ (v y : ℕ → F) (n : ℕ) :
+    newtonInterpolant v y (n + 1) =
+      newtonInterpolant v y n + C (newtonCoeff v y (n + 1)) * nodal (range (n + 1)) v := by
+  simpa only [newtonInterpolant] using nodeNewtonPoly_succ v y n
+
+/-- Compatibility form of `eval_nodeNewtonPoly`. -/
+theorem eval_newtonPoly (v y : ℕ → F) {n i : ℕ} (hi : i ≤ n)
+    (hne : ∏ j ∈ range i, (v i - v j) ≠ 0) : (newtonInterpolant v y n).eval (v i) = y i := by
+  simpa only [newtonInterpolant] using eval_nodeNewtonPoly v y hi hne
+
+/-- Compatibility form of `degree_nodeNewtonPoly_lt`. -/
+theorem degree_newtonPoly_lt (v y : ℕ → F) (n : ℕ) :
+    (newtonInterpolant v y n).degree < (n + 1 : ℕ) := by
+  simpa only [newtonInterpolant] using degree_nodeNewtonPoly_lt v y n
+
+/-- Compatibility form of `nodeNewtonPoly_eq_interpolate`. -/
+theorem newtonPoly_eq_interpolate (v y : ℕ → F) {n : ℕ}
+    (hvs : Set.InjOn v (range (n + 1))) :
+    newtonInterpolant v y n = interpolate (range (n + 1)) v y := by
+  simpa only [newtonInterpolant] using nodeNewtonPoly_eq_interpolate v y hvs
+
+/-- Compatibility form of `eq_nodeNewtonPoly_of_eval_eq`. -/
+theorem eq_newtonPoly_of_eval_eq (v y : ℕ → F) {n : ℕ}
+    (hvs : Set.InjOn v (range (n + 1)))
+    {P : F[X]} (hP : P.degree < (n + 1 : ℕ))
+    (heval : ∀ i ∈ range (n + 1), P.eval (v i) = y i) : P = newtonInterpolant v y n := by
+  simpa only [newtonInterpolant] using eq_nodeNewtonPoly_of_eval_eq v y hvs hP heval
+
+/-- Compatibility form of `coeff_nodeNewtonPoly_self`. -/
+theorem coeff_newtonPoly_self (v y : ℕ → F) (n : ℕ) :
+    (newtonInterpolant v y n).coeff n = newtonCoeff v y n := by
+  simpa only [newtonInterpolant] using coeff_nodeNewtonPoly_self v y n
 
 /-- **Newton's divided differences**: for distinct nodes,
 `c_k = ∑_{j≤k} y_j / ∏_{r≤k, r≠j} (v_j - v_r)`. -/
