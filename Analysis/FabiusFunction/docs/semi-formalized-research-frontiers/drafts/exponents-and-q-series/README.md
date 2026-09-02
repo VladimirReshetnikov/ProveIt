@@ -20,10 +20,10 @@ general-q-series guides, forward q-Pochhammer/q-binomial monograph, and
 inverse-q synthesis have been dispositioned into
 [`q_pochhammer_q_binomial_monograph/`](q_pochhammer_q_binomial_monograph/).
 Their earlier names, arrival hashes, and publication facts remain provenance,
-not parallel live documents. The latest validated receipt is the 348-page A4
-publication built from source SHA-256
-`79ee5e60a6c7e42a91c58dcd9bcae56173cc6b4aa3e54739a461943f705f3904`.
-The merged source incorporates the later five-theorem
+not parallel live documents. The current canonical TeX postdates its retained
+historical PDF; the exact source and artifact receipt appears once in the
+detailed package record below. The merged source incorporates the later
+five-theorem
 `QPochhammerEntire.lean`, `QPochhammerInfinite.lean`, and
 `QPochhammerDissection.lean` surfaces, together with the subsequent q-series
 module tranches and the zero-definition, three-theorem
@@ -95,23 +95,24 @@ Current packages and retained intake records:
   figures. Pinned source revisions and Git history preserve every superseded
   layout and arrival fact.
 
-  The latest validated build-checkpoint source was the 14,158-line,
-  661,835-byte `q_pochhammer_q_binomial_monograph.tex`, with SHA-256
-  `79ee5e60a6c7e42a91c58dcd9bcae56173cc6b4aa3e54739a461943f705f3904`.
-  Its retained `q_pochhammer_q_binomial_monograph.pdf` is a 348-page A4
-  rendering of 3,002,729 bytes, with SHA-256
+  The current `q_pochhammer_q_binomial_monograph.tex` has 14,316 lines,
+  671,065 bytes, and SHA-256
+  `38c15e63a4676ba64f35a6e89dee558eb3989787bb7c6528a943bc3d47d46e4d`.
+  Its retained `q_pochhammer_q_binomial_monograph.pdf` is a historical
+  348-page A4 artifact of 3,002,729 bytes, with SHA-256
   `8bf14b52d8a0fc0abc4d54cca503fd47a2df37cf76ee1bb4e442bea1fd2a4aa7`.
-  Exactly three serial passes produced 338, 348, and 348 pages; A4 geometry,
-  text extraction, embedded/subset Type-1 fonts including Libertinus, and
-  absence of Type-3 fonts passed. The current source has 14,304 lines and
-  670,401 bytes, with SHA-256
-  `7b4a580f80d3993111c00b97110deb9059e8ad839c45a6a1630de86b0d594279`.
+  That PDF was built in exactly three guarded serial passes (338, 348, and 348
+  pages) from the preceding 14,158-line, 661,835-byte source with SHA-256
+  `79ee5e60a6c7e42a91c58dcd9bcae56173cc6b4aa3e54739a461943f705f3904`.
+  Its A4 boxes, text extraction, embedded/subset Type-1 fonts including
+  Libertinus, absence of Type-3 fonts, and targeted visual review passed at
+  that checkpoint. Because the current TeX is newer, no render parity is
+  claimed.
   It carries the five-theorem `QPochhammerEntire.lean`, the generic
   `QPochhammerInfinite.lean` and `QPochhammerDissection.lean` APIs, and the
   subsequent q-series module tranches, plus the three-theorem
   `GeometricPochhammerNormalConvergence.lean` outer-product API. Its fresh
-  render is pending, so the supplied 348-page PDF remains a source-pinned
-  historical artifact. PDF files retained
+  render is pending. PDF files retained
   beneath `assets/` are vector research figures, not manuscript builds.
   Manuscript result labels and numerical checks remain
   distinct from Lean verification.
@@ -515,8 +516,8 @@ remain research frontiers. These fractional-Volterra API claims were checked at 
 
 Geometric-sinc subgroup member:
 [`Exponents_and_q_Series_Frontiers/`](geometric-sinc-and-exponent-families/Exponents_and_q_Series_Frontiers/)
-(current semantic-union TeX: 16,371 lines and 737,767 bytes, SHA-256
-`2e2a7f423dd85e64201043de56349e533eb040b395b1a5e6c2ae8d5b2c99ce9b`;
+(current semantic-union TeX: 16,369 lines and 737,768 bytes, SHA-256
+`4313bddb87a0f248a8bad4bd5e5a7cfbb25da51d1b994abc0c9d4c62525ca78c`;
 retained PDF: 238 A4 pages and 6,953,898 bytes, SHA-256
 `fa719a8ea68d3c474928b9fae7449f827eb35a5452613f2b660d8e88ba27267e`;
 across seven parts). Exactly three serial passes from the preceding 16,274-line,
@@ -770,8 +771,8 @@ volume's Part VII; their figures/data are likewise under `assets/`.)
 
 Canonical forward/inverse publication:
 [`q_pochhammer_q_binomial_monograph/`](q_pochhammer_q_binomial_monograph/)
-(latest validated 348-page canonical A4 publication PDF; source-only
-outer-product crosswalk rebuild pending) — *q-Series and Inverse q-Analogs:
+(current TeX with a retained historical A4 publication checkpoint; exact
+receipt in the detailed package record above) — *q-Series and Inverse q-Analogs:
 A Proof-Oriented Synthesis*. Its forward backbone proves from first principles
 the shifted-factorial, Gaussian, hypergeometric, theta, partition, Bailey,
 cyclotomic, interpolation, and Fabius--Rvachev machinery consumed by Parts II,
@@ -788,30 +789,27 @@ pre-consolidation rendered checkpoint had 13,117 source lines (SHA-256
 and a 1,582,997-byte, 213-page PDF (SHA-256
 `7ee6f8f6d8e72228a5b20daa119caa4d834b11063f910b526897b2677a2ede7b`).
 Those figures identify a retired historical artifact; they are not build
-claims about the current canonical source. The canonical synthesis's newer
-348-page PDF renders source SHA-256
-`79ee5e60a6c7e42a91c58dcd9bcae56173cc6b4aa3e54739a461943f705f3904`
-and is now a source-pinned receipt because the semantic-union source, including
-the outer-normal-convergence crosswalk, postdates that fresh build checkpoint.
+claims about the current canonical source. The canonical synthesis's current
+source and retained historical PDF are identified by the single exact receipt
+in the detailed package record above.
 
 The latest validated forward formalization ledger has 282 rows: 73 Exact, 84
 Partial, 117 with no counterpart, and 8 interface-only. The original
 191-result pre-Fabius core had 36 exact, 29 partial, 123 with no counterpart,
 and 3 interface-only entries. The four integrated-guide chapters add 31
 human-proved but not Lean-formalized assertions and five labelled definitions;
-the later Fabius bridge contributes the remaining 56 rows. Its pointwise
+the later Fabius bridge contributes the remaining rows. Its pointwise
 inside-`q^2` Pochhammer factorization and the outer product's locally uniform
 (normal) convergence are now formal for every complex strict contraction,
-including `q = 0`. The compound spectral theorem remains Partial at its named
-centered/MGF wrappers and its reciprocal outside-disk formula, pole divisor,
-and zero--pole exchange. The algebra of q-shifted factorials now accounts for 6 exact, 2
-partial, and 7
+including `q = 0`. The compound spectral theorem remains partial at its named
+centered/MGF wrappers and exterior reciprocal clauses. The algebra of
+q-shifted factorials now accounts for 11 exact, 2 partial, and 2
 unformalized results; the q-integer and Gaussian-coefficient chapter for
-7 exact, 0 partial, and 2 unformalized results. The finite
+8 exact, 1 partial, and 0 unformalized results. The finite
 q-binomial/inversion chapter now accounts for 9 exact, 1 partial, and 0
 unformalized results; the weighted chapter for 3 exact, 2 partial, and 3
-unformalized results; and the basic-hypergeometric chapter for 1 exact, 0
-partial, and 8 unformalized results. The cyclotomic chapter now has 1 exact,
+unformalized results; and the basic-hypergeometric chapter for 1 exact, 3
+partial, and 5 unformalized results. The cyclotomic chapter now has 1 exact,
 0 partial, and 8 unformalized results. The exact rows include the primary and
 second q-Cauchy identities, both weighted-Pascal recurrences,
 elementary--complete orthogonality, and weighted symmetric-function inversion.
@@ -836,6 +834,7 @@ compatibility spelling of its primary identity),
 `QPochhammerDissection.lean` (two theorems),
 `QPochhammerInfinite.lean` (one definition, 29 theorems),
 `QBinomialReciprocity.lean` (four theorems),
+`GaussianBinomialPalindromic.lean` (zero definitions, twelve theorems),
 `GaussianBinomialPolynomialStructure.lean` (zero definitions, five theorems),
 `CentralQBinomialReduction.lean` (zero definitions, six theorems),
 `CyclotomicFactorization.lean` (zero definitions, seven theorems),
@@ -881,8 +880,8 @@ sinc product has a global spectral factorization for every complex strict
 contraction with nome `q^2`; only the two final Rvachev wrappers specialize to
 nome `1/4`. The compound spectral theorem in the Fabius bridge remains
 partial because its named centered/MGF wrapper, outside-disk reciprocal
-formula, and local-uniform/normal-convergence packaging for the outer
-spectral product are not all formalized.
+formula, pole divisor, and zero--pole exchange are not formalized. Its outer
+local-uniform/normal-convergence clause is exact.
 The complementary formal surfaces of
 `CompleteHomogeneousGenerating.lean` and
 `SymmetricFunctionGenerating.lean` prove both the finite elementary product

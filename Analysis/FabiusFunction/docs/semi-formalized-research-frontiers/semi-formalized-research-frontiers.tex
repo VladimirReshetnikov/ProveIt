@@ -201,7 +201,6 @@ fractional and inverse-layer-cake checkpoint \nolinkurl{37eab3c56}}
 \newcommand{\fract}[1]{\left\{#1\right\}}
 \newcommand{\Deltah}{\Delta_h}
 \newcommand{\Btri}[1]{\binom{#1}{2}}
-\newcommand{\pos}[1]{\left(#1\right)_{+}}
 \newcommand{\Unif}{\operatorname{Unif}}
 \newcommand{\Mmain}{\mathcal M}
 \newcommand{\CoeffMass}{\mathcal C}
@@ -574,6 +573,17 @@ Gaussian-binomial continuity and classical limit &
 \nolinkurl{tendsto_gaussianBinomial_nhds_one},
 \nolinkurl{gaussianBinomial_eq_finiteQPochhammerIn_div} &
 \nolinkurl{GaussianBinomialContinuity.lean}; zero definitions and three theorems \\
+Generic Gaussian-polynomial degree, palindromicity, and mean &
+\nolinkurl{reflect_add_of_natDegree_le}, \nolinkurl{reflect_one'},
+\nolinkurl{gaussianBinomial_natDegree_le},
+\nolinkurl{gaussianBinomial_zero_left}, \nolinkurl{gaussianBinomial_diag'},
+\nolinkurl{reflect_gaussianBinomial},
+\nolinkurl{coeff_gaussianBinomial_reflect},
+\nolinkurl{coeff_gaussianBinomial_zero},
+\nolinkurl{coeff_gaussianBinomial_top},
+\nolinkurl{gaussianBinomial_natDegree}, \nolinkurl{gaussianBinomial_monic},
+\nolinkurl{two_mul_derivative_gaussianBinomial_eval_one} &
+\nolinkurl{GaussianBinomialPalindromic.lean}; zero definitions and twelve theorems \\
 Universal Gaussian-polynomial degree and palindromicity &
 \nolinkurl{natDegree_gaussianBinomial_universal},
 \nolinkurl{gaussianBinomial_universal_monic},
@@ -1928,48 +1938,6 @@ they give the exact residue-class split at length \(rn\) and, under exactly
 \(n\) for \(u\le s<r\).  They assume nothing about the nome and use no
 topology, division, cancellation, or nonvanishing premise.
 
-\path{QPochhammerInfinite.lean} has one public definition,
-\lean{qPochhammerInfIn}, and exactly twenty-seven public theorems:
-\lean{qPochhammerInfIn_eq_tprod},
-\lean{summable_norm_mul_pow},
-\lean{one_sub_ne_zero_of_norm_lt_one},
-\lean{norm_mul_pow_self_lt_one},
-\lean{finiteQPochhammerIn_self_ne_zero},
-\lean{multipliable_one_sub_mul_pow_of_norm_lt_one},
-\lean{hasProd_qPochhammerInfIn},
-\lean{tendsto_finiteQPochhammerIn_qPochhammerInfIn},
-\lean{qPochhammerInfIn_eq_finite_mul_shift},
-\lean{qPochhammerInfIn_succ_shift},
-\lean{qPochhammerInfIn_eq_factor_mul},
-\lean{qPochhammerInfIn_dissection},
-\lean{qPochhammerInfIn_ne_zero},
-\lean{qPochhammerInfIn_eq_zero_iff},
-\lean{qPochhammerInfIn_self_ne_zero},
-\lean{qPochhammerInfIn_eq_tprod_smul},
-\lean{summable_norm_pow_of_norm_lt_one},
-\lean{isBigO_one_sub_sub_one},
-\lean{differentiable_finiteQPochhammerIn},
-\lean{qPochhammerInfIn_eq_zero_iff_exists_inv_pow},
-\lean{hasProdLocallyUniformly_qPochhammerInfIn},
-\lean{continuous_qPochhammerInfIn},
-\lean{pow_sq_mul_finiteQPochhammerIn_inv_pow_self},
-\lean{differentiable_qPochhammerInfIn},
-\lean{hasDerivAt_qPochhammerInfIn_of_mul_pow_eq_one},
-\lean{hasDerivAt_qPochhammerInfIn_inv_pow}, and
-\lean{deriv_qPochhammerInfIn_inv_pow_ne_zero}.
-The definition is total in a topological commutative ring.  For
-\(\lVert q\rVert<1\), the complete commutative normed-ring layer with
-\(\lVert1\rVert=1\) proves the product, finite-prefix limit, shift,
-factor-removal, and positive-modulus dissection laws; adding a multiplicative
-norm gives the raw zero locus \(aq^j=1\).  Complete normed fields admit the
-inverse-power locus when \(q\ne0\), and local compactness gives locally uniform
-convergence and continuity in \(a\) for fixed \(q\).  The complex layer gives
-entireness and the factor-zero derivative; for \(q\ne0\), it gives the closed
-inverse-power derivative and its nonvanishing.  There is no joint-\(q\)
-holomorphy or global growth/order/type/asymptotic claim.  The preceding
-\path{QPochhammerEntire.lean} remains the separate
-\lean{complexQPochhammerInf} analytic-order-one API, including \(q=0\).
-
 \begin{theorem}[Entire fixed-nome Pochhammer symbol and simple zero lattice]
 \label{integration:thm:qpochhammer-entire}
 Let \(q\in\ComplexNumbers\) satisfy \(\lVert q\rVert<1\), and write
@@ -2046,7 +2014,7 @@ exactly \(u\le r\), including \(u=r\).  Neither theorem uses a topology, a
 norm, a nonvanishing hypothesis, or any restriction on \(q\).
 
 The exhaustive public surface of \path{QPochhammerInfinite.lean} is the
-definition \lean{qPochhammerInfIn} and twenty-seven theorems.  In an arbitrary
+definition \lean{qPochhammerInfIn} and twenty-nine theorems.  In an arbitrary
 topological commutative ring the definition is the total
 \(\prod'_{j\ge0}(1-aq^j)\), and \lean{qPochhammerInfIn_eq_tprod} records this
 defining equality; no convergence is implied outside a multipliable range.
@@ -2091,7 +2059,7 @@ The algebraic cofactor normalization
 \lean{pow_sq_mul_finiteQPochhammerIn_inv_pow_self} needs only a field and
 \(q\ne0\).
 
-The remaining four theorems are complex.  Under \(\lVert q\rVert<1\),
+The remaining six theorems are complex.  Under \(\lVert q\rVert<1\),
 \lean{differentiable_qPochhammerInfIn} proves entireness and
 \lean{hasDerivAt_qPochhammerInfIn_of_mul_pow_eq_one} gives the derivative from
 the raw equation \(a_0q^j=1\), including \(q=0,j=0\).  With \(q\ne0\),
@@ -2103,15 +2071,38 @@ the raw equation \(a_0q^j=1\), including \(q=0,j=0\).  With \(q\ne0\),
 and \lean{deriv_qPochhammerInfIn_inv_pow_ne_zero} proves the displayed
 coefficient nonzero.  Its literal conclusion is coefficient nonvanishing;
 the preceding \texttt{HasDerivAt} declaration supplies the derivative
-identification.  No theorem in this generic module states
-\texttt{analyticOrderAt}.  That conclusion for the separate public name
-\lean{complexQPochhammerInf}, including \(q=0\), remains exactly the final
-theorem of \path{QPochhammerEntire.lean}; conversely the five-theorem wrapper
-contains no generic ring-valued concatenation or dissection theorem.  Neither
-API proves joint holomorphy in \(q\) or an outside-disk reciprocal theory.
+identification.  The division-free theorem
+\lean{deriv_qPochhammerInfIn_ne_zero_of_mul_pow_eq_one} strengthens this to
+nonvanishing of the actual derivative at every raw factor zero, including
+\(q=0\), and \lean{analyticOrderAt_qPochhammerInfIn_of_eq_zero} concludes that
+every zero of the generic product has analytic order exactly one.  The
+separate public name \lean{complexQPochhammerInf} has the corresponding
+compatibility theorem \lean{analyticOrderAt_complexQPochhammerInf_of_eq_zero},
+also including \(q=0\); conversely the five-theorem wrapper contains no generic
+ring-valued concatenation or dissection theorem.  Neither API proves joint
+holomorphy in \(q\) or an outside-disk reciprocal theory.
 
 \paragraph{Exact latest q-series tranche.}
-The downstream \path{GaussianBinomialPolynomialStructure.lean} has no public
+The downstream \path{GaussianBinomialPalindromic.lean} has no public
+definitions and exactly twelve public theorems:
+\lean{reflect_add_of_natDegree_le}, \lean{reflect_one'},
+\lean{gaussianBinomial_natDegree_le},
+\lean{gaussianBinomial_zero_left}, \lean{gaussianBinomial_diag'},
+\lean{reflect_gaussianBinomial},
+\lean{coeff_gaussianBinomial_reflect},
+\lean{coeff_gaussianBinomial_zero},
+\lean{coeff_gaussianBinomial_top},
+\lean{gaussianBinomial_natDegree}, \lean{gaussianBinomial_monic}, and
+\lean{two_mul_derivative_gaussianBinomial_eval_one}.  Over every commutative
+semiring these give generic reflection helpers, the Gaussian degree bound,
+zero and diagonal values, reflection in degree \(k(n-k)\), constant and top
+coefficients one, bounded-index coefficient reversal, and the division-free
+mean identity.  Exact degree and monicity require only nontriviality.  With
+existing row symmetry and reciprocity, this keeps the canonical forward
+q-binomial structure theorem exact.  It does not prove that the coefficient
+of \(q\) is one.
+
+The companion \path{GaussianBinomialPolynomialStructure.lean} has no public
 definitions and exactly five public theorems:
 \lean{natDegree_gaussianBinomial_universal},
 \lean{gaussianBinomial_universal_monic},
@@ -4354,6 +4345,9 @@ commuting Gaussian-binomial interface.\\
 \path{GaussianBinomialContinuity.lean} &
 The exhaustive zero-definition, three-theorem continuity, \(q\to1\), and
 finite-Pochhammer quotient interface.\\
+\path{GaussianBinomialPalindromic.lean} &
+The exhaustive zero-definition, twelve-theorem generic reflection, degree,
+boundary coefficient, palindromicity, exact-degree/monicity, and mean interface.\\
 \path{GaussianBinomialPolynomialStructure.lean} &
 The exhaustive zero-definition, five-theorem universal degree, monicity,
 constant-coefficient, reflection, and bounded-index coefficient-symmetry interface.\\
@@ -5169,8 +5163,15 @@ interval supremum norm; raw \texttt{TendstoUniformlyOn}, norm-error-to-zero, and
 forms are exported as well.  No rate, coefficientwise limit, or uniform convergence outside
 $[-1,1]$ is asserted.
 
-These five modules have public definition/theorem inventories $6/33$, $0/5$, $1/7$,
-$6/7$, and $5/25$, respectively, for exactly $95$ public declarations.  Universal
+The seven modules \path{RvachevMomentAppell.lean},
+\path{RvachevPolynomialSynthesis.lean},
+\path{RvachevSuperconvergentSynthesis.lean},
+\path{LagrangeRvachevSynthesis.lean},
+\path{CompositeMeshSharpness.lean},
+\path{FabiusLegendreTranslateBlocks.lean}, and
+\path{FabiusLegendreTranslateSeries.lean} have public definition/theorem
+inventories $6/33$, $0/5$, $1/8$, $2/7$, $1/7$, $6/7$, and $5/25$,
+respectively, for exactly $113$ public declarations.  Universal
 whole-space mesh sharpness is now proved, but minimality for an individual Legendre mode,
 block, or partial sum is not.  Their APIs also do not prove an analytic
 reciprocal-MGF or Appell generating-series identity, a literal differential-series
@@ -5330,7 +5331,7 @@ A Math Stack Exchange question asks for a closed form for the sequence
  f_n(x)=2\int_{-1}^{x}\bigl(f_{n-1}(2t+1)-f_{n-1}(2t-1)\bigr)\Differential t.
 \]
 The first integration produces the piecewise linear tent
-$f_1(x)=\pos{1-|x|}$, and the subsequent iterates visually converge very rapidly to
+$f_1(x)=\PositivePart{1-|x|}$, and the subsequent iterates visually converge very rapidly to
 Rvachev's compactly supported $C^\infty$ up-function.  This report gives a complete
 finite-stage description and a sharp convergence theorem.
 
@@ -5348,7 +5349,7 @@ $n\ge1$,
 \[
  f_n(x)=\frac{2^{n(n+1)/2-1}}{n!}
  \sum_{j=0}^{2^n}\bigl(\tau_n(j)-\tau_n(j-1)\bigr)
- \pos{x+1-\frac{j}{2^{n-1}}}^{n},
+ \PositivePart{x+1-\frac{j}{2^{n-1}}}^{n},
 \]
 where $\tau_n(j)=(-1)^{\BinaryDigitSum(j)}$ on $0\le j<2^n$ and is zero outside that range.
 The $n$th derivative is therefore a rescaled Thue--Morse step function.
@@ -5402,13 +5403,13 @@ There is a small indexing issue in the informal description of the construction.
 literal seed $f_0$ in \eqref{repeated2:eq:original-recurrence} is piecewise constant; the first iterate
 is the piecewise linear function
 \begin{equation}
- f_1(x)=\pos{1-|x|}.
+ f_1(x)=\PositivePart{1-|x|}.
  \label{repeated2:eq:tent}
 \end{equation}
 When one says that the up-function arises by ``repeatedly integrating a piecewise linear
 function,'' the natural indexing is therefore
 \begin{equation}
- g_m=f_{m+1},\qquad g_0(x)=\pos{1-|x|}.
+ g_m=f_{m+1},\qquad g_0(x)=\PositivePart{1-|x|}.
  \label{repeated2:eq:linear-indexing}
 \end{equation}
 Both indexings will be retained: $f_n$ matches the question, while $g_m$ matches the
@@ -5439,14 +5440,14 @@ For every $n\ge1$ and $x\in\RealNumbers$,
  \boxed{\displaystyle
  f_n(x)=\frac{2^{n(n+1)/2-1}}{n!}
  \sum_{j=0}^{2^n}\Delta\tau_n(j)
- \pos{x+1-\frac{j}{2^{n-1}}}^{n}.}
+ \PositivePart{x+1-\frac{j}{2^{n-1}}}^{n}.}
  \label{repeated2:eq:exact-iterate-intro}
 \end{equation}
 Equivalently,
 \begin{equation}
  f_n(x)=\frac{1}{2n!\,2^{n(n-1)/2}}
  \sum_{j=0}^{2^n}\Delta\tau_n(j)
- \pos{2^nx+2^n-2j}^{n}.
+ \PositivePart{2^nx+2^n-2j}^{n}.
  \label{repeated2:eq:exact-iterate-mse-scaling}
 \end{equation}
 The knots are
@@ -5463,7 +5464,7 @@ In the tent indexing \eqref{repeated2:eq:linear-indexing}, \cref{repeated2:thm:e
  \boxed{\displaystyle
  g_m(x)=\frac{2^{m(m+3)/2}}{(m+1)!}
  \sum_{j=0}^{2^{m+1}}\Delta\tau_{m+1}(j)
- \pos{x+1-\frac{j}{2^m}}^{m+1}.}
+ \PositivePart{x+1-\frac{j}{2^m}}^{m+1}.}
  \label{repeated2:eq:exact-tent-indexing}
 \end{equation}
 Thus the $m$th repeated integration of the tent is a degree-$(m+1)$ spline on the dyadic
@@ -5762,7 +5763,7 @@ $V_1+\cdots+V_m$ is
  b_{\bm a}(x)=
  \frac{1}{2^m(m-1)!\prod_{i=1}^{m}a_i}
  \sum_{\varepsilon\in\{0,1\}^m}(-1)^{|\varepsilon|}
- \pos{x+A-2\sum_{i=1}^{m}\varepsilon_i a_i}^{m-1}.
+ \PositivePart{x+A-2\sum_{i=1}^{m}\varepsilon_i a_i}^{m-1}.
  \label{repeated2:eq:general-box-spline}
 \end{equation}
 \end{lemma}
@@ -5884,7 +5885,7 @@ For $0\le r\le n-1$, differentiating \eqref{repeated2:eq:exact-iterate-intro} gi
  f_n^{(r)}(x)=
  \frac{2^{n(n+1)/2-1}}{(n-r)!}
  \sum_{j=0}^{2^n}\Delta\tau_n(j)
- \pos{x+1-\frac{j}{2^{n-1}}}^{n-r}.
+ \PositivePart{x+1-\frac{j}{2^{n-1}}}^{n-r}.
  \label{repeated2:eq:finite-spline-derivatives}
 \end{equation}
 The formula is also valid away from the knots for $r=n$.  If
@@ -5909,7 +5910,7 @@ The first three functions are
 \begin{align}
  f_0(x)&=\frac12\IndicatorOf{(-1,1)}(x),
  \label{repeated2:eq:f0-explicit}\\
- f_1(x)&=\pos{1-|x|},
+ f_1(x)&=\PositivePart{1-|x|},
  \label{repeated2:eq:f1-explicit}\\
  f_2(x)&=
  \begin{cases}
@@ -5922,7 +5923,7 @@ The first three functions are
 The next one already displays the full Thue--Morse organization compactly:
 \begin{equation}
  f_3(x)=\frac{16}{3}\sum_{j=0}^{8}\Delta\tau_3(j)
- \pos{x+1-\frac j4}^{3}.
+ \PositivePart{x+1-\frac j4}^{3}.
  \label{repeated2:eq:f3-truncated-power}
 \end{equation}
 
@@ -6552,7 +6553,7 @@ $a_nX'$ by a single uniform coordinate $a_nU$.
 \label{repeated2:def:comparison-kernel}
 For $t\in\RealNumbers$, define
 \begin{equation}
- K(t)=\Expectation\pos{U-t}-\Expectation\pos{X-t}.
+ K(t)=\Expectation\PositivePart{U-t}-\Expectation\PositivePart{X-t}.
  \label{repeated2:eq:K-definition}
 \end{equation}
 \end{definition}
@@ -6634,15 +6635,15 @@ $X\stackrel d=(X'+U)/2$ and convexity,
 \]
 Since $X'$ has the same law as $X$, this rearranges to
 $\Expectation\phi(X)\le\Expectation\phi(U)$.  Thus $X$ is below $U$ in convex order.  Applying this to
-$\phi_t(y)=\pos{y-t}$ gives $K(t)\ge0$.
+$\phi_t(y)=\PositivePart{y-t}$ gives $K(t)\ge0$.
 
 For $0\le t\le1$,
 \[
- \Expectation\pos{U-t}=\frac{(1-t)^2}{4}.
+ \Expectation\PositivePart{U-t}=\frac{(1-t)^2}{4}.
 \]
 Also, by \eqref{repeated2:eq:X-tail-F},
 \begin{align*}
- \Expectation\pos{X-t}
+ \Expectation\PositivePart{X-t}
  &=\int_t^1\Probability(X>s)\Differential s
  =\int_t^1F\left(\frac{1-s}{2}\right)\Differential s\\
  &=2\int_0^{(1-t)/2}F(y)\Differential y
@@ -6698,7 +6699,7 @@ Let $h'$ be absolutely continuous on $[-1,1]$.  Then
 \begin{proof}
 For $y\in[-1,1]$,
 \[
- h(y)=h(-1)+h'(-1)(y+1)+\int_{-1}^{1}\pos{y-t}h''(t)\Differential t.
+ h(y)=h(-1)+h'(-1)(y+1)+\int_{-1}^{1}\PositivePart{y-t}h''(t)\Differential t.
 \]
 Take expectations first with $y=U$ and then with $y=X$.  The constant terms cancel, and
 the linear terms cancel because both random variables have mean zero.  Fubini's theorem
@@ -7099,7 +7100,7 @@ piecewise-linear formulation.
 
 \begin{corollary}[Repeated integration starting from the tent]
 \label{repeated2:cor:tent-indexed-rate}
-Let $g_0(x)=\pos{1-|x|}$ and $g_{m+1}=Tg_m$.  For every $r\ge0$,
+Let $g_0(x)=\PositivePart{1-|x|}$ and $g_{m+1}=Tg_m$.  For every $r\ge0$,
 \begin{equation}
  \Norm{g_r-\RvachevUp}_{C^r}
  =\frac{13}{72}2^{\binom{r+1}{2}},
@@ -10411,6 +10412,7 @@ Module & Role in the present article \\
 \path{DyadicClosedForm.lean} & Exact Thue--Morse/even-moment formula for arbitrary dyadic numerators. \\
 \path{HalfQBinomial.lean} & Finite $q$-Pochhammer and Gaussian-binomial calculus at $q=1/2$, including the interpolation annihilation row. \\
 \path{QBinomialReciprocity.lean} & Exactly four public theorems: \lean{gaussianBinomial_reciprocity_units}, \lean{gaussianBinomial_reciprocity}, \lean{gaussianBinomial_neg_one_eq_zero_of_odd_degree}, and \lean{gaussianBinomial_neg_one_even_odd_eq_zero}.  They give unit-valued reciprocity over every commutative semiring, its nonzero-element semifield wrapper, odd-degree vanishing at \(q=-1\) over every commutative ring, and the total even-row/odd-column specialization.  The two reciprocity identities are total above the diagonal by zero extension; no quotient, cancellation, domain, characteristic, topology, or convergence assumption is used. \\
+\path{GaussianBinomialPalindromic.lean} & Exactly twelve public theorems and no definitions: generic reflection helpers, Gaussian degree bound, zero/diagonal values, reflection, constant/top coefficients, coefficient symmetry, division-free mean, and exact degree/monicity over a nontrivial commutative semiring; no coefficient-of-\(q\) theorem is asserted. \\
 \path{GaussianBinomialPolynomialStructure.lean} & Exactly five public theorems and no definitions: exact universal natural degree, monicity, constant coefficient one, reflection at degree \(k(n-k)\), and bounded-index coefficient palindromicity; no coefficient-of-\(q\) theorem is asserted. \\
 \path{QPochhammerElementaryIdentities.lean} & Exactly 13 public theorems: unit-valued ring reversals, root-safe terminating and adjacent cross identities, and field quotient forms with their exact nonzero-denominator hypotheses; the cross identities are total by zero extension, while the adjacent quotients retain \(k<n\). \\
 \path{QDifferenceAnnihilation.lean} & Exactly four public theorems: the scaled inverse-Gaussian characteristic polynomial, its complete geometric monomial moments, scalar-extension top-coefficient extraction, and strict-degree \(q\)-difference annihilation; \cref{dyadicq:rem:scaled-qdiff}. \\

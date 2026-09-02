@@ -487,6 +487,14 @@ inventory.  `GaussianBinomialAtNegOneDerivative.lean` is 0+4, and
 `GaussianBinomialContinuity.lean` is 0+3:
 `continuous_gaussianBinomial`, `tendsto_gaussianBinomial_nhds_one`, and
 `gaussianBinomial_eq_finiteQPochhammerIn_div`.
+`GaussianBinomialPalindromic.lean` is 0+12:
+`reflect_add_of_natDegree_le`, `reflect_one'`,
+`gaussianBinomial_natDegree_le`, `gaussianBinomial_zero_left`,
+`gaussianBinomial_diag'`, `reflect_gaussianBinomial`,
+`coeff_gaussianBinomial_reflect`, `coeff_gaussianBinomial_zero`,
+`coeff_gaussianBinomial_top`, `gaussianBinomial_natDegree`,
+`gaussianBinomial_monic`, and
+`two_mul_derivative_gaussianBinomial_eval_one`.
 `GaussianBinomialPolynomialStructure.lean` is 0+5:
 `natDegree_gaussianBinomial_universal`,
 `gaussianBinomial_universal_monic`,
@@ -571,7 +579,7 @@ The retained comb-interpolation synthesis PDF is a validated 158-page A4
 historical receipt: the current source includes a post-render update to its
 additive-dyadic chapter, so a fresh parity build remains pending.  The rebuilt
 Integration-and-Transform master retains a historical 377-page PDF.  The canonical
-q-series synthesis is a validated 340-page historical receipt.  It contains
+q-series synthesis is a validated 348-page historical receipt.  It contains
 the earlier general finite/infinite q-Pochhammer crosswalks and six q-series
 modules; the merged fifth fixed-nome theorem, two later general
 q-Pochhammer theorems, and the sixteen newest q-series/q-calculus modules make

@@ -505,7 +505,7 @@ For \(N\in\IntegerNumbers\), define
 \end{equation}
 Then
 \[
- F=\trunc_{<N}F+\FormalBigO_t(t^N)
+ F=\trunc_{<N}F+\FormalBigOAt{t^N}{t}
 \]
 is formal shorthand for \(\val_t(F-\trunc_{<N}F)\ge N\). A computation ``through order \(t^{N-1}\)'' means equality after applying \(\trunc_{<N}\).
 
@@ -690,8 +690,8 @@ For a fixed \(n\), the bounds \(i\ge a\) and \(n-i\ge b\) imply \(a\le i\le n-b\
 \section{A complete worked product}
 Consider
 \begin{align*}
- F&=1+(\lambda+1)t+(2\lambda^2-\lambda)t^2+\FormalBigO_t(t^3),\\
- G&=1+(2-\lambda)t+(\lambda^2+3)t^2+\FormalBigO_t(t^3).
+ F&=1+(\lambda+1)t+(2\lambda^2-\lambda)t^2+\FormalBigOAt{t^3}{t},\\
+ G&=1+(2-\lambda)t+(\lambda^2+3)t^2+\FormalBigOAt{t^3}{t}.
 \end{align*}
 At orders zero, one, and two,
 \begin{align*}
@@ -703,7 +703,7 @@ At orders zero, one, and two,
 \end{align*}
 Hence
 \begin{equation}\label{eq:worked-product}
- FG=1+3t+(2\lambda^2+5)t^2+\FormalBigO_t(t^3).
+ FG=1+3t+(2\lambda^2+5)t^2+\FormalBigOAt{t^3}{t}.
 \end{equation}
 If the displayed series have no \(t^3\) blocks, then the next coefficient comes entirely from cross terms:
 \[
@@ -890,8 +890,8 @@ The recursion constructs a candidate. Induction on \(n\) shows that the coeffici
 \section{Worked quotient with polynomial blocks}
 Return to
 \begin{align*}
- A&=1+(\lambda+1)t+(2\lambda^2-\lambda)t^2+\FormalBigO_t(t^3),\\
- B&=1+(2-\lambda)t+(\lambda^2+3)t^2+\FormalBigO_t(t^3).
+ A&=1+(\lambda+1)t+(2\lambda^2-\lambda)t^2+\FormalBigOAt{t^3}{t},\\
+ B&=1+(2-\lambda)t+(\lambda^2+3)t^2+\FormalBigOAt{t^3}{t}.
 \end{align*}
 Since \(B_0=1\), the quotient stays in \(\Plog\). The recursion gives
 \begin{align*}
@@ -904,7 +904,7 @@ Since \(B_0=1\), the quotient stays in \(\Plog\). The recursion gives
 Thus
 \begin{equation}\label{eq:worked-quotient}
  \frac AB
- =1+(2\lambda-1)t+(3\lambda^2-6\lambda-1)t^2+\FormalBigO_t(t^3).
+ =1+(2\lambda-1)t+(3\lambda^2-6\lambda-1)t^2+\FormalBigOAt{t^3}{t}.
 \end{equation}
 Assuming the displayed inputs have zero \(t^3\) blocks, the next quotient block is
 \[
@@ -1187,7 +1187,7 @@ Operation & \(\Plog\) & \(\Rlog\) & Possible new scale\\
 Addition, multiplication & closed & closed & none\\
 Derivative & closed & closed & none\\
 Division & if leading block is a scalar, or by special divisibility & closed & Laurent powers of \(\lambda^{-1}\) after expansion\\
-\(\log(1+U)\), \(\EulerE^U\), \((1+U)^\alpha\), \(U=\FormalBigO_t(t)\) & closed & closed & none\\
+\(\log(1+U)\), \(\EulerE^U\), \((1+U)^\alpha\), \(U=\FormalBigOAt{t}{t}\) & closed & closed & none\\
 \(\log F\) for general leading block & not always & not always & \(\log\lambda\) may appear\\
 Composition & under near-linear hypotheses & under near-linear hypotheses & iterated logs may appear for logarithmic leading factors\\
 Series reversal & near identity under stated hypotheses & near identity under stated hypotheses & leading log monomials may force depth increase\\
@@ -1297,7 +1297,7 @@ Multiplying \cref{eq:inverse-XlogX,eq:log-XlogX} gives
  F\circ G={}&t\lambda+t^2(-\lambda^2+\lambda)
  +t^3\left(\lambda^3-\frac32\lambda^2\right)\notag\\
  &+t^4\left(-\lambda^4+\frac{11}{6}\lambda^3\right)
- +\FormalBigO_t(t^5).
+ +\FormalBigOAt{t^5}{t}.
 \label{eq:compose-log-over-x}
 \end{align}
 Every coefficient is obtained by ordinary block multiplication.
@@ -1338,7 +1338,7 @@ Differentiating the exact substitutions \cref{eq:t-compose-G,eq:lambda-compose-G
 \end{equation}
 
 \section{A direct coefficient dependency bound}
-Suppose \(F\) has lower valuation \(n_0\), \(U=\FormalBigO_t(t)\), and we seek \(\trunc_{<N}(F\circ G)\). In \cref{eq:exact-block-composition}, the term indexed by \(n\) begins at \(t^n\). Hence only \(n<N\) are needed. Within that term, \(V=\log(1+U)\) and \(R=(1+U)^{-1}\) are needed only through order \(t^{N-n-1}\). This gives an exact guard-term policy.
+Suppose \(F\) has lower valuation \(n_0\), \(U=\FormalBigOAt{t}{t}\), and we seek \(\trunc_{<N}(F\circ G)\). In \cref{eq:exact-block-composition}, the term indexed by \(n\) begins at \(t^n\). Hence only \(n<N\) are needed. Within that term, \(V=\log(1+U)\) and \(R=(1+U)^{-1}\) are needed only through order \(t^{N-n-1}\). This gives an exact guard-term policy.
 
 \begin{algorithmicbox}
 Composition is not implemented by expanding everything to one global high order. Each outer block \(n\) has its own local cutoff \(N-n\). Respecting this triangular dependency can reduce expression swell dramatically.
@@ -1514,7 +1514,7 @@ For \(F=\EulerE^{-X}\) in the larger transseries field and \(H=\log X\), show th
 \end{exercise}
 
 \begin{summarybox}
-For the near-identity increment \(H\in\K[\lambda][[t]]\), formal Taylor expansion is an exact identity because each derivative raises the primary power order. The difference estimate gains one order when the outer derivative is \(\FormalBigO_t(t)\), providing the contraction needed for series reversal. Deeper transseries require a logarithmic-derivative test.
+For the near-identity increment \(H\in\K[\lambda][[t]]\), formal Taylor expansion is an exact identity because each derivative raises the primary power order. The difference estimate gains one order when the outer derivative is \(\FormalBigOAt{t}{t}\), providing the contraction needed for series reversal. Deeper transseries require a logarithmic-derivative test.
 \end{summarybox}
 
 \chapter{Composition beyond the near-linear class}\label{ch:composition-depth}
@@ -1657,7 +1657,7 @@ Substituting \cref{eq:F-near-id,eq:G-near-id} into \(F\circ G=X\) gives the fixe
 \begin{equation}\label{eq:inverse-fixed-point}
  K=-H(X+K).
 \end{equation}
-The derivative \(H'\) is \(\FormalBigO_t(t)\), so the right side is contractive in the \(t\)-adic sense.
+The derivative \(H'\) is \(\FormalBigOAt{t}{t}\), so the right side is contractive in the \(t\)-adic sense.
 
 \section{The contraction lemma}
 \begin{lemma}[Gain of one block]\label{lem:inverse-contraction}
@@ -1725,10 +1725,10 @@ The proof is constructive. If \(K_j\) is correct through \(t^{N-1}\), then
 \[
  K_{j+1}=-H(X+K_j)
 \]
-is correct through \(t^N\). More precisely, if \(K_*-K_j=\FormalBigO_t(t^N)\), where \(K_*\) is the exact fixed point, then
+is correct through \(t^N\). More precisely, if \(K_*-K_j=\FormalBigOAt{t^N}{t}\), where \(K_*\) is the exact fixed point, then
 \[
  K_*-K_{j+1}
- =\Phi(K_*)-\Phi(K_j)=\FormalBigO_t(t^{N+1}).
+ =\Phi(K_*)-\Phi(K_j)=\FormalBigOAt{t^{N+1}}{t}.
 \]
 Thus fixed-point iteration is a coefficient-stabilizing algorithm.
 
@@ -1741,7 +1741,7 @@ To reverse \(F=X+H\) through order \(t^{N-1}\):
  K_{j+1}=\trunc_{<N}\bigl(-H(X+K_j)\bigr);
 \]
 \item stop when \(\trunc_{<N}K_{j+1}=\trunc_{<N}K_j\);
-\item return \(G=X+K_j\) and verify \(F\circ G-X=\FormalBigO_t(t^N)\).
+\item return \(G=X+K_j\) and verify \(F\circ G-X=\FormalBigOAt{t^N}{t}\).
 \end{enumerate}
 \end{algorithm}
 
@@ -1750,7 +1750,7 @@ Write
 \[
  K=\sum_{n\ge0}K_n(\lambda)t^n.
 \]
-The block \(K_n\) appears on the right side of \cref{eq:inverse-fixed-point} only after multiplication by \(H'=\FormalBigO_t(t)\), so it cannot affect the coefficient of \(t^n\). Therefore the equation for \(K_n\) depends only on \(K_0,\ldots,K_{n-1}\). This is the compositional analogue of the triangular quotient recursion.
+The block \(K_n\) appears on the right side of \cref{eq:inverse-fixed-point} only after multiplication by \(H'=\FormalBigOAt{t}{t}\), so it cannot affect the coefficient of \(t^n\). Therefore the equation for \(K_n\) depends only on \(K_0,\ldots,K_{n-1}\). This is the compositional analogue of the triangular quotient recursion.
 
 At leading order,
 \begin{equation}\label{eq:inverse-leading-correction}
@@ -1769,7 +1769,7 @@ Carry out three fixed-point iterates for \(F=X+\log X\) and identify which block
 Prove that a near-identity idempotent \(J\circ J=J\) must equal \(X\) by comparing its first nonzero correction block.
 \end{exercise}
 \begin{exercise}
-Show that the inverse of \(X+H\), where \(H=\FormalBigO_t(t^q)\) for \(q\ge1\), has the form \(X-H+\FormalBigO_t(t^{2q+1})\).
+Show that the inverse of \(X+H\), where \(H=\FormalBigOAt{t^q}{t}\) for \(q\ge1\), has the form \(X-H+\FormalBigOAt{t^{2q+1}}{t}\).
 \end{exercise}
 
 \begin{summarybox}
@@ -1789,7 +1789,7 @@ by \(Y=X-\log Y\) works, but writing
 \[
  Y=X-\lambda+U
 \]
-and deriving an equation for \(U=\FormalBigO_t(t)\) begins one outer block closer to the answer; its leading coefficient may grow polynomially in \(\lambda\).
+and deriving an equation for \(U=\FormalBigOAt{t}{t}\) begins one outer block closer to the answer; its leading coefficient may grow polynomially in \(\lambda\).
 
 \section{Method II: direct coefficient recursion}
 Insert an ansatz
@@ -1829,18 +1829,18 @@ The Newton update is therefore
  G_{\mathrm{new}}
  =G-\frac{F\circ G-X}{F'\circ G}.
 \end{equation}
-For \(F=X+H\), we have \(F'=1+\FormalBigO_t(t)\), so the denominator is a unit.
+For \(F=X+H\), we have \(F'=1+\FormalBigOAt{t}{t}\), so the denominator is a unit.
 
 \begin{proposition}[Quadratic valuation improvement]\label{prop:newton-improvement}
-Suppose \(F=X+H\), \(H\in\K[\lambda][[t]]\), and \(R=F\circ G-X=\FormalBigO_t(t^q)\) with \(q\ge0\). Then the Newton update satisfies
+Suppose \(F=X+H\), \(H\in\K[\lambda][[t]]\), and \(R=F\circ G-X=\FormalBigOAt{t^q}{t}\) with \(q\ge0\). Then the Newton update satisfies
 \begin{equation}\label{eq:newton-improvement}
- F\circ G_{\mathrm{new}}-X=\FormalBigO_t(t^{2q+2}).
+ F\circ G_{\mathrm{new}}-X=\FormalBigOAt{t^{2q+2}}{t}.
 \end{equation}
 A weaker but often more convenient statement is that the number of correct blocks at least doubles after the initial normalization.
 \end{proposition}
 
 \begin{proof}
-The correction \(\Delta\) has valuation at least \(q\). The constant and linear residual terms cancel by construction. Since \(F''=H''=\FormalBigO_t(t^2)\), the quadratic Taylor term has valuation at least \(2+2q\); all higher terms are deeper.
+The correction \(\Delta\) has valuation at least \(q\). The constant and linear residual terms cancel by construction. Since \(F''=H''=\FormalBigOAt{t^2}{t}\), the quadratic Taylor term has valuation at least \(2+2q\); all higher terms are deeper.
 \end{proof}
 
 Newton iteration requires multiplication, division, differentiation, and composition, but its rapid convergence is valuable for high orders.
@@ -1941,7 +1941,7 @@ The first terms are
  &+\frac{\lambda(2\lambda^2-9\lambda+6)}{6X^3}\notag\\
  &+\frac{\lambda(3\lambda^3-22\lambda^2+36\lambda-12)}{12X^4}\notag\\
  &+\frac{\lambda(12\lambda^4-125\lambda^3+350\lambda^2-300\lambda+60)}{60X^5}
- +\FormalBigO_t(t^6).
+ +\FormalBigOAt{t^6}{t}.
 \label{eq:omega-expansion}
 \end{align}
 The function \(\WrightOmega\) is Wright's omega function, characterized by
@@ -1976,7 +1976,7 @@ After a sign change, this is the pattern governing \(W_{-1}\) near the origin.
 \section{An affine-log perturbation}
 Consider
 \begin{equation}\label{eq:affine-log-F}
- F(X)=X+a\lambda+b+(c\lambda+d)t+\FormalBigO_t(t^2).
+ F(X)=X+a\lambda+b+(c\lambda+d)t+\FormalBigOAt{t^2}{t}.
 \end{equation}
 Write \(F=X+H\) and apply the universal formula. Through order \(t^2\),
 \begin{align}
@@ -1988,7 +1988,7 @@ Write \(F=X+H\) and apply the universal formula. Through order \(t^2\),
  -ac\lambda^2+2ac\lambda\notag\\
  &\hspace{2.9cm}-ad\lambda+ad-bc\lambda+bc-bd
  \Bigg]
- +\FormalBigO_t(t^3).
+ +\FormalBigOAt{t^3}{t}.
 \label{eq:affine-log-inverse}
 \end{align}
 This formula is useful when an implicit asymptotic equation has already been normalized to a linear variable plus logarithmic and reciprocal corrections.
@@ -2025,7 +2025,7 @@ Starting from \(K_0=0\), the first iterate is
 \[
  K_1=-\lambda-\lambda t.
 \]
-To extract the second correct block, put \(K=-\lambda+A(\lambda)t+B(\lambda)t^2+\FormalBigO_t(t^3)\), expand the right side, and compare coefficients. One obtains
+To extract the second correct block, put \(K=-\lambda+A(\lambda)t+B(\lambda)t^2+\FormalBigOAt{t^3}{t}\), expand the right side, and compare coefficients. One obtains
 \[
  A(\lambda)=0,
  \qquad
@@ -2034,7 +2034,7 @@ To extract the second correct block, put \(K=-\lambda+A(\lambda)t+B(\lambda)t^2+
 Thus the cancellation of the \(t\)-block is genuine, while the next block is
 \[
  F\invcomp
- =X-\lambda+\left(\lambda-\frac12\lambda^2\right)t^2+\FormalBigO_t(t^3).
+ =X-\lambda+\left(\lambda-\frac12\lambda^2\right)t^2+\FormalBigOAt{t^3}{t}.
 \]
 The same result follows at once from \cref{eq:affine-log-inverse} by setting \(a=c=1\) and \(b=d=0\). This illustrates why guessing a universal \(\lambda/X\) correction from \(X+\log X\) can fail when additional reciprocal-log terms are present.
 
@@ -2985,7 +2985,7 @@ Given maps \(A\) and \(B\), lower exponents \(p,q\), and cutoff \(N\):
 \item Otherwise add \(A_iB_j\) to \(C_{i+j}\).
 \item Normalize every affected coefficient and remove zero blocks.
 \end{enumerate}
-The result is \(FG+\FormalBigO_t(t^{N+1})\).
+The result is \(FG+\FormalBigOAt{t^{N+1}}{t}\).
 \end{algorithm}
 
 \begin{lstlisting}[style=pseudo,caption={Sparse block multiplication}]
@@ -3897,7 +3897,7 @@ Symbol & Meaning\\
 \(\LambertPolynomial{n}\) & Universal coefficient polynomial in the large-argument expansion of Lambert \(W\).\\
 \(\stirlingone{n}{k}\) & Unsigned Stirling number of the first kind, counting permutations of \(n\) elements with \(k\) cycles.\\
 \(\ell=-1/\log x\) & Common near-zero Dulac logarithmic variable.\\
-\(\FormalBigO_t(t^N)\) & Formal tail: the omitted difference has \(t\)-valuation at least \(N\); no analytic bound is asserted.\\
+\(\FormalBigOAt{t^N}{t}\) & Formal tail: the omitted difference has \(t\)-valuation at least \(N\); no analytic bound is asserted.\\
 \(\BigOAt{R(X)}{X\to\infty,\ X\in S}\) & Analytic remainder on the stated limiting ray or sector \(S\).\\
 \bottomrule
 \end{longtable}
