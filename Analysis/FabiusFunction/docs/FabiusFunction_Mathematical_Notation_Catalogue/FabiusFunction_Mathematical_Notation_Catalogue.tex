@@ -1756,9 +1756,28 @@ $\ThueMorseSign{2n+1}=-\ThueMorseSign n$.}
 \]
 At $N=0$ both sides are $1$: the sum contains the sole term $n=0$ and the product is
 empty.}
+\entryfield{Rademacher--sine representation}{For every $n\in\NaturalNumbers$,
+\[
+ \ThueMorseSign n=\prod_{j=0}^{\infty}
+ \Sign\Bigl(\sin\frac{\pi(n+\frac12)}{2^{j}}\Bigr),
+\]
+and the $j$-th factor equals $(-1)^{b_j(n)}$ exactly.  Every factor with $2^{j}>n$ is
+$1$, so the product has finite multiplicative support and is asserted without a
+convergence hypothesis.  The half-unit shift is essential: the unshifted product
+$\prod_{j}\Sign(\sin(\pi n/2^{j}))$ contains the factor $\Sign(\sin\pi n)=0$ at $j=0$
+and is identically zero.}
+\entryfield{Square wave}{For every $x\in\RealNumbers$,
+$\sin(\pi x)=(-1)^{\Floor{x}}\sin(\pi\FractionalPart{x})$; the identity holds at the
+integers as well, where both sides vanish.  Off the integers
+$\sin(\pi\FractionalPart{x})>0$, hence $\Sign(\sin\pi x)=(-1)^{\Floor{x}}$ there.  At the
+Rademacher points $x=(n+\frac12)/2^{j}$ one has $\Floor{x}=\Floor{n/2^{j}}$ and
+$\FractionalPart{x}\ne0$.}
 \entryfield{Lean crosswalk}{The formal sign sequence uses declarations in
 \modulepath{ThueMorse.lean} and related prefix modules.  Exact theorem names are recorded in
-the crosswalk appendix; prose identities are not upgraded beyond their verified status.}
+the crosswalk appendix; prose identities are not upgraded beyond their verified status.
+The Rademacher--sine representation is \lean{thueMorseSign_eq_tprod_sign_sin} with factor
+law \lean{sign_sin_rademacherPoint}, and the factored square wave is
+\lean{sin_pi_mul_eq_neg_one_zpow_floor}, all in \modulepath{RademacherSine.lean}.}
 \end{catalogueentry}
 
 \begin{catalogueentry}{padic-valuation}{\(p\)-adic and \(2\)-adic valuations}
