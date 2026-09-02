@@ -571,6 +571,7 @@ import FabiusFunction.IntegerParameterTranslation
 import FabiusFunction.MultisetInversions
 import FabiusFunction.GeometricSimplexReindex
 import FabiusFunction.RatioExpansion
+import FabiusFunction.QBinomialLocallyUniform
 import FabiusFunction.EulerPartitionRecurrence
 import FabiusFunction.PartitionStabilization
 import FabiusFunction.DurfeeAll
