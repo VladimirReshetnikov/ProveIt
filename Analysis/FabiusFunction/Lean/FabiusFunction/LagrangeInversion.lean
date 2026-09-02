@@ -24,6 +24,8 @@ truncated substitution expansion `Fabius.coeff_mul_subst_eq` collapses the sum t
 * `derivative_pow_inv`, `coeff_inv_mul_derivative`, `coeff_pow_succ_mul_derivative_eq_zero`.
 * `subst_mul_pow_inv`, `coeff_subst_mul_derivative`.
 * `coeff_subst_derivative`, `coeff_subst_id`.
+* `solution`, `solution_eq`, `subst_solution_mul`, `coeff_solution_subst_derivative`,
+  `coeff_solution` (the unconditional forms, with the solution constructed).
 -/
 
 set_option autoImplicit false
@@ -189,6 +191,71 @@ theorem coeff_subst_id (hg : g = X * u) (hu : u = φ.subst g) (hv : u * v = 1)
   have h := coeff_subst_derivative hg hu hv X n hn
   rw [derivative_X, one_mul, subst_X hs] at h
   exact h
+
+/-! ### Existence of the solution -/
+
+section Existence
+
+variable (φ ψ : R⟦X⟧)
+
+/-- If `φ ψ = 1` then the constant coefficient of `ψ` is a unit. -/
+theorem isUnit_constantCoeff_right (hψ : φ * ψ = 1) : IsUnit (constantCoeff ψ) := by
+  have h := congrArg constantCoeff hψ
+  rw [map_mul, map_one] at h
+  have h' : constantCoeff ψ * constantCoeff φ = 1 := by rw [mul_comm]; exact h
+  exact IsUnit.of_mul_eq_one _ h'
+
+theorem constantCoeff_X_mul (f : R⟦X⟧) : constantCoeff (X * f) = 0 := by
+  rw [← coeff_zero_eq_constantCoeff_apply, coeff_zero_X_mul]
+
+theorem coeff_one_X_mul (f : R⟦X⟧) : coeff 1 (X * f) = constantCoeff f := by
+  rw [coeff_succ_X_mul, coeff_zero_eq_constantCoeff_apply]
+
+/-- **The solution of `g = z φ(g)`**, as the compositional inverse of `z ψ(z)`, where `ψ` is the
+inverse of `φ`.  This is what makes the Lagrange formulas below unconditional. -/
+noncomputable def solution (hψ : φ * ψ = 1) : R⟦X⟧ :=
+  substInvOfIsUnit (X * ψ)
+    (by rw [coeff_one_X_mul]; exact isUnit_constantCoeff_right φ ψ hψ)
+
+theorem hasSubst_solution (hψ : φ * ψ = 1) : HasSubst (solution φ ψ hψ) :=
+  HasSubst.of_constantCoeff_zero' (by rw [solution, constantCoeff_substInvOfIsUnit])
+
+/-- `φ(g)` is invertible, with inverse `ψ(g)`. -/
+theorem subst_solution_mul (hψ : φ * ψ = 1) :
+    φ.subst (solution φ ψ hψ) * ψ.subst (solution φ ψ hψ) = 1 := by
+  have hs := hasSubst_solution φ ψ hψ
+  rw [← subst_mul hs, hψ, ← coe_substAlgHom hs, map_one]
+
+/-- **The functional equation holds:** `g = z φ(g)`. -/
+theorem solution_eq (hψ : φ * ψ = 1) :
+    solution φ ψ hψ = X * φ.subst (solution φ ψ hψ) := by
+  have hs : HasSubst (solution φ ψ hψ) := hasSubst_solution φ ψ hψ
+  have h0 : constantCoeff (X * ψ) = 0 := constantCoeff_X_mul ψ
+  have h1 : IsUnit (coeff 1 (X * ψ)) := by
+    rw [coeff_one_X_mul]
+    exact isUnit_constantCoeff_right φ ψ hψ
+  have hsub : (X * ψ).subst (solution φ ψ hψ) = X :=
+    subst_substInvOfIsUnit_right (X * ψ) h0 h1
+  rw [subst_mul hs, subst_X hs] at hsub
+  have hone := subst_solution_mul φ ψ hψ
+  calc solution φ ψ hψ
+      = solution φ ψ hψ * (φ.subst (solution φ ψ hψ) * ψ.subst (solution φ ψ hψ)) := by
+        rw [hone, mul_one]
+    _ = solution φ ψ hψ * ψ.subst (solution φ ψ hψ) * φ.subst (solution φ ψ hψ) := by ring
+    _ = X * φ.subst (solution φ ψ hψ) := by rw [hsub]
+
+/-- **Lagrange–Bürmann, unconditional:** `n [z^n] H(g) = [w^{n-1}] (H' φ^n)` for the canonical
+solution `g` of `g = z φ(g)`. -/
+theorem coeff_solution_subst_derivative (hψ : φ * ψ = 1) (H : R⟦X⟧) (n : ℕ) (hn : 1 ≤ n) :
+    (n : R) * coeff n (H.subst (solution φ ψ hψ)) = coeff (n - 1) (d⁄dX R H * φ ^ n) :=
+  coeff_subst_derivative (solution_eq φ ψ hψ) rfl (subst_solution_mul φ ψ hψ) H n hn
+
+/-- **The basic case, unconditional:** `n [z^n] g = [w^{n-1}] φ^n`. -/
+theorem coeff_solution (hψ : φ * ψ = 1) (n : ℕ) (hn : 1 ≤ n) :
+    (n : R) * coeff n (solution φ ψ hψ) = coeff (n - 1) (φ ^ n) :=
+  coeff_subst_id (solution_eq φ ψ hψ) rfl (subst_solution_mul φ ψ hψ) n hn
+
+end Existence
 
 end Lagrange
 

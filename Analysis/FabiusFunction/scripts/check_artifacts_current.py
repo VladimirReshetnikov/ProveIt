@@ -17,10 +17,18 @@ those were the wrong bytes.  Two ways that goes wrong, both observed on
     source newer than the artifact.
 
 Both are invisible in the log.  This check catches both without needing either
-tell, by comparing modification times.  Exits nonzero on any staleness, so it
-can gate the next build rather than being something to remember to run:
+tell, by comparing modification times.
 
-    python scripts/check_artifacts_current.py && lake build +FabiusFunction.Foo
+Run it AFTER a build, to confirm the green describes the bytes on disk:
+
+    lake build +FabiusFunction.Foo && python scripts/check_artifacts_current.py Foo
+
+Do not put it before the build of a file you have just edited: the source is
+then newer than the artifact by construction, so the check fails and blocks the
+very build that would fix it.  (An earlier version of this docstring recommended
+exactly that, and it is wrong.)  Before a build it is useful only for a module's
+*dependencies*, to confirm you are building on current artifacts, and on its own
+it answers "is this earlier green result still trustworthy?".
 
 With arguments it checks only the named modules (bare module names, no
 extension), which is the intended use: run it on what you just built.  There a

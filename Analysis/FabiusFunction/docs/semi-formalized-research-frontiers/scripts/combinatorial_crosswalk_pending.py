@@ -1329,10 +1329,16 @@ Module \lean{LagrangeInversion} formalizes \cref{eq:lagrange-burmann} as
 \lean{Fabius.Lagrange.coeff_subst_derivative}, in the division-free form
 $n[z^n]H(g)=[w^{n-1}]H'(w)\phi(w)^n$, and \cref{eq:lagrange-basic} as
 \lean{Fabius.Lagrange.coeff_subst_id}, over an arbitrary commutative
-$\RationalNumbers$-algebra.  The solution $g$ of \cref{eq:lagrange-functional}
-enters as a hypothesis, in the shape $g=z\,u$ with $u=\phi(g)$ and $u$
-invertible; existence and uniqueness are not formalized, nor is
-\cref{eq:lagrange-burmann-alt}.
+$\RationalNumbers$-algebra.  The core lemmas take $g$ in the shape $g=z\,u$ with $u=\phi(g)$ and $u$
+invertible, and the solution is then \emph{constructed} rather than assumed:
+\lean{Fabius.Lagrange.solution} builds it as the compositional inverse of
+$z\psi(z)$, where $\psi$ is the power-series inverse of $\phi$, and
+\lean{Fabius.Lagrange.solution_eq} proves it satisfies
+\cref{eq:lagrange-functional}.  So
+\lean{Fabius.Lagrange.coeff_solution_subst_derivative} and
+\lean{Fabius.Lagrange.coeff_solution} are unconditional statements about a
+witness, not conditional ones.  Uniqueness of $g$ and
+\cref{eq:lagrange-burmann-alt} are not formalized.
 The proof above is unavailable in Lean, because it runs through
 \cref{thm:res-subst}, which is itself unformalized.  The formal proof is
 purely algebraic and rests on one cancellation: writing $v$ for the inverse of
