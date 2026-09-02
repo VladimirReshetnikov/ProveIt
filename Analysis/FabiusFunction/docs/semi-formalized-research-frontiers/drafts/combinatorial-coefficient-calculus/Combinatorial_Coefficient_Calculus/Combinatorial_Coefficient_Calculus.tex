@@ -5904,6 +5904,60 @@ combine into a constant, evaluated as $\frac12\log(2\pi)$ by Wallis' product.
 The remainder bound one order farther gives the stated error.
 \end{proof}
 
+The same machine applied to $f(x)=1/x$ produces the companion expansion for the
+harmonic numbers, and identifies the Euler--Mascheroni constant as the
+associated constant of integration.  This is the expansion used silently in
+several coefficient estimates elsewhere in this work.
+
+\begin{corollary}[Harmonic-number expansion]\label{cor:merged-harmonic-expansion}
+Let $H_N=\sum_{k=1}^N1/k$.  For each fixed integer $M\ge1$, as $N\to\infty$,
+\begin{equation}
+ H_N=\log N+\gamma+\frac1{2N}
+ -\sum_{r=1}^{M-1}\frac{\beta_{2r}}{2r\,N^{2r}}+\BigO(N^{-2M}),   \label{eq:merged-harmonic-expansion}
+\end{equation}
+so that explicitly
+$H_N=\log N+\gamma+\frac1{2N}-\frac1{12N^2}+\frac1{120N^4}+\BigO(N^{-6})$.
+\end{corollary}
+
+\begin{proof}
+Apply \cref{thm:merged-euler-maclaurin} with $m=M$, $f(x)=1/x$, $a=1$, $b=N$.
+Since $f^{(j)}(x)=(-1)^jj!\,x^{-j-1}$, the boundary sum is
+\[
+ \sum_{r=1}^{M}\frac{\beta_{2r}}{(2r)!}
+ \bigl(f^{(2r-1)}(N)-f^{(2r-1)}(1)\bigr)
+ =\sum_{r=1}^{M}\frac{\beta_{2r}}{2r}
+ \left(1-\frac1{N^{2r}}\right),
+\]
+because $f^{(2r-1)}(x)=-(2r-1)!\,x^{-2r}$.  Hence
+\begin{equation}
+ H_N-\log N=\frac12+\frac1{2N}
+ +\sum_{r=1}^{M}\frac{\beta_{2r}}{2r}
+ -\sum_{r=1}^{M}\frac{\beta_{2r}}{2r\,N^{2r}}
+ -\frac1{(2M)!}\int_1^N\beta_{2M}(\{x\})f^{(2M)}(x)\Differential x. \label{eq:merged-harmonic-em}
+\end{equation}
+The integrand is absolutely integrable on $[1,\infty)$, since
+$|f^{(2M)}(x)|=(2M)!\,x^{-2M-1}$ and $\beta_{2M}(\{\cdot\})$ is bounded, so the
+integral converges as $N\to\infty$ and may be split as
+$\int_1^\infty-\int_N^\infty$.  All the $N$-independent terms of
+\eqref{eq:merged-harmonic-em} then form a constant, and letting $N\to\infty$
+identifies that constant as $\gamma=\lim_N(H_N-\log N)$, for every $M$.  What
+remains is
+\[
+ H_N=\log N+\gamma+\frac1{2N}-\sum_{r=1}^{M}\frac{\beta_{2r}}{2r\,N^{2r}}
+ +\frac1{(2M)!}\int_N^\infty\beta_{2M}(\{x\})f^{(2M)}(x)\Differential x,
+\]
+and by \eqref{eq:merged-periodic-bernoulli-sup} the tail integral is at most
+\[
+ \frac{2\RiemannZeta(2M)}{(2\pi)^{2M}}\cdot\frac1{(2M)!}
+ \int_N^\infty(2M)!\,x^{-2M-1}\Differential x
+ =\frac{2\RiemannZeta(2M)}{(2M)(2\pi)^{2M}}\,N^{-2M}
+ =\BigO(N^{-2M}).
+\]
+The term $r=M$ of the remaining sum is itself $\BigO(N^{-2M})$ and may be
+absorbed into the error, which leaves \eqref{eq:merged-harmonic-expansion}.
+The displayed special case uses $\beta_2=1/6$ and $\beta_4=-1/30$.
+\end{proof}
+
 \chapter{Pochhammer symbols, polygamma functions, and Barnes' \texorpdfstring{$G$}{G}-function}
 \label{ch:merged-gamma-barnes}
 
@@ -5972,6 +6026,123 @@ Faà di Bruno to $\EulerE^{L(a)}$.  Since the left side is a polynomial in $a$,
 agreement off the zeros supplies the polynomial continuation.
 \end{proof}
 
+The reciprocal needs no separate computation.  The complete Bell polynomial
+$\ExponentialCompleteBellPolynomial m$ is a sum of monomials
+$x_1^{j_1}x_2^{j_2}\cdots$ with $\sum_i ij_i=m$, so substituting
+$x_i\mapsto(-1)^ix_i$ multiplies every monomial by $(-1)^{\sum_iij_i}=(-1)^m$:
+\begin{equation}
+ \ExponentialCompleteBellPolynomial m(-x_1,x_2,-x_3,\ldots,(-1)^mx_m)
+ =(-1)^m\ExponentialCompleteBellPolynomial m(x_1,x_2,x_3,\ldots,x_m).      \label{eq:merged-bell-sign-flip}
+\end{equation}
+
+\begin{corollary}[Derivatives of a reciprocal Pochhammer symbol]
+\label{cor:merged-reciprocal-pochhammer}
+For $m\ge1$ and $(a)_n\ne0$,
+\begin{equation}
+ \frac{\partial^m}{\partial a^m}\frac1{(a)_n}
+ =\frac{(-1)^m}{(a)_n}
+ \ExponentialCompleteBellPolynomial m\!\left(H_n(a),-1!H_n^{(2)}(a),2!H_n^{(3)}(a),\ldots,
+ (-1)^{m-1}(m-1)!H_n^{(m)}(a)\right),                              \label{eq:merged-reciprocal-pochhammer}
+\end{equation}
+with exactly the arguments of \eqref{eq:merged-pochhammer-derivatives}.  In
+particular the two derivative arrays differ only by the alternating sign
+$(-1)^m$.
+\end{corollary}
+
+\begin{proof}
+With $L(a)=\log(a)_n$ as above, $1/(a)_n=\EulerE^{-L(a)}$, and the exponential
+Faà di Bruno formula gives
+\[
+ \frac{\partial^m}{\partial a^m}\EulerE^{-L(a)}
+ =\EulerE^{-L(a)}\ExponentialCompleteBellPolynomial m\bigl(-L'(a),-L''(a),\ldots,-L^{(m)}(a)\bigr).
+\]
+Since $L^{(r)}(a)=(-1)^{r-1}(r-1)!H_n^{(r)}(a)$, the $r$th argument is
+$-L^{(r)}(a)=(-1)^r(r-1)!H_n^{(r)}(a)$, which is $(-1)^r$ times the $r$th
+argument in \eqref{eq:merged-pochhammer-derivatives}.  Now apply
+\eqref{eq:merged-bell-sign-flip}.
+\end{proof}
+
+\section{Euler's limit and the Weierstrass product}
+
+The partial-fraction series of the next section are obtained by
+differentiating Weierstrass' product for $1/\GammaFunction$.  That product is
+proved here, so that the chapter rests on nothing beyond the integral
+definition of $\GammaFunction$.  The one ingredient is the Beta integral with
+an integer parameter, which is also the exact statement that converts a
+Pochhammer symbol into an integral.
+
+\begin{proposition}[Beta integral with an integer parameter]
+\label{prop:merged-beta-integral}
+For $\Re a>0$ and every integer $n\ge0$,
+\begin{equation}
+ \int_0^1t^{a-1}(1-t)^n\Differential t=\frac{n!}{(a)_{n+1}}.       \label{eq:merged-beta-integral}
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+Induct on $n$.  For $n=0$ the integral is $1/a=0!/(a)_1$.  For $n\ge1$,
+integration by parts with $u=(1-t)^n$ and $\Differential v=t^{a-1}\Differential t$
+gives, the boundary terms vanishing because $\Re a>0$ and $n\ge1$,
+\[
+ \int_0^1t^{a-1}(1-t)^n\Differential t
+ =\frac na\int_0^1t^{a}(1-t)^{n-1}\Differential t.
+\]
+The inductive hypothesis at parameter $a+1$ turns the right side into
+$\frac na\cdot\frac{(n-1)!}{(a+1)_n}=\frac{n!}{a\,(a+1)_n}=\frac{n!}{(a)_{n+1}}$.
+\end{proof}
+
+\begin{theorem}[Euler's limit and the Weierstrass product]
+\label{thm:merged-euler-gamma-limit}
+For $\Re z>0$,
+\begin{equation}
+ \GammaFunction(z)=\lim_{N\to\infty}\frac{N!\,N^z}{z(z+1)\cdots(z+N)},   \label{eq:merged-euler-gamma-limit}
+\end{equation}
+locally uniformly on $\{\Re z>0\}$.  Moreover, for every $z\in\ComplexNumbers$,
+\begin{equation}
+ \frac1{\GammaFunction(z)}=z\EulerE^{\gamma z}
+ \prod_{k\ge1}\left(1+\frac zk\right)\EulerE^{-z/k},                \label{eq:merged-weierstrass-gamma}
+\end{equation}
+the product converging locally uniformly, so that $1/\GammaFunction$ is entire
+with simple zeros exactly at $0,-1,-2,\ldots$.
+\end{theorem}
+
+\begin{proof}
+Put $\GammaFunction_N(z)=\int_0^N\bigl(1-\tfrac tN\bigr)^Nt^{z-1}\Differential t$.
+Substituting $t=Nu$ and applying \cref{prop:merged-beta-integral} gives
+\begin{equation}
+ \GammaFunction_N(z)=N^z\int_0^1(1-u)^Nu^{z-1}\Differential u
+ =\frac{N^z\,N!}{(z)_{N+1}}
+ =\frac{N!\,N^z}{z(z+1)\cdots(z+N)}.                               \label{eq:merged-euler-gamma-finite}
+\end{equation}
+For $0\le t\le N$ the elementary inequality
+$0\le(1-t/N)^N\le\EulerE^{-t}$ holds, and $(1-t/N)^N\to\EulerE^{-t}$
+pointwise.  On a compact subset of $\{\Re z>0\}$ one has
+$\delta\le\Re z\le M$ for some $0<\delta\le M$, whence
+$|t^{z-1}|=t^{\Re z-1}\le t^{\delta-1}+t^{M-1}$, an integrable majorant
+against $\EulerE^{-t}$ on $(0,\infty)$.  Dominated convergence therefore gives
+$\GammaFunction_N(z)\to\int_0^\infty\EulerE^{-t}t^{z-1}\Differential t=\GammaFunction(z)$,
+uniformly on that compact set, which is
+\eqref{eq:merged-euler-gamma-limit}.
+
+For the product, invert \eqref{eq:merged-euler-gamma-finite}:
+\[
+ \frac1{\GammaFunction_N(z)}
+ =z\,\EulerE^{-z\log N}\prod_{k=1}^{N}\left(1+\frac zk\right)
+ =z\,\EulerE^{\gamma_Nz}\prod_{k=1}^{N}\left(1+\frac zk\right)\EulerE^{-z/k},
+\]
+where $\gamma_N=\sum_{k=1}^N\frac1k-\log N$, since the inserted factors
+$\EulerE^{-z/k}$ contribute exactly $\EulerE^{-z\sum_{k\le N}1/k}$.  Now
+$\gamma_N\to\gamma$, and the product converges locally uniformly on
+$\ComplexNumbers$: for $|w|\le\frac12$ one has
+$\bigl|\log\bigl((1+w)\EulerE^{-w}\bigr)\bigr|\le|w|^2$, so on $|z|\le\rho$ all
+factors with $k\ge2\rho$ satisfy
+$|\log((1+z/k)\EulerE^{-z/k})|\le\rho^2/k^2$, a convergent bound.  Letting
+$N\to\infty$ gives \eqref{eq:merged-weierstrass-gamma} on $\{\Re z>0\}$, and
+both sides are entire, so the identity persists on $\ComplexNumbers$ by
+analytic continuation.  The zeros of the right side are visibly simple and
+located at $0,-1,-2,\ldots$.
+\end{proof}
+
 \section{Digamma and polygamma series}
 
 Define $\psi=\GammaFunction'/\GammaFunction$ and $\psi^{(m)}=D^m\psi$.
@@ -5988,13 +6159,18 @@ Away from nonpositive integers,
 \end{theorem}
 
 \begin{proof}
-Logarithmically differentiate Weierstrass' product
+Logarithmically differentiate the Weierstrass product
+\eqref{eq:merged-weierstrass-gamma}, which
+\cref{thm:merged-euler-gamma-limit} establishes:
 \[
- \frac1{\GammaFunction(z)}=ze^{\gamma z}
- \prod_{k\geq1}\left(1+\frac zk\right)\EulerE^{-z/k}.
+ -\psi(z)=\frac1z+\gamma
+ +\sum_{k\ge1}\left(\frac1{k+z}-\frac1k\right).
 \]
-Normal convergence on compact sets away from the poles justifies the first
-series and every further derivative.
+Combining the term $1/z$ with the sum, and pairing $1/k$ with the index shift,
+gives \eqref{eq:merged-digamma-series}.  The local uniform convergence proved
+in \cref{thm:merged-euler-gamma-limit} is normal on compact sets away from the
+poles, so the series may be differentiated termwise any number of times, which
+gives \eqref{eq:merged-polygamma-series}.
 \end{proof}
 
 \begin{corollary}[Recurrences and special values]
