@@ -141,6 +141,16 @@ STATUS = {
    r"\lean{Fabius.exp_subst_exp_sub_one} (\lean{BellGeneratingFunctions}): "
    r"$\exp\circ(e^z-1)=\sum_n B(n)z^n/n!$ as formal power series over any commutative "
    r"$\mathbb Q$-algebra; the differential equation is the derivative of this substitution"),
+ 'thm:merged-bernoulli-stirling-touchard': ('partial',
+   r"\cref{eq:merged-bernoulli-stirling} is \lean{Fabius.bernoulli_eq_sum_stirlingSecond} "
+   r"(\lean{BernoulliStirling}) for Mathlib's \lean{bernoulli} (with $B_1=-1/2$), from "
+   r"\lean{Fabius.bernoulliPowerSeries_eq_logDivSeries_subst}: the Bernoulli generating "
+   r"function is $\log(1+u)/u$ at $u=\EulerE^t-1$; the two integral representations are not "
+   r"formalized"),
+ 'thm:bell-bihomogeneous': ('Lean',
+   r"\lean{Fabius.partialBell_mul_left}, \lean{Fabius.partialBell_pow_mul}, "
+   r"\lean{Fabius.partialBell_bihomogeneous} (\lean{BellHomogeneity}), over every commutative "
+   r"semiring"),
  'thm:eulerian-recurrence': ('partial',
    r"\lean{Fabius.eulerianNumber} is defined by this recurrence "
    r"(\lean{Fabius.eulerianNumber_succ_left}, \lean{Fabius.eulerianNumber_succ_succ}, "
