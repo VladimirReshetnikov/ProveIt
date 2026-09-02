@@ -6716,6 +6716,68 @@ algebraic power.}
 followed by a second raw subscript.  Use the command's arguments or introduce a wrapper
 whose expansion has one syntactically valid script.  This rule covers number systems,
 quantiles, transform hats, and any future decorated semantic command.}
+% ed.: the three fields below were added on 2026-09-02.  The subscript rule above
+% stated only half of the constraint and read as a style preference; the omitted
+% half is a build-stopping TeX error that had silently broken six active sources.
+\entryfield{Script-final commands: the rule is a build constraint}{Many shared
+commands expand to a base atom that already carries a script.  TeX permits at
+most one superscript and one subscript per atom, so a directly following script
+of a type the atom already carries is the fatal error \texttt{Double
+superscript} or \texttt{Double subscript}, not a typographic infelicity.  A
+prime counts as a superscript.  \emph{Mixed types are legal}: since
+\commandname{NaturalNumbers} expands to \(\NaturalNumbers\), which carries only
+a subscript, \(\NaturalNumbers^{2}\) is correct, and so are
+\(\FabiusQuantile'\) and \(\SincPi^{(r)}\).  Any audit of this rule that
+searches for a command followed by a script, without first asking which script
+types that command's trailing atom carries, reports roughly ten false positives
+for every real one.}
+\entryfield{Classification of the shared commands}{Twenty-seven commands expand
+to an atom carrying \emph{both} scripts, so any following \texttt{\textasciicircum},
+\texttt{\_} or prime is fatal:
+\commandname{AssociahedronByDimension},
+\commandname{BellHessenbergMatrixH}, \commandname{BellHessenbergMatrixK},
+\commandname{BellNumber}, \commandname{CatalanNumber},
+\commandname{ComplementaryBellNumber},
+\commandname{ExponentialCompleteBellPolynomial},
+\commandname{ExponentialPartialBellPolynomial},
+\commandname{GenocchiNumber}, \commandname{GenocchiPolynomial},
+\commandname{GeometricBernoulliPolynomial},
+\commandname{GregoryCoefficient},
+\commandname{InverseFourierAngularOperator},
+\commandname{InverseFourierTwoPiOperator}, \commandname{LahNumber},
+\commandname{LambertPolynomial}, \commandname{LinearizedDecayObjective},
+\commandname{NormalizedReversionCoefficient},
+\commandname{OrdinaryGeneratingCoefficient},
+\commandname{OrdinaryPartialBellPolynomial},
+\commandname{ScaledLambertPolynomial},
+\commandname{SecondOrderEulerianPolynomial},
+\commandname{TouchardPolynomial}, \commandname{TraceBellArgument},
+\commandname{TypeAEulerianPolynomial}, \commandname{TypeBEulerianNumber}, and
+\commandname{TypeBEulerianPolynomial}.
+Seven are superscript-only and break on a following \texttt{\textasciicircum} or prime:
+\commandname{CompositionalInverseOf}, \commandname{MultiplicativeInverseOf},
+\commandname{FormalBigO}, \commandname{FallingFactorial},
+\commandname{RisingFactorial},
+\commandname{ExponentialGeneratingFunctionOf}, and
+\commandname{OrdinaryGeneratingFunctionOf}.
+The remaining thirty-eight script-final commands are subscript-only and break
+only on a following \texttt{\_}.
+This classification is derived from the expansions, so it must be recomputed
+whenever a command's definition changes rather than trusted as a fixed list.}
+\entryfield{Remedy, and document-local aliases}{Prefer the command whose
+meaning is the one intended: writing the power-series ring as
+\commandname{PolynomialLogPowerSeriesRing} is better than decorating the
+Laurent-ring command with a range subscript.  When a genuine extra script is
+needed, brace-wrap the call so the script attaches to the whole group, as in
+\texttt{\{\textbackslash LambertPolynomial\{n\}\}'}, which is valid and renders as intended.  A
+derivative may instead be printed in Leibniz form.
+
+The constraint propagates through \emph{document-local aliases}.  A definition
+such as \texttt{\textbackslash newcommand\{\textbackslash PL\}\{\textbackslash PolynomialLogLaurentRing\{\textbackslash K\}\}} makes
+\texttt{\textbackslash PL} script-final too, so \texttt{\textbackslash PL\_\{\textbackslash ge0\}} is fatal even though the
+shared command never appears with a script beside it.  An audit that inspects
+only the shared command names will not see this; alias chains must be resolved
+first.}
 \end{catalogueentry}
 
 \subsection{Exhaustive register of document-local non-Fourier hats}

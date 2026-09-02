@@ -322,7 +322,7 @@ The polynomial-logarithmic Laurent ring is
 \end{equation}
 Its power-series subring is
 \[
-  \PL_{\ge0}=\K[\ell][[t]],
+  {\PL}_{\ge0}=\K[\ell][[t]],
 \]
 and its strictly small ideal is
 \[
@@ -897,14 +897,14 @@ logarithmic variable.
 The most important special case is
 \begin{equation}\label{eq:near-identity-G}
   G(x)=x+H(x)=x\bigl(1+tH(x)\bigr),
-  \qquad H\in\PL_{\ge0}.
+  \qquad H\in{\PL}_{\ge0}.
 \end{equation}
 Since \(tH\in\mathfrak m\), \cref{thm:monomial-composition} applies with
 \(q=1\), \(c=1\), and \(U=tH\).  Analytically, \(H=o(x)\), even when
 \(H\) is a polynomial in \(\log x\).
 
 \begin{theorem}[Formal Taylor formula]\label{thm:formal-taylor}
-For \(F\in\PL\) and \(H\in\PL_{\ge0}\),
+For \(F\in\PL\) and \(H\in{\PL}_{\ge0}\),
 \begin{equation}\label{eq:formal-taylor}
 \boxed{
   F\circ(x+H)=\sum_{k\ge0}\frac{H^k}{k!}D^kF,
@@ -1057,7 +1057,7 @@ composed analytic function.
 \begin{definition}[Near-identity PL maps]
 Let
 \begin{equation}\label{eq:near-group}
-  \Gnear=\left\{x+A(x):A\in\PL_{\ge0}\right\}.
+  \Gnear=\left\{x+A(x):A\in{\PL}_{\ge0}\right\}.
 \end{equation}
 Every member satisfies \(x+A\as x\) and has formal derivative
 \(1+A'=1+\FormalBigOAt{t}{t}\).
@@ -1078,17 +1078,17 @@ Closure follows from
   (x+A)\circ(x+B)=x+B+A\circ(x+B),
 \]
 and \cref{thm:formal-taylor} shows that the correction belongs to
-\(\PL_{\ge0}\).  For existence, solve the fixed-point equation
+\({\PL}_{\ge0}\).  For existence, solve the fixed-point equation
 \begin{equation}\label{eq:fixed-point-B}
   B=\Phi(B):=-A\circ(x+B).
 \end{equation}
-If \(B-C\in t^N\PL_{\ge0}\), the formal mean-value/Taylor identity gives
+If \(B-C\in t^N{\PL}_{\ge0}\), the formal mean-value/Taylor identity gives
 \[
   A\circ(x+B)-A\circ(x+C)
   =(B-C)\int_0^1 A'\circ(x+C+s(B-C))\Differential s.
 \]
-Since \(A'\in t\PL_{\ge0}\), the right side lies in
-\(t^{N+1}\PL_{\ge0}\).  Thus \(\Phi\) improves the agreement order by at least
+Since \(A'\in t{\PL}_{\ge0}\), the right side lies in
+\(t^{N+1}{\PL}_{\ge0}\).  Thus \(\Phi\) improves the agreement order by at least
 one.  Starting with \(B_0=0\), the iterates
 \(B_{j+1}=\Phi(B_j)\) form a Cauchy sequence in the complete \(t\)-adic ring and
 converge to a unique fixed point \(B\).  The equation
@@ -1147,8 +1147,8 @@ The formal Newton step is
 }
 \end{equation}
 The denominator is a unit because \(F'=1+\FormalBigOAt{t}{t}\).  If
-\(F\circ G-x\in t^N\PL_{\ge0}\), Taylor expansion around \(G\) shows that the
-new residual is in \(t^{2N+1}\PL_{\ge0}\) (the exact exponent can improve with
+\(F\circ G-x\in t^N{\PL}_{\ge0}\), Taylor expansion around \(G\) shows that the
+new residual is in \(t^{2N+1}{\PL}_{\ge0}\) (the exact exponent can improve with
 additional valuation information).  Hence a precision-doubling implementation
 uses truncation cutoffs
 \(1,2,4,8,\ldots\), recomputing products, composition, and a reciprocal only at
@@ -1171,7 +1171,7 @@ is still smaller.
 The most explicit formula requires no recursive composition.
 
 \begin{theorem}[Reversion at infinity]\label{thm:lagrange-reversion}
-Let \(F=x+A\) with \(A\in\PL_{\ge0}\).  Its compositional inverse is
+Let \(F=x+A\) with \(A\in{\PL}_{\ge0}\).  Its compositional inverse is
 \begin{equation}\label{eq:lagrange-reversion}
 \boxed{
   F^{\rev}(x)
@@ -1429,7 +1429,7 @@ and simplifying gives
 Equating coefficients, or equivalently differentiating the proposed recurrence,
 gives
 \[
-  \LambertPolynomial{n+1}'(X)+\LambertPolynomial{n}'(X)=n\LambertPolynomial{n}(X),
+  {\LambertPolynomial{n+1}}'(X)+{\LambertPolynomial{n}}'(X)=n\LambertPolynomial{n}(X),
   \qquad \LambertPolynomial{n+1}(0)=\LambertPolynomial{n}(0)=0,
 \]
 which integrates to \eqref{eq:Lambert-recurrence}.  The initial polynomial is
@@ -1669,9 +1669,9 @@ Cohen derives, in the same notation as \eqref{eq:Cohen-K-expansion}, the
 convergent identity
 \begin{equation}\label{eq:W-denominator-Ln}
   \frac{1}{1+\LambertW_k(z)}
-  =\sum_{n\ge1}\frac{\LambertPolynomial{n}'(M)}{K^n}
+  =\sum_{n\ge1}\frac{{\LambertPolynomial{n}}'(M)}{K^n}
 \end{equation}
-under the corresponding convergence conditions.  The fact that \(\LambertPolynomial{n}'\) is
+under the corresponding convergence conditions.  The fact that \({\LambertPolynomial{n}}'\) is
 monic of degree \(n-1\) makes the leading behavior transparent.
 
 \subsection{Generalized Lambert equations}
@@ -2364,7 +2364,7 @@ Series reversal is one instance of a more general Newton--Hensel mechanism.
 Let \(\Phi(x,y)\) be an expression built from PL coefficients and local analytic
 operations in \(y\).  Suppose an approximation \(Y_0\in\PL\) satisfies
 \[
-  \Phi(x,Y_0)\in t^N\PL_{\ge0}
+  \Phi(x,Y_0)\in t^N{\PL}_{\ge0}
 \]
 and the partial derivative
 \[
@@ -2804,7 +2804,7 @@ compact derivative form should be retained to avoid expression swell.
 \subsection{A substitution certificate for a truncated inverse}
 
 \begin{proposition}[Finite certificate]\label{prop:inverse-certificate}
-Let \(F=x+A\) with \(A\in\PL_{\ge0}\), and let
+Let \(F=x+A\) with \(A\in{\PL}_{\ge0}\), and let
 \[
   G_N=x+\sum_{j=0}^{N}b_j(\ell)t^j.
 \]
@@ -2828,7 +2828,7 @@ had first nonzero term \(q(\ell)t^m\) with \(m\le N\), then Taylor expansion of
 \]
 Because \(F'\circ G=1+\FormalBigOAt{t}{t}\), the coefficient at level \(m\) would be
 \(q\ne0\), contradicting \eqref{eq:inverse-certificate}.  Hence
-\(G_N-G\in t^{N+1}\PL_{\ge0}\).
+\(G_N-G\in t^{N+1}{\PL}_{\ge0}\).
 \end{proof}
 
 This proposition is the simplest robust test for software.  It avoids comparing

@@ -1998,7 +1998,7 @@ Formula \cref{eq:Pstirling} gives several facts at once.
 \begin{proposition}[Basic properties]\label{prop:Pproperties}
 For \(n\geq1\):
 \begin{enumerate}
-\item \(\LambertPolynomial{n}(0)=0\) and \(\LambertPolynomial{n}'(0)=(-1)^{n-1}\).
+\item \(\LambertPolynomial{n}(0)=0\) and \({\LambertPolynomial{n}}'(0)=(-1)^{n-1}\).
 \item \(\deg \LambertPolynomial{n}=n\), with leading coefficient \(1/n\).
 \item The nonzero coefficients alternate in sign:
 \([u^m]\LambertPolynomial{n}\) has sign \((-1)^{n-m}\).
@@ -2030,7 +2030,7 @@ The polynomials can be generated without Stirling tables.
 \begin{theorem}[Recurrence]\label{thm:Precurrence}
 Starting with \(\LambertPolynomial{1}(u)=u\),
 \begin{align}
- \LambertPolynomial{n+1}'(u)&=n\LambertPolynomial{n}(u)-\LambertPolynomial{n}'(u),
+ {\LambertPolynomial{n+1}}'(u)&=n\LambertPolynomial{n}(u)-{\LambertPolynomial{n}}'(u),
  \label{eq:Pderivrec}\\
  \LambertPolynomial{n+1}(0)&=0.
  \label{eq:Pzero}
@@ -2059,7 +2059,7 @@ differential equation
  (1+t)U_u=t+t^2U_t.
 \end{equation}
 Equating the coefficient of \(t^{n+1}\) yields
-\(\LambertPolynomial{n+1}'=n\LambertPolynomial{n}-\LambertPolynomial{n}'\).  Since every \(\LambertPolynomial{n}\) has zero constant term by
+\({\LambertPolynomial{n+1}}'=n\LambertPolynomial{n}-{\LambertPolynomial{n}}'\).  Since every \(\LambertPolynomial{n}\) has zero constant term by
 \cref{eq:Poperator}, integration from zero gives \cref{eq:Pintegralrec}.
 \end{proof}
 
@@ -2101,7 +2101,7 @@ From \cref{eq:Uexpanded}:
 \begin{align*}
  [t]U&=u,\\
  [t^2]U&=-\LambertPolynomial{1}+\frac{u^2}{2},\\
- [t^3]U&=-\LambertPolynomial{2}+\frac{\LambertPolynomial{1}^2}{2}-u\LambertPolynomial{1}+\frac{u^3}{3}.
+ [t^3]U&=-\LambertPolynomial{2}+\frac{{\LambertPolynomial{1}}^2}{2}-u\LambertPolynomial{1}+\frac{u^3}{3}.
 \end{align*}
 Using \(\LambertPolynomial{1}=u\), this gives
 \[
@@ -3746,7 +3746,7 @@ For the last identity, use
 The differential recurrence \cref{eq:Pderivrec} gives a convenient recursion
 for individual coefficients.  Equating the coefficient of \(u^{m-1}\) in
 \[
- \LambertPolynomial{n+1}'=n\LambertPolynomial{n}-\LambertPolynomial{n}'
+ {\LambertPolynomial{n+1}}'=n\LambertPolynomial{n}-{\LambertPolynomial{n}}'
 \]
 yields
 \begin{equation}\label{eq:pnmrecurrence}
