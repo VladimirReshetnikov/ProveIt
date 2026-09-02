@@ -26,6 +26,9 @@ denominator factors `1 - bq^j` (`j ≥ 0`) and `1 - q^{j+1}/a` (`j ≥ 0`) are n
 * `onePsiOneTerm`, `onePsiOne`.
 * `finiteQPochhammerZ_div_neg_natCast`: the negative-index quotient.
 * `summable_onePsiOneTerm_nat`, `summable_onePsiOneTerm_neg`, `summable_onePsiOneTerm`.
+* `summable_norm_onePsiOneTerm`: the same domination gives *absolute* convergence, i.e.
+  summability of the norms, which in a general (possibly nonarchimedean) complete normed field
+  is strictly stronger than `Summable`.
 -/
 
 set_option autoImplicit false
@@ -106,5 +109,48 @@ theorem summable_onePsiOneTerm {a b q z : 𝕜} (hq : ‖q‖ < 1) (hq0 : q ≠ 
     (hbz : ‖b / a‖ < ‖z‖) (hz : ‖z‖ < 1) : Summable (onePsiOneTerm a b q z) :=
   Summable.of_nat_of_neg (summable_onePsiOneTerm_nat hq (qPochhammerInfIn_ne_zero b hq hb) hz)
     (summable_onePsiOneTerm_neg hq hq0 ha0 hb0 (qPochhammerInfIn_ne_zero _ hq ha) hbz)
+
+/-- The positive tail converges **absolutely**. -/
+theorem summable_norm_onePsiOneTerm_nat {a b q z : 𝕜} (hq : ‖q‖ < 1)
+    (hb : qPochhammerInfIn b q ≠ 0) (hz : ‖z‖ < 1) :
+    Summable fun n : ℕ => ‖onePsiOneTerm a b q z n‖ := by
+  obtain ⟨K, _, hK⟩ := exists_norm_finiteQPochhammerIn_div_le a hq hb
+  refine Summable.of_norm_bounded ((summable_geometric_of_lt_one (norm_nonneg z) hz).mul_left K)
+    fun n => ?_
+  rw [norm_norm, onePsiOneTerm, finiteQPochhammerZ_natCast, finiteQPochhammerZ_natCast,
+    zpow_natCast, norm_mul, norm_pow]
+  exact mul_le_mul_of_nonneg_right (hK n) (pow_nonneg (norm_nonneg z) n)
+
+/-- The negative tail converges **absolutely**. -/
+theorem summable_norm_onePsiOneTerm_neg {a b q z : 𝕜} (hq : ‖q‖ < 1) (hq0 : q ≠ 0) (ha0 : a ≠ 0)
+    (hb0 : b ≠ 0) (haq : qPochhammerInfIn (q / a) q ≠ 0) (hbz : ‖b / a‖ < ‖z‖) :
+    Summable fun n : ℕ => ‖onePsiOneTerm a b q z (-n)‖ := by
+  obtain ⟨K, _, hK⟩ := exists_norm_finiteQPochhammerIn_div_le (q / b) hq haq
+  have ha_pos : 0 < ‖a‖ := norm_pos_iff.mpr ha0
+  have hz_pos : 0 < ‖z‖ := (norm_nonneg _).trans_lt hbz
+  have hbz' : ‖b‖ < ‖a‖ * ‖z‖ := by
+    rw [norm_div, div_lt_iff₀ ha_pos, mul_comm] at hbz
+    exact hbz
+  have hr : ‖b / (a * z)‖ < 1 := by
+    rw [norm_div, norm_mul, div_lt_one (mul_pos ha_pos hz_pos)]
+    exact hbz'
+  refine Summable.of_norm_bounded ((summable_geometric_of_lt_one (norm_nonneg _) hr).mul_left K)
+    fun m => ?_
+  have hpow : (b / a) ^ m * (z ^ m)⁻¹ = (b / (a * z)) ^ m := by
+    rw [div_pow, div_pow, mul_pow, ← div_eq_mul_inv, div_div]
+  rw [norm_norm, onePsiOneTerm, finiteQPochhammerZ_div_neg_natCast ha0 hb0 hq0, zpow_neg,
+    zpow_natCast, mul_right_comm, hpow, norm_mul, norm_pow, mul_comm]
+  exact mul_le_mul_of_nonneg_right (hK m) (pow_nonneg (norm_nonneg _) m)
+
+/-- **Absolute convergence of `₁ψ₁` on its annulus.**  Under the hypotheses of
+`summable_onePsiOneTerm` the norms of the terms are summable, so the bilateral series converges
+absolutely, not merely unconditionally. -/
+theorem summable_norm_onePsiOneTerm {a b q z : 𝕜} (hq : ‖q‖ < 1) (hq0 : q ≠ 0) (ha0 : a ≠ 0)
+    (hb0 : b ≠ 0) (hb : ∀ j : ℕ, b * q ^ j ≠ 1) (ha : ∀ j : ℕ, q / a * q ^ j ≠ 1)
+    (hbz : ‖b / a‖ < ‖z‖) (hz : ‖z‖ < 1) :
+    Summable fun n : ℤ => ‖onePsiOneTerm a b q z n‖ :=
+  Summable.of_nat_of_neg
+    (summable_norm_onePsiOneTerm_nat hq (qPochhammerInfIn_ne_zero b hq hb) hz)
+    (summable_norm_onePsiOneTerm_neg hq hq0 ha0 hb0 (qPochhammerInfIn_ne_zero _ hq ha) hbz)
 
 end Fabius

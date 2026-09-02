@@ -1,4 +1,5 @@
 import FabiusFunction.ComplexGaussianBinomial
+import FabiusFunction.QGammaLogDerivative
 import FabiusFunction.QPochhammerOrderDerivative
 import Mathlib.Analysis.Meromorphic.Basic
 import Mathlib.Analysis.Complex.CauchyIntegral
@@ -7,15 +8,19 @@ import Mathlib.Analysis.Complex.CauchyIntegral
 # The complex `q`-gamma function and the generalized `q`-Pochhammer symbol as meromorphic functions
 
 For `0 < q < 1`, `Γ_q(z) = (q;q)_∞ (1-q)^{1-z}/(q^z;q)_∞` is a quotient of entire functions of
-`z`, hence meromorphic on `ℂ` (`meromorphicOn_qGammaC`), holomorphic and nonvanishing away from the
-zeros of the denominator (`differentiableOn_qGammaC`), and the recurrence
-`Γ_q(z+1) = (1-q^z)/(1-q) · Γ_q(z)` holds at every `z` off the poles (`qGammaC_add_one`), which is
-the meromorphic-continuation clause of thm:qgamma-basic.
+`z`, hence meromorphic on `ℂ` (`meromorphicOn_qGammaC`), holomorphic away from the zeros of the
+denominator (`differentiableOn_qGammaC`), and the recurrence
+`Γ_q(z+1) = (1-q^z)/(1-q) · Γ_q(z)` holds at every `z` off the poles (`qGammaC_add_one`).
+
+It is genuinely a *continuation* of the real `q`-gamma function: `qGammaC_ofReal` proves
+`Γ_q(x) = qGamma q x` for real `x`, identifying the `Complex.cpow` definition with the
+`Real.rpow` one.  Together these are the meromorphic-continuation clause of thm:qgamma-basic.
 
 Likewise the generalized symbol `(a;q)_α = (a;q)_∞/(aq^α;q)_∞` is meromorphic on `ℂ`
-(`meromorphicOn_qPochhammerC`) and holomorphic and nonvanishing on every open set avoiding
-the poles (`differentiableOn_qPochhammerC`, `qPochhammerC_ne_zero`), the holomorphy clause of
-prop:order-derivative.
+(`meromorphicOn_qPochhammerC`) and holomorphic on every open set avoiding the poles
+(`differentiableOn_qPochhammerC`); it is moreover nonvanishing there provided `(a;q)_∞ ≠ 0`
+(`qPochhammerC_ne_zero`) — without that hypothesis it can vanish identically, as at `a = 1`.
+This is the holomorphy clause of prop:order-derivative.
 -/
 
 set_option autoImplicit false
@@ -97,6 +102,26 @@ theorem qGammaC_add_one {z : ℂ} (hz : qPochhammerInfIn ((q : ℂ) ^ z) q ≠ 0
   unfold qGammaC
   rw [hpow, hshift]
   field_simp
+
+/-- **The complex `q`-gamma function restricts to the real one.**  For `0 < q < 1` and real
+`x`, the `Complex.cpow` definition `qGammaC` agrees with the `Real.rpow` definition `qGamma`.
+This is what makes `qGammaC` a *continuation* of `qGamma`: without it, `qGammaC` would merely be
+some meromorphic function satisfying a similar recurrence. -/
+theorem qGammaC_ofReal (x : ℝ) : qGammaC q (x : ℂ) = ((qGamma q x : ℝ) : ℂ) := by
+  have hqn : ‖q‖ < 1 := by
+    rw [Real.norm_of_nonneg hq0.le]
+    exact hq1
+  have hnum : ((qPochhammerInfIn q q : ℝ) : ℂ) = qPochhammerInfIn (q : ℂ) (q : ℂ) :=
+    ofReal_qPochhammerInfIn hqn
+  have hden : ((qPochhammerInfIn (q ^ x) q : ℝ) : ℂ) =
+      qPochhammerInfIn ((q : ℂ) ^ (x : ℂ)) (q : ℂ) := by
+    rw [ofReal_qPochhammerInfIn hqn, Complex.ofReal_cpow hq0.le]
+  have hpow : (((1 - q) ^ (1 - x) : ℝ) : ℂ) = (1 - (q : ℂ)) ^ (1 - (x : ℂ)) := by
+    rw [Complex.ofReal_cpow (by linarith : (0 : ℝ) ≤ 1 - q)]
+    congr 1 <;> push_cast <;> ring
+  unfold qGammaC qGamma
+  rw [Complex.ofReal_mul, Complex.ofReal_div, hnum, hden, hpow]
+  ring
 
 end QGamma
 
