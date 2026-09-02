@@ -21,8 +21,8 @@ Main files:
 - `arrival_numerical_generation_error.txt` — the preserved failure record from
   the delivered environment; the script's obsolete `mp.one`/`mp.zero` calls
   were repaired for current mpmath.
-- `pdf_validation.txt` and `compile_transcript.txt` — current artifact
-  validation and LaTeX build records.
+- `pdf_validation.txt` and `compile_transcript.txt` — the retained artifact
+  validation and LaTeX build records, with a separate current-source boundary.
 - `ARRIVAL_MANIFEST.txt` — the delivered two-file size/hash manifest.
 - `ARRIVAL_SHA256SUMS` — the verified ten-entry checksum ledger for the full
   archive payload, preserved byte-for-byte from the independent arrival
@@ -39,11 +39,15 @@ the report body genuinely uses follow that shared block. The validated PDF is
 rendered with fully embedded, subset Libertinus prose fonts and no Type 3
 fonts.
 
-The synchronized 2026-08-31 artifact rebuild used exactly three clean, serial
-pdfLaTeX passes. The resulting 24-page A4 PDF matches the 1,940-line source,
+The retained 2026-08-31 artifact rebuild used exactly three clean, serial
+pdfLaTeX passes. The resulting 24-page A4 PDF matches its recorded build source,
 has complete metadata, embeds and subsets all 24 font rows, includes five
 Libertinus rows, and has no Type 3 fonts. All 24 pages rendered and contained
-extractable text; the live 18-entry checksum ledger was refreshed afterward.
+extractable text.  The current 1,940-line, 61,049-byte TeX has SHA-256
+`92d98914722f98b37f84a19283536c8b3925584d0729920b6346a4f572c735b1`;
+it now uses `\TwoAdicValuation` for every genuine dyadic valuation and postdates
+that render.  The live 18-entry checksum ledger inventories current source and
+retained PDF as distinct payloads, not a synchronized publication pair.
 
 Rebuild from this directory:
 

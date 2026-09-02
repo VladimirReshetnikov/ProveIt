@@ -13,12 +13,16 @@ local general-$q$/endpoint-jet, Lagrange,
 revisions in `chapters/03_additive_dyadic.tex`,
 `chapters/90_reference_appendices.tex`, and
 `comb_interpolation_synthesis.tex`, followed by the exact generic-prime and
-dyadic companion-row valuation crosswalk. The repository-wide documentation
+dyadic companion-row valuation crosswalk.  A later source-only notation pass
+also replaced the true two-adic valuation by `\TwoAdicValuation` and renamed
+the geometric Newton coefficient family consistently across the driver,
+chapter 01, and chapter 90 as
+`\FabiusGeometricNewtonCoefficient{k}{q}`. The repository-wide documentation
 census recorded at the earlier merge checkpoint was 629 Lean modules and 8,546
 public declarations. The checked-in PDF was built from the earlier source graph
 and passed the complete publication gate recorded below. Later
-canonical-notation and companion-row edits in
-`chapters/03_additive_dyadic.tex` require a fresh exact three-pass render. The
+canonical-notation edits in chapters 01, 03, and 90 and in the driver require
+a fresh exact three-pass render. The
 root `SHA256SUMS` is the single exhaustive package ledger and verifies the
 current source and retained PDF as distinct payloads; there is no
 `assets/SHA256SUMS`.
@@ -73,6 +77,11 @@ rewritten. They do not certify the current canonical payloads.
 
 ## Current source-only companion-row valuation checkpoint
 
+- The current source-only notation layer uses
+  `\FabiusGeometricNewtonCoefficient{k}{q}` for the Fabius divided-difference
+  coefficient on the complete node list $1,q,\ldots,q^k$, including the
+  $k=0$ boundary, and reserves `\TwoAdicValuation` for the actual dyadic
+  valuation.  The retained PDF predates these notation-only edits.
 - The existing strict-interior dyadic comb-weight theorem remains crosswalked
   exactly to `Fabius.twoPowChoose_padicValNat`; the arbitrary-prime row-$p^m$
   declarations and their positive right endpoint remain unchanged.

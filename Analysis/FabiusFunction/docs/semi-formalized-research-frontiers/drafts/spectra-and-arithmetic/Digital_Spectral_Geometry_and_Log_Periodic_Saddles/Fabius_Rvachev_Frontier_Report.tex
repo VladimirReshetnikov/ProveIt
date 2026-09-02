@@ -117,7 +117,7 @@ dyadic sinc product
 \]
 This report organizes a chain of results around the product's arithmetic
 divisor.  Regrouping Euler's products shows that the
-zero at \(2\pi m\) has multiplicity \(1+\nu_2(m)\).  Consequently the
+zero at \(2\pi m\) has multiplicity \(1+\TwoAdicValuation(m)\).  Consequently the
 Fourier-zero spectral zeta function is
 \[
  \mathcal Z_\Phi(s)
@@ -132,7 +132,7 @@ generating function.  Its imaginary poles
 \(2\pi\ImaginaryUnit k/\log2\) give explicit Fourier coefficients for the periodic term;
 all ordinary inverse-power corrections vanish because of the trivial zeros of
 \(\zeta\), while the surviving exponentially small sector has coefficients
-controlled by \(\nu_2\).  This makes it possible to write a phase-locked
+controlled by \(\TwoAdicValuation\).  This makes it possible to write a phase-locked
 Lambert-\(W_{-1}\) saddle equation for the Fabius function at the flat endpoint,
 propose a refined inverse-Fabius expansion with an explicit periodic
 modulation, and organize its formal arbitrary-order saddle corrections.
@@ -335,13 +335,13 @@ The entire function \(\Phi\) has the canonical product
  \boxed{\displaystyle
  \Phi(z)=
  \prod_{m=1}^{\infty}
- \left(1-\frac{z^2}{(2\pi m)^2}\right)^{1+\nu_2(m)}.}
+ \left(1-\frac{z^2}{(2\pi m)^2}\right)^{1+\TwoAdicValuation(m)}.}
  \label{eq:canonical}
 \end{equation}
 Consequently the nonzero zeros are precisely \(\pm2\pi m\), and the
 multiplicity at either zero is
 \begin{equation}
- \operatorname{mult}_{2\pi m}\Phi=1+\nu_2(m).
+ \operatorname{mult}_{2\pi m}\Phi=1+\TwoAdicValuation(m).
  \label{eq:multiplicity}
 \end{equation}
 The paired genus-zero product in \eqref{eq:canonical} converges locally
@@ -359,11 +359,11 @@ Put \(m=2^{n-1}k\).  Then
 \(\pi^2k^2\,4^n=(2\pi m)^2\).  For a fixed \(m\), the admissible values of
 \(n\) are exactly
 \[
- n=1,\ldots,1+\nu_2(m),
+ n=1,\ldots,1+\TwoAdicValuation(m),
 \]
 which proves the multiplicity.  Finally,
 \[
- \sum_{m\geq1}\frac{1+\nu_2(m)}{m^2}
+ \sum_{m\geq1}\frac{1+\TwoAdicValuation(m)}{m^2}
  =\zeta(2)\sum_{j\geq0}2^{-2j}<\infty,
 \]
 so regrouping is legitimate on compact subsets and the quadratic product
@@ -374,7 +374,7 @@ converges locally uniformly.
 The support and differential equation make \(u\) look ``dyadic'' in physical
 space.  \Cref{thm:canonical} says that its Fourier divisor is dyadic in a much
 more arithmetic sense: its multiplicity sequence is the ruler sequence
-\(1+\nu_2(m)\).
+\(1+\TwoAdicValuation(m)\).
 \end{remark}
 
 \subsection{Spectral zeta and exact zero counting}
@@ -384,7 +384,7 @@ For \(\Re s>1\), define the positive-zero spectral zeta function
 \begin{equation}
  \mathcal Z_\Phi(s)
  =\sum_{m=1}^{\infty}
-   \frac{1+\nu_2(m)}{(2\pi m)^s}.
+   \frac{1+\TwoAdicValuation(m)}{(2\pi m)^s}.
  \label{eq:spectral-zeta-def}
 \end{equation}
 \end{definition}
@@ -410,11 +410,11 @@ with \(k=0\) interpreted as the pole at the origin.
 \begin{proof}
 Use
 \[
- 1+\nu_2(m)=\sum_{j\geq0}\IndicatorOf{2^j\mid m}.
+ 1+\TwoAdicValuation(m)=\sum_{j\geq0}\IndicatorOf{2^j\mid m}.
 \]
 Absolute convergence for \(\Re s>1\) permits the interchange
 \[
- \sum_{m\geq1}\frac{1+\nu_2(m)}{m^s}
+ \sum_{m\geq1}\frac{1+\TwoAdicValuation(m)}{m^s}
  =\sum_{j\geq0}\sum_{2^j\mid m}m^{-s}
  =\zeta(s)\sum_{j\geq0}2^{-js}
  =\frac{\zeta(s)}{1-2^{-s}}.
@@ -449,11 +449,11 @@ multiplicity.
 \begin{proof}
 By \eqref{eq:multiplicity},
 \[
- N(2\pi M)=\sum_{m=1}^{M}(1+\nu_2(m))
-          =M+\nu_2(M!).
+ N(2\pi M)=\sum_{m=1}^{M}(1+\TwoAdicValuation(m))
+          =M+\TwoAdicValuation(M!).
 \]
 Legendre's digit-sum formula gives
-\(\nu_2(M!)=M-\BinaryDigitSum(M)\), proving \eqref{eq:zero-count}.  Since \(2M\) is
+\(\TwoAdicValuation(M!)=M-\BinaryDigitSum(M)\), proving \eqref{eq:zero-count}.  Since \(2M\) is
 even, its parity reduction gives \eqref{eq:TM-spectral-parity}.
 \end{proof}
 
@@ -472,7 +472,7 @@ even, its parity reduction gives \eqref{eq:TM-spectral-parity}.
 
 The multiplicity generating function is the lacunary Lambert series
 \begin{equation}
- \sum_{m\geq1}(1+\nu_2(m))q^m
+ \sum_{m\geq1}(1+\TwoAdicValuation(m))q^m
  =\sum_{j\geq0}\frac{q^{2^j}}{1-q^{2^j}},
  \qquad |q|<1.
  \label{eq:ruler-lambert}
@@ -481,7 +481,7 @@ At \(q=\EulerE^{-2\pi t}\), this becomes a natural heat trace for the positive
 zero divisor:
 \begin{equation}
  \mathcal H(t)
- =\sum_{m\geq1}(1+\nu_2(m))\EulerE^{-2\pi mt}
+ =\sum_{m\geq1}(1+\TwoAdicValuation(m))\EulerE^{-2\pi mt}
  =\sum_{j\geq0}\frac1{\EulerE^{2\pi2^jt}-1}.
  \label{eq:heat-trace}
 \end{equation}
@@ -545,7 +545,7 @@ The canonical product has a direct probabilistic interpretation.  Since
 \[
  M(t)=\Phi(-\ImaginaryUnit t)
  =\prod_{m\geq1}
-  \left(1+\frac{t^2}{(2\pi m)^2}\right)^{1+\nu_2(m)},
+  \left(1+\frac{t^2}{(2\pi m)^2}\right)^{1+\TwoAdicValuation(m)},
 \]
 we may expand its logarithm at the origin.
 
@@ -572,7 +572,7 @@ Thus every even cumulant is simultaneously
 From the canonical product,
 \[
  K(t)
- =\sum_{m\geq1}(1+\nu_2(m))
+ =\sum_{m\geq1}(1+\TwoAdicValuation(m))
   \log\!\left(1+\frac{t^2}{(2\pi m)^2}\right)
  =\sum_{r\geq1}\frac{(-1)^{r+1}}r
    \mathcal Z_\Phi(2r)t^{2r}.
@@ -615,7 +615,7 @@ For the finite product
 \]
 the zero at \(2\pi m\) has multiplicity
 \[
- \min\!\bigl(N,1+\nu_2(m)\bigr)
+ \min\!\bigl(N,1+\TwoAdicValuation(m)\bigr)
  =\sum_{j=0}^{N-1}\IndicatorOf{2^j\mid m}.
 \]
 Hence its spectral zeta is
@@ -767,7 +767,7 @@ and
    \log\!\left(1-\EulerE^{-2^{\ell+1}t}\right)
  \label{eq:R-product}\\
  &=\sum_{n=1}^{\infty}
-   \frac{2^{\nu_2(n)+1}-1}{n}\EulerE^{-2nt}.
+   \frac{2^{\TwoAdicValuation(n)+1}-1}{n}\EulerE^{-2nt}.
  \label{eq:R-digital}
 \end{align}
 In particular, there are no algebraic inverse powers of \(t\):
@@ -798,8 +798,8 @@ periodicity.
 
 Finally, expand each logarithm in \eqref{eq:R-product}.  In a term with
 exponent \(2nt\), write \(n=m2^\ell\).  Summing \(1/m=2^\ell/n\) over
-\(0\leq\ell\leq\nu_2(n)\) gives
-\((2^{\nu_2(n)+1}-1)/n\), proving \eqref{eq:R-digital}.
+\(0\leq\ell\leq\TwoAdicValuation(n)\) gives
+\((2^{\TwoAdicValuation(n)+1}-1)/n\), proving \eqref{eq:R-digital}.
 \end{proof}
 
 \subsection{Explicit Fourier coefficients from the spectral zeta}
@@ -845,7 +845,7 @@ for some fixed \(A\).
 \begin{proof}
 The canonical product gives
 \[
- K(t)=\sum_{m\geq1}(1+\nu_2(m))
+ K(t)=\sum_{m\geq1}(1+\TwoAdicValuation(m))
        \log\!\left(1+\frac{t^2}{(2\pi m)^2}\right).
 \]
 For \(1/2<c<1\),
@@ -1234,7 +1234,7 @@ Poisson summation applied to \(y\mapsto\EulerE^{-ty}u(y)\) gives
 Now \(\omega_m=2\pi m2^r\).  By \cref{thm:canonical},
 \(M(t+\ImaginaryUnit\omega_m)\) has a zero at \(t=0\) of order
 \[
- 1+\nu_2(m2^r)=r+1+\nu_2(m)\geq r+1.
+ 1+\TwoAdicValuation(m2^r)=r+1+\TwoAdicValuation(m)\geq r+1.
 \]
 Therefore the alias sum contributes nothing through degree \(t^r\), and
 comparison of coefficients in \eqref{eq:poisson-Appell} proves
@@ -1665,7 +1665,7 @@ The spectral zeta \eqref{eq:spectral-zeta} is simple enough to support a
 complete ``explicit formula'' theory parallel to that of self-similar
 strings.  Natural next objects include:
 \[
- \sum_m(1+\nu_2(m))g(2\pi m/T),
+ \sum_m(1+\TwoAdicValuation(m))g(2\pi m/T),
  \qquad
  \log\det\nolimits_\zeta(\lambda^2+\rho_m^2),
 \]
@@ -1767,7 +1767,7 @@ the finite algebra is fully mechanized.
 The main organizing viewpoint is that the dyadic sinc product carries an arithmetic
 spectral divisor:
 \[
- \operatorname{mult}_{2\pi m}\Phi=1+\nu_2(m).
+ \operatorname{mult}_{2\pi m}\Phi=1+\TwoAdicValuation(m).
 \]
 Around this identity, the report develops or proposes:
 \begin{itemize}[leftmargin=2em]

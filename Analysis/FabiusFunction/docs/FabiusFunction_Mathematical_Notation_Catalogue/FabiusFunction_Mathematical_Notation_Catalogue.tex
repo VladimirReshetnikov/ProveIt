@@ -518,9 +518,12 @@ integer.\\
 Thue--Morse sign sequence; use the argument-taking command in formulas.\\
 \commandname{ThueMorseSign}\texttt{\{n\}} & $\ThueMorseSign{n}$ &
 $(-1)^{\BinaryDigitSum(n)}$.\\
-\commandname{PadicValuation}\texttt{\{p\}} & $\PadicValuation{p}$ & $p$-adic valuation;
-the argument and zero convention are stated locally.\\
-\commandname{TwoAdicValuation} & $\TwoAdicValuation$ & Two-adic valuation.\\
+\commandname{PadicValuation}\texttt{\{p\}} & $\PadicValuation{p}$ & Finite
+$p$-adic valuation on nonzero integers or rationals; the operand domain determines the
+codomain $\NaturalNumbers$ or $\IntegerNumbers$.  Zero is undefined unless an explicitly
+named extended or software-totalized convention is in force.\\
+\commandname{TwoAdicValuation} & $\TwoAdicValuation$ & The specialization
+$\PadicValuation{2}$, with the same operand-domain and zero-convention requirements.\\
 \commandname{QPochhammer}\texttt{\{a\}\{q\}\{n\}} & $\QPochhammer{a}{q}{n}$ & Finite
 or infinite $q$-shifted factorial with explicit base and length.\\
 \commandname{GeneralizedQPochhammer}\texttt{\{a\}\{q\}\{\string\nu\}} &
@@ -921,6 +924,83 @@ $(f\Convolution g)(x)=\int_{\RealNumbers}f(x-y)g(y)\,\Differential y$.}
 $(\mu\Convolution\nu)(A)=\int\!\int\IndicatorOf{A}(x+y)\,\mu(\Differential x)
 \nu(\Differential y)$.  It is the law of $X+Y$ for independent $X,Y$ with laws
 $\mu,\nu$.}
+\entryfield{Document-local dyadic uniform laws}{In the New Frontiers report,
+\commandname{DyadicUniformLaw}\texttt{\{n\}} has TeX arity one and prints
+$\mathsf U_n^{\mathrm{dyad}}$.  Its mathematical argument is
+$n\in\NaturalNumbers$, and it denotes the probability measure
+\[
+ \mathsf U_n^{\mathrm{dyad}}
+ \DefinitionEquals
+ \operatorname{Unif}\!\left[-2^{-n-1},2^{-n-1}\right],
+ \qquad
+ \frac{\Differential\mathsf U_n^{\mathrm{dyad}}}{\Differential x}
+ =2^n\IndicatorOf{[-2^{-n-1},2^{-n-1}]}(x).
+\]
+The interval has length $2^{-n}$, so the displayed density has total mass one;
+endpoint values of the density are immaterial.  If the coordinate variables are
+independent with these laws, the finite convolution
+$\mathsf U_0^{\mathrm{dyad}}\Convolution\cdots\Convolution
+\mathsf U_N^{\mathrm{dyad}}$ is their sum law and converges weakly as
+$N\to\infty$ to the Rvachev probability law, supported on $[-1,1]$.  This local
+family is a sequence of measures, not a valuation or an unnamed $U$-variable.}
+\entryfield{Document-local reciprocal-integer law}{In the reciprocal-integer-divisor
+report, \commandname{ReciprocalIntegerLaw}\texttt{\{M\}} has TeX arity one and
+prints $\mathsf R_M^{\mathrm{law}}$.  Fix an integer $M\ge2$, let $D_M$ be uniform on
+the explicitly listed $M$-point set
+\[
+ \SetOf{(M-1-2j)/M:j\in\NaturalNumbers,\ 0\le j<M},
+\]
+let $(D_{M,n})_{n\in\NaturalNumbers}$ be independent copies of $D_M$, and define
+\[
+ Y_M\DefinitionEquals\sum_{n=0}^{\infty}\frac{D_{M,n}}{2^{n+1}},
+ \qquad
+ \mathsf R_M^{\mathrm{law}}\DefinitionEquals\LawOf{Y_M}.
+\]
+The series converges absolutely, the law is symmetric and atomless, and
+\[
+ \SupportOf{\mathsf R_M^{\mathrm{law}}}
+ =\left[-\frac{M-1}{M},\frac{M-1}{M}\right].
+\]
+Under the report's positive-sign $2\pi$ characteristic-function convention, put
+$\Phi(z)=\int\EulerE^{2\pi\ImaginaryUnit zx}\,\mu_{\RvachevUp}(\Differential x)$.
+The characteristic function of $\mathsf R_M^{\mathrm{law}}$ is the unique entire
+continuation of
+\[
+ Q_M(z)=\frac{\Phi(z)}{\Phi(z/M)}
+ =\prod_{n=0}^{\infty}
+ \frac{\SincRad(\pi z/2^n)}{\SincRad(\pi z/(M2^n))};
+\]
+the quotient notation alone is not used at a common zero before this removable
+continuation is specified.  Let $X$ and $X'$ be random variables satisfying
+\(\LawOf{X}=\LawOf{X'}=\mu_{\RvachevUp}\), on a coupling for which the pair
+\((X,X')\) is independent of \(Y_M\).  Then
+$X\EqualInLaw M^{-1}X'+Y_M$; only the independence of $X'$ and $Y_M$ is needed
+for this distributional decomposition.  With the boundary definitions
+$Y_1=0$, $\mathsf R_1^{\mathrm{law}}=\delta_0$, and $Q_1=1$, the multiplicative
+cocycle is, for $M,N\in\PositiveIntegers$,
+\[
+ \mathsf R_{MN}^{\mathrm{law}}
+ =\mathsf R_M^{\mathrm{law}}\Convolution
+   (x\mapsto x/M)_{\#}\mathsf R_N^{\mathrm{law}},
+ \qquad Q_{MN}(z)=Q_M(z)Q_N(z/M).
+\]
+These are manuscript-level human-proved claims in that report, not a claimed Lean
+formalization.}
+\entryfield{Conjectural automatic-scale factor pair}{The automatic-scale report uses
+exactly the local pair $\rho_1,\rho_2$ for centered, symmetric, compactly supported
+probability measures: centered means $\int x\,\rho_j(\Differential x)=0$, and
+symmetric means $(x\mapsto-x)_{\#}\rho_j=\rho_j$, for $j\in\{1,2\}$.  Its
+factorization hypothesis is
+$\rho_1\Convolution\rho_2=\mu_{\RvachevUp}$.  Each angular-frequency characteristic
+function $\phi_j(z)=\int\EulerE^{\ImaginaryUnit zx}\,\rho_j(\Differential x)$ is
+assumed entire and in the Cartwright class---that is, of finite exponential type with
+$\int_{\RealNumbers}\log^+|\phi_j(x)|/(1+x^2)\,\Differential x<\infty$---and its zeros
+are assumed to belong to the zero multiset of the Rvachev characteristic function.
+The additional completely-regular-growth hypothesis is part of the stated conjecture,
+not a consequence of compact support.  Under those hypotheses the conjecture predicts a
+factorization by whole dyadic sinc factors, up to a finite B-spline factor and interchange
+of $\rho_1$ and $\rho_2$.  The subscripts enumerate two law factors; they are neither
+$2$-adic valuations nor the spectral radii denoted by other local $\rho$-symbols.}
 \entryfield{Sequences}{For sequences indexed by $\NaturalNumbers$, the Cauchy convolution
 is $(a\Convolution b)_n=\sum_{k=0}^{n}a_kb_{n-k}$.  It is distinct from bilateral
 convolution over $\IntegerNumbers$.}
@@ -1682,26 +1762,60 @@ the crosswalk appendix; prose identities are not upgraded beyond their verified 
 \end{catalogueentry}
 
 \begin{catalogueentry}{padic-valuation}{\(p\)-adic and \(2\)-adic valuations}
-\entryfield{Finite valuation}{For a prime $p$ and nonzero
-$n\in\IntegerNumbers$,
+\entryfield{Nonzero integers}{Fix a prime $p$.  Every nonzero
+$n\in\IntegerNumbers$ has a unique factorization
+$n=p^ku$ with $k\in\NaturalNumbers$, $u\in\IntegerNumbers$, and $p\nmid u$.
+The finite integer valuation is
 \[
- \PadicValuation p(n)\DefinitionEquals
- \max\{k\in\NaturalNumbers:p^k\mid n\}.
+ \PadicValuation{p}(n)\DefinitionEquals
+ k
+ =\max\SetOf{r\in\NaturalNumbers:p^r\mid n}
+ \in\NaturalNumbers.
 \]
-The value depends only on $|n|$.}
-\entryfield{At zero}{In analytic formulas using extended values,
-$\PadicValuation p(0)=+\infty\in\ExtendedRealNumbers$.  In Lean or finite-natural APIs,
-the valuation of zero may instead be represented by a separate option or by a
-library-specific totalization; each theorem states which codomain it uses.}
-\entryfield{Two-adic abbreviation}{$\TwoAdicValuation(n)=\PadicValuation2(n)$.
-For $n\ne0$, write $n=2^{\TwoAdicValuation(n)}n_{\mathrm{odd}}$ with
-$n_{\mathrm{odd}}$ odd.}
+The value depends only on $|n|$, so signs contribute no power of $p$.}
+\entryfield{Nonzero rationals}{For $x\in\RationalNumbers^\times$ choose any
+representation $x=a/b$ with nonzero $a,b\in\IntegerNumbers$ and define
+\[
+ \PadicValuation{p}(x)
+ \DefinitionEquals
+ \PadicValuation{p}(a)-\PadicValuation{p}(b)
+ \in\IntegerNumbers.
+\]
+This integer is independent of the chosen fraction: multiplying numerator and
+denominator by the same nonzero integer adds and subtracts the same valuation.
+Equivalently, $x=p^ku/v$ for a unique $k\in\IntegerNumbers$ after requiring
+$u,v\in\IntegerNumbers\setminus\{0\}$ and $p\nmid uv$.  Negative values therefore
+record powers of $p$ in the denominator.}
+\entryfield{Algebraic laws}{For nonzero rationals $x,y$,
+\[
+ \PadicValuation{p}(xy)=\PadicValuation{p}(x)+\PadicValuation{p}(y),
+ \qquad
+ \PadicValuation{p}(x/y)=\PadicValuation{p}(x)-\PadicValuation{p}(y).
+\]
+If also $x+y\ne0$, then
+$\PadicValuation{p}(x+y)\ge
+\min\{\PadicValuation{p}(x),\PadicValuation{p}(y)\}$, with equality when the two
+valuations differ.}
+\entryfield{Zero conventions}{The classical finite maps above have domains
+$\IntegerNumbers\setminus\{0\}$ and $\RationalNumbers^\times$; their value at zero is
+undefined.  An explicitly extended valuation instead has codomain
+$\IntegerNumbers\cup\{+\infty\}$ and is defined by
+$\overline{\PadicValuation{p}}(0)=+\infty$, with $k<+\infty$ and
+$k+(+\infty)=+\infty$ for every $k\in\IntegerNumbers$.  A finite value at zero is
+never inferred from the printed glyph: it belongs only to a named software API or another
+locally declared totalization.}
+\entryfield{Two-adic specialization}{$\TwoAdicValuation(x)=\PadicValuation{2}(x)$ on
+the declared nonzero integer or rational domain.  For a nonzero integer,
+$n=2^{\TwoAdicValuation(n)}n_{\mathrm{odd}}$ with $n_{\mathrm{odd}}$ odd and
+$\TwoAdicValuation(n)\in\NaturalNumbers$.  On rationals its codomain is
+$\IntegerNumbers$; for example,
+$\TwoAdicValuation(3/8)=-3$ and $\TwoAdicValuation(-12)=2$.}
 \entryfield{Prime-power Pascal row}{For a prime \(p\), \(m\in\NaturalNumbers\), and
 \(j\in\PositiveIntegers\) with \(j\le p^m\), the finite-natural valuation satisfies
 \[
- \PadicValuation p\!\binom{p^m}{j}+\PadicValuation p(j)=m,
+ \PadicValuation{p}\!\binom{p^m}{j}+\PadicValuation{p}(j)=m,
  \qquad
- \PadicValuation p\!\binom{p^m}{j}=m-\PadicValuation p(j).
+ \PadicValuation{p}\!\binom{p^m}{j}=m-\PadicValuation{p}(j).
 \]
 The right endpoint \(j=p^m\) and the boundary \(m=0\) are included.  The strict
 dyadic-comb specialization has \(0<j<2^m\).  These formulas do not cover the distinct
@@ -1712,10 +1826,22 @@ arbitrary-prime identities are the declarations
 \leanline{primePowerChoose_padicValNat}
 The strict dyadic specialization is
 \leanline{twoPowChoose_padicValNat}
-Lean's
-\lean{padicValNat} is totalized in \(\NaturalNumbers\), so its exact zero behavior is the
-declaration's behavior rather than the extended-value convention above.  Status:
-\textbf{Lean-proved}.}
+Mathlib's three relevant functions are distinct totalized APIs:
+\(\lean{padicValNat}:\NaturalNumbers\to\NaturalNumbers\),
+\(\lean{padicValInt}:\IntegerNumbers\to\NaturalNumbers\), and
+\(\lean{padicValRat}:\RationalNumbers\to\IntegerNumbers\) after the prime parameter
+has been supplied.  Each assigns zero the finite value \(0\); on nonzero inputs its
+codomain agrees with the corresponding finite valuation above.  Thus a theorem using one
+of these Lean names does not use the \(+\infty\) convention, and the three codomains are not
+interchangeable.  Status of the displayed project identities: \textbf{Lean-proved}.}
+\entryfield{Scoped historical spelling}{The source-faithful transcription
+\modulepath{docs/papers/arXiv-1702.06487v3/157-Arithmetic-v3.tex} carries the explicit
+\texttt{HISTORICAL-NOTATION-SCOPE:} marker and retains the raw source form
+\texttt{\textbackslash nu\_2(r)}.  In that paper
+the operand is a nonzero rational number and the value is the exponent of \(2\) in its
+prime factorization, hence an element of \(\IntegerNumbers\) that may be negative.  That
+spelling is interpretive historical evidence only; active normative prose uses
+\commandname{TwoAdicValuation} and states its domain and zero convention.}
 \entryfield{Order notation}{For a zero or pole of a meromorphic function at $z_0$,
 $\OrderOperator_{z_0}(f)$ is a different valuation-like object; positive values denote
 zeros and negative values poles in this catalogue.}
@@ -1922,6 +2048,27 @@ polynomial, logarithm, Laplace transform, or other \(L\)-family.}
 It counts all set partitions of an \(n\)-element labelled set.  The superscript
 \(\mathrm{Bell}\) is printed because an unlabelled \(B_n\) is also widely used
 for Bernoulli numbers and polynomials.}
+\entryfield{Document-local Bell block multiplicity}{In the q-Pochhammer and
+q-binomial monograph, \commandname{BellBlockMultiplicity}\texttt{\{r\}} has TeX
+arity one and prints $m_r^{\mathrm{Bell}}$.  For a fixed
+$n\in\NaturalNumbers$, the complete-Bell summation variable is the entire vector
+\[
+ (m_r^{\mathrm{Bell}})_{1\le r\le n}\in\NaturalNumbers^n,
+ \qquad
+ \sum_{r=1}^{n}r\,m_r^{\mathrm{Bell}}=n.
+\]
+Here $m_r^{\mathrm{Bell}}$ is the number of size-$r$ blocks, or equivalently the
+multiplicity with which the $r$th cumulant input is selected.  In the monograph's
+Fabius-value specialization its contribution is
+\[
+ \prod_{r=1}^{n}
+ \frac{1}{m_r^{\mathrm{Bell}}!}
+ \left(\frac{\kappa_r}{r!}\right)^{m_r^{\mathrm{Bell}}}.
+\]
+For $n=0$ the index set has the unique empty vector in $\NaturalNumbers^0$, the
+weighted sum is zero, and the empty product is one.  The semantic superscript prevents
+this nonnegative multiplicity from being mistaken for a valuation or an unrestricted
+integer index; the command is local to that monograph and is not part of the shared API.}
 \entryfield{Touchard polynomial}{For \(n\in\NaturalNumbers\),
 \[
  \TouchardPolynomial{n}(x)
@@ -2833,6 +2980,72 @@ for its abbreviated Gaussian-binomial macro.  The canonical
 evaluation, not substitution into the displayed rational quotient.}
 \end{catalogueentry}
 
+\begin{catalogueentry}{macmahon-q-catalan}{MacMahon's \(q\)-Catalan polynomial}
+\entryfield{Document-local command and type}{The \(q\)-Pochhammer monograph's local
+\commandname{MacMahonQCatalanPolynomial}\texttt{\{n\}\{q\}} has TeX arity two and
+prints \(C_n^{\mathrm{Mac}}(q)\).  The first argument is
+\(n\in\NaturalNumbers\).  The second argument names the displayed polynomial
+indeterminate---normally \(q\), or \(X\) when matching the Lean polynomial
+variable---rather than supplying a denominator at which pointwise division is to be
+performed.  Intrinsically, the family is
+\(C_n^{\mathrm{Mac}}(X)\in\IntegerNumbers[X]\); scalar values are obtained afterward by
+polynomial evaluation.}
+\entryfield{Exact polynomial quotient}{It is the unique polynomial satisfying
+\[
+ \QInteger{n+1}{q}\,C_n^{\mathrm{Mac}}(q)
+ =\GaussianBinomial{2n}{n}{q},
+ \qquad
+ C_n^{\mathrm{Mac}}(q)
+ =\frac{\GaussianBinomial{2n}{n}{q}}{\QInteger{n+1}{q}}
+ \quad\hbox{in }\IntegerNumbers[q].
+\]
+The second display is exact polynomial division: cyclotomic divisibility first proves
+that \(\QInteger{n+1}{q}\) divides the central Gaussian polynomial, and the monicity of
+the divisor gives the quotient in \(\IntegerNumbers[q]\).  It is not the pointwise
+quotient of two scalar-valued functions.  In particular, at a zero of
+\(\QInteger{n+1}{q}\), its value is the evaluation of the already constructed quotient
+polynomial---the removable value after cancellation---and not an undefined \(0/0\).}
+\entryfield{Degree and boundary value}{For every \(n\in\NaturalNumbers\),
+\[
+ \deg C_n^{\mathrm{Mac}}=n(n-1),
+ \qquad C_0^{\mathrm{Mac}}(q)=1.
+\]
+The degree formula uses natural-number subtraction at \(n=0\).  The explicit boundary
+value confirms that the polynomial is the nonzero constant \(1\), so its degree is \(0\)
+rather than an exceptional zero-polynomial degree.}
+\entryfield{Classical specialization}{Evaluation of the quotient polynomial at \(q=1\)
+gives
+\[
+ C_n^{\mathrm{Mac}}(1)=\CatalanNumber{n}
+ =\frac1{n+1}\binom{2n}{n}.
+\]
+This is polynomial evaluation after cancellation, since the defining exact identity
+specializes to
+\((n+1)C_n^{\mathrm{Mac}}(1)=\binom{2n}{n}\).}
+\entryfield{Coefficient signs}{The coefficients are nonnegative integers, by the
+separate classical combinatorial interpretation using an appropriate major-index
+statistic on Dyck paths of semilength \(n\).  Integrality from cyclotomic divisibility
+alone does not prove nonnegativity.  The current Lean module proves the exact integral
+quotient, degree, and specialization at one, but does not prove coefficientwise
+nonnegativity; that last assertion therefore has classical/cited, not Lean-proved,
+status in this catalogue.}
+\entryfield{Collision policy}{The ordinary Catalan number remains
+\(\CatalanNumber{n}\).  The bare notation \(C_n(q)\) is not canonical: the literature
+contains inequivalent \(q\)-Catalan families, and the corpus also assigns \(C_n\) to
+unrelated coefficient sequences.  The semantic superscript and the full local command
+identify specifically MacMahon's quotient convention.  This command is local to the
+monograph and is intentionally absent from the shared quick-reference and alphabetical
+command indexes.}
+\entryfield{Lean crosswalk}{In \modulepath{QCatalan.lean},
+\lean{qCatalan}~\(n\) is the polynomial in \(\IntegerNumbers[X]\);
+\lean{qInt_X_dvd_gaussianBinomial_int} proves the required divisibility,
+\lean{qInt_X_mul_qCatalan} is the exact product identity,
+\lean{qCatalan_natDegree} proves degree \(n(n-1)\), and
+\lean{qCatalan_eval_one} identifies evaluation at one with Mathlib's
+\lean{catalan}~\(n\).  These named results have status \textbf{Lean-proved}; none of
+them states coefficientwise nonnegativity.}
+\end{catalogueentry}
+
 \begin{catalogueentry}{generalized-gaussian-binomial}{Generalized Gaussian binomial
 coefficients}
 \entryfield{Finite-product/rational definition}{Fix a nonzero complex base
@@ -3169,11 +3382,23 @@ or a wave function.}
  B_q(x,y)
  \DefinitionEquals\frac{\Gamma_q(x)\Gamma_q(y)}{\Gamma_q(x+y)}
  =\int_0^1 t^{x-1}
-   \frac{(qt;q)_\infty}{(q^yt;q)_\infty}\,\mathrm d_qt.
+   \frac{\QPochhammer{qt}{q}{\infty}}
+        {\QPochhammer{q^y t}{q}{\infty}}\,\mathrm d_qt.
 \]
 The integral formula includes the Jackson differential and real powers determined by
 \(t\in(0,1]\); a complex continuation uses the gamma quotient, not an undeclared
 pointwise integral branch.}
+\entryfield{Lean crosswalk}{In \modulepath{QBetaIntegral.lean}, the total real-valued
+definition is \lean{qBeta}~\(q\,x\,y\).  Under the explicit hypotheses
+\(0<q<1\) and \(x,y>0\), \lean{qBeta_eq_prod} proves the infinite-product
+evaluation, \lean{qBeta_eq_qGamma} proves the displayed gamma quotient,
+\lean{qBeta_comm} and \lean{qBeta_pos} prove symmetry and positivity, and
+\lean{qBeta_add_one_left} and \lean{qBeta_add_one_right} prove the two positive-domain
+recurrences.  The definition is total because Lean's real operations and
+\lean{jacksonIntegral} are total; the named evaluation theorems do not silently extend
+beyond their positivity hypotheses.  Status: \textbf{Lean-proved with the displayed
+hypotheses}.  This module does not formalize the meromorphic continuation or the
+classical \(q\uparrow1\) limits.}
 \entryfield{Classical limits}{For fixed \(z\) away from poles,
 \(\Gamma_q(z)\to\GammaFunction(z)\), \(\psi_q(z)\to\psi(z)\), and
 \(B_q(x,y)\to B(x,y)\) as \(q\uparrow1\), on compact subsets where the corresponding
@@ -3505,6 +3730,40 @@ polynomial rings are present.}
 Consequently cyclotomic divisibility of ratios of shifted factorials is checked by
 subtracting these explicit nonnegative exponents after polynomiality has been
 established.}
+\entryfield{Lean crosswalk: carry and divisibility}{In
+\modulepath{CyclotomicDivisibility.lean},
+\lean{cyclotomic_exponent_eq_one_iff} proves, for \(k\le n\) and \(0<d\), that
+the Gaussian cyclotomic exponent is one exactly when
+\(n\bmod d<k\bmod d\).  The theorem
+\lean{cyclotomic_dvd_gaussianBinomial_iff} proves the corresponding divisibility
+criterion for \(\Phi_d\) and the universal Gaussian polynomial over
+\(\RationalNumbers[X]\).  These theorems formalize the displayed exponent and carry
+criterion, but they do not define the document-local three-argument
+\commandname{CyclotomicValuation} as a general Lean function.  Status:
+\textbf{Lean-proved with the stated natural-number hypotheses}.}
+\entryfield{Lean crosswalk: primitive-root blocks and \(q\)-Lucas}{For a primitive
+\(d\)th root \(\zeta\) in an integral domain,
+\modulepath{PrimitiveRootBlock.lean} proves the interior vanishing theorem
+\lean{gaussianBinomial_isPrimitiveRoot_eq_zero} and the complete block identity
+\lean{finiteQPochhammerIn_isPrimitiveRoot}, including the hypothesis \(0<d\):
+\[
+ \GaussianBinomial{d}{k}{\zeta}=0\quad(0<k<d),
+ \qquad
+ \prod_{j=0}^{d-1}(1-y\zeta^j)=1-y^d\quad(y\text{ in the coefficient ring}).
+\]
+In \modulepath{QLucas.lean}, \lean{gaussianBinomial_q_lucas} proves, for
+\(a,r,b,s\in\NaturalNumbers\) with \(b,s<d\),
+\[
+ \GaussianBinomial{ad+b}{rd+s}{\zeta}
+ =\binom ar\GaussianBinomial{b}{s}{\zeta}.
+\]
+Finally, \lean{gaussianBinomial_mul_isPrimitiveRoot} in
+\modulepath{CyclotomicDivisibility.lean} specializes this to
+\(\GaussianBinomial{an}{bn}{\zeta}=\binom ab\) for a primitive \(n\)th root and
+\(0<n\).  All three modules work over the algebraic hypotheses written in their
+declarations; they do not by themselves authorize evaluation of an uncancelled rational
+\(q\)-series quotient at a root of unity.  Status: \textbf{Lean-proved with the displayed
+hypotheses}.}
 \end{catalogueentry}
 
 \begin{catalogueentry}{q-adic-formal}{Coefficientwise convergence, \(q\)-adic order, and
@@ -5710,6 +5969,47 @@ polynomial at node $j$ is
 of degree at most $N$ matching $f$ at all nodes.}
 \entryfield{Empty case}{For $N=0$, the product is empty and $\ell_0=1$.
 There is no $N=-1$ interpolant unless a separate empty-data convention is introduced.}
+\entryfield{Document-local Fabius geometric-Newton coefficient}{In the geometric-comb
+synthesis volume, \commandname{FabiusGeometricNewtonCoefficient}
+\texttt{\{k\}\{q\}} has TeX arity two and prints
+$\mathsf c_k^{\mathrm{F,Newt}}(q)$.  Its mathematical arguments satisfy
+$k\in\NaturalNumbers$ and $q\in(0,1)$.  With the bounded Fabius function
+$\FabiusBounded$ and the ordered, pairwise distinct nodes
+$1,q,\ldots,q^k$, it is the divided difference
+\[
+ \mathsf c_k^{\mathrm{F,Newt}}(q)
+ \DefinitionEquals
+ [\FabiusBounded;1,q,\ldots,q^k]
+\]
+and hence the coefficient of
+\[
+ N_k(x;1,q)\DefinitionEquals\prod_{r=0}^{k-1}(x-q^r)
+\]
+in the Newton interpolant.  At $k=0$ the product is empty,
+$N_0=1$, and
+$\mathsf c_0^{\mathrm{F,Newt}}(q)=\FabiusBounded(1)=1$.
+The exact coefficient table in that volume specializes the second argument to
+$q=1/2$; retaining $q$ in the command distinguishes the general geometric comb from
+this half-base table.  The subscript is a Newton-basis degree, not a valuation, and the
+command is document-local rather than a shared Fabius API.}
+\entryfield{Generic Newton Lean crosswalk}{In
+\modulepath{NewtonInterpolation.lean}, \lean{newtonCoeff} and \lean{newtonPoly}
+define the triangular Newton coefficients and their degree-\(n\) polynomial over an
+arbitrary field.  The theorem \lean{eval_newtonPoly} proves interpolation at node \(i\)
+when the product of its differences from the earlier nodes is nonzero;
+\lean{newtonPoly_eq_interpolate} and \lean{newtonCoeff_eq_sum} use injectivity on the
+finite node range to identify the Lagrange interpolant and the divided-difference sum.
+For geometric nodes, \lean{nodal_range_pow} proves the \(q\)-Pochhammer form of the
+Newton basis under \(q\ne0\), \lean{prod_erase_pow_sub_pow} evaluates the nodal
+denominator for \(j\le k\), and \lean{newtonCoeff_pow_eq_sum} proves the explicit
+coefficient sum under injectivity of \(j\mapsto q^j\) on the required range.
+Instantiating the generic data by
+\(v(j)=q^j\) and \(y(j)=\FabiusBounded(q^j)\) gives the mathematical object printed by
+\commandname{FabiusGeometricNewtonCoefficient}; there is no separate Lean declaration
+with that document-local command name.  Lean's definitions remain total when a
+denominator vanishes, while the interpolation and divided-difference theorems retain
+their nonvanishing or injectivity hypotheses.  Status: \textbf{Lean-proved at the
+generic level with the stated hypotheses}.}
 \entryfield{Barycentric weights}{$w_j=(\prod_{k\ne j}(x_j-x_k))^{-1}$ and
 $I_Nf(x)=
 (\sum_jw_jf(x_j)/(x-x_j))/(\sum_jw_j/(x-x_j))$ away from nodes, with the value at a
@@ -5907,6 +6207,33 @@ infinitely many singularities or incompatible coefficient asymptotics.}
 $L^2(\Omega)=\bigoplus_{n\ge0}\mathcal H_n$ is relative to a specified probability
 structure.  $J_n$ denotes the orthogonal projection onto $\mathcal H_n$ only within that
 scope.}
+\entryfield{Dyadic-chaos multi-index}{In the dyadic-chaos report,
+$V_1,V_2,\ldots$ are independent uniform coordinates on $[-1,1]$, and
+$\ell_n(v)=\sqrt{2n+1}\,P_n(v)$ is the orthonormal Legendre basis in
+$L^2([-1,1],\Differential v/2)$.  A tensor index is
+\[
+ \alpha=(\alpha_1,\alpha_2,\ldots),
+ \qquad \alpha_j\in\NaturalNumbers\quad(j\ge1).
+\]
+Its support, total degree, and tensor basis element are, without suppressed bounds,
+\[
+ \SupportOf{\alpha}\DefinitionEquals\SetOf{j\ge1:\alpha_j>0},
+ \qquad
+ \CardinalityOf{\SupportOf{\alpha}}<\infty,
+ \qquad
+ \Norm{\alpha}_1\DefinitionEquals\sum_{j\ge1}\alpha_j,
+ \qquad
+ \ell_\alpha(V)\DefinitionEquals
+ \prod_{j\in\SupportOf{\alpha}}\ell_{\alpha_j}(V_j).
+\]
+The product is finite; equivalently one may include every $j\ge1$ because
+$\ell_0=1$.  The coefficients $c_\alpha(t)$ in
+$\EulerE^{tX}=\sum_\alpha c_\alpha(t)\ell_\alpha(V)$ inherit exactly this index
+set.  In finite-set monomial expansions the same letter denotes a finite multi-index
+$(\alpha_j)_{j\in S}$ and
+$|\alpha|=\sum_{j\in S}\alpha_j$, with the displayed summation bounds determining
+whether zero components are permitted.  The letter $\alpha$ replaces the former
+$\nu$-family so a tensor degree can never be read as a \(2\)-adic valuation.}
 \entryfield{Cumulant generating function}{For an MGF nonzero near zero,
 \[
  K_X(t)=\log\MomentGeneratingFunction X(t)
@@ -6193,6 +6520,20 @@ sequence uses $\ThueMorseSign{n}$.  A dynamical map $T:X\to X$ is typed at first
 $W$ & Lambert function, Wasserstein distance, Walsh function, and weight. & Use
 $\LambertW_k$ with branch $k$ and $W_p(\mu,\nu)$ with transport exponent $p$.  Walsh
 functions and weights carry their own indices and domains.\\
+$\nu,\nu_j$ & Finite $p$-adic valuation, a signed or probability measure, an integer or
+complex order in a generalized q-series, a fractional order, and formerly several local
+indexed families. & Valuations use $\PadicValuation{p}$ or $\TwoAdicValuation$ and state
+whether the operand is a nonzero integer or rational and whether zero is undefined,
+extended to $+\infty$, or software-totalized.  A measure is declared as such and appears
+with measurable-set or differential arguments; q-series and fractional orders state their
+parameter domains.  The former indexed families now print
+$m_r^{\mathrm{Bell}}$, $\mathsf c_k^{\mathrm{F,Newt}}(q)$,
+$\mathsf U_n^{\mathrm{dyad}}$, $\alpha$, $\rho_1,\rho_2$, or
+$\mathsf R_M^{\mathrm{law}}$ according to their full local definitions.  Outside the
+canonical implementation of \commandname{TwoAdicValuation}, no raw
+\texttt{\textbackslash nu\_2} remains in active normative prose; the spelling is
+permitted only in the explicitly marked source-faithful arithmetic paper described in
+the valuation entry.\\
 $\varepsilon$ & Thue--Morse sign, small positive tolerance, perturbation parameter, and
 error sequence. & Use $\ThueMorseSign{n}$ for the sign.  A tolerance is quantified
 $\varepsilon>0$; perturbations and errors receive semantic subscripts when signs occur
@@ -7785,8 +8126,15 @@ the relation: a numeric metric distance is not equality in distribution.\\
 or another order operator only after the local arguments define which notion is meant.\\
 \commandname{lcm} & \commandname{LeastCommonMultiple} & State the finite family and
 empty-family convention.\\
-\commandname{vtwo} & \commandname{TwoAdicValuation} & State the value at zero or restrict
-to nonzero arguments.\\
+\commandname{vtwo}, \commandname{vTwo}, \commandname{nuTwo},
+\commandname{nuu}, \commandname{vtwoPartii}, \commandname{vtwoPartcc} &
+\commandname{TwoAdicValuation} & Preserve the operand when replacing any of these
+source-local aliases.  A nonzero integer operand gives a value in
+$\NaturalNumbers$; a nonzero rational operand gives a value in $\IntegerNumbers$ and may
+have negative valuation.  Zero is outside both finite mathematical domains.  If zero can
+occur, explicitly select either the extended value $+\infty$ or a named totalized API such
+as \lean{padicValNat}, \lean{padicValInt}, or \lean{padicValRat}; all three Lean APIs
+assign zero the finite value \(0\), but their codomains differ.\\
 \commandname{qbinom} & \commandname{GaussianBinomial} & Supply all three arguments:
 upper index, lower index, and base.\\
 \commandname{qpoch}, \commandname{poch} & \commandname{QPochhammer} & Supply element,
@@ -8087,8 +8435,9 @@ $\BinaryDigitSum,\ThueMorseSignSymbol,\ThueMorseSign{n}$ &
 \commandname{BinaryDigitSum}, \commandname{ThueMorseSignSymbol},
 \commandname{ThueMorseSign} & Bit count, reserved sequence glyph, and indexed sign.\\
 $\PadicValuation{p},\TwoAdicValuation$ & \commandname{PadicValuation},
-\commandname{TwoAdicValuation} & Prime-parametric and specialized two-adic valuations;
-zero convention local.\\
+\commandname{TwoAdicValuation} & Prime-parametric and specialized two-adic valuations:
+$\NaturalNumbers$-valued on nonzero integers and $\IntegerNumbers$-valued on nonzero
+rationals.  Zero is undefined unless an extended or named totalized convention is stated.\\
 $\QPochhammer{a}{q}{n},\GaussianBinomial{n}{k}{q},\QInteger{n}{q}$ &
 \commandname{QPochhammer}, \commandname{GaussianBinomial}, \commandname{QInteger} & Every
 base and finite/infinite length explicit.\\
@@ -8416,6 +8765,28 @@ Prime-power Pascal-row valuations & \lean{primePowerChoose_padicValNat_add},
 \modulepath{PrimePowerBinomialValuation.lean} & Arbitrary-prime formulas include
 \(j=p^m\) and \(m=0\); the dyadic theorem uses \(0<j<2^m\).  No theorem for the distinct
 endpoint-flat weights \(\binom{2^m-2}{j-1}\) is inferred.\\
+MacMahon's \(q\)-Catalan polynomial & \lean{qCatalan},
+\lean{qInt_X_dvd_gaussianBinomial_int}, \lean{qInt_X_mul_qCatalan},
+\lean{qCatalan_natDegree}, and \lean{qCatalan_eval_one} in
+\modulepath{QCatalan.lean} & An exact quotient in \(\IntegerNumbers[X]\), its product
+identity, degree \(n(n-1)\), and evaluation at one are proved.  Coefficientwise
+nonnegativity is not a theorem of this module.\\
+Jackson \(q\)-beta function & \lean{qBeta}, \lean{qBeta_eq_prod},
+\lean{qBeta_eq_qGamma}, \lean{qBeta_comm}, \lean{qBeta_pos},
+\lean{qBeta_add_one_left}, and \lean{qBeta_add_one_right} in
+\modulepath{QBetaIntegral.lean} & The function is real-valued.  Product, gamma-quotient,
+symmetry, positivity, and recurrence theorems retain \(0<q<1\) and \(x,y>0\); no
+meromorphic continuation or \(q\uparrow1\) theorem is inferred.\\
+Cyclotomic carry, primitive-root blocks, and \(q\)-Lucas &
+\lean{cyclotomic_exponent_eq_one_iff} and
+\lean{cyclotomic_dvd_gaussianBinomial_iff} in
+\modulepath{CyclotomicDivisibility.lean};
+\lean{finiteQPochhammerIn_isPrimitiveRoot} in
+\modulepath{PrimitiveRootBlock.lean}; \lean{gaussianBinomial_q_lucas} in
+\modulepath{QLucas.lean} & The carry criterion is over \(\RationalNumbers[X]\); the
+root-block and \(q\)-Lucas theorems assume a primitive root in an integral domain and
+retain \(0<d\) and the stated residue bounds.  They do not define a general
+\commandname{CyclotomicValuation} function.\\
 Exact full moments & \lean{moment} in \modulepath{Arithmetic.lean};
 \lean{momentIntegral} in \modulepath{Basic.lean} & Rational recurrence and real integral are
 distinct objects; \modulepath{AnalyticMoments.lean} supplies bridge theorems with hypotheses.\\
@@ -8440,6 +8811,13 @@ states the corresponding measure equality.\\
 Fourier commands & Mathlib Fourier-transform APIs plus project-specific theorems in
 dedicated Fourier modules & The shared commands choose print normalization.  They are
 not names of one new Lean definition and do not erase Mathlib's hypotheses.\\
+Generic Newton interpolation & \lean{newtonCoeff}, \lean{newtonPoly},
+\lean{eval_newtonPoly}, \lean{newtonPoly_eq_interpolate},
+\lean{newtonCoeff_eq_sum}, \lean{nodal_range_pow},
+\lean{prod_erase_pow_sub_pow}, and \lean{newtonCoeff_pow_eq_sum} in
+\modulepath{NewtonInterpolation.lean} & Definitions are total over a field; interpolation
+and divided differences retain their product-nonzero or node-injectivity hypotheses.
+The geometric formulas do not create a separately named Fabius-specific coefficient.\\
 Finite-node Lagrange--Rvachev decoder & \lean{lagrangeRvachevDecoder} and
 \lean{lagrangeRvachevAtomCoefficient} in \modulepath{LagrangeRvachevSynthesis.lean} &
 Exact synthesis uses \(M\ne0\), \(|s|-1\le\TwoAdicValuation(M)\), and \(x\in[-1,1]\).
