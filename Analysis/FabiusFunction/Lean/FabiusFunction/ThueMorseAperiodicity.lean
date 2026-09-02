@@ -45,11 +45,8 @@ namespace Fabius
 
 /-- Adding a full block length flips every Thue--Morse sign. -/
 theorem thueMorseSign_two_pow_add (m x : ℕ) (hx : x < 2 ^ m) :
-    thueMorseSign (2 ^ m + x) = -thueMorseSign x := by
-  have h := thueMorseSign_block_concat m 1 x hx
-  rw [one_mul] at h
-  rw [h, show thueMorseSign 1 = -1 by simp [thueMorseSign, binaryWeight]]
-  ring
+    thueMorseSign (2 ^ m + x) = -thueMorseSign x :=
+  thueMorseSign_add_pow_two m x hx
 
 /-- An eventual period of the signed Thue--Morse sequence is a global
 period: the block-flip identity transports periodicity from beyond any
