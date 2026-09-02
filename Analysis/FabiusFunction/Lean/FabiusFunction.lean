@@ -56,6 +56,7 @@ import FabiusFunction.NorlundPolynomials
 import FabiusFunction.BellDerivative
 import FabiusFunction.AssociatedStirling
 import FabiusFunction.RStirling
+import FabiusFunction.FallingFactorialSeries
 import FabiusFunction.SymmetricFunctionTransform
 import FabiusFunction.SymmetricFunctionGenerating
 import FabiusFunction.FiniteQBinomialCore

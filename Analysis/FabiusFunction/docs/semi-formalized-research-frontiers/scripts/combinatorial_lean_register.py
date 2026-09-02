@@ -305,11 +305,6 @@ STATUS = {
    r"arrays $[g,f]$ over any $\RationalNumbers$-algebra, with the inverse law in the form "
    r"$[g,f]\,[h,\overline f]=[1,t]$ whenever $g\,(h\circ f)=1$; the Stirling examples are "
    r"\lean{Fabius.expRiordan_one_exp_sub_one} and \lean{Fabius.expRiordan_one_log}"),
- 'cor:merged-bernoulli-stirling-second-proof': ('partial',
-   r"the conclusion is \lean{Fabius.bernoulli_eq_sum_stirlingSecond} and the evaluation "
-   r"$\Delta^k0^n=k!\StirlingSecondKind nk$ is \lean{Fabius.factorial_mul_stirlingSecond_eq_sum} "
-   r"(\lean{StirlingBasisChange}); the finite-difference route through "
-   r"\cref{thm:merged-bernoulli-difference} is not formalized"),
  'thm:merged-appell': ('Lean',
    r"Bernoulli: the derivative identity is Mathlib's \lean{Polynomial.derivative_bernoulli}, "
    r"the translation formula is \lean{Fabius.bernoulli_eval_add} (\lean{BernoulliAppell}) and "
