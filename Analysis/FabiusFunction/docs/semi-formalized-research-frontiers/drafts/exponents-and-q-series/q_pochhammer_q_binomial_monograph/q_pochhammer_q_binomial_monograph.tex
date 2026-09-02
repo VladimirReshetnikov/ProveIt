@@ -12679,8 +12679,8 @@ inside the proof below does not formalize the result the proof concludes.
   than a mathematical claim.
 \end{description}
 
-Of the 282 labelled forward results, 118 are \statusexact, 83 are
-\statuspartial, 73 are \statusnone, and 8 are \statusna.  The original
+Of the 282 labelled forward results, 122 are \statusexact, 83 are
+\statuspartial, 69 are \statusnone, and 8 are \statusna.  The original
 191-result pre-Fabius core had 36 \statusexact, 29 \statuspartial, 123
 \statusnone, and 3 \statusna{} entries.  The four integrated guide chapters
 add 31 human-proved but not Lean-formalized assertions and five labelled
@@ -13248,15 +13248,15 @@ Euler telescoping and very-well-poised summations & 1 & 0 & 3 & 0\\
 Bilateral series and Ramanujan's \texorpdfstring{${}_1\psi_1$}{1psi1} sum & 1 & 0 & 1 & 0\\
 $q$-difference calculus and the quantum binomial & 8 & 2 & 0 & 0\\
 The $q$-gamma and $q$-beta functions & 6 & 1 & 1 & 0\\
-Jacobi's triple product & 5 & 2 & 1 & 0\\
+Jacobi's triple product & 6 & 2 & 0 & 0\\
 Theta modularity, lattice dissection, and sums of squares & 0 & 0 & 14 & 4\\
-Partitions and product--sum identities & 2 & 0 & 2 & 0\\
+Partitions and product--sum identities & 4 & 0 & 0 & 0\\
 Bailey pairs and the Rogers--Ramanujan identities & 1 & 0 & 6 & 0\\
 Bailey transforms and the Andrews--Gordon identities & 0 & 0 & 8 & 1\\
 Cyclotomic factorization and congruences & 6 & 1 & 2 & 0\\
 Negative upper indices and geometric Newton interpolation & 8 & 0 & 1 & 0\\
 Central $q$-binomial sums and Lambert series & 1 & 0 & 6 & 0\\
-Asymptotic regimes and Bernoulli expansions & 1 & 3 & 4 & 0\\
+Asymptotic regimes and Bernoulli expansions & 2 & 3 & 3 & 0\\
 Exact limits, reciprocity, and research frontiers & 0 & 0 & 5 & 0\\
 Computation, certification, and formal proof architecture & 7 & 2 & 2 & 3\\
 Geometric interpolation and exact $q$-filters & 7 & 2 & 0 & 0\\
@@ -13264,7 +13264,7 @@ Half-base arithmetic and Prouhet--Thue--Morse cancellation & 6 & 3 & 0 & 0\\
 Geometric uniform sums, $q$-cumulants, and the Fabius--Rvachev functions & 2 & 11 & 0 & 0\\
 Dyadic Gaussian--Thue--Morse structure and the values of $F$ & 7 & 44 & 5 & 0\\
 \midrule
-\textbf{Forward total} & 118 & 83 & 73 & 8\\
+\textbf{Forward total} & 122 & 83 & 69 & 8\\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -13923,7 +13923,18 @@ route; uniform convergence on annuli is not stated}\\[2pt]
 $\sum_{n\in\IntegerNumbers}(-1)^nq^{n(3n-1)/2}$ with the exponent
 \texttt{pentagonalExponent}, and the paired one-sided form, in any complete
 normed field including $q=0$}\\[2pt]
-\Cref{cor:euler-partition-recurrence} & \statusnone & ---\\[2pt]
+\Cref{cor:euler-partition-recurrence} & \statusexact &
+\texttt{partitionCount\_\allowbreak{}eq\_\allowbreak{}pentagonal\_\allowbreak{}sum},
+\texttt{sum\_\allowbreak{}antidiagonal\_\allowbreak{}pentagonalCoeff\_\allowbreak{}mul\_\allowbreak{}partitionCount},
+\texttt{hasSum\_\allowbreak{}pentagonalCoeff\_\allowbreak{}mul\_\allowbreak{}pow}\newline
+{\footnotesize\texttt{EulerPartitionRecurrence}; for $n\ge1$,
+$p(n)=\sum_{j=1}^{n}(-1)^{j-1}\bigl(p(n-j(3j-1)/2)+p(n-j(3j+1)/2)\bigr)$ with
+$p(m)=0$ for $m<0$ (the sum is finite since the pentagonal numbers exceed
+$n$ beyond $j=n$), from the convolution identity
+$\sum_{k+l=n}e(k)p(l)=\delta_{n0}$ obtained by multiplying the pentagonal
+series by the partition generating function and comparing coefficients
+(\texttt{PowerSeriesUniqueness}); the values $p(n)$ are the cardinalities of
+Mathlib's \texttt{Nat.Partition n}, read in $\ComplexNumbers$}\\[2pt]
 \Cref{thm:jacobi-cubic} & \statusexact &
 \texttt{hasSum\_\allowbreak{}jacobi\_\allowbreak{}cubic}\newline
 {\footnotesize\texttt{JacobiCubic}; as a \texttt{HasSum} over
@@ -13962,8 +13973,23 @@ of partitions of $n$ with every part at most $r$ (Mathlib's
 multiplicity vectors on $\{1,\dots,r\}$ of weight $n$; the identity for
 $\lVert q\rVert<1$ in any complete normed field; the conjugation equivalence
 with ``at most $r$ parts'' is not formalized}\\[2pt]
-\Cref{cor:durfee-all} & \statusnone & ---\\[2pt]
-\Cref{prop:partition-stabilization} & \statusnone & ---\\[2pt]
+\Cref{cor:durfee-all} & \statusexact &
+\texttt{hasSum\_\allowbreak{}durfee},
+\texttt{gaussianBinomial\_\allowbreak{}add\_\allowbreak{}eq\_\allowbreak{}sum\_\allowbreak{}sq}\newline
+{\footnotesize\texttt{DurfeeAll}; for $\lVert q\rVert<1$ in any complete normed
+field, as the limit $N\to\infty$ of the finite Durfee identity
+$[2N,N]_q=\sum_{j\le N}q^{j^2}[N,j]_q^2$ (the $q$-Vandermonde convolution at
+$k=n$) by Tannery's theorem with the dominating series
+$\lVert q\rVert^{j^2}\cdot\mathtt{gaussianMajorant}^2$; the analytic route,
+not the Durfee-square bijection}\\[2pt]
+\Cref{prop:partition-stabilization} & \statusexact &
+\texttt{coeff\_\allowbreak{}gaussianBinomial\_\allowbreak{}X\_\allowbreak{}eq\_\allowbreak{}partitionCount},
+\texttt{card\_\allowbreak{}boxPartitions\_\allowbreak{}filter\_\allowbreak{}sum}\newline
+{\footnotesize\texttt{PartitionStabilization}; the coefficient of $X^N$ in the
+Gaussian polynomial $[m+k,k]_X$ over any commutative ring equals $p(N)$ for
+$m,k\ge N$, via the box enumeration of \texttt{BoxPartitions} and the
+conjugation bijection between multiplicity vectors of weight $N$ and antitone
+sequences of sum $N$ (\texttt{conjugateVector}/\texttt{differenceVector})}\\[2pt]
 \midrule
 \multicolumn{3}{@{}l}{\itshape Bailey pairs and the Rogers--Ramanujan identities}\\
 \midrule
@@ -14165,7 +14191,13 @@ error terms are not stated}\\[2pt]
 {\footnotesize\texttt{JacobiTripleProduct}; only the last clause, the limit
 of $\GaussianBinomial{2m}{m+r}{q}$ for a fixed integer shift $r$, read through
 the zero-extended integer-indexed coefficient}\\[2pt]
-\Cref{prop:gaussian-bound} & \statusnone & ---\\[2pt]
+\Cref{prop:gaussian-bound} & \statusexact &
+\texttt{one\_\allowbreak{}le\_\allowbreak{}gaussianBinomial},
+\texttt{gaussianBinomial\_\allowbreak{}le\_\allowbreak{}inv\_\allowbreak{}qPochhammerInfIn},
+\texttt{gaussianBinomial\_\allowbreak{}le\_\allowbreak{}inv\_\allowbreak{}finiteQPochhammerIn}\newline
+{\footnotesize\texttt{GaussianBinomialBounds}, \texttt{GeometricFilterBound}; the lower
+bound for $0\le q$ in any ordered field, the upper bound for $0\le q<1$ real,
+through the intermediate bound $[n,k]_q\le1/(q;q)_k$}\\[2pt]
 \Cref{cor:qgreaterone} & \statuspartial &
 \texttt{gaussianBinomial\_\allowbreak{}inv}\newline
 {\footnotesize\texttt{GaussianBinomialBounds}; the reciprocity

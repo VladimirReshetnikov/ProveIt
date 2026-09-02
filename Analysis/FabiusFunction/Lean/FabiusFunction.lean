@@ -555,6 +555,9 @@ import FabiusFunction.IntegerParameterTranslation
 import FabiusFunction.MultisetInversions
 import FabiusFunction.GeometricSimplexReindex
 import FabiusFunction.RatioExpansion
+import FabiusFunction.EulerPartitionRecurrence
+import FabiusFunction.PartitionStabilization
+import FabiusFunction.DurfeeAll
 import FabiusFunction.PartitionDistinctOdd
 import FabiusFunction.PartitionGeneratingFunction
 import FabiusFunction.PartitionBoundedParts
