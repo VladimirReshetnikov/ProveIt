@@ -258,7 +258,7 @@ $A$ for which the composition is defined,
 By linearity it suffices to take $A(u)=u^m$.  If $m\ne-1$, then
 $u(z)^mu'(z)=\frac{1}{m+1}(u(z)^{m+1})'$ has residue zero.  For $m=-1$,
 $u'(z)/u(z)=z^{-1}+H(z)$ with $H\in R[[z]]$, because
-$u(z)=az(1+O(z))$.  Thus both sides have residue $1$.
+$u(z)=az(1+\BigO(z))$.  Thus both sides have residue $1$.
 \end{proof}
 
 \begin{masterbox}
@@ -895,6 +895,32 @@ follows by inserting \cref{eq:second-explicit} and summing exponentials.  Summin
 $k$ with weight $y^k$ proves \cref{eq:second-double-egf}.
 \end{proof}
 
+\begin{remark}[Formal crosswalk]
+% ed.: crosswalk added 2026-09-01; formal power series over any commutative
+% Q-algebra, with the exponential and log(1+X) series of Mathlib.
+The three column identities are formal power-series identities in Lean, over
+every commutative $\mathbb Q$-algebra (module
+\lean{StirlingGeneratingFunctions}): with $\lean{egf}\,a=\sum_n a_nz^n/n!$,
+\cref{eq:second-egf} is \lean{Fabius.exp_sub_one_pow}
+($(\EulerE^z-1)^k=\sum_n k!\StirlingSecondKind nk z^n/n!$) and
+\lean{Fabius.egf_stirlingSecond};
+\cref{eq:unsigned-first-egf} is \lean{Fabius.negLogOneSub_pow} and
+\lean{Fabius.egf_stirlingFirst}, where $-\log(1-z)=\sum_{n\ge1}z^n/n$ is
+\lean{Fabius.negLogOneSub}; and \cref{eq:signed-first-egf} is
+\lean{Fabius.log_pow}, with Mathlib's \lean{PowerSeries.log} for
+$\log(1+z)$.  The Lean proofs differ from the text: the second-kind identity
+is read off coefficientwise from the binomial expansion of
+$(\EulerE^z-1)^k$ into the rescaled exponentials $\EulerE^{mz}$ together with
+the surjection formula (\cref{thm:second-explicit}); the unsigned first-kind
+identity is proved by induction on $k$ from the first-order equation
+$(1-z)\,Y'=(k+1)\,Y_k$ satisfied by both sides, using that a power series over
+a torsion-free ring is determined by its derivative and constant term
+(\lean{Fabius.eq_of_one_sub_X_mul_derivative_eq}); the signed identity is the
+substitution $z\mapsto -z$ (\lean{PowerSeries.rescale}).  The bivariate
+generating function \cref{eq:second-double-egf} and the derivative identity
+\cref{eq:log-over-one-plus} are not formalized.
+\end{remark}
+
 Differentiating \cref{eq:signed-first-egf} gives the useful identity
 \begin{equation}\label{eq:log-over-one-plus}
  \frac{\log(1+z)^m}{1+z}
@@ -1215,7 +1241,7 @@ The signed first-kind exponential generating function gives
 \begin{equation}
 \label{eq:near-diagonal-log-coefficient}
  \SignedStirlingFirstKind{n}{n-p}=\frac{n!}{(n-p)!}
- [z^p]\left(\frac{\log(1+z)}{z}\right)^{n-p}.
+ \CoefficientExtraction{z}{p}\left(\frac{\log(1+z)}{z}\right)^{n-p}.
 \end{equation}
 Put $t=\log(1+z)$ and
 \[
@@ -1224,16 +1250,16 @@ Put $t=\log(1+z)$ and
 Then $t=z\phi(t)$ and $t/z=\phi(t)$.  For $p\ge1$, the
 Lagrange--B\"urmann formula applied to $H(t)=\phi(t)^{n-p}$ gives
 \begin{align*}
- [z^p]H(t(z))
- &=\frac1p[t^{p-1}]H'(t)\phi(t)^p\\
- &=\frac{n-p}{p}[t^{p-1}]\phi'(t)\phi(t)^{n-1}\\
- &=\frac{n-p}{n}[t^p]\phi(t)^n.
+ \CoefficientExtraction{z}{p}H(t(z))
+ &=\frac1p\CoefficientExtraction{t}{p-1}H'(t)\phi(t)^p\\
+ &=\frac{n-p}{p}\CoefficientExtraction{t}{p-1}\phi'(t)\phi(t)^{n-1}\\
+ &=\frac{n-p}{n}\CoefficientExtraction{t}{p}\phi(t)^n.
 \end{align*}
 The same conclusion is immediate for $p=0$.  Hence
 \begin{equation}
 \label{eq:near-diagonal-bernoulli-power}
  \SignedStirlingFirstKind{n}{n-p}=\frac{(n-1)!}{(n-p-1)!}
- [t^p]\left(\frac{t}{\EulerE^t-1}\right)^n.
+ \CoefficientExtraction{t}{p}\left(\frac{t}{\EulerE^t-1}\right)^n.
 \end{equation}
 Now write
 \[
@@ -1243,12 +1269,12 @@ Now write
 \]
 The negative-binomial expansion yields
 \[
- (n-1)![t^p](1+A)^{-n}
- =\sum_{K\ge0}(-1)^K\frac{(n+K-1)!}{K!}[t^p]A(t)^K.
+ (n-1)!\CoefficientExtraction{t}{p}(1+A)^{-n}
+ =\sum_{K\ge0}(-1)^K\frac{(n+K-1)!}{K!}\CoefficientExtraction{t}{p}A(t)^K.
 \]
 Finally, the multinomial theorem gives
 \[
- [t^p]A(t)^K
+ \CoefficientExtraction{t}{p}A(t)^K
  =\sum_{\substack{k_1+\cdots+k_p=K\\
                    \sum r k_r=p}}
    \frac{K!}{\prod_{r=1}^{p}k_r!}
@@ -1428,7 +1454,7 @@ For fixed $r\ge0$,
  \UnsignedStirlingFirstKind{n+r}{n}\sim\StirlingSecondKind{n+r}{n}
  \sim\frac{n^{2r}}{2^rr!}\qquad(n\to\infty).
 \end{equation}
-Finally, uniformly for $k=o(\log n)$,
+Finally, uniformly for $k=\LittleO(\log n)$,
 \begin{equation}\label{eq:first-small-column-asymp}
  \UnsignedStirlingFirstKind{n+1}{k+1}
  \sim\frac{n!}{k!}(\log n+\gamma)^k.
@@ -1447,9 +1473,9 @@ formula to
  \frac{\UnsignedStirlingFirstKind{n+1}{k+1}}{n!}=\CoefficientExtraction tk
  \exp\left(H_nt-\frac{H_n^{(2)}}2t^2+\frac{H_n^{(3)}}3t^3-\cdots\right).
 \]
-The saddle for the first exponential is $t=k/H_n=o(1)$.  Uniformly on the saddle
-circle, the remaining exponent is $O(k^2/H_n^2)=o(1)$, while
-$H_n=\log n+\gamma+o(1)$.  Hence the coefficient is asymptotic to $H_n^k/k!$.
+The saddle for the first exponential is $t=k/H_n=\LittleO(1)$.  Uniformly on the saddle
+circle, the remaining exponent is $\BigO(k^2/H_n^2)=\LittleO(1)$, while
+$H_n=\log n+\gamma+\LittleO(1)$.  Hence the coefficient is asymptotic to $H_n^k/k!$.
 \end{proof}
 
 \section{Bounds for second-kind numbers}
@@ -1566,7 +1592,7 @@ of the remaining labels to one of them.  This injection gives
  \StirlingSecondKind nk\ge k^{n-k}.
 \end{equation}
 Take $k_0=\Floor{n/\log n}$.  The lower estimate and
-$\log k_0=\log n-\log\log n+O(\log n/n)$ give
+$\log k_0=\log n-\log\log n+\BigO(\log n/n)$ give
 \begin{equation}
 \label{eq:stirling-mode-lower-log}
  \log\StirlingSecondKind n{k_0}
@@ -1577,12 +1603,12 @@ $\log k_0=\log n-\log\log n+O(\log n/n)$ give
 For the upper estimate, Stirling's formula, uniformly for $1\le k\le n$, gives
 \[
  \log\StirlingSecondKind nk
- \le n\log k-k\log k+k+O(\log n).
+ \le n\log k-k\log k+k+\BigO(\log n).
 \]
 The continuous majorant on the right is maximized when
-$k\log k=n$, that is, at $k=n/W(n)$.  Since
+$k\log k=n$, that is, at $k=n/\LambertW(n)$.  Since
 \[
- W(n)=\log n-\log\log n
+ \LambertW(n)=\log n-\log\log n
       +O\!\left(\frac{\log\log n}{\log n}\right),
 \]
 its maximum is the right side of \eqref{eq:stirling-maximum-log}.  Together with
@@ -1593,11 +1619,11 @@ $k=c n/\log n$, with $c$ bounded away from $0$ and $\infty$.  Comparing the last
 upper bound with \eqref{eq:stirling-mode-lower-log} gives
 \[
  \log\StirlingSecondKind nk-\log\StirlingSecondKind n{k_0}
- \le n(\log c-c+1)+o(n).
+ \le n(\log c-c+1)+\LittleO(n).
 \]
 The function $\log c-c+1$ is strictly negative for $c\ne1$.  Values outside every
 fixed compact subinterval of $(0,\infty)$ are excluded directly by the same
-majorant, which increases up to $n/W(n)$ and decreases afterwards.  Therefore any
+majorant, which increases up to $n/\LambertW(n)$ and decreases afterwards.  Therefore any
 maximizing $k$ satisfies $k/(n/\log n)\to1$, proving
 \eqref{eq:stirling-mode-asymptotic}.
 \end{proof}
@@ -1710,7 +1736,7 @@ Integrate \cref{eq:unsigned-first-egf} after division by $x$:
 With $u=-\log(1-x)$ this becomes
 $\frac1{i!}\int_0^\infty u^i/(\EulerE^u-1)\Differential u=\RiemannZeta(i+1)$.
 For the Hurwitz form use
-$1/\RisingFactorial v n=\Gamma(v)/\Gamma(v+n)$ and the beta integral
+$1/\RisingFactorial v n=\GammaFunction(v)/\GammaFunction(v+n)$ and the beta integral
 \[
  \frac1{\RisingFactorial v n}=\frac1{(n-1)!}\int_0^1t^{v-1}(1-t)^{n-1}\Differential t,
 \]
@@ -1722,7 +1748,7 @@ A repeated partial-fraction expansion of $x^{-k}$ around $1-x$ gives, for
 $k\ge3$ and $\Re z>k-1$,
 \begin{multline}\label{eq:log-power-integral}
  \int_0^1\frac{\log^z(1-x)}{x^k}\Differential x
- =\frac{(-1)^z\Gamma(z+1)}{(k-1)!}
+ =\frac{(-1)^z\GammaFunction(z+1)}{(k-1)!}
  \sum_{r=1}^{k-1}\SignedStirlingFirstKind{k-1}{r}\\
  {}\times\sum_{m=0}^r\binom rm(k-2)^{r-m}\RiemannZeta(z+1-m),
 \end{multline}
@@ -1732,7 +1758,7 @@ Substitute $u=-\log(1-x)$, expand
 $(1-\EulerE^{-u})^{-k}$ after $k-1$ integrations by parts, and express the resulting
 polynomial in the Euler operator $uD$ in the ordinary-power basis by
 $\SignedStirlingFirstKind{k-1}{r}$.  Each term is a Mellin integral
-$\int_0^\infty u^{z-m}/(\EulerE^u-1)\Differential u=\Gamma(z+1-m)\RiemannZeta(z+1-m)$; simplifying gamma
+$\int_0^\infty u^{z-m}/(\EulerE^u-1)\Differential u=\GammaFunction(z+1-m)\RiemannZeta(z+1-m)$; simplifying gamma
 ratios yields \cref{eq:log-power-integral}.
 \end{proof}
 
@@ -1751,7 +1777,7 @@ coefficient.  This derivation also supplies the convergence conditions suppresse
 the compact archived display.
 
 
-\section{Convergent Stirling series for \texorpdfstring{$\log\Gamma$}{log Gamma}, \texorpdfstring{$\psi$}{psi}, and the Stieltjes constants}
+\section{Convergent Stirling series for \texorpdfstring{$\log\GammaFunction$}{log Gamma}, \texorpdfstring{$\psi$}{psi}, and the Stieltjes constants}
 The source archive lists three nested Stirling series without their convergence
 mechanism.  All three arise from the same substitution
 \begin{equation}
@@ -1790,7 +1816,7 @@ of the cut $[1,\infty)$.  The part separated from $1$ is exponentially small.
 On the local part put $u=1-w/n$.  The constant $h_0$ has no positive-index
 coefficients, while the jump of
 $1/\log(1/(1-u))$ across the cut is
-$O(\log^{-2}n)$; multiplication by a power of $\log\log(1/(1-u))$ contributes at
+$\BigO(\log^{-2}n)$; multiplication by a power of $\log\log(1/(1-u))$ contributes at
 most $(1+\log\log n)^M$.  The Cauchy kernel contributes $n^{-1}\EulerE^w$, and the two
 rays of the keyhole have an integrable exponential majorant.  This gives
 \eqref{eq:logarithmic-transfer}.  Division by another factor $n$ makes the
@@ -1801,7 +1827,7 @@ resulting majorant summable.
 Binet's second formula, valid for $z>0$, is
 \begin{equation}
 \label{eq:binet-second}
- \log\Gamma(z)
+ \log\GammaFunction(z)
  =\left(z-\frac12\right)\log z-z+\frac12\log(2\pi)
  +2\int_0^\infty\frac{\arctan(x/z)}{\EulerE^{2\pi x}-1}\,\Differential x.
 \end{equation}
@@ -1812,12 +1838,12 @@ recovers the usual Binet integral for the digamma function, so the normalization
 also proves \eqref{eq:binet-second} rather than merely determining it up to a
 constant.
 
-\begin{theorem}[Convergent Stirling series for $\log\Gamma$ and $\psi$]
+\begin{theorem}[Convergent Stirling series for $\log\GammaFunction$ and $\psi$]
 \label{thm:gamma-stirling-series}
 For real $z>1/6$,
 \begin{multline}
 \label{eq:gamma-stirling-series}
- \log\Gamma(z)
+ \log\GammaFunction(z)
  =\left(z-\frac12\right)\log z-z+\frac12\log(2\pi)\\
  {}+\frac1\pi\sum_{n=1}^{\infty}\frac1{n\,n!}
  \sum_{\ell=0}^{\Floor{n/2}}
@@ -1828,7 +1854,7 @@ The series is locally uniformly convergent in $z>1/6$, and termwise
 differentiation gives
 \begin{multline}
 \label{eq:digamma-stirling-series}
- \psi(z)=\frac{\Gamma'(z)}{\Gamma(z)}
+ \psi(z)=\frac{\GammaFunction'(z)}{\GammaFunction(z)}
  =\log z-\frac1{2z}\\
  {}-\frac1{\pi z}\sum_{n=1}^{\infty}\frac1{n\,n!}
  \sum_{\ell=0}^{\Floor{n/2}}
@@ -1852,7 +1878,7 @@ where the second line uses
 $L(u)^r/r!=\sum_{n\ge r}\UnsignedStirlingFirstKind nr u^n/n!$.
 For $z>1/6$, the analytic continuation of this composite from $u=0$ has no
 singularity in $|u|<1$.  Indeed, the possible arctangent branch points would
-require $\log(1-u)=\pm2\pi iz$; when $1/6<z<1/4$ their solutions have modulus
+require $\log(1-u)=\pm2\pi \ImaginaryUnit z$; when $1/6<z<1/4$ their solutions have modulus
 $2\sin(\pi z)>1$, and for $z\ge1/4$ the principal logarithm on the disk cannot
 have imaginary part $\pm2\pi z$.  The only boundary singularity relevant to the
 coefficient estimate is therefore $u=1$.
@@ -1879,7 +1905,7 @@ $(2\pi z)^{-2\ell-1}$ produces the factor $-(2\ell+1)/z$ and yields
 \end{proof}
 
 For complex $z$ with $\Re z>0$, the same proof works whenever the two points
-$1-\EulerE^{2\pi iz}$ and $1-\EulerE^{-2\pi iz}$ lie outside the closed unit disk; the stated
+$1-\EulerE^{2\pi \ImaginaryUnit z}$ and $1-\EulerE^{-2\pi \ImaginaryUnit z}$ lie outside the closed unit disk; the stated
 real half-line is the simplest connected domain containing all commonly used
 positive arguments.
 
@@ -1911,8 +1937,8 @@ The outer series converges absolutely.
 The Abel--Plana formula applied to $(1+w)^{-s}$ gives Hermite's representation
 \begin{equation}
 \label{eq:hermite-zeta}
- \RiemannZeta(s)=\frac1{s-1}+\frac12+\frac1i\int_0^\infty
- \frac{(1-ix)^{-s}-(1+ix)^{-s}}{\EulerE^{2\pi x}-1}\,\Differential x,
+ \RiemannZeta(s)=\frac1{s-1}+\frac12+\frac1{\ImaginaryUnit}\int_0^\infty
+ \frac{(1-\ImaginaryUnit x)^{-s}-(1+\ImaginaryUnit x)^{-s}}{\EulerE^{2\pi x}-1}\,\Differential x,
  \qquad \Re s>0,
 \end{equation}
 with the pole omitted at $s=1$.  Expand the two powers at $s=1$ and compare with
@@ -1920,10 +1946,10 @@ with the pole omitted at $s=1$.  Expand the two powers at $s=1$ and compare with
 convergent integral yields
 \begin{equation}
 \label{eq:jensen-franel-stieltjes}
- \gamma_m=\frac12\delta_{m0}+\frac1i\int_0^\infty\frac1{\EulerE^{2\pi x}-1}
+ \gamma_m=\frac12\delta_{m0}+\frac1{\ImaginaryUnit}\int_0^\infty\frac1{\EulerE^{2\pi x}-1}
  \left\{
- \frac{\log^m(1-ix)}{1-ix}
- -\frac{\log^m(1+ix)}{1+ix}
+ \frac{\log^m(1-\ImaginaryUnit x)}{1-\ImaginaryUnit x}
+ -\frac{\log^m(1+\ImaginaryUnit x)}{1+\ImaginaryUnit x}
  \right\}\Differential x.
 \end{equation}
 
@@ -1933,14 +1959,14 @@ Differentiate the signed first-kind generating function to obtain, for $|w|<1$,
  \frac{\log^m(1+w)}{1+w}
  =m!\sum_{r\ge m}\SignedStirlingFirstKind{r+1}{m+1}\frac{w^r}{r!}.
 \end{equation}
-Only odd powers survive after replacing $w$ by $-ix$ and $ix$ and taking the
+Only odd powers survive after replacing $w$ by $-\ImaginaryUnit x$ and $\ImaginaryUnit x$ and taking the
 difference.  Since
 $\SignedStirlingFirstKind{2k+2}{m+1}=(-1)^{m+1}\UnsignedStirlingFirstKind{2k+2}{m+1}$, one finds
 \begin{multline}
 \label{eq:stieltjes-odd-expansion}
- \frac1i\left\{
- \frac{\log^m(1-ix)}{1-ix}
- -\frac{\log^m(1+ix)}{1+ix}
+ \frac1{\ImaginaryUnit}\left\{
+ \frac{\log^m(1-\ImaginaryUnit x)}{1-\ImaginaryUnit x}
+ -\frac{\log^m(1+\ImaginaryUnit x)}{1+\ImaginaryUnit x}
  \right\}\\
  =2(-1)^m m!\sum_{k\ge0}
  \frac{(-1)^k\UnsignedStirlingFirstKind{2k+2}{m+1}}{(2k+1)!}\,x^{2k+1}.
@@ -2501,6 +2527,17 @@ coefficient comparison in that equation gives
 the series.
 \end{proof}
 
+\begin{remark}[Formal crosswalk]
+% ed.: crosswalk added 2026-09-01.
+The identity $\mathscr B(z)=\exp(\EulerE^z-1)$ is \lean{Fabius.exp_subst_exp_sub_one}
+(module \lean{BellGeneratingFunctions}), stated as the substitution of
+Mathlib's exponential series into itself minus one, over any commutative
+$\mathbb Q$-algebra; it is the case $x=(1,1,\ldots)$ of the complete Bell
+generating function \lean{Fabius.exp_subst_bellWeightSeries}, whose Lean proof
+is the uniqueness argument of this proof: both sides satisfy
+$Y'=\EulerE^z\,Y$ with $Y(0)=1$.
+\end{remark}
+
 \section{Dobiński's formula and Poisson moments}
 \begin{theorem}[Dobiński]\label{thm:dobinski}
 For every $n\ge0$,
@@ -2726,42 +2763,195 @@ of \cref{eq:bell-ratio-upper} is exactly $R(n)$, so raising the resulting
 inequality to the $n$th power proves \cref{eq:bell-eventual-upper}.
 \end{proof}
 
-\begin{remark}[Why the decimal all-$n$ claim is not retained]
-The six arrivals also assert the sharper numerical constant $0.792$ for every
-$n\ge1$, but their common proof replaces a nontrivial derivative calculation and
-the cases $n\le38$ by decimal assertions.  No directed-rounding ledger or exact
-factorization of the derivative was supplied.  That statement may well be true,
-but the submitted argument is not a complete certificate, so it is not promoted to
-a theorem here.  The preceding result is asymptotically sharper and has neither an
-undefined generalized inverse nor a hidden finite computation.
+\section{The sharp numerical constant}
+All six arrivals also assert the sharper numerical bound with the decimal
+constant $0.792$ valid for \emph{every} $n\ge1$.  Their common argument
+replaced both a monotonicity claim and the range $n\le38$ by unsupported
+decimal assertions, with no directed-rounding ledger and no exact treatment of
+the finite range.  The statement itself is a theorem of Berend and
+Tassa~\cite{BerendTassa2010}.  This section proves it, splitting the two gaps
+the arrivals left open: the tail is settled by a monotonicity lemma for the
+majorant already constructed in \cref{lem:bell-coeff-upper}, and the finite
+range by an exact integer certificate that involves no floating-point
+arithmetic at all.
+
+\begin{lemma}[The coefficient majorant is decreasing]
+\label{lem:bell-majorant-decreasing}
+For $x\ge15$ put
+\begin{equation}
+ L=\log(x+1),\qquad
+ t=\log\frac{x}{L},\qquad
+ \bar R(x)=\frac Lt\exp\!\left(-1+\frac1L+\frac{\log x}{2x}\right).
+                                                                  \label{eq:bell-majorant}
+\end{equation}
+Then $\bar R$ is positive and strictly decreasing on $[15,\infty)$, and
+$\bar R(x)\to\EulerE^{-1}$ as $x\to\infty$.
+\end{lemma}
+
+\begin{proof}
+Write $\bar R=\varphi\psi$ with $\varphi=L/t$ and
+$\psi=\exp\bigl(-1+1/L+\log x/(2x)\bigr)$.  On $[15,\infty)$ one has
+$L>\EulerE>1$ and $x/L>1$, so $t>0$ and both factors are positive.  It is
+enough to show that each is strictly decreasing.
+
+\emph{The factor $\psi$.}  The map $x\mapsto1/\log(x+1)$ is strictly
+decreasing, and
+\[
+ \frac{\Differential}{\Differential x}\frac{\log x}{2x}=\frac{1-\log x}{2x^2}<0
+ \qquad(x>\EulerE).
+\]
+Hence the exponent is strictly decreasing on $[3,\infty)$, and so is $\psi$.
+
+\emph{The factor $\varphi$.}  Since $t=\log x-\log L$,
+\begin{equation}
+ \frac1\varphi=\frac{\log x-\log L}{L}
+ =\frac{\log x}{\log(x+1)}-\frac{\log L}{L}.                      \label{eq:bell-majorant-split}
+\end{equation}
+The first term of \eqref{eq:bell-majorant-split} is strictly increasing:
+\[
+ \frac{\Differential}{\Differential x}\frac{\log x}{\log(x+1)}
+ =\frac{(x+1)\log(x+1)-x\log x}{x(x+1)\log^2(x+1)}>0,
+\]
+because $s\mapsto s\log s$ is strictly increasing on $[1,\infty)$.  The second
+term is strictly decreasing, since $u\mapsto(\log u)/u$ is strictly decreasing
+for $u>\EulerE$ and
+\[
+ L=\log(x+1)>\EulerE
+ \iff x+1>\EulerE^{\EulerE}=15.154\ldots,
+\]
+which holds for every $x\ge15$.  Therefore $1/\varphi$ is strictly increasing
+and $\varphi$ strictly decreasing on $[15,\infty)$.  A product of two positive
+strictly decreasing functions is strictly decreasing.
+
+\emph{The limit.}  As $x\to\infty$, $\log(x+1)/\log x\to1$ and
+$\log L/\log x\to0$, so $1/\varphi\to1$ by \eqref{eq:bell-majorant-split};
+also $1/L\to0$ and $\log x/(2x)\to0$, so $\psi\to\EulerE^{-1}$.
+\end{proof}
+
+\begin{theorem}[Uniform numerical Bell bound]\label{thm:bell-numerical-bound}
+For every $n\ge1$,
+\begin{equation}
+ \BellNumber n<\left(\frac{0.792\,n}{\log(n+1)}\right)^n.        \label{eq:bell-numerical-bound}
+\end{equation}
+Equivalently, writing
+$R_n=\bigl(\BellNumber n\bigr)^{1/n}\log(n+1)/n$, one has $R_n<0.792$ for all
+$n\ge1$.
+\end{theorem}
+
+\begin{proof}
+Raising \eqref{eq:bell-numerical-bound} to the power $1/n$ shows that it is
+equivalent to $R_n<0.792$, so it suffices to bound $R_n$.  The two ranges are
+treated separately, and the split point $39$ is forced: the majorant
+\eqref{eq:bell-majorant} satisfies $\bar R(38)=0.79411\ldots>0.792$, so no
+argument through $\bar R$ alone can reach below $n=39$.
+
+\emph{The tail $n\ge39$.}  The right side of \cref{eq:bell-ratio-upper} is
+exactly $\bar R(n)$, so $R_n\le\bar R(n)$ for every $n\ge2$.  By
+\cref{lem:bell-majorant-decreasing}, $\bar R$ is decreasing on $[15,\infty)$,
+hence $R_n\le\bar R(n)\le\bar R(39)$ for all $n\ge39$.  Evaluating
+\eqref{eq:bell-majorant} at $x=39$ with every operation rounded outward at six
+decimals gives the ledger
+\[
+ \begin{array}{ll}
+  \log40\in[3.688879,\;3.688880], &
+  \log39\in[3.663561,\;3.663562],\\[2pt]
+  \log\log40\in[1.305322,\;1.305323], &
+  t\in[2.358238,\;2.358240],\\[2pt]
+  L/t\in[1.564250,\;1.564253], &
+  1/L\in[0.271084,\;0.271086],\\[2pt]
+  (\log39)/78\in[0.046968,\;0.046969], &
+  \text{exponent}\in[-0.681948,\;-0.681945],\\[2pt]
+  \EulerE^{\text{exponent}}\in[0.505631,\;0.505633], &
+  \bar R(39)\in[0.790933,\;0.790938].
+ \end{array}
+\]
+Each entry is obtained from the entries above it by interval arithmetic with
+outward rounding, so the last line is a rigorous enclosure.  In particular
+$\bar R(39)<0.7910<0.792$, and the tail is proved.
+
+\emph{The finite range $1\le n\le38$.}  Put
+\begin{equation}
+ A_n=\bigl\lceil10^6\log(n+1)\bigr\rceil.                       \label{eq:bell-cert-An}
+\end{equation}
+Since $\log(n+1)$ is irrational for $n\ge1$, the ceiling is strict:
+$A_n/10^6>\log(n+1)$.  Consequently
+\[
+ R_n=\bigl(\BellNumber n\bigr)^{1/n}\frac{\log(n+1)}{n}
+ <\bigl(\BellNumber n\bigr)^{1/n}\frac{A_n}{10^6n},
+\]
+and therefore $R_n<792/1000$ follows from
+$\bigl(\BellNumber n\bigr)^{1/n}A_n\cdot1000\le792\cdot10^6n$, that is, after
+raising to the $n$th power and cancelling $1000^n$, from the inequality
+between positive integers
+\begin{equation}
+ \BellNumber n\,A_n^{\,n}<(792000\,n)^n.                         \label{eq:bell-cert}
+\end{equation}
+No irrational quantity occurs in \eqref{eq:bell-cert}: the Bell numbers are the
+integers generated by \cref{thm:bell-binomial-recurrence}, and the $A_n$ are
+the integers
+\[
+ \begin{array}{llll}
+  A_{1}=693148 & A_{2}=1098613 & A_{3}=1386295 & A_{4}=1609438\\
+  A_{5}=1791760 & A_{6}=1945911 & A_{7}=2079442 & A_{8}=2197225\\
+  A_{9}=2302586 & A_{10}=2397896 & A_{11}=2484907 & A_{12}=2564950\\
+  A_{13}=2639058 & A_{14}=2708051 & A_{15}=2772589 & A_{16}=2833214\\
+  A_{17}=2890372 & A_{18}=2944439 & A_{19}=2995733 & A_{20}=3044523\\
+  A_{21}=3091043 & A_{22}=3135495 & A_{23}=3178054 & A_{24}=3218876\\
+  A_{25}=3258097 & A_{26}=3295837 & A_{27}=3332205 & A_{28}=3367296\\
+  A_{29}=3401198 & A_{30}=3433988 & A_{31}=3465736 & A_{32}=3496508\\
+  A_{33}=3526361 & A_{34}=3555349 & A_{35}=3583519 & A_{36}=3610918\\
+  A_{37}=3637587 & A_{38}=3663562 &&
+ \end{array}
+\]
+Inequality \eqref{eq:bell-cert} holds for each $n$ in the range.  Its relative
+slack $1-\BellNumber n A_n^{\,n}/(792000\,n)^n$ is smallest at $n=4$, where it
+equals $0.000811\ldots$; it is $0.006889\ldots$ at $n=3$, exceeds $0.013$ for
+$5\le n\le10$, and increases from $0.310\ldots$ at $n=11$ to $0.986\ldots$ at
+$n=38$.  This completes the finite range and the proof.
+\end{proof}
+
+\begin{remark}[The constant is essentially best possible]
+The sequence $R_n$ attains its maximum at $n=4$, where $\BellNumber4=15$ and
+\[
+ R_4=\frac{15^{1/4}\log5}{4}=0.7918392970\ldots,
+\]
+so $0.792-\max_nR_n<1.61\cdot10^{-4}$ and the constant in
+\eqref{eq:bell-numerical-bound} cannot be replaced by anything below
+$R_4$.  This also explains the tightness of the certificate at $n=4$: the
+sole reason a six-decimal logarithm suffices there is that
+$\lceil10^6\log5\rceil/10^6$ overshoots $\log5$ by less than $10^{-6}$, while
+the slack in \eqref{eq:bell-cert} is of order $10^{-3}$.  By contrast
+\cref{thm:bell-eventual-upper} is asymptotically far sharper, since
+$R_n\to\EulerE^{-1}=0.3678\ldots$; the two statements are complementary rather
+than competing.
 \end{remark}
 
 \section{Saddle-point asymptotics and Lambert \texorpdfstring{$W$}{W}}
-Let $r=W(n)$, so that $re^r=n$, and put $A=n(1+r)$.
+Let $r=\LambertW(n)$, so that $re^r=n$, and put $A=n(1+r)$.
 \begin{theorem}[Leading Bell asymptotic]\label{thm:bell-leading-asymptotic}
 As $n\to\infty$,
 \begin{align}
  \BellNumber n
  &\sim \frac{n!\exp(\EulerE^r-1)}{r^n\sqrt{2\pi n(1+r)}}
  \label{eq:bell-saddle-leading}\\
- &\sim \frac1{\sqrt n}\left(\frac{n}{W(n)}\right)^{n+1/2}
-       \exp\!\left(\frac{n}{W(n)}-n-1\right).
+ &\sim \frac1{\sqrt n}\left(\frac{n}{\LambertW(n)}\right)^{n+1/2}
+       \exp\!\left(\frac{n}{\LambertW(n)}-n-1\right).
  \label{eq:bell-W-asymptotic}
 \end{align}
 \end{theorem}
 \begin{proof}
-In \eqref{eq:bell-cauchy} take the circle $z=re^{i\theta}$.  The coefficient
+In \eqref{eq:bell-cauchy} take the circle $z=r\EulerE^{\ImaginaryUnit\theta}$.  The coefficient
 integral becomes
 \[
  \frac{\BellNumber n}{n!}=
  \frac{\EulerE^{\EulerE^r-1}}{2\pi r^n}
  \int_{-\pi}^{\pi}
- \exp\!\left(\EulerE^{re^{i\theta}}-\EulerE^r-in\theta\right)\Differential\theta.
+ \exp\!\left(\EulerE^{r\EulerE^{\ImaginaryUnit\theta}}-\EulerE^r-\ImaginaryUnit n\theta\right)\Differential\theta.
 \]
 The linear term vanishes because $re^r=n$; the quadratic term is
 $-A\theta^2/2$.  On $|\theta|\le A^{-2/5}$, Taylor expansion is uniform and the
 scaled integral tends to $\int_{\RealNumbers}\EulerE^{-u^2/2}\Differential u/\sqrt A$.  Outside that arc,
-$\Re(\EulerE^{re^{i\theta}}-\EulerE^r)\le-cA\theta^2$ on the intermediate range and is
+$\Re(\EulerE^{r\EulerE^{\ImaginaryUnit\theta}}-\EulerE^r)\le-cA\theta^2$ on the intermediate range and is
 $\le-c'\EulerE^r$ on the remaining compact range, so the contribution is negligible.
 This proves \eqref{eq:bell-saddle-leading}.  Stirling's formula and $\EulerE^r=n/r$
 simplify it to \eqref{eq:bell-W-asymptotic}.
@@ -2805,7 +2995,7 @@ $r+\log r=\log n$ gives
  +O\!\left(\frac{(\log\log n)^2}{(\log n)^2}\right).
 \]
 Substitution and one further Taylor expansion of $\log r$ produce the displayed
-terms; the prefactor contributes only $O(\log n/n)$.
+terms; the prefactor contributes only $\BigO(\log n/n)$.
 \end{proof}
 
 \section{Bell primes and verifiable computation}
@@ -3140,6 +3330,34 @@ earlier.  Summing over $k$ yields \eqref{eq:bell-factorial-complete} and
 $\exp(x(\EulerE^t-1))$, the EGF of $\TouchardPolynomial{n}(x)$.
 \end{proof}
 
+\begin{remark}[Formal crosswalk]
+% ed.: crosswalk added 2026-09-01; the Lean proofs follow the text exactly
+% (column generating functions compared coefficientwise), except for the
+% second-kind case, which is proved directly from the vertical recurrence.
+In Lean the partial Bell polynomials \lean{Fabius.partialBell} are defined by the
+pointing recurrence of \cref{thm:bell-poly-recurrences} over any commutative
+semiring (module \lean{PartialBellPolynomials}), and the column generating
+function of \cref{thm:bell-poly-egf} is \lean{Fabius.bellWeightSeries_pow}
+(module \lean{BellGeneratingFunctions}), proved by induction on $k$ from the
+first-order equation $Y'=(k+1)X'\,Y_k$ and the uniqueness of its solution.
+The specializations are then read off exactly as in the text:
+\cref{eq:bell-first-specialization} is \lean{Fabius.partialBell_factorial_pred}
+(comparing with \lean{Fabius.negLogOneSub_pow}), \cref{eq:bell-lah-specialization}
+is \lean{Fabius.partialBell_factorial} (comparing with the Lah column
+generating function $(t/(1-t))^k=\sum_n k!\LahNumber{n}{k}t^n/n!$,
+\lean{Fabius.X_mul_mkOne_pow}, proved here by the same first-order method),
+\cref{eq:bell-second-specialization} is \lean{Fabius.partialBell_one} (directly
+from the vertical recurrence of the second kind), and
+\cref{eq:bell-number-specialization} is \lean{Fabius.bell_complete_one}.  The
+complete polynomials are Mathlib-free \lean{Bell.complete}, related to the
+partial ones by \lean{Fabius.bell_complete_eq_sum_partialBell}; their
+generating function $\exp X(t)$ is \lean{Fabius.exp_subst_bellWeightSeries},
+from the equation $Y'=X'Y$, $Y(0)=1$
+(\lean{Fabius.eq_zero_of_derivative_eq_mul}).  The factorial row sum
+\cref{eq:bell-factorial-complete} and the Touchard identity
+\cref{eq:touchard-bell-specialization} are not formalized.
+\end{remark}
+
 \section{Homogeneity and a useful evaluation}
 \begin{theorem}[Bigraded homogeneity]\label{thm:bell-bihomogeneous}
 For scalars $\alpha,\beta$,
@@ -3219,6 +3437,23 @@ $Y(t)=\sum_{n\ge1}y_nt^n/n!$.  Equation
 \]
 Use \eqref{eq:partial-bell-egf} to extract the coefficient of $t^n/n!$.
 \end{proof}
+
+\begin{remark}[Formal crosswalk]
+% ed.: crosswalk added 2026-09-01; the Lean proof is this proof made formal.
+\cref{eq:bell-transform-x} is \lean{Fabius.bell_transform_inverse} (module
+\lean{BellComposition}), over any commutative $\mathbb Q$-algebra, in the form
+$x_n=\sum_{k=1}^{n}(-1)^{k+1}(k-1)!\,\ExponentialPartialBellPolynomial nk(y_1,y_2,\ldots)$
+with $y_n=\ExponentialCompleteBellPolynomial n(x)$ (Lean's \lean{Bell.complete}).
+The proof is the one above: $X=\log(1+Y)$ is
+\lean{Fabius.log_subst_exp_sub_one} ($\log\circ(\EulerE^t-1)=t$, from the
+derivative and constant term), $\log(1+u)=\sum_{k\ge1}(-1)^{k+1}(k-1)!\,u^k/k!$
+is \lean{Fabius.log_eq_egfA}, and the coefficient extraction is the exponential
+composition theorem \lean{Fabius.egfA_subst_bellWeightSeries} of
+\cref{thm:exponential-composition}.  The recursive, division-free inversion
+over every commutative ring is \lean{Bell.complete_cumulant} and
+\lean{Bell.cumulant_complete} (\lean{BellPolynomialInversion}).  The general
+form \cref{eq:general-bell-inverse} is not formalized.
+\end{remark}
 
 More generally, if $f$ and $g=f^{-1}$ are locally inverse and
 \begin{equation}\label{eq:general-bell-transform}
@@ -3569,6 +3804,28 @@ permutation records the relative order, and its $k$ descents specify $k$ mandato
 separations among the $n$ sorted positions.  Stars and bars gives
 $\binom{x+k}{n}$ words for each permutation with $k$ descents.
 \end{proof}
+
+\begin{remark}[Formal crosswalk]
+% ed.: crosswalk added 2026-09-01; Lean defines the Eulerian numbers by the
+% recurrence and proves Worpitzky by induction, not by coefficient extraction.
+In Lean the Eulerian numbers \lean{Fabius.eulerianNumber} are defined by the
+recurrence of \cref{thm:eulerian-recurrence}
+(\lean{Fabius.eulerianNumber_succ_left}); the descent count is not
+formalized.  Worpitzky's identity is \lean{Fabius.worpitzky_nat} for natural
+$x$ and \lean{Fabius.worpitzky_polynomial} in $\mathbb Q[x]$, where
+$\binom{x+k}{n}$ is \lean{Fabius.binomialPoly} (module
+\lean{EulerianNumbers}); both are stated with the sum over $0\le k\le n$,
+the extra term $k=n$ vanishing (\lean{Fabius.eulerianNumber_eq_zero_of_le}).
+The Lean proof is an induction on $n$ from the one-step relation
+$x\binom{x+k}{n}=(n-k)\binom{x+k+1}{n+1}+(k+1)\binom{x+k}{n+1}$
+(\lean{Fabius.mul_choose_add_eq}), and the polynomial identity follows from
+the natural-number identity because a polynomial over $\mathbb Q$ is
+determined by its values at the natural numbers.  The row sum
+$\sum_k\TypeAEulerianNumber nk=n!$ is \lean{Fabius.sum_eulerianNumber_eq_factorial};
+the symmetry \cref{eq:eulerian-symmetry} is not formalized.  The power sums of
+\cref{cor:eulerian-power-sum} are \lean{Fabius.sum_range_pow_succ_eq_sum_eulerianNumber},
+in the form $\sum_{r=0}^{m}r^{n+1}=\sum_{k}\TypeAEulerianNumber{n+1}{k}\binom{m+k+1}{n+2}$.
+\end{remark}
 
 \begin{corollary}[Power sums]\label{cor:eulerian-power-sum}
 For $m,n\ge1$,
@@ -3930,9 +4187,9 @@ It follows inductively from \eqref{eq:first-diagonal-ogf-recurrence} that
 \end{equation}
 Since $\SecondOrderEulerianPolynomial{p}(u)=\sum_{j=0}^{p}\SecondOrderEulerianNumber pj u^j$, coefficient extraction gives
 \[
- [t^m]D_p(t)
+ \CoefficientExtraction{t}{m}D_p(t)
  =\sum_{j=0}^{p}\SecondOrderEulerianNumber pj
-   [t^{m-2p+j}](1-t)^{-2p-1}
+   \CoefficientExtraction{t}{m-2p+j}(1-t)^{-2p-1}
  =\sum_{j=0}^{p}\SecondOrderEulerianNumber pj\binom{m+j}{2p},
 \]
 which is \eqref{eq:second-eulerian-first-diagonal}.  Both sides are polynomials in
@@ -4085,7 +4342,7 @@ Two useful specializations are immediate.  If $F(u)=\EulerE^u$ and the series ar
 exponentially normalized, one obtains the exponential formula.  If
 $A(x)=1+\sum_{n\ge1}a_nx^n$, then
 \begin{equation}\label{eq:reciprocal-ordinary-bell}
- [x^n]\frac1{A(x)}
+ \CoefficientExtraction{x}{n}\frac1{A(x)}
  =\sum_{k=1}^{n}(-1)^k\OrdinaryPartialBellPolynomial nk(a_1,\ldots,a_{n-k+1})
  \qquad(n\ge1),
 \end{equation}
@@ -4113,6 +4370,19 @@ Substitute $F(x)$ into $G$ and apply
 \cref{thm:bell-poly-partitions} with an additional weight $b_k$ for the number of
 blocks.
 \end{proof}
+
+\begin{remark}[Formal crosswalk]
+% ed.: crosswalk added 2026-09-01.
+This is \lean{Fabius.egfA_subst_bellWeightSeries} (module \lean{BellComposition}):
+for $B(t)=\sum_k b_kt^k/k!$ and $A(t)=\sum_{j\ge1}a_jt^j/j!$ over any
+commutative $\mathbb Q$-algebra, $B(A(t))=\sum_n\bigl(\sum_{k\le n}b_k
+\ExponentialPartialBellPolynomial nk(a)\bigr)t^n/n!$, where substitution is
+Mathlib's \lean{PowerSeries.subst}.  The proof reads the coefficients of the
+substitution through the powers $A(t)^k$ and the column theorem
+\lean{Fabius.bellWeightSeries_pow}.  The block-colour convolution of
+\cref{thm:bell-partial-convolution} is the same theorem applied to a product,
+\lean{Fabius.factorial_mul_partialBell_add}.
+\end{remark}
 
 Taking $b_k=1$ gives the complete Bell-polynomial exponential identity
 \begin{equation}\label{eq:exp-complete-bell-again}
@@ -4196,7 +4466,7 @@ $u=\LagrangeShiftCoordinate\phi(u)$.  Formula \eqref{eq:lagrange-basic}, multipl
 exactly \eqref{eq:analytic-lagrange-coeff}.
 \end{proof}
 
-If $f'(a)=0$ but $f(w)-f(a)=c(w-a)^q+O((w-a)^{q+1})$ with $c\ne0$, factor
+If $f'(a)=0$ but $f(w)-f(a)=c(w-a)^q+\BigO((w-a)^{q+1})$ with $c\ne0$, factor
 $f(w)-f(a)=(w-a)^qU(w)$ with $U(a)=c$.  Choosing one of the $q$ values of
 $c^{-1/q}$ reduces the equation to ordinary inversion in the variable
 $(z-f(a))^{1/q}$.  Thus the inverse has $q$ local Puiseux branches.  This is the
@@ -4322,12 +4592,12 @@ $Ck^{-3/2}R_p^{-((p-1)k+1)}$, which proves absolute convergence on the boundary.
 \end{proof}
 
 \section{Lambert's \texorpdfstring{$W$}{W} function at the origin}
-The Lambert function satisfies $W(z)\EulerE^{W(z)}=z$.
+The Lambert function satisfies $\LambertW(z)\EulerE^{\LambertW(z)}=z$.
 \begin{theorem}\label{thm:lambert-W-zero}
 On its principal branch near $0$,
 \begin{equation}\label{eq:lambert-W-zero}
- W(z)=\sum_{n=1}^{\infty}(-n)^{n-1}\frac{z^n}{n!}
- =z-z^2+\frac32z^3-\frac83z^4+O(z^5),
+ \LambertW(z)=\sum_{n=1}^{\infty}(-n)^{n-1}\frac{z^n}{n!}
+ =z-z^2+\frac32z^3-\frac83z^4+\BigO(z^5),
 \end{equation}
 with radius of convergence $\EulerE^{-1}$.
 \end{theorem}
@@ -4339,16 +4609,16 @@ point at $w=-1$, where $f(-1)=-\EulerE^{-1}$; this square-root branch point dete
 the radius.
 \end{proof}
 
-\section{A rapidly useful expansion around \texorpdfstring{$W(e)=1$}{W(e)=1}}
-Put $\xi=\log z-1$ and $u=W(z)-1$.  Then
+\section{A rapidly useful expansion around \texorpdfstring{$\LambertW(e)=1$}{W(e)=1}}
+Put $\xi=\log z-1$ and $u=\LambertW(z)-1$.  Then
 \begin{equation}\label{eq:lambert-near-e-implicit}
  u+\log(1+u)=\xi.
 \end{equation}
 Reversion gives
 \begin{equation}\label{eq:lambert-near-e}
- W(\EulerE^{1+\xi})=1+\frac{\xi}{2}+\frac{\xi^2}{16}
+ \LambertW(\EulerE^{1+\xi})=1+\frac{\xi}{2}+\frac{\xi^2}{16}
  -\frac{\xi^3}{192}-\frac{\xi^4}{3072}
- +\frac{13\xi^5}{61440}+O(\xi^6).
+ +\frac{13\xi^5}{61440}+\BigO(\xi^6).
 \end{equation}
 \begin{proof}
 The derivative at $u=0$ of the left side of
@@ -4363,7 +4633,7 @@ images $-2\pm \ImaginaryUnit\pi$.  Therefore the radius in the $\xi$-plane is
 $\sqrt{4+\pi^2}$.  For positive real $z$, the expansion converges whenever
 $|\log z-1|<\sqrt{4+\pi^2}$, approximately
 $0.0655<z<112.63$.  Taking $\xi=-1$ yields a convergent evaluation of
-$W(1)=0.567143\ldots$.
+$\LambertW(1)=0.567143\ldots$.
 
 \section{Binary trees and Catalan numbers}
 Let $\CatalanNumber{n}$ count rooted ordered full binary trees with $n$ internal vertices, and
@@ -4407,7 +4677,7 @@ Put $u=v-x$.  Then $u=y\phi(u)$ with $\phi(u)=f(x+u)$, treating $x$ as a
 coefficient parameter.  Apply \eqref{eq:lagrange-burmann} to
 $H(u)=g(x+u)$:
 \[
- [y^k]g(v)=\frac1k[u^{k-1}]g'(x+u)f(x+u)^k
+ \CoefficientExtraction{y}{k}g(v)=\frac1k\CoefficientExtraction{u}{k-1}g'(x+u)f(x+u)^k
  =\frac1{k!}D_x^{k-1}(g'(x)f(x)^k).
 \]
 Summation proves the first formula; take $g(z)=z$ for the second.
@@ -4421,7 +4691,7 @@ $1-yf'(v)>0$.  The elementary change-of-variables rule for the Dirac delta gives
  g(v)=\int_{\RealNumbers}\delta(yf(z)-z+x)g(z)(1-yf'(z))\,\Differential z.
 \end{equation}
 Using
-$\delta(s)=\int_{\RealNumbers}\EulerE^{iks}\Differential k/(2\pi)$ and expanding only in the formal
+$\delta(s)=\int_{\RealNumbers}\EulerE^{\ImaginaryUnit ks}\Differential k/(2\pi)$ and expanding only in the formal
 parameter $y$,
 \begin{align}
  g(v)
@@ -4467,7 +4737,7 @@ lemma,
 \begin{equation}\label{eq:laplace-asymptotic}
  I(\lambda)\sim \EulerE^{-\lambda f(a)}
  \sum_{n=0}^{\infty}
- \Gamma\!\left(\frac{n+\beta}{\alpha}\right)
+ \GammaFunction\!\left(\frac{n+\beta}{\alpha}\right)
  \frac{c_n}{\lambda^{(n+\beta)/\alpha}},
 \end{equation}
 where
@@ -4491,15 +4761,15 @@ Expand
 A generalized Lagrange--Bürmann calculation, first for integral $\beta$ and then
 by formal continuation in the exponent, gives
 \[
- d_n=\sum_{k=0}^{n}b_{n-k}[t^k]A(t)^{-(n+\beta)/\alpha}.
+ d_n=\sum_{k=0}^{n}b_{n-k}\CoefficientExtraction{t}{k}A(t)^{-(n+\beta)/\alpha}.
 \]
 Indeed, apply \eqref{eq:lagrange-burmann} to an antiderivative of
 $t^{m+\beta-1}$ and differentiate back after substitution.
 
 Put $\rho=(n+\beta)/\alpha$.  The ordinary Bell expansion yields
 \begin{align*}
- [t^k]A(t)^{-\rho}
- &=a_0^{-\rho}[t^k]
+ \CoefficientExtraction{t}{k}A(t)^{-\rho}
+ &=a_0^{-\rho}\CoefficientExtraction{t}{k}
  \sum_{j\ge0}\binom{-\rho}{j}
  \left(\sum_{r\ge1}\frac{a_r}{a_0}t^r\right)^j\\
  &=a_0^{-\rho}\sum_{j=0}^{k}\binom{-\rho}{j}a_0^{-j}
@@ -4508,7 +4778,7 @@ Put $\rho=(n+\beta)/\alpha$.  The ordinary Bell expansion yields
 Thus $c_n=d_n/\alpha$ is \eqref{eq:laplace-cn}.  Finally
 \[
  \int_0^\infty \EulerE^{-\lambda s^\alpha}s^{n+\beta-1}\Differential s
- =\frac1\alpha\Gamma\!\left(\frac{n+\beta}{\alpha}\right)
+ =\frac1\alpha\GammaFunction\!\left(\frac{n+\beta}{\alpha}\right)
  \lambda^{-(n+\beta)/\alpha},
 \]
 and Watson's lemma controls the replacement of the finite endpoint interval by
@@ -4645,6 +4915,23 @@ partitions by block sizes is exactly the coefficient expansion of $\EulerE^K$ an
 $\log M$.
 \end{proof}
 
+\begin{example}[The first cumulants]\label{ex:merged-first-cumulants}
+Expanding \eqref{eq:merged-moment-cumulant-backward} over the partitions of
+$[n]$ for $n\leq4$, and grouping by block-size type, gives
+\begin{align}
+ \kappa_1&=m_1,                                                    \notag\\
+ \kappa_2&=m_2-m_1^2,                                              \notag\\
+ \kappa_3&=m_3-3m_2m_1+2m_1^3,                                     \notag\\
+ \kappa_4&=m_4-4m_3m_1-3m_2^2+12m_2m_1^2-6m_1^4.                   \label{eq:merged-first-cumulants}
+\end{align}
+For a random variable these are the mean, the variance, the third central
+moment, and the fourth cumulant whose vanishing characterizes the Gaussian
+among laws with moments.  The coefficients are read off the partition lattice:
+$\Pi_4$ has one partition of type $4$, four of type $3+1$, three of type
+$2+2$, six of type $2+1+1$ and one of type $1+1+1+1$, and the Möbius weights
+$(-1)^{|\pi|-1}(|\pi|-1)!$ are $1,-1,-1,2,-6$ respectively.
+\end{example}
+
 \section{Sheffer sequences}
 
 \begin{definition}
@@ -4662,6 +4949,67 @@ The associated sequence $(p_n(x))_{n\geq0}$ is defined by
 \]
 The sequence is of binomial type when $A=1$, and Appell when $B(t)=t$.
 \end{definition}
+
+The definition above declares a sequence of binomial type by exhibiting a
+generating function.  The converse also holds, and it is the statement that
+makes the umbral formalism worth having: the binomial identity alone forces the
+exponential shape, so no sequence of binomial type escapes the theory.
+
+\begin{theorem}[Generating-function characterization of binomial type]
+\label{thm:merged-binomial-type-characterization}
+Let $K$ be a field of characteristic zero and let $(p_n)_{n\geq0}$ be
+polynomials in $K[x]$ with $p_0=1$.  The following are equivalent.
+\begin{enumerate}
+\item For all $x$ and $y$,
+\begin{equation}
+ p_n(x+y)=\sum_{k=0}^{n}\binom nkp_k(x)p_{n-k}(y)\qquad(n\geq0).   \label{eq:merged-binomial-type-law}
+\end{equation}
+\item There is a series $B(t)\in tK[[t]]$, necessarily unique, with
+\begin{equation}
+ \sum_{n\geq0}p_n(x)\frac{t^n}{n!}=\EulerE^{xB(t)}.                \label{eq:merged-binomial-type-egf}
+\end{equation}
+\end{enumerate}
+When these hold, $\deg p_n\leq n$ automatically, and $\deg p_n=n$ for every $n$
+if and only if $B'(0)\ne0$, that is, if and only if $B$ is a delta series.
+\end{theorem}
+
+\begin{proof}
+Suppose (2).  Then
+$\EulerE^{(x+y)B(t)}=\EulerE^{xB(t)}\EulerE^{yB(t)}$, and comparing
+coefficients of $t^n/n!$ in a product of exponential generating functions is
+exactly the binomial convolution \eqref{eq:merged-binomial-type-law}.
+
+Suppose (1), and put $P(x,t)=\sum_{n\geq0}p_n(x)t^n/n!\in K[x][[t]]$.  The
+binomial identity says precisely
+\begin{equation}
+ P(x+y,t)=P(x,t)\,P(y,t).                                          \label{eq:merged-binomial-type-functional}
+\end{equation}
+Setting $x=y=0$ gives $P(0,t)=P(0,t)^2$; since $P(0,t)$ has constant term
+$p_0=1$ it is a unit, so $P(0,t)=1$.  Every $P(x,t)$ likewise has constant
+term $1$, so $L(x,t)=\log P(x,t)$ is defined in $K[x][[t]]$, its coefficients
+being polynomials in $x$ because they are universal polynomials in
+$p_1(x),\ldots,p_n(x)$.  Taking logarithms in
+\eqref{eq:merged-binomial-type-functional},
+\[
+ L(x+y,t)=L(x,t)+L(y,t).
+\]
+Write $L(x,t)=\sum_{m\geq0}\ell_m(x)t^m$.  Each $\ell_m\in K[x]$ satisfies
+$\ell_m(x+y)=\ell_m(x)+\ell_m(y)$ identically in two indeterminates.  Writing
+$\ell_m(x)=\sum_jc_jx^j$ and comparing the mixed monomials $x^ay^b$ with
+$a,b\geq1$ forces $c_j=0$ for $j\geq2$ (the binomial coefficient
+$\binom ja\ne0$ in characteristic zero), while $x=y=0$ forces $c_0=0$.  Hence
+$\ell_m(x)=c_mx$ and $L(x,t)=xB(t)$ with $B(t)=\sum_mc_mt^m$.  Finally
+$\ell_0(x)=\log p_0(x)=0$, so $B\in tK[[t]]$, and exponentiating gives
+\eqref{eq:merged-binomial-type-egf}.  Uniqueness is immediate from
+$B(t)=\partial_xL(x,t)$, or equivalently from $B(t)=\sum_{n\geq1}p_n'(0)t^n/n!$.
+
+For the degree statement, expand
+$\EulerE^{xB(t)}=\sum_{k\geq0}x^kB(t)^k/k!$.  Since $B\in tK[[t]]$, the term
+$B(t)^k/k!$ contributes nothing below $t^k$, so $p_n$ has degree at most $n$
+and its coefficient of $x^n$ is $n!\cdot\CoefficientExtraction tn B(t)^n/n!=B'(0)^n$.
+Thus $\deg p_n=n$ for all $n$ exactly when $B'(0)\ne0$; and already
+$p_1(x)=B'(0)x$ shows that exact degree at $n=1$ forces $B'(0)\ne0$.
+\end{proof}
 
 \begin{theorem}[Addition and lowering]
 \label{thm:merged-sheffer}
@@ -4696,7 +5044,7 @@ Thus $x(x-na)^{n-1}$ is a sequence of binomial type.
 \begin{proof}
 Lagrange--Bürmann gives
 \[
- [t^n]\EulerE^{xT(t)}=\frac{x}{n}[w^{n-1}]\EulerE^{xw}\EulerE^{-anw}
+ \CoefficientExtraction{t}{n}\EulerE^{xT(t)}=\frac{x}{n}\CoefficientExtraction{w}{n-1}\EulerE^{xw}\EulerE^{-anw}
  =\frac{x(x-na)^{n-1}}{n!}.
 \]
 An EGF of the form $\EulerE^{xB(t)}$ satisfies the binomial identity by
@@ -4709,7 +5057,7 @@ multiplication at $x$ and $y$.
 Over a commutative $\RationalNumbers$-algebra, let $g(0)$ and $f'(0)$ be
 units and let $f(0)=0$.  Define
 \begin{equation}
- R_{n,k}=\frac{n!}{k!}[t^n]g(t)f(t)^k.                              \label{eq:merged-riordan-entry}
+ R_{n,k}=\frac{n!}{k!}\CoefficientExtraction{t}{n}g(t)f(t)^k.                              \label{eq:merged-riordan-entry}
 \end{equation}
 The resulting lower-triangular matrix is denoted $[g,f]$.
 \end{definition}
@@ -4886,6 +5234,54 @@ $\ExponentialPartialBellPolynomial42=4x_1x_3+3x_2^2$, and
 $\ExponentialPartialBellPolynomial43=6x_1^2x_2$, then simplifying.
 \end{proof}
 
+Recursion \eqref{eq:merged-inverse-derivative} expresses $g^{(n)}$ through the
+lower derivatives of $g$.  The following closed operator form expresses it
+through $f$ alone, with no reference to $g$ except in the final evaluation
+point.  It is the shortest route to a symbolic table of inverse derivatives,
+since each order costs one differentiation rather than one Bell-polynomial
+expansion.
+
+\begin{theorem}[Inverse-derivative operator]
+\label{thm:merged-inverse-derivative-operator}
+With $g=f^{-1}$ locally and $f'\ne0$ near the point in question, for every
+$n\geq1$
+\begin{equation}
+ g^{(n)}(y)=\left.
+   \left(\frac1{f'(x)}\frac{\Differential}{\Differential x}\right)^{n-1}
+   \frac1{f'(x)}\right|_{x=g(y)}.                                  \label{eq:merged-inverse-derivative-operator}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Along the inverse curve $x=g(y)$ one has $\Differential y/\Differential x=f'(x)$
+with $f'(x)\ne0$, so differentiation with respect to $y$ of any quantity
+expressed in $x$ is
+\[
+ \frac{\Differential}{\Differential y}
+ =\frac{\Differential x}{\Differential y}\frac{\Differential}{\Differential x}
+ =\frac1{f'(x)}\frac{\Differential}{\Differential x}.
+\]
+Now induct on $n$.  For $n=1$, $g'(y)=1/f'(g(y))$, which is
+\eqref{eq:merged-inverse-derivative-operator} with the operator applied zero
+times.  If \eqref{eq:merged-inverse-derivative-operator} holds for $n$, apply
+$\Differential/\Differential y$ to both sides and use the displayed operator
+identity on the right; this prefixes one more factor
+$(1/f')\,\Differential/\Differential x$ and gives the case $n+1$.
+\end{proof}
+
+\begin{example}
+Applying \eqref{eq:merged-inverse-derivative-operator} twice reproduces the
+first entries of \eqref{eq:merged-inverse-first-four}:
+\[
+ \frac1{f'}\frac{\Differential}{\Differential x}\frac1{f'}
+ =-\frac{f''}{(f')^3},
+ \qquad
+ \frac1{f'}\frac{\Differential}{\Differential x}
+ \left(-\frac{f''}{(f')^3}\right)
+ =\frac{3(f'')^2-f'f'''}{(f')^5}.
+\]
+\end{example}
+
 \section{Several nested functions}
 
 For a chain $f_1\circ\cdots\circ f_r$, repeated use of
@@ -5046,6 +5442,51 @@ This proves \eqref{eq:merged-bivariate-fuss}, including values where $A=0$ by
 polynomial continuation.  Multiplying and dividing by $A$
 when $A\ne0$ gives \eqref{eq:merged-bivariate-fuss-rational}.  The case
 $m=n=0$ is immediate from $S(0,0)=1$.
+\end{proof}
+
+In the previous example the two branches carry the same argument $S$, so the
+Good determinant collapses to a single term.  The next example is genuinely
+coupled: each series feeds the other, the determinant has two terms, and the
+answer is a difference of two products of binomial coefficients.  It shows the
+determinant doing work that no one-variable Lagrange inversion performs.
+
+\begin{example}[A coupled two-series system]\label{ex:merged-coupled-pair}
+Let $u$ and $v$ be the unique formal solutions of
+\begin{equation}
+ u=x(1+v),\qquad v=y(1+u).                                        \label{eq:merged-coupled-system}
+\end{equation}
+Then for all integers $m,n,p,q\geq0$,
+\begin{equation}
+ \CoefficientExtraction{x}{m}\CoefficientExtraction{y}{n}u^pv^q
+ =\binom{n}{m-p}\binom{m}{n-q}
+  -\binom{n-1}{m-p-1}\binom{m-1}{n-q-1},                          \label{eq:merged-coupled-coefficients}
+\end{equation}
+with the convention that a binomial coefficient with a negative entry, or with
+a lower entry exceeding the upper one, is zero.
+\end{example}
+
+\begin{proof}
+Here $\phi_1(U,V)=1+V$ and $\phi_2(U,V)=1+U$.  The only nonvanishing partial
+derivatives are $\partial\phi_1/\partial V=1$ and
+$\partial\phi_2/\partial U=1$, so the determinant in \eqref{eq:merged-good} is
+\[
+ \det\begin{pmatrix}
+  1 & -\dfrac{V}{1+V}\\[6pt]
+  -\dfrac{U}{1+U} & 1
+ \end{pmatrix}
+ =1-\frac{UV}{(1+U)(1+V)}.
+\]
+Applying \cref{thm:merged-good} with $F(U,V)=U^pV^q$ and exponents $(m,n)$
+gives
+\[
+ \CoefficientExtraction{U}{m}\CoefficientExtraction{V}{n}\Bigl(
+   U^pV^q(1+V)^m(1+U)^n
+   -U^{p+1}V^{q+1}(1+V)^{m-1}(1+U)^{n-1}\Bigr),
+\]
+since the determinant's second term cancels one factor from each of
+$(1+U)^n$ and $(1+V)^m$.  Each of the two summands factors as a product of a
+$U$-extraction and a $V$-extraction, which yields
+\eqref{eq:merged-coupled-coefficients}.
 \end{proof}
 
 \begin{proposition}[Characteristic determinant]
@@ -5254,7 +5695,8 @@ The exponential generating function for Stirling numbers is
  =k!\sum_{n\geq k}\StirlingSecondKind nk\frac{t^n}{n!}.
 \]
 Substitution and comparison of $t^n/n!$ prove
-\eqref{eq:merged-bernoulli-stirling}.
+\eqref{eq:merged-bernoulli-stirling}.  \Cref{thm:merged-bernoulli-difference}
+below re-proves it as the value at $x=0$ of a polynomial identity.
 
 Because $\TouchardPolynomial{n}$ is a polynomial, the first integral may be
 evaluated term by term:
@@ -5284,6 +5726,69 @@ convergent: for $0<x\leq1$,
  E_1(x)\leq\log(1/x)+\int_1^\infty\frac{\EulerE^{-v}}v\Differential v,
 \]
 whereas $E_1(x)\leq\EulerE^{-x}/x$ for $x\geq1$.
+\end{proof}
+
+Formula \eqref{eq:merged-bernoulli-stirling} is the specialization at $x=0$ of
+a polynomial identity in $x$, which is worth recording separately: it expresses
+the whole Bernoulli polynomial in the finite-difference basis, and it makes the
+Bernoulli--Stirling formula a corollary of the elementary evaluation
+$\Delta^k0^n=k!\StirlingSecondKind nk$.
+
+\begin{theorem}[Bernoulli polynomials from finite differences]
+\label{thm:merged-bernoulli-difference}
+Let $\Delta$ denote the forward difference in $x$, so that
+$\Delta^kx^n=\sum_{j=0}^k(-1)^{k-j}\binom kj(x+j)^n$.  Then for every
+$n\in\NaturalNumbers$,
+\begin{equation}
+ \beta_n(x)=\sum_{k=0}^{n}\frac{(-1)^k}{k+1}\Delta^kx^n.           \label{eq:merged-bernoulli-newton-basis}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+In $R[[t]]$ with $R=\RationalNumbers[x]$, substitute $u\mapsto u(\EulerE^t-1)$
+in the geometric series and integrate over $u\in[0,1]$:
+\[
+ \int_0^1\frac{\Differential u}{1+u(\EulerE^t-1)}
+ =\left[\frac{\log\bigl(1+u(\EulerE^t-1)\bigr)}{\EulerE^t-1}\right]_{u=0}^{u=1}
+ =\frac{t}{\EulerE^t-1},
+\]
+the manipulation being legitimate termwise because $\EulerE^t-1\in tR[[t]]$, so
+that only finitely many terms of
+$\sum_{k\geq0}(-1)^ku^k(\EulerE^t-1)^k$ contribute to each power of $t$.
+Expanding that series and using $\int_0^1u^k\Differential u=1/(k+1)$ gives
+\[
+ \frac{t\EulerE^{xt}}{\EulerE^t-1}
+ =\sum_{k\geq0}\frac{(-1)^k}{k+1}\EulerE^{xt}(\EulerE^t-1)^k.
+\]
+Finally $\EulerE^{xt}(\EulerE^t-1)^k
+=\sum_{j=0}^k(-1)^{k-j}\binom kj\EulerE^{(x+j)t}$, whose coefficient of
+$t^n/n!$ is $\sum_{j=0}^k(-1)^{k-j}\binom kj(x+j)^n=\Delta^kx^n$.  Comparing
+coefficients of $t^n/n!$, and noting that $\Delta^kx^n=0$ for $k>n$ since
+$\Delta$ lowers the degree, yields \eqref{eq:merged-bernoulli-newton-basis}.
+\end{proof}
+
+\begin{corollary}[Second proof of the Bernoulli--Stirling formula]
+\label{cor:merged-bernoulli-stirling-second-proof}
+Evaluating \eqref{eq:merged-bernoulli-newton-basis} at $x=0$ recovers
+\eqref{eq:merged-bernoulli-stirling}, by a route independent of the Stirling
+exponential generating function used in
+\cref{thm:merged-bernoulli-stirling-touchard}.
+\end{corollary}
+
+\begin{proof}
+It suffices to evaluate $\Delta^k0^n$.  By the surjection formula
+\cref{thm:second-explicit},
+\[
+ \Delta^k0^n=\sum_{j=0}^k(-1)^{k-j}\binom kj j^n
+ =k!\StirlingSecondKind nk,
+\]
+this being the inclusion--exclusion count of the surjections
+$[n]\twoheadrightarrow[k]$, of which there are $k!\StirlingSecondKind nk$.
+Substituting into \eqref{eq:merged-bernoulli-newton-basis} at $x=0$ gives
+\[
+ \beta_n=\sum_{k=0}^{n}\frac{(-1)^k}{k+1}\,k!\StirlingSecondKind nk,
+\]
+which is \eqref{eq:merged-bernoulli-stirling}.
 \end{proof}
 
 \section{N\"orlund's generalized Bernoulli polynomials}
@@ -5538,7 +6043,7 @@ Define the even ordinary-series coefficients $\beta_{2m}^{\sharp}$ by
 \begin{proposition}
 For even $n\geq2$,
 \begin{equation}
- \beta_n^{\sharp}=\frac{\beta_n}{2n^2\Gamma(n)},                    \label{eq:merged-modified-bernoulli}
+ \beta_n^{\sharp}=\frac{\beta_n}{2n^2\GammaFunction(n)},                    \label{eq:merged-modified-bernoulli}
 \end{equation}
 and odd coefficients vanish.  In particular,
 $\beta_2^{\sharp}=1/48$, $\beta_4^{\sharp}=-1/5760$, and
@@ -5586,13 +6091,13 @@ For $n\geq2$ and every real $x$,
 \begin{equation}
  \widetilde\beta_n(x)
  =-n!\sum_{k\in\IntegerNumbers\setminus\{0\}}
- \frac{\EulerE^{2\pi ikx}}{(2\pi ik)^n}.                          \label{eq:merged-periodic-bernoulli-fourier-complex}
+ \frac{\EulerE^{2\pi \ImaginaryUnit kx}}{(2\pi \ImaginaryUnit k)^n}.                          \label{eq:merged-periodic-bernoulli-fourier-complex}
 \end{equation}
 The series converges absolutely and uniformly.  In degree one,
 \begin{equation}
  \widetilde\beta_1(x)
  =-\lim_{N\to\infty}\sum_{0<|k|\leq N}
- \frac{\EulerE^{2\pi ikx}}{2\pi ik}
+ \frac{\EulerE^{2\pi \ImaginaryUnit kx}}{2\pi \ImaginaryUnit k}
  =-\frac1\pi\sum_{k=1}^{\infty}\frac{\sin(2\pi kx)}{k}.         \label{eq:merged-periodic-bernoulli-fourier-one}
 \end{equation}
 The symmetric complex series and the paired sine series converge at every
@@ -5626,15 +6131,15 @@ For $n\geq2$,
 \begin{proof}
 For $0<r<1$ and $0<x<1$, the logarithm series gives
 \[
- \sum_{k=1}^{\infty}\frac{r^k\EulerE^{2\pi ikx}}k
- =-\log(1-r\EulerE^{2\pi ix}).
+ \sum_{k=1}^{\infty}\frac{r^k\EulerE^{2\pi \ImaginaryUnit kx}}k
+ =-\log(1-r\EulerE^{2\pi \ImaginaryUnit x}).
 \]
 Taking imaginary parts and then letting $r\uparrow1$ yields
 \[
  \sum_{k=1}^{\infty}\frac{\sin(2\pi kx)}k
  =\pi\left(\frac12-x\right),
 \]
-because $\arg(1-\EulerE^{2\pi ix})=\pi x-\pi/2$.  Dirichlet's test gives
+because $\arg(1-\EulerE^{2\pi \ImaginaryUnit x})=\pi x-\pi/2$.  Dirichlet's test gives
 the same ordinary-series limit: $1/k$ decreases to zero and the sine partial
 sums are bounded for fixed nonintegral $x$.  At an integer every sine term is
 zero.  The complex series is nowhere absolutely convergent because the sum of
@@ -5645,7 +6150,7 @@ degree-one statement and its convergence claims.
 
 For $n\geq1$, let
 \[
- c_k^{(n)}=\int_0^1\beta_n(x)\EulerE^{-2\pi ikx}\Differential x.
+ c_k^{(n)}=\int_0^1\beta_n(x)\EulerE^{-2\pi \ImaginaryUnit kx}\Differential x.
 \]
 The mean coefficient is zero, because the Appell identity gives
 \[
@@ -5654,10 +6159,10 @@ The mean coefficient is zero, because the Appell identity gives
 \]
 For $k\ne0$ and $n\geq2$, the endpoint values agree, so integration by parts
 and $\beta_n'=n\beta_{n-1}$ give
-$c_k^{(n)}=n c_k^{(n-1)}/(2\pi ik)$.  Direct integration gives
-$c_k^{(1)}=-1/(2\pi ik)$; hence
+$c_k^{(n)}=n c_k^{(n-1)}/(2\pi \ImaginaryUnit k)$.  Direct integration gives
+$c_k^{(1)}=-1/(2\pi \ImaginaryUnit k)$; hence
 \begin{equation}
- c_k^{(n)}=-\frac{n!}{(2\pi ik)^n}\qquad(k\ne0).                  \label{eq:merged-periodic-bernoulli-coefficients}
+ c_k^{(n)}=-\frac{n!}{(2\pi \ImaginaryUnit k)^n}\qquad(k\ne0).                  \label{eq:merged-periodic-bernoulli-coefficients}
 \end{equation}
 
 For $n\geq2$, the claimed series is absolutely and uniformly convergent by
@@ -5668,7 +6173,7 @@ $\widetilde\beta_n$.  Every Fourier coefficient of $h$ is zero, so every
 Fejér mean is zero:
 \[
  \sigma_Nh(x)=\sum_{|k|\leq N}
- \left(1-\frac{|k|}{N+1}\right)\FourierTwoPi{h}(k)\EulerE^{2\pi ikx}=0.
+ \left(1-\frac{|k|}{N+1}\right)\FourierTwoPi{h}(k)\EulerE^{2\pi \ImaginaryUnit kx}=0.
 \]
 But $\sigma_Nh=h*K_N$, where
 \[
@@ -5735,20 +6240,100 @@ Substitution in \eqref{eq:merged-euler-maclaurin-rem} proves
 \eqref{eq:merged-euler-maclaurin-bound}.
 \end{proof}
 
+Both asymptotic applications below --- Stirling's expansion and the
+harmonic-number expansion --- need the same manoeuvre: the lower endpoint
+contributes nothing that depends on $N$, and its contribution has to be
+collected into a single constant that is then identified by a limit.  It is
+worth isolating that step once.
+
+\begin{corollary}[Constant-of-integration form]
+\label{cor:merged-euler-maclaurin-constant}
+Let $m\ge1$, let $a$ be an integer, and let $f\in C^{2m}([a,\infty))$ have
+$f^{(2m)}$ absolutely integrable on $[a,\infty)$.  Then there is a constant
+$C=C(f,a,m)$, independent of $N$, such that for every integer $N>a$
+\begin{equation}
+ \sum_{k=a}^{N}f(k)=\int_a^Nf(x)\Differential x+\frac{f(N)}2+C
+ +\sum_{r=1}^{m}\frac{\beta_{2r}}{(2r)!}f^{(2r-1)}(N)+\rho_m(N),  \label{eq:merged-euler-maclaurin-constant}
+\end{equation}
+where
+\begin{equation}
+ \rho_m(N)=\frac1{(2m)!}\int_N^\infty\beta_{2m}(\{x\})f^{(2m)}(x)\Differential x,
+ \qquad
+ |\rho_m(N)|\le\frac{2\RiemannZeta(2m)}{(2\pi)^{2m}(2m)!}
+ \int_N^\infty|f^{(2m)}(x)|\Differential x.                       \label{eq:merged-euler-maclaurin-constant-rem}
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+Take $b=N$ in \eqref{eq:merged-euler-maclaurin} and split the remainder
+integral as $\int_a^N=\int_a^\infty-\int_N^\infty$, which is legitimate because
+$\beta_{2m}(\{\cdot\})$ is bounded and $f^{(2m)}$ is absolutely integrable.
+Every term that involves only $a$ --- namely $f(a)/2$, the boundary sum
+$-\sum_r\beta_{2r}f^{(2r-1)}(a)/(2r)!$, and
+$-\int_a^\infty\beta_{2m}(\{x\})f^{(2m)}(x)\Differential x/(2m)!$ --- is
+independent of $N$, and their sum is the constant $C$.  What survives is
+\eqref{eq:merged-euler-maclaurin-constant}, and the bound on $\rho_m$ is
+\eqref{eq:merged-periodic-bernoulli-sup} applied to the tail.
+\end{proof}
+
 \begin{corollary}[Stirling's expansion]
 For each fixed integer $M\geq1$, as $n\to\infty$ through positive integers,
 \begin{equation}
  \log(n!)=\left(n+\frac12\right)\log n-n+\frac12\log(2\pi)
  +\sum_{r=1}^{M-1}\frac{\beta_{2r}}{2r(2r-1)n^{2r-1}}
- +O(n^{-(2M-1)}).                                                    \label{eq:merged-stirling-em}
+ +\BigO(n^{-(2M-1)}).                                                    \label{eq:merged-stirling-em}
 \end{equation}
 \end{corollary}
 
 \begin{proof}
-Apply Euler--Maclaurin to $f(x)=\log x$.  Its derivatives give the displayed
-inverse powers.  The terms at the lower endpoint and the limiting remainder
-combine into a constant, evaluated as $\frac12\log(2\pi)$ by Wallis' product.
-The remainder bound one order farther gives the stated error.
+Apply \cref{cor:merged-euler-maclaurin-constant} to $f(x)=\log x$ with $a=1$;
+the hypothesis holds because $|f^{(2M)}(x)|=(2M-1)!\,x^{-2M}$ is integrable on
+$[1,\infty)$.  Here $\int_1^N\log x\Differential x=N\log N-N+1$ and
+$f(N)/2=\frac12\log N$, while
+$f^{(2r-1)}(x)=(2r-2)!\,x^{-(2r-1)}$ gives the displayed inverse powers
+$\beta_{2r}/\bigl(2r(2r-1)N^{2r-1}\bigr)$.  The constant $C$ supplied by the
+corollary is evaluated as $\frac12\log(2\pi)-1$ by Wallis' product, and the
+remainder bound one order farther gives the stated error.
+\end{proof}
+
+The same machine applied to $f(x)=1/x$ produces the companion expansion for the
+harmonic numbers, and identifies the Euler--Mascheroni constant as the
+associated constant of integration.  This is the expansion used silently in
+several coefficient estimates elsewhere in this work.
+
+\begin{corollary}[Harmonic-number expansion]\label{cor:merged-harmonic-expansion}
+Let $H_N=\sum_{k=1}^N1/k$.  For each fixed integer $M\ge1$, as $N\to\infty$,
+\begin{equation}
+ H_N=\log N+\gamma+\frac1{2N}
+ -\sum_{r=1}^{M-1}\frac{\beta_{2r}}{2r\,N^{2r}}+\BigO(N^{-2M}),   \label{eq:merged-harmonic-expansion}
+\end{equation}
+so that explicitly
+$H_N=\log N+\gamma+\frac1{2N}-\frac1{12N^2}+\frac1{120N^4}+\BigO(N^{-6})$.
+\end{corollary}
+
+\begin{proof}
+Apply \cref{cor:merged-euler-maclaurin-constant} with $m=M$, $f(x)=1/x$ and
+$a=1$; the hypothesis holds because $|f^{(2M)}(x)|=(2M)!\,x^{-2M-1}$ is
+integrable on $[1,\infty)$.  Here $\int_1^N f=\log N$, $f(N)/2=1/(2N)$, and
+$f^{(2r-1)}(x)=-(2r-1)!\,x^{-2r}$, so
+$\beta_{2r}f^{(2r-1)}(N)/(2r)!=-\beta_{2r}/(2r\,N^{2r})$.  Hence
+\begin{equation}
+ H_N=\log N+\frac1{2N}+C
+ -\sum_{r=1}^{M}\frac{\beta_{2r}}{2r\,N^{2r}}+\rho_M(N).           \label{eq:merged-harmonic-em}
+\end{equation}
+By \eqref{eq:merged-euler-maclaurin-constant-rem},
+\[
+ |\rho_M(N)|\le\frac{2\RiemannZeta(2M)}{(2\pi)^{2M}(2M)!}
+ \int_N^\infty(2M)!\,x^{-2M-1}\Differential x
+ =\frac{2\RiemannZeta(2M)}{(2M)(2\pi)^{2M}}\,N^{-2M}=\BigO(N^{-2M}),
+\]
+so every term of \eqref{eq:merged-harmonic-em} except $C$ tends to $0$ or is
+accounted for, and letting $N\to\infty$ gives
+$C=\lim_N(H_N-\log N)=\gamma$ --- for every $M$ at once, since $C$ is the only
+$N$-independent term.  Finally the term $r=M$ of the sum is itself
+$\BigO(N^{-2M})$ and may be absorbed into the error, which leaves
+\eqref{eq:merged-harmonic-expansion}.  The displayed special case uses
+$\beta_2=1/6$ and $\beta_4=-1/30$.
 \end{proof}
 
 \chapter{Pochhammer symbols, polygamma functions, and Barnes' \texorpdfstring{$G$}{G}-function}
@@ -5767,19 +6352,27 @@ The rising Pochhammer symbol is
 \label{thm:merged-pochhammer}
 Where defined meromorphically,
 \begin{equation}
- (a)_n=\frac{\Gamma(a+n)}{\Gamma(a)},                               \label{eq:merged-pochhammer-gamma}
+ (a)_n=\frac{\GammaFunction(a+n)}{\GammaFunction(a)},                               \label{eq:merged-pochhammer-gamma}
 \end{equation}
 and, formally in $z$ and analytically for $|z|<1$,
 \begin{equation}
  (1-z)^{-a}=\sum_{n\geq0}\frac{(a)_n}{n!}z^n.                      \label{eq:merged-binomial-series}
 \end{equation}
+Moreover, for all $m,n\in\NaturalNumbers$,
+\begin{equation}
+ (a)_{m+n}=(a)_m\,(a+m)_n,\qquad
+ \FallingFactorial{a}{m+n}=\FallingFactorial{a}{m}\FallingFactorial{a-m}{n}. \label{eq:merged-pochhammer-split}
+\end{equation}
 \end{theorem}
 
 \begin{proof}
-Iterate $\Gamma(w+1)=w\Gamma(w)$ to obtain the quotient.  For the series, let
+Iterate $\GammaFunction(w+1)=w\GammaFunction(w)$ to obtain the quotient.  For the series, let
 $F=\sum(a)_nz^n/n!$.  The recurrence $(a)_{n+1}=(a+n)(a)_n$ gives
 $(1-z)F'=aF$ and $F(0)=1$, whose unique formal solution is $(1-z)^{-a}$.
-The ratio test gives analytic convergence in the unit disk.
+The ratio test gives analytic convergence in the unit disk.  The splitting
+rules \eqref{eq:merged-pochhammer-split} are immediate from the definition:
+the product $a(a+1)\cdots(a+m+n-1)$ breaks after its $m$th factor, and the
+falling statement is the same identity read in the opposite direction.
 \end{proof}
 
 \begin{corollary}[Chu--Vandermonde]
@@ -5819,9 +6412,126 @@ Faà di Bruno to $\EulerE^{L(a)}$.  Since the left side is a polynomial in $a$,
 agreement off the zeros supplies the polynomial continuation.
 \end{proof}
 
+The reciprocal needs no separate computation.  The complete Bell polynomial
+$\ExponentialCompleteBellPolynomial m$ is a sum of monomials
+$x_1^{j_1}x_2^{j_2}\cdots$ with $\sum_i ij_i=m$, so substituting
+$x_i\mapsto(-1)^ix_i$ multiplies every monomial by $(-1)^{\sum_iij_i}=(-1)^m$:
+\begin{equation}
+ \ExponentialCompleteBellPolynomial m(-x_1,x_2,-x_3,\ldots,(-1)^mx_m)
+ =(-1)^m\ExponentialCompleteBellPolynomial m(x_1,x_2,x_3,\ldots,x_m).      \label{eq:merged-bell-sign-flip}
+\end{equation}
+
+\begin{corollary}[Derivatives of a reciprocal Pochhammer symbol]
+\label{cor:merged-reciprocal-pochhammer}
+For $m\ge1$ and $(a)_n\ne0$,
+\begin{equation}
+ \frac{\partial^m}{\partial a^m}\frac1{(a)_n}
+ =\frac{(-1)^m}{(a)_n}
+ \ExponentialCompleteBellPolynomial m\!\left(H_n(a),-1!H_n^{(2)}(a),2!H_n^{(3)}(a),\ldots,
+ (-1)^{m-1}(m-1)!H_n^{(m)}(a)\right),                              \label{eq:merged-reciprocal-pochhammer}
+\end{equation}
+with exactly the arguments of \eqref{eq:merged-pochhammer-derivatives}.  In
+particular the two derivative arrays differ only by the alternating sign
+$(-1)^m$.
+\end{corollary}
+
+\begin{proof}
+With $L(a)=\log(a)_n$ as above, $1/(a)_n=\EulerE^{-L(a)}$, and the exponential
+Faà di Bruno formula gives
+\[
+ \frac{\partial^m}{\partial a^m}\EulerE^{-L(a)}
+ =\EulerE^{-L(a)}\ExponentialCompleteBellPolynomial m\bigl(-L'(a),-L''(a),\ldots,-L^{(m)}(a)\bigr).
+\]
+Since $L^{(r)}(a)=(-1)^{r-1}(r-1)!H_n^{(r)}(a)$, the $r$th argument is
+$-L^{(r)}(a)=(-1)^r(r-1)!H_n^{(r)}(a)$, which is $(-1)^r$ times the $r$th
+argument in \eqref{eq:merged-pochhammer-derivatives}.  Now apply
+\eqref{eq:merged-bell-sign-flip}.
+\end{proof}
+
+\section{Euler's limit and the Weierstrass product}
+
+The partial-fraction series of the next section are obtained by
+differentiating Weierstrass' product for $1/\GammaFunction$.  That product is
+proved here, so that the chapter rests on nothing beyond the integral
+definition of $\GammaFunction$.  The one ingredient is the Beta integral with
+an integer parameter, which is also the exact statement that converts a
+Pochhammer symbol into an integral.
+
+\begin{proposition}[Beta integral with an integer parameter]
+\label{prop:merged-beta-integral}
+For $\Re a>0$ and every integer $n\ge0$,
+\begin{equation}
+ \int_0^1t^{a-1}(1-t)^n\Differential t=\frac{n!}{(a)_{n+1}}.       \label{eq:merged-beta-integral}
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+Induct on $n$.  For $n=0$ the integral is $1/a=0!/(a)_1$.  For $n\ge1$,
+integration by parts with $u=(1-t)^n$ and $\Differential v=t^{a-1}\Differential t$
+gives, the boundary terms vanishing because $\Re a>0$ and $n\ge1$,
+\[
+ \int_0^1t^{a-1}(1-t)^n\Differential t
+ =\frac na\int_0^1t^{a}(1-t)^{n-1}\Differential t.
+\]
+The inductive hypothesis at parameter $a+1$ turns the right side into
+$\frac na\cdot\frac{(n-1)!}{(a+1)_n}=\frac{n!}{a\,(a+1)_n}=\frac{n!}{(a)_{n+1}}$.
+\end{proof}
+
+\begin{theorem}[Euler's limit and the Weierstrass product]
+\label{thm:merged-euler-gamma-limit}
+For $\Re z>0$,
+\begin{equation}
+ \GammaFunction(z)=\lim_{N\to\infty}\frac{N!\,N^z}{z(z+1)\cdots(z+N)},   \label{eq:merged-euler-gamma-limit}
+\end{equation}
+locally uniformly on $\{\Re z>0\}$.  Moreover, for every $z\in\ComplexNumbers$,
+\begin{equation}
+ \frac1{\GammaFunction(z)}=z\EulerE^{\gamma z}
+ \prod_{k\ge1}\left(1+\frac zk\right)\EulerE^{-z/k},                \label{eq:merged-weierstrass-gamma}
+\end{equation}
+the product converging locally uniformly, so that $1/\GammaFunction$ is entire
+with simple zeros exactly at $0,-1,-2,\ldots$.
+\end{theorem}
+
+\begin{proof}
+Put $\GammaFunction_N(z)=\int_0^N\bigl(1-\tfrac tN\bigr)^Nt^{z-1}\Differential t$.
+Substituting $t=Nu$ and applying \cref{prop:merged-beta-integral} gives
+\begin{equation}
+ \GammaFunction_N(z)=N^z\int_0^1(1-u)^Nu^{z-1}\Differential u
+ =\frac{N^z\,N!}{(z)_{N+1}}
+ =\frac{N!\,N^z}{z(z+1)\cdots(z+N)}.                               \label{eq:merged-euler-gamma-finite}
+\end{equation}
+For $0\le t\le N$ the elementary inequality
+$0\le(1-t/N)^N\le\EulerE^{-t}$ holds, and $(1-t/N)^N\to\EulerE^{-t}$
+pointwise.  On a compact subset of $\{\Re z>0\}$ one has
+$\delta\le\Re z\le M$ for some $0<\delta\le M$, whence
+$|t^{z-1}|=t^{\Re z-1}\le t^{\delta-1}+t^{M-1}$, an integrable majorant
+against $\EulerE^{-t}$ on $(0,\infty)$.  Dominated convergence therefore gives
+$\GammaFunction_N(z)\to\int_0^\infty\EulerE^{-t}t^{z-1}\Differential t=\GammaFunction(z)$,
+uniformly on that compact set, which is
+\eqref{eq:merged-euler-gamma-limit}.
+
+For the product, invert \eqref{eq:merged-euler-gamma-finite}:
+\[
+ \frac1{\GammaFunction_N(z)}
+ =z\,\EulerE^{-z\log N}\prod_{k=1}^{N}\left(1+\frac zk\right)
+ =z\,\EulerE^{\gamma_Nz}\prod_{k=1}^{N}\left(1+\frac zk\right)\EulerE^{-z/k},
+\]
+where $\gamma_N=\sum_{k=1}^N\frac1k-\log N$, since the inserted factors
+$\EulerE^{-z/k}$ contribute exactly $\EulerE^{-z\sum_{k\le N}1/k}$.  Now
+$\gamma_N\to\gamma$, and the product converges locally uniformly on
+$\ComplexNumbers$: for $|w|\le\frac12$ one has
+$\bigl|\log\bigl((1+w)\EulerE^{-w}\bigr)\bigr|\le|w|^2$, so on $|z|\le\rho$ all
+factors with $k\ge2\rho$ satisfy
+$|\log((1+z/k)\EulerE^{-z/k})|\le\rho^2/k^2$, a convergent bound.  Letting
+$N\to\infty$ gives \eqref{eq:merged-weierstrass-gamma} on $\{\Re z>0\}$, and
+both sides are entire, so the identity persists on $\ComplexNumbers$ by
+analytic continuation.  The zeros of the right side are visibly simple and
+located at $0,-1,-2,\ldots$.
+\end{proof}
+
 \section{Digamma and polygamma series}
 
-Define $\psi=\Gamma'/\Gamma$ and $\psi^{(m)}=D^m\psi$.
+Define $\psi=\GammaFunction'/\GammaFunction$ and $\psi^{(m)}=D^m\psi$.
 
 \begin{theorem}[Partial fractions]
 \label{thm:merged-polygamma-series}
@@ -5835,13 +6545,18 @@ Away from nonpositive integers,
 \end{theorem}
 
 \begin{proof}
-Logarithmically differentiate Weierstrass' product
+Logarithmically differentiate the Weierstrass product
+\eqref{eq:merged-weierstrass-gamma}, which
+\cref{thm:merged-euler-gamma-limit} establishes:
 \[
- \frac1{\Gamma(z)}=ze^{\gamma z}
- \prod_{k\geq1}\left(1+\frac zk\right)\EulerE^{-z/k}.
+ -\psi(z)=\frac1z+\gamma
+ +\sum_{k\ge1}\left(\frac1{k+z}-\frac1k\right).
 \]
-Normal convergence on compact sets away from the poles justifies the first
-series and every further derivative.
+Combining the term $1/z$ with the sum, and pairing $1/k$ with the index shift,
+gives \eqref{eq:merged-digamma-series}.  The local uniform convergence proved
+in \cref{thm:merged-euler-gamma-limit} is normal on compact sets away from the
+poles, so the series may be differentiated termwise any number of times, which
+gives \eqref{eq:merged-polygamma-series}.
 \end{proof}
 
 \begin{corollary}[Recurrences and special values]
@@ -5859,6 +6574,24 @@ telescopes.  Iterate from $\psi(1)=-\gamma$, and set $z=1$ in the polygamma
 series.
 \end{proof}
 
+\begin{corollary}[Hurwitz-zeta form]\label{cor:merged-polygamma-hurwitz}
+For $m\geq1$ and $\Re z>0$,
+\begin{equation}
+ \psi^{(m)}(z)=(-1)^{m+1}m!\,\HurwitzZeta{m+1}{z}.                \label{eq:merged-polygamma-hurwitz}
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+The Hurwitz zeta function is $\HurwitzZeta sz=\sum_{k\geq0}(k+z)^{-s}$ for
+$\Re s>1$ and $\Re z>0$, which is precisely the series in
+\eqref{eq:merged-polygamma-series} at $s=m+1$.
+\end{proof}
+
+This is the bridge to the Stirling--Hurwitz sums of
+\cref{thm:stirling-zeta}: the same Hurwitz values occur there as the limits of
+first-kind Stirling series, and \eqref{eq:merged-polygamma-hurwitz} identifies
+them as polygamma values.
+
 \begin{theorem}[Reflection]
 \label{thm:merged-polygamma-reflection}
 For $z\notin\IntegerNumbers$,
@@ -5870,9 +6603,9 @@ For $z\notin\IntegerNumbers$,
 \end{theorem}
 
 \begin{proof}
-Multiplying the Weierstrass products for $1/\Gamma(1+z)$ and
-$1/\Gamma(1-z)$ and using Euler's sine product gives
-$\Gamma(z)\Gamma(1-z)=\pi/\sin(\pi z)$.  Logarithmic differentiation proves
+Multiplying the Weierstrass products for $1/\GammaFunction(1+z)$ and
+$1/\GammaFunction(1-z)$ and using Euler's sine product gives
+$\GammaFunction(z)\GammaFunction(1-z)=\pi/\sin(\pi z)$.  Logarithmic differentiation proves
 the first formula; differentiating it $m$ more times proves the second.
 \end{proof}
 
@@ -5880,8 +6613,8 @@ the first formula; differentiating it $m$ more times proves the second.
 \label{thm:merged-gauss-multiplication}
 For $q\in\PositiveIntegers$,
 \begin{equation}
- \Gamma(qz)=(2\pi)^{(1-q)/2}q^{qz-1/2}
- \prod_{r=0}^{q-1}\Gamma\!\left(z+\frac rq\right).                 \label{eq:merged-gauss-multiplication}
+ \GammaFunction(qz)=(2\pi)^{(1-q)/2}q^{qz-1/2}
+ \prod_{r=0}^{q-1}\GammaFunction\!\left(z+\frac rq\right).                 \label{eq:merged-gauss-multiplication}
 \end{equation}
 Hence
 \begin{align}
@@ -5895,13 +6628,13 @@ Hence
 \begin{proof}
 Define
 \[
- Q(z)=\frac{q^{qz-1/2}\prod_{r=0}^{q-1}\Gamma(z+r/q)}{\Gamma(qz)}.
+ Q(z)=\frac{q^{qz-1/2}\prod_{r=0}^{q-1}\GammaFunction(z+r/q)}{\GammaFunction(qz)}.
 \]
 The gamma recurrence shows $Q(z+1/q)=Q(z)$.  Stirling's formula in a right
 half-plane gives $Q(z)\to(2\pi)^{(q-1)/2}$ as $\Re z\to+\infty$ in a fixed
 horizontal strip.  Periodicity therefore makes $Q$ equal to that constant;
 meromorphic continuation extends the identity throughout its domain.  Solving
-for $\Gamma(qz)$ proves \eqref{eq:merged-gauss-multiplication}.  Logarithmic
+for $\GammaFunction(qz)$ proves \eqref{eq:merged-gauss-multiplication}.  Logarithmic
 differentiation gives the digamma identity and further differentiation gives
 the polygamma identity.
 \end{proof}
@@ -5933,7 +6666,7 @@ The normally convergent product
 \end{align}
 defines an entire function satisfying
 \begin{equation}
- \BarnesGFunction(1)=1,\qquad \BarnesGFunction(z+1)=\Gamma(z)\BarnesGFunction(z).                                \label{eq:merged-barnes-recurrence}
+ \BarnesGFunction(1)=1,\qquad \BarnesGFunction(z+1)=\GammaFunction(z)\BarnesGFunction(z).                                \label{eq:merged-barnes-recurrence}
 \end{equation}
 Consequently $\BarnesGFunction(n)=1!2!\cdots(n-2)!$ for $n\geq2$.
 \end{theorem}
@@ -5945,7 +6678,7 @@ so the product converges normally and defines an entire function with the
 prescribed integral-multiplicity zeros.  At $z=0$ it equals $1$.  Divide the
 finite products at $z$ and $z-1$, rearrange before taking the limit, and use
 Weierstrass' gamma product; all quadratic convergence factors cancel and the
-limit is $\Gamma(z)$.  Normal convergence justifies passage to the limit,
+limit is $\GammaFunction(z)$.  Normal convergence justifies passage to the limit,
 proving the recurrence.  Iteration gives the integer values.
 \end{proof}
 
@@ -5954,14 +6687,14 @@ proving the recurrence.  Iteration gives the integer values.
 With compatible logarithm branches,
 \begin{equation}
  \log \BarnesGFunction(z+1)=\frac z2\log(2\pi)-\frac{z(z+1)}2
- +z\log\Gamma(z+1)-\int_0^z\log\Gamma(t+1)\Differential t.                   \label{eq:merged-alexeiewsky}
+ +z\log\GammaFunction(z+1)-\int_0^z\log\GammaFunction(t+1)\Differential t.                   \label{eq:merged-alexeiewsky}
 \end{equation}
 \end{theorem}
 
 \begin{proof}
 Logarithmic differentiation of the product gives
 \[
- \frac{\BarnesGFunction'(z+1)}{\BarnesGFunction(z+1)}
+ \frac{\Differential}{\Differential z}\log \BarnesGFunction(z+1)
  =\frac12\log(2\pi)-z-\frac12+z\psi(z+1),
 \]
 where the simplification uses the digamma partial fractions.  The derivative
@@ -6002,7 +6735,7 @@ integer $p\geq1$, as $x\to+\infty$ through positive real values,
 Equivalently, retaining the exact gamma factor,
 \begin{align}
  \log \BarnesGFunction(x+1)
- ={}&\frac{x^2}{4}+x\log\Gamma(x+1)
+ ={}&\frac{x^2}{4}+x\log\GammaFunction(x+1)
  -\left(\frac{x(x+1)}2+\frac1{12}\right)\log x-\log A            \notag\\
  &+\sum_{k=1}^{p-1}\frac{\beta_{2k+2}}
  {2k(2k+1)(2k+2)x^{2k}}+O_p(x^{-2p}).                             \label{eq:merged-barnes-asymptotic}
@@ -6014,7 +6747,7 @@ An empty sum is understood when $p=1$.
 The gamma recurrence and Binet's formula \eqref{eq:binet-second} give, for
 $t>0$,
 \[
- \log\Gamma(t+1)
+ \log\GammaFunction(t+1)
  =\left(t+\frac12\right)\log t-t+\frac12\log(2\pi)
  +2\int_0^\infty\frac{\arctan(x/t)}{\EulerE^{2\pi x}-1}\Differential x.
 \]
@@ -6034,7 +6767,7 @@ gives
 Together with \eqref{eq:merged-even-zeta-bernoulli}, substitution in Binet's
 formula yields
 \begin{equation}
- \log\Gamma(t+1)
+ \log\GammaFunction(t+1)
  =\left(t+\frac12\right)\log t-t+\frac12\log(2\pi)
  +\sum_{r=1}^{p}\frac{\beta_{2r}}
  {2r(2r-1)t^{2r-1}}+R_p(t),
@@ -6083,12 +6816,12 @@ The result is
 \[
  \sum_{k=1}^n k\log k
  =\left(\frac{n^2}{2}+\frac n2+\frac1{12}\right)\log n
-  -\frac{n^2}{4}+\frac1{12}-C+o(1).
+  -\frac{n^2}{4}+\frac1{12}-C+\LittleO(1).
 \]
 Hence the limit in \eqref{eq:merged-glaisher} exists,
 $\log A=1/12-C$, and so $C=1/12-\log A$.
 
-Finally expand the exact $x\log\Gamma(x+1)$ in
+Finally expand the exact $x\log\GammaFunction(x+1)$ in
 \eqref{eq:merged-barnes-asymptotic}.  At order $x^{-2k}$ the difference
 between the coefficient in
 \eqref{eq:merged-barnes-standard-asymptotic} and the gamma contribution is
@@ -6114,7 +6847,7 @@ In particular,
 \begin{equation}
  \prod_{k=1}^n k^k
  =A\,n^{n^2/2+n/2+1/12}\EulerE^{-n^2/4}
- \left(1+\frac1{720n^2}+O(n^{-4})\right).                         \label{eq:merged-hyperfactorial-asymptotic}
+ \left(1+\frac1{720n^2}+\BigO(n^{-4})\right).                         \label{eq:merged-hyperfactorial-asymptotic}
 \end{equation}
 \end{corollary}
 
@@ -6342,6 +7075,116 @@ diagonals.  Its dimension is the number of diagonals still free, so substitute
 $d=N-3-j$ in \eqref{eq:merged-kirkman-cayley} and simplify.
 \end{proof}
 
+\section{The associahedral \texorpdfstring{$h$}{h}-polynomial}
+
+The face vector \eqref{eq:merged-associahedron-f} is unwieldy, but its face
+transform is not: the Narayana numbers of \cref{thm:merged-narayana} reappear
+as the $h$-vector.  This is the associahedral counterpart of
+\cref{thm:permutohedron-h-polynomial}, where the Eulerian numbers played the
+same role for the permutohedron.
+
+\begin{theorem}[Associahedral \texorpdfstring{$h$}{h}-polynomial]
+\label{thm:merged-associahedron-h}
+For $N\geq3$,
+\begin{equation}
+ h_{\AssociahedronByDimension{N-3}}(t)=\sum_{r=0}^{N-3}N(N-2,r+1)\,t^r
+ =\sum_{r=0}^{N-3}\frac1{N-2}\binom{N-2}{r}\binom{N-2}{r+1}t^r.  \label{eq:merged-associahedron-h}
+\end{equation}
+In particular the $h$-vector is the $(N-2)$nd Narayana row, its coefficients are
+palindromic, and $h(1)=\CatalanNumber{N-2}$ is the number of vertices.
+\end{theorem}
+
+\begin{proof}
+Write $n=N-1$, so that $\AssociahedronByDimension{N-3}$ has dimension $n-2$, and
+record \eqref{eq:merged-associahedron-f} in the equivalent form
+\begin{equation}
+ f_d=\frac1n\binom{n-2}{d}\binom{2n-d-2}{n-1},                    \label{eq:merged-associahedron-f-alt}
+\end{equation}
+which agrees with \eqref{eq:merged-associahedron-f} after cancelling
+factorials.  By the face transform of
+\cref{thm:permutohedron-h-polynomial},
+\[
+ h(t)=\sum_{d=0}^{n-2}f_d\,(t-1)^{d},
+\]
+the sum being over nonempty faces, so
+\[
+ \CoefficientExtraction tr h=\sum_{d=r}^{n-2}(-1)^{d-r}\binom dr f_d.
+\]
+Using $\binom dr\binom{n-2}{d}=\binom{n-2}{r}\binom{n-2-r}{d-r}$ and
+substituting $j=d-r$, $M=n-2-r$,
+\[
+ \CoefficientExtraction tr h
+ =\frac1n\binom{n-2}{r}\sum_{j=0}^{M}(-1)^j\binom Mj
+   \binom{2n-r-j-2}{n-1}.
+\]
+The alternating Vandermonde identity
+\begin{equation}
+ \sum_{j=0}^{M}(-1)^j\binom Mj\binom{R-j}{S}=\binom{R-M}{S-M}    \label{eq:merged-alternating-vandermonde}
+\end{equation}
+follows by extracting $\CoefficientExtraction xS$ from
+\[
+ (1+x)^R\left(1-\frac1{1+x}\right)^M=x^M(1+x)^{R-M},
+\]
+the left side expanding as $\sum_j(-1)^j\binom Mj(1+x)^{R-j}$.  Applying
+\eqref{eq:merged-alternating-vandermonde} with $R=2n-r-2$, $S=n-1$ and
+$M=n-2-r$ gives $\binom{n}{r+1}$, whence
+\[
+ \CoefficientExtraction tr h=\frac1n\binom{n-2}{r}\binom n{r+1}
+ =\frac{(n-2)!\,(n-1)!}{r!\,(r+1)!\,(n-2-r)!\,(n-1-r)!}
+ =\frac1{n-1}\binom{n-1}{r}\binom{n-1}{r+1},
+\]
+the middle expression being obtained by writing out both binomial
+coefficients, and the last by reading the same factorial quotient backwards.
+With $n-1=N-2$ this is $N(N-2,r+1)$ by \eqref{eq:merged-narayana}.
+
+Palindromicity is the Narayana symmetry $N(m,k)=N(m,m+1-k)$ recorded after
+\cref{thm:merged-narayana}, and it is the Dehn--Sommerville relation for this
+polytope.  Finally $h(1)=\sum_kN(N-2,k)=\CatalanNumber{N-2}$, which is $f_0$
+as it must be for a simple polytope.
+\end{proof}
+
+\begin{example}
+For $N=5$ the pentagon $\AssociahedronByDimension2$ has $f=(5,5,1)$ and
+$h(t)=1+3t+t^2$; for $N=6$ the three-dimensional associahedron has
+$f=(14,21,9,1)$ and $h(t)=1+6t+6t^2+t^3$.  Both $h$-vectors are Narayana rows,
+and both sum to a Catalan number.
+\end{example}
+
+\section{Loday's realization}
+
+The associahedron is not merely a combinatorial object.  Loday's coordinates
+realize it as an explicit lattice polytope inside a hyperplane, which is the
+form in which it is normally drawn.
+
+\begin{definition}\label{def:merged-loday-coordinates}
+Let $T$ be a rooted binary tree with $n$ internal vertices, hence $n+1$ leaves.
+For the $i$th internal vertex in infix order, let $\ell_i$ and $r_i$ be the
+numbers of leaves in its left and right subtrees, and put
+\begin{equation}
+ M(T)=(\ell_1r_1,\ldots,\ell_nr_n)\in\RealNumbers^n.               \label{eq:merged-loday-point}
+\end{equation}
+\end{definition}
+
+\begin{proposition}[Loday's constant hyperplane]
+\label{prop:merged-loday-hyperplane}
+For every rooted binary tree $T$ with $n$ internal vertices,
+\begin{equation}
+ \sum_{i=1}^{n}\ell_ir_i=\binom{n+1}{2}.                          \label{eq:merged-loday-hyperplane}
+\end{equation}
+Consequently all $\CatalanNumber n$ points $M(T)$ lie in one affine hyperplane
+of $\RealNumbers^n$, and their convex hull has dimension at most $n-1$; it is
+Loday's realization of $\AssociahedronByDimension{n-1}$.
+\end{proposition}
+
+\begin{proof}
+At the $i$th internal vertex, the product $\ell_ir_i$ counts the unordered
+pairs of leaves having one leaf in each of its two child subtrees --- that is,
+exactly the pairs whose lowest common ancestor is that vertex.  Every unordered
+pair of distinct leaves has a unique lowest common ancestor, and is therefore
+counted at exactly one internal vertex.  Summing over $i$ counts every pair of
+the $n+1$ leaves once, which is $\binom{n+1}2$.
+\end{proof}
+
 \section{The Tamari order}
 
 Orient the elementary rotation by
@@ -6378,7 +7221,7 @@ definition, and acyclicity gives antisymmetry.
 \label{thm:merged-raney}
 If $T=1+zT^p$, then for integers $p,r\geq1$ and $n\geq0$,
 \begin{equation}
- [z^n]T(z)^r=\frac{r}{pn+r}\binom{pn+r}{n}.                         \label{eq:merged-raney}
+ \CoefficientExtraction{z}{n}T(z)^r=\frac{r}{pn+r}\binom{pn+r}{n}.                         \label{eq:merged-raney}
 \end{equation}
 \end{theorem}
 
@@ -6386,7 +7229,7 @@ If $T=1+zT^p$, then for integers $p,r\geq1$ and $n\geq0$,
 The case $n=0$ is immediate.  For $n\geq1$, put
 $Y=T-1=z(1+Y)^p$.  Lagrange--Bürmann applied to $(1+Y)^r$ gives
 \[
- [z^n]T^r=\frac rn[w^{n-1}](1+w)^{pn+r-1}
+ \CoefficientExtraction{z}{n}T^r=\frac rn\CoefficientExtraction{w}{n-1}(1+w)^{pn+r-1}
  =\frac r{pn+r}\binom{pn+r}{n}.
 \]
 \end{proof}
@@ -6453,18 +7296,18 @@ Let $R\in\ComplexNumbers\setminus\{0\}$,
 $\alpha\in\ComplexNumbers$, and $n\in\NaturalNumbers$.  Then the Taylor
 germ at the origin satisfies
 \begin{equation}
- [z^n](1-z/R)^{-\alpha}
+ \CoefficientExtraction{z}{n}(1-z/R)^{-\alpha}
  =R^{-n}\frac{\RisingFactorial{\alpha}{n}}{n!}
  =R^{-n}(-1)^n\binom{-\alpha}{n}.                                  \label{eq:merged-singular-binomial}
 \end{equation}
 If $\alpha\notin\{0,-1,-2,\ldots\}$, this is also the ordinary gamma quotient
 \begin{equation}
- R^{-n}\frac{\Gamma(n+\alpha)}{\Gamma(\alpha)\Gamma(n+1)}.          \label{eq:merged-singular-binomial-gamma}
+ R^{-n}\frac{\GammaFunction(n+\alpha)}{\GammaFunction(\alpha)\GammaFunction(n+1)}.          \label{eq:merged-singular-binomial-gamma}
 \end{equation}
 If instead $\alpha=-m$ with $m\in\{0,1,2,\ldots\}$, the germ is the
 polynomial $(1-z/R)^m$, and hence
 \begin{equation}
- [z^n](1-z/R)^m=
+ \CoefficientExtraction{z}{n}(1-z/R)^m=
  \begin{cases}
   R^{-n}(-1)^n\binom mn,&0\leq n\leq m,\\
   0,&n>m.
@@ -6472,9 +7315,9 @@ polynomial $(1-z/R)^m$, and hence
 \end{equation}
 For fixed $\alpha\notin\{0,-1,-2,\ldots\}$,
 \begin{equation}
- [z^n](1-z/R)^{-\alpha}
- =\frac{R^{-n}n^{\alpha-1}}{\Gamma(\alpha)}
- \left(1+\frac{\alpha(\alpha-1)}{2n}+O(n^{-2})\right).              \label{eq:merged-singular-binomial-asymp}
+ \CoefficientExtraction{z}{n}(1-z/R)^{-\alpha}
+ =\frac{R^{-n}n^{\alpha-1}}{\GammaFunction(\alpha)}
+ \left(1+\frac{\alpha(\alpha-1)}{2n}+\BigO(n^{-2})\right).              \label{eq:merged-singular-binomial-asymp}
 \end{equation}
 \end{lemma}
 
@@ -6482,12 +7325,12 @@ For fixed $\alpha\notin\{0,-1,-2,\ldots\}$,
 The generalized binomial theorem gives
 $(-1)^n\binom{-\alpha}{n}=\RisingFactorial{\alpha}{n}/n!$; this
 polynomial identity in $\alpha$ proves the first formula without any excluded
-parameters.  Away from the poles of $\Gamma(\alpha)$, its functional equation
+parameters.  Away from the poles of $\GammaFunction(\alpha)$, its functional equation
 identifies the rising factorial with
-$\Gamma(n+\alpha)/\Gamma(\alpha)$.  At $\alpha=-m$ the binomial theorem is
+$\GammaFunction(n+\alpha)/\GammaFunction(\alpha)$.  At $\alpha=-m$ the binomial theorem is
 the finite expansion of $(1-z/R)^m$, giving the displayed cases rather than an
 undefined quotient of gamma poles.  Finally, subtract the Stirling expansions
-of $\log\Gamma(n+\alpha)$ and $\log\Gamma(n+1)$ and exponentiate to obtain the
+of $\log\GammaFunction(n+\alpha)$ and $\log\GammaFunction(n+1)$ and exponentiate to obtain the
 ratio expansion for the nonexceptional parameters.
 \end{proof}
 
@@ -6497,7 +7340,7 @@ Let $\rho\in\ComplexNumbers\setminus\{0\}$, let $h$ be analytic in
 $|z|<r$ for some $r>|\rho|$, and fix $J\geq1$.  Then, for every
 $\alpha\in\ComplexNumbers$, as $n\to\infty$,
 \begin{align}
- [z^n]h(z)(1-z/\rho)^{-\alpha}
+ \CoefficientExtraction{z}{n}h(z)(1-z/\rho)^{-\alpha}
 ={}&\rho^{-n}\sum_{j=0}^{J-1}\frac{(-\rho)^jh^{(j)}(\rho)}{j!}
  \frac{\RisingFactorial{\alpha-j}{n}}{n!}                         \notag\\
  &+O\!\left(|\rho|^{-n}(n+1)^{\Re\alpha-J-1}\right).             \label{eq:merged-darboux-transfer}
@@ -6507,8 +7350,8 @@ nonpositive integer and therefore contributes only finitely many coefficients.
 In particular, if $h(\rho)\ne0$ and
 $\alpha\notin\{0,-1,-2,\ldots\}$,
 \begin{equation}
- [z^n]h(z)(1-z/\rho)^{-\alpha}
- \sim\frac{h(\rho)}{\Gamma(\alpha)}\rho^{-n}n^{\alpha-1}.         \label{eq:merged-basic-transfer}
+ \CoefficientExtraction{z}{n}h(z)(1-z/\rho)^{-\alpha}
+ \sim\frac{h(\rho)}{\GammaFunction(\alpha)}\rho^{-n}n^{\alpha-1}.         \label{eq:merged-basic-transfer}
 \end{equation}
 \end{theorem}
 
@@ -6520,7 +7363,7 @@ $(z-\rho)^j=(-\rho)^j(1-z/\rho)^j$, the finite terms follow exactly from
 Lemma~\ref{lem:merged-singular-binomial}.
 
 Choose $s$ with $|\rho|<s<r$ and write $q(z)=\sum_{k\geq0}q_kz^k$.
-Cauchy's estimate gives $q_k=O(s^{-k})$.  For fixed
+Cauchy's estimate gives $q_k=\BigO(s^{-k})$.  For fixed
 $\beta\in\ComplexNumbers$, the exact
 binomial lemma and its two parameter cases give
 \[
@@ -6564,17 +7407,17 @@ analytic in $|z|<R$.  Let
 \]
 Then, for every $n\in\NaturalNumbers$, the exact coefficient identity is
 \begin{align}
- [z^n]F(z)={}&
+ \CoefficientExtraction{z}{n}F(z)={}&
  \sum_{\nu\in\mathcal N}c_\nu\rho_\nu^{-n}
- \frac{\Gamma(n-\lambda_\nu)}
-      {\Gamma(-\lambda_\nu)\Gamma(n+1)}                            \notag\\
+ \frac{\GammaFunction(n-\lambda_\nu)}
+      {\GammaFunction(-\lambda_\nu)\GammaFunction(n+1)}                            \notag\\
  &+\sum_{\substack{\nu\in\mathcal P\\ n\leq m_\nu}}
  c_\nu\rho_\nu^{-n}(-1)^n\binom{m_\nu}{n}
- +[z^n]E(z).                                                        \label{eq:merged-darboux-subtraction}
+ +\CoefficientExtraction{z}{n}E(z).                                                        \label{eq:merged-darboux-subtraction}
 \end{align}
 Consequently, the minimal remainder hypothesis
 \begin{equation}
- [z^n]E(z)=O\!\left(R^{-n}(n+1)^{-p}\right),\qquad n\to\infty,      \label{eq:merged-darboux-coefficient-remainder}
+ \CoefficientExtraction{z}{n}E(z)=O\!\left(R^{-n}(n+1)^{-p}\right),\qquad n\to\infty,      \label{eq:merged-darboux-coefficient-remainder}
 \end{equation}
 for some integer $p\geq1$ permits the last term in
 \eqref{eq:merged-darboux-subtraction} to be replaced by that error.
@@ -6592,7 +7435,7 @@ absolutely continuous, $\varepsilon^{(p)}\in L^1([-\pi,\pi])$, and
 \]
 Then, for $n\geq1$,
 \begin{equation}
- \left|[z^n]E(z)\right|
+ \left|\CoefficientExtraction{z}{n}E(z)\right|
  \leq\frac{R^{-n}}{2\pi n^p}
        \left\|\varepsilon^{(p)}\right\|_{L^1([-\pi,\pi])}.        \label{eq:merged-darboux-boundary-remainder}
 \end{equation}
@@ -6608,14 +7451,14 @@ the direct remainder hypothesis proves its asymptotic version.
 For the boundary criterion, Cauchy's formula first on $|z|=r<R$ and then
 uniform convergence as $r\uparrow R$ give
 \begin{equation}
- [z^n]E(z)=\frac{R^{-n}}{2\pi}
+ \CoefficientExtraction{z}{n}E(z)=\frac{R^{-n}}{2\pi}
  \int_{-\pi}^{\pi}\varepsilon(\theta)
  \EulerE^{-\ImaginaryUnit n\theta}\,\Differential\theta.          \label{eq:merged-darboux-boundary-fourier}
 \end{equation}
 Integrate by parts $p$ times.  Absolute continuity justifies the last step,
 and every boundary term vanishes by periodic matching, so
 \[
- [z^n]E(z)=\frac{R^{-n}}{2\pi(\ImaginaryUnit n)^p}
+ \CoefficientExtraction{z}{n}E(z)=\frac{R^{-n}}{2\pi(\ImaginaryUnit n)^p}
  \int_{-\pi}^{\pi}\varepsilon^{(p)}(\theta)
  \EulerE^{-\ImaginaryUnit n\theta}\,\Differential\theta.
 \]
@@ -6649,8 +7492,8 @@ $h_j(\rho_j)\ne0$.  Suppose that, as Taylor germs at the origin,
 where $E$ is analytic in $|z|<R+\varepsilon$.  Then, as $n\to\infty$, the
 dominant contributions add:
 \begin{equation}
- [z^n]F(z)=\sum_j\frac{h_j(\rho_j)}{\Gamma(\alpha_j)}
- \rho_j^{-n}n^{\alpha_j-1}(1+O(n^{-1}))
+ \CoefficientExtraction{z}{n}F(z)=\sum_j\frac{h_j(\rho_j)}{\GammaFunction(\alpha_j)}
+ \rho_j^{-n}n^{\alpha_j-1}(1+\BigO(n^{-1}))
  +O\!\left((R+\varepsilon/2)^{-n}\right).                           \label{eq:merged-multiple-transfer}
 \end{equation}
 Complex conjugate points therefore produce periodic or oscillatory terms.
@@ -6669,7 +7512,7 @@ bound for $E$.
 \begin{proposition}[Logarithmic and meromorphic cases]
 For $n\geq1$,
 \begin{equation}
- [z^n]\log\frac1{1-z/R}=\frac{R^{-n}}n.                             \label{eq:merged-log-transfer}
+ \CoefficientExtraction{z}{n}\log\frac1{1-z/R}=\frac{R^{-n}}n.                             \label{eq:merged-log-transfer}
 \end{equation}
 If a meromorphic function has principal parts
 $c_{j,m}(1-z/\rho_j)^{-m}$ at its poles of smallest modulus, then its
@@ -6692,7 +7535,7 @@ Cauchy's estimate to what remains.
 As $n\to\infty$,
 \begin{equation}
  \CatalanNumber{n}=\frac{4^n}{\sqrt\pi\,n^{3/2}}
- \left(1-\frac9{8n}+\frac{145}{128n^2}+O(n^{-3})\right).            \label{eq:merged-catalan-asymp}
+ \left(1-\frac9{8n}+\frac{145}{128n^2}+\BigO(n^{-3})\right).            \label{eq:merged-catalan-asymp}
 \end{equation}
 \end{theorem}
 
@@ -6700,11 +7543,11 @@ As $n\to\infty$,
 Use $\CatalanNumber{n}=(n+1)^{-1}\binom{2n}{n}$ and
 \[
  \binom{2n}{n}=\frac{4^n}{\sqrt{\pi n}}
- \left(1-\frac1{8n}+\frac1{128n^2}+O(n^{-3})\right),
+ \left(1-\frac1{8n}+\frac1{128n^2}+\BigO(n^{-3})\right),
 \]
 which follows from Stirling's expansion.  Multiply by
-$(n+1)^{-1}=n^{-1}(1-n^{-1}+n^{-2}+O(n^{-3}))$.
-Alternatively, $C(z)=2-2\sqrt{1-4z}+O(1-4z)$ near $z=1/4$, and Darboux
+$(n+1)^{-1}=n^{-1}(1-n^{-1}+n^{-2}+\BigO(n^{-3}))$.
+Alternatively, $C(z)=2-2\sqrt{1-4z}+\BigO(1-4z)$ near $z=1/4$, and Darboux
 transfer with $\alpha=-1/2$ gives the leading term directly.
 \end{proof}
 
@@ -6815,13 +7658,13 @@ For $|y|<1$,
 \end{align}
 Their inverse pairs give, for every $m\ge0$,
 \begin{align}
- [x^{2m}]\left(\frac{x}{\sin x}\right)^{2m+1}
+ \CoefficientExtraction{x}{2m}\left(\frac{x}{\sin x}\right)^{2m+1}
  &=\frac1{4^m}\binom{2m}{m},                                      \label{eq:merged-sine-diagonal}\\
- [x^{2m}]\left(\frac{x}{\tan x}\right)^{2m+1}
+ \CoefficientExtraction{x}{2m}\left(\frac{x}{\tan x}\right)^{2m+1}
  &=(-1)^m,                                                         \label{eq:merged-tangent-diagonal}\\
- [x^{2m}]\left(\frac{x}{\sinh x}\right)^{2m+1}
+ \CoefficientExtraction{x}{2m}\left(\frac{x}{\sinh x}\right)^{2m+1}
  &=(-1)^m\frac1{4^m}\binom{2m}{m},                                \label{eq:merged-sinh-diagonal}\\
- [x^{2m}]\left(\frac{x}{\tanh x}\right)^{2m+1}
+ \CoefficientExtraction{x}{2m}\left(\frac{x}{\tanh x}\right)^{2m+1}
  &=1.                                                              \label{eq:merged-tanh-diagonal}
 \end{align}
 \end{theorem}
@@ -6834,12 +7677,12 @@ The derivatives of the four inverse functions are, in the displayed order,
 \]
 The generalized binomial theorem and the geometric series expand these four
 functions for $|y|<1$; termwise integration from $0$ to $y$ gives
-\cref{eq:merged-arcsin-series,eq:merged-arctan-series,
+\cref{eq:merged-arcsin-series,eq:merged-arctan-series,%
 eq:merged-arsinh-series,eq:merged-artanh-series}.
 
 If $g=f^{\langle-1\rangle}$, $f(0)=0$, and $f'(0)=1$, Lagrange inversion gives
 \[
- [y^n]g(y)=\frac1n[x^{n-1}]\left(\frac{x}{f(x)}\right)^n.
+ \CoefficientExtraction{y}{n}g(y)=\frac1n\CoefficientExtraction{x}{n-1}\left(\frac{x}{f(x)}\right)^n.
 \]
 Apply this identity with $f=\sin,\tan,\sinh,\tanh$ and $n=2m+1$, then compare
 with the four inverse coefficients just computed.  This proves all four
@@ -6880,8 +7723,8 @@ Let $u(t)$ be the unique formal solution of
 \end{equation}
 Then for every formal $H$ and $n\geq1$,
 \begin{equation}
- [t^n]H(u(t))
- =\frac1n[z^{n-1}]H'(a+z)\Phi(a+z)^n.                              \label{eq:merged-offset-lagrange}
+ \CoefficientExtraction{t}{n}H(u(t))
+ =\frac1n\CoefficientExtraction{z}{n-1}H'(a+z)\Phi(a+z)^n.                              \label{eq:merged-offset-lagrange}
 \end{equation}
 The same formula holds analytically in a sufficiently small neighbourhood
 when $H$ and $\Phi$ are analytic.
@@ -6892,7 +7735,7 @@ Put $w=u-a$ and $\phi(w)=\Phi(a+w)$.  Then $w=t\phi(w)$, so
 Theorem~\ref{thm:lagrange-burmann}, applied to the outer series
 $K(w)=H(a+w)$, gives
 \[
- [t^n]K(w(t))=\frac1n[z^{n-1}]K'(z)\phi(z)^n,
+ \CoefficientExtraction{t}{n}K(w(t))=\frac1n\CoefficientExtraction{z}{n-1}K'(z)\phi(z)^n,
 \]
 which is \eqref{eq:merged-offset-lagrange}.  The analytic statement follows
 from the analytic inverse-function theorem exactly as in
@@ -6946,16 +7789,16 @@ one can write
 where $H$ and $K$ extend analytically to $|w|<|\rho|+\eta$ for some $\eta>0$
 and $K(\rho)=\lambda\ne0$.  Then
 \begin{equation}
- [w^n]g(w)\sim-\frac{\lambda}{2\sqrt\pi}\rho^{-n}n^{-3/2}.        \label{eq:merged-square-root-coefficients}
+ \CoefficientExtraction{w}{n}g(w)\sim-\frac{\lambda}{2\sqrt\pi}\rho^{-n}n^{-3/2}.        \label{eq:merged-square-root-coefficients}
 \end{equation}
 \end{corollary}
 
 \begin{proof}
-The analytic part $H$ has coefficients $O((|\rho|+\eta')^{-n})$ for any
+The analytic part $H$ has coefficients $\BigO((|\rho|+\eta')^{-n})$ for any
 $0<\eta'<\eta$.  In the remaining term put $w=\rho u$ and apply
 \cref{thm:merged-darboux-transfer} with $R=1$, exponent
 $\alpha=-1/2$, and analytic multiplier $K(\rho u)$.  Since
-$\Gamma(-1/2)=-2\sqrt\pi$, its leading term is exactly
+$\GammaFunction(-1/2)=-2\sqrt\pi$, its leading term is exactly
 \cref{eq:merged-square-root-coefficients}.
 \end{proof}
 
@@ -7186,11 +8029,11 @@ which gives $c_{n+1}=a_n/(n+1)$.
 
 \begin{algorithm}[Composition power table]
 \label{alg:merged-composition}
-Assume $B(0)=0$ and set $p_{k,n}=[z^n]B(z)^k$.  Initialize
+Assume $B(0)=0$ and set $p_{k,n}=\CoefficientExtraction{z}{n}B(z)^k$.  Initialize
 $p_{0,0}=1$, $p_{0,n}=0$ for $n>0$, and use
 \begin{equation}
  p_{k,n}=\sum_{j=1}^{n}b_jp_{k-1,n-j},\qquad
- [z^n]A(B(z))=\sum_{k=0}^{n}a_kp_{k,n}.                            \label{eq:merged-alg-composition}
+ \CoefficientExtraction{z}{n}A(B(z))=\sum_{k=0}^{n}a_kp_{k,n}.                            \label{eq:merged-alg-composition}
 \end{equation}
 \end{algorithm}
 
@@ -7205,7 +8048,7 @@ each degree.
 If $F(z)=a_1z+a_2z^2+\cdots$ with invertible $a_1$, then its inverse
 $G(w)=\sum_{n\geq1}g_nw^n$ has
 \begin{equation}
- g_n=\frac1n[z^{n-1}]\left(\frac z{F(z)}\right)^n.                 \label{eq:merged-alg-lagrange-reversion}
+ g_n=\frac1n\CoefficientExtraction{z}{n-1}\left(\frac z{F(z)}\right)^n.                 \label{eq:merged-alg-lagrange-reversion}
 \end{equation}
 \end{algorithm}
 
@@ -7213,6 +8056,54 @@ $G(w)=\sum_{n\geq1}g_nw^n$ has
 This is Lagrange--Bürmann with outer function $H(z)=z$.  The coefficient
 $g_n$ depends only on $a_1,\ldots,a_n$, so every truncation is exact through
 its declared order.
+\end{proof}
+
+The next proposition is an independent check on
+\cref{alg:merged-lagrange-reversion}, on the Bell-polynomial inverse
+coefficients of \cref{thm:inverse-bell-coeff}, and on the derivative recursion
+of \cref{thm:merged-inverse-derivative}: it obtains the same coefficients by
+undetermined coefficients alone, using no inversion theorem whatever.  Two
+routes to the same fourth nontrivial order is the kind of redundancy this
+chapter exists to supply.
+
+\begin{proposition}[Direct reversion through degree five]
+\label{prop:merged-low-order-reversion}
+Let
+\[
+ F(z)=z+a_2z^2+a_3z^3+a_4z^4+a_5z^5+\BigO(z^6)
+\]
+over a commutative $\RationalNumbers$-algebra.  Then its compositional inverse
+is
+\begin{align}
+ \CompositionalInverseOf F(z)
+ ={}&z-a_2z^2+(2a_2^2-a_3)z^3
+  +(-5a_2^3+5a_2a_3-a_4)z^4                                        \notag\\
+ &+(14a_2^4-21a_2^2a_3+3a_3^2+6a_2a_4-a_5)z^5+\BigO(z^6).          \label{eq:merged-low-order-reversion}
+\end{align}
+\end{proposition}
+
+\begin{proof}
+Write $G(z)=z+b_2z^2+b_3z^3+b_4z^4+b_5z^5+\BigO(z^6)$ and expand $F(G(z))$.
+Since $G^k=z^k(1+b_2z+b_3z^2+\cdots)^k$, the coefficients of
+$z^2,z^3,z^4,z^5$ in $F(G(z))$ are respectively
+\begin{align*}
+ &b_2+a_2,\\
+ &b_3+2a_2b_2+a_3,\\
+ &b_4+a_2(2b_3+b_2^2)+3a_3b_2+a_4,\\
+ &b_5+a_2(2b_4+2b_2b_3)+a_3(3b_3+3b_2^2)+4a_4b_2+a_5.
+\end{align*}
+Requiring $F(G(z))=z$ sets each of these to zero.  The system is triangular in
+$b_2,b_3,b_4,b_5$ and solves successively:
+\begin{align*}
+ b_2&=-a_2,\\
+ b_3&=-2a_2b_2-a_3=2a_2^2-a_3,\\
+ b_4&=-a_2(2b_3+b_2^2)-3a_3b_2-a_4=-5a_2^3+5a_2a_3-a_4,\\
+ b_5&=-a_2(2b_4+2b_2b_3)-a_3(3b_3+3b_2^2)-4a_4b_2-a_5\\
+    &=14a_2^4-21a_2^2a_3+3a_3^2+6a_2a_4-a_5,
+\end{align*}
+which is \eqref{eq:merged-low-order-reversion}.  Triangularity is what makes
+the argument work over any commutative $\RationalNumbers$-algebra: no division
+occurs, because $F$ was normalized to have leading coefficient $1$.
 \end{proof}
 
 \begin{algorithm}[Reciprocal Newton iteration]
@@ -7245,16 +8136,16 @@ Then $F(G_{2m})\equiv w\pmod{w^{2m}}$.
 \end{algorithm}
 
 \begin{proof}
-Put $E=F(G_m)-w=O(w^m)$ and $\Delta=-E/F'(G_m)=O(w^m)$.  Taylor's formula
+Put $E=F(G_m)-w=\BigO(w^m)$ and $\Delta=-E/F'(G_m)=\BigO(w^m)$.  Taylor's formula
 in the formal ring gives
-$F(G_m+\Delta)=F(G_m)+F'(G_m)\Delta+O(\Delta^2)=w+O(w^{2m})$.
+$F(G_m+\Delta)=F(G_m)+F'(G_m)\Delta+\BigO(\Delta^2)=w+\BigO(w^{2m})$.
 The denominator is invertible because its constant term is $a_1$.
 \end{proof}
 
 \begin{remark}[Arithmetic complexity]
 The triangular product, reciprocal, exponential, and logarithm recurrences use
-$O(N^2)$ scalar operations through degree $N$; a direct composition table uses
-$O(N^3)$.  Faster multiplication and Newton iteration reduce asymptotic cost,
+$\BigO(N^2)$ scalar operations through degree $N$; a direct composition table uses
+$\BigO(N^3)$.  Faster multiplication and Newton iteration reduce asymptotic cost,
 but the triangular forms are preferable for symbolic audits because every
 coefficient carries a short dependency certificate.
 \end{remark}
@@ -7430,6 +8321,66 @@ in the package's external provenance and disposition ledgers.  Git revision
 \texttt{55038f2fc7d20a483a48125f086a6c8488e45530} is the immutable
 pre-consolidation source pin.
 
+\section{Closure of the merge}
+\label{sec:merged-closure}
+
+The consolidation is complete: the five donor packages have been retired and
+this manuscript is the single surviving document.  The final pass was driven by
+a label- and formula-level inventory of all six sources rather than by reading
+order.  Of the donor items with no canonical counterpart, the following were
+imported, each with a proof written for this text and each checked against an
+independent computation before insertion.
+
+\begin{itemize}\setlength{\itemsep}{2pt}
+\item \emph{The sharp Bell bound.}  All six arrivals asserted
+      $\BellNumber n<(0.792\,n/\log(n+1))^n$ for every $n\ge1$ and proved
+      neither the tail nor the finite range.  It is now
+      \cref{thm:bell-numerical-bound}, with the monotonicity of the coefficient
+      majorant supplied by \cref{lem:bell-majorant-decreasing} and the range
+      $n\le38$ settled by the integer certificate \eqref{eq:bell-cert}.  The
+      result is due to Berend and Tassa \cite{BerendTassa2010}.
+\item \emph{Euler's limit and the Weierstrass product}
+      (\cref{thm:merged-euler-gamma-limit}) with the Beta integral
+      (\cref{prop:merged-beta-integral}).  This is the one import that repairs
+      an existing argument: the polygamma partial fractions were being deduced
+      from a Weierstrass product that appeared nowhere in the manuscript.
+\item \emph{Harmonic-number expansion} (\cref{cor:merged-harmonic-expansion}),
+      \emph{reciprocal Pochhammer derivatives}
+      (\cref{cor:merged-reciprocal-pochhammer}), the \emph{Pochhammer splitting
+      rules} \eqref{eq:merged-pochhammer-split}, and the \emph{Hurwitz-zeta
+      form} of the polygamma function (\cref{cor:merged-polygamma-hurwitz}).
+\item \emph{The associahedral $h$-polynomial}
+      (\cref{thm:merged-associahedron-h}) and \emph{Loday's realization}
+      (\cref{prop:merged-loday-hyperplane}), which give the Catalan chapter the
+      same face-transform treatment the permutohedron already had.
+\item \emph{The binomial-type characterization}
+      (\cref{thm:merged-binomial-type-characterization}), the converse the
+      canonical Sheffer section lacked.
+\item \emph{Bernoulli polynomials in the finite-difference basis}
+      (\cref{thm:merged-bernoulli-difference}), the \emph{coupled two-series
+      Good system} (\cref{ex:merged-coupled-pair}), the
+      \emph{inverse-derivative operator}
+      (\cref{thm:merged-inverse-derivative-operator}), \emph{direct reversion
+      through degree five} (\cref{prop:merged-low-order-reversion}), and the
+      \emph{first cumulants} (\cref{ex:merged-first-cumulants}).
+\end{itemize}
+
+Two donor items were audited and deliberately not duplicated, because the
+canonical text already contained them under different labels: the mixed-partial
+Faà di Bruno formula, which is \cref{thm:faa-multivariate} verbatim, and the
+finite-difference lowering of the falling factorial, which is proved inline
+before \cref{thm:newton-expansion}.  The exponential and logarithmic diagonal
+identities of one donor are likewise already present, and in the stronger
+Nörlund form \eqref{eq:merged-norlund-diagonal}.
+
+Independent of mathematical content, the merge also repaired the manuscript's
+notation.  Eight calls to catalogue macros whose expansion ends in a script
+group were followed directly by a prime or an exponent, which is a fatal
+double-superscript error in \TeX; the source did not compile at all until they
+were braced.  A further $180$ sites still spelled catalogue symbols by hand,
+including an italic imaginary unit standing next to an upright $\EulerE$ inside
+a single exponent, and are now uniform.
+
 \section{Deduplication rules}
 
 The merger applied the following rules consistently.
@@ -7581,7 +8532,7 @@ coefficient calculus rather than a catalogue of isolated identities.
 
 \section{Lean formalization register}
 \label{sec:lean-register}
-Every theorem-like environment of this monograph is listed here with the status of its formalization in the Lean development \path{Analysis/FabiusFunction/Lean/FabiusFunction} (Mathlib \texttt{v4.32.0}).  \emph{Lean} means that a public, compiled declaration proves the exact statement or a more general one (the generalization is then noted next to the result); \emph{partial} means that a named part of the statement is proved and the rest is named; \emph{none} means that no Lean counterpart exists yet.  A citation, a numerical check, or a plausible derivation does not count.  The register is generated from the source and must be regenerated when results are added.  Current totals: 9 Lean, 3 partial, 174 none, of 186 results.
+Every theorem-like environment of this monograph is listed here with the status of its formalization in the Lean development \path{Analysis/FabiusFunction/Lean/FabiusFunction} (Mathlib \texttt{v4.32.0}).  \emph{Lean} means that a public, compiled declaration proves the exact statement or a more general one (the generalization is then noted next to the result); \emph{partial} means that a named part of the statement is proved and the rest is named; \emph{none} means that no Lean counterpart exists yet.  A citation, a numerical check, or a plausible derivation does not count.  The register is generated from the source and must be regenerated when results are added.  Current totals: 18 Lean, 7 partial, 176 none, of 201 results.
 
 \begin{footnotesize}
 \begin{longtable}{@{}p{0.16\textwidth}p{0.22\textwidth}p{0.08\textwidth}p{0.48\textwidth}@{}}
@@ -7611,7 +8562,7 @@ Result & Title & Status & Lean declarations (module) \\
 \Cref{thm:poisson-stirling-moments} & Poisson moments & partial & the moment series $\sum_m m^n\lambda^m/m! = e^{\lambda}\sum_k S(n,k)\lambda^k$ is \lean{Fabius.tsum_pow_mul_pow_div_factorial} (\lean{BellStirling}) for every real $\lambda$; the probabilistic phrasing is not formalized \\
 \Cref{thm:fixed-point-stirling-moments} & Moments of the number of fixed points & none &  \\
 \Cref{thm:lah-conv} & Conversion between rising and falling factorials & Lean & \lean{Fabius.ascPochhammer_eq_sum_lahNumber_mul_descPochhammer}, \lean{Fabius.descPochhammer_eq_sum_lahNumber_mul_ascPochhammer}, \lean{Fabius.sum_range_lahNumber_mul_lahNumber}, \lean{Fabius.lahNumber_eq_sum_stirlingFirst_mul_stirlingSecond} (\lean{LahNumbers}); the closed form of the definition is \lean{Fabius.lahNumber_succ_succ_mul_factorial} \\
-\Cref{thm:stirling-egfs} & Column generating functions & none &  \\
+\Cref{thm:stirling-egfs} & Column generating functions & partial & \lean{Fabius.exp_sub_one_pow}, \lean{Fabius.egf_stirlingSecond}, \lean{Fabius.negLogOneSub_pow}, \lean{Fabius.egf_stirlingFirst}, \lean{Fabius.log_pow} (\lean{StirlingGeneratingFunctions}), as formal power series over any commutative $\mathbb Q$-algebra; the bivariate generating function \cref{eq:second-double-egf} is not formalized \\
 \Cref{thm:second-ogf} & Fixed-$k$ ordinary generating function & none &  \\
 \Cref{thm:stirling-transform} & Stirling transform and its inverse & partial & the inversion formula is \lean{Fabius.stirling_inversion}, \lean{Fabius.stirling_inversion_symm}, \lean{Fabius.stirling_inversion_iff} (\lean{StirlingBasisChange}), for sequences in any additive commutative group; the generating-function form is not formalized \\
 \Cref{thm:normal-order} & Stirling normal-ordering identities & none &  \\
@@ -7626,7 +8577,7 @@ Result & Title & Status & Lean declarations (module) \\
 \Cref{thm:stirling-uniform-saddle} & Uniform Stirling saddle estimate & none &  \\
 \Cref{thm:stirling-zeta} & Stirling--zeta identities & none &  \\
 \Cref{lem:logarithmic-transfer} & Logarithmic transfer estimate & none &  \\
-\Cref{thm:gamma-stirling-series} & Convergent Stirling series for $\log\Gamma$ and $\psi$ & none &  \\
+\Cref{thm:gamma-stirling-series} & Convergent Stirling series for $\log\GammaFunction$ and $\psi$ & none &  \\
 \Cref{thm:stieltjes-stirling-series} & Stirling series for the Stieltjes constants & none &  \\
 \Cref{thm:r-stirling-recurrence} & $r$-Stirling recurrence & none &  \\
 \Cref{thm:associated-stirling-recurrence} & Associated recurrence & none &  \\
@@ -7643,7 +8594,7 @@ theorem (unlabelled, no.~35) &  & none &  \\
 \Cref{thm:spivey} & Spivey's identity & none &  \\
 \Cref{thm:bell-inversions} & Bell inversion identities & none &  \\
 \Cref{thm:weighted-bell-shift} & Weighted Bell shift & none &  \\
-\Cref{thm:bell-egf} &  & none &  \\
+\Cref{thm:bell-egf} &  & Lean & \lean{Fabius.exp_subst_exp_sub_one} (\lean{BellGeneratingFunctions}): $\exp\circ(e^z-1)=\sum_n B(n)z^n/n!$ as formal power series over any commutative $\mathbb Q$-algebra; the differential equation is the derivative of this substitution \\
 \Cref{thm:dobinski} & Dobiński & Lean & \lean{Fabius.dobinski} (\lean{BellStirling}), from the general Poisson moment identity \lean{Fabius.tsum_pow_mul_pow_div_factorial} \\
 corollary (unlabelled, no.~4) & Cauchy integral & none &  \\
 \Cref{thm:touchard-poly} & Polynomial Touchard congruence & none &  \\
@@ -7652,37 +8603,39 @@ corollary (unlabelled, no.~4) & Cauchy integral & none &  \\
 \Cref{thm:bell-log-shape} &  & none &  \\
 \Cref{lem:bell-coeff-upper} &  & none &  \\
 \Cref{thm:bell-eventual-upper} & Eventual Bell upper bound & none &  \\
+\Cref{lem:bell-majorant-decreasing} & The coefficient majorant is decreasing & none &  \\
+\Cref{thm:bell-numerical-bound} & Uniform numerical Bell bound & none &  \\
 \Cref{thm:bell-leading-asymptotic} & Leading Bell asymptotic & none &  \\
 \Cref{cor:bell-debruijn} & de Bruijn logarithmic expansion & none &  \\
 \Cref{thm:bell-poly-partitions} & Weighted-partition interpretation & none &  \\
-\Cref{thm:bell-poly-egf} & Bell-polynomial generating functions & none &  \\
-\Cref{thm:bell-poly-recurrences} & Complete and partial recurrences & none &  \\
-\Cref{thm:bell-partial-convolution} & Block-colour convolution & none &  \\
+\Cref{thm:bell-poly-egf} & Bell-polynomial generating functions & partial & the first identity is \lean{Fabius.bellWeightSeries_pow} and the third \lean{Fabius.exp_subst_bellWeightSeries} (\lean{BellGeneratingFunctions}), as formal power series over any commutative $\mathbb Q$-algebra; the bivariate forms and the ordinary Bell polynomials are not formalized \\
+\Cref{thm:bell-poly-recurrences} & Complete and partial recurrences & Lean & \lean{Fabius.partialBell} is defined by \cref{eq:partial-bell-recurrence} (\lean{Fabius.partialBell_succ_succ}, \lean{Fabius.partialBell_succ_succ_eq_binomialConv}); \cref{eq:complete-bell-recurrence} is Mathlib-free \lean{Bell.complete_succ} together with \lean{Fabius.bell_complete_eq_sum_partialBell} (\lean{PartialBellPolynomials}, \lean{BellPolynomialInversion}); the boundary values are \lean{Fabius.partialBell_zero_succ}, \lean{Fabius.partialBell_succ_zero}, \lean{Fabius.partialBell_eq_zero_of_lt} \\
+\Cref{thm:bell-partial-convolution} & Block-colour convolution & Lean & \lean{Fabius.factorial_mul_partialBell_add} (\lean{BellComposition}), in the division-free form $(k_1+k_2)!\,B_{n,k_1+k_2}=k_1!k_2!\sum_i\binom ni B_{i,k_1}B_{n-i,k_2}$ \\
 \Cref{thm:bell-near-diagonal} &  & none &  \\
 \Cref{thm:bell-poly-derivatives} & Derivative identities & none &  \\
 \Cref{thm:bell-quadratic-differential} &  & none &  \\
-\Cref{thm:bell-poly-specializations} &  & none &  \\
+\Cref{thm:bell-poly-specializations} &  & partial & \cref{eq:bell-first-specialization} is \lean{Fabius.partialBell_factorial_pred}, \cref{eq:bell-second-specialization} is \lean{Fabius.partialBell_one}, \cref{eq:bell-number-specialization} is \lean{Fabius.bell_complete_one}, \cref{eq:bell-lah-specialization} is \lean{Fabius.partialBell_factorial} (\lean{PartialBellPolynomials}, \lean{BellGeneratingFunctions}); the factorial row sum \cref{eq:bell-factorial-complete} and the Touchard form are not formalized \\
 \Cref{thm:bell-bihomogeneous} & Bigraded homogeneity & none &  \\
-\Cref{thm:complete-bell-addition} & Complete Bell addition formula & none &  \\
+\Cref{thm:complete-bell-addition} & Complete Bell addition formula & Lean & \lean{Bell.complete_add} (\lean{BellPolynomialInversion}), over every commutative semiring \\
 \Cref{thm:bell-leading-zeros} & Insertion of $q$ leading zeros & none &  \\
-\Cref{thm:bell-transform-inverse} & Bell transform and its inverse & none &  \\
+\Cref{thm:bell-transform-inverse} & Bell transform and its inverse & Lean & \cref{eq:bell-transform-x} is \lean{Fabius.bell_transform_inverse} (\lean{BellComposition}), from $X=\log(1+Y)$ formalized as \lean{Fabius.log_subst_exp_sub_one} and the composition theorem; the recursive inversion over every commutative ring is \lean{Bell.complete_cumulant} and \lean{Bell.cumulant_complete} (\lean{BellPolynomialInversion}); the general form \cref{eq:general-bell-inverse} is not formalized \\
 \Cref{thm:bell-determinants} & Bell determinants & none &  \\
 \Cref{thm:diamond-bell} &  & none &  \\
 \Cref{thm:bell-symmetric-functions} &  & none &  \\
 \Cref{cor:det-traces-bell} & Determinant from traces & none &  \\
 \Cref{thm:cycle-index-bell} &  & none &  \\
-\Cref{thm:moment-cumulant} & Moment--cumulant relations & none &  \\
+\Cref{thm:moment-cumulant} & Moment--cumulant relations & Lean & \cref{eq:moments-from-cumulants} is \lean{Fabius.bell_complete_eq_sum_partialBell} with \lean{Fabius.exp_subst_bellWeightSeries}, and \cref{eq:cumulants-from-moments} is \lean{Fabius.bell_transform_inverse} (\lean{BellComposition}); the recursive forms are \lean{Fabius.completeBellPolynomial_momentCumulant}, \lean{Fabius.momentCumulant_completeBellPolynomial} (\lean{MomentCumulantAlgebra}) and \lean{Bell.complete_cumulant} \\
 \Cref{thm:binomial-type-bell} &  & none &  \\
-\Cref{thm:eulerian-recurrence} & Eulerian recurrence & none &  \\
+\Cref{thm:eulerian-recurrence} & Eulerian recurrence & partial & \lean{Fabius.eulerianNumber} is defined by this recurrence (\lean{Fabius.eulerianNumber_succ_left}, \lean{Fabius.eulerianNumber_succ_succ}, module \lean{EulerianNumbers}); the descent count and the polynomial form \cref{eq:eulerian-poly-recurrence} are not formalized \\
 \Cref{thm:eulerian-egf} & Eulerian EGF & none &  \\
 \Cref{thm:eulerian-power-series} &  & none &  \\
 \Cref{thm:eulerian-binomial-recurrence} & A second polynomial recurrence & none &  \\
-\Cref{thm:worpitzky} & Worpitzky & none &  \\
-\Cref{cor:eulerian-power-sum} & Power sums & none &  \\
+\Cref{thm:worpitzky} & Worpitzky & Lean & \lean{Fabius.worpitzky_nat} (natural numbers, all $n$) and \lean{Fabius.worpitzky_polynomial} (in $\mathbb Q[x]$, with \lean{Fabius.binomialPoly} for $\binom{x+k}{n}$) (\lean{EulerianNumbers}) \\
+\Cref{cor:eulerian-power-sum} & Power sums & Lean & \lean{Fabius.sum_range_pow_succ_eq_sum_eulerianNumber} (\lean{EulerianNumbers}), in the form $\sum_{r=0}^{m} r^{n+1}=\sum_k A(n+1,k)\binom{m+k+1}{n+2}$ \\
 \Cref{thm:eulerian-stirling} &  & none &  \\
 \Cref{thm:eulerian-irwin-hall} &  & none &  \\
 \Cref{thm:eulerian-alternating} &  & none &  \\
-theorem (unlabelled, no.~75) &  & none &  \\
+theorem (unlabelled, no.~76) &  & none &  \\
 \Cref{thm:permutohedron-h-polynomial} & The permutohedral $h$-polynomial & none &  \\
 \Cref{thm:typeB-eulerian} & Type-$B$ recurrence and Worpitzky series & none &  \\
 \Cref{thm:typeB-permutohedron-h-polynomial} & The type-$B$ permutohedral $h$-polynomial & none &  \\
@@ -7693,7 +8646,7 @@ theorem (unlabelled, no.~75) &  & none &  \\
 \Cref{thm:faa-multiplicity} & Fa\`a di Bruno, multiplicity form & none &  \\
 \Cref{thm:faa-multivariate} & Multivariate Fa\`a di Bruno for distinct variables & none &  \\
 \Cref{thm:ordinary-composition} & Ordinary composition & none &  \\
-\Cref{thm:exponential-composition} & Exponential composition & none &  \\
+\Cref{thm:exponential-composition} & Exponential composition & Lean & \lean{Fabius.egfA_subst_bellWeightSeries} (\lean{BellComposition}): substitution of exponential generating functions over any commutative $\mathbb Q$-algebra \\
 \Cref{thm:lagrange-burmann} & Lagrange--Bürmann & none &  \\
 \Cref{thm:analytic-lagrange} & Analytic Lagrange inversion & none &  \\
 \Cref{thm:inverse-bell-coeff} & Explicit inverse coefficients & none &  \\
@@ -7705,6 +8658,7 @@ theorem (unlabelled, no.~75) &  & none &  \\
 \Cref{thm:merged-binomial-inversion} & Binomial inversion & Lean & \lean{Fabius.binomial_inversion_iff} (additive commutative groups) and \lean{Fabius.binomial_inversion_ring_iff} (commutative rings) (\lean{BinomialInversion}); the kernel orthogonality is \lean{Fabius.sum_Icc_neg_one_pow_choose_mul_choose}; the EGF form is not formalized \\
 \Cref{thm:merged-partition-mobius} & Möbius function of $\Pi\_n$ & none &  \\
 \Cref{thm:merged-moment-cumulant} & Moment--cumulant inversion & none &  \\
+\Cref{thm:merged-binomial-type-characterization} & Generating-function characterization of binomial type & none &  \\
 \Cref{thm:merged-sheffer} & Addition and lowering & none &  \\
 \Cref{prop:merged-abel} & Abel polynomials & none &  \\
 \Cref{thm:merged-riordan} & Riordan action, product, and inverse & none &  \\
@@ -7713,6 +8667,7 @@ theorem (unlabelled, no.~75) &  & none &  \\
 \Cref{thm:merged-frechet-faa} & Coordinate-free Faà di Bruno & none &  \\
 corollary (unlabelled, no.~9) &  & none &  \\
 \Cref{thm:merged-inverse-derivative} & Inverse derivative recursion & none &  \\
+\Cref{thm:merged-inverse-derivative-operator} & Inverse-derivative operator & none &  \\
 \Cref{lem:merged-multiresidue} & Multivariate residue substitution & none &  \\
 \Cref{thm:merged-good} & Lagrange--Good inversion & none &  \\
 \Cref{prop:merged-characteristic} & Characteristic determinant & none &  \\
@@ -7722,6 +8677,8 @@ corollary (unlabelled, no.~9) &  & none &  \\
 \Cref{thm:merged-alternating-sums} & Alternating power sums & none &  \\
 \Cref{thm:merged-raabe} & Raabe multiplication & none &  \\
 \Cref{thm:merged-bernoulli-stirling-touchard} & Bernoulli--Stirling formula and Touchard moments & none &  \\
+\Cref{thm:merged-bernoulli-difference} & Bernoulli polynomials from finite differences & none &  \\
+\Cref{cor:merged-bernoulli-stirling-second-proof} & Second proof of the Bernoulli--Stirling formula & none &  \\
 \Cref{thm:merged-norlund-calculus} & Appell, difference, and convolution calculus & none &  \\
 \Cref{thm:merged-norlund-bell-diagonal} & Bell-polynomial construction and the N\"orlund diagonal & none &  \\
 \Cref{thm:merged-genocchi} & Bernoulli--Euler--Genocchi relations & none &  \\
@@ -7729,42 +8686,50 @@ corollary (unlabelled, no.~9) &  & none &  \\
 proposition (unlabelled, no.~6) &  & none &  \\
 \Cref{thm:merged-periodic-bernoulli-fourier} & Fourier expansion with exact convergence qualifications & none &  \\
 \Cref{thm:merged-euler-maclaurin} & Euler--Maclaurin with remainder & none &  \\
-corollary (unlabelled, no.~10) & Stirling's expansion & none &  \\
+\Cref{cor:merged-euler-maclaurin-constant} & Constant-of-integration form & none &  \\
+corollary (unlabelled, no.~12) & Stirling's expansion & none &  \\
+\Cref{cor:merged-harmonic-expansion} & Harmonic-number expansion & none &  \\
 \Cref{thm:merged-pochhammer} & Gamma quotient and binomial series & none &  \\
-corollary (unlabelled, no.~11) & Chu--Vandermonde & none &  \\
+corollary (unlabelled, no.~14) & Chu--Vandermonde & none &  \\
 \Cref{thm:merged-pochhammer-derivatives} & All parameter derivatives & none &  \\
+\Cref{cor:merged-reciprocal-pochhammer} & Derivatives of a reciprocal Pochhammer symbol & none &  \\
+\Cref{prop:merged-beta-integral} & Beta integral with an integer parameter & none &  \\
+\Cref{thm:merged-euler-gamma-limit} & Euler's limit and the Weierstrass product & none &  \\
 \Cref{thm:merged-polygamma-series} & Partial fractions & none &  \\
-corollary (unlabelled, no.~12) & Recurrences and special values & none &  \\
+corollary (unlabelled, no.~16) & Recurrences and special values & none &  \\
+\Cref{cor:merged-polygamma-hurwitz} & Hurwitz-zeta form & none &  \\
 \Cref{thm:merged-polygamma-reflection} & Reflection & none &  \\
 \Cref{thm:merged-gauss-multiplication} & Gauss multiplication & none &  \\
-corollary (unlabelled, no.~13) &  & none &  \\
+corollary (unlabelled, no.~18) &  & none &  \\
 \Cref{thm:merged-barnes-product} & Canonical product & none &  \\
 \Cref{thm:merged-alexeiewsky} & Alexeiewsky identity & none &  \\
-corollary (unlabelled, no.~14) &  & none &  \\
+corollary (unlabelled, no.~19) &  & none &  \\
 \Cref{thm:merged-barnes-asymptotic} & Barnes asymptotics on the positive ray & none &  \\
 \Cref{cor:merged-hyperfactorial-asymptotic} & Complete hyperfactorial expansion & none &  \\
 \Cref{thm:merged-catalan-reflection} & Catalan formula & none &  \\
 \Cref{thm:merged-catalan-first-return} & First return & none &  \\
 \Cref{thm:merged-narayana} & Narayana formula & none &  \\
-corollary (unlabelled, no.~16) & Peak mean and variance & none &  \\
+corollary (unlabelled, no.~21) & Peak mean and variance & none &  \\
 \Cref{thm:merged-catalan-bijection} & Binary trees and parenthesizations & none &  \\
 \Cref{thm:merged-triangulations} & Triangulations & none &  \\
 \Cref{thm:merged-noncrossing} & Noncrossing partitions & none &  \\
 \Cref{thm:merged-kirkman-cayley} & Kirkman--Cayley dissection formula & none &  \\
 \Cref{cor:merged-associahedron-f} & Associahedral face vector & none &  \\
+\Cref{thm:merged-associahedron-h} & Associahedral \texorpdfstring{$h$}{h}-polynomial & none &  \\
+\Cref{prop:merged-loday-hyperplane} & Loday's constant hyperplane & none &  \\
 \Cref{thm:merged-tamari-order} & The rotation relation is a partial order & none &  \\
 \Cref{thm:merged-raney} & Raney numbers & none &  \\
 \Cref{thm:merged-darboux-finite} & Darboux formula & none &  \\
-corollary (unlabelled, no.~18) & Taylor integral remainder & none &  \\
+corollary (unlabelled, no.~23) & Taylor integral remainder & none &  \\
 \Cref{lem:merged-singular-binomial} & Exact algebraic coefficient, including polynomial cases & none &  \\
 \Cref{thm:merged-darboux-transfer} & Darboux transfer with an analytic multiplier & none &  \\
 \Cref{thm:merged-darboux-finite-smoothness} & Finite-smoothness Darboux subtraction & none &  \\
-corollary (unlabelled, no.~19) & Multiple dominant points & none &  \\
-proposition (unlabelled, no.~7) & Logarithmic and meromorphic cases & none &  \\
-theorem (unlabelled, no.~136) &  & none &  \\
+corollary (unlabelled, no.~24) & Multiple dominant points & none &  \\
+proposition (unlabelled, no.~9) & Logarithmic and meromorphic cases & none &  \\
+theorem (unlabelled, no.~142) &  & none &  \\
 \Cref{thm:merged-multinomial-leibniz} & Multinomial Leibniz rule & none &  \\
 \Cref{thm:merged-higher-quotient} & Higher reciprocal and quotient rules & none &  \\
-corollary (unlabelled, no.~20) & Trigonometric outer functions & none &  \\
+corollary (unlabelled, no.~25) & Trigonometric outer functions & none &  \\
 \Cref{thm:merged-four-inverse-series} & Four classical inverse series and their diagonals & none &  \\
 \Cref{prop:merged-cauchy-diagonal} & Logarithmic diagonal & none &  \\
 \Cref{thm:merged-offset-lagrange} & Offset Lagrange--B\"urmann formula & none &  \\
@@ -7776,9 +8741,10 @@ corollary (unlabelled, no.~20) & Trigonometric outer functions & none &  \\
 \Cref{alg:merged-differentiation-integration} & Differentiation and integration & none &  \\
 \Cref{alg:merged-composition} & Composition power table & none &  \\
 \Cref{alg:merged-lagrange-reversion} & Lagrange reversion & none &  \\
+\Cref{prop:merged-low-order-reversion} & Direct reversion through degree five & none &  \\
 \Cref{alg:merged-newton-reciprocal} & Reciprocal Newton iteration & none &  \\
 \Cref{alg:merged-newton-reversion} & Newton reversion & none &  \\
-proposition (unlabelled, no.~9) & Recurrence uniqueness & none &  \\
+proposition (unlabelled, no.~12) & Recurrence uniqueness & none &  \\
 \Cref{thm:merged-grid-certificate} & Polynomial grid certificate & none &  \\
 \Cref{thm:merged-crt-certificate} & Chinese-remainder certificate & none &  \\
 \end{longtable}
@@ -7795,6 +8761,12 @@ proposition (unlabelled, no.~9) & Recurrence uniqueness & none &  \\
 E.~T. Bell,
 ``Exponential polynomials,''
 \emph{Annals of Mathematics}, second series, vol.~35 (1934), pp.~258--277.
+
+\bibitem{BerendTassa2010}
+D.~Berend and T.~Tassa,
+``Improved bounds on Bell numbers and on moments of sums of random
+variables,''
+\emph{Probability and Mathematical Statistics}, vol.~30 (2010), pp.~185--205.
 
 \bibitem{BenderRichmond1998}
 E.~A. Bender and L.~B. Richmond,

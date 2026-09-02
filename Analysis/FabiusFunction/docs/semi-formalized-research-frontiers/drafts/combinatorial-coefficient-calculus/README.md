@@ -1,21 +1,18 @@
 # combinatorial-coefficient-calculus
 
-Canonical consolidation workspace for six combinatorial coefficient-calculus
-and inversion manuscripts received on 2026-09-01. Each arrival supplied one
-flat LaTeX/PDF pair. The ZIP CRCs, member paths, and member types were checked
-before extraction; at intake, the filed source and PDF bytes were identical to
-their ZIP members. A later repository notation migration revised the six
-sources only, so every arrival PDF is historical and is not claimed to render
-its migrated TeX.
+Canonical consolidation of six combinatorial coefficient-calculus and inversion
+manuscripts received on 2026-09-01. Each arrival supplied one flat LaTeX/PDF
+pair. The ZIP CRCs, member paths, and member types were checked before
+extraction; at intake, the filed source and PDF bytes were identical to their
+ZIP members.
 
-The non-suffixed `Combinatorial_Coefficient_Calculus/` directory is the
-surviving package. Its live manuscript now uses the stronger suffixed report as
-the mathematical spine and is being extended theorem by theorem with the five
-other siblings' nonduplicate material. The five donor directories remain live
-until every source, topic, and known defect has a completed disposition; only
-then will they be deleted. This is deliberately not a concatenation: 394 labels
-occur in more than one source, and the common material is retained once with
-the strongest correct hypotheses and proof.
+**The consolidation is complete.** `Combinatorial_Coefficient_Calculus/` is the
+single surviving package, and the five donor directories have been deleted now
+that every source, topic, and claim row of the disposition ledger carries a
+completed disposition. This was deliberately not a concatenation: 394 labels
+occurred in more than one source, and the common material is retained once,
+with the strongest correct hypotheses and one complete proof. A second proof
+survives only where it exposes a different mechanism.
 
 The consolidation boundary is recorded in
 [`PROVENANCE.md`](Combinatorial_Coefficient_Calculus/PROVENANCE.md), the live
@@ -26,18 +23,54 @@ and the topic/claim decisions in
 The standard-library
 [`validate_canonical.py`](Combinatorial_Coefficient_Calculus/validate_canonical.py)
 checks LaTeX structure, labels, references, citations, proof pairing, source
-coverage, and the eventual one-publication layout. No Lean build is required or
-claimed. Per the explicit build pause, the canonical PDF has not yet been
-rebuilt; its row remains a clearly identified historical arrival artifact.
+coverage, and the one-publication layout; run it with `--final`, which is the
+mode this package is now expected to pass.
 
-| Directory | Current source and retained publication | Arrival archive |
-| --- | --- | --- |
-| `Combinatorial_Coefficient_Calculus-2/` | *Combinatorial Coefficient Calculus* — current source: 6,862 lines, 277,653 bytes, SHA-256 `0b4176a295b8a1893d3a3b5b5c0cf7462f4d78931048735d11ab7c8d238c93f6`; retained historical 147-page A4 PDF | `Combinatorial_Coefficient_Calculus-2.zip`, 1,096,487 bytes, SHA-256 `a0ca605c1d3f1ee3e00eac1d69a8181e786dd414407a1b3b6db1a60f74d8766d` |
-| `Combinatorial_Coefficient_Calculus/` | **Live canonical work in progress:** *Combinatorial Coefficient Calculus* — 7,552 lines, 305,578 bytes, SHA-256 `87f9627e71763fd91df288b9b65562a3109fd9032286e6cde5defbbfcf9dc046`; retained historical 143-page A4 arrival PDF, with no render-parity claim | `Combinatorial_Coefficient_Calculus.zip`, 1,094,284 bytes, SHA-256 `a22479ac8f58e1710117af9d0a3f515c7d24ec250548f537520c9f9024f4321a` |
-| `Combinatorial_Formulae_and_Inversion_Theorems/` | *Combinatorial Formulae and Inversion Theorems* — current source: 7,036 lines, 283,111 bytes, SHA-256 `f070ad0982dfb0a9cc550caecd3207c64cdb4287b293a029d4a17ca3cd4670b3`; retained historical 140-page A4 PDF | `Combinatorial_Formulae_and_Inversion_Theorems.zip`, 1,101,493 bytes, SHA-256 `dae561780a4442a9f11acb7edf1ec508daca1db237db01fabf77c695ec924960` |
-| `Unified_Combinatorial_Coefficient_Calculus/` | *Unified Combinatorial Coefficient Calculus* — current source: 6,687 lines, 262,376 bytes, SHA-256 `9566ce29854acdaca07ae07d13a7982d42f28c1d94c02911ee32da8d4c8f8947`; retained historical 144-page A4 PDF | `Unified_Combinatorial_Coefficient_Calculus.zip`, 1,083,495 bytes, SHA-256 `c4217b088444eb3e4bf24a7542d360f02dfb8e240418b562a155ad0c251ab559` |
-| `Unified_Combinatorial_Formulae/` | *A Unified Calculus of Combinatorial Formulae* — current source: 5,898 lines, 232,717 bytes, SHA-256 `089c6ece0009249a3f21648d9b2ef61da7ed02c0d8bfd7f54aca491a8cc81bb3`; retained historical 130-page A4 PDF | `Unified_Combinatorial_Formulae.zip`, 1,015,842 bytes, SHA-256 `611b14cfda15357b679a05d9586811d8fb39f6fe7d971f00424da2bb848a5594` |
-| `Unified_Combinatorial_Formulae_and_Inversion_Theorems/` | *Unified Combinatorial Formulae and Inversion Theorems* — current source: 6,610 lines, 257,216 bytes, SHA-256 `7f41ee4b71c4d59e08d06eed1333e0adabcb60f40a00ee1ffca2f6b8d12417b2`; retained historical 138-page A4 PDF | `Unified_Combinatorial_Formulae_and_Inversion_Theorems.zip`, 1,062,893 bytes, SHA-256 `ba62d0653fba9f0d1d867885e0b45272ba128973c1e49938d6cb1f597b457e33` |
+| Directory | Document |
+| --- | --- |
+| `Combinatorial_Coefficient_Calculus/` | **Canonical:** *Combinatorial Coefficient Calculus* — 8,890-line, 385,679-byte source and the 173-page A4 PDF built from it |
 
-All six PDFs are readable, unencrypted A4 files.  Their 23--25 font rows are
-embedded, each has four Libertinus rows, and none has a Type 3 font.
+Unlike every earlier state of this package, the filed PDF renders the filed
+TeX: both come from the same three-pass `pdflatex` run, so the former
+"no render-parity claim" caveat no longer applies. That run reports no errors,
+no undefined references, and no multiply-defined labels.
+
+## What the final merge changed
+
+The last pass was driven by a label- and formula-level inventory of all six
+sources rather than by reading order. Chapter `ch:merged-concordance`,
+section "Closure of the merge", carries the in-document record. In summary:
+
+- **The manuscript did not compile.** The shared-notation migration had left
+  eight calls to catalogue macros whose expansion already ends in a script
+  group followed directly by a prime or an exponent — for example
+  `\TouchardPolynomial{n}'`, where the macro expands to
+  `\mathsf{T}^{\mathrm{Tou}}_{n}`. Each is a fatal TeX "Double superscript"
+  error.
+- **A withdrawn claim became a theorem.** All six arrivals asserted
+  `B_n < (0.792 n / log(n+1))^n` for every `n >= 1` without proving either the
+  tail or the finite range, and the consolidation had demoted it to a remark.
+  It is a theorem of Berend and Tassa (2010) and is now proved in both ranges:
+  the tail from a new monotonicity lemma for the coefficient majorant, and
+  `n <= 38` from the inequality between positive integers
+  `B_n A_n^n < (792000 n)^n` with `A_n = ceil(10^6 log(n+1))`, which contains no
+  irrational quantity at all.
+- **An existing proof rested on an unstated fact.** The polygamma series were
+  derived by logarithmically differentiating a Weierstrass product for
+  `1/Gamma` that appeared nowhere else in the manuscript. Euler's limit and
+  that product are now proved from the integral definition of `Gamma`, via the
+  Beta integral.
+- **Thirteen further donor-only results were merged**, each with a proof
+  written for this text and each checked against an independent symbolic or
+  exact-integer computation before insertion.
+- **Notation was made uniform.** Around 180 further sites still spelled
+  catalogue symbols by hand, including an italic imaginary unit next to an
+  upright `e` inside one exponent. The document now follows
+  `FabiusFunction_Mathematical_Notation_Catalogue` throughout.
+
+## What this package does not claim
+
+The manuscript is research-frontier mathematical writing. Its theorem and proof
+environments are human-readable mathematics, not evidence of Lean verification.
+The section "Lean formalization register" states, per result, what is formalized
+and what is not; it is maintained separately from this consolidation.
