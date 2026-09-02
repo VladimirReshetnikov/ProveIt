@@ -1,8 +1,16 @@
-PDF validation — synchronized canonical-notation rebuild, 2026-08-31
+PDF validation — retained build checkpoint and current live source, 2026-08-31
 
-Checkpoint status: the source, PDF, final-pass transcript, package notes, and
-live checksum ledger are synchronized. The separate arrival ledger remains
-byte-for-byte preserved.
+Checkpoint status: the PDF, final-pass transcript, and build-source fingerprint
+below form the retained synchronized checkpoint.  The current TeX is a later
+notation-only successor, so no current source/PDF parity is claimed.  The
+separate arrival ledger remains byte-for-byte preserved.
+
+Current live source:
+- TeX lines: 1940
+- TeX bytes: 61049
+- TeX SHA-256: 92d98914722f98b37f84a19283536c8b3925584d0729920b6346a4f572c735b1
+- notation boundary: every genuine dyadic valuation uses TwoAdicValuation
+- PDF/source synchronization: pending a fresh strict three-pass build
 
 Repository audit:
 - repository_audit.py was run against Analysis/FabiusFunction/docs/**/*.tex,
@@ -23,13 +31,13 @@ Build:
 - exactly three clean, strict, serial pdfLaTeX passes completed with exit 0 and
   `-shell-escape` enabled for the report's self-contained figure inputs
 - final settled page count: 24
-- final-source TeX SHA-256: a7a2bb45abf7c3a546b87c499dcd8d52d95a2569da8cc6614c3642103da19d74
-- final-source TeX lines: 1940
+- retained-build source TeX SHA-256: a7a2bb45abf7c3a546b87c499dcd8d52d95a2569da8cc6614c3642103da19d74
+- retained-build source TeX lines: 1940
 - generated TeX input SHA-256: da703d296abdff0a61a67cfe0699568859c903a27c31eb43b321e8457cf3f6e7
 - PDF SHA-256: 7038edd1f789245645333b97b67d27244987aed461ac7d1b713273010e65309f
 - final-pass compile_transcript.txt SHA-256:
   3637f2b9f04f8f500547200d3ba6268e8e1e601976e57a5c464c1e6ba69f1b83
-- PDF is newer than the final TeX source and generated TeX input
+- at that checkpoint, the PDF was newer than its build source and generated input
 - the shared preamble through the canonical listing style is byte-for-byte
   identical to the primary document except for permitted PDF metadata and
   running-head text; four required local notation commands follow that block
@@ -70,4 +78,5 @@ Numerical outputs:
 Checksum ledger:
 - CHECKSUMS.sha256 covers all 18 other regular files in this package exactly
   once, excluding only the ledger itself
-- all 18 current hashes pass `sha256sum -c CHECKSUMS.sha256`
+- all 18 live-ledger hashes pass independently; this verifies byte inventory,
+  not source/PDF parity

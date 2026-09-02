@@ -95,19 +95,20 @@ Current packages and retained intake records:
   figures. Pinned source revisions and Git history preserve every superseded
   layout and arrival fact.
 
-  The current `q_pochhammer_q_binomial_monograph.tex` has 14,316 lines,
-  671,065 bytes, and SHA-256
-  `38c15e63a4676ba64f35a6e89dee558eb3989787bb7c6528a943bc3d47d46e4d`.
-  Its retained `q_pochhammer_q_binomial_monograph.pdf` is a historical
-  348-page A4 artifact of 3,002,729 bytes, with SHA-256
-  `8bf14b52d8a0fc0abc4d54cca503fd47a2df37cf76ee1bb4e442bea1fd2a4aa7`.
-  That PDF was built in exactly three guarded serial passes (338, 348, and 348
-  pages) from the preceding 14,158-line, 661,835-byte source with SHA-256
-  `79ee5e60a6c7e42a91c58dcd9bcae56173cc6b4aa3e54739a461943f705f3904`.
+  The current `q_pochhammer_q_binomial_monograph.tex` has 14,426 lines,
+  677,040 bytes, and SHA-256
+  `085a962fa040bbc27f2978184dffd20b3890cfd4c4734fcbfcbceda8bbf8c879`.
+  Its retained `q_pochhammer_q_binomial_monograph.pdf` is a 354-page A4
+  artifact of 3,030,302 bytes, with SHA-256
+  `1050a9a3b0b7a8df8e7de0870946ae64940d7d7839a2f20427be0ebe14b0ba8c`.
+  That PDF was built in exactly three guarded serial passes (343, 354, and 354
+  pages) from the preceding 14,381-line, 675,239-byte source with SHA-256
+  `240bff72fb47562e9a8fd87085b5a3a96d738189714518db17988f7c4ac15d31`.
   Its A4 boxes, text extraction, embedded/subset Type-1 fonts including
   Libertinus, absence of Type-3 fonts, and targeted visual review passed at
-  that checkpoint. Because the current TeX is newer, no render parity is
-  claimed.
+  that checkpoint. The current TeX adds explicit Bell-multiplicity and
+  MacMahon q-Catalan notation and normalizes the merged status formulas;
+  because it is newer, no current render parity is claimed.
   It carries the five-theorem `QPochhammerEntire.lean`, the generic
   `QPochhammerInfinite.lean` and `QPochhammerDissection.lean` APIs, and the
   subsequent q-series module tranches, plus the three-theorem
@@ -516,8 +517,8 @@ remain research frontiers. These fractional-Volterra API claims were checked at 
 
 Geometric-sinc subgroup member:
 [`Exponents_and_q_Series_Frontiers/`](geometric-sinc-and-exponent-families/Exponents_and_q_Series_Frontiers/)
-(current semantic-union TeX: 16,369 lines and 737,768 bytes, SHA-256
-`4313bddb87a0f248a8bad4bd5e5a7cfbb25da51d1b994abc0c9d4c62525ca78c`;
+(current semantic-union TeX: 16,369 lines and 737,912 bytes, SHA-256
+`a4aecd625f7eb405de866e2b368bbdc648fb0f9e11b423cb936a2f319d195f02`;
 retained PDF: 238 A4 pages and 6,953,898 bytes, SHA-256
 `fa719a8ea68d3c474928b9fae7449f827eb35a5452613f2b660d8e88ba27267e`;
 across seven parts). Exactly three serial passes from the preceding 16,274-line,
@@ -538,7 +539,10 @@ spectral product converges locally uniformly for every complex strict
 contraction, including `q = 0`, with dyadic Rvachev-product and bounded-Fabius
 Fourier specializations. The compound centered/MGF and exterior reciprocal
 formula, pole divisor, and zero--pole exchange remain Partial. Final-source
-rendering and full publication validation remain pending. This is the
+rendering and full publication validation remain pending.  The current TeX
+also replaces all raw dyadic-valuation spellings by the shared
+`\TwoAdicValuation` command; this notation-only successor is not represented
+by the retained PDF. This is the
 2026-08-28 consolidation of the two former drafts (Part I:
 Newton-basis frontiers; Part II: q-binomial Richardson), joined the
 same day by the eighth-wave report as **Part III** — *Finite Dyadic

@@ -97,7 +97,7 @@ useful because it preserves the migrated experiment and research-figure
 boundary.
 
 The retained `q_pochhammer_q_binomial_monograph.pdf` is a 354-page A4
-build of the current master source (14,381 lines, 675,239 bytes,
+build of its recorded master source (14,381 lines, 675,239 bytes,
 SHA-256 `240bff72fb47562e9a8fd87085b5a3a96d738189714518db17988f7c4ac15d31`).
 The PDF is 3,030,302 bytes with SHA-256
 `1050a9a3b0b7a8df8e7de0870946ae64940d7d7839a2f20427be0ebe14b0ba8c`.
@@ -109,8 +109,16 @@ embedded and subsetted, including 5 Libertinus rows, with no Type-3
 fonts. The files under `assets/experiments/**/figures/` remain research
 figures, not publication manuscripts.
 
-The retained PDF was built from the master source described above, so the
-identities recorded there belong to one synchronized source/PDF pair.
+The current live master is a source-only successor with 14,426 lines,
+677,040 bytes, and SHA-256
+`085a962fa040bbc27f2978184dffd20b3890cfd4c4734fcbfcbceda8bbf8c879`.
+It adds the explicit document-local `\BellBlockMultiplicity{r}` and
+`\MacMahonQCatalanPolynomial{n}{q}` families and normalizes the newly merged
+Jackson, Gaussian-binomial, q-integer, and q-Pochhammer status formulas.  No
+PDF was regenerated after those changes.  Thus the PDF and its recorded
+14,381-line build source form the retained synchronized checkpoint, while the
+current master and retained PDF are distinct ledger payloads pending a fresh
+three-pass build.
 
 The current source includes exhaustive crosswalks for `QPochhammerEntire`
 (zero definitions

@@ -2980,6 +2980,72 @@ for its abbreviated Gaussian-binomial macro.  The canonical
 evaluation, not substitution into the displayed rational quotient.}
 \end{catalogueentry}
 
+\begin{catalogueentry}{macmahon-q-catalan}{MacMahon's \(q\)-Catalan polynomial}
+\entryfield{Document-local command and type}{The \(q\)-Pochhammer monograph's local
+\commandname{MacMahonQCatalanPolynomial}\texttt{\{n\}\{q\}} has TeX arity two and
+prints \(C_n^{\mathrm{Mac}}(q)\).  The first argument is
+\(n\in\NaturalNumbers\).  The second argument names the displayed polynomial
+indeterminate---normally \(q\), or \(X\) when matching the Lean polynomial
+variable---rather than supplying a denominator at which pointwise division is to be
+performed.  Intrinsically, the family is
+\(C_n^{\mathrm{Mac}}(X)\in\IntegerNumbers[X]\); scalar values are obtained afterward by
+polynomial evaluation.}
+\entryfield{Exact polynomial quotient}{It is the unique polynomial satisfying
+\[
+ \QInteger{n+1}{q}\,C_n^{\mathrm{Mac}}(q)
+ =\GaussianBinomial{2n}{n}{q},
+ \qquad
+ C_n^{\mathrm{Mac}}(q)
+ =\frac{\GaussianBinomial{2n}{n}{q}}{\QInteger{n+1}{q}}
+ \quad\hbox{in }\IntegerNumbers[q].
+\]
+The second display is exact polynomial division: cyclotomic divisibility first proves
+that \(\QInteger{n+1}{q}\) divides the central Gaussian polynomial, and the monicity of
+the divisor gives the quotient in \(\IntegerNumbers[q]\).  It is not the pointwise
+quotient of two scalar-valued functions.  In particular, at a zero of
+\(\QInteger{n+1}{q}\), its value is the evaluation of the already constructed quotient
+polynomial---the removable value after cancellation---and not an undefined \(0/0\).}
+\entryfield{Degree and boundary value}{For every \(n\in\NaturalNumbers\),
+\[
+ \deg C_n^{\mathrm{Mac}}=n(n-1),
+ \qquad C_0^{\mathrm{Mac}}(q)=1.
+\]
+The degree formula uses natural-number subtraction at \(n=0\).  The explicit boundary
+value confirms that the polynomial is the nonzero constant \(1\), so its degree is \(0\)
+rather than an exceptional zero-polynomial degree.}
+\entryfield{Classical specialization}{Evaluation of the quotient polynomial at \(q=1\)
+gives
+\[
+ C_n^{\mathrm{Mac}}(1)=\CatalanNumber{n}
+ =\frac1{n+1}\binom{2n}{n}.
+\]
+This is polynomial evaluation after cancellation, since the defining exact identity
+specializes to
+\((n+1)C_n^{\mathrm{Mac}}(1)=\binom{2n}{n}\).}
+\entryfield{Coefficient signs}{The coefficients are nonnegative integers, by the
+separate classical combinatorial interpretation using an appropriate major-index
+statistic on Dyck paths of semilength \(n\).  Integrality from cyclotomic divisibility
+alone does not prove nonnegativity.  The current Lean module proves the exact integral
+quotient, degree, and specialization at one, but does not prove coefficientwise
+nonnegativity; that last assertion therefore has classical/cited, not Lean-proved,
+status in this catalogue.}
+\entryfield{Collision policy}{The ordinary Catalan number remains
+\(\CatalanNumber{n}\).  The bare notation \(C_n(q)\) is not canonical: the literature
+contains inequivalent \(q\)-Catalan families, and the corpus also assigns \(C_n\) to
+unrelated coefficient sequences.  The semantic superscript and the full local command
+identify specifically MacMahon's quotient convention.  This command is local to the
+monograph and is intentionally absent from the shared quick-reference and alphabetical
+command indexes.}
+\entryfield{Lean crosswalk}{In \modulepath{QCatalan.lean},
+\lean{qCatalan}~\(n\) is the polynomial in \(\IntegerNumbers[X]\);
+\lean{qInt_X_dvd_gaussianBinomial_int} proves the required divisibility,
+\lean{qInt_X_mul_qCatalan} is the exact product identity,
+\lean{qCatalan_natDegree} proves degree \(n(n-1)\), and
+\lean{qCatalan_eval_one} identifies evaluation at one with Mathlib's
+\lean{catalan}~\(n\).  These named results have status \textbf{Lean-proved}; none of
+them states coefficientwise nonnegativity.}
+\end{catalogueentry}
+
 \begin{catalogueentry}{generalized-gaussian-binomial}{Generalized Gaussian binomial
 coefficients}
 \entryfield{Finite-product/rational definition}{Fix a nonzero complex base
@@ -3316,11 +3382,23 @@ or a wave function.}
  B_q(x,y)
  \DefinitionEquals\frac{\Gamma_q(x)\Gamma_q(y)}{\Gamma_q(x+y)}
  =\int_0^1 t^{x-1}
-   \frac{(qt;q)_\infty}{(q^yt;q)_\infty}\,\mathrm d_qt.
+   \frac{\QPochhammer{qt}{q}{\infty}}
+        {\QPochhammer{q^y t}{q}{\infty}}\,\mathrm d_qt.
 \]
 The integral formula includes the Jackson differential and real powers determined by
 \(t\in(0,1]\); a complex continuation uses the gamma quotient, not an undeclared
 pointwise integral branch.}
+\entryfield{Lean crosswalk}{In \modulepath{QBetaIntegral.lean}, the total real-valued
+definition is \lean{qBeta}~\(q\,x\,y\).  Under the explicit hypotheses
+\(0<q<1\) and \(x,y>0\), \lean{qBeta_eq_prod} proves the infinite-product
+evaluation, \lean{qBeta_eq_qGamma} proves the displayed gamma quotient,
+\lean{qBeta_comm} and \lean{qBeta_pos} prove symmetry and positivity, and
+\lean{qBeta_add_one_left} and \lean{qBeta_add_one_right} prove the two positive-domain
+recurrences.  The definition is total because Lean's real operations and
+\lean{jacksonIntegral} are total; the named evaluation theorems do not silently extend
+beyond their positivity hypotheses.  Status: \textbf{Lean-proved with the displayed
+hypotheses}.  This module does not formalize the meromorphic continuation or the
+classical \(q\uparrow1\) limits.}
 \entryfield{Classical limits}{For fixed \(z\) away from poles,
 \(\Gamma_q(z)\to\GammaFunction(z)\), \(\psi_q(z)\to\psi(z)\), and
 \(B_q(x,y)\to B(x,y)\) as \(q\uparrow1\), on compact subsets where the corresponding
@@ -3652,6 +3730,40 @@ polynomial rings are present.}
 Consequently cyclotomic divisibility of ratios of shifted factorials is checked by
 subtracting these explicit nonnegative exponents after polynomiality has been
 established.}
+\entryfield{Lean crosswalk: carry and divisibility}{In
+\modulepath{CyclotomicDivisibility.lean},
+\lean{cyclotomic_exponent_eq_one_iff} proves, for \(k\le n\) and \(0<d\), that
+the Gaussian cyclotomic exponent is one exactly when
+\(n\bmod d<k\bmod d\).  The theorem
+\lean{cyclotomic_dvd_gaussianBinomial_iff} proves the corresponding divisibility
+criterion for \(\Phi_d\) and the universal Gaussian polynomial over
+\(\RationalNumbers[X]\).  These theorems formalize the displayed exponent and carry
+criterion, but they do not define the document-local three-argument
+\commandname{CyclotomicValuation} as a general Lean function.  Status:
+\textbf{Lean-proved with the stated natural-number hypotheses}.}
+\entryfield{Lean crosswalk: primitive-root blocks and \(q\)-Lucas}{For a primitive
+\(d\)th root \(\zeta\) in an integral domain,
+\modulepath{PrimitiveRootBlock.lean} proves the interior vanishing theorem
+\lean{gaussianBinomial_isPrimitiveRoot_eq_zero} and the complete block identity
+\lean{finiteQPochhammerIn_isPrimitiveRoot}, including the hypothesis \(0<d\):
+\[
+ \GaussianBinomial{d}{k}{\zeta}=0\quad(0<k<d),
+ \qquad
+ \prod_{j=0}^{d-1}(1-y\zeta^j)=1-y^d\quad(y\text{ in the coefficient ring}).
+\]
+In \modulepath{QLucas.lean}, \lean{gaussianBinomial_q_lucas} proves, for
+\(a,r,b,s\in\NaturalNumbers\) with \(b,s<d\),
+\[
+ \GaussianBinomial{ad+b}{rd+s}{\zeta}
+ =\binom ar\GaussianBinomial{b}{s}{\zeta}.
+\]
+Finally, \lean{gaussianBinomial_mul_isPrimitiveRoot} in
+\modulepath{CyclotomicDivisibility.lean} specializes this to
+\(\GaussianBinomial{an}{bn}{\zeta}=\binom ab\) for a primitive \(n\)th root and
+\(0<n\).  All three modules work over the algebraic hypotheses written in their
+declarations; they do not by themselves authorize evaluation of an uncancelled rational
+\(q\)-series quotient at a root of unity.  Status: \textbf{Lean-proved with the displayed
+hypotheses}.}
 \end{catalogueentry}
 
 \begin{catalogueentry}{q-adic-formal}{Coefficientwise convergence, \(q\)-adic order, and
@@ -5880,6 +5992,24 @@ The exact coefficient table in that volume specializes the second argument to
 $q=1/2$; retaining $q$ in the command distinguishes the general geometric comb from
 this half-base table.  The subscript is a Newton-basis degree, not a valuation, and the
 command is document-local rather than a shared Fabius API.}
+\entryfield{Generic Newton Lean crosswalk}{In
+\modulepath{NewtonInterpolation.lean}, \lean{newtonCoeff} and \lean{newtonPoly}
+define the triangular Newton coefficients and their degree-\(n\) polynomial over an
+arbitrary field.  The theorem \lean{eval_newtonPoly} proves interpolation at node \(i\)
+when the product of its differences from the earlier nodes is nonzero;
+\lean{newtonPoly_eq_interpolate} and \lean{newtonCoeff_eq_sum} use injectivity on the
+finite node range to identify the Lagrange interpolant and the divided-difference sum.
+For geometric nodes, \lean{nodal_range_pow} proves the \(q\)-Pochhammer form of the
+Newton basis under \(q\ne0\), \lean{prod_erase_pow_sub_pow} evaluates the nodal
+denominator for \(j\le k\), and \lean{newtonCoeff_pow_eq_sum} proves the explicit
+coefficient sum under injectivity of \(j\mapsto q^j\) on the required range.
+Instantiating the generic data by
+\(v(j)=q^j\) and \(y(j)=\FabiusBounded(q^j)\) gives the mathematical object printed by
+\commandname{FabiusGeometricNewtonCoefficient}; there is no separate Lean declaration
+with that document-local command name.  Lean's definitions remain total when a
+denominator vanishes, while the interpolation and divided-difference theorems retain
+their nonvanishing or injectivity hypotheses.  Status: \textbf{Lean-proved at the
+generic level with the stated hypotheses}.}
 \entryfield{Barycentric weights}{$w_j=(\prod_{k\ne j}(x_j-x_k))^{-1}$ and
 $I_Nf(x)=
 (\sum_jw_jf(x_j)/(x-x_j))/(\sum_jw_j/(x-x_j))$ away from nodes, with the value at a
@@ -8635,6 +8765,28 @@ Prime-power Pascal-row valuations & \lean{primePowerChoose_padicValNat_add},
 \modulepath{PrimePowerBinomialValuation.lean} & Arbitrary-prime formulas include
 \(j=p^m\) and \(m=0\); the dyadic theorem uses \(0<j<2^m\).  No theorem for the distinct
 endpoint-flat weights \(\binom{2^m-2}{j-1}\) is inferred.\\
+MacMahon's \(q\)-Catalan polynomial & \lean{qCatalan},
+\lean{qInt_X_dvd_gaussianBinomial_int}, \lean{qInt_X_mul_qCatalan},
+\lean{qCatalan_natDegree}, and \lean{qCatalan_eval_one} in
+\modulepath{QCatalan.lean} & An exact quotient in \(\IntegerNumbers[X]\), its product
+identity, degree \(n(n-1)\), and evaluation at one are proved.  Coefficientwise
+nonnegativity is not a theorem of this module.\\
+Jackson \(q\)-beta function & \lean{qBeta}, \lean{qBeta_eq_prod},
+\lean{qBeta_eq_qGamma}, \lean{qBeta_comm}, \lean{qBeta_pos},
+\lean{qBeta_add_one_left}, and \lean{qBeta_add_one_right} in
+\modulepath{QBetaIntegral.lean} & The function is real-valued.  Product, gamma-quotient,
+symmetry, positivity, and recurrence theorems retain \(0<q<1\) and \(x,y>0\); no
+meromorphic continuation or \(q\uparrow1\) theorem is inferred.\\
+Cyclotomic carry, primitive-root blocks, and \(q\)-Lucas &
+\lean{cyclotomic_exponent_eq_one_iff} and
+\lean{cyclotomic_dvd_gaussianBinomial_iff} in
+\modulepath{CyclotomicDivisibility.lean};
+\lean{finiteQPochhammerIn_isPrimitiveRoot} in
+\modulepath{PrimitiveRootBlock.lean}; \lean{gaussianBinomial_q_lucas} in
+\modulepath{QLucas.lean} & The carry criterion is over \(\RationalNumbers[X]\); the
+root-block and \(q\)-Lucas theorems assume a primitive root in an integral domain and
+retain \(0<d\) and the stated residue bounds.  They do not define a general
+\commandname{CyclotomicValuation} function.\\
 Exact full moments & \lean{moment} in \modulepath{Arithmetic.lean};
 \lean{momentIntegral} in \modulepath{Basic.lean} & Rational recurrence and real integral are
 distinct objects; \modulepath{AnalyticMoments.lean} supplies bridge theorems with hypotheses.\\
@@ -8659,6 +8811,13 @@ states the corresponding measure equality.\\
 Fourier commands & Mathlib Fourier-transform APIs plus project-specific theorems in
 dedicated Fourier modules & The shared commands choose print normalization.  They are
 not names of one new Lean definition and do not erase Mathlib's hypotheses.\\
+Generic Newton interpolation & \lean{newtonCoeff}, \lean{newtonPoly},
+\lean{eval_newtonPoly}, \lean{newtonPoly_eq_interpolate},
+\lean{newtonCoeff_eq_sum}, \lean{nodal_range_pow},
+\lean{prod_erase_pow_sub_pow}, and \lean{newtonCoeff_pow_eq_sum} in
+\modulepath{NewtonInterpolation.lean} & Definitions are total over a field; interpolation
+and divided differences retain their product-nonzero or node-injectivity hypotheses.
+The geometric formulas do not create a separately named Fabius-specific coefficient.\\
 Finite-node Lagrange--Rvachev decoder & \lean{lagrangeRvachevDecoder} and
 \lean{lagrangeRvachevAtomCoefficient} in \modulepath{LagrangeRvachevSynthesis.lean} &
 Exact synthesis uses \(M\ne0\), \(|s|-1\le\TwoAdicValuation(M)\), and \(x\in[-1,1]\).

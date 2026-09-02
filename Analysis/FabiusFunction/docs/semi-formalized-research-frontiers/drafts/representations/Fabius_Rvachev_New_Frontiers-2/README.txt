@@ -13,8 +13,8 @@ superseded, generated, proved, numerical, and conjectural material.
 Main deliverables
 -----------------
 fabius_rvachev_new_frontiers.tex
-    Current source: 2,957 lines, 120,695 bytes, SHA-256
-    e03548653eeee69e9e8fdc4d7bf83bda93d4ee5620ab81dafdab87e7419ec6ba.
+    Current live source: 2,978 lines, 122,235 bytes, SHA-256
+    e0015e424fe577c4aee3ea473ace71b67b9f250d5a96569dccd6dd03ebe20c98.
     It preserves the canonical
     preamble, cleaned-vector-figure and claim-status safeguards, the
     scalar-base-change Gram--Stieltjes and all-degree rational native Jacobi
@@ -70,6 +70,8 @@ pdf_preflight.json
 SHA256SUMS.txt
     Current 20-payload mixed source/retained-artifact inventory.  Its fixed
     payload scope is preserved, every row is current, and all 20 entries verify.
+    It hashes the live TeX and metadata alongside the byte-retained historical
+    PDF; ledger validity does not assert source/PDF rendering parity.
 
 Numerical publication run
 -------------------------
@@ -200,8 +202,10 @@ Separate 41-page Gaunt checkpoint
   25--27, 29--30, 37, and 41 were inspected, including all five plot placements
   on pages 17, 23, 29, 30, and 30.
 * This is historical evidence only.  The current package retains the cleaned
-  vector-PDF figure provenance.  It is superseded as the current artifact by
-  the synchronized final post-union verification recorded above.
+  vector-PDF figure provenance.  It is superseded by the later retained
+  post-union PDF checkpoint recorded above.  That checkpoint was synchronized
+  only with its own frozen source; it is not a rendering of the current live
+  TeX.
 
 Claim status
 ------------

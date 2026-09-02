@@ -162,10 +162,14 @@ asset dispositions, and the deduplicated live asset ledger covers 63 retained
 payloads. The former package paths, source hashes, nested lineage, and recovery
 revisions remain in the package's
 [`PROVENANCE.md`](drafts/inverse-and-sampling/Inverse_Fabius_Analyticity_Asymptotics_and_Computability/PROVENANCE.md).
-Its synchronized 133-page A4 publication has SHA-256
-`83a2cc2050e4f6c0c6ea26b472c09f05d4c77d2d84d4ba47e316d8176e7c11c6`;
-the package README records the clean three-pass build, font preflight, and
-all-page visual inspection.
+Its retained 134-page A4 publication checkpoint has SHA-256
+`22bc68d855ad04dde9654e9fbd20b3ba7f05a33e3c5df0e5b80bb8991c94b41d`;
+the package README records that checkpoint's clean three-pass build, font
+preflight, and visual inspection.  The current 23-input source closure has
+SHA-256
+`36e7941043153faee5b18220315e663d24131ddb323b67de7e0e8e2ceb0339b1`
+and postdates the retained PDF, so no present source/PDF synchronization is
+claimed.
 The reviewed concordance classifies 39 source rows as Lean-proved and 106 as
 human-proved frontier results. Its three newest exact matches are centered
 Appell deconvolution, positive-degree Appell mean-zero, and arbitrary-phase

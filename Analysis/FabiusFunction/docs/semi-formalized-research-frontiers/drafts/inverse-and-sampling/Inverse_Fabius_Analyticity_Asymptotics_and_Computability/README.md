@@ -107,7 +107,7 @@ The canonical source surface is current and exhaustively inventoried:
 - `inverse_fabius_theory.tex`: 293 lines, 11,514 bytes, SHA-256
   `92fab1fae38bbcf86a45b51bfe7ff34e2801361df9d2f3d6aa3de4dc966eaa3c`;
 - its exhaustive 23-input source closure: SHA-256
-  `c8e9135d3be00a5fc851916812f675ab49e8a8d4824ee4338e5249c59b8b4eb6`;
+  `36e7941043153faee5b18220315e663d24131ddb323b67de7e0e8e2ceb0339b1`;
 - the retained `inverse_fabius_theory.pdf`: 134 A4 pages, 2,027,726 bytes,
   SHA-256
   `22bc68d855ad04dde9654e9fbd20b3ba7f05a33e3c5df0e5b80bb8991c94b41d`.
