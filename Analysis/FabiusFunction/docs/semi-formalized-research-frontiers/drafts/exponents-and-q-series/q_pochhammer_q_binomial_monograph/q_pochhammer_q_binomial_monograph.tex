@@ -12568,8 +12568,8 @@ inside the proof below does not formalize the result the proof concludes.
   than a mathematical claim.
 \end{description}
 
-Of the 282 labelled forward results, 104 are \statusexact, 86 are
-\statuspartial, 84 are \statusnone, and 8 are \statusna.  The original
+Of the 282 labelled forward results, 106 are \statusexact, 85 are
+\statuspartial, 83 are \statusnone, and 8 are \statusna.  The original
 191-result pre-Fabius core had 36 \statusexact, 29 \statuspartial, 123
 \statusnone, and 3 \statusna{} entries.  The four integrated guide chapters
 add 31 human-proved but not Lean-formalized assertions and five labelled
@@ -13132,11 +13132,11 @@ Partitions, words, paths, and inversion statistics & 6 & 2 & 1 & 0\\
 Finite fields, Grassmannians, and rank enumeration & 1 & 1 & 4 & 0\\
 Symmetry and unimodality & 0 & 0 & 3 & 0\\
 The infinite $q$-binomial theorem & 1 & 1 & 2 & 0\\
-Basic hypergeometric series & 2 & 3 & 4 & 0\\
+Basic hypergeometric series & 3 & 3 & 3 & 0\\
 Euler telescoping and very-well-poised summations & 0 & 0 & 4 & 0\\
 Bilateral series and Ramanujan's \texorpdfstring{${}_1\psi_1$}{1psi1} sum & 1 & 0 & 1 & 0\\
 $q$-difference calculus and the quantum binomial & 8 & 2 & 0 & 0\\
-The $q$-gamma and $q$-beta functions & 4 & 2 & 2 & 0\\
+The $q$-gamma and $q$-beta functions & 5 & 1 & 2 & 0\\
 Jacobi's triple product & 5 & 2 & 1 & 0\\
 Theta modularity, lattice dissection, and sums of squares & 0 & 0 & 14 & 4\\
 Partitions and product--sum identities & 0 & 0 & 4 & 0\\
@@ -13153,7 +13153,7 @@ Half-base arithmetic and Prouhet--Thue--Morse cancellation & 6 & 3 & 0 & 0\\
 Geometric uniform sums, $q$-cumulants, and the Fabius--Rvachev functions & 2 & 11 & 0 & 0\\
 Dyadic Gaussian--Thue--Morse structure and the values of $F$ & 6 & 44 & 6 & 0\\
 \midrule
-\textbf{Forward total} & 104 & 86 & 84 & 8\\
+\textbf{Forward total} & 106 & 85 & 83 & 8\\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -13573,7 +13573,16 @@ denominators nonzero, derived algebraically from
 exactly as in the proof; $q^{-n}$ is $(q^n)^{-1}$ and $abq^{1-n}/c$ is
 $abq/(cq^n)$}\\[2pt]
 \Cref{cor:q-chu} & \statusnone & ---\\[2pt]
-\Cref{lem:2phi1-reversal} & \statusnone & ---\\[2pt]
+\Cref{lem:2phi1-reversal} & \statusexact &
+\texttt{twoPhiOneFinite\_\allowbreak{}reversal},
+\texttt{finiteQPochhammerIn\_\allowbreak{}sub\_\allowbreak{}eq},
+\texttt{finiteQPochhammerIn\_\allowbreak{}inv\_\allowbreak{}pow\_\allowbreak{}self},
+\texttt{twoPhiOneFinite\_\allowbreak{}eq\_\allowbreak{}sum\_\allowbreak{}twoPhiOneTerm}\newline
+{\footnotesize\texttt{TwoPhiOneReversal}; in any field with $q\ne0$ and the
+additional explicit hypothesis $(q;q)_n\ne0$ for the denominators; the
+terminating sum is \texttt{twoPhiOneFinite}, with $q^{-n}=(q^n)^{-1}$ and
+$q^{1-n}=q(q^n)^{-1}$; the four symbols are reversed by the general rule
+$(x;q)_{n-i}\,(-xq^{n-i})^i q^{\binom i2}(q^{1-n}/x;q)_i=(x;q)_n$}\\[2pt]
 \Cref{prop:qchu2-by-reversal} & \statusnone & ---\\[2pt]
 \midrule
 \multicolumn{3}{@{}l}{\itshape Bilateral series and Ramanujan's \texorpdfstring{${}_1\psi_1$}{1psi1} sum}\\
@@ -13678,15 +13687,16 @@ second half of the fundamental theorem}\\[2pt]
 $0<q<1$, with $[x]_q$ as \texttt{qNumber} and its agreement with the
 $q$-integer at natural arguments; the meromorphic-continuation clause is
 not formalized}\\[2pt]
-\Cref{prop:qgamma-convex} & \statuspartial &
+\Cref{prop:qgamma-convex} & \statusexact &
 \texttt{hasDerivAt\_\allowbreak{}log\_\allowbreak{}qGamma},
-\texttt{hasDerivAt\_\allowbreak{}qPochhammerInfIn\_\allowbreak{}real},
-\texttt{ofReal\_\allowbreak{}qPochhammerInfIn}\newline
-{\footnotesize\texttt{QGammaLogDerivative}; the first logarithmic derivative
-as a \texttt{HasDerivAt} statement over $\RealNumbers$ for $0<q<1$, $x>0$,
-obtained from the complex derivative of $a\mapsto(a;q)_\infty$ by real
-restriction; the second derivative and strict log-convexity are not
-formalized}\\[2pt]
+\texttt{hasDerivAt\_\allowbreak{}deriv\_\allowbreak{}log\_\allowbreak{}qGamma},
+\texttt{deriv2\_\allowbreak{}log\_\allowbreak{}qGamma\_\allowbreak{}pos},
+\texttt{strictConvexOn\_\allowbreak{}log\_\allowbreak{}qGamma}\newline
+{\footnotesize\texttt{QGammaLogDerivative}, \texttt{QGammaLogConvex}; both
+logarithmic derivatives as \texttt{HasDerivAt} statements over $\RealNumbers$
+for $0<q<1$, $x>0$ (the second by termwise differentiation dominated on every
+half-line $x>\varepsilon$), the positivity of the second, and strict convexity of
+$\log\Gamma_q$ on $(0,\infty)$ as \texttt{StrictConvexOn}}\\[2pt]
 \Cref{thm:q-bohr-mollerup} & \statusnone & ---\\[2pt]
 \Cref{thm:qgamma-classical-limit} & \statusnone & ---\\[2pt]
 \Cref{thm:qbeta} & \statusexact &
