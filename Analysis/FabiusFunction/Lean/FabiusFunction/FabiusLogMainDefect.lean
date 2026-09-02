@@ -29,37 +29,24 @@ how every quadratic expansion in this file is produced. -/
 lemma real_log_second_order_isBigO :
     (fun x : ℝ => Real.log (1 + x) - x + x ^ 2 / 2) =O[𝓝 0]
       (fun x : ℝ => x ^ 3) := by
-  rw [isBigO_iff]
-  refine ⟨2, ?_⟩
-  filter_upwards [Metric.eventually_nhds_iff.mpr ⟨(1 / 2 : ℝ), by norm_num, fun y hy => hy⟩]
-      with x hx
-  rw [Real.dist_eq] at hx
-  have hxhalf : |x| < 1 / 2 := by simpa using hx
-  have hcx : ‖(x : ℂ)‖ < 1 := by
-    simpa [Complex.norm_real, Real.norm_eq_abs] using hxhalf.trans (by norm_num : (1 / 2 : ℝ) < 1)
-  have hc := Complex.norm_log_sub_logTaylor_le 2 (z := (x : ℂ)) hcx
-  have hone : 0 < 1 + x := by linarith [neg_lt_of_abs_lt hxhalf]
-  rw [← Complex.ofReal_one, ← Complex.ofReal_add, ← Complex.ofReal_log hone.le] at hc
-  norm_num [Complex.logTaylor_succ, Complex.logTaylor_zero] at hc
-  have heq :
-      ((Real.log (1 + x) - x + x ^ 2 / 2 : ℝ) : ℂ) =
-        (Real.log (1 + x) : ℂ) - ((x : ℂ) + -(x : ℂ) ^ 2 / 2) := by
-    push_cast
+  -- Mathlib's real Taylor bound for `log (1 - x)` at order two, read at `-x`:
+  -- `|x - x²/2 + log (1 + x)|`... with the signs of the odd terms flipped, is
+  -- exactly the defect being estimated, and `|x| < 1/2` makes the denominator
+  -- `1 - |x|` at least `1/2`.
+  refine IsBigO.of_bound 2 ?_
+  filter_upwards [Metric.ball_mem_nhds (0 : ℝ) (by norm_num : (0 : ℝ) < 1 / 2)] with x hx
+  have hx' : |x| < 1 / 2 := by simpa [Real.dist_eq] using hx
+  have h0 := Real.abs_log_sub_add_sum_range_le
+    (x := -x) (by rw [abs_neg]; exact hx'.trans (by norm_num)) 2
+  rw [show (1 : ℝ) - -x = 1 + x by ring, abs_neg] at h0
+  have h : |Real.log (1 + x) - x + x ^ 2 / 2| ≤ |x| ^ 3 / (1 - |x|) := by
+    refine le_of_eq_of_le (congrArg abs ?_) h0
+    simp only [Finset.sum_range_succ, Finset.sum_range_zero]
     ring
-  rw [← heq, Complex.norm_real, Real.norm_eq_abs] at hc
-  have hc' : |Real.log (1 + x) - x + x ^ 2 / 2| ≤
-      |x| ^ 3 * (1 - |x|)⁻¹ / 3 := by
-    exact hc
-  rw [Real.norm_eq_abs, Real.norm_eq_abs]
-  calc
-    |Real.log (1 + x) - x + x ^ 2 / 2| ≤
-        |x| ^ 3 * (1 - |x|)⁻¹ / 3 := hc'
-    _ ≤ 2 * |x ^ 3| := by
-      rw [abs_pow]
-      have hden : (1 - |x|)⁻¹ ≤ 2 := by
-        rw [inv_le_comm₀ (by linarith [abs_nonneg x]) (by norm_num : (0 : ℝ) < 2)]
-        linarith
-      nlinarith [pow_nonneg (abs_nonneg x) 3]
+  rw [Real.norm_eq_abs, Real.norm_eq_abs, abs_pow]
+  refine h.trans ?_
+  rw [div_le_iff₀ (by linarith [abs_nonneg x])]
+  nlinarith [pow_nonneg (abs_nonneg x) 3]
 
 /-- First-order Taylor bound for the logarithm near zero: `Real.log (1 + x) - x`
 is `O(x ^ 2)` on `𝓝 0`.  Weakened from the cubic bound above and used for the

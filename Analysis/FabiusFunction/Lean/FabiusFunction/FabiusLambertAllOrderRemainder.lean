@@ -539,7 +539,11 @@ private theorem dyadicLambertFixedPointDefect_isBigO (N : ℕ) :
     (dyadicLambertFixedPointDefect_eventuallyEq N).symm
       Filter.EventuallyEq.rfl
 
-private theorem abs_log_sub_log_le_div
+/-- **The logarithm is `K⁻¹`-Lipschitz on the ray `[K, ∞)`.**  A quantitative
+mean-value bound with no Fabius content: for `a, b ≥ K > 0`,
+`|log a - log b| ≤ |a - b| / K`.  The proof needs only `log t ≤ t - 1`, applied
+to the ratio of the two arguments, so no derivative appears. -/
+theorem abs_log_sub_log_le_div
     {K a b : ℝ} (hK : 0 < K) (ha : K ≤ a) (hb : K ≤ b) :
     |Real.log a - Real.log b| ≤ |a - b| / K := by
   have ha0 : 0 < a := hK.trans_le ha
