@@ -1731,6 +1731,44 @@ spellings may occur in quotations.  Normative prose uses \commandname{BinaryDigi
 an unsubscripted weight is especially unsafe because it can denote an integration weight.}
 \end{catalogueentry}
 
+\begin{catalogueentry}{base-q-digits}{Base-\(q\) digits, digit sums, digit characters,
+and digit power sums}
+\entryfield{Digits}{For an integer base $q\ge2$ and $n\in\NaturalNumbers$, the $j$-th
+base-$q$ digit is
+\[
+ d_j(n)\DefinitionEquals\Floor{n/q^{j}}\bmod q\in\{0,\dots,q-1\},\qquad j\in\NaturalNumbers,
+\]
+so that $n=\sum_{j\ge0}d_j(n)\,q^{j}$.  At $q=2$ this is the bit $b_j(n)$ of the
+\hyperlink{notation:binary-weight}{binary-weight entry}.  The base is always written
+explicitly; it is never inferred from context.}
+\entryfield{Digit sum}{$s_q(n)\DefinitionEquals\sum_{j\ge0}d_j(n)$.  At $q=2$ normative
+prose writes $\BinaryDigitSum(n)$, not $s_2(n)$; a document that abbreviates
+$s_2\DefinitionEquals\BinaryDigitSum$ must say so once.  These are plain-math
+conventions, not shared commands.}
+\entryfield{Digit window}{A statement over the block $0\le n<q^{m}$ may use the window
+product $\prod_{j<m}w\bigl(d_j(n)\bigr)$ for a digit weight $w$; leading zeros inside
+the window are weighted by $w(0)$, which is why identities stated with the window need
+no normalisation $w(0)=1$, whereas $s_q$ ignores leading zeros.}
+\entryfield{Digit character}{For $\zeta$ in a commutative ring, $u_n\DefinitionEquals
+\zeta^{s_q(n)}$.  The recursion $u_{qn+r}=\zeta^{r}u_n$ ($r<q$) and the digit product
+$\sum_{n<q^{m}}u_nz^{n}=\prod_{j<m}\sum_{r<q}\zeta^{r}z^{rq^{j}}$ hold for every $\zeta$;
+the hypothesis that $\zeta$ be a nontrivial $q$-th root of unity, $\sum_{r<q}\zeta^{r}=0$,
+enters only through the vanishing of each factor at $z=1$.  At $q=2$, $\zeta=-1$ gives
+$u_n=\ThueMorseSign n$.}
+\entryfield{Digit power sums}{$P_d(m)\DefinitionEquals\sum_{n<q^{m}}u_n\,n^{d}$.  Under
+$\sum_{r<q}\zeta^{r}=0$, $P_d(m)=0$ for $d<m$ (Prouhet cancellation), and with
+$\zeta^{q}=1$ the sharp value is
+$(\zeta-1)^{m}P_m(m)=m!\,q^{m(m+1)/2}$, stated division-free so that it holds in any
+commutative ring.}
+\entryfield{Lean crosswalk}{\lean{digitAt} is $d_j(n)$, \lean{windowWeight} the window
+product, \lean{digitPowerSum} is $P_d(m)$; the digit product is
+\lean{sum_zeta_pow_digits_sum_mul_pow} and its arbitrary-weight form
+\lean{sum_windowWeight_mul_pow} (\modulepath{BaseDigitProduct.lean}); cancellation and the
+sharp moment are \lean{digitPowerSum_eq_zero_of_lt} and
+\lean{sub_one_pow_mul_digitPowerSum_self} (\modulepath{BaseDigitProuhet.lean}).  The
+digit sum itself is Mathlib's \lean{(Nat.digits q n).sum}.}
+\end{catalogueentry}
+
 \begin{catalogueentry}{thue-morse}{Thue--Morse bit and sign sequences}
 \entryfield{Bit sequence}{$t_n\DefinitionEquals\BinaryDigitSum(n)\bmod2\in\{0,1\}$ for
 $n\in\NaturalNumbers$.}
