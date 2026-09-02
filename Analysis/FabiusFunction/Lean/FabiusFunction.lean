@@ -189,6 +189,7 @@ import FabiusFunction.DigitCharacterCongruence
 import FabiusFunction.BinaryDigitFloor
 import FabiusFunction.RademacherSine
 import FabiusFunction.BaseDigitProduct
+import FabiusFunction.SignedRowSum
 import FabiusFunction.GeneralizedProuhetBlock
 import FabiusFunction.ProuhetBlockZeroOrder
 import FabiusFunction.BitPositionQBinomial
