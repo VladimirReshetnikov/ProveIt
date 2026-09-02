@@ -8,8 +8,8 @@ pre-retirement snapshot of all five source packages is commit
 `9560165ae2eb33590404a090ab26bd3ca715f32f`, recorded in
 `audit/MERGE_SOURCE_REVISION`; the completed `source_concordance.csv` gives a
 reviewed disposition for all 547 source result environments. With the current
-exact promotions, its canonical-status distribution is 70 Lean-proved rows,
-408 human-proved frontier result rows, 60 not-applicable rows, and 9
+exact promotions, its canonical-status distribution is 73 Lean-proved rows,
+405 human-proved frontier result rows, 60 not-applicable rows, and 9
 conjecture rows.
 Directory names
 in the table are historical paths in that pinned snapshot, not live package
@@ -60,17 +60,29 @@ not a rendering distributed by the live package.
 The validation record in `README.md` distinguishes compilation, font
 embedding, complete page rendering, contact-sheet review, and full-resolution
 inspection. PDFs retained beneath `assets/` are research figures, not
-manuscripts.
+manuscripts. A later synchronized 347-page, 2,996,319-byte A4 checkpoint has
+SHA-256
+`29b422a39c42be37bd1487d4245c44e55706720c545dd015957644e47014bd48`
+and was built in three serial passes from the 14,072-line, 656,200-byte source
+with SHA-256
+`062b7230d95ff8bd52b11253c6c3c8820d6f6a82e4307ae5d82a1d793c00c517`.
+The package now retains the subsequent upstream 348-page, 3,002,729-byte A4
+PDF with SHA-256
+`8bf14b52d8a0fc0abc4d54cca503fd47a2df37cf76ee1bb4e442bea1fd2a4aa7`.
+Its guarded build used three serial passes producing 338, 348, and 348 pages.
+The merged TeX postdates that build, so the retained PDF is historical and no
+source/PDF parity is claimed.
 
-The live source now postdates the 345-page receipt. An independent lexical
-audit of its facade union finds 641 source modules and 8,652 public
+The live source now postdates the retained 348-page upstream receipt. An
+independent lexical audit of its facade union finds 657 source modules and
+8,756 public
 declarations, with no missing module headers or declaration doc comments.
-Its 282-row canonical forward ledger records 64 exact, 78 partial, 132
+Its 282-row canonical forward ledger records 71 exact, 84 partial, 119
 no-counterpart, and 8
 not-applicable results. The exhaustive q-series API
 overlay includes `RvachevPochhammerFactorization` (one definition, ten
-theorems), `QPochhammerEntire` (zero definitions, six theorems),
-`QPochhammerInfinite` (one definition, twenty-seven theorems), and
+theorems), `QPochhammerEntire` (zero definitions, five legacy compatibility
+theorems), `QPochhammerInfinite` (one definition, twenty-nine theorems), and
 `QPochhammerDissection` (zero definitions, two theorems). The Rvachev module's
 new generic-symbol equality is an unconditional definitional bridge; the
 entire module retains both the reciprocal-power zero theorem for nonzero nome
@@ -104,11 +116,32 @@ earlier q-calculus and generic-symbol bridge work while closing the named
 inside normal-convergence clause; they do not supply the outside-disk
 reciprocal, pole-divisor, or centered/MGF packaging.
 
-No canonical PDF is currently present. The root `SHA256SUMS` is therefore an
-explicitly partial, pending ledger rather than a release checksum set. Exact
-source hashes, PDF hashes, and source/PDF parity will be recorded only after
-the final source is frozen, a fresh publication build succeeds, and the
-package ledger is regenerated.
+The checkpoint union additionally retains `BasicHypergeometricSeries` (two
+definitions and five theorems), `HeineTransformation` (two definitions and
+five theorems), `QGaussSummation` (two theorems),
+`QPochhammerInfiniteBounds` (five theorems), `QPochhammerComplexOrder` (one
+definition and four theorems), and `QMultinomial` (one definition and nine
+theorems).
+
+The incoming eight-module union adds 58 public declarations:
+`GaussianBinomialPalindromic` (zero definitions and twelve theorems),
+`JacksonIntegral` (one definition and seven theorems), `QExponential` (three
+definitions and eight theorems), `ThetaQuasiPeriodicity` (one definition and
+six theorems), `JacobiCubic` (zero definitions and two theorems),
+`QPochhammerLogDerivative` (zero definitions and ten theorems),
+`QPochhammerOrderDerivative` (zero definitions and three theorems), and
+`GaussianBinomialPolynomialStructure` (zero definitions and five theorems).
+The master inventories every declaration in these modules. In particular,
+`thm:qbinom-structure` is exact and `thm:qbinom-moments` is partial because
+the formal mean identity does not include the variance.
+
+The retained upstream PDF is historical after this merged TeX. The root
+`SHA256SUMS` is therefore an explicitly partial, pending operational ledger,
+not a release checksum set: it covers stable payloads and the historical PDF
+but deliberately omits changing source and bookkeeping files. Exact live
+source hashes and source/PDF parity will be recorded only after the final
+source is frozen, a fresh publication build succeeds, and the package ledger
+is regenerated.
 
 The former q-Pochhammer/q-binomial monograph arrived in commit
 `47172bc03ec078961d8b023dfe156ecd712efb65`. Its pre-repair source SHA-256 was

@@ -16,7 +16,7 @@ their repeated results map to one strongest canonical statement, while only
 genuinely stronger or independent material was transplanted. The completed
 `source_concordance.csv` assigns every one of the 547 source result
 environments a reviewed disposition. With the current exact promotions, the
-canonical-status totals are 70 Lean-proved rows, 408 human-proved frontier
+canonical-status totals are 73 Lean-proved rows, 405 human-proved frontier
 result rows, 60 not-applicable rows, and 9 conjecture rows. All five
 source-publication trees are
 therefore historical inputs preserved by the pinned revision and repository
@@ -88,45 +88,40 @@ It compares all coefficients through degree 100 using integer arithmetic:
 1,515 equalities in total. This is a transcription-quality gate, explicitly
 not an infinite proof of any recorded identity.
 
-The exhaustive package checksum gate is:
+The final release-checksum gate is:
 
 ```text
 python audit/build_package_checksums.py --check
 ```
 
 It checks every permanent package file except the self-referential root
-`SHA256SUMS` ledger itself. The nested asset ledger remains independently
-useful because it preserves the migrated experiment and research-figure
-boundary.
+`SHA256SUMS` ledger itself. During the present source-only merge the root
+ledger is explicitly partial and pending, so that command is expected to
+remain unsatisfied until the final source freeze, publication rebuild, and
+ledger regeneration. The nested asset ledger remains independently useful
+because it preserves the migrated experiment and research-figure boundary.
 
-The retained `q_pochhammer_q_binomial_monograph.pdf` is a 347-page A4
-publication checkpoint. It was built from a 14,072-line, 656,200-byte master
-with SHA-256
-`062b7230d95ff8bd52b11253c6c3c8820d6f6a82e4307ae5d82a1d793c00c517`.
-The PDF is 2,996,319 bytes with SHA-256
-`29b422a39c42be37bd1487d4245c44e55706720c545dd015957644e47014bd48`.
+The retained `q_pochhammer_q_binomial_monograph.pdf` is the upstream
+348-page A4 publication checkpoint. The PDF is 3,002,729 bytes with SHA-256
+`8bf14b52d8a0fc0abc4d54cca503fd47a2df37cf76ee1bb4e442bea1fd2a4aa7`.
 Exactly three serial
-`pdflatex -interaction=nonstopmode -halt-on-error` passes produced 337, 347,
-and 347 pages, with `makeindex` run after each pass. The final log recorded
+`pdflatex -interaction=nonstopmode -halt-on-error` passes produced 338, 348,
+and 348 pages, with `makeindex` run after each pass. The final log recorded
 three overfull boxes in the long `QPochhammerEntire` crosswalk paragraph.
 All pages are A4, and all 42 reported font rows are embedded and subsetted,
 including five Libertinus rows, with no Type-3 font.
 
-That PDF and source were synchronized at the named build checkpoint, but the
-merged master now includes later API and crosswalk changes. The retained PDF
-is therefore a verified historical artifact, not a render of the live TeX.
-The earlier 345-page receipt (source SHA-256
-`7389b325c08df9c731942b1f67b58511d1b7624a4b03153ee23fa3edcd9dcfa3`,
-PDF SHA-256
-`6d5477affdff8eb9711232c3ab7b1ad53dda3ad9a866e8fc031f5e787fcffc59`)
-remains recorded in `PROVENANCE.md`. Files under
+The merged master includes later checkpoint and incoming API crosswalks, so
+the retained PDF is a verified historical artifact rather than a render of
+the live TeX. Earlier publication receipts remain recorded in
+`PROVENANCE.md`. Files under
 `assets/experiments/**/figures/` remain research figures rather than
 publication manuscripts.
 
-An independent lexical audit of the live facade union finds exactly 649
-source modules and 8,698 public declarations, with no missing module headers
+An independent lexical audit of the live facade union finds exactly 657
+source modules and 8,756 public declarations, with no missing module headers
 or declaration doc comments. The reviewed 547-row source concordance records
-70 Lean-proved rows, 408 human-proved frontier-result rows, 60 not-applicable
+73 Lean-proved rows, 405 human-proved frontier-result rows, 60 not-applicable
 rows, and 9 conjecture rows.
 
 The merged q-series surface includes `RvachevPochhammerFactorization` (one
@@ -165,6 +160,20 @@ theorems). The former supplies uniform term bounds and the formalized
 convergence half of the basic-hypergeometric classification; the latter gives
 the Gaussian-product definition, functorial universal-polynomial form, and
 division-free and quotient factorial identities.
+
+The incoming eight-module union adds 58 public declarations:
+`GaussianBinomialPalindromic` (zero definitions and twelve theorems),
+`JacksonIntegral` (one definition and seven theorems), `QExponential` (three
+definitions and eight theorems), `ThetaQuasiPeriodicity` (one definition and
+six theorems), `JacobiCubic` (zero definitions and two theorems),
+`QPochhammerLogDerivative` (zero definitions and ten theorems),
+`QPochhammerOrderDerivative` (zero definitions and three theorems), and
+`GaussianBinomialPolynomialStructure` (zero definitions and five theorems).
+The master contains an exhaustive declaration-by-declaration crosswalk for
+all eight. Its 282-row forward ledger is 71 Exact, 84 Partial, 119 None, and
+8 interface rows. In particular, `thm:qbinom-structure` is Exact and
+`thm:qbinom-moments` is Partial: palindromicity proves the mean identity, but
+the variance clause remains outside Lean.
 
 The live master, this README, and the extractor postdate the retained PDF.
 The root `SHA256SUMS` is intentionally a partial operational ledger: it

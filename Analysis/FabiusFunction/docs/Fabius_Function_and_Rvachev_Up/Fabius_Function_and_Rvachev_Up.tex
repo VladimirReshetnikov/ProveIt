@@ -197,14 +197,17 @@ an exact Lean theorem are kept in the companion volume under
 \end{abstract}
 
 \begin{boxedremark}\textbf{Artifact status (1 September 2026).}\space
-The live facade contains exactly 641 source modules and 8,652 public
-declarations: 31 modules and 334 declarations beyond the 610/8,318 activation
-checkpoint, and twelve modules and 105 declarations beyond the 629/8,547
-documentation WIP.  This source now includes that five-module q-calculus
-increment together with the later finite/infinite q-series and analytic
-bridge/API increments.  Its committed PDF remains a historical \nolinkurl{c5633206e}-era
-build receipt and is rebuild-pending after these source edits; it does not
-certify source/PDF parity for the present TeX file.
+The live facade contains exactly 657 source modules and 8,756 public
+declarations: 47 modules and 438 declarations beyond the 610/8,318 activation
+checkpoint, and eight modules and 58 declarations beyond the 649/8,698
+publication-union checkpoint.  This source includes the earlier finite and
+infinite q-series APIs together with the final Gaussian-palindromic, Jackson
+integral, q-exponential, theta, Jacobi-cubic, logarithmic-derivative,
+order-derivative, and universal-polynomial tranche.  The retained 175-page A4
+PDF selected from the incoming branch, SHA-256
+\nolinkurl{58d0ee5327e4efe0915c27ebba88f9017dc7d142d715676119c2a780ae14e82a},
+predates this semantic union.  It is a historical publication receipt, not a
+render of the present TeX; a fresh strict build is pending.
 \end{boxedremark}
 
 \tableofcontents
@@ -3121,14 +3124,21 @@ argument, the flattened paired Euler product, and
 \eqref{eq:geometric-complex-qpochhammer}.  The final two declarations fix the
 dyadic scale and hence the Pochhammer nome \(1/4\); their complex argument is
 unrestricted, and the Fourier-transform form assumes exactly a bounded witness
-and \lean{IsFabius}.  Taken alone, these declarations do not classify the
-Pochhammer zero set or its multiplicities, construct a reciprocal zero--pole
-factorization, derive spectral-zeta, Mellin, or logarithmic-derivative
-consequences, prove local-uniform or normal convergence of the outer
-Pochhammer product over the spectral index, name the frontier's centered
-\(\psi_q\) or \(M_q\), or supply an outside \(\lVert q\rVert>1\) reciprocal
-formula.  The next theorem records the downstream fixed-nome analytic and
-zero-set API for each inner Pochhammer factor, including its division-free
+and \lean{IsFabius}.  The downstream zero-definition, three-theorem module
+\path{GeometricPochhammerNormalConvergence.lean} upgrades the outer product
+itself to locally uniform convergence on the whole complex plane.  Its exact
+surface is
+\lean{hasProdLocallyUniformly_geometricSincProduct_complexQPochhammerInf},
+\lean{hasProdLocallyUniformly_rvachevFourierProduct_complexQPochhammerInf},
+and \lean{hasProdLocallyUniformly_rvachevFourier_complexQPochhammerInf}.
+The first assumes exactly \(\lVert q\rVert<1\), includes \(q=0\), and has
+limit \(S_q\); the other two are the nome-\(1/4\) Rvachev-product and
+bounded-Fabius specializations.  Thus the locally-uniform/normal-convergence
+clause of the outer spectral product is exact.  The compound spectral theorem
+nevertheless remains partial: no declaration packages the centered
+characteristic-function/MGF form, the outside-disk reciprocal formula, its
+pole divisor, or the zero--pole exchange.  The next theorem records the
+downstream fixed-nome analytic and zero-set API, including its division-free
 \(q=0\) boundary and the reciprocal-power description when \(q\ne0\).
 \end{proof}
 
@@ -3168,26 +3178,27 @@ vanish.  Factoring out that unique linear term leaves a holomorphic cofactor
 which is nonzero at \(a\), proving that the zero is simple.
 
 The downstream module \path{QPochhammerEntire.lean} introduces no public
-definition and has exactly six public theorems:
+definition and has exactly five public theorems:
 \lean{hasProdLocallyUniformly_complexQPochhammerInf},
 \lean{complexQPochhammerInf_differentiable},
 \lean{complexQPochhammerInf_eq_zero_iff},
 \lean{complexQPochhammerInf_eq_zero_iff_eq_inv_pow},
-\lean{analyticOrderAt_complexQPochhammerInf_of_eq_zero}, and
-\lean{analyticOrderAt_qPochhammerInfIn_of_eq_zero}.
+and \lean{analyticOrderAt_complexQPochhammerInf_of_eq_zero}.
 They formalize, in order, the locally uniform product, entireness, the
 division-free equivalence \eqref{eq:complex-qpochhammer-zero-locus}, its
 reciprocal-power form under exactly \(q\ne0\), analytic order one for the
-historical complex wrapper, and the same analytic order for the generic name.
-All six assume exactly \(\lVert q\rVert<1\); the two analytic-order theorems
-add only the displayed zero hypothesis.  In particular, neither adds
-\(q\ne0\), so both retain the case \(q=0\).
+historical complex wrapper.  All five assume exactly
+\(\lVert q\rVert<1\); the analytic-order theorem adds only the displayed zero
+hypothesis and therefore retains the case \(q=0\).  The corresponding generic
+name theorem \lean{analyticOrderAt_qPochhammerInfIn_of_eq_zero} belongs to
+\path{QPochhammerInfinite.lean}, not to this compatibility leaf.
 The factor form is deliberately stronger than a reciprocal-power listing
 because it remains valid at \(q=0\).  The module does not treat
 \(\lVert q\rVert\ge1\), joint holomorphy in \(q\), a closed derivative formula,
-growth order, reciprocal meromorphic continuation, or locally uniform
+growth order, or reciprocal meromorphic continuation.  Locally uniform
 convergence of the outer rearranged product in
-\eqref{eq:geometric-complex-qpochhammer}.
+\eqref{eq:geometric-complex-qpochhammer} is supplied by the separate
+three-theorem module above.
 \end{proof}
 
 \paragraph{Generic infinite-symbol and dissection API.}
@@ -3195,7 +3206,7 @@ The later modules \path{QPochhammerDissection.lean} and
 \path{QPochhammerInfinite.lean} expose a second public name for the same
 displayed factor product, but in the greatest algebraic generality used by
 each result.  They do not replace \lean{complexQPochhammerInf} or any of the
-six \path{QPochhammerEntire.lean} theorems above.  The finite dissection
+five \path{QPochhammerEntire.lean} theorems above.  The finite dissection
 module has no public definition and exactly two theorems.  Over an arbitrary
 commutative ring,
 \lean{finiteQPochhammerIn_dissection} proves
@@ -3212,7 +3223,7 @@ for all natural \(r,n\), including the empty boundaries, and
 under exactly \(u\le r\), hence also at \(u=r\).
 
 The exhaustive public surface of \path{QPochhammerInfinite.lean} is one
-definition and twenty-seven theorems.  For a commutative ring with an
+definition and twenty-nine theorems.  For a commutative ring with an
 arbitrary topology, \lean{qPochhammerInfIn} is the total Mathlib
 \texttt{tprod}
 \(\prod'_{j\ge0}(1-aq^j)\), and \lean{qPochhammerInfIn_eq_tprod} is its
@@ -3267,27 +3278,28 @@ entireness.  The algebraic cofactor identity
 \lean{pow_sq_mul_finiteQPochhammerIn_inv_pow_self} holds in every field under
 \(q\ne0\).
 
-Finally, the four complex declarations are
+Finally, the six complex declarations are
 \lean{differentiable_qPochhammerInfIn},
 \lean{hasDerivAt_qPochhammerInfIn_of_mul_pow_eq_one},
 \lean{hasDerivAt_qPochhammerInfIn_inv_pow}, and
-\lean{deriv_qPochhammerInfIn_inv_pow_ne_zero}.  The first proves entireness
+\lean{deriv_qPochhammerInfIn_inv_pow_ne_zero}, together with
+\lean{deriv_qPochhammerInfIn_ne_zero_of_mul_pow_eq_one} and
+\lean{analyticOrderAt_qPochhammerInfIn_of_eq_zero}.  The first proves entireness
 for \(\lVert q\rVert<1\); the second gives the derivative after removing a
 factor from the raw hypothesis \(a_0q^j=1\), including the possible
-\(q=0,j=0\) case.  The last two assume \(q\ne0\) and together give
+\(q=0,j=0\) case, and the fifth proves that raw-factor derivative is nonzero.
+The inverse-power pair assumes \(q\ne0\) and together gives
 \[
  \frac{\Differential}{\Differential a}(a;q)_\infty\bigg|_{a=q^{-j}}
  =(-1)^{j+1}(q^{\binom j2})^{-1}(q;q)_j(q;q)_\infty\ne0.
 \]
-The last declaration itself proves nonvanishing of the displayed coefficient;
-the preceding \texttt{HasDerivAt} theorem identifies it with the derivative.
-The module \path{QPochhammerInfinite.lean} itself supplies no analytic-order
-declaration.  The downstream six-theorem \path{QPochhammerEntire.lean} leaf
-supplies analytic order one both for the historical wrapper, via
-\lean{analyticOrderAt_complexQPochhammerInf_of_eq_zero}, and for the generic
-name, via \lean{analyticOrderAt_qPochhammerInfIn_of_eq_zero}; both include the
-degenerate nome \(q=0\).  Conversely that analytic leaf supplies none of the
-generic ring-valued concatenation or dissection laws.
+The coefficient theorem proves nonvanishing of the displayed expression; the
+preceding \texttt{HasDerivAt} theorem identifies it with the derivative.  The
+sixth theorem gives analytic order one at every zero, including the degenerate
+nome \(q=0\).  The same conclusion for the separately named complex wrapper is
+\lean{analyticOrderAt_complexQPochhammerInf_of_eq_zero} in
+\path{QPochhammerEntire.lean}; conversely that five-theorem wrapper supplies
+none of the generic ring-valued concatenation or dissection laws.
 
 \paragraph{Latest finite and infinite q-series tranche.}
 Six further facade-reachable modules extend this layer without changing the
@@ -3969,10 +3981,92 @@ The two summability hypotheses in the comparison theorem are essential
 because the underlying infinite product is totalized outside its admissible
 range.  No spectral-zeta recovery, cumulant-sample recovery, or
 identifiability of an underlying probability law is asserted; those remain
-open interfaces.  This zero-definition/six-theorem leaf raises the live
-facade census to 630 modules and 8,552 public declarations.  This is a
-source-only overlay; the retained 167-page PDF is explicitly historical and
-has not been regenerated for this addition.
+open interfaces.  With the final concurrent source union, the live facade
+census is exactly 657 modules and 8,756 public declarations.  The current TeX
+contains the six-theorem prime-power companion-row API, the
+zero-definition/three-theorem outer Pochhammer normal-convergence API, the
+two-module/nine-declaration effective-inverse tranche, the preceding six
+q-series modules, and the final eight-module/fifty-eight-declaration tranche
+below.  These are source-only overlays; the retained 175-page incoming-branch
+PDF is explicitly historical and has not been regenerated for this union.
+
+The six q-calculus module counts are
+\path{QPochhammerInfiniteBounds.lean} (0+5),
+\path{HeineTransformation.lean} (2+5),
+\path{QGaussSummation.lean} (0+2),
+\path{QPochhammerComplexOrder.lean} (1+4),
+\path{BasicHypergeometricSeries.lean} (2+5), and
+\path{QMultinomial.lean} (1+9).  They supply bounds, Heine and q-Gauss,
+complex order, general basic-hypergeometric summability, and the recursive
+q-multinomial API under their displayed hypotheses.
+
+\paragraph{Final q-calculus, theta, and derivative tranche.}
+Eight facade-reachable modules add exactly five definitions and fifty-three
+theorems.  \path{GaussianBinomialPalindromic.lean} has no definitions and the
+twelve theorems \lean{reflect_add_of_natDegree_le}, \lean{reflect_one'},
+\lean{gaussianBinomial_natDegree_le}, \lean{gaussianBinomial_zero_left},
+\lean{gaussianBinomial_diag'}, \lean{reflect_gaussianBinomial},
+\lean{coeff_gaussianBinomial_reflect},
+\lean{coeff_gaussianBinomial_zero}, \lean{coeff_gaussianBinomial_top},
+\lean{gaussianBinomial_natDegree}, \lean{gaussianBinomial_monic}, and
+\lean{two_mul_derivative_gaussianBinomial_eval_one}.  Over a commutative
+semiring they give the degree bound, reflection, coefficient symmetry,
+constant and top coefficients, and the division-free first-moment identity;
+exact degree and monicity additionally require a nontrivial coefficient type.
+
+\path{QExponential.lean} has the three definitions \lean{qDeriv},
+\lean{qExp}, and \lean{qExpBig}, followed by the eight theorems
+\lean{qFactorial_mul_one_sub_pow}, \lean{qFactorial_ne_zero},
+\lean{qDeriv_mul}, \lean{hasSum_qExp}, \lean{hasSum_qExpBig},
+\lean{qExp_mul_qExpBig_neg}, \lean{qDeriv_qExp}, and
+\lean{qDeriv_qExpBig}.  Its product rule is unconditional; its series and
+eigenfunction statements retain their strict-nome, argument-disc, and
+nonzero-point hypotheses.  \path{JacksonIntegral.lean} has the definition
+\lean{jacksonIntegral} and seven theorems:
+\lean{qDeriv_jacksonIntegral}, \lean{one_sub_mul_pow_mul_qDeriv},
+\lean{tendsto_jackson_sum_qDeriv}, \lean{jacksonIntegral_qDeriv},
+\lean{tendsto_jackson_sum_parts}, \lean{jackson_parts_of_tendsto}, and
+\lean{jacksonIntegral_mul_qDeriv}.  Its partial-sum telescoping statements are
+kept distinct from the summable fundamental-theorem and integration-by-parts
+forms.
+
+\path{ThetaQuasiPeriodicity.lean} has the definition \lean{bilateralTheta}
+and six theorems: \lean{thetaExponent_add_one},
+\lean{pow_thetaExponent_add_one}, \lean{hasSum_bilateralTheta},
+\lean{bilateralTheta_eq_prod}, \lean{bilateralTheta_mul_left}, and
+\lean{bilateralTheta_eq_zero_iff}.  The quasi-periodicity and zero statements
+retain \(q\ne0\) and \(z\ne0\); the latter identifies exactly
+\(z=-q^m\), \(m\in\IntegerNumbers\).  \path{JacobiCubic.lean} has no
+definitions and exactly \lean{two_mul_add_one_le_three_pow} and
+\lean{hasSum_jacobi_cubic}, the latter under complex
+\(\lVert q\rVert<1\).
+
+\path{QPochhammerLogDerivative.lean} has no definitions and ten theorems:
+\lean{one_sub_le_norm_one_sub_mul_pow},
+\lean{summable_pow_div_one_sub_mul_pow},
+\lean{summable_log_one_sub_mul_pow}, \lean{one_sub_mul_pow_ne_zero},
+\lean{qPochhammerInfIn_eq_cexp_tsum_log},
+\lean{hasDerivAt_tsum_log_one_sub_mul_pow},
+\lean{hasDerivAt_qPochhammerInfIn}, \lean{hasDerivAt_lambert_series},
+\lean{tsum_neg_pow_div_one_sub_mul_pow_eq}, and
+\lean{hasDerivAt_qPochhammerInfIn_lambert}.  Its two derivative formulas use
+complex \(\lVert q\rVert<1\) and \(\lVert a\rVert<1\).
+\path{QPochhammerOrderDerivative.lean} has no definitions and the three
+theorems \lean{hasDerivAt_const_cpow'},
+\lean{hasDerivAt_qPochhammerInfIn_mul_cpow}, and
+\lean{hasDerivAt_qPochhammerC}; the order derivative retains
+\(q\ne0\), \(\lVert q\rVert<1\), and \(\lVert aq^\alpha\rVert<1\).
+
+The distinct \path{GaussianBinomialPolynomialStructure.lean} compatibility
+leaf has no definitions and five theorems:
+\lean{natDegree_gaussianBinomial_universal},
+\lean{gaussianBinomial_universal_monic},
+\lean{coeff_zero_gaussianBinomial_universal},
+\lean{gaussianBinomial_universal_reflect}, and
+\lean{coeff_gaussianBinomial_universal_symm}.  It works in
+\(\NaturalNumbers[X]\) under \(k\le n\) and supplies the exact universal
+degree, monicity, constant coefficient, reflection, and bounded-index
+coefficient symmetry.
 
 On the real axis the origin is the unique global point of unit modulus:
 \begin{equation}
@@ -5440,10 +5534,11 @@ package the factorial and report-exact Delta witnesses for
 \lean{EffectivelyUniformContinuous}.
 
 This is the exhaustive public surface of the module: three definitions and
-fifteen theorems.  It does not construct the exact endpoint-mass ceiling
-denominator or a tolerant-bisection realizer, and it makes no
-\lean{SequentiallyComputable}, combined \lean{IsComputableRealFunction}, or
-input-bit asymptotic claim.
+fifteen theorems.  This module itself does not construct the exact endpoint-
+mass ceiling denominator or a tolerant-bisection realizer.  The downstream
+modules below supply the realizer, \lean{SequentiallyComputable}, and the
+combined \lean{IsComputableRealFunction} theorem; input-bit asymptotics remain
+open.
 
 \subsection{Fixed-depth tolerant inversion and computability of the total inverse}
 \label{sec:fabius-inverse-computable}
@@ -6300,9 +6395,21 @@ The identities in \eqref{eq:prime-power-binomial-valuation} are
 \lean{primePowerChoose_padicValNat_add} and
 \lean{primePowerChoose_padicValNat}.  They include the right endpoint
 \(j=p^m\) and the boundary \(m=0\).  The strict dyadic-comb specialization
-\(0<j<2^m\) is \lean{twoPowChoose_padicValNat}.  These three declarations
-exhaust \path{PrimePowerBinomialValuation.lean}; no endpoint-flat
-\(\binom{2^m-2}{j-1}\) valuation or valuation-histogram theorem is claimed.
+\(0<j<2^m\) is \lean{twoPowChoose_padicValNat}.  The two preceding Pascal
+rows satisfy the companion identities
+\begin{equation}
+ \nu_p\!\binom{p^m-1}{j}=0\quad(0\le j<p^m),
+ \qquad
+ \nu_p\!\binom{p^m-2}{j-1}=\nu_p(j)\quad(0<j<p^m).
+ \label{eq:prime-power-companion-row-valuation}
+\end{equation}
+These are \lean{primePowerSubOneChoose_padicValNat} and
+\lean{primePowerSubTwoChoose_padicValNat}; the latter's dyadic wrapper is
+\lean{twoPowSubTwoChoose_padicValNat}.  Its strict upper bound is essential:
+at \(j=p^m\) the selected column lies beyond row \(p^m-2\), so the binomial
+coefficient is zero.  These six declarations, and no definitions, exhaust
+\path{PrimePowerBinomialValuation.lean}.  No valuation-histogram theorem is
+claimed.
 
 \subsection{Bernoulli recurrences}
 
@@ -6999,6 +7106,22 @@ semifield.  Over every commutative ring,
 \(\GaussianBinomial{2a}{2b+1}{-1}=0\), including the above-diagonal cases.  These are finite
 algebraic identities: they use no quotient formula, cancellation, integral-domain,
 characteristic, topology, or convergence hypothesis.
+
+The downstream \path{GaussianBinomialPolynomialStructure.lean} has no public
+definitions and exactly five public theorems:
+\lean{natDegree_gaussianBinomial_universal},
+\lean{gaussianBinomial_universal_monic},
+\lean{coeff_zero_gaussianBinomial_universal},
+\lean{gaussianBinomial_universal_reflect}, and
+\lean{coeff_gaussianBinomial_universal_symm}.  For \(k\le n\), these state that
+the universal natural-coefficient polynomial
+\(\GaussianBinomial{n}{k}{X}\in\NaturalNumbers[X]\) has exact natural degree
+\(k(n-k)\), is monic, has constant coefficient one, and is fixed by reflection
+in that degree.  Under the additional bound \(d\le k(n-k)\), the last theorem
+identifies the coefficients in degrees \(d\) and \(k(n-k)-d\).  Together with
+the existing row symmetry and reciprocal identities, this closes the canonical
+forward q-binomial structure theorem.  No declaration in this five-theorem
+surface says that the coefficient of (q) is one.
 
 Four denominator-free product identities make this recursion especially useful downstream.
 For natural \(m,n\), and for \(k\le n\),
@@ -12636,24 +12759,33 @@ Fourier analysis &
 Summable-scale products, finite and infinite q-Pochhammer dissection, the
 generic complete-normed-ring infinite symbol and its explicit complex zero
 derivatives, geometric reciprocal-Gamma factorization, the separate complex
-Pochhammer wrapper and its analytic-order-one factor theory, and the latest
+Pochhammer wrapper and its analytic-order-one factor theory, locally uniform
+convergence of the outer spectral Pochhammer product, and the latest
 infinite q-binomial, Jacobi, q-Pascal, continuity, quantum-binomial, and
 Rogers--Szeg\H{o} polynomial APIs &
 \path{ScaledInfiniteProducts.lean}, \path{GeometricReciprocalGamma.lean},
 \path{RvachevPochhammerFactorization.lean}, \path{QPochhammerDissection.lean},
 \path{QPochhammerInfinite.lean}, \path{QPochhammerEntire.lean},
+\path{GeometricPochhammerNormalConvergence.lean},
 \path{ReciprocalIntegerGammaZeros.lean}, \path{DyadicGammaOrder.lean}\\
-Gaussian (q=-1) first jets, Euler and infinite q-binomial expansions, Jacobi
-and pentagonal products, q-Pascal summation, Gaussian continuity, the quantum
-binomial theorem, Rogers--Szeg\H{o} polynomials, polynomial Jackson calculus
-and q-Leibniz, finite q-Pochhammer parameter derivatives, the complex Lambert
-logarithm, and the real q-gamma API &
+Gaussian (q=-1) first jets, both universal Gaussian-polynomial structure
+interfaces, Euler and infinite q-binomial expansions, Jacobi triple and cubic
+identities, bilateral-theta quasi-periodicity and zeros, q-Pascal summation,
+Gaussian continuity, the quantum binomial theorem, Rogers--Szeg\H{o}
+polynomials, polynomial and function-level Jackson calculus, Jackson
+integration, q-exponentials, finite and infinite q-Pochhammer derivatives,
+the complex Lambert logarithm, order derivatives, and the real q-gamma API &
 \path{GaussianBinomialAtNegOneDerivative.lean},
+\path{GaussianBinomialPalindromic.lean},
+\path{GaussianBinomialPolynomialStructure.lean},
 \path{QBinomialTheoremInfinite.lean}, \path{JacobiTripleProduct.lean},
+\path{JacobiCubic.lean}, \path{ThetaQuasiPeriodicity.lean},
 \path{QPascalSummation.lean}, \path{GaussianBinomialContinuity.lean},
 \path{QuantumBinomial.lean}, \path{RogersSzegoPolynomial.lean},
 \path{PolynomialQDerivative.lean}, \path{PolynomialQLeibniz.lean},
-\path{QPochhammerDerivative.lean}, \path{LambertSeriesLog.lean},
+\path{QExponential.lean}, \path{JacksonIntegral.lean},
+\path{QPochhammerDerivative.lean}, \path{QPochhammerLogDerivative.lean},
+\path{QPochhammerOrderDerivative.lean}, \path{LambertSeriesLog.lean},
 \path{QGamma.lean}\\
 Reciprocal-Gamma first jets and the Thue--Morse Gamma tower &
 \path{ReciprocalGammaJets.lean}, \path{ThueMorseGammaTower.lean}\\
@@ -12679,6 +12811,8 @@ Analyticity, inverse, effective inverse continuity, elementary obstruction &
 \path{FabiusInverseQuarterJet.lean},
 \path{FabiusInverseEffectiveContinuity.lean},
 \path{FabiusInverseLogarithmicModulus.lean},
+\path{EffectiveMonotoneInverse.lean},
+\path{FabiusInverseComputable.lean},
 \path{ElementaryFunction.lean}, \path{NotElementary.lean},
 \path{InverseBranch.lean}, \path{InverseNotElementary.lean}\\
 Effective monotone inversion and total inverse computability (exactly two
@@ -12908,6 +13042,7 @@ Dyadic and \(q\)-binomial formulas &
 \path{DyadicClosedForm.lean}, \path{DyadicAnalytic.lean}, \path{GlobalDyadic.lean},
 \path{DyadicCorrectness.lean}, \path{FiniteQBinomialCore.lean},
 \path{QBinomialReciprocity.lean},
+\path{GaussianBinomialPolynomialStructure.lean},
 \path{QPochhammerElementaryIdentities.lean},
 \path{QBinomialCauchy.lean}, \path{QBinomialVandermonde.lean},
 \path{HalfQBinomial.lean},

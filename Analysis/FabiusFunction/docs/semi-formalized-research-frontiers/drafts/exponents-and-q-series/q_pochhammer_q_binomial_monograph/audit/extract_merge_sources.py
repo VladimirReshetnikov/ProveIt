@@ -365,8 +365,10 @@ Q_REDIRECTS = {
 
 # Canonical proof statuses can advance after the immutable merge snapshot.
 CURRENT_Q_STATUS_OVERRIDES = {
+    "cor:positivity": "Lean-proved",
     "prop:dissection": "Lean-proved",
     "cor:dissection-remainder": "Lean-proved",
+    "thm:qbinom-structure": "Lean-proved",
     "thm:poch-entire": "Lean-proved",
     "cor:qbinom-classical": "Lean-proved",
     "prop:rogers-szego-recurrence": "Lean-proved",
