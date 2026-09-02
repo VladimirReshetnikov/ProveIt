@@ -59,7 +59,7 @@ theorem prod_le_pow_of_sq_mul_succ_le_cyclic {s : ℕ → ℝ} {c : ℝ} {d : �
   refine le_of_pow_le_pow_left₀ (by norm_num : (3:ℕ) ≠ 0) (pow_nonneg hc _) ?_
   calc (∏ j ∈ range (e + 1), s j) ^ 3
       = (∏ j ∈ range (e + 1), s j ^ 2) * ∏ j ∈ range (e + 1), s ((j + 1) % (e + 1)) := by
-        rw [prod_range_succ_mod_rotate, ← prod_pow]
+        rw [prod_range_succ_mod_rotate, prod_pow]
         ring
     _ = ∏ j ∈ range (e + 1), (s j ^ 2 * s ((j + 1) % (e + 1))) := prod_mul_distrib.symm
     _ ≤ ∏ j ∈ range (e + 1), c ^ 3 :=
