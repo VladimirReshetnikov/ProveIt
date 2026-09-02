@@ -4582,11 +4582,45 @@ Let $p(0)=1$ and $p(n)=0$ for $n<0$.  Then for $n\ge1$,
 \end{corollary}
 
 \begin{proof}
-The generating function for partitions is
-\(
- \sum_{n\ge0}p(n)q^n=1/(q;q)_\infty.
-\)
-Multiply this by the pentagonal expansion and compare the coefficient of $q^n$.
+% ed.: the original proof was the one-line hint ``multiply by the pentagonal
+% ed.: expansion and compare coefficients''; the details below are those of
+% ed.: the Lean proof (\texttt{EulerPartitionRecurrence}).
+Fix $0<\AbsoluteValue q<1$.  By \Cref{thm:partition-products},
+$\sum_{n\ge0}p(n)q^n=1/(q;q)_\infty$, and by the pentagonal number theorem
+(\Cref{thm:pentagonal}),
+\[
+ (q;q)_\infty=\sum_{k\in\IntegerNumbers}(-1)^kq^{k(3k-1)/2}
+ =\sum_{m\ge0}e(m)q^m,
+ \qquad
+ e(m):=\sum_{\substack{k\in\IntegerNumbers\\ k(3k-1)/2=m}}(-1)^k .
+\]
+Here $e(m)\in\{0,\pm1\}$ and $e(0)=1$: the map $k\mapsto k(3k-1)/2$ is
+injective on $\IntegerNumbers$ (if $k(3k-1)=k'(3k'-1)$ then
+$(k-k')\bigl(3(k+k')-1\bigr)=0$, and $3(k+k')=1$ is impossible), so every
+fibre has at most one element; moreover $\AbsoluteValue k\le k(3k-1)/2$, so the
+fibre of $0$ is $\{0\}$ and the fibre of $m$ lies in $[-m,m]$.  Both series converge
+absolutely on $\AbsoluteValue q<1$ (the pentagonal series because
+$\AbsoluteValue{e(m)}\le1$), so their Cauchy product converges absolutely and
+\[
+ 1=(q;q)_\infty\cdot\frac1{(q;q)_\infty}
+ =\sum_{n\ge0}\Bigl(\sum_{m=0}^{n}e(m)\,p(n-m)\Bigr)q^n .
+\]
+Two power series with the same sum on a disc have the same coefficients
+(\Cref{thm:formal-analytic-transfer}), hence
+\[
+ \sum_{m=0}^{n}e(m)\,p(n-m)=\delta_{n,0}\qquad(n\ge0).
+\]
+For $n\ge1$ separate the term $m=0$, which is $p(n)$, and unfold the definition
+of $e(m)$: the nonzero terms with $m\ge1$ come from $k=j\ge1$, for which
+$m=j(3j-1)/2$, and from $k=-j$ with $j\ge1$, for which $m=j(3j+1)/2$.  Since
+$m\le n$ forces $j\le n$, this gives
+\[
+ p(n)=-\sum_{j=1}^{n}(-1)^j
+ \Bigl(p\bigl(n-\tfrac{j(3j-1)}2\bigr)+p\bigl(n-\tfrac{j(3j+1)}2\bigr)\Bigr),
+\]
+with the convention $p(m)=0$ for $m<0$, which is the assertion (terms with
+$j>n$ vanish under the same convention, so the sum may be written to
+infinity).
 \end{proof}
 
 \section{Jacobi's cubic identity}
@@ -4680,14 +4714,57 @@ Moreover, $d(n)=o(n)$ for every $n$.
 \end{theorem}
 
 \begin{proof}
-For unrestricted partitions, the part $j$ may occur $0,1,2,\dots$ times and contributes the geometric factor $(1-q^j)^{-1}$.  For distinct partitions, the part $j$ occurs zero or one time and contributes $1+q^j$.  For odd parts, retain only the odd geometric factors.  Finally,
+% ed.: the original proof recorded only the ``part $j$ contributes the factor
+% ed.: $(1-q^j)^{-1}$'' heuristic; the passage from the finite products to the
+% ed.: infinite ones, and the identification of coefficients, are made
+% ed.: explicit below, following the Lean proof
+% ed.: (\texttt{PartitionGeneratingFunction}, \texttt{PartitionDistinctOdd}).
+Throughout, $0<\AbsoluteValue q<1$.  A partition of $n$ is determined by its
+\emph{multiplicity vector} $(\mu_1,\mu_2,\dots)$, where $\mu_j$ is the number of
+parts equal to $j$; the vector has finite support and $\sum_j j\mu_j=n$, and
+every such vector arises from exactly one partition.  Since every part of a
+partition of $n$ is at most $n$, the partitions of $n$ with parts at most $N$
+are all partitions of $n$ as soon as $N\ge n$.
+
+\emph{Unrestricted partitions.}  For fixed $N$, the $N$ geometric series
+$\sum_{\mu_j\ge0}q^{j\mu_j}=(1-q^j)^{-1}$, $1\le j\le N$, converge absolutely,
+so their product may be expanded and regrouped by total weight:
 \[
- (-q;q)_\infty
- =\prod_{j\ge1}\frac{1-q^{2j}}{1-q^j}
- =\frac{(q^2;q^2)_\infty}{(q;q)_\infty}
- =\frac1{(q;q^2)_\infty},
+ \prod_{j=1}^{N}\frac1{1-q^j}
+ =\sum_{\mu_1,\dots,\mu_N\ge0}q^{\sum_j j\mu_j}
+ =\sum_{n\ge0}p_{\le N}(n)\,q^n,
 \]
-so the two generating functions agree coefficientwise.
+where $p_{\le N}(n)$ counts the partitions of $n$ with parts at most $N$
+(this is \Cref{prop:bounded-partitions}).  Now let $N\to\infty$.  The left side
+tends to $1/(q;q)_\infty$.  On the right, $p_{\le N}(n)=p(n)$ for $N\ge n$ and
+$p_{\le N}(n)\le p(n)$ always, and the series $\sum_np(n)\AbsoluteValue q^n$
+converges: its partial sums satisfy
+$\sum_{n<M}p(n)\AbsoluteValue q^n=\sum_{n<M}p_{\le M}(n)\AbsoluteValue q^n
+\le\prod_{j\le M}(1-\AbsoluteValue q^j)^{-1}\le1/(\AbsoluteValue q;\AbsoluteValue q)_\infty$.
+Hence dominated convergence for series (Tannery's theorem) gives
+$\sum_np_{\le N}(n)q^n\to\sum_np(n)q^n$, and the first identity follows.
+
+\emph{Distinct and odd parts.}  The same argument applies verbatim with the
+multiplicity vectors restricted to $\mu_j\in\{0,1\}$ (each part contributes the
+finite series $1+q^j$, and the finite products
+$\prod_{j\le N}(1+q^j)=(-q;q)_N$ tend to $(-q;q)_\infty$), respectively to
+vectors supported on the odd $j$ (the even parts contribute the factor $1$,
+the odd ones the geometric series, and the finite products
+$\prod_{j<2N,\ j\text{ odd}}(1-q^j)^{-1}=1/(q;q^2)_N$ tend to
+$1/(q;q^2)_\infty$); in both cases the counts are bounded by $p(n)$, so the
+same dominating series serves.
+
+\emph{The product identity.}  Termwise $(1-q^j)(1+q^j)=1-q^{2j}$, so the
+absolutely convergent products satisfy $(q;q)_\infty(-q;q)_\infty=(q^2;q^2)_\infty$,
+while the dissection of \Cref{prop:dissection} at $r=2$ gives
+$(q;q)_\infty=(q;q^2)_\infty(q^2;q^2)_\infty$.  All four products are nonzero on
+$\AbsoluteValue q<1$, and eliminating $(q^2;q^2)_\infty$ yields
+\[
+ (-q;q)_\infty=\frac{(q^2;q^2)_\infty}{(q;q)_\infty}=\frac1{(q;q^2)_\infty}.
+\]
+Thus $\sum_nd(n)q^n$ and $\sum_no(n)q^n$ are two power series with the same
+sum on the unit disc, and their coefficients agree
+(\Cref{thm:formal-analytic-transfer}): $d(n)=o(n)$ for every $n$.
 \end{proof}
 
 \begin{remark}[A bijection]
@@ -12602,8 +12679,8 @@ inside the proof below does not formalize the result the proof concludes.
   than a mathematical claim.
 \end{description}
 
-Of the 282 labelled forward results, 116 are \statusexact, 83 are
-\statuspartial, 75 are \statusnone, and 8 are \statusna.  The original
+Of the 282 labelled forward results, 122 are \statusexact, 83 are
+\statuspartial, 69 are \statusnone, and 8 are \statusna.  The original
 191-result pre-Fabius core had 36 \statusexact, 29 \statuspartial, 123
 \statusnone, and 3 \statusna{} entries.  The four integrated guide chapters
 add 31 human-proved but not Lean-formalized assertions and five labelled
@@ -13171,15 +13248,15 @@ Euler telescoping and very-well-poised summations & 1 & 0 & 3 & 0\\
 Bilateral series and Ramanujan's \texorpdfstring{${}_1\psi_1$}{1psi1} sum & 1 & 0 & 1 & 0\\
 $q$-difference calculus and the quantum binomial & 8 & 2 & 0 & 0\\
 The $q$-gamma and $q$-beta functions & 6 & 1 & 1 & 0\\
-Jacobi's triple product & 5 & 2 & 1 & 0\\
+Jacobi's triple product & 6 & 2 & 0 & 0\\
 Theta modularity, lattice dissection, and sums of squares & 0 & 0 & 14 & 4\\
-Partitions and product--sum identities & 0 & 0 & 4 & 0\\
+Partitions and product--sum identities & 4 & 0 & 0 & 0\\
 Bailey pairs and the Rogers--Ramanujan identities & 1 & 0 & 6 & 0\\
 Bailey transforms and the Andrews--Gordon identities & 0 & 0 & 8 & 1\\
 Cyclotomic factorization and congruences & 6 & 1 & 2 & 0\\
 Negative upper indices and geometric Newton interpolation & 8 & 0 & 1 & 0\\
 Central $q$-binomial sums and Lambert series & 1 & 0 & 6 & 0\\
-Asymptotic regimes and Bernoulli expansions & 1 & 3 & 4 & 0\\
+Asymptotic regimes and Bernoulli expansions & 2 & 3 & 3 & 0\\
 Exact limits, reciprocity, and research frontiers & 0 & 0 & 5 & 0\\
 Computation, certification, and formal proof architecture & 7 & 2 & 2 & 3\\
 Geometric interpolation and exact $q$-filters & 7 & 2 & 0 & 0\\
@@ -13187,7 +13264,7 @@ Half-base arithmetic and Prouhet--Thue--Morse cancellation & 6 & 3 & 0 & 0\\
 Geometric uniform sums, $q$-cumulants, and the Fabius--Rvachev functions & 2 & 11 & 0 & 0\\
 Dyadic Gaussian--Thue--Morse structure and the values of $F$ & 7 & 44 & 5 & 0\\
 \midrule
-\textbf{Forward total} & 116 & 83 & 75 & 8\\
+\textbf{Forward total} & 122 & 83 & 69 & 8\\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -13846,7 +13923,18 @@ route; uniform convergence on annuli is not stated}\\[2pt]
 $\sum_{n\in\IntegerNumbers}(-1)^nq^{n(3n-1)/2}$ with the exponent
 \texttt{pentagonalExponent}, and the paired one-sided form, in any complete
 normed field including $q=0$}\\[2pt]
-\Cref{cor:euler-partition-recurrence} & \statusnone & ---\\[2pt]
+\Cref{cor:euler-partition-recurrence} & \statusexact &
+\texttt{partitionCount\_\allowbreak{}eq\_\allowbreak{}pentagonal\_\allowbreak{}sum},
+\texttt{sum\_\allowbreak{}antidiagonal\_\allowbreak{}pentagonalCoeff\_\allowbreak{}mul\_\allowbreak{}partitionCount},
+\texttt{hasSum\_\allowbreak{}pentagonalCoeff\_\allowbreak{}mul\_\allowbreak{}pow}\newline
+{\footnotesize\texttt{EulerPartitionRecurrence}; for $n\ge1$,
+$p(n)=\sum_{j=1}^{n}(-1)^{j-1}\bigl(p(n-j(3j-1)/2)+p(n-j(3j+1)/2)\bigr)$ with
+$p(m)=0$ for $m<0$ (the sum is finite since the pentagonal numbers exceed
+$n$ beyond $j=n$), from the convolution identity
+$\sum_{k+l=n}e(k)p(l)=\delta_{n0}$ obtained by multiplying the pentagonal
+series by the partition generating function and comparing coefficients
+(\texttt{PowerSeriesUniqueness}); the values $p(n)$ are the cardinalities of
+Mathlib's \texttt{Nat.Partition n}, read in $\ComplexNumbers$}\\[2pt]
 \Cref{thm:jacobi-cubic} & \statusexact &
 \texttt{hasSum\_\allowbreak{}jacobi\_\allowbreak{}cubic}\newline
 {\footnotesize\texttt{JacobiCubic}; as a \texttt{HasSum} over
@@ -13860,10 +13948,48 @@ differentiation; see \Cref{rem:jacobi-cubic-formalization}}\\[2pt]
 \midrule
 \multicolumn{3}{@{}l}{\itshape Partitions and product--sum identities}\\
 \midrule
-\Cref{thm:partition-products} & \statusnone & ---\\[2pt]
-\Cref{prop:bounded-partitions} & \statusnone & ---\\[2pt]
-\Cref{cor:durfee-all} & \statusnone & ---\\[2pt]
-\Cref{prop:partition-stabilization} & \statusnone & ---\\[2pt]
+\Cref{thm:partition-products} & \statusexact &
+\texttt{hasSum\_\allowbreak{}partitionCount\_\allowbreak{}mul\_\allowbreak{}pow},
+\texttt{hasSum\_\allowbreak{}distinctCount\_\allowbreak{}mul\_\allowbreak{}pow},
+\texttt{hasSum\_\allowbreak{}oddCount\_\allowbreak{}mul\_\allowbreak{}pow},
+\texttt{distinctCount\_\allowbreak{}eq\_\allowbreak{}oddCount},
+\texttt{qPochhammerInfIn\_\allowbreak{}neg\_\allowbreak{}self\_\allowbreak{}eq}\newline
+{\footnotesize\texttt{PartitionGeneratingFunction},
+\texttt{PartitionDistinctOdd}, \texttt{PartitionMultiplicity}; the three
+generating functions for $\lVert q\rVert<1$ in any complete normed field, with
+$p(n)$, $d(n)$, $o(n)$ the cardinalities of Mathlib's \texttt{Nat.Partition n},
+\texttt{distincts n}, \texttt{odds n}, via the (restricted) multiplicity-vector
+bijections, Cauchy products of geometric or finite series, and Tannery's
+theorem; $(-q;q)_\infty=1/(q;q^2)_\infty$ from
+$(q^2;q^2)_\infty=(q;q)_\infty(-q;q)_\infty$ and the dissection
+$(q;q)_\infty=(q;q^2)_\infty(q^2;q^2)_\infty$; and $d(n)=o(n)$ by comparing
+coefficients (\texttt{PowerSeriesUniqueness})}\\[2pt]
+\Cref{prop:bounded-partitions} & \statusexact &
+\texttt{hasSum\_\allowbreak{}boundedCount\_\allowbreak{}mul\_\allowbreak{}pow},
+\texttt{card\_\allowbreak{}restricted\_\allowbreak{}le\_\allowbreak{}eq}\newline
+{\footnotesize\texttt{PartitionBoundedParts}; $p_{\le r}(n)$ read as the number
+of partitions of $n$ with every part at most $r$ (Mathlib's
+\texttt{Nat.Partition.restricted n (· ≤ r)}), identified with the
+multiplicity vectors on $\{1,\dots,r\}$ of weight $n$; the identity for
+$\lVert q\rVert<1$ in any complete normed field; the conjugation equivalence
+with ``at most $r$ parts'' is not formalized}\\[2pt]
+\Cref{cor:durfee-all} & \statusexact &
+\texttt{hasSum\_\allowbreak{}durfee},
+\texttt{gaussianBinomial\_\allowbreak{}add\_\allowbreak{}eq\_\allowbreak{}sum\_\allowbreak{}sq}\newline
+{\footnotesize\texttt{DurfeeAll}; for $\lVert q\rVert<1$ in any complete normed
+field, as the limit $N\to\infty$ of the finite Durfee identity
+$[2N,N]_q=\sum_{j\le N}q^{j^2}[N,j]_q^2$ (the $q$-Vandermonde convolution at
+$k=n$) by Tannery's theorem with the dominating series
+$\lVert q\rVert^{j^2}\cdot\mathtt{gaussianMajorant}^2$; the analytic route,
+not the Durfee-square bijection}\\[2pt]
+\Cref{prop:partition-stabilization} & \statusexact &
+\texttt{coeff\_\allowbreak{}gaussianBinomial\_\allowbreak{}X\_\allowbreak{}eq\_\allowbreak{}partitionCount},
+\texttt{card\_\allowbreak{}boxPartitions\_\allowbreak{}filter\_\allowbreak{}sum}\newline
+{\footnotesize\texttt{PartitionStabilization}; the coefficient of $X^N$ in the
+Gaussian polynomial $[m+k,k]_X$ over any commutative ring equals $p(N)$ for
+$m,k\ge N$, via the box enumeration of \texttt{BoxPartitions} and the
+conjugation bijection between multiplicity vectors of weight $N$ and antitone
+sequences of sum $N$ (\texttt{conjugateVector}/\texttt{differenceVector})}\\[2pt]
 \midrule
 \multicolumn{3}{@{}l}{\itshape Bailey pairs and the Rogers--Ramanujan identities}\\
 \midrule
@@ -14065,7 +14191,13 @@ error terms are not stated}\\[2pt]
 {\footnotesize\texttt{JacobiTripleProduct}; only the last clause, the limit
 of $\GaussianBinomial{2m}{m+r}{q}$ for a fixed integer shift $r$, read through
 the zero-extended integer-indexed coefficient}\\[2pt]
-\Cref{prop:gaussian-bound} & \statusnone & ---\\[2pt]
+\Cref{prop:gaussian-bound} & \statusexact &
+\texttt{one\_\allowbreak{}le\_\allowbreak{}gaussianBinomial},
+\texttt{gaussianBinomial\_\allowbreak{}le\_\allowbreak{}inv\_\allowbreak{}qPochhammerInfIn},
+\texttt{gaussianBinomial\_\allowbreak{}le\_\allowbreak{}inv\_\allowbreak{}finiteQPochhammerIn}\newline
+{\footnotesize\texttt{GaussianBinomialBounds}, \texttt{GeometricFilterBound}; the lower
+bound for $0\le q$ in any ordered field, the upper bound for $0\le q<1$ real,
+through the intermediate bound $[n,k]_q\le1/(q;q)_k$}\\[2pt]
 \Cref{cor:qgreaterone} & \statuspartial &
 \texttt{gaussianBinomial\_\allowbreak{}inv}\newline
 {\footnotesize\texttt{GaussianBinomialBounds}; the reciprocity
