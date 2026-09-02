@@ -318,4 +318,55 @@ theorem sum_range_id_eq_choose_two (m : ℕ) : ∑ i ∈ range m, i = m.choose 2
   rw [Nat.choose_two_right]
   exact (Nat.div_eq_of_eq_mul_left two_pos (Finset.sum_range_id_mul_two m).symm).symm
 
+/-! ## The unit-cube form -/
+
+/-- The nested unit-cube integral
+`∫_0^1 ⋯ ∫_0^1 g(x + h (u_0 + 2 u_1 + ⋯ + 2^{m-1} u_{m-1})) du_{m-1} ⋯ du_0`,
+defined recursively with the outermost variable `u_0` and the step doubling
+inward, in parallel with `nestedDyadicIntegral`. -/
+noncomputable def nestedUnitIntegral : ℕ → (ℝ → ℝ) → ℝ → ℝ → ℝ
+  | 0, g, x, _ => g x
+  | m + 1, g, x, h => ∫ u in (0 : ℝ)..1, nestedUnitIntegral m g (x + h * u) (2 * h)
+
+theorem nestedUnitIntegral_succ (m : ℕ) (g : ℝ → ℝ) (x h : ℝ) :
+    nestedUnitIntegral (m + 1) g x h
+      = ∫ u in (0 : ℝ)..1, nestedUnitIntegral m g (x + h * u) (2 * h) := rfl
+
+/-- **Rescaling to the unit cube**: the nested dyadic integral is the box
+volume `h^m 2^{0+1+⋯+(m-1)}` times the nested unit-cube integral, by the
+substitution `t_j = 2^j h u_j` one level at a time. -/
+theorem nestedDyadicIntegral_eq_unit (m : ℕ) (g : ℝ → ℝ) :
+    ∀ x h : ℝ, nestedDyadicIntegral m g x h
+      = h ^ m * 2 ^ (∑ i ∈ range m, i) * nestedUnitIntegral m g x h := by
+  induction m with
+  | zero => intro x h; simp [nestedUnitIntegral]
+  | succ m ih =>
+      intro x h
+      rw [nestedDyadicIntegral_succ, nestedUnitIntegral_succ]
+      simp_rw [ih]
+      rw [integral_const_mul]
+      have hsub : ∫ t in (0 : ℝ)..h, nestedUnitIntegral m g (x + t) (2 * h)
+          = h * ∫ u in (0 : ℝ)..1, nestedUnitIntegral m g (x + h * u) (2 * h) := by
+        have := smul_integral_comp_mul_left (fun t => nestedUnitIntegral m g (x + t) (2 * h))
+          (a := (0 : ℝ)) (b := 1) h
+        simp only [mul_zero, mul_one, smul_eq_mul] at this
+        exact this.symm
+      rw [hsub, sum_range_succ, pow_add, pow_succ]
+      ring
+
+/-- **The unit-cube cubature formula** (`p1:eq:unit-cube-cubature`): for
+`f ∈ C^m`,
+
+`∑_{n<2^m} ε_n f(x + n h)
+  = (-1)^m 2^{0+1+⋯+(m-1)} h^m ∫_{[0,1]^m} f^{(m)}(x + h ∑_j 2^j u_j) du`,
+
+the box integral written as the nested unit-cube integral. -/
+theorem thueMorseBlockSum_eq_nestedUnitIntegral (m : ℕ) (f : ℝ → ℝ) (hf : ContDiff ℝ m f)
+    (x h : ℝ) :
+    thueMorseBlockSum m f x h
+      = (-1) ^ m * 2 ^ (∑ i ∈ range m, i) * h ^ m *
+          nestedUnitIntegral m (iteratedDeriv m f) x h := by
+  rw [thueMorseBlockSum_eq_nestedDyadicIntegral m f hf x h, nestedDyadicIntegral_eq_unit]
+  ring
+
 end Fabius
