@@ -582,6 +582,9 @@ import FabiusFunction.IntegerParameterTranslation
 import FabiusFunction.MultisetInversions
 import FabiusFunction.GeometricSimplexReindex
 import FabiusFunction.RatioExpansion
+import FabiusFunction.GaussianIntegerPrimes
+import FabiusFunction.HessenbergDeterminant
+import FabiusFunction.JacksonFundamentalExtension
 import FabiusFunction.SumsOfSquaresGeneratingFunction
 import FabiusFunction.JacobiTripleProductUniform
 import FabiusFunction.RogersContinuant
