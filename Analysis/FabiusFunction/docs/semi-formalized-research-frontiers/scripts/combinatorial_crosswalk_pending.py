@@ -744,6 +744,28 @@ exactly this telescoping, with the difference identity taken from Mathlib
 \lean{Polynomial.sum_range_pow_eq_bernoulli_sub}.""")),
 ]
 
+PENDING += [
+ # --- thm:merged-raabe ---
+ (r"""Coefficient comparison gives the multiplication formula.  Set $q=2,x=0$ and
+solve for the half-value.
+\end{proof}
+""",
+  remark(r"""% ed.: crosswalk added 2026-09-01; the Lean proof is this proof made formal.
+\lean{Fabius.raabe} (module \lean{RaabeMultiplication}) is
+\cref{eq:merged-raabe}, written $\sum_{r<q}\beta_n(x+r/q)=q\,(1/q)^n\beta_n(qx)$
+for $q\ge1$ and rational $x$.  In $(\RationalNumbers[x])[[t]]$, Mathlib's
+\lean{Polynomial.bernoulli_generating_function} gives
+$B(a;t)(\EulerE^t-1)=t\EulerE^{at}$ for polynomial arguments $a$
+(\lean{Fabius.bernoulliPolySeries_mul_exp_sub_one}); summing over
+$a=x+r/q$ and using the finite geometric sum
+$\bigl(\sum_{r<q}\EulerE^{rt/q}\bigr)(\EulerE^{t/q}-1)=\EulerE^t-1$
+(\lean{Fabius.sum_pow_mul_sub_one}) gives $G(t)(\EulerE^{t/q}-1)=t\EulerE^{xt}$
+for the left side; rescaling $B(qx;t)$ by $t\mapsto t/q$
+(\lean{Fabius.rescale_expSeries}) gives the same identity for the right side;
+and $\EulerE^{t/q}-1$ is $t$ times a unit, which is cancelled.
+\cref{eq:merged-bernoulli-half} is \lean{Fabius.bernoulli_eval_half}.""")),
+]
+
 applied = 0
 for anchor, text in PENDING:
     if text.strip() in s:

@@ -326,6 +326,30 @@ STATUS = {
    r"(\lean{EulerPolynomials}), the Euler reflection \cref{eq:merged-euler-reflection} is "
    r"\lean{Fabius.eulerPolynomial_eval_one_sub} and $\mathsf E_{2m+1}(1/2)=0$ is "
    r"\lean{Fabius.eulerPolynomial_eval_half_odd} (\lean{EulerReflection})"),
+ 'thm:faa-partition': ('partial',
+   r"the analytic statement is not formalized; its formal power-series analogue, the "
+   r"coefficients of $F(G(t))$ through partial Bell polynomials, is "
+   r"\lean{Fabius.egfA_subst_bellWeightSeries} (\lean{BellComposition})"),
+ 'thm:faa-multiplicity': ('partial',
+   r"the analytic statement is not formalized; the formal power-series analogue "
+   r"\lean{Fabius.egfA_subst_bellWeightSeries} carries the Bell-polynomial form, with the "
+   r"partial Bell polynomials defined by the pointing recurrence rather than by the multiplicity "
+   r"sum"),
+ 'thm:merged-raabe': ('Lean',
+   r"\lean{Fabius.raabe} (\lean{RaabeMultiplication}), in the form "
+   r"$\sum_{r<q}\beta_n(x+r/q)=q\,(1/q)^n\beta_n(qx)$, proved from the generating functions in "
+   r"$(\RationalNumbers[x])[[t]]$ exactly as in the text; \cref{eq:merged-bernoulli-half} is "
+   r"\lean{Fabius.bernoulli_eval_half}"),
+ 'lem:coeff-rules': ('partial',
+   r"the formal rules are Mathlib's: \cref{eq:cauchy} is \lean{PowerSeries.coeff_mul} and "
+   r"\cref{eq:der-coeff} is \lean{PowerSeries.coeff_derivative}; \cref{eq:geom-conv} is the "
+   r"product with the geometric series (\lean{PowerSeries.coeff_mul} with "
+   r"\lean{PowerSeries.coeff_mk}); Cauchy's coefficient formula and bound "
+   r"\cref{eq:cauchy-coeff} are not formalized in this form"),
+ 'thm:merged-higher-quotient': ('partial',
+   r"the analytic statement is not formalized; its formal power-series analogue, the "
+   r"coefficients of $1/A$ through ordinary Bell polynomials, is "
+   r"\lean{Fabius.coeff_reciprocalSeries} (\lean{OrdinaryBellComposition})"),
  'thm:merged-faulhaber': ('Lean',
    r"\lean{Fabius.sum_range_add_pow_eq_bernoulli_sub} (\lean{FaulhaberOffset}), telescoping "
    r"Mathlib's \lean{Polynomial.bernoulli_eval_one_add}; the case $x=0$ is also Mathlib's "
