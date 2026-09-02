@@ -73,7 +73,8 @@ $x\binom{x+k}{n}=(n-k)\binom{x+k+1}{n+1}+(k+1)\binom{x+k}{n+1}$
 the natural-number identity because a polynomial over $\mathbb Q$ is
 determined by its values at the natural numbers.  The row sum
 $\sum_k\TypeAEulerianNumber nk=n!$ is \lean{Fabius.sum_eulerianNumber_eq_factorial};
-the symmetry \cref{eq:eulerian-symmetry} is not formalized.  The power sums of
+the symmetry \cref{eq:eulerian-symmetry} is \lean{Fabius.eulerianNumber_symm}
+(\lean{EulerianGeneratingFunctions}).  The power sums of
 \cref{cor:eulerian-power-sum} are \lean{Fabius.sum_range_pow_succ_eq_sum_eulerianNumber},
 in the form $\sum_{r=0}^{m}r^{n+1}=\sum_{k}\TypeAEulerianNumber{n+1}{k}\binom{m+k+1}{n+2}$.""")),
 ]
@@ -108,8 +109,9 @@ partial ones by \lean{Fabius.bell_complete_eq_sum_partialBell}; their
 generating function $\exp X(t)$ is \lean{Fabius.exp_subst_bellWeightSeries},
 from the equation $Y'=X'Y$, $Y(0)=1$
 (\lean{Fabius.eq_zero_of_derivative_eq_mul}).  The factorial row sum
-\cref{eq:bell-factorial-complete} and the Touchard identity
-\cref{eq:touchard-bell-specialization} are not formalized.""")),
+\cref{eq:bell-factorial-complete} is not formalized; the Touchard identity
+\cref{eq:touchard-bell-specialization} is
+\lean{Fabius.bell_complete_const_eq_touchard_eval} (\lean{BellHomogeneity}).""")),
 
  # --- thm:bell-egf ---
  (r"""coefficient comparison in that equation gives
@@ -267,7 +269,317 @@ and $g\cdot(h\circ f)=1$ then $[g,f]\,[h,\overline f]$ is the identity array
 \lean{Fabius.expRiordan_one_X}.  The Stirling examples are
 \lean{Fabius.expRiordan_one_exp_sub_one} ($[1,\EulerE^t-1]$ has entries
 $\StirlingSecondKind nk$) and \lean{Fabius.expRiordan_one_log}
-($[1,\log(1+t)]$ has entries $\StirlingFirstKindSigned nk$).""")),
+($[1,\log(1+t)]$ has entries $\SignedStirlingFirstKind{n}{k}$).""")),
+]
+
+PENDING += [
+ # --- thm:newton-expansion ---
+ (r"""with $k<j$ by excessive differencing, and gives $j!a_j$ for $k=j$.
+\end{proof}
+""",
+  remark(r"""% ed.: crosswalk added 2026-09-01.
+\lean{Fabius.newton_expansion} (module \lean{NewtonExpansion}) is the
+falling-factorial form of \cref{eq:newton-expansion} in $K[x]$ for every field
+$K$ of characteristic zero.  The formal route differs from the basis argument
+above: Mathlib's Gregory--Newton formula \lean{shift_eq_sum_fwdDiff_iter}
+gives $p(m)=\sum_{k\le m}\binom mk\Delta^kp(0)$ at every natural number $m$,
+the terms with $k>\deg p$ vanish by
+\lean{Polynomial.fwdDiff_iter_eq_zero_of_degree_lt}
+(\lean{Fabius.eval_natCast_eq_sum_choose_fwdDiff}, over any commutative
+ring), and two polynomials agreeing at infinitely many points are equal.""")),
+
+ # --- thm:exponential-formula ---
+ (r"""with weight $u^k$ proves the second, and setting $u=1$ proves the third.
+\end{proof}
+""",
+  remark(r"""% ed.: crosswalk added 2026-09-01.
+All three identities are formal power-series substitutions over any
+$\RationalNumbers$-algebra: \cref{eq:partial-bell-egf} is
+\lean{Fabius.bellWeightSeries_pow} (module \lean{BellGeneratingFunctions}),
+\cref{eq:complete-bell-egf} is \lean{Fabius.exp_subst_bellWeightSeries}, and
+\cref{eq:bivariate-bell-egf} is \lean{Fabius.exp_subst_smul_bellWeightSeries}
+(module \lean{ExponentialFormula}), obtained from the $u=1$ case by the degree
+homogeneity $\ExponentialPartialBellPolynomial nk(ux)=u^k
+\ExponentialPartialBellPolynomial nk(x)$.  The formal proofs use the pointing
+recurrence of \cref{thm:bell-poly-recurrences} rather than the multinomial
+expansion.""")),
+
+ # --- thm:ordered-bell ---
+ (r"""size gives \eqref{eq:ordered-bell-recurrence}.
+\end{proof}
+""",
+  remark(r"""% ed.: crosswalk added 2026-09-01.
+Module \lean{OrderedBell} defines \lean{Fabius.fubini} by
+\cref{eq:ordered-bell-stirling}.  \cref{eq:ordered-bell-egf} is
+\lean{Fabius.two_sub_exp_mul_egfA_fubini}, in the form
+$(2-\EulerE^t)\sum_n\mathsf F_nt^n/n!=1$ over any $\RationalNumbers$-algebra,
+proved as in the text: by the exponential composition theorem with block
+weights $k!$ the generating function is $1/(1-u)$ at $u=\EulerE^t-1$
+(\lean{Fabius.egfA_fubini}), and $(1-u)\cdot1/(1-u)=1$ is substituted.
+Reading $1/(1-u)=1+u/(1-u)$ at $u=\EulerE^t-1$ coefficientwise gives
+\cref{eq:ordered-bell-recurrence} as \lean{Fabius.fubini_succ}, written
+$\mathsf F_{n+1}=\sum_{i\le n}\binom{n+1}{i+1}\mathsf F_{n-i}$; the
+ordered-partition count is not formalized.""")),
+]
+
+PENDING += [
+ # --- thm:merged-complementary-bell ---
+ (r"""Absolute convergence follows from the ratio test for $m^n/m!$ at fixed $n$.
+\end{proof}
+""",
+  remark(r"""% ed.: crosswalk added 2026-09-01.
+Module \lean{ComplementaryBell} defines \lean{Fabius.complementaryBell} by
+\cref{eq:merged-complementary-bell} and identifies it with the complete Bell
+polynomial at constant weights $-1$
+(\lean{Fabius.complementaryBell_eq_bell_complete}), i.e. the Touchard
+polynomial at $-1$.  \cref{eq:merged-complementary-egf} is
+\lean{Fabius.exp_subst_neg_exp_sub_one}, the substitution of $-(\EulerE^t-1)$
+into the exponential series over any $\RationalNumbers$-algebra;
+\cref{eq:merged-complementary-recurrence} is
+\lean{Fabius.complementaryBell_succ}, read off from the successor recurrence
+of the complete Bell polynomials rather than from the differential equation;
+and \cref{eq:merged-complementary-dobinski} is
+\lean{Fabius.complementaryBell_eq_exp_mul_tsum}, the Poisson moment series
+\lean{Fabius.tsum_pow_mul_pow_div_factorial} at parameter $-1$, whose summability
+is part of that statement.""")),
+
+ # --- cor:merged-bell-convolution-inverse ---
+ (r"""The two EGFs are $\EulerE^{\EulerE^z-1}$ and $\EulerE^{1-\EulerE^z}$, whose product is $1$.
+\end{proof}
+""",
+  remark(r"""% ed.: crosswalk added 2026-09-01.
+\lean{Fabius.sum_choose_bell_mul_complementaryBell} (module
+\lean{ComplementaryBell}), proved from the addition law
+\lean{Bell.complete_add} of complete Bell polynomials at the weights $+1$ and
+$-1$, whose sum is the zero weight sequence with complete Bell polynomials
+$\delta_{n0}$ (\lean{Fabius.bell_complete_zero_weights}).""")),
+]
+
+PENDING += [
+ # --- thm:eulerian-stirling ---
+ (r"""using \eqref{eq:eulerian-symmetry}, or simply expanding around $t=1$, gives the
+equivalent displayed form.
+\end{proof}
+""",
+  remark(r"""% ed.: crosswalk added 2026-09-01; the Lean proof takes the expansion around
+% $t=1$ directly, with no appeal to symmetry.
+\lean{Fabius.sum_eulerianNumber_mul_X_pow_eq_sum_stirlingSecond} (module
+\lean{EulerianStirling}) is \cref{eq:eulerian-stirling} in $R[[t]]$ over any
+commutative ring $R$, with $\TypeAEulerianPolynomial{n}(t)$ written as
+$\sum_k\TypeAEulerianNumber nk\,t^k$.  The formal proof expands $(m+1)^n$ in
+the rising-factorial basis, $(m+1)^n=\sum_k(-1)^{n-k}\StirlingSecondKind nk\,
+k!\binom{m+k}{k}$ (\lean{Fabius.succ_pow_eq_sum_stirlingSecond_mul_choose}),
+uses $\sum_m\binom{m+k}{k}t^m=(1-t)^{-k-1}$ to get
+$\sum_m(m+1)^nt^m=\sum_k(-1)^{n-k}\StirlingSecondKind nk\,k!\,(1-t)^{-k-1}$
+(\lean{Fabius.succPowSeries_eq_sum_stirlingSecond}), and multiplies by
+$(1-t)^{n+1}$ through \cref{eq:eulerian-power-series}.""")),
+]
+
+PENDING += [
+ # --- thm:second-reverse-recurrences ---
+ (r"""$(1-\EulerE^{-x})F_k'(x)=kF_k(x)$.
+\end{proof}
+""",
+  remark(r"""% ed.: crosswalk added 2026-09-01.
+\cref{eq:second-triangular-explicit} is
+\lean{Fabius.stirlingSecond_eq_pow_div_factorial_sub_sum} (module
+\lean{StirlingTriangularExplicit}), proved exactly as in the first paragraph
+from the surjection count $k^n=\sum_r\StirlingSecondKind nr\,r!\binom kr$
+(\lean{Fabius.pow_eq_sum_stirlingSecond_mul_factorial_mul_choose}); the
+formal statement holds for all $n,k\ge0$ with the sum running from $r=0$
+(the extra term $\StirlingSecondKind n0/k!$ vanishes for $n\ge1$).  The
+reverse recurrences \cref{eq:second-reverse-row,eq:second-reverse-column}
+are not formalized.""")),
+]
+
+PENDING += [
+ # --- thm:spivey ---
+ (r"""classification is unique and gives the summand.
+\end{proof}
+""",
+  remark(r"""% ed.: crosswalk added 2026-09-01; the formal proof is generating-functional,
+% not the bijection above.
+\lean{Fabius.spivey} (module \lean{BellShiftEGF}) proves
+\cref{eq:spivey} from the shifted generating function
+\lean{Fabius.egfA_bell_add},
+$\sum_{n\ge0}\BellNumber{m+n}\frac{t^n}{n!}
+=\TouchardPolynomial{m}(\EulerE^t)\,\EulerE^{\EulerE^t-1}$, which is the $m$-th
+derivative of the Bell generating function.  The induction on $m$ uses
+$\bigl(\sum_n\BellNumber{n+1}t^n/n!\bigr)=\EulerE^t\sum_n\BellNumber nt^n/n!$
+(\lean{Fabius.egfA_bell_succ}, the binomial recurrence) and the Touchard
+recurrence at $x=\EulerE^t$,
+$\TouchardPolynomial{m+1}(\EulerE^t)=\bigl(\TouchardPolynomial{m}(\EulerE^t)\bigr)'
++\TouchardPolynomial{m}(\EulerE^t)\EulerE^t$
+(\lean{Fabius.derivative_touchardExp}); the coefficient of $t^n/n!$ in
+$\EulerE^{jt}\EulerE^{\EulerE^t-1}$ is the binomial convolution
+$\sum_k\binom nk\BellNumber kj^{n-k}$.""")),
+
+ # --- thm:bell-inversions ---
+ (r"""turns it into the right side after expanding
+$(X-1)^k$.
+\end{proof}
+""",
+  remark(r"""% ed.: crosswalk added 2026-09-01.
+\cref{eq:bell-inversion-one} is
+\lean{Fabius.bell_eq_sum_neg_one_pow_choose_bell_succ} (module
+\lean{BellShiftEGF}): binomial inversion
+(\lean{Fabius.binomial_inversion_ring}) of the recurrence
+\cref{eq:bell-binomial-recurrence} in the form
+\lean{Fabius.bell_succ_eq_sum_choose}.  \cref{eq:bell-inversion-two} is not
+formalized.""")),
+]
+
+PENDING += [
+ # --- thm:eulerian-egf ---
+ (r"""solves this equation and initial condition.  Formal uniqueness follows by
+recursively comparing coefficients of $x$.
+\end{proof}
+""",
+  remark(r"""% ed.: crosswalk added 2026-09-01; the Lean proof derives the EGF from the
+% binomial recurrence, not from the differential equation.
+\lean{Fabius.egfA_eulerianPolynomial_mul} (module \lean{EulerianEGF}) is
+\cref{eq:eulerian-egf} in multiplicative form, as an identity in the ring
+$(\RationalNumbers[t])[[x]]$ of formal power series in $x$ with polynomial
+coefficients:
+$\bigl(\sum_{n\ge0}\TypeAEulerianPolynomial{n}(t)\frac{x^n}{n!}\bigr)
+\bigl(t-\EulerE^{(t-1)x}\bigr)=t-1$, where $\EulerE^{(t-1)x}$ is the
+exponential series \lean{Fabius.expSeries} at $t-1$.  Comparing the
+coefficients of $x^n/n!$, this identity is exactly the binomial recurrence
+\cref{eq:eulerian-binomial-recurrence} (for $n\ge1$) together with
+$\TypeAEulerianPolynomial{0}=1$, so the formal proof goes through
+\cref{thm:eulerian-binomial-recurrence}.""")),
+
+ # --- thm:eulerian-binomial-recurrence ---
+ (r"""Using \eqref{eq:eulerian-egf}, this equals $F(x,t)-1$, which is the EGF of the
+left sides.
+\end{proof}
+""",
+  remark(r"""% ed.: crosswalk added 2026-09-01; the formal proof is independent of the EGF.
+\lean{Fabius.eulerianPolynomial_binomial_recurrence} (module
+\lean{EulerianEGF}) is \cref{eq:eulerian-binomial-recurrence} in $R[t]$ for
+$n\ge1$ over any commutative ring $R$ (the case $n=1$ reads
+$\TypeAEulerianPolynomial{1}=\TypeAEulerianPolynomial{0}$), transported from
+the power-series form \lean{Fabius.eulerian_binomial_recurrence_series}.  The
+formal proof uses the rational generating function
+\cref{eq:eulerian-power-series}: writing
+$\TypeAEulerianPolynomial{k}(t)=(1-t)^{k+1}\sum_m(m+1)^kt^m$, the right side
+becomes $(1-t)^n\sum_mt^m\sum_{k<n}\binom nk(-1)^{n-1-k}(m+1)^k
+=(1-t)^n\sum_m\bigl((m+1)^n-m^n\bigr)t^m$ by the binomial theorem
+(\lean{Fabius.sum_choose_neg_one_pow_succPowSeries}), and
+$\sum_mm^nt^m=t\sum_m(m+1)^nt^m$ (\lean{Fabius.X_mul_succPowSeries}) finishes.""")),
+]
+
+PENDING += [
+ # --- thm:ordinary-composition ---
+ (r"""coefficient, proving the second.  The third is the definition of the ordinary
+Bell polynomial.
+\end{proof}
+""",
+  remark(r"""% ed.: crosswalk added 2026-09-01.
+Module \lean{OrdinaryBellComposition} defines the ordinary partial Bell
+polynomials \lean{Fabius.ordPartialBell} over any commutative semiring by the
+composition recurrence
+$\OrdinaryPartialBellPolynomial n{k+1}(b)=\sum_{i=1}^{n}b_i
+\OrdinaryPartialBellPolynomial{n-i}{k}(b)$, $\OrdinaryPartialBellPolynomial
+n0=\delta_{n0}$, which is \cref{eq:ordinary-composition-compositions} unrolled
+one part at a time; \lean{Fabius.coeff_pow_eq_ordPartialBell} is
+$[x^n]G(x)^k=\OrdinaryPartialBellPolynomial nk(b_1,b_2,\ldots)$ for $G$ with
+zero constant term, and \cref{eq:ordinary-composition-bell} is
+\lean{Fabius.coeff_subst_eq_sum_ordPartialBell}, with the sum starting at
+$k=0$ (the term $k=0$ is $a_0\delta_{n0}$, which also covers $c_0=a_0$).  The
+reciprocal formula \cref{eq:reciprocal-ordinary-bell} is
+\lean{Fabius.coeff_reciprocalSeries}, where \lean{Fabius.reciprocalSeries} is
+$1/(1-u)$ at $u=-(A-1)$ and \lean{Fabius.mul_reciprocalSeries} shows it
+inverts $A$.  The multinomial form \cref{eq:ordinary-composition-multiplicities}
+is not formalized.""")),
+]
+
+PENDING += [
+ # --- thm:merged-appell ---
+ (r"""Setting $x=0$ in the Bernoulli translation formula gives the explicit
+polynomial expansion.
+\end{proof}
+""",
+  remark(r"""% ed.: crosswalk added 2026-09-01.
+For the Bernoulli polynomials, the derivative identity in
+\cref{eq:merged-appell-derivative} is Mathlib's
+\lean{Polynomial.derivative_bernoulli}, and the translation formula
+\cref{eq:merged-appell-translation} is \lean{Fabius.bernoulli_eval_add}
+(module \lean{BernoulliAppell}).  The formal proof is the Taylor expansion
+rather than the generating function: iterating the derivative identity gives
+$\beta_n^{(k)}=n^{\underline k}\beta_{n-k}$
+(\lean{Fabius.iterate_derivative_bernoulli}), so the Hasse derivatives are
+$\binom nk\beta_{n-k}$ (\lean{Fabius.hasseDeriv_bernoulli}), and Mathlib's
+\lean{Polynomial.taylor} expands $\beta_n(x+y)=\sum_k\beta_n^{[k]}(x)y^k$.
+The explicit formula \cref{eq:merged-bernoulli-explicit} is Mathlib's
+definition \lean{Polynomial.bernoulli_def}.  The Euler polynomials are not
+formalized.""")),
+]
+
+PENDING += [
+ # --- cor:shifted-stirling-evaluations ---
+ (r"""\eqref{eq:stirling-n-to-n} is \eqref{eq:power-to-fall} evaluated at $x=n$.
+\end{proof}
+""",
+  remark(r"""% ed.: crosswalk added 2026-09-01.
+\cref{eq:shifted-power-to-fall} is
+\lean{Fabius.X_pow_eq_sum_stirlingSecond_succ_mul_descPochhammer_comp} (module
+\lean{StirlingShiftedEvaluations}), in $R[x]$ over any commutative ring $R$,
+with $\FallingFactorial{x-1}{k}$ as the composition of Mathlib's
+\lean{descPochhammer} with $x-1$; the proof is the cancellation above, using
+that $x$ is a non-zero-divisor in $R[x]$ (\lean{Fabius.X_mul_cancel}).
+\cref{eq:stirling-n-to-n} is
+\lean{Fabius.pow_self_eq_sum_stirlingSecond_mul_descFactorial}.""")),
+]
+
+PENDING += [
+ # --- thm:paired-sums ---
+ (r"""which of the total $\ell+m$ components were marked.
+\end{proof}
+""",
+  remark(r"""% ed.: crosswalk added 2026-09-01; the first-kind hockey stick is stated with
+% lower index $k$, correcting the misprint $n$ (see the editorial note in the
+% statement).
+All six identities are in module \lean{StirlingSummations}, over the natural
+numbers.  The first equality of \cref{eq:first-two-sums} is
+\lean{Fabius.stirlingFirst_succ_succ_eq_sum_choose}, proved as the coefficient
+of $x^{k+1}$ in $\RisingFactorial{x}{n+1}=x\,(x+1)\cdots(x+n)$, and the second
+is \lean{Fabius.stirlingFirst_succ_succ_eq_sum_descFactorial} (with
+$n!/j!=\FallingFactorial{n}{n-j}$); the first equality of
+\cref{eq:second-two-sums} is \lean{Fabius.stirlingSecond_succ_succ_eq_sum}
+(module \lean{BellStirling}) and the second
+\lean{Fabius.stirlingSecond_succ_succ_eq_sum_pow}, both iterated recurrences.
+The hockey sticks \cref{eq:first-hockey,eq:second-hockey} are
+\lean{Fabius.stirlingFirst_add_succ_eq_sum} and
+\lean{Fabius.stirlingSecond_add_succ_eq_sum}, telescoping the recurrences by
+induction on $k$.  The convolutions
+\cref{eq:first-convolution,eq:second-convolution} are
+\lean{Fabius.choose_mul_stirlingFirst_add} and
+\lean{Fabius.choose_mul_stirlingSecond_add}, specializations of the
+block-colour convolution of partial Bell polynomials
+(\cref{thm:bell-partial-convolution}, \lean{Fabius.factorial_mul_partialBell_add})
+to the weights $(j-1)!$ and $1$.""")),
+]
+
+PENDING += [
+ # --- thm:normal-order ---
+ (r"""operators are equal.  The inverse relation is proved identically using
+$\FallingFactorial mn=\sum_k\SignedStirlingFirstKind{n}{k}m^k$.
+\end{proof}
+""",
+  remark(r"""% ed.: crosswalk added 2026-09-01; the Lean proof of \cref{eq:normal1} is by
+% induction on $n$, not by evaluation on monomials.
+Module \lean{StirlingNormalOrder} proves both identities applied to an
+arbitrary polynomial $p$ over any commutative ring: \cref{eq:normal1} is
+\lean{Fabius.iterate_X_mul_derivative}, $(xD)^np=\sum_k\StirlingSecondKind nk
+x^kD^kp$, by induction on $n$ from
+$xD(x^kD^kp)=k\,x^kD^kp+x^{k+1}D^{k+1}p$ (\lean{Fabius.X_mul_derivative_xkDk})
+and the recurrence $\StirlingSecondKind{n+1}{k}=k\StirlingSecondKind nk
++\StirlingSecondKind n{k-1}$; \cref{eq:normal2} is
+\lean{Fabius.xkDk_eq_sum_signedStirlingFirst}, obtained from it by Stirling
+inversion (\lean{Fabius.stirling_inversion}).  The falling-factorial form
+$\FallingFactorial{xD}{n}$ and the operator series
+\cref{eq:der-from-diff,eq:diff-from-der} are not formalized.""")),
 ]
 
 applied = 0
