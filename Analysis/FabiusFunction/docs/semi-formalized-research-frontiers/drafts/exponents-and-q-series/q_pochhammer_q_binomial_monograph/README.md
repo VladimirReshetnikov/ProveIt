@@ -108,7 +108,7 @@ fonts. The files under `assets/experiments/**/figures/` remain research
 figures, not publication manuscripts.
 
 The current live master is a source-only successor to that checkpoint: it has
-14,531 lines and 683,936 bytes. It combines the q-beta, collision-free
+14,578 lines and 687,067 bytes. It combines the q-beta, collision-free
 Newton-interpolation, integer/complex-order Gaussian,
 q-Pfaff--Saalschuetz, quantum-multinomial, Gaussian reciprocity/growth, and
 coefficient-closure crosswalks.
@@ -163,6 +163,14 @@ theorems), `QPfaffSaalschutz` (zero definitions and three theorems),
 `QuantumMultinomial` (zero definitions and five theorems), and
 `GaussianBinomialBounds` (zero definitions and six theorems), together with
 expanded Euler, Jacobi, and Rogers--Szegő material.
+The newest combinatorial and certification tranche adds
+`BinaryWordInversions` (five definitions and fourteen theorems),
+`BoxPartitions` (two definitions and eight theorems), and
+`TelescopingCertificate` (zero definitions and five theorems). These give the
+binary-word inversion and path-area generating functions, rectangular-box
+partition generating functions and counts, finite telescoping certificates,
+recurrence uniqueness, and rational-identity specialization. The live facade
+audit now contains 675 modules and 8,909 public declarations.
 
 The two newest generic theorems are
 `deriv_qPochhammerInfIn_ne_zero_of_mul_pow_eq_one`, which gives a nonzero
@@ -174,7 +182,7 @@ entireness, zero-locus, reciprocal-power, and analytic-order results rather
 than duplicating their analytic proofs. In `QBinomialTheoremInfinite`,
 `finiteQPochhammerIn_zero_left` remains the unique declaration owned by
 `GaussianBinomialAtOne` and is imported rather than redeclared. The forward
-status ledger is 90 Exact, 84 Partial, 100 None, and 8 interface rows; the
+status ledger is 97 Exact, 85 Partial, 92 None, and 8 interface rows; the
 original 191-result pre-Fabius core is 36/29/123/3, and the
 completed source concordance records 66 Lean-proved rows, 412 human-proved
 frontier rows, 60 not-applicable rows, and 9 conjectures.
@@ -197,6 +205,13 @@ The six-theorem `GaussianBinomialBounds` surface reuses the stronger
 `finiteQPochhammerIn_self_pos` from `GeneralQConditionNumber` and supplies
 evaluated reciprocity and the exact finite growth bounds on both sides of `q = 1`; the
 compound greater-than-one row remains Partial only at its asymptotic clauses.
+The new tranche makes `thm:binary-inversions`,
+`thm:rectangle-partitions`, `cor:path-area`,
+`thm:telescoping-certificate`, `cor:identity-certification`,
+`lem:polynomial-identity-principle`, and `cor:safe-specialization` Exact.
+`cor:qbinom-inversion-law` becomes Partial because its word count and inversion
+distribution are formalized while its identification with the separately
+defined random variable is not.
 The new status changes record the exact q-exponential eigenfunction and
 Jackson integration-by-parts subclaims, and Partial formalizations of the
 q-exponential factorization, Jackson fundamental theorem, and theta

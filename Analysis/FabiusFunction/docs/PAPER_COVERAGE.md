@@ -11,7 +11,7 @@ see its
 or [rendered PDF](Fabius_Function_and_Rvachev_Up/Fabius_Function_and_Rvachev_Up.pdf).
 
 > **Artifact status (2026-09-01).**  The live facade union contains exactly
-> 672 source modules and 8,875 public declarations.  The live audit reports no
+> 675 source modules and 8,909 public declarations.  The live audit reports no
 > missing module headers or declaration comments.  This crosswalk records all
 > 30 declarations in `LegendreGauntClosedForm.lean` and
 > `FabiusLegendreGauntClosedForm.lean`, together with the prime-power,

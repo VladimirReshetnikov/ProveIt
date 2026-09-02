@@ -77,7 +77,7 @@ That primary exposition is deliberately proof-backed: every mathematical claim
 in it must have a proved counterpart in the Lean development.
 
 > **Artifact status (2026-09-01).**  The live facade union contains exactly
-> 672 source modules and 8,875 public declarations.  The documentation audit
+> 675 source modules and 8,909 public declarations.  The documentation audit
 > reports no missing module headers or declaration comments.  Its q-series union retains
 > `QPochhammerEntire` 0+5, `GeometricPochhammerNormalConvergence` 0+3,
 > `QPochhammerDissection` 0+2,

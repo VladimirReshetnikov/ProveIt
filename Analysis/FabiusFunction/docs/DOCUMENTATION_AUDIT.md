@@ -109,12 +109,12 @@ only 4,606 declarations and
 declarations, including 69 undocumented ones.  Run the script for the live
 numbers rather than copying these historical values.
 
-The live post-merge 2026-09-01 inventory contains 672 modules and 8,875
+The live post-merge 2026-09-01 inventory contains 675 modules and 8,909
 lexically visible public declarations, with zero missing module headers and
 zero missing doc comments.  Relative to the 610/8,318 activation checkpoint,
-the current tree adds sixty-two modules and 558 declarations.  Relative to
-the earlier 630/8,552 merged checkpoint, concurrent source work adds forty-two
-modules and 324 declarations.  The one-definition/eight-theorem
+the current tree adds sixty-five modules and 591 declarations.  Relative to
+the earlier 630/8,552 merged checkpoint, concurrent source work adds forty-five
+modules and 357 declarations.  The one-definition/eight-theorem
 `RvachevSuperconvergentSynthesis.lean` leaf contributes
 `IsRvachevSuperconvergentPhase`,
 `isRvachevSuperconvergentPhase_two_pow_iff`,
@@ -391,7 +391,10 @@ integer/complex upper Gaussian and q-Pfaff--Saalschuetz leaves add twenty,
 yielding 670/8,857; and the noncommutative q-multinomial leaf adds five,
 yielding 671/8,862.  `GaussianBinomialBounds.lean` adds six theorems,
 yielding 672/8,868, and the seven collision-free Newton compatibility names
-yield the live 672/8,875 census.
+yield the intermediate 672/8,875 census.  The 5+14
+`BinaryWordInversions.lean`, 2+8 `BoxPartitions.lean`, and 0+5
+`TelescopingCertificate.lean` leaves then add three modules and thirty-four
+declarations, yielding the live 675/8,909 census.
 
 `GaussianBinomialPalindromic.lean` is an exhaustive zero-definition,
 fourteen-theorem leaf: `Fabius.reflect_add_of_natDegree_le`,
@@ -794,7 +797,7 @@ and 88-page notation-catalogue artifacts likewise predate their current merged
 sources.  Their package notices treat those PDFs as historical validation
 receipts, not parity claims, until fresh uninterrupted three-pass builds
 complete.  The inverse-computability receipt likewise requires refresh for the
-672/8,875 census.  The canonical inverse-theory publication retains a 134-page
+675/8,909 census.  The canonical inverse-theory publication retains a 134-page
 artifact synchronized at its latest-main source checkpoint; the merged
 effective-inversion and superconvergent-synthesis tranches make current parity
 pending.

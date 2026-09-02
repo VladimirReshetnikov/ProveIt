@@ -19,8 +19,8 @@ old flat layout; the **Previous path** column below is the map. Documents
 were moved verbatim — no `.tex` content was changed by the reorganization,
 so no PDF was rebuilt for it.
 
-**Current artifact checkpoint (2026-09-01).** The live Lean audit scans 672
-source modules and 8,875 public declarations, with no missing module headers or
+**Current artifact checkpoint (2026-09-01).** The live Lean audit scans 675
+source modules and 8,909 public declarations, with no missing module headers or
 declaration comments.
 Several PDFs below are retained,
 readable publication checkpoints rather than renders of the final merged TeX.
