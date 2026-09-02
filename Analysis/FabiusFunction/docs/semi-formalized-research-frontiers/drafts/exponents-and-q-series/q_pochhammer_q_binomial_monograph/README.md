@@ -45,9 +45,8 @@ the earlier six-package inverse provenance is not silently reinterpreted.
 
 The migrated `assets/` tree preserves six experiment programs, nineteen
 CSV/TXT outputs, and fourteen vector figures selected by the historical
-77-row `assets/ASSET_DISPOSITION.csv`. Its active `assets/SHA256SUMS` has 43
-entries because it also covers asset metadata and environment files; this is
-not a contradiction with the 39 retained historical payloads.
+77-row `assets/ASSET_DISPOSITION.csv`. That disposition ledger remains the
+authoritative inventory of the 39 retained historical payloads.
 
 ## Validation state
 
@@ -85,19 +84,13 @@ It compares all coefficients through degree 100 using integer arithmetic:
 1,515 equalities in total. This is a transcription-quality gate, explicitly
 not an infinite proof of any recorded identity.
 
-The exhaustive package checksum gate is:
+Repository policy no longer retains package-level or nested `SHA256SUMS`
+manifests. They are not validation gates and must not be recreated. Historical
+SHA-256 values recorded directly in this README and in `PROVENANCE.md` remain
+provenance receipts for the named artifacts.
 
-```text
-python audit/build_package_checksums.py --check
-```
-
-It checks every permanent package file except the self-referential root
-`SHA256SUMS` ledger itself. The nested asset ledger remains independently
-useful because it preserves the migrated experiment and research-figure
-boundary.
-
-The retained `q_pochhammer_q_binomial_monograph.pdf` is a 354-page A4
-build of the upstream source checkpoint (14,381 lines, 675,239 bytes,
+The retained `q_pochhammer_q_binomial_monograph.pdf` is a historical 354-page
+A4 build of its recorded source checkpoint (14,381 lines, 675,239 bytes,
 SHA-256 `240bff72fb47562e9a8fd87085b5a3a96d738189714518db17988f7c4ac15d31`).
 The PDF is 3,030,302 bytes with SHA-256
 `1050a9a3b0b7a8df8e7de0870946ae64940d7d7839a2f20427be0ebe14b0ba8c`.
@@ -111,12 +104,18 @@ subsetted, including five Libertinus rows, with no Type-3
 fonts. The files under `assets/experiments/**/figures/` remain research
 figures, not publication manuscripts.
 
-The current master TeX is a source-only successor to that checkpoint: it has
+The current live master is a source-only successor to that checkpoint: it has
 14,530 lines, 683,858 bytes, and SHA-256
 `b77e9ab54d9437485bab9ee36783cc1f1d5c36c347e67a5242953af8319650fc`.
-The regenerated root `SHA256SUMS` ledger records the same identity. The
-historical source identity above must not be reused for the live source, and
-the retained PDF does not claim render parity with the current TeX.
+It adds the explicit document-local `\BellBlockMultiplicity{r}` and
+`\MacMahonQCatalanPolynomial{n}{q}` families and normalizes the newly merged
+Jackson, Gaussian-binomial, q-integer, and q-Pochhammer status formulas, while
+retaining the newest feature, crosswalk, and provenance expansion catalogued
+below. No PDF was regenerated after those changes. The historical source
+identity above must not be reused for the live source: the PDF and its recorded
+14,381-line build source form the retained synchronized checkpoint, while the
+current master and retained PDF are distinct artifacts and do not claim render
+parity.
 
 The current source includes exhaustive crosswalks for `QPochhammerEntire`
 (zero definitions
@@ -219,6 +218,4 @@ classical-limit rows stay unformalized.
 
 No PDF was generated locally while resolving this merge. The retained
 354-page artifact remains the validated historical checkpoint described
-above. The root package checksum ledger (`SHA256SUMS`) is regenerated after
-source-only updates and records the live source and retained PDF as distinct
-artifacts.
+above. No deleted checksum manifest was recreated.
