@@ -148,12 +148,17 @@ theorem geometricSincProduct_pow_mul {q : ℂ} (hq : ‖q‖ < 1) (z : ℂ) (m :
     geometricSincProduct q z =
       (∏ j ∈ range m, complexSinc (π * (q ^ j * z))) * geometricSincProduct q (q ^ m * z) := by
   have h := (geometricSincProductFactors_multipliable q z hq).prod_mul_tprod_nat_add m
-  rw [geometricSincProduct, geometricSincProduct, ← h]
-  congr 1
-  refine tprod_congr fun i => ?_
-  congr 1
-  rw [pow_add]
-  ring
+  calc geometricSincProduct q z
+      = ∏' n : ℕ, complexSinc (Real.pi * (q ^ n * z)) := rfl
+    _ = (∏ j ∈ range m, complexSinc (Real.pi * (q ^ j * z))) *
+          ∏' i : ℕ, complexSinc (Real.pi * (q ^ (i + m) * z)) := h.symm
+    _ = (∏ j ∈ range m, complexSinc (π * (q ^ j * z))) *
+          geometricSincProduct q (q ^ m * z) := by
+        congr 1
+        refine tprod_congr fun i => ?_
+        congr 1
+        rw [pow_add]
+        ring
 
 /-- **The all-orders prefix form** at ratio `q`: on `‖q^m z‖ < 1`,
 
@@ -180,8 +185,10 @@ theorem tprod_complexSinc_div_pow_eq_geometricSincProduct {b : ℝ} (hb : 0 < b)
   unfold geometricSincProduct
   refine tprod_congr fun k => ?_
   congr 1
-  rw [pow_succ]
+  have hbk : ((b : ℂ) ^ k) ≠ 0 := pow_ne_zero _ hbC
+  rw [pow_succ, inv_pow]
   field_simp
+  try ring
 
 /-- **`p2:thm:base-b`** (exponential form, prefix cleared).  For a real base
 `b > 1` and `‖t‖ < π b^{m+1}`,
@@ -206,8 +213,10 @@ theorem base_geometric_sinc_eq_prefix_mul_cexp {b : ℝ} (hb : 1 < b) (t : ℂ) 
     exact inv_lt_one_of_one_lt₀ hb
   have hz : ‖((b : ℂ)⁻¹) ^ m * (t / (π * b))‖ < 1 := by
     have hval : ((b : ℂ)⁻¹) ^ m * (t / (π * b)) = t / (π * (b : ℂ) ^ (m + 1)) := by
-      rw [pow_succ]
+      have hbm : ((b : ℂ) ^ m) ≠ 0 := pow_ne_zero _ hbC
+      rw [pow_succ, inv_pow]
       field_simp
+      try ring
     rw [hval, norm_div, norm_mul, Complex.norm_real, Real.norm_eq_abs, abs_of_pos Real.pi_pos,
       norm_pow, Complex.norm_real, Real.norm_eq_abs, abs_of_pos hb0,
       div_lt_one (by positivity)]
@@ -217,12 +226,16 @@ theorem base_geometric_sinc_eq_prefix_mul_cexp {b : ℝ} (hb : 1 < b) (t : ℂ) 
   congr 1
   · refine prod_congr rfl fun j _ => ?_
     congr 1
-    rw [pow_succ]
+    have hbj : ((b : ℂ) ^ j) ≠ 0 := pow_ne_zero _ hbC
+    rw [pow_succ, inv_pow]
     field_simp
+    try ring
   · congr 2
     refine tsum_congr fun r => ?_
     congr 2
-    rw [pow_succ]
+    have hbm : ((b : ℂ) ^ m) ≠ 0 := pow_ne_zero _ hbC
+    rw [pow_succ, inv_pow]
     field_simp
+    try ring
 
 end Fabius
