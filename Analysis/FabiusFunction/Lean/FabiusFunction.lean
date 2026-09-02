@@ -581,6 +581,7 @@ import FabiusFunction.IntegerParameterTranslation
 import FabiusFunction.MultisetInversions
 import FabiusFunction.GeometricSimplexReindex
 import FabiusFunction.RatioExpansion
+import FabiusFunction.RogersContinuant
 import FabiusFunction.RogersSeries
 import FabiusFunction.BaileyLemmaFull
 import FabiusFunction.BaileyChainBounds
