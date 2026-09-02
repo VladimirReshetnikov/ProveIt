@@ -54,6 +54,7 @@ import FabiusFunction.StirlingFirstReverse
 import FabiusFunction.BernoulliNewtonBasis
 import FabiusFunction.NorlundPolynomials
 import FabiusFunction.BellDerivative
+import FabiusFunction.AssociatedStirling
 import FabiusFunction.SymmetricFunctionTransform
 import FabiusFunction.SymmetricFunctionGenerating
 import FabiusFunction.FiniteQBinomialCore

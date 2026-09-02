@@ -398,6 +398,22 @@ STATUS = {
    r"\lean{Fabius.norlund_eval_add}, \cref{eq:merged-norlund-difference} is "
    r"\lean{Fabius.norlund_succ_eval_add_one_sub} and \cref{eq:merged-norlund-convolution} is "
    r"\lean{Fabius.norlund_add_eval_add}; complex orders are not formalized."),
+ 'thm:bell-poly-derivatives': ('partial',
+   r"\cref{eq:partial-bell-derivative} is \lean{Fabius.pderiv_partialBell_succ} and "
+   r"\cref{eq:complete-bell-derivative} is \lean{Fabius.pderiv_bellComplete} (module "
+   r"\lean{BellDerivative}), in $\mathbb Q[x_1,x_2,\dots]$ via the coefficientwise derivation "
+   r"\lean{Fabius.coeffDerivation}; the chain rule \cref{eq:bell-poly-chain} is not formalized."),
+ 'thm:merged-moment-cumulant': ('partial',
+   r"In the block-size form: \lean{Bell.complete} and \lean{Bell.cumulant} are mutually inverse "
+   r"(\lean{Bell.complete_cumulant}, \lean{Bell.cumulant_complete}, module "
+   r"\lean{BellPolynomialInversion}) and $M=\EulerE^K$ is \lean{Fabius.exp_subst_bellWeightSeries}; "
+   r"the sums over set partitions and $K=\log M$ are not formalized."),
+ 'thm:associated-stirling-recurrence': ('partial',
+   r"With $\mathsf S_r$ defined as the partial Bell polynomial with weights $[j\ge r]$ "
+   r"(\lean{Fabius.associatedStirling}, module \lean{AssociatedStirling}): "
+   r"\cref{eq:associated-stirling-recurrence} is \lean{Fabius.associatedStirling_succ_succ} and "
+   r"\cref{eq:associated-stirling-egf} is \lean{Fabius.egfA_associatedStirling}; the block-size "
+   r"count is not formalized."),
  'thm:touchard-poly': ('Lean',
    r"\cref{eq:touchard-poly} is \lean{Fabius.touchardPolynomial_add_prime} "
    r"(\lean{TouchardPolyCongruence}), an identity in $(\mathbb Z/p)[x]$, read off from Spivey's "
