@@ -544,9 +544,13 @@ PENDING += [
   remark(r"""% ed.: crosswalk added 2026-09-01; the first-kind hockey stick is stated with
 % lower index $k$, correcting the misprint $n$ (see the editorial note in the
 % statement).
-All six identities are in module \lean{StirlingSummations}, over the natural
-numbers.  The first equality of \cref{eq:first-two-sums} is
-\lean{Fabius.stirlingFirst_succ_succ_eq_sum_choose}, proved as the coefficient
+All six identities are over the natural numbers, and lie in module
+\lean{StirlingSummations} except where noted.  The first equality of
+\cref{eq:first-two-sums} is
+\lean{Fabius.stirlingFirst_succ_succ_eq_sum_choose} (module
+\lean{StirlingBasisChange}, which holds it because the reverse row recurrence
+of \cref{eq:first-reverse-row} needs the same identity and neither module
+imports the other), proved as the coefficient
 of $x^{k+1}$ in $\RisingFactorial{x}{n+1}=x\,(x+1)\cdots(x+n)$, and the second
 is \lean{Fabius.stirlingFirst_succ_succ_eq_sum_descFactorial} (with
 $n!/j!=\FallingFactorial{n}{n-j}$); the first equality of
@@ -984,7 +988,8 @@ PENDING += [
 $0\le i<n-k$, and $(-1)^j\binom{-k}{j}$ replaced by $\binom{k+j-1}{j}$: the
 coefficient identity
 $\UnsignedStirlingFirstKind{n+1}{k+1}=\sum_r\binom rk\UnsignedStirlingFirstKind nr$
-is \lean{Fabius.stirlingFirst_succ_succ_eq_sum_choose}, from
+is \lean{Fabius.stirlingFirst_succ_succ_eq_sum_choose} (module
+\lean{StirlingBasisChange}), from
 $\RisingFactorial{x}{n+1}=x\,\RisingFactorial{x+1}{n}$
 (Mathlib's \lean{ascPochhammer_succ_left}), and removing the terms $r=k-1,k$
 gives the recurrence.  \cref{eq:first-reverse-column} is
@@ -1373,6 +1378,35 @@ from \cref{eq:lagrange-basic} together with
 $(\EulerE^{-w})^n=\EulerE^{-nw}$ (\lean{Fabius.expNeg_pow}).  The radius of
 convergence $\EulerE^{-1}$, and with it the branch-point argument above, is
 analytic and is not formalized.""")),
+]
+
+PENDING += [
+ # --- thm:fuss-series ---
+ (r"""Stirling's formula gives coefficients of order
+$Ck^{-3/2}R_p^{-((p-1)k+1)}$, which proves absolute convergence on the boundary.
+\end{proof}
+""",
+  remark(r"""% ed.: crosswalk added 2026-09-02; the series is Lean, the radius is not.
+Module \lean{FussCatalanSeries} constructs the distinguished solution rather
+than assuming it: with $q=p-1$, the equation $x-x^{q+1}=z$ is the Lagrange
+functional equation for $\phi(w)=(1-w^q)^{-1}$, and that weight is invertible
+by construction (\lean{Fabius.fussPhi_mul}), so \lean{Fabius.Lagrange.solution}
+applies and gives \lean{Fabius.fussSolution}; the polynomial form of the
+defining equation is \lean{Fabius.fussSolution_sub_pow}.
+\cref{eq:fuss-series} then splits into two statements:
+\lean{Fabius.coeff_fussSolution}, which is
+$(qk+1)[z^{qk+1}]x=\binom{(q+1)k}{k}$, and
+\lean{Fabius.coeff_fussSolution_eq_zero}, which is the vanishing of every
+coefficient whose index is not of the form $qk+1$.  Both follow from
+\cref{eq:lagrange-basic} once $\phi$ is written as the all-ones series with $w$
+replaced by $w^q$ (Mathlib's \lean{PowerSeries.expand}); because that
+substitution is an algebra map it commutes with the $n$th power, so the
+negative binomial coefficients come straight from
+\lean{PowerSeries.mk_one_pow_eq_mk_choose_add} and the index condition from
+\lean{PowerSeries.coeff_expand_of_not_dvd}.
+The radius \cref{eq:fuss-radius}, the critical-point argument that identifies
+it, and the absolute convergence on $|z|=R_p$ are analytic and are not
+formalized.""")),
 ]
 
 applied = 0

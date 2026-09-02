@@ -65,6 +65,7 @@ import FabiusFunction.NarayanaNumbers
 import FabiusFunction.StirlingFirstModH
 import FabiusFunction.LagrangeInversion
 import FabiusFunction.LambertWSeries
+import FabiusFunction.FussCatalanSeries
 import FabiusFunction.SymmetricFunctionTransform
 import FabiusFunction.SymmetricFunctionGenerating
 import FabiusFunction.FiniteQBinomialCore

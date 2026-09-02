@@ -8,8 +8,8 @@ Two "reverse" recurrences express `(n-k) c(n,k)` through entries further along t
 column of the triangle:
 
 * **row form:** `(n-k) c(n,k) = ∑_{j=2}^{n-k+1} C(k+j-1, j) c(n, k+j-1)`, from the coefficient
-  of `x^{k}` in `x^{(n+1)} = x · (x+1)^{(n)}` (`stirlingFirst_succ_succ_eq_sum_choose`,
-  `first_reverse_row`);
+  of `x^{k}` in `x^{(n+1)} = x · (x+1)^{(n)}` (`first_reverse_row`, on top of
+  `stirlingFirst_succ_succ_eq_sum_choose` in `StirlingBasisChange`);
 * **column form:** `(n-k) c(n,k) = ∑_{j=2}^{n-k+1} (j-2)! C(n,j) c(n-j+1, k)`, from the
   exponential generating functions `F_k = (-log(1-x))^k/k!`: the right side has EGF
   `(x + (1-x) log(1-x)) F_k'` and the left side `x F_k' - k F_k`, and these agree because
@@ -17,7 +17,7 @@ column of the triangle:
 
 ## Main results
 
-* `stirlingFirst_succ_succ_eq_sum_choose`, `first_reverse_row`.
+* `first_reverse_row`.
 * `X_mul_derivative_egfA`, `natCast_mul_egfA`, `egfA_sub`, `seq_eq_of_egfA_eq`,
   `egfA_stirlingFirst`, `one_sub_X_mul_negLog_mul_derivative_egfA_stirlingFirst`,
   `egfA_kernel`, `egfA_reverse_column`, `egfA_first_reverse_column`, `first_reverse_column`.
@@ -35,32 +35,16 @@ section Row
 
 open Polynomial
 
-/-- `c(n+1,k+1) = ∑_r C(r,k) c(n,r)`: the coefficient of `x^{k+1}` in
-`x^{(n+1)} = x · (x+1)^{(n)}`. -/
-theorem stirlingFirst_succ_succ_eq_sum_choose (n k : ℕ) :
-    Nat.stirlingFirst (n + 1) (k + 1) =
-      ∑ r ∈ range (n + 1), r.choose k * Nat.stirlingFirst n r := by
-  have h := congrArg (fun p : ℕ[X] => p.coeff (k + 1)) (ascPochhammer_succ_left (S := ℕ) n)
-  rw [coeff_ascPochhammer, Polynomial.coeff_X_mul, ascPochhammer_eq_sum_monomial_stirlingFirst,
-    finsetSum_comp, finset_sum_coeff] at h
-  simp only [← C_mul_X_pow_eq_monomial, C_mul_comp, pow_comp, X_comp, coeff_C_mul,
-    coeff_X_add_one_pow, Nat.cast_id] at h
-  rcases le_or_gt k n with hkn | hnk
-  · rw [if_pos (by omega)] at h
-    rw [h]
-    exact Finset.sum_congr rfl fun r _ => mul_comm _ _
-  · rw [Nat.stirlingFirst_eq_zero_of_lt (by omega)]
-    symm
-    exact Finset.sum_eq_zero fun r hr =>
-      by rw [Nat.choose_eq_zero_of_lt (by have := Finset.mem_range.mp hr; omega), zero_mul]
-
 /-- **Reverse row recurrence of the first kind:**
 `(n - k) c(n,k) = ∑_{j=2}^{n-k+1} C(k+j-1, j) c(n, k+j-1)`, written with `j = i + 2`. -/
 theorem first_reverse_row (n k : ℕ) (hk : 1 ≤ k) (hkn : k ≤ n) :
     (n - k) * Nat.stirlingFirst n k =
       ∑ i ∈ range (n - k), (k + i + 1).choose (i + 2) * Nat.stirlingFirst n (k + i + 1) := by
   obtain ⟨m, rfl⟩ : ∃ m, k = m + 1 := ⟨k - 1, by omega⟩
-  have h := stirlingFirst_succ_succ_eq_sum_choose n m
+  have h : Nat.stirlingFirst (n + 1) (m + 1) =
+      ∑ r ∈ range (n + 1), r.choose m * Nat.stirlingFirst n r := by
+    rw [stirlingFirst_succ_succ_eq_sum_choose]
+    exact Finset.sum_congr rfl fun r _ => mul_comm _ _
   rw [Nat.stirlingFirst_succ_succ, ← Nat.Ico_zero_eq_range,
     ← Finset.sum_Ico_consecutive _ (Nat.zero_le (m + 2)) (by omega : m + 2 ≤ n + 1),
     Nat.Ico_zero_eq_range, Finset.sum_range_succ, Finset.sum_range_succ, Nat.choose_self,

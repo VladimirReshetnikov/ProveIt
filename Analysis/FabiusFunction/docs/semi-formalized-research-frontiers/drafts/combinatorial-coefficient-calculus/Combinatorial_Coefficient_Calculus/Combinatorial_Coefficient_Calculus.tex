@@ -647,7 +647,8 @@ which follows immediately from the displayed formula for $C_k$.
 $0\le i<n-k$, and $(-1)^j\binom{-k}{j}$ replaced by $\binom{k+j-1}{j}$: the
 coefficient identity
 $\UnsignedStirlingFirstKind{n+1}{k+1}=\sum_r\binom rk\UnsignedStirlingFirstKind nr$
-is \lean{Fabius.stirlingFirst_succ_succ_eq_sum_choose}, from
+is \lean{Fabius.stirlingFirst_succ_succ_eq_sum_choose} (module
+\lean{StirlingBasisChange}), from
 $\RisingFactorial{x}{n+1}=x\,\RisingFactorial{x+1}{n}$
 (Mathlib's \lean{ascPochhammer_succ_left}), and removing the terms $r=k-1,k$
 gives the recurrence.  \cref{eq:first-reverse-column} is
@@ -1281,9 +1282,13 @@ which of the total $\ell+m$ components were marked.
 % ed.: crosswalk added 2026-09-01; the first-kind hockey stick is stated with
 % lower index $k$, correcting the misprint $n$ (see the editorial note in the
 % statement).
-All six identities are in module \lean{StirlingSummations}, over the natural
-numbers.  The first equality of \cref{eq:first-two-sums} is
-\lean{Fabius.stirlingFirst_succ_succ_eq_sum_choose}, proved as the coefficient
+All six identities are over the natural numbers, and lie in module
+\lean{StirlingSummations} except where noted.  The first equality of
+\cref{eq:first-two-sums} is
+\lean{Fabius.stirlingFirst_succ_succ_eq_sum_choose} (module
+\lean{StirlingBasisChange}, which holds it because the reverse row recurrence
+of \cref{eq:first-reverse-row} needs the same identity and neither module
+imports the other), proved as the coefficient
 of $x^{k+1}$ in $\RisingFactorial{x}{n+1}=x\,(x+1)\cdots(x+n)$, and the second
 is \lean{Fabius.stirlingFirst_succ_succ_eq_sum_descFactorial} (with
 $n!/j!=\FallingFactorial{n}{n-j}$); the first equality of
@@ -5059,6 +5064,37 @@ which is \eqref{eq:lagrange-burmann-alt}.  Take $H(w)=w$ for
 \eqref{eq:lagrange-basic}.
 \end{proof}
 
+\begin{remark}[Formal crosswalk]
+% ed.: crosswalk added 2026-09-02; the Lean proof is algebraic, with no residue calculus.
+Module \lean{LagrangeInversion} formalizes \cref{eq:lagrange-burmann} as
+\lean{Fabius.Lagrange.coeff_subst_derivative}, in the division-free form
+$n[z^n]H(g)=[w^{n-1}]H'(w)\phi(w)^n$, and \cref{eq:lagrange-basic} as
+\lean{Fabius.Lagrange.coeff_subst_id}, over an arbitrary commutative
+$\RationalNumbers$-algebra.  The core lemmas take $g$ in the shape $g=z\,u$ with $u=\phi(g)$ and $u$
+invertible, and the solution is then \emph{constructed} rather than assumed:
+\lean{Fabius.Lagrange.solution} builds it as the compositional inverse of
+$z\psi(z)$, where $\psi$ is the power-series inverse of $\phi$, and
+\lean{Fabius.Lagrange.solution_eq} proves it satisfies
+\cref{eq:lagrange-functional}.  So
+\lean{Fabius.Lagrange.coeff_solution_subst_derivative} and
+\lean{Fabius.Lagrange.coeff_solution} are unconditional statements about a
+witness, not conditional ones.  Uniqueness of $g$ and
+\cref{eq:lagrange-burmann-alt} are not formalized.
+The proof above is unavailable in Lean, because it runs through
+\cref{thm:res-subst}, which is itself unformalized.  The formal proof is
+purely algebraic and rests on one cancellation: writing $v$ for the inverse of
+$u$, one has $v^{M+1}g'=v^M-\frac1Mz(v^M)'$, whose $M$th coefficient vanishes
+for every $M\ge1$ (\lean{Fabius.Lagrange.coeff_pow_succ_mul_derivative_eq_zero}),
+while $vg'$ has constant term $1$
+(\lean{Fabius.Lagrange.coeff_inv_mul_derivative}).  Substituting
+$A(g)=(A\phi^n)(g)\,v^n$ into the truncated substitution expansion
+\lean{Fabius.coeff_mul_subst_eq} therefore collapses the sum to its single
+surviving term, which is
+$[z^{n-1}]\bigl(A(g)g'\bigr)=[w^{n-1}]\bigl(A\phi^n\bigr)$
+(\lean{Fabius.Lagrange.coeff_subst_mul_derivative}); the chain rule
+\lean{PowerSeries.derivative_subst} turns that into the displayed form.
+\end{remark}
+
 \section{Analytic inverse functions}
 \begin{theorem}[Analytic Lagrange inversion]\label{thm:analytic-lagrange}
 Let $f$ be analytic near $a$, let $b=f(a)$, and suppose $f'(a)\ne0$.  Its local
@@ -5209,6 +5245,30 @@ one, so this is the radius.  Stirling's formula gives coefficients of order
 $Ck^{-3/2}R_p^{-((p-1)k+1)}$, which proves absolute convergence on the boundary.
 \end{proof}
 
+\begin{remark}[Formal crosswalk]
+% ed.: crosswalk added 2026-09-02; the series is Lean, the radius is not.
+Module \lean{FussCatalanSeries} constructs the distinguished solution rather
+than assuming it: with $q=p-1$, the equation $x-x^{q+1}=z$ is the Lagrange
+functional equation for $\phi(w)=(1-w^q)^{-1}$, and that weight is invertible
+by construction (\lean{Fabius.fussPhi_mul}), so \lean{Fabius.Lagrange.solution}
+applies and gives \lean{Fabius.fussSolution}; the polynomial form of the
+defining equation is \lean{Fabius.fussSolution_sub_pow}.
+\cref{eq:fuss-series} then splits into two statements:
+\lean{Fabius.coeff_fussSolution}, which is
+$(qk+1)[z^{qk+1}]x=\binom{(q+1)k}{k}$, and
+\lean{Fabius.coeff_fussSolution_eq_zero}, which is the vanishing of every
+coefficient whose index is not of the form $qk+1$.  Both follow from
+\cref{eq:lagrange-basic} once $\phi$ is written as the all-ones series with $w$
+replaced by $w^q$ (Mathlib's \lean{PowerSeries.expand}); because that
+substitution is an algebra map it commutes with the $n$th power, so the
+negative binomial coefficients come straight from
+\lean{PowerSeries.mk_one_pow_eq_mk_choose_add} and the index condition from
+\lean{PowerSeries.coeff_expand_of_not_dvd}.
+The radius \cref{eq:fuss-radius}, the critical-point argument that identifies
+it, and the absolute convergence on $|z|=R_p$ are analytic and are not
+formalized.
+\end{remark}
+
 \section{Lambert's \texorpdfstring{$W$}{W} function at the origin}
 The Lambert function satisfies $\LambertW(z)\EulerE^{\LambertW(z)}=z$.
 \begin{theorem}\label{thm:lambert-W-zero}
@@ -5226,6 +5286,22 @@ $g_n=D^{n-1}\EulerE^{-nw}|_{w=0}=(-n)^{n-1}$.  The inverse map has its nearest c
 point at $w=-1$, where $f(-1)=-\EulerE^{-1}$; this square-root branch point determines
 the radius.
 \end{proof}
+
+\begin{remark}[Formal crosswalk]
+% ed.: crosswalk added 2026-09-02; the series is Lean, the radius is not.
+Module \lean{LambertWSeries} constructs $W$ rather than assuming it:
+$W=z\EulerE^{-W}$ is the Lagrange functional equation with
+$\phi(w)=\EulerE^{-w}$, which is invertible with inverse $\EulerE^{w}$
+(\lean{Fabius.expNeg_mul_exp}), so \lean{Fabius.Lagrange.solution} applies and
+\lean{Fabius.lambertW} is its value.  The familiar form $W\EulerE^W=z$ is
+\lean{Fabius.lambertW_mul_exp_subst}, and \cref{eq:lambert-W-zero} is
+\lean{Fabius.coeff_lambertW}, in the equivalent shape
+$[z^{n+1}]W=(-(n+1))^n/(n+1)!$ that avoids a truncated subtraction; it follows
+from \cref{eq:lagrange-basic} together with
+$(\EulerE^{-w})^n=\EulerE^{-nw}$ (\lean{Fabius.expNeg_pow}).  The radius of
+convergence $\EulerE^{-1}$, and with it the branch-point argument above, is
+analytic and is not formalized.
+\end{remark}
 
 \section{A rapidly useful expansion around \texorpdfstring{$\LambertW(e)=1$}{W(e)=1}}
 Put $\xi=\log z-1$ and $u=\LambertW(z)-1$.  Then
@@ -9556,7 +9632,7 @@ coefficient calculus rather than a catalogue of isolated identities.
 
 \section{Lean formalization register}
 \label{sec:lean-register}
-Every theorem-like environment of this monograph is listed here with the status of its formalization in the Lean development \path{Analysis/FabiusFunction/Lean/FabiusFunction} (Mathlib \texttt{v4.32.0}).  \emph{Lean} means that a public, compiled declaration proves the exact statement or a more general one (the generalization is then noted next to the result); \emph{partial} means that a named part of the statement is proved and the rest is named; \emph{none} means that no Lean counterpart exists yet.  A citation, a numerical check, or a plausible derivation does not count.  The register is generated from the source and must be regenerated when results are added.  Current totals: 48 Lean, 34 partial, 119 none, of 201 results.
+Every theorem-like environment of this monograph is listed here with the status of its formalization in the Lean development \path{Analysis/FabiusFunction/Lean/FabiusFunction} (Mathlib \texttt{v4.32.0}).  \emph{Lean} means that a public, compiled declaration proves the exact statement or a more general one (the generalization is then noted next to the result); \emph{partial} means that a named part of the statement is proved and the rest is named; \emph{none} means that no Lean counterpart exists yet.  A citation, a numerical check, or a plausible derivation does not count.  The register is generated from the source and must be regenerated when results are added.  Current totals: 48 Lean, 37 partial, 116 none, of 201 results.
 
 \begin{footnotesize}
 \begin{longtable}{@{}p{0.16\textwidth}p{0.22\textwidth}p{0.08\textwidth}p{0.40\textwidth}@{}}
@@ -9590,7 +9666,7 @@ Result & Title & Status & Lean declarations (module) \\
 \Cref{thm:second-ogf} & Fixed-$k$ ordinary generating function & Lean & \lean{Fabius.prod_one_sub_mul_X_mul_stirlingColumnOGF} and \lean{Fabius.stirlingColumnOGF_eq_prod_mk_pow} (\lean{StirlingOrdinaryGF}): the column series $\sum_r\StirlingSecondKind{k+r}{k}x^r$ times $\prod_{j\le k}(1-jx)$ is $1$, and equals the product of the geometric series $\sum_r j^rx^r$, in $R[[x]]$ for every commutative ring $R$; the complete-homogeneous coefficient formula is the coefficient extraction of the latter and is not stated separately \\
 \Cref{thm:stirling-transform} & Stirling transform and its inverse & Lean & the inversion formula is \lean{Fabius.stirling_inversion}, \lean{Fabius.stirling_inversion_symm}, \lean{Fabius.stirling_inversion_iff} (\lean{StirlingBasisChange}), for sequences in any additive commutative group; the generating-function form is \lean{Fabius.egfA_subst_exp_sub_one} and \lean{Fabius.egfA_subst_log} (\lean{StirlingTransformEGF}): substituting $\EulerE^t-1$, respectively $\log(1+t)$, into an exponential generating function applies the second-kind, respectively signed first-kind, Stirling transform \\
 \Cref{thm:normal-order} & Stirling normal-ordering identities & partial & \lean{Fabius.iterate_X_mul_derivative} (\cref{eq:normal1}) and \lean{Fabius.xkDk_eq_sum_signedStirlingFirst} (\cref{eq:normal2}, by Stirling inversion) in \lean{StirlingNormalOrder}, as identities of operators applied to an arbitrary polynomial over any commutative ring; the falling-factorial form $\FallingFactorial{xD}{n}$ and the operator series \cref{eq:der-from-diff,eq:diff-from-der} are not formalized \\
-\Cref{thm:paired-sums} & First- and second-kind summations & Lean & \lean{StirlingSummations}: \cref{eq:first-two-sums} is \lean{Fabius.stirlingFirst_succ_succ_eq_sum_choose} and \lean{Fabius.stirlingFirst_succ_succ_eq_sum_descFactorial}, \cref{eq:second-two-sums} is \lean{Fabius.stirlingSecond_succ_succ_eq_sum} (\lean{BellStirling}) and \lean{Fabius.stirlingSecond_succ_succ_eq_sum_pow}, the hockey sticks \cref{eq:first-hockey,eq:second-hockey} are \lean{Fabius.stirlingFirst_add_succ_eq_sum} and \lean{Fabius.stirlingSecond_add_succ_eq_sum} (with lower index $k$ in the first-kind case, correcting a misprint), and the convolutions \cref{eq:first-convolution,eq:second-convolution} are \lean{Fabius.choose_mul_stirlingFirst_add} and \lean{Fabius.choose_mul_stirlingSecond_add} \\
+\Cref{thm:paired-sums} & First- and second-kind summations & Lean & \lean{StirlingSummations}: \cref{eq:first-two-sums} is \lean{Fabius.stirlingFirst_succ_succ_eq_sum_choose} (module \lean{StirlingBasisChange}) and \lean{Fabius.stirlingFirst_succ_succ_eq_sum_descFactorial}, \cref{eq:second-two-sums} is \lean{Fabius.stirlingSecond_succ_succ_eq_sum} (\lean{BellStirling}) and \lean{Fabius.stirlingSecond_succ_succ_eq_sum_pow}, the hockey sticks \cref{eq:first-hockey,eq:second-hockey} are \lean{Fabius.stirlingFirst_add_succ_eq_sum} and \lean{Fabius.stirlingSecond_add_succ_eq_sum} (with lower index $k$ in the first-kind case, correcting a misprint), and the convolutions \cref{eq:first-convolution,eq:second-convolution} are \lean{Fabius.choose_mul_stirlingFirst_add} and \lean{Fabius.choose_mul_stirlingSecond_add} \\
 \Cref{thm:first-double-sum} & Explicit first-kind double sum & none &  \\
 \Cref{thm:signed-near-diagonal-partition} & Near-diagonal partition formula & none &  \\
 \Cref{thm:mod-h-structure} & Rigorous finite-modulus replacement for the archived spectral form & partial & \cref{eq:mod-h-block-product} is \lean{Fabius.stirlingFirst_cast_eq_coeff_block} (module \lean{StirlingFirstModH}), together with the rising-factorial product form \lean{Fabius.ascPochhammer_eq_prod_range}; the eventual vanishing that makes the spectral reading vacuous is \lean{Fabius.stirlingFirst_cast_eq_zero_of_lt}.  The linear recurrence over $\IntegerNumbers/h\IntegerNumbers$ and the Jordan decomposition are not formalized. \\
@@ -9671,12 +9747,12 @@ theorem (unlabelled, no.~76) &  & none &  \\
 \Cref{thm:faa-multivariate} & Multivariate Fa\`a di Bruno for distinct variables & none &  \\
 \Cref{thm:ordinary-composition} & Ordinary composition & partial & \cref{eq:ordinary-composition-bell} is \lean{Fabius.coeff_subst_eq_sum_ordPartialBell} (\lean{OrdinaryBellComposition}) over any commutative ring, with the ordinary Bell polynomials \lean{Fabius.ordPartialBell} defined by the composition recurrence $\OrdinaryPartialBellPolynomial n{k+1}=\sum_{i\ge1}b_i\OrdinaryPartialBellPolynomial{n-i}{k}$ (so \cref{eq:ordinary-composition-compositions} is the definition unrolled) and $[x^n]G^k=\OrdinaryPartialBellPolynomial nk(b)$ as \lean{Fabius.coeff_pow_eq_ordPartialBell}; the reciprocal formula \cref{eq:reciprocal-ordinary-bell} is \lean{Fabius.coeff_reciprocalSeries}; the multinomial form \cref{eq:ordinary-composition-multiplicities} is not formalized \\
 \Cref{thm:exponential-composition} & Exponential composition & Lean & \lean{Fabius.egfA_subst_bellWeightSeries} (\lean{BellComposition}): substitution of exponential generating functions over any commutative $\mathbb Q$-algebra \\
-\Cref{thm:lagrange-burmann} & Lagrange--Bürmann & none &  \\
+\Cref{thm:lagrange-burmann} & Lagrange--Bürmann & partial & \cref{eq:lagrange-burmann} is \lean{Fabius.Lagrange.coeff_subst_derivative} and \cref{eq:lagrange-basic} is \lean{Fabius.Lagrange.coeff_subst_id} (module \lean{LagrangeInversion}), over any commutative $\RationalNumbers$-algebra and in the division-free form $n[z^n]H(g)=[w^{n-1}]H'\phi^n$, from the division-free core \lean{Fabius.Lagrange.coeff_subst_mul_derivative}.  The solution $g$ of \cref{eq:lagrange-functional} is constructed, not assumed (\lean{Fabius.Lagrange.solution}, \lean{Fabius.Lagrange.solution_eq}), so \lean{Fabius.Lagrange.coeff_solution_subst_derivative} and \lean{Fabius.Lagrange.coeff_solution} are unconditional; uniqueness and \cref{eq:lagrange-burmann-alt} are not formalized. \\
 \Cref{thm:analytic-lagrange} & Analytic Lagrange inversion & none &  \\
 \Cref{thm:inverse-bell-coeff} & Explicit inverse coefficients & none &  \\
 \Cref{thm:associahedral-inversion} & Associahedral inversion & none &  \\
-\Cref{thm:fuss-series} &  & none &  \\
-\Cref{thm:lambert-W-zero} &  & none &  \\
+\Cref{thm:fuss-series} &  & partial & \cref{eq:fuss-series} is \lean{Fabius.coeff_fussSolution} together with \lean{Fabius.coeff_fussSolution_eq_zero} (module \lean{FussCatalanSeries}), for \lean{Fabius.fussSolution} constructed as the Lagrange solution; the polynomial form of the defining equation is \lean{Fabius.fussSolution_sub_pow}.  The radius \cref{eq:fuss-radius} and the boundary convergence are analytic and are not formalized. \\
+\Cref{thm:lambert-W-zero} &  & partial & The series \cref{eq:lambert-W-zero} is \lean{Fabius.coeff_lambertW} (module \lean{LambertWSeries}), for \lean{Fabius.lambertW} constructed as the Lagrange solution of $W=z\EulerE^{-W}$; the defining equation in the form $W\EulerE^W=z$ is \lean{Fabius.lambertW_mul_exp_subst}.  The radius of convergence $\EulerE^{-1}$ is analytic and is not formalized. \\
 \Cref{thm:shifted-lagrange-reversion} & Lagrange reversion & none &  \\
 \Cref{thm:laplace-bell} & Laplace--Erd\'elyi coefficient formula & none &  \\
 \Cref{thm:merged-binomial-inversion} & Binomial inversion & partial & \lean{Fabius.binomial_inversion_iff} (additive commutative groups) and \lean{Fabius.binomial_inversion_ring_iff} (commutative rings) (\lean{BinomialInversion}); the kernel orthogonality is \lean{Fabius.sum_Icc_neg_one_pow_choose_mul_choose}; the EGF form is not formalized \\

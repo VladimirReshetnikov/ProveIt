@@ -16,7 +16,7 @@ kind `c(n,k)` and of the second kind `S(n,k)`:
 
 ## Main results
 
-* `stirlingFirst_succ_succ_eq_sum_choose`, `stirlingFirst_succ_succ_eq_sum_descFactorial`,
+* `stirlingFirst_succ_succ_eq_sum_descFactorial`,
   `stirlingSecond_succ_succ_eq_sum_pow`.
 * `stirlingFirst_add_succ_eq_sum`, `stirlingSecond_add_succ_eq_sum`.
 * `choose_mul_stirlingFirst_add`, `choose_mul_stirlingSecond_add`.
@@ -29,25 +29,6 @@ open Finset Polynomial
 namespace Fabius
 
 /-! ### Two-sum identities -/
-
-/-- `c(n+1,k+1) = ∑_{j ≤ n} c(n,j) C(j,k)`: the coefficient of `x^{k+1}` in
-`x^{\overline{n+1}} = x · (x+1)^{\overline n}`. -/
-theorem stirlingFirst_succ_succ_eq_sum_choose (n k : ℕ) :
-    Nat.stirlingFirst (n + 1) (k + 1) =
-      ∑ j ∈ Finset.range (n + 1), Nat.stirlingFirst n j * j.choose k := by
-  have h : (ascPochhammer ℕ (n + 1)).coeff (k + 1) =
-      (X * (ascPochhammer ℕ n).comp (X + 1)).coeff (k + 1) := by
-    rw [ascPochhammer_succ_left]
-  rw [coeff_X_mul, ascPochhammer_eq_sum_monomial_stirlingFirst ℕ n, finsetSum_comp,
-    finsetSum_coeff, coeff_ascPochhammer] at h
-  simp only [monomial_comp, coeff_C_mul, coeff_X_add_one_pow, Nat.cast_id] at h
-  split_ifs at h with hk
-  · exact h
-  · rw [Nat.stirlingFirst_eq_zero_of_lt (by omega)]
-    symm
-    refine Finset.sum_eq_zero fun j hj => ?_
-    have hjn : j ≤ n := Nat.lt_succ_iff.mp (Finset.mem_range.mp hj)
-    rw [Nat.choose_eq_zero_of_lt (by omega), mul_zero]
 
 /-- `c(n+1,k+1) = ∑_{j ≤ n} n^{\underline{n-j}} c(j,k)`, i.e. `∑_j (n!/j!) c(j,k)`:
 the recurrence `c(n+1,k+1) = n c(n,k+1) + c(n,k)` iterated in `n`. -/
