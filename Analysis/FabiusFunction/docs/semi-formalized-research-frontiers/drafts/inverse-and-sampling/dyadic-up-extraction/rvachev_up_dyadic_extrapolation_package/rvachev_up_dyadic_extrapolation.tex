@@ -1,0 +1,1143 @@
+\documentclass[11pt]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,mathrsfs}
+\usepackage{booktabs,array,longtable}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{listings}
+\usepackage{fancyhdr}
+
+\definecolor{linkblue}{RGB}{25,75,135}
+\definecolor{codegray}{RGB}{247,248,250}
+\hypersetup{
+  colorlinks=true,
+  linkcolor=linkblue,
+  citecolor=linkblue,
+  urlcolor=linkblue,
+  pdftitle={Exact quarter-base extrapolation for dyadic samples of Rvachev's up-function spline prefixes},
+  pdfauthor={Technical note accompanying the ProveIt Fabius-function development},
+  pdfsubject={Rvachev up-function, finite sinc products, dyadic rational values, q-binomial extrapolation},
+  pdfkeywords={Rvachev up-function, Fabius function, dyadic rational, q-binomial, q-Pochhammer, Richardson extrapolation}
+}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[C]{\small\nouppercase{\leftmark}}
+\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}
+
+\setlist[itemize]{leftmargin=2em,itemsep=0.2em,topsep=0.4em}
+\setlist[enumerate]{leftmargin=2.4em,itemsep=0.25em,topsep=0.4em}
+
+\lstset{
+  basicstyle=\ttfamily\small,
+  backgroundcolor=\color{codegray},
+  frame=single,
+  rulecolor=\color{black!20},
+  breaklines=true,
+  columns=fullflexible,
+  showstringspaces=false,
+  keepspaces=true
+}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\upf}{\operatorname{up}}
+\newcommand{\sinc}{\operatorname{sinc}}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\Prob}{\mathbb{P}}
+\newcommand{\dd}{\,\mathrm{d}}
+\newcommand{\pospart}[1]{\left(#1\right)_{+}}
+\newcommand{\qbinom}[3]{\genfrac{[}{]}{0pt}{}{#1}{#2}_{#3}}
+\newcommand{\poch}[3]{\left(#1;#2\right)_{#3}}
+\newcommand{\G}{\mathcal{G}}
+\newcommand{\F}{\mathcal{F}}
+\newcommand{\depth}{\operatorname{depth}_2}
+
+\title{\bfseries Exact Quarter-Base Extrapolation for Dyadic Samples\\
+       of Rvachev's Up-Function Spline Prefixes}
+\author{A technical note accompanying the ProveIt Fabius-function development}
+\date{2 September 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Let
+\[
+ \widehat{\upf}(t)=\prod_{k=0}^{\infty}
+ \sinc\!\left(\frac{\pi t}{2^k}\right),
+ \qquad \sinc z=\frac{\sin z}{z},
+\]
+and let $\upf_n$ be the inverse Fourier transform of the prefix through $k=n$.
+For a fixed dyadic $x\in[-1,1]$, put $q_n=\upf_n(x)$.  We prove that after the
+spline grid resolves $x$, the sequence is not merely asymptotic to a finite
+sum of exponentials: it is \emph{exactly} of the form
+\[
+ q_n=\upf(x)+\sum_{r=1}^{d}A_r(x)4^{-rn},
+ \qquad n\ge s,
+\]
+where $a=1-|x|=m/2^s$ is reduced and $d=\lfloor s/2\rfloor$.  For every
+nontrivial depth $s\ge2$, all $A_1(x),\ldots,A_d(x)$ are nonzero, so this is
+the exact number of geometric modes.
+
+The constant term can consequently be recovered from only $d+1$ consecutive
+spline values.  With $\rho=1/4$, any $N\ge s$ gives the single closed formula
+\[
+ \boxed{
+ \upf(x)=\frac{1}{\poch{\rho}{\rho}{d}}
+ \sum_{j=0}^{d}(-1)^j\rho^{\binom{j+1}{2}}
+ \qbinom{d}{j}{\rho}\,q_{N+d-j}.}
+\]
+This is a quarter-base Gaussian-binomial/Richardson row.  Its generating
+polynomial is $\poch{\rho z}{\rho}{d}/\poch{\rho}{\rho}{d}$, whose roots
+annihilate all the decaying modes.  We also give the exact Vandermonde system
+for all coefficients, a triangular extraction algorithm, stability bounds,
+and exact rational examples.  The accompanying Python program uses only the
+standard library and verifies every displayed numerical identity with
+\texttt{fractions.Fraction} arithmetic.
+\end{abstract}
+
+\tableofcontents
+
+\section{Statement of the problem and the answer}
+
+We use the Fourier convention
+\begin{equation}
+ \widehat f(t)=\int_{\R}f(x)e^{-2\pi ixt}\dd x,
+ \qquad
+ f(x)=\int_{\R}\widehat f(t)e^{2\pi ixt}\dd t.
+ \label{eq:fourier-convention}
+\end{equation}
+The Rvachev up-function is the even, nonnegative, compactly supported
+$C^\infty$ function normalized by
+\begin{equation}
+ \widehat{\upf}(t)=\prod_{k=0}^{\infty}
+ \sinc\!\left(\frac{\pi t}{2^k}\right).
+ \label{eq:up-fourier-product}
+\end{equation}
+For $n\ge0$, define the finite-product approximation by
+\begin{equation}
+ \widehat{\upf_n}(t)=\prod_{k=0}^{n}
+ \sinc\!\left(\frac{\pi t}{2^k}\right).
+ \label{eq:finite-product-definition}
+\end{equation}
+There are $n+1$ sinc factors in \eqref{eq:finite-product-definition}; this
+indexing point matters.  The inverse transform $\upf_n$ is a compactly
+supported piecewise polynomial of degree $n$.
+
+Fix a dyadic $x\in[-1,1]$ and put
+\begin{equation}
+ q_n:=\upf_n(x),
+ \qquad
+ a:=1-|x|\in[0,1].
+ \label{eq:q-and-a}
+\end{equation}
+Write $a$ in reduced dyadic form
+\begin{equation}
+ a=\frac{m}{2^s},
+ \qquad 0\le m\le2^s,
+ \label{eq:reduced-a}
+\end{equation}
+where $s=0$ for $a\in\{0,1\}$ and, otherwise, $m$ is odd.  We call $s$ the
+reduced dyadic depth of $a$ and set
+\begin{equation}
+ d:=\left\lfloor\frac{s}{2}\right\rfloor,
+ \qquad \rho:=\frac14.
+ \label{eq:d-and-rho}
+\end{equation}
+
+The main conclusions are the following.
+
+\begin{theorem}[Exact eventual geometric tail]
+\label{thm:main-tail}
+For every dyadic $x\in[-1,1]$, with $s,d$ as above, there are rational
+coefficients $A_1(x),\ldots,A_d(x)$ such that
+\begin{equation}
+ \boxed{
+ q_n=\upf(x)+\sum_{k=1}^{d}A_k(x)\rho^{kn}
+ \qquad(n\ge s).}
+ \label{eq:main-tail}
+\end{equation}
+At the three depth-zero points, the statement is understood directly and is
+valid already at $n=0$.  If $s\ge2$, then every displayed coefficient $A_k(x)$ is nonzero; hence the
+number $d$ of decaying modes is exact.
+\end{theorem}
+
+\begin{theorem}[Single q-binomial extraction formula]
+\label{thm:main-extraction}
+Let $N\ge s$.  Then
+\begin{equation}
+ \boxed{
+ \upf(x)=\frac{1}{\poch{\rho}{\rho}{d}}
+ \sum_{j=0}^{d}(-1)^j\rho^{\binom{j+1}{2}}
+ \qbinom{d}{j}{\rho}\,q_{N+d-j},
+ \qquad \rho=\frac14.}
+ \label{eq:main-extraction}
+\end{equation}
+Here
+\begin{equation}
+ \poch{z}{q}{d}=\prod_{r=0}^{d-1}(1-zq^r),
+ \qquad
+ \qbinom{d}{j}{q}
+ =\frac{\poch{q}{q}{d}}
+ {\poch{q}{q}{j}\poch{q}{q}{d-j}}.
+ \label{eq:q-notation}
+\end{equation}
+In particular, the canonical choice $N=s$ recovers the exact rational value
+from $q_s,q_{s+1},\ldots,q_{s+d}$.
+\end{theorem}
+
+The rest of the article proves these statements, identifies the coefficients,
+and turns the closed formula into an exact algorithm.
+
+\section{Finite sinc products are centered Fabius splines}
+
+\subsection{Box densities and a random-sum interpretation}
+
+For $k\ge0$, put
+\begin{equation}
+ b_k(x)=2^k\mathbf 1_{[-2^{-k-1},\,2^{-k-1}]}(x).
+ \label{eq:box-density}
+\end{equation}
+A direct integration using \eqref{eq:fourier-convention} gives
+\begin{equation}
+ \widehat b_k(t)=\sinc\!\left(\frac{\pi t}{2^k}\right).
+ \label{eq:box-transform}
+\end{equation}
+Consequently
+\begin{equation}
+ \upf_n=b_0*b_1*\cdots*b_n.
+ \label{eq:finite-convolution}
+\end{equation}
+Equivalently, $\upf_n$ is the probability density of
+\begin{equation}
+ Z_n=\sum_{k=0}^{n}2^{-k}V_k,
+ \qquad V_k\sim\operatorname{Unif}\!\left[-\frac12,\frac12\right]
+ \quad\text{independently}.
+ \label{eq:Zn}
+\end{equation}
+This immediately proves evenness and nonnegativity.  It also shows that the
+support is
+\begin{equation}
+ \operatorname{supp}\upf_n
+ =\left[-1+2^{-n-1},\,1-2^{-n-1}\right].
+ \label{eq:finite-support}
+\end{equation}
+
+\subsection{The explicit Thue--Morse spline}
+
+Let
+\begin{equation}
+ \eps_r=(-1)^{s_2(r)},
+ \label{eq:thue-morse}
+\end{equation}
+where $s_2(r)$ is the number of $1$'s in the binary expansion of $r$.  For
+$n\ge1$ define the centered spline
+\begin{equation}
+ S_n(y)=\frac{1}{2^{\binom n2}n!}
+ \sum_{r\ge0}\eps_r\pospart{2^ny-\frac12-r}^{n}.
+ \label{eq:centered-spline}
+\end{equation}
+At a fixed $y$, the sum is finite.  A convenient cutoff is
+\begin{equation}
+ N_n(y)=\max\!\left(0,\left\lfloor2^ny+\frac12\right\rfloor\right),
+ \qquad 0\le r<N_n(y).
+ \label{eq:spline-cutoff}
+\end{equation}
+
+\begin{lemma}[Exact indexing bridge]
+\label{lem:indexing-bridge}
+For every $n\ge1$ and every $x\in[-1,1]$,
+\begin{equation}
+ \boxed{\upf_n(x)=S_n(1+x).}
+ \label{eq:upn-Sn}
+\end{equation}
+On the same interval, evenness also gives
+\begin{equation}
+ \upf_n(x)=S_n(1-|x|).
+ \label{eq:upn-Sn-even}
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+The standard truncated-power formula for the density of a sum of independent
+uniform variables, applied to the widths $2^{-k}$ for $0\le k\le n$, gives
+\begin{align}
+ \upf_n(x)
+ &=\frac{1}{n!\prod_{k=0}^{n}2^{-k}}
+ \sum_{A\subseteq\{0,\ldots,n\}}(-1)^{|A|}
+ \pospart{x+\frac12\sum_{k=0}^{n}2^{-k}-\sum_{k\in A}2^{-k}}^n.
+ \label{eq:subset-box-spline}
+\end{align}
+Encode a subset $A$ by
+\begin{equation}
+ r=\sum_{k\in A}2^{n-k}.
+\end{equation}
+Then $r$ runs from $0$ to $2^{n+1}-1$ and $(-1)^{|A|}=\eps_r$.  Since
+\begin{equation}
+ \frac12\sum_{k=0}^{n}2^{-k}=1-2^{-n-1},
+ \qquad
+ \prod_{k=0}^{n}2^{-k}=2^{-n(n+1)/2},
+\end{equation}
+For $x\in[-1,1]$, no index beyond $2^{n+1}-1$ can contribute.  Hence
+rescaling the positive part in \eqref{eq:subset-box-spline} yields
+\begin{equation}
+ \upf_n(x)=\frac{1}{2^{\binom n2}n!}
+ \sum_{r\ge0}\eps_r
+ \pospart{2^n(1+x)-\frac12-r}^{n},
+\end{equation}
+which is \eqref{eq:upn-Sn}.  Equation \eqref{eq:upn-Sn-even} follows because
+every factor $b_k$ in \eqref{eq:finite-convolution} is even.
+\end{proof}
+
+\begin{remark}[The indexing checkpoint]
+Some treatments use a prefix with factors $k=0,\ldots,n-1$.  That convention
+produces $S_{n-1}$ rather than $S_n$.  In this note, the user's product ends at
+$k=n$, contains $n+1$ factors, and produces the degree-$n$ spline $S_n$.
+\end{remark}
+
+\subsection{The Fabius distribution and the fold to up}
+
+Let $U_1,U_2,\ldots$ be independent uniform random variables on $[0,1]$ and
+put
+\begin{equation}
+ Y=\sum_{j=1}^{\infty}\frac{U_j}{2^j}.
+ \label{eq:Y}
+\end{equation}
+Let $F$ be the distribution function of $Y$.  Then $F$ is the bounded Fabius
+function \cite{fabius1966,arias1982,proveit}, and
+\begin{equation}
+ Z=2Y-1
+ \label{eq:Z}
+\end{equation}
+has density $\upf$ on $[-1,1]$.  The familiar fold relation is
+\begin{equation}
+ \upf(x)=F(1-|x|),
+ \qquad -1\le x\le1.
+ \label{eq:fold}
+\end{equation}
+For
+\begin{equation}
+ Y_n=\sum_{j=1}^{n}\frac{U_j}{2^j},
+ \qquad X_n=Y_n+2^{-n-1},
+ \label{eq:Yn-Xn}
+\end{equation}
+the spline in \eqref{eq:centered-spline} is exactly the CDF of $X_n$:
+\begin{equation}
+ S_n(y)=\Prob(X_n\le y),
+ \qquad 0\le y\le1.
+ \label{eq:Sn-cdf}
+\end{equation}
+This follows either from the same uniform-sum truncated-power formula or by
+induction from the smoothing recurrence.
+
+Combining \eqref{eq:q-and-a}, \eqref{eq:upn-Sn-even}, and \eqref{eq:fold}, our
+problem is therefore equivalent to this one:
+\begin{equation}
+ q_n=S_n(a)\longrightarrow F(a),
+ \qquad a=\frac{m}{2^s}\in[0,1].
+ \label{eq:reduced-problem}
+\end{equation}
+
+\section{Exact matched-cell moment deconvolution}
+
+The decisive observation is that the omitted random tail has exactly the
+half-width of one spline cell.
+
+\subsection{The centered tail and its moments}
+
+Let $Y'$ be an independent copy of $Y$.  The tail after $n$ binary scales is
+\begin{equation}
+ Y-Y_n\ \overset{\mathrm d}=\ 2^{-n}Y'.
+\end{equation}
+Consequently, with $Z'=2Y'-1$ and
+\begin{equation}
+ \delta_n:=2^{-n-1},
+ \label{eq:delta}
+\end{equation}
+we have the centered decomposition
+\begin{equation}
+ Y\ \overset{\mathrm d}=\ X_n+\delta_n Z'.
+ \label{eq:centered-tail-decomposition}
+\end{equation}
+Conditioning on $Z'$ gives the exact convolution identity
+\begin{equation}
+ F(t)=\E\bigl[S_n(t-\delta_n Z)\bigr]
+ =\int_{-1}^{1}S_n(t-\delta_n z)\upf(z)\dd z.
+ \label{eq:F-Sn-convolution}
+\end{equation}
+
+Define the even moments
+\begin{equation}
+ c_k:=\E(Z^{2k})=\int_{-1}^{1}z^{2k}\upf(z)\dd z,
+ \qquad c_0=1.
+ \label{eq:ck}
+\end{equation}
+The centered moment-generating function is
+\begin{align}
+ \mathscr C(T)
+ &:=\E(e^{TZ})
+   =\sum_{k\ge0}c_k\frac{T^{2k}}{(2k)!} \\
+ &=\prod_{j=1}^{\infty}
+   \frac{\sinh(T/2^j)}{T/2^j}.
+ \label{eq:C-product}
+\end{align}
+The product is the real-exponential counterpart of the sinc product
+\eqref{eq:up-fourier-product}.
+
+Define reciprocal centered moments $\gamma_k$ by
+\begin{equation}
+ \frac{1}{\mathscr C(T)}
+ =\sum_{k\ge0}\gamma_k\frac{T^{2k}}{(2k)!}.
+ \label{eq:gamma-definition}
+\end{equation}
+Thus
+\begin{equation}
+ \gamma_0=1,
+ \qquad
+ \sum_{j=0}^{r}\binom{2r}{2j}\gamma_jc_{r-j}=0
+ \quad(r\ge1).
+ \label{eq:gamma-convolution}
+\end{equation}
+The first values are
+\begin{equation}
+ \gamma_0=1,
+ \quad \gamma_1=-\frac19,
+ \quad \gamma_2=\frac{31}{675},
+ \quad \gamma_3=-\frac{2347}{59535},
+ \quad \gamma_4=\frac{1904369}{32531625}.
+ \label{eq:gamma-first}
+\end{equation}
+
+\begin{lemma}[Rationality and nonvanishing of the reciprocal moments]
+\label{lem:gamma-sign}
+Every $\gamma_k$ is rational, and
+\begin{equation}
+ (-1)^k\gamma_k>0.
+ \label{eq:gamma-sign}
+\end{equation}
+In particular, $\gamma_k\ne0$ for every $k$.
+\end{lemma}
+
+\begin{proof}
+The logarithm of \eqref{eq:C-product} is
+\begin{equation}
+ \log\mathscr C(T)
+ =\sum_{r\ge1}
+ \frac{2^{2r-1}B_{2r}}
+ {r(2r)!(2^{2r}-1)}T^{2r},
+ \label{eq:log-C}
+\end{equation}
+so its coefficients, and hence those of its exponential reciprocal, are
+rational.  For the sign, use
+\begin{equation}
+ \frac{z}{\sinh z}
+ =\sum_{r\ge0}(-1)^r b_r z^{2r},
+ \qquad b_r>0.
+ \label{eq:z-over-sinh-sign}
+\end{equation}
+For $r\ge1$, this follows explicitly from
+\begin{equation}
+ [z^{2r}]\frac{z}{\sinh z}
+ =\frac{2(1-2^{2r-1})B_{2r}}{(2r)!}.
+\end{equation}
+Now
+\begin{equation}
+ \frac1{\mathscr C(T)}
+ =\prod_{j=1}^{\infty}\frac{T/2^j}{\sinh(T/2^j)}.
+\end{equation}
+Every contribution to the coefficient of $T^{2k}$ has the common sign
+$(-1)^k$, and at least one contribution is strictly positive in absolute
+value.  This proves \eqref{eq:gamma-sign}.
+\end{proof}
+
+\subsection{A dyadic grid point is the center of one polynomial cell}
+
+The knots of $S_n$ are
+\begin{equation}
+ \kappa_{r,n}=\frac{r+1/2}{2^n}.
+ \label{eq:knots}
+\end{equation}
+If $a=M/2^n$, then
+\begin{equation}
+ [a-\delta_n,a+\delta_n]
+ =\left[\frac{M-1/2}{2^n},\frac{M+1/2}{2^n}\right]
+ \label{eq:matched-cell}
+\end{equation}
+is exactly one closed spline cell, centered at $a$.  On its interior, $S_n$
+is a single polynomial of degree at most $n$.  The exterior cells at $a=0$
+and $a=1$ are constant and cause no exception.
+
+\begin{theorem}[Exact reciprocal moment deconvolution on a matched cell]
+\label{thm:matched-deconvolution}
+Let $n\ge1$ and let $a=M/2^n\in[0,1]$.  Then
+\begin{equation}
+ \boxed{
+ S_n(a)=\sum_{k=0}^{\lfloor n/2\rfloor}
+ \frac{\gamma_k}{(2k)!}\,4^{-k(n+1)}F^{(2k)}(a).}
+ \label{eq:matched-deconvolution}
+\end{equation}
+More generally, for $0\le r\le n$, the $n$-jet satisfies the triangular
+moment relation
+\begin{equation}
+ F^{(r)}(a)=
+ \sum_{k=0}^{\lfloor(n-r)/2\rfloor}
+ \frac{c_k\delta_n^{2k}}{(2k)!}
+ S_n^{(r+2k)}(a).
+ \label{eq:jet-moment-relation}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Let $P(h)=S_n(a+h)$ denote the polynomial branch on
+$[-\delta_n,\delta_n]$.  Because $a-\delta_n Z$ remains in this cell almost
+surely, differentiating the compactly supported convolution
+\eqref{eq:F-Sn-convolution} in the distributional sense, and then using the
+ordinary polynomial branch inside the cell, gives
+\begin{equation}
+ F^{(r)}(a)=\E\bigl[P^{(r)}(-\delta_n Z)\bigr]
+ \qquad(0\le r\le n).
+ \label{eq:derivative-expectation}
+\end{equation}
+The Taylor formula for the polynomial $P^{(r)}$ is finite.  Odd moments of $Z$
+vanish because $\upf$ is even, so taking expectations gives
+\eqref{eq:jet-moment-relation}.
+
+To invert the triangular relation, consider
+\begin{equation}
+ T:=\sum_{k=0}^{\lfloor n/2\rfloor}
+ \frac{\gamma_k\delta_n^{2k}}{(2k)!}F^{(2k)}(a).
+\end{equation}
+Substitute \eqref{eq:jet-moment-relation}.  The coefficient of
+$\delta_n^{2r}S_n^{(2r)}(a)/(2r)!$ becomes
+\begin{equation}
+ \sum_{k=0}^{r}\binom{2r}{2k}\gamma_kc_{r-k}.
+\end{equation}
+By \eqref{eq:gamma-convolution}, this coefficient is $1$ for $r=0$ and $0$
+for every $r\ge1$.  Therefore $T=S_n(a)$.  Finally,
+$\delta_n^{2k}=2^{-2k(n+1)}=4^{-k(n+1)}$, proving
+\eqref{eq:matched-deconvolution}.
+\end{proof}
+
+\begin{remark}[Why the formula is exact]
+There is no passage to an infinite Taylor series in this proof.  At a matched
+dyadic point, the tail displacement $\delta_nZ$ stays inside one degree-$n$
+polynomial cell.  Taylor expansion therefore terminates, and reciprocal
+moment deconvolution is finite algebra.  This is the mechanism behind the
+eventual exact geometric behavior.
+\end{remark}
+
+\section{Dyadic depth kills all but finitely many derivative modes}
+
+\subsection{The signed global extension and derivative dilation}
+
+Introduce the signed global extension
+\begin{equation}
+ \G(y)=\sum_{b\ge0}\eps_b\upf(y-2b-1).
+ \label{eq:global-extension}
+\end{equation}
+The sum is locally finite.  On the first block,
+\begin{equation}
+ \G(y)=\upf(y-1),\qquad 0\le y\le2,
+ \label{eq:first-block}
+\end{equation}
+and on $[0,1]$ it agrees with $F$.  It satisfies the global differential
+refinement equation \cite{arias2018,proveit}
+\begin{equation}
+ \G'(y)=2\G(2y).
+ \label{eq:G-diffeq}
+\end{equation}
+Iterating gives
+\begin{equation}
+ \G^{(r)}(y)=2^{\binom{r+1}{2}}\G(2^ry).
+ \label{eq:G-derivatives}
+\end{equation}
+In particular, for $a\in[0,1]$,
+\begin{equation}
+ F^{(2k)}(a)=2^{k(2k+1)}\G(4^ka).
+ \label{eq:F-even-derivative}
+\end{equation}
+The block endpoints and centers give
+\begin{align}
+ \G(2b)&=0, \\
+ \G(2b+1)&=\eps_b, \\
+ \G\!\left(2b+\frac12\right)
+ =\G\!\left(2b+\frac32\right)&=\frac{\eps_b}{2}.
+ \label{eq:G-integer-half-values}
+\end{align}
+
+\subsection{The finite derivative jet at a dyadic point}
+
+Let $a=m/2^s\in(0,1)$ be reduced, so $m$ is odd, and put
+$d=\lfloor s/2\rfloor$.
+
+\begin{lemma}[Vanishing beyond half the dyadic depth]
+\label{lem:derivative-vanishing}
+For every $k>d$,
+\begin{equation}
+ F^{(2k)}(a)=0.
+ \label{eq:derivative-vanishing}
+\end{equation}
+For every $0\le k\le d$, one has
+\begin{equation}
+ F^{(2k)}(a)\ne0.
+ \label{eq:surviving-derivatives-nonzero}
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+If $s=2d$, then $4^da=m$ is an odd integer, while for every $k>d$,
+$4^ka=m4^{k-d}$ is an even integer.  If $s=2d+1$, then $4^da=m/2$ is an odd
+half-integer, while for $k>d$, $4^ka=2m4^{k-d-1}$ is an even integer.  Now use
+\eqref{eq:F-even-derivative} and \eqref{eq:G-integer-half-values}.  At the top
+index, $\G(4^da)$ is respectively $\pm1$ or $\pm1/2$.  For $k<d$, the
+number $4^ka=m/2^{s-2k}$ is not an integer, hence it lies in the interior of
+one of the two-unit blocks in \eqref{eq:global-extension}; the up-function is
+strictly positive in the interior of its support, so $\G(4^ka)\ne0$.
+\end{proof}
+
+\subsection{Proof of the exact eventual tail}
+
+For $n\ge s$, the reduced dyadic $a=m/2^s$ is also a point of the $2^{-n}$
+grid:
+\begin{equation}
+ a=\frac{m2^{n-s}}{2^n}.
+\end{equation}
+Apply Theorem~\ref{thm:matched-deconvolution}, then use
+Lemma~\ref{lem:derivative-vanishing}.  We obtain
+\begin{align}
+ q_n=S_n(a)
+ &=F(a)+\sum_{k=1}^{d}
+ \frac{\gamma_k}{(2k)!}4^{-k(n+1)}F^{(2k)}(a) \\
+ &=\upf(x)+\sum_{k=1}^{d}A_k(x)4^{-kn},
+ \label{eq:tail-derived}
+\end{align}
+where
+\begin{equation}
+ \boxed{
+ A_k(x)=\frac{\gamma_k}{(2k)!4^k}F^{(2k)}(a)
+ =\frac{\gamma_k2^{k(2k-1)}}{(2k)!}\G(4^ka),
+ \qquad a=1-|x|.}
+ \label{eq:Ak}
+\end{equation}
+This proves the formula in Theorem~\ref{thm:main-tail}.  It also proves
+rationality without requiring a separate arithmetic theorem about $F$ or
+$\G$.  Indeed, each $q_n=S_n(a)$ is rational by the finite sum
+\eqref{eq:centered-spline}.  Evaluating \eqref{eq:tail-derived} at
+$n=s,s+1,\ldots,s+d$ gives a square Vandermonde system over $\Q$ for
+$F(a),A_1(x),\ldots,A_d(x)$, with distinct nodes
+$1,\rho,\ldots,\rho^d$.  Its unique solution is rational.  In particular,
+this argument itself recovers the classical rationality of $\upf(x)=F(a)$ at
+dyadic arguments.
+
+For $s\ge2$, Lemma~\ref{lem:gamma-sign} and
+Lemma~\ref{lem:derivative-vanishing} imply $A_k(x)\ne0$ for every
+$1\le k\le d$.  More explicitly, if
+$a=m/2^s$ is reduced, then
+\begin{equation}
+ A_d(x)=
+ \begin{cases}
+ \displaystyle
+ \frac{\gamma_d2^{d(2d-1)}}{(2d)!}\,
+ \eps_{(m-1)/2},&s=2d,\\[1.2em]
+ \displaystyle
+ \frac{\gamma_d2^{d(2d-1)-1}}{(2d)!}\,
+ \eps_{\lfloor m/4\rfloor},&s=2d+1.
+ \end{cases}
+ \label{eq:top-coefficient}
+\end{equation}
+Thus the tail contains exactly $d$ nonconstant geometric modes, all with
+nonzero coefficients.
+
+\begin{remark}[What happens before $n=s$]
+For $n<s$, the point $a$ is not a center of the $2^{-n}$ spline grid.  The
+tail interval need not coincide with one polynomial cell, so the matched-cell
+deconvolution argument does not apply in this form.  These are precisely the
+``few initial values'' allowed in the question.  Once $n\ge s$, the formula
+\eqref{eq:tail-derived} is an identity for every subsequent $n$.
+\end{remark}
+
+\section{Extraction from consecutive spline values}
+
+We now solve the purely algebraic problem created by
+Theorem~\ref{thm:main-tail}.  Let
+\begin{equation}
+ q_n=L+\sum_{r=1}^{d}A_r\rho^{rn},
+ \qquad \rho=\frac14,
+ \qquad n\ge N.
+ \label{eq:abstract-tail}
+\end{equation}
+In the application, $L=\upf(x)$ and any $N\ge s$ is valid.
+
+\subsection{The Vandermonde system}
+
+The $d+1$ values $q_N,\ldots,q_{N+d}$ satisfy
+\begin{equation}
+ \begin{bmatrix}
+ 1&\rho^N&\rho^{2N}&\cdots&\rho^{dN}\\
+ 1&\rho^{N+1}&\rho^{2(N+1)}&\cdots&\rho^{d(N+1)}\\
+ \vdots&\vdots&\vdots&&\vdots\\
+ 1&\rho^{N+d}&\rho^{2(N+d)}&\cdots&\rho^{d(N+d)}
+ \end{bmatrix}
+ \begin{bmatrix}L\\A_1\\A_2\\\vdots\\A_d\end{bmatrix}
+ =
+ \begin{bmatrix}q_N\\q_{N+1}\\\vdots\\q_{N+d}\end{bmatrix}.
+ \label{eq:vandermonde-system}
+\end{equation}
+The determinant is nonzero because $1,\rho,\ldots,\rho^d$ are distinct.
+Therefore all coefficients are uniquely determined over $\Q$.
+
+A useful interpolation reformulation is
+\begin{equation}
+ P_N(z):=L+\sum_{r=1}^{d}A_r\rho^{rN}z^r.
+ \label{eq:PN}
+\end{equation}
+Then
+\begin{equation}
+ P_N(\rho^j)=q_{N+j},
+ \qquad 0\le j\le d,
+ \label{eq:PN-samples}
+\end{equation}
+and the desired limit is simply
+\begin{equation}
+ L=P_N(0).
+ \label{eq:L-P0}
+\end{equation}
+Moreover, once $P_N$ has been interpolated,
+\begin{equation}
+ A_r=\rho^{-rN}[z^r]P_N(z).
+ \label{eq:all-Ar}
+\end{equation}
+Thus the same $d+1$ values recover every coefficient, not only the limit.
+Explicitly,
+\begin{equation}
+ P_N(z)=\sum_{j=0}^{d}q_{N+j}
+ \prod_{\substack{0\le\ell\le d\\\ell\ne j}}
+ \frac{z-\rho^\ell}{\rho^j-\rho^\ell}.
+ \label{eq:lagrange-P}
+\end{equation}
+
+\subsection{Lagrange weights at zero}
+
+Setting $z=0$ in \eqref{eq:lagrange-P}, the weight of $q_{N+j}$ is
+\begin{align}
+ \lambda_{d,j}(\rho)
+ &:=\prod_{\substack{0\le\ell\le d\\\ell\ne j}}
+ \frac{-\rho^\ell}{\rho^j-\rho^\ell} \\
+ &=(-1)^{d-j}
+ \frac{\rho^{\binom{d-j+1}{2}}}
+ {\poch{\rho}{\rho}{j}\poch{\rho}{\rho}{d-j}}.
+ \label{eq:forward-lagrange-weight}
+\end{align}
+Hence a forward-order formula is
+\begin{equation}
+ L=\sum_{j=0}^{d}(-1)^{d-j}
+ \frac{\rho^{\binom{d-j+1}{2}}}
+ {\poch{\rho}{\rho}{j}\poch{\rho}{\rho}{d-j}}q_{N+j}.
+ \label{eq:forward-extraction}
+\end{equation}
+Reindexing by $j\mapsto d-j$ and using the Gaussian binomial coefficient in
+\eqref{eq:q-notation} gives exactly
+\begin{equation}
+ L=\frac{1}{\poch{\rho}{\rho}{d}}
+ \sum_{j=0}^{d}(-1)^j\rho^{\binom{j+1}{2}}
+ \qbinom{d}{j}{\rho}\,q_{N+d-j},
+ \label{eq:qbinomial-extraction-again}
+\end{equation}
+which proves Theorem~\ref{thm:main-extraction}.
+
+\subsection{The row polynomial and mode annihilation}
+
+Define the reverse-order weights
+\begin{equation}
+ w_{d,j}=\frac{(-1)^j\rho^{\binom{j+1}{2}}}
+ {\poch{\rho}{\rho}{d}}\qbinom{d}{j}{\rho},
+ \qquad 0\le j\le d.
+ \label{eq:wdj}
+\end{equation}
+The finite $q$-binomial theorem \cite{gasperrahman} gives their generating polynomial:
+\begin{align}
+ W_d(z)
+ &:=\sum_{j=0}^{d}w_{d,j}z^j \\
+ &=\frac{\poch{\rho z}{\rho}{d}}
+ {\poch{\rho}{\rho}{d}}
+ =\prod_{r=1}^{d}\frac{1-\rho^rz}{1-\rho^r}.
+ \label{eq:row-polynomial}
+\end{align}
+Therefore
+\begin{equation}
+ W_d(1)=1,
+ \qquad
+ W_d(\rho^{-r})=0\quad(1\le r\le d).
+ \label{eq:row-roots}
+\end{equation}
+In the reverse combination $\sum_jw_{d,j}q_{N+d-j}$, the constant mode
+contributes $LW_d(1)=L$, while the mode $A_r\rho^{rn}$ contributes a multiple
+of $W_d(\rho^{-r})=0$.  This is the shortest proof of the extraction formula
+once the geometric tail is known.
+
+\subsection{Shift-operator and triangular Richardson forms}
+
+Let $E$ be the forward shift, $(Eq)_n=q_{n+1}$.  Since $E$ acts on the mode
+$\rho^{rn}$ by the eigenvalue $\rho^r$, we have
+\begin{equation}
+ \boxed{
+ L=\frac{\prod_{r=1}^{d}(E-\rho^r)}
+ {\prod_{r=1}^{d}(1-\rho^r)}q_N.}
+ \label{eq:shift-operator}
+\end{equation}
+Expanding \eqref{eq:shift-operator} is another route to
+\eqref{eq:qbinomial-extraction-again}.
+
+It also gives an in-place triangular algorithm.  Start with
+\begin{equation}
+ R_0(j)=q_{N+j},\qquad 0\le j\le d,
+\end{equation}
+and, for $r=1,\ldots,d$, form
+\begin{equation}
+ R_r(j)=\frac{R_{r-1}(j+1)-\rho^rR_{r-1}(j)}{1-\rho^r},
+ \qquad 0\le j\le d-r.
+ \label{eq:richardson-recursion}
+\end{equation}
+Then
+\begin{equation}
+ R_d(0)=L.
+ \label{eq:richardson-result}
+\end{equation}
+With rational input, every operation is rational.
+
+\subsection{Sample count and stability}
+
+For $s\ge2$, the top coefficient $A_d$ is nonzero.  Within the model
+\eqref{eq:abstract-tail}, there are $d+1$ independent unknowns
+$L,A_1,\ldots,A_d$, and the geometric Vandermonde matrix is nonsingular.
+Thus $d+1$ samples are both sufficient and, without additional information,
+necessary to determine all coefficients.
+
+For approximate rather than exact inputs, the extraction row is well
+conditioned.  Since $0<\rho<1$ and the signs in \eqref{eq:wdj} alternate,
+\begin{equation}
+ \sum_{j=0}^{d}|w_{d,j}|
+ =W_d(-1)
+ =\frac{\poch{-\rho}{\rho}{d}}{\poch{\rho}{\rho}{d}}.
+ \label{eq:row-variation}
+\end{equation}
+At $\rho=1/4$, this increases to approximately
+\begin{equation}
+ \frac{\poch{-1/4}{1/4}{\infty}}
+ {\poch{1/4}{1/4}{\infty}}
+ \approx1.969260354.
+ \label{eq:variation-numeric}
+\end{equation}
+Hence if every supplied $q_n$ has absolute error at most $\eta$, the extracted
+constant has error at most about $1.97\eta$, uniformly in the depth.  Exact
+rational arithmetic, as used in the accompanying program, eliminates this
+issue entirely.
+
+\subsection{First extraction rows}
+
+For convenience, the first quarter-base rows are
+\begin{align}
+ d=0:\quad &L=q_N,\\
+ d=1:\quad &L=\frac43q_{N+1}-\frac13q_N,\\
+ d=2:\quad &L=\frac{64}{45}q_{N+2}-\frac49q_{N+1}+\frac1{45}q_N,\\
+ d=3:\quad &L=\frac{4096}{2835}q_{N+3}-\frac{64}{135}q_{N+2}
+             +\frac4{135}q_{N+1}-\frac1{2835}q_N.
+ \label{eq:first-rows}
+\end{align}
+
+\section{Worked exact examples}
+
+\subsection{Depth two: \texorpdfstring{$x=\pm3/4$}{x=+/-3/4}}
+
+Here
+\begin{equation}
+ a=1-|x|=\frac14,
+ \qquad s=2,
+ \qquad d=1.
+\end{equation}
+The exact dyadic value and derivative are
+\begin{equation}
+ F\!\left(\frac14\right)=\frac5{72},
+ \qquad
+ F''\!\left(\frac14\right)=8\G(1)=8.
+\end{equation}
+Since $\gamma_1=-1/9$, formula \eqref{eq:Ak} gives $A_1=-1/9$.  Therefore
+\begin{equation}
+ \boxed{
+ \upf_n\!\left(\pm\frac34\right)
+ =\frac5{72}-\frac19\,4^{-n},
+ \qquad n\ge2.}
+ \label{eq:quarter-example-tail}
+\end{equation}
+The first two values in the valid range are
+\begin{equation}
+ q_2=\frac1{16},
+ \qquad
+ q_3=\frac{13}{192}.
+\end{equation}
+The $d=1$ extraction row gives
+\begin{equation}
+ \frac43q_3-\frac13q_2
+ =\frac{4q_3-q_2}{3}
+ =\frac5{72}=\upf\!\left(\pm\frac34\right).
+\end{equation}
+
+\subsection{Depth four: \texorpdfstring{$x=\pm11/16$}{x=+/-11/16}}
+
+Now
+\begin{equation}
+ a=1-|x|=\frac5{16},
+ \qquad s=4,
+ \qquad d=2.
+\end{equation}
+The exact value is
+\begin{equation}
+ L=F\!\left(\frac5{16}\right)
+ =\frac{305857}{2073600}.
+ \label{eq:five-sixteenths-value}
+\end{equation}
+The derivative dilation gives
+\begin{align}
+ F''\!\left(\frac5{16}\right)
+ &=8\G\!\left(\frac54\right)
+ =8\upf\!\left(\frac14\right)
+ =8F\!\left(\frac34\right)
+ =\frac{67}{9},\\
+ F^{(4)}\!\left(\frac5{16}\right)
+ &=2^{10}\G(5)=-1024.
+ \label{eq:five-sixteenths-derivatives}
+\end{align}
+Using $\gamma_1=-1/9$ and $\gamma_2=31/675$ in \eqref{eq:Ak},
+\begin{equation}
+ A_1=-\frac{67}{648},
+ \qquad
+ A_2=-\frac{248}{2025}.
+\end{equation}
+Thus the eventual formula is
+\begin{equation}
+ \boxed{
+ \upf_n\!\left(\pm\frac{11}{16}\right)
+ =\frac{305857}{2073600}
+ -\frac{67}{648}\,4^{-n}
+ -\frac{248}{2025}\,16^{-n},
+ \qquad n\ge4.}
+ \label{eq:five-sixteenths-tail}
+\end{equation}
+The exact spline values are
+\begin{align}
+ q_4&=\frac{1205}{8192},\\
+ q_5&=\frac{289799}{1966080},\\
+ q_6&=\frac{13917509}{94371840}.
+ \label{eq:q456}
+\end{align}
+Applying the $d=2$ row,
+\begin{equation}
+ \frac{64}{45}q_6-\frac49q_5+\frac1{45}q_4
+ =\frac{305857}{2073600},
+ \label{eq:example-extraction}
+\end{equation}
+exactly as claimed.
+
+\subsection{Depth zero and one}
+
+When $d=0$, there is no decaying term.  The spline sequence stabilizes as soon
+as the point lies on the grid.  In particular,
+\begin{align}
+ \upf_n(0)&=1,\\
+ \upf_n(\pm1)&=0,\\
+ \upf_n\!\left(\pm\frac12\right)&=\frac12\qquad(n\ge1).
+\end{align}
+These are the $s=0$ and $s=1$ cases of the main theorem.
+
+\section{Exact computational method}
+
+For a given dyadic $x\in[-1,1]$, the shortest exact workflow is:
+
+\begin{enumerate}
+ \item Reduce $a=1-|x|$ to $m/2^s$ and set $d=\lfloor s/2\rfloor$.
+ \item Evaluate $q_s,q_{s+1},\ldots,q_{s+d}$ from the finite spline formula
+       \eqref{eq:centered-spline}.  Every operation is rational.
+ \item Apply either the single q-binomial formula
+       \eqref{eq:main-extraction} or the triangular recursion
+       \eqref{eq:richardson-recursion}.  The result is exactly $\upf(x)$.
+ \item To recover the complete eventual formula, solve the rational
+       Vandermonde system \eqref{eq:vandermonde-system}, or interpolate
+       $P_s$ using \eqref{eq:lagrange-P} and use \eqref{eq:all-Ar}.
+ \item Optionally verify the recovered coefficients against one or more later
+       values.  The theorem guarantees exact agreement for every $n\ge s$.
+\end{enumerate}
+
+The included file \texttt{verify\_extrapolation.py} implements all of these
+steps with Python's \texttt{Fraction} type.  It contains:
+
+\begin{itemize}
+ \item exact Thue--Morse spline evaluation;
+ \item dyadic-depth detection;
+ \item finite q-Pochhammer and Gaussian-binomial functions;
+ \item both closed-row and recursive extraction;
+ \item exact Gauss--Jordan solution of the full Vandermonde system;
+ \item computation of reciprocal moments $\gamma_k$ from Bernoulli numbers;
+ \item assertions for the two examples above and checks at later $n$;
+ \item an optional exhaustive exact test over all reduced dyadics through a
+       user-selected denominator depth.
+\end{itemize}
+
+A typical invocation is
+\begin{lstlisting}[language=bash]
+python3 verify_extrapolation.py
+python3 verify_extrapolation.py --x=-11/16
+python3 verify_extrapolation.py --self-test-max-depth 7
+\end{lstlisting}
+The direct Thue--Morse sum has a cutoff of order $2^n a$, so it is intended as
+an exact verification tool at moderate depth.  Faster evaluation can use the
+binary recurrences and formal arithmetic developed in the ProveIt sources;
+the extrapolation row itself is only quadratic-time in $d$ in its recursive
+form.
+
+\section{Relation to the half-base q-row in the ProveIt development}
+
+The linked development contains a general half-base Gaussian-binomial row for
+shifted finite splines.  Its row polynomial has the form
+\begin{equation}
+ \frac{(z/2;1/2)_n}{(1/2;1/2)_n}
+\end{equation}
+and annihilates modes $2^{-rn}$.  The result here is tailored to the specific
+centered prefix
+\begin{equation}
+ \prod_{k=0}^{n}\sinc\!\left(\frac{\pi t}{2^k}\right).
+\end{equation}
+The centered tail law is even, so every odd moment vanishes.  In the exact
+matched-cell deconvolution, only even derivative orders $2k$ survive, and the
+scale factor is
+\begin{equation}
+ 2^{-2k(n+1)}=4^{-k(n+1)}.
+\end{equation}
+After absorbing the fixed factor $4^{-k}$ into $A_k$, the sequence modes are
+$4^{-kn}$.  That is why the natural and minimal base in
+\eqref{eq:main-extraction} is $\rho=1/4$, not $1/2$.  The quarter-base row uses
+only $\lfloor s/2\rfloor+1$ consecutive values, whereas a generic half-base
+filter that also prepares for absent odd modes would be longer.
+
+There is also a notational distinction worth preserving: in parts of the
+linked source, a letter $Q$ denotes a complex \emph{translation parameter} in
+a shifted spline.  The number $\rho=1/4$ in this note is instead the
+\emph{geometric decay ratio} of the centered finite-product sequence.
+
+\section{Conclusion}
+
+For a fixed dyadic input, the finite sinc-product approximations have a much
+stronger structure than ordinary convergence.  Once the spline grid reaches
+the reduced denominator depth, the error is an exact finite combination of
+known geometric ratios:
+\begin{equation}
+ \upf_n(x)-\upf(x)
+ =A_1(x)4^{-n}+A_2(x)4^{-2n}+\cdots
+ +A_{\lfloor s/2\rfloor}(x)4^{-\lfloor s/2\rfloor n}.
+\end{equation}
+The analytic reason is the exact centering of the omitted random tail; the
+arithmetic reason is the vanishing of high even derivatives at dyadic points;
+and the algebraic reason the limit is extractable is the q-Vandermonde
+structure of the remaining modes.
+
+The normalized q-Pochhammer polynomial
+\begin{equation}
+ \frac{\poch{\rho z}{\rho}{d}}{\poch{\rho}{\rho}{d}}
+\end{equation}
+packages the entire extraction row.  Its value at $1$ preserves the true
+constant, and its roots $\rho^{-1},\ldots,\rho^{-d}$ annihilate every decaying
+mode.  Formula \eqref{eq:main-extraction} is therefore both a closed proof and
+a practical exact algorithm for recovering the rational value $\upf(x)$ from
+finitely many rational spline approximations.
+
+\appendix
+
+\section{A compact theorem-to-algorithm summary}
+
+Let $x\in[-1,1]$ be dyadic.
+
+\begin{align*}
+ a&=1-|x|=m/2^s\quad\text{in lowest terms},\\
+ d&=\lfloor s/2\rfloor,\qquad \rho=1/4,\\
+ q_n&=\upf_n(x)=S_n(a).
+\end{align*}
+Then, for every $n\ge s$,
+\begin{align*}
+ q_n
+ &=\upf(x)+\sum_{k=1}^{d}A_k(x)\rho^{kn},\\
+ A_k(x)
+ &=\frac{\gamma_k}{(2k)!4^k}F^{(2k)}(a),\\
+ \frac1{\mathscr C(T)}
+ &=\sum_{k\ge0}\gamma_k\frac{T^{2k}}{(2k)!},\\
+ \mathscr C(T)
+ &=\prod_{j=1}^{\infty}\frac{\sinh(T/2^j)}{T/2^j}.
+\end{align*}
+Finally, for any $N\ge s$,
+\begin{equation*}
+ \upf(x)=\frac{1}{\poch{1/4}{1/4}{d}}
+ \sum_{j=0}^{d}(-1)^j4^{-\binom{j+1}{2}}
+ \qbinom{d}{j}{1/4}\upf_{N+d-j}(x).
+\end{equation*}
+This one line is the requested extraction formula.
+
+\begin{thebibliography}{99}
+
+\bibitem{fabius1966}
+J.~Fabius,
+\newblock A probabilistic example of a nowhere analytic $C^\infty$-function,
+\newblock \emph{Zeitschrift f\"ur Wahrscheinlichkeitstheorie und Verwandte
+Gebiete} \textbf{5} (1966), 173--174.
+
+\bibitem{rvachev1990}
+V.~A.~Rvachev,
+\newblock Compactly supported solutions of functional-differential equations
+and their applications,
+\newblock \emph{Russian Mathematical Surveys} \textbf{45} (1990), no.~1,
+87--120.
+
+\bibitem{arias1982}
+J.~Arias de Reyna,
+\newblock Definici\'on y estudio de una funci\'on indefinidamente diferenciable
+de soporte compacto,
+\newblock \emph{Revista de la Real Academia de Ciencias Exactas, F\'isicas y
+Naturales de Madrid} \textbf{76} (1982), no.~1, 21--38;
+English translation, arXiv:1702.05442 (2017).
+
+\bibitem{arias2018}
+J.~Arias de Reyna,
+\newblock Arithmetic of the Fabius function,
+\newblock \emph{INTEGERS} \textbf{18} (2018), Article A51;
+arXiv:1702.06487, version~3.
+
+\bibitem{gasperrahman}
+G.~Gasper and M.~Rahman,
+\newblock \emph{Basic Hypergeometric Series}, second edition,
+\newblock Cambridge University Press, 2004.
+
+\bibitem{proveit}
+V.~Reshetnikov,
+\newblock \emph{ProveIt: Analysis/FabiusFunction}, Lean~4 formal development
+and accompanying articles,
+\newblock \url{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Analysis/FabiusFunction},
+consulted 2 September 2026.
+
+\end{thebibliography}
+
+\end{document}
