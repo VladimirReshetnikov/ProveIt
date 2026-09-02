@@ -83,37 +83,41 @@ theorem tendsto_thueMorseDirichlet (σ a : ℝ) (hσ : 0 < σ) (ha : 0 < a) :
     (dirichletPartial_cauchy σ a hσ ha)
   rwa [thueMorseDirichlet, hL.limUnder_eq]
 
+/-- Interleaving: the even-length partial sums split dyadically, for
+every shift `a ≥ 0`.  The even/odd sign split is the shared
+`sum_thueMorseSign_mul_two_mul`; what remains is the rpow identity
+`(2n + a)^(-σ) = 2^(-σ)·(n + a/2)^(-σ)`. -/
+theorem dirichletPartial_two_mul_of_nonneg (σ a : ℝ) (ha : 0 ≤ a) (N : ℕ) :
+    dirichletPartial σ a (2 * N) =
+      (2 : ℝ) ^ (-σ) *
+        (dirichletPartial σ (a / 2) N -
+          dirichletPartial σ ((a + 1) / 2) N) := by
+  have hswap : dirichletPartial σ a (2 * N) =
+      ∑ k ∈ range (2 * N),
+        (thueMorseSign k : ℝ) * (((k : ℝ) + a) ^ (-σ)) := by
+    rw [dirichletPartial]
+    exact Finset.sum_congr rfl fun n _ => mul_comm _ _
+  rw [hswap, sum_thueMorseSign_mul_two_mul N
+    (fun n : ℕ => ((n : ℝ) + a) ^ (-σ)), dirichletPartial, dirichletPartial,
+    ← Finset.sum_sub_distrib, Finset.mul_sum]
+  refine Finset.sum_congr rfl fun n _ => ?_
+  have h1 : ((2 * n : ℕ) : ℝ) + a = 2 * ((n : ℝ) + a / 2) := by
+    push_cast
+    ring
+  have h2 : ((2 * n + 1 : ℕ) : ℝ) + a = 2 * ((n : ℝ) + (a + 1) / 2) := by
+    push_cast
+    ring
+  rw [h1, h2, Real.mul_rpow (by norm_num) (by positivity),
+    Real.mul_rpow (by norm_num) (by positivity)]
+  ring
+
 /-- Interleaving: the even-length partial sums split dyadically. -/
 theorem dirichletPartial_two_mul (σ a : ℝ) (ha : 0 < a) (N : ℕ) :
     dirichletPartial σ a (2 * N) =
       (2 : ℝ) ^ (-σ) *
         (dirichletPartial σ (a / 2) N -
-          dirichletPartial σ ((a + 1) / 2) N) := by
-  rw [dirichletPartial, sum_range_two_mul]
-  have hterm : ∀ n : ℕ,
-      (((2 * n : ℕ) : ℝ) + a) ^ (-σ) * (thueMorseSign (2 * n) : ℝ) +
-        (((2 * n + 1 : ℕ) : ℝ) + a) ^ (-σ) *
-          (thueMorseSign (2 * n + 1) : ℝ) =
-      (2 : ℝ) ^ (-σ) * (((n : ℝ) + a / 2) ^ (-σ) *
-          (thueMorseSign n : ℝ)) -
-        (2 : ℝ) ^ (-σ) * (((n : ℝ) + (a + 1) / 2) ^ (-σ) *
-          (thueMorseSign n : ℝ)) := by
-    intro n
-    rw [thueMorseSign_two_mul, thueMorseSign_two_mul_add_one]
-    have h1 : ((2 * n : ℕ) : ℝ) + a = 2 * ((n : ℝ) + a / 2) := by
-      push_cast
-      ring
-    have h2 : ((2 * n + 1 : ℕ) : ℝ) + a =
-        2 * ((n : ℝ) + (a + 1) / 2) := by
-      push_cast
-      ring
-    rw [h1, h2, Real.mul_rpow (by norm_num) (by positivity),
-      Real.mul_rpow (by norm_num) (by positivity)]
-    push_cast
-    ring
-  rw [Finset.sum_congr rfl fun n _ => hterm n, Finset.sum_sub_distrib,
-    ← Finset.mul_sum, ← Finset.mul_sum, dirichletPartial, dirichletPartial]
-  ring
+          dirichletPartial σ ((a + 1) / 2) N) :=
+  dirichletPartial_two_mul_of_nonneg σ a ha.le N
 
 /-- **The dyadic Dirichlet equation** (`thm:Dirichlet-dyadic`), real
 regime: `D(σ,a) = 2^(-σ)·(D(σ,a/2) - D(σ,(a+1)/2))`. -/

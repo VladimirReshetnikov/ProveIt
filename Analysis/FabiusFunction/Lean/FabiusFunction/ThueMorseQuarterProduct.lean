@@ -124,9 +124,7 @@ theorem quarter_product :
   have h := tendsto_masterProduct (1 / 4 : ℝ) (3 / 4)
     (by norm_num) (by norm_num)
   rw [mpLimit_quarter,
-    show Real.exp (-Real.log 2) = 1 / 2 by
-      rw [Real.exp_neg, Real.exp_log (by norm_num : (0 : ℝ) < 2)]
-      norm_num] at h
+    exp_neg_log (by norm_num : (0 : ℝ) < 2)] at h
   exact h
 
 /-- The quarter product in the linear-factor form
@@ -138,9 +136,7 @@ theorem quarter_product' :
   have h := tendsto_masterProduct_affine (4 : ℝ) (1 / 4) (3 / 4)
     (by norm_num) (by norm_num) (by norm_num)
   rw [mpLimit_quarter,
-    show Real.exp (-Real.log 2) = 1 / 2 by
-      rw [Real.exp_neg, Real.exp_log (by norm_num : (0 : ℝ) < 2)]
-      norm_num] at h
+    exp_neg_log (by norm_num : (0 : ℝ) < 2)] at h
   simpa only [
     show (4 : ℝ) * (1 / 4) = 1 by norm_num,
     show (4 : ℝ) * (3 / 4) = 3 by norm_num] using h
@@ -152,9 +148,7 @@ theorem tendsto_block_product_half :
       ((k : ℝ) + 1 / 2) ^ (thueMorseSign k)) atTop (𝓝 (1 / 2 : ℝ)) := by
   have h := tendsto_block_product_half'
   rw [mpLimit_quarter,
-    show Real.exp (-Real.log 2) = 1 / 2 by
-      rw [Real.exp_neg, Real.exp_log (by norm_num : (0 : ℝ) < 2)]
-      norm_num] at h
+    exp_neg_log (by norm_num : (0 : ℝ) < 2)] at h
   exact h
 
 /-- **The half-shifted block product has value `1/2` along every even
@@ -167,9 +161,7 @@ theorem tendsto_block_product_half_even :
       ((k : ℝ) + 1 / 2) ^ (thueMorseSign k)) atTop (𝓝 (1 / 2 : ℝ)) := by
   have h := tendsto_block_product_half_even'
   rw [mpLimit_quarter,
-    show Real.exp (-Real.log 2) = 1 / 2 by
-      rw [Real.exp_neg, Real.exp_log (by norm_num : (0 : ℝ) < 2)]
-      norm_num] at h
+    exp_neg_log (by norm_num : (0 : ℝ) < 2)] at h
   exact h
 
 end Fabius
