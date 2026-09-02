@@ -12568,7 +12568,7 @@ inside the proof below does not formalize the result the proof concludes.
   than a mathematical claim.
 \end{description}
 
-Of the 282 labelled forward results, 103 are \statusexact, 87 are
+Of the 282 labelled forward results, 104 are \statusexact, 86 are
 \statuspartial, 84 are \statusnone, and 8 are \statusna.  The original
 191-result pre-Fabius core had 36 \statusexact, 29 \statuspartial, 123
 \statusnone, and 3 \statusna{} entries.  The four integrated guide chapters
@@ -13126,7 +13126,7 @@ Chapter & \statusexact & \statuspartial & \statusnone & \statusna\\
 \midrule
 The algebra of $q$-shifted factorials & 12 & 2 & 1 & 0\\
 $q$-integers and Gaussian coefficients & 8 & 1 & 0 & 0\\
-Finite $q$-binomial theorems and inversion & 9 & 1 & 0 & 0\\
+Finite $q$-binomial theorems and inversion & 10 & 0 & 0 & 0\\
 Weighted binomial coefficients and symmetric functions & 3 & 3 & 2 & 0\\
 Partitions, words, paths, and inversion statistics & 6 & 2 & 1 & 0\\
 Finite fields, Grassmannians, and rank enumeration & 1 & 1 & 4 & 0\\
@@ -13153,7 +13153,7 @@ Half-base arithmetic and Prouhet--Thue--Morse cancellation & 6 & 3 & 0 & 0\\
 Geometric uniform sums, $q$-cumulants, and the Fabius--Rvachev functions & 2 & 11 & 0 & 0\\
 Dyadic Gaussian--Thue--Morse structure and the values of $F$ & 6 & 44 & 6 & 0\\
 \midrule
-\textbf{Forward total} & 103 & 87 & 84 & 8\\
+\textbf{Forward total} & 104 & 86 & 84 & 8\\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -13367,11 +13367,14 @@ palindromicity; the variance is not formalized}\\[2pt]
 \texttt{sum\_\allowbreak{}pow\_\allowbreak{}sum\_\allowbreak{}powersetCard\_\allowbreak{}eq\_\allowbreak{}gaussianBinomial},
 \texttt{sum\_\allowbreak{}pow\_\allowbreak{}sum\_\allowbreak{}powersetCard\_\allowbreak{}Icc\_\allowbreak{}eq\_\allowbreak{}gaussianBinomial}\newline
 {\footnotesize\texttt{BitPositionQBinomial}; total zero-based and literal one-based forms}\\[2pt]
-\Cref{thm:reciprocal-finite} & \statuspartial &
+\Cref{thm:reciprocal-finite} & \statusexact &
+\texttt{hasSum\_\allowbreak{}gaussianBinomial\_\allowbreak{}add\_\allowbreak{}mul\_\allowbreak{}pow},
 \texttt{prod\_\allowbreak{}one\_\allowbreak{}sub\_\allowbreak{}qPow\_\allowbreak{}X\_\allowbreak{}mul\_\allowbreak{}gaussianBinomialGeneratingSeries}\newline
-{\footnotesize\texttt{SymmetricFunctionGenerating}; exact formal identity in
-\(R[[X]]\) over every commutative ring, but no analytic evaluation or
-convergence proof for \(\lvert z\rvert<1\)}\\[2pt]
+{\footnotesize\texttt{ReciprocalQBinomialAnalytic}: the convergent series
+$\sum_k[n+k,k]_qz^k=1/(z;q)_{n+1}$ for $\lVert q\rVert<1$, $\lVert z\rVert<1$
+in any complete normed field, as the infinite $q$-binomial theorem at
+$a=q^{n+1}$; \texttt{SymmetricFunctionGenerating}: the formal identity in
+\(R[[X]]\) over every commutative ring}\\[2pt]
 \Cref{thm:q-vandermonde} & \statusexact &
 \texttt{gaussianBinomial\_\allowbreak{}add\_\allowbreak{}vandermonde},
 \texttt{gaussianBinomial\_\allowbreak{}add\_\allowbreak{}vandermonde'}\newline
