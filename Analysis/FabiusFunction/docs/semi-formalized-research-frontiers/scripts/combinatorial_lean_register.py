@@ -241,7 +241,9 @@ STATUS = {
    r"\lean{Fabius.spivey} (\lean{BellShiftEGF}), read off from the shifted generating function "
    r"\lean{Fabius.egfA_bell_add}: $\sum_n\BellNumber{n+m}t^n/n!=\TouchardPolynomial{m}(\EulerE^t)"
    r"\,\EulerE^{\EulerE^t-1}$, proved by induction on $m$ from the Touchard recurrence "
-   r"\lean{Fabius.derivative_touchardExp}"),
+   r"\lean{Fabius.derivative_touchardExp}; the Touchard-polynomial version "
+   r"$\TouchardPolynomial{m+n}(x)=\sum_{j,k}\StirlingSecondKind mj x^j\binom nk\TouchardPolynomial{k}(x)j^{n-k}$ "
+   r"is \lean{Fabius.spivey_touchard} (\lean{TouchardShiftEGF})"),
  'thm:bell-inversions': ('partial',
    r"\cref{eq:bell-inversion-one} is \lean{Fabius.bell_eq_sum_neg_one_pow_choose_bell_succ} "
    r"(\lean{BellShiftEGF}), by \lean{Fabius.binomial_inversion_ring} applied to "
@@ -326,11 +328,12 @@ STATUS = {
    r"(\lean{EulerPolynomials}), the Euler reflection \cref{eq:merged-euler-reflection} is "
    r"\lean{Fabius.eulerPolynomial_eval_one_sub} and $\mathsf E_{2m+1}(1/2)=0$ is "
    r"\lean{Fabius.eulerPolynomial_eval_half_odd} (\lean{EulerReflection})"),
- 'thm:touchard-poly': ('partial',
-   r"\cref{eq:touchard} is \lean{Fabius.bell_add_prime_modEq} (\lean{TouchardCongruence}), "
-   r"proved from Spivey's identity modulo $p$ with \lean{Fabius.stirlingSecond_prime_eq_zero_zmod} "
-   r"($p\mid\StirlingSecondKind pk$ for $1<k<p$, from the surjection formula and Fermat); the "
-   r"polynomial congruence \cref{eq:touchard-poly} is not formalized"),
+ 'thm:touchard-poly': ('Lean',
+   r"\cref{eq:touchard-poly} is \lean{Fabius.touchardPolynomial_add_prime} "
+   r"(\lean{TouchardPolyCongruence}), an identity in $(\mathbb Z/p)[x]$, read off from Spivey's "
+   r"identity for Touchard polynomials (\lean{Fabius.touchardPolynomial_add_eq}) modulo $p$ with "
+   r"\lean{Fabius.stirlingSecond_prime_eq_zero_zmod} ($p\mid\StirlingSecondKind pk$ for $1<k<p$); "
+   r"\cref{eq:touchard} is \lean{Fabius.bell_add_prime_modEq} (\lean{TouchardCongruence})"),
  'thm:faa-partition': ('partial',
    r"the analytic statement is not formalized; its formal power-series analogue, the "
    r"coefficients of $F(G(t))$ through partial Bell polynomials, is "
