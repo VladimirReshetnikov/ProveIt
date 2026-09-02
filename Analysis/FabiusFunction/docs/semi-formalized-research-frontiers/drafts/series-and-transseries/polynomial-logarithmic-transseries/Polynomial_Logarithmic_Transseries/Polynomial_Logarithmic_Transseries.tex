@@ -206,9 +206,16 @@ absorbed sources.
 \subsection{The eight parts}
 \label{plt:sec:mot-parts}
 
-The volume is arranged so that each part depends only on those before it, with
-one deliberate exception: Part~V may be read directly after Part~IV by a reader
-who wants only the Lambert expansion.
+% ed.: the draft called "Part V may be read directly after Part IV" an
+% exception to the rule that each part depends only on those before it.  It is
+% not an exception at all --- V does come after IV --- and it also contradicts
+% reading path 1 below, which does draw two statements from Parts II and III.
+% The intended and correct content is the lightness of that dependency.
+The volume is arranged so that each part depends only on those before it.  One
+of those dependencies is lighter than the ordering suggests: a reader who wants
+only the Lambert expansion may pass from Part~I directly to Parts~IV and~V,
+because Part~V uses Parts~II and~III only through the two statements quoted in
+reading path~1 below.
 
 \begin{center}
 \begin{tabular}{@{}lp{0.16\textwidth}p{0.54\textwidth}@{}}
@@ -784,8 +791,16 @@ Three failures of closure mark the exact boundary of
   \(L^{-1}-L^{-2}+L^{-3}-\cdots\) in the second.
 \item \(\log L\) arises from composing with an inner argument whose leading
   behaviour is logarithmic, and requires a second logarithmic level.
-\item \(X^{1/2}\) arises from inverting a non-integer leading power, and
-  requires a Puiseux or Hahn exponent group.
+% ed.: the draft said X^{1/2} "arises from inverting a non-integer leading
+% power".  That is backwards, and contradicts the reading of the Fabius
+% endpoint law in the remark on its status: a half-integer exponent is produced
+% by inverting an *integer* leading power other than the first (X^2 inverts to
+% X^{1/2}); an inner argument that is already Puiseux has left the class before
+% the inversion begins.
+\item \(X^{1/2}\) arises from inverting a leading behaviour that is not
+  linear: a leading power \(X^{k}\) with \(k\ne1\) inverts to one with
+  exponents in \(k^{-1}\IntegerNumbers\).  This requires a Puiseux or Hahn
+  exponent group.
 \end{itemize}
 % ed.: source draft 6 prints the refined scale as
 % "..., X^{-n}L^2, X^{-n}L, X^{-n}, X^{-n}L^{-1}, ...", which silently places
@@ -982,8 +997,20 @@ composition --- that leaves the class.  Part~(ii) says the converse asymmetry
 does not exist: once \(\log X\) is admitted, \(X^{-1}\) is forced immediately,
 and then all of \(\RationalNumbers[t,L]\).  There is no ``logarithms only''
 differential algebra.  This is the precise sense in which powers and logarithms
-belong in one expansion.  The \(t\)-adic completion of the Laurent ring in
-(iii) is the ambient object \(\PLlau=\K[L]((t))\) of Part~I.
+belong in one expansion.
+% ed.: the draft called PLlau "the t-adic completion of the Laurent ring in
+% (iii)".  That is exactly the error item 7 of the normalizations remark warns
+% against: t is a unit in K[t,t^{-1}][L], so every power of the ideal (t) is
+% the whole ring, the t-adic filtration is constant, and the associated
+% completion collapses to zero.  The correct construction completes the
+% polynomial subring K[L][t] and only then inverts t.
+The ambient object \(\PLlau=\K[L]((t))\) of Part~I is obtained from the
+Laurent ring of~(iii) by completing its \emph{polynomial} subring
+\(\K[L][t]\) in the \(t\)-adic topology, which gives \(\PLpow=\K[L][[t]]\), and
+then inverting \(t\).  Equivalently, \(\PLlau\) is the completion of
+\(\K[t,t^{-1}][L]\) for the valuation \(\ordt\).  One may not complete
+\(\K[t,t^{-1}][L]\) \(t\)-adically: there \(t\) is a unit, so \((t^{N})\) is
+the whole ring for every \(N\) and the \(t\)-adic completion is trivial.
 \end{remark}
 
 \begin{corollary}[Both exponent directions are forced by \(\WrightOmega\)]
@@ -1221,7 +1248,12 @@ inside a logarithm,
   y+\alpha\log y+\frac{p_{1}(\log y)}{y}+\frac{p_{2}(\log y)}{y^{2}}+\cdots=X,
   \qquad \alpha\in\K,\quad p_{i}\in\K[\,\cdot\,],
 \end{equation}
-or its exponentiated form \(y^{\alpha}\EulerE^{y}=\EulerE^{X}\).  Dominant
+% ed.: the draft attached the exponentiated form to the full display, where it
+% is false --- exponentiating \eqref{plt:eq:mot-generic-implicit} exponentiates
+% the higher blocks as well.  The equivalence holds for the two-term equation
+% only, and is stated for it.
+whose two-term case \(y+\alpha\log y=X\) is equivalent to the exponentiated
+form \(y^{\alpha}\EulerE^{y}=\EulerE^{X}\).  Dominant
 balance gives \(y\sim X\); substituting that into the logarithm creates
 \(\log X\); iterating creates powers of \(X^{-1}\) carrying polynomials in
 \(\log X\).  Part~IV turns this heuristic into a theorem: read as a transseries
@@ -1337,17 +1369,21 @@ Put \(m=\ell/a\); since \(x\le\tfrac14\) we have \(\ell\ge2a\), hence
 \(2^{n}x\le1\) is equivalent to \(na\le\ell\), i.e.\ to \(n\le m\), which
 holds.  Taking logarithms in the second bound of \eqref{plt:eq:mot-flatness}
 and using \(\log x=-\ell\),
+% ed.: the draft named the two parts of this estimate A and B, colliding with
+% the B = log(1/y) of the corollary and the status remark that quote this
+% proposition.  The internal quantities are renamed A_1 and A_2; B is reserved
+% for the inverse-endpoint variable throughout the subsection.
 \[
-  \log\FabiusBounded(x)\le A+B,
+  \log\FabiusBounded(x)\le A_{1}+A_{2},
   \qquad
-  A\DefinitionEquals\frac{an(n+1)}{2}-n\ell,
+  A_{1}\DefinitionEquals\frac{an(n+1)}{2}-n\ell,
   \qquad
-  B\DefinitionEquals-\log n! .
+  A_{2}\DefinitionEquals-\log n! .
 \]
 
 \emph{The quadratic part.}  Using \(\ell=am\) and \(n=m-\theta\),
 \[
-  A=\frac{an}{2}\bigl(n+1-2m\bigr)
+  A_{1}=\frac{an}{2}\bigl(n+1-2m\bigr)
    =-\frac{a}{2}(m-\theta)(m+\theta-1)
    =-\frac{a}{2}\bigl(m^{2}-m+\theta-\theta^{2}\bigr).
 \]
@@ -1486,13 +1522,26 @@ regions, a fact requiring separate analytic work
 % convergence claim with the separate, elementary observation that the series
 % is exact at z = e.  We keep the exactness, which is verifiable in one line,
 % and defer the convergence domain to Part VI with its own citation.
-What is elementary, and worth isolating, is that
-\eqref{plt:eq:mot-W-two-orders} is \emph{exact} at \(z=\EulerE\): there
-\(L_{1}=1\) and \(L_{2}=0\), and \(\LamP{n}(0)=0\) for every
-\(n\in\NaturalNumbers\), so every correction block vanishes and the display
-returns \(\LambertW_{0}(\EulerE)=1\).  A convergence threshold is a different
-assertion and is not proved in this volume; Part~VI states what is proved and
-cites what is not.
+% ed.: the draft called the asymptotic display \eqref{plt:eq:mot-W-two-orders}
+% "exact at z = e".  A display whose remainder is an analytic O as z -> +infty
+% asserts nothing at a single point, so that formulation commits precisely the
+% conflation the box above forbids.  The correct elementary statement is a
+% coefficient identity for the underlying formal series, and it is proved here.
+What is elementary, and worth isolating, is a statement about the
+\emph{coefficients}: the formal series underlying
+\eqref{plt:eq:mot-W-two-orders}, namely
+\(L_{1}+\sum_{n\ge0}\LamP{n}(L_{2})L_{1}^{-n}\), collapses to its leading term
+at \(z=\EulerE\), where \(L_{1}=1\) and \(L_{2}=0\).  Indeed
+\(\LamP{n}(0)=0\) for every \(n\in\NaturalNumbers\): in the defining formula
+\(\LamP{n}(u)=\bigl((-1)^{n+1}/(n+1)!\bigr)
+ \bigl[\prod_{j=0}^{n-1}(\partial_{u}-j)\bigr]u^{n+1}\)
+each of the \(n\) factors either differentiates or rescales, so every monomial
+of the result has degree at least \((n+1)-n=1\) and \(\LamP{n}\) has no
+constant term.  Hence every correction block vanishes at \(z=\EulerE\) and the
+series returns the correct value \(\LambertW_{0}(\EulerE)=1\).  This is an
+identity between coefficients, not a convergence statement: a convergence
+threshold is a different assertion and is not proved in this volume; Part~VI
+states what is proved and cites what is not.
 
 \begin{summarybox}
 The inverse of \(y\mapsto y+\log y\) cannot be expanded in powers of \(X\)
@@ -1626,7 +1675,10 @@ There are inclusions of \(\K\)-algebras
   \PLpow\subsetneq\PLlau\subsetneq\PLrat\subsetneq\PLit,
 \end{equation}
 each given by the identity on coefficients except the last, which is the
-coefficientwise Laurent expansion at \(L=\infty\).  All four inclusions are
+coefficientwise Laurent expansion at \(L=\infty\).
+% ed.: the chain \eqref{plt:eq:ring-chain} exhibits three inclusions, not four;
+% the count was wrong as written.
+All three inclusions are
 strict, and:
 \begin{enumerate}[label=\textup{(\roman*)}]
 \item \(\PLpow\) and \(\PLlau\) are integral domains and are not fields;
@@ -1635,17 +1687,29 @@ strict, and:
 \end{proposition}
 
 \begin{proof}
-\emph{The first two inclusions.}  Both are inclusions of coefficient rings
-\(\K[L]\subset\K[L]\subset\K(L)\) extended blockwise, hence injective ring
-homomorphisms.  Strictness: \(t^{-1}\in\PLlau\setminus\PLpow\), and
+% ed.: the first inclusion is not a change of coefficient ring (the printed
+% chain \(\K[L]\subset\K[L]\subset\K(L)\) made it look like one); it is the
+% inclusion of a power-series ring in the corresponding Laurent ring.
+\emph{The first two inclusions.}  The first is the inclusion
+\(E[[t]]\subset E((t))\) for \(E=\K[L]\), a subring inclusion by
+\cref{plt:def:ring-four-classes}; the second is the blockwise extension of the
+coefficient inclusion \(\K[L]\subset\K(L)\), hence an injective ring
+homomorphism.  Strictness: \(t^{-1}\in\PLlau\setminus\PLpow\), and
 \(L^{-1}\in\PLrat\setminus\PLlau\) because \(L^{-1}\notin\K[L]\).
 
 \emph{The third inclusion.}  The polynomial ring \(\K[L]\) sits inside
 \(\K((L^{-1}))\) (a polynomial has finitely many positive and no negative
 powers of \(L\)).  Every nonzero \(p=aL^d+\cdots\in\K[L]\), \(a\in\K^\times\),
 is a unit there: writing \(u=L^{-1}\) we have \(p=au^{-d}(1+w)\) with
+% ed.: this appeal was unsupported and mildly circular: the geometric-series
+% corollary was stated only for coefficient rings whose list already contained
+% \(\K((L^{-1}))\), the very object being constructed here.
+% \cref{plt:cor:ring-geometric} is now proved for an arbitrary commutative
+% coefficient ring, so the instance \(E=\K\), generator \(u\), is legitimate.
 \(w\in u\K[u]\), and \(1+w\) is invertible in \(\K[[u]]\) by the geometric
-series \(\sum_{r\ge0}(-w)^r\), which is \(u\)-adically summable.  By the
+series \(\sum_{r\ge0}(-w)^r\), which is \(u\)-adically summable
+(\cref{plt:cor:ring-geometric} with coefficient ring \(\K\) and \(u\) in place
+of \(t\)).  By the
 universal property of the field of fractions, the inclusion
 \(\K[L]\hookrightarrow\K((L^{-1}))\) extends uniquely to a field embedding
 \(\K(L)\hookrightarrow\K((L^{-1}))\).  Extending blockwise gives
@@ -1825,14 +1889,19 @@ We write \(\precdom\), \(\preceqdom\) and \(\asymdom\) accordingly.
 
 \begin{lemma}[Analytic justification of dominance]
 \label{plt:lem:ring-dominance-analytic}
-Let \(\alpha,\alpha',\beta,\beta'\) be fixed reals with \(\alpha>\alpha'\).
-Then, on the positive ray,
+% ed.: the statement imposed the standing hypothesis \(\alpha>\alpha'\) and
+% then appended the case \(\alpha=\alpha'\), which that hypothesis excludes;
+% the two cases are now alternatives of one hypothesis.  The regime
+% \(X>\EulerE\) is printed here rather than produced inside the proof.
+Let \(\alpha,\alpha',\beta,\beta'\) be fixed reals with either
+\(\alpha>\alpha'\), or \(\alpha=\alpha'\) and \(\beta>\beta'\).  Then, on the
+part \(X>\EulerE\) of the positive ray, where \(\log X>1\) and the quotient
+below is positive,
 \[
   \frac{X^{\alpha}(\log X)^{\beta}}{X^{\alpha'}(\log X)^{\beta'}}
   \longrightarrow+\infty
-  \qquad(X\to+\infty),
+  \qquad(X\to+\infty).
 \]
-and if \(\alpha=\alpha'\) and \(\beta>\beta'\) the same conclusion holds.
 Consequently \eqref{plt:eq:ring-dominance} orders the monomials
 \(t^nL^j=X^{-n}(\log X)^j\) by decreasing eventual size.
 \end{lemma}
@@ -5878,9 +5947,18 @@ step.
 \subsection{Cost: the recurrence against the doubling scheme}
 \label{plt:sec:div-cost}
 
-We count multiplications in the coefficient ring \(\K[L]\); additions and
-multiplications by the scalar \(B_{0}^{-1}\in\K^{\times}\) are not counted.
-Let \(M(N)\) denote the number of such block multiplications used by whatever
+% ed.: the convention "multiplications by the scalar B_0^{-1} are not counted"
+% was stated loosely enough to exclude also the products B_j C_0 and C_0 E_j,
+% under which reading the two schemes cost exactly the same and the N-1 gap
+% claimed below disappears.  The counted set is pinned down here and the other
+% reading is recorded at the end of \cref{plt:prop:div-cost-newton}.
+We count multiplications in the coefficient ring \(\K[L]\): every product of
+two coefficient blocks costs one \emph{block multiplication}, including those
+products one of whose factors happens to be the scalar block
+\(C_{0}=B_{0}^{-1}\).  Additions are free, and so is the single outer
+normalisation by \(B_{0}^{-1}\) that
+\cref{plt:eq:div-recip-cn,plt:eq:div-quotient-recurrence} apply once per step.
+Let \(M(N)\) denote the number of block multiplications used by whatever
 routine computes \(\Trunc{(PQ)}{N}\) from \(\Trunc{P}{N}\) and
 \(\Trunc{Q}{N}\).
 
@@ -5943,6 +6021,19 @@ Total for the step: \(m^{2}+m(m+1)/2=(3m^{2}+m)/2\).  Summing over
   =\frac{N^{2}+N-2}{2}.
 \]
 Subtracting \cref{plt:eq:div-cost-naive} gives \((2N-2)/2=N-1\).
+
+% ed.: the N-1 gap is fragile: it is created entirely by charging for products
+% against the scalar block C_0.  Recording this keeps the comparison from being
+% read as a robust separation, which it is not.
+\emph{How fragile the gap is.}  Suppose instead that a product one of whose
+factors is the scalar \(C_{0}=B_{0}^{-1}\) is charged nothing.  That removes
+one product per step \(n=1,\dots,N-1\) from the recurrence, hence \(N-1\) in
+all, and \(2m\) from the doubling step at precision \(m\) (the \(m\) products
+\(B_{j}C_{0}\) and the \(m\) products \(C_{0}E_{j}\)), hence
+\(\sum_{k=0}^{K-1}2\cdot2^{k}=2N-2\) in all.  Both counts then drop to
+\(\binom{N-1}{2}\) and the two schemes cost \emph{exactly the same}.  The
+\(N-1\) gap of part (2) is therefore an artefact of the accounting; what is
+robust in the comparison is part (1).
 \end{proof}
 
 % ed.: S3 asserts that Newton inversion "is often faster than coefficient
@@ -5961,7 +6052,10 @@ counts settle the two extremes.  Precisely: if \(M(N)/N^{2}\to0\) as
 the doubling scheme uses \(o(N^{2})\) block multiplications against
 \(\Theta(N^{2})\) for the recurrence; whereas with schoolbook block
 multiplication it uses exactly \(N-1\) \emph{more} block multiplications than
-the recurrence.
+the recurrence in the accounting fixed at the head of
+\cref{plt:sec:div-cost}, and exactly as many under the alternative accounting
+described at the end of the proof of \cref{plt:prop:div-cost-newton}.  Under
+neither accounting is it faster.
 \end{corollary}
 
 \begin{proof}
@@ -6169,8 +6263,8 @@ requirement of \cref{plt:thm:div-newton}\,(4), yields exact truncations of the
 % ed.: "beats the recurrence only when block multiplication is subquadratic"
 % asserts the unproved converse; only the two extreme regimes are established.
 reciprocal; it beats the recurrence asymptotically when block multiplication is
-subquadratic and loses to it by \(N-1\) block multiplications when
-multiplication is schoolbook.  Unrestricted division of coefficient blocks forces \(\PLrat\),
+subquadratic, and does not beat it at all when multiplication is schoolbook.
+Unrestricted division of coefficient blocks forces \(\PLrat\),
 the smallest Laurent field over an intermediate coefficient ring, which
 strictly contains the fraction field of \(\PLlau\).  Expanding each rational
 coefficient at \(L=\infty\) embeds \(\PLrat\) into \(\PLit\) injectively but
@@ -7496,8 +7590,11 @@ with \(\RisingFactorial{n}{k}=n(n+1)\cdots(n+k-1)\) and
   =\sum_{j=0}^{k}\stirlingsigned{k}{j}\,\partial_{L}^{\,j}p ,
 \end{equation}
 where \(\stirlingsigned{k}{j}\) are the signed Stirling numbers of the first
-kind.  More generally \(\shiftop{n}{k}=\sum_{j=0}^{k}\stirlingsigned{k}{j}
-(\partial_{L}-n)^{j}\).
+kind.  More generally,
+\[
+  \shiftop{n}{k}
+  =\sum_{j=0}^{k}\stirlingsigned{k}{j}\,(\partial_{L}-n)^{j}.
+\]
 \end{corollary}
 
 \begin{proof}
@@ -7613,10 +7710,11 @@ Closure is \cref{plt:prop:dif-block} together with the facts that
 \(\partial_{L}\) preserves \(\K[L]\), \(\K(L)\) and \(\K((L^{-1}))\); for
 \(\EulerOp\) multiply by \(t^{-1}\), which preserves every class listed except
 \(\PLpow\).  The inclusion \(\DX(\PLpow)\subseteq t\PLpow\) is
-\cref{plt:eq:dif-block}; the reverse inclusion is
-\cref{plt:thm:dif-antiderivative} below, whose construction applied to
-\(F\in t\PLpow\) produces blocks only at indices \(\ge0\).  Likewise for
-\(t\PLpow\), all indices involved being nonresonant.
+\cref{plt:eq:dif-block}.  For the reverse inclusion, run the construction of
+\cref{plt:thm:dif-antiderivative} below on an \(F\) with \(\ordt F\ge1\): it
+produces blocks only at indices \(n\ge0\), so the antiderivative lies in
+\(\PLpow\).  The same run on an \(F\) with \(\ordt F\ge2\) meets only
+nonresonant indices \(n\ge1\), so its antiderivative lies in \(t\PLpow\).
 \end{proof}
 
 \begin{remark}[Iterated logarithms are not polynomially closed]
@@ -7824,9 +7922,9 @@ only if \(\operatorname{res}(F)=0\); the antiderivative is then unique up to
 extension, then
 \begin{equation}\label{plt:eq:dif-anti-with-Lambda}
   F-\operatorname{res}(F)\,\frac{t}{L}\in\DX\bigl(\PLit\bigr),
-  \qquad\text{so every }F\in\PLit\text{ has an antiderivative in }
-  \PLit\oplus\K\Lambda .
 \end{equation}
+so that every \(F\in\PLit\) has an antiderivative in
+\(\PLit\oplus\K\Lambda\).
 \end{theorem}
 
 \begin{proof}
@@ -7957,8 +8055,8 @@ is the vanishing of all residues of \([t^{1}]F\); the conditions at
 \item every \(F\in\PLlau\) satisfies \cref{plt:eq:dif-rat-criterion}
       (polynomials have no poles), recovering
       \cref{plt:thm:dif-antiderivative};
-\item \(t^{2}/L=1/(X^{2}\log X)\) has no antiderivative in \(\PLrat\), although
-      it has one in \(\PLit\), namely
+\item \(t^{2}/L=1/(X^{2}\log X)\) has no antiderivative in \(\PLrat\); it does
+      have one in \(\PLit\), namely
       \(t\sum_{j\ge0}(-1)^{j+1}j!\,L^{-j-1}\);
 \item \(\PLrat\) is a differential field that is not closed under
       antidifferentiation, whereas \(\PLlau\) is a differential ring, not a
@@ -13127,10 +13225,10 @@ Let \(F=X+A\in\Gnear\) with \(\ordt(A)=\alpha\).  Show that
 
 \begin{exercise}
 Carry out the guard-starved Newton step of \cref{plt:ex:rev-guard} in the other
-direction: take \(\sigma_R=\sigma_C=6\) but \(\sigma_K=2\), so that \(J\) is
-under-resolved.  Predict the resulting residual order from
-\cref{plt:lem:rev-precision-propagation} and verify that the prediction is
-attained.
+direction: keep \(q=\sigma_R=6\) but under-resolve the Jacobian, taking
+\(\sigma_K\in\SetOf{2,3,4}\).  Predict the resulting residual order from
+\cref{plt:lem:rev-precision-propagation}, and verify that in each case the
+bound \(\min\SetOf{q,\sigma_R,m+\sigma_K}\) is attained exactly.
 \end{exercise}
 
 \begin{exercise}
