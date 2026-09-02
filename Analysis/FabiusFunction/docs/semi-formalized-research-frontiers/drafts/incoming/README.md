@@ -65,23 +65,23 @@ when no archives are waiting.
 Most recent processed batch (all filed and removed on 2026-09-01):
 
 - `Polynomial-Logarithmic-Transseries-1/` became
-  [`../lambert-w/Polynomial-Logarithmic-Transseries-1/`](../lambert-w/Polynomial-Logarithmic-Transseries-1/):
+  [`../series-and-transseries/polynomial-logarithmic-transseries/Polynomial-Logarithmic-Transseries-1/`](../series-and-transseries/polynomial-logarithmic-transseries/Polynomial-Logarithmic-Transseries-1/):
   4,023-line/182,487-byte source, 119-page/584,392-byte PDF.
 - `Polynomial-Logarithmic-Transseries-2/` became
-  [`../lambert-w/Polynomial-Logarithmic-Transseries-2/`](../lambert-w/Polynomial-Logarithmic-Transseries-2/):
+  [`../series-and-transseries/polynomial-logarithmic-transseries/Polynomial-Logarithmic-Transseries-2/`](../series-and-transseries/polynomial-logarithmic-transseries/Polynomial-Logarithmic-Transseries-2/):
   5,014-line/168,311-byte source, 102-page/571,108-byte PDF.
 - `Polynomial_Logarithmic_Transseries-3/` became
-  [`../lambert-w/Polynomial_Logarithmic_Transseries-3/`](../lambert-w/Polynomial_Logarithmic_Transseries-3/):
+  [`../series-and-transseries/polynomial-logarithmic-transseries/Polynomial_Logarithmic_Transseries-3/`](../series-and-transseries/polynomial-logarithmic-transseries/Polynomial_Logarithmic_Transseries-3/):
   4,255-line/146,006-byte source, 87-page/510,663-byte PDF; its submitted
   line-411 trailing whitespace remains intact.
 - `Polynomial-Logarithmic-Transseries-4/` became
-  [`../lambert-w/Polynomial-Logarithmic-Transseries-4/`](../lambert-w/Polynomial-Logarithmic-Transseries-4/):
+  [`../series-and-transseries/polynomial-logarithmic-transseries/Polynomial-Logarithmic-Transseries-4/`](../series-and-transseries/polynomial-logarithmic-transseries/Polynomial-Logarithmic-Transseries-4/):
   3,138-line/118,001-byte source, 47-page/428,534-byte PDF.
 - `Polynomial_Logarithmic_Transseries-5/` became
-  [`../lambert-w/Polynomial_Logarithmic_Transseries-5/`](../lambert-w/Polynomial_Logarithmic_Transseries-5/):
+  [`../series-and-transseries/polynomial-logarithmic-transseries/Polynomial_Logarithmic_Transseries-5/`](../series-and-transseries/polynomial-logarithmic-transseries/Polynomial_Logarithmic_Transseries-5/):
   2,440-line/102,903-byte source, 44-page/389,188-byte PDF.
 - `Polynomial_Logarithmic_Transseries-6/` became
-  [`../lambert-w/Polynomial_Logarithmic_Transseries-6/`](../lambert-w/Polynomial_Logarithmic_Transseries-6/):
+  [`../series-and-transseries/polynomial-logarithmic-transseries/Polynomial_Logarithmic_Transseries-6/`](../series-and-transseries/polynomial-logarithmic-transseries/Polynomial_Logarithmic_Transseries-6/):
   4,354-line/150,235-byte source, 100-page/701,319-byte PDF.
 
 These six bare-directory arrivals landed together in direct-arrival commit
@@ -95,6 +95,9 @@ have a custom 522-by-738-point page, two are Letter, and two are A4.  Styling
 repair, comparison, deduplication, claim review, PDF rebuilding, and Lean
 crosswalking remain deferred until this checkpoint is published.  Full source
 and PDF hashes are recorded in the destination README and package receipts.
+The destination shown above is the current one: these six packages were filed
+under `../lambert-w/` on 2026-09-01 and regrouped into
+`../series-and-transseries/polynomial-logarithmic-transseries/` on 2026-09-02.
 
 The immediately preceding processed batch, also filed and removed on
 2026-09-01, comprised these six archives:

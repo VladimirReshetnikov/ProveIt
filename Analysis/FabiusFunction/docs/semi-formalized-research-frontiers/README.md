@@ -161,8 +161,10 @@ The draft inboxes under [`drafts/`](drafts/) are grouped thematically
 (2026-08-28): `rvachev_up_fourier_decay/` (the Fourier-decay corpus),
 `thue-morse/`, `exponents-and-q-series/`, `spectra-and-arithmetic/`,
 `integration-and-transforms/`, `inverse-and-sampling/`,
-`representations/`, `frontier-compilations/`, and `lambert-w/` (added
-when four articles on the Lambert W function itself arrived), with new
+`representations/`, `frontier-compilations/`, `lambert-w/` (added
+when four articles on the Lambert W function itself arrived), and
+`series-and-transseries/` (added 2026-09-02 for packages about the
+formal-series calculus itself), with new
 archives arriving through `drafts/incoming/` (see its README for the
 protocol).
 
@@ -269,7 +271,13 @@ the Lambert W function itself; they were merged editorially into the
 single consolidated volume `Lambert_W_Guide/` (the most complete
 treatment as the body, the other three's unique layers in a
 complements section, a four-way concordance, and a corpus-role
-section tying W₋₁ to the endpoint theory).  By the same precedent, a
+section tying W₋₁ to the endpoint theory).  Six polynomial-logarithmic
+transseries articles that arrived on 2026-09-01 were filed in that group
+too, since Lambert W is their guiding example; because their subject is
+the transseries calculus rather than the function, they were regrouped on
+2026-09-02 into the new `series-and-transseries/` group, under its
+`polynomial-logarithmic-transseries/` subgroup.  That move was verbatim —
+no source or PDF changed.  By the same precedent, a
 standalone reference monograph on q-Pochhammer symbols and q-binomial
 coefficients — the machinery consumed by the exponents
 volume's Parts II/VI/VII and the formalized Gaussian-binomial core —
