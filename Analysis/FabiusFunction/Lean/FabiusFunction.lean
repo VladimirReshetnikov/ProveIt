@@ -569,6 +569,11 @@ import FabiusFunction.IntegerParameterTranslation
 import FabiusFunction.MultisetInversions
 import FabiusFunction.GeometricSimplexReindex
 import FabiusFunction.RatioExpansion
+import FabiusFunction.BaileyAux
+import FabiusFunction.BaileyPairs
+import FabiusFunction.BaileyUnitPairs
+import FabiusFunction.BaileyLimitInfinite
+import FabiusFunction.RogersRamanujan
 import FabiusFunction.QBinomialLocallyUniform
 import FabiusFunction.EulerPartitionRecurrence
 import FabiusFunction.PartitionStabilization
