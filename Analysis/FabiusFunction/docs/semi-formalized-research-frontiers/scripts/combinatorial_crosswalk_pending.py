@@ -168,6 +168,50 @@ substitution through the powers $A(t)^k$ and the column theorem
 \lean{Fabius.factorial_mul_partialBell_add}.""")),
 ]
 
+PENDING += [
+ # --- thm:bell-bihomogeneous ---
+ (r"""The coefficient of $t^n/n!$ is
+$n!k^{n-k}/(k!(n-k)!)=\binom nk k^{n-k}$.
+\end{proof}
+""",
+  remark(r"""% ed.: crosswalk added 2026-09-01; the Lean proof is by induction on the
+% pointing recurrence, over every commutative semiring.
+\cref{eq:bell-bihomogeneous} is \lean{Fabius.partialBell_bihomogeneous}, assembled
+from the degree homogeneity \lean{Fabius.partialBell_mul_left}
+($\ExponentialPartialBellPolynomial nk(\alpha x)=\alpha^k\ExponentialPartialBellPolynomial nk(x)$)
+and the weighted homogeneity \lean{Fabius.partialBell_pow_mul}
+($\ExponentialPartialBellPolynomial nk(\beta^jx_j)=\beta^n\ExponentialPartialBellPolynomial nk(x)$),
+module \lean{BellHomogeneity}; both are proved by induction on the pointing
+recurrence rather than from the monomial expansion.  As a consequence the
+Touchard specialization \cref{eq:touchard-bell-specialization} of
+\cref{thm:bell-poly-specializations} is \lean{Fabius.bell_complete_const} and
+\lean{Fabius.bell_complete_const_eq_touchard_eval}, and the Touchard generating
+function $\exp(x(\EulerE^t-1))$ is \lean{Fabius.exp_subst_smul_exp_sub_one}.
+\cref{eq:bell-linear-arguments} is not formalized.""")),
+
+ # --- thm:merged-bernoulli-stirling-touchard ---
+ (r"""whereas $E_1(x)\leq\EulerE^{-x}/x$ for $x\geq1$.
+""",
+  r"""% ed.: crosswalk added 2026-09-01.
+\begin{remark}[Formal crosswalk]
+\cref{eq:merged-bernoulli-stirling} is \lean{Fabius.bernoulli_eq_sum_stirlingSecond}
+(module \lean{BernoulliStirling}) for Mathlib's Bernoulli numbers
+\lean{bernoulli}, whose convention $B_1=-1/2$ matches the generating function
+$t/(\EulerE^t-1)$ used here.  The Lean proof is the first paragraph of this
+proof made formal: Mathlib's \lean{bernoulliPowerSeries_mul_exp_sub_one}
+gives $\mathscr B(t)(\EulerE^t-1)=t$, \lean{Fabius.log_subst_exp_sub_one}
+gives $t=\log(1+y)$ at $y=\EulerE^t-1$, cancelling the non-zero-divisor
+$\EulerE^t-1=t\cdot(\EulerE^t-1)/t$ identifies $\mathscr B$ with
+$\log(1+y)/y$ composed with $\EulerE^t-1$
+(\lean{Fabius.bernoulliPowerSeries_eq_logDivSeries_subst}), and the
+coefficients are read off by the exponential composition theorem
+(\lean{Fabius.egfA_subst_bellWeightSeries}) with the Stirling specialization of
+the partial Bell polynomials.  The two integral representations are not
+formalized.
+\end{remark}
+"""),
+]
+
 applied = 0
 for anchor, text in PENDING:
     if text.strip() in s:
