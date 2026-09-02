@@ -3817,7 +3817,7 @@ because the underlying infinite product is totalized outside its admissible
 range.  No spectral-zeta recovery, cumulant-sample recovery, or
 identifiability of an underlying probability law is asserted; those remain
 open interfaces.  With the later concurrent source union, the live facade
-census is 672 modules and 8,868 public declarations.  The current TeX also
+census is 675 modules and 8,909 public declarations.  The current TeX also
 contains the six-theorem prime-power companion-row API and the
 zero-definition/three-theorem outer Pochhammer normal-convergence API, plus
 the two-module/nine-declaration fixed-depth effective-inverse tranche, the
@@ -3877,13 +3877,15 @@ q-Lucas over integral domains, and the integral q-Catalan polynomial with its
 exact degree and Catalan specialization.
 
 The newest interpolation and q-integral module counts are
-\path{NewtonInterpolation.lean} (2+13) and
-\path{QBetaIntegral.lean} (1+8).  Their three definitions and twenty-one
+\path{NewtonInterpolation.lean} (3+19) and
+\path{QBetaIntegral.lean} (1+8).  Their four definitions and twenty-seven
 theorems construct triangular Newton coefficients and interpolants, prove
 evaluation, uniqueness, divided differences, and the geometric-grid formula,
 and evaluate the Jackson q-beta integral in product and q-gamma forms for
 \(0<q<1\) and positive arguments, with symmetry, positivity, and both
-successor recurrences.  No endpoint or \(q\to1\) limit is claimed.
+successor recurrences.  The Newton count includes the node-qualified family
+and all seven definitionally identical \path{newtonInterpolant} compatibility
+declarations.  No endpoint or \(q\to1\) limit is claimed.
 
 The latest three q-series module counts are
 \path{GaussianBinomialInteger.lean} (1+10),
@@ -3905,13 +3907,22 @@ each variable and that \(x_jx_i=q(x_ix_j)\) for \(i<j\).  The statement is
 finite and division-free, with no ambient commutativity or convergence
 assumption.
 
-The zero-definition/six-theorem module
-\path{GaussianBinomialBounds.lean} evaluates Gaussian reciprocity over fields,
-proves the constant-term lower bound and infinite-q-Pochhammer upper bound for
-nonnegative real strict contractions, and transfers them to
-dimension-dominant two-sided estimates at every real $Q>1$.  The index
-condition $k\le n$, nonzero nome for reciprocity, and all order and
-strict-contraction hypotheses remain explicit.
+The final bound module \path{GaussianBinomialBounds.lean} has no public
+definitions and six theorems:
+\lean{gaussianBinomial_inv}, \lean{one_le_gaussianBinomial},
+\lean{finiteQPochhammerIn_pow_le_one},
+\lean{gaussianBinomial_le_inv_qPochhammerInfIn},
+\lean{pow_le_gaussianBinomial_of_one_lt}, and
+\lean{gaussianBinomial_le_pow_div_of_one_lt}.  It evaluates Gaussian
+reciprocity over fields, proves the constant-term lower bound and the uniform
+infinite-q-Pochhammer upper bound for nonnegative real strict contractions,
+and transfers them to reciprocal dimension-dominant two-sided bounds for
+every real \(Q>1\).  The index condition \(k\le n\), nonzero nome for
+reciprocity, and all order and strict-contraction hypotheses remain explicit.
+Its proof
+reuses the stronger ordered-field theorem
+\lean{finiteQPochhammerIn_self_pos} from
+\path{GeneralQConditionNumber.lean} rather than exporting a duplicate.
 
 On the real axis the origin is the unique global point of unit modulus:
 \begin{equation}

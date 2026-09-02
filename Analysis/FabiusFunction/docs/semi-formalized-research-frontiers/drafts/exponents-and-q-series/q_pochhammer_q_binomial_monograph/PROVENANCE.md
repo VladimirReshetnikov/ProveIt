@@ -23,8 +23,8 @@ The three guides arrived respectively in commits
 `1360db6064c676f83bceb23bece5ed304dd09ce8`,
 `c167e550348bfb33b4297684100d55dfb48b8c1a`, and
 `1f0f98390d551725fc7d2274638dbd7de86ee346`. They had no unique non-document
-assets: each donor package consisted only of TeX, PDF, and a repository
-checksum ledger. Their superseded PDFs were retired with the donor packages
+assets: each donor package consisted only of TeX, PDF, and a historical digest
+receipt. Their superseded PDFs were retired with the donor packages
 and are not canonical renderings of this larger source. The former forward
 and inverse manuscript PDFs were removed for the same reason. The merged
 master retains one publication checkpoint,
@@ -36,11 +36,9 @@ SHA-256
 `240bff72fb47562e9a8fd87085b5a3a96d738189714518db17988f7c4ac15d31`;
 exactly three guarded serial passes produced 343, 354, and 354 pages.
 
-The live source now postdates that receipt: it has 14,530 lines, 683,858 bytes,
-and SHA-256
-`b77e9ab54d9437485bab9ee36783cc1f1d5c36c347e67a5242953af8319650fc`.
-The regenerated root `SHA256SUMS` ledger records the same identity; the
-retained PDF therefore does not claim render parity with the current TeX. The
+The live source now postdates that receipt: it has 14,531 lines and 683,936
+bytes. No live checksum manifest is maintained; the retained PDF therefore
+does not claim render parity with the current TeX. The
 validation record in `README.md` distinguishes compilation, font embedding,
 complete page rendering, contact-sheet review, and full-resolution inspection.
 PDFs retained beneath `assets/` are research figures, not manuscripts.
@@ -74,7 +72,8 @@ theorems). The latest tail adds `QBetaIntegral` (one definition and eight
 theorems) and `NewtonInterpolation` (two definitions and thirteen theorems),
 followed by `GaussianBinomialInteger` (one definition and ten theorems),
 `GaussianBinomialComplexOrder` (one definition and five theorems), and
-`QPfaffSaalschutz` (zero definitions and three theorems). The
+`QPfaffSaalschutz` (zero definitions and three theorems), together with
+`GaussianBinomialBounds` (zero definitions and six theorems). The
 `QPochhammerEntire.lean` leaf proves the fixed-nome
 single-symbol locally uniform product and differentiability, the
 division-free factor-zero criterion including `q = 0`, the reciprocal-power
@@ -91,12 +90,21 @@ product and bounded-Fabius Fourier specializations. The compound
 and exterior reciprocal, pole-divisor, and zero--pole clauses are absent. The
 forward status inventory covers 282 labelled results: 90 Exact / 84 Partial /
 100 None / 8 N/A; the 191-result pre-Fabius core remains 36 / 29 / 123 / 3.
-The central-reduction row is Exact through its division-free commutative-ring
+The five-publication concordance
+has 66 Lean-proved, 412 human-proved frontier, 60 not-applicable, and 9
+conjecture rows. The `cor:positivity`, `thm:qbinom-structure`, and
+`prop:gq-positive-palindromic` rows are Exact: both Gaussian structure APIs
+support the structure row, and the fourteen-theorem generic API now gives
+the strict-interior coefficient-of-`q` formula and all boundary zeros. The
+central-reduction row is Exact through its division-free commutative-ring
 identity and field quotient wrapper. The cyclotomic-factorization row is Exact
 for the factorial form over every commutative ring and the Gaussian form over
-every integral domain, with the exponent bounds explicit. The half-base
-Gaussian valuation row remains Partial because its concluding odd-integer
-valuation statement has not yet been formalized. The q-beta integral and
+every integral domain, with the exponent bounds explicit. The complete root
+block, evaluated q-Lucas theorem, square-free cyclotomic criterion, and
+q-Catalan row are Exact. The primitive-root value in the Babbage corollary is
+formalized, but its derivative clause keeps that compound row Partial. The
+half-base Gaussian valuation row remains Partial because its concluding
+odd-integer valuation statement has not yet been formalized. The q-beta integral and
 recurrence rows are Exact on their stated positive real domain, and the
 geometric Newton and triangular-coefficient rows are Exact through the generic
 field-valued interpolation module and its geometric-grid specialization. The
@@ -106,12 +114,15 @@ the two complex-order series rows are also Exact on the domains recorded in
 the crosswalk, while the separate complex-parameter property rows remain
 unformalized. The quantum-multinomial row is Exact over every semiring under
 the displayed q-commutation hypotheses, without assuming that q is central or
-that the ambient semiring is commutative. `GaussianBinomialBounds` contributes
-six theorems; its proof reuses the generic `finiteQPochhammerIn_self_pos` from
-`GeneralQConditionNumber`, which is not counted as a declaration of the
-bounds leaf. No PDF was generated locally while
-resolving this merge; the
-upstream 354-page artifact remains the retained publication checkpoint.
+that the ambient semiring is commutative. `GaussianBinomialBounds` reuses
+`finiteQPochhammerIn_self_pos` from `GeneralQConditionNumber` and supplies
+evaluated reciprocity and the finite growth bounds on both sides of `q = 1`;
+the imported positivity theorem is not counted as a declaration of the
+bounds leaf. Its six exported theorems close the exact finite-growth row, while
+the greater-than-one compound row remains Partial only at its asymptotic
+clauses. No PDF was generated locally while resolving this merge; the upstream
+354-page artifact remains the retained historical publication checkpoint and
+does not render the current source.
 
 The former q-Pochhammer/q-binomial monograph arrived in commit
 `47172bc03ec078961d8b023dfe156ecd712efb65`. Its pre-repair source SHA-256 was
@@ -227,11 +238,12 @@ the redundant sidecars were then retired again so that the canonical package
 remains the sole live inverse-q document.
 
 For `inverse_q_analogs_report/`, the sidecars confirm that the original
-17-file delivery matched the archive hash already recorded above.  No checksum
-ledger was submitted: the repository-generated arrival ledger verified all 17
-payloads before normalization.  Twelve hashes agree with the pinned source
-ledger, while five CSV hashes differ solely because the arrival ledger records
-their pre-normalization line endings.  A later normalized edition passed three
+17-file delivery matched the archive hash already recorded above.  No
+submitter-provided digest receipt existed; a repository arrival audit recorded
+digests for all 17 payloads before normalization.  Twelve agree with the
+pinned normalized snapshot, while five CSV digests differ solely because the
+arrival audit preserved their pre-normalization line endings.  A later
+normalized edition passed three
 strict serial pdfLaTeX runs, a complete 51-page visual inspection, and
 deterministic replay of all seven textual data outputs.  That edition had TeX
 SHA-256
@@ -254,7 +266,7 @@ was byte-identical to the filed package after documented line-ending
 normalization and introduced no additional mathematical content.
 
 For `q_pochhammer_q_binomial_expansions_report/`, the sidecars confirm a
-seven-file normalized ledger, exact replay of the retained 44-line numerical
+seven-file normalized digest audit, exact replay of the retained 44-line numerical
 output, three clean serial pdfLaTeX passes, and visual inspection of the
 39-page report.  The validated source had SHA-256
 `2d3d47cb82ebeea01d43858599e78ddff3d0c97ac62cbe4f09e3ad7314eb4aee`
@@ -314,12 +326,12 @@ reason for merging, correcting, retaining, or retiring the source item.
 At the pinned pre-retirement revision, the six packages contained 65 tracked
 non-TeX files totalling 5,832,780 bytes:
 six Python experiment programs, two requirements files, six READMEs, six
-checksum ledgers, six generated report PDFs, twenty generated figures, and
+historical digest manifests since retired, six generated report PDFs, twenty generated figures, and
 nineteen generated data or audit files.  Four additional untracked files in
 the forward-expansion package are ordinary `.aux`, `.log`, `.out`, and `.toc`
 build intermediates.
 
-Every entry in all six source checksum ledgers matched its corresponding file
+Every historical digest in those six manifests matched its corresponding file
 at that revision.  SHA-256 comparison found no byte-identical pair among the
 69 tracked and untracked non-TeX files.  Similar names therefore did not
 license deletion:
@@ -358,8 +370,8 @@ canonical layout; the forward `q_expansion_experiments.py` stayed
 byte-identical because it writes only to standard output and required no path
 rewrite.  The programs were rerun serially;
 [`assets/VALIDATION.md`](assets/VALIDATION.md) records exact-output parity and
-the one disclosed last-digit runtime drift, while `assets/SHA256SUMS` fixes
-the post-migration bytes.
+the one disclosed last-digit runtime drift. Repository history preserves the
+post-migration digest receipts; no live checksum manifest remains.
 
 All six superseded directories were removed from the live tree.
 All tracked superseded material remains recoverable from Git history.  The
