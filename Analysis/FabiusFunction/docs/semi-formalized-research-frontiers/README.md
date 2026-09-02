@@ -37,7 +37,7 @@ explicit Rvachev--Appell specialization. In the canonical inverse synthesis
 this promotes exactly `is:p3:cor:forced-superconvergence` and
 `is:p3:thm:Appell-lattice-reproduction`, bringing its 194 immutable rows to
 49 Lean-proved / 96 human-proved / 10 conjectural / 15 open / 24
-nonassertoric. The live documentation census is 670 modules and 8,852 public
+nonassertoric. The live documentation census is 671 modules and 8,858 public
 declarations with no gaps; no PDF was rebuilt for this source-only update.
 
 The 1 September 2026 source-only q-Pochhammer overlay is likewise newer than
@@ -179,13 +179,16 @@ revisions remain in the package's
 [`PROVENANCE.md`](drafts/inverse-and-sampling/Inverse_Fabius_Analyticity_Asymptotics_and_Computability/PROVENANCE.md).
 Its retained 134-page, 2,027,726-byte A4 publication has SHA-256
 `22bc68d855ad04dde9654e9fbd20b3ba7f05a33e3c5df0e5b80bb8991c94b41d`.
-It is a fully reviewed historical checkpoint, but the current source changed
-after that render and therefore requires a fresh three-pass build before
-synchronization is claimed. The reviewed concordance classifies 49 source rows
-as Lean-proved and 96 as human-proved frontier results. Its two newest exact
-matches are the forced parity-selected superconvergence corollary and the full
-Appell lattice-reproduction theorem, including its degree-`N+1` selected-phase
-clause.
+The package README records that historical checkpoint's clean three-pass
+build, font preflight, and visual inspection.  The current 23-input source
+closure has SHA-256
+`aedf007c2cd150b1f83de6d8996b4bf31e267b3dbcec2d5cd4720f5d92122bdb`
+and postdates the retained PDF, so a fresh three-pass build is required before
+source/PDF synchronization may be claimed. The reviewed concordance classifies
+49 source rows as Lean-proved and 96 as human-proved frontier results. Its two
+newest exact matches are the forced parity-selected superconvergence corollary
+and the full Appell lattice-reproduction theorem, including its degree-`N+1`
+selected-phase clause.
 
 Later the same day the groups other than the Fourier-decay corpus were
 **consolidated into volumes**, in two styles: the original members were

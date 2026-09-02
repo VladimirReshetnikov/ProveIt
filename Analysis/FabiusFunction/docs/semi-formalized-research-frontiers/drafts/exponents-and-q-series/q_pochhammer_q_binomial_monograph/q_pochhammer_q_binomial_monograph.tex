@@ -12554,8 +12554,8 @@ inside the proof below does not formalize the result the proof concludes.
   than a mathematical claim.
 \end{description}
 
-Of the 282 labelled forward results, 90 are \statusexact, 84 are
-\statuspartial, 100 are \statusnone, and 8 are \statusna.  The original
+Of the 282 labelled forward results, 97 are \statusexact, 85 are
+\statuspartial, 92 are \statusnone, and 8 are \statusna.  The original
 191-result pre-Fabius core had 36 \statusexact, 29 \statuspartial, 123
 \statusnone, and 3 \statusna{} entries.  The four integrated guide chapters
 add 31 human-proved but not Lean-formalized assertions and five labelled
@@ -12677,10 +12677,13 @@ declaration from \path{GaussianBinomialAtOne.lean};\\
 \path{QLucas.lean}: zero definitions and eight theorems;\\
 \path{GaussianBinomialInteger.lean}: one definition and ten theorems;\\
 \path{GaussianBinomialComplexOrder.lean}: one definition and five theorems;\\
-\path{GaussianBinomialPalindromic.lean}: zero definitions and twelve
+\path{GaussianBinomialPalindromic.lean}: zero definitions and fourteen
 theorems;\\
 \path{GaussianBinomialPolynomialStructure.lean}: zero definitions and five
 theorems;\\
+\path{GaussianBinomialBounds.lean}: zero definitions and six theorems; its
+finite-product positivity input \texttt{finiteQPochhammerIn\_self\_pos} is the
+generic theorem imported from \path{GeneralQConditionNumber.lean};\\
 \path{GaussianBinomialAtNegOne.lean}: five theorems;\\
 \path{RvachevPochhammerFactorization.lean}: one definition and nine theorems;\\
 \path{GeometricCompleteHomogeneous.lean}: six theorems;\\
@@ -13110,7 +13113,7 @@ The algebra of $q$-shifted factorials & 11 & 2 & 2 & 0\\
 $q$-integers and Gaussian coefficients & 8 & 1 & 0 & 0\\
 Finite $q$-binomial theorems and inversion & 9 & 1 & 0 & 0\\
 Weighted binomial coefficients and symmetric functions & 3 & 2 & 3 & 0\\
-Partitions, words, paths, and inversion statistics & 3 & 1 & 5 & 0\\
+Partitions, words, paths, and inversion statistics & 6 & 2 & 1 & 0\\
 Finite fields, Grassmannians, and rank enumeration & 1 & 1 & 4 & 0\\
 Symmetry and unimodality & 0 & 0 & 3 & 0\\
 The infinite $q$-binomial theorem & 1 & 1 & 2 & 0\\
@@ -13129,13 +13132,13 @@ Negative upper indices and geometric Newton interpolation & 7 & 0 & 2 & 0\\
 Central $q$-binomial sums and Lambert series & 1 & 0 & 6 & 0\\
 Asymptotic regimes and Bernoulli expansions & 1 & 3 & 4 & 0\\
 Exact limits, reciprocity, and research frontiers & 0 & 0 & 5 & 0\\
-Computation, certification, and formal proof architecture & 0 & 3 & 8 & 3\\
+Computation, certification, and formal proof architecture & 4 & 3 & 4 & 3\\
 Geometric interpolation and exact $q$-filters & 6 & 2 & 1 & 0\\
 Half-base arithmetic and Prouhet--Thue--Morse cancellation & 6 & 3 & 0 & 0\\
 Geometric uniform sums, $q$-cumulants, and the Fabius--Rvachev functions & 2 & 11 & 0 & 0\\
 Dyadic Gaussian--Thue--Morse structure and the values of $F$ & 6 & 44 & 6 & 0\\
 \midrule
-\textbf{Forward total} & 90 & 84 & 100 & 8\\
+\textbf{Forward total} & 97 & 85 & 92 & 8\\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -13404,11 +13407,41 @@ monoid carrying the module structure}\\[2pt]
 \midrule
 \multicolumn{3}{@{}l}{\itshape Partitions, words, paths, and inversion statistics}\\
 \midrule
-\Cref{thm:binary-inversions} & \statusnone & ---\\[2pt]
-\Cref{cor:qbinom-inversion-law} & \statusnone & ---\\[2pt]
-\Cref{thm:rectangle-partitions} & \statusnone & ---\\[2pt]
+\Cref{thm:binary-inversions} & \statusexact &
+\texttt{sum\_\allowbreak{}pow\_\allowbreak{}inversionCount\_\allowbreak{}eq\_\allowbreak{}gaussianBinomial},
+\texttt{inversionGF\_\allowbreak{}eq\_\allowbreak{}gaussianBinomial},
+\texttt{inversionCount\_\allowbreak{}cons}\newline
+{\footnotesize\texttt{BinaryWordInversions}; words as functions
+$\mathrm{Fin}\,n\to\mathrm{Bool}$, inversions as the pairs $i<j$ with
+$w_i=1$, $w_j=0$; over every semiring, by peeling the first letter (a leading
+$1$ is inverted with every later $0$)}\\[2pt]
+\Cref{cor:qbinom-inversion-law} & \statuspartial &
+\texttt{card\_\allowbreak{}words\_\allowbreak{}eq\_\allowbreak{}choose},
+\texttt{sum\_\allowbreak{}pow\_\allowbreak{}inversionCount\_\allowbreak{}eq\_\allowbreak{}gaussianBinomial}\newline
+{\footnotesize\texttt{BinaryWordInversions}; $\#\mathcal W_{n,k}=\binom nk$ and
+the coefficient description of the inversion distribution are formal; the
+identification with the random variable of \Cref{thm:qbinom-moments} is not
+stated in Lean}\\[2pt]
+\Cref{thm:rectangle-partitions} & \statusexact &
+\texttt{sum\_\allowbreak{}pow\_\allowbreak{}boxSize\_\allowbreak{}eq\_\allowbreak{}gaussianBinomial},
+\texttt{boxGF\_\allowbreak{}eq\_\allowbreak{}gaussianBinomial},
+\texttt{sum\_\allowbreak{}boxPartitions\_\allowbreak{}succ},
+\texttt{sum\_\allowbreak{}pow\_\allowbreak{}mul\_\allowbreak{}gaussianBinomial},
+\texttt{card\_\allowbreak{}boxPartitions}\newline
+{\footnotesize\texttt{BoxPartitions}; partitions as antitone $k$-tuples
+bounded by $m$; over every semiring, by the first-part decomposition and the
+column-sum identity $\sum_{a\le m}q^a[a+k,k]_q=[m+k+1,k+1]_q$ rather than the
+word bijection; the count $\binom{m+k}{k}$ at $q=1$}\\[2pt]
 \Cref{cor:partition-symmetries} & \statuspartial & \texttt{qBinomial\_\allowbreak{}symm}\newline{\footnotesize\texttt{HalfQBinomial}}\\[2pt]
-\Cref{cor:path-area} & \statusnone & ---\\[2pt]
+\Cref{cor:path-area} & \statusexact &
+\texttt{pathArea},
+\texttt{pathArea\_\allowbreak{}eq\_\allowbreak{}sum\_\allowbreak{}height},
+\texttt{pathArea\_\allowbreak{}eq\_\allowbreak{}inversionCount},
+\texttt{sum\_\allowbreak{}pow\_\allowbreak{}pathArea\_\allowbreak{}eq\_\allowbreak{}gaussianBinomial}\newline
+{\footnotesize\texttt{BinaryWordInversions}; paths are the words of the
+encoding ($0$ east, $1$ north), the area is defined as the pairs (north step,
+later east step), shown equal to the sum of starting heights of east steps
+and to the inversion number; over every semiring}\\[2pt]
 \Cref{thm:qmult-inversions} & \statusnone & ---\\[2pt]
 \Cref{prop:rogers-szego-recurrence} & \statusexact &
 \texttt{rogersSzego\_\allowbreak{}zero},
@@ -13437,10 +13470,12 @@ the displayed \(n\ge1\) form obtained by reindexing the total natural theorem}\\
 \texttt{pow\_\allowbreak{}le\_\allowbreak{}gaussianBinomial\_\allowbreak{}of\_\allowbreak{}one\_\allowbreak{}lt},
 \texttt{gaussianBinomial\_\allowbreak{}le\_\allowbreak{}pow\_\allowbreak{}div\_\allowbreak{}of\_\allowbreak{}one\_\allowbreak{}lt},
 \texttt{one\_\allowbreak{}le\_\allowbreak{}gaussianBinomial},
-\texttt{gaussianBinomial\_\allowbreak{}le\_\allowbreak{}inv\_\allowbreak{}qPochhammerInfIn}\newline
-{\footnotesize\texttt{GaussianBinomialBounds}; over $\RealNumbers$, via the
+\texttt{gaussianBinomial\_\allowbreak{}le\_\allowbreak{}inv\_\allowbreak{}qPochhammerInfIn},
+\texttt{finiteQPochhammerIn\_\allowbreak{}self\_\allowbreak{}pos}\newline
+{\footnotesize\texttt{GaussianBinomialBounds}; \texttt{GeneralQConditionNumber}; over $\RealNumbers$, via the
 bounds $1\le[n,k]_q\le1/(q;q)_\infty$ for $0\le q<1$ (the lower bound in every
-ordered field) and reciprocity}\\[2pt]
+ordered field) and reciprocity; the generic finite-product positivity theorem
+is reused by import and is not owned by the six-theorem bounds leaf}\\[2pt]
 \midrule
 \multicolumn{3}{@{}l}{\itshape Symmetry and unimodality}\\
 \midrule
@@ -13890,10 +13925,27 @@ monic leading term $q^{k(n-k)}$ of the universal polynomial}\\[2pt]
 \Cref{thm:gaussian-dp-correct} & \statuspartial & \texttt{gaussianBinomial}\newline{\footnotesize\texttt{FiniteQBinomialCore}}\\[2pt]
 \Cref{alg:cyclotomic-list} & \statusna & \\[2pt]
 \Cref{thm:cyclotomic-list-correct} & \statusnone & ---\\[2pt]
-\Cref{thm:telescoping-certificate} & \statusnone & ---\\[2pt]
-\Cref{cor:identity-certification} & \statusnone & ---\\[2pt]
-\Cref{lem:polynomial-identity-principle} & \statusnone & ---\\[2pt]
-\Cref{cor:safe-specialization} & \statusnone & ---\\[2pt]
+\Cref{thm:telescoping-certificate} & \statusexact &
+\texttt{telescoping\_\allowbreak{}certificate},
+\texttt{telescoping\_\allowbreak{}certificate\_\allowbreak{}Ico}\newline
+{\footnotesize\texttt{TelescopingCertificate}; for a fixed $n$ the summand
+family $T(n+j,k)$ is a function of $(j,k)$; over every commutative ring, on
+$k<N$ and on $L\le k<U$}\\[2pt]
+\Cref{cor:identity-certification} & \statusexact &
+\texttt{eq\_\allowbreak{}of\_\allowbreak{}recurrence}\newline
+{\footnotesize\texttt{TelescopingCertificate}; sequences in any field with
+the same order-$r$ recurrence, nonvanishing leading coefficient
+$A_r(n)$, and $r$ equal initial values}\\[2pt]
+\Cref{lem:polynomial-identity-principle} & \statusexact &
+\texttt{rational\_\allowbreak{}identity\_\allowbreak{}principle}\newline
+{\footnotesize\texttt{TelescopingCertificate}; for quotients of polynomials
+over any field: agreement at infinitely many points with nonvanishing
+denominators gives the cleared identity $p_1q_2=p_2q_1$ in $K[X]$, via
+Mathlib's \texttt{Polynomial.eq\_of\_infinite\_eval\_eq}}\\[2pt]
+\Cref{cor:safe-specialization} & \statusexact &
+\texttt{safe\_\allowbreak{}specialization}\newline
+{\footnotesize\texttt{TelescopingCertificate}; the cleared identity
+specializes wherever both denominators are nonzero}\\[2pt]
 \Cref{lem:integer-qpochhammer-translation} & \statuspartial & \texttt{finiteQPochhammerIn\_\allowbreak{}self\_\allowbreak{}mul\_\allowbreak{}gaussianBinomial}\newline{\footnotesize\texttt{FiniteQBinomialCore}}\\[2pt]
 \Cref{thm:certified-integral-translation} & \statusnone & ---\\[2pt]
 \Cref{cor:identity-finder-certificate} & \statusnone & ---\\[2pt]

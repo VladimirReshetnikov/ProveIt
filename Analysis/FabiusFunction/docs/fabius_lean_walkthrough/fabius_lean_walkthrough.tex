@@ -1056,7 +1056,7 @@ computable positive rational dyadic-gap sequence.  The hard-coded unit interval
 is also significant: no arbitrary-endpoint algorithm is asserted without
 computable endpoint data.
 
-That gap layer has exactly eight public declarations:
+That gap layer has exactly four public definitions and four public theorems:
 \nolinkurl{EffectivelyUniformContinuousOn}, the structure
 \nolinkurl{ComputablePositiveRationalSequence},
 \nolinkurl{ComputablePositiveRationalSequence.value},
@@ -2310,13 +2310,13 @@ over both \(\RationalNumbers[X]\) and \(\Integers[X]\); the integral quotient
 has degree \(n(n-1)\) and evaluates at one to the ordinary Catalan number.
 
 \nolinkurl{NewtonInterpolation.lean} is 2+13.  Its definitions are
-\nolinkurl{newtonCoeff} and \nolinkurl{nodeNewtonPoly}; its theorems are
+\nolinkurl{newtonCoeff} and \nolinkurl{newtonInterpolant}; its theorems are
 \nolinkurl{newtonCoeff_eq}, \nolinkurl{newtonCoeff_zero},
-\nolinkurl{newtonCoeff_mul_prod}, \nolinkurl{nodeNewtonPoly_succ},
-\nolinkurl{eval_nodeNewtonPoly}, \nolinkurl{degree_nodeNewtonPoly_lt},
-\nolinkurl{nodeNewtonPoly_eq_interpolate},
-\nolinkurl{eq_nodeNewtonPoly_of_eval_eq},
-\nolinkurl{coeff_nodeNewtonPoly_self}, \nolinkurl{newtonCoeff_eq_sum},
+\nolinkurl{newtonCoeff_mul_prod}, \nolinkurl{newtonPoly_succ},
+\nolinkurl{eval_newtonPoly}, \nolinkurl{degree_newtonPoly_lt},
+\nolinkurl{newtonPoly_eq_interpolate},
+\nolinkurl{eq_newtonPoly_of_eval_eq},
+\nolinkurl{coeff_newtonPoly_self}, \nolinkurl{newtonCoeff_eq_sum},
 \nolinkurl{nodal_range_pow}, \nolinkurl{prod_erase_pow_sub_pow}, and
 \nolinkurl{newtonCoeff_pow_eq_sum}.  Over a field this is the complete
 triangular-reconstruction, finite-node interpolation and uniqueness,
@@ -5351,7 +5351,7 @@ Primitive-root Gaussian block & \nolinkurl{gaussianBinomial_isPrimitiveRoot_eq_z
 The q-Lucas theorem & \nolinkurl{two_mul_choose_two}, \nolinkurl{add_mul_add_sub_one}, \nolinkurl{choose_two_add}, \nolinkurl{coeff_finiteQPochhammerIn_neg_X}, \nolinkurl{finiteQPochhammerIn_neg_X_block}, \nolinkurl{coeff_block_pow_mul}, \nolinkurl{pow_choose_two_add_mul_eq}, \nolinkurl{gaussianBinomial_q_lucas} & Exhaustive zero-definition/eight-theorem surface of \nolinkurl{QLucas.lean}; positive primitive-root order and residue bounds remain explicit \\
 Cyclotomic carry criterion & \nolinkurl{cyclotomic_exponent_eq_one_iff}, \nolinkurl{cyclotomic_dvd_gaussianBinomial_iff}, \nolinkurl{gaussianBinomial_mul_isPrimitiveRoot} & Exhaustive zero-definition/three-theorem surface of \nolinkurl{CyclotomicDivisibility.lean}; rational-polynomial divisibility and integral-domain primitive-root value \\
 MacMahon q-Catalan polynomial & \nolinkurl{qCatalan}; \nolinkurl{map_qInt}, \nolinkurl{qInt_X_monic}, \nolinkurl{qInt_X_natDegree}, \nolinkurl{X_sub_one_mul_qInt}, \nolinkurl{qInt_X_eq_prod_cyclotomic}, \nolinkurl{qInt_X_dvd_gaussianBinomial_rat}, \nolinkurl{qInt_X_dvd_gaussianBinomial_int}, \nolinkurl{qInt_X_mul_qCatalan}, \nolinkurl{qCatalan_natDegree}, \nolinkurl{qCatalan_eval_one_mul}, \nolinkurl{qCatalan_eval_one} & Exhaustive one-definition/eleven-theorem surface of \nolinkurl{QCatalan.lean}; integral quotient, degree \(n(n-1)\), and Catalan value at one \\
-Newton interpolation and geometric divided differences & \nolinkurl{newtonCoeff}, \nolinkurl{nodeNewtonPoly}; \nolinkurl{newtonCoeff_eq}, \nolinkurl{newtonCoeff_zero}, \nolinkurl{newtonCoeff_mul_prod}, \nolinkurl{nodeNewtonPoly_succ}, \nolinkurl{eval_nodeNewtonPoly}, \nolinkurl{degree_nodeNewtonPoly_lt}, \nolinkurl{nodeNewtonPoly_eq_interpolate}, \nolinkurl{eq_nodeNewtonPoly_of_eval_eq}, \nolinkurl{coeff_nodeNewtonPoly_self}, \nolinkurl{newtonCoeff_eq_sum}, \nolinkurl{nodal_range_pow}, \nolinkurl{prod_erase_pow_sub_pow}, \nolinkurl{newtonCoeff_pow_eq_sum} & Exhaustive two-definition/thirteen-theorem field-valued surface of \nolinkurl{NewtonInterpolation.lean} \\
+Newton interpolation and geometric divided differences & \nolinkurl{newtonCoeff}, \nolinkurl{newtonInterpolant}; \nolinkurl{newtonCoeff_eq}, \nolinkurl{newtonCoeff_zero}, \nolinkurl{newtonCoeff_mul_prod}, \nolinkurl{newtonPoly_succ}, \nolinkurl{eval_newtonPoly}, \nolinkurl{degree_newtonPoly_lt}, \nolinkurl{newtonPoly_eq_interpolate}, \nolinkurl{eq_newtonPoly_of_eval_eq}, \nolinkurl{coeff_newtonPoly_self}, \nolinkurl{newtonCoeff_eq_sum}, \nolinkurl{nodal_range_pow}, \nolinkurl{prod_erase_pow_sub_pow}, \nolinkurl{newtonCoeff_pow_eq_sum} & Exhaustive two-definition/thirteen-theorem field-valued surface of \nolinkurl{NewtonInterpolation.lean} \\
 Jackson q-beta integral & \nolinkurl{qBeta}; \nolinkurl{qNumber_pos}, \nolinkurl{qBeta_term_eq}, \nolinkurl{qBeta_eq_prod}, \nolinkurl{qBeta_eq_qGamma}, \nolinkurl{qBeta_comm}, \nolinkurl{qBeta_pos}, \nolinkurl{qBeta_add_one_left}, \nolinkurl{qBeta_add_one_right} & Exhaustive one-definition/eight-theorem surface of \nolinkurl{QBetaIntegral.lean}; product and q-Gamma evaluations for \(0<q<1\) \\
 Quantum binomial theorem & \nolinkurl{quantumPlane_mul_pow}, \nolinkurl{quantum_binomial} & Exhaustive zero-definition/two-theorem noncommutative surface of \nolinkurl{QuantumBinomial.lean} \\
 Rogers--Szeg\H{o} polynomials & \nolinkurl{rogersSzego}, \nolinkurl{rogersSzego_succ}, \nolinkurl{rogersSzego_three_term}, \nolinkurl{hasSum_rogersSzego_generating} & \nolinkurl{RogersSzegoPolynomial.lean}; one definition and nine theorems, listed exhaustively above \\
@@ -5802,8 +5802,9 @@ The still later compiled current-tree tranche
 six-theorem and zero-definition, one-theorem surfaces inventoried above.  It
 closes fixed-depth tolerant bisection, sequential computability of the
 clamped inverse, and the combined computable-real-function theorem.  The
-generic theorem consumes its inverse modulus.  The later eight-declaration
-\nolinkurl{EffectiveGapInverse.lean} module derives such a modulus and
+generic theorem consumes its inverse modulus.  The later
+four-definition/four-theorem \nolinkurl{EffectiveGapInverse.lean} module
+derives such a modulus and
 effective continuity from a supplied computable positive rational dyadic-gap
 sequence, and proves total computability precisely for the clamped extension;
 no input-bit asymptotic is added.
@@ -5823,7 +5824,7 @@ Lean audits of the previously recorded new or refactored declarations,
 for each.  At that upstream checkpoint, static inspection found all 610 modules
 below \nolinkurl{FabiusFunction/} reachable from the facade and every one of
 the 105 activation declarations documented.  The live current-tree audit scans
-670 modules and 8,852 public declarations, with no missing module headers or
+672 modules and 8,868 public declarations, with no missing module headers or
 declaration comments.  At the retained historical mainline checkpoint before the latest
 six-module q-series tranche was 623 modules and 8,476 declarations.  Its
 immediately preceding census, after the Rvachev Appell and original
@@ -5885,8 +5886,11 @@ census to 660/8,777; the four root-of-unity/q-Catalan modules add twenty-six
 declarations to 664/8,803, and the q-beta/Newton pair adds twenty-four more.
 The integer/complex upper Gaussian and q-Pfaff--Saalsch\"utz tail adds three
 modules and twenty declarations, and the noncommutative q-multinomial leaf
-adds one module and five theorems.  The live source census is therefore
-670/8,852.  No
+adds one module and five theorems.  The zero-definition/six-theorem
+\nolinkurl{GaussianBinomialBounds.lean} leaf brings the intermediate census to
+671/8,858.  The four-definition/four-theorem
+\nolinkurl{EffectiveGapInverse.lean} leaf and the two new Gaussian linear
+coefficient theorems bring the live census to 672/8,868.  No
 aggregate facade build is claimed
 for this
 current-tree census.  The retained PDF and the title-page pin remain historical
@@ -5951,6 +5955,12 @@ transports Gaussian symmetry to arbitrary semirings, proves q-multinomial
 coefficient commutation, and expands powers of a finite sum into ordered
 monomials under the pairwise relations \(x_jx_i=q(x_ix_j)\) and commutation of
 the nome with every variable.  It is finite and division-free.
+The zero-definition/six-theorem
+\nolinkurl{GaussianBinomialBounds.lean} module gives evaluated field
+reciprocity, the constant-term lower bound and infinite-q-Pochhammer upper
+bound for nonnegative real strict contractions, and the resulting
+dimension-dominant two-sided bounds for real $Q>1$.  It retains $k\le n$
+and every nonzero and order hypothesis explicitly.
 \end{remark}
 
 \section{Corrections and critical distinctions}\label{app:corrections}

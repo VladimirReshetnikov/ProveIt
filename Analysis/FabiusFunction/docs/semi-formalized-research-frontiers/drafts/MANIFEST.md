@@ -19,8 +19,8 @@ old flat layout; the **Previous path** column below is the map. Documents
 were moved verbatim — no `.tex` content was changed by the reorganization,
 so no PDF was rebuilt for it.
 
-**Current artifact checkpoint (2026-09-01).** The live Lean audit scans 670
-source modules and 8,852 public declarations, with no missing module headers or
+**Current artifact checkpoint (2026-09-01).** The live Lean audit scans 671
+source modules and 8,858 public declarations, with no missing module headers or
 declaration comments.
 Several PDFs below are retained,
 readable publication checkpoints rather than renders of the final merged TeX.
@@ -59,15 +59,21 @@ exact endpoint-mass ceiling minimality and input-bit asymptotics remain outside
 Lean.
 
 The two canonical syntheses have source/artifact receipts. The current
-q-series source has 14,449 lines, 679,492 bytes, and SHA-256
-`ed3baa67195e142531234170e67d04a04e356905523333ad95d667f0ddddcc8c`.
+q-series source has 14,516 lines, 682,778 bytes, and SHA-256
+`3184b1ed82998f7a9a903cbd0e95a6836cbeab2edd3194e5dc35c7243b9b9618`.
 Its retained PDF is a historical 354-page, 3,030,302-byte A4 artifact with
 SHA-256
 `1050a9a3b0b7a8df8e7de0870946ae64940d7d7839a2f20427be0ebe14b0ba8c`,
 built from the preceding 14,381-line, 675,239-byte source with SHA-256
-`240bff72e95ddf9609f6c5aba7f5285ef2ce4ec60e0a2e73d9a50138989e58dd`.
-The current TeX is a source-only successor to that build checkpoint. The two
-payloads are distinct, and no render parity is claimed.
+`240bff72fb47562e9a8fd87085b5a3a96d738189714518db17988f7c4ac15d31`.
+The live TeX adds the Bell-block and MacMahon q-Catalan notation successor as
+well as later formalization crosswalks, so it is source-only relative to that
+build; the two payloads are distinct and no render parity is claimed.  The
+still earlier 348-page artifact checkpoint also remains historical evidence:
+its PDF SHA-256 is
+`8bf14b52d8a0fc0abc4d54cca503fd47a2df37cf76ee1bb4e442bea1fd2a4aa7`,
+and its 14,158-line, 661,835-byte build source had SHA-256
+`79ee5e60a6c7e42a91c58dcd9bcae56173cc6b4aa3e54739a461943f705f3904`.
 Six finite/infinite q-series modules contribute 69 public declarations for
 continuity at `q = 1`, Euler and q-binomial sums, Jacobi's triple product,
 q-Pascal summation, the noncommutative q-binomial theorem, and Rogers--Szegő
@@ -102,6 +108,9 @@ nonzero and denominator hypotheses.
 `QuantumMultinomial.lean` adds five theorems: antidiagonal tuple recursion,
 noncommutative Gaussian symmetry, and the ordered q-multinomial theorem for
 pairwise q-commuting variables.
+`GaussianBinomialBounds.lean` adds six theorems: evaluated reciprocity,
+nonnegative-nome lower and strict-contraction upper bounds, and the resulting
+dimension-dominant two-sided estimates for real nomes greater than one.
 The local reciprocal-power zero-lattice theorem completes
 `QPochhammerEntire.lean` to five theorems, and two further general-product
 theorems complete `QPochhammerInfinite.lean` to one definition and 29
@@ -111,8 +120,8 @@ product's locally uniform convergence is exact for every complex strict
 contraction, including `q = 0`, with dyadic Rvachev and bounded-Fabius Fourier
 specializations. The compound centered/MGF and exterior reciprocal/pole
 theorem remains Partial. The forward status ledger covers 282 labelled
-results: 88 Exact / 83 Partial / 103 None / 8 N/A interface rows. No PDF was
-generated locally for this source-only merge, so the incoming 354-page artifact
+results: 90 Exact / 84 Partial / 100 None / 8 N/A interface rows. No PDF was
+generated for this source-only merge, so the retained 354-page artifact
 remains historical. The comb synthesis also
 has a later chapter-03 notation edit: its retained 158-page, 2,456,105-byte
 A4 PDF has SHA-256
@@ -207,7 +216,7 @@ claimed as Lean verification.
 | Directory | Document | Previous path / provenance |
 | --- | --- | --- |
 | `Combinatorial_Coefficient_Calculus-2/` | *Combinatorial Coefficient Calculus* — current 6,862-line/277,653-byte source (`0b4176a2…8c93f6`) and retained historical 147-page A4 PDF | `incoming/Combinatorial_Coefficient_Calculus-2.zip` (1,096,487 bytes; SHA-256 `a0ca605c1d3f1ee3e00eac1d69a8181e786dd414407a1b3b6db1a60f74d8766d`) |
-| `Combinatorial_Coefficient_Calculus/` | **Canonical consolidation in progress:** *Combinatorial Coefficient Calculus* — current 7,552-line/305,572-byte source (`c0911d29…3880fac`) and retained historical 143-page A4 arrival PDF; no render-parity claim | Six-source provenance and disposition ledgers in the package; original non-suffixed arrival was `incoming/Combinatorial_Coefficient_Calculus.zip` (SHA-256 `a22479ac8f58e1710117af9d0a3f515c7d24ec250548f537520c9f9024f4321a`) |
+| `Combinatorial_Coefficient_Calculus/` | **Canonical consolidation in progress:** *Combinatorial Coefficient Calculus* — current 7,552-line/305,578-byte source (`87f9627e…f9dc046`) and retained historical 143-page A4 arrival PDF; no render-parity claim | Six-source provenance and disposition ledgers in the package; original non-suffixed arrival was `incoming/Combinatorial_Coefficient_Calculus.zip` (SHA-256 `a22479ac8f58e1710117af9d0a3f515c7d24ec250548f537520c9f9024f4321a`) |
 | `Combinatorial_Formulae_and_Inversion_Theorems/` | *Combinatorial Formulae and Inversion Theorems* — current 7,036-line/283,111-byte source (`f070ad09…4670b3`) and retained historical 140-page A4 PDF | `incoming/Combinatorial_Formulae_and_Inversion_Theorems.zip` (1,101,493 bytes; SHA-256 `dae561780a4442a9f11acb7edf1ec508daca1db237db01fabf77c695ec924960`) |
 | `Unified_Combinatorial_Coefficient_Calculus/` | *Unified Combinatorial Coefficient Calculus* — current 6,687-line/262,376-byte source (`9566ce29…8f8947`) and retained historical 144-page A4 PDF | `incoming/Unified_Combinatorial_Coefficient_Calculus.zip` (1,083,495 bytes; SHA-256 `c4217b088444eb3e4bf24a7542d360f02dfb8e240418b562a155ad0c251ab559`) |
 | `Unified_Combinatorial_Formulae/` | *A Unified Calculus of Combinatorial Formulae* — current 5,898-line/232,717-byte source (`089c6ece…c81bb3`) and retained historical 130-page A4 PDF | `incoming/Unified_Combinatorial_Formulae.zip` (1,015,842 bytes; SHA-256 `611b14cfda15357b679a05d9586811d8fb39f6fe7d971f00424da2bb848a5594`) |

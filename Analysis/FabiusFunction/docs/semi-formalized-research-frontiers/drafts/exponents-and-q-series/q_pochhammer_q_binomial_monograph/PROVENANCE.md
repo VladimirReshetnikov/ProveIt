@@ -36,9 +36,9 @@ SHA-256
 `240bff72fb47562e9a8fd87085b5a3a96d738189714518db17988f7c4ac15d31`;
 exactly three guarded serial passes produced 343, 354, and 354 pages.
 
-The live source now postdates that receipt: it has 14,449 lines, 679,492 bytes,
+The live source now postdates that receipt: it has 14,530 lines, 683,858 bytes,
 and SHA-256
-`ed3baa67195e142531234170e67d04a04e356905523333ad95d667f0ddddcc8c`.
+`b77e9ab54d9437485bab9ee36783cc1f1d5c36c347e67a5242953af8319650fc`.
 The regenerated root `SHA256SUMS` ledger records the same identity; the
 retained PDF therefore does not claim render parity with the current TeX. The
 validation record in `README.md` distinguishes compilation, font embedding,
@@ -51,8 +51,9 @@ The current source incorporates exhaustive crosswalks for
 `QPochhammerDissection` (zero definitions and two theorems),
 `GaussianBinomialPalindromic` (zero definitions and fourteen theorems),
 `GaussianBinomialPolynomialStructure` (zero definitions and five theorems),
-and `GeometricPochhammerNormalConvergence` (zero definitions and three
-theorems). It also inventories `QMultinomial` (one definition and nine
+`GaussianBinomialBounds` (zero definitions and six theorems), and
+`GeometricPochhammerNormalConvergence` (zero definitions and three theorems).
+It also inventories `QMultinomial` (one definition and nine
 theorems), `QuantumMultinomial` (zero definitions and five theorems),
 `QPochhammerInfiniteBounds` (zero definitions and five theorems),
 and `QPochhammerComplexOrder` (one definition and four theorems),
@@ -88,8 +89,8 @@ complex strict contraction, including `q = 0`, and gives the dyadic Rvachev
 product and bounded-Fabius Fourier specializations. The compound
 `thm:qF-spectral` row remains Partial because its named centered/MGF packaging
 and exterior reciprocal, pole-divisor, and zero--pole clauses are absent. The
-forward status inventory covers 282 labelled results: 88 Exact / 83 Partial /
-103 None / 8 N/A; the 191-result pre-Fabius core remains 36 / 29 / 123 / 3.
+forward status inventory covers 282 labelled results: 90 Exact / 84 Partial /
+100 None / 8 N/A; the 191-result pre-Fabius core remains 36 / 29 / 123 / 3.
 The central-reduction row is Exact through its division-free commutative-ring
 identity and field quotient wrapper. The cyclotomic-factorization row is Exact
 for the factorial form over every commutative ring and the Gaussian form over
@@ -105,7 +106,10 @@ the two complex-order series rows are also Exact on the domains recorded in
 the crosswalk, while the separate complex-parameter property rows remain
 unformalized. The quantum-multinomial row is Exact over every semiring under
 the displayed q-commutation hypotheses, without assuming that q is central or
-that the ambient semiring is commutative. No PDF was generated locally while
+that the ambient semiring is commutative. `GaussianBinomialBounds` contributes
+six theorems; its proof reuses the generic `finiteQPochhammerIn_self_pos` from
+`GeneralQConditionNumber`, which is not counted as a declaration of the
+bounds leaf. No PDF was generated locally while
 resolving this merge; the
 upstream 354-page artifact remains the retained publication checkpoint.
 

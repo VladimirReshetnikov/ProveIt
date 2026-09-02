@@ -31,7 +31,7 @@ module tranches and the zero-definition, three-theorem
 crosswalk. That source is a source-only successor to the fresh artifact receipt
 and requires a later synchronized three-pass build. Retained PDFs under its `assets/` tree are
 research figures, not alternate manuscript renderings. The current Lean audit
-contains 670 facade-reachable modules and 8,852 public declarations, with no
+contains 671 facade-reachable modules and 8,858 public declarations, with no
 missing module headers or declaration documentation.
 
 ## Detailed package record
@@ -95,15 +95,15 @@ Current packages and retained intake records:
   figures. Pinned source revisions and Git history preserve every superseded
   layout and arrival fact.
 
-  The current `q_pochhammer_q_binomial_monograph.tex` has 14,449 lines,
-  679,492 bytes, and SHA-256
-  `ed3baa67195e142531234170e67d04a04e356905523333ad95d667f0ddddcc8c`.
+  The current `q_pochhammer_q_binomial_monograph.tex` has 14,516 lines,
+  682,778 bytes, and SHA-256
+  `3184b1ed82998f7a9a903cbd0e95a6836cbeab2edd3194e5dc35c7243b9b9618`.
   Its retained `q_pochhammer_q_binomial_monograph.pdf` is a historical
   354-page A4 artifact of 3,030,302 bytes, with SHA-256
   `1050a9a3b0b7a8df8e7de0870946ae64940d7d7839a2f20427be0ebe14b0ba8c`.
-  That PDF was built from the preceding 14,381-line, 675,239-byte source with
-  SHA-256
-  `240bff72e95ddf9609f6c5aba7f5285ef2ce4ec60e0a2e73d9a50138989e58dd`.
+  That PDF was built in exactly three guarded serial passes (343, 354, and 354
+  pages) from the preceding 14,381-line, 675,239-byte source with SHA-256
+  `240bff72fb47562e9a8fd87085b5a3a96d738189714518db17988f7c4ac15d31`.
   Its A4 boxes, text extraction, embedded/subset Type-1 fonts including
   Libertinus, absence of Type-3 fonts, and targeted visual review passed at
   that checkpoint. The current TeX adds explicit Bell-multiplicity and
@@ -859,6 +859,7 @@ compatibility spelling of its primary identity),
 `GaussianBinomialComplexOrder.lean` (one definition, five theorems),
 `QPfaffSaalschutz.lean` (zero definitions, three theorems),
 `QuantumMultinomial.lean` (zero definitions, five theorems),
+`GaussianBinomialBounds.lean` (zero definitions, six theorems),
 `GaussianBinomialAtNegOne.lean` (five theorems),
 `RvachevPochhammerFactorization.lean` (one definition, nine theorems), and
 `QPochhammerEntire.lean` (zero definitions; four legacy compatibility
@@ -1170,3 +1171,6 @@ strict-contraction, and denominator hypotheses remain explicit.
 `QuantumMultinomial.lean` adds five theorems for antidiagonal tuple recursion,
 noncommutative Gaussian symmetry, and the ordered q-multinomial expansion for
 pairwise q-commuting variables.
+`GaussianBinomialBounds.lean` adds six theorems: field reciprocity, the
+nonnegative-nome lower bound and strict-contraction q-Pochhammer upper bound,
+and the corresponding dimension-dominant two-sided real bounds for `Q > 1`.
