@@ -22,10 +22,11 @@ inverse-q synthesis have been dispositioned into
 Their earlier names, arrival hashes, and publication facts remain provenance,
 not parallel live documents. The current canonical TeX postdates its retained
 historical PDF; the exact source and artifact receipt appears once in the
-detailed package record below. The merged source incorporates the later five-theorem
+detailed package record below. The merged source incorporates the later
+five-theorem
 `QPochhammerEntire.lean`, `QPochhammerInfinite.lean`, and
-`QPochhammerDissection.lean` surfaces, together with the latest six-module
-q-series tranche and the zero-definition, three-theorem
+`QPochhammerDissection.lean` surfaces, together with the subsequent q-series
+module tranches and the zero-definition, three-theorem
 `GeometricPochhammerNormalConvergence.lean` leaf, in its formalization
 crosswalk. That source is a source-only successor to the fresh artifact receipt
 and requires a later synchronized three-pass build. Retained PDFs under its `assets/` tree are
@@ -94,9 +95,9 @@ Current packages and retained intake records:
   figures. Pinned source revisions and Git history preserve every superseded
   layout and arrival fact.
 
-  The current `q_pochhammer_q_binomial_monograph.tex` has 14,298 lines,
-  669,990 bytes, and SHA-256
-  `3cb7365875c11c05c5e4991a3ba88cd08c33ed8a049313e39b7b5f9aa3c10885`.
+  The current `q_pochhammer_q_binomial_monograph.tex` has 14,316 lines,
+  671,065 bytes, and SHA-256
+  `38c15e63a4676ba64f35a6e89dee558eb3989787bb7c6528a943bc3d47d46e4d`.
   Its retained `q_pochhammer_q_binomial_monograph.pdf` is a historical
   348-page A4 artifact of 3,002,729 bytes, with SHA-256
   `8bf14b52d8a0fc0abc4d54cca503fd47a2df37cf76ee1bb4e442bea1fd2a4aa7`.
@@ -109,8 +110,9 @@ Current packages and retained intake records:
   claimed.
   It carries the five-theorem `QPochhammerEntire.lean`, the generic
   `QPochhammerInfinite.lean` and `QPochhammerDissection.lean` APIs, and the
-  latest six-module q-series tranche, plus the three-theorem
-  `GeometricPochhammerNormalConvergence.lean` outer-product API. PDF files retained
+  subsequent q-series module tranches, plus the three-theorem
+  `GeometricPochhammerNormalConvergence.lean` outer-product API. Its fresh
+  render is pending. PDF files retained
   beneath `assets/` are vector research figures, not manuscript builds.
   Manuscript result labels and numerical checks remain
   distinct from Lean verification.
@@ -791,24 +793,23 @@ claims about the current canonical source. The canonical synthesis's current
 source and retained historical PDF are identified by the single exact receipt
 in the detailed package record above.
 
-The latest validated forward formalization ledger has 282 labelled results:
-73 Exact, 84 Partial, 117 None, and 8 N/A. The original
+The latest validated forward formalization ledger has 282 rows: 73 Exact, 84
+Partial, 117 with no counterpart, and 8 interface-only. The original
 191-result pre-Fabius core had 36 exact, 29 partial, 123 with no counterpart,
 and 3 interface-only entries. The four integrated-guide chapters add 31
 human-proved but not Lean-formalized assertions and five labelled definitions;
-the later Fabius bridge contributes the remaining 56 rows. Its pointwise
+the later Fabius bridge contributes the remaining rows. Its pointwise
 inside-`q^2` Pochhammer factorization and the outer product's locally uniform
 (normal) convergence are now formal for every complex strict contraction,
-including `q = 0`. The compound spectral theorem remains Partial at its named
-centered/MGF wrappers and its reciprocal outside-disk formula, pole divisor,
-and zero--pole exchange. The algebra of q-shifted factorials now accounts for 6 exact, 2
-partial, and 7
+including `q = 0`. The compound spectral theorem remains partial at its named
+centered/MGF wrappers and exterior reciprocal clauses. The algebra of
+q-shifted factorials now accounts for 11 exact, 2 partial, and 2
 unformalized results; the q-integer and Gaussian-coefficient chapter for
-7 exact, 0 partial, and 2 unformalized results. The finite
+8 exact, 1 partial, and 0 unformalized results. The finite
 q-binomial/inversion chapter now accounts for 9 exact, 1 partial, and 0
 unformalized results; the weighted chapter for 3 exact, 2 partial, and 3
-unformalized results; and the basic-hypergeometric chapter for 1 exact, 0
-partial, and 8 unformalized results. The cyclotomic chapter now has 1 exact,
+unformalized results; and the basic-hypergeometric chapter for 1 exact, 3
+partial, and 5 unformalized results. The cyclotomic chapter now has 1 exact,
 0 partial, and 8 unformalized results. The exact rows include the primary and
 second q-Cauchy identities, both weighted-Pascal recurrences,
 elementary--complete orthogonality, and weighted symmetric-function inversion.
@@ -833,13 +834,18 @@ compatibility spelling of its primary identity),
 `QPochhammerDissection.lean` (two theorems),
 `QPochhammerInfinite.lean` (one definition, 29 theorems),
 `QBinomialReciprocity.lean` (four theorems),
+`GaussianBinomialPalindromic.lean` (zero definitions, twelve theorems),
 `GaussianBinomialPolynomialStructure.lean` (zero definitions, five theorems),
+`CentralQBinomialReduction.lean` (zero definitions, six theorems),
+`CyclotomicFactorization.lean` (zero definitions, seven theorems),
 `GaussianBinomialAtNegOne.lean` (five theorems),
 `RvachevPochhammerFactorization.lean` (one definition, nine theorems), and
 `QPochhammerEntire.lean` (zero definitions; four legacy compatibility
 wrappers plus one analytic-order compatibility theorem), and
 `GeometricPochhammerNormalConvergence.lean` (zero definitions, three
-theorems).
+theorems), `QPochhammerLogDerivative.lean` (zero definitions, ten theorems),
+`QPochhammerOrderDerivative.lean` (zero definitions, three theorems), and
+`JacobiCubic.lean` (zero definitions, two theorems).
 The five `GaussianBinomialAtNegOne` theorems are
 `gaussianBinomial_neg_one_even_even`,
 `gaussianBinomial_neg_one_odd_even`,
@@ -874,8 +880,8 @@ sinc product has a global spectral factorization for every complex strict
 contraction with nome `q^2`; only the two final Rvachev wrappers specialize to
 nome `1/4`. The compound spectral theorem in the Fabius bridge remains
 partial because its named centered/MGF wrapper, outside-disk reciprocal
-formula, and local-uniform/normal-convergence packaging for the outer
-spectral product are not all formalized.
+formula, pole divisor, and zero--pole exchange are not formalized. Its outer
+local-uniform/normal-convergence clause is exact.
 The complementary formal surfaces of
 `CompleteHomogeneousGenerating.lean` and
 `SymmetricFunctionGenerating.lean` prove both the finite elementary product
@@ -1099,3 +1105,13 @@ status changes make the q-exponential eigenfunction and Jackson
 integration-by-parts subclaims Exact; q-exponential factorization, the Jackson
 fundamental theorem, and theta quasi-periodicity remain Partial at the
 unformalized clauses stated in their rows.
+
+The subsequent tail adds `QPochhammerLogDerivative.lean` (ten theorems),
+`QPochhammerOrderDerivative.lean` (three theorems), `JacobiCubic.lean` (two
+theorems), `CentralQBinomialReduction.lean` (six theorems), and
+`CyclotomicFactorization.lean` (seven theorems). The last two modules make the
+central-reduction and cyclotomic-Pochhammer rows Exact: the central identity is
+division-free over every commutative ring with a field/nonzero-denominator
+quotient wrapper, while the factorial cyclotomic factorization holds over every
+commutative ring and the Gaussian factorization over every integral domain,
+with the exponent bounded in `{0,1}` by the proved divisibility inequalities.

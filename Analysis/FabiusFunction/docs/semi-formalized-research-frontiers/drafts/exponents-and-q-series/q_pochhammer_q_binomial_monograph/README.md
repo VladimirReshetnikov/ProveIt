@@ -105,28 +105,44 @@ The PDF has 3,002,729 bytes and SHA-256
 It was produced by exactly three serial
 `pdflatex -interaction=nonstopmode -halt-on-error` passes, which produced 338,
 348, and 348 pages, with `makeindex` run on the `.idx` file after each pass.
-The final log scan found three overfull boxes, all in the single paragraph of the QPochhammerEntire crosswalk (source lines 652--670) whose long declaration names lack break points. All pages are A4. `pdffonts` reports 42 font rows, all
-embedded and subsetted, including 5 Libertinus rows, with no Type-3
-fonts. The files under `assets/experiments/**/figures/` remain research
+The final log scan found three overfull boxes, all in the single paragraph of
+the `QPochhammerEntire` crosswalk in that historical source, whose long
+declaration names lack break points. All pages are A4. `pdffonts` reports 42
+font rows, all embedded and subsetted, including five Libertinus rows, with no
+Type-3 fonts. The files under `assets/experiments/**/figures/` remain research
 figures, not publication manuscripts.
 
-The current master source postdates that checkpoint: it has 14,298 lines,
-669,990 bytes, and SHA-256
-`3cb7365875c11c05c5e4991a3ba88cd08c33ed8a049313e39b7b5f9aa3c10885`.
-Consequently the retained PDF is historical, and no render parity with the
-current TeX is claimed. The current source includes exhaustive crosswalks for
-`QPochhammerEntire` (zero definitions
+The current master TeX is a source-only successor to that checkpoint: it has
+14,316 lines, 671,065 bytes, and SHA-256
+`38c15e63a4676ba64f35a6e89dee558eb3989787bb7c6528a943bc3d47d46e4d`.
+The regenerated root `SHA256SUMS` ledger records the same identity. The
+historical source identity above must not be reused for the live source, and
+the retained PDF does not claim render parity with the current TeX.
+
+The current source includes exhaustive crosswalks for `QPochhammerEntire`
+(zero definitions
 and five legacy compatibility theorems), `QPochhammerInfinite` (one definition
 and twenty-nine theorems), `QPochhammerDissection` (zero definitions and two
-theorems), and `QBinomialTheoremInfinite` (one definition and twenty-two
-theorems), together with `GeometricPochhammerNormalConvergence` (zero
-definitions and three theorems). The newer inventory also includes
+theorems), `QBinomialTheoremInfinite` (one definition and twenty-two
+theorems), `GaussianBinomialPalindromic` (zero definitions and twelve
+theorems), `GaussianBinomialPolynomialStructure` (zero definitions and five
+theorems), and `GeometricPochhammerNormalConvergence` (zero
+definitions and three theorems). The wider inventory also includes
 `QMultinomial` (one definition and nine theorems),
-`QPochhammerInfiniteBounds` (five theorems), `QPochhammerComplexOrder` (one
-definition and four theorems), `BasicHypergeometricSeries` (two definitions
-and five theorems), `HeineTransformation` (two definitions and five theorems),
-and `QGaussSummation` (two theorems), as well as expanded Euler, Jacobi, and
-Rogers--Szegő material.
+`QPochhammerInfiniteBounds` (zero definitions and five theorems),
+`QPochhammerComplexOrder` (one definition and four theorems),
+`BasicHypergeometricSeries` (two definitions and five theorems),
+`HeineTransformation` (two definitions and five theorems), and
+`QGaussSummation` (zero definitions and two theorems). Recent exact surfaces
+add `QExponential` (three definitions and eight theorems), `JacksonIntegral`
+(one definition and seven theorems), `ThetaQuasiPeriodicity` (one definition
+and six theorems), `QPochhammerLogDerivative` (zero definitions and ten
+theorems), `QPochhammerOrderDerivative` (zero definitions and three theorems),
+`JacobiCubic` (zero definitions and two theorems),
+`CentralQBinomialReduction` (zero definitions and six theorems), and
+`CyclotomicFactorization` (zero definitions and seven theorems), together with
+expanded Euler, Jacobi, and Rogers--Szegő material.
+
 The two newest generic theorems are
 `deriv_qPochhammerInfIn_ne_zero_of_mul_pow_eq_one`, which gives a nonzero
 derivative at every raw factor zero `a*q^j = 1` including `q = 0`, and
@@ -145,7 +161,24 @@ nome-`1/4` Rvachev specialization, and the bounded-Fabius Fourier
 specialization. Its named centered/MGF packaging and exterior reciprocal
 formula, pole divisor, and zero--pole exchange remain outside Lean.
 
-The root package checksum ledger records the live source and retained PDF as
-distinct payloads.
+The new status changes record the exact q-exponential eigenfunction and
+Jackson integration-by-parts subclaims, and Partial formalizations of the
+q-exponential factorization, Jackson fundamental theorem, and theta
+quasi-periodicity; the remaining clauses named in their rows stay explicit.
+The incoming tail further makes the full elementary Gaussian-polynomial
+structure and Jacobi's cubic identity Exact, while adding Partial order
+derivative and Gaussian-moment rows; the Lambert logarithm row remains
+Partial with both displayed derivative formulas now formalized.
+The central-reduction row is now Exact through a division-free commutative-ring
+identity and its field quotient wrapper; the cyclotomic-factorization row is
+Exact over every commutative ring for the factorial form and every integral
+domain for the Gaussian form, with the exponent bounds stated explicitly. The
+half-base Gaussian valuation row remains Partial: Lean proves the reciprocal
+identity and symmetry used in the argument, while the concluding odd-integer
+valuation statement is still outside the formal surface.
+
+No PDF was generated while resolving this merge. The root package checksum
+ledger records the live source and retained historical PDF as distinct
+payloads.
 PDFs are rebuilt in batches, at most about once per hour; synchronization is
 claimed only after a fresh guarded build.

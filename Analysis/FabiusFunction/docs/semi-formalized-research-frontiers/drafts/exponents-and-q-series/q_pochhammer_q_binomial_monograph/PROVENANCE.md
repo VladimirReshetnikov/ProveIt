@@ -34,26 +34,39 @@ master retains one publication checkpoint,
 It was built from the then-current 14,158-line, 661,835-byte source with
 SHA-256
 `79ee5e60a6c7e42a91c58dcd9bcae56173cc6b4aa3e54739a461943f705f3904`;
-exactly three guarded serial passes produced 338, 348, and 348 pages. The live
-source now postdates that receipt: it has 14,298 lines, 669,990 bytes, and
-SHA-256
-`3cb7365875c11c05c5e4991a3ba88cd08c33ed8a049313e39b7b5f9aa3c10885`.
-The retained PDF therefore does not claim render parity with the current TeX.
-The validation record in `README.md` distinguishes compilation, font
-embedding, complete page rendering, contact-sheet review, and full-resolution
-inspection. PDFs retained beneath `assets/` are research figures, not
-manuscripts.
+exactly three guarded serial passes produced 338, 348, and 348 pages.
 
-The current source incorporates exhaustive crosswalks for `QPochhammerEntire` (zero
-definitions and five legacy compatibility theorems), `QPochhammerInfinite`
-(one definition and twenty-nine theorems), and `QPochhammerDissection` (zero
-definitions and two theorems), plus `GeometricPochhammerNormalConvergence`
-(zero definitions and three theorems). It also inventories `QMultinomial`
-(one definition and nine theorems), `QPochhammerInfiniteBounds` (five
-theorems), `QPochhammerComplexOrder` (one definition and four theorems),
+The live source now postdates that receipt: it has 14,316 lines, 671,065 bytes,
+and SHA-256
+`38c15e63a4676ba64f35a6e89dee558eb3989787bb7c6528a943bc3d47d46e4d`.
+The regenerated root `SHA256SUMS` ledger records the same identity; the
+retained PDF therefore does not claim render parity with the current TeX. The
+validation record in `README.md` distinguishes compilation, font embedding,
+complete page rendering, contact-sheet review, and full-resolution inspection.
+PDFs retained beneath `assets/` are research figures, not manuscripts.
+
+The current source incorporates exhaustive crosswalks for
+`QPochhammerEntire` (zero definitions and five legacy compatibility theorems),
+`QPochhammerInfinite` (one definition and twenty-nine theorems),
+`QPochhammerDissection` (zero definitions and two theorems),
+`GaussianBinomialPalindromic` (zero definitions and twelve theorems),
+`GaussianBinomialPolynomialStructure` (zero definitions and five theorems),
+and `GeometricPochhammerNormalConvergence` (zero definitions and three
+theorems). It also inventories `QMultinomial` (one definition and nine
+theorems), `QPochhammerInfiniteBounds` (zero definitions and five theorems),
+and `QPochhammerComplexOrder` (one definition and four theorems),
 `BasicHypergeometricSeries` (two definitions and five theorems),
 `HeineTransformation` (two definitions and five theorems), and
-`QGaussSummation` (two theorems). The `QPochhammerEntire.lean` leaf proves the fixed-nome
+`QGaussSummation` (zero definitions and two theorems). The next tranche adds
+`QExponential` (three
+definitions and eight theorems), `JacksonIntegral` (one definition and seven
+theorems), `ThetaQuasiPeriodicity` (one definition and six theorems),
+`QPochhammerLogDerivative` (zero definitions and ten theorems),
+`QPochhammerOrderDerivative` (zero definitions and three theorems), and
+`JacobiCubic` (zero definitions and two theorems). The current tail adds
+`CentralQBinomialReduction` (zero definitions and six theorems) and
+`CyclotomicFactorization` (zero definitions and seven theorems). The
+`QPochhammerEntire.lean` leaf proves the fixed-nome
 single-symbol locally uniform product and differentiability, the
 division-free factor-zero criterion including `q = 0`, the reciprocal-power
 zero lattice for nonzero nome, and simple analytic order at every zero. The
@@ -69,6 +82,13 @@ product and bounded-Fabius Fourier specializations. The compound
 and exterior reciprocal, pole-divisor, and zero--pole clauses are absent. The
 forward status inventory covers 282 labelled results: 73 Exact / 84 Partial /
 117 None / 8 N/A; the 191-result pre-Fabius core remains 36 / 29 / 123 / 3.
+The central-reduction row is Exact through its division-free commutative-ring
+identity and field quotient wrapper. The cyclotomic-factorization row is Exact
+for the factorial form over every commutative ring and the Gaussian form over
+every integral domain, with the exponent bounds explicit. The half-base
+Gaussian valuation row remains Partial because its concluding odd-integer
+valuation statement has not yet been formalized. No PDF was generated while
+resolving this merge, so the retained 348-page artifact remains historical.
 
 The former q-Pochhammer/q-binomial monograph arrived in commit
 `47172bc03ec078961d8b023dfe156ecd712efb65`. Its pre-repair source SHA-256 was
