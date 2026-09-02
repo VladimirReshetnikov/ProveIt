@@ -1,0 +1,1666 @@
+\section{Multiplication: convolution of logarithmic blocks}
+\label{plt:sec:multiplication}
+
+Multiplication is the operation on which every later construction rests:
+reciprocals, powers, composition, and reversion are all built from it by
+triangular recurrences.  Its whole content is that the Cauchy rule in the
+outer variable~$t$ is \emph{coefficientwise finite}, so that each output
+block is an exact finite expression in finitely many input blocks.  Nothing
+here is an analytic rearrangement, and nothing here requires convergence.
+
+Throughout this section $\K$ is a field of characteristic zero, $X$ is the
+large variable, the regime is $X\to+\infty$ on the positive ray unless a
+different domain is announced, and
+\begin{equation}\label{plt:eq:mul-generators}
+ t\DefinitionEquals X^{-1},
+ \qquad
+ L\DefinitionEquals\log X .
+\end{equation}
+In the formal algebra $t$ and $L$ are independent generators; their analytic
+coupling is recorded only by the distinguished derivation, which plays no
+role in this section.  The four ambient classes are
+
+\begin{center}
+\begin{tabular}{@{}lll@{}}
+\hline
+class & coefficient ring & elements \\
+\hline
+$\PLpow$ & $\K[L]$ & $\sum_{n\ge0}p_n(L)t^n$ \\
+$\PLlau$ & $\K[L]$ & $\sum_{n\ge n_0}p_n(L)t^n$, $n_0\in\IntegerNumbers$ \\
+$\PLrat$ & $\K(L)$ & $\sum_{n\ge n_0}p_n(L)t^n$, $p_n$ rational in $L$ \\
+$\PLit$  & $\K((L^{-1}))$ & $\sum_{n\ge n_0}t^n\sum_{j\ge j_n}a_{n,j}L^{-j}$ \\
+\hline
+\end{tabular}
+\end{center}
+
+All truncations below are \emph{exclusive}: $\Trunc{F}{N}$ keeps every
+logarithmic monomial in every block $t^n$ with $n<N$, and discards the rest.
+
+\begin{remark}[Reconciliation of the source conventions]
+\label{plt:rmk:mul-conventions}
+Two of the merged reports use an inclusive outer cutoff $[F]_{\le N}$.  The
+translation is $[F]_{\le N}=\Trunc{F}{N+1}$, and every dependency range,
+algorithm bound and error exponent quoted from those reports has been shifted
+by one block accordingly.  Likewise, one report writes the coefficient
+bracket as $[F]_M$; here the series always stands to the right of the
+bracket, $[t^n]F=p_n(L)$ and $[t^nL^j]F=a_{n,j}$.
+\end{remark}
+
+\subsection{The block Cauchy product}
+\label{plt:sec:mul-cauchy}
+
+It is economical to prove the algebra of all four classes at once.  What the
+three coefficient rings $\K[L]$, $\K(L)$, $\K((L^{-1}))$ have in common is a
+degree function in $L$ together with a coefficient-extraction map obeying the
+usual convolution rule.
+
+\begin{definition}[Logarithmically graded domain]
+\label{plt:def:mul-graded-domain}
+A \emph{logarithmically graded domain over $\K$} is a commutative
+$\K$-algebra $R$ together with $\K$-linear maps
+$\kappa_d\colon R\to\K$, one for each $d\in\IntegerNumbers$, such that
+for every nonzero $f\in R$ the set $\SetOf{d:\kappa_d(f)\ne0}$ is nonempty
+and bounded above, and:
+\begin{enumerate}
+\item[(G1)] $f=0$ if and only if $\kappa_d(f)=0$ for every $d$;
+\item[(G2)] $\kappa_d(fg)=\sum_{i+j=d}\kappa_i(f)\kappa_j(g)$ for all
+$f,g\in R$ and all $d\in\IntegerNumbers$, the sum having only finitely many
+nonzero terms;
+\item[(G3)] $\kappa_0(1)=1$ and $\kappa_d(1)=0$ for $d\ne0$.
+\end{enumerate}
+For $f\ne0$ put $\degL f\DefinitionEquals\max\SetOf{d:\kappa_d(f)\ne0}$ and
+$\lc_L(f)\DefinitionEquals\kappa_{\degL f}(f)\in\K^\times$; set
+$\degL 0\DefinitionEquals-\infty$ and $\lc_L(0)\DefinitionEquals0$.
+\end{definition}
+
+Here $\lc_L$ is the leading coefficient \emph{inside one block}; it is not
+the same object as the leading scalar $\lc$ of a series, defined in
+\cref{plt:def:mul-leading-data} below, although the two agree on the leading
+block.
+
+\begin{lemma}[Elementary consequences]
+\label{plt:lem:mul-graded-basics}
+Let $R$ be a logarithmically graded domain over $\K$.  For all $f,g\in R$:
+\begin{equation}\label{plt:eq:mul-degL-laws}
+ \degL(fg)=\degL f+\degL g,
+ \qquad
+ \lc_L(fg)=\lc_L(f)\lc_L(g),
+ \qquad
+ \degL(f+g)\le\max(\degL f,\degL g).
+\end{equation}
+Here $-\infty+c=-\infty$ and $\max(-\infty,c)=c$.  In particular $R$ is an
+integral domain.  Moreover, if $\degL f\le d$ and $\degL g\le e$, then
+$\kappa_{d+e}(fg)=\kappa_d(f)\kappa_e(g)$.
+\end{lemma}
+
+\begin{proof}
+If $f=0$ or $g=0$ every assertion is trivial under the stated conventions.
+The third assertion in \eqref{plt:eq:mul-degL-laws} is immediate from
+$\K$-linearity of each $\kappa_d$.  For the first two, assume $f,g\ne0$ and
+set $d=\degL f$, $e=\degL g$.  If $c>d+e$ and $i+j=c$, then $i>d$ or $j>e$, so
+every term of (G2) vanishes and $\kappa_c(fg)=0$.  If $c=d+e$, the only
+possibly nonvanishing term is $i=d$, $j=e$, whence
+\[
+ \kappa_{d+e}(fg)=\kappa_d(f)\kappa_e(g)=\lc_L(f)\lc_L(g)\ne0,
+\]
+because $\K$ is a field and both factors are nonzero.  This proves
+$\degL(fg)=d+e$, $\lc_L(fg)=\lc_L(f)\lc_L(g)$, and, by (G1), $fg\ne0$; so $R$
+is a domain.  The last sentence is the same computation with $d,e$ merely
+upper bounds, all other terms of (G2) again vanishing.
+\end{proof}
+
+\begin{lemma}[The three coefficient rings]
+\label{plt:lem:mul-three-rings}
+Each of
+\[
+ \K[L],\qquad \K(L),\qquad \K((L^{-1}))
+\]
+is a logarithmically graded domain over $\K$, with $\degL$ equal
+respectively to the polynomial degree, to $\degL(p/q)=\deg p-\deg q$, and to
+the largest exponent occurring in the Laurent expansion.  There are injective
+$\K$-algebra homomorphisms
+\begin{equation}\label{plt:eq:mul-coeff-chain}
+ \K[L]\hookrightarrow\K(L)\hookrightarrow\K((L^{-1}))
+\end{equation}
+that preserve $\degL$ and $\lc_L$.
+\end{lemma}
+
+\begin{proof}
+For $\K[L]$ take $\kappa_d(f)$ to be the coefficient of $L^d$ in $f$ for
+$d\ge0$ and $\kappa_d=0$ for $d<0$; (G1)--(G3) are the definition of
+polynomial multiplication.  For $\K((L^{-1}))$, an element is
+$f=\sum_{j\le d}a_jL^j$ with only finitely many $j>0$ allowed but arbitrarily
+negative $j$ permitted; put $\kappa_j(f)=a_j$.  Then (G1) and (G3) are clear,
+and in (G2) the constraint $i+j=c$ with $i\le\degL f$, $j\le\degL g$ forces
+$i\ge c-\degL g$, so the sum is finite; it is the definition of the Laurent
+product.  The support of $f$ is bounded above by construction.
+
+The inclusion $\K[L]\subset\K((L^{-1}))$ is a $\K$-algebra map, and every
+nonzero element of $\K((L^{-1}))$ is invertible: writing $f\ne0$ as
+$f=a_dL^d(1+u)$ with $d=\degL f$ and $u\in L^{-1}\K[[L^{-1}]]$, the family
+$\bigl((-u)^r\bigr)_{r\ge0}$ is $L^{-1}$-adically summable and its sum
+inverts $1+u$, so $f^{-1}=a_d^{-1}L^{-d}\sum_{r\ge0}(-u)^r$.  Hence
+every nonzero polynomial becomes invertible, and the universal property of the
+field of fractions supplies a unique $\K$-algebra homomorphism
+$\iota\colon\K(L)\to\K((L^{-1}))$ extending the inclusion; it is injective
+because $\K(L)$ is a field and $\iota(1)=1$.  Pulling the maps $\kappa_d$ back
+along $\iota$ makes $\K(L)$ a logarithmically graded domain, and
+\cref{plt:lem:mul-graded-basics} applied to $\iota(p)=\iota(q)\iota(p/q)$
+gives $\degL(p/q)=\deg p-\deg q$ and
+$\lc_L(p/q)=\lc_L(p)\lc_L(q)^{-1}$.  Both maps in
+\eqref{plt:eq:mul-coeff-chain} preserve $\kappa_d$ by construction, hence
+preserve $\degL$ and $\lc_L$.
+\end{proof}
+
+\begin{definition}[The block Cauchy product]
+\label{plt:def:mul-cauchy}
+Let $R$ be a logarithmically graded domain over $\K$ and let
+\begin{equation}\label{plt:eq:mul-FG-blocks}
+ F=\sum_{n\ge a}p_n\,t^n,
+ \qquad
+ G=\sum_{m\ge b}q_m\,t^m,
+ \qquad p_n,q_m\in R,
+\end{equation}
+be elements of $R((t))$, the ring of formal Laurent series in $t$ over $R$.
+Their product is
+\begin{equation}\label{plt:eq:mul-cauchy}
+ FG\DefinitionEquals\sum_{N\ge a+b}C_N\,t^N,
+ \qquad
+ C_N\DefinitionEquals\sum_{\substack{n+m=N\\ n\ge a,\ m\ge b}}p_nq_m
+ =\sum_{n=a}^{N-b}p_n\,q_{N-n}.
+\end{equation}
+\end{definition}
+
+\begin{lemma}[Finiteness of every fiber]
+\label{plt:lem:mul-finite-fiber}
+For fixed $N$ the index set in \eqref{plt:eq:mul-cauchy} is
+$\SetOf{n\in\IntegerNumbers:a\le n\le N-b}$, of cardinality
+$\max(N-a-b+1,\,0)$.  In particular it is finite, and it is empty exactly
+when $N<a+b$.
+\end{lemma}
+
+\begin{proof}
+The constraints $n\ge a$ and $m=N-n\ge b$ are equivalent to
+$a\le n\le N-b$.  An interval of integers $[a,N-b]$ has $N-b-a+1$ elements
+when $N-b\ge a$ and is empty otherwise.
+\end{proof}
+
+This is the entire mechanism.  There is no limit, no rearrangement, and no
+hypothesis of numerical convergence: each $C_N$ is a finite sum of products
+in~$R$.
+
+\begin{theorem}[Closure of the four ambient classes]
+\label{plt:thm:mul-closure}
+Let $R$ be a logarithmically graded domain over $\K$.  Then
+\eqref{plt:eq:mul-cauchy} makes $R((t))$ a commutative $\K$-algebra with unit
+$1$, containing $R[[t]]$ as a subalgebra.  Consequently each of
+\[
+ \PLpow=\K[L][[t]],\quad
+ \PLlau=\K[L]((t)),\quad
+ \PLrat=\K(L)((t)),\quad
+ \PLit=\K((L^{-1}))((t))
+\]
+is closed under multiplication, and the chain of inclusions
+\begin{equation}\label{plt:eq:mul-class-chain}
+ \PLpow\subset\PLlau\subset\PLrat\subset\PLit
+\end{equation}
+consists of injective $\K$-algebra homomorphisms.
+\end{theorem}
+
+\begin{proof}
+By \cref{plt:lem:mul-finite-fiber} each $C_N$ is a well-defined element
+of~$R$, and $C_N=0$ for $N<a+b$; so $FG$ again has support bounded below and
+lies in $R((t))$.  Commutativity is the symmetry of the index set under
+$(n,m)\mapsto(m,n)$; bilinearity over $\K$ is clear; and $1\cdot F=F$ because
+the only admissible pair for $1=1\cdot t^0$ at level $N$ is $(0,N)$.  For
+associativity let $H=\sum_{k\ge c}h_kt^k$.  Then
+\[
+ [t^N]\bigl((FG)H\bigr)
+ =\sum_{r+k=N}\Bigl(\sum_{n+m=r}p_nq_m\Bigr)h_k
+ =\sum_{n+m+k=N}p_nq_mh_k,
+\]
+the last sum ranging over the finite set of triples with $n\ge a$, $m\ge b$,
+$k\ge c$: indeed $n+m+k=N$ with the three lower bounds confines each index to
+a finite interval, so the regrouping is a finite rearrangement.  The same
+computation with the other bracketing gives the same finite sum, whence
+$(FG)H=F(GH)$.  Distributivity is likewise a finite regrouping.
+
+If $\ordt F\ge0$ and $\ordt G\ge0$, then $C_N=0$ for $N<0$, so $R[[t]]$ is
+closed under the product; it is a subalgebra.  Taking $R=\K[L]$ gives the
+first two classes, $R=\K(L)$ the third, $R=\K((L^{-1}))$ the fourth, using
+\cref{plt:lem:mul-three-rings}.  Finally, a $\K$-algebra homomorphism
+$\varphi\colon R\to R'$ induces a $\K$-algebra homomorphism
+$R((t))\to R'((t))$ by $\sum p_nt^n\mapsto\sum\varphi(p_n)t^n$, because
+$\varphi$ commutes with the finite sums \eqref{plt:eq:mul-cauchy}; injectivity
+is inherited blockwise.  Applying this to
+\eqref{plt:eq:mul-coeff-chain} yields \eqref{plt:eq:mul-class-chain}.
+\end{proof}
+
+\begin{proposition}[The monomial-level convolution and the support bound]
+\label{plt:prop:mul-monomial}
+Let $F=\sum_{n,j}a_{n,j}t^nL^j$ and $G=\sum_{m,k}b_{m,k}t^mL^k$ lie in
+$\PLlau$ (so $j,k\in\NaturalNumbers$, and $\PLpow$ is the case
+$\ordt\ge0$) or in $\PLit$ (so $j,k\in\IntegerNumbers$, bounded above at
+each fixed outer level).  Then
+\begin{equation}\label{plt:eq:mul-2d-convolution}
+ [t^NL^d](FG)
+ =\sum_{n+m=N}\ \sum_{i+j=d}a_{n,i}b_{m,j},
+\end{equation}
+a finite sum, and
+\begin{equation}\label{plt:eq:mul-support}
+ \CoefficientSupportOf{FG}
+ \subseteq
+ \CoefficientSupportOf{F}+\CoefficientSupportOf{G},
+\end{equation}
+the Minkowski sum in $\IntegerNumbers^2$.
+\end{proposition}
+
+\begin{proof}
+Formula \eqref{plt:eq:mul-2d-convolution} is (G2) applied to
+\eqref{plt:eq:mul-cauchy}.  Finiteness holds because the outer sum is finite
+by \cref{plt:lem:mul-finite-fiber} and, for each of its terms, the inner sum
+is finite by (G2).  For \eqref{plt:eq:mul-support}: if
+$(N,d)\notin\CoefficientSupportOf{F}+\CoefficientSupportOf{G}$, then every
+summand of \eqref{plt:eq:mul-2d-convolution} has $a_{n,i}=0$ or $b_{m,j}=0$,
+so $[t^NL^d](FG)=0$.
+\end{proof}
+
+\begin{remark}[$\PLrat$ has no monomial support of its own]
+\label{plt:rmk:mul-rat-no-support}
+\cref{plt:prop:mul-monomial} is deliberately not stated for $\PLrat$.  An
+element of $\K(L)((t))$ has coefficient blocks that are rational functions of
+$L$, and a rational function is not a (finite or infinite) combination of
+powers of $L$ until one chooses an expansion point.  The coefficient support
+$\CoefficientSupportOf{\cdot}$ becomes defined only after applying the
+embedding $\PLrat\hookrightarrow\PLit$ of \cref{plt:thm:mul-closure}, which
+expands each block at $L=\infty$ and turns the exact coefficient $1/(L+1)$
+into the infinite series $L^{-1}-L^{-2}+L^{-3}-\cdots$.  Exact rational
+dependence on $L$ and a monomial support in $L$ are different pieces of data;
+only the second is what \eqref{plt:eq:mul-support} constrains.
+\end{remark}
+
+\begin{remark}[Why multiplication is a two-level, not a flat, operation]
+\label{plt:rmk:mul-two-level}
+Although \eqref{plt:eq:mul-2d-convolution} is a genuine two-dimensional
+convolution, it should not be implemented as one.  The outer index is the
+asymptotic hierarchy and the inner index is not: at fixed $N$ the inner sum
+is bounded, whereas a cutoff imposed jointly on $|N|+|d|$ does not respect
+dominance.  See \cref{plt:rmk:mul-rectangular-cutoff}.
+\end{remark}
+
+\begin{remark}[Hahn supports]
+\label{plt:rmk:mul-hahn}
+Nothing in \cref{plt:lem:mul-finite-fiber} uses that the exponents are
+integers, only that the two supports are well ordered in the direction of
+increasing smallness.  If $S,T\subseteq\Gamma$ are reverse-well-ordered
+subsets of an ordered abelian group, then $S+T$ is reverse-well-ordered and
+each $\gamma\in S+T$ has only finitely many decompositions $\gamma=s+t$ with
+$s\in S$, $t\in T$; this is the Hahn support theorem
+\cite{hahn,edgar-beginners}.  Everything in this section that does not
+mention the specific value group $\IntegerNumbers$ transfers verbatim to the
+Hahn power-log extension $\sum_{\alpha\in S}p_\alpha(L)t^\alpha$ and, in
+particular, to the Puiseux-log extensions $\K[L]((t^{1/s}))$ used later for
+fractional powers.  We do not repeat the statements.
+\end{remark}
+
+\subsection{Finite determination and precision bookkeeping}
+\label{plt:sec:mul-finite-det}
+
+The content of \cref{plt:lem:mul-finite-fiber} deserves to be recorded as a
+dependency statement, because that is the form in which it is used: it says
+exactly how much of the input must be known in order to know a given part of
+the output, and it says that no more is needed and no less will do.
+
+\begin{theorem}[Finite determination, with exact dependency range]
+\label{plt:thm:mul-finite-determination}
+Let $R$ be a logarithmically graded domain over $\K$, let $a,b,N\in
+\IntegerNumbers$, and let $F,G\in R((t))$ satisfy $\ordt F\ge a$ and
+$\ordt G\ge b$.  Then
+\begin{equation}\label{plt:eq:mul-determination}
+ [t^N](FG)=\sum_{n=a}^{N-b}p_n\,q_{N-n},
+\end{equation}
+so that $[t^N](FG)$ is a $\K$-bilinear function of the two finite tuples
+\[
+ (p_a,p_{a+1},\ldots,p_{N-b})
+ \qquad\text{and}\qquad
+ (q_b,q_{b+1},\ldots,q_{N-a}),
+\]
+equivalently of $\Trunc{F}{N-b+1}$ and $\Trunc{G}{N-a+1}$.  Both ranges are
+exact: for every $n_0$ with $a\le n_0\le N-b$ there are $F,F'\in R((t))$ with
+$\ordt\ge a$ that differ only in the block of index $n_0$, and a $G$ with
+$\ordt G\ge b$, such that $[t^N](FG)\ne[t^N](F'G)$; and symmetrically in the
+second argument.
+\end{theorem}
+
+\begin{proof}
+Equation \eqref{plt:eq:mul-determination} and the bilinearity are
+\cref{plt:def:mul-cauchy} together with \cref{plt:lem:mul-finite-fiber}; the
+blocks listed are precisely those occurring in the sum.  For exactness fix
+$n_0\in[a,N-b]$ and put $m_0=N-n_0$, so that $m_0\ge b$.  Take
+$G=t^{m_0}$, which has $\ordt G=m_0\ge b$.  If $n_0>a$ set $F=t^a+t^{n_0}$
+and $F'=t^a$; if $n_0=a$ set $F=t^a$ and $F'=2t^a$ (here $2\ne0$ because
+$\operatorname{char}\K=0$).  In both cases $\ordt F=\ordt F'=a$, the two
+series agree outside index $n_0$, and $[t^N](FG)-[t^N](F'G)$ equals $1$
+respectively $-1$.  The symmetric statement follows by commutativity.
+\end{proof}
+
+\begin{checkpointbox}
+\textbf{The precision rule.}  If $F$ is known through $\Trunc{F}{P}$ and $G$
+through $\Trunc{G}{Q}$, and $\ordt F=a$, $\ordt G=b$, then $FG$ is known
+through
+\[
+ \Trunc{FG}{\min(P+b,\;Q+a)}
+\]
+and, in the worst case, no further.  The binding entry is contributed by
+whichever factor is paired with the \emph{more singular} partner: a factor
+known to $P$ blocks is degraded by the valuation $b$ of the other factor.  In
+particular, multiplying by a series with a pole of order $r$, that is with
+valuation $-r$, costs exactly $r$ blocks of precision.
+\end{checkpointbox}
+
+\begin{corollary}[Truncated product]
+\label{plt:cor:mul-truncated-product}
+Let $F,G\in R((t))$ be nonzero with $a=\ordt F$, $b=\ordt G$, and let
+$N\in\IntegerNumbers$.  Then for all integers $P\ge N-b$ and $Q\ge N-a$,
+\begin{equation}\label{plt:eq:mul-truncated-product}
+ \Trunc{FG}{N}
+ =\Trunc{\bigl(\Trunc{F}{P}\bigr)\bigl(\Trunc{G}{Q}\bigr)}{N};
+\end{equation}
+% ed.: the optimality of $(N-b,N-a)$ was asserted unconditionally.  For
+% ed.: $N\le a+b$ both sides of \eqref{plt:eq:mul-truncated-product} vanish
+% ed.: whatever $P,Q$ are, so no pair is forced and there is nothing to be
+% ed.: optimal about; the clause is now stated under $N>a+b$, which is what
+% ed.: the argument actually establishes.
+and if $N>a+b$ the pair $(P,Q)=(N-b,\,N-a)$ is optimal: neither entry can be
+lowered by one, that is, there exist $F,G$ with these valuations
+for which $P=N-b-1$, respectively $Q=N-a-1$, falsifies
+\eqref{plt:eq:mul-truncated-product}.  If $F,G\in\PLpow$ and $N\ge0$, then
+$(P,Q)=(N,N)$ is admissible, so the cruder law
+\begin{equation}\label{plt:eq:mul-truncated-product-crude}
+ \Trunc{FG}{N}=\Trunc{\bigl(\Trunc{F}{N}\bigr)\bigl(\Trunc{G}{N}\bigr)}{N}
+ \qquad(N\ge0)
+\end{equation}
+holds there.
+\end{corollary}
+
+\begin{proof}
+Write $F=\Trunc{F}{P}+E$ and $G=\Trunc{G}{Q}+H$, so that $\ordt E\ge P$ and
+$\ordt H\ge Q$, while $\ordt\Trunc{F}{P}\ge a$ and $\ordt\Trunc{G}{Q}\ge b$.
+Then
+\[
+ FG-\bigl(\Trunc{F}{P}\bigr)\bigl(\Trunc{G}{Q}\bigr)
+ =E\,\Trunc{G}{Q}+\Trunc{F}{P}\,H+EH,
+\]
+% ed.: the source bounds the third term by $P+Q$ and asserts $P+Q\ge N$.  That
+% ed.: inequality does not follow from $P\ge N-b$ and $Q\ge N-a$: for
+% ed.: $a=b=0$ and $N=P=Q=-5$ one has $P+Q=-10<N$.  The repair is to bound
+% ed.: $\ordt H$ by $b$ rather than by $Q$, which is legitimate because every
+% ed.: block of $H$ is a block of $G$.
+whose $\ordt$ is at least $P+b\ge N$, $a+Q\ge N$ and $P+b\ge N$
+respectively; for the third term note that $H=G-\Trunc{G}{Q}$ has
+$\ordt H\ge b$, every block of $H$ being a block of $G$, so
+$\ordt(EH)\ge P+b$.  Hence the two products agree below $t^N$, which is
+\eqref{plt:eq:mul-truncated-product}.
+
+For the optimality and the sharpness, assume $N>a+b$, so that $N-1\ge a+b$.
+By \cref{plt:thm:mul-finite-determination} the block $[t^{N-1}](FG)$ already
+depends on $p_{N-1-b}$ and on $q_{N-1-a}$, so no pair below $(N-b,N-a)$ can
+serve for all $F,G$; the following pair of series shows that neither entry
+may be lowered by one.  If $N-b-1>a$ put $F=t^a+t^{N-b-1}$; if
+$N-b-1=a$ put $F=t^a$.  In both cases take $G=t^b$.  Then
+$[t^{N-1}](FG)=1$, whereas $\Trunc{F}{N-b-1}$ omits the block $t^{N-b-1}$,
+so $\Trunc{(\Trunc{F}{N-b-1})G}{N}$ has zero block at $t^{N-1}$.  (In the
+first case $N-1>a+b$, so the surviving term $t^{a+b}$ does not sit at
+level $N-1$.)  The second cutoff is symmetric.
+
+For \eqref{plt:eq:mul-truncated-product-crude}, note that $a,b\ge0$ gives
+$N\ge N-b$ and $N\ge N-a$, so $(P,Q)=(N,N)$ is admissible.
+\end{proof}
+
+\begin{warningbox}
+The crude law \eqref{plt:eq:mul-truncated-product-crude} is \emph{false} on
+the Laurent ring.  Take $F=t^{-1}$, $G=1+t$, $N=1$.  Then $FG=t^{-1}+1$, so
+$\Trunc{FG}{1}=t^{-1}+1$, whereas
+$\Trunc{F}{1}\Trunc{G}{1}=t^{-1}\cdot1=t^{-1}$.  The correct cutoff for $G$
+is $N-\ordt F=2$, and indeed $t^{-1}(1+t)=t^{-1}+1$.  Implementations that
+``normalize every series to start at $t^0$'' silently commit this error
+whenever a genuine principal part is present.
+\end{warningbox}
+
+% ed.: S6, Theorem "Closure and finite determination", eq. (mult-error-rule).
+% ed.: The source states the conclusion as O(t^{min(p+m_0, q+n_0)}) without
+% ed.: any hypothesis relating p,q to the valuations n_0,m_0, and its proof
+% ed.: silently bounds ord(E*Gtilde) by p+m_0 and ord(Ftilde*H) by q+n_0,
+% ed.: which requires ord(Gtilde) >= m_0 and ord(Ftilde) >= n_0.  Neither
+% ed.: follows from the stated hypotheses.  The corrected statement carries
+% ed.: the third entry p+q, and the hypotheses p >= n_0, q >= m_0 under
+% ed.: which the source's form is recovered.  Note that these hypotheses are
+% ed.: sufficient but not necessary: the third entry is redundant exactly
+% ed.: when p >= a or q >= b.
+\begin{corollary}[Error rule for approximate factors]
+\label{plt:cor:mul-error-rule}
+Let $F,G\in\PLlau$ with $\ordt F=a$, $\ordt G=b$, and suppose
+$\widetilde F,\widetilde G\in\PLlau$ satisfy
+\[
+ F=\widetilde F+\FormalBigOAt{t^{p}}{t},
+ \qquad
+ G=\widetilde G+\FormalBigOAt{t^{q}}{t}.
+\]
+Then
+\begin{equation}\label{plt:eq:mul-error-rule}
+ FG=\widetilde F\widetilde G
+ +\FormalBigOAt{t^{\min(p+b,\;q+a,\;p+q)}}{t}.
+\end{equation}
+If in addition $p\ge a$ and $q\ge b$ --- that is, if neither approximation is
+coarser than the leading order of the quantity it approximates --- then the
+third entry is redundant and
+\begin{equation}\label{plt:eq:mul-error-rule-normalized}
+ FG=\widetilde F\widetilde G
+ +\FormalBigOAt{t^{\min(p+b,\;q+a)}}{t}.
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+Write $E=F-\widetilde F$ and $H=G-\widetilde G$, so $\ordt E\ge p$ and
+$\ordt H\ge q$.  Expanding,
+\begin{equation}\label{plt:eq:mul-error-expansion}
+ FG-\widetilde F\widetilde G
+ =E\widetilde G+\widetilde FH+EH .
+\end{equation}
+Now $\widetilde G=G-H$ gives
+$\ordt\widetilde G\ge\min(\ordt G,\ordt H)\ge\min(b,q)$, and likewise
+$\ordt\widetilde F\ge\min(a,p)$.  Since $\ordt$ is additive on products
+(\cref{plt:thm:mul-leading-law} below, or directly
+\cref{plt:lem:mul-finite-fiber}) and satisfies
+$\ordt(A+B)\ge\min(\ordt A,\ordt B)$,
+\[
+ \ordt\bigl(FG-\widetilde F\widetilde G\bigr)
+ \ \ge\
+ \min\bigl(p+\min(b,q),\ \min(a,p)+q,\ p+q\bigr)
+ \ =\ \min(p+b,\ q+a,\ p+q),
+\]
+which is \eqref{plt:eq:mul-error-rule}.  If $p\ge a$ and $q\ge b$, then
+$p+q\ge a+q$ and $p+q\ge p+b$, so $p+q\ge\min(p+b,q+a)$ and the third entry
+may be dropped.
+\end{proof}
+
+\begin{remark}[What \eqref{plt:eq:mul-error-rule} does and does not say]
+\label{plt:rmk:mul-not-an-ideal}
+The symbol $\FormalBigOAt{t^{N}}{t}$ asserts coefficient agreement below
+outer order $N$ and nothing else: no numerical bound, no convergence, no
+uniformity in $L$.  It is also not a statement about a quotient ring.  In
+$\PLlau$ the element $t$ is a unit, so the ideal generated by $t^N$ is the
+whole ring; the subset $t^N\PLpow$ is an additive piece of the
+valuation filtration, not an ideal.  Congruences of the form
+\eqref{plt:eq:mul-error-rule} must therefore be read as valuation
+inequalities $\ordt(F-G)\ge N$, or equivalently as equalities of exclusive
+truncations.  Quotient-algebra language becomes legitimate only after the
+finite principal part has been removed and one works inside $\PLpow$, where
+$(t^N)$ is a genuine ideal.
+\end{remark}
+
+The corresponding algorithm is the schoolbook convolution restricted to the
+window supplied by \cref{plt:thm:mul-finite-determination}.
+
+\begin{lstlisting}[style=pseudo,caption={Truncated block product},label={plt:alg:mul-truncated}]
+# F, G sparse maps  exponent -> coefficient in R;  a = ord(F), b = ord(G)
+# returns the blocks of Trunc_{<N}(F*G)
+function block_product(F, G, a, b, N):
+    C := empty map
+    for (n, Pn) in F with a <= n <= N-b-1:
+        for (m, Qm) in G with b <= m <= N-n-1:
+            C[n+m] := C.get(n+m, 0) + Pn*Qm
+    normalize every coefficient of C          # collect in L before zero-testing
+    delete the blocks of C that are exactly 0
+    return C
+\end{lstlisting}
+
+\begin{remark}[Cost, and what actually dominates it]
+\label{plt:rmk:mul-cost}
+With dense consecutive support the loop performs
+$\BigO\bigl((N-a-b)^2\bigr)$ coefficient products; with sparse supports of
+sizes $s_F,s_G$ it performs at most $s_Fs_G$.  If the retained blocks have
+logarithmic degree $\BigO(d)$, each coefficient product costs
+$\BigO(d^2)$ scalar operations by schoolbook polynomial arithmetic, so the
+total is $\BigO\bigl((N-a-b)^2d^2\bigr)$; fast convolution in $t$ and fast
+polynomial multiplication in $L$ reduce both factors.  These are complexity
+$\BigO$'s and carry no analytic meaning.  In practice, at the moderate orders
+typical of hand asymptotics, exact coefficient normalization --- expansion,
+collection, and gcd reduction if the coefficients are rational functions of
+$L$ --- costs more than the convolution itself, and the decisive
+implementation choice is to never form a product whose outer order exceeds
+the requested cutoff.
+\end{remark}
+
+\begin{remark}[A rectangular cutoff is not a truncation]
+\label{plt:rmk:mul-rectangular-cutoff}
+Discarding all monomials $t^nL^j$ with $|n|+|j|$ or $|j|$ above a threshold
+does not respect dominance.  With a cap $|j|\le10$ one deletes $t^2L^{100}$
+while retaining $t^3L^{-100}$, although
+$t^3L^{-100}\precdom t^2L^{100}$ by an enormous margin.  Bounding
+$\degL p_n$ is a second, independent approximation; it is legitimate only
+when accompanied by a proved degree bound such as
+\cref{plt:prop:mul-affine-profile}.
+\end{remark}
+
+\subsection{Leading data and the leading-term law}
+\label{plt:sec:mul-leading}
+
+\begin{definition}[Leading data]
+\label{plt:def:mul-leading-data}
+Let $R$ be a logarithmically graded domain over $\K$ and let
+$F=\sum_{n\ge n_0}p_nt^n\in R((t))$ be nonzero with
+$\ordt F=\min\SetOf{n:p_n\ne0}$; set $\ordt0=+\infty$.  The
+\emph{leading block} of $F$ is the whole coefficient $p_{\ordt F}\in R$, the
+\emph{leading monomial} is
+\begin{equation}\label{plt:eq:mul-leading-monomial}
+ \lm(F)\DefinitionEquals t^{\ordt F}L^{\degL p_{\ordt F}},
+\end{equation}
+and the \emph{leading scalar} is
+$\lc(F)\DefinitionEquals\lc_L\bigl(p_{\ordt F}\bigr)\in\K^\times$.  The
+\emph{rank-two valuation} of $F$ is
+\begin{equation}\label{plt:eq:mul-rank-two}
+ v(F)\DefinitionEquals\bigl(\ordt F,\ -\degL p_{\ordt F}\bigr)
+ \in\IntegerNumbers^2,
+\end{equation}
+with $\IntegerNumbers^2$ lexicographically ordered and $v(0)=+\infty$.  These
+are three different objects and none is determined by the coarse integer
+$\ordt F$ alone.
+\end{definition}
+
+% ed.: the leading data, the rank-two valuation, the log-degree profile, the
+% ed.: exclusive truncation law and the summability calculus are all
+% ed.: introduced in the ring chapter.  Restating them here without saying so
+% ed.: would leave two definitions of the same symbols standing in one volume.
+% ed.: This remark records that the restatements are verbatim generalizations
+% ed.: over the coefficient ring and agree with the originals.
+\begin{remark}[These are the objects of the ring chapter, over a general
+coefficient ring]
+\label{plt:rmk:mul-leading-restated}
+\cref{plt:def:mul-leading-data} introduces no new object.  It repeats
+\cref{plt:def:lead-leading-data} and \cref{plt:def:ring-rank-two} with the
+three coefficient rings $\K[L]$, $\K(L)$, $\K((L^{-1}))$ replaced by an
+arbitrary logarithmically graded domain $R$, so that the leading-term law can
+be proved once for all four ambient classes simultaneously; on those four
+classes the two readings agree.  The same applies to
+\cref{plt:def:mul-profile} against \cref{plt:def:lead-profile} --- whose
+codomain is $\NaturalNumbers\cup\SetOf{-\infty}$ because there the blocks are
+polynomials, whereas over $\K(L)$ and $\K((L^{-1}))$ the value $\degL p_n$ may
+be negative --- and to \cref{plt:cor:mul-truncated-product} against
+\cref{plt:prop:trunc-product}, which the corollary strengthens to arbitrary
+sufficient cutoffs $(P,Q)$ and supplements with optimality and sharpness.
+Nothing below re-proves a ring-chapter result for its own sake; the
+restatements exist only to make the general coefficient ring available.
+\end{remark}
+
+\begin{lemma}[Dominance is growth]
+\label{plt:lem:mul-dominance}
+On the positive ray, for integers $n,m$ and $j,k$,
+\[
+ t^nL^j\succdom t^mL^k
+ \quad\Longleftrightarrow\quad
+ \lim_{X\to+\infty}\frac{X^{-n}(\log X)^j}{X^{-m}(\log X)^k}=+\infty
+ \quad\Longleftrightarrow\quad
+ n<m,\ \text{or}\ (n=m\ \text{and}\ j>k).
+\]
+Consequently, for $F$ in $\PLlau$ or in $\PLit$, $\lm(F)$ is the
+$\succdom$-largest element of $\CoefficientSupportOf{F}$.  (For $\PLrat$ the
+statement is meaningful only after the expansion of
+\cref{plt:rmk:mul-rat-no-support}.)
+\end{lemma}
+
+\begin{proof}
+% ed.: the first equivalence of the display was left unargued.  It is not a
+% ed.: theorem of this section at all: $\succdom$ is defined by the
+% ed.: right-hand condition in \cref{plt:def:ring-dominance}, so only the
+% ed.: analytic equivalence needs an argument, and that argument restates
+% ed.: \cref{plt:lem:ring-dominance-analytic} for integer exponents.
+By \cref{plt:def:ring-dominance} the relation $\succdom$ is \emph{defined} by
+the right-hand condition, so the first equivalence is a definition and only
+the second requires an argument; it is
+\cref{plt:lem:ring-dominance-analytic} specialized to integer exponents, and
+we repeat the two lines.  The ratio equals $X^{m-n}(\log X)^{j-k}$.  If $m>n$
+it tends to $+\infty$
+because $\log X=\LittleOAt{X^{\varepsilon}}{X\to+\infty}$ for every
+$\varepsilon>0$; if $m=n$ it is $(\log X)^{j-k}$, which tends to $+\infty$
+exactly when $j>k$; if $m<n$ it tends to $0$ for the same reason as the first
+case.  For the last sentence: a monomial $t^nL^j$ in the support has
+$n\ge\ordt F$, with equality attained; among those with $n=\ordt F$ the
+largest $j$ with $\kappa_j(p_{\ordt F})\ne0$ is by definition
+$\degL p_{\ordt F}$.
+\end{proof}
+
+\begin{theorem}[Leading-term law]
+\label{plt:thm:mul-leading-law}
+Let $R$ be a logarithmically graded domain over $\K$ and let $F,G\in R((t))$
+be nonzero.  Then $FG\ne0$ and
+\begin{align}
+ \ordt(FG)&=\ordt F+\ordt G,
+ \label{plt:eq:mul-ord-additive}\\
+ \lm(FG)&=\lm(F)\,\lm(G),
+ \label{plt:eq:mul-lm-law}\\
+ \lc(FG)&=\lc(F)\,\lc(G),
+ \label{plt:eq:mul-lc-law}\\
+ v(FG)&=v(F)+v(G).
+ \label{plt:eq:mul-v-additive}
+\end{align}
+Moreover $\ordt(F+G)\ge\min(\ordt F,\ordt G)$ and
+$v(F+G)\ge\min\bigl(v(F),v(G)\bigr)$ in the lexicographic order.  Each is an
+equality unless cancellation occurs at the common level: whole leading blocks
+cancel in the first case, top logarithmic coefficients in the second.
+\end{theorem}
+
+\begin{proof}
+Put $a=\ordt F$, $b=\ordt G$.  By \cref{plt:lem:mul-finite-fiber} the
+coefficient $C_N$ of $FG$ vanishes for $N<a+b$, and for $N=a+b$ the index set
+$[a,N-b]=\SetOf{a}$ is a single point, so $C_{a+b}=p_aq_b$.  Since $R$ is a
+domain (\cref{plt:lem:mul-graded-basics}) and $p_a,q_b\ne0$, we get
+$C_{a+b}\ne0$; hence $FG\ne0$ and \eqref{plt:eq:mul-ord-additive} holds.
+Applying \eqref{plt:eq:mul-degL-laws} to $C_{a+b}=p_aq_b$ gives
+\[
+ \degL C_{a+b}=\degL p_a+\degL q_b,
+ \qquad
+ \lc_L(C_{a+b})=\lc_L(p_a)\lc_L(q_b),
+\]
+which are exactly \eqref{plt:eq:mul-lm-law} and \eqref{plt:eq:mul-lc-law};
+\eqref{plt:eq:mul-v-additive} is the same pair of identities rewritten in the
+notation \eqref{plt:eq:mul-rank-two}.
+
+For the sum, let $c=\min(a,b)$.  Every block of $F+G$ of index $<c$ vanishes,
+so $\ordt(F+G)\ge c$.  If $a<b$ then $[t^c](F+G)=p_a\ne0$ and the leading
+data of $F+G$ and $F$ coincide, so $v(F+G)=v(F)=\min(v(F),v(G))$ --- note
+that $a<b$ makes $v(F)<v(G)$ lexicographically.  If $a=b=c$ and
+$p_c+q_c\ne0$, then $\ordt(F+G)=c$ and
+$\degL(p_c+q_c)\le\max(\degL p_c,\degL q_c)$ by
+\eqref{plt:eq:mul-degL-laws}, i.e.
+$-\degL(p_c+q_c)\ge\min(-\degL p_c,-\degL q_c)$, which is
+$v(F+G)\ge\min(v(F),v(G))$.  If $p_c+q_c=0$, then $\ordt(F+G)>c$ and
+$v(F+G)>\min(v(F),v(G))$ outright.
+\end{proof}
+
+\begin{corollary}[Integrality and fields]
+\label{plt:cor:mul-domain}
+Each of $\PLpow$, $\PLlau$, $\PLrat$, $\PLit$ is an integral domain.  The map
+$v$ of \eqref{plt:eq:mul-rank-two} is a rank-two valuation on $\PLrat$ and on
+$\PLit$, with value group $\IntegerNumbers^2$ lexicographically ordered; on
+$\PLlau$ it takes values in the sub-semigroup
+$\IntegerNumbers\times\IntegerNumbers_{\le0}$.  The classes $\PLrat$ and
+$\PLit$ are fields; $\PLpow$ and $\PLlau$ are not.
+\end{corollary}
+
+\begin{proof}
+Integrality is \cref{plt:thm:mul-leading-law}, and the valuation axioms are
+its last two displays together with $v(F)=+\infty$ iff $F=0$.  Surjectivity
+onto $\IntegerNumbers^2$ for $\PLrat$ and $\PLit$ follows from
+$v(t^nL^{-j})=(n,j)$, legitimate there because $L^{-j}$ lies in $\K(L)$ and
+in $\K((L^{-1}))$; the group $\IntegerNumbers^2$ with the lexicographic order
+has exactly one proper nontrivial convex subgroup,
+$\SetOf{0}\times\IntegerNumbers$, so the valuation has rank two.  On $\PLlau$
+the second coordinate is $-\degL p_{\ordt F}\le0$ because polynomial degrees
+are nonnegative.
+
+A Laurent-series ring $R((t))$ over a \emph{field} $R$ is a field, which
+covers $\PLrat$ and $\PLit$: given $F\ne0$ with $\nu=\ordt F$ and leading
+block $p_\nu\in R^\times$, write $F=p_\nu t^{\nu}(1+U)$ with
+$U=\sum_{n>\nu}(p_n/p_\nu)t^{n-\nu}\in tR[[t]]$; the family
+$\bigl((-U)^r\bigr)_{r\ge0}$ is summable because $\ordt(-U)^r\ge r$, and by
+\cref{plt:lem:mul-summable}(2) its sum $V$ satisfies
+\[
+ (1+U)V=\sum_{r\ge0}(-U)^r-\sum_{r\ge0}(-U)^{r+1}=(-U)^0=1,
+\]
+so $F^{-1}=p_\nu^{-1}t^{-\nu}V$.  (\cref{plt:lem:mul-summable} is proved in
+\cref{plt:sec:mul-powers} from \cref{plt:thm:mul-leading-law} alone, so there
+is no circularity.)  Finally $L\in\PLlau$ is not invertible in
+$\PLlau$: if $LH=1$ then \eqref{plt:eq:mul-lm-law} gives
+$L\cdot\lm(H)=1$, forcing $\degL$ of the leading block of $H$ to be $-1$,
+impossible for a polynomial.
+% ed.: the statement asserts that neither $\PLpow$ nor $\PLlau$ is a field,
+% ed.: but the argument as given covers only $\PLlau$.  One line closes it.
+Since $L\in\PLpow\subseteq\PLlau$, an inverse of $L$ inside $\PLpow$ would in
+particular be an inverse inside $\PLlau$; so $L$ is not invertible in
+$\PLpow$ either, and neither class is a field.
+\end{proof}
+
+\begin{corollary}[Necessity half of the unit criterion]
+\label{plt:cor:mul-unit-necessary}
+If $F\in\PLlau$ is invertible in $\PLlau$, then its leading block is a
+nonzero scalar: $p_{\ordt F}\in\K^\times$.  The same statement holds in
+$\PLpow$ with the additional conclusion $\ordt F=0$.
+\end{corollary}
+
+\begin{proof}
+If $FH=1$ then \eqref{plt:eq:mul-ord-additive} gives
+$\ordt F+\ordt H=0$ and \eqref{plt:eq:mul-lm-law} gives
+$\degL p_{\ordt F}+\degL h_{\ordt H}=0$.  Both degrees are nonnegative
+integers, hence both vanish, so $p_{\ordt F}\in\K^\times$.  In $\PLpow$ both
+orders are $\ge0$ and sum to $0$, so both are $0$.
+\end{proof}
+
+The converse --- that a scalar leading block suffices --- is a division
+statement and is proved with the reciprocal recurrence; it is not a
+multiplication fact and is not repeated here.
+
+\subsection{Degree and support bounds}
+\label{plt:sec:mul-degree}
+
+\begin{definition}[Log-degree profile]
+\label{plt:def:mul-profile}
+For $F=\sum_np_nt^n$ in one of the four classes, the \emph{log-degree
+profile} is the function $\dprofile{F}\colon\IntegerNumbers\to
+\IntegerNumbers\cup\SetOf{-\infty}$,
+\begin{equation}\label{plt:eq:mul-profile}
+ \dprofile{F}(n)\DefinitionEquals
+ \begin{cases}
+  \degL p_n,&p_n\ne0,\\
+  -\infty,&p_n=0.
+ \end{cases}
+\end{equation}
+The profile is data additional to $\ordt F$; it is not recoverable from it.
+For two profiles define the \emph{max-plus convolution}
+\begin{equation}\label{plt:eq:mul-maxplus}
+ \bigl(\dprofile{F}\ast\dprofile{G}\bigr)(N)
+ \DefinitionEquals
+ \max_{n+m=N}\bigl(\dprofile{F}(n)+\dprofile{G}(m)\bigr),
+\end{equation}
+with the conventions $-\infty+c=-\infty$ and $\max\emptyset=-\infty$.  Only
+the finitely many pairs of \cref{plt:lem:mul-finite-fiber} can contribute a
+value other than $-\infty$, so the maximum is effectively over a finite set.
+\end{definition}
+
+\begin{theorem}[Degree bound and exact criterion for attainment]
+\label{plt:thm:mul-degree-bound}
+Let $F,G\in R((t))$ with $R$ a logarithmically graded domain over $\K$, let
+$N\in\IntegerNumbers$, and set
+$M\DefinitionEquals(\dprofile{F}\ast\dprofile{G})(N)$.  Let
+\[
+ P_N\DefinitionEquals
+ \SetOf{(n,m):n+m=N,\ p_n\ne0,\ q_m\ne0,\
+        \dprofile{F}(n)+\dprofile{G}(m)=M}
+\]
+be the (finite, possibly empty) set of maximizing pairs.  Then
+\begin{equation}\label{plt:eq:mul-degree-bound}
+ \dprofile{FG}(N)\le M,
+\end{equation}
+% ed.: the criterion was stated as an unconditional ``if and only if''.  It
+% ed.: fails in the degenerate case $P_N=\emptyset$ (equivalently
+% ed.: $M=-\infty$): there $[t^N](FG)=0$, so equality holds although the empty
+% ed.: sum \eqref{plt:eq:mul-top-coefficient} is zero.  The criterion is now
+% ed.: confined to $M$ finite and the degenerate case is recorded separately.
+If $P_N=\emptyset$, equivalently $M=-\infty$, then $[t^N](FG)=0$ and
+\eqref{plt:eq:mul-degree-bound} holds with equality.  If $P_N\ne\emptyset$,
+so that $M\in\IntegerNumbers$, then the coefficient of $L^{M}$ in the block
+$[t^N](FG)$ is exactly
+\begin{equation}\label{plt:eq:mul-top-coefficient}
+ \kappa_{M}\bigl([t^N](FG)\bigr)
+ =\sum_{(n,m)\in P_N}\lc_L(p_n)\,\lc_L(q_m),
+\end{equation}
+and equality holds in \eqref{plt:eq:mul-degree-bound} if and only if the
+sum \eqref{plt:eq:mul-top-coefficient} is nonzero.
+\end{theorem}
+
+\begin{proof}
+Each summand of $C_N=\sum_{n+m=N}p_nq_m$ has
+$\degL(p_nq_m)=\dprofile{F}(n)+\dprofile{G}(m)\le M$ by
+\eqref{plt:eq:mul-degL-laws}, with the convention that a vanishing factor
+gives $-\infty$.  A finite sum of elements of $\degL\le M$ has
+$\degL\le M$, which is \eqref{plt:eq:mul-degree-bound}.  If $M=-\infty$ then
+every summand $p_nq_m$ vanishes, so $[t^N](FG)=0$ and both sides of
+\eqref{plt:eq:mul-degree-bound} equal $-\infty$; assume from now on
+$P_N\ne\emptyset$, so that $M\in\IntegerNumbers$.  By $\K$-linearity of
+$\kappa_M$,
+\[
+ \kappa_M(C_N)=\sum_{n+m=N}\kappa_M(p_nq_m).
+\]
+If $(n,m)\notin P_N$ then either a factor vanishes or
+$\degL(p_nq_m)<M$, and in both cases $\kappa_M(p_nq_m)=0$.  If
+$(n,m)\in P_N$ then $\degL(p_nq_m)=M$ and
+$\kappa_M(p_nq_m)=\lc_L(p_nq_m)=\lc_L(p_n)\lc_L(q_m)$ by
+\cref{plt:lem:mul-graded-basics}.  This proves
+\eqref{plt:eq:mul-top-coefficient}, and equality in
+\eqref{plt:eq:mul-degree-bound} means precisely $\kappa_M(C_N)\ne0$.
+\end{proof}
+
+% ed.: S6, Proposition "Degree and support bounds", asserts equality "whenever
+% ed.: the maximizing blocks are nonzero" under the hypothesis that all
+% ed.: coefficients are nonnegative over an ordered field.  That hypothesis is
+% ed.: far stronger than necessary and the quoted sufficient condition is
+% ed.: stated ambiguously (a zero block has degree -infinity and cannot
+% ed.: maximize at all).  The criterion below is exact and the positivity
+% ed.: hypothesis has been reduced to the leading coefficients of the
+% ed.: maximizing blocks only.
+\begin{corollary}[Three sufficient conditions for equality]
+\label{plt:cor:mul-degree-equality}
+In the situation of \cref{plt:thm:mul-degree-bound}, equality holds in
+\eqref{plt:eq:mul-degree-bound} in each of the following cases.
+\begin{enumerate}
+\item $P_N$ is a singleton.
+\item $N=\ordt F+\ordt G$ (both factors nonzero); then $P_N$ is the
+singleton $\SetOf{(\ordt F,\ordt G)}$ and one recovers
+\eqref{plt:eq:mul-lm-law}.
+% ed.: condition (3) as first drafted omitted $P_N\ne\emptyset$; over an
+% ed.: ordered field its hypotheses are satisfied vacuously when $P_N$ is
+% ed.: empty, and the conclusion would then be the false assertion that the
+% ed.: sum \eqref{plt:eq:mul-top-coefficient} is nonzero.
+\item $P_N\ne\emptyset$, $\K$ is an ordered field, and $\lc_L(p_n)>0$,
+$\lc_L(q_m)>0$ for every $(n,m)\in P_N$.
+\end{enumerate}
+\end{corollary}
+
+\begin{proof}
+(1) The sum \eqref{plt:eq:mul-top-coefficient} is a single product of two
+elements of $\K^\times$, hence nonzero.  (2) By
+\cref{plt:lem:mul-finite-fiber} the only admissible pair at
+$N=\ordt F+\ordt G$ is $(\ordt F,\ordt G)$, and both blocks are nonzero, so
+$P_N$ is that singleton; apply (1).  (3) The sum is a nonempty sum of
+strictly positive elements of an ordered field.
+\end{proof}
+
+\begin{example}[The bound is attained, at every order and by every pair]
+\label{plt:ex:mul-degree-sharp}
+Over $\K=\RationalNumbers$ let
+\[
+ F=G=\sum_{n\ge0}L^nt^n\in\PLpow,
+ \qquad\text{so}\qquad
+ \dprofile{F}(n)=\dprofile{G}(n)=n .
+\]
+Then $(\dprofile{F}\ast\dprofile{G})(N)=\max_{n+m=N}(n+m)=N$, and
+\emph{every} one of the $N+1$ admissible pairs is maximizing, so $P_N$ is as
+large as it can be and \cref{plt:cor:mul-degree-equality}(1) does not apply.
+Nevertheless
+\[
+ [t^N](FG)=\sum_{n=0}^{N}L^n\cdot L^{N-n}=(N+1)L^N,
+\]
+so $\dprofile{FG}(N)=N$ for every $N$: the bound
+\eqref{plt:eq:mul-degree-bound} is attained at every order.  Formula
+\eqref{plt:eq:mul-top-coefficient} predicts exactly the top coefficient
+$N+1=\sum_{(n,m)\in P_N}1\cdot1$.
+\end{example}
+
+\begin{warningbox}
+\cref{plt:ex:mul-degree-sharp} is the place where characteristic zero is
+used.  Over a field of characteristic $p>0$ the same computation gives
+$[t^{p-1}](FG)=p\,L^{p-1}=0$, so the block vanishes entirely and
+$\dprofile{FG}(p-1)=-\infty$ although the bound is $p-1$.  Every statement in
+this section is asserted over a field of characteristic zero, and this is not
+a formality.
+\end{warningbox}
+
+\begin{example}[The bound can fail by an arbitrary amount]
+\label{plt:ex:mul-degree-drop}
+Let $F=1+L^{d}t$ and $G=1-L^{d}t$ in $\PLpow$, $d\ge1$.  Then
+$(\dprofile{F}\ast\dprofile{G})(1)=\max(0+d,\ d+0)=d$, while
+$[t^1](FG)=-L^{d}+L^{d}=0$, so $\dprofile{FG}(1)=-\infty$.  Here
+$P_1=\SetOf{(0,1),(1,0)}$ and the sum
+\eqref{plt:eq:mul-top-coefficient} is $1\cdot(-1)+1\cdot1=0$, as it must be.
+A drop by exactly one occurs for $F=1+(L^2+L)t$, $G=1-(L^2-L)t$, where the
+bound at $N=1$ is $2$ while $[t^1](FG)=2L$ has degree $1$: here the top
+coefficients cancel but the next ones do not.
+\end{example}
+
+\begin{proposition}[Affine profiles and the profile subalgebra]
+\label{plt:prop:mul-affine-profile}
+Let $\alpha,\alpha'\ge0$ and $\beta,\gamma\in\RealNumbers$.  Let
+$F,G\in\PLlau$ be nonzero with $a=\ordt F$, $b=\ordt G$ and
+\[
+ \dprofile{F}(n)\le\alpha n+\beta\ \ (n\ge a),
+ \qquad
+ \dprofile{G}(m)\le\alpha'm+\gamma\ \ (m\ge b).
+\]
+Put $\mu=\max(\alpha,\alpha')$.  Then for all $N$,
+\begin{equation}\label{plt:eq:mul-affine-bound}
+ \dprofile{FG}(N)\le\mu N+\beta+\gamma-(\mu-\alpha)a-(\mu-\alpha')b .
+\end{equation}
+In particular, if $a,b\ge0$ then $\dprofile{FG}(N)\le\mu N+\beta+\gamma$.
+Consequently, for each $\alpha\ge0$ the set
+\[
+ \mathfrak A_\alpha
+ \DefinitionEquals
+ \SetOf{F\in\PLlau:\ \exists\beta\in\RealNumbers,\
+        \dprofile{F}(n)\le\alpha n+\beta\ \text{for all }n}
+\]
+is a $\K$-subspace with
+$\mathfrak A_\alpha\cdot\mathfrak A_{\alpha'}\subseteq
+\mathfrak A_{\max(\alpha,\alpha')}$, and
+$\mathfrak A\DefinitionEquals\bigcup_{\alpha\ge0}\mathfrak A_\alpha$ is a
+$\K$-subalgebra of $\PLlau$ containing $\K[L][t,t^{-1}]$.
+\end{proposition}
+
+\begin{proof}
+Fix $N$ and $n+m=N$ with $n\ge a$, $m\ge b$.  Then
+\[
+ \alpha n+\alpha'm
+ =\mu(n+m)-(\mu-\alpha)n-(\mu-\alpha')m
+ \le\mu N-(\mu-\alpha)a-(\mu-\alpha')b,
+\]
+because $\mu-\alpha\ge0$, $\mu-\alpha'\ge0$, $n\ge a$ and $m\ge b$.  Adding
+$\beta+\gamma$ and taking the maximum over the finite index set gives
+\eqref{plt:eq:mul-affine-bound} via \eqref{plt:eq:mul-degree-bound}.  If
+$a,b\ge0$ then the two subtracted terms are $\ge0$, so they may be dropped.
+
+For the algebra statements: $\mathfrak A_\alpha$ is a subspace because
+$\dprofile{F+G}(n)\le\max(\dprofile{F}(n),\dprofile{G}(n))
+\le\alpha n+\max(\beta,\gamma)$ and scalars do not change profiles.  The
+product statement is \eqref{plt:eq:mul-affine-bound}, whose right-hand side is
+$\mu N+\text{const}$.
+% ed.: the inclusion $\mathfrak A_\alpha\subseteq\mathfrak A_{\alpha''}$ for
+% ed.: $\alpha\le\alpha''$ was used without proof.  On the Laurent ring it is
+% ed.: not immediate: for $n<0$ a larger slope gives a \emph{smaller} bound,
+% ed.: so the constant has to be increased, and that is possible only because
+% ed.: the support is bounded below.  The argument is supplied here.
+For $\alpha\le\alpha''$ one has $\mathfrak A_\alpha\subseteq\mathfrak
+A_{\alpha''}$.  Indeed, let $F\ne0$ satisfy $\dprofile{F}(n)\le\alpha n+\beta$
+for all $n$, and put $a=\ordt F$.  For $n\ge0$ we have
+$\alpha n+\beta\le\alpha''n+\beta$; for $a\le n<0$,
+\[
+ \alpha n+\beta=\alpha''n+(\alpha''-\alpha)(-n)+\beta
+ \le\alpha''n+\beta+(\alpha''-\alpha)\max(0,-a);
+\]
+and $\dprofile{F}(n)=-\infty$ for $n<a$.  Hence
+$\beta''=\beta+(\alpha''-\alpha)\max(0,-a)$ witnesses
+$F\in\mathfrak A_{\alpha''}$, and $0\in\mathfrak A_{\alpha''}$ trivially.
+Consequently the union $\mathfrak A$ is closed under
+addition and multiplication and contains $1$; every Laurent polynomial
+$\sum_{n=n_1}^{n_2}p_n(L)t^n$ lies in $\mathfrak A_0$ with
+$\beta=\max_n\degL p_n$.
+\end{proof}
+
+\begin{remark}[$\mathfrak A$ is not $t$-adically closed]
+\label{plt:rmk:mul-profile-not-closed}
+The affine-profile condition is preserved by finite sums and products but not
+by $t$-adic limits.  Take $F_r=t^rL^{r^2}$ for $r\ge1$; each $F_r$ lies in
+$\mathfrak A_0$, and $\ordt F_r=r\to\infty$, so $(F_r)$ is summable, yet the
+sum
+$S=\sum_{r\ge1}t^rL^{r^2}$ has $\dprofile{S}(r)=r^2$, which is bounded by no
+affine function.  Hence $S\notin\mathfrak A$.  A degree bound must therefore
+be re-derived, not inherited, whenever an infinite construction is performed.
+\end{remark}
+
+\begin{proposition}[Profile of a power]
+\label{plt:prop:mul-power-profile}
+Let $F\in\PLpow$ with $\dprofile{F}(n)\le\alpha n+\beta$ for all $n\ge0$,
+where $\alpha\ge0$ and $\beta\ge0$.  Then for every integer $k\ge0$,
+\begin{equation}\label{plt:eq:mul-power-profile}
+ \dprofile{F^k}(N)\le\alpha N+k\beta
+ \qquad(N\ge0).
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+Induction on $k$.  For $k=0$ we have $F^0=1$, so $\dprofile{F^0}(0)=0\le0$
+and $\dprofile{F^0}(N)=-\infty$ for $N>0$.  Assume the bound for $k$.  By
+\eqref{plt:eq:mul-degree-bound} applied to $F^{k+1}=F^k\cdot F$,
+\[
+ \dprofile{F^{k+1}}(N)
+ \le\max_{n+m=N,\ n,m\ge0}\bigl((\alpha n+k\beta)+(\alpha m+\beta)\bigr)
+ =\alpha N+(k+1)\beta .
+\]
+\end{proof}
+
+\begin{remark}[The Lambert profile, corrected]
+\label{plt:rmk:mul-lambert-profile}
+Two of the sources record the degree law of the canonical Lambert family as
+$\deg\LamP{n}=n$ without restriction, and use it to assert that products of
+Lambert-type expansions have profile $\le N$.  The law
+$\deg\LamP{n}=n$ holds only for $n\ge1$: the normalization
+$\LamP{0}(u)=-u$ has degree $1$, not $0$.  The correct hypothesis for a
+series $F=\sum_{n\ge0}\LamP{n}(L)t^n$ is therefore
+$\dprofile{F}(n)\le n+1$ for all $n\ge0$, i.e. $\alpha=1$, $\beta=1$ in
+\cref{plt:prop:mul-affine-profile}; a product of two such series has
+$\dprofile{FG}(N)\le N+2$, and a $k$-th power has
+$\dprofile{F^k}(N)\le N+k$ by \cref{plt:prop:mul-power-profile}.  The
+unrestricted claim $\dprofile{FG}(N)\le N$ is false already at $N=0$, where
+$[t^0](FG)=\LamP{0}(L)^2=L^2$ has degree $2$.
+\end{remark}
+
+\subsection{Powers and binomial powers}
+\label{plt:sec:mul-powers}
+
+Infinite sums enter through powers, so we first record the exact sense in
+which they are legitimate.
+
+\begin{definition}[Summable family]
+\label{plt:def:mul-summable}
+Let $R$ be a logarithmically graded domain over $\K$.  A family
+$(S_i)_{i\in I}$ in $R((t))$ is \emph{summable} if for every
+$N\in\IntegerNumbers$ the set $\SetOf{i\in I:\ordt S_i<N}$ is finite.  Its
+sum is defined blockwise:
+$[t^n]\sum_{i}S_i\DefinitionEquals\sum_i[t^n]S_i$, a finite sum in the
+coefficient ring.
+\end{definition}
+
+\begin{lemma}[Summable families are well behaved]
+\label{plt:lem:mul-summable}
+Let $(S_i)_{i\in I}$ and $(T_j)_{j\in J}$ be summable families in $R((t))$.
+\begin{enumerate}
+\item $\inf_i\ordt S_i>-\infty$, so $\sum_iS_i$ is a genuine element of
+$R((t))$ (its support is bounded below).
+\item The family $(S_iT_j)_{(i,j)\in I\times J}$ is summable and
+$\bigl(\sum_iS_i\bigr)\bigl(\sum_jT_j\bigr)=\sum_{(i,j)}S_iT_j$.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+(1) Taking $N=0$ in \cref{plt:def:mul-summable}, only finitely many $i$ have
+$\ordt S_i<0$, and each of those has $\ordt S_i\in\IntegerNumbers$ (a member
+of that finite set is in particular nonzero).  Let $\lambda$ be the minimum of
+that finite set of integers, or $\lambda=0$ if the set is empty.  Then
+$\ordt S_i\ge\min(0,\lambda)$ for all $i$, and every block of
+$\sum_iS_i$ below that bound vanishes.
+
+% ed.: the source calls the two infima ``finite by (1)''; part~(1) gives only
+% ed.: $>-\infty$, and the value $+\infty$ does occur, namely when every
+% ed.: member of the family is zero.  That case is disposed of separately.
+(2) Let $\alpha=\inf_i\ordt S_i$ and $\beta=\inf_j\ordt T_j$, both
+$>-\infty$ by (1).  If $\alpha=+\infty$ or $\beta=+\infty$ then every $S_i$,
+respectively every $T_j$, is zero, so every $S_iT_j$ is zero and both
+assertions are trivial; assume therefore $\alpha,\beta\in\IntegerNumbers$.
+Fix $N$.  If $\ordt(S_iT_j)=\ordt S_i+\ordt T_j<N$ then
+$\ordt S_i<N-\beta$ and $\ordt T_j<N-\alpha$, and each of those conditions
+holds for only finitely many indices; so the family is summable.  For the
+identity, fix $n$ and compute in the coefficient ring, all sums having only
+finitely many nonzero terms:
+\[
+ [t^n]\Bigl(\sum_iS_i\sum_jT_j\Bigr)
+ =\sum_{p+q=n}\Bigl(\sum_i[t^p]S_i\Bigr)\Bigl(\sum_j[t^q]T_j\Bigr)
+ =\sum_{i,j}\sum_{p+q=n}[t^p]S_i\,[t^q]T_j
+ =\sum_{i,j}[t^n](S_iT_j).
+\]
+\end{proof}
+
+\begin{remark}
+\label{plt:rmk:mul-summable-vs-cauchy}
+Part (1) is worth isolating.  For a \emph{sequence} in a Laurent ring,
+$t$-adic Cauchyness alone does not guarantee a limit with a finite principal
+part; a common eventual lower support bound must be imposed.  For a
+\emph{summable family} no such extra hypothesis is needed, because the
+finiteness condition at $N=0$ already forces a common lower bound.
+\end{remark}
+
+\begin{proposition}[Coefficients of an integer power]
+\label{plt:prop:mul-integer-power}
+Let $F=\sum_{n\ge0}p_nt^n\in\PLpow$ and $k\ge0$.  Then
+\begin{equation}\label{plt:eq:mul-power-coefficient}
+ [t^N]F^k
+ =\sum_{\substack{n_1,\ldots,n_k\ge0\\ n_1+\cdots+n_k=N}}
+   p_{n_1}\cdots p_{n_k}
+ \DefinitionEquals C_{N,k}(p_0,p_1,\ldots),
+\end{equation}
+with $C_{0,0}=1$ and $C_{N,0}=0$ for $N>0$.  These \emph{convolution
+polynomials} satisfy
+\begin{equation}\label{plt:eq:mul-Cmr-recurrence}
+ C_{N,k+1}=\sum_{n=0}^{N}p_n\,C_{N-n,k},
+\end{equation}
+which computes the whole triangular table in $\BigO(N^2k)$ coefficient
+products.  If $p_0=0$, then $C_{N,k}=0$ for $N<k$, and, writing
+$F=\sum_{n\ge1}p_nt^n$,
+\begin{equation}\label{plt:eq:mul-bell}
+ [t^N]F^k
+ =\frac{k!}{N!}\,
+ \ExponentialPartialBellPolynomial{N}{k}
+   \bigl(1!\,p_1,\,2!\,p_2,\ldots,(N-k+1)!\,p_{N-k+1}\bigr).
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+Formula \eqref{plt:eq:mul-power-coefficient} follows by induction on $k$ from
+\cref{plt:def:mul-cauchy}: the case $k=0$ is the convention, and
+\[
+ [t^N]F^{k+1}=\sum_{n+m=N}p_n\,[t^m]F^k
+ =\sum_{n=0}^{N}p_n\!\!\!\!\sum_{\substack{n_1,\ldots,n_k\ge0\\
+   n_1+\cdots+n_k=N-n}}\!\!\!\!
+   p_{n_1}\cdots p_{n_k},
+\]
+which is both \eqref{plt:eq:mul-Cmr-recurrence} and the composition sum for
+$k+1$.  All sums are finite because every $n_i\ge0$ and they sum to $N$.  If
+$p_0=0$, every $n_i$ in a nonvanishing term is $\ge1$, so $N\ge k$.
+
+For \eqref{plt:eq:mul-bell}, recall the defining generating identity of the
+exponential partial Bell polynomials \cite{comtet-book,comtet1970}: in
+$R[[z]]$ over a commutative $\RationalNumbers$-algebra $R$,
+\[
+ \frac1{k!}\Bigl(\sum_{j\ge1}x_j\frac{z^j}{j!}\Bigr)^{k}
+ =\sum_{N\ge k}\ExponentialPartialBellPolynomial{N}{k}(x_1,x_2,\ldots)
+   \frac{z^N}{N!}.
+\]
+Apply it with $R=\K[L]$ (a $\RationalNumbers$-algebra, as
+$\operatorname{char}\K=0$), $z=t$ and $x_j=j!\,p_j$, so that
+$\sum_{j\ge1}x_jz^j/j!=F$.  Comparing coefficients of $t^N$ gives
+$\frac1{k!}[t^N]F^k=\frac1{N!}
+\ExponentialPartialBellPolynomial{N}{k}(1!p_1,2!p_2,\ldots)$, which is
+\eqref{plt:eq:mul-bell}; only the arguments $x_1,\ldots,x_{N-k+1}$ occur
+because a term of $\ExponentialPartialBellPolynomial{N}{k}$ is a product of
+$k$ variables with index sum $N$, so no index can exceed $N-k+1$.
+\end{proof}
+
+\begin{theorem}[Binomial powers and their finite determination]
+\label{plt:thm:mul-binomial}
+Let $U\in\PLpow$ with $\ordt U\ge e$ for an integer $e\ge1$, write
+$u_n=[t^n]U$, and let $\sigma\in\K$.  Put
+$\binom{\sigma}{r}=\sigma(\sigma-1)\cdots(\sigma-r+1)/r!\in\K$, with
+$\binom{\sigma}{0}=1$.  Then:
+\begin{enumerate}
+\item The family $\bigl(\binom{\sigma}{r}U^r\bigr)_{r\ge0}$ is summable, so
+\begin{equation}\label{plt:eq:mul-binomial-def}
+ (1+U)^\sigma\DefinitionEquals\sum_{r\ge0}\binom{\sigma}{r}U^r
+\end{equation}
+is a well-defined element of $\PLpow$ with constant block $1$.
+\item \emph{(Finite determination.)}  For $N\ge0$,
+\begin{equation}\label{plt:eq:mul-binomial-finite}
+ [t^N](1+U)^\sigma
+ =\sum_{r=0}^{\Floor{N/e}}\binom{\sigma}{r}\,[t^N]U^r,
+\end{equation}
+and this depends only on the blocks $u_e,u_{e+1},\ldots,u_N$, that is, only
+on $\Trunc{U}{N+1}$.  The range of $r$ is exact: for $U=t^e$ with $e\mid N$
+the term $r=N/e$ contributes $\binom{\sigma}{N/e}$, nonzero whenever
+$\sigma\notin\SetOf{0,1,\ldots,N/e-1}$.  The top block enters exactly
+linearly: for $N\ge1$,
+\begin{equation}\label{plt:eq:mul-binomial-top}
+ [t^N](1+U)^\sigma=\sigma u_N+\Psi_N(u_e,\ldots,u_{N-e}),
+\end{equation}
+where $\Psi_N$ is a universal polynomial with coefficients in
+$\RationalNumbers[\sigma]$, with the convention that $\Psi_N=0$ when the
+argument list is empty.  Hence for $\sigma\ne0$ the block $u_N$ cannot be
+omitted from the dependency range.
+\item \emph{(Exponent law.)}  For $\sigma,\tau\in\K$,
+\begin{equation}\label{plt:eq:mul-binomial-group}
+ (1+U)^\sigma(1+U)^\tau=(1+U)^{\sigma+\tau},
+ \qquad (1+U)^0=1,
+\end{equation}
+and for $k\in\NaturalNumbers$ the series $(1+U)^k$ agrees with the $k$-fold
+product.  Consequently $(1+U)^\sigma$ is a unit of $\PLpow$ with inverse
+$(1+U)^{-\sigma}$, and $\sigma\mapsto(1+U)^\sigma$ is a homomorphism from
+$(\K,+)$ to the units of $\PLpow$.
+\item \emph{(Profile.)}  If $\dprofile{U}(n)\le\alpha n+\beta$ for all
+$n\ge e$, with $\alpha\ge0$, then, writing $\beta^+=\max(\beta,0)$,
+\begin{equation}\label{plt:eq:mul-binomial-profile}
+ \dprofile{(1+U)^\sigma}(N)\le\Bigl(\alpha+\frac{\beta^+}{e}\Bigr)N
+ \qquad(N\ge0).
+\end{equation}
+In particular $\mathfrak A\cap\PLpow$ is stable under
+$U\mapsto(1+U)^\sigma$ whenever $\ordt U\ge1$.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+(1) By \eqref{plt:eq:mul-ord-additive}, $\ordt(U^r)\ge re$, which tends to
+$+\infty$; so for each $N$ only the finitely many $r\le N/e$ can have
+$\ordt(\binom{\sigma}{r}U^r)<N$.  \cref{plt:lem:mul-summable}(1) gives a
+well-defined sum, and $\ordt U\ge e\ge1$ makes the $r=0$ term the only
+contributor to $t^0$.
+
+(2) Blockwise, $[t^N](1+U)^\sigma=\sum_{r\ge0}\binom{\sigma}{r}[t^N]U^r$, and
+$[t^N]U^r=0$ once $re>N$; this is \eqref{plt:eq:mul-binomial-finite}.  By
+\cref{plt:thm:mul-finite-determination} applied $r-1$ times, $[t^N]U^r$
+depends only on the blocks $u_n$ with $e\le n\le N-(r-1)e$, and for $r\ge1$
+this range is contained in $[e,N]$.  For the sharpness of the $r$-range take
+$U=t^e$: then $U^r=t^{re}$ and the only contribution to $t^N$ comes from
+$r=N/e$, with value $\binom{\sigma}{N/e}$, which vanishes exactly when
+$\sigma$ is one of $0,1,\ldots,N/e-1$.  For
+\eqref{plt:eq:mul-binomial-top}, the term $r=0$ contributes nothing to
+$t^N$ for $N\ge1$, the term $r=1$ contributes $\sigma u_N$, and each term
+with $r\ge2$ involves only $u_n$ with $n\le N-(r-1)e\le N-e$.
+
+(3) By \cref{plt:lem:mul-summable}(2),
+\[
+ (1+U)^\sigma(1+U)^\tau
+ =\sum_{r,s\ge0}\binom{\sigma}{r}\binom{\tau}{s}U^{r+s}
+ =\sum_{m\ge0}\Bigl(\sum_{r+s=m}\binom{\sigma}{r}\binom{\tau}{s}\Bigr)U^m,
+\]
+the regrouping being legitimate because for each fixed $t$-block only
+finitely many pairs $(r,s)$ contribute.  Vandermonde's convolution
+\cite{graham-knuth-patashnik}
+\[
+ \sum_{r+s=m}\binom{\sigma}{r}\binom{\tau}{s}=\binom{\sigma+\tau}{m}
+\]
+holds for all $\sigma,\tau\in\K$: both sides are polynomial expressions in
+$(\sigma,\tau)$ with coefficients in $\RationalNumbers$; they agree for all
+pairs of nonnegative integers by comparing coefficients in
+$(1+z)^{\sigma}(1+z)^{\tau}=(1+z)^{\sigma+\tau}$ in
+$\RationalNumbers[z]$; a polynomial in two variables over the infinite domain
+$\RationalNumbers$ vanishing on $\NaturalNumbers^2$ is the zero polynomial;
+and $\RationalNumbers\subseteq\K$ because $\operatorname{char}\K=0$, so the
+identity persists in $\K$.  This proves
+\eqref{plt:eq:mul-binomial-group}; $(1+U)^0=1$ is immediate.  For
+$k\in\NaturalNumbers$ we have $\binom{k}{r}=0$ for $r>k$, so
+\eqref{plt:eq:mul-binomial-def} is the finite binomial expansion of the
+$k$-fold product in the commutative ring $\PLpow$.  Invertibility follows by
+taking $\tau=-\sigma$.
+
+(4) By \eqref{plt:eq:mul-binomial-finite} it suffices to bound
+$\degL[t^N]U^r$ for $1\le r\le\Floor{N/e}$ (the term $r=0$ contributes only
+at $N=0$, where the bound reads $0\le0$).  By
+\eqref{plt:eq:mul-power-coefficient} and \eqref{plt:eq:mul-degL-laws},
+\[
+ \degL[t^N]U^r
+ \le\max_{\substack{n_1+\cdots+n_r=N\\ n_i\ge e}}
+    \sum_{i=1}^{r}(\alpha n_i+\beta)
+ =\alpha N+r\beta
+ \le\alpha N+\Floor{N/e}\beta^+
+ \le\Bigl(\alpha+\frac{\beta^+}{e}\Bigr)N,
+\]
+where the second inequality uses $r\le\Floor{N/e}$ when $\beta\ge0$ and
+$r\beta\le0\le\Floor{N/e}\beta^+$ when $\beta<0$.  Taking the maximum over
+$r$ gives \eqref{plt:eq:mul-binomial-profile}.
+\end{proof}
+
+\begin{corollary}[Formal roots]
+\label{plt:cor:mul-roots}
+With $U$ as above and $p,q\in\IntegerNumbers$, $q\ge1$,
+\[
+ \bigl((1+U)^{p/q}\bigr)^{q}=(1+U)^{p},
+\]
+the right-hand side being the ordinary $p$-th power (or the reciprocal of the
+$|p|$-th power if $p<0$).  In particular $(1+U)^{1/q}$ is a $q$-th root of
+$1+U$ in $\PLpow$, and it is the unique one with constant block $1$.
+\end{corollary}
+
+\begin{proof}
+Iterating \eqref{plt:eq:mul-binomial-group} $q-1$ times gives
+$((1+U)^{p/q})^q=(1+U)^{qp/q}=(1+U)^p$, and
+\cref{plt:thm:mul-binomial}(3) identifies the right-hand side with the
+ordinary power.  For uniqueness, suppose $V,W\in\PLpow$ have constant block
+$1$ and $V^q=W^q=1+U$.  Then $(V-W)\sum_{i=0}^{q-1}V^iW^{q-1-i}=0$; the
+second factor has constant block $q\ne0$ (characteristic zero), hence is
+nonzero, and $\PLpow$ is a domain by \cref{plt:cor:mul-domain}, so $V=W$.
+\end{proof}
+
+\begin{remark}[Infinite products]
+\label{plt:rmk:mul-infinite-products}
+If $(U_r)_{r\ge1}$ lies in $\PLpow$ with $\ordt U_r\to+\infty$, the partial
+products $P_R=\prod_{r\le R}(1+U_r)$ converge $t$-adically.  Indeed, given
+$N$ choose $R_N$ with $\ordt U_r\ge N$ for $r>R_N$; for $R>R_N$,
+\[
+ P_R-P_{R_N}=P_{R_N}\Bigl(\prod_{R_N<r\le R}(1+U_r)-1\Bigr),
+\]
+and expanding the finite product shows that the bracket is a sum of products
+of at least one $U_r$ with $r>R_N$, hence of $\ordt\ge N$; since
+$\ordt P_{R_N}\ge0$ we get $\ordt(P_R-P_{R_N})\ge N$.  Thus $(P_R)$ is
+$t$-adically Cauchy in the complete ring $\PLpow$ and
+$\prod_{r\ge1}(1+U_r)$ is well defined.  On $\PLlau$ the same argument
+applies once one notes that $\ordt U_r\to+\infty$ forces all but finitely
+many factors to lie in $\PLpow$, so the partial products have a common lower
+support bound.
+\end{remark}
+
+\subsection{Three worked computations}
+\label{plt:sec:mul-worked}
+
+\begin{example}[A Laurent product through four blocks, with degree
+bookkeeping]
+\label{plt:ex:mul-worked-laurent}
+Over $\K=\RationalNumbers$ take
+\begin{align*}
+ F&=3t^{-2}+(L-1)t^{-1}+(L^2+2)+2L\,t+(L^2-L)t^2
+   +\FormalBigOAt{t^{3}}{t},\\
+ G&=t^{-1}+(2-L)+(L+1)t+L^2t^2+\FormalBigOAt{t^{3}}{t}.
+\end{align*}
+Here $\ordt F=-2$ and $\ordt G=-1$; $F$ is known through $\Trunc{F}{3}$ and
+$G$ through $\Trunc{G}{3}$.  By the precision rule the product is known
+through
+\[
+ \Trunc{FG}{\min(3+(-1),\,3+(-2))}=\Trunc{FG}{1},
+\]
+that is, through the block $t^{0}$ inclusive --- four blocks in all, starting
+at $t^{-3}$.  The extra block $[t^2]F$ is wasted: it can influence only
+$[t^{1}](FG)$ and beyond, for which $[t^{3}]G$ would also be needed.
+
+Writing $A_n=[t^n]F$ and $B_m=[t^m]G$, the convolution
+\eqref{plt:eq:mul-cauchy} gives
+\begin{align*}
+ C_{-3}&=A_{-2}B_{-1}=3,\\
+ C_{-2}&=A_{-2}B_{0}+A_{-1}B_{-1}
+        =3(2-L)+(L-1)=5-2L,\\
+ C_{-1}&=A_{-2}B_{1}+A_{-1}B_{0}+A_{0}B_{-1}\\
+       &=3(L+1)+(-L^2+3L-2)+(L^2+2)=6L+3,\\
+ C_{0}&=A_{-2}B_{2}+A_{-1}B_{1}+A_{0}B_{0}+A_{1}B_{-1}\\
+      &=3L^2+(L^2-1)+(-L^3+2L^2-2L+4)+2L
+      =-L^3+6L^2+3 .
+\end{align*}
+Hence
+\begin{equation}\label{plt:eq:mul-worked-laurent}
+ FG=3t^{-3}+(5-2L)t^{-2}+(6L+3)t^{-1}+(-L^3+6L^2+3)
+   +\FormalBigOAt{t^{1}}{t}.
+\end{equation}
+
+Leading data: $\lm(F)=t^{-2}$ with $\lc(F)=3$, $\lm(G)=t^{-1}$ with
+$\lc(G)=1$; \cref{plt:thm:mul-leading-law} predicts $\lm(FG)=t^{-3}$ and
+$\lc(FG)=3$, confirmed by $C_{-3}=3$.
+
+The degree bookkeeping is instructive.  The profiles are
+$\dprofile{F}(-2)=0$, $\dprofile{F}(-1)=1$, $\dprofile{F}(0)=2$,
+$\dprofile{F}(1)=1$ and $\dprofile{G}(-1)=0$, $\dprofile{G}(0)=1$,
+$\dprofile{G}(1)=1$, $\dprofile{G}(2)=2$.  Then:
+
+\begin{center}
+\begin{tabular}{@{}ccccc@{}}
+\hline
+$N$ & maximizing pairs $P_N$ & bound $M$ & top coefficient
+ \eqref{plt:eq:mul-top-coefficient} & $\dprofile{FG}(N)$ \\
+\hline
+$-3$ & $(-2,-1)$ & $0$ & $3\cdot1=3$ & $0$ \\
+$-2$ & $(-2,0),\ (-1,-1)$ & $1$ & $3(-1)+1\cdot1=-2$ & $1$ \\
+$-1$ & $(-1,0),\ (0,-1)$ & $2$ & $1\cdot(-1)+1\cdot1=0$ & $1<2$ \\
+$0$  & $(0,0)$ & $3$ & $1\cdot(-1)=-1$ & $3$ \\
+\hline
+\end{tabular}
+\end{center}
+
+At $N=-2$ two pairs compete and their contributions $-3$ and $+1$ do not
+cancel, so the bound is attained, with top coefficient $-2$: indeed
+$C_{-2}=-2L+5$.  At $N=-1$ two pairs compete and cancel exactly, so the
+degree drops from the bound $2$ to the actual value $1$: indeed
+$C_{-1}=6L+3$.  At $N=0$ the maximizing pair is unique, so
+\cref{plt:cor:mul-degree-equality}(1) forces attainment, with top
+coefficient $-1$: indeed $C_0=-L^3+\cdots$.  This is exactly the phenomenon
+\cref{plt:thm:mul-degree-bound} isolates; no inspection of the finished
+polynomial is needed to predict it.
+\end{example}
+
+\begin{example}[A square root through four blocks, verified by squaring]
+\label{plt:ex:mul-worked-sqrt}
+Let
+\[
+ U=2Lt+(L^2+2)t^2+4L\,t^3+\FormalBigOAt{t^{4}}{t}\in t\PLpow,
+\]
+so $e=1$ in \cref{plt:thm:mul-binomial}, and take $\sigma=\tfrac12$, with
+\[
+ \binom{1/2}{0}=1,\quad
+ \binom{1/2}{1}=\tfrac12,\quad
+ \binom{1/2}{2}=-\tfrac18,\quad
+ \binom{1/2}{3}=\tfrac1{16}.
+\]
+By \eqref{plt:eq:mul-binomial-finite} only $r\le N$ contributes to $t^N$, so
+through $t^3$ we need
+\[
+ U^2=4L^2t^2+(4L^3+8L)t^3+\FormalBigOAt{t^{4}}{t},
+ \qquad
+ U^3=8L^3t^3+\FormalBigOAt{t^{4}}{t}.
+\]
+Block by block:
+\begin{align*}
+ [t^1](1+U)^{1/2}&=\tfrac12(2L)=L,\\
+ [t^2](1+U)^{1/2}&=\tfrac12(L^2+2)-\tfrac18(4L^2)
+   =\tfrac{L^2}2+1-\tfrac{L^2}2=1,\\
+ [t^3](1+U)^{1/2}&=\tfrac12(4L)-\tfrac18(4L^3+8L)+\tfrac1{16}(8L^3)
+   =2L-\tfrac{L^3}2-L+\tfrac{L^3}2=L .
+\end{align*}
+Hence
+\begin{equation}\label{plt:eq:mul-worked-sqrt}
+ (1+U)^{1/2}=1+L\,t+t^2+L\,t^3+\FormalBigOAt{t^{4}}{t}.
+\end{equation}
+Two logarithmic cancellations occur, one at each of $t^2$ and $t^3$; the
+degree bound \eqref{plt:eq:mul-binomial-profile} with $\alpha=1$,
+$\beta^{+}=0$, $e=1$ predicts only $\dprofile{(1+U)^{1/2}}(N)\le N$, and the
+actual
+profile $0,1,0,1$ is strictly smaller at $N=2,3$.  A degree bound is an upper
+bound; it is not a prediction.
+
+\emph{Verification.}  \cref{plt:cor:mul-roots} says the square of
+\eqref{plt:eq:mul-worked-sqrt} must reproduce $1+U$ through $t^3$.  Squaring
+by \eqref{plt:eq:mul-cauchy}:
+\[
+ [t^0]=1,\quad
+ [t^1]=2L,\quad
+ [t^2]=2\cdot1+L^2=L^2+2,\quad
+ [t^3]=2L+2L=4L,
+\]
+which are exactly the blocks $1,u_1,u_2,u_3$ of $1+U$.  Note the precision
+accounting: squaring a series known through $\Trunc{\cdot}{4}$ with
+$\ordt=0$ returns a result known through $\Trunc{\cdot}{4}$, so the check is
+available at every block computed and at none beyond.
+\end{example}
+
+\begin{example}[A product in the iterated field]
+\label{plt:ex:mul-worked-iterated}
+In $\PLit$ the coefficient convolution is finite at the inner level too.
+Take the two blocks
+\[
+ f=\frac1{L+1}=L^{-1}-L^{-2}+L^{-3}-\cdots,
+ \qquad
+ g=\frac1{L-1}=L^{-1}+L^{-2}+L^{-3}+\cdots
+\]
+in $\K((L^{-1}))$.  For $r\ge2$, the coefficient of $L^{-r}$ in $fg$ is a sum
+over the finitely many decompositions $r=i+j$ with $i,j\ge1$:
+\[
+ \kappa_{-r}(fg)=\sum_{i=1}^{r-1}(-1)^{i+1}\cdot1
+ =\begin{cases}1,&r\ \text{even},\\0,&r\ \text{odd},\end{cases}
+\]
+so $fg=L^{-2}+L^{-4}+L^{-6}+\cdots=(L^2-1)^{-1}$, as it must be.  The
+degree law is visible: $\degL f=\degL g=-1$, $\degL(fg)=-2$, and
+$\lc_L(f)=\lc_L(g)=\lc_L(fg)=1$.  Consequently, for
+$F=f\,t^{-1}+\cdots$ and $G=g+\cdots$ in $\PLit$ one gets
+$\lm(FG)=t^{-1}L^{-2}$ and $\lc(FG)=1$ by
+\cref{plt:thm:mul-leading-law}, with no need to compute any further block.
+Observe that $\lm$ here carries a \emph{negative} power of $L$: this is
+legitimate in $\PLrat$ and $\PLit$ and impossible in $\PLlau$, which is
+exactly the content of \cref{plt:cor:mul-domain}.
+\end{example}
+
+\subsection{The analytic product rule}
+\label{plt:sec:mul-analytic}
+
+Everything above is formal algebra.  We now record the exact circumstances
+under which the block convolution computes the asymptotic expansion of an
+actual product of functions.  Nothing in this subsection asserts
+convergence: an asymptotic expansion is a statement about remainders, and the
+formal product theorem is used as an input, not replaced.
+
+\begin{definition}[Polynomial--logarithmic asymptotic expansion]
+\label{plt:def:mul-asymptotic}
+Let $\K\subseteq\ComplexNumbers$, let $X_0>1$, and let $S=[X_0,+\infty)$ with
+the real branch $L=\log X$.  A function $f\colon S\to\ComplexNumbers$ is
+\emph{PL-asymptotic} to $F\in\PLlau$, written $f\approx F$, if for every
+$N\in\IntegerNumbers$ there exist $M_N\in\NaturalNumbers$, $C_N>0$ and
+$X_N\ge X_0$ such that
+\begin{equation}\label{plt:eq:mul-asymptotic}
+ \AbsoluteValue{f(X)-\bigl(\Trunc{F}{N}\bigr)(X)}
+ \le C_N\,X^{-N}(\log X)^{M_N}
+ \qquad(X\ge X_N),
+\end{equation}
+where $\bigl(\Trunc{F}{N}\bigr)(X)=\sum_{\ordt F\le n<N}p_n(\log X)X^{-n}$ is
+the actual finite sum obtained by substituting the generators.  Equivalently,
+$f-\Trunc{F}{N}=\BigOAt{X^{-N}(\log X)^{M_N}}{X\to+\infty,\ X\in S}$.
+\end{definition}
+
+\begin{lemma}[Basic properties of $\approx$]
+\label{plt:lem:mul-asymptotic-basic}
+Let $f,g\colon S\to\ComplexNumbers$ and $F,G\in\PLlau$.
+\begin{enumerate}
+\item If \eqref{plt:eq:mul-asymptotic} holds for arbitrarily large $N$, it
+holds for every $N$; so it suffices to verify it along a cofinal set of
+cutoffs.
+\item $f\approx F$ and $f\approx F'$ imply $F=F'$.
+\item If $f\approx F$ and $g\approx G$, then $f+g\approx F+G$ and
+$\lambda f\approx\lambda F$ for $\lambda\in\K$.
+\item $f\approx0$ if and only if $f=\BigOAt{X^{-N}}{X\to+\infty}$ for every
+$N$.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+(1) Let $N'<N$ and suppose \eqref{plt:eq:mul-asymptotic} holds at $N$.  Then
+\[
+ f-\Trunc{F}{N'}=\bigl(f-\Trunc{F}{N}\bigr)
+   +\sum_{N'\le n<N}p_n(\log X)X^{-n},
+\]
+a finite sum; the first term is $\BigOAt{X^{-N}(\log
+X)^{M_N}}{X\to+\infty}\subseteq\BigOAt{X^{-N'}(\log X)^{M_N}}{X\to+\infty}$
+since $N\ge N'$, and each term of the sum is
+$\BigOAt{X^{-N'}(\log X)^{\degL p_n}}{X\to+\infty}$.
+
+(2) Suppose $D=F-F'\ne0$, with $n_1=\ordt D$ and leading block $p$ of degree
+$d$ and leading coefficient $c\ne0$.  Take $N=n_1+1$ and subtract the two
+instances of \eqref{plt:eq:mul-asymptotic}:
+\[
+ \bigl(\Trunc{D}{n_1+1}\bigr)(X)=p(\log X)X^{-n_1}
+ =\BigOAt{X^{-n_1-1}(\log X)^{M}}{X\to+\infty}
+\]
+for some $M$.  But $|p(\log X)|\sim|c|(\log X)^{d}$, so the left side
+divided by $X^{-n_1-1}(\log X)^M$ is $\sim|c|X(\log X)^{d-M}\to+\infty$, a
+contradiction.
+
+(3) Immediate from
+$\Trunc{F+G}{N}=\Trunc{F}{N}+\Trunc{G}{N}$ and the triangle inequality.
+
+(4) If $f\approx0$ then $\Trunc{0}{N}=0$ and $f=\BigOAt{X^{-N}(\log
+X)^{M_N}}{X\to+\infty}$ for every $N$; since $(\log
+X)^{M_N}=\LittleOAt{X}{X\to+\infty}$, this gives
+$f=\BigOAt{X^{-N+1}}{X\to+\infty}$ for every $N$, hence
+$f=\BigOAt{X^{-N}}{X\to+\infty}$ for every $N$.  The converse is trivial.
+\end{proof}
+
+\begin{theorem}[Analytic product rule]
+\label{plt:thm:mul-analytic-product}
+Let $\K\subseteq\ComplexNumbers$, $S=[X_0,+\infty)$ with the real logarithm,
+and let $f,g\colon S\to\ComplexNumbers$ with $f\approx F$ and $g\approx G$
+for $F,G\in\PLlau$.  Then
+\[
+ fg\approx FG,
+\]
+where $FG$ is the formal Cauchy product \eqref{plt:eq:mul-cauchy}.
+Consequently the set
+$\mathcal A(S)=\SetOf{f:\exists F\in\PLlau,\ f\approx F}$ is a
+$\K$-algebra, the map $f\mapsto F$ is a well-defined $\K$-algebra
+homomorphism $\mathcal A(S)\to\PLlau$, and its kernel is the ideal of
+functions that are $\BigOAt{X^{-N}}{X\to+\infty}$ for every $N$.
+\end{theorem}
+
+\begin{proof}
+First dispose of the degenerate case.  Any $g$ with $g\approx G$ satisfies
+$g=\BigOAt{X^{c}(\log X)^{m}}{X\to+\infty}$ for some $c\in\IntegerNumbers$
+and $m\in\NaturalNumbers$: take $N=1$ in \eqref{plt:eq:mul-asymptotic}, note
+that $\Trunc{G}{1}$ is a finite sum of monomials $t^nL^j$, and set
+$c=\max(-\ordt G,-1)$ (with $c=-1$ if $G=0$).  Hence, if $F=0$, then
+\cref{plt:lem:mul-asymptotic-basic}(4) gives
+$f=\BigOAt{X^{-P}}{X\to+\infty}$ for every $P$, so
+$fg=\BigOAt{X^{-P+c}(\log X)^{m}}{X\to+\infty}$ for every $P$, whence
+$fg\approx0=FG$ by \cref{plt:lem:mul-asymptotic-basic}(4) again; the case
+$G=0$ is symmetric.  Assume from now on $F,G\ne0$ and set $a=\ordt F$,
+$b=\ordt G$.
+
+Fix $N\in\IntegerNumbers$ and put
+\[
+ P=\max(N-b,\;a),
+ \qquad
+ Q=\max(N-a,\;b).
+\]
+Write $f_P=(\Trunc{F}{P})(X)$, $r=f-f_P$, $g_Q=(\Trunc{G}{Q})(X)$,
+$s=g-g_Q$.  By hypothesis
+$r=\BigOAt{X^{-P}(\log X)^{m_1}}{X\to+\infty}$ and
+$s=\BigOAt{X^{-Q}(\log X)^{m_2}}{X\to+\infty}$ for suitable exponents.  Since
+$\Trunc{F}{P}$ is a finite sum of blocks with outer exponents $\ge a$,
+\[
+ f_P=\BigOAt{X^{-a}(\log X)^{m_3}}{X\to+\infty},
+ \qquad
+ g_Q=\BigOAt{X^{-b}(\log X)^{m_4}}{X\to+\infty}
+\]
+with $m_3=\max_{a\le n<P}\degL p_n$ and similarly for $m_4$ (the estimates
+being vacuously true if the sums are empty).  Therefore
+\[
+ fg-f_Pg_Q=f_Ps+rg_Q+rs
+\]
+is, term by term,
+\[
+ \BigOAt{X^{-(a+Q)}(\log X)^{m_3+m_2}}{X\to+\infty}
+ +\BigOAt{X^{-(P+b)}(\log X)^{m_1+m_4}}{X\to+\infty}
+ +\BigOAt{X^{-(P+Q)}(\log X)^{m_1+m_2}}{X\to+\infty}.
+\]
+Now $a+Q\ge a+(N-a)=N$, $P+b\ge(N-b)+b=N$, and $P+Q\ge a+(N-a)=N$; hence
+\begin{equation}\label{plt:eq:mul-analytic-step1}
+ fg-f_Pg_Q=\BigOAt{X^{-N}(\log X)^{M'}}{X\to+\infty}
+\end{equation}
+for some $M'$.
+
+Next, $f_Pg_Q$ is the value at $X$ of the finite polynomial--logarithmic
+expression $\bigl(\Trunc{F}{P}\bigr)\bigl(\Trunc{G}{Q}\bigr)\in\PLlau$,
+because substitution of the generators $t=X^{-1}$, $L=\log X$ into a finite
+sum of monomials is a ring homomorphism into functions on $S$.  Since
+$P\ge N-b$ and $Q\ge N-a$, \cref{plt:cor:mul-truncated-product} gives
+\[
+ \Trunc{\bigl(\Trunc{F}{P}\bigr)\bigl(\Trunc{G}{Q}\bigr)}{N}
+ =\Trunc{FG}{N}.
+\]
+Hence $\bigl(\Trunc{F}{P}\bigr)\bigl(\Trunc{G}{Q}\bigr)-\Trunc{FG}{N}$ is a
+\emph{finite} sum of monomials $c\,t^nL^j$ with $n\ge N$, so its value at
+$X$ is $\BigOAt{X^{-N}(\log X)^{M''}}{X\to+\infty}$ with $M''$ the largest
+$j$ occurring.  Combining with \eqref{plt:eq:mul-analytic-step1},
+\[
+ fg-\bigl(\Trunc{FG}{N}\bigr)(X)
+ =\BigOAt{X^{-N}(\log X)^{\max(M',M'')}}{X\to+\infty},
+\]
+which is \eqref{plt:eq:mul-asymptotic} for $fg$ and $FG$.  As $N$ was
+arbitrary, $fg\approx FG$.
+
+The algebra statements now follow: $\mathcal A(S)$ is closed under $+$,
+scalars and $\cdot$ by \cref{plt:lem:mul-asymptotic-basic}(3) and the above;
+the assignment $f\mapsto F$ is well defined by
+\cref{plt:lem:mul-asymptotic-basic}(2) and is a homomorphism by the same two
+statements; its kernel is described by
+\cref{plt:lem:mul-asymptotic-basic}(4).
+\end{proof}
+
+\begin{remark}[Which hypotheses are actually used, and the sectorial version]
+\label{plt:rmk:mul-analytic-hypotheses}
+The proof uses only three things: that $f$ and $g$ have remainders bounded by
+$X^{-N}$ times \emph{some} power of $\log X$; that finitely many blocks are
+involved at each stage; and the formal finite-determination theorem
+\cref{plt:thm:mul-finite-determination}, which is what allows the two
+truncation cutoffs $P$ and $Q$ to be chosen independently of the shape of
+$F$ and $G$.  No convergence and no uniformity in $L$ is used or obtained.
+
+The same proof works verbatim on an unbounded set
+$S\subseteq\SetOf{z:\AbsoluteValue{\arg z}\le\theta}$ with
+$0<\theta<\pi$ and the principal logarithm, with $X^{-N}$ replaced by
+$\AbsoluteValue{X}^{-N}$ and $(\log X)^{M}$ by
+$(\log\AbsoluteValue{X})^{M}$; the only additional input is
+$\AbsoluteValue{\log X}\le\log\AbsoluteValue{X}+\theta
+\le2\log\AbsoluteValue{X}$ for $\AbsoluteValue{X}\ge\EulerE^{\theta}$, so
+that a bound in $\AbsoluteValue{\log X}$ and a bound in
+$\log\AbsoluteValue{X}$ differ only by a constant factor.  Uniformity claims
+on a sector must be stated for a \emph{closed} subsector; the branch of
+$\log$ is part of the statement and cannot be recovered from the formal
+data.
+\end{remark}
+
+\begin{warningbox}
+Three cautions, each corresponding to an overstatement found in the sources.
+\begin{enumerate}
+\item \emph{A formal identity is not an analytic theorem.}
+\cref{plt:thm:mul-analytic-product} presupposes that $f$ and $g$
+\emph{already have} expansions; it does not produce one.  The
+homomorphism $f\mapsto F$ has a large kernel --- $\EulerE^{-X}\approx0$ ---
+so a formal computation determines an actual function at best up to a flat
+error.
+\item \emph{The formal $\FormalBigOAt{t^N}{t}$ carries no uniformity in $L$.}
+Asserting $F=G+\FormalBigOAt{t^N}{t}$ says only that the blocks agree below
+outer order $N$.  In particular the constant $C_N$ and the exponent $M_N$ of
+\eqref{plt:eq:mul-asymptotic} are not supplied by any formal statement and
+must be produced separately.
+\item \emph{The three $\BigO$-roles are distinct.}  The formal tail
+$\FormalBigOAt{t^N}{t}$, the analytic estimate
+$\BigOAt{X^{-N}(\log X)^{M}}{X\to+\infty}$ of
+\eqref{plt:eq:mul-asymptotic}, and the complexity bound
+$\BigO\bigl((N-a-b)^2d^2\bigr)$ of \cref{plt:rmk:mul-cost} are three
+different assertions and none follows from the others.  A bare $\BigO$ for an
+asymptotic claim, with the regime left to context, is never acceptable.
+\end{enumerate}
+\end{warningbox}
+
+\begin{summarybox}
+Multiplication is Cauchy convolution in $t=X^{-1}$ with exact coefficient
+arithmetic in $L=\log X$.  Every output block below a cutoff is a finite
+bilinear expression in finitely many input blocks, with the exact range
+$a\le n\le N-b$, $b\le m\le N-a$; the resulting precision rule is
+$\Trunc{FG}{\min(P+b,\,Q+a)}$ and it cannot be improved.  All four ambient
+classes are closed and are integral domains, the leading monomial and leading
+scalar are multiplicative, and the rank-two valuation
+$v(F)=(\ordt F,-\degL p_{\ordt F})$ is additive.  The log-degree profile
+obeys the max-plus bound $\dprofile{FG}\le\dprofile{F}\ast\dprofile{G}$,
+with equality exactly when the maximizing pairs do not cancel; affine
+profiles are stable under products, powers, and binomial powers, but not
+under $t$-adic limits.  Binomial powers $(1+U)^\sigma$ are defined for every
+$\sigma\in\K$ by a summable family, are finitely determined at every order,
+and satisfy the exponent law.  Under printed remainder hypotheses on a stated
+domain and branch, the formal product computes the asymptotic expansion of
+the analytic product --- and nothing more.
+\end{summarybox}

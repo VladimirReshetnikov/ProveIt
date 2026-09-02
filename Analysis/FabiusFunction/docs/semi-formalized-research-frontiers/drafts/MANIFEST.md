@@ -322,6 +322,28 @@ but none uses Libertinus; two are custom 522-by-738-point, two are Letter, and
 two are A4.  Styling repair, comparison, claim review, consolidation, and Lean
 crosswalking remain deferred until after the intake publication gate.
 
+A second subgroup, `transseries-tutorials/`, was filed on 2026-09-02 from the
+direct-arrival commit `e23bad1bb0ab91fea6df5a1cfd2525eea28dcb16`.  Its four
+packages are general expositions of transseries rather than treatments of one
+scale, so they are kept apart from the polynomial-logarithmic subgroup above.
+No archive or checksum ledger was submitted; the receipts below are
+repository-generated.  None of the four loads `docs/fabius-notation.tex`, so
+all four are free of the notation-migration defect classes recorded against
+their neighbours.  Comparison, deduplication, canonical selection, and
+consolidation are deferred; see
+[`series-and-transseries/transseries-tutorials/README.md`](series-and-transseries/transseries-tutorials/README.md).
+
+| Directory | Document | Previous path / provenance |
+| --- | --- | --- |
+| `transseries-tutorials/Transseries_Tutorial-1/` | *Transseries Tutorial* — 5,159-line/188,639-byte source (`75f427b8…0fcd324`) and 143-page/793,390-byte Letter PDF (`81e6c8b0…f10b841a`) | bare arrival; direct-arrival commit `e23bad1b…28dcb16` |
+| `transseries-tutorials/Transseries_Tutorial-2/` | *Transseries Tutorial* (second treatment) — 7,749-line/250,478-byte source (`50da0899…8d95ffb2`) and 164-page/817,544-byte Letter PDF (`4bc99417…39b26453`) | bare arrival; direct-arrival commit `e23bad1b…28dcb16` |
+| `transseries-tutorials/Transseries_Tutorial-3/` | *Transseries for Mere Mortals* — 4,410-line/134,470-byte source (`26fb3f4a…5412c348`) and 121-page/656,187-byte Letter PDF (`8d34824a…5477bbf7`) | bare arrival; direct-arrival commit `e23bad1b…28dcb16` |
+| `transseries-tutorials/Transseries_Tutorial-4/` | *Transseries Tutorial* (fourth treatment) — 8,781-line/344,893-byte source (`f00fe3aa…c1779105`) and 217-page/893,129-byte custom 522-by-738-point PDF (`6e2065d4…401fe4ba`) | bare arrival; direct-arrival commit `e23bad1b…28dcb16` |
+
+All four tutorial PDFs are readable and unencrypted, every font row is embedded,
+and none is Type 3 or Libertinus; three are Letter and one is custom
+522-by-738-point, so canonical restyling is post-publication debt here too.
+
 ## spectra-and-arithmetic — `spectra-and-arithmetic/`
 
 Current source counts for unaffected rows still supersede their older intake
