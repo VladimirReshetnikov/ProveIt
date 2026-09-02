@@ -4063,6 +4063,27 @@ Use the defining generating function \eqref{p1:eq:Bell-definition} and compare
 coefficients.
 \end{proof}
 
+\emph{Formal versions.}  \Cref{p1:thm:Bell-moments} is
+\lean{Fabius.thueMorsePowerSum\_eq\_completeBellPolynomial} in
+\path{BellPolynomialMoments.lean}, for every \(m\ge0\) and \(r\ge0\), with the exponent
+written as the Gauss sum \(0+1+\cdots+(m-1)=\binom m2\), \(M_{m,n}\) as
+\lean{Fabius.thueMorsePowerSum}, the complete exponential Bell polynomial as
+\lean{Fabius.completeBellPolynomial} of \path{MomentCumulantAlgebra.lean}, and the cumulants
+as \lean{Fabius.blockCumulant}, whose closed forms \eqref{p1:eq:kappa-one}--\eqref{p1:eq:kappa-odd}
+are \lean{Fabius.blockCumulant\_one}, \lean{Fabius.blockCumulant\_even} and
+\lean{Fabius.blockCumulant\_odd}.  The proof is the one above, run entirely in
+\(\RationalNumbers[[y]]\) with no logarithm ever taken: the expansion
+\eqref{p1:eq:log-expm1} is \lean{Fabius.expm1Div\_logCoeff\_eq\_bernoulli}, the identification of
+the recursively defined formal logarithm of \((\EulerE^{y}-1)/y\) with
+\(B'_n/(n\,n!)\) (second Bernoulli numbers), obtained from
+\(yG'=(B'(y)-1)G\) and Mathlib's \(B'(y)(\EulerE^{y}-1)=y\EulerE^{y}\) by the uniqueness of
+the recursive logarithm; the logarithm of the product \eqref{p1:eq:moment-Bell-factor} is the
+sum of the rescaled logarithms (\lean{Fabius.logCoeff\_prod\_range} and the corpus's
+\lean{Fabius.SaddleExpansion.logCoeff\_rescale}); and the coefficient comparison is the EGF
+dictionary \lean{Fabius.coeff\_sum\_thueMorseSign\_exp\_pow} against
+\lean{Fabius.prod\_one\_sub\_exp\_two\_pow} of \path{ThueMorseMoments.lean}.  The case
+\(r=0\) recovers \eqref{p1:eq:moment-layer0} as \lean{Fabius.thueMorsePowerSum\_self'}.
+
 The first three nonzero layers are
 \begin{align}
  M_{m,m}
