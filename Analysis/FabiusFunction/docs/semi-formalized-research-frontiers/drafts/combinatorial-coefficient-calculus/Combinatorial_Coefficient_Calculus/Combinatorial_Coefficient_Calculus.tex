@@ -6106,6 +6106,42 @@ Substitution in \eqref{eq:merged-euler-maclaurin-rem} proves
 \eqref{eq:merged-euler-maclaurin-bound}.
 \end{proof}
 
+Both asymptotic applications below --- Stirling's expansion and the
+harmonic-number expansion --- need the same manoeuvre: the lower endpoint
+contributes nothing that depends on $N$, and its contribution has to be
+collected into a single constant that is then identified by a limit.  It is
+worth isolating that step once.
+
+\begin{corollary}[Constant-of-integration form]
+\label{cor:merged-euler-maclaurin-constant}
+Let $m\ge1$, let $a$ be an integer, and let $f\in C^{2m}([a,\infty))$ have
+$f^{(2m)}$ absolutely integrable on $[a,\infty)$.  Then there is a constant
+$C=C(f,a,m)$, independent of $N$, such that for every integer $N>a$
+\begin{equation}
+ \sum_{k=a}^{N}f(k)=\int_a^Nf(x)\Differential x+\frac{f(N)}2+C
+ +\sum_{r=1}^{m}\frac{\beta_{2r}}{(2r)!}f^{(2r-1)}(N)+\rho_m(N),  \label{eq:merged-euler-maclaurin-constant}
+\end{equation}
+where
+\begin{equation}
+ \rho_m(N)=\frac1{(2m)!}\int_N^\infty\beta_{2m}(\{x\})f^{(2m)}(x)\Differential x,
+ \qquad
+ |\rho_m(N)|\le\frac{2\RiemannZeta(2m)}{(2\pi)^{2m}(2m)!}
+ \int_N^\infty|f^{(2m)}(x)|\Differential x.                       \label{eq:merged-euler-maclaurin-constant-rem}
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+Take $b=N$ in \eqref{eq:merged-euler-maclaurin} and split the remainder
+integral as $\int_a^N=\int_a^\infty-\int_N^\infty$, which is legitimate because
+$\beta_{2m}(\{\cdot\})$ is bounded and $f^{(2m)}$ is absolutely integrable.
+Every term that involves only $a$ --- namely $f(a)/2$, the boundary sum
+$-\sum_r\beta_{2r}f^{(2r-1)}(a)/(2r)!$, and
+$-\int_a^\infty\beta_{2m}(\{x\})f^{(2m)}(x)\Differential x/(2m)!$ --- is
+independent of $N$, and their sum is the constant $C$.  What survives is
+\eqref{eq:merged-euler-maclaurin-constant}, and the bound on $\rho_m$ is
+\eqref{eq:merged-periodic-bernoulli-sup} applied to the tail.
+\end{proof}
+
 \begin{corollary}[Stirling's expansion]
 For each fixed integer $M\geq1$, as $n\to\infty$ through positive integers,
 \begin{equation}
@@ -6116,10 +6152,14 @@ For each fixed integer $M\geq1$, as $n\to\infty$ through positive integers,
 \end{corollary}
 
 \begin{proof}
-Apply Euler--Maclaurin to $f(x)=\log x$.  Its derivatives give the displayed
-inverse powers.  The terms at the lower endpoint and the limiting remainder
-combine into a constant, evaluated as $\frac12\log(2\pi)$ by Wallis' product.
-The remainder bound one order farther gives the stated error.
+Apply \cref{cor:merged-euler-maclaurin-constant} to $f(x)=\log x$ with $a=1$;
+the hypothesis holds because $|f^{(2M)}(x)|=(2M-1)!\,x^{-2M}$ is integrable on
+$[1,\infty)$.  Here $\int_1^N\log x\Differential x=N\log N-N+1$ and
+$f(N)/2=\frac12\log N$, while
+$f^{(2r-1)}(x)=(2r-2)!\,x^{-(2r-1)}$ gives the displayed inverse powers
+$\beta_{2r}/\bigl(2r(2r-1)N^{2r-1}\bigr)$.  The constant $C$ supplied by the
+corollary is evaluated as $\frac12\log(2\pi)-1$ by Wallis' product, and the
+remainder bound one order farther gives the stated error.
 \end{proof}
 
 The same machine applied to $f(x)=1/x$ produces the companion expansion for the
@@ -6138,42 +6178,28 @@ $H_N=\log N+\gamma+\frac1{2N}-\frac1{12N^2}+\frac1{120N^4}+\BigO(N^{-6})$.
 \end{corollary}
 
 \begin{proof}
-Apply \cref{thm:merged-euler-maclaurin} with $m=M$, $f(x)=1/x$, $a=1$, $b=N$.
-Since $f^{(j)}(x)=(-1)^jj!\,x^{-j-1}$, the boundary sum is
-\[
- \sum_{r=1}^{M}\frac{\beta_{2r}}{(2r)!}
- \bigl(f^{(2r-1)}(N)-f^{(2r-1)}(1)\bigr)
- =\sum_{r=1}^{M}\frac{\beta_{2r}}{2r}
- \left(1-\frac1{N^{2r}}\right),
-\]
-because $f^{(2r-1)}(x)=-(2r-1)!\,x^{-2r}$.  Hence
+Apply \cref{cor:merged-euler-maclaurin-constant} with $m=M$, $f(x)=1/x$ and
+$a=1$; the hypothesis holds because $|f^{(2M)}(x)|=(2M)!\,x^{-2M-1}$ is
+integrable on $[1,\infty)$.  Here $\int_1^N f=\log N$, $f(N)/2=1/(2N)$, and
+$f^{(2r-1)}(x)=-(2r-1)!\,x^{-2r}$, so
+$\beta_{2r}f^{(2r-1)}(N)/(2r)!=-\beta_{2r}/(2r\,N^{2r})$.  Hence
 \begin{equation}
- H_N-\log N=\frac12+\frac1{2N}
- +\sum_{r=1}^{M}\frac{\beta_{2r}}{2r}
- -\sum_{r=1}^{M}\frac{\beta_{2r}}{2r\,N^{2r}}
- -\frac1{(2M)!}\int_1^N\beta_{2M}(\{x\})f^{(2M)}(x)\Differential x. \label{eq:merged-harmonic-em}
+ H_N=\log N+\frac1{2N}+C
+ -\sum_{r=1}^{M}\frac{\beta_{2r}}{2r\,N^{2r}}+\rho_M(N).           \label{eq:merged-harmonic-em}
 \end{equation}
-The integrand is absolutely integrable on $[1,\infty)$, since
-$|f^{(2M)}(x)|=(2M)!\,x^{-2M-1}$ and $\beta_{2M}(\{\cdot\})$ is bounded, so the
-integral converges as $N\to\infty$ and may be split as
-$\int_1^\infty-\int_N^\infty$.  All the $N$-independent terms of
-\eqref{eq:merged-harmonic-em} then form a constant, and letting $N\to\infty$
-identifies that constant as $\gamma=\lim_N(H_N-\log N)$, for every $M$.  What
-remains is
+By \eqref{eq:merged-euler-maclaurin-constant-rem},
 \[
- H_N=\log N+\gamma+\frac1{2N}-\sum_{r=1}^{M}\frac{\beta_{2r}}{2r\,N^{2r}}
- +\frac1{(2M)!}\int_N^\infty\beta_{2M}(\{x\})f^{(2M)}(x)\Differential x,
-\]
-and by \eqref{eq:merged-periodic-bernoulli-sup} the tail integral is at most
-\[
- \frac{2\RiemannZeta(2M)}{(2\pi)^{2M}}\cdot\frac1{(2M)!}
+ |\rho_M(N)|\le\frac{2\RiemannZeta(2M)}{(2\pi)^{2M}(2M)!}
  \int_N^\infty(2M)!\,x^{-2M-1}\Differential x
- =\frac{2\RiemannZeta(2M)}{(2M)(2\pi)^{2M}}\,N^{-2M}
- =\BigO(N^{-2M}).
+ =\frac{2\RiemannZeta(2M)}{(2M)(2\pi)^{2M}}\,N^{-2M}=\BigO(N^{-2M}),
 \]
-The term $r=M$ of the remaining sum is itself $\BigO(N^{-2M})$ and may be
-absorbed into the error, which leaves \eqref{eq:merged-harmonic-expansion}.
-The displayed special case uses $\beta_2=1/6$ and $\beta_4=-1/30$.
+so every term of \eqref{eq:merged-harmonic-em} except $C$ tends to $0$ or is
+accounted for, and letting $N\to\infty$ gives
+$C=\lim_N(H_N-\log N)=\gamma$ --- for every $M$ at once, since $C$ is the only
+$N$-independent term.  Finally the term $r=M$ of the sum is itself
+$\BigO(N^{-2M})$ and may be absorbed into the error, which leaves
+\eqref{eq:merged-harmonic-expansion}.  The displayed special case uses
+$\beta_2=1/6$ and $\beta_4=-1/30$.
 \end{proof}
 
 \chapter{Pochhammer symbols, polygamma functions, and Barnes' \texorpdfstring{$G$}{G}-function}
@@ -8160,6 +8186,66 @@ The exact source hashes and every topic- and claim-level decision are maintained
 in the package's external provenance and disposition ledgers.  Git revision
 \texttt{55038f2fc7d20a483a48125f086a6c8488e45530} is the immutable
 pre-consolidation source pin.
+
+\section{Closure of the merge}
+\label{sec:merged-closure}
+
+The consolidation is complete: the five donor packages have been retired and
+this manuscript is the single surviving document.  The final pass was driven by
+a label- and formula-level inventory of all six sources rather than by reading
+order.  Of the donor items with no canonical counterpart, the following were
+imported, each with a proof written for this text and each checked against an
+independent computation before insertion.
+
+\begin{itemize}\setlength{\itemsep}{2pt}
+\item \emph{The sharp Bell bound.}  All six arrivals asserted
+      $\BellNumber n<(0.792\,n/\log(n+1))^n$ for every $n\ge1$ and proved
+      neither the tail nor the finite range.  It is now
+      \cref{thm:bell-numerical-bound}, with the monotonicity of the coefficient
+      majorant supplied by \cref{lem:bell-majorant-decreasing} and the range
+      $n\le38$ settled by the integer certificate \eqref{eq:bell-cert}.  The
+      result is due to Berend and Tassa \cite{BerendTassa2010}.
+\item \emph{Euler's limit and the Weierstrass product}
+      (\cref{thm:merged-euler-gamma-limit}) with the Beta integral
+      (\cref{prop:merged-beta-integral}).  This is the one import that repairs
+      an existing argument: the polygamma partial fractions were being deduced
+      from a Weierstrass product that appeared nowhere in the manuscript.
+\item \emph{Harmonic-number expansion} (\cref{cor:merged-harmonic-expansion}),
+      \emph{reciprocal Pochhammer derivatives}
+      (\cref{cor:merged-reciprocal-pochhammer}), the \emph{Pochhammer splitting
+      rules} \eqref{eq:merged-pochhammer-split}, and the \emph{Hurwitz-zeta
+      form} of the polygamma function (\cref{cor:merged-polygamma-hurwitz}).
+\item \emph{The associahedral $h$-polynomial}
+      (\cref{thm:merged-associahedron-h}) and \emph{Loday's realization}
+      (\cref{prop:merged-loday-hyperplane}), which give the Catalan chapter the
+      same face-transform treatment the permutohedron already had.
+\item \emph{The binomial-type characterization}
+      (\cref{thm:merged-binomial-type-characterization}), the converse the
+      canonical Sheffer section lacked.
+\item \emph{Bernoulli polynomials in the finite-difference basis}
+      (\cref{thm:merged-bernoulli-difference}), the \emph{coupled two-series
+      Good system} (\cref{ex:merged-coupled-pair}), the
+      \emph{inverse-derivative operator}
+      (\cref{thm:merged-inverse-derivative-operator}), \emph{direct reversion
+      through degree five} (\cref{prop:merged-low-order-reversion}), and the
+      \emph{first cumulants} (\cref{ex:merged-first-cumulants}).
+\end{itemize}
+
+Two donor items were audited and deliberately not duplicated, because the
+canonical text already contained them under different labels: the mixed-partial
+Faà di Bruno formula, which is \cref{thm:faa-multivariate} verbatim, and the
+finite-difference lowering of the falling factorial, which is proved inline
+before \cref{thm:newton-expansion}.  The exponential and logarithmic diagonal
+identities of one donor are likewise already present, and in the stronger
+Nörlund form \eqref{eq:merged-norlund-diagonal}.
+
+Independent of mathematical content, the merge also repaired the manuscript's
+notation.  Eight calls to catalogue macros whose expansion ends in a script
+group were followed directly by a prime or an exponent, which is a fatal
+double-superscript error in \TeX; the source did not compile at all until they
+were braced.  A further $180$ sites still spelled catalogue symbols by hand,
+including an italic imaginary unit standing next to an upright $\EulerE$ inside
+a single exponent, and are now uniform.
 
 \section{Deduplication rules}
 
