@@ -12599,8 +12599,8 @@ inside the proof below does not formalize the result the proof concludes.
   than a mathematical claim.
 \end{description}
 
-Of the 282 labelled forward results, 112 are \statusexact, 84 are
-\statuspartial, 78 are \statusnone, and 8 are \statusna.  The original
+Of the 282 labelled forward results, 114 are \statusexact, 83 are
+\statuspartial, 77 are \statusnone, and 8 are \statusna.  The original
 191-result pre-Fabius core had 36 \statusexact, 29 \statuspartial, 123
 \statusnone, and 3 \statusna{} entries.  The four integrated guide chapters
 add 31 human-proved but not Lean-formalized assertions and five labelled
@@ -13164,7 +13164,7 @@ Finite fields, Grassmannians, and rank enumeration & 1 & 1 & 4 & 0\\
 Symmetry and unimodality & 0 & 0 & 3 & 0\\
 The infinite $q$-binomial theorem & 1 & 1 & 2 & 0\\
 Basic hypergeometric series & 5 & 3 & 1 & 0\\
-Euler telescoping and very-well-poised summations & 0 & 0 & 4 & 0\\
+Euler telescoping and very-well-poised summations & 1 & 0 & 3 & 0\\
 Bilateral series and Ramanujan's \texorpdfstring{${}_1\psi_1$}{1psi1} sum & 1 & 0 & 1 & 0\\
 $q$-difference calculus and the quantum binomial & 8 & 2 & 0 & 0\\
 The $q$-gamma and $q$-beta functions & 5 & 1 & 2 & 0\\
@@ -13182,9 +13182,9 @@ Computation, certification, and formal proof architecture & 7 & 2 & 2 & 3\\
 Geometric interpolation and exact $q$-filters & 7 & 2 & 0 & 0\\
 Half-base arithmetic and Prouhet--Thue--Morse cancellation & 6 & 3 & 0 & 0\\
 Geometric uniform sums, $q$-cumulants, and the Fabius--Rvachev functions & 2 & 11 & 0 & 0\\
-Dyadic Gaussian--Thue--Morse structure and the values of $F$ & 6 & 45 & 5 & 0\\
+Dyadic Gaussian--Thue--Morse structure and the values of $F$ & 7 & 44 & 5 & 0\\
 \midrule
-\textbf{Forward total} & 112 & 84 & 78 & 8\\
+\textbf{Forward total} & 114 & 83 & 77 & 8\\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -14290,16 +14290,17 @@ not the displayed $\Psi_k$ normalization dictionary}\\[2pt]
 \texttt{iteratedDeriv\_fabiusReal\_inv\_two\_pow\_all}\newline
 {\footnotesize\texttt{FabiusQBinomialTaylor}; \texttt{BoundedDerivatives}; the
 two pieces are not the proposition's single Taylor-polynomial identity}\\[2pt]
-\Cref{lem:geometric-simplex} & \statuspartial &
+\Cref{lem:geometric-simplex} & \statusexact &
+\texttt{hasSum\_\allowbreak{}geometric\_\allowbreak{}simplex},
 \texttt{hasSum\_\allowbreak{}geometric\_\allowbreak{}simplex\_\allowbreak{}increments},
 \texttt{hasSum\_\allowbreak{}prod\_\allowbreak{}fin\_\allowbreak{}pi},
-\texttt{sum\_\allowbreak{}prefix\_\allowbreak{}mul\_\allowbreak{}eq\_\allowbreak{}sum\_\allowbreak{}mul\_\allowbreak{}tailSum}\newline
-{\footnotesize\texttt{GeometricSimplexSum}; the sum in the increment
-parametrization $j_h=\sum_{k\le h}(i_k+1)$, $i\in\NaturalNumbers^{\ell}$, for
-$\lVert q\rVert<1$ in any complete normed field, from the general product
-formula $\sum_{i}\prod_k g_k(i_k)=\prod_k\sum_n g_k(n)$ for absolutely
-convergent series; the reindexing to strictly increasing sequences is not
-stated in Lean}\\[2pt]
+\texttt{prefixSum\_\allowbreak{}surjective}\newline
+{\footnotesize\texttt{GeometricSimplexSum}, \texttt{GeometricSimplexReindex}; the
+sum over the strictly increasing positive sequences $j\colon[\ell]\to\NaturalNumbers$
+for $\lVert q\rVert<1$ in any complete normed field, via the general product
+formula $\sum_i\prod_kg_k(i_k)=\prod_k\sum_ng_k(n)$ for absolutely convergent
+series and the bijection $i\mapsto(j_h=\sum_{k\le h}(i_k+1))$ from increments to
+strictly increasing sequences}\\[2pt]
 \Cref{thm:fabius-composition} & \statuspartial &
 \texttt{fabiusAtInverseTwoPow\_eq\_composition\_formula}\newline
 {\footnotesize\texttt{FabiusInverseDyadicClosedForm}; only the half-base
@@ -14462,7 +14463,12 @@ different convolutional summand and lacks the stated sharp residual package}\\[2
 \midrule
 \multicolumn{3}{@{}l}{\itshape Euler telescoping and very-well-poised summations}\\
 \midrule
-\Cref{qg:lem-euler-telescope} & \statusnone & ---\\[2pt]
+\Cref{qg:lem-euler-telescope} & \statusexact &
+\texttt{euler\_\allowbreak{}telescoping}\newline
+{\footnotesize\texttt{EulerTelescoping}; in any field, for sequences
+$u,v\colon\NaturalNumbers\to K$ with $u_0-v_0\ne0$ and $v_1,\dots,v_N\ne0$, the
+products written as $\prod_{i<k}u_i$ and $\prod_{i<k}v_{i+1}$; by induction on
+$N$, each step being the one-term telescoping}\\[2pt]
 \Cref{qg:lem-jackson-rational-certificate} & \statusnone & ---\\[2pt]
 \Cref{qg:thm-jackson-8phi7} & \statusnone & ---\\[2pt]
 \Cref{qg:cor-jackson-6phi5} & \statusnone & ---\\[2pt]

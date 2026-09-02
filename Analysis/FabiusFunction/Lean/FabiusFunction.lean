@@ -13,6 +13,7 @@ import FabiusFunction.StirlingGeneratingFunctions
 import FabiusFunction.EulerianNumbers
 import FabiusFunction.PartialBellPolynomials
 import FabiusFunction.BellGeneratingFunctions
+import FabiusFunction.BellComposition
 import FabiusFunction.SymmetricFunctionTransform
 import FabiusFunction.SymmetricFunctionGenerating
 import FabiusFunction.FiniteQBinomialCore
@@ -547,6 +548,8 @@ import FabiusFunction.GaussianBinomialCumulants
 import FabiusFunction.GeometricSimplexSum
 import FabiusFunction.IntegerParameterTranslation
 import FabiusFunction.MultisetInversions
+import FabiusFunction.GeometricSimplexReindex
+import FabiusFunction.EulerTelescoping
 import FabiusFunction.GaussianBinomialPalindromic
 import FabiusFunction.ThetaQuasiPeriodicity
 
