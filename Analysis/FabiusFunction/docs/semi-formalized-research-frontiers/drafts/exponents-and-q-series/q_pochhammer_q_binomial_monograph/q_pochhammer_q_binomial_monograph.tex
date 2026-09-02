@@ -1049,9 +1049,13 @@ recurrences, so it remains valid with zero divisors.  In
 leading coefficient, and constant coefficient of the universal polynomial;
 \lean{Fabius.reflect_gaussianBinomial} and
 \lean{Fabius.coeff_gaussianBinomial_reflect} give reflection and
-coefficient palindromicity.  These statements hold for every \(k\le n\),
-including both boundary columns, so \Cref{thm:qbinom-structure} is
-\statusexact.
+coefficient palindromicity.  The new theorems
+\lean{Fabius.coeff_gaussianBinomial_one_of_pos_of_lt} and
+\lean{Fabius.coeff_gaussianBinomial_one} give the linear coefficient in the
+strict interior and totally, including zero on the lower edge, diagonal,
+and above the diagonal.  These two coefficient statements hold over every
+commutative semiring, and the structure statements hold for every \(k\le n\), including
+both boundary columns, so \Cref{thm:qbinom-structure} is \statusexact.
 \end{remark}
 
 \begin{corollary}[Odd reciprocal degree at \(q=-1\)]
@@ -12720,7 +12724,12 @@ reflection in that exact degree, and coefficient palindromicity for the
 universal polynomial over every nontrivial commutative semiring where degree
 requires nontriviality.  The same module also exports
 \path{Fabius.coeff_gaussianBinomial_top} and
-\path{Fabius.two_mul_derivative_gaussianBinomial_eval_one}.  The companion
+\path{Fabius.two_mul_derivative_gaussianBinomial_eval_one}.  Its two linear
+coefficient theorems are
+\path{Fabius.coeff_gaussianBinomial_one_of_pos_of_lt}, which gives coefficient
+one for \(0<k<n\), and
+\path{Fabius.coeff_gaussianBinomial_one}, which gives the total formula with
+zero on the lower edge, diagonal, and above the diagonal.  The companion
 \path{GaussianBinomialPolynomialStructure.lean} exports the five
 \(\NaturalNumbers[X]\)-specialized declarations
 \path{Fabius.natDegree_gaussianBinomial_universal},
@@ -12730,7 +12739,7 @@ requires nontriviality.  The same module also exports
 \path{Fabius.coeff_gaussianBinomial_universal_symm}.  Together with symmetry,
 unit reciprocity, and the universal-evaluation theorem from
 \path{GaussianBinomialUniversal.lean}, this is the exact Lean counterpart of
-\Cref{cor:positivity,thm:qbinom-structure}.
+\Cref{cor:positivity,thm:qbinom-structure,prop:gq-positive-palindromic}.
 
 \item The five theorems of \path{GaussianBinomialAtNegOne.lean} are
 \path{Fabius.gaussianBinomial_neg_one_even_even},

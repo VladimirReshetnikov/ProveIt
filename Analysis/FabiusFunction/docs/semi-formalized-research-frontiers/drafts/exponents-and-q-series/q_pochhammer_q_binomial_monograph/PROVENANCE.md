@@ -49,7 +49,7 @@ The current source incorporates exhaustive crosswalks for
 `QPochhammerEntire` (zero definitions and five legacy compatibility theorems),
 `QPochhammerInfinite` (one definition and twenty-nine theorems),
 `QPochhammerDissection` (zero definitions and two theorems),
-`GaussianBinomialPalindromic` (zero definitions and twelve theorems),
+`GaussianBinomialPalindromic` (zero definitions and fourteen theorems),
 `GaussianBinomialPolynomialStructure` (zero definitions and five theorems),
 and `GeometricPochhammerNormalConvergence` (zero definitions and three
 theorems). It also inventories `QMultinomial` (one definition and nine
@@ -59,8 +59,7 @@ and `QPochhammerComplexOrder` (one definition and four theorems),
 `BasicHypergeometricSeries` (two definitions and five theorems),
 `HeineTransformation` (two definitions and five theorems), and
 `QGaussSummation` (zero definitions and two theorems). The next tranche adds
-`QExponential` (three
-definitions and eight theorems), `JacksonIntegral` (one definition and seven
+`QExponential` (three definitions and eight theorems), `JacksonIntegral` (one definition and seven
 theorems), `ThetaQuasiPeriodicity` (one definition and six theorems),
 `QPochhammerLogDerivative` (zero definitions and ten theorems),
 `QPochhammerOrderDerivative` (zero definitions and three theorems), and
