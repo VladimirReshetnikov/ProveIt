@@ -11,6 +11,8 @@ import FabiusFunction.LahNumbers
 import FabiusFunction.BellStirling
 import FabiusFunction.StirlingGeneratingFunctions
 import FabiusFunction.EulerianNumbers
+import FabiusFunction.PartialBellPolynomials
+import FabiusFunction.BellGeneratingFunctions
 import FabiusFunction.SymmetricFunctionTransform
 import FabiusFunction.SymmetricFunctionGenerating
 import FabiusFunction.FiniteQBinomialCore
@@ -539,6 +541,12 @@ import FabiusFunction.DivisorSumLambert
 import FabiusFunction.ReciprocalQBinomialAnalytic
 import FabiusFunction.TwoPhiOneReversal
 import FabiusFunction.QGammaLogConvex
+import FabiusFunction.QChuVandermonde
+import FabiusFunction.GeometricFilterBound
+import FabiusFunction.GaussianBinomialCumulants
+import FabiusFunction.GeometricSimplexSum
+import FabiusFunction.IntegerParameterTranslation
+import FabiusFunction.MultisetInversions
 import FabiusFunction.GaussianBinomialPalindromic
 import FabiusFunction.ThetaQuasiPeriodicity
 
