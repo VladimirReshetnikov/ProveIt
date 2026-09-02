@@ -91,12 +91,25 @@ theorem signedRowSum_eq (n : ℕ) :
 
 /-! ## The mod-three corollary -/
 
+/-- The two-cycle of powers of two modulo three: `2^r mod 3 = (r mod 2) + 1`.
+(`ThueMorseBinomialLog` proves this privately; this is the public form.) -/
+theorem two_pow_mod_three (r : ℕ) : 2 ^ r % 3 = r % 2 + 1 := by
+  induction r using Nat.twoStepInduction with
+  | zero => norm_num
+  | one => norm_num
+  | more r ih _ =>
+      have h : 2 ^ (r + 2) = 2 ^ r * 4 := by rw [pow_add]; norm_num
+      have h4 : 4 % 3 = 1 := by norm_num
+      have h2 : (r + 2) % 2 = r % 2 := by omega
+      rw [h, Nat.mul_mod, ih, h4, mul_one, h2]
+      omega
+
 /-- **`p1:eq:pascal-mod3`**: `τ(n) = (2n + S(n)) mod 3`. -/
 theorem thueMorseBit_eq_two_mul_add_signedRowSum_emod_three (n : ℕ) :
     (thueMorseBit n : ℤ) = (2 * n + signedRowSum n) % 3 := by
   rw [signedRowSum_eq, thueMorseBit, pow_succ]
   have h2 : ((2 : ℤ) ^ binaryWeight n) % 3 = ((binaryWeight n % 2 + 1 : ℕ) : ℤ) := by
-    exact_mod_cast two_pow_mod_three_eq_mod_two_add_one (binaryWeight n)
+    exact_mod_cast two_pow_mod_three (binaryWeight n)
   push_cast at h2 ⊢
   generalize (2 : ℤ) ^ binaryWeight n = t at h2 ⊢
   omega
@@ -106,7 +119,7 @@ theorem thueMorseBit_eq_two_mul_add_signedRowSum_emod_three (n : ℕ) :
 theorem two_pow_succ_sub_two_eq (n : ℕ) :
     ∃ k : ℤ, (2 : ℤ) ^ (binaryWeight n + 1) - 2 = 6 * k + 2 * (thueMorseBit n : ℤ) := by
   have h2 : ((2 : ℤ) ^ binaryWeight n) % 3 = ((binaryWeight n % 2 + 1 : ℕ) : ℤ) := by
-    exact_mod_cast two_pow_mod_three_eq_mod_two_add_one (binaryWeight n)
+    exact_mod_cast two_pow_mod_three (binaryWeight n)
   rw [thueMorseBit, pow_succ]
   push_cast at h2 ⊢
   generalize (2 : ℤ) ^ binaryWeight n = t at h2 ⊢

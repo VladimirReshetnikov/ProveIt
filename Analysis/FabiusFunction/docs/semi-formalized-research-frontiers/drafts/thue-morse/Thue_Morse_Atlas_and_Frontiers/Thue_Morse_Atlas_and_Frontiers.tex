@@ -1725,7 +1725,7 @@ rearrangement \(\operatorname{rem}_3(\nu(n))=\tau(n)+1\) is
 The closing remark that the residue is never zero is
 \lean{Fabius.card\_oddBinomialIndices\_mod\_three\_ne\_zero}.  The arithmetic underneath
 all four is the two-cycle of powers of two modulo three,
-\lean{Fabius.two\_pow\_mod\_three\_eq\_mod\_two\_add\_one}, \(2^r\bmod3=(r\bmod2)+1\).
+\lean{Fabius.two\_pow\_mod\_three} (in \path{SignedRowSum.lean}; \path{ThueMorseBinomialLog.lean} keeps a private copy), \(2^r\bmod3=(r\bmod2)+1\).
 
 A form using exactly the row signs of the source formula can be written without
 the odd-count notation.  Put
@@ -1763,12 +1763,18 @@ weight is even or odd.  Also
 sine is therefore zero or \(3/4\).
 \end{proof}
 
-\emph{Formal status.}  Neither display of \cref{p1:cor:mod-three-sine} is formalized: the
-signed row sum \(S(n)\) of \eqref{p1:eq:S-pascal-exact} has no Lean counterpart yet, and
-both formulas are rewritings of \cref{p1:thm:mod-three} through it.  What is formal is
-everything the proof uses apart from \(S(n)\) itself --- the residue law of
-\cref{p1:thm:mod-three} and the two-cycle
-\lean{Fabius.two\_pow\_mod\_three\_eq\_mod\_two\_add\_one}.
+\emph{Formal versions.}  The signed row sum is \lean{Fabius.signedRowSum} in
+\path{SignedRowSum.lean}, and \eqref{p1:eq:S-pascal-exact} is
+\lean{Fabius.signedRowSum\_eq}, obtained from the full-row sum
+\(\sum_{k=0}^{n}(-1)^{\binom nk}=(n+1)-2^{\BinaryDigitSum(n)+1}\)
+(\lean{Fabius.sum\_range\_neg\_one\_pow\_choose}) by removing the \(k=0\) term.  The
+residue display \eqref{p1:eq:pascal-mod3} is
+\lean{Fabius.thueMorseBit\_eq\_two\_mul\_add\_signedRowSum\_emod\_three}, and the sine
+display \eqref{p1:eq:pascal-sine} is
+\lean{Fabius.thueMorseBit\_eq\_sin\_sq\_pi\_sub\_signedRowSum\_div\_three}; the latter
+rests on \(n-S(n)=6k+2\tau(n)\) with \(k\) exhibited explicitly
+(\lean{Fabius.two\_pow\_succ\_sub\_two\_eq}) and on \(\sin^2(2\pi/3)=3/4\)
+(\lean{Fabius.sin\_sq\_two\_pi\_div\_three}).
 
 The logarithmic and residue formulas are two shadows of the same invariant
 \(\nu(n)\): the first reads the exponent of a power of two; the second reads
