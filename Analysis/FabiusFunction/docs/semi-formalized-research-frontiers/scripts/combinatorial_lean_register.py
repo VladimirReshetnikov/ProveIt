@@ -204,7 +204,8 @@ STATUS = {
    r"operator series \cref{eq:der-from-diff,eq:diff-from-der} are not formalized"),
  'thm:paired-sums': ('Lean',
    r"\lean{StirlingSummations}: \cref{eq:first-two-sums} is "
-   r"\lean{Fabius.stirlingFirst_succ_succ_eq_sum_choose} and "
+   r"\lean{Fabius.stirlingFirst_succ_succ_eq_sum_choose} (module "
+   r"\lean{StirlingBasisChange}) and "
    r"\lean{Fabius.stirlingFirst_succ_succ_eq_sum_descFactorial}, \cref{eq:second-two-sums} is "
    r"\lean{Fabius.stirlingSecond_succ_succ_eq_sum} (\lean{BellStirling}) and "
    r"\lean{Fabius.stirlingSecond_succ_succ_eq_sum_pow}, the hockey sticks "
@@ -478,6 +479,12 @@ STATUS = {
    r"$W=z\EulerE^{-W}$; the defining equation in the form $W\EulerE^W=z$ is "
    r"\lean{Fabius.lambertW_mul_exp_subst}.  The radius of convergence $\EulerE^{-1}$ is analytic "
    r"and is not formalized."),
+ 'thm:fuss-series': ('partial',
+   r"\cref{eq:fuss-series} is \lean{Fabius.coeff_fussSolution} together with "
+   r"\lean{Fabius.coeff_fussSolution_eq_zero} (module \lean{FussCatalanSeries}), for "
+   r"\lean{Fabius.fussSolution} constructed as the Lagrange solution; the polynomial form of the "
+   r"defining equation is \lean{Fabius.fussSolution_sub_pow}.  The radius "
+   r"\cref{eq:fuss-radius} and the boundary convergence are analytic and are not formalized."),
  'thm:touchard-poly': ('Lean',
    r"\cref{eq:touchard-poly} is \lean{Fabius.touchardPolynomial_add_prime} "
    r"(\lean{TouchardPolyCongruence}), an identity in $(\mathbb Z/p)[x]$, read off from Spivey's "

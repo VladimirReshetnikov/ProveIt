@@ -23,6 +23,9 @@ basis `X^k` and the factorial bases: the rising factorials
   `m^n = ∑_k S(n,k) m^{\underline k} = ∑_k S(n,k) k! C(m,k)`, and binomial
   inversion of this identity is the surjection formula
   `k! S(n,k) = ∑_j (-1)^(k-j) C(k,j) j^n`;
+* the two-sum recurrence `c(n+1,k+1) = ∑_j c(n,j) C(j,k)`
+  (`stirlingFirst_succ_succ_eq_sum_choose`), the single home of an identity that two
+  mutually independent downstream modules both need;
 * the Stirling transform `g n = ∑_k S(n,k) f k` is inverted by
   `f n = ∑_k s(n,k) g k`, for sequences in any additive commutative group.
 
@@ -294,6 +297,30 @@ degree. -/
 theorem coeff_ascPochhammer_of_lt {S : Type*} [CommSemiring S] {n m : ℕ} (h : n < m) :
     coeff (ascPochhammer S n) m = 0 := by
   rw [coeff_ascPochhammer, if_neg (by omega)]
+
+/-- **The two-sum recurrence of the first kind:**
+`c(n+1,k+1) = ∑_{j ≤ n} c(n,j) C(j,k)`, the coefficient of `x^{k+1}` in
+`x^{(n+1)} = x (x+1)^{(n)}`.
+
+This is the single home of the identity: it is used both by the paired-sum
+theorems (`StirlingSummations`) and by the reverse row recurrence
+(`StirlingFirstReverse`), and neither of those modules imports the other. -/
+theorem stirlingFirst_succ_succ_eq_sum_choose (n k : ℕ) :
+    Nat.stirlingFirst (n + 1) (k + 1) =
+      ∑ j ∈ Finset.range (n + 1), Nat.stirlingFirst n j * j.choose k := by
+  have h : (ascPochhammer ℕ (n + 1)).coeff (k + 1) =
+      (X * (ascPochhammer ℕ n).comp (X + 1)).coeff (k + 1) := by
+    rw [ascPochhammer_succ_left]
+  rw [coeff_X_mul, ascPochhammer_eq_sum_monomial_stirlingFirst ℕ n, Polynomial.sum_comp,
+    finsetSum_coeff, coeff_ascPochhammer] at h
+  simp only [monomial_comp, coeff_C_mul, coeff_X_add_one_pow, Nat.cast_id] at h
+  split_ifs at h with hk
+  · exact h
+  · rw [Nat.stirlingFirst_eq_zero_of_lt (by omega)]
+    symm
+    refine Finset.sum_eq_zero fun j hj => ?_
+    have hjn : j ≤ n := Nat.lt_succ_iff.mp (Finset.mem_range.mp hj)
+    rw [Nat.choose_eq_zero_of_lt (by omega), mul_zero]
 
 /-- The row sum of the first-kind triangle: `∑_{k ≤ n} c(n,k) = n!`
 (the rising factorial evaluated at `1`). -/
