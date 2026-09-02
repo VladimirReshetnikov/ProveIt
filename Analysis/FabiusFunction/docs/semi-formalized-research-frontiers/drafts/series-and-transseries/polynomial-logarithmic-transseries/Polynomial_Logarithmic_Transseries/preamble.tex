@@ -1,0 +1,141 @@
+\documentclass[11pt,oneside]{article}
+
+% =====================================================================
+%  Polynomial--Logarithmic Transseries
+%  Canonical consolidated volume.  Editorial merge (2026-09-02) of the six
+%  independently written arrivals filed on 2026-09-01; see the provenance
+%  appendix for the absorbed sources and their SHA-256 receipts.
+%
+%  House style follows the canonical corpus volumes: A4, Libertinus with an
+%  lmodern fallback, article class carrying \part/\section/\subsection.
+%  All mathematical notation is normative from
+%  docs/FabiusFunction_Mathematical_Notation_Catalogue.
+% =====================================================================
+
+\usepackage[a4paper,margin=26mm,headheight=15pt]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\IfFileExists{libertinus.sty}{\usepackage{libertinus}}{\usepackage{lmodern}}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb,amsthm,mathtools,mathrsfs,bm}
+\input{../../../../../fabius-notation.tex}
+\usepackage{booktabs,longtable,tabularx,array,multirow}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{float}
+\usepackage{xurl}
+\usepackage{listings}
+\usepackage[most]{tcolorbox}
+\usepackage{hyperref}
+\usepackage[nameinlink,noabbrev,capitalise]{cleveref}
+
+\definecolor{linkblue}{RGB}{24,72,124}
+\definecolor{deepgreen}{RGB}{23,102,69}
+\definecolor{deepred}{RGB}{140,42,42}
+\definecolor{deepgold}{RGB}{122,91,19}
+\definecolor{shadegray}{RGB}{246,247,249}
+\definecolor{rulegray}{RGB}{195,201,208}
+\definecolor{palered}{RGB}{251,236,236}
+\definecolor{palegold}{RGB}{251,245,230}
+\definecolor{palegreen}{RGB}{233,245,243}
+
+\hypersetup{
+  hypertexnames=false,% ed.: avoid duplicate destinations across parts
+  colorlinks=true,
+  linkcolor=linkblue,
+  citecolor=deepgreen,
+  urlcolor=linkblue,
+  pdftitle={Polynomial-Logarithmic Transseries: Algebra, Composition, Reversion, and the Lambert W Archetype},
+  pdfauthor={Vladimir Reshetnikov; ProveIt formal-development synthesis},
+  pdfsubject={Consolidated volume on the polynomial-logarithmic transseries scale, its arithmetic, composition, compositional inversion, and the Lambert W expansion},
+  pdfkeywords={transseries, polynomial-logarithmic scale, Hahn series, series reversion, Lagrange-Burmann, Lambert W, Wright omega, Stirling numbers, Dulac series}
+}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Polynomial--logarithmic transseries}
+\fancyhead[R]{\small\nouppercase{\leftmark}}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+\setcounter{tocdepth}{2}
+\setcounter{secnumdepth}{3}
+\setlist[itemize]{leftmargin=1.45em,itemsep=0.25ex,topsep=0.55ex}
+\setlist[enumerate]{leftmargin=1.85em,itemsep=0.35ex,topsep=0.55ex}
+\allowdisplaybreaks[2]
+
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{algorithm}[theorem]{Algorithm}
+\newtheorem{exercise}[theorem]{Exercise}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\crefname{exercise}{Exercise}{Exercises}
+\Crefname{exercise}{Exercise}{Exercises}
+\crefname{algorithm}{Algorithm}{Algorithms}
+\Crefname{algorithm}{Algorithm}{Algorithms}
+
+\newtcolorbox{warningbox}[1][]{%
+  enhanced,breakable,colback=palered,colframe=deepred,
+  boxrule=0.6pt,arc=1.2mm,left=1.8mm,right=1.8mm,top=1.2mm,bottom=1.2mm,
+  title={A common trap},fonttitle=\bfseries,#1}
+\newtcolorbox{summarybox}[1][]{%
+  enhanced,breakable,colback=palegold,colframe=deepgold,
+  boxrule=0.6pt,arc=1.2mm,left=1.8mm,right=1.8mm,top=1.2mm,bottom=1.2mm,
+  title={Section summary},fonttitle=\bfseries,#1}
+\newtcolorbox{checkpointbox}[1][]{%
+  enhanced,breakable,colback=palegreen,colframe=deepgreen,
+  boxrule=0.6pt,arc=1.2mm,left=1.8mm,right=1.8mm,top=1.2mm,bottom=1.2mm,
+  title={Structural checkpoint},fonttitle=\bfseries,#1}
+
+\lstdefinestyle{pseudo}{%
+  basicstyle=\ttfamily\small,columns=fullflexible,frame=single,
+  rulecolor=\color{rulegray},backgroundcolor=\color{shadegray},
+  showstringspaces=false,keepspaces=true,
+  xleftmargin=0.4em,xrightmargin=0.4em,aboveskip=0.8em,belowskip=0.8em}
+\lstset{style=pseudo}
+
+% ---------------------------------------------------------------------
+%  Document-local shorthands.  Every one of them expands to a command
+%  defined normatively in the notation catalogue; none introduces a new
+%  mathematical meaning.  See the notation appendix.
+% ---------------------------------------------------------------------
+\newcommand{\K}{\mathbb{K}}
+\newcommand{\PLpow}{\PolynomialLogPowerSeriesRing{\K}}   % K[L][[t]]
+\newcommand{\PLlau}{\PolynomialLogLaurentRing{\K}}       % K[L]((t))
+\newcommand{\PLrat}{\RationalLogLaurentField{\K}}        % K(L)((t))
+\newcommand{\PLit}{\IteratedLaurentLogField{\K}}         % K((L^{-1}))((t))
+\newcommand{\Gnear}{\NearIdentityPolynomialLogGroup{\K}} % X + K[L][[t]]
+\newcommand{\ordt}{\nu_{t}}                              % outer valuation
+\DeclareMathOperator{\lm}{lm}
+\DeclareMathOperator{\lc}{lc}
+\DeclareMathOperator{\degL}{deg_{L}}
+\newcommand{\Trunc}[2]{\operatorname{Trunc}_{<#2}#1}     % exclusive cutoff
+\newcommand{\DX}{D_{X}}                                  % distinguished derivation
+\newcommand{\EulerOp}{\vartheta}                         % Euler operator X D_X
+\newcommand{\shiftop}[2]{\Delta_{#1,#2}}                 % repeated-derivative operator
+\newcommand{\compose}{\mathbin{\circ}}
+\newcommand{\rev}[1]{\CompositionalInverseOf{#1}}
+\newcommand{\recip}[1]{\MultiplicativeInverseOf{#1}}
+\newcommand{\stirlingone}[2]{\UnsignedStirlingFirstKind{#1}{#2}}
+\newcommand{\stirlingsigned}[2]{\SignedStirlingFirstKind{#1}{#2}}
+\newcommand{\LamP}[1]{\LambertPolynomial{#1}}
+\newcommand{\LamPsc}[1]{\ScaledLambertPolynomial{#1}}
+\newcommand{\RevErr}[2]{\operatorname{Err}_{\mathrm{rev}}\!\left(#1,#2\right)}
+\newcommand{\dprofile}[1]{d_{#1}}                        % log-degree profile
+\newcommand{\precdom}{\prec}
+\newcommand{\succdom}{\succ}
+\newcommand{\preceqdom}{\preccurlyeq}
+\newcommand{\asymdom}{\asymp}
+
+\begin{document}
