@@ -9,6 +9,7 @@ import FabiusFunction.BinomialInversion
 import FabiusFunction.StirlingBasisChange
 import FabiusFunction.LahNumbers
 import FabiusFunction.BellStirling
+import FabiusFunction.StirlingGeneratingFunctions
 import FabiusFunction.SymmetricFunctionTransform
 import FabiusFunction.SymmetricFunctionGenerating
 import FabiusFunction.FiniteQBinomialCore
@@ -534,6 +535,7 @@ import FabiusFunction.BilateralSeriesConvergence
 import FabiusFunction.QGammaLogDerivative
 import FabiusFunction.PowerSeriesUniqueness
 import FabiusFunction.DivisorSumLambert
+import FabiusFunction.ReciprocalQBinomialAnalytic
 import FabiusFunction.GaussianBinomialPalindromic
 import FabiusFunction.ThetaQuasiPeriodicity
 
