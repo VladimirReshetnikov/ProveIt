@@ -114,7 +114,7 @@ theorem reflect_gaussianBinomial {n k : ℕ} (hk : k ≤ n) :
                 reflect_monomial, revAt_le le_rfl, Nat.sub_self, pow_zero, one_mul, ih (by omega)]
             rw [hA, hB, gaussianBinomial_succ_succ_alt, mul_comm]
           · obtain rfl : k = n := by omega
-            simp [gaussianBinomial_eq_zero_of_lt, gaussianBinomial_diag', reflect_one']
+            simp [gaussianBinomial_eq_zero_of_lt]
 
 /-- **Coefficient reversal**: `c_j = c_{k(n-k)-j}` for `j ≤ k(n-k)`. -/
 theorem coeff_gaussianBinomial_reflect {n k : ℕ} (hk : k ≤ n) {j : ℕ} (hj : j ≤ k * (n - k)) :
