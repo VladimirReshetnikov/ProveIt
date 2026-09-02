@@ -10,6 +10,7 @@ import FabiusFunction.StirlingBasisChange
 import FabiusFunction.LahNumbers
 import FabiusFunction.BellStirling
 import FabiusFunction.StirlingGeneratingFunctions
+import FabiusFunction.EulerianNumbers
 import FabiusFunction.SymmetricFunctionTransform
 import FabiusFunction.SymmetricFunctionGenerating
 import FabiusFunction.FiniteQBinomialCore
