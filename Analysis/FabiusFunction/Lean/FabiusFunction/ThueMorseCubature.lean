@@ -177,6 +177,94 @@ theorem thueMorseBlockSum_nonneg (m : ℕ) (f : ℝ → ℝ) (hf : ContDiff ℝ 
   rw [thueMorseBlockSum_eq_nestedDyadicIntegral m f hf x h, ← nestedDyadicIntegral_const_mul]
   exact nestedDyadicIntegral_nonneg m _ x h hh hsign
 
+/-! ## Strict positivity -/
+
+/-- The block sum is linear in `f`: negation. -/
+theorem thueMorseBlockSum_neg (m : ℕ) (f : ℝ → ℝ) (x h : ℝ) :
+    thueMorseBlockSum m (fun y => -f y) x h = -thueMorseBlockSum m f x h := by
+  unfold thueMorseBlockSum
+  rw [← Finset.sum_neg_distrib]
+  exact sum_congr rfl fun n _ => by ring
+
+/-- For continuous `f`, the block sum is continuous in the base point. -/
+theorem continuous_thueMorseBlockSum_base (m : ℕ) {f : ℝ → ℝ} (hf : Continuous f) (x h : ℝ) :
+    Continuous fun t => thueMorseBlockSum m f (x + t) h := by
+  unfold thueMorseBlockSum
+  refine continuous_finset_sum _ fun n _ => continuous_const.mul (hf.comp ?_)
+  exact (continuous_const.add continuous_id).add continuous_const
+
+/-- The one-step reduction behind the cubature formula, as a statement on
+its own: for `f ∈ C^{m+1}`,
+`∑_{n<2^{m+1}} ε_n f(x + n h) = -∫_0^h (∑_{n<2^m} ε_n f'(x + t + n·2h)) dt`. -/
+theorem thueMorseBlockSum_succ_eq_neg_integral (m : ℕ) (f : ℝ → ℝ)
+    (hf : ContDiff ℝ (m + 1) f) (x h : ℝ) :
+    thueMorseBlockSum (m + 1) f x h
+      = -∫ t in (0 : ℝ)..h, thueMorseBlockSum m (deriv f) (x + t) (2 * h) := by
+  have hf1 : ContDiff ℝ ((m : WithTop ℕ∞) + 1) f := by
+    have := hf
+    rwa [Nat.cast_succ] at this
+  have hf' : ContDiff ℝ m (deriv f) := (contDiff_succ_iff_deriv.mp hf1).2.2
+  rw [thueMorseBlockSum_eq_nestedDyadicIntegral (m + 1) f hf x h, nestedDyadicIntegral_succ,
+    iteratedDeriv_succ']
+  have : ∀ t : ℝ, nestedDyadicIntegral m (iteratedDeriv m (deriv f)) (x + t) (2 * h)
+      = (-1) ^ m * thueMorseBlockSum m (deriv f) (x + t) (2 * h) := by
+    intro t
+    rw [thueMorseBlockSum_eq_nestedDyadicIntegral m (deriv f) hf' (x + t) (2 * h)]
+    ring_nf
+    rw [← pow_add, ← two_mul, pow_mul]
+    norm_num
+  simp_rw [this]
+  rw [integral_const_mul, pow_succ]
+  ring
+
+/-- **Strict positivity for completely monotone kernels**: if `h > 0` and
+`(-1)^m f^{(m)} > 0` on `[x, x + (2^m - 1) h]`, then
+`∑_{n<2^m} ε_n f(x + n h) > 0`.  This is the strict form behind the
+atlas's `> 0` displays. -/
+theorem thueMorseBlockSum_pos (m : ℕ) :
+    ∀ f : ℝ → ℝ, ContDiff ℝ m f → ∀ x h : ℝ, 0 < h →
+      (∀ y ∈ Set.Icc x (x + (2 ^ m - 1) * h), 0 < (-1) ^ m * iteratedDeriv m f y) →
+      0 < thueMorseBlockSum m f x h := by
+  induction m with
+  | zero =>
+      intro f _ x h _ hsign
+      have := hsign x ⟨le_refl x, by simp⟩
+      simpa [thueMorseBlockSum, thueMorseSign, binaryWeight] using this
+  | succ m ih =>
+      intro f hf x h hh hsign
+      have hf1 : ContDiff ℝ ((m : WithTop ℕ∞) + 1) f := by
+        have := hf
+        rwa [Nat.cast_succ] at this
+      have hf' : ContDiff ℝ m (deriv f) := (contDiff_succ_iff_deriv.mp hf1).2.2
+      have hcd : Continuous (deriv f) :=
+        hf.continuous_deriv (by exact_mod_cast Nat.le_add_left 1 m)
+      rw [thueMorseBlockSum_succ_eq_neg_integral m f hf x h, neg_pos]
+      -- the integrand is negative on `[0, h]`
+      have hneg : ∀ t ∈ Set.Icc (0 : ℝ) h, thueMorseBlockSum m (deriv f) (x + t) (2 * h) < 0 := by
+        intro t ht
+        have hpos := ih (fun y => -deriv f y) hf'.neg (x + t) (2 * h) (by linarith) ?_
+        · rw [thueMorseBlockSum_neg] at hpos
+          linarith
+        · intro y hy
+          rw [iteratedDeriv_neg, ← iteratedDeriv_succ']
+          have hy' : y ∈ Set.Icc x (x + (2 ^ (m + 1) - 1) * h) := by
+            refine ⟨by linarith [ht.1, hy.1], ?_⟩
+            have h2 : (2 : ℝ) ^ (m + 1) = 2 * 2 ^ m := by ring
+            rw [h2]
+            nlinarith [ht.2, hy.2, hh.le, (by positivity : (0 : ℝ) ≤ 2 ^ m)]
+          have := hsign y hy'
+          rw [pow_succ] at this
+          linarith
+      have hcont : Continuous fun t => thueMorseBlockSum m (deriv f) (x + t) (2 * h) :=
+        continuous_thueMorseBlockSum_base m hcd x (2 * h)
+      have hI : 0 < ∫ t in (0 : ℝ)..h, -thueMorseBlockSum m (deriv f) (x + t) (2 * h) := by
+        refine intervalIntegral_pos_of_pos_on (hcont.neg.intervalIntegrable 0 h) ?_ hh
+        intro t ht
+        have := hneg t ⟨ht.1.le, ht.2.le⟩
+        linarith
+      rw [integral_neg] at hI
+      linarith
+
 /-! ## The finite-difference bound -/
 
 /-- The nested dyadic integral of a function bounded by `C` on
