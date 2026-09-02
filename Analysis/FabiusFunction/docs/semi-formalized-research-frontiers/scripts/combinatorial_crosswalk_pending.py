@@ -127,6 +127,47 @@ is the uniqueness argument of this proof: both sides satisfy
 $Y'=\EulerE^z\,Y$ with $Y(0)=1$.""")),
 ]
 
+PENDING += [
+ # --- thm:bell-transform-inverse ---
+ (r"""\[
+ X=\log(1+Y)=\sum_{k\ge1}\frac{(-1)^{k-1}}{k}Y^k.
+\]
+Use \eqref{eq:partial-bell-egf} to extract the coefficient of $t^n/n!$.
+\end{proof}
+""",
+  remark(r"""% ed.: crosswalk added 2026-09-01; the Lean proof is this proof made formal.
+\cref{eq:bell-transform-x} is \lean{Fabius.bell_transform_inverse} (module
+\lean{BellComposition}), over any commutative $\mathbb Q$-algebra, in the form
+$x_n=\sum_{k=1}^{n}(-1)^{k+1}(k-1)!\,\ExponentialPartialBellPolynomial nk(y_1,y_2,\ldots)$
+with $y_n=\ExponentialCompleteBellPolynomial n(x)$ (Lean's \lean{Bell.complete}).
+The proof is the one above: $X=\log(1+Y)$ is
+\lean{Fabius.log_subst_exp_sub_one} ($\log\circ(\EulerE^t-1)=t$, from the
+derivative and constant term), $\log(1+u)=\sum_{k\ge1}(-1)^{k+1}(k-1)!\,u^k/k!$
+is \lean{Fabius.log_eq_egfA}, and the coefficient extraction is the exponential
+composition theorem \lean{Fabius.egfA_subst_bellWeightSeries} of
+\cref{thm:exponential-composition}.  The recursive, division-free inversion
+over every commutative ring is \lean{Bell.complete_cumulant} and
+\lean{Bell.cumulant_complete} (\lean{BellPolynomialInversion}).  The general
+form \cref{eq:general-bell-inverse} is not formalized.""")),
+
+ # --- thm:exponential-composition ---
+ (r"""\eqref{eq:partial-bell-egf}.  The set-partition form is
+\cref{thm:bell-poly-partitions} with an additional weight $b_k$ for the number of
+blocks.
+\end{proof}
+""",
+  remark(r"""% ed.: crosswalk added 2026-09-01.
+This is \lean{Fabius.egfA_subst_bellWeightSeries} (module \lean{BellComposition}):
+for $B(t)=\sum_k b_kt^k/k!$ and $A(t)=\sum_{j\ge1}a_jt^j/j!$ over any
+commutative $\mathbb Q$-algebra, $B(A(t))=\sum_n\bigl(\sum_{k\le n}b_k
+\ExponentialPartialBellPolynomial nk(a)\bigr)t^n/n!$, where substitution is
+Mathlib's \lean{PowerSeries.subst}.  The proof reads the coefficients of the
+substitution through the powers $A(t)^k$ and the column theorem
+\lean{Fabius.bellWeightSeries_pow}.  The block-colour convolution of
+\cref{thm:bell-partial-convolution} is the same theorem applied to a product,
+\lean{Fabius.factorial_mul_partialBell_add}.""")),
+]
+
 applied = 0
 for anchor, text in PENDING:
     if text.strip() in s:
