@@ -92,7 +92,6 @@
 \newcommand{\NormalSurv}{\overline{\Phi}_{\!G}}
 \newcommand{\Agen}{\mathcal A}
 \newcommand{\Zspec}{\mathcal Z}
-\newcommand{\Mellin}{\mathcal M}
 \newcommand{\ConstantWeightSequence}{\boldsymbol{1}}
 \newcommand{\lean}[1]{%
   \ifmmode\text{\texttt{\detokenize{#1}}}\else\nolinkurl{#1}\fi}
@@ -312,7 +311,7 @@ package in the audited snapshot:
 \item the normalized family $P_d(h)=\binom{h-1}{d}$ for even $d$, its sparse zero spectrum,
       automatic sign selector, exact total-variation law, and Gaussian boundary layer;
 \item the general spectral--endpoint Mellin reflection formula
-      $\Mellin[\log L_a](w)=-\Gamma(w)\zeta(w+1)\mathcal Z_a(-w)/\zeta(-w)$;
+      $\MellinTransformOf{\log L_a}(w)=-\Gamma(w)\zeta(w+1)\mathcal Z_a(-w)/\zeta(-w)$;
 \item the polynomial-weight universality theorem and its generalized Lambert-$W_{-1}$
       endpoint coordinate.
 \end{enumerate}
@@ -2731,7 +2730,7 @@ Assume $a_h$ has polynomial growth.  On the strip $-1<\Re w<0$,
 Using the spectral zeta from \eqref{p1:eq:zeta-a}, this becomes the reflection formula
 \begin{equation}
  \boxed{
- \Mellin[\log L_a](w)
+ \MellinTransformOf{\log L_a}(w)
  =-\Gamma(w)\zeta(w+1)
    \frac{\Zspec_a(-w)}{\zeta(-w)}.}
  \label{p1:eq:mellin-reflection}
@@ -8227,7 +8226,6 @@ form?,
 % already provided by the volume; \repo re-declared for this part's
 % path idiom -- all earlier pages are already typeset).
 \newcommand{\eps}{\varepsilon}
-\newcommand{\pos}[1]{\left(#1\right)_{+}}
 \newcommand{\KL}{\operatorname{D}}
 \newcommand{\Ent}{\operatorname{h}}
 \newcommand{\Fish}{\operatorname{I}}
@@ -8436,7 +8434,7 @@ and let $\tau(m)=\ThueMorseSign{m}$ be the signed Thue--Morse sequence.
 For $N\ge1$,
 \begin{equation}
  u_N(x)=\frac{2^{\binom N2}}{(N-1)!}
- \sum_{m=0}^{2^N-1}\tau(m)\pos{x-\kappa_{N,m}}^{N-1}.
+ \sum_{m=0}^{2^N-1}\tau(m)\PositivePart{x-\kappa_{N,m}}^{N-1}.
  \label{p5:eq:spline-formula}
 \end{equation}
 Thus $u_N$ is piecewise polynomial of degree $N-1$, belongs to $C^{N-2}(\RealNumbers)$ for $N\ge2$, and its distributional $N$th derivative is
@@ -8457,7 +8455,7 @@ For independent uniforms on intervals of lengths $\ell_1,\ldots,\ell_N$, inclusi
 \[
  \frac1{(N-1)!\prod_j\ell_j}
  \sum_{S\subseteq\{1,\ldots,N\}}(-1)^{\AbsoluteValue S}
- \pos{x-x_{\min}-\sum_{j\in S}\ell_j}^{N-1}.
+ \PositivePart{x-x_{\min}-\sum_{j\in S}\ell_j}^{N-1}.
 \]
 Here $\ell_j=2^{1-j}$, $x_{\min}=-a_N$, and
 $\prod_j\ell_j=2^{-\binom N2}$.  The subset sum has a unique binary encoding $m$, its sign is $\tau(m)$, and its translated knot is precisely \eqref{p5:eq:knots}.  Distributional differentiation proves \eqref{p5:eq:distributional-derivative} and \eqref{p5:eq:jumps}.
@@ -8856,9 +8854,9 @@ Thus the obvious independent-tail coupling loses an exponentially growing factor
 
 Define
 \begin{equation}
- C_N(t)=\Expectation\pos{X_N-t},
+ C_N(t)=\Expectation\PositivePart{X_N-t},
  \qquad
- C(t)=\Expectation\pos{X-t},
+ C(t)=\Expectation\PositivePart{X-t},
  \qquad
  K_N(t)=C(t)-C_N(t).
  \label{p5:eq:call-def}
@@ -8879,9 +8877,9 @@ At regular points,
 \begin{theorem}[Exact finite call spline; \newresult]
 Let $\kappa_{N,m}$ be \eqref{p5:eq:knots}.  Then
 \begin{equation}
- P_N(t):=\Expectation\pos{t-X_N}
+ P_N(t):=\Expectation\PositivePart{t-X_N}
  =\frac{2^{\binom N2}}{(N+1)!}
- \sum_{m=0}^{2^N-1}\tau(m)\pos{t-\kappa_{N,m}}^{N+1},
+ \sum_{m=0}^{2^N-1}\tau(m)\PositivePart{t-\kappa_{N,m}}^{N+1},
  \label{p5:eq:put-spline}
 \end{equation}
 and

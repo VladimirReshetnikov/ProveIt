@@ -555,7 +555,12 @@ all 1,190 page boxes matched A4, and the recorded targeted visual inspection
 was clean.  The later 16,344-line semantic-source checkpoint has SHA-256
 `2c34d526f18379822ced4d807fd4049ecb85231f4a42a1cd2773fd3c990dd3b9`.
 
-The live TeX changed again after every named source/PDF checkpoint. It adds the upstream
+The retired-analysis-alias migration produced a 16,369-line, 737,768-byte
+source checkpoint with SHA-256
+`4313bddb87a0f248a8bad4bd5e5a7cfbb25da51d1b994abc0c9d4c62525ca78c`.
+The live TeX changed again after that checkpoint and every named source/PDF
+pair. Its final fingerprint is deferred until rebuild and ledger regeneration.
+It adds the upstream
 q-API material, exact zero-order/exponent identifiability with constructive
 dyadic first differences, and the later normal-convergence and `6c7a69be9`
 crosswalks, followed by the final eight-module q-calculus/theta tranche. The
