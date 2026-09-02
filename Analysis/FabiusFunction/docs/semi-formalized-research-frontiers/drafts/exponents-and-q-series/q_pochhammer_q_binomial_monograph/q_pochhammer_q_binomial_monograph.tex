@@ -12602,8 +12602,8 @@ inside the proof below does not formalize the result the proof concludes.
   than a mathematical claim.
 \end{description}
 
-Of the 282 labelled forward results, 116 are \statusexact, 83 are
-\statuspartial, 75 are \statusnone, and 8 are \statusna.  The original
+Of the 282 labelled forward results, 117 are \statusexact, 84 are
+\statuspartial, 73 are \statusnone, and 8 are \statusna.  The original
 191-result pre-Fabius core had 36 \statusexact, 29 \statuspartial, 123
 \statusnone, and 3 \statusna{} entries.  The four integrated guide chapters
 add 31 human-proved but not Lean-formalized assertions and five labelled
@@ -13173,7 +13173,7 @@ $q$-difference calculus and the quantum binomial & 8 & 2 & 0 & 0\\
 The $q$-gamma and $q$-beta functions & 6 & 1 & 1 & 0\\
 Jacobi's triple product & 5 & 2 & 1 & 0\\
 Theta modularity, lattice dissection, and sums of squares & 0 & 0 & 14 & 4\\
-Partitions and product--sum identities & 0 & 0 & 4 & 0\\
+Partitions and product--sum identities & 1 & 1 & 2 & 0\\
 Bailey pairs and the Rogers--Ramanujan identities & 1 & 0 & 6 & 0\\
 Bailey transforms and the Andrews--Gordon identities & 0 & 0 & 8 & 1\\
 Cyclotomic factorization and congruences & 6 & 1 & 2 & 0\\
@@ -13187,7 +13187,7 @@ Half-base arithmetic and Prouhet--Thue--Morse cancellation & 6 & 3 & 0 & 0\\
 Geometric uniform sums, $q$-cumulants, and the Fabius--Rvachev functions & 2 & 11 & 0 & 0\\
 Dyadic Gaussian--Thue--Morse structure and the values of $F$ & 7 & 44 & 5 & 0\\
 \midrule
-\textbf{Forward total} & 116 & 83 & 75 & 8\\
+\textbf{Forward total} & 117 & 84 & 73 & 8\\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -13860,8 +13860,28 @@ differentiation; see \Cref{rem:jacobi-cubic-formalization}}\\[2pt]
 \midrule
 \multicolumn{3}{@{}l}{\itshape Partitions and product--sum identities}\\
 \midrule
-\Cref{thm:partition-products} & \statusnone & ---\\[2pt]
-\Cref{prop:bounded-partitions} & \statusnone & ---\\[2pt]
+\Cref{thm:partition-products} & \statuspartial &
+\texttt{hasSum\_\allowbreak{}partitionCount\_\allowbreak{}mul\_\allowbreak{}pow},
+\texttt{partitionEquivMultiplicity},
+\texttt{card\_\allowbreak{}partition\_\allowbreak{}eq\_\allowbreak{}card\_\allowbreak{}multiplicityVectors},
+\texttt{hasSum\_\allowbreak{}regroup}\newline
+{\footnotesize\texttt{PartitionGeneratingFunction},
+\texttt{PartitionMultiplicity}; the first identity
+$\sum_np(n)q^n=1/(q;q)_\infty$ for $\lVert q\rVert<1$ in any complete normed
+field, with $p(n)$ the cardinality of Mathlib's \texttt{Nat.Partition n}, via
+the multiplicity-vector bijection, the Cauchy product of the geometric series
+$\sum_mq^{km}$ for $k\le N$, and Tannery's theorem for $N\to\infty$; the
+generating functions of $d(n)$ and $o(n)$ and the equality $d(n)=o(n)$ are
+not formalized}\\[2pt]
+\Cref{prop:bounded-partitions} & \statusexact &
+\texttt{hasSum\_\allowbreak{}boundedCount\_\allowbreak{}mul\_\allowbreak{}pow},
+\texttt{card\_\allowbreak{}restricted\_\allowbreak{}le\_\allowbreak{}eq}\newline
+{\footnotesize\texttt{PartitionBoundedParts}; $p_{\le r}(n)$ read as the number
+of partitions of $n$ with every part at most $r$ (Mathlib's
+\texttt{Nat.Partition.restricted n (· ≤ r)}), identified with the
+multiplicity vectors on $\{1,\dots,r\}$ of weight $n$; the identity for
+$\lVert q\rVert<1$ in any complete normed field; the conjugation equivalence
+with ``at most $r$ parts'' is not formalized}\\[2pt]
 \Cref{cor:durfee-all} & \statusnone & ---\\[2pt]
 \Cref{prop:partition-stabilization} & \statusnone & ---\\[2pt]
 \midrule
