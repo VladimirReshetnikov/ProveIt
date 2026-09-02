@@ -602,6 +602,14 @@ import FabiusFunction.IntegerParameterTranslation
 import FabiusFunction.MultisetInversions
 import FabiusFunction.GeometricSimplexReindex
 import FabiusFunction.RatioExpansion
+import FabiusFunction.LambertTailLimit
+import FabiusFunction.SubspaceCount
+import FabiusFunction.AndrewsGordonFreeIndices
+import FabiusFunction.ClassicalHypergeometricLimit
+import FabiusFunction.QGammaClassicalLimit
+import FabiusFunction.ComplexGaussianClassical
+import FabiusFunction.QuintupleProduct
+import FabiusFunction.QBabbage
 import FabiusFunction.ThetaSimpleZeros
 import FabiusFunction.LambertSeriesLocallyUniform
 import FabiusFunction.QGaussFullDomain

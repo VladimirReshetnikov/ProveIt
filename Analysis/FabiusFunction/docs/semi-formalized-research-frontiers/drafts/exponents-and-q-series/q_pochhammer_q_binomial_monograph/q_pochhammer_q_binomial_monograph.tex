@@ -12831,8 +12831,8 @@ inside the proof below does not formalize the result the proof concludes.
   than a mathematical claim.
 \end{description}
 
-Of the 282 labelled forward results, 142 are \statusexact, 80 are
-\statuspartial, 52 are \statusnone, and 8 are \statusna.  The original
+Of the 282 labelled forward results, 149 are \statusexact, 82 are
+\statuspartial, 43 are \statusnone, and 8 are \statusna.  The original
 191-result pre-Fabius core had 36 \statusexact, 29 \statuspartial, 123
 \statusnone, and 3 \statusna{} entries.  The four integrated guide chapters
 add 31 human-proved but not Lean-formalized assertions and five labelled
@@ -13392,22 +13392,22 @@ $q$-integers and Gaussian coefficients & 9 & 0 & 0 & 0\\
 Finite $q$-binomial theorems and inversion & 10 & 0 & 0 & 0\\
 Weighted binomial coefficients and symmetric functions & 3 & 3 & 2 & 0\\
 Partitions, words, paths, and inversion statistics & 7 & 2 & 0 & 0\\
-Finite fields, Grassmannians, and rank enumeration & 1 & 1 & 4 & 0\\
+Finite fields, Grassmannians, and rank enumeration & 2 & 3 & 1 & 0\\
 Symmetry and unimodality & 0 & 0 & 3 & 0\\
 The infinite $q$-binomial theorem & 3 & 0 & 1 & 0\\
-Basic hypergeometric series & 7 & 1 & 1 & 0\\
+Basic hypergeometric series & 7 & 2 & 0 & 0\\
 Euler telescoping and very-well-poised summations & 1 & 0 & 3 & 0\\
 Bilateral series and Ramanujan's \texorpdfstring{${}_1\psi_1$}{1psi1} sum & 2 & 0 & 0 & 0\\
 $q$-difference calculus and the quantum binomial & 9 & 1 & 0 & 0\\
-The $q$-gamma and $q$-beta functions & 7 & 0 & 1 & 0\\
+The $q$-gamma and $q$-beta functions & 7 & 1 & 0 & 0\\
 Jacobi's triple product & 8 & 0 & 0 & 0\\
-Theta modularity, lattice dissection, and sums of squares & 1 & 1 & 12 & 4\\
+Theta modularity, lattice dissection, and sums of squares & 2 & 1 & 11 & 4\\
 Partitions and product--sum identities & 4 & 0 & 0 & 0\\
 Bailey pairs and the Rogers--Ramanujan identities & 7 & 0 & 0 & 0\\
-Bailey transforms and the Andrews--Gordon identities & 4 & 3 & 1 & 1\\
-Cyclotomic factorization and congruences & 6 & 1 & 2 & 0\\
-Negative upper indices and geometric Newton interpolation & 8 & 0 & 1 & 0\\
-Central $q$-binomial sums and Lambert series & 1 & 0 & 6 & 0\\
+Bailey transforms and the Andrews--Gordon identities & 5 & 2 & 1 & 1\\
+Cyclotomic factorization and congruences & 8 & 0 & 1 & 0\\
+Negative upper indices and geometric Newton interpolation & 9 & 0 & 0 & 0\\
+Central $q$-binomial sums and Lambert series & 2 & 0 & 5 & 0\\
 Asymptotic regimes and Bernoulli expansions & 2 & 3 & 3 & 0\\
 Exact limits, reciprocity, and research frontiers & 0 & 0 & 5 & 0\\
 Computation, certification, and formal proof architecture & 7 & 2 & 2 & 3\\
@@ -13416,7 +13416,7 @@ Half-base arithmetic and Prouhet--Thue--Morse cancellation & 6 & 3 & 0 & 0\\
 Geometric uniform sums, $q$-cumulants, and the Fabius--Rvachev functions & 2 & 11 & 0 & 0\\
 Dyadic Gaussian--Thue--Morse structure and the values of $F$ & 7 & 45 & 4 & 0\\
 \midrule
-\textbf{Forward total} & 142 & 80 & 52 & 8\\
+\textbf{Forward total} & 149 & 82 & 43 & 8\\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -13790,11 +13790,40 @@ the displayed \(n\ge1\) form obtained by reindexing the total natural theorem}\\
 \midrule
 \multicolumn{3}{@{}l}{\itshape Finite fields, Grassmannians, and rank enumeration}\\
 \midrule
-\Cref{thm:subspace-count} & \statusnone & ---\\[2pt]
+\Cref{thm:subspace-count} & \statusexact &
+\texttt{card\_\allowbreak{}submodule\_\allowbreak{}finrank\_\allowbreak{}eq\_\allowbreak{}gaussianBinomial},
+\texttt{card\_\allowbreak{}submodule\_\allowbreak{}pi\_\allowbreak{}finrank\_\allowbreak{}eq\_\allowbreak{}gaussianBinomial},
+\texttt{gaussianBinomial\_\allowbreak{}mul\_\allowbreak{}prod\_\allowbreak{}pow\_\allowbreak{}sub\_\allowbreak{}pow},
+\texttt{card\_\allowbreak{}linearIndependent\_\allowbreak{}eq\_\allowbreak{}card\_\allowbreak{}submodule\_\allowbreak{}mul}\newline
+{\footnotesize\texttt{SubspaceCount}; proved for an arbitrary finite \emph{division ring} and an
+arbitrary finite module over it, with no hypothesis relating $k$ and $n$ --- neither primality of
+$Q$ nor commutativity is ever used, and $k>n$ is covered by the zero-extension of the Gaussian
+triangle.  The literal $\FiniteField_Q^{\,n}$ statement is the corollary
+\texttt{card\_\allowbreak{}submodule\_\allowbreak{}pi\_\allowbreak{}finrank\_\allowbreak{}eq\_\allowbreak{}gaussianBinomial}.
+The division in the printed proof is replaced by an explicit fibration over the Grassmannian and
+by the division-free identity
+$\GaussianBinomial{n}{k}{q}\prod_{i<k}(q^{k}-q^{i})=\prod_{i<k}(q^{n}-q^{i})$, valid over every
+commutative ring, which the text does not state and which is what makes the count meaningful at
+roots of unity and in positive characteristic}\\[2pt]
 \Cref{thm:geometric-pascal} & \statuspartial & \texttt{gaussianBinomial\_\allowbreak{}succ\_\allowbreak{}succ}\newline{\footnotesize\texttt{FiniteQBinomialCore}}\\[2pt]
-\Cref{thm:flag-count} & \statusnone & ---\\[2pt]
+\Cref{thm:flag-count} & \statuspartial &
+\texttt{card\_\allowbreak{}two\_\allowbreak{}step\_\allowbreak{}flag},
+\texttt{card\_\allowbreak{}two\_\allowbreak{}step\_\allowbreak{}flag\_\allowbreak{}eq\_\allowbreak{}qMultinomial}\newline
+{\footnotesize\texttt{SubspaceCount}; the case $r=3$, with the composition read top-down:
+$\#\{U\subseteq W\subseteq V\}=\GaussianBinomial{n}{m}{Q}\GaussianBinomial{m}{j}{Q}$, identified
+with the $q$-multinomial.  The general $r$-step flag needs a dependent recursive flag type, and
+matching the bottom-up ordering of the statement needs permutation invariance of the
+$q$-multinomial, which the corpus does not yet contain}\\[2pt]
 \Cref{thm:rank-matrices} & \statusnone & ---\\[2pt]
-\Cref{thm:grassmann-poincare} & \statusnone & ---\\[2pt]
+\Cref{thm:grassmann-poincare} & \statuspartial &
+\texttt{sum\_\allowbreak{}pow\_\allowbreak{}two\_\allowbreak{}boxSize\_\allowbreak{}eq\_\allowbreak{}gaussianBinomial},
+\texttt{sum\_\allowbreak{}card\_\allowbreak{}boxPartitions\_\allowbreak{}mul\_\allowbreak{}pow\_\allowbreak{}eq\_\allowbreak{}gaussianBinomial}\newline
+{\footnotesize\texttt{SubspaceCount}; the entire algebraic content, over every semiring and every
+$t$: $\sum_{\lambda\subseteq k\times(n-k)}(t^2)^{\lvert\lambda\rvert}=\GaussianBinomial{n}{k}{t^2}$
+and its graded form.  The topological identification of the coefficients with
+$\operatorname{rank}H^{2d}(\mathrm{Gr}(k,n);\IntegerNumbers)$ --- Schubert cells, vanishing
+cellular boundaries, cellular cohomology --- is not formalized and is not currently formalizable,
+Mathlib's Grassmannian carrying neither a topology nor a cohomology}\\[2pt]
 \Cref{prop:qbinom-growth} & \statusexact &
 \texttt{pow\_\allowbreak{}le\_\allowbreak{}gaussianBinomial\_\allowbreak{}of\_\allowbreak{}one\_\allowbreak{}lt},
 \texttt{gaussianBinomial\_\allowbreak{}le\_\allowbreak{}pow\_\allowbreak{}div\_\allowbreak{}of\_\allowbreak{}one\_\allowbreak{}lt},
@@ -13858,7 +13887,21 @@ $\lVert z\rVert>1$) by the ratio test, the ratio of consecutive terms tending to
 (\texttt{basicHypergeometricTerm\_\allowbreak{}succ}); (iii) made precise: for $r>s+1$, $z\ne0$
 and a nonterminating series ($1-a_iq^n\ne0$ for all $i,n$) the terms eventually at least
 double in norm, so they do not tend to zero and the series diverges}\\[2pt]
-\Cref{thm:classical-hypergeometric-limit} & \statusnone & ---\\[2pt]
+\Cref{thm:classical-hypergeometric-limit} & \statuspartial &
+\texttt{tendsto\_\allowbreak{}basicHypergeometricTerm\_\allowbreak{}of\_\allowbreak{}hasDerivAt},
+\texttt{tendsto\_\allowbreak{}basicHypergeometricTerm\_\allowbreak{}cpow},
+\texttt{tendsto\_\allowbreak{}sum\_\allowbreak{}range\_\allowbreak{}basicHypergeometricTerm\_\allowbreak{}of\_\allowbreak{}hasDerivAt},
+\texttt{tendsto\_\allowbreak{}basicHypergeometric\_\allowbreak{}of\_\allowbreak{}terminating},
+\texttt{tendsto\_\allowbreak{}basicHypergeometric\_\allowbreak{}rpow\_\allowbreak{}of\_\allowbreak{}le}\newline
+{\footnotesize\texttt{ClassicalHypergeometricLimit}; the termwise limit in far greater generality
+than stated --- an arbitrary nontrivially normed field rather than $\ComplexNumbers$, arbitrary
+differentiable parameter families $a_i=f_i(q)$, $b_j=g_j(q)$ with $f_i(1)=g_j(1)=1$,
+$f_i'(1)=\alpha_i$, $g_j'(1)=\beta_j$ (the scaling $q^{\alpha_i}$ being one instance), and along
+the full punctured filter rather than $q\to1^-$ --- together with every partial sum, the full sum
+in the terminating case with no restriction on $z$, and the full sum in a nonterminating real
+case by Tannery with the $q$-uniform majorant $\lVert z\rVert^n$.  Not formalized: the complex
+estimates of the later steps, and uniformity in $z$.  The first step is not needed rather than
+unproved, the normalized quotient being a total field division}\\[2pt]
 \Cref{thm:heine} & \statuspartial &
 \texttt{heine\_\allowbreak{}transformation},
 \texttt{summable\_\allowbreak{}twoPhiOneTerm}\newline
@@ -14073,7 +14116,24 @@ both converging to $\Gamma_q(x)$ by the $q$-analogue of Euler's limit
 formula); existence: $\Gamma_q$ itself satisfies the three conditions
 (\texttt{qGamma\_\allowbreak{}one}, \texttt{qGamma\_\allowbreak{}add\_\allowbreak{}one},
 strict log-convexity), for $0<q<1$}\\[2pt]
-\Cref{thm:qgamma-classical-limit} & \statusnone & ---\\[2pt]
+\Cref{thm:qgamma-classical-limit} & \statuspartial &
+\texttt{tendsto\_\allowbreak{}qGamma\_\allowbreak{}nhdsLT\_\allowbreak{}one},
+\texttt{tendsto\_\allowbreak{}qGamma\_\allowbreak{}nhdsLT\_\allowbreak{}one\_\allowbreak{}of\_\allowbreak{}le\_\allowbreak{}one},
+\texttt{logConvex\_\allowbreak{}two\_\allowbreak{}sided\_\allowbreak{}bound},
+\texttt{qGammaLowerSeq\_\allowbreak{}le\_\allowbreak{}qGamma},
+\texttt{qGamma\_\allowbreak{}le\_\allowbreak{}qGammaUpperSeq},
+\texttt{qGammaUpperSeq\_\allowbreak{}antitone},
+\texttt{qGammaLowerSeq\_\allowbreak{}monotone},
+\texttt{abs\_\allowbreak{}qGamma\_\allowbreak{}sub\_\allowbreak{}qGammaUpperSeq\_\allowbreak{}le}\newline
+{\footnotesize\texttt{ComplexGaussianClassical}, \texttt{QGammaClassicalLimit}; the first
+sentence only.  The pointwise limit $\Gamma_q(x)\to\Gamma(x)$ is proved for every $x>0$ along the
+one-sided filter $\mathcal N_{<}(1)$, which is what $q\to1^-$ means and is stronger than
+convergence along a chosen sequence.  The monotone Artin bracket that drives the proof is
+strengthened and made independent of log-convexity: it is derived from the exact product formula
+and weighted AM--GM, which removes the restrictions $1\le m$ and $x<1$ carried by the
+log-convexity bound, and the bracket is shown to be nested with an explicit error estimate,
+neither of which the text records.  The second sentence, local uniformity on $(0,\infty)$, is
+\emph{not} formalized: it needs a uniform-on-compacts Euler limit that Mathlib lacks}\\[2pt]
 \Cref{thm:qbeta} & \statusexact &
 \texttt{qBeta},
 \texttt{qBeta\_\allowbreak{}eq\_\allowbreak{}prod},
@@ -14325,14 +14385,34 @@ recorded in the proof}\\[2pt]
 \texttt{QBinomialReciprocity}; arbitrary commutative ring, all four parity
 classes, including total above-row zero extension}\\[2pt]
 \Cref{thm:csp-subsets} & \statusnone & ---\\[2pt]
-\Cref{thm:q-babbage} & \statusnone & ---\\[2pt]
-\Cref{cor:babbage-derivative} & \statuspartial &
-\texttt{gaussianBinomial\_\allowbreak{}mul\_\allowbreak{}isPrimitiveRoot}\newline
-{\footnotesize\texttt{CyclotomicDivisibility}; the value
-$\GaussianBinomial{an}{bn}{\zeta}=\binom{a}{b}$ from the $q$-Lucas theorem,
-at every primitive
-$n$th root of unity of every integral domain; the derivative clause is not
-formalized}\\[2pt]
+\Cref{thm:q-babbage} & \statusexact &
+\texttt{gaussianBinomial\_\allowbreak{}q\_\allowbreak{}babbage},
+\texttt{gaussianBinomial\_\allowbreak{}q\_\allowbreak{}babbage\_\allowbreak{}int},
+\texttt{sq\_\allowbreak{}dvd\_\allowbreak{}pow\_\allowbreak{}mul\_\allowbreak{}gaussianBinomial\_\allowbreak{}sub},
+\texttt{cyclotomic\_\allowbreak{}dvd\_\allowbreak{}gaussianBinomial\_\allowbreak{}of\_\allowbreak{}lt},
+\texttt{choose\_\allowbreak{}mul\_\allowbreak{}prime\_\allowbreak{}congr}\newline
+{\footnotesize\texttt{QBabbage}; over $R[X]$ for every integral domain, hence over
+$\IntegerNumbers[q]$ and not merely $\RationalNumbers[q]$, and transported to every commutative
+ring by \texttt{Polynomial.map}.  The hypothesis $a\ge b$ is dropped, both sides vanishing for
+$b>a$.  It is a specialization of
+\texttt{sq\_\allowbreak{}dvd\_\allowbreak{}pow\_\allowbreak{}mul\_\allowbreak{}gaussianBinomial\_\allowbreak{}sub},
+which carries the block-pairing argument over an arbitrary commutative ring for any $\varphi$
+dividing every $\GaussianBinomial{n}{k}{q}$ with $0<k<n$; the classical Babbage congruence
+$\binom{ap}{bp}\equiv\binom ab\pmod{p^2}$ falls out at $q=1$.  Two steps the text takes tacitly
+are supplied: $\Phi_n\mid\GaussianBinomial{n}{k}{X}$ for $0<k<n$, and coprimality of $X$ with
+$\Phi_n$, which is what licenses the silent division by $q^{\binom{bn}{2}}$}\\[2pt]
+\Cref{cor:babbage-derivative} & \statusexact &
+\texttt{gaussianBinomial\_\allowbreak{}mul\_\allowbreak{}isPrimitiveRoot},
+\texttt{gaussianBinomial\_\allowbreak{}mul\_\allowbreak{}isPrimitiveRoot\_\allowbreak{}of\_\allowbreak{}babbage},
+\texttt{eval\_\allowbreak{}derivative\_\allowbreak{}gaussianBinomial\_\allowbreak{}mul\_\allowbreak{}isPrimitiveRoot},
+\texttt{dvd\_\allowbreak{}derivative\_\allowbreak{}of\_\allowbreak{}sq\_\allowbreak{}dvd}\newline
+{\footnotesize\texttt{CyclotomicDivisibility}, \texttt{QBabbage}; the value
+$\GaussianBinomial{an}{bn}{\zeta}=\binom ab$ at every primitive $n$th root of unity of every
+integral domain, now available by both routes the text offers ($q$-Lucas, and re-derived from the
+congruence), and the derivative clause, previously unformalized.  The derivative is obtained from
+the purely algebraic implication $p^2\mid f\Rightarrow p\mid f'$ rather than from an
+order-of-vanishing argument, so it holds in positive characteristic too.  Not covered: any
+refinement modulo $\Phi_n^3$, and any closed form for the common value of the two derivatives}\\[2pt]
 \midrule
 \multicolumn{3}{@{}l}{\itshape Negative upper indices and geometric Newton interpolation}\\
 \midrule
@@ -14383,7 +14463,18 @@ the three symbols $(q^{\alpha+1};q)_\infty$, $(q^{\beta+1};q)_\infty$,
 $(q^{\alpha-\beta+1};q)_\infty$, both Pascal laws under
 $(q^{\alpha+1};q)_\infty\ne0$ alone, symmetry unconditionally, and the
 agreement with \eqref{eq:complex-upper-gaussian} at $\beta=k$}\\[2pt]
-\Cref{cor:complex-gaussian-classical} & \statusnone & ---\\[2pt]
+\Cref{cor:complex-gaussian-classical} & \statusexact &
+\texttt{gaussianBinomialRR},
+\texttt{gaussianBinomialRR\_\allowbreak{}eq\_\allowbreak{}qGamma},
+\texttt{tendsto\_\allowbreak{}gaussianBinomialRR\_\allowbreak{}nhdsLT\_\allowbreak{}one},
+\texttt{tendsto\_\allowbreak{}gaussianBinomialCC\_\allowbreak{}ofReal\_\allowbreak{}nhdsLT\_\allowbreak{}one}\newline
+{\footnotesize\texttt{ComplexGaussianClassical}; with $q\to1^-$ read as the one-sided filter
+$\mathcal N_{<}(1)$.  Stated under hypotheses strictly weaker than the printed
+$\alpha>\beta>-1$, namely the three independent conditions $\alpha+1>0$, $\beta+1>0$,
+$\alpha-\beta+1>0$, which are exactly what the proof consumes; $\alpha=-\tfrac12$,
+$\beta=\tfrac15$ satisfies them and not the printed hypothesis.  The route also differs from the
+text: instead of the beta integral it squeezes the Artin two-sided bound between Euler's sequence
+and its shift.  Nothing is claimed for genuinely complex $\alpha,\beta$ or for $q\to1^+$}\\[2pt]
 \Cref{thm:generalized-qbinomial} & \statusexact &
 \texttt{hasSum\_\allowbreak{}qPochhammerC},
 \texttt{hasSum\_\allowbreak{}qPochhammerC\_\allowbreak{}inv},
@@ -14434,7 +14525,22 @@ naturality)}\\[2pt]
 \Cref{thm:singular-central} & \statusnone & ---\\[2pt]
 \Cref{thm:central-components} & \statusnone & ---\\[2pt]
 \Cref{thm:classical-singular-central} & \statusnone & ---\\[2pt]
-\Cref{prop:lambert-tail-limit} & \statusnone & ---\\[2pt]
+\Cref{prop:lambert-tail-limit} & \statusexact &
+\texttt{qLambertTerm},
+\texttt{tendsto\_\allowbreak{}qLambertTail},
+\texttt{tendsto\_\allowbreak{}qLambertTail\_\allowbreak{}log\_\allowbreak{}two},
+\texttt{tendsto\_\allowbreak{}qLambertTail\_\allowbreak{}alternating},
+\texttt{tendsto\_\allowbreak{}alternatingHarmonic}\newline
+{\footnotesize\texttt{LambertTailLimit}; over $\RealNumbers$, with $a_r(q)=q^r/[r]_q$ built from
+the corpus $q$-integer so that $a_r(1)=1/r$ on the nose.  More general than the statement in two
+free ways: the interchange \texttt{tendsto\_\allowbreak{}qLambertTail} is proved for an arbitrary
+starting index $N\ge1$ and an arbitrary limit, not only $N=2m+1$, and no hypothesis $q>0$ is
+imposed, the limit being taken along the filter $\mathcal N_{<}(1)$.  The uniform
+alternating-series remainder and the $3\varepsilon$ interchange, which the text compresses into
+one sentence, are proved in full, as is
+$\sum_{r\ge1}(-1)^{r-1}/r=\log 2$ (\texttt{tendsto\_\allowbreak{}alternatingHarmonic}), which is
+absent from Mathlib and is obtained here from the alternating series test and Abel's limit
+theorem}\\[2pt]
 \midrule
 \multicolumn{3}{@{}l}{\itshape Asymptotic regimes and Bernoulli expansions}\\
 \midrule
@@ -14903,7 +15009,20 @@ $N$, each step being the one-term telescoping}\\[2pt]
 \midrule
 \multicolumn{3}{@{}l}{\itshape Theta modularity, lattice dissection, and sums of squares}\\
 \midrule
-\Cref{qg:thm-quintuple-product} & \statusnone & ---\\[2pt]
+\Cref{qg:thm-quintuple-product} & \statusexact &
+\texttt{hasSum\_\allowbreak{}quintuple\_\allowbreak{}product},
+\texttt{hasSum\_\allowbreak{}quintuple\_\allowbreak{}product'},
+\texttt{tsum\_\allowbreak{}quintuple\_\allowbreak{}product},
+\texttt{bilateralTheta\_\allowbreak{}zpow\_\allowbreak{}mul},
+\texttt{qPochhammerInfIn\_\allowbreak{}two\_\allowbreak{}dissection}\newline
+{\footnotesize\texttt{QuintupleProduct}; for $0<\lVert q\rVert<1$ and $z\ne0$ in every complete
+normed field, not only $\ComplexNumbers$, and as a \texttt{HasSum}, which asserts unconditional
+summability over $\IntegerNumbers$ in addition to the value.  The proof replaces the text's
+unproved appeal to normal convergence on annuli by an absolutely convergent double-sum
+rearrangement, so no uniqueness of Laurent coefficients is invoked, and it kills the residue
+class $m\equiv2\pmod 3$ uniformly in $n$ from the zero set of $\theta$ rather than by the text's
+hidden case split on the sign of $n$.  The two lemmas the text uses silently, iterated theta
+quasi-periodicity and the threefold dissection, are now explicit and reusable}\\[2pt]
 \Cref{qg:def-jacobi-theta} & \statusna & notation only\\[2pt]
 \Cref{qg:prop-theta-products} & \statusnone & ---\\[2pt]
 \Cref{qg:prop-theta-heat} & \statusnone & ---\\[2pt]
@@ -14991,22 +15110,33 @@ compacta, and the $q^{1/5}$-branch normalisation}\\[2pt]
 \Cref{qg:thm-andrews-gordon} & \statuspartial &
 \texttt{hasSum\_\allowbreak{}andrewsGordon\_\allowbreak{}one},
 \texttt{hasSum\_\allowbreak{}andrewsGordon\_\allowbreak{}of\_\allowbreak{}two\_\allowbreak{}le},
+\texttt{hasSum\_\allowbreak{}of\_\allowbreak{}hasSum\_\allowbreak{}sum\_\allowbreak{}range},
+\texttt{hasSum\_\allowbreak{}pair\_\allowbreak{}of\_\allowbreak{}hasSum\_\allowbreak{}baileyChain\_\allowbreak{}one},
 \texttt{norm\_\allowbreak{}baileyChainBeta\_\allowbreak{}le}\newline
-{\footnotesize\texttt{AndrewsGordon}, \texttt{AndrewsGordonOne}, \texttt{BaileyChainBounds};
-for every $k\ge2$ and $1\le i\le k$, $\lVert q\rVert<1$ in any complete normed field, the
-identity is proved in the decreasing-variable form
-\eqref{qg:eq:andrews-gordon-decreasing}, with the multiple sum represented by the nested
-Bailey-chain recursion (\texttt{baileyChainBeta}): the case $i=1$ with $K=k-1$ chain steps
-relative to $q$, the cases $2\le i\le k$ with $t=k-i+1$ steps relative to $q$, the lowering
-shift, and $u=i-2$ steps relative to $1$, each followed by the infinite limiting lemma and
-Jacobi's triple product with base $q^{2k+1}$; the convergence is supplied by the polynomial
-growth bound along the chain.  Not formalised: the reindexing $n_j=r_j-r_{j+1}$ back to the
-independent summation indices of \eqref{qg:eq:andrews-gordon}}\\[2pt]
-\Cref{qg:cor-andrews-gordon-mod7} & \statuspartial &
-\texttt{hasSum\_\allowbreak{}andrewsGordon\_\allowbreak{}one},
-\texttt{hasSum\_\allowbreak{}andrewsGordon\_\allowbreak{}of\_\allowbreak{}two\_\allowbreak{}le}\newline
-{\footnotesize the instances $K=2$, respectively $(t,u)=(2,0)$ and $(1,1)$, of the
-nested-form theorems; the same reindexing caveat as for \Cref{qg:thm-andrews-gordon}}\\[2pt]
+{\footnotesize\texttt{AndrewsGordon}, \texttt{AndrewsGordonOne}, \texttt{BaileyChainBounds},
+\texttt{AndrewsGordonFreeIndices}; for every $k\ge2$ and $1\le i\le k$, $\lVert q\rVert<1$ in any
+complete normed field, the identity is proved in the decreasing-variable form
+\eqref{qg:eq:andrews-gordon-decreasing}, the multiple sum being carried by the nested Bailey
+chain.  The passage to the independent indices of \eqref{qg:eq:andrews-gordon} is now proved in
+general one chain variable at a time
+(\texttt{hasSum\_\allowbreak{}pair\_\allowbreak{}of\_\allowbreak{}hasSum\_\allowbreak{}baileyChain\_\allowbreak{}one}),
+and carried out completely for $K\le2$; iterating it for general $K$ needs the
+$\mathrm{Fin}\,K\to\NaturalNumbers$ induction, which is not done.  $K=1$ needs no reindexing and
+is \Cref{qg:thm-rogers-ramanujan}}\\[2pt]
+\Cref{qg:cor-andrews-gordon-mod7} & \statusexact &
+\texttt{hasSum\_\allowbreak{}andrewsGordon\_\allowbreak{}free\_\allowbreak{}mod\_\allowbreak{}seven\_\allowbreak{}one},
+\texttt{hasSum\_\allowbreak{}andrewsGordon\_\allowbreak{}free\_\allowbreak{}mod\_\allowbreak{}seven\_\allowbreak{}two},
+\texttt{hasSum\_\allowbreak{}andrewsGordon\_\allowbreak{}free\_\allowbreak{}mod\_\allowbreak{}seven\_\allowbreak{}three},
+\texttt{summable\_\allowbreak{}agFreeTermTwo},
+\texttt{qPochhammerInfIn\_\allowbreak{}self\_\allowbreak{}dissection\_\allowbreak{}seven}\newline
+{\footnotesize\texttt{AndrewsGordonFreeIndices}; all three displayed identities in the
+corollary's own free variables $N_1=r+s$, $N_2=s$, with the right sides in fully reduced form,
+for $\lVert q\rVert<1$ in an arbitrary complete normed field and with no surviving side
+conditions on $k$ or $i$.  The reindexing $n_j=r_j-r_{j+1}$ that carries the Bailey-chain output
+to these variables is proved rather than asserted, licensed by the absolute-convergence majorant
+$C^2\lVert q\rVert^{r^2}\lVert q\rVert^{s^2}$.  The combinatorial reading of the last sentence,
+that the coefficient counts partitions into parts not $\equiv0,\pm i\pmod 7$, is not
+formalized}\\[2pt]
 \midrule
 \multicolumn{3}{@{}l}{\itshape Exact limits, reciprocity, and research frontiers}\\
 \midrule
