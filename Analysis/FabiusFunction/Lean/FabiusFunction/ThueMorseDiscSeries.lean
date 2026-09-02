@@ -1,3 +1,4 @@
+import FabiusFunction.PowerSeriesUniqueness
 import FabiusFunction.ThueMorseInfiniteProduct
 import Mathlib.Analysis.Complex.LocallyUniformLimit
 
@@ -17,8 +18,9 @@ theorem (and, eventually, Mahler-method arguments) rest:
 * `summable_thueMorseDiscSeries` — absolute convergence on the disc.
 * `thueMorseDiscSeries_eq_tprod` — the lacunary infinite-product
   representation `F(z) = ∏'_j (1-z^(2^j))` throughout the disc.
-* `thueMorseDiscSeries_differentiableOn` — **holomorphy** on the disc,
-  by locally uniform convergence of the polynomial partial sums.
+* `thueMorseDiscSeries_hasFPowerSeriesOnBall`,
+  `thueMorseDiscSeries_differentiableOn` — **holomorphy** on the disc:
+  `F` is the sum of its own power series on the unit ball.
 * `thueMorseDiscSeries_mahler` — the Mahler functional equation
   `F(z) = (1-z)·F(z²)`, from the even/odd split of the series.
 * `thueMorseDiscSeries_iterate` — the iterated form
@@ -28,9 +30,8 @@ theorem (and, eventually, Mahler-method arguments) rest:
   vanishes at the boundary.
 * `thueMorseDiscSeries_zero` — `F(0) = 1`.
 
-The shared norm lemma `norm_thueMorseSign_complex` now lives upstream
-in `ThueMorseInfiniteProduct`; its real-sign input
-`abs_thueMorseSign_real` lives in `ThueMorseBoundaryFlatness`.
+The shared norm lemma `norm_thueMorseSign_complex` lives upstream in
+`ThueMorseBasicLemmas`.
 -/
 
 set_option autoImplicit false
@@ -55,41 +56,21 @@ theorem thueMorseDiscSeries_eq_tprod {z : ℂ} (hz : ‖z‖ < 1) :
   simpa [thueMorseDiscSeries] using
     (tsum_thueMorseSign_mul_pow_complex hz)
 
-/-- **Holomorphy of the Thue–Morse series** on the open unit disc:
-the polynomial partial sums converge locally uniformly. -/
+/-- **`F` is the sum of its power series on the unit ball**: the
+Thue–Morse series is the scalar power series with coefficients `ε(n)`,
+convergent on `‖z‖ < 1`. -/
+theorem thueMorseDiscSeries_hasFPowerSeriesOnBall :
+    HasFPowerSeriesOnBall thueMorseDiscSeries
+      (FormalMultilinearSeries.ofScalars ℂ fun n => (thueMorseSign n : ℂ))
+      0 (ENNReal.ofReal 1) :=
+  hasFPowerSeriesOnBall_ofScalars_of_hasSum one_pos
+    fun _ hz => (summable_thueMorseDiscSeries hz).hasSum
+
+/-- **Holomorphy of the Thue–Morse series** on the open unit disc. -/
 theorem thueMorseDiscSeries_differentiableOn :
     DifferentiableOn ℂ thueMorseDiscSeries (ball (0 : ℂ) 1) := by
-  have hTLU : TendstoLocallyUniformlyOn
-      (fun (N : ℕ) (z : ℂ) => ∑ n ∈ range N, (thueMorseSign n : ℂ) * z ^ n)
-      (fun z => ∑' n : ℕ, (thueMorseSign n : ℂ) * z ^ n) atTop
-      (ball (0 : ℂ) 1) := by
-    intro u hu z hz
-    have hz1 : ‖z‖ < 1 := mem_ball_zero_iff.mp hz
-    have hs1 : (1 + ‖z‖) / 2 < 1 := by linarith
-    have hzs : ‖z‖ < (1 + ‖z‖) / 2 := by linarith
-    have hs0 : (0 : ℝ) ≤ (1 + ‖z‖) / 2 := by positivity
-    have hTUO : TendstoUniformlyOn
-        (fun (N : ℕ) (z : ℂ) =>
-          ∑ n ∈ range N, (thueMorseSign n : ℂ) * z ^ n)
-        (fun z => ∑' n : ℕ, (thueMorseSign n : ℂ) * z ^ n) atTop
-        (ball (0 : ℂ) ((1 + ‖z‖) / 2)) :=
-      tendstoUniformlyOn_tsum_nat
-        (summable_geometric_of_lt_one hs0 hs1)
-        fun n x hx => by
-          rw [norm_mul, norm_pow, norm_thueMorseSign_complex, one_mul]
-          exact pow_le_pow_left₀ (norm_nonneg x)
-            (mem_ball_zero_iff.mp hx).le n
-    refine ⟨ball (0 : ℂ) ((1 + ‖z‖) / 2) ∩ ball (0 : ℂ) 1,
-      Filter.inter_mem (mem_nhdsWithin_of_mem_nhds
-        (isOpen_ball.mem_nhds (mem_ball_zero_iff.mpr hzs)))
-        self_mem_nhdsWithin, ?_⟩
-    filter_upwards [hTUO u hu] with N hN y hy using hN y hy.1
-  show DifferentiableOn ℂ
-    (fun z => ∑' n : ℕ, (thueMorseSign n : ℂ) * z ^ n) (ball (0 : ℂ) 1)
-  refine hTLU.differentiableOn
-    (Filter.Eventually.of_forall fun N => ?_) isOpen_ball
-  exact (Differentiable.fun_sum fun i _ =>
-    (differentiable_const _).mul (differentiable_pow i)).differentiableOn
+  have h := thueMorseDiscSeries_hasFPowerSeriesOnBall.differentiableOn
+  rwa [Metric.eball_ofReal] at h
 
 /-- **The Mahler functional equation** `F(z) = (1-z)·F(z²)` on the
 disc, from the even/odd split `ε(2k) = ε(k)`, `ε(2k+1) = -ε(k)`. -/

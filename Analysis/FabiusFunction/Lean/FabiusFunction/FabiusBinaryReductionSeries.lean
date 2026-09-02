@@ -669,27 +669,6 @@ theorem norm_globalBinaryReductionSum_sub_extendedFabius_le_total
         extendedFabius F x‖ ≤ 2 * ((2 : ℝ) ^ N)⁻¹ :=
   norm_globalBinaryReductionSum_sub_extendedFabius_le F hF N x
 
-/-- For `0 ≤ x` and `1 ≤ m` the outer summand at scale `m` is
-exactly one step of the residual telescope.  Restated for the
-concrete Fabius function as `globalFabius_binary_telescope_step`
-in `FabiusDiscreteLimitIntegration`. -/
-theorem globalBinaryReductionSummand_eq_remainder_sub
-    (F : BoundedFabius) (hF : IsFabius F)
-    (x : ℝ) (hx0 : 0 ≤ x) (m : ℕ) (hm : 1 ≤ m) :
-    globalBinaryReductionSummand x m =
-      binaryReductionRemainder F x (m - 1) -
-        binaryReductionRemainder F x m := by
-  have hprev :=
-    extendedFabius_eq_globalBinaryReductionSum_add_remainder
-      F hF x hx0 (m - 1)
-  have hcur :=
-    extendedFabius_eq_globalBinaryReductionSum_add_remainder
-      F hF x hx0 m
-  have hsucc : m - 1 + 1 = m := Nat.sub_add_cancel hm
-  rw [hsucc] at hprev
-  rw [Finset.sum_range_succ] at hcur
-  linarith
-
 /-- At every real input, each positive-index summand is exactly one step of the
 residual telescope. -/
 theorem globalBinaryReductionSummand_eq_remainder_sub_all
@@ -707,6 +686,21 @@ theorem globalBinaryReductionSummand_eq_remainder_sub_all
   rw [hsucc] at hprev
   rw [Finset.sum_range_succ] at hcur
   linarith
+
+/-- For `0 ≤ x` and `1 ≤ m` the outer summand at scale `m` is
+exactly one step of the residual telescope.  Restated for the
+concrete Fabius function as `globalFabius_binary_telescope_step`
+in `FabiusDiscreteLimitIntegration`.  The nonnegativity hypothesis
+is not needed: this is the all-real statement
+`globalBinaryReductionSummand_eq_remainder_sub_all`, kept under its
+established name. -/
+theorem globalBinaryReductionSummand_eq_remainder_sub
+    (F : BoundedFabius) (hF : IsFabius F)
+    (x : ℝ) (_hx0 : 0 ≤ x) (m : ℕ) (hm : 1 ≤ m) :
+    globalBinaryReductionSummand x m =
+      binaryReductionRemainder F x (m - 1) -
+        binaryReductionRemainder F x m :=
+  globalBinaryReductionSummand_eq_remainder_sub_all F hF x m hm
 
 /-- At every real input and every positive scale, the outer summand has the
 geometric majorant `3 * 2⁻⁽ᵐ⁻¹⁾`.  This is the exact constant obtained by
@@ -737,25 +731,6 @@ theorem norm_globalBinaryReductionSummand_le_three_mul_inv_pow
       rw [hpow, mul_inv]
       ring
 
-set_option linter.unusedVariables false in
-/-- Compatibility estimate for nonnegative inputs and scales `2 ≤ m`.  The
-hypothesis `hx0`, the stronger scale hypothesis, and the coarser constant `4`
-are retained for API compatibility; the all-real estimate above has constant
-`3` already for `1 ≤ m`. -/
-theorem norm_globalBinaryReductionSummand_le_ge_two
-    (F : BoundedFabius) (hF : IsFabius F)
-    (x : ℝ) (hx0 : 0 ≤ x) (m : ℕ) (hm : 2 ≤ m) :
-    ‖globalBinaryReductionSummand x m‖ ≤
-      4 * ((2 : ℝ) ^ (m - 1))⁻¹ := by
-  calc
-    ‖globalBinaryReductionSummand x m‖ ≤
-        3 * ((2 : ℝ) ^ (m - 1))⁻¹ :=
-      norm_globalBinaryReductionSummand_le_three_mul_inv_pow
-        F hF x m (by omega)
-    _ ≤ 4 * ((2 : ℝ) ^ (m - 1))⁻¹ := by
-      have hnonneg : 0 ≤ ((2 : ℝ) ^ (m - 1))⁻¹ := by positivity
-      linarith
-
 /-- At every real input and every positive scale, the outer summand also
 satisfies the coarser bound `4 * 2⁻⁽ᵐ⁻¹⁾`.  This compatibility form follows
 from `norm_globalBinaryReductionSummand_le_three_mul_inv_pow`. -/
@@ -772,37 +747,18 @@ theorem norm_globalBinaryReductionSummand_le_of_one_le_all
       have hnonneg : 0 ≤ ((2 : ℝ) ^ (m - 1))⁻¹ := by positivity
       linarith
 
-/-- For nonnegative `x` the outer series converges absolutely, by
-comparison with a geometric series after discarding the first two
-terms.  Also used in `FabiusGlobalQBinomialSeries` to prove
-`summable_norm_qBinomialFabiusGlobalSummand`. -/
-theorem summable_norm_globalBinaryReductionSummand
+/-- Compatibility estimate for nonnegative inputs and scales `2 ≤ m`.  The
+hypothesis `hx0`, the stronger scale hypothesis, and the coarser constant `4`
+are retained for API compatibility; it is the instance `1 ≤ m` of
+`norm_globalBinaryReductionSummand_le_of_one_le_all`, and the all-real
+estimate above has constant `3` already for `1 ≤ m`. -/
+theorem norm_globalBinaryReductionSummand_le_ge_two
     (F : BoundedFabius) (hF : IsFabius F)
-    (x : ℝ) (hx0 : 0 ≤ x) :
-    Summable (fun m : ℕ ↦ ‖globalBinaryReductionSummand x m‖) := by
-  rw [← summable_nat_add_iff (f := fun m : ℕ ↦
-    ‖globalBinaryReductionSummand x m‖) 2]
-  refine ((summable_geometric_of_norm_lt_one
-      (by norm_num : ‖(2 : ℝ)⁻¹‖ < 1)).mul_left 4).of_nonneg_of_le
-    (fun _ ↦ norm_nonneg _) ?_
-  intro j
-  calc
-    ‖globalBinaryReductionSummand x (j + 2)‖ ≤
-        4 * ((2 : ℝ) ^ (j + 2 - 1))⁻¹ :=
-      norm_globalBinaryReductionSummand_le_ge_two F hF x hx0 (j + 2) (by omega)
-    _ ≤ 4 * ((2 : ℝ)⁻¹) ^ j := by
-      rw [show j + 2 - 1 = j + 1 by omega, pow_succ, mul_inv]
-      rw [inv_pow]
-      have hnonneg : 0 ≤ ((2 : ℝ)⁻¹) ^ j := by positivity
-      norm_num
-
-/-- Summability of the outer series for nonnegative `x`, deduced
-from absolute summability. -/
-theorem summable_globalBinaryReductionSummand
-    (F : BoundedFabius) (hF : IsFabius F)
-    (x : ℝ) (hx0 : 0 ≤ x) :
-    Summable (globalBinaryReductionSummand x) :=
-  Summable.of_norm (summable_norm_globalBinaryReductionSummand F hF x hx0)
+    (x : ℝ) (_hx0 : 0 ≤ x) (m : ℕ) (hm : 2 ≤ m) :
+    ‖globalBinaryReductionSummand x m‖ ≤
+      4 * ((2 : ℝ) ^ (m - 1))⁻¹ :=
+  norm_globalBinaryReductionSummand_le_of_one_le_all F hF x m
+    (by omega)
 
 /-- The binary-reduction summands are absolutely summable at every real
 input.  The geometric comparison starts at the first positive index and uses
@@ -829,6 +785,27 @@ theorem summable_globalBinaryReductionSummand_all
     (F : BoundedFabius) (hF : IsFabius F) (x : ℝ) :
     Summable (globalBinaryReductionSummand x) :=
   Summable.of_norm (summable_norm_globalBinaryReductionSummand_all F hF x)
+
+/-- For nonnegative `x` the outer series converges absolutely.  The
+nonnegativity hypothesis is not needed: this is the all-real statement
+`summable_norm_globalBinaryReductionSummand_all`, kept under its
+established name.  Also used in `FabiusGlobalQBinomialSeries` to prove
+`summable_norm_qBinomialFabiusGlobalSummand`. -/
+theorem summable_norm_globalBinaryReductionSummand
+    (F : BoundedFabius) (hF : IsFabius F)
+    (x : ℝ) (_hx0 : 0 ≤ x) :
+    Summable (fun m : ℕ ↦ ‖globalBinaryReductionSummand x m‖) :=
+  summable_norm_globalBinaryReductionSummand_all F hF x
+
+/-- Summability of the outer series for nonnegative `x`.  The
+nonnegativity hypothesis is not needed: this is the all-real statement
+`summable_globalBinaryReductionSummand_all`, kept under its established
+name. -/
+theorem summable_globalBinaryReductionSummand
+    (F : BoundedFabius) (hF : IsFabius F)
+    (x : ℝ) (_hx0 : 0 ≤ x) :
+    Summable (globalBinaryReductionSummand x) :=
+  summable_globalBinaryReductionSummand_all F hF x
 
 /-- For nonnegative `x` the partial sums over `Finset.range N`
 converge to `extendedFabius F x`.  Restated for the concrete

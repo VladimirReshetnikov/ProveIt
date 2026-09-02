@@ -95,7 +95,12 @@ theorem thueMorseGammaLog_eq_integral (r : ℕ) (a : ℝ) (ha : 0 < a) :
     mellin_mellinKernel_ofReal]
 
 /-- Differentiating the entire dyadic equation at `s = -r` gives the exact
-dyadic law for logarithmic tower levels. -/
+dyadic law for logarithmic tower levels.
+
+The dyadic equation is the identity of functions
+`D(·,a) = 2^(-·) · (D(·,a/2) - D(·,(a+1)/2))`; the product rule at
+`s = -r` leaves only the second term, because the bracket vanishes
+there (`dirichletMellinContinuation_neg_natCast`, twice). -/
 theorem thueMorseGammaLog_dyadic (r : ℕ) (a : ℝ) (ha : 0 < a) :
     thueMorseGammaLog r a =
       (2 : ℂ) ^ r *
@@ -103,51 +108,30 @@ theorem thueMorseGammaLog_dyadic (r : ℕ) (a : ℝ) (ha : 0 < a) :
           thueMorseGammaLog r ((a + 1) / 2)) := by
   have ha2 : (0 : ℝ) < a / 2 := by linarith
   have ha3 : (0 : ℝ) < (a + 1) / 2 := by linarith
-  let s0 : ℂ := -(r : ℂ)
-  have hpow : DifferentiableAt ℂ (fun s : ℂ => (2 : ℂ) ^ (-s)) s0 :=
-    (differentiable_neg.const_cpow (Or.inl (by norm_num : (2 : ℂ) ≠ 0))) s0
+  -- the dyadic equation as an identity of functions, in `Pi` form
+  have hfun : dirichletMellinContinuation a =
+      (fun s : ℂ => (2 : ℂ) ^ (-s)) *
+        (fun s : ℂ => dirichletMellinContinuation (a / 2) s -
+          dirichletMellinContinuation ((a + 1) / 2) s) := by
+    funext s
+    exact dirichletMellinContinuation_dyadic a ha s
+  -- both factors have derivatives at `s = -r`
+  have hpow : HasDerivAt (fun s : ℂ => (2 : ℂ) ^ (-s))
+      (deriv (fun s : ℂ => (2 : ℂ) ^ (-s)) (-(r : ℂ))) (-(r : ℂ)) :=
+    ((differentiable_neg.const_cpow
+      (Or.inl (by norm_num : (2 : ℂ) ≠ 0))) (-(r : ℂ))).hasDerivAt
   have hdiff : HasDerivAt
       (fun s : ℂ => dirichletMellinContinuation (a / 2) s -
         dirichletMellinContinuation ((a + 1) / 2) s)
       (thueMorseGammaLog r (a / 2) -
-        thueMorseGammaLog r ((a + 1) / 2)) s0 := by
-    exact ((dirichletMellinContinuation_differentiable (a / 2) ha2 s0).hasDerivAt).sub
-      ((dirichletMellinContinuation_differentiable
-        ((a + 1) / 2) ha3 s0).hasDerivAt)
-  have hprodDeriv :
-      deriv (fun s : ℂ => (2 : ℂ) ^ (-s) *
-        (dirichletMellinContinuation (a / 2) s -
-          dirichletMellinContinuation ((a + 1) / 2) s)) s0 =
-        deriv (fun s : ℂ => (2 : ℂ) ^ (-s)) s0 *
-            (dirichletMellinContinuation (a / 2) s0 -
-              dirichletMellinContinuation ((a + 1) / 2) s0) +
-          (2 : ℂ) ^ (-s0) *
-            (thueMorseGammaLog r (a / 2) -
-              thueMorseGammaLog r ((a + 1) / 2)) := by
-    have hraw := (hpow.hasDerivAt.mul hdiff).deriv
-    have hmul :
-        (fun s : ℂ => (2 : ℂ) ^ (-s)) *
-            (fun s : ℂ => dirichletMellinContinuation (a / 2) s -
-              dirichletMellinContinuation ((a + 1) / 2) s) =
-          fun s : ℂ => (2 : ℂ) ^ (-s) *
-            (dirichletMellinContinuation (a / 2) s -
-              dirichletMellinContinuation ((a + 1) / 2) s) := by
-      funext s
-      rfl
-    rw [hmul] at hraw
-    exact hraw
-  have hfun : dirichletMellinContinuation a =
-      fun s : ℂ => (2 : ℂ) ^ (-s) *
-        (dirichletMellinContinuation (a / 2) s -
-          dirichletMellinContinuation ((a + 1) / 2) s) := by
-    funext s
-    exact dirichletMellinContinuation_dyadic a ha s
-  rw [thueMorseGammaLog, hfun]
-  change deriv (fun s : ℂ => (2 : ℂ) ^ (-s) *
-    (dirichletMellinContinuation (a / 2) s -
-      dirichletMellinContinuation ((a + 1) / 2) s)) s0 = _
-  rw [hprodDeriv]
-  simp only [s0, dirichletMellinContinuation_neg_natCast, sub_self,
+        thueMorseGammaLog r ((a + 1) / 2)) (-(r : ℂ)) :=
+    ((dirichletMellinContinuation_differentiable (a / 2) ha2
+      (-(r : ℂ))).hasDerivAt).sub
+      ((dirichletMellinContinuation_differentiable ((a + 1) / 2) ha3
+        (-(r : ℂ))).hasDerivAt)
+  -- product rule; the bracket vanishes at the trivial zero `-r`
+  rw [thueMorseGammaLog, hfun, (hpow.mul hdiff).deriv]
+  simp only [dirichletMellinContinuation_neg_natCast, sub_self,
     mul_zero, zero_add, neg_neg, Complex.cpow_natCast]
 
 /-- Exponentiated dyadic law for the Thue--Morse Gamma tower. -/

@@ -1,4 +1,5 @@
 import FabiusFunction.ThueMorseEnumerators
+import FabiusFunction.ThueMorseNewman
 
 /-!
 # Rarefied Thue--Morse sums and Newman's phenomenon at dyadic endpoints
@@ -8,10 +9,13 @@ destroys its bounded-discrepancy balance.  This module proves the exact
 statements of the atlas's rarefaction chapter at dyadic endpoints:
 
 * `rarefiedSum` — the signed sum over a residue class
-  `{n < 2^m : n ≡ r (mod q)}` — and the one-step recursion that halving
-  induces for every odd modulus,
-  `A(m+1, r) = A(m, 2⁻¹r) - A(m, 2⁻¹(r-1))`, whose `q = 3` case reads
-  `A(m+1, r) = A(m, 2r mod 3) - A(m, (2r+1) mod 3)`;
+  `{n < 2^m : n ≡ r (mod q)}`, i.e. `thueMorseResidueSum` of
+  `ThueMorseNewman` at the dyadic cutoff `2^m` — and the one-step
+  recursion that halving induces for every odd modulus and **every even
+  cutoff** (`thueMorseResidueSum_two_mul_of_odd`),
+  `T_r(2M) = T_{2⁻¹r}(M) - T_{2⁻¹(r-1)}(M)`, whose dyadic instance
+  is `A(m+1, r) = A(m, 2⁻¹r) - A(m, 2⁻¹(r-1))` and whose `q = 3`
+  case reads `A(m+1, r) = A(m, 2r mod 3) - A(m, (2r+1) mod 3)`;
 * the **closed vectors modulo three**:
   `(A₀, A₁, A₂)(2u+1) = 3^u · (1, -1, 0)` and
   `(A₀, A₁, A₂)(2u+2) = 3^u · (2, -1, -1)`;
@@ -37,9 +41,17 @@ namespace Fabius
 /-! ## Rarefied sums and the one-step recursion for odd moduli -/
 
 /-- The signed Thue--Morse sum over the residue class `r` modulo `q`,
-within the dyadic block `range (2^m)`. -/
+within the dyadic block `range (2^m)`: the residue sum
+`thueMorseResidueSum` of `ThueMorseNewman` at the dyadic cutoff
+`2^m`. -/
 def rarefiedSum (q r m : ℕ) : ℤ :=
-  ∑ n ∈ range (2 ^ m), if n % q = r then thueMorseSign n else 0
+  thueMorseResidueSum q r (2 ^ m)
+
+/-- `rarefiedSum` unfolded to its defining block sum. -/
+theorem rarefiedSum_eq (q r m : ℕ) :
+    rarefiedSum q r m =
+      ∑ n ∈ range (2 ^ m),
+        if n % q = r then thueMorseSign n else 0 := rfl
 
 /-- Doubling is invertible modulo an odd modulus:
 `2j ≡ 2a (mod q) ↔ j ≡ a (mod q)` for odd `q`.  Cancelling the factor two
@@ -56,17 +68,18 @@ theorem two_mul_mod_iff (q : ℕ) (hq : q % 2 = 1) (j a : ℕ) :
   · intro h
     exact Nat.ModEq.mul_left 2 h
 
-/-- **One-step recursion for every odd modulus** (the atlas's matrix
-recursion): splitting a dyadic block by the lowest binary digit sends the
-residue class `r` to the classes `2⁻¹r` (even indices, same sign) and
-`2⁻¹(r-1)` (odd indices, opposite sign), the halving realized by
-`2⁻¹ = (q+1)/2 (mod q)`.  Modulo three this specializes to
-`rarefiedSum_three_succ`. -/
-theorem rarefiedSum_succ_of_odd (q : ℕ) (hq : q % 2 = 1)
-    (r m : ℕ) (hr : r < q) :
-    rarefiedSum q r (m + 1) =
-      rarefiedSum q (((q + 1) / 2 * r) % q) m -
-        rarefiedSum q (((q + 1) / 2 * (r + q - 1)) % q) m := by
+/-- **One-step recursion for every odd modulus and every even cutoff**
+(the atlas's matrix recursion): splitting `range (2M)` by the lowest
+binary digit sends the residue class `r` to the classes `2⁻¹r` (even
+indices, same sign) and `2⁻¹(r-1)` (odd indices, opposite sign), the
+halving realized by `2⁻¹ = (q+1)/2 (mod q)`.  Nothing dyadic is used:
+the cutoff only has to be even.  The dyadic instance is
+`rarefiedSum_succ_of_odd`. -/
+theorem thueMorseResidueSum_two_mul_of_odd (q : ℕ) (hq : q % 2 = 1)
+    (r M : ℕ) (hr : r < q) :
+    thueMorseResidueSum q r (2 * M) =
+      thueMorseResidueSum q (((q + 1) / 2 * r) % q) M -
+        thueMorseResidueSum q (((q + 1) / 2 * (r + q - 1)) % q) M := by
   have hinv : ∀ x : ℕ, (2 * ((q + 1) / 2 * x)) % q = x % q := by
     intro x
     have hexp : 2 * ((q + 1) / 2 * x) = x + x * q := by
@@ -75,14 +88,15 @@ theorem rarefiedSum_succ_of_odd (q : ℕ) (hq : q % 2 = 1)
         _ = (q + 1) * x := by rw [h2]
         _ = x + x * q := by ring
     rw [hexp, Nat.add_mul_mod_self_right]
-  have hsplit : rarefiedSum q r (m + 1) =
-      ∑ j ∈ range (2 ^ m),
+  have hsplit : thueMorseResidueSum q r (2 * M) =
+      ∑ j ∈ range M,
         ((if (2 * j) % q = r then thueMorseSign (2 * j) else 0) +
           (if (2 * j + 1) % q = r then thueMorseSign (2 * j + 1) else 0)) := by
-    rw [rarefiedSum, pow_succ, mul_comm (2 ^ m) 2,
-      sum_range_two_mul (2 ^ m)
+    rw [thueMorseResidueSum,
+      sum_range_two_mul M
         (fun n => if n % q = r then thueMorseSign n else 0)]
-  rw [hsplit, rarefiedSum, rarefiedSum, ← Finset.sum_sub_distrib]
+  rw [hsplit, thueMorseResidueSum, thueMorseResidueSum,
+    ← Finset.sum_sub_distrib]
   apply Finset.sum_congr rfl
   intro j _
   have hje : (2 * j) % q = r ↔ j % q = ((q + 1) / 2 * r) % q := by
@@ -134,6 +148,19 @@ theorem rarefiedSum_succ_of_odd (q : ℕ) (hq : q % 2 = 1)
       if_neg he, if_neg ho]
     ring
 
+/-- **One-step recursion for every odd modulus at dyadic cutoffs**: the
+instance `M = 2^m` of `thueMorseResidueSum_two_mul_of_odd`, in the
+`rarefiedSum` notation.  Modulo three this specializes to
+`rarefiedSum_three_succ`. -/
+theorem rarefiedSum_succ_of_odd (q : ℕ) (hq : q % 2 = 1)
+    (r m : ℕ) (hr : r < q) :
+    rarefiedSum q r (m + 1) =
+      rarefiedSum q (((q + 1) / 2 * r) % q) m -
+        rarefiedSum q (((q + 1) / 2 * (r + q - 1)) % q) m := by
+  unfold rarefiedSum
+  rw [pow_succ, mul_comm (2 ^ m) 2]
+  exact thueMorseResidueSum_two_mul_of_odd q hq r (2 ^ m) hr
+
 /-- **One-step recursion modulo three** — the `q = 3` case of
 `rarefiedSum_succ_of_odd`, in which `2⁻¹ = 2 (mod 3)` and both residues
 are written out.  Splitting a block by the lowest binary digit sends the
@@ -163,11 +190,14 @@ theorem rarefiedSum_three_closed (u : ℕ) :
   induction u with
   | zero =>
       have h00 : rarefiedSum 3 0 0 = 1 := by
-        simp [rarefiedSum, thueMorseSign, binaryWeight]
+        simp [rarefiedSum, thueMorseResidueSum, thueMorseSign,
+          binaryWeight]
       have h01 : rarefiedSum 3 1 0 = 0 := by
-        simp [rarefiedSum, thueMorseSign, binaryWeight]
+        simp [rarefiedSum, thueMorseResidueSum, thueMorseSign,
+          binaryWeight]
       have h02 : rarefiedSum 3 2 0 = 0 := by
-        simp [rarefiedSum, thueMorseSign, binaryWeight]
+        simp [rarefiedSum, thueMorseResidueSum, thueMorseSign,
+          binaryWeight]
       have e0 := rarefiedSum_three_succ 0 0 (by omega)
       have e1 := rarefiedSum_three_succ 1 0 (by omega)
       have e2 := rarefiedSum_three_succ 2 0 (by omega)
@@ -221,14 +251,14 @@ theorem rarefiedSum_three_zero_pos (m : ℕ) (hm : 1 ≤ m) :
 
 /-! ## Balance of the full block and the even class -/
 
-/-- The full dyadic block balances exactly for `m ≥ 1`. -/
+/-- The full dyadic block balances exactly for `m ≥ 1`: the instance
+`M = 2^(m-1)` of `sum_thueMorseSign_two_mul` (every even prefix sum
+vanishes). -/
 theorem sum_thueMorseSign_range_two_pow (m : ℕ) (hm : 1 ≤ m) :
     ∑ n ∈ range (2 ^ m), thueMorseSign n = 0 := by
   obtain ⟨k, rfl⟩ : ∃ k, m = k + 1 := ⟨m - 1, by omega⟩
-  rw [pow_succ, mul_comm (2 ^ k) 2, sum_range_two_mul (2 ^ k) thueMorseSign]
-  refine Finset.sum_eq_zero fun j _ => ?_
-  rw [thueMorseSign_two_mul, thueMorseSign_two_mul_add_one]
-  ring
+  rw [pow_succ, mul_comm (2 ^ k) 2]
+  exact sum_thueMorseSign_two_mul (2 ^ k)
 
 /-- **Even-modulus collapse.**  The even residue class balances exactly
 for `m ≥ 2`: the rarefaction excess is a property of odd moduli only. -/
@@ -239,7 +269,7 @@ theorem rarefiedSum_two_zero (m : ℕ) (hm : 2 ≤ m) :
       ∑ j ∈ range (2 ^ k),
         ((if (2 * j) % 2 = 0 then thueMorseSign (2 * j) else 0) +
           (if (2 * j + 1) % 2 = 0 then thueMorseSign (2 * j + 1) else 0)) := by
-    rw [rarefiedSum, pow_succ, mul_comm (2 ^ k) 2,
+    rw [rarefiedSum, thueMorseResidueSum, pow_succ, mul_comm (2 ^ k) 2,
       sum_range_two_mul (2 ^ k)
         (fun n => if n % 2 = 0 then thueMorseSign n else 0)]
   rw [hsplit]
