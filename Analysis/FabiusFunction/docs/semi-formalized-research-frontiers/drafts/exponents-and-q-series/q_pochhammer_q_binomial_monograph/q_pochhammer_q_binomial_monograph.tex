@@ -3568,6 +3568,20 @@ If denominator factors do not vanish, the ${}_1\psi_1$ series converges absolute
 
 \begin{proof}
 For $n\to+\infty$, the ratio of consecutive terms tends to $z$.  For the negative tail put $n=-m$ and use the negative-index formula.  The ratio of successive terms in $m$ tends to $b/(az)$.  The ratio test gives the annulus.
+% ed.: the nonvanishing hypothesis is made explicit; the negative tail turns
+% ed.: the NUMERATOR parameter into a denominator, which the phrase
+% ed.: ``denominator factors'' alone does not convey.
+Explicitly, the required nonvanishing conditions are $bq^{j}\ne1$ for all
+$j\ge0$ (the denominators $(b;q)_n$ of the positive tail) and $a\ne q^{j}$
+for all $j\ge1$: by the negative-index formula
+$\GeneralizedQPochhammer{a}{q}{-m}=1/(aq^{-m};q)_m$, so on the negative tail
+the parameter $a$ produces the denominators $(aq^{-m};q)_m$, while
+$\GeneralizedQPochhammer{b}{q}{-m}=1/(bq^{-m};q)_m$ contributes no
+denominator at all.  Both tails are in fact dominated by geometric series,
+$\bigl|(a;q)_n/(b;q)_n\bigr|\le K$ and, after the reversal
+$(a;q)_{-m}/(b;q)_{-m}=(b/a)^m(q/b;q)_m/(q/a;q)_m$,
+$\bigl|(q/b;q)_m/(q/a;q)_m\bigr|\le K'$, which gives absolute convergence
+directly and is the argument used by the formalization.
 \end{proof}
 
 \begin{theorem}[Ramanujan's ${}_1\psi_1$ summation]\label{thm:1psi1}
@@ -12554,8 +12568,8 @@ inside the proof below does not formalize the result the proof concludes.
   than a mathematical claim.
 \end{description}
 
-Of the 282 labelled forward results, 97 are \statusexact, 85 are
-\statuspartial, 92 are \statusnone, and 8 are \statusna.  The original
+Of the 282 labelled forward results, 101 are \statusexact, 87 are
+\statuspartial, 86 are \statusnone, and 8 are \statusna.  The original
 191-result pre-Fabius core had 36 \statusexact, 29 \statuspartial, 123
 \statusnone, and 3 \statusna{} entries.  The four integrated guide chapters
 add 31 human-proved but not Lean-formalized assertions and five labelled
@@ -13113,33 +13127,33 @@ Chapter & \statusexact & \statuspartial & \statusnone & \statusna\\
 The algebra of $q$-shifted factorials & 11 & 2 & 2 & 0\\
 $q$-integers and Gaussian coefficients & 8 & 1 & 0 & 0\\
 Finite $q$-binomial theorems and inversion & 9 & 1 & 0 & 0\\
-Weighted binomial coefficients and symmetric functions & 3 & 2 & 3 & 0\\
+Weighted binomial coefficients and symmetric functions & 3 & 3 & 2 & 0\\
 Partitions, words, paths, and inversion statistics & 6 & 2 & 1 & 0\\
 Finite fields, Grassmannians, and rank enumeration & 1 & 1 & 4 & 0\\
 Symmetry and unimodality & 0 & 0 & 3 & 0\\
 The infinite $q$-binomial theorem & 1 & 1 & 2 & 0\\
 Basic hypergeometric series & 2 & 3 & 4 & 0\\
 Euler telescoping and very-well-poised summations & 0 & 0 & 4 & 0\\
-Bilateral series and Ramanujan's \texorpdfstring{${}_1\psi_1$}{1psi1} sum & 0 & 0 & 2 & 0\\
+Bilateral series and Ramanujan's \texorpdfstring{${}_1\psi_1$}{1psi1} sum & 1 & 0 & 1 & 0\\
 $q$-difference calculus and the quantum binomial & 8 & 2 & 0 & 0\\
-The $q$-gamma and $q$-beta functions & 3 & 1 & 4 & 0\\
+The $q$-gamma and $q$-beta functions & 4 & 2 & 2 & 0\\
 Jacobi's triple product & 5 & 2 & 1 & 0\\
 Theta modularity, lattice dissection, and sums of squares & 0 & 0 & 14 & 4\\
 Partitions and product--sum identities & 0 & 0 & 4 & 0\\
 Bailey pairs and the Rogers--Ramanujan identities & 1 & 0 & 6 & 0\\
 Bailey transforms and the Andrews--Gordon identities & 0 & 0 & 8 & 1\\
 Cyclotomic factorization and congruences & 6 & 1 & 2 & 0\\
-Negative upper indices and geometric Newton interpolation & 7 & 0 & 2 & 0\\
+Negative upper indices and geometric Newton interpolation & 8 & 0 & 1 & 0\\
 Central $q$-binomial sums and Lambert series & 1 & 0 & 6 & 0\\
 Asymptotic regimes and Bernoulli expansions & 1 & 3 & 4 & 0\\
 Exact limits, reciprocity, and research frontiers & 0 & 0 & 5 & 0\\
-Computation, certification, and formal proof architecture & 4 & 3 & 4 & 3\\
+Computation, certification, and formal proof architecture & 5 & 3 & 3 & 3\\
 Geometric interpolation and exact $q$-filters & 6 & 2 & 1 & 0\\
 Half-base arithmetic and Prouhet--Thue--Morse cancellation & 6 & 3 & 0 & 0\\
 Geometric uniform sums, $q$-cumulants, and the Fabius--Rvachev functions & 2 & 11 & 0 & 0\\
 Dyadic Gaussian--Thue--Morse structure and the values of $F$ & 6 & 44 & 6 & 0\\
 \midrule
-\textbf{Forward total} & 97 & 85 & 92 & 8\\
+\textbf{Forward total} & 101 & 87 & 86 & 8\\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -13397,7 +13411,13 @@ convergence under \(\lvert w_i z\rvert<1\)}\\[2pt]
 \texttt{sum\_\allowbreak{}elementarySymmetricEval\_\allowbreak{}mul\_\allowbreak{}completeHomogeneousEval}\newline
 {\footnotesize\texttt{SymmetricFunctionOrthogonality}; arbitrary finite family, including empty family and degree zero}\\[2pt]
 \Cref{thm:weighted-specializations} & \statuspartial & \texttt{completeHomogeneousEval\_\allowbreak{}geometric}\newline{\footnotesize\texttt{GeometricCompleteHomogeneous}}\\[2pt]
-\Cref{lem:vandermonde-alternant} & \statusnone & ---\\[2pt]
+\Cref{lem:vandermonde-alternant} & \statuspartial &
+\texttt{det\_\allowbreak{}vandermonde\_\allowbreak{}eq\_\allowbreak{}prod},
+\texttt{prod\_\allowbreak{}sub\_\allowbreak{}eq\_\allowbreak{}neg\_\allowbreak{}one\_\allowbreak{}pow\_\allowbreak{}mul\_\allowbreak{}det\_\allowbreak{}vandermonde}\newline
+{\footnotesize\texttt{VandermondeAlternant}; the determinant formula over
+every commutative ring (Mathlib's \texttt{Matrix.det\_vandermonde}) and the
+alternant orientation with its sign; the divisibility $a_\delta\mid a_\mu$
+and the integrality of Schur polynomials are not formalized}\\[2pt]
 \Cref{thm:schur-principal} & \statusnone & ---\\[2pt]
 \Cref{cor:schur-e-h} & \statusnone & ---\\[2pt]
 \Cref{thm:weighted-inversion} & \statusexact &
@@ -13546,7 +13566,17 @@ $abq/(cq^n)$}\\[2pt]
 \midrule
 \multicolumn{3}{@{}l}{\itshape Bilateral series and Ramanujan's \texorpdfstring{${}_1\psi_1$}{1psi1} sum}\\
 \midrule
-\Cref{prop:1psi1-convergence} & \statusnone & ---\\[2pt]
+\Cref{prop:1psi1-convergence} & \statusexact &
+\texttt{onePsiOneTerm},
+\texttt{onePsiOne},
+\texttt{summable\_\allowbreak{}onePsiOneTerm},
+\texttt{finiteQPochhammerZ\_\allowbreak{}div\_\allowbreak{}neg\_\allowbreak{}natCast}\newline
+{\footnotesize\texttt{BilateralSeriesConvergence}; absolute convergence in
+any complete normed field for $\lVert b/a\rVert<\lVert z\rVert<1$, with
+$q\ne0$, $a,b\ne0$, $bq^j\ne1$ and $q^{j+1}\ne a$ for all $j\ge0$ (the
+denominator factors of both tails); by geometric domination rather than the
+ratio test, via the negative-index quotient
+$(a;q)_{-m}/(b;q)_{-m}=(b/a)^m(q/b;q)_m/(q/a;q)_m$}\\[2pt]
 \Cref{thm:1psi1} & \statusnone & ---\\[2pt]
 \midrule
 \multicolumn{3}{@{}l}{\itshape $q$-difference calculus and the quantum binomial}\\
@@ -13636,7 +13666,15 @@ second half of the fundamental theorem}\\[2pt]
 $0<q<1$, with $[x]_q$ as \texttt{qNumber} and its agreement with the
 $q$-integer at natural arguments; the meromorphic-continuation clause is
 not formalized}\\[2pt]
-\Cref{prop:qgamma-convex} & \statusnone & ---\\[2pt]
+\Cref{prop:qgamma-convex} & \statuspartial &
+\texttt{hasDerivAt\_\allowbreak{}log\_\allowbreak{}qGamma},
+\texttt{hasDerivAt\_\allowbreak{}qPochhammerInfIn\_\allowbreak{}real},
+\texttt{ofReal\_\allowbreak{}qPochhammerInfIn}\newline
+{\footnotesize\texttt{QGammaLogDerivative}; the first logarithmic derivative
+as a \texttt{HasDerivAt} statement over $\RealNumbers$ for $0<q<1$, $x>0$,
+obtained from the complex derivative of $a\mapsto(a;q)_\infty$ by real
+restriction; the second derivative and strict log-convexity are not
+formalized}\\[2pt]
 \Cref{thm:q-bohr-mollerup} & \statusnone & ---\\[2pt]
 \Cref{thm:qgamma-classical-limit} & \statusnone & ---\\[2pt]
 \Cref{thm:qbeta} & \statusexact &
@@ -13655,7 +13693,13 @@ $q$-binomial summation, and the gamma quotient, with symmetry and positivity}\\[
 \texttt{qBeta\_\allowbreak{}add\_\allowbreak{}one\_\allowbreak{}left},
 \texttt{qBeta\_\allowbreak{}add\_\allowbreak{}one\_\allowbreak{}right}\newline
 {\footnotesize\texttt{QBetaIntegral}}\\[2pt]
-\Cref{thm:qgamma-multiplication} & \statusnone & ---\\[2pt]
+\Cref{thm:qgamma-multiplication} & \statusexact &
+\texttt{qGamma\_\allowbreak{}multiplication},
+\texttt{prod\_\allowbreak{}qPochhammerInfIn\_\allowbreak{}pow\_\allowbreak{}rpow},
+\texttt{prod\_\allowbreak{}qPochhammerInfIn\_\allowbreak{}pow\_\allowbreak{}succ}\newline
+{\footnotesize\texttt{QGammaMultiplication}; over $\RealNumbers$ for
+$0<q<1$, $m\ge1$, $x>0$, with $[m]_q$ as \texttt{qNumber q m}; both
+dissections of infinite symbols are separate lemmas}\\[2pt]
 \Cref{prop:qgamma-reflection} & \statusexact &
 \texttt{qGamma\_\allowbreak{}mul\_\allowbreak{}qGamma\_\allowbreak{}one\_\allowbreak{}sub}\newline
 {\footnotesize\texttt{QGamma}; for every real $x$}\\[2pt]
@@ -13831,7 +13875,20 @@ $\lVert z\rVert<1$, and every $m\ge0$; the formal version is
 \texttt{hasSum\_\allowbreak{}gaussianBinomialC\_\allowbreak{}add}\newline
 {\footnotesize\texttt{GaussianBinomialComplexOrder}; complex $\alpha$ with the
 principal branch of $q^\alpha$, $\lVert q\rVert<1$, $\lVert z\rVert<1$}\\[2pt]
-\Cref{thm:complex-gaussian-properties} & \statusnone & ---\\[2pt]
+\Cref{thm:complex-gaussian-properties} & \statusexact &
+\texttt{gaussianBinomialCC},
+\texttt{qGammaC},
+\texttt{gaussianBinomialCC\_\allowbreak{}eq\_\allowbreak{}qGammaC},
+\texttt{gaussianBinomialCC\_\allowbreak{}symm},
+\texttt{gaussianBinomialCC\_\allowbreak{}succ\_\allowbreak{}left},
+\texttt{gaussianBinomialCC\_\allowbreak{}succ\_\allowbreak{}left'},
+\texttt{gaussianBinomialCC\_\allowbreak{}natCast}\newline
+{\footnotesize\texttt{ComplexGaussianBinomial}; real $0<q<1$, complex
+arguments with $q^z=\exp(z\log q)$; the gamma quotient under nonvanishing of
+the three symbols $(q^{\alpha+1};q)_\infty$, $(q^{\beta+1};q)_\infty$,
+$(q^{\alpha-\beta+1};q)_\infty$, both Pascal laws under
+$(q^{\alpha+1};q)_\infty\ne0$ alone, symmetry unconditionally, and the
+agreement with \eqref{eq:complex-upper-gaussian} at $\beta=k$}\\[2pt]
 \Cref{cor:complex-gaussian-classical} & \statusnone & ---\\[2pt]
 \Cref{thm:generalized-qbinomial} & \statusexact &
 \texttt{hasSum\_\allowbreak{}qPochhammerC},
@@ -13925,7 +13982,15 @@ monic leading term $q^{k(n-k)}$ of the universal polynomial}\\[2pt]
 \Cref{alg:gaussian-dp} & \statusna & \\[2pt]
 \Cref{thm:gaussian-dp-correct} & \statuspartial & \texttt{gaussianBinomial}\newline{\footnotesize\texttt{FiniteQBinomialCore}}\\[2pt]
 \Cref{alg:cyclotomic-list} & \statusna & \\[2pt]
-\Cref{thm:cyclotomic-list-correct} & \statusnone & ---\\[2pt]
+\Cref{thm:cyclotomic-list-correct} & \statusexact &
+\texttt{cyclotomicFactorList},
+\texttt{gaussianBinomial\_\allowbreak{}X\_\allowbreak{}eq\_\allowbreak{}prod\_\allowbreak{}cyclotomicFactorList},
+\texttt{cyclotomic\_\allowbreak{}dvd\_\allowbreak{}gaussianBinomial\_\allowbreak{}iff\_\allowbreak{}mem},
+\texttt{cyclotomic\_\allowbreak{}exponent\_\allowbreak{}le\_\allowbreak{}one}\newline
+{\footnotesize\texttt{CyclotomicFactorList}; the list as a \texttt{Finset},
+the multiplicity-one factorization $[n,k]_X=\prod_{d\in\text{list}}\Phi_d$ over
+every integral domain, and, over $\RationalNumbers$, divisibility by
+$\Phi_d$ exactly for the listed $d$}\\[2pt]
 \Cref{thm:telescoping-certificate} & \statusexact &
 \texttt{telescoping\_\allowbreak{}certificate},
 \texttt{telescoping\_\allowbreak{}certificate\_\allowbreak{}Ico}\newline
