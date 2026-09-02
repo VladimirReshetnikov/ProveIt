@@ -84,8 +84,8 @@ theorem X_mul_derivative_thueMorseSeries :
     simp
   · rw [coeff_succ_X_mul, coeff_derivative, map_neg, coeff_mul,
       Finset.Nat.sum_antidiagonal_eq_sum_range_succ_mk, sum_range_succ_eq_add_sum_Icc]
-    simp only [coeff_rulerSeries, thueMorseSeries, coeff_mk, Nat.sub_zero]
-    rw [if_pos rfl, zero_mul, zero_add]
+    simp only [coeff_rulerSeries, thueMorseSeries, coeff_mk, Nat.sub_zero, if_true, zero_mul,
+      zero_add]
     have hsum : ∑ k ∈ Icc 1 (n + 1),
         (if k = 0 then (0 : ℤ) else rulerCoeff k) * thueMorseSign (n + 1 - k)
         = ∑ k ∈ Icc 1 (n + 1), ((2 : ℤ) ^ (padicValNat 2 k + 1) - 1) * thueMorseSign (n + 1 - k) := by

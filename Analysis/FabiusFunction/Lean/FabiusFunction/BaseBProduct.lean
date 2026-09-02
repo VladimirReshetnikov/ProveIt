@@ -59,7 +59,7 @@ theorem tsum_thueMorseBit_div_pow_succ {b : ℝ} (hb : 1 < b) :
     rw [hR, div_eq_mul_inv, pow_succ, mul_inv, ← inv_pow]
     ring
   simp_rw [hterm]
-  rw [tsum_mul_left, tsum_sub (hgeo.mul_left _) (hsum.mul_left _), tsum_mul_left, tsum_mul_left,
+  rw [tsum_mul_left, (hgeo.mul_left _).tsum_sub (hsum.mul_left _), tsum_mul_left, tsum_mul_left,
     tsum_geometric_of_abs_lt_one hx, tsum_thueMorseSign_mul_pow hx]
   have hb0 : b ≠ 0 := by linarith
   have hb1 : b - 1 ≠ 0 := by linarith
