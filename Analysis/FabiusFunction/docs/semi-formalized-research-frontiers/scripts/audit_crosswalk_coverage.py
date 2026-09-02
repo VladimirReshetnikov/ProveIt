@@ -32,7 +32,11 @@ ENV = re.compile(
     r'(?:\[[^\]]*\])?'
     r'\s*(?:\\label(?:\[[^\]]*\])?\{([^}]*)\})?',
     re.S)
-LEAN = re.compile(r'\\lean(?:Part|Partx)?\{')
+LEAN = re.compile(r'\\(?:lean(?:Part|Partx)?|decl)\{')
+# Labels named by a cross-reference: \cref{a,b}, \Cref{a}, \ref{a}, \eqref{a}.
+XREF = re.compile(r'\\(?:[cC]ref|ref|eqref)\{([^}]*)\}')
+# A unit of a ledger: a paragraph, or a row of a table (ended by \\).
+UNIT_SPLIT = re.compile(r'\n\s*\n|\\\\\s*\n')
 OPEN = re.compile(
     r'not formalized|unformalized|no Lean counterpart|not yet formalized'
     r'|remains open|is not proved|not proved (?:here|anywhere)',
@@ -77,14 +81,36 @@ def spans(text):
         prev_end = e if e >= 0 else start
 
 
+def ledger(text):
+    """Labels covered by a crosswalk ledger anywhere in the file.
+
+    Some volumes crosswalk in a dedicated appendix -- a table whose rows
+    pair Lean declarations with `\\Cref{...}` pointers at the results they
+    formalize, or paragraphs doing the same in prose.  A result named by a
+    cross-reference in any paragraph or table row that also cites Lean is
+    covered, wherever that unit sits.
+    """
+    covered = set()
+    for unit in UNIT_SPLIT.split(text):
+        if not LEAN.search(unit):
+            continue
+        for m in XREF.finditer(unit):
+            for lab in m.group(1).split(','):
+                lab = lab.strip()
+                if lab:
+                    covered.add(lab)
+    return covered
+
+
 def survey(path):
     text = io.open(path, encoding='utf-8', errors='replace').read()
     covered = disclaimed = gap = 0
     gaps = []
+    led = ledger(text)
     for kind, label, span, pre in spans(text):
         named = label and re.search(
             r'\\[cC]?ref\{' + re.escape(label) + r'\}', pre)
-        if LEAN.search(span) or (named and LEAN.search(pre)):
+        if LEAN.search(span) or (named and LEAN.search(pre)) or (label and label in led):
             covered += 1
         elif OPEN.search(span):
             disclaimed += 1
