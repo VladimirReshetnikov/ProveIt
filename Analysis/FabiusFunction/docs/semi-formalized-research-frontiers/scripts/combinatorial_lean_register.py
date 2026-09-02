@@ -461,6 +461,14 @@ STATUS = {
    r"\lean{Fabius.ascPochhammer_eq_prod_range}; the eventual vanishing that makes the spectral "
    r"reading vacuous is \lean{Fabius.stirlingFirst_cast_eq_zero_of_lt}.  The linear recurrence "
    r"over $\IntegerNumbers/h\IntegerNumbers$ and the Jordan decomposition are not formalized."),
+ 'thm:lagrange-burmann': ('partial',
+   r"\cref{eq:lagrange-burmann} is \lean{Fabius.Lagrange.coeff_subst_derivative} and "
+   r"\cref{eq:lagrange-basic} is \lean{Fabius.Lagrange.coeff_subst_id} (module "
+   r"\lean{LagrangeInversion}), over any commutative $\RationalNumbers$-algebra and in the "
+   r"division-free form $n[z^n]H(g)=[w^{n-1}]H'\phi^n$, from the division-free core "
+   r"\lean{Fabius.Lagrange.coeff_subst_mul_derivative}; the solution $g$ of "
+   r"\cref{eq:lagrange-functional} is a hypothesis rather than constructed, and "
+   r"\cref{eq:lagrange-burmann-alt} is not formalized."),
  'thm:touchard-poly': ('Lean',
    r"\cref{eq:touchard-poly} is \lean{Fabius.touchardPolynomial_add_prime} "
    r"(\lean{TouchardPolyCongruence}), an identity in $(\mathbb Z/p)[x]$, read off from Spivey's "

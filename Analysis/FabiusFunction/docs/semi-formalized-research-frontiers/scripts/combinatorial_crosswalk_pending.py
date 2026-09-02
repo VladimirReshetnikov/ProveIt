@@ -1318,6 +1318,36 @@ linear recurrence over $\IntegerNumbers/h\IntegerNumbers$ and the Jordan
 decomposition are not formalized.""")),
 ]
 
+PENDING += [
+ # --- thm:lagrange-burmann ---
+ (r"""which is \eqref{eq:lagrange-burmann-alt}.  Take $H(w)=w$ for
+\eqref{eq:lagrange-basic}.
+\end{proof}
+""",
+  remark(r"""% ed.: crosswalk added 2026-09-02; the Lean proof is algebraic, with no residue calculus.
+Module \lean{LagrangeInversion} formalizes \cref{eq:lagrange-burmann} as
+\lean{Fabius.Lagrange.coeff_subst_derivative}, in the division-free form
+$n[z^n]H(g)=[w^{n-1}]H'(w)\phi(w)^n$, and \cref{eq:lagrange-basic} as
+\lean{Fabius.Lagrange.coeff_subst_id}, over an arbitrary commutative
+$\RationalNumbers$-algebra.  The solution $g$ of \cref{eq:lagrange-functional}
+enters as a hypothesis, in the shape $g=z\,u$ with $u=\phi(g)$ and $u$
+invertible; existence and uniqueness are not formalized, nor is
+\cref{eq:lagrange-burmann-alt}.
+The proof above is unavailable in Lean, because it runs through
+\cref{thm:res-subst}, which is itself unformalized.  The formal proof is
+purely algebraic and rests on one cancellation: writing $v$ for the inverse of
+$u$, one has $v^{M+1}g'=v^M-\frac1Mz(v^M)'$, whose $M$th coefficient vanishes
+for every $M\ge1$ (\lean{Fabius.Lagrange.coeff_pow_succ_mul_derivative_eq_zero}),
+while $vg'$ has constant term $1$
+(\lean{Fabius.Lagrange.coeff_inv_mul_derivative}).  Substituting
+$A(g)=(A\phi^n)(g)\,v^n$ into the truncated substitution expansion
+\lean{Fabius.coeff_mul_subst_eq} therefore collapses the sum to its single
+surviving term, which is
+$[z^{n-1}]\bigl(A(g)g'\bigr)=[w^{n-1}]\bigl(A\phi^n\bigr)$
+(\lean{Fabius.Lagrange.coeff_subst_mul_derivative}); the chain rule
+\lean{PowerSeries.derivative_subst} turns that into the displayed form.""")),
+]
+
 applied = 0
 for anchor, text in PENDING:
     if text.strip() in s:
