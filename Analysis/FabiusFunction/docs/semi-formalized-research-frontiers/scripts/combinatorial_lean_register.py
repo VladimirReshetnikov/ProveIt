@@ -80,7 +80,10 @@ STATUS = {
    r"the inversion formula is \lean{Fabius.stirling_inversion}, "
    r"\lean{Fabius.stirling_inversion_symm}, \lean{Fabius.stirling_inversion_iff} "
    r"(\lean{StirlingBasisChange}), for sequences in any additive commutative group; "
-   r"the generating-function form is not formalized"),
+   r"the generating-function form is \lean{Fabius.egfA_subst_exp_sub_one} and "
+   r"\lean{Fabius.egfA_subst_log} (\lean{StirlingTransformEGF}): substituting $\EulerE^t-1$, "
+   r"respectively $\log(1+t)$, into an exponential generating function applies the second-kind, "
+   r"respectively signed first-kind, Stirling transform"),
  'thm:bell-binomial-recurrence': ('Lean', r"\lean{Nat.bell_succ} (Mathlib, the definition)"),
  'thm:bell-stirling-sum': ('Lean',
    r"\lean{Fabius.bell_eq_sum_stirlingSecond}, \lean{Fabius.bell_eq_sum_sum_div_factorial} "
@@ -107,15 +110,19 @@ STATUS = {
  'thm:bell-poly-egf': ('partial',
    r"the first identity is \lean{Fabius.bellWeightSeries_pow} and the third "
    r"\lean{Fabius.exp_subst_bellWeightSeries} (\lean{BellGeneratingFunctions}), as formal power "
-   r"series over any commutative $\mathbb Q$-algebra; the bivariate forms and the ordinary "
-   r"Bell polynomials are not formalized"),
+   r"series over any commutative $\mathbb Q$-algebra; the bivariate form is "
+   r"\lean{Fabius.exp_subst_smul_bellWeightSeries} (\lean{ExponentialFormula}) and the ordinary "
+   r"Bell polynomials are \lean{Fabius.ordPartialBell} with "
+   r"\lean{Fabius.coeff_pow_eq_ordPartialBell} (\lean{OrdinaryBellComposition})"),
  'thm:bell-poly-specializations': ('partial',
    r"\cref{eq:bell-first-specialization} is \lean{Fabius.partialBell_factorial_pred}, "
    r"\cref{eq:bell-second-specialization} is \lean{Fabius.partialBell_one}, "
    r"\cref{eq:bell-number-specialization} is \lean{Fabius.bell_complete_one}, "
    r"\cref{eq:bell-lah-specialization} is \lean{Fabius.partialBell_factorial} "
-   r"(\lean{PartialBellPolynomials}, \lean{BellGeneratingFunctions}); the factorial row sum "
-   r"\cref{eq:bell-factorial-complete} and the Touchard form are not formalized"),
+   r"(\lean{PartialBellPolynomials}, \lean{BellGeneratingFunctions}), and the Touchard form "
+   r"\cref{eq:touchard-bell-specialization} is \lean{Fabius.bell_complete_const_eq_touchard_eval} "
+   r"(\lean{BellHomogeneity}); the factorial row sum \cref{eq:bell-factorial-complete} is not "
+   r"formalized"),
  'thm:bell-partial-convolution': ('Lean',
    r"\lean{Fabius.factorial_mul_partialBell_add} (\lean{BellComposition}), in the division-free "
    r"form $(k_1+k_2)!\,B_{n,k_1+k_2}=k_1!k_2!\sum_i\binom ni B_{i,k_1}B_{n-i,k_2}$"),
@@ -151,6 +158,79 @@ STATUS = {
    r"\lean{Fabius.partialBell_mul_left}, \lean{Fabius.partialBell_pow_mul}, "
    r"\lean{Fabius.partialBell_bihomogeneous} (\lean{BellHomogeneity}), over every commutative "
    r"semiring"),
+ 'cor:shifted-stirling-evaluations': ('Lean',
+   r"\cref{eq:shifted-power-to-fall} is "
+   r"\lean{Fabius.X_pow_eq_sum_stirlingSecond_succ_mul_descPochhammer_comp} in $R[x]$ over any "
+   r"commutative ring (cancelling $x$ via \lean{Fabius.X_mul_cancel}) and "
+   r"\cref{eq:stirling-n-to-n} is \lean{Fabius.pow_self_eq_sum_stirlingSecond_mul_descFactorial} "
+   r"(\lean{StirlingShiftedEvaluations})"),
+ 'thm:ordinary-composition': ('partial',
+   r"\cref{eq:ordinary-composition-bell} is \lean{Fabius.coeff_subst_eq_sum_ordPartialBell} "
+   r"(\lean{OrdinaryBellComposition}) over any commutative ring, with the ordinary Bell "
+   r"polynomials \lean{Fabius.ordPartialBell} defined by the composition recurrence "
+   r"$\OrdinaryPartialBellPolynomial n{k+1}=\sum_{i\ge1}b_i\OrdinaryPartialBellPolynomial{n-i}{k}$ "
+   r"(so \cref{eq:ordinary-composition-compositions} is the definition unrolled) and "
+   r"$[x^n]G^k=\OrdinaryPartialBellPolynomial nk(b)$ as \lean{Fabius.coeff_pow_eq_ordPartialBell}; "
+   r"the reciprocal formula \cref{eq:reciprocal-ordinary-bell} is "
+   r"\lean{Fabius.coeff_reciprocalSeries}; the multinomial form "
+   r"\cref{eq:ordinary-composition-multiplicities} is not formalized"),
+ 'thm:eulerian-binomial-recurrence': ('Lean',
+   r"\lean{Fabius.eulerianPolynomial_binomial_recurrence} in $R[t]$ and "
+   r"\lean{Fabius.eulerian_binomial_recurrence_series} in $R[[t]]$ (\lean{EulerianEGF}), for "
+   r"$n\ge1$ over any commutative ring $R$, proved from the rational generating function "
+   r"\cref{eq:eulerian-power-series} and the binomial theorem rather than from the EGF"),
+ 'thm:eulerian-egf': ('Lean',
+   r"\lean{Fabius.egfA_eulerianPolynomial_mul} (\lean{EulerianEGF}): in $(\RationalNumbers[t])[[x]]$, "
+   r"$\bigl(\sum_n\TypeAEulerianPolynomial{n}(t)x^n/n!\bigr)\,(t-\EulerE^{(t-1)x})=t-1$, i.e. "
+   r"\cref{eq:eulerian-egf} in multiplicative form; it is the binomial recurrence "
+   r"\cref{thm:eulerian-binomial-recurrence} read coefficientwise"),
+ 'thm:spivey': ('Lean',
+   r"\lean{Fabius.spivey} (\lean{BellShiftEGF}), read off from the shifted generating function "
+   r"\lean{Fabius.egfA_bell_add}: $\sum_n\BellNumber{n+m}t^n/n!=\TouchardPolynomial{m}(\EulerE^t)"
+   r"\,\EulerE^{\EulerE^t-1}$, proved by induction on $m$ from the Touchard recurrence "
+   r"\lean{Fabius.derivative_touchardExp}"),
+ 'thm:bell-inversions': ('partial',
+   r"\cref{eq:bell-inversion-one} is \lean{Fabius.bell_eq_sum_neg_one_pow_choose_bell_succ} "
+   r"(\lean{BellShiftEGF}), by \lean{Fabius.binomial_inversion_ring} applied to "
+   r"\lean{Fabius.bell_succ_eq_sum_choose}; \cref{eq:bell-inversion-two} is not formalized"),
+ 'thm:second-reverse-recurrences': ('partial',
+   r"\cref{eq:second-triangular-explicit} is "
+   r"\lean{Fabius.stirlingSecond_eq_pow_div_factorial_sub_sum} (\lean{StirlingTriangularExplicit}), "
+   r"for all $n,k$ with the $r=0$ term included; the two reverse recurrences "
+   r"\cref{eq:second-reverse-row,eq:second-reverse-column} are not formalized"),
+ 'thm:eulerian-stirling': ('Lean',
+   r"\lean{Fabius.sum_eulerianNumber_mul_X_pow_eq_sum_stirlingSecond} (\lean{EulerianStirling}), "
+   r"as an identity in $R[[t]]$ over any commutative ring $R$, from the rising-factorial "
+   r"expansion of $(m+1)^n$ and $\sum_m\binom{m+k}{k}t^m=(1-t)^{-k-1}$"),
+ 'thm:merged-complementary-bell': ('Lean',
+   r"\lean{Fabius.complementaryBell} (\lean{ComplementaryBell}); "
+   r"\cref{eq:merged-complementary-egf} is \lean{Fabius.exp_subst_neg_exp_sub_one}, "
+   r"\cref{eq:merged-complementary-recurrence} is \lean{Fabius.complementaryBell_succ}, and "
+   r"\cref{eq:merged-complementary-dobinski} is \lean{Fabius.complementaryBell_eq_exp_mul_tsum} "
+   r"(the series converges absolutely as the Poisson moment series of "
+   r"\lean{Fabius.tsum_pow_mul_pow_div_factorial})"),
+ 'cor:merged-bell-convolution-inverse': ('Lean',
+   r"\lean{Fabius.sum_choose_bell_mul_complementaryBell} (\lean{ComplementaryBell}), from the "
+   r"addition law \lean{Bell.complete_add} of complete Bell polynomials at weights $\pm1$"),
+ 'thm:newton-expansion': ('Lean',
+   r"\lean{Fabius.newton_expansion} (\lean{NewtonExpansion}): $p=\sum_{k\le d}"
+   r"\frac{\Delta^kp(0)}{k!}\FallingFactorial{x}{k}$ in $K[x]$ for every field $K$ of "
+   r"characteristic zero, from the evaluation form "
+   r"\lean{Fabius.eval_natCast_eq_sum_choose_fwdDiff} ($p(m)=\sum_k\binom mk\Delta^kp(0)$ over "
+   r"any commutative ring), which packages Mathlib's Gregory--Newton formula "
+   r"\lean{shift_eq_sum_fwdDiff_iter} with \lean{Polynomial.fwdDiff_iter_eq_zero_of_degree_lt}"),
+ 'thm:exponential-formula': ('Lean',
+   r"\cref{eq:partial-bell-egf} is \lean{Fabius.bellWeightSeries_pow}, "
+   r"\cref{eq:bivariate-bell-egf} is \lean{Fabius.exp_subst_smul_bellWeightSeries} "
+   r"(\lean{ExponentialFormula}), \cref{eq:complete-bell-egf} is "
+   r"\lean{Fabius.exp_subst_bellWeightSeries}, all as substitutions of formal power series "
+   r"over any $\RationalNumbers$-algebra"),
+ 'thm:ordered-bell': ('Lean',
+   r"\lean{Fabius.fubini} is defined by \cref{eq:ordered-bell-stirling}; "
+   r"\cref{eq:ordered-bell-egf} is \lean{Fabius.two_sub_exp_mul_egfA_fubini} (via "
+   r"\lean{Fabius.egfA_fubini}: the generating function is $1/(1-u)$ at $u=\EulerE^t-1$) and "
+   r"\cref{eq:ordered-bell-recurrence} is \lean{Fabius.fubini_succ} (\lean{OrderedBell}); the "
+   r"ordered-partition count itself is not formalized"),
  'thm:second-ogf': ('Lean',
    r"\lean{Fabius.prod_one_sub_mul_X_mul_stirlingColumnOGF} and "
    r"\lean{Fabius.stirlingColumnOGF_eq_prod_mk_pow} (\lean{StirlingOrdinaryGF}): the column "
@@ -176,10 +256,13 @@ STATUS = {
    r"(\lean{StirlingBasisChange}); the finite-difference route through "
    r"\cref{thm:merged-bernoulli-difference} is not formalized"),
  'thm:merged-appell': ('partial',
-   r"for the Bernoulli polynomials Mathlib has the derivative identity "
-   r"\lean{Polynomial.derivative_bernoulli} and the explicit formula "
-   r"\cref{eq:merged-bernoulli-explicit} as the definition \lean{Polynomial.bernoulli_def}; "
-   r"translation and the Euler polynomials are not formalized"),
+   r"for the Bernoulli polynomials: the derivative identity is Mathlib's "
+   r"\lean{Polynomial.derivative_bernoulli}, the translation formula "
+   r"\cref{eq:merged-appell-translation} is \lean{Fabius.bernoulli_eval_add} "
+   r"(\lean{BernoulliAppell}, via the Hasse derivatives "
+   r"\lean{Fabius.hasseDeriv_bernoulli} and the Taylor expansion), and the explicit formula "
+   r"\cref{eq:merged-bernoulli-explicit} is the definition \lean{Polynomial.bernoulli_def}; "
+   r"the Euler polynomials are not formalized"),
  'thm:merged-bernoulli-euler-basic': ('partial',
    r"Mathlib: the difference identity \cref{eq:merged-bernoulli-difference} is "
    r"\lean{Polynomial.bernoulli_eval_one_add}, the reflection "
