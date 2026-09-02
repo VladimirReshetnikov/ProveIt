@@ -1,5 +1,6 @@
 import FabiusFunction.ThueMorseFourierInversion
 import FabiusFunction.ThueMorseValuation
+import FabiusFunction.ThueMorseBasicLemmas
 import Mathlib.Analysis.SpecialFunctions.Integrals.Basic
 
 /-!
@@ -17,7 +18,8 @@ needs `Finset.sum_mul_sum`, the addition law for `Complex.exp`, and the
 character integral `integral_exp_two_pi_int`.  Accordingly the core
 result is stated for an arbitrary index `Finset`, arbitrary complex
 coefficients, and an arbitrary integer frequency map that is injective
-on the index set; the Thue–Morse statements are corollaries.
+on the index set; the natural-frequency and Thue–Morse statements are
+corollaries.
 
 * `integral_exp_two_pi_int` — orthonormality:
   `∫₀¹ e^(2πi·d·x) dx = [d = 0]` for `d : ℤ`.
@@ -28,18 +30,27 @@ on the index set; the Thue–Morse statements are corollaries.
     = ∑ a i · b i`.
 * `integral_exp_nat_double_sum` — the same for the natural frequencies
   `ν n = n`, i.e. for arbitrary coefficient functions `ℕ → ℂ`.
-* `conj_exp_two_pi_nat` — on the real line the character conjugates to
-  its reflection: `conj e^(2πinx) = e^(-2πinx)`.
-* `integral_norm_sq_exp_nat_sum` — **discrete Parseval**:
+* `conj_exp_two_pi_int` — on the real line the character conjugates to
+  its reflection: `conj e^(2πidx) = e^(-2πidx)` for `d : ℤ`;
+  `conj_exp_two_pi_nat` is the natural-frequency case.
+* `integral_norm_sq_exp_sum` — **discrete Parseval** for an arbitrary
+  injective integer frequency map:
+  `∫₀¹ ‖∑_{i ∈ s} c i·e^(2πi ν(i) x)‖² dx = ∑_{i ∈ s} ‖c i‖²`.
+* `integral_norm_sq_exp_nat_sum` — the same for natural frequencies:
   `∫₀¹ ‖∑_{n ∈ s} c n·e^(2πinx)‖² dx = ∑_{n ∈ s} ‖c n‖²`.
-* `integral_thueMorse_double_sum` — **Parseval for the Thue–Morse
-  block**:
+* `integral_thueMorseSign_double_sum` — **Parseval for a Thue–Morse
+  sum over any index set**: for every `Finset ℕ`,
+  `∫₀¹ (∑_{n ∈ s} ε(n)e^(2πinx))·(∑_{n' ∈ s} ε(n')e^(-2πin'x)) dx
+    = |s|`.
+* `integral_thueMorse_double_sum` — the dyadic block `s = range 2^m`:
   `∫₀¹ (∑_{n<2^m} ε(n)e^(2πinx))·(∑_{n'<2^m} ε(n')e^(-2πin'x)) dx = 2^m`.
   The second factor is the complex conjugate of the first on the real
   line, so this is `∫₀¹ |P_m(e^(2πix))|² dx = 2^m` — the mass
   `∫₀¹ ρ_m = 1` for the normalized Riesz density.
-* `integral_norm_sq_thueMorse_sum` — the same mass written directly as
-  the integral of a squared modulus.
+* `integral_norm_sq_thueMorseSign_sum` — the same mass for any index
+  set, written directly as the integral of a squared modulus:
+  `∫₀¹ ‖∑_{n ∈ s} ε(n)e^(2πinx)‖² dx = |s|`.
+* `integral_norm_sq_thueMorse_sum` — its dyadic-block case, `= 2^m`.
 -/
 
 set_option autoImplicit false
@@ -192,63 +203,117 @@ theorem integral_exp_nat_double_sum (s : Finset ℕ) (a b : ℕ → ℂ) :
   simpa only [Int.cast_natCast] using h
 
 /-- On the real line the character conjugates to its reflection:
-`conj e^(2πinx) = e^(-2πinx)`. -/
-theorem conj_exp_two_pi_nat (n : ℕ) (x : ℝ) :
-    (starRingEnd ℂ) (Complex.exp (2 * Real.pi * Complex.I * n * x)) =
-      Complex.exp (-(2 * Real.pi * Complex.I * n * x)) := by
+`conj e^(2πidx) = e^(-2πidx)` for every integer frequency `d`. -/
+theorem conj_exp_two_pi_int (d : ℤ) (x : ℝ) :
+    (starRingEnd ℂ) (Complex.exp (2 * Real.pi * Complex.I * d * x)) =
+      Complex.exp (-(2 * Real.pi * Complex.I * d * x)) := by
   rw [← Complex.exp_conj]
   congr 1
-  have hx : (2 * (Real.pi : ℂ) * Complex.I * n * x) =
-      ((2 * Real.pi * n * x : ℝ) : ℂ) * Complex.I := by
+  have hx : (2 * (Real.pi : ℂ) * Complex.I * d * x) =
+      ((2 * Real.pi * d * x : ℝ) : ℂ) * Complex.I := by
     push_cast
     ring
   rw [hx, map_mul, Complex.conj_ofReal, Complex.conj_I, mul_neg]
 
-/-- **Discrete Parseval.**  For an arbitrary `Finset ℕ` of frequencies
-and arbitrary complex coefficients,
+/-- On the real line the character conjugates to its reflection:
+`conj e^(2πinx) = e^(-2πinx)`.  The natural-frequency case of
+`conj_exp_two_pi_int`. -/
+theorem conj_exp_two_pi_nat (n : ℕ) (x : ℝ) :
+    (starRingEnd ℂ) (Complex.exp (2 * Real.pi * Complex.I * n * x)) =
+      Complex.exp (-(2 * Real.pi * Complex.I * n * x)) := by
+  have h := conj_exp_two_pi_int n x
+  simpa only [Int.cast_natCast] using h
+
+/-- **Discrete Parseval.**  For a frequency map `ν : ι → ℤ` injective on
+a finite index set `s` and arbitrary complex coefficients `c`,
+`∫₀¹ ‖∑_{i ∈ s} c i·e^(2πi ν(i) x)‖² dx = ∑_{i ∈ s} ‖c i‖²`.
+On the real line the conjugate of the polynomial is the reflected
+polynomial with conjugate coefficients, so this is the bilinear
+identity `integral_exp_double_sum` paired against `conj ∘ c`. -/
+theorem integral_norm_sq_exp_sum {ι : Type*} [DecidableEq ι]
+    (s : Finset ι) (ν : ι → ℤ) (hν : Set.InjOn ν (s : Set ι))
+    (c : ι → ℂ) :
+    ∫ x in (0 : ℝ)..1,
+        ‖∑ i ∈ s, c i *
+          Complex.exp (2 * Real.pi * Complex.I * (ν i : ℂ) * x)‖ ^ 2 =
+      ∑ i ∈ s, ‖c i‖ ^ 2 := by
+  have hstar : ∀ x : ℝ,
+      (starRingEnd ℂ) (∑ i ∈ s, c i *
+          Complex.exp (2 * Real.pi * Complex.I * (ν i : ℂ) * x)) =
+        ∑ j ∈ s, (starRingEnd ℂ) (c j) *
+          Complex.exp (-(2 * Real.pi * Complex.I * (ν j : ℂ) * x)) := by
+    intro x
+    rw [map_sum]
+    refine Finset.sum_congr rfl fun i _ => ?_
+    rw [map_mul, conj_exp_two_pi_int (ν i) x]
+  have hpoint : ∀ x : ℝ,
+      (∑ i ∈ s, c i *
+          Complex.exp (2 * Real.pi * Complex.I * (ν i : ℂ) * x)) *
+        (∑ j ∈ s, (starRingEnd ℂ) (c j) *
+          Complex.exp (-(2 * Real.pi * Complex.I * (ν j : ℂ) * x))) =
+      ((‖∑ i ∈ s, c i *
+        Complex.exp (2 * Real.pi * Complex.I * (ν i : ℂ) * x)‖ ^ 2 :
+          ℝ) : ℂ) := by
+    intro x
+    rw [← hstar x, Complex.mul_conj', Complex.ofReal_pow]
+  have key : ∫ x in (0 : ℝ)..1,
+      (∑ i ∈ s, c i *
+          Complex.exp (2 * Real.pi * Complex.I * (ν i : ℂ) * x)) *
+        (∑ j ∈ s, (starRingEnd ℂ) (c j) *
+          Complex.exp (-(2 * Real.pi * Complex.I * (ν j : ℂ) * x))) =
+      ∑ i ∈ s, c i * (starRingEnd ℂ) (c i) :=
+    integral_exp_double_sum s ν hν c (fun i => (starRingEnd ℂ) (c i))
+  have hrhs : ∑ i ∈ s, c i * (starRingEnd ℂ) (c i) =
+      ((∑ i ∈ s, ‖c i‖ ^ 2 : ℝ) : ℂ) := by
+    rw [Complex.ofReal_sum]
+    refine Finset.sum_congr rfl fun i _ => ?_
+    rw [Complex.mul_conj', Complex.ofReal_pow]
+  have hcast : ((∫ x in (0 : ℝ)..1,
+        ‖∑ i ∈ s, c i *
+          Complex.exp (2 * Real.pi * Complex.I * (ν i : ℂ) * x)‖ ^ 2 :
+            ℝ) : ℂ) =
+      ((∑ i ∈ s, ‖c i‖ ^ 2 : ℝ) : ℂ) := by
+    rw [← intervalIntegral.integral_ofReal, ← hrhs, ← key]
+    exact intervalIntegral.integral_congr (fun x _ => (hpoint x).symm)
+  exact_mod_cast hcast
+
+/-- **Discrete Parseval for natural frequencies.**  For an arbitrary
+`Finset ℕ` of frequencies and arbitrary complex coefficients,
 `∫₀¹ ‖∑_{n ∈ s} c n·e^(2πinx)‖² dx = ∑_{n ∈ s} ‖c n‖²`. -/
 theorem integral_norm_sq_exp_nat_sum (s : Finset ℕ) (c : ℕ → ℂ) :
     ∫ x in (0 : ℝ)..1,
         ‖∑ n ∈ s, c n *
           Complex.exp (2 * Real.pi * Complex.I * n * x)‖ ^ 2 =
       ∑ n ∈ s, ‖c n‖ ^ 2 := by
-  have hstar : ∀ x : ℝ,
-      (starRingEnd ℂ) (∑ n ∈ s, c n *
-          Complex.exp (2 * Real.pi * Complex.I * n * x)) =
-        ∑ n' ∈ s, (starRingEnd ℂ) (c n') *
-          Complex.exp (-(2 * Real.pi * Complex.I * n' * x)) := by
-    intro x
-    rw [map_sum]
-    refine Finset.sum_congr rfl fun n _ => ?_
-    rw [map_mul, conj_exp_two_pi_nat n x]
-  have hpoint : ∀ x : ℝ,
-      (∑ n ∈ s, c n *
-          Complex.exp (2 * Real.pi * Complex.I * n * x)) *
-        (∑ n' ∈ s, (starRingEnd ℂ) (c n') *
-          Complex.exp (-(2 * Real.pi * Complex.I * n' * x))) =
-      ((‖∑ n ∈ s, c n *
-        Complex.exp (2 * Real.pi * Complex.I * n * x)‖ ^ 2 : ℝ) : ℂ) := by
-    intro x
-    rw [← hstar x, Complex.mul_conj', Complex.ofReal_pow]
-  have key : ∫ x in (0 : ℝ)..1,
-      (∑ n ∈ s, c n *
-          Complex.exp (2 * Real.pi * Complex.I * n * x)) *
-        (∑ n' ∈ s, (starRingEnd ℂ) (c n') *
-          Complex.exp (-(2 * Real.pi * Complex.I * n' * x))) =
-      ∑ n ∈ s, c n * (starRingEnd ℂ) (c n) :=
-    integral_exp_nat_double_sum s c (fun n => (starRingEnd ℂ) (c n))
-  have hrhs : ∑ n ∈ s, c n * (starRingEnd ℂ) (c n) =
-      ((∑ n ∈ s, ‖c n‖ ^ 2 : ℝ) : ℂ) := by
-    rw [Complex.ofReal_sum]
-    refine Finset.sum_congr rfl fun n _ => ?_
-    rw [Complex.mul_conj', Complex.ofReal_pow]
-  have hcast : ((∫ x in (0 : ℝ)..1,
-        ‖∑ n ∈ s, c n *
-          Complex.exp (2 * Real.pi * Complex.I * n * x)‖ ^ 2 : ℝ) : ℂ) =
-      ((∑ n ∈ s, ‖c n‖ ^ 2 : ℝ) : ℂ) := by
-    rw [← intervalIntegral.integral_ofReal, ← hrhs, ← key]
-    exact intervalIntegral.integral_congr (fun x _ => (hpoint x).symm)
-  exact_mod_cast hcast
+  have hinj : Set.InjOn (fun n : ℕ => (n : ℤ)) (s : Set ℕ) := by
+    intro m _ n _ h
+    exact Nat.cast_injective h
+  have h := integral_norm_sq_exp_sum s (fun n : ℕ => (n : ℤ)) hinj c
+  simpa only [Int.cast_natCast] using h
+
+/-- **Parseval for a Thue–Morse sum over any index set.**  The product
+of the signed trigonometric sum with its reflected conjugate integrates
+over a period to the number of terms:
+`∫₀¹ (∑_{n ∈ s} ε(n)e^(2πinx))·(∑_{n' ∈ s} ε(n')e^(-2πin'x)) dx = |s|`,
+because every coefficient pairing `ε(n)·ε(n)` is `1`. -/
+theorem integral_thueMorseSign_double_sum (s : Finset ℕ) :
+    ∫ x in (0 : ℝ)..1,
+        (∑ n ∈ s, ((thueMorseSign n : ℤ) : ℂ) *
+            Complex.exp (2 * Real.pi * Complex.I * n * x)) *
+          (∑ n' ∈ s, ((thueMorseSign n' : ℤ) : ℂ) *
+            Complex.exp (-(2 * Real.pi * Complex.I * n' * x))) =
+      (s.card : ℂ) := by
+  refine (integral_exp_nat_double_sum s
+    (fun n => ((thueMorseSign n : ℤ) : ℂ))
+    (fun n => ((thueMorseSign n : ℤ) : ℂ))).trans ?_
+  have hone : ∀ n ∈ s,
+      ((thueMorseSign n : ℤ) : ℂ) * ((thueMorseSign n : ℤ) : ℂ) =
+        (1 : ℂ) := by
+    intro n _
+    rw [← Int.cast_mul, thueMorseSign_mul_self]
+    norm_num
+  rw [Finset.sum_congr rfl hone, Finset.sum_const]
+  simp
 
 /-- **Parseval for the Thue–Morse block.**  The product of the
 trigonometric polynomial with its reflected conjugate integrates over a
@@ -262,16 +327,23 @@ theorem integral_thueMorse_double_sum (m : ℕ) :
           (∑ n' ∈ range (2 ^ m), ((thueMorseSign n' : ℤ) : ℂ) *
             Complex.exp (-(2 * Real.pi * Complex.I * n' * x))) =
       ((2 ^ m : ℕ) : ℂ) := by
-  refine (integral_exp_nat_double_sum (range (2 ^ m))
-    (fun n => ((thueMorseSign n : ℤ) : ℂ))
+  rw [integral_thueMorseSign_double_sum, Finset.card_range]
+
+/-- **Parseval mass of a Thue–Morse sum, squared-modulus form.**
+`∫₀¹ ‖∑_{n ∈ s} ε(n)e^(2πinx)‖² dx = |s|` for every `Finset ℕ`: every
+coefficient is a unit sign, so the mass is the number of terms. -/
+theorem integral_norm_sq_thueMorseSign_sum (s : Finset ℕ) :
+    ∫ x in (0 : ℝ)..1,
+        ‖∑ n ∈ s, ((thueMorseSign n : ℤ) : ℂ) *
+          Complex.exp (2 * Real.pi * Complex.I * n * x)‖ ^ 2 =
+      (s.card : ℝ) := by
+  refine (integral_norm_sq_exp_nat_sum s
     (fun n => ((thueMorseSign n : ℤ) : ℂ))).trans ?_
-  have hone : ∀ n ∈ range (2 ^ m),
-      ((thueMorseSign n : ℤ) : ℂ) * ((thueMorseSign n : ℤ) : ℂ) =
-        (1 : ℂ) := by
+  have hone : ∀ n ∈ s,
+      ‖((thueMorseSign n : ℤ) : ℂ)‖ ^ 2 = (1 : ℝ) := by
     intro n _
-    rw [← Int.cast_mul, thueMorseSign_mul_self]
-    norm_num
-  rw [Finset.sum_congr rfl hone, Finset.sum_const, Finset.card_range]
+    rw [norm_thueMorseSign_complex, one_pow]
+  rw [Finset.sum_congr rfl hone, Finset.sum_const]
   simp
 
 /-- **Parseval mass of the Thue–Morse block, squared-modulus form.**
@@ -282,17 +354,6 @@ theorem integral_norm_sq_thueMorse_sum (m : ℕ) :
         ‖∑ n ∈ range (2 ^ m), ((thueMorseSign n : ℤ) : ℂ) *
           Complex.exp (2 * Real.pi * Complex.I * n * x)‖ ^ 2 =
       ((2 ^ m : ℕ) : ℝ) := by
-  refine (integral_norm_sq_exp_nat_sum (range (2 ^ m))
-    (fun n => ((thueMorseSign n : ℤ) : ℂ))).trans ?_
-  have hone : ∀ n ∈ range (2 ^ m),
-      ‖((thueMorseSign n : ℤ) : ℂ)‖ ^ 2 = (1 : ℝ) := by
-    intro n _
-    have h1 : ((thueMorseSign n : ℤ) : ℂ) *
-        ((thueMorseSign n : ℤ) : ℂ) = 1 := by
-      rw [← Int.cast_mul, thueMorseSign_mul_self]
-      norm_num
-    rw [pow_two, ← norm_mul, h1, norm_one]
-  rw [Finset.sum_congr rfl hone, Finset.sum_const, Finset.card_range]
-  simp
+  rw [integral_norm_sq_thueMorseSign_sum, Finset.card_range]
 
 end Fabius

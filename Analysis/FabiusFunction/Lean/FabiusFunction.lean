@@ -601,6 +601,7 @@ import FabiusFunction.QPfaffSaalschutz
 import FabiusFunction.QuantumMultinomial
 import FabiusFunction.GaussianBinomialBounds
 import FabiusFunction.BinaryWordInversions
+import FabiusFunction.BinaryWeightTotals
 import FabiusFunction.BoxPartitions
 import FabiusFunction.TelescopingCertificate
 import FabiusFunction.VandermondeAlternant

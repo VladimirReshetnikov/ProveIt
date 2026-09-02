@@ -37,6 +37,9 @@ in truncated `ℕ` subtraction.  This module proves both halves.
   windows would then evolve deterministically, the pigeonhole principle
   would force two equal windows, and the word would be eventually
   periodic — contradicting `thueMorseSign_not_eventually_periodic`.
+  The final step, from two equal windows at positions `a < b` to
+  eventual periodicity, is isolated in a private lemma so that both
+  orderings of the pigeonhole pair share one proof.
 * `le_thueMorseComplexity` — **lower bound** `ℓ + 1 ≤ p(ℓ)`.
 -/
 
@@ -315,6 +318,61 @@ theorem thueMorseComplexity_mono (ℓ : ℕ) :
   rw [thueMorseComplexity, thueMorseComplexity, himg]
   exact Set.ncard_image_le (thueMorseFactorSet_finite (ℓ + 1))
 
+/-- The contradiction step of the Morse–Hedlund argument, isolated.
+If right extensions are unique (`hdet`), then two equal length-`ℓ`
+windows at positions `a < b` evolve in lockstep forever, so the bit
+sequence is periodic with period `b - a` from `a` on — contradicting
+`thueMorseSign_not_eventually_periodic`.  Both orderings of the
+pigeonhole pair in `thueMorseComplexity_lt_succ` reduce to this one
+statement. -/
+private theorem false_of_window_eq_of_lt (ℓ : ℕ)
+    (hdet : ∀ i i' : ℕ,
+      (∀ j, j < ℓ →
+        thueMorseBit (i + j) = thueMorseBit (i' + j)) →
+      thueMorseBit (i + ℓ) = thueMorseBit (i' + ℓ))
+    {a b : ℕ} (hlt : a < b)
+    (hWab : thueMorseWindow ℓ a = thueMorseWindow ℓ b) : False := by
+  -- deterministic evolution propagates window equality
+  have hprop : ∀ i i' : ℕ,
+      (∀ j, j < ℓ → thueMorseBit (i + j) = thueMorseBit (i' + j)) →
+      ∀ d j, j < ℓ → thueMorseBit (i + d + j) = thueMorseBit (i' + d + j) := by
+    intro i i' h0 d
+    induction d with
+    | zero => exact h0
+    | succ d ih =>
+        intro j hj
+        rcases Nat.lt_or_ge (j + 1) ℓ with hlt | hge
+        · have := ih (j + 1) hlt
+          rwa [show i + d + (j + 1) = i + (d + 1) + j by ring,
+            show i' + d + (j + 1) = i' + (d + 1) + j by ring] at this
+        · have hjeq : j + 1 = ℓ := by omega
+          have hd := hdet (i + d) (i' + d) ih
+          rwa [show i + d + ℓ = i + (d + 1) + j by omega,
+            show i' + d + ℓ = i' + (d + 1) + j by omega] at hd
+  have hper : ∀ n, a ≤ n → thueMorseBit (n + (b - a)) = thueMorseBit n := by
+    intro n hn
+    have hagree : ∀ j, j < ℓ → thueMorseBit (a + j) =
+        thueMorseBit (b + j) := by
+      intro j hj
+      have := congrArg (fun w => w ⟨j, hj⟩) hWab
+      simpa using this
+    rcases Nat.eq_zero_or_pos ℓ with hℓ0 | hℓ0
+    · -- ℓ = 0: determinism alone forces a constant word
+      subst hℓ0
+      have h1 := hdet n (n + (b - a)) (fun j hj => absurd hj (Nat.not_lt_zero j))
+      simpa using h1.symm
+    · have := hprop a b hagree (n - a) 0 hℓ0
+      rw [show a + (n - a) + 0 = n by omega,
+        show b + (n - a) + 0 = n + (b - a) by omega] at this
+      exact this.symm
+  -- transport to signs and contradict aperiodicity
+  apply thueMorseSign_not_eventually_periodic
+  refine ⟨b - a, a, by omega, fun n hn => ?_⟩
+  have hb := hper n hn
+  have h1 := thueMorseSign_eq_one_sub_two_mul_bit (n + (b - a))
+  have h2 := thueMorseSign_eq_one_sub_two_mul_bit n
+  omega
+
 /-- **Strict growth** (Morse–Hedlund): `p(ℓ) < p(ℓ+1)`. -/
 theorem thueMorseComplexity_lt_succ (ℓ : ℕ) :
     thueMorseComplexity ℓ < thueMorseComplexity (ℓ + 1) := by
@@ -367,23 +425,6 @@ theorem thueMorseComplexity_lt_succ (ℓ : ℕ) :
     have := hinj hmem hmem' hreseq
     have hlast := congrArg (fun w => w (Fin.last ℓ)) this
     simpa [thueMorseWindow, Fin.val_last] using hlast
-  -- deterministic evolution propagates window equality
-  have hprop : ∀ i i' : ℕ,
-      (∀ j, j < ℓ → thueMorseBit (i + j) = thueMorseBit (i' + j)) →
-      ∀ d j, j < ℓ → thueMorseBit (i + d + j) = thueMorseBit (i' + d + j) := by
-    intro i i' h0 d
-    induction d with
-    | zero => exact h0
-    | succ d ih =>
-        intro j hj
-        rcases Nat.lt_or_ge (j + 1) ℓ with hlt | hge
-        · have := ih (j + 1) hlt
-          rwa [show i + d + (j + 1) = i + (d + 1) + j by ring,
-            show i' + d + (j + 1) = i' + (d + 1) + j by ring] at this
-        · have hjeq : j + 1 = ℓ := by omega
-          have hd := hdet (i + d) (i' + d) ih
-          rwa [show i + d + ℓ = i + (d + 1) + j by omega,
-            show i' + d + ℓ = i' + (d + 1) + j by omega] at hd
   -- pigeonhole: two equal windows
   have hmaps : ∀ a ∈ range (T.card + 1), thueMorseWindow ℓ a ∈ T := by
     intro a _
@@ -392,53 +433,11 @@ theorem thueMorseComplexity_lt_succ (ℓ : ℕ) :
   have hpigeon := Finset.exists_ne_map_eq_of_card_lt_of_maps_to
     (t := T) (by rw [Finset.card_range]; omega) hmaps
   obtain ⟨a, _, b, _, hab, hWab⟩ := hpigeon
-  -- normalize to a < b
+  -- either ordering of the pair reduces to the `a < b` step
   rcases Nat.lt_or_ge a b with hlt | hge
-  · have hper : ∀ n, a ≤ n → thueMorseBit (n + (b - a)) = thueMorseBit n := by
-      intro n hn
-      have hagree : ∀ j, j < ℓ → thueMorseBit (a + j) =
-          thueMorseBit (b + j) := by
-        intro j hj
-        have := congrArg (fun w => w ⟨j, hj⟩) hWab
-        simpa using this
-      rcases Nat.eq_zero_or_pos ℓ with hℓ0 | hℓ0
-      · -- ℓ = 0: determinism alone forces a constant word
-        subst hℓ0
-        have h1 := hdet n (n + (b - a)) (fun j hj => absurd hj (Nat.not_lt_zero j))
-        simpa using h1.symm
-      · have := hprop a b hagree (n - a) 0 hℓ0
-        rw [show a + (n - a) + 0 = n by omega,
-          show b + (n - a) + 0 = n + (b - a) by omega] at this
-        exact this.symm
-    -- transport to signs and contradict aperiodicity
-    apply thueMorseSign_not_eventually_periodic
-    refine ⟨b - a, a, by omega, fun n hn => ?_⟩
-    have hb := hper n hn
-    have h1 := thueMorseSign_eq_one_sub_two_mul_bit (n + (b - a))
-    have h2 := thueMorseSign_eq_one_sub_two_mul_bit n
-    omega
-  · have hlt' : b < a := by omega
-    have hper : ∀ n, b ≤ n → thueMorseBit (n + (a - b)) = thueMorseBit n := by
-      intro n hn
-      have hagree : ∀ j, j < ℓ → thueMorseBit (b + j) =
-          thueMorseBit (a + j) := by
-        intro j hj
-        have := congrArg (fun w => w ⟨j, hj⟩) hWab
-        simpa using this.symm
-      rcases Nat.eq_zero_or_pos ℓ with hℓ0 | hℓ0
-      · subst hℓ0
-        have h1 := hdet n (n + (a - b)) (fun j hj => absurd hj (Nat.not_lt_zero j))
-        simpa using h1.symm
-      · have := hprop b a hagree (n - b) 0 hℓ0
-        rw [show b + (n - b) + 0 = n by omega,
-          show a + (n - b) + 0 = n + (a - b) by omega] at this
-        exact this.symm
-    apply thueMorseSign_not_eventually_periodic
-    refine ⟨a - b, b, by omega, fun n hn => ?_⟩
-    have hb := hper n hn
-    have h1 := thueMorseSign_eq_one_sub_two_mul_bit (n + (a - b))
-    have h2 := thueMorseSign_eq_one_sub_two_mul_bit n
-    omega
+  · exact false_of_window_eq_of_lt ℓ hdet hlt hWab
+  · exact false_of_window_eq_of_lt ℓ hdet (by omega : b < a)
+      hWab.symm
 
 /-- The empty factor is unique: `p(0) = 1`. -/
 theorem thueMorseComplexity_zero : thueMorseComplexity 0 = 1 := by
