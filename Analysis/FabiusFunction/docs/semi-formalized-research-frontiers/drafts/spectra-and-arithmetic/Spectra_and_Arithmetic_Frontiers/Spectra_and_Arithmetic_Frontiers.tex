@@ -1553,19 +1553,19 @@ $c=(r-1)/2$.
 \paragraph{Lean status.}
 Both halves of \cref{p1:prop:TM-sign-carrier} are formal in the Thue--Morse layer of the
 corpus.  The magnitude \eqref{p1:eq:T-root-magnitude} is
-\lean{Fabius.norm\_sum\_thueMorseSign\_exp} in \path{ThueMorseGelfond.lean}, which evaluates
+\path{Fabius.norm_sum_thueMorseSign_exp} in \path{ThueMorseGelfond.lean}, which evaluates
 $\bigl|\sum_{m<2^n}\ThueMorseSign m\,\EulerE^{\ImaginaryUnit mx}\bigr|$ to
 $\prod_{j<n}2|\sin(2^jx/2)|$ for every real $x$ and every $n$; at $x=2\pi r/N$ with
 $N=2^n$ the factors are $2|\sin(\pi r/2^{n-j})|$, the display above with the scales
 reversed.  The sign word \eqref{p1:eq:Gamma-sign} is
-\lean{Fabius.neg\_one\_pow\_sum\_floor\_odd\_div\_two\_pow} in \path{RademacherSine.lean}:
+\path{Fabius.neg_one_pow_sum_floor_odd_div_two_pow} in \path{RademacherSine.lean}:
 for $c<2^n$, $(-1)^{\sum_{h=1}^{n}\Floor{(2c+1)/2^h}}=\ThueMorseSign{c}$, obtained from the
 corpus identity $(-1)^{\sum_{h<n}\Floor{c/2^h}}=\ThueMorseSign{c}$
-(\lean{Fabius.neg\_one\_pow\_sum\_div\_two\_pow\_const\_one},
+(\path{Fabius.neg_one_pow_sum_div_two_pow_const_one},
 \path{DigitCharacterCongruence.lean}) through $\Floor{(2c+1)/2^{h+1}}=\Floor{c/2^h}$
-(\lean{Fabius.two\_mul\_add\_one\_div\_two\_pow\_succ}).  The reading of the sign as the
+(\path{Fabius.two_mul_add_one_div_two_pow_succ}).  The reading of the sign as the
 square wave $\Sign\sin(\pi x)=(-1)^{\Floor{x}}$, used in the proof, is
-\lean{Fabius.sign\_sin\_pi\_mul} in the same file.
+\path{Fabius.sign_sin_pi_mul} in the same file.
 
 \begin{remark}
 The earlier arithmetic-ray report uses root-of-unity values of finite
@@ -2904,6 +2904,26 @@ all $c_j=-1/2$. Every orbit point is therefore $1/3$ or $2/3$ modulo one, so the
 reduced orbit is exactly $\{1/3,2/3\}$ and $q=3$. The converse is immediate.
 \end{proof}
 
+\paragraph{Lean status.}
+The inequality \eqref{p2:eq:sqrt3-bound} is formal, division-free, in
+\path{CyclicSineProductBound.lean}: \path{Fabius.prod_norm_one_sub_exp_orbit_le} gives
+$\prod_{j<d}|1-\EulerE^{2\pi\ImaginaryUnit a2^j/q}|\le(\sqrt3)^{d}$, that is
+$A_{a,q}^{1/d}\le\sqrt3$, for every $a$ and every $d$ with $2^{d}\equiv1\pmod q$ --- the
+order of $2$ or any multiple of it --- with no coprimality or oddness hypothesis beyond
+what the congruence forces.  The proof is not the cosine averaging above but a cyclic
+form of the corpus's sharp Gelfond pairing: the two-step inequality
+$|\sin\theta|^{2}|\sin2\theta|\le(\sqrt3/2)^{3}$
+(\path{Fabius.abs_sin_sq_mul_abs_sin_two_mul_le}, \path{SharpGelfondBound.lean}) is
+applied around the closed orbit, the last factor pairing with the first because
+$|\sin(\pi a2^{d}/q)|=|\sin(\pi a/q)|$
+(\path{Fabius.abs_sin_pi_mul_two_pow_div_of_mod}), and the general principle
+\path{Fabius.prod_le_pow_of_sq_mul_succ_le_cyclic} --- cube the product, regroup as the
+$d$ pairs, take cube roots --- gives $\prod_{j<d}|\sin(\pi a2^{j}/q)|\le(\sqrt3/2)^{d}$
+(\path{Fabius.abs_prod_sin_orbit_le_sharp}).  The linear (non-cyclic) pairing of
+\path{SharpGelfondBound.lean} leaves one factor uncovered and yields only
+$2^{1/d}\cdot3^{(d-1)/2d}$; closing the orbit is exactly what removes that loss.  The
+equality clause --- equality if and only if $q=3$ --- is not formalized.
+
 \begin{corollary}[Sharp minimum of the rational-ray exponent]\label{p2:cor:kappa-minimum}
 Every nonzero rational ray satisfies
 \begin{equation}
@@ -4096,6 +4116,24 @@ Every factor indexed by $h$ contributes a simple zero at each positive multiple 
 \]
 Legendre's digit formula gives $\sum_{h\ge1}\Floor{N/2^h}=N-\BinaryDigitSum(N)$, proving \eqref{p3:eq:classical-count}.  Since $2N$ is even, \eqref{p3:eq:spectral-thue-morse} follows.  Finally, $\Phi_1(0)>0$, and crossing the zero at $n$ changes the sign exactly when $\mu_1(n)$ is odd.  Therefore the sign on $(N,N+1)$ is $(-1)^{\mathcal N_1(N)}$.
 \end{proof}
+
+\paragraph{Lean status.}
+\Cref{p3:thm:classical-count} is formal through two corpus statements.  The count
+\eqref{p3:eq:classical-count} is Legendre's digit formula in the form
+\(\sum_{h<M}\Floor{N/2^h}+\BinaryDigitSum(N)=2N\) for every \(M>\log_2N\),
+\path{Fabius.sum_range_div_two_pow_add_digitSum} in \path{DigitDefectCounting.lean}; the
+finite window is exactly the observation that all floors beyond \(h=\Floor{\log_2N}\)
+vanish, so \(\mathcal N_1(N)=\sum_{h<M}\Floor{N/2^h}\).  The parity statement
+\eqref{p3:eq:spectral-thue-morse} is
+\path{Fabius.neg_one_pow_sum_div_two_pow_const_one} in
+\path{DigitCharacterCongruence.lean}, \((-1)^{\sum_{h<m}\Floor{N/2^h}}=\ThueMorseSign N\)
+for \(N<2^m\), which is the mod-\(2\) shadow of the count without passing through the
+digit sum.  The identification of \(\mathcal N_1\) with the zero counting function of
+\(\Phi_1\) itself (each factor \(h\) contributing a simple zero at every positive multiple
+of \(2^h\)) is the zero-divisor description
+\path{Fabius.analyticOrderAt_generalizedRvachevProduct_int} at unit weight, in
+\path{GeneralizedZeroDivisor.lean}; the cumulative sum over \(n\le N\) is not separately
+stated.
 
 \begin{remark}
 The familiar sign law is therefore not merely an incidental binary identity.  It is a mod-$2$ shadow of an exact Weyl-type counting formula whose discrepancy from the linear main term is the binary digit sum.

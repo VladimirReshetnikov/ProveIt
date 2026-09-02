@@ -1,0 +1,1334 @@
+\documentclass[11pt]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage[a4paper,margin=27mm,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,array,longtable,tabularx}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{fancyhdr}
+\usepackage{xurl}
+\usepackage[hidelinks]{hyperref}
+\usepackage{aliascnt}
+\usepackage[nameinlink,noabbrev]{cleveref}
+
+\allowdisplaybreaks
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.55em}
+\setcounter{tocdepth}{2}
+\setcounter{secnumdepth}{3}
+
+\definecolor{linkblue}{RGB}{16,73,132}
+\hypersetup{
+  colorlinks=true,
+  linkcolor=linkblue,
+  citecolor=linkblue,
+  urlcolor=linkblue,
+  pdftitle={Exact Geometric Tails and q-Binomial Extrapolation for Dyadic Values of Rvachev's Up-Function},
+  pdfauthor={OpenAI}
+}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{Dyadic Rvachev extrapolation}
+\fancyhead[R]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+\newtheorem{theorem}{Theorem}[section]
+
+\newaliascnt{proposition}{theorem}
+\newtheorem{proposition}[proposition]{Proposition}
+\aliascntresetthe{proposition}
+
+\newaliascnt{lemma}{theorem}
+\newtheorem{lemma}[lemma]{Lemma}
+\aliascntresetthe{lemma}
+
+\newaliascnt{corollary}{theorem}
+\newtheorem{corollary}[corollary]{Corollary}
+\aliascntresetthe{corollary}
+
+\theoremstyle{definition}
+\newaliascnt{definition}{theorem}
+\newtheorem{definition}[definition]{Definition}
+\aliascntresetthe{definition}
+
+\newaliascnt{algorithm}{theorem}
+\newtheorem{algorithm}[algorithm]{Algorithm}
+\aliascntresetthe{algorithm}
+
+\theoremstyle{remark}
+\newaliascnt{remark}{theorem}
+\newtheorem{remark}[remark]{Remark}
+\aliascntresetthe{remark}
+
+\newaliascnt{example}{theorem}
+\newtheorem{example}[example]{Example}
+\aliascntresetthe{example}
+
+\crefname{proposition}{proposition}{propositions}
+\Crefname{proposition}{Proposition}{Propositions}
+\crefname{lemma}{lemma}{lemmas}
+\Crefname{lemma}{Lemma}{Lemmas}
+\crefname{corollary}{corollary}{corollaries}
+\Crefname{corollary}{Corollary}{Corollaries}
+\crefname{definition}{definition}{definitions}
+\Crefname{definition}{Definition}{Definitions}
+\crefname{algorithm}{algorithm}{algorithms}
+\Crefname{algorithm}{Algorithm}{Algorithms}
+\crefname{remark}{remark}{remarks}
+\Crefname{remark}{Remark}{Remarks}
+\crefname{example}{example}{examples}
+\Crefname{example}{Example}{Examples}
+
+\newcommand{\R}{\mathbb R}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\sinc}{\operatorname{sinc}}
+\newcommand{\rv}{\operatorname{up}}
+\newcommand{\Fabius}{\mathcal F}
+\newcommand{\Global}{\mathcal G}
+\newcommand{\FT}{\mathscr F}
+\newcommand{\D}{\mathrm D}
+\newcommand{\coeff}{[z^r]}
+\newcommand{\qbinom}[3]{\genfrac{[}{]}{0pt}{}{#1}{#2}_{#3}}
+\newcommand{\floor}[1]{\left\lfloor #1\right\rfloor}
+\newcommand{\abs}[1]{\left|#1\right|}
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+\newcommand{\e}{\mathrm e}
+\newcommand{\ii}{\mathrm i}
+
+\lstdefinestyle{code}{
+  basicstyle=\ttfamily\small,
+  columns=fullflexible,
+  frame=single,
+  breaklines=true,
+  showstringspaces=false,
+  backgroundcolor=\color{black!3},
+  xleftmargin=0.4em,
+  xrightmargin=0.4em
+}
+
+\title{\bfseries Exact Geometric Tails and \(q\)-Binomial Extrapolation\\[0.25em]
+for Dyadic Values of Rvachev's Up-Function}
+\author{A self-contained derivation based on the \texttt{ProveIt} development}
+\date{2 September 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Let \(\rv_n\) be the inverse Fourier transform of the finite product
+\[
+  \prod_{k=0}^{n}\sinc\!\left(\frac{\pi t}{2^k}\right),
+  \qquad \sinc z=\frac{\sin z}{z},
+\]
+and fix a dyadic rational \(x\in[-1,1]\).  Write \(s=s(x)\) for the least
+nonnegative integer for which \(2^s x\in\Z\), and put
+\(R=\floor{s/2}\).  We prove the exact, eventually finite representation
+\[
+ \rv_n(x)=\rv(x)+\sum_{r=1}^{R}B_r(x)4^{-rn},\qquad n\ge s.
+\]
+Thus the error is not merely asymptotic: after at most \(s\) initial levels it
+is a finite sum of signed geometric progressions, with ratios
+\(4^{-1},4^{-2},\ldots,4^{-R}\).  The proof combines the exact dyadic spline
+cells with an inverse convolution operator on a finite polynomial jet and the
+fact that the derivative jet of \(\rv\) terminates at dyadic points.
+
+The constant term is recovered from any \(R+1\) consecutive rational samples
+by the single formula
+\[
+ \boxed{
+ \rv(x)=\frac{1}{(Q;Q)_R}
+ \sum_{j=0}^{R}(-1)^{R-j}Q^{\binom{R-j+1}{2}}
+ \qbinom{R}{j}{Q}\,\rv_{n+j}(x),
+ \qquad Q=\frac14,\quad n\ge s.}
+\]
+Here \((a;Q)_m\) is the \(q\)-Pochhammer symbol and
+\(\qbinom{R}{j}{Q}\) is the Gaussian \(q\)-binomial coefficient.  We also
+give an exact Vandermonde/Lagrange method for recovering every \(B_r(x)\), a
+Romberg-style triangular implementation, stability estimates, examples, and
+fully rational Python verification code.
+\end{abstract}
+
+\begin{remark}[Status and provenance]
+The linked \texttt{ProveIt} corpus supplies the finite-spline formula, the
+head--tail convolution identity, the Bernoulli--Bell reciprocal-tail
+coefficients, the universal \(q\)-Lagrange weights, and the global derivative
+formula used below \cite{proveit-primary,proveit-frontiers}.  The exact
+\emph{termination at a fixed dyadic point} is derived here by joining those
+ingredients through a local polynomial-jet inversion argument.  This article
+is a mathematical proof and computational cross-check, not a claim that the
+new combined statement has already been formalized in Lean.
+\end{remark}
+
+\tableofcontents
+\newpage
+
+\section{The result in one page}
+
+Let
+\begin{equation}
+ \widehat f(t)=\int_{\R}f(x)\e^{-2\pi\ii tx}\dd x
+ \label{eq:two-pi-fourier}
+\end{equation}
+be the Fourier convention, and normalize Rvachev's function by
+\begin{equation}
+ \widehat\rv(t)=\prod_{k=0}^{\infty}
+ \sinc\!\left(\frac{\pi t}{2^k}\right).
+ \label{eq:up-product}
+\end{equation}
+For \(n\ge0\), define the user's finite-product approximant by
+\begin{equation}
+ \widehat{\rv_n}(t)=\prod_{k=0}^{n}
+ \sinc\!\left(\frac{\pi t}{2^k}\right).
+ \label{eq:user-prefix}
+\end{equation}
+
+For a dyadic \(x\), its \emph{dyadic depth} is
+\begin{equation}
+ s(x)=\min\{s\ge0:2^s x\in\Z\}.
+ \label{eq:depth}
+\end{equation}
+Thus \(s(0)=s(1)=s(-1)=0\), while a nonintegral dyadic has a unique reduced
+form \(x=a/2^s\) with \(a\) odd and \(s=s(x)\).
+
+The final answer is as follows.
+
+\begin{theorem}[Eventual exact geometric representation]
+\label{thm:main-preview}
+Fix a dyadic \(x\in[-1,1]\), let \(s=s(x)\), and set
+\(R=\floor{s/2}\).  There are rational numbers
+\(B_1(x),\ldots,B_R(x)\) such that
+\begin{equation}
+ \boxed{
+ \rv_n(x)=\rv(x)+\sum_{r=1}^{R}B_r(x)Q^{rn},
+ \qquad Q=\frac14,\quad n\ge s.}
+ \label{eq:main-preview}
+\end{equation}
+The coefficients have the analytic form
+\begin{equation}
+ B_r(x)=(-1)^r\alpha_r4^{-r}\rv^{(2r)}(x),
+ \label{eq:B-derivative-preview}
+\end{equation}
+where the universal rational constants \(\alpha_r\) are determined by
+\begin{equation}
+ \sum_{r=0}^{\infty}\alpha_r z^r
+ =\prod_{\ell=1}^{\infty}
+ \frac{1}{\sinc(2^{-\ell}\sqrt z)}.
+ \label{eq:alpha-product-preview}
+\end{equation}
+For every nonintegral dyadic of depth \(s\ge2\), the last coefficient
+\(B_R(x)\) is nonzero, so the degree \(R\) cannot in general be reduced.
+\end{theorem}
+
+Once \cref{eq:main-preview} is known, extraction is finite interpolation at
+geometric nodes.  Define
+\begin{equation}
+ (a;Q)_m=\prod_{k=0}^{m-1}(1-aQ^k),
+ \qquad
+ \qbinom{m}{j}{Q}=\frac{(Q;Q)_m}{(Q;Q)_j(Q;Q)_{m-j}}.
+ \label{eq:q-notation-preview}
+\end{equation}
+Then, for any starting index \(n\ge s\),
+\begin{equation}
+ \boxed{
+ \rv(x)=\frac{1}{(Q;Q)_R}
+ \sum_{j=0}^{R}(-1)^{R-j}Q^{\binom{R-j+1}{2}}
+ \qbinom{R}{j}{Q}\,\rv_{n+j}(x),
+ \qquad Q=\frac14.}
+ \label{eq:single-formula-preview}
+\end{equation}
+This is the requested single \(q\)-binomial/\(q\)-Pochhammer formula.  It
+requires exactly \(R+1=\floor{s/2}+1\) rational spline values.
+
+The rest of the article proves these statements, explains why the identity is
+exact rather than merely asymptotic, and gives a reproducible implementation.
+
+\section{Finite sinc products as exact dyadic splines}
+
+\subsection{An indexing dictionary}
+
+It is convenient to let \(p_N\) denote the inverse transform of a prefix with
+exactly \(N\) factors:
+\begin{equation}
+ \widehat p_N(t)=\prod_{k=0}^{N-1}
+ \sinc\!\left(\frac{\pi t}{2^k}\right),\qquad N\ge1.
+ \label{eq:pN-prefix}
+\end{equation}
+The user's indexing and this factor-count indexing are related by
+\begin{equation}
+ \boxed{\rv_n=p_{n+1}.}
+ \label{eq:index-dictionary}
+\end{equation}
+Keeping this one-step shift visible prevents the most common power-of-four
+error in the final coefficients.
+
+For \(a>0\), let
+\begin{equation}
+ b_a(x)=\frac{1}{2a}\mathbf 1_{[-a,a]}(x).
+ \label{eq:box}
+\end{equation}
+Since \(\widehat b_a(t)=\sinc(2\pi at)\), Fourier inversion gives
+\begin{equation}
+ p_N=b_{2^{-1}}*b_{2^{-2}}*\cdots*b_{2^{-N}}.
+ \label{eq:box-convolution}
+\end{equation}
+Hence \(p_N\) is a centered box spline, supported on
+\begin{equation}
+ [-A_N,A_N],\qquad A_N=\sum_{j=1}^{N}2^{-j}=1-2^{-N}.
+ \label{eq:support-radius}
+\end{equation}
+It is piecewise polynomial of degree at most \(N-1\) and belongs to
+\(C^{N-2}(\R)\) when \(N\ge2\).
+
+\subsection{The Thue--Morse truncated-power formula}
+
+Write
+\begin{equation}
+ \tau_k=(-1)^{s_2(k)},
+ \label{eq:tau}
+\end{equation}
+where \(s_2(k)\) is the sum of the binary digits of \(k\).
+
+\begin{proposition}[Exact finite spline]
+\label{prop:truncated-power}
+For \(N\ge1\), away from the harmless degree-zero knot convention,
+\begin{equation}
+ p_N(y)=\frac{2^{N(N-1)/2}}{(N-1)!}
+ \sum_{k=0}^{2^N-1}\tau_k
+ \left(y+A_N-\frac{k}{2^{N-1}}\right)_+^{N-1}.
+ \label{eq:truncated-power}
+\end{equation}
+Its knots are
+\begin{equation}
+ t_{N,k}=-1+(2k+1)2^{-N},\qquad 0\le k<2^N.
+ \label{eq:knots}
+\end{equation}
+In particular, \(p_N(y)\in\Q\) whenever \(y\in\Q\).
+\end{proposition}
+
+\begin{proof}
+Differentiate every box in \cref{eq:box-convolution}.  Since
+\(
+ \D b_a=(2a)^{-1}(\delta_{-a}-\delta_a),
+\)
+the distribution \(\D^Np_N\) is a signed sum of \(2^N\) point masses.  Binary
+endpoint choices give the signs \(\tau_k\), the locations in
+\cref{eq:knots}, and the common multiplier
+\(
+ \prod_{j=1}^{N}2^{j-1}=2^{N(N-1)/2}.
+\)
+Integrating \(N\) times from \(-\infty\) yields
+\cref{eq:truncated-power}.  Rationality at rational arguments is then
+immediate.
+\end{proof}
+
+This formula is one of the central exact-arithmetic ingredients developed in
+the repository \cite{proveit-frontiers}.
+
+\subsection{The exact self-similar tail}
+
+Let
+\begin{equation}
+ h_N=2^{-N},\qquad \rho_h(y)=h^{-1}\rv(y/h).
+ \label{eq:scaled-tail}
+\end{equation}
+The omitted random/Fourier tail is a scaled copy of the full up-function.  More
+precisely,
+\begin{equation}
+ \boxed{\rv=p_N*\rho_{h_N}.}
+ \label{eq:head-tail}
+\end{equation}
+Indeed, the quotient between \cref{eq:up-product} and
+\cref{eq:pN-prefix} is
+\[
+ \prod_{k=N}^{\infty}\sinc\!\left(\frac{\pi t}{2^k}\right)
+ =\widehat\rv(2^{-N}t)=\widehat{\rho_{h_N}}(t).
+\]
+The identity is exact for every \(N\); no limiting argument is involved.
+
+\section{Why dyadic points become cell centers}
+
+The knot grid in \cref{eq:knots} has spacing \(2^{1-N}\).  The missing-tail
+kernel in \cref{eq:head-tail} has radius \(h_N=2^{-N}\), exactly half that
+spacing.  This numerical coincidence is the geometric mechanism behind the
+finite answer.
+
+\begin{lemma}[Dyadic midpoint lemma]
+\label{lem:midpoint}
+Let \(x\in[-1,1]\) have dyadic depth \(s\).  If \(N\ge s+1\), then the nearest
+knots of \(p_N\) on either side of \(x\) are
+\begin{equation}
+ x-h_N\quad\text{and}\quad x+h_N,
+ \label{eq:nearest-knots}
+\end{equation}
+with the natural exterior-cell interpretation at \(x=\pm1\).  Consequently,
+there is a polynomial \(P_{N,x}\) of degree at most \(N-1\) such that
+\begin{equation}
+ p_N(x+t)=P_{N,x}(t),\qquad -h_N<t<h_N.
+ \label{eq:local-polynomial}
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Since \(N-1\ge s\),
+\[
+ M=2^{N-1}(x+1)\in\Z.
+\]
+Therefore
+\[
+ x=-1+2M2^{-N},
+ \qquad
+ x\pm2^{-N}=-1+(2M\pm1)2^{-N}.
+\]
+The two latter numbers are consecutive members of the odd grid
+\cref{eq:knots}.  Thus \(x\) is their midpoint and \(p_N\) is a single
+polynomial throughout the open interval between them.
+\end{proof}
+
+In the user's indexing \(N=n+1\), the sufficient threshold is simply
+\begin{equation}
+ \boxed{n\ge s(x).}
+ \label{eq:threshold}
+\end{equation}
+Earlier levels can occasionally satisfy the final formula by accident or by
+symmetry, but \cref{eq:threshold} is the uniform, explicit guarantee.
+
+\section{The reciprocal tail and its rational coefficients}
+
+\subsection{Angular normalization}
+
+The inverse differential operator is cleanest in the angular Fourier
+variable.  Put
+\begin{equation}
+ \phi(\xi)=\widehat\rv\!\left(\frac{\xi}{2\pi}\right)
+ =\prod_{\nu=1}^{\infty}\sinc\!\left(\frac{\xi}{2^\nu}\right).
+ \label{eq:angular-product}
+\end{equation}
+Define the reciprocal-tail function
+\begin{equation}
+ \Phi(z)=\frac{1}{\phi(\sqrt z)}
+ =\prod_{\ell=1}^{\infty}\frac{1}{\sinc(2^{-\ell}\sqrt z)}
+ =\sum_{r=0}^{\infty}\alpha_r z^r,
+ \qquad \alpha_0=1.
+ \label{eq:Phi-alpha}
+\end{equation}
+The nearest singularity is at \(z=4\pi^2\), so this is an ordinary analytic
+Taylor series near the origin.  For our polynomial-operator use, only its
+formal coefficients matter.
+
+\subsection{Bernoulli--Bell form}
+
+The classical identity
+\begin{equation}
+ \log\sinc w=-\sum_{k=1}^{\infty}
+ \frac{\zeta(2k)}{k\pi^{2k}}w^{2k}
+ \label{eq:log-sinc}
+\end{equation}
+gives
+\begin{equation}
+ \Phi(z)=\exp\!\left(\sum_{k=1}^{\infty}c_kz^k\right),
+ \label{eq:Phi-cumulants}
+\end{equation}
+where
+\begin{equation}
+ c_k=\frac{\zeta(2k)}{k\pi^{2k}(4^k-1)}
+ =\frac{(-1)^{k+1}2^{2k-1}B_{2k}}
+ {k(2k)!(4^k-1)}\in\Q.
+ \label{eq:ck}
+\end{equation}
+It follows that every \(\alpha_r\) is rational.  In terms of complete
+exponential Bell polynomials,
+\begin{equation}
+ \alpha_r=\frac{1}{r!}
+ Y_r(1!c_1,2!c_2,\ldots,r!c_r),
+ \label{eq:alpha-bell}
+\end{equation}
+and the computationally convenient recurrence is
+\begin{equation}
+ r\alpha_r=\sum_{k=1}^{r}k c_k\alpha_{r-k}.
+ \label{eq:alpha-recurrence}
+\end{equation}
+The first values are
+\begin{align}
+ \alpha_0&=1,&
+ \alpha_1&=\frac1{18},&
+ \alpha_2&=\frac{31}{16200},\notag\\
+ \alpha_3&=\frac{2347}{42865200},&
+ \alpha_4&=\frac{1904369}{1311675120000},&
+ \alpha_5&=\frac{3309760579}{88561680752160000}.
+ \label{eq:first-alphas}
+\end{align}
+These are the same universal coefficients that occur in the repository's
+all-order truncation expansion \cite{proveit-frontiers}.
+
+\begin{remark}[Why an asymptotic expansion is not enough]
+Fourier factorization gives, for each fixed truncation order \(M\),
+\[
+ p_N=\sum_{r=0}^{M}(-1)^r\alpha_r4^{-rN}\rv^{(2r)}
+      +O(4^{-(M+1)N})
+\]
+in smooth norms.  At a dyadic point the displayed derivatives eventually
+vanish, but this fact alone does \emph{not} force the remainder to be zero.
+The exact result requires the local polynomial argument in the next section.
+That is the step which upgrades ``all orders'' to a finite identity.
+\end{remark}
+
+\section{Exact inversion on a finite polynomial jet}
+
+\subsection{Averaging a polynomial by the tail kernel}
+
+Let \(Z\) have density \(\rv\), so \(Z\in[-1,1]\) and its law is even.  For a
+polynomial \(P\) and \(h>0\), define
+\begin{equation}
+ (\mathcal C_hP)(t)=\int_{-1}^{1}\rv(z)P(t-hz)\dd z.
+ \label{eq:Ch}
+\end{equation}
+This is again a polynomial of the same or lower degree.
+
+\begin{lemma}[Finite polynomial inverse]
+\label{lem:polynomial-inverse}
+On the vector space of polynomials of degree at most \(d\),
+\begin{equation}
+ \boxed{
+ P=\Phi(-h^2\D^2)\,\mathcal C_hP
+ =\sum_{r=0}^{\floor{d/2}}(-1)^r\alpha_rh^{2r}
+   \D^{2r}(\mathcal C_hP).}
+ \label{eq:polynomial-inverse}
+\end{equation}
+The equality is exact and purely finite.
+\end{lemma}
+
+\begin{proof}
+Let \(\mu_m=\int z^m\rv(z)\dd z\).  Odd moments vanish.  Taylor's formula for
+a polynomial gives
+\begin{equation}
+ \mathcal C_h
+ =\sum_{j\ge0}\frac{\mu_{2j}}{(2j)!}h^{2j}\D^{2j},
+ \label{eq:Ch-moment}
+\end{equation}
+where the sum truncates on every finite-degree polynomial.  Its scalar symbol
+is
+\[
+ M(w)=\sum_{j\ge0}\frac{\mu_{2j}}{(2j)!}w^j
+     =\phi(\ii\sqrt w).
+\]
+By \cref{eq:Phi-alpha},
+\[
+ \Phi(-w)=\frac{1}{\phi(\sqrt{-w})}
+         =\frac{1}{\phi(\ii\sqrt w)}
+         =\frac1{M(w)}.
+\]
+Thus the formal power series of \(\Phi(-h^2\D^2)\) and \(\mathcal C_h\) are
+reciprocals.  Because \(\D\) is nilpotent on polynomials of degree at most
+\(d\), their composition is exactly the identity after finitely many terms;
+there is no analytic convergence issue.
+\end{proof}
+
+\subsection{The spline jet equals the averaged local polynomial jet}
+
+\begin{lemma}[Jet transfer at a cell center]
+\label{lem:jet-transfer}
+Let \(x\) have dyadic depth \(s\), let \(N\ge s+1\), set \(h=h_N\), and let
+\(P_{N,x}\) be the local polynomial from \cref{lem:midpoint}.  Define
+\begin{equation}
+ J_{N,x}(t)=\mathcal C_hP_{N,x}(t).
+ \label{eq:J-polynomial}
+\end{equation}
+Then, for every \(0\le k\le N-1\),
+\begin{equation}
+ J_{N,x}^{(k)}(0)=\rv^{(k)}(x).
+ \label{eq:jet-match}
+\end{equation}
+Equivalently,
+\begin{equation}
+ J_{N,x}(t)=\sum_{k=0}^{N-1}\frac{\rv^{(k)}(x)}{k!}t^k.
+ \label{eq:J-Taylor}
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+From \cref{eq:head-tail},
+\(
+ \rv=p_N*\rho_h.
+\)
+For \(k\le N-1\), the distributional derivative \(\D^kp_N\) is locally
+integrable; point masses first appear at order \(N\).  Therefore
+\begin{align*}
+ \rv^{(k)}(x)
+ &=\int_{-h}^{h}(\D^kp_N)(x-y)\rho_h(y)\dd y\\
+ &=\int_{-1}^{1}P_{N,x}^{(k)}(-hz)\rv(z)\dd z
+  =J_{N,x}^{(k)}(0).
+\end{align*}
+The possible endpoint values at \(x\pm h\) affect a set of measure zero.  Both
+sides of \cref{eq:J-Taylor} are polynomials of degree at most \(N-1\) with the
+same derivatives at zero, so they are identical.
+\end{proof}
+
+Combining the preceding lemmas gives the exact local identity which drives the
+whole result.
+
+\begin{theorem}[Exact cell-center deconvolution]
+\label{thm:cell-deconvolution}
+If \(x\) has dyadic depth \(s\) and \(N\ge s+1\), then
+\begin{equation}
+ \boxed{
+ p_N(x)=\sum_{r=0}^{\floor{(N-1)/2}}
+ (-1)^r\alpha_r4^{-rN}\rv^{(2r)}(x).}
+ \label{eq:cell-deconvolution}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Apply \cref{lem:polynomial-inverse} to \(P_{N,x}\), with degree at most
+\(N-1\), and evaluate at zero.  Since \(P_{N,x}(0)=p_N(x)\), while
+\cref{lem:jet-transfer} gives
+\(
+ (\mathcal C_hP_{N,x})^{(2r)}(0)=\rv^{(2r)}(x),
+\)
+we obtain
+\[
+ p_N(x)=\sum_{r=0}^{\floor{(N-1)/2}}
+ (-1)^r\alpha_r h^{2r}\rv^{(2r)}(x).
+\]
+Now \(h=2^{-N}\), so \(h^{2r}=4^{-rN}\).
+\end{proof}
+
+\section{The derivative jet terminates at a dyadic point}
+
+\subsection{The signed global extension}
+
+Let
+\begin{equation}
+ \Global(y)=\sum_{b\ge0}\tau_b\rv(y-2b-1).
+ \label{eq:global-extension}
+\end{equation}
+This sum is locally finite.  On \([2b,2b+2]\), it is simply
+\begin{equation}
+ \Global(y)=\tau_b\rv(y-2b-1).
+ \label{eq:global-block}
+\end{equation}
+In particular,
+\begin{equation}
+ \Global(2m)=0\qquad(m\in\Z_{\ge0}),
+ \label{eq:G-even-zero}
+\end{equation}
+because even integers are support boundaries.  On \([-1,1]\),
+\begin{equation}
+ \rv(x)=\Global(x+1).
+ \label{eq:up-G-translate}
+\end{equation}
+The global extension satisfies the dilation equation
+\begin{equation}
+ \Global'(y)=2\Global(2y).
+ \label{eq:G-dilation}
+\end{equation}
+These identities are part of the arithmetic framework in
+\cite{proveit-primary,arias2018}.
+
+Iterating \cref{eq:G-dilation} gives
+\begin{equation}
+ \Global^{(m)}(y)=2^{\binom{m+1}{2}}\Global(2^m y),
+ \label{eq:G-derivatives}
+\end{equation}
+and hence, from \cref{eq:up-G-translate},
+\begin{equation}
+ \boxed{
+ \rv^{(m)}(x)=2^{\binom{m+1}{2}}
+ \Global\!\left(2^m(x+1)\right),
+ \qquad -1\le x\le1.}
+ \label{eq:up-derivatives-G}
+\end{equation}
+
+\begin{lemma}[Finite dyadic jet]
+\label{lem:dyadic-jet}
+If \(x\) has dyadic depth \(s\), then
+\begin{equation}
+ \rv^{(m)}(x)=0\qquad\text{for every }m>s.
+ \label{eq:dyadic-derivative-zero}
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+For \(m>s\), the number \(2^m(x+1)\) is an even integer.  Indeed, if
+\(s\ge1\), write \(x=a/2^s\) with \(a\) odd; then
+\[
+ 2^m(x+1)=(a+2^s)2^{m-s},
+\]
+and \(m-s\ge1\).  The integral cases \(s=0\) are immediate as well.  Now use
+\cref{eq:G-even-zero,eq:up-derivatives-G}.
+\end{proof}
+
+\begin{remark}[The last possible mode is genuinely present]
+Suppose \(x=a/2^s\) is nonintegral and reduced.  If \(s=2R\), then
+\(2^{2R}(x+1)=a+2^s\) is an odd integer, the center of a signed up-bump, so
+\(\Global\) there is \(\pm1\).  If \(s=2R+1\), then
+\(2^{2R}(x+1)=(a+2^s)/2\) is a half-integer strictly inside a signed bump, so
+its \(\Global\)-value is nonzero.  Hence \(\rv^{(2R)}(x)\ne0\) whenever
+\(s\ge2\).
+\end{remark}
+
+\section{Proof of the finite geometric formula}
+
+We can now prove the main statement in its precise coefficient form.
+
+\begin{theorem}[Exact finite geometric tail]
+\label{thm:finite-geometric}
+Let \(x\in[-1,1]\) be dyadic, let \(s=s(x)\), and put
+\(R=\floor{s/2}\).  For every \(N\ge s+1\),
+\begin{equation}
+ \boxed{
+ p_N(x)=\rv(x)+\sum_{r=1}^{R}C_r(x)4^{-rN},}
+ \label{eq:pN-geometric}
+\end{equation}
+where
+\begin{equation}
+ C_r(x)=(-1)^r\alpha_r\rv^{(2r)}(x).
+ \label{eq:C-r}
+\end{equation}
+Equivalently, in the user's indexing \(q_n=\rv_n(x)=p_{n+1}(x)\),
+\begin{equation}
+ \boxed{
+ q_n=\rv(x)+\sum_{r=1}^{R}B_r(x)4^{-rn},
+ \qquad n\ge s,}
+ \label{eq:qn-geometric}
+\end{equation}
+with
+\begin{align}
+ B_r(x)
+ &=4^{-r}C_r(x)
+ =(-1)^r\alpha_r4^{-r}\rv^{(2r)}(x)
+ \label{eq:B-r-derivative}\\
+ &=(-1)^r\alpha_r2^{r(2r-1)}
+ \Global\!\left(2^{2r}(x+1)\right).
+ \label{eq:B-r-global}
+\end{align}
+All coefficients are rational.  If \(s\ge2\), then \(B_R(x)\ne0\).
+\end{theorem}
+
+\begin{proof}
+The cell-center identity \cref{eq:cell-deconvolution} initially has terms up
+to \(\floor{(N-1)/2}\).  By \cref{lem:dyadic-jet}, every derivative of order
+larger than \(s\) is zero, so only \(2r\le s\), or \(r\le R\), remains.  This
+proves \cref{eq:pN-geometric}.  Substitute \(N=n+1\) and absorb one factor
+\(4^{-r}\) into the coefficient to obtain \cref{eq:qn-geometric}.
+\Cref{eq:B-r-global} follows from
+\cref{eq:up-derivatives-G}, because
+\[
+ 4^{-r}2^{\binom{2r+1}{2}}
+ =2^{-2r}2^{r(2r+1)}=2^{r(2r-1)}.
+\]
+The rationality of \(\alpha_r\) follows from \cref{eq:ck}.  Values of
+\(\Global\) at dyadic arguments are rational by the standard arithmetic theory
+of the Fabius/up function \cite{arias2018,proveit-primary}; alternatively,
+rationality of every coefficient follows directly by solving the rational
+Vandermonde system in \cref{sec:all-coefficients}.  The nonvanishing of the
+last coefficient follows from the preceding remark and \(\alpha_R>0\).
+\end{proof}
+
+Thus the error sequence is a finite linear combination of signed geometric
+progressions:
+\begin{equation}
+ q_n-\rv(x)=B_1(x)(1/4)^n+B_2(x)(1/16)^n+\cdots+B_R(x)(4^{-R})^n.
+ \label{eq:signed-progressions}
+\end{equation}
+Each progression decreases in absolute value as \(n\) increases.  The number
+of nonconstant modes is bounded by, and for \(s\ge2\) reaches, the explicit
+order \(R=\floor{s/2}\).
+
+\begin{corollary}[An exact recurrence]
+\label{cor:recurrence}
+Let \(E\) be the forward shift \((Eq)_n=q_{n+1}\).  On the tail \(n\ge s\),
+\begin{equation}
+ \prod_{r=1}^{R}(E-Q^r)\bigl(q_n-\rv(x)\bigr)=0,
+ \qquad Q=\frac14,
+ \label{eq:error-recurrence}
+\end{equation}
+and therefore
+\begin{equation}
+ (E-1)\prod_{r=1}^{R}(E-Q^r)q_n=0.
+ \label{eq:q-recurrence}
+\end{equation}
+\end{corollary}
+
+\begin{corollary}[Rational tail generating function]
+For \(n\ge s\),
+\begin{equation}
+ \sum_{m=0}^{\infty}\bigl(q_{s+m}-\rv(x)\bigr)z^m
+ =\sum_{r=1}^{R}\frac{B_r(x)Q^{rs}}{1-Q^rz}.
+ \label{eq:tail-generating-function}
+\end{equation}
+\end{corollary}
+
+\section{Exact extraction by \texorpdfstring{\(q\)}{q}-binomial interpolation}
+
+\subsection{The interpolation problem}
+
+Fix any starting index \(n\ge s\), set \(Q=1/4\), and rewrite
+\cref{eq:qn-geometric} as
+\begin{equation}
+ q_{n+j}=L+\sum_{r=1}^{R}D_r(Q^j)^r,
+ \qquad j=0,1,\ldots,R,
+ \label{eq:scaled-interpolation-data}
+\end{equation}
+where
+\begin{equation}
+ L=\rv(x),\qquad D_r=B_r(x)Q^{rn}.
+ \label{eq:D-r}
+\end{equation}
+Thus \(q_{n+j}=g_n(Q^j)\) for a polynomial
+\begin{equation}
+ g_n(z)=L+D_1z+\cdots+D_Rz^R.
+ \label{eq:g-polynomial}
+\end{equation}
+The desired limit is simply \(L=g_n(0)\).
+
+\subsection{Closed \texorpdfstring{\(q\)}{q}-Pochhammer weights}
+
+For \(m\ge0\), recall
+\begin{equation}
+ (a;Q)_m=\prod_{k=0}^{m-1}(1-aQ^k),
+ \qquad (Q;Q)_m=\prod_{k=1}^{m}(1-Q^k),
+ \label{eq:q-Pochhammer}
+\end{equation}
+and
+\begin{equation}
+ \qbinom{m}{j}{Q}=\frac{(Q;Q)_m}
+ {(Q;Q)_j(Q;Q)_{m-j}}.
+ \label{eq:Gaussian-binomial}
+\end{equation}
+
+\begin{theorem}[Universal \(q\)-Lagrange weights]
+\label{thm:q-weights}
+For \(0<Q<1\), define
+\begin{equation}
+ w_j^{(R)}=
+ \frac{(-1)^{R-j}Q^{\binom{R-j+1}{2}}}
+ {(Q;Q)_j(Q;Q)_{R-j}}
+ =\frac{(-1)^{R-j}Q^{\binom{R-j+1}{2}}}{(Q;Q)_R}
+ \qbinom{R}{j}{Q}.
+ \label{eq:q-weights}
+\end{equation}
+Then
+\begin{equation}
+ \sum_{j=0}^{R}w_j^{(R)}=1,
+ \qquad
+ \sum_{j=0}^{R}w_j^{(R)}Q^{jr}=0
+ \quad(1\le r\le R).
+ \label{eq:weight-moments}
+\end{equation}
+Consequently, for the dyadic spline sequence,
+\begin{equation}
+ \boxed{
+ \rv(x)=\sum_{j=0}^{R}w_j^{(R)}\rv_{n+j}(x),
+ \qquad n\ge s.}
+ \label{eq:weighted-extraction}
+\end{equation}
+Equivalently,
+\begin{equation}
+ \boxed{
+ \rv(x)=\frac{1}{(Q;Q)_R}
+ \sum_{j=0}^{R}(-1)^{R-j}Q^{\binom{R-j+1}{2}}
+ \qbinom{R}{j}{Q}\,\rv_{n+j}(x),
+ \quad Q=\frac14,\ n\ge s.}
+ \label{eq:main-extraction}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+The Lagrange coefficient for evaluating at zero from the nodes
+\(1,Q,\ldots,Q^R\) is
+\begin{equation}
+ \ell_j(0)=\prod_{\substack{0\le k\le R\\k\ne j}}
+ \frac{-Q^k}{Q^j-Q^k}.
+ \label{eq:Lagrange-weight-product}
+\end{equation}
+Separate the factors with \(k<j\) and \(k>j\).  The signs, powers of \(Q\),
+and products \(1-Q^m\) simplify to
+\[
+ \ell_j(0)=
+ \frac{(-1)^{R-j}Q^{(R-j)(R-j+1)/2}}
+ {(Q;Q)_j(Q;Q)_{R-j}},
+\]
+which is \cref{eq:q-weights}.  Lagrange interpolation is exact for every
+polynomial of degree at most \(R\); applying it to \(1,z,\ldots,z^R\) yields
+\cref{eq:weight-moments}.  Applying it to \(g_n\) in
+\cref{eq:g-polynomial} yields \cref{eq:weighted-extraction}, and the Gaussian
+form gives \cref{eq:main-extraction}.
+\end{proof}
+
+The first three filters, with \(Q=1/4\), are
+\begin{align}
+ R=1:\quad &\rv(x)=\frac{4q_{n+1}-q_n}{3},
+ \label{eq:filter1}\\
+ R=2:\quad &\rv(x)=\frac{q_n-20q_{n+1}+64q_{n+2}}{45},
+ \label{eq:filter2}\\
+ R=3:\quad &\rv(x)=
+ \frac{-q_n+84q_{n+1}-1344q_{n+2}+4096q_{n+3}}{2835}.
+ \label{eq:filter3}
+\end{align}
+
+\subsection{A triangular Richardson table}
+
+The weighted sum can be evaluated without constructing all weights at once.
+
+\begin{algorithm}[Exact \(q\)-Richardson table]
+\label{alg:richardson}
+Start with
+\begin{equation}
+ T_{0,n}=q_n.
+ \label{eq:T0}
+\end{equation}
+For \(m=1,2,\ldots,R\), form
+\begin{equation}
+ \boxed{
+ T_{m,n}=\frac{T_{m-1,n+1}-Q^mT_{m-1,n}}{1-Q^m}.}
+ \label{eq:richardson-recursion}
+\end{equation}
+Then
+\begin{equation}
+ T_{R,n}=\rv(x)\qquad(n\ge s).
+ \label{eq:richardson-exact}
+\end{equation}
+\end{algorithm}
+
+At stage \(m\), the new row removes the mode \(Q^{mn}\).  This is the
+Romberg-style realization of the polynomial
+\begin{equation}
+ W_R(E)=\prod_{m=1}^{R}\frac{E-Q^m}{1-Q^m}.
+ \label{eq:filter-polynomial}
+\end{equation}
+The formulas and their moment identities are also developed in the repository's
+\(q\)-Richardson layer \cite{proveit-frontiers}.
+
+\section{Recovering every coefficient from the same samples}
+\label{sec:all-coefficients}
+
+The extraction formula is the first row of an ordinary rational Vandermonde
+problem.  From \cref{eq:scaled-interpolation-data},
+\begin{equation}
+ \begin{pmatrix}
+ 1&1&1&\cdots&1\\
+ 1&Q&Q^2&\cdots&Q^R\\
+ 1&Q^2&Q^4&\cdots&Q^{2R}\\
+ \vdots&\vdots&\vdots&&\vdots\\
+ 1&Q^R&Q^{2R}&\cdots&Q^{R^2}
+ \end{pmatrix}
+ \begin{pmatrix}L\\D_1\\D_2\\\vdots\\D_R\end{pmatrix}
+ =
+ \begin{pmatrix}q_n\\q_{n+1}\\q_{n+2}\\\vdots\\q_{n+R}\end{pmatrix}.
+ \label{eq:Vandermonde-system}
+\end{equation}
+Its determinant is
+\begin{equation}
+ \prod_{0\le i<j\le R}(Q^j-Q^i)\ne0,
+ \label{eq:Vandermonde-det}
+\end{equation}
+so the solution is unique.  Since the matrix and data are rational, every
+\(L,D_r\), and hence every \(B_r=Q^{-rn}D_r\), is rational.
+
+An explicit all-coefficient interpolation formula is
+\begin{equation}
+ g_n(z)=\sum_{j=0}^{R}q_{n+j}
+ \prod_{\substack{0\le k\le R\\k\ne j}}
+ \frac{z-Q^k}{Q^j-Q^k}.
+ \label{eq:all-coefficient-Lagrange}
+\end{equation}
+Then
+\begin{equation}
+ \boxed{
+ \rv(x)=g_n(0),\qquad
+ B_r(x)=Q^{-rn}[z^r]g_n(z)\quad(1\le r\le R).}
+ \label{eq:all-coefficients}
+\end{equation}
+Thus the same \(R+1\) values determine both the true rational limit and every
+geometric correction coefficient.
+
+\section{A practical exact-arithmetic method}
+
+\begin{algorithm}[Limit extraction at a dyadic point]
+\label{alg:practical}
+Given a dyadic \(x\in[-1,1]\):
+\begin{enumerate}[label=\arabic*.,leftmargin=2.2em]
+ \item Reduce \(x\) and compute its dyadic depth
+       \(s=\min\{j:2^jx\in\Z\}\).
+ \item Set \(R=\floor{s/2}\), \(Q=1/4\), and choose any \(n\ge s\).  The
+       minimal choice is \(n=s\).
+ \item Evaluate the \(R+1\) rational spline values
+       \(q_n,q_{n+1},\ldots,q_{n+R}\), for example by
+       \cref{eq:truncated-power}.
+ \item Apply the single formula \cref{eq:main-extraction}, or equivalently
+       construct the triangular table \cref{eq:richardson-recursion}.  The
+       result is exactly \(\rv(x)\).
+ \item If the correction terms are wanted, solve
+       \cref{eq:Vandermonde-system} or use
+       \cref{eq:all-coefficients}.
+ \item As an exact diagnostic, repeat the extraction from the next overlapping
+       block.  Every block beginning at \(n\ge s\) must return the same
+       rational number.
+\end{enumerate}
+\end{algorithm}
+
+No estimate of a small remainder is needed.  With rational arithmetic, equality
+is literal numerator/denominator equality.
+
+\subsection{Stability for inexact inputs}
+
+If the input samples are rounded rather than exact, the absolute condition
+number of the weighted sum is
+\begin{equation}
+ \Lambda_R(Q)=\sum_{j=0}^{R}\abs{w_j^{(R)}}
+ =\frac{(-Q;Q)_R}{(Q;Q)_R}.
+ \label{eq:condition-number}
+\end{equation}
+For \(Q=1/4\), these values remain below the convergent limit
+\begin{equation}
+ \Lambda_\infty(1/4)=
+ \frac{(-1/4;1/4)_\infty}{(1/4;1/4)_\infty}
+ \approx1.9692603537.
+ \label{eq:condition-limit}
+\end{equation}
+Thus even high-order dyadic filters have modest absolute amplification.  Exact
+rational arithmetic, of course, eliminates roundoff entirely.
+
+\subsection{Over-ordering}
+
+If one uses any order \(M\ge R\), the same weight formula with \(M\) in place
+of \(R\) also returns \(\rv(x)\) exactly, because it annihilates every actual
+mode.  The minimal order \(R\) uses the fewest samples and normally gives the
+smallest arithmetic workload.
+
+\section{Worked exact examples}
+
+\subsection{Depth two: one geometric mode}
+
+For \(x=1/4\), \(s=2\) and \(R=1\).  Exact spline evaluation gives
+\begin{equation}
+ \rv_n\!\left(\frac14\right)
+ =\frac{67}{72}+\frac19\,4^{-n},
+ \qquad n\ge2.
+ \label{eq:x-quarter-model}
+\end{equation}
+For example,
+\[
+ q_2=\frac{15}{16},\qquad q_3=\frac{179}{192},
+\]
+and \cref{eq:filter1} gives
+\begin{equation}
+ \rv\!\left(\frac14\right)
+ =\frac{4(179/192)-15/16}{3}=\frac{67}{72}.
+ \label{eq:x-quarter-extract}
+\end{equation}
+The fitted coefficient and \(\alpha_1=1/18\) imply
+\(
+ \rv''(1/4)=-8,
+\)
+consistent with \cref{eq:up-derivatives-G}.
+
+Similarly,
+\begin{equation}
+ \rv_n\!\left(\frac34\right)
+ =\frac{5}{72}-\frac19\,4^{-n},
+ \qquad n\ge2,
+ \label{eq:x-three-quarter-model}
+\end{equation}
+so the same filter returns \(\rv(3/4)=5/72\).
+
+\subsection{Depth three: still one even-derivative mode}
+
+For \(x=1/8\), \(s=3\) but \(R=\floor{3/2}=1\), because the correction
+operator uses only even derivatives.  The exact identity is
+\begin{equation}
+ \rv_n\!\left(\frac18\right)
+ =\frac{287}{288}+\frac1{18}\,4^{-n},
+ \qquad n\ge3.
+ \label{eq:x-eighth-model}
+\end{equation}
+Thus two consecutive values again suffice.
+
+\subsection{Depth four: two geometric modes}
+
+For \(x=1/16\), \(s=4\) and \(R=2\).  The three minimal samples are
+\begin{equation}
+ q_4=\frac{24575}{24576},\qquad
+ q_5=\frac{1965959}{1966080},\qquad
+ q_6=\frac{94365509}{94371840}.
+ \label{eq:x-sixteenth-samples}
+\end{equation}
+The order-two filter gives
+\begin{align}
+ \rv\!\left(\frac1{16}\right)
+ &=\frac{q_4-20q_5+64q_6}{45}
+ =\frac{2073457}{2073600}.
+ \label{eq:x-sixteenth-limit}
+\end{align}
+Solving the full system yields
+\begin{equation}
+ \boxed{
+ \rv_n\!\left(\frac1{16}\right)
+ =\frac{2073457}{2073600}
+ +\frac{5}{648}4^{-n}
+ -\frac{248}{2025}16^{-n},
+ \qquad n\ge4.}
+ \label{eq:x-sixteenth-model}
+\end{equation}
+The corresponding derivatives inferred from
+\cref{eq:B-r-derivative} are
+\begin{equation}
+ \rv''\!\left(\frac1{16}\right)=-\frac59,
+ \qquad
+ \rv^{(4)}\!\left(\frac1{16}\right)=-1024.
+ \label{eq:x-sixteenth-derivatives}
+\end{equation}
+
+\subsection{A table of exact models}
+
+\begin{center}
+\small
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{@{}c c c c c c@{}}
+\toprule
+\(x\) & \(s\) & \(R\) & \(\rv(x)\) & \(B_1\) & \(B_2\) \\
+\midrule
+\(0\) & 0 & 0 & \(1\) & -- & -- \\
+\(1/2\) & 1 & 0 & \(1/2\) & -- & -- \\
+\(1/4\) & 2 & 1 & \(67/72\) & \(1/9\) & -- \\
+\(3/4\) & 2 & 1 & \(5/72\) & \(-1/9\) & -- \\
+\(1/8\) & 3 & 1 & \(287/288\) & \(1/18\) & -- \\
+\(1/16\) & 4 & 2 & \(2073457/2073600\) & \(5/648\) & \(-248/2025\) \\
+\(3/16\) & 4 & 2 & \(2026943/2073600\) & \(67/648\) & \(248/2025\) \\
+\(5/16\) & 4 & 2 & \(1767743/2073600\) & \(67/648\) & \(248/2025\) \\
+\(1/32\) & 5 & 2 & \(33177581/33177600\) & \(1/2592\) & \(-124/2025\) \\
+\bottomrule
+\end{tabular}
+\end{center}
+In each row the model is
+\(
+ \rv_n(x)=\rv(x)+B_1 4^{-n}+B_2 16^{-n}
+\)
+with absent terms omitted and with validity from \(n\ge s\).
+
+\section{Computational verification}
+
+The archive accompanying this article contains
+\begin{center}
+ \texttt{exact\_extrapolation.py}
+\end{center}
+and its generated report
+\begin{center}
+ \texttt{verification\_output.txt}.
+\end{center}
+The program uses only the Python standard library.  Every quantity is a
+\texttt{fractions.Fraction}; no floating-point value enters any identity check.
+It implements:
+\begin{itemize}[leftmargin=2em]
+ \item the Thue--Morse truncated-power formula for \(p_N(x)\);
+ \item \(q\)-Pochhammer symbols, Gaussian binomials, and the weights
+       \cref{eq:q-weights};
+ \item the triangular table \cref{eq:richardson-recursion};
+ \item exact Gauss--Jordan solution of \cref{eq:Vandermonde-system};
+ \item Bernoulli numbers, the cumulants \(c_k\), and the recurrence for
+       \(\alpha_r\);
+ \item overlapping-block and out-of-sample checks of every recovered model.
+\end{itemize}
+
+The included run verifies all signed dyadic points of depth at most six,
+including endpoints: 129 points in total.  At each point it checks multiple
+overlapping extraction blocks, the full fitted formula at later levels, and
+the annihilating moment identities.  All checks pass exactly.  These
+experiments are evidence against indexing or sign mistakes; the proof itself
+is contained in \cref{lem:midpoint,lem:polynomial-inverse,lem:jet-transfer,lem:dyadic-jet,thm:finite-geometric,thm:q-weights}.
+
+To reproduce the report from the archive, run
+\begin{lstlisting}[style=code,language=bash]
+python exact_extrapolation.py --max-depth 6 \
+  --output verification_output.txt
+\end{lstlisting}
+Larger depths may be requested, at an exponentially growing cost for the
+straightforward truncated-power evaluator.
+
+\section{Further consequences and extensions}
+
+\subsection{The universal part and the dyadic part}
+
+Two logically distinct structures meet in the result:
+\begin{enumerate}[label=(\roman*),leftmargin=2.2em]
+ \item The reciprocal tail and the \(q\)-filter are universal for geometric
+       sinc products.  For base \(b>1\), the natural ratio is \(Q=b^{-2}\),
+       and the same weights \cref{eq:q-weights} annihilate the modes
+       \(Q^n,\ldots,Q^{Rn}\).
+ \item Exact finite termination here depends on special dyadic geometry:
+       the point becomes the center of a uniform spline cell, and the global
+       derivative orbit reaches an even integer after finitely many doublings.
+\end{enumerate}
+Thus \(q\)-Richardson acceleration exists much more generally, while exact
+finite recovery is an arithmetic superconvergence phenomenon.
+
+\subsection{Nonconsecutive levels}
+
+Consecutive levels are not essential.  Given distinct levels
+\(n_0,\ldots,n_R\ge s\), interpolate at the nodes
+\(Q^{n_0},\ldots,Q^{n_R}\) and evaluate at zero:
+\begin{equation}
+ \rv(x)=\sum_{j=0}^{R}q_{n_j}
+ \prod_{\substack{0\le k\le R\\k\ne j}}
+ \frac{-Q^{n_k}}{Q^{n_j}-Q^{n_k}}.
+ \label{eq:nonconsecutive}
+\end{equation}
+The consecutive choice is preferable because the common factor \(Q^n\)
+cancels and produces the compact \(q\)-Pochhammer expression.
+
+\subsection{Exact certification from data}
+
+When \(x\) is known, the depth supplies a proof-level order bound, so there is
+no model-selection problem.  Nevertheless, the following checks are useful in
+software:
+\begin{itemize}[leftmargin=2em]
+ \item \(T_{R,n}=T_{R,n+1}\) for overlapping blocks;
+ \item the recovered coefficients reproduce later \(q_k\) exactly;
+ \item the moment sums in \cref{eq:weight-moments} vanish exactly;
+ \item the highest fitted coefficient is nonzero for reduced depth \(s\ge2\).
+\end{itemize}
+Failure of any check signals a wrong index convention, an insufficient start
+level, or an error in the spline evaluator.
+
+\section{Conclusion}
+
+At a fixed dyadic rational, the finite sinc-product splines exhibit a stronger
+phenomenon than ordinary convergence.  From level \(n=s(x)\) onward, the point
+is centered in one polynomial cell whose width matches the support of the
+self-similar omitted tail.  The tail convolution can therefore be inverted
+exactly on a finite polynomial jet.  The global doubling equation then kills
+all derivatives above the dyadic depth.  What appears globally as an infinite
+all-order expansion collapses pointwise to
+\[
+ \rv_n(x)=\rv(x)+\sum_{r=1}^{\floor{s(x)/2}}B_r(x)4^{-rn}.
+\]
+
+The constant term of this finite geometric polynomial is evaluation at zero
+from the nodes \(1,Q,\ldots,Q^R\).  Lagrange interpolation on that geometric
+grid is exactly the \(q\)-binomial filter
+\[
+ \rv(x)=\frac{1}{(Q;Q)_R}
+ \sum_{j=0}^{R}(-1)^{R-j}Q^{\binom{R-j+1}{2}}
+ \qbinom{R}{j}{Q}\,\rv_{n+j}(x),
+ \qquad Q=\frac14.
+\]
+It uses finitely many rational inputs and returns the true rational value with
+no limiting process and no remainder estimate.
+
+\appendix
+
+\section{Compact derivation of the weight formula}
+
+For reference, start from
+\[
+ w_j=\prod_{k\ne j}\frac{-Q^k}{Q^j-Q^k}.
+\]
+For \(k<j\), write
+\[
+ Q^j-Q^k=-Q^k(1-Q^{j-k});
+\]
+for \(k>j\), write
+\[
+ Q^j-Q^k=Q^j(1-Q^{k-j}).
+\]
+There are \(j\) signs from the first group.  The denominator products are
+\((Q;Q)_j\) and \((Q;Q)_{R-j}\).  The remaining power of \(Q\) is
+\begin{align*}
+ \sum_{k\ne j}k-
+ \left(\sum_{k<j}k+j(R-j)\right)
+ &=\frac{(R-j)(R-j+1)}2.
+\end{align*}
+Combining signs and powers gives \cref{eq:q-weights}.
+
+\section{Normalization summary}
+
+\begin{center}
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{0.28\textwidth}X@{}}
+\toprule
+Object & Definition \\
+\midrule
+Full up-function &
+\(\widehat\rv(t)=\prod_{k\ge0}\sinc(\pi t/2^k)\) under the two-pi convention.\\
+User's approximant &
+\(\widehat{\rv_n}(t)=\prod_{k=0}^{n}\sinc(\pi t/2^k)\).\\
+Factor-count spline &
+\(p_N=\rv_{N-1}\), containing exactly \(N\) factors.\\
+Tail radius &
+\(h_N=2^{-N}\), with \(\rv=p_N*\rho_{h_N}\).\\
+Geometric ratio &
+\(Q=1/4\).\\
+Dyadic depth &
+\(s(x)=\min\{s\ge0:2^sx\in\Z\}\).\\
+Number of modes &
+\(R=\floor{s(x)/2}\).\\
+Guaranteed user level &
+\(n\ge s(x)\).\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\begingroup\sloppy\begin{thebibliography}{99}
+
+\bibitem{proveit-primary}
+V.~Reshetnikov,
+\newblock \emph{The Fabius Function and Rvachev's Up-Function: Exact arithmetic,
+probability, Fourier analysis, and corrected sharp asymptotics},
+\newblock living TeX exposition in the \texttt{ProveIt} repository,
+\newblock \url{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Analysis/FabiusFunction/docs/Fabius_Function_and_Rvachev_Up}.
+
+\bibitem{proveit-frontiers}
+V.~Reshetnikov,
+\newblock \emph{Non-formalized Research Frontiers: Exponents and q-Series},
+\newblock living TeX development in the \texttt{ProveIt} repository,
+\newblock \url{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Analysis/FabiusFunction/docs/semi-formalized-research-frontiers}.
+
+\bibitem{rvachev1990}
+V.~A.~Rvachev,
+\newblock Compactly supported solutions of functional-differential equations
+and their applications,
+\newblock \emph{Russian Mathematical Surveys} \textbf{45} (1990), no.~1,
+87--120.
+
+\bibitem{arias1982}
+J.~Arias de Reyna,
+\newblock Definici\'on y estudio de una funci\'on indefinidamente diferenciable
+de soporte compacto,
+\newblock \emph{Revista de la Real Academia de Ciencias Exactas, F\'isicas y
+Naturales de Madrid} \textbf{76} (1982), no.~1, 21--38;
+English translation, \emph{An infinitely differentiable function with compact
+support: Definition and properties}, arXiv:1702.05442 (2017).
+
+\bibitem{arias2018}
+J.~Arias de Reyna,
+\newblock Arithmetic of the Fabius function,
+\newblock \emph{INTEGERS} \textbf{18} (2018), Article A51;
+arXiv:1702.06487, version 3.
+
+\bibitem{fabius1966}
+J.~Fabius,
+\newblock A probabilistic example of a nowhere analytic \(C^\infty\)-function,
+\newblock \emph{Zeitschrift f\"ur Wahrscheinlichkeitstheorie und Verwandte
+Gebiete} \textbf{5} (1966), 173--174.
+
+\bibitem{deboor}
+C.~de Boor,
+\newblock \emph{A Practical Guide to Splines}, revised edition,
+\newblock Springer, New York, 2001.
+
+\bibitem{gasper-rahman}
+G.~Gasper and M.~Rahman,
+\newblock \emph{Basic Hypergeometric Series}, second edition,
+\newblock Cambridge University Press, 2004.
+
+\end{thebibliography}\endgroup
+
+\end{document}

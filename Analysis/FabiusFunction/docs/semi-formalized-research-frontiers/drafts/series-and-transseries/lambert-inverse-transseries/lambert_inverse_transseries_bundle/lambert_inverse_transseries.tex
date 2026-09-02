@@ -1,0 +1,1378 @@
+\documentclass[11pt]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage{amsmath,amssymb,amsthm,mathtools,bm}
+\usepackage{newtxtext,newtxmath}
+\usepackage[letterpaper,margin=1in,headheight=15pt]{geometry}
+\usepackage{microtype}
+\usepackage{booktabs,longtable,tabularx,array}
+\usepackage[most]{tcolorbox}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{graphicx}
+\usepackage{listings}
+\usepackage{xurl}
+\usepackage{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\usepackage{bookmark}
+\usepackage{needspace}
+
+\definecolor{ink}{HTML}{18212B}
+\definecolor{accent}{HTML}{1E5A7A}
+\definecolor{accenttwo}{HTML}{7A3E1E}
+\definecolor{pale}{HTML}{F3F7F9}
+\definecolor{palewarm}{HTML}{FBF6F1}
+\definecolor{rulegray}{HTML}{CBD5DB}
+\definecolor{codegray}{HTML}{F5F5F5}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=accent,
+  citecolor=accenttwo,
+  urlcolor=accent,
+  pdftitle={Reversing x + W(x): Exact Reduction and Logarithmic Transseries},
+  pdfauthor={OpenAI},
+  pdfsubject={Lambert W, r-Lambert function, asymptotic inversion, logarithmic transseries},
+  pdfkeywords={Lambert W, r-Lambert W, Lagrange inversion, transseries, asymptotic expansion}
+}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\textsc{Reversing $x+W(x)$}}
+\fancyhead[R]{\small\textsc{Logarithmic transseries}}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.35pt}
+
+\titleformat{\section}
+  {\Large\bfseries\color{ink}}{\thesection}{0.65em}{}
+\titleformat{\subsection}
+  {\large\bfseries\color{accent}}{\thesubsection}{0.65em}{}
+\titleformat{\subsubsection}
+  {\normalsize\bfseries\color{accenttwo}}{\thesubsubsection}{0.65em}{}
+\titlespacing*{\section}{0pt}{2.4ex plus .5ex minus .2ex}{1.2ex}
+\titlespacing*{\subsection}{0pt}{2.0ex plus .4ex minus .2ex}{0.8ex}
+
+\setlist{itemsep=0.25em,topsep=0.5em}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.52em}
+\allowdisplaybreaks[3]
+
+\newtheoremstyle{clean}
+  {8pt}{8pt}{\itshape}{}% space, body font, indent
+  {\bfseries\color{ink}}{.}{0.55em}{}
+\theoremstyle{clean}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{example}[theorem]{Example}
+
+\newtcolorbox{mainbox}[1][]{
+  enhanced,
+  breakable,
+  colback=pale,
+  colframe=accent,
+  boxrule=0.7pt,
+  arc=2pt,
+  left=9pt,right=9pt,top=8pt,bottom=8pt,
+  title={#1},
+  fonttitle=\bfseries
+}
+\newtcolorbox{methodbox}[1][]{
+  enhanced,
+  breakable,
+  colback=palewarm,
+  colframe=accenttwo,
+  boxrule=0.6pt,
+  arc=2pt,
+  left=9pt,right=9pt,top=8pt,bottom=8pt,
+  title={#1},
+  fonttitle=\bfseries
+}
+
+\lstdefinestyle{cleanlisting}{
+  basicstyle=\ttfamily\small,
+  backgroundcolor=\color{codegray},
+  frame=single,
+  rulecolor=\color{rulegray},
+  framerule=0.4pt,
+  xleftmargin=0.5em,
+  xrightmargin=0.5em,
+  aboveskip=0.8em,
+  belowskip=0.8em,
+  columns=fullflexible,
+  keepspaces=true,
+  showstringspaces=false,
+  breaklines=true,
+  keywordstyle=\bfseries\color{accent},
+  commentstyle=\itshape\color{accenttwo}
+}
+\lstset{style=cleanlisting}
+
+\newcommand{\Lambert}{W}
+\newcommand{\rLambert}{\mathcal W}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\e}{\mathrm e}
+\newcommand{\D}{\frac{\mathrm d}{\mathrm dz}}
+\newcommand{\deltaop}{\delta}
+\newcommand{\bigO}{\mathcal O}
+\newcommand{\littleo}{o}
+\newcommand{\fall}[2]{\left(#1\right)_{\!\underline{#2}}}
+\newcommand{\bracks}[2]{\genfrac{[}{]}{0pt}{}{#1}{#2}}
+\newcommand{\Trunc}{\operatorname{Trunc}}
+\newcommand{\Res}{\operatorname{Res}}
+\newcommand{\val}{\operatorname{val}}
+
+\begin{document}
+\hypersetup{pageanchor=false}
+
+\begin{titlepage}
+\thispagestyle{empty}
+\vspace*{1.0in}
+
+{\color{accent}\rule{\textwidth}{1.1pt}}\\[1.2em]
+{\Huge\bfseries\color{ink}
+Reversing \(x+W(x)\)}\\[0.65em]
+{\fontsize{17}{21}\selectfont\color{accent}
+Exact reduction, asymptotic sectors, and a calculus for logarithmic transseries}\\[1.2em]
+{\color{accent}\rule{\textwidth}{1.1pt}}
+
+\vspace{1.2in}
+
+\begin{mainbox}[Central formula]
+Let \(W\) be the principal real Lambert function and let
+\[
+  f(x)=x+W(x),\qquad x\ge 0.
+\]
+Writing \(g=f^{-1}\), \(w=W(z)\), and
+\(
+Lambert_r\) for the inverse of \(u\mapsto u\e^u+ru\), one has
+\[
+  \boxed{\;g(z)=z-\rLambert_1(z)\;}
+\]
+and, as \(z\to\infty\),
+\[
+  \boxed{\;
+  g(z)=z-w+\sum_{k=1}^{N}\frac{A_k(w)}{z^k}
+       +\bigO_N\!\left(\left(\frac{w}{z}\right)^{N+1}\right),
+  \qquad
+  A_k(w)=\frac{(-1)^{k+1}}{(k+1)!}
+  \mathcal L_{k-1}\cdots\mathcal L_0\bigl(w^{k+1}\bigr),
+  \;}
+\]
+where
+\[
+  \mathcal L_m=\frac{w}{1+w}\frac{\mathrm d}{\mathrm dw}-m.
+\]
+The small parameter is \(w/z=\e^{-w}\sim (\log z)/z\).  This sector is
+beyond every inverse power of \(\log z\).
+\end{mainbox}
+
+\vfill
+\begin{tabularx}{\textwidth}{@{}Xr@{}}
+\textbf{Prepared as a self-contained research article} & 2 September 2026\\
+\textit{Exact symbolic coefficients, proofs, algorithms, and numerical checks} &
+\end{tabularx}
+\end{titlepage}
+\hypersetup{pageanchor=true}
+\pagenumbering{roman}
+
+\begin{abstract}
+We determine the inverse of \(f(x)=x+W(x)\) on the nonnegative real axis and
+construct its complete asymptotic description at infinity.  An elementary
+change of variable reduces the inverse exactly to the \(r\)-Lambert function:
+if \(\rLambert_r\) denotes the inverse of \(u\e^u+ru\), then
+\(f^{-1}(z)=z-\rLambert_1(z)\).  Relative to the ordinary Lambert value
+\(w=W(z)\), the difference is governed by the exponentially small parameter
+\(\eta=w/z=\e^{-w}\).  We obtain a convergent local expansion in \(\eta\), a
+uniform fixed-order remainder estimate, and an explicit differential-operator
+formula for every coefficient.  The first coefficients are rational functions
+of \(w\), beginning with
+\[
+ \frac{w^2}{1+w},\qquad
+ \frac{w^3(w^2-2)}{2(1+w)^3},\qquad
+ \frac{w^4(2w-1)(w^3-6w-6)}{6(1+w)^5}.
+\]
+Combining these sectors with the classical logarithmic expansion of \(W(z)\)
+produces a nested transseries in \(z^{-1}\), \(\log z\), and
+\(\log\log z\).  We then formulate a general reversal calculus for maps
+\(F(z)=z+\Phi(z)\) whose perturbation is a logarithmic transseries.  In the
+filtered differential algebra with \(q=z^{-1}\) and
+\(\delta=z\,\mathrm d/\mathrm dz\), the identity
+\(
+\mathrm D(q^m a)=q^{m+1}(\delta-m)a
+\)
+turns Lagrange--B\"urmann inversion into a triangular, finitely computable
+algorithm.  Fixed-point iteration, Newton iteration, truncation rules, and
+residual certificates are developed in parallel.  The result is both an
+explicit solution of the stated inverse problem and a reusable method for
+series reversal across a broad class of polynomial-logarithmic transseries.
+\end{abstract}
+
+\tableofcontents
+\clearpage
+\pagenumbering{arabic}
+
+\section{Problem, notation, and principal conclusions}
+
+Throughout, \(W=W_0\) denotes the principal real Lambert function, characterized
+on \([0,\infty)\) by \cite{Corless1996,DLMF}
+\begin{equation}\label{eq:Wdef}
+  W(x)\e^{W(x)}=x,\qquad W(x)\ge 0.
+\end{equation}
+We study
+\begin{equation}\label{eq:fdef}
+  f(x)=x+W(x),\qquad x\ge 0,
+\end{equation}
+and its inverse
+\[
+  g(z)=f^{-1}(z),\qquad z\ge 0.
+\]
+For the asymptotic analysis we use
+\begin{equation}\label{eq:notation}
+  w=W(z),\qquad L=\log z,
+  \qquad \ell=\log L,
+  \qquad q=z^{-1},
+  \qquad \eta=\frac{w}{z}=\e^{-w}.
+\end{equation}
+The identities \(z=w\e^w\) and \(\eta=\e^{-w}\) will repeatedly convert
+ordinary derivatives into operations on rational functions of \(w\).
+
+There are two distinct asymptotic layers.
+
+\begin{enumerate}[label=\textbf{\arabic*.},leftmargin=2.2em]
+\item The familiar logarithmic layer is the Poincar\'e expansion
+\[
+ W(z)\sim L-\ell+\frac{\ell}{L}
+ +\frac{\ell(\ell-2)}{2L^2}+\cdots.
+\]
+Consequently, the entire algebraic-logarithmic expansion of \(g\) begins as
+\(z-W(z)\).
+
+\item The difference between \(g(z)\) and \(z-W(z)\) is not another inverse
+power of \(L\).  It is of order
+\[
+ \frac{w^2}{z(1+w)}\sim\frac{\log z}{z},
+\]
+which is smaller than \(L^{-M}\) for every fixed \(M\).  It therefore belongs
+to a new, exponentially small transseries sector.
+\end{enumerate}
+
+The following statement summarizes the exact and asymptotic answers.  The organization by algebra, differentiation, composition, and reversion is also the organizing perspective of the linked ProveIt research-draft directory \cite{ProveItDrafts}.
+
+\begin{theorem}[Main inversion theorem]\label{thm:main}
+Let \(\rLambert_r\) denote the real inverse, near the nonnegative axis, of
+\begin{equation}\label{eq:rLambertDef}
+  u\longmapsto u\e^u+ru.
+\end{equation}
+Then
+\begin{equation}\label{eq:exactinverse}
+  g(z)=z-\rLambert_1(z),\qquad z\ge0.
+\end{equation}
+If \(w=W(z)\), then for every fixed integer \(N\ge0\),
+\begin{equation}\label{eq:mainexpansion}
+  g(z)=z-w+\sum_{k=1}^{N}\frac{A_k(w)}{z^k}
+  +\bigO_N\!\left(\left(\frac{w}{z}\right)^{N+1}\right),
+  \qquad z\to\infty,
+\end{equation}
+where
+\begin{equation}\label{eq:Akoperator}
+  A_k(w)=\frac{(-1)^{k+1}}{(k+1)!}
+  \mathcal L_{k-1}\mathcal L_{k-2}\cdots\mathcal L_0
+  \bigl(w^{k+1}\bigr),
+  \qquad
+  \mathcal L_m=\frac{w}{1+w}\frac{\mathrm d}{\mathrm dw}-m.
+\end{equation}
+Moreover,
+\begin{equation}\label{eq:Akleading}
+  A_k(w)=\frac{w^k}{k}+\bigO(w^{k-1})\qquad(w\to\infty).
+\end{equation}
+\end{theorem}
+
+The exact reduction in \cref{eq:exactinverse} is simple, but it does not by
+itself display the hierarchy of logarithmic and exponentially small terms.
+The remainder of the article develops that hierarchy and then extracts a
+general reversal mechanism that no longer depends specifically on \(W\).
+
+\section{Exact inversion through the \texorpdfstring{\(r\)}{r}-Lambert function}
+
+\subsection{Existence and monotonicity}
+
+For \(x>0\), differentiation of \cref{eq:Wdef} gives
+\begin{equation}\label{eq:Wprime}
+  W'(x)=\frac{W(x)}{x(1+W(x))}
+       =\frac{1}{\e^{W(x)}(1+W(x))}>0,
+\end{equation}
+with the continuous limiting value \(W'(0)=1\).  Hence
+\[
+  f'(x)=1+W'(x)>1
+\]
+for \(x\ge0\).  The map \(f\) is therefore strictly increasing from
+\([0,\infty)\) onto \([0,\infty)\), so its inverse \(g\) exists globally on
+that interval.
+
+The same monotonicity gives an especially useful a posteriori estimate.  If
+\(\widetilde g(z)\ge0\) is any approximation and
+\begin{equation}\label{eq:residualdef}
+  R(z)=f(\widetilde g(z))-z,
+\end{equation}
+then the mean-value theorem yields
+\begin{equation}\label{eq:residualbound}
+  \bigl|\widetilde g(z)-g(z)\bigr|\le |R(z)|.
+\end{equation}
+Thus a small residual is already a rigorous absolute-error certificate.
+
+\subsection{The exact change of variable}
+
+Set
+\[
+  u=W(g(z)).
+\]
+Then \(g(z)=u\e^u\), while \(z=g(z)+W(g(z))\).  Consequently
+\begin{equation}\label{eq:uequation}
+  z=u\e^u+u.
+\end{equation}
+On \(u\ge0\), the right-hand side has derivative
+\(\e^u(1+u)+1>0\), so \cref{eq:uequation} has exactly one nonnegative
+solution.  With the notation \cref{eq:rLambertDef}, that solution is
+\(u=\rLambert_1(z)\).  Since \(g=u\e^u=z-u\), we obtain
+\[
+  g(z)=z-\rLambert_1(z).
+\]
+This proves the exact part of \cref{thm:main}.
+
+\begin{remark}[Notation]\label{rem:notation}
+The notation follows the generalized Lambert function introduced for the inverse of \(u\e^u+ru\) in \cite{MezoBaricz2017}.  The subscript in \(\rLambert_r\) is a deformation parameter, not a branch
+index of the ordinary Lambert function.  We reserve \(W\) for the principal
+ordinary branch and use calligraphic \(\rLambert\) precisely to avoid that
+ambiguity.
+\end{remark}
+
+\subsection{A one-parameter family}
+
+The same substitution solves a larger family without additional work.
+For
+\begin{equation}\label{eq:fr}
+  f_r(x)=x+rW(x),\qquad r\ge0,
+\end{equation}
+putting \(u=W(f_r^{-1}(z))\) gives
+\[
+  z=u\e^u+ru,
+  \qquad
+  f_r^{-1}(z)=u\e^u=z-ru.
+\]
+Therefore
+\begin{equation}\label{eq:frinverse}
+  f_r^{-1}(z)=z-r\rLambert_r(z).
+\end{equation}
+The original problem is the case \(r=1\).  We will retain \(r\) in several
+intermediate formulas because it reveals the organization of the transseries
+coefficients.
+
+\section{The hidden small parameter and an exact difference equation}
+
+The ordinary value \(w=W(z)\) solves \(w\e^w=z\), whereas
+\(u=\rLambert_r(z)\) solves \(u\e^u+ru=z\).  Define
+\begin{equation}\label{eq:ddef}
+  d=w-u,
+  \qquad
+  \eta=\frac{w}{z}=\e^{-w}.
+\end{equation}
+Substituting \(u=w-d\) into the equation for \(u\), and dividing by
+\(z=w\e^w\), gives the exact identity
+\begin{equation}\label{eq:differenceeq}
+  \boxed{\quad
+  \left(1-\frac{d}{w}\right)\bigl(\e^{-d}+r\eta\bigr)=1.
+  \quad}
+\end{equation}
+For fixed large \(w\), this is an implicit analytic equation for \(d\) in the
+small parameter \(r\eta\).
+
+The scale \(\eta\) is exponentially small in \(w\), but only algebraically
+small in \(z\):
+\begin{equation}\label{eq:etasize}
+  \eta=\e^{-w}=\frac{w}{z}\sim\frac{\log z}{z}.
+\end{equation}
+Since \(z^{-1}=\e^{-L}\), one has
+\begin{equation}\label{eq:beyondorders}
+  \frac{L}{z}=o(L^{-M})
+  \qquad\text{for every fixed }M>0.
+\end{equation}
+This is the precise reason that the correction cannot be detected by carrying
+the ordinary expansion of \(W(z)\) to any finite number of inverse logarithmic
+orders.
+
+\subsection{Analytic expansion in \texorpdfstring{\(\eta\)}{eta}}
+
+Write \(\xi=r\eta\) and define
+\[
+  H(d,\xi;w)=\left(1-\frac{d}{w}\right)(\e^{-d}+\xi)-1.
+\]
+At \((d,\xi)=(0,0)\),
+\[
+  H(0,0;w)=0,
+  \qquad
+  \frac{\partial H}{\partial d}(0,0;w)=-\left(1+\frac1w\right)\ne0.
+\]
+The analytic implicit-function theorem therefore gives a unique germ
+\begin{equation}\label{eq:dseries}
+  d(w,\xi)=\sum_{k\ge1}b_k(w)\xi^k.
+\end{equation}
+For \(w\ge1\), the germ and a sufficiently small disk in \(\xi\) may be
+chosen uniformly: introduce \(t=1/w\in[0,1]\), observe that
+\(H=(1-td)(\e^{-d}+\xi)-1\), and apply compactness to the nonvanishing
+of \(H_d\) near \((d,\xi)=(0,0)\).
+
+The first derivative at the origin is
+\begin{equation}\label{eq:b1}
+  b_1(w)=-\frac{H_\xi}{H_d}(0,0;w)=\frac{w}{1+w}.
+\end{equation}
+Because
+\[
+  f_r^{-1}(z)=z-r(w-d)=z-rw+r d
+\]
+and \(\xi=r w/z\), \cref{eq:dseries} becomes
+\begin{equation}\label{eq:grA}
+  f_r^{-1}(z)
+  =z-rw+\sum_{k\ge1}r^{k+1}\frac{A_k(w)}{z^k},
+  \qquad
+  A_k(w)=w^k b_k(w).
+\end{equation}
+For \(r=1\), this is the desired expansion of \(g\).
+
+\begin{theorem}[Uniform fixed-order remainder]\label{thm:uniformremainder}
+For each fixed \(N\ge0\) and each bounded interval \(0\le r\le R\),
+\begin{equation}\label{eq:generalremainder}
+  f_r^{-1}(z)=z-rw+
+  \sum_{k=1}^{N}r^{k+1}\frac{A_k(w)}{z^k}
+  +\bigO_{N,R}\!\left(\left(\frac{w}{z}\right)^{N+1}\right),
+  \qquad z\to\infty.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+The analytic solution \(d(w,\xi)\) has a Taylor remainder bounded uniformly
+for \(w\ge1\) and \(|\xi|\le\rho\), for some fixed \(\rho>0\).  Since
+\(\xi=r w/z\to0\) uniformly for \(0\le r\le R\), truncating
+\cref{eq:dseries} after \(N\) terms gives
+\(d-\sum_{k=1}^N b_k\xi^k=\bigO_{N,R}(\xi^{N+1})\).  Multiplication by the
+outer factor \(r\) in \(f_r^{-1}=z-rw+rd\) only changes the constant when
+\(r\) is bounded.  Substitution of \(A_k=w^k b_k\) proves the claim.
+\end{proof}
+
+\subsection{Leading coefficient at every sector}
+
+The difference equation also identifies the dominant term in every
+\(z^{-k}\) sector.  Let \(w\to\infty\) in \cref{eq:differenceeq} while keeping
+\(\xi\) fixed near zero.  The limiting equation is
+\[
+  \e^{-d}+\xi=1,
+\]
+so
+\begin{equation}\label{eq:resummedleading}
+  d\longrightarrow-\log(1-\xi)
+  =\sum_{k\ge1}\frac{\xi^k}{k}.
+\end{equation}
+Consequently
+\[
+  b_k(w)\longrightarrow\frac1k,
+  \qquad
+  A_k(w)=\frac{w^k}{k}+\bigO(w^{k-1}).
+\]
+The leading pieces of all exponentially small sectors are therefore the
+Taylor coefficients of a single elementary function, \(-\log(1-\eta)\).
+This does not replace the full coefficient functions, but it is a useful
+large-\(w\) resummation principle.
+
+\section{Lagrange--B\"urmann reversal for near-identity maps}
+
+The coefficient functions in \cref{eq:grA} can be obtained directly from a
+general inversion identity.  This section develops the identity first in
+ordinary differential form and then in the filtered differential algebra
+adapted to logarithmic transseries.
+
+\subsection{The universal derivative formula}
+
+Let
+\begin{equation}\label{eq:nearidentity}
+  F(x)=x+\Phi(x)
+\end{equation}
+with \(\Phi(x)=o(x)\) in the asymptotic regime of interest.  Introduce a
+bookkeeping parameter \(\varepsilon\) and write
+\[
+  G_\varepsilon(z)=z+U_\varepsilon(z),
+  \qquad
+  U_\varepsilon=-\varepsilon\Phi(z+U_\varepsilon).
+\]
+Lagrange--B\"urmann inversion \cite{FlajoletSedgewick,Henrici} gives the formal identity
+\begin{equation}\label{eq:LB}
+  G_\varepsilon(z)=z+
+  \sum_{n\ge1}\frac{(-\varepsilon)^n}{n!}
+  \frac{\mathrm d^{n-1}}{\mathrm dz^{n-1}}
+  \bigl(\Phi(z)^n\bigr).
+\end{equation}
+Whenever the right-hand side is summable in the relevant asymptotic filtration,
+we set \(\varepsilon=1\) and obtain
+\begin{equation}\label{eq:LB1}
+  \boxed{\quad
+  F^{-1}(z)=z+
+  \sum_{n\ge1}\frac{(-1)^n}{n!}
+  \frac{\mathrm d^{n-1}}{\mathrm dz^{n-1}}
+  \bigl(\Phi(z)^n\bigr).
+  \quad}
+\end{equation}
+The first four nontrivial blocks are
+\begin{align}
+ F^{-1}(z)={}&z-\Phi
+ +\Phi\Phi'
+ -\Phi(\Phi')^2-\frac12\Phi^2\Phi'' \notag\\
+ &+\Phi(\Phi')^3
+ +\frac32\Phi^2\Phi'\Phi''
+ +\frac16\Phi^3\Phi'''
+ +\cdots.\label{eq:universalfirstterms}
+\end{align}
+For logarithmic \(\Phi\), each ordinary derivative introduces one factor of
+\(z^{-1}\), so the displayed lines are successive transseries sectors.
+
+\subsection{The coefficient differential algebra}
+
+Set
+\begin{equation}\label{eq:qdelta}
+  q=z^{-1},
+  \qquad
+  \delta=z\frac{\mathrm d}{\mathrm dz}.
+\end{equation}
+Let \(\mathcal B\) be a differential algebra of slowly varying coefficient
+functions, stable under \(\delta\).  Typical elements are finite or formal
+combinations of
+\[
+  L=\log z,\qquad \ell=\log L,
+  \qquad \log\ell,\qquad L^{-1},\qquad \ell^{-1},\ldots,
+\]
+with a chosen depth and a chosen asymptotic ordering; this is a deliberately elementary fragment of the differential-algebra viewpoint used for transseries \cite{vanDerHoeven}.  Work in the filtered
+ring \(\mathcal B[[q]]\).  For \(a\in\mathcal B\), direct differentiation gives
+\begin{equation}\label{eq:Dblock}
+  \frac{\mathrm d}{\mathrm dz}\bigl(q^m a\bigr)
+  =q^{m+1}(\delta-m)a.
+\end{equation}
+Thus differentiation raises the \(q\)-valuation by at least one.  In
+particular, for \(a\in\mathcal B\),
+\begin{equation}\label{eq:Dkblock}
+  \frac{\mathrm d^k a}{\mathrm dz^k}
+  =q^k\fall{\delta}{k}a,
+  \qquad
+  \fall{\delta}{k}
+  =\delta(\delta-1)\cdots(\delta-k+1).
+\end{equation}
+The operator on the right is a falling factorial in \(\delta\).
+
+\begin{theorem}[Pure logarithmic perturbation]\label{thm:purelogreverse}
+Suppose \(\Phi\in\mathcal B\) and \(q\Phi\prec1\).  Then the formal inverse of
+\(F(z)=z+\Phi(z)\) is
+\begin{equation}\label{eq:purelogformula}
+  F^{-1}(z)=z-\Phi(z)
+  +\sum_{k\ge1}q^k\frac{(-1)^{k+1}}{(k+1)!}
+  \fall{\delta}{k}\bigl(\Phi^{k+1}\bigr).
+\end{equation}
+For any prescribed \(q\)-order \(N\), only the terms \(k\le N\) can
+contribute.
+\end{theorem}
+
+\begin{proof}
+Put \(n=k+1\) in \cref{eq:LB1} and use \cref{eq:Dkblock}.  The \(k\)-th
+summand has \(q\)-valuation at least \(k\), so coefficient extraction through
+\(q^N\) is finite and triangular.
+\end{proof}
+
+\begin{remark}[General \(q\)-dependent perturbations]\label{rem:qdependent}
+If
+\(
+\Phi=\sum_{j\ge0}q^j\phi_j
+\)
+with \(\phi_j\in\mathcal B\), the original formula \cref{eq:LB1} still
+applies.  One simply evaluates every derivative by the block rule
+\cref{eq:Dblock} and truncates after each operation.  Because the \(n\)-th
+Lagrange term begins at \(q^{n-1}\), terms with \(n>N+1\) cannot affect the
+inverse through \(q^N\).
+\end{remark}
+
+\section{Specialization to \texorpdfstring{\(\Phi=W\)}{Phi = W}}
+
+For \(w=W(z)\), \cref{eq:Wprime} becomes
+\begin{equation}\label{eq:deltaw}
+  \delta w=zW'(z)=\frac{w}{1+w}.
+\end{equation}
+If \(R=R(w)\), then
+\begin{equation}\label{eq:DzR}
+  \frac{\mathrm d}{\mathrm dz}\bigl(z^{-m}R(w)\bigr)
+  =z^{-m-1}\left(
+    \frac{w}{1+w}\frac{\mathrm dR}{\mathrm dw}-mR
+  \right).
+\end{equation}
+This is precisely the operator \(\mathcal L_m\) in \cref{eq:Akoperator}.
+Applying \cref{thm:purelogreverse} to \(F(x)=x+W(x)\) proves the coefficient
+formula in \cref{thm:main}.
+
+\subsection{First coefficient functions}
+
+The first four rational functions are
+\begin{align}
+ A_1(w)&=\frac{w^2}{1+w},\label{eq:A1}\\[0.25em]
+ A_2(w)&=\frac{w^3(w^2-2)}{2(1+w)^3},\label{eq:A2}\\[0.25em]
+ A_3(w)&=\frac{w^4(2w-1)(w^3-6w-6)}{6(1+w)^5},\label{eq:A3}\\[0.25em]
+ A_4(w)&=\frac{w^5}{24(1+w)^7}
+ \bigl(6w^6-8w^5-69w^4-40w^3
+       +96w^2+72w-24\bigr).\label{eq:A4}
+\end{align}
+The fifth and sixth coefficients, useful for symbolic and numerical checking,
+are recorded in \cref{app:higherA}.  In general, induction in
+\cref{eq:Akoperator} shows that
+\begin{equation}\label{eq:Akstructure}
+  A_k(w)\in
+  \frac{w^{k+1}}{(1+w)^{2k-1}}\,\mathbb Q[w],
+\end{equation}
+where the remaining numerator polynomial has degree at most \(2k-2\).
+
+Thus the inverse begins
+\begin{align}
+ g(z)={}&z-w
+ +\frac{1}{z}\frac{w^2}{1+w}
+ +\frac{1}{z^2}\frac{w^3(w^2-2)}{2(1+w)^3}\notag\\
+ &+\frac{1}{z^3}
+   \frac{w^4(2w-1)(w^3-6w-6)}{6(1+w)^5}
+ +\bigO\!\left(\left(\frac{w}{z}\right)^4\right).
+ \label{eq:firstfour}
+\end{align}
+Because the coefficient functions are evaluated at the exact \(w=W(z)\),
+\cref{eq:firstfour} is already a highly effective asymptotic formula without
+expanding any logarithms.
+
+\subsection{Large-\texorpdfstring{\(w\)}{w} form of the coefficients}
+
+Expanding the rational functions at \(w=\infty\) gives
+\begin{align}
+ A_1(w)={}&w-1+\frac1w-\frac1{w^2}+\frac1{w^3}
+ +\bigO(w^{-4}),\label{eq:A1large}\\
+ A_2(w)={}&\frac{w^2}{2}-\frac{3w}{2}+2-\frac2w
+ +\frac{3}{2w^2}-\frac{1}{2w^3}+\bigO(w^{-4}),\label{eq:A2large}\\
+ A_3(w)={}&\frac{w^3}{3}-\frac{11w^2}{6}
+ +\frac{23w}{6}-\frac{31}{6}+\frac{31}{6w}
+ -\frac{11}{3w^2}+\bigO(w^{-3}),\label{eq:A3large}\\
+ A_4(w)={}&\frac{w^4}{4}-\frac{25w^3}{12}
+ +\frac{155w^2}{24}-\frac{95w}{8}+\frac{47}{3}
+ +\bigO(w^{-1}).\label{eq:A4large}
+\end{align}
+The leading terms agree with \cref{eq:Akleading}.  Retaining only those
+leading terms in every sector produces
+\[
+  g(z)-(z-w)\sim
+  \sum_{k\ge1}\frac1k\left(\frac{w}{z}\right)^k
+  =-\log\left(1-\frac{w}{z}\right),
+\]
+which is the sector-leading resummation already found from the implicit
+difference equation.
+
+\section{The classical logarithmic expansion of \texorpdfstring{\(W\)}{W}}
+
+To express the answer solely through elementary iterated logarithms, write
+\[
+  L=\log z,
+  \qquad
+  \ell=\log L.
+\]
+Let \(\bracks{n}{j}\) denote the unsigned Stirling number of the first kind.
+Define
+\begin{equation}\label{eq:Pndef}
+  P_n(\ell)=\sum_{m=1}^{n}
+  \frac{(-1)^{n-m}}{m!}
+  \bracks{n}{n-m+1}\ell^m.
+\end{equation}
+Then the standard asymptotic expansion \cite{Corless1996,DLMF} is
+\begin{equation}\label{eq:Wlogseries}
+  W(z)\sim L-\ell+\sum_{n\ge1}\frac{P_n(\ell)}{L^n}.
+\end{equation}
+The first polynomials are
+\begin{align}
+ P_1(\ell)&=\ell,\notag\\
+ P_2(\ell)&=\frac{\ell(\ell-2)}2,\notag\\
+ P_3(\ell)&=\frac{\ell(2\ell^2-9\ell+6)}6,\notag\\
+ P_4(\ell)&=\frac{\ell(3\ell^3-22\ell^2+36\ell-12)}{12},\notag\\
+ P_5(\ell)&=\frac{\ell(12\ell^4-125\ell^3+350\ell^2-300\ell+60)}{60}.
+ \label{eq:Pfirst}
+\end{align}
+Further polynomials through \(P_8\) are listed in \cref{app:Ppolys}.
+
+For each fixed \(M\), the expansion has the usual Poincar\'e interpretation \cite{deBruijn}:
+\begin{equation}\label{eq:Wlogremainder}
+ W(z)=L-\ell+\sum_{n=1}^{M}\frac{P_n(\ell)}{L^n}
+ +\bigO\!\left(\frac{\ell^{M+1}}{L^{M+1}}\right).
+\end{equation}
+Since the first beyond-all-orders correction is \(\bigO(L/z)\), the purely
+logarithmic Poincar\'e expansion of the inverse is
+\begin{equation}\label{eq:goutergeneral}
+  g(z)\sim z-L+\ell-\sum_{n\ge1}\frac{P_n(\ell)}{L^n}.
+\end{equation}
+Explicitly,
+\begin{align}
+ g(z)\sim{}&z-L+\ell-\frac{\ell}{L}
+ +\frac{\ell(2-\ell)}{2L^2}
+ -\frac{\ell(2\ell^2-9\ell+6)}{6L^3}\notag\\
+ &+\frac{\ell(12-36\ell+22\ell^2-3\ell^3)}{12L^4}
+ -\frac{P_5(\ell)}{L^5}-\cdots.
+ \label{eq:gouterexplicit}
+\end{align}
+At every fixed inverse-logarithmic order this is correct, but it cannot reveal
+the term \(A_1(w)/z\sim L/z\).  That term is smaller than the remainder of
+\emph{every} finite truncation in \cref{eq:gouterexplicit}.  This is a standard
+instance of information that is absent from a single Poincar\'e scale but present
+in a transseries.
+
+\section{The full nested logarithmic transseries}
+
+Combining \cref{eq:mainexpansion} and \cref{eq:Wlogseries} produces the
+sector decomposition
+\begin{equation}\label{eq:fulltransseriesform}
+  g(z)\sim z+\mathcal G_0(L,\ell)
+  +\sum_{k\ge1}z^{-k}\mathcal G_k(L,\ell),
+\end{equation}
+where
+\begin{equation}\label{eq:Gsectors}
+  \mathcal G_0=-W_{\mathrm{log}},
+  \qquad
+  \mathcal G_k=A_k(W_{\mathrm{log}}),\quad k\ge1,
+\end{equation}
+with \(W_{\mathrm{log}}\) denoting the formal series on the right of
+\cref{eq:Wlogseries}.
+
+The ordering must be read sector by sector.  All inverse powers of \(L\) in
+\(\mathcal G_0\) precede the first \(z^{-1}\) term; all inverse powers of
+\(L\) in the \(z^{-1}\) sector precede the first \(z^{-2}\) term; and so on.
+Symbolically,
+\[
+  L^{-M}\gg z^{-1}L^J
+  \qquad\text{for every fixed }M,J.
+\]
+This lexicographic ordering is essential.  Appending a \(z^{-1}\) correction
+after only a few terms of the outer expansion does not improve a numerical
+approximation unless the neglected outer remainder has first been made smaller
+than the new sector.
+
+\subsection{First three exponentially small sectors}
+
+Straight substitution and re-expansion give
+\begin{align}
+\mathcal G_1(L,\ell)={}&
+ L-\ell-1+\frac{\ell+1}{L}
+ +\frac{\ell^2-2}{2L^2}
+ +\frac{2\ell^3-3\ell^2-12\ell+6}{6L^3}
+ +\bigO\!\left(\frac{\ell^4}{L^4}\right),
+ \label{eq:G1exp}\\[0.4em]
+\mathcal G_2(L,\ell)={}&
+ \frac{L^2}{2}-\frac{2\ell+3}{2}L
+ +\frac{(\ell+1)(\ell+4)}2
+ -\frac{(\ell+1)(\ell+4)}{2L}
+ +\bigO\!\left(\frac{\ell^3}{L^2}\right),
+ \label{eq:G2exp}\\[0.4em]
+\mathcal G_3(L,\ell)={}&
+ \frac{L^3}{3}-\frac{6\ell+11}{6}L^2
+ +\frac{6\ell^2+28\ell+23}{6}L\notag\\
+ &-\frac{2\ell^3+20\ell^2+51\ell+31}{6}
+ +\bigO\!\left(\frac{\ell^3}{L}\right).
+ \label{eq:G3exp}
+\end{align}
+Thus, in fully elementary form,
+\begin{align}
+ g(z)\sim{}&z-L+\ell-\frac{\ell}{L}
+ +\frac{\ell(2-\ell)}{2L^2}+\cdots\notag\\
+ &+\frac1z\left[
+ L-\ell-1+\frac{\ell+1}{L}
+ +\frac{\ell^2-2}{2L^2}+\cdots\right]\notag\\
+ &+\frac1{z^2}\left[
+ \frac{L^2}{2}-\frac{2\ell+3}{2}L
+ +\frac{(\ell+1)(\ell+4)}2+\cdots\right]\notag\\
+ &+\frac1{z^3}\left[
+ \frac{L^3}{3}-\frac{6\ell+11}{6}L^2
+ +\frac{6\ell^2+28\ell+23}{6}L+\cdots\right]+\cdots.
+ \label{eq:fullfirstsectors}
+\end{align}
+The leading term in the \(k\)-th small sector is
+\begin{equation}\label{eq:sectorleading}
+  \frac{L^k}{kz^k}.
+\end{equation}
+Subleading powers of \(L\) and polynomials in \(\ell\) are produced
+mechanically by \cref{eq:Akoperator} and \cref{eq:Pndef}.
+
+\subsection{A practical two-level error budget}
+
+There are two independent truncation decisions.
+
+\begin{enumerate}[label=(\alph*),leftmargin=2em]
+\item Keeping exact \(w=W(z)\) and truncating after the \(z^{-N}\) sector has
+remainder \(\bigO((w/z)^{N+1})\) by \cref{thm:uniformremainder}.
+
+\item Replacing a coefficient \(A_k(w)\) by its logarithmic expansion through
+\(J\) subleading inverse powers of \(L\) introduces, at that sector, a typical
+error
+\[
+  z^{-k}\bigO\bigl(L^{k-J-1}\ell^{J+1}\bigr),
+\]
+with the evident modification for the outer sector \(k=0\).
+\end{enumerate}
+
+For numerical work, the most efficient representation is usually the exact-
+\(W\) sector expansion \cref{eq:mainexpansion}.  The fully elementary nested
+form \cref{eq:fullfirstsectors} is most useful for structural analysis,
+comparison of monomials, and integration into a formal transseries system.
+
+\section{A general reversal method for logarithmic transseries}
+
+We now detach the method from the special function \(W\).  Consider
+\begin{equation}\label{eq:generalF}
+  F(z)=z+\Phi(z),
+  \qquad
+  \Phi\in\mathcal B[[q]],
+  \qquad q=z^{-1},
+\end{equation}
+where \(\mathcal B\) is a chosen logarithmic coefficient algebra stable under
+\(\delta=z\,\mathrm d/\mathrm dz\).  Assume that \(q\Phi\prec1\), so the map
+is asymptotically near the identity.
+
+\subsection{Direct Lagrange algorithm}
+
+The most direct algorithm is a literal implementation of \cref{eq:LB1}, with
+all products and derivatives truncated at the requested \(q\)-order.
+
+\begin{methodbox}[Algorithm 1: Lagrange--B\"urmann reversal through \(q^N\)]
+\begin{enumerate}[leftmargin=2em]
+\item Represent \(\Phi\) as a truncated block series
+\(\sum_{m=0}^{N}q^m\phi_m\), with \(\phi_m\in\mathcal B\).
+\item Initialize \(G\leftarrow z\).
+\item For \(n=1,\ldots,N+1\):
+  form \(H\leftarrow\Phi^n\), truncate at \(q^N\), apply \(n-1\)
+  derivatives using
+  \[
+    D(q^m a)=q^{m+1}(\delta-m)a,
+  \]
+  truncating after each derivative, and add
+  \((-1)^nH/n!\) to \(G\).
+\item Return \(G\) truncated through \(q^N\).
+\end{enumerate}
+Only finitely many coefficient operations are performed, because the
+\(n\)-th summand begins at \(q^{n-1}\).
+\end{methodbox}
+
+A compact pseudocode version is as follows.
+
+\begin{lstlisting}[language=Python,caption={Filtered Lagrange reversal.}]
+def reverse_near_identity(phi, N):
+    # phi is a block series sum(q**m * a[m]), truncated at q**N.
+    G = z
+    for n in range(1, N + 2):
+        H = truncate(phi**n, q_order=N)
+        for _ in range(n - 1):
+            H = truncate(D_block(H), q_order=N)
+        G += (-1)**n * H / factorial(n)
+    return truncate(G, q_order=N)
+
+# On one block q**m * a:
+# D_block(q**m * a) = q**(m+1) * (delta(a) - m*a)
+\end{lstlisting}
+
+\subsection{Triangular fixed-point recursion}
+
+Writing the inverse as \(G=z+U\), one may instead solve
+\begin{equation}\label{eq:fixedpointU}
+  U=-\Phi(z+U).
+\end{equation}
+Taylor composition gives
+\begin{equation}\label{eq:TaylorPhi}
+  \Phi(z+U)=\sum_{j\ge0}\frac{U^j}{j!}\Phi^{(j)}(z).
+\end{equation}
+Each derivative raises \(q\)-valuation, so the coefficient of \(q^m\) on the
+right depends only on already known lower blocks and the current unknown block
+linearly.  This produces a triangular coefficient recursion.  It is often the
+best method when the coefficient algebra already has a robust composition
+engine.
+
+\subsection{Newton iteration in the filtered algebra}
+
+A third method starts from an approximation \(G_0\), for example
+\(G_0=z-\Phi(z)\), and iterates
+\begin{equation}\label{eq:Newtoninverse}
+  G_{j+1}=G_j-
+  \frac{F(G_j)-z}{F'(G_j)}.
+\end{equation}
+Since \(F'=1+o(1)\) is a unit, Newton correction is well-defined in the
+filtered ring.  Under the usual completeness assumptions it approximately
+doubles the number of correct \(q\)-blocks at each step.  Newton iteration is
+therefore preferable at high truncation order, while the Lagrange formula is
+preferable for closed coefficient formulas and proofs.
+
+\subsection{Certification and two-sided checks}
+
+For a symbolic candidate \(G\), compute the residual
+\begin{equation}\label{eq:formalresidual}
+  \mathcal R=F\circ G-z.
+\end{equation}
+If \(\mathcal R=\bigO(q^{N+1})\), then \(G\) is a right inverse through the
+requested order.  A two-sided check also computes \(G\circ F-z\).  In a
+well-ordered near-identity class, uniqueness of the inverse makes one side
+sufficient in principle, but checking both sides is a valuable implementation
+test for composition, differentiation, and truncation conventions.
+
+For real numerical evaluation, a derivative lower bound converts the residual
+into an error bound.  If \(F'(x)\ge m>0\) on the interval joining
+\(G(z)\) to the exact inverse, then
+\begin{equation}\label{eq:generalresidualbound}
+  \bigl|G(z)-F^{-1}(z)\bigr|
+  \le \frac{|F(G(z))-z|}{m}.
+\end{equation}
+For \(F(x)=x+W(x)\), one may take \(m=1\), recovering
+\cref{eq:residualbound}.
+
+\subsection{Choosing a coefficient algebra and monomial order}
+
+A practical transseries implementation must specify more than formulas.  It
+must decide what constitutes a coefficient and how monomials are compared.
+For the present problem a natural hierarchy is
+\begin{equation}\label{eq:monomialhierarchy}
+  z\;\gg\;L\;\gg\;\ell\;\gg\;1\;\gg\;L^{-1}\;\gg\cdots
+  \gg\;z^{-1}L^J\;\gg\;z^{-2}L^K\;\gg\cdots
+\end{equation}
+for every fixed \(J,K\).  More generally, one can use a lexicographic pair
+\((m,\nu)\), where \(m\) is the outer \(q\)-sector and \(\nu\) is the
+internal logarithmic order.  The following rules prevent most implementation
+errors.
+
+\begin{enumerate}[label=\textbf{R\arabic*.},leftmargin=2.5em]
+\item Truncate first by outer \(q\)-valuation, then by the internal order of
+coefficient blocks.
+\item Keep \(\delta\) closed on the coefficient algebra; introduce additional
+iterated logarithms only when differentiation requires them.
+\item Apply truncation after every multiplication, derivative, and composition.
+\item Record a target remainder ideal, not merely a number of printed terms.
+\item Verify the final answer by composition in the same ordering convention.
+\end{enumerate}
+
+\subsection{A generic logarithmic perturbation}
+
+Suppose, for example,
+\begin{equation}\label{eq:genericPhi}
+  \Phi(z)=aL+b\ell+c,
+  \qquad L=\log z,
+  \qquad \ell=\log L.
+\end{equation}
+Then
+\[
+  \delta\Phi=a+\frac{b}{L},
+  \qquad
+  \delta^2\Phi=-\frac{b}{L^2},
+\]
+and \cref{eq:purelogformula} immediately gives
+\begin{align}
+ F^{-1}(z)={}&z-\Phi
+ +q\,\Phi\,\delta\Phi\notag\\
+ &-\frac{q^2}{6}(\delta-1)\delta(\Phi^3)
+ +\frac{q^3}{24}(\delta-2)(\delta-1)\delta(\Phi^4)
+ +\bigO(q^4\mathcal B).
+ \label{eq:genericreverse}
+\end{align}
+No ad hoc re-expansion of \(\log(z+U)\) or \(\log\log(z+U)\) is required.
+The falling-factorial operators encode all chain-rule and power-of-\(z\)
+bookkeeping automatically.  This is the principal advantage of the
+\((q,\delta)\) formulation.
+
+\section{Proof of the operator coefficient formula}
+
+Although \cref{eq:Akoperator} follows quickly from Lagrange inversion, it is
+useful to display the mechanism in full.
+
+For \(F(x)=x+W(x)\), \cref{eq:LB1} reads
+\begin{equation}\label{eq:WLB}
+  g(z)=z+\sum_{n\ge1}\frac{(-1)^n}{n!}
+  \frac{\mathrm d^{n-1}}{\mathrm dz^{n-1}}w^n.
+\end{equation}
+The \(n=1\) term is \(-w\).  Put \(n=k+1\) in every remaining term.  Starting
+from a function \(R(w)\) with no explicit power of \(z^{-1}\), one derivative
+uses \(\mathcal L_0\), the next uses \(\mathcal L_1\), and after \(k\)
+derivatives one has
+\begin{equation}\label{eq:operatorinduction}
+  \frac{\mathrm d^k}{\mathrm dz^k}R(w)
+  =z^{-k}\mathcal L_{k-1}\cdots\mathcal L_0R(w).
+\end{equation}
+This follows inductively from \cref{eq:DzR}.  Taking \(R(w)=w^{k+1}\) in
+\cref{eq:operatorinduction} and substituting into \cref{eq:WLB} gives
+\[
+ \frac{(-1)^{k+1}}{(k+1)!}z^{-k}
+ \mathcal L_{k-1}\cdots\mathcal L_0(w^{k+1}),
+\]
+which is exactly \(z^{-k}A_k(w)\).
+
+The Lagrange series and the analytic \(\eta\)-series are the same expansion in
+different coordinates.  Indeed, \(d=w-\rLambert_1(z)=g(z)-(z-w)\), and
+\cref{eq:mainexpansion} gives
+\[
+ d=\sum_{k\ge1}\frac{A_k(w)}{z^k}
+  =\sum_{k\ge1}\frac{A_k(w)}{w^k}\eta^k.
+\]
+Comparison with \cref{eq:dseries} shows
+\begin{equation}\label{eq:bkAk}
+  b_k(w)=\frac{A_k(w)}{w^k}.
+\end{equation}
+Thus the implicit-function proof supplies convergence and a remainder bound,
+while Lagrange inversion supplies the closed differential-operator formula.
+Together they give more than either method alone.
+
+\section{Numerical verification}
+
+The exact value can be computed without directly inverting \(f\): solve
+\begin{equation}\label{eq:numericalu}
+  u\e^u+u=z
+\end{equation}
+for its nonnegative root and set \(g=z-u\).  Let
+\begin{equation}\label{eq:GN}
+  G_N(z)=z-w+\sum_{k=1}^{N}\frac{A_k(w)}{z^k},
+  \qquad w=W(z),
+\end{equation}
+with \(G_0=z-w\).  High-precision evaluation gives the absolute errors in
+\cref{tab:errors}.
+
+\begin{table}[htbp]
+\centering
+\caption{Absolute errors \(\lvert G_N(z)-g(z)\rvert\) using exact \(w=W(z)\).}
+\label{tab:errors}
+\small
+\begin{tabular}{@{}rrrrrr@{}}
+\toprule
+\(z\) & \(N=0\) & \(N=1\) & \(N=2\) & \(N=3\) & \(N=4\)\\
+\midrule
+\(10\) & \(1.1202\times10^{-1}\) & \(1.0462\times10^{-3}\) & \(2.9897\times10^{-4}\) & \(2.3371\times10^{-5}\) & \(6.8889\times10^{-7}\)\\
+\(100\) & \(2.6355\times10^{-2}\) & \(2.1862\times10^{-4}\) & \(9.4975\times10^{-7}\) & \(2.3486\times10^{-8}\) & \(7.9461\times10^{-10}\)\\
+\(10^3\) & \(4.4172\times10^{-3}\) & \(7.5875\times10^{-6}\) & \(1.3534\times10^{-8}\) & \(1.7161\times10^{-11}\) & \(1.1027\times10^{-14}\)\\
+\(10^6\) & \(1.0464\times10^{-5}\) & \(4.9551\times10^{-11}\) & \(2.9302\times10^{-16}\) & \(1.8408\times10^{-21}\) & \(1.1635\times10^{-26}\)\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Representative exact values are
+\begin{align*}
+ g(10)&=8.366493829844153615806835\ldots,\\
+ g(100)&=96.64072495463040645894733\ldots,\\
+ g(10^3)&=994.7548143481392806156898\ldots,\\
+ g(10^6)&=999988.6166523780211244849\ldots.
+\end{align*}
+The error pattern is consistent with the scale
+\((w/z)^{N+1}\).  At \(z=10^6\), for example, the zeroth approximation
+\(z-W(z)\) misses a term of order \(10^{-5}\), while four correction sectors
+reduce the error below \(10^{-26}\).
+
+The numerical experiment also illustrates the distinction between the outer
+and inner expansions.  Increasing the number of inverse-logarithmic terms in
+\(W(z)\) drives a log-only approximation toward \(z-W(z)\), not toward the
+exact inverse beyond the floor
+\[
+  g(z)-(z-W(z))=W(z)-\rLambert_1(z)
+  \sim\frac{W(z)^2}{z(1+W(z))}.
+\]
+Crossing that floor requires the \(z^{-1}\) sector.
+
+\section{Extensions and variants}
+
+\subsection{The full \texorpdfstring{\(r\)}{r}-family}
+
+Combining \cref{eq:frinverse} with the coefficient construction gives
+\begin{equation}\label{eq:rfull}
+  f_r^{-1}(z)=z-rw+
+  \sum_{k\ge1}r^{k+1}\frac{A_k(w)}{z^k},
+  \qquad w=W(z),
+\end{equation}
+with the fixed-order remainder stated in \cref{thm:uniformremainder}.  Equivalently,
+\begin{equation}\label{eq:rLambertExpansion}
+  \rLambert_r(z)=w-
+  \sum_{k\ge1}r^k\frac{A_k(w)}{z^k}.
+\end{equation}
+Thus one sequence \(A_k\) simultaneously describes every bounded value of the
+parameter \(r\).
+
+\subsection{Affine-scaled Lambert perturbations}
+
+Consider the three-parameter map
+\begin{equation}\label{eq:scaledF}
+  F(x)=\alpha x+\beta W(\gamma x),
+  \qquad \alpha,\beta,\gamma>0.
+\end{equation}
+Putting \(u=W(\gamma x)\) gives
+\[
+  \frac{\gamma z}{\alpha}
+  =u\e^u+\frac{\beta\gamma}{\alpha}u.
+\]
+Therefore
+\begin{equation}\label{eq:scaledinverse}
+  \boxed{\quad
+  F^{-1}(z)=\frac{z-\beta\,
+  \rLambert_{\beta\gamma/\alpha}(\gamma z/\alpha)}{\alpha}.
+  \quad}
+\end{equation}
+The asymptotic expansion follows from \cref{eq:rLambertExpansion} after
+replacing \(z\) by \(\gamma z/\alpha\).  This exact reduction is useful when
+normalizing more complicated inverse problems before invoking the general
+transseries machinery.
+
+\subsection{Perturbations built from iterated logarithms}
+
+The differential-algebra method does not require a special-function reduction.
+For maps such as
+\[
+  F(x)=x+a\log x+b\log\log x
+  +\frac{c_0+c_1\log\log x}{\log x}
+  +\frac{d_0}{x}+\cdots,
+\]
+one places the slowly varying expressions in \(\mathcal B\), the explicit
+powers of \(x^{-1}\) in the outer \(q\)-filtration, and applies either
+Algorithm~1, the fixed-point recursion, or Newton iteration.  The same block
+derivative \cref{eq:Dblock} guarantees triangularity.  The only additional
+work is to define a consistent internal ordering for the chosen depth of
+iterated logarithms.
+
+\section{Implementation checklist and common pitfalls}
+
+The following checklist summarizes the method in a form suitable for a
+computer-algebra implementation or a semi-formal proof development.
+
+\begin{methodbox}[A robust reversal workflow]
+\begin{enumerate}[leftmargin=2em]
+\item \textbf{Normalize the map.}  Rewrite it as \(F=z+\Phi\), possibly after
+an affine change of variables.
+\item \textbf{Choose the outer parameter.}  Usually \(q=z^{-1}\); verify that
+\(q\Phi\prec1\).
+\item \textbf{Choose the coefficient algebra.}  Fix the allowed logarithmic
+depth and ensure closure under \(\delta=zD_z\).
+\item \textbf{State the ordering.}  Use outer \(q\)-valuation first and
+logarithmic order second.
+\item \textbf{Generate coefficients.}  Use Lagrange--B\"urmann for closed
+formulas, a triangular fixed point for transparent recursion, or Newton for
+high order.
+\item \textbf{Truncate after every operation.}  This keeps all computations
+finite and prevents irrelevant high sectors from expanding combinatorially.
+\item \textbf{Compose back.}  Check \(F\circ G-z\) to the target remainder
+ideal; preferably also check \(G\circ F-z\).
+\item \textbf{Certify numerically.}  Where a derivative lower bound is
+available, convert the residual directly into an error estimate.
+\end{enumerate}
+\end{methodbox}
+
+Several mistakes recur in logarithmic reversal problems.
+
+\begin{enumerate}[label=\textbf{P\arabic*.},leftmargin=2.5em]
+\item \textbf{Mixing scales.}  A finite \(1/L\) expansion cannot resolve a
+term of size \(L/z\).  The latter requires a new sector.
+\item \textbf{Differentiating coefficients as constants.}  The operator
+\(D(q^m a)=q^{m+1}(\delta-m)a\) contains both \(\delta a\) and the derivative
+of \(q^m\).
+\item \textbf{Expanding too early.}  Keeping \(w=W(z)\) exact makes the sector
+coefficients compact and numerically stable.  Expand in \(L,\ell\) only when
+an elementary nested form is required.
+\item \textbf{Using a one-dimensional truncation counter.}  A transseries
+remainder is an ideal in a multi-scale ordering, not merely ``the next printed
+term.''
+\item \textbf{Ignoring branch data.}  The present real nonnegative problem has
+unique branches, but complex or negative-domain variants require explicit
+branch selection before composition and inversion.
+\end{enumerate}
+
+\section{Conclusions}
+
+The inverse of \(x+W(x)\) admits both an exact special-function representation
+and a transparent complete asymptotic structure.  The exact representation is
+\[
+  f^{-1}(z)=z-\rLambert_1(z).
+\]
+With \(w=W(z)\), the practically useful expansion is
+\[
+  f^{-1}(z)=z-w+\frac{w^2}{z(1+w)}
+  +\frac{w^3(w^2-2)}{2z^2(1+w)^3}+\cdots,
+\]
+and truncation after \(z^{-N}\) has error
+\(\bigO((w/z)^{N+1})\).  The parameter \(w/z=\e^{-w}\) identifies the
+correction as beyond all orders of the conventional inverse-logarithmic
+expansion.  Re-expansion of each rational coefficient in
+\(L=\log z\) and \(\ell=\log L\) yields the full nested logarithmic
+transseries.
+
+The broader reversal method is encoded by two formulas:
+\[
+  F^{-1}(z)=z+
+  \sum_{n\ge1}\frac{(-1)^n}{n!}D^{n-1}(\Phi^n),
+  \qquad F=z+\Phi,
+\]
+and
+\[
+  D(q^m a)=q^{m+1}(\delta-m)a,
+  \qquad q=z^{-1},\quad \delta=zD.
+\]
+Together they make coefficient extraction finite, triangular, and compatible
+with arbitrary logarithmic depth.  The same structure supports direct
+Lagrange inversion, fixed-point recursion, Newton acceleration, and residual
+certification.  The Lambert example is therefore not only solvable in closed
+form; it is a model case for systematic reversal of polynomial-logarithmic
+transseries.
+
+\appendix
+
+\section{Higher rational coefficient functions}\label{app:higherA}
+
+For compactness, write
+\begin{equation}\label{eq:A5}
+ A_5(w)=\frac{w^6}{120(1+w)^9}\,Q_5(w),
+\end{equation}
+where
+\begin{align*}
+ Q_5(w)={}&24w^8-58w^7-428w^6-151w^5
+ +1320w^4+1380w^3\\
+ &-480w^2-720w+120.
+\end{align*}
+The sixth coefficient is
+\begin{equation}\label{eq:A6}
+ A_6(w)=\frac{w^7}{720(1+w)^{11}}\,Q_6(w),
+\end{equation}
+with
+\begin{align*}
+ Q_6(w)={}&120w^{10}-444w^9-2920w^8+424w^7
+ +16577w^6+17892w^5\\
+ &-13530w^4-26400w^3-1800w^2+7200w-720.
+\end{align*}
+They are generated without solving any new implicit equations: one repeatedly
+applies \(\mathcal L_m\) according to \cref{eq:Akoperator}.
+
+A minimal symbolic implementation is
+\begin{lstlisting}[language=Python,caption={Generating \(A_k(w)\) symbolically.}]
+from sympy import symbols, diff, factorial, factor
+w = symbols('w')
+
+def L_operator(m, expr):
+    return factor(w/(1+w) * diff(expr, w) - m*expr)
+
+def A(k):
+    expr = w**(k+1)
+    for m in range(k):
+        expr = L_operator(m, expr)
+    return factor((-1)**(k+1) * expr / factorial(k+1))
+\end{lstlisting}
+
+\section{Logarithmic coefficient polynomials through order eight}\label{app:Ppolys}
+
+Using \cref{eq:Pndef}, the next polynomials after those in
+\cref{eq:Pfirst} are
+\begin{align}
+P_6(\ell)={}&\frac{\ell}{120}
+\bigl(20\ell^5-274\ell^4+1125\ell^3-1700\ell^2
+      +900\ell-120\bigr),\label{eq:P6}\\
+P_7(\ell)={}&\frac{\ell}{840}
+\bigl(120\ell^6-2058\ell^5+11368\ell^4-25725\ell^3
+      +24500\ell^2-8820\ell+840\bigr),\label{eq:P7}\\
+P_8(\ell)={}&\frac{\ell}{2520}
+\bigl(315\ell^7-6534\ell^6+45962\ell^5-142149\ell^4\notag\\
+&\hspace{7em}{}+205800\ell^3-135240\ell^2+35280\ell-2520\bigr).
+\label{eq:P8}
+\end{align}
+Together with \cref{eq:Pfirst}, these determine the outer sector through
+\(L^{-8}\).  Substitution into the rational \(A_k\) generates any desired
+number of internal logarithmic terms in the exponentially small sectors.
+
+\section{Independent derivation from the implicit difference equation}
+
+For completeness, one may compute the same coefficients without Lagrange
+inversion.  Substitute
+\[
+  d=\sum_{k=1}^{N}b_k(w)\xi^k+\bigO(\xi^{N+1})
+\]
+into
+\[
+  \left(1-\frac{d}{w}\right)(\e^{-d}+\xi)=1,
+\]
+expand the exponential, and equate powers of \(\xi\).  The coefficient of
+\(\xi^k\) is linear in \(b_k\), because the derivative of the left-hand side
+with respect to \(d\) at the origin is \(-(1+1/w)\).  Thus the recursion is
+triangular.  The first three results are
+\begin{align*}
+ b_1(w)&=\frac{w}{1+w},\\
+ b_2(w)&=\frac{w(w^2-2)}{2(1+w)^3},\\
+ b_3(w)&=\frac{w(2w-1)(w^3-6w-6)}{6(1+w)^5}.
+\end{align*}
+Multiplying by \(w^k\) recovers \(A_k\) through
+\cref{eq:bkAk}.  This route is especially convenient for proving convergence
+in \(\eta\); the operator route is more convenient for symbolic generation.
+
+\section{Reference identities for verification}
+
+The following identities form a compact test suite for an implementation.
+
+\begin{align*}
+& W(z)\e^{W(z)}=z,\\
+& \delta W(z)=\frac{W(z)}{1+W(z)},\\
+& \rLambert_r(z)\e^{\rLambert_r(z)}
+  +r\rLambert_r(z)=z,\\
+& f_r^{-1}(z)=z-r\rLambert_r(z),\\
+& \left(1-\frac{W(z)-\rLambert_r(z)}{W(z)}\right)
+  \left(\exp\!\bigl(\rLambert_r(z)-W(z)\bigr)
+        +r\frac{W(z)}{z}\right)=1,\\
+& F\bigl(F^{-1}(z)\bigr)-z=0.
+\end{align*}
+For a truncation through \(z^{-N}\), the final identity should reduce to the
+target remainder \(\bigO((W(z)/z)^{N+1})\), either symbolically or after
+asymptotic normalization.
+
+\clearpage
+\begin{thebibliography}{99}
+
+\bibitem{Corless1996}
+R.~M. Corless, G.~H. Gonnet, D.~E.~G. Hare, D.~J. Jeffrey, and D.~E. Knuth,
+``On the Lambert \(W\) function,''
+\emph{Advances in Computational Mathematics} \textbf{5} (1996), 329--359.
+\url{https://doi.org/10.1007/BF02124750}
+
+\bibitem{MezoBaricz2017}
+I.~Mez\H{o} and A.~Baricz,
+``On the generalization of the Lambert \(W\) function,''
+\emph{Transactions of the American Mathematical Society}
+\textbf{369}, no.~11 (2017), 7917--7934.
+\url{https://doi.org/10.1090/tran/6911}
+
+\bibitem{DLMF}
+NIST Digital Library of Mathematical Functions,
+Section~4.13, ``Lambert \(W\)-Function.''
+\url{https://dlmf.nist.gov/4.13}
+
+\bibitem{FlajoletSedgewick}
+P.~Flajolet and R.~Sedgewick,
+\emph{Analytic Combinatorics}, Cambridge University Press, 2009.
+See the discussion of Lagrange inversion and coefficient extraction.
+
+\bibitem{Henrici}
+P.~Henrici,
+\emph{Applied and Computational Complex Analysis}, Vol.~1,
+Wiley, 1974.
+
+\bibitem{deBruijn}
+N.~G. de Bruijn,
+\emph{Asymptotic Methods in Analysis}, Dover, 1981.
+
+\bibitem{vanDerHoeven}
+J.~van der Hoeven,
+\emph{Transseries and Real Differential Algebra},
+Lecture Notes in Mathematics 1888, Springer, 2006.
+
+\bibitem{ProveItDrafts}
+V.~Reshetnikov,
+``Series and transseries,'' in the ProveIt Fabius-function research drafts,
+GitHub repository.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/series-and-transseries}
+Accessed 2 September 2026.
+
+\end{thebibliography}
+
+\end{document}

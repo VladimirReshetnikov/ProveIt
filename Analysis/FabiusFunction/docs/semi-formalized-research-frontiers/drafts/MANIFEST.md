@@ -188,9 +188,18 @@ the older rows below.
 ## Incoming status
 
 No research payload is awaiting intake.  The `incoming/` directory contains
-only its permanent `README.md`; the six combinatorial archives and six
-polynomial-logarithmic transseries directories received on 2026-09-01 are
-recorded in their filed thematic groups below.
+only its permanent `README.md`.  The ten archives received on 2026-09-02
+(commit `3065a34fe`) were filed the same day by a quick archival intake --
+six dyadic up-extraction/extrapolation reports into
+`inverse-and-sampling/dyadic-up-extraction/`, three articles on reversing
+`x + W(x)` into `series-and-transseries/lambert-inverse-transseries/`, and
+one byte-identical reship (`rvachev_q_extrapolation_bundle (1).zip`, same
+SHA-256 as `rvachev_q_extrapolation_bundle.zip`) deleted without a second
+directory.  Claim review, comparison, consolidation, and Lean crosswalking of
+this batch are deferred past the intake publication gate.  Text files inside
+the packages are stored with repository (LF) line endings; each package's own
+`SHA256SUMS` ledger, where present, was computed by its author on the
+submitted bytes and is kept verbatim.
 
 ## fourier-decay — `rvachev_up_fourier_decay/`
 
@@ -322,6 +331,19 @@ but none uses Libertinus; two are custom 522-by-738-point, two are Letter, and
 two are A4.  Styling repair, comparison, claim review, consolidation, and Lean
 crosswalking remain deferred until after the intake publication gate.
 
+The second subgroup, `lambert-inverse-transseries/`, received three
+independently written articles on 2026-09-02 that invert `f(x) = x + W(x)`
+at infinity and develop logarithmic-transseries calculus around that example.
+They are filed here rather than under `lambert-w/` for the same reason as the
+first subgroup: the subject is the transseries method, with Lambert W as the
+worked case.  Quick intake only; no comparison or review yet.
+
+| Directory | Document | Supporting evidence | Previous path / provenance |
+| --- | --- | --- | --- |
+| `lambert-inverse-transseries/lambert_inverse_transseries/` | *Asymptotic Reversion of x + W(x) and a Calculus for Logarithmic Transseries* (1,846-line/61,003-byte source, 24-page/667,582-byte PDF) | none | `drafts/incoming/lambert_inverse_transseries.zip` (outer SHA-256 `8bef8fbbe36688daca7631bff16354dc486496cf49ce016e090fef64e86bf879`), filed 2026-09-02 |
+| `lambert-inverse-transseries/lambert_inverse_transseries_bundle/` | *Reversing x + W(x): Exact Reduction and Logarithmic Transseries* (1,378-line/48,108-byte source, 21-page/299,709-byte PDF) | none | `drafts/incoming/lambert_inverse_transseries_bundle.zip` (outer SHA-256 `9c4ea8f8b2e7d0129aa95afaea5715cf629704e6c025bcc78729d38798756654`), filed 2026-09-02 |
+| `lambert-inverse-transseries/reversing_x_plus_lambert_w_transseries/` | *Reversing x+W(x): Exact Reduction, All-Orders Asymptotics, and Logarithmic Transseries* (1,871-line/64,213-byte source, 28-page/332,829-byte PDF) | none | `drafts/incoming/reversing_x_plus_lambert_w_transseries.zip` (outer SHA-256 `4a628a31c4f95a1bafb85206ced18e341af7257afb53cf232dfe1489e237a867`), filed 2026-09-02 |
+
 ## spectra-and-arithmetic — `spectra-and-arithmetic/`
 
 Current source counts for unaffected rows still supersede their older intake
@@ -428,6 +450,23 @@ is pending, and full numerical replay remains separate reproducibility work.
 | `Inverse_Fabius_Analyticity_Asymptotics_and_Computability/` | *Inverse Fabius Theory: Analyticity, Asymptotics, Computability, and Dyadic Sampling* — canonical editorial synthesis of five peer inputs. Its immutable extractor pin is `0a0cdabeb72a6f7d67cfdfb76d02a8f7381c7bf7`; all 194 source-result rows are dispositioned (50 Lean-proved, 95 human-proved frontier results, 10 conjectures, 15 open problems, and 24 non-applicable environments). The newest exact rows include abstract effective inversion, `is:p3:cor:forced-superconvergence`, and `is:p3:thm:Appell-lattice-reproduction`. `ASSET_DISPOSITION.csv` accounts for all 88 source-subgroup files, while the deduplicated asset inventory lists 63 retained payloads. Five post-snapshot results are classified separately in `LEAN_CROSSWALK.md`. The retained, fully reviewed PDF checkpoint has 134 A4 pages and 2,027,726 bytes (SHA-256 `22bc68d855ad04dde9654e9fbd20b3ba7f05a33e3c5df0e5b80bb8991c94b41d`). Its historical three-pass page, font, text, and visual gates and the independently checked current 23-input source closure are recorded separately in canonical `VALIDATION.md`; the source changed after that render, so a fresh build is required before synchronization is claimed. | At pre-retirement revision `93db15ad3c0645bd3cfd0a3e6e694e3c86a3aa2b`: `analyticity-and-elementarity/Non_Elementarity_of_the_Fabius_Function/`; `analyticity-and-elementarity/inverse_fabius_iterates_nowhere_analytic/`; `inverse-asymptotics-and-computability/Inverse_and_Sampling_Frontiers/`; `inverse-asymptotics-and-computability/Inverse_Endpoint_All_Orders/`; `inverse-asymptotics-and-computability/Inverse_Fabius_Computability_Report/`. Nested predecessors and arrival archives are recorded in canonical `PROVENANCE.md`; Git history is the byte-level archive. |
 | `comb-interpolation/comb_interpolation_synthesis/` | *Comb Interpolation and Sampling Frontiers: Additive and Geometric Combs in the Fabius--Rvachev System* — canonical editorial synthesis of the former additive-dyadic volume and the three geometric-comb manuscripts. Shared Gaussian--Pascal, Jackson--Newton, Lagrange, stability, Fabius-boundary, quadrature, interpolation, modal, Mellin, regular-variation, spline, reciprocal-product, Euler--Maclaurin, Ruffa, and Thue--Morse material is deduplicated or preserved according to its exact source disposition. Its 180-file inventory and the historical 151-row and current 138-row package inventories are recorded. The retained 158-page, 2,456,105-byte A4 PDF (SHA-256 `81d249c8b2bb124836c858bd8e0ef9c8764606a2f9655a798d69e7565b1759b4`) is a validated historical checkpoint; the current chapter-03 notation edit requires a fresh three-pass render before source/PDF synchronization is claimed. Full numerical replay remains separate reproducibility work. | Replaces `Dyadic_Comb_Frontiers/`, `geometric_comb_q_fabius_report/`, `geometric_comb_interpolation_report/`, and `geometric_comb_interpolation_report-3/`; original bytes remain in Git history. |
 | `fabius_information_frontier/` | *Exact Information Geometry and New Frontiers for the Fabius--Rvachev System* (retained submitted 30-page A4 PDF; current 2,139-line TeX; a 601-line experiment, five data products, and three PDF/PNG figure pairs). Its 18 arrival hashes and 19 later payload hashes distinguish the submitted PDF from subsequent source changes. The information-geometry, entropy, Fisher-information, prefix-code, Thue--Morse, and endpoint layers remain archival manuscript claims pending hostile audit, numerical replay, an exact Lean crosswalk, canonical normalization, and rebuild; manuscript theorem labels do not establish formal verification. | `frontier-compilations/fabius_information_frontier/`; moved here by the thematic reorganization. |
+
+The subgroup `dyadic-up-extraction/` received six reports on 2026-09-02, all
+on the same theme: exact extraction or extrapolation of dyadic values of
+Rvachev's up-function from finite sinc-product spline prefixes, through
+geometric tails and q-binomial (quarter-base) extrapolation.  Several are
+successive drafts of one another; deduplication and comparison are deferred
+past the intake publication gate.  A byte-identical reship of
+`rvachev_q_extrapolation_bundle.zip` arrived alongside and was deleted.
+
+| Directory | Document | Supporting evidence | Previous path / provenance |
+| --- | --- | --- | --- |
+| `dyadic-up-extraction/Dyadic-Up-Extraction/` | *Exact Dyadic Extrapolation for Finite Rvachev Sinc-Product Splines* (1,725-line/58,695-byte source, 22-page/657,773-byte PDF) | `README.txt`, `SHA256SUMS.txt`, `dyadic_up_extraction.py`, `verification_output.txt` | `drafts/incoming/Dyadic-Up-Extraction.zip` (outer SHA-256 `65ec70d49d1e06f461a3ba2ec44ab2337721385aa29aaf5d6a850b6e5f63f42c`), filed 2026-09-02 |
+| `dyadic-up-extraction/Exact_Dyadic_Up_Extraction/` | *Exact q-Binomial Extraction of Rvachev Up-Function Values from Finite Sinc-Product Splines* (1,277-line/46,386-byte source, 20-page/455,880-byte PDF) | `README.txt`, `SHA256SUMS.txt`, `experiment_output.txt`, `verify_dyadic_extraction.py` | `drafts/incoming/Exact_Dyadic_Up_Extraction.zip` (outer SHA-256 `ce2376e2578954c7439238459552c2cdccca3a81ee9ea857a412f0dfcfdbc2a9`), filed 2026-09-02 |
+| `dyadic-up-extraction/Exact_Geometric_Tails_Rvachev_Up/` | *Exact Geometric Tails and q-Pochhammer Extraction for Finite-Sinc Approximants* (1,530-line/54,622-byte source, 21-page/659,341-byte PDF) | `README.txt`, `SHA256SUMS.txt`, `up_dyadic_extraction.py`, `verification.txt` | `drafts/incoming/Exact_Geometric_Tails_Rvachev_Up.zip` (outer SHA-256 `5bf158b724332dd5cddf7ef7a8f8b74073113a97a52d2198e81351e0e2de7cba`), filed 2026-09-02 |
+| `dyadic-up-extraction/dyadic_up_extraction_package/` | *Exact q-Extrapolation of Finite Sinc-Product Splines at Dyadic Points* (1,801-line/60,526-byte source, 26-page/710,914-byte PDF) | `README.txt`, `SHA256SUMS`, `finite_splines.png`, `geometric_coefficients.csv`, `geometric_mode_cancellation.png`, `sample_sequences.csv`, `verification_report.txt`, `verify_dyadic_up_extraction.py` | `drafts/incoming/dyadic_up_extraction_bundle.zip` (outer SHA-256 `1a6275692bca6dfdbe7626132a1e546c80cfc50c4cbf2ba415363567a356cea3`), filed 2026-09-02 |
+| `dyadic-up-extraction/rvachev_q_extrapolation/` | *Exact Geometric Tails and q-Binomial Extrapolation for Dyadic Values of Rvachev's Up-Function* (1,334-line/41,936-byte source, 19-page/430,625-byte PDF) | `README.txt`, `exact_extrapolation.py`, `verification_output.txt` | `drafts/incoming/rvachev_q_extrapolation_bundle.zip` (outer SHA-256 `f0dd387d453d0d6cce2e3351f5b3724eec45ef29f6e23a2e63a98702d6ff18b1`), filed 2026-09-02 |
+| `dyadic-up-extraction/rvachev_up_dyadic_extrapolation_package/` | *Exact quarter-base extrapolation for dyadic samples of Rvachev's up-function spline prefixes* (1,143-line/36,098-byte source, 15-page/426,091-byte PDF) | `README.txt`, `SHA256SUMS.txt`, `verify_extrapolation.py` | `drafts/incoming/rvachev_up_dyadic_extrapolation_package.zip` (outer SHA-256 `2fefa99ac0fde2e9cea99e13c42270ce1602fb49976ae9d5110b253f4c5785bc`), filed 2026-09-02 |
 
 ## representations — `representations/`
 
