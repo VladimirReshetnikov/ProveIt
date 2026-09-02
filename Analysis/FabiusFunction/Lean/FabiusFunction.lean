@@ -44,6 +44,7 @@ import FabiusFunction.RaabeMultiplication
 import FabiusFunction.TouchardCongruence
 import FabiusFunction.TouchardShiftEGF
 import FabiusFunction.TouchardPolyCongruence
+import FabiusFunction.TypeBEulerian
 import FabiusFunction.SymmetricFunctionTransform
 import FabiusFunction.SymmetricFunctionGenerating
 import FabiusFunction.FiniteQBinomialCore

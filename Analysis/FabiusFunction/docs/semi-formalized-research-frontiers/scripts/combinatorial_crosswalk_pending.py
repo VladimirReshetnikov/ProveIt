@@ -791,6 +791,26 @@ and in the term $j=p$ only $k=n$ survives because $p^{n-k}\equiv0$ for
 $k<n$.""")),
 ]
 
+PENDING += [
+ # --- thm:typeB-eulerian ---
+ (r"""\eqref{eq:typeB-power-series}.  Multiplication by $(1-t)^{n+1}$ and coefficient
+extraction gives \eqref{eq:typeB-explicit}.
+\end{proof}
+""",
+  remark(r"""% ed.: crosswalk added 2026-09-01; Lean takes the recurrence as the definition.
+Module \lean{TypeBEulerian} defines \lean{Fabius.typeBEulerian} by the
+recurrence \cref{eq:typeB-recurrence}; the signed-permutation count is not
+formalized.  The type-$B$ Worpitzky identity
+$(2m+1)^n=\sum_k\TypeBEulerianNumber nk\binom{m+n-k}{n}$ is
+\lean{Fabius.typeB_worpitzky}, proved by induction on $n$ from the one-step
+relation $(2m+1)\binom{m+n-k}{n}=(2k+1)\binom{m+n+1-k}{n+1}
++(2n-2k+1)\binom{m+n-k}{n+1}$ (\lean{Fabius.two_mul_add_one_mul_choose});
+\cref{eq:typeB-power-series} is \lean{Fabius.one_sub_X_pow_mul_oddPowSeries},
+in $R[[t]]$ over any commutative ring, exactly as in the text; and
+\cref{eq:typeB-explicit} is its $k$-th coefficient,
+\lean{Fabius.typeBEulerian_eq_sum_int}.""")),
+]
+
 applied = 0
 for anchor, text in PENDING:
     if text.strip() in s:
