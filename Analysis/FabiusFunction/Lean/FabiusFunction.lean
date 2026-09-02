@@ -577,6 +577,7 @@ import FabiusFunction.IntegerParameterTranslation
 import FabiusFunction.MultisetInversions
 import FabiusFunction.GeometricSimplexReindex
 import FabiusFunction.RatioExpansion
+import FabiusFunction.BaileyInversion
 import FabiusFunction.BaileyAux
 import FabiusFunction.BaileyPairs
 import FabiusFunction.BaileyUnitPairs

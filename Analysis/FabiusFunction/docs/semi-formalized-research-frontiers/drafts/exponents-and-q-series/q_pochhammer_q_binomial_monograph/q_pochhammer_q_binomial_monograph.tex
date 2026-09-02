@@ -12724,8 +12724,8 @@ inside the proof below does not formalize the result the proof concludes.
   than a mathematical claim.
 \end{description}
 
-Of the 282 labelled forward results, 128 are \statusexact, 82 are
-\statuspartial, 64 are \statusnone, and 8 are \statusna.  The original
+Of the 282 labelled forward results, 129 are \statusexact, 82 are
+\statuspartial, 63 are \statusnone, and 8 are \statusna.  The original
 191-result pre-Fabius core had 36 \statusexact, 29 \statuspartial, 123
 \statusnone, and 3 \statusna{} entries.  The four integrated guide chapters
 add 31 human-proved but not Lean-formalized assertions and five labelled
@@ -13296,7 +13296,7 @@ The $q$-gamma and $q$-beta functions & 6 & 1 & 1 & 0\\
 Jacobi's triple product & 6 & 2 & 0 & 0\\
 Theta modularity, lattice dissection, and sums of squares & 0 & 0 & 14 & 4\\
 Partitions and product--sum identities & 4 & 0 & 0 & 0\\
-Bailey pairs and the Rogers--Ramanujan identities & 6 & 0 & 1 & 0\\
+Bailey pairs and the Rogers--Ramanujan identities & 7 & 0 & 0 & 0\\
 Bailey transforms and the Andrews--Gordon identities & 0 & 0 & 8 & 1\\
 Cyclotomic factorization and congruences & 6 & 1 & 2 & 0\\
 Negative upper indices and geometric Newton interpolation & 8 & 0 & 1 & 0\\
@@ -13309,7 +13309,7 @@ Half-base arithmetic and Prouhet--Thue--Morse cancellation & 6 & 3 & 0 & 0\\
 Geometric uniform sums, $q$-cumulants, and the Fabius--Rvachev functions & 2 & 11 & 0 & 0\\
 Dyadic Gaussian--Thue--Morse structure and the values of $F$ & 7 & 44 & 5 & 0\\
 \midrule
-\textbf{Forward total} & 128 & 82 & 64 & 8\\
+\textbf{Forward total} & 129 & 82 & 63 & 8\\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -14019,7 +14019,7 @@ coefficients (\texttt{PowerSeriesUniqueness})}\\[2pt]
 \texttt{card\_\allowbreak{}restricted\_\allowbreak{}le\_\allowbreak{}eq}\newline
 {\footnotesize\texttt{PartitionBoundedParts}; $p_{\le r}(n)$ read as the number
 of partitions of $n$ with every part at most $r$ (Mathlib's
-\texttt{Nat.Partition.restricted n (· ≤ r)}), identified with the
+\texttt{Nat.Partition.restricted n (fun k => k $\le$ r)}), identified with the
 multiplicity vectors on $\{1,\dots,r\}$ of weight $n$; the identity for
 $\lVert q\rVert<1$ in any complete normed field; the conjugation equivalence
 with ``at most $r$ parts'' is not formalized}\\[2pt]
@@ -14044,7 +14044,16 @@ sequences of sum $N$ (\texttt{conjugateVector}/\texttt{differenceVector})}\\[2pt
 \multicolumn{3}{@{}l}{\itshape Bailey pairs and the Rogers--Ramanujan identities}\\
 \midrule
 \Cref{lem:qdiff-annihilation} & \statusexact & \texttt{qDifference\_\allowbreak{}sum\_\allowbreak{}eval}\textsubscript{2}\texttt{\_\allowbreak{}eq\_\allowbreak{}zero\_\allowbreak{}of\_\allowbreak{}degree\_\allowbreak{}lt}\newline{\footnotesize\texttt{QDifferenceAnnihilation}; semiring coefficients, arbitrary scalar extension, commutative-ring target; no division or distinct-node hypothesis}\\[2pt]
-\Cref{thm:bailey-inversion} & \statusnone & ---\\[2pt]
+\Cref{thm:bailey-inversion} & \statusexact &
+\texttt{isBaileyPair\_\allowbreak{}iff\_\allowbreak{}eq\_\allowbreak{}baileyInverse},
+\texttt{IsBaileyPair.eq\_\allowbreak{}baileyInverse},
+\texttt{baileySolve}\newline
+{\footnotesize\texttt{BaileyInversion}; the equivalence for $a\ne1$ in any field with
+nonvanishing denominators: the inverse formula is a left inverse by the
+$q$-difference annihilation of \Cref{lem:qdiff-annihilation}, and a two-sided one
+because every $\beta$ is the Bailey transform of the forward-substitution solution
+\texttt{baileySolve}; the removable-limit reading at $a=1$ is not formalised as
+such (the $a=1$ unit pair is verified directly in \texttt{BaileyUnitPairs})}\\[2pt]
 \Cref{cor:unit-bailey-pairs} & \statusexact &
 \texttt{isBaileyPair\_\allowbreak{}unit\_\allowbreak{}one},
 \texttt{isBaileyPair\_\allowbreak{}unit\_\allowbreak{}q},
