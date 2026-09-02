@@ -3190,7 +3190,7 @@ Collecting factors yields the claimed transformation.  Both sides are meromorphi
 \section{The \texorpdfstring{$q$}{q}-Gauss sum}
 
 \begin{theorem}[$q$-Gauss summation]\label{thm:q-gauss}
-If $\AbsoluteValue{c/(ab)}<1$, then
+If $a,b\ne0$, $(c;q)_\infty\ne0$ and $\AbsoluteValue{c/(ab)}<1$, then
 \[
  {}_2\phi_1\!\left[
  \begin{matrix}a,b\\c\end{matrix};q,\frac{c}{ab}\right]
@@ -3205,7 +3205,31 @@ Set $z=c/(ab)$ in \Cref{thm:heine}.  Then $az=c/b$, so one numerator parameter o
  ={}_1\phi_0\!\left[\begin{matrix}c/(ab)\\-\end{matrix};q,b\right]
  =\frac{(c/a;q)_\infty}{(b;q)_\infty}.
 \]
-Multiplication by the prefactor in Heine's transformation gives the result.  The initially stronger restrictions are removed by analytic continuation within the convergence domain.
+Multiplication by the prefactor in Heine's transformation gives the result, under the
+additional restrictions $\AbsoluteValue b<1$ (so that Heine's transformation applies) and
+$(c/b;q)_\infty\ne0$.
+
+The full domain is reached without analytic continuation, by letting $n\to\infty$ in the
+$q$-Pfaff--Saalsch\"utz sum of \Cref{thm:q-pfaff} written in its Cauchy form.  Put
+$z=c/(ab)$ and divide the second finite Cauchy identity (\Cref{lem:cauchy-II}) at
+$c\mapsto z$ by $(c;q)_n(z;q)_n$:
+\[
+ \sum_{k=0}^{n}\GaussianBinomial{n}{k}{q}
+ \frac{(a;q)_k(b;q)_k\,z^{k}\,(z;q)_{n-k}\,(cq^{k};q)_{n-k}}{(c;q)_n\,(z;q)_n}
+ =\frac{(c/a;q)_n\,(c/b;q)_n}{(c;q)_n\,(z;q)_n}.
+\]
+As $n\to\infty$ with $k$ fixed, $\GaussianBinomial{n}{k}{q}\to1/(q;q)_k$,
+$(z;q)_{n-k}\to(z;q)_\infty$ and $(cq^{k};q)_{n-k}\to(cq^{k};q)_\infty=(c;q)_\infty/(c;q)_k$,
+so the $k$th summand tends to the $k$th term of ${}_2\phi_1(a,b;c;q,z)$, while the right
+side tends to $(c/a,c/b;q)_\infty/(c,z;q)_\infty$.  The summands are dominated uniformly in
+$n$ by $K\AbsoluteValue z^{k}$, because the Gaussian coefficients are bounded uniformly in
+$n$ and $k$ (as in the proof of \Cref{thm:infinite-qbinomial}),
+$\AbsoluteValue{(x;q)_m}\le(-\AbsoluteValue x;\AbsoluteValue q)_\infty$ for every prefix,
+and $1/\AbsoluteValue{(c;q)_n}$, $1/\AbsoluteValue{(z;q)_n}$ are bounded since
+$(c;q)_\infty\ne0$ and $\AbsoluteValue z<1$.  Tannery's theorem (dominated convergence for
+series) therefore gives the identity for all $a,b\ne0$ with $(c;q)_\infty\ne0$ and
+$\AbsoluteValue{c/(ab)}<1$, in any complete normed field; no hypothesis on $b$ or on
+$(c/b;q)_\infty$ is needed.
 \end{proof}
 
 \section{A second finite Cauchy identity}
@@ -12759,7 +12783,7 @@ inside the proof below does not formalize the result the proof concludes.
   than a mathematical claim.
 \end{description}
 
-Of the 282 labelled forward results, 139 are \statusexact, 83 are
+Of the 282 labelled forward results, 140 are \statusexact, 82 are
 \statuspartial, 52 are \statusnone, and 8 are \statusna.  The original
 191-result pre-Fabius core had 36 \statusexact, 29 \statuspartial, 123
 \statusnone, and 3 \statusna{} entries.  The four integrated guide chapters
@@ -13323,7 +13347,7 @@ Partitions, words, paths, and inversion statistics & 7 & 2 & 0 & 0\\
 Finite fields, Grassmannians, and rank enumeration & 1 & 1 & 4 & 0\\
 Symmetry and unimodality & 0 & 0 & 3 & 0\\
 The infinite $q$-binomial theorem & 3 & 0 & 1 & 0\\
-Basic hypergeometric series & 6 & 2 & 1 & 0\\
+Basic hypergeometric series & 7 & 1 & 1 & 0\\
 Euler telescoping and very-well-poised summations & 1 & 0 & 3 & 0\\
 Bilateral series and Ramanujan's \texorpdfstring{${}_1\psi_1$}{1psi1} sum & 2 & 0 & 0 & 0\\
 $q$-difference calculus and the quantum binomial & 9 & 1 & 0 & 0\\
@@ -13344,7 +13368,7 @@ Half-base arithmetic and Prouhet--Thue--Morse cancellation & 6 & 3 & 0 & 0\\
 Geometric uniform sums, $q$-cumulants, and the Fabius--Rvachev functions & 2 & 11 & 0 & 0\\
 Dyadic Gaussian--Thue--Morse structure and the values of $F$ & 7 & 45 & 4 & 0\\
 \midrule
-\textbf{Forward total} & 139 & 83 & 52 & 8\\
+\textbf{Forward total} & 140 & 82 & 52 & 8\\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -13781,13 +13805,17 @@ domain $\lVert z\rVert<1$, $\lVert b\rVert<1$, $b\ne0$, with $(c;q)_\infty$
 and $(az;q)_\infty$ nonvanishing, in every complete normed field, together
 with the absolute convergence of ${}_2\phi_1$ in the unit disc; the
 analytic-continuation clause is not formalized}\\[2pt]
-\Cref{thm:q-gauss} & \statuspartial &
+\Cref{thm:q-gauss} & \statusexact &
+\texttt{hasSum\_\allowbreak{}q\_\allowbreak{}gauss},
+\texttt{q\_\allowbreak{}gauss\_\allowbreak{}summation\_\allowbreak{}full},
+\texttt{summable\_\allowbreak{}q\_\allowbreak{}gauss\_\allowbreak{}term},
 \texttt{q\_\allowbreak{}gauss\_\allowbreak{}summation}\newline
-{\footnotesize\texttt{QGaussSummation}; on the domain $\lVert b\rVert<1$,
-$\lVert c/(ab)\rVert<1$ where Heine's transformation is available, for
-$a,b\ne0$ and nonvanishing $(c;q)_\infty$, $(c/b;q)_\infty$; the extension to
-the full domain $\lVert c/(ab)\rVert<1$ by analytic continuation is not
-formalized}\\[2pt]
+{\footnotesize\texttt{QGaussFullDomain}, \texttt{QGaussSummation}; on the full domain
+$\lVert c/(ab)\rVert<1$ with $a,b\ne0$ and $(c;q)_\infty\ne0$, in every complete normed
+field, as the Tannery limit of the $q$-Pfaff--Saalsch\"utz sum in its Cauchy form (no
+restriction on $\lVert b\rVert$ and no hypothesis on $(c/b;q)_\infty$); the Heine route
+of the first proof is \texttt{q\_\allowbreak{}gauss\_\allowbreak{}summation}, on
+$\lVert b\rVert<1$}\\[2pt]
 \Cref{lem:cauchy-II} & \statusexact &
 \texttt{finite\_\allowbreak{}qCauchy\_\allowbreak{}second\_\allowbreak{}identity}\newline
 {\footnotesize\texttt{QBinomialCauchy}; arbitrary commutative ring and all parameters/degrees}\\[2pt]
