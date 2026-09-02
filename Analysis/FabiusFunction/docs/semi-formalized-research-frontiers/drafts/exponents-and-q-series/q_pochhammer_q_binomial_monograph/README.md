@@ -84,8 +84,9 @@ It compares all coefficients through degree 100 using integer arithmetic:
 1,515 equalities in total. This is a transcription-quality gate, explicitly
 not an infinite proof of any recorded identity.
 
-Repository policy no longer retains package-level or nested `SHA256SUMS`
-manifests. They are not validation gates and must not be recreated. Historical
+Checksum ledgers have been abolished repository-wide; no `SHA256SUMS` file is
+kept for this package or its assets, and no checksum gate is part of its
+validation state. Deleted checksum manifests must not be recreated. Historical
 SHA-256 values recorded directly in this README and in `PROVENANCE.md` remain
 provenance receipts for the named artifacts.
 
@@ -111,11 +112,11 @@ It adds the explicit document-local `\BellBlockMultiplicity{r}` and
 `\MacMahonQCatalanPolynomial{n}{q}` families and normalizes the newly merged
 Jackson, Gaussian-binomial, q-integer, and q-Pochhammer status formulas, while
 retaining the newest feature, crosswalk, and provenance expansion catalogued
-below. No PDF was regenerated after those changes. The historical source
-identity above must not be reused for the live source: the PDF and its recorded
-14,381-line build source form the retained synchronized checkpoint, while the
-current master and retained PDF are distinct artifacts and do not claim render
-parity.
+below. No PDF was regenerated after those changes; the historical source
+identity above must not be reused for the live source. Thus the PDF and its
+recorded 14,381-line build source form the retained synchronized checkpoint,
+while the current master and retained PDF are distinct payloads pending a
+fresh three-pass build and do not claim render parity.
 
 The current source includes exhaustive crosswalks for `QPochhammerEntire`
 (zero definitions
