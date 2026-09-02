@@ -1,3 +1,4 @@
+import FabiusFunction.ThueMorseBasicLemmas
 import FabiusFunction.ThueMorseValuation
 import Mathlib.Analysis.SpecialFunctions.Log.Summable
 
@@ -31,7 +32,7 @@ would otherwise keep re-deriving inline:
 * `exp_neg_nat_mul` — `e^(-t)^n = e^(-n·t)` — together with its
   dyadic specialisation `exp_neg_two_pow_mul`, `e^(-t)^(2^j) =
   e^(-2^j·t)`, the shape in which the lacunary factors occur;
-* `abs_thueMorseSign_real` — `|ε(n)| = 1` over `ℝ`;
+* `abs_thueMorseSign_real` (from `ThueMorseBasicLemmas`) — `|ε(n)| = 1` over `ℝ`;
 * `multipliable_one_sub_exp_neg_two_pow` — convergence of the lacunary
   product itself, the `Multipliable` companion of
   `summable_log_one_sub_exp`, used by `ThueMorseGDirichlet`
@@ -59,19 +60,7 @@ theorem exp_neg_nat_mul (t : ℝ) (n : ℕ) :
 — the shape of the factors of the lacunary product. -/
 theorem exp_neg_two_pow_mul (t : ℝ) (j : ℕ) :
     Real.exp (-t) ^ (2 ^ j : ℕ) = Real.exp (-((2 : ℝ) ^ j * t)) := by
-  rw [← Real.exp_nat_mul]
-  congr 1
-  push_cast
-  ring
-
-/-- The Thue–Morse sign has absolute value one over `ℝ`. -/
-theorem abs_thueMorseSign_real (n : ℕ) : |(thueMorseSign n : ℝ)| = 1 := by
-  rw [thueMorseSign]
-  rcases Nat.even_or_odd (binaryWeight n) with h | h
-  · rw [h.neg_one_pow]
-    norm_num
-  · rw [h.neg_one_pow]
-    norm_num
+  rw [exp_neg_nat_mul, Nat.cast_pow, Nat.cast_ofNat]
 
 /-- `1 - e^(-x) ≤ x` for **every** real `x`, from `e^(-x) ≥ 1 - x`. -/
 theorem one_sub_exp_neg_le (x : ℝ) : 1 - Real.exp (-x) ≤ x := by

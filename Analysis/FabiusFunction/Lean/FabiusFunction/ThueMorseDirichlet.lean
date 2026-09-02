@@ -125,10 +125,8 @@ theorem thueMorseDirichlet_dyadic (σ a : ℝ) (hσ : 0 < σ) (ha : 0 < a) :
   have h1 := tendsto_thueMorseDirichlet σ a hσ ha
   have h2 := tendsto_thueMorseDirichlet σ (a / 2) hσ (by linarith)
   have h3 := tendsto_thueMorseDirichlet σ ((a + 1) / 2) hσ (by linarith)
-  have hdouble : Tendsto (fun N : ℕ => 2 * N) atTop atTop :=
-    tendsto_atTop_mono (fun n => (by omega : n ≤ 2 * n)) tendsto_id
   have h1' : Tendsto (fun N => dirichletPartial σ a (2 * N)) atTop
-      (𝓝 (thueMorseDirichlet σ a)) := h1.comp hdouble
+      (𝓝 (thueMorseDirichlet σ a)) := h1.comp tendsto_two_mul_atTop
   have hrw : (fun N => dirichletPartial σ a (2 * N)) =
       fun N => (2 : ℝ) ^ (-σ) *
         (dirichletPartial σ (a / 2) N -

@@ -1,4 +1,5 @@
 import FabiusFunction.DyadicClosedForm
+import FabiusFunction.ThueMorseBasicLemmas
 import FabiusFunction.ThueMorseEnumerators
 
 /-!
@@ -33,6 +34,11 @@ is Newman's phenomenon in its purest form.
 * `thueMorseResidueSum` — the sign sum along a residue class.
 * `thueMorseResidueSum_three_zero_two_mul` (and companions) — the
   one-step parity system.
+* `thueMorseResidueSum_three_zero_four_mul_add_bracket` — **the
+  base-four step bracket** `|T₀(4M+s) - 3·T₀(M)| ≤ 2` for `s < 4`: the
+  whole boundary analysis, isolated once.  It drives the positivity
+  theorem below and the quantitative bounds of
+  `ThueMorseNewmanQuantitative`.
 * `newman_positivity` — **Newman's theorem** (`eq:newman-positivity`).
 -/
 
@@ -46,14 +52,6 @@ namespace Fabius
 `∑_{n<N, n≡r (mod q)} ε(n)`. -/
 def thueMorseResidueSum (q r N : ℕ) : ℤ :=
   ∑ n ∈ range N, if n % q = r then thueMorseSign n else 0
-
-/-- The Thue–Morse sign takes only the values `±1`. -/
-theorem thueMorseSign_eq_one_or_neg_one (n : ℕ) :
-    thueMorseSign n = 1 ∨ thueMorseSign n = -1 := by
-  rw [thueMorseSign]
-  rcases Nat.even_or_odd (binaryWeight n) with h | h
-  · exact Or.inl h.neg_one_pow
-  · exact Or.inr h.neg_one_pow
 
 /-- The signed prefix sum vanishes at even endpoints: consecutive
 pairs cancel. -/
@@ -145,119 +143,137 @@ theorem thueMorseResidueSum_three_one_two_mul (M : ℕ) :
       if_pos h, if_neg (by omega : ¬j % 3 = 0)]
     ring
 
+/-- **The base-four step bracket**: for every `M` and every `s < 4`,
+`3·T₀(M) - 2 ≤ T₀(4M+s) ≤ 3·T₀(M) + 2`.
+
+Composing two parity steps gives `T₀(4M) = 3·T₀(M) - E(M)` with
+`|E(M)| ≤ 1`, and the boundary terms `T₀(4M+s) - T₀(4M)` are at most
+three single signs supported on pairwise disjoint residue classes of
+`M`, so they contribute at most one in absolute value.  This bracket is
+the entire arithmetic content of Newman's phenomenon: the three-fold
+amplification against a bounded error. -/
+theorem thueMorseResidueSum_three_zero_four_mul_add_bracket (M s : ℕ)
+    (hs : s < 4) :
+    3 * thueMorseResidueSum 3 0 M - 2 ≤
+        thueMorseResidueSum 3 0 (4 * M + s) ∧
+      thueMorseResidueSum 3 0 (4 * M + s) ≤
+        3 * thueMorseResidueSum 3 0 M + 2 := by
+  have hE := abs_le.mp (abs_sum_thueMorseSign_le_one M)
+  -- the two-step collapse `T₀(4M) = 3T₀(M) - E(M)`
+  have h2M := thueMorseResidueSum_three_zero_two_mul M
+  have h1M := thueMorseResidueSum_three_one_two_mul M
+  have hsum := thueMorseResidueSum_three_add M
+  have h4M : thueMorseResidueSum 3 0 (4 * M) =
+      3 * thueMorseResidueSum 3 0 M -
+        ∑ n ∈ range M, thueMorseSign n := by
+    have ha := thueMorseResidueSum_three_zero_two_mul (2 * M)
+    rw [show 2 * (2 * M) = 4 * M by ring] at ha
+    linarith [ha, h2M, h1M, hsum]
+  -- single-sign helpers
+  have hsA : thueMorseSign (2 * M) = thueMorseSign M :=
+    thueMorseSign_two_mul M
+  have hsB : thueMorseSign (4 * M) = thueMorseSign M := by
+    rw [show 4 * M = 2 * (2 * M) by ring, thueMorseSign_two_mul,
+      thueMorseSign_two_mul]
+  have hsC : thueMorseSign (4 * M + 2) = -thueMorseSign M := by
+    rw [show 4 * M + 2 = 2 * (2 * M + 1) by ring,
+      thueMorseSign_two_mul, thueMorseSign_two_mul_add_one]
+  -- the successor decompositions up to `4M+3`
+  have hS1 := thueMorseResidueSum_succ 3 0 (4 * M)
+  have hS2 : thueMorseResidueSum 3 0 (4 * M + 2) =
+      thueMorseResidueSum 3 0 (2 * M + 1) -
+        thueMorseResidueSum 3 1 (2 * M + 1) := by
+    have h := thueMorseResidueSum_three_zero_two_mul (2 * M + 1)
+    rwa [show 2 * (2 * M + 1) = 4 * M + 2 by ring] at h
+  have hT0 := thueMorseResidueSum_succ 3 0 (2 * M)
+  have hT1 := thueMorseResidueSum_succ 3 1 (2 * M)
+  have hS3 := thueMorseResidueSum_succ 3 0 (4 * M + 2)
+  -- case split on the last two binary digits
+  have hcase : s = 0 ∨ s = 1 ∨ s = 2 ∨ s = 3 := by omega
+  rcases hcase with rfl | rfl | rfl | rfl
+  · -- `s = 0`: pure amplification
+    rw [add_zero, h4M]
+    constructor <;> linarith [hE.1, hE.2]
+  · -- `s = 1`: one boundary sign
+    rw [hS1, h4M, hsB]
+    rcases (by omega : 4 * M % 3 = 0 ∨ ¬4 * M % 3 = 0)
+      with hc | hc
+    · rw [if_pos hc]
+      rcases thueMorseSign_eq_one_or_neg_one M with hε | hε <;>
+        rw [hε] <;> constructor <;> linarith [hE.1, hE.2]
+    · rw [if_neg hc]
+      constructor <;> linarith [hE.1, hE.2]
+  · -- `s = 2`: two boundary signs on disjoint residues
+    rw [hS2, hT0, hT1, h2M, h1M, hsA]
+    rcases (by omega : M % 3 = 0 ∨ M % 3 = 1 ∨ M % 3 = 2)
+      with h3 | h3 | h3
+    · rw [if_pos (show 2 * M % 3 = 0 by omega),
+        if_neg (show ¬2 * M % 3 = 1 by omega)]
+      rcases thueMorseSign_eq_one_or_neg_one M with hε | hε <;>
+        rw [hε] <;> constructor <;> linarith [hE.1, hE.2, hsum]
+    · rw [if_neg (show ¬2 * M % 3 = 0 by omega),
+        if_neg (show ¬2 * M % 3 = 1 by omega)]
+      constructor <;> linarith [hE.1, hE.2, hsum]
+    · rw [if_neg (show ¬2 * M % 3 = 0 by omega),
+        if_pos (show 2 * M % 3 = 1 by omega)]
+      rcases thueMorseSign_eq_one_or_neg_one M with hε | hε <;>
+        rw [hε] <;> constructor <;> linarith [hE.1, hE.2, hsum]
+  · -- `s = 3`: three boundary signs on disjoint residues
+    rw [hS3, hS2, hT0, hT1, h2M, h1M, hsA, hsC]
+    rcases (by omega : M % 3 = 0 ∨ M % 3 = 1 ∨ M % 3 = 2)
+      with h3 | h3 | h3
+    · rw [if_pos (show 2 * M % 3 = 0 by omega),
+        if_neg (show ¬2 * M % 3 = 1 by omega),
+        if_neg (show ¬(4 * M + 2) % 3 = 0 by omega)]
+      rcases thueMorseSign_eq_one_or_neg_one M with hε | hε <;>
+        rw [hε] <;> constructor <;> linarith [hE.1, hE.2, hsum]
+    · rw [if_neg (show ¬2 * M % 3 = 0 by omega),
+        if_neg (show ¬2 * M % 3 = 1 by omega),
+        if_pos (show (4 * M + 2) % 3 = 0 by omega)]
+      rcases thueMorseSign_eq_one_or_neg_one M with hε | hε <;>
+        rw [hε] <;> constructor <;> linarith [hE.1, hE.2, hsum]
+    · rw [if_neg (show ¬2 * M % 3 = 0 by omega),
+        if_pos (show 2 * M % 3 = 1 by omega),
+        if_neg (show ¬(4 * M + 2) % 3 = 0 by omega)]
+      rcases thueMorseSign_eq_one_or_neg_one M with hε | hε <;>
+        rw [hε] <;> constructor <;> linarith [hE.1, hE.2, hsum]
+
+/-- The base-four step bracket at the cutoff `N` itself, written with
+`N = 4·(N/4) + N%4`. -/
+theorem thueMorseResidueSum_three_zero_bracket (N : ℕ) :
+    3 * thueMorseResidueSum 3 0 (N / 4) - 2 ≤
+        thueMorseResidueSum 3 0 N ∧
+      thueMorseResidueSum 3 0 N ≤
+        3 * thueMorseResidueSum 3 0 (N / 4) + 2 := by
+  have h := thueMorseResidueSum_three_zero_four_mul_add_bracket (N / 4)
+    (N % 4) (Nat.mod_lt _ (by norm_num))
+  rwa [Nat.div_add_mod] at h
+
+/-- The first four values `T₀(0..3) = 0, 1, 1, 1`. -/
+theorem thueMorseResidueSum_three_zero_of_lt_four (N : ℕ) (hN : N < 4) :
+    thueMorseResidueSum 3 0 N = if N = 0 then 0 else 1 := by
+  have he3 : thueMorseSign 3 = 1 := by
+    have h := thueMorseSign_two_mul_add_one 1
+    norm_num at h
+    exact h
+  interval_cases N <;>
+    norm_num [thueMorseResidueSum, Finset.sum_range_succ, he3]
+
 /-- **Newman's positivity theorem** (`eq:newman-positivity`): among
 the multiples of three below any positive cutoff, the even binary
-weights strictly outnumber the odd ones. -/
+weights strictly outnumber the odd ones.  From the step bracket,
+`T₀(N) ≥ 3·T₀(N/4) - 2 ≥ 3 - 2 = 1` by strong induction. -/
 theorem newman_positivity : ∀ N : ℕ, 1 ≤ N →
     1 ≤ thueMorseResidueSum 3 0 N := by
   intro N
   induction N using Nat.strong_induction_on with
   | _ N ih =>
     intro hN
-    by_cases h4 : N ≤ 4
-    · -- base cases, from the first four signs
-      have he0 : thueMorseSign 0 = 1 := by
-        norm_num [thueMorseSign, binaryWeight]
-      have he1 : thueMorseSign 1 = -1 := by
-        have h := thueMorseSign_two_mul_add_one 0
-        norm_num [he0] at h
-        exact h
-      have he2 : thueMorseSign 2 = -1 := by
-        have h := thueMorseSign_two_mul 1
-        norm_num [he1] at h
-        exact h
-      have he3 : thueMorseSign 3 = 1 := by
-        have h := thueMorseSign_two_mul_add_one 1
-        norm_num [he1] at h
-        exact h
-      interval_cases N <;>
-        norm_num [thueMorseResidueSum, Finset.sum_range_succ,
-          he0, he1, he2, he3]
-    · -- inductive step in base four
-      push Not at h4
-      have hM1 : 1 ≤ N / 4 := by omega
-      have hMN : N / 4 < N := by omega
-      have hIH := ih (N / 4) hMN hM1
-      set M := N / 4 with hMdef
-      have hE := abs_le.mp (abs_sum_thueMorseSign_le_one M)
-      -- the two-step collapse `T₀(4M) = 3T₀(M) - E(M)`
-      have h2M := thueMorseResidueSum_three_zero_two_mul M
-      have h1M := thueMorseResidueSum_three_one_two_mul M
-      have hsum := thueMorseResidueSum_three_add M
-      have h4M : thueMorseResidueSum 3 0 (4 * M) =
-          3 * thueMorseResidueSum 3 0 M -
-            ∑ n ∈ range M, thueMorseSign n := by
-        have ha := thueMorseResidueSum_three_zero_two_mul (2 * M)
-        rw [show 2 * (2 * M) = 4 * M by ring] at ha
-        linarith [ha, h2M, h1M, hsum]
-      -- single-sign helpers
-      have hsA : thueMorseSign (2 * M) = thueMorseSign M :=
-        thueMorseSign_two_mul M
-      have hsB : thueMorseSign (4 * M) = thueMorseSign M := by
-        rw [show 4 * M = 2 * (2 * M) by ring, thueMorseSign_two_mul,
-          thueMorseSign_two_mul]
-      have hsC : thueMorseSign (4 * M + 2) = -thueMorseSign M := by
-        rw [show 4 * M + 2 = 2 * (2 * M + 1) by ring,
-          thueMorseSign_two_mul, thueMorseSign_two_mul_add_one]
-      -- the successor decompositions up to `4M+3`
-      have hS1 := thueMorseResidueSum_succ 3 0 (4 * M)
-      have hS2 : thueMorseResidueSum 3 0 (4 * M + 2) =
-          thueMorseResidueSum 3 0 (2 * M + 1) -
-            thueMorseResidueSum 3 1 (2 * M + 1) := by
-        have h := thueMorseResidueSum_three_zero_two_mul (2 * M + 1)
-        rwa [show 2 * (2 * M + 1) = 4 * M + 2 by ring] at h
-      have hT0 := thueMorseResidueSum_succ 3 0 (2 * M)
-      have hT1 := thueMorseResidueSum_succ 3 1 (2 * M)
-      have hS3 := thueMorseResidueSum_succ 3 0 (4 * M + 2)
-      -- case split on the last two binary digits of `N`
-      have hcase : N = 4 * M ∨ N = 4 * M + 1 ∨ N = 4 * M + 2 ∨
-          N = 4 * M + 3 := by omega
-      rcases hcase with hNc | hNc | hNc | hNc
-      · -- `N = 4M`: pure amplification
-        rw [hNc, h4M]
-        linarith [hE.1, hE.2, hIH]
-      · -- `N = 4M+1`: one boundary sign
-        rw [hNc, hS1, h4M, hsB]
-        rcases (by omega : 4 * M % 3 = 0 ∨ ¬4 * M % 3 = 0)
-          with hc | hc
-        · rw [if_pos hc]
-          rcases thueMorseSign_eq_one_or_neg_one M with hε | hε <;>
-            rw [hε] <;> linarith [hE.1, hE.2, hIH]
-        · rw [if_neg hc]
-          linarith [hE.1, hE.2, hIH]
-      · -- `N = 4M+2`: two boundary signs on disjoint residues
-        rw [hNc, hS2, hT0, hT1, h2M, h1M, hsA]
-        rcases (by omega : M % 3 = 0 ∨ M % 3 = 1 ∨ M % 3 = 2)
-          with h3 | h3 | h3
-        · rw [if_pos (show 2 * M % 3 = 0 by omega),
-            if_neg (show ¬2 * M % 3 = 1 by omega)]
-          rcases thueMorseSign_eq_one_or_neg_one M with hε | hε <;>
-            rw [hε] <;> linarith [hE.1, hE.2, hIH, hsum]
-        · rw [if_neg (show ¬2 * M % 3 = 0 by omega),
-            if_neg (show ¬2 * M % 3 = 1 by omega)]
-          linarith [hE.1, hE.2, hIH, hsum]
-        · rw [if_neg (show ¬2 * M % 3 = 0 by omega),
-            if_pos (show 2 * M % 3 = 1 by omega)]
-          rcases thueMorseSign_eq_one_or_neg_one M with hε | hε <;>
-            rw [hε] <;> linarith [hE.1, hE.2, hIH, hsum]
-      · -- `N = 4M+3`: three boundary signs on disjoint residues
-        rw [hNc, hS3, hS2, hT0, hT1, h2M, h1M, hsA, hsC]
-        rcases (by omega : M % 3 = 0 ∨ M % 3 = 1 ∨ M % 3 = 2)
-          with h3 | h3 | h3
-        · rw [if_pos (show 2 * M % 3 = 0 by omega),
-            if_neg (show ¬2 * M % 3 = 1 by omega),
-            if_neg (show ¬(4 * M + 2) % 3 = 0 by omega)]
-          rcases thueMorseSign_eq_one_or_neg_one M with hε | hε <;>
-            rw [hε] <;> linarith [hE.1, hE.2, hIH, hsum]
-        · rw [if_neg (show ¬2 * M % 3 = 0 by omega),
-            if_neg (show ¬2 * M % 3 = 1 by omega),
-            if_pos (show (4 * M + 2) % 3 = 0 by omega)]
-          rcases thueMorseSign_eq_one_or_neg_one M with hε | hε <;>
-            rw [hε] <;> linarith [hE.1, hE.2, hIH, hsum]
-        · rw [if_neg (show ¬2 * M % 3 = 0 by omega),
-            if_pos (show 2 * M % 3 = 1 by omega),
-            if_neg (show ¬(4 * M + 2) % 3 = 0 by omega)]
-          rcases thueMorseSign_eq_one_or_neg_one M with hε | hε <;>
-            rw [hε] <;> linarith [hE.1, hE.2, hIH, hsum]
+    by_cases h4 : N < 4
+    · rw [thueMorseResidueSum_three_zero_of_lt_four N h4,
+        if_neg (by omega)]
+    · have hIH := ih (N / 4) (by omega) (by omega)
+      have hb := (thueMorseResidueSum_three_zero_bracket N).1
+      linarith
 
 end Fabius

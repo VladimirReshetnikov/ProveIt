@@ -1,4 +1,5 @@
 import FabiusFunction.FrullaniIntegral
+import FabiusFunction.ThueMorseBasicLemmas
 import FabiusFunction.ReciprocalGammaJets
 import FabiusFunction.ThueMorseEntireContinuation
 import FabiusFunction.ThueMorseMasterProduct
@@ -105,8 +106,7 @@ theorem mpLimit_eq_integral (a b : ℝ) (ha : 0 < a) (hb : 0 < b) :
         (Real.exp (-(b * t)) - Real.exp (-(a * t))) / t *
           lacunaryExpProduct t := by
   have hpow : Tendsto (fun m : ℕ => 2 ^ m) atTop atTop :=
-    tendsto_atTop_mono (fun m => (Nat.lt_two_pow_self (n := m)).le)
-      tendsto_id
+    tendsto_two_pow_atTop
   have h1 : Tendsto (fun m => mpLog a b (2 ^ m)) atTop
       (𝓝 (mpLimit a b)) := (tendsto_mpLimit a b ha hb).comp hpow
   have hDCT := MeasureTheory.tendsto_integral_of_dominated_convergence

@@ -178,6 +178,7 @@ import FabiusFunction.RvachevMomentAppell
 import FabiusFunction.ImplicitPowerSeries
 import FabiusFunction.QuadraticCompositionalInverse
 import FabiusFunction.PolynomialExpectationCumulant
+import FabiusFunction.ThueMorseBasicLemmas
 import FabiusFunction.ThueMorseBitSupport
 import FabiusFunction.AffineDifferenceOrbit
 import FabiusFunction.ThueMorseBooleanCube
@@ -269,6 +270,7 @@ import FabiusFunction.ThueMorseNaturalBoundary
 import FabiusFunction.ThueMorseComputability
 import FabiusFunction.WordComplexity
 import FabiusFunction.ThueMorseNewman
+import FabiusFunction.ThueMorseNewmanQuantitative
 import FabiusFunction.ThueMorseGelfond
 import FabiusFunction.PeriodDoublingHankel
 import FabiusFunction.ThueMorseHankel

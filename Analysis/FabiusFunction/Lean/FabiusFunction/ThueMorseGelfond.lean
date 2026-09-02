@@ -178,7 +178,7 @@ theorem norm_sum_thueMorseSign_exp_le_of_lt_two_pow (x : ℝ) (L : ℕ) :
       rcases hN' with rfl | rfl
       · rw [range_zero, sum_empty, norm_zero]
         positivity
-      · simp [thueMorseSign, binaryWeight] <;> linarith
+      · simp [thueMorseSign, binaryWeight]
   | succ L ih =>
       intro N hN
       by_cases hlt : N < 2 ^ (L + 1)

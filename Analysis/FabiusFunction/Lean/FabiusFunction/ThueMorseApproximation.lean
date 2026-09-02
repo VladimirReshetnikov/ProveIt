@@ -162,15 +162,6 @@ theorem iteratedPrefix_eq_approximationPolynomial_coeff_all
     _ = ((approximationPolynomial (k - 1)).coeff m : ℤ) := by
       simp [approximationPolynomialInt]
 
-/-- Positive-order compatibility form of
-`iteratedPrefix_eq_approximationPolynomial_coeff_all`.  The positivity
-hypothesis is not needed by the proof and is retained only so that the
-statement matches the source. -/
-theorem iteratedPrefix_eq_approximationPolynomial_coeff
-    (k m : ℕ) (_hk : 0 < k) (hm : m < 2 ^ k) :
-    iteratedPrefix k m = ((approximationPolynomial (k - 1)).coeff m : ℤ) :=
-  iteratedPrefix_eq_approximationPolynomial_coeff_all k m hm
-
 private theorem halfEndpointIntervalIndicator_polynomialAtom_eq_ite (n m l : ℕ) :
     halfEndpointIntervalIndicator (stepIntervalLeft n l) (stepIntervalRight n l)
         (polynomialAtomLocation n m) =
@@ -236,16 +227,6 @@ theorem correctedPrefixCoefficient_eq_stepApproximant_all
   push_cast
   have hpow : (2 : ℝ) ^ (k - 1) ≠ 0 := by positivity
   field_simp
-
-/-- Positive-order compatibility form of
-`correctedPrefixCoefficient_eq_stepApproximant_all`.  The positivity
-hypothesis is not needed by the proof and is retained only so that the
-statement matches the source. -/
-theorem correctedPrefixCoefficient_eq_stepApproximant
-    (k m : ℕ) (_hk : 0 < k) (hm : m < 2 ^ k) :
-    correctedPrefixCoefficient k m =
-      stepApproximant (k - 1) (polynomialAtomLocation (k - 1) m) :=
-  correctedPrefixCoefficient_eq_stepApproximant_all k m hm
 
 /-- The order-`n+1` corrected prefix sample at the left dyadic grid choice
 `floor(2^(n+1) x)`. -/
