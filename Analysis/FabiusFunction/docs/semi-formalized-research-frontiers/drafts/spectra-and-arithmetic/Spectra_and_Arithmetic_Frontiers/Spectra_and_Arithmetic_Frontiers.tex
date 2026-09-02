@@ -1553,19 +1553,19 @@ $c=(r-1)/2$.
 \paragraph{Lean status.}
 Both halves of \cref{p1:prop:TM-sign-carrier} are formal in the Thue--Morse layer of the
 corpus.  The magnitude \eqref{p1:eq:T-root-magnitude} is
-\lean{Fabius.norm\_sum\_thueMorseSign\_exp} in \path{ThueMorseGelfond.lean}, which evaluates
+\path{Fabius.norm_sum_thueMorseSign_exp} in \path{ThueMorseGelfond.lean}, which evaluates
 $\bigl|\sum_{m<2^n}\ThueMorseSign m\,\EulerE^{\ImaginaryUnit mx}\bigr|$ to
 $\prod_{j<n}2|\sin(2^jx/2)|$ for every real $x$ and every $n$; at $x=2\pi r/N$ with
 $N=2^n$ the factors are $2|\sin(\pi r/2^{n-j})|$, the display above with the scales
 reversed.  The sign word \eqref{p1:eq:Gamma-sign} is
-\lean{Fabius.neg\_one\_pow\_sum\_floor\_odd\_div\_two\_pow} in \path{RademacherSine.lean}:
+\path{Fabius.neg_one_pow_sum_floor_odd_div_two_pow} in \path{RademacherSine.lean}:
 for $c<2^n$, $(-1)^{\sum_{h=1}^{n}\Floor{(2c+1)/2^h}}=\ThueMorseSign{c}$, obtained from the
 corpus identity $(-1)^{\sum_{h<n}\Floor{c/2^h}}=\ThueMorseSign{c}$
-(\lean{Fabius.neg\_one\_pow\_sum\_div\_two\_pow\_const\_one},
+(\path{Fabius.neg_one_pow_sum_div_two_pow_const_one},
 \path{DigitCharacterCongruence.lean}) through $\Floor{(2c+1)/2^{h+1}}=\Floor{c/2^h}$
-(\lean{Fabius.two\_mul\_add\_one\_div\_two\_pow\_succ}).  The reading of the sign as the
+(\path{Fabius.two_mul_add_one_div_two_pow_succ}).  The reading of the sign as the
 square wave $\Sign\sin(\pi x)=(-1)^{\Floor{x}}$, used in the proof, is
-\lean{Fabius.sign\_sin\_pi\_mul} in the same file.
+\path{Fabius.sign_sin_pi_mul} in the same file.
 
 \begin{remark}
 The earlier arithmetic-ray report uses root-of-unity values of finite
