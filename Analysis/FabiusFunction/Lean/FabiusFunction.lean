@@ -577,6 +577,9 @@ import FabiusFunction.IntegerParameterTranslation
 import FabiusFunction.MultisetInversions
 import FabiusFunction.GeometricSimplexReindex
 import FabiusFunction.RatioExpansion
+import FabiusFunction.BaileyChainBounds
+import FabiusFunction.AndrewsGordon
+import FabiusFunction.AndrewsGordonOne
 import FabiusFunction.BaileyLowering
 import FabiusFunction.BaileyChain
 import FabiusFunction.BaileyInversion
