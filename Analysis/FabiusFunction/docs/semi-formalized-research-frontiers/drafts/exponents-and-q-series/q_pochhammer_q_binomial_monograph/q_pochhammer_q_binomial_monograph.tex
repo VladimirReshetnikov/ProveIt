@@ -3619,7 +3619,8 @@ directly and is the argument used by the formalization.
 \end{proof}
 
 \begin{theorem}[Ramanujan's ${}_1\psi_1$ summation]\label{thm:1psi1}
-For $\AbsoluteValue{b/a}<\AbsoluteValue z<1$,
+For $\AbsoluteValue{b/a}<\AbsoluteValue z<1$, with $a\ne0$ and the denominator factors
+nonvanishing ($bq^{j}\ne1$ and $q^{j+1}\ne a$ for all $j\ge0$),
 \[
  {}_1\psi_1\!\left[\begin{matrix}a\\b\end{matrix};q,z\right]
  =\frac{(q,b/a,az,q/(az);q)_\infty}
@@ -3666,7 +3667,41 @@ On the other hand, substituting $b=q^{m+1}$ in the proposed product and cancelli
  \frac{(az;q)_\infty}{(z;q)_\infty}.
 \]
 
-For fixed $a,z$ with $\AbsoluteValue z<1$, both sides are analytic functions of $b$ in a neighborhood of $0$ contained in $\AbsoluteValue b<\AbsoluteValue{az}$.  Absolute convergence is locally uniform there by \Cref{prop:1psi1-convergence}.  For all sufficiently large $m$, the points $b=q^{m+1}$ lie in that neighborhood, and they accumulate at $0$.  The identity theorem therefore proves equality near $0$.  Both sides are meromorphic functions of $b$ throughout the disk $\AbsoluteValue b<\AbsoluteValue{az}$: the series gives the meromorphic continuation termwise on compacta avoiding denominator zeros, and the product quotient is visibly meromorphic.  Uniqueness of meromorphic continuation proves the identity everywhere in that disk where both sides are defined, which is precisely the asserted annulus for fixed $a$ and $z$.
+Now fix $a,z$ with $\AbsoluteValue z<1$, $a\ne0$ and $(q/a;q)_\infty\ne0$, and
+clear the denominators.  For every $n\in\IntegerNumbers$ with
+$\GeneralizedQPochhammer{b}{q}{n}\ne0$ one has
+$(b;q)_\infty/\GeneralizedQPochhammer{b}{q}{n}=(bq^{n};q)_\infty$ (for $n=-k<0$ this reads
+$(b;q)_\infty(bq^{-k};q)_k=(bq^{-k};q)_\infty$), so the \emph{cleared series}
+\[
+ S(b)=\sum_{n\in\IntegerNumbers}\GeneralizedQPochhammer{a}{q}{n}\,z^{n}\,(bq^{n};q)_\infty
+\]
+equals $(b;q)_\infty$ times the ${}_1\psi_1$ series whenever $(b;q)_\infty\ne0$, and its
+terms are entire functions of $b$.  On every disk $\AbsoluteValue b\le r$ with
+$0<r<\AbsoluteValue{az}$ it is dominated by a geometric series uniformly in $b$: for $n\ge0$
+the $n$th term has modulus at most
+$(-\AbsoluteValue a;\AbsoluteValue q)_\infty(-r;\AbsoluteValue q)_\infty\AbsoluteValue z^{n}$,
+and for $n=-k<0$ the reversal
+$(xq^{-k};q)_k\,q^{\binom{k+1}{2}}=\prod_{i=1}^{k}(q^{i}-x)$ gives
+\[
+ \GeneralizedQPochhammer{a}{q}{-k}\,z^{-k}\,(bq^{-k};q)_\infty
+ =\frac{\prod_{i=1}^{k}(q^{i}-b)}{\prod_{i=1}^{k}(q^{i}-a)}\,z^{-k}\,(b;q)_\infty,
+\]
+whose modulus is at most $C\,(r/\AbsoluteValue{az})^{k}$ with $C$ independent of $b$ and
+$k$, because $\prod_{i\le k}\AbsoluteValue{q^{i}-b}\le r^{k}(-\AbsoluteValue q/r;\AbsoluteValue q)_\infty$,
+$\prod_{i\le k}(q^{i}-a)=(-a)^{k}(q/a;q)_k$, and the prefixes $(q/a;q)_k$ of the
+nonvanishing product $(q/a;q)_\infty$ are bounded away from $0$.  Hence $S$ is holomorphic
+on $\AbsoluteValue b<\AbsoluteValue{az}$ by Weierstrass's theorem, and so is the cleared
+product
+\[
+ P(b)=\frac{(q,b/a,az,q/(az);q)_\infty}{(q/a,z,b/(az);q)_\infty},
+\]
+whose denominator does not vanish there.  At $b=q^{m+1}$ the terms of $S$ with $n<-m$
+vanish, $(q^{m+1+n};q)_\infty=(q;q)_\infty/(q;q)_{m+n}$ for $n\ge-m$, and the computation
+above gives $S(q^{m+1})=P(q^{m+1})$ as soon as $\AbsoluteValue{q^{m+1}}<\AbsoluteValue{az}$.
+These points accumulate at $0$, so the identity theorem yields $S=P$ on the whole disk
+$\AbsoluteValue b<\AbsoluteValue{az}$.  Dividing by $(b;q)_\infty\ne0$ proves the theorem on
+the asserted annulus.  Note that the cleared identity $S=P$ holds without any hypothesis on
+$(b;q)_\infty$, and that no meromorphic continuation of the series is needed.
 \end{proof}
 
 \begin{remark}
@@ -12724,8 +12759,8 @@ inside the proof below does not formalize the result the proof concludes.
   than a mathematical claim.
 \end{description}
 
-Of the 282 labelled forward results, 138 are \statusexact, 83 are
-\statuspartial, 53 are \statusnone, and 8 are \statusna.  The original
+Of the 282 labelled forward results, 139 are \statusexact, 83 are
+\statuspartial, 52 are \statusnone, and 8 are \statusna.  The original
 191-result pre-Fabius core had 36 \statusexact, 29 \statuspartial, 123
 \statusnone, and 3 \statusna{} entries.  The four integrated guide chapters
 add 31 human-proved but not Lean-formalized assertions and five labelled
@@ -13290,7 +13325,7 @@ Symmetry and unimodality & 0 & 0 & 3 & 0\\
 The infinite $q$-binomial theorem & 3 & 0 & 1 & 0\\
 Basic hypergeometric series & 6 & 2 & 1 & 0\\
 Euler telescoping and very-well-poised summations & 1 & 0 & 3 & 0\\
-Bilateral series and Ramanujan's \texorpdfstring{${}_1\psi_1$}{1psi1} sum & 1 & 0 & 1 & 0\\
+Bilateral series and Ramanujan's \texorpdfstring{${}_1\psi_1$}{1psi1} sum & 2 & 0 & 0 & 0\\
 $q$-difference calculus and the quantum binomial & 9 & 1 & 0 & 0\\
 The $q$-gamma and $q$-beta functions & 7 & 0 & 1 & 0\\
 Jacobi's triple product & 7 & 1 & 0 & 0\\
@@ -13309,7 +13344,7 @@ Half-base arithmetic and Prouhet--Thue--Morse cancellation & 6 & 3 & 0 & 0\\
 Geometric uniform sums, $q$-cumulants, and the Fabius--Rvachev functions & 2 & 11 & 0 & 0\\
 Dyadic Gaussian--Thue--Morse structure and the values of $F$ & 7 & 45 & 4 & 0\\
 \midrule
-\textbf{Forward total} & 138 & 83 & 53 & 8\\
+\textbf{Forward total} & 139 & 83 & 52 & 8\\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -13806,7 +13841,19 @@ $q\ne0$, $a,b\ne0$, $bq^j\ne1$ and $q^{j+1}\ne a$ for all $j\ge0$ (the
 denominator factors of both tails); by geometric domination rather than the
 ratio test, via the negative-index quotient
 $(a;q)_{-m}/(b;q)_{-m}=(b/a)^m(q/b;q)_m/(q/a;q)_m$}\\[2pt]
-\Cref{thm:1psi1} & \statusnone & ---\\[2pt]
+\Cref{thm:1psi1} & \statusexact &
+\texttt{hasSum\_\allowbreak{}onePsiOne},
+\texttt{onePsiOne\_\allowbreak{}eq},
+\texttt{hasSum\_\allowbreak{}onePsiOneCleared},
+\texttt{hasSum\_\allowbreak{}onePsiOneCleared\_\allowbreak{}pow}\newline
+{\footnotesize\texttt{RamanujanOnePsiOne}; over $\mathbb C$, for $0<\lvert q\rvert<1$, $a\ne0$,
+$(q/a;q)_\infty\ne0$, $(b;q)_\infty\ne0$ and $\lvert b/a\rvert<\lvert z\rvert<1$, by Ismail's
+identity-theorem argument in $b$ applied to the cleared series
+$\sum_n(a;q)_nz^n(bq^n;q)_\infty$ (\texttt{onePsiOneCleared}), whose terms are entire in $b$
+and which is dominated by a geometric series on every disc $\lvert b\rvert<r<\lvert az\rvert$
+(\texttt{exists\_\allowbreak{}summable\_\allowbreak{}majorant\_\allowbreak{}onePsiOneCleared});
+the cleared identity (\texttt{hasSum\_\allowbreak{}onePsiOneCleared}) needs no hypothesis on
+$(b;q)_\infty$}\\[2pt]
 \midrule
 \multicolumn{3}{@{}l}{\itshape $q$-difference calculus and the quantum binomial}\\
 \midrule

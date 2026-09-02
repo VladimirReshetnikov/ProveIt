@@ -586,6 +586,7 @@ import FabiusFunction.IntegerParameterTranslation
 import FabiusFunction.MultisetInversions
 import FabiusFunction.GeometricSimplexReindex
 import FabiusFunction.RatioExpansion
+import FabiusFunction.RamanujanOnePsiOne
 import FabiusFunction.QGammaMeromorphic
 import FabiusFunction.BasicHypergeometricDivergence
 import FabiusFunction.GaussianIntegerPrimes
