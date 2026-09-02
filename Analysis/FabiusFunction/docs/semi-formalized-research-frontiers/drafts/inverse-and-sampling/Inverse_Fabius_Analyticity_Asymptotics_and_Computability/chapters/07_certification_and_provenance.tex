@@ -22,8 +22,8 @@ they do not upgrade a manuscript claim into a theorem.  Conversely, a theorem
 whose special case is formalized is not labelled Lean-proved unless the
 specialization and all of its hypotheses match exactly.
 
-At the source snapshot recorded in the concordance, the resulting
-classification is \(39\) Lean-proved rows, \(106\) human-proved frontier
+In the current reviewed concordance, the resulting classification is
+\(49\) Lean-proved rows, \(96\) human-proved frontier
 rows, \(10\) conjectures, \(15\) open problems, and \(24\) nonassertoric
 rows, for \(194\) rows in all.  These are source-result counts, not counts of
 distinct canonical theorem environments: deduplication may send several
@@ -38,7 +38,7 @@ degree bound, sampling nodes, and Rvachev-density weights; compact support
 reduces its integral to \([-1,1]\).  Thus no informal rescaling bridge is
 being hidden in the Lean-proved classification.
 
-Three further source rows now have exact compiled counterparts.  The centered
+Five further source rows now have exact compiled counterparts.  The centered
 Appell convolution is
 \path{Fabius.integral_eval_rvachevAppellPolynomial_sub_mul_rvachev},
 the positive-degree mean-zero corollary is
@@ -47,7 +47,18 @@ and the arbitrarily phased polynomial formula is
 \path{Fabius.normalized_tsum_shifted_rvachevDeconvolvedPolynomial_mul_rvachevUp}.
 Compact support reduces the first two whole-line integrals to \([-1,1]\);
 after that normalization, their hypotheses and conclusions match the
-corresponding canonical rows.
+corresponding canonical rows.  The two newest exact rows are the
+parity-selected one-extra-degree rule
+\cref{is:p3:cor:forced-superconvergence}, whose principal physical-coordinate
+declaration is
+\path{Fabius.integral_polynomial_mul_rvachevUp_eq_normalized_tsum_superconvergent},
+and the finite Appell lattice formula
+\cref{is:p3:thm:Appell-lattice-reproduction}, whose selected-phase clause is
+\path{Fabius.normalized_tsum_shifted_rvachevAppellPolynomial_mul_rvachevUp_superconvergent}.
+The exact dyadic phase dictionary is
+\path{Fabius.isRvachevSuperconvergentPhase_two_pow_iff}.  Existing positivity,
+strict-interior positivity, rational dyadic evaluation, and finite-support
+declarations complete the finite families recorded in the Lean crosswalk.
 
 Five canonical results were added after the immutable source snapshot and
 therefore do not alter the \(194\)-row totals.  Three are Lean-proved:
@@ -72,7 +83,7 @@ human-proved.
 
 \subsection{Partial formalizations are recorded as partial}
 
-Three results in the self-sampling chapter have substantial formal kernels
+Two results in the self-sampling chapter have substantial formal kernels
 but nonidentical or stronger canonical conclusions.  The whole labelled
 results are therefore human-proved frontier results, with the precise Lean
 boundary as follows.
@@ -91,14 +102,6 @@ the surviving derivative coefficient.  No named declaration assembles these
 pieces into the displayed complex series together with both trigonometric
 forms, so the canonical theorem remains human-proved.
 
-\item[\cref{is:p3:thm:Appell-lattice-reproduction}.]
-Specializing
-\path{Fabius.normalized_tsum_shifted_rvachevDeconvolvedPolynomial_mul_rvachevUp}
-to \(M=2^N\) and \(P=X^n\) proves the arbitrary-phase formula for
-\(0\le n\le N\).  The same paper theorem additionally asserts degree
-\(N+1\) at the parity-selected superconvergent phases.  That stronger clause
-has no exact Lean counterpart, so the whole labelled result remains
-human-proved.
 \end{description}
 
 \section{Deduplication and result provenance}
@@ -136,7 +139,7 @@ umbrella-library build but exact for the declaration used in the crosswalk.
 
 At the same editorial checkpoint,
 \path{audit/validate_canonical.py} verified all nine chapter inputs,
-(748) distinct labels, (591) references, and all (194) immutable source
+(748) distinct labels, (593) references, and all (194) immutable source
 rows with no incomplete disposition.  The independent asset check verified
 all (88) source-file dispositions, all (63) deduplicated live payloads,
 and no duplicate canonical payload.  These checks establish structural and
