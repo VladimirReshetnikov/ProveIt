@@ -2,6 +2,7 @@ import FabiusFunction.BaseDigitProduct
 import FabiusFunction.DyadicClosedForm
 import Mathlib.Analysis.Calculus.IteratedDeriv.Lemmas
 import Mathlib.Analysis.Calculus.ContDiff.Deriv
+import Mathlib.Analysis.Calculus.Deriv.Shift
 import Mathlib.MeasureTheory.Integral.IntervalIntegral.FundThmCalculus
 
 /-!
@@ -109,9 +110,7 @@ theorem thueMorseBlockSum_eq_nestedDyadicIntegral (m : ℕ) :
         have hderiv : ∀ t ∈ Set.uIcc (0 : ℝ) h,
             HasDerivAt (fun t => f (x + 2 * n * h + t)) (deriv f (x + 2 * n * h + t)) t := by
           intro t _
-          have := (hd (x + 2 * n * h + t)).hasDerivAt.comp t
-            ((hasDerivAt_id t).const_add (x + 2 * n * h))
-          simpa [Function.comp] using this
+          exact (hd (x + 2 * n * h + t)).hasDerivAt.comp_const_add (x + 2 * n * h) t
         have hint : IntervalIntegrable (fun t => deriv f (x + 2 * n * h + t)) MeasureTheory.volume 0 h :=
           (hcd.comp (continuous_const.add continuous_id)).intervalIntegrable 0 h
         rw [integral_eq_sub_of_hasDerivAt hderiv hint]

@@ -101,6 +101,22 @@ theorem limitingAutocorrelation_two_mul_add_one (r : ℕ) :
     have e1 : (2 * r + 1 + 1) / 2 = r + 1 := by omega
     rw [e1]
 
+/-- The atlas's sample values `p1:eq:eta-samples`: `η(2) = -1/3`. -/
+theorem limitingAutocorrelation_two : limitingAutocorrelation 2 = -1 / 3 := by
+  rw [show (2 : ℕ) = 2 * 1 by norm_num, limitingAutocorrelation_two_mul, limitingAutocorrelation_one]
+
+/-- `η(3) = 1/3`. -/
+theorem limitingAutocorrelation_three : limitingAutocorrelation 3 = 1 / 3 := by
+  rw [show (3 : ℕ) = 2 * 1 + 1 by norm_num, limitingAutocorrelation_two_mul_add_one,
+    limitingAutocorrelation_one, limitingAutocorrelation_two]
+  norm_num
+
+/-- `η(5) = 0`. -/
+theorem limitingAutocorrelation_five : limitingAutocorrelation 5 = 0 := by
+  rw [show (5 : ℕ) = 2 * 2 + 1 by norm_num, limitingAutocorrelation_two_mul_add_one,
+    limitingAutocorrelation_two, limitingAutocorrelation_three]
+  norm_num
+
 /-- **Existence of the limiting autocorrelation at every shift**
 (`p1:eq:eta-limit-definition`): `η_m(k) → η(k)` as `m → ∞`, for every `k`. -/
 theorem tendsto_normalizedAutocorrelation (k : ℕ) :
