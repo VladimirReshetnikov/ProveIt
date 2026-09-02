@@ -555,6 +555,7 @@ import FabiusFunction.IntegerParameterTranslation
 import FabiusFunction.MultisetInversions
 import FabiusFunction.GeometricSimplexReindex
 import FabiusFunction.RatioExpansion
+import FabiusFunction.PartitionDistinctOdd
 import FabiusFunction.PartitionGeneratingFunction
 import FabiusFunction.PartitionBoundedParts
 import FabiusFunction.QBohrMollerup
