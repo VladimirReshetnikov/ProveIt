@@ -766,6 +766,31 @@ and $\EulerE^{t/q}-1$ is $t$ times a unit, which is cancelled.
 \cref{eq:merged-bernoulli-half} is \lean{Fabius.bernoulli_eval_half}.""")),
 ]
 
+PENDING += [
+ # --- thm:touchard-poly ---
+ (r"""same number of blocks, contributing $\TouchardPolynomial{n+1}(x)$.  This proves the polynomial
+congruence; set $x=1$.
+\end{proof}
+""",
+  remark(r"""% ed.: crosswalk added 2026-09-01; the formal proof is arithmetic, not the
+% group action above.
+\cref{eq:touchard-poly} is \lean{Fabius.touchardPolynomial_add_prime} (module
+\lean{TouchardPolyCongruence}), an identity
+$\TouchardPolynomial{n+p}=\TouchardPolynomial{n+1}+x^p\TouchardPolynomial{n}$
+in $(\mathbb Z/p)[x]$ for every prime $p$, and \cref{eq:touchard} is
+\lean{Fabius.bell_add_prime_modEq} (module \lean{TouchardCongruence}).  Both
+Lean proofs read Spivey's identity (\cref{thm:spivey}; for Touchard
+polynomials \lean{Fabius.spivey_touchard}, transported from
+$\RationalNumbers[x]$ to every coefficient ring as
+\lean{Fabius.touchardPolynomial_add_eq}) with $m=p$ modulo $p$: the Stirling
+numbers $\StirlingSecondKind pj$ with $1<j<p$ vanish modulo $p$
+(\lean{Fabius.stirlingSecond_prime_eq_zero_zmod}, from the surjection formula
+\cref{thm:second-explicit} and Fermat's little theorem), the term $j=1$ is the
+Touchard recurrence $x\sum_k\binom nk\TouchardPolynomial{k}=\TouchardPolynomial{n+1}$,
+and in the term $j=p$ only $k=n$ survives because $p^{n-k}\equiv0$ for
+$k<n$.""")),
+]
+
 applied = 0
 for anchor, text in PENDING:
     if text.strip() in s:
