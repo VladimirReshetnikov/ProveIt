@@ -6002,9 +6002,20 @@ for every modulus), the parity system is
 companion, the three sums recombine to the prefix sum by
 \lean{Fabius.thueMorseResidueSum\_three\_add}, and the prefix-sum
 bound \(|E|\le1\) is \lean{Fabius.abs\_sum\_thueMorseSign\_le\_one}.
-The quantitative bounds \(\tfrac1{20}X^{\log_43}\le
-N_3(X)\le5X^{\log_43}\) and Coquet's oscillation remain literature
-imports.  Rarefactions
+The quantitative bounds are formal as well, and with better constants than
+Newman's: \lean{Fabius.newman\_quantitative} in \path{ThueMorseNewmanQuantitative.lean} gives
+\(\tfrac19N^{\log_43}\le N_3(N)\le2N^{\log_43}\) for \emph{every} integer \(N\ge1\)
+(\lean{Fabius.newman\_lower\_bound}, \lean{Fabius.newman\_upper\_bound}), which implies the
+displayed \(\tfrac1{20}\) and \(5\) at once.  Underneath are two integer brackets ---
+\(3^k+1\le N_3(N)\) for \(N\ge4\cdot4^k\)
+(\lean{Fabius.three\_pow\_add\_one\_le\_thueMorseResidueSum\_three\_zero}) and
+\(N_3(N)+1\le2\cdot3^k\) for \(N<4^{k+1}\)
+(\lean{Fabius.thueMorseResidueSum\_three\_zero\_add\_one\_le}) --- obtained from the same
+base-four step, now isolated as
+\lean{Fabius.thueMorseResidueSum\_three\_zero\_four\_mul\_add\_bracket} in
+\path{ThueMorseNewman.lean}, with the exponent \(\log_43\) entering only through
+\(\bigl(4^j\bigr)^{\log_43}=3^j\).  Coquet's oscillation remains a literature import.
+Rarefactions
 along other progressions and for generalized digit characters were analyzed
 by Drmota and Skalba \cite{p1:drmotaSkalba2000} and Drmota and Stoll
 \cite{p1:drmotaStoll2008}; a recent automata-theoretic treatment mechanizes
