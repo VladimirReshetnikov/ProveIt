@@ -3559,6 +3559,25 @@ Apply
 \(h^m2^{0+1+\cdots+(m-1)}\).
 \end{proof}
 
+\emph{Formal version.}  The nested-integral display \eqref{p1:eq:integral-cubature} is
+\lean{Fabius.thueMorseBlockSum\_eq\_nestedDyadicIntegral} in \path{ThueMorseCubature.lean},
+for every \(f\) of class \(C^m\) on the whole line and every real \(x\), \(h\) (the sign of
+\(h\) plays no role in the identity itself): the block sum
+\lean{Fabius.thueMorseBlockSum} equals \((-1)^m\) times
+\lean{Fabius.nestedDyadicIntegral} of \(f^{(m)}\), the nested integral being defined
+recursively with the outermost variable on \([0,h]\) and the step doubling inward, exactly
+as displayed.  The proof is the induction sketched above, run for all base points at once:
+splitting the block by its low bit (\lean{Fabius.thueMorseBlockSum\_succ}) turns each
+pair into \(-\int_0^hf'(x+2nh+t)\Differential t\), and the integrand of the outer integral
+is then the block sum of length \(2^m\) for \(f'\) at base point \(x+t\) with step \(2h\)
+--- a finite sum of continuous functions, so the interchange needs no parametric-integral
+theory.  The bound \eqref{p1:eq:finite-difference-bound} is
+\lean{Fabius.abs\_thueMorseBlockSum\_le}, with the sup taken over
+\([x,x+(2^m-1)h]\) and the box volume written as \(2^{0+1+\cdots+(m-1)}h^m\); the exponent is
+\(\binom m2\) by \lean{Fabius.sum\_range\_id\_eq\_choose\_two}.  It follows from the
+volume bound \lean{Fabius.abs\_nestedDyadicIntegral\_le} on the nested integral.  The
+unit-cube form \eqref{p1:eq:unit-cube-cubature} is not formalized.
+
 \begin{corollary}[Sign for completely monotone kernels]
 \label{p1:cor:complete-monotone}
 If \((-1)^mf^{(m)}\ge0\) on the interval, then
@@ -3592,6 +3611,16 @@ Use \(f(y)=(a+y)^{-s}\), for which
 \(f^{(m)}(y)=(-1)^{m-1}(m-1)!/(a+y)^m\), so the integral is strictly negative.
 Exponentiation gives the product inequality.
 \end{proof}
+
+\emph{Formal version.}  The sign statement \eqref{p1:eq:complete-monotone-sign} is
+\lean{Fabius.thueMorseBlockSum\_nonneg} in \path{ThueMorseCubature.lean}: for \(h\ge0\)
+and \((-1)^mf^{(m)}\ge0\) on \([x,x+(2^m-1)h]\) --- the interval that actually contains
+every argument \(x+t_0+\cdots+t_{m-1}\) --- the block sum is nonnegative, by
+\lean{Fabius.nestedDyadicIntegral\_nonneg} applied to \((-1)^mf^{(m)}\) through
+\lean{Fabius.nestedDyadicIntegral\_const\_mul}.  The two applications
+\eqref{p1:eq:reciprocal-power-positive} and \eqref{p1:eq:log-product-sign}, which need the
+explicit derivatives of \((a+y)^{-s}\) and \(\log(a+y)\) and \emph{strict} positivity of
+the nested integral, are not formalized.
 
 \subsection{Arbitrary translation weights}
 \label{p1:sec:arbitrary-weights}
