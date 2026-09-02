@@ -730,7 +730,9 @@ Composition is the first operation for which the relation \(L=\log x\) is essent
 
 Define
 \begin{equation}\label{eq:Gnear-def}
- \Gnear\DefinitionEqualsx+\PL
+% ed.: the notation migration glued \DefinitionEquals to the following "x",
+% producing the undefined control sequence \DefinitionEqualsx.
+ \Gnear\DefinitionEquals x+\PL
  =\SetOf{x+A(x):A\in\K[L][[x^{-1}]]}.
 \end{equation}
 Every \(G=x+A\in\Gnear\) can be factored as
@@ -1321,7 +1323,7 @@ Equating powers of \(t\) gives a remarkably simple recurrence.
 The Lambert polynomials are uniquely determined by
 \begin{align}
  \LambertPolynomial{0}(L)&=-L,\label{eq:P-rec-P0}\\
- \LambertPolynomial{n+1}'(L)&=n\LambertPolynomial{n}(L)-\LambertPolynomial{n}'(L),\qquad n\ge0,
+ {\LambertPolynomial{n+1}}'(L)&=n\LambertPolynomial{n}(L)-{\LambertPolynomial{n}}'(L),\qquad n\ge0,
  \label{eq:P-rec-diff}\\
  \LambertPolynomial{n}(0)&=0,\qquad n\ge0.
  \label{eq:P-zero}
@@ -1336,8 +1338,8 @@ Equivalently,
 \end{theorem}
 
 \begin{proof}
-Write \(\mathcal P=\sum_{n\ge0}\LambertPolynomial{n}t^n\) in \cref{eq:P-PDE}.  The coefficient of \(t^0\) gives \(\LambertPolynomial{0}'+1=0\), and the coefficient of \(t^{n+1}\) gives
-\(n\LambertPolynomial{n}=\LambertPolynomial{n+1}'+\LambertPolynomial{n}'\).  At \(L=0\), the implicit equation becomes
+Write \(\mathcal P=\sum_{n\ge0}\LambertPolynomial{n}t^n\) in \cref{eq:P-PDE}.  The coefficient of \(t^0\) gives \({\LambertPolynomial{0}}'+1=0\), and the coefficient of \(t^{n+1}\) gives
+\(n\LambertPolynomial{n}={\LambertPolynomial{n+1}}'+{\LambertPolynomial{n}}'\).  At \(L=0\), the implicit equation becomes
 \[
  \mathcal P(t,0)+\log(1+t\mathcal P(t,0))=0.
 \]
@@ -1458,7 +1460,7 @@ The product is empty for \(n=1\).
 \begin{proof}
 Let the integral be \(I_n(s)\).  Since \(\LambertPolynomial{n}(0)=0\), integration by parts gives
 \[
- \int_0^\infty\EulerE^{-sL}\LambertPolynomial{n}'(L)\Differential L=sI_n(s).
+ \int_0^\infty\EulerE^{-sL}{\LambertPolynomial{n}}'(L)\Differential L=sI_n(s).
 \]
 Apply this to \cref{eq:P-rec-diff}:
 \[
