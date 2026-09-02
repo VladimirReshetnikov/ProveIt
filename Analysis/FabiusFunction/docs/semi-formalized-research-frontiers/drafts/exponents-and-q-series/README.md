@@ -1,17 +1,49 @@
 # Exponents and q-series
 
-The seven live document packages are organized by their primary mathematical
-overlap:
+There are two live document packages:
 
 - [`q_pochhammer_q_binomial_monograph/`](q_pochhammer_q_binomial_monograph/)
   is the single canonical synthesis of forward q-series and branch-aware
   inverse-q theory.
-- [`q-fabius-parameter-deformations/`](q-fabius-parameter-deformations/)
-  contains the continuous-parameter, limit-regime, susceptibility, and smooth
-  response reports for the geometric q-Fabius family.
-- [`geometric-sinc-and-exponent-families/`](geometric-sinc-and-exponent-families/)
-  contains the central exponent/geometric-sinc synthesis and its
-  negative/reciprocal and cyclotomic companion reports.
+- [`geometric_q_fabius_frontiers/`](geometric_q_fabius_frontiers/) is the
+  single consolidated frontier volume for the geometric q-deformation of the
+  Fabius–Rvachev system: exponent sequences, sinc products, atomic splines,
+  and parameter deformations.
+
+## The 2026-09-02 consolidation
+
+The two former subgroups `q-fabius-parameter-deformations/` and
+`geometric-sinc-and-exponent-families/` no longer exist. Their six standalone
+documents were merged into `geometric_q_fabius_frontiers/` and deleted from the
+working tree; git history is the archive, and the volume's own provenance
+section pins every absorbed snapshot by SHA-256.
+
+| Former package | Now |
+| --- | --- |
+| `geometric-sinc-and-exponent-families/Exponents_and_q_Series_Frontiers/` | Parts I–VII (the volume's spine; renamed in place, assets retained) |
+| `geometric-sinc-and-exponent-families/Fabius_Rvachev_Frontier_Report/` | Part VIII |
+| `geometric-sinc-and-exponent-families/Cyclotomic_q_Fabius_Rvachev_Frontier/` | Part IX |
+| `q-fabius-parameter-deformations/fabius_q_frontiers_report/` | Part X |
+| `q-fabius-parameter-deformations/Continuous_Parameter_Edgeworth_and_q_Gevrey_Frontier/` | Part XI |
+| `q-fabius-parameter-deformations/Fabius_Flat_Parameter_Response_Dynamics/` | Part XII |
+
+The consolidation added a new **Part 0, Common Framework**, written for the
+merge rather than absorbed from any source. The six reports had fixed the same
+objects independently and inconsistently — three affine normalizations of one
+random variable, two sinc arguments, and the letters `X_q` and `Y_q` denoting
+different objects in different reports — so Part 0 states the shared
+definitions, transforms, and cumulant identities once with complete proofs and
+tabulates the exact dictionary from each part's local convention to the
+canonical one. Each absorbed part keeps its own mathematics; what it no longer
+carries is its own re-derivation of the shared layer.
+
+Every absorbed report's verification material — scripts, data tables, and
+figures — is preserved under `geometric_q_fabius_frontiers/assets/`.
+
+The detailed package record below still describes the six absorbed documents
+individually; those entries are retained as provenance, and their directory
+paths are dead. Resolve any path through the table above or through the
+[draft manifest](../MANIFEST.md).
 
 The former `q-pochhammer-and-inversion/` locations are recorded in pinned
 history; no live index or package remains at that path. Every live package
