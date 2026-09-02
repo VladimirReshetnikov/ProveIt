@@ -12724,7 +12724,7 @@ inside the proof below does not formalize the result the proof concludes.
   than a mathematical claim.
 \end{description}
 
-Of the 282 labelled forward results, 137 are \statusexact, 84 are
+Of the 282 labelled forward results, 138 are \statusexact, 83 are
 \statuspartial, 53 are \statusnone, and 8 are \statusna.  The original
 191-result pre-Fabius core had 36 \statusexact, 29 \statuspartial, 123
 \statusnone, and 3 \statusna{} entries.  The four integrated guide chapters
@@ -13292,7 +13292,7 @@ Basic hypergeometric series & 6 & 2 & 1 & 0\\
 Euler telescoping and very-well-poised summations & 1 & 0 & 3 & 0\\
 Bilateral series and Ramanujan's \texorpdfstring{${}_1\psi_1$}{1psi1} sum & 1 & 0 & 1 & 0\\
 $q$-difference calculus and the quantum binomial & 9 & 1 & 0 & 0\\
-The $q$-gamma and $q$-beta functions & 6 & 1 & 1 & 0\\
+The $q$-gamma and $q$-beta functions & 7 & 0 & 1 & 0\\
 Jacobi's triple product & 7 & 1 & 0 & 0\\
 Theta modularity, lattice dissection, and sums of squares & 1 & 1 & 12 & 4\\
 Partitions and product--sum identities & 4 & 0 & 0 & 0\\
@@ -13309,7 +13309,7 @@ Half-base arithmetic and Prouhet--Thue--Morse cancellation & 6 & 3 & 0 & 0\\
 Geometric uniform sums, $q$-cumulants, and the Fabius--Rvachev functions & 2 & 11 & 0 & 0\\
 Dyadic Gaussian--Thue--Morse structure and the values of $F$ & 7 & 45 & 4 & 0\\
 \midrule
-\textbf{Forward total} & 137 & 84 & 53 & 8\\
+\textbf{Forward total} & 138 & 83 & 53 & 8\\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -13416,11 +13416,14 @@ right-hand side defined; the integral case is
 of \texttt{QPochhammerInfinite}}\\[2pt]
 \Cref{prop:order-derivative} & \statuspartial &
 \texttt{hasDerivAt\_\allowbreak{}qPochhammerC},
-\texttt{hasDerivAt\_\allowbreak{}qPochhammerInfIn\_\allowbreak{}mul\_\allowbreak{}cpow}\newline
-{\footnotesize\texttt{QPochhammerOrderDerivative}; the derivative in the
-order with the displayed logarithmic form, at every $\alpha$ with
-$\lVert aq^\alpha\rVert<1$ (principal branch); holomorphy on a general open
-$U$ avoiding the poles and the local uniformity are not formalized}\\[2pt]
+\texttt{meromorphicOn\_\allowbreak{}qPochhammerC},
+\texttt{differentiableOn\_\allowbreak{}qPochhammerC},
+\texttt{qPochhammerC\_\allowbreak{}ne\_\allowbreak{}zero}\newline
+{\footnotesize\texttt{QPochhammerOrderDerivative}, \texttt{QGammaMeromorphic}; $\alpha\mapsto(a;q)_\alpha$
+is meromorphic on $\mathbb C$, holomorphic and nonvanishing on every set avoiding the poles
+$aq^{\alpha+j}=1$, and the derivative has the displayed logarithmic form at every $\alpha$ with
+$\lVert aq^\alpha\rVert<1$ (principal branch); the derivative formula at general non-pole
+$\alpha$ and the local uniformity of the series are not formalised}\\[2pt]
 \Cref{thm:lambert-log} & \statuspartial &
 \texttt{tsum\_\allowbreak{}log\_\allowbreak{}one\_\allowbreak{}sub\_\allowbreak{}geom},
 \texttt{exp\_\allowbreak{}neg\_\allowbreak{}tsum\_\allowbreak{}lambert\_\allowbreak{}eq\_\allowbreak{}qPochhammerInfIn},
@@ -13884,15 +13887,17 @@ second half of the fundamental theorem}\\[2pt]
 \midrule
 \multicolumn{3}{@{}l}{\itshape The $q$-gamma and $q$-beta functions}\\
 \midrule
-\Cref{thm:qgamma-basic} & \statuspartial &
-\texttt{qGamma\_\allowbreak{}one},
-\texttt{qGamma\_\allowbreak{}add\_\allowbreak{}one},
+\Cref{thm:qgamma-basic} & \statusexact &
+\texttt{qGamma\_\allowbreak{}one}, \texttt{qGamma\_\allowbreak{}add\_\allowbreak{}one},
 \texttt{qGamma\_\allowbreak{}nat\_\allowbreak{}succ},
-\texttt{qGamma\_\allowbreak{}pos}\newline
-{\footnotesize\texttt{QGamma}; the three real identities for $x>0$ and
-$0<q<1$, with $[x]_q$ as \texttt{qNumber} and its agreement with the
-$q$-integer at natural arguments; the meromorphic-continuation clause is
-not formalized}\\[2pt]
+\texttt{meromorphicOn\_\allowbreak{}qGammaC},
+\texttt{qGammaC\_\allowbreak{}add\_\allowbreak{}one}\newline
+{\footnotesize\texttt{QGamma}, \texttt{QGammaMeromorphic}; the three real identities for $x>0$
+and $0<q<1$, with $[x]_q$ as \texttt{qNumber}; the complex $\Gamma_q(z)=(q;q)_\infty(1-q)^{1-z}/(q^z;q)_\infty$
+(\texttt{qGammaC}) is meromorphic on $\mathbb C$, holomorphic off the zeros of $(q^z;q)_\infty$
+(\texttt{differentiableOn\_\allowbreak{}qGammaC}), and satisfies
+$\Gamma_q(z+1)=\frac{1-q^z}{1-q}\Gamma_q(z)$ at every non-pole $z$, the meromorphic
+continuation of the recurrence}\\[2pt]
 \Cref{prop:qgamma-convex} & \statusexact &
 \texttt{hasDerivAt\_\allowbreak{}log\_\allowbreak{}qGamma},
 \texttt{hasDerivAt\_\allowbreak{}deriv\_\allowbreak{}log\_\allowbreak{}qGamma},
