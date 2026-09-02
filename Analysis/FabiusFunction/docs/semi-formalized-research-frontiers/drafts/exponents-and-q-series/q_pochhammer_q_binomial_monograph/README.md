@@ -104,8 +104,10 @@ The PDF is 3,030,302 bytes with SHA-256
 It was built by exactly three serial
 `pdflatex -interaction=nonstopmode -halt-on-error` passes, which produced 343,
 354, and 354 pages, with `makeindex` run on the `.idx` file after each pass.
-The final log scan found three overfull boxes, all in the single paragraph of the `QPochhammerEntire` crosswalk, whose long declaration names lack break points. All pages are A4. `pdffonts` reports 42 font rows, all
-embedded and subsetted, including 5 Libertinus rows, with no Type-3
+The final log scan found three overfull boxes, all in the single paragraph of
+the `QPochhammerEntire` crosswalk, whose long declaration names lack break
+points. All pages are A4. `pdffonts` reports 42 font rows, all embedded and
+subsetted, including five Libertinus rows, with no Type-3
 fonts. The files under `assets/experiments/**/figures/` remain research
 figures, not publication manuscripts.
 
@@ -128,7 +130,7 @@ The current source includes exhaustive crosswalks for `QPochhammerEntire`
 and five legacy compatibility theorems), `QPochhammerInfinite` (one definition
 and twenty-nine theorems), `QPochhammerDissection` (zero definitions and two
 theorems), `QBinomialTheoremInfinite` (one definition and twenty-two
-theorems), `GaussianBinomialPalindromic` (zero definitions and twelve
+theorems), `GaussianBinomialPalindromic` (zero definitions and fourteen
 theorems), `GaussianBinomialPolynomialStructure` (zero definitions and five
 theorems), and `GeometricPochhammerNormalConvergence` (zero
 definitions and three theorems). The wider inventory also includes
@@ -204,8 +206,17 @@ The quantum-multinomial row is Exact over every semiring under the stated
 pairwise q-commutation laws and commutation of q with each variable; neither
 centrality of q nor commutativity of the ambient semiring is claimed.
 
-Source and PDF were synchronized by this build, and the root package checksum
-ledger (`SHA256SUMS`) was regenerated with `audit/build_package_checksums.py`
-afterwards. PDFs are rebuilt in batches, at most about once per hour, so
-source-only commits may precede the next synchronization; the ledger and the
-figures above always describe the retained PDF.
+The complete root block, evaluated q-Lucas theorem, square-free cyclotomic
+criterion, and q-Catalan row are Exact. The primitive-root value in the
+Babbage corollary is formalized over every integral domain, while its
+derivative clause keeps that compound row Partial.
+
+The geometric Newton interpolation and divided-difference rows are Exact. The
+Jackson q-beta product/q-gamma evaluation and its two recurrence formulas are
+also Exact. The terminating q-Pfaff--Saalschütz sum and quantum multinomial
+are Exact, as are the integer-index Gaussian definition and Pascal laws, both
+reciprocal-product expansions, the complex upper-parameter series, and the
+generalized q-binomial theorem. The remaining complex-Gaussian property and
+classical-limit rows stay unformalized. No PDF was generated locally while resolving this merge: the
+supplied 354-page artifact is the validated upstream receipt described above,
+while the merged source is its source-only successor.

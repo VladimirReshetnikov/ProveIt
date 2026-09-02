@@ -52,9 +52,11 @@ current report is 2,992 lines (SHA-256
 `EffectiveMonotoneInverse.lean` now proves the certified fixed-depth
 tolerant-bisection realizer and restricted sequential inversion, while
 `FabiusInverseComputable.lean` proves the totalized inverse is an
-`IsComputableRealFunction`. The retained 42-page PDF remains historical; the
-exact ceiling modulus, gap-to-modulus abstract strengthening, and input-bit
-asymptotics remain outside Lean.
+`IsComputableRealFunction`. `EffectiveGapInverse.lean` additionally derives a
+computable reciprocal inverse modulus and effective continuity from computable
+positive rational forward gaps. The retained 42-page PDF remains historical;
+exact endpoint-mass ceiling minimality and input-bit asymptotics remain outside
+Lean.
 
 The two canonical syntheses have source/artifact receipts. The current
 q-series source has 14,516 lines, 682,778 bytes, and SHA-256
@@ -197,19 +199,21 @@ links to pre-consolidation commit `2e3567feb14947ee3ebcdab11adca64e746ad26f`.
 
 ## combinatorial coefficient calculus — `combinatorial-coefficient-calculus/`
 
-Six standalone archival arrivals were filed here on 2026-09-01.  Each package
-preserved one submitted TeX/PDF pair byte-for-byte at intake and added a two-row
-live checksum ledger.  A later notation migration revised the sources only;
-the retained PDFs remain the historical arrivals, and each refreshed ledger
-records those distinct payloads.  The manuscripts have visibly overlapping
-subjects and titles, but comparison, deduplication, canonical selection, claim
-review, PDF rebuilding, and Lean crosswalking are deliberately deferred until
-after publication of this quick-gate intake.
+Six standalone archival arrivals were filed here on 2026-09-01. The
+non-suffixed `Combinatorial_Coefficient_Calculus/` package is now the selected
+canonical destination, using the stronger suffixed sibling as its mathematical
+spine. The other five manuscripts remain live donors while their distinct
+incidence, Bernoulli--Barnes, Good-inversion, Catalan, inverse-singularity, and
+algorithmic layers are merged theorem by theorem. Exact pre-consolidation
+identities, topic/claim dispositions, and structural validation live in the
+canonical package. Donor deletion and the single final PDF are deliberately
+deferred until every disposition is complete; none of the manuscript proofs is
+claimed as Lean verification.
 
 | Directory | Document | Previous path / provenance |
 | --- | --- | --- |
 | `Combinatorial_Coefficient_Calculus-2/` | *Combinatorial Coefficient Calculus* — current 6,862-line/277,653-byte source (`0b4176a2…8c93f6`) and retained historical 147-page A4 PDF; pair ledger verifies 2/2 | `incoming/Combinatorial_Coefficient_Calculus-2.zip` (1,096,487 bytes; SHA-256 `a0ca605c1d3f1ee3e00eac1d69a8181e786dd414407a1b3b6db1a60f74d8766d`) |
-| `Combinatorial_Coefficient_Calculus/` | *Combinatorial Coefficient Calculus* — current 6,873-line/276,828-byte source (`98497684…2ff63f`) and retained historical 143-page A4 PDF; pair ledger verifies 2/2 | `incoming/Combinatorial_Coefficient_Calculus.zip` (1,094,284 bytes; SHA-256 `a22479ac8f58e1710117af9d0a3f515c7d24ec250548f537520c9f9024f4321a`) |
+| `Combinatorial_Coefficient_Calculus/` | **Canonical consolidation in progress:** *Combinatorial Coefficient Calculus* — current 7,397-line/298,685-byte source (`71ce453c…3fce72`) and retained historical 143-page A4 arrival PDF; no render-parity claim | Six-source provenance and disposition ledgers in the package; original non-suffixed arrival was `incoming/Combinatorial_Coefficient_Calculus.zip` (SHA-256 `a22479ac8f58e1710117af9d0a3f515c7d24ec250548f537520c9f9024f4321a`) |
 | `Combinatorial_Formulae_and_Inversion_Theorems/` | *Combinatorial Formulae and Inversion Theorems* — current 7,036-line/283,111-byte source (`f070ad09…4670b3`) and retained historical 140-page A4 PDF; pair ledger verifies 2/2 | `incoming/Combinatorial_Formulae_and_Inversion_Theorems.zip` (1,101,493 bytes; SHA-256 `dae561780a4442a9f11acb7edf1ec508daca1db237db01fabf77c695ec924960`) |
 | `Unified_Combinatorial_Coefficient_Calculus/` | *Unified Combinatorial Coefficient Calculus* — current 6,687-line/262,376-byte source (`9566ce29…8f8947`) and retained historical 144-page A4 PDF; pair ledger verifies 2/2 | `incoming/Unified_Combinatorial_Coefficient_Calculus.zip` (1,083,495 bytes; SHA-256 `c4217b088444eb3e4bf24a7542d360f02dfb8e240418b562a155ad0c251ab559`) |
 | `Unified_Combinatorial_Formulae/` | *A Unified Calculus of Combinatorial Formulae* — current 5,898-line/232,717-byte source (`089c6ece…c81bb3`) and retained historical 130-page A4 PDF; pair ledger verifies 2/2 | `incoming/Unified_Combinatorial_Formulae.zip` (1,015,842 bytes; SHA-256 `611b14cfda15357b679a05d9586811d8fb39f6fe7d971f00424da2bb848a5594`) |
@@ -355,9 +359,11 @@ Rvachev--Appell specialization.
 Eight inverse-computability rows are now exact as well: the main combined
 theorem, the three tolerant-comparison certificates, fixed-depth bisection,
 restricted sequential inversion, computable clamping, and the totalized
-sequential corollary. The broader abstract inversion row remains human-proved
-because the generic Lean theorem accepts a computable inverse modulus rather
-than deriving it from the manuscript's positive gap sequence.
+sequential corollary. `FabiusFunction.EffectiveGapInverse` closes the abstract
+inversion row by deriving the reciprocal modulus from computable positive
+rational forward gaps and proving subset sequential computability plus
+effective uniform continuity; its companion theorem packages the clamped total
+inverse.
 `ASSET_DISPOSITION.csv` accounts for 88 source-group files; the deduplicated
 asset tree is present, and its exhaustive live `assets/SHA256SUMS` ledger
 verifies every retained payload. The retained 134-page, 2,027,726-byte A4 PDF

@@ -13,6 +13,7 @@ coefficient sequence: reflecting it in degree `k(n-k)` returns it.  The
 palindromicity is proved by induction from the two `q`-Pascal recurrences:
 reflecting `[n,k+1]_X + X^{n-k}[n,k]_X` in degree `(k+1)(n-k)` gives
 `X^{k+1}[n,k+1]_X + [n,k]_X`, which is the other recurrence.
+For a strict interior column `0 < k < n`, the coefficient of `X` is one.
 
 The immediate consequence for the inversion distribution with generating
 function `[n,k]_q` is that its mean is `k(n-k)/2`, in the division-free form
@@ -26,6 +27,9 @@ function `[n,k]_q` is that its mean is `k(n-k)/2`, in the division-free form
 * `reflect_gaussianBinomial`: `reflect (k(n-k)) [n,k]_X = [n,k]_X`.
 * `coeff_gaussianBinomial_reflect`: `c_j = c_{k(n-k)-j}`.
 * `coeff_gaussianBinomial_zero`, `coeff_gaussianBinomial_top`.
+* `coeff_gaussianBinomial_one_of_pos_of_lt` and
+  `coeff_gaussianBinomial_one`: the strict-interior and total linear
+  coefficient formulas.
 * `two_mul_derivative_gaussianBinomial_eval_one`: the mean.
 -/
 
@@ -130,6 +134,45 @@ theorem coeff_gaussianBinomial_zero {n k : ℕ} (hk : k ≤ n) :
   have h := map_gaussianBinomial (evalRingHom (0 : R)) (X : R[X]) n k
   rw [coe_evalRingHom, eval_X] at h
   rw [h, gaussianBinomial_zero_left hk]
+
+/-- In every strict interior column `0 < k < n`, the coefficient of `X` in
+the Gaussian polynomial `[n,k]_X` is one. -/
+theorem coeff_gaussianBinomial_one_of_pos_of_lt
+    {n k : ℕ} (hk : 0 < k) (hkn : k < n) :
+    (gaussianBinomial (X : R[X]) n k).coeff 1 = 1 := by
+  induction n generalizing k with
+  | zero => omega
+  | succ n ih =>
+      cases k with
+      | zero => omega
+      | succ k =>
+          rw [gaussianBinomial_succ_succ_alt, coeff_add]
+          by_cases hk0 : k = 0
+          · subst k
+            simp [coeff_gaussianBinomial_zero (R := R) (by omega : 1 ≤ n), coeff_one]
+          · rw [coeff_X_pow_mul', if_neg (by omega : ¬ k + 1 ≤ 1),
+              ih (by omega) (by omega), zero_add]
+
+/-- **Complete linear-coefficient classification.**  The coefficient of `X`
+in `[n,k]_X` is one exactly in the strict interior `0 < k < n`; it is zero
+on the lower edge, on the diagonal, and above the diagonal. -/
+theorem coeff_gaussianBinomial_one (n k : ℕ) :
+    (gaussianBinomial (X : R[X]) n k).coeff 1 =
+      if 0 < k ∧ k < n then 1 else 0 := by
+  by_cases h : 0 < k ∧ k < n
+  · rw [if_pos h, coeff_gaussianBinomial_one_of_pos_of_lt h.1 h.2]
+  · rw [if_neg h]
+    by_cases hk0 : k = 0
+    · subst k
+      simp [coeff_one]
+    · have hnk : n ≤ k := by
+        by_contra hnk
+        exact h ⟨Nat.pos_of_ne_zero hk0, Nat.lt_of_not_ge hnk⟩
+      rcases eq_or_lt_of_le hnk with hdiag | habove
+      · subst k
+        simp [coeff_one]
+      · rw [gaussianBinomial_eq_zero_of_lt (X : R[X]) habove]
+        simp
 
 /-- The coefficient of `X^{k(n-k)}` in `[n,k]_X` is `1`. -/
 theorem coeff_gaussianBinomial_top {n k : ℕ} (hk : k ≤ n) :
