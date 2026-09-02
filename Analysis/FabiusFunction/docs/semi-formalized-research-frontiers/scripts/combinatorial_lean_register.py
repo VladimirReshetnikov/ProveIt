@@ -376,6 +376,28 @@ STATUS = {
    r"$C=1+zC^2$ is \lean{Fabius.catalanSeries_eq} and its uniqueness among power series "
    r"\lean{Fabius.eq_catalanSeries_of_eq_one_add_X_mul_sq} (module "
    r"\lean{CatalanGeneratingFunction}); the square-root closed form is not formalized."),
+ 'thm:first-reverse-recurrences': ('Lean',
+   r"\cref{eq:first-reverse-row} is \lean{Fabius.first_reverse_row} and "
+   r"\cref{eq:first-reverse-column} is \lean{Fabius.first_reverse_column} (module "
+   r"\lean{StirlingFirstReverse}), the first from the rising factorial, the second by "
+   r"comparing exponential generating functions (\lean{Fabius.egfA_first_reverse_column})."),
+ 'thm:merged-bernoulli-difference': ('Lean',
+   r"\cref{eq:merged-bernoulli-newton-basis} is \lean{Fabius.bernoulli_eq_sum_fwdDiff} (module "
+   r"\lean{BernoulliNewtonBasis}), an identity in $\mathbb Q[x]$ with $\Delta^kx^n$ written out as "
+   r"$\sum_j(-1)^{k-j}\binom kj(x+j)^n$; the truncated Gregory composition is "
+   r"\lean{Fabius.X_pow_dvd_bernoulliPowerSeries_sub_gregory}."),
+ 'cor:merged-bernoulli-stirling-second-proof': ('Lean',
+   r"\lean{Fabius.bernoulli_eq_sum_fwdDiff_zero} (module \lean{BernoulliNewtonBasis}): "
+   r"$\beta_n=\sum_k\frac{(-1)^k}{k+1}\Delta^k0^n$, and with the surjection formula "
+   r"\lean{Fabius.factorial_mul_stirlingSecond_eq_sum} this is "
+   r"\lean{Fabius.bernoulli_eq_sum_stirlingSecond}."),
+ 'thm:merged-norlund-calculus': ('partial',
+   r"For natural orders $\alpha,\gamma\in\mathbb N$ (module \lean{NorlundPolynomials}, "
+   r"$\beta_n^{(a)}$ defined by \lean{Fabius.norlund}): \cref{eq:merged-norlund-appell} is "
+   r"\lean{Fabius.derivative_norlund_succ}, \cref{eq:merged-norlund-translation} is "
+   r"\lean{Fabius.norlund_eval_add}, \cref{eq:merged-norlund-difference} is "
+   r"\lean{Fabius.norlund_succ_eval_add_one_sub} and \cref{eq:merged-norlund-convolution} is "
+   r"\lean{Fabius.norlund_add_eval_add}; complex orders are not formalized."),
  'thm:touchard-poly': ('Lean',
    r"\cref{eq:touchard-poly} is \lean{Fabius.touchardPolynomial_add_prime} "
    r"(\lean{TouchardPolyCongruence}), an identity in $(\mathbb Z/p)[x]$, read off from Spivey's "

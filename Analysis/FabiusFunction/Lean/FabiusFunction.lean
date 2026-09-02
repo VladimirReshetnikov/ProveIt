@@ -50,6 +50,10 @@ import FabiusFunction.ShiftOperatorCharP
 import FabiusFunction.BellUmbra
 import FabiusFunction.StirlingParity
 import FabiusFunction.CatalanGeneratingFunction
+import FabiusFunction.StirlingFirstReverse
+import FabiusFunction.BernoulliNewtonBasis
+import FabiusFunction.NorlundPolynomials
+import FabiusFunction.BellDerivative
 import FabiusFunction.SymmetricFunctionTransform
 import FabiusFunction.SymmetricFunctionGenerating
 import FabiusFunction.FiniteQBinomialCore
