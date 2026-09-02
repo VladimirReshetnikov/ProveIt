@@ -158,6 +158,37 @@ STATUS = {
    r"\lean{Fabius.partialBell_mul_left}, \lean{Fabius.partialBell_pow_mul}, "
    r"\lean{Fabius.partialBell_bihomogeneous} (\lean{BellHomogeneity}), over every commutative "
    r"semiring"),
+ 'thm:eulerian-alternating': ('partial',
+   r"\cref{eq:eulerian-alternating} is \lean{Fabius.sum_neg_one_pow_mul_eulerianNumber} "
+   r"(\lean{EulerianAlternating}), from the Eulerian EGF at $t=-1$ "
+   r"(\lean{Fabius.egfA_eulerianPolynomial_eval_neg_one_mul}) and "
+   r"$x\tanh x=x-\mathscr B(2x)+\mathscr B(4x)$ "
+   r"(\lean{Fabius.X_mul_egfA_eulerianPolynomial_eval_neg_one}); the two reciprocal-binomial "
+   r"identities are not formalized"),
+ 'thm:merged-genocchi': ('partial',
+   r"with \lean{Fabius.genocchi} defined by $2(1-2^n)\beta_n$, the generating function "
+   r"\cref{eq:merged-genocchi-egf} is \lean{Fabius.egf_genocchi_mul_exp_add_one} "
+   r"(\lean{GenocchiNumbers}), i.e. the first equality of \cref{eq:merged-genocchi}; "
+   r"\lean{Fabius.genocchi_one}, \lean{Fabius.genocchi_two}, \lean{Fabius.genocchi_odd} give the "
+   r"initial values and the parity; the Euler-polynomial equality is not formalized"),
+ 'thm:bell-leading-zeros': ('Lean',
+   r"\lean{Fabius.partialBell_leadingZeros} (\lean{BellLeadingZeros}), over any "
+   r"$\RationalNumbers$-algebra, with the zero-padded weights \lean{Fabius.leadingZeros} and the "
+   r"rescaled weights \lean{Fabius.qScaled}; the proof compares the weight series "
+   r"(\lean{Fabius.bellWeightSeries_leadingZeros}) exactly as in the text"),
+ 'thm:merged-sheffer': ('partial',
+   r"\cref{eq:merged-sheffer-addition} is \lean{Fabius.shefferPoly_add} (\lean{BinomialType}), "
+   r"for \lean{Fabius.shefferPoly} $=c\star p$ (binomial convolution of the coefficients of $g$ "
+   r"with the binomial-type sequence), with generating function "
+   r"\lean{Fabius.egfA_mul_exp_subst_smul_bellWeightSeries}; the lowering law "
+   r"\cref{eq:merged-sheffer-lowering} is not formalized"),
+ 'thm:binomial-type-bell': ('partial',
+   r"with \lean{Fabius.binomialTypePoly} defined by \cref{eq:binomial-type-bell} "
+   r"(\lean{BinomialType}): \cref{eq:binomial-type-egf} is "
+   r"\lean{Fabius.exp_subst_smul_bellWeightSeries_eq_egfA_binomialTypePoly} and "
+   r"\cref{eq:binomial-type-identity} is \lean{Fabius.binomialTypePoly_add} (from the addition "
+   r"law \lean{Bell.complete_add}), over any commutative ring; the delta operator "
+   r"\cref{eq:delta-operator} is not formalized"),
  'thm:normal-order': ('Lean',
    r"\lean{Fabius.iterate_X_mul_derivative} (\cref{eq:normal1}) and "
    r"\lean{Fabius.xkDk_eq_sum_signedStirlingFirst} (\cref{eq:normal2}, by Stirling inversion) in "
