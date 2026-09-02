@@ -939,6 +939,40 @@ and its coefficients are the binomial coefficients
 $\StirlingSecondKind{2n}{n}$ rest on Lucas's theorem and are not formalized.""")),
 ]
 
+PENDING += [
+ # --- thm:merged-catalan-reflection ---
+ (r"""Subtraction and simplification prove the formula.
+\end{proof}
+""",
+  remark(r"""% ed.: crosswalk added 2026-09-02.
+Mathlib defines the Catalan numbers by the first-return recurrence
+$\CatalanNumber{n+1}=\sum_{i+j=n}\CatalanNumber i\CatalanNumber j$ and proves
+that they count Dyck words of semilength $n$
+(\lean{DyckWord.card_dyckWord_semilength_eq_catalan}, through the bijection
+with binary trees) and that $\CatalanNumber n=\binom{2n}{n}/(n+1)$
+(\lean{catalan_eq_centralBinom_div}, \lean{succ_mul_catalan_eq_centralBinom}).
+The difference form of \cref{eq:merged-catalan-reflection} is
+\lean{Fabius.catalan_succ_eq_choose_sub_choose} (module
+\lean{CatalanGeneratingFunction}), for $n+1$ so that no negative lower index
+occurs, derived algebraically from $(n+2)\CatalanNumber{n+1}=\binom{2n+2}{n+1}$
+and $\binom{2n+2}{n+1}(n+1)=\binom{2n+2}{n}(n+2)$; the reflection bijection
+itself is not formalized.""")),
+
+ # --- thm:merged-catalan-first-return ---
+ (r"""equation.  Of the two quadratic roots, only the displayed branch has constant
+term $1$.
+\end{proof}
+""",
+  remark(r"""% ed.: crosswalk added 2026-09-02.
+\lean{Fabius.catalanSeries_eq} (module \lean{CatalanGeneratingFunction}) is
+$C(z)=1+zC(z)^2$ in $R[[z]]$ over any commutative ring, read off from
+Mathlib's recurrence \lean{catalan_succ'} by coefficient comparison, and
+\lean{Fabius.eq_catalanSeries_of_eq_one_add_X_mul_sq} is the uniqueness
+statement behind the choice of branch: every power series $F$ with
+$F=1+zF^2$ equals $C(z)$, since the equation determines each coefficient from
+the earlier ones.  The closed form with $\sqrt{1-4z}$ is not formalized.""")),
+]
+
 applied = 0
 for anchor, text in PENDING:
     if text.strip() in s:

@@ -367,6 +367,15 @@ STATUS = {
    r"(module \lean{StirlingParity}), for $1\le k\le n$, from the column series modulo $2$, "
    r"\lean{Fabius.stirlingColumnOGF_zmod_two}; the bitwise form \cref{eq:second-parity-bit} "
    r"(Lucas) and the power-of-two criterion are not formalized."),
+ 'thm:merged-catalan-reflection': ('Lean',
+   r"The Dyck-word count is Mathlib's \lean{DyckWord.card_dyckWord_semilength_eq_catalan}; "
+   r"$\CatalanNumber n=\binom{2n}{n}/(n+1)$ is \lean{catalan_eq_centralBinom_div} and the "
+   r"difference form is \lean{Fabius.catalan_succ_eq_choose_sub_choose} "
+   r"(module \lean{CatalanGeneratingFunction})."),
+ 'thm:merged-catalan-first-return': ('partial',
+   r"$C=1+zC^2$ is \lean{Fabius.catalanSeries_eq} and its uniqueness among power series "
+   r"\lean{Fabius.eq_catalanSeries_of_eq_one_add_X_mul_sq} (module "
+   r"\lean{CatalanGeneratingFunction}); the square-root closed form is not formalized."),
  'thm:touchard-poly': ('Lean',
    r"\cref{eq:touchard-poly} is \lean{Fabius.touchardPolynomial_add_prime} "
    r"(\lean{TouchardPolyCongruence}), an identity in $(\mathbb Z/p)[x]$, read off from Spivey's "
