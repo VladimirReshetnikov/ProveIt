@@ -988,10 +988,10 @@ Thus $i_0(x)=m(x)$ and the classical plane-wave/Legendre expansion reads
 \end{equation}
 
 For a finitely supported multi-index
-$\nu=(\nu_1,\nu_2,\ldots)\in\NaturalNumbers^{(\NaturalNumbers)}$, put
+$\alpha=(\alpha_1,\alpha_2,\ldots)\in\NaturalNumbers^{(\NaturalNumbers)}$, put
 \begin{equation}
- \ell_\nu(V)=\prod_{j\ge1}\ell_{\nu_j}(V_j),
- \qquad \SupportOperator\nu=\{j:\nu_j>0\}.
+ \ell_\alpha(V)=\prod_{j\ge1}\ell_{\alpha_j}(V_j),
+ \qquad \SupportOf{\alpha}=\{j:\alpha_j>0\}.
  \label{eq:tensor-Legendre}
 \end{equation}
 
@@ -1050,21 +1050,21 @@ unit disk.
 \label{thm:tensor-Legendre}
 The expansion
 \begin{equation}
- \EulerE^{tX}=\sum_{\nu\in\NaturalNumbers^{(\NaturalNumbers)}}c_\nu(t)\ell_\nu(V)
+ \EulerE^{tX}=\sum_{\alpha\in\NaturalNumbers^{(\NaturalNumbers)}}c_\alpha(t)\ell_\alpha(V)
  \label{eq:tensor-expansion}
 \end{equation}
 converges in $L^2$, with
 \begin{equation}
  \boxed{
- c_\nu(t)=M(t)
- \prod_{j\in\SupportOperator\nu}
- \frac{\sqrt{2\nu_j+1}\,i_{\nu_j}(x_j)}{i_0(x_j)}.}
+ c_\alpha(t)=M(t)
+ \prod_{j\in\SupportOf{\alpha}}
+ \frac{\sqrt{2\alpha_j+1}\,i_{\alpha_j}(x_j)}{i_0(x_j)}.}
  \label{eq:c-nu}
 \end{equation}
 For every finite $S$, summing the squared coefficients with support exactly
 $S$ recovers the Hoeffding component:
 \begin{equation}
- \sum_{\SupportOperator\nu=S}|c_\nu(t)|^2
+ \sum_{\SupportOf{\alpha}=S}|c_\alpha(t)|^2
  =\|H_S(t)\|_2^2.
  \label{eq:support-Legendre-energy}
 \end{equation}
@@ -1087,13 +1087,13 @@ Expanding these $N$ local factors by
 \eqref{eq:local-Legendre-expansion} gives a finite tensor expansion in each
 finite degree truncation; completeness and local Parseval give its $L^2$
 limit.  Since
-$M_{>N}(t)\prod_{j=1}^Ni_0(x_j)=M(t)$, its coefficient for every $\nu$ with
-$\SupportOperator\nu\subset\{1,\ldots,N\}$ is exactly \eqref{eq:c-nu}.
+$M_{>N}(t)\prod_{j=1}^Ni_0(x_j)=M(t)$, its coefficient for every $\alpha$ with
+$\SupportOf{\alpha}\subset\{1,\ldots,N\}$ is exactly \eqref{eq:c-nu}.
 
 The martingale $f_N$ converges in $L^2$ to $\EulerE^{tX}$.  The nested finite tensor
 bases therefore yield \eqref{eq:tensor-expansion} and show that the coefficient
 squares sum to $\|\EulerE^{tX}\|_2^2=M(2t)$.  A tensor coefficient lies in the
-Hoeffding subspace indexed by $S$ exactly when $\SupportOperator\nu=S$; Parseval inside
+Hoeffding subspace indexed by $S$ exactly when $\SupportOf{\alpha}=S$; Parseval inside
 that closed subspace proves \eqref{eq:support-Legendre-energy}.  Dividing the
 local nonconstant energies by their sums gives the independent mark law, and
 \cref{thm:active-set-law} supplies the independent active indicators.
@@ -1114,7 +1114,8 @@ Let $u$ mark active-coordinate count and $z$ mark total Legendre degree.  The
 normalized second-moment generating product, for $|u|,|z|\le1$, is
 \begin{equation}
  \frac1{M(2t)}
- \sum_{\nu}|c_\nu(t)|^2u^{|\SupportOperator\nu|}z^{|\nu|_1}
+ \sum_{\alpha}|c_\alpha(t)|^2
+ u^{\CardinalityOf{\SupportOf{\alpha}}}z^{\Norm{\alpha}_1}
  =\prod_{j\ge1}\left[(1-p_j)+p_ju\,D_j(z)\right],
  \label{eq:joint-degree-product}
 \end{equation}
@@ -2932,7 +2933,7 @@ Order refinement
 Power-sum Bell form
 & $A_k=k!^{-1}\ExponentialCompleteBellPolynomial{k}(\InteractionPowerSum{1},-1!\InteractionPowerSum{2},\ldots,(-1)^{k-1}(k-1)!\InteractionPowerSum{k})$ \\
 Legendre coefficient
-& $c_\nu=M\prod_{\nu_j>0}\sqrt{2\nu_j+1}\,i_{\nu_j}(x_j)/i_0(x_j)$ \\
+& $c_\alpha=M\prod_{\alpha_j>0}\sqrt{2\alpha_j+1}\,i_{\alpha_j}(x_j)/i_0(x_j)$ \\
 Continuous degree mark
 & $D(x,z)=\sum_{n\ge1}q_n(x)z^n$ for $x\ne0$, while $D(0,z)=z$ \\
 Smooth order bound

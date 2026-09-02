@@ -2372,7 +2372,7 @@ hypotheses,
 \begin{proofidea}
 The complete integer zero-divisor theorem says that the order at a positive
 integer \(r\) is the weighted scale multiplicity
-\(\sum_{h=0}^{\nu_2(r)}a(h)\).  Since \(\nu_2(2^n)=n\), this is exactly
+\(\sum_{h=0}^{\TwoAdicValuation(r)}a(h)\).  Since \(\TwoAdicValuation(2^n)=n\), this is exactly
 \eqref{integration:eq:generalized-rvachev-dyadic-order}.  The initial sample
 \(n=0\) is at \(2^0=1\), not at zero: it is \(a(0)\), whereas every
 \(\Phi_a\) has value one at the origin.  The prefix identity
@@ -2495,10 +2495,10 @@ It imports the stronger \lean{finiteQPochhammerIn\_self\_pos} from
 dimension-dominant upper and lower bounds under the displayed order,
 nonzero-nome, and contraction hypotheses.  The
 parity-selected synthesis module
-\path{RvachevSuperconvergentSynthesis.lean} is 1+7: it characterizes the two
-dyadic superconvergent phases and proves the corresponding monomial,
-polynomial, deconvolution, and Appell sampling identities without asserting
-optimality beyond that classified phase set.
+\path{RvachevSuperconvergentSynthesis.lean} is 1+8: it names the selected
+dyadic phase representatives and proves the corresponding monomial,
+polynomial, deconvolution, and Appell sampling identities.  It asserts neither
+a complete phase classification nor maximality beyond those representatives.
 
 The earlier compiler-validated checkpoint \texttt{e6f535e5d} supplied the two modules that
 promote the
@@ -17079,7 +17079,7 @@ of \(F(2^{-n})\) divides \(\Delta_n\), and separately computes the two-adic valu
 \begin{candidate}[Discharged]
 For every \(n\ge1\),
 \[
- \nu_2(\Delta_n)\ge \binom n2+1+\nu_2(n!).
+ \TwoAdicValuation(\Delta_n)\ge \binom n2+1+\TwoAdicValuation(n!).
 \]
 \end{candidate}
 This is \lean{dyadicDenominator_padicVal_two_lower_bound} in \path{PaperStatements.lean},

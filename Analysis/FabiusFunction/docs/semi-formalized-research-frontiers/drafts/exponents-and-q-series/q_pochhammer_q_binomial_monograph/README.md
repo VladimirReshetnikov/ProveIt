@@ -45,9 +45,10 @@ the earlier six-package inverse provenance is not silently reinterpreted.
 
 The migrated `assets/` tree preserves six experiment programs, nineteen
 CSV/TXT outputs, and fourteen vector figures selected by the historical
-77-row `assets/ASSET_DISPOSITION.csv`. Its active `assets/SHA256SUMS` has 43
-entries because it also covers asset metadata and environment files; this is
-not a contradiction with the 39 retained historical payloads.
+77-row `assets/ASSET_DISPOSITION.csv`. That disposition record, the pinned
+source revisions, and repository history preserve the boundary between the 39
+retained historical payloads and the accompanying metadata and environment
+files. No live SHA checksum ledger is maintained.
 
 ## Validation state
 
@@ -85,19 +86,8 @@ It compares all coefficients through degree 100 using integer arithmetic:
 1,515 equalities in total. This is a transcription-quality gate, explicitly
 not an infinite proof of any recorded identity.
 
-The exhaustive package checksum gate is:
-
-```text
-python audit/build_package_checksums.py --check
-```
-
-It checks every permanent package file except the self-referential root
-`SHA256SUMS` ledger itself. The nested asset ledger remains independently
-useful because it preserves the migrated experiment and research-figure
-boundary.
-
 The retained `q_pochhammer_q_binomial_monograph.pdf` is a historical 354-page
-A4 build of the upstream source checkpoint (14,381 lines, 675,239 bytes,
+A4 build of its recorded source checkpoint (14,381 lines, 675,239 bytes,
 SHA-256 `240bff72fb47562e9a8fd87085b5a3a96d738189714518db17988f7c4ac15d31`).
 The PDF is 3,030,302 bytes with SHA-256
 `1050a9a3b0b7a8df8e7de0870946ae64940d7d7839a2f20427be0ebe14b0ba8c`.
@@ -111,16 +101,19 @@ subsetted, including five Libertinus rows, with no Type-3
 fonts. The files under `assets/experiments/**/figures/` remain research
 figures, not publication manuscripts.
 
-The current master TeX is a source-only successor to that checkpoint: it has
-14,481 lines, 681,698 bytes, and SHA-256
-`5c9b4b461938d6f15511a4e825caf3974e448c9ab3a805f447471f8d008500ad`.
-It combines the q-beta, collision-free Newton-interpolation,
-integer/complex-order Gaussian, q-Pfaff--Saalschuetz,
-quantum-multinomial, Gaussian reciprocity/growth, and coefficient-closure
-crosswalks. The regenerated root `SHA256SUMS` ledger records the live source
-and retained PDF separately; the PDF remains pinned to source SHA-256
-`240bff72fb47562e9a8fd87085b5a3a96d738189714518db17988f7c4ac15d31`
-and does not claim render parity with the merged TeX.
+The current live master is a source-only successor to that checkpoint: it has
+14,526 lines and 683,497 bytes. It combines the q-beta, collision-free
+Newton-interpolation, integer/complex-order Gaussian,
+q-Pfaff--Saalschuetz, quantum-multinomial, Gaussian reciprocity/growth, and
+coefficient-closure crosswalks.
+It adds the explicit document-local `\BellBlockMultiplicity{r}` and
+`\MacMahonQCatalanPolynomial{n}{q}` families and normalizes the newly merged
+Jackson, Gaussian-binomial, q-integer, and q-Pochhammer status formulas, while
+retaining the newest feature, crosswalk, and provenance expansion catalogued
+below. No PDF was regenerated after those changes. Thus the PDF and its
+recorded 14,381-line build source form the retained synchronized checkpoint;
+the current master and retained PDF do not claim render parity pending a
+fresh three-pass build.
 
 The current source includes exhaustive crosswalks for `QPochhammerEntire`
 (zero definitions

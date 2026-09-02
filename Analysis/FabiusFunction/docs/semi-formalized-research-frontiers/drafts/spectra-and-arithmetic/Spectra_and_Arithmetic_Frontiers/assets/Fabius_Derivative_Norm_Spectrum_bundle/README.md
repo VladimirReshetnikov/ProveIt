@@ -17,6 +17,17 @@ levels above this directory.
 - `data/` -- CSV tables and a plain-text numerical run summary.
 - `SHA256SUMS.txt` -- checksums for every distributed file except the checksum file itself.
 
+## Live-source / retained-artifact boundary
+
+The current consolidated source has 8,183 lines, 349,076 bytes, and SHA-256
+`683a560044772216980b05c4dd26957c6bbfb6c34019cc8d4cae815d9cff8df1`.
+It uses `\TwoAdicValuation` for every genuine dyadic valuation.  The retained
+consolidated PDF has SHA-256
+`2a97dc10398bc4f7d2eaf109c5d28a746355d2e6ddece6e7ee32c5897f487e72`
+and predates this notation-only source successor.  No PDF was regenerated:
+`SHA256SUMS.txt` is therefore a mixed byte inventory of current TeX and a
+retained PDF checkpoint, not evidence that those two files are synchronized.
+
 ## Central new deductions (relative to the pinned repository corpus)
 
 The report proves an exact equimeasurability law for every derivative of Rvachev's

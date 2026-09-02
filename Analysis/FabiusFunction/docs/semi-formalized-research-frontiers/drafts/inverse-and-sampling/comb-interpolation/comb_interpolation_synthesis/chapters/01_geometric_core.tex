@@ -1603,10 +1603,10 @@ factor $2^{\binom n2}$, leaving the much more regular moment sequence $a_n$.
 \subsection{The exact Gaussian transform of Fabius data}
 \label{gq:sec:fabius-newton-transform}
 
-Let $\nu_k$ be the coefficient of $N_k(x;1,q)$ in the Newton interpolant to
-$F$ at $1,q,\ldots,q^k$:
+Let $\FabiusGeometricNewtonCoefficient{k}{q}$ be the coefficient of
+$N_k(x;1,q)$ in the Newton interpolant to $F$ at $1,q,\ldots,q^k$:
 \begin{equation}
- \nu_k=[F;1,q,\ldots,q^k].
+ \FabiusGeometricNewtonCoefficient{k}{q}=[F;1,q,\ldots,q^k].
  \label{gq:eq:fabius-nu-definition}
 \end{equation}
 
@@ -1615,7 +1615,7 @@ $F$ at $1,q,\ldots,q^k$:
 For $q=1/2$,
 \begin{equation}
  \boxed{
- \nu_k=\frac1{(q;q)_k}
+ \FabiusGeometricNewtonCoefficient{k}{q}=\frac1{(q;q)_k}
  \sum_{j=0}^{k}(-1)^j
  \GaussianBinomial{k}{j}{q^{-1}}a_j
  =\frac1{(1/2;1/2)_k}
@@ -1625,7 +1625,7 @@ For $q=1/2$,
 Consequently the degree-$n$ interpolant is
 \begin{equation}
  \boxed{
- (\Interp_nF)(x)=\sum_{k=0}^{n}\nu_k
+ (\Interp_nF)(x)=\sum_{k=0}^{n}\FabiusGeometricNewtonCoefficient{k}{q}
  \prod_{r=0}^{k-1}(x-2^{-r}).}
  \label{gq:eq:fabius-newton-expansion}
 \end{equation}
@@ -1656,13 +1656,13 @@ This transform is a meeting point of three triangular arrays:
 \end{enumerate}
 The resulting coefficients need not be small.  Exact values begin
 \begin{align}
- \nu_0&=1,
- &\nu_1&=1,
- &\nu_2&=-\frac{26}{27},
- &\nu_3&=-\frac{128}{27},
+ \FabiusGeometricNewtonCoefficient{0}{1/2}&=1,
+ &\FabiusGeometricNewtonCoefficient{1}{1/2}&=1,
+ &\FabiusGeometricNewtonCoefficient{2}{1/2}&=-\frac{26}{27},
+ &\FabiusGeometricNewtonCoefficient{3}{1/2}&=-\frac{128}{27},
  \label{gq:eq:first-fabius-newton-1}\\
- \nu_4&=-\frac{4253248}{637875},
- &\nu_5&=\frac{189673472}{19774125}.
+ \FabiusGeometricNewtonCoefficient{4}{1/2}&=-\frac{4253248}{637875},
+ &\FabiusGeometricNewtonCoefficient{5}{1/2}&=\frac{189673472}{19774125}.
  \label{gq:eq:first-fabius-newton-2}
 \end{align}
 The signs and magnitudes already foreshadow the gap instability studied in
@@ -2041,7 +2041,7 @@ For $u=\RvachevUp$,
 \end{equation}
 Hence, for every nonzero integer $m$,
 \begin{equation}
- \OrderOperator_{\xi=m}\FourierTwoPi{u}(\xi)=1+\nu_2(m).
+ \OrderOperator_{\xi=m}\FourierTwoPi{u}(\xi)=1+\TwoAdicValuation(m).
  \label{gq:eq:up-integer-zero-order}
 \end{equation}
 This exact multiplicity is the dyadic Strang--Fix mechanism behind the

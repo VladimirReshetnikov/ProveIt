@@ -21,7 +21,7 @@ inverse-q synthesis have been dispositioned into
 [`q_pochhammer_q_binomial_monograph/`](q_pochhammer_q_binomial_monograph/).
 Their earlier names, arrival hashes, and publication facts remain provenance,
 not parallel live documents. The current canonical TeX postdates its retained
-historical PDF; the exact source and artifact receipt appears once in the
+historical PDF; the historical source-and-artifact receipt appears once in the
 detailed package record below. The merged source incorporates the later
 five-theorem
 `QPochhammerEntire.lean`, `QPochhammerInfinite.lean`, and
@@ -45,10 +45,9 @@ Current packages and retained intake records:
   four CSV tables, two captured outputs, and four PDF/PNG figure pairs),
   arrived as a bare directory in direct-arrival commit
   `8a184546747082cbd92ad4675fb61981c6b8c3b6`; no archive or outer hash was
-  supplied. Its submitted ledger covers all 20 non-ledger payloads and was
-  refreshed after four CSV entries received CRLF-to-LF normalization. The
-  later strict rebuild replaced the main TeX/PDF pair; the refreshed 20-entry
-  operational ledger verifies every current payload. All five current PDFs
+  supplied. Its arrival receipt covered all 20 payloads; four CSV entries later
+  received CRLF-to-LF normalization. The later strict rebuild replaced the
+  main TeX/PDF pair. All five current PDFs
   are readable and unencrypted (26 pages total). The main report has 33
   embedded/subset font rows, including five Libertinus rows and eight Type-3
   rows inherited from the four included vector figures; the standalone figure
@@ -65,8 +64,8 @@ Current packages and retained intake records:
   `52179f63fe955a64508915eedaa560de9f3056da` under the bare generic wrapper
   `Fabius_Rvachev_Frontier_Report_2026-08-30-G/` and was filed under this
   title-derived collision-safe name. Its manifest covers the full delivery.
-  The current PDF was rebuilt from the final source in three strict passes;
-  the refreshed 19-entry ledger verifies every current payload. The main PDF
+  The current PDF was rebuilt from the final source in three strict passes.
+  The main PDF
   has 33 embedded/subset font rows, including six Libertinus rows and six
   Type-3 rows inherited from the three included vector figures; the standalone
   figure PDFs contain the same six Type-3 rows. Its title and abstract concern
@@ -95,19 +94,18 @@ Current packages and retained intake records:
   figures. Pinned source revisions and Git history preserve every superseded
   layout and arrival fact.
 
-  The current `q_pochhammer_q_binomial_monograph.tex` has 14,481 lines,
-  681,698 bytes, and SHA-256
-  `5c9b4b461938d6f15511a4e825caf3974e448c9ab3a805f447471f8d008500ad`.
-  Its retained `q_pochhammer_q_binomial_monograph.pdf` is a historical
-  354-page A4 artifact of 3,030,302 bytes, with SHA-256
+  The current `q_pochhammer_q_binomial_monograph.tex` has 14,526 lines and
+  683,497 bytes. Its retained `q_pochhammer_q_binomial_monograph.pdf` is a
+  historical 354-page A4 artifact of 3,030,302 bytes, with SHA-256
   `1050a9a3b0b7a8df8e7de0870946ae64940d7d7839a2f20427be0ebe14b0ba8c`.
-  That PDF was built from the preceding 14,381-line, 675,239-byte source with
-  SHA-256
+  That PDF was built in exactly three guarded serial passes (343, 354, and 354
+  pages) from the preceding 14,381-line, 675,239-byte source with SHA-256
   `240bff72fb47562e9a8fd87085b5a3a96d738189714518db17988f7c4ac15d31`.
   Its A4 boxes, text extraction, embedded/subset Type-1 fonts including
   Libertinus, absence of Type-3 fonts, and targeted visual review passed at
-  that checkpoint. Because the current TeX is newer, no render parity is
-  claimed.
+  that checkpoint. The current TeX adds explicit Bell-multiplicity and
+  MacMahon q-Catalan notation and normalizes the merged status formulas;
+  because it is newer, no current render parity is claimed.
   It carries the five-theorem `QPochhammerEntire.lean`, the generic
   `QPochhammerInfinite.lean` and `QPochhammerDissection.lean` APIs, both
   Gaussian structure modules, `CentralQBinomialReduction.lean`,
@@ -141,8 +139,8 @@ Current packages and retained intake records:
   cyclotomic asymptotic and natural-boundary layers manuscript-only. The
   retained main PDF has 28 A4 pages, so the five PDFs have 32 pages in total
   (28 main plus four one-page figures). Its current 1,875-line source postdates
-  that rendering; a fresh strict three-pass build and operational-ledger
-  refresh are pending. The retained main PDF uses
+  that rendering; a fresh strict three-pass build remains pending. The
+  retained main PDF uses
   embedded/subset Type-1 Libertinus fonts with no Type 3 font; the unchanged
   standalone vector figures retain nine embedded/subset Type-3 rows as
   disclosed archival debt.
@@ -151,8 +149,7 @@ Current packages and retained intake records:
 *Negative Parameters, Reciprocal Bases, and the Gaussian Boundary* (current
 1,475-line source and matching 26-page A4 PDF), arrived on 2026-08-30 with all
 13 payload checksums verified. Its current PDF was rebuilt from the final
-source, and the refreshed operational ledger verifies all thirteen current
-payloads. It develops
+source. It develops
 negative-parameter affine transport, reciprocal-base digit reversal,
 multisection, shape theory, and the Gaussian boundary for geometric-uniform
 laws.  Because much of that subject already appears in Part VII of the
@@ -167,8 +164,7 @@ theorem labels do not by themselves assert Lean formalization.
   SHA-256
   `afdcf522589a7baad82c81a527c02dcc09e58455ab14c57a9c492e65563c647e`).
   Its immutable 13-entry arrival ledger verifies 13/13. The current PDF was
-  rebuilt from the final source, and the refreshed 17-entry operational ledger
-  verifies 17/17. The pinned replay reproduced the two exact
+  rebuilt from the final source. The pinned replay reproduced the two exact
   algebra tables, common-random-number table, and two figures byte-for-byte;
   the two Monte-Carlo tables differed only at documented last-bit levels far
   below their sampling errors. A hostile review repaired the conditional-law
@@ -525,8 +521,8 @@ remain research frontiers. These fractional-Volterra API claims were checked at 
 
 Geometric-sinc subgroup member:
 [`Exponents_and_q_Series_Frontiers/`](geometric-sinc-and-exponent-families/Exponents_and_q_Series_Frontiers/)
-(current semantic-union TeX: 16,369 lines and 737,768 bytes, SHA-256
-`4313bddb87a0f248a8bad4bd5e5a7cfbb25da51d1b994abc0c9d4c62525ca78c`;
+(current semantic-union TeX: 16,369 lines and 737,912 bytes, SHA-256
+`a4aecd625f7eb405de866e2b368bbdc648fb0f9e11b423cb936a2f319d195f02`;
 retained PDF: 238 A4 pages and 6,953,898 bytes, SHA-256
 `fa719a8ea68d3c474928b9fae7449f827eb35a5452613f2b660d8e88ba27267e`;
 across seven parts). Exactly three serial passes from the preceding 16,274-line,
@@ -534,9 +530,9 @@ across seven parts). Exactly three serial passes from the preceding 16,274-line,
 `4be184dc95f7c9d7665e5edf56cd22dc66bdacbc2f113b03b700468836018f8b`
 produced 228, 238, and 238 pages. Basic A4, text-extraction, embedded-font, and
 no-Type-3 checks passed, but the containing multi-document batch stopped before
-a fresh full log, page-box, and visual audit. The child ledgers now record the
-actual current TeX and retained PDF as distinct payloads; that does not assert
-render parity. The semantic-union source adds the upstream q-API crosswalk
+a fresh full log, page-box, and visual audit. The current TeX and retained PDF
+remain distinct payloads; that does not assert render parity. The
+semantic-union source adds the upstream q-API crosswalk
 material and the exact `GeneralizedRvachevIdentifiability.lean`
 zero-order/exponent crosswalk after the PDF's source checkpoint. The latter
 gives constructive dyadic-order first differences and full-product rigidity;
@@ -547,7 +543,10 @@ spectral product converges locally uniformly for every complex strict
 contraction, including `q = 0`, with dyadic Rvachev-product and bounded-Fabius
 Fourier specializations. The compound centered/MGF and exterior reciprocal
 formula, pole divisor, and zero--pole exchange remain Partial. Final-source
-rendering and full publication validation remain pending. This is the
+rendering and full publication validation remain pending.  The current TeX
+also replaces all raw dyadic-valuation spellings by the shared
+`\TwoAdicValuation` command; this notation-only successor is not represented
+by the retained PDF. This is the
 2026-08-28 consolidation of the two former drafts (Part I:
 Newton-basis frontiers; Part II: q-binomial Richardson), joined the
 same day by the eighth-wave report as **Part III** — *Finite Dyadic
