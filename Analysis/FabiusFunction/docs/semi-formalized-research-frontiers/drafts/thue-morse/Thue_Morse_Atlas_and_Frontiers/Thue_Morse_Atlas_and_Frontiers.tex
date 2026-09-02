@@ -2650,9 +2650,14 @@ identity of formal power series with integer coefficients, with
 \(A\) as \lean{Fabius.rulerSeries} built on the ruler coefficient
 \lean{Fabius.rulerCoeff} of \path{ThueMorseHessenberg.lean}.  Its coefficient of \(z^n\) is
 exactly the ruler-convolution recurrence of \cref{p1:thm:ruler-convolution}, from which it
-is derived; no convergence enters.  The two readings the theorem also offers --- the
-\(\RationalNumbers\)-logarithm itself, and the analytic identity for \(|z|<1\) --- are not formalized:
-the first is a coefficientwise integration of the display above, the second its evaluation.
+is derived; no convergence enters.  The \(\RationalNumbers\)-logarithm itself is formal as
+well: for the corpus's recursively defined formal logarithm (\path{RulerLogSeries.lean}),
+\lean{Fabius.logCoeff\_thueMorseSign} gives \([z^k]\log E(z)=-a_k/k\) for every \(k\ge1\)
+(\lean{Fabius.logCoeff\_thueMorseSign\_of\_pos} in the explicit form
+\(-(2^{\TwoAdicValuation(k)+1}-1)/k\)), obtained from the rational form of the display above,
+\lean{Fabius.X\_mul\_derivative\_thueMorseSeriesRat}, by the uniqueness of the recursive
+logarithm.  Only the analytic reading for \(|z|<1\), the evaluation of these identities at a
+point, is not formalized.
 
 \subsection{A nonlocal convolution recurrence}
 
