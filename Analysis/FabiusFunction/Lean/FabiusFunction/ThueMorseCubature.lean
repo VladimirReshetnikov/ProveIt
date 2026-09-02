@@ -3,6 +3,7 @@ import FabiusFunction.DyadicClosedForm
 import Mathlib.Analysis.Calculus.IteratedDeriv.Lemmas
 import Mathlib.Analysis.Calculus.ContDiff.Deriv
 import Mathlib.Analysis.Calculus.Deriv.Shift
+import Mathlib.Tactic.LinearCombination
 import Mathlib.MeasureTheory.Integral.IntervalIntegral.FundThmCalculus
 
 /-!
@@ -181,10 +182,10 @@ theorem thueMorseBlockSum_nonneg (m : ℕ) (f : ℝ → ℝ) (hf : ContDiff ℝ 
 
 /-- The block sum is linear in `f`: negation. -/
 theorem thueMorseBlockSum_neg (m : ℕ) (f : ℝ → ℝ) (x h : ℝ) :
-    thueMorseBlockSum m (fun y => -f y) x h = -thueMorseBlockSum m f x h := by
+    thueMorseBlockSum m (-f) x h = -thueMorseBlockSum m f x h := by
   unfold thueMorseBlockSum
   rw [← Finset.sum_neg_distrib]
-  exact sum_congr rfl fun n _ => by ring
+  exact sum_congr rfl fun n _ => by simp only [Pi.neg_apply]; ring
 
 /-- For continuous `f`, the block sum is continuous in the base point. -/
 theorem continuous_thueMorseBlockSum_base (m : ℕ) {f : ℝ → ℝ} (hf : Continuous f) (x h : ℝ) :
@@ -200,22 +201,22 @@ theorem thueMorseBlockSum_succ_eq_neg_integral (m : ℕ) (f : ℝ → ℝ)
     (hf : ContDiff ℝ (m + 1) f) (x h : ℝ) :
     thueMorseBlockSum (m + 1) f x h
       = -∫ t in (0 : ℝ)..h, thueMorseBlockSum m (deriv f) (x + t) (2 * h) := by
-  have hf1 : ContDiff ℝ ((m : WithTop ℕ∞) + 1) f := by
-    have := hf
-    rwa [Nat.cast_succ] at this
+  have hf1 : ContDiff ℝ ((m : WithTop ℕ∞) + 1) f := hf
   have hf' : ContDiff ℝ m (deriv f) := (contDiff_succ_iff_deriv.mp hf1).2.2
+  have hsq : ((-1 : ℝ) ^ m) * (-1) ^ m = 1 := by
+    rw [← pow_add, ← two_mul, pow_mul]
+    norm_num
   rw [thueMorseBlockSum_eq_nestedDyadicIntegral (m + 1) f hf x h, nestedDyadicIntegral_succ,
     iteratedDeriv_succ']
   have : ∀ t : ℝ, nestedDyadicIntegral m (iteratedDeriv m (deriv f)) (x + t) (2 * h)
       = (-1) ^ m * thueMorseBlockSum m (deriv f) (x + t) (2 * h) := by
     intro t
-    rw [thueMorseBlockSum_eq_nestedDyadicIntegral m (deriv f) hf' (x + t) (2 * h)]
-    ring_nf
-    rw [← pow_add, ← two_mul, pow_mul]
-    norm_num
+    rw [thueMorseBlockSum_eq_nestedDyadicIntegral m (deriv f) hf' (x + t) (2 * h), ← mul_assoc,
+      hsq, one_mul]
   simp_rw [this]
   rw [integral_const_mul, pow_succ]
-  ring
+  set I := ∫ t in (0 : ℝ)..h, thueMorseBlockSum m (deriv f) (x + t) (2 * h) with hI
+  linear_combination (-I) * hsq
 
 /-- **Strict positivity for completely monotone kernels**: if `h > 0` and
 `(-1)^m f^{(m)} > 0` on `[x, x + (2^m - 1) h]`, then
@@ -242,7 +243,7 @@ theorem thueMorseBlockSum_pos (m : ℕ) :
       -- the integrand is negative on `[0, h]`
       have hneg : ∀ t ∈ Set.Icc (0 : ℝ) h, thueMorseBlockSum m (deriv f) (x + t) (2 * h) < 0 := by
         intro t ht
-        have hpos := ih (fun y => -deriv f y) hf'.neg (x + t) (2 * h) (by linarith) ?_
+        have hpos := ih (-deriv f) hf'.neg (x + t) (2 * h) (by linarith) ?_
         · rw [thueMorseBlockSum_neg] at hpos
           linarith
         · intro y hy
