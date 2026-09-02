@@ -6,8 +6,13 @@ series.
 
 ## Main files
 
-- `fabius_dyadic_chaos_frontiers.tex` - complete self-contained LaTeX source.
-- `fabius_dyadic_chaos_frontiers.pdf` - compiled A4 report.
+- `fabius_dyadic_chaos_frontiers.tex` - current live, self-contained LaTeX
+  source: 3,153 lines, 112,391 bytes, SHA-256
+  `34241042a005ea529219aca0761c121760a2574324bbb2300c365012cc1435c2`.
+- `fabius_dyadic_chaos_frontiers.pdf` - retained historical 40-page A4
+  report: 819,265 bytes, SHA-256
+  `0be7f0943e8d5fb795878aa0b3ecb21af25680155ad214ee2f1598de50e705ea`.
+  It is not a rendering of the current live source; a rebuild is pending.
 - `LEAN_CROSSWALK.md` - label-complete map from all 41 nonconjectural paper
   results to the current Lean corpus, with exact remaining proof obligations.
 - `experiments.py` - deterministic, extensively commented exact and
@@ -164,18 +169,21 @@ latexmk -pdf -interaction=nonstopmode -halt-on-error \
 ```
 
 Equivalently, run `pdflatex` repeatedly until the table of contents and cross
-references stabilize. The current repository release PDF was rebuilt from a
-clean source directory with exactly three explicit `pdflatex` passes using
-pdfTeX 1.40.22 (TeX Live 2022/dev); `latexmk` was not used. Standard packages
-are used, with Libertinus fonts when available and Latin Modern as a fallback.
+references stabilize. The retained repository PDF was rebuilt from a clean
+3,153-line, 111,604-byte frozen source (SHA-256
+`3ff13b907faf7d2000ad6c218c8eb8f3468ed9750e32ceb2e31eb21cbe713fe5`)
+with exactly three explicit `pdflatex` passes using pdfTeX 1.40.22 (TeX Live
+2022/dev); `latexmk` was not used. The current live source has changed since
+that build and has not yet been rendered. Standard packages are used, with
+Libertinus fonts when available and Latin Modern as a fallback.
 
-## Verification status
+## Retained PDF/build verification (historical)
 
 - All theorem, equation, figure, and bibliography references resolve.
-- The final PDF has 40 A4 pages and is an unencrypted 819,265-byte PDF 1.5
+- The retained PDF has 40 A4 pages and is an unencrypted 819,265-byte PDF 1.5
   artifact. Every font is embedded and no Type 3 font is
   present in either the report or its six vector figures.
-- The final PDF was preflighted and all 40 pages were rendered at 120 dpi.
+- The retained PDF was preflighted and all 40 pages were rendered at 120 dpi.
   Four complete contact sheets were inspected, followed by full-resolution
   checks of pages 12--13, 22--23, and 36--38: the scaled and square-summable
   limits, the geometric/dyadic sharp coefficients, the conclusion, status
@@ -184,7 +192,7 @@ are used, with Libertinus fonts when available and Latin Modern as a fallback.
   were observed.
 - The exact five appended compiler-backed result headings audited during the
   PDF release are each extractable once when matched with their theorem number
-  and class. The report SHA-256 is
+  and class. The retained report SHA-256 is
   `0be7f0943e8d5fb795878aa0b3ecb21af25680155ad214ee2f1598de50e705ea`.
 - The experiment was replayed in two fresh trees. The six archived figure pairs
   were regenerated from the recorded environment after selecting TrueType
@@ -202,7 +210,9 @@ sha256sum -c SHA256SUMS
 The active ledger contains exactly 33 entries—every regular package file
 except `SHA256SUMS` itself, including this README, the immutable arrival
 ledger, the Lean crosswalk, and all four audit files---and verifies against the
-repository-normalized bytes.
+repository-normalized bytes. It is a mixed current-source/retained-artifact
+ledger: successful verification does not claim that the historical report PDF
+renders the current TeX.
 
 ## Repository filing provenance
 
@@ -225,4 +235,5 @@ Type 3 fonts, corrected the manuscript's proof and status boundaries, added
 the label-complete Lean crosswalk, and rebuilt the 40-page report in exactly
 three explicit `pdflatex` passes. The details and remaining formalization
 obligations are recorded in `audit/POST_INTAKE_REVIEW.md` and
-`LEAN_CROSSWALK.md`.
+`LEAN_CROSSWALK.md`. Those build claims describe the retained historical PDF
+checkpoint, which predates the current source-only notation edits.

@@ -20,7 +20,7 @@ claim in the source pool is represented here as machine checked.
 | Archive arrival | `c3720b763d159c3a009b66e6e89ac500b7843e98` | Adds the six ZIP archives under `drafts/incoming/`. |
 | Safe extraction and filing | `d1d5c71e6a8b6aafa751ab5be816e5931b6a50fa` | Extracts one flat TeX/PDF pair from each ZIP, records the original member hashes, and deletes the filed ZIPs. |
 | Shared-notation migration | `729820bfe079947d1f1af7877820fbbb9202a1f0` | Rewrites the six TeX sources to the shared notation API; it does not rebuild or alter the six PDFs. |
-| Pre-consolidation snapshot | `55038f2fc7d20a483a48125f086a6c8488e45530` | Pins the exact current input files covered by `SOURCE_CLOSURE.sha256`. |
+| Pre-consolidation snapshot | `55038f2fc7d20a483a48125f086a6c8488e45530` | Pins the exact six-source input tree recorded below and in the historical closure records. |
 
 The archive, extraction, and migration commits are all ancestors of the
 snapshot commit.  Consequently, the original bytes remain recoverable from
@@ -28,23 +28,30 @@ Git even after the live donor directories are retired.
 
 ## Identity model
 
-Each input has three intentionally distinct identities.
+The records distinguish four intentionally different identities.
 
 1. **Original source** means the TeX member inside the ZIP at the archive
    arrival commit.  The same bytes were filed by the extraction commit.
-2. **Current source** means the notation-migrated TeX at the pinned
+2. **Snapshot source** means the notation-migrated TeX at the pinned
    pre-consolidation snapshot.  Its hash generally differs from the original
    source hash.
 3. **Retained historical PDF** means the PDF member from the arrival ZIP.  The
    filed PDF at the snapshot has the same bytes.  Since the notation migration
    changed TeX without rebuilding PDF, the PDF is not asserted to render the
-   current source.
+   snapshot source.
+4. **Live canonical source** means the evolving TeX at the surviving
+   non-suffixed path.  Its active row in `SOURCE_CLOSURE.sha256` is refreshed at
+   every consolidation checkpoint; its immutable `CCC` snapshot identity remains
+   recorded here even after the canonical text diverges from that donor.
 
 The six package-local `SHA256SUMS` files are derivative two-row ledgers, not
-additional research payloads.  They are therefore outside the twelve-payload
-closure (six TeX files and six PDFs).  This file, `SOURCE_DISPOSITION.csv`, and
+additional research payloads.  They are therefore outside the transitional
+twelve-payload closure (the live canonical TeX/PDF pair and the five donor
+TeX/PDF pairs).  This file, `SOURCE_DISPOSITION.csv`, and
 `SOURCE_CLOSURE.sha256` are likewise consolidation metadata rather than source
-manuscripts.
+manuscripts.  At final retirement the active closure contracts to the one
+canonical TeX/PDF pair; the commented historical records continue to identify all
+six inputs.
 
 The stable source identifiers used below and in the disposition ledger are:
 
@@ -155,14 +162,15 @@ filed paths have the common prefix
 
 ## Reproduction and verification
 
-From the repository root, the twelve live snapshot payloads are checked with:
+From the repository root, the live transitional payloads are checked with:
 
 ```text
 sha256sum -c Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/combinatorial-coefficient-calculus/Combinatorial_Coefficient_Calculus/SOURCE_CLOSURE.sha256
 ```
 
-The active rows in that file are conventional `sha256sum` rows.  Its commented
-`HISTORICAL_*` rows identify data that no longer has a live filesystem path.
+The active rows in that file are conventional `sha256sum` rows and describe the
+working consolidation tree at the current checkpoint.  Its commented
+`HISTORICAL_*` rows identify immutable intake data rather than mutable live paths.
 To reproduce one historical record, obtain the ZIP by its Git blob ID in a
 binary-safe shell, verify the archive, and stream the named member:
 

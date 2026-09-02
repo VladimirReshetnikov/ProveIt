@@ -1050,10 +1050,35 @@ computable denominator \(d\), and
 \[
  |u-v|<d(p)^{-1}\Longrightarrow |g(u)-g(v)|<2^{-p}.
 \]
-It consumes this inverse modulus; it does not derive one from the positive gap
-sequence in the inverse-computability paper.  The hard-coded unit interval is
-also significant: no arbitrary-endpoint algorithm is asserted without
+It consumes this inverse modulus.  The adjacent
+\nolinkurl{EffectiveGapInverse.lean} layer derives one from a supplied
+computable positive rational dyadic-gap sequence.  The hard-coded unit interval
+is also significant: no arbitrary-endpoint algorithm is asserted without
 computable endpoint data.
+
+That gap layer has exactly eight public declarations:
+\nolinkurl{EffectivelyUniformContinuousOn}, the structure
+\nolinkurl{ComputablePositiveRationalSequence},
+\nolinkurl{ComputablePositiveRationalSequence.value},
+\nolinkurl{ComputablePositiveRationalSequence.reciprocalDenominator},
+\nolinkurl{ComputablePositiveRationalSequence.reciprocalDenominator_spec},
+\nolinkurl{inverseModulus_of_positiveRationalGap},
+\nolinkurl{effectiveInversionOn_Icc_of_computablePositiveRationalGap}, and
+\nolinkurl{clampedEffectiveInversion_of_computablePositiveRationalGap}.
+The sequence contains computable positive natural numerators and denominators;
+the reciprocal denominator is their natural quotient plus one, so it is
+computable, positive, and has reciprocal strictly below the encoded rational
+value.  For a strict increasing inverse pair on \([0,1]\), the exact analytic
+hypothesis is
+\[
+ \alpha(p)\le f(x+2^{-p})-f(x)
+ \quad\text{for every }x\in[0,1-2^{-p}].
+\]
+This yields the inverse modulus.  A computable dyadic evaluator for \(f\) and
+interval maps for both functions then yield sequential computability and
+effective uniform continuity of \(g\) on \([0,1]\).  The total theorem certifies
+exactly \(x\mapsto g(\nolinkurl{unitClamp}(x))\); it agrees with \(g\) on the
+unit interval but makes no claim about the unclamped values of \(g\) outside it.
 
 The specialization \nolinkurl{FabiusInverseComputable.lean} has no public
 definition and exactly one public theorem,
@@ -1062,9 +1087,10 @@ the centered-spline evaluator, the Delta denominator, tolerant bisection on
 \([0,1]\), and the computable \(1\)-Lipschitz clamp.  Its effective-uniform-
 continuity clause is
 \nolinkurl{fabiusInv_effectivelyUniformContinuous_logarithmicDelta}.
-Consequently the totalized inverse, not merely its unit-interval restriction,
+Consequently the totalized Fabius inverse, not merely its unit-interval restriction,
 satisfies \nolinkurl{IsComputableRealFunction}.  These two modules expose all
-nine declarations just listed and no input-bit or running-time asymptotic.
+nine fixed-depth/Fabius declarations just listed; the gap layer adds its eight
+declarations and no input-bit or running-time asymptotic.
 
 The separate smooth bridge \nolinkurl{FabiusInverseQuarterJet.lean} identifies
 the complete inverse jet at the quarter anchor.  For
@@ -1680,7 +1706,7 @@ The use of \(\operatorname{ENat.toNat}\) is safe here because
 order as a finite natural cast.
 
 The proof is deliberately triangular.  The valuation identity
-\(\nu_2(2^n)=n\) turns each sampled order into the inclusive prefix
+\(\TwoAdicValuation(2^n)=n\) turns each sampled order into the inclusive prefix
 \(P_a(n)\).  For \(n=0\), the sample is \(z=1\), not \(z=0\), and
 \(P_a(0)=a(0)\); all these products have value one at the origin.  The
 successor law \(P_a(n+1)=P_a(n)+a(n+1)\) and natural cancellation give the
@@ -2180,7 +2206,7 @@ holomorphy or global growth/order/type/asymptotic result.
 \subsubsection{Latest q-series limit, triple-product, and polynomial tranche}
 
 The downstream \nolinkurl{GaussianBinomialPalindromic.lean} has no public
-definitions and exactly twelve public theorems:
+definitions and exactly fourteen public theorems:
 \nolinkurl{reflect_add_of_natDegree_le}, \nolinkurl{reflect_one'},
 \nolinkurl{gaussianBinomial_natDegree_le},
 \nolinkurl{gaussianBinomial_zero_left},
@@ -2189,15 +2215,18 @@ definitions and exactly twelve public theorems:
 \nolinkurl{coeff_gaussianBinomial_zero},
 \nolinkurl{coeff_gaussianBinomial_top},
 \nolinkurl{gaussianBinomial_natDegree},
-\nolinkurl{gaussianBinomial_monic}, and
-\nolinkurl{two_mul_derivative_gaussianBinomial_eval_one}.  Over every
+\nolinkurl{gaussianBinomial_monic},
+\nolinkurl{two_mul_derivative_gaussianBinomial_eval_one},
+\nolinkurl{coeff_gaussianBinomial_one_of_pos_of_lt}, and
+\nolinkurl{coeff_gaussianBinomial_one}.  Over every
 commutative semiring these give the general reflection helpers, the Gaussian
 degree bound, zero and diagonal values, reflection in degree \(k(n-k)\),
 constant and top coefficients one, bounded-index coefficient reversal, and
-the division-free mean identity.  Exact degree and monicity require only
-nontriviality.  With existing symmetry and reciprocity this keeps the canonical
-forward q-binomial structure theorem exact; it does not prove that the
-coefficient of \(q\) is one.
+the division-free mean identity.  The interior theorem gives linear coefficient
+one under exactly \(0<k<n\); the total theorem gives one in that case and zero
+otherwise, explicitly covering \(k=0\), \(k=n\), and \(n<k\).  Both hold over
+every commutative semiring.  Exact degree and monicity alone require
+nontriviality.
 
 The companion \nolinkurl{GaussianBinomialPolynomialStructure.lean} has no
 public definitions and exactly five public theorems:
@@ -2211,8 +2240,98 @@ universal polynomial \(\nolinkurl{gaussianBinomial}
 has constant coefficient one, and is fixed by reflection in that degree.  If
 also \(d\le k(n-k)\), the last theorem identifies the coefficients in degrees
 \(d\) and \(k(n-k)-d\).  With the existing Gaussian symmetry and reciprocity
-results this closes the canonical forward q-binomial structure theorem; it
-does not prove that the coefficient of \(q\) is one.
+results this closes the canonical forward q-binomial structure theorem.  The
+adjacent general-semiring theorem \nolinkurl{coeff_gaussianBinomial_one}
+supplies the complete linear-coefficient classifier.
+
+The source-only \nolinkurl{CentralQBinomialReduction.lean} surface has no
+definitions and six theorems:
+\nolinkurl{finiteQPochhammerIn_mul_neg},
+\nolinkurl{finiteQPochhammerIn_two_mul},
+\nolinkurl{finiteQPochhammerIn_map_ringHom},
+\nolinkurl{central_gaussianBinomial_sq_mul_int},
+\nolinkurl{central_gaussianBinomial_sq_mul}, and
+\nolinkurl{central_gaussianBinomial_sq_div}.  The first five give sign pairing,
+even--odd dissection, naturality, and the integral and general division-free
+central squared-base reductions over commutative rings; the quotient wrapper
+is field-level and assumes its two denominators are nonzero.
+\nolinkurl{CyclotomicFactorization.lean} has no definitions and seven theorems:
+\nolinkurl{div_add_div_le_div}, \nolinkurl{div_le_div_add_div_add_one},
+\nolinkurl{mem_range_and_mem_divisors_iff},
+\nolinkurl{finiteQPochhammerIn_X_eq_prod_cyclotomic},
+\nolinkurl{finiteQPochhammerIn_X_eq_gaussianBinomial_mul},
+\nolinkurl{prod_cyclotomic_pow_div_extend}, and
+\nolinkurl{gaussianBinomial_X_eq_prod_cyclotomic}.  They give exponent bounds,
+the divisor reindexing, commutative-ring finite-product identities, and the
+integral-domain Gaussian cyclotomic factorization.
+
+Four further modules form the exhaustive root-of-unity and q-Catalan layer.
+\nolinkurl{PrimitiveRootBlock.lean} is 0+3:
+\nolinkurl{gaussianBinomial_isPrimitiveRoot_eq_zero},
+\nolinkurl{neg_one_pow_mul_pow_choose_two}, and
+\nolinkurl{finiteQPochhammerIn_isPrimitiveRoot}.  In a commutative integral
+domain, a primitive \(d\)-th root \(\zeta\) kills the interior coefficients
+\(\GaussianBinomial{d}{k}{\zeta}\); for \(d>0\), its top phase is \(-1\) and
+the complete block is \((y;\zeta)_d=1-y^d\).
+
+\nolinkurl{QLucas.lean} is 0+8:
+\nolinkurl{two_mul_choose_two}, \nolinkurl{add_mul_add_sub_one},
+\nolinkurl{choose_two_add}, \nolinkurl{coeff_finiteQPochhammerIn_neg_X},
+\nolinkurl{finiteQPochhammerIn_neg_X_block},
+\nolinkurl{coeff_block_pow_mul}, \nolinkurl{pow_choose_two_add_mul_eq}, and
+\nolinkurl{gaussianBinomial_q_lucas}.  Its natural quadratic, polynomial
+coefficient, block, and phase identities prove
+\[
+ \GaussianBinomial{ad+b}{rd+s}{\zeta}
+ =\binom ar\GaussianBinomial{b}{s}{\zeta}
+\]
+when \(d>0\), \(\zeta\) is a primitive \(d\)-th root in a commutative integral
+domain, and \(b,s<d\).
+
+\nolinkurl{CyclotomicDivisibility.lean} is 0+3:
+\nolinkurl{cyclotomic_exponent_eq_one_iff},
+\nolinkurl{cyclotomic_dvd_gaussianBinomial_iff}, and
+\nolinkurl{gaussianBinomial_mul_isPrimitiveRoot}.  For \(k\le n\) and \(d>0\),
+the exponent is one exactly when \(n\bmod d<k\bmod d\); over
+\(\RationalNumbers[X]\) this is the exact divisibility criterion for
+\(\Phi_d\).  A primitive \(n\)-th root in a commutative integral domain also
+gives \(\GaussianBinomial{an}{bn}{\zeta}=\binom ab\) when \(n>0\).
+
+\nolinkurl{QCatalan.lean} is 1+11.  Its definition is
+\nolinkurl{qCatalan}; its theorems are \nolinkurl{map_qInt},
+\nolinkurl{qInt_X_monic}, \nolinkurl{qInt_X_natDegree},
+\nolinkurl{X_sub_one_mul_qInt}, \nolinkurl{qInt_X_eq_prod_cyclotomic},
+\nolinkurl{qInt_X_dvd_gaussianBinomial_rat},
+\nolinkurl{qInt_X_dvd_gaussianBinomial_int},
+\nolinkurl{qInt_X_mul_qCatalan}, \nolinkurl{qCatalan_natDegree},
+\nolinkurl{qCatalan_eval_one_mul}, and \nolinkurl{qCatalan_eval_one}.
+The q-integer identities give \([n+1]_X\mid\GaussianBinomial{2n}{n}{X}\)
+over both \(\RationalNumbers[X]\) and \(\Integers[X]\); the integral quotient
+has degree \(n(n-1)\) and evaluates at one to the ordinary Catalan number.
+
+\nolinkurl{NewtonInterpolation.lean} is 2+13.  Its definitions are
+\nolinkurl{newtonCoeff} and \nolinkurl{nodeNewtonPoly}; its theorems are
+\nolinkurl{newtonCoeff_eq}, \nolinkurl{newtonCoeff_zero},
+\nolinkurl{newtonCoeff_mul_prod}, \nolinkurl{nodeNewtonPoly_succ},
+\nolinkurl{eval_nodeNewtonPoly}, \nolinkurl{degree_nodeNewtonPoly_lt},
+\nolinkurl{nodeNewtonPoly_eq_interpolate},
+\nolinkurl{eq_nodeNewtonPoly_of_eval_eq},
+\nolinkurl{coeff_nodeNewtonPoly_self}, \nolinkurl{newtonCoeff_eq_sum},
+\nolinkurl{nodal_range_pow}, \nolinkurl{prod_erase_pow_sub_pow}, and
+\nolinkurl{newtonCoeff_pow_eq_sum}.  Over a field this is the complete
+triangular-reconstruction, finite-node interpolation and uniqueness,
+divided-difference, and geometric-power-grid surface; its injectivity,
+nonzero-product, \(q\ne0\), and index hypotheses remain explicit.
+
+\nolinkurl{QBetaIntegral.lean} is 1+8.  Its definition is
+\nolinkurl{qBeta}; its theorems are \nolinkurl{qNumber_pos},
+\nolinkurl{qBeta_term_eq}, \nolinkurl{qBeta_eq_prod},
+\nolinkurl{qBeta_eq_qGamma}, \nolinkurl{qBeta_comm},
+\nolinkurl{qBeta_pos}, \nolinkurl{qBeta_add_one_left}, and
+\nolinkurl{qBeta_add_one_right}.  For \(0<q<1\), they evaluate the Jackson
+q-beta integral by infinite products and q-Gamma and give symmetry,
+positivity, and both recurrences under the displayed positive-argument
+hypotheses.
 
 Six further facade-reachable modules contribute exactly seventy public
 declarations.  The small-module inventories are exhaustive:
@@ -5224,8 +5343,16 @@ Infinite q-binomial theorem and Euler expansions & \nolinkurl{gaussianMajorant},
 Jacobi triple product and pentagonal sums & \nolinkurl{thetaExponent}, \nolinkurl{pentagonalExponent}, \nolinkurl{hasSum_jacobi_triple_product}, \nolinkurl{hasSum_pentagonal}, \nolinkurl{hasSum_pentagonal_pairs} & \nolinkurl{JacobiTripleProduct.lean}; two definitions and twenty-five theorems, listed exhaustively above \\
 Finite q-Pascal summations & \nolinkurl{sum_gaussianBinomial_succ_mul}, \nolinkurl{sum_gaussianBinomial_succ_mul'}, \nolinkurl{Commute.gaussianBinomial_left}, \nolinkurl{Commute.gaussianBinomial_right} & Exhaustive zero-definition/four-theorem surface of \nolinkurl{QPascalSummation.lean} \\
 Continuity and classical limit of Gaussian binomials & \nolinkurl{continuous_gaussianBinomial}, \nolinkurl{tendsto_gaussianBinomial_nhds_one}, \nolinkurl{gaussianBinomial_eq_finiteQPochhammerIn_div} & Exhaustive zero-definition/three-theorem surface of \nolinkurl{GaussianBinomialContinuity.lean} \\
-Generic Gaussian-polynomial degree, palindromicity, and mean & \nolinkurl{reflect_add_of_natDegree_le}, \nolinkurl{reflect_one'}, \nolinkurl{gaussianBinomial_natDegree_le}, \nolinkurl{gaussianBinomial_zero_left}, \nolinkurl{gaussianBinomial_diag'}, \nolinkurl{reflect_gaussianBinomial}, \nolinkurl{coeff_gaussianBinomial_reflect}, \nolinkurl{coeff_gaussianBinomial_zero}, \nolinkurl{coeff_gaussianBinomial_top}, \nolinkurl{gaussianBinomial_natDegree}, \nolinkurl{gaussianBinomial_monic}, \nolinkurl{two_mul_derivative_gaussianBinomial_eval_one} & Exhaustive zero-definition/twelve-theorem surface of \nolinkurl{GaussianBinomialPalindromic.lean}; no linear-coefficient claim \\
-Universal Gaussian-polynomial degree and palindromicity & \nolinkurl{natDegree_gaussianBinomial_universal}, \nolinkurl{gaussianBinomial_universal_monic}, \nolinkurl{coeff_zero_gaussianBinomial_universal}, \nolinkurl{gaussianBinomial_universal_reflect}, \nolinkurl{coeff_gaussianBinomial_universal_symm} & Exhaustive zero-definition/five-theorem surface of \nolinkurl{GaussianBinomialPolynomialStructure.lean}; no linear-coefficient claim \\
+Generic Gaussian-polynomial degree, palindromicity, mean, and linear coefficient & \nolinkurl{reflect_add_of_natDegree_le}, \nolinkurl{reflect_one'}, \nolinkurl{gaussianBinomial_natDegree_le}, \nolinkurl{gaussianBinomial_zero_left}, \nolinkurl{gaussianBinomial_diag'}, \nolinkurl{reflect_gaussianBinomial}, \nolinkurl{coeff_gaussianBinomial_reflect}, \nolinkurl{coeff_gaussianBinomial_zero}, \nolinkurl{coeff_gaussianBinomial_top}, \nolinkurl{gaussianBinomial_natDegree}, \nolinkurl{gaussianBinomial_monic}, \nolinkurl{two_mul_derivative_gaussianBinomial_eval_one}, \nolinkurl{coeff_gaussianBinomial_one_of_pos_of_lt}, \nolinkurl{coeff_gaussianBinomial_one} & Exhaustive zero-definition/fourteen-theorem surface of \nolinkurl{GaussianBinomialPalindromic.lean}; total arbitrary-commutative-semiring classifier, one exactly for \(0<k<n\) and zero otherwise \\
+Universal Gaussian-polynomial degree and palindromicity & \nolinkurl{natDegree_gaussianBinomial_universal}, \nolinkurl{gaussianBinomial_universal_monic}, \nolinkurl{coeff_zero_gaussianBinomial_universal}, \nolinkurl{gaussianBinomial_universal_reflect}, \nolinkurl{coeff_gaussianBinomial_universal_symm} & Exhaustive zero-definition/five-theorem surface of \nolinkurl{GaussianBinomialPolynomialStructure.lean}; the adjacent generic theorem supplies the linear-coefficient classifier \\
+Central squared-base Gaussian reduction & \nolinkurl{finiteQPochhammerIn_mul_neg}, \nolinkurl{finiteQPochhammerIn_two_mul}, \nolinkurl{finiteQPochhammerIn_map_ringHom}, \nolinkurl{central_gaussianBinomial_sq_mul_int}, \nolinkurl{central_gaussianBinomial_sq_mul}, \nolinkurl{central_gaussianBinomial_sq_div} & Exhaustive zero-definition/six-theorem surface of \nolinkurl{CentralQBinomialReduction.lean} \\
+Cyclotomic q-factorizations & \nolinkurl{div_add_div_le_div}, \nolinkurl{div_le_div_add_div_add_one}, \nolinkurl{mem_range_and_mem_divisors_iff}, \nolinkurl{finiteQPochhammerIn_X_eq_prod_cyclotomic}, \nolinkurl{finiteQPochhammerIn_X_eq_gaussianBinomial_mul}, \nolinkurl{prod_cyclotomic_pow_div_extend}, \nolinkurl{gaussianBinomial_X_eq_prod_cyclotomic} & Exhaustive zero-definition/seven-theorem surface of \nolinkurl{CyclotomicFactorization.lean} \\
+Primitive-root Gaussian block & \nolinkurl{gaussianBinomial_isPrimitiveRoot_eq_zero}, \nolinkurl{neg_one_pow_mul_pow_choose_two}, \nolinkurl{finiteQPochhammerIn_isPrimitiveRoot} & Exhaustive zero-definition/three-theorem surface of \nolinkurl{PrimitiveRootBlock.lean}; interior vanishing, top phase, and complete block in a commutative integral domain \\
+The q-Lucas theorem & \nolinkurl{two_mul_choose_two}, \nolinkurl{add_mul_add_sub_one}, \nolinkurl{choose_two_add}, \nolinkurl{coeff_finiteQPochhammerIn_neg_X}, \nolinkurl{finiteQPochhammerIn_neg_X_block}, \nolinkurl{coeff_block_pow_mul}, \nolinkurl{pow_choose_two_add_mul_eq}, \nolinkurl{gaussianBinomial_q_lucas} & Exhaustive zero-definition/eight-theorem surface of \nolinkurl{QLucas.lean}; positive primitive-root order and residue bounds remain explicit \\
+Cyclotomic carry criterion & \nolinkurl{cyclotomic_exponent_eq_one_iff}, \nolinkurl{cyclotomic_dvd_gaussianBinomial_iff}, \nolinkurl{gaussianBinomial_mul_isPrimitiveRoot} & Exhaustive zero-definition/three-theorem surface of \nolinkurl{CyclotomicDivisibility.lean}; rational-polynomial divisibility and integral-domain primitive-root value \\
+MacMahon q-Catalan polynomial & \nolinkurl{qCatalan}; \nolinkurl{map_qInt}, \nolinkurl{qInt_X_monic}, \nolinkurl{qInt_X_natDegree}, \nolinkurl{X_sub_one_mul_qInt}, \nolinkurl{qInt_X_eq_prod_cyclotomic}, \nolinkurl{qInt_X_dvd_gaussianBinomial_rat}, \nolinkurl{qInt_X_dvd_gaussianBinomial_int}, \nolinkurl{qInt_X_mul_qCatalan}, \nolinkurl{qCatalan_natDegree}, \nolinkurl{qCatalan_eval_one_mul}, \nolinkurl{qCatalan_eval_one} & Exhaustive one-definition/eleven-theorem surface of \nolinkurl{QCatalan.lean}; integral quotient, degree \(n(n-1)\), and Catalan value at one \\
+Newton interpolation and geometric divided differences & \nolinkurl{newtonCoeff}, \nolinkurl{nodeNewtonPoly}; \nolinkurl{newtonCoeff_eq}, \nolinkurl{newtonCoeff_zero}, \nolinkurl{newtonCoeff_mul_prod}, \nolinkurl{nodeNewtonPoly_succ}, \nolinkurl{eval_nodeNewtonPoly}, \nolinkurl{degree_nodeNewtonPoly_lt}, \nolinkurl{nodeNewtonPoly_eq_interpolate}, \nolinkurl{eq_nodeNewtonPoly_of_eval_eq}, \nolinkurl{coeff_nodeNewtonPoly_self}, \nolinkurl{newtonCoeff_eq_sum}, \nolinkurl{nodal_range_pow}, \nolinkurl{prod_erase_pow_sub_pow}, \nolinkurl{newtonCoeff_pow_eq_sum} & Exhaustive two-definition/thirteen-theorem field-valued surface of \nolinkurl{NewtonInterpolation.lean} \\
+Jackson q-beta integral & \nolinkurl{qBeta}; \nolinkurl{qNumber_pos}, \nolinkurl{qBeta_term_eq}, \nolinkurl{qBeta_eq_prod}, \nolinkurl{qBeta_eq_qGamma}, \nolinkurl{qBeta_comm}, \nolinkurl{qBeta_pos}, \nolinkurl{qBeta_add_one_left}, \nolinkurl{qBeta_add_one_right} & Exhaustive one-definition/eight-theorem surface of \nolinkurl{QBetaIntegral.lean}; product and q-Gamma evaluations for \(0<q<1\) \\
 Quantum binomial theorem & \nolinkurl{quantumPlane_mul_pow}, \nolinkurl{quantum_binomial} & Exhaustive zero-definition/two-theorem noncommutative surface of \nolinkurl{QuantumBinomial.lean} \\
 Rogers--Szeg\H{o} polynomials & \nolinkurl{rogersSzego}, \nolinkurl{rogersSzego_succ}, \nolinkurl{rogersSzego_three_term}, \nolinkurl{hasSum_rogersSzego_generating} & \nolinkurl{RogersSzegoPolynomial.lean}; one definition and nine theorems, listed exhaustively above \\
 Geometric CDF \(F_q\) and density \(f_q\) & \nolinkurl{geometricUniformCDF}, \nolinkurl{geometricUniformDensity}, \nolinkurl{geometricUniformDensity_zero}, \nolinkurl{geometricUniformDensity_nonpos_of_neg}, \nolinkurl{volume_withDensity_geometricUniformDensity_eq_zero_of_nonpos}, \nolinkurl{geometricUniformDistribution_ne_withDensity_geometricUniformDensity_of_nonpos}, \nolinkurl{geometricUniformCDF_hasDerivAt}, \nolinkurl{geometricUniformDistribution_eq_withDensity}, \nolinkurl{contDiff_geometricUniformCDF}, \nolinkurl{contDiff_geometricUniformDensity} & \nolinkurl{GeometricUniformCDF.lean} \\
@@ -5240,7 +5367,8 @@ Inverse curvature & \nolinkurl{deriv_deriv_fabiusInv}, \nolinkurl{deriv_deriv_fa
 Exact inverse modulus & \nolinkurl{fabiusIntervalMass}, \nolinkurl{strictMonoOn_fabiusIntervalMass_firstHalf}, \nolinkurl{fabiusIntervalMass_eq_fabiusReal_iff}, \nolinkurl{fabiusInv_sub_eq_sub_iff_of_mem_Icc}, \nolinkurl{abs_fabiusInv_sub_le}, \nolinkurl{abs_fabiusInv_sub_eq_iff_of_mem_Icc}, \nolinkurl{sSup_abs_fabiusInv_sub_eq}, \nolinkurl{forall_abs_fabiusInv_sub_lt_iff} & \nolinkurl{InverseModulus.lean}; strict and equality refinements are unit-interval qualified where clamping requires it \\
 Effective dyadic inverse modulus & \nolinkurl{inverseFabiusFactorialDenominator}, \nolinkurl{inverseFabiusDeltaDenominator}, \nolinkurl{fabiusInv_effectivelyUniformContinuous} & \nolinkurl{FabiusInverseEffectiveContinuity.lean}; explicit primitive-recursive continuity modulus, not an inverse realizer \\
 Logarithmic reciprocal inverse modulus & \nolinkurl{inverseFabiusLogarithmicOrder}, \nolinkurl{inverseFabiusLogarithmicFactorialDenominator}, \nolinkurl{inverseFabiusLogarithmicDeltaDenominator}, \nolinkurl{fabiusInv_effectivelyUniformContinuous_logarithmic}, \nolinkurl{fabiusInv_effectivelyUniformContinuous_logarithmicDelta} & \nolinkurl{FabiusInverseLogarithmicModulus.lean}; least binary-length selector and two primitive-recursive witnesses, not an inverse realizer \\
-Fixed-depth effective monotone inversion & \nolinkurl{SequentiallyComputableOn}, \nolinkurl{unitClamp}, \nolinkurl{unitClamp_sequentiallyComputable}, \nolinkurl{tolerantDifference_error}, \nolinkurl{tolerantDifference_safe_updates}, \nolinkurl{tolerantDifference_inconclusive}, \nolinkurl{tolerantBisection_correct}, \nolinkurl{effectiveInversionOn_Icc} & \nolinkurl{EffectiveMonotoneInverse.lean}; exact two-definition/six-theorem public surface, with a fixed \(p\)-step dyadic controller and a supplied positive computable inverse modulus rather than a modulus derived from a gap sequence \\
+Fixed-depth effective monotone inversion & \nolinkurl{SequentiallyComputableOn}, \nolinkurl{unitClamp}, \nolinkurl{unitClamp_sequentiallyComputable}, \nolinkurl{tolerantDifference_error}, \nolinkurl{tolerantDifference_safe_updates}, \nolinkurl{tolerantDifference_inconclusive}, \nolinkurl{tolerantBisection_correct}, \nolinkurl{effectiveInversionOn_Icc} & \nolinkurl{EffectiveMonotoneInverse.lean}; exact two-definition/six-theorem public surface, with a fixed \(p\)-step dyadic controller consuming a supplied positive computable inverse modulus \\
+Positive-rational-gap effective inversion & \nolinkurl{EffectivelyUniformContinuousOn}, \nolinkurl{ComputablePositiveRationalSequence}, \nolinkurl{ComputablePositiveRationalSequence.value}, \nolinkurl{ComputablePositiveRationalSequence.reciprocalDenominator}, \nolinkurl{ComputablePositiveRationalSequence.reciprocalDenominator_spec}, \nolinkurl{inverseModulus_of_positiveRationalGap}, \nolinkurl{effectiveInversionOn_Icc_of_computablePositiveRationalGap}, \nolinkurl{clampedEffectiveInversion_of_computablePositiveRationalGap} & Exhaustive eight-declaration surface of \nolinkurl{EffectiveGapInverse.lean}; derives the unit-interval modulus and continuity from supplied rational dyadic-gap bounds and certifies exactly the clamped total extension \\
 Computable totalized Fabius inverse & \nolinkurl{fabiusInv_isComputableRealFunction} & \nolinkurl{FabiusInverseComputable.lean}; zero definitions and one theorem combining clamped tolerant-bisection sequential computability with logarithmic-Delta effective uniform continuity \\
 Actual quarter inverse jet & \nolinkurl{iteratedDeriv_centeredFabiusInv_quarter_eq_quadraticInverse}, \nolinkurl{iteratedDeriv_fabiusInv_five_seventy_two_succ} & \nolinkurl{FabiusInverseQuarterJet.lean}; equality of jets, not local analytic equality \\
 Centered Thue--Morse mixed differences & \nolinkurl{symmetricMixedDifference}, \nolinkurl{symmetricMixedDifference_polynomial_eq_coeff_card}, \nolinkurl{symmetricDyadicMixedDifference_eq_sum_thueMorseSign_smul} & \nolinkurl{ThueMorseSymmetricDifference.lean}; finite algebraic identities, with no analytic limit claim \\
@@ -5311,7 +5439,8 @@ Module & Role in the development \\
 \nolinkurl{InverseModulus.lean} & Exhaustive one-definition/thirty-one-theorem structural inverse-modulus layer: global weak and maximal strict fixed-length increment shape, exact endpoint minimizers, constrained-superadditivity equality, unit-interval inverse-gap rigidity, global sharp modulus bounds and attained suprema, and effective injectivity.  The inverse equality loci are deliberately not global because of the clamped tails. \\
 \nolinkurl{FabiusInverseEffectiveContinuity.lean} & Exhaustive two-definition/twelve-theorem effective inverse-continuity layer: primitive-recursive factorial and report denominators, recurrence and endpoint-mass lower bounds, strict and closed global inverse moduli, and \nolinkurl{EffectivelyUniformContinuous}; the inverse remains noncomputable and no sequential realizer or combined computable-function theorem is supplied. \\
 \nolinkurl{FabiusInverseLogarithmicModulus.lean} & Three definitions and fifteen theorems: the primitive-recursive least binary-length order, its exact \nolinkurl{Nat.log2} formula and minimality, factorial and Delta denominators at that order, strict/closed-input reciprocal moduli, and an effective-uniform-continuity theorem for either witness; no exact endpoint-mass ceiling, tolerant-bisection realizer, sequential computability, combined computable-real-function theorem, or input-bit asymptotic. \\
-\nolinkurl{EffectiveMonotoneInverse.lean} & Exactly two public definitions and six theorems: sequential computability on a set, the computable unit clamp, the difference certificate and its safe-update and inconclusive-success consequences, fixed-depth dyadic tolerant-bisection correctness, and the abstract unit-interval inversion theorem.  The abstract theorem assumes a positive computable inverse modulus and does not derive it from a paper gap sequence. \\
+\nolinkurl{EffectiveMonotoneInverse.lean} & Exactly two public definitions and six theorems: sequential computability on a set, the computable unit clamp, the difference certificate and its safe-update and inconclusive-success consequences, fixed-depth dyadic tolerant-bisection correctness, and the abstract unit-interval inversion theorem.  The abstract theorem consumes a positive computable inverse modulus. \\
+\nolinkurl{EffectiveGapInverse.lean} & Exactly eight public declarations: effective uniform continuity on a set; a computable positive rational sequence, its value and reciprocal denominator with specification; the rational-gap inverse modulus; unit-interval sequential computability plus effective continuity; and the total computability of the clamped extension. \\
 \nolinkurl{FabiusInverseComputable.lean} & Zero public definitions and exactly one theorem, \nolinkurl{fabiusInv_isComputableRealFunction}: the total inverse preserves computable real sequences by clamping and tolerant bisection and has the logarithmic-Delta effective continuity modulus. \\
 \nolinkurl{FabiusInverseQuarterJet.lean} & Full smooth derivative jet of the centered inverse at \(5/72\), identified with the factorial-scaled coefficients of the quadratic compositional inverse; this is not a local analytic identity. \\
 \nolinkurl{ImplicitPowerSeries.lean} & Nonmonic complete-adic lifting and residue-class uniqueness, with arbitrary-base and zero-constant formal implicit-root specializations over power-series rings; it does not construct or analytically realize a Fabius inverse germ. \\
@@ -5378,8 +5507,16 @@ Module & Role in the development \\
 \nolinkurl{JacobiTripleProduct.lean} & Two definitions and exactly twenty-five theorems: theta and pentagonal exponents, finite and infinite Jacobi triple products, and Euler pentagonal sums. \\
 \nolinkurl{QPascalSummation.lean} & Exactly four theorems and no public definitions: two finite Gaussian-binomial summations and the left and right commuting q-binomial identities. \\
 \nolinkurl{GaussianBinomialContinuity.lean} & Exactly three theorems and no public definitions: continuity, the classical \(q\to1\) limit, and the finite-Pochhammer quotient formula. \\
-\nolinkurl{GaussianBinomialPalindromic.lean} & Exactly twelve theorems and no public definitions: general reflection helpers; generic degree bound, boundary values, reflection, constant/top coefficients, coefficient symmetry, and mean identity; exact degree and monicity over a nontrivial commutative semiring. \\
+\nolinkurl{GaussianBinomialPalindromic.lean} & Exactly fourteen theorems and no public definitions: general reflection helpers; generic degree bound, boundary values, reflection, constant/top coefficients, coefficient symmetry, mean identity, and the interior/total linear-coefficient theorems; exact degree and monicity over a nontrivial commutative semiring. \\
 \nolinkurl{GaussianBinomialPolynomialStructure.lean} & Exactly five theorems and no public definitions: universal natural degree, monicity, constant coefficient one, exact reflection, and bounded-index coefficient symmetry. \\
+\nolinkurl{CentralQBinomialReduction.lean} & Exactly six theorems and no definitions: sign pairing, even--odd dissection, naturality, integral and commutative-ring division-free central reduction, and a field quotient under two nonvanishing hypotheses. \\
+\nolinkurl{CyclotomicFactorization.lean} & Exactly seven theorems and no definitions: quotient bounds, divisor reindexing, finite-product and factorial identities over commutative rings, interval-product extension, and Gaussian cyclotomic factorization over an integral domain. \\
+\nolinkurl{PrimitiveRootBlock.lean} & Exactly three theorems and no definitions: primitive-root interior Gaussian vanishing, the top phase, and the complete finite q-Pochhammer block. \\
+\nolinkurl{QLucas.lean} & Exactly eight theorems and no definitions: three natural quadratic identities, signed-product coefficient and block formulas, the primitive-root phase, and q-Lucas. \\
+\nolinkurl{CyclotomicDivisibility.lean} & Exactly three theorems and no definitions: the carry characterization of exponent one, the rational-polynomial divisibility iff, and the multiple-index primitive-root value. \\
+\nolinkurl{QCatalan.lean} & Exactly one definition and eleven theorems: q-integer naturality, degree and cyclotomic identities, rational and integral divisibility, and the integral q-Catalan quotient with its degree and value at one. \\
+\nolinkurl{NewtonInterpolation.lean} & Exactly two definitions and thirteen theorems: triangular Newton coefficients, the node polynomial, interpolation and uniqueness, divided differences, and the geometric-power-grid formulas over a field. \\
+\nolinkurl{QBetaIntegral.lean} & Exactly one definition and eight theorems: the Jackson q-beta integral, its term/product/q-Gamma evaluations, symmetry, positivity, and two recurrences. \\
 \nolinkurl{QuantumBinomial.lean} & Exactly two theorems and no public definitions: the quantum-plane power lemma and the noncommutative quantum binomial theorem. \\
 \nolinkurl{RogersSzegoPolynomial.lean} & One definition and exactly nine theorems: the Rogers--Szeg\H{o} polynomial, its initial values, dilation and three-term recurrences, and its generating series. \\
 \nolinkurl{GeometricUniformCDF.lean} & The named \(F_q\) and explicit \(f_q\), conditioning and interval-integral equations, pointwise derivative and exact positive-ratio \nolinkurl{withDensity} law, continuity, reflection, exterior zeros, ordinary/topological support containments, compact support, and \(C^\infty\) regularity under their exact parameter hypotheses.  It also proves that the selected total formula is zero at \(q=0\), nonpositive for \(q<0\), yields the zero clamped measure for \(q\le0\), and cannot represent \(\mu_q\) on the nonpositive contraction range. \\
@@ -5665,8 +5802,11 @@ The still later compiled current-tree tranche
 six-theorem and zero-definition, one-theorem surfaces inventoried above.  It
 closes fixed-depth tolerant bisection, sequential computability of the
 clamped inverse, and the combined computable-real-function theorem.  The
-generic theorem assumes its inverse modulus rather than deriving it from the
-paper's gap sequence, and no input-bit asymptotic is added.
+generic theorem consumes its inverse modulus.  The later eight-declaration
+\nolinkurl{EffectiveGapInverse.lean} module derives such a modulus and
+effective continuity from a supplied computable positive rational dyadic-gap
+sequence, and proves total computability precisely for the clamped extension;
+no input-bit asymptotic is added.
 The seven activation rows and the finite-Taylor and square-summable discussions in
 Section~\ref{ch:probability} record source checkpoint
 \nolinkurl{a345425d21d90e680bf15e34093af42c69c08a83}, published 31 August
@@ -5759,11 +5899,12 @@ Those six counts are \nolinkurl{QPochhammerInfiniteBounds.lean} (0+5),
 \nolinkurl{BasicHypergeometricSeries.lean} (2+5), and
 \nolinkurl{QMultinomial.lean} (1+9).
 The four subsequent counts are
-\nolinkurl{GaussianBinomialPalindromic.lean} (0+12),
+\nolinkurl{GaussianBinomialPalindromic.lean} (0+14),
 \nolinkurl{JacksonIntegral.lean} (1+7),
 \nolinkurl{QExponential.lean} (3+8), and
 \nolinkurl{ThetaQuasiPeriodicity.lean} (1+6).  They add Gaussian-polynomial
-degree and palindromicity, q-exponential and q-derivative laws, Jackson
+degree, palindromicity, and the total linear-coefficient classifier,
+q-exponential and q-derivative laws, Jackson
 integration, and bilateral-theta quasi-periodicity and zeros under the
 displayed analytic hypotheses.
 The four newest counts are

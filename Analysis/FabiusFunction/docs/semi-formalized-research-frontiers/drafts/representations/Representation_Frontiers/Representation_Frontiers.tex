@@ -424,11 +424,11 @@ rederived here.
 \subsection[Product, zero, gamma, and exponential representations of Phi]{Product, zero, gamma, and exponential representations of \(\Phi\)}
 
 \paragraph{Canonical zero product (\statusknown).}
-Let \(\nu_2(n)\) be the exponent of \(2\) in \(n\).  The nonzero integer \(n\) is a zero of
-multiplicity \(1+\nu_2(|n|)\), and
+Let \(\TwoAdicValuation(n)\) be the exponent of \(2\) in \(n\).  The nonzero integer \(n\) is a zero of
+multiplicity \(1+\TwoAdicValuation(|n|)\), and
 \begin{equation}
  \Phi(z)=\prod_{n=1}^{\infty}
- \left(1-\frac{z^2}{n^2}\right)^{1+\nu_2(n)}.                \label{p1:eq:canonical-product}
+ \left(1-\frac{z^2}{n^2}\right)^{1+\TwoAdicValuation(n)}.                \label{p1:eq:canonical-product}
 \end{equation}
 
 \paragraph{Gamma product (\statusderived).}
@@ -458,7 +458,7 @@ For \(|z|<1\),
 \end{equation}
 The coefficient sequence is the spectral zeta function
 \begin{equation}
- Z_{\Phi}(s)=\sum_{n=1}^{\infty}\frac{1+\nu_2(n)}{n^s}
+ Z_{\Phi}(s)=\sum_{n=1}^{\infty}\frac{1+\TwoAdicValuation(n)}{n^s}
  =\frac{\zeta(s)}{1-2^{-s}}.                                \label{p1:eq:spectral-zeta}
 \end{equation}
 
@@ -1152,7 +1152,7 @@ Away from the integer zero set of \(\Phi\),
  \right],                                                    \label{p1:eq:logder-cot}\\
  &=-\pi\sum_{m=1}^{\infty}\frac{m}{2^m}
  \tan\!\left(\frac{\pi z}{2^m}\right),                    \label{p1:eq:logder-tan}\\
- &=-2z\sum_{n=1}^{\infty}\frac{1+\nu_2(n)}{n^2-z^2}.       \label{p1:eq:logder-zero}
+ &=-2z\sum_{n=1}^{\infty}\frac{1+\TwoAdicValuation(n)}{n^2-z^2}.       \label{p1:eq:logder-zero}
 \end{align}
 All three series converge locally normally on compact subsets avoiding the poles.
 \end{theorem}
@@ -1162,7 +1162,7 @@ Differentiate the logarithm of each of the three products
 \eqref{p1:eq:Phi-products} and \eqref{p1:eq:canonical-product}.  For large \(k\), the bracket
 in \eqref{p1:eq:logder-cot} and the term in \eqref{p1:eq:logder-tan} are \(\BigO(4^{-k})\)
 uniformly on compact sets.  The terms in \eqref{p1:eq:logder-zero} are bounded by a constant
-times \((1+\nu_2(n))/n^2\), which is summable by \eqref{p1:eq:spectral-zeta} at \(s=2\).
+times \((1+\TwoAdicValuation(n))/n^2\), which is summable by \eqref{p1:eq:spectral-zeta} at \(s=2\).
 \end{proof}
 
 The three forms have different numerical regimes.  The tangent sum is usually the fastest
@@ -1173,7 +1173,7 @@ sum exposes multiplicities and supports rigorous rational tail bounds.
 
 The valuation weight has the divisor decomposition
 \begin{equation}
- 1+\nu_2(n)=\sum_{k=0}^{\infty}\IndicatorOf{2^k\mid n}.     \label{p1:eq:valuation-indicators}
+ 1+\TwoAdicValuation(n)=\sum_{k=0}^{\infty}\IndicatorOf{2^k\mid n}.     \label{p1:eq:valuation-indicators}
 \end{equation}
 This turns the zero sum into a dyadic superposition of classical special functions.
 
@@ -1206,7 +1206,7 @@ For every integer \(r\ge2\),
 From \eqref{p1:eq:canonical-product}, for \(r\ge1\), paired symmetrically when \(r=1\),
 \begin{equation}
  (\log\Phi)^{(r)}(z)
- =(r-1)!\sum_{n\ge1}(1+\nu_2(n))
+ =(r-1)!\sum_{n\ge1}(1+\TwoAdicValuation(n))
  \left[-\frac1{(n-z)^r}+\frac{(-1)^{r-1}}{(n+z)^r}\right].   \label{p1:eq:logder-general-zero}
 \end{equation}
 Insert \eqref{p1:eq:valuation-indicators}, write \(n=2^k m\), and sum over \(m\ge1\).
@@ -1215,7 +1215,7 @@ paired sum is the standard digamma difference.
 \end{proof}
 
 \begin{corollary}[Local jet data at nonzero zeros]
-Let \(N\ne0\) be an integer and \(d_N=1+\nu_2(|N|)\).  Then
+Let \(N\ne0\) be an integer and \(d_N=1+\TwoAdicValuation(|N|)\).  Then
 \begin{equation}
  \frac{\Phi'(z)}{\Phi(z)}=\frac{d_N}{z-N}+H_N(z),             \label{p1:eq:local-logder-zero}
 \end{equation}
@@ -1232,7 +1232,7 @@ formal spectral product.
 \begin{definition}
 Let
 \begin{equation}
- \mathcal I=\{(n,r):n\ge1,\ 1\le r\le 1+\nu_2(n)\},
+ \mathcal I=\{(n,r):n\ge1,\ 1\le r\le 1+\TwoAdicValuation(n)\},
 \end{equation}
 and define the positive diagonal operator \(\cK\) on \(\ell^2(\mathcal I)\) by
 \begin{equation}
@@ -1257,14 +1257,14 @@ Furthermore,
 \begin{proof}
 By \eqref{p1:eq:spectral-zeta},
 \[
- \TraceOperator\cK=\sum_{n\ge1}\frac{1+\nu_2(n)}{n^2}
+ \TraceOperator\cK=\sum_{n\ge1}\frac{1+\TwoAdicValuation(n)}{n^2}
  =\frac{\zeta(2)}{1-2^{-2}}<\infty,
 \]
 so \(\cK\) is trace class.  Its Fredholm determinant is the product over its eigenvalues,
 with multiplicity:
 \[
  \det(I-z^2\cK)
- =\prod_{n\ge1}\left(1-\frac{z^2}{n^2}\right)^{1+\nu_2(n)}
+ =\prod_{n\ge1}\left(1-\frac{z^2}{n^2}\right)^{1+\TwoAdicValuation(n)}
  =\Phi(z).
 \]
 Substituting \(z=it/(2\pi)\) gives \eqref{p1:eq:M-fredholm}.  Formula
@@ -1887,7 +1887,7 @@ the data and by the squared-logarithmic endpoint scale of \(\rho\).  A Riemann--
 strong Szeg\H{o} analysis adapted to the endpoint flatness is the natural next step.
 
 \begin{conjecture}[Dyadically regularized Mittag--Leffler expansion]\label{p1:conj:ML}
-Let \(d_n=1+\nu_2(|n|)\), and let \(\operatorname{PP}_n(z)\) be the principal part of
+Let \(d_n=1+\TwoAdicValuation(|n|)\), and let \(\operatorname{PP}_n(z)\) be the principal part of
 \(1/\Phi(z)\) at the nonzero integer \(n\).  There exists a canonical dyadic grouping and a
 finite genus of subtraction polynomials such that
 \begin{equation}
@@ -2035,7 +2035,7 @@ The Fredholm determinant and Hurwitz-zeta hierarchy suggest:
 \item exact trace identities for logarithmic derivatives at rational and half-integer
       arguments;
 \item meromorphic continuation of dyadically weighted spectral sums with local factors
-      dictated by \(\nu_2(n)\).
+      dictated by \(\TwoAdicValuation(n)\).
 \end{enumerate}
 
 \subsection{Inverse-function program}
@@ -9186,7 +9186,7 @@ If $g_r$ is the probability density with Fourier image $\Psi_r$, then
 This one identity generates cosine, Gamma, canonical-zero, logarithmic-zeta,
 hyperbolic-product, cumulant, Bell-polynomial, spectral-zeta, and integral
 representations.  The component zero multiplicity is
-$1+\Floor{\nu_2(n)/r}$, and its spectral zeta is
+$1+\Floor{\TwoAdicValuation(n)/r}$, and its spectral zeta is
 $\zeta(s)/(1-2^{-rs})$.  Mellin analysis shows an exact roots-of-unity
 cancellation: the $r$-periodic pole lattice of a sparse component recombines so
 that only the ordinary dyadic harmonics survive.
@@ -10968,9 +10968,9 @@ digit-sum sequence in base $2^r$.
 \begin{proof}
 The sign starts positive on $(0,1)$ and flips once for each zero multiplicity
 crossed, giving \eqref{p5:eq:sparse-sign-zero-count}.  Since
-$m_r(j)=1+\Floor{\nu_2(j)/r}$,
+$m_r(j)=1+\Floor{\TwoAdicValuation(j)/r}$,
 \[
- \sum_{j=1}^{n}\Floor{\frac{\nu_2(j)}r}
+ \sum_{j=1}^{n}\Floor{\frac{\TwoAdicValuation(j)}r}
  =\sum_{\ell\ge1}\#\{j\le n:2^{r\ell}\mid j\}
  =\sum_{\ell\ge1}\Floor{\frac n{2^{r\ell}}}.
 \]
@@ -11097,7 +11097,7 @@ $\Phi(z)=\prod_{n\ge0}\SincPi(z/2^n)$. & \statusknown\\
 Triangular cosine product &
 $\Phi(z)=\prod_{m\ge1}\cos(\pi z/2^m)^m$. & \statusknown\\
 Canonical zero product &
-$\Phi(z)=\prod_{n\ge1}(1-z^2/n^2)^{1+\nu_2(n)}$. & \statusknown\\
+$\Phi(z)=\prod_{n\ge1}(1-z^2/n^2)^{1+\TwoAdicValuation(n)}$. & \statusknown\\
 Gamma product &
 $\Phi(z)=\prod_{n\ge0}[\Gamma(1+z/2^n)\Gamma(1-z/2^n)]^{-1}$. & \statusknown\\
 Logarithmic zeta series &
@@ -11107,7 +11107,7 @@ $\Phi'/\Phi=\sum_{j\ge0}[(\pi/2^j)\cot(\pi z/2^j)-1/z]$. & \statusderived\\
 Tangent logarithmic derivative &
 $\Phi'/\Phi=-\pi\sum_{m\ge1}m2^{-m}\tan(\pi z/2^m)$. & \statusderived\\
 Partial fractions &
-$\Phi'/\Phi=-2z\sum_{n\ge1}(1+\nu_2(n))/(n^2-z^2)$. & \statusknown\\
+$\Phi'/\Phi=-2z\sum_{n\ge1}(1+\TwoAdicValuation(n))/(n^2-z^2)$. & \statusknown\\
 Moment-generating product &
 $M(s)=\prod_{n\ge0}\sinh(s/2^{n+1})/(s/2^{n+1})$. & \statusknown\\
 Moment series &
@@ -11133,11 +11133,11 @@ $R(z)=\int u(x)/(z-x)\Differential x=\sum_{m\ge0}\mu_mz^{-m-1}$. & \statusknown\
 Jacobi fraction &
 $R(z)=1/(z-a_0-b_1/(z-a_1-b_2/(\cdots)))$, with coefficients determined by the moment Hankel determinants. & \statusknown\\
 Fredholm determinant &
-$\Phi(z)=\det(I-z^2T)$ for eigenvalues $n^{-2}$ of multiplicity $1+\nu_2(n)$. & \statusknown\\
+$\Phi(z)=\det(I-z^2T)$ for eigenvalues $n^{-2}$ of multiplicity $1+\TwoAdicValuation(n)$. & \statusknown\\
 Spectral zeta &
-$\sum_{n\ge1}(1+\nu_2(n))n^{-s}=\zeta(s)/(1-2^{-s})$. & \statusknown\\
+$\sum_{n\ge1}(1+\TwoAdicValuation(n))n^{-s}=\zeta(s)/(1-2^{-s})$. & \statusknown\\
 Heat trace &
-$K(t)=\sum_{n\ge1}(1+\nu_2(n))\EulerE^{-tn^2}$ and
+$K(t)=\sum_{n\ge1}(1+\TwoAdicValuation(n))\EulerE^{-tn^2}$ and
 $\int_0^\infty t^{s/2-1}K(t)\Differential t=\Gamma(s/2)\zeta(s)/(1-2^{-s})$. & \statusderived\\
 Polyphase product &
 $\Phi(z)=\prod_{a=0}^{r-1}\Psi_r(z/2^a)$. & \statusnew\\
@@ -11247,7 +11247,7 @@ $\tau(2n)=\tau(n)$, $\tau(2n+1)=1-\tau(n)$. & \statusknown\\
 Floor-sum parity &
 $\eps_n=(-1)^{n-\sum_{j\ge1}\Floor{n/2^j}}$. & \statusknown\\
 Factorial valuation &
-$\eps_n=(-1)^{n-\nu_2(n!)}$. & \statusknown\\
+$\eps_n=(-1)^{n-\TwoAdicValuation(n!)}$. & \statusknown\\
 Finite coefficient product &
 $\eps_n=[z^n]\prod_{j=0}^{N-1}(1-z^{2^j})$ for $n<2^N$. & \statusknown\\
 Block Fourier product &
@@ -11710,7 +11710,7 @@ A practical Lean sequence is:
 \item construct $Z_r$ from the existing weighted-uniform probability
       infrastructure and identify its characteristic function;
 \item prove the finite and infinite convolution factorizations;
-\item formalize zero multiplicities using $\nu_2$ and Euclidean division;
+\item formalize zero multiplicities using $\TwoAdicValuation$ and Euclidean division;
 \item define $g_{r,N}$ as a finite convolution, then prove the truncated-power
       formula and $D^Ng_{r,N}$ as a finite signed measure;
 \item prove the bit-reversal ordering and parity invariance;
@@ -11856,7 +11856,7 @@ prose as follows.  Put $q=2^{-r}$.
  \Psi_r(z)&=\prod_{m\ge0}\SincPi(q^mz),                    \label{p5:eq:machine-1}\\
  \Phi(z)&=\prod_{a=0}^{r-1}\Psi_r(2^{-a}z),                \label{p5:eq:machine-2}\\
  \log\Psi_r(z)&=-\sum_{m\ge1}\frac{\zeta(2m)}{m(1-q^{2m})}z^{2m}, \label{p5:eq:machine-3}\\
- \OrderOperator_{z=n}\Psi_r&=1+\Floor{\frac{\nu_2(n)}r}, \label{p5:eq:machine-4}\\
+ \OrderOperator_{z=n}\Psi_r&=1+\Floor{\frac{\TwoAdicValuation(n)}r}, \label{p5:eq:machine-4}\\
  \mathcal Z_r(s)&=\frac{\zeta(s)}{1-2^{-rs}},             \label{p5:eq:machine-5}\\
  g_{r,N}(x)&=\frac{q^{-\binom N2}}{(N-1)!}
  \sum_{k<2^N}\eps_k(x-x_{r,N,k})_+^{N-1},                \label{p5:eq:machine-6}\\
@@ -12282,11 +12282,11 @@ rederived here.
 \subsection[Product, zero, gamma, and exponential representations of Phi]{Product, zero, gamma, and exponential representations of \(\Phi\)}
 
 \paragraph{Canonical zero product (\statusknownPartl).}
-Let \(\nu_2(n)\) be the exponent of \(2\) in \(n\).  The nonzero integer \(n\) is a zero of
-multiplicity \(1+\nu_2(|n|)\), and
+Let \(\TwoAdicValuation(n)\) be the exponent of \(2\) in \(n\).  The nonzero integer \(n\) is a zero of
+multiplicity \(1+\TwoAdicValuation(|n|)\), and
 \begin{equation}
  \Phi(z)=\prod_{n=1}^{\infty}
- \left(1-\frac{z^2}{n^2}\right)^{1+\nu_2(n)}.                \label{p6:eq:canonical-product}
+ \left(1-\frac{z^2}{n^2}\right)^{1+\TwoAdicValuation(n)}.                \label{p6:eq:canonical-product}
 \end{equation}
 
 \paragraph{Gamma product (\statusderivedPartl).}
@@ -12307,7 +12307,7 @@ For \(|z|<1\),
 \end{equation}
 The coefficient sequence is the spectral zeta function
 \begin{equation}
- Z_{\Phi}(s)=\sum_{n=1}^{\infty}\frac{1+\nu_2(n)}{n^s}
+ Z_{\Phi}(s)=\sum_{n=1}^{\infty}\frac{1+\TwoAdicValuation(n)}{n^s}
  =\frac{\zeta(s)}{1-2^{-s}}.                                \label{p6:eq:spectral-zeta}
 \end{equation}
 
@@ -12809,7 +12809,7 @@ Away from the integer zero set of \(\Phi\),
  \right],                                                    \label{p6:eq:logder-cot}\\
  &=-\pi\sum_{m=1}^{\infty}\frac{m}{2^m}
  \tan\!\left(\frac{\pi z}{2^m}\right),                    \label{p6:eq:logder-tan}\\
- &=-2z\sum_{n=1}^{\infty}\frac{1+\nu_2(n)}{n^2-z^2}.       \label{p6:eq:logder-zero}
+ &=-2z\sum_{n=1}^{\infty}\frac{1+\TwoAdicValuation(n)}{n^2-z^2}.       \label{p6:eq:logder-zero}
 \end{align}
 All three series converge locally normally on compact subsets avoiding the poles.
 \end{theorem}
@@ -12819,7 +12819,7 @@ Differentiate the logarithm of each of the three products
 \eqref{p6:eq:Phi-products} and \eqref{p6:eq:canonical-product}.  For large \(k\), the bracket
 in \eqref{p6:eq:logder-cot} and the term in \eqref{p6:eq:logder-tan} are \(\BigO(4^{-k})\)
 uniformly on compact sets.  The terms in \eqref{p6:eq:logder-zero} are bounded by a constant
-times \((1+\nu_2(n))/n^2\), which is summable by \eqref{p6:eq:spectral-zeta} at \(s=2\).
+times \((1+\TwoAdicValuation(n))/n^2\), which is summable by \eqref{p6:eq:spectral-zeta} at \(s=2\).
 \end{proof}
 
 The three forms have different numerical regimes.  The tangent sum is usually the fastest
@@ -12830,7 +12830,7 @@ sum exposes multiplicities and supports rigorous rational tail bounds.
 
 The valuation weight has the divisor decomposition
 \begin{equation}
- 1+\nu_2(n)=\sum_{k=0}^{\infty}\IndicatorOf{2^k\mid n}.     \label{p6:eq:valuation-indicators}
+ 1+\TwoAdicValuation(n)=\sum_{k=0}^{\infty}\IndicatorOf{2^k\mid n}.     \label{p6:eq:valuation-indicators}
 \end{equation}
 This turns the zero sum into a dyadic superposition of classical special functions.
 
@@ -12863,7 +12863,7 @@ For every integer \(r\ge2\),
 From \eqref{p6:eq:canonical-product}, for \(r\ge1\), paired symmetrically when \(r=1\),
 \begin{equation}
  (\log\Phi)^{(r)}(z)
- =(r-1)!\sum_{n\ge1}(1+\nu_2(n))
+ =(r-1)!\sum_{n\ge1}(1+\TwoAdicValuation(n))
  \left[-\frac1{(n-z)^r}+\frac{(-1)^{r-1}}{(n+z)^r}\right].   \label{p6:eq:logder-general-zero}
 \end{equation}
 Insert \eqref{p6:eq:valuation-indicators}, write \(n=2^k m\), and sum over \(m\ge1\).
@@ -12872,7 +12872,7 @@ paired sum is the standard digamma difference.
 \end{proof}
 
 \begin{corollary}[Local jet data at nonzero zeros]
-Let \(N\ne0\) be an integer and \(d_N=1+\nu_2(|N|)\).  Then
+Let \(N\ne0\) be an integer and \(d_N=1+\TwoAdicValuation(|N|)\).  Then
 \begin{equation}
  \frac{\Phi'(z)}{\Phi(z)}=\frac{d_N}{z-N}+H_N(z),             \label{p6:eq:local-logder-zero}
 \end{equation}
@@ -12889,7 +12889,7 @@ formal spectral product.
 \begin{definition}
 Let
 \begin{equation}
- \mathcal I=\{(n,r):n\ge1,\ 1\le r\le 1+\nu_2(n)\},
+ \mathcal I=\{(n,r):n\ge1,\ 1\le r\le 1+\TwoAdicValuation(n)\},
 \end{equation}
 and define the positive diagonal operator \(\cK\) on \(\ell^2(\mathcal I)\) by
 \begin{equation}
@@ -12914,14 +12914,14 @@ Furthermore,
 \begin{proof}
 By \eqref{p6:eq:spectral-zeta},
 \[
- \TraceOperator\cK=\sum_{n\ge1}\frac{1+\nu_2(n)}{n^2}
+ \TraceOperator\cK=\sum_{n\ge1}\frac{1+\TwoAdicValuation(n)}{n^2}
  =\frac{\zeta(2)}{1-2^{-2}}<\infty,
 \]
 so \(\cK\) is trace class.  Its Fredholm determinant is the product over its eigenvalues,
 with multiplicity:
 \[
  \det(I-z^2\cK)
- =\prod_{n\ge1}\left(1-\frac{z^2}{n^2}\right)^{1+\nu_2(n)}
+ =\prod_{n\ge1}\left(1-\frac{z^2}{n^2}\right)^{1+\TwoAdicValuation(n)}
  =\Phi(z).
 \]
 Substituting \(z=it/(2\pi)\) gives \eqref{p6:eq:M-fredholm}.  Formula
@@ -14042,7 +14042,7 @@ the data and by the squared-logarithmic endpoint scale of \(\rho\).  A Riemann--
 strong Szeg\H{o} analysis adapted to the endpoint flatness is the natural next step.
 
 \begin{conjecture}[Dyadically regularized Mittag--Leffler expansion]\label{p6:conj:ML}
-Let \(d_n=1+\nu_2(|n|)\), and let \(\operatorname{PP}_n(z)\) be the principal part of
+Let \(d_n=1+\TwoAdicValuation(|n|)\), and let \(\operatorname{PP}_n(z)\) be the principal part of
 \(1/\Phi(z)\) at the nonzero integer \(n\).  There exists a canonical dyadic grouping and a
 finite genus of subtraction polynomials such that
 \begin{equation}
@@ -14187,7 +14187,7 @@ The Fredholm determinant and Hurwitz-zeta hierarchy suggest:
 \item exact trace identities for logarithmic derivatives at rational and half-integer
       arguments;
 \item meromorphic continuation of dyadically weighted spectral sums with local factors
-      dictated by \(\nu_2(n)\).
+      dictated by \(\TwoAdicValuation(n)\).
 \end{enumerate}
 
 \subsection{Inverse-function program}
@@ -14364,7 +14364,6 @@ R. Koekoek, P. A. Lesky, and R. F. Swarttouw,
 \renewcommand{\arraystretch}{1.16}
 \newcommand{\D}{\mathbb D}
 \newcommand{\T}{\mathbb T}
-\newcommand{\vTwo}{\nu_2}
 \newcommand{\Jouk}{\mathcal J}
 \newcommand{\CMV}{\mathcal C}
 \newcommand{\repoPartc}{\textsc{ProveIt}}
@@ -14604,22 +14603,22 @@ Rearranging Euler products yields
 \begin{align}
  \Phi(\xi)
  &=\prod_{m=1}^{\infty}
- \left(1-\frac{\xi^2}{m^2}\right)^{1+\vTwo(m)},
+ \left(1-\frac{\xi^2}{m^2}\right)^{1+\TwoAdicValuation(m)},
  \label{p7:eq:phi-canonical-product}\\
  M(t)
  &=\prod_{m=1}^{\infty}
- \left(1+\frac{t^2}{4\pi^2m^2}\right)^{1+\vTwo(m)}.
+ \left(1+\frac{t^2}{4\pi^2m^2}\right)^{1+\TwoAdicValuation(m)}.
  \label{p7:eq:M-canonical-product}
 \end{align}
 Thus \(\Phi\) has a zero at every nonzero integer \(m\), of multiplicity
 \begin{equation}
- d_m=1+\vTwo(|m|).
+ d_m=1+\TwoAdicValuation(|m|).
  \label{p7:eq:zero-multiplicity}
 \end{equation}
 Its logarithmic derivative is the normally convergent meromorphic series
 \begin{equation}
  \frac{\Phi'(z)}{\Phi(z)}
- =-2z\sum_{m=1}^{\infty}\frac{1+\vTwo(m)}{m^2-z^2}.
+ =-2z\sum_{m=1}^{\infty}\frac{1+\TwoAdicValuation(m)}{m^2-z^2}.
  \label{p7:eq:phi-log-derivative}
 \end{equation}
 The audited repository develops several equivalent cotangent, tangent, digamma, and
@@ -15068,7 +15067,7 @@ The series is locally uniformly convergent, and
  J_0(2\pi\xi)+2\sum_{m=1}^{\infty}(-1)^mc_{2m}J_{2m}(2\pi\xi)
  &=\prod_{j=0}^{\infty}\SincPi\!\left(\frac{\xi}{2^j}\right)
  \label{p7:eq:Bessel-sinc}\\
- &=\prod_{n=1}^{\infty}\left(1-\frac{\xi^2}{n^2}\right)^{1+\vTwo(n)}.
+ &=\prod_{n=1}^{\infty}\left(1-\frac{\xi^2}{n^2}\right)^{1+\TwoAdicValuation(n)}.
  \label{p7:eq:Bessel-canonical}
 \end{align}
 \end{theorem}
@@ -15085,7 +15084,7 @@ For every \(r\ge0\), termwise differentiation gives
  +2\sum_{m=1}^{\infty}(-1)^mc_{2m}J_{2m}^{(r)}(2\pi\xi)\right].
  \label{p7:eq:Phi-Bessel-derivatives}
 \end{equation}
-At an integer zero \(N\ne0\), the first \(1+\vTwo(N)\) equations in this derivative ladder
+At an integer zero \(N\ne0\), the first \(1+\TwoAdicValuation(N)\) equations in this derivative ladder
 become exact Bessel cancellation identities. In particular,
 \begin{equation}
  J_0(2\pi N)+2\sum_{m=1}^{\infty}(-1)^mc_{2m}J_{2m}(2\pi N)=0.
@@ -15105,7 +15104,7 @@ Moreover,
  I_0(t)+2\sum_{m=1}^{\infty}c_{2m}I_{2m}(t)
  &=\prod_{k=1}^{\infty}\frac{\sinh(t/2^k)}{t/2^k}
  \label{p7:eq:IBessel-hyperbolic}\\
- &=\prod_{n=1}^{\infty}\left(1+\frac{t^2}{4\pi^2n^2}\right)^{1+\vTwo(n)}.
+ &=\prod_{n=1}^{\infty}\left(1+\frac{t^2}{4\pi^2n^2}\right)^{1+\TwoAdicValuation(n)}.
  \label{p7:eq:IBessel-canonical}
 \end{align}
 \end{theorem}
@@ -15348,7 +15347,7 @@ coefficient, digit, half-integer-sign, trigonometric, and finite-product formula
 
 Let
 \begin{equation}
- N_\Phi(n):=\sum_{m=1}^{n}\bigl(1+\vTwo(m)\bigr),\qquad N_\Phi(0)=0.
+ N_\Phi(n):=\sum_{m=1}^{n}\bigl(1+\TwoAdicValuation(m)\bigr),\qquad N_\Phi(0)=0.
  \label{p7:eq:Nphi-def}
 \end{equation}
 This is the number of positive zeros of \(\Phi\) in \((0,n+1/2)\), counted with multiplicity.
@@ -15357,7 +15356,7 @@ This is the number of positive zeros of \(\Phi\) in \((0,n+1/2)\), counted with 
 \label{p7:thm:spectral-digit-sum}
 For every \(n\ge0\),
 \begin{equation}
- N_\Phi(n)=n+\vTwo(n!)=2n-\BinaryDigitSum(n).
+ N_\Phi(n)=n+\TwoAdicValuation(n!)=2n-\BinaryDigitSum(n).
  \label{p7:eq:Nphi-digit}
 \end{equation}
 Thus the complete binary digit sum, not only its parity, is recovered by
@@ -15369,7 +15368,7 @@ Thus the complete binary digit sum, not only its parity, is recovered by
 
 \begin{proof}
 The first equality follows from \eqref{p7:eq:zero-multiplicity}. Legendre's formula for the
-2-adic valuation gives \(\vTwo(n!)=n-\BinaryDigitSum(n)\).
+2-adic valuation gives \(\TwoAdicValuation(n!)=n-\BinaryDigitSum(n)\).
 \end{proof}
 
 Let \(\Gamma_n\) be any positively oriented contour enclosing precisely the positive integer
@@ -15402,14 +15401,14 @@ The argument principle gives the contour integral as \(2\pi\ImaginaryUnit N_\Phi
 Substitution of \eqref{p7:eq:phi-log-derivative} turns the contour formulas into explicit
 meromorphic series integrals. Locally at a positive integer,
 \begin{equation}
- \ResidueOperator_{z=n}\frac{\Phi'(z)}{\Phi(z)}=1+\vTwo(n),
+ \ResidueOperator_{z=n}\frac{\Phi'(z)}{\Phi(z)}=1+\TwoAdicValuation(n),
  \label{p7:eq:local-residue}
 \end{equation}
 and hence
 \begin{equation}
  \frac{\epsilon_n}{\epsilon_{n-1}}
  =\exp\left(\pi\ImaginaryUnit\ResidueOperator_{z=n}\frac{\Phi'(z)}{\Phi(z)}\right)
- =(-1)^{1+\vTwo(n)}.
+ =(-1)^{1+\TwoAdicValuation(n)}.
  \label{p7:eq:local-TM-ratio}
 \end{equation}
 Thus the local zero multiplicity records the carry chain when passing from \(n-1\) to \(n\).
@@ -15577,7 +15576,7 @@ Baseline; differential-difference law\\
 Baseline; Fourier image\\
 
 \(\Phi\), zero product &
-\(\prod_{n\ge1}(1-\xi^2/n^2)^{1+\vTwo(n)}\) &
+\(\prod_{n\ge1}(1-\xi^2/n^2)^{1+\TwoAdicValuation(n)}\) &
 Baseline; dyadic zero divisor\\
 
 \(\Phi\), Bessel series &
@@ -15593,7 +15592,7 @@ New; zero-multiplicity sum rules\\
 Baseline; moment generating function\\
 
 \(M\), canonical product &
-\(\prod_{n\ge1}(1+t^2/(4\pi^2n^2))^{1+\vTwo(n)}\) &
+\(\prod_{n\ge1}(1+t^2/(4\pi^2n^2))^{1+\TwoAdicValuation(n)}\) &
 Baseline rearrangement\\
 
 \(M\), Bessel series &
@@ -15899,7 +15898,7 @@ series involving Bernoulli numbers, dyadic zeta factors, or a binary Barnes-type
 \begin{conjecture}[Bessel zero hierarchy has a finite recursive basis]
 \label{p7:conj:Bessel-basis}
 The derivative cancellation identities obtained from the zero of multiplicity
-\(1+\vTwo(N)\) at \(N\) can be reduced, using Bessel recurrences, to a triangular finite
+\(1+\TwoAdicValuation(N)\) at \(N\) can be reduced, using Bessel recurrences, to a triangular finite
 basis whose coefficient matrix has an explicit Thue--Morse or \(q\)-binomial factorization.
 \end{conjecture}
 
@@ -15949,7 +15948,7 @@ monodromy representation of the corresponding automatic word.
 
 \item \textbf{De Branges and Hermite interpolation.} The integer zero divisor has unbounded
 multiplicity. Build a complete interpolation basis adapted to the values of
-\(\Phi^{(r)}(n)\) for \(0\le r\le\vTwo(n)\), rather than ordinary simple-node Shannon
+\(\Phi^{(r)}(n)\) for \(0\le r\le\TwoAdicValuation(n)\), rather than ordinary simple-node Shannon
 sampling.
 
 \item \textbf{Bessel sum-rule algebra.} Organize \eqref{p7:eq:Bessel-integer-zero} and its

@@ -104,12 +104,13 @@ strict serial passes at fixed source epoch `1788242400`, producing 151, 158,
 and 158 pages. The retained publication PDF has 158 pages, 2,456,105
 bytes, and SHA-256
 `81d249c8b2bb124836c858bd8e0ef9c8764606a2f9655a798d69e7565b1759b4`.
-The later canonical-notation and companion-row valuation edits in
-`chapters/03_additive_dyadic.tex` make that PDF a validated historical
-checkpoint rather than a rendering of the current source; a fresh exact
-three-pass build is pending. The root ledger verifies the current source and
-retained PDF as distinct payloads. The complete checkpoint receipt and the
-older historical receipts are recorded once in
+The later canonical-notation edits in `chapters/01_geometric_core.tex`,
+`chapters/03_additive_dyadic.tex`, and `chapters/90_reference_appendices.tex`,
+together with the document-local geometric-Newton command in the driver, make
+that PDF a validated historical checkpoint rather than a rendering of the
+current source; a fresh exact three-pass build is pending. The root ledger
+verifies the current source and retained PDF as distinct payloads. The complete
+checkpoint receipt and the older historical receipts are recorded once in
 [`assets/VALIDATION.md`](assets/VALIDATION.md).
 
 ## Reproduce the computational evidence
@@ -151,7 +152,11 @@ with the local general-$q$, endpoint-jet, Lagrange-synthesis,
 `PrimePowerBinomialValuation`, reference-appendix, layout, and driver edits in
 `chapters/03_additive_dyadic.tex`, `chapters/90_reference_appendices.tex`, and
 `comb_interpolation_synthesis.tex`, and adds the exact generic-prime and dyadic
-companion-row valuation crosswalk described above. The repository-wide Lean
+companion-row valuation crosswalk described above.  It now spells every genuine
+two-adic valuation with the shared `\TwoAdicValuation` command and uses the
+document-local `\FabiusGeometricNewtonCoefficient{k}{q}` family for the
+geometric Newton coefficients formerly homographic with that valuation. The
+repository-wide Lean
 documentation census recorded at the earlier merge checkpoint was 629 modules
 and 8,546 public declarations. That historical census is contextual evidence,
 not a claim that every manuscript result in this volume is formalized.

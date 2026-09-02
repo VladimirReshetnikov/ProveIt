@@ -111,9 +111,9 @@ theorem newtonPoly_eq_interpolate (v y : ℕ → F) {n : ℕ} (hvs : Set.InjOn v
     newtonInterpolant v y n = interpolate (range (n + 1)) v y := by
   refine eq_interpolate_of_eval_eq y hvs ?_ fun i hi => ?_
   · rw [card_range]
-    exact degree_newtonPoly_lt v y n
+    exact degree_nodeNewtonPoly_lt v y n
   · have hi' : i < n + 1 := mem_range.mp hi
-    refine eval_newtonPoly v y (Nat.lt_succ_iff.mp hi') (prod_ne_zero_iff.mpr fun j hj => ?_)
+    refine eval_nodeNewtonPoly v y (Nat.lt_succ_iff.mp hi') (prod_ne_zero_iff.mpr fun j hj => ?_)
     have hj' : j < i := mem_range.mp hj
     refine sub_ne_zero.mpr fun h => ?_
     have hij : i = j :=
@@ -122,7 +122,8 @@ theorem newtonPoly_eq_interpolate (v y : ℕ → F) {n : ℕ} (hvs : Set.InjOn v
 
 /-- **Uniqueness**: a polynomial of degree `≤ n` taking the values `y_i` at `n+1` distinct
 nodes `v_i` is the Newton polynomial. -/
-theorem eq_newtonPoly_of_eval_eq (v y : ℕ → F) {n : ℕ} (hvs : Set.InjOn v (range (n + 1)))
+theorem eq_nodeNewtonPoly_of_eval_eq (v y : ℕ → F) {n : ℕ}
+    (hvs : Set.InjOn v (range (n + 1)))
     {P : F[X]} (hP : P.degree < (n + 1 : ℕ))
     (heval : ∀ i ∈ range (n + 1), P.eval (v i) = y i) : P = newtonInterpolant v y n := by
   rw [newtonPoly_eq_interpolate v y hvs]

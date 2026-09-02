@@ -87,31 +87,40 @@ Checksum ledgers have been abolished repository-wide; no `SHA256SUMS` file is
 kept for this package or its assets, and no checksum gate is part of its
 validation state.
 
-The retained `q_pochhammer_q_binomial_monograph.pdf` is a 354-page A4
-build of the upstream source checkpoint (14,381 lines, 675,239 bytes,
+The retained `q_pochhammer_q_binomial_monograph.pdf` is a historical 354-page
+A4 build of its recorded source checkpoint (14,381 lines, 675,239 bytes,
 SHA-256 `240bff72fb47562e9a8fd87085b5a3a96d738189714518db17988f7c4ac15d31`).
 The PDF is 3,030,302 bytes with SHA-256
 `1050a9a3b0b7a8df8e7de0870946ae64940d7d7839a2f20427be0ebe14b0ba8c`.
 It was built by exactly three serial
 `pdflatex -interaction=nonstopmode -halt-on-error` passes, which produced 343,
 354, and 354 pages, with `makeindex` run on the `.idx` file after each pass.
-The final log scan found three overfull boxes, all in the single paragraph of the `QPochhammerEntire` crosswalk, whose long declaration names lack break points. All pages are A4. `pdffonts` reports 42 font rows, all
-embedded and subsetted, including 5 Libertinus rows, with no Type-3
+The final log scan found three overfull boxes, all in the single paragraph of
+the `QPochhammerEntire` crosswalk, whose long declaration names lack break
+points. All pages are A4. `pdffonts` reports 42 font rows, all embedded and
+subsetted, including five Libertinus rows, with no Type-3
 fonts. The files under `assets/experiments/**/figures/` remain research
 figures, not publication manuscripts.
 
-The current master TeX is a source-only successor to that checkpoint: it has
-14,449 lines, 679,492 bytes, and SHA-256
-`ed3baa67195e142531234170e67d04a04e356905523333ad95d667f0ddddcc8c`.
-The historical source identity above must not be reused for the live source,
-and the retained PDF does not claim render parity with the current TeX.
+The current live master is a source-only successor to that checkpoint: it has
+14,516 lines, 682,778 bytes, and SHA-256
+`3184b1ed82998f7a9a903cbd0e95a6836cbeab2edd3194e5dc35c7243b9b9618`.
+It adds the explicit document-local `\BellBlockMultiplicity{r}` and
+`\MacMahonQCatalanPolynomial{n}{q}` families and normalizes the newly merged
+Jackson, Gaussian-binomial, q-integer, and q-Pochhammer status formulas, while
+retaining the newest feature, crosswalk, and provenance expansion catalogued
+below. No PDF was regenerated after those changes; the historical source
+identity above must not be reused for the live source. Thus the PDF and its
+recorded 14,381-line build source form the retained synchronized checkpoint,
+while the current master and retained PDF are distinct payloads pending a
+fresh three-pass build and do not claim render parity.
 
 The current source includes exhaustive crosswalks for `QPochhammerEntire`
 (zero definitions
 and five legacy compatibility theorems), `QPochhammerInfinite` (one definition
 and twenty-nine theorems), `QPochhammerDissection` (zero definitions and two
 theorems), `QBinomialTheoremInfinite` (one definition and twenty-two
-theorems), `GaussianBinomialPalindromic` (zero definitions and twelve
+theorems), `GaussianBinomialPalindromic` (zero definitions and fourteen
 theorems), `GaussianBinomialPolynomialStructure` (zero definitions and five
 theorems), and `GeometricPochhammerNormalConvergence` (zero
 definitions and three theorems). The wider inventory also includes
@@ -187,6 +196,17 @@ The quantum-multinomial row is Exact over every semiring under the stated
 pairwise q-commutation laws and commutation of q with each variable; neither
 centrality of q nor commutativity of the ambient semiring is claimed.
 
-Source and PDF were synchronized by this build. PDFs are rebuilt in batches,
-at most about once per hour, so source-only commits may precede the next
-synchronization; the figures above always describe the retained PDF.
+The complete root block, evaluated q-Lucas theorem, square-free cyclotomic
+criterion, and q-Catalan row are Exact. The primitive-root value in the
+Babbage corollary is formalized over every integral domain, while its
+derivative clause keeps that compound row Partial.
+
+The geometric Newton interpolation and divided-difference rows are Exact. The
+Jackson q-beta product/q-gamma evaluation and its two recurrence formulas are
+also Exact. The terminating q-Pfaff--Saalschütz sum and quantum multinomial
+are Exact, as are the integer-index Gaussian definition and Pascal laws, both
+reciprocal-product expansions, the complex upper-parameter series, and the
+generalized q-binomial theorem. The remaining complex-Gaussian property and
+classical-limit rows stay unformalized. No PDF was generated locally while resolving this merge: the
+supplied 354-page artifact is the validated upstream receipt described above,
+while the merged source is its source-only successor.

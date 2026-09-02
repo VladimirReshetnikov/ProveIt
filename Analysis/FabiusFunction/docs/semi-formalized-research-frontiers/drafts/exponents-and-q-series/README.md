@@ -95,24 +95,32 @@ Current packages and retained intake records:
   figures. Pinned source revisions and Git history preserve every superseded
   layout and arrival fact.
 
-  The current `q_pochhammer_q_binomial_monograph.tex` has 14,449 lines,
-  679,492 bytes, and SHA-256
-  `ed3baa67195e142531234170e67d04a04e356905523333ad95d667f0ddddcc8c`.
+  The current `q_pochhammer_q_binomial_monograph.tex` has 14,516 lines,
+  682,778 bytes, and SHA-256
+  `3184b1ed82998f7a9a903cbd0e95a6836cbeab2edd3194e5dc35c7243b9b9618`.
   Its retained `q_pochhammer_q_binomial_monograph.pdf` is a historical
   354-page A4 artifact of 3,030,302 bytes, with SHA-256
   `1050a9a3b0b7a8df8e7de0870946ae64940d7d7839a2f20427be0ebe14b0ba8c`.
-  That PDF was built from the preceding 14,381-line, 675,239-byte source with
-  SHA-256
-  `240bff72e95ddf9609f6c5aba7f5285ef2ce4ec60e0a2e73d9a50138989e58dd`.
+  That PDF was built in exactly three guarded serial passes (343, 354, and 354
+  pages) from the preceding 14,381-line, 675,239-byte source with SHA-256
+  `240bff72fb47562e9a8fd87085b5a3a96d738189714518db17988f7c4ac15d31`.
   Its A4 boxes, text extraction, embedded/subset Type-1 fonts including
   Libertinus, absence of Type-3 fonts, and targeted visual review passed at
-  that checkpoint. Because the current TeX is newer, no render parity is
-  claimed.
+  that checkpoint. The current TeX adds explicit Bell-multiplicity and
+  MacMahon q-Catalan notation and normalizes the merged status formulas;
+  because it is newer, no current render parity is claimed.
   It carries the five-theorem `QPochhammerEntire.lean`, the generic
-  `QPochhammerInfinite.lean` and `QPochhammerDissection.lean` APIs, and the
-  subsequent q-series module tranches, plus the three-theorem
-  `GeometricPochhammerNormalConvergence.lean` outer-product API. Its fresh
-  render is pending. PDF files retained
+  `QPochhammerInfinite.lean` and `QPochhammerDissection.lean` APIs, both
+  Gaussian structure modules, `CentralQBinomialReduction.lean`,
+  `CyclotomicFactorization.lean`, `PrimitiveRootBlock.lean`, `QLucas.lean`,
+  `QCatalan.lean`, `CyclotomicDivisibility.lean`, the subsequent q-series
+  module tranches, and the three-theorem
+  `GeometricPochhammerNormalConvergence.lean` outer-product API. The forward
+  crosswalk is now 77 Exact, 85 Partial, 112 None, and 8 interface rows; the
+  source ledger is 66 Lean-proved, 412 human-proved frontier, 60 not
+  applicable, and 9 conjectures. No PDF was generated locally while resolving
+  this source-only merge, so the retained 348-page artifact does not render
+  the current source. PDF files retained
   beneath `assets/` are vector research figures, not manuscript builds.
   Manuscript result labels and numerical checks remain
   distinct from Lean verification.
@@ -516,8 +524,8 @@ remain research frontiers. These fractional-Volterra API claims were checked at 
 
 Geometric-sinc subgroup member:
 [`Exponents_and_q_Series_Frontiers/`](geometric-sinc-and-exponent-families/Exponents_and_q_Series_Frontiers/)
-(current semantic-union TeX: 16,369 lines and 737,768 bytes, SHA-256
-`4313bddb87a0f248a8bad4bd5e5a7cfbb25da51d1b994abc0c9d4c62525ca78c`;
+(current semantic-union TeX: 16,369 lines and 737,912 bytes, SHA-256
+`a4aecd625f7eb405de866e2b368bbdc648fb0f9e11b423cb936a2f319d195f02`;
 retained PDF: 238 A4 pages and 6,953,898 bytes, SHA-256
 `fa719a8ea68d3c474928b9fae7449f827eb35a5452613f2b660d8e88ba27267e`;
 across seven parts). Exactly three serial passes from the preceding 16,274-line,
@@ -538,7 +546,10 @@ spectral product converges locally uniformly for every complex strict
 contraction, including `q = 0`, with dyadic Rvachev-product and bounded-Fabius
 Fourier specializations. The compound centered/MGF and exterior reciprocal
 formula, pole divisor, and zero--pole exchange remain Partial. Final-source
-rendering and full publication validation remain pending. This is the
+rendering and full publication validation remain pending.  The current TeX
+also replaces all raw dyadic-valuation spellings by the shared
+`\TwoAdicValuation` command; this notation-only successor is not represented
+by the retained PDF. This is the
 2026-08-28 consolidation of the two former drafts (Part I:
 Newton-basis frontiers; Part II: q-binomial Richardson), joined the
 same day by the eighth-wave report as **Part III** — *Finite Dyadic
@@ -834,7 +845,7 @@ compatibility spelling of its primary identity),
 `QPochhammerDissection.lean` (two theorems),
 `QPochhammerInfinite.lean` (one definition, 29 theorems),
 `QBinomialReciprocity.lean` (four theorems),
-`GaussianBinomialPalindromic.lean` (zero definitions, twelve theorems),
+`GaussianBinomialPalindromic.lean` (zero definitions, fourteen theorems),
 `GaussianBinomialPolynomialStructure.lean` (zero definitions, five theorems),
 `CentralQBinomialReduction.lean` (zero definitions, six theorems),
 `CyclotomicFactorization.lean` (zero definitions, seven theorems),
@@ -851,11 +862,23 @@ compatibility spelling of its primary identity),
 `GaussianBinomialAtNegOne.lean` (five theorems),
 `RvachevPochhammerFactorization.lean` (one definition, nine theorems), and
 `QPochhammerEntire.lean` (zero definitions; four legacy compatibility
-wrappers plus one analytic-order compatibility theorem), and
+wrappers plus one analytic-order compatibility theorem),
 `GeometricPochhammerNormalConvergence.lean` (zero definitions, three
 theorems), `QPochhammerLogDerivative.lean` (zero definitions, ten theorems),
 `QPochhammerOrderDerivative.lean` (zero definitions, three theorems), and
 `JacobiCubic.lean` (zero definitions, two theorems).
+The direct structure theorems in `GaussianBinomialPalindromic` are
+`gaussianBinomial_natDegree`, `gaussianBinomial_monic`,
+`coeff_gaussianBinomial_zero`, `reflect_gaussianBinomial`, and
+`coeff_gaussianBinomial_reflect`. The same generic commutative-semiring API
+exports the top coefficient, degree bound, boundary evaluations, and the
+division-free mean identity
+`two_mul_derivative_gaussianBinomial_eval_one`. The new
+`coeff_gaussianBinomial_one_of_pos_of_lt` and
+`coeff_gaussianBinomial_one` theorems give coefficient one in every strict
+interior column and zero on every boundary. The `cor:positivity`,
+`thm:qbinom-structure`, and inverse-source
+`prop:gq-positive-palindromic` rows are therefore Exact.
 The five `GaussianBinomialAtNegOne` theorems are
 `gaussianBinomial_neg_one_even_even`,
 `gaussianBinomial_neg_one_odd_even`,
@@ -865,8 +888,8 @@ The five `GaussianBinomialAtNegOne` theorems are
 `gaussianBinomial_neg_one_even_odd_eq_zero` theorem from
 `QBinomialReciprocity` prove the forward backbone's complete `q = -1` value
 formula over every commutative ring, for all natural parameters including
-above-row zero extension. The `q`-Lucas theorem used by the printed proof remains
-unformalized; the status promotion concerns the corollary's exact statement.
+above-row zero extension. The evaluated `q`-Lucas theorem is now formalized at
+every primitive root of unity of every integral domain.
 The q-difference annihilation row is exact through
 `qDifference_sum_eval₂_eq_zero_of_degree_lt`, with the stronger
 characteristic-polynomial, all-moment, and scalar-extension top-coefficient
@@ -1096,19 +1119,19 @@ recurrences, and generating function. Together they contribute 69 public
 declarations without weakening the strict-contraction or noncommutative
 hypotheses recorded in their source modules.
 
-The next six-module inventory adds `QMultinomial.lean` (one definition, seven
+The next six-module inventory adds `QMultinomial.lean` (one definition, nine
 theorems), `QPochhammerInfiniteBounds.lean` (five theorems),
 `QPochhammerComplexOrder.lean` (one definition, four theorems),
 `BasicHypergeometricSeries.lean` (two definitions, five theorems),
 `HeineTransformation.lean` (two definitions, five theorems), and
-`QGaussSummation.lean` (two theorems). Together these 34 declarations cover
+`QGaussSummation.lean` (two theorems). Together these 36 declarations cover
 q-multinomial algebra, quantitative infinite-product bounds, principal-branch
 complex order, basic-hypergeometric convergence, Heine transformation, and the
 q-Gauss specialization, with each analytic-continuation boundary retained at
 its audited status.
 
 The newest four-module inventory adds `GaussianBinomialPalindromic.lean`
-(12 theorems), `JacksonIntegral.lean` (one definition, seven theorems),
+(14 theorems), `JacksonIntegral.lean` (one definition, seven theorems),
 `QExponential.lean` (three definitions, eight theorems), and
 `ThetaQuasiPeriodicity.lean` (one definition, six theorems). The resulting
 status changes make the q-exponential eigenfunction and Jackson

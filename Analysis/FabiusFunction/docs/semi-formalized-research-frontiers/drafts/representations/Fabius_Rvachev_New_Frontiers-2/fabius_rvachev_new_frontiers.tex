@@ -99,6 +99,7 @@
 }
 
 \newcommand{\eps}{\varepsilon}
+\newcommand{\DyadicUniformLaw}[1]{\mathsf U^{\mathrm{dyad}}_{#1}}
 \newcommand{\repo}{\nolinkurl{Analysis/FabiusFunction/docs}}
 \newcommand{\commit}{\nolinkurl{b863b90ee74ec0405af2d67ad04c61824c3aea00}}
 
@@ -477,13 +478,14 @@ spectral results below, the leading logarithmic-square envelope is enough.
 \label{sec:logconcavity}
 
 \subsection{Infinite uniform convolution}
-For $n\ge0$, let $\nu_n$ be the uniform probability law on
+For $n\ge0$, let $\DyadicUniformLaw{n}$ be the uniform probability law on
 \[
  I_n=[-2^{-n-1},2^{-n-1}].
 \]
 Then \cref{eq:Y-random} says
 \begin{equation}
- \mu=\nu_0*\nu_1*\nu_2*\cdots
+ \mu=\DyadicUniformLaw{0}\Convolution\DyadicUniformLaw{1}
+ \Convolution\DyadicUniformLaw{2}\Convolution\cdots
  \label{eq:infinite-convolution}
 \end{equation}
 in the sense of weak convergence of the finite convolutions.
@@ -497,9 +499,10 @@ $(-1,1)$.  Consequently $F$ is log-concave on $[0,1]$.
 
 \begin{proof}
 The indicator of an interval is log-concave in the extended sense, so every
-$\nu_n$ is a log-concave probability measure.  The Pr\'ekopa--Leindler theorem~\cite{SaumardWellner}
+$\DyadicUniformLaw{n}$ is a log-concave probability measure.  The Pr\'ekopa--Leindler theorem~\cite{SaumardWellner}
 implies that convolution preserves log-concavity.  Hence every finite
-convolution $\mu_N=\nu_0*\cdots*\nu_N$ is log-concave.  The class of
+convolution $\mu_N=\DyadicUniformLaw{0}\Convolution\cdots
+\Convolution\DyadicUniformLaw{N}$ is log-concave.  The class of
 log-concave probability measures is closed under weak convergence, so the weak
 limit $\mu$ is log-concave.  Since $\mu$ has the continuous full-dimensional
 density $\RvachevUp$ on its support, that density is log-concave.  Finally,

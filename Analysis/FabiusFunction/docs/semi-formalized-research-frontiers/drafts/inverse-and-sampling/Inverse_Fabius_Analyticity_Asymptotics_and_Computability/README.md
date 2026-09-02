@@ -45,14 +45,16 @@ python -B audit/build_package_checksums.py --check
 environments while preserving the ten immutable source fields reproduced from
 `audit/SOURCE_REVISION`.  Its current totals are 49 Lean-proved, 96
 human-proved frontier results, 10 conjectures, 15 open problems, and 24
-nonassertoric rows.  Eight inverse-computability rows now have exact compiled
+nonassertoric rows.  Nine inverse-computability rows now have exact compiled
 counterparts: the main theorem, the three tolerant-difference branch
 certificates, tolerant-bisection correctness, unit-interval sequential
 inversion, computable clamping, and sequential computability of the totalized
-inverse.  The abstract inversion theorem remains human-proved because the
-generic Lean theorem assumes a computable reciprocal inverse modulus rather
-than deriving that modulus and effective continuity from a computable positive
-gap sequence.  The centered Appell deconvolution, positive-degree Appell
+inverse.  `FabiusFunction.EffectiveGapInverse` closes the ninth, abstract row:
+it derives a computable reciprocal inverse modulus from computable positive
+rational gap data and concludes both subset sequential computability and
+effective uniform continuity; its companion theorem packages the clamped
+inverse as a total computable real function.  The centered Appell
+deconvolution, positive-degree Appell
 mean-zero, and arbitrarily phased polynomial-deconvolution rows also have exact
 named Lean counterparts.  The Appell lattice theorem is now Lean-proved:
 Lean covers both its arbitrary-phase `0 <= n <= N` formula and its
@@ -115,7 +117,7 @@ The canonical source surface is current and exhaustively inventoried:
 - `inverse_fabius_theory.tex`: 293 lines, 11,514 bytes, SHA-256
   `92fab1fae38bbcf86a45b51bfe7ff34e2801361df9d2f3d6aa3de4dc966eaa3c`;
 - its exhaustive 23-input source closure: SHA-256
-  `f8326a0cf839589521a4c06e66512e4684119859706c8b4984d1950b295056cf`;
+  `aedf007c2cd150b1f83de6d8996b4bf31e267b3dbcec2d5cd4720f5d92122bdb`;
 - the retained `inverse_fabius_theory.pdf`: 134 A4 pages, 2,027,726 bytes,
   SHA-256
   `22bc68d855ad04dde9654e9fbd20b3ba7f05a33e3c5df0e5b80bb8991c94b41d`.

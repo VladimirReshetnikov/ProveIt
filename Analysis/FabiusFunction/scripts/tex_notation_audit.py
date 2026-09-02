@@ -51,6 +51,17 @@ CATALOGUE_INPUT = (
 HISTORICAL_NOTATION_MARKER = "HISTORICAL-NOTATION-SCOPE"
 LOCAL_NON_FOURIER_HAT_MARKER = "LOCAL-NON-FOURIER-HAT:"
 RAW_HAT_PATTERN = r"\\(?:widehat|hat)(?![A-Za-z@])"
+RAW_TWO_ADIC_LITERAL_PATTERN = (
+    r"(?:\\nu(?![A-Za-z@])|\{\s*\\nu(?![A-Za-z@])\s*\})"
+    r"\s*_\s*"
+    r"(?:"
+    r"2"
+    r"|"
+    r"\{\s*(?:\\[!,;:]\s*)*"
+    r"(?:\\(?:displaystyle|textstyle|scriptstyle|scriptscriptstyle)\s*)?"
+    r"2\s*\}"
+    r")"
+)
 LOCAL_NON_FOURIER_HAT_LINE_RE = re.compile(
     r"^[ \t]*%[ \t]*LOCAL-NON-FOURIER-HAT:[ \t]*"
     r"\\(?P<name>[A-Za-z@]+)[ \t]+(?P<meaning>\S[^\r\n]*)[ \t]*$"
@@ -105,6 +116,10 @@ SEMANTIC_LITERAL_PATTERNS = {
     r"\\mathbb(?![A-Za-z@])\s*(?:\{\s*E\s*\}|E)": r"use \Expectation for expectation",
     r"\\operatorname\s*\{\s*Var\s*\}": r"use \Variance for probability variance",
     r"\\operatorname\s*\{\s*Cov\s*\}": r"use \Covariance for probability covariance",
+    RAW_TWO_ADIC_LITERAL_PATTERN: (
+        r"raw \nu_2 requires classification; use \TwoAdicValuation for the "
+        r"two-adic valuation or rename a non-valuation local family semantically"
+    ),
 }
 
 # Commands whose old names either hide semantics or have incompatible
@@ -158,6 +173,11 @@ RETIRED_COMMANDS = {
     "TV": "TotalVariationOf or TotalVariationDistance",
     "dist": "MetricDistance or EqualInLaw",
     "vtwo": "TwoAdicValuation",
+    "nuu": "TwoAdicValuation",
+    "nuTwo": "TwoAdicValuation",
+    "vTwo": "TwoAdicValuation",
+    "vtwoPartii": "TwoAdicValuation",
+    "vtwoPartcc": "TwoAdicValuation",
     "qbinom": "GaussianBinomial (three explicit arguments)",
     "qpoch": "QPochhammer (three explicit arguments)",
     "poch": "QPochhammer (three explicit arguments)",
@@ -616,6 +636,7 @@ def audit_file(
     catalogue_source = rel.startswith(CATALOGUE_PREFIX)
     historical_source = rel.startswith("papers/")
     historical_scope = HISTORICAL_NOTATION_MARKER in raw
+    historical_notation_exempt = historical_source and historical_scope
     shared_commands = canonical_command_names(docs / CANONICAL_INPUT)
     root = bool(DOCUMENTCLASS_RE.search(code))
     findings: list[Finding] = []
@@ -732,7 +753,12 @@ def audit_file(
                     f"literal shared operator; {message}",
                 ))
 
-    if semantic and not canonical_source and not catalogue_source and not historical_scope:
+    if (
+        semantic
+        and not canonical_source
+        and not catalogue_source
+        and not historical_notation_exempt
+    ):
         for pattern, message in SEMANTIC_LITERAL_PATTERNS.items():
             for match in re.finditer(pattern, code):
                 if (

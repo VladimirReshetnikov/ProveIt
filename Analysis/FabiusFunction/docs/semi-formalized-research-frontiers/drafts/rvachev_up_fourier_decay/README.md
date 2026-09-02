@@ -3,7 +3,16 @@
 This group has one canonical human-readable document:
 
 - [`Rvachev_Up_Fourier_Decay.tex`](Rvachev_Up_Fourier_Decay/Rvachev_Up_Fourier_Decay.tex) — editable source;
-- [`Rvachev_Up_Fourier_Decay.pdf`](Rvachev_Up_Fourier_Decay/Rvachev_Up_Fourier_Decay.pdf) — synchronized rendered article.
+- [`Rvachev_Up_Fourier_Decay.pdf`](Rvachev_Up_Fourier_Decay/Rvachev_Up_Fourier_Decay.pdf) — retained rendered checkpoint.
+
+The current live TeX has 4,185 lines, 172,728 bytes, and SHA-256
+`a1e5f815daddef85a022fec07a7c2b01379a8bd9e76e8045a16e63087208df76`;
+it now uses `\TwoAdicValuation` for its dyadic valuation.  The retained
+55-page A4 PDF has 1,049,155 bytes and SHA-256
+`df65cbf5223e48cb393fb7cb2af7467a1837371b061f67f7995dcd507e7e3677`.
+No PDF was regenerated after the notation-only source edit, so these are
+distinct live-source and historical-artifact identities, not a synchronized
+publication pair.
 
 The article is an editorial consolidation of the original 2018 question,
 eight successive reports, the comparative and second-wave audits, the Gentle
@@ -63,7 +72,7 @@ pdflatex -interaction=nonstopmode -halt-on-error Rvachev_Up_Fourier_Decay.tex
 pdflatex -interaction=nonstopmode -halt-on-error Rvachev_Up_Fourier_Decay.tex
 ```
 
-Only the `.tex` and synchronized `.pdf` are committed; LaTeX auxiliary files
+Only the `.tex` and retained `.pdf` are committed; LaTeX auxiliary files
 remain untracked.
 
 See [`../MANIFEST.md`](../MANIFEST.md) for the thematic draft inventory.

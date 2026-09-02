@@ -28,6 +28,12 @@ The opt-in ``--classical-analysis-aliases`` profile retires the reviewed
 The Mellin migration recognizes only the application and bare-operator forms
 present in the audited corpus and fails closed if another form is encountered.
 
+The opt-in ``--two-adic-valuation`` profile retires the reviewed local aliases
+for the specialized two-adic valuation and rewrites a classified literal
+``\nu_2`` to ``\TwoAdicValuation``.  It skips whole-paper historical notation
+scopes and fails closed if an unclassified literal remains in a selected
+project-authored source.
+
 The command is dry-run by default and accepts one or more explicit files or
 directories.  ``--apply`` is required to write.  Archive paths are rejected.
 
@@ -46,6 +52,7 @@ import sys
 
 
 CANONICAL_INPUT = "fabius-notation.tex"
+HISTORICAL_NOTATION_MARKER = "HISTORICAL-NOTATION-SCOPE"
 
 # Every entry here preserves TeX argument shape after the explicit positive-
 # integer special case in ``transform`` has run.  Do not add normalization-
@@ -170,6 +177,54 @@ CLASSICAL_ANALYSIS_RENAMES = {
 }
 
 CLASSICAL_ANALYSIS_SHARED_DECLARATIONS = {"Mellin"}
+
+TWO_ADIC_VALUATION_RENAMES = {
+    "nuu": "TwoAdicValuation",
+    "nuTwo": "TwoAdicValuation",
+    "vTwo": "TwoAdicValuation",
+    "vtwoPartii": "TwoAdicValuation",
+    "vtwoPartcc": "TwoAdicValuation",
+}
+
+TWO_ADIC_VALUATION_DEFINITION_BODIES = {
+    "nuu": r"\nu_2",
+    "nuTwo": r"\nu_2",
+    "vTwo": r"\nu_2",
+    "vtwoPartii": r"\TwoAdicValuation",
+    "vtwoPartcc": r"\TwoAdicValuation",
+}
+
+# The final boundary deliberately rejects a following letter or digit.  A
+# source such as ``\nu_{2a}``, ``\nu_20``, or even juxtaposed ``\nu_{2}n``
+# needs human classification rather than a replacement that could join the
+# following letter to the canonical control word.
+RAW_TWO_ADIC_LITERAL_RE = re.compile(
+    r"(?:\\nu(?![A-Za-z@])|\{\s*\\nu(?![A-Za-z@])\s*\})"
+    r"\s*_\s*"
+    r"(?:"
+    r"2(?![0-9A-Za-z])"
+    r"|"
+    r"\{\s*(?:\\[!,;:]\s*)*"
+    r"(?:\\(?:displaystyle|textstyle|scriptstyle|scriptscriptstyle)\s*)?"
+    r"2\s*\}(?![A-Za-z@])"
+    r")"
+)
+
+# The postcondition is intentionally broader than the replacement grammar.
+# It catches ambiguous TeX such as ``\nu_2n`` or ``\nu_{2}n``: those forms
+# must not be rewritten automatically, but neither may they silently pass as
+# if no raw valuation token remained.
+ANY_RAW_TWO_ADIC_LITERAL_RE = re.compile(
+    r"(?:\\nu(?![A-Za-z@])|\{\s*\\nu(?![A-Za-z@])\s*\})"
+    r"\s*_\s*"
+    r"(?:"
+    r"2"
+    r"|"
+    r"\{\s*(?:\\[!,;:]\s*)*"
+    r"(?:\\(?:displaystyle|textstyle|scriptstyle|scriptscriptstyle)\s*)?"
+    r"2\s*\}"
+    r")"
+)
 
 # These are complete for the reviewed active corpus.  They deliberately use
 # literal spellings rather than a permissive operand regex: bracketed Mellin
@@ -407,6 +462,22 @@ def declaration_name(code: str, extra_names: set[str]) -> str | None:
     return None
 
 
+def is_reviewed_two_adic_definition(code: str, name: str) -> bool:
+    """Accept only the five audited, zero-argument alias definitions."""
+
+    body = TWO_ADIC_VALUATION_DEFINITION_BODIES[name]
+    return bool(
+        re.fullmatch(
+            r"[ \t]*\\newcommand[ \t]*\{[ \t]*\\"
+            + re.escape(name)
+            + r"[ \t]*\}[ \t]*\{[ \t]*"
+            + re.escape(body)
+            + r"[ \t]*\}[ \t]*(?:\r?\n)?",
+            code,
+        )
+    )
+
+
 def canonical_relative_input(path: Path, docs: Path) -> str:
     target = docs / CANONICAL_INPUT
     relative = Path(*Path(target).relative_to(path.parent).parts) if is_under(target, path.parent) else None
@@ -460,6 +531,7 @@ def transform(
     combinatorial_calculus: bool,
     formal_bigo_filtration: str | None,
     classical_analysis_aliases: bool = False,
+    two_adic_valuation: bool = False,
 ) -> tuple[str, dict[str, int], bool]:
     text, added = add_input(text, path, docs)
     renames = dict(SAFE_RENAMES)
@@ -478,6 +550,8 @@ def transform(
         renames.update(COMBINATORIAL_CALCULUS_RENAMES)
     if classical_analysis_aliases:
         renames.update(CLASSICAL_ANALYSIS_RENAMES)
+    if two_adic_valuation:
+        renames.update(TWO_ADIC_VALUATION_RENAMES)
     shared_declarations: set[str] = set()
     if combinatorial_calculus:
         shared_declarations.update(COMBINATORIAL_SHARED_DECLARATIONS)
@@ -496,6 +570,13 @@ def transform(
         code, comment = split_code_comment(line)
         name = declaration_name(code, extra_names)
         if name is not None:
+            if two_adic_valuation and name in TWO_ADIC_VALUATION_RENAMES:
+                if not is_reviewed_two_adic_definition(code, name):
+                    raise ValueError(
+                        f"{path}: refusing unreviewed definition of \\{name}; "
+                        "the two-adic profile removes only its audited "
+                        "zero-argument alias definition"
+                    )
             # Only one-line definitions are mechanical.  A continuation marker
             # or unbalanced braces is left for semantic review.
             if not code.rstrip().endswith("%") and code.count("{") == code.count("}"):
@@ -565,6 +646,14 @@ def transform(
             code, profile_counts = rewrite_classical_analysis_aliases(code)
             for key, substitutions in profile_counts.items():
                 counts[key] = counts.get(key, 0) + substitutions
+        if two_adic_valuation:
+            code, substitutions = RAW_TWO_ADIC_LITERAL_RE.subn(
+                r"\\TwoAdicValuation", code
+            )
+            if substitutions:
+                counts["two-adic-literal"] = (
+                    counts.get("two-adic-literal", 0) + substitutions
+                )
         for old, new in renames.items():
             pattern = re.compile(r"\\" + re.escape(old) + r"(?![A-Za-z@])")
             code, substitutions = pattern.subn(r"\\" + new, code)
@@ -589,7 +678,17 @@ def transform(
                         counts.get("FabiusGlobal-literal", 0) + substitutions
                     )
         output.append(code + comment)
-    return "".join(output), {k: v for k, v in counts.items() if v}, added
+    migrated = "".join(output)
+    if two_adic_valuation:
+        for line_number, line in enumerate(migrated.splitlines(), start=1):
+            code, _comment = split_code_comment(line)
+            if ANY_RAW_TWO_ADIC_LITERAL_RE.search(code):
+                raise ValueError(
+                    f"{path}: unclassified raw \\nu_2 remains at line "
+                    f"{line_number}; rename a non-valuation local family "
+                    r"semantically or use \TwoAdicValuation"
+                )
+    return migrated, {k: v for k, v in counts.items() if v}, added
 
 
 def read_exact(path: Path) -> tuple[str, str]:
@@ -655,6 +754,14 @@ def main() -> int:
             "aliases and the corpus-specific Mellin application grammar"
         ),
     )
+    parser.add_argument(
+        "--two-adic-valuation",
+        action="store_true",
+        help=(
+            "semantically assert that reviewed local aliases and raw nu_2 "
+            "literals denote the specialized two-adic valuation"
+        ),
+    )
     args = parser.parse_args()
     docs, archive = repository_paths()
     try:
@@ -666,8 +773,21 @@ def main() -> int:
     changed = 0
     total = {name: 0 for name in SAFE_RENAMES}
     roots_updated = 0
+    historical_scopes_skipped = 0
     for path in files:
         original, encoding = read_exact(path)
+        historical_source = (docs / "papers").resolve() in path.resolve().parents
+        if (
+            args.two_adic_valuation
+            and historical_source
+            and HISTORICAL_NOTATION_MARKER in original
+        ):
+            historical_scopes_skipped += 1
+            print(
+                "SKIP HISTORICAL NOTATION SCOPE "
+                f"{path.relative_to(docs).as_posix()}"
+            )
+            continue
         try:
             migrated, counts, input_added = transform(
                 original,
@@ -681,6 +801,7 @@ def main() -> int:
                 combinatorial_calculus=args.combinatorial_calculus,
                 formal_bigo_filtration=args.formal_bigo_filtration,
                 classical_analysis_aliases=args.classical_analysis_aliases,
+                two_adic_valuation=args.two_adic_valuation,
             )
         except ValueError as error:
             print(str(error), file=sys.stderr)
@@ -700,6 +821,7 @@ def main() -> int:
     print(f"files scanned       : {len(files)}")
     print(f"files changed       : {changed}")
     print(f"root imports added  : {roots_updated}")
+    print(f"historical scopes skipped: {historical_scopes_skipped}")
     print("token/definition rewrites:")
     for name, count in sorted(total.items(), key=lambda item: (-item[1], item[0])):
         if not count:
@@ -753,6 +875,16 @@ def main() -> int:
             print(
                 f"  {count:6d}  reviewed \\Mellin applications -> "
                 r"\MellinTransformOf / \MellinTransformSymbol"
+            )
+        elif name == "two-adic-literal":
+            print(
+                f"  {count:6d}  literal \\nu_2 -> "
+                r"\TwoAdicValuation"
+            )
+        elif name in TWO_ADIC_VALUATION_RENAMES:
+            print(
+                f"  {count:6d}  \\{name} -> "
+                f"\\{TWO_ADIC_VALUATION_RENAMES[name]}"
             )
         elif name in CLASSICAL_ANALYSIS_RENAMES:
             print(
