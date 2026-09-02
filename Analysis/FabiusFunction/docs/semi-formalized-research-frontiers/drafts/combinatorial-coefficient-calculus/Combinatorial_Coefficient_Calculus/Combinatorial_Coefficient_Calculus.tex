@@ -71,6 +71,10 @@
 \newtheorem{remark}[theorem]{Remark}
 \newtheorem{historical}[theorem]{Historical note}
 
+% Crosswalk to the Lean development (Analysis/FabiusFunction/Lean/FabiusFunction):
+% typeset a declaration name verbatim, in text or in math mode.
+\newcommand{\lean}[1]{\ifmmode\text{\texttt{\detokenize{#1}}}\else\nolinkurl{#1}\fi}
+
 \newtcolorbox{masterbox}[1][]{
   enhanced,breakable,colback=softolive,colframe=deepolive,
   boxrule=0.7pt,arc=1mm,left=2mm,right=2mm,top=1.5mm,bottom=1.5mm,
@@ -396,6 +400,9 @@ $3$-cycles.  Summing over the possible number of cycles gives
  \sum_{k=0}^n\UnsignedStirlingFirstKind nk=n!,
 \end{equation}
 which also follows from \cref{eq:unsigned-first-def} at $x=1$.
+% ed.: crosswalk added 2026-09-01.
+In Lean, \cref{eq:first-row-sum} is \lean{Fabius.sum_stirlingFirst_eq_factorial},
+proved exactly by evaluating \cref{eq:unsigned-first-def} at $x=1$.
 
 \section{Second-kind numbers: set partitions and surjections}
 \begin{definition}
@@ -429,6 +436,22 @@ a set partition into fibres followed by an ordering of the fibres.  Inclusion--
 exclusion over the set of omitted codomain values gives
 $\sum_{j=0}^k(-1)^{k-j}\binom kjj^n$.  Division by $k!$ proves the formula.
 \end{proof}
+
+\begin{remark}[Formal crosswalk]
+% ed.: crosswalk added 2026-09-01; the Lean proof is algebraic, not by
+% inclusion--exclusion over surjections.
+The identity is \lean{Fabius.factorial_mul_stirlingSecond_eq_sum}, stated in
+$\mathbb Z$ as $k!\,\StirlingSecondKind nk=\sum_{j=0}^k(-1)^{k-j}\binom kj j^n$,
+and \lean{Fabius.stirlingSecond_eq_sum_div_factorial} over $\mathbb Q$
+(module \lean{StirlingBasisChange}).  The Lean proof does not count
+surjections: it evaluates the falling-factorial expansion of
+\cref{thm:stirling-basis} at a natural number, obtaining
+$m^n=\sum_k\StirlingSecondKind nk\,k!\binom mk$ for every $m$
+(\lean{Fabius.pow_eq_sum_stirlingSecond_mul_factorial_mul_choose}), and inverts
+this relation by binomial inversion (\cref{thm:merged-binomial-inversion}).
+The combinatorial reading (there are $k!\,\StirlingSecondKind nk$ surjections)
+is not formalized.
+\end{remark}
 
 The simple diagonals follow at once:
 \begin{equation}\label{eq:second-simple}
@@ -615,6 +638,32 @@ by $-x$ and multiplying by $(-1)^n$ gives \cref{eq:power-to-rise}.  Division of
 $\FallingFactorial{x}{n}$ by $n!$ gives the second binomial-basis formula.
 \end{proof}
 
+\begin{remark}[Formal crosswalk]
+% ed.: crosswalk added 2026-09-01; the Lean statements are more general than
+% the text (arbitrary commutative rings, polynomial identities).
+All four identities are polynomial identities in Lean, valid over every
+commutative semiring or ring rather than for an indeterminate over
+$\mathbb Q$: \cref{eq:rise-to-power} is
+\lean{Fabius.ascPochhammer_eq_sum_monomial_stirlingFirst} (commutative
+semirings), \cref{eq:fall-to-power} is
+\lean{Fabius.descPochhammer_eq_sum_monomial_signedStirlingFirst},
+\cref{eq:power-to-fall} is \lean{Fabius.X_pow_eq_sum_stirlingSecond_mul_descPochhammer},
+and \cref{eq:power-to-rise} is \lean{Fabius.X_pow_eq_sum_stirlingSecond_mul_ascPochhammer}
+(commutative rings), all in \lean{StirlingBasisChange}.  The signed numbers are
+\lean{Fabius.signedStirlingFirst} with recurrence
+\lean{Fabius.signedStirlingFirst_succ_succ}; the unsigned and second-kind
+numbers are Mathlib's \lean{Nat.stirlingFirst} and \lean{Nat.stirlingSecond}.
+The evaluated forms of \cref{eq:binomial-basis} are
+\lean{Fabius.pow_eq_sum_stirlingSecond_mul_descPochhammer_eval} (any
+commutative ring) and, for natural numbers,
+\lean{Fabius.pow_eq_sum_stirlingSecond_mul_descFactorial} and
+\lean{Fabius.pow_eq_sum_stirlingSecond_mul_factorial_mul_choose}.  The Lean
+proofs are not by Newton expansion: the first two identities are proved by
+comparing coefficients along the one-step recurrences, the third by the
+single relation $x\,\FallingFactorial{x}{k}=\FallingFactorial{x}{k+1}+k\FallingFactorial{x}{k}$,
+and the fourth by the substitution $x\mapsto -x$.
+\end{remark}
+
 
 \begin{corollary}[Shifted factorial evaluations]
 \label{cor:shifted-stirling-evaluations}
@@ -650,6 +699,24 @@ Uniqueness of coordinates in the factorial basis gives the first matrix product.
 The reverse substitution gives the second.
 \end{proof}
 
+\begin{remark}[Formal crosswalk]
+% ed.: crosswalk added 2026-09-01.
+\cref{eq:stirling-inv2} is \lean{Fabius.sum_range_stirlingSecond_mul_signedStirlingFirst}
+(with the sum over $0\le j\le n$; the terms with $j<k$ vanish) and
+\cref{eq:stirling-inv1} is \lean{Fabius.sum_range_signedStirlingFirst_mul_stirlingSecond};
+both also exist over the interval $k\le j\le n$
+(\lean{Fabius.sum_Icc_stirlingSecond_mul_signedStirlingFirst},
+\lean{Fabius.sum_Icc_signedStirlingFirst_mul_stirlingSecond}), all in
+\lean{StirlingBasisChange}.  The Lean proof of the second product compares
+monomial coefficients as in the text; the first is then obtained from the
+second by the general fact that a one-sided inverse of a triangular kernel is
+two-sided (\lean{Fabius.lowerTriangular_orthogonal_comm}, module
+\lean{TriangularKernelInverse}, proved through the finite matrices
+\lean{Fabius.kernelMatrix}), so no uniqueness argument in the factorial
+basis is needed.  Uniqueness of coordinates in a triangular basis is
+nevertheless available as \lean{Fabius.eq_of_sum_smul_eq_sum_smul}.
+\end{remark}
+
 \section{Power sums by basis adaptation}
 The factorial basis makes discrete antidifferentiation immediate.  Combining
 \cref{eq:power-to-fall,eq:finite-diff-falling} yields
@@ -663,6 +730,12 @@ For $m=4$ this is
  +\frac64\FallingFactorial{N+1}{4}+\frac15\FallingFactorial{N+1}{5},
 \]
 which expands to the familiar quartic power-sum polynomial.
+% ed.: crosswalk added 2026-09-01.
+Formula \cref{eq:power-sum-stirling} is
+\lean{Fabius.sum_range_pow_eq_sum_stirlingSecond} (module
+\lean{StirlingBasisChange}), in the integer form
+$\sum_{i=0}^{N}i^m=\sum_{k=0}^m\StirlingSecondKind mk\,k!\binom{N+1}{k+1}$,
+which is the display since $\FallingFactorial{N+1}{k+1}/(k+1)=k!\binom{N+1}{k+1}$.
 
 
 \section{Factorial moments: Poisson variables and permutation fixed points}
@@ -754,6 +827,29 @@ and compose the two transformations to obtain \cref{eq:lah-inv}.  Finally, expan
 rising factorial into powers by first-kind numbers and powers into falling factorials
 by second-kind numbers; uniqueness gives \cref{eq:lah-stirling-product}.
 \end{proof}
+
+\begin{remark}[Formal crosswalk]
+% ed.: crosswalk added 2026-09-01; Lean defines the Lah numbers by the
+% recurrence and proves the closed form, the reverse of the text's order.
+In Lean the Lah numbers \lean{Fabius.lahNumber} are defined by the recurrence
+$\LahNumber{n+1}{k+1}=(n+k+1)\LahNumber{n}{k+1}+\LahNumber{n}{k}$, and the
+closed form \cref{eq:lah-def} is the theorem
+\lean{Fabius.lahNumber_succ_succ_mul_factorial}, in the division-free form
+$\LahNumber{n+1}{k+1}\,(k+1)!=(n+1)!\binom nk$.  Then \cref{eq:lah-rise-fall}
+is \lean{Fabius.ascPochhammer_eq_sum_lahNumber_mul_descPochhammer},
+\cref{eq:lah-fall-rise} is \lean{Fabius.descPochhammer_eq_sum_lahNumber_mul_ascPochhammer},
+\cref{eq:lah-inv} is \lean{Fabius.sum_range_lahNumber_mul_lahNumber}, and
+\cref{eq:lah-stirling-product} is
+\lean{Fabius.lahNumber_eq_sum_stirlingFirst_mul_stirlingSecond}
+(module \lean{LahNumbers}); the polynomial identities hold over every
+commutative ring.  The Lean proofs use no generating function: the
+conversion formula follows from
+$\FallingFactorial{x}{k}(x+n)=\FallingFactorial{x}{k+1}+(n+k)\FallingFactorial{x}{k}$
+by induction, and the last two identities are read off by uniqueness of
+coefficients in the factorial bases
+(\lean{Fabius.eq_of_sum_C_mul_eq_sum_C_mul}).  The inequalities
+\cref{eq:stirling-lah-ineq} are not formalized.
+\end{remark}
 
 The inequalities
 \begin{equation}\label{eq:stirling-lah-ineq}
@@ -863,6 +959,17 @@ The inverse formula is exactly the matrix inversion in
 \]
 Substitution by the compositional inverse $\log(1+z)$ gives the reverse relation.
 \end{proof}
+
+\begin{remark}[Formal crosswalk]
+% ed.: crosswalk added 2026-09-01.
+The inversion formula \cref{eq:stirling-transform-inverse} is
+\lean{Fabius.stirling_inversion}, with converse
+\lean{Fabius.stirling_inversion_symm} and the equivalence
+\lean{Fabius.stirling_inversion_iff} (module \lean{StirlingBasisChange}),
+for sequences with values in any additive commutative group, the Stirling
+numbers acting by integer multiples.  The generating-function relations
+\cref{eq:stirling-transform-egf} are not formalized.
+\end{remark}
 
 \section{Differential-operator normal ordering}
 Let $D=d/dx$.  The Euler operator $xD$ is diagonal on monomials:
@@ -1380,7 +1487,7 @@ polynomial
 The recurrence \eqref{eq:second-recurrence} is equivalent to
 \begin{equation}
 \label{eq:touchard-differential-recurrence-shape}
- \TouchardPolynomial{n+1}(x)=x\bigl(\TouchardPolynomial{n}(x)+\TouchardPolynomial{n}'(x)\bigr),
+ \TouchardPolynomial{n+1}(x)=x\bigl(\TouchardPolynomial{n}(x)+\bigl(\TouchardPolynomial{n}\bigr)'(x)\bigr),
  \qquad \TouchardPolynomial{0}(x)=1.
 \end{equation}
 
@@ -2272,7 +2379,7 @@ the block containing $0$.  Choose those $k$ elements and partition them
 arbitrarily; the block containing $0$ is then forced.
 \end{proof}
 
-\begin{theorem}[Stirling decomposition]
+\begin{theorem}[Stirling decomposition]\label{thm:bell-stirling-sum}
 \begin{equation}\label{eq:bell-stirling-sum}
  \BellNumber n=\sum_{k=0}^{n}\StirlingSecondKind nk
  =\sum_{k=0}^{n}\frac1{k!}\sum_{i=0}^{k}(-1)^{k-i}\binom ki i^n.
@@ -2283,6 +2390,23 @@ The first equality groups partitions by their number of blocks.  Substitute the
 inclusion--exclusion formula for $\StirlingSecondKind nk$ from
 \cref{eq:second-explicit} to obtain the second equality.
 \end{proof}
+
+\begin{remark}[Formal crosswalk]
+% ed.: crosswalk added 2026-09-01; the Lean proof is by recurrence, since
+% Mathlib defines the Bell numbers by \cref{eq:bell-binomial-recurrence}.
+The first equality is \lean{Fabius.bell_eq_sum_stirlingSecond} and the second
+\lean{Fabius.bell_eq_sum_sum_div_factorial} (module \lean{BellStirling}).
+Mathlib's \lean{Nat.bell} is defined by the binomial recurrence of
+\cref{thm:bell-binomial-recurrence} (\lean{Nat.bell_succ}), so the Lean
+proof shows that $\sum_k\StirlingSecondKind nk$ satisfies the same
+recurrence, through the vertical recurrence
+$\StirlingSecondKind{n+1}{k+1}=\sum_{i\le n}\binom ni\StirlingSecondKind ik$
+(\lean{Fabius.stirlingSecond_succ_succ_eq_sum}).  The same recurrence gives
+the Touchard polynomials $T_n(x)=\sum_k\StirlingSecondKind nk x^k$
+(\lean{Fabius.touchardPolynomial}) the binomial-type relation
+$T_{n+1}(x)=x\sum_k\binom nk T_k(x)$ (\lean{Fabius.touchardPolynomial_succ})
+and $T_n(1)=\BellNumber n$ (\lean{Fabius.touchardPolynomial_eval_one}).
+\end{remark}
 
 \section{Spivey's identity and binomial inversions}
 \begin{theorem}[Spivey's identity]\label{thm:spivey}
@@ -2396,6 +2520,24 @@ formal coefficient extraction gives the same identity algebraically.  The last
 statement is the defining moment sum of a Poisson$(1)$ variable.
 \end{proof}
 
+\begin{remark}[Formal crosswalk]
+% ed.: crosswalk added 2026-09-01; the Lean statement is the general Poisson
+% moment series, of which Dobinski's formula is the case lambda = 1.
+\lean{Fabius.dobinski} (module \lean{BellStirling}) proves
+$\sum_{m\ge0}m^n/m!=\EulerE\,\BellNumber n$ as an identity of real series.
+It is the case $\lambda=1$ of
+\lean{Fabius.tsum_pow_mul_pow_div_factorial}, the Poisson moment identity
+$\sum_{m\ge0}m^n\lambda^m/m!=\EulerE^{\lambda}\sum_k\StirlingSecondKind nk\lambda^k$
+for every real $\lambda$, which is the analytic content of
+\cref{thm:poisson-stirling-moments}.  The Lean proof does not expand the
+exponential generating function: it inserts
+$m^n=\sum_k\StirlingSecondKind nk\FallingFactorial mk$ and uses that the
+$k$-th falling-factorial moment series is the exponential series shifted by
+$k$ places (\lean{Fabius.hasSum_descFactorial_mul_pow_div_factorial}), so
+only finitely many absolutely convergent series are rearranged.  The Cauchy
+integral form is not formalized.
+\end{remark}
+
 \begin{corollary}[Cauchy integral]
 For every positively oriented circle $\gamma$ around $0$,
 \begin{equation}\label{eq:bell-cauchy}
@@ -2498,7 +2640,7 @@ The same recurrence permits a compact machine-checkable certificate.
 \begin{theorem}\label{thm:bell-log-shape}
 For $n\ge1$,
 \begin{equation}\label{eq:bell-log-shape}
- 1\le \frac{\BellNumber{n-1}\BellNumber{n+1}}{\BellNumber n^2}\le\frac{n+1}{n}.
+ 1\le \frac{\BellNumber{n-1}\BellNumber{n+1}}{\bigl(\BellNumber n\bigr)^2}\le\frac{n+1}{n}.
 \end{equation}
 Thus $(\BellNumber n)$ is log-convex, whereas $(\BellNumber n/n!)$ is log-concave.
 \end{theorem}
@@ -2544,7 +2686,7 @@ For $t>0$,
 \end{equation}
 For $n\ge2$, put $L=\log(n+1)$ and $t=\log(n/L)$.  Then
 \begin{equation}\label{eq:bell-ratio-upper}
- \BellNumber n^{1/n}\frac{L}{n}
+ \bigl(\BellNumber n\bigr)^{1/n}\frac{L}{n}
  \le \frac{L}{t}
  \exp\!\left(-1+\frac1L+\frac{\log n}{2n}\right).
 \end{equation}
@@ -3134,7 +3276,7 @@ $D_n=\ExponentialCompleteBellPolynomial n$.
 Let $J$ reverse the coordinate order and let
 $D=\DiagonalOperator(0!,1!,\ldots,(n-1)!)$.  A direct entrywise calculation gives
 \[
- \BellHessenbergMatrixK{n}=D(J\BellHessenbergMatrixH{n}^{\mathsf T}J)D^{-1}.
+ \BellHessenbergMatrixK{n}=D\bigl(J\bigl(\BellHessenbergMatrixH{n}\bigr)^{\mathsf T}J\bigr)D^{-1}.
 \]
 Indeed,
 $\frac{(i-1)!}{(j-1)!}\binom{j-1}{i-1}=1/(j-i)!$ above the diagonal, and the
@@ -3323,7 +3465,7 @@ Outside $0\le k<n$ the number is zero.
 Equivalently,
 \begin{equation}\label{eq:eulerian-poly-recurrence}
  \TypeAEulerianPolynomial{n}(t)=\bigl(1+(n-1)t\bigr)\TypeAEulerianPolynomial{n-1}(t)
-       +t(1-t)\TypeAEulerianPolynomial{n-1}'(t).
+       +t(1-t)\bigl(\TypeAEulerianPolynomial{n-1}\bigr)'(t).
 \end{equation}
 \end{theorem}
 \begin{proof}
@@ -3688,7 +3830,7 @@ larger than $i$.  Let $\SecondOrderEulerianNumber nk$ count those with $k$ ordin
  \SecondOrderEulerianNumber nk&=(2n-k-1)\SecondOrderEulerianNumber{n-1}{k-1}
  +(k+1)\SecondOrderEulerianNumber{n-1}{k},
  \label{eq:second-eulerian-recurrence}\\
- \SecondOrderEulerianPolynomial{n+1}(t)&=(2nt+1)\SecondOrderEulerianPolynomial{n}(t)-t(t-1)\SecondOrderEulerianPolynomial{n}'(t),
+ \SecondOrderEulerianPolynomial{n+1}(t)&=(2nt+1)\SecondOrderEulerianPolynomial{n}(t)-t(t-1)\bigl(\SecondOrderEulerianPolynomial{n}\bigr)'(t),
  \label{eq:second-eulerian-poly-recurrence}\\
  \SecondOrderEulerianPolynomial{n}(1)&=(2n-1)!!.
  \label{eq:second-eulerian-row-sum}
@@ -4424,6 +4566,25 @@ of the forward formula into the backward one makes the coefficient of $a_j$
 \]
 which independently verifies the inverse matrices.
 \end{proof}
+
+\begin{remark}[Formal crosswalk]
+% ed.: crosswalk added 2026-09-01; the Lean statement drops the Q-algebra
+% hypothesis.
+The equivalence of \cref{eq:merged-binomial-forward} and
+\cref{eq:merged-binomial-backward} is \lean{Fabius.binomial_inversion_ring_iff}
+for sequences in any commutative ring and
+\lean{Fabius.binomial_inversion_iff} for sequences in any additive commutative
+group (module \lean{BinomialInversion}); the hypothesis of a commutative
+$\mathbb Q$-algebra is unnecessary, since the proof is the inverse-matrix
+computation of the last display,
+\lean{Fabius.sum_Icc_neg_one_pow_choose_mul_choose}, which reduces through
+\lean{Nat.choose_mul} to the alternating row sums of Pascal's triangle.  The
+reverse product is supplied by the general commutation theorem
+\lean{Fabius.lowerTriangular_orthogonal_comm}, and both directions are
+instances of the finite triangular transform calculus of
+\lean{Fabius.lowerTriangularTransform}.  The exponential-generating-function
+form \cref{eq:merged-binomial-egf} is not formalized.
+\end{remark}
 
 \section{The partition lattice and cumulants}
 
@@ -7174,7 +7335,7 @@ silently promoted to an identity.
 \section{Disposition of the Bell-number decimal table}
 
 The arrivals contain a six-decimal table for
-$R_n=\BellNumber n^{1/n}\log(n+1)/n$ and describe its entries as directed
+$R_n=\bigl(\BellNumber n\bigr)^{1/n}\log(n+1)/n$ and describe its entries as directed
 interval bounds.  They do not supply the interval endpoints before rounding,
 the rounding implementation, a replay script, or a checksum-pinned output.
 Consequently the table is not an exact certificate and is omitted from the
@@ -7417,6 +7578,211 @@ Eulerian and Catalan families form two transverse strands: the first translates
 powers into descent and polyhedral data, while the second translates reversion into
 trees, paths, polygon dissections, and associahedra.  The resulting structure is a
 coefficient calculus rather than a catalogue of isolated identities.
+
+\section{Lean formalization register}
+\label{sec:lean-register}
+Every theorem-like environment of this monograph is listed here with the status of its formalization in the Lean development \path{Analysis/FabiusFunction/Lean/FabiusFunction} (Mathlib \texttt{v4.32.0}).  \emph{Lean} means that a public, compiled declaration proves the exact statement or a more general one (the generalization is then noted next to the result); \emph{partial} means that a named part of the statement is proved and the rest is named; \emph{none} means that no Lean counterpart exists yet.  A citation, a numerical check, or a plausible derivation does not count.  The register is generated from the source and must be regenerated when results are added.  Current totals: 9 Lean, 3 partial, 174 none, of 186 results.
+
+\begin{footnotesize}
+\begin{longtable}{@{}p{0.16\textwidth}p{0.22\textwidth}p{0.08\textwidth}p{0.48\textwidth}@{}}
+\toprule
+Result & Title & Status & Lean declarations (module) \\
+\midrule
+\endfirsthead
+\toprule
+Result & Title & Status & Lean declarations (module) \\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+\Cref{lem:coeff-rules} & Coefficient rules & none &  \\
+\Cref{thm:res-subst} & Formal change of variables for residues & none &  \\
+\Cref{thm:newton-expansion} & Newton expansion & none &  \\
+\Cref{thm:exponential-formula} & The exponential formula & none &  \\
+\Cref{cor:partition-type} & Partition-type count & none &  \\
+\Cref{thm:first-cycle} & Permutation interpretation & partial & recurrence and boundary values are Mathlib's \lean{Nat.stirlingFirst_succ_succ}, \lean{Nat.stirlingFirst_succ_zero}, \lean{Nat.stirlingFirst_eq_zero_of_lt}; the defining expansions are \lean{Fabius.ascPochhammer_eq_sum_monomial_stirlingFirst} and \lean{Fabius.descPochhammer_eq_sum_monomial_signedStirlingFirst} (\lean{StirlingBasisChange}); the permutation count itself is not formalized \\
+\Cref{thm:second-recurrence} & Second-kind recurrence & Lean & \lean{Nat.stirlingSecond_succ_succ}, \lean{Nat.stirlingSecond_succ_zero}, \lean{Nat.stirlingSecond_eq_zero_of_lt} (Mathlib); the set-partition count is Mathlib's definition by this recurrence \\
+\Cref{thm:second-explicit} & Surjection formula & Lean & \lean{Fabius.factorial_mul_stirlingSecond_eq_sum} (over $\mathbb Z$) and \lean{Fabius.stirlingSecond_eq_sum_div_factorial} (over $\mathbb Q$) (\lean{StirlingBasisChange}); proved by binomial inversion of \lean{Fabius.pow_eq_sum_stirlingSecond_mul_factorial_mul_choose} \\
+\Cref{thm:second-reverse-recurrences} & Alternative second-kind recurrences & none &  \\
+\Cref{thm:first-reverse-recurrences} & Reverse recurrences of the first kind & none &  \\
+\Cref{thm:stirling-basis} & Stirling basis transformations & Lean & \lean{Fabius.ascPochhammer_eq_sum_monomial_stirlingFirst}, \lean{Fabius.descPochhammer_eq_sum_monomial_signedStirlingFirst}, \lean{Fabius.X_pow_eq_sum_stirlingSecond_mul_descPochhammer}, \lean{Fabius.X_pow_eq_sum_stirlingSecond_mul_ascPochhammer}, \lean{Fabius.pow_eq_sum_stirlingSecond_mul_factorial_mul_choose} (\lean{StirlingBasisChange}); polynomial identities over every commutative ring \\
+\Cref{cor:shifted-stirling-evaluations} & Shifted factorial evaluations & none &  \\
+\Cref{cor:stirling-inverse} & Inverse matrices & Lean & \lean{Fabius.sum_range_stirlingSecond_mul_signedStirlingFirst}, \lean{Fabius.sum_range_signedStirlingFirst_mul_stirlingSecond} and their \lean{Icc} forms (\lean{StirlingBasisChange}) \\
+\Cref{thm:poisson-stirling-moments} & Poisson moments & partial & the moment series $\sum_m m^n\lambda^m/m! = e^{\lambda}\sum_k S(n,k)\lambda^k$ is \lean{Fabius.tsum_pow_mul_pow_div_factorial} (\lean{BellStirling}) for every real $\lambda$; the probabilistic phrasing is not formalized \\
+\Cref{thm:fixed-point-stirling-moments} & Moments of the number of fixed points & none &  \\
+\Cref{thm:lah-conv} & Conversion between rising and falling factorials & Lean & \lean{Fabius.ascPochhammer_eq_sum_lahNumber_mul_descPochhammer}, \lean{Fabius.descPochhammer_eq_sum_lahNumber_mul_ascPochhammer}, \lean{Fabius.sum_range_lahNumber_mul_lahNumber}, \lean{Fabius.lahNumber_eq_sum_stirlingFirst_mul_stirlingSecond} (\lean{LahNumbers}); the closed form of the definition is \lean{Fabius.lahNumber_succ_succ_mul_factorial} \\
+\Cref{thm:stirling-egfs} & Column generating functions & none &  \\
+\Cref{thm:second-ogf} & Fixed-$k$ ordinary generating function & none &  \\
+\Cref{thm:stirling-transform} & Stirling transform and its inverse & partial & the inversion formula is \lean{Fabius.stirling_inversion}, \lean{Fabius.stirling_inversion_symm}, \lean{Fabius.stirling_inversion_iff} (\lean{StirlingBasisChange}), for sequences in any additive commutative group; the generating-function form is not formalized \\
+\Cref{thm:normal-order} & Stirling normal-ordering identities & none &  \\
+\Cref{thm:paired-sums} & First- and second-kind summations & none &  \\
+\Cref{thm:first-double-sum} & Explicit first-kind double sum & none &  \\
+\Cref{thm:signed-near-diagonal-partition} & Near-diagonal partition formula & none &  \\
+\Cref{thm:mod-h-structure} & Rigorous finite-modulus replacement for the archived spectral form & none &  \\
+\Cref{thm:second-parity} & Parity criterion & none &  \\
+\Cref{thm:stirling-simple-asymp} & Fixed column and fixed diagonal & none &  \\
+\Cref{thm:stirling-row-log-concavity} & Real-rootedness and strict log-concavity & none &  \\
+\Cref{thm:stirling-mode-asymptotic} & Asymptotic mode and maximal entry & none &  \\
+\Cref{thm:stirling-uniform-saddle} & Uniform Stirling saddle estimate & none &  \\
+\Cref{thm:stirling-zeta} & Stirling--zeta identities & none &  \\
+\Cref{lem:logarithmic-transfer} & Logarithmic transfer estimate & none &  \\
+\Cref{thm:gamma-stirling-series} & Convergent Stirling series for $\log\Gamma$ and $\psi$ & none &  \\
+\Cref{thm:stieltjes-stirling-series} & Stirling series for the Stieltjes constants & none &  \\
+\Cref{thm:r-stirling-recurrence} & $r$-Stirling recurrence & none &  \\
+\Cref{thm:associated-stirling-recurrence} & Associated recurrence & none &  \\
+\Cref{thm:reduced-stirling} & Reduction formula & none &  \\
+proposition (unlabelled, no.~1) &  & none &  \\
+\Cref{thm:ordered-bell} & Ordered Bell numbers & none &  \\
+proposition (unlabelled, no.~2) &  & none &  \\
+proposition (unlabelled, no.~3) &  & none &  \\
+theorem (unlabelled, no.~33) & Return-to-order shuffles & none &  \\
+theorem (unlabelled, no.~34) &  & none &  \\
+theorem (unlabelled, no.~35) &  & none &  \\
+\Cref{thm:bell-binomial-recurrence} & Binomial recurrence & Lean & \lean{Nat.bell_succ} (Mathlib, the definition) \\
+\Cref{thm:bell-stirling-sum} & Stirling decomposition & Lean & \lean{Fabius.bell_eq_sum_stirlingSecond}, \lean{Fabius.bell_eq_sum_sum_div_factorial} (\lean{BellStirling}) \\
+\Cref{thm:spivey} & Spivey's identity & none &  \\
+\Cref{thm:bell-inversions} & Bell inversion identities & none &  \\
+\Cref{thm:weighted-bell-shift} & Weighted Bell shift & none &  \\
+\Cref{thm:bell-egf} &  & none &  \\
+\Cref{thm:dobinski} & Dobiński & Lean & \lean{Fabius.dobinski} (\lean{BellStirling}), from the general Poisson moment identity \lean{Fabius.tsum_pow_mul_pow_div_factorial} \\
+corollary (unlabelled, no.~4) & Cauchy integral & none &  \\
+\Cref{thm:touchard-poly} & Polynomial Touchard congruence & none &  \\
+\Cref{thm:bell-prime-power-shift} & Prime-power shift & none &  \\
+\Cref{thm:bell-period-bound} &  & none &  \\
+\Cref{thm:bell-log-shape} &  & none &  \\
+\Cref{lem:bell-coeff-upper} &  & none &  \\
+\Cref{thm:bell-eventual-upper} & Eventual Bell upper bound & none &  \\
+\Cref{thm:bell-leading-asymptotic} & Leading Bell asymptotic & none &  \\
+\Cref{cor:bell-debruijn} & de Bruijn logarithmic expansion & none &  \\
+\Cref{thm:bell-poly-partitions} & Weighted-partition interpretation & none &  \\
+\Cref{thm:bell-poly-egf} & Bell-polynomial generating functions & none &  \\
+\Cref{thm:bell-poly-recurrences} & Complete and partial recurrences & none &  \\
+\Cref{thm:bell-partial-convolution} & Block-colour convolution & none &  \\
+\Cref{thm:bell-near-diagonal} &  & none &  \\
+\Cref{thm:bell-poly-derivatives} & Derivative identities & none &  \\
+\Cref{thm:bell-quadratic-differential} &  & none &  \\
+\Cref{thm:bell-poly-specializations} &  & none &  \\
+\Cref{thm:bell-bihomogeneous} & Bigraded homogeneity & none &  \\
+\Cref{thm:complete-bell-addition} & Complete Bell addition formula & none &  \\
+\Cref{thm:bell-leading-zeros} & Insertion of $q$ leading zeros & none &  \\
+\Cref{thm:bell-transform-inverse} & Bell transform and its inverse & none &  \\
+\Cref{thm:bell-determinants} & Bell determinants & none &  \\
+\Cref{thm:diamond-bell} &  & none &  \\
+\Cref{thm:bell-symmetric-functions} &  & none &  \\
+\Cref{cor:det-traces-bell} & Determinant from traces & none &  \\
+\Cref{thm:cycle-index-bell} &  & none &  \\
+\Cref{thm:moment-cumulant} & Moment--cumulant relations & none &  \\
+\Cref{thm:binomial-type-bell} &  & none &  \\
+\Cref{thm:eulerian-recurrence} & Eulerian recurrence & none &  \\
+\Cref{thm:eulerian-egf} & Eulerian EGF & none &  \\
+\Cref{thm:eulerian-power-series} &  & none &  \\
+\Cref{thm:eulerian-binomial-recurrence} & A second polynomial recurrence & none &  \\
+\Cref{thm:worpitzky} & Worpitzky & none &  \\
+\Cref{cor:eulerian-power-sum} & Power sums & none &  \\
+\Cref{thm:eulerian-stirling} &  & none &  \\
+\Cref{thm:eulerian-irwin-hall} &  & none &  \\
+\Cref{thm:eulerian-alternating} &  & none &  \\
+theorem (unlabelled, no.~75) &  & none &  \\
+\Cref{thm:permutohedron-h-polynomial} & The permutohedral $h$-polynomial & none &  \\
+\Cref{thm:typeB-eulerian} & Type-$B$ recurrence and Worpitzky series & none &  \\
+\Cref{thm:typeB-permutohedron-h-polynomial} & The type-$B$ permutohedral $h$-polynomial & none &  \\
+\Cref{thm:second-eulerian-recurrence} & Second-order recurrence & none &  \\
+\Cref{thm:second-eulerian-stirling-gf} & Diagonal Stirling generating function & none &  \\
+\Cref{thm:second-eulerian-first-diagonal} & Second-order Eulerian diagonal formula & none &  \\
+\Cref{thm:faa-partition} & Fa\`a di Bruno, partition form & none &  \\
+\Cref{thm:faa-multiplicity} & Fa\`a di Bruno, multiplicity form & none &  \\
+\Cref{thm:faa-multivariate} & Multivariate Fa\`a di Bruno for distinct variables & none &  \\
+\Cref{thm:ordinary-composition} & Ordinary composition & none &  \\
+\Cref{thm:exponential-composition} & Exponential composition & none &  \\
+\Cref{thm:lagrange-burmann} & Lagrange--Bürmann & none &  \\
+\Cref{thm:analytic-lagrange} & Analytic Lagrange inversion & none &  \\
+\Cref{thm:inverse-bell-coeff} & Explicit inverse coefficients & none &  \\
+\Cref{thm:associahedral-inversion} & Associahedral inversion & none &  \\
+\Cref{thm:fuss-series} &  & none &  \\
+\Cref{thm:lambert-W-zero} &  & none &  \\
+\Cref{thm:shifted-lagrange-reversion} & Lagrange reversion & none &  \\
+\Cref{thm:laplace-bell} & Laplace--Erd\'elyi coefficient formula & none &  \\
+\Cref{thm:merged-binomial-inversion} & Binomial inversion & Lean & \lean{Fabius.binomial_inversion_iff} (additive commutative groups) and \lean{Fabius.binomial_inversion_ring_iff} (commutative rings) (\lean{BinomialInversion}); the kernel orthogonality is \lean{Fabius.sum_Icc_neg_one_pow_choose_mul_choose}; the EGF form is not formalized \\
+\Cref{thm:merged-partition-mobius} & Möbius function of $\Pi\_n$ & none &  \\
+\Cref{thm:merged-moment-cumulant} & Moment--cumulant inversion & none &  \\
+\Cref{thm:merged-sheffer} & Addition and lowering & none &  \\
+\Cref{prop:merged-abel} & Abel polynomials & none &  \\
+\Cref{thm:merged-riordan} & Riordan action, product, and inverse & none &  \\
+\Cref{thm:merged-complementary-bell} & EGF, recurrence, and Dobiński-type series & none &  \\
+\Cref{cor:merged-bell-convolution-inverse} & Convolution inverse of the Bell sequence & none &  \\
+\Cref{thm:merged-frechet-faa} & Coordinate-free Faà di Bruno & none &  \\
+corollary (unlabelled, no.~9) &  & none &  \\
+\Cref{thm:merged-inverse-derivative} & Inverse derivative recursion & none &  \\
+\Cref{lem:merged-multiresidue} & Multivariate residue substitution & none &  \\
+\Cref{thm:merged-good} & Lagrange--Good inversion & none &  \\
+\Cref{prop:merged-characteristic} & Characteristic determinant & none &  \\
+\Cref{thm:merged-appell} & Appell, translation, and explicit formulas & none &  \\
+\Cref{thm:merged-bernoulli-euler-basic} & Difference and reflection identities & none &  \\
+\Cref{thm:merged-faulhaber} & Faulhaber with an offset & none &  \\
+\Cref{thm:merged-alternating-sums} & Alternating power sums & none &  \\
+\Cref{thm:merged-raabe} & Raabe multiplication & none &  \\
+\Cref{thm:merged-bernoulli-stirling-touchard} & Bernoulli--Stirling formula and Touchard moments & none &  \\
+\Cref{thm:merged-norlund-calculus} & Appell, difference, and convolution calculus & none &  \\
+\Cref{thm:merged-norlund-bell-diagonal} & Bell-polynomial construction and the N\"orlund diagonal & none &  \\
+\Cref{thm:merged-genocchi} & Bernoulli--Euler--Genocchi relations & none &  \\
+\Cref{thm:merged-cauchy-polynomials} & Integral, Stirling, difference, addition, and reflection formulas & none &  \\
+proposition (unlabelled, no.~6) &  & none &  \\
+\Cref{thm:merged-periodic-bernoulli-fourier} & Fourier expansion with exact convergence qualifications & none &  \\
+\Cref{thm:merged-euler-maclaurin} & Euler--Maclaurin with remainder & none &  \\
+corollary (unlabelled, no.~10) & Stirling's expansion & none &  \\
+\Cref{thm:merged-pochhammer} & Gamma quotient and binomial series & none &  \\
+corollary (unlabelled, no.~11) & Chu--Vandermonde & none &  \\
+\Cref{thm:merged-pochhammer-derivatives} & All parameter derivatives & none &  \\
+\Cref{thm:merged-polygamma-series} & Partial fractions & none &  \\
+corollary (unlabelled, no.~12) & Recurrences and special values & none &  \\
+\Cref{thm:merged-polygamma-reflection} & Reflection & none &  \\
+\Cref{thm:merged-gauss-multiplication} & Gauss multiplication & none &  \\
+corollary (unlabelled, no.~13) &  & none &  \\
+\Cref{thm:merged-barnes-product} & Canonical product & none &  \\
+\Cref{thm:merged-alexeiewsky} & Alexeiewsky identity & none &  \\
+corollary (unlabelled, no.~14) &  & none &  \\
+\Cref{thm:merged-barnes-asymptotic} & Barnes asymptotics on the positive ray & none &  \\
+\Cref{cor:merged-hyperfactorial-asymptotic} & Complete hyperfactorial expansion & none &  \\
+\Cref{thm:merged-catalan-reflection} & Catalan formula & none &  \\
+\Cref{thm:merged-catalan-first-return} & First return & none &  \\
+\Cref{thm:merged-narayana} & Narayana formula & none &  \\
+corollary (unlabelled, no.~16) & Peak mean and variance & none &  \\
+\Cref{thm:merged-catalan-bijection} & Binary trees and parenthesizations & none &  \\
+\Cref{thm:merged-triangulations} & Triangulations & none &  \\
+\Cref{thm:merged-noncrossing} & Noncrossing partitions & none &  \\
+\Cref{thm:merged-kirkman-cayley} & Kirkman--Cayley dissection formula & none &  \\
+\Cref{cor:merged-associahedron-f} & Associahedral face vector & none &  \\
+\Cref{thm:merged-tamari-order} & The rotation relation is a partial order & none &  \\
+\Cref{thm:merged-raney} & Raney numbers & none &  \\
+\Cref{thm:merged-darboux-finite} & Darboux formula & none &  \\
+corollary (unlabelled, no.~18) & Taylor integral remainder & none &  \\
+\Cref{lem:merged-singular-binomial} & Exact algebraic coefficient, including polynomial cases & none &  \\
+\Cref{thm:merged-darboux-transfer} & Darboux transfer with an analytic multiplier & none &  \\
+\Cref{thm:merged-darboux-finite-smoothness} & Finite-smoothness Darboux subtraction & none &  \\
+corollary (unlabelled, no.~19) & Multiple dominant points & none &  \\
+proposition (unlabelled, no.~7) & Logarithmic and meromorphic cases & none &  \\
+theorem (unlabelled, no.~136) &  & none &  \\
+\Cref{thm:merged-multinomial-leibniz} & Multinomial Leibniz rule & none &  \\
+\Cref{thm:merged-higher-quotient} & Higher reciprocal and quotient rules & none &  \\
+corollary (unlabelled, no.~20) & Trigonometric outer functions & none &  \\
+\Cref{thm:merged-four-inverse-series} & Four classical inverse series and their diagonals & none &  \\
+\Cref{prop:merged-cauchy-diagonal} & Logarithmic diagonal & none &  \\
+\Cref{thm:merged-offset-lagrange} & Offset Lagrange--B\"urmann formula & none &  \\
+\Cref{thm:merged-square-root-inverse} & Local square-root inverse & none &  \\
+\Cref{cor:merged-square-root-coefficients} & Universal coefficient signature & none &  \\
+\Cref{thm:merged-kepler} & Lagrange and Fourier--Bessel forms & none &  \\
+\Cref{alg:merged-product-quotient} & Product, reciprocal, and quotient & none &  \\
+\Cref{alg:merged-exp-log-power} & Logarithm, exponential, and powers & none &  \\
+\Cref{alg:merged-differentiation-integration} & Differentiation and integration & none &  \\
+\Cref{alg:merged-composition} & Composition power table & none &  \\
+\Cref{alg:merged-lagrange-reversion} & Lagrange reversion & none &  \\
+\Cref{alg:merged-newton-reciprocal} & Reciprocal Newton iteration & none &  \\
+\Cref{alg:merged-newton-reversion} & Newton reversion & none &  \\
+proposition (unlabelled, no.~9) & Recurrence uniqueness & none &  \\
+\Cref{thm:merged-grid-certificate} & Polynomial grid certificate & none &  \\
+\Cref{thm:merged-crt-certificate} & Chinese-remainder certificate & none &  \\
+\end{longtable}
+\end{footnotesize}
 
 \backmatter
 
