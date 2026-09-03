@@ -4086,6 +4086,14 @@ For the first product rule, insert and subtract $f(qx)g(x)$ in
 For the second, insert and subtract $f(x)g(qx)$.  The scaling rule follows directly from the definition.
 \end{proof}
 
+\emph{Lean status.}  For polynomials: \path{Fabius.qDerivative_C_mul_X_pow} in
+\path{PolynomialQDerivative.lean} ($D_q(ax^n)=a[n]_qx^{n-1}$, with \path{Fabius.qInt} the
+$q$-integer), \path{Fabius.qDerivative} being the linear operator on $R[X]$; the product rule
+is \path{Fabius.qDerivative_mul} (and \path{Fabius.qDerivative_mul'} with the roles
+exchanged).  For functions on a normed field the operator is \path{Fabius.qDeriv}
+(\path{QExponential.lean}) with product rule \path{Fabius.qDeriv_mul}.
+
+
 \begin{remark}[The polynomial $q$-derivative, division-free]\label{rem:qderivative-polynomial}
 On polynomials the $q$-derivative needs neither $q\ne1$ nor $x\ne0$: it is the coefficientwise operator
 \[
@@ -4126,6 +4134,11 @@ to index $k$.  The total coefficient of index $k$ is
 by the second $q$-Pascal recurrence.
 \end{proof}
 
+\emph{Lean status.}  Exactly \path{Fabius.qDerivative_iterate_mul} in
+\path{PolynomialQLeibniz.lean}, for polynomials over any commutative ring: the $k$-th
+$q$-derivative of $f$ is evaluated at $q^{n-k}x$ (as a composition with $q^{n-k}X$).
+
+
 \section{\texorpdfstring{$q$}{q}-Taylor and Newton interpolation}
 
 Define the $q$-falling power based at $a$ by
@@ -4164,6 +4177,12 @@ gives
 Divide by $(1-q)x$.  Iteration proves the second formula.
 \end{proof}
 
+\emph{Lean status.}  Exactly \path{Fabius.qDerivative_qFallingPower_succ} in
+\path{PolynomialQTaylor.lean}, with \path{Fabius.qFallingPower} the polynomial
+$(x-a)(x-qa)\cdots(x-q^{m-1}a)$; the iterated form is
+\path{Fabius.qDerivative_iterate_qFallingPower}.
+
+
 \begin{theorem}[$q$-Taylor formula]\label{thm:q-taylor}
 Assume $[j]_q\ne0$ for $1\le j\le N$.  If $f$ is a polynomial of degree at most $N$, then
 \[
@@ -4179,6 +4198,11 @@ The polynomials $\QFallingPower{x}{a}{q}{k}$, $0\le k\le N$, are monic of distin
 \)
 Apply $D_q^j$ and set $x=a$.  By \Cref{lem:qfalling-derivative}, every term with $k>j$ still contains the factor $x-a$, terms with $k<j$ vanish after too many derivatives, and the $k=j$ term equals $c_j[j]_q!$.  Thus $c_j=(D_q^jf)(a)/[j]_q!$.
 \end{proof}
+
+\emph{Lean status.}  Exactly \path{Fabius.qTaylor} in \path{PolynomialQTaylor.lean}, over
+every field, under $[j]_q\ne0$ for $1\le j\le N$ and $\deg f\le N$, with
+\path{Fabius.qFactorial} the $q$-factorial.
+
 
 \begin{remark}
 When the nodes $a,aq,aq^2,\ldots$ are distinct, this is a Newton interpolation formula on that geometric grid.  In every case covered by the theorem, its basis zeros follow a multiplicative rather than an additive progression.
@@ -4209,6 +4233,10 @@ by the first $q$-Pascal recurrence.  Multiplying on the left instead uses $YX^{m
 the second $q$-Pascal recurrence; this is the route taken by the formalization.
 \end{proof}
 
+\emph{Lean status.}  Exactly \path{Fabius.quantum_binomial} in \path{QuantumBinomial.lean},
+in any (associative, unital) algebra in which $q$ commutes with $X$ and $Y$ and $YX=qXY$.
+
+
 \begin{remark}[Generality]\label{rem:quantum-binomial-generality}
 Only two things are used: that $q$ commutes with $X$ and with $Y$, so that $YX^m=q^mX^mY$ and so that the Gaussian coefficients, being polynomials in $q$ with natural coefficients, commute with $X$ and $Y$; and the $q$-Pascal recurrence.  The theorem therefore holds in every semiring, with no commutativity assumption on the ambient ring and no requirement that $q$ be central beyond commuting with $X$ and $Y$; over a commutative ring it is the finite $q$-binomial theorem of \Cref{thm:finite-qbinomial} in reversed form.
 \end{remark}
@@ -4231,6 +4259,11 @@ Then, for every $n\ge0$,
 \]
 where on the right the factors are written in increasing order of index.  Equivalently, the $q$-multinomial coefficients are exactly the structure constants that expand powers of $x_1+\cdots+x_r$ in the ordered monomial basis of the quantum affine $r$-space.
 \end{corollary}
+
+\emph{Lean status.}  Exactly \path{Fabius.quantum_multinomial} in
+\path{QuantumMultinomial.lean}, with the sum over the compositions of $n$ into $r$ parts
+(\texttt{Nat.antidiagonalTuple}) and the multinomial \path{Fabius.qMultinomial}.
+
 
 % ed.: the incoming survey states only that ``iterating the proof gives a
 % ed.: $q$-multinomial theorem''.  The ordering of the monomials is part of the
@@ -4310,6 +4343,12 @@ The product formulas and the stated convergence domains follow from Euler's iden
 Reindex with $r=n-k$ to obtain the Cauchy product of $e_q(X)$ and $e_q(Y)$, with all $X$ factors preceding all $Y$ factors.  Since every total degree receives only finitely many contributions, the formal rearrangement is valid.
 \end{proof}
 
+\emph{Lean status.}  Formal in \path{QExponential.lean}: \path{Fabius.qExp} and
+\path{Fabius.qExpBig} are the two $q$-exponentials, \path{Fabius.hasSum_qExp} and
+\path{Fabius.hasSum_qExpBig} their series (for $|(1-q)x|<1$, resp.\ every $x$), and the
+factorization $e_q(x)E_q(-x)=1$ is \path{Fabius.qExp_mul_qExpBig_neg}.
+
+
 \begin{proposition}[Eigenfunction properties]\label{prop:qexp-eigen}
 Under the hypotheses and within the convergence domains of \Cref{cor:qexp-factor}, for scalar $\lambda$,
 \[
@@ -4322,6 +4361,10 @@ Under the hypotheses and within the convergence domains of \Cref{cor:qexp-factor
 \begin{proof}
 Differentiate the series term by term and use $D_qx^n=[n]_qx^{n-1}$.
 \end{proof}
+
+\emph{Lean status.}  Exactly \path{Fabius.qDeriv_qExp} and \path{Fabius.qDeriv_qExpBig} in
+\path{QExponential.lean} (at $x\ne0$, within the convergence domain).
+
 
 \section{Jackson's \texorpdfstring{$q$}{q}-integral}
 
@@ -4371,6 +4414,15 @@ For the converse, the $N$th partial Jackson sum is exactly
 Letting $N\to\infty$ proves both convergence and the formula.
 \end{proof}
 
+\emph{Lean status.}  Both halves are formal in \path{JacksonIntegral.lean} with
+\path{Fabius.jacksonIntegral} the Jackson sum: \path{Fabius.qDeriv_jacksonIntegral}
+($D_q\int_0^x f\,d_qt=f(x)$ at $x\ne0$, given summability of the Jackson series) and
+\path{Fabius.jacksonIntegral_qDeriv} ($\int_0^a D_qG\,d_qt=G(a)-\lim_nG(aq^n)$, given the
+limit and summability); the one-sided limit version at the origin is
+\path{Fabius.tendsto_qDeriv_jacksonIntegral_nhdsWithin}
+(\path{JacksonFundamentalExtension.lean}).
+
+
 \begin{corollary}[Jackson integration by parts]\label{cor:q-integration-parts}
 Let $a\ne0$.  Suppose the two Jackson series below converge and
 \[
@@ -4397,6 +4449,11 @@ For every $N$, the product rule gives the finite identity
 \end{align*}
 Let $N\to\infty$ and use the assumed convergence and endpoint limit.
 \end{proof}
+
+\emph{Lean status.}  Exactly \path{Fabius.jacksonIntegral_mul_qDeriv} in
+\path{JacksonIntegral.lean}, under the convergence of the two Jackson series and the limit
+of $f(aq^n)g(aq^n)$.
+
 
 \begin{example}[Monomials]
 For $\Re(s)>-1$,
@@ -4459,6 +4516,12 @@ sides are finite; equality elsewhere follows in the sense of
 meromorphic continuation.
 \end{proof}
 
+\emph{Lean status.}  Formal in \path{QGamma.lean} for $0<q<1$: \path{Fabius.qGamma_one},
+\path{Fabius.qGamma_add_one} ($\Gamma_q(x+1)=[x]_q\Gamma_q(x)$, with
+\path{Fabius.qNumber} the $q$-number of a real argument), \path{Fabius.qGamma_pos}, and
+\path{Fabius.qGamma_nat_succ} ($\Gamma_q(n+1)=[n]_q!$).
+
+
 \begin{proposition}[Logarithmic derivatives and convexity]\label{prop:qgamma-convex}
 For $x>0$,
 \[
@@ -4477,6 +4540,12 @@ Thus $\Gamma_q$ is strictly log-convex.
 \begin{proof}
 Differentiate the locally uniformly convergent logarithm of the defining infinite product.  A second differentiation gives the positive series.
 \end{proof}
+
+\emph{Lean status.}  The logarithmic derivative is \path{Fabius.hasDerivAt_log_qGamma}
+(\path{QGammaLogDerivative.lean}); the second derivative and strict log-convexity are
+\path{Fabius.hasDerivAt_deriv_log_qGamma}, \path{Fabius.deriv2_log_qGamma_pos} and
+\path{Fabius.strictConvexOn_log_qGamma} in \path{QGammaLogConvex.lean}.
+
 
 \section{A \texorpdfstring{$q$}{q}-Bohr--Mollerup theorem}
 
@@ -4521,6 +4590,14 @@ The ratio of the upper bound to the lower bound is
 \]
 Hence the bounds determine $f(x)$ uniquely for $0<x\le1$, and the recurrence determines it on all of $(0,\infty)$.  Since $\Gamma_q$ satisfies the same conditions, $f=\Gamma_q$.
 \end{proof}
+
+\emph{Lean status.}  Exactly \path{Fabius.qGamma_eq_of_logConvex} in
+\path{QBohrMollerup.lean}: a positive $f$ on $(0,\infty)$ with $f(1)=1$,
+$f(x+1)=[x]_q f(x)$ and $\log f$ convex equals $\Gamma_q$; $\Gamma_q$ itself satisfies the
+three conditions by \path{Fabius.qGamma_one}, \path{Fabius.qGamma_add_one} and
+\path{Fabius.strictConvexOn_log_qGamma}.  The proof passes through the $q$-analogue of
+Euler's limit, \path{Fabius.tendsto_qGamma_limit}.
+
 
 \section{Classical limit}
 
@@ -4568,6 +4645,13 @@ The dominated convergence theorem therefore gives
 The lower outer bound differs by the factor $(n/(n+1))^{1-x}$, which also tends uniformly to $1$.  For fixed $n$, the original $q$-bounds converge uniformly as $q\to1^-$ because they contain only finitely many continuous factors.  A uniform squeeze proves local uniform convergence on $(0,1]$, and the recurrence extends it to arbitrary compact subsets of $(0,\infty)$.
 \end{proof}
 
+\emph{Lean status.}  Exactly \path{Fabius.tendsto_qGamma_nhdsLT_one} in
+\path{ComplexGaussianClassical.lean}, for every $x>0$, the limit taken along $q\to1^-$;
+the two-sided Artin bracket used in the proof is \path{Fabius.qGamma_two_sided_bound}, and
+\path{QGammaClassicalLimit.lean} gives the nested monotone bracket
+\path{Fabius.qGammaLowerSeq_le_and_le_qGammaUpperSeq} for every $m$.
+
+
 \section{The Jackson \texorpdfstring{$q$}{q}-beta integral}
 
 \begin{definition}
@@ -4607,6 +4691,11 @@ Thus
 which is exactly the gamma quotient after substituting the definition of $\Gamma_q$.
 \end{proof}
 
+\emph{Lean status.}  Exactly \path{Fabius.qBeta_eq_qGamma} in \path{QBetaIntegral.lean},
+with \path{Fabius.qBeta} the Jackson integral $\int_0^1t^{x-1}(tq;q)_\infty/(tq^y;q)_\infty\,d_qt$
+summed in closed form by \path{Fabius.qBeta_eq_prod}.
+
+
 \begin{corollary}[Recurrences]\label{cor:qbeta-recurrence}
 For $x,y>0$,
 \[
@@ -4621,6 +4710,11 @@ For $x,y>0$,
 \begin{proof}
 Apply the functional equation for $\Gamma_q$ to the quotient in \Cref{thm:qbeta}.
 \end{proof}
+
+\emph{Lean status.}  Exactly \path{Fabius.qBeta_add_one_left} and
+\path{Fabius.qBeta_add_one_right} in \path{QBetaIntegral.lean}, with the symmetry
+\path{Fabius.qBeta_comm}.
+
 
 \section{Multiplication and reflection-type formulas}
 
@@ -4657,6 +4751,10 @@ Taking the ratio and using
 produces the formula.
 \end{proof}
 
+\emph{Lean status.}  Exactly \path{Fabius.qGamma_multiplication} in
+\path{QGammaMultiplication.lean}, for $0<q<1$, $m\ge1$, $x>0$.
+
+
 \begin{proposition}[Reflection-type product]\label{prop:qgamma-reflection}
 For $0<x<1$,
 \[
@@ -4669,6 +4767,10 @@ For $0<x<1$,
 \begin{proof}
 Multiply the two defining products; the powers of $1-q$ combine to one.
 \end{proof}
+
+\emph{Lean status.}  Exactly \path{Fabius.qGamma_mul_qGamma_one_sub} in \path{QGamma.lean}
+(for every real $x$, as an identity of the defining products).
+
 
 \begin{remark}
 Unlike Euler's reflection formula, the right side is naturally a theta quotient rather than an elementary trigonometric function.  Jacobi's triple product in the next part makes that theta structure explicit.
@@ -4741,6 +4843,13 @@ so $c_0=1$.  Thus
 \)
 \end{proof}
 
+\emph{Lean status.}  The first display is \path{Fabius.hasSum_jacobi_triple_product'} in
+\path{JacobiTripleProduct.lean} ($\sum_kq^{\binom k2}z^k=(-z,-q/z,q;q)_\infty$, in every
+complete normed field, $|q|<1$, $z\ne0$), with \path{Fabius.thetaExponent} the integer
+$\binom k2$; the signed form is \path{Fabius.hasSum_bilateralTheta} together with
+\path{Fabius.bilateralTheta_eq_prod} (\path{ThetaQuasiPeriodicity.lean}).
+
+
 \begin{corollary}[Quasi-periodicity and zeros]\label{cor:theta-quasi}
 Let $0<\AbsoluteValue q<1$ and $z\ne0$.  The theta function satisfies
 \[
@@ -4769,6 +4878,11 @@ $(q;q)_\infty$ occurs twice, once as the third factor of the triple product and 
 shifted symbol.  Hence $\BilateralTheta{\cdot}{q}$ has derivative $u'(z_0)G(z_0)\ne0$ at $z_0$,
 with $u'(z_0)=q^{j}$, respectively $-q^{j+1}/z_0^{2}$, so every zero is simple.
 \end{proof}
+
+\emph{Lean status.}  Exactly \path{Fabius.bilateralTheta_mul_left}
+($\theta(qz)=z^{-1}\theta(z)$) and \path{Fabius.bilateralTheta_eq_zero_iff} (the zeros are
+$z=-q^m$, $m\in\IntegerNumbers$) in \path{ThetaQuasiPeriodicity.lean}.
+
 
 % Chapter: \ref{chap:jtp} ("Jacobi's triple product").  A new section placed
 % immediately after the \end{proof} of \Cref{cor:theta-quasi}
@@ -4830,6 +4944,11 @@ by \Cref{cor:shifted-central-vandermonde}.  Therefore
 \]
 and the summand vanishes for $\AbsoluteValue k>N$, which is \eqref{eq:finite-jtp}.  Both sides are Laurent polynomials in $z$ with coefficients in $\IntegerNumbers[q]$ because each Gaussian coefficient is such a polynomial by \Cref{thm:qbinom-structure}.
 \end{proof}
+
+\emph{Lean status.}  Exactly \path{Fabius.finite_triple_product} in
+\path{JacobiTripleProduct.lean}, over every field, $z\ne0$, with the polynomial identity
+behind it \path{Fabius.finite_triple_product_poly} (over every commutative ring).
+
 
 \begin{example}\label{ex:finite-jtp-N1}
 At $N=1$ the coefficients are $\GaussianBinomial{2}{0}{q}=\GaussianBinomial{2}{2}{q}=1$ and $\GaussianBinomial{2}{1}{q}=1+q$, so \eqref{eq:finite-jtp} reads
@@ -4924,6 +5043,12 @@ The convergence is moreover uniform on the annulus: given $\varepsilon>0$, choos
 which is \eqref{eq:jtp-minus}.
 \end{proof}
 
+\emph{Lean status.}  Exactly \path{Fabius.tendstoUniformlyOn_finite_triple_product} (the
+product side) and \path{Fabius.tendstoUniformlyOn_finite_triple_product_sum} (the sum side)
+in \path{JacobiTripleProductUniform.lean}, uniform on every closed annulus
+$r\le|z|\le R$.
+
+
 \begin{remark}[Two mechanisms for one identity]\label{rem:jtp-two-proofs}
 \Cref{thm:jtp} was proved above from a functional equation together with the Durfee-square evaluation of the constant Laurent coefficient.  \Cref{cor:jtp-from-finite} instead proves the stronger local-uniform convergence statement from the polynomial identity \eqref{eq:finite-jtp}, whose only inputs are \Cref{thm:finite-qbinomial} and \Cref{thm:q-vandermonde}; Jacobi's identity is then a consequence, not a second canonical assertion.  This route separates algebra from analysis completely: \eqref{eq:finite-jtp} holds in $\IntegerNumbers[q][z,z^{-1}]$, and the entire analytic content is the single limit $\GaussianBinomial{2N}{N+k}{q}\to1/(q;q)_\infty$, which is the same finite-to-infinite stabilization recorded coefficientwise in \Cref{prop:partition-stabilization} and columnwise in \Cref{thm:fixed-column-limit}.  That separation is exactly the architecture recommended in \Cref{chap:formalization}.  Note also that \eqref{eq:finite-jtp} is genuinely finer than \eqref{eq:jtp-minus}: its coefficients are the central Gaussian coefficients $\GaussianBinomial{2N}{N+k}{q}$, which by \Cref{thm:qbinom-structure} are palindromic polynomials of degree $(N+k)(N-k)$, whereas in the limit every one of them collapses to the single $k$-independent factor $1/(q;q)_\infty$; what survives of the polynomial is not its constant term but its stabilised coefficient sequence, namely the partition numbers of \Cref{prop:partition-stabilization}.
 
@@ -4958,6 +5083,11 @@ by dissection.  The series exponent is
 \]
 Pair the terms $n$ and $-n$ to obtain the second form.
 \end{proof}
+
+\emph{Lean status.}  Exactly \path{Fabius.hasSum_pentagonal} in
+\path{JacobiTripleProduct.lean} (with \path{Fabius.pentagonalExponent} the integer
+$n(3n-1)/2$), and paired as \path{Fabius.hasSum_pentagonal_pairs}.
+
 
 \begin{corollary}[Euler's partition recurrence]\label{cor:euler-partition-recurrence}
 Let $p(0)=1$ and $p(n)=0$ for $n<0$.  Then for $n\ge1$,
@@ -5010,6 +5140,11 @@ $j>n$ vanish under the same convention, so the sum may be written to
 infinity).
 \end{proof}
 
+\emph{Lean status.}  Exactly \path{Fabius.partitionCount_eq_pentagonal_sum} in
+\path{EulerPartitionRecurrence.lean}, from the Cauchy product
+\path{Fabius.sum_antidiagonal_pentagonalCoeff_mul_partitionCount}.
+
+
 \section{Jacobi's cubic identity}
 
 \begin{theorem}[Jacobi identity]\label{thm:jacobi-cubic}
@@ -5035,6 +5170,10 @@ Pair $m=-n$ with $m=n+1$ for $n\ge0$.  Their sum is
 \]
 Cancelling the common minus sign proves the identity.
 \end{proof}
+
+\emph{Lean status.}  Exactly \path{Fabius.hasSum_jacobi_cubic} in \path{JacobiCubic.lean}
+(over $\ComplexNumbers$, $|q|<1$).
+
 
 % ed.: remark added to record the proof used by the formalization.
 \begin{remark}[A derivative-free proof]\label{rem:jacobi-cubic-formalization}
@@ -5075,6 +5214,10 @@ Set $z=q^x$ in \eqref{eq:jtp-minus}:
 \]
 Substitute this in \Cref{prop:qgamma-reflection}.
 \end{proof}
+
+\emph{Lean status.}  Exactly \path{Fabius.hasSum_theta_qGamma_reflection} in
+\path{QGamma.lean}, for $0<x<1$.
+
 
 \input{chapters/10_theta_modularity_and_squares}
 
@@ -5244,6 +5387,12 @@ By linearity it suffices to take $P(x)=x^m$ with $0\le m<N$.  Put $t=N-s$ and us
 for the product contains the factor $1-q^0$.
 \end{proof}
 
+\emph{Lean status.}  The monomial case $P=x^M$, $1\le M\le N$, is
+\path{Fabius.sum_weightNumerator_mul_pow_eq_zero} in \path{BaileyUnitPairs.lean}; the
+constant case is \path{Fabius.sum_gaussianBinomial_alternating}
+(\path{QBinomialInversion.lean}).  Linearity over monomials is not separately stated.
+
+
 \begin{remark}[Lean counterpart and boundary]
 This lemma is \statusexact, by
 \texttt{Fabius.qDifference\_\allowbreak{}sum\_\allowbreak{}eval}\textsubscript{2}\allowbreak
@@ -5309,6 +5458,13 @@ matrix is its inverse, so the two relations are equivalent.
 Since every expression is rational in $a$ and the singularity at $a=1$ is removable, the limiting statement follows.
 \end{proof}
 
+\emph{Lean status.}  Exactly \path{Fabius.isBaileyPair_iff_eq_baileyInverse} in
+\path{BaileyInversion.lean}, with \path{Fabius.baileyInverse} the displayed inverse sum, under
+$a\ne1$ and the nonvanishing of $(q;q)_n$ and $(aq;q)_n$; existence and uniqueness of the
+$\alpha$ for a given $\beta$ are \path{Fabius.exists_isBaileyPair} and
+\path{Fabius.isBaileyPair_baileySolve}.
+
+
 \begin{corollary}[Two unit Bailey pairs]\label{cor:unit-bailey-pairs}
 Let $\beta_n=\delta_{n,0}$.
 \begin{enumerate}[label=\textup{(\roman*)}]
@@ -5342,6 +5498,11 @@ For $a=q$, the ratio
 $\QPochhammer{a}{q}{n}/\QPochhammer{q}{q}{n}$ is $1$ and the remaining
 factor is $[2n+1]_q$.
 \end{proof}
+
+\emph{Lean status.}  Exactly \path{Fabius.isBaileyPair_unit_one} and
+\path{Fabius.isBaileyPair_unit_q} in \path{BaileyUnitPairs.lean}, with the explicit
+$\alpha$-sequences \path{Fabius.unitBaileyAlphaOne} and \path{Fabius.unitBaileyAlphaQ}.
+
 
 \section{The limiting Bailey lemma}
 
@@ -5377,6 +5538,10 @@ it contributes
  \bigl((zq)q^j;q\bigr)_{N-j}=zq^NS_N(qz).
 \]
 \end{proof}
+
+\emph{Lean status.}  Exactly \path{Fabius.bailey_aux_sum} in \path{BaileyAux.lean}, over every
+commutative ring.
+
 
 \begin{theorem}[Limiting Bailey lemma, finite form]\label{thm:bailey-limit-finite}
 If $(\alpha_n,\beta_n)$ is a Bailey pair relative to $a$, define
