@@ -38,8 +38,8 @@ def ordPartialBell (x : ℕ → R) : ℕ → ℕ → R
   | n, 0 => if n = 0 then 1 else 0
   | n, k + 1 => ∑ i ∈ Finset.range n, x (i + 1) * ordPartialBell x (n - (i + 1)) k
 
-@[simp]
 /-- With no parts, the ordinary partial Bell polynomial is `1` at `n = 0` and `0` otherwise. -/
+@[simp]
 theorem ordPartialBell_zero_right (x : ℕ → R) (n : ℕ) :
     ordPartialBell x n 0 = if n = 0 then 1 else 0 := by
   rw [ordPartialBell]

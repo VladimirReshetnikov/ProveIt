@@ -712,6 +712,7 @@ import FabiusFunction.FabiusGeneralLinearDenominator
 import FabiusFunction.ThueMorseComplexHalfAngle
 import FabiusFunction.ThueMorseQPochhammer
 import FabiusFunction.ThueMorseEulerFunction
+import FabiusFunction.ThueMorseQPochhammerInfinite
 import FabiusFunction.LambertWAnalytic
 import FabiusFunction.MixedDifferenceForwardDiff
 import FabiusFunction.GeometricProuhetBlock
