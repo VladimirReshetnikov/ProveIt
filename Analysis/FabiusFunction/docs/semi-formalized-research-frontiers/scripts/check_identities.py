@@ -380,6 +380,116 @@ for n in range(0, 5):
 check('Cauchy polynomials b_0..b_4', 'the quoted polynomials and b_n(0) values', bad, t)
 
 
+# ------------------------------------------------------- set-partition machinery
+def _setparts_fs(n):
+    def rec(i, maxb, cur):
+        if i == n:
+            blocks = [[] for _ in range(maxb + 1)]
+            for idx, b in enumerate(cur):
+                blocks[b].append(idx)
+            yield frozenset(frozenset(b) for b in blocks)
+            return
+        for b in range(maxb + 2):
+            yield from rec(i + 1, max(maxb, b), cur + [b])
+    yield from rec(0, -1, [])
+
+
+def _refines(a, b):
+    return all(any(x <= y for y in b) for x in a)
+
+
+# -------------------------------------------------------- thm:merged-partition-mobius
+bad, t = [], 0
+for n in range(1, 6):
+    P = list(_setparts_fs(n))
+    mu = {}
+    for s in P:
+        for p in sorted((q for q in P if _refines(s, q)), key=lambda q: -len(q)):
+            mu[(s, p)] = 1 if s == p else -sum(
+                mu[(s, tau)] for tau in P
+                if _refines(s, tau) and _refines(tau, p) and tau != p)
+    for s in P:
+        for p in P:
+            if not _refines(s, p):
+                continue
+            prod = 1
+            for Cb in p:
+                m = sum(1 for x in s if x <= Cb)
+                prod *= (-1) ** (m - 1) * factorial(m - 1)
+            t += 1
+            if mu[(s, p)] != prod:
+                bad.append((n, sorted(map(sorted, s)), sorted(map(sorted, p))))
+    bot = frozenset(frozenset([i]) for i in range(n))
+    top = frozenset([frozenset(range(n))])
+    for p in P:
+        want = 1
+        for B in p:
+            want *= (-1) ** (len(B) - 1) * factorial(len(B) - 1)
+        t += 2
+        if mu[(bot, p)] != want:
+            bad.append(('bottom', n))
+        if mu[(p, top)] != (-1) ** (len(p) - 1) * factorial(len(p) - 1):
+            bad.append(('top', n))
+check('thm:merged-partition-mobius',
+      'mu(s,p) = prod_C (-1)^{m_C-1}(m_C-1)!, against mu from its own recursion', bad, t)
+
+# --------------------------------------------------- thm:permutohedron-h-polynomial
+bad, t = [], 0
+for n in range(1, 8):
+    d = n - 1
+    h = [0] * (d + 2)
+    for i in range(0, d + 1):
+        f = factorial(i + 1) * S2[n][i + 1]          # f_{i-1} of the dual simplicial polytope
+        for j in range(0, d - i + 1):
+            h[i + j] += f * ((-1) ** j) * comb(d - i, j)
+    hp = h[:d + 1]
+    eu = [E[n][k] for k in range(0, max(n, 1))]
+    eu += [0] * (len(hp) - len(eu))
+    hp += [0] * (len(eu) - len(hp))
+    t += 1
+    if hp != eu:
+        bad.append((n, hp, eu))
+check('thm:permutohedron-h-polynomial',
+      'h_{P_n}(t) = A_n(t), from the ordered-set-partition face numbers', bad, t)
+
+# ------------------------------------------------------------ thm:bell-poly-partitions
+def _partial_bell(n, k, x):
+    B = [[F(0)] * (n + 1) for _ in range(n + 1)]
+    B[0][0] = F(1)
+    for a in range(1, n + 1):
+        for b in range(1, a + 1):
+            B[a][b] = sum((F(comb(a - 1, i - 1)) * x[i - 1] * B[a - i][b - 1]
+                           for i in range(1, a - b + 2)), F(0))
+    return B[n][k]
+
+
+bad, t = [], 0
+for n in range(1, 8):
+    xs = [F(random.randint(-5, 5), random.randint(1, 3)) for _ in range(n)]
+    parts = list(_setparts_fs(n))
+    for k in range(1, n + 1):
+        tot = F(0)
+        for p in parts:
+            if len(p) == k:
+                w = F(1)
+                for B in p:
+                    w *= xs[len(B) - 1]
+                tot += w
+        t += 1
+        if tot != _partial_bell(n, k, xs):
+            bad.append((n, k))
+    tot = F(0)
+    for p in parts:
+        w = F(1)
+        for B in p:
+            w *= xs[len(B) - 1]
+        tot += w
+    t += 1
+    if tot != sum((_partial_bell(n, k, xs) for k in range(1, n + 1)), F(0)):
+        bad.append(('complete', n))
+check('thm:bell-poly-partitions',
+      'B_{n,k} is the weight of partitions into k blocks; B_n of all partitions', bad, t)
+
 # --------------------------------------------------------------------- report
 width = max(len(lab) for lab, _, _, _ in RESULTS)
 failed = 0
