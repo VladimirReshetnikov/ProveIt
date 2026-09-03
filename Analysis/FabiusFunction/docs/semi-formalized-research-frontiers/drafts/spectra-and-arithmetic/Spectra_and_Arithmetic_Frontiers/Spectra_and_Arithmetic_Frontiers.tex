@@ -8322,6 +8322,21 @@ More general: for \emph{every} real \(t\) whose orbit returns,
 statement is \(t=a/q\), \(2^d\equiv1\pmod q\), together with the identity
 \(|1-e^{2\pi i\theta}|=2|\sin\pi\theta|\), which is not part of the module.
 The equality case \(q=3\) is not formal.\\
+\addlinespace
+\Cref{p3:thm:sign-law-r}, periodicity part: the parity of \(\binom j{r-1}\)
+is periodic in \(j\) (Lucas), hence \(\varepsilon_r\) is \(2\)-automatic &
+\decl{PascalParity.choose_mod_two_eq_mod_two_pow},
+\decl{PascalParity.choose_add_two_pow_mod_two},
+\decl{eventuallyPeriodic_parityWord_choose},
+\decl{finite_twoKernel_parityCharacter_choose} (module
+\lean{PascalParityPeriodic}) &
+Lucas mod \(2\), iterated: for \(k<2^m\) the parity of \(\binom hk\) depends
+only on \(h\bmod 2^m\), for every \(h,k,m\).  The library takes the period
+\(2^{r-1}\), which is a period but not the minimal one; the exact minimal
+period \(P_r=2^{m_r}\) and the count \(d_r\) of \(-1\) values per period in
+\eqref{p3:eq:Pr-dr} are not formal.  \(2\)-automaticity is the library's
+finiteness of the \(2\)-kernel of \(\varepsilon_r\), through
+\decl{finite_twoKernel_parityCharacter_iff}.\\
 \bottomrule
 \end{longtable}
 
