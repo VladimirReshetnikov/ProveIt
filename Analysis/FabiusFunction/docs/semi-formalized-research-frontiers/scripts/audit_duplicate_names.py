@@ -78,45 +78,50 @@ def strip_comments(text):
 
 
 NS_OPEN = re.compile(r'^namespace\s+([A-Za-z_][\w.\'!?]*)', re.M)
+SEC_OPEN = re.compile(r'^section(?:\s+([A-Za-z_][\w.\'!?]*))?\s*$', re.M)
 NS_CLOSE = re.compile(r'^end\s*([A-Za-z_][\w.\'!?]*)?\s*$', re.M)
 
 
 def qualified_names(text):
-    """Yield fully qualified declaration names, tracking `namespace`.
+    """Yield fully qualified declaration names, tracking `namespace` AND `section`.
 
-    Modules do NOT all sit in a bare `Fabius`: e.g.
-    `SaddleLogAsymptoticTransfer` opens `Fabius.SaddleExpansion`, so its
-    `coeff_pow_eq_zero_of_lt` genuinely does not collide with the one in
-    `Fabius`.  Keying on the short name reports that as a duplicate; the
-    stack is what makes the check sound.
+    Both are tracked on one stack, because Lean closes them with the same `end`.  A section frame
+    contributes nothing to the prefix but must still absorb its `end`; without that, the bare `end`
+    of an anonymous `section` pops the enclosing namespace and every declaration after it is
+    recorded unqualified.  That bug hid a real facade-blocking collision
+    (`Fabius.bernoulliPolySeries`, declared in two modules) and affected any of the 170 modules
+    here that contain a bare `end`.
 
-    `section ... end` also consumes an anonymous `end`, so only pop on
-    an `end` that either names the current namespace or is bare and
-    matched by an open namespace count.
+    Frames are `('ns', name)` or `('sec', name_or_None)`; the prefix is the dot-join of the
+    namespace frames only.
     """
     stack = []
     for line in text.splitlines():
         m = NS_OPEN.match(line)
         if m:
-            stack.append(m.group(1))
+            stack.append(('ns', m.group(1)))
+            continue
+        m = SEC_OPEN.match(line)
+        if m:
+            stack.append(('sec', m.group(1)))
             continue
         m = NS_CLOSE.match(line)
         if m and stack:
             closing = m.group(1)
-            if closing is None or closing == stack[-1]:
+            if closing is None:
                 stack.pop()
-            elif closing in stack:
-                # `end Foo` closing an outer namespace: drop to it.
-                while stack and stack[-1] != closing:
-                    stack.pop()
-                if stack:
-                    stack.pop()
+            else:
+                # `end X` closes the innermost frame named X, discarding anything inside it.
+                if any(name == closing for _kind, name in stack):
+                    while stack:
+                        _kind, name = stack.pop()
+                        if name == closing:
+                            break
             continue
         m = DECL.match(line)
         if m:
-            prefix = '.'.join(stack)
+            prefix = '.'.join(name for kind, name in stack if kind == 'ns')
             yield (prefix + '.' + m.group(1)) if prefix else m.group(1)
-
 
 def main():
     if not os.path.isdir(LEAN):
