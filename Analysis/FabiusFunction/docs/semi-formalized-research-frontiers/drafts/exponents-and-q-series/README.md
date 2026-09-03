@@ -70,7 +70,10 @@ missing module headers or declaration documentation.
 
 Current packages and retained intake records:
 
-- [`fabius_q_frontiers_report/`](q-fabius-parameter-deformations/fabius_q_frontiers_report/),
+- **Absorbed 2026-09-02 as Part~X of
+  [`geometric_q_fabius_frontiers/`](geometric_q_fabius_frontiers/);
+  the directory `q-fabius-parameter-deformations/fabius_q_frontiers_report/` no longer exists.**
+  Formerly `fabius_q_frontiers_report/`,
   *Parameter-Flow, Gaussian, and Large-Deviation Frontiers for the
   q-Fabius--Rvachev Family* (23 A4 pp and 1,506 source lines at arrival;
   current main artifact: 22 A4 pp from 1,492 source lines; with two scripts,
@@ -86,7 +89,10 @@ Current packages and retained intake records:
   PDFs contain the same eight Type-3 rows. Figure-font normalization remains
   deferred.
 
-- [`Continuous_Parameter_Edgeworth_and_q_Gevrey_Frontier/`](q-fabius-parameter-deformations/Continuous_Parameter_Edgeworth_and_q_Gevrey_Frontier/),
+- **Absorbed 2026-09-02 as Part~XI of
+  [`geometric_q_fabius_frontiers/`](geometric_q_fabius_frontiers/);
+  the directory `q-fabius-parameter-deformations/Continuous_Parameter_Edgeworth_and_q_Gevrey_Frontier/` no longer exists.**
+  Formerly `Continuous_Parameter_Edgeworth_and_q_Gevrey_Frontier/`,
   *Continuous-Parameter Edgeworth Theory, Large Deviations, and Quadratic
   q-Gevrey Regularity at the Fabius--Rvachev Frontier* (29 A4 pp and 1,387
   main-source lines at arrival; current main artifact: 29 A4 pp from 1,372
@@ -156,7 +162,10 @@ Current packages and retained intake records:
   Manuscript result labels and numerical checks remain
   distinct from Lean verification.
 
-- [`Cyclotomic_q_Fabius_Rvachev_Frontier/`](geometric-sinc-and-exponent-families/Cyclotomic_q_Fabius_Rvachev_Frontier/),
+- **Absorbed 2026-09-02 as Part~IX of
+  [`geometric_q_fabius_frontiers/`](geometric_q_fabius_frontiers/);
+  the directory `geometric-sinc-and-exponent-families/Cyclotomic_q_Fabius_Rvachev_Frontier/` no longer exists.**
+  Formerly `Cyclotomic_q_Fabius_Rvachev_Frontier/`,
   *Cyclotomic Blow-Ups and Natural Boundaries for the q-Fabius--Rvachev Sinc
   Product* (25 pp at arrival; currently 28 A4 pp and 1,875 source lines),
   arrived on 2026-08-30 from
@@ -177,7 +186,10 @@ Current packages and retained intake records:
   standalone vector figures retain nine embedded/subset Type-3 rows as
   disclosed archival debt.
 
-- [`Fabius_Rvachev_Frontier_Report/`](geometric-sinc-and-exponent-families/Fabius_Rvachev_Frontier_Report/),
+- **Absorbed 2026-09-02 as Part~VIII of
+  [`geometric_q_fabius_frontiers/`](geometric_q_fabius_frontiers/);
+  the directory `geometric-sinc-and-exponent-families/Fabius_Rvachev_Frontier_Report/` no longer exists.**
+  Formerly `Fabius_Rvachev_Frontier_Report/`,
 *Negative Parameters, Reciprocal Bases, and the Gaussian Boundary* (current
 1,475-line source and matching 26-page A4 PDF), arrived on 2026-08-30 with all
 13 payload checksums verified. Its current PDF was rebuilt from the final
@@ -189,7 +201,10 @@ consolidated volume, the report remains standalone until its genuinely new
 claims are isolated and the overlap is deliberately deduplicated.  Paper
 theorem labels do not by themselves assert Lean formalization.
 
-- [`Fabius_Flat_Parameter_Response_Dynamics/`](q-fabius-parameter-deformations/Fabius_Flat_Parameter_Response_Dynamics/),
+- **Absorbed 2026-09-02 as Part~XII of
+  [`geometric_q_fabius_frontiers/`](geometric_q_fabius_frontiers/);
+  the directory `q-fabius-parameter-deformations/Fabius_Flat_Parameter_Response_Dynamics/` no longer exists.**
+  Formerly `Fabius_Flat_Parameter_Response_Dynamics/`,
   *Flat Parameter Fronts, q-Susceptibility, and Smooth Dynamics* (26 A4 pp;
   current 1,890-line TeX and 519-line deterministic exact/Monte-Carlo program),
   was filed on 2026-08-30 from `fabius_frontier_report_2026.zip` (803,598 bytes;
@@ -552,7 +567,8 @@ remain research frontiers. These fractional-Volterra API claims were checked at 
 `149332f9d`.
 
 Geometric-sinc subgroup member:
-[`Exponents_and_q_Series_Frontiers/`](geometric-sinc-and-exponent-families/Exponents_and_q_Series_Frontiers/)
+[`geometric_q_fabius_frontiers/`](geometric_q_fabius_frontiers/), whose
+Parts~I--VII are the former `Exponents_and_q_Series_Frontiers/`
 (current semantic-union TeX: 16,369 lines and 737,912 bytes, SHA-256
 `a4aecd625f7eb405de866e2b368bbdc648fb0f9e11b423cb936a2f319d195f02`;
 retained PDF: 238 A4 pages and 6,953,898 bytes, SHA-256
