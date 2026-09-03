@@ -4,7 +4,7 @@ Twelve independently written articles that invert a rapidly growing special
 function at infinity to all orders, filed here on 2026-09-03 as quick-gate
 intakes in three batches: three from commit `5a453e1dc`, six more that
 arrived while that first batch was being published, and three (the Fibonacci
-subject below, arrival commit `0aedf78ae`) later the same day.  All twelve came as ZIP
+subject below) later the same day.  All twelve came as ZIP
 archives; the archives were deleted after unpacking and git history is the
 archive.
 
