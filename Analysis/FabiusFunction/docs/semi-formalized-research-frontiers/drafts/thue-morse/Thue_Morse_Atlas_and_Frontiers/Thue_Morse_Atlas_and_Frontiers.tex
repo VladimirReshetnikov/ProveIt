@@ -4203,10 +4203,17 @@ the self-reflective translation \(x=-c_m\).
 \]
 is formal for every complex \(t\): it is
 \lean{Fabius.sum\_range\_two\_pow\_thueMorseSign\_cexp\_affine} with
-\(a=-c_mt\) and \(z=t\).  The subsequent complex half-angle rewrite
-\(1-\EulerE^u=-2\EulerE^{u/2}\sinh(u/2)\), and hence the centered sinh product
-\eqref{p1:eq:centered-sinh} as a named complex theorem, is not yet packaged in
-Lean.  At the moment level, the reflection functional equation is
+\(a=-c_mt\) and \(z=t\).  For \emph{real} \(t\) the half-angle rewrite
+\(1-\EulerE^u=-2\EulerE^{u/2}\sinh(u/2)\) is
+\lean{Fabius.one\_sub\_exp\_eq\_sinh}, and the centered sinh product
+\eqref{p1:eq:centered-sinh} is formal exactly as displayed, with
+\(\prod_{j<m}\sinh(2^{j-1}t)\) written \(\prod_{j<m}\sinh(2^jt/2)\):
+\lean{Fabius.sum\_thueMorseSign\_exp\_centered\_eq\_sinh\_prod}
+(\path{ThueMorseSinhProduct.lean}), derived from the all-rings product
+identity \lean{Fabius.prod\_one\_sub\_pow\_eq\_sum\_thueMorseSign}; the
+uncentered form with its prefactor \(\EulerE^{c_mt}\) is
+\lean{Fabius.sum\_thueMorseSign\_exp\_eq\_sinh\_prod}.  The same statement
+for complex \(t\) is not yet packaged.  At the moment level, the reflection functional equation is
 \lean{Fabius.sum\_thueMorseSign\_mul\_add\_pow\_reflect}
 (\path{ThueMorseMoments.lean}, any commutative ring); the selection rule
 \eqref{p1:eq:centered-parity-zero} for odd \(m+r\) is
