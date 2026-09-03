@@ -1,6 +1,7 @@
 import FabiusFunction.HalfIntegerAliasIdentity
 import FabiusFunction.EffectiveFlatness
 import FabiusFunction.DyadicAnalytic
+import FabiusFunction.CyclicCharacterSums
 
 /-!
 # The alias coefficients as a half-range cosine transform of dyadic values
@@ -19,7 +20,10 @@ infinite sinc product (the alias class of `Φ` on the half-integers) and the
 `qBinomialThueMorseTranslatedFormulaIn_eq_fabiusAtInverseTwoPow`).
 
 The general tool is a fold of a sum over `ℤ/2Nℤ` of an even function onto
-the half range `1 ≤ k ≤ N-1`, `sum_zmod_even_eq_fold`.
+the half range `1 ≤ k ≤ N-1`, `sum_zmod_even_eq_fold`.  For odd `r` the
+half-range cosine sum vanishes (`sum_Ico_cos_alias_angle_odd`), which turns
+the display into the volume's sign form `p1:eq:A-F-DCT` with `1 - up` in place
+of `up` (`foldedCoefficient_eq_halfRange_cos_odd`).
 -/
 
 set_option autoImplicit false
@@ -157,5 +161,67 @@ theorem foldedCoefficient_two_pow_eq_fabiusDyadic (F : BoundedFabius) (hF : IsFa
     rw [hup k hk.2]
   rw [foldedCoefficient_eq_halfRange_cos F hF]
   simp only [Nat.cast_pow, Nat.cast_ofNat, hsum]
+
+/-! ## The sign form for odd residues (`p1:eq:A-F-DCT`) -/
+
+/-- The full cosine sum over a period vanishes for every nonzero residue `r`. -/
+theorem sum_cos_alias_angle_eq_zero (N : ℕ) [NeZero N] (r : ZMod (2 * N)) (hr : r ≠ 0) :
+    ∑ j : ZMod (2 * N), Complex.cos ((Real.pi * r.val * j.val / N : ℝ) : ℂ) = 0 := by
+  have h2 : (2 : ℂ) * ∑ j : ZMod (2 * N), Complex.cos ((Real.pi * r.val * j.val / N : ℝ) : ℂ)
+      = ∑ j : ZMod (2 * N), ZMod.stdAddChar (j * r)
+        + ∑ j : ZMod (2 * N), ZMod.stdAddChar (j * -r) := by
+    rw [mul_sum, ← sum_add_distrib]
+    refine sum_congr rfl fun j _ => ?_
+    rw [Complex.two_cos, stdAddChar_mul_eq_exp, mul_neg, stdAddChar_neg_mul_eq_exp]
+  rw [sum_stdAddChar_mul, sum_stdAddChar_mul, if_neg hr, if_neg (neg_ne_zero.mpr hr),
+    add_zero] at h2
+  exact (mul_eq_zero.mp h2).resolve_left two_ne_zero
+
+/-- For odd `r` the half-range cosine sum vanishes: `∑_{1 ≤ k < N} cos(π r k/N) = 0`. -/
+theorem sum_Ico_cos_alias_angle_odd (N : ℕ) [NeZero N] (r : ZMod (2 * N)) (hr : Odd r.val) :
+    ∑ k ∈ Ico 1 N, Complex.cos ((Real.pi * r.val * k / N : ℝ) : ℂ) = 0 := by
+  have hr0 : r ≠ 0 := by
+    rintro rfl
+    rw [ZMod.val_zero] at hr
+    exact (Nat.not_odd_iff_even.mpr even_zero) hr
+  have hN : (0 : ℝ) < N := by exact_mod_cast Nat.pos_of_ne_zero (NeZero.ne N)
+  have hfold := sum_zmod_even_eq_fold N
+    (fun j => Complex.cos ((Real.pi * r.val * j.val / N : ℝ) : ℂ)) (cos_alias_angle_neg N r)
+  rw [sum_cos_alias_angle_eq_zero N r hr0] at hfold
+  simp only at hfold
+  have h0 : Complex.cos ((Real.pi * r.val * (0 : ZMod (2 * N)).val / N : ℝ) : ℂ) = 1 := by
+    simp
+  have hNN : Complex.cos ((Real.pi * r.val * (N : ZMod (2 * N)).val / N : ℝ) : ℂ) = -1 := by
+    have hval : (N : ZMod (2 * N)).val = N := by
+      rw [ZMod.val_natCast, Nat.mod_eq_of_lt (by omega)]
+    have hang : (Real.pi * r.val * (N : ZMod (2 * N)).val / N : ℝ) = (r.val : ℕ) * Real.pi := by
+      rw [hval]
+      field_simp
+      ring
+    rw [hang, ← Complex.ofReal_cos, Real.cos_nat_mul_pi, Odd.neg_one_pow hr]
+    push_cast
+    ring
+  have hsum : ∑ k ∈ Ico 1 N,
+        Complex.cos ((Real.pi * r.val * ((k : ℕ) : ZMod (2 * N)).val / N : ℝ) : ℂ)
+      = ∑ k ∈ Ico 1 N, Complex.cos ((Real.pi * r.val * k / N : ℝ) : ℂ) := by
+    refine sum_congr rfl fun k hk => ?_
+    rw [mem_Ico] at hk
+    rw [ZMod.val_natCast, Nat.mod_eq_of_lt (by omega)]
+  rw [h0, hNN, hsum] at hfold
+  linear_combination (-1 / 2 : ℂ) * hfold
+
+/-- **`p1:eq:A-F-DCT`** in the form `F = 1 - up`: for odd `r`,
+`A_{N,r} = N⁻¹ [1 - 2 ∑_{1 ≤ k < N} (1 - up(k/N)) cos(π r k/N)]`. -/
+theorem foldedCoefficient_eq_halfRange_cos_odd (F : BoundedFabius) (hF : IsFabius F)
+    (N : ℕ) [NeZero N] (r : ZMod (2 * N)) (hr : Odd r.val) :
+    foldedCoefficient F N r
+      = (N : ℂ)⁻¹ * (1 - 2 * ∑ k ∈ Ico 1 N,
+          (1 - (rvachevUp F ((k : ℝ) / N) : ℂ)) *
+            Complex.cos ((Real.pi * r.val * k / N : ℝ) : ℂ)) := by
+  rw [foldedCoefficient_eq_halfRange_cos F hF]
+  congr 1
+  have h := sum_Ico_cos_alias_angle_odd N r hr
+  simp only [sub_mul, one_mul, sum_sub_distrib, h]
+  ring
 
 end Fabius
