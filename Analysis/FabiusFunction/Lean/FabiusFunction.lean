@@ -83,6 +83,10 @@ import FabiusFunction.EulerianPolynomialRecurrence
 import FabiusFunction.BellFactorialRowSum
 import FabiusFunction.BellInversionTwo
 import FabiusFunction.StirlingSecondReverseColumn
+import FabiusFunction.ElementarySymmetricBell
+import FabiusFunction.ExpLog
+import FabiusFunction.CumulantBellFormula
+import FabiusFunction.NewtonPowerSumBell
 import FabiusFunction.SymmetricFunctionTransform
 import FabiusFunction.SymmetricFunctionGenerating
 import FabiusFunction.FiniteQBinomialCore
