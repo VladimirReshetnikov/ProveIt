@@ -88,6 +88,84 @@ MUTATIONS = [
      '_g_mul(_g_pow(phi2, n2), det))',
      '_g_mul(_g_pow(phi2, n2), _g_one()))'),
 
+    # --- second pass: the entries the first pass left unmeasured ---
+
+    ('second-parity central: n & 2n -> n & 4n',
+     'if (S2[2 * n][n] % 2 == 1) != ((n & (2 * n)) == 0):',
+     'if (S2[2 * n][n] % 2 == 1) != ((n & (4 * n)) == 0):'),
+
+    ('second-parity regression: make the refuted form correct again',
+     'bad_pow = [n for n in range(1, 23) if (S2[2 * n][n] % 2 == 1) != (n > 0 and n & (n - 1) == 0)]',
+     'bad_pow = [n for n in range(1, 23) if (S2[2 * n][n] % 2 == 1) != ((n & (2 * n)) == 0)]'),
+
+    ('first-double-sum: C(j-1,k-1) -> C(j-1,k)',
+     'tot += F(comb(j - 1, k - 1) * comb(2 * n - k, j)) * inner',
+     'tot += F(comb(j - 1, k) * comb(2 * n - k, j)) * inner'),
+
+    ('signed-near-diagonal: (r+1)!^k -> r!^k',
+     'den *= factorial(kr) * factorial(r + 1) ** kr',
+     'den *= factorial(kr) * factorial(r) ** kr'),
+
+    ('chromatic: adjacency j-i < d -> j-i <= d',
+     'if all(not (j - i < d and col[i] == col[j])',
+     'if all(not (j - i <= d and col[i] == col[j])'),
+
+    ('fixed-point moments: sum to m -> sum to m+1',
+     'if e != sum(S2[n][k] for k in range(0, m + 1)):',
+     'if e != sum(S2[n][k] for k in range(0, m + 2)):'),
+
+    ('Cauchy b_4(0): -19/30 -> -19/31',
+     'F(-19, 30), F(0), F(4), F(-4), F(1)',
+     'F(-19, 31), F(0), F(4), F(-4), F(1)'),
+
+    ('permutohedron: face count (i+1)! -> i!',
+     'f = factorial(i + 1) * S2[n][i + 1]',
+     'f = factorial(i) * S2[n][i + 1]'),
+
+    ('Bell weighted partitions: compare against the wrong block count',
+     'if tot != _partial_bell(n, k, xs):',
+     'if tot != _partial_bell(n, k + 1, xs):'),
+
+    ('log-concavity: strict > becomes <',
+     'if not (S2[n][k] ** 2 > S2[n][k - 1] * S2[n][k + 1]):',
+     'if not (S2[n][k] ** 2 < S2[n][k - 1] * S2[n][k + 1]):'),
+
+    ('cycle index: i! -> (i+1)!',
+     'if tot / factorial(n) != bell_complete([F(factorial(i)) * a[i]',
+     'if tot / factorial(n) != bell_complete([F(factorial(i + 1)) * a[i]'),
+
+    ('Irwin-Hall: A(n,k)/n! -> A(n,k)/(n+1)!',
+     '!= F(E[n][k], factorial(n)):',
+     '!= F(E[n][k], factorial(n + 1)):'),
+
+    ('inverse-derivative: drop the leading minus sign',
+     'rhs = -sum((fd[k] * _partial_bell(n, k, gd[1:n + 1])',
+     'rhs = sum((fd[k] * _partial_bell(n, k, gd[1:n + 1])'),
+
+    ('binomial type: C(n,k) -> C(n,k+1) in the convolution',
+     'rhs[(i, j)] = rhs.get((i, j), F(0)) + F(comb(n, k)) * aa * bb',
+     'rhs[(i, j)] = rhs.get((i, j), F(0)) + F(comb(n, k + 1)) * aa * bb'),
+
+    ('res-subst: extract the wrong coefficient',
+     'idx = -1 - n',
+     'idx = -2 - n'),
+
+    ('Lagrange reversion: y^k/k! -> y^k/(k+1)!',
+     "if _q_trim(list(gv[k])) != _q_trim([cc / factorial(k) for cc in term]):",
+     "if _q_trim(list(gv[k])) != _q_trim([cc / factorial(k + 1) for cc in term]):"),
+
+    ('Faa di Bruno: f^{(|pi|)} -> f^{(|pi|+1)}',
+     'term = f_at(len(blocks))',
+     'term = f_at(len(blocks) + 1)'),
+
+    ('Bell quadratic: 1/(n-1) -> 1/n',
+     'rhs = {k: F(1, n - 1) * v for k, v in rhs.items()}',
+     'rhs = {k: F(1, n) * v for k, v in rhs.items()}'),
+
+    ('Pochhammer split: (a)_m (a+m)_n -> (a)_m (a)_n',
+     'if _poch(a, m + n) != _poch(a, m) * _poch(a + m, n):',
+     'if _poch(a, m + n) != _poch(a, m) * _poch(a, n):'),
+
     ('inverse-derivative operator: iterate n instead of n-1',
      'cur = _o_mul(invfp, _o_der(cur))',
      'cur = _o_mul(invfp, _o_der(_o_mul(invfp, _o_der(cur))))'),
