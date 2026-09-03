@@ -8545,6 +8545,31 @@ Repeat the proof of \cref{p2:thm:all-orders-Q}, replacing the geometric sum in $
 one in $b^{-2r}$.
 \end{proof}
 
+\emph{Formal versions.}  \Cref{p2:thm:base-b} is formal in \path{GeometricSincZeta.lean}, in
+exponential form with the prefix cleared and on exactly the stated domain
+\(|t|<\pi b^{m+1}\): \lean{Fabius.base\_geometric\_sinc\_eq\_prefix\_mul\_cexp} gives
+\[
+  \prod_{k\ge1}\SincRad\Bigl(\frac{t}{b^{k}}\Bigr)
+  =\prod_{k=1}^{m}\SincRad\Bigl(\frac{t}{b^{k}}\Bigr)
+  \exp\Bigl(-\sum_{r\ge1}\frac{\zeta(2r)}{r}
+  \frac{(t/(\pi b^{m+1}))^{2r}}{1-b^{-2r}}\Bigr),
+\]
+which is \eqref{p2:eq:base-b} once \(q=b^{-2}\) is substituted.  The proof is the one
+sketched above, carried out once for an \emph{arbitrary} complex ratio: the corpus's
+\(\mathrm{S}_q(z)=\prod_{n\ge0}\SincRad(\pi q^{n}z)\) satisfies
+\(\mathrm{S}_q(z)=\exp\bigl(-\sum_{r\ge1}\zeta(2r)z^{2r}/(r(1-q^{2r}))\bigr)\) on
+\(|z|<1\) for every \(|q|<1\) (\lean{Fabius.geometricSincProduct\_eq\_cexp}), with the
+finite-prefix form on \(|q^{m}z|<1\)
+(\lean{Fabius.geometricSincProduct\_eq\_prefix\_mul\_cexp}, via the shift
+\lean{Fabius.geometricSincProduct\_pow\_mul}).  The engine is the same pair-family Euler
+transform as in the dyadic case, with the geometric collapse
+\(\sum_{h}(q^{h}z)^{2r}=z^{2r}/(1-q^{2r})\) (\lean{Fabius.tsum\_pow\_mul\_even\_pow}) in
+place of \(\sum_h4^{-rh}\), and the pair power sums are again evaluated for every \(z\)
+(\lean{Fabius.geometric\_sinc\_pair\_powerSum}).  The dyadic theorem
+\cref{p2:thm:all-orders-Q} is the case \(q=1/2\); the base-\(b\) reading is \(q=1/b\) at
+\(z=t/(\pi b)\), where \(\pi q^{n}z=t/b^{n+1}\)
+(\lean{Fabius.tprod\_complexSinc\_div\_pow\_eq\_geometricSincProduct}).
+
 \section{An all-orders finite-block formula for the endpoint Laplace product}
 \label{p2:sec:Laplace-tail}
 
