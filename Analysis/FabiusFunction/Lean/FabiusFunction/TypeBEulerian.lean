@@ -33,10 +33,13 @@ def typeBEulerian : ℕ → ℕ → ℕ
   | n + 1, 0 => typeBEulerian n 0
   | n + 1, k + 1 => (2 * k + 3) * typeBEulerian n (k + 1) + (2 * n - 2 * k + 1) * typeBEulerian n k
 
+/-- The type-B Eulerian triangle starts at `1`. -/
 @[simp] theorem typeBEulerian_zero_zero : typeBEulerian 0 0 = 1 := rfl
 
+/-- Row `0` of the type-B Eulerian triangle vanishes beyond its first entry. -/
 @[simp] theorem typeBEulerian_zero_succ (k : ℕ) : typeBEulerian 0 (k + 1) = 0 := rfl
 
+/-- Column `0` of the type-B Eulerian triangle is constant down the rows. -/
 theorem typeBEulerian_succ_zero (n : ℕ) : typeBEulerian (n + 1) 0 = typeBEulerian n 0 := rfl
 
 /-- The recurrence `B(n+1,k+1) = (2k+3) B(n,k+1) + (2n-2k+1) B(n,k)`. -/

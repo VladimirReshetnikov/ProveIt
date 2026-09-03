@@ -923,8 +923,8 @@ moments of the Bell umbra are $1$ (\lean{Fabius.bellUmbra_descPochhammer})."""))
 
 PENDING += [
  # --- thm:second-parity ---
- (r"""Putting $k=n$ in \cref{eq:second-parity-bit} gives
-$n\BitwiseAnd\Floor{(n-1)/2}=0$, which is equivalent to $n$ having one $1$-bit.
+ (r"""condition is the same.  Powers of two are the $n$ with a single $1$-bit, a strictly
+smaller class.
 \end{proof}
 """,
   remark(r"""% ed.: crosswalk added 2026-09-02; the Lean proof is the reduction of the column series modulo 2.
@@ -939,8 +939,17 @@ parity of the new factor), so the column series of \cref{eq:second-ogf}
 becomes $(1-t)^{-\lceil k/2\rceil}$ (\lean{Fabius.stirlingColumnOGF_zmod_two})
 and its coefficients are the binomial coefficients
 (\lean{Fabius.stirlingSecond_add_zmod_two}).  The bitwise form
-\cref{eq:second-parity-bit} and the power-of-two criterion for
-$\StirlingSecondKind{2n}{n}$ rest on Lucas's theorem and are not formalized.""")),
+\cref{eq:second-parity-bit} is \lean{Fabius.stirlingSecond_odd_iff} and the central case
+is \lean{Fabius.stirlingSecond_two_mul_odd_iff} (module \lean{StirlingParityBitwise}).
+Both rest on Kummer's theorem at the prime two, \lean{Fabius.odd_choose_add_iff}: the
+coefficient $\binom{w+d}{w}$ is odd exactly when $w\BitwiseAnd d=0$.  Mathlib has
+Lucas's theorem but not this consequence, so it is proved in that module by induction on
+the binary digits, the digit factor of Lucas being $1$ in the three cases where the
+lowest digits of $w$ and $d$ do not collide and $0$ in the one case where they do.  The
+central case is where the corrected form of the statement matters: the $n$ for which
+$\StirlingSecondKind{2n}{n}$ is odd are those with no two adjacent $1$-bits, and
+\lean{Fabius.land_pred_div_two_iff} is the step that turns the criterion
+$n\BitwiseAnd\Floor{(n-1)/2}=0$ into that condition.""")),
 ]
 
 PENDING += [

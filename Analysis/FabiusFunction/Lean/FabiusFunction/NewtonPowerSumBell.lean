@@ -42,6 +42,7 @@ cumulants are the Newton weights. -/
 noncomputable def scaledElemSym (s : Finset ι) (u : ι → A) (j : ℕ) : A :=
   ((j.factorial : ℕ) : A) * ∑ t ∈ s.powersetCard j, ∏ i ∈ t, u i
 
+/-- The scaled elementary symmetric function at index `0` is the empty product `1`. -/
 theorem scaledElemSym_zero (s : Finset ι) (u : ι → A) : scaledElemSym A s u 0 = 1 := by
   rw [scaledElemSym, Finset.powersetCard_zero, Finset.sum_singleton, Finset.prod_empty,
     Nat.factorial_zero, Nat.cast_one, mul_one]

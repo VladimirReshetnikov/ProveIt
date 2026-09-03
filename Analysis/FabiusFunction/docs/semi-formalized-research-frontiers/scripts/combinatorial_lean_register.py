@@ -380,11 +380,15 @@ STATUS = {
    r"\lean{Fabius.sum_signedStirlingFirst_mul_bell_eq} is \cref{eq:weighted-bell-special}, "
    r"over any commutative ring, from the umbral shift \lean{Fabius.bellUmbra_descPochhammer_mul} "
    r"(module \lean{BellUmbra})."),
- 'thm:second-parity': ('partial',
+ 'thm:second-parity': ('Lean',
    r"\cref{eq:second-parity-binomial} is \lean{Fabius.stirlingSecond_modEq_choose_two} "
    r"(module \lean{StirlingParity}), for $1\le k\le n$, from the column series modulo $2$, "
-   r"\lean{Fabius.stirlingColumnOGF_zmod_two}; the bitwise form \cref{eq:second-parity-bit} "
-   r"(Lucas) and the power-of-two criterion are not formalized."),
+   r"\lean{Fabius.stirlingColumnOGF_zmod_two}.  The bitwise form "
+   r"\cref{eq:second-parity-bit} is \lean{Fabius.stirlingSecond_odd_iff} and the central "
+   r"case is \lean{Fabius.stirlingSecond_two_mul_odd_iff} (module "
+   r"\lean{StirlingParityBitwise}), both resting on Kummer's theorem at the prime two, "
+   r"\lean{Fabius.odd_choose_add_iff}, which is proved there from Mathlib's Lucas "
+   r"theorem by induction on the binary digits."),
  'thm:merged-catalan-reflection': ('Lean',
    r"The Dyck-word count is Mathlib's \lean{DyckWord.card_dyckWord_semilength_eq_catalan}; "
    r"$\CatalanNumber n=\binom{2n}{n}/(n+1)$ is \lean{catalan_eq_centralBinom_div} and the "
@@ -535,16 +539,18 @@ STATUS = {
    r"\lean{Bell.egfA_mul} makes the generating function of the power a power "
    r"(\lean{Fabius.egfA_diamondPow}), and \lean{Fabius.bellWeightSeries_pow} reads off its "
    r"coefficients"),
- 'thm:bell-symmetric-functions': ('partial',
+ 'thm:bell-symmetric-functions': ('Lean',
    r"\cref{eq:elementary-via-bell} is \lean{Fabius.esymm_eq_bell_complete} and its sign "
    r"variant \lean{Fabius.esymm_eq_neg_bell_complete} (\lean{ElementarySymmetricBell}), for a "
    r"finite family in any commutative $\mathbb Q$-algebra; \cref{eq:powersum-via-bell} is "
    r"\lean{Fabius.newton_power_sum} in cleared form and \lean{Fabius.power_sum_eq} in the "
-   r"divided form (\lean{NewtonPowerSumBell}).  Both rest on "
-   r"\lean{Fabius.exp_subst_logOf} (\lean{ExpLog}), which supplies the $\exp\circ\log$ "
-   r"inverse Mathlib lacks, and on \lean{Fabius.cumulant_eq_cumulantSum} "
-   r"(\lean{CumulantBellFormula}).  The second form of \cref{eq:powersum-via-bell}, through "
-   r"the ordinary partial Bell polynomials, is not formalized"),
+   r"divided form (\lean{NewtonPowerSumBell}), with its second form, through the ordinary "
+   r"partial Bell polynomials, as \lean{Fabius.power_sum_eq_ord_bell} "
+   r"(\lean{PowerSumOrdinaryBell}).  All of it rests on \lean{Fabius.exp_subst_logOf} "
+   r"(\lean{ExpLog}), which supplies the $\exp\circ\log$ inverse Mathlib lacks, and on "
+   r"\lean{Fabius.cumulant_eq_cumulantSum} (\lean{CumulantBellFormula}); the two forms of "
+   r"\cref{eq:powersum-via-bell} are the exponential and the ordinary reading of the same "
+   r"$\log E$, equated"),
  'thm:touchard-poly': ('Lean',
    r"\cref{eq:touchard-poly} is \lean{Fabius.touchardPolynomial_add_prime} "
    r"(\lean{TouchardPolyCongruence}), an identity in $(\mathbb Z/p)[x]$, read off from Spivey's "
