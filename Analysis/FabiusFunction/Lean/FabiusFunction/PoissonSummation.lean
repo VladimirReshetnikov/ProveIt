@@ -39,7 +39,7 @@ noncomputable section
 
 /-- The Schwartz function obtained by positively rescaling Rvachev's compactly
 supported smooth function. -/
-private noncomputable def scaledRvachevSchwartz
+noncomputable def scaledRvachevSchwartz
     (F : BoundedFabius) (hF : IsFabius F) (u : ℝ) (hu : u ≠ 0) : SchwartzMap ℝ ℂ := by
   let f : ℝ → ℝ := fun x ↦ rvachevUp F (u * x)
   have hf_compact : HasCompactSupport f := by
@@ -51,12 +51,16 @@ private noncomputable def scaledRvachevSchwartz
   exact (hf_compact.comp_left (map_zero Complex.ofRealCLM)).toSchwartzMap
     (Complex.ofRealCLM.contDiff.comp hf_smooth)
 
-private lemma scaledRvachevSchwartz_apply
+/-- Evaluating the rescaled Rvachev Schwartz map at `x` recovers the
+complexified Rvachev function at the scaled argument `u * x`. -/
+lemma scaledRvachevSchwartz_apply
     (F : BoundedFabius) (hF : IsFabius F) (u : ℝ) (hu : u ≠ 0) (x : ℝ) :
     scaledRvachevSchwartz F hF u hu x = (rvachevUp F (u * x) : ℂ) :=
   rfl
 
-private lemma fourier_scaledRvachevSchwartz
+/-- For positive `u`, the Fourier transform of the rescaled Rvachev function is
+`u⁻¹` times `rvachevFourier` evaluated at `w / u`. -/
+lemma fourier_scaledRvachevSchwartz
     (F : BoundedFabius) (hF : IsFabius F) {u : ℝ} (hu : 0 < u) (w : ℝ) :
     𝓕 (scaledRvachevSchwartz F hF u hu.ne') w =
       (u⁻¹ : ℝ) • rvachevFourier F (((w / u : ℝ) : ℂ)) := by
@@ -293,7 +297,12 @@ theorem rvachev_even_translate_fourier
       norm_num
       ring
 
-private lemma rvachevFourier_half_int_summable
+/-- The Fourier transform of a bounded Fabius solution is summable over the
+half-integers `k/2`, `k` ranging over `ℤ`.  This is the summability
+hypothesis the half-integer Poisson summation below consumes; it comes from
+the Schwartz decay of the rescaled Rvachev profile rather than from any
+property of the lattice. -/
+lemma rvachevFourier_half_int_summable
     (F : BoundedFabius) (hF : IsFabius F) :
     Summable fun k : ℤ ↦ rvachevFourier F ((((k : ℝ) / 2 : ℝ) : ℂ)) := by
   let φ : SchwartzMap ℝ ℂ :=

@@ -1,0 +1,927 @@
+\chapter{Theta modularity, lattice dissection, and sums of squares}
+\label{chap:theta-modularity-squares}
+
+This chapter collects the theta-function consequences that are not needed for
+the elementary development of the Jacobi triple product in
+\Cref{chap:jtp}, but which reveal its modular and arithmetic force.  The
+arguments are deliberately explicit: Poisson summation supplies modular
+inversion, lattice dissection supplies product identities, and unique
+factorization or logarithmic differentiation converts theta coefficients into
+divisor sums.  Throughout the analytic sections, $0<\AbsoluteValue q<1$.
+
+\section{Watson's quintuple product}
+
+\begin{theorem}[Watson's quintuple product]
+\label{qg:thm-quintuple-product}
+For $z\ne0$,
+\begin{align}
+ &(q,-z,-q/z;q)_\infty(qz^2,q/z^2;q^2)_\infty\notag\\
+ &\qquad=\sum_{n\in\IntegerNumbers}(-1)^n
+ q^{n(3n-1)/2}z^{3n}(1+zq^n).
+\label{eq:qg-quintuple-product}
+\end{align}
+\end{theorem}
+
+\begin{proof}
+By \Cref{thm:jtp},
+\begin{align*}
+ (-z,-q/z,q;q)_\infty
+   &=\sum_{r\in\IntegerNumbers}q^{r(r-1)/2}z^r,\\
+ (qz^2,q/z^2,q^2;q^2)_\infty
+   &=\sum_{s\in\IntegerNumbers}(-1)^sq^{s^2}z^{2s}.
+\end{align*}
+Consequently, the left side of
+\eqref{eq:qg-quintuple-product}, multiplied by $(q^2;q^2)_\infty$, is
+the product of these two bilateral series.  Both converge absolutely for $0<\AbsoluteValue q<1$
+and $z\ne0$, so the doubly indexed family of products is unconditionally summable over
+$\IntegerNumbers^2$; grouping it along the fibres $r+2s=m$ is therefore a legitimate
+rearrangement, and no appeal to uniqueness of Laurent coefficients is required.  The coefficient
+of $z^m$ is
+\begin{equation}
+ q^{m(m-1)/2}\sum_{s\in\IntegerNumbers}(-1)^s
+ q^{3s^2+(1-2m)s}.
+\label{eq:qg-quintuple-coefficient}
+\end{equation}
+Apply the minus-sign form of the triple product with base $Q=q^6$, together with the iterated
+quasi-periodicity
+\[
+ \BilateralTheta{Q^{j}w}{Q}\,Q^{\binom j2}w^{\,j}=\BilateralTheta{w}{Q}
+ \qquad(j\in\IntegerNumbers),
+\]
+which follows from \Cref{cor:theta-quasi} by induction in both directions.  This gives, when
+$m=3n$,
+\[
+ \sum_{s\in\IntegerNumbers}(-1)^sq^{3s^2+(1-6n)s}
+ =(-1)^nq^{-3n^2+n}(q^2;q^2)_\infty.
+\]
+Thus \eqref{eq:qg-quintuple-coefficient} equals
+$(-1)^nq^{n(3n-1)/2}(q^2;q^2)_\infty$.  When $m=3n+1$, the same
+calculation gives
+$(-1)^nq^{n(3n+1)/2}(q^2;q^2)_\infty$; explicitly, the shift is by $Q^{-n}$ starting from $-q^{2}$
+rather than from $-q^{4}$, which contributes $(-1)^nq^{-3n^2-n}$, and
+$\binom{3n+1}{2}-3n^2-n=n(3n+1)/2$.
+
+When $m=3n+2$ the inner sum is $\BilateralTheta{-q^{-6n}}{Q}=\BilateralTheta{-Q^{-n}}{Q}$, and
+$-Q^{-n}$ lies in the zero set $\{-Q^{j}:j\in\IntegerNumbers\}$ of $\BilateralTheta{\cdot}{Q}$
+given by \Cref{cor:theta-quasi}; hence it vanishes, uniformly in $n$ and with no case
+distinction.  The shift used above is equally uniform: taking $w=-1$ and $j=-n$ in the iterated
+quasi-periodicity gives $\BilateralTheta{-Q^{-n}}{Q}\,Q^{\binom{-n}{2}}(-1)^{-n}
+=\BilateralTheta{-1}{Q}=0$, since $-1=-Q^{0}$ lies in the zero set.  What does require a case
+distinction is reading the vanishing directly off the product without shifting: the offending
+factor then sits in $(q^{-6n};q^6)_\infty$ when $n\ge0$, but in $(q^{6n+6};q^6)_\infty$ when
+$n\le-1$.
+
+After division by the nonzero product $(q^2;q^2)_\infty$, only the powers
+$z^{3n}$ and $z^{3n+1}$ remain.  Their coefficients are respectively
+\[
+ (-1)^nq^{n(3n-1)/2},
+ \qquad
+ (-1)^nq^{n(3n+1)/2},
+\]
+which combine to the right side of
+\eqref{eq:qg-quintuple-product}.
+\end{proof}
+
+\begin{remark}[Coefficient dissection and root-system products]
+The proof illustrates a mechanism that persists in higher-rank product
+identities.  Multiplying two Jacobi factors first produces a lattice sum;
+fixing the exponent of $z$ restricts that lattice to an affine slice; and the
+remaining one-dimensional theta factor then uses its zeros and
+quasi-periodicity to distinguish residue classes.  In Macdonald-type
+root-system products, higher-dimensional lattice cosets and Weyl symmetries
+play analogous roles.  This is a structural comparison, not an invocation or
+proof of a root-system identity.
+\end{remark}
+
+\section{Jacobi theta functions and the heat equation}
+
+Let $\tau$ lie in the upper half-plane and put
+\[
+ q=\EulerE^{\pi\ImaginaryUnit\tau},
+ \qquad
+ \zeta=\EulerE^{2\pi\ImaginaryUnit z}.
+\]
+Whenever a rational power of $q$ occurs in the theta or eta formulas, it is
+defined by
+\[
+ q^\alpha:=\EulerE^{\pi\ImaginaryUnit\alpha\tau};
+\]
+it is not a power obtained from an unspecified logarithm of the complex number
+$q$.
+Whenever $\zeta^{1/2}$ occurs below, it means the single-valued expression
+$\EulerE^{\pi\ImaginaryUnit z}$, not an unspecified square root.
+
+\begin{definition}[Jacobi theta functions]
+\label{qg:def-jacobi-theta}
+\begin{align}
+ \vartheta_3(z\mid\tau)
+  &=\sum_{n\in\IntegerNumbers}
+    \EulerE^{\pi\ImaginaryUnit n^2\tau+2\pi\ImaginaryUnit nz}
+   =\sum_{n\in\IntegerNumbers}q^{n^2}\zeta^n,
+ \label{eq:qg-theta3-definition}\\
+ \vartheta_4(z\mid\tau)
+  &=\sum_{n\in\IntegerNumbers}(-1)^n
+    \EulerE^{\pi\ImaginaryUnit n^2\tau+2\pi\ImaginaryUnit nz},
+ \label{eq:qg-theta4-definition}\\
+ \vartheta_2(z\mid\tau)
+  &=\sum_{n\in\IntegerNumbers}
+    \EulerE^{\pi\ImaginaryUnit(n+1/2)^2\tau
+      +2\pi\ImaginaryUnit(n+1/2)z}.
+ \label{eq:qg-theta2-definition}
+\end{align}
+\end{definition}
+
+These series and all their termwise derivatives converge normally on compact
+subsets of $\ComplexNumbers\times\{\operatorname{Im}\tau>0\}$.
+
+\begin{proposition}[Theta product forms]
+\label{qg:prop-theta-products}
+One has
+\begin{align}
+ \vartheta_3(z\mid\tau)
+  &=(q^2,-q\zeta,-q/\zeta;q^2)_\infty,
+ \label{eq:qg-theta3-product}\\
+ \vartheta_4(z\mid\tau)
+  &=(q^2,q\zeta,q/\zeta;q^2)_\infty,
+ \label{eq:qg-theta4-product}\\
+ \vartheta_2(z\mid\tau)
+  &=q^{1/4}\zeta^{1/2}
+    (q^2,-q^2\zeta,-\zeta^{-1};q^2)_\infty.
+ \label{eq:qg-theta2-product}
+\end{align}
+In particular,
+\begin{align}
+ \vartheta_2(0\mid\tau)
+  &=2q^{1/4}(q^2;q^2)_\infty(-q^2;q^2)_\infty^2,
+ \label{eq:qg-theta2-null}\\
+ \vartheta_3(0\mid\tau)
+  &=(q^2;q^2)_\infty(-q;q^2)_\infty^2,
+ \label{eq:qg-theta3-null}\\
+ \vartheta_4(0\mid\tau)
+  &=(q^2;q^2)_\infty(q;q^2)_\infty^2.
+ \label{eq:qg-theta4-null}
+\end{align}
+\end{proposition}
+
+\begin{proof}
+Apply \Cref{thm:jtp} with base $q^2$.  The substitution $z=-q\zeta$
+there works because
+\[
+ (-1)^n(q^2)^{\binom n2}(-q\zeta)^n=q^{n^2}\zeta^n;
+\]
+the substitution $z=q\zeta$ gives the second formula.  Finally,
+\[
+ \vartheta_2(z\mid\tau)
+ =q^{1/4}\zeta^{1/2}
+  \sum_{n\in\IntegerNumbers}q^{n(n+1)}\zeta^n,
+\]
+and the triple product with argument $-q^2\zeta$ gives
+\eqref{eq:qg-theta2-product}.  Set $z=0$ and use
+$(-1;q^2)_\infty=2(-q^2;q^2)_\infty$ to obtain the three null values.
+\end{proof}
+
+\begin{proposition}[Heat equation]
+\label{qg:prop-theta-heat}
+Each $\vartheta_j$, for $j=2,3,4$, satisfies
+\begin{equation}
+ \frac{\partial\vartheta_j}{\partial\tau}
+ =\frac{1}{4\pi\ImaginaryUnit}
+   \frac{\partial^2\vartheta_j}{\partial z^2}.
+\label{eq:qg-theta-heat}
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+For a summand with shift $\alpha\in\{0,1/2\}$, differentiation in
+$\tau$ multiplies by $\pi\ImaginaryUnit(n+\alpha)^2$, whereas two
+differentiations in $z$ multiply by $-4\pi^2(n+\alpha)^2$.  Since
+$-4\pi^2/(4\pi\ImaginaryUnit)=\pi\ImaginaryUnit$, the identities hold
+term by term; normal convergence justifies both differentiations.
+\end{proof}
+
+\section{Poisson summation and modular inversion}
+
+\begin{definition}[Fourier transform convention]
+\label{qg:def-fourier-transform}
+For an integrable function $f:\RealNumbers\to\ComplexNumbers$ and
+$\xi\in\RealNumbers$, write
+\[
+ \FourierTwoPi{f}(\xi)
+ =\int_{\RealNumbers}f(x)\EulerE^{-2\pi\ImaginaryUnit x\xi}
+   \,\Differential x.
+\]
+\end{definition}
+
+\begin{theorem}[Poisson summation]
+\label{qg:thm-poisson}
+For every Schwartz function $f:\RealNumbers\to\ComplexNumbers$, one has
+\begin{equation}
+ \sum_{n\in\IntegerNumbers}f(n)
+ =\sum_{k\in\IntegerNumbers}\FourierTwoPi{f}(k).
+\label{eq:qg-poisson}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+The periodization $P(x)=\sum_{n\in\IntegerNumbers}f(x+n)$ and all its
+derivatives converge uniformly.  Thus $P$ is smooth and $1$-periodic.  Its
+$k$th Fourier coefficient is
+\begin{align*}
+ \int_0^1P(x)\EulerE^{-2\pi\ImaginaryUnit kx}\,\Differential x
+ &=\sum_{n\in\IntegerNumbers}\int_0^1
+   f(x+n)\EulerE^{-2\pi\ImaginaryUnit kx}\,\Differential x\\
+ &=\int_{\RealNumbers}f(u)\EulerE^{-2\pi\ImaginaryUnit ku}
+   \,\Differential u
+ =\FourierTwoPi{f}(k),
+\end{align*}
+because $\EulerE^{2\pi\ImaginaryUnit kn}=1$.  Repeated integration by
+parts makes these Fourier coefficients rapidly decreasing.  The Fourier
+inversion theorem for smooth periodic functions therefore gives an absolutely
+and uniformly convergent Fourier series for $P$.  Evaluating it at $x=0$ proves
+\eqref{eq:qg-poisson}.
+\end{proof}
+
+\begin{lemma}[Fourier transform of a complex Gaussian]
+\label{qg:lem-gaussian-fourier}
+If $\operatorname{Im}\tau>0$ and $u\in\ComplexNumbers$, then, with the
+principal square-root branch,
+\begin{equation}
+ \int_{\RealNumbers}
+ \EulerE^{\pi\ImaginaryUnit\tau x^2+2\pi\ImaginaryUnit ux}
+ \,\Differential x
+ =(-\ImaginaryUnit\tau)^{-1/2}
+  \EulerE^{-\pi\ImaginaryUnit u^2/\tau}.
+\label{eq:qg-complex-gaussian}
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+First let $\tau=\ImaginaryUnit t$ with $t>0$, and for real $u$ put
+\[
+ I_t(u)=\int_{\RealNumbers}
+ \EulerE^{-\pi t x^2+2\pi\ImaginaryUnit ux}\,\Differential x.
+\]
+Differentiation under the integral is justified by Gaussian domination.  Since
+\[
+ \frac{\Differential}{\Differential x}\EulerE^{-\pi t x^2}
+ =-2\pi t x\,\EulerE^{-\pi t x^2},
+\]
+integration by parts, with vanishing boundary term, gives
+\begin{align*}
+ I_t'(u)
+ &=2\pi\ImaginaryUnit\int_{\RealNumbers}
+   x\EulerE^{-\pi t x^2+2\pi\ImaginaryUnit ux}\,\Differential x\\
+ &=-\frac{\ImaginaryUnit}{t}
+   \int_{\RealNumbers}
+   \frac{\Differential}{\Differential x}
+   \bigl(\EulerE^{-\pi t x^2}\bigr)
+   \EulerE^{2\pi\ImaginaryUnit ux}\,\Differential x\\
+ &=-\frac{2\pi u}{t}I_t(u).
+\end{align*}
+Because the ordinary Gaussian integral gives $I_t(0)=t^{-1/2}$, this
+differential equation yields
+\[
+ I_t(u)=t^{-1/2}\EulerE^{-\pi u^2/t}
+ \qquad (u\in\RealNumbers).
+\]
+
+For $u$ in a compact subset of $\ComplexNumbers$, the integrand and all its
+$u$-derivatives are dominated by a constant times
+\[
+ \EulerE^{-\pi t x^2+C\AbsoluteValue x},
+\]
+so the integral is entire in $u$.  The identity theorem therefore extends the
+formula to every complex $u$.
+
+Finally, if $K$ is a compact subset of the upper half-plane and $u$ is fixed,
+then for some $\delta>0$ and all $\tau\in K$,
+\[
+ \left|
+ \EulerE^{\pi\ImaginaryUnit\tau x^2+2\pi\ImaginaryUnit ux}
+ \right|
+ \le
+ \EulerE^{-\pi\delta x^2+2\pi\AbsoluteValue{\operatorname{Im}u}
+                    \AbsoluteValue x}.
+\]
+The same bound with an additional polynomial factor handles every
+$\tau$-derivative.  Thus the integral is holomorphic in $\tau$.  The identity
+theorem extends the formula from the positive imaginary axis to the whole
+upper half-plane.  Since $-\ImaginaryUnit\tau$ lies in the right half-plane,
+its principal square root is holomorphic there and is characterized by
+\[
+ (-\ImaginaryUnit\cdot\ImaginaryUnit t)^{1/2}=t^{1/2}.
+\]
+\end{proof}
+
+\begin{theorem}[Jacobi imaginary transformation]
+\label{qg:thm-jacobi-imaginary}
+For $\operatorname{Im}\tau>0$ and $z\in\ComplexNumbers$,
+\begin{equation}
+ \vartheta_3\!\left(\frac z\tau\middle|-\frac1\tau\right)
+ =(-\ImaginaryUnit\tau)^{1/2}
+  \EulerE^{\pi\ImaginaryUnit z^2/\tau}\vartheta_3(z\mid\tau).
+\label{eq:qg-theta3-modular}
+\end{equation}
+At $z=0$,
+\begin{align}
+ \vartheta_2(0\mid-1/\tau)
+  &=(-\ImaginaryUnit\tau)^{1/2}\vartheta_4(0\mid\tau),
+ \label{eq:qg-theta2-modular}\\
+ \vartheta_3(0\mid-1/\tau)
+  &=(-\ImaginaryUnit\tau)^{1/2}\vartheta_3(0\mid\tau),
+ \label{eq:qg-theta3-null-modular}\\
+ \vartheta_4(0\mid-1/\tau)
+  &=(-\ImaginaryUnit\tau)^{1/2}\vartheta_2(0\mid\tau).
+ \label{eq:qg-theta4-modular}
+\end{align}
+\end{theorem}
+
+\begin{proof}
+Apply \Cref{qg:thm-poisson} to
+$f(x)=\EulerE^{\pi\ImaginaryUnit\tau x^2+2\pi\ImaginaryUnit zx}$.
+For fixed $z$, the Gaussian decay supplied by $\operatorname{Im}\tau>0$
+shows that $f$ is a Schwartz function.
+By \Cref{qg:lem-gaussian-fourier},
+\[
+ \FourierTwoPi{f}(k)=(-\ImaginaryUnit\tau)^{-1/2}
+ \EulerE^{-\pi\ImaginaryUnit(z-k)^2/\tau}.
+\]
+After factoring out
+$\EulerE^{-\pi\ImaginaryUnit z^2/\tau}$, Poisson summation is exactly
+\eqref{eq:qg-theta3-modular}.  For the shifted Gaussian
+$f(x)=\EulerE^{\pi\ImaginaryUnit\tau(x+1/2)^2}$, translation by $1/2$
+multiplies the $k$th Fourier transform by $(-1)^k$.  Poisson summation then
+gives
+\[
+ \vartheta_2(0\mid\tau)
+ =(-\ImaginaryUnit\tau)^{-1/2}\vartheta_4(0\mid-1/\tau).
+\]
+This is \eqref{eq:qg-theta4-modular}; replacing $\tau$ by $-1/\tau$
+and using the chosen branch gives \eqref{eq:qg-theta2-modular}.
+\end{proof}
+
+\begin{definition}[Dedekind eta function]
+\label{qg:def-dedekind-eta}
+For $\operatorname{Im}\tau>0$,
+\begin{equation}
+ \eta(\tau)=\EulerE^{\pi\ImaginaryUnit\tau/12}
+ \prod_{n=1}^{\infty}(1-\EulerE^{2\pi\ImaginaryUnit n\tau})
+ =q^{1/12}(q^2;q^2)_\infty.
+\label{eq:qg-eta-definition}
+\end{equation}
+\end{definition}
+
+\begin{theorem}[Theta--eta product and eta modularity]
+\label{qg:thm-theta-eta-modular}
+One has
+\begin{align}
+ \vartheta_2(0\mid\tau)\vartheta_3(0\mid\tau)
+ \vartheta_4(0\mid\tau)&=2\eta(\tau)^3,
+ \label{eq:qg-theta-eta}\\
+ \eta(\tau+1)&=\EulerE^{\pi\ImaginaryUnit/12}\eta(\tau),
+ \label{eq:qg-eta-T}\\
+ \eta(-1/\tau)&=(-\ImaginaryUnit\tau)^{1/2}\eta(\tau).
+ \label{eq:qg-eta-S}
+\end{align}
+\end{theorem}
+
+\begin{proof}
+Multiply the three null-value formulas in
+\Cref{qg:prop-theta-products}.  The elementary product relations
+\[
+ (-q;q^2)_\infty(q;q^2)_\infty=(q^2;q^4)_\infty,
+ \qquad
+ (-q^2;q^2)_\infty=\frac{(q^4;q^4)_\infty}{(q^2;q^2)_\infty},
+\]
+and
+$(q^2;q^2)_\infty=(q^2;q^4)_\infty(q^4;q^4)_\infty$
+reduce the product to $2q^{1/4}(q^2;q^2)_\infty^3=2\eta(\tau)^3$.
+
+The translation formula follows immediately from the definition.  Applying
+the three modular formulas in \Cref{qg:thm-jacobi-imaginary} to the theta--eta
+product yields
+\[
+ \eta(-1/\tau)^3=(-\ImaginaryUnit\tau)^{3/2}\eta(\tau)^3.
+\]
+Moreover, $\eta$ has no zeros in the upper half-plane.  Indeed,
+\[
+ \sum_{n\ge1}\AbsoluteValue{\EulerE^{2\pi\ImaginaryUnit n\tau}}<\infty,
+\]
+and none of the factors
+$1-\EulerE^{2\pi\ImaginaryUnit n\tau}$ vanishes; hence the convergent infinite
+product in \eqref{eq:qg-eta-definition} is nonzero.  Since
+$-\ImaginaryUnit\tau$ lies in the right half-plane, its principal square root
+is also holomorphic and nonzero there.
+The quotient
+\[
+ h(\tau)=\frac{\eta(-1/\tau)}
+ {(-\ImaginaryUnit\tau)^{1/2}\eta(\tau)}
+\]
+is holomorphic and takes values among the cube roots of unity, hence is
+constant.  At $\tau=\ImaginaryUnit$ it equals $1$, proving
+\eqref{eq:qg-eta-S} with no unresolved root of unity.
+\end{proof}
+
+\section{Ramanujan's theta function and lattice dissection}
+
+\begin{definition}[Ramanujan's general theta function]
+\label{qg:def-ramanujan-theta}
+For $a,b\in\ComplexNumbers$ with $\AbsoluteValue{ab}<1$, set
+\begin{equation}
+ \RamanujanTheta{a}{b}=\sum_{n\in\IntegerNumbers}
+ a^{n(n+1)/2}b^{n(n-1)/2}.
+\label{eq:qg-ramanujan-theta}
+\end{equation}
+Here a zeroth power is $1$, including at a zero base.  Pairing the terms
+indexed by $n$ and $-n$ gives the unambiguous form
+\[
+ \RamanujanTheta{a}{b}=1+\sum_{n=1}^{\infty}
+ (a^n+b^n)(ab)^{n(n-1)/2}.
+\]
+This series converges normally on compact subsets of
+$\{(a,b):\AbsoluteValue{ab}<1\}$: on such a compact set its $n$th paired
+term is bounded by $2M^n\rho^{n(n-1)/2}$ for suitable $M<\infty$ and
+$\rho<1$.
+\end{definition}
+
+\begin{proposition}[Ramanujan's product]
+\label{qg:prop-ramanujan-product}
+For $a,b\in\ComplexNumbers$ with $\AbsoluteValue{ab}<1$,
+\begin{equation}
+ \RamanujanTheta{a}{b}=(-a,-b,ab;ab)_\infty.
+\label{eq:qg-ramanujan-product}
+\end{equation}
+At base zero, the infinite symbol is interpreted by its natural extension
+$(c;0)_\infty:=1-c$.
+\end{proposition}
+
+\begin{proof}
+If $ab\ne0$, then both $a$ and $b$ are nonzero.  In \Cref{thm:jtp}, take
+the base to be $ab$ and the argument to be $-a$.  The $n$th summand becomes
+\[
+ (-1)^n(ab)^{\binom n2}(-a)^n
+ =a^{n(n+1)/2}b^{n(n-1)/2},
+\]
+and the product is $(-a,-b,ab;ab)_\infty$.
+
+If $ab=0$, the paired form of the defining series gives
+$\RamanujanTheta{a}{b}=1+a+b$.  With the stated zero-base convention, the product side is
+\[
+ (1+a)(1+b)=1+a+b+ab=1+a+b.
+\]
+Thus the identity also holds in the degenerate cases.
+\end{proof}
+
+For $\AbsoluteValue Q<1$ and $x\in\ComplexNumbers^\times$ write
+\[
+ \BilateralQuadraticTheta{x}{Q}
+ =\sum_{n\in\IntegerNumbers}Q^{n^2}x^n.
+\]
+The quadratic exponent makes this series absolutely convergent for every such
+$Q$ and $x$.
+Its exact crosswalk to the bilateral Jacobi series defined earlier is
+\[
+ \BilateralQuadraticTheta{x}{Q}=\BilateralTheta{Qx}{Q^2}.
+\]
+The semantic subscript distinguishes this function from the Fabius transfer
+operator $\mathcal T$ and from every proof-local transformation.
+With the theta nome and elliptic exponential declared above, the complete
+crosswalk is
+\begin{align*}
+ \vartheta_3(z\mid\tau)
+ &=\BilateralQuadraticTheta{\zeta}{q}
+  =\BilateralTheta{q\zeta}{q^2},\\
+ \vartheta_4(z\mid\tau)
+ &=\BilateralQuadraticTheta{-\zeta}{q}
+  =\MultiplicativeTheta{q\zeta}{q^2},\\
+ \vartheta_2(z\mid\tau)
+ &=q^{1/4}\zeta^{1/2}\BilateralTheta{q^2\zeta}{q^2}.
+\end{align*}
+
+\begin{theorem}[Schr\"oter lattice dissection]
+\label{qg:thm-schroeter}
+Let $a,b$ be positive integers, let $0<\AbsoluteValue q<1$, and let
+$x,y\in\ComplexNumbers^\times$.  Then
+\begin{align}
+ \BilateralQuadraticTheta{x}{q^a}\BilateralQuadraticTheta{y}{q^b}
+ &=\sum_{k=0}^{a+b-1}y^kq^{bk^2}
+ \BilateralQuadraticTheta{xyq^{2bk}}{q^{a+b}}\notag\\
+ &\qquad\qquad\times
+ \BilateralQuadraticTheta{y^ax^{-b}q^{2abk}}{q^{ab(a+b)}}.
+\label{eq:qg-schroeter}
+\end{align}
+\end{theorem}
+
+\begin{proof}
+Expand the left side over $(n,m)\in\IntegerNumbers^2$ and partition the
+lattice by the unique $k\in\{0,\ldots,a+b-1\}$ for which
+$m-n=k+(a+b)s$ with $s\in\IntegerNumbers$.  In that residue class the
+change of variables
+\[
+ n=r-bs,
+ \qquad
+ m=k+r+as
+\]
+is a bijection with $(r,s)\in\IntegerNumbers^2$.  Direct substitution gives
+\begin{align*}
+ x^ny^m&=y^k(xy)^r(y^ax^{-b})^s,\\
+ an^2+bm^2
+ &=(a+b)r^2+2bkr+bk^2
+   +ab(a+b)s^2+2abks.
+\end{align*}
+The $r$- and $s$-sums are therefore the two displayed theta series, and the
+remaining factor is $y^kq^{bk^2}$.  Absolute convergence justifies the
+partition and rearrangement.
+\end{proof}
+
+\begin{remark}[Sublattice cosets and diagonalization]
+For fixed $k$, the linear part of the change of variables is
+\[
+ \binom{n}{m-k}
+ =\begin{pmatrix}1&-b\\1&a\end{pmatrix}\binom{r}{s},
+\]
+whose determinant is $a+b$.  Its image is the index-$(a+b)$ sublattice on
+which the second coordinate minus the first is divisible by $a+b$.
+Translating this image by $(0,k)$ gives the coset
+$m-n\equiv k\pmod{a+b}$, and the values $k=0,\ldots,a+b-1$ give all cosets.
+Equivalently, this is the rank-two Smith-normal-form description of the
+congruence map $(n,m)\mapsto m-n\pmod{a+b}$.  At the same time, the mixed
+$rs$ term in
+$an^2+bm^2$ cancels under this basis change.  The remaining linear terms,
+which depend on the coset representative $k$, are absorbed into the arguments
+of the two theta series.  Thus Schr\"oter dissection is simultaneously a
+sublattice decomposition and a diagonalization of the quadratic form; this
+remark records the mechanism and asserts no additional identity.
+\end{remark}
+
+\section{Theta powers and sums of squares}
+
+Let $r_d(n)$ be the number of ordered $d$-tuples
+$(x_1,\ldots,x_d)\in\IntegerNumbers^d$ with
+$x_1^2+\cdots+x_d^2=n$.
+For $d=0$ we use the unique empty tuple, so
+$r_0(0)=1$ and $r_0(n)=0$ for $n\ge1$.
+
+\begin{proposition}[Universal sums-of-squares generating function]
+\label{qg:prop-squares-theta}
+For every nonnegative integer $d$ and $\AbsoluteValue q<1$,
+\begin{equation}
+ \left(\sum_{m\in\IntegerNumbers}q^{m^2}\right)^d
+ =\sum_{n=0}^{\infty}r_d(n)q^n.
+\label{eq:qg-squares-theta}
+\end{equation}
+The same identity holds coefficientwise in $\IntegerNumbers[[q]]$.
+\end{proposition}
+
+\begin{proof}
+In the $d$-fold Cauchy product, choosing $q^{x_j^2}$ from the $j$th factor
+produces $q^{x_1^2+\cdots+x_d^2}$, and every ordered representation occurs
+exactly once.  Analytically, absolute convergence permits the Cauchy product.
+Formally, a fixed coefficient receives only finitely many contributions because
+$x_j^2\le n$ whenever the tuple contributes to $q^n$.
+\end{proof}
+
+\begin{warning}[Generating functions are not coefficient evaluations]
+The proposition identifies $r_d(n)$ as a theta-power coefficient, but by
+itself gives no divisor-sum formula for that coefficient.  In particular, the
+classical evaluations of $r_6(n)$ and $r_8(n)$ require additional input:
+one proves modularity of the relevant theta powers, determines a basis (or a
+dimension bound) for the appropriate modular-form space, decomposes into
+Eisenstein and possible cusp components, and only then compares Fourier
+coefficients.  Such evaluations must not be inferred from the Cauchy-product
+argument alone.  The separate two- and four-square proofs below supply their
+own additional arithmetic and analytic input.
+\end{warning}
+
+Define the real Dirichlet character modulo $4$ by
+\[
+ \chi_4(d)=
+ \begin{cases}
+  0,&2\mid d,\\
+  1,&d\equiv1\pmod4,\\
+ -1,&d\equiv3\pmod4.
+ \end{cases}
+\]
+
+\begin{lemma}[Gaussian unique factorization]
+\label{qg:lem-gaussian-ufd}
+The ring $\IntegerNumbers[\ImaginaryUnit]$ is Euclidean for
+$N(x+\ImaginaryUnit y)=x^2+y^2$, hence is a unique-factorization domain.
+For every rational prime $p$:
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item $2=-\ImaginaryUnit(1+\ImaginaryUnit)^2$;
+\item if $p\equiv3\pmod4$, then $p$ is irreducible in
+      $\IntegerNumbers[\ImaginaryUnit]$;
+\item if $p\equiv1\pmod4$, then $p=\varpi\bar\varpi$ for a Gaussian prime
+      $\varpi$, unique up to a unit and conjugation.  The alternate letter
+      $\varpi$ prevents collision with the circular constant $\pi$ used in
+      the theta and Fourier formulas above.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+For nonzero $\beta$, round the real and imaginary parts of $\alpha/\beta$
+to obtain $\gamma\in\IntegerNumbers[\ImaginaryUnit]$.  Then
+\[
+ \AbsoluteValue{\alpha/\beta-\gamma}^2\le\frac12,
+\]
+and therefore
+\[
+ N(\alpha-\gamma\beta)
+ =N(\beta)\AbsoluteValue{\alpha/\beta-\gamma}^2
+ \le\frac12N(\beta)<N(\beta).
+\]
+Thus Euclidean division holds.  Descent in
+the norm gives factorization into irreducibles, and B\'ezout's identity gives
+Euclid's lemma, hence uniqueness up to order and the units
+$\{\pm1,\pm\ImaginaryUnit\}$.
+
+The factorization of $2$ is immediate.  If $p\equiv3\pmod4$ factored into
+nonunits, the norms of the factors would force $p=x^2+y^2$, impossible
+modulo $4$.  Thus $p$ is irreducible.
+
+Now let $p\equiv1\pmod4$ and put
+\[
+ t=\left(\frac{p-1}{2}\right)!.
+\]
+Pairing $j$ with $p-j$ in Wilson's theorem gives
+\[
+ -1\equiv(p-1)!
+ \equiv(-1)^{(p-1)/2}
+ \left(\left(\frac{p-1}{2}\right)!\right)^2
+ \equiv t^2\pmod p,
+\]
+because $(p-1)/2$ is even.  Hence
+$p\mid(t+\ImaginaryUnit)(t-\ImaginaryUnit)$ in the Gaussian integers.
+If $p$ were irreducible, it would be prime and would divide one factor, which
+is impossible because its imaginary coordinate is $\pm1$.  Therefore
+$p=\varpi\rho$ with nonunits.  Norms force
+$N(\varpi)=N(\rho)=p$.  An element of prime norm is irreducible, so $\varpi$ and
+$\rho$ are Gaussian primes.  Moreover,
+\[
+ \varpi\bar\varpi=N(\varpi)=p=\varpi\rho,
+\]
+and cancellation gives $\rho=\bar\varpi$.  If
+$p=\sigma\bar\sigma$ is another such factorization, uniqueness of
+factorization applied to $\varpi\bar\varpi=\sigma\bar\sigma$ shows that $\sigma$
+is associated either to $\varpi$ or to $\bar\varpi$.  This proves uniqueness up to
+a unit and conjugation.
+\end{proof}
+
+\begin{theorem}[Jacobi's two-square theorem]
+\label{qg:thm-two-square}
+For every $n\ge1$,
+\begin{equation}
+ r_2(n)=4\sum_{d\mid n}\chi_4(d).
+\label{eq:qg-two-square}
+\end{equation}
+Equivalently, if
+\[
+ n=2^a\prod_{j=1}^{u}p_j^{\alpha_j}
+       \prod_{\ell=1}^{v}r_\ell^{\beta_\ell},
+ \qquad
+ p_j\equiv1\pmod4,\quad r_\ell\equiv3\pmod4,
+\]
+then $r_2(n)=0$ if some $\beta_\ell$ is odd, and otherwise
+$r_2(n)=4\prod_{j=1}^{u}(\alpha_j+1)$.
+\end{theorem}
+
+\begin{proof}
+A representation $n=x^2+y^2$ is a Gaussian integer of norm $n$.  By
+\Cref{qg:lem-gaussian-ufd}, the prime above $2$ has forced exponent up to a
+unit.  A prime $r_\ell\equiv3\pmod4$ is self-conjugate and contributes an
+even exponent to a norm, so $\beta_\ell$ must be even and then its exponent
+in $x+\ImaginaryUnit y$ is forced.  For
+$p_j=\varpi_j\bar\varpi_j$, the exponent of $\varpi_j$ may be any
+$e_j\in\{0,\ldots,\alpha_j\}$ and the exponent of $\bar\varpi_j$ is then
+$\alpha_j-e_j$.  Finally there are four units.  Unique factorization shows
+that these choices are exhaustive and nonduplicative, proving the product
+formula.
+
+The divisor sum is multiplicative.  Its local factor is $1$ at $2$,
+$\alpha_j+1$ at $p_j\equiv1\pmod4$, and
+$1-1+\cdots+(-1)^{\beta_\ell}$ at $r_\ell\equiv3\pmod4$.  These are exactly
+the factors in the product formula, proving \eqref{eq:qg-two-square}.
+\end{proof}
+
+\begin{corollary}[Two-square Lambert series]
+\label{qg:cor-two-square-lambert}
+For $\AbsoluteValue q<1$,
+\begin{equation}
+ \left(\sum_{m\in\IntegerNumbers}q^{m^2}\right)^2
+ =1+4\sum_{d=1}^{\infty}\chi_4(d)\frac{q^d}{1-q^d}
+ =1+4\sum_{j=0}^{\infty}(-1)^j
+       \frac{q^{2j+1}}{1-q^{2j+1}}.
+\label{eq:qg-two-square-lambert}
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+By \Cref{qg:prop-squares-theta,qg:thm-two-square}, the coefficient of $q^n$
+in the first Lambert series is $4\sum_{d\mid n}\chi_4(d)=r_2(n)$.
+Since $\chi_4$ vanishes on even integers and equals $(-1)^j$ at $2j+1$,
+the second form follows.
+\end{proof}
+
+\begin{theorem}[Jacobi's four-square theorem]
+\label{qg:thm-four-square}
+For every $n\ge1$,
+\begin{equation}
+ r_4(n)=8\sum_{\substack{d\mid n\\4\nmid d}}d.
+\label{eq:qg-four-square}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Fix $x\in\ComplexNumbers$ with $0<\AbsoluteValue x<1$.  Apply the
+minus-sign form of \Cref{thm:jtp} with base $x$ and argument $a^2x$, and
+multiply by $a$.  This gives
+\begin{equation}
+ (a-a^{-1})\prod_{\nu\ge1}
+ (1-a^2x^\nu)(1-a^{-2}x^\nu)(1-x^\nu)
+ =\sum_{m\in\IntegerNumbers}(-1)^ma^{2m+1}x^{m(m+1)/2}.
+\label{eq:qg-four-square-start}
+\end{equation}
+For this fixed $x$, both sides and their $a$-derivatives converge normally on
+compact annuli in the $a$-plane.  As functions of $x$, all theta series,
+products, and logarithmic-derivative series used below converge locally
+uniformly for $\AbsoluteValue x<1$, so the subsequent differentiations,
+rearrangements, and parity dissections are legitimate.
+Differentiate at $a=1$ and divide by $2$:
+\begin{equation}
+ (x;x)_\infty^3
+ =\frac12\sum_{m\in\IntegerNumbers}(-1)^m(2m+1)x^{m(m+1)/2}.
+\label{eq:qg-jacobi-cube}
+\end{equation}
+After squaring \eqref{eq:qg-jacobi-cube}, the summand indexed by $(m,n)$ is
+\[
+ \frac14(-1)^{m+n}(2m+1)(2n+1)
+ x^{(m^2+n^2+m+n)/2}.
+\]
+If $m+n$ is even, put
+\[
+ m=r+s,\qquad n=r-s.
+\]
+Then
+\[
+ (2m+1)(2n+1)=(2r+1)^2-(2s)^2,
+ \qquad
+ \frac{m^2+n^2+m+n}{2}=r^2+s^2+r.
+\]
+If $m+n$ is odd, put
+\[
+ m=r+s,\qquad n=s-r-1.
+\]
+Now $(-1)^{m+n}=-1$, while
+\[
+ (2m+1)(2n+1)=(2s)^2-(2r+1)^2.
+\]
+Thus the parity sign reverses this coefficient, and the exponent is again
+$r^2+s^2+r$.  Both changes of variables are bijections from their respective
+parity classes to $\IntegerNumbers^2$, so the two classes contribute equally.
+Consequently,
+\begin{equation}
+ (x;x)_\infty^6
+ =\frac12\sum_{r,s\in\IntegerNumbers}
+ \bigl((2r+1)^2-(2s)^2\bigr)x^{r^2+s^2+r}.
+\label{eq:qg-four-square-coalesce}
+\end{equation}
+
+Let $D=x\,d/dx$ and set
+\[
+ A(x)=\sum_{s\in\IntegerNumbers}x^{s^2},
+ \qquad
+ B(x)=\sum_{r\in\IntegerNumbers}x^{r^2+r}.
+\]
+Then \eqref{eq:qg-four-square-coalesce} is
+\begin{equation}
+ (x;x)_\infty^6
+ =\frac12\bigl[A(x)(1+4D)B(x)-4B(x)DA(x)\bigr].
+\label{eq:qg-four-square-D}
+\end{equation}
+The triple product gives
+\begin{align}
+ A(x)&=\prod_{\nu\ge1}(1+x^{2\nu-1})^2(1-x^{2\nu}),
+ \label{eq:qg-A-product}\\
+ B(x)&=2\prod_{\nu\ge1}(1+x^{2\nu})^2(1-x^{2\nu}).
+ \label{eq:qg-B-product}
+\end{align}
+Using
+\[
+ D\log(1+x^j)=\frac{jx^j}{1+x^j},
+ \qquad
+ D\log(1-x^j)=-\frac{jx^j}{1-x^j},
+\]
+the two copies of
+$D\log\prod_{\nu\ge1}(1-x^{2\nu})$ cancel, and
+\begin{align*}
+ D\log B-D\log A
+ &=2\sum_{\nu\ge1}\left(
+   \frac{2\nu x^{2\nu}}{1+x^{2\nu}}
+   -\frac{(2\nu-1)x^{2\nu-1}}{1+x^{2\nu-1}}
+   \right).
+\end{align*}
+Since $A(x)B(x)/2$ is the product on the first line below,
+\eqref{eq:qg-four-square-D} becomes
+\begin{align}
+ (x;x)_\infty^6
+ &=\prod_{\nu\ge1}
+ (1+x^{2\nu-1})^2(1+x^{2\nu})^2(1-x^{2\nu})^2\notag\\
+ &\quad\times\left[
+ 1-8\sum_{\nu\ge1}\left(
+ \frac{(2\nu-1)x^{2\nu-1}}{1+x^{2\nu-1}}
+ -\frac{2\nu x^{2\nu}}{1+x^{2\nu}}
+ \right)\right].
+\label{eq:qg-four-square-logdiff}
+\end{align}
+We first verify the product identity
+\[
+ \prod_{\nu\ge1}(1+x^\nu)^4(1-x^\nu)^2
+ =\prod_{\nu\ge1}
+ (1+x^{2\nu-1})^2(1+x^{2\nu})^2(1-x^{2\nu})^2.
+\]
+Indeed, the quotient of the left product by the right product is
+\[
+ \left[
+ \prod_{\nu\ge1}(1-x^{4\nu-2})
+ \prod_{\nu\ge1}(1+x^{2\nu})
+ \right]^2=1,
+\]
+because
+\[
+ \prod_{\nu\ge1}(1+x^{2\nu})
+ =\frac{(x^4;x^4)_\infty}{(x^2;x^2)_\infty}
+ =\frac1{(x^2;x^4)_\infty}
+ =\prod_{\nu\ge1}(1-x^{4\nu-2})^{-1}.
+\]
+This identity therefore turns \eqref{eq:qg-four-square-logdiff} into
+\begin{equation}
+ \prod_{\nu\ge1}\left(\frac{1-x^\nu}{1+x^\nu}\right)^4
+ =1-8\sum_{\nu\ge1}\left(
+ \frac{(2\nu-1)x^{2\nu-1}}{1+x^{2\nu-1}}
+ -\frac{2\nu x^{2\nu}}{1+x^{2\nu}}
+ \right).
+\label{eq:qg-four-square-quotient}
+\end{equation}
+The minus-sign triple product with base $x^2$ and argument $x$ gives
+\[
+ \sum_{m\in\IntegerNumbers}(-1)^mx^{m^2}
+ =(x,x,x^2;x^2)_\infty.
+\]
+Furthermore,
+\[
+ (x,x,x^2;x^2)_\infty
+ =(x;x^2)_\infty^2(x^2;x^2)_\infty
+ =\frac{(x;x)_\infty}{(-x;x)_\infty}
+ =\prod_{\nu\ge1}\frac{1-x^\nu}{1+x^\nu},
+\]
+where the middle equality follows from
+\[
+ (x;x)_\infty=(x;x^2)_\infty(x^2;x^2)_\infty,
+ \qquad
+ (x;x)_\infty(-x;x)_\infty=(x^2;x^2)_\infty.
+\]
+
+Replace $x$ by $-x$ in \eqref{eq:qg-four-square-quotient}.  Since
+$m^2\equiv m\pmod2$, the preceding triple-product specialization turns the
+left side into the fourth power of
+$\sum_{m\in\IntegerNumbers}x^{m^2}$.  The right side becomes
+\[
+ 1+8\left[
+ \sum_{\substack{j\ge1\\j\ \mathrm{odd}}}
+  \frac{jx^j}{1-x^j}
+ +\sum_{\nu\ge1}\frac{2\nu x^{2\nu}}{1+x^{2\nu}}
+ \right].
+\]
+For the even part,
+\[
+ \frac{2\nu x^{2\nu}}{1+x^{2\nu}}
+ =\frac{2\nu x^{2\nu}}{1-x^{2\nu}}
+  -\frac{4\nu x^{4\nu}}{1-x^{4\nu}},
+\]
+and hence
+\[
+ \sum_{\nu\ge1}\frac{2\nu x^{2\nu}}{1+x^{2\nu}}
+ =\sum_{\substack{j\ge1\\2\mid j}}\frac{jx^j}{1-x^j}
+  -\sum_{\substack{j\ge1\\4\mid j}}\frac{jx^j}{1-x^j}.
+\]
+Adding the odd-index sum leaves exactly the indices not divisible by $4$.
+Thus
+\begin{equation}
+ \left(\sum_{m\in\IntegerNumbers}x^{m^2}\right)^4
+ =1+8\sum_{\substack{j\ge1\\4\nmid j}}
+ \frac{jx^j}{1-x^j}.
+\label{eq:qg-four-square-lambert}
+\end{equation}
+By \Cref{qg:prop-squares-theta}, the coefficient of $x^n$ on the left is
+$r_4(n)$; on the right it is
+$8\sum_{d\mid n,\,4\nmid d}d$.  This proves
+\eqref{eq:qg-four-square}.
+\end{proof}
+
+\begin{remark}
+The two-square proof is arithmetic and the four-square proof analytic, but
+both terminate in Lambert series.  This is the common mechanism: a theta
+product exposes geometric denominators, and coefficient extraction turns
+them into divisor sums.
+\end{remark}

@@ -1,0 +1,638 @@
+\chapter{Cyclotomic and Fabius--Rvachev recovery}
+\label{chap:cyclotomic-fabius-recovery}
+
+\section{The boundary and probability regimes are different}
+\label{sec:cyclotomic-fabius-interface}
+
+Two uses of a geometric parameter occur in this volume.  In
+\cref{sec:ip-cyclotomic}, the base \(q\) approaches the unit circle and the
+Lambert series develops resonant residue classes.  In the present part,
+\(0<q<1\) is the contraction ratio of a random series.  The Rvachev member is
+the perfectly regular interior value \(q=1/2\).  Thus the radial inverse
+\cref{thm:ip-radial-cyclotomic} and the finite cyclotomic analysis of
+\cref{sec:gaussian-cyclotomic} remain available when a product formula reaches
+the boundary, but they should not be conflated with statistical recovery of
+the geometric contraction parameter.
+
+The law, support, CDF refinement, smooth density, and half-base
+identification are represented in Lean by the modules
+\lean{FabiusFunction.GeometricUniformLaw},
+\lean{FabiusFunction.GeometricUniformCDF}, and
+\lean{FabiusFunction.ProbabilityRepresentation}.  In particular,
+\lean{geometricUniformCDF_one_half_eq_fabiusReal} is the exact formal bridge
+at \(q=1/2\).  The phase-bearing sinc-product bridge is formalized separately
+in \lean{FabiusFunction.GeometricSincCharacteristicFunction}, as
+\lean{charFun_geometricUniformDistribution_eq_phase_mul_geometricSincProduct}.
+The arbitrary-power Fourier decay in
+\cref{thm:geometric-uniform-fourier-decay}, its
+parameter-derivative strengthening in \cref{eq:fr-q-derivative-rapid}, and the
+cumulant inversions later in this chapter are complete human proofs at the
+frontier level; they are not claimed here as existing Lean declarations.
+
+\section{The geometric uniform law and its sinc product}
+\label{sec:fr-geometric-law}
+
+Continue with the independent uniform variables \(U_j\), the random variable
+\(X_q\), its CDF \(F_q\), density \(f_q\), and characteristic function
+\(\varphi_q\) from \cref{chap:geometric-uniform-fabius}.  Put
+\begin{equation}\label{eq:fr-Z}
+ \varepsilon_j:=2U_j-1,
+ \qquad
+ Z_q:=2X_q-1=(1-q)\sum_{j=0}^{\infty}q^j\varepsilon_j,
+ \qquad
+ u_q(z):=\frac12 f_q\!\left(\frac{z+1}{2}\right).
+\end{equation}
+Thus \(Z_q\) has density \(u_q\) and support \([-1,1]\).
+
+\begin{corollary}[The symmetric normalization and its refinement]
+\label{thm:fr-geometric-density}
+For real \(t\),
+\begin{equation}
+ \CharacteristicFunction{Z_q}(t)\DefinitionEquals
+ \Expectation\EulerE^{\ImaginaryUnit tZ_q}
+ =\EulerE^{-\ImaginaryUnit t}\varphi_q(2t)
+ =\prod_{j=0}^{\infty}\SincRad\bigl((1-q)q^jt\bigr),
+ \label{eq:fr-sinc-product}
+\end{equation}
+The function \(t\mapsto\CharacteristicFunction{Z_q}(t)\) has the log-Gaussian,
+hence arbitrary-power, decay of
+\cref{thm:geometric-uniform-fourier-decay}; the density \(u_q\) is
+\(C^\infty\) and compactly supported.  If \(Z_q'\) is an independent copy,
+then \(Z_q\EqualInLaw(1-q)\varepsilon_0+qZ_q'\), and consequently
+\begin{align}
+ u_q(x)
+ &=\frac1{2(1-q)}
+   \int_{(x-(1-q))/q}^{(x+(1-q))/q}u_q(s)\Differential s,
+ \label{eq:fr-density-refinement}\\
+ u_q'(x)
+ &=\frac{u_q((x+(1-q))/q)-u_q((x-(1-q))/q)}
+ {2q(1-q)}.\label{eq:fr-density-derivative}
+\end{align}
+\end{corollary}
+
+\begin{proof}
+The characteristic-function identity is the affine change
+\(Z_q=2X_q-1\) in \cref{thm:geometric-uniform-characteristic}; the phase
+cancels exactly.  Decay and smoothness follow from
+\cref{thm:geometric-uniform-fourier-decay,thm:geometric-uniform-smooth-density}.
+Splitting off the first centered
+coordinate gives the displayed fixed point.  Conditional on \(Z_q'=s\), the
+variable \((1-q)\varepsilon_0+qs\) is uniform on
+\([qs-(1-q),qs+(1-q)]\); averaging its density gives
+\cref{eq:fr-density-refinement}.  Differentiating that identity by the
+fundamental theorem of calculus gives \cref{eq:fr-density-derivative}.
+\end{proof}
+
+\section{The exact Fabius and Rvachev member}
+\label{sec:fr-fabius-member}
+
+\begin{definition}[Normalized bounded Fabius function]
+\label{def:fr-normalized-fabius}
+A normalized bounded Fabius function is a continuously differentiable map
+\(G:\RealNumbers\to[0,1]\) such that
+\[
+ G(x)=0\quad(x\le0),\qquad G(x)=1\quad(x\ge1),
+ \qquad G(1-x)=1-G(x),
+\]
+and
+\[
+ G'(x)=2G(2x)\qquad(0\le x\le\tfrac12).
+\]
+This exterior-tail normalization removes the additive and scaling ambiguities
+from the differential equation.
+\end{definition}
+
+\begin{theorem}[Uniqueness of the normalized bounded Fabius function]
+\label{thm:fr-fabius-identification}
+The function \(F\) of \cref{thm:probabilistic-fabius} is the unique
+normalized bounded Fabius function in the sense of
+\cref{def:fr-normalized-fabius}.
+\end{theorem}
+
+\begin{proof}
+Existence is \cref{thm:probabilistic-fabius}: its CDF \(F\) has the constant
+exterior tails, reflection law, and local differential equation required by
+\cref{def:fr-normalized-fabius}.  For uniqueness, let \(G\) be any other
+candidate.  It is nondecreasing: its
+derivative is nonnegative on \([0,1/2]\), and differentiating reflection gives
+\(G'(1-x)=G'(x)\).  Thus \(G\) is the CDF of a probability measure \(\mu\)
+on \([0,1]\).  For such a CDF define
+\[
+ (\mathcal TG)(x)=\int_0^1G(2x-v)\Differential v
+ =\int_{2x-1}^{2x}G(s)\Differential s.
+\]
+This is the CDF of \((V+Z)/2\), where \(V\) is uniform on \([0,1]\),
+\(Z\) has CDF \(G\), and they are independent.  On \((0,1/2)\),
+\[
+ (\mathcal TG)'(x)=2G(2x)=G'(x),
+\]
+while on \((1/2,1)\), reflection and its differentiated form give
+\[
+ (\mathcal TG)'(x)=2\bigl(1-G(2x-1)\bigr)
+ =2G(2-2x)=G'(1-x)=G'(x).
+\]
+Both functions vanish at zero and have the same constant exterior tails, so
+\(\mathcal TG=G\): every normalized bounded Fabius law is a fixed point.
+
+On probability measures on \([0,1]\), let \(\mathcal T\mu\) denote the law
+just constructed.  Given any coupling \((Z_1,Z_2)\) of \(\mu_1,\mu_2\), use
+the same independent \(V\) in both images.  Then
+\[
+ \Expectation\left|\frac{V+Z_1}{2}-\frac{V+Z_2}{2}\right|
+ =\frac12\Expectation|Z_1-Z_2|,
+\]
+and taking the infimum over couplings yields
+\(W_1(\mathcal T\mu_1,\mathcal T\mu_2)
+ \le\tfrac12W_1(\mu_1,\mu_2)\).  Two fixed points therefore have zero
+Wasserstein distance.  Finally, separating the first summand shows
+\(X_{1/2}\EqualInLaw(U_0+X_{1/2}')/2\), so its law is a fixed point.  It is
+the unique one.  This is the human-readable uniqueness argument complementing
+the formal identification
+\lean{geometricUniformCDF_one_half_eq_fabiusReal}.
+\end{proof}
+
+The centered normalization introduces no second Fabius or Rvachev result:
+\(u_{1/2}=\RvachevUp\) is exactly \cref{eq:up-definition}, its two Fabius
+branches are \cref{prop:up-tail}, and its angular Fourier product is
+\cref{thm:up-sinc-product}.  With
+\(\FourierTwoPi{u}(z)=\int_\RealNumbers
+u(s)\EulerE^{-2\pi\ImaginaryUnit sz}\Differential s\), substituting
+\(t=-2\pi z\) there and using evenness gives
+\[
+ \FourierTwoPi{\RvachevUp}(z)
+ =\prod_{j=0}^{\infty}\SincPi\!\left(\frac{z}{2^j}\right).
+\]
+
+\section{Thue--Morse spline approximants}
+\label{sec:fr-thue-morse}
+
+Let \(\BinaryDigitSum(k)\) be the number of ones in the binary expansion of \(k\), and put
+\(\ThueMorseSign{k}=(-1)^{\BinaryDigitSum(k)}\).  The occurrence of these signs is ordinary
+inclusion--exclusion on the dyadic geometric comb.
+
+\begin{corollary}[Exact Thue--Morse partial CDF]
+\label{thm:fr-thue-morse-splines}
+For \(N\ge1\), put
+\[
+ F_N(x)=\Probability(X_{1/2,N}\le x),
+ \qquad r_+=\max(r,0).
+\]
+Then
+\begin{equation}
+ F_N(x)=\frac{2^{N(N+1)/2}}{N!}
+ \sum_{k=0}^{2^N-1}\ThueMorseSign{k}
+ \left(x-\frac{k}{2^N}\right)_+^N.
+ \label{eq:fr-thue-morse-spline}
+\end{equation}
+For the Fabius function \(F\) and every real \(x\),
+\begin{equation}
+ F_N(x-2^{-N})\le F(x)\le F_N(x).
+ \label{eq:fr-spline-sandwich}
+\end{equation}
+In particular the explicit splines converge pointwise to \(F\), and uniformly
+with the quantitative bound
+\begin{equation}
+ 0\le F_N(x)-F(x)
+ \le F(x+2^{-N})-F(x)
+ \le \omega_F(2^{-N}),
+ \label{eq:fr-spline-uniform-bound}
+\end{equation}
+where
+\(\omega_F(\delta)=\sup_{|a-b|\le\delta}|F(a)-F(b)|\).  Consequently
+\(\|F_N-F\|_\infty\le\omega_F(2^{-N})\to0\).
+\end{corollary}
+
+\begin{proof}
+Specialize the weighted cube-cut formula \cref{eq:weighted-cube-cut} to
+\(c_j=2^{-j-1}\).  The product of the weights is
+\(2^{-N(N+1)/2}\), and binary bit reversal identifies each subset sum with a
+unique \(k/2^N\) without changing the parity of the subset cardinality.  This
+is \cref{eq:fr-thue-morse-spline}.
+
+The tail estimate \cref{eq:finite-uniform-tail-bound} at \(q=1/2\) says
+\(0\le X-X_{1/2,N}\le2^{-N}\).  Hence
+\[
+ \{X_{1/2,N}\le x-2^{-N}\}
+ \subseteq\{X\le x\}
+ \subseteq\{X_{1/2,N}\le x\}.
+\]
+Taking probabilities proves the sandwich.  Its right inequality gives
+\(F(x)\le F_N(x)\).  Applying its left inequality at \(x+2^{-N}\) gives
+\(F_N(x)\le F(x+2^{-N})\), and hence
+\cref{eq:fr-spline-uniform-bound}.  The continuous function \(F\) is constant
+off \([0,1]\), so it is uniformly continuous on \(\RealNumbers\) and
+\(\omega_F(2^{-N})\to0\).  This proves the claimed uniform convergence.
+\end{proof}
+
+The finite sign identity behind the theorem is
+\begin{equation}
+ \prod_{j=0}^{N-1}(1-z^{2^j})
+ =\sum_{k=0}^{2^N-1}\ThueMorseSign{k}z^k.
+ \label{eq:fr-thue-morse-product}
+\end{equation}
+It follows immediately by choosing either \(1\) or \(-z^{2^j}\) from each
+factor; uniqueness of binary expansion identifies the chosen subset with
+\(k\), and its cardinality with \(\BinaryDigitSum(k)\).
+
+\section{Cumulants as exact inverse observables}
+\label{sec:fr-cumulant-recovery}
+
+We use the Bernoulli-number convention \(B_2=1/6\), \(B_4=-1/30\).
+
+\begin{theorem}[All cumulants and monotone base recovery]
+\label{thm:fr-cumulant-recovery}
+For every \(m\ge1\),
+\begin{equation}
+ \kappa_{2m}(Z_q)
+ =\frac{2^{2m}B_{2m}}{2m}
+   \frac{(1-q)^{2m}}{1-q^{2m}},
+ \label{eq:fr-cumulants}
+\end{equation}
+and every odd cumulant vanishes:
+\begin{equation}
+ \kappa_{2m+1}(Z_q)=0\qquad(m\ge0).
+ \label{eq:fr-odd-cumulants}
+\end{equation}
+After division by the nonzero uniform cumulant, set
+\[
+ R_m(q)=\frac{\kappa_{2m}(Z_q)}{\kappa_{2m}(\varepsilon_0)}
+ =\frac{(1-q)^{2m}}{1-q^{2m}}.
+\]
+Then \(R_m\) is a strictly decreasing bijection from \((0,1)\) to \((0,1)\).
+Thus, given an observed normalized cumulant \(\rho_m\in(0,1)\), the unique
+recovered base is equivalently the unique \(q\in(0,1)\) satisfying
+\begin{equation}
+ \rho_m(1-q^{2m})=(1-q)^{2m}.
+ \label{eq:fr-cumulant-polynomial}
+\end{equation}
+Its endpoint expansions are
+\begin{align}
+ q&=\frac{1-\rho_m}{2m}+\BigO((1-\rho_m)^2),
+ &&\rho_m\uparrow1,\label{eq:fr-cumulant-qzero}\\
+ 1-q&=(2m\rho_m)^{1/(2m-1)}
+ \left(1+\BigO(\rho_m^{1/(2m-1)})\right),
+ &&\rho_m\downarrow0.\label{eq:fr-cumulant-qone}
+\end{align}
+\end{theorem}
+
+\begin{proof}
+The forward chapter writes \(Y_q=X_q-1/2\), so \cref{eq:fr-Z} gives
+\(Z_q=2Y_q\).  Homogeneity of cumulants and
+\cref{thm:q-cumulants-uniform} therefore give
+\[
+ \kappa_r(Z_q)=2^r\kappa_r(Y_q).
+\]
+This is \cref{eq:fr-cumulants}, and the odd cumulants vanish for the same
+reason.  Equation \eqref{eq:centered-uniform-logmgf} gives
+\(\kappa_{2m}(U_0-1/2)=B_{2m}/(2m)\); since
+\(\varepsilon_0=2(U_0-1/2)\), homogeneity gives
+\(\kappa_{2m}(\varepsilon_0)=2^{2m}B_{2m}/(2m)\).  Thus the displayed
+normalization of \(R_m\) follows without a second cumulant derivation.
+
+Logarithmic differentiation gives
+\[
+ \frac{R_m'(q)}{R_m(q)}
+ =-\frac{2m}{1-q}+\frac{2mq^{2m-1}}{1-q^{2m}}<0,
+\]
+because
+\(q^{2m-1}(1-q)<1-q^{2m}=(1-q)(1+q+\cdots+q^{2m-1})\).
+The endpoint limits are one and zero, so strict monotonicity proves the
+bijection.  Substituting the observed value \(\rho_m=R_m(q)\) gives
+\cref{eq:fr-cumulant-polynomial} and its unique root in \((0,1)\).
+At \(q=0\), \(R_m(q)=1-2mq+\BigO(q^2)\).  At \(q=1-\varepsilon\),
+\[
+ R_m(q)=\frac{\varepsilon^{2m-1}}{2m}
+ (1+\BigO(\varepsilon)).
+\]
+Ordinary and Puiseux reversion give
+\cref{eq:fr-cumulant-qzero,eq:fr-cumulant-qone}.
+\end{proof}
+
+The case \(m=1\) is especially simple.
+
+\begin{corollary}[Exact variance inverse]
+\label{cor:fr-variance-inverse}
+The centered variance and its inverse are
+\begin{equation}
+ V(q)=\Variance(Z_q)=\frac{1-q}{3(1+q)},
+ \qquad q=\frac{1-3V}{1+3V}.
+ \label{eq:fr-variance-inverse}
+\end{equation}
+The Rvachev value \(q=1/2\) is characterized by \(V=1/9\).
+\end{corollary}
+
+\begin{proof}
+Either put \(m=1\) in \cref{eq:fr-cumulants}, or sum
+\(\frac13(1-q)^2\sum_{j\ge0}q^{2j}\).  Solving the resulting
+linear-fractional equation gives the inverse and the specialization.
+\end{proof}
+
+\section{Scale-free recovery and an upgraded conjecture}
+\label{sec:fr-scale-free}
+
+\begin{theorem}[Kurtosis inverse and total location--scale identifiability]
+\label{thm:fr-total-identifiability}
+The excess kurtosis of \(Z_q\) is
+\begin{equation}
+ \gamma_2(q)=\frac{\kappa_4(Z_q)}{\kappa_2(Z_q)^2}
+ =-\frac65\frac{1-q^2}{1+q^2},
+ \label{eq:fr-kurtosis}
+\end{equation}
+and is a strictly increasing bijection from \((0,1)\) to \((-6/5,0)\), with
+inverse
+\begin{equation}
+ q=\sqrt{\frac{1+5\gamma_2/6}{1-5\gamma_2/6}}.
+ \label{eq:fr-kurtosis-inverse}
+\end{equation}
+Consequently the mean, positive variance, and excess kurtosis uniquely
+identify every member of the normalized family
+\[
+ W_{\mu,s,q}=\mu+sZ_q,
+ \qquad \mu\in\RealNumbers,\quad s>0,\quad0<q<1.
+\]
+Explicitly, \(\mu=\Expectation W_{\mu,s,q}\), \(q\) is given by
+\cref{eq:fr-kurtosis-inverse}, and
+\begin{equation}
+ s=\sqrt{\Variance(W_{\mu,s,q})\,\frac{3(1+q)}{1-q}}.
+ \label{eq:fr-scale-inverse}
+\end{equation}
+Equivalently, in the raw-series convention
+\begin{equation}\label{eq:fr-raw-scale-family}
+ \widetilde W_{\mu,a,q}
+ :=\mu+a\sum_{j\ge0}q^j\varepsilon_j,
+ \qquad a=s(1-q),
+\end{equation}
+the recovered scale is
+\begin{equation}\label{eq:fr-raw-scale-inverse}
+ a=\sqrt{3\Variance(\widetilde W_{\mu,a,q})(1-q^2)}.
+\end{equation}
+Thus the total cumulant identifiability statement left conjectural in one
+source report is a theorem for the stated three-parameter family.
+\end{theorem}
+
+\begin{proof}
+Insert \(B_2=1/6\) and \(B_4=-1/30\) into
+\cref{eq:fr-cumulants}.  Cancellation gives
+\[
+ \frac{-2}{15}\frac{(1-q)^4}{1-q^4}
+ \left(\frac{3(1-q^2)}{(1-q)^2}\right)^2
+ =-\frac65\frac{1-q^2}{1+q^2}.
+\]
+The last rational function is strictly increasing, with the stated endpoint
+limits.  Solving it for \(q^2\) gives
+\cref{eq:fr-kurtosis-inverse}.  Translation changes only the mean, positive
+scaling multiplies variance by \(s^2\), and excess kurtosis is unchanged by
+both operations.  Hence the three displayed reconstruction formulas exist
+and are unique.  Formula \cref{eq:fr-scale-inverse} is just
+\(\Variance(W_{\mu,s,q})=s^2V(q)\) with
+\cref{eq:fr-variance-inverse} substituted.  Finally,
+\cref{eq:fr-Z,eq:fr-raw-scale-family} give \(a=s(1-q)\); multiplying the
+square of \cref{eq:fr-scale-inverse} by \((1-q)^2\) gives
+\cref{eq:fr-raw-scale-inverse}.
+\end{proof}
+
+For redundancy checks, the next standardized cumulant is
+\begin{equation}
+ \frac{\kappa_6(Z_q)}{\kappa_2(Z_q)^3}
+ =\frac{48}{7}\frac{(1-q^2)^2}{1+q^2+q^4}.
+ \label{eq:fr-standardized-sixth}
+\end{equation}
+At \(q=1/2\), the exact diagnostic triple begins
+\[
+ \Variance(Z_{1/2})=\frac19,
+ \qquad\gamma_2(Z_{1/2})=-\frac{18}{25},
+ \qquad\frac{\kappa_6(Z_{1/2})}{\kappa_2(Z_{1/2})^3}=\frac{144}{49}.
+\]
+Equation \cref{eq:fr-standardized-sixth} follows from
+\(\kappa_6(\varepsilon_0)=16/63\) and the same geometric-series cancellation
+as above.
+
+\section{Endpoint regimes and conditioning}
+\label{sec:fr-endpoints}
+
+\begin{proposition}[Uniform and Gaussian endpoint laws]
+\label{prop:fr-endpoint-laws}
+As \(q\downarrow0\), for the chosen pointwise bounded versions,
+\(Z_q\to\varepsilon_0\) uniformly in the sample point (and hence almost surely).
+As \(q\uparrow1\), \(Z_q\to0\) in \(L^2\).  After standardization,
+\begin{equation}
+ \frac{Z_q}{\sqrt{V(q)}}\ \ConvergesInLaw\ \mathcal N(0,1).
+ \label{eq:fr-central-limit}
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+The first limit has the deterministic bound
+\[
+ |Z_q-\varepsilon_0|
+ \le q|\varepsilon_0|+(1-q)\sum_{j\ge1}q^j|\varepsilon_j|\le2q.
+\]
+The \(L^2\) assertion follows from
+\(\Expectation Z_q^2=V(q)\to0\).  For the Gaussian limit, put
+\[
+ a_{q,j}=\frac{(1-q)q^j}{\sqrt{V(q)}}.
+\]
+Then
+\[
+ \sum_{j\ge0}a_{q,j}^2=3,
+ \qquad \max_{j\ge0}a_{q,j}=a_{q,0}
+ =\sqrt{3(1-q^2)}\longrightarrow0.
+\]
+The sinc product gives the characteristic function of the standardized law as
+\(\prod_{j\ge0}\SincRad(t a_{q,j})\).  For fixed real \(t\) and \(q\) sufficiently
+close to one, every argument lies in a fixed neighborhood of zero on which
+\[
+ \log\SincRad z=-\frac{z^2}{6}+\BigO(z^4),
+\]
+with a uniform remainder constant.  The resulting logarithmic series is
+absolutely convergent because \(\sum_j a_{q,j}^2=3\).  Consequently
+\[
+ \log\prod_{j\ge0}\SincRad(t a_{q,j})
+ =-\frac{t^2}{6}\sum_{j\ge0}a_{q,j}^2
+  +\BigO\!\left(t^4\sum_{j\ge0}a_{q,j}^4\right)
+ =-\frac{t^2}{2}+o(1),
+\]
+because
+\(\sum_j a_{q,j}^4\le(\max_j a_{q,j}^2)\sum_j a_{q,j}^2\to0\).
+Thus the characteristic functions converge pointwise to \(\EulerE^{-t^2/2}\),
+and L\'evy's continuity theorem proves \cref{eq:fr-central-limit}.  This direct
+Fourier argument also avoids applying a finite-row triangular-array theorem to
+the countably infinite series.
+\end{proof}
+
+Variance recovery is absolutely well-conditioned on every closed
+subinterval of \(0<V<1/3\), since
+\[
+ \frac{\Differential q}{\Differential V}=-\frac6{(1+3V)^2}.
+\]
+Its relative condition number diverges as \(q\downarrow0\), but that is the
+inevitable normalization by a recovered parameter tending to zero, not an
+absolute singularity.  Near \(q=1\), the Puiseux behavior in
+\cref{eq:fr-cumulant-qone} shows why high-order cumulant recovery is
+progressively flatter than variance recovery.
+
+\section{Parameter scores, local CDF inversion, and the symmetry obstruction}
+\label{sec:fr-cdf-inverse}
+
+Put \(w_j(q)=(1-q)q^j\).  Then
+\[
+ w_j'(q)=q^{j-1}\bigl(j-(j+1)q\bigr),
+\]
+where the formula at \(j=0\) is interpreted by cancellation as \(-1\).
+Write
+\[
+ H_q(x)=\Probability(Z_q\le x)=F_q\left(\frac{x+1}{2}\right)
+\]
+for the centered CDF.
+
+\begin{proposition}[Fourier score and quantile sensitivity]
+\label{prop:fr-fourier-score}
+Away from the zeros of the sinc factors,
+\begin{equation}
+ \partial_q\log\CharacteristicFunction{Z_q}(t)
+ =\sum_{j\ge0}w_j'(q)
+ \left(t\cot(w_j(q)t)-\frac1{w_j(q)}\right).
+ \label{eq:fr-fourier-score}
+\end{equation}
+The bracket is interpreted by analytic continuation at \(t=0\), where its
+value is zero.
+The series converges locally uniformly in \(q\in(0,1)\) and real \(t\) on the
+open set where none of those factors vanishes.  More quantitatively, for every
+compact \(K\Subset(0,1)\), every \(A>0\), and all integers \(k\ge0\), there is
+a constant \(C_{A,k,K}\) such that
+\begin{equation}
+ \sup_{q\in K}\left|\partial_q^k\CharacteristicFunction{Z_q}(t)\right|
+ \le C_{A,k,K}(1+|t|)^{-A}.
+ \label{eq:fr-q-derivative-rapid}
+\end{equation}
+Consequently the characteristic function, density, centered CDF \(H_q\), and
+uncentered CDF \(F_q(x)=H_q(2x-1)\) are \(C^\infty\) in \(q\) on compact
+subintervals of \((0,1)\), and parameter differentiation may be passed
+through Fourier inversion.  If a centered quantile branch satisfies
+\(H_q(x_p(q))=p\) and \(u_q(x_p(q))>0\), then it is locally smooth and
+\begin{equation}
+ x_p'(q)=-\frac{\partial_q\Probability(Z_q\le x)|_{x=x_p(q)}}{u_q(x_p(q))}.
+ \label{eq:fr-quantile-sensitivity}
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+For a nonzero sinc factor,
+\[
+ \frac{\Differential}{\Differential w}\log\SincRad(wt)=t\cot(wt)-\frac1w.
+\]
+At \(t=0\) the apparent singularity is removable because
+\[
+ t\cot(wt)-\frac1w=-\frac{wt^2}{3}-\frac{w^3t^4}{45}
+ +\BigO(w^5t^6).
+\]
+The chain rule gives each summand in \cref{eq:fr-fourier-score}.  For large
+\(j\), the bracket equals
+\(-w_jt^2/3+\BigO(w_j^3t^4)\), while
+\(|w_j'|\le C_K(j+1)q_+^{j-1}\) on any compact \(K\subset(0,1)\), where
+\(q_+=\max K<1\).  The resulting majorant is a convergent multiple of
+\(\sum(j+1)q_+^{2j}\), proving local uniform convergence away from the zeros.
+
+For completeness, we quantify the product differentiation, including at its
+zeros.  For every \(r\ge0\), direct differentiation of
+\(w_j=(1-q)q^j\) gives constants depending only on \(K,r\) such that
+\[
+ \sup_{q\in K}|\partial_q^r w_j(q)|
+ \le C_{K,r}(j+1)^r q_+^j,
+ \qquad
+ \sum_{j\ge0}\sup_{q\in K}|\partial_q^r w_j(q)|<\infty.
+\]
+The integral representation
+\(\SincRad y=\frac12\int_{-1}^{1}\EulerE^{\ImaginaryUnit yu}\Differential u\) shows that every real
+derivative of \(\SincRad\) is bounded.  These two estimates, together with the
+chain rule, give normally convergent differentiated products on compact
+\((q,t)\)-sets.
+
+Now fix \(k\) and choose an integer \(R>A+2k\).  On \(K\), each of the first
+\(R\) weights is bounded away from zero, so an undifferentiated leading factor
+is \(\BigO_K(|t|^{-1})\).  In a term of the \(k\)-fold Leibniz rule, suppose
+that \(s\le k\) of those leading factors are differentiated.  Their total
+derivative order is at most \(k\), so boundedness of the sinc derivatives
+makes the term \(\BigO_{K,k,R}(|t|^{k+s-R})\).  Since \(s\le k\) and
+\(R>A+2k\), this is \(\BigO_{K,k,R}(|t|^{-A})\).
+Derivatives falling on later factors are summable by the preceding weight
+estimates and do not change this worst power.  Summing the normally convergent
+Leibniz expansion proves \cref{eq:fr-q-derivative-rapid}; enlarging the
+constant handles bounded \(t\).
+
+Given any numbers of spatial and parameter derivatives, choose \(A\) large
+enough that the corresponding power of \(t\) is integrable.  Dominated Fourier
+inversion then proves smooth dependence of \(u_q\).  Since all centered laws
+are supported in the common interval \([-1,1]\),
+\(H_q(x)=\int_{-1}^xu_q(s)\Differential s\) on that interval, with constant exterior
+tails; hence the same conclusion holds for \(H_q\) and \(F_q\).  Finally, the
+implicit-function theorem applies at a quantile where \(u_q(x_p)>0\).
+Differentiating its defining identity and solving
+\(\partial_qH_q(x_p)+u_q(x_p)x_p'=0\) gives
+\cref{eq:fr-quantile-sensitivity}.
+\end{proof}
+
+For fixed \(x\), the \(C^2\) inverse sensitivity theorem
+\cref{thm:uq-inverse-sensitivities} applies to \(q\mapsto F_q(x)\) at any point
+where its \(q\)-derivative is nonzero.  If
+\(A=\partial_qF_q(x)|_{q=q_0}\), \(B=\partial_q^2F_q(x)|_{q=q_0}\), and
+\(\Delta=p-F_{q_0}(x)\), the first terms are
+\[
+ q-q_0=\frac\Delta A-\frac{B}{2A^3}\Delta^2+\BigO(\Delta^3).
+\]
+At \(x=1/2\), however, reflection forces \(F_q(1/2)=1/2\) for every \(q\).
+The entire parameter score vanishes there, so the midpoint contains no
+information about \(q\).  This is an exact identifiability obstruction, not a
+numerical conditioning accident.
+
+\section{\texorpdfstring{The geometric comb as a \(q\)-Pochhammer interpolation basis}{The geometric comb as a q-Pochhammer interpolation basis}}
+\label{sec:fr-geometric-interpolation}
+
+\begin{proposition}[Newton remainder on geometric nodes]
+\label{prop:fr-newton-qpochhammer}
+Let \(n\ge1\), let \(0<q<1\), let \(I\subset\RealNumbers\) be an interval containing
+\(x,1,q,\ldots,q^{n-1}\), and let \(g:I\to\RealNumbers\) be \(n\)-times continuously
+differentiable.  Let \(N_{n-1}g\) be its interpolation polynomial at those
+\(n\) distinct geometric nodes.  Then some point \(\xi\) in the convex hull of
+\(x,1,q,\ldots,q^{n-1}\) satisfies
+\begin{equation}
+ g(x)-N_{n-1}g(x)
+ =\frac{g^{(n)}(\xi)}{n!}
+ \prod_{j=0}^{n-1}(x-q^j)
+ =\frac{g^{(n)}(\xi)}{n!}x^n\QPochhammer{x^{-1}}{q}{n},
+ \label{eq:fr-newton-qpochhammer}
+\end{equation}
+where the final expression is understood by polynomial continuation at
+\(x=0\).
+\end{proposition}
+
+\begin{proof}
+If \(x=q^j\) for one of the interpolation nodes, both sides of the first
+equality vanish, and any \(\xi\) in the convex hull may be chosen.  Otherwise
+the \(n+1\) points are distinct.  Put
+\[
+ c=\frac{g(x)-N_{n-1}g(x)}{\prod_{j=0}^{n-1}(x-q^j)},
+ \qquad
+ h(t)=g(t)-N_{n-1}g(t)-c\prod_{j=0}^{n-1}(t-q^j).
+\]
+The real-valued function \(h\) has those \(n+1\) distinct zeros.  Applying
+Rolle's theorem \(n\) times gives a point \(\xi\) in their convex hull with
+\(h^{(n)}(\xi)=0\).  Since \(N_{n-1}g\) has degree at most \(n-1\) and the
+node polynomial is monic of degree \(n\), this identity reads
+\(g^{(n)}(\xi)-n!c=0\), proving the first equality.  For \(x\ne0\), the second
+equality is the factor-by-factor identity
+\[
+ x^n\QPochhammer{x^{-1}}{q}{n}
+ =x^n\prod_{j=0}^{n-1}(1-x^{-1}q^j)
+ =\prod_{j=0}^{n-1}(x-q^j).
+\]
+The final product is a polynomial in \(x\), so this identity defines the
+polynomial continuation of the middle expression at \(x=0\).
+\end{proof}
+
+This is the precise interpolation link behind the informal phrase
+\emph{geometric comb}.  The same nodes \(q^j\) govern the random-series
+weights, the cumulant sums, Newton divided differences, and the finite
+\(q\)-Pochhammer basis.  Parameter recovery from Fabius--Rvachev observables is
+therefore connected to inverse \(q\)-products structurally, rather than by a
+mere resemblance of notation.

@@ -11,8 +11,15 @@ This module supplies the minimal real `W_{-1}` infrastructure needed for
 equation (9) of the local K-fold Thue--Morse draft.  The branch is totalized;
 its defining equation, order, uniqueness, and exact-range API covers the
 closed-left natural domain `[-exp(-1), 0)`, while its ordinary continuity and
-derivative API uses the smooth interior `(-exp(-1), 0)`.  It also proves the
-standard first two terms of the branch's positive-side asymptotic expansion.
+derivative API uses the smooth interior `(-exp(-1), 0)`.
+
+It also proves the near-zero logarithmic bounds of the Lambert W guide,
+
+`-η - η·log η / (η - 1) ≤ W₋₁(x) < -η - log η`  for  `-1/e < x < 0`,
+`η = log (1 / (-x)) > 1`,
+
+and reads the standard first two terms of the branch's asymptotic expansion
+off that bracket, together with the explicit `O(log η / η)` rate they carry.
 -/
 
 set_option autoImplicit false
@@ -41,8 +48,8 @@ private lemma exists_mulLog_eq {z : ℝ} (hz : z ∈ Ioo (-Real.exp (-1)) 0) :
 noncomputable def lowerLambertArg (z : ℝ) : ℝ :=
   Function.invFunOn mulLog (Icc (0 : ℝ) (Real.exp (-1))) z
 
-/-- A totalized definition of the lower real Lambert branch.  Its intended
-domain is `(-exp (-1), 0)`. -/
+/-- A totalized definition of the lower real Lambert branch.  Its natural
+domain is `[-exp (-1), 0)`; derivative statements use the smooth interior. -/
 noncomputable def lowerLambertW (z : ℝ) : ℝ :=
   Real.log (lowerLambertArg z)
 
@@ -112,7 +119,7 @@ theorem lowerLambertW_le_neg_one {z : ℝ}
   have hu := (lowerLambertArg_spec_of_mem_Ico hz).1
   exact (Real.log_le_iff_le_exp hu.1).2 hu.2
 
-/-- On its natural domain, the lower branch is strictly below `-1`. -/
+/-- On the smooth interior of its natural domain, the lower branch is strictly below `-1`. -/
 theorem lowerLambertW_lt_neg_one {z : ℝ} (hz : z ∈ Ioo (-Real.exp (-1)) 0) :
     lowerLambertW z < -1 := by
   rw [lowerLambertW]
@@ -187,7 +194,7 @@ theorem lowerLambertW_strictAntiOn :
     StrictAntiOn lowerLambertW (Ioo (-Real.exp (-1)) 0) :=
   lowerLambertW_strictAntiOn_Ico.mono fun _ hz ↦ ⟨hz.1.le, hz.2⟩
 
-/-- Exact range of the lower real Lambert branch on its natural domain. -/
+/-- Exact range of the lower real Lambert branch on its smooth interior. -/
 theorem lowerLambertW_image :
     lowerLambertW '' Ioo (-Real.exp (-1)) 0 = Iio (-1) := by
   apply Subset.antisymm
@@ -225,8 +232,54 @@ theorem lowerLambertW_image_Ico :
       obtain ⟨z, hz, hzw⟩ := hwmem
       exact ⟨z, ⟨hz.1.le, hz.2⟩, hzw⟩
 
-/-- The lower real Lambert branch is continuous at every point of its natural
-domain. -/
+/-- The lower branch is right-continuous at the real branch point relative
+to its closed-left natural domain.
+
+Negating the branch turns its strict antitonicity into strict monotonicity;
+the exact image `(-W₋₁) '' [-exp (-1), 0) = [1, ∞)` then rules out a
+jump at the endpoint. -/
+theorem lowerLambertW_continuousWithinAt_branchPoint :
+    ContinuousWithinAt lowerLambertW (Ico (-Real.exp (-1)) 0)
+      (-Real.exp (-1)) := by
+  let g : ℝ → ℝ := fun x ↦ -lowerLambertW x
+  have hgmono : StrictMonoOn g (Ico (-Real.exp (-1)) 0) := by
+    intro a ha b hb hab
+    exact neg_lt_neg (lowerLambertW_strictAntiOn_Ico ha hb hab)
+  have hgimage : g '' Ico (-Real.exp (-1)) 0 = Ici 1 := by
+    ext y
+    constructor
+    · rintro ⟨x, hx, rfl⟩
+      exact mem_Ici.mpr (by
+        dsimp only [g]
+        linarith [lowerLambertW_le_neg_one hx])
+    · intro hy
+      have hneg : -y ∈ Iic (-1) := by
+        exact mem_Iic.mpr (by linarith [mem_Ici.mp hy])
+      rw [← lowerLambertW_image_Ico] at hneg
+      obtain ⟨x, hx, hxy⟩ := hneg
+      refine ⟨x, hx, ?_⟩
+      dsimp only [g]
+      rw [hxy]
+      simp
+  have hg : ContinuousWithinAt g (Ici (-Real.exp (-1)))
+      (-Real.exp (-1)) := by
+    apply hgmono.continuousWithinAt_right_of_image_mem_nhdsWithin
+    · exact Ico_mem_nhdsGE (neg_lt_zero.mpr (Real.exp_pos _))
+    · rw [hgimage]
+      have hgbp : g (-Real.exp (-1)) = 1 := by
+        simp [g]
+      rw [hgbp]
+      exact self_mem_nhdsWithin
+  have hgneg : ContinuousWithinAt (fun x ↦ -g x)
+      (Ici (-Real.exp (-1))) (-Real.exp (-1)) := hg.neg
+  have hfun : (fun x ↦ -g x) = lowerLambertW := by
+    funext x
+    simp [g]
+  rw [hfun] at hgneg
+  exact hgneg.mono fun _ hx ↦ mem_Ici.mpr hx.1
+
+/-- The lower real Lambert branch is continuous at every point of the smooth
+interior of its natural domain. -/
 theorem lowerLambertW_continuousAt {z : ℝ}
     (hz : z ∈ Ioo (-Real.exp (-1)) 0) :
     ContinuousAt lowerLambertW z := by
@@ -262,10 +315,20 @@ theorem lowerLambertW_continuousAt {z : ℝ}
     simp [g]
   rwa [hfun] at hgneg
 
-/-- Continuity of the lower real Lambert branch on its natural domain. -/
+/-- Continuity of the lower real Lambert branch on its smooth interior. -/
 theorem lowerLambertW_continuousOn :
     ContinuousOn lowerLambertW (Ioo (-Real.exp (-1)) 0) :=
   fun _ hz => (lowerLambertW_continuousAt hz).continuousWithinAt
+
+/-- Continuity of the lower branch on the full endpoint-inclusive natural
+domain `[-exp (-1), 0)`. -/
+theorem lowerLambertW_continuousOn_Ico :
+    ContinuousOn lowerLambertW (Ico (-Real.exp (-1)) 0) := by
+  intro z hz
+  rcases eq_or_lt_of_le hz.1 with h | h
+  · subst z
+    exact lowerLambertW_continuousWithinAt_branchPoint
+  · exact (lowerLambertW_continuousAt ⟨h, hz.2⟩).continuousWithinAt
 
 /-- Inverse-function derivative of the lower real Lambert branch. -/
 theorem lowerLambertW_hasDerivAt {z : ℝ}
@@ -314,7 +377,7 @@ theorem deriv_lowerLambertW {z : ℝ}
       rw [lowerLambertW_mul_exp hz, add_comm]
 
 /-- The derivative of the lower real Lambert branch is strictly negative on
-its natural domain. -/
+the smooth interior of its natural domain. -/
 theorem deriv_lowerLambertW_neg {z : ℝ}
     (hz : z ∈ Ioo (-Real.exp (-1)) 0) :
     deriv lowerLambertW z < 0 := by
@@ -403,135 +466,308 @@ theorem one_div_log_two_lt_paperLambertN {x : ℝ} (hx : 0 < x)
   exact (div_lt_div_iff_of_pos_right hlog2).2 (by
     linarith [lowerLambertW_lt_neg_one hz])
 
-private def mulExpNeg (y : ℝ) : ℝ := y * Real.exp (-y)
+/-! ### The map `z ↦ z - log z` on `(1, ∞)`
 
-private lemma mulExpNeg_strictAntiOn : StrictAntiOn mulExpNeg (Ici (1 : ℝ)) := by
-  intro a ha b hb hab
-  have heba : Real.exp (-b) < Real.exp (-a) := Real.exp_lt_exp.2 (neg_lt_neg hab)
-  have hea : Real.exp (-a) ∈ Icc (0 : ℝ) (Real.exp (-1)) := by
-    exact ⟨(Real.exp_pos _).le, Real.exp_le_exp.2 (neg_le_neg ha)⟩
-  have heb : Real.exp (-b) ∈ Icc (0 : ℝ) (Real.exp (-1)) := by
-    exact ⟨(Real.exp_pos _).le, Real.exp_le_exp.2 (neg_le_neg hb)⟩
-  have h := Real.mul_log_strictAntiOn heb hea heba
-  simpa [mulExpNeg, Real.log_exp, mul_comm] using h
+The near-zero bracket proved below is really a statement about the *inverse*
+of `φ(z) = z - log z`, which is strictly increasing on `(1, ∞)`.  Writing
+`y = -W₋₁(x) > 1`, the defining equation `W e^W = x` becomes `y·e^{-y} = -x`,
+that is `y - log y = η` with `η = log (1 / (-x))`.  Then
 
-private noncomputable def lowerLambertY (eps : ℝ) : ℝ := -lowerLambertW (-eps)
+* `y > η + log η`, because `y > η` forces `log y > log η`; and
+* `y ≤ B := η + η·log η / (η - 1)`, because `log B ≤ log η + (B - η)/η`
+  shows `φ(B) ≥ η = φ(y)`, and `φ` is monotone.
 
-private lemma lowerLambertY_gt_one {eps : ℝ} (heps : eps ∈ Ioo 0 (Real.exp (-1))) :
-    1 < lowerLambertY eps := by
-  have hz : -eps ∈ Ioo (-Real.exp (-1)) 0 :=
-    ⟨neg_lt_neg heps.2, neg_lt_zero.2 heps.1⟩
-  simpa [lowerLambertY] using neg_lt_neg (lowerLambertW_lt_neg_one hz)
+Neither step mentions Lambert's function, so the bracket is proved for an
+arbitrary `y > 1` and `η = φ(y)` in `Fabius.SubLog`, and only then read off
+for `W₋₁` through `lowerLambertW_mul_exp`.  Stated this way it applies to any
+quantity known only through an equation `y - log y = η` — which is how the
+lower branch enters the dyadic saddle-point analysis elsewhere in this
+library. -/
 
-private lemma lowerLambertY_mul_exp_neg {eps : ℝ}
-    (heps : eps ∈ Ioo 0 (Real.exp (-1))) :
-    mulExpNeg (lowerLambertY eps) = eps := by
-  have hz : -eps ∈ Ioo (-Real.exp (-1)) 0 :=
-    ⟨by linarith [heps.2], by linarith [heps.1]⟩
-  have h := lowerLambertW_mul_exp hz
-  simpa [lowerLambertY, mulExpNeg] using congrArg Neg.neg h
+namespace SubLog
 
-private theorem tendsto_lowerLambertY_nhdsGT_zero_atTop :
-    Tendsto lowerLambertY (nhdsWithin (0 : ℝ) (Ioi 0)) atTop := by
-  refine tendsto_atTop.2 ?_
-  intro B
-  let A : ℝ := max B 1 + 1
-  have hA1 : 1 < A := by
-    dsimp [A]
-    linarith [le_max_right B 1]
-  have hdelta : 0 < mulExpNeg A := by
-    exact mul_pos (lt_trans zero_lt_one hA1) (Real.exp_pos _)
-  have hcut : 0 < min (Real.exp (-1)) (mulExpNeg A) :=
-    lt_min (Real.exp_pos _) hdelta
-  filter_upwards [Ioo_mem_nhdsGT hcut] with eps heps
-  have hepsDomain : eps ∈ Ioo 0 (Real.exp (-1)) :=
-    ⟨heps.1, heps.2.trans_le (min_le_left _ _)⟩
-  have hy1 : 1 < lowerLambertY eps := lowerLambertY_gt_one hepsDomain
-  by_contra hnot
-  have hyB : lowerLambertY eps < B := lt_of_not_ge hnot
-  have hBA : B < A := by
-    dsimp [A]
-    linarith [le_max_left B 1]
-  have hyA : lowerLambertY eps < A := hyB.trans hBA
-  have hanti := mulExpNeg_strictAntiOn hy1.le hA1.le hyA
-  rw [lowerLambertY_mul_exp_neg hepsDomain] at hanti
-  exact (not_lt_of_ge (le_of_lt (heps.2.trans_le (min_le_right _ _)))) hanti
+/-- `z ↦ z - log z` is strictly increasing on `[1, ∞)`: its derivative
+`1 - 1/z` is positive for `z > 1`. -/
+theorem strictMonoOn_sub_log : StrictMonoOn (fun z : ℝ => z - Real.log z) (Ici 1) := by
+  refine strictMonoOn_of_deriv_pos (convex_Ici 1) ?_ ?_
+  · exact (continuousOn_id.sub (Real.continuousOn_log.mono fun z hz =>
+      by simp only [mem_Ici, mem_compl_iff, mem_singleton_iff] at hz ⊢; linarith))
+  · intro z hz
+    rw [interior_Ici, mem_Ioi] at hz
+    have hz0 : z ≠ 0 := by linarith
+    have hd : HasDerivAt (fun z : ℝ => z - Real.log z) (1 - z⁻¹) z :=
+      (hasDerivAt_id z).sub (Real.hasDerivAt_log hz0)
+    rw [hd.deriv]
+    have : z⁻¹ < 1 := inv_lt_one_of_one_lt₀ hz
+    linarith
 
-private lemma log_eq_log_lowerLambertY_sub {eps : ℝ}
-    (heps : eps ∈ Ioo 0 (Real.exp (-1))) :
-    Real.log eps = Real.log (lowerLambertY eps) - lowerLambertY eps := by
-  have hy : 0 < lowerLambertY eps :=
-    zero_lt_one.trans (lowerLambertY_gt_one heps)
-  have hlog := congrArg Real.log (lowerLambertY_mul_exp_neg heps)
-  rw [mulExpNeg, Real.log_mul hy.ne' (Real.exp_ne_zero _), Real.log_exp] at hlog
+/-- A point `y > 1` with `y - log y = η` lies strictly above `η + log η`. -/
+theorem lt_of_sub_log_eq {y η : ℝ} (hy : 1 < y) (h : y - Real.log y = η) :
+    η + Real.log η < y := by
+  have hlog : 0 < Real.log y := Real.log_pos hy
+  have hη : η < y := by linarith
+  have hη1 : 1 < η := by
+    -- `η = y - log y` and `log y < y - 1`
+    have := Real.log_lt_sub_one_of_pos (by linarith : 0 < y) hy.ne'
+    linarith
+  have := Real.log_lt_log (by linarith) hη
   linarith
 
-private lemma neg_log_div_lowerLambertY {eps : ℝ}
-    (heps : eps ∈ Ioo 0 (Real.exp (-1))) :
-    -Real.log eps / lowerLambertY eps =
-      1 - Real.log (lowerLambertY eps) / lowerLambertY eps := by
-  rw [log_eq_log_lowerLambertY_sub heps]
-  have hy : lowerLambertY eps ≠ 0 :=
-    (zero_lt_one.trans (lowerLambertY_gt_one heps)).ne'
-  field_simp
+/-- A point `y > 1` with `y - log y = η` lies at most at
+`η + η·log η / (η - 1)`. -/
+theorem le_of_sub_log_eq {y η : ℝ} (hy : 1 < y) (h : y - Real.log y = η) :
+    y ≤ η + η * Real.log η / (η - 1) := by
+  have hη1 : 1 < η := by
+    have := Real.log_lt_sub_one_of_pos (by linarith : 0 < y) hy.ne'
+    linarith
+  have hη0 : 0 < η := by linarith
+  have hlogη : 0 < Real.log η := Real.log_pos hη1
+  set r := η * Real.log η / (η - 1) with hr
+  have hr0 : 0 < r := by positivity
+  -- `log (η + r) ≤ log η + r/η`, from `log (1 + s) ≤ s` at `s = r/η`
+  have hlogB : Real.log (η + r) ≤ Real.log η + r / η := by
+    have hs : 0 < 1 + r / η := by positivity
+    have h1 : Real.log (η + r) = Real.log η + Real.log (1 + r / η) := by
+      rw [← Real.log_mul hη0.ne' hs.ne']
+      congr 1
+      field_simp
+    have h2 : Real.log (1 + r / η) ≤ r / η := by
+      linarith [Real.log_le_sub_one_of_pos hs]
+    linarith
+  -- and `r/η = log η / (η - 1)`, so `log η + r/η = r`
+  have hrη : Real.log η + r / η = r := by
+    have hne : η - 1 ≠ 0 := by linarith
+    rw [hr]
+    field_simp
+    ring
+  -- hence `φ(η + r) ≥ η = φ(y)`, and `φ` is increasing on `[1, ∞)`
+  have hφB : η ≤ (η + r) - Real.log (η + r) := by linarith
+  refine le_of_not_gt fun hcon => ?_
+  have hmono := strictMonoOn_sub_log (mem_Ici.mpr (by linarith : (1 : ℝ) ≤ η + r))
+    (mem_Ici.mpr hy.le) hcon
+  simp only at hmono
+  linarith
+
+/-- **The bracket for the inverse of `z - log z`.**  If `y > 1` and
+`y - log y = η`, then `η + log η < y ≤ η + η·log η / (η - 1)`. -/
+theorem bracket_of_sub_log_eq {y η : ℝ} (hy : 1 < y) (h : y - Real.log y = η) :
+    η + Real.log η < y ∧ y ≤ η + η * Real.log η / (η - 1) :=
+  ⟨lt_of_sub_log_eq hy h, le_of_sub_log_eq hy h⟩
+
+end SubLog
+
+/-! ### The lower branch near zero -/
+
+/-- On `(-1/e, 0)`, the lower branch satisfies `y - log y = log (1 / (-x))`
+with `y = -W₋₁(x)`: the defining equation read through `y·e^{-y} = -x`. -/
+theorem neg_lowerLambertW_sub_log_eq {x : ℝ} (hx : x ∈ Ioo (-Real.exp (-1)) 0) :
+    -lowerLambertW x - Real.log (-lowerLambertW x) = Real.log (1 / (-x)) := by
+  have hW := lowerLambertW_mul_exp hx
+  have hWneg : lowerLambertW x < -1 := lowerLambertW_lt_neg_one hx
+  have hy : 0 < -lowerLambertW x := by linarith
+  have hx0 : 0 < -x := by linarith [hx.2]
+  -- `-x = (-W) · exp W`, so `log (-x) = log (-W) + W`
+  have hprod : -x = (-lowerLambertW x) * Real.exp (lowerLambertW x) := by linarith
+  have hlog : Real.log (-x) = Real.log (-lowerLambertW x) + lowerLambertW x := by
+    rw [hprod, Real.log_mul hy.ne' (Real.exp_pos _).ne', Real.log_exp]
+  rw [one_div, Real.log_inv, hlog]
   ring
 
-private lemma lowerLambertW_expansion_remainder_eq {eps : ℝ}
+/-- **Near-zero logarithmic bounds, upper half.**  For `-1/e < x < 0` and
+`η = log (1 / (-x))`, `W₋₁(x) < -η - log η`. -/
+theorem lowerLambertW_lt_neg_log_sub {x : ℝ} (hx : x ∈ Ioo (-Real.exp (-1)) 0) :
+    lowerLambertW x <
+      -Real.log (1 / (-x)) - Real.log (Real.log (1 / (-x))) := by
+  have hy : 1 < -lowerLambertW x := by linarith [lowerLambertW_lt_neg_one hx]
+  have := SubLog.lt_of_sub_log_eq hy (neg_lowerLambertW_sub_log_eq hx)
+  linarith
+
+/-- **Near-zero logarithmic bounds, lower half.**  For `-1/e < x < 0` and
+`η = log (1 / (-x))`, `-η - η·log η / (η - 1) ≤ W₋₁(x)`. -/
+theorem neg_log_sub_div_le_lowerLambertW {x : ℝ} (hx : x ∈ Ioo (-Real.exp (-1)) 0) :
+    -Real.log (1 / (-x)) -
+        Real.log (1 / (-x)) * Real.log (Real.log (1 / (-x))) / (Real.log (1 / (-x)) - 1) ≤
+      lowerLambertW x := by
+  have hy : 1 < -lowerLambertW x := by linarith [lowerLambertW_lt_neg_one hx]
+  have := SubLog.le_of_sub_log_eq hy (neg_lowerLambertW_sub_log_eq hx)
+  linarith
+
+/-- **The two-sided near-zero bracket** for the lower branch, in the guide's
+form: with `η = log (1 / (-x)) > 1`,
+`-η - η·log η / (η - 1) ≤ W₋₁(x) < -η - log η`. -/
+theorem lowerLambertW_near_zero_bounds {x : ℝ} (hx : x ∈ Ioo (-Real.exp (-1)) 0) :
+    -Real.log (1 / (-x)) -
+        Real.log (1 / (-x)) * Real.log (Real.log (1 / (-x))) / (Real.log (1 / (-x)) - 1) ≤
+      lowerLambertW x ∧
+    lowerLambertW x < -Real.log (1 / (-x)) - Real.log (Real.log (1 / (-x))) :=
+  ⟨neg_log_sub_div_le_lowerLambertW hx, lowerLambertW_lt_neg_log_sub hx⟩
+
+/-- The auxiliary quantity `η = log (1 / (-x))` exceeds `1` on `(-1/e, 0)`. -/
+theorem one_lt_log_one_div_neg {x : ℝ} (hx : x ∈ Ioo (-Real.exp (-1)) 0) :
+    1 < Real.log (1 / (-x)) := by
+  have hx0 : 0 < -x := by linarith [hx.2]
+  have hlt : -x < Real.exp (-1) := by linarith [hx.1]
+  rw [one_div, Real.log_inv]
+  have := Real.log_lt_log hx0 hlt
+  rw [Real.log_exp] at this
+  linarith
+
+/-! ### The two-term expansion at the singularity
+
+Everything below is the bracket of `lowerLambertW_near_zero_bounds` rewritten
+in the coordinate `eps = -x`, where `η = log (1 / (-x))` becomes `-log eps`.
+The upper endpoint of the bracket is exactly `log eps - log |log eps|`, and
+the lower endpoint sits `log η / (η - 1)` below it, so the two-term expansion
+and its rate are read off the bracket rather than proved again. -/
+
+-- The bracket's width, in the normalization used below:
+-- `log η - η·log η/(η - 1) = -(log η/(η - 1))`.
+private lemma remainder_bracket {y η : ℝ} (hη : 1 < η)
+    (hlow : -η - η * Real.log η / (η - 1) ≤ y) (hupp : y < -η - Real.log η) :
+    -(Real.log η / (η - 1)) ≤ y - (-η - Real.log η) ∧
+      y - (-η - Real.log η) < 0 := by
+  have hne : η - 1 ≠ 0 := by linarith
+  have hsplit : η * Real.log η / (η - 1) = Real.log η + Real.log η / (η - 1) := by
+    have hnum : η * Real.log η = (η - 1) * Real.log η + Real.log η := by ring
+    rw [hnum, add_div, mul_div_cancel_left₀ (Real.log η) hne]
+  rw [hsplit] at hlow
+  exact ⟨by linarith, by linarith⟩
+
+private lemma one_lt_neg_log {eps : ℝ} (heps : eps ∈ Ioo 0 (Real.exp (-1))) :
+    1 < -Real.log eps := by
+  have h := Real.log_lt_log heps.1 heps.2
+  rw [Real.log_exp] at h
+  linarith
+
+-- The near-zero bracket in the coordinate `eps`, centred at the two-term
+-- expansion `log eps - log |log eps|`.
+private lemma lowerLambertW_expansion_bracket {eps : ℝ}
     (heps : eps ∈ Ioo 0 (Real.exp (-1))) :
-    lowerLambertW (-eps) -
-        (Real.log eps - Real.log |Real.log eps|) =
-      Real.log ((-Real.log eps) / lowerLambertY eps) := by
-  have heps1 : eps < 1 := heps.2.trans (Real.exp_lt_one_iff.2 (by norm_num))
-  have hlogneg : Real.log eps < 0 := Real.log_neg heps.1 heps1
-  have hL : 0 < -Real.log eps := neg_pos.2 hlogneg
-  have hy : 0 < lowerLambertY eps :=
-    zero_lt_one.trans (lowerLambertY_gt_one heps)
-  rw [Real.log_div hL.ne' hy.ne', abs_of_neg hlogneg]
-  have hW : lowerLambertW (-eps) = -lowerLambertY eps := by
-    simp [lowerLambertY]
-  rw [hW, log_eq_log_lowerLambertY_sub heps]
-  ring
+    -(Real.log (-Real.log eps) / (-Real.log eps - 1)) ≤
+        lowerLambertW (-eps) - (Real.log eps - Real.log |Real.log eps|) ∧
+      lowerLambertW (-eps) - (Real.log eps - Real.log |Real.log eps|) < 0 := by
+  have hx : (-eps) ∈ Ioo (-Real.exp (-1)) 0 :=
+    ⟨by linarith [heps.2], by linarith [heps.1]⟩
+  have hEta1 := one_lt_neg_log heps
+  have hlogneg : Real.log eps < 0 := by linarith
+  have hEtaEq : Real.log (1 / (-(-eps))) = -Real.log eps := by
+    rw [neg_neg, one_div, Real.log_inv]
+  have hrewrite : Real.log eps - Real.log |Real.log eps|
+      = -(-Real.log eps) - Real.log (-Real.log eps) := by
+    rw [abs_of_neg hlogneg]
+    ring
+  have hlow := neg_log_sub_div_le_lowerLambertW hx
+  have hupp := lowerLambertW_lt_neg_log_sub hx
+  rw [hEtaEq] at hlow hupp
+  rw [hrewrite]
+  exact remainder_bracket hEta1 hlow hupp
+
+/-- The lower Lambert branch diverges to negative infinity as its negative
+argument approaches zero: `W₋₁(-eps) → -∞` as `eps ↓0`.
+
+This is the upper half of the near-zero bracket alone: `W₋₁(-eps)` stays
+below `log eps - log (-log eps) < log eps → -∞`. -/
+theorem tendsto_lowerLambertW_neg_nhdsGT_zero_atBot :
+    Tendsto (fun eps : ℝ ↦ lowerLambertW (-eps))
+      (nhdsWithin (0 : ℝ) (Ioi 0)) atBot := by
+  have hEta : Tendsto (fun eps : ℝ => -Real.log eps)
+      (nhdsWithin (0 : ℝ) (Ioi 0)) atTop :=
+    tendsto_neg_atTop_iff.mpr Real.tendsto_log_nhdsGT_zero
+  have hbound : ∀ᶠ eps : ℝ in nhdsWithin (0 : ℝ) (Ioi 0),
+      -Real.log eps ≤ -(lowerLambertW (-eps)) := by
+    filter_upwards [Ioo_mem_nhdsGT (Real.exp_pos (-1))] with eps heps
+    have hEta1 := one_lt_neg_log heps
+    have hlogneg : Real.log eps < 0 := by linarith
+    have habs : Real.log |Real.log eps| = Real.log (-Real.log eps) := by
+      rw [abs_of_neg hlogneg]
+    have hupp := (lowerLambertW_expansion_bracket heps).2
+    rw [habs] at hupp
+    have hlogpos : 0 < Real.log (-Real.log eps) := Real.log_pos hEta1
+    linarith
+  have hneg : Tendsto (fun eps : ℝ ↦ -(lowerLambertW (-eps)))
+      (nhdsWithin (0 : ℝ) (Ioi 0)) atTop :=
+    tendsto_atTop_mono' _ hbound hEta
+  exact tendsto_neg_atTop_iff.mp hneg
+
+/-- **Explicit rate in the two-term expansion of the lower branch.**  For
+`0 < eps < 1/e` and `η = -log eps > 1`,
+
+`|W₋₁(-eps) - (log eps - log |log eps|)| ≤ log η / (η - 1)`.
+
+The error is in fact confined to the half-open interval
+`[-log η / (η - 1), 0)`: this is nothing but `lowerLambertW_near_zero_bounds`
+recentred at the upper endpoint of the bracket, whose distance to the lower
+endpoint is `η·log η/(η - 1) - log η = log η/(η - 1)`. -/
+theorem abs_lowerLambertW_expansion_le {eps : ℝ}
+    (heps : eps ∈ Ioo 0 (Real.exp (-1))) :
+    |lowerLambertW (-eps) - (Real.log eps - Real.log |Real.log eps|)| ≤
+      Real.log (-Real.log eps) / (-Real.log eps - 1) := by
+  obtain ⟨hlow, hupp⟩ := lowerLambertW_expansion_bracket heps
+  rw [abs_of_nonpos hupp.le]
+  linarith
+
+-- `log t / (t - 1) ≤ 2 · log t / t` for `t ≥ 2`, since then `t/2 ≤ t - 1`.
+private lemma log_div_sub_one_le {t : ℝ} (ht : 2 ≤ t) :
+    Real.log t / (t - 1) ≤ 2 * (Real.log t / t) := by
+  have hlog : 0 ≤ Real.log t := Real.log_nonneg (by linarith)
+  have h1 : Real.log t / (t - 1) ≤ Real.log t / (t / 2) :=
+    div_le_div_of_nonneg_left hlog (by linarith) (by linarith)
+  have h2 : Real.log t / (t / 2) = 2 * (Real.log t / t) := by
+    rw [div_div_eq_mul_div]
+    ring
+  rwa [h2] at h1
+
+/-- **The two-term expansion of the lower branch, with its rate.**  With
+`η = -log eps`, the error of `W₋₁(-eps) = log eps - log |log eps| + o(1)` is
+`O(log η / η)` as `eps ↓ 0`.
+
+This is an `eps`-coordinate packaging of `abs_lowerLambertW_expansion_le`,
+not new content: the same `O(log/·)` rate for the same remainder is recorded
+in the dyadic `t`-coordinate by `dyadicLambertPerturbation_isBigO_log_div`
+and `dyadicLambertRefinedRemainder_isBigO`. -/
+theorem lowerLambertW_expansion_isBigO :
+    (fun eps : ℝ => lowerLambertW (-eps) -
+        (Real.log eps - Real.log |Real.log eps|)) =O[nhdsWithin (0 : ℝ) (Ioi 0)]
+      (fun eps : ℝ => Real.log (-Real.log eps) / (-Real.log eps)) := by
+  have key : ∀ᶠ eps : ℝ in nhdsWithin (0 : ℝ) (Ioi 0),
+      ‖lowerLambertW (-eps) - (Real.log eps - Real.log |Real.log eps|)‖ ≤
+        2 * ‖Real.log (-Real.log eps) / (-Real.log eps)‖ := by
+    filter_upwards [Ioo_mem_nhdsGT (Real.exp_pos (-2))] with eps heps
+    have hle : Real.exp (-2) ≤ Real.exp (-1) := Real.exp_le_exp.2 (by norm_num)
+    have hepsDom : eps ∈ Ioo 0 (Real.exp (-1)) := ⟨heps.1, lt_of_lt_of_le heps.2 hle⟩
+    have hEta2 : 2 ≤ -Real.log eps := by
+      have h := Real.log_lt_log heps.1 heps.2
+      rw [Real.log_exp] at h
+      linarith
+    have hnum : 0 ≤ Real.log (-Real.log eps) := Real.log_nonneg (by linarith)
+    have hbound := abs_lowerLambertW_expansion_le hepsDom
+    have hcmp := log_div_sub_one_le hEta2
+    have habs2 : |Real.log (-Real.log eps) / (-Real.log eps)|
+        = Real.log (-Real.log eps) / (-Real.log eps) :=
+      abs_of_nonneg (div_nonneg hnum (by linarith))
+    simp only [Real.norm_eq_abs]
+    linarith
+  exact Asymptotics.IsBigO.of_bound 2 key
 
 /-- Standard first two terms of the lower real Lambert branch:
-`W₋₁(-eps) = log eps - log |log eps| + o(1)` as `eps ↓ 0`. -/
+`W₋₁(-eps) = log eps - log |log eps| + o(1)` as `eps ↓ 0`.
+
+The `o(1)` is the qualitative shadow of `lowerLambertW_expansion_isBigO`:
+the majorant `log η / η` tends to `0` because `η = -log eps → ∞`. -/
 theorem tendsto_lowerLambertW_expansion :
     Tendsto
       (fun eps : ℝ => lowerLambertW (-eps) -
         (Real.log eps - Real.log |Real.log eps|))
       (nhdsWithin (0 : ℝ) (Ioi 0)) (nhds 0) := by
-  have hlogOverY :
-      Tendsto
-        (fun eps : ℝ => Real.log (lowerLambertY eps) / lowerLambertY eps)
-        (nhdsWithin (0 : ℝ) (Ioi 0)) (nhds 0) := by
-    change Tendsto ((fun x : ℝ => Real.log x / x) ∘ lowerLambertY)
+  have hEta : Tendsto (fun eps : ℝ => -Real.log eps)
+      (nhdsWithin (0 : ℝ) (Ioi 0)) atTop :=
+    tendsto_neg_atTop_iff.mpr Real.tendsto_log_nhdsGT_zero
+  have hmaj : Tendsto (fun eps : ℝ => Real.log (-Real.log eps) / (-Real.log eps))
+      (nhdsWithin (0 : ℝ) (Ioi 0)) (nhds 0) := by
+    change Tendsto ((fun t : ℝ => Real.log t / t) ∘ (fun eps : ℝ => -Real.log eps))
       (nhdsWithin (0 : ℝ) (Ioi 0)) (nhds 0)
-    exact Real.isLittleO_log_id_atTop.tendsto_div_nhds_zero.comp
-      tendsto_lowerLambertY_nhdsGT_zero_atTop
-  have hbase :
-      Tendsto
-        (fun eps : ℝ => 1 - Real.log (lowerLambertY eps) / lowerLambertY eps)
-        (nhdsWithin (0 : ℝ) (Ioi 0)) (nhds 1) := by
-    simpa using (tendsto_const_nhds.sub hlogOverY :
-      Tendsto
-        (fun eps : ℝ => 1 - Real.log (lowerLambertY eps) / lowerLambertY eps)
-        (nhdsWithin (0 : ℝ) (Ioi 0)) (nhds (1 - 0)))
-  have hdomain : ∀ᶠ eps : ℝ in nhdsWithin (0 : ℝ) (Ioi 0),
-      eps ∈ Ioo 0 (Real.exp (-1)) :=
-    Ioo_mem_nhdsGT (Real.exp_pos _)
-  have hratio :
-      Tendsto (fun eps : ℝ => (-Real.log eps) / lowerLambertY eps)
-        (nhdsWithin (0 : ℝ) (Ioi 0)) (nhds 1) := by
-    exact hbase.congr' <| by
-      filter_upwards [hdomain] with eps heps
-      exact (neg_log_div_lowerLambertY heps).symm
-  have hlogRatio :
-      Tendsto (fun eps : ℝ =>
-        Real.log ((-Real.log eps) / lowerLambertY eps))
-        (nhdsWithin (0 : ℝ) (Ioi 0)) (nhds 0) := by
-    simpa using hratio.log one_ne_zero
-  exact hlogRatio.congr' <| by
-    filter_upwards [hdomain] with eps heps
-    exact (lowerLambertW_expansion_remainder_eq heps).symm
+    exact Real.isLittleO_log_id_atTop.tendsto_div_nhds_zero.comp hEta
+  exact lowerLambertW_expansion_isBigO.trans_tendsto hmaj
 
 end
 

@@ -1,0 +1,147 @@
+\part{Certification, Formalization, and Provenance}
+
+\section{Status discipline}
+\label{sec:status-discipline}
+
+This synthesis uses three noninterchangeable kinds of mathematical evidence.
+
+\begin{enumerate}
+\item A result is \emph{Lean-proved} only when every clause of the
+      human-readable statement has the same hypotheses and conclusion as a
+      named Lean declaration.  A paper theorem assembled from several Lean
+      declarations qualifies only when the finite family is explicitly
+      identified; the presence of all the right ingredients is not enough.
+\item A \emph{human-proved frontier result} has a complete proof in this volume
+      but no exact Lean counterpart yet.
+\item A \emph{conjecture} or \emph{research problem} retains an explicit,
+      mathematically substantive unresolved obligation.
+\end{enumerate}
+
+Executable symbolic or numerical checks are useful regression evidence, but
+they do not upgrade a manuscript claim into a theorem.  Conversely, a theorem
+whose special case is formalized is not labelled Lean-proved unless the
+specialization and all of its hypotheses match exactly.
+
+In the current reviewed concordance, the resulting classification is
+\(49\) Lean-proved rows, \(96\) human-proved frontier
+rows, \(10\) conjectures, \(15\) open problems, and \(24\) nonassertoric
+rows, for \(194\) rows in all.  These are source-result counts, not counts of
+distinct canonical theorem environments: deduplication may send several
+source rows to one stronger surviving result.
+
+The normalization in the shifted self-sampling theorem is matched exactly by
+the Lean declaration
+\path{Fabius.integral_polynomial_mul_rvachevUp_eq_dyadic_tsum}
+in \path{FabiusFunction.PolynomialCombExactness}.  It has the same
+whole-line integral, dyadic mesh factor, arbitrary real phase, polynomial
+degree bound, sampling nodes, and Rvachev-density weights; compact support
+reduces its integral to \([-1,1]\).  Thus no informal rescaling bridge is
+being hidden in the Lean-proved classification.
+
+Five further source rows now have exact compiled counterparts.  The centered
+Appell convolution is
+\path{Fabius.integral_eval_rvachevAppellPolynomial_sub_mul_rvachev},
+the positive-degree mean-zero corollary is
+\path{Fabius.integral_eval_rvachevAppellPolynomial_mul_rvachev_eq_zero},
+and the arbitrarily phased polynomial formula is
+\path{Fabius.normalized_tsum_shifted_rvachevDeconvolvedPolynomial_mul_rvachevUp}.
+Compact support reduces the first two whole-line integrals to \([-1,1]\);
+after that normalization, their hypotheses and conclusions match the
+corresponding canonical rows.  The two newest exact rows are the
+parity-selected one-extra-degree rule
+\cref{is:p3:cor:forced-superconvergence}, whose principal physical-coordinate
+declaration is
+\path{Fabius.integral_polynomial_mul_rvachevUp_eq_normalized_tsum_superconvergent},
+and the finite Appell lattice formula
+\cref{is:p3:thm:Appell-lattice-reproduction}, whose selected-phase clause is
+\path{Fabius.normalized_tsum_shifted_rvachevAppellPolynomial_mul_rvachevUp_superconvergent}.
+The exact dyadic phase dictionary is
+\path{Fabius.isRvachevSuperconvergentPhase_two_pow_iff}.  Existing positivity,
+strict-interior positivity, rational dyadic evaluation, and finite-support
+declarations complete the finite families recorded in the Lean crosswalk.
+
+Five canonical results were added after the immutable source snapshot and
+therefore do not alter the \(194\)-row totals.  Three are Lean-proved:
+the derivative-distribution theorem, the complete geometric-Lagrange residual
+theorem (by
+\path{Fabius.sum_geometricLagrangeWeight_mul_pow_of_pos} and
+\path{Fabius.completeHomogeneousEval_geometric}), and the finite-product
+loss lemma (by
+\path{Fabius.one_sub_sum_range_le_prod_range_one_sub}).
+The base-\(b\) density proposition is a new human-proved strengthening, and
+the dyadic singularity atlas is explicitly an open problem.  All five
+dispositions and their exact formalization boundaries are recorded in the
+Lean crosswalk.
+
+The source theorem \cref{is:p2:thm:Catalan-quarter} illustrates why the count
+uses whole-statement rather than partial-clause certification.  The declaration
+\path{Fabius.iteratedDeriv_fabiusInv_five_seventy_two_succ}
+formalizes its all-order Catalan derivative formula, but not the packaged
+quarter jet, quadratic algebraic shadow, and large-order asymptotic as one
+finite exact family.  The complete canonical theorem therefore remains
+human-proved.
+
+\subsection{Partial formalizations are recorded as partial}
+
+Two results in the self-sampling chapter have substantial formal kernels
+but nonidentical or stronger canonical conclusions.  The whole labelled
+results are therefore human-proved frontier results, with the precise Lean
+boundary as follows.
+
+\begin{description}
+\item[\cref{is:p3:prop:local-factorization}.]
+Lean proves the denominator-cleared integer-zero factorization and the
+analytic-cofactor derivative engine.  The proposition also asserts the
+normalized local exponential form and its explicit logarithmic jet; those
+extra clauses, and hence the whole proposition, are not a single exact Lean
+result.
+
+\item[\cref{is:p3:thm:first-defect}.]
+Lean proves the odd-alias representation, and a companion theorem evaluates
+the surviving derivative coefficient.  No named declaration assembles these
+pieces into the displayed complex series together with both trigonometric
+forms, so the canonical theorem remains human-proved.
+
+\end{description}
+
+\section{Deduplication and result provenance}
+\label{sec:result-provenance}
+
+The machine-readable theorem concordance records every theorem-style source
+environment at the immutable pre-retirement revision.  Several source rows may
+map to one canonical theorem when one statement is a specialization or a
+later duplicate of a stronger result.  Such a many-to-one mapping is
+deduplication, not loss: the source statement, source line, surviving label,
+logical status, and reason for the disposition remain explicit.
+
+The companion asset ledger performs the analogous job for scripts, exact
+output, figures, generated fragments, checksum ledgers, and historical PDFs.
+Only unique reproducibility material is migrated into the canonical
+\path{assets/} tree.  Superseded layouts remain recoverable at the revision
+recorded in \path{audit/SOURCE_REVISION} and throughout Git history.
+
+\section{Reproducibility boundary}
+\label{sec:reproducibility-boundary}
+
+The publication gate has four independent layers: a structural source audit,
+replay of retained exact computations, three serial \LaTeX{} passes, and
+visual inspection of the rendered PDF.  Lean validation, when required by a
+source change, is serialized separately; no PDF or source-level claim is
+treated as compiler evidence.
+
+For the new arbitrary-phase polynomial self-sampling result, the focused
+command
+\path{lake build +FabiusFunction.PolynomialCombExactness}
+completed successfully after a serialized replay of its (3474)-job
+dependency graph.  The terminal exit code was zero, and the target module
+contains no placeholder proof.  This compiler evidence is narrower than an
+umbrella-library build but exact for the declaration used in the crosswalk.
+
+At the same editorial checkpoint,
+\path{audit/validate_canonical.py} verified all nine chapter inputs,
+(748) distinct labels, (593) references, and all (194) immutable source
+rows with no incomplete disposition.  The independent asset check verified
+all (88) source-file dispositions, all (63) deduplicated live payloads,
+and no duplicate canonical payload.  These checks establish structural and
+provenance completeness; they do not replace mathematical proof or visual
+inspection.

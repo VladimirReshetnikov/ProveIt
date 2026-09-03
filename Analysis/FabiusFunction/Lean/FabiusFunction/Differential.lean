@@ -1,4 +1,5 @@
 import FabiusFunction.Basic
+import FabiusFunction.AffineDifferenceOrbit
 import Mathlib.Analysis.Calculus.ContDiff.Deriv
 import Mathlib.Analysis.Calculus.LocalExtr.Basic
 
@@ -12,7 +13,9 @@ the two one-sided derivatives, then bootstraps the differential equation to
 smoothness of every finite order.
 It also records the closed constant-tail forms of the Fabius derivative and
 the exact midpoint derivative, so endpoint arguments do not need to reopen
-the global folded formula.
+the global folded formula.  The generic affine-difference orbit calculus is
+then specialized to express every derivative of `up` as a finite
+Thue--Morse-signed affine orbit, globally on the real line.
 -/
 
 set_option autoImplicit false
@@ -123,6 +126,23 @@ theorem fabius_hasDerivAt (F : BoundedFabius) (hF : IsFabius F) (x : ℝ) :
     rw [rvachevUp_eq_zero_of_le_neg_one F hF (by linarith), mul_zero]
     exact fabius_hasDerivAt_of_neg F hF hx
 
+/-- **`y ↦ F((y+1)/2)` is a global antiderivative of the up-function.**
+This is the folded derivative identity `F'(x) = 2·up(2x-1)` of
+`fabius_hasDerivAt` composed with the affine substitution: the factor
+`2` is eaten by the inner derivative `1/2`, and the argument
+`2·((y+1)/2) - 1` collapses to `y`. -/
+theorem hasDerivAt_fabiusReal_half_shift (F : BoundedFabius)
+    (hF : IsFabius F) (y : ℝ) :
+    HasDerivAt (fun z : ℝ => fabiusReal F ((z + 1) / 2)) (rvachevUp F y) y := by
+  have hinner : HasDerivAt (fun z : ℝ => (z + 1) / 2) (2⁻¹) y := by
+    simpa using ((hasDerivAt_id y).add_const (1 : ℝ)).div_const 2
+  have h := (fabius_hasDerivAt F hF ((y + 1) / 2)).comp y hinner
+  have harg : 2 * ((y + 1) / 2) - 1 = y := by ring
+  rw [harg] at h
+  have hval : 2 * rvachevUp F y * 2⁻¹ = rvachevUp F y := by ring
+  rw [hval] at h
+  exact h
+
 /-- On the whole closed left tail `(-∞, 0]`, including the gluing point, the
 bounded Fabius function has derivative zero. -/
 theorem fabius_hasDerivAt_of_nonpos (F : BoundedFabius) (hF : IsFabius F)
@@ -184,6 +204,17 @@ theorem deriv_fabiusReal (F : BoundedFabius) (hF : IsFabius F) :
     deriv (fabiusReal F) = fun x : ℝ => 2 * rvachevUp F (2 * x - 1) := by
   funext x
   exact (fabius_hasDerivAt F hF x).deriv
+
+/-- The first derivative inherits the reflection symmetry of the Rvachev
+bump: reflecting an argument across the midpoint leaves the derivative
+unchanged.  The identity is global, including both constant exterior tails. -/
+theorem deriv_fabiusReal_one_sub
+    (F : BoundedFabius) (hF : IsFabius F) (x : ℝ) :
+    deriv (fabiusReal F) (1 - x) = deriv (fabiusReal F) x := by
+  rw [(fabius_hasDerivAt F hF (1 - x)).deriv,
+    (fabius_hasDerivAt F hF x).deriv,
+    show 2 * (1 - x) - 1 = -(2 * x - 1) by ring,
+    rvachevUp_even F (2 * x - 1)]
 
 /-- The bounded Fabius function is differentiable on all of `ℝ`. -/
 theorem fabius_differentiable (F : BoundedFabius) (hF : IsFabius F) :
@@ -297,6 +328,30 @@ theorem deriv_rvachevUp (F : BoundedFabius) (hF : IsFabius F) (x : ℝ) :
     deriv (rvachevUp F) x =
       2 * (rvachevUp F (2 * x + 1) - rvachevUp F (2 * x - 1)) :=
   (rvachev_hasDerivAt F hF x).deriv
+
+/-- **Every derivative of Rvachev's function is a finite Thue--Morse
+affine orbit.**  Unlike the rescaled-global-Fabius formula, this identity is
+valid at every real `x` and is expressed entirely in terms of `rvachevUp`.
+
+It is the `a = b = 2`, `c = 1` specialization of the generic open-domain
+affine-difference calculus in `AffineDifferenceOrbit`. -/
+theorem iteratedDeriv_rvachevUp_eq_thueMorse_sum
+    (F : BoundedFabius) (hF : IsFabius F) (n : ℕ) (x : ℝ) :
+    iteratedDeriv n (rvachevUp F) x =
+      (2 : ℝ) ^ (n + 1).choose 2 *
+        ∑ j ∈ Finset.range (2 ^ n), (thueMorseSign j : ℝ) *
+          rvachevUp F
+            ((2 : ℝ) ^ n * x + (2 : ℝ) ^ n - 1 - 2 * (j : ℝ)) := by
+  have h := iteratedDeriv_eq_affineDifference_iterate
+    (a := (2 : ℝ)) (b := (2 : ℝ)) (c := (1 : ℝ)) (rvachevUp F)
+    (fun y => by
+      simpa only [affineDifference, smul_eq_mul] using
+        rvachev_hasDerivAt F hF y) n x
+  rw [affineDifference_iterate_two_one_apply] at h
+  have hchoose : (n + 1).choose 2 = n.choose 2 + n := by
+    rw [Nat.choose_succ_succ]
+    simp [add_comm]
+  simpa only [smul_eq_mul, zsmul_eq_mul, hchoose, pow_add, mul_comm] using h
 
 /-- Any solution of Rvachev's dyadic differential refinement equation is smooth.
 

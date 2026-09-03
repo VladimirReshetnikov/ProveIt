@@ -18,8 +18,12 @@ with its exact algebraic part:
 
 The evaluation at `x = -2πk/2^m` specializes to the dyadic discrete
 Fourier transform. Its closed sine form is proved downstream in
-`ThueMorseSineProduct.lean`; the integral normalization `∫ρ_m = 1`
-remains open here.
+`ThueMorseSineProduct.lean`.  The integral normalization `∫ρ_m = 1`
+is not proved in this module either, but it is not open: it is
+`Fabius.integral_prod_one_sub_cos_two_pow` in
+`FabiusFunction.LacunaryRieszIntegral`, an instance of the
+lacunary Riesz-product mean value at amplitudes `a ≡ -1`.  Nothing
+about the Thue–Morse structure enters there, only the Hadamard gap.
 -/
 
 set_option autoImplicit false

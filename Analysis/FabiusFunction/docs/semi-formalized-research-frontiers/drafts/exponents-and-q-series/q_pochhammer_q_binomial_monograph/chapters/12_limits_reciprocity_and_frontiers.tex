@@ -1,0 +1,585 @@
+\chapter{Exact limits, reciprocity, and research frontiers}\label{chap:limits-reciprocity-frontiers}
+
+This chapter isolates three principles that are easy to use informally and
+equally easy to overstate: modular acceleration near \(q=1\), passage from
+finite identities to formal or analytic limits, and stabilization at the two
+ends of a reciprocal polynomial.  Each proved statement below records the
+topology in which its limit is taken.  The final section then lists open
+programs as problems rather than silently promoting them to conjectures.
+
+\section{An exact modular acceleration}
+
+The eta transformation in \Cref{qg:thm-theta-eta-modular} gives more than the
+leading singular term of \((q;q)_\infty\).  It replaces a slowly convergent
+product with one whose nome is exponentially small.
+
+\begin{theorem}[Exact modular form of the Euler product]
+\label{qg:thm-qpochhammer-modular-asymptotic}
+Let \(t>0\), and put
+\[
+ q=\EulerE^{-t},
+ \qquad
+ Q=\EulerE^{-4\pi^2/t}.
+\]
+Then
+\begin{equation}
+ (q;q)_\infty
+ =\sqrt{\frac{2\pi}{t}}
+   \exp\!\left(-\frac{\pi^2}{6t}+\frac{t}{24}\right)
+   (Q;Q)_\infty.
+\label{eq:qg-qpochhammer-modular-exact}
+\end{equation}
+Consequently, as \(t\to0^+\),
+\begin{align}
+ (q;q)_\infty
+ &=\sqrt{\frac{2\pi}{t}}
+   \exp\!\left(-\frac{\pi^2}{6t}+\frac{t}{24}\right)
+   \left(1+O\!\left(\EulerE^{-4\pi^2/t}\right)\right),
+\label{eq:qg-qpochhammer-modular-asymptotic}\\
+ \log(q;q)_\infty
+ &=-\frac{\pi^2}{6t}
+   +\frac12\log\frac{2\pi}{t}
+   +\frac{t}{24}
+   +O\!\left(\EulerE^{-4\pi^2/t}\right).
+\label{eq:qg-qpochhammer-log-asymptotic}
+\end{align}
+The error terms are real and uniform for \(0<t\le t_0\), for every fixed
+\(t_0>0\) small enough.
+\end{theorem}
+
+\begin{proof}
+Set \(\tau=\ImaginaryUnit t/(2\pi)\).  The definition
+\eqref{eq:qg-eta-definition} gives
+\begin{equation}
+ \eta\!\left(\frac{\ImaginaryUnit t}{2\pi}\right)
+ =\EulerE^{-t/24}(\EulerE^{-t};\EulerE^{-t})_\infty.
+\label{eq:qg-eta-at-small-imaginary-argument}
+\end{equation}
+Since \(-1/\tau=2\pi\ImaginaryUnit/t\), the inversion formula
+\eqref{eq:qg-eta-S}, with its positive square root on the positive imaginary
+axis, reads
+\[
+ \eta\!\left(\frac{\ImaginaryUnit t}{2\pi}\right)
+ =\sqrt{\frac{2\pi}{t}}
+   \eta\!\left(\frac{2\pi\ImaginaryUnit}{t}\right).
+\]
+Applying the definition once more at \(2\pi\ImaginaryUnit/t\) yields
+\[
+ \eta\!\left(\frac{2\pi\ImaginaryUnit}{t}\right)
+ =\EulerE^{-\pi^2/(6t)}
+   (\EulerE^{-4\pi^2/t};\EulerE^{-4\pi^2/t})_\infty.
+\]
+Combining the last two identities with
+\eqref{eq:qg-eta-at-small-imaginary-argument} proves the exact formula
+\eqref{eq:qg-qpochhammer-modular-exact}.
+
+It remains to justify the stated exponential remainder rather than merely
+observe that \(Q\to0\).  For \(0<Q\le1/2\), the elementary inequality
+\(-\log(1-u)\le u/(1-u)\), \(0\le u<1\), gives
+\[
+ 0\le-\log(Q;Q)_\infty
+ =\sum_{m\ge1}-\log(1-Q^m)
+ \le\sum_{m\ge1}\frac{Q^m}{1-Q^m}
+ \le\frac{Q}{(1-Q)^2}
+ \le4Q.
+\]
+Thus \(\log(Q;Q)_\infty=O(Q)\).  If
+\(L=-\log(Q;Q)_\infty\), then \(0\le L\le4Q\) and
+\[
+ \bigl|(Q;Q)_\infty-1\bigr|=1-\EulerE^{-L}\le L\le4Q.
+\]
+Substitution in the exact formula gives the first asymptotic, and taking the
+real logarithm gives the second.  The displayed inequalities also provide
+the asserted uniformity.
+\end{proof}
+
+\section{\texorpdfstring{Coefficientwise and \(q\)-adic limits}{Coefficientwise and q-adic limits}}
+
+For a series \(G(q)=\sum_{d\ge0}g_dq^d\), write
+\(\OrderOperator_{q=0} G=\min\{d:g_d\ne0\}\), with
+\(\OrderOperator_{q=0} 0=\infty\).  The congruence
+\(G\equiv H\pmod{q^{N+1}}\) means that their coefficients agree through
+degree \(N\).  These conventions make the finiteness behind the usual
+“truncate and pass to the limit” argument explicit.
+
+\begin{proposition}[Coefficientwise passage to an analytic limit]
+\label{qg:prop-coefficientwise-limit}
+Let \(R\) be a commutative ring and let \(P_N\in R[q]\).  Suppose that for
+every \(d\ge0\) there are \(c_d\in R\) and \(N_d\) such that
+\[
+ [q^d]P_N=c_d\qquad(N\ge N_d).
+\]
+Then there is a unique series \(F=\sum_{d\ge0}c_dq^d\in R[[q]]\), and
+\(P_N\to F\) coefficientwise.
+
+If \(R=\ComplexNumbers\) and the polynomials \(P_N\), viewed as holomorphic
+functions, converge locally uniformly on the unit disk to a function \(P\),
+then \(P\) is holomorphic and
+\begin{equation}
+ c_d=\frac{1}{2\pi\ImaginaryUnit}
+     \int_{|z|=r}\frac{P(z)}{z^{d+1}}\,dz
+     =\frac{P^{(d)}(0)}{d!}
+ \qquad(0<r<1).
+\label{eq:qg-coefficientwise-cauchy}
+\end{equation}
+In particular, the formal coefficientwise limit is precisely the Taylor
+series of the analytic limit.
+\end{proposition}
+
+\begin{proof}
+The first assertion is coefficientwise: the eventual value \(c_d\) determines
+the coefficient of degree \(d\), so the displayed series exists and is the
+only possible coefficientwise limit.
+
+For the analytic assertion, local uniform convergence of holomorphic
+functions makes \(P\) holomorphic.  Fix \(0<r<1\).  Cauchy's coefficient
+formula and uniform convergence on the circle \(|z|=r\) give
+\[
+ [q^d]P_N
+ =\frac{1}{2\pi\ImaginaryUnit}
+   \int_{|z|=r}\frac{P_N(z)}{z^{d+1}}\,dz
+ \longrightarrow
+ \frac{1}{2\pi\ImaginaryUnit}
+   \int_{|z|=r}\frac{P(z)}{z^{d+1}}\,dz.
+\]
+The left side is eventually equal to \(c_d\).  A second application of
+Cauchy's formula identifies the last integral with \(P^{(d)}(0)/d!\), proving
+\eqref{eq:qg-coefficientwise-cauchy}.
+\end{proof}
+
+\begin{proposition}[Exact truncation principle]
+\label{qg:prop-truncation-principle}
+Let \((e_j)_{j\ge1}\) be an arbitrary sequence of integers, and interpret
+negative powers by their binomial expansions in \(\IntegerNumbers[[q]]\).
+The finite products
+\[
+ \ProductTruncation{M}{q}=\prod_{j=1}^{M}(1-q^j)^{e_j}
+\]
+have a well-defined coefficientwise limit \(F\in\IntegerNumbers[[q]]\), and
+for every \(N\ge0\),
+\begin{equation}
+ F(q)\equiv\prod_{j=1}^{N}(1-q^j)^{e_j}
+ \pmod{q^{N+1}}.
+\label{eq:qg-truncation-product}
+\end{equation}
+
+More generally, let \(R\) be a commutative ring and let
+\((S_m)_{m\ge0}\subset R[[q]]\) satisfy
+\(\OrderOperator_{q=0} S_m\to\infty\), in the precise sense that for each
+\(N\) only finitely many \(m\) have
+\(\OrderOperator_{q=0} S_m\le N\).  Then the \(q\)-adic sum
+\(S=\sum_{m\ge0}S_m\) is well defined and
+\begin{equation}
+ S(q)\equiv
+ \sum_{\OrderOperator_{q=0} S_m\le N}S_m(q)
+ \pmod{q^{N+1}}.
+\label{eq:qg-truncation-series}
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+For every \(j\ge1\) and \(e\in\IntegerNumbers\),
+\[
+ (1-q^j)^e\equiv1\pmod{q^j}.
+\]
+For \(e\ge0\) this follows from the finite binomial theorem.  For
+\(e=-r<0\), it follows from
+\[
+ (1-q^j)^{-r}
+ =\sum_{k\ge0}\binom{k+r-1}{r-1}q^{jk}
+ \qquad(r\ge1).
+\]
+Consequently, if \(M\ge N\), every factor with \(j>N\) is congruent to \(1\)
+modulo \(q^{N+1}\), and hence
+\[
+ \ProductTruncation{M}{q}\equiv\ProductTruncation{N}{q}
+ \pmod{q^{N+1}}.
+\]
+Thus every coefficient of \(\ProductTruncation{M}{q}\) stabilizes; apply
+\Cref{qg:prop-coefficientwise-limit} with \(R=\IntegerNumbers\).  Passing to
+the stabilized coefficients gives \eqref{eq:qg-truncation-product}.
+
+For the series assertion, fix a degree \(d\).  Only finitely many \(S_m\)
+have order at most \(d\), so the coefficient
+\(\sum_m[q^d]S_m\) is a finite sum in \(R\).  These finite sums define a
+unique element \(S\in R[[q]]\).  Terms with order greater than \(N\) vanish
+modulo \(q^{N+1}\), and the remaining index set is finite by hypothesis.
+This proves \eqref{eq:qg-truncation-series}.
+\end{proof}
+
+\section{Borwein dissections and two-ended stabilization}
+
+For \(n\ge1\), define
+\begin{equation}
+ \BorweinProduct{n}{q}=\frac{(q;q)_{3n}}{(q^3;q^3)_n}
+ =\prod_{j=1}^{n}(1-q^{3j-2})(1-q^{3j-1}).
+\label{eq:qg-borwein-product}
+\end{equation}
+Grouping coefficients by their exponent modulo \(3\) gives unique
+polynomials
+\(A_n^{\mathrm{Bor}},B_n^{\mathrm{Bor}},C_n^{\mathrm{Bor}}
+\in\IntegerNumbers[x]\) such that
+\begin{equation}
+ \BorweinProduct{n}{q}
+ =\BorweinComponentA{n}{q^3}
+  -q\BorweinComponentB{n}{q^3}
+  -q^2\BorweinComponentC{n}{q^3}.
+\label{eq:qg-borwein-dissection}
+\end{equation}
+The minus signs are part of the normalization; none of the arguments below
+assumes a sign for the coefficients of the three polynomials.
+
+\begin{proposition}[Reciprocity of the Borwein dissection]
+\label{qg:prop-borwein-reciprocity}
+For every \(n\ge1\),
+\begin{align}
+ \BorweinComponentA{n}{x}
+ &=x^{n^2}\BorweinComponentA{n}{x^{-1}},\\
+ \BorweinComponentB{n}{x}
+ &=x^{n^2-1}\BorweinComponentC{n}{x^{-1}},\\
+ \BorweinComponentC{n}{x}
+ &=x^{n^2-1}\BorweinComponentB{n}{x^{-1}}.
+\label{eq:qg-borwein-reciprocity}
+\end{align}
+In particular,
+\[
+ \BorweinComponentB{n}{1}=\BorweinComponentC{n}{1},
+ \qquad
+ \BorweinComponentA{n}{1}=2\BorweinComponentB{n}{1}.
+\]
+\end{proposition}
+
+\begin{proof}
+The degree of \(\BorweinProduct{n}{q}\) is
+\[
+ \sum_{j=1}^{n}\bigl((3j-2)+(3j-1)\bigr)=3n^2.
+\]
+For positive integers \(a,b\),
+\((1-q^{-a})(1-q^{-b})=q^{-a-b}(1-q^a)(1-q^b)\).
+There are two factors in every \(j\)-block, so their signs cancel, and
+\[
+ \BorweinProduct{n}{q}=q^{3n^2}\BorweinProduct{n}{q^{-1}}.
+\]
+Insert \eqref{eq:qg-borwein-dissection} on both sides and put \(x=q^3\).
+The residue-zero terms give
+\(\BorweinComponentA{n}{x}
+=x^{n^2}\BorweinComponentA{n}{x^{-1}}\).  The residue-one terms on the left match the
+reflected residue-two terms on the right, giving
+\(\BorweinComponentB{n}{x}
+=x^{n^2-1}\BorweinComponentC{n}{x^{-1}}\); the remaining residue class gives the third
+identity.  This comparison is legitimate in the Laurent-polynomial ring
+\(\IntegerNumbers[q,q^{-1}]\), where the three residue classes modulo \(3\)
+form a direct sum.
+
+Putting \(x=1\) in the last two identities gives
+\(\BorweinComponentB{n}{1}=\BorweinComponentC{n}{1}\).  Since
+\(\BorweinProduct{n}{1}=0\), equation \eqref{eq:qg-borwein-dissection} at
+\(q=1\) gives
+\(\BorweinComponentA{n}{1}
+=\BorweinComponentB{n}{1}+\BorweinComponentC{n}{1}
+=2\BorweinComponentB{n}{1}\).
+\end{proof}
+
+\begin{proposition}[Exact stabilization at both reciprocal ends]
+\label{qg:prop-borwein-tail-stabilization}
+Write
+\[
+ \BorweinCoefficientA{n}{r}=[x^r]\BorweinComponentA{n}{x},
+ \qquad
+ \BorweinCoefficientB{n}{r}=[x^r]\BorweinComponentB{n}{x},
+ \qquad
+ \BorweinCoefficientC{n}{r}=[x^r]\BorweinComponentC{n}{x}.
+\]
+For every fixed \(d\ge0\) and every \(n\ge d+1\), the lower-end
+coefficients have already stabilized:
+\[
+ \BorweinCoefficientA{n}{d}=\BorweinCoefficientA{d+1}{d},
+ \qquad
+ \BorweinCoefficientB{n}{d}=\BorweinCoefficientB{d+1}{d},
+ \qquad
+ \BorweinCoefficientC{n}{d}=\BorweinCoefficientC{d+1}{d}.
+\]
+The coefficients at the same fixed distance from the reciprocal ends satisfy
+the exact formulas
+\begin{align}
+ \BorweinCoefficientA{n}{n^2-d}&=\BorweinCoefficientA{d+1}{d},\\
+ \BorweinCoefficientB{n}{n^2-1-d}&=\BorweinCoefficientC{d+1}{d},\\
+ \BorweinCoefficientC{n}{n^2-1-d}&=\BorweinCoefficientB{d+1}{d}.
+\label{eq:qg-borwein-tail-stabilization}
+\end{align}
+Thus every fixed-distance coefficient at either end of each polynomial is
+eventually constant.  No coefficientwise nonnegativity assertion is needed.
+\end{proposition}
+
+\begin{proof}
+Fix \(N\le n\).  Factoring the product at \(N\) gives
+\[
+ \BorweinProduct{n}{q}=\BorweinProduct{N}{q}
+ \prod_{j=N+1}^{n}(1-q^{3j-2})(1-q^{3j-1}).
+\]
+For \(j>N\), both nonconstant exponents in the \(j\)th new block are at least
+\(3N+1\).  Hence the entire tail product is congruent to \(1\) modulo
+\(q^{3N+1}\), and
+\begin{equation}
+ \BorweinProduct{n}{q}\equiv\BorweinProduct{N}{q}
+ \pmod{q^{3N+1}}.
+\label{eq:qg-borwein-finite-product-stabilization}
+\end{equation}
+Take \(N=d+1\).  The exponents \(3d\), \(3d+1\), and \(3d+2\) are all less
+than \(3N+1=3d+4\), so their coefficients in
+\(\BorweinProduct{n}{q}\) and \(\BorweinProduct{d+1}{q}\) agree.
+By \eqref{eq:qg-borwein-dissection}, those three coefficients are respectively
+\(\BorweinCoefficientA{n}{d}\), \(-\BorweinCoefficientB{n}{d}\), and
+\(-\BorweinCoefficientC{n}{d}\).  This proves the three lower-end
+stabilization identities.
+
+The reciprocity identities in \Cref{qg:prop-borwein-reciprocity} give, for
+every \(n\),
+\[
+ \BorweinCoefficientA{n}{n^2-d}=\BorweinCoefficientA{n}{d},
+ \qquad
+ \BorweinCoefficientB{n}{n^2-1-d}=\BorweinCoefficientC{n}{d},
+ \qquad
+ \BorweinCoefficientC{n}{n^2-1-d}=\BorweinCoefficientB{n}{d}.
+\]
+Substituting the already proved lower-end values yields
+\eqref{eq:qg-borwein-tail-stabilization} and completes the proof.
+\end{proof}
+
+\paragraph{Historical status of the sign question.}
+\label{qg:hist-borwein-sign-status}
+The donor manuscript stated coefficientwise nonnegativity of
+\(A_n^{\mathrm{Bor}},B_n^{\mathrm{Bor}},C_n^{\mathrm{Bor}}\) as a
+Borwein conjecture.  That assertion is not retained here
+as a conjecture: the relevant Borwein positivity conjectures are historically
+resolved in the literature~\cite{Wang2022,WangKrattenthaler2022}.  Their
+external proofs are not reproduced and are not used in this chapter.  The
+unconditional conclusion needed here is the sign-free stabilization theorem
+above, proved directly from finite-product \(q\)-adic stabilization and
+reciprocity.
+
+\paragraph{Historical status of the bilateral-lattice prompt.}
+\label{qg:hist-bilateral-bailey-lattices}
+The donor manuscript also asked for bilateral Bailey lattices combining a
+parameter-lowering step with Ramanujan's \({}_1\psi_1\) summation.  That broad
+request is not retained as an open problem.  Dousse, Jouhet, and
+Konan~\cite{DousseJouhetKonan2025} established bilateral Bailey lattices and
+used them to derive Andrews--Gordon- and Bressoud-type identities.  A genuine
+new frontier would therefore have to specify a transformation, residue-class
+family, or analytic regime not covered by that theory; the unspecialized donor
+prompt makes no such distinction.
+
+\section{Archival product records and finite quality control}
+\label{qg:sec-archival-product-records}
+
+One donor guide normalized fifteen further Rogers--Ramanujan--Slater-type
+formulas from its supplied archive.  They were deliberately not presented as
+theorems there, and they are not promoted to theorems here.  In the displays
+below, the decorated relation
+\(\RecordedIdentity\) means ``the source records this
+identity''; it does not assert that this volume has proved the infinite
+identity.  None of these records is used as a premise.  Slater's classical
+list and the modern survey of McLaughlin, Sills, and Zimmer provide the
+appropriate literature map~\cite{Slater1952,McLaughlinSillsZimmer}.
+
+\subsection{Bailey's modulus-nine trio}
+
+\begin{align}
+ \sum_{n\ge0}
+ \frac{q^{3n^2}(q;q)_{3n}}
+ {(q^3;q^3)_n(q^3;q^3)_{2n}}
+ &\RecordedIdentity
+ \frac{(q^4,q^5,q^9;q^9)_\infty}{(q^3;q^3)_\infty},
+ \tag{SR-B9.1}\label{qg:eq-record-b9-1}\\
+ \sum_{n\ge0}
+ \frac{q^{3n^2+3n}(q;q)_{3n}(1-q^{3n+2})}
+ {(q^3;q^3)_n(q^3;q^3)_{2n+1}}
+ &\RecordedIdentity
+ \frac{(q^2,q^7,q^9;q^9)_\infty}{(q^3;q^3)_\infty},
+ \tag{SR-B9.2}\label{qg:eq-record-b9-2}\\
+ \sum_{n\ge0}
+ \frac{q^{3n^2+3n}(q;q)_{3n+1}}
+ {(q^3;q^3)_n(q^3;q^3)_{2n+1}}
+ &\RecordedIdentity
+ \frac{(q,q^8,q^9;q^9)_\infty}{(q^3;q^3)_\infty}.
+ \tag{SR-B9.3}\label{qg:eq-record-b9-3}
+\end{align}
+The surviving product-side residue pairs are respectively
+\(\{4,5\}\), \(\{2,7\}\), and \(\{1,8\}\) modulo (9).
+
+\subsection{Dyson's modulus-twenty-seven quartet}
+
+\begin{align}
+ 1+\sum_{n\ge1}
+ \frac{q^{n^2}(q^3;q^3)_{n-1}}
+ {(q;q)_n(q;q)_{2n-1}}
+ &\RecordedIdentity
+ \frac{(q^{12},q^{15},q^{27};q^{27})_\infty}
+ {(q;q)_\infty},
+ \tag{SR-D27.1}\label{qg:eq-record-d27-1}\\
+ \sum_{n\ge0}
+ \frac{q^{n^2+n}(q^3;q^3)_n}
+ {(q;q)_n(q;q)_{2n+1}}
+ &\RecordedIdentity
+ \frac{(q^9;q^9)_\infty}{(q;q)_\infty},
+ \tag{SR-D27.2}\label{qg:eq-record-d27-2}\\
+ \sum_{n\ge0}
+ \frac{q^{n^2+2n}(q^3;q^3)_n}
+ {(q;q)_n(q;q)_{2n+2}}
+ &\RecordedIdentity
+ \frac{(q^6,q^{21},q^{27};q^{27})_\infty}
+ {(q;q)_\infty},
+ \tag{SR-D27.3}\label{qg:eq-record-d27-3}\\
+ \sum_{n\ge0}
+ \frac{q^{n^2+3n}(q^3;q^3)_n}
+ {(q;q)_n(q;q)_{2n+2}}
+ &\RecordedIdentity
+ \frac{(q^3,q^{24},q^{27};q^{27})_\infty}
+ {(q;q)_\infty}.
+ \tag{SR-D27.4}\label{qg:eq-record-d27-4}
+\end{align}
+The second product is the exceptional member: it collapses to the simpler
+modulus-nine factor \((q^9;q^9)_\infty\).
+
+\subsection{Rogers's modulus-fourteen trio}
+
+\begin{align}
+ \sum_{n\ge0}\frac{q^{n^2}}
+ {(q;q)_n(q;q^2)_n}
+ &\RecordedIdentity
+ \frac{(q^6,q^8,q^{14};q^{14})_\infty}{(q;q)_\infty},
+ \tag{SR-R14.1}\label{qg:eq-record-r14-1}\\
+ \sum_{n\ge0}\frac{q^{n^2+n}}
+ {(q;q)_n(q;q^2)_{n+1}}
+ &\RecordedIdentity
+ \frac{(q^4,q^{10},q^{14};q^{14})_\infty}{(q;q)_\infty},
+ \tag{SR-R14.2}\label{qg:eq-record-r14-2}\\
+ \sum_{n\ge0}\frac{q^{n^2+2n}}
+ {(q;q)_n(q;q^2)_{n+1}}
+ &\RecordedIdentity
+ \frac{(q^2,q^{12},q^{14};q^{14})_\infty}{(q;q)_\infty}.
+ \tag{SR-R14.3}\label{qg:eq-record-r14-3}
+\end{align}
+The mixed bases \(q\) and \(q^2\) on the sum side expose the parity-sensitive
+feature that separates even-modulus theory from the odd Andrews--Gordon
+family.
+
+\subsection{Rogers--Selberg, Jackson--Slater, and Fine records}
+
+\begin{align}
+ \sum_{n\ge0}\frac{q^{2n^2}}
+ {(q^2;q^2)_n(-q;q)_{2n}}
+ &\RecordedIdentity
+ \frac{(q^3,q^4,q^7;q^7)_\infty}{(q^2;q^2)_\infty},
+ \tag{SR-RS.1}\label{qg:eq-record-rs-1}\\
+ \sum_{n\ge0}\frac{q^{2n^2+2n}}
+ {(q^2;q^2)_n(-q;q)_{2n}}
+ &\RecordedIdentity
+ \frac{(q^2,q^5,q^7;q^7)_\infty}{(q^2;q^2)_\infty},
+ \tag{SR-RS.2}\label{qg:eq-record-rs-2}\\
+ \sum_{n\ge0}\frac{q^{2n^2+2n}}
+ {(q^2;q^2)_n(-q;q)_{2n+1}}
+ &\RecordedIdentity
+ \frac{(q,q^6,q^7;q^7)_\infty}{(q^2;q^2)_\infty},
+ \tag{SR-RS.3}\label{qg:eq-record-rs-3}\\
+ \sum_{n\ge0}\frac{q^{2n^2}}{(q;q)_{2n}}
+ &\RecordedIdentity
+ \frac{(q,q^7,q^8;q^8)_\infty
+       (q^6,q^{10};q^{16})_\infty}
+ {(q;q)_\infty}.
+ \tag{SR-JS}\label{qg:eq-record-js}
+\end{align}
+The Jackson--Slater product is a useful mixed-modulus record: its right side
+uses moduli (8) and (16) simultaneously.  Fine's isolated eta-quotient
+record is
+\begin{align}
+ &\frac{(q^2;q^2)_\infty(q^3;q^3)_\infty
+        (q^8;q^8)_\infty(q^{12};q^{12})_\infty}
+       {(q;q)_\infty(q^{24};q^{24})_\infty}
+ \RecordedIdentity
+ 1+\sum_{k\ge1}
+ \frac{q^k(1+q^{4k})(1+q^{6k})}{1+q^{12k}}.
+ \tag{SR-F}\label{qg:eq-record-fine}
+\end{align}
+Its sum side is Lambert-like, while the product side becomes an eta quotient
+after \(q=\EulerE^{2\pi\ImaginaryUnit\tau}\).
+
+\subsection{What the finite audit proves---and what it does not}
+
+The retained source-only checker
+\nolinkurl{audit/verify_archival_identity_records.py} works in the exact
+quotient ring \(\IntegerNumbers[[q]]/(q^{101})\).  It truncates every product
+factor above degree \(100\), expands reciprocal factors by their exact
+geometric or binomial series, and includes only sum-side terms whose
+\(q\)-adic order is at most \(100\).  It compares both sides coefficient by
+coefficient:
+\begin{center}
+\begin{tabular}{@{}lcc@{}}
+\toprule
+Family & Records & Coefficients compared per record\\
+\midrule
+Bailey modulus (9) & (3) & (101)\\
+Dyson modulus (27) & (4) & (101)\\
+Rogers modulus (14) & (3) & (101)\\
+Rogers--Selberg & (3) & (101)\\
+Jackson--Slater & (1) & (101)\\
+Fine & (1) & (101)\\
+\midrule
+Total & (15) & (1515) coefficient equalities\\
+\bottomrule
+\end{tabular}
+\end{center}
+This exact finite computation is strong transcription-quality control, but it
+is not an infinite proof: two formal series can agree through any prescribed
+finite order and then differ.  A record may be promoted to a theorem only
+after a finite degree bound, a convergent analytic argument, or another
+complete proof supplies the missing infinite step.
+
+\section{Precisely delimited open programs}
+
+The following items are requests for constructions or classifications, not
+assertions presented as true.  They are therefore recorded as prose open
+problems rather than as theorem-like conjectures.
+
+\paragraph{Open problem (finite Andrews--Gordon certificates).}
+\label{qg:prob-finite-andrews-gordon-certificates}
+For every \(k\ge2\) and \(1\le i\le k\), construct a finite polynomial
+identity whose coefficientwise limit is the corresponding Andrews--Gordon
+identity, whose sum-side terms are manifestly coefficientwise nonnegative,
+and whose verification reduces to Gaussian recurrences together with a
+bounded collection of explicit telescoping-certificate types independent of
+the truncation order.  Seek a canonical truncation for which the product side
+has a direct lattice-path or cylindric-partition interpretation.
+
+\paragraph{Open problem (even-modulus lowering).}
+\label{qg:prob-even-modulus-lowering}
+Construct a parity-sensitive parameter-lowering identity for Bailey pairs
+that produces the even-modulus Bressoud family from finite algebra, with
+modulus \(14\) as the first nontrivial test.  The parity restriction should be
+visible in the finite kernel itself, and the proof should separate the
+terminating identity, coefficientwise limit, and analytic specialization.
+
+\paragraph{Open problem (total positivity of the Bailey kernel).}
+\label{qg:prob-bailey-kernel-total-positivity}
+For \(0<a,q<1\), consider the lower-triangular kernel
+\[
+ M_{n,r}(a,q)
+ =\frac{1}{(q;q)_{n-r}(aq;q)_{n+r}}
+ \qquad(0\le r\le n).
+\]
+Determine whether every minor of \(M\) is nonnegative (equivalently, whether
+this holds after any positive diagonal normalization).  If total positivity
+fails, determine the first obstructing minor and the largest order of total
+positivity that holds uniformly in \(a,q\).  Either outcome should explain
+which variation-diminishing or coefficient-sign consequences survive for
+Bailey transforms.
+
+\paragraph{Open problem (root-of-unity asymptotics).}
+\label{qg:prob-root-of-unity-asymptotics}
+Let \(\zeta\) be a primitive root of unity and approach it through
+\(q=\zeta\EulerE^{-t}\), \(t\to0^+\), with all logarithmic branches stated
+explicitly.  Develop uniform asymptotic expansions for q-Pochhammer products,
+Bailey sums, and their locally defined inverse branches on compact parameter
+sets avoiding moving poles and zeros.  Separate the dilogarithmic exponential,
+algebraic prefactor, and exponentially small sectors, and determine how the
+resulting Stokes data governs the singularities of the inverse q-analogs.

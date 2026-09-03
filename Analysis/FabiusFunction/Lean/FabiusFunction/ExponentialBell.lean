@@ -1,4 +1,5 @@
 import FabiusFunction.ExponentialPartition
+import FabiusFunction.MomentCumulantAlgebra
 import FabiusFunction.SaddleExpansionAlgebra
 
 /-!
@@ -16,7 +17,9 @@ successor recurrence.  Consequently every theorem proved through the saddle
 coefficient engine immediately has a finite weighted-partition expansion—the
 coefficient form underlying complete exponential Bell polynomials.  The
 partition formula can therefore be used in targets such as polynomial rings
-without introducing field hypotheses.
+without introducing field hypotheses.  The final theorem applies the same
+identity after canonical factorial normalization, giving the weighted-
+partition formula for `completeBellPolynomial` itself.
 -/
 
 set_option autoImplicit false
@@ -41,5 +44,15 @@ theorem partitionExpSum_eq_expCoeff
         apply Finset.sum_congr rfl
         intro j hj
         rw [ih (n - j) (by omega)]
+
+/-- A complete exponential Bell polynomial is the factorially denormalized
+weighted-partition sum of the factorially normalized cumulants. -/
+theorem completeBellPolynomial_eq_partitionExpSum
+    {R : Type*} [CommRing R] [Algebra ℚ R]
+    (κ : ℕ → R) (n : ℕ) :
+    completeBellPolynomial κ n =
+      (n.factorial : ℚ) • partitionExpSum (factorialNormalize κ) n := by
+  rw [completeBellPolynomial, factorialDenormalize,
+    partitionExpSum_eq_expCoeff]
 
 end Fabius

@@ -1,0 +1,47 @@
+Build and validation record
+===========================
+
+Report: Automatic Scale Factorizations of the Rvachev Law
+Date: 2026-08-31
+Audited working tree base: f25b0d1523dddb28addcc0c5bd87dcce737eca94
+
+LaTeX build command (run serially three times):
+  pdflatex -interaction=nonstopmode -halt-on-error -file-line-error automatic_scale_factorizations.tex
+
+Result:
+  SUCCESS
+  PDF pages: 22
+  PDF bytes: 920804
+  PDF SHA-256: fd5069812cad0e9a4f618721fd60534a5ecf8694631043dc133a5e2ca54c5f8b
+  Build-source lines: 1684
+  Build-source SHA-256: c705aefb011dc99fcba48aca2bbbf5fde2fb8c65c720b6ab06bfc9fd24193e5f
+  Page geometry: A4, rotation zero on every page
+  Nonblank pages: 22 of 22 have extractable non-whitespace text
+  Metadata: title, author, subject, and keywords present
+  LaTeX unresolved-reference/citation warnings: 0
+  Overfull/underfull box warnings: 0
+  PDF font rows: 23, all embedded and subset
+  Libertinus font rows: 5
+  Type 3 fonts: 0 (the manuscript selects the retained PNG plot companions)
+  Visual sample: pages 1, 11, and 22 inspected cleanly
+
+Current live source after the notation-only post-build cleanup:
+  Source lines: 1682
+  Source bytes: 62490
+  Source SHA-256: 3e40fef5247ed3d7263ff885dc97159b456f26347614817fc18e087af647de90
+  Notation boundary: TwoAdicValuation is the valuation; rho_1 and rho_2 are
+    the conjectural probability-factor pair
+  PDF/source synchronization: pending a fresh three-pass build
+
+Numerical experiment command:
+  python3 thue_morse_factors.py
+
+Selected high-precision checks:
+  |phi_+(z) phi_-(z) - phi_up(z)|          = 2.134e-81
+  plus q-Mahler residual                   = 4.218e-81
+  minus q-Mahler residual                  = 1.055e-81
+  Mellin check error at s=-3/2             = approximately 8e-23
+  Mellin check error at s=-1.4+0.3i        = approximately 3e-27
+
+The Monte Carlo density figure uses 500,000 coupled samples and 45 dyadic scales.
+Numerical experiments illustrate but do not replace the analytical proofs in the report.

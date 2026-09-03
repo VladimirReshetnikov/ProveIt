@@ -10,6 +10,10 @@
 
 \DefineSimpleKey{bib}{myurl}
 
+% Canonical project-wide mathematical notation.
+\input{../../fabius-notation.tex}
+% HISTORICAL-NOTATION-SCOPE: source-faithful paper transcription; original
+% notation is interpreted by the catalogue and is not normative project prose.
 \newcommand\myurl[1]{\url{#1}}
 
 \BibSpec{webpage}{%
@@ -85,16 +89,10 @@ Spain}
 
 
 
-\newcommand{\N}{{\mathbb N}}
-\newcommand{\R}{{\mathbb R}}
-\newcommand{\C}{{\mathbb C}}
-\newcommand{\Z}{{\mathbb Z}}
-\newcommand{\Q}{{\mathbb Q}}
 \newcommand{\arctanh}{\mathop{\rm arctanh }}
 \def\Re{\operatorname{Re}}
 \def\Im{\operatorname{Im}}
 \def\Hermite{\operatorname{\mathcal H}}
-\def\supp{\operatorname{supp}}
 
 \newfont{\cmbsy}{cmbsy10}
 \newcommand{\Orden}{\mathop{\hbox{\cmbsy O}}\nolimits}
@@ -106,7 +104,7 @@ Spain}
 
 \section{Introduction.}
 
-Infinitely differentiable functions of compact support defined on $\R$ play 
+Infinitely differentiable functions of compact support defined on $\RealNumbers$ play
 an important role in Analysis. Usually, one constructs   examples using an idea 
 of Cauchy. For this example the derivatives are cumbersome. This problem makes
 me search for a better example.
@@ -121,12 +119,12 @@ So I posed  the following question:
 \centering
 \includegraphics[width=\hsize]{09FuncionAgain-1.pdf}
 \end{wrapfigure}
-Does there exist a function $\varphi\in\mathcal D(\R)$ such that:
+Does there exist a function $\varphi\in\mathcal D(\RealNumbers)$ such that:
 \begin{itemize}
-\item[(a)] $\supp(\varphi)=[-1,1]$,
+\item[(a)] $\SupportOperator(\varphi)=[-1,1]$,
 \item[(b)] $\varphi(t)>0$ for any $t\in(-1,1)$,
 \item[(c)] $\varphi(0)=1$,
-\item[(d)] and there is a constant $k>0$ such that for any $t\in\R$
+\item[(d)] and there is a constant $k>0$ such that for any $t\in\RealNumbers$
 
 $\displaystyle{\varphi'(t)=k\bigl(\varphi(2t+1)-\varphi(2t-1)\bigr)}$?
 
@@ -154,12 +152,12 @@ not give any other property of this function.
 \section{Existence and Unicity.}
 
 \begin{thm}\label{T:1}
-There is a unique  infinitely differentiable function with compact support $\varphi\colon\R\to\R$ and such that:
+There is a unique  infinitely differentiable function with compact support $\varphi\colon\RealNumbers\to\RealNumbers$ and such that:
 \begin{itemize}
-\item[(a)] $\supp(\varphi)=[-1,1]$.
+\item[(a)] $\SupportOperator(\varphi)=[-1,1]$.
 \item[(b)] $\varphi(t)>0$ for any $t$ in the open set $(-1,1)$.
 \item[(c)] $\varphi(0)=1$.
-\item[(d)] There is a constant $k>0$ such that for any $t\in\R$
+\item[(d)] There is a constant $k>0$ such that for any $t\in\RealNumbers$
 \[
 \varphi'(t)=k\bigl(\varphi(2t+1)-\varphi(2t-1)\bigr)
 \]
@@ -171,9 +169,9 @@ First, assuming that $\varphi$ exists, we will prove the unicity of $\varphi$ an
 
 
 
-Since $\varphi\in\mathcal D(\R)$ its Fourier transform is an entire function
+Since $\varphi\in\mathcal D(\RealNumbers)$ its Fourier transform is an entire function
 \begin{equation}\label{E:1}
-\widehat\varphi(z)=\int_\R \varphi(t)e^{-2\pi i t z}\,dt
+\widehat\varphi(z)=\int_\RealNumbers \varphi(t)e^{-2\pi i t z}\,dt
 \end{equation}
 The Fourier transform of  $\varphi'(t)$, $\varphi(2t+1)$ and $\varphi(2t-1)$ are
 \[2\pi i z \widehat\varphi(z),\quad e^{\pi i z}\widehat\varphi(\tfrac{z}{2}), 
@@ -195,7 +193,7 @@ taking limits for $n\to\infty$ we obtain $k=2$ and
 \end{equation}
 If there is a solution to our problem it is unique, because by the inversion formula 
 \begin{equation}\label{E:5}
-\varphi(t)=\int_\R\widehat\varphi(x)e^{2\pi i t x}\,dx
+\varphi(t)=\int_\RealNumbers\widehat\varphi(x)e^{2\pi i t x}\,dx
 \end{equation}
 and condition (c) will fix the value of the constant $\widehat\varphi(0)$. 
 
@@ -225,18 +223,19 @@ Using the known formulas
 we obtain 
 \begin{equation}\label{E:9}
 \widehat\varphi(z)=\prod_{m=1}^\infty \Bigl(\cos\frac{\pi z}{2^m}\Bigr)^m=\prod_{m=1}^\infty
-\Bigl(1-\frac{z^2}{m^2}\Bigr)^{1+v_2(m)}, 
+\Bigl(1-\frac{z^2}{m^2}\Bigr)^{1+\TwoAdicValuation(m)},
 \end{equation}
-where $v_2(m)$ is the greatest exponent such that $2^{v_2(m)}$ divides $m$. 
+where $\TwoAdicValuation(m)$ is the greatest exponent such that
+$2^{\TwoAdicValuation(m)}$ divides $m$.
 
-It is clear that $\widehat\varphi$ restricted to $\R$ is infinitely differentiable. We will 
+It is clear that $\widehat\varphi$ restricted to $\RealNumbers$ is infinitely differentiable. We will
 show also that it is a rapidly decreasing function. 
 
-Let $f(x)=(\sin x)/x$. For $x\in\R^*$, we have $|f(x)|\le 1$ and $|\sin x|\le 1$. For 
+Let $f(x)=(\sin x)/x$. For $x\in\RealNumbers^*$, we have $|f(x)|\le 1$ and $|\sin x|\le 1$. For
 all $n$
 \[|x^n\widehat\varphi(x)|=\Bigl|x^n \prod_{h=0}^\infty f(\pi x/2^h)\Bigr|\le \Bigl|x^n\prod_{h=0}^{n-1}
 f(\pi x/2^h)\Bigr|\le 2^{\binom{n}{2}}\pi^{-n}.\]
-It is easy to see that there is a constant $M_r\ge0$ for each $r\in\N$ such that 
+It is easy to see that there is a constant $M_r\ge0$ for each $r\in\NaturalNumbers$ such that
 \[|\partial^r f(\pi x/2^h)|\le \pi^r2^{-hr}M_r.\]
 Applying the rule to differentiate an infinite product and the same idea 
 used above to bound $|x^n\widehat\varphi(x)|$ we obtain
@@ -258,15 +257,15 @@ conditions (a), (b) and (c). Instead of using Paley-Wiener's Theorem we prefer
 to use another method,
 which gives us some additional information.
 
-Let $\mu_n$ be the Radon measure in $\R$ whose Fourier transform is
+Let $\mu_n$ be the Radon measure in $\RealNumbers$ whose Fourier transform is
 \begin{equation}\label{E:10}
-\mathcal F(\mu_m)=\prod_{k=1}^m\Bigl(\cos\frac{\pi x}{2^k}\Bigr)^k.
+\FourierTwoPiTransformOf{\mu_m}=\prod_{k=1}^m\Bigl(\cos\frac{\pi x}{2^k}\Bigr)^k.
 \end{equation}
 
 Since
 \begin{equation}\label{E:11}
-\mathcal F\bigl(\tfrac12\delta_{2^{-k-1}}+\tfrac12\delta_{-2^{-k-1}}
-\bigr)=\cos\frac{\pi x}{2^k},
+\FourierTwoPiTransformOf{\tfrac12\delta_{2^{-k-1}}+\tfrac12\delta_{-2^{-k-1}}}
+=\cos\frac{\pi x}{2^k},
 \end{equation}
 $\mu_m$ is the convolution product 
 \begin{equation}\label{E:12}
@@ -276,33 +275,34 @@ $\mu_m$ is the convolution product
 where the powers have also the meaning of convolution products. 
 
 It is clear that the total variation $\Vert \mu_m\Vert=1$, $\mu_m\ge0$ and 
-$\supp(\mu_m)\subset[-1,1]$. The last assertion follows from
+$\SupportOperator(\mu_m)\subset[-1,1]$. The last assertion follows from
 \[\sum_{k=1}^\infty \frac{k}{2^{k+1}}=1.\]
 
 \begin{lem}\label{L:1}
 Let  $(\mu_m)$ be the sequence of measures defined in \eqref{E:12}. This
-sequence of measures converges in the weak-* topology $\sigma(\mathcal M_b(\R),C^*(\R))$
+sequence of measures converges in the weak-* topology $\sigma(\mathcal M_b(\RealNumbers),C^*(\RealNumbers))$
 towards the measure $\varphi\lambda$ with density $\varphi$ with 
 respect to Lebesgue measure $\lambda$.
 \end{lem}
 
 \begin{proof} Denote by
-$C^*(\R)$ the Banach space of complex valued bounded functions defined on $\R$.
+$C^*(\RealNumbers)$ the Banach space of complex valued bounded functions defined on $\RealNumbers$.
 Since the measures $\mu_m$ are on the unit ball of the dual space, which is weakly compact, 
 there is a measure $\mu$ that is a weak cluster point to the sequence $\mu_m$. Since
-$\mathcal F(\mu_m)\to \mathcal F(\varphi\lambda)$ pointwise, we have $\mathcal F(\mu)=
-\mathcal F(\varphi\lambda)$. Since $\mathcal F$ is injective in the space of bounded 
+$\FourierTwoPiTransformOf{\mu_m}\to \FourierTwoPiTransformOf{\varphi\lambda}$ pointwise, we have
+$\FourierTwoPiTransformOf{\mu}=\FourierTwoPiTransformOf{\varphi\lambda}$. Since
+$\FourierTwoPiOperator$ is injective in the space of bounded
 Radon measures, we obtain $\mu=\varphi\lambda$. Therefore $\varphi\lambda$ is the only 
 weak cluster point, so that it is the weak limit of the sequence $\mu_m$.
 \end{proof}
 
 Since $\mu_m\to\varphi\lambda$ with weak convergence, it follows that $\varphi$ satisfies 
 condition (a) and, since $\varphi$ is continuous it follows that $\varphi(x)\ge0$ for 
-all $x\in\R$. 
+all $x\in\RealNumbers$.
 
 Now we know that $\int\varphi(t)\,dt=\widehat\varphi(0)=1$. This fact, together 
 with the fact that 
-$\supp(\varphi)=[-1,1]$ yields
+$\SupportOperator(\varphi)=[-1,1]$ yields
 \begin{multline*}
 \varphi(0)=\int_{-1}^0\varphi'(t)\,dt=\int_{-1}^02\bigl(\varphi(2t+1)-\varphi(2t-1)\bigr)\,dt\\
 =2\int\varphi(2t+1)\,dt=\int\varphi(u)\,du=1.
@@ -345,7 +345,7 @@ Therefore
 Equations \eqref{E:12} and \eqref{E:14} show that $\mu_n$ is the measure
 obtained when we substitute each power $x^m$ by $\delta_{\frac{2m-g_n}{2^{n+1}}}$ in the polynomial
 \[2^{-\binom{n+1}{2}}p_n(x).\]
-For each $n\in\N$, let $\varphi_n$ be the step function obtained from
+For each $n\in\NaturalNumbers$, let $\varphi_n$ be the step function obtained from
 the polynomial $2^{-\binom{n+1}{2}}p_n(x)$ substituting each power $x^m$ by the characteristic
 function of the interval 
 \[ \Bigl[\frac{2m-1-g_n}{2^{n+1}},\frac{2m+1-g_n}{2^{n+1}}\Bigr]\]
@@ -375,27 +375,27 @@ Therefore we have a combinatorial interpretation  of the coefficient of $x^r$ in
 $r=s_1+s_2+\cdots+s_m$ such that $0\le s_i\le 2^i-1$}.
 
 \begin{thm}\label{T:3}
-Let $\sigma=\bigotimes_{k=1}^\infty \lambda_k$ be the measure defined on $[0,1]^\N$, $\lambda_k$
+Let $\sigma=\bigotimes_{k=1}^\infty \lambda_k$ be the measure defined on $[0,1]^\NaturalNumbers$, $\lambda_k$
 being the Lebesgue measure on $[0,1]$. For $-1\le x\le 0$ we have
 \[\varphi(x)=\sigma\Bigl\{(x_k)\colon 0\le \sum_{k=1}^\infty\frac{x_k}{2^k}\le x+1\Bigr\}\]
 \end{thm}
 \begin{proof}
-Let $\nu_k$ be the measure in $[-1,1]^\N$
+Let $\nu_k$ be the measure in $[-1,1]^\NaturalNumbers$
 \[\nu_k=\bigotimes_{m=1}^\infty \bigl(\frac12\delta_{2^{-m-k}}+\frac12\delta_{-2^{-m-k}}\bigr)\]
 ($k=1$ $2$, \dots, ) and let $(t_{k,1}, t_{k,2},\dots)$ denote the variables in the space
-$[-1,1]^\N$.
+$[-1,1]^\NaturalNumbers$.
 
-Let $\mu$ be the measure defined on $\{0,1\}^\N$ as the product of the measure 
+Let $\mu$ be the measure defined on $\{0,1\}^\NaturalNumbers$ as the product of the measure
 assigning $0$ and $1$ measure $1/2$. 
 
-Then $\nu_k=f_k(\mu)$ the image measure, with $f_k\{0,1\}^\N\to[-1,1]^\N$ given by 
+Then $\nu_k=f_k(\mu)$ the image measure, with $f_k\{0,1\}^\NaturalNumbers\to[-1,1]^\NaturalNumbers$ given by
 $f_k(\varepsilon_1,\varepsilon_2,\dots)=(t_{k,1}, t_{k,2},\dots)$ where
 \[t_{k,m}=\begin{cases}
 2^{-m-k} & \text{when $\varepsilon_m=1$},\\
 -2^{-m-k}  & \text{when $\varepsilon_m=0$}.
 \end{cases}\]
 $\mu$ is also the image measure of Lebesgue measure on $[0,1]$ by the application 
-$g\colon[0,1]\to \{0,1\}^\N$ defined by $g(x)=(\varepsilon_1,\varepsilon_2,\dots)$
+$g\colon[0,1]\to \{0,1\}^\NaturalNumbers$ defined by $g(x)=(\varepsilon_1,\varepsilon_2,\dots)$
 if $x=\sum_{m=1}^\infty (\varepsilon_m/2^m)$ with $\varepsilon_m\in\{0,1\}$. The function
 $g$ is well defined only almost everywhere but this is no difficulty. 
 
@@ -403,7 +403,7 @@ The measure $\varphi(t)\,dt$ is the limit of the $\mu_m$, therefore for all inte
 $f$, 
 \[\int f(t)\varphi(t)\,dt=\int f\Bigl(\sum t_{k,m}\Bigr)\,d\bigotimes_{k=1}^\infty \nu_k.\]
 Since each $\nu_k$ is an image measure the last integral can be transformed in an 
-integral on $[0,1]^\N$ with respect to the measure $\sigma=\otimes _{k=1}^\infty\lambda$.
+integral on $[0,1]^\NaturalNumbers$ with respect to the measure $\sigma=\otimes _{k=1}^\infty\lambda$.
 
 The relation $f_k\circ g(x_k)=(t_{k,1},t_{k,2},\dots)$ implies 
 $x_k=\sum_{m=1}^\infty (\varepsilon_m/2^m)$ with $\varepsilon_m\in\{0,1\}$, 
@@ -473,9 +473,9 @@ and for $q$  odd the degree of $T(t,x)$ is $n$.
 The function $\varphi$ is not analytic on any point of the interval $[-1,1]$.
 \end{cor*}
 \begin{thm}\label{T:5}
-For $u>0$ and $t\in\R$ we have
+For $u>0$ and $t\in\RealNumbers$ we have
 \begin{equation}\label{E:25}
-\sum_{k\in\Z}\varphi(t+uk)=\sum_{k\in\Z}\frac{1}{u}
+\sum_{k\in\IntegerNumbers}\varphi(t+uk)=\sum_{k\in\IntegerNumbers}\frac{1}{u}
 \widehat\varphi\Bigl(\frac{k}{u}\Bigr)e^{2\pi i k\frac1u}.
 \end{equation}
 \end{thm}
@@ -483,12 +483,12 @@ For $u>0$ and $t\in\R$ we have
 The left hand side of \eqref{E:25} is locally finite, therefore the sum is 
 infinitely differentiable. It is a periodic function of $t$ with period $u$. Therefore
 it has a Fourier series expansion
-\[\sum_{k\in\Z}\varphi(t+uk)=\sum_{k\in\Z}a_k e^{2\pi i k\frac1u}\]
+\[\sum_{k\in\IntegerNumbers}\varphi(t+uk)=\sum_{k\in\IntegerNumbers}a_k e^{2\pi i k\frac1u}\]
 where
 \begin{multline*}
-a_n=\frac{1}{u}\int_0^u\sum_{k\in\Z}\varphi(t+uk)e^{-2\pi i n\frac{t}{u}}\,dt=
-\sum_{k\in\Z}\frac{1}{u}\int_0^u\varphi(t+uk)e^{-2\pi i n\frac{t}{u}}\,dt\\=
-\sum_{k\in\Z}\frac{1}{u}\int_{uk}^{u(k+1)}\varphi(v)e^{-2\pi i n\frac{v-uk}{u}}\,dv=
+a_n=\frac{1}{u}\int_0^u\sum_{k\in\IntegerNumbers}\varphi(t+uk)e^{-2\pi i n\frac{t}{u}}\,dt=
+\sum_{k\in\IntegerNumbers}\frac{1}{u}\int_0^u\varphi(t+uk)e^{-2\pi i n\frac{t}{u}}\,dt\\=
+\sum_{k\in\IntegerNumbers}\frac{1}{u}\int_{uk}^{u(k+1)}\varphi(v)e^{-2\pi i n\frac{v-uk}{u}}\,dv=
 \frac{1}{u}\int\varphi(v)e^{-2\pi i v\frac{n}{u}}\,dv=
 \frac{1}{u}\widehat\varphi\Bigl(\frac{n}{u}\Bigr).
 \end{multline*}
@@ -496,11 +496,11 @@ a_n=\frac{1}{u}\int_0^u\sum_{k\in\Z}\varphi(t+uk)e^{-2\pi i n\frac{t}{u}}\,dt=
 
 Some particular cases of \eqref{E:25} are interesting:
 \begin{equation}\label{E:26}
-\sum_{k\in\Z}\varphi\Bigl(t+\frac{k}{n}\Bigr)=n \qquad \text{for }\quad n\in\N.
+\sum_{k\in\IntegerNumbers}\varphi\Bigl(t+\frac{k}{n}\Bigr)=n \qquad \text{for }\quad n\in\NaturalNumbers.
 \end{equation}
 Furthermore
 \begin{equation}\label{E:27}
-\sum_{k\in\Z}\varphi(t+k)=1.
+\sum_{k\in\IntegerNumbers}\varphi(t+k)=1.
 \end{equation}
 which is equivalent to 
 \begin{equation}\label{E:28}
@@ -509,7 +509,7 @@ which is equivalent to
 
 Also, from \eqref{E:25} it follows that
 \begin{equation}\label{E:29}
-\sum_{k\in\Z}\varphi(t+2k)=\frac12\sum_{k\in\Z}
+\sum_{k\in\IntegerNumbers}\varphi(t+2k)=\frac12\sum_{k\in\IntegerNumbers}
 \widehat\varphi\Bigl(\frac{k}{2}\Bigr)e^{\pi i k t},
 \end{equation}
 which  is no more than the Fourier expansion
@@ -520,17 +520,19 @@ which  is no more than the Fourier expansion
 valid for $t\in[-1,1]$ and which has good convergence properties.
 
 The product \eqref{E:9} implies that the sign of the coefficient $\widehat\varphi((2k+1)/2)$
-is the parity of $1+v_2(1)+1+v_2(2)+\cdots+1+v_2(k)=k+v_2(k!)=s(k)$, therefore also equal
+is the parity of
+$1+\TwoAdicValuation(1)+1+\TwoAdicValuation(2)+\cdots
++1+\TwoAdicValuation(k)=k+\TwoAdicValuation(k!)=s(k)$, therefore also equal
 to the sign of $\theta(k)$.
 
 Equation \eqref{E:25} is not only a Fourier expansion, it is also Poisson's formula applied 
 to $\varphi(t+x)$. For $t=0$ it yields
 \begin{equation}\label{E:31}
-\sum_{m\in\Z}\varphi(ma)=\sum_{m\in\Z}\frac{1}{a}\widehat\varphi\Bigl(\frac{m}{a}\Bigr),
+\sum_{m\in\IntegerNumbers}\varphi(ma)=\sum_{m\in\IntegerNumbers}\frac{1}{a}\widehat\varphi\Bigl(\frac{m}{a}\Bigr),
 \end{equation}
 and using the knowledge about the support of $\varphi$, this implies
 \begin{equation}\label{E:32}
-a+2a\varphi(a)=\sum_{m\in\Z}\frac{1}{a}\widehat\varphi\Bigl(\frac{m}{a}\Bigr),
+a+2a\varphi(a)=\sum_{m\in\IntegerNumbers}\frac{1}{a}\widehat\varphi\Bigl(\frac{m}{a}\Bigr),
 \qquad \text{for }\quad\frac12\le a\le 1.
 \end{equation}
 
@@ -639,7 +641,7 @@ Since for $2h\le 2^{n+1}(1+x)\le 2(h+1)$ we have \[\theta(2^{2n+1}(1+x))=(-1)^{s
 =\frac{1}{n!}2^{-\binom{n+1}{2}}\sum_{h=0}^{q+2^n-1}(-1)^{s(h)}
 \int_{-1}^1\bigl(2(q-h)+2^{n+1}-1-u\bigr)^n\varphi(u)\,du\\
 =\frac{1}{n!}2^{-\binom{n+1}{2}}\sum_{h=0}^{q+2^n-1}(-1)^{s(h)}\sum_{k=0}^n
-\binom{n}{k}\bigl(2(q-h)+2^{n+1}-1\bigr)^{n-k}(-1)^k\int_{\R}u^k\varphi(u)\,du.
+\binom{n}{k}\bigl(2(q-h)+2^{n+1}-1\bigr)^{n-k}(-1)^k\int_{\RealNumbers}u^k\varphi(u)\,du.
 \end{multline*}
 This formula, together with  equality
 \[\int_{-1}^1u^n\varphi(u)\,du=\bigl(1+(-1)^n\bigr)\int_0^1u^n\varphi(u)\,du\]
@@ -762,5 +764,3 @@ We have
 By \eqref{E:generating} we may expand in Taylor series 
 \[e^{-(x+i\xi t)^2}=e^{-x^2}e^{-2i\xi t x-(-i\xi t)^2}=e^{-x^2}\sum_{n=0}^\infty
 \frac{H_n(x)}{n!}(-i\xi t)^n\]
-
-

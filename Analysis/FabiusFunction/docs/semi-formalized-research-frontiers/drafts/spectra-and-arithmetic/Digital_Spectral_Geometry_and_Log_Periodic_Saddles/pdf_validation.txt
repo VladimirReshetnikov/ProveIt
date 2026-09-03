@@ -1,0 +1,82 @@
+PDF validation — retained build checkpoint and current live source, 2026-08-31
+
+Checkpoint status: the PDF, final-pass transcript, and build-source fingerprint
+below form the retained synchronized checkpoint.  The current TeX is a later
+notation-only successor, so no current source/PDF parity is claimed.  The
+separate arrival ledger remains byte-for-byte preserved.
+
+Current live source:
+- TeX lines: 1940
+- TeX bytes: 61049
+- TeX SHA-256: 92d98914722f98b37f84a19283536c8b3925584d0729920b6346a4f572c735b1
+- notation boundary: every genuine dyadic valuation uses TwoAdicValuation
+- PDF/source synchronization: pending a fresh strict three-pass build
+
+Repository audit:
+- repository_audit.py was run against Analysis/FabiusFunction/docs/**/*.tex,
+  excluding this package directory
+- prior TeX files read: 188
+- total source lines: 390119
+- total source bytes: 16813357
+- raw-byte concatenated corpus SHA-256, in lexicographic relative-path order:
+  bb8a7de4c16a960f8d640d99797085b4f17cd0cdcc38b38caa4014536806b4d3
+- generated repository_audit.md SHA-256:
+  70e66ec477a46666b3acfe5d81123ebf50576b92b4f9d25deb6cf6a93d27b5fb
+- a second independent output-path run matched repository_audit.md byte for byte
+- phrase-cluster hit counts, in report order: 43, 88, 36, 24, 75, 37
+- preserved ARRIVAL_SHA256SUMS SHA-256:
+  4c177281eec24f00edf6041ec11779444e24e455db965503207b32c301749629
+
+Build:
+- exactly three clean, strict, serial pdfLaTeX passes completed with exit 0 and
+  `-shell-escape` enabled for the report's self-contained figure inputs
+- final settled page count: 24
+- retained-build source TeX SHA-256: a7a2bb45abf7c3a546b87c499dcd8d52d95a2569da8cc6614c3642103da19d74
+- retained-build source TeX lines: 1940
+- generated TeX input SHA-256: da703d296abdff0a61a67cfe0699568859c903a27c31eb43b321e8457cf3f6e7
+- PDF SHA-256: 7038edd1f789245645333b97b67d27244987aed461ac7d1b713273010e65309f
+- final-pass compile_transcript.txt SHA-256:
+  3637f2b9f04f8f500547200d3ba6268e8e1e601976e57a5c464c1e6ba69f1b83
+- at that checkpoint, the PDF was newer than its build source and generated input
+- the shared preamble through the canonical listing style is byte-for-byte
+  identical to the primary document except for permitted PDF metadata and
+  running-head text; four required local notation commands follow that block
+
+Final log and source checks:
+- TeX errors / fatal stops: 0
+- undefined references or citations: 0
+- rerun requests: 0
+- duplicate labels: 0
+- duplicate bibliography keys: 0
+- overfull boxes: 0
+- underfull boxes: 0
+- non-blocking hyperref PDF-string warnings: 4 (mathematics in headings)
+
+PDF structure:
+- readable and text-extractable: yes; all 24 pages contain text
+- pages: 24
+- every page: 595.276 x 841.89 pt (A4), rotation 0
+- file size: 853955 bytes
+- PDF version: 1.5
+- font rows: 24; embedded: 24/24; subset: 24/24; Type 3: 0
+- canonical face: Libertinus (5 rows); Latin Modern rows: 0
+- raster images: three generated 1440 x 684 PNG figures, all present
+- all 24 pages rendered successfully with Poppler
+
+Search and render checks:
+- title, exact 188-file corpus statistics and digest, zero-multiplicity/count
+  formula, numerical tables, Lean/novelty boundary, proof-gap quarantine,
+  corrected plateau boundary, and conjecture boundary extract correctly
+- Poppler rendered all 24 pages successfully; every rendered page was nonblank,
+  and text extraction found non-whitespace content on every page
+
+Numerical outputs:
+- audit regeneration did not require numerical regeneration
+- numerical_results.tex, numerical_summary.txt, and all three PNG figures remain
+  byte-identical to the previously validated regenerated outputs
+
+Checksum ledger:
+- CHECKSUMS.sha256 covers all 18 other regular files in this package exactly
+  once, excluding only the ledger itself
+- all 18 live-ledger hashes pass independently; this verifies byte inventory,
+  not source/PDF parity

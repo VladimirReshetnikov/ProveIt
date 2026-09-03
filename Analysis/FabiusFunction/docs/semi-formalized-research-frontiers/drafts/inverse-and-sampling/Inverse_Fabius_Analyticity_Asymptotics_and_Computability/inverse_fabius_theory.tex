@@ -1,0 +1,293 @@
+\documentclass[11pt,oneside]{article}
+
+\usepackage[a4paper,margin=27mm,headheight=22pt]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\IfFileExists{libertinus.sty}{\usepackage{libertinus}}{\usepackage{lmodern}}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb,amsthm,mathtools,mathrsfs,bm}
+\usepackage{booktabs,longtable,array,tabularx,multirow}
+\usepackage{graphicx}
+\usepackage{pgfplots}
+\usepackage{tikz}
+\usepackage[most]{tcolorbox}
+\usepackage{float}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{listings}
+\usepackage{xurl}
+\usepackage{aliascnt}
+\usepackage[hypertexnames=false]{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+
+% Canonical project-wide mathematical notation.
+\input{../../../../fabius-notation.tex}
+
+\definecolor{linkblue}{RGB}{25,75,135}
+\definecolor{deepgreen}{RGB}{28,103,76}
+\definecolor{shadegray}{RGB}{246,247,249}
+\definecolor{rulegray}{RGB}{195,201,208}
+\definecolor{DeepBlue}{RGB}{30,58,95}
+\definecolor{Teal}{RGB}{33,112,116}
+\definecolor{Burgundy}{RGB}{125,49,62}
+\definecolor{Gold}{RGB}{168,118,31}
+\definecolor{SoftBlue}{RGB}{239,244,249}
+\definecolor{SoftTeal}{RGB}{237,248,247}
+\definecolor{SoftGold}{RGB}{252,248,235}
+\definecolor{SoftRed}{RGB}{252,241,243}
+\definecolor{CodeGray}{RGB}{247,248,250}
+\definecolor{navy}{HTML}{12355B}
+\definecolor{teal}{HTML}{187A80}
+\definecolor{gold}{HTML}{B7791F}
+\definecolor{darkgreen}{HTML}{216E39}
+\definecolor{darkred}{HTML}{9B2C2C}
+
+\pgfplotsset{compat=1.18}
+\usetikzlibrary{arrows.meta,positioning,calc,fit}
+\hypersetup{
+  colorlinks=true,
+  linkcolor=linkblue,
+  citecolor=deepgreen,
+  urlcolor=linkblue,
+  pdftitle={Inverse Fabius Theory: Analyticity, Asymptotics, Computability, and Dyadic Sampling},
+  pdfauthor={Human-readable research synthesis for Vladimir Reshetnikov's ProveIt repository},
+  pdfsubject={Inverse Fabius analyticity and non-elementarity, inverse iterates, dyadic germs, endpoint asymptotics, computability, and Rvachev sampling},
+  pdfkeywords={Fabius function, inverse Fabius function, nowhere analytic, non-elementary, Rvachev up-function, Thue-Morse, q-binomial, sinc product, Lambert W, Bell polynomials, Bernoulli polynomials, Lagrange inversion, Richardson extrapolation}
+}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Inverse Fabius theory}
+\fancyhead[R]{\small\nouppercase{\leftmark}}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+\titleformat{\section}{\Large\bfseries}{\thesection}{0.7em}{}
+\titleformat{\subsection}{\large\bfseries}{\thesubsection}{0.7em}{}
+\titleformat{\subsubsection}{\normalsize\bfseries}{\thesubsubsection}{0.7em}{}
+\setcounter{secnumdepth}{3}
+\setcounter{tocdepth}{2}
+\setlist[itemize]{leftmargin=2em,itemsep=0.25em,topsep=0.4em}
+\setlist[enumerate]{leftmargin=2.3em,itemsep=0.25em,topsep=0.4em}
+\setlength{\emergencystretch}{3em}
+\allowdisplaybreaks[2]
+\numberwithin{equation}{section}
+
+\newcommand{\newsharedtheorem}[2]{%
+  \newaliascnt{#1}{theorem}%
+  \newtheorem{#1}[#1]{#2}%
+  \aliascntresetthe{#1}%
+}
+\newtheorem{theorem}{Theorem}[section]
+\newsharedtheorem{proposition}{Proposition}
+\newsharedtheorem{lemma}{Lemma}
+\newsharedtheorem{corollary}{Corollary}
+\newsharedtheorem{identity}{Identity}
+\newsharedtheorem{claim}{Claim}
+\newsharedtheorem{conjecture}{Conjecture}
+\newsharedtheorem{problem}{Research problem}
+\theoremstyle{definition}
+\newsharedtheorem{definition}{Definition}
+\newsharedtheorem{algorithm}{Algorithm}
+\newsharedtheorem{example}{Example}
+\newsharedtheorem{experiment}{Computer-assisted experiment}
+\newsharedtheorem{obligation}{Formalization obligation}
+\theoremstyle{remark}
+\newsharedtheorem{remark}{Remark}
+\newsharedtheorem{warning}{Warning}
+
+\crefname{theorem}{theorem}{theorems}
+\Crefname{theorem}{Theorem}{Theorems}
+\crefname{proposition}{proposition}{propositions}
+\Crefname{proposition}{Proposition}{Propositions}
+\crefname{lemma}{lemma}{lemmas}
+\Crefname{lemma}{Lemma}{Lemmas}
+\crefname{corollary}{corollary}{corollaries}
+\Crefname{corollary}{Corollary}{Corollaries}
+\crefname{conjecture}{conjecture}{conjectures}
+\Crefname{conjecture}{Conjecture}{Conjectures}
+\crefname{problem}{research problem}{research problems}
+\Crefname{problem}{Research problem}{Research problems}
+\crefname{identity}{identity}{identities}
+\Crefname{identity}{Identity}{Identities}
+\crefname{algorithm}{algorithm}{algorithms}
+\Crefname{algorithm}{Algorithm}{Algorithms}
+\crefname{obligation}{formalization obligation}{formalization obligations}
+\Crefname{obligation}{Formalization obligation}{Formalization obligations}
+\crefname{warning}{warning}{warnings}
+\Crefname{warning}{Warning}{Warnings}
+
+% Shared notation retained from the five source reports.
+\newcommand{\eps}{\varepsilon}
+\newcommand{\FiniteSpline}[1]{F_{#1}^{\mathrm{spl}}}
+\newcommand{\FiniteSplineInverse}[1]{G_{#1}^{\mathrm{spl}}}
+\newcommand{\Fn}{\FiniteSpline{n}}
+\newcommand{\Gn}{\FiniteSplineInverse{n}}
+\newcommand{\PhiAng}{\Phi_{\mathrm{ang}}}
+\newcommand{\PhiCyc}{\Phi_{2\pi}}
+\newcommand{\EndpointKernel}{\mathcal K}
+% LOCAL-NON-FOURIER-HAT: \NestedLambertLogApproximation denotes the order-N composition-and-truncation approximation to the nested Lambert logarithmic coordinate T_r.
+\newcommand{\NestedLambertLogApproximation}[1]{\widehat{T}_{#1}}
+% LOCAL-NON-FOURIER-HAT: \FactorialScaledInverseTransferCoefficient denotes the factorially scaled coefficient m! c_m(y) in the inverse-transfer asymptotic expansion.
+\newcommand{\FactorialScaledInverseTransferCoefficient}[1]{\widehat{c}_{#1}}
+\newcommand{\repo}{\nolinkurl{Analysis/FabiusFunction}}
+\newcommand{\newresult}{\textbf{Human-proved frontier result.}}
+\newcommand{\corpusresult}{\textbf{Imported proved result.}}
+\newcommand{\checked}{\textbf{Independently checked.}}
+\newcommand{\range}{\operatorname{range}}
+\newcommand{\statusrepo}{\textsc{Lean}}
+\newcommand{\statuslit}{\textsc{Prior}}
+\newcommand{\statusnew}{\textsc{Frontier}}
+\newcommand{\iu}{\mathrm i}
+\newcommand{\Bper}{\widetilde B}
+\newcommand{\Acal}{\mathscr A}
+\newcommand{\Kcal}{\mathcal K}
+\newcommand{\Qcal}{\mathcal Q}
+\newcommand{\Mcal}{\mathcal M}
+\newcommand{\Pcal}{\mathcal P}
+\newcommand{\repoPartl}{\textsc{ProveIt}}
+\newcommand{\statusproved}{\textcolor{darkgreen}{\textbf{proved here}}}
+\newcommand{\statuscomputer}{\textcolor{gold!75!black}{\textbf{exact computation}}}
+\newcommand{\statusconjectural}{\textcolor{darkred}{\textbf{conjectural}}}
+\newcommand{\DFT}{\operatorname{DFT}}
+% Coefficient function of the Fourier series of the endpoint ripple \Psi.
+\newcommand{\Psihat}{c_{\Psi}}
+\newcommand{\Csharp}{C_{\sharp}}
+\newcommand{\CB}{C_B}
+\newcommand{\Gzero}{G_0}
+\newcommand{\Hnum}{\mathsf H}
+\newcommand{\Elem}{\mathcal E}
+\newcommand{\An}{\mathcal A}
+\newcommand{\D}{\mathcal D}
+\newcommand{\id}{\operatorname{id}}
+\newcommand{\comp}{\mathbin{\circ}}
+\newcommand{\ThetaF}{\Theta}
+\newcommand{\half}{\tfrac12}
+\newcommand{\rad}{\operatorname{rad}}
+\newcommand{\Inv}{G}
+\newcommand{\InvT}{\overline G}
+\newcommand{\Clamp}{\operatorname{clamp}}
+\newcommand{\arrivalcommit}{\nolinkurl{40fdea4cc0a728189f357389e3f114a2cb00e561}}
+\newcommand{\lean}[1]{\ifmmode\text{\nolinkurl{#1}}\else\nolinkurl{#1}\fi}
+\newcommand{\leanevaltwo}[1]{%
+  \nolinkurl{integral_eval}\texttt{\textsubscript{2}}\nolinkurl{#1}}
+
+\newenvironment{proofidea}
+  {\par\smallskip\noindent\textit{Proof architecture.}\ }
+  {\hfill$\square$\par\smallskip}
+\newenvironment{boxedremark}{%
+  \par\smallskip\noindent\begin{center}\begin{minipage}{0.94\textwidth}%
+  \color{black}\hrule\vspace{0.6em}\small
+}{%
+  \vspace{0.6em}\hrule\end{minipage}\end{center}\smallskip
+}
+\newenvironment{statuspanel}[1]{%
+  \par\smallskip\noindent\begin{center}\begin{minipage}{0.94\textwidth}%
+  \hrule\vspace{0.5em}\noindent\textbf{#1}\par\smallskip
+}{%
+  \vspace{0.5em}\hrule\end{minipage}\end{center}\smallskip
+}
+\newcommand{\statusnote}[1]{%
+  \begin{center}
+  \fcolorbox{linkblue}{shadegray}{\parbox{0.91\textwidth}{\small #1}}
+  \end{center}
+}
+
+\newtcolorbox{statusbox}[1][]{
+  enhanced,breakable,colback=SoftBlue,colframe=DeepBlue,
+  boxrule=0.65pt,arc=2pt,left=7pt,right=7pt,top=6pt,bottom=6pt,
+  title={#1},fonttitle=\bfseries
+}
+\newtcolorbox{resultbox}[1][]{
+  enhanced,breakable,colback=SoftTeal,colframe=Teal,
+  boxrule=0.65pt,arc=2pt,left=7pt,right=7pt,top=6pt,bottom=6pt,
+  title={#1},fonttitle=\bfseries
+}
+\newtcolorbox{cautionbox}[1][]{
+  enhanced,breakable,colback=SoftGold,colframe=Gold,
+  boxrule=0.65pt,arc=2pt,left=7pt,right=7pt,top=6pt,bottom=6pt,
+  title={#1},fonttitle=\bfseries
+}
+\newtcolorbox{frontierbox}[1][]{
+  enhanced,breakable,colback=SoftRed,colframe=Burgundy,
+  boxrule=0.65pt,arc=2pt,left=7pt,right=7pt,top=6pt,bottom=6pt,
+  title={#1},fonttitle=\bfseries
+}
+\newenvironment{conjecturebox}[1][Conjectural frontier]
+  {\begin{center}\begin{minipage}{0.94\textwidth}%
+   \color{gold!80!black}\hrule height 0.8pt\vspace{0.45em}%
+   \color{black}\textbf{#1}\par\smallskip}
+  {\vspace{0.35em}\color{gold!80!black}\hrule height 0.5pt%
+   \end{minipage}\end{center}}
+
+\lstdefinestyle{pseudo}{
+  basicstyle=\ttfamily\small,
+  backgroundcolor=\color{shadegray},
+  frame=single,
+  rulecolor=\color{rulegray},
+  columns=fullflexible,
+  keepspaces=true,
+  showstringspaces=false,
+  breaklines=true,
+  xleftmargin=0.7em,
+  xrightmargin=0.7em,
+  aboveskip=0.8em,
+  belowskip=0.8em
+}
+\lstdefinestyle{reportpseudo}{style=pseudo}
+\lstdefinestyle{pythonstyle}{style=pseudo,language=Python,basicstyle=\ttfamily\footnotesize}
+\lstdefinestyle{frontiercode}{
+  style=pseudo,
+  language=Python,
+  basicstyle=\ttfamily\footnotesize,
+  keywordstyle=\color{navy}\bfseries,
+  commentstyle=\color{teal},
+  stringstyle=\color{gold!85!black}
+}
+
+\title{\bfseries Inverse Fabius Theory\\[0.35em]
+\large Analyticity, asymptotics, computability, and dyadic sampling}
+\author{Human-readable research synthesis for\\
+\small Vladimir Reshetnikov's \texttt{ProveIt} repository}
+\date{Consolidated repository edition: 31 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+This volume replaces five overlapping reports about the inverse Fabius
+function and the Rvachev law.  It develops their common analytic and
+probabilistic platform once, then treats dense-open analyticity of a precisely
+specified totalized elementary-expression grammar, its nonrepresentability
+results, positive compositional inverse
+iterates, exact inverse-dyadic germs, Bell and Bernoulli inversion,
+Barnes--Rvachev deconvolution, all-orders Lambert--W endpoint asymptotics,
+dyadic self-sampling and Richardson filters, exact inverse moduli, and
+certified computation.
+
+Every nonconjectural retained assertion has a complete human-readable proof.
+Exact Lean counterparts are identified by module and declaration; manuscript
+results with no exact formal counterpart are described as human-proved
+frontier results.  Numerical experiments are used only as reproducible checks.
+Open claims occur only as explicitly named conjectures or research problems,
+and false, vacuous, or duplicated former conjectures are quarantined rather
+than silently recycled.
+\end{abstract}
+
+\tableofcontents
+\clearpage
+
+\input{chapters/00_scope_and_platform}
+\input{chapters/01_analyticity_and_elementarity}
+\input{chapters/02_inverse_iterates}
+\input{chapters/03_inverse_germs_and_deconvolution}
+\input{chapters/04_endpoint_all_orders}
+\input{chapters/05_dyadic_self_sampling}
+\input{chapters/06_computability}
+\input{chapters/07_certification_and_provenance}
+\input{chapters/09_references}
+
+\end{document}

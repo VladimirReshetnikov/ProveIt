@@ -1,0 +1,129 @@
+\section{Source and asset provenance}
+\label{app:provenance}
+
+This appendix is intentionally revision-backed.  The four live source
+manuscripts and all 180 files in their parent subtree are pinned at commit
+\texttt{73f0b373126ef22a3b5dccadfa7b99d61d445345}.  The executable extractor in
+\nolinkurl{audit/} reconstructs their result inventory directly from that
+commit, while \nolinkurl{source_disposition.csv} records the SHA-256 digest and
+final disposition of every path.  Thus deleting an absorbed report does not
+erase either its bytes or its theorem-level identity.
+
+\subsection{The four peer manuscripts}
+
+\begin{longtable}{@{}p{0.31\textwidth}p{0.63\textwidth}@{}}
+\toprule
+Historical package & Canonical contribution \\
+\midrule
+\endfirsthead
+\toprule
+Historical package & Canonical contribution \\
+\midrule
+\endhead
+\nolinkurl{Dyadic_Comb_Frontiers} & Additive dyadic foundations, exact comb
+sums and quadrature, spectral and phase calculus, and endpoint-flat global
+interpolation.  That manuscript was itself an editorial merge of nine earlier
+packages, itemized below. \\
+\addlinespace
+\nolinkurl{geometric_comb_q_fabius_report} & Canonical finite geometric-comb
+spine: affine covariance, Jackson--Newton calculus, Gaussian-Pascal changes of
+basis, complete-homogeneous residuals, sharp Lebesgue asymptotics, Fabius
+boundary recovery, and the Gaussian--Appell Rvachev decoder. \\
+\addlinespace
+\nolinkurl{geometric_comb_interpolation_report} & Confluent modal filters,
+regular variation, geometric-knot B-splines, finite geometric-uniform splines,
+cumulants, and even-entire Fourier-scale reconstruction. \\
+\addlinespace
+\nolinkurl{geometric_comb_interpolation_report-3} & Arbitrary-target
+cardinals, Mellin symbols and logarithmic modes, Taylor/Richardson limits,
+regular summability, superflat divergence, the general geometric-uniform
+moment transform, and the reciprocal Rvachev sinc-product filter. \\
+\bottomrule
+\end{longtable}
+
+The four manuscripts are peers, not successive editions.  Similar statements
+therefore receive multiple source rows in the concordance but one strongest
+canonical destination.  In particular, the q-Pochhammer nodal polynomial,
+geometric Vandermonde determinant, Gaussian-Pascal factorization, Jackson
+divided differences, accumulation-point barycentric row, universal monomial
+residual, and analytic infinite Newton series are not repeated in the
+independent-extension part.
+
+\subsection{The nine absorbed additive-dyadic sources}
+
+The additive-dyadic manuscript already absorbed the following packages.  The
+first six main TeX sources are directly recoverable from the parent of commit
+\texttt{d022736a}; the later three are recoverable inside the deleted incoming
+ZIP blobs named below.  Their exact source hashes and theorem-level mapping are
+retained in Git history and in the concordance notes.
+
+\begin{longtable}{@{}p{0.36\textwidth}p{0.58\textwidth}@{}}
+\toprule
+Historical package & Material retained in the additive-dyadic parts \\
+\midrule
+\endfirsthead
+\toprule
+Historical package & Material retained in the additive-dyadic parts \\
+\midrule
+\endhead
+\nolinkurl{Fabius_Dyadic_Comb_Sums_Report_Package} & Row generating function,
+Bernoulli--Thue--Morse and Bell--Prouhet formulae, exact collapse, spectral
+defects, Hurwitz continuation, and iterated/fractional sums. \\
+\addlinespace
+\nolinkurl{fabius-dyadic-comb-sums-report} & Moment EGF, probabilistic dyadic
+convolution, sparse row algorithm, early spectral values, Richardson filtering,
+and tensor cubature. \\
+\addlinespace
+\nolinkurl{fabius_dyadic_comb_report_final} & Arbitrarily shifted exactness,
+$2$-adic alias hierarchy, Bell--Bernoulli jets, absolute/negative powers,
+universal zeta correction, and phase superconvergence. \\
+\addlinespace
+\nolinkurl{fabius_dyadic_interpolation_report} & Symmetry compression,
+smoothstep factorization, exact cardinal modes, fixed-order instability,
+Lambert balance, full-grid Hermite amplification, and local stability. \\
+\addlinespace
+\nolinkurl{fabius_interpolation_report} & Exact balance window, entropy-mode
+all-order instability, endpoint derivative defects, mixed transforms, and
+stable alternatives. \\
+\addlinespace
+\nolinkurl{Fabius_Rvachev_Dyadic_Interpolation_Report} & Valuation law,
+error-identity form of endpoint-flat factorization, even Rvachev reduction,
+optimized-divergence data, and peak-migration asymptotics. \\
+\addlinespace
+\nolinkurl{Fabius_Euler_Maclaurin_Report_Package} & Bernoulli periodization,
+arbitrary-mesh termination, reflection, phase defects, positivity, closed
+exhaustion tails, and derivative-free extrapolation.  Source archive:
+\nolinkurl{a348a5b1^:drafts/incoming/Fabius_Euler_Maclaurin_Report.zip}. \\
+\addlinespace
+\nolinkurl{fabius_rvachev_exhaustion_euler_maclaurin_bundle} & All-mesh
+alias--Bernoulli identity, general first defect, half-interval Rvachev rule,
+two-level recovery, and Gaussian phase filters.  Source archive:
+\nolinkurl{9d4f6771^:drafts/incoming/fabius_rvachev_exhaustion_euler_maclaurin_bundle.zip}. \\
+\addlinespace
+\nolinkurl{fabius_ruffa_phase_calculus} & Multiple-angle domination, twisted
+spectral positivity, complete phase zero sets, finite phase cubature, digital
+Bernoulli filters, coherent radix exhaustion, and tensor shells.  Source
+archive: \nolinkurl{563e4d35^:drafts/incoming/fabius_ruffa_phase_calculus.zip}. \\
+\bottomrule
+\end{longtable}
+
+The old nested READMEs, audit prose, report PDFs, stale checksum ledgers, and
+three files explicitly announcing that their content was “not shipped” were
+not mathematical evidence.  Their nonduplicative provenance and reproduction
+instructions have been distilled into this appendix and the canonical asset
+documentation.  Scripts, exact data, generated tables, textual outputs, and
+valid diagnostic PNGs survive under
+\nolinkurl{assets/companion-evidence/<source-slug>/}.  The only byte-identical
+payload pair was a two-line requirements file, now represented once with two
+provenance rows.
+
+\subsection{What the audit establishes}
+
+The source-result extractor and publication validator are intentionally
+separate.  The former proves that the immutable source columns of the theorem
+concordance still agree with the pinned manuscripts.  The latter checks
+chapter inclusion, environment balance, labels and references, explicit proof
+coverage, conjecture labelling, source-disposition completeness, and live asset
+hashes.  Three strict serial pdfLaTeX passes and rendered-page inspection are
+additional publication evidence; neither static checking nor numerical replay
+is presented as a substitute for a mathematical proof.

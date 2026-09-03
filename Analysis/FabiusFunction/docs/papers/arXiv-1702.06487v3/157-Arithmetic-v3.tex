@@ -4,6 +4,10 @@
 \usepackage{enumerate}
 \usepackage[applemac]{inputenc}
 \usepackage[OT2,T1]{fontenc}
+% Canonical project-wide mathematical notation.
+\input{../../fabius-notation.tex}
+% HISTORICAL-NOTATION-SCOPE: source-faithful paper transcription; original
+% notation is interpreted by the catalogue and is not normative project prose.
 \newcommand\textcyr[1]{{\fontencoding{OT2}\fontfamily{wncyr}\selectfont #1}}
 %\usepackage{mathrsfs}
 \usepackage{wrapfig}
@@ -65,7 +69,6 @@
 \makeatother
 %\numberwithin{equation}{section}
 
-\DeclareMathOperator\up{up}
 
 \def\medio{{\tfrac{1}{2}}}
 \def\oeis#1{\href{http://oeis.org/#1}{#1}}
@@ -80,7 +83,7 @@ Facultad de Matem\'aticas \\
 c/ Tarfia, sn
  \\
 41012-Sevilla \\
-Spain} 
+Spain}
 %\thanks{Supported by  MINECO grant MTM2015-63699-P}
 \email{arias@us.es}
 
@@ -90,94 +93,88 @@ Spain}
 
 
 
-\newcommand{\N}{{\mathbb N}}
-\newcommand{\R}{{\mathbb R}}
-\newcommand{\C}{{\mathbb C}}
-\newcommand{\Z}{{\mathbb Z}}
-\newcommand{\Q}{{\mathbb Q}}
 \newcommand{\arctanh}{\mathop{\rm arctanh }}
 \def\Re{\operatorname{Re}}
 \def\Im{\operatorname{Im}}
 \def\Hermite{\operatorname{\mathcal H}}
-\def\supp{\operatorname{supp}}
 \def\den{\operatorname{den}}
 
 \newfont{\cmbsy}{cmbsy10}
 \newcommand{\Orden}{\mathop{\hbox{\cmbsy O}}\nolimits}
 
-\begin{abstract} 
-The Fabius function $F(x)$ takes rational values at dyadic points. We study the 
+\begin{abstract}
+The Fabius function $F(x)$ takes rational values at dyadic points. We study the
 arithmetic of these rational numbers. In particular, we define two sequences
-of natural numbers that determine these rational numbers. Using these sequences 
-we solve 
+of natural numbers that determine these rational numbers. Using these sequences
+we solve
 a conjecture raised  in MathOverflow by Vladimir Reshetnikov.
-We determine the dyadic valuation of $F(2^{-n})$, showing that 
+We determine the dyadic valuation of $F(2^{-n})$, showing that
 $\nu_2(F(2^{-n}))=-\binom{n}{2}-\nu_2(n!)-1$.
-We give the proof  (Proposition \ref{P:Res}) of  a formula that allows an efficient computation 
-of exact or approximate values of $F(x)$.  
+We give the proof  (Proposition \ref{P:Res}) of  a formula that allows an efficient computation
+of exact or approximate values of $F(x)$.
 
-The Fabius function was defined in 1935 by 
-Jessen and Wintner and has been independently defined  at least 
-six times since. 
-We attempt to unify notations related to the Fabius function. 
+The Fabius function was defined in 1935 by
+Jessen and Wintner and has been independently defined  at least
+six times since.
+We attempt to unify notations related to the Fabius function.
 \end{abstract}
 
 \maketitle
 
 \section{Introduction.}
 The Fabius function is a natural object. It is not surprising that it has been
-independently  defined several times. As far as known it was defined independently 
+independently  defined several times. As far as known it was defined independently
 in the following cases:
 \begin{enumerate}
 \item In 1935 by  B. Jessen and A. Wintner  \cite{MR1501802}*{Ex.~5, p.~62} (English). In five lines
 they showed that it is infinitely differentiable.
 
-\item In 1966 by J. Fabius \cite{MR0197656} (English); considered  as the distribution function 
-of a random variable. 
+\item In 1966 by J. Fabius \cite{MR0197656} (English); considered  as the distribution function
+of a random variable.
 
-\item In 1971 by  V. A.~Rvach{\"e}v   \cite{MR0296237} (Ukrainian); defined 
+\item In 1971 by  V. A.~Rvach{\"e}v   \cite{MR0296237} (Ukrainian); defined
 as a solution to the equation
 $y'(x)=2(y(2x+1)-y(2x-1))$.
 
 \item In 1981 by G. Kh. Kirov and G. A.~Totkov \cite{MR705073} (Bulgarian).
 
-\item In 1982 by J. Arias de Reyna \cite{MR666839} (Spanish); defined  in the same way as V. A.~Rvach{\"e}v. 
+\item In 1982 by J. Arias de Reyna \cite{MR666839} (Spanish); defined  in the same way as V. A.~Rvach{\"e}v.
 
-\item In 1985  by R. Schnabl \cite{MR1031820} (German). 
+\item In 1985  by R. Schnabl \cite{MR1031820} (German).
 \end{enumerate}
 
-Today there are many papers dealing with the Fabius function, due mainly to {V. A.~Rvach{\"e}v} \cite{MR0296237}--\cite{MR1050928}, (a 
+Today there are many papers dealing with the Fabius function, due mainly to {V. A.~Rvach{\"e}v} \cite{MR0296237}--\cite{MR1050928}, (a
 summary of his result can be found in  \cite{MR1050928}). Recently   \cite{MR666839}
-has been translated to English and posted  in 
-\href{http://arxiv.org/abs/1702.05442}{arXiv:1702.05442}. In this paper  the function is 
-defined and its main properties are proven. 
+has been translated to English and posted  in
+\href{http://arxiv.org/abs/1702.05442}{arXiv:1702.05442}. In this paper  the function is
+defined and its main properties are proven.
 
-The function $\up(x)$ takes rational values at dyadic points \cite{MR0330388}.%
+The function $\RvachevUp(x)$ takes rational values at dyadic points \cite{MR0330388}.%
 \footnote{This Russian paper was not accessed directly. Rather, it came to notice
 through the works of  V. A.~Rvach{\"e}v \cite{MR1050928}. In \cite{MR666839} it was
-independently proved that the values of $\up(k/2^n)$ are rational numbers.}
+independently proved that the values of $\RvachevUp(k/2^n)$ are rational numbers.}
 The object of this paper are
-the arithmetical properties of these rational values.  Some of the results 
-are also contained in \cite{MR666839}. In particular, we solve here a question 
-posed in MathOverflow by Vladimir Reshetnikov. 
+the arithmetical properties of these rational values.  Some of the results
+are also contained in \cite{MR666839}. In particular, we solve here a question
+posed in MathOverflow by Vladimir Reshetnikov.
 
 
-\subsection{Some notations.} 
-We consider  two functions. Firstly, the Rvach{\"e}v function $\up(x)$ with support in $[-1,1]$ that satisfies on all
-$\R$ equation \eqref{E:main}.  V. A.~Rvach{\"e}v denotes it by $\up(x)$; it is the same function 
+\subsection{Some notations.}
+We consider  two functions. Firstly, the Rvach{\"e}v function $\RvachevUp(x)$ with support in $[-1,1]$ that satisfies on all
+$\RealNumbers$ equation \eqref{E:main}.  V. A.~Rvach{\"e}v denotes it by $\RvachevUp(x)$; it is the same function
 that is called
-$\varphi(x)$ in the translation of \cite{MR666839}. Secondly, the Fabius  function $F(x)$, 
-defined by Fabius, that satisfies $F'(x)=2F(2x)$  for $x>0$. This function coincides with 
+$\varphi(x)$ in the translation of \cite{MR666839}. Secondly, the Fabius  function $F(x)$,
+defined by Fabius, that satisfies $F'(x)=2F(2x)$  for $x>0$. This function coincides with
 the function $\theta(x)$ in \cite{MR666839}, except that  in \cite{MR666839}
-it is defined on all of $\R$, putting $F(x)=0$ for $x<0$. Therefore $F'(x)=2F(2x)$  is true 
-for all $x\in\R$. 
+it is defined on all of $\RealNumbers$, putting $F(x)=0$ for $x<0$. Therefore $F'(x)=2F(2x)$  is true
+for all $x\in\RealNumbers$.
 
-There is a connection between these two functions (see \cite{MR666839}*{Theorem 4}). 
-Specifically, 
+There is a connection between these two functions (see \cite{MR666839}*{Theorem 4}).
+Specifically,
 \begin{equation}\label{E, F-def}
-F(x)=\sum_{n=0}^\infty (-1)^{w(n)}\up(x-2n-1),
+F(x)=\sum_{n=0}^\infty (-1)^{w(n)}\RvachevUp(x-2n-1),
 \end{equation}
-where $w(n)$ is the sum of the digits of $n$ expressed in base $2$. 
+where $w(n)$ is the sum of the digits of $n$ expressed in base $2$.
 
 \begin{figure}[htbp]
 \begin{center}
@@ -188,32 +185,32 @@ where $w(n)$ is the sum of the digits of $n$ expressed in base $2$.
 \end{figure}
 
 
-The Fabius function $F\colon[0,1]\to[0,1]$ is increasing with $F(0)=0$ and $F(1)=1$. 
-Rvach{\"e}v's function $\up\colon\R\to\R$ can be defined in terms of $F(t)$ by 
-\[\up(t)=\begin{cases} F(t+1) & \text{for $-1\le t\le0$},\\
+The Fabius function $F\colon[0,1]\to[0,1]$ is increasing with $F(0)=0$ and $F(1)=1$.
+Rvach{\"e}v's function $\RvachevUp\colon\RealNumbers\to\RealNumbers$ can be defined in terms of $F(t)$ by
+\[\RvachevUp(t)=\begin{cases} F(t+1) & \text{for $-1\le t\le0$},\\
 F(1-t) & \text{for $0\le t\le 1$},\\
 0 & \text{for $|t|>1$}.
 \end{cases}
 \]
-The function $\up(t)$ is an infinitely differentiable function of compact 
-support $[-1,1]$. 
-The relation with the Fabius function is only given for reference. 
-The function $\up(t)$ has a nice independent
-definition, see Theorem 1 in \cite{MR666839}. 
+The function $\RvachevUp(t)$ is an infinitely differentiable function of compact
+support $[-1,1]$.
+The relation with the Fabius function is only given for reference.
+The function $\RvachevUp(t)$ has a nice independent
+definition, see Theorem 1 in \cite{MR666839}.
 
-We use $w(n)$ to denote the sum of the digits of $n$ expressed in binary notation. 
-We use $\nu_2(r)$ is the dyadic  valuation of the rational number $r$, the exponent of $2$ in the 
-factorization of $r$. 
+We use $w(n)$ to denote the sum of the digits of $n$ expressed in binary notation.
+We use $\nu_2(r)$ is the dyadic  valuation of the rational number $r$, the exponent of $2$ in the
+factorization of $r$.
 
-We will define two sequences of rational numbers. Firstly,  $(c_n)$ the moments of Rvach{\"e}v's function $\up(x)$. Secondly, 
+We will define two sequences of rational numbers. Firstly,  $(c_n)$ the moments of Rvach{\"e}v's function $\RvachevUp(x)$. Secondly,
 $(d_n)$ the half moments of Rvach{\"e}v's function. These are also related to the values
-of the Fabius 
-function $F(x)$, see equation \eqref{E:dnint}.  There are two sequences of natural numbers associated to these rational 
-numbers: $F_n$ associated to the moments $c_n$,  and $G_n$ associated to the half moments. 
+of the Fabius
+function $F(x)$, see equation \eqref{E:dnint}.  There are two sequences of natural numbers associated to these rational
+numbers: $F_n$ associated to the moments $c_n$,  and $G_n$ associated to the half moments.
 
 A further  two sequences are Reshetnikov's numbers $R_n$, and the sequence $D_n$ of
 the  common denominators of
-the values  $F(a/2^n)$ of the Fabius function at dyadic numbers with denominator $2^n$. 
+the values  $F(a/2^n)$ of the Fabius function at dyadic numbers with denominator $2^n$.
 
 
 
@@ -226,70 +223,70 @@ the values  $F(a/2^n)$ of the Fabius function at dyadic numbers with denominator
 
 \section{Properties of the Fabius function.}
 
-The Fabius function $\up(x)$ is a simple
+The Fabius function $\RvachevUp(x)$ is a simple
 infinitely differentiable function of compact support. Visualising it as a bump function,
-it   increases from $0$ to a certain value and then decreases symmetrically 
+it   increases from $0$ to a certain value and then decreases symmetrically
 to $0$. Its derivative is positive in the first interval and then negative in the next.
-Therefore it may be  that the derivative is obtained from two 
-homothetically deformed copies of the function. 
+Therefore it may be  that the derivative is obtained from two
+homothetically deformed copies of the function.
 
 \begin{wrapfigure}{r}{0.40\textwidth}
 %\label{wrap-fig:1}
 \includegraphics[width=0.38\textwidth]{09Funcion1.pdf}
-\end{wrapfigure} 
+\end{wrapfigure}
 \leavevmode%
-In fact $\up(x)$ is infinitely differentiable of 
-compact support equal to $[-1,1]$, and  for all $x\in\R$ satisfies  the equation
+In fact $\RvachevUp(x)$ is infinitely differentiable of
+compact support equal to $[-1,1]$, and  for all $x\in\RealNumbers$ satisfies  the equation
 
 \begin{equation}\label{E:main}
-\mskip-200mu \up'(x)=2\bigl(\up(2x+1)-\up(2x-1)\bigr),
+\mskip-200mu \RvachevUp'(x)=2\bigl(\RvachevUp(2x+1)-\RvachevUp(2x-1)\bigr),
 \end{equation}
-with $\up(0)=1$.
+with $\RvachevUp(0)=1$.
 
 The number $2$ is the only factor giving an interesting solution to the equation.
-The Fabius function \eqref{E, F-def} appears when one attempts to compute the 
-derivatives $\up^{(n)}(x)$.
-We have  $F'(x)=2F(2x)$ for all $x\in\R$. 
+The Fabius function \eqref{E, F-def} appears when one attempts to compute the
+derivatives $\RvachevUp^{(n)}(x)$.
+We have  $F'(x)=2F(2x)$ for all $x\in\RealNumbers$.
 Therefore  (\cite{MR666839}*{eq.~(22)})
 \begin{equation}\label{E:FabiusD}
-\mskip-220mu 
+\mskip-220mu
 F^{(k)}(x)=2^{\binom{k+1}{2}}F(2^k x),
 \end{equation}
 and
 \begin{equation}
-\mskip-220mu 
-\up^{(n)}(x)=2^{\binom{n+1}{2}}F(2^n(x+1)), \quad -1\le x\le 1.
+\mskip-220mu
+\RvachevUp^{(n)}(x)=2^{\binom{n+1}{2}}F(2^n(x+1)), \quad -1\le x\le 1.
 \end{equation}
 Its Fourier transform is an entire function
 \begin{equation}
-\widehat{\up}(z)=\prod_{n=0}^\infty \frac{\sin(\pi z/2^n)}
+\widehat{\RvachevUp}(z)=\prod_{n=0}^\infty \frac{\sin(\pi z/2^n)}
 {\pi z/2^n}.
 \end{equation}
 The inversion formula yields the following expression
 \begin{equation}
-\up(x)=\int_\R\widehat{\up}(t)e^{2\pi i t x}\,dt.
+\RvachevUp(x)=\int_\RealNumbers\widehat{\RvachevUp}(t)e^{2\pi i t x}\,dt.
 \end{equation}
 
 \section{The values of the Fabius function and two sequences of rational numbers.}
 
 \subsection{The sequence of rational  numbers $c_n$.}
 
-The Fourier transform  $\widehat\up(z)$ is an entire function. 
-In \cite{MR666839}*{eq.~(4) and (6)}  it is shown that  
+The Fourier transform  $\widehat\RvachevUp(z)$ is an entire function.
+In \cite{MR666839}*{eq.~(4) and (6)}  it is shown that
 \begin{equation}\label{hatphi}
-\widehat\up(z)=\prod_{n=0}^\infty \frac{\sin(\pi z/2^n)}{\pi z/2^n}=\sum_{n=0}^\infty (-1)^n \frac{c_n}{(2n)!} (2\pi z)^{2n}.
+\widehat\RvachevUp(z)=\prod_{n=0}^\infty \frac{\sin(\pi z/2^n)}{\pi z/2^n}=\sum_{n=0}^\infty (-1)^n \frac{c_n}{(2n)!} (2\pi z)^{2n}.
 \end{equation}
 These coefficients $c_n$ are very important for the study of the Fabius function.
 They are given by the integrals \cite{MR666839}*{eq.~(34)}
 \begin{equation}\label{D:cn}
-c_n=\int_\R t^{2n}\up(t)\,dt,
+c_n=\int_\RealNumbers t^{2n}\RvachevUp(t)\,dt,
 \end{equation}
 and satisfy the recurrence \cite{MR666839}*{eq.~(7)}
 \begin{equation}\label{E:cr}
 (2n+1)2^{2n}c_n=\sum_{k=0}^{n}\binom{2n+1}{2k}c_k.
 \end{equation}
 
-The next Proposition is contained in \cite{MR666839} but is a little 
+The next Proposition is contained in \cite{MR666839} but is a little
 cryptic, so it is  expanded here.
 \begin{prop}\label{PD:F}
 The numbers $c_n$ satisfy the recurrence
@@ -304,9 +301,9 @@ where $F_n$ are natural numbers.
 \end{prop}
 
 \begin{proof}
-The last term in the sum of \eqref{E:cr} is equal to $(2n+1)c_n$. We obtain 
-\eqref{E:cr2} from \eqref{E:cr} by adding $-(2n+1)c_n$ to both sides. 
-We have $c_0=\widehat\up(0)$ and this is equal to $1$.  Then the recurrence 
+The last term in the sum of \eqref{E:cr} is equal to $(2n+1)c_n$. We obtain
+\eqref{E:cr2} from \eqref{E:cr} by adding $-(2n+1)c_n$ to both sides.
+We have $c_0=\widehat\RvachevUp(0)$ and this is equal to $1$.  Then the recurrence
 can be used to compute the numbers:
 
 \[1,\nn\frac{1}{9},\nn\frac{19}{675},\nn\frac{583}{59\,535},
@@ -319,7 +316,7 @@ Equation \eqref{E:cf} follows from the definition
 F_n:= c_n(2n+1)!!\,\prod_{\nu=1}^n (2^{2\nu}-1).
 \end{equation}
 It remains to show that the numbers $F_n$ are natural.
-We understand that an empty product is equal to $1$, so that $F_0=1$. For 
+We understand that an empty product is equal to $1$, so that $F_0=1$. For
 $n\ge1$  substituting \eqref{E:cf} in the recurrence \eqref{E:cr2} yields, for $n\ge1$,
 \[\frac{F_n}{(2n-1)!!}\prod_{\nu=1}^{n-1}(2^{2\nu}-1)^{-1}=
 \sum_{k=0}^{n-1}\binom{2n+1}{2k}\frac{F_k}{(2k+1)!!}\prod_{\nu=1}^{k}(2^{2\nu}-1)^{-1},
@@ -329,29 +326,29 @@ so that
 F_n=\sum_{k=0}^{n-1}F_k\binom{2n+1}{2k}\frac{(2n-1)!!}{(2k+1)!!}
 \prod_{\nu=k+1}^{n-1}(2^{2\nu}-1),\qquad n\ge1.
 \end{equation}
-This expression for $F_n$ shows by induction  that all the $F_n$ are natural numbers. 
+This expression for $F_n$ shows by induction  that all the $F_n$ are natural numbers.
 The first $F_n$'s are
 \[1,\ 1,\  19,\  2\,915,\  2\,788\,989,\  14\,754\,820\,185,\  402\,830\,065\,455\,939, \
 54\,259\,734\,183\,964\,303\,995,\dots\]
 \end{proof}
 
 \subsection{Relation to  values of the Fabius function.}
-Notice that $F(2^{-n})=\up(1-2^{-n})$. 
-In \cite{MR666839}*{Theorem 6} it is shown that 
+Notice that $F(2^{-n})=\RvachevUp(1-2^{-n})$.
+In \cite{MR666839}*{Theorem 6} it is shown that
 \begin{equation}
-n\int_0^1x^{n-1}\up(x)\,dx=n!\,2^{\binom{n}{2}}\up(1-2^{-n}).
+n\int_0^1x^{n-1}\RvachevUp(x)\,dx=n!\,2^{\binom{n}{2}}\RvachevUp(1-2^{-n}).
 \end{equation}
-Since $\up(x)$ is an even function, it follows that 
+Since $\RvachevUp(x)$ is an even function, it follows that
 \begin{equation}
-\frac{c_n}{2}=\int_0^1x^{2n}\up(x)\,dx=(2n)!\,2^{\binom{2n+1}{2}}
-\up(1-2^{-2n-1}).
+\frac{c_n}{2}=\int_0^1x^{2n}\RvachevUp(x)\,dx=(2n)!\,2^{\binom{2n+1}{2}}
+\RvachevUp(1-2^{-2n-1}).
 \end{equation}
 Therefore, as noticed in \cite{MR666839} we have
 \begin{equation}\label{E:35}
-F(2^{-2n-1})=\up(1-2^{-2n-1})=\frac{2^{-\binom{2n+1}{2}}}{2 (2n)!}\frac{F_n}{(2n+1)(2n-1)\cdots1}
+F(2^{-2n-1})=\RvachevUp(1-2^{-2n-1})=\frac{2^{-\binom{2n+1}{2}}}{2 (2n)!}\frac{F_n}{(2n+1)(2n-1)\cdots1}
 \prod_{k=1}^n(2^{2k}-1)^{-1}.
 \end{equation}
-The values of $F(2^{-n})=\up(1-2^{-n})$ depend of another interesting sequence of 
+The values of $F(2^{-n})=\RvachevUp(1-2^{-n})$ depend of another interesting sequence of
 rational numbers.
 
 \subsection{The sequence of rational  numbers $d_n$.}
@@ -360,7 +357,7 @@ as the coefficients of the power series
 \begin{equation}\label{E:dexpan}
 f(x)=\sum_{n=0}^\infty \frac{d_n}{n!}x^n
 \end{equation}
-satisfying 
+satisfying
 \begin{equation}\label{E:deff}
 f(2x)=\frac{e^x-1}{x}f(x).
 \end{equation}
@@ -368,13 +365,13 @@ So these numbers are defined also by the recurrence \cite{MR666839}*{eq.~(40)}
 \begin{equation}\label{E:d-recur}
 d_0=1,\quad (n+1)(2^n-1)d_n=\sum_{k=0}^{n-1}\binom{n+1}{k}d_k.
 \end{equation}
-The $d_n$ are connected with $\up(t)$ in  \cite{MR666839}*{eq.~(36)}.  
+The $d_n$ are connected with $\RvachevUp(t)$ in  \cite{MR666839}*{eq.~(36)}.
 It is shown there that the function
 \begin{equation}\label{E:gooddef}
-f(x):=1+x\int_0^1\up(t)e^{xt}\,dt=e^{\frac{x}{2}}\widehat\up
+f(x):=1+x\int_0^1\RvachevUp(t)e^{xt}\,dt=e^{\frac{x}{2}}\widehat\RvachevUp
 \Bigl(\frac{ix}{4\pi}\Bigr)
 \end{equation}
-satisfies \eqref{E:deff}. We give the simple proof that was omitted in 
+satisfies \eqref{E:deff}. We give the simple proof that was omitted in
 \cite{MR666839}.
 
 \begin{prop}
@@ -382,26 +379,26 @@ Let $f$ be defined as in \eqref{E:gooddef}, then we have \eqref{E:deff}.
 \end{prop}
 
 \begin{proof}
-The functional equation \eqref{E:main} of $\up(t)$ implies for the Fourier transform that 
-\[\widehat\up(z)=\frac{\sin\pi z}{\pi z}\widehat\up(z/2).\]
+The functional equation \eqref{E:main} of $\RvachevUp(t)$ implies for the Fourier transform that
+\[\widehat\RvachevUp(z)=\frac{\sin\pi z}{\pi z}\widehat\RvachevUp(z/2).\]
 Therefore
-\[f(2x)=e^{x}\widehat\up
-\Bigl(\frac{ix}{2\pi}\Bigr)=e^{x}\frac{\sin(ix/2)}{ix/2}\widehat\up
+\[f(2x)=e^{x}\widehat\RvachevUp
+\Bigl(\frac{ix}{2\pi}\Bigr)=e^{x}\frac{\sin(ix/2)}{ix/2}\widehat\RvachevUp
 \Bigl(\frac{ix}{4\pi}\Bigr)=e^{\frac{x}{2}}\frac{e^{-x/2}-e^{x/2}}{2i(ix/2)}f(x)
 =\frac{e^x-1}{x}f(x).\]
 \end{proof}
 
 By \eqref{E:gooddef} we have
-\[f(x)=1+x\sum_{n=0}^\infty\frac{x^n}{n!}\int_0^1 t^n\up(t)\,dt.\]
+\[f(x)=1+x\sum_{n=0}^\infty\frac{x^n}{n!}\int_0^1 t^n\RvachevUp(t)\,dt.\]
 So, equating the coefficients of equal powers with the expansion \eqref{E:dexpan}
-we obtain 
+we obtain
 \cite{MR666839}*{eq.~(42)}
 \begin{equation}\label{E:dnint}
-d_n=n\int_0^1t^{n-1}\up(t)\,dt.
+d_n=n\int_0^1t^{n-1}\RvachevUp(t)\,dt.
 \end{equation}
 Together with \cite{MR666839}*{eq.~(33)} this yields
 \begin{equation}\label{E:d-n}
-d_n=n!\,2^{\binom{n}{2}}\up(1-2^{-n})=n!\,2^{\binom{n}{2}}F(2^{-n}).
+d_n=n!\,2^{\binom{n}{2}}\RvachevUp(1-2^{-n})=n!\,2^{\binom{n}{2}}F(2^{-n}).
 \end{equation}
 The values of the $d_n$ can be computed easily applying the recurrence \eqref{E:d-recur}.
 The first terms are
@@ -417,26 +414,26 @@ d_n=\frac{1}{2^n}\sum_{k=0}^{\lfloor n/2\rfloor}\binom{n}{2k}c_k.
 \end{equation}
 \end{prop}
 \begin{proof}
-For $n=0$ we have $c_0=d_0=1$ and \eqref{E:dncn1} is trivial in this case. 
+For $n=0$ we have $c_0=d_0=1$ and \eqref{E:dncn1} is trivial in this case.
 For $n\ge1$ we have the following computation
 \begin{multline*}
-d_n=n\int_0^1 t^{n-1}\up(t)\,dt=\int_0^1\up(t)\,d(t^n)=\Bigl.
-t^n\up(t)\Bigr|_{t=0}^{t=1}-\int_0^1t^n\up'(t)\,dt\\
+d_n=n\int_0^1 t^{n-1}\RvachevUp(t)\,dt=\int_0^1\RvachevUp(t)\,d(t^n)=\Bigl.
+t^n\RvachevUp(t)\Bigr|_{t=0}^{t=1}-\int_0^1t^n\RvachevUp'(t)\,dt\\
 =
--\int_0^12t^n\bigl(\up(2t+1)-\up(2t-1)\bigr)\,dt=2\int_0^1 t^n\up(2t-1)\,dt
-=\int_{-1}^1\up(x)\Bigl(\frac{x+1}{2}\Bigr)^n\,dx\\
+-\int_0^12t^n\bigl(\RvachevUp(2t+1)-\RvachevUp(2t-1)\bigr)\,dt=2\int_0^1 t^n\RvachevUp(2t-1)\,dt
+=\int_{-1}^1\RvachevUp(x)\Bigl(\frac{x+1}{2}\Bigr)^n\,dx\\
 =
-\frac{1}{2^n}\sum_{k=0}^n\int_{-1}^1\binom{n}{k}\up(x)x^k\,dx=
-\frac{1}{2^n}\sum_{0\le h\le n/2}\binom{n}{2h}\int\up(x)x^{2h}\,dx\\=
+\frac{1}{2^n}\sum_{k=0}^n\int_{-1}^1\binom{n}{k}\RvachevUp(x)x^k\,dx=
+\frac{1}{2^n}\sum_{0\le h\le n/2}\binom{n}{2h}\int\RvachevUp(x)x^{2h}\,dx\\=
 \frac{1}{2^n}\sum_{0\le h\le n/2}\binom{n}{2h}c_h.
 \end{multline*}
 \end{proof}
 
-As in the case of the $c_n$, there is a sequence of natural numbers hiding in 
-$d_n$. 
+As in the case of the $c_n$, there is a sequence of natural numbers hiding in
+$d_n$.
 
 \begin{prop}
-There is a sequence of natural numbers $(G_n)$ such that 
+There is a sequence of natural numbers $(G_n)$ such that
 \begin{equation}\label{E:defG}
 d_n=\frac{G_n}{(n+1)!}\prod_{k=1}^n(2^k-1)^{-1}.
 \end{equation}
@@ -444,16 +441,16 @@ d_n=\frac{G_n}{(n+1)!}\prod_{k=1}^n(2^k-1)^{-1}.
 
 \begin{proof}
 For $n\ge0$ define $G_n$ by the equation \eqref{E:defG}. The recurrence \eqref{E:d-recur}
-then implies 
+then implies
 \[G_n=\sum_{k=0}^{n-1}G_k\binom{n+1}{k}\frac{n!}{(k+1)!}\prod_{j={k+1}}^{n-1}(2^j-1),\qquad n\ge1.\]
-By induction we obtain that all the $G_n$ are natural numbers. 
+By induction we obtain that all the $G_n$ are natural numbers.
 \end{proof}
-The first numbers $G_n$ starting from $n=0$ are 
+The first numbers $G_n$ starting from $n=0$ are
 \[1,\  1,\  5,\  84,\  4\,004,\   494\,760,\   150\,120\,600,\   107\,969\,547\,840,\   179\,605\,731\,622\,464, \dots\]
 By \eqref{E:d-n} we obtain the explicit value
 \begin{equation}\label{E:values}
-F(2^{-n})=\up(1-2^{-n})=\frac{2^{-\binom{n}{2}}G_n}{n!\,(n+1)!}\prod_{k=1}^{n}(2^k-1)^{-1},\qquad n\ge0.
-\end{equation} 
+F(2^{-n})=\RvachevUp(1-2^{-n})=\frac{2^{-\binom{n}{2}}G_n}{n!\,(n+1)!}\prod_{k=1}^{n}(2^k-1)^{-1},\qquad n\ge0.
+\end{equation}
 Equations \eqref{E:35} and \eqref{E:values} yields
 \begin{equation}
 \frac{G_{2n+1}}{2n+1}=2^n (n+1)! F_n\prod_{k=0}^n(2^{2k+1}-1),\qquad n\ge0.
@@ -468,7 +465,7 @@ So that $(2n+1)F_n\mid G_{2n+1}$.
 
 
 Recently Vladimir Reshetnikov posed a  question (\href{http://mathoverflow.net/questions/261649/a-conjecture-about-certain-values-of-the-fabius-function}{question 261649
-in MathOverflow}) about Fabius function. The results in \cite{MR666839} makes it easy 
+in MathOverflow}) about Fabius function. The results in \cite{MR666839} makes it easy
 to answer. Note that \cite{MR666839} has been translated to English
 and posted it in arXiv (\href{http://arxiv.org/abs/1702.05442}{English version arXiv:1702.05442}).
 We refer
@@ -487,12 +484,12 @@ It is true that all $R_n$ are natural numbers?
 The first  $R_n$ (starting from $n=1$) certainly are:
 \[1,\nn 5,\nn 15,\nn 1\,001,\nn 5\,985,\nn 2\,853\,675,\nn 26\,261\,235,\nn 72\,808\,620\,885,\nn 915\,304\,354\,965,\dots\]
 Applying some of the results in \cite{MR666839} we will show that in fact all $R_n$ are
-natural numbers. 
+natural numbers.
 
-In Section \ref{S:comput} we consider the problem of the computation of 
+In Section \ref{S:comput} we consider the problem of the computation of
 the exact values of the function $F(x)$
-at dyadic points. This will allows us to state another conjecture related to this 
-conjecture of Reshetnikov. 
+at dyadic points. This will allows us to state another conjecture related to this
+conjecture of Reshetnikov.
 
 
 
@@ -501,7 +498,7 @@ conjecture of Reshetnikov.
 \section{Answer to Reshetnikov's question.}
 
 
-Reshetnikov's numbers can be computed in terms of the $d_n$. This  will be 
+Reshetnikov's numbers can be computed in terms of the $d_n$. This  will be
 essential in the solution of Reshetnikov's question.
 
 \begin{prop}\label{P:Rndn}
@@ -512,25 +509,25 @@ R_n=2d_n (2n-1)!! \prod_{k=1}^{\lfloor n/2\rfloor}(2^{2k}-1).
 \end{prop}
 
 \begin{proof}
-In the definition \eqref{D:R} of the $R_n$ substitute the value of 
+In the definition \eqref{D:R} of the $R_n$ substitute the value of
 $F(2^{-n})$ obtained from \eqref{E:d-n}.
 \end{proof}
 
 
 
-First we consider the odd case. 
+First we consider the odd case.
 \begin{thm}\label{T:6}
 For all $n\ge0$ the number $R_{2n+1}$ is an integer multiple of $F_n$.
 \end{thm}
 \begin{proof}
-Since $\up$ is an even function, we have by  \eqref{E:dnint}
-\[d_{2n+1}=(2n+1)\int_0^1t^{2n}\up(t)\,dt=\frac{2n+1}{2}c_n.\]
+Since $\RvachevUp$ is an even function, we have by  \eqref{E:dnint}
+\[d_{2n+1}=(2n+1)\int_0^1t^{2n}\RvachevUp(t)\,dt=\frac{2n+1}{2}c_n.\]
 Therefore by \eqref{E:Rndn}
 \[R_{2n+1}=2d_{2n+1} (4n+1)!! \prod_{k=1}^{n}(2^{2k}-1)=(2n+1)c_n(4n+1)!! \prod_{k=1}^{n}(2^{2k}-1).\]
 By \eqref{E:cf}
 \[R_{2n+1}=\frac{F_n}{(2n-1)!!}\prod_{\nu=1}^n(2^{2\nu}-1)^{-1}
 (4n+1)!! \prod_{k=1}^{n}(2^{2k}-1).\]
-Simplifying 
+Simplifying
 \begin{equation}\label{E:RF}
 R_{2n+1}=F_n\frac{(4n+1)!!}{(2n-1)!!}.
 \end{equation}
@@ -563,74 +560,74 @@ For all $n$ the number $R_n$ is a natural number.
 
 \begin{proof}
 By Theorem \ref{T:6} it remains only to prove that $R_{2n}$ is a natural number.
-For a rational number $r$ let $\nu_2(r)$ be the exponent of $2$ 
+For a rational number $r$ let $\nu_2(r)$ be the exponent of $2$
 in the prime decomposition
-of $r$. By Proposition \ref{P:7},  $R_{2n}$ is a 
+of $r$. By Proposition \ref{P:7},  $R_{2n}$ is a
 natural number if and only if $\nu_2(R_{2n})\ge0$. By \eqref{E:Rndn} we have
-$\nu_2(R_{n})=\nu_2(2d_{n})$.  We will show by induction that 
+$\nu_2(R_{n})=\nu_2(2d_{n})$.  We will show by induction that
 $\nu_2(2d_n)\ge0$ and this will prove the Theorem.
 
-Since the numbers $F_n$ are natural, \eqref{E:RF} implies that 
-$\nu_2(2d_{2n+1})=\nu_2(R_{2n+1})\ge0$. 
+Since the numbers $F_n$ are natural, \eqref{E:RF} implies that
+$\nu_2(2d_{2n+1})=\nu_2(R_{2n+1})\ge0$.
 We have $\nu_2(2d_0)=\nu_2(2)=1\ge0$. For any other even number we use induction. By
 \eqref{E:d-recur} we have for $n\ge1$
 \begin{equation}\label{E:d2n=}
 (2n+1)(2^{2n}-1)2d_{2n}=\sum_{k=0}^{2n-1}\binom{2n+1}{k}2d_k.
 \end{equation}
-Hence 
+Hence
 \[\nu_2(2d_{2n})=\nu_2\bigl((2n+1)(2^{2n}-1)2d_{2n}\bigr)=
 \nu_2\Bigl(\sum_{k=0}^{2n-1}\binom{2n+1}{k}2d_k\Bigr),\qquad n\ge1.\]
 By induction hypothesis $\nu_2(2d_k)\ge0$ for $0\le k\le 2n-1$. It follows that $\nu_2(2d_{2n})\ge0$
-for all $n\ge1$. 
+for all $n\ge1$.
 \end{proof}
 
-\section{Computation of $\up(m/2^n)$.}\label{S:comput}
+\section{Computation of $\RvachevUp(m/2^n)$.}\label{S:comput}
 
 
-At dyadic points $t=m/2^n$  the function takes rational values. This was proved 
+At dyadic points $t=m/2^n$  the function takes rational values. This was proved
 in \cite{MR666839}*{Th.~9}, where a procedure to compute these values was given.
-In \cite{MR666839} it was desired to express $\up(q/2^n)$ in terms of $\up(1-2^{-k-1})$. 
-This was achieved by substituting $c_k$ in terms of $\up(1-2^{-k-1})$. This is 
-correct, but for computations it is preferable not to make this last substitution. 
+In \cite{MR666839} it was desired to express $\RvachevUp(q/2^n)$ in terms of $\RvachevUp(1-2^{-k-1})$.
+This was achieved by substituting $c_k$ in terms of $\RvachevUp(1-2^{-k-1})$. This is
+correct, but for computations it is preferable not to make this last substitution.
 In this way the formula in \cite{MR666839}*{Thm.~7} can be written
-\[\up(q2^{-n})=\frac{2^{-\binom{n+1}{2}}}{n!}\sum_{h=0}^{q+2^n-1}(-1)^{w(h)}
+\[\RvachevUp(q2^{-n})=\frac{2^{-\binom{n+1}{2}}}{n!}\sum_{h=0}^{q+2^n-1}(-1)^{w(h)}
 \sum_{k=0}^{\lfloor n/2\rfloor}\binom{n}{2k}\bigl(2(q-h)+2^{n+1}-1\bigr)^{n-2k}c_k.\]
-This is valid for $-2^{-n}\le q\le 2^n$. 
+This is valid for $-2^{-n}\le q\le 2^n$.
 The sum in $h$ has few terms for $q$ near $-2^{n}$.
-Therefore since $\up(1-x)=\up(-1+x)$ we obtain, with $q=a-2^{n}$,
+Therefore since $\RvachevUp(1-x)=\RvachevUp(-1+x)$ we obtain, with $q=a-2^{n}$,
 \begin{equation}\label{E:explicit}
-F(\tfrac{a}{2^n})=\up(1-\tfrac{a}{2^n})=
+F(\tfrac{a}{2^n})=\RvachevUp(1-\tfrac{a}{2^n})=
 \frac{2^{-\binom{n+1}{2}}}{n!}\sum_{h=0}^{a-1}(-1)^{w(h)}
 \sum_{k=0}^{\lfloor n/2\rfloor}\binom{n}{2k}(2a-2h-1)^{n-2k}c_k.
 \end{equation}
-The numbers $c_k$ can be computed with the recurrence \eqref{E:cr2}. 
-This  equation, together with $\up(t)+\up(1-t)=1$ for $0\le t\le1$,  allows one to easily 
-compute the values at dyadic points. 
+The numbers $c_k$ can be computed with the recurrence \eqref{E:cr2}.
+This  equation, together with $\RvachevUp(t)+\RvachevUp(1-t)=1$ for $0\le t\le1$,  allows one to easily
+compute the values at dyadic points.
 Another way has been proposed by Haugland recently \cite{H}.
 Notice also that our formula can be written as follows
 \begin{equation}\label{E:explicit2}
-\up(1-\tfrac{a}{2^n})=
+\RvachevUp(1-\tfrac{a}{2^n})=
 \frac{2^{-\binom{n+1}{2}}}{n!}
 \sum_{k=0}^{\lfloor n/2\rfloor}\binom{n}{2k}c_k
 \sum_{h=0}^{a-1}(-1)^{w(h)}
 (2a-2h-1)^{n-2k}.
 \end{equation}
 
-Equation \eqref{E:explicit2} show that the values at dyadic points of $\up(x)$, and therefore also those  
-of $F(x)$, are rational numbers. In principle it allow the explicit computation of $\up(a/2^n)$ 
+Equation \eqref{E:explicit2} show that the values at dyadic points of $\RvachevUp(x)$, and therefore also those
+of $F(x)$, are rational numbers. In principle it allow the explicit computation of $\RvachevUp(a/2^n)$
 and therefore of $F(a/2^n)$ for all integers $a$. Nevertheless there is a better way to compute the function.
-It is thought that  this better method is due to V. A. Rvach{\"e}v,  
-brought to attention by V. Reshetnikov. He posted a solution to a 
-\href{http://mathematica.stackexchange.com/questions/120331/how-do-i-numerically-evaluate-and-plot-the-fabius-function}{question of Pierrot Bolnez} about how to compute $F(x)$. 
-Reshetnikov's answer consists of a program 
-in Mathematica to compute the function. The program has been reverse engineered, 
-and proved the 
-relevant result.  At other point Reshetnikov cites Rvach{\"e}v and  says that he thinks it is not 
+It is thought that  this better method is due to V. A. Rvach{\"e}v,
+brought to attention by V. Reshetnikov. He posted a solution to a
+\href{http://mathematica.stackexchange.com/questions/120331/how-do-i-numerically-evaluate-and-plot-the-fabius-function}{question of Pierrot Bolnez} about how to compute $F(x)$.
+Reshetnikov's answer consists of a program
+in Mathematica to compute the function. The program has been reverse engineered,
+and proved the
+relevant result.  At other point Reshetnikov cites Rvach{\"e}v and  says that he thinks it is not
 translated to English.  So a proof of the formula on which the method is based can be useful.
 
 We need a Lemma.
 \begin{lem}\label{L:taylor}
-Let $x>0$ be a real number and let  $k$ be the unique integer such that $2^k\le x<2^{k+1}$. Then for any 
+Let $x>0$ be a real number and let  $k$ be the unique integer such that $2^k\le x<2^{k+1}$. Then for any
 non negative integer $n$ we have
 \begin{equation}
 \int_{2^k}^x(x-t)^nF^{(n+1)}(t)\,dt=-\int_0^{y}(y-t)^n F^{(n+1)}(t)\,dt,\qquad \text{with}\quad y=x-2^k.
@@ -644,10 +641,10 @@ Letting $a=2^{-k}y$, we have $0\le a<1$  and we obtain
 \[\int_{2^k}^x(x-t)^nF^{(n+1)}(t)\,dt=2^{k(n+1)}\int_{0}^{a}(a-u)^nF^{(n+1)}(2^k(1+u))\,du.\]
 Differentiating $F^{(k)}(x)=2^{\binom{k+1}{2}}F(2^k t)$ repeatedly we obtain
 \[F^{(k+n+1)}(t)=2^{\binom{k+1}{2}} 2^{k(n+1)}F^{(n+1)}(2^k t).\]
-It follows that 
+It follows that
 \[2^{k(n+1)}\int_{0}^{a}(a-u)^nF^{(n+1)}(2^k(1+u))\,du=2^{-\binom{k+1}{2}}\int_{0}^{a}(a-u)^nF^{(k+n+1)}(u+1)\,du.\]
-When $0<u<a$ we have $1<u+1<2$. For $0<x<2$ we have by definition $F(x)=\up(x-1)$. 
-Therefore $F'(x)=2\up(2x-1)-2\up(2x-3)$. This implies for $0<u<1$ that $F'(u)=2\up(2u-1)$ and $F'(u+1)=-2\up(2u-1)=-F'(u)$
+When $0<u<a$ we have $1<u+1<2$. For $0<x<2$ we have by definition $F(x)=\RvachevUp(x-1)$.
+Therefore $F'(x)=2\RvachevUp(2x-1)-2\RvachevUp(2x-3)$. This implies for $0<u<1$ that $F'(u)=2\RvachevUp(2u-1)$ and $F'(u+1)=-2\RvachevUp(2u-1)=-F'(u)$
 Hence
 \[2^{-\binom{k+1}{2}}\int_{0}^{a}(a-u)^nF^{(k+n+1)}(u+1)\,du=-2^{-\binom{k+1}{2}}\int_{0}^{a}(a-u)^nF^{(k+n+1)}(u)\,du\]
 It only remains to reverse our steps.  We have
@@ -663,55 +660,55 @@ It only remains to reverse our steps.  We have
 
 \begin{prop}\label{P:Res}
 Let $x>0$ be a real number. Let  $n$ be the unique integer  such that $2^{-n}\le x< 2^{-n+1}$ and put $y=x-2^{-n}$.
-Then we have 
+Then we have
 \begin{equation}
 F(x)=-F(y)+\sum_{0\le k\le n} 2^{\binom{k+1}{2}-\binom{n-k}{2}}\frac{d_{n-k}}{(n-k)!}\frac{y^k}{k!},
 \end{equation}
-where the sum is $0$ when $n<0$. 
+where the sum is $0$ when $n<0$.
 \end{prop}
 
 \begin{proof}
-We use Taylor's Theorem with integral rest 
+We use Taylor's Theorem with integral rest
 \[F(x)=F(y+2^{-n})=\sum_{0\le k\le N}\frac{F^{(k)}(2^{-n})}{k!}y^k+\int_{2^{-n}}^x\frac{(x-t)^N}{N!} F^{(N+1)}(t)\,dt.\]
 
-When $n<0$, the number $2^{-n}$ is an even natural number. For $k\ge0$ the derivative $F^{(k)}(2^{-n})=0$. So that for 
-any $N\ge0$, 
+When $n<0$, the number $2^{-n}$ is an even natural number. For $k\ge0$ the derivative $F^{(k)}(2^{-n})=0$. So that for
+any $N\ge0$,
 \[F(x)=\int_{2^{-n}}^x\frac{(x-t)^N}{N!} F^{(N+1)}(t)\,dt\]
 By Lemma \eqref{L:taylor},
 \[\int_{2^{-n}}^x\frac{(x-t)^N}{N!} F^{(N+1)}(t)\,dt=-\int_{0}^y\frac{(x-t)^N}{N!} F^{(N+1)}(t)\,dt.\]
-Again, by Taylor's Theorem, applied at the point $0$ where all derivatives are also $=0$,  
-this is equal to $-F(y)$ as we wanted to prove. 
+Again, by Taylor's Theorem, applied at the point $0$ where all derivatives are also $=0$,
+this is equal to $-F(y)$ as we wanted to prove.
 
 For $n\ge0$ we apply again Taylor's Theorem with $N=n$.  In this case
 \[F(x)=F(y+2^{-n})=\sum_{0\le k\le n}\frac{F^{(k)}(2^{-n})}{k!}y^k+\int_{2^{-n}}^x\frac{(x-t)^n}{n!} F^{(n+1)}(t)\,dt.\]
-Lemma \eqref{L:taylor} gives us 
+Lemma \eqref{L:taylor} gives us
 \[\int_{2^{-n}}^x\frac{(x-t)^n}{n!} F^{(n+1)}(t)\,dt=-\int_0^y \frac{(y-t)^n}{n!} F^{(n+1)}(t)\,dt=-F(y).\]
-The last equality using Taylor's Theorem at the point $t=0$ where all derivatives of $F$ are equal to $0$. 
+The last equality using Taylor's Theorem at the point $t=0$ where all derivatives of $F$ are equal to $0$.
 
 To finish the proof notice that by \eqref{E:FabiusD} and \eqref{E:d-n} we have for $0\le k\le n$,
 \[F^{(k)}(2^{-n})=2^{\binom{k+1}{2}}F(2^k 2^{-n})=2^{\binom{k+1}{2}}\frac{d_{n-k}}{(n-k)! 2^{\binom{n-k}{2}}}.\]
 \end{proof}
 
 \begin{rem}
-Notice that  Proposition \ref{P:Res} reduces the computation of $F(x)$  to that of $F(y)$. 
-If $x$ is dyadic a repeated use ends in $F(0)$. The number of steps being merely the number of $1$ 
-in the  dyadic representation of $x$.  If $x$ is not dyadic a finite number of steps reduce the computation to that 
-of  $F(y)$ for some $y$ small enough so that  $F(y)$ is less than the absolute error requested. 
+Notice that  Proposition \ref{P:Res} reduces the computation of $F(x)$  to that of $F(y)$.
+If $x$ is dyadic a repeated use ends in $F(0)$. The number of steps being merely the number of $1$
+in the  dyadic representation of $x$.  If $x$ is not dyadic a finite number of steps reduce the computation to that
+of  $F(y)$ for some $y$ small enough so that  $F(y)$ is less than the absolute error requested.
 This procedure is implemented by Reshetnikov in his answer to \href{http://mathematica.stackexchange.com/questions/120331/how-do-i-numerically-evaluate-and-plot-the-fabius-function}{Pierrot Bolnez question in Mathematica StackExchange}.
 \end{rem}
 
-\section{The least common denominator of $\up(a/2^n)$.}
+\section{The least common denominator of $\RvachevUp(a/2^n)$.}
 
-Reshetnikov's conjecture tries to determine the denominator of the dyadic number $F(2^{-n})$.  It is more natural to 
+Reshetnikov's conjecture tries to determine the denominator of the dyadic number $F(2^{-n})$.  It is more natural to
 consider the common denominator $D_n$ of all numbers $F(a/2^n)$ where $a$ is an odd number. This is a finite number
-because we only have to consider the case of $a=2k+1$ for $k=0$, $1$, \dots, $2^{n-1}-1$.  
+because we only have to consider the case of $a=2k+1$ for $k=0$, $1$, \dots, $2^{n-1}-1$.
 
 Therefore we define as follow.
-\begin{defn} Let $D_n$ be le least common multiple of the denominators of the 
-fractions $\up(\frac{2k+1}{2^n})$ with $2^{-n}<2k+1\le2^n$. 
+\begin{defn} Let $D_n$ be le least common multiple of the denominators of the
+fractions $\RvachevUp(\frac{2k+1}{2^n})$ with $2^{-n}<2k+1\le2^n$.
 \end{defn}
 
-The first $D_n$ starting from $D_0=1$ are 
+The first $D_n$ starting from $D_0=1$ are
 \begin{gather*}
 1,\nn 2,\nn 72,\nn 288,\nn 2\,073\,600,\nn 33\,177\,600,\nn 2\,809\,213\,747\,200,\nn 179\,789\,679\,820\,800,\\
 704\,200\,217\,922\,109\,440\,000,\nn 180\,275\,255\,788\,060\,016\,640\,000,\\
@@ -727,42 +724,42 @@ The first $D_n$ starting from $D_0=1$ are
 \begin{thm}\label{T:9}
 For any natural number $n\ge1$ and any integer $-2^n< a< 2^n$ the number
 \begin{equation}\label{Rekete}
-\up(\tfrac{a}{2^n})\;n!\;2^{\binom{n+1}{2}}(2\lfloor n/2\rfloor+1)!! \prod_{k=1}^{\lfloor n/2\rfloor}(2^{2k}-1)
+\RvachevUp(\tfrac{a}{2^n})\;n!\;2^{\binom{n+1}{2}}(2\lfloor n/2\rfloor+1)!! \prod_{k=1}^{\lfloor n/2\rfloor}(2^{2k}-1)
 \end{equation}
-is natural. 
+is natural.
 
-Equivalently 
+Equivalently
 \[D_n\text{ divides the number } n!\;2^{\binom{n+1}{2}}(2\lfloor n/2\rfloor+1)!! \prod_{k=1}^{\lfloor n/2\rfloor}(2^{2k}-1).\]
 
 
 \end{thm}
 
 \begin{proof}
-By \eqref{E:explicit} we know that 
-\[\up(\tfrac{a}{2^n})\;n!\;2^{\binom{n+1}{2}}\]
-is a linear combination with integer coefficients of the rational numbers $c_k$ with 
-$0\le k\le n/2$. We have $c_0=1$ and, for $n\ge1$, by \eqref{E:cf} the numbers 
+By \eqref{E:explicit} we know that
+\[\RvachevUp(\tfrac{a}{2^n})\;n!\;2^{\binom{n+1}{2}}\]
+is a linear combination with integer coefficients of the rational numbers $c_k$ with
+$0\le k\le n/2$. We have $c_0=1$ and, for $n\ge1$, by \eqref{E:cf} the numbers
 \[F_k = c_k(2k+1)!! \prod_{r=1}^{k}(2^{2r}-1)\]
 are natural. Therefore, if $m=\lfloor n/2\rfloor$ then all the numbers
 \[c_k (2m+1)!! \prod_{r=1}^{m}(2^{2r}-1), \qquad 0\le k\le n/2,\]
-are natural.  It follows that the number in \eqref{Rekete} is an integer. Since 
+are natural.  It follows that the number in \eqref{Rekete} is an integer. Since
 it is also positive it is a natural number.
 \end{proof}
 \begin{rem}
 Theorem \ref{T:9} applies to any $a$ and not only for $2^n-1$ as in Reshetnikov's conjecture.
-The power of $2$ is better in Reshetnikov's conjecture than in Theorem \ref{T:9}, but 
-for other primes  Theorem \ref{T:9} is better than Reshetnikov's conjecture.  It is thought that 
-the power of $2$ can be improved in Theorem \ref{T:9}. 
+The power of $2$ is better in Reshetnikov's conjecture than in Theorem \ref{T:9}, but
+for other primes  Theorem \ref{T:9} is better than Reshetnikov's conjecture.  It is thought that
+the power of $2$ can be improved in Theorem \ref{T:9}.
 \end{rem}
 
 
 \begin{prop}
-For any natural number $n$ the number $D_n$ is a multiple of the denominator of 
+For any natural number $n$ the number $D_n$ is a multiple of the denominator of
 $d_n/(2^{\binom{n}{2}}\,n!)$.
 \end{prop}
 \begin{proof}
-This follows directly from equation \eqref{E:d-n} and the definition of 
-$D_n$, since $D_n$ is a multiple of the denominator of $\up(1-2^{-n})$.
+This follows directly from equation \eqref{E:d-n} and the definition of
+$D_n$, since $D_n$ is a multiple of the denominator of $\RvachevUp(1-2^{-n})$.
 \end{proof}
 
 The quotients $D_n/\den(d_n/(2^{\binom{n}{2}}\,n!))$ for $1\le n\le 17$ are
@@ -773,7 +770,7 @@ The following appear to be true:
 \begin{itemize}
 \item[(a)]
 The quotient $A_n=2^{-\binom{n}{2}}D_n$ satisfies $A_{2n}=A_{2n+1}$ for $n\ge1$.
-\item[(b)] Let $K_{n}=A_{2n-1}$ for $n\ge1$, so that 
+\item[(b)] Let $K_{n}=A_{2n-1}$ for $n\ge1$, so that
 by (a) we have $K_1=A_1$, and for $n\ge2$
 \[K_n=2^{-\binom{2n-1}{2}}D_{2n-1}=2^{-\binom{2n-2}{2}}D_{2n-2}.\]
 Then $2\times(2n-1)!$ divides $K_n$.
@@ -796,10 +793,10 @@ If these conjectures are true we obtain for $n\ge1$
 In this Section we show that the numerator and denominator of $2d_n$ are odd numbers.
 
 
-We have noticed in the proof 
+We have noticed in the proof
 of Theorem \ref{T:8} that $\nu_2(2d_n)=\nu_2(R_n)$. So that by equation
 \eqref{E:RF} it follows that $\nu_2(2d_{2n+1})=\nu_2(F_n)$. We will show
-now that the numbers $F_n$ are odd.  
+now that the numbers $F_n$ are odd.
 This will prove our result for $2d_n$ when $n$ is an odd number.
 For this proof we will use Lucas's Theorem \cite{MR0023257}.
 
@@ -813,65 +810,65 @@ in base $p$.  Then we have the congruence
 
 From Lucas's Theorem we get the following application:
 \begin{prop}\label{P:afterLucas}
-(a) For $n\ge1$ the cardinal of odd combinatory numbers $\binom{2n+1}{2k}$ 
+(a) For $n\ge1$ the cardinal of odd combinatory numbers $\binom{2n+1}{2k}$
 with $0\le k\le n$ is exactly $2^{w(n)}$.
 
-(b) For $n\ge 1$ the number of odd combinatory numbers $\binom{2n+1}{k}$ 
+(b) For $n\ge 1$ the number of odd combinatory numbers $\binom{2n+1}{k}$
 with $0\le k\le 2n+1$ is  $2^{w(n)+1}$.
 
 \end{prop}
 
 \begin{proof}
-Let the binary expansion of $n$ be $\varepsilon_r\varepsilon_{r-1}\dots\varepsilon_0$, that is, 
+Let the binary expansion of $n$ be $\varepsilon_r\varepsilon_{r-1}\dots\varepsilon_0$, that is,
 \[n=\varepsilon_r2^r+\varepsilon2^{r-1}+\cdots \varepsilon_0,\quad \text{with }
 \varepsilon_j\in\{0,1\}.\]
 The expansion of $2n+1$ is $\varepsilon_r\varepsilon_{r-1}\dots\varepsilon_01$.
-If $\binom{2n+1}{2k}$ is odd $k\le n$, then $k\le 2^{r+1}$. Hence its 
+If $\binom{2n+1}{2k}$ is odd $k\le n$, then $k\le 2^{r+1}$. Hence its
 binary expansion is
 of the form $k=\delta_r\cdots \delta_0$. Therefore Lucas's Theorem says that
 \[\binom{2n+1}{2k}\equiv \binom{\varepsilon_r}{\delta_r}\cdots
 \binom{\varepsilon_0}{\delta_0}\binom{1}{0}\pmod{2}\]
 Here each factor $\binom{0}{1}=0$ and each factor $\binom{1}{\delta}=1$ for
 any value of $\delta$.  So $\binom{2n+1}{2k}\equiv1$ is equivalent to saying that
-$ \delta_j=0$ when $\varepsilon_j=0$. Therefore the number of odd combinatory 
-numbers is $2^{m}$, where $m$ is the number of digits equal to $1$ in 
-the expansion of $n$. But 
-this is to say $m=w(n)$. 
+$ \delta_j=0$ when $\varepsilon_j=0$. Therefore the number of odd combinatory
+numbers is $2^{m}$, where $m$ is the number of digits equal to $1$ in
+the expansion of $n$. But
+this is to say $m=w(n)$.
 
 The second assertion can be proved in the same way.
 \end{proof}
 
 \begin{prop}
-All the numbers $F_n$  are odd. 
+All the numbers $F_n$  are odd.
 \end{prop}
 
 \begin{proof}
 We have $F_0=F_1=1$. We proceed by induction assuming that we have proved that
-all $F_k$ are odd numbers for $0\le k\le n-1$. 
-Equation \eqref{Rec:F} gives $F_n$ as a sum of terms. Each term is a product 
-of an odd number for a combinatory number $\binom{2n+1}{2k}$, with $k$ running on 
-$0\le k\le n-1$. The missing combinatory number 
-(that is, for $k=n$ is $\binom{2n+1}{2n}=2n+1$) is an 
-odd number. So, by Proposition \ref{P:afterLucas}, the term adding to $F_n$ are even except for $2^{w(n)}-1$ of them. Since 
+all $F_k$ are odd numbers for $0\le k\le n-1$.
+Equation \eqref{Rec:F} gives $F_n$ as a sum of terms. Each term is a product
+of an odd number for a combinatory number $\binom{2n+1}{2k}$, with $k$ running on
+$0\le k\le n-1$. The missing combinatory number
+(that is, for $k=n$ is $\binom{2n+1}{2n}=2n+1$) is an
+odd number. So, by Proposition \ref{P:afterLucas}, the term adding to $F_n$ are even except for $2^{w(n)}-1$ of them. Since
 $w(n)\ge1$ this implies that $F_n$ is odd.
 \end{proof}
 
 \begin{thm}
-For all $n\ge1$ we have $\nu_2(2d_n)=0$, that is, the rational number $2d_n$ is the 
+For all $n\ge1$ we have $\nu_2(2d_n)=0$, that is, the rational number $2d_n$ is the
 quotient of two odd numbers.
 \end{thm}
 
 \begin{proof}
 We have seen that $F_n$ is an odd number and that this implies $\nu_2(2d_{2n+1})=0$.
 So we only need to show this for $2d_{2n}$ and $n\ge1$ (notice that $2d_0=2$, so that
-$\nu_2(2d_0)=1$). 
+$\nu_2(2d_0)=1$).
 
 We have shown (Theorem \ref{T:8}) that $R_n$ are integers. By Proposition \ref{P:Rndn}
 there is an odd number
 \[N_n=(2n-1)!!\prod_{k=1}^{\lfloor n/2\rfloor}(2^{2k}-1),\]
 such that $2d_n N_n=R_n$ is an integer. It is easy to see that for $k\le n$
 we have $N_k\mid N_n$.  Therefore for all $1\le k\le n$ we have $d_kN_n$
-is an integer. 
+is an integer.
 
 We proceed by induction, assuming we have proved that $\nu(2d_k)=0$ for $1\le k<2n$
 and we have to show that $\nu_2(2d_{2n})=0$.
@@ -881,23 +878,23 @@ and obtain
 =\nu_2\Bigl(\sum_{k=0}^{2n-1}\binom{2n+1}{k}2d_kN_{2n}\Bigr)\]
 By the induction hypothesis $2d_kN_{2n}$ is an odd natural number for $1\le k\le 2n-1$
 and it is even for $k=0$. So we only need to show that there are an odd number of
-odd combinatory numbers $\binom{2n+1}{k}$ with $1\le k\le 2n-1$. This follows easily 
+odd combinatory numbers $\binom{2n+1}{k}$ with $1\le k\le 2n-1$. This follows easily
 from Propostition \ref{P:afterLucas}.
 \end{proof}
 
 \begin{thm}
-The number $R_n$ is odd for $n\ge1$. Or equivalently 
+The number $R_n$ is odd for $n\ge1$. Or equivalently
 \begin{equation}
-\nu_2\bigl(\up(1-2^{-n})\bigr)=-\binom{n}{2}-1-\nu_2(n!).
+\nu_2\bigl(\RvachevUp(1-2^{-n})\bigr)=-\binom{n}{2}-1-\nu_2(n!).
 \end{equation}
 \end{thm}
 \begin{proof}
-We have seen that $2d_n$ is a quotient of two odd numbers and $R_n$ is a 
+We have seen that $2d_n$ is a quotient of two odd numbers and $R_n$ is a
 natural number.   Therefore equation \eqref{E:Rndn} implies
-that $R_n$ is an odd number. 
+that $R_n$ is an odd number.
 
 Equation \eqref{E:d-n} yields
-\[0=\nu_2(2d_n)=1+\nu_2(n!)+\binom{n}{2}+\nu_2\bigl(\up(1-2^{-n})\bigr).\]
+\[0=\nu_2(2d_n)=1+\nu_2(n!)+\binom{n}{2}+\nu_2\bigl(\RvachevUp(1-2^{-n})\bigr).\]
 \end{proof}
 
 
@@ -923,14 +920,14 @@ where $B_k$ are Bernoulli numbers $B_0=1$, $B_1=-\frac12$, $B_2=\frac16$, $B_3=0
 
 \begin{proof}
 By \eqref{hatphi} and \eqref{E:deff} the functions
-\[\widehat\up(z)=\sum_{n=0}^\infty (-1)^n \frac{c_n}{(2n)!} (2\pi z)^{2n},\quad
+\[\widehat\RvachevUp(z)=\sum_{n=0}^\infty (-1)^n \frac{c_n}{(2n)!} (2\pi z)^{2n},\quad
 \text{and}\quad f(x)=\sum_{n=0}^\infty \frac{d_n}{n!}x^n\]
 satisfy the equations
-\[\frac{\pi z}{\sin\pi z}\widehat\up(z)=\widehat\up(\tfrac{z}{2}),\quad
+\[\frac{\pi z}{\sin\pi z}\widehat\RvachevUp(z)=\widehat\RvachevUp(\tfrac{z}{2}),\quad
 \frac{x}{e^x-1}f(2x)=f(x).\]
 Using the well known power series
 \[\frac{\pi z}{\sin\pi z}=1+\sum_{n=1}^\infty(-1)^{n+1}\frac{B_{2n}(2^{2n}-2)}{(2n)!}(\pi z)^{2n},\quad \frac{x}{e^x-1}=\sum_{n=0}^\infty \frac{B_n}{n!} x^n\]
-and equating coefficients of the same power of the variable we obtain our 
+and equating coefficients of the same power of the variable we obtain our
 recurrences.
 \end{proof}
 
@@ -952,7 +949,7 @@ recurrences.
    note={{\href{http://arxiv.org/abs/1702.05442}{English version arXiv:1702.05442}}}
 }
 
-	
+
 \bib{MR0197656}{article}{
    author={Fabius, J.},
    title={A probabilistic example of a nowhere analytic $C^{\infty
@@ -978,7 +975,7 @@ recurrences.
    review={\MR{0023257}},
    doi={10.2307/2304500},
 }
-		
+
 
 \bib{H}{article}{
    author={Haugland, J. K.},
@@ -1032,7 +1029,7 @@ recurrences.
    issn={0868-8044},
    review={\MR{1350871}},
 }
-		
+
 \bib{MR1294281}{article}{
    author={Kolodiazhny, V. M.},
    author={Rvach{\"e}v, V. A.},
@@ -1075,7 +1072,7 @@ recurrences.
    pages={139--149, 194},
    review={\MR{0330388}},
 }
-		
+
 
 \bib{MR550591}{article}{
    author={Rvach{\"e}v, V. A.},
@@ -1168,4 +1165,3 @@ recurrences.
 
 \end{document}
 
-	

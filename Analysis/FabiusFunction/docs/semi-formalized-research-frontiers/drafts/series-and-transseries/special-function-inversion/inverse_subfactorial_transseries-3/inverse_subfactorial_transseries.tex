@@ -1,0 +1,1878 @@
+\documentclass[11pt]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage[margin=1.02in,headheight=14pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,bm,mathrsfs}
+\usepackage{booktabs,array,longtable,tabularx}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage[most]{tcolorbox}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\usepackage[nameinlink,capitalise,noabbrev]{cleveref}
+\usepackage{url}
+
+\definecolor{DeepBlue}{HTML}{17365D}
+\definecolor{Teal}{HTML}{0B6E75}
+\definecolor{LightBlue}{HTML}{EAF3F8}
+\definecolor{LightTeal}{HTML}{EAF7F5}
+\definecolor{WarmGray}{HTML}{F5F3EF}
+\definecolor{DarkGray}{HTML}{353A40}
+\definecolor{Accent}{HTML}{9B4D26}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=DeepBlue,
+  citecolor=Teal,
+  urlcolor=Accent,
+  pdftitle={Inverse Subfactorials at Infinity},
+  pdfauthor={Research note prepared for the ProveIt project}
+}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\textsc{Inverse Subfactorials at Infinity}}
+\fancyhead[R]{\small\textsc{Lambert--W and Bell Transseries}}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.55em}
+\setlist[itemize]{topsep=0.25em,itemsep=0.2em,leftmargin=1.6em}
+\setlist[enumerate]{topsep=0.25em,itemsep=0.25em,leftmargin=1.8em}
+\allowdisplaybreaks
+\numberwithin{equation}{section}
+
+\newtheoremstyle{mainthm}
+  {0.8em}{0.8em}{\itshape}{}{\color{DeepBlue}\bfseries}{.}{0.55em}{}
+\theoremstyle{mainthm}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+
+\newtheoremstyle{defstyle}
+  {0.7em}{0.7em}{}{}{\color{Teal}\bfseries}{.}{0.55em}{}
+\theoremstyle{defstyle}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{algorithm}[theorem]{Algorithm}
+
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{problem}[theorem]{Problem}
+
+\newtcolorbox{resultbox}[1][]{
+  enhanced, breakable,
+  colback=LightBlue, colframe=DeepBlue,
+  boxrule=0.7pt, arc=1.5mm,
+  left=2mm,right=2mm,top=1.5mm,bottom=1.5mm,
+  title={#1}, fonttitle=\bfseries
+}
+\newtcolorbox{methodbox}[1][]{
+  enhanced, breakable,
+  colback=LightTeal, colframe=Teal,
+  boxrule=0.6pt, arc=1.5mm,
+  left=2mm,right=2mm,top=1.5mm,bottom=1.5mm,
+  title={#1}, fonttitle=\bfseries
+}
+\newtcolorbox{warningbox}[1][]{
+  enhanced, breakable,
+  colback=WarmGray, colframe=Accent,
+  boxrule=0.6pt, arc=1.5mm,
+  left=2mm,right=2mm,top=1.5mm,bottom=1.5mm,
+  title={#1}, fonttitle=\bfseries
+}
+
+\newcommand{\e}{\mathrm e}
+\newcommand{\ii}{\mathrm i}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\Dsub}{\mathfrak D}
+\newcommand{\Bell}{\mathcal B}
+\newcommand{\Touch}{\mathcal T}
+\newcommand{\W}{W}
+\newcommand{\cO}{\mathcal O}
+\newcommand{\Res}{\operatorname{Res}}
+\newcommand{\Log}{\operatorname{Log}}
+\newcommand{\sgn}{\operatorname{sgn}}
+\newcommand{\ceil}[1]{\left\lceil #1\right\rceil}
+\newcommand{\floor}[1]{\left\lfloor #1\right\rfloor}
+\newcommand{\abs}[1]{\left|#1\right|}
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+\newcommand{\bracks}[1]{\left[#1\right]}
+\newcommand{\paren}[1]{\left(#1\right)}
+\newcommand{\set}[1]{\left\{#1\right\}}
+\newcommand{\coeff}[2]{\left[#1\right]#2}
+\newcommand{\diff}{\mathop{}\!\mathrm d}
+
+\title{\vspace{-2.0em}\textbf{Inverse Subfactorials at Infinity}\\[0.35em]
+\large Lambert--\(W\) carriers, Bell-number sectors, and a general calculus of gamma-dominant transseries}
+\author{Research note prepared for the ProveIt series-and-transseries project}
+\date{September 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+The subfactorial sequence \(D_n=!n\), which counts derangements, is discrete and therefore has no unique inverse until an interpolation or a generalized-inverse convention is chosen.  This article resolves that ambiguity explicitly and derives asymptotic inverse transseries for several canonical choices.  For every branch index \(\kappa\in\mathbb Z\), the incomplete-gamma continuation admits the exact splitting
+\[
+ \Dsub_\kappa(z)=\frac{\Gamma(z+1)}{\e}
+ +\e^{(2\kappa+1)\pi\ii z}C(z),
+ \qquad
+ C(z)=\frac1\e\int_0^1 t^z\e^t\dd t.
+\]
+The correction has the Bell-number expansion
+\[
+ C(x)\sim\sum_{m\ge1}(-1)^{m-1}\frac{\Bell_m}{x^m},
+\]
+with an exact signed remainder bounded by \(\Bell_{M+1}x^{-M-1}\) after \(M\) terms.  Let \(u(Y)\) be the large real solution of \(\Gamma(u+1)/\e=Y\), put
+\[
+ A=\log\frac{\e Y}{\sqrt{2\pi}},\qquad
+ w=W_0(A/\e),\qquad Q=\frac{A}{w},\qquad s=1+w.
+\]
+We derive the all-orders gamma-envelope inverse
+\[
+ u(Y)\sim Q-\frac12+\frac{1}{24sQ}
+ -\frac{14s^2+10s+5}{5760s^3Q^3}
+ +\frac{2232s^4+1176s^3+714s^2+350s+105}{2903040s^5Q^5}+\cdots.
+\]
+The inverse of the full branch is then a nested transseries
+\[
+ \Dsub_\kappa^{-1}(Y)
+ \sim u(Y)+\sum_{r\ge1}\frac{\e^{r(2\kappa+1)\pi\ii u(Y)}}{Y^r}
+ \Phi_r^{(\kappa)}(u(Y)),
+\]
+where every coefficient is given by an explicit finite differential-operator product.  The first coefficient is \(-C/\psi\), and hence the first genuinely subfactorial displacement has size \(Y^{-1}/(u\log u)\), far below every fixed exponential scale \(\e^{-cu}\).  We also obtain the inverse of the canonical real symmetrization \(\Gamma(x+1)/\e+C(x)\cos(\pi x)\), parity-resolved inverses, and the discrete staircase inverse.  Finally, we develop a general two-stage inversion theory for dominant logarithmic-Lambert carriers perturbed by algebraic, oscillatory, or multi-frequency moment sectors, including a Touchard-polynomial deformation of the Bell expansion.
+\end{abstract}
+
+\tableofcontents
+\bigskip
+
+\section{Introduction}
+
+\subsection{Why the phrase ``inverse subfactorial'' needs a definition}
+
+The derangement number
+\[
+ D_n=!n=n!\sum_{j=0}^{n}\frac{(-1)^j}{j!}
+\]
+is defined on the nonnegative integers.  A sequence does not possess an ordinary inverse function on a continuum.  Several natural inverse objects coexist:
+\begin{enumerate}
+\item the generalized inverse of the increasing integer sequence, which is a staircase;
+\item a real smooth interpolation agreeing with every \(D_n\);
+\item the complex incomplete-gamma continuation \(\Gamma(z+1,-1)/\e\), after a branch is selected;
+\item the two nonoscillatory parity envelopes that interpolate the even and odd subsequences separately.
+\end{enumerate}
+These objects have different asymptotic structures.  The staircase inverse has an unavoidable order-one rounding sector.  The smooth and analytic inverses have much finer transseries whose first subfactorial correction is superexponentially small relative to the inverse variable.
+
+The main purpose of this article is to derive all of these structures without conflating them.  The formal-calculus viewpoint is compatible with the polynomial-logarithmic reversion framework collected in the ProveIt series-and-transseries directory \cite{ProveItSeries}.  The special feature here is that the derangement correction is not merely another inverse power: relative to \(n!/\e\), it is a new, enormously smaller sector whose coefficients are Bell numbers.
+
+\subsection{The four scales}
+
+Write \(Y\to+\infty\) for the target value, and let \(u=u(Y)\) solve
+\[
+ \frac{\Gamma(u+1)}{\e}=Y.
+\]
+Then \(u\asymp \log Y/\log\log Y\).  Four asymptotic layers should be distinguished.
+
+\begin{enumerate}
+\item \textbf{Lambert-logarithmic layer.}  The leading inverse is expressed by a Lambert \(W\) carrier and may be expanded in nested logarithms.
+\item \textbf{Stirling inverse-power layer.}  Centered Stirling corrections produce powers \(u^{-1},u^{-3},u^{-5},\ldots\), divided by powers of \(1+W\).
+\item \textbf{Hyperasymptotic gamma layer.}  The divergent Stirling series has a least-term scale of order \(u^{-1/2}\e^{-2\pi u}\).  A complete numerical resolution below that scale requires an exact or hyperasymptotic treatment of the gamma envelope.
+\item \textbf{Bell/subfactorial layer.}  The additive derangement correction changes the inverse by
+\[
+ O\!\left(\frac{1}{Y\,u\log u}\right)
+ =\exp\{-u\log u+O(u)\},
+\]
+which is smaller than \(\e^{-cu}\) for every fixed \(c>0\).
+\end{enumerate}
+
+This hierarchy explains why the cleanest final answer is a \emph{nested} transseries: first keep the inverse-gamma carrier \(u(Y)\) exact, then expand the Bell sector in powers of \(Y^{-1}\).  The Lambert--Stirling expansion of \(u\) can be inserted afterward to any desired algebraic accuracy.
+
+\subsection{Notation and conventions}
+
+Bell numbers are denoted by \(\Bell_m\), so that \(\Bell_0=1\), \(\Bell_1=1\), \(\Bell_2=2\), \(\Bell_3=5\), and so on.  Bernoulli numbers and polynomials retain the conventional notation \(B_m\) and \(B_m(x)\).  The digamma and polygamma functions are
+\[
+ \psi(z)=\frac{\Gamma'(z)}{\Gamma(z)},
+ \qquad \psi^{(j)}(z)=\frac{\dd^j}{\dd z^j}\psi(z).
+\]
+The principal Lambert branch is \(W_0\).  Unless a complex sector is explicitly discussed, all logarithms and all large variables are real and positive.
+
+For a formal series in \(t\), \([t^n]H(t)\) denotes coefficient extraction.  Asymptotic statements are Poincare statements: the number of retained terms is fixed before the large-variable limit is taken.
+
+\section{Derangements, incomplete gamma, and the Bell correction}
+
+\subsection{Classical identities}
+
+A derangement is a permutation without fixed points.  Inclusion-exclusion gives
+\begin{equation}\label{eq:derangement-finite-sum}
+ D_n=n!\sum_{j=0}^{n}\frac{(-1)^j}{j!}.
+\end{equation}
+The upper incomplete gamma identity
+\[
+ \Gamma(n+1,z)=n!\,\e^{-z}\sum_{j=0}^{n}\frac{z^j}{j!}
+\]
+therefore yields
+\begin{equation}\label{eq:integer-incomplete-gamma}
+ D_n=\frac{\Gamma(n+1,-1)}{\e}.
+\end{equation}
+The right-hand side requires a branch convention away from integer \(n\).  That branch information is precisely what creates the oscillatory factor in the inverse transseries.
+
+Hassani proved the exact representation
+\begin{equation}\label{eq:hassani-exact}
+ D_n=\frac{n!}{\e}+(-1)^n\frac{L_n(\e)}{\e},
+ \qquad
+ L_n(\e)=\int_1^{\e}(\log t)^n\dd t,
+\end{equation}
+and derived the Bell-number asymptotic expansion with an explicit remainder bound \cite{Hassani2020}.  We now place that result inside an analytic continuation that is adapted to inversion.
+
+\subsection{A branch-indexed exact decomposition}
+
+For \(\kappa\in\mathbb Z\), set
+\[
+ \theta_\kappa=(2\kappa+1)\pi,
+ \qquad \omega_\kappa=\ii\theta_\kappa.
+\]
+When the segment from \(0\) to \(-1\) is traversed with argument \(\theta_\kappa\), define the corresponding branch of the lower incomplete gamma by that path.  The standard relation
+\(
+ \Gamma(s,-1)=\Gamma(s)-\gamma(s,-1)
+\)
+then gives the following exact formula.
+
+\begin{theorem}[Exact branch splitting]\label{thm:exact-branch-splitting}
+For \(\Re z>-1\), define
+\begin{equation}\label{eq:C-def}
+ F(z)=\frac{\Gamma(z+1)}{\e},
+ \qquad
+ C(z)=\frac1\e\int_0^1 t^z\e^t\dd t
+      =\frac1\e\sum_{j=0}^{\infty}\frac{1}{j!(z+j+1)}.
+\end{equation}
+Then the branch-indexed subfactorial continuation is
+\begin{equation}\label{eq:branch-splitting}
+ \boxed{\Dsub_\kappa(z)=F(z)+\e^{\omega_\kappa z}C(z).}
+\end{equation}
+For every nonnegative integer \(n\), this value is independent of \(\kappa\) and equals \(D_n\).
+\end{theorem}
+
+\begin{proof}
+Put \(s=z+1\) and parametrize the chosen path by
+\(
+ t=r\e^{\ii\theta_\kappa}
+\), \(0\le r\le1\).  Since \(\e^{\ii\theta_\kappa}=-1\),
+\[
+ \gamma(s,-1)
+ =\e^{\ii\theta_\kappa s}\int_0^1 r^{s-1}\e^r\dd r.
+\]
+Consequently,
+\begin{align*}
+ \frac{\Gamma(z+1,-1)}{\e}
+ &=\frac{\Gamma(z+1)}{\e}
+   -\frac{\e^{\ii\theta_\kappa(z+1)}}{\e}
+     \int_0^1r^z\e^r\dd r\\
+ &=F(z)+\e^{\ii\theta_\kappa z}C(z),
+\end{align*}
+because \(\e^{\ii\theta_\kappa}=-1\).  Expanding \(\e^t\) under the integral proves the convergent partial-fraction series in \cref{eq:C-def}.  At an integer \(n\), the phase is \((-1)^n\).  After the substitution \(t=\e^v\), one has
+\[
+ L_n(\e)=\int_0^1v^n\e^v\dd v=\e C(n),
+\]
+so \cref{eq:hassani-exact} completes the identification with \(D_n\).
+\end{proof}
+
+\begin{remark}
+Formula \cref{eq:branch-splitting} may be taken as the definition in the half-plane \(\Re z>-1\), avoiding any ambiguity in incomplete-gamma path notation.  The cancellation that continues the function farther left is not needed for the large-argument analysis.
+\end{remark}
+
+\subsection{The canonical real symmetrization}
+
+The two adjacent branches \(\kappa=0\) and \(\kappa=-1\) are complex conjugates on the real axis.  Their average is therefore a distinguished real interpolation.
+
+\begin{definition}[Symmetrized real subfactorial]\label{def:sym-subfactorial}
+For real \(x>-1\), set
+\begin{equation}\label{eq:sym-subfactorial}
+ \Dsub_{\rm sym}(x)
+ =\frac{\Dsub_0(x)+\Dsub_{-1}(x)}2
+ =F(x)+C(x)\cos(\pi x).
+\end{equation}
+Then \(\Dsub_{\rm sym}(n)=D_n\) for every nonnegative integer \(n\).
+\end{definition}
+
+The following elementary fact justifies the real inverse and, later, the ceiling formula for the discrete inverse.
+
+\begin{proposition}[Eventual monotonicity of the real interpolation]\label{prop:sym-monotone}
+There exists \(X>0\) such that \(\Dsub_{\rm sym}'(x)>0\) for every \(x\ge X\).  Consequently, \(\Dsub_{\rm sym}\) has a unique terminal real inverse.
+\end{proposition}
+
+\begin{proof}
+From the integral representation,
+\(
+ C(x)=O(x^{-1})
+\)
+and
+\(
+ C'(x)=O(x^{-2})
+\).
+Therefore
+\[
+ \frac{\dd}{\dd x}\bigl(C(x)\cos(\pi x)\bigr)
+ =C'(x)\cos(\pi x)-\pi C(x)\sin(\pi x)=O(x^{-1}).
+\]
+On the other hand,
+\[
+ F'(x)=F(x)\psi(x+1)\sim F(x)\log x\longrightarrow+\infty.
+\]
+The positive gamma-envelope derivative thus eventually dominates the oscillatory derivative.
+\end{proof}
+
+It is also useful to introduce the parity envelopes
+\begin{equation}\label{eq:parity-envelopes}
+ G_\sigma(x)=F(x)+\sigma C(x),\qquad \sigma\in\{+1,-1\}.
+\end{equation}
+For even \(n\), \(G_+(n)=D_n\); for odd \(n\), \(G_-(n)=D_n\).  These envelopes remove the oscillatory phase and isolate the two lattice subsequences.
+
+\subsection{Bell numbers from a Stieltjes kernel}
+
+The correction \(C\) is a Stieltjes transform of a positive discrete measure.  Let
+\begin{equation}\label{eq:bell-measure}
+ \dd\mu(t)=\frac1\e\sum_{j=0}^{\infty}\frac{1}{j!}\,\delta_{j+1}(\dd t).
+\end{equation}
+Then
+\[
+ C(x)=\int_0^\infty\frac{\dd\mu(t)}{x+t}.
+\]
+The moments of this measure are Bell numbers shifted by one index:
+\begin{equation}\label{eq:bell-moments}
+ \int_0^\infty t^{m-1}\dd\mu(t)
+ =\frac1\e\sum_{j=0}^{\infty}\frac{(j+1)^{m-1}}{j!}
+ =\Bell_m,
+ \qquad m\ge1.
+\end{equation}
+The last equality is Dobinski's formula after shifting the summation index.
+
+\begin{theorem}[Exact Bell expansion and signed remainder]\label{thm:bell-remainder}
+For every real \(x>0\) and integer \(M\ge1\),
+\begin{equation}\label{eq:C-bell-expansion}
+ C(x)=\sum_{m=1}^{M}(-1)^{m-1}\frac{\Bell_m}{x^m}+R_M(x),
+\end{equation}
+where
+\begin{equation}\label{eq:C-exact-remainder}
+ R_M(x)=\frac{(-1)^M}{\e x^M}
+ \sum_{j=0}^{\infty}\frac{(j+1)^M}{j!(x+j+1)}.
+\end{equation}
+In particular,
+\begin{equation}\label{eq:C-remainder-bound}
+ (-1)^M R_M(x)>0,
+ \qquad
+ \abs{R_M(x)}\le \frac{\Bell_{M+1}}{x^{M+1}}.
+\end{equation}
+Thus
+\begin{equation}\label{eq:C-full-asymptotic}
+ C(x)\sim\sum_{m\ge1}(-1)^{m-1}\frac{\Bell_m}{x^m}.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+For \(b>0\), finite geometric division gives the exact identity
+\begin{equation}\label{eq:finite-geometric-resolvent}
+ \frac1{x+b}
+ =\sum_{m=1}^{M}(-1)^{m-1}\frac{b^{m-1}}{x^m}
+ +(-1)^M\frac{b^M}{x^M(x+b)}.
+\end{equation}
+Set \(b=j+1\), multiply by \(1/(\e j!)\), and sum over \(j\ge0\).  The moment identity \cref{eq:bell-moments} gives the finite sum in \cref{eq:C-bell-expansion}, and the last term gives \cref{eq:C-exact-remainder}.  Positivity proves the sign.  Since \(x+j+1\ge x\),
+\[
+ \abs{R_M(x)}
+ \le\frac{1}{\e x^{M+1}}
+ \sum_{j=0}^{\infty}\frac{(j+1)^M}{j!}
+ =\frac{\Bell_{M+1}}{x^{M+1}}.
+\]
+\end{proof}
+
+The first terms are
+\begin{equation}\label{eq:C-first-terms}
+ C(x)\sim \frac1x-\frac2{x^2}+\frac5{x^3}-\frac{15}{x^4}
+ +\frac{52}{x^5}-\frac{203}{x^6}+\cdots.
+\end{equation}
+The series diverges for every fixed \(x\): for example, \(\Bell_{2m}\ge(2m-1)!!\), so \(\Bell_m^{1/m}\) is unbounded.  Its role is asymptotic, and the explicit remainder bound tells us exactly how a fixed truncation behaves as \(x\to\infty\).
+
+\subsection{Derivatives and differential closure}
+
+Differentiation under the integral gives
+\begin{equation}\label{eq:C-derivatives}
+ C^{(r)}(x)=\frac1\e\int_0^1t^x(\log t)^r\e^t\dd t,
+ \qquad (-1)^r C^{(r)}(x)>0.
+\end{equation}
+Termwise differentiation of the Poincare expansion is legitimate at every fixed order and yields
+\begin{equation}\label{eq:C-derivative-asymptotic}
+ C^{(r)}(x)
+ \sim\sum_{m\ge1}(-1)^{m+r-1}(m)_r\Bell_m\,x^{-m-r},
+\end{equation}
+where \((m)_r=m(m+1)\cdots(m+r-1)\) is the rising factorial.  These formulas will place all inverse-sector coefficients in a differential ring generated by inverse powers, inverse logarithms, Bell numbers, and Bernoulli numbers.
+
+\section{Which inverse is being expanded?}\label{sec:inverse-objects}
+
+\subsection{The dominant gamma-envelope inverse}
+
+Let
+\begin{equation}\label{eq:envelope-def}
+ F(x)=\frac{\Gamma(x+1)}{\e}.
+\end{equation}
+Because \(\psi(x+1)\sim\log x\), there is an \(x_0\) such that \(F'(x)>0\) for \(x\ge x_0\).  We denote the inverse on this terminal interval by
+\begin{equation}\label{eq:u-def}
+ u(Y)=F^{-1}(Y),\qquad Y\ge F(x_0).
+\end{equation}
+This exact function will be the carrier for every finer inverse.  At \(x=u(Y)\), introduce
+\begin{equation}\label{eq:lambda-def}
+ \lambda=\lambda(u)=\psi(u+1),
+ \qquad
+ P_k=P_k(u)=\frac{F^{(k)}(u)}{F(u)}.
+\end{equation}
+The first normalized derivatives are
+\begin{equation}\label{eq:Pk-first}
+ P_1=\lambda,
+ \qquad P_2=\lambda^2+\lambda',
+ \qquad P_3=\lambda^3+3\lambda\lambda'+\lambda'',
+\end{equation}
+and in general
+\begin{equation}\label{eq:Pk-recurrence}
+ P_0=1,\qquad P_{k+1}=P_k'+\lambda P_k.
+\end{equation}
+Thus \(P_k\) is the complete exponential Bell polynomial in \(\lambda,\lambda',\ldots\).  Since \(F(u)=Y\),
+\begin{equation}\label{eq:F-derivatives-at-u}
+ F^{(k)}(u)=Y P_k(u),\qquad F'(u)=Y\lambda(u).
+\end{equation}
+
+\subsection{Large inverse branches of the analytic continuation}
+
+Fix \(\kappa\).  For large positive \(Y\), \cref{eq:branch-splitting} has a unique solution \(z_\kappa(Y)\) in a sufficiently small disk around \(u(Y)\).  Indeed,
+\[
+ \Dsub_\kappa(u)-Y=\e^{\omega_\kappa u}C(u)=O(u^{-1}),
+\]
+whereas
+\[
+ \Dsub_\kappa'(u)=Y\lambda+O(u^{-1}).
+\]
+Consequently,
+\begin{equation}\label{eq:analytic-root-displacement-size}
+ z_\kappa(Y)-u(Y)
+ =O\!\left(\frac{1}{Y\,u\log u}\right).
+\end{equation}
+The root is generally complex even when \(Y\) is real.  Different incomplete-gamma path branches give different phases away from integer arguments, although all of them agree on the derangement lattice.
+
+\subsection{The large real inverse}
+
+Let
+\begin{equation}\label{eq:real-inverse-r}
+ r(Y)=\Dsub_{\rm sym}^{-1}(Y)
+\end{equation}
+be the eventual real inverse of \cref{eq:sym-subfactorial}.  It is the most natural single-valued real interpolation inverse because it agrees with the complete derangement sequence, not only one parity.  Its correction is oscillatory through \(\cos(\pi u)\) and generates higher Fourier harmonics at successive transseries orders.
+
+For parity-resolved questions, let
+\begin{equation}\label{eq:parity-inverse}
+ x_\sigma(Y)=G_\sigma^{-1}(Y),\qquad \sigma\in\{+1,-1\}.
+\end{equation}
+Then
+\begin{equation}\label{eq:parity-exact-lattice}
+ x_{(-1)^n}(D_n)=n
+\end{equation}
+for every sufficiently large integer \(n\).  The parity inverses are especially convenient for displaying the Bell sector because no trigonometric phase remains.
+
+\subsection{The discrete generalized inverse}
+
+Since \(D_n\) is strictly increasing from \(n=2\) onward, one may define
+\begin{equation}\label{eq:discrete-inverse}
+ N(Y)=\min\set{n\ge2:D_n\ge Y}.
+\end{equation}
+For all sufficiently large \(Y\), monotonicity of \(\Dsub_{\rm sym}\) and the interpolation identity give
+\begin{equation}\label{eq:discrete-ceiling}
+ \boxed{N(Y)=\ceil{r(Y)}.}
+\end{equation}
+Indeed, once \(n\) is large enough for \cref{prop:sym-monotone} to apply, the map \(\Dsub_{\rm sym}\) carries \([n-1,n]\) bijectively onto \([D_{n-1},D_n]\).  Thus \(D_{n-1}<Y\le D_n\) is equivalent to \(n-1<r(Y)\le n\), with the endpoint convention agreeing with the ceiling.
+
+This inverse contains an order-one discontinuous sector.  Away from integer values of \(r(Y)\), the classical Fourier representation of the sawtooth gives
+\begin{equation}\label{eq:ceiling-fourier}
+ N(Y)=r(Y)+\frac12+\frac1\pi\sum_{m=1}^{\infty}
+ \frac{\sin(2\pi m r(Y))}{m}.
+\end{equation}
+At a jump, the Fourier series takes the midpoint value and the ceiling convention must be imposed separately.  Formula \cref{eq:ceiling-fourier} explains why no continuous asymptotic expansion can approximate the staircase uniformly with an error \(o(1)\): lattice inversion and smooth transseries inversion are distinct problems.
+
+\section{The Lambert--\texorpdfstring{\(W\)}{W} carrier for the gamma envelope}\label{sec:gamma-carrier}
+
+\subsection{Centered Stirling expansion}
+
+The shifted form of Stirling's expansion is most efficient here.  Put
+\begin{equation}\label{eq:q-shift}
+ q=x+\frac12.
+\end{equation}
+The DLMF shifted expansion \cite{DLMF511} with shift \(1/2\) gives
+\begin{equation}\label{eq:centered-stirling}
+ \log\Gamma\!\left(q+\frac12\right)
+ \sim q\log q-q+\frac12\log(2\pi)+R(q),
+\end{equation}
+where
+\begin{equation}\label{eq:R-centered}
+ R(q)\sim\sum_{m\ge1}\frac{B_{2m}(1/2)}{2m(2m-1)q^{2m-1}}.
+\end{equation}
+The identity
+\(
+ B_{2m}(1/2)=(2^{1-2m}-1)B_{2m}
+\)
+shows that only odd inverse powers occur.  Explicitly,
+\begin{equation}\label{eq:R-first}
+ R(q)\sim
+ -\frac{1}{24q}+\frac{7}{2880q^3}
+ -\frac{31}{40320q^5}+\frac{127}{215040q^7}
+ -\frac{511}{608256q^9}+\cdots.
+\end{equation}
+
+For the equation \(F(x)=Y\), define
+\begin{equation}\label{eq:A-def}
+ A=A(Y)=\log\frac{\e Y}{\sqrt{2\pi}}.
+\end{equation}
+Then \(q=u+1/2\) satisfies the exact equation
+\begin{equation}\label{eq:exact-q-equation}
+ A=q(\log q-1)+\rho(q),
+\end{equation}
+where \(\rho(q)\) is the exact centered Stirling remainder function and has the asymptotic expansion \(R(q)\) in \cref{eq:R-centered}.
+
+\subsection{Exact solution of the leading equation}
+
+Discarding \(\rho\) gives
+\begin{equation}\label{eq:carrier-equation}
+ A=Q(\log Q-1).
+\end{equation}
+This equation is solved exactly by Lambert \(W\).  Set
+\begin{equation}\label{eq:w-Q-s}
+ w=W_0(A/\e),
+ \qquad
+ Q=\frac{A}{w}=\e^{w+1},
+ \qquad
+ s=1+w=\log Q.
+\end{equation}
+Indeed, \(w\e^w=A/\e\), so \(Qw=A\) and \(\log Q-1=w\).  The familiar leading approximation to the inverse gamma function is therefore
+\begin{equation}\label{eq:leading-gamma-inverse}
+ u(Y)\sim Q-\frac12.
+\end{equation}
+The shift by \(-1/2\) is not cosmetic: it removes the logarithmic prefactor in Stirling's formula and forces the subsequent algebraic correction to begin at order \(Q^{-1}\).
+
+\subsection{A general triangular reversion theorem}
+
+The following formal result will be reused for other gamma-dominant functions.
+
+\begin{theorem}[Lambert-centered reversion]\label{thm:lambert-centered-reversion}
+Let \(S\to+\infty\), let \(a\) be fixed, and suppose \(q\) is determined by
+\begin{equation}\label{eq:general-lambert-shape}
+ S=q(\log q-a)+R(q),
+ \qquad
+ R(q)\sim\sum_{m\ge1}r_m q^{-m}.
+\end{equation}
+Define
+\begin{equation}\label{eq:general-carrier}
+ w=W_0(S\e^{-a}),
+ \qquad Q=\frac{S}{w}=\e^{a+w},
+ \qquad s=1+w.
+\end{equation}
+Then there is a unique formal expansion
+\begin{equation}\label{eq:q-reversion-general}
+ q\sim Q+\sum_{n\ge1}d_n(s)Q^{-n}.
+\end{equation}
+The coefficients are determined triangularly.  Put \(t=Q^{-1}\) and
+\begin{equation}\label{eq:U-def}
+ U(t)=\frac{q-Q}{Q}=\sum_{n\ge1}d_n t^{n+1}.
+\end{equation}
+Then \(U\) is the unique formal solution of
+\begin{equation}\label{eq:U-master-equation}
+ 0=t^{-1}\left[
+ sU+\sum_{k\ge2}\frac{(-1)^k}{k(k-1)}U^k
+ \right]
+ +\sum_{m\ge1}r_m t^m(1+U)^{-m}.
+\end{equation}
+If \(U_{n-1}=\sum_{j=1}^{n-1}d_jt^{j+1}\), then
+\begin{equation}\label{eq:d-recursion}
+ d_n=-\frac1s[t^n]\left\{
+ t^{-1}\left[sU_{n-1}+\sum_{k\ge2}\frac{(-1)^k}{k(k-1)}U_{n-1}^k\right]
+ +\sum_{m\ge1}r_mt^m(1+U_{n-1})^{-m}
+ \right\}.
+\end{equation}
+For every fixed \(N\), truncation after \(d_NQ^{-N}\) has error
+\begin{equation}\label{eq:lambert-reversion-error}
+ O\!\left(\frac{Q^{-N-1}}{s}\right),
+\end{equation}
+provided the expansion of \(R\) is valid to the corresponding order.
+\end{theorem}
+
+\begin{proof}
+The carrier identity is \(S=Q(\log Q-a)=Qw\).  Write \(q=Q(1+U)\).  Then
+\begin{align*}
+ q(\log q-a)-Q(\log Q-a)
+ &=Q\left[(1+U)(w+\log(1+U))-w\right]\\
+ &=Q\left[wU+(1+U)\log(1+U)\right].
+\end{align*}
+The Taylor identity
+\begin{equation}\label{eq:one-plus-U-log}
+ (1+U)\log(1+U)
+ =U+\sum_{k\ge2}\frac{(-1)^k}{k(k-1)}U^k
+\end{equation}
+turns the last expression into the first term of \cref{eq:U-master-equation}; substituting
+\(
+ q^{-m}=t^m(1+U)^{-m}
+\)
+gives the rest.  The coefficient of \(d_n\) in \([t^n]\) is exactly \(s\), while every nonlinear occurrence involves only \(d_1,\ldots,d_{n-1}\).  Since \(s\ne0\) for large positive \(S\), the recursion is unique.
+
+For the analytic error, let \(q_N\) be the truncation and let \(\mathcal R_N\) be the residual in \cref{eq:general-lambert-shape}.  Coefficient matching gives \(\mathcal R_N=O(Q^{-N-1})\).  The derivative of the left-hand side with respect to \(q\) is
+\[
+ \log q-a+1+R'(q)=s+o(s).
+\]
+The mean-value theorem therefore transfers residual order into the error estimate \cref{eq:lambert-reversion-error}.
+\end{proof}
+
+The first universal coefficients are
+\begin{align}
+ d_1&=-\frac{r_1}{s},\label{eq:d1-general}\\
+ d_2&=-\frac{r_2}{s},\label{eq:d2-general}\\
+ d_3&=-\frac{r_3}{s}-\frac{r_1^2}{s^2}-\frac{r_1^2}{2s^3},\label{eq:d3-general}\\
+ d_4&=-\frac{r_4}{s}-\frac{3r_1r_2}{s^2}-\frac{r_1r_2}{s^3}.
+ \label{eq:d4-general}
+\end{align}
+The appearance of \(s^{-1}=(1+W_0)^{-1}\) is the formal signature of reversion: it is the reciprocal derivative of the Lambert carrier.
+
+\subsection{Explicit inverse-gamma coefficients}
+
+For the centered gamma expansion, \(r_{2m}=0\).  Equation \cref{eq:U-master-equation} is then odd in the formal grading, so \(d_{2m}=0\).  Substituting \cref{eq:R-first} into the recursion gives
+\begin{align}
+ d_1&=\frac{1}{24s},\label{eq:gamma-d1}\\
+ d_3&=-\frac{14s^2+10s+5}{5760s^3},\label{eq:gamma-d3}\\
+ d_5&=\frac{2232s^4+1176s^3+714s^2+350s+105}{2903040s^5},\label{eq:gamma-d5}\\
+ d_7&=-\frac{822960s^6+292536s^5+136956s^4+68040s^3
+ +32970s^2+12250s+2625}{1393459200s^7}.
+ \label{eq:gamma-d7}
+\end{align}
+
+\begin{resultbox}[Principal gamma-envelope inverse]
+With \(A,w,Q,s\) defined by \cref{eq:A-def,eq:w-Q-s},
+\begin{align}
+ u(Y)
+ &=Q-\frac12+\frac{1}{24sQ}
+ -\frac{14s^2+10s+5}{5760s^3Q^3}\notag\\
+ &\quad
+ +\frac{2232s^4+1176s^3+714s^2+350s+105}{2903040s^5Q^5}
+ +O\!\left(\frac{1}{sQ^7}\right).
+ \label{eq:u-main-expansion}
+\end{align}
+The \(Q^{-7}\) term is obtained by inserting \cref{eq:gamma-d7}.
+\end{resultbox}
+
+The expansion is algorithmic to arbitrary order.  Every coefficient is a rational function of \(s=1+W_0(A/\e)\) with rational coefficients because the centered Stirling coefficients are rational.
+
+\subsection{Flattening the Lambert carrier into nested logarithms}
+
+Set
+\begin{equation}\label{eq:L1-L2}
+ L_1=\log(A/\e)=\log A-1,
+ \qquad L_2=\log L_1.
+\end{equation}
+The large-argument expansion of Lambert \(W\), as developed by Corless, Gonnet, Hare, Jeffrey, and Knuth \cite{Corless1996}, implies
+\begin{align}
+ \frac1{W_0(A/\e)}
+ &\sim \frac1{L_1}
+ +\frac{L_2}{L_1^2}
+ +\frac{L_2^2-L_2}{L_1^3}\notag\\
+ &\quad
+ +\frac{L_2^3-\tfrac52L_2^2+L_2}{L_1^4}
+ +\frac{L_2^4-\tfrac{13}{3}L_2^3+\tfrac92L_2^2-L_2}{L_1^5}
+ +\cdots.
+ \label{eq:inverse-W-nested-log}
+\end{align}
+Hence
+\begin{align}
+ Q
+ &\sim A\left[
+ \frac1{L_1}+\frac{L_2}{L_1^2}
+ +\frac{L_2^2-L_2}{L_1^3}
+ +\frac{L_2^3-\tfrac52L_2^2+L_2}{L_1^4}
+ +\cdots\right].
+ \label{eq:Q-nested-log}
+\end{align}
+Combining \cref{eq:Q-nested-log} with \cref{eq:u-main-expansion} produces a fully flattened polynomial-logarithmic transseries in \(A\), \(\log A\), and \(\log\log A\).  It is usually preferable to keep the exact \(W_0\) carrier, because doing so packages infinitely many nested-log terms and sharply improves numerical conditioning.
+
+\subsection{The least-term barrier and why nesting matters}
+
+The Bernoulli-number identity
+\[
+ B_{2m}=(-1)^{m-1}\frac{2(2m)!}{(2\pi)^{2m}}\zeta(2m)
+\]
+shows that the centered Stirling series is factorially divergent.  Its least term occurs near \(m\sim\pi Q\) and has magnitude
+\begin{equation}\label{eq:stirling-least-term}
+ O\!\left(Q^{-1/2}\e^{-2\pi Q}\right).
+\end{equation}
+By contrast, the first inverse-subfactorial sector derived below has size
+\begin{equation}\label{eq:bell-sector-size-pre}
+ \frac1{YQ\log Q}
+ =\exp\{-Q(\log Q-1)+O(\log Q)\}.
+\end{equation}
+Therefore
+\begin{equation}\label{eq:bell-beyond-fixed-exp}
+ \frac1{YQ\log Q}=o(\e^{-cQ})
+ \qquad\text{for every fixed }c>0.
+\end{equation}
+A finite or even optimally truncated Stirling expansion of \(u(Y)\) cannot, by itself, numerically resolve the Bell displacement for very large \(Y\).  One should first compute \(u(Y)\) exactly or refine it by high-precision Newton iteration, and only then add the Bell-sector transseries.  This is not a defect of the expansion; it is a genuine separation of asymptotic levels.
+
+\section{A general additive-sector inversion formula}\label{sec:additive-inversion}
+
+\subsection{Reduction to a near-identity map}
+
+Let \(F\) be locally invertible, let \(u=F^{-1}\), and consider
+\begin{equation}\label{eq:G-epsilon}
+ G_\varepsilon(x)=F(x)+\varepsilon E(x).
+\end{equation}
+The bookkeeping parameter \(\varepsilon\) records the additive sector; it will eventually be set equal to \(1\).  Make the exact change of variable
+\[
+ v=F(x),\qquad x=u(v),\qquad \widetilde E(v)=E(u(v)).
+\]
+Then solving \(G_\varepsilon(x)=Y\) is equivalent to reverting the near-identity equation
+\begin{equation}\label{eq:v-near-identity}
+ Y=v+\varepsilon\widetilde E(v)
+\end{equation}
+and then applying \(u\).  This elementary conjugacy is the source of a closed all-orders formula.
+
+\begin{theorem}[Lagrange--Buermann formula for an additive perturbation]\label{thm:additive-LB}
+Let \(F'(u(Y))\ne0\).  Formally in \(\varepsilon\), and analytically whenever the local Lagrange series converges,
+\begin{equation}\label{eq:additive-LB-Y}
+ G_\varepsilon^{-1}(Y)
+ =u(Y)+\sum_{n\ge1}\frac{(-\varepsilon)^n}{n!}
+ \frac{\dd^{n-1}}{\dd Y^{n-1}}
+ \left[u'(Y)E(u(Y))^n\right].
+\end{equation}
+Equivalently, with
+\begin{equation}\label{eq:transport-operator}
+ \mathscr D_u=\frac1{F'(u)}\frac{\dd}{\dd u},
+\end{equation}
+one has
+\begin{equation}\label{eq:additive-LB-u}
+ \boxed{
+ G_\varepsilon^{-1}(Y)
+ =u+\sum_{n\ge1}\frac{(-\varepsilon)^n}{n!}
+ \mathscr D_u^{\,n-1}
+ \left(\frac{E(u)^n}{F'(u)}\right).}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+The generalized Lagrange--Buermann formula applied to \cref{eq:v-near-identity} states that, for any analytic test function \(H\),
+\[
+ H(v)=H(Y)+\sum_{n\ge1}\frac{(-\varepsilon)^n}{n!}
+ \frac{\dd^{n-1}}{\dd Y^{n-1}}
+ \left[H'(Y)\widetilde E(Y)^n\right].
+\]
+Take \(H=u\).  Since \(\widetilde E(Y)=E(u(Y))\) and \(u'(Y)=1/F'(u(Y))\), this gives \cref{eq:additive-LB-Y}.  Finally,
+\[
+ \frac{\dd}{\dd Y}
+ =\frac1{F'(u)}\frac{\dd}{\dd u}=\mathscr D_u,
+\]
+which proves \cref{eq:additive-LB-u}.  The same derivation is valid in formal power-series algebra; see standard treatments of Lagrange inversion such as \cite{FlajoletSedgewick}.
+\end{proof}
+
+The first three coefficients, with \(f_j=F^{(j)}(u)\) and \(E_j=E^{(j)}(u)\), are
+\begin{align}
+ a_1&=-\frac{E_0}{f_1},\label{eq:a1-general}\\
+ a_2&=\frac{E_0E_1}{f_1^2}-\frac{f_2E_0^2}{2f_1^3},\label{eq:a2-general}\\
+ a_3&=-\frac{E_0E_1^2+\tfrac12E_0^2E_2}{f_1^3}
+ +\frac{3E_0^2E_1f_2}{2f_1^4}
+ +\frac{E_0^3f_3}{6f_1^4}
+ -\frac{E_0^3f_2^2}{2f_1^5}.
+ \label{eq:a3-general}
+\end{align}
+These formulas agree with direct coefficient matching, but \cref{eq:additive-LB-u} is substantially more efficient at high order.
+
+\subsection{A triangular coefficient recurrence}
+
+For formalization or computer algebra it is useful to have a recurrence that does not differentiate a large closed expression.  Write
+\begin{equation}\label{eq:Delta-series}
+ G_\varepsilon^{-1}(Y)=u+\Delta,
+ \qquad \Delta=\sum_{n\ge1}a_n\varepsilon^n.
+\end{equation}
+Define the ordinary composition polynomials
+\begin{equation}\label{eq:composition-polynomials}
+ \mathcal C_{n,k}(a_1,a_2,\ldots)
+ =[\varepsilon^n]\left(\sum_{j\ge1}a_j\varepsilon^j\right)^k,
+ \qquad \mathcal C_{0,0}=1.
+\end{equation}
+Expanding \(F(u+\Delta)+\varepsilon E(u+\Delta)=F(u)\) gives
+\begin{equation}\label{eq:additive-recurrence}
+ a_n=-\frac1{F'(u)}\left[
+ \sum_{k=2}^{n}\frac{F^{(k)}(u)}{k!}\mathcal C_{n,k}
+ +\sum_{k=0}^{n-1}\frac{E^{(k)}(u)}{k!}\mathcal C_{n-1,k}
+ \right].
+\end{equation}
+Every term on the right depends only on \(a_1,\ldots,a_{n-1}\), so the recurrence is triangular.  The polynomials \(\mathcal C_{n,k}\) are ordinary partial Bell polynomials; they should not be confused with the Bell numbers \(\Bell_m\) entering \(C(x)\).
+
+\subsection{Exponential sectors and an explicit operator product}
+
+Suppose now that
+\begin{equation}\label{eq:E-omega}
+ E(x)=\e^{\omega x}C(x),
+\end{equation}
+where \(\omega\) is fixed and \(C\) is algebraic-logarithmic at infinity.  For the gamma envelope, \(F'(u)=Y\lambda\).  Introduce
+\begin{equation}\label{eq:Domega}
+ D_\omega=\frac{\dd}{\dd u}+\omega.
+\end{equation}
+The derivative structure forces a pure sector factorization.
+
+\begin{theorem}[Single-frequency sector factorization]\label{thm:single-frequency-factorization}
+For \(F(u)=Y\), \(F'(u)=Y\lambda(u)\), and \(E(x)=\e^{\omega x}C(x)\), the inverse has the formal expansion
+\begin{equation}\label{eq:single-sector-transseries}
+ G^{-1}(Y)
+ \sim u(Y)+\sum_{n\ge1}\frac{\e^{n\omega u(Y)}}{Y^n}
+ \Phi_n^{(\omega)}(u(Y)).
+\end{equation}
+Define, for \(1\le r\le n-1\),
+\begin{equation}\label{eq:Lnr-operator}
+ \mathcal L_{n,r}^{(\omega)}H
+ =\frac{H'+(n\omega-r\lambda)H}{\lambda}.
+\end{equation}
+Then
+\begin{equation}\label{eq:Phi-operator-product}
+ \boxed{
+ \Phi_n^{(\omega)}
+ =\frac{(-1)^n}{n!}
+ \left(\mathcal L_{n,n-1}^{(\omega)}\circ\cdots\circ
+ \mathcal L_{n,1}^{(\omega)}\right)
+ \left(\frac{C^n}{\lambda}\right),}
+\end{equation}
+with the empty product understood as the identity for \(n=1\).
+\end{theorem}
+
+\begin{proof}
+The \(n\)-th term of \cref{eq:additive-LB-u} starts from
+\[
+ \frac{E(u)^n}{F'(u)}
+ =Y^{-1}\e^{n\omega u}\frac{C(u)^n}{\lambda(u)}.
+\]
+For any integer \(r\ge1\), direct differentiation gives
+\begin{equation}\label{eq:operator-factor-step}
+ \mathscr D_u\left(Y^{-r}\e^{n\omega u}H(u)\right)
+ =Y^{-r-1}\e^{n\omega u}
+ \frac{H'+(n\omega-r\lambda)H}{\lambda}.
+\end{equation}
+Applying this identity \(n-1\) times proves both the factorization and the operator product.
+\end{proof}
+
+The first coefficients are
+\begin{align}
+ \Phi_1^{(\omega)}
+ &=-\frac{C}{\lambda},\label{eq:Phi1}\\
+ \Phi_2^{(\omega)}
+ &=\frac{C\,D_\omega C}{\lambda^2}
+ -\frac{C^2P_2}{2\lambda^3},\label{eq:Phi2}\\
+ \Phi_3^{(\omega)}
+ &=-\frac{C(D_\omega C)^2}{\lambda^3}
+ -\frac{C^2D_\omega^2C}{2\lambda^3}
+ +\frac{3C^2(D_\omega C)P_2}{2\lambda^4}\notag\\
+ &\quad
+ +\frac{C^3P_3}{6\lambda^4}
+ -\frac{C^3P_2^2}{2\lambda^5}.
+ \label{eq:Phi3}
+\end{align}
+For fixed \(\omega\), the large-\(u\) estimates \(C=O(u^{-1})\), \(\lambda\sim\log u\), and \(P_k=O((\log u)^k)\) imply
+\begin{equation}\label{eq:Phi-size}
+ \Phi_n^{(\omega)}(u)=O\!\left(\frac{u^{-n}}{\log u}\right).
+\end{equation}
+Thus the grading by powers of \(Y^{-1}\) is asymptotically strict even when \(\omega\) is purely imaginary.
+
+\subsection{Multi-frequency grids}
+
+Let
+\begin{equation}\label{eq:multi-E}
+ E(x)=\sum_{\alpha=1}^{M}\e^{\omega_\alpha x}C_\alpha(x).
+\end{equation}
+Substitution into \cref{eq:additive-LB-u} and multinomial expansion of \(E(u)^n\) show that the inverse support lies on the grid
+\begin{equation}\label{eq:multi-grid}
+ \left\{
+ Y^{-\lvert\bm r\rvert}\e^{(\bm r\cdot\bm\omega)u}:
+ \bm r\in\mathbb N^M\setminus\{\bm0\}
+ \right\}.
+\end{equation}
+Hence
+\begin{equation}\label{eq:multi-transseries}
+ G^{-1}(Y)
+ \sim u(Y)+\sum_{\bm r\ne\bm0}
+ Y^{-\lvert\bm r\rvert}\e^{(\bm r\cdot\bm\omega)u(Y)}
+ \Phi_{\bm r}(u(Y)).
+\end{equation}
+Order the support first by total degree \(\lvert\bm r\rvert\) and then by any fixed monomial order.  Purely imaginary frequencies may produce equal magnitudes or resonant phases, but the factor \(Y^{-\lvert\bm r\rvert}\) still makes the total-degree grading well founded.
+
+\subsection{Formal versus analytic validity}
+
+For the subfactorial problem the series in the auxiliary amplitude \(\varepsilon\) is more than a formal device.  In the \(v\)-coordinate, the map
+\[
+ v\longmapsto Y-\varepsilon\widetilde E(v)
+\]
+is a contraction in a small disk around \(Y\) for all bounded \(\varepsilon\) once \(Y\) is sufficiently large, because
+\begin{equation}\label{eq:Etilde-derivative}
+ \widetilde E'(Y)=\frac{E'(u)}{F'(u)}
+ =O\!\left(\frac{1}{Y\,u\log u}\right).
+\end{equation}
+Thus the Lagrange series converges at \(\varepsilon=1\) for each sufficiently large fixed \(Y\).  Its subsequent expansion in powers of \(u^{-1}\), however, is generally only asymptotic.  This distinction is useful: the sector expansion in \(Y^{-1}\) can converge while the Bell and Stirling coefficient expansions diverge.
+
+\section{Inverse transseries for subfactorial continuations}\label{sec:subfactorial-main}
+
+\subsection{The branch-indexed complex inverse}
+
+Apply \cref{thm:single-frequency-factorization} with \(\omega=\omega_\kappa=(2\kappa+1)\pi\ii\) and with \(C\) from \cref{eq:C-def}.
+
+\begin{theorem}[All-orders inverse of a subfactorial branch]\label{thm:subfactorial-branch-inverse}
+For every fixed \(\kappa\in\mathbb Z\), the large inverse branch satisfying \(z_\kappa(Y)-u(Y)\to0\) has the nested transseries
+\begin{equation}\label{eq:subfactorial-all-orders}
+ \boxed{
+ z_\kappa(Y)
+ \sim u(Y)+\sum_{n\ge1}
+ \frac{\e^{n\omega_\kappa u(Y)}}{Y^n}
+ \Phi_n^{(\omega_\kappa)}(u(Y)),}
+\end{equation}
+where \(u(Y)\) is the exact inverse of \(\Gamma(x+1)/\e\), and the coefficients are given by \cref{eq:Phi-operator-product}.  For each fixed \(N\),
+\begin{equation}\label{eq:subfactorial-sector-error}
+ z_\kappa(Y)
+ =u(Y)+\sum_{n=1}^{N}
+ \frac{\e^{n\omega_\kappa u(Y)}}{Y^n}
+ \Phi_n^{(\omega_\kappa)}(u(Y))
+ +O\!\left(\frac{Y^{-N-1}u^{-N-1}}{\log u}\right).
+\end{equation}
+The estimate holds along the positive real \(Y\)-axis for fixed \(\kappa\), and sectorially after the usual branch restrictions.
+\end{theorem}
+
+\begin{proof}
+The formal expansion and coefficient formula follow directly from \cref{thm:single-frequency-factorization}.  For the analytic estimate, the contraction argument following \cref{eq:Etilde-derivative} gives a convergent amplitude expansion for large \(Y\).  The derivative bounds \(C^{(j)}(u)=O(u^{-j-1})\), together with fixed \(\omega_\kappa\), imply \cref{eq:Phi-size} inductively through the operator product.  The first omitted sector therefore has the stated order, and the remaining convergent tail is geometrically dominated for large \(Y\).
+\end{proof}
+
+The first three sectors are obtained by substituting \(\omega_\kappa\) into \cref{eq:Phi1,eq:Phi2,eq:Phi3}.  In particular,
+\begin{align}
+ z_\kappa(Y)
+ &=u-\frac{\e^{\omega_\kappa u}}{Y}\frac{C}{\lambda}\notag\\
+ &\quad+\frac{\e^{2\omega_\kappa u}}{Y^2}
+ \left[
+ \frac{C(C'+\omega_\kappa C)}{\lambda^2}
+ -\frac{C^2(\lambda^2+\lambda')}{2\lambda^3}
+ \right]
+ +O\!\left(\frac{Y^{-3}u^{-3}}{\log u}\right).
+ \label{eq:subfactorial-first-two-sectors}
+\end{align}
+For the principal incomplete-gamma path, \(\kappa=0\) and \(\omega_0=\pi\ii\).
+
+\subsection{Expanding the first Bell sector}
+
+Let
+\begin{equation}\label{eq:L-log-u}
+ L=\log u.
+\end{equation}
+The digamma expansion \cite{DLMF511} gives
+\begin{equation}\label{eq:lambda-expansion}
+ \lambda=\psi(u+1)
+ \sim L+\frac1{2u}-\frac1{12u^2}+\frac1{120u^4}-\cdots.
+\end{equation}
+Combining this with \cref{eq:C-first-terms} gives
+\begin{align}
+ \frac{C(u)}{\lambda(u)}
+ &\sim \frac1{uL}
+ -\frac{4L+1}{2u^2L^2}
+ +\frac{60L^2+13L+3}{12u^3L^3}\notag\\
+ &\quad
+ -\frac{360L^3+64L^2+14L+3}{24u^4L^4}
+ +O\!\left(\frac{u^{-5}}{L}\right).
+ \label{eq:C-over-lambda}
+\end{align}
+At the next sector,
+\begin{equation}\label{eq:Phi2-leading-omega}
+ \Phi_2^{(\omega)}(u)
+ =\frac1{u^2}\left(-\frac1{2L}+\frac{\omega}{L^2}\right)
+ +O\!\left(\frac{u^{-3}}{L}\right).
+\end{equation}
+Consequently, the branch inverse begins
+\begin{align}
+ z_\kappa(Y)
+ &=u-\frac{\e^{\omega_\kappa u}}{Y}
+ \left[
+ \frac1{uL}-\frac{4L+1}{2u^2L^2}
+ +\frac{60L^2+13L+3}{12u^3L^3}
+ +O\!\left(\frac{u^{-4}}{L}\right)
+ \right]\notag\\
+ &\quad
+ +\frac{\e^{2\omega_\kappa u}}{Y^2}
+ \left[
+ -\frac1{2u^2L}+\frac{\omega_\kappa}{u^2L^2}
+ +O\!\left(\frac{u^{-3}}{L}\right)
+ \right]
+ +O\!\left(\frac{Y^{-3}u^{-3}}{L}\right).
+ \label{eq:branch-expanded-two-sectors}
+\end{align}
+All coefficients at all orders are generated by Bell numbers from \(C\), Bernoulli numbers from \(\lambda\), and the differential operators \(\mathcal L_{n,r}^{(\omega)}\).
+
+\subsection{The real symmetrized inverse}
+
+Set
+\begin{equation}\label{eq:H-cos}
+ H(u)=C(u)\cos(\pi u),
+ \qquad
+ H'(u)=C'(u)\cos(\pi u)-\pi C(u)\sin(\pi u).
+\end{equation}
+Applying \cref{eq:additive-LB-u} with \(E=H\) yields a real expansion.
+
+\begin{theorem}[Real inverse interpolating every derangement]\label{thm:sym-inverse}
+The eventual real inverse \(r(Y)=\Dsub_{\rm sym}^{-1}(Y)\) satisfies
+\begin{align}
+ r(Y)
+ &=u-\frac{H}{Y\lambda}
+ +\frac1{Y^2}\left[
+ \frac{HH'}{\lambda^2}
+ -\frac{H^2(\lambda^2+\lambda')}{2\lambda^3}
+ \right]
+ +O\!\left(\frac{Y^{-3}u^{-3}}{\log u}\right).
+ \label{eq:sym-inverse-two-sector}
+\end{align}
+More generally,
+\begin{equation}\label{eq:sym-inverse-all-order}
+ r(Y)
+ \sim u+\sum_{n\ge1}\frac{(-1)^n}{n!}
+ \left(\frac1{Y\lambda}\frac{\dd}{\dd u}\right)^{n-1}
+ \left(\frac{H(u)^n}{Y\lambda}\right).
+\end{equation}
+Successive orders contain harmonics \(\e^{\ii m\pi u}\) with \(m=-n,-n+2,\ldots,n\).
+\end{theorem}
+
+The first-order displacement is
+\begin{equation}\label{eq:sym-leading}
+ r(Y)-u(Y)
+ \sim-\frac{\cos(\pi u)}{Y\,u\log u}.
+\end{equation}
+At the exact derangement ordinates, \(r(D_n)=n\).
+
+\subsection{Parity-resolved inverse transseries}
+
+For \(G_\sigma=F+\sigma C\), set \(\omega=0\) and use the amplitude \(\varepsilon=\sigma\).  Then
+\begin{equation}\label{eq:parity-all-orders}
+ \boxed{
+ x_\sigma(Y)
+ \sim u(Y)+\sum_{n\ge1}\frac{\sigma^n}{Y^n}\Phi_n^{(0)}(u(Y)).}
+\end{equation}
+The first two sectors are
+\begin{align}
+ x_\sigma(Y)
+ &=u-\frac{\sigma C}{Y\lambda}
+ +\frac1{Y^2}\left[
+ \frac{CC'}{\lambda^2}
+ -\frac{C^2(\lambda^2+\lambda')}{2\lambda^3}
+ \right]
+ +O\!\left(\frac{Y^{-3}u^{-3}}{\log u}\right).
+ \label{eq:parity-two-sector-exact}
+\end{align}
+Expanding the coefficient functions gives
+\begin{align}
+ x_\sigma(Y)
+ &=u-\frac{\sigma}{Y}
+ \left[
+ \frac1{uL}-\frac{4L+1}{2u^2L^2}
+ +\frac{60L^2+13L+3}{12u^3L^3}
+ +O\!\left(\frac{u^{-4}}{L}\right)
+ \right]\notag\\
+ &\quad+\frac1{Y^2}\left[
+ -\frac1{2u^2L}
+ +\frac{8L^2-3L-2}{4u^3L^3}
+ +O\!\left(\frac{u^{-4}}{L}\right)
+ \right]
+ +O\!\left(\frac{Y^{-3}u^{-3}}{L}\right).
+ \label{eq:parity-expanded}
+\end{align}
+This is the simplest explicit real form of the inverse-subfactorial transseries.
+
+\subsection{The alternating displacement at derangement ordinates}
+
+Let \(\sigma_n=(-1)^n\), and let \(u_n=u(D_n)\).  Since
+\(
+ D_n=F(n)+\sigma_nC(n)
+\), Taylor inversion of \(F\) around \(n\) gives
+\begin{equation}\label{eq:u-n-exact-leading}
+ u_n-n
+ =\frac{\sigma_n C(n)}{F(n)\psi(n+1)}
+ +O\!\left(\frac{1}{F(n)^2n^2\log n}\right).
+\end{equation}
+Therefore
+\begin{equation}\label{eq:u-n-simple-asymptotic}
+ \boxed{
+ u(D_n)-n
+ \sim\frac{(-1)^n}{D_n\,n\log n}.}
+\end{equation}
+The inverse-gamma envelope passes alternately just above the even indices and just below the odd indices when sampled at the exact derangement values.  The Bell sector in \cref{eq:parity-expanded} cancels this displacement and recovers the integer exactly, order by order.
+
+\subsection{Complex branch bookkeeping beyond the principal real carrier}
+
+The positive real inverse uses the principal logarithm and \(W_0\).  In the complex plane, write
+\begin{equation}\label{eq:complex-A-m}
+ A_m=\Log\frac{\e Y}{\sqrt{2\pi}}+2\pi\ii m,
+ \qquad m\in\mathbb Z,
+\end{equation}
+and choose a Lambert branch \(W_j(A_m/\e)\).  Every pair \((m,j)\) for which
+\(
+ Q_{m,j}=A_m/W_j(A_m/\e)
+\)
+tends to infinity inside a Stirling sector generates a formal inverse-gamma branch by \cref{thm:lambert-centered-reversion}.  The incomplete-gamma continuation contributes the additional branch label \(\kappa\) through \(\omega_\kappa\).  Thus the full complex branch structure is naturally organized by a logarithm index, a Lambert index, and an incomplete-gamma path index.  The present article focuses on \((m,j)=(0,0)\) and arbitrary fixed \(\kappa\), which is the family asymptotic to the positive real envelope.
+
+\section{General theory for transseries of the same shape}\label{sec:general-theory}
+
+\subsection{Two-stage inversion architecture}
+
+The subfactorial problem separates into two logically independent reversions.
+
+\begin{methodbox}[Stage A: invert the dominant carrier]
+Suppose a shifted coordinate \(q=x+\beta\) reduces the logarithm of the dominant function to
+\begin{equation}\label{eq:dominant-general-log}
+ \log F(x)=c+q(\log q-a)+R(q),
+\end{equation}
+where \(R(q)=o(q)\) belongs to a differential algebra of inverse powers and logarithms.  For \(S=\log Y-c\), use
+\begin{equation}\label{eq:dominant-general-W}
+ w=W_0(S\e^{-a}),\qquad Q=S/w=\e^{a+w}
+\end{equation}
+as the exact Lambert carrier.  Revert the smaller term \(R\) by the triangular recurrence of \cref{thm:lambert-centered-reversion}.  The universal reversion denominator is \(1+w\).
+\end{methodbox}
+
+\begin{methodbox}[Stage B: invert the subdominant sectors]
+Write the full function as
+\begin{equation}\label{eq:general-full-G}
+ G(x)=F(x)+E(x),
+\end{equation}
+where \(E/F\to0\).  Keep \(u=F^{-1}(Y)\) exact and apply the additive Lagrange--Buermann formula
+\begin{equation}\label{eq:general-stage-B}
+ G^{-1}(Y)
+ \sim u+\sum_{n\ge1}\frac{(-1)^n}{n!}
+ \left(\frac1{F'(u)}\frac{\dd}{\dd u}\right)^{n-1}
+ \left(\frac{E(u)^n}{F'(u)}\right).
+\end{equation}
+Only after this sector expansion is established should one substitute the Stage A expansion for \(u\).
+\end{methodbox}
+
+The architecture prevents a common error: flattening every scale too early can hide a tiny sector beneath the truncation error of a much larger divergent expansion.
+
+\subsection{Lambert-reducible polynomial-logarithmic corrections}
+
+The recurrence in \cref{thm:lambert-centered-reversion} extends directly when
+\begin{equation}\label{eq:R-polylog}
+ R(q)\sim\sum_{m\ge m_0}q^{-m}P_m(\log q),
+\end{equation}
+with polynomial or Laurent-polynomial \(P_m\).  Under \(q=Q(1+U)\), one expands
+\[
+ \log q=\log Q+\log(1+U)
+\]
+automatically.  The coefficient ring must contain \(\log Q=a+w\) and the reversion factor \(s^{-1}=(1+w)^{-1}\), but the recursion remains triangular because \(U=O(Q^{-1-m_0})\).  More general well-based logarithmic transseries can be handled in the same way whenever composition with \(\log(1+U)\), differentiation, and division by \(1+w\) remain inside the chosen coefficient field.  This is the operational setting of grid-based transseries described in standard references \cite{VanDerHoeven2006,Edgar2010}.
+
+At first order, the correction has the universal Newton form
+\begin{equation}\label{eq:general-first-carrier-correction}
+ q-Q\sim-\frac{R(Q)}{1+w}.
+\end{equation}
+Higher orders are forced by repeated composition.  The same denominator \(1+w\) appears regardless of the constant \(a\) in \(q(\log q-a)\), because
+\[
+ \frac{\dd}{\dd q}\left[q(\log q-a)\right]
+ =\log q-a+1=w+1
+\]
+at the carrier point.
+
+\subsection{Moment/Stieltjes corrections}
+
+The Bell correction belongs to a much larger class with an especially transparent remainder theory.
+
+\begin{theorem}[Moment expansion for a Stieltjes correction]\label{thm:stieltjes-moment}
+Let \(\mu\) be a positive measure on \([0,\infty)\) with finite moments
+\begin{equation}\label{eq:moment-Mj}
+ M_j=\int_0^\infty t^j\dd\mu(t),\qquad j=0,1,\ldots,M.
+\end{equation}
+For
+\begin{equation}\label{eq:Cmu}
+ C_\mu(x)=\int_0^\infty\frac{\dd\mu(t)}{x+t},\qquad x>0,
+\end{equation}
+one has the exact finite expansion
+\begin{equation}\label{eq:Cmu-expansion}
+ C_\mu(x)=\sum_{k=1}^{M}(-1)^{k-1}\frac{M_{k-1}}{x^k}
+ +R_{\mu,M}(x),
+\end{equation}
+where
+\begin{equation}\label{eq:Cmu-rem}
+ R_{\mu,M}(x)=(-1)^Mx^{-M}
+ \int_0^\infty\frac{t^M}{x+t}\dd\mu(t).
+\end{equation}
+In particular,
+\begin{equation}\label{eq:Cmu-bound}
+ (-1)^MR_{\mu,M}(x)\ge0,
+ \qquad
+ \abs{R_{\mu,M}(x)}\le M_Mx^{-M-1}.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Integrate the exact resolvent identity \cref{eq:finite-geometric-resolvent} against \(\mu\).
+\end{proof}
+
+Now consider
+\begin{equation}\label{eq:moment-perturbed-G}
+ G(x)=F(x)+\e^{\omega x}C_\mu(x).
+\end{equation}
+The inverse transseries is still \cref{eq:single-sector-transseries}.  The first sector is
+\begin{equation}\label{eq:moment-first-inverse-sector}
+ -\frac{\e^{\omega u}}{Y\lambda(u)}
+ \sum_{k\ge1}(-1)^{k-1}\frac{M_{k-1}}{u^k},
+\end{equation}
+followed by corrections generated by differentiation and products of the moments.  Thus a moment sequence in the original additive term becomes the coefficient sequence of a new inverse transseries sector.  The Bell-number phenomenon is the special case
+\(
+ M_{k-1}=\Bell_k
+\).
+
+\subsection{Multi-frequency and resonant corrections}
+
+For
+\begin{equation}\label{eq:general-multifrequency-G}
+ G(x)=F(x)+\sum_{\alpha=1}^{M}\e^{\omega_\alpha x}C_\alpha(x),
+\end{equation}
+the inverse support is the additive semigroup generated by
+\begin{equation}\label{eq:basic-inverse-monomials}
+ \mathfrak m_\alpha(Y)=\frac{\e^{\omega_\alpha u(Y)}}{Y}.
+\end{equation}
+Mixed products produce \(\mathfrak m_1^{r_1}\cdots\mathfrak m_M^{r_M}\).  If a resonance
+\(
+ \bm r\cdot\bm\omega=\bm s\cdot\bm\omega
+\)
+occurs, the corresponding coefficient functions add.  Resonance changes coefficient bookkeeping but not the total-degree valuation \(Y^{-\lvert\bm r\rvert}\).
+
+The real symmetrized subfactorial is the two-frequency example \(\omega_\pm=\pm\pi\ii\).  At total degree \(n\), its harmonics have frequencies \((n-2j)\pi\), \(0\le j\le n\).  This explains the harmonic statement in \cref{thm:sym-inverse} without separate trigonometric calculations at every order.
+
+\subsection{Multiplicative perturbations}
+
+If
+\begin{equation}\label{eq:multiplicative-G}
+ G(x)=F(x)\left(1+M(x)\right),
+ \qquad M(x)\to0,
+\end{equation}
+then take \(E(x)=F(x)M(x)\) in \cref{eq:general-stage-B}.  Since \(E(u)=YM(u)\), the first inverse displacement is
+\begin{equation}\label{eq:multiplicative-first}
+ G^{-1}(Y)-u(Y)
+ \sim-\frac{M(u)}{\lambda(u)}.
+\end{equation}
+Thus the inverse-sector monomial is the relative correction \(M(u)\), not \(Y^{-1}\).  The same Lagrange--Buermann operator handles additive, multiplicative, oscillatory, and mixed perturbations; only the valuation changes.
+
+\subsection{Closure of the coefficient field}
+
+For the subfactorial problem, let \(L=\log u\) and consider the differential algebra
+\begin{equation}\label{eq:coefficient-algebra}
+ \mathscr A=
+ \mathbb C[\omega,L,L^{-1}]\!\left[\!\left[u^{-1}\right]\!\right].
+\end{equation}
+Because
+\[
+ \frac{\dd}{\dd u}\left(u^{-m}L^j\right)
+ =-m u^{-m-1}L^j+j u^{-m-1}L^{j-1},
+\]
+the algebra is closed under differentiation.  The expansion \(\lambda=L+O(u^{-1})\) makes \(\lambda\) a unit after adjoining \(L^{-1}\), so division by \(\lambda\) is also closed.  Since \(C\in u^{-1}\mathscr A\), the operator product \cref{eq:Phi-operator-product} proves inductively that
+\begin{equation}\label{eq:Phi-algebra}
+ \Phi_n^{(\omega)}\in u^{-n}L^{-1}\mathscr A.
+\end{equation}
+The full single-frequency inverse belongs to the grid extension
+\begin{equation}\label{eq:grid-algebra}
+ u+\mathscr A[[\mathfrak m]],
+ \qquad
+ \mathfrak m=Y^{-1}\e^{\omega u}.
+\end{equation}
+This gives a precise algebraic meaning to the nested inverse transseries used throughout the article.
+
+\subsection{Residual-to-error transfer}
+
+A formal expansion becomes a certified approximation only after its residual is divided by a derivative lower bound.
+
+\begin{lemma}[Real residual certificate]\label{lem:residual-certificate}
+Let \(G\) be continuously differentiable and strictly monotone on an interval containing an exact root \(x_*\) of \(G(x)=Y\) and an approximation \(x_N\).  If
+\begin{equation}\label{eq:derivative-lower-bound}
+ \abs{G'(x)}\ge m_N>0
+\end{equation}
+throughout the segment joining \(x_N\) and \(x_*\), then
+\begin{equation}\label{eq:residual-error-bound}
+ \abs{x_N-x_*}
+ \le\frac{\abs{G(x_N)-Y}}{m_N}.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Apply the mean-value theorem to \(G(x_N)-G(x_*)\).
+\end{proof}
+
+For the real subfactorial interpolations and large \(u\),
+\[
+ G'(x)=F(x)\psi(x+1)+O(x^{-1}).
+\]
+On a sufficiently small neighborhood of \(u\), one may take
+\begin{equation}\label{eq:subfactorial-m-lower}
+ m_N\ge\frac12Y\log u.
+\end{equation}
+Therefore a computable residual yields the practical certificate
+\begin{equation}\label{eq:subfactorial-residual-certificate}
+ \abs{x_N-x_*}
+ \le\frac{2\abs{G(x_N)-Y}}{Y\log u}.
+\end{equation}
+For complex branches, the corresponding tool is a local inverse-function or Rouche argument on a disk; the same derivative dominance supplies the needed nonvanishing condition.
+
+\subsection{A reusable inversion algorithm}
+
+\begin{algorithm}[Nested transseries inversion]\label{alg:nested-inversion}
+For a gamma-dominant function \(G=F+E\) and a large target \(Y\):
+\begin{enumerate}
+\item Identify a shift \(q=x+\beta\) that reduces \(\log F\) to \(c+q(\log q-a)+R(q)\).
+\item Form \(S=\log Y-c\), \(w=W_0(S\e^{-a})\), and \(Q=S/w\).
+\item Generate as many Stage A coefficients as needed from \cref{eq:d-recursion}.  Use the resulting approximation as a starting value for Newton iteration on \(\log F(x)-\log Y\), thereby obtaining the exact carrier \(u\) at the precision required by the smallest desired sector.
+\item Evaluate \(E(u)\), \(F'(u)\), and their derivatives.  For Stieltjes corrections, either use the convergent integral/partial-fraction representation or optimally truncate the moment expansion with its explicit remainder bound.
+\item Generate Stage B coefficients by \cref{eq:additive-LB-u}, the recurrence \cref{eq:additive-recurrence}, or the operator product \cref{eq:Phi-operator-product}.
+\item Sum sectors in increasing valuation and compute the residual \(G(x_N)-Y\).
+\item Convert the residual to an error bound with \cref{eq:residual-error-bound} or a complex inverse-function estimate.
+\end{enumerate}
+\end{algorithm}
+
+Using \(\log F\) in the Newton step avoids overflow.  The required working precision must be chosen from the smallest requested absolute correction.  In the subfactorial case, resolving the first Bell sector at large \(Y\) requires roughly the number of decimal digits in \(Y\), in addition to the digits desired in the answer.
+
+\section{A Touchard-polynomial deformation}\label{sec:touchard}
+
+The Bell numbers arise because the correction measure is Poisson with parameter \(1\), shifted by one.  Replacing the fixed incomplete-gamma argument \(-1\) by \(-a\) produces the full Touchard-polynomial family.
+
+\subsection{Generalized alternating exponential truncations}
+
+Fix \(a>0\) and define
+\begin{equation}\label{eq:Da-n}
+ D_n(a)=n!\sum_{j=0}^{n}\frac{(-a)^j}{j!}
+ =\e^{-a}\Gamma(n+1,-a).
+\end{equation}
+For a path index \(\kappa\), put
+\begin{equation}\label{eq:omega-a}
+ \omega_{\kappa,a}=\log a+(2\kappa+1)\pi\ii
+\end{equation}
+and
+\begin{equation}\label{eq:Ca-def}
+ C_a(z)=a\e^{-a}\int_0^1t^z\e^{at}\dd t
+ =a\e^{-a}\sum_{j=0}^{\infty}\frac{a^j}{j!(z+j+1)}.
+\end{equation}
+The same path calculation as in \cref{thm:exact-branch-splitting} gives
+\begin{equation}\label{eq:Da-branch}
+ \boxed{
+ \Dsub_{\kappa,a}(z)
+ =\e^{-a}\Gamma(z+1)+\e^{\omega_{\kappa,a}z}C_a(z).}
+\end{equation}
+At integer \(n\), the phase is \((-a)^n\), and \cref{eq:Da-branch} equals \(D_n(a)\).
+
+\subsection{Touchard coefficients and exact remainder}
+
+Let \(\Touch_m(a)\) be the Touchard polynomial, equivalently the \(m\)-th moment of a Poisson random variable of mean \(a\):
+\begin{equation}\label{eq:Touchard-def}
+ \Touch_m(a)=\e^{-a}\sum_{j=0}^{\infty}\frac{j^m a^j}{j!}.
+\end{equation}
+A shift of index gives
+\begin{equation}\label{eq:Touchard-shift-identity}
+ a\e^{-a}\sum_{j=0}^{\infty}\frac{a^j(j+1)^{m-1}}{j!}
+ =\Touch_m(a).
+\end{equation}
+Therefore \cref{thm:stieltjes-moment} yields the following direct extension of the Bell theorem.
+
+\begin{theorem}[Touchard expansion]\label{thm:touchard-expansion}
+For every \(x>0\) and integer \(M\ge1\),
+\begin{equation}\label{eq:Ca-touchard}
+ C_a(x)=\sum_{m=1}^{M}(-1)^{m-1}\frac{\Touch_m(a)}{x^m}
+ +R_{a,M}(x),
+\end{equation}
+where
+\begin{equation}\label{eq:Ca-touchard-bound}
+ (-1)^MR_{a,M}(x)>0,
+ \qquad
+ \abs{R_{a,M}(x)}\le\frac{\Touch_{M+1}(a)}{x^{M+1}}.
+\end{equation}
+At \(a=1\), \(\Touch_m(1)=\Bell_m\), recovering \cref{thm:bell-remainder}.
+\end{theorem}
+
+\subsection{Inverse transseries for the deformed family}
+
+Let \(u_a(Y)\) solve
+\begin{equation}\label{eq:ua-def}
+ \e^{-a}\Gamma(u_a+1)=Y.
+\end{equation}
+Its Lambert carrier is obtained by replacing \(A\) with
+\begin{equation}\label{eq:Aa-def}
+ A_a=\log\frac{\e^aY}{\sqrt{2\pi}}.
+\end{equation}
+All centered Stirling coefficients remain unchanged.  Applying \cref{thm:single-frequency-factorization} gives
+\begin{equation}\label{eq:Da-inverse-transseries}
+ \Dsub_{\kappa,a}^{-1}(Y)
+ \sim u_a(Y)+\sum_{n\ge1}
+ \frac{\e^{n\omega_{\kappa,a}u_a(Y)}}{Y^n}
+ \Phi_{a,n}^{(\omega_{\kappa,a})}(u_a(Y)),
+\end{equation}
+where \(\Phi_{a,n}\) is obtained from \cref{eq:Phi-operator-product} by replacing \(C\) with \(C_a\).  In particular,
+\begin{equation}\label{eq:Da-leading-inverse}
+ \Dsub_{\kappa,a}^{-1}(Y)
+ =u_a(Y)-\frac{\e^{\omega_{\kappa,a}u_a}C_a(u_a)}{Y\psi(u_a+1)}
+ +O\!\left(\frac{\abs{a}^{2u_a}}{Y^2u_a^2\log u_a}\right).
+\end{equation}
+For fixed \(a\), factorial growth still dominates \(a^{u_a}\), so the sector is asymptotically small.  This family demonstrates that Bell-number inverse sectors are one point in a broader Poisson-moment/Touchard theory.
+
+\section{Numerical verification}\label{sec:numerics}
+
+The numerical experiments in this section use arbitrary-precision arithmetic.  The exact carrier \(u(Y)\) was obtained by Newton iteration on
+\begin{equation}\label{eq:newton-loggamma}
+ \log\Gamma(u+1)-1-\log Y=0,
+\end{equation}
+seeded by \cref{eq:u-main-expansion}.  The correction \(C(u)\) and its derivative were evaluated from the rapidly convergent sums
+\begin{equation}\label{eq:C-Cprime-sums}
+ C(u)=\frac1\e\sum_{j\ge0}\frac{1}{j!(u+j+1)},
+ \qquad
+ C'(u)=-\frac1\e\sum_{j\ge0}\frac{1}{j!(u+j+1)^2}.
+\end{equation}
+All displayed differences are signed errors, rounded from computations performed with at least 80 decimal digits.
+
+\subsection{Accuracy of the Lambert--Stirling carrier}
+
+Let \(u^{[0]}=Q-1/2\), and let \(u^{[1]},u^{[3]},u^{[5]},u^{[7]}\) denote the successive truncations obtained by adding \(d_1Q^{-1},d_3Q^{-3},d_5Q^{-5},d_7Q^{-7}\).  At the target \(Y=D_n\), the errors relative to the exact gamma-envelope inverse \(u(D_n)\) are as follows.
+
+\begin{table}[htbp]
+\centering
+\small
+\setlength{\tabcolsep}{3.2pt}
+\caption{Signed errors \(u^{[j]}-u(D_n)\) in the Lambert--Stirling carrier.}
+\label{tab:carrier-errors}
+\begin{tabular}{r r r r r r}
+\toprule
+\(n\) & \(u^{[0]}-u\) & \(u^{[1]}-u\) & \(u^{[3]}-u\) & \(u^{[5]}-u\) & \(u^{[7]}-u\)\\
+\midrule
+10 & \(-1.6867983\!\times10^{-3}\) & \(1.2192504\!\times10^{-6}\) & \(-3.3010676\!\times10^{-9}\) & \(2.0997717\!\times10^{-11}\) & \(-2.5455408\!\times10^{-13}\)\\
+20 & \(-6.7283562\!\times10^{-4}\) & \(1.1908008\!\times10^{-7}\) & \(-8.5346644\!\times10^{-11}\) & \(1.4599668\!\times10^{-13}\) & \(-4.7355933\!\times10^{-16}\)\\
+50 & \(-2.1036963\!\times10^{-4}\) & \(5.7995124\!\times10^{-9}\) & \(-6.9095404\!\times10^{-13}\) & \(1.9819752\!\times10^{-16}\) & \(-1.0724457\!\times10^{-19}\)\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The alternating decrease is consistent with the centered Stirling structure.  More importantly, at \(n=20\) the Bell displacement is only about \(1.7\times10^{-20}\), already much smaller than the \(Q^{-7}\)-truncation error.  At \(n=50\) the difference is overwhelming.  This is the practical manifestation of the scale separation in \cref{eq:bell-beyond-fixed-exp}: one must Newton-refine the carrier before attempting to resolve the subfactorial sector.
+
+\subsection{Recovery of integer indices from exact derangement values}
+
+For \(Y=D_n\), choose \(\sigma=(-1)^n\).  Let
+\begin{align}
+ x_\sigma^{[1]}
+ &=u-\frac{\sigma C}{Y\lambda},\label{eq:x-parity-num-1}\\
+ x_\sigma^{[2]}
+ &=x_\sigma^{[1]}+\frac1{Y^2}
+ \left[
+ \frac{CC'}{\lambda^2}
+ -\frac{C^2(\lambda^2+\lambda')}{2\lambda^3}
+ \right].
+ \label{eq:x-parity-num-2}
+\end{align}
+Because \(x_{(-1)^n}(D_n)=n\) exactly, their signed errors may be measured directly against \(n\).
+
+\begin{table}[htbp]
+\centering
+\small
+\caption{Bell-sector recovery of the integer index from \(Y=D_n\).}
+\label{tab:bell-recovery}
+\begin{tabular}{r r r r}
+\toprule
+\(n\) & \(u(D_n)-n\) & \(x_{(-1)^n}^{[1]}(D_n)-n\) & \(x_{(-1)^n}^{[2]}(D_n)-n\)\\
+\midrule
+10 & \( 2.67167149055\!\times10^{-8}\) & \( 9.13998505805\!\times10^{-16}\) & \( 4.21393368757\!\times10^{-23}\)\\
+11 & \(-2.15649411782\!\times10^{-9}\) & \( 6.12409529877\!\times10^{-18}\) & \(-2.34134360394\!\times10^{-26}\)\\
+20 & \( 1.68471784606\!\times10^{-20}\) & \( 4.43896764784\!\times10^{-40}\) & \( 1.56737019375\!\times10^{-59}\)\\
+21 & \(-7.55330911992\!\times10^{-22}\) & \( 9.04443664056\!\times10^{-43}\) & \(-1.45092932399\!\times10^{-63}\)\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The sign of \(u(D_n)-n\) alternates exactly as predicted by \cref{eq:u-n-simple-asymptotic}.  Each added sector contributes another power of the tiny amplitude \(Y^{-1}\); in the displayed cases this roughly doubles the number of correct decimal places at each step.
+
+\subsection{A genuinely complex inverse branch}
+
+For the principal incomplete-gamma branch \(\omega=\pi\ii\), define \(z^{[1]}\) and \(z^{[2]}\) by retaining one and two sectors in \cref{eq:subfactorial-first-two-sectors}.  The next table compares them with a high-precision numerical root of \(\Dsub_0(z)=Y\).
+
+\begin{table}[htbp]
+\centering
+\small
+\caption{Principal complex branch: displacement and truncation errors.}
+\label{tab:complex-branch}
+\begin{tabular}{c p{0.31\linewidth} p{0.31\linewidth}}
+\toprule
+\(Y\) & \(z_0(Y)-u(Y)\) & errors \(z^{[1]}-z_0\), \(z^{[2]}-z_0\)\\
+\midrule
+\(10^8\)
+& \( -2.2116333803\times10^{-10}+1.8899727089\times10^{-10}\ii\)
+& \( -2.4490805670\times10^{-19}-1.5375833604\times10^{-19}\ii\)\\[-0.1em]
+&& \( -1.0624249085\times10^{-28}+4.2279221738\times10^{-28}\ii\)\\[0.35em]
+\(10^{20}\)
+& \( -1.8355790924\times10^{-23}+1.3633601642\times10^{-22}\ii\)
+& \( -4.4860789094\times10^{-44}+4.9345285404\times10^{-44}\ii\)\\[-0.1em]
+&& \( 4.7644684050\times10^{-65}-1.1986677056\times10^{-65}\ii\)\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The phase \(\e^{\pi\ii u}\) is visible in the nonzero imaginary part.  The error reduction agrees with the sector orders \(Y^{-2}\) and \(Y^{-3}\).
+
+\subsection{A residual check}
+
+The most reliable implementation should not trust a coefficient table alone.  Given any approximant \(x_N\), evaluate
+\[
+ \Res_N=G(x_N)-Y.
+\]
+For the real parity or symmetrized interpolation, \cref{eq:subfactorial-residual-certificate} converts this directly into a certified error.  For example, once \(Y\) is large enough that \(G'(x)\ge\tfrac12Y\log u\) on the enclosing interval, a residual of size \(10^{-p}Y\log u\) guarantees \(p\) correct absolute decimal digits in \(x_N\).  This residual check also detects branch mistakes: using \(\e^{-\pi\ii u}\) instead of \(\e^{\pi\ii u}\) generally leaves a first-sector residual rather than a third-sector residual.
+
+\section{Consequences, extensions, and research directions}\label{sec:directions}
+
+\subsection{A concise hierarchy theorem}
+
+Combining the preceding results gives the following summary.
+
+\begin{theorem}[Hierarchy of the inverse subfactorial]\label{thm:hierarchy-summary}
+Let \(Y\to+\infty\), let \(A,w,Q,s\) be as in \cref{eq:A-def,eq:w-Q-s}, and let \(u=F^{-1}(Y)\).  Then:
+\begin{enumerate}
+\item \(u\sim Q-1/2\), and the complete algebraic correction is a series in odd powers of \(Q^{-1}\) with coefficients rational in \(s\).
+\item The principal analytic subfactorial inverse is
+\[
+ \Dsub_0^{-1}(Y)
+ =u-\frac{\e^{\pi\ii u}C(u)}{Y\psi(u+1)}
+ +O\!\left(\frac{Y^{-2}u^{-2}}{\log u}\right).
+\]
+\item The real symmetrized inverse is
+\[
+ \Dsub_{\rm sym}^{-1}(Y)
+ =u-\frac{C(u)\cos(\pi u)}{Y\psi(u+1)}
+ +O\!\left(\frac{Y^{-2}u^{-2}}{\log u}\right).
+\]
+\item The parity inverse is
+\[
+ x_\sigma(Y)
+ =u-\frac{\sigma C(u)}{Y\psi(u+1)}
+ +O\!\left(\frac{Y^{-2}u^{-2}}{\log u}\right).
+\]
+\item The discrete generalized inverse is \(N(Y)=\ceil{\Dsub_{\rm sym}^{-1}(Y)}\) for all sufficiently large \(Y\).
+\end{enumerate}
+In every smooth case, all higher sectors are generated by \cref{eq:additive-LB-u}; in the analytic branch case they factor as \(Y^{-n}\e^{n\pi\ii u}\Phi_n(u)\).
+\end{theorem}
+
+\subsection{Why the Bell numbers survive inversion}
+
+The Bell numbers enter the original sequence additively, not relatively.  It might therefore seem that inversion would destroy their simple structure.  The first sector shows the opposite: inversion multiplies the Bell expansion by the reciprocal logarithmic derivative \(1/\psi(u+1)\).  At higher orders, the operator product differentiates and multiplies copies of \(C\), so the coefficients are finite polynomial expressions in Bell numbers and Bernoulli numbers.  In other words, inversion does not erase the combinatorial moments; it promotes them into a differential algebra.
+
+At total sector degree \(n\), the leading algebraic size is \(u^{-n}/\log u\).  The coefficient of a fixed power \(u^{-m}\) is assembled from compositions of \(m\) into \(n\) positive parts, weighted by products of Bell numbers and by the normalized gamma derivatives \(P_k\).  This gives a natural combinatorial interpretation of the inverse coefficients in terms of two interacting Bell structures: ordinary Bell numbers from the Poisson moment measure and complete exponential Bell polynomials from derivatives of \(F=\exp(\log F)\).
+
+\subsection{Hyperasymptotic flattening}
+
+The nested answer deliberately leaves \(u(Y)\) exact.  A fully flattened transseries that resolves the Bell sector using only explicit elementary, Lambert, and exponential monomials would have to continue the inverse-gamma expansion through its resurgent hierarchy.  Because the Bell scale is smaller than \(\e^{-cQ}\) for every fixed \(c\), finitely many exponential improvements of Stirling's series still do not suffice asymptotically.  One would need either:
+\begin{itemize}
+\item an exact special-function carrier, as used here;
+\item a hyperasymptotic process whose exponential level increases with \(Q\); or
+\item a convergent representation of \(\log\Gamma\), such as a Binet-type integral, incorporated into the inversion.
+\end{itemize}
+Developing a practically efficient ``all-the-way-down'' flattened transseries is an interesting problem because it couples resurgence with a superexponentially small combinatorial sector.
+
+\subsection{Global complex branch geometry}
+
+The local large branch near the positive envelope is unambiguous, but the global inverse of \(\Gamma(z+1,-1)\) has a much richer Riemann-surface structure.  Critical points satisfy
+\begin{equation}\label{eq:critical-subfactorial}
+ F(z)\psi(z+1)+\e^{\omega_\kappa z}\bigl(C'(z)+\omega_\kappa C(z)\bigr)=0.
+\end{equation}
+Near the positive axis the first term dominates, so no critical point interferes with the branch constructed here.  Farther into the complex plane, zeros of \(\psi\), gamma oscillation, and exponential phase growth can compete.  A systematic classification would combine the indices \((m,j,\kappa)\) of \cref{eq:complex-A-m} with Stokes geometry for the gamma function.
+
+\subsection{The staircase and periodic transseries}
+
+Equation \cref{eq:ceiling-fourier} places the discrete inverse in a different category from well-based small transseries: its periodic correction is order one and discontinuous.  Nonetheless, one can regard it as a transasymptotic composition
+\[
+ N(Y)=\mathcal S(r(Y)),
+ \qquad \mathcal S(x)=\ceil{x},
+\]
+where the smooth argument \(r(Y)\) has the complete expansion developed here.  Questions about the distribution of the fractional part of \(r(Y)\), or about averaged versions of \(N(Y)-r(Y)\), may be approachable by exponential-sum methods.  The rapidly increasing gaps \(D_{n+1}-D_n\) suggest that averaging with respect to \(Y\) and averaging with respect to \(n\) will lead to different limiting laws.
+
+\subsection{Formalization prospects}
+
+The derivation separates into components well suited to proof-assistant formalization:
+\begin{enumerate}
+\item the exact incomplete-gamma decomposition \cref{thm:exact-branch-splitting};
+\item the finite resolvent identity and Bell remainder theorem \cref{thm:bell-remainder};
+\item the formal Lambert-centered recurrence \cref{thm:lambert-centered-reversion};
+\item the formal Lagrange--Buermann identity \cref{thm:additive-LB};
+\item coefficient extraction in a differential ring;
+\item residual-to-error transfer by \cref{lem:residual-certificate}.
+\end{enumerate}
+The analytic Stirling remainder and sectorial complex estimates are the least elementary pieces.  A practical formalization strategy would first prove the formal coefficient theorems and the real finite-order error statements, leaving full complex resurgence for a later layer.
+
+\begin{problem}[Coefficient combinatorics]
+Find a direct closed formula for the coefficient of \(u^{-m}L^{-j}\) in \(\Phi_n^{(0)}\) in terms of set partitions, compositions, Bell numbers \(\Bell_k\), and Bernoulli numbers.  The operator product proves existence and gives an algorithm, but a transparent combinatorial formula may reveal positivity or sign regularities not visible from differentiation.
+\end{problem}
+
+\begin{problem}[Uniform Touchard deformation]
+Study \cref{eq:Da-inverse-transseries} when \(a=a(Y)\) grows with \(Y\).  The fixed-\(a\) hierarchy breaks when \(a^{u_a}/Y\) ceases to be small.  Transition regimes should occur when \(\log a\) is comparable with \(\log u_a-1\), and may require a new two-parameter Lambert carrier.
+\end{problem}
+
+\begin{problem}[Convergence boundary in the amplitude plane]
+For fixed large \(Y\), determine the nearest singularity in \(\varepsilon\) of the solution to
+\(
+ F(x)+\varepsilon\e^{\omega x}C(x)=Y
+\).
+The Lagrange series converges at \(\varepsilon=1\) for sufficiently large \(Y\), but the precise radius is controlled by simultaneous solutions of the equation and its \(x\)-derivative.  Its asymptotic expansion would quantify the true convergence margin of the Bell-sector series.
+\end{problem}
+
+\section{Conclusion}
+
+The inverse subfactorial is not a single object until one specifies how the integer sequence is continued or inverted.  Once that choice is made, the asymptotic structure is remarkably systematic.
+
+The dominant factorial growth is inverted by a Lambert \(W\) carrier.  Centered Stirling corrections are then reversed through a triangular algebra whose universal denominator is \(1+W\).  The exact derangement correction is a Stieltjes transform whose moments are Bell numbers, and additive Lagrange--Buermann inversion promotes it to a new sector graded by \(Y^{-1}\).  For a branch of the incomplete gamma continuation, the sector carries the phase \(\e^{(2\kappa+1)\pi\ii u}\); for the real symmetrization, the phases combine into Fourier harmonics; for parity envelopes, they reduce to signs; and for the discrete inverse, a separate order-one ceiling sector remains.
+
+The central all-orders result is the nested formula
+\[
+ \Dsub_\kappa^{-1}(Y)
+ \sim u(Y)+\sum_{n\ge1}\frac{\e^{n(2\kappa+1)\pi\ii u(Y)}}{Y^n}
+ \Phi_n^{(\kappa)}(u(Y)),
+\]
+with \(u(Y)\) given by the Lambert-centered inverse-gamma expansion and \(\Phi_n\) given by a finite differential-operator product.  The same two-stage method applies to a broad class of gamma-dominant maps with polynomial-logarithmic carriers and moment-generated additive sectors.  The Touchard deformation shows that the Bell coefficients are not accidental: they are the Poisson-parameter-one instance of a general moment-to-inverse principle.
+
+\appendix
+
+\section{Coefficient extraction for the centered gamma inverse}\label{app:gamma-coefficients}
+
+This appendix records the algebra behind \cref{eq:gamma-d1,eq:gamma-d3,eq:gamma-d5,eq:gamma-d7}.  Write
+\begin{equation}\label{eq:app-R}
+ R(q)=r_1q^{-1}+r_2q^{-2}+r_3q^{-3}+\cdots
+\end{equation}
+and
+\begin{equation}\label{eq:app-delta}
+ q=Q+d_1Q^{-1}+d_2Q^{-2}+d_3Q^{-3}+\cdots.
+\end{equation}
+Substitution into \cref{eq:U-master-equation} gives, successively,
+\begin{align}
+ s d_1+r_1&=0,\label{eq:app-match1}\\
+ s d_2+r_2&=0,\label{eq:app-match2}\\
+ s d_3+r_3-r_1d_1+\frac12d_1^2&=0,\label{eq:app-match3}\\
+ s d_4+r_4-2r_1d_2-r_2d_1+d_1d_2&=0.
+ \label{eq:app-match4}
+\end{align}
+Using \(d_1=-r_1/s\) and \(d_2=-r_2/s\) yields \cref{eq:d3-general,eq:d4-general}.  At the next order one obtains
+\begin{align}
+ d_5
+ &=-\frac{r_5}{s}
+ -\frac{4r_1r_3+2r_2^2}{s^2}
+ -\frac{2r_1^3+r_1r_3+\tfrac12r_2^2}{s^3}\notag\\
+ &\quad
+ -\frac{5r_1^3}{3s^4}
+ -\frac{r_1^3}{2s^5}.
+ \label{eq:d5-general}
+\end{align}
+For the centered gamma series,
+\[
+ r_1=-\frac1{24},\qquad r_2=0,\qquad
+ r_3=\frac7{2880},\qquad r_4=0,\qquad
+ r_5=-\frac{31}{40320}.
+\]
+Substitution into \cref{eq:d5-general} simplifies to \cref{eq:gamma-d5}.
+
+The vanishing of all \(d_{2m}\) follows by parity.  If \(U(t)\) contains only even powers of \(t\), then every term in the right-hand side of \cref{eq:U-master-equation} contains only odd powers: \(t^{-1}U^k\) is odd and \(t^{2m-1}(1+U)^{-(2m-1)}\) is odd.  Therefore no even coefficient equation is generated, and the unique solution has \(d_{2m}=0\).
+
+\section{Derivation of the first Bell-log coefficients}\label{app:bell-log}
+
+From \cref{eq:C-first-terms,eq:lambda-expansion}, write
+\begin{align*}
+ C(u)&=u^{-1}-2u^{-2}+5u^{-3}-15u^{-4}+O(u^{-5}),\\
+ \lambda(u)&=L+\frac12u^{-1}-\frac1{12}u^{-2}+O(u^{-4}).
+\end{align*}
+Factor \(\lambda=L(1+\eta)\), where
+\[
+ \eta=\frac{1}{2uL}-\frac{1}{12u^2L}+O(u^{-4}L^{-1}).
+\]
+Then
+\begin{align*}
+ \lambda^{-1}
+ &=L^{-1}(1-\eta+\eta^2-\eta^3+\cdots)\\
+ &=\frac1L-\frac{1}{2uL^2}
+ +\frac1{u^2}\left(\frac{1}{12L^2}+\frac{1}{4L^3}\right)
+ +O\!\left(\frac{u^{-3}}{L^2}\right).
+\end{align*}
+Multiplication by the Bell expansion of \(C\) gives
+\begin{align*}
+ \frac{C}{\lambda}
+ &=\frac1{uL}
+ +\frac1{u^2}\left(-\frac2L-\frac1{2L^2}\right)\\
+ &\quad+\frac1{u^3}\left(
+ \frac5L+\frac{13}{12L^2}+\frac1{4L^3}
+ \right)+O\!\left(\frac{u^{-4}}L\right),
+\end{align*}
+which is equivalent to the first three terms of \cref{eq:C-over-lambda}.
+
+For \(\omega=0\),
+\begin{equation}\label{eq:app-Phi2-zero}
+ \Phi_2^{(0)}
+ =\frac{CC'}{\lambda^2}
+ -\frac{C^2}{2\lambda}
+ -\frac{C^2\lambda'}{2\lambda^3}.
+\end{equation}
+Straight expansion yields
+\begin{equation}\label{eq:app-Phi2-exp}
+ \Phi_2^{(0)}
+ =-\frac1{2u^2L}
+ +\frac{8L^2-3L-2}{4u^3L^3}
+ +O\!\left(\frac{u^{-4}}L\right).
+\end{equation}
+For general fixed \(\omega\), add \(\omega C^2/\lambda^2\), giving \cref{eq:Phi2-leading-omega}.
+
+\section{A second proof of the additive coefficient formula}\label{app:direct-proof}
+
+For completeness, we verify directly that \cref{eq:additive-LB-u} solves the inverse problem.  Substitute
+\[
+ x=u+\sum_{n\ge1}a_n\varepsilon^n
+\]
+into
+\[
+ F(x)+\varepsilon E(x)=F(u).
+\]
+At order \(\varepsilon\),
+\[
+ F'a_1+E=0,
+\]
+so \(a_1=-E/F'\).  At order \(\varepsilon^2\),
+\[
+ F'a_2+\frac12F''a_1^2+E'a_1=0,
+\]
+which gives \cref{eq:a2-general}.  At order \(\varepsilon^3\),
+\[
+ F'a_3+F''a_1a_2+\frac16F'''a_1^3
+ +E'a_2+\frac12E''a_1^2=0,
+\]
+and substitution gives \cref{eq:a3-general}.
+
+The general recurrence is \cref{eq:additive-recurrence}.  To identify it with the Lagrange--Buermann formula, note that both are triangular solutions with the same first coefficient.  Formal uniqueness of the inverse in the ring of power series in \(\varepsilon\) forces equality.  This direct argument is useful in a formal proof assistant because it reduces the theorem to coefficient extraction and uniqueness, without invoking contour integration.
+
+\section{Implementation pseudocode}\label{app:pseudocode}
+
+The following pseudocode separates the asymptotic seed, exact carrier refinement, and Bell-sector correction.
+
+\begin{verbatim}
+INPUT: large Y, carrier order K, sector order N, branch omega
+
+A  := log(e*Y/sqrt(2*pi))
+w  := LambertW_0(A/e)
+Q  := A/w
+s  := 1+w
+u  := Q - 1/2
+u  := u + d1(s)/Q + d3(s)/Q^3 + ... + dK(s)/Q^K
+
+repeat until desired precision:
+    f  := logGamma(u+1) - 1 - log(Y)
+    fp := digamma(u+1)
+    u  := u - f/fp
+
+C  := exp(-1) * sum_{j>=0} 1/(j!*(u+j+1))
+lambda := digamma(u+1)
+
+Phi[1] := -C/lambda
+for n from 2 to N:
+    H := C^n/lambda
+    for r from 1 to n-1:
+        H := ( derivative(H,u) + (n*omega-r*lambda)*H )/lambda
+    Phi[n] := (-1)^n * H/n!
+
+x := u + sum_{n=1}^N exp(n*omega*u)*Phi[n]/Y^n
+residual := Gamma(x+1)/e + exp(omega*x)*C(x) - Y
+OUTPUT: x, residual, residual-based error certificate
+\end{verbatim}
+
+The residual is evaluated at the final approximant \(x\).  For the parity inverse, set \(\omega=0\) and multiply the \(n\)-th sector by \(\sigma^n\).  For the symmetrized real inverse, replace \(E(x)\) by \(C(x)\cos(\pi x)\) and use the general formula \cref{eq:additive-LB-u}.
+
+\section{Reference table of principal formulas}\label{app:formula-table}
+
+\begin{longtable}{p{0.30\linewidth} p{0.64\linewidth}}
+\toprule
+Object & Formula\\
+\midrule
+\endfirsthead
+\toprule
+Object & Formula\\
+\midrule
+\endhead
+Branch continuation
+& \(\Dsub_\kappa(z)=\Gamma(z+1)/\e+\e^{(2\kappa+1)\pi\ii z}C(z)\).\\[0.4em]
+Bell correction
+& \(C(z)=\e^{-1}\int_0^1t^z\e^t\dd t=\e^{-1}\sum_{j\ge0}[j!(z+j+1)]^{-1}\).\\[0.4em]
+Bell asymptotic
+& \(C(x)\sim\sum_{m\ge1}(-1)^{m-1}\Bell_mx^{-m}\), with remainder bounded by \(\Bell_{M+1}x^{-M-1}\).\\[0.4em]
+Gamma carrier
+& \(A=\log(\e Y/\sqrt{2\pi})\), \(w=W_0(A/\e)\), \(Q=A/w\), \(s=1+w\).\\[0.4em]
+Envelope inverse
+& \(u=Q-\tfrac12+(24sQ)^{-1}-(14s^2+10s+5)/(5760s^3Q^3)+\cdots\).\\[0.4em]
+Additive inversion
+& \(G^{-1}=u+\sum_{n\ge1}(-1)^n\mathscr D_u^{n-1}(E(u)^n/F'(u))/n!\).\\[0.4em]
+Branch inverse
+& \(z_\kappa=u+\sum_{n\ge1}Y^{-n}\e^{n\omega_\kappa u}\Phi_n^{(\omega_\kappa)}(u)\).\\[0.4em]
+First branch sector
+& \(-Y^{-1}\e^{\omega_\kappa u}C(u)/\psi(u+1)\).\\[0.4em]
+Real interpolation
+& \(\Dsub_{\rm sym}(x)=F(x)+C(x)\cos(\pi x)\).\\[0.4em]
+Discrete inverse
+& \(N(Y)=\ceil{\Dsub_{\rm sym}^{-1}(Y)}\) eventually.\\[0.4em]
+Touchard deformation
+& \(C_a(x)\sim\sum_{m\ge1}(-1)^{m-1}\Touch_m(a)x^{-m}\).\\
+\bottomrule
+\end{longtable}
+
+\begin{thebibliography}{99}
+
+\bibitem{Hassani2020}
+M.~Hassani,
+``Derangements and Alternating Sum of Permutations by Integration,''
+\emph{Journal of Integer Sequences} \textbf{23} (2020), Article 20.7.8.
+\url{https://cs.uwaterloo.ca/journals/JIS/VOL23/Hassani/hassani5.html}
+
+\bibitem{DLMF511}
+NIST Digital Library of Mathematical Functions,
+Chapter 5, especially \S5.11, ``Asymptotic Expansions'' for the gamma and digamma functions.
+\url{https://dlmf.nist.gov/5.11}
+
+\bibitem{DLMF82}
+NIST Digital Library of Mathematical Functions,
+Chapter 8, especially \S8.2 and \S8.7, ``Incomplete Gamma Functions.''
+\url{https://dlmf.nist.gov/8.2}
+
+\bibitem{Corless1996}
+R.~M.~Corless, G.~H.~Gonnet, D.~E.~G.~Hare, D.~J.~Jeffrey, and D.~E.~Knuth,
+``On the Lambert \(W\) Function,''
+\emph{Advances in Computational Mathematics} \textbf{5} (1996), 329--359.
+\url{https://doi.org/10.1007/BF02124750}
+
+\bibitem{FlajoletSedgewick}
+P.~Flajolet and R.~Sedgewick,
+\emph{Analytic Combinatorics},
+Cambridge University Press, 2009.
+\url{https://ac.cs.princeton.edu/}
+
+\bibitem{VanDerHoeven2006}
+J.~van der Hoeven,
+\emph{Transseries and Real Differential Algebra},
+Lecture Notes in Mathematics 1888, Springer, 2006.
+\url{https://doi.org/10.1007/3-540-35590-1}
+
+\bibitem{Edgar2010}
+G.~A.~Edgar,
+``Transseries for Beginners,''
+\emph{Real Analysis Exchange} \textbf{35} (2009/2010), 253--310.
+\url{https://arxiv.org/abs/0801.4877}
+
+\bibitem{Olver1997}
+F.~W.~J.~Olver,
+\emph{Asymptotics and Special Functions},
+AKP Classics, A K Peters, 1997.
+
+\bibitem{Comtet1974}
+L.~Comtet,
+\emph{Advanced Combinatorics},
+D.~Reidel, 1974.
+
+\bibitem{ProveItSeries}
+V.~Reshetnikov,
+``Series and transseries,'' in the ProveIt repository,
+Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/series-and-transseries,
+accessed September 3, 2026.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/series-and-transseries}
+
+\end{thebibliography}
+
+\end{document}

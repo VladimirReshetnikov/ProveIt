@@ -67,6 +67,22 @@ noncomputable def lagrangeEvalWeight
   classical
   exact (Lagrange.basis s v i).eval x
 
+/-- Literal product form of the Lagrange evaluation weight.  The identity
+is total and does not require distinct nodes; exactness results below impose
+the appropriate injectivity hypothesis separately. -/
+theorem lagrangeEvalWeight_eq_product
+    {F ι : Type*} [Field F]
+    (s : Finset ι) (v : ι → F) (x : F) (i : ι) :
+    lagrangeEvalWeight s v x i =
+      (by
+        classical
+        exact ∏ j ∈ s.erase i, (x - v j) / (v i - v j)) := by
+  classical
+  rw [lagrangeEvalWeight, Lagrange.basis, Polynomial.eval_prod]
+  apply Finset.prod_congr rfl
+  intro j _hj
+  simp [Lagrange.basisDivisor, div_eq_mul_inv, mul_comm]
+
 /-- Evaluation by finite Lagrange weights.  For distinct nodes, the weighted
 sum of the nodal values of a polynomial of degree strictly below `s.card`
 equals its value at the target point `x`. -/

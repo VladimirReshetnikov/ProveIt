@@ -1,0 +1,854 @@
+% ed.: Consolidated from the four Legendre--Rvachev reports listed in
+% Appendix~\ref{sec:provenance-poly}.  The symbols Q^- and R deliberately
+% distinguish deconvolution from moment smoothing.
+
+\section{Legendre synthesis, spectral closure, and self-reconstruction}
+\label{sec:legendre-closure}
+
+The Legendre reports compose two exact transforms: Fourier--Legendre analysis
+of the up-function and finite synthesis of each polynomial mode by up-atoms.
+Their principal notational ambiguity is removed once and for all by the box
+\begin{equation}
+ \boxed{
+ \begin{gathered}
+ Q_n^-:=\MM_u(D)^{-1}P_n,\qquad
+ R_n:=\MM_u(D)P_n,\\
+ X_-:=\MM_u(D)^{-1}x\MM_u(D),\qquad
+ X_+:=\MM_u(D)x\MM_u(D)^{-1}.
+ \end{gathered}}
+ \label{eq:leg-notation}
+\end{equation}
+Thus $Q_n^-$ is the deconvolved polynomial whose samples are synthesis
+coefficients, whereas $R_n$ is the distinct moment-smoothed polynomial used
+in the Appell connection of \cref{sec:leg-smoothed}.  If
+$K(z)=\log\MM_u(z)$, the commutator identity
+$g(D)x=xg(D)+g'(D)$ gives
+\begin{equation}
+ X_-=x-K'(D),\qquad X_+=x+K'(D).
+ \label{eq:leg-Xpm}
+\end{equation}
+We also write $\mathscr D_u:=\MM_u(D)^{-1}$ for the deconvolution operator.
+
+Use the classical Legendre normalization $P_n(1)=1$, for which
+\begin{equation}
+ h_n=\int_{-1}^{1}P_n(x)^2\Differential x=\frac2{2n+1}
+ \label{eq:leg-hn}
+\end{equation}
+and define the even Fourier--Legendre coefficients
+\begin{equation}
+ a_n:=\frac{4n+1}{2}\int_{-1}^{1}u(x)P_{2n}(x)\Differential x.
+ \label{eq:leg-an}
+\end{equation}
+The primary exposition's section on the Fourier--Legendre expansion of
+$\RvachevUp$ in \path{Fabius_Function_and_Rvachev_Up.tex} proves
+\begin{equation}
+ u(x)=\sum_{n=0}^{\infty}a_nP_{2n}(x)
+ \label{eq:leg-canonical-series}
+\end{equation}
+absolutely and uniformly on $[-1,1]$, with rational $a_n$; the exact Lean
+anchors are \path{summable_abs_rvachevLegendreCoefficient},
+\path{hasSum_rvachevLegendreSeries}, and
+\path{hasSum_rvachevLegendreSeries_uniform} in
+\path{FabiusLegendreSeries.lean}.
+
+\subsection{Finite mode synthesis and the legal block loop}
+
+\begin{theorem}[Literal Legendre synthesis and Jacobi closed form]
+\label{thm:leg-mode-synthesis}
+Let $\ell\ge0$ and let $M\in\PositiveIntegers$ satisfy
+$\TwoAdicValuation(M)\ge\ell$.  Then, for $x\in[-1,1]$,
+\begin{equation}
+ \boxed{
+ P_\ell(x)=\frac1M\sum_{|k|<2M}
+ Q_\ell^-(k/M)u(x-k/M).}
+ \label{eq:leg-mode-synthesis}
+\end{equation}
+The deconvolved polynomial has the finite Jacobi expansion
+\begin{equation}
+ \boxed{
+ Q_\ell^-(x)=
+ \sum_{r=0}^{\Floor{\ell/2}}
+ \frac{\gamma_{2r}}{(2r)!}
+ \frac{(\ell+2r)!}{2^{2r}\ell!}
+ P_{\ell-2r}^{(2r,2r)}(x).}
+ \label{eq:leg-Q-jacobi}
+\end{equation}
+In particular $Q_\ell^-(-x)=(-1)^\ell Q_\ell^-(x)$ and all its
+coefficients are rational.
+\end{theorem}
+
+\begin{proof}
+Equation \eqref{eq:leg-mode-synthesis} is
+\cref{thm:lag-cardinal} applied to the polynomial $P_\ell$, or equivalently
+\eqref{eq:interval-algorithm} with unit atom radius.  Expand
+$\MM_u(D)^{-1}=\sum_r\gamma_rD^r/r!$.  Odd coefficients vanish by evenness,
+and the classical derivative formula
+\[
+ D^{2r}P_\ell(x)=
+ 2^{-2r}\frac{(\ell+2r)!}{\ell!}
+ P_{\ell-2r}^{(2r,2r)}(x)
+\]
+gives \eqref{eq:leg-Q-jacobi}.  Jacobi polynomials with integral parameters
+have rational coefficients; every summand has the parity of $\ell$.
+\end{proof}
+
+% The next four subsections depend conceptually on the translated analysis
+% kernel and biorthogonality proved later in this chapter.  Capture them here
+% and typeset them only after that foundation, so the source stays close to
+% its provenance while the printed exposition follows the proof dependency.
+\long\def\LegendreDeferredClosure{%
+\subsection{Reverse local closure and rational spectral identities}
+
+For $x\in[-1,1]$ and $c\in[-2,2]$ put
+\[
+ I(c)=[-1,1]\cap[c-1,c+1].
+\]
+The shifted canonical expansion is
+\begin{equation}
+ u(x-c)=\IndicatorOf{I(c)}(x)
+ \sum_{r=0}^{\infty}a_rP_{2r}(x-c).
+ \label{eq:leg-shifted-local}
+\end{equation}
+It is absolutely and uniformly convergent on
+$[-1,1]\times[-2,2]$ because
+$\sum_r|a_r|<\infty$ and $|P_{2r}|\le1$ on $[-1,1]$.
+For $\ell,r\ge0$ and $M\in\PositiveIntegers$ with $\TwoAdicValuation(M)\ge\ell$, define
+\begin{equation}
+ H_{\ell r}^{(M)}(x)
+ :=\frac1M\sum_{|k|<2M}Q_\ell^-(k/M)
+ \IndicatorOf{I(k/M)}(x)P_{2r}(x-k/M).
+ \label{eq:leg-H}
+\end{equation}
+For $m,r\ge0$, define
+\begin{equation}
+ \mathscr C_{m,r}(c)
+ :=\frac{2m+1}{2}\int_{I(c)}
+ P_m(x)P_{2r}(x-c)\Differential x.
+ \label{eq:leg-clipped-C}
+\end{equation}
+
+\begin{theorem}[Reverse local loop and rational spectral closure]
+\label{thm:leg-reverse-loop}
+Let $\ell\ge0$ and $M\in\PositiveIntegers$ satisfy $\TwoAdicValuation(M)\ge\ell$.  Then
+\begin{equation}
+ \boxed{P_\ell(x)=\sum_{r=0}^{\infty}a_rH_{\ell r}^{(M)}(x)}
+ \label{eq:leg-reverse-loop}
+\end{equation}
+absolutely and uniformly on $[-1,1]$.  Moreover, for every $m\ge0$,
+\begin{equation}
+ \Lambda_m(c)=\sum_{r=0}^{\infty}a_r\mathscr C_{m,r}(c)
+ \label{eq:leg-Lambda-connection}
+\end{equation}
+absolutely and uniformly for $c\in[-2,2]$.  For $m,r\ge0$ define
+\begin{equation}
+ T_{m\ell r}^{(M)}
+ :=\frac1M\sum_{|k|<2M}
+ Q_\ell^-(k/M)\mathscr C_{m,r}(k/M),
+ \label{eq:leg-T}
+\end{equation}
+Then every $T_{m\ell r}^{(M)}$ is rational and
+\begin{equation}
+ \boxed{\delta_{m\ell}=\sum_{r=0}^{\infty}
+ a_rT_{m\ell r}^{(M)}.}
+ \label{eq:leg-rational-spectral}
+\end{equation}
+If $m+\ell$ is odd, then $T_{m\ell r}^{(M)}=0$ for every $r\ge0$.
+\end{theorem}
+
+\begin{proof}
+Insert \eqref{eq:leg-shifted-local} into the finite synthesis
+\eqref{eq:leg-mode-synthesis}.  Interchanging a finite sum with an absolutely
+uniform series is legitimate and produces \eqref{eq:leg-reverse-loop}.
+Insert the same expansion into \eqref{eq:leg-Lambda}; dominated uniform
+convergence gives \eqref{eq:leg-Lambda-connection}.
+
+Now substitute \eqref{eq:leg-Lambda-connection} into
+\eqref{eq:leg-biorthogonality}.  The sum over $k$ is finite, so its
+interchange with the absolutely convergent $r$-series gives
+\eqref{eq:leg-rational-spectral}.  At rational $k/M$, the polynomial
+$Q_\ell^-$ is rational, while \eqref{eq:leg-clipped-C} is the integral of a
+rational polynomial over an interval with rational endpoints; hence every
+$T$ is rational.  Finally,
+\[
+ Q_\ell^-(-c)\mathscr C_{m,r}(-c)
+ =(-1)^{m+\ell}Q_\ell^-(c)\mathscr C_{m,r}(c),
+\]
+so odd total parity cancels in the symmetric $k$-sum.
+\end{proof}
+
+The functions $H_{\ell r}^{(M)}$ are only piecewise polynomial, but their
+infinite weighted sum is the smooth polynomial $P_\ell$.  The cancellation of
+all boundary jets is made explicit below.
+
+\subsection{Gram geometry and finite projector frames}
+
+Fix an integer $N\ge0$, put $M=4^N$, and write
+$K_M:=\{k\in\IntegerNumbers:|k|<2M\}$.  Let
+\[
+ \phi_k(x)=u(x-k/M),\qquad
+ \mathbf D_{kn}=M^{-1}Q_{2n}^-(k/M),\quad 0\le n\le N,
+\]
+and define
+\[
+ G_{k\ell}=\int_{-1}^{1}\phi_k(x)\phi_\ell(x)\Differential x,\qquad
+ H=\DiagonalOperator(h_0,h_2,\ldots,h_{2N}).
+\]
+
+\begin{theorem}[Exact Gram isometry and coefficient projector]
+\label{thm:leg-Gram}
+The synthesis matrix satisfies
+\begin{equation}
+ \boxed{\mathbf D^TG\mathbf D=H.}
+ \label{eq:leg-DtGD}
+\end{equation}
+Thus
+\begin{equation}
+ \Pi_{\rm coef}:=\mathbf D H^{-1}\mathbf D^TG
+ \label{eq:leg-coef-projector}
+\end{equation}
+is an idempotent, is self-adjoint for the Gram seminorm
+($G\Pi_{\rm coef}=\Pi_{\rm coef}^TG$), has range
+$\operatorname{col}\mathbf D$, and has trace $N+1$.
+
+The even Christoffel--Darboux kernel
+\begin{equation}
+ K_N^{\rm e}(x,y)=
+ \sum_{n=0}^{N}\frac{P_{2n}(x)P_{2n}(y)}{h_{2n}}
+ \label{eq:leg-even-CD}
+\end{equation}
+has the two-sided atom factorization
+\begin{equation}
+ \boxed{
+ K_N^{\rm e}(x,y)=\frac1{M^2}
+ \sum_{k,\ell\in K_M}
+ \widetilde K_N^{\rm e}(k/M,\ell/M)
+ u(x-k/M)u(y-\ell/M),}
+ \label{eq:leg-two-sided-CD}
+\end{equation}
+where
+\[
+ \widetilde K_N^{\rm e}(s,t)
+ =\sum_{n=0}^{N}\frac{Q_{2n}^-(s)Q_{2n}^-(t)}{h_{2n}}.
+\]
+Its coefficient matrix is positive semidefinite of rank $N+1$.
+\end{theorem}
+
+\begin{proof}
+The $(m,n)$ entry of $\mathbf D^TG\mathbf D$ is the inner product of the finite syntheses of
+$P_{2m}$ and $P_{2n}$, hence is $h_{2n}\delta_{mn}$.  The projector
+identities follow by substituting $\mathbf D^TG\mathbf D=H$; cyclicity of trace gives
+$\TraceOperator\Pi_{\rm coef}=N+1$.
+
+Substitute \eqref{eq:leg-mode-synthesis} in both variables of
+\eqref{eq:leg-even-CD} and interchange finite sums.  The coefficient matrix
+is $\mathbf D H^{-1}\mathbf D^T$, hence positive semidefinite;
+$\mathbf D$ has full column rank, so its
+rank is $N+1$.
+\end{proof}
+
+There is also a one-sided synthesis/analysis factorization.  Put
+\[
+ K_N^\sharp(t,y)
+ =\sum_{n=0}^{N}\frac{Q_{2n}^-(t)P_{2n}(y)}{h_{2n}},
+\quad
+ g_k(x)=u(x-k/M),\quad
+ \eta_k(y)=M^{-1}K_N^\sharp(k/M,y).
+\]
+Then
+\[
+ \Pi_N^{\rm e}\colon L^2([-1,1])\longrightarrow
+ \SpanOperator\{P_0,P_2,\ldots,P_{2N}\}
+\]
+denotes the orthogonal projector, and
+\begin{equation}
+ K_N^{\rm e}(x,y)=\sum_{k\in K_M}g_k(x)\eta_k(y),
+ \qquad
+ (\Pi_N^{\rm e}f)(x)=\sum_{k\in K_M}g_k(x)\langle f,\eta_k\rangle.
+ \label{eq:leg-one-sided-frame}
+\end{equation}
+It follows by applying polynomial synthesis in the $x$ variable.  Since
+$\Pi_N^{\rm e}$ is an orthogonal projector of rank $N+1$,
+\begin{align}
+ \sum_k\langle g_k,\eta_k\rangle&=N+1,
+ \label{eq:leg-frame-trace}\\
+ \sum_{k,\ell}\langle g_k,g_\ell\rangle
+ \langle\eta_k,\eta_\ell\rangle&=N+1.
+ \label{eq:leg-frame-HS}
+\end{align}
+The first is the trace and the second the squared Hilbert--Schmidt norm of
+the same projector.  These identities constrain any attempt to choose a
+better-conditioned nullspace gauge.
+
+\subsection{Refinement null trains and a lifting law}
+
+For $p\in\Pi_d$ put $p^\sharp=\mathscr D_{\RvachevUp}p$.  At a mesh
+$m\in\PositiveIntegers$ with $\TwoAdicValuation(m)\ge d$, define the canonical finite coefficient
+row
+\[
+ (F_mp)_k=m^{-1}p^\sharp(k/m),\qquad |k|<2m.
+\]
+Let $E_r$ embed a coarse row into the $r$-times finer grid by putting it at
+indices divisible by $r$ and zero elsewhere.
+
+\begin{theorem}[Interlevel null train and refinement cocycle]
+\label{thm:leg-interlevel}
+Let $d\ge0$, $p\in\Pi_d$, and $r,s,m\in\PositiveIntegers$ with
+$\TwoAdicValuation(m)\ge d$.  Then, on $[-1,1]$,
+\begin{equation}
+ \boxed{
+ \frac1{rm}\sum_{|k|<2rm}
+ \bigl(1-r\IndicatorOf{r\mid k}\bigr)
+ p^\sharp(k/(rm))u(x-k/(rm))=0.}
+ \label{eq:leg-interlevel}
+\end{equation}
+Equivalently, $G_{m;r}p:=F_{rm}p-E_rF_mp$ belongs to the local synthesis
+kernel.  These gauge corrections satisfy
+\begin{equation}
+ \boxed{G_{m;rs}p=G_{rm;s}p+E_sG_{m;r}p.}
+ \label{eq:leg-refinement-cocycle}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Write the fine synthesis of $p$.  Rewrite the coarse synthesis on the fine
+index set by setting $k=rj$; its coefficient becomes
+$r(rm)^{-1}p^\sharp(k/(rm))$ on divisible indices and zero elsewhere.
+Subtracting proves \eqref{eq:leg-interlevel}.  Both sides of
+\eqref{eq:leg-refinement-cocycle} telescope to
+$F_{rsm}p-E_sE_rF_mp$.
+\end{proof}
+
+For every integer $N\ge0$, let $a^{(N)}$ be the common-mesh coefficient row
+for $S_N$:
+\[
+ a_k^{(N)}=4^{-N}C_N^-(k/4^N).
+\]
+
+\begin{corollary}[Exact quarter-grid Legendre lifting]
+\label{cor:leg-lifting}
+For every integer $N\ge0$, put $m=4^N$.  For $|k|<8m$,
+\begin{equation}
+ \boxed{
+ a_k^{(N+1)}-(E_4a^{(N)})_k
+ =\frac{1-4\IndicatorOf{4\mid k}}{4m}C_N^-(k/(4m))
+ +\frac{a_{N+1}}{4m}Q_{2N+2}^-(k/(4m)).}
+ \label{eq:leg-lifting}
+\end{equation}
+The first term synthesizes zero on $[-1,1]$; the second synthesizes the new
+orthogonal block $B_{N+1}$.
+\end{corollary}
+
+\begin{proof}
+At $t=k/(4m)$,
+\[
+ a_k^{(N+1)}
+ =\frac1{4m}\bigl(C_N^-(t)+a_{N+1}Q_{2N+2}^-(t)\bigr),
+\]
+whereas $(E_4a^{(N)})_k=
+4\IndicatorOf{4\mid k}C_N^-(t)/(4m)$.  Subtract.  Apply
+\cref{thm:leg-interlevel} to $p=S_N$ for the first term and
+\eqref{eq:leg-mode-synthesis} to the new mode for the second.
+\end{proof}
+
+\subsection{Flatness and finite boundary identities}
+
+\begin{theorem}[Endpoint flatness and finite jet sum rules]
+\label{thm:leg-flatness}
+For every $s\ge0$,
+\begin{equation}
+ \boxed{
+ \sum_{n\ge\Ceiling{s/2}}
+ a_n\frac{(2n+s)!}{2^ss!(2n-s)!}=0,}
+ \label{eq:leg-flatness-series}
+\end{equation}
+and the series is absolutely convergent.
+
+For every $\ell\ge0$, every $M\in\PositiveIntegers$ with $\TwoAdicValuation(M)\ge\ell$, and
+every $s\ge0$,
+\begin{equation}
+ \boxed{
+ \frac1M\sum_{|k|<2M}Q_\ell^-(k/M)u^{(s)}(1-k/M)
+ =
+ \begin{cases}
+ \dfrac{(\ell+s)!}{2^ss!(\ell-s)!},&s\le\ell,\\[0.7em]
+ 0,&s>\ell.
+ \end{cases}}
+ \label{eq:leg-boundary-jets}
+\end{equation}
+At the left endpoint the right side is multiplied by
+$(-1)^{\ell+s}$.
+\end{theorem}
+
+\begin{proof}
+Repeated self-adjointness of $\mathcal L$ shows that the Legendre
+coefficients of the $C^\infty$ flat function $u$ decay faster than every
+power.  Hence \eqref{eq:leg-canonical-series} may be differentiated any fixed
+number of times.  Evaluate its $s$th derivative at $x=1$, use
+$u^{(s)}(1)=0$, and use the classical formula
+\[
+ P_j^{(s)}(1)=
+ \begin{cases}
+ 2^{-s}(j+s)!/[s!(j-s)!],&s\le j,\\
+ 0,&s>j.
+ \end{cases}
+\]
+This proves \eqref{eq:leg-flatness-series} and its absolute convergence.
+
+Differentiate the finite identity \eqref{eq:leg-mode-synthesis}; no
+convergence argument is needed.  Evaluation at $1$ gives
+\eqref{eq:leg-boundary-jets}, and reflection gives the left endpoint.
+\end{proof}
+
+\begin{corollary}[Boundary jets as finite Thue--Morse identities]
+\label{cor:leg-thue-morse-boundary-jets}
+Let $\ell,L,s$ be nonnegative integers with $L\ge\ell$, and set $M=2^L$.
+For
+$1\le k\le2M-1$, let $j_{k,s}\in\{0,\ldots,2^s-1\}$ and
+$y_{k,s}\in[-1,1)$ be the unique cell coordinates satisfying
+\begin{equation}
+ 1-\frac{k}{M}
+ =-1+\frac{2j_{k,s}+1+y_{k,s}}{2^s}.
+ \label{eq:leg-boundary-cell-coordinates}
+\end{equation}
+Then
+\begin{equation}
+ \boxed{
+ \frac{2^{\binom{s+1}{2}}}{M}
+ \sum_{k=1}^{2M-1}Q_\ell^-(k/M)
+ (-1)^{\BinaryDigitSum(j_{k,s})}u(y_{k,s})
+ =
+ \begin{cases}
+ \dfrac{(\ell+s)!}{2^ss!(\ell-s)!},&s\le\ell,\\[0.7em]
+ 0,&s>\ell.
+ \end{cases}}
+ \label{eq:leg-thue-morse-boundary-jets}
+\end{equation}
+All values $y_{k,s}$ are dyadic.  Thus every displayed identity is an exact
+rational cancellation combining the Bell--Bernoulli polynomial samples
+$Q_\ell^-(k/M)$ with a level-$s$ Thue--Morse sign row.
+\end{corollary}
+
+\begin{proof}
+The exact derivative-cell law is
+\[
+ u^{(s)}\!\left(-1+\frac{2j+1+y}{2^s}\right)
+ =2^{\binom{s+1}{2}}(-1)^{\BinaryDigitSum(j)}u(y),
+ \qquad 0\le j<2^s,\quad -1\le y\le1.
+\]
+It is the theorem \path{iteratedDeriv_rvachev_cell} in the primary Lean
+development.  The half-open cells in
+\eqref{eq:leg-boundary-cell-coordinates} partition $[-1,1)$, so the stated
+coordinates exist uniquely.  In \eqref{eq:leg-boundary-jets}, every term with
+$k<0$ is evaluated strictly to the right of the support, while $k=0$ is the
+flat endpoint $1$; all those derivatives vanish.  Apply the cell law to the
+remaining indices $1\le k<2M$ and substitute.  At a shared cell boundary the
+other convention has $y=1$ instead of $y=-1$; both values of $u$ vanish, so
+the identity is independent of the convention.  Dyadicity and rationality
+follow from the definitions and the exact dyadic-value theorem.
+\end{proof}
+
+\begin{corollary}[Central-binomial dyadic cancellation]
+\label{cor:leg-central-sum}
+For $n\ge0$ and $M=4^n$,
+\begin{equation}
+ \boxed{
+ Q_{2n}^-(0)+2\sum_{k=1}^{M-1}
+ Q_{2n}^-(k/M)u(k/M)=(-1)^n\binom{2n}{n}.}
+ \label{eq:leg-central-sum}
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+Evaluate \eqref{eq:leg-mode-synthesis} for $P_{2n}$ at $x=0$.
+The boundary terms vanish, and parity pairs $k$ with $-k$.  Multiply by
+$M=4^n$ and use
+$P_{2n}(0)=(-1)^n4^{-n}\binom{2n}{n}$.
+\end{proof}
+}
+
+For every integer $n\ge0$, put $m_n=4^n$ and define its finite even-mode train
+\begin{equation}
+ B_n(x):=\frac{a_n}{m_n}
+ \sum_{|k|<2m_n}Q_{2n}^-(k/m_n)u(x-k/m_n).
+ \label{eq:leg-block}
+\end{equation}
+Then $B_n=a_nP_{2n}$ on the target interval.
+
+\begin{theorem}[Rank-one atomized spectral details]
+\label{thm:leg-rank-one-details}
+For every integer $n\ge0$ and $f\in L^2([-1,1])$, define
+\begin{equation}
+ \Delta_nf:=\frac{4n+1}{2}\langle f,P_{2n}\rangle P_{2n}.
+ \label{eq:leg-rank-one-detail}
+\end{equation}
+Then $\Delta_n$ is the self-adjoint orthogonal rank-one projector onto
+$\SpanOperator\{P_{2n}\}$, and it has the finite atomized form
+\begin{equation}
+ \boxed{
+ (\Delta_nf)(x)=\frac{4n+1}{2m_n}\langle f,P_{2n}\rangle
+ \sum_{|k|<2m_n}Q_{2n}^-(k/m_n)u(x-k/m_n)}
+ \quad(x\in[-1,1]).
+ \label{eq:leg-rank-one-atomized}
+\end{equation}
+For all $m,n\ge0$,
+\begin{equation}
+ \boxed{\Delta_n\Delta_m=\delta_{nm}\Delta_n,
+ \qquad \Delta_nu=B_n.}
+ \label{eq:leg-rank-one-calculus}
+\end{equation}
+Thus the block loop is exactly the orthogonal spectral resolution of $u$,
+with each spectral detail itself realized by a finite up-train.
+\end{theorem}
+
+\begin{proof}
+The Legendre norm is
+$\langle P_{2n},P_{2n}\rangle=2/(4n+1)$, so
+\eqref{eq:leg-rank-one-detail} is the usual formula for the orthogonal
+projector onto a one-dimensional subspace.  Legendre orthogonality gives
+$\Delta_n\Delta_m=\delta_{nm}\Delta_n$.  Substituting the finite synthesis
+\eqref{eq:leg-mode-synthesis} with $M=m_n$ proves
+\eqref{eq:leg-rank-one-atomized}.  Finally,
+$\langle u,P_{2n}\rangle=2a_n/(4n+1)$ by \eqref{eq:leg-an}, whence
+$\Delta_nu=a_nP_{2n}=B_n$.
+\end{proof}
+
+\begin{theorem}[Blockwise self-loop and common-mesh partial sums]
+\label{thm:leg-block-loop}
+For every $x\in[-1,1]$,
+\begin{equation}
+ \boxed{u(x)=\sum_{n=0}^{\infty}B_n(x),}
+ \label{eq:leg-block-loop}
+\end{equation}
+where the series converges absolutely and uniformly when each finite train is
+kept as one block.
+
+For an integer cutoff $N\ge0$, put
+\begin{equation}
+ S_N=\sum_{n=0}^{N}a_nP_{2n},\qquad
+ C_N^-=\mathscr D_uS_N=\sum_{n=0}^{N}a_nQ_{2n}^-.
+ \label{eq:leg-SN-CN}
+\end{equation}
+Then $\deg S_N\le2N$, and the sufficient common mesh $M_N=4^N$ gives
+\begin{equation}
+ \boxed{
+ S_N(x)=\frac1{M_N}\sum_{|k|<2M_N}
+ C_N^-(k/M_N)u(x-k/M_N).}
+ \label{eq:leg-common-mesh}
+\end{equation}
+The right side converges uniformly to $u$.  The mesh $4^N$ is least for
+universal exactness on the whole space $\Pi_{2N}$; no target-specific
+minimality for $S_N$ is asserted.
+\end{theorem}
+
+\begin{proof}
+Substituting \eqref{eq:leg-mode-synthesis} into
+\eqref{eq:leg-canonical-series} gives \eqref{eq:leg-block-loop}; its $n$th
+block is exactly $a_nP_{2n}$.  Since
+$\|P_j\|_{L^\infty[-1,1]}\le1$ and $\sum_n|a_n|<\infty$, the Weierstrass
+test proves absolute uniform block convergence.
+
+The degree inequality in \eqref{eq:leg-SN-CN} is unconditional; equality
+would require $a_N\ne0$.  Since $\TwoAdicValuation(4^N)=2N$, applying
+\eqref{eq:leg-mode-synthesis} to the single polynomial $S_N$ gives
+\eqref{eq:leg-common-mesh}.  Its convergence is precisely
+$S_N\to u$.  The universal least-mesh statement is
+\path{isLeast_rvachevCombExactThrough_even} from
+\path{CompositeMeshSharpness.lean}, with the claim boundary already stated
+after \cref{thm:scale-classification}.
+\end{proof}
+
+\begin{warning}[Blockwise does not mean atomwise]
+Finite regrouping within $B_n$ is always legal, and the outer series may be
+rearranged as a series of blocks.  It does not follow that the individual
+atoms can be flattened into an absolutely or unconditionally convergent
+double series.  The repeated central coefficient in
+ \cref{thm:leg2-central-growth} proves the contrary.
+\end{warning}
+
+\subsection{Orthogonal blocks and positive energy series}
+
+\begin{theorem}[Orthogonal translate blocks and exact tails]
+\label{thm:leg-block-orthogonality}
+For $m,n\ge0$,
+\begin{equation}
+ \boxed{
+ \int_{-1}^{1}B_n(x)B_m(x)\Differential x
+ =\delta_{nm}\frac{2a_n^2}{4n+1}.}
+ \label{eq:leg-block-orthogonality}
+\end{equation}
+Consequently
+\begin{align}
+ \|u-S_N\|_2^2
+ &=\sum_{n>N}\frac{2a_n^2}{4n+1},
+ \label{eq:leg-L2-tail}\\
+ \|u\|_2^2
+ &=\sum_{n=0}^{\infty}\frac{2a_n^2}{4n+1}.
+ \label{eq:leg-parseval}
+\end{align}
+For the Legendre Sturm--Liouville operator
+\[
+ \mathcal L=-D(1-x^2)D,\qquad
+ \lambda_n=2n(2n+1),
+\]
+one further has
+\begin{equation}
+ \int_{-1}^{1}(1-x^2)B_n'B_m'\Differential x
+ =\delta_{nm}\lambda_n\frac{2a_n^2}{4n+1},
+ \label{eq:leg-derivative-blocks}
+\end{equation}
+and, for every real $s\ge0$ in the spectral domain,
+\begin{equation}
+ \|(I+\mathcal L)^{s/2}u\|_2^2
+ =\sum_{n=0}^{\infty}(1+\lambda_n)^s
+ \frac{2a_n^2}{4n+1}.
+ \label{eq:leg-sobolev-energy}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+On $[-1,1]$, $B_n=a_nP_{2n}$, so
+\eqref{eq:leg-block-orthogonality} is ordinary Legendre orthogonality.
+Orthogonal convergence gives \eqref{eq:leg-L2-tail} and
+\eqref{eq:leg-parseval}.  Since
+$\mathcal LP_{2n}=\lambda_nP_{2n}$, integration by parts gives
+\[
+ \int(1-x^2)B_n'B_m'=\langle\mathcal LB_n,B_m\rangle,
+\]
+which proves \eqref{eq:leg-derivative-blocks}.  The last identity is the
+spectral theorem for the nonnegative self-adjoint Legendre operator.
+\end{proof}
+
+The individual translates inside the blocks are not orthogonal.  Expanding
+\eqref{eq:leg-block-orthogonality} instead gives an exact cross-scale
+atom-Gram cancellation identity; this is the literal content formalized by
+\path{sum_rvachevLegendreAtomCoefficient_mul_gram}.
+
+Let
+\begin{equation}
+ \mathscr E_F:=\int_0^1\FabiusBounded(t)^2\Differential t.
+ \label{eq:leg-A2}
+\end{equation}
+Because $u(x)=\FabiusBounded(1-|x|)$ on $[-1,1]$, $\|u\|_2^2=2\mathscr E_F$.
+
+\begin{theorem}[Fabius square energy: rational series and sinc integrals]
+\label{thm:leg-A2}
+One has the three exact representations
+\begin{align}
+ \boxed{\mathscr E_F=\sum_{n=0}^{\infty}\frac{a_n^2}{4n+1}}
+ \label{eq:leg-A2-series}\\
+ &=\int_0^\infty
+ \prod_{j=0}^{\infty}\SincPi^2(\xi/2^j)\Differential\xi
+ \label{eq:leg-A2-fourier}\\
+ &=\frac1{2\pi}\int_0^\infty
+ \prod_{r=1}^{\infty}
+ \left(\frac{\sin(t/2^r)}{t/2^r}\right)^2\Differential t.
+ \label{eq:leg-A2-sinc}
+\end{align}
+Every finite partial sum in \eqref{eq:leg-A2-series} is a nonnegative
+rational number, and the sequence of partial sums is nondecreasing.  It is
+strict at the $n$th step exactly when $a_n\ne0$.
+\end{theorem}
+
+\begin{proof}
+Divide \eqref{eq:leg-parseval} by two and use
+$\|u\|_2^2=2\mathscr E_F$.  Rationality follows from $a_n\in\RationalNumbers$.
+Parseval for the Fourier convention of \cref{sec:shared} gives
+$\|u\|_2^2=\int_\RealNumbers|\FourierTwoPi{u}(\xi)|^2\Differential\xi$.  Evenness, division by two,
+and the sinc product give \eqref{eq:leg-A2-fourier}; the substitution
+$t=2\pi\xi$ gives \eqref{eq:leg-A2-sinc}.  Monotonicity and its equality
+criterion follow because the added term is $a_n^2/(4n+1)$.
+\end{proof}
+
+\begin{corollary}[Nested dyadic-Fabius square series]
+\label{cor:leg-dyadic-square-energy}
+For every integer $n\ge0$, define the finite dyadic quantity
+\begin{equation}
+ \mathcal R_n^{\rm dy}:=
+ \sum_{j=0}^{n}(-1)^{n+j}
+ \binom{2n}{n+j}\binom{2n+2j}{2n}(2j)!
+ 2^{\binom{2j+1}{2}}\FabiusBounded(2^{-2j-1}).
+ \label{eq:leg-dyadic-R}
+\end{equation}
+Then, for every $n\ge0$, the coefficient identity in the following box
+holds, and its substitution into \eqref{eq:leg-A2-series} gives the displayed
+energy series:
+\begin{equation}
+ \boxed{a_n=4^{-n}(4n+1)\mathcal R_n^{\rm dy},
+ \qquad
+ \mathscr E_F=\sum_{n=0}^{\infty}
+ (4n+1)16^{-n}(\mathcal R_n^{\rm dy})^2.}
+ \label{eq:leg-dyadic-square-energy}
+\end{equation}
+Every inner quantity $\mathcal R_n^{\rm dy}$ is rational.  Hence this is a
+positive outer series whose $n$th term is the square of a finite rational
+combination of the nested values
+$\FabiusBounded(2^{-1}),\FabiusBounded(2^{-3}),\ldots,\FabiusBounded(2^{-2n-1})$.
+\end{corollary}
+
+\begin{proof}
+The coefficient identity in \eqref{eq:leg-dyadic-square-energy} is
+kernel-verified as
+\path{rvachevLegendreCoefficient_eq_fabius_sum} in
+\path{FabiusLegendreCoefficients.lean}.  Here is its finite human-readable
+derivation.
+Put $\mu_{2j}=\int_{-1}^{1}x^{2j}u(x)\Differential x$.  Expanding $P_{2n}$ in
+monomials in \eqref{eq:leg-an} gives
+\[
+ a_n=\frac{4n+1}{2^{2n+1}}
+ \sum_{j=0}^{n}(-1)^{n+j}
+ \binom{2n}{n+j}\binom{2n+2j}{2n}\mu_{2j}.
+\]
+The exact moment--Fabius bridge from the primary exposition is
+\[
+ \mu_{2j}=2(2j)!\,2^{\binom{2j+1}{2}}\FabiusBounded(2^{-2j-1});
+\]
+obtained by integrating the dyadic derivative-cell formula; its dyadic
+values are kernel-verified by \path{fabiusDyadic_cast}.  Substitution proves
+the formula for $a_n$.  Insert its square into
+\eqref{eq:leg-A2-series} and cancel one factor $4n+1$ to obtain the second
+identity.  The same exact dyadic-value theorem gives rationality.
+\end{proof}
+
+The four exact cutoffs
+\[
+ \frac14,\qquad\frac7{18},\qquad
+ \frac{3271}{8100},\qquad
+ \frac{3246043}{8037225}
+\]
+are kernel-verified in \path{FabiusLegendreRationalEnergy.lean}; the Fourier
+and sinc equalities are kernel-verified in
+\path{FabiusSquareEnergyFourier.lean}.  A decimal evaluation of
+$\mathscr E_F$ is not
+needed for any theorem here.
+
+\subsection{Translated Legendre analysis and exact biorthogonality}
+
+\begin{definition}[Translated Legendre analysis kernel]
+\label{def:leg-Lambda}
+For $m\ge0$ and $c\in\RealNumbers$, set
+\begin{equation}
+ \Lambda_m(c)=\frac{2m+1}{2}
+ \int_{-1}^{1}u(x-c)P_m(x)\Differential x.
+ \label{eq:leg-Lambda}
+\end{equation}
+\end{definition}
+
+\begin{theorem}[Analysis kernel and Fourier--Bessel representation]
+\label{thm:leg-Lambda}
+For every $m\ge0$, the function $\Lambda_m$ belongs to $C_c^\infty(\RealNumbers)$,
+has support contained
+in $[-2,2]$, and satisfies
+\begin{align}
+ \Lambda_m(-c)&=(-1)^m\Lambda_m(c),
+ \label{eq:leg-Lambda-parity}\\
+ \Lambda_{2n}(0)&=a_n,\qquad \Lambda_{2n+1}(0)=0\quad(n\ge0),
+ \label{eq:leg-Lambda-origin}\\
+ \Lambda_m(c)&=(2m+1)(-\ImaginaryUnit)^m
+ \int_\RealNumbers\FourierTwoPi{u}(\xi)j_m(2\pi\xi)
+ \EulerE^{2\pi\ImaginaryUnit\xi c}\Differential\xi.
+ \label{eq:leg-Lambda-bessel}
+\end{align}
+Here $j_m$ is the spherical Bessel function.
+\end{theorem}
+
+\begin{proof}
+Let $\chi_m(x)=P_m(x)\IndicatorOf{[-1,1]}(x)$.  Evenness of $u$ gives
+$\Lambda_m=(2m+1)(u*\chi_m)/2$.  Convolution of a compactly supported
+$C^\infty$ function with a compactly supported integrable function is
+$C^\infty$, and supports add to $[-2,2]$.  Reflection gives
+\eqref{eq:leg-Lambda-parity}; \eqref{eq:leg-Lambda-origin} is
+\eqref{eq:leg-an} and oddness.
+
+The classical integral representation gives
+$\FourierTwoPi{\chi_m}(\xi)=2(-\ImaginaryUnit)^mj_m(2\pi\xi)$.  The rapid decay of
+$\FourierTwoPi{u}$ makes the product integrable, so Fourier inversion of the
+convolution proves \eqref{eq:leg-Lambda-bessel}.
+\end{proof}
+
+\begin{lemma}[Rational dyadic truncated moments]
+\label{lem:leg-dyadic-truncated}
+If $a,b\in\IntegerNumbers[1/2]$, $a\le b$, and $r\ge0$, then
+\begin{equation}
+ \int_a^b x^ru(x)\Differential x\in\RationalNumbers.
+ \label{eq:leg-dyadic-truncated}
+\end{equation}
+Consequently $\Lambda_m(c)\in\RationalNumbers$ for every dyadic $c$.
+\end{lemma}
+
+\begin{proof}
+Intersect $[a,b]$ with the support $[-1,1]$, which preserves dyadic
+endpoints.  On $[-1,1]$ the differential refinement equation implies
+\[
+ u(x)=\frac12u'\!\left(\frac{x-1}{2}\right),
+\]
+because the other child $u(x-2)$ vanishes.  For a polynomial $p$ and dyadic
+$a,b\in[-1,1]$, substitute $t=(x-1)/2$ and integrate by parts:
+\begin{align*}
+ \int_a^bp(x)u(x)\Differential x
+ &=
+ \left[p(2t+1)u(t)\right]_{(a-1)/2}^{(b-1)/2}\\
+ &\quad-\int_{(a-1)/2}^{(b-1)/2}
+ 2p'(2t+1)u(t)\Differential t.
+\end{align*}
+The boundary values of $u$ at dyadic arguments are rational by
+\path{fabiusDyadic_cast} in \path{DyadicAnalytic.lean}, the exact
+dyadic-value theorem recorded in the primary exposition.  Induction on $\deg p$
+therefore proves the first claim, with the constant case terminating after
+the boundary term.
+
+For dyadic $c$, substitute $x=c+y$ in \eqref{eq:leg-Lambda}.  Expand
+$P_m(y+c)$ and split at the dyadic endpoints of
+$[-1,1]\cap[-1-c,1-c]$.  The result is a finite rational combination of the
+moments just proved.
+\end{proof}
+
+\begin{theorem}[Legendre--up dyadic biorthogonality]
+\label{thm:leg-biorthogonality}
+Let $\ell\ge0$, $M\in\PositiveIntegers$ with $\TwoAdicValuation(M)\ge\ell$, and $m\ge0$.
+Then
+\begin{equation}
+ \boxed{
+ \frac1M\sum_{|k|<2M}
+ Q_\ell^-(k/M)\Lambda_m(k/M)=\delta_{m\ell}.}
+ \label{eq:leg-biorthogonality}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Multiply \eqref{eq:leg-mode-synthesis} by
+$(2m+1)P_m(x)/2$ and integrate over $[-1,1]$.  The left side is
+$\delta_{m\ell}$ by Legendre orthogonality, and each atom integral is
+$\Lambda_m(k/M)$.
+\end{proof}
+
+\begin{corollary}[Finite biorthogonal matrices and projector identities]
+\label{cor:leg-biorthogonal-matrices}
+Let $d\ge0$ and $M\in\PositiveIntegers$ satisfy $\TwoAdicValuation(M)\ge d$.  Then the matrices
+indexed by $K_M:=\{k\in\IntegerNumbers:|k|<2M\}$,
+\[
+ A_{k\ell}^{(d)}=M^{-1}Q_\ell^-(k/M),\qquad
+ L_{mk}^{(d)}=\Lambda_m(k/M)
+ \quad(k\in K_M,\ 0\le m,\ell\le d)
+\]
+satisfy $L^{(d)}A^{(d)}=I_{d+1}$.  Consequently
+$A^{(d)}L^{(d)}$ is an oblique projector of rank and trace $d+1$, and
+\begin{align}
+ d+1&=\frac1M\sum_{|k|<2M}\sum_{\ell=0}^{d}
+ Q_\ell^-(k/M)\Lambda_\ell(k/M),
+ \label{eq:leg-spectral-trace}\\
+ 1&=\sum_{\substack{S\subset K_M\\|S|=d+1}}
+ \det L^{(d)}_{:,S}\det A^{(d)}_{S,:}.
+ \label{eq:leg-spectral-CB}
+\end{align}
+\end{corollary}
+
+\begin{proof}
+Because $\ell\le d$, the hypothesis $\TwoAdicValuation(M)\ge d$ permits
+\cref{thm:leg-biorthogonality} for every matrix entry, so
+$L^{(d)}A^{(d)}=I_{d+1}$.  Idempotence, rank, and trace follow from this
+right-inverse identity;
+taking the trace and applying Cauchy--Binet give
+\eqref{eq:leg-spectral-trace} and \eqref{eq:leg-spectral-CB}.
+\end{proof}
+
+\LegendreDeferredClosure

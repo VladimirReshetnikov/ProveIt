@@ -1,0 +1,433 @@
+\chapter{Inverse-source provenance and concordance}
+\label{chap:inverse-reference-appendix}
+
+\section{Source corpus and editorial provenance}
+\label{sec:ref-source-provenance}
+
+The canonical volume is a semantic consolidation of six independently
+delivered source packages.  They are not numbered editions of one manuscript:
+overlap records independent rediscovery or reuse, and disagreement must be
+settled mathematically rather than by choosing the newest-looking file.  The
+historical paths in \cref{tab:ref-source-packages} were relative to the former
+sibling layout under \lean{exponents-and-q-series}; the pinned pre-retirement
+revision and repository history preserve them.  The row counts are the
+numbers of theorem-like source environments recorded in the machine-readable
+concordance.
+
+\begin{table}[htbp]
+\centering
+\small
+\begin{tabularx}{0.98\textwidth}{@{}>{\raggedright\arraybackslash}p{0.34\textwidth}r>{\raggedright\arraybackslash}X@{}}
+\toprule
+Source package and principal file & Rows & Distinctive contribution and
+canonical disposition\\
+\midrule
+\lean{inverse_q_analog_functions_report/}\newline
+\lean{inverse_q_analog_functions.tex}
+& 49
+& The clearest branchwise narrative, passive-parameter viewpoint, real and
+complex sheet atlases, and continuation algorithms.  Its reusable inverse
+calculus is absorbed into the universal chapter; its product-specific
+geometry is distributed among the finite and infinite product chapters.\\
+\addlinespace
+\lean{inverse_q_analog_jet_atlas/}\newline
+\lean{inverse_q_analog_jet_atlas.tex}
+& 38
+& Formal triangular reversion, Lagrange--B\"urmann and Lagrange--Good
+formulas, Bell-polynomial organization, mixed jets, and coefficient atlases.
+These are consolidated, with corrected algebraic hypotheses, in the universal
+inversion calculus.\\
+\addlinespace
+\lean{inverse_q_analogs_extended_report/}\newline
+\lean{inverse_q_analogs_extended_report.tex}
+& 48
+& The broadest collection of exceptional finite regimes, radial inverses,
+\(q\)-special functions, certification ideas, and Fabius--Rvachev recovery.
+Correct special cases are retained at their natural topical destinations;
+overgeneralized claims are corrected or retired.\\
+\addlinespace
+\lean{inverse_q_analogs_report/}\newline
+\lean{inverse_q_analogs_report.tex}
+& 59
+& Discriminants, remote inverse sheets, real branch geometry, numerical
+certification, and the earliest large conjecture register.  Exact results are
+deduplicated; symbolic collision claims without independently checkable
+certificates remain conditional targets rather than theorems.\\
+\addlinespace
+\lean{inverse_q_analogs_report-2/}\newline
+\lean{inverse_q_analogs_report.tex}
+& 29
+& An independent synthesis emphasizing reciprocal regimes, roots of unity,
+compact coefficient tables, and algorithmic cross-checks.  It supplies
+corroborating provenance and occasionally sharper normalizations, not a
+presumption of chronological priority.\\
+\addlinespace
+\lean{q_pochhammer_q_binomial_expansions_report/}\newline
+\lean{q_analog_expansions_report.tex}
+& 37
+& The primary forward-expansion engine: finite and infinite
+\(q\)-Pochhammer products, Gaussian and multinomial coefficients,
+Bernoulli/polylogarithmic expansions, roots of unity, and \(q\)-special
+functions.  Its uniform head--tail remainder arguments are retained wherever
+termwise formal expansion alone would be insufficient.\\
+\bottomrule
+\end{tabularx}
+\caption{The six source packages and their canonical roles.}
+\label{tab:ref-source-packages}
+\end{table}
+
+The editorial disposition is governed by five rules.
+
+\begin{enumerate}
+\item A semantic duplicate is stated once, with the strongest correct
+  hypotheses and one complete proof.  Several source rows may therefore point
+  to one canonical label.
+\item A useful source theorem may be strengthened, split into logically
+  independent results, or absorbed into a more general lemma.  The
+  concordance records the primary destination and explains any one-to-many
+  refinement in its disposition note.
+\item A false, ill-posed, redundant, or unfalsifiable assertion is not
+  preserved merely because it carried a theorem or conjecture heading.
+  Interesting statements with genuine missing obligations survive only in
+  explicitly labelled \emph{Conjecture} environments.
+\item Numerical and symbolic calculations are evidence only to the extent
+  certified by reproducible exact arithmetic, interval enclosures, or a proved
+  residual bound.  Unsupported large factorizations are certification targets,
+  not hidden premises of unconditional theorems.
+\item A script, table, captured output, or figure is migrated only when it
+  uniquely supports a retained result or reproducible calculation.
+  Byte-identical duplicates and generated publication byproducts are not
+  separate mathematical sources.  Superseded layouts remain recoverable from
+  repository history.
+\end{enumerate}
+
+\section{The exhaustive result concordance}
+\label{sec:ref-concordance}
+
+The file \lean{theorem_concordance.csv} is the machine-readable ledger for the
+source corpus.  It has one header and exactly \(260\) data rows, one for every
+environment recognized by the extraction audit.  The package totals are
+\[
+ 49+38+48+59+29+37=260.
+\]
+By kind, the inventory contains \(131\) theorems, \(28\) propositions,
+\(16\) corollaries, \(2\) lemmas, \(32\) conjectures, \(28\) problems or
+research problems, \(9\) definitions, \(5\) algorithms, \(4\) examples,
+\(4\) principles, and \(1\) computational result.  The extractor found an
+intervening \lean{proof} or \lean{proofidea} environment after \(163\) rows
+and no such environment after \(97\).  This last field is a syntactic audit
+signal, not a verdict on correctness: conjectures and definitions normally
+have no proof, while a source proof environment may still contain a gap.
+
+\begin{table}[htbp]
+\centering
+\small
+\begin{tabularx}{0.98\textwidth}{@{}>{\raggedright\arraybackslash}p{0.27\textwidth}>{\raggedright\arraybackslash}X@{}}
+\toprule
+CSV field group & Meaning\\
+\midrule
+\lean{source_key}
+& Stable key formed from the package name and the source label, or from a
+  deterministic kind-and-ordinal key when the source supplied no label.\\
+\addlinespace
+\lean{source_package}, \lean{source_file}, \lean{source_line}
+& Exact source location.  Line numbers belong to the archived source snapshot
+  and are provenance coordinates, not canonical page references.\\
+\addlinespace
+\lean{source_label}, \lean{source_kind}, \lean{source_title},
+\lean{source_chapter}, \lean{source_section_path}
+& The source manuscript's own classification and surrounding hierarchy.
+  These fields preserve what was claimed without endorsing it.\\
+\addlinespace
+\lean{source_proof_present}
+& Whether a \lean{proof} or \lean{proofidea} environment occurs before the
+  next recognized result.  It does not assert that the proof is sound,
+  complete, or relevant to the exact statement.\\
+\addlinespace
+\lean{canonical_label}, \lean{canonical_status}
+& The primary canonical destination and its strict status.  Repeated labels
+  across source rows express semantic deduplication.  A split or partial
+  retention is described in \lean{disposition_notes}.\\
+\addlinespace
+\lean{lean_module}, \lean{lean_declaration}
+& An exact formal counterpart, when one has actually been identified and
+  validated.  Related supporting lemmas do not justify filling these fields
+  for a stronger human theorem.\\
+\addlinespace
+\lean{disposition_notes}
+& The reason for strengthening, merging, splitting, correcting, making
+  conditional, retaining as a conjecture, or retiring the source result.\\
+\bottomrule
+\end{tabularx}
+\caption{Interpretation of the concordance columns.}
+\label{tab:ref-concordance-fields}
+\end{table}
+
+For an assertion, \lean{canonical_status} uses exactly the three-way
+vocabulary of \cref{sec:status-vocabulary}:
+\emph{Lean-proved}, \emph{human-proved frontier result}, or
+\emph{conjecture}.  A definition, notation declaration, or purely descriptive
+algorithm is not forced into an assertion status; its retention or retirement
+is explained in the disposition field.  Likewise, \emph{merged},
+\emph{strengthened}, \emph{corrected}, and \emph{retired} are dispositions,
+not proof statuses.
+
+The extractor initially generated the five editorial columns empty, because
+text matching cannot decide mathematical equivalence.  In the reviewed
+ledger, all \(260\) rows now have a canonical status and disposition note.  Its
+status census is one \emph{Lean-proved}, \(147\)
+\emph{human-proved frontier result}, fifteen \emph{conjecture}, and \(97\)
+\emph{not applicable}; \(180\) rows map to canonical labels, while the
+remaining \(80\) are explicitly absorbed, retired, or not separately asserted.
+Exact Lean module and declaration cells remain empty unless an exact formal
+counterpart is claimed.
+The retained reviewed CSV is authoritative.  The revision-backed extractor
+\lean{audit/extract_source_results.py} reproduces and verifies its ten
+immutable source columns from the commit pinned in
+\lean{audit/SOURCE_REVISION}; it refuses to overwrite the five editorial
+columns.
+
+\section{Notation and mandatory branch data}
+\label{sec:ref-notation}
+
+An inverse symbol denotes a branch only after its data have been fixed.  At
+minimum one must record the forward map \(F\), the active variable, all passive
+parameters, the target or limiting coordinate, the base point or real domain,
+the continuation path or sheet, and every logarithm or fractional-power
+determination.  The following table is a compact decoding guide for the
+notation used throughout the volume.
+
+\begingroup
+\small
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.22\textwidth}>{\raggedright\arraybackslash}p{0.29\textwidth}>{\raggedright\arraybackslash}p{0.42\textwidth}@{}}
+\caption{Notation and the branch information suppressed by a bare inverse
+symbol.}
+\label{tab:ref-notation-branches}\\
+\toprule
+Notation & Meaning and domain & Branch data that must accompany inversion\\
+\midrule
+\endfirsthead
+\toprule
+Notation & Meaning and domain & Branch data that must accompany inversion\\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+\(P_n(a,q)=\QPochhammer{a}{q}{n}\)
+& Finite product
+  \(\prod_{j=0}^{n-1}(1-aq^j)\), with an empty product equal to one.
+& State whether \(a\) or \(q\) is active; fix \(n\) and the other parameter;
+  record a base point, real monotonicity interval, or Puiseux sheet.\\
+\addlinespace
+\(P(a,q)=\QPochhammer{a}{q}{\infty}\)
+& Normally convergent product only for \(|q|<1\).  Boundary radial limits and
+  exterior reciprocal normalizations are different objects.
+& For argument inversion, give the principal interval or the zero-gap index
+  and side.  For base inversion, give the interior path or the radial
+  normalization and target logarithm.\\
+\addlinespace
+\(\mathcal A_q(y)\)
+& The principal real inverse of
+  \(a\mapsto\QPochhammer{a}{q}{\infty}\) for \(0<q<1\), \(y>0\),
+  selected by \(a<1\).
+& No sheet index is needed on this monotone branch; a nonprincipal real or
+  complex inverse must not reuse this symbol without an explicit sheet label.\\
+\addlinespace
+\(\GaussianBinomial{n}{k}{q}\)
+& Gaussian polynomial, including its polynomial continuation where the
+  factorial quotient reads \(0/0\).
+& Fix \(n,k\); distinguish the positive real branch, a reciprocal
+  \(q\leftrightarrow q^{-1}\) branch, and a cyclotomic zero or local sheet.\\
+\addlinespace
+\(q=\EulerE^{-t}\)
+& Logarithmic coordinate near \(q=1\), with \(t=-\PrincipalLogarithm q\).
+& Record the logarithm branch and, in a complex asymptotic statement, a
+  closed sector contained in \(\Re t>0\).\\
+\addlinespace
+\(q=\zeta\EulerE^{-t}\)
+& Radial or sectorial approach to a primitive root \(\zeta\) of order \(d\).
+& Record \(\zeta\), \(d\), the sector or real radial path, and the continuation
+  of every logarithm.  This notation never asserts a germ across \(|q|=1\).\\
+\addlinespace
+\(s=1-y\), \(\eta=((1-a)-y)/(a(1-a))\)
+& Regular target coordinates at the unit level and at the small-base endpoint.
+& Record the source base point and the nonvanishing denominators.  A different
+  normalization changes every printed inverse coefficient.\\
+\addlinespace
+\(X=-\PrincipalLogarithm y+C\)
+& Reciprocal-log scale used when a forward logarithm begins
+  \(-A/t+C+\cdots\).
+& Fix the target logarithm, the constant \(C\), the sheet with \(t\sim A/X\),
+  and a sector on which \(A/X\) is admissible.\\
+\addlinespace
+\(W_k\)
+& The \(k\)-th Lambert-\(W\) determination.
+& Record \(k\) and verify the original chosen-log equation.  Solving an
+  exponentiated equation alone can admit candidates on the wrong logarithm
+  sheet.\\
+\addlinespace
+\((y-y_0)^{1/m}\)
+& Ramified coordinate at a zero of order \(m\).
+& Choose the root on a simply connected punctured target domain, or work on
+  the ramified cover; all \(m\) determinations coalesce at \(y_0\).\\
+\addlinespace
+\(\Gamma_q,\psi_q,B_q\)
+& The \(q\)-gamma, \(q\)-digamma, and \(q\)-beta normalizations specified in
+  the \(q\)-special-function chapter.
+& State the real parameter interval or complex continuation, the active
+  parameter, the base regime, and any reciprocal continuation for \(q>1\).\\
+\addlinespace
+\(\varphi_q(t)=\CharacteristicFunction{X_q}(t)\),
+\(\CharacteristicFunction{Z_q}(t)\), sinc products
+& Characteristic functions of the normalized geometric-uniform law and its
+  centered normalization, including the Fabius--Rvachev member.
+& Fix the probability normalization, phase convention, real base
+  \(0<q<1\), and whether inversion concerns a distribution parameter, a
+  Fourier value, or a cumulant observable.\\
+\end{longtable}
+\endgroup
+
+\section{Source-to-canonical topical crosswalk}
+\label{sec:ref-topical-crosswalk}
+
+The row-level concordance is the authoritative provenance mechanism.  For
+human navigation, \cref{tab:ref-topical-crosswalk} records where the major
+source themes landed.  A source can appear in several canonical chapters, and
+a canonical theorem can synthesize several sources.
+
+\begin{table}[htbp]
+\centering
+\small
+\begin{tabularx}{0.98\textwidth}{@{}>{\raggedright\arraybackslash}p{0.24\textwidth}>{\raggedright\arraybackslash}p{0.30\textwidth}>{\raggedright\arraybackslash}X@{}}
+\toprule
+Source package & Principal source themes & Canonical destinations\\
+\midrule
+\lean{inverse_q_analog_functions_report}
+& Branch orientation, regular inverse germs, sensitivities, real and complex
+sheet atlases, continuation.
+& \Cref{sec:uq-regular-germs,sec:uq-sensitivities,fp-finite-covering,%
+sec:ip-argument-atlas,sec:certification-frontiers}.\\
+\addlinespace
+\lean{inverse_q_analog_jet_atlas}
+& Triangular coefficient recurrences, Lagrange inversion, Bell polynomials,
+mixed jets, multivariate and Good inversion.
+& \Cref{sec:uq-formal-inversion,sec:uq-lagrange-burmann,%
+sec:uq-bell-packaging,sec:uq-multivariate-recursion,%
+sec:uq-lagrange-good}.\\
+\addlinespace
+\lean{inverse_q_analogs_extended_report}
+& Exceptional finite bases, \(q=0,\pm1\), radial cyclotomic inversion,
+\(q\)-special functions, certification, Fabius--Rvachev recovery.
+& \Cref{fp-base-inversion,fp-minus-one-section,sec:ip-real-base,%
+sec:ip-cyclotomic,sec:qs-qgamma,sec:fr-geometric-law,%
+sec:certification-frontiers}.\\
+\addlinespace
+\lean{inverse_q_analogs_report}
+& Discriminants, real gaps and remote sheets, \(q\)-special inverses,
+certification algorithms, conjecture register.
+& \Cref{fp-finite-covering,sec:ip-argument-atlas,thm:ip-remote-gaps,%
+sec:qs-qdigamma,sec:certification-frontiers,sec:precise-open-frontiers}.\\
+\addlinespace
+\lean{inverse_q_analogs_report-2}
+& Reciprocal regimes, roots of unity, compact inverse tables, independent
+algorithmic derivations.
+& \Cref{fp-base-inversion,sec:ip-fixed-a-qone,sec:ip-cyclotomic,%
+sec:gaussian-infinity,sec:qs-qexponentials,%
+sec:certification-frontiers}.\\
+\addlinespace
+\lean{q_pochhammer_q_binomial_expansions_report}
+& Exact forward coefficient engines, uniform remainders, Bernoulli and
+polylogarithmic expansions, Gaussian/multinomial limits, roots of unity,
+\(q\)-gamma and \(q\)-beta.
+& \Cref{fp-finite-covering,sec:ip-fixed-a-qone,sec:ip-qx,%
+sec:gaussian-one,sec:qmultinomial,sec:qs-qgamma,sec:qs-qbeta}.\\
+\bottomrule
+\end{tabularx}
+\caption{Topical source-to-canonical crosswalk.}
+\label{tab:ref-topical-crosswalk}
+\end{table}
+\clearpage
+
+\section{Formalization boundary}
+\label{sec:ref-formalization-boundary}
+
+The exact declaration-level source map is already given in
+\cref{sec:lean-certification-map} and is not duplicated here.  Its current
+formal surface has six principal islands:
+
+\begin{enumerate}
+\item classical Fabius inverse identities, monotonicity, continuity,
+  differentiability, and explicit effective-continuity moduli;
+\item the geometric-uniform probability law, its support and self-similarity,
+  the geometric sinc characteristic-function identity, certified sinc and CDF
+  tails, and an effective forward Fabius modulus;
+\item the generic infinite \(q\)-Pochhammer product at every strict contraction:
+  complete-normed-ring convergence, concatenation, factor removal and
+  positive-modulus dissection, the multiplicative-norm factor-zero locus,
+  locally compact field continuity, and complex entireness with an explicit
+  nonzero reciprocal-zero derivative; the separate complex wrapper additionally
+  has analytic order one at every zero, including \(q=0\);
+\item selected finite \(q\)-Pochhammer and Gaussian-polynomial identities,
+  including exact residue-class and remainder dissections over arbitrary
+  commutative rings, reciprocity, exact values and first derivatives at
+  \(q=-1\), and multiplicity one for the alternating zero over
+  characteristic-zero rings;
+\item Bell/cumulant conversion and a quadratic asymptotic-inversion lemma;
+\item real Lambert-\(W\) branch-point geometry: the opposite vertical
+  tangents and failure of finite differentiability, together with the signed
+  leading square-root equivalences for the principal and lower branches.
+\end{enumerate}
+
+The last island comes from the companion Lambert-\(W\) corpus, specifically
+\lean{LambertWBranchPointGeometry.lean} and
+\lean{LambertWBranchPointAsymptotics.lean}.  It is supporting formalization
+for the universal fold discussion, not a seventh inverse-\(q\) precursor;
+accordingly it adds no row to the frozen \(260\)-result source ledger.  The
+signed leading equivalences do not include a higher Puiseux coefficient or
+remainder theorem, still less a formal inversion theorem for a
+\(q\)-product.
+
+These declarations support parts of the canonical narrative; they do not
+silently formalize stronger neighbors.  In particular, no Lean status is
+claimed here for the general analytic and formal inverse theorems beyond the
+  named Bell and quadratic support.  Beyond the fixed-\(q\) generic
+  \(q\)-Pochhammer declarations named above, no Lean status is claimed for the
+  uniform-in-\(q\) product and logarithmic tail bounds, joint holomorphy, or
+  the differentiated logarithmic kernels of
+\cref{thm:ip-normal-convergence}, nor for remote-gap and log-periodic
+asymptotics, all-order \(q\to1\) and cyclotomic expansions, Dedekind-eta
+completion, Gaussian and \(q\)-special global inverse atlases, complex
+certification algorithms, or the conjectures in
+\cref{sec:precise-open-frontiers}.  A theorem in those families remains a
+\emph{human-proved frontier result} unless an exact named declaration is
+listed for that exact statement.
+
+The Lean table in \cref{sec:lean-certification-map} is explicitly a source
+inspection, not a build report.  No Lean process was run while preparing this
+appendix, so it contributes no fresh compiler evidence.  Likewise, a
+nonempty \lean{lean_module} or \lean{lean_declaration} field in a future
+concordance row will be a cross-reference, not by itself proof of a current
+aggregate build.  Compiler validation, source inspection, a focused module
+build, and a full repository build are distinct evidence levels and must be
+reported separately.
+
+\section{Repository and source note}
+\label{sec:ref-repository-note}
+
+No citation key occurs in the canonical package at the time of this
+consolidation, so this volume does not manufacture a bibliography from the
+longer reading lists of its precursors.  Its immediate documentary sources
+were the six packages in \cref{tab:ref-source-packages}.  The retained
+package-level ledger \lean{PROVENANCE.md}, row-level ledger
+\lean{theorem_concordance.csv}, editorial contract \lean{README.md}, and
+revision-backed extractor \lean{audit/extract_source_results.py} are the live
+canonical records.  Repository history preserves superseded layouts and
+retired duplicates.
+
+Classical named tools used in proofs---the inverse-function theorem,
+Lagrange--B\"urmann and Lagrange--Good inversion, Rouch\'e's theorem,
+Dedekind-eta modularity, and standard special-function identities---are
+invoked with their exact hypotheses at the point of use.  If external
+citations are introduced in a later edition, their actual citation keys and
+bibliographic entries should be added together; an uncited generic reading
+list would not improve the present provenance record.

@@ -12,8 +12,8 @@ one instance, and so is any product over any index set of integer
 multipliers.
 
 **Half mass is a statement about symmetric functions.**  If
-`f(1−t) = f(t)` and `f` is integrable, then `∫₀^{1/2} f = ½∫₀¹ f` —
-nothing else about `f` is used.
+`f(1−t) = f(t)` and `f` is integrable on `[0,½]` and on `[½,1]`, then
+`∫₀^{1/2} f = ½∫₀¹ f` — nothing else about `f` is used.
 
 Specialising both to `∏_{j<n} sin²(π2ʲt)`, whose total mass is the
 exact `2⁻ⁿ` of `integral_prod_sin_sq_two_pow`, gives
@@ -24,7 +24,10 @@ exact `2⁻ⁿ` of `integral_prod_sin_sq_two_pow`, gives
   reflection.
 * `prod_abs_sin_reflect`, `prod_sin_sq_reflect` — products over an
   arbitrary index set.
-* `integral_half_of_reflect` — half mass for any symmetric function.
+* `integral_half_of_reflect_of_intervalIntegrable` — half mass for any
+  symmetric function integrable on the two halves.
+* `integral_half_of_reflect` — the same under integrability on every
+  interval.
 * `integral_prod_sin_sq_two_pow_half` — the dyadic instance.
 -/
 
@@ -70,10 +73,12 @@ theorem prod_sin_sq_reflect {ι : Type*} (s : Finset ι) (k : ι → ℤ)
 /-! ## Half mass of a symmetric function -/
 
 /-- **Half mass**: a function symmetric about `1/2` puts half of its
-mass on each side.  Only the symmetry and integrability are used. -/
-theorem integral_half_of_reflect {f : ℝ → ℝ}
+mass on each side.  Only the symmetry and integrability on the two
+halves `[0, ½]` and `[½, 1]` are used. -/
+theorem integral_half_of_reflect_of_intervalIntegrable {f : ℝ → ℝ}
     (hsymm : ∀ x : ℝ, f (1 - x) = f x)
-    (hint : ∀ a b : ℝ, IntervalIntegrable f MeasureTheory.volume a b) :
+    (hint₀ : IntervalIntegrable f MeasureTheory.volume 0 (1/2))
+    (hint₁ : IntervalIntegrable f MeasureTheory.volume (1/2) 1) :
     ∫ t in (0:ℝ)..(1/2), f t = (∫ t in (0:ℝ)..1, f t) / 2 := by
   have hrefl : ∫ t in (1/2:ℝ)..1, f t = ∫ t in (0:ℝ)..(1/2), f t := by
     have hsub := intervalIntegral.integral_comp_sub_left
@@ -83,10 +88,19 @@ theorem integral_half_of_reflect {f : ℝ → ℝ}
     norm_num at hsub
     exact hsub.symm
   have hsplit := intervalIntegral.integral_add_adjacent_intervals
-    (a := (0:ℝ)) (b := (1/2 : ℝ)) (c := (1:ℝ)) (hint 0 (1/2))
-    (hint (1/2) 1)
+    (a := (0:ℝ)) (b := (1/2 : ℝ)) (c := (1:ℝ)) hint₀ hint₁
   rw [hrefl] at hsplit
   linarith
+
+/-- **Half mass** under integrability on every interval: the special
+case of `integral_half_of_reflect_of_intervalIntegrable` in which `f`
+is interval-integrable everywhere. -/
+theorem integral_half_of_reflect {f : ℝ → ℝ}
+    (hsymm : ∀ x : ℝ, f (1 - x) = f x)
+    (hint : ∀ a b : ℝ, IntervalIntegrable f MeasureTheory.volume a b) :
+    ∫ t in (0:ℝ)..(1/2), f t = (∫ t in (0:ℝ)..1, f t) / 2 :=
+  integral_half_of_reflect_of_intervalIntegrable hsymm (hint 0 (1/2))
+    (hint (1/2) 1)
 
 /-! ## The dyadic instance -/
 
@@ -107,8 +121,9 @@ theorem integral_prod_sin_sq_two_pow_half (n : ℕ) :
   have hcont : Continuous
       (fun t : ℝ => ∏ j ∈ range n, Real.sin (π * 2 ^ j * t) ^ 2) :=
     continuous_finsetProd _ (fun j _ => by fun_prop)
-  rw [integral_half_of_reflect (prod_sin_sq_two_pow_reflect n)
-      (fun a b => hcont.intervalIntegrable a b),
+  rw [integral_half_of_reflect_of_intervalIntegrable
+      (prod_sin_sq_two_pow_reflect n)
+      (hcont.intervalIntegrable _ _) (hcont.intervalIntegrable _ _),
     integral_prod_sin_sq_two_pow n, pow_succ]
   ring
 

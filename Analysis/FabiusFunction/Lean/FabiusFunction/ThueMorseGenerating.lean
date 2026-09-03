@@ -61,8 +61,11 @@ tending to `F(1) = 1`.
   `paperPrefixPolygonReal_endpoint_not_tendsto_one` -- the endpoint
   obstruction, for the grid and for the intended polygonal interpolation.
 * The remaining declarations include the `correctedPrefixGridValue` counterparts
-  of the grid statements, the rational companion `paperPrefixPolygon` of the
-  real polygon, and `simp` coefficient lemmas for the two series.
+  of the grid statements, the polygon `paperPrefixPolygonField` over an
+  arbitrary linearly ordered field with a floor — of which the
+  rational `paperPrefixPolygon` and the real `paperPrefixPolygonReal`
+  are the two instances — and `simp` coefficient lemmas for the two
+  series.
 
 ## Conventions and caveats
 
@@ -470,84 +473,120 @@ theorem paperPrefixGridValue_endpoint_not_tendsto_one :
     le_of_tendsto h (Filter.Eventually.of_forall hnonpos)
   norm_num at hone
 
-/-- The piecewise-linear interpolation intended by equation (1), as opposed
-to the step function obtained by reading its displayed `floor` literally. -/
-def paperPrefixPolygon (k : ℕ) (x : ℚ) : ℚ :=
-  let u := x * (2 : ℚ) ^ k
+/-- The piecewise-linear interpolation intended by equation (1), over an
+arbitrary linearly ordered field `K` with a floor.  The rational dyadic
+grid values are cast into `K`, the abscissa `x` is scaled to
+`u = x·2^k`, and consecutive grid values are joined linearly across
+`[⌊u⌋, ⌊u⌋+1]`.  The rational polygon `paperPrefixPolygon` and
+the real polygon `paperPrefixPolygonReal` are its instances at
+`K = ℚ` and `K = ℝ`. -/
+def paperPrefixPolygonField (K : Type*) [Field K] [LinearOrder K]
+    [IsStrictOrderedRing K] [FloorSemiring K] (k : ℕ) (x : K) : K :=
+  let u := x * (2 : K) ^ k
   let j := ⌊u⌋₊
-  paperPrefixGridValue k j +
-    (u - (j : ℚ)) *
-      (paperPrefixGridValue k (j + 1) - paperPrefixGridValue k j)
+  (paperPrefixGridValue k j : K) +
+    (u - (j : K)) *
+      ((paperPrefixGridValue k (j + 1) : K) - paperPrefixGridValue k j)
+
+/-- The polygonal interpolation agrees with every dyadic grid value,
+over any linearly ordered field with a floor. -/
+theorem paperPrefixPolygonField_grid (K : Type*) [Field K]
+    [LinearOrder K] [IsStrictOrderedRing K] [FloorSemiring K]
+    (k j : ℕ) :
+    paperPrefixPolygonField K k ((j : K) / (2 : K) ^ k) =
+      (paperPrefixGridValue k j : K) := by
+  unfold paperPrefixPolygonField
+  have hpow : (2 : K) ^ k ≠ 0 := by positivity
+  rw [div_mul_cancel₀ _ hpow]
+  simp
+
+/-- In particular, the polygon agrees with the literal grid at `x = 1`,
+over any linearly ordered field with a floor. -/
+theorem paperPrefixPolygonField_one (K : Type*) [Field K]
+    [LinearOrder K] [IsStrictOrderedRing K] [FloorSemiring K]
+    (k : ℕ) :
+    paperPrefixPolygonField K k 1 =
+      (paperPrefixGridValue k (2 ^ k) : K) := by
+  have h := paperPrefixPolygonField_grid K k (2 ^ k)
+  have hpow : (2 : K) ^ k ≠ 0 := by positivity
+  have h2 : ((2 ^ k : ℕ) : K) / (2 : K) ^ k = 1 := by
+    push_cast
+    exact div_self hpow
+  rw [h2] at h
+  exact h
+
+/-- Passing from the contradictory floor wording to the intended
+polygonal interpolation does not repair the endpoint obstruction, over
+any linearly ordered field with a floor and an order-closed topology:
+the polygon's value at `x = 1` is `-1/2^(C(k,2)) ≤ 0` at every
+level. -/
+theorem paperPrefixPolygonField_endpoint_not_tendsto_one (K : Type*)
+    [Field K] [LinearOrder K] [IsStrictOrderedRing K] [FloorSemiring K]
+    [TopologicalSpace K] [OrderClosedTopology K] :
+    ¬ Filter.Tendsto (fun k : ℕ => paperPrefixPolygonField K k 1)
+      Filter.atTop (nhds (1 : K)) := by
+  rw [show (fun k : ℕ => paperPrefixPolygonField K k 1) =
+      fun k : ℕ => (paperPrefixGridValue k (2 ^ k) : K) by
+    funext k
+    exact paperPrefixPolygonField_one K k]
+  intro h
+  have hnonpos : ∀ k : ℕ,
+      (paperPrefixGridValue k (2 ^ k) : K) ≤ 0 := by
+    intro k
+    rw [paperPrefixGridValue_endpoint]
+    have hrecip : 0 < 1 / (2 : ℚ) ^ k.choose 2 := by positivity
+    exact Rat.cast_nonpos.mpr (by linarith)
+  have hone : (1 : K) ≤ 0 :=
+    le_of_tendsto h (Filter.Eventually.of_forall hnonpos)
+  exact (not_le.mpr zero_lt_one) hone
+
+/-- The piecewise-linear interpolation intended by equation (1), as
+opposed to the step function obtained by reading its displayed `floor`
+literally: the rational instance of `paperPrefixPolygonField`. -/
+def paperPrefixPolygon (k : ℕ) (x : ℚ) : ℚ :=
+  paperPrefixPolygonField ℚ k x
 
 /-- The polygonal interpolation agrees with every dyadic grid value. -/
 theorem paperPrefixPolygon_grid (k j : ℕ) :
     paperPrefixPolygon k ((j : ℚ) / (2 : ℚ) ^ k) =
-      paperPrefixGridValue k j := by
-  unfold paperPrefixPolygon
-  have hpow : (2 : ℚ) ^ k ≠ 0 := by positivity
-  rw [div_mul_cancel₀ _ hpow]
-  simp
+      paperPrefixGridValue k j :=
+  paperPrefixPolygonField_grid ℚ k j
 
 /-- In particular, the polygon agrees with the literal grid at `x = 1`. -/
 theorem paperPrefixPolygon_one (k : ℕ) :
-    paperPrefixPolygon k 1 = paperPrefixGridValue k (2 ^ k) := by
-  have h := paperPrefixPolygon_grid k (2 ^ k)
-  norm_num at h ⊢
-  exact h
+    paperPrefixPolygon k 1 = paperPrefixGridValue k (2 ^ k) :=
+  paperPrefixPolygonField_one ℚ k
 
 /-- Passing from the contradictory floor wording to the intended polygonal
 interpolation does not repair the endpoint obstruction. -/
 theorem paperPrefixPolygon_endpoint_not_tendsto_one :
     ¬ Filter.Tendsto (fun k : ℕ => paperPrefixPolygon k 1)
-      Filter.atTop (nhds (1 : ℚ)) := by
-  rw [show (fun k : ℕ => paperPrefixPolygon k 1) =
-      fun k : ℕ => paperPrefixGridValue k (2 ^ k) by
-    funext k
-    exact paperPrefixPolygon_one k]
-  exact paperPrefixGridValue_endpoint_not_tendsto_one
+      Filter.atTop (nhds (1 : ℚ)) :=
+  paperPrefixPolygonField_endpoint_not_tendsto_one ℚ
 
 /-- The source's intended real polygon obtained by joining consecutive
-literal dyadic grid values. -/
+literal dyadic grid values: the real instance of
+`paperPrefixPolygonField`. -/
 noncomputable def paperPrefixPolygonReal (k : ℕ) (x : ℝ) : ℝ :=
-  let u := x * (2 : ℝ) ^ k
-  let j := ⌊u⌋₊
-  (paperPrefixGridValue k j : ℝ) +
-    (u - (j : ℝ)) *
-      ((paperPrefixGridValue k (j + 1) : ℝ) - paperPrefixGridValue k j)
+  paperPrefixPolygonField ℝ k x
 
 /-- The real polygon agrees with every dyadic grid value. -/
 theorem paperPrefixPolygonReal_grid (k j : ℕ) :
     paperPrefixPolygonReal k ((j : ℝ) / (2 : ℝ) ^ k) =
-      (paperPrefixGridValue k j : ℝ) := by
-  unfold paperPrefixPolygonReal
-  have hpow : (2 : ℝ) ^ k ≠ 0 := by positivity
-  rw [div_mul_cancel₀ _ hpow]
-  simp
+      (paperPrefixGridValue k j : ℝ) :=
+  paperPrefixPolygonField_grid ℝ k j
 
 /-- In particular, the real polygon agrees with the literal grid at `x = 1`. -/
 theorem paperPrefixPolygonReal_one (k : ℕ) :
-    paperPrefixPolygonReal k 1 = (paperPrefixGridValue k (2 ^ k) : ℝ) := by
-  have h := paperPrefixPolygonReal_grid k (2 ^ k)
-  norm_num at h ⊢
-  exact h
+    paperPrefixPolygonReal k 1 = (paperPrefixGridValue k (2 ^ k) : ℝ) :=
+  paperPrefixPolygonField_one ℝ k
 
 /-- The intended real polygon has the same endpoint obstruction as the
 rational grid and therefore cannot converge pointwise to a function with
 value one at the right endpoint. -/
 theorem paperPrefixPolygonReal_endpoint_not_tendsto_one :
     ¬ Filter.Tendsto (fun k : ℕ => paperPrefixPolygonReal k 1)
-      Filter.atTop (nhds (1 : ℝ)) := by
-  rw [show (fun k : ℕ => paperPrefixPolygonReal k 1) =
-      fun k : ℕ => (paperPrefixGridValue k (2 ^ k) : ℝ) by
-    funext k
-    exact paperPrefixPolygonReal_one k]
-  intro h
-  have hnonpos : ∀ k : ℕ, (paperPrefixGridValue k (2 ^ k) : ℝ) ≤ 0 := by
-    intro k
-    rw [paperPrefixGridValue_endpoint]
-    norm_num
-  have hone : (1 : ℝ) ≤ 0 :=
-    le_of_tendsto h (Filter.Eventually.of_forall hnonpos)
-  norm_num at hone
+      Filter.atTop (nhds (1 : ℝ)) :=
+  paperPrefixPolygonField_endpoint_not_tendsto_one ℝ
 
 end Fabius

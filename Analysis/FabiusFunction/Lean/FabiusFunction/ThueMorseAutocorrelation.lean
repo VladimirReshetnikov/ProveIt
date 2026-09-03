@@ -1,5 +1,7 @@
+import FabiusFunction.ThueMorseBasicLemmas
 import FabiusFunction.ThueMorseEnumerators
 import Mathlib.Analysis.SpecificLimits.Basic
+import Mathlib.Analysis.SpecificLimits.Normed
 
 /-!
 # Finite autocorrelation of the Thue–Morse signs
@@ -126,11 +128,6 @@ theorem thueMorseWindowAutocorrelation_two_mul_odd (K r : ℕ) :
     thueMorseSign_two_mul_add_one, thueMorseSign_two_mul]
   ring
 
-/-- Every Thue–Morse sign has absolute value one. -/
-private theorem abs_thueMorseSign_eq_one (n : ℕ) :
-    |thueMorseSign n| = 1 := by
-  rw [thueMorseSign, abs_pow, abs_neg, abs_one, one_pow]
-
 /-- The trivial bound `|R_N(k)| ≤ N`: the window sum has `N` terms and
 each of them is a sign.  Its one use below is the dyadic specialization
 `abs_thueMorseAutocorrelation_le`, which places every normalized
@@ -141,7 +138,7 @@ theorem abs_thueMorseWindowAutocorrelation_le (N k : ℕ) :
   have hterm : ∀ n ∈ range N,
       |thueMorseSign n * thueMorseSign (n + k)| = 1 := by
     intro n _
-    rw [abs_mul, abs_thueMorseSign_eq_one, abs_thueMorseSign_eq_one,
+    rw [abs_mul, abs_thueMorseSign, abs_thueMorseSign,
       one_mul]
   calc |thueMorseWindowAutocorrelation N k|
       ≤ ∑ n ∈ range N, |thueMorseSign n * thueMorseSign (n + k)| := by
@@ -234,24 +231,11 @@ theorem three_mul_thueMorseAutocorrelation_two (m : ℕ) :
 /-! ## Normalized limits -/
 
 /-- The alternating dyadic geometric sequence `(-1/2)^m` tends to zero:
-it is squeezed between `±(1/2)^m`. -/
+its ratio has absolute value `1/2 < 1`. -/
 theorem tendsto_neg_half_pow :
-    Tendsto (fun m : ℕ => ((-1 : ℝ) / 2) ^ m) atTop (𝓝 0) := by
-  have hhalf : Tendsto (fun m : ℕ => ((1 : ℝ) / 2) ^ m) atTop (𝓝 0) :=
-    tendsto_pow_atTop_nhds_zero_of_lt_one (r := (1 : ℝ) / 2)
-      (by norm_num) (by norm_num)
-  have hneg : Tendsto (fun m : ℕ => -(((1 : ℝ) / 2) ^ m)) atTop (𝓝 0) := by
-    simpa using hhalf.neg
-  have habs : ∀ m : ℕ, |((-1 : ℝ) / 2) ^ m| ≤ ((1 : ℝ) / 2) ^ m := by
-    intro m
-    have hbase : |(-1 : ℝ) / 2| = (1 : ℝ) / 2 := by
-      rw [abs_div, abs_neg, abs_one,
-        abs_of_nonneg (by norm_num : (0 : ℝ) ≤ 2)]
-    have heq : |((-1 : ℝ) / 2) ^ m| = ((1 : ℝ) / 2) ^ m := by
-      rw [abs_pow, hbase]
-    exact le_of_eq heq
-  exact tendsto_of_tendsto_of_tendsto_of_le_of_le hneg hhalf
-    (fun m => (abs_le.1 (habs m)).1) (fun m => (abs_le.1 (habs m)).2)
+    Tendsto (fun m : ℕ => ((-1 : ℝ) / 2) ^ m) atTop (𝓝 0) :=
+  tendsto_pow_atTop_nhds_zero_of_abs_lt_one
+    (by rw [abs_div, abs_neg, abs_one, abs_two]; norm_num)
 
 /-- The common limit shape of the two closed forms:
 `-1/3 + (-2/3)·(-1/2)^m → -1/3`. -/
@@ -277,6 +261,17 @@ theorem tendsto_thueMorseAutocorrelation_zero_shift :
     exact div_self (by positivity)
   exact tendsto_const_nhds.congr fun m => (hval m).symm
 
+/-- Normalizing a closed form `3·A = -2^p - c·s` by `2^p`:
+`A/2^p = -1/3 + (-c/3)·(s/2^p)`.  Both limiting autocorrelations below
+are this one computation. -/
+private theorem div_two_pow_of_three_mul_eq {A : ℤ} {p : ℕ} {c s : ℝ}
+    (h : 3 * (A : ℝ) = -(2 : ℝ) ^ p - c * s) :
+    (A : ℝ) / 2 ^ p = -1 / 3 + (-c / 3) * (s / 2 ^ p) := by
+  have hne : ((2 : ℝ) ^ p) ≠ 0 := by positivity
+  have hcancel : s / 2 ^ p * 2 ^ p = s := div_mul_cancel₀ _ hne
+  rw [div_eq_iff hne]
+  linear_combination (1 / 3 : ℝ) * h + (c / 3) * hcancel
+
 /-- **The limiting autocorrelation at shift one.**  Dividing the closed
 form `3·A_m(1) = -2^m - 2·(-1)^m` by `3·2^m` gives
 `A_m(1)/2^m = -1/3 + (-2/3)·(-1/2)^m`, whence `A_m(1)/2^m → -1/3`. -/
@@ -286,28 +281,10 @@ theorem tendsto_thueMorseAutocorrelation_one :
   have hval : ∀ m : ℕ, (thueMorseAutocorrelation m 1 : ℝ) / 2 ^ m =
       -1 / 3 + (-2 / 3) * ((-1 : ℝ) / 2) ^ m := by
     intro m
-    have hz := three_mul_thueMorseAutocorrelation_one m
     have hcast : (3 : ℝ) * (thueMorseAutocorrelation m 1 : ℝ) =
         -(2 : ℝ) ^ m - 2 * (-1 : ℝ) ^ m := by
-      have hc := congrArg (fun z : ℤ => (z : ℝ)) hz
-      push_cast at hc
-      linarith
-    have hne : ((2 : ℝ) ^ m) ≠ 0 := by positivity
-    have hpow : ((-1 : ℝ) / 2) ^ m = (-1 : ℝ) ^ m / 2 ^ m := by
-      rw [div_pow]
-    have hcancel : ((-1 : ℝ) ^ m / 2 ^ m) * 2 ^ m = (-1 : ℝ) ^ m :=
-      div_mul_cancel₀ _ hne
-    have expand :
-        (-1 / 3 + (-2 / 3) * ((-1 : ℝ) ^ m / 2 ^ m)) * 2 ^ m =
-          -1 / 3 * 2 ^ m + (-2 / 3) * (-1 : ℝ) ^ m := by
-      have hassoc :
-          (-1 / 3 + (-2 / 3) * ((-1 : ℝ) ^ m / 2 ^ m)) * 2 ^ m =
-            -1 / 3 * 2 ^ m +
-              (-2 / 3) * (((-1 : ℝ) ^ m / 2 ^ m) * 2 ^ m) := by
-        ring
-      rw [hassoc, hcancel]
-    rw [hpow, div_eq_iff hne, expand]
-    linarith
+      exact_mod_cast three_mul_thueMorseAutocorrelation_one m
+    rw [div_two_pow_of_three_mul_eq hcast, div_pow]
   exact tendsto_neg_third_add.congr fun m => (hval m).symm
 
 /-- **The limiting autocorrelation at shift two.**  Dividing the closed
@@ -322,30 +299,11 @@ theorem tendsto_thueMorseAutocorrelation_two :
       (thueMorseAutocorrelation (m + 1) 2 : ℝ) / 2 ^ (m + 1) =
         -1 / 3 + (-2 / 3) * ((-1 : ℝ) / 2) ^ m := by
     intro m
-    have hz := three_mul_thueMorseAutocorrelation_two m
-    have hp : (2 : ℝ) ^ (m + 1) = 2 * 2 ^ m := by rw [pow_succ]; ring
     have hcast : (3 : ℝ) * (thueMorseAutocorrelation (m + 1) 2 : ℝ) =
-        -(2 * (2 : ℝ) ^ m) - 4 * (-1 : ℝ) ^ m := by
-      have hc := congrArg (fun z : ℤ => (z : ℝ)) hz
-      push_cast at hc
-      linarith
-    have hne : ((2 : ℝ) ^ m) ≠ 0 := by positivity
-    have hne' : ((2 : ℝ) ^ (m + 1)) ≠ 0 := by positivity
-    have hpow : ((-1 : ℝ) / 2) ^ m = (-1 : ℝ) ^ m / 2 ^ m := by
-      rw [div_pow]
-    have hcancel : ((-1 : ℝ) ^ m / 2 ^ m) * 2 ^ m = (-1 : ℝ) ^ m :=
-      div_mul_cancel₀ _ hne
-    have expand :
-        (-1 / 3 + (-2 / 3) * ((-1 : ℝ) ^ m / 2 ^ m)) * (2 * 2 ^ m) =
-          -2 / 3 * 2 ^ m + (-4 / 3) * (-1 : ℝ) ^ m := by
-      have hassoc :
-          (-1 / 3 + (-2 / 3) * ((-1 : ℝ) ^ m / 2 ^ m)) * (2 * 2 ^ m) =
-            -2 / 3 * 2 ^ m +
-              (-4 / 3) * (((-1 : ℝ) ^ m / 2 ^ m) * 2 ^ m) := by
-        ring
-      rw [hassoc, hcancel]
-    rw [hpow, div_eq_iff hne', hp, expand]
-    linarith
+        -(2 : ℝ) ^ (m + 1) - 4 * (-1 : ℝ) ^ m := by
+      exact_mod_cast three_mul_thueMorseAutocorrelation_two m
+    rw [div_two_pow_of_three_mul_eq hcast, div_pow, pow_succ]
+    ring
   have key : Tendsto
       (fun m : ℕ =>
         (thueMorseAutocorrelation (m + 1) 2 : ℝ) / 2 ^ (m + 1))

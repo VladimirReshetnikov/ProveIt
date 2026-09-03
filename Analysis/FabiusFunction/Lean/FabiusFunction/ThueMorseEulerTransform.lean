@@ -1,3 +1,4 @@
+import FabiusFunction.ThueMorseBasicLemmas
 import FabiusFunction.ThueMorseEnumerators
 import Mathlib.NumberTheory.Padics.PadicVal.Basic
 
@@ -349,14 +350,6 @@ theorem two_mul_sum_thueMorseBit_add_sum_thueMorseSign (N : ℕ) :
   rw [Finset.sum_congr rfl h, Finset.sum_sub_distrib, ← Finset.mul_sum,
     Finset.sum_const, Finset.card_range, nsmul_eq_mul, mul_one]
   ring
-
-/-- The Thue–Morse sign has absolute value one. -/
-theorem abs_thueMorseSign (n : ℕ) : |thueMorseSign n| = 1 := by
-  have h := thueMorseSign_eq_one_sub_two_mul_bit n
-  have hle := thueMorseBit_le_one n
-  rcases Nat.le_one_iff_eq_zero_or_eq_one.mp hle with h0 | h1
-  · rw [h, h0]; norm_num
-  · rw [h, h1]; norm_num
 
 /-- The inclusive signed prefix sum:
 `∑_{t≤N} ε(t) = ε(N/2)` for even `N` and `0` for odd `N`. -/

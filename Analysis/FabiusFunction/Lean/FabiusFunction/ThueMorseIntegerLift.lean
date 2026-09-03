@@ -152,20 +152,19 @@ of `(√((1+3z)/(1-z)) - 1)/(2(1-z))`, manifestly integers. -/
 def integerLift (n : ℕ) : ℤ :=
   ∑ k ∈ Icc 1 n, (-1) ^ (k - 1) * (catalan (k - 1) : ℤ) * (n.choose k : ℤ)
 
+/-- The integral algebraic lift vanishes in degree zero. -/
 @[simp] theorem integerLift_zero : integerLift 0 = 0 := by
   simp [integerLift]
 
+/-- The integral algebraic lift equals `1` in degree one. -/
 theorem integerLift_one : integerLift 1 = 1 := by
   simp [integerLift]
 
 /-- A natural number is `1` in `ZMod 2` exactly by its parity. -/
 private theorem natCast_zmod_two (m : ℕ) :
     (m : ZMod 2) = if m % 2 = 1 then 1 else 0 := by
-  conv_lhs => rw [← Nat.div_add_mod m 2]
-  push_cast
-  have h2 : (2 : ZMod 2) = 0 := by decide
-  rcases Nat.mod_two_eq_zero_or_one m with h | h <;>
-    rw [h] <;> simp [h2]
+  rw [← ZMod.natCast_mod m 2]
+  rcases Nat.mod_two_eq_zero_or_one m with h | h <;> rw [h] <;> simp
 
 /-- **The parity theorem in `ZMod 2`**: `c(n) ≡ w₂(n) (mod 2)`.
 Modulo two the alternating signs vanish, only Mersenne-indexed

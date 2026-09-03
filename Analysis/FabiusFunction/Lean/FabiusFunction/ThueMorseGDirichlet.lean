@@ -1,4 +1,6 @@
 import FabiusFunction.FrullaniIntegral
+import FabiusFunction.ThueMorseBasicLemmas
+import FabiusFunction.ReciprocalGammaJets
 import FabiusFunction.ThueMorseEntireContinuation
 import FabiusFunction.ThueMorseMasterProduct
 
@@ -31,7 +33,9 @@ The proof here is Fubini-free and uses no uniform summation-by-parts:
    integral of step 2.
 
 * `mpLimit_eq_integral` — **the closed integral form of `log G`**.
-* `hasDerivAt_Gamma_inv_zero` — `(1/Γ)'(0) = 1`.
+* `hasDerivAt_Gamma_inv_zero` — `(1/Γ)'(0) = 1`, re-exported from
+  `ReciprocalGammaJets`, which proves the corresponding formula at every
+  nonpositive integer.
 * `hasDerivAt_dirichletMellinContinuation_zero` — the derivative of
   the continuation at `0` is the Mellin value `M(0)`.
 * `mpLimit_eq_deriv_sub` — **the derivative bridge**
@@ -102,8 +106,7 @@ theorem mpLimit_eq_integral (a b : ℝ) (ha : 0 < a) (hb : 0 < b) :
         (Real.exp (-(b * t)) - Real.exp (-(a * t))) / t *
           lacunaryExpProduct t := by
   have hpow : Tendsto (fun m : ℕ => 2 ^ m) atTop atTop :=
-    tendsto_atTop_mono (fun m => (Nat.lt_two_pow_self (n := m)).le)
-      tendsto_id
+    tendsto_two_pow_atTop
   have h1 : Tendsto (fun m => mpLog a b (2 ^ m)) atTop
       (𝓝 (mpLimit a b)) := (tendsto_mpLimit a b ha hb).comp hpow
   have hDCT := MeasureTheory.tendsto_integral_of_dominated_convergence
@@ -221,23 +224,6 @@ private theorem mellin_mellinKernel_zero (a : ℝ) :
   have ht0 : (0 : ℝ) < t := ht
   rw [show (0 : ℝ) - 1 = -1 by ring, Real.rpow_neg_one]
   ring
-
-/-- **`(1/Γ)'(0) = 1`**: from `Γ(s)⁻¹ = s·Γ(s+1)⁻¹`
-(`Complex.one_div_Gamma_eq_self_mul_one_div_Gamma_add_one`, an identity
-of entire functions valid at the poles too) and the product rule,
-since `Γ(1) = 1`. -/
-theorem hasDerivAt_Gamma_inv_zero :
-    HasDerivAt (fun s : ℂ => (Complex.Gamma s)⁻¹) 1 0 := by
-  have hg : Differentiable ℂ
-      (fun s : ℂ => (Complex.Gamma (s + 1))⁻¹) :=
-    Complex.differentiable_one_div_Gamma.comp
-      (differentiable_id.add_const 1)
-  have hd := (hasDerivAt_id (0 : ℂ)).mul (hg 0).hasDerivAt
-  have heq : (fun s : ℂ => (Complex.Gamma s)⁻¹) =
-      fun s : ℂ => s * (Complex.Gamma (s + 1))⁻¹ :=
-    funext Complex.one_div_Gamma_eq_self_mul_one_div_Gamma_add_one
-  rw [heq]
-  simpa [Pi.mul_def, Complex.Gamma_one] using hd
 
 /-- **The derivative of the entire continuation at `s = 0`** is the
 Mellin value `M(0)`: in `d/ds [Γ(s)⁻¹·M(s)]` the product rule leaves

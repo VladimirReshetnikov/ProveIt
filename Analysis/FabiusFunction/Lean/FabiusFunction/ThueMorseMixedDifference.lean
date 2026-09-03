@@ -148,6 +148,7 @@ def dyadicMixedDifference {M A : Type*} [AddCommMonoid M] [AddCommGroup A]
     (h : M) (m : ℕ) (f : M → A) (x : M) : A :=
   mixedDifference (fun j : ℕ ↦ 2 ^ j • h) (range m) f x
 
+/-- The zeroth dyadic mixed difference is the original function value. -/
 @[simp] theorem dyadicMixedDifference_zero {M A : Type*} [AddCommMonoid M]
     [AddCommGroup A] (h : M) (f : M → A) (x : M) :
     dyadicMixedDifference h 0 f x = f x := by

@@ -1,0 +1,1913 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage{libertinus}
+\IfFileExists{inconsolata.sty}{\usepackage[scaled=0.88]{inconsolata}}{\renewcommand{\ttdefault}{lmtt}}
+\usepackage{microtype}
+\usepackage[a4paper,margin=25mm,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,bm,mathrsfs}
+\input{../../../../fabius-notation.tex}
+\usepackage{booktabs,longtable,tabularx,array,multirow}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{float}
+\usepackage[most]{tcolorbox}
+\usepackage{xurl}
+\usepackage{hyperref}
+\usepackage[nameinlink,capitalise,noabbrev]{cleveref}
+
+\definecolor{navy}{HTML}{16324F}
+\definecolor{teal}{HTML}{1E6B6A}
+\definecolor{gold}{HTML}{A97413}
+\definecolor{burgundy}{HTML}{7A2946}
+\definecolor{slate}{HTML}{536273}
+\definecolor{lightblue}{HTML}{EEF5FA}
+\definecolor{lightgreen}{HTML}{EEF8F4}
+\definecolor{lightgold}{HTML}{FFF8E8}
+\definecolor{lightred}{HTML}{FBEFF3}
+\definecolor{lightgray}{HTML}{F4F6F8}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=navy,
+  citecolor=teal,
+  urlcolor=burgundy,
+  pdfauthor={OpenAI research report for Vladimir Reshetnikov},
+  pdftitle={Dyadic Stein--Koopman and q-Oscillator Calculus for the Fabius--Rvachev Law},
+  pdfsubject={Fabius function, Rvachev up-function, Appell polynomials, Stein method, Koopman operators, q-Pochhammer determinants},
+  pdfkeywords={Fabius, Rvachev, Thue--Morse, Appell, Koopman, Stein kernel, Lambert W, q-binomial}
+}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\textsc{Dyadic Stein--Koopman Calculus}}
+\fancyhead[R]{\small\nouppercase{\leftmark}}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+\titleformat{\section}{\Large\bfseries\color{navy}}{\thesection}{0.75em}{}
+\titleformat{\subsection}{\large\bfseries\color{teal}}{\thesubsection}{0.65em}{}
+\titleformat{\subsubsection}{\normalsize\bfseries\color{slate}}{\thesubsubsection}{0.6em}{}
+\titlespacing*{\section}{0pt}{2.2ex plus .5ex}{1.0ex}
+\titlespacing*{\subsection}{0pt}{1.8ex plus .4ex}{0.7ex}
+
+\setlist[itemize]{leftmargin=2.0em,itemsep=0.35ex,topsep=0.5ex}
+\setlist[enumerate]{leftmargin=2.2em,itemsep=0.45ex,topsep=0.6ex}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.55em}
+\setlength{\emergencystretch}{2em}
+\graphicspath{{figures/}}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\newtheorem{problem}[theorem]{Problem}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\newtcolorbox{resultbox}[1][]{enhanced,breakable,colback=lightgreen,colframe=teal,
+  boxrule=0.8pt,arc=2pt,left=7pt,right=7pt,top=5pt,bottom=5pt,
+  title=\textbf{#1},fonttitle=\bfseries}
+\newtcolorbox{inputbox}[1][]{enhanced,breakable,colback=lightblue,colframe=navy,
+  boxrule=0.8pt,arc=2pt,left=7pt,right=7pt,top=5pt,bottom=5pt,
+  title=\textbf{#1},fonttitle=\bfseries}
+\newtcolorbox{conjecturebox}[1][]{enhanced,breakable,colback=lightgold,colframe=gold,
+  boxrule=0.8pt,arc=2pt,left=7pt,right=7pt,top=5pt,bottom=5pt,
+  title=\textbf{#1},fonttitle=\bfseries}
+\newtcolorbox{cautionbox}[1][]{enhanced,breakable,colback=lightred,colframe=burgundy,
+  boxrule=0.8pt,arc=2pt,left=7pt,right=7pt,top=5pt,bottom=5pt,
+  title=\textbf{#1},fonttitle=\bfseries}
+
+\newcommand{\Lip}{\operatorname{Lip}}
+\newcommand{\Acal}{\mathcal A}
+\newcommand{\Pcal}{\mathcal P}
+\newcommand{\Scal}{\mathcal S}
+\newcommand{\Lcal}{\mathcal L}
+\newcommand{\Kcal}{\mathcal K}
+\newcommand{\Hcal}{\mathcal H}
+\newcommand{\PiD}{\Pi}
+\newcommand{\repo}{\nolinkurl{Analysis/FabiusFunction/docs}}
+
+\crefname{theorem}{theorem}{theorems}
+\crefname{proposition}{proposition}{propositions}
+\crefname{corollary}{corollary}{corollaries}
+\crefname{lemma}{lemma}{lemmas}
+\crefname{conjecture}{conjecture}{conjectures}
+\crefname{problem}{problem}{problems}
+\crefname{definition}{definition}{definitions}
+\crefname{example}{example}{examples}
+\crefname{remark}{remark}{remarks}
+
+\begin{document}
+\hypersetup{pageanchor=false}
+
+\begin{titlepage}
+\thispagestyle{empty}
+\begin{center}
+\vspace*{1.0cm}
+{\color{navy}\rule{0.92\textwidth}{1.2pt}}\\[1.0cm]
+{\fontsize{27}{32}\selectfont\bfseries\color{navy}
+Dyadic Stein--Koopman and\\[0.18em]
+$q$-Oscillator Calculus\\[0.18em]
+for the Fabius--Rvachev Law}\\[0.8cm]
+{\Large\color{teal}
+Appell eigenmodes, transfer determinants, martingales,\\
+irreversibility, and Lambert endpoint kernels}\\[1.0cm]
+{\color{navy}\rule{0.92\textwidth}{1.2pt}}\\[1.25cm]
+
+\begin{tcolorbox}[width=0.88\textwidth,colback=lightblue,colframe=navy,arc=3pt,boxrule=0.8pt]
+\centering
+\textbf{Frontier research report based on the recursive LaTeX corpus under}\\[0.35em]
+\texttt{Analysis/FabiusFunction/docs}\\[0.45em]
+\textbf{Status:} rigorous results, exact symbolic verification, numerical experiments,\\
+and explicitly labeled conjectures
+\end{tcolorbox}
+
+\vfill
+{\large Prepared for Vladimir Reshetnikov}\\[0.35cm]
+{\large 30 August 2026}\\[0.8cm]
+{\small The word ``new'' in this report means not located in the inspected repository corpus under the stated normalizations. It is not an unconditional claim of worldwide publication priority.}
+\end{center}
+\end{titlepage}
+\hypersetup{pageanchor=true}
+
+\pagenumbering{roman}
+
+\begin{abstract}
+The centered Rvachev law is the stationary distribution of the affine smoothing chain
+\[
+ X_{k+1}=\frac{X_k+U_{k+1}}2,
+ \qquad U_k\sim\operatorname{Unif}[-1,1].
+\]
+The repository already develops its reciprocal-moment Appell polynomials, Bernoulli cumulants, exact dyadic arithmetic, sinc products, and all-orders inverse-Fabius endpoint asymptotics. This report shows that these ingredients fit a previously unexploited dynamical framework. The inverse-moment Appell polynomial of degree $n$ is an exact Koopman eigenfunction with eigenvalue $2^{-n}$. From this one obtains explicit polynomial spectral projectors, dual eigendistributions $\RvachevUp^{(n)}$, closed Poisson and resolvent formulae, a $q$-Weyl commutation relation, and the transfer determinant
+\[
+ \det(I-zP\vert_{\Pi_d})=(z;1/2)_{d+1}.
+\]
+An Appell-Fock completion gives a trace-class realization with Fredholm determinant $(z;1/2)_\infty$.
+
+The stationary fixed-point equation also supplies a Stein operator $I-P$ whose discrepancy is quantitatively equivalent to Wasserstein distance, while the differentiated operator
+\[
+ \Scal f=f'(x)-f\!\left(\frac{x+1}{2}\right)+f\!\left(\frac{x-1}{2}\right)
+\]
+is the weak adjoint of Rvachev's differential-dilation equation. Polynomial and exponential eigenmodes generate exact martingales. Their lag correlations reveal genuine time asymmetry: $\Expectation[\Acal_2(Y)\Acal_4(Y)]=-128/33075$, giving distinct forward and reverse one-step correlations and hence a rigorous nonreversibility certificate. A general factorization proves that every nontrivial affine-uniform chain with $0<|r|<1$ is nonreversible.
+
+A second strand derives the classical scalar Stein kernel directly from the Fabius function:
+\[
+ \tau(x)=
+ \frac{|x|F((1-|x|)/2)+2F((1-|x|)/4)}{F(1-|x|)}.
+\]
+It has exact rational values at dyadic points, an inverse-Fabius integral representation, and Bell--Bernoulli Appell moments $\Expectation[\tau(Y)\Acal_n(Y)]=\kappa_{n+2}/(n+1)$. Combining this exact formula with the repository's phase-aware inverse asymptotics yields
+\[
+ \tau(1-G(y))=G(y)\left[
+ \frac1\rho+\frac{(\Psi'(\theta)-1)/\log2-1}{\rho^2}
+ +\BigO\!\left(\frac{1+\log\rho}{\rho^3}\right)
+ \right],
+\]
+and therefore $\tau(1-q)\sim q/\lambda(q)$, where $\lambda$ is the exact lower-Lambert coordinate defined in \cref{eq:lambda-q}. Exact arithmetic through dyadic depth $120$ and symbolic checks through degree $10$ accompany the proofs. The report closes with concrete conjectures on natural-space spectra, full Stein-kernel transseries, Thue--Morse spectral projectors, Legendre conditioning, and multivariate atomic masks.
+\end{abstract}
+
+\tableofcontents
+\clearpage
+\pagenumbering{arabic}
+
+\section{Scope, corpus audit, and contribution boundary}
+\label{sec:scope}
+
+\subsection{How the corpus was inspected}
+
+The requested source tree is not a single article. Its current top level contains the main Fabius--Rvachev exposition, a mathematical glossary, a non-elementarity study, a Lean walkthrough, source-paper transcriptions, an archive, the canonical frontier volume, and a semi-formalized draft system. The draft manifest was reorganized on 28 August 2026 into thematic consolidations for Fourier decay, Thue--Morse, exponent and $q$-series theory, Lambert $W$, spectra and arithmetic, integration and transforms, inverse and sampling, dyadic-comb methods, and representations. The manifest states that absorbed documents were moved verbatim into the consolidations and that provenance is retained in the documents and git history \cite{ProveItManifest}.
+
+The audit used three layers.
+\begin{enumerate}
+\item The current primary sources and the current consolidated frontier volumes were read at source level, with special attention to theorem statements, proofs, result ledgers, appendices, and open-problem registers.
+\item The earlier recursive source inventories preserved in the repository reports were used to retain coverage of frozen and deleted paths whose unique content has since been absorbed into consolidations.
+\item Exact phrase and formula searches were run for the proposed organizing notions: \emph{Koopman}, \emph{fixed-point Stein}, \emph{Stein kernel}, \emph{polynomial Poisson equation}, \emph{reversibility}, \emph{Appell martingale}, and transfer determinants built from the affine smoothing operator. Adjacent operator, Appell, inverse, sampling, Legendre, and spectral sections were then read line by line.
+\end{enumerate}
+
+The present report treats the following as imported repository inputs rather than new claims:
+\begin{itemize}
+\item the definitions and normalization dictionary for the bounded Fabius distribution $F$, the compact Rvachev density $\RvachevUp$, and the signed global extension;
+\item the random-uniform series, moment generating function, Bernoulli cumulants, infinite sinc product, exact dyadic values, and Thue--Morse derivative formulas;
+\item the inverse-moment Rvachev--Appell family
+\(
+ \EulerE^{xt}/M(t)=\sum_{n\ge0}\Acal_n(x)t^n/n!
+\), its Bell--Bernoulli recurrence, parity, and exact deconvolution identity \cite{ProveItInverse};
+\item the general geometric-$q$ moment and Appell families, reciprocal-$q$ deconvolution, Gaussian-binomial interpolation, finite sinc products, and positive/signed approximation results \cite{ProveItQ};
+\item the lower-Lambert phase, Gamma--zeta periodic fluctuation, all-orders endpoint expansion for $F$ and $G=F^{-1}$, and the two-term inverse elasticity;
+\item the existing Legendre, Jacobi, Lagrange, sampling, multiresolution, Fredholm, zero-divisor, and spectral-determinant representations, none of which is relabeled here as new.
+\end{itemize}
+
+\begin{cautionbox}[Priority convention]
+Every boxed ``new'' result below was absent from the inspected repository sources under the displayed normalization. The comparison was deliberately against the current consolidated successors, not merely against an older snapshot. No claim is made that every result is absent from all external literature under every possible language or normalization. General Appell martingales and Stein methods for self-decomposable laws have substantial external literatures \cite{DiNardo2013,ArrasHoudre2019,ArrasHoudre2022}; the frontier contribution here is their exact synthesis with the Rvachev affine chain, the repository's specific Appell basis, its dyadic $q$-calculus, and its lower-Lambert endpoint theory.
+\end{cautionbox}
+
+\subsection{Result ledger}
+
+\begin{longtable}{@{}p{0.32\textwidth}p{0.16\textwidth}p{0.43\textwidth}@{}}
+\toprule
+Result & Status & Main mechanism \\
+\midrule
+\endfirsthead
+\toprule
+Result & Status & Main mechanism \\
+\midrule
+\endhead
+Appell--Koopman eigenvalue law $P_r\Acal_n=r^n\Acal_n$ & proved & stationary MGF cocycle \\
+Polynomial spectral projectors and dual eigen-distributions & proved & Appell differentiation and stationarity \\
+$q$-Weyl commutation and Gaussian-binomial operator powers & proved & $DP_r=rP_rD$ \\
+Finite and Fock-space transfer determinants & proved & eigenvalue product $\prod(1-zr^n)$ \\
+Closed polynomial resolvent and Poisson solver & proved & diagonal Appell expansion \\
+Fixed-point Stein discrepancy equivalent to $W_1$ & proved & contractive Neumann series \\
+Differential-dilation Stein operator and Rvachev adjoint & proved & $(I-P)D$ plus change of variables \\
+Polynomial and exponential martingales & proved & Koopman eigenmodes and MGF cocycle \\
+Exact lag covariance and nonreversibility & proved & Appell Gram kernel and $G_{24}\ne0$ \\
+Exact Fabius formula for the scalar Stein kernel & proved & two Fabius primitive identities \\
+Inverse-Fabius Stein bridge and Bernoulli moments & proved & quantile substitution and Appell EGF \\
+Two-term Lambert-periodic Stein-kernel endpoint law & proved from repository input & inverse elasticity plus Watson expansion \\
+Natural-space spectral completeness and full transseries & conjectural & compact embeddings and derivative-stable endpoint calculus \\
+\bottomrule
+\end{longtable}
+
+\section{Normalization and imported interfaces}
+\label{sec:normalization}
+
+\subsection{Fabius, Rvachev, and the centered probability law}
+
+Let $F:[0,1]\to[0,1]$ be the standard bounded Fabius distribution, characterized by
+\begin{equation}
+ F'(x)=2F(2x)\quad(0\le x\le1/2),
+ \qquad F(1-x)=1-F(x),
+ \label{eq:Fabius-basic}
+\end{equation}
+with $F(0)=0$ and $F(1)=1$. Rvachev's compactly supported density is
+\begin{equation}
+ u(x):=\RvachevUp(x)=F(1-|x|)\IndicatorOf{[-1,1]}(x).
+ \label{eq:up-F}
+\end{equation}
+It is even, nonnegative, $C^\infty$, flat at $\pm1$, and has total mass one. Its differential-dilation equation is
+\begin{equation}
+ u'(x)=2\bigl(u(2x+1)-u(2x-1)\bigr).
+ \label{eq:up-dde}
+\end{equation}
+
+Let $U_1,U_2,\ldots$ be independent $\operatorname{Unif}[-1,1]$ variables. The centered Rvachev random variable is
+\begin{equation}
+ Y=\sum_{j=1}^{\infty}2^{-j}U_j,
+ \qquad \Probability(Y\in\Differential x)=u(x)\Differential x.
+ \label{eq:Y-series}
+\end{equation}
+Its moment generating function and cumulant generating function are
+\begin{align}
+ M(t)&=\Expectation\EulerE^{tY}
+ =\prod_{j=1}^{\infty}\frac{\sinh(t/2^j)}{t/2^j},
+ \label{eq:M-product}\\
+ K(t)&=\log M(t)
+ =\sum_{m\ge1}\kappa_{2m}\frac{t^{2m}}{(2m)!},
+ \qquad
+ \kappa_{2m}=\frac{2^{2m-1}B_{2m}}{m(4^m-1)}.
+ \label{eq:cumulants}
+\end{align}
+On the imaginary axis, $M(2\pi\ImaginaryUnit\xi)$ is the repository's infinite sinc product. Thus the moment, Fourier, and dyadic scaling pictures are restrictions of one entire function.
+
+The series splits after its first digit:
+\begin{equation}
+ Y\ \stackrel d=\ \frac{Y+U}{2},
+ \qquad
+ M(t)=M(t/2)\frac{\sinh(t/2)}{t/2},
+ \label{eq:fixedpoint}
+\end{equation}
+where the $Y$ and $U$ on the right are independent.
+
+\subsection{The imported inverse-moment Appell family}
+
+The repository defines the reciprocal-moment Appell polynomials by
+\begin{equation}
+ \frac{\EulerE^{xt}}{M(t)}
+ =\sum_{n=0}^{\infty}\Acal_n(x)\frac{t^n}{n!}.
+ \label{eq:Appell-gen}
+\end{equation}
+They satisfy
+\begin{equation}
+ \Acal_n'(x)=n\Acal_{n-1}(x),
+ \qquad
+ \Acal_n(-x)=(-1)^n\Acal_n(x),
+ \qquad
+ \Expectation\Acal_n(Y)=\delta_{n0},
+ \label{eq:Appell-basic}
+\end{equation}
+and the exact deconvolution law
+\begin{equation}
+ \int_{-1}^{1}\Acal_n(x-y)u(y)\Differential y=x^n.
+ \label{eq:Appell-deconv}
+\end{equation}
+The first nontrivial members are
+\begin{align}
+ \Acal_2(x)&=x^2-\frac19,
+ &\Acal_3(x)&=x^3-\frac{x}{3},
+ \notag\\
+ \Acal_4(x)&=x^4-\frac23x^2+\frac{31}{675},
+ &\Acal_6(x)&=x^6-\frac53x^4+\frac{31}{45}x^2-\frac{2347}{59535}.
+ \label{eq:Appell-low}
+\end{align}
+The new point is not the existence of these polynomials. It is that they diagonalize the exact affine dynamics behind $u$.
+
+\section{The affine smoothing chain}
+\label{sec:chain}
+
+\subsection{A geometric-uniform family}
+
+For $-1<r<1$, let $U_k\sim\operatorname{Unif}[-1,1]$ be independent and define
+\begin{equation}
+ X_{k+1}=rX_k+(1-r)U_{k+1}.
+ \label{eq:r-chain}
+\end{equation}
+The stationary series is
+\begin{equation}
+ Y_r=(1-r)\sum_{j=0}^{\infty}r^jU_{j+1}.
+ \label{eq:Yr}
+\end{equation}
+For $0<r<1$ it is supported on $[-1,1]$; at $r=1/2$ it is exactly $Y$. Write $\pi_r$ for its law and
+\begin{equation}
+ (P_rf)(x)=\frac12\int_{-1}^{1}f(rx+(1-r)v)\Differential v
+ \label{eq:Pr}
+\end{equation}
+for the Markov/Koopman operator acting on observables.
+
+\begin{proposition}[Stationarity and Wasserstein contraction]
+\label{prop:contraction}
+For every $p\ge1$ and probability measures $\mu,\nu$ with finite $p$th moment,
+\begin{equation}
+ W_p(\mu P_r^k,\nu P_r^k)\le |r|^kW_p(\mu,\nu).
+ \label{eq:Wp-contract}
+\end{equation}
+Consequently $\pi_r$ is the unique stationary law with finite $p$th moment, and every initial law converges to it geometrically in $W_p$.
+\end{proposition}
+
+\begin{proof}
+Couple $X\sim\mu$ and $Z\sim\nu$ optimally and use the same innovations in both chains. Their difference after one step is exactly $r(X-Z)$; iteration gives \eqref{eq:Wp-contract}. Uniqueness follows by applying the bound to two stationary laws.
+\end{proof}
+
+Let $M_r(t)=\Expectation\EulerE^{tY_r}$ and $m_r(t)=\Expectation\EulerE^{t(1-r)U}$. Stationarity is equivalent to the exact cocycle
+\begin{equation}
+ M_r(t)=M_r(rt)m_r(t),
+ \qquad
+ m_r(t)=\frac{\sinh((1-r)t)}{(1-r)t}.
+ \label{eq:Mr-cocycle}
+\end{equation}
+The even cumulants are
+\begin{equation}
+ \kappa_{2m}(Y_r)
+ =\frac{2^{2m-1}B_{2m}}{m}\,
+ \frac{(1-r)^{2m}}{1-r^{2m}},
+ \qquad \kappa_{2m+1}(Y_r)=0.
+ \label{eq:r-cumulants}
+\end{equation}
+At $r=1/2$, this reduces to \eqref{eq:cumulants}.
+
+\section{Appell--Koopman diagonalization}
+\label{sec:koopman}
+
+\subsection{The master affine theorem}
+
+Let a general affine recursion be
+\begin{equation}
+ X_{k+1}=rX_k+\xi_{k+1},
+ \qquad |r|<1,
+ \label{eq:general-AR}
+\end{equation}
+where the innovations have an MGF near zero and the stationary law has MGF $M$. Define its reciprocal-moment Appell polynomials by \eqref{eq:Appell-gen} with this $M$.
+
+\begin{theorem}[Appell--Koopman eigenbasis]
+\label{thm:koopman-eigen}
+For every $n\ge0$,
+\begin{equation}
+ P_r\Acal_n=r^n\Acal_n.
+ \label{eq:koopman-eigen}
+\end{equation}
+Equivalently, for the stationary chain,
+\begin{equation}
+ \Expectation[\Acal_n(X_k)\mid X_0=x]=r^{nk}\Acal_n(x).
+ \label{eq:conditional-eigen}
+\end{equation}
+In the Rvachev case $r=1/2$, the complete polynomial spectrum is $1,2^{-1},2^{-2},\ldots$.
+\end{theorem}
+
+\begin{proof}
+Let $m_\xi(t)=\Expectation\EulerE^{t\xi}$. Stationarity gives $M(t)=M(rt)m_\xi(t)$. Apply $P_r$ to the generating function:
+\begin{align*}
+ P_r\left(\frac{\EulerE^{tx}}{M(t)}\right)
+ &=\frac{\EulerE^{rtx}m_\xi(t)}{M(t)}
+ =\frac{\EulerE^{rtx}}{M(rt)}\\
+ &=\sum_{n\ge0}\Acal_n(x)\frac{(rt)^n}{n!}.
+\end{align*}
+Coefficient comparison proves \eqref{eq:koopman-eigen}; iteration proves \eqref{eq:conditional-eigen}.
+\end{proof}
+
+\begin{resultbox}[New organizing principle]
+The repository's inverse-moment Appell polynomials are not only a deconvolution basis. They are the exact eigenmodes of the affine refinement dynamics that generates the Rvachev law. The same MGF quotient simultaneously inverts convolution and diagonalizes conditional expectation.
+\end{resultbox}
+
+\subsection{Exact polynomial spectral coordinates}
+
+Let $\Pi_d$ denote the space of polynomials of degree at most $d$.
+
+\begin{theorem}[Spectral coordinate functional]
+\label{thm:spectral-coordinate}
+Every $p\in\Pi_d$ has the unique expansion
+\begin{equation}
+ p(x)=\sum_{n=0}^{d}\Lcal_n(p)\Acal_n(x),
+ \qquad
+ \boxed{\displaystyle
+ \Lcal_n(p)=\frac1{n!}\Expectation\bigl[p^{(n)}(Y_r)\bigr].}
+ \label{eq:spectral-coordinate}
+\end{equation}
+Hence
+\begin{equation}
+ P_r^kp=\sum_{n=0}^{d}r^{nk}\Lcal_n(p)\Acal_n,
+ \qquad
+ \PiD_np:=\Lcal_n(p)\Acal_n
+ \label{eq:iterate-projectors}
+\end{equation}
+are exact iterates and rank-one spectral projectors.
+\end{theorem}
+
+\begin{proof}
+Write $p=\sum c_m\Acal_m$. By the Appell derivative law,
+\[
+ \Acal_m^{(n)}=\frac{m!}{(m-n)!}\Acal_{m-n}
+ \quad(m\ge n).
+\]
+Taking expectation under $\pi_r$ kills every positive-degree Appell polynomial, so $\Expectation p^{(n)}(Y_r)=n!c_n$. The remaining statements follow from \cref{thm:koopman-eigen}.
+\end{proof}
+
+\begin{corollary}[A Legendre--Appell spectral bridge]
+\label{cor:legendre-appell}
+For the Legendre polynomial $P_m^{\mathrm{Leg}}$,
+\begin{equation}
+ P_m^{\mathrm{Leg}}(x)
+ =\sum_{n=0}^{m}c_{m,n}^{(r)}\Acal_n^{(r)}(x),
+ \qquad
+ c_{m,n}^{(r)}=\frac{(2n-1)!!}{n!}
+ \Expectation\!\left[C_{m-n}^{n+1/2}(Y_r)\right],
+ \label{eq:legendre-appell}
+\end{equation}
+where $C_j^\lambda$ is the Gegenbauer polynomial and $(-1)!!=1$. Only terms with $m-n$ even survive. Therefore
+\begin{equation}
+ P_r^kP_m^{\mathrm{Leg}}
+ =\sum_{n=0}^{m}r^{nk}c_{m,n}^{(r)}\Acal_n^{(r)}.
+ \label{eq:legendre-iterate}
+\end{equation}
+All coefficients are rational in the dyadic case.
+\end{corollary}
+
+\begin{proof}
+Use $(P_m^{\mathrm{Leg}})^{(n)}=(2n-1)!!C_{m-n}^{n+1/2}$ in \eqref{eq:spectral-coordinate}. Symmetry gives the parity statement, and the Rvachev moments are rational.
+\end{proof}
+
+This is complementary to the repository's spatial expansions of $u$ in Legendre polynomials and its finite shifted-$u$ representations of arbitrary polynomials. Here Legendre modes are propagated exactly by the affine dynamics after a finite change of basis to the Appell eigenmodes.
+
+\subsection{Dual eigendistributions}
+
+Regard $u_r$ as the stationary density when it exists and $u_r^{(n)}$ as its distributional derivatives.
+
+\begin{theorem}[Dual derivative spectrum]
+\label{thm:dual-spectrum}
+For every $n\ge0$,
+\begin{equation}
+ P_r^*u_r^{(n)}=r^nu_r^{(n)}.
+ \label{eq:dual-eigen}
+\end{equation}
+Moreover the primal and dual families are biorthogonal:
+\begin{equation}
+ \left\langle u_r^{(m)},\Acal_n^{(r)}\right\rangle
+ =(-1)^m m!\,\delta_{mn}.
+ \label{eq:biorthogonal}
+\end{equation}
+Thus the projector can be written
+\begin{equation}
+ \PiD_np=\frac{(-1)^n}{n!}
+ \left\langle u_r^{(n)},p\right\rangle\Acal_n^{(r)}.
+ \label{eq:projector-dual}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Differentiation under the affine expectation gives
+\begin{equation}
+ DP_r=rP_rD,
+ \qquad D^nP_r=r^nP_rD^n.
+ \label{eq:DPr}
+\end{equation}
+Hence, for a test function $f$,
+\[
+ \langle P_r^*u_r^{(n)},f\rangle
+ =\langle u_r^{(n)},P_rf\rangle
+ =(-1)^nr^n\int u_rP_rf^{(n)}
+ =r^n\langle u_r^{(n)},f\rangle,
+\]
+using stationarity in the last step. Equation \eqref{eq:biorthogonal} follows from the Appell derivative formula and mean-zero cancellation.
+\end{proof}
+
+For $r=1/2$, the dual eigen-distributions are the derivative tower of Rvachev's bump. Finite spline approximants express these derivatives through signed dyadic jump measures whose signs are controlled by Thue--Morse words. Equation \eqref{eq:projector-dual} therefore gives a spectral interpretation of that automatic sign structure: the limiting Thue--Morse derivative measures extract individual Koopman coordinates.
+
+\section{\texorpdfstring{A $q$-Weyl and Bell--Bernoulli operator calculus}{A q-Weyl and Bell--Bernoulli operator calculus}}
+\label{sec:qweyl}
+
+\subsection{The derivative--Koopman commutation relation}
+
+Equation \eqref{eq:DPr} is a genuine $q$-commutation law. With $q=r$, the derivative and the affine Koopman operator satisfy
+\begin{equation}
+ DP_r=qP_rD.
+ \label{eq:qcommute}
+\end{equation}
+Consequently the Gaussian binomial theorem applies at the operator level.
+
+\begin{theorem}[Gaussian-binomial operator power]
+\label{thm:qbinomial-operator}
+For every integer $N\ge0$,
+\begin{equation}
+ \boxed{\displaystyle
+ (P_r+D)^N
+ =\sum_{j=0}^{N}\GaussianBinomial{N}{j}{r}
+ P_r^{N-j}D^j.}
+ \label{eq:qbinomial-operator}
+\end{equation}
+The identity holds on polynomials and on every smooth class on which the displayed compositions are defined.
+\end{theorem}
+
+\begin{proof}
+If operators $A,B$ satisfy $BA=qAB$, the standard induction behind the finite $q$-binomial theorem gives
+$(A+B)^N=\sum_j\GaussianBinomial{N}{j}{q}A^{N-j}B^j$.
+Take $A=P_r$ and $B=D$.
+\end{proof}
+
+At $r=1/2$, the Gaussian coefficient is exactly the half-base object that governs the repository's geometric interpolation and finite-difference formulas. Here it appears for a different reason: it is the noncommutative coefficient forced by affine differentiation.
+
+\subsection{The Appell raising operator}
+
+Let $K_r(t)=\log M_r(t)$ and define, on polynomials,
+\begin{equation}
+ R_r:=x-K_r'(D)
+ =x-\sum_{m\ge1}\kappa_{2m}(Y_r)
+ \frac{D^{2m-1}}{(2m-1)!}.
+ \label{eq:raising}
+\end{equation}
+The series terminates on every polynomial.
+
+\begin{theorem}[Bell--Bernoulli ladder]
+\label{thm:ladder}
+The operators $D$ and $R_r$ act on the Appell basis by
+\begin{equation}
+ D\Acal_n^{(r)}=n\Acal_{n-1}^{(r)},
+ \qquad
+ R_r\Acal_n^{(r)}=\Acal_{n+1}^{(r)}.
+ \label{eq:ladder-actions}
+\end{equation}
+They satisfy
+\begin{equation}
+ [D,R_r]=I,
+ \qquad
+ P_rR_r=rR_rP_r.
+ \label{eq:ladder-commutations}
+\end{equation}
+If $N_r:=R_rD$, then
+\begin{equation}
+ N_r\Acal_n^{(r)}=n\Acal_n^{(r)},
+ \qquad
+ \boxed{P_r=r^{N_r}}
+ \label{eq:number-operator}
+\end{equation}
+in the spectral/formal functional calculus on polynomials.
+\end{theorem}
+
+\begin{proof}
+Differentiate the generating function with respect to $t$:
+\[
+ \partial_t\frac{\EulerE^{xt}}{M_r(t)}
+ =\bigl(x-K_r'(t)\bigr)\frac{\EulerE^{xt}}{M_r(t)}.
+\]
+Since $D$ acts on the generating function as multiplication by $t$, coefficient comparison gives the raising law. The commutator $[D,R_r]=[D,x]=I$. The relation $P_rR_r=rR_rP_r$ follows on each basis vector from \cref{thm:koopman-eigen}. The number-operator identities are then immediate.
+\end{proof}
+
+\begin{resultbox}[A dyadic $q$-oscillator]
+The quadruple $(D,R_{1/2},N_{1/2},P_{1/2})$ is a concrete Bernoulli-deformed Weyl representation in which $D$ lowers Appell degree, $R$ raises it, $N$ counts it, and the affine refinement operator is the dyadic exponential $2^{-N}$. The Bernoulli cumulants enter only through the raising operator; the eigenvalue geometry is pure $q$-scaling.
+\end{resultbox}
+
+\section{Transfer determinants, resolvents, and Poisson equations}
+\label{sec:determinants}
+
+\subsection{Finite polynomial transfer determinants}
+
+\begin{theorem}[$q$-Pochhammer characteristic polynomial]
+\label{thm:finite-determinant}
+On $\Pi_d$,
+\begin{align}
+ \det\bigl(I-zP_r\vert_{\Pi_d}\bigr)
+ &=\prod_{n=0}^{d}(1-zr^n)
+ =\QPochhammer{z}{r}{d+1},
+ \label{eq:finite-det}\\
+ \TraceOperator\bigl(P_r^k\vert_{\Pi_d}\bigr)
+ &=\sum_{n=0}^{d}r^{nk}
+ =\frac{1-r^{(d+1)k}}{1-r^k}.
+ \label{eq:finite-trace}
+\end{align}
+The determinant has the Gaussian-binomial expansion
+\begin{equation}
+ \QPochhammer{z}{r}{d+1}
+ =\sum_{j=0}^{d+1}(-1)^jr^{\binom j2}
+ \GaussianBinomial{d+1}{j}{r}z^j.
+ \label{eq:finite-det-qbinom}
+\end{equation}
+For $|z|$ sufficiently small,
+\begin{equation}
+ \log\det\bigl(I-zP_r\vert_{\Pi_d}\bigr)
+ =-\sum_{k\ge1}\frac{z^k}{k}
+ \frac{1-r^{(d+1)k}}{1-r^k}.
+ \label{eq:finite-lambert-log}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+The Appell basis diagonalizes $P_r$ with eigenvalues $r^0,\ldots,r^d$. The product, trace, finite $q$-binomial theorem, and logarithmic expansion follow in succession.
+\end{proof}
+
+The repository already contains sophisticated spectral determinants built from the integer zero divisor of the infinite sinc product. The determinant \eqref{eq:finite-det} is a different object: it is the characteristic polynomial of a specified transfer operator on polynomial observables. Its spectrum is the geometric contraction ladder, not the Fourier zero multiset.
+
+\subsection{Closed resolvents and the polynomial Poisson equation}
+
+\begin{theorem}[Polynomial resolvent]
+\label{thm:polynomial-resolvent}
+For $p\in\Pi_d$ and $z$ away from the poles $r^{-n}$,
+\begin{equation}
+ (I-zP_r)^{-1}p
+ =\sum_{n=0}^{d}\frac{\Lcal_n(p)}{1-zr^n}\Acal_n^{(r)}.
+ \label{eq:poly-resolvent}
+\end{equation}
+If $h\in\Pi_d$ is centered under $\pi_r$, then the unique centered polynomial solution of
+\begin{equation}
+ (I-P_r)g=h
+ \label{eq:Poisson}
+\end{equation}
+is
+\begin{equation}
+ \boxed{\displaystyle
+ g=\sum_{n=1}^{d}\frac{\Lcal_n(h)}{1-r^n}\Acal_n^{(r)}.}
+ \label{eq:poly-Poisson}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Apply the diagonal decomposition \eqref{eq:spectral-coordinate}; centeredness is exactly the absence of the $n=0$ term.
+\end{proof}
+
+The denominators $1-r^n$ are $q$-integers up to the common factor $1-r$:
+\[
+ \frac1{1-r^n}=\frac1{(1-r)[n]_r}.
+\]
+Thus the polynomial Poisson solver is a diagonal $q$-integration operator in Appell degree.
+
+\subsection{An Appell-Fock completion}
+
+Define a Hilbert space $\Hcal_r^{\mathrm A}$ by completing the polynomial span under
+\begin{equation}
+ \left\|\sum_{n\ge0}c_n\Acal_n^{(r)}\right\|_{\Hcal_r^{\mathrm A}}^2
+ :=\sum_{n\ge0}|c_n|^2.
+ \label{eq:Fock-norm}
+\end{equation}
+This is an engineered coefficient space, not the natural $L^2(\pi_r)$ space.
+
+\begin{theorem}[Trace-class Appell realization]
+\label{thm:Fock-determinant}
+For $|r|<1$, $P_r$ extends to a normal trace-class operator on $\Hcal_r^{\mathrm A}$ with
+\begin{align}
+ \operatorname{spec}(P_r)&=\{r^n:n\ge0\}\cup\{0\},
+ \label{eq:Fock-spectrum}\\
+ \TraceOperator(P_r^k)&=\frac1{1-r^k},
+ \label{eq:Fock-trace}\\
+ \det(I-zP_r)&=\prod_{n=0}^{\infty}(1-zr^n)
+ =\QPochhammer{z}{r}{\infty}.
+ \label{eq:Fock-det}
+\end{align}
+On the centered subspace $c_0=0$, the determinant is $\QPochhammer{zr}{r}{\infty}$.
+\end{theorem}
+
+\begin{proof}
+Under the coefficient isometry to $\ell^2(\NaturalNumbers)$, $P_r$ is the diagonal operator $\DiagonalOperator(1,r,r^2,\ldots)$. Its singular values are $1,|r|,|r|^2,\ldots$, whose sum is finite. The trace and Fredholm determinant are therefore the displayed convergent sums and products.
+\end{proof}
+
+\begin{cautionbox}[Natural versus engineered spectrum]
+\Cref{thm:Fock-determinant} is fully rigorous but does not settle the spectrum of $P_r$ on $L^2(\pi_r)$, Sobolev spaces, analytic function spaces, or the repository's representation spaces. In the natural $L^2$ geometry the Appell basis is nonorthogonal, and nonreversibility later shows that $P_r$ is not self-adjoint. Natural-space spectral completeness is therefore a genuine frontier problem, not a corollary of the Fock construction.
+\end{cautionbox}
+
+\section{A fixed-point Stein method}
+\label{sec:fixedpoint-stein}
+
+\subsection{The invariant fixed-point operator}
+
+For the target law $\pi_r$, define
+\begin{equation}
+ \Kcal_r f:=(I-P_r)f.
+ \label{eq:fixed-Stein}
+\end{equation}
+Stationarity gives $\Expectation_{\pi_r}\Kcal_rf=0$.
+
+\begin{theorem}[Fixed-point Stein characterization]
+\label{thm:Stein-characterization}
+Let $\mu$ be a probability law with finite first moment. The following are equivalent:
+\begin{enumerate}[label=(\roman*)]
+\item $\mu=\pi_r$;
+\item $\int(I-P_r)f\Differential\mu=0$ for every bounded Lipschitz $f$;
+\item $\mu P_r=\mu$.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+The equivalence of (ii) and (iii) is the definition of push-forward by the Markov kernel. By \cref{prop:contraction}, the invariant law is unique.
+\end{proof}
+
+\subsection{Stein equation and sharp elementary factors}
+
+For a Lipschitz test function $h$, put $\bar h=h-\pi_rh$.
+
+\begin{theorem}[Contractive Stein solution]
+\label{thm:Stein-solution}
+The series
+\begin{equation}
+ g_h:=\sum_{k=0}^{\infty}P_r^k\bar h
+ \label{eq:Stein-series}
+\end{equation}
+converges modulo constants, solves
+\begin{equation}
+ (I-P_r)g_h=\bar h,
+ \label{eq:Stein-equation}
+\end{equation}
+and satisfies
+\begin{equation}
+ \Lip(g_h)\le\frac{\Lip(h)}{1-|r|}.
+ \label{eq:Stein-factor}
+\end{equation}
+For $r=1/2$, the factor is $2$.
+\end{theorem}
+
+\begin{proof}
+The common-innovation coupling gives $\Lip(P_r^kh)\le|r|^k\Lip(h)$. The geometric series yields \eqref{eq:Stein-factor}, and telescoping the partial sums yields \eqref{eq:Stein-equation}. A fixed normalization, such as $g_h(0)=0$, removes the irrelevant additive constant.
+\end{proof}
+
+Define the fixed-point Stein discrepancy
+\begin{equation}
+ \Delta_r(\mu):=
+ \sup_{\Lip(f)\le1}\left|\int(I-P_r)f\Differential\mu\right|.
+ \label{eq:Stein-discrepancy}
+\end{equation}
+
+\begin{theorem}[Equivalence with Wasserstein distance]
+\label{thm:discrepancy-W1}
+For every $\mu$ with finite first moment,
+\begin{equation}
+ \boxed{\displaystyle
+ (1-|r|)W_1(\mu,\pi_r)
+ \le\Delta_r(\mu)
+ \le(1+|r|)W_1(\mu,\pi_r).}
+ \label{eq:W1-equivalence}
+\end{equation}
+In the dyadic case,
+\begin{equation}
+ W_1(\mu,\pi_{1/2})\le2\Delta_{1/2}(\mu),
+ \qquad
+ \Delta_{1/2}(\mu)\le\frac32W_1(\mu,\pi_{1/2}).
+ \label{eq:dyadic-W1-equivalence}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+For $\Lip(h)\le1$, use \cref{thm:Stein-solution}:
+\[
+ |\mu h-\pi_rh|
+ =|\mu(I-P_r)g_h|
+ \le\frac{\Delta_r(\mu)}{1-|r|}.
+\]
+Taking the Kantorovich--Rubinstein supremum proves the first inequality. Conversely, if $\Lip(f)\le1$, then
+\[
+ \Lip((I-P_r)f)\le1+|r|,
+\]
+and $\pi_r(I-P_r)f=0$. Therefore
+\[
+ |\mu(I-P_r)f|
+ =|(\mu-\pi_r)(I-P_r)f|
+ \le(1+|r|)W_1(\mu,\pi_r).
+\]
+\end{proof}
+
+\begin{resultbox}[A computable approximation metric]
+Any approximation to the Rvachev law can now be assessed by a residual of its own fixed-point equation. The discrepancy is not merely one-sided: it is quantitatively equivalent to $W_1$ with explicit constants. This supplies a direct route from spline, finite-product, quadrature, or sampling approximants to transport error estimates.
+\end{resultbox}
+
+For polynomial tests, \cref{thm:polynomial-resolvent} turns \eqref{eq:Stein-series} into the finite closed form \eqref{eq:poly-Poisson}. Thus the abstract contractive Stein equation and the exact $q$-Appell Poisson equation are the same object at two levels of regularity.
+
+\section{The differential-dilation Stein operator}
+\label{sec:differential-stein}
+
+\subsection{A local/nonlocal hybrid}
+
+Differentiate before applying the fixed-point operator:
+\begin{equation}
+ \Scal_r:=(I-P_r)D.
+ \label{eq:S-general-def}
+\end{equation}
+Since
+\begin{equation}
+ P_rf'(x)=
+ \frac{f(rx+1-r)-f(rx-(1-r))}{2(1-r)},
+ \label{eq:Pr-derivative}
+\end{equation}
+we obtain
+\begin{equation}
+ \boxed{\displaystyle
+ \Scal_rf(x)=f'(x)-
+ \frac{f(rx+1-r)-f(rx-(1-r))}{2(1-r)}.}
+ \label{eq:S-general}
+\end{equation}
+At $r=1/2$ this becomes
+\begin{equation}
+ \boxed{\displaystyle
+ \Scal f(x)=f'(x)-f\!\left(\frac{x+1}{2}\right)
+ +f\!\left(\frac{x-1}{2}\right).}
+ \label{eq:S-dyadic}
+\end{equation}
+
+\begin{theorem}[Differential-dilation Stein identity]
+\label{thm:differential-Stein}
+For every sufficiently regular $f$,
+\begin{equation}
+ \Expectation\Scal_rf(Y_r)=0.
+ \label{eq:S-identity}
+\end{equation}
+On Appell eigenmodes,
+\begin{equation}
+ \boxed{\displaystyle
+ \Scal_r\Acal_n^{(r)}
+ =n(1-r^{n-1})\Acal_{n-1}^{(r)}.}
+ \label{eq:S-lowering}
+\end{equation}
+In particular, $\Scal_r$ annihilates constants and affine functions.
+\end{theorem}
+
+\begin{proof}
+Stationarity gives $\Expectation(I-P_r)g(Y_r)=0$ with $g=f'$. For the lowering law, use $D\Acal_n=n\Acal_{n-1}$ and $P_r\Acal_{n-1}=r^{n-1}\Acal_{n-1}$.
+\end{proof}
+
+The affine kernel means that \eqref{eq:S-identity} alone is not a full characterization without additional moment or normalization conditions. The fixed-point operator $I-P_r$ is the cleaner characterizing Stein operator; $\Scal_r$ is the better bridge to the differential equation and Appell ladder.
+
+\subsection{Rvachev's equation as the adjoint Stein equation}
+
+\begin{theorem}[Weak adjoint equivalence]
+\label{thm:adjoint-DDE}
+For a compactly supported smooth density $v$, the identity
+\begin{equation}
+ \int_{\RealNumbers}\Scal f(x)v(x)\Differential x=0
+ \quad\text{for all }f\in C_c^\infty(\RealNumbers)
+ \label{eq:weak-Stein}
+\end{equation}
+is equivalent to
+\begin{equation}
+ v'(x)=2\bigl(v(2x+1)-v(2x-1)\bigr)
+ \label{eq:adjoint-dde}
+\end{equation}
+in the distributional sense.
+\end{theorem}
+
+\begin{proof}
+Integrate the derivative term in \eqref{eq:S-dyadic} by parts. In the two dilation terms use $x=2y-1$ and $x=2y+1$, respectively. The resulting coefficient of the arbitrary test function is
+\[
+ -v'(y)-2v(2y-1)+2v(2y+1).
+\]
+Its vanishing is exactly \eqref{eq:adjoint-dde}.
+\end{proof}
+
+Thus Rvachev's defining differential-dilation equation is literally the adjoint stationarity equation of the differentiated affine Stein operator. This makes the probabilistic fixed point and the analytic refinement equation two faces of one operator identity.
+
+\section{Martingales, lag correlations, and irreversibility}
+\label{sec:martingales}
+
+\subsection{Polynomial and exponential martingales}
+
+\begin{theorem}[Appell eigenmartingales]
+\label{thm:Appell-martingales}
+Assume $r\ne0$ and let $(X_k)$ be the stationary or nonstationary affine chain \eqref{eq:general-AR}. For every $n\ge0$,
+\begin{equation}
+ M_k^{(n)}:=r^{-nk}\Acal_n(X_k)
+ \label{eq:poly-martingale}
+\end{equation}
+is a martingale with respect to the natural filtration. In the dyadic case this is $2^{nk}\Acal_n(X_k)$.
+\end{theorem}
+
+\begin{proof}
+By \cref{thm:koopman-eigen},
+\[
+ \Expectation[M_{k+1}^{(n)}\mid X_k]
+ =r^{-n(k+1)}P_r\Acal_n(X_k)
+ =r^{-nk}\Acal_n(X_k).
+\]
+\end{proof}
+
+The whole ladder is packaged by a Wald-type exponential martingale.
+
+\begin{theorem}[Exponential Appell martingale]
+\label{thm:exponential-martingale}
+For real $t$ (and for complex $t$ away from zeros of the relevant MGFs),
+\begin{equation}
+ Z_k(t):=\frac{\exp(r^{-k}tX_k)}{M(r^{-k}t)}
+ \label{eq:exp-martingale}
+\end{equation}
+is a martingale. Its Taylor coefficients in $t$ are the martingales \eqref{eq:poly-martingale}.
+\end{theorem}
+
+\begin{proof}
+Put $s=r^{-(k+1)}t$. The MGF cocycle $M(s)=M(rs)m_\xi(s)$ gives
+\[
+ \Expectation[Z_{k+1}(t)\mid X_k]
+ =\frac{\EulerE^{rsX_k}m_\xi(s)}{M(s)}
+ =\frac{\EulerE^{r^{-k}tX_k}}{M(r^{-k}t)}.
+\]
+Expansion of \eqref{eq:Appell-gen} gives the coefficient statement.
+\end{proof}
+
+For imaginary $t$, the denominator is the Rvachev sinc product. Hence the repository's Fourier product normalizes a complex exponential into an exact affine-chain martingale, except at its known zero divisor.
+
+\subsection{The Appell Gram kernel}
+
+Define
+\begin{equation}
+ G_{mn}^{(r)}:=\Expectation\bigl[\Acal_m^{(r)}(Y_r)\Acal_n^{(r)}(Y_r)\bigr].
+ \label{eq:Gram}
+\end{equation}
+The bivariate generating function is immediate but highly useful.
+
+\begin{proposition}[Exact Gram generating function]
+\label{prop:Gram-EGF}
+\begin{equation}
+ \boxed{\displaystyle
+ \sum_{m,n\ge0}G_{mn}^{(r)}\frac{s^m}{m!}\frac{t^n}{n!}
+ =\frac{M_r(s+t)}{M_r(s)M_r(t)}
+ =\exp\bigl(K_r(s+t)-K_r(s)-K_r(t)\bigr).}
+ \label{eq:Gram-EGF}
+\end{equation}
+In particular, $G_{mn}^{(r)}=0$ when $m+n$ is odd.
+\end{proposition}
+
+\begin{proof}
+Multiply the two Appell generating functions and take expectation. Parity follows from the evenness of $K_r$.
+\end{proof}
+
+\begin{theorem}[Exact forward and reverse lag correlations]
+\label{thm:lag-correlations}
+For a stationary chain and $k\ge0$,
+\begin{align}
+ \Expectation\bigl[\Acal_m(X_0)\Acal_n(X_k)\bigr]
+ &=r^{nk}G_{mn}^{(r)},
+ \label{eq:forward-lag}\\
+ \Expectation\bigl[\Acal_n(X_0)\Acal_m(X_k)\bigr]
+ &=r^{mk}G_{mn}^{(r)}.
+ \label{eq:reverse-lag}
+\end{align}
+\end{theorem}
+
+\begin{proof}
+Condition on $X_0$ and apply \eqref{eq:conditional-eigen}; then use symmetry of the Gram matrix.
+\end{proof}
+
+The decay exponent is determined by the degree at the \emph{future} time. This orientation dependence is invisible in ordinary stationary moments and supplies an exact test for reversibility.
+
+\subsection{An exact dyadic nonreversibility certificate}
+
+Extracting the coefficient $s^2t^4$ from \eqref{eq:Gram-EGF} gives the universal identity
+\begin{equation}
+ G_{24}^{(r)}=\kappa_6(Y_r)+8\kappa_2(Y_r)\kappa_4(Y_r).
+ \label{eq:G24-cumulant}
+\end{equation}
+For $r=1/2$,
+\begin{equation}
+ \boxed{\displaystyle
+ G_{24}=-\frac{128}{33075}.}
+ \label{eq:G24-dyadic}
+\end{equation}
+Therefore at lag one,
+\begin{align}
+ \Expectation[\Acal_2(X_0)\Acal_4(X_1)]
+ &=-\frac8{33075},
+ \label{eq:forward-witness}\\
+ \Expectation[\Acal_4(X_0)\Acal_2(X_1)]
+ &=-\frac{32}{33075},
+ \label{eq:reverse-witness}\\
+ \text{forward}-\text{reverse}
+ &=\frac8{11025}.
+ \label{eq:witness-difference}
+\end{align}
+
+\begin{theorem}[Nonreversibility of the Rvachev affine chain]
+\label{thm:dyadic-nonreversible}
+The stationary chain
+\(
+ X_{k+1}=(X_k+U_{k+1})/2
+\)
+is not reversible. Equivalently, its Koopman operator is not self-adjoint on $L^2(\pi_{1/2})$.
+\end{theorem}
+
+\begin{proof}
+For a reversible stationary chain, $\Expectation[f(X_0)g(X_1)]=\Expectation[g(X_0)f(X_1)]$ for all square-integrable $f,g$. Equations \eqref{eq:forward-witness} and \eqref{eq:reverse-witness} contradict this with $f=\Acal_2$ and $g=\Acal_4$.
+\end{proof}
+
+This also explains why the Appell eigenfunctions are not mutually orthogonal in the natural stationary inner product. A self-adjoint operator with distinct real eigenvalues would have orthogonal eigenspaces, whereas $G_{24}\ne0$ couples the eigenvalues $r^2$ and $r^4$.
+
+\subsection{A general affine-uniform theorem}
+
+Substituting \eqref{eq:r-cumulants} into \eqref{eq:G24-cumulant} and factoring gives
+\begin{equation}
+ \boxed{\displaystyle
+ G_{24}^{(r)}
+ =-\frac{16(r-1)^4(12r^4+7r^2+2)}
+ {315(r+1)^2(r^2+1)(r^2-r+1)(r^2+r+1)}.}
+ \label{eq:G24-factor}
+\end{equation}
+Every factor in the denominator is positive for $-1<r<1$, and the quartic in the numerator is positive.
+
+\begin{theorem}[Uniform affine chains are generically irreversible]
+\label{thm:general-nonreversible}
+For every $r$ with $0<|r|<1$, the stationary affine-uniform chain \eqref{eq:r-chain} is nonreversible. The endpoint $r=0$ is the independent chain and is reversible.
+\end{theorem}
+
+\begin{proof}
+Equation \eqref{eq:G24-factor} gives $G_{24}^{(r)}<0$. By \cref{thm:lag-correlations}, the two lag-one mixed moments are $r^4G_{24}^{(r)}$ and $r^2G_{24}^{(r)}$, which differ because $r^4\ne r^2$ for $0<|r|<1$. At $r=0$, every new state is an independent uniform innovation.
+\end{proof}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.82\textwidth]{appell_lag_asymmetry.png}
+\caption{Exact forward and reverse mixed Appell correlations in the dyadic chain. The exact laws are $|G_{24}|2^{-4k}$ and $|G_{24}|2^{-2k}$. Monte Carlo markers are shown only at lags $0$ and $1$, before the smaller correlation reaches the sampling-noise floor.}
+\label{fig:lag-asymmetry}
+\end{figure}
+
+\section{The scalar Stein kernel in Fabius coordinates}
+\label{sec:scalar-kernel}
+
+\subsection{Definition and exact Fabius formula}
+
+For a centered density $u$ on $[-1,1]$, the canonical one-dimensional Stein kernel is
+\begin{equation}
+ \tau(x)=\frac1{u(x)}\int_x^1 y u(y)\Differential y,
+ \qquad -1<x<1.
+ \label{eq:Stein-kernel-def}
+\end{equation}
+It satisfies
+\begin{equation}
+ \Expectation[Yf(Y)]=\Expectation[\tau(Y)f'(Y)]
+ \label{eq:classical-Stein}
+\end{equation}
+for smooth $f$. In the Rvachev case, evenness gives $\tau(-x)=\tau(x)$.
+
+\begin{lemma}[Two Fabius primitives]
+\label{lem:F-primitives}
+For $0\le q\le1$,
+\begin{align}
+ \int_0^qF(s)\Differential s&=F(q/2),
+ \label{eq:F-primitive0}\\
+ \int_0^q sF(s)\Differential s&=qF(q/2)-2F(q/4).
+ \label{eq:F-primitive1}
+\end{align}
+\end{lemma}
+
+\begin{proof}
+Both right-hand sides vanish at $q=0$. Differentiate and use $F'(x)=2F(2x)$ at $x=q/2$ and $x=q/4$.
+\end{proof}
+
+\begin{theorem}[Exact Fabius Stein kernel]
+\label{thm:exact-tau}
+For $-1<x<1$,
+\begin{equation}
+ \boxed{\displaystyle
+ \tau(x)=
+ \frac{|x|F((1-|x|)/2)+2F((1-|x|)/4)}{F(1-|x|)}.}
+ \label{eq:tau-global}
+\end{equation}
+Equivalently, for $0<q\le1$,
+\begin{equation}
+ \boxed{\displaystyle
+ \tau(1-q)=
+ \frac{(1-q)F(q/2)+2F(q/4)}{F(q)}.}
+ \label{eq:tau-q}
+\end{equation}
+In particular,
+\begin{equation}
+ \tau(0)=\frac5{36},
+ \qquad
+ \tau(1/2)=\frac1{12}.
+ \label{eq:tau-special}
+\end{equation}
+Every dyadic value $\tau(1-a/2^N)$ is rational whenever the corresponding Fabius values are rational.
+\end{theorem}
+
+\begin{proof}
+For $x=1-q\ge0$, substitute $s=1-y$ in \eqref{eq:Stein-kernel-def} and use $u(y)=F(1-y)$:
+\[
+ \int_{1-q}^{1}yu(y)\Differential y
+ =\int_0^q(1-s)F(s)\Differential s.
+\]
+Apply \cref{lem:F-primitives} and divide by $u(1-q)=F(q)$. Evenness gives the global formula. The special values use $F(1/2)=1/2$, $F(1/4)=5/72$, and $F(1/8)=1/288$.
+\end{proof}
+
+The exact kernel links a classical local Stein identity to the repository's dyadic arithmetic. Unlike the fixed-point operator $I-P$, it is a coefficient in a first-order differential identity; the two Stein structures are complementary.
+
+\subsection{An inverse-Fabius identity}
+
+Let $G=F^{-1}:(0,1)\to(0,1)$.
+
+\begin{theorem}[Quantile bridge]
+\label{thm:tau-quantile}
+For $0<y<1$ and $q=G(y)$,
+\begin{equation}
+ \boxed{\displaystyle
+ \tau(1-G(y))
+ =G(y)-\frac{G(y)^2}{2}
+ -\frac1y\int_0^y
+ \left(G(v)-\frac{G(v)^2}{2}\right)\Differential v.}
+ \label{eq:tau-quantile}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Let $H(s)=s-s^2/2$. The numerator in \eqref{eq:tau-q} is
+\[
+ \int_0^q(1-s)F(s)\Differential s
+ =H(q)F(q)-\int_0^qH(s)F'(s)\Differential s.
+\]
+Use $v=F(s)$ in the last integral and $F(q)=y$; then divide by $y$.
+\end{proof}
+
+Equation \eqref{eq:tau-quantile} turns endpoint information about $G$ into endpoint information about $\tau$ without evaluating the density or differentiating a rapidly varying function.
+
+\subsection{Bell--Bernoulli moments of the kernel}
+
+\begin{theorem}[Stein-kernel/Appell transform]
+\label{thm:tau-Appell}
+For $t$ near zero,
+\begin{equation}
+ \boxed{\displaystyle
+ \Expectation\left[\tau(Y)\frac{\EulerE^{tY}}{M(t)}\right]
+ =\frac{K'(t)}t.}
+ \label{eq:tau-EGF}
+\end{equation}
+Consequently, for every $n\ge0$,
+\begin{equation}
+ \boxed{\displaystyle
+ \Expectation[\tau(Y)\Acal_n(Y)]
+ =\frac{\kappa_{n+2}}{n+1}.}
+ \label{eq:tau-Appell-moment}
+\end{equation}
+For $n=2m$ this is
+\begin{equation}
+ \Expectation[\tau(Y)\Acal_{2m}(Y)]
+ =\frac{2^{2m+1}B_{2m+2}}
+ {(m+1)(2m+1)(4^{m+1}-1)},
+ \label{eq:tau-Bernoulli}
+\end{equation}
+and the odd moments vanish.
+\end{theorem}
+
+\begin{proof}
+Apply the classical Stein identity \eqref{eq:classical-Stein} to $f(y)=\EulerE^{ty}/M(t)$. The left side is $M'(t)/M(t)=K'(t)$; the right side is $t$ times the expectation in \eqref{eq:tau-EGF}. Expand both sides in powers of $t$ and compare coefficients. Insert \eqref{eq:cumulants} for \eqref{eq:tau-Bernoulli}.
+\end{proof}
+
+The case $n=0$ gives
+\begin{equation}
+ \Expectation\tau(Y)=\kappa_2=\Variance(Y)=\frac19,
+ \label{eq:mean-tau}
+\end{equation}
+as expected. Higher coefficients show that the scalar Stein kernel is an exact Bernoulli probe of the nonorthogonal Appell basis.
+
+\section{Lambert--periodic endpoint asymptotics of the Stein kernel}
+\label{sec:endpoint}
+
+\subsection{Imported inverse elasticity}
+
+Put
+\begin{equation}
+ L=\log2,
+ \qquad
+ T=\log(1/y),
+ \qquad
+ \rho=\sqrt{\frac{2T}{L}},
+ \qquad
+ \theta=\rho+\frac1L+\frac12.
+ \label{eq:endpoint-vars}
+\end{equation}
+The repository's all-orders inverse analysis gives, as $y\downarrow0$,
+\begin{equation}
+ \mathcal E(y):=\frac{yG'(y)}{G(y)}
+ =\frac1\rho+
+ \frac{\Psi'(\theta)-1}{L\rho^2}
+ +\BigO\!\left(\frac{1+\log\rho}{\rho^3}\right),
+ \label{eq:elasticity-input}
+\end{equation}
+where $\Psi$ is the smooth mean-zero one-periodic Gamma--zeta fluctuation in the forward endpoint expansion. This is an imported analytic input, not reproved here.
+
+\subsection{A Watson ratio for the Fabius primitive}
+
+Define
+\begin{equation}
+ R(q):=\frac{F(q/2)}{F(q)}.
+ \label{eq:Rq}
+\end{equation}
+If $q=G(y)$, integration by parts in \eqref{eq:F-primitive0} gives
+\begin{equation}
+ R(G(y))=G(y)-\frac1y\int_0^yG(v)\Differential v.
+ \label{eq:R-inverse}
+\end{equation}
+Write $q(T)=G(\EulerE^{-T})$ and $E(T)=\mathcal E(\EulerE^{-T})$. Since $q'(T)=-E(T)q(T)$,
+\begin{equation}
+ \frac{R(q(T))}{q(T)}
+ =1-\int_0^\infty \EulerE^{-s}
+ \exp\!\left(-\int_0^sE(T+a)\Differential a\right)\Differential s.
+ \label{eq:Watson-exact}
+\end{equation}
+
+\begin{lemma}[Two-term primitive ratio]
+\label{lem:R-asymptotic}
+As $T\to\infty$,
+\begin{equation}
+ \frac{R(q(T))}{q(T)}
+ =E(T)-E(T)^2
+ +\BigO\!\left(\frac{1+\log\rho}{\rho^3}\right).
+ \label{eq:R-E}
+\end{equation}
+Therefore
+\begin{equation}
+ \frac{R(G(y))}{G(y)}
+ =\frac1\rho+
+ \frac{(\Psi'(\theta)-1)/L-1}{\rho^2}
+ +\BigO\!\left(\frac{1+\log\rho}{\rho^3}\right).
+ \label{eq:R-rho}
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+In \eqref{eq:Watson-exact}, the weight $\EulerE^{-s}$ localizes $s$ to a bounded range. On such ranges, \eqref{eq:elasticity-input} implies
+$E(T+s)=E(T)+\BigO((1+\log\rho)/\rho^3)$ uniformly. Replacing the inner integral by $sE(T)$ changes the integral by the stated error. The remaining elementary integral is
+\[
+ 1-\int_0^\infty\EulerE^{-(1+E(T))s}\Differential s
+ =\frac{E(T)}{1+E(T)}
+ =E(T)-E(T)^2+\BigO(E(T)^3).
+\]
+Insert \eqref{eq:elasticity-input}.
+\end{proof}
+
+The ratio also satisfies an exact first-order equation useful for an all-orders expansion. If
+\begin{equation}
+ r_*(T):=\frac{R(q(T))}{q(T)},
+ \label{eq:rstar}
+\end{equation}
+then differentiation of \eqref{eq:R-inverse} gives
+\begin{equation}
+ r_*'(T)=(1+E(T))r_*(T)-E(T),
+ \qquad
+ r_*(T)=\frac{E(T)+r_*'(T)}{1+E(T)}.
+ \label{eq:rstar-ode}
+\end{equation}
+This identity is the recursion seed for the conjectural full transseries in \cref{sec:conjectures}.
+
+\subsection{The endpoint theorem}
+
+Equation \eqref{eq:tau-q} factors as
+\begin{equation}
+ \tau(1-q)=R(q)\bigl(1-q+2R(q/2)\bigr).
+ \label{eq:tau-factor-R}
+\end{equation}
+Since $q=G(y)$ is exponentially small in $\rho$ while $R(q/2)=\BigO(q/\rho)$, the factor in parentheses differs from one by less than any fixed algebraic power of $1/\rho$.
+
+\begin{theorem}[Two-term Lambert-periodic Stein-kernel law]
+\label{thm:tau-endpoint}
+As $y\downarrow0$,
+\begin{equation}
+ \boxed{\displaystyle
+ \tau(1-G(y))=G(y)\left[
+ \frac1\rho+
+ \frac{(\Psi'(\theta)-1)/L-1}{\rho^2}
+ +\BigO\!\left(\frac{1+\log\rho}{\rho^3}\right)
+ \right].}
+ \label{eq:tau-endpoint}
+\end{equation}
+By evenness, the same profile governs the left endpoint $x\downarrow-1$.
+\end{theorem}
+
+\begin{proof}
+Combine \cref{lem:R-asymptotic} with \eqref{eq:tau-factor-R}. The correction $-q+2R(q/2)$ is exponentially smaller than the displayed algebraic terms.
+\end{proof}
+
+The first coefficient is universal, while the second contains the derivative of the same Gamma--zeta fluctuation that controls the inverse Fabius function. The extra $-1$ is the Watson correction $-E^2$ from averaging the quantile over an exponential window.
+
+\subsection{Lower-Lambert form}
+
+Define the exact lower-Lambert coordinate
+\begin{equation}
+ \lambda(q):=-\frac1L W_{-1}(-Lq),
+ \qquad
+ q=\lambda(q)\EulerE^{-L\lambda(q)}=\lambda(q)2^{-\lambda(q)}.
+ \label{eq:lambda-q}
+\end{equation}
+The repository's phase matching gives $\lambda(G(y))=\rho+\BigO(1)$.
+
+\begin{corollary}[Lambert equivalent]
+\label{cor:tau-lambert}
+As $q\downarrow0$,
+\begin{equation}
+ \boxed{\displaystyle
+ \tau(1-q)\sim\frac{q}{\lambda(q)}.}
+ \label{eq:tau-lambert}
+\end{equation}
+\end{corollary}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.82\textwidth]{stein_kernel_endpoint_ratio.png}
+\caption{Exact dyadic values of $\tau(1-2^{-n})\lambda(2^{-n})/2^{-n}$. The values are computed from rational Fabius data; only $W_{-1}$ is evaluated numerically. The ratio approaches one, in agreement with \cref{cor:tau-lambert}.}
+\label{fig:tau-ratio}
+\end{figure}
+
+\begin{table}[H]
+\centering
+\caption{Selected exact dyadic kernel values and Lambert normalization.}
+\label{tab:tau-dyadic}
+\begin{tabular}{@{}rccc@{}}
+\toprule
+$n$ & $F(2^{-n})$ & $\tau(1-2^{-n})$ & $\tau\lambda/2^{-n}$ \\
+\midrule
+2 & $5/72$ & $2843/72000$ & $0.6317777778$ \\
+3 & $1/288$ & $17/960$ & $0.7713619036$ \\
+4 & $143/2073600$ & $759875/96864768$ & $0.8480076643$ \\
+5 & $19/33177600$ & $1423/408576$ & $0.8916040100$ \\
+10 & exact rational & exact rational & $0.9562409091$ \\
+20 & exact rational & exact rational & $0.9776576718$ \\
+40 & exact rational & exact rational & $0.9884250147$ \\
+80 & exact rational & exact rational & $0.9940535144$ \\
+120 & exact rational & exact rational & $0.9959882742$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{Signed bases and the broader geometric family}
+\label{sec:signed-bases}
+
+\subsection{Negative contraction parameters}
+
+The operator framework remains meaningful for $-1<r<0$. The stationary law is still symmetric and compactly supported, but the contraction reverses orientation at every step. Put $r=-a$ with $0<a<1$ and
+\begin{equation}
+ c_a:=\frac{1+a}{1-a}.
+ \label{eq:ca}
+\end{equation}
+Because the independent uniforms are symmetric, the alternating signs in the stationary series can be absorbed digit by digit.
+
+\begin{proposition}[Positive/negative-base conjugacy]
+\label{prop:negative-conjugacy}
+For $0<a<1$,
+\begin{align}
+ Y_{-a}&\stackrel d=c_aY_a,
+ \label{eq:Y-negative-scale}\\
+ M_{-a}(t)&=M_a(c_at),
+ \label{eq:M-negative-scale}\\
+ \Acal_{n}^{(-a)}(x)&=c_a^n\Acal_n^{(a)}(x/c_a).
+ \label{eq:A-negative-scale}
+\end{align}
+Nevertheless the Koopman eigenvalues retain the sign:
+\begin{equation}
+ P_{-a}\Acal_n^{(-a)}=(-a)^n\Acal_n^{(-a)}.
+ \label{eq:negative-eigen}
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+From \eqref{eq:Yr},
+\[
+ Y_{-a}=(1+a)\sum_{j\ge0}(-a)^jU_{j+1}
+ \stackrel d=(1+a)\sum_{j\ge0}a^jU_{j+1}=c_aY_a.
+\]
+The MGF and Appell scaling follow. The eigenvalue law is \cref{thm:koopman-eigen}.
+\end{proof}
+
+Thus the negative base has a positive-law geometry but an alternating transfer spectrum. Its finite determinant is
+\begin{equation}
+ \det(I-zP_{-a}\vert_{\Pi_d})=(z;-a)_{d+1}.
+ \label{eq:negative-det}
+\end{equation}
+The even/odd splitting of this product provides a natural dynamical companion to the repository's negative-$q$ and position-parity Thue--Morse formulas.
+
+\subsection{Reciprocal bases}
+
+The values $q=\pm2,\pm4$ emphasized in the repository lie outside the contractive Markov range. Their reciprocal parameters $r=q^{-1}$ lie inside it. This suggests a useful dictionary:
+\begin{center}
+\begin{tabular}{@{}lll@{}}
+\toprule
+Contractive object & Reciprocal-$q$ object & Analytic role \\
+\midrule
+$r^n$ & $q^{-n}$ & transfer eigenvalue \\
+$(z;r)_\infty$ & $(z;q^{-1})_\infty$ & Fredholm determinant \\
+$\Acal_n^{(r)}$ & reciprocal moment/Appell family & polynomial eigenmode \\
+$P_r$ & inverse geometric averaging & deconvolution/continuation \\
+\bottomrule
+\end{tabular}
+\end{center}
+For $|q|>1$, the repository realizes reciprocal moments through vertical-line or signed functionals. The present contraction picture shows where the same reciprocal powers arise dynamically, before analytic continuation.
+
+\section{Exact computation and numerical experiments}
+\label{sec:numerics}
+
+\subsection{Reproducibility architecture}
+
+The accompanying script \texttt{experiments.py} uses exact SymPy rational arithmetic for every algebraic claim and uses floating-point arithmetic only for Lambert $W$ and Monte Carlo checks. It performs four independent tasks.
+\begin{enumerate}
+\item It constructs the centered Rvachev cumulants from \eqref{eq:cumulants}, obtains moments by the triangular moment--cumulant recurrence, and constructs $\Acal_0,\ldots,\Acal_{12}$ from \eqref{eq:Appell-gen}.
+\item It verifies the Koopman eigenlaw and differential-dilation lowering law through degree $10$, reconstructs a generic degree-$10$ polynomial from \eqref{eq:spectral-coordinate}, and verifies the determinant identity through $d=8$.
+\item It evaluates exact dyadic Fabius values using the repository formula
+\begin{equation}
+ F(2^{-n})
+ =2^{-\binom{n+1}{2}}
+ \sum_{k=0}^{\Floor{n/2}}
+ \frac{\mu_{2k}}{(2k)!(n-2k)!},
+ \label{eq:dyadic-F-compute}
+\end{equation}
+then evaluates \eqref{eq:tau-q} exactly through depth $120$.
+\item It simulates the stationary affine chain and compares forward and reverse mixed Appell correlations with \cref{thm:lag-correlations}.
+\end{enumerate}
+
+\input{data/exact_verification.tex}
+
+\subsection{Exact Appell and Gram data}
+
+The generated low-degree Appell polynomials are reproduced in \cref{app:appell-table}. Their exact stationary Gram matrix begins as follows.
+
+\input{data/gram_matrix.tex}
+
+The entry in row $2$, column $4$ is the irreversibility witness \eqref{eq:G24-dyadic}. The checker obtains it independently by direct rational integration against the moment sequence and by the cumulant identity \eqref{eq:G24-cumulant}.
+
+\subsection{Endpoint experiment}
+
+The endpoint calculation uses exact rational $F(2^{-n})$ and $\tau(1-2^{-n})$ values. For each selected $n$, the only transcendental evaluation is
+\[
+ \lambda_n=-\frac1{\log2}W_{-1}(-2^{-n}\log2).
+\]
+The ratio $\tau(1-2^{-n})\lambda_n/2^{-n}$ increases from approximately $0.63178$ at $n=2$ to $0.99599$ at $n=120$. The figure and \cref{tab:tau-dyadic} show the slow, logarithmic convergence predicted by \cref{thm:tau-endpoint}.
+
+A second diagnostic compares
+\begin{equation}
+ \frac{\tau(1-G(y))}{G(y)}
+ \quad\text{with}\quad
+ \mathcal E(y)-\mathcal E(y)^2.
+ \label{eq:Watson-diagnostic}
+\end{equation}
+The difference decays on the expected $\rho^{-3}$ scale, with a small oscillatory modulation inherited from $\Psi$.
+
+\subsection{Monte Carlo scope}
+
+The lag experiment uses $300{,}000$ stationary samples, each initialized by $36$ dyadic uniform digits. The omitted tail is at most $2^{-36}$. At lag one the estimates are
+\begin{align*}
+ \text{forward: }&-2.43824\times10^{-4}
+ \quad\text{versus}\quad -2.41875\times10^{-4},\\
+ \text{reverse: }&-9.78772\times10^{-4}
+ \quad\text{versus}\quad -9.67498\times10^{-4}.
+\end{align*}
+At larger lags, the exact forward correlation falls below ordinary Monte Carlo noise; the plotted empirical markers are therefore restricted to lags $0$ and $1$. The proof of nonreversibility is exact and does not depend on simulation.
+
+\begin{cautionbox}[What the experiments do and do not prove]
+The symbolic checks are finite-degree certificates for formulas already proved algebraically in the text. The exact dyadic table is genuine exact arithmetic. The endpoint plot is numerical evidence for the rate and phase of an asymptotic theorem whose first two terms were proved from repository input. Monte Carlo is used only as a sanity check for the lag orientation and is not part of any proof.
+\end{cautionbox}
+
+\section{Conjectures and frontier research directions}
+\label{sec:conjectures}
+
+\subsection{Natural-space transfer spectra}
+
+The Appell polynomials span all polynomials, hence form a total set in $L^2(\pi_r)$ because the target has compact support. They are exact eigenvectors, but they are not orthogonal and, by \cref{thm:general-nonreversible}, the operator is nonnormal for $0<|r|<1$. The engineered space in \cref{thm:Fock-determinant} avoids this geometry by definition.
+
+\begin{conjecture}[Natural analytic nuclearity]
+\label{conj:natural-nuclearity}
+For every $0<|r|<1$, there exists a canonical scale of analytic or Gevrey spaces adapted to the endpoint flatness of $u_r$ such that:
+\begin{enumerate}[label=(\roman*)]
+\item $P_r$ is nuclear;
+\item the Appell polynomials form a Schauder basis;
+\item the spectrum is exactly $\{r^n:n\ge0\}\cup\{0\}$;
+\item the Fredholm determinant is $(z;r)_\infty$ without an engineered coefficient norm.
+\end{enumerate}
+\end{conjecture}
+
+A plausible norm should balance derivative growth against the endpoint saddle and should make the coefficient functional $p\mapsto\Expectation p^{(n)}(Y_r)/n!$ continuous with explicit $n$-dependence.
+
+\begin{problem}[Natural $L^2$ spectrum and pseudospectrum]
+Determine the full spectrum of $P_{1/2}$ on $L^2(u\Differential x)$ and quantify the norms of the finite-degree spectral projectors \eqref{eq:projector-dual}. The nonzero off-diagonal Gram entries imply potentially large eigenbasis condition numbers. Relate their growth to the repository's Legendre, Lagrange, and shifted-$u$ synthesis matrices.
+\end{problem}
+
+\subsection{A full Stein-kernel transseries}
+
+Equation \eqref{eq:rstar-ode} converts the all-orders inverse elasticity directly into an all-orders kernel expansion.
+
+\begin{conjecture}[Phase-aware Stein-kernel expansion]
+\label{conj:tau-transseries}
+For each fixed $N$,
+\begin{equation}
+ \tau(1-G(y))
+ =G(y)\left[
+ \sum_{j=1}^{N}
+ \frac{T_j(\theta,\log\rho)}{\rho^j}
+ +\BigO_N\!\left(\frac{(1+\log\rho)^{N}}{\rho^{N+1}}\right)
+ \right],
+ \label{eq:tau-transseries}
+\end{equation}
+where every $T_j$ is a polynomial in $\log\rho$ with smooth one-periodic coefficients generated recursively from the inverse-elasticity coefficients. The first two are
+\begin{equation}
+ T_1=1,
+ \qquad
+ T_2=\frac{\Psi'(\theta)-1}{\log2}-1.
+ \label{eq:T12}
+\end{equation}
+The highest periodic derivative and highest logarithmic degree should obey triangular laws analogous to the repository's inverse top-jet and top-log laws.
+\end{conjecture}
+
+The formal recursion is immediate from \eqref{eq:rstar-ode}; the hard part is a derivative-stable remainder theorem uniform over the exponentially weighted Watson window.
+
+\begin{conjecture}[Kernel shape]
+\label{conj:kernel-shape}
+The Rvachev Stein kernel is strictly decreasing on $[0,1)$:
+\begin{equation}
+ \tau'(x)<0\qquad(0<x<1),
+ \label{eq:tau-monotone}
+\end{equation}
+so its unique maximum is $\tau(0)=5/36$ and it decreases to zero with the Lambert law \eqref{eq:tau-lambert}.
+\end{conjecture}
+
+Exact dyadic values, the even log-concave convolution structure, and numerical evaluations support this statement, but a direct proof must control the logarithmic derivative of $F$ across all scales, not only asymptotically.
+
+\subsection{Stein discrepancies for the finite sinc/spline hierarchy}
+
+The repository obtains exact transport distances for several finite convolution and spline approximants. The fixed-point discrepancy suggests a more structural target.
+
+\begin{problem}[Exact residuals for finite approximants]
+For each finite sinc-product or box-spline law $\mu_N$, compute
+\begin{equation}
+ \Delta_{1/2}(\mu_N)
+ =\sup_{\Lip f\le1}|\mu_N(I-P)f|
+ \label{eq:finite-discrepancy}
+\end{equation}
+exactly or asymptotically. Determine whether the extremizer is piecewise linear on the Thue--Morse knot set and whether the exact $W_1$ collapse found in the repository is visible directly from the fixed-point residual.
+\end{problem}
+
+For Richardson-extrapolated signed measures, replace the supremum by the dual bounded-Lipschitz norm. The $q$-Poisson solver may expose cancellations not visible in absolute transport metrics.
+
+\subsection{Thue--Morse projectors}
+
+The dual projector \eqref{eq:projector-dual} pairs a test polynomial with $u^{(n)}$. Repository formulas express finite derivative approximants as signed atoms or truncated powers with Thue--Morse signs.
+
+\begin{conjecture}[Automatic spectral extraction]
+There are finite Thue--Morse signed measures $\sigma_{n,N}$, supported on the dyadic knot set, such that
+\begin{equation}
+ \sigma_{n,N}\longrightarrow u^{(n)}
+ \label{eq:sigma-converge}
+\end{equation}
+in an explicit negative Sobolev norm at a supergeometric rate, and the finite functionals
+\begin{equation}
+ p\longmapsto\frac{(-1)^n}{n!}\langle\sigma_{n,N},p\rangle
+ \label{eq:finite-projector}
+\end{equation}
+are exact on a degree range increasing with $N$. Gaussian-binomial weights should give accelerated versions whose error determinant is controlled by $(z;1/2)_N$.
+\end{conjecture}
+
+This would turn Prouhet cancellation into a convergent spectral-projector algorithm.
+
+\subsection{Legendre conditioning and nonnormality}
+
+The finite Legendre--Appell matrix in \eqref{eq:legendre-appell} is triangular with rational entries. It conjugates the Markov operator on $\Pi_d$ to a diagonal matrix.
+
+\begin{problem}[Asymptotic condition numbers]
+Determine the asymptotic growth of the condition number of the Legendre--Appell change of basis and of the projector norms $\|\PiD_n\|$ in Legendre-weighted and Rvachev-weighted $L^2$ spaces. Decide whether endpoint flatness produces stretched-exponential growth, and identify the saddle governing it.
+\end{problem}
+
+A solution would quantify how a completely explicit real spectrum coexists with strong transient amplification in a nonnormal basis.
+
+\subsection{Irreversibility beyond a single moment}
+
+\Cref{thm:general-nonreversible} supplies a scalar witness but not a full measure of time asymmetry.
+
+\begin{problem}[Entropy production and Appell antisymmetry]
+Let $\Gamma_k^{(r)}=(r^{nk}-r^{mk})G_{mn}^{(r)}$ be the antisymmetric Appell lag matrix. Relate its Schatten norms, finite principal minors, or generating function to the relative entropy between the forward and time-reversed two-step laws. Determine the leading behavior as $r\to0$ and $r\to1^-$.
+\end{problem}
+
+The exact factor \eqref{eq:G24-factor} predicts fourth-order vanishing as $r\to1$, but other mode pairs may dominate a global entropy-production scale.
+
+\subsection{General atomic masks and multivariate up-like functions}
+
+The affine proof of \cref{thm:koopman-eigen} uses only a stationary MGF cocycle. It therefore extends to vector recursions
+\begin{equation}
+ X_{k+1}=AX_k+\xi_{k+1}
+ \label{eq:vector-AR}
+\end{equation}
+with spectral radius $\rho(A)<1$, producing multivariate Appell eigenpolynomials organized by tensor powers of $A$. This is directly relevant to multivariate compactly supported $C^\infty$ functions generated by nonstationary subdivision \cite{CharinaContiDyn}.
+
+\begin{conjecture}[Subdivision Stein--Koopman correspondence]
+For every convergent atomic subdivision mask with a probabilistic affine realization, the reciprocal moment polynomials diagonalize the associated refinement Markov operator; the multivariate transfer determinant factors over symmetric tensor powers of the dilation matrix; and the adjoint differentiated Stein operator is the mask's distributional refinement equation.
+\end{conjecture}
+
+The scalar dyadic theory developed here is the rank-one model of this proposed correspondence.
+
+\subsection{\texorpdfstring{Complex and reciprocal $q$}{Complex and reciprocal q}}
+
+For complex $r$ with $|r|<1$, the MGF cocycle and formal Appell eigenlaw remain valid, although positivity is lost. The determinant $(z;r)_\infty$ is still analytic. It is natural to compare its Stokes geometry as $r$ approaches roots of unity with the repository's reciprocal-$q$ vertical-line moment functionals.
+
+\begin{problem}[Root-of-unity transfer limits]
+Construct renormalized limits of the finite transfer determinants and polynomial resolvents as $r$ approaches a root of unity radially. Determine whether Gaussian-binomial cancellation produces finite cyclic blocks and whether their signs recover position-parity refinements of Thue--Morse.
+\end{problem}
+
+\section{Formalization roadmap}
+\label{sec:formalization}
+
+The repository already formalizes the Rvachev moment/Appell family and a substantial part of the dyadic and $q$-binomial infrastructure. The new results have a favorable dependency graph.
+
+\begin{enumerate}
+\item \textbf{Polynomial affine operator.} Define $P_r$ on polynomials by integrating a polynomial against the uniform moment functional. Prove degree preservation and $DP_r=rP_rD$ by coefficient arithmetic.
+\item \textbf{MGF coefficient identity.} Avoid analytic convergence initially: encode $M(t)=M(rt)m(t)$ as a formal power-series identity and derive $P_r\Acal_n=r^n\Acal_n$ coefficientwise.
+\item \textbf{Spectral coordinates.} Formalize $\Expectation\Acal_n=\delta_{n0}$ and the triangular derivative formula, then prove \eqref{eq:spectral-coordinate} by polynomial induction.
+\item \textbf{$q$-commuting powers.} Reuse the existing Gaussian-binomial theorem to prove \eqref{eq:qbinomial-operator}; the only new input is the commutation relation.
+\item \textbf{Finite determinant.} In the Appell basis, the matrix is diagonal. The determinant theorem reduces to the existing finite $q$-Pochhammer product.
+\item \textbf{Poisson and martingale laws.} These are finite sums and one-step conditional expectations once the eigenvalue theorem is available.
+\item \textbf{Irreversibility certificate.} Compute $\kappa_2,\kappa_4,\kappa_6$, prove $G_{24}=\kappa_6+8\kappa_2\kappa_4$, and normalize the rational witness $-128/33075$.
+\item \textbf{Stein kernel.} Formalize the two Fabius primitives, the exact ratio \eqref{eq:tau-q}, and the quantile change of variables. These need only one-dimensional integration and existing inverse definitions.
+\item \textbf{Endpoint theorem.} This is the only analytically deep layer. It should depend on the formalized lower-Lambert phase and a separate lemma controlling the exponentially weighted Watson integral.
+\end{enumerate}
+
+A compact first milestone would formalize the chain through the finite determinant and exact nonreversibility theorem without any asymptotic analysis.
+
+\section{Conclusion}
+\label{sec:conclusion}
+
+The Fabius--Rvachev corpus already contains an unusually rich collection of exact structures: Thue--Morse signs, dyadic arithmetic, q-binomial interpolation, infinite sinc products, Bell--Bernoulli cumulants, Legendre and sampling representations, and lower-Lambert endpoint expansions. The affine smoothing chain supplies a missing common dynamical layer.
+
+Its reciprocal-moment Appell polynomials are exact Koopman eigenfunctions. Once that observation is made, several consequences become finite and explicit: spectral coordinates are expectations of derivatives, dual coordinates are Rvachev derivatives, Poisson equations divide by $1-r^n$, Gaussian coefficients encode noncommuting operator powers, and the transfer determinant is a q-Pochhammer product. The same eigenmodes generate martingales and exact lag correlations. Their nonorthogonality is not an accident but a signature of genuine time irreversibility.
+
+The fixed-point equation also opens a Stein-method direction. The simple residual $I-P$ characterizes the law and is quantitatively equivalent to Wasserstein distance, while $(I-P)D$ has Rvachev's differential equation as its adjoint. Independently, the scalar Stein kernel has an exact Fabius formula and an inverse-Fabius bridge. Its endpoint is governed by the same lower-Lambert phase and Gamma--zeta periodicity as the quantile, but with a new Watson correction.
+
+The resulting research program is concrete. Its finite algebra is ready for formalization; its exact rational experiments are reproducible; its endpoint conjectures inherit a mature all-orders calculus; and its natural-space spectral, nonnormal, Thue--Morse, Legendre, and multivariate extensions are sharply posed.
+
+\appendix
+
+\section{Generated Appell table}
+\label{app:appell-table}
+
+The following table is generated by exact rational series inversion in \texttt{experiments.py}.
+
+\input{data/appell_polynomials.tex}
+
+\section{Derivation of the universal irreversibility witness}
+\label{app:G24}
+
+Let
+\[
+ \mathscr G(s,t)=\frac{M_r(s+t)}{M_r(s)M_r(t)}.
+\]
+Up to total degree six,
+\begin{align*}
+ \log\mathscr G(s,t)
+ ={}&\frac{\kappa_2}{2}\bigl((s+t)^2-s^2-t^2\bigr)\\
+ &+\frac{\kappa_4}{24}\bigl((s+t)^4-s^4-t^4\bigr)\\
+ &+\frac{\kappa_6}{720}\bigl((s+t)^6-s^6-t^6\bigr)+\BigO_7.
+\end{align*}
+The coefficient of $s^2t^4/(2!4!)$ in $\exp(\log\mathscr G)$ has two contributions: the direct sixth-cumulant term and the product of the quadratic and quartic cross terms. This gives
+\[
+ G_{24}=\kappa_6+8\kappa_2\kappa_4.
+\]
+From \eqref{eq:r-cumulants},
+\begin{align*}
+ \kappa_2&=\frac{1-r}{3(1+r)},\\
+ \kappa_4&=-\frac{2(1-r)^4}{15(1-r^4)},\\
+ \kappa_6&=\frac{16(1-r)^6}{63(1-r^6)}.
+\end{align*}
+Putting these over a common denominator and factoring yields \eqref{eq:G24-factor}. At $r=1/2$ it reduces to $-128/33075$.
+
+\section{A compact formula sheet}
+\label{app:formula-sheet}
+
+\begin{longtable}{@{}p{0.35\textwidth}p{0.58\textwidth}@{}}
+\toprule
+Object & Formula \\
+\midrule
+\endfirsthead
+\toprule
+Object & Formula \\
+\midrule
+\endhead
+Stationary series & $Y_r=(1-r)\sum_{j\ge0}r^jU_{j+1}$ \\
+Markov operator & $(P_rf)(x)=\frac12\int_{-1}^1f(rx+(1-r)v)\Differential v$ \\
+MGF cocycle & $M_r(t)=M_r(rt)\sinh((1-r)t)/((1-r)t)$ \\
+Appell EGF & $\EulerE^{xt}/M_r(t)=\sum\Acal_n^{(r)}(x)t^n/n!$ \\
+Koopman eigenvalue & $P_r\Acal_n^{(r)}=r^n\Acal_n^{(r)}$ \\
+Spectral coordinate & $\Lcal_n(p)=\Expectation p^{(n)}(Y_r)/n!$ \\
+Dual eigen-distribution & $P_r^*u_r^{(n)}=r^nu_r^{(n)}$ \\
+Commutation & $DP_r=rP_rD$, $P_rR_r=rR_rP_r$ \\
+Number operator & $N_r=R_rD$, $P_r=r^{N_r}$ \\
+Finite determinant & $\det(I-zP_r|_{\Pi_d})=(z;r)_{d+1}$ \\
+Polynomial Poisson solution & $g=\sum_{n\ge1}\Lcal_n(h)\Acal_n^{(r)}/(1-r^n)$ \\
+Fixed-point Stein operator & $\Kcal_r=I-P_r$ \\
+Differential Stein operator & $\Scal_r=(I-P_r)D$ \\
+Stein discrepancy & $(1-|r|)W_1\le\Delta_r\le(1+|r|)W_1$ \\
+Polynomial martingale & $r^{-nk}\Acal_n(X_k)$ \\
+Lag correlation & $\Expectation[\Acal_m(X_0)\Acal_n(X_k)]=r^{nk}G_{mn}$ \\
+Gram EGF & $\sum G_{mn}s^mt^n/(m!n!)=M_r(s+t)/(M_r(s)M_r(t))$ \\
+Rvachev Stein kernel & $\tau(1-q)=((1-q)F(q/2)+2F(q/4))/F(q)$ \\
+Kernel Appell moment & $\Expectation[\tau(Y)\Acal_n(Y)]=\kappa_{n+2}/(n+1)$ \\
+Endpoint equivalent & $\tau(1-q)\sim q/\lambda(q)$ \\
+\bottomrule
+\end{longtable}
+
+\section{Corpus nonduplication ledger}
+\label{app:corpus}
+
+The audit grouped the recursively inspected sources as follows.
+\begin{longtable}{@{}p{0.31\textwidth}p{0.61\textwidth}@{}}
+\toprule
+Source family & Material screened for overlap \\
+\midrule
+\endfirsthead
+\toprule
+Source family & Material screened for overlap \\
+\midrule
+\endhead
+Primary exposition and glossary & Normalizations, random series, moments, Fourier products, exact values, functional equations, notation \\
+Lean walkthrough and theorem index & Existing formal Appell, q-binomial, endpoint, sampling, and derivative declarations \\
+Canonical frontier volume & Bell recurrences, inverse asymptotics, Thue--Morse, q-series, spectral and representation result registers \\
+Fourier-decay corpus and audits & Dyadic rays, martingale decomposition for the doubling map, LIL/CLT, sinc zero geometry \\
+Thue--Morse consolidation & Prouhet cancellation, finite blocks, derivative signs, automatic and Mahler formulas \\
+Exponent and q-series consolidation & General exponent sequences, Gaussian interpolation, finite sinc products, reciprocal q, geometric moment/Appell families \\
+Lambert-W guide & Branch structure, exact lower branch, asymptotic and numerical methods \\
+Spectra and arithmetic & Fourier zero divisors, arithmetic rays, derivative norms, Pascal--Rvachev hierarchies \\
+Integration and transforms & Mellin/Laplace/Fourier/resolvent formulas, fractional calculus, quantile integrals, order statistics \\
+Inverse and sampling & Inverse endpoint expansion, Barnes/Appell deconvolution, self-sampling, alias filters, inverse-moment Appell polynomials \\
+Inverse all-orders volume & Lagrange--Bell coefficient calculus, phase tomography, elasticity and higher inverse derivatives \\
+Dyadic-comb frontiers & Quadrature, interpolation, Bernoulli periodization, Euler--Maclaurin, exhaustion formulas \\
+Representation frontiers & Legendre/Jacobi/Chebyshev expansions, Fredholm and Brownian representations, multiresolution, sampling, operator identities \\
+Archived sources and papers & Historical variants and classical Fabius/Rvachev arithmetic, exact-value, and atomic-function sources \\
+\bottomrule
+\end{longtable}
+
+The exact searches found the imported Appell deconvolution material but no repository treatment of the affine operator as a Koopman operator, no fixed-point Stein discrepancy, no polynomial Poisson diagonalization in the Appell basis, no affine-chain reversibility analysis, and no Fabius formula for the scalar Stein kernel. These absences define the report's repository-relative contribution boundary.
+
+\section{Reproducibility manifest}
+\label{app:reproducibility}
+
+The accompanying archive contains:
+\begin{center}
+\begin{tabularx}{0.94\textwidth}{@{}lX@{}}
+\toprule
+Path & Purpose \\
+\midrule
+\texttt{dyadic\_stein\_koopman\_frontier.tex} & Complete report source \\
+\texttt{dyadic\_stein\_koopman\_frontier.pdf} & Compiled report \\
+\texttt{experiments.py} & Commented exact and numerical experiment driver \\
+\texttt{requirements.txt} & Python dependency list \\
+\texttt{README.md} & Reproduction instructions and file map \\
+\texttt{CORPUS\_AUDIT.md} & Nonduplication audit summary \\
+\texttt{data/appell\_polynomials.tex} & Generated exact Appell table \\
+\texttt{data/gram\_matrix.tex} & Generated exact Gram matrix \\
+\texttt{data/exact\_verification.tex} & Generated symbolic check table \\
+\texttt{data/stein\_kernel\_table.csv} & Exact dyadic endpoint table through depth 120 \\
+\texttt{data/lag\_correlations.csv} & Exact and Monte Carlo lag data \\
+\texttt{figures/*.pdf, figures/*.png} & Vector and raster experiment figures \\
+\texttt{numerical\_summary.txt} & Human-readable exact/numerical summary \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+To reproduce the experiment outputs, run
+\begin{verbatim}
+python experiments.py --sample-size 300000 --max-dyadic-depth 120
+\end{verbatim}
+from the archive directory. No network access is required.
+
+\begin{thebibliography}{99}
+
+\bibitem{Fabius1966}
+J.~Fabius,
+\newblock A probabilistic example of a nowhere analytic $C^\infty$ function,
+\newblock \emph{Zeitschrift f"ur Wahrscheinlichkeitstheorie und Verwandte Gebiete} \textbf{5} (1966), 173--174.
+
+\bibitem{Rvachev1990}
+V.~L.~Rvachev,
+\newblock Compactly supported solutions of functional-differential equations and their applications,
+\newblock \emph{Russian Mathematical Surveys} \textbf{45} (1990), no.~1, 87--120.
+
+\bibitem{Arias1982}
+J.~Arias de Reyna,
+\newblock An infinitely differentiable function with compact support: definition and properties,
+\newblock English translation of the 1982 article, arXiv:1702.05442.
+
+\bibitem{AriasArithmetic}
+J.~Arias de Reyna,
+\newblock Arithmetic of the Fabius function,
+\newblock arXiv:1702.06487, 2017.
+
+\bibitem{Haugland}
+J.~K.~Haugland,
+\newblock Evaluating the Fabius function,
+\newblock arXiv:1609.07999, version 2.
+
+\bibitem{AlloucheShallit}
+J.-P.~Allouche and J.~Shallit,
+\newblock \emph{Automatic Sequences: Theory, Applications, Generalizations},
+\newblock Cambridge University Press, 2003.
+
+\bibitem{Koopman1931}
+B.~O.~Koopman,
+\newblock Hamiltonian systems and transformation in Hilbert space,
+\newblock \emph{Proceedings of the National Academy of Sciences USA} \textbf{17} (1931), 315--318.
+
+\bibitem{GasperRahman}
+G.~Gasper and M.~Rahman,
+\newblock \emph{Basic Hypergeometric Series}, 2nd ed.,
+\newblock Cambridge University Press, 2004.
+
+\bibitem{CorlessLambert}
+R.~M.~Corless, G.~H.~Gonnet, D.~E.~G.~Hare, D.~J.~Jeffrey, and D.~E.~Knuth,
+\newblock On the Lambert $W$ function,
+\newblock \emph{Advances in Computational Mathematics} \textbf{5} (1996), 329--359.
+
+\bibitem{DiNardo2013}
+E.~Di Nardo,
+\newblock On a representation of time-space harmonic polynomials via symbolic calculus,
+\newblock arXiv:1304.0294, 2013.
+
+\bibitem{ArrasHoudre2019}
+B.~Arras and C.~Houdr\'e,
+\newblock On Stein's method for infinitely divisible laws with finite first moment,
+\newblock arXiv:1712.10051.
+
+\bibitem{ArrasHoudre2022}
+B.~Arras and C.~Houdr\'e,
+\newblock On Stein's method for multivariate self-decomposable laws with finite first moment,
+\newblock arXiv:1809.02050, revised 2022.
+
+\bibitem{Saumard2019}
+A.~Saumard,
+\newblock Weighted Poincar\'e inequalities, concentration inequalities and tail bounds related to the behavior of the Stein kernel in dimension one,
+\newblock \emph{Bernoulli} \textbf{25} (2019), no.~4B, 3978--4006.
+
+\bibitem{CourtadeFathiPananjady}
+T.~A.~Courtade, M.~Fathi, and A.~Pananjady,
+\newblock Existence of Stein kernels under a spectral gap, and discrepancy bounds,
+\newblock \emph{Annales de l'Institut Henri Poincar\'e, Probabilit\'es et Statistiques} \textbf{55} (2019), 777--790.
+
+\bibitem{MijouleEtAl}
+G.~Mijoule, M.~Rai\v{c}, G.~Reinert, and Y.~Swan,
+\newblock Stein's density method for multivariate continuous distributions,
+\newblock \emph{Electronic Journal of Probability} \textbf{28} (2023), paper 20.
+
+\bibitem{CharinaContiDyn}
+M.~Charina, C.~Conti, and N.~Dyn,
+\newblock Multivariate compactly supported $C^\infty$ functions by subdivision,
+\newblock arXiv:2211.05677.
+
+\bibitem{ProveItRoot}
+V.~Reshetnikov,
+\newblock \emph{ProveIt: Analysis/FabiusFunction/docs},
+\newblock \url{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Analysis/FabiusFunction/docs}, accessed 30 August 2026.
+
+\bibitem{ProveItManifest}
+V.~Reshetnikov,
+\newblock Draft manifest for the semi-formalized Fabius--Rvachev frontier corpus,
+\newblock \url{https://github.com/VladimirReshetnikov/ProveIt/blob/main/Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/MANIFEST.md}, accessed 30 August 2026.
+
+\bibitem{ProveItInverse}
+V.~Reshetnikov,
+\newblock \emph{Inverse and Sampling Frontiers for the Fabius--Rvachev System},
+\newblock current consolidated LaTeX source in the ProveIt repository, 2026.
+
+\bibitem{ProveItEndpoint}
+V.~Reshetnikov,
+\newblock \emph{All-Orders Endpoint Asymptotics for the Inverse Fabius Function},
+\newblock current consolidated LaTeX source in the ProveIt repository, 2026.
+
+\bibitem{ProveItQ}
+V.~Reshetnikov,
+\newblock \emph{Exponent-Sequence and $q$-Series Frontiers},
+\newblock current consolidated LaTeX source in the ProveIt repository, 2026.
+
+\bibitem{ProveItRepresentations}
+V.~Reshetnikov,
+\newblock \emph{Representation Frontiers for the Fabius--Rvachev System},
+\newblock current consolidated LaTeX source in the ProveIt repository, 2026.
+
+\end{thebibliography}
+
+\end{document}

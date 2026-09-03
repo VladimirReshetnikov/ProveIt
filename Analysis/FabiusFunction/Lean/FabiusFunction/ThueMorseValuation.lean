@@ -53,18 +53,15 @@ theorem thueMorseSign_mul_cancel (n : ℕ) (x : ℤ) :
 
 /-- Two powers of `-1` agree as soon as their exponents have even sum.  A
 small workhorse: the parity identities of this module and its successors are
-all proved by exhibiting the even sum to `omega`. -/
+all proved by exhibiting the even sum to `omega`.
+
+This is the `ℤ` retyping of
+`ThueMorseBasicLemmas.neg_one_pow_eq_of_add_eq_two_mul`; both are one step
+from Mathlib's `neg_one_pow_congr`, applied to the parity equivalence
+`Nat.even_add` for the even sum `a + b = c + c`. -/
 theorem neg_one_pow_eq_of_add_even {a b c : ℕ} (h : a + b = 2 * c) :
-    ((-1 : ℤ)) ^ a = (-1) ^ b := by
-  have hab : ((-1 : ℤ)) ^ a * (-1) ^ b = 1 := by
-    rw [← pow_add, h, pow_mul, neg_one_sq, one_pow]
-  have hbb : ((-1 : ℤ)) ^ b * (-1) ^ b = 1 := by
-    rw [← pow_add]
-    exact Even.neg_one_pow ⟨b, rfl⟩
-  calc ((-1 : ℤ)) ^ a
-      = (-1) ^ a * ((-1) ^ b * (-1) ^ b) := by rw [hbb, mul_one]
-    _ = ((-1) ^ a * (-1) ^ b) * (-1) ^ b := by ring
-    _ = (-1) ^ b := by rw [hab, one_mul]
+    ((-1 : ℤ)) ^ a = (-1) ^ b :=
+  neg_one_pow_congr ((Nat.even_add (m := a) (n := b)).mp ⟨c, by omega⟩)
 
 /-! ## The successor law and the ruler sequence -/
 

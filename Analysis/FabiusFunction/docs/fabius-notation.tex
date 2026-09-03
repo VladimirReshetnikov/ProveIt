@@ -1,0 +1,284 @@
+% Canonical mathematical notation for active FabiusFunction LaTeX documents.
+%
+% This file is intentionally a plain TeX input rather than a LaTeX package.
+% The migration target is for every standalone document to load it by an
+% explicit path relative to that document's directory; included fragments then
+% inherit the definitions from their root document.  Keep this file independent
+% of document layout and metadata.
+%
+% Contract:
+%   * one command has one mathematical meaning throughout the active corpus;
+%   * names encode semantic roles rather than a document-local choice of letter;
+%   * visually similar but differently normalized objects have different print;
+%   * every command below is defined normatively in the notation catalogue.
+%
+% The active corpus excludes docs/archive/.  Historical sources may retain
+% their original notation only inside an explicitly labelled quotation.
+
+\makeatletter
+\@ifundefined{mathbb}{%
+  \PackageError{fabius-notation}{The amssymb package must be loaded first}%
+    {Load amsmath and amssymb before inputting fabius-notation.tex.}%
+}{}
+\@ifundefined{operatorname}{%
+  \PackageError{fabius-notation}{The amsmath package must be loaded first}%
+    {Load amsmath before inputting fabius-notation.tex.}%
+}{}
+\makeatother
+
+% Version stamp used by the catalogue and by static audits.
+\newcommand{\FabiusNotationVersion}{2026-09-01}
+
+% Number systems.  NaturalNumbers is explicitly the nonnegative convention.
+\newcommand{\NaturalNumbers}{\mathbb{N}_{0}}
+\newcommand{\PositiveIntegers}{\mathbb{N}_{>0}}
+\newcommand{\IntegerNumbers}{\mathbb{Z}}
+\newcommand{\RationalNumbers}{\mathbb{Q}}
+\newcommand{\RealNumbers}{\mathbb{R}}
+\newcommand{\ComplexNumbers}{\mathbb{C}}
+\newcommand{\ExtendedRealNumbers}{\overline{\mathbb{R}}}
+
+% The three principal Fabius--Rvachev functions.  Subscripts are deliberate:
+% a bare F and a calligraphic F have several unrelated uses in the corpus.
+\newcommand{\FabiusBounded}{F_{\mathrm{bd}}}
+\newcommand{\FabiusGlobal}{F_{\mathrm{gl}}}
+\newcommand{\FabiusQuantile}{Q_{F}}
+\newcommand{\FabiusClampedQuantile}{Q_{F,\mathrm{cl}}}
+\newcommand{\RvachevUp}{\operatorname{up}}
+
+% Constants, elementary operators, and delimiters.
+\newcommand{\EulerE}{\mathrm{e}}
+\newcommand{\ImaginaryUnit}{\mathrm{i}}
+\newcommand{\Differential}{\mathop{}\!\mathrm{d}}
+\newcommand{\AbsoluteValue}[1]{\left\lvert #1\right\rvert}
+\newcommand{\Norm}[1]{\left\lVert #1\right\rVert}
+\newcommand{\Floor}[1]{\left\lfloor #1\right\rfloor}
+\newcommand{\Ceiling}[1]{\left\lceil #1\right\rceil}
+\newcommand{\FractionalPart}[1]{\left\{#1\right\}}
+\newcommand{\PositivePart}[1]{\left(#1\right)_{+}}
+\newcommand{\IndicatorOf}[1]{\mathbf{1}_{#1}}
+\newcommand{\SetOf}[1]{\left\{#1\right\}}
+\newcommand{\InnerProduct}[1]{\left\langle #1\right\rangle}
+\newcommand{\CardinalityOf}[1]{\left\lvert #1\right\rvert}
+\newcommand{\DefinitionEquals}{\mathrel{\coloneqq}}
+\newcommand{\Sign}{\operatorname{sgn}}
+\newcommand{\IdentityOperator}{\operatorname{id}}
+\newcommand{\SpanOperator}{\operatorname{span}}
+\newcommand{\TraceOperator}{\operatorname{tr}}
+\newcommand{\RankOperator}{\operatorname{rank}}
+\newcommand{\DiagonalOperator}{\operatorname{diag}}
+\newcommand{\ResidueOperator}{\operatorname*{Res}}
+\newcommand{\LeastCommonMultiple}{\operatorname{lcm}}
+\newcommand{\OrderOperator}{\operatorname{ord}}
+\newcommand{\PrincipalLogarithm}{\operatorname{Log}}
+\newcommand{\FallingFactorial}[2]{\left(#1\right)^{\underline{#2}}}
+\newcommand{\RisingFactorial}[2]{\left(#1\right)^{\overline{#2}}}
+
+% Support, topology, convolution, and metric notation.
+\newcommand{\SupportOperator}{\operatorname{supp}}
+\newcommand{\SupportOf}[1]{\SupportOperator\!\left(#1\right)}
+\newcommand{\CoefficientSupportOf}[1]{%
+  \operatorname{supp}_{\mathrm{coeff}}\!\left(#1\right)%
+}
+\newcommand{\TopologicalSupportOf}[1]{\operatorname{tsupp}\!\left(#1\right)}
+\newcommand{\Convolution}{\mathbin{*}}
+\newcommand{\MetricDistance}{\operatorname{dist}}
+\newcommand{\TotalVariationOf}[1]{\operatorname{TV}\!\left(#1\right)}
+\newcommand{\TotalVariationDistance}{d_{\mathrm{TV}}}
+
+% Probability.  Equality and convergence in law are not metric distance.
+\newcommand{\Probability}{\mathbb{P}}
+\newcommand{\Expectation}{\mathbb{E}}
+\newcommand{\Variance}{\operatorname{Var}}
+\newcommand{\Covariance}{\operatorname{Cov}}
+\newcommand{\LawOperator}{\operatorname{Law}}
+\newcommand{\LawOf}[1]{\LawOperator\!\left(#1\right)}
+\newcommand{\EqualInLaw}{\mathrel{\overset{\mathrm{law}}{=}}}
+\newcommand{\ConvergesInLaw}{\mathrel{\xrightarrow{\mathrm{law}}}}
+\newcommand{\DyadicSigmaField}{\mathcal{A}}
+
+% Named objectives used in the Fourier-decay saddle analysis.  Their printed
+% names deliberately cannot be confused with any Fabius function or transform.
+\newcommand{\DecayOptimizationObjective}[1]{%
+  \operatorname{Obj}_{\mathrm{decay},#1}%
+}
+\newcommand{\LinearizedDecayObjective}[1]{%
+  \operatorname{Obj}^{\mathrm{lin}}_{\mathrm{decay},#1}%
+}
+
+% Fourier and integral transforms.  The printed labels expose normalization.
+% FourierTwoPi uses exp(-2*pi*i*x*xi); FourierAngular uses exp(-i*x*omega).
+\newcommand{\FourierTwoPiOperator}{\mathcal{F}_{2\pi}}
+\newcommand{\FourierAngularOperator}{\mathcal{F}_{\mathrm{ang}}}
+\newcommand{\InverseFourierTwoPiOperator}{\mathcal{F}_{2\pi}^{-1}}
+\newcommand{\InverseFourierAngularOperator}{\mathcal{F}_{\mathrm{ang}}^{-1}}
+\newcommand{\FourierTwoPiTransformOf}[1]{\FourierTwoPiOperator\!\left[#1\right]}
+\newcommand{\FourierAngularTransformOf}[1]{\FourierAngularOperator\!\left[#1\right]}
+\newcommand{\FourierTwoPi}[1]{\widehat{#1}_{\,2\pi}}
+\newcommand{\FourierAngular}[1]{\widehat{#1}_{\,\mathrm{ang}}}
+\newcommand{\FourierSeriesCoefficient}[2]{%
+  \widehat{#1}_{\,\mathrm{FS}}\!\left[#2\right]%
+}
+\newcommand{\FourierSeriesCoefficientAtPeriod}[3]{%
+  \widehat{#1}_{\,\mathrm{FS};\,#3}\!\left[#2\right]%
+}
+\newcommand{\LaplaceTransformSymbol}{\mathcal{L}}
+\newcommand{\MellinTransformSymbol}{\mathcal{M}}
+\newcommand{\LaplaceTransformOf}[1]{\LaplaceTransformSymbol\!\left[#1\right]}
+\newcommand{\MellinTransformOf}[1]{\MellinTransformSymbol\!\left[#1\right]}
+\newcommand{\MomentGeneratingFunction}[1]{M_{#1}}
+\newcommand{\CharacteristicFunction}[1]{\varphi_{#1}}
+
+% The two standard sinc functions must never share one symbol.
+\newcommand{\SincRad}{\operatorname{sinc}_{\mathrm{rad}}}
+\newcommand{\SincPi}{\operatorname{sinc}_{\pi}}
+
+% Binary arithmetic and Thue--Morse notation.
+\newcommand{\BinaryDigitSum}{\operatorname{wt}_{2}}
+\newcommand{\ThueMorseSignSymbol}{\varepsilon}
+\newcommand{\ThueMorseSign}[1]{\varepsilon_{#1}}
+\newcommand{\PadicValuation}[1]{\nu_{#1}}
+\newcommand{\TwoAdicValuation}{\nu_{2}}
+
+% q-series notation.  Every base is an explicit argument.
+\newcommand{\QPochhammer}[3]{\left(#1;#2\right)_{#3}}
+\newcommand{\GaussianBinomial}[3]{%
+  \genfrac{[}{]}{0pt}{}{#1}{#2}_{#3}%
+}
+\newcommand{\QInteger}[2]{\left[#1\right]_{#2}}
+\newcommand{\QMultinomial}[3]{%
+  \genfrac{[}{]}{0pt}{}{#1}{#2}_{#3}%
+}
+\newcommand{\GeneralizedQPochhammer}[3]{%
+  \left(#1;#2\right)_{#3}%
+}
+\newcommand{\GeneralizedGaussianBinomial}[3]{%
+  \genfrac{[}{]}{0pt}{}{#1}{#2}_{#3}%
+}
+\newcommand{\GeneralizedQNumber}[2]{\left[#1\right]_{#2}}
+
+% Combinatorial coefficient calculus.  Semantic labels separate the several
+% bracket, angle-bracket, Bell, L, T, and hat conventions that otherwise
+% collide across the corpus.  An operand follows CoefficientExtraction.
+\newcommand{\SignedStirlingFirstKind}[2]{%
+  s\!\left(#1,#2\right)%
+}
+\newcommand{\UnsignedStirlingFirstKind}[2]{%
+  \genfrac{[}{]}{0pt}{}{#1}{#2}%
+}
+\newcommand{\StirlingSecondKind}[2]{%
+  \genfrac{\{} {\}}{0pt}{}{#1}{#2}%
+}
+\newcommand{\LahNumber}[2]{\mathsf{L}^{\mathrm{Lah}}_{#1,#2}}
+\newcommand{\TypeAEulerianNumber}[2]{%
+  \genfrac{\langle}{\rangle}{0pt}{}{#1}{#2}%
+}
+\newcommand{\TypeBEulerianNumber}[2]{%
+  \mathsf{E}^{\mathrm{Eul},B}_{#1,#2}%
+}
+\newcommand{\SecondOrderEulerianNumber}[2]{%
+  \left\langle\!\left\langle
+    \genfrac{}{}{0pt}{}{#1}{#2}
+  \right\rangle\!\right\rangle
+}
+\newcommand{\BellNumber}[1]{\mathsf{B}^{\mathrm{Bell}}_{#1}}
+\newcommand{\ExponentialPartialBellPolynomial}[2]{%
+  \mathcal{B}^{\mathrm{exp}}_{#1,#2}%
+}
+\newcommand{\ExponentialCompleteBellPolynomial}[1]{%
+  \mathcal{B}^{\mathrm{exp}}_{#1}%
+}
+\newcommand{\GeometricBernoulliPolynomial}[2]{%
+  \mathrm{Ber}^{\mathrm{geom}}_{#1,#2}%
+}
+\newcommand{\OrdinaryPartialBellPolynomial}[2]{%
+  \mathcal{B}^{\mathrm{ord}}_{#1,#2}%
+}
+\newcommand{\TouchardPolynomial}[1]{\mathsf{T}^{\mathrm{Tou}}_{#1}}
+\newcommand{\CoefficientExtraction}[2]{\left[#1^{#2}\right]}
+\newcommand{\CycleCountOperator}{\operatorname{cyc}}
+\newcommand{\SetPartitionOperator}{\operatorname{Part}}
+\newcommand{\BitwiseAnd}{\mathbin{\&}}
+\newcommand{\ExponentialGeneratingFunctionOf}[1]{#1^{\mathrm{egf}}}
+\newcommand{\OrdinaryGeneratingFunctionOf}[1]{#1^{\mathrm{ogf}}}
+\newcommand{\NormalizedReversionCoefficient}[2]{%
+  #1^{\mathrm{rev,norm}}_{#2}%
+}
+\newcommand{\OrdinaryGeneratingCoefficient}[2]{#1^{\mathrm{ogf}}_{#2}}
+\newcommand{\PartitionLatticeMinimum}{\bot_{\Pi}}
+\newcommand{\PartitionLatticeMaximum}{\top_{\Pi}}
+\newcommand{\TraceBellArgument}[1]{s^{\mathrm{tr}}_{#1}}
+\newcommand{\FiniteField}{\mathbb{F}}
+\newcommand{\CatalanNumber}[1]{\mathsf{C}^{\mathrm{Cat}}_{#1}}
+\newcommand{\ComplementaryBellNumber}[1]{%
+  \mathsf{B}^{\mathrm{comp}}_{#1}%
+}
+\newcommand{\GregoryCoefficient}[1]{\mathsf{G}^{\mathrm{Greg}}_{#1}}
+\newcommand{\GenocchiNumber}[1]{\mathsf{G}^{\mathrm{Gen}}_{#1}}
+\newcommand{\GenocchiPolynomial}[1]{\mathsf{G}^{\mathrm{Gen}}_{#1}}
+\newcommand{\BarnesGFunction}{\mathrm{G}_{\mathrm{Barnes}}}
+\newcommand{\BellHessenbergMatrixH}[1]{\mathsf{H}^{\mathrm{Bell}}_{#1}}
+\newcommand{\BellHessenbergMatrixK}[1]{\mathsf{K}^{\mathrm{Bell}}_{#1}}
+\newcommand{\AssociahedronByDimension}[1]{%
+  \mathsf{K}^{\mathrm{Assoc}}_{\dim=#1}%
+}
+\newcommand{\LagrangeShiftCoordinate}{\zeta_{\mathrm{Lag}}}
+\newcommand{\TypeAEulerianPolynomial}[1]{%
+  \mathsf{E}^{\mathrm{Eul},A}_{#1}%
+}
+\newcommand{\TypeBEulerianPolynomial}[1]{%
+  \mathsf{E}^{\mathrm{Eul},B}_{#1}%
+}
+\newcommand{\SecondOrderEulerianPolynomial}[1]{%
+  \mathsf{E}^{\mathrm{Eul},2}_{#1}%
+}
+
+% Named special functions.
+\newcommand{\Polylogarithm}{\operatorname{Li}}
+\newcommand{\LambertW}{W}
+\newcommand{\WrightOmega}{\omega}
+\newcommand{\LambertPolynomial}[1]{%
+  \mathsf{L}^{\mathrm{Lam}}_{#1}%
+}
+\newcommand{\ScaledLambertPolynomial}[1]{%
+  \mathsf{L}^{\mathrm{Lam,sc}}_{#1}%
+}
+\newcommand{\GammaFunction}{\Gamma}
+\newcommand{\RiemannZeta}{\zeta}
+\newcommand{\HurwitzZeta}[2]{\zeta\!\left(#1,#2\right)}
+
+% Asymptotics.  BigO and LittleO are operator tokens for existing formula
+% grammar; prefer the At forms so that the limiting regime is printed.
+\newcommand{\BigO}{\mathcal{O}}
+\newcommand{\LittleO}{o}
+\newcommand{\BigOAt}[2]{\mathcal{O}_{#2}\!\left(#1\right)}
+\newcommand{\LittleOAt}[2]{o_{#2}\!\left(#1\right)}
+
+% Polynomial--logarithmic transseries.  These names expose the algebraic
+% operation or coefficient completion; the rendered subscripts keep the four
+% genuinely different classes distinct.  The formal-O token is valuation
+% filtration notation, not an analytic estimate and not, in a Laurent ring, an
+% ideal-quotient congruence.
+\newcommand{\MultiplicativeInverseOf}[1]{#1^{-1}}
+\newcommand{\CompositionalInverseOf}[1]{%
+  #1^{\langle -1\rangle_{\circ}}%
+}
+\newcommand{\FormalBigO}{\mathcal{O}^{\mathrm{form}}}
+\newcommand{\FormalBigOAt}[2]{%
+  \FormalBigO_{#2}\!\left(#1\right)%
+}
+\newcommand{\PolynomialLogPowerSeriesRing}[1]{%
+  \mathscr{PL}_{\mathrm{pow},#1}%
+}
+\newcommand{\PolynomialLogLaurentRing}[1]{%
+  \mathscr{PL}_{\mathrm{poly},#1}%
+}
+\newcommand{\RationalLogLaurentField}[1]{%
+  \mathscr{PL}_{\mathrm{rat},#1}%
+}
+\newcommand{\IteratedLaurentLogField}[1]{%
+  \mathscr{PL}_{\mathrm{itLaur},#1}%
+}
+\newcommand{\NearIdentityPolynomialLogGroup}[1]{%
+  \mathcal{G}_{\mathrm{poly},#1}%
+}

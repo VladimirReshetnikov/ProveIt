@@ -1,5 +1,6 @@
 import FabiusFunction.RenormalizationIdentity
 import FabiusFunction.SincProductShells
+import FabiusFunction.SharpGelfondBound
 import FabiusFunction.BaselineDecay
 
 /-!
@@ -128,5 +129,131 @@ theorem norm_rvachevFourierProduct_le_pow_div {y : ℝ} (hy : y ≠ 0)
           (norm_nonneg _)
         positivity
     _ = 2 ^ (K * (K - 1) / 2) := by ring
+
+/-- **The shell sine numerators are themselves a lacunary Gelfond
+product.**  The `K` factors `|sin(πy/2ᵏ)|`, `k < K`, are the factors
+`|sin(π 2ʲ t)|` at `t = y/2^{K-1}` read backwards, so the sharp two-step
+bound applies to them:
+
+`∏_{k<K} |sin(πy/2ᵏ)| ≤ (2/√3)·(√3/2)^K`
+
+(that is, `(√3/2)^{K−1}` for `K ≥ 1`). -/
+theorem prod_abs_sin_div_two_pow_le (K : ℕ) (y : ℝ) :
+    (∏ k ∈ Finset.range K, |Real.sin (π * y / 2 ^ k)|) ≤
+      2 / Real.sqrt 3 * (Real.sqrt 3 / 2) ^ K := by
+  have hs3 : (0 : ℝ) < Real.sqrt 3 := Real.sqrt_pos.mpr (by norm_num)
+  have hunit : 2 / Real.sqrt 3 * (Real.sqrt 3 / 2) = 1 := by
+    rw [div_mul_div_comm, mul_comm 2 (Real.sqrt 3),
+      div_self (mul_ne_zero hs3.ne' two_ne_zero)]
+  rcases K with _ | m
+  · simp only [Finset.range_zero, Finset.prod_empty, pow_zero, mul_one]
+    rw [le_div_iff₀ hs3, one_mul]
+    exact Real.sqrt_le_iff.mpr ⟨by norm_num, by norm_num⟩
+  · -- reflect the index and recognise the doubling product at `t = y/2^m`
+    have hreflect :
+        (∏ j ∈ Finset.range (m + 1),
+          |Real.sin (π * 2 ^ j * (y / 2 ^ m))|) =
+        ∏ k ∈ Finset.range (m + 1), |Real.sin (π * y / 2 ^ k)| := by
+      have hterm : ∀ j ∈ Finset.range (m + 1),
+          |Real.sin (π * 2 ^ j * (y / 2 ^ m))| =
+          (fun k : ℕ => |Real.sin (π * y / 2 ^ k)|) (m + 1 - 1 - j) := by
+        intro j hj
+        have hjm : j ≤ m := Nat.lt_succ_iff.mp (Finset.mem_range.mp hj)
+        have hsplit : (2 : ℝ) ^ m = 2 ^ (m - j) * 2 ^ j := by
+          rw [← pow_add]
+          congr 1
+          omega
+        have harg : π * 2 ^ j * (y / 2 ^ m) = π * y / 2 ^ (m - j) := by
+          rw [hsplit]
+          field_simp
+          ring
+        simp only [harg, Nat.add_sub_cancel]
+      rw [Finset.prod_congr rfl hterm]
+      exact Finset.prod_range_reflect
+        (fun k : ℕ => |Real.sin (π * y / 2 ^ k)|) (m + 1)
+    rw [← hreflect]
+    refine (abs_prod_sin_two_pow_le_sharp (y / 2 ^ m) m).trans (le_of_eq ?_)
+    rw [pow_succ, mul_comm ((Real.sqrt 3 / 2) ^ m), ← mul_assoc, hunit,
+      one_mul]
+
+/-- **The classical decay corollary with the sharp constant**: keeping the
+sharp Gelfond bound on the sine numerators instead of discarding them
+improves `norm_rvachevFourierProduct_le_pow_div` by the geometric factor
+`(√3/2)^{K−1}`:
+
+`‖Φ(y)‖ ≤ (2/√3)·(√3/2)^K·2^{K(K−1)/2}/(π|y|)^K`. -/
+theorem norm_rvachevFourierProduct_le_pow_div_sharp {y : ℝ} (hy : y ≠ 0)
+    (K : ℕ) :
+    ‖rvachevFourierProduct (y : ℂ)‖ ≤
+      2 / Real.sqrt 3 * (Real.sqrt 3 / 2) ^ K *
+        2 ^ (K * (K - 1) / 2) / (π * |y|) ^ K := by
+  have hpos : (0:ℝ) < (π * |y|) ^ K := by
+    have : (0:ℝ) < π * |y| := mul_pos Real.pi_pos (abs_pos.mpr hy)
+    positivity
+  have hc : (0:ℝ) < 2 ^ (K * (K - 1) / 2) := by positivity
+  have hs3 : (0 : ℝ) < Real.sqrt 3 := Real.sqrt_pos.mpr (by norm_num)
+  have hgeo : (0 : ℝ) ≤ 2 / Real.sqrt 3 * (Real.sqrt 3 / 2) ^ K := by
+    positivity
+  rw [le_div_iff₀ hpos, mul_comm]
+  rw [norm_rvachevFourierProduct_shell_cross K y]
+  have hsin := prod_abs_sin_div_two_pow_le K y
+  have htail : ‖rvachevFourierProduct ((y / 2 ^ K : ℝ) : ℂ)‖ ≤ 1 :=
+    norm_rvachevFourierProduct_le_one _
+  calc (∏ k ∈ Finset.range K, |Real.sin (π * y / 2 ^ k)|) *
+        2 ^ (K * (K - 1) / 2) *
+        ‖rvachevFourierProduct ((y / 2 ^ K : ℝ) : ℂ)‖
+      ≤ (2 / Real.sqrt 3 * (Real.sqrt 3 / 2) ^ K) *
+          2 ^ (K * (K - 1) / 2) * 1 := by
+        apply mul_le_mul (mul_le_mul_of_nonneg_right hsin hc.le) htail
+          (norm_nonneg _)
+        positivity
+    _ = 2 / Real.sqrt 3 * (Real.sqrt 3 / 2) ^ K *
+          2 ^ (K * (K - 1) / 2) := by ring
+
+/-- **The sharp Gelfond constant on every dyadic ray.**  Feeding the sharp
+two-step bound `abs_prod_sin_two_pow_le_sharp` (instead of the logistic
+bound behind `norm_rvachevFourierProduct_two_pow_mul_le`) into the shell
+factorization improves the constant `√(5/3)` to `2/√3`: for every `k` and
+every `y ≠ 0`,
+
+`‖Φ(2ᵏ·y)‖ ≤ (2/√3)·(√3/2)ᵏ / (2^(k(k+1)/2)·(π|y|)ᵏ) · ‖Φ(y)‖`,
+
+i.e. the lacunary numerator is `(√3/2)^(k−1)` for `k ≥ 1` (and `1` for
+`k = 0`).  By `abs_prod_sin_two_pow_third` the rate `(√3/2)ᵏ` is attained
+along the ray `y = 1/3`. -/
+theorem norm_rvachevFourierProduct_two_pow_mul_le_sharp (k : ℕ) (y : ℝ)
+    (hy : y ≠ 0) :
+    ‖rvachevFourierProduct ((2 : ℂ) ^ k * (y : ℂ))‖ ≤
+      2 / Real.sqrt 3 * (Real.sqrt 3 / 2) ^ k /
+          ((2 : ℝ) ^ (k * (k + 1) / 2) * (Real.pi * |y|) ^ k) *
+        ‖rvachevFourierProduct (y : ℂ)‖ := by
+  have hy' : (0 : ℝ) < |y| := abs_pos.mpr hy
+  have hden : (0 : ℝ) < (2 : ℝ) ^ (k * (k + 1) / 2) * (Real.pi * |y|) ^ k := by
+    have hpi : (0 : ℝ) < Real.pi := Real.pi_pos
+    positivity
+  have hs3 : (0 : ℝ) < Real.sqrt 3 := Real.sqrt_pos.mpr (by norm_num)
+  have hs3' : Real.sqrt 3 ≠ 0 := hs3.ne'
+  have hnum : (∏ j ∈ range k, |Real.sin ((2 : ℝ) ^ (j + 1) * Real.pi * y)|) ≤
+      2 / Real.sqrt 3 * (Real.sqrt 3 / 2) ^ k := by
+    rcases k with _ | k
+    · simp only [range_zero, prod_empty, pow_zero, mul_one]
+      rw [le_div_iff₀ hs3, one_mul]
+      exact Real.sqrt_le_iff.mpr ⟨by norm_num, by norm_num⟩
+    · have h := abs_prod_sin_two_pow_le_sharp (2 * y) k
+      have hprod : (∏ j ∈ range (k + 1),
+          |Real.sin ((2 : ℝ) ^ (j + 1) * Real.pi * y)|) =
+          ∏ j ∈ range (k + 1), |Real.sin (Real.pi * 2 ^ j * (2 * y))| :=
+        Finset.prod_congr rfl fun j _ => by
+          rw [show (2 : ℝ) ^ (j + 1) * Real.pi * y =
+            Real.pi * 2 ^ j * (2 * y) from by ring]
+      have hunit : 2 / Real.sqrt 3 * (Real.sqrt 3 / 2) = 1 := by
+        rw [div_mul_div_comm, mul_comm 2 (Real.sqrt 3),
+          div_self (mul_ne_zero hs3' two_ne_zero)]
+      rw [hprod]
+      refine h.trans (le_of_eq ?_)
+      rw [pow_succ, mul_comm ((Real.sqrt 3 / 2) ^ k), ← mul_assoc, hunit,
+        one_mul]
+  rw [norm_rvachevFourierProduct_two_pow_mul k y hy]
+  gcongr
 
 end Fabius

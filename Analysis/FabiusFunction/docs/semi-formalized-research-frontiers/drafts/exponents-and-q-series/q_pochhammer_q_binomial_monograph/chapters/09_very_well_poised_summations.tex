@@ -1,0 +1,476 @@
+\chapter{Euler telescoping and very-well-poised summations}
+\label{chap:very-well-poised}
+
+The summations in this chapter are finite.  Their natural first home is
+therefore a rational-function field, where no convergence hypothesis is
+needed and every nonzero auxiliary rational function may legitimately be
+cancelled.  Only after the rational identity has been proved do we specialize
+the parameters to complex numbers.  This order matters: normalizing a sum by
+its conjectured product can introduce auxiliary denominators whose zeros are
+not poles of the original identity.
+
+The main result is Jackson's terminating balanced very-well-poised
+${}_8\phi_7$ summation.  Its proof has two elementary layers.  A six-variable
+rational transformation supplies the algebraic certificate, and Euler's
+product-difference lemma turns that certificate into a finite telescoping
+sum.  The terminal ${}_6\phi_5$ identity is then an honest finite limit.
+
+\section{Euler's product-difference telescope}
+\label{qg:sec:euler-telescope}
+
+\begin{lemma}[Euler's telescoping lemma]
+\label{qg:lem-euler-telescope}
+Let $K$ be a field and let $N\in\NaturalNumbers$.  Choose
+$u_0,\ldots,u_N\in K$ and $v_0,\ldots,v_N\in K$.  Put $w_k=u_k-v_k$ and assume
+$w_0v_1\cdots v_N\ne0$.  Then
+\begin{equation}
+\label{qg:eq:euler-telescoping}
+ \sum_{k=0}^{N}
+ \frac{w_k}{w_0}
+ \frac{u_0u_1\cdots u_{k-1}}{v_1v_2\cdots v_k}
+ =\frac1{w_0}
+ \left(
+  \frac{u_0u_1\cdots u_N}{v_1v_2\cdots v_N}-v_0
+ \right),
+\end{equation}
+where empty products are $1$.
+\end{lemma}
+
+\begin{proof}
+For $k\ge1$ the $k$th summand is
+\[
+ \frac1{w_0}
+ \left(
+  \frac{u_0u_1\cdots u_k}{v_1v_2\cdots v_k}
+  -\frac{u_0u_1\cdots u_{k-1}}{v_1v_2\cdots v_{k-1}}
+ \right),
+\]
+because $w_k=u_k-v_k$.  The $k=0$ summand is
+$(u_0-v_0)/w_0$.  Adding the $N+1$ differences cancels every intermediate
+product and leaves exactly the right-hand side of
+\eqref{qg:eq:euler-telescoping}.
+\end{proof}
+
+The application below has $u_N=v_0=0$, so the right-hand side vanishes.  The
+advantage of \Cref{qg:lem-euler-telescope} is that the telescoping
+antiderivative is encoded by the two product sequences; it need not be guessed
+term by term.
+
+\section{Jackson's rational certificate}
+\label{qg:sec:jackson-certificate}
+
+\begin{lemma}[Jackson's six-variable rational certificate]
+\label{qg:lem-jackson-rational-certificate}
+In the rational-function field
+\[
+ \RationalNumbers(A,B,C,D,E,F)
+\]
+one has
+\begingroup
+\scriptsize
+\begin{align}
+&1-
+ \frac{(1-B)(1-C)(1-D)(1-E)(1-F)(1-A^3/(BCDEF))}
+ {(1-A/B)(1-A/C)(1-A/D)(1-A/E)(1-A/F)(1-BCDEF/A^2)}
+ \notag\\
+&=\frac{(1-A)(1-D)(1-A^2/(BCDE))(1-A^2/(BCDF))
+ (1-A^2/(BDEF))(1-A^2/(CDEF))}
+ {(1-A/B)(1-A/C)(1-A/E)(1-A/F)
+ (1-A^2/(BCDEF))(1-A^3/(BCD^2EF))}
+ \notag\\
+&\quad\times\left[
+ 1-
+ \frac{(1-A/(BD))(1-A/(CD))(1-A/(DE))(1-A/(DF))
+ (1-A^2/(BCDEF))(1-A^3/(BCDEF))}
+ {(1-1/D)(1-A/D)(1-A^2/(BCDE))(1-A^2/(BCDF))
+ (1-A^2/(BDEF))(1-A^2/(CDEF))}
+ \right].
+\label{qg:eq:jackson-rational}
+\end{align}
+\endgroup
+Consequently the identity holds after every specialization to a field for
+which all rational expressions displayed in
+\eqref{qg:eq:jackson-rational} are defined.
+\end{lemma}
+
+\begin{proof}
+For a finite list set
+\[
+ \Pi(x_1,\ldots,x_r):=\prod_{i=1}^{r}(1-x_i),
+\]
+and abbreviate the left-hand side of
+\eqref{qg:eq:jackson-rational} by
+\begin{align*}
+J(A;B,C,D,E,F)
+:={}&1-
+\frac{\Pi(B,C,D,E,F,A^3/(BCDEF))}
+{\Pi(A/B,A/C,A/D,A/E,A/F,BCDEF/A^2)}.
+\end{align*}
+Define also
+\begin{align*}
+\JacksonPrefactor(A;B,C,D,E,F)
+:={}&
+\frac{\Pi(A,A/(EF),A^2/(BCDE),A^2/(BCDF))}
+{\Pi(A/E,A/F,A^2/(BCD),A^2/(BCDEF))}
+\end{align*}
+and the rational substitution
+\begin{equation}
+\label{qg:eq:jackson-seed-substitution}
+\sigma(A;B,C,D,E,F)
+:=\left(
+ \frac{A^2}{BCD};
+ E,F,\frac{A}{BC},\frac{A}{CD},\frac{A}{BD}
+\right).
+\end{equation}
+We first prove the seed transformation
+\begin{equation}
+\label{qg:eq:jackson-seed}
+ J(A;B,C,D,E,F)
+ =\JacksonPrefactor(A;B,C,D,E,F)\,
+  J\bigl(\sigma(A;B,C,D,E,F)\bigr).
+\end{equation}
+
+Let $D_0,N_0$ be respectively the denominator and numerator products in the
+definition of $J$:
+\begin{align*}
+D_0&=\Pi(A/B,A/C,A/D,A/E,A/F,BCDEF/A^2),\\
+N_0&=\Pi(B,C,D,E,F,A^3/(BCDEF)).
+\end{align*}
+After the substitution \eqref{qg:eq:jackson-seed-substitution}, the analogous
+products, before common factors are cancelled, may be written
+\begin{align*}
+D_1&=\Pi(A/B,A/C,A/D,A^2/(BCDE),A^2/(BCDF),EF/A),\\
+N_1&=\Pi(A/(BC),A/(BD),A/(CD),E,F,A^3/(BCDEF)).
+\end{align*}
+Put $\Delta_i=D_i-N_i$.  We claim
+\begin{equation}
+\label{qg:eq:jackson-delta-transform}
+ \Delta_0=\lambda\Delta_1,
+ \qquad
+ \lambda:=\frac{B^2C^2D^2(A-1)}{A(A^2-BCD)}.
+\end{equation}
+
+This claim has a short coefficient proof.  Put $L=A^3/(BCDE)$ and regard
+$\Delta_0,\Delta_1$ as Laurent polynomials in $F$.  Directly pairing the
+constant and reciprocal factors shows that each has the form
+\[
+ \Delta_i=r_iF+s_i+\frac{Lr_i}{F}.
+\]
+Introduce the two four-term polynomials
+\begin{align*}
+U&:=A^2-A(B+C+D)+A+BCD,\\
+V&:=A^2+ABCD-A(BC+BD+CD)+BCD.
+\end{align*}
+Expanding only in the affine variable $E$ gives
+\begin{align*}
+r_0&=\frac{A-1}{A^2}\,(-AU+EV),\\
+r_1&=\frac{A^2-BCD}{AB^2C^2D^2}\,(-AU+EV).
+\end{align*}
+Hence $r_0=\lambda r_1$.
+
+It remains to compare the constant coefficients.  At $F=1$ both $N_0$ and
+$N_1$ vanish, and cancelling their common factors gives
+\begin{align*}
+\frac{\Delta_0(1)}{\Delta_1(1)}
+&=\frac{(1-A/E)(1-A)(1-BCDE/A^2)}
+{(1-A^2/(BCDE))(1-A^2/(BCD))(1-E/A)}\\
+&=\frac{B^2C^2D^2(A-1)}{A(A^2-BCD)}
+=\lambda.
+\end{align*}
+The coefficients of $F$ and $F^{-1}$ already have ratio $\lambda$, so the
+equality at $F=1$ forces $s_0=\lambda s_1$.  This proves
+\eqref{qg:eq:jackson-delta-transform}.  A second direct cancellation gives
+\[
+ \JacksonPrefactor(A;B,C,D,E,F)\frac{D_0}{D_1}=\lambda.
+\]
+Since $J=\Delta_0/D_0$ and
+$J\circ\sigma=\Delta_1/D_1$, the seed transformation
+\eqref{qg:eq:jackson-seed} follows.
+
+Apply the seed transformation twice.  Its second iterate is
+\begin{equation}
+\label{qg:eq:jackson-second-iterate}
+\sigma^2(A;B,C,D,E,F)
+=\left(
+ \frac{A^3}{BCD^2EF};
+ \frac{A}{CD},\frac{A}{BD},\frac{A^2}{BCDEF},
+ \frac{A}{DF},\frac{A}{DE}
+\right).
+\end{equation}
+Substitution and cancellation in the two prefactors gives
+\begin{align*}
+&\JacksonPrefactor(A;B,C,D,E,F)\,
+ \JacksonPrefactor\bigl(\sigma(A;B,C,D,E,F)\bigr)\\
+&\quad=
+\frac{\Pi(A,D,A^2/(BCDE),A^2/(BCDF),
+ A^2/(BDEF),A^2/(CDEF))}
+{\Pi(A/B,A/C,A/E,A/F,A^2/(BCDEF),A^3/(BCD^2EF))}.
+\end{align*}
+Likewise \eqref{qg:eq:jackson-second-iterate} gives
+\begin{align*}
+J(\sigma^2)
+={}&1-
+ \frac{(1-A/(BD))(1-A/(CD))(1-A/(DE))(1-A/(DF))}
+ {(1-1/D)(1-A/D)(1-A^2/(BCDE))(1-A^2/(BCDF))}\\
+&\qquad\times
+ \frac{(1-A^2/(BCDEF))(1-A^3/(BCDEF))}
+ {(1-A^2/(BDEF))(1-A^2/(CDEF))}.
+\end{align*}
+Thus
+$J=\JacksonPrefactor\,(\JacksonPrefactor\circ\sigma)\,(J\circ\sigma^2)$
+is precisely
+\eqref{qg:eq:jackson-rational}.  Every step took place in the rational-function
+field, so the final specialization assertion follows by applying a field
+homomorphism wherever the displayed denominators remain nonzero.
+\end{proof}
+
+\section{Jackson's terminating \texorpdfstring{${}_8\phi_7$}{8phi7} sum}
+\label{qg:sec:jackson-8phi7}
+
+\begin{theorem}[Jackson's terminating very-well-poised ${}_8\phi_7$ sum]
+\label{qg:thm-jackson-8phi7}
+For $N\in\NaturalNumbers$, the following is an identity in
+$\RationalNumbers(q,a,b,c,d)$:
+\begin{align}
+&\sum_{k=0}^{N}
+ \frac{1-aq^{2k}}{1-a}
+ \frac{(a,b,c,d,a^2q^{N+1}/(bcd),q^{-N};q)_k}
+ {(q,aq/b,aq/c,aq/d,bcdq^{-N}/a,aq^{N+1};q)_k}q^k
+ \notag\\
+&\qquad=
+ \frac{(aq,aq/(bc),aq/(bd),aq/(cd);q)_N}
+ {(aq/b,aq/c,aq/d,aq/(bcd);q)_N}.
+\label{qg:eq:jackson-8phi7}
+\end{align}
+Consequently \eqref{qg:eq:jackson-8phi7} holds for
+$q,a,b,c,d\in\ComplexNumbers^\times$ whenever
+\[
+ (1-a)
+ (q,aq/b,aq/c,aq/d,bcdq^{-N}/a,aq^{N+1},aq/(bcd);q)_N
+ \ne0.
+\]
+Equivalently, it holds at every nonzero complex specialization at which the
+terms in the displayed identity are defined.
+\end{theorem}
+
+\begin{proof}
+Work first in the field $K=\RationalNumbers(q,a,b,c,d)$.  Let
+$\JacksonNormalizedSummand{n}{k}$ be the
+$k$th summand divided by the product on the right-hand side of
+\eqref{qg:eq:jackson-8phi7}; explicitly,
+\begin{align*}
+\JacksonNormalizedSummand{n}{k}&=
+ \frac{(aq/b,aq/c,aq/d,aq/(bcd);q)_n}
+ {(aq,aq/(bc),aq/(bd),aq/(cd);q)_n}
+ \frac{1-aq^{2k}}{1-a}q^k\\
+&\quad\times
+ \frac{(a,b,c,d,a^2q^{n+1}/(bcd),q^{-n};q)_k}
+ {(q,aq/b,aq/c,aq/d,bcdq^{-n}/a,aq^{n+1};q)_k}.
+\end{align*}
+Set $\JacksonNormalizedSummand{n}{k}=0$ outside $0\le k\le n$.  Define
+\begin{align*}
+u_k={}&(1-aq^k)(1-bq^k)(1-cq^k)(1-dq^k)
+ \left(1-\frac{a^2q^{n+k+1}}{bcd}\right)
+ (1-q^{-n-1+k}),\\
+v_k={}&\left(1-\frac{aq^k}{b}\right)
+ \left(1-\frac{aq^k}{c}\right)
+ \left(1-\frac{aq^k}{d}\right)
+ \left(1-\frac{bcdq^{-n+k-1}}a\right)\\
+&\times(1-aq^{n+k+1})(1-q^k),
+\qquad
+w_k:=u_k-v_k.
+\end{align*}
+Then $u_{n+1}=0$, $v_0=0$, and
+\begin{equation}
+\label{qg:eq:jackson-w0}
+w_0=(1-a)(1-b)(1-c)(1-d)
+ \left(1-\frac{a^2q^{n+1}}{bcd}\right)(1-q^{-n-1}).
+\end{equation}
+
+Apply \Cref{qg:lem-jackson-rational-certificate} with
+\begin{equation}
+\label{qg:eq:jackson-certificate-substitution}
+A=aq^{2k},\quad B=\frac{aq^k}{b},\quad
+C=\frac{aq^k}{c},\quad D=aq^{n+k+1},\quad
+E=\frac{aq^k}{d},\quad F=q^k.
+\end{equation}
+The fraction subtracted from $1$ on the certificate's left-hand side becomes
+$v_k/u_k$.  Cancelling the monomials on its right-hand side yields
+\begin{equation}
+\label{qg:eq:jackson-w}
+w_k=bcd\,
+ \frac{1-aq^{2k}}{1-a^2q^{2n+2}/(bcd)}
+ \frac{q^k}{aq^{n+1}}\,\mathcal B_{n,k},
+\end{equation}
+where
+\begin{align}
+\mathcal B_{n,k}={}&
+ (1-q^{-n-1})(1-aq^{n+1}/b)(1-aq^{n+1}/c)(1-aq^{n+1}/d)
+ \notag\\
+&\times(1-bcdq^{-n+k-1}/a)(1-a^2q^{n+k+1}/(bcd))
+ \frac{aq^{n+1}}{bcd}
+ \notag\\
+&+(1-q^{-n+k-1})(1-aq^{n+k+1})
+ (1-aq^{n+1}/(bc))(1-aq^{n+1}/(bd))
+ \notag\\
+&\times(1-aq^{n+1}/(cd))(1-a^2q^{n+1}/(bcd)).
+\label{qg:eq:jackson-B}
+\end{align}
+The leading factor $bcd$ in \eqref{qg:eq:jackson-w} is essential.
+
+We next verify the finite-difference certificate without an unprinted
+multivariate expansion.  Put
+\begin{align*}
+\mathcal C_{n,k}:={}&-
+ \frac{1-aq^{2k}}{1-a}q^k
+ \frac{(a,b,c,d;q)_k}{(q,aq/b,aq/c,aq/d;q)_k}
+ \frac{(aq/b,aq/c,aq/d,aq/(bcd);q)_n}
+ {(aq,aq/(bc),aq/(bd),aq/(cd);q)_{n+1}}\\
+&\times
+ \frac{(q^{-n-1},a^2q^{n+1}/(bcd);q)_k}
+ {(1-q^{-n-1})(1-a^2q^{n+1}/(bcd))
+  (bcdq^{-n}/a,aq^{n+2};q)_k}.
+\end{align*}
+We claim that
+\begin{equation}
+\label{qg:eq:jackson-direct-difference}
+ \JacksonNormalizedSummand{n+1}{k}-\JacksonNormalizedSummand{n}{k}
+ =\mathcal C_{n,k}\mathcal B_{n,k}
+ \qquad(0\le k\le n+1).
+\end{equation}
+For $0\le k\le n$, repeated use of
+\[
+ \frac{(xq;q)_k}{(x;q)_k}=\frac{1-xq^k}{1-x}
+\]
+gives
+\begin{align*}
+\frac{\JacksonNormalizedSummand{n+1}{k}}
+     {\JacksonNormalizedSummand{n}{k}}-1
+={}&-\frac{\mathcal B_{n,k}}
+{(1-q^{-n+k-1})(1-aq^{n+1}/(bc))(1-aq^{n+1}/(bd))}\\
+&\quad\times
+\frac1{(1-aq^{n+1}/(cd))(1-a^2q^{n+1}/(bcd))
+(1-aq^{n+k+1})}.
+\end{align*}
+Multiplying by the displayed formula for $\JacksonNormalizedSummand{n}{k}$
+and cancelling one initial
+and one terminal factor in each shifted factorial gives
+\eqref{qg:eq:jackson-direct-difference}.  For $k=n+1$ one has
+$(q^{-n};q)_{n+1}=0$, so $\JacksonNormalizedSummand{n}{n+1}=0$; the second summand of
+\(\mathcal B_{n,n+1}\) also vanishes, and direct cancellation in the first
+summand gives the same formula.
+
+On the other hand,
+\begin{equation}
+\label{qg:eq:jackson-product-quotient}
+ \frac{u_0u_1\cdots u_{k-1}}{v_1v_2\cdots v_k}
+ =\frac{(a,b,c,d,a^2q^{n+1}/(bcd),q^{-n-1};q)_k}
+ {(aq/b,aq/c,aq/d,bcdq^{-n}/a,aq^{n+2},q;q)_k}.
+\end{equation}
+Define
+\begin{align*}
+D_n={}&
+ \frac{(aq/b,aq/c,aq/d,aq/(bcd);q)_n}
+ {(aq,aq/(bc),aq/(bd),aq/(cd);q)_{n+1}}\\
+&\times\left[-\frac{aq^{n+1}}{bcd}(1-b)(1-c)(1-d)
+ \left(1-\frac{a^2q^{2n+2}}{bcd}\right)\right].
+\end{align*}
+The factor $bcd$ in the denominator of $D_n$ is essential.  Substituting
+\eqref{qg:eq:jackson-w0}, \eqref{qg:eq:jackson-w}, and
+\eqref{qg:eq:jackson-product-quotient}, and cancelling the common factors,
+gives
+\[
+ D_n\frac{w_k}{w_0}
+ \frac{u_0u_1\cdots u_{k-1}}{v_1v_2\cdots v_k}
+ =\mathcal C_{n,k}\mathcal B_{n,k}.
+\]
+Together with \eqref{qg:eq:jackson-direct-difference}, this proves the exact
+finite-difference certificate
+\begin{equation}
+\label{qg:eq:jackson-finite-difference}
+ \JacksonNormalizedSummand{n+1}{k}-\JacksonNormalizedSummand{n}{k}
+ =D_n\frac{w_k}{w_0}
+ \frac{u_0u_1\cdots u_{k-1}}{v_1v_2\cdots v_k}.
+\end{equation}
+
+Use \Cref{qg:lem-euler-telescope} with upper index $n+1$.  Since
+$u_{n+1}=v_0=0$, its right-hand side is zero.  Summing
+\eqref{qg:eq:jackson-finite-difference} over $0\le k\le n+1$ therefore gives
+\[
+ \sum_k\JacksonNormalizedSummand{n+1}{k}
+ =\sum_k\JacksonNormalizedSummand{n}{k}.
+\]
+At $n=0$ only $k=0$ occurs and
+$\JacksonNormalizedSummand{0}{0}=1$.  Hence the normalized sum is $1$
+for every $n$, which is exactly \eqref{qg:eq:jackson-8phi7} in $K$.
+
+Finally, clear only the denominators occurring in the original identity.
+Equality in $K$ then specializes at every complex tuple satisfying the
+hypotheses of the theorem, even when an auxiliary normalization factor used
+inside the proof vanishes.
+\end{proof}
+
+\begin{remark}[The removable value $a=1$]
+\label{qg:rem:jackson-a-one}
+The statement above excludes $a=1$ because the very-well-poised factor is
+displayed as a quotient.  The singularity is removable.  For $k\ge1$,
+\[
+ \frac{1-aq^{2k}}{1-a}(a;q)_k
+ =(1-aq^{2k})(aq;q)_{k-1},
+\]
+whose value at $a=1$ is $(1-q^{2k})(q;q)_{k-1}$; for $k=0$ the combined
+factor is $1$.  Thus \eqref{qg:eq:jackson-8phi7} extends to $a=1$ whenever
+the remaining displayed denominators are nonzero.
+\end{remark}
+
+\section{The terminating \texorpdfstring{${}_6\phi_5$}{6phi5} limit}
+\label{qg:sec:terminating-6phi5}
+
+\begin{corollary}[Terminating very-well-poised ${}_6\phi_5$]
+\label{qg:cor-jackson-6phi5}
+For $N\in\NaturalNumbers$, the identity
+\begin{align}
+&\sum_{k=0}^{N}
+ \frac{1-aq^{2k}}{1-a}
+ \frac{(a,b,c,q^{-N};q)_k}
+ {(q,aq/b,aq/c,aq^{N+1};q)_k}
+ \left(\frac{aq^{N+1}}{bc}\right)^k
+ \notag\\
+&\qquad=
+ \frac{(aq,aq/(bc);q)_N}{(aq/b,aq/c;q)_N}
+\label{qg:eq:terminating-6phi5}
+\end{align}
+holds in $\RationalNumbers(q,a,b,c)$.  Consequently it holds for
+$q,a,b,c\in\ComplexNumbers^\times$ whenever
+\[
+ (1-a)(q,aq/b,aq/c,aq^{N+1};q)_N\ne0.
+\]
+It also has the removable $a=1$ extension described in
+\Cref{qg:rem:jackson-a-one}.
+\end{corollary}
+
+\begin{proof}
+In \eqref{qg:eq:jackson-8phi7}, regard $x=d^{-1}$ as an indeterminate over
+$\RationalNumbers(q,a,b,c)$ and take the value at $x=0$ after cancelling the
+common leading powers of $d$.  For each fixed $k$,
+\begin{align*}
+(d;q)_k
+ &=(-d)^kq^{\binom{k}{2}}\bigl(1+O(d^{-1})\bigr),\\
+(bcdq^{-N}/a;q)_k
+ &=\left(-\frac{bcdq^{-N}}a\right)^k
+ q^{\binom{k}{2}}\bigl(1+O(d^{-1})\bigr).
+\end{align*}
+Therefore
+\[
+ q^k\frac{(d;q)_k}{(bcdq^{-N}/a;q)_k}
+ \longrightarrow
+ \left(\frac{aq^{N+1}}{bc}\right)^k.
+\]
+The factors with arguments $a^2q^{N+1}/(bcd)$ and $aq/d$ tend to $1$.
+On the product side the four factors involving $d$ likewise tend to $1$,
+leaving the quotient in \eqref{qg:eq:terminating-6phi5}.  The sum has only
+$N+1$ terms, so taking this coefficientwise rational limit is legitimate and
+proves the identity in $\RationalNumbers(q,a,b,c)$.  The specialization and
+removable-value statements follow exactly as in
+\Cref{qg:thm-jackson-8phi7,qg:rem:jackson-a-one}.
+\end{proof}

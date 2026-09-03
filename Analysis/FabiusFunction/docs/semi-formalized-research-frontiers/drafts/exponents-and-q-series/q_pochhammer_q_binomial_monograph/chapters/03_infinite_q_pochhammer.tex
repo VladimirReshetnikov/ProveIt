@@ -1,0 +1,1212 @@
+\chapter{Infinite \texorpdfstring{\(q\)}{q}-Pochhammer inverse geometry}
+\label{chap:infinite-q-pochhammer-inversion}
+
+\section{The infinite product: analytic domain and certified tails}
+\label{sec:ip-normal-convergence}
+\label{sec:infinite-normal-convergence}
+
+For \(|q|<1\), put
+\[
+ P(a,q):=(a;q)_\infty=\prod_{j=0}^{\infty}(1-aq^j).
+\]
+The domain condition is part of the definition.  Values on \(|q|=1\), radial
+limits toward that boundary, and exterior reciprocal normalizations are
+different objects and will be treated separately.
+
+\begin{theorem}[Normal convergence, zeros, and derivative kernels]
+\label{thm:ip-normal-convergence}
+Let \(0<\rho<1\) and \(R>0\).  Uniformly for \(|q|\leq\rho\), \(|a|\leq R\),
+and \(N\geq0\),
+\begin{equation}
+ \left|\prod_{j=N}^{\infty}(1-aq^j)-1\right|
+ \leq \exp\left(\frac{R\rho^N}{1-\rho}\right)-1.
+ \label{eq:ip-product-tail}
+\end{equation}
+If \(R\rho^N<1\), the logarithm obtained by continuation from \(a=0\)
+satisfies
+\begin{equation}
+ \left|\sum_{j=N}^{\infty}\log(1-aq^j)\right|
+ \leq
+ \frac{R\rho^N}{(1-\rho)(1-R\rho^N)}.
+ \label{eq:ip-log-tail}
+\end{equation}
+Consequently \(P\) is holomorphic on
+\(\{(a,q)\in\ComplexNumbers^2:|q|<1\}\), and is entire in \(a\) for fixed \(q\).
+For \(0<|q|<1\), its zeros as a function of \(a\) are exactly
+\(a=q^{-m}\), \(m\geq0\), and they are simple.  Away from those zeros,
+\begin{align}
+ \partial_a\log P(a,q)
+  &=-\sum_{j\geq0}\frac{q^j}{1-aq^j},
+  \label{eq:ip-a-logder}\\
+ \partial_a^2\log P(a,q)
+  &=-\sum_{j\geq0}\frac{q^{2j}}{(1-aq^j)^2},
+  \label{eq:ip-a-logsecond}\\
+ \partial_q\log P(a,q)
+  &=-a\sum_{j\geq1}\frac{j q^{j-1}}{1-aq^j}.
+  \label{eq:ip-q-logder}
+\end{align}
+All three series converge locally uniformly on the indicated zero-free set.
+\end{theorem}
+
+\begin{proof}
+Put \(u_j=-aq^j\).  Expanding finite products and applying the triangle
+inequality gives
+\[
+ \left|\prod_{j=N}^{M}(1+u_j)-1\right|
+ \leq\prod_{j=N}^{M}(1+|u_j|)-1
+ \leq\exp\left(\sum_{j=N}^{M}|u_j|\right)-1.
+\]
+Since \(\sum_{j\geq N}|u_j|\leq R\rho^N/(1-\rho)\), the finite tails form a
+uniformly Cauchy family and their limit obeys \cref{eq:ip-product-tail}.  If
+\(R\rho^N<1\), then
+\[
+ |\log(1-z)|\leq\sum_{k\geq1}\frac{|z|^k}{k}
+ \leq\frac{|z|}{1-|z|}
+\]
+for \(|z|<1\).  With \(|aq^j|\leq R\rho^N\rho^{j-N}\), summation proves
+\cref{eq:ip-log-tail}.
+
+Locally uniform limits of the finite holomorphic products are holomorphic.
+If no factor vanishes, choose \(N\) so that \(|aq^j|<1/2\) for \(j\geq N\).
+The tail is the exponential of an absolutely convergent logarithmic sum and
+is therefore nonzero; hence the only zeros are the factor zeros.  At
+\(a=q^{-m}\), exactly one factor vanishes, so the zero is simple.  On a compact
+zero-free set, the denominators are separated from zero for the finite head,
+while the tails in \cref{eq:ip-a-logder,eq:ip-a-logsecond,eq:ip-q-logder} are
+bounded by convergent geometric series with at most a polynomial factor in
+\(j\).  Normal convergence therefore permits termwise differentiation and
+proves all three identities.
+\end{proof}
+
+\paragraph{Exact fixed-nome Lean subclaims and their boundary.}
+The generic formal object is \lean{Fabius.qPochhammerInfIn}, the total
+\texttt{tprod} in an arbitrary topological commutative ring, with defining
+theorem \lean{Fabius.qPochhammerInfIn_eq_tprod}.  In a normed ring with
+\(\lVert1\rVert=1\), the elementary lemmas are
+\lean{Fabius.summable_norm_mul_pow},
+\lean{Fabius.one_sub_ne_zero_of_norm_lt_one}, and
+\lean{Fabius.norm_mul_pow_self_lt_one}; the finite self-product result
+\lean{Fabius.finiteQPochhammerIn_self_ne_zero} additionally uses a
+commutative ring with no zero divisors.
+
+For \(\lVert q\rVert<1\) in a complete normed commutative ring with
+\(\lVert1\rVert=1\), the seven exact convergence and factorization theorems
+are
+\lean{Fabius.multipliable_one_sub_mul_pow_of_norm_lt_one},
+\lean{Fabius.hasProd_qPochhammerInfIn},
+\lean{Fabius.tendsto_finiteQPochhammerIn_qPochhammerInfIn},
+\lean{Fabius.qPochhammerInfIn_eq_finite_mul_shift},
+\lean{Fabius.qPochhammerInfIn_succ_shift},
+\lean{Fabius.qPochhammerInfIn_eq_factor_mul}, and
+\lean{Fabius.qPochhammerInfIn_dissection}; only the last also assumes
+\(0<r\).  With a multiplicative norm, the exact zero block is
+\lean{Fabius.qPochhammerInfIn_ne_zero},
+\lean{Fabius.qPochhammerInfIn_eq_zero_iff}, and
+\lean{Fabius.qPochhammerInfIn_self_ne_zero}.  The middle theorem is the raw
+factor equation \(aq^j=1\), so it includes \(q=0\).
+
+The unconditional normed-field support theorems are
+\lean{Fabius.qPochhammerInfIn_eq_tprod_smul} and
+\lean{Fabius.isBigO_one_sub_sub_one};
+\lean{Fabius.summable_norm_pow_of_norm_lt_one} additionally assumes
+\(\lVert q\rVert<1\), while
+\lean{Fabius.differentiable_finiteQPochhammerIn} needs only a nontrivially
+normed field.  In a complete normed field, \(\lVert q\rVert<1\) and
+\(q\ne0\) give the reciprocal
+zero enumeration
+\lean{Fabius.qPochhammerInfIn_eq_zero_iff_exists_inv_pow}; the same strict
+contraction together with local compactness is assumed by
+\lean{Fabius.hasProdLocallyUniformly_qPochhammerInfIn} and
+\lean{Fabius.continuous_qPochhammerInfIn}.  The finite cofactor identity
+\lean{Fabius.pow_sq_mul_finiteQPochhammerIn_inv_pow_self} is algebraic over a
+field with \(q\ne0\).
+
+Over \(\ComplexNumbers\), the final six theorems are
+\lean{Fabius.differentiable_qPochhammerInfIn},
+\lean{Fabius.hasDerivAt_qPochhammerInfIn_of_mul_pow_eq_one},
+\lean{Fabius.hasDerivAt_qPochhammerInfIn_inv_pow},
+\lean{Fabius.deriv_qPochhammerInfIn_inv_pow_ne_zero},
+\lean{Fabius.deriv_qPochhammerInfIn_ne_zero_of_mul_pow_eq_one}, and
+\lean{Fabius.analyticOrderAt_qPochhammerInfIn_of_eq_zero}.  The raw derivative
+theorem assumes \(a_0q^j=1\) and permits \(q=0,j=0\); the reciprocal-power
+formula and its nonvanishing theorem assume \(q\ne0\) and give exactly
+\cref{eq:ip-zero-derivative}.  The inverse-power nonvanishing theorem literally
+proves the displayed coefficient nonzero, while the preceding \texttt{HasDerivAt}
+theorem identifies that coefficient with the derivative.  The first new
+theorem strengthens this to actual derivative nonvanishing directly from the
+division-free raw factor equation \(aq^j=1\), including \(q=0\).  The second
+states that every zero of \(a\mapsto(a;q)_\infty\) has analytic order exactly
+one for every strict complex contraction, again including \(q=0\).
+
+The finite parent module \path{QPochhammerDissection.lean} has no public
+definition and exactly the two commutative-ring theorems
+\lean{Fabius.finiteQPochhammerIn_dissection} and
+\lean{Fabius.finiteQPochhammerIn_dissection_remainder}.  They require no
+condition on \(q\); the first is total in natural \(r,n\), and the second
+assumes exactly \(u\le r\), including \(u=r\).  The positive-modulus
+infinite identity listed above is the limit-level companion.
+
+The infinite declarations listed above exhaust the one definition and
+twenty-nine theorems of
+\path{QPochhammerInfinite.lean}.  They formalize the fixed-\(q\) convergence,
+entireness, zero, finite-shift, residue-dissection, and zero-derivative
+subclaims used in this chapter.  They do \emph{not} formalize the
+uniform-in-\(q\) numerical tail bounds
+\cref{eq:ip-product-tail,eq:ip-log-tail}, joint holomorphy in \((a,q)\), or the
+three logarithmic-derivative series
+\cref{eq:ip-a-logder,eq:ip-a-logsecond,eq:ip-q-logder}; consequently the
+compound \Cref{thm:ip-normal-convergence} remains a human-proved frontier
+result.  The generic module now states analytic order one directly through
+\lean{Fabius.analyticOrderAt_qPochhammerInfIn_of_eq_zero}.  The unchanged
+\lean{Fabius.analyticOrderAt_complexQPochhammerInf_of_eq_zero} and the other
+three declarations in \path{QPochhammerEntire.lean} are legacy compatibility
+wrappers for the older \lean{Fabius.complexQPochhammerInf} names; they transfer
+the generic results rather than duplicating their analytic proofs.
+
+\begin{lemma}[Lambert logarithm]
+\label{lem:ip-lambert-log}
+For \(|a|<1\) and \(|q|<1\),
+\begin{equation}
+ \log(a;q)_\infty
+ =-\sum_{m\geq1}\frac{a^m}{m(1-q^m)},
+ \label{eq:ip-lambert-log}
+\end{equation}
+where the logarithm is the branch equal to zero at \(a=0\).  The double
+series used in its derivation is absolutely and locally uniformly convergent.
+\end{lemma}
+
+\begin{proof}
+For each factor,
+\(\log(1-aq^j)=-\sum_{m\geq1}a^mq^{jm}/m\).  On compact subdiscs
+\(|a|\leq\alpha<1\), \(|q|\leq\rho<1\),
+\[
+ \sum_{j\geq0}\sum_{m\geq1}\frac{|a|^m|q|^{jm}}m
+ \leq\sum_{m\geq1}\frac{\alpha^m}{m(1-\rho^m)}
+ \leq\frac{-\log(1-\alpha)}{1-\rho}<\infty.
+\]
+Thus Fubini's theorem applies, and summing
+\(\sum_{j\geq0}q^{jm}=(1-q^m)^{-1}\) gives
+\cref{eq:ip-lambert-log}.
+\end{proof}
+
+\section{Argument inversion and the complete real sheet atlas}
+\label{sec:ip-argument-atlas}
+
+\begin{theorem}[Principal inverse, all gaps, and exact zero normalization]
+\label{thm:ip-real-atlas}
+Fix \(0<q<1\), write \(P_q(a)=(a;q)_\infty\), and put
+\(r_m=q^{-m}\).
+\begin{enumerate}
+\item \(P_q\) is positive and strictly decreasing from \(+\infty\) to \(0\)
+  on \((-\infty,1)\).  It therefore has a unique real-analytic inverse
+  \(\mathcal A_q:(0,\infty)\to(-\infty,1)\).
+\item Every \(r_m\) is a simple zero, with
+  \begin{equation}
+   d_m:=P_q'(r_m)=(-1)^{m+1}q^{-m(m-1)/2}
+   (q;q)_m(q;q)_\infty.
+   \label{eq:ip-zero-derivative}
+  \end{equation}
+  Hence its inverse germ is \(a_m(y)=r_m+y/d_m+\BigO(y^2)\).
+\item On the gap \(I_m=(r_m,r_{m+1})\), the sign of \(P_q\) is
+  \(\sigma_m=(-1)^{m+1}\).  There is exactly one critical point
+  \(c_m\in I_m\), and \(P_q''(c_m)\ne0\).  If
+  \(M_m=|P_q(c_m)|\), then \(I_m\) contains two roots of \(P_q(a)=y\)
+  when \(0<\sigma_my<M_m\), one double root when
+  \(\sigma_my=M_m\), and no root when
+  \(\sigma_my<0\) or \(\sigma_my>M_m\).  At \(y=0\), its two endpoint
+  roots are \(r_m,r_{m+1}\).
+\end{enumerate}
+The principal inverse is strictly decreasing and convex, and, with
+\[
+ S_k(a)=\sum_{j\geq0}\frac{q^{kj}}{(1-aq^j)^k},
+\]
+it satisfies
+\begin{align}
+ \mathcal A_q'(y)&=-\frac1{yS_1(\mathcal A_q(y))},
+ \label{eq:ip-principal-first}\\
+ \mathcal A_q''(y)&=
+ \frac{S_1(\mathcal A_q(y))^2-S_2(\mathcal A_q(y))}
+ {y^2S_1(\mathcal A_q(y))^3}>0.
+ \label{eq:ip-principal-second}
+\end{align}
+\end{theorem}
+
+\begin{proof}
+For \(a<1\), all factors are positive and
+\(\partial_a\log P_q<0\) by \cref{eq:ip-a-logder}.  As \(a\uparrow1\),
+\[
+ P_q(a)=(1-a)(aq;q)_\infty
+ \sim(q;q)_\infty(1-a)\longrightarrow0,
+\]
+where normal convergence gives the limit of the second factor.  If \(a=-x\),
+then \(P_q(-x)=\prod_{j\geq0}(1+xq^j)\geq1+x\to\infty\).
+This proves the first bijection and, since its derivative never vanishes,
+real analyticity of its inverse.
+
+To compute the derivative at \(r_m\), remove the vanishing factor:
+\[
+ P_q'(r_m)=-q^m\prod_{j\ne m}(1-q^{j-m}).
+\]
+The indices \(j<m\) contribute
+\((-1)^mq^{-m(m+1)/2}(q;q)_m\); the indices \(j>m\) contribute
+\((q;q)_\infty\).  This proves \cref{eq:ip-zero-derivative} and the inverse
+germ.
+
+On every compact subset avoiding the zeros, \cref{eq:ip-a-logder} may be
+written
+\[
+ \frac{P_q'(a)}{P_q(a)}=\sum_{j\geq0}\frac1{a-r_j},\qquad
+ \left(\frac{P_q'}{P_q}\right)'(a)
+ =-\sum_{j\geq0}\frac1{(a-r_j)^2}<0.
+\]
+In \(I_m\), the first sum tends to \(+\infty\) at the left endpoint and to
+\(-\infty\) at the right endpoint.  It therefore has one and only one zero.
+At that point \(P_q''/P_q\) equals the strictly negative second sum, so the
+critical point is nondegenerate.  There are \(m+1\) negative factors in the
+gap, giving the sign \(\sigma_m\).  The logarithmic derivative has opposite
+signs on the two sides of \(c_m\); hence the absolute value rises strictly
+from zero to \(M_m\) and falls strictly to zero.  The root count follows.
+
+Implicit differentiation gives \cref{eq:ip-principal-first}.  Since
+\[
+ S_1(a)^2-S_2(a)
+ =2\sum_{0\leq i<j}
+ \frac{q^{i+j}}{(1-aq^i)(1-aq^j)}>0
+\]
+for \(a<1\), a second differentiation gives
+\cref{eq:ip-principal-second} and proves convexity.
+\end{proof}
+
+\paragraph{Lean boundary.}
+The zero and derivative subclaim is exact through
+\lean{hasDerivAt_qPochhammerInfIn_inv_pow} and
+\lean{deriv_qPochhammerInfIn_inv_pow_ne_zero}.  The real inverse germs,
+monotonicity and convexity, uniqueness of the gap critical point, and sheet
+counts in \cref{thm:ip-real-atlas} remain human-proved.
+
+\subsection{Endpoint and central inverse jets}
+
+Euler's expansion
+\[
+ (a;q)_\infty=\sum_{m\geq0}
+ \frac{(-1)^mq^{\binom m2}}{(q;q)_m}a^m
+\]
+and Lagrange inversion give, with \(s=1-y\),
+\begin{align}
+ \mathcal A_q(y)={}&(1-q)s+\frac{q(1-q)}{1+q}s^2 \notag\\
+ &+\frac{q^2(1-q)(q^2+q+2)}
+ {(1+q)^2(q^2+q+1)}s^3+\BigO(s^4),
+ \label{eq:ip-unit-target-jet}\\
+ [s^m]\mathcal A_q(1-s)
+ ={}&\frac1m[z^{m-1}]
+ \left(\frac{z}{1-(z;q)_\infty}\right)^m.
+ \label{eq:ip-unit-target-all-order}
+\end{align}
+This follows exactly as in \cref{fp-unit-inverse}: the forward linear
+coefficient is \(1/(1-q)\), and direct coefficient comparison gives the three
+displayed terms.
+
+At the other endpoint, let
+\[
+ C_q=(q;q)_\infty,\qquad
+ L_1(q)=\sum_{j\geq1}\frac{q^j}{1-q^j},\qquad v=\frac y{C_q}.
+\]
+Writing \(a=1-\delta\) gives
+\[
+ (a;q)_\infty=C_q\delta\bigl(1+L_1(q)\delta+\BigO(\delta^2)\bigr).
+\]
+Reversion therefore yields
+\begin{equation}
+ \mathcal A_q(y)=1-v+L_1(q)v^2+\BigO(v^3).
+ \label{eq:ip-zero-target-jet}
+\end{equation}
+The radius of either inverse series is bounded by the nearest singular value
+encountered by its chosen sheet; such a singular value may be critical or
+asymptotic, and need not be the numerically nearest critical value belonging
+to some other sheet.
+
+\subsection{Remote real critical points}
+
+\begin{theorem}[Remote-gap asymptotics]
+\label{thm:ip-remote-gaps}
+Let \(m=k+1\).  As \(k\to\infty\),
+\begin{align}
+ c_k(q)&=q^{-m}\left(1-\frac1{m+1}+\BigO(m^{-2})\right),
+ \label{eq:ip-remote-location}\\
+ |P_q(c_k)|
+ &= (q;q)_\infty^2q^{-m(m+1)/2}
+ \frac{m^m}{(m+1)^{m+1}}\left(1+\BigO(m^{-1})\right)
+ \label{eq:ip-remote-value}\\
+ &=\frac{(q;q)_\infty^2}{\EulerE(m+1)}
+ q^{-m(m+1)/2}\left(1+\BigO(m^{-1})\right).
+ \notag
+\end{align}
+The error constants are locally uniform for \(q\) in compact subsets of
+\((0,1)\).
+\end{theorem}
+
+\begin{proof}
+Parameterize the gap by \(a=q^{-m}(1-\varepsilon)\),
+\(0<\varepsilon<1-q\).  Separating the \(m\) factors before the right endpoint
+gives the exact identity
+\begin{align}
+ P_q(a)
+ &=(-1)^mq^{-m(m+1)/2}
+ \varepsilon(1-\varepsilon)^mG_m(\varepsilon),
+ \label{eq:ip-remote-factorization}\\
+ G_m(\varepsilon)
+ &=\left(\frac q{1-\varepsilon};q\right)_m
+ ((1-\varepsilon)q;q)_\infty.
+ \notag
+\end{align}
+If \(\varepsilon=\BigO(m^{-1})\), logarithmic differentiation of the two
+products shows uniformly that
+\[
+ \partial_\varepsilon\log G_m(\varepsilon)=\BigO(1).
+\]
+Indeed, the resulting summands are bounded by constant multiples of
+\(q^j/(1-q^j)\), whose sum converges.  The same logarithmic estimate, together
+with the omitted tail \(\sum_{j>m}q^j=\BigO(q^m)\), gives
+\[
+ G_m(\varepsilon)=(q;q)_\infty^2(1+\BigO(m^{-1})).
+\]
+It remains to verify that the unknown extremum lies in this range.  The
+logarithmic derivative of \cref{eq:ip-remote-factorization} is positive as
+\(\varepsilon\downarrow0\).  At
+\(\varepsilon=2/(m+1)\), which lies inside the gap for all sufficiently large
+\(m\), the first two terms below have size \(-m/2+\BigO(1)\), while the
+already established \(G_m'/G_m=\BigO(1)\) estimate applies there.  The
+derivative is therefore negative.  Uniqueness of the gap extremum gives
+\(\varepsilon_*<2/(m+1)\), so \(\varepsilon_*=\BigO(m^{-1})\) without
+circular reasoning.
+
+At that unique extremum, logarithmic differentiation of
+\cref{eq:ip-remote-factorization} now gives
+\[
+ 0=\frac1\varepsilon-\frac m{1-\varepsilon}
+   +\partial_\varepsilon\log G_m(\varepsilon).
+\]
+The bounded last term perturbs the zero of the first two terms by
+\(\BigO(m^{-2})\), so
+\(\varepsilon=(m+1)^{-1}+\BigO(m^{-2})\).  Substitution proves
+\cref{eq:ip-remote-location,eq:ip-remote-value}; finally
+\((1-1/(m+1))^m=\EulerE^{-1}(1+\BigO(m^{-1}))\).
+\end{proof}
+
+\section{Large targets and the log-periodic principal inverse}
+\label{sec:ip-log-periodic}
+
+\begin{theorem}[Theta-modulated growth and its inverse]
+\label{thm:ip-log-periodic}
+Let \(q=\EulerE^{-\tau}\), \(\tau>0\).  For \(x=\EulerE^L\geq1\), write uniquely
+\(x=q^{-m}r\), \(m\in\NaturalNumbers\), \(1\leq r<q^{-1}\), and
+\(\rho=\log r\in[0,\tau)\).  Define on that interval
+\begin{equation}
+ \Psi_q(\rho)=
+ \log\left((-\,\EulerE^\rho;q)_\infty(-q\EulerE^{-\rho};q)_\infty\right)
+ -\frac\rho2-\frac{\rho^2}{2\tau},
+ \label{eq:ip-phase}
+\end{equation}
+and extend it \(\tau\)-periodically.  Then \(\Psi_q\) is smooth and
+\begin{equation}
+ \log(-\EulerE^L;q)_\infty
+ =\frac{L^2}{2\tau}+\frac L2+\Psi_q(L\bmod\tau)
+ +\BigO(\EulerE^{-L}).
+ \label{eq:ip-log-periodic-forward}
+\end{equation}
+If \(Y=(-x;q)_\infty\to\infty\), set
+\[
+ R=\sqrt{2\tau\log Y},\qquad
+ \rho_0=(R-\tau/2)\bmod\tau.
+\]
+Then
+\begin{equation}
+ \log x=R-\frac\tau2+
+ \frac{\tau\bigl(\tau/8-\Psi_q(\rho_0)\bigr)}R
+ +\BigO((\log Y)^{-1}).
+ \label{eq:ip-log-periodic-inverse}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+The finite shift is exact:
+\[
+ (-q^{-m}r;q)_\infty
+ =r^mq^{-m(m+1)/2}(-q/r;q)_m(-r;q)_\infty.
+\]
+Uniformly for \(1\leq r\leq q^{-1}\), replacing the finite product by
+\((-q/r;q)_\infty\) has relative error \(1+\BigO(q^m)\), by
+\cref{eq:ip-product-tail}.  Since \(L=m\tau+\rho\),
+\[
+ m\rho+\frac{\tau m(m+1)}2
+ =\frac{L^2}{2\tau}+\frac L2-\frac{\rho^2}{2\tau}-\frac\rho2.
+\]
+Taking logarithms proves \cref{eq:ip-log-periodic-forward}.  Normal
+convergence permits all \(\rho\)-derivatives on the compact fundamental
+interval.  Under \(\rho\mapsto\rho+\tau\), the product inside the logarithm
+is multiplied by \(\EulerE^{\rho+\tau}\), exactly the change of the two subtracted
+terms, so the extension is smooth and periodic.
+
+Completing the square rewrites the forward equation as
+\[
+ 2\tau\log Y=(L+\tau/2)^2+
+ 2\tau\bigl(\Psi_q(\rho)-\tau/8\bigr)+\BigO(\EulerE^{-L}).
+\]
+Taking the positive square root first gives \(L=R-\tau/2+\BigO(R^{-1})\).
+Insert this once into the bounded correction.  The exact phase differs from
+\(\rho_0\), on the periodic circle, by \(\BigO(R^{-1})\); smoothness of
+\(\Psi_q\) changes the \(R^{-1}\) correction by only \(\BigO(R^{-2})\).
+Since \(R^{-2}=\BigO((\log Y)^{-1})\), this is
+\cref{eq:ip-log-periodic-inverse}.
+\end{proof}
+
+\section{\texorpdfstring{Inversion in the base at \(q=0\) and on the real interval}{Inversion in the base at q=0 and on the real interval}}
+\label{sec:ip-real-base}
+
+\begin{theorem}[Real base atlas and the stable small-base jet]
+\label{thm:ip-real-base}
+Fix real \(a\).
+\begin{enumerate}
+\item If \(0<a<1\), \(q\mapsto(a;q)_\infty\) decreases strictly on
+  \([0,1)\) from \(1-a\) to \(0\).
+\item If \(a<0\), it increases strictly from \(1-a\) to \(+\infty\).
+\item If \(a=0\) it is identically \(1\), and if \(a=1\) it is identically
+  \(0\).
+\item If \(a>1\), it has the distinct simple base zeros
+  \(q_j=a^{-1/j}\), \(j\geq1\), accumulating at \(1\); hence only
+  interval-by-interval base inverses are possible.
+\end{enumerate}
+For \(a\notin\{0,1\}\), set
+\(\eta=((1-a)-y)/(a(1-a))\).  The branch through \(q=0\) is
+\begin{align}
+ q={}&\eta-\eta^2+(1+a)\eta^3-(1+4a)\eta^4 \notag\\
+ &+(1+11a+3a^2)\eta^5-(1+26a+22a^2)\eta^6
+ +\BigO(\eta^7).
+ \label{eq:ip-small-base-jet}
+\end{align}
+Every coefficient is obtained by finite exact arithmetic: through order
+\(\eta^M\), it agrees with every finite product of order \(n>M\).
+\end{theorem}
+
+\begin{proof}
+On \(0<q<1\), \cref{eq:ip-q-logder} has sign \(-\Sign(a)\) whenever \(a<1\)
+and \(a\ne0\).  If \(0<a<1\), then for any \(M\), and \(q\) sufficiently
+close to one, the first \(M\) nonconstant factors are at most
+\(1-a/2<1\); the remaining factors lie in \((0,1)\).  Thus the product is at
+most \((1-a/2)^M\), and its limit is zero.  If \(a<0\), the first \(M\)
+factors are at least \(1+|a|/2\), while all remaining factors exceed one, so
+the limit is \(+\infty\).  The values at \(q=0\) and the two constant cases
+are immediate.  For \(a>1\), exactly the \(j\)-th factor vanishes at
+\(q_j\), proving simplicity and the asserted accumulation.
+
+Near \(q=0\), normal convergence makes the product analytic and
+\(\partial_qP(a,0)=-a(1-a)\ne0\), so the analytic inverse exists.  The
+coefficient of \(q^M\) uses only factors with index at most \(M\); hence it
+equals the stable finite-product coefficient.  Direct subset expansion gives
+\[
+ \frac{1-(aq;q)_\infty}{a}
+ =q+q^2+(1-a)q^3+(1-a)q^4+(1-2a)q^5
+ +(1-2a+a^2)q^6+\BigO(q^7).
+\]
+Substitution of \(q=\eta+\sum_{j=2}^{6}c_j\eta^j\), followed by comparison of
+successive powers, gives
+\[
+ (c_2,c_3,c_4,c_5,c_6)
+ =(-1,\,1+a,\,-1-4a,\,1+11a+3a^2,\,-1-26a-22a^2),
+\]
+which is \cref{eq:ip-small-base-jet}.  Because the subset calculation through
+degree \(M\) uses no factor beyond index \(M\), it also proves the stated
+finite exactness mechanism.
+\end{proof}
+
+\section{\texorpdfstring{Fixed-argument inversion as \(q\to1\)}{Fixed-argument inversion as q approaches 1}}
+\label{sec:ip-fixed-a-qone}
+
+\begin{theorem}[Uniform all-order fixed-argument expansion]
+\label{thm:ip-fixed-a-expansion}
+Let \(q=\EulerE^{-t}\), where \(t\to0\) in a closed subsector of
+\(\Re t>0\).  Uniformly for \(|a|\leq\rho<1\),
+\begin{equation}
+ \log(a;\EulerE^{-t})_\infty
+ \sim-\frac{\Polylogarithm_2(a)}t+\frac12\log(1-a)
+ -\sum_{r\geq1}\frac{B_{2r}}{(2r)!}
+ \Polylogarithm_{2-2r}(a)t^{2r-1}.
+ \label{eq:ip-fixed-a-forward}
+\end{equation}
+More precisely, for every \(M\geq1\), retain the leading and constant terms
+and the Bernoulli terms with \(1\leq r\leq M-1\) (an empty sum when \(M=1\)).
+The remainder is then \(\BigO(|t|^{2M-1})\), uniformly on the stated sets.
+\end{theorem}
+
+\begin{proof}
+Insert, in \cref{eq:ip-lambert-log},
+\[
+ \frac1{1-\EulerE^{-x}}=\frac1x+\frac12+
+ \sum_{r=1}^{M-1}\frac{B_{2r}}{(2r)!}x^{2r-1}+R_M(x).
+\]
+The displayed terms sum respectively to the dilogarithm, logarithm, and
+polylogarithms in \cref{eq:ip-fixed-a-forward}.  To control the remainder,
+choose a small \(\delta>0\) and split the Lambert index at
+\(m\leq\delta/|t|\).  Taylor's theorem is uniform on this first range and
+gives a contribution bounded by
+\[
+ C|t|^{2M-1}\sum_{m\geq1}\rho^m m^{2M-2}
+ =\BigO(|t|^{2M-1}).
+\]
+On the complementary range, \(\rho^m\leq
+\exp(-c/|t|)\).  Because \(t\) stays in a closed subsector of the right
+half-plane, \(1-\EulerE^{-mt}\) is uniformly separated from zero there; the tail
+is exponentially small and hence smaller than every power of \(|t|\).
+\end{proof}
+
+\begin{theorem}[Rigorous large-log base inverse]
+\label{thm:ip-fixed-a-inverse}
+Fix \(a\) with \(|a|<1\) and \(A=\Polylogarithm_2(a)\ne0\), and choose compatible
+branches of all logarithms.  Put
+\[
+ D=\frac{\Polylogarithm_0(a)}{12},\qquad
+ E=\frac{\Polylogarithm_{-2}(a)}{720},\qquad
+ F=\frac{\Polylogarithm_{-4}(a)}{30240},\qquad
+ X=-\log y+\frac12\log(1-a).
+\]
+Let \(X\to\infty\) so that \(A/X\) remains in a closed subsector of
+\(\Re t>0\).  On the inverse sheet with \(t\sim A/X\),
+\begin{align}
+ t={}&\frac AX+\frac{DA^2}{X^3}
+ +\frac{A^3(2D^2-AE)}{X^5}\notag\\
+ &+\frac{A^4(A^2F-6ADE+5D^3)}{X^7}
+ +\BigO(X^{-9}),\qquad q=\EulerE^{-t}.
+ \label{eq:ip-fixed-a-inverse}
+\end{align}
+For real \(0<a<1\), this is the unique real base inverse as \(y\downarrow0\).
+\end{theorem}
+
+\begin{proof}
+The preceding theorem gives
+\[
+ X=\frac At+Dt-Et^3+Ft^5+\BigO(t^7).
+\]
+Insert an ansatz \(t=A/X+\alpha X^{-3}+\beta X^{-5}+\gamma X^{-7}\).
+Comparison of \(X^{-1},X^{-3},X^{-5}\) gives
+\[
+ \alpha=DA^2,\quad
+ \beta=A^3(2D^2-AE),\quad
+ \gamma=A^4(A^2F-6ADE+5D^3).
+\]
+This proves the formal coefficients, but the error also needs transfer.
+For the displayed approximation \(t_0\), substitution in the forward
+equation leaves a residual \(\BigO(X^{-7})\), while
+\[
+ \frac{\Differential}{\Differential t}\left(\frac At+Dt-Et^3+Ft^5\right)
+ =-\frac A{t^2}+\BigO(1)
+\]
+has modulus comparable with \(|X|^2\).  The remainder is holomorphic and
+uniformly \(\BigO(t^7)\) on a slightly wider closed subsector, so Cauchy's
+estimate makes its derivative \(\BigO(t^6)\).  Taylor expansion of the exact
+target equation on
+\(|t-t_0|=K|X|^{-9}\) therefore consists of a constant
+\(\BigO(X^{-7})\), a linear term of modulus comparable with
+\(K|X|^{-7}\), and a quadratic error
+\(\BigO(|X|^3|X|^{-18})\).  For fixed sufficiently large \(K\), the linear
+term dominates the other two.  Rouché's theorem gives one zero inside that
+circle, proving the \(\BigO(X^{-9})\) remainder.  The real uniqueness follows
+from \cref{thm:ip-real-base}.
+\end{proof}
+
+\section{\texorpdfstring{The coalescing parameter \(a=q^x\)}{The coalescing parameter a equals q to the x}}
+\label{sec:ip-qx}
+
+\begin{theorem}[All-order coalescing expansion]
+\label{thm:ip-qx-expansion}
+Let \(\Re x>0\), \(q=\EulerE^{-t}\), and let \(t\to0\) in a closed subsector of
+\(|\arg t|<\pi/2\).  Use the logarithm obtained by analytic continuation from
+positive \(t\).  Then, locally uniformly for \(x\) in compact subsets of
+\(\Re x>0\),
+\begin{align}
+ \log(q^x;q)_\infty
+ \sim{}&-\frac{\pi^2}{6t}
+ +\left(\frac12-x\right)\log t
+ +\frac12\log(2\pi)-\log\Gamma(x) \notag\\
+ &+\frac{B_2(x)}4t
+ -\sum_{r\geq1}
+ \frac{B_{2r}B_{2r+1}(x)}{2r(2r+1)!}t^{2r}.
+ \label{eq:ip-qx-expansion}
+\end{align}
+\end{theorem}
+
+\begin{proof}
+For \(c>1\), initially with \(t>0\), Mellin inversion of the exponential in
+the Lambert sum gives
+\begin{equation}
+ \log(\EulerE^{-xt};\EulerE^{-t})_\infty
+ =-\frac1{2\pi\ImaginaryUnit}\int_{c-\ImaginaryUnit\infty}^{c+\ImaginaryUnit\infty}
+ \Gamma(s)\zeta(s+1)\zeta(s,x)t^{-s}\Differential s.
+ \label{eq:ip-qx-mellin}
+\end{equation}
+Absolute convergence for \(c>1\) justifies the interchange with the Lambert
+sum.  Both sides then continue analytically to the stated sector, on the
+logarithm sheet fixed in the theorem.  Indeed, uniformly for \(x\) in a fixed
+compact subset of \(\Re x>0\), sufficiently small \(t\) in a smaller closed
+subsector gives no factor zero: for bounded \(j\) the exponent
+\((x+j)t\) has modulus below \(2\pi\), while for large \(j\) its argument
+stays strictly between \(-\pi/2\) and \(\pi/2\), so it cannot be a nonzero
+multiple of \(2\pi\ImaginaryUnit\).  We may therefore shift the continued contour left.
+The pole at \(s=1\) contributes
+\(-\pi^2/(6t)\).  At \(s=0\) the double pole, together with
+\[
+ \zeta(0,x)=\frac12-x,\qquad
+ \zeta'(0,x)=\log\Gamma(x)-\frac12\log(2\pi),
+\]
+gives the logarithmic and constant terms.  At \(s=-1\), the residue of
+\(\Gamma\), \(\zeta(0)=-1/2\), and
+\(\zeta(-1,x)=-B_2(x)/2\) give \(B_2(x)t/4\).  At \(s=-2r\),
+\[
+ \operatorname*{Res}_{s=-2r}\Gamma(s)=\frac1{(2r)!},\quad
+ \zeta(1-2r)=-\frac{B_{2r}}{2r},\quad
+ \zeta(-2r,x)=-\frac{B_{2r+1}(x)}{2r+1},
+\]
+which yields the remaining coefficients, including the outer minus sign in
+\cref{eq:ip-qx-mellin}.  At negative odd integers below \(-1\), a trivial zero
+of \(\zeta(s+1)\) cancels the gamma pole.
+
+Here is the required uniform remainder estimate.  Fix a compact set
+\(K\Subset\{\Re x>0\}\), a closed subsector
+\(|\arg t|\leq\pi/2-\delta\), and a vertical line \(\Re s=\sigma\) avoiding
+the poles just listed.  Uniformly for \(x\in K\), Stirling's estimate and the
+standard polynomial vertical bounds for the two zeta functions give constants
+\(C,N\) such that
+\[
+ \left|\Gamma(\sigma+\ImaginaryUnit u)
+ \zeta(\sigma+1+\ImaginaryUnit u)
+ \zeta(\sigma+\ImaginaryUnit u,x)\right|
+ \leq C(1+|u|)^N\EulerE^{-\pi|u|/2}.
+\]
+For the chosen branch of \(t^{-s}\),
+\[
+ |t^{-(\sigma+\ImaginaryUnit u)}|
+ =|t|^{-\sigma}\EulerE^{u\arg t}
+ \leq |t|^{-\sigma}\EulerE^{(\pi/2-\delta)|u|}.
+\]
+Thus the integrand on the shifted vertical line is bounded by
+\[
+ C|t|^{-\sigma}(1+|u|)^N\EulerE^{-\delta|u|},
+\]
+which is integrable uniformly for \(x\in K\).  The same exponential factor
+makes the horizontal sides of the truncating rectangles tend to zero.  The
+shifted contour is therefore \(\BigO_K(|t|^{-\sigma})\).  Shifting
+successively past the displayed poles, and choosing \(\sigma\) strictly
+between the last retained pole and the next uncancelled pole, proves the
+asserted sectorial Poincaré remainder locally uniformly in \(x\).
+\end{proof}
+
+The specialization \(x=1\) has more structure than its power asymptotic:
+Dedekind modularity restores the exponentially small remainder exactly, both
+at the positive cusp and on the radial path toward \(-1\).
+
+\begin{theorem}[Exact eta completions at \(q=1\) and \(q=-1\)]
+\label{thm:ip-eta-completions}
+For \(t>0\),
+\begin{equation}
+ (\EulerE^{-t};\EulerE^{-t})_\infty
+ =\sqrt{\frac{2\pi}{t}}
+ \exp\left(-\frac{\pi^2}{6t}+\frac{t}{24}\right)
+ (\EulerE^{-4\pi^2/t};\EulerE^{-4\pi^2/t})_\infty.
+ \label{eq:ip-eta-positive}
+\end{equation}
+If \(Q_c=\exp(-c\pi^2/t)\), then
+\begin{equation}
+ (-\EulerE^{-t};-\EulerE^{-t})_\infty
+ =\sqrt{\frac{\pi}{t}}
+ \exp\left(-\frac{\pi^2}{24t}+\frac{t}{24}\right)
+ \frac{(Q_2;Q_2)_\infty^3}
+ {(Q_4;Q_4)_\infty(Q_1;Q_1)_\infty}.
+ \label{eq:ip-eta-negative}
+\end{equation}
+Consequently the relative errors after deleting the final product factor in
+\cref{eq:ip-eta-positive} and the final product quotient in
+\cref{eq:ip-eta-negative} are, respectively,
+\(\BigO(\EulerE^{-4\pi^2/t})\) and \(\BigO(\EulerE^{-\pi^2/t})\).
+\end{theorem}
+
+\begin{proof}
+Recall
+\[
+ \eta(\tau)=\EulerE^{\pi\ImaginaryUnit\tau/12}
+ \prod_{n\geq1}(1-\EulerE^{2\pi\ImaginaryUnit n\tau})
+\]
+and the modular identity
+\(\eta(-1/\tau)=\sqrt{-\ImaginaryUnit\tau}\,\eta(\tau)\), with the positive square root
+when \(\tau\) is positive imaginary.  Set \(\tau=\ImaginaryUnit t/(2\pi)\).  Then
+\begin{align*}
+ \eta(\tau)&=\EulerE^{-t/24}(\EulerE^{-t};\EulerE^{-t})_\infty,\\
+ \eta(-1/\tau)&=\EulerE^{-\pi^2/(6t)}
+ (\EulerE^{-4\pi^2/t};\EulerE^{-4\pi^2/t})_\infty,\\
+ \sqrt{-\ImaginaryUnit\tau}&=\sqrt{t/(2\pi)}.
+\end{align*}
+Solving the modular identity for the first product proves
+\cref{eq:ip-eta-positive}.
+
+For the negative radial path put \(x=\EulerE^{-t}\).  Separating the even and odd
+powers in the defining product, and then separating the odd powers in the
+ordinary positive product, gives
+\begin{align*}
+ (-x;-x)_\infty
+  &=(x^2;x^2)_\infty(-x;x^2)_\infty,\\
+ (-x;x^2)_\infty
+  &=\frac{(x^2;x^4)_\infty}{(x;x^2)_\infty},\\
+ (x;x^2)_\infty
+  &=\frac{(x;x)_\infty}{(x^2;x^2)_\infty},
+ \qquad
+ (x^2;x^4)_\infty
+  =\frac{(x^2;x^2)_\infty}{(x^4;x^4)_\infty}.
+\end{align*}
+Thus
+\begin{equation}
+ (-x;-x)_\infty
+ =\frac{(x^2;x^2)_\infty^3}
+ {(x;x)_\infty(x^4;x^4)_\infty}.
+ \label{eq:ip-eta-dissection}
+\end{equation}
+Apply \cref{eq:ip-eta-positive} with \(t,2t,4t\).  The square-root factors
+simplify to \(\sqrt{\pi/t}\), the elementary exponent to
+\(-\pi^2/(24t)+t/24\), and the three complementary nomes to
+\(Q_4,Q_2,Q_1\), respectively.  Substitution in
+\cref{eq:ip-eta-dissection} proves \cref{eq:ip-eta-negative}.
+
+Finally, as \(Q\downarrow0\), expansion of the first factor and the product
+tail estimate \cref{eq:ip-product-tail} give
+\((Q;Q)_\infty=1+\BigO(Q)\); the same estimate keeps its reciprocal bounded.
+Applying this observation to the exact final factors proves both relative
+error assertions.
+\end{proof}
+
+For real \(x>0\), the product decreases from \(1\) to \(0\) as \(q\) runs from
+\(0\) to \(1\), since every factor \(1-q^{x+j}\) does.  It therefore has a
+unique real base inverse.  Put
+\[
+ \Lambda=-\log y,\quad A=\frac{\pi^2}{6},\quad
+ B=x-\frac12,\quad C=\log\Gamma(x)-\frac12\log(2\pi).
+\]
+The leading equation is \(\Lambda=A/t+B\log t+C\).  If \(B\ne0\), its exact
+real Lambert-\(W\) solution for sufficiently large \(\Lambda\) is
+\begin{equation}
+ t_0=-\frac{A}
+ {B\,W_k\!\left(-\frac AB
+ \exp\left(-\frac{\Lambda-C}{B}\right)\right)},
+ \label{eq:ip-qx-lambert}
+\end{equation}
+where \(k=-1\) when \(B>0\), and \(k=0\) when \(B<0\).
+When \(B=0\), \(t_0=A/(\Lambda-C)\).  Exponentiating the leading equation and
+putting \(w=-A/(Bt)\) proves \cref{eq:ip-qx-lambert}; all quantities are real,
+so this exponentiation loses no logarithm-sheet information.  The omitted
+part of \cref{eq:ip-qx-expansion} is \(\BigO(t)\), while the derivative of
+\(A/t+B\log t+C\) has magnitude comparable with \(t^{-2}\).  The real
+mean-value theorem, applied between the exact inverse and \(t_0\), therefore
+gives \(t=t_0+\BigO(t_0^3)\).
+
+\section{\texorpdfstring{Fixed-target double scaling at \(q=1\)}{Fixed-target double scaling at q=1}}
+\label{sec:ip-double-scaling}
+
+\begin{theorem}[All-order fixed-target inverse and recurrence]
+\label{thm:ip-double-scaling}
+Fix \(L>0\).  The unique real solution
+\[
+ (a;\EulerE^{-\varepsilon})_\infty=\EulerE^{-L},\qquad 0<a<1,
+\]
+has, for every \(M\), an asymptotic expansion
+\(a(\varepsilon)=\sum_{k=1}^{M}A_k(L)\varepsilon^k+
+\BigO(\varepsilon^{M+1})\).  Define
+\[
+ C_{r,n}=[\varepsilon^n]
+ \left(\sum_{k\geq1}A_k\varepsilon^k\right)^r.
+\]
+Then \(A_1=L\), and for \(n\geq1\),
+\begin{align}
+ A_{n+1}={}&-\sum_{r=2}^{n+1}\frac{C_{r,n+1}}{r^2}
+ -\frac12\sum_{r=1}^{n}\frac{C_{r,n}}r \notag\\
+ &-\sum_{j=1}^{\Floor{n/2}}
+ \frac{B_{2j}}{(2j)!}
+ \sum_{r=1}^{n-2j+1}r^{2j-2}C_{r,n-2j+1}.
+ \label{eq:ip-double-scaling-recurrence}
+\end{align}
+In particular,
+\begin{align}
+ a={}&L\varepsilon-\frac{L(L+2)}4\varepsilon^2
+ +\frac{L(L^2+9L+12)}{72}\varepsilon^3 \notag\\
+ &-\frac{L(L^3+4L^2+12L+24)}{576}\varepsilon^4 \notag\\
+ &-\frac{L(31L^4-75L^3-800L^2-720)}
+ {86400}\varepsilon^5+\BigO(\varepsilon^6).
+ \label{eq:ip-double-scaling-five}
+\end{align}
+Every \(A_k\) is a rational polynomial in \(L\) divisible by \(L\).
+\end{theorem}
+
+\begin{proof}
+Taking the negative logarithm gives the exact positive Lambert equation
+\begin{equation}
+ \Phi_\varepsilon(a):=
+ \sum_{r\geq1}\frac{a^r}{r(1-\EulerE^{-r\varepsilon})}=L.
+ \label{eq:ip-positive-lambert}
+\end{equation}
+Since the first summand is at least \(a/\varepsilon\), every solution obeys
+\(0<a\leq L\varepsilon\).  Moreover
+\[
+ \partial_a\Phi_\varepsilon(a)
+ =\sum_{r\geq1}\frac{a^{r-1}}{1-\EulerE^{-r\varepsilon}}
+ \geq\frac1{1-\EulerE^{-\varepsilon}}\geq\frac1\varepsilon.
+\]
+Thus \(\Phi_\varepsilon\) is strictly increasing, and existence and uniqueness
+also follow from the principal real argument atlas.
+
+Expand
+\[
+ \frac1{1-\EulerE^{-r\varepsilon}}
+ =\frac1{r\varepsilon}+\frac12+
+ \sum_{j\geq1}\frac{B_{2j}}{(2j)!}
+ (r\varepsilon)^{2j-1}.
+\]
+The coefficient of \(\varepsilon^n\) in
+\cref{eq:ip-positive-lambert} contains the new unknown \(A_{n+1}\) only in
+\(a/\varepsilon\), with coefficient one.  The remaining contributions are,
+respectively, the three sums on the right of
+\cref{eq:ip-double-scaling-recurrence}; setting the coefficient to zero proves
+the recurrence.  It gives the five displayed polynomials by successive
+substitution.  Inductively its operations preserve rational polynomiality,
+and every term vanishes at \(L=0\), proving the factor \(L\).
+
+It remains to justify the asymptotic remainder.  For a truncation
+\(a_M=\sum_{k=1}^{M}A_k\varepsilon^k=\BigO(\varepsilon)\), use
+\[
+ 1-\EulerE^{-r\varepsilon}\geq c\min(r\varepsilon,1)
+\]
+for real \(\varepsilon>0\).  Splitting at \(r=\varepsilon^{-1}\) then bounds
+the Lambert tail \(r\geq M+1\) by
+\[
+ \frac C\varepsilon
+ \sum_{M+1\leq r\leq\varepsilon^{-1}}\frac{|a_M|^r}{r^2}
+ +C\sum_{r>\varepsilon^{-1}}\frac{|a_M|^r}{r}
+ =\BigO(\varepsilon^M).
+\]
+For the finitely many retained indices, Taylor's theorem for the elementary
+kernel, together with the recurrence, gives
+\(\Phi_\varepsilon(a_M)-L=\BigO(\varepsilon^M)\).  The derivative lower bound
+and the real mean-value theorem then imply
+\[
+ |a-a_M|\leq\varepsilon\,|\Phi_\varepsilon(a)-\Phi_\varepsilon(a_M)|
+ =\BigO(\varepsilon^{M+1}).
+\]
+This completes both the formal and analytic parts of the proof.
+\end{proof}
+
+\begin{warning}[Complex double scaling]
+For complex \(L=-\log y\), the recurrence still defines a formal branch, but
+the poles \(2\pi\ImaginaryUnit k/r\) of the Lambert kernels accumulate at
+\(\varepsilon=0\).  The real theorem above does not imply a convergent complex
+Taylor series.  A complex version requires a sector, a logarithm branch, and
+uniform remainder estimates; absent those data it remains a formal
+asymptotic construction.
+\end{warning}
+
+\section{Raw root-of-unity endpoints and radial inverses}
+\label{sec:ip-cyclotomic}
+
+\begin{proposition}[Raw boundary partial products]
+\label{prop:ip-boundary-products}
+Let \(\zeta\) be primitive of order \(d\), and write \(N=kd+s\),
+\(0\leq s<d\).  Then
+\begin{equation}
+ (a;\zeta)_N=(1-a^d)^k\prod_{j=0}^{s-1}(1-a\zeta^j).
+ \label{eq:ip-boundary-block}
+\end{equation}
+Hence the partial products tend to zero when \(|1-a^d|<1\), are unbounded
+when \(|1-a^d|>1\), and do not converge when \(|1-a^d|=1\) and \(a\ne0\).
+For \(a=0\), they are identically one.
+\end{proposition}
+
+\begin{proof}
+Every complete residue block contributes
+\(\prod_{j=0}^{d-1}(1-a\zeta^j)=1-a^d\), proving
+\cref{eq:ip-boundary-block}.  The first two conclusions follow from the
+geometric factor.  In the unit-modulus case, the subsequence \(s=0\) is
+\((1-a^d)^k\); it could converge only if \(1-a^d=1\), which forces \(a=0\).
+\end{proof}
+
+This proposition concerns raw partial products on the boundary.  The next
+theorem instead approaches the boundary from \(|q|<1\), where the analytic
+product is defined.
+
+\begin{theorem}[Uniform radial cyclotomic expansion and inverse]
+\label{thm:ip-radial-cyclotomic}
+Let \(\zeta\) be primitive of order \(d\), let \(|a|\leq\rho<1\), and put
+\(q=\zeta\EulerE^{-t}\), with \(t\to0\) in a closed subsector of \(\Re t>0\).
+All logarithms below are the holomorphic determinations obtained by
+continuation from \(a=0\); in particular,
+\[
+ \log(1-a^d)=-\sum_{\ell\geq1}\frac{a^{d\ell}}{\ell}
+ \qquad (|a|<1).
+\]
+Define
+\begin{align}
+ A_\zeta(a)&=\frac{\Polylogarithm_2(a^d)}{d^2},
+ \label{eq:ip-cyclotomic-A}\\
+ C_\zeta(a)&=\frac1{2d}\log(1-a^d)
+ -\sum_{\substack{m\geq1\\d\nmid m}}
+ \frac{a^m}{m(1-\zeta^m)},
+ \label{eq:ip-cyclotomic-C}\\
+ D_\zeta(a)&=\frac{a^d}{12(1-a^d)}
+ -\sum_{\substack{m\geq1\\d\nmid m}}
+ \frac{a^m\zeta^m}{(1-\zeta^m)^2}.
+ \label{eq:ip-cyclotomic-D}
+\end{align}
+The coefficient series converge absolutely, and
+\begin{equation}
+ \log(a;\zeta\EulerE^{-t})_\infty
+ =-\frac{A_\zeta(a)}t+C_\zeta(a)-D_\zeta(a)t
+ +\BigO(t^2)
+ \label{eq:ip-cyclotomic-forward}
+\end{equation}
+uniformly on the stated compact sets.  If \(A_\zeta(a)\ne0\), choose a branch
+of \(\log y\), put \(X=-\log y+C_\zeta(a)\), and suppose that \(X\to\infty\)
+with \(A_\zeta(a)/X\) in the chosen closed subsector.  The corresponding
+inverse satisfies
+\begin{equation}
+ t=\frac{A_\zeta(a)}X+
+ \frac{D_\zeta(a)A_\zeta(a)^2}{X^3}
+ +\BigO(X^{-4}),\qquad q=\zeta\EulerE^{-t}.
+ \label{eq:ip-cyclotomic-inverse}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Split \cref{eq:ip-lambert-log} into indices \(m=d\ell\) and \(d\nmid m\).
+For the multiples,
+\[
+ \frac1{1-\EulerE^{-d\ell t}}
+ =\frac1{d\ell t}+\frac12+\frac{d\ell t}{12}
+ +\BigO((\ell t)^3).
+\]
+Their singular, constant, and linear sums are respectively
+\[
+ -\frac{\Polylogarithm_2(a^d)}{d^2t},\qquad
+ \frac1{2d}\log(1-a^d),\qquad
+ -\frac{a^d}{12(1-a^d)}t.
+\]
+For nonmultiples,
+\[
+ \frac1{1-\zeta^m\EulerE^{-mt}}
+ =\frac1{1-\zeta^m}
+ -\frac{m\zeta^m}{(1-\zeta^m)^2}t
+ +\BigO(m^2t^2).
+\]
+These are exactly the remaining terms in
+\cref{eq:ip-cyclotomic-C,eq:ip-cyclotomic-D}.
+
+Absolute convergence of the coefficient sums is not by itself a remainder
+proof, so split again at \(m\leq\delta/|t|\).  Choose \(\delta\) below the
+nearest singularity of each of the finitely many residue-class kernels.  On
+the first range Taylor's theorem gives a uniform remainder, and summation of
+\(\rho^m m|t|^2\) gives \(\BigO(t^2)\).  On the tail,
+\(\rho^m=\BigO(\exp(-c/|t|))\); the sector condition also separates every
+denominator from zero.  This proves \cref{eq:ip-cyclotomic-forward}.
+
+The target equation is
+\[
+ X=\frac{A_\zeta}t+D_\zeta t+\BigO(t^2).
+\]
+Substitution of \(t_0=A_\zeta/X+D_\zeta A_\zeta^2/X^3\) leaves residual
+\(\BigO(X^{-2})\), while the derivative has size comparable with \(X^2\).
+Uniform holomorphy on a slightly wider subsector and Cauchy's estimate control
+the derivatives of the \(\BigO(t^2)\) remainder.  Thus, on a circle of radius
+\(K|X|^{-4}\) around \(t_0\), the linear term has size comparable with
+\(K|X|^{-2}\), the constant residual is \(\BigO(X^{-2})\), and all higher
+variations are smaller.  For fixed sufficiently large \(K\), Rouché's theorem
+supplies a unique nearby solution and proves
+\cref{eq:ip-cyclotomic-inverse}.
+\end{proof}
+
+\begin{corollary}[The radial points \(1\) and \(-1\)]
+\label{cor:ip-plus-minus-one}
+For real \(0<a<1\), \cref{eq:ip-fixed-a-inverse} is the unique inverse toward
+\(q=1^-\).  For real \(0<|a|<1\), put
+\[
+ A_-=\frac14\Polylogarithm_2(a^2),\quad
+ C_-=\frac12\log(1-a),\quad
+ D_-=\frac{a(a+3)}{12(1-a^2)},
+\]
+\[
+ E_-=\frac{a(15a^4+4a^3+90a^2+4a+15)}
+ {720(1-a^2)^3},\qquad X=-\log y+C_-.
+\]
+On the real radial branch \(q=-\EulerE^{-t}\), \(t\downarrow0\),
+\begin{align}
+ \log(a;-\EulerE^{-t})_\infty
+ &=-\frac{A_-}t+C_--D_-t+E_-t^3+\BigO(t^5),
+ \label{eq:ip-minus-one-forward}\\
+ t&=\frac{A_-}X+\frac{D_-A_-^2}{X^3}
+ +\frac{2D_-^2A_-^3-E_-A_-^4}{X^5}
+ +\BigO(X^{-7}).
+ \label{eq:ip-minus-one-inverse}
+\end{align}
+Here the inverse formula is taken as
+\(y=(a;-\EulerE^{-t})_\infty\downarrow0\), equivalently \(X\to+\infty\).
+\end{corollary}
+
+\begin{proof}
+Split the canonical Lambert logarithm into even and odd indices:
+\[
+ \log(a;-\EulerE^{-t})_\infty
+ =-\sum_{m\geq1}\frac{a^m}{m(1-(-1)^m\EulerE^{-mt})}.
+\]
+For even indices use
+\[
+ \frac1{1-\EulerE^{-x}}
+ =\frac1x+\frac12+\frac{x}{12}-\frac{x^3}{720}
+ +\BigO(x^5),
+\]
+and for odd indices use
+\[
+ \frac1{1+\EulerE^{-x}}
+ =\frac12+\frac{x}{4}-\frac{x^3}{48}+\BigO(x^5).
+\]
+Only the even indices \(m=2r\) contribute a singular term, namely
+\[
+ -\sum_{r\geq1}\frac{a^{2r}}{2r}\frac1{2rt}
+ =-\frac{\Polylogarithm_2(a^2)}{4t}.
+\]
+The constant term is
+\[
+ -\frac12\sum_{m\geq1}\frac{a^m}{m}
+ =\frac12\log(1-a).
+\]
+The coefficient of \(t\) is
+\[
+ -\frac1{12}\sum_{r\geq1}a^{2r}
+ -\frac14\sum_{\substack{m\geq1\\m\ \mathrm{odd}}}a^m
+ =-\frac{a(a+3)}{12(1-a^2)}.
+\]
+Writing \(z=a^2\), the coefficient of \(t^3\) is
+\[
+ \frac1{180}\sum_{r\geq1}r^2z^r
+ +\frac1{48}\sum_{\substack{m\geq1\\m\ \mathrm{odd}}}m^2a^m.
+\]
+The elementary identities
+\[
+ \sum_{r\geq1}r^2z^r=\frac{z(1+z)}{(1-z)^3},
+ \qquad
+ \sum_{\substack{m\geq1\\m\ \mathrm{odd}}}m^2a^m
+ =\frac{a(1+a)}{(1-a)^3}
+ -\frac{4a^2(1+a^2)}{(1-a^2)^3}
+\]
+simplify this coefficient to
+\[
+ \frac{a(15a^4+4a^3+90a^2+4a+15)}{720(1-a^2)^3}=E_-.
+\]
+For fixed \(|a|<1\), the same finite-index/tail split used in the proof of
+\cref{thm:ip-radial-cyclotomic} justifies the expansions under the sum; the
+summed fifth-order remainders are \(\BigO(t^5)\).  This proves
+\cref{eq:ip-minus-one-forward} with every displayed coefficient.
+
+Now
+\[
+ X=\frac{A_-}{t}+D_-t-E_-t^3+\BigO(t^5).
+\]
+Substituting
+\(t=A_-/X+\alpha X^{-3}+\beta X^{-5}\) and comparing the coefficients of
+\(X^{-1}\) and \(X^{-3}\) gives
+\[
+ \alpha=D_-A_-^2,
+ \qquad
+ \beta=2D_-^2A_-^3-E_-A_-^4.
+\]
+The resulting residual is \(\BigO(X^{-5})\), whereas the derivative of the
+target equation is
+\(-A_-/t^2+\BigO(1)\asymp-X^2\).  The real mean-value theorem therefore
+improves the inverse error to \(\BigO(X^{-7})\), proving
+\cref{eq:ip-minus-one-inverse}.  The exclusion \(a=0\) is necessary: there
+the product is identically one and \(A_-=0\).
+\end{proof}
+
+\begin{proposition}[Fixed-level cyclotomic coalescence with winding]
+\label{prop:ip-cyclotomic-fixed-level}
+Let \(\zeta\) be primitive of order \(d\), let
+\(q=\zeta\EulerE^{-t}\), and let \(t\to0\) in a closed subsector of
+\(\Re t>0\).  Fix \(y\in\ComplexNumbers^\times\), choose a logarithm
+\(\ell\) of \(y\), and, for \(\nu\in\IntegerNumbers\), put
+\[
+ L_\nu:=-\ell-2\pi\ImaginaryUnit\nu.
+\]
+Suppose \(L_\nu\ne0\).  For the Lambert logarithm that is zero at \(a=0\),
+the lifted equation
+\[
+ \log(a;q)_\infty=\ell+2\pi\ImaginaryUnit\nu
+\]
+has exactly \(d\) solution germs tending to \(a=0\).  They satisfy
+\begin{equation}
+ a^d\sim d^2L_\nu t,\qquad
+ a\sim\omega(d^2L_\nu t)^{1/d},\qquad \omega^d=1.
+ \label{eq:ip-cyclotomic-fixed-level}
+\end{equation}
+Consequently the raw equation \((a;q)_\infty=y\) has one such
+\(d\)-sheeted cluster for every fixed winding \(\nu\) with \(L_\nu\ne0\).
+Every continuous raw solution branch tending to zero belongs to exactly one
+of these clusters.  The exceptional lift \(L_\nu=0\), when it occurs, is a
+different degenerate problem and is not covered by the displayed scale.
+\end{proposition}
+
+\begin{proof}
+Write \(\Lambda(a,t)\) for the Lambert logarithm in
+\cref{eq:ip-cyclotomic-forward}.  The lifted equation is
+\(-\Lambda(a,t)=L_\nu\).  Suppose first that a solution germ has
+\(a\to0\).  In the uniform forward formula,
+\(C_\zeta(a)=\LittleO(1)\) and \(D_\zeta(a)t=\LittleO(1)\); its remainder is
+uniform for \(|a|\leq\rho\), so
+\[
+ \frac{\Polylogarithm_2(a^d)}{d^2t}=L_\nu+\LittleO(1).
+\]
+Since \(\Polylogarithm_2(z)/z\to1\), the last identity first gives
+\(a^d=\BigO(t)\) and then
+\(a^d/(d^2t)\to L_\nu\), proving the first relation and the scale
+\(a=\BigO(t^{1/d})\).
+
+Choose a determination \(\tau=t^{1/d}\) on the subsector and write
+\(a=\tau b\).  Uniformly for \(b\) in a fixed compact set,
+\[
+ -\Lambda(\tau b,t)-L_\nu
+ =\frac{b^d}{d^2}-L_\nu+\LittleO(1),
+\]
+because
+\(\Polylogarithm_2(tb^d)/(d^2t)=b^d/d^2+\BigO(t)\), while
+\(C_\zeta(\tau b)=\LittleO(1)\) and
+\(tD_\zeta(\tau b)=\LittleO(1)\).  The limiting polynomial has the
+\(d\) distinct roots of \(b^d=d^2L_\nu\).  Rouché's theorem on disjoint
+small circles about those roots supplies one zero on each circle for all
+sufficiently small \(t\).  The preceding converse estimate shows that every
+solution tending to zero lies on one of these circles.  Each circle contains
+one zero counted with multiplicity, so that zero is simple.  For every
+nonzero \(t\) in the subsector, the holomorphic implicit-function theorem
+therefore makes it a locally holomorphic function of the chosen coordinate
+\(\tau=t^{1/d}\).  The circles are fixed and pairwise disjoint, and each
+contains exactly one zero; uniqueness makes these local functions agree on
+overlaps and patch to \(d\) sectorial solution germs.  Conversely, any
+solution with \(a\to0\) has
+\[
+ b^d=d^2L_\nu+\LittleO(1),\qquad b=a/\tau,
+\]
+and hence eventually lies in exactly one of these circles.  This proves the
+exact germ count, its exhaustivity, and both asymptotic relations.
+
+Finally, exponentiating a lifted solution gives the raw equation.  Conversely,
+on a continuous raw solution branch the quantity
+\((\Lambda(a,t)-\ell)/(2\pi\ImaginaryUnit)\) is integer-valued and continuous,
+hence is one fixed integer \(\nu\).  Thus the winding clusters are disjoint
+and exhaust all continuous raw branches tending to zero.
+\end{proof}
+
+\begin{warning}[Exterior normalization]
+The defining product does not converge for \(|q|>1\).  There is therefore no
+canonical unnormalized value of \((a;q)_\infty\), and no canonical inverse at
+\(q=\infty\).  One may instead specify, for example,
+\((a;q^{-1})_\infty\) for \(|q|>1\), or a \(q\)-gamma normalization with its
+explicit powers removed.  Different choices can have different inverse
+asymptotics and must not be conflated.
+\end{warning}

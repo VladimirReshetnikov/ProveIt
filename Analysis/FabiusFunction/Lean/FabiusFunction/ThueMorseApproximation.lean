@@ -162,15 +162,6 @@ theorem iteratedPrefix_eq_approximationPolynomial_coeff_all
     _ = ((approximationPolynomial (k - 1)).coeff m : ℤ) := by
       simp [approximationPolynomialInt]
 
-/-- Positive-order compatibility form of
-`iteratedPrefix_eq_approximationPolynomial_coeff_all`.  The positivity
-hypothesis is not needed by the proof and is retained only so that the
-statement matches the source. -/
-theorem iteratedPrefix_eq_approximationPolynomial_coeff
-    (k m : ℕ) (_hk : 0 < k) (hm : m < 2 ^ k) :
-    iteratedPrefix k m = ((approximationPolynomial (k - 1)).coeff m : ℤ) :=
-  iteratedPrefix_eq_approximationPolynomial_coeff_all k m hm
-
 private theorem halfEndpointIntervalIndicator_polynomialAtom_eq_ite (n m l : ℕ) :
     halfEndpointIntervalIndicator (stepIntervalLeft n l) (stepIntervalRight n l)
         (polynomialAtomLocation n m) =
@@ -236,16 +227,6 @@ theorem correctedPrefixCoefficient_eq_stepApproximant_all
   push_cast
   have hpow : (2 : ℝ) ^ (k - 1) ≠ 0 := by positivity
   field_simp
-
-/-- Positive-order compatibility form of
-`correctedPrefixCoefficient_eq_stepApproximant_all`.  The positivity
-hypothesis is not needed by the proof and is retained only so that the
-statement matches the source. -/
-theorem correctedPrefixCoefficient_eq_stepApproximant
-    (k m : ℕ) (_hk : 0 < k) (hm : m < 2 ^ k) :
-    correctedPrefixCoefficient k m =
-      stepApproximant (k - 1) (polynomialAtomLocation (k - 1) m) :=
-  correctedPrefixCoefficient_eq_stepApproximant_all k m hm
 
 /-- The order-`n+1` corrected prefix sample at the left dyadic grid choice
 `floor(2^(n+1) x)`. -/
@@ -354,6 +335,23 @@ theorem correctedPrefixGridSample_eq_stepApproximant
   have hpow : (0 : ℝ) < (2 : ℝ) ^ (n + 1) := by positivity
   nlinarith
 
+/-- A symmetric continuity bracket at `y`: a step `d`, positive and at
+most `c`, such that `g` at both `y - d` and `y + d` lies within `ε / 2`
+of `g y`.  The cap `c` lets the caller keep `y ± d` on one side of the
+origin. -/
+private theorem exists_symmetric_bracket
+    {g : ℝ → ℝ} {y : ℝ} (hgcont : ContinuousAt g y)
+    {ε c : ℝ} (hε : 0 < ε) (hc : 0 < c) :
+    ∃ d : ℝ, 0 < d ∧ d ≤ c ∧ dist (g (y - d)) (g y) < ε / 2 ∧
+      dist (g (y + d)) (g y) < ε / 2 := by
+  rcases (Metric.continuousAt_iff.1 hgcont) (ε / 2) (by positivity) with
+    ⟨δ, hδ, hgδ⟩
+  obtain ⟨d, hd, hdδ, hdc⟩ : ∃ d : ℝ, 0 < d ∧ d < δ ∧ d ≤ c :=
+    ⟨min (δ / 2) c, lt_min (by linarith) hc,
+      (min_le_left _ _).trans_lt (by linarith), min_le_right _ _⟩
+  refine ⟨d, hd, hdc, ?_, ?_⟩ <;>
+    (apply hgδ; simpa [Real.dist_eq, abs_of_nonneg hd.le] using hdδ)
+
 /-- Abstract moving-argument squeeze for a unimodal family.  A family `f` of
 real functions that increases on `Iio 0`, decreases on `Ioi 0`, matches the
 limit at the origin, never exceeds the peak value `g 0`, and converges
@@ -373,87 +371,45 @@ theorem tendsto_moving_of_unimodal_of_tendsto
     Tendsto (fun n => f n (u n)) l (nhds (g y)) := by
   rw [Metric.tendsto_nhds]
   intro ε hε
+  -- a bracket half-width capped by `|y| / 2`, so that for `y ≠ 0` both
+  -- `y ± d` stay on the side of the origin containing `y`
+  obtain ⟨d, hd, hdy, hga, hgb⟩ := exists_symmetric_bracket hgcont hε
+    (c := if y = 0 then 1 else |y| / 2) (by
+      split_ifs with hy0
+      · exact one_pos
+      · exact half_pos (abs_pos.2 hy0))
+  have hua := (Metric.tendsto_nhds.1 hu) d hd
+  have hfa :=
+    (Metric.tendsto_nhds.1 (hpt (y - d))) (ε / 2) (by positivity)
+  have hfb :=
+    (Metric.tendsto_nhds.1 (hpt (y + d))) (ε / 2) (by positivity)
+  filter_upwards [hua, hfa, hfb] with n hun hfan hfbn
+  rw [Real.dist_eq, abs_lt] at hun hfan hfbn hga hgb ⊢
+  have hau : y - d ≤ u n := by linarith [hun.1]
+  have hub : u n ≤ y + d := by linarith [hun.2]
   rcases lt_trichotomy y 0 with hy | rfl | hy
-  · rcases (Metric.continuousAt_iff.1 hgcont) (ε / 2) (by positivity) with
-      ⟨δ, hδ, hgδ⟩
-    let d : ℝ := min (δ / 2) (-y / 2)
-    have hd : 0 < d := by
-      dsimp [d]
-      exact lt_min (by linarith) (by linarith)
-    have hdδ : d < δ := by
-      exact (min_le_left _ _).trans_lt (by linarith)
-    have hdy : d ≤ -y / 2 := min_le_right _ _
+  · rw [if_neg hy.ne, abs_of_neg hy] at hdy
     have ha0 : y - d < 0 := by linarith
     have hb0 : y + d < 0 := by linarith
-    have hga : dist (g (y - d)) (g y) < ε / 2 := by
-      apply hgδ
-      simpa [Real.dist_eq, abs_of_nonneg hd.le] using hdδ
-    have hgb : dist (g (y + d)) (g y) < ε / 2 := by
-      apply hgδ
-      simpa [Real.dist_eq, abs_of_nonneg hd.le] using hdδ
-    have hua := (Metric.tendsto_nhds.1 hu) d hd
-    have hfa := (Metric.tendsto_nhds.1 (hpt (y - d))) (ε / 2) (by positivity)
-    have hfb := (Metric.tendsto_nhds.1 (hpt (y + d))) (ε / 2) (by positivity)
-    filter_upwards [hua, hfa, hfb] with n hun hfan hfbn
-    rw [Real.dist_eq, abs_lt] at hun hfan hfbn hga hgb ⊢
-    have hau : y - d ≤ u n := by linarith [hun.1]
-    have hub : u n ≤ y + d := by linarith [hun.2]
     have hu0 : u n < 0 := lt_of_le_of_lt hub hb0
     have hlower := hfmono n ha0 hu0 hau
     have hupper := hfmono n hu0 hb0 hub
     constructor <;> linarith
-  · rcases (Metric.continuousAt_iff.1 hgcont) (ε / 2) (by positivity) with
-      ⟨δ, hδ, hgδ⟩
-    let d : ℝ := δ / 2
-    have hd : 0 < d := by dsimp [d]; positivity
-    have hdδ : d < δ := by dsimp [d]; linarith
-    have hga : dist (g (-d)) (g 0) < ε / 2 := by
-      apply hgδ
-      simpa [Real.dist_eq, abs_of_nonneg hd.le] using hdδ
-    have hgb : dist (g d) (g 0) < ε / 2 := by
-      apply hgδ
-      simpa [Real.dist_eq, abs_of_nonneg hd.le] using hdδ
-    have hua := (Metric.tendsto_nhds.1 hu) d hd
-    have hfa := (Metric.tendsto_nhds.1 (hpt (-d))) (ε / 2) (by positivity)
-    have hfb := (Metric.tendsto_nhds.1 (hpt d)) (ε / 2) (by positivity)
-    filter_upwards [hua, hfa, hfb] with n hun hfan hfbn
-    rw [Real.dist_eq, abs_lt] at hun hfan hfbn hga hgb ⊢
-    have hleft : -d < u n := by linarith [hun.1]
-    have hright : u n < d := by linarith [hun.2]
-    have hlower : g 0 - ε < f n (u n) := by
+  · have hlower : g 0 - ε < f n (u n) := by
       rcases lt_trichotomy (u n) 0 with huneg | huzero | hupos
-      · have hmono := hfmono n (neg_neg_of_pos hd) huneg hleft.le
+      · have hmono :=
+          hfmono n (by linarith : (0 : ℝ) - d < 0) huneg hau
         linarith
       · rw [huzero, hfzero n]
         linarith
-      · have hanti := hfanti n hupos hd hright.le
+      · have hanti :=
+          hfanti n hupos (by linarith : (0 : ℝ) < 0 + d) hub
         linarith
     have hupper : f n (u n) ≤ g 0 := hfle n (u n)
     constructor <;> linarith
-  · rcases (Metric.continuousAt_iff.1 hgcont) (ε / 2) (by positivity) with
-      ⟨δ, hδ, hgδ⟩
-    let d : ℝ := min (δ / 2) (y / 2)
-    have hd : 0 < d := by
-      dsimp [d]
-      exact lt_min (by linarith) (by linarith)
-    have hdδ : d < δ := by
-      exact (min_le_left _ _).trans_lt (by linarith)
-    have hdy : d ≤ y / 2 := min_le_right _ _
+  · rw [if_neg hy.ne', abs_of_pos hy] at hdy
     have ha0 : 0 < y - d := by linarith
     have hb0 : 0 < y + d := by linarith
-    have hga : dist (g (y - d)) (g y) < ε / 2 := by
-      apply hgδ
-      simpa [Real.dist_eq, abs_of_nonneg hd.le] using hdδ
-    have hgb : dist (g (y + d)) (g y) < ε / 2 := by
-      apply hgδ
-      simpa [Real.dist_eq, abs_of_nonneg hd.le] using hdδ
-    have hua := (Metric.tendsto_nhds.1 hu) d hd
-    have hfa := (Metric.tendsto_nhds.1 (hpt (y - d))) (ε / 2) (by positivity)
-    have hfb := (Metric.tendsto_nhds.1 (hpt (y + d))) (ε / 2) (by positivity)
-    filter_upwards [hua, hfa, hfb] with n hun hfan hfbn
-    rw [Real.dist_eq, abs_lt] at hun hfan hfbn hga hgb ⊢
-    have hau : y - d ≤ u n := by linarith [hun.1]
-    have hub : u n ≤ y + d := by linarith [hun.2]
     have hu0 : 0 < u n := lt_of_lt_of_le ha0 hau
     have hlower := hfanti n hu0 hb0 hub
     have hupper := hfanti n ha0 hu0 hau
@@ -603,5 +559,70 @@ theorem correctedPrefixGridSample_tendsto_fabius
     Tendsto (fun n : ℕ => correctedPrefixGridSample n (x / 2))
       atTop (nhds (fabiusReal F x)) := by
   exact correctedPrefixGridSample_tendsto_fabius_of_le_one F hF hx.2
+
+/-! ## Independence of the order and coordinate corrections
+
+The gap register's *Independent roles of the order and coordinate
+corrections* candidate: the corrected interpretation matches polynomial
+index `k - 1` with prefix row `k`
+(`iteratedPrefix_eq_approximationPolynomial_coeff_all`) *and* places
+cell `m` at the centered coordinate `(2m - g_n)/2^{n+1}`
+(`stepIntervalLeft`/`stepIntervalRight`).  The two repairs are
+independently necessary: keeping the naive order (matching `P_k` with
+row `k`) fails already in the coefficients, regardless of the
+coordinate, and keeping the naive uncentered grid coordinate fails
+already at the first cell endpoint, regardless of the order. -/
+
+/-- The naive uncentered grid coordinate: cell `m` placed at `m/2^n`,
+without the centering shift `-g_n/2^{n+1}`. -/
+noncomputable def naiveGridCoordinate (n m : ℕ) : ℝ :=
+  (m : ℝ) / 2 ^ n
+
+/-- **The naive-order failure witness**: matching `P_k` with prefix row
+`k` (instead of `P_{k-1}`) is already wrong at `k = 1`, `m = 1`, inside
+the dyadic cutoff: the row value is `0`, the coefficient is `1`.  The
+defect is purely in the coefficients, so no coordinate convention can
+repair it. -/
+theorem iteratedPrefix_ne_approximationPolynomial_coeff_same_index :
+    iteratedPrefix 1 1 ≠ ((approximationPolynomial 1).coeff 1 : ℤ) := by
+  have hs0 : thueMorseSign 0 = 1 := by
+    norm_num [thueMorseSign, binaryWeight, Nat.digits_zero]
+  have hs1 : thueMorseSign 1 = -1 := by
+    simpa [hs0] using thueMorseSign_two_mul_add_one 0
+  have hrow : iteratedPrefix 1 1 = 0 := by
+    show (∑ j ∈ Finset.range 2, iteratedPrefix 0 j) = 0
+    rw [Finset.sum_range_succ, Finset.sum_range_one, iteratedPrefix_zero,
+      iteratedPrefix_zero, hs0, hs1]
+    norm_num
+  have hp : approximationPolynomial 1 = 1 + Polynomial.X := by
+    rw [show 1 = 0 + 1 by omega, approximationPolynomial_succ]
+    simp
+  have hcoeff : (approximationPolynomial 1).coeff 1 = 1 := by
+    rw [hp]
+    simp [Polynomial.coeff_one]
+  rw [hrow, hcoeff]
+  norm_num
+
+/-- **The naive-coordinate failure witness**: the uncentered grid
+places the left endpoint of the first level-one cell at `-1/4`, while
+the corrected tiling requires `-1/2`.  The defect is purely in the
+geometry, so no order convention can repair it. -/
+theorem naiveGridCoordinate_ne_stepIntervalLeft :
+    naiveGridCoordinate 1 0 - 1 / 2 ^ 2 ≠ stepIntervalLeft 1 0 := by
+  have hdeg : approximationDegree 1 = 1 := by
+    simp [approximationDegree]
+  rw [naiveGridCoordinate, stepIntervalLeft, hdeg]
+  norm_num
+
+/-- **Neither correction alone suffices** (the register's combined
+theorem): the order correction and the centered coordinate repair
+disjoint defects.  The first conjunct fails in the coefficients alone,
+the second in the endpoints alone, so retaining either naive convention
+leaves a defect that the other correction does not touch. -/
+theorem order_and_coordinate_corrections_independent :
+    (iteratedPrefix 1 1 ≠ ((approximationPolynomial 1).coeff 1 : ℤ)) ∧
+      (naiveGridCoordinate 1 0 - 1 / 2 ^ 2 ≠ stepIntervalLeft 1 0) :=
+  ⟨iteratedPrefix_ne_approximationPolynomial_coeff_same_index,
+    naiveGridCoordinate_ne_stepIntervalLeft⟩
 
 end Fabius

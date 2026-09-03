@@ -23,6 +23,10 @@
 
 %New command to display footnote whose markers will always be hidden
 \let\svthefootnote\thefootnote
+% Canonical project-wide mathematical notation.
+\input{../../fabius-notation.tex}
+% HISTORICAL-NOTATION-SCOPE: source-faithful paper transcription; original
+% notation is interpreted by the catalogue and is not normative project prose.
 \newcommand\blfootnotetext[1]{%
   \let\thefootnote\relax\footnote{#1}%
   \addtocounter{footnote}{-1}%
@@ -125,9 +129,9 @@ The main results of this paper are the following. (Throughout the rest of this p
 % $\pi/\sqrt{2\log 2}$.  The error originates in equation (4.5) of this paper,
 % which evaluates the variance functional (2.9) without the Parseval factor
 % 1/2 (giving $\pi^2/2$ instead of the correct $\pi^2/4$).  See the audit
-% docs/non-formalized-research-frontiers/drafts/rvachev_up_fourier_decay/
-% Rvachev_Up_Fourier_Decay_Comparative_Audit/ (Theorem "exact variance" and
-% Finding "erratum-level correction").  A corrected critical edition of the
+% canonical article docs/semi-formalized-research-frontiers/drafts/
+% rvachev_up_fourier_decay/Rvachev_Up_Fourier_Decay/ (Theorem "exact variance"
+% and subsection "The normalization error in the published theorem").  A corrected critical edition of the
 % whole paper is maintained alongside this transcription as
 % AIF_2017__67_2_637_0-corrected.tex.
 Theorem 1.1. - Let $\left(n_{k}\right)_{k \geqslant 1}$ be the sequence of evil numbers, sorted in increasing order, and let $h \neq 0$ be an integer. Let $\varepsilon>0$ be arbitrary. Then for almost all $\alpha \in(0,1)$ we have

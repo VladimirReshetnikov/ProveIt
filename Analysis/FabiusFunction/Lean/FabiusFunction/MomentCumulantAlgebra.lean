@@ -1,4 +1,6 @@
 import FabiusFunction.SaddleLogExpansionAlgebra
+import Mathlib.Algebra.BigOperators.Intervals
+import Mathlib.Algebra.Order.Interval.Finset.SuccPred
 
 /-!
 # Moment--cumulant algebra
@@ -28,6 +30,9 @@ one and cumulants have zeroth term zero.
 * `completeBellPolynomial_factorialDenormalize` and
   `momentCumulant_factorialDenormalize` connect these exponential-generating
   transforms directly to the ordinary `expCoeff` and `logCoeff` recurrences.
+* `factorialNormalize_completeBellPolynomial` and
+  `factorialNormalize_momentCumulant` expose the same connection in the
+  normalization-first direction.
 * `completeBellPolynomial_momentCumulant` and
   `momentCumulant_completeBellPolynomial` are the unconditional all-index
   inverse formulas.
@@ -35,6 +40,8 @@ one and cumulants have zeroth term zero.
   `momentCumulant_completeBellPolynomial_of_zero_eq_zero` are the corresponding
   function-level inverse laws for normalized moment and cumulant sequences.
 * `completeBellPolynomial_succ` is the classical complete Bell recurrence.
+* `momentCumulant_succ_recurrence` and `momentCumulant_recurrence` are its
+  corresponding normalized-moment forms.
 * `map_completeBellPolynomial` and `map_momentCumulant` express functoriality
   under morphisms of commutative rational algebras.
 -/
@@ -94,6 +101,26 @@ coefficient of degree `n` in the formal logarithm of
 `1 + ∑ j ≥ 1, μ_j X^j / j!`; the supplied value `μ 0` is irrelevant. -/
 def momentCumulant (μ : ℕ → R) (n : ℕ) : R :=
   factorialDenormalize (logCoeff (factorialNormalize μ)) n
+
+/-- Normalizing a complete Bell transform recovers its ordinary exponential
+coefficient family. -/
+@[simp]
+theorem factorialNormalize_completeBellPolynomial (κ : ℕ → R) :
+    factorialNormalize (completeBellPolynomial κ) =
+      expCoeff (factorialNormalize κ) := by
+  change factorialNormalize
+      (factorialDenormalize (expCoeff (factorialNormalize κ))) = _
+  exact factorialNormalize_factorialDenormalize _
+
+/-- Normalizing a moment--cumulant transform recovers the ordinary formal
+logarithmic coefficient family. -/
+@[simp]
+theorem factorialNormalize_momentCumulant (μ : ℕ → R) :
+    factorialNormalize (momentCumulant μ) =
+      logCoeff (factorialNormalize μ) := by
+  change factorialNormalize
+      (factorialDenormalize (logCoeff (factorialNormalize μ))) = _
+  exact factorialNormalize_factorialDenormalize _
 
 /-- Applying the complete Bell transform to a factorially denormalized
 ordinary exponent sequence is exactly factorial denormalization of the
@@ -254,6 +281,31 @@ theorem momentCumulant_completeBellPolynomial_of_zero_eq_zero
   · subst n
     simpa using hκ.symm
   · simp [hn]
+
+/-- The classical moment--cumulant recurrence in successor form:
+`mu_(n+1) = ∑ j ≤ n, choose(n,j) * kappa_(j+1) * mu_(n-j)`. -/
+theorem momentCumulant_succ_recurrence
+    (μ : ℕ → R) (hμ0 : μ 0 = 1) (n : ℕ) :
+    μ (n + 1) =
+      ∑ j ∈ Finset.range (n + 1),
+        (n.choose j : R) * momentCumulant μ (j + 1) * μ (n - j) := by
+  have h := completeBellPolynomial_succ (momentCumulant μ) n
+  rw [completeBellPolynomial_momentCumulant_of_zero_eq_one μ hμ0] at h
+  exact h
+
+/-- The classical moment--cumulant recurrence indexed by the cumulant order:
+`mu_N = ∑ k in [1,N], choose(N-1,k-1) * kappa_k * mu_(N-k)`. -/
+theorem momentCumulant_recurrence
+    (μ : ℕ → R) (hμ0 : μ 0 = 1)
+    (N : ℕ) (hN : 1 ≤ N) :
+    μ N =
+      ∑ k ∈ Finset.Icc 1 N,
+        (Nat.choose (N - 1) (k - 1) : R) *
+          momentCumulant μ k * μ (N - k) := by
+  obtain ⟨n, rfl⟩ :=
+    Nat.exists_eq_succ_of_ne_zero (by omega : N ≠ 0)
+  rw [← Finset.Ico_add_one_right_eq_Icc, Finset.sum_Ico_eq_sum_range]
+  simpa [add_comm] using momentCumulant_succ_recurrence μ hμ0 n
 
 /-- The complete Bell transform commutes with morphisms of commutative
 rational algebras. -/
