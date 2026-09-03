@@ -62,7 +62,34 @@ This `README.md` is the permanent explanation of the directory and
 **must not be deleted** — it also keeps the directory present in git
 when no archives are waiting.
 
-Most recent processed batch (all filed and removed on 2026-09-01):
+Most recent processed batch (all filed and removed on 2026-09-03):
+
+- `Asymptotic_Inversion_Gamma_Barnes_G.zip` became
+  `../series-and-transseries/special-function-inversion/Asymptotic_Inversion_Gamma_Barnes_G/`:
+  2,376-line/83,252-byte source, 29-page A4/646,225-byte PDF.
+- `inverse_k_function_transseries.zip` became
+  `../series-and-transseries/special-function-inversion/inverse_k_function_transseries/`:
+  2,259-line/66,867-byte source, 29-page A4/349,822-byte PDF.
+- `inverse_subfactorial_transseries.zip` became
+  `../series-and-transseries/special-function-inversion/inverse_subfactorial_transseries/`:
+  2,631-line/95,404-byte source, 38-page A4/688,626-byte PDF.
+
+These three archives landed together in commit `5a453e1dc`.  Each contained
+exactly one `.tex` and one `.pdf` at top level with no wrapping directory, so
+the destination directory was created at filing; none included a checksum
+ledger, and none was added.  Every archive passed a CRC check and carried no
+absolute path, parent-directory traversal, or symlink entry.  All three sources
+were already LF with a final newline, so no normalization was applied and the
+filed bytes are exactly the submitted bytes.  All three PDFs are readable and
+unencrypted, produced by pdfTeX-1.40.26 at PDF version 1.7, with every font row
+embedded and no Type 3 font; all three are A4, which is canonical, and two of
+the three carry Libertinus faces — `inverse_k_function_transseries` does not,
+which is the only styling debt recorded against this batch.  None of the three
+loads `docs/fabius-notation.tex`.  Comparison, deduplication, proof checking,
+numerical reproduction, editorial consolidation, and Lean crosswalking were all
+deferred at intake and have not been carried out.
+
+The preceding processed batch (all filed and removed on 2026-09-01):
 
 - `Polynomial-Logarithmic-Transseries-1/` became
   `../series-and-transseries/polynomial-logarithmic-transseries/Polynomial-Logarithmic-Transseries-1/`:
