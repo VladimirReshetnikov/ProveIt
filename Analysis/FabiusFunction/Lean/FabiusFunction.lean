@@ -713,6 +713,7 @@ import FabiusFunction.ThueMorseQPochhammer
 import FabiusFunction.ThueMorseEulerFunction
 import FabiusFunction.LambertWAnalytic
 import FabiusFunction.MixedDifferenceForwardDiff
+import FabiusFunction.GeometricProuhetBlock
 import FabiusFunction.GeneralLinearThueMorseSum
 
 set_option autoImplicit false
