@@ -1,4 +1,5 @@
 import FabiusFunction.IntervalParseval
+import FabiusFunction.IntSumFolding
 import FabiusFunction.RvachevHalfIntegerEnergy
 import FabiusFunction.LambertWElementaryBounds
 import FabiusFunction.LambertWLowerBranchLogBounds
