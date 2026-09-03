@@ -83,7 +83,7 @@ theorem sum_exp_neg_two_pi_I_mul (N : ℕ) [NeZero N] (S : ℤ) :
 
 /-- The Ramanujan sum over the odd residues `r = 2s + 1` modulo `2N`:
 `c_{2N}(S) = ∑_{s<N} e^{-πi (2s+1) S/N}`. -/
-noncomputable def ramanujanOddSum (N : ℕ) (S : ℤ) : ℂ :=
+noncomputable def ramanujanOddSum (N : ℕ) [NeZero N] (S : ℤ) : ℂ :=
   ∑ s : ZMod N, Complex.exp (-(Real.pi * Complex.I * (2 * (s.val : ℂ) + 1) * S / N))
 
 /-- **`p1:eq:Ramanujan-power-two`**, for every `N ≥ 1`:

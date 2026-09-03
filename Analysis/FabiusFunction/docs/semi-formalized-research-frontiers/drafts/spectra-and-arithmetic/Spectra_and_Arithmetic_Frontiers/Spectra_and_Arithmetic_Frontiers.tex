@@ -879,10 +879,11 @@ statements are
 \path{Fabius.sum_intResidueTsum},
 \path{Fabius.dft_intResidueTsum}, and
 \path{Fabius.intResidueTsum_eq_dft_average}, all in
-\path{SummableCyclicAlias.lean}.  This foundation does not by itself prove
-\eqref{p1:eq:alias-identity}: that specialization still requires inserting the
+\path{SummableCyclicAlias.lean}.  That specialization --- inserting the
 absolutely convergent Fourier series of \(P\) and identifying its finite DFT
-with the sampled values \(A_{n,r}\).
+with the sampled values \(A_{n,r}\) --- is now carried out in
+\path{HalfIntegerAliasIdentity.lean}; see the Lean status after
+\cref{p1:thm:alias-identity}.
 
 \subsection{Folded coefficients}
 
@@ -943,6 +944,28 @@ $\RvachevUp(j/N)=1-\FabiusBounded(j/N)$.  Since $r$ is odd,
 which yields \eqref{p1:eq:A-F-DCT}.
 \end{proof}
 
+\paragraph{Lean status.}
+The boxed identity \eqref{p1:eq:alias-identity} is formal, in
+\path{HalfIntegerAliasIdentity.lean}, and for every modulus: with
+\path{Fabius.periodizedUp} the two-periodization, \path{Fabius.gridSample} its sample
+vector on \(\IntegerNumbers/2N\IntegerNumbers\), and \path{Fabius.foldedCoefficient}
+the coefficient \(A_{N,r}=N^{-1}\,\mathcal D_{2N}(\text{samples})(r)\) in Mathlib's DFT
+normalization, \path{Fabius.foldedCoefficient_eq_tsum} is
+\(A_{N,r}=\sum_{q\in\IntegerNumbers}\PhiU(qN+r/2)\) for every \(N\ge1\) and every residue
+\(r\) modulo \(2N\) --- neither \(N=2^n\) nor the oddness of \(r\) is used.  The proof is
+the one above, carried out as a chain of rewrites: sampling the period-two Fourier series
+\path{Fabius.rvachev_even_translate_fourier} at \(j/N\) turns \(\EulerE^{\pi\ImaginaryUnit
+kj/N}\) into the standard character of \(\IntegerNumbers/2N\IntegerNumbers\)
+(\path{Fabius.exp_pi_mul_I_eq_stdAddChar}), so the sample vector is \(\tfrac12\) times
+the bilateral Fourier sums of \path{SummableCyclicAlias.lean} at \(-j\)
+(\path{Fabius.gridSample_eq}); the DFT of those sums is the residue-class sums
+(\path{Fabius.dft_intResidueTsum}), and two Mathlib identities, \path{ZMod.dft_comp_neg}
+and \path{ZMod.dft_dft}, give \(\mathcal D_{2N}(\text{samples})=N\cdot\mathcal R_\bullet\)
+(\path{Fabius.dft_gridSample}).  The residue class is finally re-indexed as the affine
+line \(q\mapsto2Nq+r\) (\path{Fabius.residueClassEquiv}).  The two cosine displays
+\eqref{p1:eq:A-Up-DCT}--\eqref{p1:eq:A-F-DCT}, which pair \(j\) with \(2N-j\) and use
+\(P=\RvachevUp\) on \([0,1]\), are not separately formalized.
+
 \subsection{Exact inverse transform}
 
 \begin{theorem}[Dyadic spectral reconstruction]\label{p1:thm:inverse-DCT}
@@ -971,6 +994,18 @@ $A_{n,2N-r}=A_{n,r}$.  Pairing the odd frequencies gives
 \eqref{p1:eq:inverse-DCT}.
 \end{proof}
 
+\paragraph{Lean status.}
+The three facts the proof uses are formal in \path{HalfIntegerAliasIdentity.lean}, for every
+\(N\ge1\): the inverse transform in complex form,
+\(P(j/N)=\tfrac12\sum_{r\in\IntegerNumbers/2N\IntegerNumbers}A_{N,r}\chi_{2N}(rj)\)
+(\path{Fabius.gridSample_eq_sum_foldedCoefficient}, from Mathlib's \path{ZMod.dft_dft});
+\(A_{N,0}=1\) (\path{Fabius.foldedCoefficient_zero}); the vanishing of every nonzero even
+mode, \(A_{N,2s}=0\) for \(0<s<N\) (\path{Fabius.foldedCoefficient_two_mul_eq_zero}, since
+each alias point \(qN+s\) is a nonzero integer, where \(\FourierTwoPi{\RvachevUp}\) vanishes);
+and the symmetry \(A_{N,-r}=A_{N,r}\) (\path{Fabius.foldedCoefficient_neg}, from the
+evenness of \(\FourierTwoPi{\RvachevUp}\)).  The final pairing of \(r\) with \(2N-r\) into the
+cosine form \eqref{p1:eq:inverse-DCT} is not separately formalized.
+
 \begin{corollary}[Exact discrete energy identity]\label{p1:cor:discrete-energy}
 One has
 \begin{equation}\label{p1:eq:discrete-energy}
@@ -987,6 +1022,19 @@ Apply finite Parseval to \eqref{p1:eq:inverse-DCT}.  The constant mode contribut
 $1/4$, and each nonconstant cosine has mean square $1/2$ on the length-$2N$
 grid.  Use $P(0)=1$, $P(1)=0$, and symmetry of the remaining samples.
 \end{proof}
+
+\paragraph{Lean status.}
+The energy identity is formal before the odd/even split and the sample pairing:
+\path{Fabius.sum_foldedCoefficient_sq} in \path{HalfIntegerAliasIdentity.lean} gives
+\(\sum_{r\in\IntegerNumbers/2N\IntegerNumbers}A_{N,r}^2=\tfrac2N\sum_{j<2N}P(j/N)^2\)
+for every \(N\ge1\).  It rests on a Parseval-type identity for Mathlib's DFT on
+\(\IntegerNumbers/M\IntegerNumbers\) proved for every vector \(\Phi\),
+\(\sum_r\mathcal D\Phi(r)\,\mathcal D\Phi(-r)=M\sum_j\Phi(j)^2\)
+(\path{Fabius.sum_dft_mul_dft_neg}, from \path{ZMod.dft_apply} and \path{ZMod.dft_dft} alone),
+combined with the symmetry \path{Fabius.foldedCoefficient_neg}.  Restricting the left side
+to odd \(r<N\) (the even modes vanish, \path{Fabius.foldedCoefficient_two_mul_eq_zero}, and
+\(A_{N,0}=1\)) and folding the right side with \(P(0)=1\), \(P(1)=0\) produces the displayed
+\eqref{p1:eq:discrete-energy}; that bookkeeping is not separately formalized.
 
 \begin{remark}[Continuous limit]
 As $n\to\infty$, the right side of \eqref{p1:eq:discrete-energy} tends
