@@ -112,19 +112,23 @@ def oddTwoPowEquiv : ℕ × ℕ ≃ ℕ where
       rw [Nat.factorization_mul hne hpow, Finsupp.add_apply,
         Nat.factorization_eq_zero_of_not_dvd hodd,
         Nat.factorization_pow_self Nat.prime_two, zero_add]
-    have hcompl : ordCompl[2] ((2 * k + 1) * 2 ^ j) = 2 * k + 1 := by
-      rw [hfac]
-      exact Nat.mul_div_cancel _ (Nat.two_pow_pos j)
+    have hdiv : (2 * k + 1) * 2 ^ j / 2 ^ j = 2 * k + 1 :=
+      Nat.mul_div_cancel _ (Nat.two_pow_pos j)
     have hk : (2 * k + 1 - 1) / 2 = k := by omega
     show ((ordCompl[2] ((2 * k + 1) * 2 ^ j - 1 + 1) - 1) / 2,
         ((2 * k + 1) * 2 ^ j - 1 + 1).factorization 2) = (k, j)
-    rw [h1, hcompl, hfac, hk]
+    rw [h1, hfac, hdiv, hk]
   right_inv n := by
     have hne : n + 1 ≠ 0 := Nat.succ_ne_zero n
     have hodd : ¬ (2 ∣ ordCompl[2] (n + 1)) :=
       Nat.not_dvd_ordCompl Nat.prime_two hne
     have hmod : ordCompl[2] (n + 1) % 2 = 1 := Nat.two_dvd_ne_zero.mp hodd
+    -- `omega` handles `/` and `%` by numerals, but only once the odd part is an
+    -- opaque variable: left as the compound `(n+1) / 2 ^ (n+1).factorization 2`
+    -- it loses track of the atom's nonnegativity.
     have hc : 2 * ((ordCompl[2] (n + 1) - 1) / 2) + 1 = ordCompl[2] (n + 1) := by
+      obtain ⟨x, hx⟩ : ∃ x, ordCompl[2] (n + 1) = x := ⟨_, rfl⟩
+      rw [hx] at hmod ⊢
       omega
     have key : (2 * ((ordCompl[2] (n + 1) - 1) / 2) + 1) *
         2 ^ ((n + 1).factorization 2) = n + 1 := by

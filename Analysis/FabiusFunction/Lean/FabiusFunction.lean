@@ -709,6 +709,7 @@ import FabiusFunction.FabiusDyadicGaussianForm
 import FabiusFunction.FabiusGeneralLinearDenominator
 import FabiusFunction.ThueMorseComplexHalfAngle
 import FabiusFunction.ThueMorseQPochhammer
+import FabiusFunction.ThueMorseEulerFunction
 import FabiusFunction.GeneralLinearThueMorseSum
 
 set_option autoImplicit false
