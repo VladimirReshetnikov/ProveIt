@@ -147,6 +147,7 @@ import FabiusFunction.LacunaryProductToSum
 import FabiusFunction.LogSeriesMultiplicative
 import FabiusFunction.BaseLayerRegrouping
 import FabiusFunction.ShellEnvelopeExplicit
+import FabiusFunction.ThueMorseSinhProduct
 import FabiusFunction.RvachevFourierDecay
 import FabiusFunction.BoundednessSkeleton
 import FabiusFunction.TransferOperatorStep
