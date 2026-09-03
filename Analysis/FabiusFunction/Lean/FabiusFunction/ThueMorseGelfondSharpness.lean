@@ -44,15 +44,20 @@ namespace Fabius
 noncomputable def gelfondRoot : ℂ :=
   Complex.exp (((2 * Real.pi / 3 : ℝ) : ℂ) * Complex.I)
 
+/-- The Gelfond frequency is a primitive cube root of unity: `w^3 = 1`. -/
 theorem gelfondRoot_pow_three : gelfondRoot ^ 3 = 1 := by
   rw [gelfondRoot, ← Complex.exp_nat_mul, ← Complex.exp_two_pi_mul_I]
   congr 1
   push_cast
   ring
 
+/-- The Gelfond frequency lies on the unit circle. -/
 theorem norm_gelfondRoot : ‖gelfondRoot‖ = 1 :=
   Complex.norm_exp_ofReal_mul_I _
 
+/-- The Gelfond frequency is not the trivial cube root: together with
+`gelfondRoot_pow_three` this makes it primitive, which is what the
+sharpness argument needs. -/
 theorem gelfondRoot_ne_one : gelfondRoot ≠ 1 := by
   intro h
   have him := congrArg Complex.im h

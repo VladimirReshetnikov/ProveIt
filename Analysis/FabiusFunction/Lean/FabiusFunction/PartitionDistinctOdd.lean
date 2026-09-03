@@ -40,11 +40,17 @@ def distinctVectors (N n : ℕ) : Finset (Fin N → ℕ) :=
 def oddVectors (N n : ℕ) : Finset (Fin N → ℕ) :=
   (multiplicityVectors N n).filter fun m => ∀ k : Fin N, Even ((k : ℕ) + 1) → m k = 0
 
+/-- For `n ≤ N` a partition of `n` is determined by its multiplicity vector on `{1, …, N}`:
+`partMultiplicity N` is injective.  This is the injectivity half of
+`partitionEquivMultiplicity`, and it is what the `Finset.card_bij` proofs below need. -/
 theorem partMultiplicity_injective {n N : ℕ} (hN : n ≤ N) :
     Function.Injective (partMultiplicity (n := n) N) := by
   intro p p' h
   exact (partitionEquivMultiplicity n N hN).injective (Subtype.ext h)
 
+/-- Reading the multiplicities back off the partition built from `m` returns `m`:
+`partitionOfMultiplicity` is a right inverse of `partMultiplicity N`.  This supplies the
+surjectivity witness in `card_distincts_eq` and `card_odds_eq`. -/
 theorem partMultiplicity_partitionOfMultiplicity (n : ℕ) {N : ℕ} (m : Fin N → ℕ)
     (h : ∑ k : Fin N, ((k : ℕ) + 1) * m k = n) :
     partMultiplicity N (partitionOfMultiplicity n m h) = m := by
@@ -52,6 +58,10 @@ theorem partMultiplicity_partitionOfMultiplicity (n : ℕ) {N : ℕ} (m : Fin N 
   show (partitionOfMultiplicity n m h).parts.count ((k : ℕ) + 1) = m k
   rw [partitionOfMultiplicity_parts, count_multisetOfMultiplicity]
 
+/-- A vector `m : Fin N → ℕ` only ever produces parts `1, …, N`, so a part `j + 1` beyond the
+alphabet occurs with multiplicity `0`.  This is the `j ≥ N` companion of
+`count_multisetOfMultiplicity`; the `Nodup` check in `card_distincts_eq` runs over all part
+sizes, not just those below `N`. -/
 theorem count_multisetOfMultiplicity_of_ge {N : ℕ} (m : Fin N → ℕ) {j : ℕ} (hj : N ≤ j) :
     (multisetOfMultiplicity m).count (j + 1) = 0 := by
   rw [Multiset.count_eq_zero]
@@ -228,11 +238,16 @@ theorem hasSum_card_oddVectors {q : 𝕜} (hq : ‖q‖ < 1) (N : ℕ) :
 /-! ### The finite products -/
 
 omit [CompleteSpace 𝕜] in
+/-- The distinct-parts product with parts at most `N` is `(-q;q)_N`:
+`∏_{k<N} (1 + q^{k+1}) = (-q;q)_N`, since the `j`-th factor `1 - (-q) q^j` of the finite
+q-Pochhammer product is `1 + q^{j+1}`. -/
 theorem prod_one_add_pow_succ (q : 𝕜) (N : ℕ) :
     ∏ k : Fin N, (1 + q ^ ((k : ℕ) + 1)) = finiteQPochhammerIn (-q) q N := by
   rw [finiteQPochhammerIn, ← Fin.prod_univ_eq_prod_range (fun j => 1 - -q * q ^ j) N]
   exact prod_congr rfl fun k _ => by simp only [neg_mul, sub_neg_eq_add, pow_succ']
 
+/-- Pairing consecutive factors: `∏_{k<2n} f k = ∏_{j<n} f(2j) f(2j+1)`.  This is what splits
+a product over the parts `1, …, 2M` into its odd and even halves in `prod_odd_inv`. -/
 theorem prod_range_two_mul {M : Type*} [CommMonoid M] (f : ℕ → M) (n : ℕ) :
     ∏ k ∈ range (2 * n), f k = ∏ j ∈ range n, (f (2 * j) * f (2 * j + 1)) := by
   induction n with
@@ -306,11 +321,19 @@ def distinctCount (n : ℕ) : ℕ := (Nat.Partition.distincts n).card
 /-- `o(n)`: the number of partitions of `n` into odd parts. -/
 def oddCount (n : ℕ) : ℕ := (Nat.Partition.odds n).card
 
+/-- `d(n) ≤ p(n)`: the partitions into distinct parts form a subset of all partitions of `n`.
+This is the coefficient bound that makes `∑ p(n) ‖q‖^n` a majorant for the distinct-parts
+series. -/
 theorem distinctCount_le (n : ℕ) : distinctCount n ≤ partitionCount n := card_le_univ _
 
+/-- `o(n) ≤ p(n)`: the partitions into odd parts form a subset of all partitions of `n`, the
+majorant bound used for the odd-parts series. -/
 theorem oddCount_le (n : ℕ) : oddCount n ≤ partitionCount n := card_le_univ _
 
 omit [CompleteSpace 𝕜] in
+/-- `‖(n : 𝕜)‖ ≤ n` for a natural number `n`: Mathlib's `Nat.norm_cast_le` with the factor
+`‖1‖ = 1` cleared away.  It converts the norm of an integer coefficient in `𝕜` into the real
+counting bound needed for the dominated-convergence estimates below. -/
 theorem norm_natCast_le' (n : ℕ) : ‖(n : 𝕜)‖ ≤ n := by
   have := Nat.norm_cast_le (α := 𝕜) n
   rwa [norm_one, mul_one] at this

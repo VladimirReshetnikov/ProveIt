@@ -1,4 +1,5 @@
 import FabiusFunction.CombFirstDefect
+import FabiusFunction.DyadicCombTrapezoid
 
 /-!
 # The defect Fourier series of the shifted monomial combs
@@ -256,14 +257,7 @@ theorem tsum_monomial_eq_integral_of_odd_deg (F : BoundedFabius)
         exact hpar
       · rw [if_neg (fun hc => hℓ (odd_neg.mp hc)), if_neg hℓ,
           neg_zero]
-    have hswap : ∑' ℓ : ℤ, f (-ℓ) = ∑' ℓ : ℤ, f ℓ :=
-      (Equiv.neg ℤ).tsum_eq f
-    have hminus : ∑' ℓ : ℤ, f (-ℓ) = -∑' ℓ : ℤ, f ℓ := by
-      calc ∑' ℓ : ℤ, f (-ℓ) = ∑' ℓ : ℤ, -(f ℓ) := tsum_congr hneg
-        _ = -∑' ℓ : ℤ, f ℓ := tsum_neg
-    have hTT : ∑' ℓ : ℤ, f ℓ = -∑' ℓ : ℤ, f ℓ :=
-      hswap.symm.trans hminus
-    exact add_self_eq_zero.mp (eq_neg_iff_add_eq_zero.mp hTT)
+    exact tsum_int_eq_zero_of_neg hneg
   rw [hT] at h
   exact sub_eq_zero.mp h
 

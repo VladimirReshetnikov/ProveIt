@@ -36,12 +36,22 @@ def baileyChainBeta (a q : K) (β : ℕ → K) : ℕ → ℕ → K
   | t + 1, n => ∑ j ∈ range (n + 1),
       a ^ j * q ^ (j * j) / finiteQPochhammerIn q q (n - j) * baileyChainBeta a q β t j
 
+/-- Zero iterations leave `α` alone: `α^{(0)}_n = a^0 q^0 α_n = α_n`, so `α^{(0)} = α` as
+functions.  Together with `baileyChainBeta_zero` this is the base case of the induction in
+`IsBaileyPair.chain`. -/
 @[simp] theorem baileyChainAlpha_zero (a q : K) (α : ℕ → K) : baileyChainAlpha a q α 0 = α := by
   funext n
   simp [baileyChainAlpha]
 
+/-- Zero iterations leave `β` alone: `β^{(0)} = β`, the first branch of the recursion defining
+`baileyChainBeta`, hence true by `rfl`. -/
 @[simp] theorem baileyChainBeta_zero (a q : K) (β : ℕ → K) : baileyChainBeta a q β 0 = β := rfl
 
+/-- One step of the chain, in rewritable form:
+`β^{(t+1)}_n = ∑_{j ≤ n} a^j q^{j²} β^{(t)}_j / (q;q)_{n-j}`.  This is the second branch of the
+recursion defining `baileyChainBeta` (so again `rfl`), stated as an equation between terms rather
+than between the two functions, which is the shape needed to unfold a single application of the
+finite limiting Bailey lemma inside a proof. -/
 theorem baileyChainBeta_succ (a q : K) (β : ℕ → K) (t n : ℕ) :
     baileyChainBeta a q β (t + 1) n = ∑ j ∈ range (n + 1),
       a ^ j * q ^ (j * j) / finiteQPochhammerIn q q (n - j) * baileyChainBeta a q β t j := rfl

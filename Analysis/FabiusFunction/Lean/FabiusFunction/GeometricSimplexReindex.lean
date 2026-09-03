@@ -26,11 +26,17 @@ namespace Fabius
 /-- The prefix sums `j_h = ∑_{k ≤ h} (i_k + 1)` of a sequence of increments. -/
 def prefixSum {ℓ : ℕ} (i : Fin ℓ → ℕ) (h : Fin ℓ) : ℕ := ∑ k, if k ≤ h then i k + 1 else 0
 
+/-- Base case of the parametrization: `j_1 = i_0 + 1`, since `k = 0` is the only index with
+`k ≤ 0` and so the only one contributing to the prefix sum at `h = 0`. -/
 theorem prefixSum_zero {ℓ : ℕ} (i : Fin (ℓ + 1) → ℕ) : prefixSum i 0 = i 0 + 1 := by
   unfold prefixSum
   rw [Fin.sum_univ_succ, if_pos le_rfl,
     sum_eq_zero fun k _ => if_neg (not_le.mpr (Fin.succ_pos k)), add_zero]
 
+/-- Recurrence for the parametrization: `j_{h+1} = j_h + (i_{h+1} + 1)`.  Passing from `h` to
+`h + 1` enlarges the index set `{k | k ≤ h}` by the single index `h + 1`, whose summand is
+`i_{h+1} + 1`.  Together with `prefixSum_zero` this determines `prefixSum` recursively, and it is
+the source of both the strict monotonicity and the injectivity below. -/
 theorem prefixSum_succ {ℓ : ℕ} (i : Fin (ℓ + 1) → ℕ) (h : Fin ℓ) :
     prefixSum i h.succ = prefixSum i h.castSucc + (i h.succ + 1) := by
   unfold prefixSum
@@ -51,6 +57,9 @@ theorem prefixSum_succ {ℓ : ℕ} (i : Fin (ℓ + 1) → ℕ) (h : Fin ℓ) :
   rw [sum_add_distrib, sum_ite_eq' univ h.succ]
   simp
 
+/-- Every prefix sum is positive: `1 ≤ i_h + 1 ≤ j_h`, because the summands are nonnegative and
+the index `k = h` already contributes `i_h + 1`.  This is the `1 ≤ j_1` half of the constraint
+`1 ≤ j_1 < ⋯ < j_ℓ` describing the range of `prefixSum`. -/
 theorem prefixSum_pos {ℓ : ℕ} (i : Fin ℓ → ℕ) (h : Fin ℓ) : 0 < prefixSum i h := by
   unfold prefixSum
   refine lt_of_lt_of_le (Nat.succ_pos (i h)) ?_
@@ -58,16 +67,28 @@ theorem prefixSum_pos {ℓ : ℕ} (i : Fin ℓ → ℕ) (h : Fin ℓ) : 0 < pref
     (fun _ _ => by positivity) (mem_univ h)
   simpa using this
 
+/-- Consecutive prefix sums increase strictly, `j_h < j_{h+1}`: by `prefixSum_succ` they differ by
+`i_{h+1} + 1 ≥ 1`.  The `+ 1` in the increments `i_h + 1` is exactly what turns a weakly increasing
+parametrization into a strictly increasing one. -/
 theorem prefixSum_castSucc_lt_succ {ℓ : ℕ} (i : Fin (ℓ + 1) → ℕ) (h : Fin ℓ) :
     prefixSum i h.castSucc < prefixSum i h.succ := by
   rw [prefixSum_succ]
   omega
 
+/-- The prefix sums form a strictly increasing sequence `j_1 < ⋯ < j_ℓ`, upgraded from the
+one-step bound `prefixSum_castSucc_lt_succ` by `Fin.strictMono_iff_lt_succ` (the case `ℓ = 0` is
+vacuous).  With `prefixSum_pos` this shows every `prefixSum i` lies in the strictly increasing
+positive sequences, which is one inclusion of the range computation in
+`hasSum_geometric_simplex`. -/
 theorem prefixSum_strictMono {ℓ : ℕ} (i : Fin ℓ → ℕ) : StrictMono (prefixSum i) := by
   rcases ℓ with _ | ℓ
   · exact fun a => a.elim0
   · exact Fin.strictMono_iff_lt_succ.mpr fun h => prefixSum_castSucc_lt_succ i h
 
+/-- The increments are recoverable from the prefix sums, so `i ↦ prefixSum i` is injective on
+`Fin ℓ → ℕ`.  Induction on `h`: `prefixSum_zero` recovers `i_0` from `j_1`, and `prefixSum_succ`
+recovers `i_{h+1}` from the difference `j_{h+1} - j_h` once the earlier increments agree.  This is
+what lets the sum over increments be transported to a sum over strictly increasing sequences. -/
 theorem prefixSum_injective {ℓ : ℕ} : Function.Injective (prefixSum (ℓ := ℓ)) := by
   rcases ℓ with _ | ℓ
   · intro i i' _
@@ -87,6 +108,11 @@ theorem prefixSum_injective {ℓ : ℕ} : Function.Injective (prefixSum (ℓ := 
       rw [h2] at h1
       omega
 
+/-- Every strictly increasing positive sequence `1 ≤ j_1 < ⋯ < j_ℓ` is a sequence of prefix sums:
+take the increments `i_0 = j_1 - 1` and `i_{h+1} = j_{h+1} - j_h - 1`, which are genuine naturals
+precisely because `j` is positive and strictly increasing.  Together with `prefixSum_strictMono`
+and `prefixSum_pos` this identifies the range of `prefixSum` with the strictly increasing positive
+sequences. -/
 theorem prefixSum_surjective {ℓ : ℕ} (j : Fin ℓ → ℕ) (hj : StrictMono j) (hpos : ∀ h, 0 < j h) :
     ∃ i, prefixSum i = j := by
   rcases ℓ with _ | ℓ

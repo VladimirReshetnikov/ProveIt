@@ -42,6 +42,7 @@ namespace Fabius
 def binaryWeightTotal (N : ℕ) : ℕ :=
   ∑ n ∈ range N, binaryWeight n
 
+/-- The empty running total is zero: `S(0) = 0`. -/
 @[simp] theorem binaryWeightTotal_zero : binaryWeightTotal 0 = 0 := by
   simp [binaryWeightTotal]
 
