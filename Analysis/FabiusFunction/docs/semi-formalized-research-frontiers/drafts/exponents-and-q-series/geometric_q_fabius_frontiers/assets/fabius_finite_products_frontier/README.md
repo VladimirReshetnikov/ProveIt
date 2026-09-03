@@ -1,3 +1,13 @@
+> **Absorbed into the consolidated volume.**
+> This directory is the preserved verification package of a report that is now
+> **Part V** of `geometric_q_fabius_frontiers.tex`, two levels up. The
+> report's own `.tex` and `.pdf` were deleted when it was merged; git history
+> is the archive, and the volume's Provenance section pins the absorbed
+> snapshot by SHA-256. The scripts, data, and figures here are still live —
+> the volume includes them from `assets/fabius_finite_products_frontier/`. Any build or path
+> instruction below describes the original standalone package and no longer
+> resolves as written.
+
 # Finite dyadic sinc products and Rvachev spline approximants
 
 This archive accompanies **Finite Dyadic Sinc Products and Exact Transport Geometry: Piecewise-polynomial approximants to Rvachev's up-function**.
