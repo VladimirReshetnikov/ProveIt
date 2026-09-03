@@ -1,3 +1,4 @@
+import FabiusFunction.GLOrderProduct
 import FabiusFunction.SubspaceCount
 import Mathlib.LinearAlgebra.Basis.Basic
 import Mathlib.LinearAlgebra.Basis.VectorSpace
@@ -422,33 +423,9 @@ theorem gaussianBinomial_mul_gaussianBinomial_mul_prod_pow_sub_pow {R : Type*} [
     ← gaussianBinomial_mul_prod_pow_sub_pow q hb]
   ring
 
-/-- **The order of the general linear group as a division-free product.**
-`∏_{i<n} (qⁿ - qⁱ) = q^{C(n,2)} ∏_{j<n} (q^{j+1} - 1)`.
-
-This holds over an **arbitrary commutative ring**, for an **arbitrary** `q`: there is no
-invertibility, nonvanishing or domain hypothesis, and none is needed, because the proof only
-factors `qⁿ - qⁱ = qⁱ(q^{n-i} - 1)` and reflects the index.  Over a finite field with `q`
-elements the left side is `|GLₙ(F_q)|`, so this exhibits that order as a power of `q` times a
-`q`-factorial-like product; at `q = 2` it is the sequence `1, 1, 6, 168, 20160, …`.
-
-Stated here rather than left implicit inside a counting argument because it is the shape other
-work needs: identifying a denominator `q^{n²}(q⁻¹;q⁻¹)ₙ`-style prefactor with `|GLₙ|` runs through
-exactly this identity. -/
-theorem prod_pow_sub_pow_eq_pow_choose_two_mul {R : Type*} [CommRing R] (q : R) (n : ℕ) :
-    ∏ i ∈ Finset.range n, (q ^ n - q ^ i)
-      = q ^ n.choose 2 * ∏ j ∈ Finset.range n, (q ^ (j + 1) - 1) := by
-  have hfactor : ∀ i ∈ Finset.range n, q ^ n - q ^ i = q ^ i * (q ^ (n - i) - 1) := by
-    intro i hi
-    have hi' : i ≤ n := (Finset.mem_range.mp hi).le
-    rw [mul_sub, mul_one, ← pow_add, Nat.add_sub_cancel' hi']
-  have hrefl : ∏ i ∈ Finset.range n, (q ^ (n - i) - 1)
-      = ∏ j ∈ Finset.range n, (q ^ (j + 1) - 1) := by
-    rw [← Finset.prod_range_reflect (fun j => q ^ (j + 1) - 1) n]
-    refine Finset.prod_congr rfl fun i hi => ?_
-    have hi' : i < n := Finset.mem_range.mp hi
-    congr 2
-    omega
-  rw [Finset.prod_congr rfl hfactor, Finset.prod_mul_distrib, hrefl,
-    Finset.prod_pow_eq_pow_sum, Finset.sum_range_id, Nat.choose_two_right]
+/-! The division-free identity `∏_{i<n} (qⁿ - qⁱ) = q^{C(n,2)} ∏_{j<n} (q^{j+1} - 1)`, whose
+finite-field reading is `|GLₙ|`, is `prod_pow_sub_pow_eq_pow_choose_two_mul` in
+`FabiusFunction.GLOrderProduct`.  It is stated there rather than here so that consumers which need
+only the ring identity are not forced to import Mathlib's linear algebra along with it. -/
 
 end Fabius
