@@ -2594,19 +2594,57 @@ Equivalently,
 \end{theorem}
 
 \begin{proof}
-Every rank-$r$ matrix $A$ can be factored as $A=UV$, where $U$ is an $m\times r$ matrix of full column rank and $V$ is an $r\times n$ matrix of full row rank.  There are
-\(
- \prod_{i=0}^{r-1}(Q^m-Q^i)
-\)
-choices for $U$ and
-\(
- \prod_{i=0}^{r-1}(Q^n-Q^i)
-\)
-choices for $V$.  Two pairs $(U,V)$ and $(U',V')$ give the same $A$ exactly when
+Throughout, an $m\times r$ matrix has \emph{full column rank} when its $r$ columns are linearly
+independent, and an $r\times n$ matrix has \emph{full row rank} when its $r$ rows are.
+
+\emph{Factorization.}  Let $A$ have rank $r$, so its column space $C\subseteq\FiniteField_Q^{\,m}$
+has dimension $r$.  Pick a basis $u_1,\dots,u_r$ of $C$ and let $U$ be the $m\times r$ matrix with
+those columns; $U$ has full column rank, and as a map $\FiniteField_Q^{\,r}\to\FiniteField_Q^{\,m}$
+it is injective with image $C$.  Each column $a_j$ of $A$ lies in $C$, so $a_j=Uv_j$ for a unique
+$v_j\in\FiniteField_Q^{\,r}$; let $V$ be the $r\times n$ matrix with columns $v_1,\dots,v_n$.  Then
+$A=UV$.  Moreover $V$ has full row rank: its row space has dimension
+$\operatorname{rank}V=\operatorname{rank}UV=\operatorname{rank}A=r$, the middle equality because
+$U$ is injective.
+
+\emph{Counting the pairs.}  A matrix $U$ of full column rank is an ordered linearly independent
+$r$-tuple in $\FiniteField_Q^{\,m}$, and there are $\prod_{i=0}^{r-1}(Q^m-Q^i)$ of those: having
+chosen $i$ independent vectors, the next may be any vector outside their span, which has $Q^i$
+elements.  This is the count already used in the proof of \Cref{thm:subspace-count}.  Transposing,
+there are $\prod_{i=0}^{r-1}(Q^n-Q^i)$ matrices $V$ of full row rank.  Taking $m=r$ gives the order
+of the general linear group asserted in the statement, since an invertible $r\times r$ matrix is
+exactly an ordered basis of $\FiniteField_Q^{\,r}$:
 \[
- U'=UG,\qquad V'=G^{-1}V
+ \AbsoluteValue{\mathrm{GL}_r(\FiniteField_Q)}=\prod_{i=0}^{r-1}(Q^r-Q^i).
 \]
-for a unique $G\in\mathrm{GL}_r(\FiniteField_{Q})$.  Thus every matrix is counted $\AbsoluteValue{\mathrm{GL}_r}$ times.  Substituting the subspace-count formulas gives the first expression.
+
+\emph{The fibres are $\mathrm{GL}_r$-orbits, freely permuted.}  If $U'=UG$ and $V'=G^{-1}V$ with
+$G$ invertible, then $U'V'=UGG^{-1}V=UV$, so the pair $(U',V')$ has the same product.  Conversely
+suppose $UV=U'V'=A$ with $U,U'$ of full column rank and $V,V'$ of full row rank.  Full row rank
+makes $V$ surjective onto $\FiniteField_Q^{\,r}$, so the column space of $A=UV$ is
+$U(\FiniteField_Q^{\,r})$, the column space of $U$; likewise for $U'$.  Hence $U$ and $U'$ have the
+same column space $C$, and their columns are two bases of $C$, so there is a matrix
+$G\in\mathrm{GL}_r(\FiniteField_Q)$ with $U'=UG$, namely the change-of-basis matrix.  It is unique:
+if $UG=UG'$ then $U(G-G')=0$, and $U$ is injective, so $G=G'$.  Finally $UV=U'V'=UGV'$ and the
+injectivity of $U$ give $V=GV'$, that is $V'=G^{-1}V$.  So the map $(U,V)\mapsto UV$ from pairs onto
+rank-$r$ matrices has every fibre a free $\mathrm{GL}_r$-orbit, of size exactly
+$\AbsoluteValue{\mathrm{GL}_r(\FiniteField_Q)}$.
+
+\emph{Conclusion.}  Dividing the number of pairs by the common fibre size,
+\[
+ N_{m,n,r}(Q)
+ =\frac{\prod_{i=0}^{r-1}(Q^m-Q^i)\prod_{i=0}^{r-1}(Q^n-Q^i)}
+        {\prod_{i=0}^{r-1}(Q^r-Q^i)},
+\]
+which is the second display.  The first follows from the identity
+$\GaussianBinomial{m}{r}{Q}\prod_{i<r}(Q^r-Q^i)=\prod_{i<r}(Q^m-Q^i)$ of
+\Cref{thm:subspace-count}, applied to $m$ and to $n$: the numerator is
+$\GaussianBinomial{m}{r}{Q}\GaussianBinomial{n}{r}{Q}\AbsoluteValue{\mathrm{GL}_r}^2$, and one
+factor of $\AbsoluteValue{\mathrm{GL}_r}$ cancels.
+
+No hypothesis relating $r$ to $m$ and $n$ is needed.  If $r>\min(m,n)$ there are no matrices of
+rank $r$, and the right sides vanish as well, since $\GaussianBinomial{m}{r}{Q}=0$ for $r>m$ while
+$\prod_{i<r}(Q^r-Q^i)\ne0$; at $r=0$ every product is empty and both sides equal $1$, counting the
+zero matrix.
 \end{proof}
 
 \section{Schubert cells and a topological meaning}
@@ -12865,8 +12903,8 @@ inside the proof below does not formalize the result the proof concludes.
   than a mathematical claim.
 \end{description}
 
-Of the 282 labelled forward results, 148 are \statusexact, 83 are
-\statuspartial, 43 are \statusnone, and 8 are \statusna.  The original
+Of the 282 labelled forward results, 149 are \statusexact, 83 are
+\statuspartial, 42 are \statusnone, and 8 are \statusna.  The original
 191-result pre-Fabius core had 36 \statusexact, 29 \statuspartial, 123
 \statusnone, and 3 \statusna{} entries.  The four integrated guide chapters
 add 31 human-proved but not Lean-formalized assertions and five labelled
@@ -13426,7 +13464,7 @@ $q$-integers and Gaussian coefficients & 9 & 0 & 0 & 0\\
 Finite $q$-binomial theorems and inversion & 10 & 0 & 0 & 0\\
 Weighted binomial coefficients and symmetric functions & 3 & 3 & 2 & 0\\
 Partitions, words, paths, and inversion statistics & 7 & 2 & 0 & 0\\
-Finite fields, Grassmannians, and rank enumeration & 2 & 3 & 1 & 0\\
+Finite fields, Grassmannians, and rank enumeration & 3 & 3 & 0 & 0\\
 Symmetry and unimodality & 0 & 0 & 3 & 0\\
 The infinite $q$-binomial theorem & 3 & 0 & 1 & 0\\
 Basic hypergeometric series & 7 & 2 & 0 & 0\\
@@ -13450,7 +13488,7 @@ Half-base arithmetic and Prouhet--Thue--Morse cancellation & 6 & 3 & 0 & 0\\
 Geometric uniform sums, $q$-cumulants, and the Fabius--Rvachev functions & 2 & 11 & 0 & 0\\
 Dyadic Gaussian--Thue--Morse structure and the values of $F$ & 7 & 45 & 4 & 0\\
 \midrule
-\textbf{Forward total} & 148 & 83 & 43 & 8\\
+\textbf{Forward total} & 149 & 83 & 42 & 8\\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -13848,7 +13886,21 @@ $\#\{U\subseteq W\subseteq V\}=\GaussianBinomial{n}{m}{Q}\GaussianBinomial{m}{j}
 with the $q$-multinomial.  The general $r$-step flag needs a dependent recursive flag type, and
 matching the bottom-up ordering of the statement needs permutation invariance of the
 $q$-multinomial, which the corpus does not yet contain}\\[2pt]
-\Cref{thm:rank-matrices} & \statusnone & ---\\[2pt]
+\Cref{thm:rank-matrices} & \statusexact &
+\texttt{card\_\allowbreak{}matrix\_\allowbreak{}rank\_\allowbreak{}eq},
+\texttt{card\_\allowbreak{}matrix\_\allowbreak{}rank\_\allowbreak{}mul\_\allowbreak{}prod\_\allowbreak{}pow\_\allowbreak{}sub\_\allowbreak{}pow},
+\texttt{card\_\allowbreak{}linearMap\_\allowbreak{}finrank\_\allowbreak{}range\_\allowbreak{}eq},
+\texttt{gaussianBinomial\_\allowbreak{}mul\_\allowbreak{}gaussianBinomial\_\allowbreak{}mul\_\allowbreak{}prod\_\allowbreak{}pow\_\allowbreak{}sub\_\allowbreak{}pow}\newline
+{\footnotesize\texttt{RankMatrixCount}; both displays, for an arbitrary pair of finite index types
+rather than $\{1,\dots,m\}$ and $\{1,\dots,n\}$, and for every $r$ with no hypothesis
+$r\le\min(m,n)$ --- the degenerate ranges are proved, not excluded.  The second display appears
+with its division cleared, and that cleared identity is also proved over an arbitrary commutative
+ring, where the printed quotient is undefined.  Underneath, the same count is proved for linear
+maps between arbitrary finite modules over any finite division ring; the matrix statements ask for
+a field only because Mathlib's rank and $\lvert\mathrm{GL}_r\rvert$ do.  The Lean proof takes a
+different route from the one above, fibring over kernels and reusing the subspace count, so it
+needs neither the rank factorization nor the orbit argument; those steps of the printed proof are
+therefore checked by hand here, not mechanically}\\[2pt]
 \Cref{thm:grassmann-poincare} & \statuspartial &
 \texttt{sum\_\allowbreak{}pow\_\allowbreak{}two\_\allowbreak{}boxSize\_\allowbreak{}eq\_\allowbreak{}gaussianBinomial},
 \texttt{sum\_\allowbreak{}card\_\allowbreak{}boxPartitions\_\allowbreak{}mul\_\allowbreak{}pow\_\allowbreak{}eq\_\allowbreak{}gaussianBinomial}\newline
