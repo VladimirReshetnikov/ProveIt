@@ -1199,7 +1199,7 @@ A targeted external search located the classical ingredients separately---the or
 Fabius--Rvachev analysis and arithmetic, lacunary Thue--Morse products, automatic sequences,
 Berry--Esseen bounds, rational and integer-valued generating functions, Mellin harmonic sums,
 exponential Tauberian transfer, and Lambert inversion
-\cite{p1:arias1982,p1:arias2017,p1:aistleitner2015,p1:toth2022,p1:alloucheShallit,p1:petrov1995,p1:stanley1997,p1:flajolet1995,p1:debruijn1959,p1:corless1996}---but not this combined classification.
+\cite{bib:arias1982,bib:arias2017,bib:aistleitner2015,bib:toth2022,bib:allouche2003,bib:petrov1995,bib:stanley1997,bib:flajolet1995,bib:bruijn1959,bib:corless1996}---but not this combined classification.
 Accordingly, ``new'' below always means new to the pinned corpus and apparently nonstandard;
 it is not an assertion of exhaustive worldwide priority.
 
@@ -1806,7 +1806,7 @@ the corresponding shifted parity words, because
 $\varepsilon_{S^ka}(2^j)=(-1)^{\bar a_{k+j}}$.  A finite $2$-kernel therefore implies a
 finite shift orbit of the parity word, which is equivalent to eventual periodicity.  This is
 the present Walsh-character specialization of the standard finite-kernel characterization
-of automatic sequences \cite{p1:alloucheShallit}.
+of automatic sequences \cite{bib:allouche2003}.
 \end{proof}
 
 \subsection{Finite sign products and exact Prouhet order}
@@ -2140,7 +2140,7 @@ $x_j=q^j$, therefore gives
 The principal specialization identity
 $H_n(1,q,\ldots,q^r)=\GaussianBinomial{n+r}{r}{q}$ yields
 \eqref{p1:eq:q-survivor}; see, for example, the standard finite $q$-binomial calculus in
-\cite{p1:andrews1976}.
+\cite{bib:andrews1976}.
 \end{proof}
 
 \paragraph{Post-snapshot Lean crosswalk.}
@@ -2559,7 +2559,7 @@ This is \statusproved as a synthesis of the standard rational-series theorem wit
 
 \begin{proof}
 The equivalence of the first three statements is the usual companion-matrix characterization
-of rational ordinary generating functions \cite{p1:stanley1997}.  If
+of rational ordinary generating functions \cite{bib:stanley1997}.  If
 $S^da=\sum_{j<d}\gamma_jS^ja$, then
 $L_d=\sum_{j<d}\gamma_jL_j$ as analytic germs, while
 \[
@@ -2802,7 +2802,7 @@ Let
  G_P(x)=\Probability(Y_P\le x).
 \]
 The corresponding exponential Tauberian theorem of de Bruijn type
-\cite{p1:debruijn1959,p1:voss2009} gives
+\cite{bib:bruijn1959,bib:voss2009} gives
 \begin{equation}
  -\log G_P(x)
  \sim C_P\bigl(\log(1/x)\bigr)^{d+2}
@@ -2847,7 +2847,7 @@ It has the explicit lower-branch solution
  \label{p1:eq:generalized-lambert}
 \end{equation}
 For $p=2$ this is the familiar lower-Lambert coordinate of the classical Fabius analysis;
-the branch notation and inversion conventions follow \cite{p1:corless1996}.
+the branch notation and inversion conventions follow \cite{bib:corless1996}.
 For $p>2$ it gives a single closed coordinate in which the polynomial-weight endpoint
 transseries should be organized; the Mellin calculation in \cref{p1:sec:mellin} explains the
 periodic coefficients that decorate it.
@@ -3464,7 +3464,7 @@ Since $\Variance(U)=1/12$ and $\Expectation|U|^3=1/32$,
  =\frac1{4\,7^r}.
 \end{align*}
 Divide the latter by $\sigma_r^3$ and apply the Berry--Esseen theorem for independent,
-not necessarily identically distributed summands \cite{p1:petrov1995}.
+not necessarily identically distributed summands \cite{bib:petrov1995}.
 \end{proof}
 
 \begin{remark}
@@ -3616,7 +3616,7 @@ Using the spectral zeta from \eqref{p1:eq:zeta-a}, this becomes the reflection f
 \end{equation}
 Thus the endpoint asymptotic and the integer-zero divisor are two Mellin views of the same
 generating function.  The contour-transfer interpretation follows the harmonic-sum Mellin
-framework of \cite{p1:flajolet1995}.  This is \statusproved.  Neither \eqref{p1:eq:kernel-mellin} nor
+framework of \cite{bib:flajolet1995}.  This is \statusproved.  Neither \eqref{p1:eq:kernel-mellin} nor
 \eqref{p1:eq:La-mellin} is formalized.  The library does prove the sibling real-variable integral
 \lean{Fabius.bose_mellin_integral_zeta} (\lean{MellinBose.lean}),
 $\int_0^\infty x^{a-1}\log(1-\EulerE^{-x})\Differential x=-\Gamma(a)\zeta(a+1)$ for real $a>0$: the same
@@ -3696,7 +3696,7 @@ factor.
 
 \subsection{Generalized Bernoulli polynomials generate the residues}
 
-Define the N\"orlund generalized Bernoulli polynomials \cite{p1:norlund1924} by
+Define the N\"orlund generalized Bernoulli polynomials \cite{bib:norlund1924} by
 \begin{equation}
  \left(\frac u{\EulerE^u-1}\right)^\alpha\EulerE^{xu}
  =\sum_{n\ge0}B_n^{(\alpha)}(x)\frac{u^n}{n!}.
@@ -4357,86 +4357,7 @@ The numerical script fixes the precision and grid sizes explicitly.  Its formula
 copies do not overlap.  All exact checks run before figure generation.
 
 
-\begin{thebibliography}{99}
 
-\bibitem{p1:aistleitner2015}
-C.~Aistleitner, R.~Hofer, and G.~Larcher,
-\emph{On parametric Thue--Morse sequences and lacunary trigonometric products},
-arXiv:1502.06738v2, 2015.
-
-\bibitem{p1:alloucheShallit}
-J.-P.~Allouche and J.~Shallit,
-\emph{Automatic Sequences: Theory, Applications, Generalizations},
-Cambridge University Press, 2003.
-
-\bibitem{p1:andrews1976}
-G.~E.~Andrews,
-\emph{The Theory of Partitions},
-Encyclopedia of Mathematics and its Applications, Vol.~2,
-Addison--Wesley, 1976; reprinted by Cambridge University Press.
-
-\bibitem{p1:arias1982}
-J.~Arias de Reyna,
-\emph{An infinitely differentiable function with compact support: definition and
-properties}, Rev. Real Acad. Ciencias Madrid \textbf{76} (1982), 21--38;
-English translation, arXiv:1702.05442, 2017.
-
-\bibitem{p1:arias2017}
-J.~Arias de Reyna,
-\emph{Arithmetic of the Fabius function},
-Ann. Inst. Fourier (Grenoble) \textbf{67} (2017), no.~2, 637--679;
-arXiv:1702.06487v3.
-
-\bibitem{p1:corless1996}
-R.~M.~Corless, G.~H.~Gonnet, D.~E.~G.~Hare, D.~J.~Jeffrey, and D.~E.~Knuth,
-\emph{On the Lambert $W$ function},
-Adv. Comput. Math. \textbf{5} (1996), 329--359.
-
-\bibitem{p1:debruijn1959}
-N.~G.~de Bruijn,
-\emph{Pairs of slowly oscillating functions occurring in asymptotic problems concerning
-the Laplace transform},
-Nieuw Arch. Wisk. (3) \textbf{7} (1959), 20--26.
-
-\bibitem{p1:flajolet1995}
-P.~Flajolet, X.~Gourdon, and P.~Dumas,
-\emph{Mellin transforms and asymptotics: harmonic sums},
-Theoret. Comput. Sci. \textbf{144} (1995), 3--58.
-
-\bibitem{p1:norlund1924}
-N.~E.~N\"orlund,
-\emph{Vorlesungen \"uber Differenzenrechnung},
-Grundlehren der mathematischen Wissenschaften, Vol.~13,
-Springer, Berlin, 1924.
-
-\bibitem{p1:petrov1995}
-V.~V.~Petrov,
-\emph{Limit Theorems of Probability Theory: Sequences of Independent Random Variables},
-Oxford Studies in Probability, Vol.~4, Clarendon Press, Oxford, 1995.
-
-\bibitem{p1:stanley1997}
-R.~P.~Stanley,
-\emph{Enumerative Combinatorics, Vol.~1}, second printing,
-Cambridge Studies in Advanced Mathematics, Vol.~49,
-Cambridge University Press, 1997.
-
-\bibitem{p1:toth2022}
-L.~T\'oth,
-\emph{Linear combinations of Dirichlet series associated with the Thue--Morse sequence},
-Integers \textbf{22} (2022), Paper A98; arXiv:2211.13570.
-
-\bibitem{p1:voss2009}
-J.~Voss,
-\emph{Upper and lower bounds in exponential Tauberian theorems},
-Tbilisi Math. J. \textbf{2} (2009), 41--50; arXiv:0908.0642.
-
-\bibitem{p1:proveit}
-V.~Reshetnikov,
-\emph{ProveIt: formal and expository development of the Fabius function},
-GitHub repository, pinned in this report at commit
-\texttt{32d6d36c51d803289e6d6a0dc0c37753766eba47}, 27 August 2026.
-
-\end{thebibliography}
 
 
 % extra macros for part 2
@@ -4581,7 +4502,7 @@ unformalized.
 \subsection{How the corpus was used}
 
 The source audit covered every LaTeX family in the repository documentation tree
-\cite{p2:repo}, including the current expository volumes, the formalization walkthrough, the
+\cite{bib:repo}, including the current expository volumes, the formalization walkthrough, the
 non-elementarity article, the mathematical glossary, the consolidated frontier
 volume, the Thue--Morse formula atlas, all waves of the Fourier-decay discussion,
 the paper-source subdirectories, and the historical archive. The archive index
@@ -6423,58 +6344,7 @@ between the explicit and triangular filters, reproduces
 asserts the two-sided certificate \eqref{p2:eq:certificate} at representative
 points.
 
-\begin{thebibliography}{99}
 
-\bibitem{p2:repo}
-V. Reshetnikov,
-\emph{ProveIt: Analysis/FabiusFunction documentation and Lean development},
-GitHub repository,
-\url{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Analysis/FabiusFunction}.
-
-\bibitem{p2:Fabius1966}
-J. Fabius,
-\emph{A probabilistic example of a nowhere analytic \(C^\infty\)-function},
-Z. Wahrscheinlichkeitstheorie verw. Gebiete 5 (1966), 173--174.
-
-\bibitem{p2:Arias1982}
-J. Arias de Reyna,
-\emph{An infinitely differentiable function with compact support: Definition
-and properties},
-Rev. Real Acad. Cienc. Exact. Fis. Natur. Madrid 76 (1982), 21--38;
-English source at arXiv:1702.05442.
-
-\bibitem{p2:AriasArithmetic}
-J. Arias de Reyna,
-\emph{Arithmetic of the Fabius function},
-arXiv:1702.06487 (2017).
-
-\bibitem{p2:Aistleitner}
-C. Aistleitner, R. Hofer, and G. Larcher,
-\emph{On parametric Thue--Morse sequences and lacunary trigonometric products},
-arXiv:1502.06738; Ann. Inst. Fourier 67 (2017), 637--687.
-
-\bibitem{p2:Toth}
-L. Toth,
-\emph{Linear combinations of Dirichlet series associated with the Thue--Morse
-sequence},
-Integers 22 (2022), Article 98; arXiv:2211.13570.
-
-\bibitem{p2:Sidi}
-A. Sidi,
-\emph{Practical Extrapolation Methods: Theory and Applications},
-Cambridge University Press, 2003.
-
-\bibitem{p2:Comtet}
-L. Comtet,
-\emph{Advanced Combinatorics: The Art of Finite and Infinite Expansions},
-D. Reidel, 1974.
-
-\bibitem{p2:GasperRahman}
-G. Gasper and M. Rahman,
-\emph{Basic Hypergeometric Series}, 2nd ed.,
-Cambridge University Press, 2004.
-
-\end{thebibliography}
 
 
 
@@ -6561,7 +6431,7 @@ primary-exposition drafts, supplements, $q$-calculus articles, Lean walkthroughs
 glossaries, and per-topic frontier dossiers.  The archive explicitly records frozen
 first-introduced versions and prunes byte-identical copies already present in the live
 tree, so the living consolidated sources are the appropriate mathematical baseline
-for avoiding duplication \cite{p3:proveit-primary,p3:proveit-frontiers,p3:proveit-archive}.
+for avoiding duplication \cite{bib:repo2026a,bib:repo2026b,bib:repoa}.
 
 The existing corpus already develops the probability law of $\RvachevUp$, the infinite sinc
 product, exact dyadic arithmetic, Thue--Morse identities, derivative tilings, moments,
@@ -6570,7 +6440,7 @@ spline $f_n$.  In particular, the frontier volume proves a sharp error law for $
 and explicitly contrasts it with the ordinary prefix density $p_n$, whose sharp law is
 not studied there.  It then asks for a positive compactly supported tail replacement
 with matching variance, predicting a possible $16^{-n}$ rate but asserting no such
-scheme \cite{p3:proveit-frontiers}.
+scheme \cite{bib:repo2026b}.
 
 \subsection{What is new here}
 
@@ -6624,7 +6494,7 @@ $[-1,1]$ whose transform is
  \label{p3:eq:infinite-product}
 \end{equation}
 This normalization agrees with the compactly supported function studied by Rvachev
-and Arias de Reyna \cite{p3:rvachev1990,p3:arias1982}.
+and Arias de Reyna \cite{bib:rvachev1990,bib:arias1982}.
 
 \subsection{Partial products and random sums}
 
@@ -6898,7 +6768,7 @@ Define
  \label{p3:eq:cm}
 \end{equation}
 The living primary exposition proves the corresponding sharp derivative norm for
-$\RvachevUp$ through its exact dyadic derivative tiling \cite{p3:proveit-primary}.  The finite
+$\RvachevUp$ through its exact dyadic derivative tiling \cite{bib:repo2026a}.  The finite
 splines possess a stronger local plateau.
 
 \begin{theorem}[Finite-prefix derivative geometry]
@@ -7365,7 +7235,7 @@ spatial derivatives.
 
 Assume $Q$ is exact for polynomials of degree at most $\ell-1$, and its Peano kernel
 of order $\ell$ has one sign.  This includes Gaussian, one-endpoint Radau, and
-Lobatto rules for a positive measure on an interval \cite{p3:davis-rabinowitz,p3:gautschi}.
+Lobatto rules for a positive measure on an interval \cite{bib:davis1984,bib:gautschi2004}.
 Set
 \begin{equation}
  \varepsilon_{Q,\ell}=Q(z^\ell)-m_\ell,
@@ -7812,89 +7682,7 @@ python finite_sinc_experiments.py --output-dir . --fft-power 17
 \end{lstlisting}
 to regenerate every figure and table.  The volume itself is rebuilt from its own directory by running \texttt{pdflatex} on \path{geometric_q_fabius_frontiers.tex} three times, so that the table of contents and every cross-reference settle.
 
-\begin{thebibliography}{99}
 
-\bibitem{p3:proveit-primary}
-V.~Reshetnikov,
-\newblock \emph{The Fabius Function and Rvachev's Up-Function: Exact arithmetic,
-probability, Fourier analysis, and corrected sharp asymptotics},
-\newblock living TeX exposition in the \texttt{ProveIt} repository, snapshot examined
-28 August 2026,
-\newblock \url{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Analysis/FabiusFunction/docs/Fabius_Function_and_Rvachev_Up}.
-
-\bibitem{p3:proveit-frontiers}
-V.~Reshetnikov,
-\newblock \emph{Non-formalized Research Frontiers},
-\newblock living consolidated TeX volume in the \texttt{ProveIt} repository, snapshot
-examined 28 August 2026,
-\newblock \url{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Analysis/FabiusFunction/docs/semi-formalized-research-frontiers}.
-
-\bibitem{p3:proveit-archive}
-V.~Reshetnikov,
-\newblock \emph{Archive of historical document versions},
-\newblock recursive archive index in the \texttt{ProveIt} repository,
-\newblock \url{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Analysis/FabiusFunction/docs/archive}.
-
-\bibitem{p3:jessen1935}
-B.~Jessen and A.~Wintner,
-\newblock Distribution functions and the Riemann zeta function,
-\newblock \emph{Transactions of the American Mathematical Society} \textbf{38}
-(1935), 48--88.
-
-\bibitem{p3:fabius1966}
-J.~Fabius,
-\newblock A probabilistic example of a nowhere analytic $C^\infty$-function,
-\newblock \emph{Zeitschrift f\"ur Wahrscheinlichkeitstheorie und Verwandte Gebiete}
-\textbf{5} (1966), 173--174.
-
-\bibitem{p3:rvachev1971}
-V.~L.~Rvachev and V.~A.~Rvachev,
-\newblock A certain finite function,
-\newblock \emph{Dopovidi Akademii Nauk Ukrains'koi RSR, Series A} (1971),
-705--707, 764.
-
-\bibitem{p3:rvachev1990}
-V.~A.~Rvachev,
-\newblock Compactly supported solutions of functional-differential equations and their
-applications,
-\newblock \emph{Russian Mathematical Surveys} \textbf{45} (1990), no.~1, 87--120.
-
-\bibitem{p3:arias1982}
-J.~Arias de Reyna,
-\newblock Definici\'on y estudio de una funci\'on indefinidamente diferenciable de
-soporte compacto,
-\newblock \emph{Revista de la Real Academia de Ciencias Exactas, F\'isicas y Naturales
-de Madrid} \textbf{76} (1982), no.~1, 21--38;
-English translation, \emph{An infinitely differentiable function with compact support:
-Definition and properties}, arXiv:1702.05442 (2017).
-
-\bibitem{p3:arias2018}
-J.~Arias de Reyna,
-\newblock Arithmetic of the Fabius function,
-\newblock \emph{INTEGERS} \textbf{18} (2018), Article A51;
-arXiv:1702.06487.
-
-\bibitem{p3:deboor}
-C.~de Boor,
-\newblock \emph{A Practical Guide to Splines}, revised edition,
-\newblock Springer, New York, 2001.
-
-\bibitem{p3:davis-rabinowitz}
-P.~J.~Davis and P.~Rabinowitz,
-\newblock \emph{Methods of Numerical Integration}, second edition,
-\newblock Academic Press, Orlando, 1984.
-
-\bibitem{p3:gautschi}
-W.~Gautschi,
-\newblock \emph{Orthogonal Polynomials: Computation and Approximation},
-\newblock Oxford University Press, 2004.
-
-\bibitem{p3:allouche-shallit}
-J.-P.~Allouche and J.~Shallit,
-\newblock \emph{Automatic Sequences: Theory, Applications, Generalizations},
-\newblock Cambridge University Press, 2003.
-
-\end{thebibliography}
 
 
 
@@ -9064,45 +8852,7 @@ between the two packages; the numerical work is ancillary throughout ---
 every theorem above has a complete proof independent of the computations.
 
 
-\begin{thebibliography}{9}
 
-\bibitem{p4:AriasTranslation}
-J.~Arias de Reyna,
-\newblock \emph{An infinitely differentiable function with compact
-support: Definition and properties}, English translation of the 1982
-article, arXiv:1702.05442 (2017).
-
-\bibitem{p4:Fabius1966}
-J.~Fabius,
-\newblock A probabilistic example of a nowhere analytic
-$C^\infty$-function,
-\newblock \emph{Z.~Wahrscheinlichkeitstheorie Verw.~Geb.}
-\textbf{5} (1966), 173--174.
-
-\bibitem{p4:Rvachev1990}
-V.~A.~Rvachev,
-\newblock Compactly supported solutions of functional-differential
-equations and their applications,
-\newblock \emph{Russian Math.~Surveys} \textbf{45} (1990), no.~1,
-87--120.
-
-\bibitem{p4:BoxSplines}
-C.~de Boor, K.~H\"ollig, and S.~Riemenschneider,
-\newblock \emph{Box Splines}, Applied Mathematical Sciences 98,
-Springer, 1993.
-
-\bibitem{p4:Gautschi}
-W.~Gautschi,
-\newblock \emph{Orthogonal Polynomials: Computation and
-Approximation}, Oxford University Press, 2004.
-
-\bibitem{p4:MSE240687}
-V.~Reshetnikov,
-\newblock Recursive integration over piecewise polynomials: closed
-form?,
-\newblock Mathematics Stack Exchange, question 240687, 2012.
-
-\end{thebibliography}
 
 
 
@@ -9487,7 +9237,7 @@ For $y>0$, differentiation at regular points gives
  \frac{\Differential}{\Differential y}\int_{-r}^{r}f(x-y)\Differential x
  =f(-r-y)-f(r-y)=f(r+y)-f(\AbsoluteValue{r-y})\le0.
 \]
-Approximation handles the finitely nonsmooth spline case.  This is the one-dimensional content of Anderson's symmetric-unimodal inequality \cite{p5:Anderson1955}.
+Approximation handles the finitely nonsmooth spline case.  This is the one-dimensional content of Anderson's symmetric-unimodal inequality \cite{bib:anderson1955}.
 \end{proof}
 
 \begin{theorem}[Convex-order and peakedness chain; \newresult]
@@ -10326,7 +10076,7 @@ The exact dyadic arithmetic of $H_N$ and the inverse-Fabius infrastructure sugge
 
 \subsection{Total positivity and variation diminution}
 
-Every finite approximant is a convolution of boxes, hence belongs to the classical P\'olya-frequency/spline setting of Curry and Schoenberg \cite{p5:CurrySchoenberg1966}.  The fixed density crossing suggests a stronger variation-diminishing statement for the deconvolution chain:
+Every finite approximant is a convolution of boxes, hence belongs to the classical P\'olya-frequency/spline setting of Curry and Schoenberg \cite{bib:curry1966}.  The fixed density crossing suggests a stronger variation-diminishing statement for the deconvolution chain:
 
 \begin{conjecture}[Higher derivative crossing hierarchy]
 For each fixed $r$, the error $u_N^{(r)}-u^{(r)}$ has, for all sufficiently large $N$, the same number and ordering of sign changes as $-u^{(r+2)}$, and the zeros converge with complete $4^{-N}$ expansions.  At special dyadic zeros forced by flatness, some crossings are exact at every stage.
@@ -10513,84 +10263,7 @@ python finite_sinc_experiments.py --output . --grid-power 18 --max-stage 10
 \end{lstlisting}
 The volume itself is rebuilt from its own directory by running \texttt{pdflatex} on \path{geometric_q_fabius_frontiers.tex} three times, so that the table of contents and every cross-reference settle.
 
-\begin{thebibliography}{99}
 
-\bibitem{p5:Anderson1955}
-T.~W. Anderson,
-\newblock The integral of a symmetric unimodal function over a symmetric convex set and some probability inequalities,
-\newblock \emph{Proc. Amer. Math. Soc.} \textbf{6} (1955), 170--176.
-\newblock doi:10.1090/S0002-9939-1955-0069229-1.
-
-\bibitem{p5:Arias2017}
-J. Arias de Reyna,
-\newblock An infinitely differentiable function with compact support: definition and properties,
-\newblock arXiv:1702.05442 (2017); English translation of \emph{Rev. Real Acad. Ciencias} \textbf{76} (1982), 21--38.
-
-\bibitem{p5:AriasArithmetic}
-J. Arias de Reyna,
-\newblock Arithmetic of the Fabius function,
-\newblock \emph{Integers} \textbf{18} (2018), A51; arXiv:1702.06487.
-
-\bibitem{p5:deBoor}
-C. de Boor,
-\newblock \emph{A Practical Guide to Splines}, revised edition,
-\newblock Springer, 2001.
-
-\bibitem{p5:CurrySchoenberg1966}
-H.~B. Curry and I.~J. Schoenberg,
-\newblock On P\'olya frequency functions IV: the fundamental spline functions and their limits,
-\newblock \emph{J. Analyse Math.} \textbf{17} (1966), 71--107.
-\newblock doi:10.1007/BF02788653.
-
-\bibitem{p5:Fabius1966}
-J. Fabius,
-\newblock A probabilistic example of a nowhere analytic $C^\infty$-function,
-\newblock \emph{Z. Wahrscheinlichkeitstheorie verw. Gebiete} \textbf{5} (1966), 173--174.
-\newblock doi:10.1007/BF00536652.
-
-\bibitem{p5:GasperRahman}
-G. Gasper and M. Rahman,
-\newblock \emph{Basic Hypergeometric Series}, second edition,
-\newblock Cambridge University Press, 2004.
-
-\bibitem{p5:JessenWintner1935}
-B. Jessen and A. Wintner,
-\newblock Distribution functions and the Riemann zeta function,
-\newblock \emph{Trans. Amer. Math. Soc.} \textbf{38} (1935), 48--88.
-\newblock doi:10.1090/S0002-9947-1935-1501802-5.
-
-\bibitem{p5:ShakedShanthikumar}
-M. Shaked and J.~G. Shanthikumar,
-\newblock \emph{Stochastic Orders},
-\newblock Springer, 2007.
-
-\bibitem{p5:Stam1959}
-A.~J. Stam,
-\newblock Some inequalities satisfied by the quantities of information of Fisher and Shannon,
-\newblock \emph{Information and Control} \textbf{2} (1959), 101--112.
-\newblock doi:10.1016/S0019-9958(59)90348-1.
-
-\bibitem{p5:Villani}
-C. Villani,
-\newblock \emph{Topics in Optimal Transportation},
-\newblock Graduate Studies in Mathematics 58, American Mathematical Society, 2003.
-
-\bibitem{p5:Zolotarev}
-V.~M. Zolotarev,
-\newblock \emph{Modern Theory of Summation of Random Variables},
-\newblock VSP, Utrecht, 1997.
-
-\bibitem{p5:ProveItPrimary}
-V. Reshetnikov,
-\newblock The Fabius function and Rvachev's up-function,
-\newblock source in the \texttt{ProveIt} repository, \repo{}, commit \texttt{21758aba2f8e200342be2a7b321247dac80efc00}.
-
-\bibitem{p5:ProveItFrontiers}
-V. Reshetnikov et al.,
-\newblock Non-formalized research frontiers and thematic draft consolidations for the Fabius--Rvachev system,
-\newblock \texttt{ProveIt} repository, \repo{}/\texttt{semi-formalized-research-frontiers}, same commit.
-
-\end{thebibliography}
 
 
 
@@ -11105,7 +10778,7 @@ they are not finite: changing one coefficient affects the approximant globally.
 For numerical work one often prefers local functions with supports of small
 diameter.  Their matrices are sparse or banded, so a fixed amount of memory can
 support higher-dimensional approximation spaces.  Classical finite splines,
-including Schoenberg's $B$-splines~\cite{p6:schoenberg}, are local, but a spline of fixed degree has
+including Schoenberg's $B$-splines~\cite{bib:schoenberg1946}, are local, but a spline of fixed degree has
 fixed smoothness and therefore does not remain optimal as the target smoothness
 increases.  Classical polynomials are universal but nonlocal; ordinary splines
 are local but not universal.  The natural objective is a system that is both
@@ -11327,7 +11000,7 @@ and differentiation recovers \eqref{p6:eq:ha-diffeq}.
 The probability interpretation in the attached chapter is not decorative.  It
 immediately explains support, positivity, evenness, normalization, and the
 functional equation.  It also places the construction in the classical theory
-of infinite convolutions developed by Jessen and Wintner~\cite{p6:jessen-wintner}, while the geometric
+of infinite convolutions developed by Jessen and Wintner~\cite{bib:jessen1935}, while the geometric
 weights make the law exactly self-similar.
 \end{sourcebox}
 
@@ -11521,7 +11194,7 @@ expression for
 in terms of $\tau$, binomial coefficients, and the moments.  For the first point
 in a dyadic cell the expression simplifies to a half-moment divided by
 $2^{\binom{n}{2}}(n-1)!$.  This is one of the bridges to the exact arithmetic
-results later developed by Arias de Reyna and Haugland~\cite{p6:arias-arithmetic,p6:haugland}, and by the repository.
+results later developed by Arias de Reyna and Haugland~\cite{bib:arias2017,bib:haugland2016}, and by the repository.
 
 \subsection{Recursive evaluation on arbitrary points}
 
@@ -12413,7 +12086,7 @@ of $Y_{a,p}$, and
  \nu_a=\LawOperator\Bigl(\sum_{j=1}^{\infty}\varepsilon_ja^{-j}\Bigr),
 \]
 the symmetric Bernoulli convolution with contraction ratio
-$1/a$~\cite{p6:peres}.
+$1/a$~\cite{bib:peres2000}.
 
 \begin{theorem}[Exact derivative-energy factorization and universal limit]
 \label{p6:thm:energy-factorization}
@@ -12551,7 +12224,7 @@ $\Expectation(Z_a^{\mathrm{ln}})^n=a^{n(n+2)}/2^n=\Expectation Z_a^n$ for all $n
 laws are distinct: the spectral density behaves like $I_a^{-1}z^{-1/2}$ as
 $z\downarrow0$, whereas the lognormal density vanishes faster than every
 power.  Hence this Stieltjes moment sequence is indeterminate
-(Heyde's classical lognormal indeterminacy~\cite{p6:heyde}), and the sinc
+(Heyde's classical lognormal indeterminacy~\cite{bib:heyde1963}), and the sinc
 product supplies, for every base $a\ge2$, a concrete second representing
 density.
 \end{corollary}
@@ -12584,7 +12257,7 @@ determinants and monic orthogonal polynomials:
  \label{p6:eq:sw-op}
 \end{gather}
 for either representing measure $\rho$ --- the dilated monic
-Stieltjes--Wigert system~\cite{p6:ismail}.  (Hankel: factor
+Stieltjes--Wigert system~\cite{bib:ismail2005}.  (Hankel: factor
 $c^{i+j}q^{-i(i+1)/2-j(j+1)/2-ij}$ from rows and columns and evaluate the
 Vandermonde determinant in $1,q^{-1},\ldots,q^{-N}$; the squared norm is
 $\Delta_n/\Delta_{n-1}$.)  The repository's $q$-moment algebra thus acquires,
@@ -12687,7 +12360,7 @@ $\det G_N=(q^2;q^2)_N^{\,N+1}\prod_{d=1}^N(1-q^{2d})^{-d}$ gives exactly
  \mathfrak M(x)=\prod_{d\ge1}(1-x^d)^{-d},
 \end{equation}
 with $\mathfrak M$ MacMahon's plane-partition generating function
-\cite{p6:andrews}: the per-vector entropy of the tower is
+\cite{bib:andrews1976}: the per-vector entropy of the tower is
 $\log(q^2;q^2)_\infty$ and the excess constant counts plane partitions at
 $x=a^{-2}$.  The sharp Riesz constants themselves close up under the Jacobi
 triple product,
@@ -12891,7 +12564,7 @@ Substituting $e_j\mapsto z^j$ turns \eqref{p6:eq:q-gram-schmidt} into
 $q^nH_n(z/q;q^2)$, where $H_n(z;q)=\sum_j\GaussianBinomial{n}{j}{q}z^j$ is the
 Rogers--Szeg\H{o} polynomial: the derivative tower of $h_a$ is
 orthogonalized by the classical $q$-Hermite circle polynomials at base
-$a^{-2}$ \cite{p6:ismail}.  This is forced by \cref{p6:prop:circle-model}
+$a^{-2}$ \cite{bib:ismail2005}.  This is forced by \cref{p6:prop:circle-model}
 below, because the Rogers--Szeg\H{o} polynomials are precisely the
 orthogonal polynomials of the theta weight on the circle.
 \end{remark}
@@ -13055,7 +12728,7 @@ strictly positive at positive arguments.
 \begin{corollary}[Oscillation and the checkerboard inverse]
 \label{p6:cor:stp-consequences}
 Every finite section of the positive kernel is an oscillation matrix in
-Karlin's sense~\cite{p6:karlin}: its Gram maps are variation diminishing,
+Karlin's sense~\cite{bib:karlin1968}: its Gram maps are variation diminishing,
 its eigenvalues are simple and positive, and its inverse has checkerboard
 signs --- exactly the $(-1)^{j-k}$ pattern displayed in closed form by
 \cref{p6:thm:q-gram-schmidt}.  The Schur factor quantifies how a sparse
@@ -13252,7 +12925,7 @@ $h_a$, so the cyclic subspace of $h_a$ under $\mathcal L$ is unitarily
 $L^2(\rho_{\mathrm{sp}})$ --- but by the Riesz density criterion for
 indeterminate moment problems, polynomials are dense in $L^2(\rho)$ only
 for $N$-extremal (hence discrete) representing
-measures~\cite{p6:ismail}, and $\rho_{\mathrm{sp}}$ is absolutely
+measures~\cite{bib:ismail2005}, and $\rho_{\mathrm{sp}}$ is absolutely
 continuous.  Hence some vectors $g(\mathcal L)h_a$ of the cyclic subspace
 are orthogonal to every even derivative of $h_a$; exhibiting an explicit
 bounded one is the subject of \cref{p6:conj:spectral-null-modes}.
@@ -13603,7 +13276,7 @@ lattice
 
 \begin{proof}
 The two-map system \eqref{p6:eq:Tpm} satisfies the open-set condition for
-$a>2$, so Hutchinson's theorem \cite{p6:hutchinson} gives
+$a>2$, so Hutchinson's theorem \cite{bib:hutchinson1981} gives
 $\dim_{\mathrm H}K_a=D_a$ from the similarity equation $2a^{-D}=1$; the tube
 formula below shows that $\eps^{D_a-1}V_a(\eps)$ is bounded above and below by
 positive constants, which pins the Minkowski dimension at $D_a$ as well.  The
@@ -13614,7 +13287,7 @@ $\Differential(1-2a^{-s})/\Differential s=2a^{-s}\log a=\log a$ at every $s_k$, 
 
 The vertical arithmetic progression \eqref{p6:eq:complex-dimensions} is the
 canonical lattice pattern of a self-similar fractal string in the sense of
-Lapidus and van Frankenhuijsen \cite{p6:lapidus-vf}.  What is distinctive here
+Lapidus and van Frankenhuijsen \cite{bib:lapidus2013}.  What is distinctive here
 is that it enters the analysis of a $C^\infty$ function: the singular set of
 the smooth spline $h_a$ carries the same complex dimensions as its
 complementary gap string.
@@ -14017,7 +13690,7 @@ The zeros of $\Phi_a$ are
 \end{equation}
 A uniform lattice of translates with spacing $\delta$ reproduces polynomials of
 degree $n$ when $\Phi_a$ and its first $n$ derivatives vanish at every nonzero
-frequency $m/\delta$.  This is the one-dimensional Strang--Fix mechanism~\cite{p6:strang-fix,p6:deboor-ron}.  The
+frequency $m/\delta$.  This is the one-dimensional Strang--Fix mechanism~\cite{bib:strang1971,bib:boor1992}.  The
 binary source exploits it in difference-equation form.  For general $a$, zero
 collisions are controlled by rational powers of $a$.
 
@@ -14575,7 +14248,7 @@ If $u=\log s$, then $y\EulerE^u\asymp u/\log a$, so
 \begin{equation}\label{p6:eq:Lambert-coordinate}
  u\asymp-W_{-1}(-y\log a).
 \end{equation}
-The lower branch is required because $u\to+\infty$ as $y\downarrow0$; see~\cite{p6:corless} for the branch structure of Lambert $W$.
+The lower branch is required because $u\to+\infty$ as $y\downarrow0$; see~\cite{bib:corless1996} for the branch structure of Lambert $W$.
 For $a=2$, this is exactly the coordinate used in the repository's inverse and
 small-argument expansions.
 
@@ -14607,7 +14280,7 @@ contains $[0,1/a]$, on which the recursion is closed in the unit
 normalization, and at $a=2$ it specializes to the repository identity
 $F'(x)=2F(2x)$.
 Pantograph equations of this type sit alongside de Rham's functional
-equations~\cite{p6:derham}, and \eqref{p6:eq:edge-iterated} already forces the
+equations~\cite{bib:rham1956}, and \eqref{p6:eq:edge-iterated} already forces the
 quadratic-in-depth exponents whose inversion is Lambert-$W$; the following
 subsections make that heuristic exact at the transform level.
 
@@ -14707,7 +14380,7 @@ terms of \eqref{p6:eq:general-exact-Laplace} from the triple pole at $s=0$; the
 lattice modes from the simple poles of $1/(1-a^s)$ at $s=\chi_k$, whose
 residues sample the kernel transform at $s=-\chi_k$ after pairing $k\to-k$,
 giving \eqref{p6:eq:general-gamma-zeta}; and a remainder absorbed by
-$E_a$~\cite{p6:flajolet-gd}.  Stirling's bound
+$E_a$~\cite{bib:flajolet1995}.  Stirling's bound
 $|\Gamma(\sigma+\ImaginaryUnit t)|\asymp\EulerE^{-\pi|t|/2}|t|^{\sigma-1/2}$ gives exponential
 decay in $|k|$.  Since $\Gamma$ has no zeros and $\zeta(1+\ImaginaryUnit t)\ne0$ for
 $t\ne0$, every mode \eqref{p6:eq:general-gamma-zeta} is nonzero.
@@ -15088,7 +14761,7 @@ endpoints lie in the field generated by $a$ and the even moments, with
 denominator growth controlled by the ideals generated by $a^{2m}-1$.  The
 cumulant formula \eqref{p6:eq:kappa} suggests a systematic
 algebraic-denominator theory generalizing the dyadic rational arithmetic of
-Arias de Reyna and Haugland~\cite{p6:arias-arithmetic,p6:haugland}.  The
+Arias de Reyna and Haugland~\cite{bib:arias2017,bib:haugland2016}.  The
 expanded editions sharpen the expected dichotomy: for algebraic $a$ the
 denominators should be controlled by the algebraic \emph{norms} of
 $a^{2m}-1$, while transcendental parameters generically admit no
@@ -15529,145 +15202,7 @@ regenerates all of them.  In every archive under \path{assets/}, the
 absorbed report source itself is deleted after merging; git history and the
 provenance hashes are the archive of record.
 
-\begin{thebibliography}{99}
 
-\bibitem{p6:attached}
-V. L. Rvachev, ``Atomic Functions,'' Chapter 3 in the Russian source supplied
-with this task.  The supplied bibliographic excerpt does not include the book's
-front matter; the OCR source ends at equation (3.100).
-
-\bibitem{p6:repo-primary}
-V. Reshetnikov,
-\emph{The Fabius Function and Rvachev's Up-Function}, living repository
-exposition,
-\url{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Analysis/FabiusFunction/docs/Fabius_Function_and_Rvachev_Up}.
-
-\bibitem{p6:repo-glossary}
-V. Reshetnikov,
-\emph{Mathematical Glossary for Analysis/FabiusFunction},
-\url{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Analysis/FabiusFunction/docs/FabiusFunction_Mathematical_Glossary}.
-
-\bibitem{p6:repo-frontier}
-V. Reshetnikov,
-\emph{Non-formalized Fabius Research Frontiers},
-\url{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Analysis/FabiusFunction/docs/semi-formalized-research-frontiers}.
-
-\bibitem{p6:arias-definition}
-J. Arias de Reyna,
-``An infinitely differentiable function with compact support: Definition and
-properties,'' \emph{Rev. Real Acad. Ciencias Madrid} 76 (1982), 21--38;
-English translation, arXiv:1702.05442, 2017.
-
-\bibitem{p6:arias-arithmetic}
-J. Arias de Reyna,
-``Arithmetic of the Fabius function,'' arXiv:1702.06487, 2017.
-
-\bibitem{p6:haugland}
-J. K. Haugland,
-``Evaluating the Fabius function,'' arXiv:1609.07999, 2016.
-
-\bibitem{p6:aistleitner}
-C. Aistleitner, R. Hofer, and G. Larcher,
-``On parametric Thue--Morse sequences and lacunary trigonometric products,''
-arXiv:1502.06738, 2015.
-
-\bibitem{p6:toth}
-L. T\'oth,
-``Linear combinations of Dirichlet series associated with the Thue--Morse
-sequence,'' \emph{Integers} 22 (2022), Article 98; arXiv:2211.13570.
-
-\bibitem{p6:jessen-wintner}
-B. Jessen and A. Wintner,
-``Distribution functions and the Riemann zeta function,''
-\emph{Transactions of the American Mathematical Society} 38 (1935), 48--88.
-
-\bibitem{p6:schoenberg}
-I. J. Schoenberg,
-``Contributions to the problem of approximation of equidistant data by analytic
-functions,'' \emph{Quarterly of Applied Mathematics} 4 (1946), 45--99 and
-112--141.
-
-\bibitem{p6:strang-fix}
-G. Strang and G. Fix,
-\emph{A Fourier Analysis of the Finite Element Variational Method}, in
-Constructive Aspects of Functional Analysis, Edizioni Cremonese, Rome, 1971.
-
-\bibitem{p6:deboor-ron}
-C. de Boor and A. Ron,
-``Fourier analysis of the approximation power of principal shift-invariant
-spaces,'' \emph{Constructive Approximation} 8 (1992), 427--462.
-
-\bibitem{p6:comtet}
-L. Comtet,
-\emph{Advanced Combinatorics}, Reidel, Dordrecht, 1974.
-
-\bibitem{p6:gasper-rahman}
-G. Gasper and M. Rahman,
-\emph{Basic Hypergeometric Series}, 2nd ed., Cambridge University Press, 2004.
-
-\bibitem{p6:corless}
-R. M. Corless, G. H. Gonnet, D. E. G. Hare, D. J. Jeffrey, and D. E. Knuth,
-``On the Lambert $W$ function,'' \emph{Advances in Computational Mathematics}
-5 (1996), 329--359.
-
-\bibitem{p6:peres-solomyak}
-Y. Peres, W. Schlag, and B. Solomyak,
-``Sixty years of Bernoulli convolutions,'' in
-\emph{Fractal Geometry and Stochastics II}, Progress in Probability 46,
-Birkh\"auser, 2000, 39--65.
-
-\bibitem{p6:hutchinson}
-J. E. Hutchinson,
-``Fractals and self-similarity,''
-\emph{Indiana University Mathematics Journal} 30 (1981), no.~5, 713--747.
-
-\bibitem{p6:lapidus-vf}
-M. L. Lapidus and M. van Frankenhuijsen,
-\emph{Fractal Geometry, Complex Dimensions and Zeta Functions:
-Geometry and Spectra of Fractal Strings}, 2nd ed.,
-Springer Monographs in Mathematics, Springer, 2013.
-
-\bibitem{p6:flajolet-gd}
-P. Flajolet, X. Gourdon, and P. Dumas,
-``Mellin transforms and asymptotics: Harmonic sums,''
-\emph{Theoretical Computer Science} 144 (1995), 3--58.
-
-\bibitem{p6:derham}
-G. de Rham,
-``Sur quelques courbes d\'efinies par des \'equations fonctionnelles,''
-\emph{Rendiconti del Seminario Matematico dell'Universit\`a e del Politecnico
-di Torino} 16 (1956--1957), 101--113.
-
-\bibitem{p6:heyde}
-C. C. Heyde,
-``On a property of the lognormal distribution,''
-\emph{Journal of the Royal Statistical Society, Series B} 25 (1963), no.~2,
-392--393.
-
-\bibitem{p6:ismail}
-M. E. H. Ismail,
-\emph{Classical and Quantum Orthogonal Polynomials in One Variable},
-Encyclopedia of Mathematics and its Applications 98,
-Cambridge University Press, 2005.
-
-\bibitem{p6:andrews}
-G. E. Andrews,
-\emph{The Theory of Partitions},
-Encyclopedia of Mathematics and its Applications 2,
-Addison--Wesley, 1976; reprinted Cambridge University Press, 1998.
-
-\bibitem{p6:peres}
-Y. Peres, W. Schlag, and B. Solomyak,
-``Sixty years of Bernoulli convolutions,''
-in \emph{Fractal Geometry and Stochastics II},
-Progress in Probability 46, Birkh\"auser, 2000, 39--65.
-
-\bibitem{p6:karlin}
-S. Karlin,
-\emph{Total Positivity}, Vol.~I,
-Stanford University Press, 1968.
-
-\end{thebibliography}
 
 
 % ed.: Part VII local macros (checked absent from the volume registry;
@@ -16719,7 +16254,7 @@ $(u;q)_m=\sum_{n<2^m}(-u)^{\BinaryDigitSum(n)}q^{\pi_2(n)}$, and at fixed weight
  =q^{\binom k2}\GaussianBinomial{m}{k}{q},
 \end{equation}
 a specialization of the $q$-digital binomial theorem of Mansour and
-Nguyen~\cite{p7:mansour-nguyen}.  The shifted variant
+Nguyen~\cite{bib:mansour2015}.  The shifted variant
 $\mathcal T_m(z;q)=\prod_{j<m}(1-q^{j+1}z^{2^j})
 =\sum_n\ThueMorseSign{n}q^{\rho_2(n)}z^n$ with
 $\rho_2=\pi_2+\BinaryDigitSum$ satisfies
@@ -16849,7 +16384,7 @@ $(z;-a)_{2m}=(z;a^2)_m(-az;a^2)_m$ --- the finite counterpart of sign
 conjugacy and decimation.  Interpreting the nome as a prime power connects
 the two orbits to finite geometry: $\GaussianBinomial{N}{k}{Q}$ counts $k$-planes in
 $\mathbb F_Q^N$, $\GaussianBinomial{N}{k}{1/Q}=Q^{-k(N-k)}\#\Gr(k,\mathbb F_Q^N)$, and by
-Fu, Reiner, Stanton, and Thiem~\cite{p7:fu-reiner-stanton-thiem} the negative
+Fu, Reiner, Stanton, and Thiem~\cite{bib:fu2012} the negative
 nome counts nondegenerate subspaces of Hermitian spaces:
 $\GaussianBinomial{N}{k}{-Q}=(-Q)^{-k(N-k)}U_Q(N,k)$ and
 $\GaussianBinomial{N}{k}{-1/Q}=Q^{-2k(N-k)}U_Q(N,k)$ over $\mathbb F_{Q^2}$.  The two
@@ -17314,60 +16849,7 @@ decomposition; the density-level all-orders Lambert-$W_{-1}$ program, the
 $\mathcal P_n$ arithmetic, and the vertical orthogonal polynomials are the
 principal open frontiers.
 
-\begin{thebibliography}{99}
 
-\bibitem{p7:arias-definition}
-J. Arias de Reyna,
-``An infinitely differentiable function with compact support: Definition and
-properties,'' \emph{Rev. Real Acad. Ciencias Madrid} 76 (1982), 21--38;
-English translation, arXiv:1702.05442, 2017.
-
-\bibitem{p7:arias-arithmetic}
-J. Arias de Reyna,
-``Arithmetic of the Fabius function,'' arXiv:1702.06487, 2017.
-
-\bibitem{p7:fabius}
-J. Fabius,
-``A probabilistic example of a nowhere analytic $C^\infty$-function,''
-\emph{Zeitschrift f\"ur Wahrscheinlichkeitstheorie und Verwandte Gebiete}
-5 (1966), 173--174.
-
-\bibitem{p7:haugland}
-J. K. Haugland,
-``Evaluating the Fabius function,'' arXiv:1609.07999, 2016.
-
-\bibitem{p7:fu-reiner-stanton-thiem}
-A. M. Fu, V. Reiner, D. Stanton, and P. Thiem,
-``The negative $q$-binomial,''
-\emph{Electronic Journal of Combinatorics} 19 (2012), Paper P36.
-
-\bibitem{p7:mansour-nguyen}
-T. Mansour and H. D. Nguyen,
-``A $q$-digital binomial theorem,'' arXiv:1506.07945, 2015; see also
-H. D. Nguyen, ``A digital binomial theorem,'' arXiv:1412.3181, 2014.
-
-\bibitem{p7:allouche-shallit}
-J.-P. Allouche and J. Shallit,
-``The ubiquitous Prouhet--Thue--Morse sequence,'' in \emph{Sequences and
-Their Applications}, Springer, 1999, 1--16.
-
-\bibitem{p7:toth}
-L. T\'oth,
-``Linear combinations of Dirichlet series associated with the Thue--Morse
-sequence,'' \emph{Integers} 22 (2022), Article 98.
-
-\bibitem{p7:corless}
-R. M. Corless, G. H. Gonnet, D. E. G. Hare, D. J. Jeffrey, and D. E. Knuth,
-``On the Lambert $W$ function,'' \emph{Advances in Computational
-Mathematics} 5 (1996), 329--359.
-
-\bibitem{p7:gasper-rahman}
-G. Gasper and M. Rahman,
-\emph{Basic Hypergeometric Series}, 2nd ed., Cambridge University Press,
-2004; and NIST DLMF, Chapter 17, for $q$-Pochhammer and Gaussian-binomial
-conventions.
-
-\end{thebibliography}
 
 
 \clearpage
@@ -17450,14 +16932,14 @@ non-elementarity article, the Lean walkthrough, the consolidated
 families, and the TeX sources stored under \texttt{papers}.  The archive is important
 for priority control: many early notes are frozen historical stages, while the two large
 integrated sources are the canonical current synthesis.  The principal public entry
-points are \cite{p8:repo-main,p8:repo-frontiers,p8:repo-glossary,p8:repo-nonelem,p8:repo-leanwalk}.
+points are \cite{bib:repo2026c,bib:repo2026d,bib:repog,bib:repoh,bib:repoi}.
 
 The repository's own frontier box is unusually specific.  It records that the law
 \(\mu_q\) is absolutely continuous for every \(\lvert q\rvert<1\), but that the chosen
 function called \(f_q\) has only been identified with the Radon--Nikodym density for
 \(0<q<1\).  It separately lists centered affine transport, log-concavity, strictness,
 central plateaux, explicit Bernoulli cumulants, Bell moments, and Gaussian limits as
-unpromoted research layers \cite{p8:repo-frontiers}.  These declarations make it possible
+unpromoted research layers \cite{bib:repo2026d}.  These declarations make it possible
 to state a sharp non-duplication target.
 
 \subsection{What is taken as established}
@@ -17906,7 +17388,7 @@ For finite \(N\), the partial sum
 \]
 is a convolution of uniform laws on compact intervals.  A negative coefficient merely
 reflects an interval, so each factor remains log-concave.  Affine images and convolutions
-preserve log-concavity by the Pr\'ekopa theorem \cite{p8:prekopa1973}.  Hence every finite
+preserve log-concavity by the Pr\'ekopa theorem \cite{bib:prekopa1973}.  Hence every finite
 law is log-concave.  The partial sums converge almost surely, therefore weakly, to \(X_q\).
 The class of log-concave probability measures is closed under weak convergence, so the
 limit law is log-concave.  A log-concave measure that has a continuous density has that
@@ -18706,110 +18188,7 @@ This part's verification material is kept in the volume directory under
 The absorbed report's source and PDF were deleted when it was merged; git
 history is their archive.  The volume itself is rebuilt from its own directory by running \texttt{pdflatex} on \path{geometric_q_fabius_frontiers.tex} three times, so that the table of contents and every cross-reference settle.
 
-\begin{thebibliography}{99}
 
-\bibitem{p8:repo-main}
-V.~Reshetnikov,
-\newblock \emph{The Fabius Function and Rvachev's Up-Function: Probability, Analysis,
-Arithmetic, and Formalization},
-\newblock integrated TeX source in \texttt{ProveIt/Analysis/FabiusFunction/docs},
-consulted 30 August 2026,
-\newblock \url{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Analysis/FabiusFunction/docs/Fabius_Function_and_Rvachev_Up}.
-
-\bibitem{p8:repo-frontiers}
-V.~Reshetnikov,
-\newblock \emph{Semi-formalized Research Frontiers for the Fabius/Rvachev Program},
-\newblock consolidated TeX source in \texttt{ProveIt/Analysis/FabiusFunction/docs},
-consulted 30 August 2026,
-\newblock \url{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Analysis/FabiusFunction/docs/semi-formalized-research-frontiers}.
-
-\bibitem{p8:repo-glossary}
-V.~Reshetnikov,
-\newblock \emph{Fabius Function Mathematical Glossary},
-\newblock \url{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Analysis/FabiusFunction/docs/FabiusFunction_Mathematical_Glossary}.
-
-\bibitem{p8:repo-nonelem}
-V.~Reshetnikov,
-\newblock \emph{Non-Elementarity of the Fabius Function},
-\newblock \url{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Analysis/FabiusFunction/docs/Non_Elementarity_of_the_Fabius_Function}.
-
-\bibitem{p8:repo-leanwalk}
-V.~Reshetnikov,
-\newblock \emph{Fabius Lean Walkthrough},
-\newblock \url{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Analysis/FabiusFunction/docs/fabius_lean_walkthrough}.
-
-\bibitem{p8:jessen1935}
-B.~Jessen and A.~Wintner,
-\newblock Distribution functions and the Riemann zeta function,
-\newblock \emph{Transactions of the American Mathematical Society} \textbf{38} (1935),
-48--88.
-
-\bibitem{p8:fabius1966}
-J.~Fabius,
-\newblock A probabilistic example of a nowhere analytic \(C^\infty\)-function,
-\newblock \emph{Zeitschrift f\"ur Wahrscheinlichkeitstheorie und Verwandte Gebiete}
-\textbf{5} (1966), 173--174.
-
-\bibitem{p8:rvachev1990}
-V.~A.~Rvachev,
-\newblock Compactly supported solutions of functional-differential equations and their
-applications,
-\newblock \emph{Russian Mathematical Surveys} \textbf{45} (1990), no.~1, 87--120.
-
-\bibitem{p8:arias1982}
-J.~Arias de Reyna,
-\newblock An infinitely differentiable function with compact support: definition and
-properties,
-\newblock English translation of the 1982 article, arXiv:1702.05442 (2017).
-
-\bibitem{p8:arias2018}
-J.~Arias de Reyna,
-\newblock Arithmetic of the Fabius function,
-\newblock \emph{INTEGERS} \textbf{18} (2018), Article A51; arXiv:1702.06487v3.
-
-\bibitem{p8:corless1996}
-R.~M.~Corless, G.~H.~Gonnet, D.~E.~G.~Hare, D.~J.~Jeffrey, and D.~E.~Knuth,
-\newblock On the Lambert \(W\) function,
-\newblock \emph{Advances in Computational Mathematics} \textbf{5} (1996), 329--359.
-
-\bibitem{p8:flajolet1995}
-P.~Flajolet, X.~Gourdon, and P.~Dumas,
-\newblock Mellin transforms and asymptotics: harmonic sums,
-\newblock \emph{Theoretical Computer Science} \textbf{144} (1995), 3--58.
-
-\bibitem{p8:prekopa1973}
-A.~Pr\'ekopa,
-\newblock On logarithmic concave measures and functions,
-\newblock \emph{Acta Scientiarum Mathematicarum (Szeged)} \textbf{34} (1973), 335--343.
-
-\bibitem{p8:berry1941}
-A.~C.~Berry,
-\newblock The accuracy of the Gaussian approximation to the sum of independent variates,
-\newblock \emph{Transactions of the American Mathematical Society} \textbf{49} (1941),
-122--136.
-
-\bibitem{p8:esseen1942}
-C.-G.~Esseen,
-\newblock On the Liapunoff limit of error in the theory of probability,
-\newblock \emph{Arkiv f\"or Matematik, Astronomi och Fysik} \textbf{A28} (1942), no.~9,
-1--19.
-
-\bibitem{p8:petrov1975}
-V.~V.~Petrov,
-\newblock \emph{Sums of Independent Random Variables},
-\newblock Springer, 1975.
-
-\bibitem{p8:gasperrahman}
-G.~Gasper and M.~Rahman,
-\newblock \emph{Basic Hypergeometric Series}, second edition,
-\newblock Cambridge University Press, 2004.
-
-\bibitem{p8:alloucheshallit}
-J.-P.~Allouche and J.~Shallit,
-\newblock \emph{Automatic Sequences: Theory, Applications, Generalizations},
-\newblock Cambridge University Press, 2003.
-
-\end{thebibliography}
 
 
 \clearpage
@@ -20070,7 +19449,7 @@ the multiplier at a general time $\tau>0$ is recovered from the same limit
 after the substitution $w\mapsto\tau^{1/6}w$.
 The associated fundamental solution has unit mass but is not of one sign: by
 the preceding proposition it changes sign, and the classical oscillatory
-asymptotics for polyharmonic kernels \cite{p9:EvgrafovPostnikov} show that it
+asymptotics for polyharmonic kernels \cite{bib:evgrafov1970} show that it
 in fact oscillates.
 \end{corollary}
 
@@ -20626,88 +20005,7 @@ python numerical_experiments.py --dps 80
 from that directory; this volume reads the regenerated figures and data table
 in place.  The volume itself is rebuilt from its own directory by running \texttt{pdflatex} on \path{geometric_q_fabius_frontiers.tex} three times, so that the table of contents and every cross-reference settle.
 
-\begin{thebibliography}{99}
 
-\bibitem{p9:ProveItDocs}
-V.~Reshetnikov,
-\newblock \emph{ProveIt: Analysis/FabiusFunction documentation corpus},
-\newblock GitHub repository, living tree and archive,
-\newblock \url{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Analysis/FabiusFunction/docs},
-accessed 30 August 2026.
-
-\bibitem{p9:ProveItPrimary}
-V.~Reshetnikov,
-\newblock \emph{The Fabius Function and Rvachev's Up-Function},
-\newblock primary exposition in the ProveIt repository, 2026.
-
-\bibitem{p9:ProveItQFrontiers}
-V.~Reshetnikov,
-\newblock \emph{Exponents and $q$-Series Frontiers},
-\newblock consolidated semi-formalized source in
-\path{Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/exponents-and-q-series}, 2026.
-
-\bibitem{p9:Fabius1966}
-J.~Fabius,
-\newblock A probabilistic example of a nowhere analytic $C^\infty$-function,
-\newblock \emph{Zeitschrift f\"ur Wahrscheinlichkeitstheorie und Verwandte Gebiete}
-\textbf{5} (1966), 173--174.
-
-\bibitem{p9:Rvachev1971}
-V.~L.~Rvachev and V.~A.~Rvachev,
-\newblock A certain finite function,
-\newblock \emph{Dopovidi Akademii Nauk Ukrains'koi RSR, Series A} (1971), 705--707, 764.
-
-\bibitem{p9:Rvachev1990}
-V.~A.~Rvachev,
-\newblock Compactly supported solutions of functional-differential equations and their applications,
-\newblock \emph{Russian Mathematical Surveys} \textbf{45} (1990), no.~1, 87--120.
-
-\bibitem{p9:Arias1982}
-J.~Arias de Reyna,
-\newblock An infinitely differentiable function with compact support: definition and properties,
-\newblock English translation, arXiv:1702.05442.
-
-\bibitem{p9:AriasArithmetic}
-J.~Arias de Reyna,
-\newblock Arithmetic of the Fabius function,
-\newblock \emph{INTEGERS} \textbf{18} (2018), Article A51; arXiv:1702.06487.
-
-\bibitem{p9:AlloucheShallit}
-J.-P.~Allouche and J.~Shallit,
-\newblock \emph{Automatic Sequences: Theory, Applications, Generalizations},
-\newblock Cambridge University Press, 2003.
-
-\bibitem{p9:GasperRahman}
-G.~Gasper and M.~Rahman,
-\newblock \emph{Basic Hypergeometric Series}, second edition,
-\newblock Cambridge University Press, 2004.
-
-\bibitem{p9:McIntosh1999}
-R.~J.~McIntosh,
-\newblock Some asymptotic formulae for $q$-shifted factorials,
-\newblock \emph{Ramanujan Journal} \textbf{3} (1999), 205--214.
-
-\bibitem{p9:GaroufalidisZagier}
-S.~Garoufalidis and D.~Zagier,
-\newblock Asymptotics of Nahm sums at roots of unity,
-\newblock \emph{Ramanujan Journal} \textbf{55} (2021), 219--238.
-
-\bibitem{p9:Kopp}
-G.~S.~Kopp,
-\newblock The Shintani--Faddeev modular cocycle,
-\newblock preprint, 2024; sections on cyclic quantum dilogarithms and root-of-unity $q$-Pochhammer asymptotics.
-
-\bibitem{p9:BellComtet}
-L.~Comtet,
-\newblock \emph{Advanced Combinatorics},
-\newblock Reidel, 1974.
-
-\bibitem{p9:EvgrafovPostnikov}
-M.~A.~Evgrafov and M.~M.~Postnikov,
-\newblock Asymptotic behavior of Green's functions for parabolic and elliptic equations with constant coefficients,
-\newblock \emph{Mathematics of the USSR-Sbornik} \textbf{11} (1970), 1--24.
-
-\end{thebibliography}
 
 
 \clearpage
@@ -20798,7 +20096,7 @@ contains the expository Fabius and Rvachev documents, the Lean walkthrough,
 archival material, the canonical semi-formalized frontier volume, and a large
 set of current standalone drafts.  The working comparison used the live
 source tree, the canonical frontier volume and its group READMEs, and the
-global draft manifest dated 28--30 August 2026 \cite{p10:ProveItDocs,p10:ProveItManifest}.  The purpose of the comparison
+global draft manifest dated 28--30 August 2026 \cite{bib:repo2026h,bib:repo2026i}.  The purpose of the comparison
 was not merely to avoid repeated wording: it was to remove mathematical
 layers whose main claims were already present under different titles.
 
@@ -20906,7 +20204,7 @@ At $q=1/2$ the first product is
 $\prod_{k\ge1}\SincRad(t/2^k)$, the standard Fourier transform of the centered
 Rvachev $\RvachevUp$-function.  Thus $X_{1/2}$ is exactly the centered up-law; the
 usual piecewise shift/reflection relation then connects its density to the
-Fabius function \cite{p10:Fabius1966,p10:Rvachev1990,p10:Arias2018}.
+Fabius function \cite{bib:fabius1966,bib:rvachev1990,bib:arias2018}.
 
 \subsection{Bernoulli cumulants}
 
@@ -20932,7 +20230,7 @@ In particular
  \sigma_q^2:=\Variance(X_q)=\frac{1-q}{3(1+q)}.
  \label{p10:eq:variance}
 \end{equation}
-The moments are complete Bell polynomials in the cumulants \cite{p10:Comtet}, so every even
+The moments are complete Bell polynomials in the cumulants \cite{bib:comtet1974}, so every even
 moment is a rational function of $q$ with Bernoulli input.  This exact
 cumulant layer is part of the established corpus; our use of it below is to
 build the new parameter asymptotics.
@@ -21267,7 +20565,7 @@ even powers of $\delta$.  The first two nontrivial terms are
 For
 $f_{\delta,\theta}(t)=g(\theta s_\delta \EulerE^{-t})$, all derivatives decay
 exponentially as $t\to\infty$, uniformly for $\theta$ in a compact set.
-The midpoint Euler--Maclaurin formula \cite{p10:Olver} gives
+The midpoint Euler--Maclaurin formula \cite{bib:olver1974} gives
 \begin{equation}
  \delta\sum_{j\ge0}f_{\delta,\theta}((j+1/2)\delta)
  =\int_0^\infty f_{\delta,\theta}(t)\Differential t
@@ -21300,7 +20598,7 @@ steps; the residual amplitude $s_\delta$ moves no node and only rescales the
 argument, $\theta\mapsto\theta s_\delta$.  The resulting coefficients are Bernoulli polynomials at
 $1/2$, not merely Bernoulli numbers at zero.  This provides a direct bridge
 between the repository's $q$-product layer and its Bernoulli/Euler--Maclaurin
-layer \cite{p10:GasperRahman}.
+layer \cite{bib:gasper2004}.
 \end{remark}
 
 \section{A large-deviation principle as \texorpdfstring{$q\uparrow1$}{q tends to 1}}
@@ -21339,7 +20637,7 @@ $\Lambda_\delta$ in \eqref{p10:eq:scaled-cgf}, and
 \cref{p10:thm:lambda-limit} gives pointwise convergence to the finite,
 differentiable function $\Lambda$ on all of $\RealNumbers$.  Since every
 $X_{\EulerE^{-\delta}}$ is supported on the common compact interval $[-1,1]$,
-exponential tightness is automatic.  The G\"artner--Ellis theorem \cite{p10:Ellis1984,p10:DemboZeitouni} therefore
+exponential tightness is automatic.  The G\"artner--Ellis theorem \cite{bib:ellis1984,bib:dembo1998} therefore
 gives the LDP with Legendre transform \eqref{p10:eq:rate-Legendre}.  Strict
 convexity and \eqref{p10:eq:gradient-range} give the unique saddle and the
 parametric identities.  Outside $[-1,1]$ the rate is infinite by support.
@@ -21581,7 +20879,7 @@ The saddle equation becomes
 Dropping the exponentially small last term yields
 $\eta\theta=\log(2\theta)$, equivalent to
 $(-\eta\theta)\EulerE^{-\eta\theta}=-\eta/2$.  The diverging positive solution is
-\eqref{p10:eq:theta-Lambert} on branch $W_{-1}$ \cite{p10:Corless1996}.  A mean-value estimate in
+\eqref{p10:eq:theta-Lambert} on branch $W_{-1}$ \cite{bib:corless1996}.  A mean-value estimate in
 \eqref{p10:eq:edge-saddle-exact} gives \eqref{p10:eq:theta-Lambert-error}.  Finally
 substitute $x=1-\eta$, use
 $\eta\theta=\log(2\theta)+o(1)$, and subtract \eqref{p10:eq:Lambda-large} from
@@ -22213,92 +21511,7 @@ cumulant-transform, rate, Edgeworth, and stop-loss experiments;
 \end{itemize}
 The volume itself is rebuilt from its own directory by running \texttt{pdflatex} on \path{geometric_q_fabius_frontiers.tex} three times, so that the table of contents and every cross-reference settle.
 
-\begin{thebibliography}{99}
 
-\bibitem{p10:Fabius1966}
-J.~Fabius,
-\newblock A probabilistic example of a nowhere analytic $C^\infty$-function,
-\newblock \emph{Z. Wahrscheinlichkeitstheorie verw. Geb.} \textbf{5}
-(1966), 173--174.
-
-\bibitem{p10:Rvachev1990}
-V.~A.~Rvachev,
-\newblock Compactly supported solutions of functional-differential equations
-and their applications,
-\newblock \emph{Russian Mathematical Surveys} \textbf{45} (1990), no.~1,
-87--120; DOI: 10.1070/RM1990v045n01ABEH002324.
-
-\bibitem{p10:Arias2018}
-J.~Arias de Reyna,
-\newblock Arithmetic of the Fabius function,
-\newblock \emph{Integers} \textbf{18} (2018), Paper A51; arXiv:1702.06487.
-
-\bibitem{p10:ProveItDocs}
-V.~Reshetnikov,
-\newblock ProveIt: FabiusFunction documentation tree,
-\newblock \url{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Analysis/FabiusFunction/docs},
-accessed 30 August 2026.
-
-\bibitem{p10:ProveItManifest}
-V.~Reshetnikov,
-\newblock Draft manifest for the semi-formalized Fabius--Rvachev research
-frontiers,
-\newblock \url{https://github.com/VladimirReshetnikov/ProveIt/blob/main/Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/MANIFEST.md},
-accessed 30 August 2026.
-
-\bibitem{p10:Corless1996}
-R.~M.~Corless, G.~H.~Gonnet, D.~E.~G.~Hare, D.~J.~Jeffrey, and D.~E.~Knuth,
-\newblock On the Lambert $W$ function,
-\newblock \emph{Advances in Computational Mathematics} \textbf{5} (1996),
-329--359.
-
-\bibitem{p10:Ellis1984}
-R.~S.~Ellis,
-\newblock Large deviations for a general class of random vectors,
-\newblock \emph{Annals of Probability} \textbf{12} (1984), 1--12.
-
-\bibitem{p10:DemboZeitouni}
-A.~Dembo and O.~Zeitouni,
-\newblock \emph{Large Deviations Techniques and Applications},
-\newblock 2nd ed., Springer, 1998; corrected printing 2010.
-
-\bibitem{p10:BhattacharyaRao}
-R.~N.~Bhattacharya and R.~Rao,
-\newblock \emph{Normal Approximation and Asymptotic Expansions},
-\newblock Wiley, 1976; SIAM Classics reprint, 2010.
-
-\bibitem{p10:Petrov}
-V.~V.~Petrov,
-\newblock \emph{Sums of Independent Random Variables},
-\newblock Springer, 1975.
-
-\bibitem{p10:MarshallOlkinArnold}
-A.~W.~Marshall, I.~Olkin, and B.~C.~Arnold,
-\newblock \emph{Inequalities: Theory of Majorization and Its Applications},
-\newblock 2nd ed., Springer, 2011.
-
-\bibitem{p10:HardyLittlewoodPolya}
-G.~H.~Hardy, J.~E.~Littlewood, and G.~P\'olya,
-\newblock \emph{Inequalities},
-\newblock 2nd ed., Cambridge University Press, 1952.
-
-\bibitem{p10:Olver}
-F.~W.~J.~Olver,
-\newblock \emph{Asymptotics and Special Functions},
-\newblock Academic Press, 1974; A K Peters reprint, 1997.
-
-\bibitem{p10:GasperRahman}
-G.~Gasper and M.~Rahman,
-\newblock \emph{Basic Hypergeometric Series},
-\newblock 2nd ed., Cambridge University Press, 2004.
-
-\bibitem{p10:Comtet}
-L.~Comtet,
-\newblock \emph{Advanced Combinatorics: The Art of Finite and Infinite
-Expansions},
-\newblock Reidel, 1974.
-
-\end{thebibliography}
 
 
 \clearpage
@@ -22345,7 +21558,7 @@ Let \((U_n)_{n\ge0}\) be independent \(\operatorname{Unif}[0,1]\) random variabl
  X_r=(1-r)\sum_{n=0}^{\infty}r^nU_n,
  \qquad 0<r<1.
 \end{equation}
-The weights sum to one, so \(X_r\in[0,1]\).  At \(r=1/2\), its distribution function is the Fabius function \(F\), and its density is the affine rescaling \cite{p11:Fabius1966,p11:Arias1982,p11:RepoPrimary}
+The weights sum to one, so \(X_r\in[0,1]\).  At \(r=1/2\), its distribution function is the Fabius function \(F\), and its density is the affine rescaling \cite{bib:fabius1966,bib:arias1982,bib:repo2026j}
 \begin{equation}\label{p11:eq:fabius-density-up}
  F'(x)=2\RvachevUp(2x-1),\qquad 0<x<1.
 \end{equation}
@@ -22371,7 +21584,7 @@ The report establishes the following package.
 \end{enumerate}
 \end{resultbox}
 
-The central Edgeworth theorem resolves a program that the repository itself marks as open: its discrete finite-level analog was completed, while the continuous parameter limit \(a\downarrow1\), equivalently \(r\uparrow1\), remained open.  A companion frontier draft records the first fixed-frequency quartic correction and conjectures precisely the weighted, differentiated, all-orders statement proved here \cite{p11:RepoFrontier,p11:RepoGaussian}.
+The central Edgeworth theorem resolves a program that the repository itself marks as open: its discrete finite-level analog was completed, while the continuous parameter limit \(a\downarrow1\), equivalently \(r\uparrow1\), remained open.  A companion frontier draft records the first fixed-frequency quartic correction and conjectures precisely the weighted, differentiated, all-orders statement proved here \cite{bib:repo2026k,bib:repo2026l}.
 
 \subsection{Why the new scales are natural}
 The standard CLT scale keeps \(Z_h=O(1)\).  The standardized support, however, is
@@ -22412,7 +21625,7 @@ Historical archive & Frozen first-introduction versions grouped by subject.  Byt
 \bottomrule
 \end{longtable}
 
-The imported baseline includes the classical compact-support and arithmetic papers, the standard Thue--Morse survey, lacunary-product work, and a recent Thue--Morse Dirichlet-series paper \cite{p11:Arias1982,p11:Arias2017,p11:AlloucheShallit,p11:AistleitnerParametric,p11:AistleitnerEvil,p11:Toth}.
+The imported baseline includes the classical compact-support and arithmetic papers, the standard Thue--Morse survey, lacunary-product work, and a recent Thue--Morse Dirichlet-series paper \cite{bib:arias1982,bib:arias2017,bib:allouche1999,bib:aistleitner,bib:aistleitner2017a,bib:toth2022}.
 
 The archive and draft manifest are important methodologically: they prevent a recent theorem hidden in a prior wave from being misidentified as new.  Historical copies were treated as lineage evidence, not as independent mathematical content.
 
@@ -22471,7 +21684,7 @@ We use
  \qquad
  f(x)=\frac1{2\pi}\int_{\RealNumbers}\EulerE^{-\ImaginaryUnit tx}\FourierAngular{f}(-t)\,\Differential t.
 \end{equation}
-For every fixed \(h>0\), the product \eqref{p11:eq:Psi-product} decays faster than every negative power, and therefore \(Z_h\) has a compactly supported \(C^\infty\) density \(f_h\) \cite{p11:JessenWintner,p11:Arias1982}.  A quantitative version is proved in \Cref{p11:lem:sinc-envelope}.
+For every fixed \(h>0\), the product \eqref{p11:eq:Psi-product} decays faster than every negative power, and therefore \(Z_h\) has a compactly supported \(C^\infty\) density \(f_h\) \cite{bib:jessen1935,bib:arias1982}.  A quantitative version is proved in \Cref{p11:lem:sinc-envelope}.
 
 The probabilists' Hermite polynomials are
 \begin{equation}\label{p11:eq:Hermite}
@@ -22628,7 +21841,7 @@ Fix integers \(R,j,K\ge0\).  There exist \(h_0>0\) and \(C_{R,j,K}<\infty\) such
 Consequently \(f_h\) has a complete asymptotic expansion in the Schwartz topology, and every coefficient is an explicit Bernoulli--Bell--Hermite polynomial.
 \end{theorem}
 
-Relative to the classical Edgeworth framework \cite{p11:BhattacharyaRao,p11:Petrov}, this theorem strengthens the usual local statement in three ways: it is uniform on all of \(\RealNumbers\), survives any fixed number of spatial derivatives, and carries arbitrary fixed polynomial weights.
+Relative to the classical Edgeworth framework \cite{bib:bhattacharya2010,bib:petrov1975}, this theorem strengthens the usual local statement in three ways: it is uniform on all of \(\RealNumbers\), survives any fixed number of spatial derivatives, and carries arbitrary fixed polynomial weights.
 
 \subsection{Global sinc-product bounds}
 The proof starts with a uniform frequency envelope.
@@ -22868,7 +22081,7 @@ By \Cref{p11:prop:exact-cumulants}, \(\lambda_{2m}(h)=\BigO(h^{m-1})\), so the \
 \[
  \BigO\bigl((hb_h^2)^{m-1}\bigr).
 \]
-The series is locally uniformly controlled because the largest individual moment-generating-function argument is \(\BigO(\sqrt h\,b_h)\to0\).  Hence the scaled log MGF converges locally uniformly to \(t^2/2\).  The G\"artner--Ellis theorem \cite{p11:DemboZeitouni} gives the LDP with Legendre transform \(x^2/2\).
+The series is locally uniformly controlled because the largest individual moment-generating-function argument is \(\BigO(\sqrt h\,b_h)\to0\).  Hence the scaled log MGF converges locally uniformly to \(t^2/2\).  The G\"artner--Ellis theorem \cite{bib:dembo1998} gives the LDP with Legendre transform \(x^2/2\).
 \end{proof}
 
 \subsection{The compact scale}
@@ -22924,7 +22137,7 @@ Each finite-\(h\) log MGF is convex, and strict convexity of the limit follows e
  \Lambda'(s)=\sqrt6\frac{\ell(\sqrt6s)}{\sqrt6s}\to\sqrt6
  \quad(s\to+\infty),
 \]
-and similarly the limit is \(-\sqrt6\) at \(-\infty\).  Thus the derivative range is exactly \((-\sqrt6,\sqrt6)\).  The G\"artner--Ellis theorem \cite{p11:DemboZeitouni} applies; exponential tightness is automatic from the uniformly bounded supports of \(Y_h\).  The Legendre transform is finite only on the derivative range and diverges at and beyond the limiting endpoints, giving \eqref{p11:eq:rate-support}.
+and similarly the limit is \(-\sqrt6\) at \(-\infty\).  Thus the derivative range is exactly \((-\sqrt6,\sqrt6)\).  The G\"artner--Ellis theorem \cite{bib:dembo1998} applies; exponential tightness is automatic from the uniformly bounded supports of \(Y_h\).  The Legendre transform is finite only on the derivative range and diverges at and beyond the limiting endpoints, giving \eqref{p11:eq:rate-support}.
 \end{proof}
 
 \subsection{Exact saddle parametrization}
@@ -22964,7 +22177,7 @@ The positive quartic term shows how compact support makes deviations more expens
 
 \section{Lambert--\texorpdfstring{$W$}{W} inversion at the limiting support edge}\label{p11:sec:lambert-edge}
 
-The parametric formula in \Cref{p11:thm:rate-parametric} permits a precise edge analysis.  It is here that the Gaussian boundary, the lower real branch of Lambert \(W\) \cite{p11:CorlessLambertW}, and the zeta/Stieltjes constants meet.
+The parametric formula in \Cref{p11:thm:rate-parametric} permits a precise edge analysis.  It is here that the Gaussian boundary, the lower real branch of Lambert \(W\) \cite{bib:corless1996}, and the zeta/Stieltjes constants meet.
 
 \subsection{A renormalized Mellin constant}
 Use the standard Stieltjes convention
@@ -23089,20 +22302,20 @@ Let \(M=(M_n)_{n\ge0}\) be positive with \(M_0=1\).  Define the global Roumieu c
  \exists C,A>0\ \forall n\ge0,
  \Norm{f^{(n)}}_\infty\le CA^nM_n\right\}.
 \end{equation}
-For log-convex \(M\), the Denjoy--Carleman criterion in this convention \cite{p11:Komatsu} says that the class is quasianalytic exactly when
+For log-convex \(M\), the Denjoy--Carleman criterion in this convention \cite{bib:komatsu1973} says that the class is quasianalytic exactly when
 \begin{equation}\label{p11:eq:carleman-criterion}
  \sum_{n\ge1}\frac{M_{n-1}}{M_n}=\infty.
 \end{equation}
 A Gevrey class of finite order \(s\) corresponds, up to exponential factors, to \(M_n=(n!)^s\).
 
 \subsection{The Rvachev function}
-The exact norm identity already established in the repository \cite{p11:RepoPrimary,p11:RepoExponents} is
+The exact norm identity already established in the repository \cite{bib:repo2026j,bib:repo2026m} is
 \begin{equation}\label{p11:eq:up-exact-norm}
  \Norm{\RvachevUp^{(n)}}_\infty
  =\Norm{\RvachevUp^{(n)}}_1
  =2^{n(n+1)/2}.
 \end{equation}
-Its finite signed derivative decomposition is indexed by the signed Thue--Morse sequence \cite{p11:AlloucheShallit,p11:RepoExponents}.  Thus automatic-sequence cancellation and support tiling produce an exact global smoothness scale.
+Its finite signed derivative decomposition is indexed by the signed Thue--Morse sequence \cite{bib:allouche1999,bib:repo2026m}.  Thus automatic-sequence cancellation and support tiling produce an exact global smoothness scale.
 
 \begin{theorem}[Sharp Denjoy--Carleman class of \(\RvachevUp\)]\label{p11:thm:carleman-up}
 Let
@@ -23144,7 +22357,7 @@ is called \emph{quadratic \(q\)-Gevrey}.  This terminology is descriptive and is
 For \(\RvachevUp\), \(q=1/2\).  The name records the same quadratic exponent that appears in \(q\)-Pochhammer products, Stieltjes--Wigert moments, and log-Gaussian Fourier envelopes.
 
 \subsection{Separated-base atomic functions}
-For the general atomic functions \(h_a\), \(a\ge2\), the repository proves \cite{p11:RepoExponents}
+For the general atomic functions \(h_a\), \(a\ge2\), the repository proves \cite{bib:repo2026m}
 \begin{equation}\label{p11:eq:ha-exact-norm}
  \Norm{h_a^{(n)}}_\infty
  =\frac{a^{n(n+3)/2+1}}{2^{n+1}},
@@ -23483,100 +22696,7 @@ The public path is
 \url{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Analysis/FabiusFunction/docs}.
 \end{center}
 
-\begin{thebibliography}{99}
 
-\bibitem{p11:Arias1982}
-J.~Arias de Reyna,
-\newblock \emph{An infinitely differentiable function with compact support: Definition and properties},
-\newblock English translation of Rev. Real Acad. Cienc. Exact. F\'is. Natur. Madrid \textbf{76} (1982), 21--38,
-\newblock arXiv:1702.05442.
-
-\bibitem{p11:Arias2017}
-J.~Arias de Reyna,
-\newblock \emph{Arithmetic of the Fabius function},
-\newblock arXiv:1702.06487 (2017).
-
-\bibitem{p11:AlloucheShallit}
-J.-P.~Allouche and J.~Shallit,
-\newblock \emph{The ubiquitous Prouhet--Thue--Morse sequence},
-\newblock in Sequences and Their Applications, Springer, 1999, pp.~1--16.
-
-\bibitem{p11:AistleitnerParametric}
-C.~Aistleitner, R.~Hofer, and G.~Larcher,
-\newblock \emph{On parametric Thue--Morse sequences and lacunary trigonometric products},
-\newblock arXiv:1502.06738.
-
-\bibitem{p11:AistleitnerEvil}
-C.~Aistleitner, R.~Hofer, and G.~Larcher,
-\newblock \emph{On evil Kronecker sequences and lacunary trigonometric products},
-\newblock Ann. Inst. Fourier \textbf{67} (2017), 637--687.
-
-\bibitem{p11:BhattacharyaRao}
-R.~N.~Bhattacharya and R.~Rao,
-\newblock \emph{Normal Approximation and Asymptotic Expansions},
-\newblock SIAM, 2010 reprint.
-
-\bibitem{p11:CorlessLambertW}
-R.~M.~Corless, G.~H.~Gonnet, D.~E.~G.~Hare, D.~J.~Jeffrey, and D.~E.~Knuth,
-\newblock \emph{On the Lambert W function},
-\newblock Adv. Comput. Math. \textbf{5} (1996), 329--359.
-
-\bibitem{p11:DemboZeitouni}
-A.~Dembo and O.~Zeitouni,
-\newblock \emph{Large Deviations Techniques and Applications},
-\newblock 2nd ed., Springer, 1998; corrected printing 2010.
-
-\bibitem{p11:Fabius1966}
-J.~Fabius,
-\newblock \emph{A probabilistic example of a nowhere analytic \(C^\infty\)-function},
-\newblock Z. Wahrscheinlichkeitstheorie verw. Gebiete \textbf{5} (1966), 173--174.
-
-\bibitem{p11:Haugland}
-J.~K.~Haugland,
-\newblock \emph{Evaluating the Fabius function},
-\newblock arXiv:1609.07999 (2016).
-
-\bibitem{p11:JessenWintner}
-B.~Jessen and A.~Wintner,
-\newblock \emph{Distribution functions and the Riemann zeta function},
-\newblock Trans. Amer. Math. Soc. \textbf{38} (1935), 48--88.
-
-\bibitem{p11:Komatsu}
-H.~Komatsu,
-\newblock \emph{Ultradistributions I: Structure theorems and a characterization},
-\newblock J. Fac. Sci. Univ. Tokyo Sect. IA Math. \textbf{20} (1973), 25--105.
-
-\bibitem{p11:Petrov}
-V.~V.~Petrov,
-\newblock \emph{Sums of Independent Random Variables},
-\newblock Springer, 1975.
-
-\bibitem{p11:RepoPrimary}
-V.~Reshetnikov et al.,
-\newblock \emph{The Fabius function and Rvachev's up function}, living LaTeX exposition,
-\newblock \repo\ repository, accessed 30 August 2026.
-
-\bibitem{p11:RepoFrontier}
-V.~Reshetnikov et al.,
-\newblock \emph{Semi-formalized research frontiers for the Fabius and Rvachev functions}, living LaTeX frontier volume,
-\newblock \repo\ repository, accessed 30 August 2026.
-
-\bibitem{p11:RepoGaussian}
-V.~Reshetnikov et al.,
-\newblock \emph{Fabius--Rvachev frontier report}, Gaussian-boundary and geometric-parameter draft,
-\newblock \repo\ repository, accessed 30 August 2026.
-
-\bibitem{p11:RepoExponents}
-V.~Reshetnikov et al.,
-\newblock \emph{Exponents and \(q\)-series frontiers}, consolidated draft volume,
-\newblock \repo\ repository, accessed 30 August 2026.
-
-\bibitem{p11:Toth}
-L.~T\'oth,
-\newblock \emph{Linear combinations of Dirichlet series associated with the Thue--Morse sequence},
-\newblock arXiv:2211.13570 (2022).
-
-\end{thebibliography}
 
 
 \clearpage
@@ -23678,8 +22798,8 @@ independent article would therefore bias the duplication audit.
 The live frontier README records that eleven former notebooks were consolidated into six
 canonical thematic syntheses plus a gap register, preserving distinct arguments, numerical
 evidence, warnings, and proof obligations while compressing redundant repetitions
-\cite{p12:repoFrontier}.  The current manifest adds the larger thematic draft volumes and recent
-representation reports \cite{p12:repoManifest}.  Accordingly, the phrase \emph{new result} below
+\cite{bib:repo2026o}.  The current manifest adds the larger thematic draft volumes and recent
+representation reports \cite{bib:repo2026p}.  Accordingly, the phrase \emph{new result} below
 means ``not found in the active primary exposition, canonical frontier volume, or current
 manifest under the audited concepts and equivalent terminology.''  It is not a claim of
 absolute priority over all mathematical literature.
@@ -23704,7 +22824,7 @@ constant outside that interval, symmetric by \(F(1-x)=1-F(x)\), and satisfies
  F'(x)=2F(2x)\quad(0\le x\le1/2).
 \]
 It is strictly convex on \([0,1/2]\), strictly concave on \([1/2,1]\), and all positive-order
-endpoint derivatives vanish \cite{p12:repoPrimary}.
+endpoint derivatives vanish \cite{bib:repo2026n}.
 \item The exact midpoint transfer is
 \begin{equation}
  F\!\left(\frac12+h\right)=\frac12+2h-F(h),\qquad
@@ -23712,18 +22832,18 @@ endpoint derivatives vanish \cite{p12:repoPrimary}.
  \quad 0\le h\le\frac12,
  \label{p12:eq:midpoint-transfer-input}
 \end{equation}
-and \(F^{(k)}(1/2)=0\) for every \(k\ge2\) \cite{p12:repoPrimary}.
+and \(F^{(k)}(1/2)=0\) for every \(k\ge2\) \cite{bib:repo2026n}.
 \item For \(0<q<1\), the normalized geometric-uniform law has a compactly supported
 \(C^\infty\) density \(f_q\), a continuous CDF \(F_q\), reflection symmetry, exact support
 \([0,1]\), and the affine refinement equation stated in \cref{p12:sec:qfamily}
-\cite{p12:repoPrimary}.
+\cite{bib:repo2026n}.
 \item At the dyadic endpoint,
 \begin{equation}
  \log F(2^{-t})\sim-\frac{\log2}{2}\,t^2\qquad(t\to\infty),
  \label{p12:eq:dyadic-leading-input}
 \end{equation}
 while the sharp expansion contains a nonconstant periodic correction in an exact lower-Lambert
-phase \cite{p12:repoPrimary,p12:repoFrontier}.
+phase \cite{bib:repo2026n,bib:repo2026o}.
 \end{itemize}
 
 Everything labeled \statusproved{} is derived in this report from these inputs and standard
@@ -25295,88 +24415,461 @@ figure generation.
 --- reproduction parameters and a concise explanation of the numerical layer.
 \end{itemize}
 
-\begin{thebibliography}{99}
 
-\bibitem{p12:jessenWintner}
-B.~Jessen and A.~Wintner,
+
+
+\clearpage
+\phantomsection
+\addcontentsline{toc}{part}{References}
+\part*{References}
+\markboth{References}{References}
+The twelve absorbed reports each carried their own reference list.
+They are consolidated here: entries that name the same work are
+stated once, in the fullest wording any of the reports used, and every
+citation in the volume points at this single list.
+
+\begin{thebibliography}{999}
+\bibitem{bib:berry1941}
+A.~C.~Berry,
+\newblock The accuracy of the Gaussian approximation to the sum of independent variates,
+\newblock \emph{Transactions of the American Mathematical Society} \textbf{49} (1941),
+122--136.
+\bibitem{bib:dembo1998}
+A.~Dembo and O.~Zeitouni,
+\newblock \emph{Large Deviations Techniques and Applications},
+\newblock 2nd ed., Springer, 1998; corrected printing 2010.
+\bibitem{bib:stam1959}
+A.~J. Stam,
+\newblock Some inequalities satisfied by the quantities of information of Fisher and Shannon,
+\newblock \emph{Information and Control} \textbf{2} (1959), 101--112.
+\newblock doi:10.1016/S0019-9958(59)90348-1.
+\bibitem{bib:fu2012}
+A. M. Fu, V. Reiner, D. Stanton, and P. Thiem,
+``The negative $q$-binomial,''
+\emph{Electronic Journal of Combinatorics} 19 (2012), Paper P36.
+\bibitem{bib:prekopa1973}
+A.~Pr\'ekopa,
+\newblock On logarithmic concave measures and functions,
+\newblock \emph{Acta Scientiarum Mathematicarum (Szeged)} \textbf{34} (1973), 335--343.
+\bibitem{bib:sidi2003}
+A. Sidi,
+\emph{Practical Extrapolation Methods: Theory and Applications},
+Cambridge University Press, 2003.
+\bibitem{bib:marshall2011}
+A.~W.~Marshall, I.~Olkin, and B.~C.~Arnold,
+\newblock \emph{Inequalities: Theory of Majorization and Its Applications},
+\newblock 2nd ed., Springer, 2011.
+\bibitem{bib:jessen1935}
+B. Jessen and A. Wintner,
 \newblock Distribution functions and the Riemann zeta function,
-\newblock \emph{Transactions of the American Mathematical Society} \textbf{38} (1935),
-48--88.
-
-\bibitem{p12:fabius1966}
-J.~Fabius,
-\newblock A probabilistic example of a nowhere analytic \(C^\infty\)-function,
-\newblock \emph{Zeitschrift f\"ur Wahrscheinlichkeitstheorie und Verwandte Gebiete}
-\textbf{5} (1966), 173--174.
-\newblock DOI: \nolinkurl{10.1007/BF00536652}.
-
-\bibitem{p12:rvachev1971}
-V.~L.~Rvachev and V.~A.~Rvachev,
-\newblock A certain finite function,
-\newblock \emph{Dopovidi Akademii Nauk Ukrains'koi RSR, Series A} (1971), 705--707, 764.
-
-\bibitem{p12:rvachev1990}
-V.~A.~Rvachev,
-\newblock Compactly supported solutions of functional-differential equations and their
-applications,
-\newblock \emph{Russian Mathematical Surveys} \textbf{45} (1990), no.~1, 87--120.
-
-\bibitem{p12:arias1982}
+\newblock \emph{Trans. Amer. Math. Soc.} \textbf{38} (1935), 48--88.
+\newblock doi:10.1090/S0002-9947-1935-1501802-5.
+\bibitem{bib:aistleitner2015}
+C. Aistleitner, R. Hofer, and G. Larcher,
+``On parametric Thue--Morse sequences and lacunary trigonometric products,''
+arXiv:1502.06738, 2015.
+\bibitem{bib:aistleitner2017a}
+C.~Aistleitner, R.~Hofer, and G.~Larcher,
+\newblock \emph{On evil Kronecker sequences and lacunary trigonometric products},
+\newblock Ann. Inst. Fourier \textbf{67} (2017), 637--687.
+\bibitem{bib:aistleitner}
+C.~Aistleitner, R.~Hofer, and G.~Larcher,
+\newblock \emph{On parametric Thue--Morse sequences and lacunary trigonometric products},
+\newblock arXiv:1502.06738.
+\bibitem{bib:aistleitner2017}
+C. Aistleitner, R. Hofer, and G. Larcher,
+\emph{On parametric Thue--Morse sequences and lacunary trigonometric products},
+arXiv:1502.06738; Ann. Inst. Fourier 67 (2017), 637--687.
+\bibitem{bib:heyde1963}
+C. C. Heyde,
+``On a property of the lognormal distribution,''
+\emph{Journal of the Royal Statistical Society, Series B} 25 (1963), no.~2,
+392--393.
+\bibitem{bib:boor1992}
+C. de Boor and A. Ron,
+``Fourier analysis of the approximation power of principal shift-invariant
+spaces,'' \emph{Constructive Approximation} 8 (1992), 427--462.
+\bibitem{bib:boor2001}
+C.~de Boor,
+\newblock \emph{A Practical Guide to Splines}, revised edition,
+\newblock Springer, New York, 2001.
+\bibitem{bib:boor1993}
+C.~de Boor, K.~H\"ollig, and S.~Riemenschneider,
+\newblock \emph{Box Splines}, Applied Mathematical Sciences 98,
+Springer, 1993.
+\bibitem{bib:villani2003}
+C. Villani,
+\newblock \emph{Topics in Optimal Transportation},
+\newblock Graduate Studies in Mathematics 58, American Mathematical Society, 2003.
+\bibitem{bib:esseen1942}
+C.-G.~Esseen,
+\newblock On the Liapunoff limit of error in the theory of probability,
+\newblock \emph{Arkiv f\"or Matematik, Astronomi och Fysik} \textbf{A28} (1942), no.~9,
+1--19.
+\bibitem{bib:olver1974}
+F.~W.~J.~Olver,
+\newblock \emph{Asymptotics and Special Functions},
+\newblock Academic Press, 1974; A K Peters reprint, 1997.
+\bibitem{bib:rham1956}
+G. de Rham,
+``Sur quelques courbes d\'efinies par des \'equations fonctionnelles,''
+\emph{Rendiconti del Seminario Matematico dell'Universit\`a e del Politecnico
+di Torino} 16 (1956--1957), 101--113.
+\bibitem{bib:andrews1976}
+G.~E.~Andrews,
+\emph{The Theory of Partitions},
+Encyclopedia of Mathematics and its Applications, Vol.~2,
+Addison--Wesley, 1976; reprinted by Cambridge University Press.
+\bibitem{bib:gasper2004}
+G. Gasper and M. Rahman,
+\emph{Basic Hypergeometric Series}, 2nd ed., Cambridge University Press,
+2004; and NIST DLMF, Chapter 17, for $q$-Pochhammer and Gaussian-binomial
+conventions.
+\bibitem{bib:hardy1952}
+G.~H.~Hardy, J.~E.~Littlewood, and G.~P\'olya,
+\newblock \emph{Inequalities},
+\newblock 2nd ed., Cambridge University Press, 1952.
+\bibitem{bib:kopp2024}
+G.~S.~Kopp,
+\newblock The Shintani--Faddeev modular cocycle,
+\newblock preprint, 2024; sections on cyclic quantum dilogarithms and root-of-unity $q$-Pochhammer asymptotics.
+\bibitem{bib:strang1971}
+G. Strang and G. Fix,
+\emph{A Fourier Analysis of the Finite Element Variational Method}, in
+Constructive Aspects of Functional Analysis, Edizioni Cremonese, Rome, 1971.
+\bibitem{bib:curry1966}
+H.~B. Curry and I.~J. Schoenberg,
+\newblock On P\'olya frequency functions IV: the fundamental spline functions and their limits,
+\newblock \emph{J. Analyse Math.} \textbf{17} (1966), 71--107.
+\newblock doi:10.1007/BF02788653.
+\bibitem{bib:komatsu1973}
+H.~Komatsu,
+\newblock \emph{Ultradistributions I: Structure theorems and a characterization},
+\newblock J. Fac. Sci. Univ. Tokyo Sect. IA Math. \textbf{20} (1973), 25--105.
+\bibitem{bib:schoenberg1946}
+I. J. Schoenberg,
+``Contributions to the problem of approximation of equidistant data by analytic
+functions,'' \emph{Quarterly of Applied Mathematics} 4 (1946), 45--99 and
+112--141.
+\bibitem{bib:arias2017a}
+J. Arias de Reyna,
+\newblock An infinitely differentiable function with compact support: definition and properties,
+\newblock arXiv:1702.05442 (2017); English translation of \emph{Rev. Real Acad. Ciencias} \textbf{76} (1982), 21--38.
+\bibitem{bib:arias}
+J.~Arias de Reyna,
+\newblock An infinitely differentiable function with compact support: definition and properties,
+\newblock English translation, arXiv:1702.05442.
+\bibitem{bib:arias2017}
+J.~Arias de Reyna,
+\emph{Arithmetic of the Fabius function},
+Ann. Inst. Fourier (Grenoble) \textbf{67} (2017), no.~2, 637--679;
+arXiv:1702.06487v3.
+\bibitem{bib:arias2018}
+J.~Arias de Reyna,
+\newblock Arithmetic of the Fabius function,
+\newblock \emph{INTEGERS} \textbf{18} (2018), Article A51;
+arXiv:\nolinkurl{1702.06487}, version 3.
+\bibitem{bib:arias1982}
+J.~Arias de Reyna,
+\newblock Definici\'on y estudio de una funci\'on indefinidamente diferenciable de
+soporte compacto,
+\newblock \emph{Revista de la Real Academia de Ciencias Exactas, F\'isicas y Naturales
+de Madrid} \textbf{76} (1982), no.~1, 21--38;
+English translation, \emph{An infinitely differentiable function with compact support:
+Definition and properties}, arXiv:1702.05442 (2017).
+\bibitem{bib:arias1982a}
 J.~Arias de Reyna,
 \newblock Definici\'on y estudio de una funci\'on indefinidamente diferenciable de soporte
 compacto,
 \newblock \emph{Revista de la Real Academia de Ciencias Exactas, F\'isicas y Naturales de
 Madrid} \textbf{76} (1982), no.~1, 21--38;
 English translation, arXiv:\nolinkurl{1702.05442} (2017).
-
-\bibitem{p12:arias2018}
-J.~Arias de Reyna,
-\newblock Arithmetic of the Fabius function,
-\newblock \emph{INTEGERS} \textbf{18} (2018), Article A51;
-arXiv:\nolinkurl{1702.06487}, version 3.
-
-\bibitem{p12:alloucheShallit}
+\bibitem{bib:hutchinson1981}
+J. E. Hutchinson,
+``Fractals and self-similarity,''
+\emph{Indiana University Mathematics Journal} 30 (1981), no.~5, 713--747.
+\bibitem{bib:fabius1966}
+J.~Fabius,
+\newblock A probabilistic example of a nowhere analytic \(C^\infty\)-function,
+\newblock \emph{Zeitschrift f\"ur Wahrscheinlichkeitstheorie und Verwandte Gebiete}
+\textbf{5} (1966), 173--174.
+\newblock DOI: \nolinkurl{10.1007/BF00536652}.
+\bibitem{bib:haugland2016}
+J. K. Haugland,
+``Evaluating the Fabius function,'' arXiv:1609.07999, 2016.
+\bibitem{bib:voss2009}
+J.~Voss,
+\emph{Upper and lower bounds in exponential Tauberian theorems},
+Tbilisi Math. J. \textbf{2} (2009), 41--50; arXiv:0908.0642.
+\bibitem{bib:allouche1999}
+J.-P. Allouche and J. Shallit,
+``The ubiquitous Prouhet--Thue--Morse sequence,'' in \emph{Sequences and
+Their Applications}, Springer, 1999, 1--16.
+\bibitem{bib:allouche2003}
 J.-P.~Allouche and J.~Shallit,
-\newblock \emph{Automatic Sequences: Theory, Applications, Generalizations},
-\newblock Cambridge University Press, 2003.
-
-\bibitem{p12:corless1996}
-R.~M.~Corless, G.~H.~Gonnet, D.~E.~G.~Hare, D.~J.~Jeffrey, and D.~E.~Knuth,
-\newblock On the Lambert \(W\) function,
-\newblock \emph{Advances in Computational Mathematics} \textbf{5} (1996), 329--359.
-
-\bibitem{p12:flajolet1995}
-P.~Flajolet, X.~Gourdon, and P.~Dumas,
-\newblock Mellin transforms and asymptotics: harmonic sums,
-\newblock \emph{Theoretical Computer Science} \textbf{144} (1995), 3--58.
-
-\bibitem{p12:gasperRahman}
-G.~Gasper and M.~Rahman,
-\newblock \emph{Basic Hypergeometric Series}, second edition,
-\newblock Cambridge University Press, 2004.
-
-\bibitem{p12:repoPrimary}
+\emph{Automatic Sequences: Theory, Applications, Generalizations},
+Cambridge University Press, 2003.
+\bibitem{bib:comtet1974}
+L. Comtet,
+\emph{Advanced Combinatorics: The Art of Finite and Infinite Expansions},
+D. Reidel, 1974.
+\bibitem{bib:toth2022}
+L. T\'oth,
+``Linear combinations of Dirichlet series associated with the Thue--Morse
+sequence,'' \emph{Integers} 22 (2022), Article 98; arXiv:2211.13570.
+\bibitem{bib:evgrafov1970}
+M.~A.~Evgrafov and M.~M.~Postnikov,
+\newblock Asymptotic behavior of Green's functions for parabolic and elliptic equations with constant coefficients,
+\newblock \emph{Mathematics of the USSR-Sbornik} \textbf{11} (1970), 1--24.
+\bibitem{bib:ismail2005}
+M. E. H. Ismail,
+\emph{Classical and Quantum Orthogonal Polynomials in One Variable},
+Encyclopedia of Mathematics and its Applications 98,
+Cambridge University Press, 2005.
+\bibitem{bib:lapidus2013}
+M. L. Lapidus and M. van Frankenhuijsen,
+\emph{Fractal Geometry, Complex Dimensions and Zeta Functions:
+Geometry and Spectra of Fractal Strings}, 2nd ed.,
+Springer Monographs in Mathematics, Springer, 2013.
+\bibitem{bib:shaked2007}
+M. Shaked and J.~G. Shanthikumar,
+\newblock \emph{Stochastic Orders},
+\newblock Springer, 2007.
+\bibitem{bib:norlund1924}
+N.~E.~N\"orlund,
+\emph{Vorlesungen \"uber Differenzenrechnung},
+Grundlehren der mathematischen Wissenschaften, Vol.~13,
+Springer, Berlin, 1924.
+\bibitem{bib:bruijn1959}
+N.~G.~de Bruijn,
+\emph{Pairs of slowly oscillating functions occurring in asymptotic problems concerning
+the Laplace transform},
+Nieuw Arch. Wisk. (3) \textbf{7} (1959), 20--26.
+\bibitem{bib:flajolet1995}
+P. Flajolet, X. Gourdon, and P. Dumas,
+``Mellin transforms and asymptotics: Harmonic sums,''
+\emph{Theoretical Computer Science} 144 (1995), 3--58.
+\bibitem{bib:davis1984}
+P.~J.~Davis and P.~Rabinowitz,
+\newblock \emph{Methods of Numerical Integration}, second edition,
+\newblock Academic Press, Orlando, 1984.
+\bibitem{bib:mcintosh1999}
+R.~J.~McIntosh,
+\newblock Some asymptotic formulae for $q$-shifted factorials,
+\newblock \emph{Ramanujan Journal} \textbf{3} (1999), 205--214.
+\bibitem{bib:corless1996}
+R. M. Corless, G. H. Gonnet, D. E. G. Hare, D. J. Jeffrey, and D. E. Knuth,
+``On the Lambert $W$ function,'' \emph{Advances in Computational Mathematics}
+5 (1996), 329--359.
+\bibitem{bib:bhattacharya2010}
+R.~N.~Bhattacharya and R.~Rao,
+\newblock \emph{Normal Approximation and Asymptotic Expansions},
+\newblock SIAM, 2010 reprint.
+\bibitem{bib:bhattacharya1976}
+R.~N.~Bhattacharya and R.~Rao,
+\newblock \emph{Normal Approximation and Asymptotic Expansions},
+\newblock Wiley, 1976; SIAM Classics reprint, 2010.
+\bibitem{bib:stanley1997}
+R.~P.~Stanley,
+\emph{Enumerative Combinatorics, Vol.~1}, second printing,
+Cambridge Studies in Advanced Mathematics, Vol.~49,
+Cambridge University Press, 1997.
+\bibitem{bib:ellis1984}
+R.~S.~Ellis,
+\newblock Large deviations for a general class of random vectors,
+\newblock \emph{Annals of Probability} \textbf{12} (1984), 1--12.
+\bibitem{bib:garoufalidis2021}
+S.~Garoufalidis and D.~Zagier,
+\newblock Asymptotics of Nahm sums at roots of unity,
+\newblock \emph{Ramanujan Journal} \textbf{55} (2021), 219--238.
+\bibitem{bib:karlin1968}
+S. Karlin,
+\emph{Total Positivity}, Vol.~I,
+Stanford University Press, 1968.
+\bibitem{bib:mansour2015}
+T. Mansour and H. D. Nguyen,
+``A $q$-digital binomial theorem,'' arXiv:1506.07945, 2015; see also
+H. D. Nguyen, ``A digital binomial theorem,'' arXiv:1412.3181, 2014.
+\bibitem{bib:anderson1955}
+T.~W. Anderson,
+\newblock The integral of a symmetric unimodal function over a symmetric convex set and some probability inequalities,
+\newblock \emph{Proc. Amer. Math. Soc.} \textbf{6} (1955), 170--176.
+\newblock doi:10.1090/S0002-9939-1955-0069229-1.
+\bibitem{bib:rvachev1990}
+V.~A.~Rvachev,
+\newblock Compactly supported solutions of functional-differential equations
+and their applications,
+\newblock \emph{Russian Mathematical Surveys} \textbf{45} (1990), no.~1,
+87--120; DOI: 10.1070/RM1990v045n01ABEH002324.
+\bibitem{bib:rvachev1971}
+V.~L.~Rvachev and V.~A.~Rvachev,
+\newblock A certain finite function,
+\newblock \emph{Dopovidi Akademii Nauk Ukrains'koi RSR, Series A} (1971),
+705--707, 764.
+\bibitem{bib:rvachev}
+V. L. Rvachev, ``Atomic Functions,'' Chapter 3 in the Russian source supplied
+with this task.  The supplied bibliographic excerpt does not include the book's
+front matter; the OCR source ends at equation (3.100).
+\bibitem{bib:zolotarev1997}
+V.~M. Zolotarev,
+\newblock \emph{Modern Theory of Summation of Random Variables},
+\newblock VSP, Utrecht, 1997.
+\bibitem{bib:repo2026m}
+V.~Reshetnikov et al.,
+\newblock \emph{Exponents and \(q\)-series frontiers}, consolidated draft volume,
+\newblock \repo\ repository, accessed 30 August 2026.
+\bibitem{bib:repo2026l}
+V.~Reshetnikov et al.,
+\newblock \emph{Fabius--Rvachev frontier report}, Gaussian-boundary and geometric-parameter draft,
+\newblock \repo\ repository, accessed 30 August 2026.
+\bibitem{bib:repoc}
+V. Reshetnikov et al.,
+\newblock Non-formalized research frontiers and thematic draft consolidations for the Fabius--Rvachev system,
+\newblock \texttt{ProveIt} repository, \repo{}/\texttt{semi-formalized-research-frontiers}, same commit.
+\bibitem{bib:repo2026k}
+V.~Reshetnikov et al.,
+\newblock \emph{Semi-formalized research frontiers for the Fabius and Rvachev functions}, living LaTeX frontier volume,
+\newblock \repo\ repository, accessed 30 August 2026.
+\bibitem{bib:repo2026j}
+V.~Reshetnikov et al.,
+\newblock \emph{The Fabius function and Rvachev's up function}, living LaTeX exposition,
+\newblock \repo\ repository, accessed 30 August 2026.
+\bibitem{bib:repoa}
+V.~Reshetnikov,
+\newblock \emph{Archive of historical document versions},
+\newblock recursive archive index in the \texttt{ProveIt} repository,
+\newblock \url{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Analysis/FabiusFunction/docs/archive}.
+\bibitem{bib:repo2026p}
+V.~Reshetnikov,
+\newblock \emph{Draft manifest for the Fabius research-frontier corpus},
+\newblock \path{Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/MANIFEST.md},
+\newblock \url{https://github.com/VladimirReshetnikov/ProveIt}, consulted 30 August 2026.
+\bibitem{bib:repo2026i}
+V.~Reshetnikov,
+\newblock Draft manifest for the semi-formalized Fabius--Rvachev research
+frontiers,
+\newblock \url{https://github.com/VladimirReshetnikov/ProveIt/blob/main/Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/MANIFEST.md},
+accessed 30 August 2026.
+\bibitem{bib:repo2026g}
+V.~Reshetnikov,
+\newblock \emph{Exponents and $q$-Series Frontiers},
+\newblock consolidated semi-formalized source in
+\path{Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/exponents-and-q-series}, 2026.
+\bibitem{bib:repog}
+V.~Reshetnikov,
+\newblock \emph{Fabius Function Mathematical Glossary},
+\newblock \url{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Analysis/FabiusFunction/docs/FabiusFunction_Mathematical_Glossary}.
+\bibitem{bib:repoi}
+V.~Reshetnikov,
+\newblock \emph{Fabius Lean Walkthrough},
+\newblock \url{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Analysis/FabiusFunction/docs/fabius_lean_walkthrough}.
+\bibitem{bib:repoe}
+V. Reshetnikov,
+\emph{Mathematical Glossary for Analysis/FabiusFunction},
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Analysis/FabiusFunction/docs/FabiusFunction_Mathematical_Glossary}.
+\bibitem{bib:repoh}
+V.~Reshetnikov,
+\newblock \emph{Non-Elementarity of the Fabius Function},
+\newblock \url{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Analysis/FabiusFunction/docs/Non_Elementarity_of_the_Fabius_Function}.
+\bibitem{bib:repof}
+V. Reshetnikov,
+\emph{Non-formalized Fabius Research Frontiers},
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Analysis/FabiusFunction/docs/semi-formalized-research-frontiers}.
+\bibitem{bib:repo2026b}
+V.~Reshetnikov,
+\newblock \emph{Non-formalized Research Frontiers},
+\newblock living consolidated TeX volume in the \texttt{ProveIt} repository, snapshot
+examined 28 August 2026,
+\newblock \url{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Analysis/FabiusFunction/docs/semi-formalized-research-frontiers}.
+\bibitem{bib:repo}
+V. Reshetnikov,
+\emph{ProveIt: Analysis/FabiusFunction documentation and Lean development},
+GitHub repository,
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Analysis/FabiusFunction}.
+\bibitem{bib:repo2026e}
+V.~Reshetnikov,
+\newblock \emph{ProveIt: Analysis/FabiusFunction documentation corpus},
+\newblock GitHub repository, living tree and archive,
+\newblock \url{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Analysis/FabiusFunction/docs},
+accessed 30 August 2026.
+\bibitem{bib:repo2026h}
+V.~Reshetnikov,
+\newblock ProveIt: FabiusFunction documentation tree,
+\newblock \url{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Analysis/FabiusFunction/docs},
+accessed 30 August 2026.
+\bibitem{bib:repo2026}
+V.~Reshetnikov,
+\emph{ProveIt: formal and expository development of the Fabius function},
+GitHub repository, pinned in this report at commit
+\texttt{32d6d36c51d803289e6d6a0dc0c37753766eba47}, 27 August 2026.
+\bibitem{bib:repo2012}
+V.~Reshetnikov,
+\newblock Recursive integration over piecewise polynomials: closed
+form?,
+\newblock Mathematics Stack Exchange, question 240687, 2012.
+\bibitem{bib:repo2026o}
+V.~Reshetnikov,
+\newblock \emph{Semi-formalized Fabius research frontiers},
+\newblock canonical source under
+\path{Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/},
+\newblock \url{https://github.com/VladimirReshetnikov/ProveIt}, consulted 30 August 2026.
+\bibitem{bib:repo2026d}
+V.~Reshetnikov,
+\newblock \emph{Semi-formalized Research Frontiers for the Fabius/Rvachev Program},
+\newblock consolidated TeX source in \texttt{ProveIt/Analysis/FabiusFunction/docs},
+consulted 30 August 2026,
+\newblock \url{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Analysis/FabiusFunction/docs/semi-formalized-research-frontiers}.
+\bibitem{bib:repod}
+V. Reshetnikov,
+\emph{The Fabius Function and Rvachev's Up-Function}, living repository
+exposition,
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Analysis/FabiusFunction/docs/Fabius_Function_and_Rvachev_Up}.
+\bibitem{bib:repo2026f}
+V.~Reshetnikov,
+\newblock \emph{The Fabius Function and Rvachev's Up-Function},
+\newblock primary exposition in the ProveIt repository, 2026.
+\bibitem{bib:repob}
+V. Reshetnikov,
+\newblock The Fabius function and Rvachev's up-function,
+\newblock source in the \texttt{ProveIt} repository, \repo{}, commit \texttt{21758aba2f8e200342be2a7b321247dac80efc00}.
+\bibitem{bib:repo2026n}
 V.~Reshetnikov,
 \newblock \emph{The Fabius Function and Rvachev's Up-Function: Exact arithmetic,
 probability, Fourier analysis, and corrected sharp asymptotics},
 \newblock current source under
 \path{Analysis/FabiusFunction/docs/Fabius_Function_and_Rvachev_Up/},
 \newblock \url{https://github.com/VladimirReshetnikov/ProveIt}, consulted 30 August 2026.
-
-\bibitem{p12:repoFrontier}
+\bibitem{bib:repo2026a}
 V.~Reshetnikov,
-\newblock \emph{Semi-formalized Fabius research frontiers},
-\newblock canonical source under
-\path{Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/},
-\newblock \url{https://github.com/VladimirReshetnikov/ProveIt}, consulted 30 August 2026.
-
-\bibitem{p12:repoManifest}
+\newblock \emph{The Fabius Function and Rvachev's Up-Function: Exact arithmetic,
+probability, Fourier analysis, and corrected sharp asymptotics},
+\newblock living TeX exposition in the \texttt{ProveIt} repository, snapshot examined
+28 August 2026,
+\newblock \url{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Analysis/FabiusFunction/docs/Fabius_Function_and_Rvachev_Up}.
+\bibitem{bib:repo2026c}
 V.~Reshetnikov,
-\newblock \emph{Draft manifest for the Fabius research-frontier corpus},
-\newblock \path{Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/MANIFEST.md},
-\newblock \url{https://github.com/VladimirReshetnikov/ProveIt}, consulted 30 August 2026.
-
+\newblock \emph{The Fabius Function and Rvachev's Up-Function: Probability, Analysis,
+Arithmetic, and Formalization},
+\newblock integrated TeX source in \texttt{ProveIt/Analysis/FabiusFunction/docs},
+consulted 30 August 2026,
+\newblock \url{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Analysis/FabiusFunction/docs/Fabius_Function_and_Rvachev_Up}.
+\bibitem{bib:petrov1995}
+V.~V.~Petrov,
+\emph{Limit Theorems of Probability Theory: Sequences of Independent Random Variables},
+Oxford Studies in Probability, Vol.~4, Clarendon Press, Oxford, 1995.
+\bibitem{bib:petrov1975}
+V.~V.~Petrov,
+\newblock \emph{Sums of Independent Random Variables},
+\newblock Springer, 1975.
+\bibitem{bib:gautschi2004}
+W.~Gautschi,
+\newblock \emph{Orthogonal Polynomials: Computation and Approximation},
+\newblock Oxford University Press, 2004.
+\bibitem{bib:peres2000}
+Y. Peres, W. Schlag, and B. Solomyak,
+``Sixty years of Bernoulli convolutions,'' in
+\emph{Fractal Geometry and Stochastics II}, Progress in Probability 46,
+Birkh\"auser, 2000, 39--65.
 \end{thebibliography}
-
 
 \end{document}

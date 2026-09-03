@@ -15,6 +15,8 @@ err = [l for l in lines
        if l.startswith('! ')
        or re.match(r'^\S+\.(tex|sty|cls|def):\d+: ', l)]
 undef = [l for l in lines if 'Reference' in l and 'undefined' in l]
+undefcite = [l for l in lines if 'Citation' in l and 'undefined' in l]
+unusedbib = [l for l in lines if 'There were undefined citations' in l]
 undefcs = [l for l in lines if 'Undefined control sequence' in l]
 multi = [l for l in lines if 'multiply defined' in l or 'multiply-defined' in l]
 dupdest = [l for l in lines if 'destination with the same identifier' in l]
@@ -27,6 +29,10 @@ print('errors                : %d' % len(err))
 for l in err[:15]:
     print('    %s' % l[:150])
 print('undefined references  : %d' % len(undef))
+print('undefined citations   : %d%s'
+      % (len(undefcite), '  (+ summary line)' if unusedbib else ''))
+for l in undefcite[:8]:
+    print('    %s' % l[:150])
 print('undefined control seqs: %d' % len(undefcs))
 for l in undefcs[:8]:
     print('    %s' % l[:150])
