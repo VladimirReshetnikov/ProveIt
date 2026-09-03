@@ -18418,6 +18418,11 @@ For $q\in\DiskD=\SetOf{q\in\ComplexNumbers:|q|<1}$ and $z\in\ComplexNumbers$, se
  \SincRad\bigl((1-q)q^jz\bigr).
  \label{p9:eq:Phi-def}
 \end{equation}
+Here $\SincRad0=1$ and the empty power is read as $q^{0}=1$ for every $q$,
+including $q=0$.  Thus at $q=0$ the factor $j=0$ contributes $\SincRad z$ and
+every factor with $j\ge1$ contributes $\SincRad0=1$; this is the convention
+under which $\Phi(0,z)=\SincRad z$ below, and it matches the division-free
+reading of the zero set in \cref{p9:eq:zeros}.
 \end{definition}
 
 \begin{proposition}[Holomorphy and normalization]
@@ -18502,14 +18507,26 @@ one has the absolutely and locally uniformly convergent expansion
 \end{theorem}
 
 \begin{proof}
-For $(q,z)\in\Omega$, every argument $(1-q)q^jz$ lies in the zero-free disk $|w|<\pi$.  Insert \cref{p9:eq:sinc-log}, sum first over $j$, and use
-\(
- \sum_{j\ge0}q^{2kj}=(1-q^{2k})^{-1}
-\).  Absolute local uniformity follows from a geometric majorant because
-\(
- c_k\le C\pi^{-2k}/k
-\)
-and $|(1-q)z|$ stays below $\pi$ on compact subsets.
+For $(q,z)\in\Omega$ every argument $(1-q)q^jz$ lies in the zero-free disk
+$|w|<\pi$, so \cref{p9:eq:sinc-log} may be inserted factor by factor.  Fix a
+compact $L\subset\Omega$ and choose $r<1$ and $\rho<1$ with $|q|\le r$ and
+$|(1-q)z|\le\rho\pi$ on $L$.  Since $\zeta(2k)\le\zeta(2)$, so that
+$c_k\le\zeta(2)/(k\pi^{2k})$, and since $|q|^{2jk}\le|q|^{2j}$ for $k\ge1$,
+\begin{equation}
+ \sum_{j\ge0}\sum_{k\ge1}c_k\AbsoluteValue{(1-q)q^{j}z}^{2k}
+ \le\sum_{j\ge0}r^{2j}\sum_{k\ge1}\frac{\zeta(2)}{k}\rho^{2k}
+ =\frac{\zeta(2)}{1-r^{2}}\,\log\frac1{1-\rho^{2}}
+ <\infty
+ \label{p9:eq:master-majorant}
+\end{equation}
+uniformly on $L$.  The double family is therefore absolutely summable, so it
+may be summed in either order; summing first over $j$ and using
+$\sum_{j\ge0}q^{2kj}=(1-q^{2k})^{-1}$ gives \cref{p9:eq:master-log}.  The same
+majorant, with the factor $\sum_jr^{2j}$ deleted, dominates the right-hand
+side of \cref{p9:eq:master-log} and shows that it too converges absolutely and
+uniformly on $L$.  The logarithm on the left is the sum of the individual
+zero-normalized branches, which is the branch with
+$\log\Phi(q,0)=0$.
 \end{proof}
 
 The coefficient
@@ -18535,15 +18552,36 @@ The double product is locally normally convergent.
 \end{theorem}
 
 \begin{proof}
-Apply Euler's product to each sinc factor:
+Apply Euler's product to each sinc factor, obtaining the doubly indexed
+product
 \[
- \prod_{j\ge0}\prod_{n\ge1}
- \left(1-\frac{(1-q)^2q^{2j}z^2}{\pi^2n^2}\right).
+ \Phi(q,z)=\prod_{j\ge0}\prod_{n\ge1}\bigl(1+\alpha_{j,n}\bigr),
+ \qquad
+ \alpha_{j,n}=-\frac{(1-q)^2q^{2j}z^2}{\pi^2n^2}.
 \]
-The sum of absolute first-order deviations is bounded on compact sets by a constant multiple of
-\(
- \sum_j|q|^{2j}\sum_nn^{-2}<\infty
-\), so the products may be interchanged.  The inner product over $j$ is the stated $q^2$-Pochhammer symbol.
+Since $\sum_{n\ge1}n^{-2}=\zeta(2)=\pi^{2}/6$ and $\sum_{j\ge0}|q|^{2j}
+=(1-|q|^{2})^{-1}$,
+\begin{equation}
+ \sum_{j\ge0}\sum_{n\ge1}\AbsoluteValue{\alpha_{j,n}}
+ =\frac{\AbsoluteValue{(1-q)z}^{2}}{\pi^{2}}
+  \cdot\frac{\zeta(2)}{1-\AbsoluteValue q^{2}}
+ =\frac{\AbsoluteValue{(1-q)z}^{2}}{6\bigl(1-\AbsoluteValue q^{2}\bigr)},
+ \label{p9:eq:qpoch-normal}
+\end{equation}
+which is finite for $|q|<1$ and bounded on compact subsets of
+$\DiskD\times\ComplexNumbers$.  A product $\prod(1+\alpha_i)$ over a countable
+index set with $\sum_i\AbsoluteValue{\alpha_i}<\infty$ converges
+unconditionally, is unchanged by any bijective reindexing or by grouping the
+factors into blocks, and its value equals either iterated product; this is the
+standard criterion for normal convergence of infinite products, applied here
+to the index set $\SetOf{(j,n)}$.  Grouping by $n$ and evaluating the inner
+product over $j$ turns $\prod_{j\ge0}(1-(1-q)^{2}z^{2}q^{2j}/(\pi^{2}n^{2}))$
+into the stated $q^{2}$-Pochhammer symbol.  Because
+\cref{p9:eq:qpoch-normal} is uniform on compact sets, the convergence is
+locally normal.  No hypothesis on the vanishing of individual Euler factors
+is needed: absolute summability of the $\alpha_{j,n}$ is what licenses the
+rearrangement, and a vanishing factor merely makes both sides zero.  Hence the
+identity holds for every $q\in\DiskD$ and every $z\in\ComplexNumbers$.
 \end{proof}
 
 \begin{remark}[Lean crosswalk: global factorization]
@@ -18656,6 +18694,182 @@ Also define
 \end{align}
 \end{definition}
 
+\begin{lemma}[Uniform multiplier estimates]
+\label{p9:lem:uniform-multiplier}
+Write $a=a_\omega$ and $b=\omega/a$, and for $k\ge1$ and
+$q=\omega(1-\delta)$ let
+\begin{equation}
+ S_k(\delta)
+ =\frac{(1-q)^{2k}}{1-q^{2k}}
+ =\frac{(a+\omega\delta)^{2k}}{1-\omega^{2k}(1-\delta)^{2k}}
+ \label{p9:eq:Sk-delta}
+\end{equation}
+be the multiplier of $z^{2k}$ in \cref{p9:eq:master-log}.
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item \emph{(Resonant factorization.)}  If $d\mid k$, then
+\begin{equation}
+ S_k(\delta)=\frac{a^{2k}}{2k\delta}\,H_k(\delta),
+ \qquad
+ H_k(\delta)=(1+b\delta)^{2k}\,
+ \frac{2k\delta}{1-(1-\delta)^{2k}},
+ \label{p9:eq:Hk}
+\end{equation}
+and $H_k$ extends holomorphically to the closed disc
+$\AbsoluteValue\delta\le1/(4k)$, where
+\begin{equation}
+ \AbsoluteValue{H_k(\delta)}\le M_1
+ \DefinitionEquals2\EulerE^{\AbsoluteValue b/2},
+ \qquad
+ H_k(0)=1,
+ \qquad
+ \CoefficientExtraction{\delta}{1}H_k=2kb+\frac{2k-1}{2}.
+ \label{p9:eq:Hk-bounds}
+\end{equation}
+\item \emph{(Nonresonant separation.)}  Suppose $d\ge2$ and $d\nmid k$.  Then
+$\omega^{2k}$ is a $d$th root of unity different from $1$, and
+\begin{equation}
+ \gamma\DefinitionEquals
+ \min_{\substack{1\le r<d\\0\le t\le1}}
+ \AbsoluteValue{1-\omega^{2r}t}
+ \ge\sin\frac{\pi}{d}>0 .
+ \label{p9:eq:gamma}
+\end{equation}
+In particular $\AbsoluteValue{1-\omega^{2k}(1-\delta)^{2k}}\ge\gamma$ for every
+real $\delta\in[0,1]$.
+\item \emph{(Nonresonant derivative.)}  Under the hypotheses of \textup{(ii)},
+for $0\le\delta\le\delta_1\DefinitionEquals\AbsoluteValue a/2$,
+\begin{equation}
+ \AbsoluteValue{S_k'(\delta)}
+ \le 2k\,\Theta\,\AbsoluteValue{a+\omega\delta}^{2k},
+ \qquad
+ \Theta\DefinitionEquals
+ \frac{2}{\gamma\AbsoluteValue a}+\frac1{\gamma^{2}} .
+ \label{p9:eq:Sk-derivative}
+\end{equation}
+\item \emph{(Nonresonant analyticity.)}  Under the hypotheses of
+\textup{(ii)}, put
+\begin{equation}
+ \gamma_0=2\sin\frac{\pi}{d},
+ \qquad
+ \lambda_\omega=\min\SetOf{\tfrac12,\
+   \log\bigl(1+\tfrac{\gamma_0}{2}\bigr)} .
+ \label{p9:eq:lambda-omega}
+\end{equation}
+Then $S_k$ is holomorphic on $\AbsoluteValue\delta\le\lambda_\omega/(2k)$ and
+\begin{equation}
+ \AbsoluteValue{S_k(\delta)}
+ \le M_2\AbsoluteValue a^{2k},
+ \qquad
+ M_2\DefinitionEquals
+ \frac{2\EulerE^{\AbsoluteValue b/2}}{\gamma_0},
+ \label{p9:eq:Sk-analytic}
+\end{equation}
+on that disc.
+\item \emph{(Crude resonant lower bound.)}  If $d\mid k$ and $0<\delta\le1$,
+then
+\begin{equation}
+ 1-(1-\delta)^{2k}\ge1-\EulerE^{-2k\delta}
+ \ge(1-\EulerE^{-1})\min(1,2k\delta).
+ \label{p9:eq:tail-lower}
+\end{equation}
+\end{enumerate}
+When $d=1$ every index is resonant, parts \textup{(ii)}--\textup{(iv)}
+are vacuous, and we then adopt the conventions $\gamma=\gamma_0=1$ and
+$\lambda_\omega=\tfrac12$, so that the constants $\Theta$ and $M_2$ named
+above are defined in every case.
+\end{lemma}
+
+\begin{proof}
+Throughout, $1-q=1-\omega(1-\delta)=a+\omega\delta$ and
+$q^{2k}=\omega^{2k}(1-\delta)^{2k}$, which is \cref{p9:eq:Sk-delta}.
+
+\emph{(i)}  If $d\mid k$ then $\omega^{2k}=1$, and \cref{p9:eq:Hk} is the
+identity $(a+\omega\delta)^{2k}=a^{2k}(1+b\delta)^{2k}$ together with the
+insertion of $2k\delta$.  Write $n=2k$.  From the binomial theorem,
+\begin{equation}
+ \frac{1-(1-\delta)^{n}}{n\delta}
+ =\sum_{j\ge0}p_j(n)\delta^{j},
+ \qquad
+ p_j(n)=\frac{(-1)^{j}}{n}\binom{n}{j+1}
+ =\frac{(-1)^{j}(n-1)\cdots(n-j)}{(j+1)!},
+ \label{p9:eq:pj}
+\end{equation}
+so $p_0=1$, $p_1(n)=-(n-1)/2$ and $\AbsoluteValue{p_j(n)}\le n^{j}/(j+1)!$.
+Hence for $n\AbsoluteValue\delta\le\tfrac12$,
+\[
+ \AbsoluteValue{\frac{1-(1-\delta)^{n}}{n\delta}-1}
+ \le\sum_{j\ge1}\frac{(n\AbsoluteValue\delta)^{j}}{(j+1)!}
+ =\frac{\EulerE^{x}-1-x}{x}\bigg|_{x=n\AbsoluteValue\delta}
+ \le\frac{\EulerE^{1/2}-\tfrac32}{\tfrac12}
+ <0.298<\frac12 ,
+\]
+the middle function being increasing in $x>0$.  Therefore the series
+\cref{p9:eq:pj} is a nonvanishing holomorphic function on
+$\AbsoluteValue\delta\le1/(2n)=1/(4k)$, its reciprocal
+$G_n(\delta)=n\delta/(1-(1-\delta)^{n})$ is holomorphic there with
+$\AbsoluteValue{G_n}\le(1-\tfrac12)^{-1}=2$, and
+$\CoefficientExtraction{\delta}{1}G_n=-p_1(n)=(n-1)/2$.  On the same disc
+$\AbsoluteValue{(1+b\delta)^{n}}\le\EulerE^{n\AbsoluteValue b\AbsoluteValue\delta}
+ \le\EulerE^{\AbsoluteValue b/2}$, which gives the bound in
+\cref{p9:eq:Hk-bounds}; and
+$\CoefficientExtraction{\delta}{1}H_k=nb+(n-1)/2$ with $n=2k$, which is the
+last assertion.
+
+\emph{(ii)}  $\omega^{2}$ has multiplicative order $d$, so $\omega^{2k}$
+depends only on $k\bmod d$ and equals $1$ exactly when $d\mid k$; for
+$d\nmid k$ it is one of the numbers $\omega^{2r}$, $1\le r<d$.  Write
+$\omega^{2r}=\EulerE^{\ImaginaryUnit\phi}$.  The distance from $1$ to the
+segment $\SetOf{\EulerE^{\ImaginaryUnit\phi}t:0\le t\le1}$ equals
+$\AbsoluteValue{\sin\phi}$ if $\cos\phi\ge0$ and equals $1$ if $\cos\phi<0$.
+In the second case the distance is $1\ge\sin(\pi/d)$.  In the first case
+$\phi=2\pi s/d$ with $s\not\equiv0\pmod d$, and writing $2s\equiv u\pmod{2d}$
+with $0\le u<2d$ we get $\AbsoluteValue{\sin\phi}
+ =\AbsoluteValue{\sin(\pi u/d)}$; here $u=0$ is excluded by
+$s\not\equiv0\pmod d$, and $u=d$ forces $\phi=\pi$, hence $\cos\phi<0$, which
+is the second case.  For the remaining $u$ we have
+$\AbsoluteValue{\sin(\pi u/d)}\ge\sin(\pi/d)$.  Since
+$(1-\delta)^{2k}\in[0,1]$ for real $\delta\in[0,1]$, the displayed lower bound
+on $\AbsoluteValue{1-\omega^{2k}(1-\delta)^{2k}}$ follows.
+
+\emph{(iii)}  With $D_k(\delta)=1-\omega^{2k}(1-\delta)^{2k}$ one has
+$D_k'(\delta)=2k\omega^{2k}(1-\delta)^{2k-1}$, so
+\[
+ S_k'(\delta)
+ =\frac{2k\omega(a+\omega\delta)^{2k-1}}{D_k(\delta)}
+ -\frac{2k\omega^{2k}(1-\delta)^{2k-1}(a+\omega\delta)^{2k}}{D_k(\delta)^{2}} .
+\]
+For real $\delta\in[0,1]$ we have $\AbsoluteValue{(1-\delta)^{2k-1}}\le1$ and,
+by \textup{(ii)}, $\AbsoluteValue{D_k}\ge\gamma$.  For
+$0\le\delta\le\AbsoluteValue a/2$ also
+$\AbsoluteValue{a+\omega\delta}\ge\AbsoluteValue a-\delta
+ \ge\AbsoluteValue a/2$, so
+$\AbsoluteValue{a+\omega\delta}^{2k-1}
+ \le(2/\AbsoluteValue a)\AbsoluteValue{a+\omega\delta}^{2k}$.  Combining the
+three bounds gives \cref{p9:eq:Sk-derivative}.
+
+\emph{(iv)}  The minimum of $\AbsoluteValue{1-\eta}$ over $d$th roots of unity
+$\eta\ne1$ is $\AbsoluteValue{1-\EulerE^{2\pi\ImaginaryUnit/d}}=2\sin(\pi/d)
+=\gamma_0$.  For $\AbsoluteValue\delta\le\lambda_\omega/(2k)$,
+\[
+ \AbsoluteValue{(1-\delta)^{2k}-1}
+ \le(1+\AbsoluteValue\delta)^{2k}-1
+ \le\EulerE^{2k\AbsoluteValue\delta}-1
+ \le\EulerE^{\lambda_\omega}-1\le\frac{\gamma_0}{2},
+\]
+so $\AbsoluteValue{1-\omega^{2k}(1-\delta)^{2k}}
+ \ge\gamma_0-\gamma_0/2=\gamma_0/2>0$; in particular the denominator does not
+vanish and $S_k$ is holomorphic there.  The numerator obeys
+$\AbsoluteValue{(a+\omega\delta)^{2k}}
+ \le\AbsoluteValue a^{2k}\EulerE^{2k\AbsoluteValue b\AbsoluteValue\delta}
+ \le\AbsoluteValue a^{2k}\EulerE^{\AbsoluteValue b/2}$, which gives
+\cref{p9:eq:Sk-analytic}.
+
+\emph{(v)}  $1-\delta\le\EulerE^{-\delta}$ gives the first inequality.  For the
+second, $x\mapsto1-\EulerE^{-x}$ is concave with value $0$ at $x=0$, hence lies
+above the chord $x\mapsto(1-\EulerE^{-1})x$ on $[0,1]$, and it is increasing,
+hence at least $1-\EulerE^{-1}$ for $x\ge1$.
+\end{proof}
+
 \begin{theorem}[Uniform two-term radial root-of-unity expansion]
 \label{p9:thm:two-term-radial}
 Let $K$ be a compact subset of $\SetOf{z:|a_\omega z|<\pi}$.  Uniformly for $z\in K$,
@@ -18670,68 +18884,94 @@ In particular, every nontrivial root of unity carries a full exponential-scale s
 \end{theorem}
 
 \begin{proof}
-Put $a=a_\omega$, choose $0<\rho<\rho_1<1$ with
+Put $a=a_\omega$ and $b=\omega/a$, choose $0<\rho<\rho_1<1$ with
 $|az|\le\rho\pi$ on $K$, and shrink $\delta_0>0$ so that
-$|(a+\omega\delta)z|\le\rho_1\pi$ for $z\in K$ and
-$0\le\delta\le\delta_0$.  Write the $k$th multiplier as
+$\delta_0\le\min\SetOf{\tfrac1{64},\AbsoluteValue a/2}$ and
+$|(a+\omega\delta)z|\le\rho_1\pi$ for $z\in K$ and $0\le\delta\le\delta_0$.
+Then $(q,z)\in\Omega$ for $q=\omega(1-\delta)$ and $z\in K$, so
+\cref{p9:eq:master-log} applies and
 \[
- S_k(\delta)=
- \frac{(a+\omega\delta)^{2k}}
- {1-\omega^{2k}(1-\delta)^{2k}}.
+ \log\Phi\bigl(\omega(1-\delta),z\bigr)
+ =-\sum_{k\ge1}c_kS_k(\delta)z^{2k}
 \]
+with $S_k$ as in \cref{p9:eq:Sk-delta}.  We use the majorants
+$c_k\AbsoluteValue{az}^{2k}\le\zeta(2)\rho^{2k}/k$ and
+$c_k\AbsoluteValue{(a+\omega\delta)z}^{2k}\le\zeta(2)\rho_1^{2k}/k$, both
+immediate from $c_k\le\zeta(2)/(k\pi^{2k})$.
 
-If $d\nmid k$, the finitely many possible phases $\omega^{2k}\ne1$ give
-\(
- \inf_{0\le t\le1}|1-\omega^{2k}t|>0
-\)
-uniformly in $k$.  Differentiating $S_k$ on the real interval
-$[0,\delta_0]$, and using the two bounds just chosen, gives
+\emph{Nonresonant indices.}  Assume $d\ge2$; for $d=1$ there are none.  For
+$d\nmid k$ the function $S_k$ is real-analytic on $[0,\delta_0]$ and
+\cref{p9:lem:uniform-multiplier}\textup{(iii)} applies, so the mean value
+theorem gives, for $0\le\delta\le\delta_0$,
 \begin{equation}
  c_k|z|^{2k}|S_k(\delta)-S_k(0)|
- \le C_K\delta\rho_1^{2k}.
+ \le 2k\Theta\,\delta\,
+   c_k\max_{0\le s\le\delta}\AbsoluteValue{(a+\omega s)z}^{2k}
+ \le C_K\delta\rho_1^{2k},
+ \qquad
+ C_K=2\zeta(2)\Theta .
  \label{p9:eq:nonres-uniform}
 \end{equation}
-Indeed, the derivative contributes at most one factor of $k$, which cancels
-the $1/k$ in $c_k\le\zeta(2)/(k\pi^{2k})$.  Summing
-\cref{p9:eq:nonres-uniform} proves the required $O_K(\delta)$ estimate for all
-nonresonant indices.
+Summing over $k$ bounds the total nonresonant deviation by
+$C_K\rho_1^{2}(1-\rho_1^{2})^{-1}\delta=O_K(\delta)$, and the retained values
+$S_k(0)=a^{2k}/(1-\omega^{2k})$ contribute exactly \cref{p9:eq:B-first}.
 
-Now suppose $d\mid k$, put $n=2k$ and $b=\omega/a$, and choose the cutoff
-$N=\Floor{\delta^{-1/2}}$.  Uniformly when $k\le N$,
-\begin{align*}
- (1+b\delta)^n&=1+nb\delta+O(n^2\delta^2),\\
- \frac1{1-(1-\delta)^n}
- &=\frac1{n\delta}+\frac{n-1}{2n}+O(n\delta).
-\end{align*}
-Here $n\delta\le2\sqrt\delta$, so the constants are independent of $k$ and
-$\delta$.  Multiplication yields
+\emph{Resonant indices below the cutoff.}  Let $d\mid k$, put $n=2k$, and set
+$N=\Floor{\delta^{-1/2}}$.  Since $\delta\le1/64$ we have
+$N\le\delta^{-1/2}\le1/(8\delta)$, so every $k\le N$ satisfies
+$\delta\le1/(8k)$, that is, $\delta$ lies within half the radius of the disc
+of \cref{p9:lem:uniform-multiplier}\textup{(i)}.  Cauchy's estimate on that disc,
+applied to $H_k$ with $\AbsoluteValue{H_k}\le M_1$ and radius $1/(4k)$, gives
+for $\AbsoluteValue\delta\le1/(8k)$
+\[
+ \AbsoluteValue{H_k(\delta)-1
+  -\bigl(\CoefficientExtraction{\delta}{1}H_k\bigr)\delta}
+ \le M_1\frac{(4k\delta)^{2}}{1-4k\delta}
+ \le 32M_1k^{2}\delta^{2}.
+\]
+Dividing by $2k\delta$ and using \cref{p9:eq:Hk,p9:eq:Hk-bounds} therefore
+yields the uniform expansion
 \begin{equation}
  \frac{S_k(\delta)}{a^{2k}}
  =\frac1{2k\delta}+\frac{\omega}{a}
-  +\frac{2k-1}{4k}+O(k\delta).
+  +\frac{2k-1}{4k}+O(k\delta),
  \label{p9:eq:res-uniform}
 \end{equation}
-After multiplication by $c_k|az|^{2k}$, the summed remainder in
-\cref{p9:eq:res-uniform} is bounded by
-\(
- C_K\delta\sum_{k\le N}\rho^{2k}=O_K(\delta)
-\).
+in which the implied constant is $16M_1$, independent of $k\le N$ and of
+$\delta\le\delta_0$.  Multiplying by $c_k\AbsoluteValue{az}^{2k}$ bounds the
+remainder of the $k$th term by
+$16M_1\zeta(2)\rho^{2k}\delta$, so the sum
+of these remainders over the resonant indices $k\le N$ is at most
+$16M_1\zeta(2)\rho^{2}(1-\rho^{2})^{-1}\delta=O_K(\delta)$.  The three
+retained terms of \cref{p9:eq:res-uniform}, summed over all resonant $k$,
+produce exactly $-\Aact_\omega(z)/\delta$ and \cref{p9:eq:B-second}.
 
-It remains only to justify discarding $k>N$.  The elementary inequality
+\emph{Resonant indices beyond the cutoff.}  By
+\cref{p9:lem:uniform-multiplier}\textup{(v)},
 \[
- 1-(1-\delta)^n\ge 1-\EulerE^{-n\delta}
- \ge (1-\EulerE^{-1})\min(1,n\delta)
+ c_k|z|^{2k}\AbsoluteValue{S_k(\delta)}
+ \le\frac{\zeta(2)\rho_1^{2k}}
+     {k\,(1-\EulerE^{-1})\min(1,2k\delta)}
+ \le\frac{\zeta(2)}{1-\EulerE^{-1}}\rho_1^{2k}
+   \left(\frac1k+\frac1{2k^{2}\delta}\right),
 \]
-and the $\rho_1$ bound imply that the actual resonant tail, as well as the
-three subtracted terms in \cref{p9:eq:res-uniform}, is at most
+while the corresponding subtracted terms satisfy
 \[
- C_K\sum_{k>N}\rho_1^{2k}
- \left(1+\frac1{k\delta}\right)
- =O_K\!\left(\delta^{-1}\rho_1^{2N}\right)=o_K(\delta).
+ c_k\AbsoluteValue{az}^{2k}
+ \left(\frac1{2k\delta}+\AbsoluteValue b+\frac{2k-1}{4k}\right)
+ \le\zeta(2)\rho^{2k}
+ \left(\frac1{2k^{2}\delta}+\frac{\AbsoluteValue b+1}{k}\right).
 \]
-Thus the fixed-index coefficients may be summed uniformly.  Their pole and
-constant parts are precisely $\Aact_\omega$ and $\Bact_\omega$, respectively,
-which proves \cref{p9:eq:two-term-radial}.
+Summing both over $k>N$ gives $O_K\bigl(\delta^{-1}\rho_1^{2N}\bigr)$, and
+$\rho_1^{2N}\le\rho_1^{-2}(\rho_1^{2})^{\delta^{-1/2}}$, so by
+\cref{p9:eq:exp-beats-power} this is $o_K(\delta^{M})$ for every $M$; in
+particular it is $O_K(\delta)$.
+
+Adding the three estimates proves \cref{p9:eq:two-term-radial}, with the
+explicit constant
+$2\zeta(2)\Theta\rho_1^{2}(1-\rho_1^{2})^{-1}
+ +16M_1\zeta(2)\rho^{2}(1-\rho^{2})^{-1}+1$ for all sufficiently small
+$\delta$, the first summand being absent when $d=1$.
 \end{proof}
 
 \subsection{Dilogarithmic and cyclic descriptions}
@@ -18753,15 +18993,43 @@ The series converges absolutely and locally uniformly.
 \end{theorem}
 
 \begin{proof}
-Expand $\zeta(2\ell d)=\sum_{n\ge1}n^{-2\ell d}$ in \cref{p9:eq:action-series}, then interchange the absolutely convergent sums:
-\begin{align*}
+Since $c_k=\zeta(2k)/(k\pi^{2k})$, the $\ell$th term of
+\cref{p9:eq:action-series} is
+\[
+ \frac{c_{\ell d}}{2\ell d}a_\omega^{2\ell d}z^{2\ell d}
+ =\frac{\zeta(2\ell d)}{2(\ell d)^{2}}
+   \left(\frac{a_\omega z}{\pi}\right)^{2\ell d}
+ =\sum_{n\ge1}\frac1{2(\ell d)^{2}}
+   \left(\frac{a_\omega z}{\pi n}\right)^{2\ell d}.
+\]
+Let $K$ be a compact subset of $\SetOf{z:\AbsoluteValue{a_\omega z}<\pi}$ and
+put $\rho=\max_{z\in K}\AbsoluteValue{a_\omega z}/\pi<1$.  Because
+$\zeta(2\ell d)\le\zeta(2)$ for $\ell d\ge1$, the resulting double family is
+absolutely summable, with
+\begin{equation}
+ \sum_{n\ge1}\sum_{\ell\ge1}
+ \frac1{2(\ell d)^{2}}
+ \AbsoluteValue{\frac{a_\omega z}{\pi n}}^{2\ell d}
+ =\sum_{\ell\ge1}\frac{\zeta(2\ell d)}{2(\ell d)^{2}}\rho^{2\ell d}
+ \le\frac{\zeta(2)}{2d^{2}}\sum_{\ell\ge1}\frac{\rho^{2\ell d}}{\ell^{2}}
+ \le\frac{\zeta(2)^{2}}{2d^{2}}
+ \label{p9:eq:dilog-majorant}
+\end{equation}
+uniformly for $z\in K$.  A summable double family may be summed in either
+order, so
+\[
  \Aact_\omega(z)
- &=\sum_{n\ge1}\sum_{\ell\ge1}
+ =\sum_{n\ge1}\sum_{\ell\ge1}
  \frac1{2(\ell d)^2}
- \left(\frac{a_\omega z}{\pi n}\right)^{2\ell d}\\
- &=\frac1{2d^2}\sum_{n\ge1}
- \Polylogarithm_2\!\left(\left(\frac{a_\omega z}{\pi n}\right)^{2d}\right).
-\end{align*}
+ \left(\frac{a_\omega z}{\pi n}\right)^{2\ell d}
+ =\frac1{2d^2}\sum_{n\ge1}
+ \Polylogarithm_2\!\left(\left(\frac{a_\omega z}{\pi n}\right)^{2d}\right),
+\]
+the inner sum being the defining series
+$\Polylogarithm_2(x)=\sum_{\ell\ge1}x^{\ell}/\ell^{2}$ evaluated at
+$x=(a_\omega z/(\pi n))^{2d}$, which satisfies $\AbsoluteValue x\le\rho^{2d}<1$.
+Since the bound \cref{p9:eq:dilog-majorant} is uniform on $K$ and $K$ was an
+arbitrary compact subset, the convergence is absolute and locally uniform.
 \end{proof}
 
 \begin{theorem}[Cyclic projection formula]
@@ -18783,13 +19051,29 @@ holomorphic removable extension at zero.
 \end{theorem}
 
 \begin{proof}
-Average the logarithmic series:
+Fix $z$ with $\AbsoluteValue{a_\omega z}<\pi$ and put
+$\rho=\AbsoluteValue{a_\omega z}/\pi<1$.  For $t$ on the segment $[0,z]$ every
+argument $a_\omega\omega^{r}t$ lies in $\SetOf{\AbsoluteValue w\le\rho\pi}$, so
+\cref{p9:eq:sinc-log} applies to each of the $d$ logarithms and
 \[
  \frac1d\sum_{r=0}^{d-1}\log\SincRad(a_\omega\omega^rt)
  =-\sum_{k\ge1}c_ka_\omega^{2k}t^{2k}
- \left(\frac1d\sum_{r=0}^{d-1}\omega^{2kr}\right).
+ \left(\frac1d\sum_{r=0}^{d-1}\omega^{2kr}\right)
+ =-\sum_{\substack{k\ge1\\ d\mid k}}c_ka_\omega^{2k}t^{2k},
 \]
-The parenthesized average is one if $d\mid k$ and zero otherwise.  Integrating termwise gives \cref{p9:eq:action-series}.
+because $\omega^{2}$ has order $d$, so the inner average is
+$\IndicatorOf{d\mid k}$.  The surviving series has lowest term $t^{2d}$, so
+after division by $t$ the integrand of \cref{p9:eq:cyclic-projection} is
+$O(t^{2d-1})$ and extends holomorphically through $t=0$.  Parametrizing the
+segment by $t=sz$ with $s\in[0,1]$ turns the integrand into
+$-\sum_{d\mid k}c_ka_\omega^{2k}z^{2k}s^{2k-1}$, which is dominated by the
+summable constants $\zeta(2)\rho^{2k}/k$ uniformly in $s\in[0,1]$ by
+\cref{p9:eq:ck-majorant}.  Uniform convergence on the compact parameter
+interval permits termwise integration, and
+$\int_0^1s^{2k-1}\Differential s=1/(2k)$ turns the $k$th term into
+$c_ka_\omega^{2k}z^{2k}/(2k)$.  Summing over $k=\ell d$ gives exactly
+\cref{p9:eq:action-series}.  The integral is path independent inside the disc
+because the integrand is holomorphic there.
 \end{proof}
 
 \begin{remark}
@@ -18888,30 +19172,77 @@ ever making it depend on $n$; that is what
 
 \begin{theorem}[Natural boundary on a universal frequency interval]
 \label{p9:thm:natural-boundary}
-Fix $z$ either real or purely imaginary with $0<|z|<\pi/2$.  The holomorphic
-function
+Fix $z$ either real or purely imaginary with $0<|z|<\pi/2$.  Then the
+holomorphic function
 \begin{equation}
  q\longmapsto\Phi(q,z),\qquad |q|<1,
  \label{p9:eq:qmap}
 \end{equation}
-has the unit circle as a natural boundary.  More strongly, it admits no single-valued meromorphic continuation through any nontrivial boundary arc.
+admits no single-valued meromorphic continuation through any point of the unit
+circle.  Explicitly: there exist no $\zeta_0$ with
+$\AbsoluteValue{\zeta_0}=1$, no $\varrho>0$, and no function $F$ meromorphic on
+the disc
+$\Delta(\zeta_0,\varrho)=\SetOf{q:\AbsoluteValue{q-\zeta_0}<\varrho}$ such that
+$F=\Phi(\cdot,z)$ on the connected set
+$\Delta(\zeta_0,\varrho)\cap\DiskD$.  In particular the unit circle is a
+natural boundary, and no continuation crosses a nontrivial boundary arc.
 \end{theorem}
 
 \begin{proof}
-Let $\omega\ne1$ be any root of unity.  By the preceding theorem,
-\(
- A:=\Aact_\omega(z)\in\RealNumbers\setminus\SetOf0
-\).  From \cref{p9:eq:two-term-radial},
+\emph{Step 1: $\Phi(\cdot,z)$ is zero-free on $\DiskD$.}  For
+$\AbsoluteValue q<1$ we have $\AbsoluteValue{1-q}<2$, hence
+$\AbsoluteValue{(1-q)z}<2\cdot\pi/2=\pi$, so $(q,z)\in\Omega$ and
+\cref{p9:eq:master-log} represents $\log\Phi(q,z)$ as a convergent series.
+Therefore $\Phi(q,z)=\EulerE^{\log\Phi(q,z)}\ne0$ for every $q\in\DiskD$.  The
+same inequality shows $\AbsoluteValue{a_\omega z}\le2\AbsoluteValue z<\pi$ for
+every root of unity $\omega$, so $z$ lies in the common domain of
+$\Aact_\omega$ and $\Bact_\omega$ and \cref{p9:eq:two-term-radial} may be
+applied at $z$.
+
+\emph{Step 2: no local continuation.}  Suppose such a triple
+$(\zeta_0,\varrho,F)$ existed.  The lens $\Delta(\zeta_0,\varrho)\cap\DiskD$ is
+a nonempty connected open set on which $F$ coincides with the zero-free
+function $\Phi(\cdot,z)$, so $F$ does not vanish identically on the connected
+disc $\Delta(\zeta_0,\varrho)$.  Roots of unity are dense on the unit circle,
+so $\Delta(\zeta_0,\varrho)$ contains a root of unity $\omega\ne1$; fix one,
+primitive of some order $m\ge2$.  For all sufficiently small $\delta>0$ the
+radial point $\omega(1-\delta)$ lies in $\Delta(\zeta_0,\varrho)\cap\DiskD$, so
 \begin{equation}
- \log|\Phi(\omega(1-\delta),z)|
+ F\bigl(\omega(1-\delta)\bigr)=\Phi\bigl(\omega(1-\delta),z\bigr).
+ \label{p9:eq:F-radial}
+\end{equation}
+
+\emph{Step 3: the two growth rates are incompatible.}  Because $F$ is
+meromorphic near $\omega$ and not identically zero, there are an integer $\nu$
+and a function $G$ holomorphic near $\omega$ with $G(\omega)\ne0$ and
+$F(q)=(q-\omega)^{\nu}G(q)$; this single formula covers a regular point
+($\nu=0$), a zero ($\nu>0$) and a pole ($\nu<0$), and $\nu$ is finite in each
+case.  Since $\AbsoluteValue{\omega(1-\delta)-\omega}=\delta$,
+\begin{equation}
+ \log\AbsoluteValue{F\bigl(\omega(1-\delta)\bigr)}
+ =\nu\log\delta+O(1),
+ \qquad\delta\downarrow0 .
+ \label{p9:eq:mero-rate}
+\end{equation}
+On the other hand $A\DefinitionEquals\Aact_\omega(z)$ is real and nonzero by
+\cref{p9:thm:nonvanishing-action}, and taking real parts in
+\cref{p9:eq:two-term-radial} with $K=\SetOf z$ gives
+\begin{equation}
+ \log\AbsoluteValue{\Phi\bigl(\omega(1-\delta),z\bigr)}
  =-\frac{A}{\delta}+O(1).
  \label{p9:eq:mod-growth}
 \end{equation}
-If $A>0$, the modulus tends to zero faster than every power of $\delta$.  A holomorphic continuation through $\omega$ would either be nonzero there or have a zero of finite order, both incompatible with this decay.  A zero of infinite order would force the continuation to vanish identically near $\omega$, hence everywhere in the connected disk by identity, contradicting $\Phi(0,z)=\SincRad z\ne0$.  A meromorphic continuation cannot have a pole because its modulus would then grow at a finite polynomial rate; without a pole it is holomorphic, which is the case just excluded.
+By \cref{p9:eq:F-radial} the left-hand sides of
+\cref{p9:eq:mero-rate,p9:eq:mod-growth} coincide.  But the right-hand side of
+\cref{p9:eq:mero-rate} is $O(\log(1/\delta))$, whereas that of
+\cref{p9:eq:mod-growth} tends to $-\infty$ at rate $\delta^{-1}$ when $A>0$ and
+to $+\infty$ at rate $\delta^{-1}$ when $A<0$.  Dividing by $\delta^{-1}$ and
+letting $\delta\downarrow0$ gives $-A=0$, contradicting $A\ne0$.
 
-If $A<0$, the modulus grows faster than every power of $\delta$.  This is incompatible not only with a holomorphic continuation but also with a meromorphic continuation, whose singularity could have only finite pole order.
-
-Thus every nontrivial root of unity is a nonmeromorphic boundary singularity.  Roots of unity are dense on $|q|=1$, so no open boundary arc can be crossed.
+Hence no boundary point admits a single-valued meromorphic continuation.  A
+continuation across a nontrivial arc would restrict to one at each of its
+points, so none exists; and since a meromorphic continuation is in particular
+weaker than a holomorphic one, the unit circle is a natural boundary.
 \end{proof}
 
 \begin{corollary}[The centered exponential germ of Part~VII]
@@ -19071,13 +19402,27 @@ Define the Laurent germ
 For $d\nmid k$ it is analytic at zero; for $d\mid k$ it has a simple pole in $\eps^d$.
 
 \begin{theorem}[All-orders logarithmic expansion]
-There are even polynomials $L_n(w)$ such that, as a locally uniform asymptotic expansion,
+\label{p9:thm:all-orders}
+There are even polynomials $L_n(w)$, with $\deg L_n\le2(n+d)$, such that for
+every compact $W\subset\ComplexNumbers$ and every integer $N\ge1$ there are
+$C_{W,N}>0$ and $\eps_{W,N}>0$ with
+\begin{equation}
+ \AbsoluteValue{
+  \log\Phi(q_\eps,\sqrt\eps\,w)+A_\omega w^{2d}
+  -\sum_{n=1}^{N}L_n(w)\eps^{n}}
+ \le C_{W,N}\,\eps^{N+1}
+ \label{p9:eq:all-log-quant}
+\end{equation}
+for all $w\in W$ and $0<\eps\le\eps_{W,N}$.  The constants depend on $N$ and
+$W$, but not on $w$ or $\eps$.  We abbreviate this locally uniform
+Poincar\'e expansion by
 \begin{equation}
  \log\Phi(q_\eps,\sqrt\eps\,w)
  \sim -A_\omega w^{2d}+\sum_{n\ge1}L_n(w)\eps^n,
  \label{p9:eq:all-log}
 \end{equation}
-where the coefficient is the finite sum
+with no claim that the series on the right converges.  The coefficient is the
+finite sum
 \begin{equation}
  \boxed{
  L_n(w)=-\sum_{k=1}^{n+d}c_kw^{2k}
@@ -19102,7 +19447,32 @@ where $B_n$ is the complete exponential Bell polynomial.
 \end{theorem}
 
 \begin{proof}
-Substitute \cref{p9:eq:Rkeps} into the master logarithm.  The coefficient of $\eps^n$ in the $k$th term is the displayed Laurent coefficient with index $n-k$.  Since the lowest possible exponent in $\mathcal R_k$ is $-d$, only $k\le n+d$ can contribute, so the sum is finite.  For a truncation through order $n$, Taylor's theorem applies to those finitely many Laurent germs, and \cref{p9:eq:scaled-tail} with $M=n+d+1$ bounds the remaining infinite sum by $O_W(\eps^{n+1})$.  This proves the compact-uniform Poincar\'e expansion.  Formula \cref{p9:eq:Bell-Pn} is the standard exponential formula for exponentiating a formal series.
+Fix $N\ge1$ and a compact $W$.  For small $\eps$ we have
+$\AbsoluteValue{(1-q_\eps)\sqrt\eps\,w}<\pi$ on $W$, so \cref{p9:eq:master-log}
+applies and $\log\Phi(q_\eps,\sqrt\eps\,w)
+ =-\sum_{k\ge1}c_kw^{2k}\eps^{k}\mathcal R_k(\eps)$ with $\mathcal R_k$ as in
+\cref{p9:eq:Rkeps}.  The coefficient of $\eps^{n}$ in the $k$th term is the
+Laurent coefficient of $\mathcal R_k$ with index $n-k$; since the lowest
+exponent occurring in $\mathcal R_k$ is $-d$, only $k\le n+d$ contributes.
+Hence \cref{p9:eq:Ln} is a finite sum and $\deg L_n\le2(n+d)$, so each $L_n$ is
+bounded on $W$.
+
+For the remainder, split at $k=N+d$.  Each of the finitely many germs
+$f_k(\eps)=\eps^{d}\cdot\eps^{k}\mathcal R_k(\eps)$ with $1\le k\le N+d$ is
+holomorphic at $\eps=0$, because $\eps^{k}\mathcal R_k$ has a pole of order at
+most $d$ there.  Taylor's theorem applied to $f_k$ on a disc
+$\AbsoluteValue\eps\le r_k$ gives
+$\AbsoluteValue{f_k(\eps)-\sum_{j\le N+d}\CoefficientExtraction{\eps}{j}f_k
+ \,\eps^{j}}\le c^{(k)}_N\eps^{N+d+1}$; dividing by $\eps^{d}$ shows that
+$\eps^{k}\mathcal R_k(\eps)$ differs from its truncation through order
+$\eps^{N}$ by at most $c^{(k)}_N\eps^{N+1}$.  There are at most $N+d$ such
+indices, and multiplying by the bounded factor $c_kw^{2k}$ keeps the bound
+uniform on $W$.  The indices $k\ge N+d+1$ are covered by
+\cref{p9:eq:scaled-tail} with $M=N+d+1$, whose right-hand side is
+$C_W\eps^{N+1}$.  Adding the two estimates gives \cref{p9:eq:all-log-quant}.
+Formula \cref{p9:eq:Bell-Pn} is then the standard exponential formula for
+exponentiating a formal series, applied coefficientwise to
+\cref{p9:eq:all-log}.
 \end{proof}
 
 \begin{remark}
@@ -19180,9 +19550,16 @@ This is the first genuinely higher-order dissipative limit.
 The sinc product is one instance of a more general mechanism.
 
 \begin{theorem}[Universal resonant germ]
-Let $h$ be entire, with $h(0)=1$, and choose the local logarithm
+\label{p9:thm:universal-germ}
+Let $h$ be entire with $h(0)=1$, and fix $R_h>0$ so small that $h$ has no zero
+on the closed disc $\AbsoluteValue w\le R_h$.  There $h$ has a holomorphic
+logarithm vanishing at the origin, and Cauchy's estimates give
 \begin{equation}
- \log h(z)=\sum_{n\ge1}b_nz^n.
+ \log h(z)=\sum_{n\ge1}b_nz^n,
+ \qquad
+ \AbsoluteValue{b_n}\le M_hR_h^{-n},
+ \qquad
+ M_h=\max_{\AbsoluteValue w=R_h}\AbsoluteValue{\log h(w)} .
  \label{p9:eq:germ-log}
 \end{equation}
 For $|q|<1$ define
@@ -19190,7 +19567,13 @@ For $|q|<1$ define
  \mathcal P_h(q,z)=\prod_{j\ge0}h\bigl((1-q)q^jz\bigr).
  \label{p9:eq:Ph}
 \end{equation}
-Fix a root $\omega\ne1$, and let
+Fix a root of unity $\omega\ne1$, of order $m\ge2$, put
+\begin{equation}
+ \gamma_h=\min\SetOf{\AbsoluteValue{1-\zeta t}:
+   \zeta^{m}=1,\ \zeta\ne1,\ 0\le t\le1}>0,
+ \label{p9:eq:gamma-h}
+\end{equation}
+and let
 \begin{equation}
  r=\min\SetOf{n\ge1:b_n\ne0\ \text{and}\ \omega^n=1}.
  \label{p9:eq:r-germ}
@@ -19208,35 +19591,77 @@ $\delta^{1/r}$ as the positive real root.  Then, locally uniformly for $w$,
 \end{theorem}
 
 \begin{proof}
-The logarithm of \cref{p9:eq:Ph} is
+That $\gamma_h>0$ is clear: $\AbsoluteValue{1-\zeta t}$ is continuous and
+positive on the compact set $(\mu_m\setminus\SetOf1)\times[0,1]$, since
+$\zeta t=1$ with $t\in[0,1]$ forces $t=1$ and $\zeta=1$.
+
+Write $a=1-\omega$ and $q=\omega(1-\delta)$, so that $1-q=a+\omega\delta$ and
+$\AbsoluteValue{1-q}\le\AbsoluteValue a+\delta\le3$ for $0<\delta\le1$.  Let
+$W\subset\ComplexNumbers$ be compact, $R_W=\max_W\AbsoluteValue w$, and restrict
+to those $\delta$ with
+\begin{equation}
+ 0<\delta\le\min\SetOf{1,\gamma_h},
+ \qquad
+ 3R_W\delta^{1/r}\le\tfrac12R_h .
+ \label{p9:eq:germ-domain}
+\end{equation}
+For $z=\delta^{1/r}w$ with $w\in W$ this gives
+$\AbsoluteValue{(1-q)q^{j}z}\le\AbsoluteValue{(1-q)z}\le\tfrac12R_h<R_h$ for
+every $j\ge0$: all arguments of $h$ lie in the disc on which $\log h$ is the
+holomorphic branch of \cref{p9:eq:germ-log}, which is the domain of the
+computation that follows.
+
+Since $\AbsoluteValue{b_n}\AbsoluteValue{(1-q)z}^{n}
+\AbsoluteValue q^{jn}\le M_h2^{-n}\AbsoluteValue q^{j}$ for $n\ge1$, the double
+family is absolutely summable and
 \[
- \sum_{n\ge1}b_n\frac{(1-q)^n}{1-q^n}z^n.
+ \log\mathcal P_h(q,z)
+ =\sum_{j\ge0}\log h\bigl((1-q)q^{j}z\bigr)
+ =\sum_{j\ge0}\sum_{n\ge1}b_n(1-q)^{n}q^{jn}z^{n}
+ =\sum_{n\ge1}b_n\frac{(1-q)^{n}}{1-q^{n}}z^{n},
 \]
-Choose a zero-free disk about zero for $h$.  Cauchy's estimate for its analytic
-logarithm gives $|b_n|\le CR_0^{-n}$ for some $R_0>0$.  For nonresonant $n$,
-the finitely many possible phases $\omega^n\ne1$ keep the denominator uniformly
-away from zero, and the scaled term is $O(\delta^{n/r})$.  For resonant $n$,
-\(
- 1-(1-\delta)^n\ge\delta
-\), while the $n=r$ term converges to
+each partial product of \cref{p9:eq:Ph} being the exponential of the
+corresponding partial sum.  Put
+$\theta=\AbsoluteValue{(1-q)z}/R_h\le\tfrac12$, so that
+$\AbsoluteValue{b_n}\AbsoluteValue{(1-q)z}^{n}\le M_h\theta^{n}$ and
+$\theta\le3R_W\delta^{1/r}/R_h$.
+
+If $\omega^{n}\ne1$ then $q^{n}=\omega^{n}(1-\delta)^{n}$ with
+$(1-\delta)^{n}\in[0,1]$, so $\AbsoluteValue{1-q^{n}}\ge\gamma_h$ by
+\cref{p9:eq:gamma-h}; if $\omega^{n}=1$ then
+$1-q^{n}=1-(1-\delta)^{n}\ge\delta$.  Since $\delta\le\gamma_h$, in both cases
+$\AbsoluteValue{1-q^{n}}^{-1}\le\delta^{-1}$.  Hence the tail $n>r$ obeys
 \[
- b_r w^r\frac{(a_\omega+\omega\delta)^r\delta}
- {1-(1-\delta)^r}
- \longrightarrow \frac{b_ra_\omega^r}{r}w^r.
+ \sum_{n>r}\AbsoluteValue{b_n\frac{(1-q)^{n}}{1-q^{n}}z^{n}}
+ \le\frac{M_h}{\delta}\sum_{n>r}\theta^{n}
+ \le\frac{2M_h}{\delta}\theta^{r+1}
+ \le\frac{2M_h}{\delta}
+   \left(\frac{3R_W}{R_h}\right)^{r+1}\delta^{(r+1)/r}
+ =O_W\bigl(\delta^{1/r}\bigr).
 \]
-Every resonant coefficient below $r$ vanishes by its definition.  Finally, on
-a compact $w$-set the entire tail $n>r$ is bounded, in both resonance classes,
-by
+For $1\le n<r$ with $b_n\ne0$ the index is nonresonant by the minimality in
+\cref{p9:eq:r-germ}, so $\AbsoluteValue{1-q^{n}}\ge\gamma_h$ and the term is at
+most $M_h\gamma_h^{-1}\theta^{n}=O_W(\delta^{n/r})=O_W(\delta^{1/r})$.
+Finally $z^{r}=\delta w^{r}$, so the term $n=r$ equals
 \[
- C\delta^{-1}\sum_{n>r}(B\delta^{1/r})^n
- =O(\delta^{1/r}).
+ b_rw^{r}(a+\omega\delta)^{r}\,
+ \frac{\delta}{1-(1-\delta)^{r}}
+ \longrightarrow\frac{b_ra^{r}}{r}w^{r}
 \]
-Thus exactly the $n=r$ term survives, uniformly on compact sets.  Exponentiating
+uniformly on $W$, because $\delta/(1-(1-\delta)^{r})\to1/r$ and
+$(a+\omega\delta)^{r}\to a^{r}$.  Adding the three estimates gives
+$\log\mathcal P_h(\omega(1-\delta),\delta^{1/r}w)\to b_ra^{r}w^{r}/r$ uniformly
+on $W$, and exponentiating, which is uniformly continuous on bounded sets,
 gives \cref{p9:eq:universal-germ}.
 \end{proof}
 
 \begin{corollary}[Sinc and $q$-Pochhammer specializations]
-For $h(z)=\SincRad z$, only even coefficients occur and the first resonance is $r=2d$, recovering \cref{p9:eq:blowup-limit}.  For $h(z)=1-z$ and a primitive $m$th root, $r=m$ and
+For $h(z)=\SincRad z$ one may take any $R_h<\pi$; only even coefficients
+occur, with $b_{2k}=-c_k$, so the first resonance is
+$r=\min\SetOf{2k:m\mid2k}=2d$ and
+$b_r(1-\omega)^{r}/r=-c_da_\omega^{2d}/(2d)=-A_\omega$, recovering
+\cref{p9:eq:blowup-limit}.  For $h(z)=1-z$ one may take any $R_h<1$; here
+$b_n=-1/n$, so for a primitive $m$th root $r=m$ and
 \begin{equation}
  \prod_{j\ge0}
  \left(1-(1-q)q^j\delta^{1/m}w\right)
@@ -19335,7 +19760,20 @@ For real $0<q<1$, the moment generating function of $Y_q$ is
  \frac{\sinh((1-q)q^jt)}{(1-q)q^jt}.
  \label{p9:eq:MGF}
 \end{equation}
-For complex $q$, \cref{p9:eq:MGF} defines an entire generating function and hence a complex moment functional.  The classical Bernoulli expansion gives
+For complex $q$, \cref{p9:eq:MGF} defines an entire generating function and
+hence a complex moment functional.  Its cumulants are defined for every
+$q\in\DiskD$ by the coefficient prescription
+\begin{equation}
+ \kappa_n(q)\DefinitionEquals
+ n!\,\CoefficientExtraction{t}{n}\log M(q,t)\in\ComplexNumbers ,
+ \label{p9:eq:kappa-def}
+\end{equation}
+the logarithm being the branch with $\log M(q,0)=0$; for real $0<q<1$ this is
+the usual $n$th cumulant of $Y_q$.
+
+\begin{proposition}[Bernoulli form of the cumulants]
+\label{p9:prop:cumulants}
+For every $q\in\DiskD$ and every $k\ge1$,
 \begin{equation}
  \kappa_{2k}(q)
  =\frac{2^{2k-1}B_{2k}}{k}
@@ -19344,8 +19782,73 @@ For complex $q$, \cref{p9:eq:MGF} defines an entire generating function and henc
  \kappa_{2k+1}(q)=0.
  \label{p9:eq:cumulants}
 \end{equation}
+\end{proposition}
+
+\begin{proof}
+Insert $z=\ImaginaryUnit t$ into \cref{p9:eq:master-log}, which is legitimate
+for $\AbsoluteValue{(1-q)t}<\pi$, and use
+$(\ImaginaryUnit t)^{2k}=(-1)^{k}t^{2k}$:
+\begin{equation}
+ \log M(q,t)
+ =\sum_{k\ge1}(-1)^{k-1}c_kR_k(q)\,t^{2k},
+ \label{p9:eq:logM-series}
+\end{equation}
+absolutely convergent there.  Only even powers occur, so
+$\kappa_{2k+1}(q)=0$ and $\kappa_{2k}(q)=(2k)!\,(-1)^{k-1}c_kR_k(q)$.  Euler's
+formula
+\(
+ \zeta(2k)=(-1)^{k+1}B_{2k}(2\pi)^{2k}/\bigl(2\,(2k)!\bigr)
+\)
+in the Bernoulli convention \cref{p0:eq:bernoulli} converts
+$c_k=\zeta(2k)/(k\pi^{2k})$ into
+\[
+ (2k)!\,(-1)^{k-1}c_k
+ =(-1)^{k-1}\frac{(2k)!}{k\pi^{2k}}\cdot
+   \frac{(-1)^{k+1}B_{2k}2^{2k}\pi^{2k}}{2\,(2k)!}
+ =\frac{2^{2k}B_{2k}}{2k}
+ =\frac{2^{2k-1}B_{2k}}{k},
+\]
+which is \cref{p9:eq:cumulants}.  For real $0<q<1$ this is exactly $2^{2k}$
+times \cref{p0:eq:cumulants}, as \cref{p9:status:conventions} requires, since
+$Y_q=2\GeoLawCentered q$ and the $n$th cumulant is homogeneous of degree $n$.
+Both sides of \cref{p9:eq:cumulants} are rational in $q$ off the set
+$q^{2k}=1$, so the identity for real $q$ already forces it for all
+$q\in\DiskD$; the direct derivation above is recorded because it also fixes
+the meaning of the left-hand side there.
+\end{proof}
+
+\begin{lemma}[Coefficientwise limits pass through products, exponentials and
+reciprocals]
+\label{p9:lem:formal-limits}
+Let $f_\eps,f,g_\eps,g\in\ComplexNumbers[[t]]$ and suppose that
+$\CoefficientExtraction{t}{n}f_\eps\to\CoefficientExtraction{t}{n}f$ and
+$\CoefficientExtraction{t}{n}g_\eps\to\CoefficientExtraction{t}{n}g$ as
+$\eps\downarrow0$, for every $n\ge0$.  Then, coefficientwise as
+$\eps\downarrow0$,
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item $f_\eps g_\eps\to fg$;
+\item $\EulerE^{f_\eps}\to\EulerE^{f}$, provided $f_\eps(0)=f(0)=0$;
+\item $1/f_\eps\to1/f$, provided $f_\eps(0)=f(0)=1$.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+In each case the $n$th coefficient of the output is one fixed polynomial, with
+coefficients not depending on $\eps$, in the first $n+1$ coefficients of the
+input.  For \textup{(i)} this is the Cauchy product
+$\CoefficientExtraction{t}{n}(fg)=\sum_{i+j=n}f_ig_j$.  For \textup{(ii)} it is
+the exponential formula
+$\CoefficientExtraction{t}{n}\EulerE^{f}
+ =B_n(1!f_1,\dots,n!f_n)/n!$, with $B_n$ the complete exponential Bell
+polynomial, which is the identity already used in \cref{p9:eq:Bell-Pn}.  For
+\textup{(iii)} it is the recursion $h_0=1$,
+$h_n=-\sum_{j=1}^{n}f_jh_{n-j}$, which exhibits
+$h_n=\CoefficientExtraction{t}{n}(1/f)$ as a polynomial in $f_1,\dots,f_n$.
+Polynomials are continuous, so coefficientwise convergence is preserved.
+\end{proof}
 
 \begin{theorem}[Cyclotomic cumulant condensation]
+\label{p9:thm:cumulant-condensation}
 Let $Z_\eps=\sqrt\eps\,Y_{q_\eps}$ at the level of formal moments.  Then
 \begin{equation}
  \kappa_n(Z_\eps)\longrightarrow0
@@ -19372,7 +19875,45 @@ Equivalently, coefficientwise near $t=0$,
 \end{theorem}
 
 \begin{proof}
-Apply the same resonance count as in \cref{p9:eq:spectral-collapse} to \cref{p9:eq:cumulants}, remembering that scaling by $\sqrt\eps$ multiplies the $n$th cumulant by $\eps^{n/2}$.  The identity between $B_\omega$ and $A_\omega$ follows from Euler's formula for $B_{2d}$ in terms of $\zeta(2d)$.
+Scaling by $\sqrt\eps$ multiplies the $n$th cumulant by $\eps^{n/2}$, so
+$\kappa_n(Z_\eps)=\eps^{n/2}\kappa_n(q_\eps)$.  All odd cumulants vanish by
+\cref{p9:prop:cumulants}, and for $n=2k$
+\[
+ \kappa_{2k}(Z_\eps)
+ =\frac{2^{2k-1}B_{2k}}{k}\,\eps^{k}\mathcal R_k(\eps)
+\]
+with $\mathcal R_k$ as in \cref{p9:eq:Rkeps}.  If $d\nmid k$ then
+$\mathcal R_k(\eps)\to a_\omega^{2k}/(1-\omega^{2k})$ stays bounded, so the
+factor $\eps^{k}$ forces the limit $0$.  If $k=\ell d$ then
+$1-(1-\eps^{d})^{2k}=2k\eps^{d}\bigl(1+O(\eps^{d})\bigr)$, so
+\[
+ \eps^{k}\mathcal R_k(\eps)
+ =\frac{a_\omega^{2k}}{2k}\,\eps^{(\ell-1)d}
+  \bigl(1+O(\eps^{d})\bigr),
+\]
+which tends to $0$ for $\ell\ge2$ and to $a_\omega^{2d}/(2d)$ for $\ell=1$.
+This is \cref{p9:eq:kappa-vanish}, and at $k=d$ it gives
+\[
+ \kappa_{2d}(Z_\eps)\longrightarrow
+ \frac{2^{2d-1}B_{2d}}{d}\cdot\frac{a_\omega^{2d}}{2d}
+ =\frac{2^{2d-2}B_{2d}a_\omega^{2d}}{d^{2}}
+ =K_{2d,\omega},
+\]
+which is \cref{p9:eq:kappa-survive}.  Consequently
+$\log M(q_\eps,\sqrt\eps\,t)
+ =\sum_{k\ge1}\kappa_{2k}(Z_\eps)t^{2k}/(2k)!$ converges coefficientwise to
+$K_{2d,\omega}t^{2d}/(2d)!$, and \cref{p9:lem:formal-limits}\textup{(ii)}
+upgrades this to the coefficientwise limit \cref{p9:eq:MGF-limit} for $M$
+itself, with $B_\omega=K_{2d,\omega}/(2d)!$.  Finally Euler's formula for
+$\zeta(2d)$ gives
+\[
+ A_\omega=\frac{\zeta(2d)a_\omega^{2d}}{2d^{2}\pi^{2d}}
+ =\frac{(-1)^{d+1}B_{2d}2^{2d}\pi^{2d}a_\omega^{2d}}
+        {2\,(2d)!\cdot2d^{2}\pi^{2d}}
+ =(-1)^{d+1}\frac{2^{2d-2}B_{2d}a_\omega^{2d}}{d^{2}\,(2d)!}
+ =(-1)^{d+1}B_\omega ,
+\]
+which is the remaining identity of \cref{p9:eq:MGF-limit}.
 \end{proof}
 
 \begin{corollary}[Sparse Bell moment limit]
@@ -19393,7 +19934,18 @@ and for $r\ge0$,
 \end{corollary}
 
 \begin{proof}
-Expand $\exp(B_\omega t^{2d})$.  Equivalently, apply the complete Bell polynomial to a cumulant list with exactly one nonzero entry.
+By definition $m_n(q)=n!\,\CoefficientExtraction{t}{n}M(q,t)$, and replacing
+$t$ by $\sqrt\eps\,t$ multiplies the $n$th coefficient by $\eps^{n/2}$, so
+\[
+ \eps^{n/2}m_n(q_\eps)
+ =n!\,\CoefficientExtraction{t}{n}M(q_\eps,\sqrt\eps\,t).
+\]
+By \cref{p9:eq:MGF-limit} the right-hand side converges to
+$n!\,\CoefficientExtraction{t}{n}\EulerE^{B_\omega t^{2d}}$.  Expanding
+$\EulerE^{B_\omega t^{2d}}=\sum_{r\ge0}B_\omega^{r}t^{2dr}/r!$ shows that this
+vanishes unless $2d\mid n$ and equals $(2dr)!B_\omega^{r}/r!$ when $n=2dr$,
+which is \cref{p9:eq:mom-zero,p9:eq:mom-survive}.  Equivalently, apply the
+complete Bell polynomial to a cumulant list with exactly one nonzero entry.
 \end{proof}
 
 \subsection{Limiting Appell family}
@@ -19444,10 +19996,46 @@ These polynomials satisfy
 \end{theorem}
 
 \begin{proof}
-The generating function of \cref{p9:eq:Appell-scaled} is
-\(
- \EulerE^{xt}/M(q_\eps,\sqrt\eps t)
-\).  Apply \cref{p9:eq:MGF-limit}.  Expanding the limiting exponential gives \cref{p9:eq:GH-explicit}; differentiating its generating function gives the operator identities.
+Substituting $(x,t)\mapsto(x/\sqrt\eps,\sqrt\eps\,t)$ in \cref{p9:eq:Appell-q}
+leaves $\EulerE^{xt}$ unchanged and multiplies the $n$th Taylor coefficient by
+$\eps^{n/2}$, so by \cref{p9:eq:Appell-scaled}
+\[
+ \sum_{n\ge0}\widetilde{\mathcal A}_{n,\eps}(x)\frac{t^{n}}{n!}
+ =\frac{\EulerE^{xt}}{M(q_\eps,\sqrt\eps\,t)} .
+\]
+The series $M(q_\eps,\sqrt\eps\,t)$ has constant term $1$ and converges
+coefficientwise to $\EulerE^{B_\omega t^{2d}}$ by \cref{p9:eq:MGF-limit}, so
+\cref{p9:lem:formal-limits}\textup{(iii)} gives coefficientwise convergence of
+its reciprocal, and then part~\textup{(i)}, applied with the
+$\eps$-independent factor $\EulerE^{xt}$, gives
+\[
+ \CoefficientExtraction{t}{n}
+ \frac{\EulerE^{xt}}{M(q_\eps,\sqrt\eps\,t)}
+ \longrightarrow
+ \CoefficientExtraction{t}{n}\EulerE^{xt-B_\omega t^{2d}}
+\]
+for every $n$.  Both sides are polynomials in $x$ of degree at most $n$;
+expanding $\EulerE^{xt}=\sum_{j\ge0}x^{j}t^{j}/j!$ exhibits the coefficient of
+$x^{j}$ in $\CoefficientExtraction{t}{n}$ as
+$\CoefficientExtraction{t}{n-j}$ of the reciprocal divided by $j!$, so the
+convergence is also coefficient by coefficient in $x$, which is the assertion
+of \cref{p9:eq:Appell-limit}.  Expanding
+$\EulerE^{xt-Bt^{2d}}=\EulerE^{xt}\sum_{r\ge0}(-B)^{r}t^{2dr}/r!$ and reading
+off $\CoefficientExtraction{t}{n}$ gives \cref{p9:eq:GH-explicit}.  For the
+operator identities write $D=\frac{\Differential}{\Differential x}$ and note
+$D^{j}\EulerE^{xt}=t^{j}\EulerE^{xt}$.  Hence
+\[
+ \sum_{n\ge0}\bigl(\EulerE^{-BD^{2d}}x^{n}\bigr)\frac{t^{n}}{n!}
+ =\EulerE^{-BD^{2d}}\EulerE^{xt}
+ =\EulerE^{-Bt^{2d}}\EulerE^{xt},
+\]
+which is \cref{p9:eq:GH-gen}, so $H_n^{(d,B)}=\EulerE^{-BD^{2d}}x^{n}$;  and
+differentiating \cref{p9:eq:GH-gen} in $t$ gives
+$\sum_nH_{n+1}^{(d,B)}t^{n}/n!
+ =(x-2dBt^{2d-1})\EulerE^{xt-Bt^{2d}}
+ =(x-2dBD^{2d-1})\EulerE^{xt-Bt^{2d}}$, whence
+$H_{n+1}^{(d,B)}=(x-2dBD^{2d-1})H_n^{(d,B)}$.  Both identities are the content
+of \cref{p9:eq:GH-operator}.
 \end{proof}
 
 \section{Polyharmonic heat symbols and Stokes sectors}
@@ -19487,7 +20075,76 @@ For $d=1$ it is Gaussian; for $d\ge2$ it necessarily changes sign.
 \end{proposition}
 
 \begin{proof}
-Fourier inversion gives smoothness, mass, the PDE, and scaling.  Suppose $d\ge2$ and $\EulerE^{-A\xi^{2d}}$ were a characteristic function of a positive probability measure.  Its second derivative at zero is zero, which would force variance zero; the measure would be a point mass and its characteristic function identically one, a contradiction.
+\emph{Smoothness and the equation.}  Fix $\tau_0>0$.  For $\tau\ge\tau_0$ and
+all integers $\alpha,\beta\ge0$,
+\[
+ \AbsoluteValue{\partial_\tau^{\alpha}\partial_x^{\beta}
+   \EulerE^{-\tau A\xi^{2d}-\ImaginaryUnit x\xi}}
+ =A^{\alpha}\AbsoluteValue\xi^{2d\alpha+\beta}
+   \EulerE^{-\tau A\xi^{2d}}
+ \le A^{\alpha}\AbsoluteValue\xi^{2d\alpha+\beta}
+   \EulerE^{-\tau_0A\xi^{2d}},
+\]
+and the right-hand side is integrable in $\xi$ and independent of
+$(x,\tau)$.  Differentiation under the integral sign is therefore legitimate,
+and $K_{d,A}$ is $C^{\infty}$ on $\RealNumbers\times(0,\infty)$ with
+\[
+ \partial_\tau K_{d,A}
+ =\frac1{2\pi}\int_{\RealNumbers}\bigl(-A\xi^{2d}\bigr)
+   \EulerE^{-\tau A\xi^{2d}-\ImaginaryUnit x\xi}\Differential\xi,
+ \qquad
+ \partial_x^{2d}K_{d,A}
+ =\frac1{2\pi}\int_{\RealNumbers}(-\ImaginaryUnit\xi)^{2d}
+   \EulerE^{-\tau A\xi^{2d}-\ImaginaryUnit x\xi}\Differential\xi .
+\]
+Since $(-\ImaginaryUnit)^{2d}=(-1)^{d}$, multiplying the second identity by
+$(-1)^{d+1}A$ reproduces the first, which is the equation in
+\cref{p9:eq:polyharmonic-PDE}.
+
+\emph{Schwartz class and mass.}  For fixed $\tau>0$ the function
+$\xi\mapsto\xi^{\beta}\EulerE^{-\tau A\xi^{2d}}$ is Schwartz, so repeated
+integration by parts in $\xi$ shows that
+$x^{\alpha}\partial_x^{\beta}K_{d,A}(x,\tau)$ is bounded for all
+$\alpha,\beta\ge0$; hence $K_{d,A}(\cdot,\tau)\in\mathcal S(\RealNumbers)$.
+The symbol $\EulerE^{-\tau A\xi^{2d}}$ is even, so \cref{p9:eq:heat-kernel}
+coincides with the inverse angular Fourier transform of
+\cref{p0:eq:fourier}, and Fourier inversion for Schwartz functions gives
+$\FourierAngularTransformOf{K_{d,A}(\cdot,\tau)}(\xi)
+ =\EulerE^{-\tau A\xi^{2d}}$.  Evaluating at $\xi=0$ gives total mass
+$\int_{\RealNumbers}K_{d,A}(x,\tau)\Differential x=1$.
+
+\emph{Scaling and the initial value.}  The substitution
+$\xi=(A\tau)^{-1/(2d)}u$ in \cref{p9:eq:heat-kernel} gives
+\cref{p9:eq:kernel-scaling} directly.  For bounded continuous $\varphi$ that
+law and $K_{d,1}(\cdot,1)\in L^{1}$ give
+\[
+ \int_{\RealNumbers}K_{d,A}(x,\tau)\varphi(x)\Differential x
+ =\int_{\RealNumbers}K_{d,1}(y,1)\,
+   \varphi\bigl(y(A\tau)^{1/(2d)}\bigr)\Differential y
+ \longrightarrow\varphi(0)
+ \qquad(\tau\downarrow0)
+\]
+by dominated convergence, which is the assertion
+$K_{d,A}(\cdot,\tau)\to\delta_0$.  For $d=1$ the integral
+\cref{p9:eq:heat-kernel} is the classical Gaussian.
+
+\emph{Sign change for $d\ge2$.}  Suppose $K_{d,A}(\cdot,1)\ge0$.  Being
+nonnegative with total mass one it is then the density of a probability
+measure $\mu$, whose characteristic function is
+$\varphi(\xi)=\EulerE^{-A\xi^{2d}}$.  For $\xi\ne0$,
+\[
+ \int_{\RealNumbers}\frac{2-2\cos(\xi x)}{\xi^{2}}\Differential\mu(x)
+ =\frac{2-\varphi(\xi)-\varphi(-\xi)}{\xi^{2}}
+ =\frac{2-2\EulerE^{-A\xi^{2d}}}{\xi^{2}}
+ \longrightarrow0
+ \qquad(\xi\to0),
+\]
+because $2d\ge4$.  The integrand is nonnegative and tends pointwise to
+$x^{2}$, so Fatou's lemma gives
+$\int_{\RealNumbers}x^{2}\Differential\mu(x)=0$, hence $\mu=\delta_0$ and
+$\varphi\equiv1$ --- contradicting $\varphi(\xi)=\EulerE^{-A\xi^{2d}}$.
+Therefore $K_{d,A}(\cdot,1)$ takes both signs, and by
+\cref{p9:eq:kernel-scaling} so does $K_{d,A}(\cdot,\tau)$ for every $\tau>0$.
 \end{proof}
 
 \begin{corollary}[The sixth-order Rvachev cyclotomic heat limit]
@@ -19503,6 +20160,32 @@ the preceding proposition it changes sign, and the classical oscillatory
 asymptotics for polyharmonic kernels \cite{bib:evgrafov1970} show that it
 in fact oscillates.
 \end{corollary}
+
+\begin{proof}
+At $\omega=\EulerE^{\pi\ImaginaryUnit/3}$ we have $m=6$, $\gcd(m,2)=2$ and
+$d=3$, and $\theta=\pi/3$, so the computation in the proof of
+\cref{p9:eq:sign-a} gives
+\(
+ a_\omega^{6}=(-4)^{3}\EulerE^{\ImaginaryUnit\pi}\sin^{6}(\pi/6)
+ =(-64)(-1)\cdot2^{-6}=1 .
+\)
+Hence, by \cref{p9:eq:Aomega} and $\zeta(6)=\pi^{6}/945$,
+\[
+ A_\omega=\frac{\zeta(6)a_\omega^{6}}{2\cdot3^{2}\pi^{6}}
+ =\frac1{945\cdot18}=\frac1{17010}>0 .
+\]
+\cref{p9:eq:blowup-limit} therefore gives
+$\Phi(q_\eps,\sqrt\eps\,w)\to\EulerE^{-w^{6}/17010}$ locally uniformly in $w$.
+By the proof of the preceding proposition,
+$\FourierAngularTransformOf{K_{3,A_\omega}(\cdot,\tau)}(\xi)
+ =\EulerE^{-\tau A_\omega\xi^{6}}$, whose value at $\tau=1$ is exactly the
+limit just obtained; and by \cref{p9:eq:polyharmonic-PDE} with $d=3$ the
+kernel solves \cref{p9:eq:sixth-pde}, since $(-1)^{d+1}=1$.  For a general
+$\tau>0$ apply the same limit at the frequency $\tau^{1/6}w$, which is
+legitimate because the convergence is locally uniform and $\tau^{1/6}W$ is
+again compact.  The mass and sign statements are those of the preceding
+proposition.
+\end{proof}
 
 \subsection{Backward roots and contour rotation}
 
@@ -19607,7 +20290,45 @@ sectorially or asymptotically with a uniform remainder estimate.
 
 The more unusual inverse asks for $q$ as a function of $z$ while the transform value is held fixed.
 
+\begin{lemma}[The root-centered substitution is well defined]
+\label{p9:lem:substitution-finite}
+Let $\rho(s)\in\ComplexNumbers[[s]]$ with $\rho(0)\ne0$ and set
+$\delta=z^{2d}\rho(z^{2})$ and $q=\omega(1-\delta)$.  Then for every $k\ge1$
+the $k$th term $-c_kz^{2k}\mathcal R_k$ of \cref{p9:eq:master-log}, with
+$\mathcal R_k$ as in \cref{p9:eq:Rkeps} and $\eps^{d}$ replaced by $\delta$, is
+a well-defined element of $\ComplexNumbers[[z^{2}]]$ whose lowest occurring
+power of $z$ is $z^{2k-2d}$ when $d\mid k$ and $z^{2k}$ otherwise.
+Consequently $\CoefficientExtraction{z}{N}\log\Phi(q(z),z)$ receives
+contributions only from the indices $k\le N/2+d$, the substitution is a
+well-defined map $\ComplexNumbers[[s]]\to\ComplexNumbers[[z^{2}]]$, and its
+constant term equals $-A_\omega/\rho(0)$.
+\end{lemma}
+
+\begin{proof}
+The numerator $(a_\omega+\omega\delta)^{2k}$ is a power series in $\delta$ with
+constant term $a_\omega^{2k}\ne0$, and $\delta\in z^{2d}\ComplexNumbers[[z^{2}]]$.
+If $d\nmid k$ the denominator $1-\omega^{2k}(1-\delta)^{2k}$ has constant term
+$1-\omega^{2k}\ne0$, hence is invertible in $\ComplexNumbers[[\delta]]$, and
+$-c_kz^{2k}\mathcal R_k\in z^{2k}\ComplexNumbers[[z^{2}]]$.  If $d\mid k$ the
+denominator is $1-(1-\delta)^{2k}=2k\delta\,u_k(\delta)$ with
+$u_k\in\ComplexNumbers[[\delta]]$ and $u_k(0)=1$, so $u_k$ is invertible and
+\[
+ -c_kz^{2k}\mathcal R_k
+ =-\frac{c_kz^{2k-2d}}{2k\,\rho(z^{2})}
+   (a_\omega+\omega\delta)^{2k}u_k(\delta)^{-1}
+ \in z^{2k-2d}\ComplexNumbers[[z^{2}]],
+\]
+$\rho$ being invertible because $\rho(0)\ne0$.  Since $d\mid k$ forces
+$k\ge d$, the exponent $2k-2d$ is nonnegative in every case, so the sum over
+$k$ lies in $\ComplexNumbers[[z^{2}]]$ and a term contributes to
+$\CoefficientExtraction{z}{N}$ only when $2k-2d\le N$, that is $k\le N/2+d$.
+The unique index with lowest power $z^{0}$ is $k=d$, and its contribution
+there is $-c_da_\omega^{2d}/(2d\rho(0))=-A_\omega/\rho(0)$ by
+\cref{p9:eq:Aomega}.
+\end{proof}
+
 \begin{proposition}[Formal inverse $q$-series at a root of unity]
+\label{p9:prop:inverse-q}
 Assume $d\ge2$, fix $y$ and $\ell$ as above, and choose the root-centered coordinate
 \begin{equation}
  q(z)=\omega(1-\delta(z)).
@@ -19644,16 +20365,22 @@ and therefore
 \end{proposition}
 
 \begin{proof}
-Write $\delta=\rho z^{2d}$.  Coefficientwise substitution in the master
-series has constant term
-\(
- -A_\omega/\rho
-\).  The equation $-A_\omega/\rho=\ell$ has the simple solution $\rho_0=-A_\omega/\ell$, since the derivative $A_\omega/\rho_0^2$ is nonzero.  The formal implicit-function theorem, or direct triangular coefficient recursion, gives $\rho(z^2)$.  Expanding
-\[
- \log\Phi=-\frac{A_\omega z^{2d}}{\delta}
- -C_{1,\omega}z^2+O(z^4)+O(z^{2d})
-\]
-and matching the coefficient of $z^2$ yields \cref{p9:eq:delta-z}.
+By \cref{p9:lem:substitution-finite} the left-hand side of
+\cref{p9:eq:q-inverse-eq}, read through the master logarithm on the prescribed
+logarithm sheet, is a well-defined element
+$\Lambda(\rho)\in\ComplexNumbers[[z^{2}]]$ whose coefficient of $z^{N}$ depends
+polynomially on $\rho_0^{-1}$ and on finitely many $\rho_i$, and whose constant
+term is $-A_\omega/\rho_0$.  The scalar equation $-A_\omega/\rho_0=\ell$ has the
+unique solution $\rho_0=-A_\omega/\ell\ne0$, at which the derivative of
+$\rho_0\mapsto-A_\omega/\rho_0$ equals $A_\omega/\rho_0^{2}\ne0$; so the formal
+implicit-function theorem applies and determines $\rho_1,\rho_2,\dots$
+triangularly from the coefficients of $z^{2},z^{4},\dots$.  The explicit
+low-order coefficients are computed in
+\cref{p9:app:inverse-coefficients}, which is the official derivation of
+\cref{p9:eq:delta-z} and hence of \cref{p9:eq:q-z-expansion}: only the master
+logarithm is used there, never the two-term radial expansion, whose $O(\delta)$
+remainder is not an all-orders series.  No analytic remainder is claimed at any
+step.
 \end{proof}
 
 \begin{remark}[No convergent boundary germ is claimed]
@@ -19673,6 +20400,44 @@ indexing into analytic continuation or monodromy requires sectorial
 realizations and a careful separation of logarithm-sheet changes from
 critical-value branching; neither is asserted here.
 \end{remark}
+
+\begin{status}[What an analytic inverse branch would require]
+\label{p9:status:inverse-analytic}
+The two propositions of this section are \statusproved{} as statements about
+formal series and \statusopen{} as statements about functions; nothing in this
+part asserts an analytic inverse branch.  The missing ingredient can be named
+precisely.  For the inverse frequency $w(\eps)=\sum_{n\ge0}w_n\eps^{n}$ of
+\cref{p9:eq:inverse-w} one would need constants $C,A>0$, an exponent $s\ge0$,
+a sector
+\[
+ \Sigma=\SetOf{\eps\in\ComplexNumbers:
+   0<\AbsoluteValue\eps<\eps_1,\ \AbsoluteValue{\arg\eps}<\vartheta},
+\]
+and a holomorphic $\mathbf w:\Sigma\to\ComplexNumbers$ with
+$\Phi\bigl(q_\eps,\sqrt\eps\,\mathbf w(\eps)\bigr)=y$ on $\Sigma$ and
+\begin{equation}
+ \AbsoluteValue{\mathbf w(\eps)-\sum_{n<N}w_n\eps^{n}}
+ \le C\,A^{N}(N!)^{s}\AbsoluteValue\eps^{N}
+ \qquad(\eps\in\Sigma,\ N\ge1);
+ \label{p9:eq:gevrey-target}
+\end{equation}
+a Gevrey estimate of this shape, with $\vartheta>\pi s/2$, would identify
+$\mathbf w$ as the Borel--Laplace sum of the formal series and would settle the
+analytic realization.  The obstruction to producing \cref{p9:eq:gevrey-target}
+by the present method is explicit rather than technical: the denominators
+$1-(1-\eps^{d})^{2k}$ of \cref{p9:eq:Rkeps} vanish where $\eps^{d}=1-\zeta$
+with $\zeta^{2k}=1$, and the nearest such point satisfies
+$\AbsoluteValue{1-\zeta}=2\sin(\pi/(2k))\asymp1/k$, so the family
+$\SetOf{\mathcal R_k}_{k\ge1}$ has no common disc of analyticity about
+$\eps=0$ and no $k$-independent domain on which an implicit-function argument
+could be run.  \cref{p9:thm:full-radial} does not repair this: it is an
+asymptotic expansion at fixed frequency whose constants $C_{K,R}$ are allowed
+to depend arbitrarily on the order $R$, and \cref{p9:eq:gevrey-target} is
+exactly a statement about how those constants grow.  Proving a Gevrey version
+of \cref{p9:thm:full-radial}, with $C_{K,R}\le CA^{R}(R!)^{s}$, is therefore
+the missing estimate; it is the analytic content of the open problem
+\emph{Cyclotomic inverse monodromy} stated below.
+\end{status}
 
 \section{Numerical experiments}
 
@@ -19923,17 +20688,17 @@ Let $K\Subset\SetOf{z:|a_\omega z|<\pi}$ and choose $\rho<1$ such that
  \label{p9:eq:ck-majorant}
 \end{equation}
 provides the basic summable majorant.  When $d>1$, the nonresonant phases
-$\omega^{2k}$ range over a finite set not containing one.  More explicitly,
-with
-\[
- \gamma=\min_{\substack{1\le r<d\\0\le t\le1}}
- |1-\omega^{2r}t|>0,
-\]
-both denominators occurring in the derivative of $S_k(\delta)$ are bounded
-below by $\gamma$.  The numerator derivative and the derivative of
-$(1-\delta)^{2k}$ each contribute at most $Ck$ times a geometric majorant.
-This is the detailed justification of \cref{p9:eq:nonres-uniform}; when $d=1$
-the nonresonant part is empty.
+$\omega^{2k}$ range over a finite set not containing one, and
+\cref{p9:lem:uniform-multiplier}\textup{(ii)} bounds the denominator of
+$S_k(\delta)$ below by the constant $\gamma\ge\sin(\pi/d)$, uniformly in $k$
+and in $\delta\in[0,1]$.  Part~\textup{(iii)} of the same lemma bounds
+$\AbsoluteValue{S_k'(\delta)}$ by
+$2k\Theta\AbsoluteValue{a_\omega+\omega\delta}^{2k}$, the single factor $k$
+cancelling the $1/k$ in \cref{p9:eq:ck-majorant}.  This is the detailed
+justification of \cref{p9:eq:nonres-uniform}, with the explicit constant
+$C_K=2\zeta(2)\Theta$ and
+$\Theta=2/(\gamma\AbsoluteValue{a_\omega})+\gamma^{-2}$; when $d=1$ the
+nonresonant part is empty.
 
 For resonant $k$, the cutoff $N=\Floor{\delta^{-1/2}}$ is deliberately
 smaller than the tempting scale $\delta^{-1}$.  On $k\le N$ the true expansion
@@ -19947,23 +20712,162 @@ power of $\delta$: for each $M>0$ and $0<r<1$,
 This proves, rather than merely predicts, the uniform $O_K(\delta)$ remainder
 in \cref{p9:thm:two-term-radial}.
 
-The same cutoff method can be repeated to any prescribed finite order, but a
-full Poincar\'e theorem requires keeping the order-dependent Taylor constants
-explicit.  This suggests the further expansion
+The same cutoff method can be repeated to any prescribed finite order, once
+the order-dependent Taylor constants are kept explicit.  The uniform bounds of
+\cref{p9:lem:uniform-multiplier} are exactly what is needed, because they
+control every Taylor coefficient of the multipliers, not merely the first two.
+Define, for $r\ge0$,
+\begin{equation}
+ B_{r,\omega}(z)
+ =-\sum_{\substack{k\ge1\\ d\nmid k}}c_k
+   \CoefficientExtraction{\delta}{r}S_k\;z^{2k}
+  -\sum_{\substack{k\ge1\\ d\mid k}}
+   \frac{c_ka_\omega^{2k}}{2k}
+   \CoefficientExtraction{\delta}{r+1}H_k\;z^{2k},
+ \label{p9:eq:Br-def}
+\end{equation}
+with $S_k$ and $H_k$ as in \cref{p9:eq:Sk-delta,p9:eq:Hk}.
+
+\begin{theorem}[All-orders fixed-frequency radial expansion]
+\label{p9:thm:full-radial}
+Every series \cref{p9:eq:Br-def} converges absolutely and locally uniformly on
+$\SetOf{z:\AbsoluteValue{a_\omega z}<\pi}$, and $B_{0,\omega}=\Bact_\omega$.
+Moreover, for every compact
+$K\Subset\SetOf{z:\AbsoluteValue{a_\omega z}<\pi}$ and every integer $R\ge0$
+there are $C_{K,R}>0$ and $\delta_{K,R}>0$ such that
+\begin{equation}
+ \AbsoluteValue{
+  \log\Phi\bigl(\omega(1-\delta),z\bigr)
+  +\frac{\Aact_\omega(z)}{\delta}
+  -\sum_{r=0}^{R}B_{r,\omega}(z)\delta^{r}}
+ \le C_{K,R}\,\delta^{R+1}
+ \label{p9:eq:full-radial-quant}
+\end{equation}
+for all $z\in K$ and $0<\delta\le\delta_{K,R}$.  We abbreviate this by the
+locally uniform Poincar\'e expansion
 \begin{equation}
  \log\Phi(\omega(1-\delta),z)
  \sim -\frac{\Aact_\omega(z)}{\delta}
- +\sum_{r\ge0}B_{r,\omega}(z)\delta^r
+ +\sum_{r\ge0}B_{r,\omega}(z)\delta^r .
  \label{p9:eq:full-radial}
 \end{equation}
-locally uniformly in the same disk.  Each candidate $B_{r,\omega}$ is an
-explicitly convergent zeta-weighted coefficient series with rational functions
-of $k$ and $\omega$ as coefficients.  We leave this all-orders fixed-frequency
-statement as a conjectural strengthening; it is not needed for any theorem in
-the main text.
+The constant $C_{K,R}$ is allowed to depend on $R$; no claim is made that the
+series in \cref{p9:eq:full-radial} converges, nor that its constants grow at
+any prescribed rate in $R$.
+\end{theorem}
+
+\begin{proof}
+Fix $0<\rho<\rho_1<1$ with $\AbsoluteValue{a_\omega z}\le\rho\pi$ on $K$ and
+$\AbsoluteValue{(a_\omega+\omega\delta)z}\le\rho_1\pi$ for $z\in K$ and
+$0\le\delta\le\delta_0$, and abbreviate $a=a_\omega$, $b=\omega/a$.
+
+\emph{Step 1: coefficient bounds.}  By
+\cref{p9:lem:uniform-multiplier}\textup{(i)}, $H_k$ is holomorphic with
+$\AbsoluteValue{H_k}\le M_1$ on the closed disc
+$\AbsoluteValue\delta\le1/(4k)$, so Cauchy's estimates give
+\begin{equation}
+ \AbsoluteValue{\CoefficientExtraction{\delta}{r}H_k}\le M_1(4k)^{r},
+ \qquad
+ \AbsoluteValue{H_k(\delta)-\sum_{r=0}^{R+1}
+   \CoefficientExtraction{\delta}{r}H_k\;\delta^{r}}
+ \le 2M_1(4k\delta)^{R+2}
+ \label{p9:eq:Hk-taylor}
+\end{equation}
+for $0\le\delta\le1/(8k)$, the second bound being the geometric estimate of
+the Taylor tail on half the radius.  By
+\cref{p9:lem:uniform-multiplier}\textup{(iv)}, for $d\nmid k$ the function
+$S_k$ is holomorphic with $\AbsoluteValue{S_k}\le M_2\AbsoluteValue a^{2k}$ on
+$\AbsoluteValue\delta\le\lambda_\omega/(2k)$, so likewise
+\begin{equation}
+ \AbsoluteValue{\CoefficientExtraction{\delta}{r}S_k}
+ \le M_2\AbsoluteValue a^{2k}
+   \Bigl(\frac{2k}{\lambda_\omega}\Bigr)^{r},
+ \qquad
+ \AbsoluteValue{S_k(\delta)-\sum_{r=0}^{R}
+   \CoefficientExtraction{\delta}{r}S_k\;\delta^{r}}
+ \le 2M_2\AbsoluteValue a^{2k}
+   \Bigl(\frac{2k\delta}{\lambda_\omega}\Bigr)^{R+1}
+ \label{p9:eq:Sk-taylor}
+\end{equation}
+for $0\le\delta\le\lambda_\omega/(4k)$.  Combining the left-hand bounds with
+\cref{p9:eq:ck-majorant} dominates the two families in \cref{p9:eq:Br-def} by
+$M_2\zeta(2)(2/\lambda_\omega)^{r}k^{r-1}\rho^{2k}$ and by
+$M_14^{r+1}\zeta(2)k^{r-1}\rho^{2k}/2$ respectively, both summable in $k$
+because $\rho<1$, and uniformly so on $K$.  Hence each $B_{r,\omega}$
+converges absolutely and locally uniformly.  For $r=0$ the coefficients are
+$\CoefficientExtraction{\delta}{0}S_k=a^{2k}/(1-\omega^{2k})$ and, by
+\cref{p9:eq:Hk-bounds}, $\CoefficientExtraction{\delta}{1}H_k=2kb+(2k-1)/2$,
+so \cref{p9:eq:Br-def} reduces termwise to
+\cref{p9:eq:B-first,p9:eq:B-second}; that is $B_{0,\omega}=\Bact_\omega$.
+
+Note also that, for $d\mid k$, expanding $H_k$ through order $\delta^{R+1}$ and
+dividing by $2k\delta$ expands $S_k$ through order $\delta^{R}$ starting at
+$\delta^{-1}$, with coefficient $a^{2k}/(2k)$ there; multiplied by
+$-c_kz^{2k}$ and summed over the resonant $k$, that coefficient reproduces
+exactly $-\Aact_\omega(z)$ by \cref{p9:eq:action-series}.  Thus the three
+displayed objects in \cref{p9:eq:full-radial-quant} are the true sum, its
+$\delta^{-1}$ coefficient, and its coefficients of $\delta^{0},\dots,\delta^{R}$.
+
+\emph{Step 2: the remainder below the cutoff.}  Split every sum over $k$ at
+$N=\Floor{\delta^{-1/2}}$, and shrink $\delta_{K,R}\le\delta_0$ so that
+$\delta_{K,R}\le\min\SetOf{1/64,\lambda_\omega^{2}/16}$, which is
+positive because $\lambda_\omega>0$ by \cref{p9:eq:lambda-omega} and the
+convention recorded in \cref{p9:lem:uniform-multiplier}; then
+$N\le\delta^{-1/2}\le\min\SetOf{1/(8\delta),\lambda_\omega/(4\delta)}$, so
+\cref{p9:eq:Hk-taylor,p9:eq:Sk-taylor} apply for every $k\le N$.  Using
+$S_k=a^{2k}H_k/(2k\delta)$ in the resonant case and
+\cref{p9:eq:ck-majorant} throughout, the resonant part of the left-hand side
+of \cref{p9:eq:full-radial-quant} restricted to $k\le N$ is at most
+\[
+ \sum_{\substack{d\mid k,\;k\le N}}
+ \frac{c_k\AbsoluteValue{az}^{2k}}{2k\delta}\cdot2M_1(4k\delta)^{R+2}
+ \le M_1\zeta(2)4^{R+2}\,\delta^{R+1}\sum_{k\ge1}k^{R}\rho^{2k},
+\]
+and the nonresonant part at most
+\[
+ \sum_{\substack{d\nmid k,\;k\le N}}
+ c_k\AbsoluteValue z^{2k}\cdot
+ 2M_2\AbsoluteValue a^{2k}
+ \Bigl(\frac{2k\delta}{\lambda_\omega}\Bigr)^{R+1}
+ \le 2M_2\zeta(2)
+ \Bigl(\frac{2}{\lambda_\omega}\Bigr)^{R+1}\delta^{R+1}
+ \sum_{k\ge1}k^{R}\rho^{2k}.
+\]
+Both sums over $k$ are finite because $\rho<1$, so this contribution is
+$O_{K,R}(\delta^{R+1})$.
+
+\emph{Step 3: the remainder beyond the cutoff.}  For $k>N$ the true terms are
+bounded exactly as in the proof of \cref{p9:thm:two-term-radial}: by
+\cref{p9:lem:uniform-multiplier}\textup{(ii)} and \textup{(v)},
+\[
+ c_k\AbsoluteValue z^{2k}\AbsoluteValue{S_k(\delta)}
+ \le C\rho_1^{2k}\Bigl(\frac1k+\frac1{k^{2}\delta}\Bigr),
+\]
+with $C$ depending only on $\gamma$ and $\omega$.  The subtracted terms with
+index $k>N$ --- the $k$th term of $\Aact_\omega(z)/\delta$ together with the
+$k$th terms of $B_{0,\omega},\dots,B_{R,\omega}$ --- are bounded, after
+summation over $0\le r\le R$ and using the left-hand bounds of
+\cref{p9:eq:Hk-taylor,p9:eq:Sk-taylor} together with $\delta\le1$, by
+$C_R\,\rho^{2k}k^{R}\bigl(1+(k\delta)^{-1}\bigr)$.  Summing both over $k>N$
+gives $O_R\bigl(\delta^{-1}N^{R}\rho_1^{2N}\bigr)$, and
+$\rho_1^{2N}\le\rho_1^{-2}(\rho_1^{2})^{\delta^{-1/2}}$, so by
+\cref{p9:eq:exp-beats-power} this is $o(\delta^{M})$ for every $M>0$; in
+particular it is $O(\delta^{R+1})$.
+
+Adding the estimates of Steps~2 and~3 proves
+\cref{p9:eq:full-radial-quant}, and \cref{p9:eq:full-radial} is its
+abbreviation.
+\end{proof}
+
+The bound obtained above for $C_{K,R}$ grows like $4^{R}R!$, the factorial
+entering through $\sum_kk^{R}\rho^{2k}$.  Whether it can be held to a Gevrey
+rate is a separate question, and an open one; it is what an analytic --- as opposed to
+asymptotic --- theory of the inverse branches would need, as recorded in
+\cref{p9:status:inverse-analytic}.
 
 \section{A direct coefficient derivation for the inverse
 \texorpdfstring{$q$}{q}-branch}
+\label{p9:app:inverse-coefficients}
 
 Set
 \(
