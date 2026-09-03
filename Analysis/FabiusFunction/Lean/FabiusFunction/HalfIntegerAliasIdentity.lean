@@ -367,7 +367,7 @@ theorem sum_foldedCoefficient (F : BoundedFabius) (hF : IsFabius F) (N : ℕ) [N
   simp only [hchar, one_mul] at h
   have h2 : (2 : ℂ) ≠ 0 := two_ne_zero
   field_simp at h
-  linear_combination h
+  linear_combination -h
 
 /-- The even residues contribute exactly `A_{N,0} = 1`. -/
 theorem sum_foldedCoefficient_even (F : BoundedFabius) (hF : IsFabius F) (N : ℕ) [NeZero N] :
