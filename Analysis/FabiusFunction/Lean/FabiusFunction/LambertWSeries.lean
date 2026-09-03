@@ -79,11 +79,17 @@ theorem coeff_lambertW (n : ℕ) :
   field_simp at h ⊢
   linarith [h]
 
+/-- The linear coefficient of the formal Lambert series is `1`:
+`W(z) = z - z^2 + O(z^3)`.  The `n = 0` case of `coeff_lambertW`. -/
 @[simp] theorem coeff_lambertW_one : coeff 1 lambertW = 1 := by
   have h := coeff_lambertW 0
   norm_num at h
   exact h
 
+/-- The quadratic coefficient of the formal Lambert series is `-1`, the
+`n = 1` case of `coeff_lambertW`.  Its analytic counterpart is the
+curvature value `deriv (deriv principalLambertW) 0 = -2` of
+`LambertWCurvature`, the two differing by the factorial `2!`. -/
 theorem coeff_lambertW_two : coeff 2 lambertW = -1 := by
   have h := coeff_lambertW 1
   norm_num at h
