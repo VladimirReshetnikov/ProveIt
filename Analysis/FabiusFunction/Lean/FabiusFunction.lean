@@ -646,6 +646,7 @@ import FabiusFunction.IntegerParameterTranslation
 import FabiusFunction.MultisetInversions
 import FabiusFunction.GeometricSimplexReindex
 import FabiusFunction.RatioExpansion
+import FabiusFunction.SchroeterFormula
 import FabiusFunction.SubspaceMobius
 import FabiusFunction.BasicBernoulliLog
 import FabiusFunction.GaussianFourierTheta
