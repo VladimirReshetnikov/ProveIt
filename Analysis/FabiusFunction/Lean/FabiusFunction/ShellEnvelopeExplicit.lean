@@ -1,5 +1,6 @@
 import FabiusFunction.RenormalizationIdentity
 import FabiusFunction.SincProductShells
+import FabiusFunction.SharpGelfondBound
 import FabiusFunction.BaselineDecay
 
 /-!
@@ -128,5 +129,51 @@ theorem norm_rvachevFourierProduct_le_pow_div {y : ℝ} (hy : y ≠ 0)
           (norm_nonneg _)
         positivity
     _ = 2 ^ (K * (K - 1) / 2) := by ring
+
+/-- **The sharp Gelfond constant on every dyadic ray.**  Feeding the sharp
+two-step bound `abs_prod_sin_two_pow_le_sharp` (instead of the logistic
+bound behind `norm_rvachevFourierProduct_two_pow_mul_le`) into the shell
+factorization improves the constant `√(5/3)` to `2/√3`: for every `k` and
+every `y ≠ 0`,
+
+`‖Φ(2ᵏ·y)‖ ≤ (2/√3)·(√3/2)ᵏ / (2^(k(k+1)/2)·(π|y|)ᵏ) · ‖Φ(y)‖`,
+
+i.e. the lacunary numerator is `(√3/2)^(k−1)` for `k ≥ 1` (and `1` for
+`k = 0`).  By `abs_prod_sin_two_pow_third` the rate `(√3/2)ᵏ` is attained
+along the ray `y = 1/3`. -/
+theorem norm_rvachevFourierProduct_two_pow_mul_le_sharp (k : ℕ) (y : ℝ)
+    (hy : y ≠ 0) :
+    ‖rvachevFourierProduct ((2 : ℂ) ^ k * (y : ℂ))‖ ≤
+      2 / Real.sqrt 3 * (Real.sqrt 3 / 2) ^ k /
+          ((2 : ℝ) ^ (k * (k + 1) / 2) * (Real.pi * |y|) ^ k) *
+        ‖rvachevFourierProduct (y : ℂ)‖ := by
+  have hy' : (0 : ℝ) < |y| := abs_pos.mpr hy
+  have hden : (0 : ℝ) < (2 : ℝ) ^ (k * (k + 1) / 2) * (Real.pi * |y|) ^ k := by
+    have hpi : (0 : ℝ) < Real.pi := Real.pi_pos
+    positivity
+  have hs3 : (0 : ℝ) < Real.sqrt 3 := Real.sqrt_pos.mpr (by norm_num)
+  have hs3' : Real.sqrt 3 ≠ 0 := hs3.ne'
+  have hnum : (∏ j ∈ range k, |Real.sin ((2 : ℝ) ^ (j + 1) * Real.pi * y)|) ≤
+      2 / Real.sqrt 3 * (Real.sqrt 3 / 2) ^ k := by
+    rcases k with _ | k
+    · simp only [range_zero, prod_empty, pow_zero, mul_one]
+      rw [le_div_iff₀ hs3, one_mul]
+      exact Real.sqrt_le_iff.mpr ⟨by norm_num, by norm_num⟩
+    · have h := abs_prod_sin_two_pow_le_sharp (2 * y) k
+      have hprod : (∏ j ∈ range (k + 1),
+          |Real.sin ((2 : ℝ) ^ (j + 1) * Real.pi * y)|) =
+          ∏ j ∈ range (k + 1), |Real.sin (Real.pi * 2 ^ j * (2 * y))| :=
+        Finset.prod_congr rfl fun j _ => by
+          rw [show (2 : ℝ) ^ (j + 1) * Real.pi * y =
+            Real.pi * 2 ^ j * (2 * y) from by ring]
+      have hunit : 2 / Real.sqrt 3 * (Real.sqrt 3 / 2) = 1 := by
+        rw [div_mul_div_comm, mul_comm 2 (Real.sqrt 3),
+          div_self (mul_ne_zero hs3' two_ne_zero)]
+      rw [hprod]
+      refine h.trans (le_of_eq ?_)
+      rw [pow_succ, mul_comm ((Real.sqrt 3 / 2) ^ k), ← mul_assoc, hunit,
+        one_mul]
+  rw [norm_rvachevFourierProduct_two_pow_mul k y hy]
+  gcongr
 
 end Fabius

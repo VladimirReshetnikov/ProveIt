@@ -37,10 +37,13 @@ def secondEulerian : ℕ → ℕ → ℕ
   | n + 1, 0 => secondEulerian n 0
   | n + 1, k + 1 => (2 * n - k) * secondEulerian n k + (k + 2) * secondEulerian n (k + 1)
 
+/-- The second-order Eulerian triangle starts at `1`. -/
 @[simp] theorem secondEulerian_zero_zero : secondEulerian 0 0 = 1 := rfl
 
+/-- Row `0` of the second-order Eulerian triangle vanishes beyond its first entry. -/
 @[simp] theorem secondEulerian_zero_succ (k : ℕ) : secondEulerian 0 (k + 1) = 0 := rfl
 
+/-- Column `0` of the second-order Eulerian triangle is constant down the rows. -/
 theorem secondEulerian_succ_zero (n : ℕ) : secondEulerian (n + 1) 0 = secondEulerian n 0 := rfl
 
 /-- The recurrence `⟪n+1,k+1⟫ = (2n-k) ⟪n,k⟫ + (k+2) ⟪n,k+1⟫`. -/

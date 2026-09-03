@@ -18,7 +18,7 @@ is cancelled.
 ## Main results
 
 * `expSeries_pow`, `rescale_expSeries`, `sum_pow_mul_sub_one`.
-* `bernoulliPolySeries`, `bernoulliPolySeries_mul_exp_sub_one`, `coeff_bernoulliPolySeries_eval`.
+* `bernoulliPolySeriesAt`, `bernoulliPolySeriesAt_mul_exp_sub_one`, `coeff_bernoulliPolySeriesAt_eval`.
 * `raabe`: the multiplication theorem; `bernoulli_eval_half`: `β_n(1/2) = (2^{1-n}-1) B_n`.
 -/
 
@@ -61,20 +61,25 @@ end
 
 /-! ### Bernoulli polynomial generating functions with polynomial argument -/
 
-/-- `B(a; t) = ∑_n β_n(a) t^n/n!` for a polynomial argument `a ∈ ℚ[x]`. -/
-noncomputable def bernoulliPolySeries (a : ℚ[X]) : PowerSeries ℚ[X] :=
+/-- `B(a; t) = ∑_n β_n(a) t^n/n!` for a polynomial argument `a ∈ ℚ[x]`.
+
+Named `…At` to distinguish it from `bernoulliPolySeries` of `BernoulliNewtonBasis`,
+which is this series at the argument `X` and carries no argument of its own.  The two
+shared a name until 2026-09-02; each module built, because Lean rejects a duplicate only
+when a third module imports both, and that module is the umbrella facade. -/
+noncomputable def bernoulliPolySeriesAt (a : ℚ[X]) : PowerSeries ℚ[X] :=
   PowerSeries.mk fun n => aeval a ((1 / n.factorial : ℚ) • Polynomial.bernoulli n)
 
 /-- Mathlib's generating function: `B(a;t)(e^t - 1) = t e^{at}`. -/
-theorem bernoulliPolySeries_mul_exp_sub_one (a : ℚ[X]) :
-    bernoulliPolySeries a * (PowerSeries.exp ℚ[X] - 1) = PowerSeries.X * expSeries ℚ[X] a := by
-  rw [bernoulliPolySeries, Polynomial.bernoulli_generating_function, rescale_exp_eq_expSeries']
+theorem bernoulliPolySeriesAt_mul_exp_sub_one (a : ℚ[X]) :
+    bernoulliPolySeriesAt a * (PowerSeries.exp ℚ[X] - 1) = PowerSeries.X * expSeries ℚ[X] a := by
+  rw [bernoulliPolySeriesAt, Polynomial.bernoulli_generating_function, rescale_exp_eq_expSeries']
 
 /-- The coefficients of `B(a; t)`, evaluated at `x`. -/
-theorem coeff_bernoulliPolySeries_eval (a : ℚ[X]) (n : ℕ) (x : ℚ) :
-    (PowerSeries.coeff n (bernoulliPolySeries a)).eval x =
+theorem coeff_bernoulliPolySeriesAt_eval (a : ℚ[X]) (n : ℕ) (x : ℚ) :
+    (PowerSeries.coeff n (bernoulliPolySeriesAt a)).eval x =
       (1 / n.factorial : ℚ) * (Polynomial.bernoulli n).eval (a.eval x) := by
-  rw [bernoulliPolySeries, PowerSeries.coeff_mk, ← comp_eq_aeval, smul_comp, eval_smul,
+  rw [bernoulliPolySeriesAt, PowerSeries.coeff_mk, ← comp_eq_aeval, smul_comp, eval_smul,
     eval_comp, smul_eq_mul]
 
 /-- `e^{t/q}` raised to the `q`-th power is `e^t`. -/
@@ -94,9 +99,9 @@ theorem raabe (n q : ℕ) (hq : 0 < q) (x : ℚ) :
   set c : ℚ[X] := C (1 / (q : ℚ)) with hc_def
   set y : PowerSeries ℚ[X] := expSeries ℚ[X] c with hy
   set G : PowerSeries ℚ[X] :=
-    ∑ r ∈ Finset.range q, bernoulliPolySeries (X + C ((r : ℚ) / q)) with hG
+    ∑ r ∈ Finset.range q, bernoulliPolySeriesAt (X + C ((r : ℚ) / q)) with hG
   set H : PowerSeries ℚ[X] :=
-    PowerSeries.C (C (q : ℚ)) * PowerSeries.rescale c (bernoulliPolySeries (C (q : ℚ) * X)) with hH
+    PowerSeries.C (C (q : ℚ)) * PowerSeries.rescale c (bernoulliPolySeriesAt (C (q : ℚ) * X)) with hH
   -- `e^t - 1 = t · u` with `u` a unit, and `y - 1 = t · (unit)`
   have hu := X_mul_expSubOneDiv ℚ[X]
   have hunit := isUnit_expSubOneDiv ℚ[X]
@@ -118,7 +123,7 @@ theorem raabe (n q : ℕ) (hq : 0 < q) (x : ℚ) :
       PowerSeries.X * expSeries ℚ[X] X * ∑ r ∈ Finset.range q, y ^ r := by
     rw [hG, Finset.sum_mul, Finset.mul_sum]
     refine Finset.sum_congr rfl fun r _ => ?_
-    rw [bernoulliPolySeries_mul_exp_sub_one, ← expSeries_mul, hy, expSeries_pow,
+    rw [bernoulliPolySeriesAt_mul_exp_sub_one, ← expSeries_mul, hy, expSeries_pow,
       show ((r : ℚ) / q) = (r : ℚ) * (1 / q) by ring, map_mul, map_natCast]
     ring
   -- hence `G (y - 1) = t e^{xt}`
@@ -135,13 +140,13 @@ theorem raabe (n q : ℕ) (hq : 0 < q) (x : ℚ) :
     exact sub_eq_zero.mp h2
   -- the right side: `H (y - 1) = t e^{xt}` as well
   have hH1 : H * (y - 1) = PowerSeries.X * expSeries ℚ[X] X := by
-    have h := congrArg (PowerSeries.rescale c) (bernoulliPolySeries_mul_exp_sub_one (C (q : ℚ) * X))
+    have h := congrArg (PowerSeries.rescale c) (bernoulliPolySeriesAt_mul_exp_sub_one (C (q : ℚ) * X))
     rw [map_mul, map_mul, map_sub, map_one, PowerSeries.rescale_X, rescale_expSeries,
       rescale_exp_eq_expSeries', ← hy,
       show c * (C (q : ℚ) * X) = X by
         rw [hc_def, ← mul_assoc, ← map_mul, one_div_mul_cancel hqQ, map_one, one_mul]] at h
     calc H * (y - 1)
-        = PowerSeries.C (C (q : ℚ)) * (PowerSeries.rescale c (bernoulliPolySeries (C (q : ℚ) * X)) *
+        = PowerSeries.C (C (q : ℚ)) * (PowerSeries.rescale c (bernoulliPolySeriesAt (C (q : ℚ) * X)) *
             (y - 1)) := by rw [hH]; ring
       _ = PowerSeries.C (C (q : ℚ)) * (PowerSeries.C c * PowerSeries.X * expSeries ℚ[X] X) := by
           rw [h]
@@ -163,7 +168,7 @@ theorem raabe (n q : ℕ) (hq : 0 < q) (x : ℚ) :
   -- compare the coefficients of `t^n` and evaluate at `x`
   have hc := congrArg (fun φ : PowerSeries ℚ[X] => (PowerSeries.coeff n φ).eval x) hGH
   simp only [hG, hH, hc_def, map_sum, eval_finsetSum, PowerSeries.coeff_C_mul,
-    PowerSeries.coeff_rescale, eval_mul, eval_C, eval_pow, coeff_bernoulliPolySeries_eval, eval_add,
+    PowerSeries.coeff_rescale, eval_mul, eval_C, eval_pow, coeff_bernoulliPolySeriesAt_eval, eval_add,
     eval_X] at hc
   have hn : (1 / (n.factorial : ℚ)) ≠ 0 := one_div_ne_zero (by positivity)
   have hc' : (1 / (n.factorial : ℚ)) * ∑ r ∈ Finset.range q, (Polynomial.bernoulli n).eval (x + r / q)

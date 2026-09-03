@@ -1,5 +1,6 @@
 import FabiusFunction.Basic
 import FabiusFunction.ThueMorseBooleanCube
+import FabiusFunction.ThueMorseComplexHalfAngle
 import FabiusFunction.ThueMorseWalsh
 
 /-!
@@ -9,7 +10,9 @@ The finite Thue--Morse product is valid in every commutative ring.  Over
 `ℂ`, factoring its exponential specializations through sine and through the
 removable exponential quotient gives two exact analytic normalizations:
 
-* `sum_thueMorseSign_cexp_eq_sin_prod` is the complex half-angle formula;
+* `sum_thueMorseSign_cexp_eq_sin_prod`, the complex half-angle formula, is
+  the entry point; it is proved in `ThueMorseComplexHalfAngle` and imported
+  here, together with the factorization `one_sub_cexp_mul_I` behind it;
 * `thueMorseBlock_cexp_eq_sincPrefix` is the total finite sinc bridge;
 * `thueMorseBlock_exp_neg_eq_laplacePrefix` is the total finite Laplace
   bridge.
@@ -91,36 +94,7 @@ private theorem two_mul_div_two_pow {m : ℕ} (hm : 1 ≤ m) (t : ℂ) :
   rw [div_eq_div_iff (pow_ne_zero _ htwo) (pow_ne_zero _ htwo), hpow]
   ring
 
-/-! ## The complex half-angle identity -/
-
-/-- The complex half-angle factorization
-`1 - exp (i z) = -2i * exp (i z / 2) * sin (z / 2)`. -/
-theorem one_sub_cexp_mul_I (z : ℂ) :
-    1 - Complex.exp (z * Complex.I) =
-      -2 * Complex.I * Complex.exp ((z / 2) * Complex.I) *
-        Complex.sin (z / 2) := by
-  have h2sin := Complex.two_sin (z / 2)
-  have hI := Complex.I_sq
-  have hprod :
-      Complex.exp ((z / 2) * Complex.I) *
-          Complex.exp (-(z / 2) * Complex.I) = 1 := by
-    rw [← Complex.exp_add, ← add_mul,
-      show z / 2 + -(z / 2) = 0 by ring,
-      zero_mul, Complex.exp_zero]
-  have hsq :
-      Complex.exp ((z / 2) * Complex.I) *
-          Complex.exp ((z / 2) * Complex.I) =
-        Complex.exp (z * Complex.I) := by
-    rw [← Complex.exp_add]
-    congr 1
-    ring
-  linear_combination
-    (Complex.I * Complex.exp ((z / 2) * Complex.I)) * h2sin +
-    (Complex.exp ((z / 2) * Complex.I) *
-        Complex.exp (-(z / 2) * Complex.I) -
-      Complex.exp ((z / 2) * Complex.I) *
-        Complex.exp ((z / 2) * Complex.I)) * hI -
-    hprod + hsq
+/-! ## Clearing the removable sinc denominator -/
 
 /-- The defining denominator of `complexSinc` can be cleared at every
 complex argument, including zero. -/
@@ -130,53 +104,6 @@ theorem mul_complexSinc (z : ℂ) : z * complexSinc z = Complex.sin z := by
     simp [complexSinc]
   · rw [complexSinc, if_neg hz]
     field_simp
-
-/-- The complex sine-product form of a finite Thue--Morse block:
-`sum ε(n) exp(iz)^n` is one phase times the product of the dyadic sines.
-There is no reality or nonvanishing hypothesis. -/
-theorem sum_thueMorseSign_cexp_eq_sin_prod (z : ℂ) (m : ℕ) :
-    ∑ n ∈ range (2 ^ m), (thueMorseSign n : ℂ) *
-        Complex.exp (z * Complex.I) ^ n =
-      (-2 * Complex.I) ^ m *
-        Complex.exp ((((2 ^ m - 1 : ℕ) : ℂ) * z / 2) * Complex.I) *
-        ∏ j ∈ range m, Complex.sin (((2 : ℂ) ^ j * z) / 2) := by
-  rw [← prod_one_sub_pow_eq_sum_thueMorseSign
-    (Complex.exp (z * Complex.I)) m]
-  calc
-    ∏ j ∈ range m, (1 - Complex.exp (z * Complex.I) ^ 2 ^ j) =
-        ∏ j ∈ range m,
-          (-2 * Complex.I *
-            Complex.exp ((((2 : ℂ) ^ j * z) / 2) * Complex.I) *
-            Complex.sin (((2 : ℂ) ^ j * z) / 2)) := by
-      refine Finset.prod_congr rfl fun j _ => ?_
-      have hz : Complex.exp (z * Complex.I) ^ 2 ^ j =
-          Complex.exp (((2 : ℂ) ^ j * z) * Complex.I) := by
-        rw [← Complex.exp_nat_mul]
-        congr 1
-        push_cast
-        ring
-      rw [hz, one_sub_cexp_mul_I]
-    _ = (-2 * Complex.I) ^ m *
-          (∏ j ∈ range m,
-            Complex.exp ((((2 : ℂ) ^ j * z) / 2) * Complex.I)) *
-          ∏ j ∈ range m, Complex.sin (((2 : ℂ) ^ j * z) / 2) := by
-      rw [Finset.prod_mul_distrib, Finset.prod_mul_distrib,
-        Finset.prod_const, Finset.card_range]
-    _ = (-2 * Complex.I) ^ m *
-          Complex.exp ((((2 ^ m - 1 : ℕ) : ℂ) * z / 2) * Complex.I) *
-          ∏ j ∈ range m, Complex.sin (((2 : ℂ) ^ j * z) / 2) := by
-      congr 2
-      rw [← Complex.exp_sum]
-      congr 1
-      rw [← Finset.sum_mul]
-      congr 1
-      have hgeom : ∑ j ∈ range m, ((2 : ℂ) ^ j) =
-          ((2 ^ m - 1 : ℕ) : ℂ) := by
-        have h := sum_range_two_pow m
-        rw [← h]
-        push_cast
-        ring
-      rw [← Finset.sum_div, ← Finset.sum_mul, hgeom]
 
 /-! ## Total sinc normalization -/
 

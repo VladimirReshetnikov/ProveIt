@@ -1,3 +1,4 @@
+import FabiusFunction.DyadicCombTrapezoid
 import FabiusFunction.FabiusInverse
 import FabiusFunction.SubgraphFubini
 import Mathlib.MeasureTheory.Integral.IntervalIntegral.AbsolutelyContinuousFun
@@ -467,32 +468,8 @@ unit interval is `1 / 2`.  This follows directly from the global reflection
 identity `fabiusInv F hF (1 - u) = 1 - fabiusInv F hF u`. -/
 theorem intervalIntegral_fabiusInv_eq_one_half
     (F : BoundedFabius) (hF : IsFabius F) :
-    (∫ u in (0 : ℝ)..1, fabiusInv F hF u) = 1 / 2 := by
-  have hintegrable :
-      IntervalIntegrable (fabiusInv F hF) volume 0 1 :=
-    (continuous_fabiusInv F hF).intervalIntegrable 0 1
-  have hreflect :
-      (∫ u in (0 : ℝ)..1, fabiusInv F hF u) =
-        ∫ u in (0 : ℝ)..1, fabiusInv F hF (1 - u) := by
-    symm
-    simpa only [sub_self, sub_zero] using
-      intervalIntegral.integral_comp_sub_left
-        (f := fabiusInv F hF) (a := (0 : ℝ)) (b := 1) 1
-  have hbalance :
-      (∫ u in (0 : ℝ)..1, fabiusInv F hF u) =
-        1 - ∫ u in (0 : ℝ)..1, fabiusInv F hF u := by
-    calc
-      (∫ u in (0 : ℝ)..1, fabiusInv F hF u) =
-          ∫ u in (0 : ℝ)..1, fabiusInv F hF (1 - u) := hreflect
-      _ = ∫ u in (0 : ℝ)..1, (1 - fabiusInv F hF u) := by
-        apply intervalIntegral.integral_congr
-        intro u _hu
-        change fabiusInv F hF (1 - u) = 1 - fabiusInv F hF u
-        rw [fabiusInv_one_sub F hF u]
-      _ = 1 - ∫ u in (0 : ℝ)..1, fabiusInv F hF u := by
-        rw [intervalIntegral.integral_sub intervalIntegrable_const hintegrable,
-          intervalIntegral.integral_const]
-        norm_num
-  linarith
+    (∫ u in (0 : ℝ)..1, fabiusInv F hF u) = 1 / 2 :=
+  integral_unit_of_reflect (fabiusInv_one_sub F hF)
+    ((continuous_fabiusInv F hF).intervalIntegrable 0 1)
 
 end Fabius
