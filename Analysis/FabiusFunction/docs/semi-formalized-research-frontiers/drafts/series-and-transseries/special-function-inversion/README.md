@@ -1,9 +1,10 @@
 # Special-function inversion at infinity
 
-Nine independently written articles that invert a rapidly growing special
+Twelve independently written articles that invert a rapidly growing special
 function at infinity to all orders, filed here on 2026-09-03 as quick-gate
-intakes in two batches: three from commit `5a453e1dc`, and six more that
-arrived while that first batch was being published.  All nine came as ZIP
+intakes in three batches: three from commit `5a453e1dc`, six more that
+arrived while that first batch was being published, and three (the Fibonacci
+subject below, arrival commit `912d3bfbe`) later the same day.  All twelve came as ZIP
 archives; the archives were deleted after unpacking and git history is the
 archive.
 
@@ -20,9 +21,9 @@ three articles all invert the single map `x + W(x)`: the subgroups share the
 Lambert-core technique, but that one treats one map in depth while this one
 applies the technique across different special functions.
 
-## The three subjects
+## The four subjects
 
-The nine fall into three subjects, three articles each, written independently
+The twelve fall into four subjects, three articles each, written independently
 of one another.  That was noted at intake as provenance; **no comparison,
 deduplication, or canonical selection has been made**, and the titles below are
 transcribed rather than assessed.
@@ -50,6 +51,22 @@ transcribed rather than assessed.
 | `inverse_subfactorial_transseries/` | *Inverting the Subfactorial at Infinity: Bell-Sector Transseries, Inverse-Gamma Geometry, and a General Reversion Calculus for Rapid Cores with Tiny Oscillatory Tails* | 2,631 lines; 95,404 bytes | 38 A4 pages; 688,626 bytes |
 | `inverse_subfactorial_transseries-2/` | *Asymptotic Inversion of the Subfactorial: Bell-Number Tails, Inverse-Gamma Anchoring, and a Calculus for Exponentially Separated Transseries* | 2,188 lines; 73,742 bytes | 27 A4 pages; 725,870 bytes |
 | `inverse_subfactorial_transseries-3/` | *Inverse Subfactorials at Infinity: Lambert–`W` Carriers, Bell-Number Sectors, and a General Calculus of Gamma-Dominant Transseries* | 1,878 lines; 81,203 bytes | 35 Letter pages; 530,302 bytes |
+
+### A real-argument Fibonacci function
+
+The fourth subject differs from the first three in its core: the map inverted
+is a real continuation of the Fibonacci numbers, so the dominant phase is a pure
+exponential in the golden ratio and the inverse transseries is *log-periodic*
+(oscillatory in `log` of the argument) rather than Lambert-cored.  Filed here
+because the purpose is the same, inverting a rapidly growing special function
+at infinity to all orders with an extracted general reversion calculus; the
+titles are transcribed, not assessed.
+
+| Directory | Document | Source | PDF |
+| --- | --- | --- | --- |
+| `Fibonacci_Inverse_LogPeriodic_Transseries/` | *Inverting a Real-Argument Fibonacci Function: Log-Periodic Transseries, Exact Coefficients, and a General Product-Reversion Calculus* | 2,554 lines; 89,365 bytes | 33 A4 pages; 787,646 bytes |
+| `fibonacci_inverse_transseries_article/` | *Log-Periodic Transseries for the Inverse of a Real Fibonacci Continuation* | 2,857 lines; 98,788 bytes | 36 A4 pages; 797,090 bytes |
+| `fibonacci_inverse_transseries_article-2/` | *Inverse Asymptotics for a Real-Argument Fibonacci Function* | 1,884 lines; 64,334 bytes | 24 A4 pages; 759,845 bytes |
 
 ## Intake receipts
 

@@ -62,7 +62,15 @@ This `README.md` is the permanent explanation of the directory and
 **must not be deleted** — it also keeps the directory present in git
 when no archives are waiting.
 
-Most recent processed batch (six archives, filed and removed on 2026-09-03).
+Most recent processed batch (three archives, filed and removed on 2026-09-03,
+arrival commit `912d3bfbe`): the three Fibonacci-inversion articles, all to
+`../series-and-transseries/special-function-inversion/` as its fourth subject.
+
+- `Fibonacci_Inverse_LogPeriodic_Transseries.zip` → `Fibonacci_Inverse_LogPeriodic_Transseries/`: 2,554-line/89,365-byte source, 33-page A4/787,646-byte PDF.
+- `fibonacci_inverse_transseries_article.zip` → `fibonacci_inverse_transseries_article/`: 2,857-line/98,788-byte source, 36-page A4/797,090-byte PDF.
+- `fibonacci_inverse_transseries_article-2.zip` → `fibonacci_inverse_transseries_article-2/`: 1,884-line/64,334-byte source, 24-page A4/759,845-byte PDF.
+
+Previous batch (six archives, filed and removed on 2026-09-03).
 These arrived *while the batch below was being published*, which is the case the
 rule at the top of this file covers: the first batch was finished and pushed to
 `origin/main` before any of these was touched, and they were then taken in the

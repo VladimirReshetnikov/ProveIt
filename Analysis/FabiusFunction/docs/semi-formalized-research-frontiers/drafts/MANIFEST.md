@@ -423,7 +423,10 @@ styling debts.  None of the nine loads `docs/fabius-notation.tex`, so all nine
 are outside the notation migration.  The nine fall into three subjects — Gamma
 and Barnes `G`, the hyperfactorial `K`-function, and the subfactorial — with
 three independently written articles each; that grouping was recorded at intake
-as provenance, and no comparison among them has been made.
+as provenance, and no comparison among them has been made.  A third batch of
+three, filed 2026-09-03 in the same quick-intake mode, adds a fourth subject:
+the inverse of a real-argument continuation of the Fibonacci function, whose
+transseries is log-periodic (the golden-ratio phase) rather than Lambert-cored.
 Comparison, deduplication, proof checking, numerical reproduction and Lean
 crosswalking are deferred; see
 [`series-and-transseries/special-function-inversion/README.md`](series-and-transseries/special-function-inversion/README.md).
@@ -439,6 +442,9 @@ crosswalking are deferred; see
 | `special-function-inversion/K_function_inverse_transseries_article/` | *Asymptotic Inversion of the Kinkelin--Bendersky `K`-Function: Lambert-Anchored Transseries for the Generalized Hyperfactorial and a General Theory of `x^p log x` Reversion* — 2,581-line/84,722-byte source and 30-page A4/743,783-byte PDF | `drafts/incoming/K_function_inverse_transseries_article.zip`, second batch, filed 2026-09-03 |
 | `special-function-inversion/inverse_subfactorial_transseries-2/` | *Asymptotic Inversion of the Subfactorial: Bell-Number Tails, Inverse-Gamma Anchoring, and a Calculus for Exponentially Separated Transseries* — 2,188-line/73,742-byte source and 27-page A4/725,870-byte PDF; inner files are plain `inverse_subfactorial_transseries.*`, kept as submitted | `drafts/incoming/inverse_subfactorial_transseries-2.zip`, second batch, filed 2026-09-03 |
 | `special-function-inversion/inverse_subfactorial_transseries-3/` | *Inverse Subfactorials at Infinity: Lambert--`W` Carriers, Bell-Number Sectors, and a General Calculus of Gamma-Dominant Transseries* — 1,878-line/81,203-byte source and 35-page **Letter**/530,302-byte PDF; inner files kept as submitted | `drafts/incoming/inverse_subfactorial_transseries-3.zip`, second batch, filed 2026-09-03 |
+| `special-function-inversion/Fibonacci_Inverse_LogPeriodic_Transseries/` | *Inverting a Real-Argument Fibonacci Function: Log-Periodic Transseries, Exact Coefficients, and a General Product-Reversion Calculus* — 2,554-line/89,365-byte source and 33-page A4/787,646-byte PDF | `drafts/incoming/Fibonacci_Inverse_LogPeriodic_Transseries.zip`, arrival commit `912d3bfbe`, third batch, filed 2026-09-03 |
+| `special-function-inversion/fibonacci_inverse_transseries_article/` | *Log-Periodic Transseries for the Inverse of a Real Fibonacci Continuation* — 2,857-line/98,788-byte source and 36-page A4/797,090-byte PDF; inner files are plain `fibonacci_inverse_transseries.*`, kept as submitted | `drafts/incoming/fibonacci_inverse_transseries_article.zip`, arrival commit `912d3bfbe`, third batch, filed 2026-09-03 |
+| `special-function-inversion/fibonacci_inverse_transseries_article-2/` | *Inverse Asymptotics for a Real-Argument Fibonacci Function* — 1,884-line/64,334-byte source and 24-page A4/759,845-byte PDF; inner files are plain `fibonacci_inverse_transseries.*`, kept as submitted | `drafts/incoming/fibonacci_inverse_transseries_article-2.zip`, arrival commit `912d3bfbe`, third batch, filed 2026-09-03 |
 
 ## spectra-and-arithmetic — `spectra-and-arithmetic/`
 
