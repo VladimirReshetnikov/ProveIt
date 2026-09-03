@@ -892,6 +892,91 @@ for _ in range(5):
 check('thm:merged-good', 'Lagrange-Good inversion in dimension 2, both sides built separately',
       bad, t)
 
+# ------------------------------------------- thm:shifted-lagrange-reversion
+# With v solving v = x + y f(v):  g(v) = g(x) + sum_k (y^k/k!) (d/dx)^{k-1}(f^k g').
+# f and g are polynomials, so v is computed exactly as a y-series with polynomial
+# coefficients by iterating the fixed point, and the comparison at each y^k is between
+# polynomials in x -- an identity, not a check at sample points.
+KR = 7
+
+
+def _q_mul(a, b):
+    r = [F(0)] * (len(a) + len(b) - 1)
+    for i, u in enumerate(a):
+        if u:
+            for j, v in enumerate(b):
+                r[i + j] += u * v
+    return _q_trim(r)
+
+
+def _q_add(a, b):
+    m = max(len(a), len(b))
+    return _q_trim([(a[i] if i < len(a) else F(0)) + (b[i] if i < len(b) else F(0))
+                    for i in range(m)])
+
+
+def _q_trim(a):
+    while len(a) > 1 and a[-1] == 0:
+        a.pop()
+    return a
+
+
+def _q_der(a):
+    return _q_trim([a[i] * i for i in range(1, len(a))] or [F(0)])
+
+
+def _q_pow(a, n):
+    r = [F(1)]
+    for _ in range(n):
+        r = _q_mul(r, a)
+    return r
+
+
+def _q_apply(poly, vser):
+    """poly(v) where v is a y-series of polynomials."""
+    out = [[F(0)] for _ in range(KR)]
+    pw = [[[F(1)]] + [[F(0)] for _ in range(KR - 1)]]
+    for _d in range(len(poly) - 1):
+        prev = pw[-1]
+        nxt = [[F(0)] for _ in range(KR)]
+        for i in range(KR):
+            if prev[i] == [F(0)]:
+                continue
+            for j in range(KR - i):
+                if vser[j] != [F(0)]:
+                    nxt[i + j] = _q_add(nxt[i + j], _q_mul(prev[i], vser[j]))
+        pw.append(nxt)
+    for d, cc in enumerate(poly):
+        if cc:
+            for i in range(KR):
+                out[i] = _q_add(out[i], [cc * z for z in pw[d][i]])
+    return out
+
+
+bad, t = [], 0
+for _ in range(10):
+    f = _q_trim([F(random.randint(-3, 3), random.randint(1, 2)) for _ in range(4)])
+    g = _q_trim([F(random.randint(-3, 3), random.randint(1, 2)) for _ in range(4)])
+    v = [[F(0), F(1)]] + [[F(0)] for _ in range(KR - 1)]
+    for _ in range(KR):
+        fv = _q_apply(f, v)
+        v = [[F(0), F(1)]] + [fv[i - 1] for i in range(1, KR)]
+    gv = _q_apply(g, v)
+    gp = _q_der(g)
+    for k in range(1, KR):
+        term = _q_mul(_q_pow(f, k), gp)
+        term2 = _q_pow(f, k)
+        for _ in range(k - 1):
+            term = _q_der(term)
+            term2 = _q_der(term2)
+        t += 2
+        if _q_trim(list(gv[k])) != _q_trim([cc / factorial(k) for cc in term]):
+            bad.append(('g', k))
+        if _q_trim(list(v[k])) != _q_trim([cc / factorial(k) for cc in term2]):
+            bad.append(('v', k))
+check('thm:shifted-lagrange-reversion',
+      "g(v) = g(x) + sum (y^k/k!) d^{k-1}(f^k g'), and the g = id case", bad, t)
+
 # --------------------------------------------------------------------- report
 width = max(len(lab) for lab, _, _, _ in RESULTS)
 failed = 0
