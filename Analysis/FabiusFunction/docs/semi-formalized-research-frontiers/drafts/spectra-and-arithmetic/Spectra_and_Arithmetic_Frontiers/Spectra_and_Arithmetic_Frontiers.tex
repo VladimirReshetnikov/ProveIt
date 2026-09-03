@@ -1000,9 +1000,21 @@ character at \(\pm rj\) as \(\EulerE^{\pm\pi\ImaginaryUnit rj/N}\)
 (\path{Fabius.stdAddChar_mul_eq_exp}, \path{Fabius.stdAddChar_neg_mul_eq_exp}).  The
 identification \(P(j/N)=\RvachevUp(j/N)\) for \(0\le j\le N\) is
 \path{Fabius.gridSample_natCast_of_le} (from \path{Fabius.periodizedUp_of_mem_Icc}, the
-statement that the periodization is \(\RvachevUp\) on \([-1,1]\)).  Only the final fold of
-\(j\) with \(2N-j\) onto \(1\le j\le N-1\) in \eqref{p1:eq:A-Up-DCT}, and the passage to
-\(\FabiusBounded=1-\RvachevUp\) in \eqref{p1:eq:A-F-DCT}, are not separately formalized.
+statement that the periodization is \(\RvachevUp\) on \([-1,1]\)).  The fold of \(j\)
+with \(2N-j\) onto \(1\le j\le N-1\) is \path{Fabius.sum_zmod_even_eq_fold} in
+\path{AliasDyadicBridge.lean}, a half-range fold for every even function on
+\(\IntegerNumbers/2N\IntegerNumbers\) (the sum over \(\IntegerNumbers/2N\IntegerNumbers\) is first
+written as a sum over \(0\le k<2N\), \path{Fabius.sum_zmod_eq_sum_range}); applied to the
+cosine form, with \(P(0)=1\), \(P(1)=\RvachevUp(1)=0\) and the periodicity of the cosine
+factor (\path{Fabius.cos_alias_angle_neg}), it gives \eqref{p1:eq:A-Up-DCT} verbatim,
+\path{Fabius.foldedCoefficient_eq_halfRange_cos}, for every \(N\ge1\) and every residue
+\(r\).  For \(N=2^n\) the samples are the exact rational dyadic values,
+\(\RvachevUp(k/2^n)=\FabiusBounded\bigl((2^n-k)/2^n\bigr)=\mathtt{fabiusDyadic}\,n\,(2^n-k)\)
+(\path{Fabius.foldedCoefficient_two_pow_eq_fabiusDyadic}, through
+\path{Fabius.rvachevUp_eq_fabiusReal_one_sub_abs} and \path{Fabius.fabiusDyadic_cast}).
+The variant \eqref{p1:eq:A-F-DCT} additionally uses
+\(\sum_{j=1}^{N-1}\cos(\pi rj/N)=0\) for odd \(r\); that character sum is not separately
+formalized.
 
 \subsection{Exact inverse transform}
 
@@ -1260,10 +1272,13 @@ are formal through the \(q\)-binomial formula
 (\path{FabiusQBinomialScalarFormula.lean}), and the alias identity underlying the left side
 is \path{Fabius.foldedCoefficient_eq_tsum} (\path{HalfIntegerAliasIdentity.lean}).  The
 assembly is formal up to the half-range fold: the cosine form of \(A_{N,r}\) over all
-residues is \path{Fabius.foldedCoefficient_eq_sum_cos}, and its samples are the values
-\(\RvachevUp(j/N)\) for \(j\le N\) (\path{Fabius.gridSample_natCast_of_le}).  The fold of
-\(j\) with \(2N-j\) into \eqref{p1:eq:A-F-DCT} and the substitution of the \(q\)-binomial
-values into it are not formalized, nor is the convergence statement, which is analytic.
+residues is \path{Fabius.foldedCoefficient_eq_sum_cos}, its half-range fold is
+\path{Fabius.foldedCoefficient_eq_halfRange_cos}, and at \(N=2^n\) the samples are the
+exact rational values \(\mathtt{fabiusDyadic}\,n\,(2^n-k)\)
+(\path{Fabius.foldedCoefficient_two_pow_eq_fabiusDyadic}, \path{AliasDyadicBridge.lean}).
+The substitution of the \(q\)-binomial closed form for those rational values into the
+transform, and the sign form \eqref{p1:eq:A-F-DCT}, are not formalized, nor is the
+convergence statement, which is analytic.
 
 \begin{remark}[Three structures in one finite expression]
 Formula \eqref{p1:eq:q-approximant} simultaneously contains

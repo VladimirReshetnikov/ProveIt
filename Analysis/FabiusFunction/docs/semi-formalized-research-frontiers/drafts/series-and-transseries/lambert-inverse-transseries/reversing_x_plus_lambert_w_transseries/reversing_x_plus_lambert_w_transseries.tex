@@ -278,6 +278,19 @@ By definition, \(y=\rW_1(z)\).  Since \(z=x+y\), we obtain
 branches are the relevant ones throughout.
 \end{proof}
 
+\paragraph{Lean status.}
+Formal, in \path{LambertShiftInverse.lean}: \(\rW_1\) is \path{Fabius.shiftedLambertW}
+(the inverse on \([0,\infty)\) of \path{Fabius.shiftedMulExp}, \(u\mapsto u\e^u+u\)), \(g\) is
+\path{Fabius.lambertShiftInv}, and the three identities are
+\path{Fabius.lambertShift_lambertShiftInv} (\(f(g(z))=z\)),
+\path{Fabius.lambertShiftInv_eq_mul_exp} (\(g(z)=y\e^y\)) and
+\path{Fabius.principalLambertW_lambertShiftInv} (\(W(g(z))=y\)); \(g\) is the two-sided
+inverse of \(f\) on \([0,\infty)\) by \path{Fabius.lambertShiftInv_lambertShift} and
+\path{Fabius.lambertShift_eq_iff}.  The bracket \eqref{eq:f-prime-bounds} is
+\path{Fabius.one_le_deriv_lambertShift}, \path{Fabius.deriv_lambertShift_le_two}, and the
+strict form of \eqref{eq:global-bracket} for \(z>0\) is \path{Fabius.lambertShiftInv_lt_self},
+\path{Fabius.sub_principalLambertW_lt_lambertShiftInv}.
+
 This exact formula identifies the special function involved, but it does
 not by itself expose the full large-\(z\) hierarchy.  The remainder of the
 article derives that hierarchy directly.
@@ -332,6 +345,15 @@ Moreover, \(R(z)\) and \(\widetilde g(z)-g(z)\) have the same sign.
 Apply the mean-value theorem to \(f(\widetilde g)-f(g)=R\) and use
 \eqref{eq:f-prime-bounds}.
 \end{proof}
+
+\paragraph{Lean status.}
+The sandwich \eqref{eq:residual-sandwich} is formal for every \(z\ge0\) and every
+\(\widetilde g(z)\ge0\): \path{Fabius.abs_sub_lambertShiftInv_le_abs_residual} and
+\path{Fabius.abs_residual_le_two_mul_abs_sub_lambertShiftInv} in
+\path{LambertShiftInverse.lean}, from the two-sided Lipschitz bracket of \(f\)
+(\path{Fabius.abs_sub_le_abs_lambertShift_sub}, \path{Fabius.abs_lambertShift_sub_le_two_mul}),
+itself the mean-value theorem with \eqref{eq:f-prime-bounds}.  The sign statement is
+\path{Fabius.residual_pos_iff} and \path{Fabius.residual_neg_iff}.
 
 This elementary certificate will later turn a formal composition check into
 a rigorous numerical error bound.

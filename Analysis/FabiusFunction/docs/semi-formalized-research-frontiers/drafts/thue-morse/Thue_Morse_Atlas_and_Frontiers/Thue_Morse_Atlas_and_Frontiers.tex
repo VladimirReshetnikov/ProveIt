@@ -1047,7 +1047,15 @@ oscillating \(N\)-scale term itself (Delange's periodic function) is not pursued
 \lean{Fabius.le\_two\_mul\_binaryWeightTotal\_add} and
 \lean{Fabius.two\_mul\_binaryWeightTotal\_le} (with \(\Floor{\log_2N}\) as
 \lean{Nat.log}), and \eqref{p1:eq:weight-total-bracket} is
-\lean{Fabius.abs\_binaryWeightTotal\_sub\_le}, with the real \(\log_2N\).
+\lean{Fabius.abs\_binaryWeightTotal\_sub\_le}, with the real \(\log_2N\).  Behind the
+bracket stands Trollope's exact digit formula: with \(N=\sum_j b_j2^j\) in binary,
+\[
+ S(N)=\sum_{j\ge0} b_j\bigl(j\,2^{j-1}+(N\bmod 2^j)\bigr),
+\]
+each set bit contributing the full dyadic block below it together with the residue
+above it; this is \lean{Fabius.binaryWeightTotal\_eq\_sum\_testBit} (over any digit window
+\(j<b\) with \(N<2^b\)), with the block value \(S(2^L)=L\,2^{L-1}\) as
+\lean{Fabius.binaryWeightTotal\_two\_pow}.
 
 \subsection{Square waves and a sine-sign product}
 
