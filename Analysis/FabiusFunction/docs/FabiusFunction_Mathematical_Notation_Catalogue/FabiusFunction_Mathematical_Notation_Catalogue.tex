@@ -7103,93 +7103,6 @@ printed symbol.  The accent means formal asymptotic series prior to Borel
 transformation.  The series name, including any semantic script, must be placed
 inside the one argument; any subsequent decoration must group the expansion.
 
-\Needspace{16\baselineskip}
-\paragraph{\localaccentname{FormalAsymptoticExpansionOf}}
-TeX arity is one; argument \(1\) is the name \(f\) of an actual function.  The command
-prints a wide hat over \(f\); its evaluation variable remains outside the macro.  In the
-incoming transseries volume, fix \(X>0\), \(t=X^{-1}\), \(\lambda=\log X\), a
-characteristic-zero coefficient field \(K\), and polynomial blocks
-\(A_n\in K[\lambda]\).  The formal object is
-\[
- \widehat f(X)
- \DefinitionEquals
- \sum_{n\ge n_0}A_n(\log X)X^{-n}
- \in K[\lambda]((t)).
-\]
-It is a coefficient array in the \(t\)-adic completion.  The separate analytic assertion
-that it is a Poincaré expansion of \(f\) means that, for every truncation index \(N\), the
-difference between \(f(X)\) and the sum through the block \(N-1\) is little-oh of the
-last retained scale along a declared ray or sector.  The field, limit direction, branch
-of \(\log X\), block degrees, and precise remainder scale are suppressed data.  The
-accent means formal asymptotic expansion, not Fourier transformation and not equality of
-the formal sum with \(f\).
-
-\Needspace{18\baselineskip}
-\paragraph{\localaccentname{LambertAsymptoticApproximation}}
-TeX arity is one; argument \(1\) is the truncation order
-\(N\in\PositiveIntegers\).  It prints \(\widehat W_N\), already owning the subscript
-\(N\).  On the positive principal-branch ray, let \(z=\EulerE^L\), \(L>1\), put
-\(\ell=\log L\), and let \(P_n\) be the explicitly defined Lambert polynomial family of
-that document.  Then
-\[
- \widehat W_N
- \DefinitionEquals
- L-\ell+\sum_{n=1}^{N}\frac{P_n(\ell)}{L^n}.
-\]
-This is a finite real scalar approximation to \(W_0(z)\), not the Lambert function
-itself and not a Fourier transform.  Its logarithmic residual is
-\[
- \rho_N\DefinitionEquals\widehat W_N+\log\widehat W_N-L
-\]
-whenever \(\widehat W_N>0\).  If \(W=W_0(\EulerE^L)\), the mean-value theorem gives
-\(\widehat W_N-W=\rho_N/(1+1/\theta_N)\) for some \(\theta_N\) between them, provided
-that interval avoids zero.  The branch, positive ray, variables \(L,\ell\), polynomial
-normalization, and residual domain are suppressed.  A semantic superscript such as
-\(\mathrm{new}\) for one Newton correction may follow the complete command expansion;
-no second raw subscript may be appended.
-
-\Needspace{13\baselineskip}
-\paragraph{\localaccentname{wideeq}}
-TeX arity is zero; the command prints a hatted equality sign as a binary relation.  For
-two formal polynomial--logarithmic series
-\[
- A=\sum_{\gamma}a_\gamma\mathfrak m_\gamma,\qquad
- B=\sum_{\gamma}b_\gamma\mathfrak m_\gamma
-\]
-written over the same coefficient field, ordered monomial family, and locally finite
-support convention,
-\[
- A\mathrel{\widehat=}B
- \quad\Longleftrightarrow\quad
- a_\gamma=b_\gamma\ \text{for every index }\gamma.
-\]
-It is coefficientwise formal identity, not equality of convergent numerical sums,
-asymptotic equivalence, equality modulo a truncation ideal, or Fourier equality.  The
-ambient coefficient field, monomial group, ordering, support condition, and formal
-variables must already be declared.
-
-\Needspace{16\baselineskip}
-\paragraph{\localaccentname{DulacFormalSeriesOf}}
-TeX arity is one; argument \(1\) is the name \(f\) of a function or germ.  The command
-prints a wide hat over \(f\), with the small evaluation variable supplied after the
-expansion.  For \(x\to0^+\), put
-\[
- X=x^{-1},\qquad \ell=\log(1/x)=\log X,
-\]
-choose a strictly increasing exponent sequence
-\(\lambda_0<\lambda_1<\cdots\to+\infty\), and polynomial blocks
-\(P_j\in K[\ell]\).  Then
-\[
- \widehat f(x)
- \DefinitionEquals\sum_{j\ge0}x^{\lambda_j}P_j(\ell)
-\]
-is the formal Dulac or power--log series, subject to the declared local-finiteness
-condition that makes each formal coefficient operation finite.  The dominance order
-compares the exponent \(\lambda_j\) first and logarithmic degree second.  The coefficient
-field, exponent group, branch and sign of the logarithm, support condition, and whether
-the formal series is an actual asymptotic expansion of a germ are suppressed.  The
-accent means formal Dulac expansion, not Fourier transformation.
-
 \subsubsection{Inverse, sampling, and prediction constructions}
 
 \paragraph{\localaccentname{FactorialScaledInverseTransferCoefficient}}
@@ -9092,13 +9005,15 @@ or a catalogue entry are not substitutes for inspecting the current declaration.
 
 \subsection{Snapshot boundary}
 
-The inventory below is the recursive active tree observed on 2026-09-01 at the
-source-validation checkpoint.  It excludes every path below \modulepath{docs/archive/} and
-counts this catalogue exactly once.  It contains 160 mathematical content sources: 62
+The inventory below is the recursive active tree observed on 2026-09-03, after the
+consolidation of the six exponents-and-$q$-series drafts into one volume and of the six
+polynomial--logarithmic transseries drafts into one volume, and after the arrival of the
+special-function-inversion intake.  It excludes every path below \modulepath{docs/archive/} and
+counts this catalogue exactly once.  It contains 170 mathematical content sources: 72
 standalone documents and 98 included or generated fragments.  The separate shared
-contract \modulepath{docs/fabius-notation.tex} raises the total before this catalogue to 161
-active TeX files.  Including this standalone catalogue gives 162 active TeX files and
-63 standalone documents.  ``Standalone'' means that the uncommented source
+contract \modulepath{docs/fabius-notation.tex} raises the total before this catalogue to 171
+active TeX files.  Including this standalone catalogue gives 172 active TeX files and
+73 standalone documents.  ``Standalone'' means that the uncommented source
 contains \commandname{documentclass}; every other content source is a fragment inheriting
 its root preamble.
 
@@ -9117,22 +9032,23 @@ Manifest group & Standalone & Fragments & Total\\
 \modulepath{FabiusFunction_Mathematical_Glossary/} & 1 & 0 & 1\\
 \modulepath{papers/} & 7 & 0 & 7\\
 Frontier synthesis root & 1 & 0 & 1\\
-\modulepath{drafts/combinatorial-coefficient-calculus/} & 6 & 0 & 6\\
-\modulepath{drafts/exponents-and-q-series/} & 7 & 20 & 27\\
+\modulepath{drafts/combinatorial-coefficient-calculus/} & 1 & 0 & 1\\
+\modulepath{drafts/exponents-and-q-series/} & 2 & 20 & 22\\
 \modulepath{drafts/frontier-compilations/} & 3 & 1 & 4\\
 \modulepath{drafts/integration-and-transforms/} & 1 & 7 & 8\\
-\modulepath{drafts/inverse-and-sampling/} & 3 & 30 & 33\\
-\modulepath{drafts/lambert-w/} & 7 & 4 & 11\\
+\modulepath{drafts/inverse-and-sampling/} & 9 & 30 & 39\\
+\modulepath{drafts/lambert-w/} & 1 & 4 & 5\\
 \modulepath{drafts/representations/} & 12 & 26 & 38\\
 \modulepath{drafts/rvachev_up_fourier_decay/} & 1 & 0 & 1\\
+\modulepath{drafts/series-and-transseries/} & 20 & 0 & 20\\
 \modulepath{drafts/spectra-and-arithmetic/} & 10 & 10 & 20\\
 \modulepath{drafts/thue-morse/} & 1 & 0 & 1\\
 \midrule
-Mathematical content subtotal & 62 & 98 & 160\\
+Mathematical content subtotal & 72 & 98 & 170\\
 Shared notation contract & 0 & 1 & 1\\
 This catalogue & 1 & 0 & 1\\
 \midrule
-Active TeX total including catalogue & 63 & 99 & 162\\
+Active TeX total including catalogue & 73 & 99 & 172\\
 \bottomrule
 \end{longtable}
 \endgroup
@@ -9179,9 +9095,15 @@ listings.  Rendered-PDF inspection later closes the composition and layout gap.
 At shared-contract version \FabiusNotationVersion:
 
 \begin{itemize}
-\item \modulepath{docs/fabius-notation.tex} defines exactly 91 shared commands.
-\item Every one of those 91 command names occurs in the canonical quick reference and
-      in the alphabetical command index, with its exact arity.
+\item \modulepath{docs/fabius-notation.tex} defines exactly 146 shared commands, not
+      counting the version stamp \commandname{FabiusNotationVersion}: the 91 of the
+      original contract, the combinatorial coefficient-calculus block, and the
+      polynomial--logarithmic transseries block.
+\item Every one of those 146 command names occurs in the canonical quick reference and
+      in the alphabetical command index, with its exact arity.  This was re-derived on
+      2026-09-03 by comparing the \commandname{newcommand} names of the shared file
+      against the \commandname{commandname} entries of both sections, not by
+      adjusting the previous count.
 \item Every command belongs to a detailed normative entry defining its type-level role,
       normalization, exceptional cases, or the local data the command intentionally
       requires at each use.
