@@ -134,8 +134,9 @@ noncomputable def residueClassEquiv (N : ℕ) [NeZero N] (r : ZMod (2 * N)) :
   toFun q := ⟨2 * N * q + r.val, by
     simp only [Set.mem_preimage, Set.mem_singleton_iff]
     push_cast
-    rw [ZMod.natCast_zmod_val, ZMod.natCast_self]
-    ring⟩
+    have h2N : (2 : ZMod (2 * N)) * (N : ZMod (2 * N)) = 0 := by
+      exact_mod_cast ZMod.natCast_self (2 * N)
+    rw [h2N, zero_mul, zero_add]⟩
   invFun k := (k.1 - r.val) / (2 * N)
   left_inv q := by
     have h2N : (2 * (N : ℤ)) ≠ 0 := mul_ne_zero two_ne_zero (by exact_mod_cast NeZero.ne N)
@@ -154,7 +155,7 @@ noncomputable def residueClassEquiv (N : ℕ) [NeZero N] (r : ZMod (2 * N)) :
     push_cast at hc
     have h2N : (2 * (N : ℤ)) ≠ 0 := mul_ne_zero two_ne_zero (by exact_mod_cast NeZero.ne N)
     rw [hc, Int.mul_ediv_cancel_left _ h2N]
-    linear_combination hc
+    linear_combination -hc
 
 /-- **`p1:eq:alias-identity`**: for every `N ≥ 1` and every residue `r`,
 
@@ -250,8 +251,8 @@ noncomputable def residueClassNegEquiv (M : ℕ) (r : ZMod M) :
     have hk := k.2
     simp only [Set.mem_preimage, Set.mem_singleton_iff] at hk ⊢
     rw [Int.cast_neg, hk]⟩
-  left_inv k := by apply Subtype.ext; simp
-  right_inv k := by apply Subtype.ext; simp
+  left_inv k := Subtype.ext (neg_neg _)
+  right_inv k := Subtype.ext (neg_neg _)
 
 /-- The half-integer coefficients are even, `a_{-k} = a_k`. -/
 theorem halfIntegerCoefficient_neg (F : BoundedFabius) (hF : IsFabius F) (k : ℤ) :
@@ -297,7 +298,7 @@ theorem sum_dft_mul_dft_neg {M : ℕ} [NeZero M] (Φ : ZMod M → ℂ) :
         rw [ZMod.dft_apply (ZMod.dft Φ) (-j)]
         congr 1
         refine sum_congr rfl fun r _ => ?_
-        rw [smul_eq_mul]
+        try rw [smul_eq_mul]
     _ = (M : ℂ) * ∑ j : ZMod M, Φ j ^ 2 := by
         rw [hdd, mul_sum]
         refine sum_congr rfl fun j _ => ?_
@@ -326,6 +327,6 @@ theorem sum_foldedCoefficient_sq (F : BoundedFabius) (hF : IsFabius F) (N : ℕ)
   rw [sum_congr rfl fun r _ => hsq r, ← mul_sum, h]
   push_cast
   field_simp
-  ring
+  try ring
 
 end Fabius
