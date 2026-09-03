@@ -328,15 +328,24 @@ cmd //c mklink //J ".lake\\packages" "C:\\ProveIt\\.lake\\packages"
 
 ### Seed the corpus build outputs too, or pay a day
 
-The junction fixes Mathlib and nothing else. A fresh worktree still has **zero**
-`FabiusFunction` oleans, and compiling the atlas from scratch costs the better
-part of a day — which is a day the kernel is unavailable to everyone else, not
-just to you. Copy a sibling worktree's `.lake\build` instead. Measured
-2026-09-02: 1.353 GB, 6005 files, 1m48s, after which a new leaf module built in
-25–90 seconds.
+The `packages` junction fixes Mathlib and nothing else. A fresh worktree still
+has **zero** `FabiusFunction` oleans, and compiling the atlas from scratch costs
+the better part of a day — a day the kernel is unavailable to everyone else, not
+just to you. Measured 2026-09-02, two worktrees that had only ever built the
+closures they needed held 181 and 765 of 868 modules, so the gap between a
+seeded and an unseeded worktree is the difference between minutes and a night.
 
-Find a donor, and prefer the one with the most oleans at a commit closest to
-yours:
+**Prefer a junction of the whole `.lake` to a sibling worktree.** This is the
+user's standing preference — *use a junction, don't copy* — and it is also
+instant and duplicates nothing:
+
+```sh
+cmd //c "mklink /J <yours>\.lake <sibling>\.lake"
+```
+
+Pick the sibling with the freshest corpus, and check rather than assume —
+`C:\ProveIt\.lake` has Mathlib built but **zero** `FabiusFunction` oleans, so
+junctioning to it forces a full rebuild:
 
 ```sh
 for d in /c/ProveIt/.claude/worktrees/*/; do
@@ -344,18 +353,25 @@ for d in /c/ProveIt/.claude/worktrees/*/; do
 done
 ```
 
-Then, from PowerShell:
+The trade-off to accept consciously: the build directory is then *shared* with
+that sibling, so only the machine-wide one-kernel rule keeps two drivers from
+racing inside it.
+
+**Copy only when you need artifact isolation** from the sibling session. From
+PowerShell:
 
 ```
 robocopy <donor>\.lake\build <yours>\.lake\build /E /MT:8 /R:1 /W:1
 ```
 
-`robocopy` exits **1** when it successfully copies files; treat any code below 8
-as success.
+Measured 2026-09-02: 1.353 GB, 6005 files, 1m48s, after which a new leaf module
+built in 25–90 seconds. `robocopy` exits **1** when it successfully copies
+files; treat any code below 8 as success.
 
-Two checks first, both cheap and both necessary. Lake decides staleness from
-content hashes, so a donor at a different commit is perfectly good for every
-module whose source happens to match and silently useless for the rest:
+Two checks first, whichever route you take — both cheap and both necessary.
+Lake decides staleness from content hashes, so a sibling at a different commit
+is perfectly good for every module whose source happens to match and silently
+useless for the rest:
 
 1. `git merge-base --is-ancestor <donor HEAD> HEAD` — the donor's commit is in
    your history.
@@ -368,6 +384,49 @@ finish.** The donor is usually another agent's live worktree, and a module
 rewritten mid-copy leaves you a torn olean whose failure looks like corruption.
 Nothing of theirs is written — it is a read — so the only cost to them is the
 pause.
+
+### Lake's job counter is not progress, and the facade is not the gate
+
+Two mistakes made repeatedly on one night, 2026-09-02, both worth naming.
+
+**The job counter says almost nothing about remaining work.** An umbrella build
+reporting `3492 of 3598 jobs` looks 97% done and is not: most of those jobs are
+Mathlib replays out of the shared package cache, resolved in milliseconds, while
+the corpus modules that remain cost 55–70 seconds apiece. The two are not
+commensurable, so the ratio is meaningless. When that run was killed, only about
+180 corpus modules had actually been built. Count oleans
+(`ls .lake/build/lib/lean/FabiusFunction/*.olean | wc -l`) against sources; do
+not quote the counter as progress.
+
+The same run also failed at `3607 of 3645` on an earlier attempt, which was read
+as "38 short". It is not evidence of nearness at all: the fan-out persists to the
+end and then exhausts memory. Two modules blamed for that failure
+(`SincProductShells`, `StirlingAsymptotics`) each built green in under a minute
+when given an invocation of their own.
+
+**Prefer a scoped validation to the facade.** Building every module answers
+"does the corpus compile"; after a wave of edits the question is "did anything I
+changed break anything downstream of it", and those differ by the several hundred
+untouched modules that make the facade an overnight job. Compute the transitive
+dependents of what actually changed and build those in topological order, one
+invocation each, so every dependency is already compiled when its turn comes.
+Two scripts do exactly this:
+
+```sh
+python3 Analysis/FabiusFunction/scripts/affected_modules.py <base> --stats --out affected.txt
+sh Analysis/FabiusFunction/scripts/validate_affected.sh affected.txt
+```
+
+The first closes the change set under the *reverse* `import FabiusFunction.*`
+graph and emits a topological order; `--stats` reports how many of those lack a
+built olean, which is the honest estimate of remaining work. The second drives
+one `lake` invocation per module and writes a log ending in
+`VALIDATE-DONE modules=N failures=M`.
+
+Measured the same night: 59 changed modules closed to 270 dependents, of which
+only 74 lacked an olean — roughly two hours instead of eleven, and it covers
+exactly the risk the edits introduced. The several hundred untouched modules a
+facade build would also compile cannot have been broken by the diff.
 
 ### When to pay a root-module invalidation
 

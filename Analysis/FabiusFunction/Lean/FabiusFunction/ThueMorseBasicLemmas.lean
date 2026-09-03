@@ -33,19 +33,24 @@ open Filter
 
 namespace Fabius
 
+/-- Zero has no one bits, so `w(0) = 0`. -/
 @[simp] theorem binaryWeight_zero : binaryWeight 0 = 0 := by
   simp [binaryWeight]
 
+/-- One has a single one bit, so `w(1) = 1`. -/
 @[simp] theorem binaryWeight_one : binaryWeight 1 = 1 := by
   rw [binaryWeight, Nat.digits_def' one_lt_two one_pos]
   simp
 
+/-- The Thue-Morse sequence opens with `+1`: `e(0) = (-1)^{w(0)} = 1`. -/
 @[simp] theorem thueMorseSign_zero : thueMorseSign 0 = 1 := by
   simp [thueMorseSign]
 
+/-- `e(1) = -1`, the first sign change. -/
 @[simp] theorem thueMorseSign_one : thueMorseSign 1 = -1 := by
   simp [thueMorseSign]
 
+/-- `e(2) = -1`, since `2 = 10` in binary also has odd digit sum. -/
 @[simp] theorem thueMorseSign_two : thueMorseSign 2 = -1 := by
   rw [thueMorseSign, binaryWeight, Nat.digits_def' one_lt_two two_pos]
   simp
