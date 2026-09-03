@@ -81,6 +81,9 @@ theorem digits_sum_pow_mul_add {q : ℕ} (hq : 1 < q) {m a r : ℕ} (ha : a < q 
 def digitPowerSum {R : Type*} [CommSemiring R] (ζ : R) (q m d : ℕ) : R :=
   ∑ n ∈ range (q ^ m), ζ ^ (Nat.digits q n).sum * (n : R) ^ d
 
+/-- At window width and degree both zero the sum has the single term
+`n = 0`, whose digit sum and whose zeroth power are both trivial, so
+`P_0(0) = 1`. -/
 @[simp] theorem digitPowerSum_zero_zero {R : Type*} [CommSemiring R] (ζ : R) (q : ℕ) :
     digitPowerSum ζ q 0 0 = 1 := by
   simp [digitPowerSum]
