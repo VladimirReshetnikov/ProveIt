@@ -1196,6 +1196,16 @@ Insert \eqref{p1:eq:baseline-qbinomial} with $m=j$ and $c=0$ into
 \cref{p1:thm:alias-error}.
 \end{proof}
 
+\paragraph{Lean status.}
+Partial.  The dyadic values that \eqref{p1:eq:q-approximant} feeds into the cosine transform
+are formal through the \(q\)-binomial formula
+\path{Fabius.qBinomialThueMorseTranslatedFormulaIn_eq_fabiusAtInverseTwoPow}
+(\path{FabiusQBinomialScalarFormula.lean}), and the alias identity underlying the left side
+is \path{Fabius.foldedCoefficient_eq_tsum} (\path{HalfIntegerAliasIdentity.lean}).  The
+assembly --- the cosine form \eqref{p1:eq:A-F-DCT}, which pairs \(j\) with \(2N-j\), and the
+substitution of the \(q\)-binomial values into it --- is not formalized, nor is the
+convergence statement, which is analytic.
+
 \begin{remark}[Three structures in one finite expression]
 Formula \eqref{p1:eq:q-approximant} simultaneously contains
 \begin{enumerate}
@@ -2543,6 +2553,20 @@ $|\sin(\pi2^ky)|=|\sin(\pi2^kt)|$. The denominator of the finite product is
 \]
 whereas its numerator is $2^{-(N+1)}Q_{N+1}(t)$. Multiplication proves the claim.
 \end{proof}
+
+\paragraph{Lean status.}
+\Cref{p2:thm:exact-factorization} is the corpus's dyadic shell factorization, formal in
+\path{SincProductShells.lean} for every real \(y\ne0\) and every \(N\):
+\path{Fabius.norm_rvachevFourierProduct_two_pow_mul} gives
+\(|\mathscr U(2^Ny)|=\prod_{j<N}|\sin(2^{j+1}\pi y)|\big/\bigl(2^{N(N+1)/2}(\pi|y|)^N\bigr)
+\cdot|\mathscr U(y)|\), and its zero-safe cross-multiplied form
+\path{Fabius.norm_rvachevFourierProduct_two_pow_mul_cross} is the assertion that the identity
+survives when both sides vanish.  The two readings differ only in bookkeeping: the display
+above splits off \(N+1\) factors and writes the tail as \(H(y)=\mathscr U(y)/\SincRad(\pi y)\),
+whereas the formal statement splits off \(N\) and keeps \(\mathscr U(y)\); the passage
+\(|\sin(\pi2^ky)|=|\sin(\pi2^kt)|\) for \(t=y-1\) and the identification
+\(Q_{N+1}(t)=|T_{N+1}(\EulerE^{2\pi\ImaginaryUnit t})|\) are not restated in Lean.  The
+exponent algebra behind the master cocycle is \path{Fabius.shell_exponent_identity}.
 
 Put
 \begin{equation}
