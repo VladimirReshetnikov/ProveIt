@@ -990,9 +990,19 @@ the bilateral Fourier sums of \path{SummableCyclicAlias.lean} at \(-j\)
 (\path{Fabius.dft_intResidueTsum}), and two Mathlib identities, \path{ZMod.dft_comp_neg}
 and \path{ZMod.dft_dft}, give \(\mathcal D_{2N}(\text{samples})=N\cdot\mathcal R_\bullet\)
 (\path{Fabius.dft_gridSample}).  The residue class is finally re-indexed as the affine
-line \(q\mapsto2Nq+r\) (\path{Fabius.residueClassEquiv}).  The two cosine displays
-\eqref{p1:eq:A-Up-DCT}--\eqref{p1:eq:A-F-DCT}, which pair \(j\) with \(2N-j\) and use
-\(P=\RvachevUp\) on \([0,1]\), are not separately formalized.
+line \(q\mapsto2Nq+r\) (\path{Fabius.residueClassEquiv}).  The cosine form is formal
+over the full residue range: \path{Fabius.foldedCoefficient_eq_sum_cos} is
+\(A_{N,r}=N^{-1}\sum_{j\in\IntegerNumbers/2N\IntegerNumbers}P(j/N)\cos(\pi rj/N)\), obtained
+by re-indexing the character sum through \(j\mapsto-j\), which fixes the sample vector
+(\path{Fabius.gridSample_neg}, from the period \(2\) and the evenness of the periodization,
+\path{Fabius.periodizedUp_add_two} and \path{Fabius.periodizedUp_neg}), and writing the
+character at \(\pm rj\) as \(\EulerE^{\pm\pi\ImaginaryUnit rj/N}\)
+(\path{Fabius.stdAddChar_mul_eq_exp}, \path{Fabius.stdAddChar_neg_mul_eq_exp}).  The
+identification \(P(j/N)=\RvachevUp(j/N)\) for \(0\le j\le N\) is
+\path{Fabius.gridSample_natCast_of_le} (from \path{Fabius.periodizedUp_of_mem_Icc}, the
+statement that the periodization is \(\RvachevUp\) on \([-1,1]\)).  Only the final fold of
+\(j\) with \(2N-j\) onto \(1\le j\le N-1\) in \eqref{p1:eq:A-Up-DCT}, and the passage to
+\(\FabiusBounded=1-\RvachevUp\) in \eqref{p1:eq:A-F-DCT}, are not separately formalized.
 
 \subsection{Exact inverse transform}
 
@@ -1032,7 +1042,9 @@ mode, \(A_{N,2s}=0\) for \(0<s<N\) (\path{Fabius.foldedCoefficient_two_mul_eq_ze
 each alias point \(qN+s\) is a nonzero integer, where \(\FourierTwoPi{\RvachevUp}\) vanishes);
 and the symmetry \(A_{N,-r}=A_{N,r}\) (\path{Fabius.foldedCoefficient_neg}, from the
 evenness of \(\FourierTwoPi{\RvachevUp}\)).  The final pairing of \(r\) with \(2N-r\) into the
-cosine form \eqref{p1:eq:inverse-DCT} is not separately formalized.
+cosine form \eqref{p1:eq:inverse-DCT} is not separately formalized; the dual statement on
+the sample side, the cosine form of \(A_{N,r}\) over all residues \(j\), is
+\path{Fabius.foldedCoefficient_eq_sum_cos}.
 
 \begin{corollary}[Exact discrete energy identity]\label{p1:cor:discrete-energy}
 One has
@@ -1247,9 +1259,11 @@ are formal through the \(q\)-binomial formula
 \path{Fabius.qBinomialThueMorseTranslatedFormulaIn_eq_fabiusAtInverseTwoPow}
 (\path{FabiusQBinomialScalarFormula.lean}), and the alias identity underlying the left side
 is \path{Fabius.foldedCoefficient_eq_tsum} (\path{HalfIntegerAliasIdentity.lean}).  The
-assembly --- the cosine form \eqref{p1:eq:A-F-DCT}, which pairs \(j\) with \(2N-j\), and the
-substitution of the \(q\)-binomial values into it --- is not formalized, nor is the
-convergence statement, which is analytic.
+assembly is formal up to the half-range fold: the cosine form of \(A_{N,r}\) over all
+residues is \path{Fabius.foldedCoefficient_eq_sum_cos}, and its samples are the values
+\(\RvachevUp(j/N)\) for \(j\le N\) (\path{Fabius.gridSample_natCast_of_le}).  The fold of
+\(j\) with \(2N-j\) into \eqref{p1:eq:A-F-DCT} and the substitution of the \(q\)-binomial
+values into it are not formalized, nor is the convergence statement, which is analytic.
 
 \begin{remark}[Three structures in one finite expression]
 Formula \eqref{p1:eq:q-approximant} simultaneously contains
