@@ -112,8 +112,13 @@ private theorem prod_pow_succ_sub_one_eq_pow_mul_qPochhammer
   induction m with
   | zero => simp
   | succ m ih =>
+      -- `pow_add` must be applied as a pinned instance: as a rewrite rule it
+      -- also matches `Q ^ (m + 1)` and splits it into `Q ^ m * Q ^ 1`, after
+      -- which `hfac` no longer finds `Q ^ (m + 1) - 1`.
+      have hsplit : Q ^ ((m + 1).choose 2 + (m + 1))
+          = Q ^ ((m + 1).choose 2) * Q ^ (m + 1) := pow_add Q _ _
       rw [Finset.prod_range_succ, Finset.prod_range_succ, ih,
-        choose_succ_two (m + 1), pow_add, ← hfac m]
+        choose_succ_two (m + 1), hsplit, ← hfac m]
       ring
 
 /-- **The order of `GL_n(K)` is a q-Pochhammer prefactor.**  Over every
