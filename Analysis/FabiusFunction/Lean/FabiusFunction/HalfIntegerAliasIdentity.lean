@@ -264,8 +264,7 @@ theorem foldedCoefficient_neg (F : BoundedFabius) (hF : IsFabius F) (N : ℕ) [N
   rw [foldedCoefficient_eq_intResidueTsum F hF N, foldedCoefficient_eq_intResidueTsum F hF N,
     intResidueTsum, intResidueTsum, ← (residueClassNegEquiv (2 * N) r).tsum_eq]
   refine tsum_congr fun k => ?_
-  simp only [residueClassNegEquiv, Equiv.subtypeEquiv_apply, Equiv.neg_apply]
-  exact halfIntegerCoefficient_neg F hF _
+  exact (halfIntegerCoefficient_neg F hF k.1).symm
 
 /-- **A Parseval-type identity for Mathlib's DFT on `ℤ/Mℤ`**, for every
 `Φ : ZMod M → ℂ`: `∑_r 𝓕Φ(r) 𝓕Φ(-r) = M ∑_j Φ(j)²`.  Only `dft_apply`,
@@ -286,7 +285,6 @@ theorem sum_dft_mul_dft_neg {M : ℕ} [NeZero M] (Φ : ZMod M → ℂ) :
         rw [mul_sum]
         refine sum_congr rfl fun r _ => ?_
         rw [show -(j * -r) = -(r * -j) by ring]
-        ring
     _ = ∑ j : ZMod M, Φ j * ZMod.dft (ZMod.dft Φ) (-j) := by
         refine sum_congr rfl fun j _ => ?_
         rw [ZMod.dft_apply (ZMod.dft Φ) (-j)]
