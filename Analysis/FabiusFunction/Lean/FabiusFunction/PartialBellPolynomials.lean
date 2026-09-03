@@ -31,9 +31,7 @@ functions developed in `BellPolynomialInversion` applies.
 * `partialBell`, `partialBell_succ_succ`, `partialBell_eq_zero_of_lt`,
   `partialBell_self`.
 * `bell_complete_eq_sum_partialBell`.
-* `partialBell_one`, `stirlingFirst_succ_succ_eq_sum`,
-  `partialBell_factorial_pred`, `lahNumber_succ_succ_eq_sum`,
-  `partialBell_factorial`.
+* `partialBell_one`, `partialBell_factorial_pred`, `partialBell_factorial`.
 -/
 
 set_option autoImplicit false
