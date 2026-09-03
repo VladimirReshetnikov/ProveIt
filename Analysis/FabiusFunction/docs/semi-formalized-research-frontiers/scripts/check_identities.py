@@ -1243,6 +1243,81 @@ for n in range(2, 7):
 check('thm:bell-quadratic-differential',
       'the quadratic differential recurrence for B_n, as a polynomial identity', bad, t)
 
+# ------------------------------------------------ thm:associahedral-inversion
+# b_n = sum over faces F of K_{n-1} of (-1)^{n - dim F} a_F, where faces are plane rooted
+# trees with n+1 leaves and internal arities >= 2, and a_F multiplies a_{r-1} over internal
+# vertices of arity r.
+#
+# The sign simplifies, and the manuscript's own indexing forces it: a tree with n+1 leaves and
+# m internal vertices satisfies sum (r_v - 1) = n, and a vertex of arity r contributes r - 2
+# to the dimension (the corolla r = n+1 being the whole polytope, dimension n-1).  So
+# dim F = sum (r_v - 2) = n - m and (-1)^{n - dim F} = (-1)^m -- the parity of the number of
+# internal vertices.  The face sum is evaluated by the tree recursion; b_n independently by
+# series reversion.
+def _t_face_sum(a, kmax):
+    S = [F(0)] * (kmax + 1)
+    S[1] = F(1)
+    for k in range(2, kmax + 1):
+        tot = F(0)
+        for r in range(2, k + 1):
+            comp = [F(0)] * (k + 1)
+            comp[0] = F(1)
+            for _ in range(r):
+                nxt = [F(0)] * (k + 1)
+                for s in range(k + 1):
+                    if comp[s]:
+                        for j in range(1, k + 1 - s):
+                            if S[j]:
+                                nxt[s + j] += comp[s] * S[j]
+                comp = nxt
+            tot += F(-1) * a[r - 1] * comp[k]
+        S[k] = tot
+    return S
+
+
+def _t_reversion(a, NN):
+    A = [F(0)] * (NN + 3)
+    A[1] = F(1)
+    for n in range(1, NN + 2):
+        if n < len(a):
+            A[n + 1] = a[n]
+    B = [F(0)] * (NN + 3)
+    B[1] = F(1)
+    for n in range(2, NN + 2):
+        Bt = B[:]
+        Bt[n] = F(0)
+        pw = [F(0)] * (NN + 3)
+        pw[0] = F(1)
+        tot = [F(0)] * (NN + 3)
+        for i in range(1, NN + 3):
+            nxt = [F(0)] * (NN + 3)
+            for p in range(NN + 3):
+                if pw[p]:
+                    for q in range(1, NN + 3 - p):
+                        if Bt[q]:
+                            nxt[p + q] += pw[p] * Bt[q]
+            pw = nxt
+            if A[i]:
+                for p in range(NN + 3):
+                    tot[p] += A[i] * pw[p]
+        B[n] = -tot[n] / A[1]
+    return B
+
+
+bad, t = [], 0
+NA = 7
+for _ in range(8):
+    a = [F(0)] + [F(random.randint(-4, 4), random.randint(1, 3)) for _ in range(NA + 2)]
+    S = _t_face_sum(a, NA + 1)
+    B = _t_reversion(a, NA)
+    for n in range(1, NA + 1):
+        t += 1
+        if B[n + 1] != S[n + 1]:
+            bad.append(n)
+check('thm:associahedral-inversion',
+      'b_n as the signed face sum over the associahedron, sign = parity of internal vertices',
+      bad, t)
+
 # --------------------------------------------------------------------- report
 width = max(len(lab) for lab, _, _, _ in RESULTS)
 failed = 0
