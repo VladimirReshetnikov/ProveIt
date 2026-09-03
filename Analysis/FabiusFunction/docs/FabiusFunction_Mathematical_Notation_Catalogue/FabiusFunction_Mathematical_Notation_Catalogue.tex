@@ -6622,6 +6622,21 @@ sequence uses $\ThueMorseSign{n}$.  A dynamical map $T:X\to X$ is typed at first
 $W$ & Lambert function, Wasserstein distance, Walsh function, and weight. & Use
 $\LambertW_k$ with branch $k$ and $W_p(\mu,\nu)$ with transport exponent $p$.  Walsh
 functions and weights carry their own indices and domains.\\
+$X,Y,Z$ & The geometric-uniform random variable in three different affine
+normalizations, together with a generic random variable, a state space, and a
+spatial coordinate. & The three normalizations are genuinely different random
+variables and must never be identified by their letter.  A source using seeds
+uniform on $[0,1]$ and writing $X_q=(1-q)\sum_jq^jU_j$ has support $[0,1]$ and
+mean $\tfrac12$; a source using seeds uniform on $[-1,1]$ and writing the same
+formula obtains twice the centering of the first, with support $[-1,1]$; a
+standardized variable divides the centering by $\sigma_q$.  Consequently the
+same symbol $Y_q$ denotes the uncentered, the centered, and the doubled centered
+variable in three different frontier reports.  Any document using more than one
+of them declares the seed interval, the centering, and the scaling at first use,
+and states the affine map to the others; the consolidated
+\modulepath{geometric_q_fabius_frontiers/} volume fixes one canonical
+normalization in sans serif and carries the dictionary as a proved
+proposition.\\
 $\nu,\nu_j$ & Finite $p$-adic valuation, a signed or probability measure, an integer or
 complex order in a generalized q-series, a fractional order, and formerly several local
 indexed families. & Valuations use $\PadicValuation{p}$ or $\TwoAdicValuation$ and state
@@ -6640,9 +6655,63 @@ $\varepsilon$ & Thue--Morse sign, small positive tolerance, perturbation paramet
 error sequence. & Use $\ThueMorseSign{n}$ for the sign.  A tolerance is quantified
 $\varepsilon>0$; perturbations and errors receive semantic subscripts when signs occur
 in the same scope.\\
+$\varphi,\phi,\Phi$ & Characteristic function, standard normal density and
+distribution function, a Fourier product in a rescaled frequency, an Euler
+totient, and a refinable scaling function. & Use
+$\CharacteristicFunction{Z}$ for the characteristic function of a named
+variable; the subscript is the variable, not the parameter, unless the source
+says otherwise.  A bare $\varphi$ or $\Phi$ with no subscript is the standard
+normal density or distribution function only where a source declares it so.
+The most dangerous case in the active corpus is a characteristic function of a
+\emph{rescaled} variable printed with a parameter subscript: a source writing
+$\phi_q(t)$ for the transform of the $[-1,1]$-normalized geometric-uniform
+variable means $\CharacteristicFunction{q}(2t)$ in the $[0,1]$ normalization,
+and the two are distinguished in print only by $\phi$ against $\varphi$.
+Such a source states the argument scaling explicitly; the glyph is not
+sufficient qualification.  A totient is $\varphi(n)$ on integer argument, and a
+refinable scaling function is declared with its mask.\\
 \bottomrule
 \end{longtable}
 \endgroup
+
+\begin{catalogueentry}{geometric-q-fabius-canonical-namespace}
+{The canonical geometric-uniform family of the consolidated \texorpdfstring{$q$}{q}-Fabius volume}
+\entryfield{Scope}{Local to the standalone exponents-and-$q$-series volume
+\modulepath{geometric_q_fabius_frontiers/}.  The symbols $\mathsf X_q$,
+$\mathsf X^{\circ}_q$, and $\mathsf X^{\ast}_q$ are declared in that volume's
+Part~0 and are not shared-API commands.  They are typeset in sans serif
+precisely so that they cannot be read as any of the roman $X_q$, $Y_q$, $Z_q$
+that the volume's twelve absorbed parts use for three different affine images of
+the same random variable.}
+\entryfield{Formula}{For independent $U_j$ uniform on $[0,1]$ and real
+$\AbsoluteValue q<1$,
+\[
+ \mathsf X_q=(1-q)\sum_{j\ge0}q^{j}U_j,
+ \qquad
+ \mathsf X^{\circ}_q=\mathsf X_q-\tfrac12,
+ \qquad
+ \mathsf X^{\ast}_q=\mathsf X^{\circ}_q/\sigma_q,
+\]
+with $\sigma_q^{2}=(1-q)/\bigl(12(1+q)\bigr)$.}
+\entryfield{Normalization}{The weights sum to one, so $\Expectation\mathsf X_q=\tfrac12$
+and the support is $[0,1]$ for $0\le q<1$ and
+$[-a/(1-a),\,1/(1-a)]$ for $q=-a$ with $0<a<1$.  At $q=\tfrac12$ the distribution
+function is $\FabiusBounded$ exactly, which is why this normalization and not one of
+the $[-1,1]$ variants is canonical.  The characteristic function of the centered
+variable is $\prod_{j\ge0}\SincRad\bigl((1-q)q^{j}t/2\bigr)$.}
+\entryfield{Relation to the parts}{A part using seeds uniform on $[-1,1]$ works with
+$2\mathsf X^{\circ}_q$, so its cumulants carry an extra $2^{2m}$ and its variance is
+$(1-q)/\bigl(3(1+q)\bigr)$; a part working in the standardized scale uses
+$\mathsf X^{\ast}_q$, whose normalizing constant $\sqrt{3(1-q^{2})}$ equals
+$(1-q)/(2\sigma_q)$.  The volume states the whole dictionary as a proved
+proposition rather than leaving it to be read off letter by letter.}
+\entryfield{Status}{Definition, with the convergence, support, uniqueness,
+transform, and cumulant statements proved in the volume's Part~0.  The $q=\tfrac12$
+identification with $\FabiusBounded$ and $\RvachevUp$ is classical.}
+\entryfield{Scope end}{The standalone volume.  Outside it the letters $X$, $Y$, $Z$
+carry no geometric-uniform meaning without a local declaration, per the collision
+register above.}
+\end{catalogueentry}
 
 \begin{catalogueentry}{inverse-synthesis-local-namespace}
 {Finite-spline, Fourier-product, and endpoint-kernel notation in the inverse-synthesis
