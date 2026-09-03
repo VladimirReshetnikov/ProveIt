@@ -4452,6 +4452,45 @@ point, \decl{principalLambertW\_not\_differentiableAt\_branchPoint} and
 \lean{LambertWBranchPointGeometry}) &
 Only the leading square-root term is formal; the full signed Puiseux series
 and its coefficients are not.\\
+\addlinespace
+\Cref{lem:logineq}: \(t/(1+t)\leq\log(1+t)\leq t\) for \(t>-1\) &
+Mathlib: \nolinkurl{Real.log_le_sub_one_of_pos} and
+\nolinkurl{Real.one_sub_inv_le_log_of_pos} &
+Both halves are Mathlib lemmas (not repository declarations), stated at
+\(1+t>0\); the strict upper form is
+\nolinkurl{Real.log_lt_sub_one_of_pos}.\\
+\addlinespace
+\Cref{thm:W0positivebounds}: \(x/(1+x)\leq\Wz(x)\leq\log(1+x)\leq x\) for
+\(x\geq0\), strict for \(x>0\) &
+\decl{principalLambertW\_elementary\_bounds},
+\decl{div\_one\_add\_le\_principalLambertW},
+\decl{principalLambertW\_le\_log\_one\_add},
+\decl{principalLambertW\_le\_self}, and the strict
+\decl{div\_one\_add\_lt\_principalLambertW},
+\decl{principalLambertW\_lt\_log\_one\_add} (module
+\lean{LambertWElementaryBounds}) &
+Proved from a single inequality with no Lambert content, valid for
+\emph{every} real \(w\): \decl{exp\_le\_one\_add\_mul\_exp\_self},
+\(\EulerE^w\leq1+w\EulerE^w\), strict for \(w\neq0\); the guide's
+\(w=\Wz(x)\) is one instance, and \decl{le\_log\_one\_add\_mul\_exp} states
+the upper bound for every real \(w\) in the form
+\(w\leq\log(1+w\EulerE^w)\).\\
+\addlinespace
+\Cref{thm:Wmzerobounds}: for \(-1/\EulerE<x<0\) and
+\(\eta=\log(1/(-x))\),
+\(-\eta-\eta\log\eta/(\eta-1)\leq\Wm(x)<-\eta-\log\eta\) &
+\decl{lowerLambertW\_near\_zero\_bounds}, with the halves
+\decl{neg\_log\_sub\_div\_le\_lowerLambertW} and
+\decl{lowerLambertW\_lt\_neg\_log\_sub} (module
+\lean{LambertWLowerBranchLogBounds}) &
+The mechanism is the bracket for the inverse of \(z-\log z\), stated with no
+Lambert content for every \(y>1\) with \(y-\log y=\eta\):
+\decl{SubLog.bracket\_of\_sub\_log\_eq}, from
+\decl{SubLog.strictMonoOn\_sub\_log}.  The reduction
+\(y=-\Wm(x)\), \(y-\log y=\eta\) is
+\decl{neg\_lowerLambertW\_sub\_log\_eq}, and \(\eta>1\) on the whole domain is
+\decl{one\_lt\_log\_one\_div\_neg}, so the denominator \(\eta-1\) is never a
+side condition for the caller.\\
 \bottomrule
 \end{longtable}
 
@@ -4460,8 +4499,11 @@ Not formalized, in the order they appear above: the addition identity of
 polynomial recurrence for higher derivatives (\Cref{thm:higherder}), the
 antiderivatives and moments of \Cref{sec:integrals}, the local Taylor
 expansion, convergence of the Maclaurin series, the full Puiseux and
-logarithmic asymptotic expansions, the rigorous elementary bounds of
-\Cref{sec:bounds}, and everything from \Cref{sec:rational} onward.
+logarithmic asymptotic expansions, the remaining bounds of
+\Cref{sec:bounds} (the logarithmic bounds for large positive arguments, the
+square-root bounds on the negative part of the principal branch, and the
+two-sided \(W_{-1}\) bound of \Cref{thm:chatzbound}), and everything from
+\Cref{sec:rational} onward.
 
 \section{Concordance of the four merged treatments}\label{app:concordance}
 
