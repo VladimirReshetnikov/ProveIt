@@ -490,6 +490,55 @@ for n in range(1, 8):
 check('thm:bell-poly-partitions',
       'B_{n,k} is the weight of partitions into k blocks; B_n of all partitions', bad, t)
 
+# ------------------------------------------------- thm:stirling-row-log-concavity
+bad, t = [], 0
+for n in range(1, 61):
+    for k in range(2, n):
+        t += 1
+        if not (S2[n][k] ** 2 > S2[n][k - 1] * S2[n][k + 1]):
+            bad.append(('strict', n, k))
+    row = [S2[n][k] for k in range(1, n + 1)]
+    up = True
+    for i in range(1, len(row)):
+        if row[i] > row[i - 1]:
+            if not up:
+                bad.append(('unimodal', n, i))
+                break
+        elif row[i] < row[i - 1]:
+            up = False
+    mx = max(row)
+    at = [i for i, v in enumerate(row) if v == mx]
+    t += 2
+    if not (len(at) == 1 or (len(at) == 2 and at[1] == at[0] + 1)):
+        bad.append(('mode', n, at))
+check('thm:stirling-row-log-concavity',
+      'S(n,k)^2 > S(n,k-1)S(n,k+1) strictly, row unimodal, mode one or two indices', bad, t)
+
+# ------------------------------------------------------------- thm:cycle-index-bell
+bad, t = [], 0
+for n in range(1, 8):
+    a = [F(random.randint(-5, 5), random.randint(1, 3)) for _ in range(n)]
+    tot = F(0)
+    for p in permutations(range(n)):
+        seen = [False] * n
+        term = F(1)
+        for i in range(n):
+            if seen[i]:
+                continue
+            j, ln = i, 0
+            while not seen[j]:
+                seen[j] = True
+                j = p[j]
+                ln += 1
+            term *= a[ln - 1]
+        tot += term
+    t += 1
+    if tot / factorial(n) != bell_complete([F(factorial(i)) * a[i]
+                                            for i in range(n)]) / factorial(n):
+        bad.append(n)
+check('thm:cycle-index-bell',
+      'Z(S_n) = (1/n!) B_n(0! a_1, .., (n-1)! a_n), against enumeration of S_n', bad, t)
+
 # --------------------------------------------------------------------- report
 width = max(len(lab) for lab, _, _, _ in RESULTS)
 failed = 0
