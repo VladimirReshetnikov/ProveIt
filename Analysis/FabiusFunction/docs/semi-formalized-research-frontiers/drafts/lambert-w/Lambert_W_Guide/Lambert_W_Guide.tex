@@ -4491,12 +4491,28 @@ Lambert content for every \(y>1\) with \(y-\log y=\eta\):
 \decl{neg\_lowerLambertW\_sub\_log\_eq}, and \(\eta>1\) on the whole domain is
 \decl{one\_lt\_log\_one\_div\_neg}, so the denominator \(\eta-1\) is never a
 side condition for the caller.\\
+\addlinespace
+\Cref{thm:higherder}: every derivative of either branch is
+\(W^{(n)}=\EulerE^{-nW}P_n(W)/(1+W)^{2n-1}\) with
+\(P_{n+1}=(1+w)P_n'-(nw+3n-1)P_n\) &
+\decl{lambertDerivPoly}, \decl{lambertDerivPoly\_succ},
+\decl{iteratedDeriv\_principalLambertW},
+\decl{iteratedDeriv\_lowerLambertW} (module
+\lean{LambertWHigherDerivatives}); the general engine is
+\decl{AutonomousODE.iteratedDeriv\_eq\_comp} (module
+\lean{AutonomousIteratedDeriv}) &
+Lean's \(P_n\) is this guide's \(P_{n+1}\): the recurrence is stated as
+\(P_{n+1}=(1+w)P_n'-((n+1)w+3n+2)P_n\) from \(P_0=1\), and the formula as
+\(W^{(n+1)}=\EulerE^{-(n+1)W}P_n(W)/(1+W)^{2n+1}\), on the open domains
+\((-1/\EulerE,\infty)\) and \((-1/\EulerE,0)\).  The engine is stated for an
+arbitrary solution of an autonomous equation \(W'=\varphi\circ W\) on an open
+set, with the derivative family as hypotheses, so it applies beyond Lambert's
+function.\\
 \bottomrule
 \end{longtable}
 
 Not formalized, in the order they appear above: the addition identity of
 \Cref{prop:addition}, the exact branch pairing of \Cref{sec:pairing}, the
-polynomial recurrence for higher derivatives (\Cref{thm:higherder}), the
 antiderivatives and moments of \Cref{sec:integrals}, the local Taylor
 expansion, convergence of the Maclaurin series, the full Puiseux and
 logarithmic asymptotic expansions, the remaining bounds of
