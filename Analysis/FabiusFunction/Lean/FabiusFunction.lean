@@ -649,6 +649,14 @@ import FabiusFunction.IntegerParameterTranslation
 import FabiusFunction.MultisetInversions
 import FabiusFunction.GeometricSimplexReindex
 import FabiusFunction.RatioExpansion
+import FabiusFunction.ThetaHeatEquation
+import FabiusFunction.QPochhammerModularAsymptotic
+import FabiusFunction.FormalQBinomial
+import FabiusFunction.BorweinReciprocity
+import FabiusFunction.GaussianUnimodality
+import FabiusFunction.TwoSquareTheorem
+import FabiusFunction.FourSquareTheorem
+import FabiusFunction.JacksonVeryWellPoised
 import FabiusFunction.QSeriesTruncation
 import FabiusFunction.RogersRamanujanPartitions
 import FabiusFunction.GLOrderProduct
