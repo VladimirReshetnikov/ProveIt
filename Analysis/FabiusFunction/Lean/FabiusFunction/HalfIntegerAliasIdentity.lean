@@ -273,23 +273,19 @@ theorem sum_dft_mul_dft_neg {M : ℕ} [NeZero M] (Φ : ZMod M → ℂ) :
     ∑ r : ZMod M, ZMod.dft Φ r * ZMod.dft Φ (-r) = (M : ℂ) * ∑ j : ZMod M, Φ j ^ 2 := by
   have hdd := ZMod.dft_dft Φ
   calc ∑ r : ZMod M, ZMod.dft Φ r * ZMod.dft Φ (-r)
-      = ∑ r : ZMod M, ∑ j : ZMod M, ZMod.stdAddChar (-(j * -r)) * (ZMod.dft Φ r * Φ j) := by
+      = ∑ r : ZMod M, ∑ j : ZMod M, ZMod.dft Φ r * (ZMod.stdAddChar (-(j * -r)) • Φ j) := by
         refine sum_congr rfl fun r _ => ?_
         rw [ZMod.dft_apply Φ (-r), mul_sum]
-        refine sum_congr rfl fun j _ => ?_
-        rw [smul_eq_mul]
-        ring
-    _ = ∑ j : ZMod M, Φ j * ∑ r : ZMod M, ZMod.stdAddChar (-(r * -j)) * ZMod.dft Φ r := by
+    _ = ∑ j : ZMod M, Φ j * ∑ r : ZMod M, ZMod.stdAddChar (-(r * -j)) • ZMod.dft Φ r := by
         rw [sum_comm]
         refine sum_congr rfl fun j _ => ?_
         rw [mul_sum]
         refine sum_congr rfl fun r _ => ?_
-        rw [show -(j * -r) = -(r * -j) by ring]
+        rw [smul_eq_mul, smul_eq_mul, show -(j * -r) = -(r * -j) by ring]
+        ring
     _ = ∑ j : ZMod M, Φ j * ZMod.dft (ZMod.dft Φ) (-j) := by
         refine sum_congr rfl fun j _ => ?_
         rw [ZMod.dft_apply (ZMod.dft Φ) (-j)]
-        congr 1
-        exact sum_congr rfl fun r _ => rfl
     _ = (M : ℂ) * ∑ j : ZMod M, Φ j ^ 2 := by
         rw [hdd, mul_sum]
         refine sum_congr rfl fun j _ => ?_

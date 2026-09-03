@@ -248,6 +248,7 @@ import FabiusFunction.ThueMorseFourierInversion
 import FabiusFunction.HalfIntegerOddDFT
 import FabiusFunction.SummableCyclicAlias
 import FabiusFunction.HalfIntegerAliasIdentity
+import FabiusFunction.CyclicCharacterSums
 import FabiusFunction.ThueMorseParseval
 import FabiusFunction.ThueMorseComplexity
 import FabiusFunction.ThueMorseArithmeticFilter
