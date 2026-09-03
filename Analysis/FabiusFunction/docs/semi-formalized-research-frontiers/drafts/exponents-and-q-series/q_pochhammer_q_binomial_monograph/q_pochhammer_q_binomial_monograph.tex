@@ -441,6 +441,14 @@ legitimate; equivalently one may formulate the same proof for unit parameters
 over a commutative ring.
 \end{proof}
 
+\emph{Lean status.}  Both displays are exactly
+\path{Fabius.finiteQPochhammerIn_base_reversal} and
+\path{Fabius.finiteQPochhammerIn_inv_base_reversal} in
+\path{QPochhammerElementaryIdentities.lean}, over every field, for $a,q\ne0$ and every
+$n$ (with unit-level versions \path{Fabius.finiteQPochhammerIn_base_reversal_units} over a
+commutative ring).
+
+
 \section{Negative indices}
 
 The concatenation law suggests the only extension to negative integers that preserves
@@ -490,6 +498,14 @@ and the remaining product is
 Taking the reciprocal proves the formula.  The extended concatenation identity follows by cancelling the overlapping finite factors; the cases in which one of $m,n,m+n$ is negative reduce directly to the definition.
 \end{proof}
 
+\emph{Lean status.}  The negative-index closed form is
+\path{Fabius.finiteQPochhammerZ_neg_natCast_eq} in \path{QPochhammerIntegerIndex.lean},
+where \path{Fabius.finiteQPochhammerZ} is the integer-index symbol defined through the
+interval product \path{Fabius.qIntervalProd}; the concatenation law for all integer indices
+(the second display) is \path{Fabius.finiteQPochhammerZ_add}, under the nonvanishing of the
+factors it divides by, with \path{Fabius.finiteQPochhammerZ_add_one} the one-step case.
+
+
 % ed.: remark added to record the generality of the formalization.
 \begin{remark}[Signed interval products]\label{rem:negative-index-formalization}
 The formalization organizes all integer indices around the signed interval
@@ -529,6 +545,13 @@ quotient.  For $k>N$, the defining product contains its index-$N$ factor
 $1-q^{-N}q^N=0$; here only $q\ne0$ is needed.
 \end{proof}
 
+\emph{Lean status.}  Exactly \path{Fabius.finiteQPochhammerIn_inv_pow_eq_self_div} (the
+closed form, under $k\le N$ and $(q;q)_{N-k}\ne0$) and
+\path{Fabius.finiteQPochhammerIn_inv_pow_eq_zero_of_lt} (vanishing for $k>N$) in
+\path{QPochhammerElementaryIdentities.lean}, over every field with $q\ne0$; the Lean form
+writes $q^{-Nk}$ as division by $q^{Nk}$.
+
+
 \section{Partial fractions and logarithmic derivatives}
 
 \begin{theorem}[Finite partial-fraction decomposition]\label{thm:partial-fraction}
@@ -564,6 +587,10 @@ finite poles are removable.  The difference is therefore a polynomial; it is
 $O(z^{-1})$ at infinity, so it is identically zero.
 \end{proof}
 
+\emph{Lean status.}  Not formalized; the corpus has no partial-fraction decomposition of
+$1/(z;q)_{n+1}$.
+
+
 % ed.: remark added to record the division-free form proved in Lean.
 \begin{remark}[The polynomial form]\label{rem:partial-fraction-formalization}
 Clearing denominators, the theorem is the identity
@@ -598,6 +625,14 @@ If $a=a(x)$ is differentiable, then
 \begin{proof}
 Differentiate the logarithm of the finite product term by term.
 \end{proof}
+
+\emph{Lean status.}  The finite logarithmic derivative is not formalized as such.  Its
+infinite counterpart is: \path{Fabius.hasDerivAt_qPochhammerInfIn_lambert} in
+\path{QPochhammerLogDerivative.lean} gives
+$\partial_a(a;q)_\infty=-(a;q)_\infty\sum_{m\ge0}a^m/(1-q^{m+1})$ for $|a|,|q|<1$, which is
+$\partial_a\log(a;q)_\infty=-\sum_j q^j/(1-aq^j)$ after resummation
+(\path{Fabius.tsum_neg_pow_div_one_sub_mul_pow_eq}).
+
 
 \section{Infinite products and Lambert series}
 
@@ -721,6 +756,14 @@ recovers the finite product.  If $\alpha=-n<0$, the same relation, applied after
 \)
 \end{proof}
 
+\emph{Lean status.}  Exactly \path{Fabius.qPochhammerC_add} in
+\path{QPochhammerComplexOrder.lean}, for the complex-order symbol
+\path{Fabius.qPochhammerC} (defined as the quotient $(a;q)_\infty/(aq^\alpha;q)_\infty$),
+under $q\ne0$ and $(aq^\alpha;q)_\infty\ne0$; the specializations $\alpha=0$ and
+$\alpha\in\NaturalNumbers$ are \path{Fabius.qPochhammerC_zero} and
+\path{Fabius.qPochhammerC_natCast}.
+
+
 \begin{proposition}[Derivative with respect to the order]\label{prop:order-derivative}
 Fix $a\in\ComplexNumbers$ with $\QPochhammer{a}{q}{\infty}\ne0$, and let
 $U\subset\ComplexNumbers$ be open with
@@ -760,6 +803,14 @@ Since $\GeneralizedQPochhammer{a}{q}{\alpha}
 =\QPochhammer{a}{q}{\infty}/G(\alpha)$ and the numerator is nonzero and
 independent of $\alpha$, the claimed formula follows.
 \end{proof}
+
+\emph{Lean status.}  The derivative in the order is
+\path{Fabius.hasDerivAt_qPochhammerC} in \path{QPochhammerOrderDerivative.lean}:
+for $|q|<1$, $q\ne0$ and $|aq^\alpha|<1$,
+$\partial_\alpha\,(a;q)_\alpha=(a;q)_\alpha\log q\sum_{j\ge0}aq^{\alpha+j}/(1-aq^{\alpha+j})$,
+the displayed logarithmic derivative; holomorphy on $U$ and the nonvanishing clause are
+not separately stated.
+
 
 \begin{theorem}[Lambert-series expansion]\label{thm:lambert-log}
 If $\AbsoluteValue q<1$ and $\AbsoluteValue a<1$, then
@@ -803,6 +854,13 @@ $\sum_{j\ge0}\sum_{m\ge0}\AbsoluteValue a^m\AbsoluteValue q^{j(m+1)}
  =\sum_{m\ge0}\AbsoluteValue a^m/(1-\AbsoluteValue q^{m+1})<\infty$.
 \end{proof}
 
+\emph{Lean status.}  The Lambert-series expansion is
+\path{Fabius.hasSum_lambert_log_complex} in \path{LambertSeriesLog.lean}
+($\sum_{m\ge1}a^m/(m(1-q^m))=-\sum_j\log(1-aq^j)$ for $|a|,|q|<1$), with the exponentiated
+form \path{Fabius.exp_neg_tsum_lambert_eq_qPochhammerInfIn}; the derivative clause is
+\path{Fabius.hasDerivAt_qPochhammerInfIn_lambert} (\path{QPochhammerLogDerivative.lean}).
+
+
 \begin{remark}[Branches]\label{rem:lambert-log-branch}
 The logarithm on the left is the sum $\sum_{j\ge0}\log(1-aq^j)$ of the principal logarithms of the factors, each of which lies in the disk $\AbsoluteValue{1-(1-aq^j)}<1$ where the Mercator series converges; the identity therefore fixes a definite branch, the one that is continuous in $a$ on $\AbsoluteValue a<1$ and vanishes at $a=0$.  The branch-free form is
 \[
@@ -829,6 +887,12 @@ Logarithmic differentiation gives
 \]
 The coefficient of $q^n$ is the sum of all $j$ dividing $n$.
 \end{proof}
+
+\emph{Lean status.}  Analytic rather than formal-power-series form:
+\path{Fabius.neg_mul_deriv_div_qPochhammerInfIn_self} in \path{DivisorSumLambert.lean} is
+$-q\,(q;q)_\infty'/(q;q)_\infty=\sum_{n\ge1}\sigma_1(n)q^n$ for $|q|<1$, resting on the
+Lambert-to-divisor resummation \path{Fabius.tsum_lambert_sigma_one}.
+
 
 \section{The dilogarithmic limit}
 
@@ -880,6 +944,10 @@ It remains to bound the total remainder.  Split the $m$-sum at $m\le t^{-1}$.  I
 For $m>t^{-1}$, subtracting finitely many asymptotic terms leaves a quantity bounded by a polynomial in $mt$ plus $(1-\EulerE^{-mt})^{-1}$; the factor $\rho^m$ makes the tail exponentially small in $1/t$, hence smaller than every power of $t$.  This proves the uniform remainder estimate.
 \end{proof}
 
+\emph{Lean status.}  Not formalized; no dilogarithm or Euler--Maclaurin expansion of
+$\log(a;e^{-t})_\infty$ is in the corpus.
+
+
 \section{Classical shifted factorials as a limit}
 
 \begin{proposition}[Finite classical limit]\label{prop:classical-poch-limit}
@@ -907,6 +975,13 @@ to $u=x+j$ in
 \]
 proves the result.
 \end{proof}
+
+\emph{Lean status.}  Exactly \path{Fabius.tendsto_finiteQPochhammerIn_cpow_div_pow} in
+\path{ClassicalPochhammerLimit.lean}, with $q^x$ the principal complex power and the
+limit along $q\to1$, $q\ne1$; the real-power version is
+\path{Fabius.tendsto_finiteQPochhammerIn_rpow_div_pow}, and the general mechanism is
+\path{Fabius.tendsto_finiteQPochhammerIn_div_pow_of_hasDerivAt}.
+
 
 % ed.: remark added to record the generality of the formalization.
 \begin{remark}[Only the derivative at $1$ enters]\label{rem:classical-limit-formalization}
@@ -957,6 +1032,15 @@ For $0\le k\le n$,
 \begin{proof}
 Cancel $(q;q)_{n-k}$ from $(q;q)_n$ using \Cref{prop:concat}.
 \end{proof}
+
+\emph{Lean status.}  The first equality, cleared of its denominator, is
+\path{Fabius.finiteQPochhammerIn_self_mul_gaussianBinomial} in
+\path{FiniteQBinomialCore.lean} ($(q;q)_k\binom nk_q=(q^{n-k+1};q)_k$ over every commutative
+ring), and the three-factor form
+$(q;q)_n=(q;q)_k(q;q)_{n-k}\binom nk_q$ is
+\path{Fabius.finiteQPochhammerIn_self_eq_mul_mul_gaussianBinomial}; the product display is
+the definition of the symbol unfolded.
+
 
 \section{The two Pascal recurrences}
 
@@ -1115,6 +1199,11 @@ For fixed $n,k$,
 Use the $q$-factorial form and $[j]_q\to j$.  Alternatively, and in the generality of an arbitrary topological semiring, the Gaussian coefficient is built from $q$ by finitely many additions, multiplications, and powers through the $q$-Pascal recurrence, hence is a continuous function of $q$; its value at $q=1$ is $\binom nk$ by the same recurrence, so the limit is that value.  This is the route taken by the formalization.
 \end{proof}
 
+\emph{Lean status.}  Exactly \path{Fabius.tendsto_gaussianBinomial_nhds_one} in
+\path{GaussianBinomialContinuity.lean}, in every topological semiring (the Gaussian
+coefficient is a polynomial in $q$, so the limit is evaluation at $1$).
+
+
 \section{Multinomial coefficients and flags}
 
 \begin{definition}
@@ -1151,6 +1240,15 @@ Write out the factorial ratios.  Consecutive numerator and denominator factors t
 Positivity follows from \Cref{cor:positivity}.
 \end{proof}
 
+\emph{Lean status.}  This is the definition of the multinomial in Lean:
+\path{Fabius.qMultinomial} in \path{QMultinomial.lean} is defined by the recursion
+\path{Fabius.qMultinomial_cons},
+$\QMultinomial{n}{n_1,\ldots,n_r}{q}=\GaussianBinomial{n_1+\cdots+n_r}{n_1}{q}\QMultinomial{n-n_1}{n_2,\ldots,n_r}{q}$,
+whose unfolding is the displayed product; the quotient form is
+\path{Fabius.qMultinomial_eq_div} (and \path{Fabius.finiteQPochhammerIn_self_sum_eq_qMultinomial_mul}
+cleared of denominators).
+
+
 \section{Adjacent ratios and efficient recurrences}
 
 \begin{proposition}\label{prop:adjacent-ratio}
@@ -1184,6 +1282,13 @@ natural \(n,k\): on and above the row boundary both sides vanish.  In the
 strict range \(k<n\), division over a field by the two explicitly assumed
 nonzero denominators in each line gives the stated ratios.
 \end{proof}
+
+\emph{Lean status.}  Exactly \path{Fabius.gaussianBinomial_adjacent_div} in
+\path{QPochhammerElementaryIdentities.lean}, over every field, under the two stated
+nonvanishing hypotheses; the denominator-free form is
+\path{Fabius.gaussianBinomial_adjacent_mul}, and the row-index versions
+\path{Fabius.gaussianBinomial_row_adjacent_mul}, \path{Fabius.gaussianBinomial_row_adjacent_div}.
+
 
 These ratios are useful numerically, but at roots of unity their denominators
 may vanish and the quotients need not be defined.  The cross-multiplied
@@ -1245,6 +1350,10 @@ The first sum is $k(n-k)$.  The second equals
 \]
 Since the first and second derivatives of $\log M$ at $0$ are the mean and variance, respectively, the result follows.
 \end{proof}
+
+\emph{Lean status.}  Not formalized; the corpus has no moments of the inversion-number
+distribution.
+
 
 \chapter{Finite \texorpdfstring{$q$}{q}-binomial theorems and inversion}\label{chap:finite-qbinomial}
 
@@ -1406,6 +1515,12 @@ The term with $j$ chosen from the first factor and $r-j$ from the second has exp
 Subtracting $\binom r2$ gives $(m-j)(r-j)$, proving \eqref{eq:qvand1}.  Splitting the product in the reverse order gives \eqref{eq:qvand2}.
 \end{proof}
 
+\emph{Lean status.}  The first display is exactly
+\path{Fabius.gaussianBinomial_add_vandermonde} in \path{QBinomialVandermonde.lean}, over
+every commutative semiring, with the sum over $0\le j\le r$ (the terms outside that range
+vanish); \path{Fabius.gaussianBinomial_add_vandermonde'} is the companion form.
+
+
 \begin{corollary}[Central form]\label{cor:central-vandermonde}
 For $m,n\ge0$,
 \[
@@ -1418,6 +1533,11 @@ For $m,n\ge0$,
 \begin{proof}
 Set $r=m$ in \eqref{eq:qvand1} and put $\ell=m-j$.  Then the exponent becomes $\ell^2$, while symmetry gives $\GaussianBinomial{m}{m-\ell}{q}=\GaussianBinomial{m}{\ell}{q}$ and the second factor is $\GaussianBinomial{n}{\ell}{q}$.
 \end{proof}
+
+\emph{Lean status.}  Exactly \path{Fabius.gaussianBinomial_add_central_min} in
+\path{QBinomialVandermonde.lean} (sum to $\min(m,n)$), with
+\path{Fabius.gaussianBinomial_add_central} the form summed to $m$.
+
 
 % Chapter: \ref{chap:finite-qbinomial} ("Finite $q$-binomial theorems and
 % inversion"), section "$q$-Vandermonde convolution".
@@ -1445,6 +1565,13 @@ Assume therefore $-N\le k\le N$ and set $r=N+k\in\SetOf{0,\dots,2N}$.  \Cref{thm
 \]
 Substitute $\ell=N-j$.  Then $N+k-j=\ell+k$, so the exponent becomes $\ell(\ell+k)=\ell^2+\ell k$; the symmetry $\GaussianBinomial{N}{N-\ell}{q}=\GaussianBinomial{N}{\ell}{q}$ of \Cref{thm:qbinom-structure}\,(i) turns the first Gaussian coefficient into $\GaussianBinomial{N}{\ell}{q}$, and the second is $\GaussianBinomial{N}{\ell+k}{q}$.  This is \eqref{eq:shifted-central-vandermonde}.
 \end{proof}
+
+\emph{Lean status.}  Exactly \path{Fabius.gaussianBinomial_two_mul_int_shifted_central} in
+\path{QBinomialVandermonde.lean}, with the integer-index coefficient
+\path{Fabius.gaussianBinomialInt} (zero outside $0\le k\le n$) and the sum over
+$0\le\ell\le N$; the finsum form over all of $\IntegerNumbers$ is
+\path{Fabius.gaussianBinomial_two_mul_int_shifted_central_finsum}.
+
 
 \begin{remark}[Formal version]
 \formalfile{FiniteQBinomialCore.lean} defines the zero-extended integer
@@ -1509,6 +1636,18 @@ Put $r=n-k$.  The coefficient is
 By \Cref{cor:alternating-qbinom}, this equals $0$ when $n>j$ and $1$ when $n=j$.  Thus the composition is the identity.  The same argument in the opposite order proves equivalence.
 \end{proof}
 
+\emph{Lean status.}  The inversion is formal through the two-sided orthogonality of the
+kernels: with \path{Fabius.gaussianBinomialKernel} the matrix $\GaussianBinomial{n}{k}{q}$
+and \path{Fabius.gaussianBinomialInverseKernel} the matrix
+$(-1)^{n-k}q^{\binom{n-k}2}\GaussianBinomial{n}{k}{q}$,
+\path{Fabius.gaussianBinomialKernel_left_orthogonality} and
+\path{Fabius.gaussianBinomialKernel_right_orthogonality} in \path{QBinomialInversion.lean}
+are the two products equal to the identity, over every commutative ring; the passage to
+sequences $(a_n)$, $(b_n)$ is matrix multiplication and is not separately stated.  The
+scaled kernels are \path{Fabius.scaledGaussianBinomialKernel_left_orthogonality} and
+\path{Fabius.scaledGaussianBinomialKernel_right_orthogonality}.
+
+
 \begin{corollary}[Matrix orthogonality]\label{cor:qbinomial-orthogonality}
 For $0\le j\le n$,
 \[
@@ -1520,6 +1659,11 @@ For $0\le j\le n$,
 \begin{proof}
 This is the kernel computation in the preceding proof.
 \end{proof}
+
+\emph{Lean status.}  Exactly \path{Fabius.gaussianBinomialKernel_left_orthogonality} in
+\path{QBinomialInversion.lean}; the row case $j=0$ is
+\path{Fabius.sum_gaussianBinomial_alternating}.
+
 
 \begin{remark}[Formal version and scaled strengthening]
 The scalar algebra is formalized in \formalfile{QBinomialInversion.lean}.  Its
@@ -1698,6 +1842,12 @@ independent of $k$.  Therefore
  C_{n+1}(u,v)=(1-uvq^n)C_n(u,v)=(uv;q)_{n+1}.
 \]
 \end{proof}
+
+\emph{Lean status.}  Exactly \path{Fabius.finite_qCauchy_identity} in
+\path{QBinomialCauchy.lean}, over every commutative ring, with the reflected form
+\path{Fabius.finite_qCauchy_identity_reflected} and the second identity
+\path{Fabius.finite_qCauchy_second_identity}.
+
 
 \begin{remark}
 Taking $u=0$ recovers the tautology $(0;q)_k=1$ inside a weighted expansion; taking special limits of $u$ or $v$ produces several finite convolution formulas used later in the proof of the $q$-Pfaff--Saalsch\"utz summation.
@@ -2247,6 +2397,13 @@ Let $F_{n,k}(q)$ denote the right side.  If the last letter is $1$, deletion of 
 The boundary values are $1$, so $F_{n,k}$ and $\GaussianBinomial{n}{k}{q}$ obey the same recurrence and initial conditions.
 \end{proof}
 
+\emph{Lean status.}  Formal as the two-letter case of the multiset enumerator
+\path{Fabius.qMultinomial_ofFn_eq_sum_pow_inversions} in \path{MultisetInversions.lean}
+(\Cref{thm:qmult-inversions} below), with $\mathcal W_{n,k}$ the words over two letters with
+the prescribed letter counts and \path{Fabius.inversions} the inversion number; the
+two-letter multinomial is the Gaussian coefficient by \path{Fabius.qMultinomial_pair}.
+
+
 \begin{corollary}[Inversion-law interpretation]\label{cor:qbinom-inversion-law}
 For $0\le k\le n$, the random variable in \Cref{thm:qbinom-moments} is the
 inversion number of a uniformly random word in $\mathcal W_{n,k}$.
@@ -2255,6 +2412,10 @@ inversion number of a uniformly random word in $\mathcal W_{n,k}$.
 \begin{proof}
 The coefficient of $q^j$ in \Cref{thm:binary-inversions} counts words with $j$ inversions, while $\AbsoluteValue{\mathcal W_{n,k}}=\binom nk$.
 \end{proof}
+
+\emph{Lean status.}  Not formalized as a statement about a random variable; the underlying
+count is \path{Fabius.qMultinomial_ofFn_eq_sum_pow_inversions}.
+
 
 \section{Partitions inside a rectangle}
 
@@ -2296,6 +2457,13 @@ recovers a strictly increasing sequence of positions, so this is a bijection.  T
 Apply \Cref{thm:binary-inversions}.
 \end{proof}
 
+\emph{Lean status.}  Formal in \path{GaussianUnimodality.lean}: the coefficient of $q^j$ in
+$\GaussianBinomial{m+k}{k}{q}$ is \path{Fabius.boxCoeff} (\path{Fabius.coeff_gaussianBinomial_X_eq_boxCoeff}),
+and \path{Fabius.boxCoeff_eq_card} identifies it with the number of partitions with at most
+$k$ parts, each at most $m$, of size $j$; the stable range $j\le\min(k,m)$ reduces to the
+unrestricted partition count (\path{Fabius.boxCoeff_eq_partitionCount}).
+
+
 \begin{corollary}[Conjugation and complement]\label{cor:partition-symmetries}
 Conjugating Ferrers diagrams proves
 \(
@@ -2310,6 +2478,12 @@ Taking the complement in the rectangle proves
 \begin{proof}
 Conjugation exchanges a $k\times m$ rectangle with an $m\times k$ rectangle without changing size.  Complementation sends size $r$ to $mk-r$, so the generating polynomial is reciprocal of degree $mk$.
 \end{proof}
+
+\emph{Lean status.}  The conjugation symmetry is \path{Fabius.boxCoeff_transpose} and
+\path{Fabius.gaussianBinomial_symm} (\path{FiniteQBinomialCore.lean}); the complement
+symmetry $c_j=c_{km-j}$ is \path{Fabius.boxCoeff_symm}, all in
+\path{GaussianUnimodality.lean}.
+
 
 \section{Lattice paths and area}
 
@@ -2340,6 +2514,10 @@ Under the word--path encoding, every north step contributes the number of
 later east steps.  Summing over north steps gives $\InversionNumber{w}$ and,
 by the equivalent definition above, $\LatticePathArea{P}$.
 \end{proof}
+
+\emph{Lean status.}  Not formalized; lattice paths are not in the corpus, only the
+partition and word models.
+
 
 \section{Durfee squares and the central convolution}
 
@@ -2381,6 +2559,13 @@ Choose the positions of the largest letter $r$.  If their binary indicator has i
 Iterating and using \Cref{prop:qmult-factor} proves the formula.
 \end{proof}
 
+\emph{Lean status.}  Exactly \path{Fabius.qMultinomial_ofFn_eq_sum_pow_inversions} in
+\path{MultisetInversions.lean}: for letter counts $c$ with $\sum c=N$, the multinomial
+$\QMultinomial{N}{c}{q}$ is $\sum q^{\mathrm{inv}(w)}$ over the words
+$w:\{1,\dots,N\}\to\{1,\dots,r\}$ with letter counts $c$, over every commutative semiring
+(through the recurrence \path{Fabius.multisetInversionGF_eq_qMultinomialVec}).
+
+
 \section{Rogers--Szeg\H{o} polynomials}
 
 \begin{definition}
@@ -2421,6 +2606,11 @@ Writing $n=k+j$ and separating the double sum gives
 \]
 Each factor equals the reciprocal infinite product by Euler's identity, proved later in \Cref{cor:euler-infinite}; alternatively, the equality follows already by taking $n\to\infty$ in \Cref{thm:reciprocal-finite}.  This gives the stated product.
 \end{proof}
+
+\emph{Lean status.}  Exactly \path{Fabius.rogersSzego_succ} in
+\path{RogersSzegoPolynomial.lean}, with \path{Fabius.rogersSzego} the polynomial
+$H_n(z;q)=\sum_k\GaussianBinomial{n}{k}{q}z^k$.
+
 
 \begin{proposition}[Three-term recurrence]\label{prop:rogers-szego-three-term}
 \index{Rogers--Szeg\H{o} polynomial!three-term recurrence}
@@ -2472,6 +2662,10 @@ because $1-q^{\,n+1-k}=1-q^0=0$.  For $k>n+1$ every term is zero.  This
 exhausts all $k$ and completes the proof.
 \end{proof}
 
+\emph{Lean status.}  Exactly \path{Fabius.rogersSzego_three_term} in
+\path{RogersSzegoPolynomial.lean} (indexed as $H_{n+2}$ in terms of $H_{n+1},H_n$).
+
+
 \begin{corollary}[Dilation formula]\label{cor:rogers-szego-dilation}
 For $n\ge1$,
 \[
@@ -2486,6 +2680,11 @@ Compare the coefficients of $z^k$, $k\ge1$: on the left it is $q^k\GaussianBinom
 \]
 which is the claim established in the proof of \Cref{prop:rogers-szego-three-term} (read at the index $k$ in place of $k-1$; it is the product of the two cross identities of \Cref{prop:adjacent-ratio}).  The constant terms are both $1$.  Conversely, adding the dilation formula to the basic recurrence $H_{n+1}(z;q)=zH_n(z;q)+H_n(qz;q)$ gives the three-term recurrence at once, which is how the formalization organizes the three results: the basic recurrence is the second $q$-Pascal summation, the dilation formula is the column-adjacent cross identity read coefficientwise over every commutative ring, and the three-term recurrence is their sum.
 \end{proof}
+
+\emph{Lean status.}  Exactly \path{Fabius.rogersSzego_dilation} in
+\path{RogersSzegoPolynomial.lean}; the generating function $\sum_n H_n(z;q)t^n/(q;q)_n$
+is \path{Fabius.hasSum_rogersSzego_generating}.
+
 
 \begin{remark}\label{rem:rogers-szego-three-term}
 The recurrence of \Cref{prop:rogers-szego-recurrence} moves the argument, from
@@ -2729,6 +2928,10 @@ Because $V$ is finite-dimensional, let $m$ be maximal with $F^mv\ne0$.  Applying
 so $d=m\in\NaturalNumbers$.  The vectors $v,Fv,\dots,F^dv$ have distinct weights and are linearly independent.  Their span is invariant under $E,F,H$ and is nonzero; irreducibility makes it all of $V$.  The displayed weights and multiplicities follow.
 \end{proof}
 
+\emph{Lean status.}  Not formalized; the corpus has no Lie-algebra representation
+theory.
+
+
 \section{Exterior powers and Gaussian coefficients}
 
 Let $L_{n-1}$ have a weight basis $v_0,\dots,v_{n-1}$ with
@@ -2783,6 +2986,9 @@ Use \Cref{cor:weighted-subsets} with $q=x^{-2}$.  The prefactor becomes
 \]
 \end{proof}
 
+\emph{Lean status.}  Not formalized (see \Cref{lem:sl2-structure}).
+
+
 \begin{theorem}[Unimodality of Gaussian coefficients]\label{thm:qbinom-unimodal}
 If
 \[
@@ -2809,6 +3015,13 @@ contributes a consecutive block of ones centered at weight $0$: it is zero until
 
 By \Cref{prop:exterior-character}, the multiplicity of weight $D-2j$ is exactly $c_j$.  Hence $c_0\le c_1\le\cdots\le c_{\Floor{D/2}}$.
 \end{proof}
+
+\emph{Lean status.}  Partial: \path{GaussianUnimodality.lean} proves the ascent
+$c_{j}\le c_{j+1}$ for $j<\min(k,n-k)$ (\path{Fabius.coeff_gaussianBinomial_le_succ_of_lt_max}) and
+full unimodality when $\min(k,n-k)\le2$ (\path{Fabius.boxCoeffUnimodal_of_min_le_two});
+the general case, which needs the $\mathfrak{sl}_2$ argument or Sylvester's proof, is
+not formalized.
+
 
 \begin{remark}
 The proof explains more than the inequality: the successive differences $c_j-c_{j-1}$ record multiplicities of irreducible summands with prescribed highest weight.  Stronger strict-unimodality results require additional arguments and have a small family of exceptional cases; ordinary unimodality is exactly what the $\mathfrak{sl}_2$ decomposition supplies for free.
@@ -2858,6 +3071,11 @@ To prove uniqueness, iterate the functional equation:
 As $N\to\infty$, $q^Nz\to0$, so $F(q^Nz)\to1$.  The finite product tends to $G(z)$.  Hence $F=G$.
 \end{proof}
 
+\emph{Lean status.}  Exactly \path{Fabius.hasSum_qBinomial_theorem} in
+\path{QBinomialTheoremInfinite.lean}, in every complete normed field, for $|q|<1$ and
+$|z|<1$ and every $a$, with the sum stated as a \texttt{HasSum}.
+
+
 \begin{corollary}[Euler's two infinite identities]\label{cor:euler-infinite}
 For $\AbsoluteValue q<1$,
 \begin{align}
@@ -2887,6 +3105,10 @@ For fixed $n$, $\GaussianBinomial{N}{n}{q}\to1/(q;q)_n$ as $N\to\infty$.  The li
 \]
 where the denominator is positive because $(q;q)_r\to(q;q)_\infty\ne0$.  Thus the summands, extended by zero for $n>N$, are dominated by a constant multiple of $\AbsoluteValue q^{\binom n2}R^n$.  Dominated convergence, together with local uniform convergence of the products, now permits passage to the limit.
 \end{proof}
+
+\emph{Lean status.}  Exactly \path{Fabius.hasSum_euler_product} (all $z$) and
+\path{Fabius.hasSum_euler_reciprocal} ($|z|<1$) in \path{QBinomialTheoremInfinite.lean}.
+
 
 \begin{remark}[Both identities as stable limits of finite ones]\label{rem:qbinomial-finite-route}
 The formalization proves \Cref{thm:infinite-qbinomial} itself, and not only \eqref{eq:euler-product-series}, by the finite-to-infinite mechanism of the preceding proof, over an arbitrary complete normed field.  Divide the finite $q$-Cauchy identity of \Cref{thm:q-cauchy}, with $u=a$ and $v=z$, by $(z;q)_N$:
@@ -2934,6 +3156,10 @@ Collecting the terms of total degree $N$ gives the displayed finite
 convolution.
 \end{proof}
 
+\emph{Lean status.}  Not formalized as a statement about the general ratio; the single-factor
+cases are \Cref{cor:euler-infinite}.
+
+
 \section{Formal and analytic interpretations}
 
 \begin{proposition}[Formal version]\label{prop:formal-qbinomial}
@@ -2972,6 +3198,10 @@ and hence
 Because $1-q^n$ is a unit, this recurrence has a unique solution, namely
 $c_n=(a;q)_n/(q;q)_n$.
 \end{proof}
+
+\emph{Lean status.}  Not formalized in the $I$-adic setting; the analytic version is
+\Cref{thm:infinite-qbinomial}.
+
 
 \section{Limits in the number of factors}
 
@@ -3701,6 +3931,12 @@ $\bigl|(q/b;q)_m/(q/a;q)_m\bigr|\le K'$, which gives absolute convergence
 directly and is the argument used by the formalization.
 \end{proof}
 
+\emph{Lean status.}  Contained in \path{Fabius.hasSum_onePsiOne}
+(\path{RamanujanOnePsiOne.lean}), whose hypotheses are exactly $|b/a|<|z|<1$ with the
+denominator factors nonvanishing; absolute convergence is the majorant
+\path{Fabius.exists_summable_majorant_onePsiOneCleared}.
+
+
 \begin{theorem}[Ramanujan's ${}_1\psi_1$ summation]\label{thm:1psi1}
 For $\AbsoluteValue{b/a}<\AbsoluteValue z<1$, with $a\ne0$ and the denominator factors
 nonvanishing ($bq^{j}\ne1$ and $q^{j+1}\ne a$ for all $j\ge0$),
@@ -3796,6 +4032,12 @@ $\AbsoluteValue b<\AbsoluteValue{az}$.  Dividing by $(b;q)_\infty\ne0$ proves th
 the asserted annulus.  Note that the cleared identity $S=P$ holds without any hypothesis on
 $(b;q)_\infty$, and that no meromorphic continuation of the series is needed.
 \end{proof}
+
+\emph{Lean status.}  Exactly \path{Fabius.onePsiOne_eq} (and its \texttt{HasSum} form
+\path{Fabius.hasSum_onePsiOne}) in \path{RamanujanOnePsiOne.lean}: for $|q|<1$, $q\ne0$,
+$a\ne0$, $(q/a;q)_\infty\ne0$, $(b;q)_\infty\ne0$ and $|b/a|<|z|<1$, the bilateral sum
+equals $(q,b/a,az,q/(az);q)_\infty/(b,q/a,z,b/(az);q)_\infty$.
+
 
 \begin{remark}
 Ramanujan's sum contains the infinite $q$-binomial theorem and several theta-product identities as limiting or specialized cases.  It is a model example of a bilateral identity: the second inequality in the convergence annulus is controlled by the positive tail, while the first is controlled by the negative tail.
