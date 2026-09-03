@@ -190,13 +190,13 @@ theorem sum_Ico_cos_alias_angle_odd (N : ℕ) [NeZero N] (r : ZMod (2 * N)) (hr 
   rw [sum_cos_alias_angle_eq_zero N r hr0] at hfold
   have h0 : Complex.cos ((Real.pi * r.val * (0 : ZMod (2 * N)).val / N : ℝ) : ℂ) = 1 := by
     simp
+  have hNpos : 0 < N := Nat.pos_of_ne_zero (NeZero.ne N)
   have hNN : Complex.cos ((Real.pi * r.val * (N : ZMod (2 * N)).val / N : ℝ) : ℂ) = -1 := by
     have hval : (N : ZMod (2 * N)).val = N := by
       rw [ZMod.val_natCast, Nat.mod_eq_of_lt (by omega)]
     have hang : (Real.pi * r.val * (N : ZMod (2 * N)).val / N : ℝ) = (r.val : ℕ) * Real.pi := by
       rw [hval]
       field_simp
-      ring
     rw [hang, ← Complex.ofReal_cos, Real.cos_nat_mul_pi, Odd.neg_one_pow hr]
     push_cast
     ring
