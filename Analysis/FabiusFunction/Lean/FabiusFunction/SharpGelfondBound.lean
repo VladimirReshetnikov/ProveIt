@@ -67,13 +67,14 @@ theorem prod_pow_three_eq (s : ℕ → ℝ) (n : ℕ) :
       rw [prod_range_succ, mul_pow, ihn, prod_range_succ]
       ring
 
-/-- **Two-step product principle**: if `0 ≤ s j ≤ 1` and every adjacent
-pair satisfies `(s j)² · s (j+1) ≤ c³`, then `∏_{j≤n} s j ≤ cⁿ`.
-This is the abstract form of the sharp Gelfond bound: a two-cycle
-subaction yields one factor of `c` per step after the first. -/
-theorem prod_le_pow_of_sq_mul_succ_le {s : ℕ → ℝ} {c : ℝ}
-    (h0 : ∀ j, 0 ≤ s j) (h1 : ∀ j, s j ≤ 1) (hc : 0 ≤ c)
-    (hpair : ∀ j, s j ^ 2 * s (j + 1) ≤ c ^ 3) (n : ℕ) :
+/-- **Two-step product principle, boundary form**: only the two
+boundary factors need a bound — if `0 ≤ s j`, `s 0 · (s n)² ≤ 1` and
+every adjacent pair satisfies `(s j)² · s (j+1) ≤ c³`, then
+`∏_{j≤n} s j ≤ cⁿ`.  The interior factors may exceed `1`. -/
+theorem prod_le_pow_of_sq_mul_succ_le_of_boundary {s : ℕ → ℝ} {c : ℝ}
+    (h0 : ∀ j, 0 ≤ s j) (hc : 0 ≤ c)
+    (hpair : ∀ j, s j ^ 2 * s (j + 1) ≤ c ^ 3) (n : ℕ)
+    (hfront : s 0 * s n ^ 2 ≤ 1) :
     ∏ j ∈ range (n + 1), s j ≤ c ^ n := by
   refine le_of_pow_le_pow_left₀ (by norm_num : (3:ℕ) ≠ 0) (pow_nonneg hc n) ?_
   rw [prod_pow_three_eq]
@@ -84,15 +85,27 @@ theorem prod_le_pow_of_sq_mul_succ_le {s : ℕ → ℝ} {c : ℝ}
   rw [Finset.prod_const, Finset.card_range] at hblocks
   have hb0 : 0 ≤ ∏ j ∈ range n, (s j ^ 2 * s (j + 1)) :=
     Finset.prod_nonneg fun j _ => mul_nonneg (sq_nonneg _) (h0 _)
+  calc s 0 * s n ^ 2 * ∏ j ∈ range n, (s j ^ 2 * s (j + 1))
+      ≤ 1 * (c ^ 3) ^ n := mul_le_mul hfront hblocks hb0 (by norm_num)
+    _ = (c ^ n) ^ 3 := by ring
+
+/-- **Two-step product principle**: if `0 ≤ s j ≤ 1` and every adjacent
+pair satisfies `(s j)² · s (j+1) ≤ c³`, then `∏_{j≤n} s j ≤ cⁿ`.
+This is the abstract form of the sharp Gelfond bound: a two-cycle
+subaction yields one factor of `c` per step after the first.  It is the
+boundary form with `s 0 · (s n)² ≤ 1` read off from `s ≤ 1`. -/
+theorem prod_le_pow_of_sq_mul_succ_le {s : ℕ → ℝ} {c : ℝ}
+    (h0 : ∀ j, 0 ≤ s j) (h1 : ∀ j, s j ≤ 1) (hc : 0 ≤ c)
+    (hpair : ∀ j, s j ^ 2 * s (j + 1) ≤ c ^ 3) (n : ℕ) :
+    ∏ j ∈ range (n + 1), s j ≤ c ^ n := by
+  refine prod_le_pow_of_sq_mul_succ_le_of_boundary h0 hc hpair n ?_
   have hsn : s n ^ 2 ≤ 1 := by
     have hn0 := h0 n
     have hn1 := h1 n
     nlinarith
-  have hfront : s 0 * s n ^ 2 ≤ 1 * 1 :=
-    mul_le_mul (h1 0) hsn (sq_nonneg _) zero_le_one
-  calc s 0 * s n ^ 2 * ∏ j ∈ range n, (s j ^ 2 * s (j + 1))
-      ≤ 1 * 1 * (c ^ 3) ^ n := mul_le_mul hfront hblocks hb0 (by norm_num)
-    _ = (c ^ n) ^ 3 := by ring
+  calc s 0 * s n ^ 2 ≤ 1 * 1 :=
+        mul_le_mul (h1 0) hsn (sq_nonneg _) zero_le_one
+    _ = 1 := one_mul 1
 
 /-- The sharp two-step inequality, squared form:
 `(sin²θ)² · sin²(2θ) ≤ (3/4)³`. -/
