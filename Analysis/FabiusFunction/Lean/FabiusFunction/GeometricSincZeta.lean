@@ -144,18 +144,40 @@ theorem geometricSincProduct_eq_cexp {q z : ℂ} (hq : ‖q‖ < 1) (hz : ‖z�
     mul_comm (1 - q ^ (2 * (r + 1))) ((r : ℂ) + 1)]
 
 /-- The prefix shift: `S_q(z) = (∏_{j<m} sinc(π q^j z)) · S_q(q^m z)`. -/
+/-- The one-step peel: `S_q(z) = sinc(π z) · S_q(q z)`.  Same mechanism as the
+corpus's `tprod_geom_scale`: peel the first factor with `tprod_eq_zero_mul'`
+and re-index the tail. -/
+theorem geometricSincProduct_mul_shift {q : ℂ} (hq : ‖q‖ < 1) (z : ℂ) :
+    geometricSincProduct q z =
+      complexSinc (π * z) * geometricSincProduct q (q * z) := by
+  have harg : (fun n : ℕ => complexSinc (Real.pi * (q ^ (n + 1) * z))) =
+      fun n : ℕ => complexSinc (Real.pi * (q ^ n * (q * z))) :=
+    funext fun n => by
+      congr 1
+      rw [pow_succ]
+      ring
+  have hmult := geometricSincProductFactors_multipliable q (q * z) hq
+  unfold geometricSincProduct
+  rw [tprod_eq_zero_mul' (harg ▸ hmult), harg, pow_zero, one_mul]
+
 theorem geometricSincProduct_pow_mul {q : ℂ} (hq : ‖q‖ < 1) (z : ℂ) (m : ℕ) :
     geometricSincProduct q z =
       (∏ j ∈ range m, complexSinc (π * (q ^ j * z))) * geometricSincProduct q (q ^ m * z) := by
-  have h := (geometricSincProductFactors_multipliable q z hq).prod_mul_tprod_nat_add m
-  beta_reduce at h
-  have h2 : (∏' i : ℕ, complexSinc (Real.pi * (q ^ (i + m) * z)))
-      = geometricSincProduct q (q ^ m * z) := by
-    unfold geometricSincProduct
-    exact tprod_congr fun i => by rw [pow_add, mul_assoc]
-  rw [h2] at h
-  unfold geometricSincProduct
-  exact h.symm
+  induction m generalizing z with
+  | zero => simp
+  | succ m ih =>
+      rw [geometricSincProduct_mul_shift hq z, ih (q * z), prod_range_succ']
+      have h1 : ∀ j ∈ range m,
+          complexSinc (π * (q ^ j * (q * z))) = complexSinc (π * (q ^ (j + 1) * z)) := by
+        intro j _
+        congr 1
+        rw [pow_succ]
+        ring
+      have h2 : q ^ m * (q * z) = q ^ (m + 1) * z := by
+        rw [pow_succ]
+        ring
+      rw [prod_congr rfl h1, h2, pow_zero, one_mul]
+      ring
 
 /-- **The all-orders prefix form** at ratio `q`: on `‖q^m z‖ < 1`,
 
