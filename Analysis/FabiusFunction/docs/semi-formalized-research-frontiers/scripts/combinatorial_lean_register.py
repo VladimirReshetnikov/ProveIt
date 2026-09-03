@@ -95,11 +95,16 @@ STATUS = {
    r"the moment series $\sum_m m^n\lambda^m/m! = e^{\lambda}\sum_k S(n,k)\lambda^k$ is "
    r"\lean{Fabius.tsum_pow_mul_pow_div_factorial} (\lean{BellStirling}) for every real "
    r"$\lambda$; the probabilistic phrasing is not formalized"),
- 'thm:merged-binomial-inversion': ('partial',
+ 'thm:merged-binomial-inversion': ('Lean',
+   r"the equivalence of \cref{eq:merged-binomial-forward,eq:merged-binomial-backward} is "
    r"\lean{Fabius.binomial_inversion_iff} (additive commutative groups) and "
    r"\lean{Fabius.binomial_inversion_ring_iff} (commutative rings) "
-   r"(\lean{BinomialInversion}); the kernel orthogonality is "
-   r"\lean{Fabius.sum_Icc_neg_one_pow_choose_mul_choose}; the EGF form is not formalized"),
+   r"(\lean{BinomialInversion}), with the kernel orthogonality "
+   r"\lean{Fabius.sum_Icc_neg_one_pow_choose_mul_choose}; \cref{eq:merged-binomial-egf} is "
+   r"\lean{Fabius.egfA_eq_exp_mul_iff} and \lean{Fabius.egfA_eq_altSeries_mul_iff} "
+   r"(\lean{BinomialInversionEGF}), each an iff with its sequence form, together with "
+   r"\lean{Fabius.egfA_eq_exp_mul_iff_egfA_eq_altSeries_mul} for the equivalence of the two "
+   r"generating-function equations"),
  'thm:bell-poly-recurrences': ('Lean',
    r"\lean{Fabius.partialBell} is defined by \cref{eq:partial-bell-recurrence} "
    r"(\lean{Fabius.partialBell_succ_succ}, \lean{Fabius.partialBell_succ_succ_eq_binomialConv}); "
@@ -107,23 +112,27 @@ STATUS = {
    r"\lean{Fabius.bell_complete_eq_sum_partialBell} (\lean{PartialBellPolynomials}, "
    r"\lean{BellPolynomialInversion}); the boundary values are \lean{Fabius.partialBell_zero_succ}, "
    r"\lean{Fabius.partialBell_succ_zero}, \lean{Fabius.partialBell_eq_zero_of_lt}"),
- 'thm:bell-poly-egf': ('partial',
-   r"the first identity is \lean{Fabius.bellWeightSeries_pow} and the third "
-   r"\lean{Fabius.exp_subst_bellWeightSeries} (\lean{BellGeneratingFunctions}), as formal power "
-   r"series over any commutative $\mathbb Q$-algebra; the bivariate form is "
-   r"\lean{Fabius.exp_subst_smul_bellWeightSeries} (\lean{ExponentialFormula}) and the ordinary "
-   r"Bell polynomials are \lean{Fabius.ordPartialBell} with "
-   r"\lean{Fabius.coeff_pow_eq_ordPartialBell} (\lean{OrdinaryBellComposition}); the ordinary "
-   r"bivariate identity \cref{eq:ordinary-bell-bivariate} is not formalized"),
- 'thm:bell-poly-specializations': ('partial',
+ 'thm:bell-poly-egf': ('Lean',
+   r"all five identities, as formal power series over any commutative $\mathbb Q$-algebra.  "
+   r"The first is \lean{Fabius.bellWeightSeries_pow} and the third "
+   r"\lean{Fabius.exp_subst_bellWeightSeries} (\lean{BellGeneratingFunctions}); the exponential "
+   r"bivariate form is \lean{Fabius.exp_subst_smul_bellWeightSeries} "
+   r"(\lean{ExponentialFormula}); the ordinary Bell polynomials are "
+   r"\lean{Fabius.ordPartialBell} with \cref{eq:ordinary-bell-ogf} as "
+   r"\lean{Fabius.coeff_pow_eq_ordPartialBell} (\lean{OrdinaryBellComposition}); and "
+   r"\cref{eq:ordinary-bell-bivariate} is \lean{Fabius.coeff_exp_subst_smul} "
+   r"(\lean{OrdinaryBellBivariate}).  In both bivariate statements $u$ is a scalar parameter "
+   r"rather than a second formal variable"),
+ 'thm:bell-poly-specializations': ('Lean',
    r"\cref{eq:bell-first-specialization} is \lean{Fabius.partialBell_factorial_pred}, "
+   r"\cref{eq:bell-factorial-complete} is \lean{Fabius.bell_complete_factorial_pred} "
+   r"(\lean{BellFactorialRowSum}), "
    r"\cref{eq:bell-second-specialization} is \lean{Fabius.partialBell_one}, "
    r"\cref{eq:bell-number-specialization} is \lean{Fabius.bell_complete_one}, "
    r"\cref{eq:bell-lah-specialization} is \lean{Fabius.partialBell_factorial} "
    r"(\lean{PartialBellPolynomials}, \lean{BellGeneratingFunctions}), and the Touchard form "
    r"\cref{eq:touchard-bell-specialization} is \lean{Fabius.bell_complete_const_eq_touchard_eval} "
-   r"(\lean{BellHomogeneity}); the factorial row sum \cref{eq:bell-factorial-complete} is not "
-   r"formalized"),
+   r"(\lean{BellHomogeneity})"),
  'thm:bell-partial-convolution': ('Lean',
    r"\lean{Fabius.factorial_mul_partialBell_add} (\lean{BellComposition}), in the division-free "
    r"form $(k_1+k_2)!\,B_{n,k_1+k_2}=k_1!k_2!\sum_i\binom ni B_{i,k_1}B_{n-i,k_2}$"),
@@ -247,15 +256,21 @@ STATUS = {
    r"\lean{Fabius.derivative_touchardExp}; the Touchard-polynomial version "
    r"$\TouchardPolynomial{m+n}(x)=\sum_{j,k}\StirlingSecondKind mj x^j\binom nk\TouchardPolynomial{k}(x)j^{n-k}$ "
    r"is \lean{Fabius.spivey_touchard} (\lean{TouchardShiftEGF})"),
- 'thm:bell-inversions': ('partial',
+ 'thm:bell-inversions': ('Lean',
    r"\cref{eq:bell-inversion-one} is \lean{Fabius.bell_eq_sum_neg_one_pow_choose_bell_succ} "
    r"(\lean{BellShiftEGF}), by \lean{Fabius.binomial_inversion_ring} applied to "
-   r"\lean{Fabius.bell_succ_eq_sum_choose}; \cref{eq:bell-inversion-two} is not formalized"),
+   r"\lean{Fabius.bell_succ_eq_sum_choose}; \cref{eq:bell-inversion-two} is "
+   r"\lean{Fabius.sum_choose_bell_add_eq_sum_neg_one_pow} (\lean{BellInversionTwo}), proved "
+   r"not by the Poisson argument but by showing both sides satisfy "
+   r"$H(n,k+1)=H(n+1,k)-H(n,k)$ and agree at $k=0$"),
  'thm:second-reverse-recurrences': ('partial',
    r"\cref{eq:second-triangular-explicit} is "
    r"\lean{Fabius.stirlingSecond_eq_pow_div_factorial_sub_sum} (\lean{StirlingTriangularExplicit}), "
-   r"for all $n,k$ with the $r=0$ term included; the two reverse recurrences "
-   r"\cref{eq:second-reverse-row,eq:second-reverse-column} are not formalized"),
+   r"for all $n,k$ with the $r=0$ term included; \cref{eq:second-reverse-column} is "
+   r"\lean{Fabius.second_reverse_column} (\lean{StirlingSecondReverseColumn}), by the "
+   r"column differential equation $(1-\EulerE^{-x})F_k'=kF_k$ "
+   r"(\lean{Fabius.one_sub_altSeries_mul_derivative_egfA_stirlingSecond}); "
+   r"\cref{eq:second-reverse-row} is not formalized"),
  'thm:eulerian-stirling': ('Lean',
    r"\lean{Fabius.sum_eulerianNumber_mul_X_pow_eq_sum_stirlingSecond} (\lean{EulerianStirling}), "
    r"as an identity in $R[[t]]$ over any commutative ring $R$, from the rising-factorial "
@@ -289,13 +304,14 @@ STATUS = {
    r"\lean{Fabius.egfA_fubini}: the generating function is $1/(1-u)$ at $u=\EulerE^t-1$) and "
    r"\cref{eq:ordered-bell-recurrence} is \lean{Fabius.fubini_succ} (\lean{OrderedBell}); the "
    r"ordered-partition count itself is not formalized"),
- 'thm:second-ogf': ('Lean',
+ 'thm:second-ogf': ('partial',
    r"\lean{Fabius.prod_one_sub_mul_X_mul_stirlingColumnOGF} and "
    r"\lean{Fabius.stirlingColumnOGF_eq_prod_mk_pow} (\lean{StirlingOrdinaryGF}): the column "
    r"series $\sum_r\StirlingSecondKind{k+r}{k}x^r$ times $\prod_{j\le k}(1-jx)$ is $1$, and "
    r"equals the product of the geometric series $\sum_r j^rx^r$, in $R[[x]]$ for every "
-   r"commutative ring $R$; the complete-homogeneous coefficient formula is the coefficient "
-   r"extraction of the latter and is not stated separately"),
+   r"commutative ring $R$; \cref{eq:second-complete-symmetric}, which reads the coefficient "
+   r"off the product as a complete homogeneous symmetric polynomial, is displayed inside the "
+   r"theorem and is not formalized"),
  'thm:eulerian-power-series': ('Lean',
    r"\lean{Fabius.one_sub_X_pow_mul_succPowSeries} (the identity "
    r"$(1-t)^{n+1}\sum_m(m+1)^nt^m=\TypeAEulerianPolynomial{n}(t)$ in $R[[t]]$) and "
@@ -485,6 +501,28 @@ STATUS = {
    r"\lean{Fabius.fussSolution} constructed as the Lagrange solution; the polynomial form of the "
    r"defining equation is \lean{Fabius.fussSolution_sub_pow}.  The radius "
    r"\cref{eq:fuss-radius} and the boundary convergence are analytic and are not formalized."),
+ 'thm:inverse-bell-coeff': ('Lean',
+   r"\lean{InverseBellCoefficients}: \cref{eq:inverse-bell-coeff} is "
+   r"\lean{Fabius.factorial_mul_coeff_reversion} (sum from $k=0$) and "
+   r"\lean{Fabius.factorial_mul_coeff_reversion_of_two_le} (sum from $k=1$, for $n\ge2$), "
+   r"with $g_1=f_1^{-1}$ as \lean{Fabius.coeff_reversion_one}; the reversion itself is "
+   r"constructed, not assumed, and \lean{Fabius.subst_egfA_reversion} proves it inverts $f$"),
+ 'thm:second-eulerian-first-diagonal': ('partial',
+   r"\lean{Fabius.stirlingFirst_diagonal} (\lean{StirlingFirstDiagonal}), with the upper "
+   r"index written as $m+p$ so that the range is explicit and the out-of-range convention "
+   r"is not needed; proved by double induction on the termwise binomial identity "
+   r"\lean{Fabius.choose_termwise} rather than through the generating function, so the "
+   r"formal proof stays in $\mathbb N$.  The polynomial continuation displayed in the "
+   r"theorem is not formalized: it follows from the integer identity, but stating it needs a "
+   r"definition of the continuation of $c$ in its upper index, which the corpus does not have"),
+ 'thm:diamond-bell': ('Lean',
+   r"\lean{Fabius.diamondPow_apply} and \lean{Fabius.partialBell_eq_diamondPow_div} "
+   r"(\lean{DiamondPower}); the diamond product is \lean{Bell.binomialConv}, and "
+   r"\lean{Fabius.binomialConv_eq_sum_Ico} checks that the two extreme terms the source "
+   r"omits do vanish, so the two definitions agree.  The proof is the source's: "
+   r"\lean{Bell.egfA_mul} makes the generating function of the power a power "
+   r"(\lean{Fabius.egfA_diamondPow}), and \lean{Fabius.bellWeightSeries_pow} reads off its "
+   r"coefficients"),
  'thm:touchard-poly': ('Lean',
    r"\cref{eq:touchard-poly} is \lean{Fabius.touchardPolynomial_add_prime} "
    r"(\lean{TouchardPolyCongruence}), an identity in $(\mathbb Z/p)[x]$, read off from Spivey's "
@@ -505,12 +543,6 @@ STATUS = {
    r"$\sum_{r<q}\beta_n(x+r/q)=q\,(1/q)^n\beta_n(qx)$, proved from the generating functions in "
    r"$(\RationalNumbers[x])[[t]]$ exactly as in the text; \cref{eq:merged-bernoulli-half} is "
    r"\lean{Fabius.bernoulli_eval_half}"),
- 'lem:coeff-rules': ('partial',
-   r"the formal rules are Mathlib's: \cref{eq:cauchy} is \lean{PowerSeries.coeff_mul} and "
-   r"\cref{eq:der-coeff} is \lean{PowerSeries.coeff_derivative}; \cref{eq:geom-conv} is the "
-   r"product with the geometric series (\lean{PowerSeries.coeff_mul} with "
-   r"\lean{PowerSeries.coeff_mk}); Cauchy's coefficient formula and bound "
-   r"\cref{eq:cauchy-coeff} are not formalized in this form"),
  'thm:merged-higher-quotient': ('partial',
    r"the analytic statement is not formalized; its formal power-series analogue, the "
    r"coefficients of $1/A$ through ordinary Bell polynomials, is "
@@ -521,10 +553,11 @@ STATUS = {
    r"\lean{Polynomial.sum_range_pow_eq_bernoulli_sub} (and \lean{sum_range_pow}, "
    r"\lean{sum_Ico_pow} in the Bernoulli-number form)"),
  'thm:eulerian-recurrence': ('partial',
-   r"\lean{Fabius.eulerianNumber} is defined by this recurrence "
-   r"(\lean{Fabius.eulerianNumber_succ_left}, \lean{Fabius.eulerianNumber_succ_succ}, "
-   r"module \lean{EulerianNumbers}); the descent count and the polynomial form "
-   r"\cref{eq:eulerian-poly-recurrence} are not formalized"),
+   r"\cref{eq:eulerian-recurrence} defines \lean{Fabius.eulerianNumber} (\lean{EulerianNumbers}, "
+   r"\lean{Fabius.eulerianNumber_succ_succ}), with the textbook indexing as "
+   r"\lean{Fabius.eulerianNumber_succ_left}; \cref{eq:eulerian-poly-recurrence} is "
+   r"\lean{Fabius.eulerianPolynomial_succ} (\lean{EulerianPolynomialRecurrence}) over any "
+   r"commutative ring; the descent count itself is not formalized"),
  'thm:worpitzky': ('Lean',
    r"\lean{Fabius.worpitzky_nat} (natural numbers, all $n$) and "
    r"\lean{Fabius.worpitzky_polynomial} (in $\mathbb Q[x]$, with "
@@ -533,6 +566,16 @@ STATUS = {
    r"\lean{Fabius.sum_range_pow_succ_eq_sum_eulerianNumber} (\lean{EulerianNumbers}), "
    r"in the form $\sum_{r=0}^{m} r^{n+1}=\sum_k A(n+1,k)\binom{m+k+1}{n+2}$"),
 }
+
+# A dict literal keeps the LAST of two equal keys and reports nothing, so a
+# duplicated label silently replaces one crosswalk by another.  That happened
+# once, to lem:coeff-rules, and the row that shipped was the weaker of the two.
+# Re-read this file and refuse to run if any label is written twice.
+_rows = re.findall(r"^ '([^']+)': \('", io.open(__file__, encoding='utf-8').read(), re.M)
+_dups = sorted({r for r in _rows if _rows.count(r) > 1})
+assert not _dups, 'duplicate register labels (a dict literal would hide one): %s' % _dups
+assert len(_rows) == len(STATUS), (
+    'register rows %d but STATUS has %d entries' % (len(_rows), len(STATUS)))
 
 ENV = re.compile(
     r'\\begin\{(theorem|proposition|lemma|corollary|identity|algorithm)\}'
