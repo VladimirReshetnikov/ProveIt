@@ -350,7 +350,7 @@ made, and neither has the comparison between the second and the fourth.
 
 | Directory | Document | Previous path |
 | --- | --- | --- |
-| `polynomial-logarithmic-transseries/Polynomial_Logarithmic_Transseries/` | **Canonical, consolidation complete:** *Polynomial--Logarithmic Transseries: Algebra, Composition, Series Reversal, and the Lambert W Archetype* — 35{,}172-line/1{,}760{,}242-byte source (`388ba72b…d9f3cb`) and the 399-page A4 PDF built from it in the same three-pass run (4{,}419{,}014 bytes, `ef995bb5…9337da`) | Editorial merge (2026-09-02) of the six 2026-09-01 arrivals `Polynomial-Logarithmic-Transseries-1/`, `-2/`, `-4/` and `Polynomial_Logarithmic_Transseries-3/`, `-5/`, `-6/`, all from direct-arrival commit `730e1763…95ab4f`; absorbed sources deleted, git history is the archive, per-source receipts in the volume's provenance appendix |
+| `polynomial-logarithmic-transseries/Polynomial_Logarithmic_Transseries/` | **Canonical, consolidation complete:** *Polynomial--Logarithmic Transseries: Algebra, Composition, Series Reversal, and the Lambert W Archetype* — 35{,}990-line/1{,}832{,}059-byte source (`0d4c0de1…78b4fb`) and the 411-page A4 PDF built from it in the same three-pass run (4{,}499{,}866 bytes, `30fdef89…239f81`) | Editorial merge (2026-09-02) of the six 2026-09-01 arrivals `Polynomial-Logarithmic-Transseries-1/`, `-2/`, `-4/` and `Polynomial_Logarithmic_Transseries-3/`, `-5/`, `-6/`, all from direct-arrival commit `730e1763…95ab4f`; absorbed sources deleted, git history is the archive, per-source receipts in the volume's provenance appendix |
 
 The consolidation is complete.  The six arrival packages and their
 retained historical PDFs were deleted once every source was absorbed and
