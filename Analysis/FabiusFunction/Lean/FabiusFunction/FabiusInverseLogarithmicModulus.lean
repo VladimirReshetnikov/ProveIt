@@ -24,13 +24,10 @@ open Set
 
 namespace Fabius
 
-private theorem natPow_primrec : Primrec₂ ((· ^ ·) : ℕ → ℕ → ℕ) :=
-  Primrec₂.unpaired'.1 Nat.Primrec.pow
-
 private theorem powTwo_le_primrec :
     PrimrecRel (fun n r : ℕ => 2 ^ r ≤ n) := by
   exact Primrec.nat_le.comp
-    (natPow_primrec.comp (Primrec.const 2) Primrec.snd)
+    (primrec₂_nat_pow.comp (Primrec.const 2) Primrec.snd)
     Primrec.fst
 
 /-! ## The least logarithmic dyadic order -/
@@ -237,33 +234,35 @@ theorem abs_fabiusInv_sub_lt_inv_nat_of_le_logarithmicDeltaDenominator
 the smaller logarithmic factorial denominator. -/
 theorem fabiusInv_effectivelyUniformContinuous_logarithmic
     (F : BoundedFabius) (hF : IsFabius F) :
-    EffectivelyUniformContinuous (fabiusInv F hF) := by
-  refine ⟨inverseFabiusLogarithmicFactorialDenominator,
-    inverseFabiusLogarithmicFactorialDenominator_primrec.to_comp, ?_, ?_⟩
-  · intro n hn
-    rw [inverseFabiusLogarithmicFactorialDenominator_of_pos n hn,
-      inverseFabiusFactorialDenominator_eq]
-    positivity
-  · intro n hn u v huv
-    simpa only [one_div] using
-      abs_fabiusInv_sub_lt_inv_nat_of_lt_logarithmicFactorialDenominator
-        F hF n hn (by simpa only [one_div] using huv)
+    EffectivelyUniformContinuous (fabiusInv F hF) :=
+  fabiusInv_effectivelyUniformContinuous_of_denominator F hF
+    inverseFabiusLogarithmicFactorialDenominator
+    inverseFabiusLogarithmicFactorialDenominator_primrec.to_comp
+    (fun n hn => by
+      rw [inverseFabiusLogarithmicFactorialDenominator_of_pos n hn,
+        inverseFabiusFactorialDenominator_eq]
+      positivity)
+    (fun n hn => ⟨inverseFabiusLogarithmicOrder n,
+      (inverseFabiusLogarithmicOrder_isLeast n hn).1, by
+        rw [inverseFabiusLogarithmicFactorialDenominator_of_pos n hn]
+        exact inv_inverseFabiusFactorialDenominator_le_fabiusReal F hF _⟩)
 
 /-- Effective uniform continuity witnessed by the report-exact logarithmic
 Delta denominator.  The factorial theorem above supplies the stronger
 alternative. -/
 theorem fabiusInv_effectivelyUniformContinuous_logarithmicDelta
     (F : BoundedFabius) (hF : IsFabius F) :
-    EffectivelyUniformContinuous (fabiusInv F hF) := by
-  refine ⟨inverseFabiusLogarithmicDeltaDenominator,
-    inverseFabiusLogarithmicDeltaDenominator_primrec.to_comp, ?_, ?_⟩
-  · intro n hn
-    rw [inverseFabiusLogarithmicDeltaDenominator_of_pos n hn,
-      inverseFabiusDeltaDenominator]
-    positivity
-  · intro n hn u v huv
-    simpa only [one_div] using
-      abs_fabiusInv_sub_lt_inv_nat_of_lt_logarithmicDeltaDenominator
-        F hF n hn (by simpa only [one_div] using huv)
+    EffectivelyUniformContinuous (fabiusInv F hF) :=
+  fabiusInv_effectivelyUniformContinuous_of_denominator F hF
+    inverseFabiusLogarithmicDeltaDenominator
+    inverseFabiusLogarithmicDeltaDenominator_primrec.to_comp
+    (fun n hn => by
+      rw [inverseFabiusLogarithmicDeltaDenominator_of_pos n hn,
+        inverseFabiusDeltaDenominator]
+      positivity)
+    (fun n hn => ⟨inverseFabiusLogarithmicOrder n,
+      (inverseFabiusLogarithmicOrder_isLeast n hn).1, by
+        rw [inverseFabiusLogarithmicDeltaDenominator_of_pos n hn]
+        exact inv_inverseFabiusDeltaDenominator_le_fabiusReal F hF _⟩)
 
 end Fabius

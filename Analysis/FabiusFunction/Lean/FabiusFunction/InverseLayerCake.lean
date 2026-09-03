@@ -329,6 +329,31 @@ theorem intervalIntegral_mul_comp_of_lt_iff_lt_of_absolutelyContinuousOnInterval
     (intervalIntegral_mul_comp_sub_of_lt_iff_lt_of_absolutelyContinuousOnInterval
       C Q hab hcd hC hQ hinv φ hφ Ψ hΨ)
 
+/-! ### The Fabius clock hypotheses
+
+The three facts every Fabius instance of the generic identities needs:
+both clocks map the unit interval into itself, and they are inverse
+strict order equivalences there. -/
+
+/-- `fabiusReal` maps the unit interval into itself (it maps all of `ℝ`
+into it). -/
+theorem fabiusReal_mapsTo_Icc (F : BoundedFabius) :
+    MapsTo (fabiusReal F) (Icc (0 : ℝ) 1) (Icc (0 : ℝ) 1) :=
+  fun x _ => ⟨fabiusReal_nonneg F x, fabiusReal_le_one F x⟩
+
+/-- The totalized inverse maps the unit interval into itself. -/
+theorem fabiusInv_mapsTo_Icc (F : BoundedFabius) (hF : IsFabius F) :
+    MapsTo (fabiusInv F hF) (Icc (0 : ℝ) 1) (Icc (0 : ℝ) 1) :=
+  fun u _ => fabiusInv_mem_Icc F hF u
+
+/-- The strict order equivalence between the Fabius clocks on the unit
+interval, in the binder shape the generic layer-cake theorems consume. -/
+theorem fabiusReal_lt_iff_lt_fabiusInv_of_mem (F : BoundedFabius)
+    (hF : IsFabius F) :
+    ∀ ⦃x u : ℝ⦄, x ∈ Icc (0 : ℝ) 1 → u ∈ Icc (0 : ℝ) 1 →
+      (fabiusReal F x < u ↔ x < fabiusInv F hF u) :=
+  fun _ _ hx hu => fabiusReal_lt_iff_lt_fabiusInv F hF hx hu
+
 /-- **Weighted inverse layer cake for the Fabius clocks.**  Integrating a
 primitive at `fabiusInv F hF u` is equivalent to integrating the complementary
 weight above `fabiusReal F x`.  This is the Banach-valued and complex-weighted
@@ -343,19 +368,11 @@ theorem intervalIntegral_smul_intervalIntegral_fabiusInv
     (∫ u in (0 : ℝ)..1,
         φ u • (∫ x in (0 : ℝ)..fabiusInv F hF u, ψ x)) =
       ∫ x in (0 : ℝ)..1,
-        (∫ u in fabiusReal F x..1, φ u) • ψ x := by
-  apply intervalIntegral_smul_intervalIntegral_of_lt_iff_lt
-    (C := fabiusReal F) (Q := fabiusInv F hF)
-  · norm_num
-  · norm_num
-  · intro x _hx
-    exact ⟨fabiusReal_nonneg F x, fabiusReal_le_one F x⟩
-  · intro u _hu
-    exact fabiusInv_mem_Icc F hF u
-  · intro x u hx hu
-    exact fabiusReal_lt_iff_lt_fabiusInv F hF hx hu
-  · exact hφ
-  · exact hψ
+        (∫ u in fabiusReal F x..1, φ u) • ψ x :=
+  intervalIntegral_smul_intervalIntegral_of_lt_iff_lt (fabiusReal F)
+    (fabiusInv F hF) zero_le_one zero_le_one (fabiusReal_mapsTo_Icc F)
+    (fabiusInv_mapsTo_Icc F hF) (fabiusReal_lt_iff_lt_fabiusInv_of_mem F hF)
+    φ hφ ψ hψ
 
 /-- Pointwise-`C¹` form of the weighted Fabius inverse layer cake.  If
 `Ψ(0) = 0` and `Ψ' = ψ` on `[0,1]`, then
@@ -373,21 +390,11 @@ theorem intervalIntegral_smul_comp_fabiusInv
     (hderiv : ∀ x ∈ Icc (0 : ℝ) 1, HasDerivAt Ψ (ψ x) x) :
     (∫ u in (0 : ℝ)..1, φ u • Ψ (fabiusInv F hF u)) =
       ∫ x in (0 : ℝ)..1,
-        (∫ u in fabiusReal F x..1, φ u) • ψ x := by
-  apply intervalIntegral_smul_comp_of_lt_iff_lt
-    (C := fabiusReal F) (Q := fabiusInv F hF)
-  · norm_num
-  · norm_num
-  · intro x _hx
-    exact ⟨fabiusReal_nonneg F x, fabiusReal_le_one F x⟩
-  · intro u _hu
-    exact fabiusInv_mem_Icc F hF u
-  · intro x u hx hu
-    exact fabiusReal_lt_iff_lt_fabiusInv F hF hx hu
-  · exact hφ
-  · exact hψ
-  · exact hΨ0
-  · exact hderiv
+        (∫ u in fabiusReal F x..1, φ u) • ψ x :=
+  intervalIntegral_smul_comp_of_lt_iff_lt (fabiusReal F) (fabiusInv F hF)
+    zero_le_one zero_le_one (fabiusReal_mapsTo_Icc F)
+    (fabiusInv_mapsTo_Icc F hF) (fabiusReal_lt_iff_lt_fabiusInv_of_mem F hF)
+    φ hφ Ψ ψ hψ hΨ0 hderiv
 
 /-- **Absolutely-continuous weighted inverse layer cake for the Fabius
 clocks.**  For every real or complex interval-integrable weight `φ` and every
@@ -407,20 +414,11 @@ theorem intervalIntegral_mul_comp_fabiusInv_of_absolutelyContinuousOnInterval
     (hΨ0 : Ψ 0 = 0) :
     (∫ u in (0 : ℝ)..1, φ u * (Ψ (fabiusInv F hF u) : 𝕜)) =
       ∫ x in (0 : ℝ)..1,
-        ((deriv Ψ x : ℝ) : 𝕜) * (∫ u in fabiusReal F x..1, φ u) := by
-  apply intervalIntegral_mul_comp_of_lt_iff_lt_of_absolutelyContinuousOnInterval
-    (C := fabiusReal F) (Q := fabiusInv F hF)
-  · norm_num
-  · norm_num
-  · intro x _hx
-    exact ⟨fabiusReal_nonneg F x, fabiusReal_le_one F x⟩
-  · intro u _hu
-    exact fabiusInv_mem_Icc F hF u
-  · intro x u hx hu
-    exact fabiusReal_lt_iff_lt_fabiusInv F hF hx hu
-  · exact hφ
-  · exact hΨ
-  · exact hΨ0
+        ((deriv Ψ x : ℝ) : 𝕜) * (∫ u in fabiusReal F x..1, φ u) :=
+  intervalIntegral_mul_comp_of_lt_iff_lt_of_absolutelyContinuousOnInterval
+    (fabiusReal F) (fabiusInv F hF) zero_le_one zero_le_one
+    (fabiusReal_mapsTo_Icc F) (fabiusInv_mapsTo_Icc F hF)
+    (fabiusReal_lt_iff_lt_fabiusInv_of_mem F hF) φ hφ Ψ hΨ hΨ0
 
 /-- **Weighted area identity for the inverse Fabius function.**  Every
 integrable real weight satisfies
