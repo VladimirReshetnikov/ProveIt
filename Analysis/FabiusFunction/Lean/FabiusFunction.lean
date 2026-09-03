@@ -90,6 +90,7 @@ import FabiusFunction.ExpAddLog
 import FabiusFunction.SquareRootSeries
 import FabiusFunction.PowerSumOrdinaryBell
 import FabiusFunction.StirlingParityBitwise
+import FabiusFunction.StirlingSecondReverseRow
 import FabiusFunction.SymmetricFunctionTransform
 import FabiusFunction.SymmetricFunctionGenerating
 import FabiusFunction.FiniteQBinomialCore
@@ -648,6 +649,8 @@ import FabiusFunction.IntegerParameterTranslation
 import FabiusFunction.MultisetInversions
 import FabiusFunction.GeometricSimplexReindex
 import FabiusFunction.RatioExpansion
+import FabiusFunction.ThetaHeatEquation
+import FabiusFunction.QPochhammerModularAsymptotic
 import FabiusFunction.FormalQBinomial
 import FabiusFunction.BorweinReciprocity
 import FabiusFunction.GaussianUnimodality

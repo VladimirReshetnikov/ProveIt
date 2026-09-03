@@ -274,7 +274,11 @@ STATUS = {
    r"\lean{Fabius.second_reverse_column} (\lean{StirlingSecondReverseColumn}), by the "
    r"column differential equation $(1-\EulerE^{-x})F_k'=kF_k$ "
    r"(\lean{Fabius.one_sub_altSeries_mul_derivative_egfA_stirlingSecond}); "
-   r"\cref{eq:second-reverse-row} is not formalized"),
+   r"\cref{eq:second-reverse-row} is not formalized, though its series step is: the "
+   r"coefficients of $(1+t)\log(1+t)-t$ are \lean{Fabius.coeff_logTail} and its value "
+   r"at $u=\EulerE^x-1$ is \lean{Fabius.subst_logTail} "
+   r"(\lean{StirlingSecondReverseRow}), which is what lets the row identity be proved "
+   r"in one variable rather than two"),
  'thm:eulerian-stirling': ('Lean',
    r"\lean{Fabius.sum_eulerianNumber_mul_X_pow_eq_sum_stirlingSecond} (\lean{EulerianStirling}), "
    r"as an identity in $R[[t]]$ over any commutative ring $R$, from the rising-factorial "
