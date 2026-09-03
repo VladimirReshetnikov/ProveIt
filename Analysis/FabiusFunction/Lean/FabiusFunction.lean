@@ -258,6 +258,7 @@ import FabiusFunction.HalfIntegerOddDFT
 import FabiusFunction.SummableCyclicAlias
 import FabiusFunction.HalfIntegerAliasIdentity
 import FabiusFunction.AliasDyadicBridge
+import FabiusFunction.LambertShiftInverse
 import FabiusFunction.CyclicCharacterSums
 import FabiusFunction.AliasErrorBound
 import FabiusFunction.DyadicDerivativeFiltration
