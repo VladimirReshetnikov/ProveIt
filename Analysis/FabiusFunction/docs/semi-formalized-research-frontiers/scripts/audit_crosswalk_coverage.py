@@ -32,7 +32,9 @@ ENV = re.compile(
     r'(?:\[[^\]]*\])?'
     r'\s*(?:\\label(?:\[[^\]]*\])?\{([^}]*)\})?',
     re.S)
-LEAN = re.compile(r'\\(?:lean(?:Part|Partx)?|decl)\{')
+# `\path{Fabius.name}` is the Spectra and Arithmetic volume's citation form
+# (that volume defines no `\lean` macro).
+LEAN = re.compile(r'\\(?:lean(?:Part|Partx)?|decl)\{|\\path\{Fabius\.')
 # Labels named by a cross-reference: \cref{a,b}, \Cref{a}, \ref{a}, \eqref{a}.
 XREF = re.compile(r'\\(?:[cC]ref|ref|eqref)\{([^}]*)\}')
 # A unit of a ledger: a paragraph, or a row of a table (ended by \\).
@@ -205,10 +207,12 @@ def main(argv):
         if note:
             print(note)
             continue
-        for kind, label in gaps[:12]:
+        # AUDIT_ALL=1 in the environment lists every gap instead of the first 12.
+        cap = len(gaps) if os.environ.get('AUDIT_ALL') else 12
+        for kind, label in gaps[:cap]:
             print('      %-12s %s' % (kind, label))
-        if len(gaps) > 12:
-            print('      ... and %d more' % (len(gaps) - 12))
+        if len(gaps) > cap:
+            print('      ... and %d more' % (len(gaps) - cap))
 
     print()
     print('TOTAL  cited %d   disclaimed %d   NO POINTER %d'

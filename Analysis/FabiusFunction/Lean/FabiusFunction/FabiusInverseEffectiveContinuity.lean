@@ -1,6 +1,7 @@
 import FabiusFunction.FabiusComputability
 import FabiusFunction.FabiusRecurrenceSequence
 import FabiusFunction.InverseModulus
+import FabiusFunction.PrimrecNatPow
 
 /-!
 # Effective continuity of the inverse Fabius function
@@ -31,9 +32,6 @@ set_option autoImplicit false
 open Finset Set
 
 namespace Fabius
-
-private theorem natPow_primrec : Primrec₂ ((· ^ ·) : ℕ → ℕ → ℕ) :=
-  Primrec₂.unpaired'.1 Nat.Primrec.pow
 
 private theorem choose_succ_two_eq_triangle (r : ℕ) :
     (r + 1).choose 2 = r * (r + 1) / 2 := by
@@ -71,7 +69,7 @@ private theorem inverseFabiusFactorialDenominatorStep_primrec :
     Primrec₂ (fun r d : ℕ => d * 2 ^ (r + 1) * (r + 2)) := by
   exact Primrec.nat_mul.comp₂
     (Primrec.nat_mul.comp₂ Primrec₂.right
-      (natPow_primrec.comp₂ (Primrec.const 2).to₂
+      (primrec₂_nat_pow.comp₂ (Primrec.const 2).to₂
         (Primrec.succ.comp₂ Primrec₂.left)))
     (Primrec.succ.comp₂ (Primrec.succ.comp₂ Primrec₂.left))
 
@@ -100,9 +98,9 @@ theorem inverseFabiusDeltaDenominator_primrec :
     Primrec.nat_div.comp
       (Primrec.nat_mul.comp Primrec.id hsucc) (Primrec.const 2)
   have hpowTwo : Primrec (fun r : ℕ => 2 ^ (r * (r + 1) / 2)) :=
-    natPow_primrec.comp (Primrec.const 2) htriangle
+    primrec₂_nat_pow.comp (Primrec.const 2) htriangle
   have hpower : Primrec (fun r : ℕ => (r + 1) ^ (r + 1)) :=
-    natPow_primrec.comp hsucc hsucc
+    primrec₂_nat_pow.comp hsucc hsucc
   exact (Primrec.nat_mul.comp hpowTwo hpower).of_eq fun r => by
     rw [inverseFabiusDeltaDenominator, choose_succ_two_eq_triangle]
 
@@ -241,16 +239,34 @@ private theorem inverse_two_pow_mem_Icc (r : ℕ) :
   refine ⟨by positivity, ?_⟩
   exact (inv_le_one₀ (by positivity)).2 (one_le_pow₀ (by norm_num))
 
+/-- **Any certified lower bound for the dyadic endpoint mass is an inverse
+modulus**: if `c ≤ F(2⁻ʳ)` and `|u - v| < c`, then `|G(u) - G(v)| < 2⁻ʳ`.
+Every explicit dyadic modulus below is an instance, with `c` the reciprocal
+of a computable denominator. -/
+theorem abs_fabiusInv_sub_lt_inverse_two_pow_of_le_fabiusReal
+    (F : BoundedFabius) (hF : IsFabius F) (r : ℕ) {c u v : ℝ}
+    (hc : c ≤ fabiusReal F ((2 : ℝ) ^ r)⁻¹) (huv : |u - v| < c) :
+    |fabiusInv F hF u - fabiusInv F hF v| < ((2 : ℝ) ^ r)⁻¹ :=
+  abs_fabiusInv_sub_lt_of_abs_sub_lt_fabiusReal F hF
+    (inverse_two_pow_mem_Icc r) (huv.trans_le hc)
+
+/-- Closed-threshold form of
+`abs_fabiusInv_sub_lt_inverse_two_pow_of_le_fabiusReal`. -/
+theorem abs_fabiusInv_sub_le_inverse_two_pow_of_le_fabiusReal
+    (F : BoundedFabius) (hF : IsFabius F) (r : ℕ) {c u v : ℝ}
+    (hc : c ≤ fabiusReal F ((2 : ℝ) ^ r)⁻¹) (huv : |u - v| ≤ c) :
+    |fabiusInv F hF u - fabiusInv F hF v| ≤ ((2 : ℝ) ^ r)⁻¹ :=
+  abs_fabiusInv_sub_le_of_abs_sub_le_fabiusReal F hF
+    (inverse_two_pow_mem_Icc r) (huv.trans hc)
+
 /-- The stronger factorial-denominator dyadic inverse modulus. -/
 theorem abs_fabiusInv_sub_lt_inverse_two_pow_of_lt_factorialDenominator
     (F : BoundedFabius) (hF : IsFabius F) (r : ℕ) {u v : ℝ}
     (huv : |u - v| <
       ((inverseFabiusFactorialDenominator r : ℝ))⁻¹) :
-    |fabiusInv F hF u - fabiusInv F hF v| < ((2 : ℝ) ^ r)⁻¹ := by
-  apply abs_fabiusInv_sub_lt_of_abs_sub_lt_fabiusReal F hF
-    (inverse_two_pow_mem_Icc r)
-  exact huv.trans_le
-    (inv_inverseFabiusFactorialDenominator_le_fabiusReal F hF r)
+    |fabiusInv F hF u - fabiusInv F hF v| < ((2 : ℝ) ^ r)⁻¹ :=
+  abs_fabiusInv_sub_lt_inverse_two_pow_of_le_fabiusReal F hF r
+    (inv_inverseFabiusFactorialDenominator_le_fabiusReal F hF r) huv
 
 /-- Closed-threshold companion to the factorial-denominator dyadic inverse
 modulus.  This form is suited to certified interval algorithms. -/
@@ -258,53 +274,64 @@ theorem abs_fabiusInv_sub_le_inverse_two_pow_of_le_factorialDenominator
     (F : BoundedFabius) (hF : IsFabius F) (r : ℕ) {u v : ℝ}
     (huv : |u - v| ≤
       ((inverseFabiusFactorialDenominator r : ℝ))⁻¹) :
-    |fabiusInv F hF u - fabiusInv F hF v| ≤ ((2 : ℝ) ^ r)⁻¹ := by
-  apply abs_fabiusInv_sub_le_of_abs_sub_le_fabiusReal F hF
-    (inverse_two_pow_mem_Icc r)
-  exact huv.trans
-    (inv_inverseFabiusFactorialDenominator_le_fabiusReal F hF r)
+    |fabiusInv F hF u - fabiusInv F hF v| ≤ ((2 : ℝ) ^ r)⁻¹ :=
+  abs_fabiusInv_sub_le_inverse_two_pow_of_le_fabiusReal F hF r
+    (inv_inverseFabiusFactorialDenominator_le_fabiusReal F hF r) huv
 
 /-- The manuscript's strict-threshold explicit dyadic inverse modulus. -/
 theorem abs_fabiusInv_sub_lt_inverse_two_pow_of_lt_deltaDenominator
     (F : BoundedFabius) (hF : IsFabius F) (r : ℕ) {u v : ℝ}
     (huv : |u - v| < ((inverseFabiusDeltaDenominator r : ℝ))⁻¹) :
-    |fabiusInv F hF u - fabiusInv F hF v| < ((2 : ℝ) ^ r)⁻¹ := by
-  apply abs_fabiusInv_sub_lt_of_abs_sub_lt_fabiusReal F hF
-    (inverse_two_pow_mem_Icc r)
-  exact huv.trans_le
-    (inv_inverseFabiusDeltaDenominator_le_fabiusReal F hF r)
+    |fabiusInv F hF u - fabiusInv F hF v| < ((2 : ℝ) ^ r)⁻¹ :=
+  abs_fabiusInv_sub_lt_inverse_two_pow_of_le_fabiusReal F hF r
+    (inv_inverseFabiusDeltaDenominator_le_fabiusReal F hF r) huv
 
 /-- Closed-threshold companion to the manuscript's elementary dyadic inverse
 modulus. -/
 theorem abs_fabiusInv_sub_le_inverse_two_pow_of_le_deltaDenominator
     (F : BoundedFabius) (hF : IsFabius F) (r : ℕ) {u v : ℝ}
     (huv : |u - v| ≤ ((inverseFabiusDeltaDenominator r : ℝ))⁻¹) :
-    |fabiusInv F hF u - fabiusInv F hF v| ≤ ((2 : ℝ) ^ r)⁻¹ := by
-  apply abs_fabiusInv_sub_le_of_abs_sub_le_fabiusReal F hF
-    (inverse_two_pow_mem_Icc r)
-  exact huv.trans
-    (inv_inverseFabiusDeltaDenominator_le_fabiusReal F hF r)
+    |fabiusInv F hF u - fabiusInv F hF v| ≤ ((2 : ℝ) ^ r)⁻¹ :=
+  abs_fabiusInv_sub_le_inverse_two_pow_of_le_fabiusReal F hF r
+    (inv_inverseFabiusDeltaDenominator_le_fabiusReal F hF r) huv
+
+/-- **Any computable positive denominator sequence certified at a dyadic
+order above `n` witnesses effective uniform continuity of the inverse**:
+if for every `n ≥ 1` there is an `r` with `n < 2ʳ` and
+`1/d(n) ≤ F(2⁻ʳ)`, then `d` is a modulus of continuity for `fabiusInv`.
+The three explicit witnesses of the corpus (factorial, logarithmic
+factorial, logarithmic Delta) are instances. -/
+theorem fabiusInv_effectivelyUniformContinuous_of_denominator
+    (F : BoundedFabius) (hF : IsFabius F) (d : ℕ → ℕ) (hd : Computable d)
+    (hpos : ∀ n : ℕ, 0 < n → 0 < d n)
+    (hcert : ∀ n : ℕ, 0 < n → ∃ r : ℕ, n < 2 ^ r ∧
+      ((d n : ℝ))⁻¹ ≤ fabiusReal F ((2 : ℝ) ^ r)⁻¹) :
+    EffectivelyUniformContinuous (fabiusInv F hF) := by
+  refine ⟨d, hd, hpos, ?_⟩
+  intro n hn u v huv
+  obtain ⟨r, hr, hc⟩ := hcert n hn
+  have hdyadic := abs_fabiusInv_sub_lt_inverse_two_pow_of_le_fabiusReal
+    F hF r hc (by simpa only [one_div] using huv)
+  have hpow : (n : ℝ) < (2 : ℝ) ^ r := by exact_mod_cast hr
+  have hinv : ((2 : ℝ) ^ r)⁻¹ < (n : ℝ)⁻¹ :=
+    (inv_lt_inv₀ (by positivity) (by exact_mod_cast hn)).2 hpow
+  exact hdyadic.trans (by simpa only [one_div] using hinv)
 
 /-- The totalized inverse Fabius function is effectively uniformly
 continuous.  The primitive-recursive witness is the stronger factorial
-denominator at order `n`; `n < 2 ^ n` converts its dyadic output bound to the
-reciprocal convention required by `EffectivelyUniformContinuous`. -/
+denominator at order `n` itself; `n < 2 ^ n` converts its dyadic output
+bound to the reciprocal convention required by
+`EffectivelyUniformContinuous`. -/
 theorem fabiusInv_effectivelyUniformContinuous
     (F : BoundedFabius) (hF : IsFabius F) :
-    EffectivelyUniformContinuous (fabiusInv F hF) := by
-  refine ⟨inverseFabiusFactorialDenominator,
-    inverseFabiusFactorialDenominator_primrec.to_comp, ?_, ?_⟩
-  · intro n _hn
-    rw [inverseFabiusFactorialDenominator_eq]
-    positivity
-  · intro n hn u v huv
-    have hdyadic :=
-      abs_fabiusInv_sub_lt_inverse_two_pow_of_lt_factorialDenominator
-        F hF n (by simpa only [one_div] using huv)
-    have hpow : (n : ℝ) < (2 : ℝ) ^ n := by
-      exact_mod_cast Nat.lt_two_pow_self (n := n)
-    have hinv : ((2 : ℝ) ^ n)⁻¹ < (n : ℝ)⁻¹ :=
-      (inv_lt_inv₀ (by positivity) (by exact_mod_cast hn)).2 hpow
-    exact hdyadic.trans (by simpa only [one_div] using hinv)
+    EffectivelyUniformContinuous (fabiusInv F hF) :=
+  fabiusInv_effectivelyUniformContinuous_of_denominator F hF
+    inverseFabiusFactorialDenominator
+    inverseFabiusFactorialDenominator_primrec.to_comp
+    (fun n _ => by
+      rw [inverseFabiusFactorialDenominator_eq]
+      positivity)
+    (fun n _ => ⟨n, Nat.lt_two_pow_self,
+      inv_inverseFabiusFactorialDenominator_le_fabiusReal F hF n⟩)
 
 end Fabius

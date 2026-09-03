@@ -31,9 +31,7 @@ functions developed in `BellPolynomialInversion` applies.
 * `partialBell`, `partialBell_succ_succ`, `partialBell_eq_zero_of_lt`,
   `partialBell_self`.
 * `bell_complete_eq_sum_partialBell`.
-* `partialBell_one`, `stirlingFirst_succ_succ_eq_sum`,
-  `partialBell_factorial_pred`, `lahNumber_succ_succ_eq_sum`,
-  `partialBell_factorial`.
+* `partialBell_one`, `partialBell_factorial_pred`, `partialBell_factorial`.
 -/
 
 set_option autoImplicit false
@@ -59,12 +57,15 @@ noncomputable def partialBell (x : ℕ → R) : ℕ → ℕ → R
 termination_by n _ => n
 decreasing_by omega
 
+/-- `B_{0,0} = 1`. -/
 @[simp] theorem partialBell_zero_zero (x : ℕ → R) : partialBell x 0 0 = 1 := by
   rw [partialBell]
 
+/-- `B_{0,k+1} = 0`: no partition of the empty set into `k+1` parts. -/
 @[simp] theorem partialBell_zero_succ (x : ℕ → R) (k : ℕ) : partialBell x 0 (k + 1) = 0 := by
   rw [partialBell]
 
+/-- `B_{n+1,0} = 0`: no partition of a nonempty set into no parts. -/
 @[simp] theorem partialBell_succ_zero (x : ℕ → R) (n : ℕ) : partialBell x (n + 1) 0 = 0 := by
   rw [partialBell]
 

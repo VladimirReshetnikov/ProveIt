@@ -47,8 +47,12 @@ probability generating function `P/P(1)`. -/
 noncomputable def varAtOne (P : K[X]) : K :=
   (derivative (derivative P)).eval 1 / P.eval 1 + meanAtOne P - meanAtOne P ^ 2
 
+/-- The constant polynomial `1` is the generating function of the point mass at `0`, whose mean
+is `0`.  This is the base case of `meanAtOne_prod`. -/
 @[simp] theorem meanAtOne_one : meanAtOne (1 : K[X]) = 0 := by simp [meanAtOne]
 
+/-- The point mass at `0`, with generating function `1`, has variance `0`.  This is the base case
+of `varAtOne_prod`. -/
 @[simp] theorem varAtOne_one : varAtOne (1 : K[X]) = 0 := by simp [varAtOne]
 
 /-- The mean is additive on products (independent sums). -/
@@ -64,6 +68,9 @@ theorem varAtOne_mul {A B : K[X]} (hA : A.eval 1 ≠ 0) (hB : B.eval 1 ≠ 0) :
   field_simp
   ring
 
+/-- The mean of a finite product is the sum of the means: a product of generating functions is the
+generating function of a sum of independent variables, and the first cumulant is additive.  The
+hypothesis `hf` keeps every factor — hence the whole product — nonvanishing at `1`. -/
 theorem meanAtOne_prod {ι : Type*} (s : Finset ι) (f : ι → K[X])
     (hf : ∀ i ∈ s, (f i).eval 1 ≠ 0) :
     meanAtOne (∏ i ∈ s, f i) = ∑ i ∈ s, meanAtOne (f i) := by
@@ -76,6 +83,8 @@ theorem meanAtOne_prod {ι : Type*} (s : Finset ι) (f : ι → K[X])
     rw [eval_prod]
     exact prod_ne_zero_iff.mpr hs
 
+/-- The variance of a finite product is the sum of the variances: the second cumulant is additive
+over independent summands.  As in `meanAtOne_prod`, `hf` keeps each factor nonzero at `1`. -/
 theorem varAtOne_prod {ι : Type*} (s : Finset ι) (f : ι → K[X])
     (hf : ∀ i ∈ s, (f i).eval 1 ≠ 0) :
     varAtOne (∏ i ∈ s, f i) = ∑ i ∈ s, varAtOne (f i) := by
@@ -90,11 +99,16 @@ theorem varAtOne_prod {ι : Type*} (s : Finset ι) (f : ι → K[X])
 
 /-! ### The `q`-integers -/
 
+/-- `(X^n)'(1) = n`: the contribution of the monomial `X^n` to the first moment of a generating
+function, the summand used to build `eval_one_derivative_qInt_X` term by term. -/
 theorem eval_one_derivative_X_pow (n : ℕ) :
     (derivative ((X : K[X]) ^ n)).eval 1 = n := by
   rw [derivative_X_pow]
   simp
 
+/-- `(X^n)''(1) = n(n-1)`, the second falling factorial of `n`.  This is the summand behind
+`eval_one_derivative_derivative_qInt_X`; the case `n = 0` is treated separately because
+`derivative_X_pow` there produces the exponent `0 - 1` in `ℕ`. -/
 theorem eval_one_derivative_derivative_X_pow (n : ℕ) :
     (derivative (derivative ((X : K[X]) ^ n))).eval 1 = (n : K) * ((n : K) - 1) := by
   rcases n with _ | k
@@ -105,6 +119,8 @@ theorem eval_one_derivative_derivative_X_pow (n : ℕ) :
     push_cast
     ring
 
+/-- `[m]_X` evaluated at `X = 1` is `m`: the `q`-integer `1 + X + ⋯ + X^{m-1}` degenerates to the
+ordinary integer `m`, so it is the total mass of the uniform distribution on `{0, …, m-1}`. -/
 theorem eval_one_qInt_X (m : ℕ) : (qInt (X : K[X]) m).eval 1 = m := by
   simp [qInt, eval_finsetSum]
 
@@ -112,6 +128,8 @@ section CharZeroField
 
 variable [CharZero K]
 
+/-- `([m]_X)'(1) = 0 + 1 + ⋯ + (m-1) = m(m-1)/2`, the unnormalized first moment of the uniform
+distribution on `{0, …, m-1}`. -/
 theorem eval_one_derivative_qInt_X (m : ℕ) :
     (derivative (qInt (X : K[X]) m)).eval 1 = (m : K) * ((m : K) - 1) / 2 := by
   induction m with
@@ -121,6 +139,8 @@ theorem eval_one_derivative_qInt_X (m : ℕ) :
     push_cast
     ring
 
+/-- `([m]_X)''(1) = ∑_{i<m} i(i-1) = m(m-1)(m-2)/3`, the unnormalized second factorial moment of
+the uniform distribution on `{0, …, m-1}` (equal to `2·C(m,3)`). -/
 theorem eval_one_derivative_derivative_qInt_X (m : ℕ) :
     (derivative (derivative (qInt (X : K[X]) m))).eval 1 =
       (m : K) * ((m : K) - 1) * ((m : K) - 2) / 3 := by
@@ -152,6 +172,9 @@ end CharZeroField
 
 /-! ### The Gaussian coefficient -/
 
+/-- `1 - X^{m+1} = (1 - X) [m+1]_X`: the telescoping identity that lets a factor `1 - X^{j+1}` of a
+finite `q`-Pochhammer product be traded for the `q`-integer `[j+1]_X` times `1 - X`.  It is
+`X_sub_one_mul_qInt` with both sides negated. -/
 theorem one_sub_X_pow_succ_eq (m : ℕ) :
     (1 : K[X]) - X ^ (m + 1) = (1 - X) * qInt (X : K[X]) (m + 1) := by
   linear_combination X_sub_one_mul_qInt (R := K) m
@@ -179,12 +202,18 @@ theorem gaussianBinomial_X_mul_prod_qInt {n k : ℕ} (hk : k ≤ n) :
   rw [mul_comm]
   exact mul_left_cancel₀ hne h
 
+/-- The Gaussian coefficient specializes at `q = 1` to the ordinary binomial coefficient:
+`[n,k]_X |_{X=1} = C(n,k)`.  This is the normalizing constant `P(1)` that turns `[n,k]_X` into the
+probability generating function of the inversion number. -/
 theorem eval_one_gaussianBinomial_X (n k : ℕ) :
     (gaussianBinomial (X : K[X]) n k).eval 1 = (n.choose k : K) := by
   have := map_gaussianBinomial (evalRingHom (1 : K)) (X : K[X]) n k
   rw [coe_evalRingHom, eval_X, gaussianBinomial_one_eq_natCast_choose] at this
   exact this
 
+/-- Telescoping the means across the factorization `[n,k]_X ∏_{j<k} [j+1]_X = ∏_{j<k} [m+1+j]_X`
+with `m = n - k`: the uniform means `(m+j)/2` on the right minus the uniform means `j/2` on the
+left sum to `km/2`, which is `E X = k(n-k)/2`. -/
 theorem sum_mean_diff (m k : ℕ) :
     ∑ j ∈ range k, (((m + 1 + j : ℕ) : K) - 1) / 2 -
       ∑ j ∈ range k, (((j + 1 : ℕ) : K) - 1) / 2 = (k : K) * m / 2 := by
@@ -195,6 +224,9 @@ theorem sum_mean_diff (m k : ℕ) :
     push_cast at ih ⊢
     linear_combination ih
 
+/-- The variance counterpart of `sum_mean_diff`: with `m = n - k`, the uniform variances
+`((m+1+j)^2-1)/12` on the right of the `q`-integer factorization minus the variances
+`((j+1)^2-1)/12` on the left sum to `km(k+m+1)/12`, which is `Var X = k(n-k)(n+1)/12`. -/
 theorem sum_var_diff (m k : ℕ) :
     ∑ j ∈ range k, (((m + 1 + j : ℕ) : K) ^ 2 - 1) / 12 -
       ∑ j ∈ range k, (((j + 1 : ℕ) : K) ^ 2 - 1) / 12 =

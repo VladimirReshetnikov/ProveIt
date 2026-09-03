@@ -301,6 +301,19 @@ Monotonicity of \(h_1\) gives \(u=\rW_1(z)\).  Finally,
 \(x=u\e^u=z-u\), which proves both identities.
 \end{proof}
 
+\paragraph{Lean status.}
+Formal, in \path{LambertShiftInverse.lean}: with \path{Fabius.lambertShift} the map
+\(f(x)=x+\W(x)\), \path{Fabius.shiftedLambertW} the root \(u\ge0\) of \(u\e^u+u=z\)
+(defined as the inverse on \([0,\infty)\) of \path{Fabius.shiftedMulExp}, whose existence is
+the intermediate value theorem on \([0,z]\) and whose uniqueness is strict monotonicity,
+\path{Fabius.shiftedLambertW_unique}), and \path{Fabius.lambertShiftInv} the difference
+\(z-u\), the theorem is the pair \path{Fabius.lambertShift_lambertShiftInv}
+(\(f(z-u)=z\)) and \path{Fabius.lambertShiftInv_eq_mul_exp} (\(z-u=u\e^u\)); the
+intermediate fact \(\W(g(z))=u\) is \path{Fabius.principalLambertW_lambertShiftInv}.  That
+\(g\) is the two-sided inverse of \(f\) on \([0,\infty)\) is
+\path{Fabius.lambertShiftInv_lambertShift} together with
+\path{Fabius.lambertShift_strictMonoOn} and \path{Fabius.lambertShift_surjOn}.
+
 \begin{corollary}[Elementary bounds]
 \label{cor:bounds}
 For every \(z>0\),
@@ -316,6 +329,13 @@ The right inequality follows from \(g(z)=z-u\) and \(u>0\).  Let
 \(h_1(v)=v\e^v+v=z+v>z=h_1(u)\).  Monotonicity gives \(u<v\), hence
 \(g(z)=z-u>z-v\).
 \end{proof}
+
+\paragraph{Lean status.}
+Formal: \path{Fabius.lambertShiftInv_lt_self} and
+\path{Fabius.sub_principalLambertW_lt_lambertShiftInv} in \path{LambertShiftInverse.lean},
+for every \(z>0\); the second is the comparison \(u<\W(z)\)
+(\path{Fabius.shiftedLambertW_lt_principalLambertW}) read off the strict monotonicity of
+\(t\mapsto t\e^t\).
 
 Differentiating \eqref{eq:u-equation} gives
 \begin{equation}
@@ -1017,6 +1037,17 @@ substitution of the standard Lambert expansion \eqref{eq:W-log-expansion}
 proves the result.
 \end{proof}
 
+\paragraph{Lean status.}
+Partial.  The Lambert-side input, the leading two terms of \eqref{eq:W-log-expansion}, is
+formal in \path{PrincipalLambertWAtTop.lean}: the identity \(\W(x)+\log\W(x)=\log x\)
+(\path{Fabius.principalLambertW_add_log}), the bracket \(L-\ell\le\W(x)\le L\) for \(x\ge\e\)
+(\path{Fabius.principalLambertW_log_bracket}), \(\W\sim\log\) at \(+\infty\)
+(\path{Fabius.principalLambertW_isEquivalent_log}) and the two-term statement
+\(\W(x)-(L-\ell)\to0\) (\path{Fabius.tendsto_principalLambertW_sub_log_sub_log_log}).  The
+higher terms \(P_n(\ell)/L^n\), and the beyond-all-orders step
+\(g(z)-(z-\W(z))=O(L/z)\) that transfers the expansion from \(z-\W(z)\) to \(g\), are not
+formalized.
+
 In explicit form,
 \begin{align}
  g(z)\sim{}&z-L+\ell-\frac{\ell}{L}
@@ -1282,6 +1313,17 @@ The mean value theorem gives
 \(R=F(H)-F(G)=F'(\xi)(H-G)\) for some intermediate \(\xi\).
 Apply \eqref{eq:derivative-bounds}.
 \end{proof}
+
+\paragraph{Lean status.}
+The instance used below, \(F=f\), \(m=1\), \(M=2\), is formal in
+\path{LambertShiftInverse.lean}: the derivative bracket \eqref{eq:Fprime-bound} is
+\path{Fabius.one_le_deriv_lambertShift} and \path{Fabius.deriv_lambertShift_le_two} (from
+\path{Fabius.lambertShift_hasDerivAt} and the bound \(\W'\le1\),
+\path{Fabius.inv_exp_mul_add_one_le_one}), and the mean-value transfer is
+\path{Fabius.abs_sub_lambertShiftInv_le_abs_residual} (\(|H-G|\le|R|\)) and
+\path{Fabius.abs_residual_le_two_mul_abs_sub_lambertShiftInv} (\(|R|\le2|H-G|\)), for every
+\(z\ge0\) and every approximation \(H\ge0\).  The general \((m,M)\) statement is not
+separately formalized.
 
 For \(F(x)=x+\W(x)\), \eqref{eq:Wprime} gives
 \begin{equation}

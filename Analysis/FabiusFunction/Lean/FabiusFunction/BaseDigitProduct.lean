@@ -67,9 +67,13 @@ weighted by `w 0`. -/
 def windowWeight {R : Type*} [CommSemiring R] (w : ℕ → R) (q m n : ℕ) : R :=
   ∏ j ∈ range m, w (digitAt q n j)
 
+/-- The lowest base-`q` digit is the residue: `d_0 n = n mod q`. -/
 @[simp] theorem digitAt_zero (q n : ℕ) : digitAt q n 0 = n % q := by
   simp [digitAt]
 
+/-- Shifting the digit index by one is dividing the argument by `q`:
+`d_{j+1} n = d_j (n / q)`.  This is the recursion the window weights are
+peeled by. -/
 theorem digitAt_succ (q n j : ℕ) : digitAt q n (j + 1) = digitAt q (n / q) j := by
   unfold digitAt
   rw [pow_succ', ← Nat.div_div_eq_div_mul]

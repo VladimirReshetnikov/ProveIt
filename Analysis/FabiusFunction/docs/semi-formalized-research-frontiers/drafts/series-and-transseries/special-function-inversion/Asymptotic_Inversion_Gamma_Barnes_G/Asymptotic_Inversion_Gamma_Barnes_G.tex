@@ -1,0 +1,2376 @@
+\documentclass[11pt,oneside]{article}
+
+% Standalone ProveIt research note.  The source intentionally has no external
+% inputs so that the TeX/PDF pair is directly reproducible after extraction.
+\usepackage[a4paper,margin=26mm,headheight=15pt]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\IfFileExists{libertinus.sty}{\usepackage{libertinus}}{\usepackage{lmodern}}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb,amsthm,mathtools,mathrsfs,bm}
+\usepackage{booktabs,longtable,tabularx,array}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{xurl}
+\usepackage{listings}
+\usepackage[most]{tcolorbox}
+\usepackage{hyperref}
+\usepackage[nameinlink,noabbrev,capitalise]{cleveref}
+
+\definecolor{linkblue}{RGB}{24,72,124}
+\definecolor{deepgreen}{RGB}{23,102,69}
+\definecolor{deepred}{RGB}{140,42,42}
+\definecolor{deepgold}{RGB}{122,91,19}
+\definecolor{shadegray}{RGB}{246,247,249}
+\definecolor{rulegray}{RGB}{195,201,208}
+\definecolor{palered}{RGB}{251,236,236}
+\definecolor{palegold}{RGB}{251,245,230}
+\definecolor{palegreen}{RGB}{233,245,243}
+\definecolor{paleblue}{RGB}{236,243,251}
+
+\hypersetup{
+  hypertexnames=false,
+  colorlinks=true,
+  linkcolor=linkblue,
+  citecolor=deepgreen,
+  urlcolor=linkblue,
+  pdftitle={Asymptotic Inversion of the Gamma and Barnes G-Functions},
+  pdfauthor={Vladimir Reshetnikov},
+  pdfsubject={Lambert-core transseries for inverse Gamma and inverse Barnes G, with a general inversion calculus},
+  pdfkeywords={inverse gamma function, Barnes G-function, Lambert W, transseries, asymptotic inversion, Hahn series, Stirling series, Lagrange-Burmann inversion}
+}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Inverse Gamma and Barnes \(G\)}
+\fancyhead[R]{\small\nouppercase{\leftmark}}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+\setcounter{tocdepth}{2}
+\setcounter{secnumdepth}{3}
+\setlist[itemize]{leftmargin=1.5em,itemsep=0.25ex,topsep=0.6ex}
+\setlist[enumerate]{leftmargin=1.9em,itemsep=0.35ex,topsep=0.6ex}
+\allowdisplaybreaks[2]
+
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{algorithm}[theorem]{Algorithm}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\crefname{algorithm}{algorithm}{algorithms}
+\Crefname{algorithm}{Algorithm}{Algorithms}
+
+\newtcolorbox{mainbox}[1][]{%
+  enhanced,breakable,colback=paleblue,colframe=linkblue,
+  boxrule=0.7pt,arc=1.2mm,left=2mm,right=2mm,top=1.4mm,bottom=1.4mm,
+  title={Main result},fonttitle=\bfseries,#1}
+\newtcolorbox{warningbox}[1][]{%
+  enhanced,breakable,colback=palered,colframe=deepred,
+  boxrule=0.6pt,arc=1.2mm,left=2mm,right=2mm,top=1.2mm,bottom=1.2mm,
+  title={Scale warning},fonttitle=\bfseries,#1}
+\newtcolorbox{methodbox}[1][]{%
+  enhanced,breakable,colback=palegreen,colframe=deepgreen,
+  boxrule=0.6pt,arc=1.2mm,left=2mm,right=2mm,top=1.2mm,bottom=1.2mm,
+  title={Reusable method},fonttitle=\bfseries,#1}
+\newtcolorbox{summarybox}[1][]{%
+  enhanced,breakable,colback=palegold,colframe=deepgold,
+  boxrule=0.6pt,arc=1.2mm,left=2mm,right=2mm,top=1.2mm,bottom=1.2mm,
+  title={Summary},fonttitle=\bfseries,#1}
+
+\lstdefinestyle{pseudo}{%
+  basicstyle=\ttfamily\small,
+  columns=fullflexible,
+  frame=single,
+  rulecolor=\color{rulegray},
+  backgroundcolor=\color{shadegray},
+  showstringspaces=false,
+  keepspaces=true,
+  breaklines=true,
+  xleftmargin=0.4em,xrightmargin=0.4em,
+  aboveskip=0.8em,belowskip=0.8em
+}
+\lstset{style=pseudo}
+
+\newcommand{\W}{\operatorname{W}}
+\newcommand{\e}{\mathrm{e}}
+\newcommand{\dd}{\mathop{}\!\mathrm{d}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Tcal}{\mathcal{T}}
+\newcommand{\Rcal}{\mathcal{R}}
+\newcommand{\Kcal}{\mathcal{K}}
+\newcommand{\Bcal}{\mathcal{B}}
+\newcommand{\mideal}{\mathfrak{m}}
+\newcommand{\coeff}[2]{\left[#1^{#2}\right]}
+\newcommand{\littleprec}{\prec}
+\DeclareMathOperator{\Log}{Log}
+\DeclareMathOperator{\LogGamma}{LogGamma}
+\DeclareMathOperator{\InvGamma}{InvGamma}
+\DeclareMathOperator{\ord}{ord}
+\DeclareMathOperator{\Res}{Res}
+
+\begin{document}
+
+\title{\textbf{Asymptotic Inversion of the Gamma and Barnes \(G\)-Functions}\\[0.35em]
+  \Large Lambert-Core Transseries and a General Reversion Calculus}
+\author{Vladimir Reshetnikov\\
+  \small ProveIt research note}
+\date{3 September 2026}
+\maketitle
+
+\begin{abstract}
+For a large positive value \(y\), this article derives explicit all-orders
+asymptotic transseries for the large real solutions of
+\(\Gamma(x)=y\) and \(G(x)=y\), where \(G\) is the Barnes \(G\)-function.
+The leading inversions are not ordinary power-series reversions.  After taking
+logarithms, their dominant phases are respectively
+\(x(\log x-1)\) and \(\tfrac12x^2(\log x-\tfrac32)\), and their exact inverse
+cores are expressed by the Lambert \(W\)-function.  The lower-order Stirling
+terms then generate a second, exponentially finer grid of correction blocks.
+
+For the upper inverse Gamma branch, put
+\[
+ R=\log\!\left(\frac{y}{\sqrt{2\pi}}\right),\qquad
+ w=\W_0(R/\e),\qquad T=\frac{R}{w},\qquad \Lambda=\log T=w+1.
+\]
+We prove
+\[
+ \Gamma_+^{-1}(y)\sim \frac12+T+
+ \sum_{n\ge1}\frac{d_{2n-1}(\Lambda)}{T^{2n-1}},
+\]
+where \(d_{2n-1}\in\Lambda^{-1}\Q[\Lambda^{-1}]\), give a triangular
+coefficient recurrence, prove remainder transfer from Stirling's series, and
+list the first five nonzero blocks through \(T^{-9}\).  The first two blocks
+agree with the finite expansion previously proved by Gerhold, Hubalek, and
+Tomovski; the recurrence continues it to arbitrary order.  We also record the
+ordinary convergent inverse series for the second positive branch tending to
+zero.
+
+For Barnes \(G\), it is cleaner to solve \(G(z+1)=y\).  With
+\[
+ C_G=\zeta'(-1),\quad R=\log y-C_G,\quad
+ v=\W_0(4R/\e^3),\quad U=2\sqrt{R/v},\quad
+ \lambda=\frac{v+1}{2}=\log U-1,
+\]
+we obtain
+\[
+ z\sim U+\sum_{n\ge0}\frac{b_n(\lambda)}{U^n},
+ \qquad G_+^{-1}(y)=1+z.
+\]
+The coefficient functions are explicit rational Laurent polynomials in
+\(\lambda\) with coefficients in \(\Q[\tfrac12\log(2\pi)]\).  A logarithmic
+term in the forward Barnes expansion is resonant with the core slope; it
+forces the nonzero coefficientwise limit
+\[
+ \sum_{n\ge1}e_n(\lambda)q^n
+ \longrightarrow \sqrt{1+q^2/6}-1
+ \qquad(\lambda\to\infty),
+\]
+which explains the limiting constants \(1/12,-1/288,1/3456,\ldots\) in the
+odd inverse-power blocks.
+
+The two examples are instances of a general theory for phases
+\(a x^p(\log x-\beta)+\Psi(x)\).  We develop exact Lambert-core inversion,
+a Hahn-series implicit-function theorem, a support-semigroup calculus,
+triangular and Newton--Hensel algorithms, a Lagrange--B\"urmann reduction to
+near-identity reversion, denominator bounds, resonant logarithmic sectors,
+complex branch labels, residual error certificates, and transport of
+exponentially small sectors.  Formal, Poincar\'e-asymptotic, and convergent
+claims are kept separate throughout.
+\end{abstract}
+
+\noindent\textbf{Keywords.}
+Inverse Gamma function; Barnes \(G\)-function; Lambert \(W\); transseries;
+series reversion; Hahn series; Stirling series; Lagrange--B\"urmann inversion;
+Newton--Hensel lifting; exponentially improved asymptotics.
+
+{\small\tableofcontents}
+\clearpage
+
+\section{Introduction and principal formulas}
+\label{sec:introduction}
+
+The inversion of a rapidly growing special function has two logically distinct
+layers.  The first layer inverts the dominant growth law.  The second layer
+propagates every lower-order asymptotic term through the inverse map.  For
+polynomial growth the first layer is algebraic; for an exponential it is a
+logarithm; for a phase of the form \(x^p\log x\), the exact core inverse is a
+Lambert \(W\)-expression.  Gamma and Barnes \(G\) are the first two canonical
+examples of the latter class.
+
+The familiar leading estimate for inverse Gamma follows by solving Stirling's
+main term.  What is less visible in that one-line calculation is the hierarchy
+of scales.  Expanding Lambert \(W\) creates an outer series in powers of
+\(1/\log\log y\), with polynomial dependence on \(\log\log\log y\).  A fixed
+shift, such as the \(1/2\) in the optimal Gamma centering, is smaller than every
+term of that outer scale.  The Bernoulli corrections are smaller again: they
+form a grid in powers of the inverse Lambert core, with coefficient functions
+that themselves have inverse-logarithmic expansions.  Treating all these
+objects as if they were terms of one ordinary power series obscures both the
+algebra and the attainable error estimates.
+
+The Barnes problem has one further feature.  Its forward phase contains
+\(-\tfrac1{12}\log z\).  After normalization by the dominant
+\(\tfrac12z^2\log z\) phase, this term is small by \(z^{-2}\), but its factor
+\(\log z\) is of the same order as the core slope parameter.  It therefore
+survives in the coefficientwise large-slope limit and creates an algebraic
+subseries inside the inverse transseries.  This is the simplest example of the
+\emph{resonant logarithmic correction} developed in \cref{sec:resonance}.
+
+\subsection{Branch conventions}
+
+On the positive real axis, \(\Gamma\) has a unique minimum: indeed,
+\(\psi'(x)=\sum_{n\ge0}(n+x)^{-2}>0\), while
+\(\psi(x)\to-\infty\) as \(x\to0^+\) and
+\(\psi(x)\to+\infty\) as \(x\to+\infty\).  Thus \(\psi\) has one
+zero and \(\Gamma'=\Gamma\psi\) changes sign exactly once.  Consequently,
+a large positive \(y\) has two positive preimages.  We write
+\(\Gamma_+^{-1}(y)\) for the branch tending to \(+\infty\) and
+\(\Gamma_0^{-1}(y)\) for the branch tending to \(0^+\).  The Lambert-core
+transseries concerns \(\Gamma_+^{-1}\); the second branch has an ordinary
+series in \(1/y\), given in \cref{sec:gamma-small-branch}.
+
+For Barnes \(G\), we use \(\Bcal(y)\) for the eventual positive real inverse of
+\(z\mapsto G(z+1)\):
+\[
+ G(\Bcal(y)+1)=y,\qquad \Bcal(y)\longrightarrow+\infty.
+\]
+Thus the corresponding branch of the inverse of \(G\) itself is
+\[
+ G_+^{-1}(y)=1+\Bcal(y).
+\]
+This convention removes a persistent off-by-one shift from the asymptotic
+formulas.
+
+\subsection{The answer at a glance}
+
+\begin{mainbox}
+Let \(B_n(x)\) denote a Bernoulli polynomial and \(B_n=B_n(0)\).
+
+\textbf{Upper inverse Gamma.}  Define
+\begin{equation}
+ R_\Gamma=\log y-\frac12\log(2\pi),\quad
+ w=\W_0(R_\Gamma/\e),\quad
+ T=\frac{R_\Gamma}{w},\quad
+ \Lambda=\log T=w+1.
+ \label{eq:gamma-core-summary}
+\end{equation}
+Then, for each fixed \(N\ge0\),
+\begin{equation}
+ \Gamma_+^{-1}(y)
+ =\frac12+T+\sum_{n=1}^{N}
+   \frac{d_{2n-1}(\Lambda)}{T^{2n-1}}
+ +O\!\left(\frac{1}{T^{2N+1}\Lambda}\right),
+ \qquad y\to+\infty,
+ \label{eq:gamma-summary}
+\end{equation}
+where the \(d_{2n-1}\) are generated by \cref{eq:gamma-recurrence}.  In
+particular,
+\begin{align}
+ d_1(\Lambda)&=\frac{1}{24\Lambda},\label{eq:gamma-d1-summary}\\
+ d_3(\Lambda)&=-\frac{14\Lambda^2+10\Lambda+5}
+ {5760\Lambda^3},\label{eq:gamma-d3-summary}\\
+ d_5(\Lambda)&=\frac{2232\Lambda^4+1176\Lambda^3+714\Lambda^2
+ +350\Lambda+105}{2903040\Lambda^5}.
+ \label{eq:gamma-d5-summary}
+\end{align}
+
+\textbf{Upper inverse Barnes \(G\).}  Put
+\begin{equation}
+ \alpha=\frac12\log(2\pi),\quad C_G=\zeta'(-1),\quad
+ R_G=\log y-C_G,
+ \label{eq:barnes-constants-summary}
+\end{equation}
+\begin{equation}
+ v=\W_0(4R_G/\e^3),\qquad
+ U=2\sqrt{R_G/v},\qquad
+ \lambda=\frac{v+1}{2}=\log U-1.
+ \label{eq:barnes-core-summary}
+\end{equation}
+Then, for each fixed \(N\ge0\),
+\begin{equation}
+ \Bcal(y)=U+\sum_{n=0}^{N}\frac{b_n(\lambda)}{U^n}
+ +O(U^{-N-1}),
+ \qquad y\to+\infty,
+ \label{eq:barnes-summary}
+\end{equation}
+with coefficients generated by \cref{eq:barnes-recurrence}.  The first three
+are
+\begin{align}
+ b_0(\lambda)&=-\frac{\alpha}{\lambda},
+ \label{eq:barnes-b0-summary}\\
+ b_1(\lambda)&=
+ \frac{6\alpha^2\lambda-6\alpha^2+\lambda^3+\lambda^2}
+ {12\lambda^3},
+ \label{eq:barnes-b1-summary}\\
+ b_2(\lambda)&=
+ \frac{\alpha(8\alpha^2\lambda-6\alpha^2+\lambda^2)}
+ {12\lambda^5}.
+ \label{eq:barnes-b2-summary}
+\end{align}
+Finally, \(G_+^{-1}(y)=1+\Bcal(y)\).
+\end{mainbox}
+
+\subsection{Relation to earlier work}
+
+The forward asymptotic expansions used below are classical.  We take the
+Gamma form from the NIST Digital Library of Mathematical Functions
+\cite{DLMF511} and the Barnes form from DLMF and Nemes
+\cite{DLMF517,NemesBarnes}.  Corless, Gonnet, Hare, Jeffrey, and Knuth provide
+the standard analytic and asymptotic framework for Lambert \(W\)
+\cite{CorlessEtAl}.  Jeffrey and Watt discuss branches of the complex inverse
+Gamma function and record the leading Lambert approximation
+\cite{JeffreyWatt}.  Gerhold, Hubalek, and Tomovski prove the inverse-Gamma
+expansion through the \(T^{-3}\) block in notation equivalent to ours
+\cite{GerholdHubalekTomovski}.  The present derivation recovers those terms,
+continues them by a closed triangular recurrence, treats Barnes \(G\) in the
+same framework, and isolates the general support and resonance mechanisms.
+
+No assertion of convergence is hidden in the symbol \(\sim\).  Stirling's
+Bernoulli series is generally divergent, so the inverse block expansions are
+Poincar\'e asymptotic transseries.  A finite truncation is rigorous once the
+corresponding forward remainder is controlled; \cref{sec:residuals} explains
+that transfer.  Exponentially improved forward expansions lead to deeper
+inverse sectors, but they do not make the untruncated Bernoulli series
+convergent.
+
+\begin{warningbox}
+There are three different operations that are easily conflated:
+\begin{enumerate}
+\item retaining Lambert \(W\) exactly and expanding only the lower-order
+      phase corrections;
+\item expanding Lambert \(W\) itself in iterated logarithms;
+\item optimally truncating the divergent Bernoulli sector and then adding
+      exponentially small terms.
+\end{enumerate}
+They correspond to three nested asymptotic levels.  An equality or error term
+valid at one level need not survive a reordering at another.
+\end{warningbox}
+
+\section{Exact inversion of the Lambert core}
+\label{sec:core}
+
+\subsection{The model phase}
+
+Let
+\begin{equation}
+ \Phi_0(x)=a x^p(\log x-\beta),
+ \qquad a>0,\quad p>0,
+ \label{eq:general-core}
+\end{equation}
+and suppose first that all quantities are positive real and that the branch at
+large \(x\) is intended.  The following elementary lemma is the organizing
+identity for the whole article.
+
+\begin{lemma}[Exact Lambert-core inverse]
+\label{lem:core-inverse}
+Let \(R>0\), and define
+\begin{equation}
+ Z=\frac{pR}{a}\e^{-p\beta},\qquad
+ v=\W_0(Z),\qquad
+ X=\e^\beta\e^{v/p}
+   =\left(\frac{pR}{av}\right)^{1/p}.
+ \label{eq:general-core-variables}
+\end{equation}
+Then \(\Phi_0(X)=R\).  Moreover,
+\begin{equation}
+ \log X=\beta+\frac{v}{p},\qquad
+ \Phi_0'(X)=aX^{p-1}(v+1),
+ \label{eq:core-slope}
+\end{equation}
+and
+\begin{equation}
+ \frac{\dd X}{\dd R}=\frac{1}{aX^{p-1}(v+1)}.
+ \label{eq:core-derivative}
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Put \(u=p(\log X-\beta)\).  Equation \(\Phi_0(X)=R\) is equivalent to
+\[
+ \frac{a}{p}\e^{p\beta}u\e^u=R,
+\]
+or \(u\e^u=Z\).  Thus \(u=v=\W_0(Z)\), which gives
+\cref{eq:general-core-variables}.  Differentiating
+\(a x^p(\log x-\beta)\) and substituting
+\(p(\log X-\beta)=v\) yields \cref{eq:core-slope}; the inverse-function
+formula then gives \cref{eq:core-derivative}.
+\end{proof}
+
+The derivative in \cref{eq:core-slope} identifies the universal divisor
+\(v+1\) that appears in every correction coefficient.  It also explains why a
+small phase residual should be divided by \(aX^{p-1}(v+1)\), not merely by the
+leading power \(X^{p-1}\).
+
+\subsection{The outer iterated-logarithmic layer}
+
+For \(|Z|\to\infty\) in a fixed sector avoiding the standard cuts, write
+\[
+ L_1=\log Z,
+ \qquad L_2=\log L_1.
+\]
+The classical expansion
+\begin{equation}
+ \W(Z)\sim L_1-L_2+\frac{L_2}{L_1}
+ +\frac{L_2(-2+L_2)}{2L_1^2}
+ +\frac{L_2(6-9L_2+2L_2^2)}{6L_1^3}+\cdots
+ \label{eq:W-outer}
+\end{equation}
+turns \(X=(pR/(av))^{1/p}\) into a polynomial-logarithmic transseries in
+\(1/L_1\).  We deliberately keep \(v=\W(Z)\) exact for most of the article.
+Doing so packages infinitely many outer logarithmic terms into one analytic
+quantity and exposes the much smaller correction grid generated by the
+remainder of the phase.
+
+Define
+\begin{equation}
+ q=X^{-1}=\e^{-\beta-v/p}.
+ \label{eq:q-general}
+\end{equation}
+As \(v\to+\infty\),
+\begin{equation}
+ q\littleprec v^{-N}\qquad\text{for every fixed }N>0.
+ \label{eq:q-beyond-v}
+\end{equation}
+Thus powers of \(q\) are beyond all orders of the coefficient scale
+\(v^{-1}\).  The natural inverse object is consequently a two-level
+transseries: a Hahn series in \(q\), whose coefficients are rational or
+formal Laurent series in \(v^{-1}\).
+
+\section{Normalized displacement and the triangular inverse theorem}
+\label{sec:triangular}
+
+\subsection{The exact normalized equation}
+
+Consider a perturbed phase
+\begin{equation}
+ \Phi(x)=a x^p(\log x-\beta)+C+\Psi(x)
+ \label{eq:perturbed-phase}
+\end{equation}
+and the equation \(\Phi(x)=Y\).  Set \(R=Y-C\), construct \(v,X,q\) by
+\cref{eq:general-core-variables,eq:q-general}, and write
+\begin{equation}
+ x=X(1+\epsilon).
+ \label{eq:relative-displacement}
+\end{equation}
+After division by \(aX^p\), the core displacement is
+\begin{equation}
+ \Kcal_{p,v}(\epsilon)
+ =(1+\epsilon)^p\left(\frac{v}{p}+\log(1+\epsilon)\right)-\frac{v}{p}.
+ \label{eq:kernel-general}
+\end{equation}
+The normalized perturbation is
+\begin{equation}
+ \Rcal(q,v,\epsilon)
+ =\frac{\Psi(X(1+\epsilon))}{aX^p}.
+ \label{eq:normalized-remainder}
+\end{equation}
+Hence the inverse problem is exactly
+\begin{equation}
+ \Kcal_{p,v}(\epsilon)+\Rcal(q,v,\epsilon)=0.
+ \label{eq:normalized-equation}
+\end{equation}
+
+The Taylor coefficients of the universal kernel have a compact closed form:
+\begin{equation}
+ \Kcal_{p,v}(\epsilon)=\sum_{n\ge1}\kappa_n(p,v)\epsilon^n,
+ \qquad
+ \kappa_n(p,v)=\frac{v}{p}\binom pn+
+ \frac{\partial}{\partial p}\binom pn.
+ \label{eq:kappa-general}
+\end{equation}
+Indeed, \((1+\epsilon)^p\log(1+\epsilon)=\partial_p(1+\epsilon)^p\).
+In particular,
+\begin{equation}
+ \kappa_1(p,v)=v+1,
+ \label{eq:kernel-linear}
+\end{equation}
+which is the normalized core slope.
+
+\subsection{Hahn-series setting}
+
+Let \(S\subset\R_{\ge0}\) be a well-ordered additive submonoid with
+\(0\in S\), and let \(\mathscr C\) be a characteristic-zero coefficient
+field containing \(p,v\) and \((v+1)^{-1}\).  Typical choices are
+\(\C(v)\), \(\C((v^{-1}))\), or a differential transseries field extending
+them.  Write
+\[
+ \mathscr C[[q^S]]
+ =\left\{\sum_{\rho\in S}c_\rho q^\rho:
+   \operatorname{supp}(c)\text{ is well ordered}\right\}
+\]
+for the corresponding Hahn ring and
+\[
+ \mideal=\left\{F\in\mathscr C[[q^S]]:\ord_qF>0\right\}
+\]
+for its positive-valuation ideal.
+
+The condition that \(S\) be well ordered is not decorative.  It ensures that
+at any prescribed exponent \(\rho\), only finitely many decompositions of
+\(\rho\) can contribute to the coefficient of a product or composition under
+the finite-type hypotheses used below.  For the two principal examples,
+\(S=2\N\) for shifted Gamma and \(S=\N\) for Barnes \(G\), so no transfinite
+bookkeeping is needed; the Hahn formulation states the closure principle that
+survives fractional powers and mixed grids.
+
+\begin{theorem}[Triangular Lambert-core inversion]
+\label{thm:triangular}
+Assume that
+\begin{equation}
+ \Rcal(q,v,E)=
+ \sum_{\substack{\rho\in S,\ \rho>0\\m\ge0}}
+ r_{\rho,m}(v)q^\rho E^m
+ \label{eq:R-hahn}
+\end{equation}
+is locally finite at every \(q\)-exponent and belongs to
+\(\mideal\mathscr C[[E]]\).  If \(v+1\) is invertible in \(\mathscr C\), then
+\cref{eq:normalized-equation} has a unique solution
+\begin{equation}
+ \epsilon(q,v)=\sum_{\substack{\gamma\in S\\\gamma>0}}
+ e_\gamma(v)q^\gamma\in\mideal.
+ \label{eq:epsilon-hahn}
+\end{equation}
+For every \(\gamma>0\), let
+\(\epsilon_{<\gamma}=\sum_{0<\delta<\gamma}e_\delta q^\delta\).  Then
+\begin{equation}
+ e_\gamma(v)=-\frac{1}{v+1}\coeff{q}{\gamma}
+ \left(
+   \sum_{n\ge2}\kappa_n(p,v)\epsilon_{<\gamma}^{\,n}
+   +\Rcal(q,v,\epsilon_{<\gamma})
+ \right).
+ \label{eq:general-triangular-recurrence}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Because \(\epsilon\in\mideal\), every nonlinear power \(\epsilon^n\),
+\(n\ge2\), has strictly larger valuation than \(\epsilon\).  Likewise, every
+monomial \(q^\rho\epsilon^m\) in \(\Rcal\) has \(\rho>0\).  Therefore the
+coefficient of \(q^\gamma\) in all terms of
+\cref{eq:normalized-equation} except \((v+1)\epsilon\) depends only on
+coefficients \(e_\delta\) with \(\delta<\gamma\).  Local finiteness makes that
+coefficient a finite sum.  Solving the coefficient equation gives
+\cref{eq:general-triangular-recurrence}; transfinite induction over the
+well-ordered support constructs a solution.
+
+For uniqueness, suppose two solutions first differ at exponent \(\gamma\).
+All nonlinear and perturbed contributions at that exponent depend only on
+lower coefficients and therefore agree.  The difference of the two equations
+is \((v+1)(e_\gamma-\widetilde e_\gamma)=0\), so the coefficients agree, a
+contradiction.
+\end{proof}
+
+\begin{corollary}[Support semigroup]
+\label{cor:support}
+If the \(q\)-support of \(\Rcal(q,v,0)\) is contained in a set \(A\subset
+\R_{>0}\), and all \(E\)-dependent coefficients of \(\Rcal\) use the same
+base exponents, then the support of \(\epsilon\) is contained in the additive
+semigroup generated by \(A\).
+\end{corollary}
+
+\begin{proof}
+The recurrence combines previously occurring exponents only by addition and
+adds base exponents from \(A\).  Induction gives the claim.
+\end{proof}
+
+\subsection{A denominator bound on an integral grid}
+
+The ubiquitous powers of the slope divisor have a simple combinatorial
+origin.
+
+\begin{proposition}[Universal slope-denominator bound]
+\label{prop:denominator-bound}
+Suppose \(S=\N\), the coefficients of \(\Rcal\) lie in a polynomial ring
+\(A[v]\), and no coefficient contains \((v+1)^{-1}\).  If
+\(\epsilon=\sum_{n\ge1}e_nq^n\), then
+\begin{equation}
+ (v+1)^{2n-1}e_n\in A[v]
+ \qquad(n\ge1).
+ \label{eq:denominator-bound}
+\end{equation}
+The exponent \(2n-1\) is an upper bound; cancellations may lower it.
+\end{proposition}
+
+\begin{proof}
+The assertion is immediate for \(n=1\).  Assume it for every lower index.
+A coefficient of \(q^n\) in a nonlinear product
+\(e_{j_1}\cdots e_{j_m}\), where \(m\ge2\) and
+\(j_1+\cdots+j_m=n\), has denominator exponent at most
+\[
+ \sum_{r=1}^m(2j_r-1)=2n-m\le2n-2.
+\]
+After the final division by \(v+1\) in
+\cref{eq:general-triangular-recurrence}, the exponent is at most \(2n-1\).
+A monomial from \(\Rcal\) carries an additional positive base exponent
+\(q^\rho\), so its indices sum to \(n-\rho<n\) and gives a strictly smaller
+bound.  This closes the induction.
+\end{proof}
+
+\subsection{Formal versus analytic meaning}
+
+\Cref{thm:triangular} is a formal implicit-function theorem.  To obtain an
+asymptotic theorem for an analytic function, one also needs:
+\begin{enumerate}
+\item a forward Poincar\'e expansion for \(\Psi\), with a remainder uniform in
+      the sector or interval under consideration;
+\item eventual nonvanishing of \(\Phi'(x)\);
+\item a residual-to-root estimate, supplied in \cref{sec:residuals}.
+\end{enumerate}
+The formal recurrence then computes a candidate truncation, while the analytic
+hypotheses prove that the exact inverse differs from it by the stated next
+scale.  This separation prevents a common error: formal existence in a Hahn
+ring does not imply convergence of the resulting infinite series.
+
+\section{Equivalent reversion mechanisms}
+\label{sec:mechanisms}
+
+The normalized displacement recurrence is the most efficient route to the
+explicit coefficients in this article.  Two complementary formulations are
+valuable both conceptually and computationally: a reduction to near-identity
+reversion in the phase coordinate, and a perturbation expansion in a formal
+coupling parameter.
+
+\subsection{Phase-coordinate reduction and Lagrange--B\"urmann inversion}
+\label{sec:phase-coordinate}
+
+Let \(h=\Phi_0^{-1}\) denote the chosen Lambert-core inverse.  Introduce the
+phase coordinate \(u=\Phi_0(x)\).  Then
+\begin{equation}
+ \Phi(h(u))=u+C+A(u),
+ \qquad A(u)=\Psi(h(u)).
+ \label{eq:phase-coordinate-map}
+\end{equation}
+After replacing \(Y\) by \(R=Y-C\), inversion of \(\Phi\) factors as
+\begin{equation}
+ \Phi^{-1}(Y)=h\!\left((I+A)^{-1}(R)\right),
+ \qquad (I+A)(u)=u+A(u).
+ \label{eq:inverse-factorization}
+\end{equation}
+Thus every Lambert-core problem can be reduced to the near-identity reversion
+calculus already natural for polynomial-logarithmic transseries.
+
+\begin{theorem}[Lagrange--B\"urmann phase reversion]
+\label{thm:lagrange-phase}
+Let \(\mathscr D\) be a differential transseries algebra in which the following
+family is locally finite in the chosen valuation.  Then
+\begin{equation}
+ (I+A)^{-1}(R)
+ =R+\sum_{n\ge1}\frac{(-1)^n}{n!}
+ \left(\frac{\dd}{\dd R}\right)^{n-1}A(R)^n.
+ \label{eq:lagrange-near-identity}
+\end{equation}
+Consequently,
+\begin{equation}
+ \Phi^{-1}(Y)
+ =h\!\left(
+ R+\sum_{n\ge1}\frac{(-1)^n}{n!}
+ D_R^{n-1}A(R)^n
+ \right).
+ \label{eq:lagrange-core-composed}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+The classical Lagrange--B\"urmann identity for the inverse of
+\(u\mapsto u+A(u)\) gives \cref{eq:lagrange-near-identity}.  In a formal
+transseries algebra, the only additional issue is summability: at every
+prescribed monomial, only finitely many summands may contribute.  This is the
+stated local-finiteness hypothesis.  Composition with the already defined
+core inverse \(h\) gives \cref{eq:lagrange-core-composed}.
+\end{proof}
+
+\begin{remark}
+Formula \cref{eq:lagrange-near-identity} is universal but not always the best
+coefficient engine.  Repeated differentiation expands expressions that the
+normalized recurrence keeps factored.  It is most useful for structural
+proofs, for deriving the first few perturbative terms, and for importing a
+pre-existing near-identity transseries calculus.
+\end{remark}
+
+\subsection{Perturbation coefficients in closed differential form}
+
+Insert a formal parameter \(\tau\) and solve
+\begin{equation}
+ \Phi_0(x)+\tau\Psi(x)=R,
+ \qquad
+ x=X+\tau x_1+\tau^2x_2+\tau^3x_3+\cdots.
+ \label{eq:tau-perturbation}
+\end{equation}
+Write, at \(x=X\),
+\[
+ P=\Phi_0'(X),\quad Q=\Phi_0''(X),\quad S=\Phi_0'''(X),
+ \qquad
+ \Psi_j=\Psi^{(j)}(X).
+\]
+Direct Taylor expansion gives
+\begin{align}
+ x_1={}&-\frac{\Psi_0}{P},
+ \label{eq:x1-general}\\
+ x_2={}&\frac{\Psi_0\Psi_1}{P^2}
+ -\frac{Q\Psi_0^2}{2P^3},
+ \label{eq:x2-general}\\
+ x_3={}&-\frac{\Psi_0\Psi_1^2}{P^3}
+ -\frac{\Psi_0^2\Psi_2}{2P^3}
+ +\frac{3Q\Psi_0^2\Psi_1}{2P^4}
+ +\frac{S\Psi_0^3}{6P^4}
+ -\frac{Q^2\Psi_0^3}{2P^5}.
+ \label{eq:x3-general}
+\end{align}
+These identities are useful when \(\Psi\) is treated as one composite object.
+The triangular \(q\)-recurrence is finer: it separates the different scales
+inside \(\Psi\) and computes only the coefficient requested at each step.
+
+\begin{proof}[Derivation]
+Substitute \cref{eq:tau-perturbation} into the left-hand side and equate powers
+of \(\tau\).  At first order one obtains \(Px_1+\Psi_0=0\).  At second order,
+\[
+ Px_2+\frac12Qx_1^2+\Psi_1x_1=0.
+\]
+At third order,
+\[
+ Px_3+Qx_1x_2+\frac16Sx_1^3+
+ \Psi_1x_2+\frac12\Psi_2x_1^2=0.
+\]
+Solving successively and simplifying yields
+\cref{eq:x1-general,eq:x2-general,eq:x3-general}.
+\end{proof}
+
+\subsection{Newton--Hensel lifting}
+
+Define
+\[
+ F(\epsilon)=\Kcal_{p,v}(\epsilon)+\Rcal(q,v,\epsilon).
+\]
+Formal Newton iteration is
+\begin{equation}
+ \epsilon_{\mathrm{new}}
+ =\epsilon-\frac{F(\epsilon)}{\partial_\epsilon F(\epsilon)}.
+ \label{eq:newton-epsilon}
+\end{equation}
+Since \(\partial_\epsilon F(0)=v+1+O(q)\) is a unit, Newton lifting doubles the
+known \(q\)-valuation under the usual complete-ring hypotheses.  A triangular
+step is preferable when coefficients are wanted sequentially; Newton is
+preferable for high-order truncated-series arithmetic because one inversion
+of a unit replaces many scalar recurrences.
+
+\section{Resonant logarithmic corrections}
+\label{sec:resonance}
+
+The large parameter \(v\) appears in two places: in the core kernel and in the
+coefficients obtained by evaluating powers of \(\log x\).  Usually the latter
+are lower order after division by the core slope.  A term containing exactly
+one factor of \(\log x\), however, may survive coefficientwise as
+\(v\to\infty\).  Barnes \(G\) exhibits this phenomenon.
+
+\subsection{The coefficientwise limiting equation}
+
+Suppose the normalized perturbation has an expansion
+\begin{equation}
+ \Rcal(q,v,E)=vH(q,E)+R_0(q,v,E),
+ \qquad v^{-1}R_0\longrightarrow0
+ \label{eq:resonant-decomposition}
+\end{equation}
+coefficientwise in the Hahn topology.  Divide
+\cref{eq:normalized-equation} by \(v\).  Because
+\begin{equation}
+ \frac{1}{v}\Kcal_{p,v}(E)
+ \longrightarrow \frac{(1+E)^p-1}{p},
+ \label{eq:kernel-v-limit}
+\end{equation}
+the limiting correction \(E_0(q)\), when it exists, satisfies
+\begin{equation}
+ \frac{(1+E_0)^p-1}{p}+H(q,E_0)=0,
+ \qquad E_0(0)=0.
+ \label{eq:resonant-limit-equation}
+\end{equation}
+
+\begin{theorem}[Resonant coefficient limit]
+\label{thm:resonant-limit}
+Under the hypotheses of \cref{thm:triangular}, assume additionally
+\cref{eq:resonant-decomposition} and suppose that the derivative of the
+left-hand side of \cref{eq:resonant-limit-equation} at \(E_0=0,q=0\) is a
+unit.  Then the coefficients of the unique solution \(\epsilon(q,v)\) tend,
+as \(v\to\infty\), to the coefficients of the unique small solution
+\(E_0(q)\) of \cref{eq:resonant-limit-equation}.
+\end{theorem}
+
+\begin{proof}
+Apply the triangular recurrence coefficient by coefficient after division by
+\(v\).  At each exponent, the coefficient equation has a limiting nonzero
+linear divisor and depends only on already determined lower coefficients.
+Induction therefore commutes with the coefficientwise limit.
+\end{proof}
+
+For a perturbation monomial
+\(c x^{p-\rho}\log x\), substitution
+\(x=X(1+E)\) gives the leading normalized contribution
+\begin{equation}
+ \frac{c}{ap}
+ vq^\rho(1+E)^{p-\rho},
+ \label{eq:resonant-monomial}
+\end{equation}
+so such monomials are precisely the elementary sources of resonance.  Terms
+without \(\log x\) disappear from the limiting equation, while higher powers
+of \(\log x\) require a modified scaling and may change the dominant core
+rather than merely perturb it.
+
+\section{Residuals, rigorous errors, and exponential sectors}
+\label{sec:residuals}
+
+\subsection{Residual-to-root transfer}
+
+A symbolic transseries truncation becomes an analytic approximation only after
+its residual is transferred through the inverse slope.
+
+\begin{theorem}[Residual certificate]
+\label{thm:residual-certificate}
+Let \(\Phi\in C^2(I)\) be real and strictly monotone on an interval \(I\), let
+\(x\in I\) solve \(\Phi(x)=Y\), and let \(\widehat x\in I\).  If
+\(|\Phi'(t)|\ge m>0\) between \(x\) and \(\widehat x\), then
+\begin{equation}
+ |x-\widehat x|
+ \le \frac{|\Phi(\widehat x)-Y|}{m}.
+ \label{eq:mean-value-certificate}
+\end{equation}
+If the residual \(\delta=\Phi(\widehat x)-Y\) tends to zero and the relevant
+derivatives have regular asymptotics, then
+\begin{equation}
+ x-\widehat x
+ =-\frac{\delta}{\Phi'(\widehat x)}
+ +O\!\left(
+   \frac{\Phi''(\widehat x)\delta^2}{\Phi'(\widehat x)^3}
+ \right).
+ \label{eq:residual-newton-expansion}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+The first assertion is the mean-value theorem.  For the second, write
+\(x=\widehat x+h\), Taylor-expand
+\(0=\delta+\Phi'(\widehat x)h+\tfrac12\Phi''(\xi)h^2\), and use the first
+bound to control \(h\).
+\end{proof}
+
+For \cref{eq:perturbed-phase}, provided \(\Psi'(X)=o(X^{p-1}v)\),
+\begin{equation}
+ \Phi'(X)\sim aX^{p-1}(v+1).
+ \label{eq:asymptotic-inverse-slope}
+\end{equation}
+Thus a forward phase residual \(\delta\) produces an inverse error of leading
+size
+\begin{equation}
+ -\frac{\delta}{aX^{p-1}(v+1)}.
+ \label{eq:phase-error-division}
+\end{equation}
+This single division explains the \(1/\Lambda\) factor in the Gamma remainder
+and the \(1/(U\lambda)\) response of the Barnes inverse to a phase error.
+
+\subsection{Transport of exponentially small sectors}
+
+Suppose an exponentially improved forward phase contains a sector
+\begin{equation}
+ E_\sigma(x)=S_\sigma(x)\exp(-\sigma x^\mu),
+ \qquad \Re(\sigma x^\mu)>0.
+ \label{eq:forward-exponential-sector}
+\end{equation}
+At first order, its inverse contribution is
+\begin{equation}
+ \Delta x_\sigma
+ \sim-\frac{S_\sigma(X)\exp(-\sigma X^\mu)}
+ {aX^{p-1}(v+1)}.
+ \label{eq:inverse-exponential-sector}
+\end{equation}
+Products and substitutions of these sectors generate the deeper transseries
+levels in the usual way.  Stokes multipliers are transported by the same
+rule: evaluate the forward sector at the algebraic-logarithmic inverse and
+divide by the inverse slope, then iterate if higher accuracy is required.
+
+For Gamma and Barnes \(G\), explicit error bounds and exponentially improved
+forward expansions are available in the literature
+\cite{NemesGamma,NemesBarnes}.  The present article does not rederive their
+terminant-function structure.  It identifies the exact algebraic operation
+needed to convert any chosen forward hyperasymptotic truncation into an inverse
+one.
+
+\begin{warningbox}
+An optimally truncated Bernoulli series may have an exponentially small
+remainder, but the formal infinite Bernoulli series remains divergent.  The
+exponential sector belongs after optimal truncation; it must not be appended
+to an unqualified equality with the divergent series.
+\end{warningbox}
+
+\section{Complex asymptotic branches}
+\label{sec:complex-branches}
+
+The positive real formulas use \(\log y\) and \(\W_0\).  Complex inversion
+requires two branch choices.  Let
+\begin{equation}
+ Y_m=\Log y+2\pi i m-C,
+ \qquad m\in\mathbb Z,
+ \label{eq:Y-complex-branch}
+\end{equation}
+where \(\Log\) is a fixed principal determination at the target.  For every
+Lambert branch index \(k\), define
+\begin{equation}
+ v_{m,k}=\W_k\!\left(
+  \frac{pY_m}{a}\e^{-p\beta}
+ \right),
+ \qquad
+ X_{m,k}=\exp\!\left(\beta+\frac{v_{m,k}}{p}\right).
+ \label{eq:complex-core-branches}
+\end{equation}
+The exponential form is preferable to an ambiguous \(p\)-th root: it keeps
+the logarithm and Lambert branches compatible.  Whenever the forward phase
+has a uniform asymptotic expansion in a sector containing \(X_{m,k}\), the
+same normalized recurrence gives a formal inverse branch based at that core.
+A Rouch\'e argument or a Newton contraction then identifies an actual local
+inverse sheet for sufficiently large \(|Y_m|\).
+
+For Gamma, the half-shifted variable and \(p=1\) leave the pair \((m,k)\) as
+the asymptotic sheet labels.  For Barnes \(G\), \(p=2\) rotates the core by
+approximately half the change in the Lambert phase.  Global branch topology is
+more intricate because of poles or zeros of the original special function;
+the construction here is an asymptotic local classification, not a claim that
+the labels are globally one-to-one.
+
+\section{The upper inverse Gamma transseries}
+\label{sec:gamma}
+
+\subsection{Why the half-shift is the correct normal form}
+
+The standard Stirling expansion may be written, uniformly in sectors bounded
+away from the negative real axis, as
+\begin{equation}
+ \log\Gamma(z+h)
+ \sim\left(z+h-\frac12\right)\log z-z+\frac12\log(2\pi)
+ +\sum_{k=2}^{\infty}
+ \frac{(-1)^kB_k(h)}{k(k-1)z^{k-1}}.
+ \label{eq:shifted-stirling-general}
+\end{equation}
+Set \(h=1/2\) and write
+\begin{equation}
+ t=x-\frac12.
+ \label{eq:gamma-half-shift}
+\end{equation}
+Because \(B_{2k+1}(1/2)=0\), every even inverse power disappears and
+\begin{equation}
+ \log\Gamma\!\left(t+\frac12\right)
+ \sim t(\log t-1)+\frac12\log(2\pi)
+ +\sum_{k\ge1}\frac{a_k}{t^{2k-1}},
+ \label{eq:gamma-shifted-phase}
+\end{equation}
+where
+\begin{equation}
+ a_k=\frac{B_{2k}(1/2)}{2k(2k-1)}
+ =\frac{(2^{1-2k}-1)B_{2k}}{2k(2k-1)}.
+ \label{eq:gamma-ak}
+\end{equation}
+The first values are
+\begin{equation}
+ a_1=-\frac1{24},\quad
+ a_2=\frac7{2880},\quad
+ a_3=-\frac{31}{40320},\quad
+ a_4=\frac{127}{215040},\quad
+ a_5=-\frac{511}{608256}.
+ \label{eq:gamma-ak-first}
+\end{equation}
+
+The half-shift is more than a cosmetic acceleration.  It changes the support
+of the normalized perturbation from a full integer grid to the even grid
+\(2\N\).  Consequently, the displacement \(t-T\) contains only odd inverse
+powers of the Lambert core.  This parity is exact to all algebraic orders.
+
+\subsection{Core variables and normalized equation}
+
+Let \(y\to+\infty\) and define
+\begin{equation}
+ R=\log y-\frac12\log(2\pi),
+ \qquad
+ w=\W_0(R/\e),
+ \qquad
+ T=\frac{R}{w}=\e^{w+1},
+ \qquad
+ \Lambda=\log T=w+1.
+ \label{eq:gamma-core-full}
+\end{equation}
+Then
+\begin{equation}
+ T(\log T-1)=R,
+ \qquad
+ \frac{\dd}{\dd T}\bigl(T(\log T-1)\bigr)=\Lambda.
+ \label{eq:gamma-core-identities}
+\end{equation}
+Put \(q=T^{-1}\) and
+\begin{equation}
+ t=T(1+\epsilon),
+ \qquad
+ \epsilon=\sum_{n\ge1}e_n(\Lambda)q^{2n}.
+ \label{eq:gamma-epsilon}
+\end{equation}
+Subtract the core equation from \cref{eq:gamma-shifted-phase} and divide by
+\(T\).  The exact formal equation is
+\begin{equation}
+ \Lambda\epsilon+
+ (1+\epsilon)\log(1+\epsilon)-\epsilon
+ +\sum_{k\ge1}a_kq^{2k}(1+\epsilon)^{-(2k-1)}=0.
+ \label{eq:gamma-normalized}
+\end{equation}
+Since \(t-T=T\epsilon\), define
+\begin{equation}
+ d_{2n-1}(\Lambda)=e_n(\Lambda).
+ \label{eq:gamma-d-e}
+\end{equation}
+
+\begin{theorem}[All-orders upper inverse Gamma expansion]
+\label{thm:gamma-all-orders}
+Let \(\Gamma_+^{-1}\) be the positive real inverse branch tending to infinity.
+For every fixed \(N\ge0\),
+\begin{equation}
+ \Gamma_+^{-1}(y)
+ =\frac12+T+\sum_{n=1}^{N}
+ \frac{d_{2n-1}(\Lambda)}{T^{2n-1}}
+ +O\!\left(\frac{1}{T^{2N+1}\Lambda}\right),
+ \qquad y\to+\infty,
+ \label{eq:gamma-all-orders}
+\end{equation}
+where \(T,\Lambda\) are given by \cref{eq:gamma-core-full}.  The coefficients
+are uniquely determined by \(d_{2n-1}=e_n\) and
+\begin{equation}
+ e_n(\Lambda)=-\frac1\Lambda\coeff{q}{2n}
+ \left[
+ (1+E_{n-1})\log(1+E_{n-1})-E_{n-1}
+ +\sum_{k=1}^{n}a_kq^{2k}
+  (1+E_{n-1})^{-(2k-1)}
+ \right],
+ \label{eq:gamma-recurrence}
+\end{equation}
+with
+\begin{equation}
+ E_{n-1}=\sum_{j=1}^{n-1}e_j(\Lambda)q^{2j}.
+ \label{eq:gamma-trunc-epsilon}
+\end{equation}
+Moreover,
+\begin{equation}
+ d_{2n-1}(\Lambda)
+ \in \Lambda^{-1}\Q[\Lambda^{-1}],
+ \qquad
+ \deg_{\Lambda^{-1}}d_{2n-1}\le2n-1,
+ \label{eq:gamma-coefficient-ring}
+\end{equation}
+and
+\begin{equation}
+ d_{2n-1}(\Lambda)=-\frac{a_n}{\Lambda}
+ +O(\Lambda^{-2}).
+ \label{eq:gamma-leading-block}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+\Cref{eq:gamma-normalized} is the specialization of
+\cref{eq:normalized-equation} with \(p=a=\beta=1\) and support \(2\N\).
+The coefficient of \(\epsilon\) is \(\Lambda\), so
+\cref{thm:triangular} gives existence, uniqueness, and
+\cref{eq:gamma-recurrence}.
+
+We prove \cref{eq:gamma-coefficient-ring} by induction.  The nonlinear kernel
+\((1+E)\log(1+E)-E\) starts with \(E^2/2\) and has rational coefficients.
+The binomial expansions in the Bernoulli sector also have rational
+coefficients.  If the lower \(e_j\) are polynomials in \(\Lambda^{-1}\) with
+zero constant term and degree at most \(2j-1\), then every coefficient inside
+the brackets in \cref{eq:gamma-recurrence} is a polynomial in
+\(\Lambda^{-1}\) of degree at most \(2n-2\).  Division by \(\Lambda\) gives
+the stated degree bound and zero constant term.  At exponent \(q^{2n}\), the
+only contribution independent of lower \(e_j\) is \(a_nq^{2n}\), which proves
+\cref{eq:gamma-leading-block}.
+
+For the analytic remainder, use the duplication identity
+\[
+ \log\Gamma\!\left(t+\frac12\right)
+ =\log\Gamma(2t)-\log\Gamma(t)+(1-2t)\log2+\frac12\log\pi.
+\]
+Apply the standard remainder bound separately to the two ordinary
+positive-real Stirling expansions.  For every fixed \(M\), this shows that
+\cref{eq:gamma-shifted-phase} truncated after \(a_Mt^{-(2M-1)}\) has
+remainder \(O(t^{-(2M+1)})\).  Choose \(M=N+1\).  Substitution of the
+formal inverse through \(e_Nq^{2N}\) then leaves a forward phase residual
+\(O(T^{-(2N+1)})\).  The inverse phase slope is
+\(\Lambda+O(T^{-2})\).  Applying \cref{thm:residual-certificate} divides the
+phase residual by \(\Lambda\), yielding the error in
+\cref{eq:gamma-all-orders}.
+\end{proof}
+
+\subsection{Explicit correction blocks}
+
+The first five nonzero blocks are
+\begin{align}
+ d_1={}&\frac{1}{24\Lambda},
+ \label{eq:gamma-d1}\\[0.3em]
+ d_3={}&-\frac{14\Lambda^2+10\Lambda+5}{5760\Lambda^3},
+ \label{eq:gamma-d3}\\[0.3em]
+ d_5={}&\frac{
+ 2232\Lambda^4+1176\Lambda^3+714\Lambda^2+350\Lambda+105}
+ {2903040\Lambda^5},
+ \label{eq:gamma-d5}\\[0.3em]
+ d_7={}&-\frac{1}{1393459200\Lambda^7}
+ \bigl(
+ 822960\Lambda^6+292536\Lambda^5+136956\Lambda^4
+ \notag\\[-0.2em]
+ &\hspace{4.5em}{}+68040\Lambda^3+32970\Lambda^2
+ +12250\Lambda+2625
+ \bigr),
+ \label{eq:gamma-d7}\\[0.3em]
+ d_9={}&\frac{1}{367873228800\Lambda^9}
+ \bigl(
+ 309052800\Lambda^8+77920128\Lambda^7+26024592\Lambda^6
+ \notag\\[-0.2em]
+ &\hspace{2.5em}{}+10019592\Lambda^5+4516028\Lambda^4
+ +2023560\Lambda^3+812350\Lambda^2
+ \notag\\[-0.2em]
+ &\hspace{2.5em}{}+242550\Lambda+40425
+ \bigr).
+ \label{eq:gamma-d9}
+\end{align}
+Thus, through the first three correction blocks,
+\begin{align}
+ \Gamma_+^{-1}(y)={}&\frac12+T
+ +\frac{1}{24T\Lambda}
+ -\frac{14\Lambda^2+10\Lambda+5}{5760T^3\Lambda^3}
+ \notag\\
+ &+\frac{2232\Lambda^4+1176\Lambda^3+714\Lambda^2
+ +350\Lambda+105}{2903040T^5\Lambda^5}
+ +O\!\left(\frac{1}{T^7\Lambda}\right).
+ \label{eq:gamma-three-blocks}
+\end{align}
+
+For comparison with expansions written as separate powers of \(\log T\), the
+first blocks are
+\begin{align}
+ d_3={}&-\frac{7}{2880\Lambda}
+        -\frac{1}{576\Lambda^2}
+        -\frac{1}{1152\Lambda^3},
+ \label{eq:gamma-d3-expanded}\\
+ d_5={}&\frac{31}{40320\Lambda}
+ +\frac{7}{17280\Lambda^2}
+ +\frac{17}{69120\Lambda^3}
+ +\frac{5}{41472\Lambda^4}
+ +\frac{1}{27648\Lambda^5}.
+ \label{eq:gamma-d5-expanded}
+\end{align}
+The expansion of Gerhold, Hubalek, and Tomovski is precisely
+\cref{eq:gamma-three-blocks} through \(d_3/T^3\), expressed in the separated
+form \cref{eq:gamma-d3-expanded} \cite{GerholdHubalekTomovski}.
+
+\subsection{A hand derivation of the first two blocks}
+
+The recurrence is transparent at low order.  Since
+\[
+ (1+E)\log(1+E)-E=\frac12E^2-\frac16E^3+\cdots,
+\]
+the coefficient of \(q^2\) in \cref{eq:gamma-normalized} is
+\(\Lambda e_1+a_1\).  Therefore
+\[
+ e_1=-\frac{a_1}{\Lambda}=\frac{1}{24\Lambda}.
+\]
+At order \(q^4\), the contributions are
+\[
+ \Lambda e_2+\frac12e_1^2-a_1e_1+a_2=0.
+\]
+Substituting \(a_1=-1/24\), \(a_2=7/2880\), and
+\(e_1=1/(24\Lambda)\) yields \cref{eq:gamma-d3}.  Higher orders are no more
+conceptually difficult, but the number of partitions of the target exponent
+grows; truncated-series arithmetic is preferable to hand expansion.
+
+\subsection{Outer expansion in iterated logarithms}
+\label{sec:gamma-outer}
+
+The Lambert core itself can be expanded without first writing the generic
+\(\W\)-series.  Let
+\begin{equation}
+ L=\log R,
+ \qquad \ell=\log L.
+ \label{eq:gamma-L-ell}
+\end{equation}
+Writing \(T=(R/L)S\) in \(T(\log T-1)=R\) gives the implicit equation
+\begin{equation}
+ S\left(1-\frac{\ell+1}{L}+\frac{\log S}{L}\right)=1.
+ \label{eq:gamma-S-equation}
+\end{equation}
+Ordinary formal reversion in \(L^{-1}\) yields
+\begin{align}
+ T=\frac{R}{L}\biggl[{}&1+\frac{\ell+1}{L}
+ +\frac{\ell(\ell+1)}{L^2}
+ +\frac{(\ell-1)(\ell+1)(2\ell+1)}{2L^3}
+ \notag\\
+ &+\frac{(\ell+1)(6\ell^3-8\ell^2-7\ell+1)}{6L^4}
+ \notag\\
+ &+\frac{(\ell+1)(12\ell^4-29\ell^3-17\ell^2+17\ell+5)}
+ {12L^5}
+ +O\!\left(\frac{\ell^6}{L^6}\right)
+ \biggr].
+ \label{eq:gamma-T-outer}
+\end{align}
+Combining \cref{eq:gamma-T-outer} with \cref{eq:gamma-all-orders} gives a
+pure iterated-logarithmic expansion if desired.  The ordering must be read
+lexicographically:
+\begin{equation}
+ \frac{T}{L^N}\longrightarrow\infty
+ \quad\text{for every fixed }N,
+ \qquad
+ 1\gg \frac1{T\Lambda}.
+ \label{eq:gamma-hierarchy}
+\end{equation}
+Hence the shift \(1/2\) is beyond all orders of the outer \(L^{-1}\) scale,
+and the Bernoulli inverse blocks are beyond that shift.
+
+\subsection{Numerical verification}
+\label{sec:gamma-numerics}
+
+To avoid numerical inversion error, the following test starts from an exact
+chosen abscissa \(x\), forms \(y=\Gamma(x)\), reconstructs \(T,\Lambda\) from
+\(y\), and compares successive truncations with the original \(x\).  Let
+\(E_0\) denote approximation minus exact value for \(1/2+T\), and let
+\(E_j\) use the same sign convention after including the first \(j\)
+correction blocks \(d_1/T,d_3/T^3,\ldots\).
+
+\begin{table}[htbp]
+\centering
+\small
+\caption{Signed errors (approximation minus exact value) for the upper inverse Gamma expansion.}
+\label{tab:gamma-errors}
+\begin{tabular}{r@{\quad}rrrrr}
+\toprule
+\(x\) & \(E_0\) & \(E_1\) & \(E_2\) & \(E_3\) & \(E_4\)\\
+\midrule
+5   & \(-6.1414\!\times10^{-3}\) & \( 2.8694\!\times10^{-5}\)
+    & \(-4.1862\!\times10^{-7}\) & \( 1.3452\!\times10^{-8}\)
+    & \(-8.2694\!\times10^{-10}\)\\
+10  & \(-1.9470\!\times10^{-3}\) & \( 1.7430\!\times10^{-6}\)
+    & \(-5.7560\!\times10^{-9}\) & \( 4.4485\!\times10^{-11}\)
+    & \(-6.5578\!\times10^{-13}\)\\
+20  & \(-7.1924\!\times10^{-4}\) & \( 1.4126\!\times10^{-7}\)
+    & \(-1.1183\!\times10^{-10}\) & \( 2.1113\!\times10^{-13}\)
+    & \(-7.5612\!\times10^{-16}\)\\
+100 & \(-9.1031\!\times10^{-5}\) & \( 6.2869\!\times10^{-10}\)
+    & \(-1.9388\!\times10^{-14}\) & \( 1.4440\!\times10^{-18}\)
+    & \(-2.0231\!\times10^{-22}\)\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The clean reduction by several orders per block is typical before optimal
+truncation.  At a fixed moderate \(x\), sufficiently remote Bernoulli blocks
+will eventually grow because the underlying Stirling series is divergent.
+
+\section{The other positive inverse Gamma branch}
+\label{sec:gamma-small-branch}
+
+For completeness, a large positive \(y\) also has a positive preimage tending
+to zero.  This branch is governed by a local pole, not by the Lambert core.
+Put \(s=1/y\).  Since
+\begin{equation}
+ s=\frac{x}{\Gamma(1+x)},
+ \label{eq:small-gamma-relation}
+\end{equation}
+Lagrange inversion gives the convergent local series
+\begin{equation}
+ \Gamma_0^{-1}(y)
+ =\sum_{n\ge1}\frac{s^n}{n!}
+ \left.
+ \frac{\dd^{n-1}}{\dd x^{n-1}}\Gamma(1+x)^n
+ \right|_{x=0},
+ \qquad s=\frac1y.
+ \label{eq:gamma-small-lagrange}
+\end{equation}
+Using
+\begin{equation}
+ \log\Gamma(1+x)
+ =-\gamma x+\sum_{m\ge2}\frac{(-1)^m\zeta(m)}{m}x^m,
+ \qquad |x|<1,
+ \label{eq:loggamma-near-one}
+\end{equation}
+we find
+\begin{align}
+ \Gamma_0^{-1}(y)={}&\frac1y-\frac{\gamma}{y^2}
+ +\left(\frac{3\gamma^2}{2}+\frac{\pi^2}{12}\right)\frac1{y^3}
+ \notag\\
+ &-\left(\frac{8\gamma^3}{3}+\frac{\gamma\pi^2}{3}
+ +\frac{\zeta(3)}{3}\right)\frac1{y^4}
+ \notag\\
+ &+\left(\frac{125\gamma^4}{24}
+ +\frac{25\gamma^2\pi^2}{24}
+ +\frac{5\gamma\zeta(3)}{3}
+ +\frac{29\pi^4}{1440}\right)\frac1{y^5}
+ +O(y^{-6}).
+ \label{eq:gamma-small-explicit}
+\end{align}
+More generally, every pole at \(-n\) gives a local inverse branch with leading
+term
+\begin{equation}
+ x=-n+\frac{(-1)^n}{n!\,y}+O(y^{-2}).
+ \label{eq:gamma-pole-branches}
+\end{equation}
+These pole-centered branches belong to ordinary local series reversion and are
+algebraically separate from the large branch analyzed in
+\cref{sec:gamma}.
+
+\section{The inverse Barnes \texorpdfstring{\(G\)}{G}-transseries}
+\label{sec:barnes}
+
+\subsection{Forward phase in a centered variable}
+
+Barnes' \(G\)-function is characterized by
+\begin{equation}
+ G(z+1)=\Gamma(z)G(z),
+ \qquad G(1)=1.
+ \label{eq:barnes-recurrence-definition}
+\end{equation}
+For inversion on the large positive real axis, write the argument as \(z+1\)
+from the outset.  The classical forward expansion is
+\begin{align}
+ \log G(z+1)\sim{}&
+ \frac12z^2\log z-\frac34z^2
+ +\frac12\log(2\pi)\,z
+ -\frac1{12}\log z
+ +\zeta'(-1)
+ \notag\\
+ &+\sum_{k\ge1}\frac{B_{2k+2}}{4k(k+1)z^{2k}},
+ \qquad z\to\infty,
+ \label{eq:barnes-forward}
+\end{align}
+valid in every fixed sector avoiding the negative real axis
+\cite{DLMF517,NemesBarnes}.  Define
+\begin{equation}
+ \alpha=\frac12\log(2\pi),
+ \qquad b=-\frac1{12},
+ \qquad C_G=\zeta'(-1)=\frac1{12}-\log A,
+ \label{eq:barnes-alpha-b-C}
+\end{equation}
+where \(A\) is the Glaisher--Kinkelin constant, and
+\begin{equation}
+ c_k=\frac{B_{2k+2}}{4k(k+1)}.
+ \label{eq:barnes-ck}
+\end{equation}
+Then
+\begin{equation}
+ c_1=-\frac1{240},\qquad
+ c_2=\frac1{1008},\qquad
+ c_3=-\frac1{1440},\qquad
+ c_4=\frac1{1056}.
+ \label{eq:barnes-ck-first}
+\end{equation}
+In the notation of the general model,
+\begin{equation}
+ a=\frac12,
+ \qquad p=2,
+ \qquad \beta=\frac32,
+ \label{eq:barnes-core-parameters}
+\end{equation}
+and the perturbation is
+\begin{equation}
+ \Psi(z)=\alpha z+b\log z+\sum_{k\ge1}c_kz^{-2k}.
+ \label{eq:barnes-Psi}
+\end{equation}
+
+\subsection{Exact core variables}
+
+Let \(G(z+1)=y\) and set
+\begin{equation}
+ R=\log y-C_G.
+ \label{eq:barnes-R}
+\end{equation}
+The core equation
+\begin{equation}
+ \frac12U^2\left(\log U-\frac32\right)=R
+ \label{eq:barnes-core-equation}
+\end{equation}
+is solved exactly by
+\begin{equation}
+ v=\W_0(4R/\e^3),
+ \qquad
+ U=2\sqrt{\frac{R}{v}}=\e^{(v+3)/2},
+ \qquad
+ \lambda=\log U-1=\frac{v+1}{2}.
+ \label{eq:barnes-U-v-lambda}
+\end{equation}
+The core slope is
+\begin{equation}
+ \frac{\dd}{\dd U}
+ \left[\frac12U^2\left(\log U-\frac32\right)\right]
+ =U(\log U-1)=U\lambda.
+ \label{eq:barnes-core-slope}
+\end{equation}
+
+Put \(q=U^{-1}\) and
+\begin{equation}
+ z=U(1+\epsilon),
+ \qquad
+ \epsilon=\sum_{n\ge1}e_n(\lambda)q^n.
+ \label{eq:barnes-epsilon}
+\end{equation}
+After subtraction of \cref{eq:barnes-core-equation} and division by
+\(U^2/2\), the exact normalized equation is
+\begin{align}
+ 0={}&\Kcal_\lambda(\epsilon)
+ +2\alpha q(1+\epsilon)
+ +2bq^2\bigl(\lambda+1+\log(1+\epsilon)\bigr)
+ \notag\\
+ &+2\sum_{k\ge1}c_kq^{2k+2}(1+\epsilon)^{-2k},
+ \label{eq:barnes-normalized}
+\end{align}
+where
+\begin{equation}
+ \Kcal_\lambda(E)
+ =(1+E)^2\left(\lambda-\frac12+\log(1+E)\right)
+ -\left(\lambda-\frac12\right).
+ \label{eq:barnes-kernel}
+\end{equation}
+Its linear part is
+\begin{equation}
+ \Kcal_\lambda(E)=2\lambda E+O(E^2).
+ \label{eq:barnes-kernel-linear}
+\end{equation}
+Since
+\[
+ z=U+e_1+e_2U^{-1}+e_3U^{-2}+\cdots,
+\]
+we set
+\begin{equation}
+ b_n(\lambda)=e_{n+1}(\lambda),
+ \qquad n\ge0.
+ \label{eq:barnes-b-e}
+\end{equation}
+
+\begin{theorem}[All-orders inverse Barnes expansion]
+\label{thm:barnes-all-orders}
+Let \(\Bcal(y)\) be the eventual positive solution of \(G(z+1)=y\).  For every
+fixed \(N\ge0\),
+\begin{equation}
+ \Bcal(y)=U+\sum_{n=0}^{N}\frac{b_n(\lambda)}{U^n}
+ +O(U^{-N-1}),
+ \qquad y\to+\infty,
+ \label{eq:barnes-all-orders}
+\end{equation}
+where \(U,\lambda\) are given by \cref{eq:barnes-U-v-lambda}.  Define
+\begin{equation}
+ E_{n-1}=\sum_{j=1}^{n-1}e_j(\lambda)q^j.
+ \label{eq:barnes-E-trunc}
+\end{equation}
+Then \(e_n\), and hence every \(b_n\), is uniquely determined by
+\begin{align}
+ e_n(\lambda)=-\frac1{2\lambda}\coeff{q}{n}
+ \biggl[{}&\Kcal_\lambda(E_{n-1})-2\lambda E_{n-1}
+ +2\alpha q(1+E_{n-1})
+ \notag\\
+ &+2bq^2\bigl(\lambda+1+\log(1+E_{n-1})\bigr)
+ \notag\\
+ &+2\sum_{1\le k\le(n-2)/2}
+ c_kq^{2k+2}(1+E_{n-1})^{-2k}
+ \biggr].
+ \label{eq:barnes-recurrence}
+\end{align}
+The last sum is empty when \(n<4\).  The coefficients satisfy
+\begin{equation}
+ e_n\in\Q[\alpha,\lambda,\lambda^{-1}],
+ \qquad
+ e_n(-\alpha)=(-1)^ne_n(\alpha),
+ \label{eq:barnes-ring-parity}
+\end{equation}
+and are bounded coefficient functions as \(\lambda\to+\infty\).
+\end{theorem}
+
+\begin{proof}
+\Cref{eq:barnes-normalized} has support \(\N\) and linear divisor
+\(2\lambda\).  The general triangular theorem gives
+\cref{eq:barnes-recurrence}.  The coefficient ring follows by induction from
+the rational Taylor coefficients of the logarithm and binomial powers.  The
+transformation
+\begin{equation}
+ (q,\alpha,E)\longmapsto(-q,-\alpha,E)
+ \label{eq:barnes-parity-transform}
+\end{equation}
+leaves \cref{eq:barnes-normalized} invariant.  Uniqueness therefore implies
+\(\epsilon(-q,-\alpha)=\epsilon(q,\alpha)\), which is equivalent to the
+parity assertion.
+
+To prove boundedness, divide \cref{eq:barnes-normalized} by \(\lambda\).
+The only coefficient growing linearly with \(\lambda\), besides the core
+kernel, is the constant part of the \(bq^2\)-term.  The limiting equation has a
+small formal solution with bounded coefficients; \cref{thm:resonant-limit}
+then gives coefficientwise convergence.  The forward Barnes remainder can be
+truncated to any prescribed algebraic order.  Its transfer through the slope
+\(U\lambda(1+o(1))\), together with boundedness of the next coefficient block,
+gives the error in \cref{eq:barnes-all-orders}.
+\end{proof}
+
+\subsection{Explicit Barnes coefficient blocks}
+
+The first coefficients are
+\begin{align}
+ b_0={}&-\frac{\alpha}{\lambda},
+ \label{eq:barnes-b0}\\[0.4em]
+ b_1={}&\frac{6\alpha^2\lambda-6\alpha^2+\lambda^3+\lambda^2}
+ {12\lambda^3},
+ \label{eq:barnes-b1}\\[0.4em]
+ b_2={}&\frac{\alpha(8\alpha^2\lambda-6\alpha^2+\lambda^2)}
+ {12\lambda^5}.
+ \label{eq:barnes-b2}
+\end{align}
+For the next two, define
+\begin{align}
+ P_3(\lambda,\alpha)={}&
+ 180\alpha^4\lambda^3+120\alpha^4\lambda^2
+ -1500\alpha^4\lambda+900\alpha^4
+ \notag\\
+ &+60\alpha^2\lambda^5+120\alpha^2\lambda^4
+ +60\alpha^2\lambda^3-180\alpha^2\lambda^2
+ \notag\\
+ &+5\lambda^7-\lambda^6+5\lambda^5+5\lambda^4,
+ \label{eq:barnes-P3}\\[0.4em]
+ P_4(\lambda,\alpha)={}&
+ 576\alpha^4\lambda^3+480\alpha^4\lambda^2
+ -2520\alpha^4\lambda+1260\alpha^4
+ \notag\\
+ &+80\alpha^2\lambda^5+280\alpha^2\lambda^4
+ +200\alpha^2\lambda^3-300\alpha^2\lambda^2
+ \notag\\
+ &-22\lambda^7-11\lambda^6+10\lambda^5+15\lambda^4.
+ \label{eq:barnes-P4}
+\end{align}
+Then
+\begin{equation}
+ b_3=-\frac{P_3(\lambda,\alpha)}{1440\lambda^7},
+ \qquad
+ b_4=-\frac{\alpha P_4(\lambda,\alpha)}{1440\lambda^9}.
+ \label{eq:barnes-b3-b4}
+\end{equation}
+The longer coefficient \(b_5\) is listed in
+\cref{app:barnes-b5}.  The expansion through \(U^{-2}\) is therefore
+\begin{align}
+ \Bcal(y)={}&U-\frac{\alpha}{\lambda}
+ +\frac{6\alpha^2\lambda-6\alpha^2+\lambda^3+\lambda^2}
+ {12\lambda^3U}
+ \notag\\
+ &+\frac{\alpha(8\alpha^2\lambda-6\alpha^2+\lambda^2)}
+ {12\lambda^5U^2}
+ +O(U^{-3}).
+ \label{eq:barnes-three-blocks}
+\end{align}
+
+\subsection{Resonance and the limiting algebraic subseries}
+\label{sec:barnes-resonance}
+
+The resonance is completely explicit.  Divide
+\cref{eq:barnes-normalized} by \(2\lambda\) and let
+\(\lambda\to+\infty\) coefficientwise.  The \(\alpha q\)-term, all
+\(c_k\)-terms, and the nonconstant part of the logarithmic term vanish.  Since
+\[
+ \frac{\Kcal_\lambda(E)}{2\lambda}
+ \longrightarrow\frac{(1+E)^2-1}{2},
+\]
+the limiting series \(E_0(q)\) satisfies
+\begin{equation}
+ \frac{(1+E_0)^2-1}{2}+bq^2=0.
+ \label{eq:barnes-limit-equation}
+\end{equation}
+The branch with \(E_0(0)=0\) is
+\begin{equation}
+ E_0(q)=\sqrt{1-2bq^2}-1
+ =\sqrt{1+\frac{q^2}{6}}-1.
+ \label{eq:barnes-limit-series}
+\end{equation}
+Therefore
+\begin{equation}
+ \lim_{\lambda\to\infty}e_{2m+1}(\lambda)=0,
+ \qquad
+ \lim_{\lambda\to\infty}e_{2m}(\lambda)
+ =\binom{1/2}{m}6^{-m}.
+ \label{eq:barnes-e-limits}
+\end{equation}
+Equivalently,
+\begin{equation}
+ \lim_{\lambda\to\infty}b_{2m}(\lambda)=0,
+ \qquad
+ \lim_{\lambda\to\infty}b_{2m-1}(\lambda)
+ =\binom{1/2}{m}6^{-m}.
+ \label{eq:barnes-b-limits}
+\end{equation}
+The first limiting constants are
+\begin{equation}
+ b_1\to\frac1{12},
+ \qquad
+ b_3\to-\frac1{288},
+ \qquad
+ b_5\to\frac1{3456}.
+ \label{eq:barnes-limits-first}
+\end{equation}
+This coefficientwise algebraic limit is invisible if the forward
+\(-\tfrac1{12}\log z\) term is treated as an undifferentiated small error.
+It is also a useful check on symbolic computations: every odd inverse-power
+block must approach the corresponding binomial coefficient, while every even
+block must vanish.
+
+\subsection{Outer iterated-logarithmic expansion}
+\label{sec:barnes-outer}
+
+Let
+\begin{equation}
+ Z=\frac{4R}{\e^3},
+ \qquad
+ L_1=\log Z,
+ \qquad
+ L_2=\log L_1.
+ \label{eq:barnes-L1-L2}
+\end{equation}
+Expanding \(v=\W_0(Z)\) and then \(v^{-1/2}\) gives
+\begin{align}
+ U=2\sqrt{\frac{R}{L_1}}\biggl[{}&1+\frac{L_2}{2L_1}
+ +\frac{L_2(3L_2-4)}{8L_1^2}
+ +\frac{L_2(5L_2^2-16L_2+8)}{16L_1^3}
+ \notag\\
+ &+\frac{L_2(105L_2^3-568L_2^2+720L_2-192)}{384L_1^4}
+ +O\!\left(\frac{L_2^5}{L_1^5}\right)
+ \biggr].
+ \label{eq:barnes-U-outer}
+\end{align}
+For the inverse of \(G\) itself, the nested hierarchy begins
+\begin{equation}
+ G_+^{-1}(y)
+ =U+1-\frac{\alpha}{\lambda}
+ +\frac{b_1(\lambda)}{U}+\cdots.
+ \label{eq:barnes-full-hierarchy}
+\end{equation}
+For every fixed \(N\), \(U/L_1^N\to\infty\); hence the shift \(+1\) is
+beyond all orders of the outer iterated-logarithmic scale.  The displacement
+\(-\alpha/\lambda\) is smaller than the shift but larger than every inverse
+power of \(U\).  This four-level ordering is worth displaying explicitly:
+\begin{equation}
+ \frac{U}{L_1^N}\gg1\gg\lambda^{-1}\gg U^{-1}
+ \qquad(N\text{ fixed}).
+ \label{eq:barnes-hierarchy}
+\end{equation}
+
+\subsection{Numerical verification}
+\label{sec:barnes-numerics}
+
+Choose an exact \(z\), form \(y=G(z+1)\), reconstruct \(U,\lambda\), and let
+\(E_\star\) be core approximation minus exact value.  Let \(E_j\) use the
+same sign convention after including \(b_0,b_1/U,\ldots,b_j/U^j\).
+
+\begin{table}[htbp]
+\centering
+\small
+\caption{Signed errors (approximation minus exact value) for \(\Bcal(y)\), where \(y=G(z+1)\).}
+\label{tab:barnes-errors}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{r@{\quad}rrrrrr}
+\toprule
+\(z\) & \(E_\star\) & \(E_0\) & \(E_1\) & \(E_2\) & \(E_3\) & \(E_4\)\\
+\midrule
+5 & \( 1.1187\) & \(-1.3867\!\times10^{-2}\)
+  & \(-7.8343\!\times10^{-3}\) & \(-1.5935\!\times10^{-3}\)
+  & \(-1.8345\!\times10^{-4}\) & \( 5.8515\!\times10^{-6}\)\\
+10 & \( 6.5273\!\times10^{-1}\) & \(-2.0081\!\times10^{-2}\)
+   & \(-8.4026\!\times10^{-4}\) & \( 1.5249\!\times10^{-5}\)
+   & \( 3.2299\!\times10^{-6}\) & \( 4.1936\!\times10^{-8}\)\\
+20 & \( 4.4669\!\times10^{-1}\) & \(-8.7205\!\times10^{-3}\)
+   & \(-6.6821\!\times10^{-5}\) & \( 2.3736\!\times10^{-6}\)
+   & \( 3.4133\!\times10^{-8}\) & \(-1.5564\!\times10^{-9}\)\\
+100 & \( 2.5342\!\times10^{-1}\) & \(-1.2959\!\times10^{-3}\)
+    & \(-3.9481\!\times10^{-7}\) & \( 8.1326\!\times10^{-9}\)
+    & \(-5.3660\!\times10^{-12}\) & \(-8.9993\!\times10^{-14}\)\\
+\bottomrule
+\end{tabular}%
+}
+\end{table}
+
+The core error is much larger than in the Gamma example because the linear
+term \(\alpha z\) produces the slowly decaying displacement
+\(-\alpha/\lambda\).  Once that block is included, the triangular expansion
+again improves rapidly.  At \(z=5\), adding still more terms eventually
+encounters the asymptotic nature of the forward Bernoulli sector; at larger
+arguments the useful range grows.
+
+\section{General phase families of Gamma--Barnes type}
+\label{sec:general-families}
+
+\subsection{Polynomial-logarithmic perturbations below the leading power}
+
+A broad class covered directly by \cref{thm:triangular} is
+\begin{equation}
+ \Phi(x)=a x^p(\log x-\beta)+C
+ +\sum_{\rho\in A}x^{p-\rho}P_\rho(\log x)
+ +\text{smaller sectors},
+ \label{eq:general-polylog-phase}
+\end{equation}
+where \(A\subset\R_{>0}\) is well ordered and each \(P_\rho\) is a
+polynomial or an asymptotic coefficient transseries.  Substitution
+\(x=X(1+E)\), with \(q=X^{-1}\), gives
+\begin{align}
+ \Rcal(q,v,E)={}&\frac1a\sum_{\rho\in A}q^\rho
+ (1+E)^{p-\rho}
+ P_\rho\!\left(\beta+\frac vp+\log(1+E)\right)
+ \notag\\
+ &+\text{smaller normalized sectors}.
+ \label{eq:general-polylog-normalized}
+\end{align}
+Every term has positive \(q\)-valuation.  Powers of \(v\) in its coefficient
+are harmless because \(q^\rho v^M\to0\) for every fixed \(M\).  The inverse
+support lies in the additive semigroup generated by \(A\).
+
+This immediately explains the two examples:
+\begin{center}
+\begin{tabular}{lllll}
+\toprule
+Function & shifted variable & \(p\) & base support & first perturbation\\
+\midrule
+\(\Gamma(t+1/2)\) & \(t=x-1/2\) & 1 & \(2\N\) & \(-1/(24t)\)\\
+\(G(z+1)\) & \(z=x-1\) & 2 & \(\N\) & \(\alpha z\)\\
+\bottomrule
+\end{tabular}
+\end{center}
+For Gamma, a drop of two units in normalized power occurs because the forward
+term \(t^{-1}\) is divided by the order-\(t\) core.  For Barnes, the forward
+linear term \(\alpha z\) is divided by the order-\(z^2\) core and produces
+\(q^1\), so the full integer grid is generated.
+
+\subsection{What must be absorbed into the core}
+
+Terms with the same algebraic power \(x^p\) as the leading phase are not
+\(q\)-small.  For example,
+\[
+ a x^p\log x+c x^p=a x^p(\log x-\beta),
+ \qquad \beta=-c/a,
+\]
+so the \(cx^p\) term should be absorbed exactly into \(\beta\).  More generally,
+a phase
+\begin{equation}
+ x^p\left(a_r(\log x)^r+a_{r-1}(\log x)^{r-1}+\cdots\right)
+ \label{eq:same-power-log-poly}
+\end{equation}
+requires an outer inversion in the logarithmic coefficient scale before the
+\(q\)-grid theorem is applied.  Treating a same-power term as a small
+perturbation makes \(\Rcal(q,v,0)\) have valuation zero and violates the
+hypothesis of \cref{thm:triangular}.
+
+This gives a practical normalization rule:
+\begin{enumerate}
+\item collect and invert the entire dominant algebraic power, including the
+      necessary logarithmic polynomial;
+\item use drops in algebraic power to define the exponentially finer \(q\)-grid;
+\item place optimally truncated or resurgent exponentials in still deeper
+      sectors.
+\end{enumerate}
+
+\subsection{Exact Lambert inversion for a logarithmic-power core}
+\label{sec:log-power-core}
+
+The exact core need not be linear in \(\log x\).  Let
+\begin{equation}
+ \Phi_{0,r}(x)=a x^p(\log x-\beta)^r,
+ \qquad p\ne0,\quad r\ne0.
+ \label{eq:log-power-core}
+\end{equation}
+Choose compatible branches of powers and logarithms.  For
+\(\Phi_{0,r}(X)=R\), define
+\begin{equation}
+ Z=\frac pr\left(\frac{R}{a\e^{p\beta}}\right)^{1/r},
+ \qquad
+ w=\W_k(Z),
+ \qquad
+ u=\frac rp w,
+ \qquad
+ X=\e^{\beta+u}.
+ \label{eq:log-power-core-inverse}
+\end{equation}
+Then \(\Phi_{0,r}(X)=R\).  Indeed,
+\[
+ u^r\e^{pu}
+ =\left(\frac rp\right)^rw^r\e^{rw}
+ =\frac{R}{a\e^{p\beta}}.
+\]
+The derivative is
+\begin{equation}
+ \Phi_{0,r}'(X)
+ =aX^{p-1}u^{r-1}(pu+r).
+ \label{eq:log-power-core-slope}
+\end{equation}
+With \(x=X(1+E)\), the normalized universal kernel becomes
+\begin{equation}
+ \Kcal_{p,r,u}(E)
+ =(1+E)^p
+ \left(1+\frac{\log(1+E)}{u}\right)^r-1,
+ \label{eq:log-power-kernel}
+\end{equation}
+whose linear coefficient is
+\begin{equation}
+ p+\frac ru=\frac{pu+r}{u}.
+ \label{eq:log-power-linear}
+\end{equation}
+The same Hahn implicit-function proof applies whenever this coefficient is a
+unit and the normalized perturbation has positive valuation.  The case
+\(r=1\) reduces, after multiplication by \(v/p\), to the kernel used in the
+rest of the article.
+
+This extension covers inverse phases led by
+\(x^p(\log x)^r\) without introducing a new special inverse function.  It also
+clarifies the boundary of the method: a genuinely non-polynomial function of
+\(\log x\) may still be invertible in a transseries coefficient field, but the
+Lambert closed form can disappear.
+
+\subsection{Coefficient algebras and nested supports}
+
+For computational work it is useful to distinguish three coefficient choices.
+
+\paragraph{Rational-function coefficients.}
+Keeping \(v\) or \(\lambda\) exact gives coefficients in fields such as
+\(\Q(v)\) or \(\Q(\alpha,\lambda)\).  This is the compact form used for the
+explicit Gamma and Barnes blocks.
+
+\paragraph{Laurent coefficients at large slope.}
+Expanding each rational coefficient in \(v^{-1}\) gives an element of
+\(\Q((v^{-1}))[[q^S]]\).  The order is lexicographic: compare \(q\)-exponents
+first, then inverse powers of \(v\).  This form exposes the leading Newton
+response and resonant limits.
+
+\paragraph{Full outer logarithmic coefficients.}
+Substituting the expansion of \(v=\W(Z)\) embeds the result into a larger
+polynomial-logarithmic transseries in \(L_1^{-1}\), \(L_2=\log L_1\), and
+\(q\).  Since \(q\) itself is an exponential of \(-v/p\), the resulting
+monomial group has at least two logarithmic-exponential levels.  Expansion in
+this largest algebra should be postponed until presentation or comparison
+requires it; it is usually inefficient for coefficient generation.
+
+\subsection{Higher Barnes multiple gamma functions}
+
+The logarithms of higher Barnes multiple gamma functions have leading phases
+of the schematic form
+\begin{equation}
+ a_m x^m\log x+b_mx^m+\text{lower algebraic powers and logarithms}.
+ \label{eq:multiple-gamma-schematic}
+\end{equation}
+After absorbing \(b_mx^m\) into a shift of the logarithm, the core has
+\(p=m\) and \(r=1\).  Therefore the same Lambert-core and Hahn-grid machinery
+applies, subject to the sign and convention used for the particular multiple
+gamma normalization.  The support semigroup is read directly from the drops
+in algebraic degree in the known forward expansion.  Barnes \(G\) is the
+first nontrivial member, with \(m=2\).
+
+\section{Coefficient computation and numerical use}
+\label{sec:algorithms}
+
+\subsection{A generic truncated-series algorithm}
+
+The recurrence \cref{eq:general-triangular-recurrence} is readily implemented
+in any computer algebra system supporting truncated Hahn or Puiseux series.
+For an integral grid, the following pseudocode is sufficient.
+
+\begin{algorithm}[Triangular inversion on a \(q\)-grid]
+\label{alg:generic-triangular}
+Given a truncation order \(N\), a kernel
+\(K(E)=(v+1)E+K_{\ge2}(E)\), and a normalized perturbation
+\(R(q,E)\):
+\begin{lstlisting}
+E := 0
+for n := 1,...,N:
+    H := truncate_q(K_ge_2(E) + R(q,E), order = n)
+    e_n := - coefficient(H, q^n) / (v+1)
+    E := E + e_n q^n
+return E
+\end{lstlisting}
+At step \(n\), every operation may be truncated immediately above \(q^n\).
+\end{algorithm}
+
+If the base support is \(2\N\), as for shifted Gamma, replace \(q^n\) by
+\(q^{2n}\).  For a finitely generated fractional support, store exponents as
+exact rationals and process them in increasing order.
+
+\subsection{Specialized Gamma algorithm}
+
+\begin{algorithm}[Gamma coefficient blocks]
+\label{alg:gamma}
+Let \(a_k\) be given by \cref{eq:gamma-ak}.  The following
+procedure computes all blocks through \(d_{2N-1}\):
+\begin{lstlisting}
+E := 0
+for n := 1,...,N:
+    H := (1+E) log(1+E) - E
+    for k := 1,...,n:
+        H := H + a_k q^(2k) (1+E)^(-(2k-1))
+    e_n := - coefficient(truncate_q(H,2n), q^(2n)) / Lambda
+    E := E + e_n q^(2n)
+return d_(2n-1) := e_n
+\end{lstlisting}
+All arithmetic is exact over \(\Q(\Lambda)\).  Bernoulli numbers are needed
+only up to \(B_{2N}\).
+\end{algorithm}
+
+The recurrence is output-sensitive.  With naive dense series multiplication,
+computing \(N\) blocks takes polynomial time in \(N\); FFT-based multiplication
+can reduce the high-order cost.  Expression swell is controlled by retaining
+factored powers of \(\Lambda\) and combining rational functions only at the
+end of each step.
+
+\subsection{Specialized Barnes algorithm}
+
+\begin{algorithm}[Barnes coefficient blocks]
+\label{alg:barnes}
+Let \(b=-1/12\) and \(c_k\) be given by \cref{eq:barnes-ck}.  To compute
+\(b_0,\ldots,b_N\):
+\begin{lstlisting}
+E := 0
+for n := 1,...,N+1:
+    H := K_lambda(E) - 2 lambda E
+    H := H + 2 alpha q (1+E)
+    H := H + 2 b q^2 (lambda+1+log(1+E))
+    for k with 2k+2 <= n:
+        H := H + 2 c_k q^(2k+2) (1+E)^(-2k)
+    e_n := - coefficient(truncate_q(H,n),q^n) / (2 lambda)
+    E := E + e_n q^n
+return b_(n-1) := e_n
+\end{lstlisting}
+The parity check \(e_n(-\alpha)=(-1)^ne_n(\alpha)\) and the limiting check
+\cref{eq:barnes-e-limits} are inexpensive regression tests.
+\end{algorithm}
+
+\subsection{Stable numerical evaluation}
+
+For very large \(y\), never form \(\Gamma(x)\) or \(G(x)\) merely to evaluate
+the inverse approximation.  Work with \(Y=\log y\) from the beginning.  The
+recipes are:
+
+\paragraph{Gamma.}
+Compute
+\[
+ R=Y-\tfrac12\log(2\pi),\quad
+ w=\W_0(R/\e),\quad T=R/w,\quad \Lambda=w+1,
+\]
+then evaluate \cref{eq:gamma-all-orders}.  The identity \(T=\e^{w+1}\) is
+useful if \(R/w\) suffers loss of relative accuracy in a specialized numeric
+regime, although the quotient is normally stable on the positive real axis.
+
+\paragraph{Barnes.}
+Compute
+\[
+ R=Y-\zeta'(-1),\quad
+ v=\W_0(4R/\e^3),\quad
+ U=2\sqrt{R/v},\quad \lambda=(v+1)/2,
+\]
+then evaluate \cref{eq:barnes-all-orders} and add one to recover
+\(G_+^{-1}(y)\).
+
+A single Newton correction in the logarithmic phase often supplies most or all
+of the remaining working precision; a second correction retains quadratic
+convergence when required.  For Gamma the stable update is
+\begin{equation}
+ x_{\mathrm{new}}=x-
+ \frac{\log\Gamma(x)-Y}{\psi(x)},
+ \label{eq:gamma-newton-log}
+\end{equation}
+where \(\psi\) is the digamma function.  This avoids overflow from evaluating
+\(\Gamma(x)\) itself.  For Barnes \(G\), use the analogous update with the
+logarithmic derivative of \(G\), or a high-accuracy numerical derivative of
+\(\log G\) when no dedicated routine is available.
+
+\subsection{Truncation policy}
+
+At fixed moderate argument, adding terms indefinitely is counterproductive.
+A robust policy is:
+\begin{enumerate}
+\item generate blocks in increasing \(q\)-order;
+\item estimate the magnitude of the next block using the exact coefficient
+      function, not only its leading large-\(v\) term;
+\item stop near the smallest block, or sooner if the desired precision has
+      been reached;
+\item certify by evaluating the forward logarithmic residual and applying
+      \cref{eq:mean-value-certificate} or one Newton step.
+\end{enumerate}
+Because the Lambert core is retained exactly, far fewer terms are usually
+needed than in a fully expanded iterated-logarithmic formula.
+
+\section{Formal, asymptotic, and convergent statements}
+\label{sec:logical-status}
+
+The calculations in this article use three notions of expansion.  Their
+logical status should remain explicit.
+
+\subsection{Formal Hahn identities}
+
+Equations such as \cref{eq:gamma-normalized,eq:barnes-normalized} define
+formal solutions coefficient by coefficient.  Their uniqueness is algebraic
+and does not depend on an analytic function realizing the forward series.
+Coefficient formulas, support restrictions, parity, and denominator bounds
+live at this level.
+
+\subsection{Poincar\'e asymptotic realization}
+
+The forward Gamma and Barnes expansions are Poincar\'e asymptotic in sectors.
+For every fixed truncation order, substitution of the formal inverse
+truncation leaves a controlled residual.  Eventual monotonicity on the positive
+real axis and \cref{thm:residual-certificate} then imply the inverse remainder.
+This is the meaning of \cref{eq:gamma-all-orders,eq:barnes-all-orders}.
+
+\subsection{Convergent local inverses}
+
+The small positive Gamma branch in \cref{eq:gamma-small-lagrange} is an
+ordinary local analytic inverse and therefore has a nonzero radius of
+convergence in \(s=1/y\).  The large-branch Bernoulli expansions are not of
+this kind.  The exact special-function inverse exists analytically on its
+branch, but its displayed algebraic transseries is asymptotic rather than a
+convergent sum of all Bernoulli blocks.
+
+\subsection{Hyperasymptotic completion}
+
+The late Bernoulli coefficients encode exponentially small remainders and
+Stokes transitions.  Forward exponentially improved expansions for Gamma and
+Barnes \(G\) have been developed by Nemes and earlier authors
+\cite{NemesGamma,NemesBarnes}.  Applying
+\cref{eq:inverse-exponential-sector} produces the leading inverse sectors.
+A complete resurgent treatment would additionally track alien derivatives or
+terminant multipliers through composition.  Nothing in the algebraic grid
+prevents this extension, but its natural coefficient algebra is larger than
+the one required for the explicit results here.
+
+\section{Conclusions}
+\label{sec:conclusions}
+
+The large inverse branches of Gamma and Barnes \(G\) have a common normal
+form.  Taking logarithms exposes a superlinear phase; a Lambert \(W\)
+expression inverts its \(x^p\log x\) core exactly; a relative displacement
+then satisfies an implicit equation with a unit linear coefficient.  The
+remaining inversion is triangular in a Hahn grid.
+
+For Gamma, the half-shift \(x=t+1/2\) removes every even inverse power from the
+forward Stirling phase.  The inverse displacement consequently has only odd
+powers \(T^{-1},T^{-3},\ldots\), with coefficient polynomials in
+\(\Lambda^{-1}\).  The recurrence \cref{eq:gamma-recurrence} computes them to
+arbitrary order and the forward remainder transfers with one additional
+factor \(1/\Lambda\).
+
+For Barnes \(G\), the linear term creates the first displacement
+\(-\alpha/\lambda\), while the logarithmic term is resonant.  Its surviving
+large-slope limit sums to the elementary algebraic series
+\(\sqrt{1+q^2/6}-1\).  This both explains the coefficient pattern and provides
+a strong symbolic check.  The actual inverse \(G_+^{-1}\) is obtained by
+restoring the shift \(+1\).
+
+The general calculus applies whenever the dominant phase can be normalized to
+\(a x^p(\log x-\beta)\), or more generally to
+\(a x^p(\log x-\beta)^r\), and all unabsorbed algebraic corrections have
+positive relative power drop.  Its essential ingredients are exact core
+inversion, a well-ordered support semigroup, a unit normalized slope, and a
+residual certificate.  These conditions are constructive: they yield
+coefficient algorithms rather than merely existence statements.
+
+\begin{summarybox}
+For practical use, keep Lambert \(W\) unexpanded, center the forward phase so
+that its support is as sparse as possible, compute the inverse blocks by the
+triangular recurrence, and validate the chosen truncation by its logarithmic
+residual.  Expand into iterated logarithms only as a final presentation layer.
+\end{summarybox}
+
+\appendix
+
+\section{Coefficient extraction identities}
+\label{app:coefficient-extraction}
+
+This appendix records two identities useful for independent implementations.
+
+\subsection{Kernel coefficients}
+
+From \cref{eq:kappa-general},
+\begin{equation}
+ \kappa_n(p,v)=\frac{v}{p}\binom pn+
+ \binom pn\sum_{j=0}^{n-1}\frac{1}{p-j},
+ \label{eq:kappa-harmonic-form}
+\end{equation}
+whenever none of \(p,p-1,\ldots,p-n+1\) is zero.  The right-hand side extends
+polynomially through removable singularities because it is simply
+\(\frac{v}{p}\binom pn+\partial_p\binom pn\).  For integral \(p\), it is safer
+to evaluate the derivative form before substitution.
+
+For Gamma, \(p=1\) and the universal nonlinear part simplifies to
+\begin{equation}
+ (1+E)\log(1+E)-E
+ =\sum_{m\ge2}\frac{(-1)^m}{m(m-1)}E^m.
+ \label{eq:gamma-kernel-series}
+\end{equation}
+For Barnes, direct expansion gives
+\begin{equation}
+ \Kcal_\lambda(E)
+ =2\lambda E+\lambda E^2
+ +E^2+\frac13E^3-\frac1{12}E^4
+ +\frac1{30}E^5-\cdots.
+ \label{eq:barnes-kernel-series}
+\end{equation}
+The separation of \(2\lambda E\) in the recurrence is essential; the term
+\(\lambda E^2\) remains nonlinear and is responsible for the algebraic
+resonant limit.
+
+\subsection{Bell-polynomial form of the small Gamma branch}
+
+Let
+\begin{equation}
+ \log\Gamma(1+x)=\sum_{m\ge1}\ell_m\frac{x^m}{m!},
+ \qquad
+ \ell_1=-\gamma,
+ \qquad
+ \ell_m=(-1)^m(m-1)!\zeta(m)\quad(m\ge2).
+ \label{eq:ellm-loggamma}
+\end{equation}
+If \(Y_n\) denotes the complete exponential Bell polynomial, then
+\begin{equation}
+ \left.
+ \frac{\dd^{n-1}}{\dd x^{n-1}}\Gamma(1+x)^n
+ \right|_{x=0}
+ =Y_{n-1}(n\ell_1,n\ell_2,\ldots,n\ell_{n-1}).
+ \label{eq:small-gamma-bell}
+\end{equation}
+Consequently,
+\begin{equation}
+ \Gamma_0^{-1}(y)
+ =\sum_{n\ge1}
+ \frac{Y_{n-1}(n\ell_1,\ldots,n\ell_{n-1})}{n!\,y^n}.
+ \label{eq:small-gamma-bell-series}
+\end{equation}
+This gives exact symbolic coefficients to arbitrary order without performing
+series composition explicitly.
+
+The next coefficient after \cref{eq:gamma-small-explicit} is
+\begin{align}
+ [y^{-6}]\,\Gamma_0^{-1}(y)=-\biggl({}&
+ \frac{54\gamma^5}{5}+3\gamma^3\pi^2+6\gamma^2\zeta(3)
+ +\frac{17\gamma\pi^4}{120}
+ \notag\\
+ &+\frac{\pi^2\zeta(3)}6+\frac{\zeta(5)}5
+ \biggr).
+ \label{eq:small-gamma-sixth}
+\end{align}
+
+\section{The sixth displayed Barnes block}
+\label{app:barnes-b5}
+
+For completeness, the coefficient multiplying \(U^{-5}\) in
+\cref{eq:barnes-all-orders} is
+\begin{equation}
+ b_5(\lambda)=\frac{P_5(\lambda,\alpha)}{362880\lambda^{11}},
+ \label{eq:barnes-b5}
+\end{equation}
+where
+\begin{align}
+ P_5={}&
+ 22680\alpha^6\lambda^5+40824\alpha^6\lambda^4
+ -349272\alpha^6\lambda^3-352800\alpha^6\lambda^2
+ \notag\\
+ &+1111320\alpha^6\lambda-476280\alpha^6
+ +11340\alpha^4\lambda^7+34020\alpha^4\lambda^6
+ +3780\alpha^4\lambda^5
+ \notag\\
+ &-138600\alpha^4\lambda^4-132300\alpha^4\lambda^3
+ +132300\alpha^4\lambda^2
+ +1890\alpha^2\lambda^9
+ \notag\\
+ &+8568\alpha^2\lambda^8+15120\alpha^2\lambda^7
+ +11718\alpha^2\lambda^6-3150\alpha^2\lambda^5
+ -9450\alpha^2\lambda^4
+ \notag\\
+ &+105\lambda^{11}-668\lambda^{10}-378\lambda^9
+ -21\lambda^8+175\lambda^7+105\lambda^6.
+ \label{eq:barnes-P5}
+\end{align}
+The coefficient satisfies the predicted even parity in \(\alpha\), and
+\begin{equation}
+ \lim_{\lambda\to\infty}b_5(\lambda)
+ =\frac{105}{362880}=\frac1{3456},
+ \label{eq:barnes-b5-limit}
+\end{equation}
+matching \cref{eq:barnes-b-limits}.
+
+\section{Direct residual checks}
+\label{app:residual-checks}
+
+The coefficient formulas can be checked without evaluating either inverse
+function.  For Gamma, substitute
+\begin{equation}
+ E_N(q)=\sum_{n=1}^{N}d_{2n-1}(\Lambda)q^{2n}
+ \label{eq:gamma-residual-EN}
+\end{equation}
+into the left-hand side of \cref{eq:gamma-normalized}.  The defining recurrence
+is equivalent to
+\begin{equation}
+ \Lambda E_N+(1+E_N)\log(1+E_N)-E_N
+ +\sum_{k=1}^{N}a_kq^{2k}(1+E_N)^{-(2k-1)}
+ =O(q^{2N+2}).
+ \label{eq:gamma-residual-formal}
+\end{equation}
+The coefficient of \(q^{2N+2}\) predicts the next block before any special
+function is evaluated.
+
+For Barnes, put
+\begin{equation}
+ E_N(q)=\sum_{n=1}^{N+1}b_{n-1}(\lambda)q^n.
+ \label{eq:barnes-residual-EN}
+\end{equation}
+Then the left-hand side of \cref{eq:barnes-normalized}, with the Bernoulli sum
+truncated wherever its exponent does not exceed \(N+1\), is
+\begin{equation}
+ O(q^{N+2}).
+ \label{eq:barnes-residual-formal}
+\end{equation}
+These identities are exact in the rational-function coefficient field and
+serve as stronger symbolic tests than decimal comparison.
+
+For analytic verification at a numeric target, evaluate instead
+\begin{equation}
+ \delta_\Gamma=\log\Gamma(\widehat x)-\log y,
+ \qquad
+ \delta_G=\log G(\widehat x)-\log y,
+ \label{eq:numeric-log-residuals}
+\end{equation}
+and divide by the corresponding logarithmic derivative.  This avoids the
+severe scaling and overflow that would result from subtracting the original
+function values.
+
+\section{Notation dictionary}
+\label{app:notation}
+
+\begin{longtable}{>{\raggedright\arraybackslash}p{0.20\textwidth}
+                  >{\raggedright\arraybackslash}p{0.72\textwidth}}
+\toprule
+Symbol & Meaning\\
+\midrule
+\endfirsthead
+\toprule
+Symbol & Meaning\\
+\midrule
+\endhead
+\(Y\) & Logarithmic target, usually \(Y=\log y\).\\
+\(C\) & Constant term removed from the forward phase.\\
+\(R=Y-C\) & Target for the exact dominant core.\\
+\(p,a,\beta\) & Parameters of \(a x^p(\log x-\beta)\).\\
+\(v\) & Lambert variable \(\W((pR/a)\e^{-p\beta})\).\\
+\(X\) & Exact Lambert core \(\e^\beta\e^{v/p}\).\\
+\(q=X^{-1}\) & Exponentially small grid monomial relative to \(v^{-1}\).\\
+\(\epsilon\) & Relative inverse displacement, \(x=X(1+\epsilon)\).\\
+\(T,\Lambda\) & Gamma core and slope parameter: \(T=R/\W(R/\e)\),
+                  \(\Lambda=\log T\).\\
+\(U,\lambda\) & Barnes core and half-slope parameter:
+                  \(U=2\sqrt{R/v}\), \(\lambda=(v+1)/2\).\\
+\(d_{2n-1}\) & Gamma displacement coefficient multiplying \(T^{-(2n-1)}\).\\
+\(b_n\) & Barnes displacement coefficient multiplying \(U^{-n}\).\\
+\(C_G\) & Barnes constant \(\zeta'(-1)=1/12-\log A\).\\
+\bottomrule
+\end{longtable}
+
+\begin{thebibliography}{99}
+
+\bibitem{Barnes1900}
+E.~W. Barnes,
+\newblock The theory of the \(G\)-function,
+\newblock \emph{Quarterly Journal of Pure and Applied Mathematics}
+\textbf{31} (1900), 264--314.
+
+\bibitem{BorweinCorless}
+J.~M. Borwein and R.~M. Corless,
+\newblock Gamma and factorial in the Monthly,
+\newblock \emph{American Mathematical Monthly} \textbf{125} (2018),
+400--424.
+
+\bibitem{CorlessEtAl}
+R.~M. Corless, G.~H. Gonnet, D.~E.~G. Hare, D.~J. Jeffrey, and D.~E. Knuth,
+\newblock On the Lambert \(W\) function,
+\newblock \emph{Advances in Computational Mathematics} \textbf{5} (1996),
+329--359,
+\newblock \url{https://doi.org/10.1007/BF02124750}.
+
+\bibitem{DLMF511}
+NIST Digital Library of Mathematical Functions,
+\newblock \S5.11, Asymptotic expansions of the Gamma function,
+\newblock \url{https://dlmf.nist.gov/5.11}, accessed 3 September 2026.
+
+\bibitem{DLMF517}
+NIST Digital Library of Mathematical Functions,
+\newblock \S5.17, Barnes' \(G\)-function,
+\newblock \url{https://dlmf.nist.gov/5.17}, accessed 3 September 2026.
+
+\bibitem{FolitseJeffreyCorless}
+K.~A. Folitse, D.~J. Jeffrey, and R.~M. Corless,
+\newblock Properties and computation of the functional inverse of Gamma,
+\newblock in \emph{2017 19th International Symposium on Symbolic and Numeric
+Algorithms for Scientific Computing}, IEEE, 2017, 63--66,
+\newblock \url{https://doi.org/10.1109/SYNASC.2017.00020}.
+
+\bibitem{GerholdHubalekTomovski}
+S. Gerhold, F. Hubalek, and \v{Z}. Tomovski,
+\newblock Asymptotics of some generalized Mathieu series,
+\newblock \emph{Mathematica Scandinavica} \textbf{126} (2020), 424--450,
+\newblock \url{https://doi.org/10.7146/math.scand.a-121106}.
+
+\bibitem{JeffreyWatt}
+D.~J. Jeffrey and S.~M. Watt,
+\newblock The inverse of the complex Gamma function,
+\newblock arXiv:2311.16583, 2023,
+\newblock \url{https://arxiv.org/abs/2311.16583}.
+
+\bibitem{NemesGamma}
+G. Nemes,
+\newblock Error bounds and exponential improvements for the asymptotic
+expansions of the Gamma function and its reciprocal,
+\newblock \emph{Proceedings of the Royal Society of Edinburgh Section A:
+Mathematics} \textbf{145} (2015), 571--596,
+\newblock \url{https://doi.org/10.1017/S0308210513001558}.
+
+\bibitem{NemesBarnes}
+G. Nemes,
+\newblock Error bounds and exponential improvement for the asymptotic
+expansion of the Barnes \(G\)-function,
+\newblock \emph{Proceedings of the Royal Society A} \textbf{470} (2014),
+20140534,
+\newblock \url{https://doi.org/10.1098/rspa.2014.0534}.
+
+\bibitem{Olver}
+F.~W.~J. Olver,
+\newblock \emph{Asymptotics and Special Functions},
+\newblock A K Peters, Wellesley, MA, 1997 reprint of the 1974 edition.
+
+\bibitem{ParisKaminski}
+R.~B. Paris and D. Kaminski,
+\newblock \emph{Asymptotics and Mellin--Barnes Integrals},
+\newblock Cambridge University Press, Cambridge, 2001.
+
+\bibitem{Pedersen}
+H.~L. Pedersen,
+\newblock Inverses of Gamma functions,
+\newblock \emph{Constructive Approximation} \textbf{41} (2015), 251--267.
+
+\bibitem{Uchiyama}
+M. Uchiyama,
+\newblock The principal inverse of the Gamma function,
+\newblock \emph{Proceedings of the American Mathematical Society}
+\textbf{140} (2012), 1343--1348,
+\newblock \url{https://doi.org/10.1090/S0002-9939-2011-11023-2}.
+
+\bibitem{vanDerHoeven}
+J. van der Hoeven,
+\newblock \emph{Transseries and Real Differential Algebra},
+\newblock Lecture Notes in Mathematics 1888, Springer, Berlin, 2006.
+
+\bibitem{WhittakerWatson}
+E.~T. Whittaker and G.~N. Watson,
+\newblock \emph{A Course of Modern Analysis}, 4th ed.,
+\newblock Cambridge University Press, Cambridge, 1927.
+
+\end{thebibliography}
+
+\end{document}

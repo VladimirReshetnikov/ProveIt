@@ -34,7 +34,7 @@ corollaries.  `-log(1-X)` is introduced here as `negLogOneSub A`, the series
   `one_sub_X_mul_derivative_negLogOneSub`,
   `eq_of_one_sub_X_mul_derivative_eq` (the uniqueness principle).
 * `negLogOneSub_pow`, `egf_stirlingFirst`.
-* `rescale_neg_one_negLogOneSub`, `log_pow`, `egf_signedStirlingFirst`.
+* `rescale_neg_one_negLogOneSub`, `log_pow`.
 -/
 
 set_option autoImplicit false

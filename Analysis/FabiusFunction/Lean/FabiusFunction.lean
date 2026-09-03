@@ -2,9 +2,9 @@ import FabiusFunction.IntervalParseval
 import FabiusFunction.IntSumFolding
 import FabiusFunction.PascalTailIdentity
 import FabiusFunction.PeriodicOrbitGelfondBound
+import FabiusFunction.PascalParityPeriodic
 import FabiusFunction.RvachevHalfIntegerEnergy
 import FabiusFunction.LambertWElementaryBounds
-import FabiusFunction.LambertWLowerBranchLogBounds
 import FabiusFunction.CompleteHomogeneous
 import FabiusFunction.CompleteHomogeneousGenerating
 import FabiusFunction.CompleteHomogeneousBell
@@ -82,6 +82,15 @@ import FabiusFunction.EulerianPolynomialRecurrence
 import FabiusFunction.BellFactorialRowSum
 import FabiusFunction.BellInversionTwo
 import FabiusFunction.StirlingSecondReverseColumn
+import FabiusFunction.ElementarySymmetricBell
+import FabiusFunction.ExpLog
+import FabiusFunction.CumulantBellFormula
+import FabiusFunction.NewtonPowerSumBell
+import FabiusFunction.ExpAddLog
+import FabiusFunction.SquareRootSeries
+import FabiusFunction.PowerSumOrdinaryBell
+import FabiusFunction.StirlingParityBitwise
+import FabiusFunction.StirlingSecondReverseRow
 import FabiusFunction.SymmetricFunctionTransform
 import FabiusFunction.SymmetricFunctionGenerating
 import FabiusFunction.FiniteQBinomialCore
@@ -117,6 +126,7 @@ import FabiusFunction.FabiusLambertPhaseLockedPullback
 import FabiusFunction.FabiusLambertPhaseExtraction
 import FabiusFunction.FabiusLambertPhaseExtractionBell
 import FabiusFunction.PrincipalLambertW
+import FabiusFunction.PrincipalLambertWAtTop
 import FabiusFunction.LowerLambertW
 import FabiusFunction.GeneralizedLambertCoordinate
 import FabiusFunction.LambertBranchDichotomy
@@ -246,6 +256,12 @@ import FabiusFunction.ThueMorseSineProduct
 import FabiusFunction.ThueMorseFourierInversion
 import FabiusFunction.HalfIntegerOddDFT
 import FabiusFunction.SummableCyclicAlias
+import FabiusFunction.HalfIntegerAliasIdentity
+import FabiusFunction.AliasDyadicBridge
+import FabiusFunction.LambertShiftInverse
+import FabiusFunction.CyclicCharacterSums
+import FabiusFunction.AliasErrorBound
+import FabiusFunction.DyadicDerivativeFiltration
 import FabiusFunction.ThueMorseParseval
 import FabiusFunction.ThueMorseComplexity
 import FabiusFunction.ThueMorseArithmeticFilter
@@ -307,6 +323,7 @@ import FabiusFunction.PoissonApproximateIdentity
 import FabiusFunction.PoissonMassSwap
 import FabiusFunction.StieltjesPerron
 import FabiusFunction.GeneralQConditionNumber
+import FabiusFunction.GeometricToeplitzBridge
 import FabiusFunction.LimitConditionNumber
 import FabiusFunction.CumulantGridConstant
 import FabiusFunction.MultipleAngleBounds
@@ -480,6 +497,8 @@ import FabiusFunction.BoseFinitePartIntegral
 import FabiusFunction.PeriodicMean
 import FabiusFunction.PeriodicRegularity
 import FabiusFunction.LaplacePeriodicSecondOrder
+import FabiusFunction.EndpointLogDerivativeExpansion
+import FabiusFunction.LaplaceMomentBoundsSharp
 import FabiusFunction.FabiusTranslatedLegendreSeries
 import FabiusFunction.FabiusLegendreLeastSquares
 import FabiusFunction.LegendreGaunt
@@ -531,7 +550,9 @@ import FabiusFunction.InverseBranch
 import FabiusFunction.InverseNotElementary
 import FabiusFunction.FabiusComputableSpline
 import FabiusFunction.EffectiveMonotoneInverse
+import FabiusFunction.PrimrecNatPow
 import FabiusFunction.EffectiveGapInverse
+import FabiusFunction.FabiusGapInversion
 import FabiusFunction.FabiusInverseComputable
 import FabiusFunction.FabiusSaddleJetClosedForm
 import FabiusFunction.FabiusSaddleExponentClosedForm
@@ -635,6 +656,27 @@ import FabiusFunction.IntegerParameterTranslation
 import FabiusFunction.MultisetInversions
 import FabiusFunction.GeometricSimplexReindex
 import FabiusFunction.RatioExpansion
+import FabiusFunction.ThetaHeatEquation
+import FabiusFunction.QPochhammerModularAsymptotic
+import FabiusFunction.FormalQBinomial
+import FabiusFunction.BorweinReciprocity
+import FabiusFunction.GaussianUnimodality
+import FabiusFunction.TwoSquareTheorem
+import FabiusFunction.FourSquareTheorem
+import FabiusFunction.JacksonVeryWellPoised
+import FabiusFunction.QSeriesTruncation
+import FabiusFunction.RogersRamanujanPartitions
+import FabiusFunction.GLOrderProduct
+import FabiusFunction.SchroeterFormula
+import FabiusFunction.SubspaceMobius
+import FabiusFunction.BasicBernoulliLog
+import FabiusFunction.GaussianFourierTheta
+import FabiusFunction.JacksonRationalCertificate
+import FabiusFunction.JacobiImaginaryTransform
+import FabiusFunction.ThetaProductIdentities
+import FabiusFunction.CyclicSievingSubsets
+import FabiusFunction.SchurPrincipalSpecialization
+import FabiusFunction.RankMatrixCount
 import FabiusFunction.QExponentialFactorization
 import FabiusFunction.LambertTailLimit
 import FabiusFunction.SubspaceCount
@@ -681,6 +723,18 @@ import FabiusFunction.PartitionMultiplicity
 import FabiusFunction.EulerTelescoping
 import FabiusFunction.GaussianBinomialPalindromic
 import FabiusFunction.ThetaQuasiPeriodicity
+import FabiusFunction.FabiusDyadicGaussianForm
+import FabiusFunction.FabiusGeneralLinearDenominator
+import FabiusFunction.ThueMorseComplexHalfAngle
+import FabiusFunction.ThueMorseQPochhammer
+import FabiusFunction.QPochhammerMultiplicativeDissection
+import FabiusFunction.ThueMorseEulerFunction
+import FabiusFunction.ThueMorseQPochhammerInfinite
+import FabiusFunction.ThueMorsePentagonal
+import FabiusFunction.LambertWAnalytic
+import FabiusFunction.MixedDifferenceForwardDiff
+import FabiusFunction.GeometricProuhetBlock
+import FabiusFunction.GeneralLinearThueMorseSum
 
 set_option autoImplicit false
 

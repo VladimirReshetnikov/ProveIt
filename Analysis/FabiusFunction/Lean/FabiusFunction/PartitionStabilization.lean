@@ -33,14 +33,20 @@ namespace Fabius
 /-- Extension of a vector on `Fin k` by zero. -/
 def extZero {k : ℕ} (l : Fin k → ℕ) (t : ℕ) : ℕ := if h : t < k then l ⟨t, h⟩ else 0
 
+/-- Inside the range, `extZero l` is just `l`: `extZero l t = l ⟨t, h⟩` for `t < k`. -/
 theorem extZero_of_lt {k : ℕ} (l : Fin k → ℕ) {t : ℕ} (h : t < k) : extZero l t = l ⟨t, h⟩ := by
   unfold extZero
   rw [dif_pos h]
 
+/-- Past the range, `extZero l` vanishes: `extZero l t = 0` for `k ≤ t`. This is the padding by
+zeros that lets a partition with at most `k` parts be read as a sequence indexed by all of `ℕ`. -/
 theorem extZero_of_le {k : ℕ} (l : Fin k → ℕ) {t : ℕ} (h : k ≤ t) : extZero l t = 0 := by
   unfold extZero
   rw [dif_neg (not_lt.mpr h)]
 
+/-- Zero-padding preserves antitonicity: if `l` is antitone on `Fin k` then `extZero l` is
+antitone on all of `ℕ`. Crossing the boundary `k` is harmless because the padded values are `0`,
+which is below every value of `l`. -/
 theorem extZero_antitone {k : ℕ} {l : Fin k → ℕ} (hl : ∀ i j : Fin k, i ≤ j → l j ≤ l i)
     {s t : ℕ} (hst : s ≤ t) : extZero l t ≤ extZero l s := by
   by_cases ht : t < k
@@ -60,6 +66,9 @@ def differenceVector (N : ℕ) {k : ℕ} (l : Fin k → ℕ) : Fin N → ℕ :=
 /-- The tail sum `∑_{i ≥ t} μ_i` as a function of `t : ℕ`. -/
 def tailSumAt {N : ℕ} (μ : Fin N → ℕ) (t : ℕ) : ℕ := ∑ i : Fin N, if t ≤ i then μ i else 0
 
+/-- The zero-padded conjugate is the tail sum, at every `t : ℕ`, once `k ≥ N`: on `t < k` this is
+`conjugateVector` by definition, and for `t ≥ k ≥ N` both sides are `0` because no index of
+`Fin N` reaches `t`. -/
 theorem extZero_conjugateVector {N k : ℕ} (hk : N ≤ k) (μ : Fin N → ℕ) (t : ℕ) :
     extZero (conjugateVector k μ) t = tailSumAt μ t := by
   by_cases ht : t < k
@@ -70,6 +79,8 @@ theorem extZero_conjugateVector {N k : ℕ} (hk : N ≤ k) (μ : Fin N → ℕ) 
     symm
     exact sum_eq_zero fun i _ => if_neg (by omega)
 
+/-- Peeling the first term off a tail sum: `∑_{i ≥ t} μ_i = μ_t + ∑_{i ≥ t+1} μ_i` for `t < N`.
+This is the recursion that makes `differenceVector` invert `conjugateVector`. -/
 theorem tailSumAt_succ {N : ℕ} (μ : Fin N → ℕ) {t : ℕ} (ht : t < N) :
     tailSumAt μ t = μ ⟨t, ht⟩ + tailSumAt μ (t + 1) := by
   unfold tailSumAt
@@ -85,9 +96,13 @@ theorem tailSumAt_succ {N : ℕ} (μ : Fin N → ℕ) {t : ℕ} (ht : t < N) :
   · intro h
     exact ⟨by omega, by omega⟩
 
+/-- A tail sum starting beyond the last index is empty: `∑_{i ≥ t} μ_i = 0` for `t ≥ N`. -/
 theorem tailSumAt_of_le {N : ℕ} (μ : Fin N → ℕ) {t : ℕ} (ht : N ≤ t) : tailSumAt μ t = 0 :=
   sum_eq_zero fun i _ => if_neg (by omega)
 
+/-- The conjugate of a multiplicity vector is a partition, i.e. antitone: `j ≤ j'` implies
+`(conjugate μ)_{j'} ≤ (conjugate μ)_j`, since the tail sum `∑_{i ≥ j} μ_i` only loses terms as `j`
+grows. This is one half of membership in `boxPartitions k m`. -/
 theorem conjugateVector_antitone {N k : ℕ} (μ : Fin N → ℕ) :
     ∀ j j' : Fin k, j ≤ j' → conjugateVector k μ j' ≤ conjugateVector k μ j := by
   intro j j' hjj'
@@ -98,6 +113,9 @@ theorem conjugateVector_antitone {N k : ℕ} (μ : Fin N → ℕ) :
   · rw [if_neg h]
     exact Nat.zero_le _
 
+/-- Every part of the conjugate is bounded by the weight `∑_i (i+1) μ_i` of `μ`: each surviving
+term `μ_i` in `∑_{i ≥ j} μ_i` is at most `(i+1) μ_i`. With weight `N ≤ m` this is the other half
+of membership in `boxPartitions k m` — the conjugate fits in a box of width `m`. -/
 theorem conjugateVector_le_weight {N k : ℕ} (μ : Fin N → ℕ) (j : Fin k) :
     conjugateVector k μ j ≤ ∑ i : Fin N, ((i : ℕ) + 1) * μ i := by
   unfold conjugateVector
@@ -139,6 +157,10 @@ theorem sum_Ico_sub_succ {e : ℕ → ℕ} (he : ∀ s t, s ≤ t → e t ≤ e 
     have h2 := he b (b + 1) (Nat.le_succ b)
     omega
 
+/-- The tail sums of the consecutive differences telescope: for antitone `l`,
+`∑_{i ≥ t} (differenceVector N l)_i = extZero l t - extZero l N`, the sum running over `Ico t N`
+(and being empty, with both sides `0`, when `t > N`). This is the computation behind
+`conjugateVector_differenceVector`. -/
 theorem tailSumAt_differenceVector {N k : ℕ} {l : Fin k → ℕ}
     (hl : ∀ i j : Fin k, i ≤ j → l j ≤ l i) (t : ℕ) :
     tailSumAt (differenceVector N l) t = extZero l t - extZero l N := by

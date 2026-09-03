@@ -17,6 +17,14 @@ character of that cube.  This module proves the atlas's enumerator chapter:
   `n`-th numbers of even and odd binary weight, their difference is the
   Thue--Morse sign, and their compositions satisfy the four exact closure
   laws of the atlas;
+* the **generic bit enumeration** `bitEnum b n`, the `n`-th integer
+  whose Thue--Morse bit is `b`: the evil and odious enumerations are its
+  instances `b = 0` and `b = 1`, and their eight mirrored theorems
+  (bit value, surjectivity onto the bit class, strict monotonicity, the
+  four composition laws) are each derived from one generic statement;
+* the **bit/sign bridge** `thueMorseBit_eq_iff_thueMorseSign_eq` and
+  `thueMorseBit_ne_iff_thueMorseSign_eq_neg`: equal bits are equal
+  signs, distinct bits are opposite signs;
 * the **XOR autocorrelation** `∑_{n < 2^m} ε(n) ε(n XOR a) = 2^m ε(a)` and
   the signed **Hamming-sphere sums**
   `∑_{w(n XOR a) = r} ε(n) = ε(a) (-1)^r m.choose r`.
@@ -74,68 +82,148 @@ theorem thueMorseBit_two_mul_add_one (n : ℕ) :
   simp only [thueMorseBit, binaryWeight_two_mul_add_one]
   omega
 
+/-! ### Bits and signs -/
+
+/-- Two indices have equal Thue--Morse bits iff they have equal
+Thue--Morse signs. -/
+theorem thueMorseBit_eq_iff_thueMorseSign_eq (a b : ℕ) :
+    thueMorseBit a = thueMorseBit b ↔
+      thueMorseSign a = thueMorseSign b := by
+  have ha := thueMorseSign_eq_one_sub_two_mul_bit a
+  have hb := thueMorseSign_eq_one_sub_two_mul_bit b
+  have ha1 := thueMorseBit_le_one a
+  have hb1 := thueMorseBit_le_one b
+  constructor <;> intro h <;> omega
+
+/-- Two indices have distinct Thue--Morse bits iff their Thue--Morse
+signs are opposite. -/
+theorem thueMorseBit_ne_iff_thueMorseSign_eq_neg (a b : ℕ) :
+    thueMorseBit a ≠ thueMorseBit b ↔
+      thueMorseSign a = -thueMorseSign b := by
+  have ha := thueMorseSign_eq_one_sub_two_mul_bit a
+  have hb := thueMorseSign_eq_one_sub_two_mul_bit b
+  have ha1 := thueMorseBit_le_one a
+  have hb1 := thueMorseBit_le_one b
+  constructor <;> intro h <;> omega
+
+/-! ### The generic bit enumeration -/
+
+/-- The `n`-th integer whose Thue--Morse bit is `b` (for `b ≤ 1`), in
+increasing order: `2n` when `τ(n) = b`, else `2n + 1`.  The evil and
+odious enumerations are the instances `b = 0` and `b = 1`
+(`evilEnum_eq_bitEnum`, `odiousEnum_eq_bitEnum`). -/
+def bitEnum (b n : ℕ) : ℕ :=
+  if thueMorseBit n = b then 2 * n else 2 * n + 1
+
+/-- `bitEnum b` doubles an index whose bit is `b`. -/
+theorem bitEnum_of_thueMorseBit_eq {b m : ℕ} (h : thueMorseBit m = b) :
+    bitEnum b m = 2 * m := by
+  rw [bitEnum, if_pos h]
+
+/-- `bitEnum b` doubles and increments an index whose bit is not `b`. -/
+theorem bitEnum_of_thueMorseBit_ne {b m : ℕ} (h : thueMorseBit m ≠ b) :
+    bitEnum b m = 2 * m + 1 := by
+  rw [bitEnum, if_neg h]
+
+/-- The evil enumeration is the bit enumeration at `b = 0`. -/
+theorem evilEnum_eq_bitEnum (n : ℕ) : evilEnum n = bitEnum 0 n := by
+  have hb := thueMorseBit_le_one n
+  unfold evilEnum bitEnum
+  split_ifs <;> omega
+
+/-- The odious enumeration is the bit enumeration at `b = 1`. -/
+theorem odiousEnum_eq_bitEnum (n : ℕ) : odiousEnum n = bitEnum 1 n := by
+  have hb := thueMorseBit_le_one n
+  unfold odiousEnum bitEnum
+  split_ifs <;> omega
+
+/-- The bit enumeration lands on indices of bit `b`. -/
+theorem thueMorseBit_bitEnum {b : ℕ} (hb : b ≤ 1) (n : ℕ) :
+    thueMorseBit (bitEnum b n) = b := by
+  have hn := thueMorseBit_le_one n
+  by_cases h : thueMorseBit n = b
+  · rw [bitEnum_of_thueMorseBit_eq h, thueMorseBit_two_mul, h]
+  · rw [bitEnum_of_thueMorseBit_ne h, thueMorseBit_two_mul_add_one]
+    omega
+
+/-- Every index of bit `b` is hit by the bit enumeration, at `m / 2`. -/
+theorem bitEnum_div_two {b : ℕ} (m : ℕ) (h : thueMorseBit m = b) :
+    bitEnum b (m / 2) = m := by
+  rcases Nat.even_or_odd' m with ⟨k, hk | hk⟩ <;> subst hk
+  · rw [thueMorseBit_two_mul] at h
+    rw [Nat.mul_div_cancel_left k (by norm_num),
+      bitEnum_of_thueMorseBit_eq h]
+  · rw [thueMorseBit_two_mul_add_one] at h
+    have hk := thueMorseBit_le_one k
+    have hne : thueMorseBit k ≠ b := by omega
+    rw [show (2 * k + 1) / 2 = k by omega,
+      bitEnum_of_thueMorseBit_ne hne]
+
+/-- The bit enumeration is strictly monotone, for every `b`. -/
+theorem bitEnum_strictMono (b : ℕ) : StrictMono (bitEnum b) := by
+  intro x y hxy
+  unfold bitEnum
+  split_ifs <;> omega
+
+/-- Composition law: the bit enumeration doubles its own values. -/
+theorem bitEnum_bitEnum_self {b : ℕ} (hb : b ≤ 1) (n : ℕ) :
+    bitEnum b (bitEnum b n) = 2 * bitEnum b n :=
+  bitEnum_of_thueMorseBit_eq (thueMorseBit_bitEnum hb n)
+
+/-- Composition law: the enumeration of any other bit doubles and
+increments the values of `bitEnum b`. -/
+theorem bitEnum_bitEnum_of_ne {b c : ℕ} (hb : b ≤ 1) (hcb : c ≠ b)
+    (n : ℕ) : bitEnum c (bitEnum b n) = 2 * bitEnum b n + 1 := by
+  apply bitEnum_of_thueMorseBit_ne
+  rw [thueMorseBit_bitEnum hb]
+  exact hcb.symm
+
+/-- The composition law in one formula: `bitEnum c ∘ bitEnum b` doubles,
+plus one exactly when `c ≠ b`. -/
+theorem bitEnum_bitEnum {b : ℕ} (c : ℕ) (hb : b ≤ 1) (n : ℕ) :
+    bitEnum c (bitEnum b n) =
+      2 * bitEnum b n + (if c = b then 0 else 1) := by
+  by_cases hcb : c = b
+  · rw [if_pos hcb, Nat.add_zero, hcb, bitEnum_bitEnum_self hb]
+  · rw [if_neg hcb, bitEnum_bitEnum_of_ne hb hcb]
+
+/-! ### The evil and odious instances -/
+
 /-- The evil enumeration lands on evil numbers. -/
 @[simp] theorem thueMorseBit_evilEnum (n : ℕ) :
     thueMorseBit (evilEnum n) = 0 := by
-  rw [evilEnum]
-  rcases Nat.eq_zero_or_pos (thueMorseBit n) with h | h
-  · rw [h, Nat.add_zero, thueMorseBit_two_mul, h]
-  · have hb := thueMorseBit_le_one n
-    have h1 : thueMorseBit n = 1 := by omega
-    rw [h1, thueMorseBit_two_mul_add_one, h1]
+  rw [evilEnum_eq_bitEnum]
+  exact thueMorseBit_bitEnum (by norm_num) n
 
 /-- The odious enumeration lands on odious numbers. -/
 @[simp] theorem thueMorseBit_odiousEnum (n : ℕ) :
     thueMorseBit (odiousEnum n) = 1 := by
-  rw [odiousEnum]
-  rcases Nat.eq_zero_or_pos (thueMorseBit n) with h | h
-  · rw [h, Nat.sub_zero, thueMorseBit_two_mul_add_one, h]
-  · have hb := thueMorseBit_le_one n
-    have h1 : thueMorseBit n = 1 := by omega
-    rw [h1, show 2 * n + 1 - 1 = 2 * n by omega, thueMorseBit_two_mul, h1]
+  rw [odiousEnum_eq_bitEnum]
+  exact thueMorseBit_bitEnum (by norm_num) n
 
 /-- Every evil number is hit by the evil enumeration, at index `m / 2`. -/
 theorem evilEnum_div_two (m : ℕ) (h : thueMorseBit m = 0) :
     evilEnum (m / 2) = m := by
-  rcases Nat.even_or_odd m with ⟨k, hk⟩ | ⟨k, hk⟩ <;> subst hk
-  · rw [show k + k = 2 * k from (two_mul k).symm] at h ⊢
-    rw [thueMorseBit_two_mul] at h
-    rw [evilEnum, Nat.mul_div_cancel_left k (by norm_num), h]
-    omega
-  · rw [thueMorseBit_two_mul_add_one] at h
-    have hb := thueMorseBit_le_one k
-    have h1 : thueMorseBit k = 1 := by omega
-    rw [evilEnum, show (2 * k + 1) / 2 = k by omega, h1]
+  rw [evilEnum_eq_bitEnum]
+  exact bitEnum_div_two m h
 
 /-- Every odious number is hit by the odious enumeration, at `m / 2`. -/
 theorem odiousEnum_div_two (m : ℕ) (h : thueMorseBit m = 1) :
     odiousEnum (m / 2) = m := by
-  rcases Nat.even_or_odd m with ⟨k, hk⟩ | ⟨k, hk⟩ <;> subst hk
-  · rw [show k + k = 2 * k from (two_mul k).symm] at h ⊢
-    rw [thueMorseBit_two_mul] at h
-    rw [odiousEnum, Nat.mul_div_cancel_left k (by norm_num), h]
-    omega
-  · rw [thueMorseBit_two_mul_add_one] at h
-    have hb := thueMorseBit_le_one k
-    have h0 : thueMorseBit k = 0 := by omega
-    rw [odiousEnum, show (2 * k + 1) / 2 = k by omega, h0]
-    omega
+  rw [odiousEnum_eq_bitEnum]
+  exact bitEnum_div_two m h
 
 /-- The evil enumeration is strictly monotone. -/
 theorem evilEnum_strictMono : StrictMono evilEnum := by
-  intro a b hab
-  have ha := thueMorseBit_le_one a
-  have hb := thueMorseBit_le_one b
-  rw [evilEnum, evilEnum]
-  omega
+  have h : evilEnum = bitEnum 0 := funext evilEnum_eq_bitEnum
+  rw [h]
+  exact bitEnum_strictMono 0
 
 /-- The odious enumeration is strictly monotone. -/
 theorem odiousEnum_strictMono : StrictMono odiousEnum := by
-  intro a b hab
-  have ha := thueMorseBit_le_one a
-  have hb := thueMorseBit_le_one b
-  rw [odiousEnum, odiousEnum]
-  omega
+  have h : odiousEnum = bitEnum 1 := funext odiousEnum_eq_bitEnum
+  rw [h]
+  exact bitEnum_strictMono 1
 
 /-- The `n`-th odious number exceeds the `n`-th evil number by the
 Thue--Morse sign: consecutive partners differ by exactly `ε(n)`. -/
@@ -162,31 +250,26 @@ theorem evilEnum_add_odiousEnum (n : ℕ) :
 /-- Composition laws: an evil index doubles cleanly. -/
 theorem evilEnum_evilEnum (n : ℕ) :
     evilEnum (evilEnum n) = 2 * evilEnum n := by
-  rw [show evilEnum (evilEnum n) =
-      2 * evilEnum n + thueMorseBit (evilEnum n) from rfl,
-    thueMorseBit_evilEnum, Nat.add_zero]
+  simp only [evilEnum_eq_bitEnum]
+  exact bitEnum_bitEnum_self (by norm_num) n
 
 /-- Composition laws: an odious index below the evil enumeration. -/
 theorem odiousEnum_evilEnum (n : ℕ) :
     odiousEnum (evilEnum n) = 2 * evilEnum n + 1 := by
-  rw [show odiousEnum (evilEnum n) =
-      2 * evilEnum n + 1 - thueMorseBit (evilEnum n) from rfl,
-    thueMorseBit_evilEnum, Nat.sub_zero]
+  simp only [evilEnum_eq_bitEnum, odiousEnum_eq_bitEnum]
+  exact bitEnum_bitEnum_of_ne (by norm_num) (by norm_num) n
 
 /-- Composition laws: the evil enumeration of an odious index. -/
 theorem evilEnum_odiousEnum (n : ℕ) :
     evilEnum (odiousEnum n) = 2 * odiousEnum n + 1 := by
-  rw [show evilEnum (odiousEnum n) =
-      2 * odiousEnum n + thueMorseBit (odiousEnum n) from rfl,
-    thueMorseBit_odiousEnum]
+  simp only [evilEnum_eq_bitEnum, odiousEnum_eq_bitEnum]
+  exact bitEnum_bitEnum_of_ne (by norm_num) (by norm_num) n
 
 /-- Composition laws: an odious index doubles cleanly. -/
 theorem odiousEnum_odiousEnum (n : ℕ) :
     odiousEnum (odiousEnum n) = 2 * odiousEnum n := by
-  rw [show odiousEnum (odiousEnum n) =
-      2 * odiousEnum n + 1 - thueMorseBit (odiousEnum n) from rfl,
-    thueMorseBit_odiousEnum]
-  omega
+  simp only [odiousEnum_eq_bitEnum]
+  exact bitEnum_bitEnum_self (by norm_num) n
 
 /-! ## XOR autocorrelation and Hamming spheres -/
 

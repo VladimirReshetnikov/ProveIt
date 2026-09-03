@@ -297,7 +297,12 @@ theorem rvachev_even_translate_fourier
       norm_num
       ring
 
-private lemma rvachevFourier_half_int_summable
+/-- The Fourier transform of a bounded Fabius solution is summable over the
+half-integers `k/2`, `k` ranging over `ℤ`.  This is the summability
+hypothesis the half-integer Poisson summation below consumes; it comes from
+the Schwartz decay of the rescaled Rvachev profile rather than from any
+property of the lattice. -/
+lemma rvachevFourier_half_int_summable
     (F : BoundedFabius) (hF : IsFabius F) :
     Summable fun k : ℤ ↦ rvachevFourier F ((((k : ℝ) / 2 : ℝ) : ℂ)) := by
   let φ : SchwartzMap ℝ ℂ :=

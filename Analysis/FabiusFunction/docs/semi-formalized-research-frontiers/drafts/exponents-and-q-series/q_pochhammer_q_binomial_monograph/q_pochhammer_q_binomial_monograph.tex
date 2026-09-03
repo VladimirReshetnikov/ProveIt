@@ -441,6 +441,14 @@ legitimate; equivalently one may formulate the same proof for unit parameters
 over a commutative ring.
 \end{proof}
 
+\emph{Lean status.}  Both displays are exactly
+\path{Fabius.finiteQPochhammerIn_base_reversal} and
+\path{Fabius.finiteQPochhammerIn_inv_base_reversal} in
+\path{QPochhammerElementaryIdentities.lean}, over every field, for $a,q\ne0$ and every
+$n$ (with unit-level versions \path{Fabius.finiteQPochhammerIn_base_reversal_units} over a
+commutative ring).
+
+
 \section{Negative indices}
 
 The concatenation law suggests the only extension to negative integers that preserves
@@ -490,6 +498,14 @@ and the remaining product is
 Taking the reciprocal proves the formula.  The extended concatenation identity follows by cancelling the overlapping finite factors; the cases in which one of $m,n,m+n$ is negative reduce directly to the definition.
 \end{proof}
 
+\emph{Lean status.}  The negative-index closed form is
+\path{Fabius.finiteQPochhammerZ_neg_natCast_eq} in \path{QPochhammerIntegerIndex.lean},
+where \path{Fabius.finiteQPochhammerZ} is the integer-index symbol defined through the
+interval product \path{Fabius.qIntervalProd}; the concatenation law for all integer indices
+(the second display) is \path{Fabius.finiteQPochhammerZ_add}, under the nonvanishing of the
+factors it divides by, with \path{Fabius.finiteQPochhammerZ_add_one} the one-step case.
+
+
 % ed.: remark added to record the generality of the formalization.
 \begin{remark}[Signed interval products]\label{rem:negative-index-formalization}
 The formalization organizes all integer indices around the signed interval
@@ -529,6 +545,13 @@ quotient.  For $k>N$, the defining product contains its index-$N$ factor
 $1-q^{-N}q^N=0$; here only $q\ne0$ is needed.
 \end{proof}
 
+\emph{Lean status.}  Exactly \path{Fabius.finiteQPochhammerIn_inv_pow_eq_self_div} (the
+closed form, under $k\le N$ and $(q;q)_{N-k}\ne0$) and
+\path{Fabius.finiteQPochhammerIn_inv_pow_eq_zero_of_lt} (vanishing for $k>N$) in
+\path{QPochhammerElementaryIdentities.lean}, over every field with $q\ne0$; the Lean form
+writes $q^{-Nk}$ as division by $q^{Nk}$.
+
+
 \section{Partial fractions and logarithmic derivatives}
 
 \begin{theorem}[Finite partial-fraction decomposition]\label{thm:partial-fraction}
@@ -564,6 +587,10 @@ finite poles are removable.  The difference is therefore a polynomial; it is
 $O(z^{-1})$ at infinity, so it is identically zero.
 \end{proof}
 
+\emph{Lean status.}  Not formalized; the corpus has no partial-fraction decomposition of
+$1/(z;q)_{n+1}$.
+
+
 % ed.: remark added to record the division-free form proved in Lean.
 \begin{remark}[The polynomial form]\label{rem:partial-fraction-formalization}
 Clearing denominators, the theorem is the identity
@@ -598,6 +625,14 @@ If $a=a(x)$ is differentiable, then
 \begin{proof}
 Differentiate the logarithm of the finite product term by term.
 \end{proof}
+
+\emph{Lean status.}  The finite logarithmic derivative is not formalized as such.  Its
+infinite counterpart is: \path{Fabius.hasDerivAt_qPochhammerInfIn_lambert} in
+\path{QPochhammerLogDerivative.lean} gives
+$\partial_a(a;q)_\infty=-(a;q)_\infty\sum_{m\ge0}a^m/(1-q^{m+1})$ for $|a|,|q|<1$, which is
+$\partial_a\log(a;q)_\infty=-\sum_j q^j/(1-aq^j)$ after resummation
+(\path{Fabius.tsum_neg_pow_div_one_sub_mul_pow_eq}).
+
 
 \section{Infinite products and Lambert series}
 
@@ -721,6 +756,14 @@ recovers the finite product.  If $\alpha=-n<0$, the same relation, applied after
 \)
 \end{proof}
 
+\emph{Lean status.}  Exactly \path{Fabius.qPochhammerC_add} in
+\path{QPochhammerComplexOrder.lean}, for the complex-order symbol
+\path{Fabius.qPochhammerC} (defined as the quotient $(a;q)_\infty/(aq^\alpha;q)_\infty$),
+under $q\ne0$ and $(aq^\alpha;q)_\infty\ne0$; the specializations $\alpha=0$ and
+$\alpha\in\NaturalNumbers$ are \path{Fabius.qPochhammerC_zero} and
+\path{Fabius.qPochhammerC_natCast}.
+
+
 \begin{proposition}[Derivative with respect to the order]\label{prop:order-derivative}
 Fix $a\in\ComplexNumbers$ with $\QPochhammer{a}{q}{\infty}\ne0$, and let
 $U\subset\ComplexNumbers$ be open with
@@ -760,6 +803,14 @@ Since $\GeneralizedQPochhammer{a}{q}{\alpha}
 =\QPochhammer{a}{q}{\infty}/G(\alpha)$ and the numerator is nonzero and
 independent of $\alpha$, the claimed formula follows.
 \end{proof}
+
+\emph{Lean status.}  The derivative in the order is
+\path{Fabius.hasDerivAt_qPochhammerC} in \path{QPochhammerOrderDerivative.lean}:
+for $|q|<1$, $q\ne0$ and $|aq^\alpha|<1$,
+$\partial_\alpha\,(a;q)_\alpha=(a;q)_\alpha\log q\sum_{j\ge0}aq^{\alpha+j}/(1-aq^{\alpha+j})$,
+the displayed logarithmic derivative; holomorphy on $U$ and the nonvanishing clause are
+not separately stated.
+
 
 \begin{theorem}[Lambert-series expansion]\label{thm:lambert-log}
 If $\AbsoluteValue q<1$ and $\AbsoluteValue a<1$, then
@@ -803,6 +854,13 @@ $\sum_{j\ge0}\sum_{m\ge0}\AbsoluteValue a^m\AbsoluteValue q^{j(m+1)}
  =\sum_{m\ge0}\AbsoluteValue a^m/(1-\AbsoluteValue q^{m+1})<\infty$.
 \end{proof}
 
+\emph{Lean status.}  The Lambert-series expansion is
+\path{Fabius.hasSum_lambert_log_complex} in \path{LambertSeriesLog.lean}
+($\sum_{m\ge1}a^m/(m(1-q^m))=-\sum_j\log(1-aq^j)$ for $|a|,|q|<1$), with the exponentiated
+form \path{Fabius.exp_neg_tsum_lambert_eq_qPochhammerInfIn}; the derivative clause is
+\path{Fabius.hasDerivAt_qPochhammerInfIn_lambert} (\path{QPochhammerLogDerivative.lean}).
+
+
 \begin{remark}[Branches]\label{rem:lambert-log-branch}
 The logarithm on the left is the sum $\sum_{j\ge0}\log(1-aq^j)$ of the principal logarithms of the factors, each of which lies in the disk $\AbsoluteValue{1-(1-aq^j)}<1$ where the Mercator series converges; the identity therefore fixes a definite branch, the one that is continuous in $a$ on $\AbsoluteValue a<1$ and vanishes at $a=0$.  The branch-free form is
 \[
@@ -829,6 +887,12 @@ Logarithmic differentiation gives
 \]
 The coefficient of $q^n$ is the sum of all $j$ dividing $n$.
 \end{proof}
+
+\emph{Lean status.}  Analytic rather than formal-power-series form:
+\path{Fabius.neg_mul_deriv_div_qPochhammerInfIn_self} in \path{DivisorSumLambert.lean} is
+$-q\,(q;q)_\infty'/(q;q)_\infty=\sum_{n\ge1}\sigma_1(n)q^n$ for $|q|<1$, resting on the
+Lambert-to-divisor resummation \path{Fabius.tsum_lambert_sigma_one}.
+
 
 \section{The dilogarithmic limit}
 
@@ -880,6 +944,10 @@ It remains to bound the total remainder.  Split the $m$-sum at $m\le t^{-1}$.  I
 For $m>t^{-1}$, subtracting finitely many asymptotic terms leaves a quantity bounded by a polynomial in $mt$ plus $(1-\EulerE^{-mt})^{-1}$; the factor $\rho^m$ makes the tail exponentially small in $1/t$, hence smaller than every power of $t$.  This proves the uniform remainder estimate.
 \end{proof}
 
+\emph{Lean status.}  Not formalized; no dilogarithm or Euler--Maclaurin expansion of
+$\log(a;e^{-t})_\infty$ is in the corpus.
+
+
 \section{Classical shifted factorials as a limit}
 
 \begin{proposition}[Finite classical limit]\label{prop:classical-poch-limit}
@@ -907,6 +975,13 @@ to $u=x+j$ in
 \]
 proves the result.
 \end{proof}
+
+\emph{Lean status.}  Exactly \path{Fabius.tendsto_finiteQPochhammerIn_cpow_div_pow} in
+\path{ClassicalPochhammerLimit.lean}, with $q^x$ the principal complex power and the
+limit along $q\to1$, $q\ne1$; the real-power version is
+\path{Fabius.tendsto_finiteQPochhammerIn_rpow_div_pow}, and the general mechanism is
+\path{Fabius.tendsto_finiteQPochhammerIn_div_pow_of_hasDerivAt}.
+
 
 % ed.: remark added to record the generality of the formalization.
 \begin{remark}[Only the derivative at $1$ enters]\label{rem:classical-limit-formalization}
@@ -957,6 +1032,15 @@ For $0\le k\le n$,
 \begin{proof}
 Cancel $(q;q)_{n-k}$ from $(q;q)_n$ using \Cref{prop:concat}.
 \end{proof}
+
+\emph{Lean status.}  The first equality, cleared of its denominator, is
+\path{Fabius.finiteQPochhammerIn_self_mul_gaussianBinomial} in
+\path{FiniteQBinomialCore.lean} ($(q;q)_k\binom nk_q=(q^{n-k+1};q)_k$ over every commutative
+ring), and the three-factor form
+$(q;q)_n=(q;q)_k(q;q)_{n-k}\binom nk_q$ is
+\path{Fabius.finiteQPochhammerIn_self_eq_mul_mul_gaussianBinomial}; the product display is
+the definition of the symbol unfolded.
+
 
 \section{The two Pascal recurrences}
 
@@ -1115,6 +1199,11 @@ For fixed $n,k$,
 Use the $q$-factorial form and $[j]_q\to j$.  Alternatively, and in the generality of an arbitrary topological semiring, the Gaussian coefficient is built from $q$ by finitely many additions, multiplications, and powers through the $q$-Pascal recurrence, hence is a continuous function of $q$; its value at $q=1$ is $\binom nk$ by the same recurrence, so the limit is that value.  This is the route taken by the formalization.
 \end{proof}
 
+\emph{Lean status.}  Exactly \path{Fabius.tendsto_gaussianBinomial_nhds_one} in
+\path{GaussianBinomialContinuity.lean}, in every topological semiring (the Gaussian
+coefficient is a polynomial in $q$, so the limit is evaluation at $1$).
+
+
 \section{Multinomial coefficients and flags}
 
 \begin{definition}
@@ -1151,6 +1240,15 @@ Write out the factorial ratios.  Consecutive numerator and denominator factors t
 Positivity follows from \Cref{cor:positivity}.
 \end{proof}
 
+\emph{Lean status.}  This is the definition of the multinomial in Lean:
+\path{Fabius.qMultinomial} in \path{QMultinomial.lean} is defined by the recursion
+\path{Fabius.qMultinomial_cons},
+$\QMultinomial{n}{n_1,\ldots,n_r}{q}=\GaussianBinomial{n_1+\cdots+n_r}{n_1}{q}\QMultinomial{n-n_1}{n_2,\ldots,n_r}{q}$,
+whose unfolding is the displayed product; the quotient form is
+\path{Fabius.qMultinomial_eq_div} (and \path{Fabius.finiteQPochhammerIn_self_sum_eq_qMultinomial_mul}
+cleared of denominators).
+
+
 \section{Adjacent ratios and efficient recurrences}
 
 \begin{proposition}\label{prop:adjacent-ratio}
@@ -1184,6 +1282,13 @@ natural \(n,k\): on and above the row boundary both sides vanish.  In the
 strict range \(k<n\), division over a field by the two explicitly assumed
 nonzero denominators in each line gives the stated ratios.
 \end{proof}
+
+\emph{Lean status.}  Exactly \path{Fabius.gaussianBinomial_adjacent_div} in
+\path{QPochhammerElementaryIdentities.lean}, over every field, under the two stated
+nonvanishing hypotheses; the denominator-free form is
+\path{Fabius.gaussianBinomial_adjacent_mul}, and the row-index versions
+\path{Fabius.gaussianBinomial_row_adjacent_mul}, \path{Fabius.gaussianBinomial_row_adjacent_div}.
+
 
 These ratios are useful numerically, but at roots of unity their denominators
 may vanish and the quotients need not be defined.  The cross-multiplied
@@ -1245,6 +1350,10 @@ The first sum is $k(n-k)$.  The second equals
 \]
 Since the first and second derivatives of $\log M$ at $0$ are the mean and variance, respectively, the result follows.
 \end{proof}
+
+\emph{Lean status.}  Not formalized; the corpus has no moments of the inversion-number
+distribution.
+
 
 \chapter{Finite \texorpdfstring{$q$}{q}-binomial theorems and inversion}\label{chap:finite-qbinomial}
 
@@ -1406,6 +1515,12 @@ The term with $j$ chosen from the first factor and $r-j$ from the second has exp
 Subtracting $\binom r2$ gives $(m-j)(r-j)$, proving \eqref{eq:qvand1}.  Splitting the product in the reverse order gives \eqref{eq:qvand2}.
 \end{proof}
 
+\emph{Lean status.}  The first display is exactly
+\path{Fabius.gaussianBinomial_add_vandermonde} in \path{QBinomialVandermonde.lean}, over
+every commutative semiring, with the sum over $0\le j\le r$ (the terms outside that range
+vanish); \path{Fabius.gaussianBinomial_add_vandermonde'} is the companion form.
+
+
 \begin{corollary}[Central form]\label{cor:central-vandermonde}
 For $m,n\ge0$,
 \[
@@ -1418,6 +1533,11 @@ For $m,n\ge0$,
 \begin{proof}
 Set $r=m$ in \eqref{eq:qvand1} and put $\ell=m-j$.  Then the exponent becomes $\ell^2$, while symmetry gives $\GaussianBinomial{m}{m-\ell}{q}=\GaussianBinomial{m}{\ell}{q}$ and the second factor is $\GaussianBinomial{n}{\ell}{q}$.
 \end{proof}
+
+\emph{Lean status.}  Exactly \path{Fabius.gaussianBinomial_add_central_min} in
+\path{QBinomialVandermonde.lean} (sum to $\min(m,n)$), with
+\path{Fabius.gaussianBinomial_add_central} the form summed to $m$.
+
 
 % Chapter: \ref{chap:finite-qbinomial} ("Finite $q$-binomial theorems and
 % inversion"), section "$q$-Vandermonde convolution".
@@ -1445,6 +1565,13 @@ Assume therefore $-N\le k\le N$ and set $r=N+k\in\SetOf{0,\dots,2N}$.  \Cref{thm
 \]
 Substitute $\ell=N-j$.  Then $N+k-j=\ell+k$, so the exponent becomes $\ell(\ell+k)=\ell^2+\ell k$; the symmetry $\GaussianBinomial{N}{N-\ell}{q}=\GaussianBinomial{N}{\ell}{q}$ of \Cref{thm:qbinom-structure}\,(i) turns the first Gaussian coefficient into $\GaussianBinomial{N}{\ell}{q}$, and the second is $\GaussianBinomial{N}{\ell+k}{q}$.  This is \eqref{eq:shifted-central-vandermonde}.
 \end{proof}
+
+\emph{Lean status.}  Exactly \path{Fabius.gaussianBinomial_two_mul_int_shifted_central} in
+\path{QBinomialVandermonde.lean}, with the integer-index coefficient
+\path{Fabius.gaussianBinomialInt} (zero outside $0\le k\le n$) and the sum over
+$0\le\ell\le N$; the finsum form over all of $\IntegerNumbers$ is
+\path{Fabius.gaussianBinomial_two_mul_int_shifted_central_finsum}.
+
 
 \begin{remark}[Formal version]
 \formalfile{FiniteQBinomialCore.lean} defines the zero-extended integer
@@ -1509,6 +1636,18 @@ Put $r=n-k$.  The coefficient is
 By \Cref{cor:alternating-qbinom}, this equals $0$ when $n>j$ and $1$ when $n=j$.  Thus the composition is the identity.  The same argument in the opposite order proves equivalence.
 \end{proof}
 
+\emph{Lean status.}  The inversion is formal through the two-sided orthogonality of the
+kernels: with \path{Fabius.gaussianBinomialKernel} the matrix $\GaussianBinomial{n}{k}{q}$
+and \path{Fabius.gaussianBinomialInverseKernel} the matrix
+$(-1)^{n-k}q^{\binom{n-k}2}\GaussianBinomial{n}{k}{q}$,
+\path{Fabius.gaussianBinomialKernel_left_orthogonality} and
+\path{Fabius.gaussianBinomialKernel_right_orthogonality} in \path{QBinomialInversion.lean}
+are the two products equal to the identity, over every commutative ring; the passage to
+sequences $(a_n)$, $(b_n)$ is matrix multiplication and is not separately stated.  The
+scaled kernels are \path{Fabius.scaledGaussianBinomialKernel_left_orthogonality} and
+\path{Fabius.scaledGaussianBinomialKernel_right_orthogonality}.
+
+
 \begin{corollary}[Matrix orthogonality]\label{cor:qbinomial-orthogonality}
 For $0\le j\le n$,
 \[
@@ -1520,6 +1659,11 @@ For $0\le j\le n$,
 \begin{proof}
 This is the kernel computation in the preceding proof.
 \end{proof}
+
+\emph{Lean status.}  Exactly \path{Fabius.gaussianBinomialKernel_left_orthogonality} in
+\path{QBinomialInversion.lean}; the row case $j=0$ is
+\path{Fabius.sum_gaussianBinomial_alternating}.
+
 
 \begin{remark}[Formal version and scaled strengthening]
 The scalar algebra is formalized in \formalfile{QBinomialInversion.lean}.  Its
@@ -1698,6 +1842,12 @@ independent of $k$.  Therefore
  C_{n+1}(u,v)=(1-uvq^n)C_n(u,v)=(uv;q)_{n+1}.
 \]
 \end{proof}
+
+\emph{Lean status.}  Exactly \path{Fabius.finite_qCauchy_identity} in
+\path{QBinomialCauchy.lean}, over every commutative ring, with the reflected form
+\path{Fabius.finite_qCauchy_identity_reflected} and the second identity
+\path{Fabius.finite_qCauchy_second_identity}.
+
 
 \begin{remark}
 Taking $u=0$ recovers the tautology $(0;q)_k=1$ inside a weighted expansion; taking special limits of $u$ or $v$ produces several finite convolution formulas used later in the proof of the $q$-Pfaff--Saalsch\"utz summation.
@@ -2247,6 +2397,13 @@ Let $F_{n,k}(q)$ denote the right side.  If the last letter is $1$, deletion of 
 The boundary values are $1$, so $F_{n,k}$ and $\GaussianBinomial{n}{k}{q}$ obey the same recurrence and initial conditions.
 \end{proof}
 
+\emph{Lean status.}  Formal as the two-letter case of the multiset enumerator
+\path{Fabius.qMultinomial_ofFn_eq_sum_pow_inversions} in \path{MultisetInversions.lean}
+(\Cref{thm:qmult-inversions} below), with $\mathcal W_{n,k}$ the words over two letters with
+the prescribed letter counts and \path{Fabius.inversions} the inversion number; the
+two-letter multinomial is the Gaussian coefficient by \path{Fabius.qMultinomial_pair}.
+
+
 \begin{corollary}[Inversion-law interpretation]\label{cor:qbinom-inversion-law}
 For $0\le k\le n$, the random variable in \Cref{thm:qbinom-moments} is the
 inversion number of a uniformly random word in $\mathcal W_{n,k}$.
@@ -2255,6 +2412,10 @@ inversion number of a uniformly random word in $\mathcal W_{n,k}$.
 \begin{proof}
 The coefficient of $q^j$ in \Cref{thm:binary-inversions} counts words with $j$ inversions, while $\AbsoluteValue{\mathcal W_{n,k}}=\binom nk$.
 \end{proof}
+
+\emph{Lean status.}  Not formalized as a statement about a random variable; the underlying
+count is \path{Fabius.qMultinomial_ofFn_eq_sum_pow_inversions}.
+
 
 \section{Partitions inside a rectangle}
 
@@ -2296,6 +2457,13 @@ recovers a strictly increasing sequence of positions, so this is a bijection.  T
 Apply \Cref{thm:binary-inversions}.
 \end{proof}
 
+\emph{Lean status.}  Formal in \path{GaussianUnimodality.lean}: the coefficient of $q^j$ in
+$\GaussianBinomial{m+k}{k}{q}$ is \path{Fabius.boxCoeff} (\path{Fabius.coeff_gaussianBinomial_X_eq_boxCoeff}),
+and \path{Fabius.boxCoeff_eq_card} identifies it with the number of partitions with at most
+$k$ parts, each at most $m$, of size $j$; the stable range $j\le\min(k,m)$ reduces to the
+unrestricted partition count (\path{Fabius.boxCoeff_eq_partitionCount}).
+
+
 \begin{corollary}[Conjugation and complement]\label{cor:partition-symmetries}
 Conjugating Ferrers diagrams proves
 \(
@@ -2310,6 +2478,12 @@ Taking the complement in the rectangle proves
 \begin{proof}
 Conjugation exchanges a $k\times m$ rectangle with an $m\times k$ rectangle without changing size.  Complementation sends size $r$ to $mk-r$, so the generating polynomial is reciprocal of degree $mk$.
 \end{proof}
+
+\emph{Lean status.}  The conjugation symmetry is \path{Fabius.boxCoeff_transpose} and
+\path{Fabius.gaussianBinomial_symm} (\path{FiniteQBinomialCore.lean}); the complement
+symmetry $c_j=c_{km-j}$ is \path{Fabius.boxCoeff_symm}, all in
+\path{GaussianUnimodality.lean}.
+
 
 \section{Lattice paths and area}
 
@@ -2340,6 +2514,10 @@ Under the word--path encoding, every north step contributes the number of
 later east steps.  Summing over north steps gives $\InversionNumber{w}$ and,
 by the equivalent definition above, $\LatticePathArea{P}$.
 \end{proof}
+
+\emph{Lean status.}  Not formalized; lattice paths are not in the corpus, only the
+partition and word models.
+
 
 \section{Durfee squares and the central convolution}
 
@@ -2381,6 +2559,13 @@ Choose the positions of the largest letter $r$.  If their binary indicator has i
 Iterating and using \Cref{prop:qmult-factor} proves the formula.
 \end{proof}
 
+\emph{Lean status.}  Exactly \path{Fabius.qMultinomial_ofFn_eq_sum_pow_inversions} in
+\path{MultisetInversions.lean}: for letter counts $c$ with $\sum c=N$, the multinomial
+$\QMultinomial{N}{c}{q}$ is $\sum q^{\mathrm{inv}(w)}$ over the words
+$w:\{1,\dots,N\}\to\{1,\dots,r\}$ with letter counts $c$, over every commutative semiring
+(through the recurrence \path{Fabius.multisetInversionGF_eq_qMultinomialVec}).
+
+
 \section{Rogers--Szeg\H{o} polynomials}
 
 \begin{definition}
@@ -2421,6 +2606,11 @@ Writing $n=k+j$ and separating the double sum gives
 \]
 Each factor equals the reciprocal infinite product by Euler's identity, proved later in \Cref{cor:euler-infinite}; alternatively, the equality follows already by taking $n\to\infty$ in \Cref{thm:reciprocal-finite}.  This gives the stated product.
 \end{proof}
+
+\emph{Lean status.}  Exactly \path{Fabius.rogersSzego_succ} in
+\path{RogersSzegoPolynomial.lean}, with \path{Fabius.rogersSzego} the polynomial
+$H_n(z;q)=\sum_k\GaussianBinomial{n}{k}{q}z^k$.
+
 
 \begin{proposition}[Three-term recurrence]\label{prop:rogers-szego-three-term}
 \index{Rogers--Szeg\H{o} polynomial!three-term recurrence}
@@ -2472,6 +2662,10 @@ because $1-q^{\,n+1-k}=1-q^0=0$.  For $k>n+1$ every term is zero.  This
 exhausts all $k$ and completes the proof.
 \end{proof}
 
+\emph{Lean status.}  Exactly \path{Fabius.rogersSzego_three_term} in
+\path{RogersSzegoPolynomial.lean} (indexed as $H_{n+2}$ in terms of $H_{n+1},H_n$).
+
+
 \begin{corollary}[Dilation formula]\label{cor:rogers-szego-dilation}
 For $n\ge1$,
 \[
@@ -2486,6 +2680,11 @@ Compare the coefficients of $z^k$, $k\ge1$: on the left it is $q^k\GaussianBinom
 \]
 which is the claim established in the proof of \Cref{prop:rogers-szego-three-term} (read at the index $k$ in place of $k-1$; it is the product of the two cross identities of \Cref{prop:adjacent-ratio}).  The constant terms are both $1$.  Conversely, adding the dilation formula to the basic recurrence $H_{n+1}(z;q)=zH_n(z;q)+H_n(qz;q)$ gives the three-term recurrence at once, which is how the formalization organizes the three results: the basic recurrence is the second $q$-Pascal summation, the dilation formula is the column-adjacent cross identity read coefficientwise over every commutative ring, and the three-term recurrence is their sum.
 \end{proof}
+
+\emph{Lean status.}  Exactly \path{Fabius.rogersSzego_dilation} in
+\path{RogersSzegoPolynomial.lean}; the generating function $\sum_n H_n(z;q)t^n/(q;q)_n$
+is \path{Fabius.hasSum_rogersSzego_generating}.
+
 
 \begin{remark}\label{rem:rogers-szego-three-term}
 The recurrence of \Cref{prop:rogers-szego-recurrence} moves the argument, from
@@ -2594,19 +2793,57 @@ Equivalently,
 \end{theorem}
 
 \begin{proof}
-Every rank-$r$ matrix $A$ can be factored as $A=UV$, where $U$ is an $m\times r$ matrix of full column rank and $V$ is an $r\times n$ matrix of full row rank.  There are
-\(
- \prod_{i=0}^{r-1}(Q^m-Q^i)
-\)
-choices for $U$ and
-\(
- \prod_{i=0}^{r-1}(Q^n-Q^i)
-\)
-choices for $V$.  Two pairs $(U,V)$ and $(U',V')$ give the same $A$ exactly when
+Throughout, an $m\times r$ matrix has \emph{full column rank} when its $r$ columns are linearly
+independent, and an $r\times n$ matrix has \emph{full row rank} when its $r$ rows are.
+
+\emph{Factorization.}  Let $A$ have rank $r$, so its column space $C\subseteq\FiniteField_Q^{\,m}$
+has dimension $r$.  Pick a basis $u_1,\dots,u_r$ of $C$ and let $U$ be the $m\times r$ matrix with
+those columns; $U$ has full column rank, and as a map $\FiniteField_Q^{\,r}\to\FiniteField_Q^{\,m}$
+it is injective with image $C$.  Each column $a_j$ of $A$ lies in $C$, so $a_j=Uv_j$ for a unique
+$v_j\in\FiniteField_Q^{\,r}$; let $V$ be the $r\times n$ matrix with columns $v_1,\dots,v_n$.  Then
+$A=UV$.  Moreover $V$ has full row rank: its row space has dimension
+$\operatorname{rank}V=\operatorname{rank}UV=\operatorname{rank}A=r$, the middle equality because
+$U$ is injective.
+
+\emph{Counting the pairs.}  A matrix $U$ of full column rank is an ordered linearly independent
+$r$-tuple in $\FiniteField_Q^{\,m}$, and there are $\prod_{i=0}^{r-1}(Q^m-Q^i)$ of those: having
+chosen $i$ independent vectors, the next may be any vector outside their span, which has $Q^i$
+elements.  This is the count already used in the proof of \Cref{thm:subspace-count}.  Transposing,
+there are $\prod_{i=0}^{r-1}(Q^n-Q^i)$ matrices $V$ of full row rank.  Taking $m=r$ gives the order
+of the general linear group asserted in the statement, since an invertible $r\times r$ matrix is
+exactly an ordered basis of $\FiniteField_Q^{\,r}$:
 \[
- U'=UG,\qquad V'=G^{-1}V
+ \AbsoluteValue{\mathrm{GL}_r(\FiniteField_Q)}=\prod_{i=0}^{r-1}(Q^r-Q^i).
 \]
-for a unique $G\in\mathrm{GL}_r(\FiniteField_{Q})$.  Thus every matrix is counted $\AbsoluteValue{\mathrm{GL}_r}$ times.  Substituting the subspace-count formulas gives the first expression.
+
+\emph{The fibres are $\mathrm{GL}_r$-orbits, freely permuted.}  If $U'=UG$ and $V'=G^{-1}V$ with
+$G$ invertible, then $U'V'=UGG^{-1}V=UV$, so the pair $(U',V')$ has the same product.  Conversely
+suppose $UV=U'V'=A$ with $U,U'$ of full column rank and $V,V'$ of full row rank.  Full row rank
+makes $V$ surjective onto $\FiniteField_Q^{\,r}$, so the column space of $A=UV$ is
+$U(\FiniteField_Q^{\,r})$, the column space of $U$; likewise for $U'$.  Hence $U$ and $U'$ have the
+same column space $C$, and their columns are two bases of $C$, so there is a matrix
+$G\in\mathrm{GL}_r(\FiniteField_Q)$ with $U'=UG$, namely the change-of-basis matrix.  It is unique:
+if $UG=UG'$ then $U(G-G')=0$, and $U$ is injective, so $G=G'$.  Finally $UV=U'V'=UGV'$ and the
+injectivity of $U$ give $V=GV'$, that is $V'=G^{-1}V$.  So the map $(U,V)\mapsto UV$ from pairs onto
+rank-$r$ matrices has every fibre a free $\mathrm{GL}_r$-orbit, of size exactly
+$\AbsoluteValue{\mathrm{GL}_r(\FiniteField_Q)}$.
+
+\emph{Conclusion.}  Dividing the number of pairs by the common fibre size,
+\[
+ N_{m,n,r}(Q)
+ =\frac{\prod_{i=0}^{r-1}(Q^m-Q^i)\prod_{i=0}^{r-1}(Q^n-Q^i)}
+        {\prod_{i=0}^{r-1}(Q^r-Q^i)},
+\]
+which is the second display.  The first follows from the identity
+$\GaussianBinomial{m}{r}{Q}\prod_{i<r}(Q^r-Q^i)=\prod_{i<r}(Q^m-Q^i)$ of
+\Cref{thm:subspace-count}, applied to $m$ and to $n$: the numerator is
+$\GaussianBinomial{m}{r}{Q}\GaussianBinomial{n}{r}{Q}\AbsoluteValue{\mathrm{GL}_r}^2$, and one
+factor of $\AbsoluteValue{\mathrm{GL}_r}$ cancels.
+
+No hypothesis relating $r$ to $m$ and $n$ is needed.  If $r>\min(m,n)$ there are no matrices of
+rank $r$, and the right sides vanish as well, since $\GaussianBinomial{m}{r}{Q}=0$ for $r>m$ while
+$\prod_{i<r}(Q^r-Q^i)\ne0$; at $r=0$ every product is empty and both sides equal $1$, counting the
+zero matrix.
 \end{proof}
 
 \section{Schubert cells and a topological meaning}
@@ -2691,6 +2928,10 @@ Because $V$ is finite-dimensional, let $m$ be maximal with $F^mv\ne0$.  Applying
 so $d=m\in\NaturalNumbers$.  The vectors $v,Fv,\dots,F^dv$ have distinct weights and are linearly independent.  Their span is invariant under $E,F,H$ and is nonzero; irreducibility makes it all of $V$.  The displayed weights and multiplicities follow.
 \end{proof}
 
+\emph{Lean status.}  Not formalized; the corpus has no Lie-algebra representation
+theory.
+
+
 \section{Exterior powers and Gaussian coefficients}
 
 Let $L_{n-1}$ have a weight basis $v_0,\dots,v_{n-1}$ with
@@ -2745,6 +2986,9 @@ Use \Cref{cor:weighted-subsets} with $q=x^{-2}$.  The prefactor becomes
 \]
 \end{proof}
 
+\emph{Lean status.}  Not formalized (see \Cref{lem:sl2-structure}).
+
+
 \begin{theorem}[Unimodality of Gaussian coefficients]\label{thm:qbinom-unimodal}
 If
 \[
@@ -2771,6 +3015,13 @@ contributes a consecutive block of ones centered at weight $0$: it is zero until
 
 By \Cref{prop:exterior-character}, the multiplicity of weight $D-2j$ is exactly $c_j$.  Hence $c_0\le c_1\le\cdots\le c_{\Floor{D/2}}$.
 \end{proof}
+
+\emph{Lean status.}  Partial: \path{GaussianUnimodality.lean} proves the ascent
+$c_{j}\le c_{j+1}$ for $j<\min(k,n-k)$ (\path{Fabius.coeff_gaussianBinomial_le_succ_of_lt_max}) and
+full unimodality when $\min(k,n-k)\le2$ (\path{Fabius.boxCoeffUnimodal_of_min_le_two});
+the general case, which needs the $\mathfrak{sl}_2$ argument or Sylvester's proof, is
+not formalized.
+
 
 \begin{remark}
 The proof explains more than the inequality: the successive differences $c_j-c_{j-1}$ record multiplicities of irreducible summands with prescribed highest weight.  Stronger strict-unimodality results require additional arguments and have a small family of exceptional cases; ordinary unimodality is exactly what the $\mathfrak{sl}_2$ decomposition supplies for free.
@@ -2820,6 +3071,11 @@ To prove uniqueness, iterate the functional equation:
 As $N\to\infty$, $q^Nz\to0$, so $F(q^Nz)\to1$.  The finite product tends to $G(z)$.  Hence $F=G$.
 \end{proof}
 
+\emph{Lean status.}  Exactly \path{Fabius.hasSum_qBinomial_theorem} in
+\path{QBinomialTheoremInfinite.lean}, in every complete normed field, for $|q|<1$ and
+$|z|<1$ and every $a$, with the sum stated as a \texttt{HasSum}.
+
+
 \begin{corollary}[Euler's two infinite identities]\label{cor:euler-infinite}
 For $\AbsoluteValue q<1$,
 \begin{align}
@@ -2849,6 +3105,10 @@ For fixed $n$, $\GaussianBinomial{N}{n}{q}\to1/(q;q)_n$ as $N\to\infty$.  The li
 \]
 where the denominator is positive because $(q;q)_r\to(q;q)_\infty\ne0$.  Thus the summands, extended by zero for $n>N$, are dominated by a constant multiple of $\AbsoluteValue q^{\binom n2}R^n$.  Dominated convergence, together with local uniform convergence of the products, now permits passage to the limit.
 \end{proof}
+
+\emph{Lean status.}  Exactly \path{Fabius.hasSum_euler_product} (all $z$) and
+\path{Fabius.hasSum_euler_reciprocal} ($|z|<1$) in \path{QBinomialTheoremInfinite.lean}.
+
 
 \begin{remark}[Both identities as stable limits of finite ones]\label{rem:qbinomial-finite-route}
 The formalization proves \Cref{thm:infinite-qbinomial} itself, and not only \eqref{eq:euler-product-series}, by the finite-to-infinite mechanism of the preceding proof, over an arbitrary complete normed field.  Divide the finite $q$-Cauchy identity of \Cref{thm:q-cauchy}, with $u=a$ and $v=z$, by $(z;q)_N$:
@@ -2896,6 +3156,10 @@ Collecting the terms of total degree $N$ gives the displayed finite
 convolution.
 \end{proof}
 
+\emph{Lean status.}  Not formalized as a statement about the general ratio; the single-factor
+cases are \Cref{cor:euler-infinite}.
+
+
 \section{Formal and analytic interpretations}
 
 \begin{proposition}[Formal version]\label{prop:formal-qbinomial}
@@ -2934,6 +3198,10 @@ and hence
 Because $1-q^n$ is a unit, this recurrence has a unique solution, namely
 $c_n=(a;q)_n/(q;q)_n$.
 \end{proof}
+
+\emph{Lean status.}  Not formalized in the $I$-adic setting; the analytic version is
+\Cref{thm:infinite-qbinomial}.
+
 
 \section{Limits in the number of factors}
 
@@ -3663,6 +3931,12 @@ $\bigl|(q/b;q)_m/(q/a;q)_m\bigr|\le K'$, which gives absolute convergence
 directly and is the argument used by the formalization.
 \end{proof}
 
+\emph{Lean status.}  Contained in \path{Fabius.hasSum_onePsiOne}
+(\path{RamanujanOnePsiOne.lean}), whose hypotheses are exactly $|b/a|<|z|<1$ with the
+denominator factors nonvanishing; absolute convergence is the majorant
+\path{Fabius.exists_summable_majorant_onePsiOneCleared}.
+
+
 \begin{theorem}[Ramanujan's ${}_1\psi_1$ summation]\label{thm:1psi1}
 For $\AbsoluteValue{b/a}<\AbsoluteValue z<1$, with $a\ne0$ and the denominator factors
 nonvanishing ($bq^{j}\ne1$ and $q^{j+1}\ne a$ for all $j\ge0$),
@@ -3759,6 +4033,12 @@ the asserted annulus.  Note that the cleared identity $S=P$ holds without any hy
 $(b;q)_\infty$, and that no meromorphic continuation of the series is needed.
 \end{proof}
 
+\emph{Lean status.}  Exactly \path{Fabius.onePsiOne_eq} (and its \texttt{HasSum} form
+\path{Fabius.hasSum_onePsiOne}) in \path{RamanujanOnePsiOne.lean}: for $|q|<1$, $q\ne0$,
+$a\ne0$, $(q/a;q)_\infty\ne0$, $(b;q)_\infty\ne0$ and $|b/a|<|z|<1$, the bilateral sum
+equals $(q,b/a,az,q/(az);q)_\infty/(b,q/a,z,b/(az);q)_\infty$.
+
+
 \begin{remark}
 Ramanujan's sum contains the infinite $q$-binomial theorem and several theta-product identities as limiting or specialized cases.  It is a model example of a bilateral identity: the second inequality in the convergence annulus is controlled by the positive tail, while the first is controlled by the negative tail.
 \end{remark}
@@ -3806,6 +4086,14 @@ For the first product rule, insert and subtract $f(qx)g(x)$ in
 For the second, insert and subtract $f(x)g(qx)$.  The scaling rule follows directly from the definition.
 \end{proof}
 
+\emph{Lean status.}  For polynomials: \path{Fabius.qDerivative_C_mul_X_pow} in
+\path{PolynomialQDerivative.lean} ($D_q(ax^n)=a[n]_qx^{n-1}$, with \path{Fabius.qInt} the
+$q$-integer), \path{Fabius.qDerivative} being the linear operator on $R[X]$; the product rule
+is \path{Fabius.qDerivative_mul} (and \path{Fabius.qDerivative_mul'} with the roles
+exchanged).  For functions on a normed field the operator is \path{Fabius.qDeriv}
+(\path{QExponential.lean}) with product rule \path{Fabius.qDeriv_mul}.
+
+
 \begin{remark}[The polynomial $q$-derivative, division-free]\label{rem:qderivative-polynomial}
 On polynomials the $q$-derivative needs neither $q\ne1$ nor $x\ne0$: it is the coefficientwise operator
 \[
@@ -3846,6 +4134,11 @@ to index $k$.  The total coefficient of index $k$ is
 by the second $q$-Pascal recurrence.
 \end{proof}
 
+\emph{Lean status.}  Exactly \path{Fabius.qDerivative_iterate_mul} in
+\path{PolynomialQLeibniz.lean}, for polynomials over any commutative ring: the $k$-th
+$q$-derivative of $f$ is evaluated at $q^{n-k}x$ (as a composition with $q^{n-k}X$).
+
+
 \section{\texorpdfstring{$q$}{q}-Taylor and Newton interpolation}
 
 Define the $q$-falling power based at $a$ by
@@ -3884,6 +4177,12 @@ gives
 Divide by $(1-q)x$.  Iteration proves the second formula.
 \end{proof}
 
+\emph{Lean status.}  Exactly \path{Fabius.qDerivative_qFallingPower_succ} in
+\path{PolynomialQTaylor.lean}, with \path{Fabius.qFallingPower} the polynomial
+$(x-a)(x-qa)\cdots(x-q^{m-1}a)$; the iterated form is
+\path{Fabius.qDerivative_iterate_qFallingPower}.
+
+
 \begin{theorem}[$q$-Taylor formula]\label{thm:q-taylor}
 Assume $[j]_q\ne0$ for $1\le j\le N$.  If $f$ is a polynomial of degree at most $N$, then
 \[
@@ -3899,6 +4198,11 @@ The polynomials $\QFallingPower{x}{a}{q}{k}$, $0\le k\le N$, are monic of distin
 \)
 Apply $D_q^j$ and set $x=a$.  By \Cref{lem:qfalling-derivative}, every term with $k>j$ still contains the factor $x-a$, terms with $k<j$ vanish after too many derivatives, and the $k=j$ term equals $c_j[j]_q!$.  Thus $c_j=(D_q^jf)(a)/[j]_q!$.
 \end{proof}
+
+\emph{Lean status.}  Exactly \path{Fabius.qTaylor} in \path{PolynomialQTaylor.lean}, over
+every field, under $[j]_q\ne0$ for $1\le j\le N$ and $\deg f\le N$, with
+\path{Fabius.qFactorial} the $q$-factorial.
+
 
 \begin{remark}
 When the nodes $a,aq,aq^2,\ldots$ are distinct, this is a Newton interpolation formula on that geometric grid.  In every case covered by the theorem, its basis zeros follow a multiplicative rather than an additive progression.
@@ -3929,6 +4233,10 @@ by the first $q$-Pascal recurrence.  Multiplying on the left instead uses $YX^{m
 the second $q$-Pascal recurrence; this is the route taken by the formalization.
 \end{proof}
 
+\emph{Lean status.}  Exactly \path{Fabius.quantum_binomial} in \path{QuantumBinomial.lean},
+in any (associative, unital) algebra in which $q$ commutes with $X$ and $Y$ and $YX=qXY$.
+
+
 \begin{remark}[Generality]\label{rem:quantum-binomial-generality}
 Only two things are used: that $q$ commutes with $X$ and with $Y$, so that $YX^m=q^mX^mY$ and so that the Gaussian coefficients, being polynomials in $q$ with natural coefficients, commute with $X$ and $Y$; and the $q$-Pascal recurrence.  The theorem therefore holds in every semiring, with no commutativity assumption on the ambient ring and no requirement that $q$ be central beyond commuting with $X$ and $Y$; over a commutative ring it is the finite $q$-binomial theorem of \Cref{thm:finite-qbinomial} in reversed form.
 \end{remark}
@@ -3951,6 +4259,11 @@ Then, for every $n\ge0$,
 \]
 where on the right the factors are written in increasing order of index.  Equivalently, the $q$-multinomial coefficients are exactly the structure constants that expand powers of $x_1+\cdots+x_r$ in the ordered monomial basis of the quantum affine $r$-space.
 \end{corollary}
+
+\emph{Lean status.}  Exactly \path{Fabius.quantum_multinomial} in
+\path{QuantumMultinomial.lean}, with the sum over the compositions of $n$ into $r$ parts
+(\texttt{Nat.antidiagonalTuple}) and the multinomial \path{Fabius.qMultinomial}.
+
 
 % ed.: the incoming survey states only that ``iterating the proof gives a
 % ed.: $q$-multinomial theorem''.  The ordering of the monomials is part of the
@@ -4030,6 +4343,12 @@ The product formulas and the stated convergence domains follow from Euler's iden
 Reindex with $r=n-k$ to obtain the Cauchy product of $e_q(X)$ and $e_q(Y)$, with all $X$ factors preceding all $Y$ factors.  Since every total degree receives only finitely many contributions, the formal rearrangement is valid.
 \end{proof}
 
+\emph{Lean status.}  Formal in \path{QExponential.lean}: \path{Fabius.qExp} and
+\path{Fabius.qExpBig} are the two $q$-exponentials, \path{Fabius.hasSum_qExp} and
+\path{Fabius.hasSum_qExpBig} their series (for $|(1-q)x|<1$, resp.\ every $x$), and the
+factorization $e_q(x)E_q(-x)=1$ is \path{Fabius.qExp_mul_qExpBig_neg}.
+
+
 \begin{proposition}[Eigenfunction properties]\label{prop:qexp-eigen}
 Under the hypotheses and within the convergence domains of \Cref{cor:qexp-factor}, for scalar $\lambda$,
 \[
@@ -4042,6 +4361,10 @@ Under the hypotheses and within the convergence domains of \Cref{cor:qexp-factor
 \begin{proof}
 Differentiate the series term by term and use $D_qx^n=[n]_qx^{n-1}$.
 \end{proof}
+
+\emph{Lean status.}  Exactly \path{Fabius.qDeriv_qExp} and \path{Fabius.qDeriv_qExpBig} in
+\path{QExponential.lean} (at $x\ne0$, within the convergence domain).
+
 
 \section{Jackson's \texorpdfstring{$q$}{q}-integral}
 
@@ -4091,6 +4414,15 @@ For the converse, the $N$th partial Jackson sum is exactly
 Letting $N\to\infty$ proves both convergence and the formula.
 \end{proof}
 
+\emph{Lean status.}  Both halves are formal in \path{JacksonIntegral.lean} with
+\path{Fabius.jacksonIntegral} the Jackson sum: \path{Fabius.qDeriv_jacksonIntegral}
+($D_q\int_0^x f\,d_qt=f(x)$ at $x\ne0$, given summability of the Jackson series) and
+\path{Fabius.jacksonIntegral_qDeriv} ($\int_0^a D_qG\,d_qt=G(a)-\lim_nG(aq^n)$, given the
+limit and summability); the one-sided limit version at the origin is
+\path{Fabius.tendsto_qDeriv_jacksonIntegral_nhdsWithin}
+(\path{JacksonFundamentalExtension.lean}).
+
+
 \begin{corollary}[Jackson integration by parts]\label{cor:q-integration-parts}
 Let $a\ne0$.  Suppose the two Jackson series below converge and
 \[
@@ -4117,6 +4449,11 @@ For every $N$, the product rule gives the finite identity
 \end{align*}
 Let $N\to\infty$ and use the assumed convergence and endpoint limit.
 \end{proof}
+
+\emph{Lean status.}  Exactly \path{Fabius.jacksonIntegral_mul_qDeriv} in
+\path{JacksonIntegral.lean}, under the convergence of the two Jackson series and the limit
+of $f(aq^n)g(aq^n)$.
+
 
 \begin{example}[Monomials]
 For $\Re(s)>-1$,
@@ -4179,6 +4516,12 @@ sides are finite; equality elsewhere follows in the sense of
 meromorphic continuation.
 \end{proof}
 
+\emph{Lean status.}  Formal in \path{QGamma.lean} for $0<q<1$: \path{Fabius.qGamma_one},
+\path{Fabius.qGamma_add_one} ($\Gamma_q(x+1)=[x]_q\Gamma_q(x)$, with
+\path{Fabius.qNumber} the $q$-number of a real argument), \path{Fabius.qGamma_pos}, and
+\path{Fabius.qGamma_nat_succ} ($\Gamma_q(n+1)=[n]_q!$).
+
+
 \begin{proposition}[Logarithmic derivatives and convexity]\label{prop:qgamma-convex}
 For $x>0$,
 \[
@@ -4197,6 +4540,12 @@ Thus $\Gamma_q$ is strictly log-convex.
 \begin{proof}
 Differentiate the locally uniformly convergent logarithm of the defining infinite product.  A second differentiation gives the positive series.
 \end{proof}
+
+\emph{Lean status.}  The logarithmic derivative is \path{Fabius.hasDerivAt_log_qGamma}
+(\path{QGammaLogDerivative.lean}); the second derivative and strict log-convexity are
+\path{Fabius.hasDerivAt_deriv_log_qGamma}, \path{Fabius.deriv2_log_qGamma_pos} and
+\path{Fabius.strictConvexOn_log_qGamma} in \path{QGammaLogConvex.lean}.
+
 
 \section{A \texorpdfstring{$q$}{q}-Bohr--Mollerup theorem}
 
@@ -4241,6 +4590,14 @@ The ratio of the upper bound to the lower bound is
 \]
 Hence the bounds determine $f(x)$ uniquely for $0<x\le1$, and the recurrence determines it on all of $(0,\infty)$.  Since $\Gamma_q$ satisfies the same conditions, $f=\Gamma_q$.
 \end{proof}
+
+\emph{Lean status.}  Exactly \path{Fabius.qGamma_eq_of_logConvex} in
+\path{QBohrMollerup.lean}: a positive $f$ on $(0,\infty)$ with $f(1)=1$,
+$f(x+1)=[x]_q f(x)$ and $\log f$ convex equals $\Gamma_q$; $\Gamma_q$ itself satisfies the
+three conditions by \path{Fabius.qGamma_one}, \path{Fabius.qGamma_add_one} and
+\path{Fabius.strictConvexOn_log_qGamma}.  The proof passes through the $q$-analogue of
+Euler's limit, \path{Fabius.tendsto_qGamma_limit}.
+
 
 \section{Classical limit}
 
@@ -4288,6 +4645,13 @@ The dominated convergence theorem therefore gives
 The lower outer bound differs by the factor $(n/(n+1))^{1-x}$, which also tends uniformly to $1$.  For fixed $n$, the original $q$-bounds converge uniformly as $q\to1^-$ because they contain only finitely many continuous factors.  A uniform squeeze proves local uniform convergence on $(0,1]$, and the recurrence extends it to arbitrary compact subsets of $(0,\infty)$.
 \end{proof}
 
+\emph{Lean status.}  Exactly \path{Fabius.tendsto_qGamma_nhdsLT_one} in
+\path{ComplexGaussianClassical.lean}, for every $x>0$, the limit taken along $q\to1^-$;
+the two-sided Artin bracket used in the proof is \path{Fabius.qGamma_two_sided_bound}, and
+\path{QGammaClassicalLimit.lean} gives the nested monotone bracket
+\path{Fabius.qGammaLowerSeq_le_and_le_qGammaUpperSeq} for every $m$.
+
+
 \section{The Jackson \texorpdfstring{$q$}{q}-beta integral}
 
 \begin{definition}
@@ -4327,6 +4691,11 @@ Thus
 which is exactly the gamma quotient after substituting the definition of $\Gamma_q$.
 \end{proof}
 
+\emph{Lean status.}  Exactly \path{Fabius.qBeta_eq_qGamma} in \path{QBetaIntegral.lean},
+with \path{Fabius.qBeta} the Jackson integral $\int_0^1t^{x-1}(tq;q)_\infty/(tq^y;q)_\infty\,d_qt$
+summed in closed form by \path{Fabius.qBeta_eq_prod}.
+
+
 \begin{corollary}[Recurrences]\label{cor:qbeta-recurrence}
 For $x,y>0$,
 \[
@@ -4341,6 +4710,11 @@ For $x,y>0$,
 \begin{proof}
 Apply the functional equation for $\Gamma_q$ to the quotient in \Cref{thm:qbeta}.
 \end{proof}
+
+\emph{Lean status.}  Exactly \path{Fabius.qBeta_add_one_left} and
+\path{Fabius.qBeta_add_one_right} in \path{QBetaIntegral.lean}, with the symmetry
+\path{Fabius.qBeta_comm}.
+
 
 \section{Multiplication and reflection-type formulas}
 
@@ -4377,6 +4751,10 @@ Taking the ratio and using
 produces the formula.
 \end{proof}
 
+\emph{Lean status.}  Exactly \path{Fabius.qGamma_multiplication} in
+\path{QGammaMultiplication.lean}, for $0<q<1$, $m\ge1$, $x>0$.
+
+
 \begin{proposition}[Reflection-type product]\label{prop:qgamma-reflection}
 For $0<x<1$,
 \[
@@ -4389,6 +4767,10 @@ For $0<x<1$,
 \begin{proof}
 Multiply the two defining products; the powers of $1-q$ combine to one.
 \end{proof}
+
+\emph{Lean status.}  Exactly \path{Fabius.qGamma_mul_qGamma_one_sub} in \path{QGamma.lean}
+(for every real $x$, as an identity of the defining products).
+
 
 \begin{remark}
 Unlike Euler's reflection formula, the right side is naturally a theta quotient rather than an elementary trigonometric function.  Jacobi's triple product in the next part makes that theta structure explicit.
@@ -4461,6 +4843,13 @@ so $c_0=1$.  Thus
 \)
 \end{proof}
 
+\emph{Lean status.}  The first display is \path{Fabius.hasSum_jacobi_triple_product'} in
+\path{JacobiTripleProduct.lean} ($\sum_kq^{\binom k2}z^k=(-z,-q/z,q;q)_\infty$, in every
+complete normed field, $|q|<1$, $z\ne0$), with \path{Fabius.thetaExponent} the integer
+$\binom k2$; the signed form is \path{Fabius.hasSum_bilateralTheta} together with
+\path{Fabius.bilateralTheta_eq_prod} (\path{ThetaQuasiPeriodicity.lean}).
+
+
 \begin{corollary}[Quasi-periodicity and zeros]\label{cor:theta-quasi}
 Let $0<\AbsoluteValue q<1$ and $z\ne0$.  The theta function satisfies
 \[
@@ -4489,6 +4878,11 @@ $(q;q)_\infty$ occurs twice, once as the third factor of the triple product and 
 shifted symbol.  Hence $\BilateralTheta{\cdot}{q}$ has derivative $u'(z_0)G(z_0)\ne0$ at $z_0$,
 with $u'(z_0)=q^{j}$, respectively $-q^{j+1}/z_0^{2}$, so every zero is simple.
 \end{proof}
+
+\emph{Lean status.}  Exactly \path{Fabius.bilateralTheta_mul_left}
+($\theta(qz)=z^{-1}\theta(z)$) and \path{Fabius.bilateralTheta_eq_zero_iff} (the zeros are
+$z=-q^m$, $m\in\IntegerNumbers$) in \path{ThetaQuasiPeriodicity.lean}.
+
 
 % Chapter: \ref{chap:jtp} ("Jacobi's triple product").  A new section placed
 % immediately after the \end{proof} of \Cref{cor:theta-quasi}
@@ -4550,6 +4944,11 @@ by \Cref{cor:shifted-central-vandermonde}.  Therefore
 \]
 and the summand vanishes for $\AbsoluteValue k>N$, which is \eqref{eq:finite-jtp}.  Both sides are Laurent polynomials in $z$ with coefficients in $\IntegerNumbers[q]$ because each Gaussian coefficient is such a polynomial by \Cref{thm:qbinom-structure}.
 \end{proof}
+
+\emph{Lean status.}  Exactly \path{Fabius.finite_triple_product} in
+\path{JacobiTripleProduct.lean}, over every field, $z\ne0$, with the polynomial identity
+behind it \path{Fabius.finite_triple_product_poly} (over every commutative ring).
+
 
 \begin{example}\label{ex:finite-jtp-N1}
 At $N=1$ the coefficients are $\GaussianBinomial{2}{0}{q}=\GaussianBinomial{2}{2}{q}=1$ and $\GaussianBinomial{2}{1}{q}=1+q$, so \eqref{eq:finite-jtp} reads
@@ -4644,6 +5043,12 @@ The convergence is moreover uniform on the annulus: given $\varepsilon>0$, choos
 which is \eqref{eq:jtp-minus}.
 \end{proof}
 
+\emph{Lean status.}  Exactly \path{Fabius.tendstoUniformlyOn_finite_triple_product} (the
+product side) and \path{Fabius.tendstoUniformlyOn_finite_triple_product_sum} (the sum side)
+in \path{JacobiTripleProductUniform.lean}, uniform on every closed annulus
+$r\le|z|\le R$.
+
+
 \begin{remark}[Two mechanisms for one identity]\label{rem:jtp-two-proofs}
 \Cref{thm:jtp} was proved above from a functional equation together with the Durfee-square evaluation of the constant Laurent coefficient.  \Cref{cor:jtp-from-finite} instead proves the stronger local-uniform convergence statement from the polynomial identity \eqref{eq:finite-jtp}, whose only inputs are \Cref{thm:finite-qbinomial} and \Cref{thm:q-vandermonde}; Jacobi's identity is then a consequence, not a second canonical assertion.  This route separates algebra from analysis completely: \eqref{eq:finite-jtp} holds in $\IntegerNumbers[q][z,z^{-1}]$, and the entire analytic content is the single limit $\GaussianBinomial{2N}{N+k}{q}\to1/(q;q)_\infty$, which is the same finite-to-infinite stabilization recorded coefficientwise in \Cref{prop:partition-stabilization} and columnwise in \Cref{thm:fixed-column-limit}.  That separation is exactly the architecture recommended in \Cref{chap:formalization}.  Note also that \eqref{eq:finite-jtp} is genuinely finer than \eqref{eq:jtp-minus}: its coefficients are the central Gaussian coefficients $\GaussianBinomial{2N}{N+k}{q}$, which by \Cref{thm:qbinom-structure} are palindromic polynomials of degree $(N+k)(N-k)$, whereas in the limit every one of them collapses to the single $k$-independent factor $1/(q;q)_\infty$; what survives of the polynomial is not its constant term but its stabilised coefficient sequence, namely the partition numbers of \Cref{prop:partition-stabilization}.
 
@@ -4678,6 +5083,11 @@ by dissection.  The series exponent is
 \]
 Pair the terms $n$ and $-n$ to obtain the second form.
 \end{proof}
+
+\emph{Lean status.}  Exactly \path{Fabius.hasSum_pentagonal} in
+\path{JacobiTripleProduct.lean} (with \path{Fabius.pentagonalExponent} the integer
+$n(3n-1)/2$), and paired as \path{Fabius.hasSum_pentagonal_pairs}.
+
 
 \begin{corollary}[Euler's partition recurrence]\label{cor:euler-partition-recurrence}
 Let $p(0)=1$ and $p(n)=0$ for $n<0$.  Then for $n\ge1$,
@@ -4730,6 +5140,11 @@ $j>n$ vanish under the same convention, so the sum may be written to
 infinity).
 \end{proof}
 
+\emph{Lean status.}  Exactly \path{Fabius.partitionCount_eq_pentagonal_sum} in
+\path{EulerPartitionRecurrence.lean}, from the Cauchy product
+\path{Fabius.sum_antidiagonal_pentagonalCoeff_mul_partitionCount}.
+
+
 \section{Jacobi's cubic identity}
 
 \begin{theorem}[Jacobi identity]\label{thm:jacobi-cubic}
@@ -4755,6 +5170,10 @@ Pair $m=-n$ with $m=n+1$ for $n\ge0$.  Their sum is
 \]
 Cancelling the common minus sign proves the identity.
 \end{proof}
+
+\emph{Lean status.}  Exactly \path{Fabius.hasSum_jacobi_cubic} in \path{JacobiCubic.lean}
+(over $\ComplexNumbers$, $|q|<1$).
+
 
 % ed.: remark added to record the proof used by the formalization.
 \begin{remark}[A derivative-free proof]\label{rem:jacobi-cubic-formalization}
@@ -4795,6 +5214,10 @@ Set $z=q^x$ in \eqref{eq:jtp-minus}:
 \]
 Substitute this in \Cref{prop:qgamma-reflection}.
 \end{proof}
+
+\emph{Lean status.}  Exactly \path{Fabius.hasSum_theta_qGamma_reflection} in
+\path{QGamma.lean}, for $0<x<1$.
+
 
 \input{chapters/10_theta_modularity_and_squares}
 
@@ -4964,6 +5387,12 @@ By linearity it suffices to take $P(x)=x^m$ with $0\le m<N$.  Put $t=N-s$ and us
 for the product contains the factor $1-q^0$.
 \end{proof}
 
+\emph{Lean status.}  The monomial case $P=x^M$, $1\le M\le N$, is
+\path{Fabius.sum_weightNumerator_mul_pow_eq_zero} in \path{BaileyUnitPairs.lean}; the
+constant case is \path{Fabius.sum_gaussianBinomial_alternating}
+(\path{QBinomialInversion.lean}).  Linearity over monomials is not separately stated.
+
+
 \begin{remark}[Lean counterpart and boundary]
 This lemma is \statusexact, by
 \texttt{Fabius.qDifference\_\allowbreak{}sum\_\allowbreak{}eval}\textsubscript{2}\allowbreak
@@ -5029,6 +5458,13 @@ matrix is its inverse, so the two relations are equivalent.
 Since every expression is rational in $a$ and the singularity at $a=1$ is removable, the limiting statement follows.
 \end{proof}
 
+\emph{Lean status.}  Exactly \path{Fabius.isBaileyPair_iff_eq_baileyInverse} in
+\path{BaileyInversion.lean}, with \path{Fabius.baileyInverse} the displayed inverse sum, under
+$a\ne1$ and the nonvanishing of $(q;q)_n$ and $(aq;q)_n$; existence and uniqueness of the
+$\alpha$ for a given $\beta$ are \path{Fabius.exists_isBaileyPair} and
+\path{Fabius.isBaileyPair_baileySolve}.
+
+
 \begin{corollary}[Two unit Bailey pairs]\label{cor:unit-bailey-pairs}
 Let $\beta_n=\delta_{n,0}$.
 \begin{enumerate}[label=\textup{(\roman*)}]
@@ -5062,6 +5498,11 @@ For $a=q$, the ratio
 $\QPochhammer{a}{q}{n}/\QPochhammer{q}{q}{n}$ is $1$ and the remaining
 factor is $[2n+1]_q$.
 \end{proof}
+
+\emph{Lean status.}  Exactly \path{Fabius.isBaileyPair_unit_one} and
+\path{Fabius.isBaileyPair_unit_q} in \path{BaileyUnitPairs.lean}, with the explicit
+$\alpha$-sequences \path{Fabius.unitBaileyAlphaOne} and \path{Fabius.unitBaileyAlphaQ}.
+
 
 \section{The limiting Bailey lemma}
 
@@ -5097,6 +5538,10 @@ it contributes
  \bigl((zq)q^j;q\bigr)_{N-j}=zq^NS_N(qz).
 \]
 \end{proof}
+
+\emph{Lean status.}  Exactly \path{Fabius.bailey_aux_sum} in \path{BaileyAux.lean}, over every
+commutative ring.
+
 
 \begin{theorem}[Limiting Bailey lemma, finite form]\label{thm:bailey-limit-finite}
 If $(\alpha_n,\beta_n)$ is a Bailey pair relative to $a$, define
@@ -12865,8 +13310,8 @@ inside the proof below does not formalize the result the proof concludes.
   than a mathematical claim.
 \end{description}
 
-Of the 282 labelled forward results, 150 are \statusexact, 81 are
-\statuspartial, 43 are \statusnone, and 8 are \statusna.  The original
+Of the 282 labelled forward results, 167 are \statusexact, 89 are
+\statuspartial, 18 are \statusnone, and 8 are \statusna.  The original
 191-result pre-Fabius core had 36 \statusexact, 29 \statuspartial, 123
 \statusnone, and 3 \statusna{} entries.  The four integrated guide chapters
 add 31 human-proved but not Lean-formalized assertions and five labelled
@@ -13424,33 +13869,33 @@ Chapter & \statusexact & \statuspartial & \statusnone & \statusna\\
 The algebra of $q$-shifted factorials & 13 & 1 & 1 & 0\\
 $q$-integers and Gaussian coefficients & 9 & 0 & 0 & 0\\
 Finite $q$-binomial theorems and inversion & 10 & 0 & 0 & 0\\
-Weighted binomial coefficients and symmetric functions & 3 & 3 & 2 & 0\\
+Weighted binomial coefficients and symmetric functions & 5 & 3 & 0 & 0\\
 Partitions, words, paths, and inversion statistics & 7 & 2 & 0 & 0\\
-Finite fields, Grassmannians, and rank enumeration & 2 & 3 & 1 & 0\\
-Symmetry and unimodality & 0 & 0 & 3 & 0\\
-The infinite $q$-binomial theorem & 3 & 0 & 1 & 0\\
+Finite fields, Grassmannians, and rank enumeration & 3 & 3 & 0 & 0\\
+Symmetry and unimodality & 0 & 1 & 2 & 0\\
+The infinite $q$-binomial theorem & 4 & 0 & 0 & 0\\
 Basic hypergeometric series & 7 & 2 & 0 & 0\\
-Euler telescoping and very-well-poised summations & 1 & 0 & 3 & 0\\
+Euler telescoping and very-well-poised summations & 3 & 0 & 1 & 0\\
 Bilateral series and Ramanujan's \texorpdfstring{${}_1\psi_1$}{1psi1} sum & 2 & 0 & 0 & 0\\
 $q$-difference calculus and the quantum binomial & 10 & 0 & 0 & 0\\
 The $q$-gamma and $q$-beta functions & 7 & 1 & 0 & 0\\
 Jacobi's triple product & 8 & 0 & 0 & 0\\
-Theta modularity, lattice dissection, and sums of squares & 2 & 1 & 11 & 4\\
-Partitions and product--sum identities & 4 & 0 & 0 & 0\\
-Bailey pairs and the Rogers--Ramanujan identities & 7 & 0 & 0 & 0\\
-Bailey transforms and the Andrews--Gordon identities & 5 & 2 & 1 & 1\\
-Cyclotomic factorization and congruences & 8 & 0 & 1 & 0\\
+Theta modularity, lattice dissection, and sums of squares & 7 & 5 & 2 & 4\\
+Partitions and product--sum identities & 3 & 1 & 0 & 0\\
+Bailey pairs and the Rogers--Ramanujan identities & 6 & 1 & 0 & 0\\
+Bailey transforms and the Andrews--Gordon identities & 5 & 3 & 0 & 1\\
+Cyclotomic factorization and congruences & 9 & 0 & 0 & 0\\
 Negative upper indices and geometric Newton interpolation & 9 & 0 & 0 & 0\\
 Central $q$-binomial sums and Lambert series & 2 & 0 & 5 & 0\\
-Asymptotic regimes and Bernoulli expansions & 2 & 3 & 3 & 0\\
-Exact limits, reciprocity, and research frontiers & 0 & 0 & 5 & 0\\
+Asymptotic regimes and Bernoulli expansions & 3 & 3 & 2 & 0\\
+Exact limits, reciprocity, and research frontiers & 5 & 0 & 0 & 0\\
 Computation, certification, and formal proof architecture & 7 & 2 & 2 & 3\\
 Geometric interpolation and exact $q$-filters & 7 & 2 & 0 & 0\\
 Half-base arithmetic and Prouhet--Thue--Morse cancellation & 6 & 3 & 0 & 0\\
 Geometric uniform sums, $q$-cumulants, and the Fabius--Rvachev functions & 2 & 11 & 0 & 0\\
-Dyadic Gaussian--Thue--Morse structure and the values of $F$ & 7 & 45 & 4 & 0\\
+Dyadic Gaussian--Thue--Morse structure and the values of $F$ & 8 & 45 & 3 & 0\\
 \midrule
-\textbf{Forward total} & 150 & 81 & 43 & 8\\
+\textbf{Forward total} & 167 & 89 & 18 & 8\\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -13750,8 +14195,26 @@ convergence under \(\lvert w_i z\rvert<1\)}\\[2pt]
 every commutative ring (Mathlib's \texttt{Matrix.det\_vandermonde}) and the
 alternant orientation with its sign; the divisibility $a_\delta\mid a_\mu$
 and the integrality of Schur polynomials are not formalized}\\[2pt]
-\Cref{thm:schur-principal} & \statusnone & ---\\[2pt]
-\Cref{cor:schur-e-h} & \statusnone & ---\\[2pt]
+\Cref{thm:schur-principal} & \statusexact &
+\texttt{alternantPow},
+\texttt{alternantPow\_\allowbreak{}eq\_\allowbreak{}prod},
+\texttt{schur\_\allowbreak{}principal\_\allowbreak{}cleared},
+\texttt{schur\_\allowbreak{}principal\_\allowbreak{}div}\newline
+{\footnotesize\texttt{SchurPrincipalSpecialization}; the identity in cleared form
+$a_\mu\prod_{i<j}(1-q^{j-i})=q^{n(\lambda)}\bigl(\prod_{i<j}(1-q^{\lambda_i-\lambda_j+j-i})\bigr)a_\delta$
+over an arbitrary commutative ring and arbitrary $q$ --- valid at $q=0$, at roots of unity, in
+positive characteristic, with zero divisors and in the zero ring --- whereas the text argues in
+$\RationalNumbers(q)$ and transfers to $\ComplexNumbers$.  The Vandermonde evaluation of the
+alternant is proved for an arbitrary exponent vector, not only one coming from a partition.  In a
+field the displayed quotient form holds under $a_\delta\ne0$, with the sufficient criterion $q\ne0$
+and $q^d\ne1$ for $0<d<m$; the extra $q\ne0$ is genuinely needed for the bialternant quotient, since
+at $q=0$ with $m\ge3$ every displayed denominator is $1$ while $a_\delta=0$}\\[2pt]
+\Cref{cor:schur-e-h} & \statusexact &
+\texttt{alternantPow\_\allowbreak{}row\_\allowbreak{}eq\_\allowbreak{}gaussianBinomial\_\allowbreak{}mul},
+\texttt{schur\_\allowbreak{}e\_\allowbreak{}h\_\allowbreak{}cleared}\newline
+{\footnotesize\texttt{SchurPrincipalSpecialization}; formalized division-free, with no
+cancellation, no hypothesis on $q$ and no bound on $k$, so it holds in the degenerate cases the
+printed quotient cannot express}\\[2pt]
 \Cref{thm:weighted-inversion} & \statusexact &
 \texttt{weightedSymmetricFunction\_inversion}\newline
 {\footnotesize\texttt{SymmetricFunctionTransform}; whole-function iff over a
@@ -13848,7 +14311,21 @@ $\#\{U\subseteq W\subseteq V\}=\GaussianBinomial{n}{m}{Q}\GaussianBinomial{m}{j}
 with the $q$-multinomial.  The general $r$-step flag needs a dependent recursive flag type, and
 matching the bottom-up ordering of the statement needs permutation invariance of the
 $q$-multinomial, which the corpus does not yet contain}\\[2pt]
-\Cref{thm:rank-matrices} & \statusnone & ---\\[2pt]
+\Cref{thm:rank-matrices} & \statusexact &
+\texttt{card\_\allowbreak{}matrix\_\allowbreak{}rank\_\allowbreak{}eq},
+\texttt{card\_\allowbreak{}matrix\_\allowbreak{}rank\_\allowbreak{}mul\_\allowbreak{}prod\_\allowbreak{}pow\_\allowbreak{}sub\_\allowbreak{}pow},
+\texttt{card\_\allowbreak{}linearMap\_\allowbreak{}finrank\_\allowbreak{}range\_\allowbreak{}eq},
+\texttt{gaussianBinomial\_\allowbreak{}mul\_\allowbreak{}gaussianBinomial\_\allowbreak{}mul\_\allowbreak{}prod\_\allowbreak{}pow\_\allowbreak{}sub\_\allowbreak{}pow}\newline
+{\footnotesize\texttt{RankMatrixCount}; both displays, for an arbitrary pair of finite index types
+rather than $\{1,\dots,m\}$ and $\{1,\dots,n\}$, and for every $r$ with no hypothesis
+$r\le\min(m,n)$ --- the degenerate ranges are proved, not excluded.  The second display appears
+with its division cleared, and that cleared identity is also proved over an arbitrary commutative
+ring, where the printed quotient is undefined.  Underneath, the same count is proved for linear
+maps between arbitrary finite modules over any finite division ring; the matrix statements ask for
+a field only because Mathlib's rank and $\lvert\mathrm{GL}_r\rvert$ do.  The Lean proof takes a
+different route from the one above, fibring over kernels and reusing the subspace count, so it
+needs neither the rank factorization nor the orbit argument; those steps of the printed proof are
+therefore checked by hand here, not mechanically}\\[2pt]
 \Cref{thm:grassmann-poincare} & \statuspartial &
 \texttt{sum\_\allowbreak{}pow\_\allowbreak{}two\_\allowbreak{}boxSize\_\allowbreak{}eq\_\allowbreak{}gaussianBinomial},
 \texttt{sum\_\allowbreak{}card\_\allowbreak{}boxPartitions\_\allowbreak{}mul\_\allowbreak{}pow\_\allowbreak{}eq\_\allowbreak{}gaussianBinomial}\newline
@@ -13873,7 +14350,17 @@ is reused by import and is not owned by the six-theorem bounds leaf}\\[2pt]
 \midrule
 \Cref{lem:sl2-structure} & \statusnone & ---\\[2pt]
 \Cref{prop:exterior-character} & \statusnone & ---\\[2pt]
-\Cref{thm:qbinom-unimodal} & \statusnone & ---\\[2pt]
+\Cref{thm:qbinom-unimodal} & \statuspartial &
+\texttt{boxCoeff\_\allowbreak{}symm},
+\texttt{coeff\_\allowbreak{}gaussianBinomial\_\allowbreak{}X\_\allowbreak{}eq\_\allowbreak{}boxCoeff},
+\texttt{coeff\_\allowbreak{}gaussianBinomial\_\allowbreak{}unimodal\_\allowbreak{}of\_\allowbreak{}min\_\allowbreak{}le\_\allowbreak{}two}\newline
+{\footnotesize\texttt{GaussianUnimodality}; the symmetry $c_j=c_{D-j}$ in full, for all $k\le n$,
+over an arbitrary \emph{semiring} --- the printed $\ComplexNumbers$ and every field,
+characteristic and order hypothesis are unused.  Unimodality is proved only on thin boxes,
+$\min(k,n-k)\le2$, i.e.\ six columns of each Pascal row.  The general case runs through the
+$\mathfrak{sl}_2$ representation theory of \Cref{lem:sl2-structure} and
+\Cref{prop:exterior-character}, which Mathlib does not carry; those two rows stay unformalized and
+no unimodality beyond the thin range is claimed}\\[2pt]
 \midrule
 \multicolumn{3}{@{}l}{\itshape The infinite $q$-binomial theorem}\\
 \midrule
@@ -13904,7 +14391,18 @@ Cauchy product of the $r+s$ absolutely convergent Euler expansions, the
 coefficient $c_N$ being the sum over $\mathtt{antidiagonalTuple}\,(r+s)\,N$ of
 the products of the concatenated (\texttt{Fin.append}) coefficient families;
 the case $s=0$ has no restriction on $z$}\\[2pt]
-\Cref{prop:formal-qbinomial} & \statusnone & ---\\[2pt]
+\Cref{prop:formal-qbinomial} & \statusexact &
+\texttt{qPochhammer\_\allowbreak{}mul\_\allowbreak{}qBinomialSeries},
+\texttt{qBinomialSeries\_\allowbreak{}eq\_\allowbreak{}inverse\_\allowbreak{}mul},
+\texttt{isUnit\_\allowbreak{}qPochhammerSeries},
+\texttt{qRegular\_\allowbreak{}of\_\allowbreak{}isAdicComplete}\newline
+{\footnotesize\texttt{FormalQBinomial}; over an arbitrary commutative ring under the single
+algebraic hypothesis that every $1-q^{n+1}$ is a unit, which is strictly weaker than the printed
+assumption of $I$-adic completeness and separatedness with $q\in I$ --- that assumption is
+discharged into it, so every statement applies verbatim in the printed setting.  The unit clause
+for $(z;q)_\infty$ is proved unconditionally from its constant coefficient.  The infinite products
+are the Euler expansions linked to the finite ones by an effective congruence rather than
+constructed as limits in a topologised $A[[z]]$}\\[2pt]
 \midrule
 \multicolumn{3}{@{}l}{\itshape Basic hypergeometric series}\\
 \midrule
@@ -14293,7 +14791,7 @@ theorem; $(-q;q)_\infty=1/(q;q^2)_\infty$ from
 $(q^2;q^2)_\infty=(q;q)_\infty(-q;q)_\infty$ and the dissection
 $(q;q)_\infty=(q;q^2)_\infty(q^2;q^2)_\infty$; and $d(n)=o(n)$ by comparing
 coefficients (\texttt{PowerSeriesUniqueness})}\\[2pt]
-\Cref{prop:bounded-partitions} & \statusexact &
+\Cref{prop:bounded-partitions} & \statuspartial &
 \texttt{hasSum\_\allowbreak{}boundedCount\_\allowbreak{}mul\_\allowbreak{}pow},
 \texttt{card\_\allowbreak{}restricted\_\allowbreak{}le\_\allowbreak{}eq}\newline
 {\footnotesize\texttt{PartitionBoundedParts}; $p_{\le r}(n)$ read as the number
@@ -14301,7 +14799,9 @@ of partitions of $n$ with every part at most $r$ (Mathlib's
 \texttt{Nat.Partition.restricted n (fun k => k $\le$ r)}), identified with the
 multiplicity vectors on $\{1,\dots,r\}$ of weight $n$; the identity for
 $\lVert q\rVert<1$ in any complete normed field; the conjugation equivalence
-with ``at most $r$ parts'' is not formalized}\\[2pt]
+with ``at most $r$ parts'' is not formalized.  The proposition asserts the two readings of $p_{\le r}(n)$ --- largest part at most
+$r$, and at most $r$ parts --- are the same count, and that conjugation bijection is not
+formalized, so only one half of the printed statement is covered}\\[2pt]
 \Cref{cor:durfee-all} & \statusexact &
 \texttt{hasSum\_\allowbreak{}durfee},
 \texttt{gaussianBinomial\_\allowbreak{}add\_\allowbreak{}eq\_\allowbreak{}sum\_\allowbreak{}sq}\newline
@@ -14323,7 +14823,7 @@ sequences of sum $N$ (\texttt{conjugateVector}/\texttt{differenceVector})}\\[2pt
 \multicolumn{3}{@{}l}{\itshape Bailey pairs and the Rogers--Ramanujan identities}\\
 \midrule
 \Cref{lem:qdiff-annihilation} & \statusexact & \texttt{qDifference\_\allowbreak{}sum\_\allowbreak{}eval}\textsubscript{2}\texttt{\_\allowbreak{}eq\_\allowbreak{}zero\_\allowbreak{}of\_\allowbreak{}degree\_\allowbreak{}lt}\newline{\footnotesize\texttt{QDifferenceAnnihilation}; semiring coefficients, arbitrary scalar extension, commutative-ring target; no division or distinct-node hypothesis}\\[2pt]
-\Cref{thm:bailey-inversion} & \statusexact &
+\Cref{thm:bailey-inversion} & \statuspartial &
 \texttt{isBaileyPair\_\allowbreak{}iff\_\allowbreak{}eq\_\allowbreak{}baileyInverse},
 \texttt{IsBaileyPair.eq\_\allowbreak{}baileyInverse},
 \texttt{baileySolve}\newline
@@ -14332,7 +14832,9 @@ nonvanishing denominators: the inverse formula is a left inverse by the
 $q$-difference annihilation of \Cref{lem:qdiff-annihilation}, and a two-sided one
 because every $\beta$ is the Bailey transform of the forward-substitution solution
 \texttt{baileySolve}; the removable-limit reading at $a=1$ is not formalised as
-such (the $a=1$ unit pair is verified directly in \texttt{BaileyUnitPairs})}\\[2pt]
+such (the $a=1$ unit pair is verified directly in \texttt{BaileyUnitPairs}).  The theorem's closing sentence, that at $a=1$ the right side is read by its removable
+limit, is part of the statement and is not formalized, so the equivalence is established only on
+$a\ne1$}\\[2pt]
 \Cref{cor:unit-bailey-pairs} & \statusexact &
 \texttt{isBaileyPair\_\allowbreak{}unit\_\allowbreak{}one},
 \texttt{isBaileyPair\_\allowbreak{}unit\_\allowbreak{}q},
@@ -14430,7 +14932,19 @@ recorded in the proof}\\[2pt]
 {\footnotesize\texttt{GaussianBinomialAtNegOne};
 \texttt{QBinomialReciprocity}; arbitrary commutative ring, all four parity
 classes, including total above-row zero extension}\\[2pt]
-\Cref{thm:csp-subsets} & \statusnone & ---\\[2pt]
+\Cref{thm:csp-subsets} & \statusexact &
+\texttt{IsCyclicSieving},
+\texttt{isCyclicSieving\_\allowbreak{}powersetCard},
+\texttt{card\_\allowbreak{}rotationFix},
+\texttt{isPrimitiveRoot\_\allowbreak{}pow\_\allowbreak{}addOrderOf}\newline
+{\footnotesize\texttt{CyclicSievingSubsets}; over an arbitrary commutative integral domain
+carrying a primitive $n$th root of unity, not merely $\IntegerNumbers[q]$ evaluated in
+$\ComplexNumbers$, for every $k$ with no range hypothesis and every $j$ with no residue
+restriction and no case split at $j=0$.  The two steps the text asserts without proof carry
+essentially all the work and are formalized separately: the count of translation-invariant
+$k$-subsets, proved for an \emph{arbitrary} element of additive order $d$ rather than a power of
+the distinguished generator, which subsumes the unproved sentence about orbit sizes and ``fixed iff
+a union of orbits''; and the primitivity of the relevant root power}\\[2pt]
 \Cref{thm:q-babbage} & \statusexact &
 \texttt{gaussianBinomial\_\allowbreak{}q\_\allowbreak{}babbage},
 \texttt{gaussianBinomial\_\allowbreak{}q\_\allowbreak{}babbage\_\allowbreak{}int},
@@ -14590,7 +15104,18 @@ theorem}\\[2pt]
 \midrule
 \multicolumn{3}{@{}l}{\itshape Asymptotic regimes and Bernoulli expansions}\\
 \midrule
-\Cref{lem:basic-bernoulli-log} & \statusnone & ---\\[2pt]
+\Cref{lem:basic-bernoulli-log} & \statusexact &
+\texttt{log\_\allowbreak{}one\_\allowbreak{}sub\_\allowbreak{}rexp\_\allowbreak{}neg\_\allowbreak{}div},
+\texttt{one\_\allowbreak{}sub\_\allowbreak{}cexp\_\allowbreak{}neg},
+\texttt{summable\_\allowbreak{}bernoulliLogTerm},
+\texttt{norm\_\allowbreak{}bernoulliLogTerm\_\allowbreak{}le}\newline
+{\footnotesize\texttt{BasicBernoulliLog}; the displayed expansion for real $x\ne0$ with
+$\lvert x\rvert<2\pi$, together with a branch-free multiplicative form over $\ComplexNumbers$ valid
+on the whole disc including $x=0$, so the positivity that makes the real logarithm honest is
+delivered rather than assumed.  Convergence is proved with an explicit geometric majorant.  The
+route is the corpus's own even-zeta material rather than an analytic statement about
+$x/(\EulerE^{x}-1)$, which Mathlib does not carry.  Not claimed: that $2\pi$ is the exact radius of
+convergence}\\[2pt]
 \Cref{thm:gaussian-bernoulli} & \statusnone & ---\\[2pt]
 \Cref{cor:gaussian-first-asymptotic} & \statusnone & ---\\[2pt]
 \Cref{thm:fixed-column-limit} & \statuspartial &
@@ -14970,7 +15495,22 @@ the theorem's full universal characterization}\\[2pt]
 \texttt{finiteQPochhammerIn\_self\_mul\_gaussianBinomial},
 \texttt{finiteQPochhammerIn\_self\_eq\_mul\_mul\_gaussianBinomial}\newline
 {\footnotesize\texttt{FiniteQBinomialCore}}\\[2pt]
-\Cref{thm:subspace-mobius} & \statusnone & ---\\[2pt]
+\Cref{thm:subspace-mobius} & \statusexact &
+\texttt{mu\_\allowbreak{}submodule},
+\texttt{mu\_\allowbreak{}submodule\_\allowbreak{}quotient},
+\texttt{eulerChar\_\allowbreak{}submodule},
+\texttt{mu\_\allowbreak{}submodule\_\allowbreak{}pi},
+\texttt{mu\_\allowbreak{}apply\_\allowbreak{}eq\_\allowbreak{}zero\_\allowbreak{}of\_\allowbreak{}not\_\allowbreak{}le}\newline
+{\footnotesize\texttt{SubspaceMobius}; both displays, for any finite module over any finite
+\emph{division ring} --- so $Q$ need not be a prime power and $K$ need not be commutative --- and
+with values in an arbitrary commutative ring rather than $\IntegerNumbers$.  The convention
+$\mu(U,W)=0$ off the order relation, which the display leaves unspecified, is proved.  The
+reduction the text uses, that $X\mapsto X/U$ is an interval isomorphism and that $\mu$ depends only
+on the isomorphism type of the interval, is \emph{not} formalized: Mathlib transports $\mu$ along
+no order isomorphism, so the Lean proof inducts on the relative rank directly and uses the quotient
+correspondence only as a cardinality statement.  Also proved in passing:
+\Cref{rem:mobius-inversion-kernel}, identifying the $q$-binomial inversion kernel with
+$\mu(U,W)\GaussianBinomial{n}{k}{Q}$}\\[2pt]
 \Cref{prop:thue-morse-power-recurrence} & \statuspartial &
 \texttt{thueMorsePowerSum\_succ}\newline
 {\footnotesize\texttt{ThueMorsePrefix}; Lean has the untranslated recurrence,
@@ -15049,9 +15589,33 @@ different convolutional summand and lacks the stated sharp residual package}\\[2
 $u,v\colon\NaturalNumbers\to K$ with $u_0-v_0\ne0$ and $v_1,\dots,v_N\ne0$, the
 products written as $\prod_{i<k}u_i$ and $\prod_{i<k}v_{i+1}$; by induction on
 $N$, each step being the one-term telescoping}\\[2pt]
-\Cref{qg:lem-jackson-rational-certificate} & \statusnone & ---\\[2pt]
+\Cref{qg:lem-jackson-rational-certificate} & \statusexact &
+\texttt{jackson\_\allowbreak{}rational\_\allowbreak{}certificate},
+\texttt{jacksonCertNum\_\allowbreak{}left},
+\texttt{jacksonCertNum\_\allowbreak{}shift},
+\texttt{jackson\_\allowbreak{}certificate\_\allowbreak{}closed\_\allowbreak{}form}\newline
+{\footnotesize\texttt{JacksonRationalCertificate}; over an arbitrary field rather than
+$\RationalNumbers(A,\dots,F)$ and its complex specializations, under exactly the eighteen
+nonvanishing hypotheses that spell out the text's clause ``all rational expressions displayed are
+defined''.  Because the statement is quantified over every such field, the text's separate
+specialization corollary is subsumed rather than being a further step.  Two of the underlying
+identities are proved division-free over an \emph{arbitrary commutative ring}, including
+characteristic $2$ and non-domains, where the text works only in characteristic $0$}\\[2pt]
 \Cref{qg:thm-jackson-8phi7} & \statusnone & ---\\[2pt]
-\Cref{qg:cor-jackson-6phi5} & \statusnone & ---\\[2pt]
+\Cref{qg:cor-jackson-6phi5} & \statusexact &
+\texttt{terminating\_\allowbreak{}sixPhiFive},
+\texttt{sum\_\allowbreak{}sixPhiFiveTerm},
+\texttt{sixPhiFive\_\allowbreak{}certificate},
+\texttt{one\_\allowbreak{}sub\_\allowbreak{}mul\_\allowbreak{}pow\_\allowbreak{}mul\_\allowbreak{}finiteQPochhammerIn}\newline
+{\footnotesize\texttt{JacksonVeryWellPoised}; the terminating very-well-poised
+${}_6\phi_5$ over an arbitrary field, where the text claims $\ComplexNumbers^\times$, with
+$q^{-N}$ written $(q^N)^{-1}$ as elsewhere in the corpus.  The proof does \emph{not} follow the
+printed derivation, which obtains this from \Cref{qg:thm-jackson-8phi7} by a coefficientwise
+rational limit; it inducts on the terminating index directly, so it does not depend on the
+${}_8\phi_7$.  The nonvanishing hypotheses are \emph{not} comparable with the printed ones: they
+are stronger at index $N+1$ and $2N+2$, so over $\ComplexNumbers$ this applies to fewer tuples,
+while over an arbitrary field and at $a=0$ it is a proper extension.  The certificate identity
+carrying the analytic content holds over an arbitrary commutative ring}\\[2pt]
 \midrule
 \multicolumn{3}{@{}l}{\itshape Theta modularity, lattice dissection, and sums of squares}\\
 \midrule
@@ -15070,17 +15634,92 @@ class $m\equiv2\pmod 3$ uniformly in $n$ from the zero set of $\theta$ rather th
 hidden case split on the sign of $n$.  The two lemmas the text uses silently, iterated theta
 quasi-periodicity and the threefold dissection, are now explicit and reusable}\\[2pt]
 \Cref{qg:def-jacobi-theta} & \statusna & notation only\\[2pt]
-\Cref{qg:prop-theta-products} & \statusnone & ---\\[2pt]
-\Cref{qg:prop-theta-heat} & \statusnone & ---\\[2pt]
+\Cref{qg:prop-theta-products} & \statuspartial &
+\texttt{hasSum\_\allowbreak{}pow\_\allowbreak{}sqExponent\_\allowbreak{}mul\_\allowbreak{}zpow},
+\texttt{hasSum\_\allowbreak{}neg\_\allowbreak{}one\_\allowbreak{}zpow\_\allowbreak{}mul\_\allowbreak{}pow\_\allowbreak{}sqExponent\_\allowbreak{}mul\_\allowbreak{}zpow},
+\texttt{hasSum\_\allowbreak{}pow\_\allowbreak{}sqAddExponent\_\allowbreak{}mul\_\allowbreak{}zpow},
+\texttt{qPochhammerInfIn\_\allowbreak{}neg\_\allowbreak{}one}\newline
+{\footnotesize\texttt{ThetaProductIdentities}; all six displayed identities, stated in the nome
+variables over an \emph{arbitrary} complete normed field with $\lVert q\rVert<1$, $q\ne0$,
+$\zeta\ne0$ --- more general than the text, which works over $\ComplexNumbers$, and with every
+fractional power gone from the statement.  Each is a \texttt{HasSum}.  Two hypotheses the text's
+proof uses without checking are made explicit.  Partial because the corpus has no
+$\ComplexNumbers$-definition of $\vartheta_2$ or $\vartheta_4$ carrying the prefactor
+$q^{1/4}\zeta^{1/2}$: the two $\vartheta_2$ displays are therefore stated with that prefactor
+stripped, as statements about $\vartheta_3(z+\tau/2\mid\tau)$.  The other four are exact}\\[2pt]
+\Cref{qg:prop-theta-heat} & \statusexact &
+\texttt{thetaTwo\_\allowbreak{}heat},
+\texttt{thetaThree\_\allowbreak{}heat},
+\texttt{thetaFour\_\allowbreak{}heat},
+\texttt{thetaThree\_\allowbreak{}heat\_\allowbreak{}iteratedDeriv},
+\texttt{hasSum\_\allowbreak{}jacobiTheta\_\allowbreak{}zz\_\allowbreak{}term}\newline
+{\footnotesize\texttt{ThetaHeatEquation}; all three printed cases $j=2,3,4$, each as
+$\partial\vartheta_j/\partial\tau=(1/(4\pi i))\,\partial^2\vartheta_j/\partial z^2$ on the upper
+half-plane, with $\partial/\partial\tau$ and $\partial/\partial z$ the complex holomorphic
+derivative and the second $z$-derivative also restated as an iterated derivative.  The functions
+are the corpus's own $\vartheta_2,\vartheta_3,\vartheta_4$, whose \texttt{HasSum} bridges identify
+them with the monograph's three series, so these are the printed statements and not surrogates.
+Over $\ComplexNumbers$ only: the statement lives on the upper half-plane and uses holomorphy, so
+there is no free commutative-ring or normed-field version}\\[2pt]
 \Cref{qg:def-fourier-transform} & \statusna & transform convention\\[2pt]
-\Cref{qg:thm-poisson} & \statusnone & ---\\[2pt]
-\Cref{qg:lem-gaussian-fourier} & \statusnone & ---\\[2pt]
-\Cref{qg:thm-jacobi-imaginary} & \statusnone & ---\\[2pt]
+\Cref{qg:thm-poisson} & \statusexact &
+\texttt{poisson\_\allowbreak{}summation\_\allowbreak{}schwartz},
+\texttt{poisson\_\allowbreak{}summation\_\allowbreak{}of\_\allowbreak{}rpow\_\allowbreak{}decay}\newline
+{\footnotesize\texttt{GaussianFourierTheta}; verbatim, in the text's own transform convention,
+which is Mathlib's with no normalization or sign discrepancy.  Also proved under a hypothesis
+strictly weaker than Schwartz: continuity together with $f$ and $\widehat f=O(\lvert x\rvert^{-b})$
+for a single $b>1$.  The text's own proof is not the one formalized --- Mathlib argues through the
+Fourier series of the periodization, which discharges the two uniform-convergence assertions the
+text leaves unproved}\\[2pt]
+\Cref{qg:lem-gaussian-fourier} & \statusexact &
+\texttt{integral\_\allowbreak{}cexp\_\allowbreak{}pi\_\allowbreak{}I\_\allowbreak{}mul\_\allowbreak{}sq\_\allowbreak{}add},
+\texttt{fourier\_\allowbreak{}cexp\_\allowbreak{}pi\_\allowbreak{}I\_\allowbreak{}mul\_\allowbreak{}sq\_\allowbreak{}add},
+\texttt{integrable\_\allowbreak{}cexp\_\allowbreak{}pi\_\allowbreak{}I\_\allowbreak{}mul\_\allowbreak{}sq\_\allowbreak{}add}\newline
+{\footnotesize\texttt{GaussianFourierTheta}; verbatim, with the hypothesis $0<\operatorname{Im}\tau$
+on a bare $\tau\in\ComplexNumbers$ rather than membership in the upper half-plane type, and with
+the strengthening to the full Fourier transform at every real frequency, which is the form the
+text's own proof of \Cref{qg:thm-jacobi-imaginary} actually uses.  Integrability, which the text
+does not state, is proved so the integral statements are not vacuous.  Every power is Mathlib's
+principal \texttt{cpow}, which agrees with the text's principal square root exactly because
+$\operatorname{Re}(-\ImaginaryUnit\tau)=\operatorname{Im}\tau>0$ keeps the argument off the cut}\\[2pt]
+\Cref{qg:thm-jacobi-imaginary} & \statusexact &
+\texttt{thetaThree\_\allowbreak{}neg\_\allowbreak{}inv},
+\texttt{thetaThree\_\allowbreak{}zero\_\allowbreak{}neg\_\allowbreak{}inv},
+\texttt{thetaTwo\_\allowbreak{}zero\_\allowbreak{}neg\_\allowbreak{}inv},
+\texttt{thetaFour\_\allowbreak{}zero\_\allowbreak{}neg\_\allowbreak{}inv},
+\texttt{hasSum\_\allowbreak{}thetaThree},
+\texttt{tsum\_\allowbreak{}cexp\_\allowbreak{}pi\_\allowbreak{}I\_\allowbreak{}mul\_\allowbreak{}sq\_\allowbreak{}add}\newline
+{\footnotesize\texttt{JacobiImaginaryTransform}, \texttt{GaussianFourierTheta}; all four displayed
+equations.  The identification of $\vartheta_2,\vartheta_3,\vartheta_4$ with the text's own series
+is proved as \texttt{HasSum} statements, asserting unconditional summability over
+$\IntegerNumbers$ as well as the value.  Three free strengthenings: the laws hold under $\tau\ne0$
+rather than $0<\operatorname{Im}\tau$, since $\operatorname{Im}(-1/\tau)$ has the sign of
+$\operatorname{Im}\tau$ and both sides vanish off the upper half-plane; the $\vartheta_2$ and
+$\vartheta_4$ laws are proved at general $z$, where the text gives only $z=0$, which also removes
+its unproved appeal to $(w^{-1})^{1/2}=(w^{1/2})^{-1}$; and $\vartheta_3(0\mid\tau)$ is identified
+with the one-variable theta.  \texttt{GaussianFourierTheta} reaches the same series identity by the
+independent Poisson route}\\[2pt]
 \Cref{qg:def-dedekind-eta} & \statusna & notation only\\[2pt]
 \Cref{qg:thm-theta-eta-modular} & \statusnone & ---\\[2pt]
 \Cref{qg:def-ramanujan-theta} & \statusna & notation only\\[2pt]
 \Cref{qg:prop-ramanujan-product} & \statusnone & ---\\[2pt]
-\Cref{qg:thm-schroeter} & \statusnone & ---\\[2pt]
+\Cref{qg:thm-schroeter} & \statusexact &
+\texttt{schroeter\_\allowbreak{}formula},
+\texttt{hasSum\_\allowbreak{}schroeter},
+\texttt{hasSum\_\allowbreak{}schroeterFibre},
+\texttt{quadTheta\_\allowbreak{}eq\_\allowbreak{}bilateralTheta},
+\texttt{summable\_\allowbreak{}norm\_\allowbreak{}quadThetaTerm}\newline
+{\footnotesize\texttt{SchroeterFormula}; over an arbitrary complete normed field rather than
+$\ComplexNumbers$, so also over $\RealNumbers$ and the $p$-adic fields, the only analytic input
+being a real geometric majorant.  The hypotheses are exactly the chapter's own, with no weakening.
+The conclusion is a \texttt{HasSum}, asserting unconditional summability of the lattice family
+where the printed $\sum_{n\in\IntegerNumbers}$ fixes no summation order; norm-summability is
+recorded separately, which over a nonarchimedean field is stronger again.  The dissection is
+carried by an explicit equivalence of $\IntegerNumbers^2$ built from the division algorithm, so
+the change of variables is a bijection by construction rather than by inspection.  Two identities
+the chapter states only in passing are proved with it: the crosswalk
+$\Theta(x;Q)=\BilateralTheta{Qx}{Q^2}$, with its $Q\ne0$ made explicit, and Jacobi's triple
+product in the $\sum Q^{n^2}x^n$ normalization}\\[2pt]
 \Cref{qg:prop-squares-theta} & \statuspartial &
 \texttt{hasSum\_\allowbreak{}sumSqRep},
 \texttt{sumSqRep},
@@ -15102,9 +15741,36 @@ computation, (ii) from Mathlib's
 \texttt{GaussianInt.prime\_of\_nat\_prime\_of\_mod\_four\_eq\_three}, (iii) from Fermat's
 two-square theorem \texttt{Nat.Prime.sq\_add\_sq} and the norm argument, with uniqueness up to a
 unit and conjugation from primality}\\[2pt]
-\Cref{qg:thm-two-square} & \statusnone & ---\\[2pt]
-\Cref{qg:cor-two-square-lambert} & \statusnone & ---\\[2pt]
-\Cref{qg:thm-four-square} & \statusnone & ---\\[2pt]
+\Cref{qg:thm-two-square} & \statuspartial &
+\texttt{twoSquareArith},
+\texttt{isMultiplicative\_\allowbreak{}twoSquareArith},
+\texttt{twoSquareDivisorSum\_\allowbreak{}prime\_\allowbreak{}pow},
+\texttt{twoSquareDivisorSum\_\allowbreak{}eq\_\allowbreak{}prod},
+\texttt{sumSqRep\_\allowbreak{}two\_\allowbreak{}eq\_\allowbreak{}zero\_\allowbreak{}iff}\newline
+{\footnotesize\texttt{TwoSquareTheorem}; the arithmetic half in full and unconditionally --- the
+divisor sum as the Dirichlet convolution $\zeta*\chi_4$, its multiplicativity, its exact local
+factors at $2$, at $p\equiv1$ and at $p\equiv3\pmod4$, and hence both the vanishing criterion and
+the product formula --- together with the vanishing half of \eqref{eq:qg-two-square}, that
+$r_2(n)=0$ exactly when $D(n)=0$.  \emph{Not} proved: the count $r_2(n)=4D(n)$ on the set where
+$D(n)\ne0$, which is the theorem's core and is carried as an explicit hypothesis}\\[2pt]
+\Cref{qg:cor-two-square-lambert} & \statuspartial &
+\texttt{twoSquareDivisorSum\_\allowbreak{}eq\_\allowbreak{}prod},
+\texttt{sumSqRep\_\allowbreak{}two\_\allowbreak{}eq\_\allowbreak{}zero\_\allowbreak{}iff}\newline
+{\footnotesize\texttt{TwoSquareTheorem}; the Lambert-series form is conditional on the same
+counting core as \Cref{qg:thm-two-square}, and is stated with that hypothesis explicit rather
+than assumed}\\[2pt]
+\Cref{qg:thm-four-square} & \statuspartial &
+\texttt{sumSqRep\_\allowbreak{}four\_\allowbreak{}eq\_\allowbreak{}iff},
+\texttt{sumSqRep\_\allowbreak{}four\_\allowbreak{}eq\_\allowbreak{}of\_\allowbreak{}lambert},
+\texttt{hasSum\_\allowbreak{}sumSqRep\_\allowbreak{}four\_\allowbreak{}product},
+\texttt{hasSum\_\allowbreak{}sigmaNotDvdFour\_\allowbreak{}tsum}\newline
+{\footnotesize\texttt{FourSquareTheorem}; proved \emph{conditionally}.  The equivalence between
+the theorem and its Lambert form is unconditional, and both sides of the printed proof's last
+sentence are proved outright: the theta side, $\sum_n r_4(n)q^n=\bigl((q^2;q^2)_\infty(-q;q^2)_\infty^2\bigr)^4$
+over any complete normed field, and the Lambert side,
+$\sum_{4\nmid j}jq^j/(1-q^j)=\sum_n\bigl(\sum_{d\mid n,\,4\nmid d}d\bigr)q^n$.  The identity
+joining them, \eqref{eq:qg-four-square-lambert}, is \emph{not} proved and is carried as the
+hypothesis.  Mathlib's four-square theorem is existence, not counting, and is not a substitute}\\[2pt]
 \midrule
 \multicolumn{3}{@{}l}{\itshape Bailey transforms and the Andrews--Gordon identities}\\
 \midrule
@@ -15132,7 +15798,17 @@ named lemmas}\\[2pt]
 {\footnotesize\texttt{BaileyChain}; the $t$-fold multiple sum is represented by the
 nested recursion $\beta^{(t+1)}_n=\sum_{j\le n}a^jq^{j^2}\beta^{(t)}_j/(q;q)_{n-j}$,
 exactly as the inductive proof in the text unfolds it}\\[2pt]
-\Cref{qg:cor-rr-partitions} & \statusnone & ---\\[2pt]
+\Cref{qg:cor-rr-partitions} & \statuspartial &
+\texttt{partsMod5\_\allowbreak{}14\_\allowbreak{}eq\_\allowbreak{}staircaseCount},
+\texttt{partsMod5\_\allowbreak{}23\_\allowbreak{}eq\_\allowbreak{}staircaseCount},
+\texttt{hasSum\_\allowbreak{}restrictedCount\_\allowbreak{}mul\_\allowbreak{}pow}\newline
+{\footnotesize\texttt{RogersRamanujanPartitions}; the product side exactly --- the counts of
+partitions into parts $\equiv1,4$ and $\equiv2,3\pmod 5$ --- identified with a Durfee-staircase
+expansion of the sum side, both genuine partition counts, on the sorry-free analytic identities.
+The restricted-parts generating function is proved for an \emph{arbitrary} decidable predicate on
+part sizes, subsuming the odd-parts and bounded-parts cases already in the corpus.  \emph{Not}
+formalized: the printed gap condition, that is the bijection between the staircase expansion and
+partitions with parts differing by at least $2$}\\[2pt]
 \Cref{qg:lem-rogers-recurrence} & \statusexact &
 \texttt{rogersSeries\_\allowbreak{}recurrence},
 \texttt{rogersSeries},
@@ -15186,11 +15862,54 @@ formalized}\\[2pt]
 \midrule
 \multicolumn{3}{@{}l}{\itshape Exact limits, reciprocity, and research frontiers}\\
 \midrule
-\Cref{qg:thm-qpochhammer-modular-asymptotic} & \statusnone & ---\\[2pt]
-\Cref{qg:prop-coefficientwise-limit} & \statusnone & ---\\[2pt]
-\Cref{qg:prop-truncation-principle} & \statusnone & ---\\[2pt]
-\Cref{qg:prop-borwein-reciprocity} & \statusnone & ---\\[2pt]
-\Cref{qg:prop-borwein-tail-stabilization} & \statusnone & ---\\[2pt]
+\Cref{qg:thm-qpochhammer-modular-asymptotic} & \statusexact &
+\texttt{qPochhammerInfIn\_\allowbreak{}exp\_\allowbreak{}neg\_\allowbreak{}modular},
+\texttt{eta\_\allowbreak{}eq\_\allowbreak{}qPochhammerInfIn},
+\texttt{neg\_\allowbreak{}one\_\allowbreak{}div\_\allowbreak{}modularPoint},
+\texttt{isBigO\_\allowbreak{}log\_\allowbreak{}qPochhammerInfIn\_\allowbreak{}exp\_\allowbreak{}neg\_\allowbreak{}sub},
+\texttt{isBigO\_\allowbreak{}qPochhammerInfIn\_\allowbreak{}exp\_\allowbreak{}neg\_\allowbreak{}ratio\_\allowbreak{}sub\_\allowbreak{}one}\newline
+{\footnotesize\texttt{QPochhammerModularAsymptotic}; the exact identity
+$(q;q)_\infty=\sqrt{2\pi/t}\,\EulerE^{-\pi^2/(6t)+t/24}\,(Q;Q)_\infty$ at $q=\EulerE^{-t}$,
+$Q=\EulerE^{-4\pi^2/t}$, proved for \emph{every} $t>0$ with no smallness restriction, and both
+printed corollaries with explicit constants.  The $S$-involution is isolated as
+$-1/\tau=\,$\texttt{modularPoint}$(4\pi^2/t)$ on the imaginary axis so that it can be reused for
+the theta asymptotics, and the bridge $\eta(z)=\mathfrak q_{24}(z)\,(\mathfrak q_1(z);\mathfrak
+q_1(z))_\infty$ to Mathlib's Dedekind eta holds for every $z$}\\[2pt]
+\Cref{qg:prop-coefficientwise-limit} & \statusexact &
+\texttt{existsUnique\_\allowbreak{}coefficientwise\_\allowbreak{}limit},
+\texttt{tendsto\_\allowbreak{}of\_\allowbreak{}eventually\_\allowbreak{}coeff\_\allowbreak{}eq},
+\texttt{iteratedDeriv\_\allowbreak{}eq\_\allowbreak{}of\_\allowbreak{}eventually\_\allowbreak{}coeff}\newline
+{\footnotesize\texttt{QSeriesTruncation}; the approximants are arbitrary \emph{power series} over
+an arbitrary semiring, indexed by an arbitrary type and converging along an arbitrary non-trivial
+filter, where the text takes polynomials over a commutative ring and $N\to\infty$ over
+$\NaturalNumbers$.  That generality is not decoration: the paper's own application inside
+\Cref{qg:prop-truncation-principle} is to truncated products that are not polynomials.  The
+coefficientwise limit is a genuine \texttt{Tendsto} in the power-series topology, not a shorthand
+for stabilisation}\\[2pt]
+\Cref{qg:prop-truncation-principle} & \statusexact &
+\texttt{coeff\_\allowbreak{}qInfProduct},
+\texttt{existsUnique\_\allowbreak{}coefficientwise\_\allowbreak{}limit}\newline
+{\footnotesize\texttt{QSeriesTruncation}; the product half in the generality the paper's own
+citation of it requires, the truncated products $\prod_{j\le M}(1-q^j)^{e_j}$ lying outside
+$R[q]$ as soon as one exponent is negative}\\[2pt]
+\Cref{qg:prop-borwein-reciprocity} & \statusexact &
+\texttt{reflect\_\allowbreak{}borweinA},
+\texttt{reflect\_\allowbreak{}borweinB},
+\texttt{reflect\_\allowbreak{}borweinC},
+\texttt{eval\_\allowbreak{}one\_\allowbreak{}borweinB\_\allowbreak{}eq\_\allowbreak{}borweinC},
+\texttt{borweinProduct\_\allowbreak{}dissection}\newline
+{\footnotesize\texttt{BorweinReciprocity}; over an arbitrary commutative ring, where the text works
+in $\IntegerNumbers[x]$.  Both the polynomial form, with \texttt{Polynomial.reflect} literally
+$x^Nf(1/x)$, and the coefficient form, together with both ``in particular'' corollaries.  The
+dissection \eqref{eq:qg-borwein-dissection} is proved rather than posited: $A_n,B_n,C_n$ are
+constructed as the residue-class contractions of $P_n$.  The sign question of the Borwein
+conjecture is not touched}\\[2pt]
+\Cref{qg:prop-borwein-tail-stabilization} & \statusexact &
+\texttt{coeff\_\allowbreak{}borweinA\_\allowbreak{}stabilize},
+\texttt{coeff\_\allowbreak{}borweinB\_\allowbreak{}stabilize},
+\texttt{coeff\_\allowbreak{}borweinC\_\allowbreak{}stabilize}\newline
+{\footnotesize\texttt{BorweinReciprocity}; all six identities, both ends, over an arbitrary
+commutative ring}\\[2pt]
 \bottomrule
 \end{longtable}
 \endgroup

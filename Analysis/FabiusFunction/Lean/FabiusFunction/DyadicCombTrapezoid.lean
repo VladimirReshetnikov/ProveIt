@@ -132,7 +132,41 @@ theorem integral_unit_of_reflect {g : ℝ → ℝ}
   simp only [sub_zero, smul_eq_mul, mul_one] at hrefl
   linarith
 
+/-- **The unit integral of a reflection-antisymmetric function is `0`**:
+if `g(1-x) = -g(x)` then `∫₀¹ g = 0`.  No integrability is assumed: a
+non-integrable `g` has interval integral `0` as well. -/
+theorem integral_unit_eq_zero_of_reflect_neg {g : ℝ → ℝ}
+    (hodd : ∀ x, g (1 - x) = -g x) :
+    ∫ x in (0 : ℝ)..1, g x = 0 := by
+  have hrefl : ∫ x in (0 : ℝ)..1, g (1 - x) =
+      ∫ x in (0 : ℝ)..1, g x :=
+    intervalIntegral_comp_one_sub_unit g
+  have hcongr : ∫ x in (0 : ℝ)..1, g (1 - x) =
+      ∫ x in (0 : ℝ)..1, (-g x) :=
+    intervalIntegral.integral_congr fun x _ => hodd x
+  rw [hcongr, intervalIntegral.integral_neg] at hrefl
+  linarith
+
 end UnitReflection
+
+section OddSummation
+
+/-- **A sum over `ℤ` of a function odd under `k ↦ -k` vanishes**, in any
+topological ring without zero divisors and of characteristic zero (so in
+`ℝ` and `ℂ`).  No summability is assumed: `k ↦ -k` is a bijection of `ℤ`
+that negates every term, so the sum equals its own negative — and a
+non-summable `tsum` is `0` as well. -/
+theorem tsum_int_eq_zero_of_neg {α : Type*} [Ring α] [NoZeroDivisors α]
+    [CharZero α] [TopologicalSpace α] [IsTopologicalAddGroup α] [T2Space α]
+    {f : ℤ → α} (hf : ∀ k, f (-k) = -f k) :
+    ∑' k : ℤ, f k = 0 := by
+  have h : ∑' k : ℤ, f k = -∑' k : ℤ, f k := by
+    calc ∑' k : ℤ, f k = ∑' k : ℤ, f (-k) := ((Equiv.neg ℤ).tsum_eq f).symm
+      _ = ∑' k : ℤ, -f k := tsum_congr hf
+      _ = -∑' k : ℤ, f k := tsum_neg
+  exact add_self_eq_zero.mp (eq_neg_iff_add_eq_zero.mp h)
+
+end OddSummation
 
 section FabiusInstance
 
@@ -178,28 +212,14 @@ equals its own negative.  No summability is assumed: a non-summable
 theorem tsum_odd_pow_mul_of_even {g : ℝ → ℝ} (hg : ∀ x, g (-x) = g x)
     (u : ℝ) (r : ℕ) :
     ∑' k : ℤ, (u * k) ^ (2 * r + 1) * g (u * k) = 0 := by
-  have hneg : ∀ k : ℤ,
-      (u * ((-k : ℤ) : ℝ)) ^ (2 * r + 1) * g (u * ((-k : ℤ) : ℝ)) =
-      -((u * k) ^ (2 * r + 1) * g (u * k)) := by
-    intro k
-    have h1 : (u * ((-k : ℤ) : ℝ)) = -(u * k) := by
-      push_cast
-      ring
-    rw [h1, hg (u * k), Odd.neg_pow ⟨r, by ring⟩]
+  refine tsum_int_eq_zero_of_neg fun k => ?_
+  show (u * ((-k : ℤ) : ℝ)) ^ (2 * r + 1) * g (u * ((-k : ℤ) : ℝ)) =
+    -((u * k) ^ (2 * r + 1) * g (u * k))
+  have h1 : (u * ((-k : ℤ) : ℝ)) = -(u * k) := by
+    push_cast
     ring
-  have key : ∑' k : ℤ, (u * k) ^ (2 * r + 1) * g (u * k) =
-      -∑' k : ℤ, (u * k) ^ (2 * r + 1) * g (u * k) := by
-    conv_lhs => rw [← (Equiv.neg ℤ).tsum_eq
-      (fun k : ℤ => (u * k) ^ (2 * r + 1) * g (u * k))]
-    have hterm : ∀ k : ℤ,
-        (fun k : ℤ => (u * k) ^ (2 * r + 1) * g (u * k))
-          ((Equiv.neg ℤ) k) =
-        -((u * k) ^ (2 * r + 1) * g (u * k)) := by
-      intro k
-      simp only [Equiv.neg_apply]
-      exact hneg k
-    rw [tsum_congr hterm, tsum_neg]
-  linarith
+  rw [h1, hg (u * k), Odd.neg_pow ⟨r, by ring⟩]
+  ring
 
 /-- **Centered odd-power Rvachev comb sums vanish at every real
 scale**: `∑_{k∈ℤ} (uk)^{2r+1}·up(uk) = 0` for every `u` and `r`, by

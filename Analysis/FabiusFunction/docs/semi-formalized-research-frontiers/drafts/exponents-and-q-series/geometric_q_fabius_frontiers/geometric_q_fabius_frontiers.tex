@@ -1002,6 +1002,58 @@ reference, and those demotions are listed in
       susceptibility resolvent, and the conditional smooth dynamics.
 \end{description}
 
+\subsection{Result census}
+\label{p0:sec:census}
+
+\cref{p0:tab:census} counts the numbered environments of each part.  It is
+mechanically derived from the source by
+\path{drafts/scripts/part_result_census.py}, so it can be regenerated rather
+than maintained by hand, and it exists to make one thing visible at a glance
+in a volume of this length: which parts are carrying open problems and which
+are carrying proofs.  The last column counts \texttt{proof} environments, not
+proved statements: a corollary proved in one line inside its statement, or two
+results discharged by a single argument, will not match one for one.
+
+\begingroup\small
+\begin{longtable}{@{}l r r r r r r r r@{}}
+\caption{Numbered environments per part.}
+\label{p0:tab:census}\\
+\toprule
+Part & Thm & Prop & Lem & Cor & Def & Conj & Prob & Proofs\\
+\midrule
+\endfirsthead
+\toprule
+Part & Thm & Prop & Lem & Cor & Def & Conj & Prob & Proofs\\
+\midrule
+\endhead
+0 & 1 & 7 & 2 & 0 & 1 & 0 & 0 & 10\\
+I & 20 & 0 & 1 & 5 & 1 & 4 & 3 & 21\\
+II & 12 & 2 & 1 & 2 & 2 & 0 & 0 & 16\\
+III & 6 & 2 & 0 & 2 & 0 & 4 & 3 & 8\\
+IV & 13 & 1 & 0 & 3 & 1 & 1 & 0 & 13\\
+V & 13 & 1 & 2 & 3 & 1 & 4 & 0 & 17\\
+VI & 40 & 6 & 1 & 13 & 1 & 19 & 0 & 52\\
+VII & 15 & 1 & 0 & 3 & 1 & 3 & 4 & 16\\
+VIII & 6 & 1 & 1 & 5 & 1 & 4 & 1 & 13\\
+IX & 14 & 5 & 3 & 4 & 3 & 2 & 7 & 24\\
+X & 6 & 3 & 0 & 1 & 0 & 5 & 4 & 9\\
+XI & 9 & 2 & 3 & 1 & 1 & 8 & 3 & 15\\
+XII & 11 & 4 & 2 & 5 & 1 & 4 & 3 & 22\\
+\midrule
+Total & 166 & 35 & 16 & 47 & 14 & 58 & 28 & 236\\
+\bottomrule
+\end{longtable}
+\endgroup
+
+Two readings are worth stating.  First, the volume asserts 264 results of
+proved kind against 58 conjectures and 28 open problems: it is a proof
+document with a frontier register attached, not a problem list.  Second, the
+distribution is uneven by design --- Part~VI carries a third of everything
+because it is itself a threefold editorial merge of independent
+reconstructions of one source chapter, while Parts~X and~XI are deliberately
+lean, having had their duplicated layers merged into one another and their
+shared setup moved here.
+
 \section{Register of volume-local symbols}
 \label{p0:sec:register}
 
@@ -16069,6 +16121,9 @@ Theorems \path{tendstoLocallyUniformly_prefix_sinc_charFun} and
 uniform convergence of the full phase-bearing prefixes on \(\RealNumbers\) and its
 explicit uniform-on-every-compact-set form.
 
+\end{statusbox}
+
+\begin{statusbox}{Lean crosswalk: the fixed-symbol and outer-product layers}
 The source-only module \path{QPochhammerEntire.lean} now closes the exact
 fixed-symbol analytic layer without adding a second definition: its API has
 zero public definitions and five public theorems.  For arbitrary
@@ -16108,6 +16163,9 @@ substitution $z=(1-q)t/(2\pi)$, the general theorem is exactly the outer
 locally-uniform (normal-convergence) part of the inside-disk formula
 \eqref{p7:eq:sinc-poch}.
 
+\end{statusbox}
+
+\begin{statusbox}{Lean crosswalk: what remains a frontier obligation}
 There is still no single declaration with the manuscript's named centered
 $\psi_q$ or MGF wrapper, and there is no outside-$\AbsoluteValue q>1$
 reciprocal formula, pole divisor, or zero--pole exchange.  Consequently the
@@ -21764,7 +21822,7 @@ For \(m\ge2\), define
 \begin{equation}\label{p11:eq:Am}
  A_m=\frac{B_{2m}}{2m}\,12^m\frac{2^{m-1}}{m}.
 \end{equation}
-Then, convergently for sufficiently small \(h\),
+Then, for every \(h\) with \(0<h<\pi/m\),
 \begin{align}
  \lambda_{2m}(h)
  &=A_mh^{m-1}
@@ -21788,6 +21846,17 @@ Taking logarithms of the factor after \(A_mh^{m-1}\) and applying \eqref{p11:eq:
  =\sum_{k\ge1}c_k(m-m^{2k})h^{2k},
 \]
 which is \eqref{p11:eq:lambda-exponential}.  Apply \eqref{p11:eq:bell-def} with \(z=h^2\) and \(x_k=k!d_{m,k}\).
+
+The stated range is exact and cannot be replaced by a single interval
+independent of \(m\).  By \Cref{p0:lem:log-sinhc} the series
+\eqref{p11:eq:log-sinh} has radius exactly \(\pi\); it is applied here at the
+two arguments \(h\) and \(mh\), and the second is the binding one, so
+\eqref{p11:eq:lambda-exponential} and \eqref{p11:eq:lambda-bell} converge
+precisely for \(0<h<\pi/m\).  The threshold degenerates as \(m\to\infty\),
+which is harmless downstream: \Cref{p11:thm:edgeworth-schwartz} and
+\Cref{p11:prop:h-power-series} use \eqref{p11:eq:lambda-bell} only for
+\(2\le m\le R+1\) with \(R\) fixed in advance, hence only for
+\(0<h<\pi/(R+1)\).
 \end{proof}
 
 The first cumulants, useful later, are
@@ -21836,11 +21905,53 @@ Consequently \(f_h\) has a complete asymptotic expansion in the Schwartz topolog
 
 Relative to the classical Edgeworth framework \cite{bib:bhattacharya2010,bib:petrov1975}, this theorem strengthens the usual local statement in three ways: it is uniform on all of \(\RealNumbers\), survives any fixed number of spatial derivatives, and carries arbitrary fixed polynomial weights.
 
+The passage from the exact-cumulant polynomial \(\mathcal E_{R,h}\) to a
+genuine power series in \(h\) --- which is what the last sentence of the
+theorem asserts, and what the quantile expansion below consumes --- requires
+re-expanding each \(\lambda_{2m}(h)\) and re-truncating.  That change of
+remainder is estimated once, here.
+
+\begin{proposition}[Re-expansion in powers of \(h\)]\label{p11:prop:h-power-series}
+Let \(P_N\) be the polynomial defined by \eqref{p11:eq:coefficient-extraction}.
+For every \(R\ge0\) the difference
+\(\mathcal E_{R,h}-\sum_{N=0}^{R}h^NP_N\) is a polynomial in \(x\) of degree at
+most \(D_R=4R\), all of whose coefficients are \(\BigOAt{h^{R+1}}{R}\) as
+\(h\downarrow0\).  Consequently, for all \(j,K\ge0\),
+\begin{equation}\label{p11:eq:E-vs-power-series}
+ \Norm{f_h-\phiN\sum_{N=0}^{R}h^NP_N}_{j,K}\le C_{R,j,K}h^{R+1},
+\end{equation}
+so \(f_h\) does have a complete asymptotic expansion in powers of \(h\) in
+every Schwartz seminorm, with coefficients \(\phiN P_N\).
+\end{proposition}
+
+\begin{proof}
+The term of \eqref{p11:eq:edgeworth-polynomial} indexed by \(\bm k\) is
+\[
+ H_{2\nu(\bm k)}(x)\prod_{m=2}^{R+1}\frac1{k_m!}
+ \left(\frac{\lambda_{2m}(h)}{(2m)!}\right)^{k_m}.
+\]
+Its \(x\)-independent factor is real analytic in \(h\) on \(0<h<\pi/(R+1)\) by
+\Cref{p11:thm:cumulant-bell}, and vanishes to order \(w(\bm k)\) at \(h=0\)
+because \(\lambda_{2m}(h)=A_mh^{m-1}(1+\BigO(h^2))\).  Only the finitely many
+\(\bm k\) with \(w(\bm k)\le R\) occur, so Taylor's theorem with remainder at
+order \(R\), applied to each such coefficient function of \(h\), replaces every
+coefficient by a polynomial in \(h\) of degree \(R\) up to
+\(\BigOAt{h^{R+1}}{R}\).  The Hermite degrees are bounded by
+\(2\nu(\bm k)=2\bigl(w(\bm k)+\sum_mk_m\bigr)\le4w(\bm k)\le4R\), because
+\(m-1\ge1\) gives \(\sum_mk_m\le w(\bm k)\); this is \(D_R\).  That the
+resulting coefficient of \(h^N\) equals \(P_N\) for every \(N\le R\),
+independently of \(R\), is \eqref{p11:eq:coefficient-extraction}: multi-indices
+with \(w(\bm k)\ge R+1\) cannot contribute to \(h^N\) with \(N\le R\).
+Finally \(\Norm{\phiN\,x^{d}}_{j,K}<\infty\) for every \(d\le4R\), so
+multiplying the coefficient bound by \(\phiN\) and adding
+\eqref{p11:eq:edgeworth-main} gives \eqref{p11:eq:E-vs-power-series}.
+\end{proof}
+
 \subsection{Global sinc-product bounds}
 The proof starts with a uniform frequency envelope.
 
 \begin{lemma}[Global sinc envelope]\label{p11:lem:sinc-envelope}
-There are universal constants \(c,C>0\) such that
+The constant \(c=\tfrac16\) is admissible throughout.  First,
 \begin{equation}\label{p11:eq:sinc-basic-envelope}
  \AbsoluteValue{\SincRad u}\le\exp\bigl(-c\min(u^2,1)\bigr),\qquad u\in\RealNumbers.
 \end{equation}
@@ -21852,30 +21963,113 @@ Then
 \begin{equation}\label{p11:eq:Psi-envelope}
  \AbsoluteValue{\Psi_h(t)}\le\EulerE^{-cS_h(t)}.
 \end{equation}
-Moreover, for each integer \(q\ge0\), after decreasing \(c\) if necessary,
+Moreover, with the same \(c\) and with \(A_h\) the support constant of
+\eqref{p11:eq:standardized-support}, for every integer \(q\ge0\),
 \begin{equation}\label{p11:eq:Psi-derivative-envelope}
  \AbsoluteValue{\partial_t^q\Psi_h(t)}
- \le C_qh^{-q/2}(1+\AbsoluteValue t)^q\EulerE^{-cS_h(t)}.
+ \le\bigl(\EulerE^{c}A_h\bigr)^{q}\,\EulerE^{-cS_h(t)},
+ \qquad
+ A_h=\sum_{n\ge0}a_hr^n=\sqrt{3\coth(h/2)},
+ \quad A_h\le\sqrt{\frac{13}{2h}}\ \ (0<h\le1).
 \end{equation}
-Finally, for any fixed \(0<\delta<1\),
+Since \(A_h\le\sqrt{13/(2h)}\), this implies the weaker form
+\(\AbsoluteValue{\partial_t^q\Psi_h}\le
+ C_qh^{-q/2}(1+\AbsoluteValue t)^q\EulerE^{-cS_h}\) in which the estimate is
+quoted elsewhere; the sharper form carries no factor \((1+\AbsoluteValue t)^q\).
+Finally, for any fixed \(0<\delta<1\) and with
+\(c_\delta=\tfrac12\min(\delta^2,\EulerE^{-2})\),
 \begin{align}
  S_h(t)&=3t^2,
  &&\AbsoluteValue t\le a_h^{-1},\label{p11:eq:S-gaussian}\\
  S_h(t)&\ge c_\delta h^{-1},
- &&\AbsoluteValue t\ge\delta a_h^{-1}.\label{p11:eq:S-outer}
+ &&\AbsoluteValue t\ge\delta a_h^{-1},\label{p11:eq:S-outer}\\
+ S_h(t)&\ge\frac{\log(a_h\AbsoluteValue t)}{h}+\frac{\EulerE^{-2}}{2h},
+ &&a_h\AbsoluteValue t\ge1,\ 0<h\le1.\label{p11:eq:S-power}
 \end{align}
 \end{lemma}
 
 \begin{proof}
-For \(\AbsoluteValue u\le1\), the Taylor expansion of \(\log\SincRad u\) gives \(\log\AbsoluteValue{\SincRad u}\le-cu^2\).  On \(\AbsoluteValue u\ge1\), continuity and \(\SincRad u\to0\) imply \(\sup_{\AbsoluteValue u\ge1}\AbsoluteValue{\SincRad u}<1\), proving \eqref{p11:eq:sinc-basic-envelope}.  Multiplication over \(n\) proves \eqref{p11:eq:Psi-envelope}.
-
-For derivatives, differentiate a finite partial product and use Leibniz's rule.  Each differentiation replaces at most one sinc factor by a bounded derivative and contributes a scale \(a_hr^n\).  The sum of scales is
+\emph{The scalar envelope.}  From the Euler product
+\(\SincRad u=\prod_{k\ge1}\bigl(1-u^2/(k\pi)^2\bigr)\) and
+\(\log(1-x)\le-x\),
 \[
- \sum_{n\ge0}a_hr^n=\frac{a_h}{1-r}=\BigO(h^{-1/2}).
+ \log\AbsoluteValue{\SincRad u}
+ \le-\sum_{k\ge1}\frac{u^2}{k^2\pi^2}=-\frac{u^2}{6},
+ \qquad\AbsoluteValue u<\pi,
 \]
-Removing finitely many factors only changes the exponent in \eqref{p11:eq:Psi-envelope} by a bounded amount.  Passing to the infinite product proves \eqref{p11:eq:Psi-derivative-envelope}.
+which gives \eqref{p11:eq:sinc-basic-envelope} with \(c=\tfrac16\) on
+\(\AbsoluteValue u\le1\).  For \(\AbsoluteValue u\ge1\) the function
+\(\SincRad\) decreases on \([1,\pi]\) and satisfies
+\(\AbsoluteValue{\SincRad u}\le\AbsoluteValue u^{-1}\le\pi^{-1}\) beyond, so
+\[
+ \sup_{\AbsoluteValue u\ge1}\AbsoluteValue{\SincRad u}
+ =\sin1=0.8414709\ldots<0.8464817\ldots=\EulerE^{-1/6},
+\]
+which is \eqref{p11:eq:sinc-basic-envelope} on \(\AbsoluteValue u\ge1\).
+Multiplying the factors of \eqref{p11:eq:Psi-product} proves
+\eqref{p11:eq:Psi-envelope}.
 
-If \(a_h\AbsoluteValue t\le1\), every term in \eqref{p11:eq:Sht} is quadratic, so \eqref{p11:eq:quadratic-sum} gives \eqref{p11:eq:S-gaussian}.  If \(\delta\le a_h\AbsoluteValue t\le1\), then \eqref{p11:eq:S-gaussian} and \(a_h^2=3(1-r^2)\asymp h\) give \(S_h(t)\ge c_\delta/h\).  If \(a_h\AbsoluteValue t>1\), choose the first index after which \(a_hr^n\AbsoluteValue t<1\).  The quadratic tail alone is bounded below by a constant multiple of \((1-r^2)^{-1}\asymp h^{-1}\).  This proves \eqref{p11:eq:S-outer}.
+\emph{Derivatives.}  Write \(\alpha_n=a_hr^n\) and
+\(\Psi_{h,N}(t)=\prod_{n<N}\SincRad(\alpha_nt)\).  By
+\cref{p0:prop:products} the partial products converge to \(\Psi_h\) locally
+uniformly on \(\ComplexNumbers\), and every \(\Psi_{h,N}\) is entire; by
+Weierstrass' theorem \(\partial_t^q\Psi_{h,N}\to\partial_t^q\Psi_h\) locally
+uniformly for every \(q\).  It therefore suffices to bound the partial
+products uniformly in \(N\), and no interchange beyond this needs to be
+assumed.  Since \(\SincRad u=\int_0^1\cos(us)\Differential s\),
+\begin{equation}\label{p11:eq:sinc-derivative-sup}
+ \Norm{\SincRad^{(m)}}_\infty\le\int_0^1s^m\Differential s=\frac1{m+1}\le1 .
+\end{equation}
+Applying the multinomial form of Leibniz's rule to a finite product --- which,
+unlike the informal count ``one factor per differentiation'', allows several
+derivatives to land on the same factor ---
+\[
+ \AbsoluteValue{\partial_t^q\Psi_{h,N}(t)}
+ \le\sum_{\substack{(m_n)_{n<N}\in\NaturalNumbers^{N}\\ \sum_nm_n=q}}
+   \frac{q!}{\prod_nm_n!}
+   \prod_{n:\,m_n\ge1}\alpha_n^{m_n}
+   \prod_{n:\,m_n=0}\AbsoluteValue{\SincRad(\alpha_nt)},
+\]
+where \eqref{p11:eq:sinc-derivative-sup} was used on each differentiated
+factor.  At most \(q\) indices carry \(m_n\ge1\), and each index contributes at
+most \(1\) to \(S_h\), so by \eqref{p11:eq:sinc-basic-envelope} the
+undifferentiated block is at most
+\(\EulerE^{cq}\EulerE^{-cS_h(t)}\).  What remains is the multinomial expansion
+of \(\bigl(\sum_{n<N}\alpha_n\bigr)^q\).  Letting \(N\to\infty\) and using
+\[
+ \sum_{n\ge0}a_hr^n=\frac{a_h}{1-r}
+ =\sqrt{\frac{3(1-r^2)}{(1-r)^2}}
+ =\sqrt{\frac{3(1+r)}{1-r}}=\sqrt{3\coth(h/2)}=A_h
+\]
+gives \eqref{p11:eq:Psi-derivative-envelope}; and since \(x\coth x\) increases,
+\(hA_h^2=3h\coth(h/2)\le3\coth(\tfrac12)=6.4918\ldots<\tfrac{13}2\) for
+\(0<h\le1\).
+
+\emph{Lower bounds for \(S_h\).}  If \(a_h\AbsoluteValue t\le1\), every term in
+\eqref{p11:eq:Sht} is quadratic, so \eqref{p11:eq:quadratic-sum} gives
+\eqref{p11:eq:S-gaussian}.  If
+\(\delta a_h^{-1}\le\AbsoluteValue t\le a_h^{-1}\), then by
+\eqref{p11:eq:S-gaussian}, \(a_h^2=3(1-r^2)\) and \(1-\EulerE^{-2h}\le2h\),
+\[
+ S_h(t)=3t^2\ge\frac{3\delta^2}{a_h^2}
+ =\frac{\delta^2}{1-\EulerE^{-2h}}\ge\frac{\delta^2}{2h}\ge\frac{c_\delta}{h}.
+\]
+If \(a_h\AbsoluteValue t>1\), let \(n_1\ge1\) be least with
+\(a_hr^{n_1}\AbsoluteValue t<1\); the indices \(n<n_1\) contribute exactly
+\(1\) each, so \(S_h(t)\ge n_1>h^{-1}\log(a_h\AbsoluteValue t)\), while
+\(a_hr^{n_1}\AbsoluteValue t\ge r\,a_hr^{n_1-1}\AbsoluteValue t\ge r\) makes
+the quadratic tail
+\[
+ \sum_{n\ge n_1}(a_hr^n t)^2
+ =\frac{(a_hr^{n_1}t)^2}{1-r^2}\ge\frac{r^2}{1-r^2}
+ =\frac1{\EulerE^{2h}-1}\ge\frac{\EulerE^{-2h}}{2h}
+ \qquad(\text{by }\EulerE^{x}-1\le x\EulerE^{x}).
+\]
+Adding the two blocks gives \eqref{p11:eq:S-power} for \(0<h\le1\).  It also
+gives \eqref{p11:eq:S-outer} on this range for \(0<h\le1\), because
+\(\EulerE^{-2h}/(2h)\ge\EulerE^{-2}/(2h)\ge c_\delta/h\); and for \(h>1\) one
+has \(S_h(t)\ge1\ge h^{-1}\ge c_\delta h^{-1}\) since \(c_\delta<1\).  Thus
+\eqref{p11:eq:S-outer} holds for every \(h>0\).
 \end{proof}
 
 \subsection{Low-frequency cumulant control}
@@ -21892,16 +22086,75 @@ where
  \AbsoluteValue{\partial_t^q\rho_{R,h}(t)}
  \le C_{R,q,\delta}h^{R+1}(1+\AbsoluteValue t)^{2R+4}.
 \end{equation}
+The identity and the bound hold verbatim for complex \(t\) with
+\(a_h\AbsoluteValue t\le\delta\), the logarithm being the principal branch;
+only holomorphy of \(\log\SincRad\) on \(\AbsoluteValue z<\pi\) is used.
 \end{lemma}
 
 \begin{proof}
-For \(\AbsoluteValue z\le\delta<\pi\), Taylor's theorem applied to \(\log\SincRad z\) gives a remainder bounded, together with any fixed number of derivatives, by a constant times \(\AbsoluteValue z^{2R+4}\).  Sum this over \(z_n=a_hr^nt\).  The omitted power sum is
+Since \(\SincRad z=\sinhc(\ImaginaryUnit z)\), \eqref{p11:eq:log-sinh} gives
+\(\log\SincRad z=\sum_{k\ge1}(-1)^kc_kz^{2k}\) on \(\AbsoluteValue z<\pi\),
+where the logarithm is holomorphic because \(\SincRad\) has no zero there.  Put
 \[
- \sum_{n\ge0}(a_hr^n)^{2R+4}
- =\frac{a_h^{2R+4}}{1-r^{2R+4}}
- =\BigO(h^{R+1}),
+ g_R(z)=\log\SincRad z-\sum_{k=1}^{R+1}(-1)^kc_kz^{2k},
 \]
-because \(a_h^2\asymp h\) and \(1-r^{2R+4}\asymp h\).  The retained coefficients are exactly the cumulants in \Cref{p11:prop:exact-cumulants}.  Differentiation only lowers powers of \(t\) and changes the constant.
+holomorphic on \(\AbsoluteValue z<\pi\) and vanishing to order \(2R+4\) at the
+origin, so \(g_R(z)=z^{2R+4}\tilde g_R(z)\) with \(\tilde g_R\) holomorphic
+there.  Fix \(\delta<\delta'<\pi\) and set
+\(M=\sup_{\AbsoluteValue z\le\delta'}\AbsoluteValue{\tilde g_R(z)}<\infty\).
+Cauchy's estimate on circles of radius \(\delta'-\delta\) gives
+\(\AbsoluteValue{\tilde g_R^{(i)}(z)}\le i!\,M(\delta'-\delta)^{-i}\) for
+\(\AbsoluteValue z\le\delta\); expanding \(\partial_z^q(z^{2R+4}\tilde g_R)\)
+by Leibniz's rule and using \(\AbsoluteValue z\le\delta\) to absorb the lower
+powers therefore yields the derivative-uniform remainder estimate
+\begin{equation}\label{p11:eq:gR-derivative}
+ \AbsoluteValue{g_R^{(q)}(z)}\le C_{R,q,\delta}\,
+ \AbsoluteValue z^{\max(0,\,2R+4-q)},
+ \qquad\AbsoluteValue z\le\delta,\ q\ge0 .
+\end{equation}
+This is the statement that ``differentiation lowers powers of \(t\)'', now
+proved rather than asserted.
+
+For \(a_h\AbsoluteValue t\le\delta\) all factors of \eqref{p11:eq:Psi-product}
+are zero free, so \(\log\Psi_h(t)=\sum_{n\ge0}\log\SincRad(a_hr^nt)\), the
+series converging locally uniformly (its \(n\)th term is
+\(\BigO((a_hr^n)^2t^2)\)) and hence differentiable term by term.  Splitting
+each summand into its polynomial part and \(g_R\) gives
+\eqref{p11:eq:logpsi-trunc} with
+\(\rho_{R,h}(t)=\sum_{n\ge0}g_R(a_hr^nt)\), because
+\[
+ (-1)^kc_k\,\frac{a_h^{2k}}{1-r^{2k}}\,t^{2k}
+ =\frac{B_{2k}}{2k}\,\frac{12^k}{(2k)!}\,
+   \frac{(1-r^2)^k}{1-r^{2k}}\,(\ImaginaryUnit t)^{2k}
+ =\frac{\lambda_{2k}(h)}{(2k)!}(\ImaginaryUnit t)^{2k}
+\]
+by \eqref{p11:eq:ck-dmk}, \(a_h^2=3(1-r^2)\) and
+\Cref{p11:prop:exact-cumulants}; the term \(k=1\) is \(-t^2/2\) since
+\(\lambda_2=1\).
+
+For the bound, \(\partial_t^q\rho_{R,h}(t)=\sum_n(a_hr^n)^qg_R^{(q)}(a_hr^nt)\).
+Because \(a_h^2=3(1-\EulerE^{-2h})\le6h\) and
+\(1-\EulerE^{-x}\ge x/2\) for \(0\le x\le1\),
+\begin{equation}\label{p11:eq:geometric-power-sum}
+ \sum_{n\ge0}(a_hr^n)^{2k}=\frac{a_h^{2k}}{1-r^{2k}}
+ \le\frac{(6h)^{k}}{kh}=\frac{6^{k}}{k}\,h^{k-1}
+ \qquad(2kh\le1).
+\end{equation}
+If \(q\le2R+4\), \eqref{p11:eq:gR-derivative} and
+\eqref{p11:eq:geometric-power-sum} at \(k=R+2\) give
+\[
+ \AbsoluteValue{\partial_t^q\rho_{R,h}(t)}
+ \le C_{R,q,\delta}\AbsoluteValue t^{2R+4-q}
+ \sum_{n\ge0}(a_hr^n)^{2R+4}
+ \le C_{R,q,\delta}\,\frac{6^{R+2}}{R+2}\,h^{R+1}
+ \AbsoluteValue t^{2R+4-q};
+\]
+if \(q>2R+4\), the same two displays give
+\(\AbsoluteValue{\partial_t^q\rho_{R,h}}\le C\sum_n(a_hr^n)^{q}
+ \le C'h^{q/2-1}\le C'h^{R+1}\) for \(h\le1\), since
+\(q/2-1\ge R+\tfrac32\).  Both cases are \eqref{p11:eq:rho-bound}.  Every step
+uses only \(\AbsoluteValue z\le\delta\) and holomorphy, so the argument is
+unchanged for complex \(t\) with \(a_h\AbsoluteValue t\le\delta\).
 \end{proof}
 
 \subsection{Proof of the Edgeworth theorem}
@@ -21915,7 +22168,8 @@ Let
 \end{equation}
 By \eqref{p11:eq:hermite-inversion}, its inverse Fourier transform is \(\phiN\mathcal E_{R,h}\).
 
-Choose a small \(\varepsilon>0\), depending on \(R,j,K\), and split the frequency axis into
+Fix \(\varepsilon=\dfrac1{8(R+2)}\), so that \(\varepsilon<\tfrac14\) and
+\(\varepsilon(2R+4)=\tfrac14<R+1\), and split the frequency axis into
 \[
  \mathcal Z_0=\{\AbsoluteValue t\le h^{-\varepsilon}\},\qquad
  \mathcal Z_1=\{h^{-\varepsilon}<\AbsoluteValue t\le\delta/a_h\},\qquad
@@ -21923,32 +22177,188 @@ Choose a small \(\varepsilon>0\), depending on \(R,j,K\), and split the frequenc
 \]
 where \(0<\delta<1\) is fixed.
 
-On \(\mathcal Z_0\), \Cref{p11:lem:cumulant-remainder} applies.  Each cumulant term with index \(m\) has formal parameter weight \(m-1\), because \(\lambda_{2m}(h)=\BigO(h^{m-1})\).  Expanding the exponential in \eqref{p11:eq:logpsi-trunc} and retaining all monomials of total weight at most \(R\) produces exactly \eqref{p11:eq:approx-transform}.  Every omitted monomial has weight at least \(R+1\).  If \(\varepsilon\) is small enough that \(h\AbsoluteValue t^4=o(1)\) on \(\mathcal Z_0\), Taylor's formula for the exponential and \eqref{p11:eq:rho-bound} yield, for every fixed derivative order \(q\),
+On \(\mathcal Z_0\) we work on the closed complex discs
+\(D_t=\SetOf{z:\AbsoluteValue{z-t}\le1}\), \(t\in\mathcal Z_0\).  Since
+\(a_h^2=3(1-\EulerE^{-2h})\le6h\), we have
+\(a_h(h^{-\varepsilon}+1)\le\sqrt{6h}\,(h^{-\varepsilon}+1)\to0\) because
+\(\varepsilon<\tfrac12\), so for small \(h\) every such disc lies in the
+window \(a_h\AbsoluteValue z\le\delta\) on which
+\Cref{p11:lem:cumulant-remainder} is valid.  There write
+\(\Psi_h=\EulerE^{-z^2/2}\EulerE^{u}\) with \(u=P_h+\rho_{R,h}\) and
+\(P_h(z)=\sum_{m=2}^{R+1}\lambda_{2m}(h)(\ImaginaryUnit z)^{2m}/(2m)!\), and
+\(A_{R,h}=\EulerE^{-z^2/2}\Sigma_{R,h}\) with \(\Sigma_{R,h}\) the sum in
+\eqref{p11:eq:approx-transform}; then
+\begin{equation}\label{p11:eq:Z0-split}
+ \EulerE^{z^2/2}\bigl(\Psi_h-A_{R,h}\bigr)(z)
+ =\bigl(\EulerE^{P_h}-\Sigma_{R,h}\bigr)
+ +\EulerE^{P_h}\bigl(\EulerE^{\rho_{R,h}}-1\bigr).
+\end{equation}
+
+The omitted monomials form an infinite family of unbounded degree in \(z\), so
+they must be summed, not merely counted.  Put
+\(\theta=h\,(1+\AbsoluteValue z^2)^2\) and
+\[
+ C^\ast_R=\max_{2\le m\le R+1}\ \sup_{0<h\le1}
+ \frac{\AbsoluteValue{\lambda_{2m}(h)}}{(2m)!\,h^{m-1}},
+\]
+which is finite because by \Cref{p11:prop:exact-cumulants} the function
+\(\sinh^mh/\sinh(mh)\) is continuous on \((0,1]\) with limit \(h^{m-1}/m\) at
+the origin.  Since \(\AbsoluteValue z^{2m}\le(1+\AbsoluteValue z^2)^{2m-2}\)
+for \(m\ge2\),
+\begin{equation}\label{p11:eq:beta-grading}
+ \beta_m\DefinitionEquals
+ \frac{\AbsoluteValue{\lambda_{2m}(h)}\,\AbsoluteValue z^{2m}}{(2m)!}
+ \le C^\ast_R\,\theta^{\,m-1},
+ \qquad 2\le m\le R+1 .
+\end{equation}
+In the expansion
+\(\EulerE^{P_h}=\sum_{\bm k\in\NaturalNumbers^R}\prod_mk_m!^{-1}
+ \bigl(\lambda_{2m}(\ImaginaryUnit z)^{2m}/(2m)!\bigr)^{k_m}\) the multi-index
+\(\bm k\) contributes at most \(\prod_m\beta_m^{k_m}/k_m!\le
+ (\max(1,C^\ast_R)\,\theta)^{w(\bm k)}\), because \(m-1\ge1\) forces
+\(\sum_mk_m\le w(\bm k)\); and at most \((W+1)^R\) multi-indices have
+\(w(\bm k)=W\).  Hence, once \(\max(1,C^\ast_R)\theta\le\tfrac12\),
+\begin{equation}\label{p11:eq:weight-tail}
+ \AbsoluteValue{\EulerE^{P_h}-\Sigma_{R,h}}
+ \le\sum_{W\ge R+1}(W+1)^R\bigl(\max(1,C^\ast_R)\theta\bigr)^{W}
+ \le C_R\,\theta^{R+1}
+ =C_R\,h^{R+1}(1+\AbsoluteValue z^2)^{2R+2}.
+\end{equation}
+On \(\mathcal Z_0\) and its discs, \(1+\AbsoluteValue z^2\le4h^{-2\varepsilon}\)
+for small \(h\), so \(\theta\le16h^{1-4\varepsilon}\to0\) and the hypothesis of
+\eqref{p11:eq:weight-tail} holds; the same estimate gives
+\(\AbsoluteValue{P_h}\le\sum_{m}\beta_m\le2C^\ast_R\theta\le1\), while
+\eqref{p11:eq:rho-bound} with \(q=0\) gives
+\(\AbsoluteValue{\rho_{R,h}}\le
+ C_Rh^{R+1-\varepsilon(2R+4)}=C_Rh^{R+3/4}\le1\).  Therefore the second term of
+\eqref{p11:eq:Z0-split} is at most
+\(\EulerE^{2}\AbsoluteValue{\rho_{R,h}}\le
+ C_Rh^{R+1}(1+\AbsoluteValue z)^{2R+4}\).  Finally
+\(\AbsoluteValue{\EulerE^{-z^2/2}}=\EulerE^{-\Re(z^2)/2}
+ \le\EulerE^{1/2}\EulerE^{\AbsoluteValue t}\EulerE^{-t^2/2}
+ \le\EulerE^{3/2}\EulerE^{-t^2/4}\) for \(\AbsoluteValue{z-t}\le1\), and
+\((1+\AbsoluteValue z)\le2+\AbsoluteValue t\), so
+\begin{equation}\label{p11:eq:Z0-sup}
+ \sup_{\AbsoluteValue{z-t}\le1}
+ \AbsoluteValue{(\Psi_h-A_{R,h})(z)}
+ \le C_Rh^{R+1}(1+\AbsoluteValue t)^{4R+4}\EulerE^{-t^2/4},
+ \qquad t\in\mathcal Z_0 .
+\end{equation}
+Both \(\Psi_h\) and \(A_{R,h}\) are entire, so Cauchy's estimate
+\(\AbsoluteValue{\partial_t^qg(t)}\le q!\sup_{\AbsoluteValue{z-t}=1}
+ \AbsoluteValue{g(z)}\) upgrades \eqref{p11:eq:Z0-sup} to every frequency
+derivative at once, with no Fa\`a di Bruno bookkeeping:
 \begin{equation}\label{p11:eq:central-transform-error}
  \AbsoluteValue{\partial_t^q(\Psi_h-A_{R,h})(t)}
  \le C h^{R+1}(1+\AbsoluteValue t)^M\EulerE^{-t^2/4}
  \qquad(t\in\mathcal Z_0),
 \end{equation}
-for some \(M=M(R,q)\).  The right side is integrable with norm \(\BigO(h^{R+1})\).
+with \(M=4R+4\) and \(C=C(R,q)\).  The right side is integrable with norm
+\(\BigO(h^{R+1})\).
 
-On \(\mathcal Z_1\), \eqref{p11:eq:S-gaussian} and \eqref{p11:eq:Psi-derivative-envelope} give Gaussian decay \(\EulerE^{-ct^2}\).  The approximant \(A_{R,h}\) is a fixed-degree polynomial times \(\EulerE^{-t^2/2}\).  Therefore every differentiated \(L^1\) norm on \(\mathcal Z_1\) is
+On \(\mathcal Z_1\) one has \(a_h\AbsoluteValue t\le\delta<1\), so
+\eqref{p11:eq:S-gaussian} gives \(S_h(t)=3t^2\) and
+\eqref{p11:eq:Psi-derivative-envelope} gives
+\(\AbsoluteValue{\partial_t^q\Psi_h(t)}\le(\EulerE^{c}A_h)^q\EulerE^{-t^2/2}\)
+with \(c=\tfrac16\).  The approximant \(A_{R,h}\) is \(\EulerE^{-t^2/2}\) times
+a polynomial of degree at most \(4R\) whose coefficients are bounded uniformly
+for \(0<h\le1\).  Hence for all \(j,q\ge0\)
 \[
- \BigO\!\left(\EulerE^{-c h^{-2\varepsilon}}\right)=\BigO(h^N)
+ \int_{\mathcal Z_1}(1+\AbsoluteValue t)^{j}
+ \AbsoluteValue{\partial_t^q(\Psi_h-A_{R,h})}\Differential t
+ \le C_{j,q,R}\,h^{-q/2}
+ \int_{\AbsoluteValue t>h^{-\varepsilon}}
+ (1+\AbsoluteValue t)^{j+4R}\EulerE^{-t^2/2}\Differential t
+ =\BigO\bigl(\EulerE^{-h^{-2\varepsilon}/4}\bigr),
 \]
-for every \(N\).
+which is \(\BigO(h^N)\) for every \(N\).
 
-On \(\mathcal Z_2\), \eqref{p11:eq:S-outer} gives an \(\EulerE^{-c/h}\) factor.  For very large \(t\), the number of sinc factors with argument at least one grows like \(h^{-1}\log(a_h\AbsoluteValue t)\), so \eqref{p11:eq:Psi-envelope} can be sharpened to an integrable bound
-\[
+On \(\mathcal Z_2\) the estimate must be made, not merely indicated; split it
+at \(a_h\AbsoluteValue t=1\).  For
+\(\delta a_h^{-1}<\AbsoluteValue t\le a_h^{-1}\), \eqref{p11:eq:S-outer} gives
+\(S_h\ge c_\delta h^{-1}\), the zone has length at most \(2a_h^{-1}\), and
+\((1+\AbsoluteValue t)^{j}\le(1+a_h^{-1})^{j}\); since \(a_h^{-1}\le(3h)^{-1/2}\)
+for \(h\le1\), the corresponding integral of
+\((1+\AbsoluteValue t)^{j}\AbsoluteValue{\partial_t^q\Psi_h}\) is at most
+\(C_{j,q}h^{-(j+q+1)/2}\EulerE^{-cc_\delta/h}\).
+
+For \(\AbsoluteValue t>a_h^{-1}\) put \(T=a_h\AbsoluteValue t\ge1\).  Then
+\eqref{p11:eq:S-power} and \eqref{p11:eq:Psi-derivative-envelope} give the
+explicit outer decay
+\begin{equation}\label{p11:eq:outer-power-decay}
  \AbsoluteValue{\partial_t^q\Psi_h(t)}
- \le C_{q,N}\EulerE^{-c/h}(1+\AbsoluteValue t)^{-N}
+ \le\bigl(\EulerE^{c}A_h\bigr)^{q}\,
+   \EulerE^{-c\EulerE^{-2}/(2h)}\,T^{-c/h},
+ \qquad c=\tfrac16,
+\end{equation}
+a power of \(T\) whose exponent \(c/h\) diverges: this is the precise form of
+``the number of sinc factors with argument at least one grows like
+\(h^{-1}\log(a_h\AbsoluteValue t)\)''.  Using \(1+\AbsoluteValue t\le2T/a_h\)
+there (legitimate since \(\AbsoluteValue t\ge a_h^{-1}\ge1\) for \(h\le\tfrac16\))
+and substituting \(t=T/a_h\),
+\[
+ \int_{\AbsoluteValue t>a_h^{-1}}(1+\AbsoluteValue t)^{j}
+ \AbsoluteValue{\partial_t^q\Psi_h}\Differential t
+ \le\frac{2^{j+1}\bigl(\EulerE^{c}A_h\bigr)^{q}}{a_h^{\,j+1}}
+ \EulerE^{-c\EulerE^{-2}/(2h)}\int_1^\infty T^{\,j-c/h}\Differential T
+ \le\frac{2^{j+2}\bigl(\EulerE^{c}A_h\bigr)^{q}}{a_h^{\,j+1}}
+ \EulerE^{-c\EulerE^{-2}/(2h)}
 \]
-for any prescribed \(N\), once \(h\) is small.  The Gaussian approximant has the same superpolynomial smallness on \(\mathcal Z_2\).  Hence, for every fixed \(q\),
+as soon as \(c/h\ge j+2\), that is \(h\le\frac1{6(j+2)}\).  The prefactor is
+\(\BigO(h^{-(j+q+1)/2})\) and is absorbed by
+\(\EulerE^{-\EulerE^{-2}/(12h)}\).  The approximant \(A_{R,h}\) carries the
+factor \(\EulerE^{-t^2/2}\) with \(\AbsoluteValue t>a_h^{-1}\ge(6h)^{-1/2}\)
+and is smaller still.  The quantifiers now match the statement of the theorem:
+\(R\), \(j\) and \(K\) are fixed first, only derivative orders \(q\le K\) are
+needed, and \(h_0\) is then constrained by
+\(h_0\le\min\bigl(\tfrac16,\tfrac1{6(j+2)}\bigr)\) together with the finitely
+many smallness conditions used on \(\mathcal Z_0\); no bound is required for an
+unquantified \(N\).
+
+Collecting the three zones and applying Leibniz's rule --- which writes
+\(\partial_t^q[(\ImaginaryUnit t)^{j}g]\) as a combination of
+\(t^{\,j-i}\partial_t^{\,q-i}g\) with \(0\le i\le\min(j,q)\) --- we obtain, for
+every fixed \(q\) and \(j\),
 \begin{equation}\label{p11:eq:fourier-derivative-L1}
  \Norm{\partial_t^q\bigl[(\ImaginaryUnit t)^j(\Psi_h-A_{R,h})\bigr]}_{L^1(\RealNumbers)}
  \le C_{R,j,q}h^{R+1}.
 \end{equation}
 
-Fourier inversion gives the case \(K=0\).  Multiplication by \(x^K\) in physical space corresponds, after integration by parts, to \(K\) derivatives in frequency.  Applying \eqref{p11:eq:fourier-derivative-L1} for all \(q\le K\) proves \eqref{p11:eq:edgeworth-main}.
+It remains to convert \eqref{p11:eq:fourier-derivative-L1} into the seminorm
+bound; since the Schwartz-topology claim rests entirely on this step, it is
+written out.  Let \(g=f_h-\phiN\mathcal E_{R,h}\), so that
+\(\FourierAngular{g}(-t)=\Psi_h-A_{R,h}=:G(t)\) by
+\eqref{p11:eq:hermite-inversion}, and \(G\) together with all its derivatives
+is integrable by the three zone estimates.  By
+\eqref{p11:eq:fourier-convention},
+\(g^{(j)}(x)=\frac1{2\pi}\int(-\ImaginaryUnit t)^{j}
+ \EulerE^{-\ImaginaryUnit tx}G(t)\Differential t\).  From
+\(x\EulerE^{-\ImaginaryUnit tx}
+ =\ImaginaryUnit\,\partial_t\EulerE^{-\ImaginaryUnit tx}\), \(K\) integrations
+by parts --- with no boundary contribution, because
+\(\partial_t^{i}[(\ImaginaryUnit t)^{j}G(t)]\to0\) as
+\(\AbsoluteValue t\to\infty\) for \(i\le K\) --- give
+\begin{equation}\label{p11:eq:weighted-inversion}
+ x^{K}g^{(j)}(x)
+ =\frac{(-\ImaginaryUnit)^{K}}{2\pi}\int_{\RealNumbers}
+   \EulerE^{-\ImaginaryUnit tx}\,
+   \partial_t^{K}\bigl[(-\ImaginaryUnit t)^{j}G(t)\bigr]\Differential t,
+ \qquad
+ \sup_{x}\AbsoluteValue{x^{K}g^{(j)}(x)}
+ \le\frac1{2\pi}\Norm{\partial_t^{K}
+   \bigl[(\ImaginaryUnit t)^{j}G\bigr]}_{L^1}.
+\end{equation}
+The case \(K=0\) is plain Fourier inversion.  Since
+\((1+\AbsoluteValue x)^{K}\le2^{K}(1+\AbsoluteValue x^{K})\),
+\[
+ \Norm{g}_{j,K}
+ \le\frac{2^{K}}{2\pi}\left(
+   \Norm{(\ImaginaryUnit t)^{j}G}_{L^1}
+   +\Norm{\partial_t^{K}\bigl[(\ImaginaryUnit t)^{j}G\bigr]}_{L^1}\right)
+ \le C_{R,j,K}h^{R+1}
+\]
+by \eqref{p11:eq:fourier-derivative-L1} with \(q=0\) and \(q=K\).  This is
+\eqref{p11:eq:edgeworth-main}.
 \end{proof}
 
 \subsection{First explicit orders}
@@ -21986,8 +22396,51 @@ Let \(F_h(x)=\Probability(Z_h\le x)\).  For every \(R\ge0\), uniformly in \(x\in
  \left(\frac{\lambda_{2m}(h)}{(2m)!}\right)^{k_m}
  +\BigO(h^{R+1}).
 \end{equation}
-The error remains \(\BigO(h^{R+1})\) after multiplication by any fixed polynomial weight.
+Moreover, for every fixed \(K\ge0\) the error term
+\(\mathcal R_{R,h}(x)\) in \eqref{p11:eq:cdf-general} obeys the weighted bound
+\begin{equation}\label{p11:eq:cdf-weighted-error}
+ \sup_{x\in\RealNumbers}
+ (1+\AbsoluteValue x)^{K}\AbsoluteValue{\mathcal R_{R,h}(x)}
+ \le C_{R,K}h^{R+1}.
+\end{equation}
 \end{corollary}
+
+\begin{proof}
+Let \(D_{R,h}\) be the right-hand side of \eqref{p11:eq:cdf-general} without
+the error term, and \(\mathcal R_{R,h}=F_h-D_{R,h}\).  Since the zero
+multi-index contributes \(H_0=1\) to \eqref{p11:eq:edgeworth-polynomial},
+\eqref{p11:eq:integrate-hermite} gives
+\(D_{R,h}(x)=\int_{-\infty}^{x}\phiN\mathcal E_{R,h}\), whence
+\(\mathcal R_{R,h}(x)=\int_{-\infty}^{x}(f_h-\phiN\mathcal E_{R,h})\).
+
+The weighted claim does \emph{not} follow from
+\eqref{p11:eq:edgeworth-main} alone: integrating a density error of size
+\(h^{R+1}(1+\AbsoluteValue x)^{-K-1}\) from \(-\infty\) leaves, for a generic
+integrand, a constant that no polynomial weight can beat.  What makes it true
+here is the exact cancellation of total mass,
+\begin{equation}\label{p11:eq:mass-cancellation}
+ \int_{\RealNumbers}\bigl(f_h-\phiN\mathcal E_{R,h}\bigr)\Differential x=0,
+\end{equation}
+which holds because \(\int f_h=1\), \(\int\phiN=1\), and \(\int H_n\phiN=0\)
+for every \(n\ge1\), so that only the zero multi-index of
+\eqref{p11:eq:edgeworth-polynomial} survives integration.
+
+Granted \eqref{p11:eq:mass-cancellation}, integrate from the near side of the
+axis.  For \(x\ge0\),
+\(\mathcal R_{R,h}(x)=-\int_x^{\infty}(f_h-\phiN\mathcal E_{R,h})\), so by
+\Cref{p11:thm:edgeworth-schwartz} with \(j=0\) and weight \(K+1\),
+\[
+ \AbsoluteValue{\mathcal R_{R,h}(x)}
+ \le\Norm{f_h-\phiN\mathcal E_{R,h}}_{0,K+1}
+   \int_x^{\infty}\frac{\Differential u}{(1+u)^{K+1}}
+ =\frac{\Norm{f_h-\phiN\mathcal E_{R,h}}_{0,K+1}}{K\,(1+x)^{K}}
+\]
+for \(K\ge1\), and symmetrically for \(x\le0\) from
+\(\mathcal R_{R,h}(x)=\int_{-\infty}^{x}(f_h-\phiN\mathcal E_{R,h})\).  For
+\(K=0\) the same two formulas give the unweighted statement
+\eqref{p11:eq:cdf-general}.  This proves
+\eqref{p11:eq:cdf-weighted-error}.
+\end{proof}
 
 Through second order,
 \begin{equation}\label{p11:eq:cdf-second-order}
@@ -22016,9 +22469,60 @@ All higher \(q_n\) follow recursively by coefficient extraction from \eqref{p11:
 \end{theorem}
 
 \begin{proof}
-On the compact interval \(u\in[\eta,1-\eta]\), the normal quantile \(z\) stays in a fixed compact set and \(\phiN(z)\) is bounded away from zero.  The uniform CDF expansion and the implicit function theorem therefore produce a uniform asymptotic power series in \(h\).
+\emph{A window with a uniform lower bound on the density.}  Let
+\(z_\eta=\PhiN^{-1}(1-\eta)\) and \(I_\eta=[-z_\eta-1,\,z_\eta+1]\); for
+\(u\in[\eta,1-\eta]\) the normal quantile \(z=\PhiN^{-1}(u)\) lies in
+\([-z_\eta,z_\eta]\).  Put \(2c_\eta=\phiN(z_\eta+1)>0\).  By
+\Cref{p11:thm:edgeworth-schwartz} with \(R=j=K=0\) (where
+\(\mathcal E_{0,h}\equiv1\)) we have \(\Norm{f_h-\phiN}_\infty\le C_0h\), so
+\(f_h\ge c_\eta\) on \(I_\eta\) once \(h\le h_1(\eta)\).  Hence \(F_h\) is
+strictly increasing on \(I_\eta\) with \(F_h'\ge c_\eta\), and \(Q_h\) is well
+defined and smooth on \(F_h(I_\eta)\supseteq[\eta,1-\eta]\).  This much is the
+implicit function theorem; by itself it produces no expansion, and in
+particular no uniform remainder.  The next two steps supply both.
 
-For an explicit recursion, write
+\emph{An approximate inverse.}  By \Cref{p11:cor:cdf-edgeworth} together with
+the re-expansion of \Cref{p11:prop:h-power-series}, applied to the
+\(h\)-dependent coefficients in \eqref{p11:eq:cdf-general}, there are
+polynomials \(A_1,A_2,\ldots\) with
+\begin{equation}\label{p11:eq:cdf-graded}
+ \sup_{x\in\RealNumbers}
+ \left\lvert F_h(x)-\PhiN(x)-\phiN(x)\sum_{n=1}^{N}h^nA_n(x)\right\rvert
+ \le C_Nh^{N+1}
+\end{equation}
+for every \(N\).  Let \(q_1,\ldots,q_N\) be given by
+\eqref{p11:eq:quantile-recursion} below and set
+\(\widetilde Q_N(h,z)=z+\sum_{n=1}^{N}h^nq_n(z)\).  The functions
+\(\PhiN,\phiN,A_n,q_n\) are smooth, so on the compact set \(I_\eta\) they and
+their derivatives through order \(N+1\) are bounded by some
+\(B=B(N,\eta)\).  Since \(\widetilde Q_N(h,z)-z=\BigO(h)\) uniformly for
+\(z\in[-z_\eta,z_\eta]\), the increment stays in \(I_\eta\) for small \(h\) and
+Taylor expansion of \(\PhiN\) and of \(\phiN A_n\) about \(z\) in that
+increment, truncated after order \(N\), is legitimate with remainder
+\(\BigOAt{h^{N+1}}{N,\eta}\).  Recursion
+\eqref{p11:eq:quantile-recursion} says precisely that the coefficients of
+\(h^1,\ldots,h^N\) in the resulting expansion of
+\(F_h(\widetilde Q_N(h,z))-\PhiN(z)\) all vanish.  Therefore
+\begin{equation}\label{p11:eq:approx-inverse}
+ \sup_{u\in[\eta,1-\eta]}
+ \AbsoluteValue{F_h\bigl(\widetilde Q_N(h,z)\bigr)-u}
+ \le C_{N,\eta}\,h^{N+1}.
+\end{equation}
+
+\emph{Transfer to the exact quantile.}  For small \(h\) both
+\(\widetilde Q_N(h,z)\) and \(Q_h(u)\) lie in \(I_\eta\), where
+\(F_h'\ge c_\eta\).  The mean value theorem and \(F_h(Q_h(u))=u\) give
+\[
+ \AbsoluteValue{Q_h(u)-\widetilde Q_N(h,z)}
+ \le\frac1{c_\eta}
+   \AbsoluteValue{F_h\bigl(\widetilde Q_N(h,z)\bigr)-F_h\bigl(Q_h(u)\bigr)}
+ \le\frac{C_{N,\eta}}{c_\eta}\,h^{N+1},
+\]
+uniformly in \(u\in[\eta,1-\eta]\); the remainder order survives because the
+lower bound \(F_h'\ge c_\eta\) is uniform on the window.  Taking \(N=R\) proves
+\eqref{p11:eq:quantile-general}.
+
+For the explicit recursion, write
 \[
  F_h(x)=\PhiN(x)+\phiN(x)\sum_{n\ge1}h^nA_n(x),
  \qquad
@@ -22064,17 +22568,45 @@ Equivalently, for each Borel set \(A\), the usual LDP upper and lower bounds hol
 \end{theorem}
 
 \begin{proof}
-For fixed \(t\), the scaled log moment generating function is
+Avoid the cumulant series, whose radius of convergence would itself have to be
+controlled, and use the exact product form instead.  By
+\eqref{p11:eq:centered-X} and \cref{p0:prop:dictionary}\,(ii), the coefficient
+of \(V_n\) in \(Z_h\) is \(2a_hr^n\), so with
+\(\ell(a)=\log(\sinh a/a)\) as in \eqref{p11:eq:ell-J} below,
 \[
  \frac1{b_h^2}\log\Expectation\EulerE^{tb_hZ_h}
- =\frac{t^2}{2}
- +\frac1{b_h^2}\sum_{m\ge2}\frac{\lambda_{2m}(h)}{(2m)!}(tb_h)^{2m}.
+ =\frac1{b_h^2}\sum_{n\ge0}\ell\bigl(a_hr^n\,tb_h\bigr).
 \]
-By \Cref{p11:prop:exact-cumulants}, \(\lambda_{2m}(h)=\BigO(h^{m-1})\), so the \(m\)-th correction is
+The Euler product \(\sinh z/z=\prod_{k\ge1}(1+z^2/(k\pi)^2)\) together with
+\(0\le x-\log(1+x)\le x^2/2\) for \(x\ge0\) gives a two-sided estimate valid
+for \emph{all} real \(z\), with no smallness restriction:
+\begin{equation}\label{p11:eq:ell-quartic}
+ 0\le\frac{z^2}{6}-\ell(z)
+ \le\frac{z^4}{2}\sum_{k\ge1}\frac1{(k\pi)^4}
+ =\frac{z^4}{2}\cdot\frac{\zeta(4)}{\pi^4}
+ =\frac{z^4}{180},
+ \qquad z\in\RealNumbers .
+\end{equation}
+Summing \eqref{p11:eq:ell-quartic} over \(n\), using
+\(\sum_n(a_hr^n)^2=3\) from \eqref{p11:eq:quadratic-sum} and
 \[
- \BigO\bigl((hb_h^2)^{m-1}\bigr).
+ \sum_{n\ge0}(a_hr^n)^4=\frac{a_h^4}{1-r^4}
+ =\frac{9(1-r^2)}{1+r^2}\le18h ,
 \]
-The series is locally uniformly controlled because the largest individual moment-generating-function argument is \(\BigO(\sqrt h\,b_h)\to0\).  Hence the scaled log MGF converges locally uniformly to \(t^2/2\).  The G\"artner--Ellis theorem \cite{bib:dembo1998} gives the LDP with Legendre transform \(x^2/2\).
+we obtain the explicit, locally uniform estimate
+\begin{equation}\label{p11:eq:md-uniform}
+ \left\lvert\frac1{b_h^2}\log\Expectation\EulerE^{tb_hZ_h}
+ -\frac{t^2}{2}\right\rvert
+ \le\frac{t^4}{10}\,hb_h^2
+ \qquad(t\in\RealNumbers),
+\end{equation}
+whose right side tends to \(0\) uniformly on compact \(t\)-sets exactly under
+the hypothesis \(hb_h^2\to0\).  The limit \(t\mapsto t^2/2\) is finite and
+differentiable on all of \(\RealNumbers\), hence lower semicontinuous and
+essentially smooth (its essential domain has empty boundary), so the
+G\"artner--Ellis theorem \cite{bib:dembo1998} applies in its full form and
+gives the LDP at speed \(b_h^2\) with the good rate function
+\(\sup_t\{tx-t^2/2\}=x^2/2\).
 \end{proof}
 
 \subsection{The compact scale}
@@ -22110,27 +22642,86 @@ The function \(\Lambda\) is even, real analytic, and strictly convex.  Its deriv
 \end{theorem}
 
 \begin{proof}
-The centered summands in \(Z_h\) have standardized coefficients \(\sqrt{12(1-r^2)}r^n\).  Therefore
-\begin{align*}
- h\log\Expectation\exp\left(\frac{sY_h}{h}\right)
- &=h\log\Expectation\exp\left(\frac{sZ_h}{\sqrt h}\right)\\
- &=h\sum_{n\ge0}\ell\!\left(b_hs\EulerE^{-nh}\right),
+\emph{The limiting generator, by a two-sided Riemann bracket.}  The
+coefficient of \(V_n\) in \(Z_h\) is \(2a_hr^n\), so
+\(\log\Expectation\EulerE^{\theta Z_h}=\sum_{n\ge0}\ell(a_hr^n\theta)\); at
+\(\theta=s/\sqrt h\),
+\begin{equation}\label{p11:eq:ldp-riemann}
+ \Lambda_h(s)\DefinitionEquals
+ h\log\Expectation\exp\!\left(\frac{sY_h}{h}\right)
+ =h\sum_{n\ge0}\ell\bigl(\beta_hs\EulerE^{-nh}\bigr),
  \qquad
- b_h=\sqrt{\frac{3(1-\EulerE^{-2h})}{h}}\longrightarrow\sqrt6.
-\end{align*}
-The summand is continuous, nonnegative for real arguments, quadratic near zero, and decays exponentially as a function of \(nh\) after the argument becomes small.  Dominated Riemann-sum convergence gives
+ \beta_h=\frac{a_h}{\sqrt h}
+ =\sqrt{\frac{3(1-\EulerE^{-2h})}{h}}\longrightarrow\sqrt6 .
+\end{equation}
+(The scale is written \(\beta_h\), not \(b_h\), to keep it distinct from the
+moderate-deviation scale of \Cref{p11:thm:moderate-deviations}.)  Fix
+\(s>0\).  Because \(\ell\) is even, nonnegative, and increasing on
+\([0,\infty)\), the function
+\(\varphi_h(x)=\ell(\beta_hs\EulerE^{-x})\) is nonnegative and
+\emph{decreasing} on \([0,\infty)\); for such a function the Riemann sum
+brackets the integral,
 \[
- h\sum_{n\ge0}\ell(b_hs\EulerE^{-nh})
- \longrightarrow\int_0^\infty\ell(\sqrt6\,s\EulerE^{-x})\,\Differential x.
+ \int_0^{\infty}\varphi_h
+ \le h\sum_{n\ge0}\varphi_h(nh)
+ \le\int_0^{\infty}\varphi_h+h\,\varphi_h(0),
 \]
-The substitution \(u=\EulerE^{-x}\) gives \eqref{p11:eq:Lambda-integral}; the substitution \(v=\sqrt6\,su\) gives \eqref{p11:eq:Lambda-J}.
+so no domination argument and no fixed majorant are needed even though
+\(\beta_h\) moves with \(h\).  Substituting \(u=\EulerE^{-x}\) turns
+\(\int_0^\infty\varphi_h\) into
+\(\int_0^1\ell(\beta_hsu)\Differential u/u=J(\beta_hs)\), giving
+\begin{equation}\label{p11:eq:ldp-bracket}
+ J(\beta_hs)\le\Lambda_h(s)\le J(\beta_hs)+h\,\ell(\beta_hs).
+\end{equation}
+Both \(J\) and \(\ell\) are continuous, \(\beta_h\to\sqrt6\), and
+\(h\,\ell(\beta_hs)\to0\) for each fixed \(s\); hence
+\(\Lambda_h(s)\to J(\sqrt6\,s)=\Lambda(s)\), which is
+\eqref{p11:eq:Lambda-integral} after \(u=\EulerE^{-x}\) and
+\eqref{p11:eq:Lambda-J} after \(v=\sqrt6\,su\).  The case \(s<0\) follows from
+evenness of \(\ell\), and \(s=0\) is trivial.  This verifies the hypothesis of
+the G\"artner--Ellis theorem for every \(s\in\RealNumbers\).
 
-Each finite-\(h\) log MGF is convex, and strict convexity of the limit follows either by differentiating under the integral or by observing that \(\ell\) is the log MGF of a nondegenerate centered uniform variable.  Since \(\ell(a)=a-\log(2a)+o(1)\) as \(a\to+\infty\),
+\emph{Regularity of \(\Lambda\), without differentiating under an integral.}
+The function \(v\mapsto\ell(v)/v\), set to \(0\) at \(v=0\), is real analytic
+on \(\RealNumbers\): \(\sinh v/v\) is entire and strictly positive on
+\(\RealNumbers\), so \(\ell\) is real analytic and vanishes to second order at
+the origin.  Hence its primitive \(J\), and therefore
+\(\Lambda=J(\sqrt6\,\cdot)\), are real analytic on all of \(\RealNumbers\);
+evenness of \(\Lambda\) follows from that of \(J\).  For strict convexity,
+\(\Lambda''(s)=6J''(\sqrt6\,s)\) and
+\(J'(a)=\ell(a)/a=\bigl(\ell(a)-\ell(0)\bigr)/(a-0)\) is the difference
+quotient of \(\ell\) based at the origin.  Now \(\ell\) is the logarithmic
+moment generating function of \(2V\) with \(V\) uniform on
+\([-\tfrac12,\tfrac12]\), a nondegenerate variable, so \(\ell\) is strictly
+convex; a difference quotient of a strictly convex function from a fixed base
+point is strictly increasing, so \(J''>0\) and \(\Lambda''>0\).
+
+\emph{Derivative range, essential smoothness, and the support of \(I\).}  From
+\(\ell(a)=a-\log(2a)+\log(1-\EulerE^{-2a})\) one gets \(\ell(a)/a\to1\) as
+\(a\to+\infty\), so \(\Lambda'(s)=\sqrt6\,\ell(\sqrt6\,s)/(\sqrt6\,s)\)
+increases strictly from \(-\sqrt6\) to \(\sqrt6\) and
+\(\Lambda'(\RealNumbers)=(-\sqrt6,\sqrt6)\) exactly.  Since \(\Lambda\) is
+finite and differentiable on all of \(\RealNumbers\), its essential domain is
+\(\RealNumbers\) and has empty boundary; \(\Lambda\) is therefore lower
+semicontinuous and essentially smooth, and the steepness condition is vacuous.
+Consequently the G\"artner--Ellis theorem \cite{bib:dembo1998} yields the
+\emph{full} large-deviation principle, lower bound included, with the good
+convex rate function \eqref{p11:eq:rate-legendre}; \(I\) is good because
+\(\Lambda\) is finite everywhere, and in any case
+\(\AbsoluteValue{Y_h}\le\sqrt h\,A_h=\sqrt{3h\coth(h/2)}\le\sqrt{13/2}\) for
+\(0<h\le1\), so the family is exponentially tight.  Finally \(I\) is finite
+exactly on the derivative range: for \(\AbsoluteValue y<\sqrt6\) the saddle
+equation \(\Lambda'(s)=y\) is solvable and \(I(y)\) is the finite value there,
+while at \(y=\sqrt6\), writing \(a=\sqrt6\,s\),
 \[
- \Lambda'(s)=\sqrt6\frac{\ell(\sqrt6s)}{\sqrt6s}\to\sqrt6
- \quad(s\to+\infty),
+ \sqrt6\,s-\Lambda(s)=a-J(a)
+ =\int_0^{a}\left(1-\frac{\ell(v)}{v}\right)\Differential v
+ \ge\int_1^{a}\frac{\log(2v)}{v}\Differential v
+ \longrightarrow\infty
 \]
-and similarly the limit is \(-\sqrt6\) at \(-\infty\).  Thus the derivative range is exactly \((-\sqrt6,\sqrt6)\).  The G\"artner--Ellis theorem \cite{bib:dembo1998} applies; exponential tightness is automatic from the uniformly bounded supports of \(Y_h\).  The Legendre transform is finite only on the derivative range and diverges at and beyond the limiting endpoints, giving \eqref{p11:eq:rate-support}.
+because \(1-\ell(v)/v=\bigl(\log(2v)-\log(1-\EulerE^{-2v})\bigr)/v\ge\log(2v)/v\)
+for \(v\ge1\); a fortiori \(I(y)=\infty\) for \(y>\sqrt6\).  This is
+\eqref{p11:eq:rate-support}.
 \end{proof}
 
 \subsection{Exact saddle parametrization}
@@ -22302,13 +22893,23 @@ For log-convex \(M\), the Denjoy--Carleman criterion in this convention \cite{bi
 A Gevrey class of finite order \(s\) corresponds, up to exponential factors, to \(M_n=(n!)^s\).
 
 \subsection{The Rvachev function}
-The exact norm identity already established in the repository \cite{bib:repo2026j,bib:repo2026m} is
+The exact norm identity is not imported here as an axiom: in this volume it is
+\Cref{p6:thm:exact-derivative-norm} specialized to \(a=2\), where
+\(h_2=\RvachevUp\).  Combining
+\eqref{p6:eq:exact-derivative-norm-closed} and
+\eqref{p6:eq:exact-derivative-L1} at \(a=2\), and using
+\(\Norm{h_2}_\infty=1\), gives
 \begin{equation}\label{p11:eq:up-exact-norm}
  \Norm{\RvachevUp^{(n)}}_\infty
  =\Norm{\RvachevUp^{(n)}}_1
  =2^{n(n+1)/2}.
 \end{equation}
-Its finite signed derivative decomposition is indexed by the signed Thue--Morse sequence \cite{bib:allouche1999,bib:repo2026m}.  Thus automatic-sequence cancellation and support tiling produce an exact global smoothness scale.
+Its finite signed derivative decomposition is
+\eqref{p6:eq:ha-derivative-hierarchy}, indexed by the signed Thue--Morse
+sequence \cite{bib:allouche1999}.  Thus automatic-sequence cancellation and
+support tiling produce an exact global smoothness scale, and the two theorems
+of this section are \statusproved{} within the volume rather than
+\statusexisting.
 
 \begin{theorem}[Sharp Denjoy--Carleman class of \(\RvachevUp\)]\label{p11:thm:carleman-up}
 Let
@@ -22337,7 +22938,11 @@ The logarithm of the left side is \((\log2)n^2/2+\BigO(n)\), whereas the right s
 \[
  M_n^{\RvachevUp}/M_{n-1}^{\RvachevUp}=2^n,
 \]
-so \eqref{p11:eq:up-carleman-sum} and the Denjoy--Carleman criterion prove nonquasianalyticity.
+which is increasing in \(n\); together with \(M_0^{\RvachevUp}=1\) this is the
+log-convexity hypothesis under which \eqref{p11:eq:carleman-criterion} was
+stated, and which must be verified before the criterion is used.  The sum
+\eqref{p11:eq:up-carleman-sum} is then finite, so the Denjoy--Carleman
+criterion proves nonquasianalyticity.
 \end{proof}
 
 \begin{definition}[Quadratic \(q\)-Gevrey scale]
@@ -22350,7 +22955,7 @@ is called \emph{quadratic \(q\)-Gevrey}.  This terminology is descriptive and is
 For \(\RvachevUp\), \(q=1/2\).  The name records the same quadratic exponent that appears in \(q\)-Pochhammer products, Stieltjes--Wigert moments, and log-Gaussian Fourier envelopes.
 
 \subsection{Separated-base atomic functions}
-For the general atomic functions \(h_a\), \(a\ge2\), the repository proves \cite{bib:repo2026m}
+For the general atomic functions \(h_a\), \(a\ge2\), \Cref{p6:thm:exact-derivative-norm} proves
 \begin{equation}\label{p11:eq:ha-exact-norm}
  \Norm{h_a^{(n)}}_\infty
  =\frac{a^{n(n+3)/2+1}}{2^{n+1}},
@@ -22372,7 +22977,19 @@ Its quadratic \(q\)-Gevrey parameter is \(q=a^{-1}\).
 \end{theorem}
 
 \begin{proof}
-Equation \eqref{p11:eq:ha-exact-norm} is \((a/2)M_n^{(a)}\), proving membership and optimality.  Quadratic growth again excludes every finite Gevrey order.  A direct calculation gives \(M_n^{(a)}/M_{n-1}^{(a)}=a^{n+1}/2\), proving \eqref{p11:eq:ha-carleman-sum}.
+The \emph{first} identity in \eqref{p11:eq:ha-exact-norm} says
+\(\Norm{h_a^{(n)}}_\infty=(a/2)M_n^{(a)}\), so
+\(h_a\in\mathcal B^{\{M^{(a)}\}}\) with \(C=a/2\), \(A=1\), and conversely
+\(h_a\in\mathcal B^{\{N\}}\) forces \(N_n\ge(2/a)C^{-1}A^{-n}M_n^{(a)}\); this
+is membership together with optimality.  (The second identity in
+\eqref{p11:eq:ha-exact-norm}, the \(L^1\) norm \(a^{n(n+1)/2}\), is \emph{not}
+\((a/2)M_n^{(a)}\) --- at \(a=3\), \(n=1\) the two are \(3\) and \(27/4\) --- and
+it enters only through the Fourier envelope
+\eqref{p11:eq:fourier-from-carleman}.)  Quadratic growth again excludes every
+finite Gevrey order.  Finally \(M_0^{(a)}=1\) and
+\(M_n^{(a)}/M_{n-1}^{(a)}=a^{n+1}/2\) is increasing, so \(M^{(a)}\) is
+log-convex and \eqref{p11:eq:carleman-criterion} may be applied; summing the
+reciprocals gives \eqref{p11:eq:ha-carleman-sum}.
 \end{proof}
 
 \subsection{Associated functions and Fourier decay}
@@ -22397,7 +23014,19 @@ For \(h_a\), the coefficient \((2\log a)^{-1}\) replaces \((2\log2)^{-1}\).  The
 \section{Numerical experiments}\label{p11:sec:numerics}
 
 \subsection{Method}
-The exact standardized characteristic function \eqref{p11:eq:Psi-product} was evaluated on a centered FFT frequency grid.  The infinite product was truncated only when the largest remaining sinc argument was below \(10^{-14}\).  Fourier inversion used \(2^{15}\) grid points with physical spacing \(0.002\); the numerical density mass was \(0.99999999999926\) for every reported \(h\).  No Monte Carlo sampling was used.
+The exact standardized characteristic function \eqref{p11:eq:Psi-product} was evaluated on a centered FFT frequency grid.  The infinite product was truncated at the first index \(N\) whose sinc argument
+fell below \(10^{-14}\); by \eqref{p11:eq:sinc-basic-envelope} the discarded
+tail multiplies the product by a factor in
+\(\bigl[\exp\bigl(-10^{-28}/(6(1-r^2))\bigr),\,1\bigr]\), which for every
+tabulated \(h\ge0.05\) is within \(10^{-27}\) of \(1\) and so far below the
+smallest reported error, \(1.83\times10^{-7}\).  Fourier inversion used
+\(2^{15}\) grid points with physical spacing \(0.002\), i.e. a window
+\(\AbsoluteValue x\le32.768\); since \(Z_h\) is supported in
+\(\AbsoluteValue x\le A_h=\sqrt{3\coth(h/2)}\), which is \(10.96\) at
+\(h=0.05\) and smaller for larger \(h\), the window contains the whole support
+and there is no wrap-around.  The numerical density mass was
+\(0.99999999999926\) for every reported \(h\).  No Monte Carlo sampling was
+used.
 
 For \(E_R(h)\), define the maximum density error on \(\AbsoluteValue x\le8\) after retaining terms through \(h^R\).  The results are:
 \begin{table}[htbp]
@@ -22526,10 +23155,39 @@ for almost every \(x\), while exceptional recurrent orbits realize a nontrivial 
 \end{conjecture}
 
 \subsection{The overlapping phase \texorpdfstring{$1<a<2$}{1<a<2}}
-The exact norm formula uses disjoint cylinder supports and therefore stops at \(a=2\).  Fourier methods still give
+The exact norm formula uses disjoint cylinder supports and therefore stops at
+\(a=2\).  Fourier methods still give the matching upper bound, and in fact with
+a linear rather than an \(n\log n\) correction.  Write
+\(T=2\pi\AbsoluteValue\xi\) and \(L=\log_aT\), and use
+\(\AbsoluteValue{\SincRad u}\le\min(1,\AbsoluteValue u^{-1})\) in Part~VI's
+product \(\FourierTwoPi{h_a}(\xi)=\prod_{j\ge1}\SincRad(Ta^{-j})\), keeping
+only the \(N=\lfloor L\rfloor\) factors whose argument is at least \(1\):
+for \(T\ge a\), with \(\phi=L-N\in[0,1)\),
 \[
- \log\Norm{h_a^{(n)}}_\infty\le\frac{\log a}{2}n^2+\BigO_a(n\log n).
+ \AbsoluteValue{\FourierTwoPi{h_a}(\xi)}
+ \le\frac{a^{N(N+1)/2}}{T^{N}}
+ =\exp\!\left(-\frac{\log a}{2}\bigl(L^2-L-\phi^2+\phi\bigr)\right)
+ \le a^{1/8}\,T^{1/2}
+   \exp\!\left(-\frac{\log^2T}{2\log a}\right),
 \]
+since \(\phi^2-\phi\ge-\tfrac14\).  Hence, substituting \(T=\EulerE^{v}\),
+\[
+ \Norm{h_a^{(n)}}_\infty
+ \le\int_{\RealNumbers}
+   (2\pi\AbsoluteValue\xi)^{n}
+   \AbsoluteValue{\FourierTwoPi{h_a}(\xi)}\Differential\xi
+ \le\frac{a^{n+1}}{\pi(n+1)}
+  +\frac{a^{1/8}}{\pi}\int_{-\infty}^{\infty}
+   \EulerE^{(n+3/2)v-v^{2}/(2\log a)}\Differential v,
+\]
+and completing the square in the Gaussian integral gives
+\begin{equation}\label{p11:eq:overlap-upper}
+ \log\Norm{h_a^{(n)}}_\infty\le\frac{\log a}{2}n^2+\BigOAt{n}{a},
+ \qquad 1<a<2 .
+\end{equation}
+This much is \statusproved.  It is one half of \eqref{p11:eq:overlap-conj}; the
+matching lower bound, which the disjointness argument supplies only for
+\(a\ge2\), is what the following conjecture asserts.
 
 \begin{conjecture}[Sharp quadratic exponent under overlap]\label{p11:conj:overlap-growth}
 For every \(1<a<2\),
