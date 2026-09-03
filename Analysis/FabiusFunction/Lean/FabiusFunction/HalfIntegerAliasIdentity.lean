@@ -48,6 +48,11 @@ residue `r`, not only for `N = 2^n` and odd `r`.
 * `sum_zmod_two_mul_eq_sum_even_add_odd` — the parity split of a sum over `ℤ/2Nℤ`.
 * `sum_foldedCoefficient`, `sum_foldedCoefficient_odd` — `∑_r A_{N,r} = 2` and the
   universal trace `∑_{s<N} A_{N,2s+1} = 1`.
+* `periodizedUp_add_two`, `periodizedUp_neg`, `periodizedUp_of_mem_Icc` — period `2`,
+  evenness, and `P = up` on `[-1, 1]`.
+* `gridSample_neg`, `gridSample_natCast_of_le` — the sample vector is even and equals
+  `up(j/N)` for `j ≤ N`.
+* `foldedCoefficient_eq_sum_cos` — **the cosine form** `A_{N,r} = N⁻¹ ∑_j P(j/N) cos(π r j/N)`.
 -/
 
 set_option autoImplicit false
@@ -388,5 +393,134 @@ theorem sum_foldedCoefficient_odd (F : BoundedFabius) (hF : IsFabius F) (N : ℕ
   rw [sum_zmod_two_mul_eq_sum_even_add_odd, sum_add_distrib, sum_foldedCoefficient_even F hF N]
     at h
   linear_combination h
+
+/-! ## Symmetries of the periodization and the cosine form -/
+
+/-- The periodization has period `2`. -/
+theorem periodizedUp_add_two (F : BoundedFabius) (t : ℝ) :
+    periodizedUp F (t + 2) = periodizedUp F t := by
+  unfold periodizedUp
+  conv_rhs => rw [← (Equiv.addRight (1 : ℤ)).tsum_eq]
+  refine tsum_congr fun k => ?_
+  simp only [Equiv.coe_addRight]
+  congr 2
+  push_cast
+  ring
+
+/-- The periodization is even. -/
+theorem periodizedUp_neg (F : BoundedFabius) (t : ℝ) :
+    periodizedUp F (-t) = periodizedUp F t := by
+  unfold periodizedUp
+  rw [← (Equiv.neg ℤ).tsum_eq]
+  refine tsum_congr fun k => ?_
+  simp only [Equiv.neg_apply]
+  rw [← rvachevUp_even F (t + 2 * k)]
+  congr 2
+  push_cast
+  ring
+
+/-- On the support interval the periodization is the up-function itself. -/
+theorem periodizedUp_of_mem_Icc (F : BoundedFabius) (hF : IsFabius F) {t : ℝ}
+    (ht0 : -1 ≤ t) (ht1 : t ≤ 1) : periodizedUp F t = rvachevUp F t := by
+  unfold periodizedUp
+  rw [← Complex.ofReal_tsum, rvachev_even_translate_sum_eq_self F hF ht0 ht1]
+
+/-- The sample vector is even: `S(-j) = S(j)`. -/
+theorem gridSample_neg (F : BoundedFabius) (N : ℕ) [NeZero N] (j : ZMod (2 * N)) :
+    gridSample F N (-j) = gridSample F N j := by
+  unfold gridSample
+  by_cases hj : j = 0
+  · subst hj
+    simp
+  · have hval : (-j).val = 2 * N - j.val := by
+      rw [ZMod.neg_val, if_neg hj]
+    have hlt : j.val < 2 * N := ZMod.val_lt j
+    have hN : (N : ℝ) ≠ 0 := by exact_mod_cast NeZero.ne N
+    rw [hval]
+    have harg : (((2 * N - j.val : ℕ) : ℝ) / N) = -((j.val : ℝ) / N) + 2 := by
+      rw [Nat.cast_sub hlt.le]
+      push_cast
+      field_simp
+      ring
+    rw [harg, periodizedUp_add_two, periodizedUp_neg]
+
+/-- For `j ≤ N` the sample is the up-function value `up(j/N)`. -/
+theorem gridSample_natCast_of_le (F : BoundedFabius) (hF : IsFabius F) (N : ℕ) [NeZero N]
+    {j : ℕ} (hj : j ≤ N) :
+    gridSample F N ((j : ℕ) : ZMod (2 * N)) = (rvachevUp F ((j : ℝ) / N) : ℂ) := by
+  unfold gridSample
+  have hN' : 0 < N := Nat.pos_of_ne_zero (NeZero.ne N)
+  have hN : (0 : ℝ) < N := by exact_mod_cast hN'
+  have hval : ((j : ℕ) : ZMod (2 * N)).val = j := by
+    rw [ZMod.val_natCast, Nat.mod_eq_of_lt (by omega)]
+  rw [hval]
+  have hjN : (j : ℝ) / N ≤ 1 := by
+    rw [div_le_one hN]
+    exact_mod_cast hj
+  have hj0 : (-1 : ℝ) ≤ (j : ℝ) / N := by
+    have := div_nonneg (Nat.cast_nonneg j) hN.le
+    linarith
+  exact periodizedUp_of_mem_Icc F hF hj0 hjN
+
+/-- The standard character at `j r` as a complex exponential of the real angle
+`π r j / N`. -/
+theorem stdAddChar_mul_eq_exp (N : ℕ) [NeZero N] (j r : ZMod (2 * N)) :
+    ZMod.stdAddChar (j * r) =
+      Complex.exp (((Real.pi * r.val * j.val / N : ℝ) : ℂ) * Complex.I) := by
+  have hN : (N : ℂ) ≠ 0 := by exact_mod_cast NeZero.ne N
+  have h : j * r = (((j.val * r.val : ℕ) : ℤ) : ZMod (2 * N)) := by
+    rw [Int.cast_natCast]
+    push_cast
+    rw [ZMod.natCast_zmod_val, ZMod.natCast_zmod_val]
+  rw [h, ZMod.stdAddChar_coe]
+  congr 1
+  push_cast
+  field_simp
+
+/-- The standard character at `-(j r)` as the conjugate exponential. -/
+theorem stdAddChar_neg_mul_eq_exp (N : ℕ) [NeZero N] (j r : ZMod (2 * N)) :
+    ZMod.stdAddChar (-(j * r)) =
+      Complex.exp (-((Real.pi * r.val * j.val / N : ℝ) : ℂ) * Complex.I) := by
+  have hN : (N : ℂ) ≠ 0 := by exact_mod_cast NeZero.ne N
+  have h : -(j * r) = ((-((j.val * r.val : ℕ) : ℤ) : ℤ) : ZMod (2 * N)) := by
+    rw [Int.cast_neg, Int.cast_natCast]
+    push_cast
+    rw [ZMod.natCast_zmod_val, ZMod.natCast_zmod_val]
+  rw [h, ZMod.stdAddChar_coe]
+  congr 1
+  push_cast
+  field_simp
+
+/-- **The cosine form of the folded coefficients.**  Because the sample vector is
+even, the character sum collapses to a real cosine sum over all residues:
+
+`A_{N,r} = N⁻¹ ∑_{j ∈ ℤ/2Nℤ} P(j/N) cos(π r j / N)`. -/
+theorem foldedCoefficient_eq_sum_cos (F : BoundedFabius) (N : ℕ) [NeZero N]
+    (r : ZMod (2 * N)) :
+    foldedCoefficient F N r =
+      (N : ℂ)⁻¹ * ∑ j : ZMod (2 * N),
+        gridSample F N j * Complex.cos ((Real.pi * r.val * j.val / N : ℝ) : ℂ) := by
+  have hneg : ∑ j : ZMod (2 * N), ZMod.stdAddChar (-(j * r)) • gridSample F N j
+      = ∑ j : ZMod (2 * N), ZMod.stdAddChar (j * r) • gridSample F N j := by
+    refine Fintype.sum_equiv (Equiv.neg (ZMod (2 * N))) _ _ fun j => ?_
+    simp only [Equiv.neg_apply]
+    rw [gridSample_neg, neg_mul]
+  unfold foldedCoefficient
+  rw [ZMod.dft_apply]
+  congr 1
+  have h2 : (2 : ℂ) * ∑ j : ZMod (2 * N), ZMod.stdAddChar (-(j * r)) • gridSample F N j
+      = 2 * ∑ j : ZMod (2 * N),
+          gridSample F N j * Complex.cos ((Real.pi * r.val * j.val / N : ℝ) : ℂ) := by
+    rw [two_mul]
+    nth_rewrite 2 [hneg]
+    rw [← sum_add_distrib, mul_sum]
+    refine sum_congr rfl fun j _ => ?_
+    rw [smul_eq_mul, smul_eq_mul, stdAddChar_mul_eq_exp, stdAddChar_neg_mul_eq_exp,
+      show (2 : ℂ) * (gridSample F N j * Complex.cos ((Real.pi * r.val * j.val / N : ℝ) : ℂ))
+        = gridSample F N j * (2 * Complex.cos ((Real.pi * r.val * j.val / N : ℝ) : ℂ)) by ring,
+      Complex.two_cos]
+    ring
+  exact mul_left_cancel₀ two_ne_zero h2
+
 
 end Fabius
