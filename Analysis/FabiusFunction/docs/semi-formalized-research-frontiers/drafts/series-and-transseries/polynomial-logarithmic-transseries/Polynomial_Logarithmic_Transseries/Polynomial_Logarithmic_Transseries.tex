@@ -35575,6 +35575,49 @@ Beyond the third block --- the \(\LamP{n}\) coefficients for \(n\ge2\), the
 remainder order at every order, and any uniformity --- everything is
 human-proved here and unformalized.
 
+\subsection{All derivatives of the real branches: crosswalked}
+
+The derivative formulas used in \cref{plt:sec:lambert-branches} are
+kernel-verified to every order.  \texttt{Fabius.\allowbreak iteratedDeriv\_\allowbreak principalLambertW}
+proves, for \(x>-\EulerE^{-1}\) and every \(n\in\NaturalNumbers\),
+\[
+ \frac{\Differential^{\,n+1}}{\Differential x^{\,n+1}}\LambertW_{0}(x)
+ =\frac{\EulerE^{-(n+1)W}\,P_{n}(W)}{(1+W)^{2n+1}},
+ \qquad W=\LambertW_{0}(x),
+\]
+and \texttt{Fabius.\allowbreak iteratedDeriv\_\allowbreak lowerLambertW} proves the
+same formula for \(\LambertW_{-1}\) on \((-\EulerE^{-1},0)\).  The polynomial
+family is \texttt{Fabius.\allowbreak lambertDerivPoly}, defined by
+\(P_{0}=1\) and the recurrence
+(\texttt{Fabius.\allowbreak lambertDerivPoly\_\allowbreak succ})
+\[
+ P_{n+1}(w)=(1+w)P_{n}'(w)-\bigl((n+1)w+(3n+2)\bigr)P_{n}(w),
+\]
+whose first members, recomputed here in exact arithmetic from that
+recurrence, are
+\[
+ P_{1}=-(w+2),\quad
+ P_{2}=2w^{2}+8w+9,\quad
+ P_{3}=-(6w^{3}+36w^{2}+79w+64),\quad
+ P_{4}=24w^{4}+192w^{3}+622w^{2}+974w+625,
+\]
+the first two being the kernel's own evaluated cases
+(\texttt{Fabius.\allowbreak eval\_\allowbreak lambertDerivPoly\_\allowbreak one},
+\texttt{\ldots\_\allowbreak two}).  Two conventions matter.  The Lean index is
+shifted by one against the classical one: the classical \(P_{n}\) of
+\cite{corless-et-al-1996} is Lean's \(P_{n-1}\), and the formula above is for
+the \((n+1)\)-st derivative.  And \(P_{1}=-(w+2)\) is exactly what one
+obtains by differentiating \(\LambertW'=\EulerE^{-W}/(1+W)\) once, which
+fixes the sign convention.  The engine behind the theorem carries no Lambert
+content and is the reusable piece:
+\texttt{AutonomousODE.\allowbreak iteratedDeriv\_\allowbreak eq\_\allowbreak comp} proves
+that if \(W'=\varphi\circ W\) on an open set then every iterated derivative
+is \(G_{n}\circ W\) with \(G_{0}=\mathrm{id}\) and
+\(G_{n+1}=G_{n}'\varphi\).  This entry is crosswalked, not neighbouring: it
+is the same statement in the same normalization, and the Lambert
+\(\LambertW\) guide's own crosswalk appendix records the identical index
+convention.
+
 \subsection{Summary}
 
 Of the results in this volume, none is crosswalked in the strong sense; one
