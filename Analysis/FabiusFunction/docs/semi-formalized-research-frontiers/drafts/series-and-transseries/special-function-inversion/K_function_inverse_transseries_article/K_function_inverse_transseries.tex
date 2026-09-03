@@ -1,0 +1,2581 @@
+\documentclass[11pt,oneside]{article}
+% Standalone ProveIt research note. The source intentionally has no external
+% inputs so that the TeX/PDF pair is directly reproducible after extraction.
+\usepackage[a4paper,margin=26mm,headheight=15pt]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\IfFileExists{libertinus.sty}{\usepackage{libertinus}}{\usepackage{lmodern}}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb,amsthm,mathtools,mathrsfs,bm}
+\usepackage{booktabs,longtable,tabularx,array}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{xurl}
+\usepackage{listings}
+\usepackage[most]{tcolorbox}
+\usepackage{hyperref}
+\usepackage[nameinlink,noabbrev,capitalise]{cleveref}
+
+\definecolor{linkblue}{RGB}{24,72,124}
+\definecolor{deepgreen}{RGB}{23,102,69}
+\definecolor{deepred}{RGB}{140,42,42}
+\definecolor{deepgold}{RGB}{122,91,19}
+\definecolor{shadegray}{RGB}{246,247,249}
+\definecolor{rulegray}{RGB}{195,201,208}
+\definecolor{palered}{RGB}{251,236,236}
+\definecolor{palegold}{RGB}{251,245,230}
+\definecolor{palegreen}{RGB}{233,245,243}
+\definecolor{paleblue}{RGB}{236,243,251}
+
+\hypersetup{
+  hypertexnames=false,
+  colorlinks=true,
+  linkcolor=linkblue,
+  citecolor=deepgreen,
+  urlcolor=linkblue,
+  pdftitle={Asymptotic Inversion of the Kinkelin-Bendersky K-Function},
+  pdfauthor={Vladimir Reshetnikov},
+  pdfsubject={Lambert-anchored transseries for the inverse generalized hyperfactorial and a general theory of x^p log x reversion},
+  pdfkeywords={K-function, hyperfactorial, Kinkelin, Bendersky, Lambert W, inverse asymptotics, transseries, Lagrange-Burmann inversion, Barnes G-function}
+}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Inverse K-function transseries}
+\fancyhead[R]{\small\nouppercase{\leftmark}}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+\setcounter{tocdepth}{2}
+\setcounter{secnumdepth}{3}
+\setlist[itemize]{leftmargin=1.5em,itemsep=0.25ex,topsep=0.6ex}
+\setlist[enumerate]{leftmargin=1.9em,itemsep=0.35ex,topsep=0.6ex}
+\allowdisplaybreaks[2]
+
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{algorithm}[theorem]{Algorithm}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\crefname{algorithm}{algorithm}{algorithms}
+\Crefname{algorithm}{Algorithm}{Algorithms}
+
+\newtcolorbox{mainbox}[1][]{%
+  enhanced,breakable,colback=paleblue,colframe=linkblue,
+  boxrule=0.7pt,arc=1.2mm,left=2mm,right=2mm,top=1.4mm,bottom=1.4mm,
+  title={Main result},fonttitle=\bfseries,#1}
+\newtcolorbox{warningbox}[1][]{%
+  enhanced,breakable,colback=palered,colframe=deepred,
+  boxrule=0.6pt,arc=1.2mm,left=2mm,right=2mm,top=1.2mm,bottom=1.2mm,
+  title={Scale and branch warning},fonttitle=\bfseries,#1}
+\newtcolorbox{methodbox}[1][]{%
+  enhanced,breakable,colback=palegreen,colframe=deepgreen,
+  boxrule=0.6pt,arc=1.2mm,left=2mm,right=2mm,top=1.2mm,bottom=1.2mm,
+  title={Reusable method},fonttitle=\bfseries,#1}
+\newtcolorbox{summarybox}[1][]{%
+  enhanced,breakable,colback=palegold,colframe=deepgold,
+  boxrule=0.6pt,arc=1.2mm,left=2mm,right=2mm,top=1.2mm,bottom=1.2mm,
+  title={Summary},fonttitle=\bfseries,#1}
+
+\lstdefinestyle{pythonstyle}{%
+  language=Python,
+  basicstyle=\ttfamily\small,
+  columns=fullflexible,
+  frame=single,
+  rulecolor=\color{rulegray},
+  backgroundcolor=\color{shadegray},
+  showstringspaces=false,
+  keepspaces=true,
+  breaklines=true,
+  xleftmargin=0.4em,xrightmargin=0.4em,
+  aboveskip=0.8em,belowskip=0.8em
+}
+\lstset{style=pythonstyle}
+
+\newcommand{\W}{\operatorname{W}}
+\newcommand{\e}{\mathrm{e}}
+\newcommand{\dd}{\mathop{}\!\mathrm{d}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\Acal}{\mathcal{A}}
+\newcommand{\Fcal}{\mathcal{F}}
+\newcommand{\Hcal}{\mathcal{H}}
+\newcommand{\Lcal}{\mathcal{L}}
+\newcommand{\Tcal}{\mathcal{T}}
+\newcommand{\Bcal}{\mathcal{B}}
+\newcommand{\coeff}[2]{\left[#1^{#2}\right]}
+\DeclareMathOperator{\Res}{Res}
+\DeclareMathOperator{\Log}{Log}
+\DeclareMathOperator{\Trunc}{Trunc}
+
+\begin{document}
+
+\title{\textbf{Asymptotic Inversion of the Kinkelin--Bendersky \(K\)-Function}\\[0.35em]
+  \Large Lambert-Anchored Transseries for the Generalized Hyperfactorial\\
+  and a General Theory of \(x^p\log x\) Reversion}
+\author{Vladimir Reshetnikov\\
+  \small ProveIt research note}
+\date{3 September 2026}
+\maketitle
+
+\begin{abstract}
+The Kinkelin--Bendersky function \(K\), characterized on the positive real axis by
+\(K(x+1)=x^xK(x)\) and \(K(1)=1\), interpolates the hyperfactorials
+\(K(n+1)=\prod_{k=1}^n k^k\).  This article derives an all-orders asymptotic
+transseries for its large real inverse and for the corresponding complex
+sectorial inverse germs.  The decisive normalization is the half-shift
+\(t=z-\tfrac12\).  With \(A\) the Glaisher--Kinkelin constant and
+\(C=\log A-\tfrac18\), one has
+\[
+ \log K\!\left(t+\tfrac12\right)
+ \sim \frac12t^2\log t-\frac14t^2+C-\frac1{24}\log t
+      +\sum_{m\ge1}\frac{\kappa_m}{t^{2m}},
+\]
+where
+\[
+ \kappa_m=-\frac{B_{2m+2}(1/2)}{4m(m+1)(2m+1)}
+ =\frac{(1-2^{-2m-1})B_{2m+2}}{4m(m+1)(2m+1)}.
+\]
+For \(y\to+\infty\), put \(Y=\log y\),
+\[
+ w=\W_0(4Y/\e),\qquad \lambda=\frac{w+1}{2},\qquad
+ T=\e^\lambda=2\sqrt{\frac{Y}{w}},\qquad q=T^{-2}.
+\]
+Then the inverse branch mapping \([1,\infty)\) to \([2,\infty)\) satisfies
+\[
+ K_+^{-1}(y)=\frac12+T+\sum_{n=1}^{N}a_n(\lambda)T^{1-2n}
+              +O_N(T^{-2N-1}),
+\]
+for every fixed \(N\).  Every \(a_n\) is an explicitly computable polynomial in
+\(\lambda^{-1}\) of degree at most \(2n-1\), with coefficients in
+\(\Q[C,\kappa_1,\ldots,\kappa_{n-1}]\).  We give a triangular recurrence, a
+closed ordered-operator formula obtained from a perturbative
+Lagrange--B\"urmann identity, four explicit correction blocks, a rank-two
+reorganization in \((q,\lambda^{-1})\), rigorous residual-to-error transfer,
+and high-precision numerical checks.
+
+A second, accelerated Lambert anchor exactly absorbs the constant and logarithmic
+corrections.  It gives the one-line approximation
+\[
+ K_+^{-1}(y)\approx \frac12+
+ \sqrt{\frac{4(Y-C)}{\W_0(4(Y-C)/\e)}+\frac1{12}},
+\]
+whose inverse error is already \(O(T^{-3}/\log T)\).  Finally, the calculation is
+placed in a general framework for maps
+\(F(x)=a x^p(\log x-b)+H(x)\), where \(H\) is a lower-order grid-based
+logarithmic transseries.  The Lambert anchor is exact, the inverse support is
+locally finite, and the coefficients follow from a universal differential
+operator calculus.
+\end{abstract}
+
+\noindent\textbf{Keywords.}
+Kinkelin--Bendersky \(K\)-function; hyperfactorial; generalized hyperfactorial;
+Glaisher--Kinkelin constant; Barnes \(G\)-function; Lambert \(W\); asymptotic
+inverse; transseries; Lagrange--B\"urmann inversion; series reversion.
+
+\begingroup
+\footnotesize
+\let\originaladdvspace\addvspace
+\renewcommand{\addvspace}[1]{\originaladdvspace{0.25em}}
+\tableofcontents
+\endgroup
+\clearpage
+
+\section{The inverse problem and the answer in compact form}
+\label{sec:intro}
+
+The object of study is the real-valued Kinkelin--Bendersky function
+\(K:[0,\infty)\to(0,\infty)\), normalized by
+\begin{equation}
+ K(0)=K(1)=K(2)=1,
+ \qquad K(x+1)=x^xK(x)\quad(x>0).
+ \label{eq:K-functional}
+\end{equation}
+At positive integers,
+\begin{equation}
+ K(n+1)=\prod_{k=1}^{n}k^k.
+ \label{eq:K-integers}
+\end{equation}
+This is the convention used in the standard literature on the \(K\)-function
+\cite{Bendersky1933,SondowHadjicostas2007}.  Some software and combinatorial
+sources instead denote by \(H(x)\) the shifted hyperfactorial
+\begin{equation}
+ H(x):=K(x+1).
+ \label{eq:H-shift}
+\end{equation}
+Thus an inverse formula for \(H\) is obtained from the formulas below by
+subtracting \(1\) from the inverse of \(K\).
+
+For large positive arguments, the relevant inverse is the increasing branch
+\begin{equation}
+ K_+^{-1}:[1,\infty)\longrightarrow[2,\infty).
+ \label{eq:real-inverse-branch}
+\end{equation}
+The endpoint value \(y=1\) is not globally one-to-one because
+\(K(0)=K(1)=K(2)=1\); the subscript \(+\) fixes the branch which grows to
+infinity.
+
+\begin{mainbox}
+Let
+\begin{equation}
+ Y=\log y,
+ \qquad w=\W_0\!\left(\frac{4Y}{\e}\right),
+ \qquad \lambda=\frac{w+1}{2},
+ \qquad T=\e^\lambda=2\sqrt{\frac{Y}{w}}.
+ \label{eq:main-variables}
+\end{equation}
+Let \(A\) be the Glaisher--Kinkelin constant and set
+\begin{equation}
+ C=\log A-\frac18=-\zeta'(-1)-\frac1{24}.
+ \label{eq:C-def}
+\end{equation}
+Then, as \(y\to+\infty\),
+\begin{equation}
+ K_+^{-1}(y)
+ \sim \frac12+T+\sum_{n\ge1}a_n(\lambda)T^{1-2n}.
+ \label{eq:main-transseries}
+\end{equation}
+The first three coefficients are
+\begin{align}
+ a_1(\lambda)={}&\frac1{24}-\frac{C}{\lambda},
+ \label{eq:a1}\\[0.3em]
+ a_2(\lambda)={}&-\frac1{1152}
+ +\frac{20C+1}{480\lambda}
+ -\frac{C^2}{2\lambda^2}
+ -\frac{C^2}{2\lambda^3},
+ \label{eq:a2}\\[0.3em]
+ a_3(\lambda)={}&\frac1{27648}
+ -\frac{1890C+311}{725760\lambda}
+ +\frac{C(10C+1)}{160\lambda^2}
+ \notag\\
+ &-\frac{C(240C^2-10C-1)}{480\lambda^3}
+ -\frac{5C^3}{6\lambda^4}
+ -\frac{C^3}{2\lambda^5}.
+ \label{eq:a3}
+\end{align}
+For every fixed \(N\ge0\), truncation after \(a_N\) has the real-axis error
+\begin{equation}
+ K_+^{-1}(y)-\left(\frac12+T+
+       \sum_{n=1}^{N}a_n(\lambda)T^{1-2n}\right)
+ =O_N(T^{-2N-1}).
+ \label{eq:main-error}
+\end{equation}
+The convention is that the sum is empty when \(N=0\).
+\end{mainbox}
+
+The first correction can be written directly in \(Y\) and \(w\):
+\begin{equation}
+ K_+^{-1}(y)
+ =\frac12+2\sqrt{\frac{Y}{w}}
+ +\frac12\sqrt{\frac{w}{Y}}
+   \left(\frac1{24}-\frac{2C}{w+1}\right)
+ +O\!\left(\left(\frac{w}{Y}\right)^{3/2}\right).
+ \label{eq:first-correction-Yw}
+\end{equation}
+This already displays the two essential scales.  The Lambert variable
+\(w\sim\log Y\) resums the entire iterated-logarithm expansion of the leading
+block.  The first genuinely new block is smaller by
+\begin{equation}
+ T^{-2}=\e^{-(w+1)}=\frac{w}{4Y},
+ \label{eq:q-def-intro}
+\end{equation}
+which is beyond every algebraic order in \(1/w\).
+
+\subsection{What is meant by a transseries here}
+
+There are three equivalent ways to read \cref{eq:main-transseries}.
+
+\begin{enumerate}
+\item As a \emph{Lambert-anchored outer expansion}, it is a Poincar\'e expansion
+in powers of \(q=T^{-2}\), with coefficient functions of the slow variable
+\(\lambda=\log T\).
+\item As a \emph{rank-two grid-based transseries}, its monomials are
+\begin{equation}
+ Tq^n\lambda^{-j}
+ =\exp\!\left(-\frac{2n-1}{2}(w+1)\right)\lambda^{-j},
+ \qquad n\ge1,
+ \label{eq:rank-two-monomials}
+\end{equation}
+with \(0\le j\le2n-1\) in the present problem.
+\item After expanding \(w=\W_0(4Y/\e)\) in
+\(L_1=\log(4Y/\e)\) and \(L_2=\log L_1\), it becomes a nested
+logarithmic transseries in powers of \(L_1/Y\), whose coefficient blocks are
+polynomials in \(L_2\) and inverse powers of \(L_1\).
+\end{enumerate}
+
+The Lambert-anchored form is both shorter and numerically superior.  Expanding
+\(\W\) too early destroys an exact inversion and replaces it with an infinite
+slow series before the first algebraic correction has even appeared.
+
+\subsection{Outline and status of the results}
+
+The forward asymptotic expansion of the hyperfactorial and of related
+Bendersky functions is classical and has been refined in a substantial
+literature; see, for example,
+\cite{Bendersky1933,WangLiu2016,Wang2017,Xu2020}.  A useful closed Lambert
+approximation to the inverse has also appeared in an online discussion
+\cite{MathSEHyperfactorial}.  The all-orders inverse coefficients, the centered
+operator formula, the rank-two resummation, and the general
+\(a x^p(\log x-b)\) inversion calculus are derived here.  This statement is a
+description of the contents of this note, not a claim that no equivalent
+formula can exist elsewhere.
+
+The argument deliberately separates three levels of validity.
+
+\begin{itemize}
+\item The identities for coefficients are exact formal identities in a
+locally finite transseries algebra.
+\item On the positive real axis, the source expansion and monotonicity turn
+each fixed truncation into the rigorous asymptotic estimate
+\cref{eq:main-error}.
+\item In the complex plane, the same formulas describe local inverse germs on
+admissible sectors, once the logarithm and Lambert branches are fixed and the
+path stays away from critical points.
+\end{itemize}
+
+\section{The \(K\)-function and its increasing real branch}
+\label{sec:K-background}
+
+\subsection{Integral, zeta, and Barnes representations}
+
+For \(x\ge0\), one convenient definition is
+\begin{equation}
+ \log K(x)
+ =\frac{x^2-x}{2}-\frac{x}{2}\log(2\pi)
+  +\int_0^x\log\Gamma(u)\,\dd u.
+ \label{eq:K-integral}
+\end{equation}
+The singularity of \(\log\Gamma(u)\) at the origin is integrable.  A standard
+complex continuation is encoded by
+\begin{equation}
+ K(z)=\exp\!\bigl(\zeta'(-1,z)-\zeta'(-1)\bigr),
+ \label{eq:K-Hurwitz}
+\end{equation}
+with compatible branch conventions.  On the positive real axis, the relation
+to the Barnes \(G\)-function is
+\begin{equation}
+ K(z)G(z)=\Gamma(z)^{z-1}.
+ \label{eq:K-Barnes-relation}
+\end{equation}
+Equivalently,
+\begin{equation}
+ K(x+1)G(x+1)=\Gamma(x+1)^x.
+ \label{eq:K-Barnes-shifted}
+\end{equation}
+These formulas and the recurrence \cref{eq:K-functional} are recorded in
+\cite{SondowHadjicostas2007}; the Barnes asymptotics used below are summarized
+in the NIST Digital Library of Mathematical Functions
+\cite{DLMF}.
+
+\subsection{Monotonicity beyond \(2\)}
+
+Differentiate \cref{eq:K-integral}:
+\begin{equation}
+ \frac{\dd}{\dd x}\log K(x)
+ =x-\frac12-\frac12\log(2\pi)+\log\Gamma(x),
+ \label{eq:logK-prime}
+\end{equation}
+so that
+\begin{equation}
+ \frac{\dd^2}{\dd x^2}\log K(x)=1+\psi(x),
+ \label{eq:logK-second}
+\end{equation}
+where \(\psi=\Gamma'/\Gamma\).
+
+\begin{proposition}[Increasing real branch]
+\label{prop:monotone}
+The function \(K\) is strictly increasing on \([2,\infty)\), maps this interval
+onto \([1,\infty)\), and therefore has the inverse branch
+\cref{eq:real-inverse-branch}.
+\end{proposition}
+
+\begin{proof}
+The digamma function is increasing on \((0,\infty)\), and
+\(\psi(2)=1-\gamma>0\).  Hence \(1+\psi(x)>0\) for \(x\ge2\), so the right-hand
+side of \cref{eq:logK-prime} is increasing there.  At \(x=2\), it equals
+\begin{equation*}
+ \frac32-\frac12\log(2\pi)>0.
+\end{equation*}
+Thus \((\log K)'(x)>0\) for \(x\ge2\), and therefore \(K'(x)>0\).  Since
+\(K(2)=1\) and the large-\(x\) expansion in \cref{sec:centered-source} tends to
+infinity, the range is \([1,\infty)\).
+\end{proof}
+
+\begin{corollary}[Shifted hyperfactorial inverse]
+\label{cor:H-inverse}
+If \(H(x)=K(x+1)\), then on the increasing branch
+\begin{equation}
+ H_+^{-1}(y)=K_+^{-1}(y)-1
+ \sim -\frac12+T+\sum_{n\ge1}a_n(\lambda)T^{1-2n}.
+ \label{eq:H-inverse}
+\end{equation}
+\end{corollary}
+
+\section{The centered forward expansion}
+\label{sec:centered-source}
+
+The forward asymptotic expansion is not merely an input to inversion.  Its
+correct centering determines the support and the complexity of the inverse
+transseries.
+
+\subsection{The classical uncentered form}
+
+The Barnes expansion
+\cite[\S5.17(ii)]{DLMF} and the exact cancellation in
+\cref{eq:K-Barnes-shifted} give, uniformly in every closed sector
+\(|\arg z|\le\pi-\delta\),
+\begin{align}
+ \log K(z+1)
+ \sim{}&\left(\frac{z^2}{2}+\frac z2+\frac1{12}\right)\log z
+       -\frac{z^2}{4}+\log A
+ \notag\\
+ &-\sum_{m\ge1}
+ \frac{B_{2m+2}}{4m(m+1)(2m+1)z^{2m}}.
+ \label{eq:uncentered-logK}
+\end{align}
+Here \(B_n\) denotes the Bernoulli number and
+\begin{equation}
+ \log A=\frac1{12}-\zeta'(-1).
+ \label{eq:logA}
+\end{equation}
+Although \cref{eq:uncentered-logK} contains only even negative powers, its
+leading polynomial-logarithmic part contains a linear term \(z\log z\).  The
+inverse becomes substantially simpler after the half-shift.
+
+\subsection{Half-shift and parity}
+
+Define
+\begin{equation}
+ t=z-\frac12,
+ \qquad
+ \Lcal(t):=\log K\!\left(t+\frac12\right),
+ \qquad
+ \Phi(t):=\frac12t^2\log t-\frac14t^2.
+ \label{eq:centered-defs}
+\end{equation}
+Let the Bernoulli polynomials be normalized by
+\begin{equation}
+ \frac{u\e^{xu}}{\e^u-1}
+ =\sum_{n\ge0}B_n(x)\frac{u^n}{n!}.
+ \label{eq:Bernoulli-polys}
+\end{equation}
+They satisfy
+\begin{equation}
+ B_n\!\left(\frac12\right)=(2^{1-n}-1)B_n.
+ \label{eq:Bernoulli-half}
+\end{equation}
+
+\begin{theorem}[Canonical centered expansion]
+\label{thm:centered-expansion}
+As \(t\to\infty\) in every closed sector
+\(|\arg t|\le\pi-\delta\),
+\begin{equation}
+ \Lcal(t)
+ \sim \Phi(t)+C-\frac1{24}\log t
+       +\sum_{m\ge1}\kappa_m t^{-2m},
+ \label{eq:centered-logK}
+\end{equation}
+where \(C\) is given by \cref{eq:C-def} and
+\begin{equation}
+ \kappa_m
+ =-\frac{B_{2m+2}(1/2)}{4m(m+1)(2m+1)}
+ =\frac{(1-2^{-2m-1})B_{2m+2}}
+        {4m(m+1)(2m+1)}.
+ \label{eq:kappa-formula}
+\end{equation}
+For every fixed \(M\ge1\), the corresponding finite form is
+\begin{equation}
+ \Lcal(t)=\Phi(t)+C-\frac1{24}\log t
+ +\sum_{m=1}^{M-1}\kappa_m t^{-2m}+O(t^{-2M}).
+ \label{eq:centered-remainder}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+From \cref{eq:logK-prime}, with \(x=t+\tfrac12\),
+\begin{equation}
+ \Lcal'(t)=t-\frac12\log(2\pi)+\log\Gamma\!\left(t+\frac12\right).
+ \label{eq:Lprime-gamma}
+\end{equation}
+The shifted Stirling expansion is
+\begin{equation}
+ \log\Gamma(t+a)
+ \sim \left(t+a-\frac12\right)\log t-t+\frac12\log(2\pi)
+ +\sum_{n\ge1}
+   \frac{(-1)^{n+1}B_{n+1}(a)}{n(n+1)t^n}.
+ \label{eq:shifted-Stirling}
+\end{equation}
+At \(a=\tfrac12\), all Bernoulli polynomials of odd degree greater than one
+vanish.  Hence
+\begin{equation}
+ \Lcal'(t)
+ \sim t\log t-\frac1{24t}
+ +\sum_{m\ge1}
+ \frac{B_{2m+2}(1/2)}{(2m+1)(2m+2)t^{2m+1}}.
+ \label{eq:centered-derivative-expansion}
+\end{equation}
+Termwise integration gives \cref{eq:centered-logK} up to a constant and yields
+exactly \cref{eq:kappa-formula}.  Matching with the uncentered expansion
+\cref{eq:uncentered-logK} determines the constant as
+\(\log A-\tfrac18=C\).  Uniform remainder estimates follow either by applying
+the standard sectorial remainder for shifted Stirling and integrating, or
+directly by re-expanding the Barnes remainder.
+\end{proof}
+
+The first coefficients are
+\begin{equation}
+ \kappa_1=-\frac7{5760},\quad
+ \kappa_2=\frac{31}{161280},\quad
+ \kappa_3=-\frac{127}{1290240},\quad
+ \kappa_4=\frac{511}{4866048},\quad
+ \kappa_5=-\frac{1414477}{7380172800}.
+ \label{eq:kappa-first-five}
+\end{equation}
+
+\begin{remark}[Why the half-shift is canonical]
+The half-shift simultaneously removes the \(z\log z\) term from the dominant
+phase and converts the entire tail to even inverse powers.  At the derivative
+level this is the identity \(B_{2m+1}(1/2)=0\).  Consequently the inverse
+corrections occur in the sparse lattice \(T^{1-2n}\), rather than in every
+integer power of \(T^{-1}\).
+\end{remark}
+
+\begin{warningbox}
+The variable in \cref{eq:centered-logK} is
+\(t=z-\tfrac12\), where \(z\) is the argument of \(K\).  If one instead uses
+the common hyperfactorial variable \(x\) in \(H(x)=K(x+1)\), then
+\(t=x+\tfrac12\).  Losing this shift produces an apparent error of order
+\(1/2\), much larger than every displayed correction block.
+\end{warningbox}
+
+\section{Exact Lambert inversion of the dominant phase}
+\label{sec:Lambert-anchor}
+
+The leading phase is
+\begin{equation}
+ \Phi(t)=\frac14t^2\bigl(\log(t^2)-1\bigr).
+ \label{eq:Phi-alt}
+\end{equation}
+It is not necessary to invert this phase asymptotically: it is exactly
+Lambert-invertible.
+
+\begin{proposition}[Exact dominant anchor]
+\label{prop:exact-anchor}
+Let \(Y>0\) and define \(w,\lambda,T\) by \cref{eq:main-variables}.  Then
+\begin{equation}
+ \Phi(T)=Y,
+ \qquad \log T=\lambda,
+ \qquad T^2=\frac{4Y}{w},
+ \qquad T^{-2}=\e^{-(w+1)}=\frac{w}{4Y}.
+ \label{eq:anchor-identities}
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+Set \(w=2\log T-1\).  Then
+\begin{equation}
+ 4\Phi(T)=T^2(2\log T-1)=\e^{w+1}w.
+\end{equation}
+Thus \(\Phi(T)=Y\) is equivalent to
+\begin{equation}
+ w\e^w=\frac{4Y}{\e}.
+\end{equation}
+On the positive real axis this gives \(w=\W_0(4Y/\e)\), followed by all the
+identities in \cref{eq:anchor-identities}.
+\end{proof}
+
+\begin{corollary}[Leading inverse]
+\label{cor:leading-inverse}
+As \(y\to+\infty\),
+\begin{equation}
+ K_+^{-1}(y)=\frac12+T+O(T^{-1}).
+ \label{eq:leading-inverse}
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+The omitted part of \cref{eq:centered-logK} is \(O(\log T)\), while
+\(\Phi'(T)=T\log T\).  One inverse-function step therefore produces a
+displacement \(O(T^{-1})\).
+\end{proof}
+
+The two slow-fast parameters used throughout the rest of the article are
+\begin{equation}
+ \lambda=\log T=\frac{w+1}{2},
+ \qquad q=T^{-2}=\e^{-2\lambda}.
+ \label{eq:lambda-q}
+\end{equation}
+They satisfy the strict scale separation
+\begin{equation}
+ q=o(\lambda^{-M})\qquad(M=0,1,2,\ldots).
+ \label{eq:q-beyond-all-orders}
+\end{equation}
+Thus a correction of relative size \(q\) is beyond all orders of the ordinary
+large-\(\lambda\) expansion.
+
+\section{The normalized inverse equation and triangular reversion}
+\label{sec:implicit-equation}
+
+Write the unknown centered inverse in the form
+\begin{equation}
+ t=T(1+u),
+ \qquad
+ u\sim\sum_{n\ge1}a_n(\lambda)q^n,
+ \qquad q=T^{-2}.
+ \label{eq:u-ansatz}
+\end{equation}
+Because \(\Phi(T)=Y\), direct substitution gives
+\begin{equation}
+ \frac{\Phi(T(1+u))-\Phi(T)}{T^2}
+ =\Psi_\lambda(u),
+ \label{eq:Psi-origin}
+\end{equation}
+where
+\begin{equation}
+ \Psi_\lambda(u)
+ :=\frac12(1+u)^2
+       \left(\lambda+\log(1+u)-\frac12\right)
+   -\frac12\left(\lambda-\frac12\right).
+ \label{eq:Psi-def}
+\end{equation}
+In particular,
+\begin{equation}
+ \Psi_\lambda(0)=0,
+ \qquad \partial_u\Psi_\lambda(0)=\lambda.
+ \label{eq:Psi-linear}
+\end{equation}
+
+Let
+\begin{equation}
+ \Hcal(q,\lambda)
+ :=C-\frac{\lambda}{24}+\sum_{m\ge1}\kappa_mq^m.
+ \label{eq:Hcal-K}
+\end{equation}
+The complete formal inverse equation is
+\begin{align}
+ 0={}&\Fcal(u,q;\lambda)
+ \notag\\
+ :={}&\Psi_\lambda(u)
+ +q\left(C-\frac{\lambda+\log(1+u)}{24}\right)
+ +\sum_{m\ge1}\kappa_mq^{m+1}(1+u)^{-2m}.
+ \label{eq:normalized-implicit}
+\end{align}
+The equality is to be read formally when the full divergent source series is
+used, and as an asymptotic identity to any prescribed finite order when
+\cref{eq:centered-remainder} is truncated.
+
+\begin{theorem}[Unique formal inverse and triangular recurrence]
+\label{thm:triangular-recurrence}
+There is a unique formal solution
+\begin{equation}
+ U(q;\lambda)=\sum_{n\ge1}a_n(\lambda)q^n
+ \label{eq:U-formal}
+\end{equation}
+to \(\Fcal(U,q;\lambda)=0\) with \(U(0;\lambda)=0\), after adjoining
+\(\lambda^{-1}\) to the coefficient ring.  If
+\begin{equation}
+ U_{N-1}(q;\lambda)=\sum_{j=1}^{N-1}a_j(\lambda)q^j,
+ \label{eq:UNminus1}
+\end{equation}
+then
+\begin{equation}
+ a_N(\lambda)
+ =-\frac1\lambda\,[q^N]\,
+   \Fcal\!\left(U_{N-1}(q;\lambda),q;\lambda\right).
+ \label{eq:triangular-recurrence}
+\end{equation}
+Only \(\kappa_1,\ldots,\kappa_{N-1}\) are needed to compute \(a_N\).
+\end{theorem}
+
+\begin{proof}
+Suppose \(a_1,\ldots,a_{N-1}\) have already been determined.  Replace
+\(U_{N-1}\) by \(U_{N-1}+a_Nq^N\) in \cref{eq:normalized-implicit}.  At order
+\(q^N\), the new unknown can enter only through the linearization of
+\(\Psi_\lambda\) at \(u=0\); all nonlinear occurrences multiply it by an
+additional positive power of \(q\).  By \cref{eq:Psi-linear}, its coefficient
+is \(\lambda a_N\).  Setting the coefficient of \(q^N\) to zero gives
+\cref{eq:triangular-recurrence}.  This also proves uniqueness by induction.
+The source term \(\kappa_mq^{m+1}\) can affect order \(q^N\) only when
+\(m\le N-1\).
+\end{proof}
+
+The recurrence is often the fastest way to generate coefficients in a computer
+algebra system.  It also reveals why the expansion is locally finite: no
+coefficient requires an infinite part of the forward asymptotic series.
+
+\subsection{A polynomial structure theorem}
+
+It is useful to isolate the dependence on the second small parameter
+\begin{equation}
+ s=\lambda^{-1}.
+ \label{eq:s-def}
+\end{equation}
+Decompose
+\begin{equation}
+ \Psi_\lambda(u)=\lambda A(u)+B(u),
+ \label{eq:Psi-AB}
+\end{equation}
+where
+\begin{align}
+ A(u)&=u+\frac{u^2}{2},
+ \label{eq:A-def}\\
+ B(u)&=\frac12(1+u)^2\log(1+u)-\frac u2-\frac{u^2}{4}.
+ \label{eq:B-def}
+\end{align}
+After division by \(\lambda\), the implicit equation becomes
+\begin{equation}
+ A(u)-\frac q{24}+sR(u,q)=0,
+ \label{eq:s-implicit}
+\end{equation}
+with
+\begin{equation}
+ R(u,q)=B(u)+q\left(C-\frac{\log(1+u)}{24}\right)
+ +\sum_{m\ge1}\kappa_mq^{m+1}(1+u)^{-2m}.
+ \label{eq:R-def}
+\end{equation}
+All explicit dependence on \(\lambda\) has now been compressed into one factor
+\(s\).
+
+\begin{theorem}[Finite slow depth of each outer block]
+\label{thm:finite-slow-depth}
+For every \(N\ge1\),
+\begin{equation}
+ a_N(\lambda)
+ \in\Q[C,\kappa_1,\ldots,\kappa_{N-1}][\lambda^{-1}],
+ \qquad
+ \deg_{\lambda^{-1}}a_N\le2N-1.
+ \label{eq:aN-ring}
+\end{equation}
+Moreover,
+\begin{equation}
+ [\lambda^0]a_N(\lambda)
+ =\binom{1/2}{N}12^{-N}.
+ \label{eq:aN-constant-term}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+At \(s=0\), \cref{eq:s-implicit} reduces to
+\begin{equation}
+ u+\frac{u^2}{2}=\frac q{24}.
+\end{equation}
+The solution with \(u(0)=0\) is
+\begin{equation}
+ u=\sqrt{1+\frac q{12}}-1,
+ \label{eq:u-szero}
+\end{equation}
+which proves \cref{eq:aN-constant-term}.  For the degree bound, use induction
+on \(N\) in the coefficient equation obtained from
+\cref{eq:s-implicit}.  The term linear in \(a_N\) has coefficient one.  A
+product of previously known coefficients with total outer degree \(N\) has
+slow degree at most \(2N-2\); multiplication by the single explicit factor
+\(s\) in \(sR\) raises this to at most \(2N-1\).  Formal composition with
+\(\log(1+u)\) and \((1+u)^{-2m}\) preserves the same outer-degree estimate.
+The coefficient field is generated only by the source constants that can occur
+through order \(q^N\).
+\end{proof}
+
+\begin{remark}
+The finiteness in \cref{eq:aN-ring} is special and stronger than what is needed
+for a transseries.  A general coefficient differential algebra may produce an
+infinite slow expansion inside each outer block.  Here the linear appearance of
+\(\lambda\) in the centered source equation forces a polynomial in
+\(\lambda^{-1}\).
+\end{remark}
+
+\section{Perturbative Lagrange--B\"urmann inversion}
+\label{sec:Lagrange}
+
+The triangular recurrence is constructive, but an all-orders closed formula is
+more revealing.  The needed identity is a perturbative form of
+Lagrange--B\"urmann inversion; related uses of Lagrange inversion in
+asymptotic factorial problems appear in \cite{BrassescoMendez2011}.
+
+\subsection{A general differential-operator identity}
+
+\begin{theorem}[Perturbative Lagrange--B\"urmann formula]
+\label{thm:perturbative-LB}
+Let \(F_0\) and \(H\) be analytic near \(X\), suppose
+\(F_0'(X)\ne0\), and let \(x(\varepsilon)\) be the local solution of
+\begin{equation}
+ F_0(x)+\varepsilon H(x)=F_0(X),
+ \qquad x(0)=X.
+ \label{eq:perturbed-equation}
+\end{equation}
+Define
+\begin{equation}
+ \mathscr D_0:=\frac1{F_0'(X)}\frac{\dd}{\dd X}.
+ \label{eq:D0-general}
+\end{equation}
+Then, as a convergent local power series in \(\varepsilon\), and also as a
+formal identity,
+\begin{equation}
+ x(\varepsilon)
+ =X+\sum_{n\ge1}\frac{(-\varepsilon)^n}{n!}
+ \mathscr D_0^{\,n-1}
+ \left(\frac{H(X)^n}{F_0'(X)}\right).
+ \label{eq:perturbative-LB}
+\end{equation}
+More generally, for analytic \(g\),
+\begin{equation}
+ g(x(\varepsilon))
+ =g(X)+\sum_{n\ge1}\frac{(-\varepsilon)^n}{n!}
+ \mathscr D_0^{\,n-1}
+ \left(\frac{g'(X)H(X)^n}{F_0'(X)}\right).
+ \label{eq:perturbative-LB-g}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Take a small positively oriented contour around \(X\) containing no other zero
+of \(F_0(z)-F_0(X)\).  For sufficiently small \(\varepsilon\), the argument
+principle gives
+\begin{equation}
+ g(x(\varepsilon))
+ =\frac{1}{2\pi i}\oint
+ g(z)\frac{F_0'(z)+\varepsilon H'(z)}
+ {F_0(z)+\varepsilon H(z)-F_0(X)}\,\dd z.
+ \label{eq:argument-principle-g}
+\end{equation}
+Subtract the same formula at \(\varepsilon=0\), write the difference as a
+logarithmic derivative, integrate by parts, and expand
+\(\log(1+\varepsilon H/(F_0-F_0(X)))\).  The coefficient of
+\(\varepsilon^n\) is
+\begin{equation}
+ \frac{(-1)^n}{n}
+ \Res_{z=X}\frac{g'(z)H(z)^n}{(F_0(z)-F_0(X))^n}.
+ \label{eq:residue-step}
+\end{equation}
+The change of local coordinate \(v=F_0(z)\) yields the standard residue
+identity
+\begin{equation}
+ \Res_{z=X}\frac{\varphi(z)}{(F_0(z)-F_0(X))^n}
+ =\frac1{(n-1)!}
+ \left.
+ \left(\frac1{F_0'(z)}\frac{\dd}{\dd z}\right)^{n-1}
+ \frac{\varphi(z)}{F_0'(z)}
+ \right|_{z=X}.
+ \label{eq:residue-coordinate}
+\end{equation}
+Combining the two formulas proves \cref{eq:perturbative-LB-g}; taking
+\(g(z)=z\) gives \cref{eq:perturbative-LB}.
+\end{proof}
+
+\begin{methodbox}
+To invert \(F=F_0+H\), first solve \(F_0(X)=Y\) exactly or asymptotically, then
+apply \cref{eq:perturbative-LB} with \(\varepsilon=1\).  If the operator
+\(\mathscr D_0\) strictly raises a chosen asymptotic valuation, the infinite
+sum is locally finite coefficient by coefficient and is valid as a formal
+transseries even when it is not a convergent perturbation series.
+\end{methodbox}
+
+\subsection{Specialization to the \(K\)-function}
+
+For the centered \(K\)-problem,
+\begin{equation}
+ F_0(T)=\Phi(T),
+ \qquad
+ F_0'(T)=T\lambda,
+ \qquad
+ H(T)=C-\frac{\lambda}{24}+\sum_{m\ge1}\kappa_mT^{-2m}.
+ \label{eq:K-F0-H}
+\end{equation}
+Therefore
+\begin{equation}
+ \mathscr D:=\frac1{T\lambda}\frac{\dd}{\dd T}
+ \label{eq:K-D}
+\end{equation}
+and the centered inverse has the formal expansion
+\begin{equation}
+ t
+ \sim T+\sum_{n\ge1}\frac{(-1)^n}{n!}
+ \mathscr D^{\,n-1}
+ \left(\frac{H(T)^n}{T\lambda}\right).
+ \label{eq:K-LB-master}
+\end{equation}
+Equation \cref{eq:K-LB-master} is an all-orders formula requiring no implicit
+coefficient solving.
+
+To make the outer blocks explicit, observe that
+\begin{equation}
+ \mathscr D\bigl(Tq^r f(\lambda)\bigr)
+ =Tq^{r+1}\Acal_r f(\lambda),
+ \label{eq:D-block-action}
+\end{equation}
+where
+\begin{equation}
+ \Acal_r f
+ :=\frac{f'(\lambda)+(1-2r)f(\lambda)}{\lambda}.
+ \label{eq:Ar-def}
+\end{equation}
+Here and below, a prime on a coefficient function means differentiation with
+respect to \(\lambda\).
+
+\begin{theorem}[Ordered block formula]
+\label{thm:block-formula}
+Let
+\begin{equation}
+ \Hcal(q,\lambda)=C-\frac{\lambda}{24}
+                   +\sum_{m\ge1}\kappa_mq^m.
+ \label{eq:Hcal-repeated}
+\end{equation}
+Then the coefficient of \(Tq^N=T^{1-2N}\) in the inverse is
+\begin{align}
+ a_N(\lambda)
+ ={}&\sum_{n=1}^{N}\frac{(-1)^n}{n!}
+ \bigl(\Acal_{N-1}\circ\Acal_{N-2}\circ\cdots
+        \circ\Acal_{N-n+1}\bigr)
+ \notag\\
+ &\hspace{28mm}\times
+ \left(
+   \frac{[q^{N-n}]\Hcal(q,\lambda)^n}{\lambda}
+ \right).
+ \label{eq:block-formula}
+\end{align}
+For \(n=1\), the displayed operator composition is empty and acts as the
+identity.  In every nonempty composition, the rightmost operator acts first.
+\end{theorem}
+
+\begin{proof}
+In the \(n\)-th summand of \cref{eq:K-LB-master}, a term
+\([q^m]\Hcal^n\) begins as \(Tq^{m+1}\).  Each application of
+\(\mathscr D\) raises the outer index by one according to
+\cref{eq:D-block-action}.  After \(n-1\) applications, the final index is
+\(m+n\).  Setting \(m=N-n\) and recording the ordered operators gives
+\cref{eq:block-formula}.  Since \(n\le N\), only finitely many perturbation
+orders contribute to a fixed block.
+\end{proof}
+
+\subsection{The first four inverse blocks}
+
+For reference, the next coefficient after \cref{eq:a1}--\cref{eq:a3} is
+\begin{align}
+ a_4(\lambda)={}&-\frac5{2654208}
+ +\frac{6300C+5629}{34836480\lambda}
+ -\frac{37800C^2+12440C+63}{5806080\lambda^2}
+ \notag\\
+ &+\frac{3024000C^3+415800C^2-12440C-63}
+        {29030400\lambda^3}
+ \notag\\
+ &-\frac{C^2(1800C^2-220C-33)}{2880\lambda^4}
+ -\frac{C^2(1360C^2-20C-3)}{960\lambda^5}
+ \notag\\
+ &-\frac{35C^4}{24\lambda^6}
+ -\frac{5C^4}{8\lambda^7}.
+ \label{eq:a4}
+\end{align}
+The constant terms
+\begin{equation}
+ \frac1{24},\quad -\frac1{1152},\quad
+ \frac1{27648},\quad -\frac5{2654208},\ldots
+ \label{eq:constant-blocks}
+\end{equation}
+are precisely the coefficients of
+\(\sqrt{1+q/12}-1\), as predicted by
+\cref{eq:aN-constant-term}.
+
+A compact alternative notation is
+\begin{equation}
+ \eta:=\frac{\lambda}{24}-C.
+ \label{eq:eta-def}
+\end{equation}
+Then
+\begin{align}
+ a_1={}&\frac{\eta}{\lambda},
+ \label{eq:a1-eta}\\
+ a_2={}&-\frac{\eta^2}{2\lambda^3}
+ -\frac{\eta(12\eta-1)}{24\lambda^2}
+ +\frac7{5760\lambda},
+ \label{eq:a2-eta}\\
+ a_3={}&\frac{\eta^3}{2\lambda^5}
+ +\frac{\eta^2(40\eta-3)}{48\lambda^4}
+ +\frac{\eta(960\eta^2-160\eta+1)}{1920\lambda^3}
+ \notag\\
+ &-\frac{7(72\eta-1)}{138240\lambda^2}
+ -\frac{31}{161280\lambda}.
+ \label{eq:a3-eta}
+\end{align}
+This version makes the direct contributions of \(\kappa_1\) and
+\(\kappa_2\) more visible.
+
+\section{Analytic validity, remainder transfer, and certification}
+\label{sec:analytic-validity}
+
+Formal reversion becomes an asymptotic theorem because the source expansion is
+uniform and the derivative of the dominant phase is large.
+
+\subsection{Residual of a formal truncation}
+
+For \(N\ge0\), define
+\begin{equation}
+ t_N:=T+\sum_{n=1}^{N}a_n(\lambda)T^{1-2n},
+ \qquad
+ z_N:=\frac12+t_N.
+ \label{eq:tN-zN}
+\end{equation}
+
+\begin{lemma}[Residual order]
+\label{lem:residual-order}
+For every fixed \(N\ge0\),
+\begin{equation}
+ \log K(z_N)-Y=O_N(\lambda T^{-2N})
+ \qquad(Y\to+\infty).
+ \label{eq:residual-order}
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Divide the source equation by \(T^2\) as in
+\cref{eq:normalized-implicit}.  By construction, the coefficients of
+\(q,q^2,\ldots,q^N\) vanish after substituting the truncated series for \(u\).
+The first possible uncancelled normalized term is of order
+\(\lambda q^{N+1}\); the factor \(\lambda\) is present because the linear
+part of \(\Psi_\lambda\) is \(\lambda u\).  Multiplication by
+\(T^2=q^{-1}\) gives \(O(\lambda T^{-2N})\).  The source remainder
+\(O(t^{-2N})\) in \cref{eq:centered-remainder} has the same or smaller order.
+\end{proof}
+
+\subsection{Transfer from residual to inverse error}
+
+The centered derivative satisfies
+\begin{equation}
+ \Lcal'(t)=t\log t+O(t^{-1})
+ \label{eq:Lprime-leading}
+\end{equation}
+uniformly on the positive real axis.  Since \(t_N/T\to1\),
+\begin{equation}
+ \Lcal'(t)=T\lambda\bigl(1+o(1)\bigr)
+ \label{eq:Lprime-near-T}
+\end{equation}
+uniformly between \(t_N\) and the exact root for all sufficiently large
+\(Y\).
+
+\begin{theorem}[Real-axis asymptotic inverse]
+\label{thm:real-asymptotic}
+Let \(t_*:=K_+^{-1}(y)-\tfrac12\).  For every fixed \(N\ge0\),
+\begin{equation}
+ t_*-t_N=O_N(T^{-2N-1}).
+ \label{eq:t-error}
+\end{equation}
+Equivalently, \cref{eq:main-error} holds.
+\end{theorem}
+
+\begin{proof}
+By the mean value theorem, for some point \(\xi\) between \(t_N\) and \(t_*\),
+\begin{equation}
+ t_N-t_*
+ =\frac{\Lcal(t_N)-\Lcal(t_*)}{\Lcal'(\xi)}
+ =\frac{\log K(z_N)-Y}{\Lcal'(\xi)}.
+ \label{eq:MVT-transfer}
+\end{equation}
+Use \cref{eq:residual-order,eq:Lprime-near-T} to obtain
+\(O(\lambda T^{-2N})/(T\lambda)=O(T^{-2N-1})\).
+\end{proof}
+
+\begin{remark}[How many forward coefficients are required?]
+To construct \(a_1,\ldots,a_N\), it is enough to know the centered forward
+series through \(\kappa_{N-1}t^{-2N+2}\).  The next source term contributes at
+the same scale as the first omitted inverse block and therefore belongs in the
+remainder.
+\end{remark}
+
+\subsection{A posteriori residual certificates}
+
+Asymptotic order does not by itself certify a finite numerical computation.
+Monotonicity supplies a direct certificate.
+
+\begin{proposition}[Residual-to-error bound]
+\label{prop:residual-certificate}
+Let \(Y>0\), let \(z_*=K_+^{-1}(\e^Y)\), and suppose an interval
+\(I=[a,b]\subset[2,\infty)\) contains both \(z_*\) and an approximation
+\(\widehat z\).  Then
+\begin{equation}
+ |\widehat z-z_*|
+ \le
+ \frac{|\log K(\widehat z)-Y|}
+      {\inf_{x\in I}\left(x-\frac12-\frac12\log(2\pi)+\log\Gamma(x)\right)}.
+ \label{eq:residual-certificate}
+\end{equation}
+The denominator is positive.  Since the derivative is increasing on
+\([2,\infty)\), it may be replaced by its value at \(a\).
+\end{proposition}
+
+\begin{proof}
+Apply the mean value theorem to \(\log K\) and use
+\cref{eq:logK-prime,prop:monotone}.
+\end{proof}
+
+A first-order residual correction is
+\begin{equation}
+ z_*=\widehat z-
+ \frac{\log K(\widehat z)-Y}
+ {\widehat z-\frac12-\frac12\log(2\pi)+\log\Gamma(\widehat z)}
+ +O\!\left(
+   \frac{R^2\sup_I|1+\psi|}{(\inf_I(\log K)')^3}
+ \right),
+ \label{eq:Newton-residual}
+\end{equation}
+where \(R=\log K(\widehat z)-Y\).  Thus the transseries is also an excellent
+starting value for Newton or Halley iteration.
+
+\begin{warningbox}
+All asymptotic series in this article are Poincar\'e expansions.  The Bernoulli
+coefficients grow factorially, so summing indefinitely at fixed \(y\) is not
+justified.  For high numerical accuracy, truncate near the least term or use a
+small fixed number of inverse blocks followed by a certified Newton step.
+\end{warningbox}
+
+\section{Rank-two structure and logarithmic re-expansion}
+\label{sec:rank-two}
+
+The Lambert anchor packages an infinite logarithmic expansion into the single
+variable \(w\).  This section unpacks the structure and also gives a second
+resummation that reverses the order of the two scales.
+
+\subsection{The ordinary large-argument expansion of \(\W\)}
+
+Let
+\begin{equation}
+ L_1=\log\!\left(\frac{4Y}{\e}\right),
+ \qquad L_2=\log L_1.
+ \label{eq:L1-L2}
+\end{equation}
+The principal Lambert function has the classical expansion
+\cite{CorlessEtAl1996,DLMF}
+\begin{align}
+ w={}&L_1-L_2+\frac{L_2}{L_1}
+ +\frac{L_2(-2+L_2)}{2L_1^2}
+ \notag\\
+ &+\frac{L_2(6-9L_2+2L_2^2)}{6L_1^3}
+ +O\!\left(\frac{L_2^4}{L_1^4}\right).
+ \label{eq:W-log-expansion}
+\end{align}
+Consequently,
+\begin{align}
+ T=2\sqrt{\frac{Y}{L_1}}\biggl[{}&1+\frac{L_2}{2L_1}
+ +\frac{L_2(3L_2-4)}{8L_1^2}
+ \notag\\
+ &+\frac{L_2(5L_2^2-16L_2+8)}{16L_1^3}
+ \notag\\
+ &+\frac{L_2(105L_2^3-568L_2^2+720L_2-192)}{384L_1^4}
+ +O\!\left(\frac{L_2^5}{L_1^5}\right)\biggr].
+ \label{eq:T-log-expansion}
+\end{align}
+Every finite truncation of \cref{eq:T-log-expansion} is still much larger than
+the first outer correction \(a_1/T\).  Indeed,
+\begin{equation}
+ \frac{a_1/T}{T}=O\!\left(\frac{L_1}{Y}\right)
+ =o(L_1^{-M})\qquad(M\ge0).
+ \label{eq:outer-beyond-slow}
+\end{equation}
+
+\subsection{The fully expanded nested transseries}
+
+Combining \cref{eq:main-transseries,eq:W-log-expansion} gives a conventional
+iterated-logarithm transseries of the shape
+\begin{equation}
+ K_+^{-1}(y)
+ \sim \frac12+
+ \sum_{n\ge0}2^{1-2n}
+ \left(\frac{L_1}{Y}\right)^{n-1/2}
+ \sum_{r\ge0}\frac{P_{n,r}(L_2)}{L_1^r},
+ \label{eq:nested-log-transseries}
+\end{equation}
+where each \(P_{n,r}\) is a polynomial.  The convention for \(n=0\) is
+\((L_1/Y)^{-1/2}=\sqrt{Y/L_1}\), and \(P_{0,0}=1\).  The first row of these
+polynomials is displayed explicitly in \cref{eq:T-log-expansion}.  All later
+rows follow mechanically by substituting \cref{eq:W-log-expansion} into
+\(a_n((w+1)/2)T^{1-2n}\).
+
+\begin{warningbox}
+The double sum in \cref{eq:nested-log-transseries} must be truncated according
+to the transseries ordering, not by a naive rectangle.  For every fixed
+\(r\), all terms in the leading \(n=0\) row dominate the entire \(n=1\) row.
+The \(W\)-anchored form automatically respects this hierarchy and is therefore
+the recommended computational representation.
+\end{warningbox}
+
+\subsection{Reversing the hierarchy: \(1/\lambda\) first}
+
+Equation \cref{eq:s-implicit} permits the alternative expansion
+\begin{equation}
+ u(q,\lambda)
+ \sim U_0(q)+\frac{U_1(q)}{\lambda}
+ +\frac{U_2(q)}{\lambda^2}+\cdots.
+ \label{eq:Uj-resummation}
+\end{equation}
+This resums infinitely many outer blocks at each fixed slow order.
+
+Set
+\begin{equation}
+ r=r(q):=\sqrt{1+\frac q{12}}.
+ \label{eq:r-def}
+\end{equation}
+Then the leading function is exactly
+\begin{equation}
+ U_0(q)=r-1.
+ \label{eq:U0}
+\end{equation}
+The next one is also explicit.
+
+\begin{proposition}[First slow correction]
+\label{prop:U1}
+With the source series interpreted formally in \(q\),
+\begin{equation}
+ U_1(q)=-\frac1r\left\{
+ \frac12\log r+
+ \left(12C-\frac14\right)(r^2-1)
+ +\sum_{m\ge1}\kappa_mq^{m+1}r^{-2m}
+ \right\}.
+ \label{eq:U1}
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+Insert \(u=U_0+\lambda^{-1}U_1+\cdots\) into
+\cref{eq:s-implicit}.  At order \(\lambda^0\),
+\(A(U_0)=q/24\), giving \cref{eq:U0}.  At order \(\lambda^{-1}\),
+\begin{equation}
+ A'(U_0)U_1+R(U_0,q)=0.
+\end{equation}
+Since \(A'(U_0)=1+U_0=r\), it remains to simplify \(R(r-1,q)\).  Using
+\(q=12(r^2-1)\), one finds
+\begin{equation}
+ B(r-1)+q\left(C-\frac{\log r}{24}\right)
+ =\frac12\log r+\left(12C-\frac14\right)(r^2-1),
+\end{equation}
+which proves the formula.
+\end{proof}
+
+All higher \(U_j\) satisfy a triangular functional recurrence.  For \(j\ge1\),
+let
+\begin{equation}
+ V_{j-1}(s):=U_0+\sum_{i=1}^{j-1}s^iU_i.
+ \label{eq:Vj}
+\end{equation}
+Then
+\begin{equation}
+ rU_j
+ +\frac12\sum_{i=1}^{j-1}U_iU_{j-i}
+ +[s^{j-1}]R(V_{j-1}(s),q)=0.
+ \label{eq:Uj-recurrence}
+\end{equation}
+This representation is useful when many outer powers of \(q\) are needed but
+only a few inverse powers of \(\lambda\) are desired.
+
+\begin{remark}[Two valid but different summation directions]
+The expansion \(u=\sum_n a_n(\lambda)q^n\) is outer-first and is asymptotically
+canonical because \(q\ll\lambda^{-M}\).  The expansion
+\(u=\sum_j\lambda^{-j}U_j(q)\) is a formal resummation across infinitely many
+outer blocks.  It is algebraically useful, but analytic claims about the
+\(q\)-series \(U_j\) require separate convergence or summability analysis.
+\end{remark}
+
+\section{An accelerated Lambert anchor}
+\label{sec:accelerated-anchor}
+
+The leading Lambert anchor treats the constant and logarithmic terms as a
+perturbation.  A different elementary model absorbs both of them exactly and
+also captures a nontrivial infinite string of inverse powers.  This gives a
+markedly sharper closed approximation before any transseries correction is
+added.
+
+Set
+\begin{equation}
+ d:=\frac1{12},
+ \qquad
+ \widehat\Phi(t)
+ :=\frac14(t^2-d)\bigl(\log(t^2-d)-1\bigr)+C.
+ \label{eq:Phihat-def}
+\end{equation}
+For positive large \(t\), expansion of the logarithm gives
+\begin{equation}
+ \widehat\Phi(t)
+ =\Phi(t)+C-\frac1{24}\log t
+  +\sum_{m\ge1}\widehat\kappa_m t^{-2m},
+ \qquad
+ \widehat\kappa_m:=\frac{d^{m+1}}{4m(m+1)}.
+ \label{eq:Phihat-expansion}
+\end{equation}
+Indeed,
+\begin{equation}
+ (1-x)\log(1-x)
+ =-x+\sum_{j\ge2}\frac{x^j}{j(j-1)},
+ \label{eq:one-minus-x-log}
+\end{equation}
+with \(x=d/t^2\), and the constant terms cancel.  Therefore the exact
+centered logarithm may be written
+\begin{equation}
+ \Lcal(t)
+ \sim \widehat\Phi(t)+\widehat H(t),
+ \qquad
+ \widehat H(t):=\sum_{m\ge1}\rho_m t^{-2m},
+ \label{eq:accelerated-splitting}
+\end{equation}
+where
+\begin{equation}
+ \rho_m:=\kappa_m-\widehat\kappa_m.
+ \label{eq:rho-def}
+\end{equation}
+The first residual coefficients are
+\begin{equation}
+ \rho_1=-\frac1{480},
+ \qquad
+ \rho_2=\frac{61}{362880},
+ \qquad
+ \rho_3=-\frac{433}{4354560}.
+ \label{eq:rho-first}
+\end{equation}
+
+\subsection{Exact inversion of the accelerated model}
+
+Let \(Y=\log y\), and assume \(Y>C\).  Define
+\begin{equation}
+ \widehat w:=\W_0\!\left(\frac{4(Y-C)}{\e}\right),
+ \qquad
+ S:=\frac{4(Y-C)}{\widehat w},
+ \qquad
+ \widehat T:=\sqrt{S+d}.
+ \label{eq:accelerated-anchor-def}
+\end{equation}
+Then
+\begin{equation}
+ \widehat\Phi(\widehat T)=Y.
+ \label{eq:Phihat-inversion}
+\end{equation}
+To see this, set \(X=\widehat T^2-d=S\).  The defining equation becomes
+\begin{equation}
+ X(\log X-1)=4(Y-C),
+ \label{eq:X-logX-accelerated}
+\end{equation}
+and the substitution \(\widehat w=\log X-1\) reduces it to
+\(\widehat w\e^{\widehat w}=4(Y-C)/\e\).
+
+\begin{mainbox}[title={Accelerated one-line inverse}]
+For \(y\to+\infty\), with \(Y=\log y\),
+\begin{equation}
+ \boxed{
+ K_+^{-1}(y)
+ =\frac12+
+ \sqrt{\frac{4(Y-C)}{\W_0(4(Y-C)/\e)}+\frac1{12}}
+ +O\!\left(\frac{1}{T^3\log T}\right).}
+ \label{eq:accelerated-one-line}
+\end{equation}
+Here \(C=\log A-\tfrac18=-\zeta'(-1)-\tfrac1{24}\), and either \(T\) or
+\(\widehat T\) may be used inside the displayed error term.
+\end{mainbox}
+
+The gain over the uncorrected anchor \(z\approx\tfrac12+T\) is two outer
+powers: the latter has error \(O(T^{-1})\), whereas
+\cref{eq:accelerated-one-line} has error \(O(T^{-3}/\log T)\).  The
+acceleration is not accidental: it resums the complete \(\lambda^0\) row
+\(U_0(q)=\sqrt{1+q/12}-1\), shifts the constant \(C\) into the Lambert
+argument, and incorporates the logarithmic correction into the modified
+quadratic variable \(t^2-d\).
+
+\subsection{All-orders corrections around the accelerated anchor}
+
+Since
+\begin{equation}
+ \widehat\Phi'(t)
+ =\frac t2\log(t^2-d),
+ \label{eq:Phihat-prime}
+\end{equation}
+define the anchor derivative operator
+\begin{equation}
+ \widehat{\mathscr D}
+ :=\frac{2}{t\log(t^2-d)}\frac{\dd}{\dd t}.
+ \label{eq:Dhat-def}
+\end{equation}
+The perturbative formula of \cref{thm:perturbative-LB} gives the formal
+accelerated inverse
+\begin{equation}
+ t
+ \sim \widehat T+
+ \sum_{n\ge1}\frac{(-1)^n}{n!}
+ \widehat{\mathscr D}^{\,n-1}
+ \left.
+ \left(
+   \frac{\widehat H(t)^n}{\widehat\Phi'(t)}
+ \right)\right|_{t=\widehat T}.
+ \label{eq:accelerated-LB}
+\end{equation}
+Every fixed inverse order receives contributions from only finitely many
+perturbation orders.  The first correction follows solely from
+\(\rho_1=-1/480\):
+\begin{equation}
+ t
+ =\widehat T+
+ \frac{1}{240\widehat T^3\log(\widehat T^2-1/12)}
+ +O\!\left(\frac{1}{\widehat T^5\log\widehat T}
+           +\frac{1}{\widehat T^7(\log\widehat T)^3}\right).
+ \label{eq:accelerated-first-correction}
+\end{equation}
+The two terms displayed in the remainder come respectively from the next
+source coefficient and from nonlinear reversion of the first one.
+
+\begin{proposition}[Accelerated error transfer]
+\label{prop:accelerated-error}
+For \(N\ge0\), let \(\widehat t_N\) denote the truncation of
+\cref{eq:accelerated-LB} selected so that substitution into the accelerated
+forward transseries cancels every residual term through source order
+\(t^{-2N}\); thus \(\widehat t_0=\widehat T\).  Then, on the positive real
+axis,
+\begin{equation}
+ K_+^{-1}(\e^Y)-\frac12-\widehat t_N
+ =O_N\!\left(\frac{\widehat T^{-2N-3}}{\log\widehat T}\right),
+ \qquad Y\to+\infty.
+ \label{eq:accelerated-error}
+\end{equation}
+For \(N=0\), this is \cref{eq:accelerated-one-line}.  For \(N=1\),
+retaining the correction in \cref{eq:accelerated-first-correction} cancels
+\(\rho_1t^{-2}\) and moves the leading error to the scale stated inside that
+formula's remainder.
+\end{proposition}
+
+\begin{proof}
+By construction, the accelerated forward residual is
+\(O(t^{-2N-2})\).  Division by
+\(\widehat\Phi'(t)\asymp t\log t\), followed by the same mean-value argument
+as in \cref{thm:real-asymptotic}, gives
+\(O(t^{-2N-3}/\log t)\).  The retained formal reversion terms cancel all
+larger nonlinear contributions, and \(t\sim\widehat T\) converts this to
+\cref{eq:accelerated-error}.
+\end{proof}
+
+\begin{remark}[Which anchor should be used?]
+The basic anchor is structurally simpler and exposes the polynomial block
+coefficients \(a_n(\lambda)\).  The accelerated anchor is usually superior
+for a one-line numerical approximation.  They encode the same inverse germ;
+they merely choose different portions of the forward transseries as the
+exactly invertible model.
+\end{remark}
+
+\section{Complex sectorial inverse germs}
+\label{sec:complex-branches}
+
+The positive real inverse uses the principal logarithm and \(\W_0\), but the
+same construction describes complex inverse germs.  Because both the
+logarithm of the target and Lambert \(W\) are multivalued, two branch indices
+appear naturally.
+
+Fix a branch of \(\log K(t+\tfrac12)\) in a sector
+\begin{equation}
+ |\arg t|\le \pi-\delta,
+ \qquad \delta>0,
+ \label{eq:t-sector}
+\end{equation}
+where the centered Stirling expansion is uniform.  For a nonzero target
+\(y\), choose
+\begin{equation}
+ Y_\ell:=\Log y+2\pi i\ell,
+ \qquad \ell\in\mathbb Z,
+ \label{eq:Yell}
+\end{equation}
+and a branch \(\W_k\) of Lambert \(W\).  Set
+\begin{equation}
+ w_{k,\ell}:=\W_k\!\left(\frac{4Y_\ell}{\e}\right),
+ \qquad
+ \lambda_{k,\ell}:=\frac{w_{k,\ell}+1}{2},
+ \qquad
+ T_{k,\ell}:=\exp(\lambda_{k,\ell}).
+ \label{eq:complex-anchor}
+\end{equation}
+Then \(\Phi(T_{k,\ell})=Y_\ell\) on the corresponding logarithmic sheet.
+
+\begin{theorem}[Sectorial complex inverse transseries]
+\label{thm:complex-inverse}
+Let a pair \((k,\ell)\) vary along a path such that
+\begin{equation}
+ |T_{k,\ell}|\longrightarrow\infty,
+ \qquad
+ |\arg T_{k,\ell}|\le\pi-\delta,
+ \qquad
+ |w_{k,\ell}+1|\ge\varepsilon>0.
+ \label{eq:complex-nondegenerate}
+\end{equation}
+Assume also that the chosen local solution avoids critical points of
+\(\log K\).  Then there is a sectorial inverse germ with
+\begin{equation}
+ z_{k,\ell}(y)
+ \sim \frac12+T_{k,\ell}
+ +\sum_{n\ge1}a_n(\lambda_{k,\ell})
+ T_{k,\ell}^{1-2n},
+ \label{eq:complex-inverse-series}
+\end{equation}
+where the same rational functions \(a_n\) as on the real branch occur.  For
+every fixed \(N\), the error is
+\begin{equation}
+ O_{N,\delta,\varepsilon}
+ \bigl(|T_{k,\ell}|^{-2N-1}\bigr)
+ \label{eq:complex-error}
+\end{equation}
+through any closed subsector on which the derivative remains uniformly
+nonzero.
+\end{theorem}
+
+\begin{proof}
+The centered forward expansion and its differentiated form are uniform in
+closed subsectors of \cref{eq:t-sector}; this follows from the corresponding
+sectorial Stirling expansions for \(\Gamma\) and Barnes \(G\)
+\cite[\S5.11, \S5.17]{DLMF}.  The formal coefficient calculation is
+algebraic and is unchanged after complexification.  Condition
+\(|w+1|\ge\varepsilon\) excludes the critical value of the Lambert anchor,
+for which \(\Phi'(T)=T(w+1)/2\) vanishes.  The analytic inverse-function
+theorem and the complex mean-value replacement based on contour estimates
+then transfer the residual order to the inverse order.
+\end{proof}
+
+\begin{warningbox}
+The indices \((k,\ell)\) label asymptotic constructions, not necessarily
+globally distinct single-valued branches of an entire inverse.  Analytic
+continuation can permute germs, two index pairs can describe the same germ on
+overlapping sheets, and singularities occur at critical values of \(K\) as
+well as at the Lambert branch point \(w=-1\).  Formula
+\cref{eq:complex-inverse-series} is therefore a sectorial local statement.
+\end{warningbox}
+
+The accelerated anchor also complexifies.  Replacing \(Y\) by \(Y_\ell\),
+choosing a branch \(\W_k(4(Y_\ell-C)/\e)\), and choosing the compatible square
+root gives
+\begin{equation}
+ \widehat T_{k,\ell}^2
+ =\frac{4(Y_\ell-C)}{\W_k(4(Y_\ell-C)/\e)}+\frac1{12}.
+ \label{eq:complex-accelerated}
+\end{equation}
+The operator formula \cref{eq:accelerated-LB} then applies on any domain where
+\(\log(\widehat T^2-1/12)\) and the square root are consistently chosen and
+the anchor derivative does not vanish.
+
+\section{A general theory for Lambert-invertible logarithmic transseries}
+\label{sec:general-theory}
+
+The calculation above is an instance of a broad and stable inversion
+mechanism.  Its essential feature is a dominant monomial multiplied by one
+logarithm.  Lambert \(W\) inverts that dominant phase exactly, while a
+differential operator converts every lower-order source monomial into a
+strictly smaller inverse monomial.
+
+\subsection{The exact generalized Lambert anchor}
+
+Let
+\begin{equation}
+ F_0(x):=a x^p(\log x-b),
+ \qquad a\ne0,\quad p>0,
+ \label{eq:general-F0}
+\end{equation}
+and solve \(F_0(X)=Y\).  Put
+\begin{equation}
+ w:=\W_k\!\left(\frac{p}{a}\e^{-pb}Y\right),
+ \qquad
+ L:=b+\frac wp,
+ \qquad
+ X:=\e^L
+      =\left(\frac{pY}{aw}\right)^{1/p}.
+ \label{eq:general-anchor}
+\end{equation}
+Then \(F_0(X)=Y\).  The logarithmic slope variable is
+\begin{equation}
+ \Lambda:=p(L-b)+1=w+1,
+ \label{eq:Lambda-def}
+\end{equation}
+and
+\begin{equation}
+ F_0'(X)=aX^{p-1}\Lambda.
+ \label{eq:general-F0-prime}
+\end{equation}
+Thus the only intrinsic degeneracy of the anchor occurs at the Lambert
+critical point \(w=-1\).
+
+\subsection{A one-grid source class}
+
+Fix \(\sigma>0\) and define the outer monomial
+\begin{equation}
+ Q:=X^{-\sigma}.
+ \label{eq:general-Q}
+\end{equation}
+Consider a source transseries of the form
+\begin{equation}
+ F(x)=F_0(x)+H(x),
+ \qquad
+ H(x)=x^{p-\sigma}\Hcal(x^{-\sigma},\log x),
+ \label{eq:general-source}
+\end{equation}
+where
+\begin{equation}
+ \Hcal(Q,L)=\sum_{m\ge0}h_m(L)Q^m.
+ \label{eq:general-Hcal}
+\end{equation}
+The coefficients \(h_m\) belong to a differential algebra \(\Acal\) that is
+closed under \(\dd/\dd L\), multiplication, and division by \(a\Lambda\).
+Typical choices are rational functions in \(L\), Laurent polynomials in
+\(\Lambda\), or logarithmic transseries in slower scales.
+
+\begin{definition}[Lambert-grid inverse transseries]
+\label{def:Lambert-grid}
+A formal inverse associated with \cref{eq:general-source} is an expansion
+\begin{equation}
+ x
+ =X\left(1+\sum_{N\ge1}c_N(L)Q^N\right),
+ \qquad c_N\in\Acal[\Lambda^{-1}],
+ \label{eq:general-inverse-shape}
+\end{equation}
+ordered first by the powers of \(Q\) and then by the chosen asymptotic order
+inside the coefficient algebra.
+\end{definition}
+
+The anchor derivative operator is
+\begin{equation}
+ \mathscr D_0
+ :=\frac1{F_0'(X)}\frac{\dd}{\dd X}.
+ \label{eq:general-D0}
+\end{equation}
+For every exponent \(\rho\) and coefficient function \(f(L)\),
+\begin{equation}
+ \mathscr D_0\bigl(X^\rho f(L)\bigr)
+ =X^{\rho-p}\Bcal_\rho f(L),
+ \qquad
+ \Bcal_\rho f:=\frac{f'(L)+\rho f(L)}{a\Lambda}.
+ \label{eq:general-block-action}
+\end{equation}
+Each application lowers the power of \(X\) by exactly \(p\), while remaining
+inside the coefficient differential algebra.
+
+\begin{theorem}[Universal inverse formula]
+\label{thm:universal-inverse}
+For the source \cref{eq:general-source}, the formal inverse satisfying
+\(F(x)=Y=F_0(X)\) is
+\begin{equation}
+ \boxed{
+ x
+ \sim X+\sum_{n\ge1}\frac{(-1)^n}{n!}
+ \mathscr D_0^{\,n-1}
+ \left(\frac{H(X)^n}{F_0'(X)}\right).}
+ \label{eq:universal-inverse}
+\end{equation}
+At each prescribed power of \(Q\), only finitely many values of \(n\)
+contribute.  Consequently \cref{eq:universal-inverse} is well defined as a
+formal transseries independently of convergence of the perturbation series in
+an auxiliary parameter.
+\end{theorem}
+
+\begin{proof}
+Formula \cref{eq:universal-inverse} is
+\cref{eq:perturbative-LB} with the auxiliary parameter set to one.  A monomial
+from \(H^n/F_0'\) has initial size
+\begin{equation}
+ X^{n(p-\sigma)-(p-1)-m\sigma}
+ =X^{(n-1)p-n\sigma+1-m\sigma},
+ \end{equation}
+where \(m\ge0\) is its total source-grid index.  After \(n-1\) applications
+of \(\mathscr D_0\), \cref{eq:general-block-action} changes this to
+\begin{equation}
+ X^{1-(m+n)\sigma}=XQ^{m+n}.
+ \label{eq:local-finiteness-power}
+\end{equation}
+Hence the coefficient of \(XQ^N\) can only receive contributions from
+\(1\le n\le N\), with \(m=N-n\).  This proves local finiteness and the claimed
+shape.
+\end{proof}
+
+\begin{theorem}[Ordered coefficient formula]
+\label{thm:general-block-formula}
+Let
+\begin{equation}
+ \rho_{n,N}:=(n-1)p-N\sigma+1.
+ \label{eq:rho-nN}
+\end{equation}
+Then the coefficient in \cref{eq:general-inverse-shape} is
+\begin{align}
+ c_N(L)
+ ={}&\sum_{n=1}^{N}\frac{(-1)^n}{n!}
+ \bigl(
+   \Bcal_{\rho_{n,N}-(n-2)p}
+   \circ\cdots\circ
+   \Bcal_{\rho_{n,N}-p}
+   \circ\Bcal_{\rho_{n,N}}
+ \bigr)
+ \notag\\[-0.2em]
+ &\hspace{31mm}\times
+ \left(
+  \frac{[Q^{N-n}]\Hcal(Q,L)^n}{a\Lambda}
+ \right).
+ \label{eq:general-block-formula}
+\end{align}
+For \(n=1\), the operator composition is empty.  For \(n\ge2\), it contains
+exactly \(n-1\) factors, and the rightmost factor acts first.
+\end{theorem}
+
+\begin{proof}
+The coefficient \([Q^{N-n}]\Hcal^n\) in \(H^n/F_0'\) is multiplied by
+\(X^{\rho_{n,N}}\).  Successive applications of \(\mathscr D_0\) lower its
+power by \(p\), so \cref{eq:general-block-action} produces the displayed
+ordered list of \(\Bcal\)-operators.  The final power is \(X^{1-N\sigma}\),
+as required.
+\end{proof}
+
+\subsection{Normalized implicit recurrence}
+
+An alternative construction avoids the perturbative operator formula.  Set
+\begin{equation}
+ x=X(1+u),
+ \qquad
+ u=\sum_{N\ge1}c_NQ^N.
+ \label{eq:general-u}
+\end{equation}
+After division by \(aX^p\), the equation \(F(x)=F_0(X)\) becomes
+\begin{align}
+ 0={}&(1+u)^p
+ \left(L+\log(1+u)-b\right)-(L-b)
+ \notag\\
+ &+\frac{Q}{a}(1+u)^{p-\sigma}
+ \Hcal\bigl(Q(1+u)^{-\sigma},L+\log(1+u)\bigr).
+ \label{eq:general-normalized-implicit}
+\end{align}
+The derivative of its first line with respect to \(u\) at \(u=0\) is
+\(\Lambda\).  Therefore the coefficient of \(c_N\) in the \(Q^N\)-equation
+is \(\Lambda\), and the recurrence is triangular:
+\begin{equation}
+ c_N=-\frac1\Lambda[Q^N]
+ \Fcal\!\left(\sum_{j=1}^{N-1}c_jQ^j,Q;L\right),
+ \label{eq:general-triangular}
+\end{equation}
+where \(\Fcal\) denotes the left-hand side of
+\cref{eq:general-normalized-implicit}.  Formula
+\cref{eq:general-triangular} is often the simplest route for computer
+algebra; \cref{eq:general-block-formula} is usually the clearest theoretical
+formula.
+
+\subsection{Asymptotic validity}
+
+\begin{theorem}[Residual-to-inverse transfer for the general class]
+\label{thm:general-analytic}
+Suppose \(F\) is analytic in a real ray or closed complex sector, the source
+expansion is differentiable term by term there, and
+\begin{equation}
+ H(x)=x^{p-\sigma}\sum_{m=0}^{N-1}h_m(\log x)x^{-m\sigma}
+      +O\bigl(x^{p-(N+1)\sigma}\Acal_N(x)\bigr),
+ \label{eq:general-source-remainder}
+\end{equation}
+where \(\Acal_N\) is a controlled slow factor.  Assume
+\begin{equation}
+ |\Lambda|\ge\varepsilon>0,
+ \qquad
+ |F'(x)|\asymp |a\Lambda X^{p-1}|
+ \label{eq:general-nondegenerate}
+\end{equation}
+uniformly near the desired root.  If \(x_N\) is the inverse transseries
+truncated after \(c_NXQ^N\), then
+\begin{equation}
+ x-x_N
+ =O\!\left(X^{1-(N+1)\sigma}\widetilde\Acal_N(X)\right),
+ \label{eq:general-inverse-remainder}
+\end{equation}
+where \(\widetilde\Acal_N\) differs from \(\Acal_N\) only by factors generated
+inside the coefficient differential algebra, in particular by powers of
+\(\Lambda^{-1}\).
+\end{theorem}
+
+\begin{proof}
+Substitution of the recursively determined coefficients cancels the normalized
+residual through \(Q^N\).  Restoring the factor \(aX^p\) leaves a residual of
+order \(X^{p-(N+1)\sigma}\) times a slow factor.  Division by the local slope
+\(F'(x)\asymp a\Lambda X^{p-1}\), using either the real mean-value theorem or
+a sectorial inverse-function estimate, produces
+\(X^{1-(N+1)\sigma}\) and the indicated slow factors.
+\end{proof}
+
+\subsection{Beyond a single grid}
+
+The one-grid hypothesis is convenient, not essential.  Suppose instead that
+\begin{equation}
+ H(x)=\sum_{\gamma\in\Gamma}
+ x^{p-\gamma}h_\gamma(\log x),
+ \label{eq:multigrid-source}
+\end{equation}
+where \(\Gamma\subset(0,\infty)\) is well ordered and locally finite.  Products
+of source monomials generate the additive semigroup
+\begin{equation}
+ \langle\Gamma\rangle
+ :=\left\{\gamma_1+\cdots+\gamma_n:
+ n\ge1,\ \gamma_j\in\Gamma\right\}.
+ \label{eq:additive-support}
+\end{equation}
+The same power count as in \cref{eq:local-finiteness-power} shows that the
+relative inverse support is contained in \(\langle\Gamma\rangle\).  Whenever
+that semigroup is locally finite---as it is for every finitely generated
+positive grid---the perturbative formula is coefficientwise finite.  Hahn or
+logarithmic transseries coefficient fields may be used for the slow
+coefficients.  This is the natural setting for mixtures of integer powers,
+fractional powers, iterated logarithms, and exponentially small sectors; see
+\cite{vanDerHoeven2006,ADH2017} for the broader transseries framework.
+
+\begin{methodbox}[title={General Lambert-grid inversion recipe}]
+Given a large equation \(F(x)=Y\) whose dominant part is
+\(a x^p(\log x-b)\):
+\begin{enumerate}
+ \item invert the dominant phase exactly by \cref{eq:general-anchor};
+ \item choose an outer support for the lower-order source and verify local
+       finiteness under addition;
+ \item compute coefficients either by the normalized recurrence
+       \cref{eq:general-triangular} or by the ordered operator formula
+       \cref{eq:general-block-formula};
+ \item retain Lambert \(W\) in the final expression unless a fully logarithmic
+       expansion is explicitly needed;
+ \item certify a finite approximation from its residual and a lower bound on
+       \(|F'|\).
+\end{enumerate}
+\end{methodbox}
+
+\section{Examples and neighboring inverse problems}
+\label{sec:examples}
+
+The parameters in the general theory clarify both what is special about the
+\(K\)-function and what is universal.  The following table records the dominant
+phase, the first outer spacing, and the exact Lambert anchor in several
+standard problems.  In each row \(Y\) denotes the logarithm of the original
+large target when the special function itself, rather than its logarithm, is
+being inverted.
+
+\begin{table}[htbp]
+\centering
+\small
+\caption{Lambert anchors for related logarithmic inverse problems.}
+\label{tab:neighboring-anchors}
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{0.22\textwidth}
+  >{\centering\arraybackslash}p{0.18\textwidth}
+  >{\centering\arraybackslash}p{0.12\textwidth}
+  >{\centering\arraybackslash}X@{}}
+\toprule
+Problem & \((a,p,b)\) & \(\sigma\) & Dominant anchor \(X\) \\
+\midrule
+\(\log\Gamma(x)=Y\)
+ & \((1,1,1)\) & \(1\)
+ & \(Y/\W(Y/\e)\) \\
+Centered \(\log K(t+\tfrac12)=Y\)
+ & \((\tfrac12,2,\tfrac12)\) & \(2\)
+ & \(2\sqrt{Y/\W(4Y/\e)}\) \\
+\(\log G(x+1)=Y\)
+ & \((\tfrac12,2,\tfrac32)\) & \(1\)
+ & \(2\sqrt{Y/\W(4Y/\e^3)}\) \\
+Order-\(r\) hyperfactorial, \(p=r+1\)
+ & \((1/p,p,1/p)\) & typically \(1\)
+ & \(\bigl(p^2Y/\W(p^2Y/\e)\bigr)^{1/p}\) \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\subsection{The inverse gamma function}
+
+Stirling's expansion has the form
+\begin{equation}
+ \log\Gamma(x)
+ \sim x(\log x-1)-\frac12\log x+\frac12\log(2\pi)
+ +\sum_{m\ge1}\frac{B_{2m}}{2m(2m-1)x^{2m-1}}.
+ \label{eq:gamma-general-example}
+\end{equation}
+Thus \(a=1\), \(p=1\), \(b=1\), and the correction begins at
+\(x^0\), so \(\sigma=1\).  With
+\begin{equation}
+ X=\frac{Y}{\W(Y/\e)},
+ \qquad
+ \Lambda=\W(Y/\e)+1,
+ \label{eq:gamma-anchor-example}
+\end{equation}
+the first general coefficient is
+\begin{equation}
+ c_1=-\frac{h_0(L)}{\Lambda},
+ \qquad
+ h_0(L)=-\frac L2+\frac12\log(2\pi).
+ \label{eq:gamma-c1-example}
+\end{equation}
+This recovers the familiar Lambert description of the large inverse gamma
+branch while placing all subsequent corrections in a single automatic
+calculus.
+
+\subsection{The centered inverse \(K\)-function}
+
+For \(x=t\), the centered source has
+\begin{equation}
+ a=\frac12,
+ \qquad p=2,
+ \qquad b=\frac12,
+ \qquad \sigma=2,
+ \qquad h_0(L)=C-\frac L{24}.
+ \label{eq:K-general-parameters}
+\end{equation}
+Since \(a\Lambda=\tfrac12(w+1)=\lambda\), the universal first coefficient
+\begin{equation}
+ c_1=-\frac{h_0(L)}{a\Lambda}
+ \label{eq:universal-c1}
+\end{equation}
+becomes
+\begin{equation}
+ c_1=\frac1{24}-\frac C\lambda=a_1(\lambda),
+ \label{eq:K-c1-recovered}
+\end{equation}
+exactly as in \cref{eq:a1}.  The unusually large spacing \(\sigma=2\) is the
+benefit of the canonical half-shift and parity cancellation.
+
+\subsection{The inverse Barnes \(G\)-function}
+
+The standard Barnes expansion is
+\begin{align}
+ \log G(x+1)
+ \sim{}&\frac{x^2}{2}\log x-\frac{3x^2}{4}
+ +\frac x2\log(2\pi)-\frac1{12}\log x+\zeta'(-1)
+ \notag\\
+ &+\sum_{m\ge1}\frac{B_{2m+2}}
+ {4m(m+1)x^{2m}}.
+ \label{eq:BarnesG-example}
+\end{align}
+The dominant phase has \((a,p,b)=(\tfrac12,2,\tfrac32)\), but the
+\(x\log(2\pi)/2\) correction begins one power below the dominant term.
+Consequently \(\sigma=1\), and the inverse contains every integer outer power
+rather than only the even lattice obtained for the centered \(K\)-function.
+This comparison explains why the identity
+\begin{equation}
+ K(z)G(z)=\Gamma(z)^{z-1}
+ \label{eq:K-G-comparison}
+\end{equation}
+does not by itself reveal the sparse inverse support of \(K\): the sparsity
+appears only after cancellation and centering.
+
+\subsection{Higher generalized hyperfactorials}
+
+For an integer \(r\ge0\), consider the discrete products
+\begin{equation}
+ H_r(n):=\prod_{k=1}^{n}k^{k^r}.
+ \label{eq:Hr-discrete}
+\end{equation}
+Euler--Maclaurin summation gives, with \(p=r+1\),
+\begin{equation}
+ \log H_r(n)
+ =\frac{n^p}{p}\log n-\frac{n^p}{p^2}
+  +O(n^{p-1}\log n).
+ \label{eq:Hr-leading}
+\end{equation}
+Any normalized continuous interpolation having this asymptotic form therefore
+has the dominant parameters
+\begin{equation}
+ a=\frac1p,
+ \qquad b=\frac1p,
+ \qquad
+ X=\left(
+ \frac{p^2Y}{\W(p^2Y/\e)}
+ \right)^{1/p}.
+ \label{eq:Hr-anchor}
+\end{equation}
+The lower Euler--Maclaurin terms normally begin at relative order \(X^{-1}\),
+so the generic grid spacing is \(\sigma=1\).  Special shifts can eliminate
+some sublattices, just as the half-shift does for \(K\).  Determining such a
+shift amounts to choosing a center at which the relevant Bernoulli
+polynomials vanish.
+
+\subsection{The first two universal coefficients}
+
+For later reuse, write the source as in \cref{eq:general-Hcal}.  The first two
+relative inverse coefficients obtained from
+\cref{eq:general-block-formula} are
+\begin{align}
+ c_1={}&-\frac{h_0}{a\Lambda},
+ \label{eq:general-c1}\\
+ c_2={}&-\frac{h_1}{a\Lambda}
+ +\frac12\Bcal_{p-2\sigma+1}
+ \left(\frac{h_0^2}{a\Lambda}\right).
+ \label{eq:general-c2}
+\end{align}
+These formulas already include differentiation of all logarithmic coefficient
+functions through \(\Bcal_\rho\).  They are therefore valid without assuming
+that the \(h_m\) are constants.
+
+\section{Symbolic generation and stable numerical evaluation}
+\label{sec:algorithms}
+
+The recurrence and operator formulas are straightforward to automate.  This
+section gives reproducible pseudocode in Python/SymPy notation and a stable
+workflow for evaluating the inverse without forming the astronomically large
+number \(y=\e^Y\).
+
+\subsection{Generating the centered source coefficients}
+
+The Bernoulli-polynomial formula \cref{eq:kappa-formula} is directly
+implementable:
+
+\begin{lstlisting}
+import sympy as sp
+
+m = sp.symbols("m", integer=True, positive=True)
+
+def kappa(j: int) -> sp.Expr:
+    if j < 1:
+        raise ValueError("j must be positive")
+    return sp.factor(
+        -sp.bernoulli(2*j + 2, sp.Rational(1, 2))
+        / (4*j*(j + 1)*(2*j + 1))
+    )
+
+print([kappa(j) for j in range(1, 6)])
+# [-7/5760, 31/161280, -127/1290240,
+#  511/4866048, -1414477/7380172800]
+\end{lstlisting}
+
+\subsection{Triangular generation of inverse blocks}
+
+The following routine implements \cref{eq:triangular-recurrence}.  Every
+expression is truncated before coefficient extraction, preventing irrelevant
+high powers from expanding.
+
+\begin{lstlisting}
+import sympy as sp
+
+q, lam, C = sp.symbols("q lam C")
+
+def trunc(expr: sp.Expr, order: int) -> sp.Expr:
+    return sp.series(expr, q, 0, order + 1).removeO().expand()
+
+def inverse_blocks(N: int) -> list[sp.Expr]:
+    if N < 1:
+        return []
+
+    u = sp.Integer(0)
+    blocks: list[sp.Expr] = []
+
+    for n in range(1, N + 1):
+        log1pu = trunc(sp.log(1 + u), n)
+        psi = sp.Rational(1, 2)*(1 + u)**2 * (
+            lam + log1pu - sp.Rational(1, 2)
+        ) - sp.Rational(1, 2)*(lam - sp.Rational(1, 2))
+
+        source = q*(C - (lam + log1pu)/24)
+        for j in range(1, n):
+            source += kappa(j)*q**(j + 1) * trunc(
+                (1 + u)**(-2*j), n
+            )
+
+        residual_n = trunc(psi + source, n).coeff(q, n)
+        a_n = sp.factor(-residual_n/lam)
+        blocks.append(a_n)
+        u = trunc(u + a_n*q**n, n)
+
+    return blocks
+\end{lstlisting}
+
+Because the coefficient equation is triangular, no nonlinear equation solver
+is invoked.  Exact rational arithmetic is preserved, and \(C\) may remain a
+symbol until numerical evaluation.
+
+\subsection{Evaluation from \(Y=\log y\)}
+
+For very large targets, passing \(y\) itself to a floating-point routine is
+unnecessary and may overflow.  The natural input is \(Y\).  The basic
+Lambert-anchored truncation is evaluated as follows.
+
+\begin{lstlisting}
+from mpmath import mp
+
+mp.dps = 80
+Cnum = -mp.diff(mp.zeta, -1) - mp.mpf(1)/24
+
+def inverse_K_from_logY(Y, coeff_functions):
+    Y = mp.mpf(Y)
+    w = mp.lambertw(4*Y/mp.e)
+    lam = (w + 1)/2
+    T = mp.e**lam
+
+    z = mp.mpf(1)/2 + T
+    for n, a_n in enumerate(coeff_functions, start=1):
+        z += a_n(lam, Cnum) * T**(1 - 2*n)
+    return z
+\end{lstlisting}
+
+A robust production implementation should also:
+\begin{enumerate}
+ \item evaluate \(T=2\sqrt{Y/w}\) rather than \(\e^\lambda\) when that is
+       numerically better scaled;
+ \item increase working precision before subtracting a residual near zero;
+ \item use the exact derivative \cref{eq:logK-prime} for a Newton correction;
+ \item certify the final answer with \cref{eq:residual-certificate} whenever a
+       rigorous enclosure is needed.
+\end{enumerate}
+
+\begin{algorithm}[Lambert-transseries inverse of \(K\)]
+\label{alg:inverse-K}
+Given \(Y=\log y\), a block order \(N\), and a working precision:
+\begin{enumerate}
+ \item Compute \(w=\W_0(4Y/\e)\), \(\lambda=(w+1)/2\), and
+       \(T=2\sqrt{Y/w}\).
+ \item Form
+       \(z_N=\tfrac12+T+\sum_{n=1}^{N}a_n(\lambda)T^{1-2n}\).
+ \item Optionally replace \(z_N\) by one Newton iterate
+       \begin{equation*}
+       z_N-\frac{(z_N-1)\log\Gamma(z_N)-\log G(z_N)-Y}
+       {z_N-\tfrac12-\tfrac12\log(2\pi)+\log\Gamma(z_N)}.
+       \end{equation*}
+ \item Estimate or bound the remaining error from the new residual.
+\end{enumerate}
+\end{algorithm}
+
+The numerator in the Newton step uses the exact positive-real identity
+\cref{eq:K-Barnes-relation}; it avoids numerical integration in the defining formula
+for \(K\).
+
+\subsection{Choosing a truncation order}
+
+For fixed \(N\), the theorem gives an unambiguous asymptotic order.  If many
+blocks are generated, however, the factorial growth of the Bernoulli source
+coefficients eventually propagates into the inverse.  A practical adaptive
+rule is:
+\begin{equation}
+ \text{stop before the first block whose magnitude exceeds its predecessor,}
+ \label{eq:least-block-rule}
+\end{equation}
+then apply one Newton step.  This is a numerical heuristic rather than a
+replacement for a remainder theorem.  When only moderate precision is needed,
+three or four blocks are already far beyond the accuracy of the leading
+Lambert approximation over a wide range of \(Y\).
+
+\section{High-precision numerical checks}
+\label{sec:numerics}
+
+The formulas were checked against the exact identity
+\begin{equation}
+ \log K(z)=(z-1)\log\Gamma(z)-\log G(z),
+ \qquad z>0,
+ \label{eq:logK-exact-numeric}
+\end{equation}
+using high-precision arithmetic.  The reference root was computed directly
+from \(\log K(z)=Y\), and the reported numbers are absolute errors in \(z\).
+No Newton correction was applied to the asymptotic values in the tables.
+
+\begin{table}[htbp]
+\centering
+\small
+\caption{Absolute error of the basic Lambert-anchored truncations
+\(z_N=\tfrac12+T+\sum_{n=1}^{N}a_nT^{1-2n}\).}
+\label{tab:basic-errors}
+\begin{tabular}{@{}rrrrrr@{}}
+\toprule
+\(Y\) & exact inverse \(z_*\) & \(N=0\) & \(N=1\) & \(N=2\) & \(N=4\) \\
+\midrule
+\(10\)
+ & \(4.966157945496709\)
+ & \(9.162\times10^{-3}\) & \(1.935\times10^{-5}\)
+ & \(1.347\times10^{-7}\) & \(6.963\times10^{-11}\) \\
+\(100\)
+ & \(10.915136726993085\)
+ & \(1.070\times10^{-3}\) & \(2.046\times10^{-7}\)
+ & \(5.165\times10^{-10}\) & \(2.775\times10^{-14}\) \\
+\(1000\)
+ & \(27.284589040600087\)
+ & \(1.503\times10^{-4}\) & \(2.134\times10^{-8}\)
+ & \(4.241\times10^{-12}\) & \(4.537\times10^{-18}\) \\
+\(10^6\)
+ & \(584.235864411692401\)
+ & \(3.809\times10^{-5}\) & \(2.524\times10^{-13}\)
+ & \(6.128\times10^{-19}\) & \(2.420\times10^{-30}\) \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The \(N=3\) errors, omitted from the table for width, are respectively
+\begin{equation}
+ 6.036\times10^{-10},\qquad
+ 2.690\times10^{-12},\qquad
+ 3.032\times10^{-15},\qquad
+ 8.319\times10^{-25}.
+ \label{eq:N3-errors}
+\end{equation}
+The nonmonotone comparison between \(N=3\) and \(N=4\) at \(Y=10\) is a
+normal finite-argument effect; asymptotic truncations are not required to
+improve monotonically at every point.
+
+\begin{table}[htbp]
+\centering
+\small
+\caption{Absolute error of the accelerated anchor and of its first correction.}
+\label{tab:accelerated-errors}
+\begin{tabular}{@{}rrr@{}}
+\toprule
+\(Y\) & anchor \cref{eq:accelerated-one-line}
+& anchor plus \cref{eq:accelerated-first-correction} \\
+\midrule
+\(10\)    & \(1.559\times10^{-5}\)  & \(6.167\times10^{-8}\) \\
+\(100\)   & \(7.865\times10^{-7}\)  & \(5.825\times10^{-10}\) \\
+\(1000\)  & \(3.297\times10^{-8}\)  & \(3.706\times10^{-12}\) \\
+\(10^6\)  & \(1.644\times10^{-12}\) & \(3.894\times10^{-19}\) \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Several features are visible.
+\begin{itemize}
+ \item The first basic correction removes roughly two to eight decimal orders
+       over the displayed range, with the gain increasing rapidly with \(Y\).
+ \item Four basic blocks deliver about \(14\) correct decimal places already at
+       \(Y=100\), and about \(30\) digits at \(Y=10^6\).
+ \item The accelerated one-line anchor has nearly the accuracy of the first
+       basic correction, while its first residual correction is competitive
+       with two or three basic blocks.
+\end{itemize}
+These numerical observations agree with the proved orders; they are not used
+as evidence for the derivation.
+
+\section{Conclusions}
+\label{sec:conclusion}
+
+The inverse generalized hyperfactorial is governed by a sparse two-scale
+transseries once the correct variable is chosen.  The central facts are:
+\begin{enumerate}
+ \item The shift \(t=z-\tfrac12\) converts the logarithm of \(K\) into
+       \(\Phi(t)+C-\tfrac1{24}\log t\) plus only even inverse powers.
+ \item The dominant phase \(\Phi(t)=\tfrac12t^2\log t-\tfrac14t^2\) is
+       inverted exactly by \(w=\W(4Y/\e)\), not merely approximated by an
+       iterated-logarithm series.
+ \item The inverse has the all-orders form
+       \(\tfrac12+T+\sum_{n\ge1}a_n(\lambda)T^{1-2n}\), with a triangular
+       recurrence, an ordered operator formula, and a fixed-order remainder
+       \(O(T^{-2N-1})\).
+ \item Every \(K\)-coefficient block is a finite polynomial in
+       \(\lambda^{-1}\); the constant row resums to
+       \(\sqrt{1+q/12}-1\).
+ \item A modified quadratic Lambert model absorbs the constant, logarithm,
+       and an infinite rational tail, yielding a substantially sharper
+       one-line approximation.
+ \item The same construction works for
+       \(a x^p(\log x-b)\) plus locally finite lower-order logarithmic
+       transseries.  Lambert inversion supplies the anchor, and
+       Lagrange--B\"urmann supplies a universal coefficient calculus.
+\end{enumerate}
+
+The practical recommendation is equally simple: retain Lambert \(W\) as an
+exact structural component, use a small number of outer correction blocks, and
+finish with a residual-controlled Newton step when numerical accuracy is the
+goal.  For formal work, the normalized recurrence is easiest to automate; for
+proofs and support analysis, the ordered differential-operator formula is the
+more informative representation.
+
+\appendix
+
+\section{Formula sheet}
+\label{app:formula-sheet}
+
+This appendix collects the formulas needed for direct use without repeating
+the derivations.
+
+\subsection{Forward data}
+
+\begin{align}
+ t&=z-\frac12,
+ &\Phi(t)&=\frac12t^2\log t-\frac14t^2,
+ &C&=-\zeta'(-1)-\frac1{24}.
+ \label{eq:sheet-forward-1}
+\end{align}
+\begin{equation}
+ \log K\!\left(t+\frac12\right)
+ \sim \Phi(t)+C-\frac1{24}\log t+
+ \sum_{m\ge1}\kappa_m t^{-2m}.
+ \label{eq:sheet-forward-2}
+\end{equation}
+\begin{equation}
+ \kappa_m
+ =\frac{(1-2^{-2m-1})B_{2m+2}}
+ {4m(m+1)(2m+1)}.
+ \label{eq:sheet-kappa}
+\end{equation}
+
+\subsection{Basic Lambert anchor and inverse}
+
+\begin{align}
+ Y&=\log y,
+ &w&=\W_0(4Y/\e),
+ &\lambda&=\frac{w+1}{2},
+ \label{eq:sheet-anchor-1}\\
+ T&=2\sqrt{Y/w}=\e^\lambda,
+ &q&=T^{-2}=\frac{w}{4Y},
+ &&
+ \label{eq:sheet-anchor-2}\\
+ K_+^{-1}(y)
+ &\sim\frac12+T+\sum_{n\ge1}a_n(\lambda)T^{1-2n}.
+ &&
+ \label{eq:sheet-inverse}
+\end{align}
+The first block is
+\begin{equation}
+ a_1=\frac1{24}-\frac C\lambda.
+ \label{eq:sheet-a1}
+\end{equation}
+The higher blocks through \(a_4\) are given in
+\cref{eq:a2,eq:a3,eq:a4}.  The normalized recurrence is
+\begin{equation}
+ a_N=-\frac1\lambda[q^N]\Fcal(U_{N-1},q;\lambda),
+ \qquad
+ U_{N-1}=\sum_{j=1}^{N-1}a_jq^j,
+ \label{eq:sheet-recurrence}
+\end{equation}
+with \(\Fcal\) defined by \cref{eq:normalized-implicit}.
+
+\subsection{Accelerated anchor}
+
+\begin{align}
+ \widehat w&=\W_0\!\left(\frac{4(Y-C)}{\e}\right),
+ &\widehat T&=
+ \sqrt{\frac{4(Y-C)}{\widehat w}+\frac1{12}},
+ \label{eq:sheet-accelerated-1}\\
+ K_+^{-1}(y)
+ &=\frac12+\widehat T
+ +\frac{1}{240\widehat T^3
+ \log(\widehat T^2-1/12)}+\cdots.
+ \label{eq:sheet-accelerated-2}
+\end{align}
+
+\subsection{General Lambert-grid inversion}
+
+For
+\begin{equation}
+ F(x)=a x^p(\log x-b)
+ +x^{p-\sigma}\Hcal(x^{-\sigma},\log x),
+ \label{eq:sheet-general-source}
+\end{equation}
+put
+\begin{equation}
+ w=\W_k\!\left(\frac pa\e^{-pb}Y\right),
+ \qquad
+ X=\left(\frac{pY}{aw}\right)^{1/p},
+ \qquad
+ \Lambda=w+1.
+ \label{eq:sheet-general-anchor}
+\end{equation}
+Then
+\begin{equation}
+ x\sim X+\sum_{n\ge1}\frac{(-1)^n}{n!}
+ \left(\frac1{aX^{p-1}\Lambda}\frac\dd{\dd X}\right)^{n-1}
+ \left(
+ \frac{H(X)^n}{aX^{p-1}\Lambda}
+ \right).
+ \label{eq:sheet-general-inverse}
+\end{equation}
+
+\section{Conventions and shift dictionary}
+\label{app:conventions}
+
+Several neighboring conventions coexist in the literature.  The formulas in
+this article use
+\begin{equation}
+ K(x+1)=x^xK(x),
+ \qquad K(1)=1,
+ \qquad K(n+1)=\prod_{k=1}^n k^k.
+ \label{eq:appendix-K-convention}
+\end{equation}
+If the hyperfactorial is written
+\begin{equation}
+ H(x):=K(x+1),
+ \label{eq:appendix-H-convention}
+\end{equation}
+then
+\begin{equation}
+ H_+^{-1}(y)=K_+^{-1}(y)-1.
+ \label{eq:appendix-H-inverse}
+\end{equation}
+If a discrete source defines \(H_n=\prod_{k=1}^{n-1}k^k\), then
+\(H_n=K(n)\), whereas the convention
+\(\prod_{k=1}^{n}k^k\) equals \(K(n+1)\).  These shifts do not change the
+Lambert scale, but they do change the constant term of an inverse expansion
+and therefore must be fixed before comparing formulas.
+
+The Bernoulli convention is \(B_1=-1/2\), generated by
+\begin{equation}
+ \frac{u}{\e^u-1}=\sum_{n\ge0}B_n\frac{u^n}{n!}.
+ \label{eq:appendix-Bernoulli}
+\end{equation}
+The symbol \(\W_k\) denotes the \(k\)-th branch of Lambert \(W\), characterized
+locally by \(\W_k(z)\e^{\W_k(z)}=z\).  On the positive real axis all main
+formulas use \(\W_0\).
+
+\section{A complete high-precision verification script}
+\label{app:verification-code}
+
+The following compact script regenerates the coefficients by the triangular
+recurrence, computes the exact positive-real benchmark through Barnes \(G\),
+and reproduces tables of inverse errors.  It uses SymPy for exact symbolic
+algebra and mpmath for numerical evaluation.
+
+\begin{lstlisting}
+import sympy as sp
+from mpmath import mp
+
+q, lam, Csym = sp.symbols("q lam C")
+
+def kap(j):
+    return sp.factor(
+        -sp.bernoulli(2*j + 2, sp.Rational(1, 2))
+        / (4*j*(j + 1)*(2*j + 1))
+    )
+
+def trunc(expr, n):
+    return sp.series(expr, q, 0, n + 1).removeO().expand()
+
+def make_blocks(N):
+    u = sp.Integer(0)
+    ans = []
+    for n in range(1, N + 1):
+        log1pu = trunc(sp.log(1 + u), n)
+        psi = sp.Rational(1, 2)*(1 + u)**2 * (
+            lam + log1pu - sp.Rational(1, 2)
+        ) - sp.Rational(1, 2)*(lam - sp.Rational(1, 2))
+        F = psi + q*(Csym - (lam + log1pu)/24)
+        for j in range(1, n):
+            F += kap(j)*q**(j + 1)*trunc((1 + u)**(-2*j), n)
+        an = sp.factor(-trunc(F, n).coeff(q, n)/lam)
+        ans.append(an)
+        u = trunc(u + an*q**n, n)
+    return ans
+
+mp.dps = 100
+Cnum = -mp.diff(mp.zeta, -1) - mp.mpf(1)/24
+blocks = make_blocks(4)
+block_num = [sp.lambdify((lam, Csym), a, "mpmath") for a in blocks]
+
+def logK(z):
+    return (z - 1)*mp.loggamma(z) - mp.log(mp.barnesg(z))
+
+def exact_inverse(Y):
+    w = mp.lambertw(4*Y/mp.e)
+    guess = mp.mpf(1)/2 + 2*mp.sqrt(Y/w)
+    return mp.findroot(lambda z: logK(z) - Y, guess)
+
+def basic_inverse(Y, N):
+    w = mp.lambertw(4*Y/mp.e)
+    la = (w + 1)/2
+    T = 2*mp.sqrt(Y/w)
+    z = mp.mpf(1)/2 + T
+    for n in range(N):
+        z += block_num[n](la, Cnum)*T**(-2*n - 1)
+    return z
+
+def accelerated_inverse(Y, corrected=False):
+    wh = mp.lambertw(4*(Y - Cnum)/mp.e)
+    Th = mp.sqrt(4*(Y - Cnum)/wh + mp.mpf(1)/12)
+    z = mp.mpf(1)/2 + Th
+    if corrected:
+        z += 1/(240*Th**3*mp.log(Th**2 - mp.mpf(1)/12))
+    return z
+
+for Y in map(mp.mpf, [10, 100, 1000, 10**6]):
+    root = exact_inverse(Y)
+    print("Y =", Y, "root =", mp.nstr(root, 40))
+    print("basic errors:",
+          [mp.nstr(abs(basic_inverse(Y, N) - root), 12)
+           for N in range(5)])
+    print("accelerated errors:",
+          [mp.nstr(abs(accelerated_inverse(Y, flag) - root), 12)
+           for flag in (False, True)])
+\end{lstlisting}
+
+At positive real \(z\), \(G(z)>0\) and the logarithms in the script are
+unambiguous.  For complex tests, one must maintain compatible branches of
+\(\log\Gamma\), \(\log G\), \(\log K\), and \(\W\) along the continuation
+path.
+
+\section{Project context and reproducibility}
+\label{app:project-context}
+
+This note was prepared for the ``Series and transseries'' research-frontier
+folder of the ProveIt project:
+\begin{center}
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/series-and-transseries}.
+\end{center}
+The \LaTeX{} source is standalone: it has no external figures, bibliography
+files, or input fragments.  A standard \texttt{pdflatex} run performed twice
+is sufficient to resolve the table of contents and cross-references.
+
+\begin{thebibliography}{99}
+
+\bibitem{ADH2017}
+M.~Aschenbrenner, L.~van den Dries, and J.~van der Hoeven,
+\emph{Asymptotic Differential Algebra and Model Theory of Transseries},
+Annals of Mathematics Studies, vol.~195, Princeton University Press,
+Princeton, 2017.
+\newblock \url{https://doi.org/10.1515/9781400885411}.
+
+\bibitem{Bendersky1933}
+L.~Bendersky,
+``Sur la fonction gamma g\'en\'eralis\'ee,''
+\emph{Acta Mathematica} \textbf{61} (1933), 263--322.
+\newblock \url{https://doi.org/10.1007/BF02547794}.
+
+\bibitem{BrassescoMendez2011}
+S.~Brassesco and M.~A. M\'endez,
+``The asymptotic expansion for \(n!\) and the Lagrange inversion formula,''
+\emph{The Ramanujan Journal} \textbf{24} (2011), 219--234.
+\newblock \url{https://doi.org/10.1007/s11139-010-9237-2}.
+
+\bibitem{CorlessEtAl1996}
+R.~M. Corless, G.~H. Gonnet, D.~E. Hare, D.~J. Jeffrey, and D.~E. Knuth,
+``On the Lambert \(W\) function,''
+\emph{Advances in Computational Mathematics} \textbf{5} (1996), 329--359.
+\newblock \url{https://doi.org/10.1007/BF02124750}.
+
+\bibitem{DLMF}
+NIST Digital Library of Mathematical Functions,
+F.~W.~J. Olver, A.~B. Olde Daalhuis, D.~W. Lozier, B.~I. Schneider,
+R.~F. Boisvert, C.~W. Clark, B.~R. Miller, B.~V. Saunders,
+H.~S. Cohl, and M.~A. McClain, eds.,
+\S5.11 (Gamma-function asymptotics), \S5.13 (integrals),
+\S5.17 (Barnes \(G\)-function), and \S4.13 (Lambert \(W\)).
+\newblock \url{https://dlmf.nist.gov/}.
+
+\bibitem{MathSEHyperfactorial}
+C.~Leibovici,
+``Looking for the inverse of the hyperfactorial function,''
+Mathematics Stack Exchange, question 3507137, 13 January 2020.
+\newblock \url{https://math.stackexchange.com/questions/3507137/}.
+
+\bibitem{SondowHadjicostas2007}
+J.~Sondow and P.~Hadjicostas,
+``The generalized-Euler-constant function \(\gamma(z)\) and a generalization
+of Somos's quadratic recurrence constant,''
+\emph{Journal of Mathematical Analysis and Applications}
+\textbf{332} (2007), 292--314.
+\newblock \url{https://doi.org/10.1016/j.jmaa.2006.09.081}.
+
+\bibitem{vanDerHoeven2006}
+J.~van der Hoeven,
+\emph{Transseries and Real Differential Algebra},
+Lecture Notes in Mathematics, vol.~1888, Springer, Berlin, 2006.
+\newblock \url{https://doi.org/10.1007/3-540-35590-1}.
+
+\bibitem{Wang2017}
+W.~Wang,
+``Some asymptotic expansions on hyperfactorial functions and generalized
+Glaisher--Kinkelin constants,''
+\emph{The Ramanujan Journal} \textbf{43} (2017), 513--533.
+\newblock \url{https://doi.org/10.1007/s11139-017-9909-2}.
+
+\bibitem{WangLiu2016}
+W.~Wang and H.~Liu,
+``Asymptotic expansions related to hyperfactorial function and
+Glaisher--Kinkelin constant,''
+\emph{Applied Mathematics and Computation} \textbf{283} (2016), 153--162.
+\newblock \url{https://doi.org/10.1016/j.amc.2016.02.027}.
+
+\bibitem{Xu2020}
+J.~Xu,
+``New asymptotic expansions on hyperfactorial functions,''
+\emph{Comptes Rendus Math\'ematique} \textbf{358} (2020), no.~9--10,
+971--980.
+\newblock \url{https://doi.org/10.5802/crmath.73}.
+
+\end{thebibliography}
+
+\end{document}

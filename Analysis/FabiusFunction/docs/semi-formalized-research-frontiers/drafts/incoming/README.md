@@ -62,7 +62,46 @@ This `README.md` is the permanent explanation of the directory and
 **must not be deleted** — it also keeps the directory present in git
 when no archives are waiting.
 
-Most recent processed batch (all filed and removed on 2026-09-03):
+Most recent processed batch (six archives, filed and removed on 2026-09-03).
+These arrived *while the batch below was being published*, which is the case the
+rule at the top of this file covers: the first batch was finished and pushed to
+`origin/main` before any of these was touched, and they were then taken in the
+next quick-intake commit.  All six went to
+`../series-and-transseries/special-function-inversion/`, joining the three
+already there, and the nine now fall into three subjects with three
+independently written articles each.
+
+- `inverse_gamma_barnesG_transseries.zip` → `inverse_gamma_barnesG_transseries/`:
+  1,655-line/72,966-byte source, 28-page A4/663,480-byte PDF.
+- `inverse_gamma_barnes_transseries.zip` → `inverse_gamma_barnes_transseries/`:
+  1,827-line/60,596-byte source, 25-page A4/324,795-byte PDF.
+- `K_Function_Inverse_Transseries_LaTeX_and_PDF.zip` → `K_Function_Inverse_Transseries/`:
+  2,644-line/90,380-byte source, 33-page A4/724,630-byte PDF.  **Renamed at
+  filing**: the archive stem would have put the PDF at a 263-character path,
+  past the Windows `MAX_PATH` limit of 260, after which `pdfinfo` reports
+  *"No such file or directory"* for a file that plainly exists.  The directory
+  is named after the document instead, which is also the corpus convention.
+- `K_function_inverse_transseries_article.zip` → `K_function_inverse_transseries_article/`:
+  2,581-line/84,722-byte source, 30-page A4/743,783-byte PDF.
+- `inverse_subfactorial_transseries-2.zip` → `inverse_subfactorial_transseries-2/`:
+  2,188-line/73,742-byte source, 27-page A4/725,870-byte PDF.
+- `inverse_subfactorial_transseries-3.zip` → `inverse_subfactorial_transseries-3/`:
+  1,878-line/81,203-byte source, 35-page Letter/530,302-byte PDF.
+
+Every archive passed a CRC check with no absolute path, parent-directory
+traversal, or symlink entry, and each held exactly one `.tex` and one `.pdf` at
+top level.  All six sources are LF with a final newline; no normalization was
+applied.  The last two archives both contain inner files named plainly
+`inverse_subfactorial_transseries.*`, which were kept as submitted — the
+directory name carries the distinction, following the precedent of
+`lambert_inverse_transseries_bundle/`.  All six PDFs are readable, unencrypted,
+pdfTeX-1.40.26, fully embedded and Type-3-free; five are A4 and one is Letter,
+and three carry Libertinus faces.  None loads `docs/fabius-notation.tex`.
+Comparison, deduplication, canonical selection, proof checking, numerical
+reproduction and Lean crosswalking were all deferred.
+
+The batch immediately before it (three archives, filed and removed the same
+day):
 
 - `Asymptotic_Inversion_Gamma_Barnes_G.zip` became
   `../series-and-transseries/special-function-inversion/Asymptotic_Inversion_Gamma_Barnes_G/`:
