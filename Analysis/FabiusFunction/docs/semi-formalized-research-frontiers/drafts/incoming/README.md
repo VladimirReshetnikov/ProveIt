@@ -81,8 +81,12 @@ traversal, or symlink entry. **All three wrapped an inner directory of the
 same name**, `thue_morse_diagonal_polynomials/`, so the archive stems — which
 are distinct — were used as directory names, the same resolution as for the
 earlier same-named subfactorial siblings; the longest filed path is 230
-characters. All three sources are LF with a final newline; no normalization
-was applied. All three PDFs are readable, unencrypted, pdfTeX-1.40.26, A4;
+characters. All three sources are LF with a final newline and were filed
+byte-for-byte; the only normalization is the repository's own CRLF-to-LF
+conversion of the two generated CSV tables
+(`generated/diagonal_polynomials.csv`, `generated/half_grid_roots.csv`) in the
+third package, which git applied at commit. All three PDFs are readable,
+unencrypted, pdfTeX-1.40.26, A4;
 one is fully embedded and Type-3-free, the other two carry two or three Type-3
 rows inherited from a Matplotlib figure. Two carry Libertinus faces. None loads
 `docs/fabius-notation.tex`. Two archives ship a submitted `SHA256SUMS` and one a
