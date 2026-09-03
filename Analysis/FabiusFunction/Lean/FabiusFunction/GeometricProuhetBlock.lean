@@ -17,10 +17,20 @@ they are exactly `x + r` for `r < 2^k`, which is the dyadic block; at general
 
 The whole content beyond the engine is one exponent identity,
 
-`∏_{j<k} q^j = q^{C(k,2)}`  (`prod_range_pow_eq_pow_choose_two`),
+`∏_{j<k} q^j = q^{C(k,2)}`,
 
-which is where the triangular power in the sharp moment comes from.  It also
-explains, retroactively, the constant `4^{C(k,2)} = 2^{2C(k,2)}` in the dyadic
+which is where the triangular power in the sharp moment comes from.  It is
+already named in the corpus, as
+`ThueMorseComplexProductBridge.prod_range_pow_eq_pow_choose_two`, but that
+module imports `FabiusFunction.Basic` and importing it here would pull the
+whole Fabius core into a purely algebraic leaf, so the three-lemma chain
+(`Finset.prod_pow_eq_pow_sum`, `Finset.sum_range_id`, `Nat.choose_two_right`)
+is inlined at its two use sites instead.  The lemma's natural home is a light
+module both layers can reach; moving it there is a separate change, since the
+only common ancestor is `ThueMorseBooleanCube` and that has 153 dependents.
+
+The identity also explains, retroactively, the constant
+`4^{C(k,2)} = 2^{2C(k,2)}` in the dyadic
 q-binomial--Thue--Morse formula of `FabiusQBinomialFormula`: the dyadic block's
 sharp moment carries `2^{C(k,2)}`, and the formula's weight carries its square.
 
@@ -33,8 +43,6 @@ recursion -- not the block.
 
 ## Main results
 
-* `prod_range_pow_eq_pow_choose_two` — `∏_{j<k} a^j = a^{C(k,2)}` in any
-  commutative monoid.
 * `sum_powerset_geometric_eval_eq_zero_of_degree_lt` — Prouhet annihilation at
   geometric steps, for every polynomial of degree below `k`.
 * `sum_powerset_geometric_pow_card` — the sharp moment
@@ -49,15 +57,6 @@ set_option autoImplicit false
 open Finset
 
 namespace Fabius
-
-/-- **The triangular power.**  In any commutative monoid,
-`∏_{j<k} a^j = a^{C(k,2)}`, since `∑_{j<k} j = k(k-1)/2 = C(k,2)`.  The
-natural-number division in Gauss' formula is exact because `k(k-1)` is
-even. -/
-theorem prod_range_pow_eq_pow_choose_two {M : Type*} [CommMonoid M]
-    (a : M) (k : ℕ) :
-    ∏ j ∈ Finset.range k, a ^ j = a ^ k.choose 2 := by
-  rw [Finset.prod_pow_eq_pow_sum, Finset.sum_range_id, ← Nat.choose_two_right]
 
 /-- **Prouhet annihilation at geometric steps.**  Over every commutative ring,
 for every `q` and every polynomial of degree strictly below `k`,
@@ -92,7 +91,8 @@ theorem sum_powerset_geometric_pow_card
   have h := sum_powerset_neg_one_pow_pow_card
     (Finset.range k) (fun j : ℕ => q ^ j) x
   rw [Finset.card_range] at h
-  rw [h, prod_range_pow_eq_pow_choose_two]
+  rw [h, Finset.prod_pow_eq_pow_sum, Finset.sum_range_id,
+    ← Nat.choose_two_right]
 
 /-- **Coefficient extraction at geometric steps.**  For every polynomial of
 degree at most `k`, the geometric block functional reads off the degree-`k`
@@ -107,7 +107,8 @@ theorem sum_powerset_geometric_eval_eq_coeff
   have h := sum_powerset_neg_one_pow_eval_eq_coeff_card
     (Finset.range k) (fun j : ℕ => q ^ j) p ?_ x
   · rw [Finset.card_range] at h
-    rw [h, prod_range_pow_eq_pow_choose_two]
+    rw [h, Finset.prod_pow_eq_pow_sum, Finset.sum_range_id,
+      ← Nat.choose_two_right]
   · rwa [Finset.card_range]
 
 /-- The dyadic case `q = 2`: the classical Prouhet constant

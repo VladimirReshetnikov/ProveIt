@@ -720,6 +720,7 @@ import FabiusFunction.FabiusDyadicGaussianForm
 import FabiusFunction.FabiusGeneralLinearDenominator
 import FabiusFunction.ThueMorseComplexHalfAngle
 import FabiusFunction.ThueMorseQPochhammer
+import FabiusFunction.QPochhammerMultiplicativeDissection
 import FabiusFunction.ThueMorseEulerFunction
 import FabiusFunction.ThueMorseQPochhammerInfinite
 import FabiusFunction.LambertWAnalytic
