@@ -1348,6 +1348,23 @@ with $N\mid j$ are $j=0,N$, so
 $p_1(n)=\tfrac12(P_0-P_N)=1/2$.
 \end{proof}
 
+\paragraph{Lean status.}
+The two finite character sums the proof rests on are formal in
+\path{CyclicCharacterSums.lean}, for every modulus rather than only powers of two: the
+orthogonality \(\sum_{j\in\IntegerNumbers/M\IntegerNumbers}\chi_M(jk)=M[k=0]\)
+(\path{Fabius.sum_stdAddChar_mul}, obtained from Mathlib's \path{ZMod.dft_apply} and
+\path{ZMod.dft_dft} applied to the delta at \(0\), with no orthogonality lemma), and the
+Ramanujan sum \eqref{p1:eq:Ramanujan-power-two} over the odd residues modulo \(2N\),
+\(c_{2N}(S)=N(-1)^{S/N}\) if \(N\mid S\) and \(0\) otherwise
+(\path{Fabius.ramanujanOddSum_eq}, with \path{Fabius.ramanujanOddSum} the sum
+parametrized as \(r=2s+1\), \(s\in\IntegerNumbers/N\IntegerNumbers\)).  The power-trace
+formula \eqref{p1:eq:Ramanujan-traces} itself --- the \(m\)-fold expansion of
+\(A_{n,r}^m\) and the resummation over the odd residues --- is not formalized; the
+universal trace \eqref{p1:eq:universal-trace} is within reach of the inverse transform
+\path{Fabius.gridSample_eq_sum_foldedCoefficient} at \(j=0\) together with
+\path{Fabius.foldedCoefficient_zero} and the even-mode vanishing, but is not stated
+separately.
+
 \begin{remark}[A trace that does not disperse]
 The orbit degree is $N/2\to\infty$, yet the unnormalized first trace remains
 exactly $1/2$.  Most conjugates become tiny; a sparse collection of low-frequency
@@ -8266,7 +8283,7 @@ parity ledger: a row is listed only when the Lean statement has the displayed
 mathematical content, and it says where Lean is weaker, more general, or
 normalized differently.  All declarations are in namespace \lean{Fabius}.
 The convention agrees on both sides: \decl{rvachevFourier} is this volume's
-$\FourierTwoPi$, \decl{rvachevFourierProduct} is $\prod_n\SincPi(z/2^n)$, and
+$\FourierTwoPi{\RvachevUp}$, \decl{rvachevFourierProduct} is $\prod_n\SincPi(z/2^n)$, and
 \decl{generalizedRvachevProduct} at the weights $a_h=\binom h{r-1}$ is
 $\Phi_r$, with \decl{parityCharacter} at those weights the sign character
 $\varepsilon_r$.
