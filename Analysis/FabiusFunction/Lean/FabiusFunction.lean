@@ -88,6 +88,7 @@ import FabiusFunction.ExpLog
 import FabiusFunction.CumulantBellFormula
 import FabiusFunction.NewtonPowerSumBell
 import FabiusFunction.ExpAddLog
+import FabiusFunction.SquareRootSeries
 import FabiusFunction.SymmetricFunctionTransform
 import FabiusFunction.SymmetricFunctionGenerating
 import FabiusFunction.FiniteQBinomialCore
@@ -646,6 +647,7 @@ import FabiusFunction.IntegerParameterTranslation
 import FabiusFunction.MultisetInversions
 import FabiusFunction.GeometricSimplexReindex
 import FabiusFunction.RatioExpansion
+import FabiusFunction.SchroeterFormula
 import FabiusFunction.SubspaceMobius
 import FabiusFunction.BasicBernoulliLog
 import FabiusFunction.GaussianFourierTheta

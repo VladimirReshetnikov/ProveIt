@@ -12903,8 +12903,8 @@ inside the proof below does not formalize the result the proof concludes.
   than a mathematical claim.
 \end{description}
 
-Of the 282 labelled forward results, 149 are \statusexact, 83 are
-\statuspartial, 42 are \statusnone, and 8 are \statusna.  The original
+Of the 282 labelled forward results, 159 are \statusexact, 84 are
+\statuspartial, 31 are \statusnone, and 8 are \statusna.  The original
 191-result pre-Fabius core had 36 \statusexact, 29 \statuspartial, 123
 \statusnone, and 3 \statusna{} entries.  The four integrated guide chapters
 add 31 human-proved but not Lean-formalized assertions and five labelled
@@ -13462,33 +13462,33 @@ Chapter & \statusexact & \statuspartial & \statusnone & \statusna\\
 The algebra of $q$-shifted factorials & 13 & 1 & 1 & 0\\
 $q$-integers and Gaussian coefficients & 9 & 0 & 0 & 0\\
 Finite $q$-binomial theorems and inversion & 10 & 0 & 0 & 0\\
-Weighted binomial coefficients and symmetric functions & 3 & 3 & 2 & 0\\
+Weighted binomial coefficients and symmetric functions & 5 & 3 & 0 & 0\\
 Partitions, words, paths, and inversion statistics & 7 & 2 & 0 & 0\\
 Finite fields, Grassmannians, and rank enumeration & 3 & 3 & 0 & 0\\
 Symmetry and unimodality & 0 & 0 & 3 & 0\\
 The infinite $q$-binomial theorem & 3 & 0 & 1 & 0\\
 Basic hypergeometric series & 7 & 2 & 0 & 0\\
-Euler telescoping and very-well-poised summations & 1 & 0 & 3 & 0\\
+Euler telescoping and very-well-poised summations & 2 & 0 & 2 & 0\\
 Bilateral series and Ramanujan's \texorpdfstring{${}_1\psi_1$}{1psi1} sum & 2 & 0 & 0 & 0\\
 $q$-difference calculus and the quantum binomial & 10 & 0 & 0 & 0\\
 The $q$-gamma and $q$-beta functions & 7 & 1 & 0 & 0\\
 Jacobi's triple product & 8 & 0 & 0 & 0\\
-Theta modularity, lattice dissection, and sums of squares & 2 & 1 & 11 & 4\\
+Theta modularity, lattice dissection, and sums of squares & 6 & 2 & 6 & 4\\
 Partitions and product--sum identities & 3 & 1 & 0 & 0\\
 Bailey pairs and the Rogers--Ramanujan identities & 6 & 1 & 0 & 0\\
 Bailey transforms and the Andrews--Gordon identities & 5 & 2 & 1 & 1\\
-Cyclotomic factorization and congruences & 8 & 0 & 1 & 0\\
+Cyclotomic factorization and congruences & 9 & 0 & 0 & 0\\
 Negative upper indices and geometric Newton interpolation & 9 & 0 & 0 & 0\\
 Central $q$-binomial sums and Lambert series & 2 & 0 & 5 & 0\\
-Asymptotic regimes and Bernoulli expansions & 2 & 3 & 3 & 0\\
+Asymptotic regimes and Bernoulli expansions & 3 & 3 & 2 & 0\\
 Exact limits, reciprocity, and research frontiers & 0 & 0 & 5 & 0\\
 Computation, certification, and formal proof architecture & 7 & 2 & 2 & 3\\
 Geometric interpolation and exact $q$-filters & 7 & 2 & 0 & 0\\
 Half-base arithmetic and Prouhet--Thue--Morse cancellation & 6 & 3 & 0 & 0\\
 Geometric uniform sums, $q$-cumulants, and the Fabius--Rvachev functions & 2 & 11 & 0 & 0\\
-Dyadic Gaussian--Thue--Morse structure and the values of $F$ & 7 & 45 & 4 & 0\\
+Dyadic Gaussian--Thue--Morse structure and the values of $F$ & 8 & 45 & 3 & 0\\
 \midrule
-\textbf{Forward total} & 149 & 83 & 42 & 8\\
+\textbf{Forward total} & 159 & 84 & 31 & 8\\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -13788,8 +13788,26 @@ convergence under \(\lvert w_i z\rvert<1\)}\\[2pt]
 every commutative ring (Mathlib's \texttt{Matrix.det\_vandermonde}) and the
 alternant orientation with its sign; the divisibility $a_\delta\mid a_\mu$
 and the integrality of Schur polynomials are not formalized}\\[2pt]
-\Cref{thm:schur-principal} & \statusnone & ---\\[2pt]
-\Cref{cor:schur-e-h} & \statusnone & ---\\[2pt]
+\Cref{thm:schur-principal} & \statusexact &
+\texttt{alternantPow},
+\texttt{alternantPow\_\allowbreak{}eq\_\allowbreak{}prod},
+\texttt{schur\_\allowbreak{}principal\_\allowbreak{}cleared},
+\texttt{schur\_\allowbreak{}principal\_\allowbreak{}div}\newline
+{\footnotesize\texttt{SchurPrincipalSpecialization}; the identity in cleared form
+$a_\mu\prod_{i<j}(1-q^{j-i})=q^{n(\lambda)}\bigl(\prod_{i<j}(1-q^{\lambda_i-\lambda_j+j-i})\bigr)a_\delta$
+over an arbitrary commutative ring and arbitrary $q$ --- valid at $q=0$, at roots of unity, in
+positive characteristic, with zero divisors and in the zero ring --- whereas the text argues in
+$\RationalNumbers(q)$ and transfers to $\ComplexNumbers$.  The Vandermonde evaluation of the
+alternant is proved for an arbitrary exponent vector, not only one coming from a partition.  In a
+field the displayed quotient form holds under $a_\delta\ne0$, with the sufficient criterion $q\ne0$
+and $q^d\ne1$ for $0<d<m$; the extra $q\ne0$ is genuinely needed for the bialternant quotient, since
+at $q=0$ with $m\ge3$ every displayed denominator is $1$ while $a_\delta=0$}\\[2pt]
+\Cref{cor:schur-e-h} & \statusexact &
+\texttt{alternantPow\_\allowbreak{}row\_\allowbreak{}eq\_\allowbreak{}gaussianBinomial\_\allowbreak{}mul},
+\texttt{schur\_\allowbreak{}e\_\allowbreak{}h\_\allowbreak{}cleared}\newline
+{\footnotesize\texttt{SchurPrincipalSpecialization}; formalized division-free, with no
+cancellation, no hypothesis on $q$ and no bound on $k$, so it holds in the degenerate cases the
+printed quotient cannot express}\\[2pt]
 \Cref{thm:weighted-inversion} & \statusexact &
 \texttt{weightedSymmetricFunction\_inversion}\newline
 {\footnotesize\texttt{SymmetricFunctionTransform}; whole-function iff over a
@@ -14486,7 +14504,19 @@ recorded in the proof}\\[2pt]
 {\footnotesize\texttt{GaussianBinomialAtNegOne};
 \texttt{QBinomialReciprocity}; arbitrary commutative ring, all four parity
 classes, including total above-row zero extension}\\[2pt]
-\Cref{thm:csp-subsets} & \statusnone & ---\\[2pt]
+\Cref{thm:csp-subsets} & \statusexact &
+\texttt{IsCyclicSieving},
+\texttt{isCyclicSieving\_\allowbreak{}powersetCard},
+\texttt{card\_\allowbreak{}rotationFix},
+\texttt{isPrimitiveRoot\_\allowbreak{}pow\_\allowbreak{}addOrderOf}\newline
+{\footnotesize\texttt{CyclicSievingSubsets}; over an arbitrary commutative integral domain
+carrying a primitive $n$th root of unity, not merely $\IntegerNumbers[q]$ evaluated in
+$\ComplexNumbers$, for every $k$ with no range hypothesis and every $j$ with no residue
+restriction and no case split at $j=0$.  The two steps the text asserts without proof carry
+essentially all the work and are formalized separately: the count of translation-invariant
+$k$-subsets, proved for an \emph{arbitrary} element of additive order $d$ rather than a power of
+the distinguished generator, which subsumes the unproved sentence about orbit sizes and ``fixed iff
+a union of orbits''; and the primitivity of the relevant root power}\\[2pt]
 \Cref{thm:q-babbage} & \statusexact &
 \texttt{gaussianBinomial\_\allowbreak{}q\_\allowbreak{}babbage},
 \texttt{gaussianBinomial\_\allowbreak{}q\_\allowbreak{}babbage\_\allowbreak{}int},
@@ -14646,7 +14676,18 @@ theorem}\\[2pt]
 \midrule
 \multicolumn{3}{@{}l}{\itshape Asymptotic regimes and Bernoulli expansions}\\
 \midrule
-\Cref{lem:basic-bernoulli-log} & \statusnone & ---\\[2pt]
+\Cref{lem:basic-bernoulli-log} & \statusexact &
+\texttt{log\_\allowbreak{}one\_\allowbreak{}sub\_\allowbreak{}rexp\_\allowbreak{}neg\_\allowbreak{}div},
+\texttt{one\_\allowbreak{}sub\_\allowbreak{}cexp\_\allowbreak{}neg},
+\texttt{summable\_\allowbreak{}bernoulliLogTerm},
+\texttt{norm\_\allowbreak{}bernoulliLogTerm\_\allowbreak{}le}\newline
+{\footnotesize\texttt{BasicBernoulliLog}; the displayed expansion for real $x\ne0$ with
+$\lvert x\rvert<2\pi$, together with a branch-free multiplicative form over $\ComplexNumbers$ valid
+on the whole disc including $x=0$, so the positivity that makes the real logarithm honest is
+delivered rather than assumed.  Convergence is proved with an explicit geometric majorant.  The
+route is the corpus's own even-zeta material rather than an analytic statement about
+$x/(\EulerE^{x}-1)$, which Mathlib does not carry.  Not claimed: that $2\pi$ is the exact radius of
+convergence}\\[2pt]
 \Cref{thm:gaussian-bernoulli} & \statusnone & ---\\[2pt]
 \Cref{cor:gaussian-first-asymptotic} & \statusnone & ---\\[2pt]
 \Cref{thm:fixed-column-limit} & \statuspartial &
@@ -15026,7 +15067,22 @@ the theorem's full universal characterization}\\[2pt]
 \texttt{finiteQPochhammerIn\_self\_mul\_gaussianBinomial},
 \texttt{finiteQPochhammerIn\_self\_eq\_mul\_mul\_gaussianBinomial}\newline
 {\footnotesize\texttt{FiniteQBinomialCore}}\\[2pt]
-\Cref{thm:subspace-mobius} & \statusnone & ---\\[2pt]
+\Cref{thm:subspace-mobius} & \statusexact &
+\texttt{mu\_\allowbreak{}submodule},
+\texttt{mu\_\allowbreak{}submodule\_\allowbreak{}quotient},
+\texttt{eulerChar\_\allowbreak{}submodule},
+\texttt{mu\_\allowbreak{}submodule\_\allowbreak{}pi},
+\texttt{mu\_\allowbreak{}apply\_\allowbreak{}eq\_\allowbreak{}zero\_\allowbreak{}of\_\allowbreak{}not\_\allowbreak{}le}\newline
+{\footnotesize\texttt{SubspaceMobius}; both displays, for any finite module over any finite
+\emph{division ring} --- so $Q$ need not be a prime power and $K$ need not be commutative --- and
+with values in an arbitrary commutative ring rather than $\IntegerNumbers$.  The convention
+$\mu(U,W)=0$ off the order relation, which the display leaves unspecified, is proved.  The
+reduction the text uses, that $X\mapsto X/U$ is an interval isomorphism and that $\mu$ depends only
+on the isomorphism type of the interval, is \emph{not} formalized: Mathlib transports $\mu$ along
+no order isomorphism, so the Lean proof inducts on the relative rank directly and uses the quotient
+correspondence only as a cardinality statement.  Also proved in passing:
+\Cref{rem:mobius-inversion-kernel}, identifying the $q$-binomial inversion kernel with
+$\mu(U,W)\GaussianBinomial{n}{k}{Q}$}\\[2pt]
 \Cref{prop:thue-morse-power-recurrence} & \statuspartial &
 \texttt{thueMorsePowerSum\_succ}\newline
 {\footnotesize\texttt{ThueMorsePrefix}; Lean has the untranslated recurrence,
@@ -15105,7 +15161,18 @@ different convolutional summand and lacks the stated sharp residual package}\\[2
 $u,v\colon\NaturalNumbers\to K$ with $u_0-v_0\ne0$ and $v_1,\dots,v_N\ne0$, the
 products written as $\prod_{i<k}u_i$ and $\prod_{i<k}v_{i+1}$; by induction on
 $N$, each step being the one-term telescoping}\\[2pt]
-\Cref{qg:lem-jackson-rational-certificate} & \statusnone & ---\\[2pt]
+\Cref{qg:lem-jackson-rational-certificate} & \statusexact &
+\texttt{jackson\_\allowbreak{}rational\_\allowbreak{}certificate},
+\texttt{jacksonCertNum\_\allowbreak{}left},
+\texttt{jacksonCertNum\_\allowbreak{}shift},
+\texttt{jackson\_\allowbreak{}certificate\_\allowbreak{}closed\_\allowbreak{}form}\newline
+{\footnotesize\texttt{JacksonRationalCertificate}; over an arbitrary field rather than
+$\RationalNumbers(A,\dots,F)$ and its complex specializations, under exactly the eighteen
+nonvanishing hypotheses that spell out the text's clause ``all rational expressions displayed are
+defined''.  Because the statement is quantified over every such field, the text's separate
+specialization corollary is subsumed rather than being a further step.  Two of the underlying
+identities are proved division-free over an \emph{arbitrary commutative ring}, including
+characteristic $2$ and non-domains, where the text works only in characteristic $0$}\\[2pt]
 \Cref{qg:thm-jackson-8phi7} & \statusnone & ---\\[2pt]
 \Cref{qg:cor-jackson-6phi5} & \statusnone & ---\\[2pt]
 \midrule
@@ -15126,17 +15193,79 @@ class $m\equiv2\pmod 3$ uniformly in $n$ from the zero set of $\theta$ rather th
 hidden case split on the sign of $n$.  The two lemmas the text uses silently, iterated theta
 quasi-periodicity and the threefold dissection, are now explicit and reusable}\\[2pt]
 \Cref{qg:def-jacobi-theta} & \statusna & notation only\\[2pt]
-\Cref{qg:prop-theta-products} & \statusnone & ---\\[2pt]
+\Cref{qg:prop-theta-products} & \statuspartial &
+\texttt{hasSum\_\allowbreak{}pow\_\allowbreak{}sqExponent\_\allowbreak{}mul\_\allowbreak{}zpow},
+\texttt{hasSum\_\allowbreak{}neg\_\allowbreak{}one\_\allowbreak{}zpow\_\allowbreak{}mul\_\allowbreak{}pow\_\allowbreak{}sqExponent\_\allowbreak{}mul\_\allowbreak{}zpow},
+\texttt{hasSum\_\allowbreak{}pow\_\allowbreak{}sqAddExponent\_\allowbreak{}mul\_\allowbreak{}zpow},
+\texttt{qPochhammerInfIn\_\allowbreak{}neg\_\allowbreak{}one}\newline
+{\footnotesize\texttt{ThetaProductIdentities}; all six displayed identities, stated in the nome
+variables over an \emph{arbitrary} complete normed field with $\lVert q\rVert<1$, $q\ne0$,
+$\zeta\ne0$ --- more general than the text, which works over $\ComplexNumbers$, and with every
+fractional power gone from the statement.  Each is a \texttt{HasSum}.  Two hypotheses the text's
+proof uses without checking are made explicit.  Partial because the corpus has no
+$\ComplexNumbers$-definition of $\vartheta_2$ or $\vartheta_4$ carrying the prefactor
+$q^{1/4}\zeta^{1/2}$: the two $\vartheta_2$ displays are therefore stated with that prefactor
+stripped, as statements about $\vartheta_3(z+\tau/2\mid\tau)$.  The other four are exact}\\[2pt]
 \Cref{qg:prop-theta-heat} & \statusnone & ---\\[2pt]
 \Cref{qg:def-fourier-transform} & \statusna & transform convention\\[2pt]
-\Cref{qg:thm-poisson} & \statusnone & ---\\[2pt]
-\Cref{qg:lem-gaussian-fourier} & \statusnone & ---\\[2pt]
-\Cref{qg:thm-jacobi-imaginary} & \statusnone & ---\\[2pt]
+\Cref{qg:thm-poisson} & \statusexact &
+\texttt{poisson\_\allowbreak{}summation\_\allowbreak{}schwartz},
+\texttt{poisson\_\allowbreak{}summation\_\allowbreak{}of\_\allowbreak{}rpow\_\allowbreak{}decay}\newline
+{\footnotesize\texttt{GaussianFourierTheta}; verbatim, in the text's own transform convention,
+which is Mathlib's with no normalization or sign discrepancy.  Also proved under a hypothesis
+strictly weaker than Schwartz: continuity together with $f$ and $\widehat f=O(\lvert x\rvert^{-b})$
+for a single $b>1$.  The text's own proof is not the one formalized --- Mathlib argues through the
+Fourier series of the periodization, which discharges the two uniform-convergence assertions the
+text leaves unproved}\\[2pt]
+\Cref{qg:lem-gaussian-fourier} & \statusexact &
+\texttt{integral\_\allowbreak{}cexp\_\allowbreak{}pi\_\allowbreak{}I\_\allowbreak{}mul\_\allowbreak{}sq\_\allowbreak{}add},
+\texttt{fourier\_\allowbreak{}cexp\_\allowbreak{}pi\_\allowbreak{}I\_\allowbreak{}mul\_\allowbreak{}sq\_\allowbreak{}add},
+\texttt{integrable\_\allowbreak{}cexp\_\allowbreak{}pi\_\allowbreak{}I\_\allowbreak{}mul\_\allowbreak{}sq\_\allowbreak{}add}\newline
+{\footnotesize\texttt{GaussianFourierTheta}; verbatim, with the hypothesis $0<\operatorname{Im}\tau$
+on a bare $\tau\in\ComplexNumbers$ rather than membership in the upper half-plane type, and with
+the strengthening to the full Fourier transform at every real frequency, which is the form the
+text's own proof of \Cref{qg:thm-jacobi-imaginary} actually uses.  Integrability, which the text
+does not state, is proved so the integral statements are not vacuous.  Every power is Mathlib's
+principal \texttt{cpow}, which agrees with the text's principal square root exactly because
+$\operatorname{Re}(-\ImaginaryUnit\tau)=\operatorname{Im}\tau>0$ keeps the argument off the cut}\\[2pt]
+\Cref{qg:thm-jacobi-imaginary} & \statusexact &
+\texttt{thetaThree\_\allowbreak{}neg\_\allowbreak{}inv},
+\texttt{thetaThree\_\allowbreak{}zero\_\allowbreak{}neg\_\allowbreak{}inv},
+\texttt{thetaTwo\_\allowbreak{}zero\_\allowbreak{}neg\_\allowbreak{}inv},
+\texttt{thetaFour\_\allowbreak{}zero\_\allowbreak{}neg\_\allowbreak{}inv},
+\texttt{hasSum\_\allowbreak{}thetaThree},
+\texttt{tsum\_\allowbreak{}cexp\_\allowbreak{}pi\_\allowbreak{}I\_\allowbreak{}mul\_\allowbreak{}sq\_\allowbreak{}add}\newline
+{\footnotesize\texttt{JacobiImaginaryTransform}, \texttt{GaussianFourierTheta}; all four displayed
+equations.  The identification of $\vartheta_2,\vartheta_3,\vartheta_4$ with the text's own series
+is proved as \texttt{HasSum} statements, asserting unconditional summability over
+$\IntegerNumbers$ as well as the value.  Three free strengthenings: the laws hold under $\tau\ne0$
+rather than $0<\operatorname{Im}\tau$, since $\operatorname{Im}(-1/\tau)$ has the sign of
+$\operatorname{Im}\tau$ and both sides vanish off the upper half-plane; the $\vartheta_2$ and
+$\vartheta_4$ laws are proved at general $z$, where the text gives only $z=0$, which also removes
+its unproved appeal to $(w^{-1})^{1/2}=(w^{1/2})^{-1}$; and $\vartheta_3(0\mid\tau)$ is identified
+with the one-variable theta.  \texttt{GaussianFourierTheta} reaches the same series identity by the
+independent Poisson route}\\[2pt]
 \Cref{qg:def-dedekind-eta} & \statusna & notation only\\[2pt]
 \Cref{qg:thm-theta-eta-modular} & \statusnone & ---\\[2pt]
 \Cref{qg:def-ramanujan-theta} & \statusna & notation only\\[2pt]
 \Cref{qg:prop-ramanujan-product} & \statusnone & ---\\[2pt]
-\Cref{qg:thm-schroeter} & \statusnone & ---\\[2pt]
+\Cref{qg:thm-schroeter} & \statusexact &
+\texttt{schroeter\_\allowbreak{}formula},
+\texttt{hasSum\_\allowbreak{}schroeter},
+\texttt{hasSum\_\allowbreak{}schroeterFibre},
+\texttt{quadTheta\_\allowbreak{}eq\_\allowbreak{}bilateralTheta},
+\texttt{summable\_\allowbreak{}norm\_\allowbreak{}quadThetaTerm}\newline
+{\footnotesize\texttt{SchroeterFormula}; over an arbitrary complete normed field rather than
+$\ComplexNumbers$, so also over $\RealNumbers$ and the $p$-adic fields, the only analytic input
+being a real geometric majorant.  The hypotheses are exactly the chapter's own, with no weakening.
+The conclusion is a \texttt{HasSum}, asserting unconditional summability of the lattice family
+where the printed $\sum_{n\in\IntegerNumbers}$ fixes no summation order; norm-summability is
+recorded separately, which over a nonarchimedean field is stronger again.  The dissection is
+carried by an explicit equivalence of $\IntegerNumbers^2$ built from the division algorithm, so
+the change of variables is a bijection by construction rather than by inspection.  Two identities
+the chapter states only in passing are proved with it: the crosswalk
+$\Theta(x;Q)=\BilateralTheta{Qx}{Q^2}$, with its $Q\ne0$ made explicit, and Jacobi's triple
+product in the $\sum Q^{n^2}x^n$ normalization}\\[2pt]
 \Cref{qg:prop-squares-theta} & \statuspartial &
 \texttt{hasSum\_\allowbreak{}sumSqRep},
 \texttt{sumSqRep},
