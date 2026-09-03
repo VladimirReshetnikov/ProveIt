@@ -188,4 +188,77 @@ theorem abs_binaryWeightTotal_sub_le (N : ℕ) :
     rw [abs_le]
     constructor <;> nlinarith [hup, hlo, hL1, hL2, hN0]
 
+/-! ## Trollope's exact digit formula -/
+
+/-- `S(2^L) = L·2^(L-1)`; at `L = 0` both sides are `0`. -/
+theorem binaryWeightTotal_two_pow (L : ℕ) :
+    binaryWeightTotal (2 ^ L) = L * 2 ^ (L - 1) := by
+  rcases L with _ | L
+  · simp [binaryWeightTotal, binaryWeight]
+  · have h := two_mul_binaryWeightTotal_two_pow (L + 1)
+    have h2 : (L + 1) * 2 ^ (L + 1) = 2 * ((L + 1) * 2 ^ L) := by ring
+    rw [Nat.add_sub_cancel]
+    exact Nat.eq_of_mul_eq_mul_left (by norm_num : 0 < 2) (h.trans h2)
+
+/-- **Trollope's exact formula.**  Writing `b_j` for the binary digits
+of `N`,
+
+`S(N) = ∑_{j : b_j = 1} (j·2^(j-1) + (N mod 2^j))`:
+
+a set bit in position `j` contributes the whole total `S(2^j) = j·2^(j-1)`
+of the block below it plus the `N mod 2^j` integers above it that carry
+that bit.  Stated over any digit window `range b` with `N < 2^b`; it is
+the closed form behind `abs_binaryWeightTotal_sub_le`, proved by
+induction on the top digit. -/
+theorem binaryWeightTotal_eq_sum_testBit (N b : ℕ) (hb : N < 2 ^ b) :
+    binaryWeightTotal N =
+      ∑ j ∈ range b,
+        if N.testBit j then j * 2 ^ (j - 1) + N % 2 ^ j else 0 := by
+  induction N using Nat.strong_induction_on generalizing b with
+  | _ N ih =>
+    rcases Nat.eq_zero_or_pos N with rfl | hN
+    · simp
+    · obtain ⟨r, hNr, hr⟩ := exists_top_digit N hN
+      set L := Nat.log 2 N with hL
+      have hLb : L < b := by
+        by_contra h
+        have h' : b ≤ L := by omega
+        have h1 := Nat.pow_le_pow_right (by norm_num : 0 < 2) h'
+        have h2 : 2 ^ L ≤ N := Nat.pow_log_le_self 2 hN.ne'
+        omega
+      have hrN : r < N := by
+        have := Nat.one_le_two_pow (n := L)
+        omega
+      have hIH := ih r hrN L hr
+      have hlow : ∀ j ∈ range L,
+          (if (2 ^ L + r).testBit j then
+              j * 2 ^ (j - 1) + (2 ^ L + r) % 2 ^ j else 0) =
+            (if r.testBit j then j * 2 ^ (j - 1) + r % 2 ^ j else 0) := by
+        intro j hj
+        have hj' : j < L := Finset.mem_range.mp hj
+        rw [Nat.testBit_two_pow_add_gt hj', Nat.add_mod,
+          Nat.mod_eq_zero_of_dvd (pow_dvd_pow 2 hj'.le), zero_add,
+          Nat.mod_mod]
+      have htop : (if (2 ^ L + r).testBit L then
+          L * 2 ^ (L - 1) + (2 ^ L + r) % 2 ^ L else 0) =
+          L * 2 ^ (L - 1) + r := by
+        rw [Nat.testBit_two_pow_add_eq, Nat.testBit_eq_false_of_lt hr,
+          Bool.not_false, if_pos rfl, Nat.add_mod, Nat.mod_self, zero_add,
+          Nat.mod_mod, Nat.mod_eq_of_lt hr]
+      have hhigh : ∀ j ∈ Finset.Ico (L + 1) b,
+          (if (2 ^ L + r).testBit j then
+              j * 2 ^ (j - 1) + (2 ^ L + r) % 2 ^ j else 0) = 0 := by
+        intro j hj
+        have hj' : L + 1 ≤ j := (Finset.mem_Ico.mp hj).1
+        have hlt : 2 ^ L + r < 2 ^ j :=
+          calc 2 ^ L + r < 2 ^ L + 2 ^ L := by omega
+            _ = 2 ^ (L + 1) := by ring
+            _ ≤ 2 ^ j := Nat.pow_le_pow_right (by norm_num) hj'
+        rw [Nat.testBit_eq_false_of_lt hlt, if_neg Bool.false_ne_true]
+      rw [hNr, binaryWeightTotal_two_pow_add L r hr, binaryWeightTotal_two_pow,
+        hIH, ← Finset.sum_range_add_sum_Ico _ (Nat.succ_le_of_lt hLb),
+        Finset.sum_range_succ, Finset.sum_congr rfl hlow, htop,
+        Finset.sum_eq_zero hhigh, add_zero]
+      ring
+
 end Fabius

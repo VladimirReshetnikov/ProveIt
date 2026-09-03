@@ -263,20 +263,6 @@ theorem exists_natDegree_le_eqOn_block (p m : ℕ) (hp : 0 < p) :
 
 /-! ### The plateau as a corollary -/
 
-private theorem iteratedDeriv_eval_poly
-    (r : ℕ) (Q : Polynomial ℝ) (x : ℝ) :
-    iteratedDeriv r (fun y : ℝ => Q.eval y) x =
-      (Polynomial.derivative^[r] Q).eval x := by
-  induction r generalizing Q with
-  | zero => simp [iteratedDeriv_zero]
-  | succ r ih =>
-      have hd : deriv (fun y : ℝ => Q.eval y) =
-          fun y : ℝ => (Polynomial.derivative Q).eval y := by
-        funext y
-        exact Polynomial.deriv Q
-      rw [iteratedDeriv_succ', hd, Function.iterate_succ_apply]
-      exact ih (Polynomial.derivative Q)
-
 private theorem exists_C_iterate_derivative
     {Q : Polynomial ℝ} {r : ℕ} (hQ : Q.natDegree ≤ r) :
     ∃ c : ℝ, Polynomial.derivative^[r] Q = Polynomial.C c := by
@@ -308,7 +294,7 @@ theorem iteratedDeriv_fabiusUniformSpline_const_dyadic
         (uniformSplineCellPolynomial p (2 ^ (p - r))).eval y :=
     (fabiusUniformSpline_eqOn_cellPolynomial_dyadic hp
       hrp).eventuallyEq_of_mem (Icc_mem_nhds hx.1 hx.2)
-  rw [(hev.iteratedDeriv r).eq_of_nhds, iteratedDeriv_eval_poly, hc,
+  rw [(hev.iteratedDeriv r).eq_of_nhds, iteratedDeriv_eval_polynomial, hc,
     Polynomial.eval_C]
 
 /-! ### Sharpness of the degree drop -/
