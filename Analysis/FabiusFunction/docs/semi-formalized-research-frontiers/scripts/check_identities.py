@@ -702,6 +702,71 @@ check('thm:merged-binomial-type-characterization',
       'binomial law, deg p_n <= n, and deg p_n = n for all n iff B is a delta series',
       bad, t)
 
+# ------------------------------------------------------------------ thm:res-subst
+# Res_z A(u(z)) u'(z) = Res_u A(u).  Exact Laurent arithmetic: u = z v with v(0) invertible,
+# so u^n = z^n v^n for every integer n, negative powers via series inversion.  A is given
+# genuine poles -- for a power series the identity is 0 = 0 and would pass for the wrong
+# reason.
+NR = 26
+
+
+def _pmul(a, b):
+    r = [F(0)] * NR
+    for i, x in enumerate(a):
+        if x:
+            for j, y in enumerate(b):
+                if i + j >= NR:
+                    break
+                r[i + j] += x * y
+    return r
+
+
+def _pinv(a):
+    r = [F(0)] * NR
+    r[0] = F(1) / a[0]
+    for n in range(1, NR):
+        r[n] = -sum(a[k] * r[n - k] for k in range(1, n + 1)) / a[0]
+    return r
+
+
+def _ppow(a, n):
+    if n < 0:
+        return _ppow(_pinv(a), -n)
+    r = [F(0)] * NR
+    r[0] = F(1)
+    for _ in range(n):
+        r = _pmul(r, a)
+    return r
+
+
+bad, t = [], 0
+for _ in range(25):
+    v = [F(random.randint(-4, 4), random.randint(1, 3)) for _ in range(NR)]
+    while v[0] == 0:
+        v[0] = F(random.randint(1, 4))
+    vp = [F(0)] * NR
+    for i in range(1, NR):
+        vp[i - 1] = v[i] * i
+    zvp = [F(0)] * NR
+    for i in range(NR - 1):
+        zvp[i + 1] = vp[i]
+    uprime = [v[i] + zvp[i] for i in range(NR)]
+    L, M = random.randint(1, 4), random.randint(0, 3)
+    aco = {n: F(random.randint(-5, 5), random.randint(1, 3)) for n in range(-L, M + 1)}
+    if all(cc == 0 for cc in aco.values()):
+        aco[-1] = F(1)
+    tot = F(0)
+    for n, cc in aco.items():
+        if cc:
+            ser = _pmul(_ppow(v, n), uprime)
+            idx = -1 - n
+            if 0 <= idx < NR:
+                tot += cc * ser[idx]
+    t += 1
+    if tot != aco.get(-1, F(0)):
+        bad.append((tot, aco.get(-1, F(0))))
+check('thm:res-subst', "Res_z A(u(z))u'(z) = Res_u A(u), Laurent A with poles", bad, t)
+
 # --------------------------------------------------------------------- report
 width = max(len(lab) for lab, _, _, _ in RESULTS)
 failed = 0
