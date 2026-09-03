@@ -466,9 +466,9 @@ STATUS = {
    r"\cref{eq:merged-cauchy-integral} and the reflection \cref{eq:merged-cauchy-reflection} "
    r"are not formalized."),
  'lem:coeff-rules': ('partial',
-   r"The three formal rules are \lean{Fabius.PowerSeries.coeff_mul_eq_sum_range} "
-   r"(\cref{eq:cauchy}), \lean{Fabius.PowerSeries.coeff_derivative_eq} (\cref{eq:der-coeff}) and "
-   r"\lean{Fabius.PowerSeries.coeff_mul_geomSeries} (\cref{eq:geom-conv}), over any commutative "
+   r"The three formal rules are \lean{Fabius.coeff_mul_eq_sum_range} "
+   r"(\cref{eq:cauchy}), \lean{Fabius.coeff_derivative_eq} (\cref{eq:der-coeff}) and "
+   r"\lean{Fabius.coeff_mul_geomSeries} (\cref{eq:geom-conv}), over any commutative "
    r"ring (module \lean{CoefficientRules}); the analytic Cauchy coefficient formula "
    r"\cref{eq:cauchy-coeff} is not formalized."),
  'thm:merged-multinomial-leibniz': ('partial',

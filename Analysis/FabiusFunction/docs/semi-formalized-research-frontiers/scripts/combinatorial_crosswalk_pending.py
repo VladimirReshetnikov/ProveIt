@@ -760,7 +760,7 @@ solve for the half-value.
 for $q\ge1$ and rational $x$.  In $(\RationalNumbers[x])[[t]]$, Mathlib's
 \lean{Polynomial.bernoulli_generating_function} gives
 $B(a;t)(\EulerE^t-1)=t\EulerE^{at}$ for polynomial arguments $a$
-(\lean{Fabius.bernoulliPolySeries_mul_exp_sub_one}); summing over
+(\lean{Fabius.bernoulliPolySeriesAt_mul_exp_sub_one}); summing over
 $a=x+r/q$ and using the finite geometric sum
 $\bigl(\sum_{r<q}\EulerE^{rt/q}\bigr)(\EulerE^{t/q}-1)=\EulerE^t-1$
 (\lean{Fabius.sum_pow_mul_sub_one}) gives $G(t)(\EulerE^{t/q}-1)=t\EulerE^{xt}$
@@ -1217,12 +1217,12 @@ PENDING += [
   remark(r"""% ed.: crosswalk added 2026-09-02; the three formal rules are Lean, the analytic one is not.
 Module \lean{CoefficientRules} proves the three formal rules over an arbitrary
 commutative ring: \cref{eq:cauchy} is
-\lean{Fabius.PowerSeries.coeff_mul_eq_sum_range}, \cref{eq:der-coeff} is
-\lean{Fabius.PowerSeries.coeff_derivative_eq}, and \cref{eq:geom-conv} is
-\lean{Fabius.PowerSeries.coeff_mul_geomSeries}, where $F/(1-az)$ is read as
+\lean{Fabius.coeff_mul_eq_sum_range}, \cref{eq:der-coeff} is
+\lean{Fabius.coeff_derivative_eq}, and \cref{eq:geom-conv} is
+\lean{Fabius.coeff_mul_geomSeries}, where $F/(1-az)$ is read as
 $F\cdot\sum_na^nz^n$; that the geometric series really is the reciprocal of
-$1-az$ is \lean{Fabius.PowerSeries.one_sub_C_mul_X_mul_geomSeries}, and
-\lean{Fabius.PowerSeries.eq_mul_geomSeries_iff} lets the same rule be applied
+$1-az$ is \lean{Fabius.one_sub_C_mul_X_mul_geomSeries}, and
+\lean{Fabius.eq_mul_geomSeries_iff} lets the same rule be applied
 to a series presented by the equation $(1-az)G=F$, which is how it is used in
 the Stirling column arguments.  The analytic Cauchy coefficient formula and
 bound \cref{eq:cauchy-coeff} are not formalized.""")),

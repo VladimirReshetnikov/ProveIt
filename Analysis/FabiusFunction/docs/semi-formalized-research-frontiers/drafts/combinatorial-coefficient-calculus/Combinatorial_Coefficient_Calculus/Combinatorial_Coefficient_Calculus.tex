@@ -244,12 +244,12 @@ bound follows by estimating the contour integral by its length $2\pi r$.
 % ed.: crosswalk added 2026-09-02; the three formal rules are Lean, the analytic one is not.
 Module \lean{CoefficientRules} proves the three formal rules over an arbitrary
 commutative ring: \cref{eq:cauchy} is
-\lean{Fabius.PowerSeries.coeff_mul_eq_sum_range}, \cref{eq:der-coeff} is
-\lean{Fabius.PowerSeries.coeff_derivative_eq}, and \cref{eq:geom-conv} is
-\lean{Fabius.PowerSeries.coeff_mul_geomSeries}, where $F/(1-az)$ is read as
+\lean{Fabius.coeff_mul_eq_sum_range}, \cref{eq:der-coeff} is
+\lean{Fabius.coeff_derivative_eq}, and \cref{eq:geom-conv} is
+\lean{Fabius.coeff_mul_geomSeries}, where $F/(1-az)$ is read as
 $F\cdot\sum_na^nz^n$; that the geometric series really is the reciprocal of
-$1-az$ is \lean{Fabius.PowerSeries.one_sub_C_mul_X_mul_geomSeries}, and
-\lean{Fabius.PowerSeries.eq_mul_geomSeries_iff} lets the same rule be applied
+$1-az$ is \lean{Fabius.one_sub_C_mul_X_mul_geomSeries}, and
+\lean{Fabius.eq_mul_geomSeries_iff} lets the same rule be applied
 to a series presented by the equation $(1-az)G=F$, which is how it is used in
 the Stirling column arguments.  The analytic Cauchy coefficient formula and
 bound \cref{eq:cauchy-coeff} are not formalized.
@@ -6786,7 +6786,7 @@ solve for the half-value.
 for $q\ge1$ and rational $x$.  In $(\RationalNumbers[x])[[t]]$, Mathlib's
 \lean{Polynomial.bernoulli_generating_function} gives
 $B(a;t)(\EulerE^t-1)=t\EulerE^{at}$ for polynomial arguments $a$
-(\lean{Fabius.bernoulliPolySeries_mul_exp_sub_one}); summing over
+(\lean{Fabius.bernoulliPolySeriesAt_mul_exp_sub_one}); summing over
 $a=x+r/q$ and using the finite geometric sum
 $\bigl(\sum_{r<q}\EulerE^{rt/q}\bigr)(\EulerE^{t/q}-1)=\EulerE^t-1$
 (\lean{Fabius.sum_pow_mul_sub_one}) gives $G(t)(\EulerE^{t/q}-1)=t\EulerE^{xt}$
@@ -9965,7 +9965,7 @@ Result & Title & Status & Lean declarations (module) \\
 \endhead
 \bottomrule
 \endfoot
-\Cref{lem:coeff-rules} & Coefficient rules & partial & The three formal rules are \lean{Fabius.PowerSeries.coeff_mul_eq_sum_range} (\cref{eq:cauchy}), \lean{Fabius.PowerSeries.coeff_derivative_eq} (\cref{eq:der-coeff}) and \lean{Fabius.PowerSeries.coeff_mul_geomSeries} (\cref{eq:geom-conv}), over any commutative ring (module \lean{CoefficientRules}); the analytic Cauchy coefficient formula \cref{eq:cauchy-coeff} is not formalized. \\
+\Cref{lem:coeff-rules} & Coefficient rules & partial & The three formal rules are \lean{Fabius.coeff_mul_eq_sum_range} (\cref{eq:cauchy}), \lean{Fabius.coeff_derivative_eq} (\cref{eq:der-coeff}) and \lean{Fabius.coeff_mul_geomSeries} (\cref{eq:geom-conv}), over any commutative ring (module \lean{CoefficientRules}); the analytic Cauchy coefficient formula \cref{eq:cauchy-coeff} is not formalized. \\
 \Cref{thm:res-subst} & Formal change of variables for residues & none &  \\
 \Cref{thm:newton-expansion} & Newton expansion & Lean & \lean{Fabius.newton_expansion} (\lean{NewtonExpansion}): $p=\sum_{k\le d}\frac{\Delta^kp(0)}{k!}\FallingFactorial{x}{k}$ in $K[x]$ for every field $K$ of characteristic zero, from the evaluation form \lean{Fabius.eval_natCast_eq_sum_choose_fwdDiff} ($p(m)=\sum_k\binom mk\Delta^kp(0)$ over any commutative ring), which packages Mathlib's Gregory--Newton formula \lean{shift_eq_sum_fwdDiff_iter} with \lean{Polynomial.fwdDiff_iter_eq_zero_of_degree_lt} \\
 \Cref{thm:exponential-formula} & The exponential formula & Lean & \cref{eq:partial-bell-egf} is \lean{Fabius.bellWeightSeries_pow}, \cref{eq:bivariate-bell-egf} is \lean{Fabius.exp_subst_smul_bellWeightSeries} (\lean{ExponentialFormula}), \cref{eq:complete-bell-egf} is \lean{Fabius.exp_subst_bellWeightSeries}, all as substitutions of formal power series over any $\RationalNumbers$-algebra \\
