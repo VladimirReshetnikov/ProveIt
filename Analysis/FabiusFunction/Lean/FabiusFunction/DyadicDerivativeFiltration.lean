@@ -56,7 +56,6 @@ theorem iteratedDeriv_rvachevUp_dyadic_eq_zero (F : BoundedFabius) (hF : IsFabiu
       2 ^ (n + k + 1) - 1 - 2 * (j : ℝ)
       = (((2 * (2 ^ k * (2 * c + 1) + 2 ^ (n + k) - j) - 1 : ℤ)) : ℝ) := by
     push_cast
-    rw [pow_add, pow_add, pow_add]
     field_simp
     ring
   rw [harg]
@@ -106,9 +105,24 @@ theorem iteratedDeriv_rvachevUp_dyadic_critical (F : BoundedFabius) (hF : IsFabi
       have : (j : ℤ) = c + 2 ^ p := by
         generalize hu : (c : ℤ) + 2 ^ p = u at h ⊢
         omega
-      exact_mod_cast this.symm
+      exact_mod_cast this
     have hge : (1 : ℝ) ≤ |(((2 * ((c : ℤ) + 2 ^ p - j) : ℤ)) : ℝ)| := by
       exact_mod_cast Int.one_le_abs hne
     rw [rvachevUp_eq_zero_of_one_le_abs F hF hge, mul_zero]
+
+/-- **`p1:cor:denominator-detection`**: at a reduced dyadic point `(2c+1)/2^n`
+the critical derivative is nonzero and every higher one vanishes, so the
+depth `n` is `max {m : up^{(m)}(t) ≠ 0}`. -/
+theorem dyadic_depth_eq_max_nonzero_iteratedDeriv (F : BoundedFabius) (hF : IsFabius F)
+    {n : ℕ} (hn : 1 ≤ n) {c : ℕ} (hc : c < 2 ^ (n - 1)) :
+    iteratedDeriv n (rvachevUp F) (((2 * c + 1 : ℕ) : ℝ) / 2 ^ n) ≠ 0 ∧
+      ∀ m, n < m → iteratedDeriv m (rvachevUp F) (((2 * c + 1 : ℕ) : ℝ) / 2 ^ n) = 0 := by
+  refine ⟨?_, fun m hm => iteratedDeriv_rvachevUp_dyadic_eq_zero F hF hm ⟨c, rfl⟩⟩
+  rw [iteratedDeriv_rvachevUp_dyadic_critical F hF hn hc]
+  have hsign : ((thueMorseSign c : ℤ) : ℝ) ≠ 0 := by
+    rw [thueMorseSign]
+    push_cast
+    exact pow_ne_zero _ (by norm_num)
+  exact mul_ne_zero (neg_ne_zero.mpr hsign) (pow_ne_zero _ two_ne_zero)
 
 end Fabius

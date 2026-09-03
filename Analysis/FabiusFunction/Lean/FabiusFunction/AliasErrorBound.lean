@@ -83,7 +83,6 @@ theorem norm_alias_term_le (F : BoundedFabius) (hF : IsFabius F) (N : ℕ) [NeZe
         rw [Real.rpow_neg (abs_nonneg _), Real.rpow_natCast, mul_pow, div_pow, mul_pow,
           div_pow]
         field_simp
-        ring
 
 /-- **`p1:thm:alias-error`, tsum form.**  For every `K ≥ 2`, `N ≥ 1` and residue
 `r` with `r < N`,
@@ -125,7 +124,7 @@ theorem norm_foldedCoefficient_sub_le (F : BoundedFabius) (hF : IsFabius F) (N :
     have hsingle : Summable fun q : ℤ => if q = 0 then f 0 else 0 :=
       (hasSum_ite_eq (0 : ℤ) (f 0)).summable
     change ∑' q : ℤ, f q = _
-    rw [hdec]
+    conv_lhs => rw [hdec]
     simp only []
     rw [Summable.tsum_add hf'sum hsingle, tsum_ite_eq]
   have hf0 : f 0 = rvachevFourier F ((r.val : ℂ) / 2) := by
