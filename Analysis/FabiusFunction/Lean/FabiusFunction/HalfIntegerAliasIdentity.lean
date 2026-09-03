@@ -400,7 +400,7 @@ theorem sum_foldedCoefficient_odd (F : BoundedFabius) (hF : IsFabius F) (N : ℕ
 theorem periodizedUp_add_two (F : BoundedFabius) (t : ℝ) :
     periodizedUp F (t + 2) = periodizedUp F t := by
   unfold periodizedUp
-  rw [← (Equiv.addRight (1 : ℤ)).tsum_eq]
+  conv_rhs => rw [← (Equiv.addRight (1 : ℤ)).tsum_eq]
   refine tsum_congr fun k => ?_
   simp only [Equiv.coe_addRight]
   congr 2
@@ -449,14 +449,18 @@ theorem gridSample_natCast_of_le (F : BoundedFabius) (hF : IsFabius F) (N : ℕ)
     {j : ℕ} (hj : j ≤ N) :
     gridSample F N ((j : ℕ) : ZMod (2 * N)) = (rvachevUp F ((j : ℝ) / N) : ℂ) := by
   unfold gridSample
-  have hN : (0 : ℝ) < N := by exact_mod_cast Nat.pos_of_ne_zero (NeZero.ne N)
+  have hN' : 0 < N := Nat.pos_of_ne_zero (NeZero.ne N)
+  have hN : (0 : ℝ) < N := by exact_mod_cast hN'
   have hval : ((j : ℕ) : ZMod (2 * N)).val = j := by
     rw [ZMod.val_natCast, Nat.mod_eq_of_lt (by omega)]
   rw [hval]
   have hjN : (j : ℝ) / N ≤ 1 := by
     rw [div_le_one hN]
     exact_mod_cast hj
-  exact periodizedUp_of_mem_Icc F hF (by positivity) hjN
+  have hj0 : (-1 : ℝ) ≤ (j : ℝ) / N := by
+    have := div_nonneg (Nat.cast_nonneg j) hN.le
+    linarith
+  exact periodizedUp_of_mem_Icc F hF hj0 hjN
 
 /-- The standard character at `j r` as a complex exponential of the real angle
 `π r j / N`. -/
@@ -472,7 +476,6 @@ theorem stdAddChar_mul_eq_exp (N : ℕ) [NeZero N] (j r : ZMod (2 * N)) :
   congr 1
   push_cast
   field_simp
-  ring
 
 /-- The standard character at `-(j r)` as the conjugate exponential. -/
 theorem stdAddChar_neg_mul_eq_exp (N : ℕ) [NeZero N] (j r : ZMod (2 * N)) :
@@ -487,7 +490,6 @@ theorem stdAddChar_neg_mul_eq_exp (N : ℕ) [NeZero N] (j r : ZMod (2 * N)) :
   congr 1
   push_cast
   field_simp
-  ring
 
 /-- **The cosine form of the folded coefficients.**  Because the sample vector is
 even, the character sum collapses to a real cosine sum over all residues:
@@ -500,10 +502,9 @@ theorem foldedCoefficient_eq_sum_cos (F : BoundedFabius) (N : ℕ) [NeZero N]
         gridSample F N j * Complex.cos ((Real.pi * r.val * j.val / N : ℝ) : ℂ) := by
   have hneg : ∑ j : ZMod (2 * N), ZMod.stdAddChar (-(j * r)) • gridSample F N j
       = ∑ j : ZMod (2 * N), ZMod.stdAddChar (j * r) • gridSample F N j := by
-    rw [← (Equiv.neg (ZMod (2 * N))).sum_comp]
-    refine sum_congr rfl fun j _ => ?_
+    refine Fintype.sum_equiv (Equiv.neg (ZMod (2 * N))) _ _ fun j => ?_
     simp only [Equiv.neg_apply]
-    rw [gridSample_neg, neg_mul, neg_neg]
+    rw [gridSample_neg, neg_mul]
   unfold foldedCoefficient
   rw [ZMod.dft_apply]
   congr 1
