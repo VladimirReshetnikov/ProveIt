@@ -637,6 +637,71 @@ for lab, lhs, rhs in (('-beta_2/2', -F(1, 6) / 2, F(-1, 12)),
 check('cor:merged-harmonic-expansion',
       'residual * N^6 -> -1/252, and the quoted terms match -beta_{2r}/(2r)', bad, t)
 
+# ------------------------------- thm:merged-binomial-type-characterization
+def _exp_xB(bcoef, NN):
+    """p_n(x) as coefficient lists in x, from exp(x B(t))."""
+    poly = [[F(0)] * (NN + 1) for _ in range(NN + 1)]
+    poly[0][0] = F(1)
+    Bp = [F(0)] * (NN + 1)
+    Bp[0] = F(1)
+    for r in range(1, NN + 1):
+        nxt = [F(0)] * (NN + 1)
+        for i in range(NN + 1):
+            if Bp[i]:
+                for j in range(1, NN + 1 - i):
+                    if bcoef[j]:
+                        nxt[i + j] += Bp[i] * bcoef[j]
+        Bp = nxt
+        for n in range(NN + 1):
+            if Bp[n]:
+                poly[n][r] += Bp[n] / factorial(r)
+    return [[F(factorial(n)) * cc for cc in poly[n]] for n in range(NN + 1)]
+
+
+def _shift_xy(p):
+    out = {}
+    for r, cc in enumerate(p):
+        if cc:
+            for i in range(r + 1):
+                out[(i, r - i)] = out.get((i, r - i), F(0)) + cc * comb(r, i)
+    return {k: v for k, v in out.items() if v != 0}
+
+
+bad, t = [], 0
+NB2 = 7
+for trial in range(20):
+    delta = trial % 2 == 0
+    b = [F(0)] * (NB2 + 2)
+    b[1] = F(random.randint(1, 4), random.randint(1, 3)) if delta else F(0)
+    for k in range(2, NB2 + 2):
+        b[k] = F(random.randint(-4, 4), random.randint(1, 3))
+    if not delta and all(b[k] == 0 for k in range(2, NB2 + 2)):
+        b[2] = F(1)
+    p = _exp_xB(b, NB2)
+    for n in range(0, NB2 + 1):
+        lhs = _shift_xy(p[n])
+        rhs = {}
+        for k in range(0, n + 1):
+            for i, aa in enumerate(p[k]):
+                if aa:
+                    for j, bb in enumerate(p[n - k]):
+                        if bb:
+                            rhs[(i, j)] = rhs.get((i, j), F(0)) + F(comb(n, k)) * aa * bb
+        rhs = {k: v for k, v in rhs.items() if v != 0}
+        t += 2
+        if lhs != rhs:
+            bad.append(('law', trial, n))
+        if max([r for r, cc in enumerate(p[n]) if cc != 0], default=0) > n:
+            bad.append(('degree', trial, n))
+    exact = all(max([r for r, cc in enumerate(p[n]) if cc != 0], default=0) == n
+                for n in range(0, NB2 + 1))
+    t += 1
+    if exact != delta:
+        bad.append(('delta iff', trial, exact, delta))
+check('thm:merged-binomial-type-characterization',
+      'binomial law, deg p_n <= n, and deg p_n = n for all n iff B is a delta series',
+      bad, t)
+
 # --------------------------------------------------------------------- report
 width = max(len(lab) for lab, _, _, _ in RESULTS)
 failed = 0
