@@ -80,7 +80,7 @@ theorem exp_pi_mul_I_eq_stdAddChar (N : ℕ) [NeZero N] (k : ℤ) (j : ZMod (2 *
   congr 1
   push_cast
   field_simp
-  ring
+  try ring
 
 /-- The sample vector is the twisted sum at `-j`:
 `P(j/N) = ½ · 𝒜_{-j}(a)`, and hence `½ · (𝓕 R)(-j)`. -/
@@ -107,7 +107,7 @@ theorem dft_gridSample (F : BoundedFabius) (hF : IsFabius F) (N : ℕ) [NeZero N
     rw [Pi.smul_apply, smul_eq_mul, gridSample_eq F hF N j, dft_intResidueTsum _ ha]
   rw [hS, map_smul, ZMod.dft_comp_neg, ZMod.dft_dft]
   funext r
-  rw [Pi.smul_apply, neg_neg, smul_eq_mul, smul_eq_mul]
+  simp only [Pi.smul_apply, smul_eq_mul, neg_neg]
   push_cast
   ring
 
@@ -132,9 +132,9 @@ noncomputable def residueClassEquiv (N : ℕ) [NeZero N] (r : ZMod (2 * N)) :
     ring⟩
   invFun k := (k.1 - r.val) / (2 * N)
   left_inv q := by
+    have h2N : (2 * (N : ℤ)) ≠ 0 := mul_ne_zero two_ne_zero (by exact_mod_cast NeZero.ne N)
     simp only
-    rw [add_sub_cancel_right, mul_comm, Int.mul_ediv_cancel _ (by exact_mod_cast
-      Nat.mul_ne_zero two_ne_zero (NeZero.ne N))]
+    rw [add_sub_cancel_right, Int.mul_ediv_cancel_left _ h2N]
   right_inv k := by
     obtain ⟨k, hk⟩ := k
     simp only [Set.mem_preimage, Set.mem_singleton_iff] at hk
@@ -146,9 +146,9 @@ noncomputable def residueClassEquiv (N : ℕ) [NeZero N] (r : ZMod (2 * N)) :
       rw [hk, ZMod.natCast_zmod_val, sub_self]
     obtain ⟨c, hc⟩ := hdvd
     push_cast at hc
-    rw [hc, mul_comm ((2 : ℤ) * N) c, Int.mul_ediv_cancel _ (by exact_mod_cast
-      Nat.mul_ne_zero two_ne_zero (NeZero.ne N))]
-    omega
+    have h2N : (2 * (N : ℤ)) ≠ 0 := mul_ne_zero two_ne_zero (by exact_mod_cast NeZero.ne N)
+    rw [hc, Int.mul_ediv_cancel_left _ h2N]
+    linear_combination hc
 
 /-- **`p1:eq:alias-identity`**: for every `N ≥ 1` and every residue `r`,
 
@@ -211,13 +211,14 @@ theorem gridSample_eq_sum_foldedCoefficient (F : BoundedFabius) (N : ℕ) [NeZer
   have hN : (N : ℂ) ≠ 0 := by exact_mod_cast NeZero.ne N
   have h := congrFun (ZMod.dft_dft (gridSample F N)) (-j)
   rw [neg_neg, ZMod.dft_apply] at h
-  -- h : ∑ r, χ(-(r * -j)) • 𝓕S r = (2N) • S j
+  simp only [smul_eq_mul] at h
+  push_cast at h
+  -- h : ∑ r, χ(-(r * -j)) * 𝓕S r = 2 * N * S j
   have h' : ∑ r : ZMod (2 * N), ZMod.stdAddChar (r * j) * ZMod.dft (gridSample F N) r
-      = (2 * N : ℂ) * gridSample F N j := by
+      = 2 * (N : ℂ) * gridSample F N j := by
     rw [← h]
-    push_cast
     refine sum_congr rfl fun r _ => ?_
-    rw [smul_eq_mul, show -(r * -j) = r * j by ring]
+    rw [show -(r * -j) = r * j by ring]
   simp only [foldedCoefficient]
   have h2N : (2 * (N : ℂ)) ≠ 0 := mul_ne_zero two_ne_zero hN
   calc gridSample F N j
