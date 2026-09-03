@@ -25,6 +25,14 @@ import os
 import re
 import sys
 
+# The register text this script prints is TeX and can contain non-ASCII.  On a
+# cp1252 console that raises UnicodeEncodeError, which kills the script exactly
+# when it has a finding to report and returns an exit code a caller reads as
+# "tool broken" rather than "audit failed".  Force UTF-8 rather than rely on the
+# caller's environment, since the point of this script is to run unattended.
+if hasattr(sys.stdout, 'reconfigure'):
+    sys.stdout.reconfigure(encoding='utf-8', errors='replace')
+
 HERE = os.path.dirname(os.path.abspath(__file__))
 REG = os.path.join(HERE, 'combinatorial_lean_register.py')
 PEN = os.path.join(HERE, 'combinatorial_crosswalk_pending.py')
