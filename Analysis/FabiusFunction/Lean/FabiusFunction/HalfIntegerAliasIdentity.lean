@@ -1,5 +1,6 @@
 import FabiusFunction.PoissonSummation
 import FabiusFunction.SummableCyclicAlias
+import FabiusFunction.BaseDigitProduct
 import Mathlib.Analysis.SpecialFunctions.Complex.CircleAddChar
 
 /-!
@@ -44,6 +45,9 @@ residue `r`, not only for `N = 2^n` and odd `r`.
 * `foldedCoefficient_neg` — `A_{N,-r} = A_{N,r}`.
 * `sum_dft_mul_dft_neg` — a Parseval-type identity for `ZMod.dft`, for every vector.
 * `sum_foldedCoefficient_sq` — the discrete energy identity, all residues.
+* `sum_zmod_two_mul_eq_sum_even_add_odd` — the parity split of a sum over `ℤ/2Nℤ`.
+* `sum_foldedCoefficient`, `sum_foldedCoefficient_odd` — `∑_r A_{N,r} = 2` and the
+  universal trace `∑_{s<N} A_{N,2s+1} = 1`.
 -/
 
 set_option autoImplicit false
@@ -315,5 +319,74 @@ theorem sum_foldedCoefficient_sq (F : BoundedFabius) (hF : IsFabius F) (N : ℕ)
   push_cast
   field_simp
   try ring
+
+/-! ## The parity split and the universal trace -/
+
+/-- A sum over `ℤ/2Nℤ` is a sum over the even and odd residues `2s`, `2s+1`,
+`s < N`. -/
+theorem sum_zmod_two_mul_eq_sum_even_add_odd (N : ℕ) [NeZero N] (f : ZMod (2 * N) → ℂ) :
+    ∑ r : ZMod (2 * N), f r =
+      ∑ s ∈ range N, (f ((2 * s : ℕ) : ZMod (2 * N)) + f ((2 * s + 1 : ℕ) : ZMod (2 * N))) := by
+  have h2N : 0 < 2 * N := Nat.mul_pos two_pos (Nat.pos_of_ne_zero (NeZero.ne N))
+  have hval : ∑ r : ZMod (2 * N), f r = ∑ n ∈ range (2 * N), f ((n : ℕ) : ZMod (2 * N)) := by
+    refine sum_nbij' (fun r => r.val) (fun n => (n : ZMod (2 * N))) ?_ ?_ ?_ ?_ ?_
+    · intro r _
+      exact mem_range.mpr (ZMod.val_lt r)
+    · intro n _
+      exact mem_univ _
+    · intro r _
+      exact ZMod.natCast_zmod_val r
+    · intro n hn
+      rw [ZMod.val_natCast, Nat.mod_eq_of_lt (mem_range.mp hn)]
+    · intro r _
+      rw [ZMod.natCast_zmod_val]
+  rw [hval, sum_range_mul_eq_sum_sum (fun n => f ((n : ℕ) : ZMod (2 * N))) 2 N]
+  refine sum_congr rfl fun s _ => ?_
+  rw [sum_range_succ, sum_range_succ, sum_range_zero, zero_add, add_zero]
+
+/-- `P(0) = 1`: the periodization at the origin is the central value of `up`. -/
+theorem periodizedUp_zero (F : BoundedFabius) (hF : IsFabius F) : periodizedUp F 0 = 1 := by
+  unfold periodizedUp
+  rw [← Complex.ofReal_tsum]
+  have h := rvachev_even_translate_sum_eq_self F hF (t := 0) (by norm_num) (by norm_num)
+  simp only [zero_add] at h ⊢
+  rw [h, rvachevUp_zero F hF]
+  simp
+
+/-- The sum of all folded coefficients is `2`: the inverse transform at `j = 0`. -/
+theorem sum_foldedCoefficient (F : BoundedFabius) (hF : IsFabius F) (N : ℕ) [NeZero N] :
+    ∑ r : ZMod (2 * N), foldedCoefficient F N r = 2 := by
+  have h := gridSample_eq_sum_foldedCoefficient F N 0
+  have h0 : gridSample F N 0 = 1 := by
+    unfold gridSample
+    rw [ZMod.val_zero, Nat.cast_zero, zero_div, periodizedUp_zero F hF]
+  rw [h0] at h
+  have hchar : ∀ r : ZMod (2 * N), ZMod.stdAddChar (r * (0 : ZMod (2 * N))) = 1 := by
+    intro r
+    rw [mul_zero, AddChar.map_zero_eq_one]
+  simp only [hchar, one_mul] at h
+  have h2 : (2 : ℂ) ≠ 0 := two_ne_zero
+  field_simp at h
+  linear_combination h
+
+/-- The even residues contribute exactly `A_{N,0} = 1`. -/
+theorem sum_foldedCoefficient_even (F : BoundedFabius) (hF : IsFabius F) (N : ℕ) [NeZero N] :
+    ∑ s ∈ range N, foldedCoefficient F N ((2 * s : ℕ) : ZMod (2 * N)) = 1 := by
+  have hN : 0 < N := Nat.pos_of_ne_zero (NeZero.ne N)
+  rw [sum_eq_single_of_mem 0 (mem_range.mpr hN)]
+  · simp only [mul_zero, Nat.cast_zero]
+    exact foldedCoefficient_zero F hF N
+  · intro s hs hs0
+    exact foldedCoefficient_two_mul_eq_zero F hF N hs0 (mem_range.mp hs)
+
+/-- **The universal trace** (`p1:eq:universal-trace` before pairing): the odd
+folded coefficients sum to `1`, for every `N ≥ 1`,
+`∑_{s<N} A_{N,2s+1} = 1`. -/
+theorem sum_foldedCoefficient_odd (F : BoundedFabius) (hF : IsFabius F) (N : ℕ) [NeZero N] :
+    ∑ s ∈ range N, foldedCoefficient F N ((2 * s + 1 : ℕ) : ZMod (2 * N)) = 1 := by
+  have h := sum_foldedCoefficient F hF N
+  rw [sum_zmod_two_mul_eq_sum_even_add_odd, sum_add_distrib, sum_foldedCoefficient_even F hF N]
+    at h
+  linear_combination h
 
 end Fabius
