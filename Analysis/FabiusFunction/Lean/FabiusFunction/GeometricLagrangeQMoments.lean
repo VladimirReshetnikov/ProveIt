@@ -121,12 +121,9 @@ theorem geometricLagrangeQMoment_eq_forwardRichardson_eval
     (hPochhammer : qPochhammer q q p ≠ 0) :
     geometricLagrangeQMoment q p m =
       (forwardGeometricRichardsonPolynomial q p).eval (q ^ m) := by
-  have hPochhammer' : geometricQPochhammer q p ≠ 0 := by
-    rwa [geometricQPochhammer_rat_eq_qPochhammer]
   have hnodes : Set.InjOn (fun j : ℕ ↦ q ^ j)
       (Finset.range (p + 1)) :=
-    pow_injOn_range_of_geometricQPochhammer_ne_zero
-      q hq p hPochhammer'
+    pow_injOn_range_of_qPochhammer_self_ne_zero q hq p hPochhammer
   rw [geometricLagrangeQMoment_eq_weightPolynomial_eval,
     geometricLagrangeWeightPolynomial_eq_forwardGeometricRichardsonPolynomial
       q hq p hnodes]
@@ -204,12 +201,9 @@ theorem geometricLagrangeQMoment_eq_qPochhammer
   rw [geometricLagrangeQMoment_eq_forwardRichardson_eval
     q hq p m hPochhammer,
     forwardGeometricRichardsonPolynomial_eval]
-  have hPochhammer' : geometricQPochhammer q p ≠ 0 := by
-    rwa [geometricQPochhammer_rat_eq_qPochhammer]
   have hnodes : Set.InjOn (fun j : ℕ ↦ q ^ j)
       (Finset.range (p + 1)) :=
-    pow_injOn_range_of_geometricQPochhammer_ne_zero
-      q hq p hPochhammer'
+    pow_injOn_range_of_qPochhammer_self_ne_zero q hq p hPochhammer
   have hden : (geometricRootPolynomial q⁻¹ p).eval 1 ≠ 0 :=
     geometricRootPolynomial_inv_eval_one_ne_zero_of_nodes_injective
       q hq p hnodes
@@ -225,12 +219,9 @@ theorem geometricLagrangeQMoment_zero
     (q : ℚ) (hq : q ≠ 0) (p : ℕ)
     (hPochhammer : qPochhammer q q p ≠ 0) :
     geometricLagrangeQMoment q p 0 = 1 := by
-  have hPochhammer' : geometricQPochhammer q p ≠ 0 := by
-    rwa [geometricQPochhammer_rat_eq_qPochhammer]
   have hnodes : Set.InjOn (fun j : ℕ ↦ q ^ j)
       (Finset.range (p + 1)) :=
-    pow_injOn_range_of_geometricQPochhammer_ne_zero
-      q hq p hPochhammer'
+    pow_injOn_range_of_qPochhammer_self_ne_zero q hq p hPochhammer
   simpa [geometricLagrangeQMoment] using
     sum_geometricLagrangeWeight q p hnodes
 
@@ -240,12 +231,9 @@ theorem geometricLagrangeQMoment_eq_zero
     (hPochhammer : qPochhammer q q p ≠ 0)
     (hmpos : 0 < m) (hmp : m ≤ p) :
     geometricLagrangeQMoment q p m = 0 := by
-  have hPochhammer' : geometricQPochhammer q p ≠ 0 := by
-    rwa [geometricQPochhammer_rat_eq_qPochhammer]
   have hnodes : Set.InjOn (fun j : ℕ ↦ q ^ j)
       (Finset.range (p + 1)) :=
-    pow_injOn_range_of_geometricQPochhammer_ne_zero
-      q hq p hPochhammer'
+    pow_injOn_range_of_qPochhammer_self_ne_zero q hq p hPochhammer
   exact sum_geometricLagrangeWeight_mul_pow_eq_zero
     q p m hnodes hmpos hmp
 
@@ -303,12 +291,9 @@ theorem geometricLagrangeQMoment_eq_residual_qPochhammer
     geometricLagrangeQMoment q p m =
       ((-1 : ℚ) ^ p * q ^ (p + 1).choose 2) *
         qPochhammer (q ^ (m - p)) q p / qPochhammer q q p := by
-  have hPochhammer' : geometricQPochhammer q p ≠ 0 := by
-    rwa [geometricQPochhammer_rat_eq_qPochhammer]
   have hnodes : Set.InjOn (fun j : ℕ ↦ q ^ j)
       (Finset.range (p + 1)) :=
-    pow_injOn_range_of_geometricQPochhammer_ne_zero
-      q hq p hPochhammer'
+    pow_injOn_range_of_qPochhammer_self_ne_zero q hq p hPochhammer
   have hmoment :=
     sum_geometricLagrangeWeight_mul_pow_eq_gaussianBinomial
       q p m hnodes (by omega : 0 < m)
@@ -784,12 +769,9 @@ theorem sum_abs_geometricLagrangeWeight_eq_qPochhammer_ratio
       qPochhammer (-q) q p / qPochhammer q q p := by
   have hPochhammer : qPochhammer q q p ≠ 0 :=
     (qPochhammer_self_pos_of_pos_of_lt_one q hqpos hqone p).ne'
-  have hPochhammer' : geometricQPochhammer q p ≠ 0 := by
-    rwa [geometricQPochhammer_rat_eq_qPochhammer]
   have hnodes : Set.InjOn (fun j : ℕ ↦ q ^ j)
       (Finset.range (p + 1)) :=
-    pow_injOn_range_of_geometricQPochhammer_ne_zero
-      q hqpos.ne' p hPochhammer'
+    pow_injOn_range_of_qPochhammer_self_ne_zero q hqpos.ne' p hPochhammer
   have hden : (geometricRootPolynomial q⁻¹ p).eval 1 ≠ 0 :=
     geometricRootPolynomial_inv_eval_one_ne_zero_of_nodes_injective
       q hqpos.ne' p hnodes

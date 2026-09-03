@@ -323,6 +323,7 @@ import FabiusFunction.PoissonApproximateIdentity
 import FabiusFunction.PoissonMassSwap
 import FabiusFunction.StieltjesPerron
 import FabiusFunction.GeneralQConditionNumber
+import FabiusFunction.GeometricToeplitzBridge
 import FabiusFunction.LimitConditionNumber
 import FabiusFunction.CumulantGridConstant
 import FabiusFunction.MultipleAngleBounds
