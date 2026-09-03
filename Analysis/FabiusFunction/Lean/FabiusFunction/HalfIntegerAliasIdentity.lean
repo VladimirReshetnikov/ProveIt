@@ -136,7 +136,8 @@ noncomputable def residueClassEquiv (N : ℕ) [NeZero N] (r : ZMod (2 * N)) :
     push_cast
     have h2N : (2 : ZMod (2 * N)) * (N : ZMod (2 * N)) = 0 := by
       exact_mod_cast ZMod.natCast_self (2 * N)
-    rw [h2N, zero_mul, zero_add]⟩
+    rw [h2N, zero_mul, zero_add]
+    try rw [ZMod.natCast_zmod_val]⟩
   invFun k := (k.1 - r.val) / (2 * N)
   left_inv q := by
     have h2N : (2 * (N : ℤ)) ≠ 0 := mul_ne_zero two_ne_zero (by exact_mod_cast NeZero.ne N)
@@ -242,17 +243,10 @@ theorem gridSample_eq_sum_foldedCoefficient (F : BoundedFabius) (N : ℕ) [NeZer
 
 /-- The residue classes of `r` and `-r` are exchanged by negation. -/
 noncomputable def residueClassNegEquiv (M : ℕ) (r : ZMod M) :
-    (fun n : ℤ => (n : ZMod M)) ⁻¹' {-r} ≃ (fun n : ℤ => (n : ZMod M)) ⁻¹' {r} where
-  toFun k := ⟨-k.1, by
-    have hk := k.2
-    simp only [Set.mem_preimage, Set.mem_singleton_iff] at hk ⊢
-    rw [Int.cast_neg, hk, neg_neg]⟩
-  invFun k := ⟨-k.1, by
-    have hk := k.2
-    simp only [Set.mem_preimage, Set.mem_singleton_iff] at hk ⊢
-    rw [Int.cast_neg, hk]⟩
-  left_inv k := Subtype.ext (neg_neg _)
-  right_inv k := Subtype.ext (neg_neg _)
+    (fun n : ℤ => (n : ZMod M)) ⁻¹' {-r} ≃ (fun n : ℤ => (n : ZMod M)) ⁻¹' {r} :=
+  (Equiv.neg ℤ).subtypeEquiv fun k => by
+    simp only [Set.mem_preimage, Set.mem_singleton_iff, Equiv.neg_apply, Int.cast_neg,
+      neg_eq_iff_eq_neg]
 
 /-- The half-integer coefficients are even, `a_{-k} = a_k`. -/
 theorem halfIntegerCoefficient_neg (F : BoundedFabius) (hF : IsFabius F) (k : ℤ) :
@@ -270,7 +264,7 @@ theorem foldedCoefficient_neg (F : BoundedFabius) (hF : IsFabius F) (N : ℕ) [N
   rw [foldedCoefficient_eq_intResidueTsum F hF N, foldedCoefficient_eq_intResidueTsum F hF N,
     intResidueTsum, intResidueTsum, ← (residueClassNegEquiv (2 * N) r).tsum_eq]
   refine tsum_congr fun k => ?_
-  simp only [residueClassNegEquiv, Equiv.coe_fn_mk]
+  simp only [residueClassNegEquiv, Equiv.subtypeEquiv_apply, Equiv.neg_apply]
   exact halfIntegerCoefficient_neg F hF _
 
 /-- **A Parseval-type identity for Mathlib's DFT on `ℤ/Mℤ`**, for every
@@ -297,8 +291,7 @@ theorem sum_dft_mul_dft_neg {M : ℕ} [NeZero M] (Φ : ZMod M → ℂ) :
         refine sum_congr rfl fun j _ => ?_
         rw [ZMod.dft_apply (ZMod.dft Φ) (-j)]
         congr 1
-        refine sum_congr rfl fun r _ => ?_
-        try rw [smul_eq_mul]
+        exact sum_congr rfl fun r _ => rfl
     _ = (M : ℂ) * ∑ j : ZMod M, Φ j ^ 2 := by
         rw [hdd, mul_sum]
         refine sum_congr rfl fun j _ => ?_
