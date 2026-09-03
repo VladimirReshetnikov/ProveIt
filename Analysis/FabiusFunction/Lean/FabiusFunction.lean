@@ -688,6 +688,8 @@ import FabiusFunction.PartitionMultiplicity
 import FabiusFunction.EulerTelescoping
 import FabiusFunction.GaussianBinomialPalindromic
 import FabiusFunction.ThetaQuasiPeriodicity
+import FabiusFunction.FabiusDyadicGaussianForm
+import FabiusFunction.FabiusGeneralLinearDenominator
 
 set_option autoImplicit false
 
