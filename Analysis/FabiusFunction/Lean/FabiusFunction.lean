@@ -723,6 +723,7 @@ import FabiusFunction.ThueMorseQPochhammer
 import FabiusFunction.QPochhammerMultiplicativeDissection
 import FabiusFunction.ThueMorseEulerFunction
 import FabiusFunction.ThueMorseQPochhammerInfinite
+import FabiusFunction.ThueMorsePentagonal
 import FabiusFunction.LambertWAnalytic
 import FabiusFunction.MixedDifferenceForwardDiff
 import FabiusFunction.GeometricProuhetBlock
