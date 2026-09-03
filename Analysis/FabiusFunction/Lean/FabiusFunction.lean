@@ -706,6 +706,8 @@ import FabiusFunction.GaussianBinomialPalindromic
 import FabiusFunction.ThetaQuasiPeriodicity
 import FabiusFunction.FabiusDyadicGaussianForm
 import FabiusFunction.FabiusGeneralLinearDenominator
+import FabiusFunction.ThueMorseQPochhammer
+import FabiusFunction.GeneralLinearThueMorseSum
 
 set_option autoImplicit false
 
