@@ -88,13 +88,13 @@ finite field,
 `|GL_n(K)| = Q^{C(n,2)} · ∏_{j<n} (Q^{j+1} - 1)`,  `Q = |K|`.
 
 This is `cast_card_generalLinearGroup_eq_prod` followed by the
-denominator-free `prod_pow_sub_pow_self_eq`. -/
+denominator-free `prod_pow_sub_pow_eq_pow_choose_two_mul` of `GLOrderProduct`. -/
 theorem cast_card_generalLinearGroup_eq_pow_choose_mul_prod (n : ℕ) :
     (Nat.card (Matrix.GeneralLinearGroup (Fin n) K) : ℚ) =
       (Fintype.card K : ℚ) ^ n.choose 2 *
         ∏ j ∈ Finset.range n, ((Fintype.card K : ℚ) ^ (j + 1) - 1) := by
   rw [cast_card_generalLinearGroup_eq_prod (K := K) n,
-    prod_pow_sub_pow_self_eq (Fintype.card K : ℚ) n]
+    prod_pow_sub_pow_eq_pow_choose_two_mul (Fintype.card K : ℚ) n]
 
 /-- Factoring the leading power out of every Mersenne factor turns the
 triangular-Mersenne product into a finite q-Pochhammer at the inverse base.
