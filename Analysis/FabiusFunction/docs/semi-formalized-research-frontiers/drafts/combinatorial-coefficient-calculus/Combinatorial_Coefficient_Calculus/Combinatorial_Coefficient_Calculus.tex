@@ -553,28 +553,46 @@ $k^n=\sum_r\StirlingSecondKind nr\FallingFactorial{k}{r}$.  Since
 $\FallingFactorial{k}{r}=k!/(k-r)!$ for $r\le k$, division by $k!$ and isolation of the
 $r=k$ term gives \eqref{eq:second-triangular-explicit}.
 
-For the row reversal, use the bivariate exponential generating function
+% ed.: the proof below replaced a bivariate one, which introduced
+% $F(x,y)=\exp(y(\EulerE^x-1))$, differentiated $j$ times in $y$, and disposed of the
+% resulting series by differentiating it twice and restoring two initial coefficients.
+% Fixing $k$ makes every term a column generating function in $x$ alone, so the second
+% variable is not needed; the series identity is then a single coefficient computation.
+For the row reversal fix $k\ge1$, write $u=\EulerE^x-1$, and recall the column generating
+function
 \[
- F(x,y)=\exp\!\bigl(y(\EulerE^x-1)\bigr)
- =\sum_{n,k\ge0}\StirlingSecondKind nk\frac{x^n}{n!}y^k,
- \qquad u=\EulerE^x-1.
+ F_m(x)=\sum_{n\ge0}\StirlingSecondKind nm\frac{x^n}{n!}=\frac{u^m}{m!}.
 \]
-The generating function of the left side of
-\eqref{eq:second-reverse-row} is
+Multiply \eqref{eq:second-reverse-row} by $x^n/n!$ and sum over $n$; since
+$\StirlingSecondKind nm=0$ for $m>n$, only finitely many $j$ contribute to each power of
+$x$, so the rearrangement is legitimate.  The left side becomes
 \[
- xF_x-yF_y=yF\bigl(xe^x-u\bigr).
+ \sum_{n\ge0}(n-k)\StirlingSecondKind nk\frac{x^n}{n!}=xF_k'-kF_k
+ =\frac{u^{k-1}}{(k-1)!}\bigl(x\EulerE^x-u\bigr),
 \]
-On the other hand, because
-$\binom{-k}{j}=(-1)^j\binom{k+j-1}{j}$, the generating function of its right side is
-\begin{align*}
- y\sum_{j\ge2}\frac{(-1)^j}{j(j-1)}\,\partial_y^jF
- &=yF\sum_{j\ge2}\frac{(-1)^ju^j}{j(j-1)}\\
- &=yF\bigl((1+u)\log(1+u)-u\bigr)\\
- &=yF\bigl(xe^x-u\bigr).
-\end{align*}
-Here the middle series is obtained by differentiating it twice, summing the
-geometric series, and restoring the two zero initial coefficients.  Equality of
-coefficients proves \eqref{eq:second-reverse-row}.
+using $F_k'=u^{k-1}u'/(k-1)!$ and $u'=\EulerE^x$.  For the right side, $\binom{-k}{j}
+=(-1)^j\binom{k+j-1}{j}$ gives
+\[
+ (j-2)!\binom{-k}{j}\frac1{(k+j-1)!}
+ =\frac{(-1)^j(j-2)!}{j!\,(k-1)!}
+ =\frac{(-1)^j}{j(j-1)(k-1)!},
+\]
+so that
+\[
+ \sum_{j\ge2}(j-2)!\binom{-k}{j}F_{k+j-1}
+ =\frac{u^{k-1}}{(k-1)!}\sum_{j\ge2}\frac{(-1)^ju^j}{j(j-1)}.
+\]
+Both sides therefore carry the factor $u^{k-1}/(k-1)!$, and it remains to identify the two
+series.  In $\RationalNumbers[[t]]$,
+\begin{equation}\label{eq:log-quadratic-tail}
+ \sum_{j\ge2}\frac{(-1)^jt^j}{j(j-1)}=(1+t)\log(1+t)-t,
+\end{equation}
+because the coefficient of $t^j$ on the right is
+$(-1)^{j+1}/j+(-1)^{j}/(j-1)=(-1)^j/(j(j-1))$ for $j\ge2$, while the constant and linear
+coefficients are $0$ and $1-1=0$.  Substituting $t=u$, which is legitimate as $u$ has no
+constant term, and using $1+u=\EulerE^x$ and $\log(1+u)=x$, the right-hand series equals
+$x\EulerE^x-u$.  The two sides agree, and equating coefficients of $x^n/n!$ proves
+\eqref{eq:second-reverse-row}.
 
 For the column reversal fix $k$ and put
 \[
@@ -9955,7 +9973,7 @@ Result & Title & Status & Lean declarations (module) \\
 \Cref{thm:first-cycle} & Permutation interpretation & partial & recurrence and boundary values are Mathlib's \lean{Nat.stirlingFirst_succ_succ}, \lean{Nat.stirlingFirst_succ_zero}, \lean{Nat.stirlingFirst_eq_zero_of_lt}; the defining expansions are \lean{Fabius.ascPochhammer_eq_sum_monomial_stirlingFirst} and \lean{Fabius.descPochhammer_eq_sum_monomial_signedStirlingFirst} (\lean{StirlingBasisChange}); the permutation count itself is not formalized \\
 \Cref{thm:second-recurrence} & Second-kind recurrence & Lean & \lean{Nat.stirlingSecond_succ_succ}, \lean{Nat.stirlingSecond_succ_zero}, \lean{Nat.stirlingSecond_eq_zero_of_lt} (Mathlib); the set-partition count is Mathlib's definition by this recurrence \\
 \Cref{thm:second-explicit} & Surjection formula & Lean & \lean{Fabius.factorial_mul_stirlingSecond_eq_sum} (over $\mathbb Z$) and \lean{Fabius.stirlingSecond_eq_sum_div_factorial} (over $\mathbb Q$) (\lean{StirlingBasisChange}); proved by binomial inversion of \lean{Fabius.pow_eq_sum_stirlingSecond_mul_factorial_mul_choose} \\
-\Cref{thm:second-reverse-recurrences} & Alternative second-kind recurrences & partial & \cref{eq:second-triangular-explicit} is \lean{Fabius.stirlingSecond_eq_pow_div_factorial_sub_sum} (\lean{StirlingTriangularExplicit}), for all $n,k$ with the $r=0$ term included; \cref{eq:second-reverse-column} is \lean{Fabius.second_reverse_column} (\lean{StirlingSecondReverseColumn}), by the column differential equation $(1-\EulerE^{-x})F_k'=kF_k$ (\lean{Fabius.one_sub_altSeries_mul_derivative_egfA_stirlingSecond}); \cref{eq:second-reverse-row} is not formalized \\
+\Cref{thm:second-reverse-recurrences} & Alternative second-kind recurrences & partial & \cref{eq:second-triangular-explicit} is \lean{Fabius.stirlingSecond_eq_pow_div_factorial_sub_sum} (\lean{StirlingTriangularExplicit}), for all $n,k$ with the $r=0$ term included; \cref{eq:second-reverse-column} is \lean{Fabius.second_reverse_column} (\lean{StirlingSecondReverseColumn}), by the column differential equation $(1-\EulerE^{-x})F_k'=kF_k$ (\lean{Fabius.one_sub_altSeries_mul_derivative_egfA_stirlingSecond}); \cref{eq:second-reverse-row} is not formalized, though its series step is: the coefficients of $(1+t)\log(1+t)-t$ are \lean{Fabius.coeff_logTail} and its value at $u=\EulerE^x-1$ is \lean{Fabius.subst_logTail} (\lean{StirlingSecondReverseRow}), which is what lets the row identity be proved in one variable rather than two \\
 \Cref{thm:first-reverse-recurrences} & Reverse recurrences of the first kind & Lean & \cref{eq:first-reverse-row} is \lean{Fabius.first_reverse_row} and \cref{eq:first-reverse-column} is \lean{Fabius.first_reverse_column} (module \lean{StirlingFirstReverse}), the first from the rising factorial, the second by comparing exponential generating functions (\lean{Fabius.egfA_first_reverse_column}). \\
 \Cref{thm:stirling-basis} & Stirling basis transformations & Lean & \lean{Fabius.ascPochhammer_eq_sum_monomial_stirlingFirst}, \lean{Fabius.descPochhammer_eq_sum_monomial_signedStirlingFirst}, \lean{Fabius.X_pow_eq_sum_stirlingSecond_mul_descPochhammer}, \lean{Fabius.X_pow_eq_sum_stirlingSecond_mul_ascPochhammer}, \lean{Fabius.pow_eq_sum_stirlingSecond_mul_factorial_mul_choose} (\lean{StirlingBasisChange}); polynomial identities over every commutative ring \\
 \Cref{cor:shifted-stirling-evaluations} & Shifted factorial evaluations & Lean & \cref{eq:shifted-power-to-fall} is \lean{Fabius.X_pow_eq_sum_stirlingSecond_succ_mul_descPochhammer_comp} in $R[x]$ over any commutative ring (cancelling $x$ via \lean{Fabius.X_mul_cancel}) and \cref{eq:stirling-n-to-n} is \lean{Fabius.pow_self_eq_sum_stirlingSecond_mul_descFactorial} (\lean{StirlingShiftedEvaluations}) \\
