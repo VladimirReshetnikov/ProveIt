@@ -1360,10 +1360,15 @@ Ramanujan sum \eqref{p1:eq:Ramanujan-power-two} over the odd residues modulo \(2
 parametrized as \(r=2s+1\), \(s\in\IntegerNumbers/N\IntegerNumbers\)).  The power-trace
 formula \eqref{p1:eq:Ramanujan-traces} itself --- the \(m\)-fold expansion of
 \(A_{n,r}^m\) and the resummation over the odd residues --- is not formalized; the
-universal trace \eqref{p1:eq:universal-trace} is within reach of the inverse transform
-\path{Fabius.gridSample_eq_sum_foldedCoefficient} at \(j=0\) together with
-\path{Fabius.foldedCoefficient_zero} and the even-mode vanishing, but is not stated
-separately.
+universal trace \eqref{p1:eq:universal-trace} is formal in the form
+\(\sum_{s<N}A_{N,2s+1}=1\), for every \(N\ge1\)
+(\path{Fabius.sum_foldedCoefficient_odd}, in \path{HalfIntegerAliasIdentity.lean}): the
+inverse transform at \(j=0\) gives \(\sum_{r}A_{N,r}=2\)
+(\path{Fabius.sum_foldedCoefficient}, using \(P(0)=1\)), the even residues contribute
+exactly \(A_{N,0}=1\), and the parity split of a sum over
+\(\IntegerNumbers/2N\IntegerNumbers\) (\path{Fabius.sum_zmod_two_mul_eq_sum_even_add_odd})
+isolates the odd ones.  Halving to \(p_1(n)=1/2\) by pairing \(r\) with \(2N-r\)
+(\path{Fabius.foldedCoefficient_neg}) is the one step not restated.
 
 \begin{remark}[A trace that does not disperse]
 The orbit degree is $N/2\to\infty$, yet the unnormalized first trace remains
