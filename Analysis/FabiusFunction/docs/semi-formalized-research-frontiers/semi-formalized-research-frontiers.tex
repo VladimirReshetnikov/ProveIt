@@ -17097,9 +17097,22 @@ The genuinely missing components are:
         \lean{refinementFactorSeries} is a product over
         \(\mathrm{rescale}(-2^{j})\).  The abstract coefficient extractor
         \lean{weighted_factor_coefficient} in the same file is already stated
-        for an abstract weight, node and annihilation family, so it should
-        transfer unchanged.
+        for an abstract weight, node and annihilation family, so its
+        \emph{statement} should transfer unchanged.
 \end{enumerate}
+
+\begin{warning}[Three of those declarations are \texttt{private}]
+\label{genq:warn:private}
+\lean{recurrenceSeries_rescale_two}, \lean{refinementFactorSeries} and
+\lean{weighted_factor_coefficient} are all declared \texttt{private} in
+\path{FabiusQBinomialFormula.lean}, so none of them is accessible from another
+module as things stand.  Component (b) therefore begins with a step this
+register originally omitted: making those three public, or relocating the
+abstract extractor to a module the general-nome development can import.  That
+is bookkeeping rather than mathematics, but it is not nothing --- the extractor
+is the piece the whole route was supposed to reuse, and "reuse it unchanged" is
+not available until it is visible.
+\end{warning}
 \end{obligation}
 
 \begin{obligation}[Probabilistic reading, if any]
