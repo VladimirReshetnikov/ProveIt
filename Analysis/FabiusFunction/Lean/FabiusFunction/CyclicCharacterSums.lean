@@ -111,7 +111,6 @@ theorem ramanujanOddSum_eq (N : ℕ) [NeZero N] (S : ℤ) :
     have harg : -(Real.pi * Complex.I * (S : ℂ) / N) = (t : ℂ) * (-(Real.pi * Complex.I)) := by
       rw [hS]
       field_simp
-      ring
     rw [hdiv, harg, Complex.exp_int_mul, Complex.exp_neg, Complex.exp_pi_mul_I, inv_neg_one]
     ring
   · simp
