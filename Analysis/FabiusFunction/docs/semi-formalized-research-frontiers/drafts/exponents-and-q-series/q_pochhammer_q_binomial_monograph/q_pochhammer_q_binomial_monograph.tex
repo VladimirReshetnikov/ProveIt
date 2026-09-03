@@ -12903,8 +12903,8 @@ inside the proof below does not formalize the result the proof concludes.
   than a mathematical claim.
 \end{description}
 
-Of the 282 labelled forward results, 159 are \statusexact, 84 are
-\statuspartial, 31 are \statusnone, and 8 are \statusna.  The original
+Of the 282 labelled forward results, 165 are \statusexact, 89 are
+\statuspartial, 20 are \statusnone, and 8 are \statusna.  The original
 191-result pre-Fabius core had 36 \statusexact, 29 \statuspartial, 123
 \statusnone, and 3 \statusna{} entries.  The four integrated guide chapters
 add 31 human-proved but not Lean-formalized assertions and five labelled
@@ -13465,30 +13465,30 @@ Finite $q$-binomial theorems and inversion & 10 & 0 & 0 & 0\\
 Weighted binomial coefficients and symmetric functions & 5 & 3 & 0 & 0\\
 Partitions, words, paths, and inversion statistics & 7 & 2 & 0 & 0\\
 Finite fields, Grassmannians, and rank enumeration & 3 & 3 & 0 & 0\\
-Symmetry and unimodality & 0 & 0 & 3 & 0\\
-The infinite $q$-binomial theorem & 3 & 0 & 1 & 0\\
+Symmetry and unimodality & 0 & 1 & 2 & 0\\
+The infinite $q$-binomial theorem & 4 & 0 & 0 & 0\\
 Basic hypergeometric series & 7 & 2 & 0 & 0\\
-Euler telescoping and very-well-poised summations & 2 & 0 & 2 & 0\\
+Euler telescoping and very-well-poised summations & 3 & 0 & 1 & 0\\
 Bilateral series and Ramanujan's \texorpdfstring{${}_1\psi_1$}{1psi1} sum & 2 & 0 & 0 & 0\\
 $q$-difference calculus and the quantum binomial & 10 & 0 & 0 & 0\\
 The $q$-gamma and $q$-beta functions & 7 & 1 & 0 & 0\\
 Jacobi's triple product & 8 & 0 & 0 & 0\\
-Theta modularity, lattice dissection, and sums of squares & 6 & 2 & 6 & 4\\
+Theta modularity, lattice dissection, and sums of squares & 6 & 5 & 3 & 4\\
 Partitions and product--sum identities & 3 & 1 & 0 & 0\\
 Bailey pairs and the Rogers--Ramanujan identities & 6 & 1 & 0 & 0\\
-Bailey transforms and the Andrews--Gordon identities & 5 & 2 & 1 & 1\\
+Bailey transforms and the Andrews--Gordon identities & 5 & 3 & 0 & 1\\
 Cyclotomic factorization and congruences & 9 & 0 & 0 & 0\\
 Negative upper indices and geometric Newton interpolation & 9 & 0 & 0 & 0\\
 Central $q$-binomial sums and Lambert series & 2 & 0 & 5 & 0\\
 Asymptotic regimes and Bernoulli expansions & 3 & 3 & 2 & 0\\
-Exact limits, reciprocity, and research frontiers & 0 & 0 & 5 & 0\\
+Exact limits, reciprocity, and research frontiers & 4 & 0 & 1 & 0\\
 Computation, certification, and formal proof architecture & 7 & 2 & 2 & 3\\
 Geometric interpolation and exact $q$-filters & 7 & 2 & 0 & 0\\
 Half-base arithmetic and Prouhet--Thue--Morse cancellation & 6 & 3 & 0 & 0\\
 Geometric uniform sums, $q$-cumulants, and the Fabius--Rvachev functions & 2 & 11 & 0 & 0\\
 Dyadic Gaussian--Thue--Morse structure and the values of $F$ & 8 & 45 & 3 & 0\\
 \midrule
-\textbf{Forward total} & 159 & 84 & 31 & 8\\
+\textbf{Forward total} & 165 & 89 & 20 & 8\\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -13943,7 +13943,17 @@ is reused by import and is not owned by the six-theorem bounds leaf}\\[2pt]
 \midrule
 \Cref{lem:sl2-structure} & \statusnone & ---\\[2pt]
 \Cref{prop:exterior-character} & \statusnone & ---\\[2pt]
-\Cref{thm:qbinom-unimodal} & \statusnone & ---\\[2pt]
+\Cref{thm:qbinom-unimodal} & \statuspartial &
+\texttt{boxCoeff\_\allowbreak{}symm},
+\texttt{coeff\_\allowbreak{}gaussianBinomial\_\allowbreak{}X\_\allowbreak{}eq\_\allowbreak{}boxCoeff},
+\texttt{coeff\_\allowbreak{}gaussianBinomial\_\allowbreak{}unimodal\_\allowbreak{}of\_\allowbreak{}min\_\allowbreak{}le\_\allowbreak{}two}\newline
+{\footnotesize\texttt{GaussianUnimodality}; the symmetry $c_j=c_{D-j}$ in full, for all $k\le n$,
+over an arbitrary \emph{semiring} --- the printed $\ComplexNumbers$ and every field,
+characteristic and order hypothesis are unused.  Unimodality is proved only on thin boxes,
+$\min(k,n-k)\le2$, i.e.\ six columns of each Pascal row.  The general case runs through the
+$\mathfrak{sl}_2$ representation theory of \Cref{lem:sl2-structure} and
+\Cref{prop:exterior-character}, which Mathlib does not carry; those two rows stay unformalized and
+no unimodality beyond the thin range is claimed}\\[2pt]
 \midrule
 \multicolumn{3}{@{}l}{\itshape The infinite $q$-binomial theorem}\\
 \midrule
@@ -13974,7 +13984,18 @@ Cauchy product of the $r+s$ absolutely convergent Euler expansions, the
 coefficient $c_N$ being the sum over $\mathtt{antidiagonalTuple}\,(r+s)\,N$ of
 the products of the concatenated (\texttt{Fin.append}) coefficient families;
 the case $s=0$ has no restriction on $z$}\\[2pt]
-\Cref{prop:formal-qbinomial} & \statusnone & ---\\[2pt]
+\Cref{prop:formal-qbinomial} & \statusexact &
+\texttt{qPochhammer\_\allowbreak{}mul\_\allowbreak{}qBinomialSeries},
+\texttt{qBinomialSeries\_\allowbreak{}eq\_\allowbreak{}inverse\_\allowbreak{}mul},
+\texttt{isUnit\_\allowbreak{}qPochhammerSeries},
+\texttt{qRegular\_\allowbreak{}of\_\allowbreak{}isAdicComplete}\newline
+{\footnotesize\texttt{FormalQBinomial}; over an arbitrary commutative ring under the single
+algebraic hypothesis that every $1-q^{n+1}$ is a unit, which is strictly weaker than the printed
+assumption of $I$-adic completeness and separatedness with $q\in I$ --- that assumption is
+discharged into it, so every statement applies verbatim in the printed setting.  The unit clause
+for $(z;q)_\infty$ is proved unconditionally from its constant coefficient.  The infinite products
+are the Euler expansions linked to the finite ones by an effective congruence rather than
+constructed as limits in a topologised $A[[z]]$}\\[2pt]
 \midrule
 \multicolumn{3}{@{}l}{\itshape Basic hypergeometric series}\\
 \midrule
@@ -15174,7 +15195,20 @@ specialization corollary is subsumed rather than being a further step.  Two of t
 identities are proved division-free over an \emph{arbitrary commutative ring}, including
 characteristic $2$ and non-domains, where the text works only in characteristic $0$}\\[2pt]
 \Cref{qg:thm-jackson-8phi7} & \statusnone & ---\\[2pt]
-\Cref{qg:cor-jackson-6phi5} & \statusnone & ---\\[2pt]
+\Cref{qg:cor-jackson-6phi5} & \statusexact &
+\texttt{terminating\_\allowbreak{}sixPhiFive},
+\texttt{sum\_\allowbreak{}sixPhiFiveTerm},
+\texttt{sixPhiFive\_\allowbreak{}certificate},
+\texttt{one\_\allowbreak{}sub\_\allowbreak{}mul\_\allowbreak{}pow\_\allowbreak{}mul\_\allowbreak{}finiteQPochhammerIn}\newline
+{\footnotesize\texttt{JacksonVeryWellPoised}; the terminating very-well-poised
+${}_6\phi_5$ over an arbitrary field, where the text claims $\ComplexNumbers^\times$, with
+$q^{-N}$ written $(q^N)^{-1}$ as elsewhere in the corpus.  The proof does \emph{not} follow the
+printed derivation, which obtains this from \Cref{qg:thm-jackson-8phi7} by a coefficientwise
+rational limit; it inducts on the terminating index directly, so it does not depend on the
+${}_8\phi_7$.  The nonvanishing hypotheses are \emph{not} comparable with the printed ones: they
+are stronger at index $N+1$ and $2N+2$, so over $\ComplexNumbers$ this applies to fewer tuples,
+while over an arbitrary field and at $a=0$ it is a proper extension.  The certificate identity
+carrying the analytic content holds over an arbitrary commutative ring}\\[2pt]
 \midrule
 \multicolumn{3}{@{}l}{\itshape Theta modularity, lattice dissection, and sums of squares}\\
 \midrule
@@ -15287,9 +15321,36 @@ computation, (ii) from Mathlib's
 \texttt{GaussianInt.prime\_of\_nat\_prime\_of\_mod\_four\_eq\_three}, (iii) from Fermat's
 two-square theorem \texttt{Nat.Prime.sq\_add\_sq} and the norm argument, with uniqueness up to a
 unit and conjugation from primality}\\[2pt]
-\Cref{qg:thm-two-square} & \statusnone & ---\\[2pt]
-\Cref{qg:cor-two-square-lambert} & \statusnone & ---\\[2pt]
-\Cref{qg:thm-four-square} & \statusnone & ---\\[2pt]
+\Cref{qg:thm-two-square} & \statuspartial &
+\texttt{twoSquareArith},
+\texttt{isMultiplicative\_\allowbreak{}twoSquareArith},
+\texttt{twoSquareDivisorSum\_\allowbreak{}prime\_\allowbreak{}pow},
+\texttt{twoSquareDivisorSum\_\allowbreak{}eq\_\allowbreak{}prod},
+\texttt{sumSqRep\_\allowbreak{}two\_\allowbreak{}eq\_\allowbreak{}zero\_\allowbreak{}iff}\newline
+{\footnotesize\texttt{TwoSquareTheorem}; the arithmetic half in full and unconditionally --- the
+divisor sum as the Dirichlet convolution $\zeta*\chi_4$, its multiplicativity, its exact local
+factors at $2$, at $p\equiv1$ and at $p\equiv3\pmod4$, and hence both the vanishing criterion and
+the product formula --- together with the vanishing half of \eqref{eq:qg-two-square}, that
+$r_2(n)=0$ exactly when $D(n)=0$.  \emph{Not} proved: the count $r_2(n)=4D(n)$ on the set where
+$D(n)\ne0$, which is the theorem's core and is carried as an explicit hypothesis}\\[2pt]
+\Cref{qg:cor-two-square-lambert} & \statuspartial &
+\texttt{twoSquareDivisorSum\_\allowbreak{}eq\_\allowbreak{}prod},
+\texttt{sumSqRep\_\allowbreak{}two\_\allowbreak{}eq\_\allowbreak{}zero\_\allowbreak{}iff}\newline
+{\footnotesize\texttt{TwoSquareTheorem}; the Lambert-series form is conditional on the same
+counting core as \Cref{qg:thm-two-square}, and is stated with that hypothesis explicit rather
+than assumed}\\[2pt]
+\Cref{qg:thm-four-square} & \statuspartial &
+\texttt{sumSqRep\_\allowbreak{}four\_\allowbreak{}eq\_\allowbreak{}iff},
+\texttt{sumSqRep\_\allowbreak{}four\_\allowbreak{}eq\_\allowbreak{}of\_\allowbreak{}lambert},
+\texttt{hasSum\_\allowbreak{}sumSqRep\_\allowbreak{}four\_\allowbreak{}product},
+\texttt{hasSum\_\allowbreak{}sigmaNotDvdFour\_\allowbreak{}tsum}\newline
+{\footnotesize\texttt{FourSquareTheorem}; proved \emph{conditionally}.  The equivalence between
+the theorem and its Lambert form is unconditional, and both sides of the printed proof's last
+sentence are proved outright: the theta side, $\sum_n r_4(n)q^n=\bigl((q^2;q^2)_\infty(-q;q^2)_\infty^2\bigr)^4$
+over any complete normed field, and the Lambert side,
+$\sum_{4\nmid j}jq^j/(1-q^j)=\sum_n\bigl(\sum_{d\mid n,\,4\nmid d}d\bigr)q^n$.  The identity
+joining them, \eqref{eq:qg-four-square-lambert}, is \emph{not} proved and is carried as the
+hypothesis.  Mathlib's four-square theorem is existence, not counting, and is not a substitute}\\[2pt]
 \midrule
 \multicolumn{3}{@{}l}{\itshape Bailey transforms and the Andrews--Gordon identities}\\
 \midrule
@@ -15317,7 +15378,17 @@ named lemmas}\\[2pt]
 {\footnotesize\texttt{BaileyChain}; the $t$-fold multiple sum is represented by the
 nested recursion $\beta^{(t+1)}_n=\sum_{j\le n}a^jq^{j^2}\beta^{(t)}_j/(q;q)_{n-j}$,
 exactly as the inductive proof in the text unfolds it}\\[2pt]
-\Cref{qg:cor-rr-partitions} & \statusnone & ---\\[2pt]
+\Cref{qg:cor-rr-partitions} & \statuspartial &
+\texttt{partsMod5\_\allowbreak{}14\_\allowbreak{}eq\_\allowbreak{}staircaseCount},
+\texttt{partsMod5\_\allowbreak{}23\_\allowbreak{}eq\_\allowbreak{}staircaseCount},
+\texttt{hasSum\_\allowbreak{}restrictedCount\_\allowbreak{}mul\_\allowbreak{}pow}\newline
+{\footnotesize\texttt{RogersRamanujanPartitions}; the product side exactly --- the counts of
+partitions into parts $\equiv1,4$ and $\equiv2,3\pmod 5$ --- identified with a Durfee-staircase
+expansion of the sum side, both genuine partition counts, on the sorry-free analytic identities.
+The restricted-parts generating function is proved for an \emph{arbitrary} decidable predicate on
+part sizes, subsuming the odd-parts and bounded-parts cases already in the corpus.  \emph{Not}
+formalized: the printed gap condition, that is the bijection between the staircase expansion and
+partitions with parts differing by at least $2$}\\[2pt]
 \Cref{qg:lem-rogers-recurrence} & \statusexact &
 \texttt{rogersSeries\_\allowbreak{}recurrence},
 \texttt{rogersSeries},
@@ -15372,10 +15443,41 @@ formalized}\\[2pt]
 \multicolumn{3}{@{}l}{\itshape Exact limits, reciprocity, and research frontiers}\\
 \midrule
 \Cref{qg:thm-qpochhammer-modular-asymptotic} & \statusnone & ---\\[2pt]
-\Cref{qg:prop-coefficientwise-limit} & \statusnone & ---\\[2pt]
-\Cref{qg:prop-truncation-principle} & \statusnone & ---\\[2pt]
-\Cref{qg:prop-borwein-reciprocity} & \statusnone & ---\\[2pt]
-\Cref{qg:prop-borwein-tail-stabilization} & \statusnone & ---\\[2pt]
+\Cref{qg:prop-coefficientwise-limit} & \statusexact &
+\texttt{existsUnique\_\allowbreak{}coefficientwise\_\allowbreak{}limit},
+\texttt{tendsto\_\allowbreak{}of\_\allowbreak{}eventually\_\allowbreak{}coeff\_\allowbreak{}eq},
+\texttt{iteratedDeriv\_\allowbreak{}eq\_\allowbreak{}of\_\allowbreak{}eventually\_\allowbreak{}coeff}\newline
+{\footnotesize\texttt{QSeriesTruncation}; the approximants are arbitrary \emph{power series} over
+an arbitrary semiring, indexed by an arbitrary type and converging along an arbitrary non-trivial
+filter, where the text takes polynomials over a commutative ring and $N\to\infty$ over
+$\NaturalNumbers$.  That generality is not decoration: the paper's own application inside
+\Cref{qg:prop-truncation-principle} is to truncated products that are not polynomials.  The
+coefficientwise limit is a genuine \texttt{Tendsto} in the power-series topology, not a shorthand
+for stabilisation}\\[2pt]
+\Cref{qg:prop-truncation-principle} & \statusexact &
+\texttt{coeff\_\allowbreak{}qInfProduct},
+\texttt{existsUnique\_\allowbreak{}coefficientwise\_\allowbreak{}limit}\newline
+{\footnotesize\texttt{QSeriesTruncation}; the product half in the generality the paper's own
+citation of it requires, the truncated products $\prod_{j\le M}(1-q^j)^{e_j}$ lying outside
+$R[q]$ as soon as one exponent is negative}\\[2pt]
+\Cref{qg:prop-borwein-reciprocity} & \statusexact &
+\texttt{reflect\_\allowbreak{}borweinA},
+\texttt{reflect\_\allowbreak{}borweinB},
+\texttt{reflect\_\allowbreak{}borweinC},
+\texttt{eval\_\allowbreak{}one\_\allowbreak{}borweinB\_\allowbreak{}eq\_\allowbreak{}borweinC},
+\texttt{borweinProduct\_\allowbreak{}dissection}\newline
+{\footnotesize\texttt{BorweinReciprocity}; over an arbitrary commutative ring, where the text works
+in $\IntegerNumbers[x]$.  Both the polynomial form, with \texttt{Polynomial.reflect} literally
+$x^Nf(1/x)$, and the coefficient form, together with both ``in particular'' corollaries.  The
+dissection \eqref{eq:qg-borwein-dissection} is proved rather than posited: $A_n,B_n,C_n$ are
+constructed as the residue-class contractions of $P_n$.  The sign question of the Borwein
+conjecture is not touched}\\[2pt]
+\Cref{qg:prop-borwein-tail-stabilization} & \statusexact &
+\texttt{coeff\_\allowbreak{}borweinA\_\allowbreak{}stabilize},
+\texttt{coeff\_\allowbreak{}borweinB\_\allowbreak{}stabilize},
+\texttt{coeff\_\allowbreak{}borweinC\_\allowbreak{}stabilize}\newline
+{\footnotesize\texttt{BorweinReciprocity}; all six identities, both ends, over an arbitrary
+commutative ring}\\[2pt]
 \bottomrule
 \end{longtable}
 \endgroup
