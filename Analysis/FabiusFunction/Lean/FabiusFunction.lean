@@ -706,6 +706,7 @@ import FabiusFunction.GaussianBinomialPalindromic
 import FabiusFunction.ThetaQuasiPeriodicity
 import FabiusFunction.FabiusDyadicGaussianForm
 import FabiusFunction.FabiusGeneralLinearDenominator
+import FabiusFunction.ThueMorseComplexHalfAngle
 import FabiusFunction.ThueMorseQPochhammer
 import FabiusFunction.GeneralLinearThueMorseSum
 

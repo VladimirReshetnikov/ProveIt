@@ -87,18 +87,14 @@ theorem norm_thueMorseSign_complex (n : ℕ) :
 /-- `(-1)^a = (-1)^b` whenever `a + b` is even, in any monoid with a
 distributive negation — the sign-collapse step of every parity identity
 in the corpus (`ThueMorseValuation.neg_one_pow_eq_of_add_even` is the
-`ℤ` instance). -/
+`ℤ` retyping).  The hypothesis is written as `a + b = 2 * c` rather than
+`Even (a + b)` so that the even sum can be exhibited to `omega` at the
+call sites; `Nat.even_add` then converts it to the parity equivalence
+that Mathlib's `neg_one_pow_congr` consumes. -/
 theorem neg_one_pow_eq_of_add_eq_two_mul {R : Type*} [Monoid R]
     [HasDistribNeg R] {a b c : ℕ} (h : a + b = 2 * c) :
-    ((-1 : R)) ^ a = (-1) ^ b := by
-  have hab : ((-1 : R)) ^ a * (-1) ^ b = 1 := by
-    rw [← pow_add, h, pow_mul, neg_one_sq, one_pow]
-  have hbb : ((-1 : R)) ^ b * (-1) ^ b = 1 := by
-    rw [← pow_add, ← two_mul, pow_mul, neg_one_sq, one_pow]
-  calc ((-1 : R)) ^ a
-      = (-1) ^ a * ((-1) ^ b * (-1) ^ b) := by rw [hbb, mul_one]
-    _ = ((-1) ^ a * (-1) ^ b) * (-1) ^ b := by rw [mul_assoc]
-    _ = (-1) ^ b := by rw [hab, one_mul]
+    ((-1 : R)) ^ a = (-1) ^ b :=
+  neg_one_pow_congr ((Nat.even_add (m := a) (n := b)).mp ⟨c, by omega⟩)
 
 /-- `d ≤ j` implies `d < 2^j`: every index below the exponent lies in
 the dyadic block. -/

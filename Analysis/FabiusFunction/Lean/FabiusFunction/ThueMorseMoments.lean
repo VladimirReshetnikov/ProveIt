@@ -33,11 +33,12 @@ closed integer form, plus the reflection principle behind the third.
   the characteristic-free parity statement; no invalid cancellation of `2`
   is hidden in it.
 * `sum_thueMorseSign_mul_midpoint_pow_eq_zero_field` — the **parity
-  selection rule over any field of characteristic zero**: centered at
-  the block midpoint `c_m = (2^m - 1)/2`, the signed power sum of
-  exponent `r` vanishes whenever `m + r` is odd.  It is the torsion-free
-  corollary of the ring-valued statement above, obtained by cancelling
-  `2 ≠ 0`.
+  selection rule over any field in which `2 ≠ 0`**, that is, over any
+  field of characteristic not two: centered at the block midpoint
+  `c_m = (2^m - 1)/2`, the signed power sum of exponent `r` vanishes
+  whenever `m + r` is odd.  It is the corollary of the ring-valued
+  statement above obtained by cancelling `2 ≠ 0`, and characteristic `2`
+  is the only obstruction: fields of odd characteristic are covered too.
 * `sum_thueMorseSign_mul_midpoint_pow_eq_zero` — its instance over
   `ℚ`.  Below the first surviving degree the centered sums already
   vanish for every `r`, of either parity
@@ -53,7 +54,7 @@ The parity rule needs no exponential generating function and no `sinh`
 product: it is pure dyadic reflection combined with the complement sign
 `ε(2^m-1-n) = (-1)^m ε(n)`.  Over a general ring reflection gives
 `2S = 0`; the familiar equality `S = 0` additionally uses that `2` can be
-cancelled, as it can in `ℚ`.
+cancelled, as it can in any field where `2 ≠ 0`, in particular in `ℚ`.
 
 The last two sections prove the **complete power-moment composition
 formula** on an arbitrary finite set `S` of bit positions, of which the
@@ -265,15 +266,20 @@ theorem two_mul_sum_thueMorseSign_mul_centered_pow_eq_zero
     (2 : R) * S = S + S := by ring
     _ = 0 := hsum
 
-/-- **Midpoint parity selection rule, over any field of characteristic
-zero.**  Centered at `c_m = (2^m - 1)/2`, the signed power sums vanish
-whenever `m + r` is odd: `∑_{n<2^m} ε(n)·(n - c_m)^r = 0`.  This is
+/-- **Midpoint parity selection rule, over any field in which `2 ≠ 0`.**
+Centered at `c_m = (2^m - 1)/2`, the signed power sums vanish whenever
+`m + r` is odd: `∑_{n<2^m} ε(n)·(n - c_m)^r = 0`.  This is
 `two_mul_sum_thueMorseSign_mul_centered_pow_eq_zero` with the factor
-`2` cancelled, which is legitimate exactly because `2 ≠ 0` in
-characteristic zero; `sum_thueMorseSign_mul_midpoint_pow_eq_zero` is
-the rational instance. -/
+`2` cancelled, which is legitimate exactly because `2 ≠ 0`; the
+hypothesis is therefore `NeZero (2 : R)`, i.e. characteristic not two,
+and not characteristic zero.  Fields of odd characteristic — `ZMod p`
+for an odd prime `p`, its finite extensions, and function fields over
+them — are covered; only characteristic two is excluded, where the
+halving that defines `c_m` is unavailable.
+`sum_thueMorseSign_mul_midpoint_pow_eq_zero` is the rational
+instance. -/
 theorem sum_thueMorseSign_mul_midpoint_pow_eq_zero_field
-    {R : Type*} [Field R] [CharZero R] (m r : ℕ) (h : Odd (m + r)) :
+    {R : Type*} [Field R] [NeZero (2 : R)] (m r : ℕ) (h : Odd (m + r)) :
     ∑ n ∈ range (2 ^ m),
         ((thueMorseSign n : ℤ) : R) *
           ((n : R) - ((2 : R) ^ m - 1) / 2) ^ r = 0 := by
@@ -281,6 +287,7 @@ theorem sum_thueMorseSign_mul_midpoint_pow_eq_zero_field
   have hc :
       ((2 : R) ^ m - 1) / 2 + ((2 : R) ^ m - 1) / 2 =
         ((2 ^ m - 1 : ℕ) : R) := by
+    rw [add_halves]
     push_cast [Nat.cast_sub h1]
     ring
   have htwo := two_mul_sum_thueMorseSign_mul_centered_pow_eq_zero
@@ -296,7 +303,8 @@ the range `r > m`, a cancellation with no uncentered analogue.  This is the
 rational instance of
 `sum_thueMorseSign_mul_midpoint_pow_eq_zero_field`, i.e.
 `two_mul_sum_thueMorseSign_mul_centered_pow_eq_zero` with the nonzero
-factor `2` cancelled. -/
+factor `2` cancelled; the required `NeZero (2 : ℚ)` comes from
+`CharZero ℚ`, which is only one of the many fields where `2 ≠ 0`. -/
 theorem sum_thueMorseSign_mul_midpoint_pow_eq_zero (m r : ℕ)
     (h : Odd (m + r)) :
     ∑ n ∈ range (2 ^ m),
