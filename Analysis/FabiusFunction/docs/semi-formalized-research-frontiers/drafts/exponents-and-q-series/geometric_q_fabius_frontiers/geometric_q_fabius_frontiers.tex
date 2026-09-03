@@ -1829,11 +1829,12 @@ $\varepsilon_a(N)$, while $\Floor{x}=-(N+1)$ is not even a natural number.  We w
 $\Floor{x}$ because we have $x\ge0$ in mind.
 
 Assembled, these pieces give the law on the whole axis with no hypothesis at all, in
-\path{LobeSignComplete.lean}:
+\path{LobeSignComplete.lean}, in which $\Phi_a$ is read on the real axis through its
+canonical product \eqref{p1:eq:canonical-a}:
 \[
- \Psi_a(x)=0
+ \Phi_a(x)=0
  \quad\text{or}\quad
- 0<\varepsilon_a\bigl(\Floor{\AbsoluteValue{x}}\bigr)\,\Psi_a(x),
+ 0<\varepsilon_a\bigl(\Floor{\AbsoluteValue{x}}\bigr)\,\Phi_a(x),
  \qquad x\in\RealNumbers
 \]
 (\lean{Fabius.parityCharacter\_mul\_canonicalRealProduct\_dichotomy}), the first alternative
@@ -2602,8 +2603,10 @@ For a complex sequence $a$ of at most exponential growth, the following are equi
 \item $a$ satisfies a constant-coefficient linear recurrence from some point onward;
 \item its ordinary generating function $A(q)=\sum_{h\ge0}a_hq^h$ is rational.
 \end{enumerate}
-When these conditions hold, the logarithmic transforms
-$L_j(z)=\log\Phi_{S^ja}(z)$ span a finite-dimensional space stable under $z\mapsto2z$.
+When these conditions hold, the logarithmic transforms $L_j(z)=\log\Phi_{S^ja}(z)$ span a
+finite-dimensional space $\mathscr L$, and the dilation $z\mapsto2z$ maps $\mathscr L$ into
+$\mathscr L+\ComplexNumbers\log\SincPi(2z)$: the $L_j$ obey a finite \emph{inhomogeneous}
+refinement system with forcing term $\log\SincPi(2z)$.
 Conversely, any finite-dimensional shift-closed exponent model has rational $A$.
 This is \statusproved as a synthesis of the standard rational-series theorem with
 \cref{p1:thm:shift-refinement}.
@@ -2617,7 +2620,11 @@ $L_d=\sum_{j<d}\gamma_jL_j$ as analytic germs, while
 \[
  L_j(2z)=a_j\log\SincPi(2z)+L_{j+1}(z).
 \]
-Thus the vector $(L_0,\ldots,L_{d-1},\log\SincPi(2z))$ obeys a finite refinement system.
+Thus every dilated $L_j$ lies in $\mathscr L+\ComplexNumbers\log\SincPi(2z)$, which is the
+asserted inhomogeneous refinement system.  The forcing term is genuinely outside
+$\mathscr L$: for $a\equiv1$ one has $d=1$ and $\mathscr L=\ComplexNumbers\log\Phi_a$, which is
+singular exactly at the nonzero integers, whereas $\log\SincPi(2z)$ is singular at
+$z=\pm\tfrac12$ as well.
 The converse is the same statement read on the exponent vectors.
 \end{proof}
 
@@ -3526,8 +3533,9 @@ The standardized fourth cumulant is also exact:
  =-2\left(\frac35\right)^{r+1}.
  \label{p1:eq:pascal-standardized-k4}
 \end{equation}
-It decays more slowly than the Berry--Esseen upper bound and predicts the first Edgeworth
-correction in \cref{p1:conj:edgeworth}.
+It decays faster than the Berry--Esseen upper bound of \cref{p1:thm:pascal-BE} --- at the
+geometric rate $3/5=0.6$ per unit of $r$, against $3\sqrt3/7=0.7423\ldots$ --- and predicts
+the first Edgeworth correction in \cref{p1:conj:edgeworth}.
 \end{remark}
 
 \subsection{Boundary scaling of the smooth box approximants}
@@ -3552,8 +3560,8 @@ For each fixed bounded interval of $y$ values,
    \BigO\!\left(\left(\frac{3\sqrt3}{7}\right)^{d+1}\right),
  \label{p1:eq:right-boundary}
 \end{align}
-where the implied constant is universal.  Away from any shrinking neighborhood of the two
-endpoints, $f_d$ converges uniformly to the box density
+where the implied constant is universal.  Outside any neighborhood of the two endpoints of
+radius $\rho_d$ with $\rho_d/\tau_d\to\infty$, $f_d$ converges uniformly to the box density
 $\IndicatorOf{[-1/2,1/2]}$.  This is \statusproved.
 \end{theorem}
 
@@ -3715,9 +3723,13 @@ As $t\to\infty$, Mellin inversion of \eqref{p1:eq:La-mellin} gives an expansion 
  \label{p1:eq:logLP-structure}
 \end{equation}
 where $C_P$ is \eqref{p1:eq:CP}, every $Q_k$ is a polynomial of degree at most $d$, and the
-remainder comes from the exponentially small endpoint correction and from poles farther to
-the right after contour displacement.  The Fourier coefficients of the periodic-polynomial
-part are explicit residues of
+remainder is the exponentially small endpoint correction alone: for a polynomial weight the
+integrand $-\Gamma(w)\zeta(w+1)A_P(2^w)$ has no pole with $\Re w>0$, its poles lying at
+$w\in\{0,-1,-2,\ldots\}$ and on the lattice \eqref{p1:eq:dyadic-lattice}.  Poles to the right
+of the imaginary axis do appear in the rational setting of
+\cref{p1:conj:rational-transseries}, where a denominator root $\rho$ with
+$\AbsoluteValue\rho>1$ sits at $\Re w=\log\AbsoluteValue\rho/\log2>0$.  The Fourier
+coefficients of the periodic-polynomial part are explicit residues of
 $-\Gamma(w)\zeta(w+1)A_P(2^w)$.
 
 In particular, degree $d$ produces:
@@ -3959,13 +3971,16 @@ $y$-derivatives, the two boundary profiles admit a uniform expansion
  f_d\!\left(\frac12+\tau_dy\right)
  =\NormalSurv(y)
   +\varphi(y)\sum_{j=1}^{J}E_j(y;r)
-  +o\!\left((3/5)^{J(r+1)}\right),
+  +\BigO\!\left(\left(\frac{3^{J+2}}{4^{J+2}-1}\right)^{r+1}\right),
  \label{p1:eq:edgeworth-conj}
 \end{equation}
 where $\varphi$ is the Gaussian density and each $E_j$ is an explicit Hermite polynomial
 whose coefficients are Bell polynomials in the standardized cumulants.  The first correction
 is governed by
-$\kappa_4/\sigma^4=-2(3/5)^{r+1}$.
+$\kappa_4/\sigma^4=-2(3/5)^{r+1}$.  The remainder gauge is the size of the first omitted
+group: the weight-$j$ group carries $\kappa_{2(j+1)}/\sigma^{2(j+1)}$, of exact size
+$\bigl(3^{j+1}/(4^{j+1}-1)\bigr)^{r+1}$, which for $j\ge2$ already exceeds
+$(3/5)^{j(r+1)}$.
 \end{conjecture}
 
 \paragraph{Why it is plausible.}
@@ -4825,10 +4840,11 @@ Write
 
 \begin{proposition}[complete Bell-polynomial formula]
 \label{p2:prop:Bell}
-Let \(Y_r\) denote the complete exponential Bell polynomial. Then
+With \(\ExponentialCompleteBellPolynomial{r}\) the complete exponential Bell
+polynomial in the notation of \cref{p0:prop:bell},
 \begin{equation}
  \alpha_r(b)=\frac1{r!}
- Y_r\bigl(1!c_1(b),2!c_2(b),\ldots,r!c_r(b)\bigr),
+ \ExponentialCompleteBellPolynomial{r}\bigl(1!c_1(b),2!c_2(b),\ldots,r!c_r(b)\bigr),
  \label{p2:eq:Bellalpha}
 \end{equation}
 and equivalently
@@ -5194,7 +5210,8 @@ monotone on this interval,
  \Phi_b^{(m+1)}(z).
  \label{p2:eq:upperbound}
 \end{align}
-The sign is exactly \((-1)^m\).
+For \(0<z<\pi^2b^2\) the sign is exactly \((-1)^m\); at \(z=0\) both sides of
+\eqref{p2:eq:divdiff} vanish.
 \end{theorem}
 
 \begin{proof}
@@ -5213,7 +5230,7 @@ divided difference between
 
 \begin{corollary}[relative bracketing]
 \label{p2:cor:bracket}
-For real \(\xi\) with \(\AbsoluteValue\xi<\pi b^{n+1}\) and \(P_b(\xi)\ne0\),
+For real \(\xi\) with \(0<\AbsoluteValue\xi<\pi b^{n+1}\) and \(P_b(\xi)\ne0\),
 \begin{equation}
  \Sign\!\left(\frac{\mathcal R_{m,n}P_b(\xi)}{P_b(\xi)}-1\right)=(-1)^m.
  \label{p2:eq:signlaw}
@@ -5514,8 +5531,11 @@ for every fixed \(s\), and uniformly for \(y\in J\),
 \end{theorem}
 
 \begin{proof}
-On a slightly larger compact interval \(K'\Subset(0,1)\), continuity and strict
-monotonicity give \(F'\geq c>0\). The \(C^1\) convergence in
+On a slightly larger compact interval \(K'\Subset(0,1)\), positivity of the
+up-function on the interior of its support gives \(F'\geq c>0\): by
+\eqref{p2:eq:Fshift} and the refinement equation, \(F'(x)=2u_2(2x-1)\), and
+\(u_2>0\) on \((-1,1)\), so \(F'>0\) on \((0,1)\); continuity and compactness of
+\(K'\) supply the constant. The \(C^1\) convergence in
 \cref{p2:cor:Fconv} implies \(F_{m,n}'\geq c/2\) for large \(n\), so the inverse
 branch exists. Standard differentiation of inverse functions gives
 \eqref{p2:eq:Gconv}.
@@ -5649,8 +5669,10 @@ For example, at \(\xi=3,n=4,m=3\), the true absolute error is
 accelerated values is \(3.16292144780\times10^{-16}\), and
 \cref{p2:thm:certificate} gives the upper bound
 \(3.17532506132\times10^{-16}\). The certificate therefore encloses the true
-error in an interval of relative width about \(4\times10^{-6}\), using no
-reference value of \(P(3)\).
+error in an interval of relative width \(q^{m+1}=4^{-4}=1/256\approx3.9\times
+10^{-3}\), whose upper endpoint exceeds the true error by only about
+\(3.5\times10^{-6}\) in relative terms, and it uses no reference value of
+\(P(3)\).
 
 \section{A universal geometric-product theorem}
 \label{p2:sec:universal}
@@ -5660,8 +5682,8 @@ parts of the construction are special to Rvachev's function.
 
 \begin{theorem}[universal analytic-factor acceleration]
 \label{p2:thm:universal}
-Let \(\varphi\) be an even analytic function near zero with \(\varphi(0)=1\),
-nonzero in a neighborhood of zero, and
+Let \(\rho>0\), and let \(\varphi\) be even, analytic and zero-free on the disc
+\(\AbsoluteValue w<\rho\), with \(\varphi(0)=1\) and
 \begin{equation}
  \log\varphi(w)=-\sum_{k=1}^{\infty}a_kw^{2k}.
  \label{p2:eq:generalphi}
@@ -5671,7 +5693,8 @@ For \(b>1\), define
  Q_b(\xi)=\prod_{\nu\geq1}\varphi(\xi/b^\nu),
  \qquad Q_{b,n}(\xi)=\prod_{\nu=1}^n\varphi(\xi/b^\nu).
 \]
-Then locally at \(q^n\xi^2=0\),
+Then for \(\AbsoluteValue\xi<b\rho\), so that \(z=q^n\xi^2\) lies in the disc
+\(\AbsoluteValue z<b^2\rho^2\) on which the tail series converges,
 \begin{equation}
  \frac{Q_{b,n}(\xi)}{Q_b(\xi)}
  =\exp\!\left(\sum_{k\geq1}
@@ -5686,12 +5709,19 @@ Let its Taylor coefficients in \(z=q^n\xi^2\) be \(\beta_r\). The same weights
  \sum_{r\geq m+1}\GaussianBinomial{r-1}{m}{q}\beta_r z^r.
  \label{p2:eq:universalError}
 \end{equation}
-If all \(a_k\geq0\), then all \(\beta_r\geq0\), and the sign law, divided-
-difference bounds, and a posteriori certificate remain valid.
+If \(a_k\geq0\) for every \(k\) and \(a_1>0\), then \(\beta_r>0\) for every
+\(r\geq0\), by the same recurrence as \eqref{p2:eq:alpharec}, and the sign law,
+divided-difference bounds, and a posteriori certificate remain valid.
+Nonnegativity alone is not enough: \(\varphi\equiv1\) makes every \(\beta_r\)
+with \(r\geq1\) vanish, and with it the error and its sign.
 \end{theorem}
 
 \begin{proof}
-The proof of \cref{p2:thm:cumulants} uses only the geometric sum
+For \(\AbsoluteValue\xi<b\rho\) every factor \(\varphi(\xi/b^\nu)\) is evaluated
+inside the disc of analyticity, and \(\limsup_k\AbsoluteValue{a_k}^{1/k}\leq
+\rho^{-2}\) makes the tail radius at least \(b^2\rho^2\); for
+\(\varphi=\SincRad\) one has \(\rho=\pi\) and this is the disc of
+\cref{p2:thm:tailfactor}.  The proof of \cref{p2:thm:cumulants} uses only the geometric sum
 \(\sum_{\ell\geq1}b^{-2k\ell}=1/(b^{2k}-1)\). The q-filter calculation then
 uses only the Taylor expansion and \cref{p2:lem:qmoments}.
 \end{proof}
@@ -6435,7 +6465,7 @@ under the Fourier convention
 $\FourierTwoPi{f}(\xi)=\int_{\RealNumbers}f(x)\EulerE^{-2\pi\ImaginaryUnit x\xi}\Differential x$.
 This report studies the inverse transforms $p_n$ of the first $n$ factors.
 They are nonstationary dyadic box splines: compactly supported, nonnegative,
-even, log-concave, piecewise polynomial of degree $n-1$, and $C^{n-2}$.
+even, log-concave, piecewise polynomial of degree at most $n-1$, and $C^{n-2}$.
 Their knots unexpectedly form a uniform dyadic grid, while the jumps of the
 top derivative carry the signed Thue--Morse sequence.  An explicit truncated-power
 formula, exact cell formulas, recursions, Fourier-zero multiplicities, partition-of-unity
@@ -6603,7 +6633,8 @@ Write
  \tau_k=(-1)^{\BinaryDigitSum(k)},
  \label{p3:eq:tm-sign}
 \end{equation}
-where $\BinaryDigitSum(k)$ is the binary digit sum.  For $m=0$, the convention
+where $\BinaryDigitSum(k)$ is the binary digit sum.  For $n=1$, where the exponent in
+\eqref{p3:eq:truncated-power} is $0$, the convention
 $y_+^0=\IndicatorOf{(0,\infty)}(y)$ is used away from knots.
 
 \begin{theorem}[Exact truncated-power formula]
@@ -6897,7 +6928,7 @@ For every integer $r\ge0$ and every $n\ge r+3$,
  =\frac{2^{\binom{r+3}{2}-1}}{9\,4^n}.}
  \label{p3:eq:sharp-prefix-law}
 \end{equation}
-The extremum is attained at
+The extremum is attained, among other points, at
 \begin{equation}
  x=c_{r+2}=1-2^{-(r+2)},
  \label{p3:eq:error-extremizer}
@@ -6948,8 +6979,9 @@ For $r=0$,
  \label{p3:eq:sharp-uniform-r0}
 \end{equation}
 This is exactly one half of the repeated-integration error
-$8/(9\,4^n)$ in the frontier volume: omitting the tail has variance defect $-1/9$,
-whereas replacing it by a full-radius uniform box has variance defect $+2/9$.
+$8/(9\,4^n)$ in the frontier volume: omitting the tail has variance defect
+$-\delta_n^2/9$, whereas replacing it by a full-radius uniform box has variance defect
+$+2\delta_n^2/9$, in the units of \eqref{p3:eq:variance-defect}.
 
 \subsection{Exact Kolmogorov distance}
 
@@ -7012,28 +7044,20 @@ interior moment effect.
 Near the origin, define
 \begin{equation}
  \frac1{\Phi(z)}
- =\exp\!\left(\sum_{j=1}^{\infty}\alpha_j(2\pi z)^{2j}\right)
+ =\exp\!\left(\sum_{j=1}^{\infty}c_j(2)(2\pi z)^{2j}\right)
  =\sum_{m=0}^{\infty}a_m(2\pi z)^{2m}.
  \label{p3:eq:reciprocal-series}
 \end{equation}
-The logarithm of the sine product gives
+This is the base-two case of the volume's single reciprocal-product coefficient layer,
+\cref{p2:thm:cumulants,p2:prop:Bell}, where it is proved: under the substitution
+$z_{\mathrm{II}}=(2\pi z)^2$ one has $a_m=\alpha_m(2)$, and the Bernoulli cumulants
+$c_k(b)$ of \eqref{p2:eq:ckBernoulli} specialize to
 \begin{equation}
- \alpha_j=\frac{|B_{2j}|}{2j(2j)!(1-2^{-2j})}.
+ c_j(2)=\frac{\zeta(2j)}{j\pi^{2j}(4^j-1)}
+ =\frac{|B_{2j}|}{2j(2j)!(1-2^{-2j})}.
  \label{p3:eq:alpha-Bernoulli}
 \end{equation}
-Thus
-\begin{equation}
- a_0=1,
- \qquad
- ma_m=\sum_{j=1}^{m}j\alpha_j a_{m-j},
- \label{p3:eq:a-recurrence}
-\end{equation}
-and, in terms of the complete exponential Bell polynomial $Y_m$,
-\begin{equation}
- a_m=\frac1{m!}Y_m(1!\alpha_1,2!\alpha_2,\ldots,m!\alpha_m).
- \label{p3:eq:a-Bell}
-\end{equation}
-The first coefficients are
+The Bell recurrence \eqref{p2:eq:alpharec} then gives
 \begin{equation}
 \begin{aligned}
  a_0&=1,&
@@ -7101,9 +7125,10 @@ The leading profile is therefore
  \quad\text{uniformly}.
  \label{p3:eq:leading-profile}
 \end{equation}
-The sharp derivative norm of $\RvachevUp^{(r+2)}$ is exactly the constant in
-\cref{p3:eq:sharp-prefix-law}, explaining why the asymptotic coefficient is already exact
-at the dyadic extremizer for every admissible $n$.
+The sharp derivative norm $\Norm{\RvachevUp^{(r+2)}}_\infty=2^{\binom{r+3}{2}}$ is exactly
+$18\cdot4^n$ times the constant in \cref{p3:eq:sharp-prefix-law}: the asymptotic profile
+$-\delta_n^2\RvachevUp^{(r+2)}/18$ already attains its supremum at the dyadic extremizer for
+every admissible $n$.
 
 \subsection{Signed geometric Richardson acceleration}
 
@@ -7307,7 +7332,7 @@ $n\ge r+2\ell+1$,
  2^{\binom{r+2\ell+1}{2}}\,2^{-2\ell n}.}
  \label{p3:eq:quadrature-law}
 \end{equation}
-The extremum occurs at $x=c_{r+2\ell}$ and has sign
+The extremum is attained, among other points, at $x=c_{r+2\ell}$, where it has sign
 $\Sign(\varepsilon_{Q,\ell})(-1)^r$.
 \end{theorem}
 
@@ -7644,8 +7669,11 @@ proof may follow from total positivity of the uniform-box kernel.
 For $0<q<1$, infinite products generated by widths $(1-q)q^j$ have the same exact
 head--tail scaling.  The Bell--Bernoulli expansion and positive tail quadrature survive.
 The dyadic case $q=1/2$ is exceptional because subset sums form a uniform grid and the
-top derivative is exactly Thue--Morse.  Determining the sharp $C^r$ constants for
-general $q$ is a natural next problem.
+top derivative is exactly Thue--Morse.  For the bases $q=1/a$ with $a\ge2$ the sharp
+leading $C^r$ constants are already available in closed form
+(\cref{p6:cor:prefix-norm}); what remains open here is the overlapping range
+$1/2<q<1$, together with the plateau and extremal-set structure, which is special to
+$q=1/2$.
 
 \paragraph{Multivariate box splines.}
 Products of directional sinc factors invert to multivariate box splines.  A geometric
@@ -7716,12 +7744,13 @@ Taylor expansion.
 \label{p3:app:manifest}
 
 The verification material for this part is kept in the volume directory under
-\path{assets/finite_sinc_products_report/}:
+\path{assets/finite_sinc_products_report/}, each figure being present both as the
+\path{.png} file this part loads and as a \path{.pdf} variant:
 \begin{itemize}[leftmargin=2em]
 \item \path{assets/finite_sinc_products_report/finite_sinc_experiments.py} -- documented numerical and exact code;
-\item \path{assets/finite_sinc_products_report/finite_sinc_approximants.pdf} -- generated approximation figure;
-\item \path{assets/finite_sinc_products_report/scaled_error_profiles.pdf} -- generated error-profile figure;
-\item \path{assets/finite_sinc_products_report/convergence_comparison.pdf} -- generated convergence figure;
+\item \path{assets/finite_sinc_products_report/finite_sinc_approximants.png} -- generated approximation figure;
+\item \path{assets/finite_sinc_products_report/scaled_error_profiles.png} -- generated error-profile figure;
+\item \path{assets/finite_sinc_products_report/convergence_comparison.png} -- generated convergence figure;
 \item \path{assets/finite_sinc_products_report/sharp_error_verification.csv} -- raw-prefix numerical table;
 \item \path{assets/finite_sinc_products_report/positive_acceleration_verification.csv} -- accelerated numerical table;
 \item \path{assets/finite_sinc_products_report/exact_coefficients.txt} -- exact series and Richardson coefficients;
@@ -7853,8 +7882,9 @@ the centered uniform density and unrolling the recursion,
  \label{p4:eq:w-convolution}
 \end{equation}
 where $p_n=\beta_{2^{-1}}*\cdots*\beta_{2^{-n}}$ is the ordinary prefix of
-\cref{p3:sec:exact-spline}: a univariate box spline of degree $n$ supported
-on $[-1,1]$, with the smallest box occurring twice.  Probabilistically, if
+\cref{p3:sec:exact-spline}: a univariate box spline of degree $n-1$ supported
+on $[-1+h,1-h]$, each box occurring once.  It is $f_n$, not $p_n$, that is the
+degree-$n$ spline on $[-1,1]$ obtained by repeating the smallest box.  Probabilistically, if
 $X_n$ has density $f_n$, $X$ has density $\RvachevUp$, and
 $S_n=\sum_{k=1}^{n}2^{-k}U_k$ with $U_k$ independent uniform on $[-1,1]$,
 then
@@ -8200,7 +8230,7 @@ computation gives
 \toprule
 $r$ & $3$ & $5$ & $10$ & $20$ & $30$ & $50$\\
 \midrule
-$\rho_r(4\pi)^{2r}$ & $0.40698$ & $3.58279$ & $3.611538$
+$\rho_r(4\pi)^{2r}$ & $1.46985$ & $3.58279$ & $3.611538$
  & $3.6115993859$ & $3.611599386028056$ & $3.6115993860280564487$\\
 \bottomrule
 \end{tabular}
@@ -8319,7 +8349,7 @@ duplicated smallest box one more exactly when $v\ge n-1$.
 \label{p4:cor:w-realization}
 For every nonzero integer $M$,
 $\OrderOperator_{t=2^n\pi M}\bigl(F_n/\Phi\bigr)=1-\TwoAdicValuation(|M|)$: at the critical
-scaling $t=2^nz$ the three exceptional layers of \eqref{p4:eq:w-defect} are
+scaling $t=2^nz$ the three layers $v=n-1$, $v=n$, $v\ge n+1$ of \eqref{p4:eq:w-defect} are
 exactly the divisor of $A$ --- the over-resolved layer $v=n-1$ is the simple
 zero of $A$ at odd multiples of $\pi$, the re-agreement layer $v=n$ is the
 removable point at $2\pi\cdot$odd, and each unresolved layer $v\ge n+1$ is
@@ -8495,7 +8525,7 @@ $4^n\Norm{F_n-\Phi}_{L^p}\to\tfrac19\Norm{t^2\Phi}_{L^p}$.  The unweighted
 constants, by lobe-wise quadrature, are
 \begin{equation}
  C_\infty=\frac19\sup_t t^2|\Phi(t)|=0.650851567393992\ldots
- \quad(\text{maximizer }t_*=3.750573332377785\ldots),
+ \quad(\text{maximizer }t_*=3.750573330779642\ldots),
  \label{p4:eq:w-Cinf}
 \end{equation}
 $C_1=\tfrac19\int t^2|\Phi|\Differential t=11.0486184433431\ldots$ and
@@ -8573,7 +8603,9 @@ of \eqref{p4:eq:w-tail-models} gives, for every $r\ge1$,
  \label{p4:eq:w-cumulant-defect}
 \end{equation}
 with all odd cumulants zero: the $r$th term of the Bernoulli series
-\eqref{p4:eq:w-logA} \emph{is} the defect of the $2r$th cumulant, and the
+\eqref{p4:eq:w-logA}, evaluated at $ht$, \emph{is} the $2r$th cumulant term of
+$X_n$ minus that of $X$, so that
+$\kappa_{2r}(X_n)-\kappa_{2r}(X)=(-1)^r(2r)!\,\ell_r4^{-rn}$, and the
 leading $4^{-n}$ rate is exactly the variance mismatch
 $\Variance(X_n)-\Variance(X)=\tfrac29\,4^{-n}$ between the uniform tail (variance
 $\tfrac13$) and the true tail (variance $\tfrac19$).  Bell-polynomial
@@ -8756,7 +8788,7 @@ Lobatto--5 & $\tfrac{78976}{153675}\delta_0
  & $1006207/24604155961875$ & exact support; five shifts\\
 dyadic--7 & pair totals $\tfrac{10411}{2679075},
  \tfrac{1003648}{2679075},\tfrac{581632}{2679075}$ at $\pm1,\pm\tfrac12,
- \pm\tfrac14$, center $\tfrac{120376}{297675}$ & 4 & ---
+ \pm\tfrac14$, center $\tfrac{120376}{297675}$ & 4 & $330593/10493400960000$
  & exact support; seven dyadic shifts\\
 polynomial $q_3$ & density $\tfrac{35}{32}(1-x^2)^3$ & 2 & $2/22275$
  & exact support; one $C^{n+2}$ density of degree $n+6$\\
@@ -8948,13 +8980,13 @@ Let
 \]
 and let $u_N$ and $u=\RvachevUp$ be their inverse Fourier transforms in the angular-frequency convention.  The established Fabius--Rvachev corpus identifies $u_N$ as a degree-$N-1$ compactly supported spline with a Thue--Morse truncated-power formula and proves strong convergence, an all-orders $4^{-N}$ deconvolution expansion, and signed $q$-Richardson acceleration.  Those facts are used here as input rather than relabelled as new.
 
-The main new result is an exact convergence-geometry package.  Writing $\mu_N=u_N\,\Differential x$ and $\mu=u\,\Differential x$, we prove that $\mu_N$ increases to $\mu$ in convex order while remaining more peaked about the origin.  The density error crosses zero at the fixed points $\pm\tfrac12$, independently of $N$.  Consequently, for every $N\ge2$,
+The main new result is an exact convergence-geometry package.  Writing $\mu_N=u_N\,\Differential x$ and $\mu=u\,\Differential x$, we prove that $\mu_N$ increases to $\mu$ in convex order while remaining more peaked about the origin.  The density error changes sign at the fixed points $\pm\tfrac12$, independently of $N$.  Consequently $W_1(\mu_N,\mu)=4^{-N}/9$ for every $N\ge1$, and for every $N\ge2$
 \[
  W_1(\mu_N,\mu)=d_{\rm K}(\mu_N,\mu)=\frac{4^{-N}}9,
  \qquad
  d_{\rm TV}(\mu_N,\mu)=\frac{2\,4^{-N}}9,
 \]
-and the stop-loss and order-two Zolotarev distances both equal $4^{-N}/18$.  We also prove $W_\infty(\mu_N,\mu)=2^{-N}$, derive an exact Thue--Morse spline formula for the call potential, and show that its maximum and its total area are both $4^{-N}/18$.  These identities imply a positivity obstruction: no convex combination of consecutive finite-product laws can cancel the leading $4^{-N}$ error in any of the preceding finite metrics; signed weights are structurally necessary for Richardson acceleration.
+while the stop-loss and order-two Zolotarev distances both equal $4^{-N}/18$ for every $N\ge1$.  We also prove $W_\infty(\mu_N,\mu)=2^{-N}$, derive an exact Thue--Morse spline formula for the call and put transforms of $\mu_N$, and show that the call-potential gap $K_N=C-C_N$ has maximum and total area both equal to $4^{-N}/18$.  These identities imply a positivity obstruction: no convex combination of consecutive finite-product laws can cancel the leading $4^{-N}$ error in any of the preceding finite metrics; signed weights are structurally necessary for Richardson acceleration.
 
 The report further derives the all-orders stop-loss profile, smooth-test and interior-quantile expansions, and a finite-$p$ versus $p=\infty$ transport crossover.  Fully reproducible FFT experiments verify the exact constants and give strong evidence for new entropy, forward-relative-entropy, Fisher-information, and fixed-$p$ Wasserstein asymptotics.  The latter are explicitly marked conjectural where a weighted endpoint remainder theorem is still required.
 \end{abstract}
@@ -9213,12 +9245,7 @@ Define $b_m$ by
  =\sum_{m=0}^{\infty}b_mz^{2m}.
  \label{p5:eq:bmdef}
 \end{equation}
-In complete Bell-polynomial notation,
-\begin{equation}
- b_m=\frac1{m!}\mathcal B_m(1!c_1,2!c_2,\ldots,m!c_m).
- \label{p5:eq:bell-bm}
-\end{equation}
-The first coefficients are
+These are the base-two values of the volume's single reciprocal-product coefficient layer: in the notation of \cref{p2:thm:cumulants,p2:prop:Bell} one has $c_r=c_r(2)$ and $b_m=\alpha_m(2)$, so $b_m$ is the complete Bell polynomial \eqref{p2:eq:Bellalpha} in the $c_r$ and obeys the recurrence \eqref{p2:eq:alpharec}; the same numbers are Part~III's $a_m$ in \eqref{p3:eq:reciprocal-series}.  Explicitly,
 \begin{equation}
  b_0=1,
  \quad b_1=\frac1{18},
@@ -9226,11 +9253,6 @@ The first coefficients are
  \quad b_3=\frac{2347}{42865200},
  \quad b_4=\frac{1904369}{1311675120000}.
  \label{p5:eq:first-b}
-\end{equation}
-They also satisfy the convenient recurrence
-\begin{equation}
- mb_m=\sum_{r=1}^{m}r c_r b_{m-r}.
- \label{p5:eq:b-rec}
 \end{equation}
 
 \subsection{Physical-space expansion}
@@ -9348,9 +9370,9 @@ If $U\sim\operatorname{Unif}[-\tfrac12,\tfrac12]$ and $\AbsoluteValue r\le\tfrac
 \end{lemma}
 
 \begin{proof}
-The zero of $u+r$ lies inside the integration interval, and direct integration gives
+The zero of $v+r$ lies inside the integration interval, and direct integration gives
 \[
- \int_{-1/2}^{1/2}\AbsoluteValue{u+r}\Differential u
+ \int_{-1/2}^{1/2}\AbsoluteValue{v+r}\Differential v
  =\frac12\left(\frac12-r\right)^2
   +\frac12\left(\frac12+r\right)^2
  =r^2+\frac14.
@@ -9438,7 +9460,12 @@ where the infima range over couplings.  In one dimension,
 \end{equation}
 
 \begin{theorem}[Exact metric collapse; \newresult]
-For every $N\ge2$,
+For every $N\ge1$,
+\begin{equation}
+ \boxed{W_1(\mu_N,\mu)=\frac{4^{-N}}9,}
+ \label{p5:eq:w1-exact}
+\end{equation}
+and for every $N\ge2$ this is also the Kolmogorov distance,
 \begin{equation}
  \boxed{
  W_1(\mu_N,\mu)
@@ -9453,7 +9480,8 @@ For every $N\ge2$,
  d_{\rm TV}(\mu_N,\mu)=\frac{2\,4^{-N}}9.}
  \label{p5:eq:tv-exact}
 \end{equation}
-At the first stage,
+At the first stage the remaining three constants are exceptional, while $W_1$ keeps its
+general value $4^{-1}/9=1/36$:
 \begin{equation}
  W_1(\mu_1,\mu)=\frac1{36},
  \qquad
@@ -9479,6 +9507,7 @@ Subtracting the finite and limiting versions and applying \eqref{p5:eq:absolute-
 \[
  W_1(\mu_N,\mu)=\Expectation\AbsoluteValue X-\Expectation\AbsoluteValue{X_N}=\frac{4^{-N}}9.
 \]
+This step uses only \eqref{p5:eq:cdf-sign} and \eqref{p5:eq:absolute-moments}, so it is valid for every $N\ge1$.
 
 For $N\ge2$, write $X_N=U+R_N$ with $R_N=\tfrac12X_{N-1}'$.  Conditioning on $R_N$ at the threshold $1/2$ gives
 \[
@@ -9672,7 +9701,7 @@ In particular,
  \qquad\text{in every }C^r(\RealNumbers).
  \label{p5:eq:K-leading}
 \end{equation}
-At $t=0$, all terms after the first vanish because $u(0)=1$ and $u^{(k)}(0)=0$ for $k\ge1$; the leading value $4^{-N}/18$ is in fact exact.
+At $t=0$, all terms after the first vanish because $u(0)=1$ and $u^{(k)}(0)=0$ for $k\ge1$, consistently with the exact value $K_N(0)=4^{-N}/18$ established in \eqref{p5:eq:K-height}.
 \end{theorem}
 
 \begin{proof}
@@ -9707,7 +9736,7 @@ For $N\ge2$,
  =\frac{4^{-N}}{18}A(\alpha).
  \label{p5:eq:mix-sl}
 \end{align}
-The mixture density exceeds $u$ on $(-1/2,0)\cup(0,1/2)$, equals it at $0$ and $\pm1/2$ (up to knot conventions), and is below $u$ for $1/2<\AbsoluteValue x<1$, unless all mass is placed on a limiting stage.
+The mixture density exceeds $u$ on $(-1/2,0)\cup(0,1/2)$, equals it at $0$ and $\pm1/2$ (up to knot conventions), and is below $u$ for $1/2<\AbsoluteValue x<1$.
 \end{theorem}
 
 \begin{proof}
@@ -9799,7 +9828,7 @@ Because $u_N$ and $u$ are supported inside one period of length two, their perio
  u(x)&=\frac12+\sum_{n=1}^{\infty}\Phi(\pi n)\cos(\pi nx).
  \label{p5:eq:cosine-limit}
 \end{align}
-For the limit, every nonzero even coefficient vanishes and the odd coefficients decay superalgebraically.  On the grid
+For every $N\ge1$ the even coefficients with $n\ne0$ vanish, since the $j=1$ factor $\SincRad(\pi n/2)$ does; for the limit the odd coefficients decay superalgebraically as well, whereas at finite $N$ one has only $\Phi_N(\pi n)=\BigO(n^{-N})$.  On the grid
 \[
  x_k=-1+\frac{2k}{M},\qquad M=2^{18},
 \]
@@ -9911,7 +9940,7 @@ For every finite $N$,
 \end{proposition}
 
 \begin{proof}
-The limiting density is strictly positive on $(-1,1)$, while $u_N$ vanishes on the two strips $a_N<\AbsoluteValue x<1$ of positive $u$-mass.  Hence the reverse logarithmic ratio is infinite there.  In the forward direction, $u$ is positive on the compact interior support of $u_N$, and the polynomial vanishing of $u_N$ at its own endpoints makes $u_N\log(u_N/u)$ integrable.
+The limiting density is strictly positive on $(-1,1)$, while $u_N$ vanishes on the two strips $a_N<\AbsoluteValue x<1$ of positive $u$-mass.  Hence the reverse logarithmic ratio is infinite there.  In the forward direction, $u_N$ is bounded and supported on the compact subinterval $[-a_N,a_N]$ of $(-1,1)$, on which the continuous $u$ is bounded below by a positive constant; hence $u_N\log(u_N/u)$ is bounded and integrable.
 \end{proof}
 
 \subsection{Fisher information}
@@ -10047,7 +10076,7 @@ Integrating over $s$ gives \eqref{p5:eq:Wp-conj}.  The endpoint layers must agai
 \label{p5:tab:information}
 \begin{tabular}{@{}rcccccc@{}}
 \toprule
-$N$ & entropy gap & ratio & $D(u_N\Vert u)$ & ratio & $W_2$ & ratio\\
+$N$ & entropy gap & ratio & $\KL(u_N\Vert u)$ & ratio & $W_2$ & ratio\\
 \midrule
 3 & $1.057601\times10^{-2}$ & $1.03244285$ & $5.896794\times10^{-4}$ & $0.96628234$ & $3.018666\times10^{-3}$ & $1.01230978$ \\
 4 & $2.580642\times10^{-3}$ & $1.00770183$ & $3.762085\times10^{-5}$ & $0.98636290$ & $7.477592\times10^{-4}$ & $1.00304444$ \\
@@ -10263,10 +10292,12 @@ and
 \]
 The quartic terms cancel, leaving
 \[
- \int\left(\frac{2u'(-u''')}{u}+\frac{u'^2u''}{u^2}\right)\Differential x
- =2\int u(s')^2\Differential x.
+ \int\left(\frac{2u'u'''}{u}-\frac{u'^2u''}{u^2}\right)\Differential x
+ =\int u\bigl(2ss''+5s^2s'+s^4\bigr)\Differential x
+ =-2\int u(s')^2\Differential x
+ =-2L.
 \]
-Multiplication by $\eps_N^2/18$ therefore yields the conjectured first correction $\eps_N^2L/9$ in \eqref{p5:eq:fisher-conj}.
+With the deconvolution perturbation $v=-\eps_N^2u''/18$, the first variation \eqref{p5:eq:fisher-variation} is $-\eps_N^2/18$ times this bracket, that is $+\eps_N^2L/9$, the conjectured first correction in \eqref{p5:eq:fisher-conj}.
 
 \section{Reproducibility ledger}
 \label{p5:app:repro}
