@@ -24,9 +24,33 @@ import os
 import re
 import sys
 
+# Declaration names carry subscripts and Greek letters.  On a cp1252 console, printing one
+# raises UnicodeEncodeError and the audit dies at the moment it has a duplicate to report --
+# so force a UTF-8 stream with an escape fallback rather than let the gate fail silently.
+for _stream in (sys.stdout, sys.stderr):
+    try:
+        _stream.reconfigure(encoding='utf-8', errors='backslashreplace')
+    except Exception:
+        pass
+
 HERE = os.path.dirname(os.path.abspath(__file__))
 LEAN = os.path.normpath(os.path.join(
     HERE, '..', '..', '..', 'Lean', 'FabiusFunction'))
+
+# Lean identifiers are Unicode.  Restricting these classes to ASCII truncated names at the
+# first subscript or Greek letter (`jacobiTheta₂_neg_inv` -> `jacobiTheta`), which made
+# unrelated declarations collide and produced phantom duplicates.  Note `\\w` is not a
+# substitute: subscript digits are Unicode category No, not Nd, so `\\w` does not match them.
+_ID_START = ("A-Za-z_"
+             "\u00c0-\u024f"      # Latin-1 supplement + Latin Extended-A/B
+             "\u0370-\u03ff"      # Greek and Coptic
+             "\u1f00-\u1fff"      # Greek Extended
+             "\u2100-\u214f")     # letterlike symbols (ℂ ℝ ℤ ℕ ℚ)
+_ID_CONT = (_ID_START +
+            "0-9'!?"
+            "\u00b2\u00b3\u00b9"  # superscripts two, three, one
+            "\u2070-\u209c")      # super- and subscripts
+_ID = '[' + _ID_START + '][' + _ID_CONT + ']*'
 
 DECL = re.compile(
     r'^(?:@\[[^\]]*\]\s*)?'
@@ -34,7 +58,7 @@ DECL = re.compile(
     r'(?:theorem|lemma|def|abbrev|structure|inductive|instance)\s+'
     # Dotted names are one declaration, not a collision on the prefix:
     # `theorem IsFabius.unique` must not read as declaring `IsFabius`.
-    r'([A-Za-z_][A-Za-z0-9_\'!?]*(?:\.[A-Za-z_][A-Za-z0-9_\'!?]*)*)',
+    r'(' + _ID + r'(?:\.' + _ID + r')*)',
     re.M)
 
 COMMENT_BLOCK = re.compile(r'/-.*?-/', re.S)
