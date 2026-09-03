@@ -326,6 +326,49 @@ mkdir -p .lake
 cmd //c mklink //J ".lake\\packages" "C:\\ProveIt\\.lake\\packages"
 ```
 
+### Seed the corpus build outputs too, or pay a day
+
+The junction fixes Mathlib and nothing else. A fresh worktree still has **zero**
+`FabiusFunction` oleans, and compiling the atlas from scratch costs the better
+part of a day — which is a day the kernel is unavailable to everyone else, not
+just to you. Copy a sibling worktree's `.lake\build` instead. Measured
+2026-09-02: 1.353 GB, 6005 files, 1m48s, after which a new leaf module built in
+25–90 seconds.
+
+Find a donor, and prefer the one with the most oleans at a commit closest to
+yours:
+
+```sh
+for d in /c/ProveIt/.claude/worktrees/*/; do
+  echo "$(ls $d/.lake/build/lib/lean/FabiusFunction/*.olean 2>/dev/null | wc -l)  $d"
+done
+```
+
+Then, from PowerShell:
+
+```
+robocopy <donor>\.lake\build <yours>\.lake\build /E /MT:8 /R:1 /W:1
+```
+
+`robocopy` exits **1** when it successfully copies files; treat any code below 8
+as success.
+
+Two checks first, both cheap and both necessary. Lake decides staleness from
+content hashes, so a donor at a different commit is perfectly good for every
+module whose source happens to match and silently useless for the rest:
+
+1. `git merge-base --is-ancestor <donor HEAD> HEAD` — the donor's commit is in
+   your history.
+2. `md5sum` your intended dependency sources against the donor's copies. Only
+   the closure you mean to build has to match; your own new modules are leaves
+   and would rebuild anyway.
+
+**Ask the donor's owner to hold builds before you start, and tell them when you
+finish.** The donor is usually another agent's live worktree, and a module
+rewritten mid-copy leaves you a torn olean whose failure looks like corruption.
+Nothing of theirs is written — it is a read — so the only cost to them is the
+pause.
+
 ### When to pay a root-module invalidation
 
 Moving a declaration into `Arithmetic.lean`, `Basic.lean` or `Differential.lean`

@@ -92,14 +92,14 @@ validation state. Deleted checksum manifests must not be recreated. Historical
 SHA-256 values recorded directly in this README and in `PROVENANCE.md` remain
 provenance receipts for the named artifacts.
 
-The retained `q_pochhammer_q_binomial_monograph.pdf` is a 367-page A4
-build of the current master source (15,190 lines, 728,116 bytes,
-SHA-256 `a65126f7fb10f207aa2cb9fdefe96c5f6f9210dcddd14cf3bfcd5653b351ae41`).
-The PDF is 3,122,835 bytes with SHA-256
-`fd0585ac96ccb78a6a559a2cc2b3a5f019affcf90c7f200687571b69b783bad9`.
+The retained `q_pochhammer_q_binomial_monograph.pdf` is a 378-page A4
+build of the current master source (15,630 lines, 764,952 bytes,
+SHA-256 `403a25dccadc15e7a34bedd8d28a2dc3369cb6e6a046cd199a30ed178742a32d`).
+The PDF is 3,175,603 bytes with SHA-256
+`5d0dac5a8d1cba7bedab9055a51f59478054de22969dcf75b0f58ce3f3c265bc`.
 It was built by exactly three serial
-`pdflatex -interaction=nonstopmode -halt-on-error` passes, which produced 367,
-367, and 367 pages, with `makeindex` run on the `.idx` file after each pass.
+`pdflatex -interaction=nonstopmode -halt-on-error` passes, which produced 378,
+378, and 378 pages, with `makeindex` run on the `.idx` file after each pass.
 3 overfull hboxes All pages are A4. `pdffonts` reports 43 font rows, all
 embedded and subsetted, including 5 Libertinus rows, with no Type-3
 fonts. The files under `assets/experiments/**/figures/` remain research
@@ -169,7 +169,7 @@ entireness, zero-locus, reciprocal-power, and analytic-order results rather
 than duplicating their analytic proofs. In `QBinomialTheoremInfinite`,
 `finiteQPochhammerIn_zero_left` remains the unique declaration owned by
 `GaussianBinomialAtOne` and is imported rather than redeclared. The forward
-status ledger is 158 Exact, 84 Partial, 32 None, and 8 interface rows; the
+status ledger is 159 Exact, 84 Partial, 31 None, and 8 interface rows; the
 original 191-result pre-Fabius core is 36/29/123/3, and the
 completed source concordance records 66 Lean-proved rows, 412 human-proved
 frontier rows, 60 not-applicable rows, and 9 conjectures.

@@ -1,3 +1,4 @@
+import FabiusFunction.GLOrderProduct
 import FabiusFunction.SubspaceCount
 import Mathlib.LinearAlgebra.Basis.Basic
 import Mathlib.LinearAlgebra.Basis.VectorSpace
@@ -421,5 +422,10 @@ theorem gaussianBinomial_mul_gaussianBinomial_mul_prod_pow_sub_pow {R : Type*} [
   rw [← gaussianBinomial_mul_prod_pow_sub_pow q ha,
     ← gaussianBinomial_mul_prod_pow_sub_pow q hb]
   ring
+
+/-! The division-free identity `∏_{i<n} (qⁿ - qⁱ) = q^{C(n,2)} ∏_{j<n} (q^{j+1} - 1)`, whose
+finite-field reading is `|GLₙ|`, is `prod_pow_sub_pow_eq_pow_choose_two_mul` in
+`FabiusFunction.GLOrderProduct`.  It is stated there rather than here so that consumers which need
+only the ring identity are not forced to import Mathlib's linear algebra along with it. -/
 
 end Fabius

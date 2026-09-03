@@ -647,6 +647,8 @@ import FabiusFunction.IntegerParameterTranslation
 import FabiusFunction.MultisetInversions
 import FabiusFunction.GeometricSimplexReindex
 import FabiusFunction.RatioExpansion
+import FabiusFunction.GLOrderProduct
+import FabiusFunction.SchroeterFormula
 import FabiusFunction.SubspaceMobius
 import FabiusFunction.BasicBernoulliLog
 import FabiusFunction.GaussianFourierTheta
@@ -704,6 +706,8 @@ import FabiusFunction.GaussianBinomialPalindromic
 import FabiusFunction.ThetaQuasiPeriodicity
 import FabiusFunction.FabiusDyadicGaussianForm
 import FabiusFunction.FabiusGeneralLinearDenominator
+import FabiusFunction.ThueMorseQPochhammer
+import FabiusFunction.GeneralLinearThueMorseSum
 
 set_option autoImplicit false
 

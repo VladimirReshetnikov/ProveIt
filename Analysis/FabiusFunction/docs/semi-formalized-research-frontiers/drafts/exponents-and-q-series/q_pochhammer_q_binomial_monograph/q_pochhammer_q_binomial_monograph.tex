@@ -12903,8 +12903,8 @@ inside the proof below does not formalize the result the proof concludes.
   than a mathematical claim.
 \end{description}
 
-Of the 282 labelled forward results, 158 are \statusexact, 84 are
-\statuspartial, 32 are \statusnone, and 8 are \statusna.  The original
+Of the 282 labelled forward results, 159 are \statusexact, 84 are
+\statuspartial, 31 are \statusnone, and 8 are \statusna.  The original
 191-result pre-Fabius core had 36 \statusexact, 29 \statuspartial, 123
 \statusnone, and 3 \statusna{} entries.  The four integrated guide chapters
 add 31 human-proved but not Lean-formalized assertions and five labelled
@@ -13473,7 +13473,7 @@ Bilateral series and Ramanujan's \texorpdfstring{${}_1\psi_1$}{1psi1} sum & 2 & 
 $q$-difference calculus and the quantum binomial & 10 & 0 & 0 & 0\\
 The $q$-gamma and $q$-beta functions & 7 & 1 & 0 & 0\\
 Jacobi's triple product & 8 & 0 & 0 & 0\\
-Theta modularity, lattice dissection, and sums of squares & 5 & 2 & 7 & 4\\
+Theta modularity, lattice dissection, and sums of squares & 6 & 2 & 6 & 4\\
 Partitions and product--sum identities & 3 & 1 & 0 & 0\\
 Bailey pairs and the Rogers--Ramanujan identities & 6 & 1 & 0 & 0\\
 Bailey transforms and the Andrews--Gordon identities & 5 & 2 & 1 & 1\\
@@ -13488,7 +13488,7 @@ Half-base arithmetic and Prouhet--Thue--Morse cancellation & 6 & 3 & 0 & 0\\
 Geometric uniform sums, $q$-cumulants, and the Fabius--Rvachev functions & 2 & 11 & 0 & 0\\
 Dyadic Gaussian--Thue--Morse structure and the values of $F$ & 8 & 45 & 3 & 0\\
 \midrule
-\textbf{Forward total} & 158 & 84 & 32 & 8\\
+\textbf{Forward total} & 159 & 84 & 31 & 8\\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -15249,7 +15249,23 @@ independent Poisson route}\\[2pt]
 \Cref{qg:thm-theta-eta-modular} & \statusnone & ---\\[2pt]
 \Cref{qg:def-ramanujan-theta} & \statusna & notation only\\[2pt]
 \Cref{qg:prop-ramanujan-product} & \statusnone & ---\\[2pt]
-\Cref{qg:thm-schroeter} & \statusnone & ---\\[2pt]
+\Cref{qg:thm-schroeter} & \statusexact &
+\texttt{schroeter\_\allowbreak{}formula},
+\texttt{hasSum\_\allowbreak{}schroeter},
+\texttt{hasSum\_\allowbreak{}schroeterFibre},
+\texttt{quadTheta\_\allowbreak{}eq\_\allowbreak{}bilateralTheta},
+\texttt{summable\_\allowbreak{}norm\_\allowbreak{}quadThetaTerm}\newline
+{\footnotesize\texttt{SchroeterFormula}; over an arbitrary complete normed field rather than
+$\ComplexNumbers$, so also over $\RealNumbers$ and the $p$-adic fields, the only analytic input
+being a real geometric majorant.  The hypotheses are exactly the chapter's own, with no weakening.
+The conclusion is a \texttt{HasSum}, asserting unconditional summability of the lattice family
+where the printed $\sum_{n\in\IntegerNumbers}$ fixes no summation order; norm-summability is
+recorded separately, which over a nonarchimedean field is stronger again.  The dissection is
+carried by an explicit equivalence of $\IntegerNumbers^2$ built from the division algorithm, so
+the change of variables is a bijection by construction rather than by inspection.  Two identities
+the chapter states only in passing are proved with it: the crosswalk
+$\Theta(x;Q)=\BilateralTheta{Qx}{Q^2}$, with its $Q\ne0$ made explicit, and Jacobi's triple
+product in the $\sum Q^{n^2}x^n$ normalization}\\[2pt]
 \Cref{qg:prop-squares-theta} & \statuspartial &
 \texttt{hasSum\_\allowbreak{}sumSqRep},
 \texttt{sumSqRep},

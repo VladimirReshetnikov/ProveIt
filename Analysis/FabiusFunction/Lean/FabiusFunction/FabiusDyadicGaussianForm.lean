@@ -1,6 +1,6 @@
 import FabiusFunction.FabiusQBinomialFormula
+import FabiusFunction.GLOrderProduct
 import FabiusFunction.QBinomialReciprocity
-import FabiusFunction.QPochhammerElementaryIdentities
 
 /-!
 # The dyadic Fabius formula in Gaussian-binomial form
@@ -18,14 +18,12 @@ q-binomial at the base `1/2`, and neither is identified with anything else.
 This module removes the base `1/2` entirely.  Two independent
 normalizations are carried out and then combined.
 
-**The prefactor is a falling `2`-product.**  Over an arbitrary commutative
-ring, `prod_pow_sub_pow_self_eq` records
+**The prefactor is a falling `2`-product.**  `GLOrderProduct` records,
+over an arbitrary commutative ring and with no hypothesis on `q`,
 
-`∏_{i<n} (q^n - q^i) = q^{C(n,2)} ∏_{j<n} (q^{j+1} - 1)`,
+`∏_{i<n} (q^n - q^i) = q^{C(n,2)} ∏_{j<n} (q^{j+1} - 1)`.
 
-with no hypothesis on `q`; it is the diagonal case `N = k = n` of the
-existing `prod_pow_sub_pow_eq_finiteQPochhammerIn`.  Combined with the
-Mersenne normalization `two_pow_nat_sq_mul_halfQPochhammer` of
+Combined with the Mersenne normalization `two_pow_nat_sq_mul_halfQPochhammer` of
 `HalfQBinomial`, this turns the prefactor into
 
 `2^{n^2} (1/2; 1/2)_n = ∏_{i<n} (2^n - 2^i)`.
@@ -54,8 +52,6 @@ subspaces of `𝔽_2^n`.
 
 ## Main results
 
-* `prod_pow_sub_pow_self_eq` — the denominator-free falling-product
-  identity over any commutative ring.
 * `two_pow_nat_sq_mul_halfQPochhammer_eq_prod` and
   `two_pow_nat_sq_mul_qPochhammer_half_eq_prod` — the formula's prefactor
   as `∏_{i<n} (2^n - 2^i)`.
@@ -77,41 +73,6 @@ open Finset
 
 namespace Fabius
 
-/-! ## The falling product of powers -/
-
-/-- Reversing the sign of every Mersenne factor.  Stated separately from
-`prod_pow_sub_pow_self_eq` because the induction is cleaner than any
-rewrite of `Finset.prod_const` through the two occurrences of `n`. -/
-private theorem prod_pow_succ_sub_one_eq (R : Type*) [CommRing R] (q : R) (m : ℕ) :
-    ∏ j ∈ Finset.range m, (q ^ (j + 1) - 1) =
-      (-1 : R) ^ m * ∏ j ∈ Finset.range m, (1 - q * q ^ j) := by
-  induction m with
-  | zero => simp
-  | succ m ih =>
-      rw [Finset.prod_range_succ, Finset.prod_range_succ, ih]
-      ring
-
-/-- **The falling product of powers, denominator-free.**  Over every
-commutative ring and for every `q`,
-
-`∏_{i<n} (q^n - q^i) = q^{C(n,2)} · ∏_{j<n} (q^{j+1} - 1)`.
-
-No hypothesis on `q` is used, so the identity holds at roots of unity, in
-positive characteristic, and in the presence of zero divisors.  It is the
-diagonal case `N = k = n` of `prod_pow_sub_pow_eq_finiteQPochhammerIn`,
-after the alternating sign is absorbed into the Mersenne factors.
-
-For a prime power `q` the left-hand side is the order of `GL_n` over the
-field with `q` elements; see `FabiusGeneralLinearDenominator`. -/
-theorem prod_pow_sub_pow_self_eq {R : Type*} [CommRing R] (q : R) (n : ℕ) :
-    ∏ i ∈ Finset.range n, (q ^ n - q ^ i) =
-      q ^ n.choose 2 * ∏ j ∈ Finset.range n, (q ^ (j + 1) - 1) := by
-  have h := prod_pow_sub_pow_eq_finiteQPochhammerIn q (le_refl n)
-  rw [Nat.sub_self] at h
-  simp only [Nat.zero_add, pow_one] at h
-  rw [h, prod_pow_succ_sub_one_eq R q n, finiteQPochhammerIn]
-  ring
-
 /-! ## The prefactor -/
 
 /-- **The formula's prefactor is a falling `2`-product.**  The denominator
@@ -120,7 +81,7 @@ theorem prod_pow_sub_pow_self_eq {R : Type*} [CommRing R] (q : R) (n : ℕ) :
 theorem two_pow_nat_sq_mul_halfQPochhammer_eq_prod (n : ℕ) :
     (2 : ℚ) ^ (n ^ 2) * halfQPochhammer n =
       ∏ i ∈ Finset.range n, ((2 : ℚ) ^ n - 2 ^ i) := by
-  rw [two_pow_nat_sq_mul_halfQPochhammer, prod_pow_sub_pow_self_eq (2 : ℚ) n,
+  rw [two_pow_nat_sq_mul_halfQPochhammer, prod_pow_sub_pow_eq_pow_choose_two_mul (2 : ℚ) n,
     halfMersenneProduct]
 
 /-- The prefactor identity in the literal q-Pochhammer notation used by
