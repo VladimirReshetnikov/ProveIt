@@ -648,6 +648,8 @@ import FabiusFunction.IntegerParameterTranslation
 import FabiusFunction.MultisetInversions
 import FabiusFunction.GeometricSimplexReindex
 import FabiusFunction.RatioExpansion
+import FabiusFunction.ThetaHeatEquation
+import FabiusFunction.QPochhammerModularAsymptotic
 import FabiusFunction.FormalQBinomial
 import FabiusFunction.BorweinReciprocity
 import FabiusFunction.GaussianUnimodality
