@@ -6,7 +6,7 @@
 \IfFileExists{libertinus.sty}{\usepackage{libertinus}}{\usepackage{lmodern}}
 \usepackage{microtype}
 \usepackage{amsmath,amssymb,amsthm,mathtools,mathrsfs,bm}
-\input{../../../../../fabius-notation.tex}
+\input{../../../../fabius-notation.tex}
 \usepackage{booktabs,longtable,tabularx,array,multirow}
 \usepackage{graphicx}
 \usepackage{xcolor}
@@ -125,8 +125,6 @@
   stringstyle=\color{deepred}
 }
 
-\small commit \texttt{32d6d36c51d803289e6d6a0dc0c37753766eba47}}
-
 \usepackage{caption}
 \usepackage{pgfplots}
 \usepackage{subcaption}
@@ -135,11 +133,11 @@
 % ed.: volume-local symbols introduced by Part 0.  The canonical family is
 % typeset in sans serif so that it cannot be confused with any part's local
 % X_q, Y_q, or Z_q, which denote three different affine images of it.
-\\newcommand{\\GeoLaw}[1]{\\mathsf{X}_{#1}}
-\\newcommand{\\GeoLawCentered}[1]{\\mathsf{X}^{\\circ}_{#1}}
-\\newcommand{\\GeoLawStandard}[1]{\\mathsf{X}^{\\ast}_{#1}}
-\\newcommand{\\Unif}{\\operatorname{Unif}}
-\\newcommand{\\sinhc}{\\operatorname{sinhc}}
+\newcommand{\GeoLaw}[1]{\mathsf{X}_{#1}}
+\newcommand{\GeoLawCentered}[1]{\mathsf{X}^{\circ}_{#1}}
+\newcommand{\GeoLawStandard}[1]{\mathsf{X}^{\ast}_{#1}}
+\newcommand{\Unif}{\operatorname{Unif}}
+\newcommand{\sinhc}{\operatorname{sinhc}}
 % ed.: environments and status macros needed by the absorbed Parts VIII--XII.
 % They are declared here in the volume's own idiom rather than duplicated
 % per part, so that every part shares one theorem counter and one palette.
@@ -20404,7 +20402,7 @@ path & purpose\\
 \end{center}
 
 The script uses the exact convergent logarithmic series rather than a truncated product.  To reproduce the tables and figures, run
-\begin{lstlisting}[style=py]
+\begin{lstlisting}[style=python]
 python numerical_experiments.py --dps 80
 \end{lstlisting}
 from the archive root.  The LaTeX source expects the generated figure and data directories in their packaged relative locations.
@@ -20498,8 +20496,8 @@ M.~A.~Evgrafov and M.~M.~Postnikov,
 % Part X -- absorbed from q-fabius-parameter-deformations/fabius_q_frontiers_report/q_fabius_parameter_frontiers.tex
 % ------------------------------------------------------------------
 % ed.: macros carried over with Part~X
+% (\sinhc is now declared once in the preamble, with Part 0)
 \renewcommand{\repo}{\textsc{ProveIt}}
-\newcommand{\sinhc}{\operatorname{sinhc}}
 \newcommand{\cx}{\preceq_{\mathrm{cx}}}
 \newcommand{\cL}{C_{\Lambda}}
 \newcommand{\He}{H}
