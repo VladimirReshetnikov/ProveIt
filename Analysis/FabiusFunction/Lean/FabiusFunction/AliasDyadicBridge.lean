@@ -183,12 +183,11 @@ theorem sum_Ico_cos_alias_angle_odd (N : ℕ) [NeZero N] (r : ZMod (2 * N)) (hr 
   have hr0 : r ≠ 0 := by
     rintro rfl
     rw [ZMod.val_zero] at hr
-    exact (Nat.not_odd_iff_even.mpr even_zero) hr
+    exact (Nat.not_odd_iff_even.mpr ⟨0, rfl⟩) hr
   have hN : (0 : ℝ) < N := by exact_mod_cast Nat.pos_of_ne_zero (NeZero.ne N)
   have hfold := sum_zmod_even_eq_fold N
     (fun j => Complex.cos ((Real.pi * r.val * j.val / N : ℝ) : ℂ)) (cos_alias_angle_neg N r)
   rw [sum_cos_alias_angle_eq_zero N r hr0] at hfold
-  simp only at hfold
   have h0 : Complex.cos ((Real.pi * r.val * (0 : ZMod (2 * N)).val / N : ℝ) : ℂ) = 1 := by
     simp
   have hNN : Complex.cos ((Real.pi * r.val * (N : ZMod (2 * N)).val / N : ℝ) : ℂ) = -1 := by
