@@ -679,7 +679,7 @@ and the standardized cumulants are
  \lambda_{2m}(q)
  \DefinitionEquals\kappa_{2m}\bigl(\GeoLawStandard{q}\bigr)
  =\frac{B_{2m}}{2m}\,12^{m}\,\frac{(1-q^{2})^{m}}{1-q^{2m}},
- \qquad m\ge2 .
+ \qquad m\ge2,\quad\text{for real }\AbsoluteValue q<1 .
 \end{equation}
 \end{theorem}
 
@@ -15244,7 +15244,8 @@ reversal at the finite level and exact convolution inversion
 $M_q(t)M_{1/q}(-t)=1$ at the germ level.  The centered transform is a product
 of $q^2$-Pochhammer symbols over the sine zeros, packaging the spectral zeta
 function and the Bernoulli cumulant dictionary
-$\kappa_n=\tfrac{B_n}{n}(1-q)^n/(1-q^n)$.
+$\kappa_n=\tfrac{B_n}{n}(1-q)^n/(1-q^n)$ for $n\ge2$, the mean
+$\kappa_1=\tfrac12$ standing apart under the convention $B_1=-\tfrac12$.
 
 The reciprocal germs at $q=\pm2,\pm4$ are not probability laws on $\RealNumbers$, but
 they are exactly the Fourier transforms of infinite convolutions of Laplace
@@ -15351,6 +15352,12 @@ $-4$ & reciprocal signed quartic germ & $1/2$ & $-5/36$ \\
 \end{tabular}
 \end{center}
 
+The four exterior entries are formal second cumulants, not variances of laws
+on $\RealNumbers$; each is exactly the negative of the variance of the
+reciprocal-base limit law at $1/q$.  \Cref{p7:rem:two-meanings}, at the end of
+\cref{p7:sec:klein-four}, separates the two objects that live at
+$q=\pm2,\pm4$ and pins down the sign that relates them.
+
 \section{The geometric-uniform family and its reciprocal germ}
 \label{p7:sec:germ}
 
@@ -15452,15 +15459,36 @@ Then
  \boxed{\,Y_{-a}\overset d=\lambda_aY_a-\beta_a,\qquad
  Y_{-a}-\tfrac12\overset d=\lambda_a\bigl(Y_a-\tfrac12\bigr),\,}
 \end{equation}
-equivalently $M_{-a}(t)=\EulerE^{-\beta_at}M_a(\lambda_at)$ and
-$C_{-a}(t)=C_a(\lambda_at)$.
+equivalently $M_{-a}(t)=\EulerE^{-\beta_at}M_a(\lambda_at)$,
+$C_{-a}(t)=C_a(\lambda_at)$, and, for the centered characteristic functions
+\eqref{p7:eq:psi-sinc}, $\psi_{-a}(t)=\psi_a(\lambda_at)$.
 \end{theorem}
 
 \begin{proof}
-In the centered series \eqref{p7:eq:Yq}, replace $(-1)^jV_j$ by $V_j$ in law
-(the $V_j$ are symmetric and independent):
-$Y_{-a}-\tfrac12=(1+a)\sum_j(-a)^jV_j
-\overset d=(1+a)\sum_ja^jV_j=\lambda_a(Y_a-\tfrac12)$.
+More is true: the equality holds almost surely under a digitwise coupling.
+With $V_j=U_j-\tfrac12$, define the reflected digits
+\[
+ V_j^-=(-1)^jV_j,
+ \qquad
+ U_j^-=\tfrac12+V_j^-=
+ \begin{cases}
+ U_j,&j\ \text{even},\\
+ 1-U_j,&j\ \text{odd},
+ \end{cases}
+\]
+so that $(U_j^-)_{j\ge0}$ is again an iid $\Unif[0,1]$ sequence.  Building
+$Y_{-a}$ from it gives, almost surely,
+\[
+ Y_{-a}-\tfrac12
+ =(1+a)\sum_{j\ge0}(-a)^jV_j^-
+ =(1+a)\sum_{j\ge0}a^jV_j
+ =\lambda_a\Bigl((1-a)\sum_{j\ge0}a^jV_j\Bigr)
+ =\lambda_a\bigl(Y_a-\tfrac12\bigr),
+\]
+the rearrangement being justified by absolute convergence.  Forgetting the
+coupling gives the distributional identity, and the transform forms follow by
+applying $\Expectation\EulerE^{t\,\cdot}$ and
+$\Expectation\EulerE^{\ImaginaryUnit t\,\cdot}$.
 \end{proof}
 
 \begin{corollary}[Complete transport]\label{p7:cor:transport}
@@ -15471,10 +15499,19 @@ For $0<a<1$,
  g_{-a}(x)=\frac1{\lambda_a}\,
  g_a\!\left(\frac{x+\beta_a}{\lambda_a}\right),
  \label{p7:eq:cdf-transport}\\
+ g_{-a}^{(k)}(x)&=\lambda_a^{-(k+1)}\,
+ g_a^{(k)}\!\left(\frac{x+\beta_a}{\lambda_a}\right),
+ \qquad k\ge0,
+ \label{p7:eq:derivative-transport}\\
  G_{-a}^{-1}(u)&=\lambda_aG_a^{-1}(u)-\beta_a,
  \qquad 0<u<1.
  \label{p7:eq:quantile-transport}
 \end{align}
+Consequently $g_{-a}\in C_c^\infty(\RealNumbers)$, with support
+\eqref{p7:eq:negative-support}; the $L^p$, Sobolev and entropy consequences of
+\eqref{p7:eq:derivative-transport} are \cref{p8:cor:norm-entropy}, and its
+Thue--Morse consequence at $a=\tfrac12$ is
+\cref{p8:cor:negative-thue-morse}.
 Every interior or endpoint expansion at $+a$ transfers exactly to $-a$; there
 is no independent negative-parameter asymptotic problem.  In particular
 \begin{equation}\label{p7:eq:negative-special}
@@ -15483,8 +15520,12 @@ is no independent negative-parameter asymptotic problem.  In particular
  Y_{-1/4}\overset d=\tfrac53\,Y_{1/4}-\tfrac13:
 \end{equation}
 the negative half-base law is the Fabius law stretched by $3$ onto $[-1,2]$,
-with $G_{-1/2}(x)=F\bigl(\tfrac{x+1}3\bigr)$ and density
-$\tfrac23\RvachevUp\bigl(\tfrac{2x-1}3\bigr)$ in Rvachev normalization.
+with $G_{-1/2}(x)=F\bigl(\tfrac{x+1}3\bigr)$, quantile
+$G_{-1/2}^{-1}(u)=3F^{-1}(u)-1$, and density
+$\tfrac23\RvachevUp\bigl(\tfrac{2x-1}3\bigr)$ in Rvachev normalization: every
+exact formula for $F^{-1}$ is an exact formula for the negative dyadic
+quantile.  The repository's selected total function at this parameter is the
+\emph{negative} of that density (\cref{p8:cor:negative-dyadic-sign}).
 \end{corollary}
 
 \begin{figure}[H]
@@ -15499,8 +15540,12 @@ half-base plateau is critical and collapses to the center
 \end{figure}
 
 Standardizing removes the sign entirely (sixteenth wave): since
-$\sigma_{-a}=\lambda_a\sigma_a$, the variance-normalized laws satisfy
-$Z_{-a}\overset d=Z_a$, and the support-normalized density profile
+$\sigma_{-a}=\lambda_a\sigma_a$ by \eqref{p0:eq:variance}, the
+variance-normalized laws satisfy
+\begin{equation}\label{p7:eq:standard-sign-collapse}
+ \boxed{\,Z_{-a}\overset d=Z_a,\,}
+\end{equation}
+and the support-normalized density profile
 \begin{equation}\label{p7:eq:Uq-def}
  \mathcal U_q(x)=R_qg_q\!\left(\tfrac12+R_qx\right),
  \qquad
@@ -15552,9 +15597,9 @@ For the two orbits, with $M=M_{1/2}$ and $N=M_{1/4}$:
  &M_{-4}(t)&=\EulerE^{4t/3}/N(5t/3).
  \label{p7:eq:quartic-orbit}
 \end{align}
-Even centered cumulants transform by
-$\kappa_{2m}(-q)=c(q)^{2m}\kappa_{2m}(q)$ and
-$\kappa_{2m}(1/q)=-\kappa_{2m}(q)$.
+Even centered cumulants transform by the two laws
+\eqref{p7:eq:cumulant-symmetries}, $\kappa_{2m}(-q)=c(q)^{2m}\kappa_{2m}(q)$
+and $\kappa_{2m}(1/q)=-\kappa_{2m}(q)$.
 
 \subsection{Finite reciprocal duality by digit reversal}
 
@@ -15573,13 +15618,67 @@ proves
  Y_q^{[m]}\Longrightarrow Y_{q^{-1}}
  \quad(m\to\infty,\ \AbsoluteValue q>1),
 \end{equation}
-since $\alpha_{m,q}q^{m-1-j}=\alpha_{m,q^{-1}}q^{-j}$.  Thus the exterior
+both being proved in Part~VIII: the identity in the sharper pathwise form as
+\cref{p8:thm:reciprocal-duality}, from
+$[m]_{q^{-1}}=q^{1-m}[m]_q$, and the weak limit with its four orbit
+specializations as \cref{p8:thm:outside-limit}.  Thus the exterior
 parameters $2,-2,4,-4$, read through normalized finite sums, converge exactly
 to the interior laws at $1/2,-1/2,1/4,-1/4$: values $\AbsoluteValue q>1$ must not be
 inserted into the infinite series, but they have exact finite and limiting
 meanings after normalization and digit reversal.  The germ-level inversion
 \eqref{p7:eq:reciprocity} and the finite digit reversal are the analytic and
 combinatorial faces of the same duality.
+
+\begin{remark}[The two meanings of $q=\pm2,\pm4$]
+\label{p7:rem:two-meanings}
+Two different objects live at a parameter outside the unit circle, and this
+volume asserts something true about each.  The first is the \emph{reciprocal
+germ} $M_q$ --- the unique normalized solution of the Mahler equation
+(\cref{p7:thm:formal-unique}), realized outside the disc by the inverse
+product \eqref{p7:eq:Mq-outside} --- whose cumulants are the values at $q$ of
+the rational functions $\kappa_n$ of \cref{p0:thm:cumulants}, continued past
+the unit circle by \cref{p7:thm:cumulants}.  For $\AbsoluteValue q>1$ these have
+$\kappa_2(q)<0$, so the germ is the moment generating function of no
+probability law on $\RealNumbers$; it is instead the characteristic function of a
+positive measure carried by the vertical line $\Re z=\tfrac12$
+(\cref{p7:thm:laplace-dual}).  The second is the \emph{reciprocal-base limit
+law}: the weak limit of the normalized finite laws
+$Y_q^{[N]}=[N]_q^{-1}\sum_{n<N}q^nU_n$ of \eqref{p7:eq:finite-law} (written
+$X_{q,N}$ in Part~VIII), which by digit reversal equals $Y_{q^{-1}}^{[N]}$
+exactly and converges to the honest compactly supported law $Y_{1/q}$
+(\cref{p8:thm:reciprocal-duality,p8:thm:outside-limit}).  The bridge between
+the two is one sign, and it is not a defect of either statement: the
+reciprocal-invariant finite ratio of \cref{p8:thm:finite-cumulants} has two
+different limits, according to which side of the unit circle $q$ lies on,
+\[
+ \lim_{N\to\infty}\frac{[N]_{q^{s}}}{[N]_q^{\,s}}
+ =\begin{cases}
+ \dfrac{(1-q)^{s}}{1-q^{s}}, & \AbsoluteValue q<1,\\[1.0em]
+ (-1)^{s+1}\dfrac{(1-q)^{s}}{1-q^{s}}, & \AbsoluteValue q>1,
+ \end{cases}
+\]
+whence
+\[
+ \boxed{\;\kappa_{2m}\bigl(Y_{1/q}\bigr)
+ =\lim_{N\to\infty}\kappa_{2m}\bigl(Y_q^{[N]}\bigr)
+ =-\,\kappa_{2m}(q)
+ \qquad(\AbsoluteValue q>1).\;}
+\]
+So the inversion law $\kappa_{2m}(1/q)=-\kappa_{2m}(q)$ of
+\eqref{p7:eq:cumulant-symmetries} and the reciprocal invariance of every
+finite ratio (\cref{p8:thm:finite-cumulants}) are the \emph{same} statement,
+read at $N=\infty$ and at finite $N$.  Concretely, the four formal second
+cumulants $-\tfrac1{36},-\tfrac14,-\tfrac1{20},-\tfrac5{36}$ of the orbit
+table at $q=2,-2,4,-4$ are exactly $-\Variance(Y_{1/2})$,
+$-\Variance(Y_{-1/2})$, $-\Variance(Y_{1/4})$, $-\Variance(Y_{-1/4})$.  An
+independent corroboration of the same sign is the Laplace dual: with $r=1/q$,
+$C_q(t)=\Expectation\EulerE^{\ImaginaryUnit tL_r}$ places the germ's moments on
+$\Re z=\tfrac12$, and $\kappa_{2m}(\ImaginaryUnit L)
+=(-1)^m\kappa_{2m}(L)$ is precisely the $\ImaginaryUnit^{2m}$ of that
+vertical embedding (\cref{p7:thm:laplace-dual}); at $m=1$,
+$\kappa_2(L_r)=\Variance(Y_{1/q})=-\kappa_2(q)$.
+\end{remark}
+
 \section{Cumulants, spectral zeta, and shape}
 \label{p7:sec:cumulants}
 
@@ -15587,7 +15686,11 @@ combinatorial faces of the same duality.
 
 \begin{theorem}[Signed/reciprocal cumulant dictionary; both waves]
 \label{p7:thm:cumulants}
-For every $q$ with $q^n\ne1$,
+The cumulant dictionary of \cref{p0:thm:cumulants}, proved there for real
+$\AbsoluteValue q<1$, extends verbatim to every $q$ with $q^n\ne1$ --- in particular
+to the reciprocal regime $\AbsoluteValue q>1$ --- as an identity between the
+coefficients of the germ of \cref{p7:thm:formal-unique} and rational functions
+of $q$:
 \begin{equation}\label{p7:eq:cumulants}
  \boxed{\ \kappa_1(q)=\frac12,
  \qquad
@@ -15596,8 +15699,13 @@ For every $q$ with $q^n\ne1$,
  \quad(n\ge2),\ }
 \end{equation}
 with $[n]_q=1+q+\cdots+q^{n-1}$; all odd cumulants above the mean vanish, and
-\begin{equation}\label{p7:eq:variance}
- \kappa_2(q)=\frac1{12}\,\frac{1-q}{1+q}.
+$\kappa_2(q)=\tfrac1{12}(1-q)/(1+q)$, which on $\AbsoluteValue q<1$ is the
+variance \eqref{p0:eq:variance}.  Along the
+Klein-four orbit the even cumulants obey the two symmetry laws
+\begin{equation}\label{p7:eq:cumulant-symmetries}
+ \boxed{\ \kappa_{2m}(1/q)=-\kappa_{2m}(q),
+ \qquad
+ \kappa_{2m}(-q)=c(q)^{2m}\kappa_{2m}(q).\ }
 \end{equation}
 Moments are complete Bell polynomials,
 $m_n(q)=\ExponentialCompleteBellPolynomial{n}\bigl(\tfrac12,\kappa_2,0,\kappa_4,0,\ldots\bigr)$, hence exact
@@ -15605,32 +15713,35 @@ rationals at every rational $q$.
 \end{theorem}
 
 \begin{proof}
-Insert $\log E(z)=\tfrac z2+\sum_{n\ge2}\tfrac{B_n}{n}\tfrac{z^n}{n!}$ into
-\eqref{p7:eq:Mq-inside} and sum $\sum_{j\ge0}q^{jn}=(1-q^n)^{-1}$; both sides
-of \eqref{p7:eq:cumulants} are rational in $q$ order by order and satisfy the
-unique recurrence of \cref{p7:thm:formal-unique}, which extends the formula to
-the reciprocal regime.
+For real $\AbsoluteValue q<1$ the dictionary is \cref{p0:thm:cumulants}.  Both
+sides of \eqref{p7:eq:cumulants} are rational in $q$ order by order and
+satisfy the unique recurrence \eqref{p7:eq:an-recurrence} of
+\cref{p7:thm:formal-unique}, so the identity of rational functions persists
+wherever that recurrence determines the germ, in particular on
+$\AbsoluteValue q>1$, where the germ is \eqref{p7:eq:Mq-outside}.  The two
+symmetries \eqref{p7:eq:cumulant-symmetries} are read off the M\"obius factor
+$(1-q)/(1+q)$ and the Cayley coordinate $c(q)=(1+q)/(1-q)$: inversion flips
+every even centered cumulant, sign change scales it by $c(q)^{2m}$.
 \end{proof}
 
-The M\"obius factor $(1-q)/(1+q)$ already shows the two symmetries at the
-level of \eqref{p7:eq:variance}: $\kappa_{2m}(1/q)=-\kappa_{2m}(q)$ (inversion
-flips every even centered cumulant) and
-$\kappa_{2m}(-q)=c(q)^{2m}\kappa_{2m}(q)$.  The standardized cumulants
-\begin{equation}\label{p7:eq:standard-cumulants}
- \kappa_{2m}(Z_q)=\frac{B_{2m}}{2m}\,12^m\,
- \frac{(1-q^2)^m}{1-q^{2m}},
- \qquad
- \kappa_4(Z_q)=-\frac65\,\frac{1-q^2}{1+q^2},
+The standardized cumulants $\lambda_{2m}(q)=\kappa_{2m}(Z_q)$ of
+\eqref{p0:eq:standardized-cumulants} are even in $q$, which is what makes the
+normalized sign collapse \eqref{p7:eq:standard-sign-collapse} algebraically
+transparent.  Outside the unit circle there is no $Z_q$ to standardize by,
+since $\sigma_q^2=\kappa_2(q)<0$; there $\lambda_{2m}$ is read as the rational
+function, which by \eqref{p7:eq:cumulant-symmetries} satisfies the formal
+inversion law
+\begin{equation}\label{p7:eq:standard-cumulant-inversion}
+ \lambda_{2m}(1/q)=(-1)^{m+1}\lambda_{2m}(q),
 \end{equation}
-are even in $q$, making the normalized sign collapse algebraically
-transparent.
+so that $\lambda_4(1/q)=-\lambda_4(q)$ while $\lambda_2\equiv1$.
 
 \begin{statusbox}{Crosswalk to Part VI}
 Under the affine identification of \cref{p6:prop:q-crosswalk}
 ($X_a\overset d=b_a(2Y_q-1)$ at $q=1/a$), the dictionary
 \eqref{p7:eq:cumulants} is equivalent to the cumulant formula
 \eqref{p6:eq:kappa}, and the standardized kurtosis in
-\eqref{p7:eq:standard-cumulants} is the $\lambda_4$ of Part~VI's Gaussian
+\eqref{p0:eq:standardized-cumulants} is the $\lambda_4$ of Part~VI's Gaussian
 limit.  Likewise the Lindeberg limit $Z_q\Rightarrow N(0,1)$ as
 $\AbsoluteValue q\to1^-$, the uniform limit $Y_q\to U_0$ in $L^2$ as $q\to0$, the
 log-Gaussian Fourier envelope, and the exact plateau below are the
@@ -15650,7 +15761,10 @@ The centered characteristic function is the sinc product
  \qquad
  \psi_q(t)=\SincRad\!\left(\tfrac{(1-q)t}2\right)\psi_q(qt),
 \end{equation}
-with positive zeros $\tau_{n,k}=2\pi k/\bigl((1-q)\AbsoluteValue q^n\bigr)$.  The
+with positive zeros $\tau_{n,k}=2\pi k/\bigl((1-q)\AbsoluteValue q^n\bigr)$ for
+$q\ne0$; in the degenerate case $q=0$ only the scale $n=0$ survives, the zero
+list collapses to $\tau_{0,k}=2\pi k$, and the closed form below --- like the
+formalized statements of the crosswalk boxes --- still holds verbatim.  The
 indexed spectral zeta function evaluates in closed form (sixteenth wave,
 specializing the exponent-sequence machinery of Part~I):
 \begin{equation}\label{p7:eq:spectral-zeta}
@@ -15671,8 +15785,10 @@ transition.
 
 \begin{theorem}[Shape of the whole real family; sixteenth wave]
 \label{p7:thm:shape}
-For every real $0<\AbsoluteValue q<1$ the density $g_q$ is symmetric about $1/2$,
-positive on the interior of its support, log-concave, and unimodal.  For
+For every real $\AbsoluteValue q<1$ the law of $Y_q$ is log-concave.  For
+$0<\AbsoluteValue q<1$ its density $g_q$ is symmetric about $1/2$,
+positive on the interior of its support, log-concave, and unimodal; at $q=0$
+the density is $\IndicatorOf{[0,1]}$, log-concave in the extended sense.  For
 $0<a\le\tfrac12$,
 \begin{equation}\label{p7:eq:plateau}
  g_a(x)=\frac1{1-a}
@@ -15683,25 +15799,41 @@ $0<a\le\tfrac12$,
 \end{equation}
 these being the exact global maxima; for $a<\tfrac12$ the plateaus have
 positive length, and at $\AbsoluteValue q=\tfrac12$ they collapse to the central
-maximizer.
+maximizer.  In either law the plateau carries mass $(1-2a)/(1-a)$.
 \end{theorem}
 
 \begin{proof}
-Log-concavity: finite partial sums are convolutions of interval uniforms,
-which are log-concave by the Pr\'ekopa--Leindler theorem; the class is
-weakly closed, and the limit density is smooth.  Plateau: the fixed point \eqref{p7:eq:affine-fixed-point}
-writes $g_a$ as the uniform average
-$g_a(x)=\tfrac1{1-a}[G_a(x/a)-G_a((x-1+a)/a)]$; for $x\in[a,1-a]$ the first
-CDF value is $1$ and the second is $0$.  Convolution with a uniform kernel
-gives the matching upper bound, and the negative case is the affine image
-under \cref{p7:cor:transport}.
+Log-concavity: the partial sums $(1-q)\sum_{n\le N}q^nU_n$ are convolutions of
+interval uniforms --- a negative coefficient only reflects an interval --- and
+so are log-concave by the Pr\'ekopa--Leindler theorem.  For $q\ne0$ and
+$N\ge2$ the truncated transforms
+$\prod_{n\le N}\SincRad\bigl((1-q)q^nt/2\bigr)$ are bounded in modulus by
+their first three factors, hence by the $N$-independent integrable envelope
+$\min\{1,C_q\AbsoluteValue t^{-3}\}$ with $C_q=8(1-q)^{-3}\AbsoluteValue q^{-3}$, and
+they converge pointwise to \eqref{p7:eq:psi-sinc}; Fourier inversion turns
+this into uniform convergence of the truncated densities to $g_q$, and a
+locally uniform limit of log-concave functions is log-concave.  At $q=0$ the
+law is $\Unif[0,1]$.  Plateau: the fixed point
+\eqref{p7:eq:affine-fixed-point} writes $Y_a=(1-a)U+aY_a'$ with $aY_a'$
+supported in $[0,a]$, so \cref{p8:lem:uniform-plateau} applies with
+$\alpha=0$, $\beta=a$, and $a$ there equal to $1-a$ here, its hypothesis
+$1-a\ge a$ being exactly $a\le\tfrac12$; the height is $1/(1-a)$ on
+$[a,1-a]$.  Convolution with a uniform kernel gives the matching upper bound.
+The negative case is the affine image under \cref{p7:cor:transport}:
+$\lambda_aa-\beta_a=a^2/(1-a)$ and the height is
+$\lambda_a^{-1}(1-a)^{-1}=1/(1+a)$.  Height times length is
+$(1-2a)/(1-a)$ in both cases.
 \end{proof}
 
 In Part~VI coordinates the positive plateau is exactly the central plateau of
 $h_a$ at $a=1/q$; the phase boundary $\AbsoluteValue q=\tfrac12$ is the critical base
 $a=2$.  The conjecture that $\mathcal U_q$ is \emph{strictly} log-concave for
-$\tfrac12<\AbsoluteValue q<1$ is the register entry already recorded in Part~VI's
-future directions and is not repeated here.
+$\tfrac12<\AbsoluteValue q<1$, and that below the transition
+\eqref{p7:eq:plateau} is the \emph{maximal} flat interval with strictly
+log-concave shoulders, is the register entry already recorded in Part~VI's
+future directions (``strict log-concavity in the overlapping regime'') and is
+not repeated here; by \cref{p7:cor:transport} the negative cases are affine
+images of the positive ones.
 
 \section{Scale multisection and the half--quarter bridge}
 \label{p7:sec:multisection}
@@ -15717,9 +15849,16 @@ and for $\AbsoluteValue q<1$ this is the distributional identity
 \begin{equation}\label{p7:eq:Y-multisection}
  Y_q\overset d=\sum_{r=0}^{m-1}\frac{q^r}{[m]_q}\,Y_{q^m}^{(r)}
 \end{equation}
-with independent summands.  The cumulant compatibility check is the
-$q$-integer identity
-$\sum_{r<m}\bigl(q^r/[m]_q\bigr)^n=[m]_{q^n}/[m]_q^n$.
+with independent summands.  On the frequency axis and on cumulants this reads
+\begin{equation}\label{p7:eq:multisection-transforms}
+ \psi_q(t)=\prod_{r=0}^{m-1}
+ \psi_{q^m}\!\left(\frac{q^rt}{[m]_q}\right),
+ \qquad
+ \kappa_s(Y_q)=\frac{[m]_{q^s}}{[m]_q^{\,s}}\,\kappa_s\bigl(Y_{q^m}\bigr)
+ \quad(s\ge1),
+\end{equation}
+the second being the cumulant compatibility check, i.e.\ the $q$-integer
+identity $\sum_{r<m}\bigl(q^r/[m]_q\bigr)^n=[m]_{q^n}/[m]_q^n$.
 \end{theorem}
 
 \begin{proof}
@@ -15734,9 +15873,23 @@ The specializations at $m=2$ organize the two orbits into one system:
  \label{p7:eq:half-quarter}\\
  Y_{-1/2}&\overset d=2Y_{1/4}^{(0)}-Y_{1/4}^{(1)},
  \qquad
- M_2(t)=M_4(t/3)\,M_4(2t/3),
+ M_2(t)=M_4(t/3)\,M_4(2t/3).
  \label{p7:eq:signed-reciprocal-decimation}
 \end{align}
+
+On the frequency axis the same two lines are the sinc splittings
+\begin{equation}\label{p7:eq:sinc-splitting}
+ \psi_{-a}(t)=\psi_a(\lambda_at)
+ =\psi_{a^2}\!\left(\frac t{1-a}\right)
+  \psi_{a^2}\!\left(\frac{at}{1-a}\right),
+ \qquad
+ \psi_{1/2}(3t)=\psi_{1/4}(2t)\,\psi_{1/4}(t),
+\end{equation}
+the first obtained from \eqref{p7:eq:M-multisection} at $q=-a$, $m=2$, where
+$[2]_{-a}=1-a$ and $\psi_{a^2}$ is even, combined with the sign law
+\eqref{p7:eq:sign-law}; the second is the case $q=\tfrac12$, $m=2$ after
+$t\mapsto3t$, and is exactly the interlacing of the even and odd factors of
+the dyadic sinc product into two quarter-base products.
 
 \begin{statusbox}{Lean crosswalk: exact fixed half--quarter law}
 The fixed first line \cref{p7:eq:half-quarter} is now exact in
@@ -15763,7 +15916,7 @@ and comb counterparts.  In particular, a convolution of scaled measures alone
 does not establish the displayed density identity.
 \end{statusbox}
 
-and more generally
+More generally
 $Y_{1/2}\overset d=(2^m-1)^{-1}\sum_{j<m}2^{m-1-j}Y_{2^{-m}}^{(j)}$: the
 Fabius law is a convolutional barycenter of the $q=2^{-m}$ family.  In the
 unnormalized centered coordinate $R_q=\sum_{j\ge0}q^jV_j$ the identity is
@@ -15976,20 +16129,24 @@ $(a;Q)_\infty=\prod_{j<m}(aQ^j;Q^m)_\infty$ reproduces
 For the base-$b$ member it is convenient to renormalize the centered
 transform as
 \begin{equation}\label{p7:eq:Phi-q}
- \Phi_q(z)=\prod_{j=0}^{\infty}\SincRad(\pi q^jz)
+ S_q(z)=\prod_{j=0}^{\infty}\SincRad(\pi q^jz)
  \qquad(\AbsoluteValue q<1),
 \end{equation}
 so that at $q=1/b$ the factor $j=0$ vanishes exactly at the nonzero integers.
+This is the \path{geometricSincProduct} of the crosswalk boxes above, and is
+written $S_q$ throughout: the letter $\Phi$ is reserved in this volume for the
+generalized Rvachev transform and, in Part~XII, for a characteristic function
+(\cref{p0:tab:dictionary}).
 
 \begin{proposition}[Base-$b$ zero divisor; seventeenth wave]
 \label{p7:prop:base-b-zero}
 Let $q=1/b$ with integer $b\ge2$.  At every nonzero integer $n$,
 \begin{equation}\label{p7:eq:base-b-zero}
- \OrderOperator_{z=n}\Phi_{1/b}(z)=1+\nu_b(n),
+ \OrderOperator_{z=n}S_{1/b}(z)=1+\nu_b(n),
  \qquad
  \nu_b(n)=\max\{j\ge0:b^j\mid n\}.
 \end{equation}
-In particular $\OrderOperator_{z=n}\Phi_{1/4}(z)=1+\Floor{\TwoAdicValuation(n)/2}$: the quartic
+In particular $\OrderOperator_{z=n}S_{1/4}(z)=1+\Floor{\TwoAdicValuation(n)/2}$: the quartic
 transform sees binary valuation levels in pairs, the spectral counterpart of
 even/odd scale decimation.
 \end{proposition}
@@ -16311,7 +16468,10 @@ with $\alpha_{N,q}=(1-q)/(1-q^N)$,
  {\alpha_{N,q}^{\,N}\,q^{\binom N2}\,t^{\,N}},
 \end{equation}
 which for $\AbsoluteValue q>1$ converges locally uniformly to the centered transform of
-$Y_{1/q}$.
+$Y_{1/q}$.  Normalizing by $[N]_q^{\,s}$ turns the unnormalized cumulants
+$\gamma_s$ of $T_{q,N}$ into the reciprocal-invariant ratio
+$\kappa_s\bigl(Y_q^{[N]}\bigr)=\gamma_s/[N]_q^{\,s}$ of
+\cref{p8:thm:finite-cumulants}.
 \end{theorem}
 
 \begin{proof}
@@ -16561,9 +16721,13 @@ transport \eqref{p7:eq:cdf-transport}, the negative laws inherit the whole
 lattice at the shifted nodes $\lambda_aa^n-\beta_a$ (accumulating at the left
 endpoint $-\beta_a$), with jets scaled by $\lambda_a^{-r}$; there is no
 independent negative-parameter endpoint problem.  Successive lattice ratios
-obey
-$G_q(q^{n+1})/G_q(q^n)\sim q^{\,n+1}/\bigl((1-q)(n+1)\bigr)$ --- faster than
-any geometric rate, the first visible sign of log-squared decay.
+obey exactly
+$G_q(q^{n+1})/G_q(q^n)
+ =\tfrac{q^{\,n+1}}{(1-q)(n+1)}\cdot\tfrac{m_{n+1}(q)}{m_n(q)}$,
+hence
+$G_q(q^{n+1})/G_q(q^n)\sim q^{\,n+1}/\bigl((1-q)(n+1)\bigr)$ since
+$m_{n+1}(q)/m_n(q)\to1$ by the right-endpoint flatness of $G_q$ at $1$ ---
+faster than any geometric rate, the first visible sign of log-squared decay.
 
 \section{Endpoint asymptotics and the general-\texorpdfstring{$q$}{q} Lambert program}
 \label{p7:sec:endpoint-asymptotics}
@@ -16819,7 +16983,13 @@ tranche: the inverse product germ and the outside-disk reciprocal Euler
 rearrangement (the general inside strict-complex-contraction rearrangement is
 now formalized in \path{RvachevPochhammerFactorization.lean}), the $L^2$ Laplace
 series, Hankel positivity and affine transport of determinants, and the
-quasi-definite orthogonal recurrence.  Suggested module names:
+quasi-definite orthogonal recurrence.  Three further targets are absorbed
+from Part~VIII's list: the sign-corrected density
+$g_q=\Sign(q)\widetilde f_q$ of \cref{p8:thm:all-sign-density}, which removes
+the negative-parameter density ambiguity outright; the finite reciprocal
+duality \eqref{p7:eq:finite-reciprocal} by coefficient extensionality,
+together with $q=\pm2,\pm4$ wrappers; and the exact plateau
+\eqref{p7:eq:plateau} from the CDF tails.  Suggested module names:
 \texttt{GeometricUniformSign}, \texttt{GeometricProuhet}, \texttt{TwoNomePartition},
 \texttt{GeometricEndpoint}, \texttt{GeometricEndpointJets},
 \texttt{GeometricEndpointAsymptotic}.  The conjectures of this part remain in
@@ -17005,7 +17175,10 @@ The series converges absolutely almost surely.  Put
  Y_q=X_q-\frac12=(1-q)\sum_{n=0}^{\infty}q^nV_n.     \label{p8:eq:Yq-def}
 \end{equation}
 The centering follows from \((1-q)\sum_{n\ge0}q^n=1\).  Every \(V_n\) is symmetric,
-which is the source of the negative-parameter duality.
+which is the source of the negative-parameter duality.  Note the
+normalization shift across the part boundary recorded in
+\cref{p0:tab:dictionary}: Part~VII's \(Y_q\) is this part's \emph{uncentered}
+\(X_q\), and this part's \(Y_q\) is its centering.
 
 Write
 \[
@@ -17016,11 +17189,11 @@ Write
  \SincRad z=\begin{cases}\sin z/z,&z\ne0,\\1,&z=0.\end{cases}
 \]
 Independence gives the centered infinite sinc product
-\begin{equation}
- \psi_q(t)=\prod_{n=0}^{\infty}
- \SincRad\!\left(\frac{(1-q)q^nt}{2}\right).             \label{p8:eq:psi-product}
-\end{equation}
-The signs of the individual arguments disappear because \(\SincRad\) is even, but the
+\(\psi_q(t)=\prod_{n\ge0}\SincRad\bigl((1-q)q^nt/2\bigr)\), which is
+\eqref{p0:eq:cf}; \eqref{p7:eq:psi-sinc} records it together with the
+functional equation \(\psi_q(t)=\SincRad\bigl(\tfrac{(1-q)t}2\bigr)\psi_q(qt)\)
+and the zero list.  The signs of the individual arguments disappear because
+\(\SincRad\) is even, but the
 factor \(1-q\) remains and will encode the affine stretch between \(q=r\) and \(q=-r\).
 
 \subsection{The affine fixed point}
@@ -17046,13 +17219,10 @@ For an integer \(m\ge1\), set
  [m]_q=1+q+\cdots+q^{m-1}=\frac{1-q^m}{1-q}             \label{p8:eq:q-bracket}
 \end{equation}
 when \(q\ne1\), with the continuous value \([m]_1=m\).  We use the Bernoulli convention
-\(B_2=1/6\), \(B_4=-1/30\), \(B_6=1/42\).  For a centered uniform
-\(V\sim\operatorname{Unif}(-1/2,1/2)\),
-\begin{equation}
- \cump_{2m}(V)=\frac{B_{2m}}{2m},
- \qquad
- \cump_{2m+1}(V)=0.                                    \label{p8:eq:uniform-cumulants}
-\end{equation}
+\(B_2=1/6\), \(B_4=-1/30\), \(B_6=1/42\).  A centered uniform
+\(V\sim\operatorname{Unif}(-1/2,1/2)\) has \(\cump_{2m}(V)=B_{2m}/2m\) and
+\(\cump_{2m+1}(V)=0\); this and the resulting cumulants of \(X_q\) are
+\cref{p0:thm:cumulants}.
 The complete exponential Bell polynomial \(\mathcal B_n\) converts cumulants to moments:
 \begin{equation}
  \Expectation Z^n=\mathcal B_n\bigl(\cump_1(Z),\ldots,\cump_n(Z)\bigr). \label{p8:eq:bell-moment}
@@ -17060,74 +17230,30 @@ The complete exponential Bell polynomial \(\mathcal B_n\) converts cumulants to 
 
 \section{Negative parameters: an exact affine duality}
 
-\subsection{The coupling theorem}
+\subsection{The coupling, and the notation it fixes}
 
-\begin{theorem}[Negative/positive affine duality]\label{p8:thm:negative-duality}
-Let \(0<r<1\) and
+The affine sign conjugacy, with its digitwise coupling, is
+\cref{p7:thm:sign-conjugacy}: for \(0<r<1\),
 \begin{equation}
- c_r=\frac{1+r}{1-r}.                                    \label{p8:eq:cr-def}
-\end{equation}
-Then
-\begin{equation}
- \boxed{
- X_{-r}-\frac12\ \doteqL\ c_r\left(X_r-\frac12\right).}
-                                                               \label{p8:eq:negative-duality}
-\end{equation}
-More strongly, there is a digitwise coupling under which the equality holds almost
-surely.
-\end{theorem}
-
-\begin{proof}
-Let \(V_n=U_n-1/2\).  Define reflected digits
-\[
- V_n^-=(-1)^nV_n,
+ X_{-r}-\frac12\ \doteqL\ c_r\left(X_r-\frac12\right),
  \qquad
- U_n^-=\frac12+V_n^-=
- \begin{cases}
- U_n,&n\ \text{even},\\
- 1-U_n,&n\ \text{odd}.
- \end{cases}
-\]
-The sequence \((U_n^-)\) is again i.i.d. uniform.  Using it to construct the negative-base
-law gives, almost surely,
-\begin{align*}
- X_{-r}-\frac12
-  &=(1+r)\sum_{n\ge0}(-r)^nV_n^-\\
-  &=(1+r)\sum_{n\ge0}(-r)^n(-1)^nV_n\\
-  &=(1+r)\sum_{n\ge0}r^nV_n\\
-  &=\frac{1+r}{1-r}\left((1-r)\sum_{n\ge0}r^nV_n\right)\\
-  &=c_r\left(X_r-\frac12\right).
-\end{align*}
-Absolute convergence justifies the termwise coupling.  Forgetting the coupling proves
-the distributional identity.
-\end{proof}
-
-\begin{corollary}[Support, CDF, and quantile]\label{p8:cor:negative-cdf}
-Let
-\begin{equation}
+ c_r=\frac{1+r}{1-r},                                    \label{p8:eq:cr-def}
+\end{equation}
+with almost-sure equality under the reflected digits
+\(U_n^-=\tfrac12+(-1)^n\bigl(U_n-\tfrac12\bigr)\), which are again i.i.d.\
+uniform.  Support, CDF and quantile transport are \cref{p7:cor:transport} and
+\eqref{p7:eq:negative-support}; writing \(Q_q\) for the generalized inverse of
+\(F_q\), we fix for the rest of this part the notation
+\[
  \ell_r=-\frac{r}{1-r},
  \qquad
- u_r=\frac{1}{1-r}.                                      \label{p8:eq:negative-support}
-\end{equation}
-Then \(\SupportOperator(X_{-r})=[\ell_r,u_r]\), and for every real \(x\),
-\begin{equation}
- \boxed{
- F_{-r}(x)=F_r\!\left(\frac12+\frac{x-1/2}{c_r}\right).}
-                                                               \label{p8:eq:negative-cdf}
-\end{equation}
-For generalized inverse quantiles,
-\begin{equation}
- \boxed{
- Q_{-r}(u)=\frac12+c_r\left(Q_r(u)-\frac12\right),
- \qquad 0<u<1.}                                           \label{p8:eq:negative-quantile}
-\end{equation}
-\end{corollary}
-
-\begin{proof}
-The affine map \(T_r(y)=1/2+c_r(y-1/2)\) is increasing.  It maps \([0,1]\) onto
-\([\ell_r,u_r]\), and pushforward under an increasing affine map gives
-\cref{p8:eq:negative-cdf,p8:eq:negative-quantile}.
-\end{proof}
+ u_r=\frac{1}{1-r},
+ \qquad
+ T_r(y)=\frac12+c_r\left(y-\frac12\right),
+\]
+so that \(T_r\) is the increasing affine bijection of \([0,1]\) onto
+\([\ell_r,u_r]=\SupportOperator(X_{-r})\), and
+\(F_{-r}=F_r\circ T_r^{-1}\), \(Q_{-r}=T_r\circ Q_r\).
 
 \subsection{The correct negative-parameter density and the sign diagnosis}
 
@@ -17170,24 +17296,12 @@ which gives \(g_q=\widetilde f_q\).  If \(q<0\), the inequalities reverse and
 The CDF is continuous, so endpoint conventions do not matter.
 \end{proof}
 
-\begin{corollary}[Smooth negative density]\label{p8:cor:negative-density}
-For \(0<r<1\),
-\begin{equation}
- \boxed{
- g_{-r}(x)=\frac1{c_r}\,
- g_r\!\left(\frac12+\frac{x-1/2}{c_r}\right).}           \label{p8:eq:negative-density}
-\end{equation}
-Consequently \(g_{-r}\in C_c^\infty(\RealNumbers)\), with support \([\ell_r,u_r]\), and
-\begin{equation}
- g_{-r}^{(k)}(x)=c_r^{-(k+1)}
- g_r^{(k)}\!\left(\frac12+\frac{x-1/2}{c_r}\right).      \label{p8:eq:negative-derivative}
-\end{equation}
-\end{corollary}
-
-\begin{proof}
-Differentiate the affine CDF relation or use the change-of-variables formula for an
-affine pushforward.  The derivative formula follows by the chain rule.
-\end{proof}
+The density and all of its derivatives transport affinely,
+\(g_{-r}(x)=c_r^{-1}g_r\bigl(T_r^{-1}(x)\bigr)\) and
+\(g_{-r}^{(k)}(x)=c_r^{-(k+1)}g_r^{(k)}\bigl(T_r^{-1}(x)\bigr)\) for every
+\(k\ge0\), so \(g_{-r}\in C_c^\infty(\RealNumbers)\) with support
+\([\ell_r,u_r]\).  This is \cref{p7:cor:transport} and
+\eqref{p7:eq:derivative-transport}.
 
 \begin{corollary}[Norm and entropy transport]\label{p8:cor:norm-entropy}
 For \(1\le p\le\infty\) and \(k\ge0\),
@@ -17203,29 +17317,21 @@ The same affine law gives the standard Rényi-entropy scaling.
 \end{corollary}
 
 \begin{proof}
-Use \cref{p8:eq:negative-derivative} and the substitution
+Use \eqref{p7:eq:derivative-transport} and the substitution
 \(y=1/2+(x-1/2)/c_r\).  The entropy identity is the usual Jacobian formula for
 \(aX+b\) with \(a=c_r>0\).
 \end{proof}
 
 \subsection{Characteristic functions and sinc products}
 
-\begin{corollary}[Centered transform scaling]\label{p8:cor:negative-char}
-For all real \(t\),
-\begin{equation}
- \boxed{\psi_{-r}(t)=\psi_r(c_rt).}                       \label{p8:eq:negative-char}
-\end{equation}
-Equivalently,
-\begin{equation}
+Applying characteristic functions to the sign conjugacy gives the centered
+transform scaling \(\psi_{-r}(t)=\psi_r(c_rt)\), the last clause of
+\eqref{p7:eq:sign-law}.  On products it is the identity
+\[
  \prod_{n\ge0}\SincRad\!\left(\frac{(1+r)r^nt}{2}\right)
- =\prod_{n\ge0}\SincRad\!\left(\frac{(1-r)r^nc_rt}{2}\right).
-\end{equation}
-\end{corollary}
-
-\begin{proof}
-Apply characteristic functions to \cref{p8:eq:negative-duality}.  The product identity is
-also immediate from \((1-r)c_r=1+r\).
-\end{proof}
+ =\prod_{n\ge0}\SincRad\!\left(\frac{(1-r)r^nc_rt}{2}\right),
+\]
+immediate from \((1-r)c_r=1+r\).
 
 \section{The exact negative dyadic law}
 
@@ -17233,23 +17339,29 @@ also immediate from \((1-r)c_r=1+r\).
 
 Set \(r=1/2\).  Then \(c_r=3\), \(\ell_r=-1\), and \(u_r=2\).
 
-\begin{theorem}[Negative dyadic bridge]\label{p8:thm:negative-dyadic}
-For every real \(x\) and every \(0<u<1\),
-\begin{align}
- F_{-1/2}(x)&=F\!\left(\frac{x+1}{3}\right),              \label{p8:eq:negative-dyadic-cdf}\\
- g_{-1/2}(x)&=\frac23\RvachevUp\!\left(\frac{2x-1}{3}\right),  \label{p8:eq:negative-dyadic-density}\\
- Q_{-1/2}(u)&=3F^{-1}(u)-1.                               \label{p8:eq:negative-dyadic-quantile}
-\end{align}
-The support is \([-1,2]\).  The source-selected total function satisfies
+The CDF, density and quantile of the negative dyadic law are
+\cref{p7:cor:transport} at \(a=\tfrac12\) combined with the half-base bridge
+\eqref{p8:eq:half-bridge}:
+\[
+ F_{-1/2}(x)=F\!\left(\frac{x+1}{3}\right),
+ \qquad
+ g_{-1/2}(x)=\frac23\RvachevUp\!\left(\frac{2x-1}{3}\right),
+ \qquad
+ Q_{-1/2}(u)=3F^{-1}(u)-1,
+\]
+on the support \([-1,2]\).  What the sign diagnosis adds is the value of the
+source-selected total function there.
+
+\begin{corollary}[Sign of the selected function at the negative dyadic base]
+\label{p8:cor:negative-dyadic-sign}
+For every real \(x\),
 \begin{equation}
  \widetilde f_{-1/2}(x)=-\frac23\RvachevUp\!\left(\frac{2x-1}{3}\right). \label{p8:eq:negative-dyadic-selected}
 \end{equation}
-\end{theorem}
+\end{corollary}
 
 \begin{proof}
-Insert \(r=1/2\) into \cref{p8:eq:negative-cdf,p8:eq:negative-density,p8:eq:negative-quantile},
-then use the half-base bridge \cref{p8:eq:half-bridge}.  The sign statement follows from
-\cref{p8:eq:density-sign}.
+Combine \cref{p8:eq:density-sign} with the density displayed above.
 \end{proof}
 
 This is a direct and unexpectedly economical link between a negative geometric base and
@@ -17292,7 +17404,7 @@ Thus the same Thue--Morse signs occur on a grid whose spacing is stretched from
 \end{corollary}
 
 \begin{proof}
-From \cref{p8:eq:negative-dyadic-density},
+From the negative dyadic density of \cref{p7:cor:transport},
 \[
  g_{-1/2}^{(m)}(x)=\left(\frac23\right)^{m+1}
  \RvachevUp^{(m)}\!\left(\frac{2x-1}{3}\right).
@@ -17375,33 +17487,19 @@ An integrable function is log-concave when its logarithm is concave on its posit
 set, with the usual extended-value convention.
 \end{definition}
 
-\begin{theorem}[Log-concavity of the geometric-uniform family]\label{p8:thm:logconcavity}
-For every real \(q\) with \(\lvert q\rvert<1\), the law of \(X_q\) is log-concave.  For
-\(q\ne0\), its smooth density \(g_q\) is log-concave on \(\RealNumbers\); at \(q=0\), the density
-is \(\IndicatorOf{[0,1]}\), which is log-concave in the extended sense.
-\end{theorem}
-
-\begin{proof}
-For finite \(N\), the partial sum
-\[
- X_q^{(N)}=(1-q)\sum_{n=0}^{N}q^nU_n
-\]
-is a convolution of uniform laws on compact intervals.  A negative coefficient merely
-reflects an interval, so each factor remains log-concave.  Affine images and convolutions
-preserve log-concavity by the Pr\'ekopa theorem \cite{bib:prekopa1973}.  Hence every finite
-law is log-concave.  The partial sums converge almost surely, therefore weakly, to \(X_q\).
-The class of log-concave probability measures is closed under weak convergence, so the
-limit law is log-concave.  A log-concave measure that has a continuous density has that
-density as its log-concave representative.  Smoothness for \(q\ne0\) follows from the
-positive theory and \cref{p8:cor:negative-density}; \(q=0\) is uniform.
-\end{proof}
-
-\begin{remark}
-This result supplies a global shape theorem that the repository lists as open.  It implies
-unimodality and, together with reflection symmetry, places the mode at \(1/2\).  It does
-\emph{not} by itself imply strict log-concavity; the next theorem exhibits a whole
-parameter region where strictness is impossible.
-\end{remark}
+In this sense the law of \(X_q\) is log-concave for every real
+\(\lvert q\rvert<1\), including \(q=0\), where the density is
+\(\IndicatorOf{[0,1]}\); for \(q\ne0\) the smooth density \(g_q\) is
+log-concave on \(\RealNumbers\).  This is \cref{p7:thm:shape}: there the finite
+partial sums \((1-q)\sum_{n\le N}q^nU_n\) are convolutions of uniform laws on
+compact intervals, a negative coefficient merely reflects an interval, and
+affine images and convolutions
+preserve log-concavity by the Pr\'ekopa theorem \cite{bib:prekopa1973}.  Its proof there then passes to the limit
+locally uniformly through the sinc-product tail bound.  This supplies the
+global shape theorem that the repository lists as open, it implies
+unimodality, and with reflection symmetry it places the mode at \(1/2\).  It
+does \emph{not} by itself imply strict log-concavity: the same theorem
+exhibits a whole parameter region where strictness is impossible.
 
 \subsection{A dominant-digit plateau lemma}
 
@@ -17424,53 +17522,18 @@ For \(x\in[\beta,\alpha+a]\), one has \(x\ge\beta\) and \(x-a\le\alpha\), so the
 contains the whole support of \(Y\) and has probability one.
 \end{proof}
 
-\begin{theorem}[Exact positive and negative central plateaux]\label{p8:thm:geometric-plateau}
-Let \(0\le r<1/2\).
+Applied to the fixed-point equation \(X_r=(1-r)U+rX_r'\) with \(\alpha=0\),
+\(\beta=r\) and \(a=1-r\), the lemma gives the exact central plateaux of
+\cref{p7:thm:shape}: for \(0<r\le1/2\) the positive density equals
+\(1/(1-r)\) on \([r,1-r]\), the negative density equals \(1/(1+r)\) on
+\([r^2/(1-r),\,1-r^2/(1-r)]\) --- the affine image of the first under
+\cref{p7:cor:transport} --- each interval collapsing to the point \(x=1/2\) at
+\(r=1/2\), and in either law the plateau carries mass \((1-2r)/(1-r)\).
 
-For the positive law,
-\begin{equation}
- \boxed{
- g_r(x)=\frac1{1-r}\quad\text{for }r\le x\le1-r.}         \label{p8:eq:positive-plateau}
-\end{equation}
-For the negative law,
-\begin{equation}
- \boxed{
- g_{-r}(x)=\frac1{1+r}\quad\text{for }
- \frac{r^2}{1-r}\le x\le1-\frac{r^2}{1-r}.}              \label{p8:eq:negative-plateau}
-\end{equation}
-At \(r=1/2\) each interval collapses to the point \(x=1/2\).  The plateau probability
-mass in either law is
-\begin{equation}
- \frac{1-2r}{1-r}.                                        \label{p8:eq:plateau-mass}
-\end{equation}
-\end{theorem}
-
-\begin{proof}
-From the fixed-point equation,
-\[
- X_r=(1-r)U+rX_r',
-\]
-and \(rX_r'\) is supported on \([0,r]\).  Apply
-\cref{p8:lem:uniform-plateau} with \(a=1-r\), \(\alpha=0\), \(\beta=r\).  The condition
-\(1-r\ge r\) is exactly \(r\le1/2\), and the height is \(1/(1-r)\).
-
-For the negative law, apply the affine density transport \cref{p8:eq:negative-density} to
-the interval \([r,1-r]\).  Its lower endpoint maps to
-\[
- \frac12+c_r\left(r-\frac12\right)=\frac{r^2}{1-r},
-\]
-and symmetry gives the upper endpoint.  The height is
-\(c_r^{-1}(1-r)^{-1}=1/(1+r)\).  Multiplying height by interval length gives
-\cref{p8:eq:plateau-mass}.
-\end{proof}
-
-\begin{conjecture}[Strict-log-concavity phase transition]\label{p8:conj:strict-logconcavity}
-For every \(1/2\le r<1\), the density \(g_r\) is strictly log-concave on \((0,1)\) in
-the multiplicative-inequality sense.  For \(0<r<1/2\), the interval
-\([r,1-r]\) is the maximal constant interval, and each shoulder is strictly
-log-concave.  By affine duality, the corresponding statements hold for \(g_{-r}\).
-\end{conjecture}
-
+Strictness above the transition, and the maximality of the plateau interval,
+are Part~VI's conjecture on strict log-concavity in the overlapping regime,
+recorded once in the discussion following \cref{p7:thm:shape}; by
+\cref{p7:thm:sign-conjugacy} the negative cases follow from the positive ones.
 The critical value \(r=1/2\) is structurally natural: it is exactly where the first
 uniform digit and the entire tail have equal support length.  Proving strictness above
 the transition likely requires an equality-case analysis for repeated Pr\'ekopa
@@ -17480,65 +17543,26 @@ convolution or a direct argument from the refinement equation.
 
 \subsection{Decomposition into independent \texorpdfstring{$q^m$}{q^m} laws}
 
-\begin{theorem}[Residue-class multiplication law]\label{p8:thm:residue-decomposition}
-Let \(m\ge1\) and \(\lvert q\rvert<1\).  Let
-\(X_{q^m}^{(0)},\ldots,X_{q^m}^{(m-1)}\) be independent copies of \(X_{q^m}\).  Then
-\begin{equation}
- \boxed{
- X_q\ \doteqL\ \frac1{[m]_q}\sum_{j=0}^{m-1}q^jX_{q^m}^{(j)}.} \label{p8:eq:residue-decomposition}
-\end{equation}
-The centered variables satisfy the same weighted identity:
-\begin{equation}
- Y_q\ \doteqL\ \frac1{[m]_q}\sum_{j=0}^{m-1}q^jY_{q^m}^{(j)}. \label{p8:eq:centered-residue}
-\end{equation}
-\end{theorem}
-
-\begin{proof}
-Split the defining series into residue classes \(n=mk+j\):
-\begin{align*}
- X_q
- &=(1-q)\sum_{j=0}^{m-1}q^j\sum_{k\ge0}q^{mk}U_{mk+j}\\
- &=\frac{1-q}{1-q^m}\sum_{j=0}^{m-1}q^j
- \left((1-q^m)\sum_{k\ge0}(q^m)^kU_{mk+j}\right).
-\end{align*}
-The parenthesized variables are independent copies of \(X_{q^m}\), and
-\((1-q)/(1-q^m)=1/[m]_q\).  Since the weights sum to one, subtracting \(1/2\) yields the
-centered identity.
-\end{proof}
-
-\begin{corollary}[Transform and cumulant multiplication]\label{p8:cor:multiplication}
-For all real \(t\),
-\begin{equation}
- \boxed{
- \psi_q(t)=\prod_{j=0}^{m-1}
- \psi_{q^m}\!\left(\frac{q^jt}{[m]_q}\right).}            \label{p8:eq:psi-multiplication}
-\end{equation}
-Whenever the cumulant of order \(s\) is considered,
-\begin{equation}
- \boxed{
- \cump_s(X_q)=\frac{[m]_{q^s}}{[m]_q^s}\,
- \cump_s(X_{q^m}).}                                      \label{p8:eq:cumulant-multiplication}
-\end{equation}
-\end{corollary}
-
-\begin{proof}
-Characteristic functions multiply over independent sums.  Cumulants of order \(s\)
-scale by the \(s\)-th power of a coefficient and add, giving
-\[
- \frac{1}{[m]_q^s}\sum_{j=0}^{m-1}q^{js}
- =\frac{[m]_{q^s}}{[m]_q^s}.
-\]
-\end{proof}
+Splitting the defining series into residue classes \(n=mk+j\) writes \(X_q\)
+as the weighted independent sum
+\(X_q\doteqL[m]_q^{-1}\sum_{j<m}q^jX_{q^m}^{(j)}\), with the same weighted
+identity for the centered variables, the transform law
+\(\psi_q(t)=\prod_{j<m}\psi_{q^m}\bigl(q^jt/[m]_q\bigr)\) and the cumulant law
+\(\cump_s(X_q)=\bigl([m]_{q^s}/[m]_q^s\bigr)\cump_s(X_{q^m})\).  All four are
+\cref{p7:thm:multisection} and \eqref{p7:eq:multisection-transforms}, proved
+there as identities of analytic germs valid outside the unit disc as well, and
+identified with the Pochhammer dissection
+\((a;q)_\infty=\prod_{r<m}(aq^r;q^m)_\infty\).
 
 \subsection{Even--odd splitting}
 
-For \(m=2\), \cref{p8:eq:residue-decomposition} becomes
+For \(m=2\), \eqref{p7:eq:Y-multisection} becomes
 \begin{align}
  X_r&\doteqL\frac{X_{r^2}^{(0)}+rX_{r^2}^{(1)}}{1+r},     \label{p8:eq:positive-even-odd}\\
  X_{-r}&\doteqL\frac{X_{r^2}^{(0)}-rX_{r^2}^{(1)}}{1-r}. \label{p8:eq:negative-even-odd}
 \end{align}
 Thus a negative-base law is a normalized difference of two independent positive-base
-laws.  Combining this with \cref{p8:thm:negative-duality} gives the distribution identity
+laws.  Combining this with \cref{p7:thm:sign-conjugacy} gives the distribution identity
 \begin{equation}
  \frac{X_{r^2}^{(0)}-rX_{r^2}^{(1)}}{1-r}-\frac12
  \ \doteqL\
@@ -17552,19 +17576,11 @@ For centered transforms, \(\psi_{q^2}\) is even, so
  \psi_{r^2}\!\left(\frac{t}{1-r}\right)
  \psi_{r^2}\!\left(\frac{rt}{1-r}\right).                \label{p8:eq:negative-even-odd-char}
 \end{equation}
-Together with \(\psi_{-r}(t)=\psi_r(c_rt)\), this yields the sinc-product identity
-\begin{equation}
- \boxed{
- \psi_r(c_rt)=
- \psi_{r^2}\!\left(\frac{t}{1-r}\right)
- \psi_{r^2}\!\left(\frac{rt}{1-r}\right).}              \label{p8:eq:sinc-splitting}
-\end{equation}
-At \(r=1/2\),
-\begin{equation}
- \boxed{\psi_{1/2}(3t)=\psi_{1/4}(2t)\psi_{1/4}(t).}      \label{p8:eq:dyadic-quarter-product}
-\end{equation}
-This is precisely the interlacing of the even and odd factors of the dyadic infinite sinc
-product into two quarter-base products.
+Together with \(\psi_{-r}(t)=\psi_r(c_rt)\) this is the sinc splitting
+\eqref{p7:eq:sinc-splitting}, whose \(r=1/2\) case
+\(\psi_{1/2}(3t)=\psi_{1/4}(2t)\psi_{1/4}(t)\) is precisely the interlacing of
+the even and odd factors of the dyadic infinite sinc product into two
+quarter-base products.
 
 \subsection{Computational significance}
 
@@ -17634,7 +17650,7 @@ canonical weak limit.  Explicitly,
 The reciprocal identity is \cref{p8:thm:reciprocal-duality}.  Since \(\lvert p\rvert<1\),
 \([N]_p\to(1-p)^{-1}\) and the normalized finite series converges almost surely to
 \((1-p)\sum_{n\ge0}p^nU_n=X_p\).  The special cases use
-\cref{p8:thm:negative-duality}.
+\cref{p7:thm:sign-conjugacy}.
 \end{proof}
 
 \begin{proposition}[Exponential coupling rate]\label{p8:prop:finite-rate}
@@ -17662,7 +17678,7 @@ Then \(0\le A_N\le1-p^N\), \(0\le T_N\le p^N\),
 \]
 is the difference of two numbers in \([0,p^N]\).
 
-For negative \(p=-r\), finite digit reflection gives
+For negative \(p=-r\), finite digit reflection (\cref{p7:thm:sign-conjugacy}) gives
 \[
  X_{-r,N}-\frac12\ \doteqL\
  c_{r,N}\left(X_{r,N}-\frac12\right),
@@ -17716,35 +17732,27 @@ and \([N]_{q^{-1}}^s=q^{s(1-N)}[N]_q^s\), so the ratio is reciprocal-invariant.
 This reciprocity is the probability-law analogue of the involution underlying Gaussian
 binomial reciprocity.  It suggests a systematic dictionary between finite geometric
 uniform sums, symmetric functions of the coefficient multiset, and denominator-free
-$q$-identities.
+$q$-identities.  It is invariant at every finite \(N\), but its \(N\to\infty\)
+limit is not one rational function of \(q\): the limit acquires a sign on
+\(\lvert q\rvert>1\), and that sign is exactly what separates the reciprocal
+germ from the reciprocal-base limit law
+(\cref{p7:rem:two-meanings}).
 
 \section{The Gaussian boundary \texorpdfstring{$\lvert q\rvert\uparrow1$}{|q| -> 1}}
 
 \subsection{Sign-invariant standardization}
 
-For \(-1<q<1\),
-\begin{equation}
- \sigma_q^2=\Variance(X_q)
- =\frac{(1-q)^2}{12(1-q^2)}
- =\frac{1-q}{12(1+q)}.                                    \label{p8:eq:variance-q}
-\end{equation}
-Define
+Cumulants and variance are \cref{p0:thm:cumulants} and
+\eqref{p0:eq:variance}: for \(-1<q<1\),
+\(\sigma_q^2=\Variance(X_q)=(1-q)/\bigl(12(1+q)\bigr)\).  Define
 \begin{equation}
  Z_q=\frac{X_q-1/2}{\sigma_q}.                             \label{p8:eq:Zq}
 \end{equation}
-
-\begin{proposition}[Standardized sign collapse]\label{p8:prop:standard-sign}
-For \(0<r<1\),
-\begin{equation}
- \boxed{Z_{-r}\ \doteqL\ Z_r.}                           \label{p8:eq:standard-sign}
-\end{equation}
-Thus the standardized family depends only on \(r=\lvert q\rvert\).
-\end{proposition}
-
-\begin{proof}
-From \cref{p8:eq:variance-q}, \(\sigma_{-r}=c_r\sigma_r\).  Divide
-\cref{p8:eq:negative-duality} by this identity.
-\end{proof}
+Since \(\sigma_{-r}=c_r\sigma_r\), the sign collapses under standardization,
+\(Z_{-r}\doteqL Z_r\), so the standardized family depends only on
+\(r=\lvert q\rvert\); this is \eqref{p7:eq:standard-sign-collapse}, whose
+support-normalized refinement \eqref{p7:eq:Uq-def} says that every normalized
+shape statistic is an even function of \(q\).
 
 The centered characteristic function of \(Z_r\) has the useful normalized product
 \begin{equation}
@@ -17800,42 +17808,31 @@ The Berry--Esseen Lyapunov ratio is therefore
  &=\frac{3\sqrt3}{4}\frac{(1-r^2)^{3/2}}{1-r^3}.
 \end{align*}
 Apply the finite-sum inequality and pass to the almost-sure limit.  The sign collapse
-\cref{p8:eq:standard-sign} handles \(-r\).  Expanding
+\eqref{p7:eq:standard-sign-collapse} handles \(-r\).  Expanding
 \(1-r^2\sim2(1-r)\) and \(1-r^3\sim3(1-r)\) gives
 \cref{p8:eq:BE-asymptotic}.
 \end{proof}
 
 \subsection{Closed standardized Bernoulli cumulants}
 
-\begin{theorem}[All standardized cumulants]\label{p8:thm:standard-cumulants}
-For \(m\ge1\), the even standardized cumulant of either \(Z_r\) or \(Z_{-r}\) is
-\begin{equation}
- \boxed{
- \lambda_{2m}(r):=\cump_{2m}(Z_r)
- =\frac{B_{2m}}{2m}\,12^m
- \frac{(1-r^2)^m}{1-r^{2m}}.}                             \label{p8:eq:standard-cumulants}
-\end{equation}
-All odd cumulants vanish.  In particular,
+\begin{corollary}[Low standardized cumulants and the order estimate]\label{p8:thm:standard-cumulants}
+The even standardized cumulants
+\(\lambda_{2m}(r)=\cump_{2m}(Z_r)=\cump_{2m}(Z_{-r})\) are
+\eqref{p0:eq:standardized-cumulants}, and all odd cumulants vanish.  In
+particular,
 \begin{align}
  \lambda_4(r)&=-\frac65\frac{1-r^2}{1+r^2},              \label{p8:eq:lambda4}\\
  \lambda_6(r)&=\frac{48}{7}
  \frac{(1-r^2)^2}{1+r^2+r^4}.                            \label{p8:eq:lambda6}
 \end{align}
 For fixed \(m\ge2\), \(\lambda_{2m}(r)=\BigO((1-r)^{m-1})\).
-\end{theorem}
+\end{corollary}
 
 \begin{proof}
-The cumulant of order \(2m\) of \(X_r-1/2\) is
-\[
- \frac{B_{2m}}{2m}(1-r)^{2m}\sum_{n\ge0}r^{2mn}
- =\frac{B_{2m}}{2m}\frac{(1-r)^{2m}}{1-r^{2m}}.
-\]
-Divide by
-\[
- \sigma_r^{2m}=\left(\frac{1-r}{12(1+r)}\right)^m
-\]
-to obtain \cref{p8:eq:standard-cumulants}.  Odd cumulants vanish by symmetry.  The
-negative law has the same standardized distribution.  Factoring
+Put \(m=2\) and \(m=3\) in \eqref{p0:eq:standardized-cumulants} with
+\(B_4=-1/30\) and \(B_6=1/42\).  Odd cumulants vanish by symmetry, and the
+negative law has the same standardized distribution by
+\eqref{p7:eq:standard-sign-collapse}.  Factoring
 \(1-r^{2m}=(1-r^2)(1+r^2+\cdots+r^{2m-2})\) gives the order estimate.
 \end{proof}
 
@@ -17960,9 +17957,10 @@ deterministic tail bound
  \AbsoluteValue{(1-q)\sum_{n\ge N}q^nU_n}
  \le\frac{\AbsoluteValue{1-q}\AbsoluteValue q^N}{1-\AbsoluteValue q}                  \label{p8:eq:numerical-tail}
 \end{equation}
-falls below the requested tolerance.  The coupling checks are stronger than Monte Carlo
-comparisons: reflected or reversed digits make the asserted equality exact, so the
-reported errors measure floating-point roundoff.
+falls below the requested tolerance.  The coupling checks are not independent
+tests of the identities they accompany: reflected or reversed digits make the
+asserted equality exact by construction, so the reported errors measure
+floating-point roundoff and nothing else.
 
 \input{assets/geometric-sinc-and-exponent-families/Fabius_Rvachev_Frontier_Report/numerical_results.tex}
 
@@ -18022,28 +18020,18 @@ asymptotic calculus.  The crucial analytic estimate is uniform control of
 
 \subsection{A generic-$q$ Lambert--\texorpdfstring{$W$}{W} endpoint theory}
 
-For fixed \(0<r<1\), the negative Laplace transform of \(X_r\) is
-\begin{equation}
- \Expectation \EulerE^{-sX_r}
- =\prod_{n\ge0}
- \frac{1-\EulerE^{-(1-r)r^ns}}{(1-r)r^ns}.                      \label{p8:eq:general-laplace-product}
-\end{equation}
-Its logarithm is a geometric harmonic sum.  Mellin analysis should produce a quadratic
-polynomial in \(\log s\), a smooth periodic fluctuation in
-\(\log_{1/r}s\), and descending corrections.  Saddle inversion then produces a
-Lambert--\(W_{-1}\) phase, just as in the dyadic theory.
-
-\begin{conjecture}[Generic geometric endpoint expansion]\label{p8:conj:generic-endpoint}
-For every fixed \(0<r<1\), \(F_r(x)\) admits an all-orders small-\(x\) saddle expansion
-whose coefficient functions are smooth and one-periodic in the exact logarithmic saddle
-phase.  The leading inversion is expressible using \(W_{-1}\), while the periodic phase
-must be kept exact.  Under \cref{p8:thm:negative-duality}, the entire expansion transfers to
-\(F_{-r}\) at its left endpoint by \(x\mapsto(x-\ell_r)/c_r\).
-\end{conjecture}
-
-This project would unify the corpus's dyadic Lambert analysis with the generic
-geometric-uniform family and explain how the log-periodic oscillation changes with the
-base.
+The all-orders endpoint programme is \cref{p7:conj:all-orders}, and its
+transform-level half is already proved: the negative Laplace transform of
+\(X_r\) is the geometric harmonic sum
+\(\Expectation\EulerE^{-sX_r}=\prod_{n\ge0}\bigl(1-\EulerE^{-(1-r)r^ns}\bigr)
+/\bigl((1-r)r^ns\bigr)\), and \cref{p7:thm:cocycle-resolved} resolves its
+logarithm exactly into a quadratic polynomial in \(\log s\), a real-analytic
+one-periodic fluctuation in \(\log_{1/r}s\) with explicit Gamma--zeta Fourier
+modes, and an exponentially small remainder.  What remains open is the
+density-level saddle inversion, stated in the exact \(-W_{-1}\) coordinate as
+\cref{p7:conj:all-orders}; the negative cases transfer by
+\cref{p7:cor:transport}, which carries the left endpoint of \(F_{-r}\) to that
+of \(F_r\) by \(x\mapsto(x-\ell_r)/c_r\).
 
 \subsection{Legendre coefficients and endpoint saddles}
 
@@ -18071,10 +18059,13 @@ principle: every symmetric polynomial or entire symmetric function of
 symmetric functions give Gaussian-binomial expressions.
 
 \begin{problem}[A probability proof of a full Gaussian-binomial reciprocity package]
-Construct natural random variables or random polynomials whose elementary-symmetric
+\Cref{p7:sec:position-energy} and \eqref{p7:eq:lagrange-reversal} already give
+the algebraic reciprocity, including
+\(\GaussianBinomial{N}{k}{1/q}=q^{-k(N-k)}\GaussianBinomial{N}{k}{q}\) and the row reversal of the
+$q$-Lagrange coefficients.  What is asked here is a probabilistic
+realization: construct natural random variables or random polynomials whose elementary-symmetric
 statistics of the finite geometric weights recover
-\(\GaussianBinomial{N}{k}{q}\), and derive
-\(\GaussianBinomial{N}{k}{1/q}=q^{-k(N-k)}\GaussianBinomial{N}{k}{q}\) directly from digit reversal.  Then seek
+\(\GaussianBinomial{N}{k}{q}\).  Then seek
 mixed Bell/Gaussian identities obtained by converting between power sums and elementary
 symmetric functions.
 \end{problem}
@@ -18085,19 +18076,18 @@ The strongest immediate formal targets are elementary enough to be realistic add
 to the existing Lean development:
 
 \begin{enumerate}[leftmargin=2.2em]
-\item define the centered geometric-uniform law and prove the reflected-digit coupling;
-\item derive the affine pushforward equality
-      \(\mu_{-r}=T_{r*}\mu_r\);
-\item prove the CDF, quantile, support, and smooth-density transports;
 \item replace the negative-parameter density ambiguity by the sign-corrected theorem
       \(g_q=\Sign(q)\widetilde f_q\);
-\item formalize the residue-class multiplication law and its characteristic-function
-      corollary;
 \item prove finite reciprocal-base duality by coefficient extensionality and list
       \(q=\pm2,\pm4\) wrappers;
-\item formalize the exact plateau theorem from the CDF tails;
-\item package Bernoulli cumulants and standardized sign collapse.
+\item formalize the exact plateau theorem from the CDF tails.
 \end{enumerate}
+The remaining targets of the original list --- the reflected-digit coupling and
+the affine pushforward \(\mu_{-r}=T_{r*}\mu_r\), the CDF, quantile, support and
+smooth-density transports, the residue-class multiplication law with its
+characteristic-function corollary, and the Bernoulli cumulant and
+standardized-sign-collapse package --- are tranches of Part~VII's merged
+roadmap and are listed there once.
 
 Log-concavity may require additional convex-measure infrastructure.  Berry--Esseen and
 uniform Edgeworth theory are longer-term targets, but the exact cumulant and quartic
@@ -18161,7 +18151,7 @@ For even \(N\), this is exactly \(c_r\); for odd \(N\), it converges exponential
 
 \subsection{Low standardized cumulants}
 
-The first values from \cref{p8:eq:standard-cumulants} are
+The first values from \eqref{p0:eq:standardized-cumulants} are
 \begin{align*}
  \lambda_2(r)&=1,\\
  \lambda_4(r)&=-\frac65\frac{1-r^2}{1+r^2},\\
