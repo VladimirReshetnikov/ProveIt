@@ -21263,8 +21263,10 @@ $B_4(1/2)=7/240$ gives \eqref{p10:eq:C4}.
 
 \begin{remark}[A q-calculus reading]
 Equation \eqref{p10:eq:midpoint-sum} is a logarithmic Jackson-type sum whose mesh
-is $\delta=-\log q$, but the exact factor $s_\delta$ centers the sampling at
-half steps.  The resulting coefficients are Bernoulli polynomials at
+is $\delta=-\log q$, and it is the exponential factor $\EulerE^{-\delta/2}$ of the
+exact factorization \eqref{p10:eq:sdelta} that centers the sampling at half
+steps; the residual amplitude $s_\delta$ moves no node and only rescales the
+argument, $\theta\mapsto\theta s_\delta$.  The resulting coefficients are Bernoulli polynomials at
 $1/2$, not merely Bernoulli numbers at zero.  This provides a direct bridge
 between the repository's $q$-product layer and its Bernoulli/Euler--Maclaurin
 layer \cite{p10:GasperRahman}.
@@ -21314,6 +21316,33 @@ At $x=1$,
 $\theta-\Lambda(\theta)\to\infty$ by the asymptotic expansion proved in
 \cref{p10:thm:Lambert-edge}; hence $I(1)=\infty$, and similarly at $-1$.
 \end{proof}
+
+Part~XI proves the same principle on its own compact scale, and the two
+statements are exact transcriptions of one another rather than two theorems.
+By \cref{p0:tab:dictionary}, $X_q=2\GeoLawCentered q$, so the standardized
+variable $X_q/\sigma_q$, with $\sigma_q$ as in \eqref{p10:eq:variance}, is
+$\GeoLawStandard q$, which is Part~XI's $Z_h$ at $h=\delta$; by
+\eqref{p10:eq:variance-delta},
+$\sqrt\delta/\sigma_q=\sqrt6\,(1+O(\delta^2))$, so Part~XI's compact variable
+$Y_h=\sqrt\delta\,Z_h$ of \eqref{p11:eq:Yh} is
+$\sqrt6\,X_{\EulerE^{-\delta}}(1+O(\delta^2))$.  Accordingly
+\cref{p11:thm:compact-ldp} is the present theorem after $y=\sqrt6\,x$: the
+two speeds $1/h$ and $1/\delta$ coincide, the transforms are related by
+$\Lambda_{\mathrm{XI}}(s)=\Lambda(\sqrt6\,s)$, because
+\eqref{p11:eq:Lambda-J} reads $\Lambda_{\mathrm{XI}}(s)=J(\sqrt6\,s)$ and
+$J=\Lambda$ by \cref{p10:prop:CLambda-closed}, and the rate functions by
+$I_{\mathrm{XI}}(y)=I(y/\sqrt6)$; in particular
+\eqref{p10:eq:gradient-range} becomes the range $(-\sqrt6,\sqrt6)$ of
+\eqref{p11:eq:rate-support}, and \eqref{p10:eq:I-center-series} becomes
+\eqref{p11:eq:I-center-series}.  Under the same substitution the parametric
+identities \eqref{p10:eq:rate-parametric} are \cref{p11:thm:rate-parametric}:
+the saddle $\theta_x$ of \eqref{p10:eq:saddle-equation} is Part~XI's $a$, the
+level is $y(a)=\sqrt6\,\ell(a)/a$ of \eqref{p11:eq:y-a}, and
+$I(x)=\theta_xx-\Lambda(\theta_x)$ is \eqref{p11:eq:I-parametric}.  Both
+coordinates are carried by the volume on purpose: the present one has
+support $[-1,1]$ and is the one used in \cref{p10:sec:Lambert} and
+\cref{p10:sec:matching}, while Part~XI's has support
+$[-\sqrt6,\sqrt6]$ and is the one in which its Edgeworth matching is stated.
 
 Thus for regular sets $A$ the logarithmic probability scale is
 \begin{equation}
@@ -21391,6 +21420,87 @@ Numerically,
  \label{p10:eq:CLambda-value}
 \end{equation}
 
+The constant \eqref{p10:eq:CLambda} is not a new transcendental.  Throughout,
+Bernoulli numbers are those of \eqref{p0:eq:bernoulli}, so that
+\eqref{p10:eq:logsinhc-series} holds, and $\gamma_1$ denotes the \emph{first
+Stieltjes constant} in the convention fixed by Part~XI in
+\eqref{p11:eq:stieltjes-convention}, namely the one in which
+$\zeta(1+s)=s^{-1}+\gamma-\gamma_1s+O(s^2)$; in that convention
+$\gamma_1=-0.0728158454836767248605\ldots$.
+
+\begin{proposition}[Closed form of the endpoint constant]
+\label{p10:prop:CLambda-closed}
+The limiting transform \eqref{p10:eq:Lambda} is Part~XI's transform $J$ of
+\eqref{p11:eq:ell-J}: one has $\Lambda=J$ on all of $\RealNumbers$.  The
+constant \eqref{p10:eq:CLambda} has the closed form
+\begin{equation}
+ \cL=\mathfrak C-\frac{(\log2)^2}{2}
+    =\gamma_1+\frac{\gamma^2}{2}-\frac{\pi^2}{12}-\frac{(\log2)^2}{2},
+ \label{p10:eq:CLambda-closed}
+\end{equation}
+where $\gamma$ is Euler's constant, $\gamma_1$ is the first Stieltjes
+constant of \eqref{p11:eq:stieltjes-convention}, and $\mathfrak C$ is the
+renormalized Mellin constant \eqref{p11:eq:Cstar} of Part~XI.
+\end{proposition}
+
+\begin{proof}
+The integrand of \eqref{p10:eq:Lambda} is $g(u)/u$ with $g=\log\sinhc$ from
+\eqref{p10:eq:gdef}, and Part~XI's $\ell$ in \eqref{p11:eq:ell-J} is the same
+function of the same variable.  Hence
+$\Lambda(\theta)=\int_0^\theta g(u)u^{-1}\Differential u
+ =\int_0^\theta\ell(v)v^{-1}\Differential v=J(\theta)$, both sides being even.
+
+For the constant, substitute $x=2u$, under which $\Differential u/u
+=\Differential x/x$.  By \eqref{p10:eq:g-large},
+\[
+ \int_0^1\frac{g(u)}{u}\Differential u
+ =1+\int_0^1\frac{\log(1-\EulerE^{-2u})-\log(2u)}{u}\Differential u
+ =1+\int_0^2\frac{\log(1-\EulerE^{-x})-\log x}{x}\Differential x,
+\]
+while the second integral of \eqref{p10:eq:CLambda} becomes
+$\int_2^\infty\log(1-\EulerE^{-x})x^{-1}\Differential x$.  The two occurrences
+of $1$ in \eqref{p10:eq:CLambda} cancel, so
+\begin{equation}
+ \cL=\int_0^2\frac{\log(1-\EulerE^{-x})-\log x}{x}\Differential x
+     +\int_2^\infty\frac{\log(1-\EulerE^{-x})}{x}\Differential x .
+ \label{p10:eq:CLambda-halved}
+\end{equation}
+This is \eqref{p11:eq:Cstar-integral} with the splitting point $2$ in place
+of $1$, and the two differ by an elementary integral:
+\[
+ \mathfrak C-\cL
+ =\int_1^2\frac{\log(1-\EulerE^{-x})}{x}\Differential x
+  -\int_1^2\frac{\log(1-\EulerE^{-x})-\log x}{x}\Differential x
+ =\int_1^2\frac{\log x}{x}\Differential x
+ =\frac{(\log2)^2}{2}.
+\]
+\cref{p11:lem:J-asymptotic} identifies $\mathfrak C$ with the finite part of
+$-\Gamma(s)\zeta(s+1)$ at $s=0$, computed there from
+\eqref{p11:eq:mellin-log1mexp} and \eqref{p11:eq:stieltjes-convention} as
+\eqref{p11:eq:mellin-finite-part}, giving
+$\mathfrak C=\gamma_1+\tfrac12\gamma^2-\tfrac1{12}\pi^2$.  This proves
+\eqref{p10:eq:CLambda-closed}.
+
+The same statement read through the two logarithmic variables explains why a
+$(\log2)^2$ appears at all.  \cref{p11:lem:J-asymptotic} expands $J$ in
+$L=\log(2a)$, giving $J(\theta)=\theta-\tfrac12L^2+\mathfrak C
++O(\EulerE^{-2\theta}/\theta)$, whereas \eqref{p10:eq:Lambda-large} expands the
+same function in $\log\theta$.  Since
+$\tfrac12L^2=\tfrac12(\log\theta)^2+(\log2)\log\theta+\tfrac12(\log2)^2$, the
+elementary terms agree and the constants must differ by exactly
+$\tfrac12(\log2)^2$, the additive constant of such an expansion being unique
+because $\theta$, $(\log\theta)^2$, $\log\theta$ and $1$ are asymptotically
+independent and the remainder vanishes.
+\end{proof}
+
+Numerically \eqref{p10:eq:CLambda-closed} reproduces
+\eqref{p10:eq:CLambda-value}: by \eqref{p11:eq:Cstar},
+$\mathfrak C=-0.72869391700393060593\ldots$, and subtracting
+$\tfrac12(\log2)^2=0.24022650695910071233\ldots$ gives
+$-0.96892042396303131827\ldots$.  The closed form and the two absolutely
+convergent integrals of \eqref{p10:eq:CLambda} were evaluated independently
+to sixty decimal places and agree to that precision.
+
 \begin{theorem}[Transform and saddle endpoint]
 \label{p10:thm:Lambert-edge}
 As $\theta\to+\infty$,
@@ -21464,6 +21574,27 @@ counterpart of the log-squared endpoint structures elsewhere in the
 Fabius--Rvachev theory.
 \end{remark}
 
+The edge law \eqref{p10:eq:I-Lambert} is \cref{p11:thm:rate-edge} written in
+the coordinate of this part.  The edge parameters agree, because
+$y=\sqrt6\,x$ turns Part~XI's $1-y/\sqrt6$ into $\eta=1-x$, and Part~XI's
+Lambert variable \eqref{p11:eq:wdelta} is, by \eqref{p10:eq:theta-Lambert}
+and $\eta\theta_0=\log(2\theta_0)$,
+\[
+ w(\eta)=-W_{-1}(-\eta/2)=\eta\,\theta_0(\eta)=\log\bigl(2\theta_0(\eta)\bigr)
+ =L_\eta+\log2 .
+\]
+Substituting this together with \eqref{p10:eq:CLambda-closed} into
+\eqref{p11:eq:edge-rate-main} returns \eqref{p10:eq:I-Lambert} identically:
+\[
+ \tfrac12w(\eta)^2-w(\eta)-\mathfrak C
+ =\tfrac12L_\eta^2+(\log2-1)L_\eta-\log2
+  +\tfrac12(\log2)^2-\mathfrak C
+ =\tfrac12L_\eta^2+(\log2-1)L_\eta-\log2-\cL .
+\]
+Part~XI's version is the sharper of the two: at the exact saddle it replaces
+the $o(1)$ of \eqref{p10:eq:I-Lambert} by an exponentially small error, as in
+\eqref{p11:eq:edge-rate-a}.
+
 \section{Uniform all-orders Edgeworth expansion for \texorpdfstring{$q\uparrow1$}{q tends to 1}}
 \label{p10:sec:Edgeworth}
 
@@ -21481,6 +21612,16 @@ Then
  =\prod_{j\ge0}\SincRad(b_qq^jt).
  \label{p10:eq:standardized-cf}
 \end{equation}
+This standardized layer is shared with Part~XI, and the two parts use the
+same variable, not merely proportional ones.  Indeed $X_q=2\GeoLawCentered q$
+by \cref{p0:tab:dictionary}, so $\sigma_q$ of \eqref{p10:eq:variance} is
+twice the canonical standard deviation and $Z_q=\GeoLawStandard q$; with
+$r=q=\EulerE^{-\delta}$ and $h=\delta$ this is exactly Part~XI's $Z_h$ of
+\eqref{p11:eq:h-r-sigma-Z}.  Consequently $b_q=a_h=\sqrt{3(1-q^2)}$ and
+$\chi_q=\Psi_h$ of \eqref{p11:eq:Psi-product}, and everything proved in
+\cref{p11:sec:edgeworth} applies to $\chi_q$ verbatim after the substitution
+$h=\delta$.
+
 Let $\lambda_n(q)$ be the standardized cumulants of $Z_q$.  From
 \eqref{p10:eq:Xq-cumulants}, for $m\ge2$,
 \begin{align}
@@ -21493,7 +21634,10 @@ Let $\lambda_n(q)$ be the standardized cumulants of $Z_q$.  From
  \qquad q=\EulerE^{-\delta}.
  \label{p10:eq:lambda-delta}
 \end{align}
-Therefore $\lambda_{2m}=O(\delta^{m-1})$.  The first values are
+Therefore $\lambda_{2m}=O(\delta^{m-1})$.  Both forms are
+\cref{p11:prop:exact-cumulants}, where they are proved; they are repeated
+here because the hyperbolic parity of \eqref{p10:eq:lambda-delta} is read off
+below.  The first values are
 \begin{align}
  \lambda_4&=-\frac65\tanh\delta
  =-\frac65\delta+\frac25\delta^3+O(\delta^5),
@@ -21508,9 +21652,13 @@ Therefore $\lambda_{2m}=O(\delta^{m-1})$.  The first values are
 
 Let $H_n$ denote the probabilists' Hermite polynomials,
 $\phi(x)=(2\pi)^{-1/2}\EulerE^{-x^2/2}$, and let a multi-index
-$\bm{k}=(k_2,k_3,\ldots)$ have weight
+$\bm{k}=(k_2,k_3,\ldots)$ have Edgeworth weight and Hermite degree
+% ed.: the absorbed source typeset this weight with the corpus binary
+% digit-sum macro, which means wt_2 and is used with that meaning in
+% Parts I--IV and VII of this volume.  The local letter w of Part XI's
+% weight display replaces it here.
 \begin{equation}
- \BinaryDigitSum(\bm{k})=\sum_{m\ge2}(m-1)k_m,
+ w(\bm{k})=\sum_{m\ge2}(m-1)k_m,
  \qquad
  |\bm{k}|_*=\sum_{m\ge2}mk_m.
  \label{p10:eq:edgeworth-weight}
@@ -21518,21 +21666,29 @@ $\bm{k}=(k_2,k_3,\ldots)$ have weight
 For $R\ge0$ define
 \begin{equation}
  \mathcal E_{R,q}(x)=
- \sum_{\BinaryDigitSum(\bm{k})\le R}
+ \sum_{w(\bm{k})\le R}
  H_{2|\bm{k}|_*}(x)
  \prod_{m\ge2}\frac1{k_m!}
  \left(\frac{\lambda_{2m}(q)}{(2m)!}\right)^{k_m}.
  \label{p10:eq:edgeworth-polynomial}
 \end{equation}
 Only finitely many indices contribute.  Keeping exact finite-$q$ cumulants is
-useful: it automatically resums many higher powers of $\delta$.
+useful: it automatically resums many higher powers of $\delta$.  The weight
+$w$ and the degree $|\bm{k}|_*$ are Part~XI's $w$ and $\nu$ of
+\eqref{p11:eq:weights}, so \eqref{p10:eq:edgeworth-polynomial} is
+\eqref{p11:eq:edgeworth-polynomial} at $h=\delta$:
+$\mathcal E_{R,q}=\mathcal E_{R,h}$.
 
 \subsection{Global Fourier bounds}
 
-\begin{lemma}[Geometric infinite-sinc tails]
+\begin{remark}[Geometric infinite-sinc tails]
 \label{p10:lem:sinc-tail}
-Fix $q_0\in(0,1)$ and an integer $L\ge0$.  There exist positive constants
-$c,C_L$ such that for $q_0\le q<1$,
+The global frequency control needed below is proved once, in Part~XI, for the
+very same product: by \eqref{p10:eq:standardized-cf} and
+\cref{p0:tab:dictionary} one has $\chi_q=\Psi_h$ at $h=\delta$, so
+\cref{p11:lem:sinc-envelope} applies verbatim.  In the letters of this part
+it gives, for each $q_0\in(0,1)$ and each integer $L\ge0$, positive constants
+$c,C_L$ such that for $q_0\le q<1$
 \begin{equation}
  |\chi_q(t)|\le
  \begin{cases}
@@ -21542,35 +21698,31 @@ $c,C_L$ such that for $q_0\le q<1$,
  \end{cases}
  \label{p10:eq:sinc-tail-bound}
 \end{equation}
-\end{lemma}
-
-\begin{proof}
-Choose $c_0>0$ such that
-$|\SincRad u|\le \EulerE^{-c_0u^2}$ for $|u|\le1$.  If
-$|t|\le b_q^{-1}$, every factor lies in that range and
-\[
- |\chi_q(t)|\le
- \exp\left[-c_0b_q^2t^2\sum_{j\ge0}q^{2j}\right]
- =\EulerE^{-3c_0t^2}.
-\]
-For $|t|>b_q^{-1}$, choose $n$ so that
-$b_qq^n|t|\le1<b_qq^{n-1}|t|$.  The product of factors with $j\ge n$ is at
-most
-\[
- \exp\left[-c_0b_q^2t^2\frac{q^{2n}}{1-q^2}\right]
- \le \exp\left[-\frac{c_0q_0^2}{1-q^2}\right],
-\]
-which is bounded by $\EulerE^{-c/(1-q)}$.  On the far part of the tail, the first
-$L$ factors also satisfy $|\SincRad u|\le|u|^{-1}$ and supply the stated
-polynomial decay.  The bounded transition interval is absorbed into $C_L$.
-\end{proof}
+The first line is \eqref{p11:eq:Psi-envelope} together with the exact
+identity \eqref{p11:eq:S-gaussian}, which is where the normalization
+$\sum_{j\ge0}(b_qq^j)^2=3$ enters; the exponential factor on the second line
+is \eqref{p11:eq:S-outer} combined with $1-q^2\asymp\delta$; and the
+polynomial factor is the elementary bound $|\SincRad u|\le|u|^{-1}$ applied
+to the first $L$ factors of the product.  \Cref{p11:lem:sinc-envelope} is
+strictly stronger than \eqref{p10:eq:sinc-tail-bound} in two respects that
+the sup-norm statement below does not display: it bounds every fixed
+frequency derivative $\partial_t^{\,p}\Psi_h$, which is what a
+Schwartz-seminorm conclusion needs, and on the outer zone the proof of
+\cref{p11:thm:edgeworth-schwartz} sharpens the tail to
+$\EulerE^{-c/\delta}(1+|t|)^{-N}$ for every prescribed $N$.
+\end{remark}
 
 \subsection{The differentiated theorem}
 
-\begin{theorem}[Continuous-parameter Edgeworth expansion]
+\begin{remark}[Continuous-parameter Edgeworth expansion]
 \label{p10:thm:Edgeworth}
-Let $f_q$ be the density of $Z_q$.  For every pair of nonnegative integers
-$R$ and $r$, there exist $q_{R,r}<1$ and $C_{R,r}<\infty$ such that
+The differentiated Edgeworth expansion this part uses is the sup-norm
+specialization of the theorem proved in Part~XI, and the volume states it
+only once.  Since $Z_q$ is Part~XI's $Z_h$ at $h=\delta$ and
+$\mathcal E_{R,q}=\mathcal E_{R,h}$, \cref{p11:thm:edgeworth-schwartz} with
+$j=r$ and $K=0$ reads: writing $f_q$ for the density of $Z_q$, for every pair
+of nonnegative integers $R$ and $r$ there exist $q_{R,r}<1$ and
+$C_{R,r}<\infty$ such that
 \begin{equation}
  \sup_{x\in\RealNumbers}
  \left|
@@ -21582,61 +21734,33 @@ $R$ and $r$, there exist $q_{R,r}<1$ and $C_{R,r}<\infty$ such that
  \qquad q_{R,r}<q<1,
  \label{p10:eq:Edgeworth-theorem}
 \end{equation}
-where $\delta=-\log q$.
-\end{theorem}
+where $\delta=-\log q$.  Part~XI's \eqref{p11:eq:edgeworth-main} is strictly
+stronger, since it carries an arbitrary fixed polynomial weight $(1+|x|)^K$
+alongside the $r$ spatial derivatives; \eqref{p10:eq:Edgeworth-theorem} is
+its $K=0$ corollary.
 
-\begin{proof}
-Following the classical Fourier strategy for Edgeworth expansions
-\cite{p10:BhattacharyaRao,p10:Petrov}, we give the argument in enough detail to isolate the only genuinely
-nonstandard point: global control of the infinite sinc product.
-
-Choose a small exponent $\alpha>0$, depending on $R$, and put
-$T_\delta=\delta^{-\alpha}$, with $\alpha<1/4$.  On
-$|t|\le T_\delta$ the largest sinc argument is
-$b_q|t|=O(\delta^{1/2-\alpha})=o(1)$.  Expanding every logarithm by
-\eqref{p10:eq:logsinhc-series} with $z$ replaced by $iz$, summing the geometric
-powers, and using \eqref{p10:eq:lambda-delta} gives
-\begin{equation}
+One ingredient deserves to be named, because the report absorbed into this
+part used it as an assumption rather than proving it.  Its low-frequency step
+was the expansion
+\[
  \log\chi_q(t)
  =-\frac{t^2}{2}
- +\sum_{m=2}^{R+1}
-   \frac{\lambda_{2m}(q)}{(2m)!}(it)^{2m}
+ +\sum_{m=2}^{R+1}\frac{\lambda_{2m}(q)}{(2m)!}(it)^{2m}
  +\rho_{R,q}(t),
- \label{p10:eq:logcf-expansion}
-\end{equation}
-where, after decreasing $\alpha$ if necessary,
-\begin{equation}
- |\rho_{R,q}(t)|
- \le C_R\delta^{R+1}(1+|t|^{2R+4}).
- \label{p10:eq:logcf-remainder}
-\end{equation}
-The same small-argument inequality used in \cref{p10:lem:sinc-tail} gives a
-uniform Gaussian envelope $|\chi_q(t)|\le \EulerE^{-ct^2}$ in this zone.
-
-Exponentiating \eqref{p10:eq:logcf-expansion} and retaining all monomials of
-weight at most $R$ produces exactly the Fourier polynomial corresponding to
-\eqref{p10:eq:edgeworth-polynomial}.  Standard estimates for the exponential
-remainder therefore give
-\begin{equation}
- \left|\chi_q(t)-\EulerE^{-t^2/2}\mathcal P_{R,q}(it)\right|
- \le C_R\delta^{R+1}(1+|t|^{M_R})\EulerE^{-ct^2},
- \qquad |t|\le T_\delta,
- \label{p10:eq:central-fourier-error}
-\end{equation}
-for some finite $M_R$.  Here $\mathcal P_{R,q}$ is the same multi-index sum
-as \eqref{p10:eq:edgeworth-polynomial}, with $H_n(x)$ replaced by the monomial
-$(it)^n$.
-
-Fourier inversion after $r$ derivatives is bounded in sup norm by the
-$L^1$ norm of $|t|^r$ times the Fourier error.  The integral of
-\eqref{p10:eq:central-fourier-error} is $O(\delta^{R+1})$.  On
-$T_\delta<|t|\le b_q^{-1}$, the Gaussian part of
-\cref{p10:lem:sinc-tail} is $O(\delta^N)$ for every $N$; the Gaussian--polynomial
-approximant has the same property.  On $|t|>b_q^{-1}$, take
-$L>r+1$ in \cref{p10:lem:sinc-tail}; the contribution is
-$O(\EulerE^{-c/(1-q)})$ times a power of $b_q^{-1}$ and is again smaller than every
-power of $\delta$.  This proves \eqref{p10:eq:Edgeworth-theorem}.
-\end{proof}
+ \qquad
+ |\rho_{R,q}(t)|\le C_R\delta^{R+1}\bigl(1+|t|^{2R+4}\bigr),
+\]
+with the frequency window on which it holds left to be arranged afterwards.
+Nothing in this volume rests on that as an assumption: the estimate is
+\cref{p11:lem:cumulant-remainder}, proved there on the explicit window
+$b_q|t|\le\varepsilon_0$ for any fixed $\varepsilon_0<\pi$, and for every
+fixed frequency derivative, as \eqref{p11:eq:logpsi-trunc} and
+\eqref{p11:eq:rho-bound} at $h=\delta$.  (Part~XI writes $\delta$ for that
+frequency-split constant; it is unrelated to the $\delta=-\log q$ of this
+part, which is why it is called $\varepsilon_0$ here.)  The global envelope
+that accompanies it is \cref{p11:lem:sinc-envelope}, quoted above as
+\eqref{p10:eq:sinc-tail-bound}.
+\end{remark}
 
 \subsection{First explicit corrections}
 
@@ -21660,14 +21784,17 @@ where
 The absence of an $H_4$ term in $Q_2$ and of an $H_6$ term in $Q_3$ reflects
 the hyperbolic parity visible in \eqref{p10:eq:lambda-delta}.  If one instead
 uses $1-q$ as the small parameter, these cancellations are obscured by the
-change of variables.
+change of variables.  The same three orders appear in Part~XI as
+\eqref{p11:eq:edgeworth-three-orders}, written in $h=\delta$ and with the
+remainder measured in every fixed Schwartz seminorm; the parity reading above
+is what this part adds to them.
 
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.92\textwidth]{assets/q-fabius-parameter-deformations/fabius_q_frontiers_report/figures/edgeworth_errors.pdf}
 \caption{Sup-norm density errors from direct Fourier inversion.  Fitted
 slopes $1.02$, $2.05$, $3.07$, and $4.10$ agree with
-\cref{p10:thm:Edgeworth}.}
+\eqref{p10:eq:Edgeworth-theorem} and \cref{p11:thm:edgeworth-schwartz}.}
 \label{p10:fig:edgeworth}
 \end{figure}
 
@@ -21679,7 +21806,11 @@ stories.  The center expansion of $I$ contains the same cumulant information
 as the Hermite correction.
 
 Substitute $x=\sigma_qz$ into \eqref{p10:eq:I-center-series} and use
-\eqref{p10:eq:variance-delta}.  Uniformly for bounded $z$,
+\eqref{p10:eq:variance-delta}.  Fix $\rho$ strictly smaller than the radius
+of convergence of the rate series \eqref{p10:eq:I-center-series}.  Then,
+uniformly on the range $\sigma_q|z|\le\rho$, that is for
+$|z|\le\rho\,\sigma_q^{-1}$, which by \eqref{p10:eq:variance-delta} is a
+window of width of order $\delta^{-1/2}$,
 \begin{equation}
  \frac{I(\sigma_qz)}{\delta}
  =\frac{z^2}{2}+\frac{\delta z^4}{20}
@@ -21687,6 +21818,14 @@ Substitute $x=\sigma_qz$ into \eqref{p10:eq:I-center-series} and use
  +O\bigl(\delta^3(1+|z|^8)\bigr).
  \label{p10:eq:rate-matching}
 \end{equation}
+The remainder carries the growing factor $1+|z|^8$ because
+\eqref{p10:eq:rate-matching} is used at $|z|\to\infty$, in
+\eqref{p10:eq:moderate-window} and in \cref{p10:prin:three-regimes}(ii); it
+is exactly the size of the next term $c_4\sigma_q^8z^8/\delta$ of the rate
+series, with $c_4=\frac{1188}{875}$, and each displayed term dominates the
+next precisely while $\delta z^2\to0$, that is on $|z|=o(\delta^{-1/2})$.
+For bounded $z$ the statement degenerates to the uninformative
+$O(\delta^3)$.
 The first exponential correction $\EulerE^{-\delta z^4/20}$ matches the leading
 Hermite term $-\delta H_4/20$ after the saddlepoint prefactor is expanded.
 The Gaussian moderate-deviation window suggested by the quartic term is
@@ -21704,7 +21843,11 @@ As $q=\EulerE^{-\delta}\uparrow1$:
 \item fixed standardized $z$ is governed by the differentiated Edgeworth
 series;
 \item $1\ll |z|\ll\delta^{-1/2}$ is governed by the Taylor expansion of
-$I(\sigma_qz)/\delta$ and its moderate-deviation resummations;
+$I(\sigma_qz)/\delta$ and its moderate-deviation resummations; on this window
+the corresponding large-deviation principle is not heuristic but proved, as
+\cref{p11:thm:moderate-deviations}, whose scale $b_h$ with $b_h\to\infty$ and
+$hb_h^2\to0$ is precisely $1\ll b_h\ll\delta^{-1/2}$ once its parameter is
+read as $h=\delta$ and its variable as $Z_h=Z_q$;
 \item fixed $x\in(-1,1)\setminus\{0\}$ is governed by
 $\EulerE^{-I(x)/\delta}$, with Lambert-$W_{-1}$ behavior as $x$ approaches the
 support edge.
@@ -21727,6 +21870,16 @@ uniformly with all fixed $x$-derivatives.  The coefficients should be
 rational differential polynomials in the tilted cumulants
 $g^{(k)}(\theta_xe^{-t})$ integrated over $t$.
 \end{conjecture}
+
+\Cref{p11:conj:local-ldp} is this same conjecture in Part~XI's compact
+coordinate.  Under $y=\sqrt6\,x$ of \cref{p0:tab:dictionary} the densities
+differ by the Jacobian $\sqrt6$ and the curvatures by
+$\Lambda_{\mathrm{XI}}''(s(y))=6\Lambda''(\theta_x)$, so the two prefactors
+agree; both are open.  This part keeps
+\eqref{p10:eq:saddlepoint-conjecture} because \cref{p10:sec:future} refines
+it in the coordinate with support $[-1,1]$, and the matching statement that
+belongs with it is \cref{p11:conj:matching}, of which
+\cref{p10:prin:three-regimes} is the scale-diagram form.
 
 A proof should combine exponential tilting with a local Edgeworth theorem for
 the resulting infinitesimal triangular array.  The midpoint expansion
@@ -21766,7 +21919,7 @@ Gaussian density error & $1.01783$ \\
 Edgeworth weighted order $1$ & $2.05126$ \\
 Edgeworth weighted order $2$ & $3.07181$ \\
 Edgeworth weighted order $3$ & $4.09974$ \\
-Endpoint constant $\cL$ & $-0.9689204239630311$ \\
+Endpoint constant $\cL$ & $-0.968920423963031$ \\
 Minimum sampled stop-loss gap & $0$ (to displayed precision) \\
 Maximum sampled stop-loss gap, $r=.35,s=.72$ & $0.0757670$ \\
 \bottomrule
@@ -21804,7 +21957,10 @@ the reported approximation errors.
 
 The finite-$q$ scaled cumulant transform is evaluated in its exact midpoint
 form \eqref{p10:eq:midpoint-sum}.  The endpoint constant is evaluated using the
-two absolutely convergent integrals in \eqref{p10:eq:CLambda}.  The stop-loss
+two absolutely convergent integrals in \eqref{p10:eq:CLambda}; the quadrature
+is reported to the fifteen decimals its double-precision arithmetic supports,
+and agrees there with the closed form \eqref{p10:eq:CLambda-closed} and with
+the thirty-eight digits of \eqref{p10:eq:CLambda-value}.  The stop-loss
 experiment uses independent samples and a sorted-sample suffix-sum
 algorithm; it is not used in any proof.
 
@@ -21939,7 +22095,7 @@ The LDP and all-order Edgeworth proofs require substantially more analytic
 infrastructure.  A practical formal route would first isolate the transform
 limit, strict convexity, and the first $O(\delta^2)$ correction; the full
 uniform derivative theorem can then be modularized around
-\cref{p10:lem:sinc-tail}.
+\cref{p11:lem:sinc-envelope} and \cref{p11:lem:cumulant-remainder}.
 
 \section{Conclusion}
 
@@ -21976,11 +22132,14 @@ conditional Jensen \\
 \cref{p10:thm:midpoint-EM} & Exact half-step factorization, midpoint
 Euler--Maclaurin, exponential derivative decay \\
 \cref{p10:thm:LDP} & \cref{p10:thm:lambda-limit}, compact support,
-G\"artner--Ellis \\
+G\"artner--Ellis; and \cref{p10:thm:Lambert-edge} for $I(\pm1)=\infty$ \\
 \cref{p10:thm:Lambert-edge} & Elementary decomposition of $\log\sinhc$,
 $W_{-1}$ inversion \\
-\cref{p10:thm:Edgeworth} & Exact cumulants, analytic log-sinc expansion,
-\cref{p10:lem:sinc-tail}, Fourier inversion \\
+\cref{p10:prop:CLambda-closed} & \eqref{p10:eq:g-large}, the substitution
+$x=2u$, and \cref{p11:lem:J-asymptotic} for the Mellin finite part \\
+\eqref{p10:eq:Edgeworth-theorem} & \cref{p11:thm:edgeworth-schwartz}, which
+rests on \cref{p11:lem:sinc-envelope} and
+\cref{p11:lem:cumulant-remainder} \\
 \bottomrule
 \end{tabularx}
 \end{center}
@@ -23070,6 +23229,8 @@ For every compact \(K\subset(-\sqrt6,\sqrt6)\), the density of \(Y_h\) has the u
 where \(s(y)\) is the unique solution of \(\Lambda'(s)=y\), and each \(A_n\) is an explicit differential polynomial in \(\Lambda\).
 \end{conjecture}
 
+\Cref{p10:conj:saddlepoint} is the same conjecture in Part~X's coordinate, obtained by the substitution \(y=\sqrt6\,x\) of \Cref{p0:tab:dictionary}; the density picks up the Jacobian \(\sqrt6\) and \(\Lambda''(s(y))=6\Lambda''(\theta_x)\), so the two prefactors agree.
+
 \begin{conjecture}[Edgeworth--large-deviation matching]\label{p11:conj:matching}
 When \(y=\sqrt h\,x\to0\), the saddlepoint expansion \eqref{p11:eq:local-ldp-conj}, re-expanded in \(h\), matches the Bernoulli--Bell--Hermite Edgeworth series term by term.  In the overlap \(1\ll x\ll h^{-1/2}\), it matches the Gaussian moderate-deviation expansion.  This matching is Borel summable in a sector of the complex \(x\)-plane avoiding the images of the nearest sinc zeros.
 \end{conjecture}
@@ -23585,47 +23746,56 @@ Thue--Morse/dyadic structure & Composition clocks & Conditional multiplication b
 \end{tabularx}
 \end{center}
 
-\section{The normalized geometric-uniform family}
+\section{Conventions of this part}
 \label{p12:sec:qfamily}
 
-Let \((U_j)_{j\ge0}\) be independent \(\operatorname{Unif}[0,1]\) random variables and, for
-\(0<q<1\), define
+This part works in the canonical normalization of Part~0, restricted to
+$0<q<1$.  In the notation of \cref{p0:def:family} it writes
 \begin{equation}
  c_j(q)=(1-q)q^j,
  \qquad
- X_q=\sum_{j\ge0}c_j(q)U_j,
+ X_q=\sum_{j\ge0}c_j(q)U_j=\GeoLaw{q},
  \qquad
- Z_q=X_q-\frac12.
+ Z_q=X_q-\frac12=\GeoLawCentered{q},
  \label{p12:eq:q-law}
 \end{equation}
-The weights sum to one, so \(X_q\in[0,1]\) and \(\Expectation X_q=1/2\).  We write
+with $(U_j)_{j\ge0}$ independent and uniform on $[0,1]$, and
 \[
- F_q(x)=\Probability(X_q\le x),\qquad f_q(x)=F_q'(x).
+ F_q(x)=\Probability(X_q\le x),\qquad f_q(x)=F_q'(x),
 \]
-At \(q=1/2\), \(F_{1/2}=F\) is the bounded Fabius function and \(f_{1/2}=F'\) is the affine
-copy of Rvachev's bump.
-
-The independent-copy decomposition
+so $F_q=G_q$ and $f_q=g_q$ in Part~0's letters.  Everything this part needs
+from the shared layer is proved there: $X_q\in[0,1]$ with
+$\Expectation X_q=\tfrac12$ (\cref{p0:prop:basic}), the identification
+$F_{1/2}=\FabiusBounded$ with $f_{1/2}=2\RvachevUp(2\cdot-1)$
+(\cref{p0:prop:fabius-point}), the independent-copy decomposition
 \begin{equation}
  X_q\overset d=(1-q)U_0+qX_q'
  \label{p12:eq:affine-copy}
 \end{equation}
-gives
+together with its uniqueness (\cref{p0:prop:fixed-point}), and the centered
+characteristic function
+\begin{equation}
+ \Phi_q(t)=\Expectation\EulerE^{\ImaginaryUnit tZ_q}
+ =\prod_{j\ge0}\SincRad\!\left(\frac{c_j(q)t}{2}\right)
+ =\CharacteristicFunction{q}(t)
+ \label{p12:eq:centered-sinc-product}
+\end{equation}
+with its locally uniform convergence in $(q,t)$ (\cref{p0:prop:products}).
+Cumulants and variance are \cref{p0:thm:cumulants} and
+\eqref{p0:eq:variance}.  The one consequence of \eqref{p12:eq:affine-copy}
+that this part uses and Part~0 does not record is the pair of exact
+distribution and density relations obtained by conditioning on $U_0$,
 \begin{align}
  F_q(x)
  &=\int_0^1F_q\!\left(\frac{x-(1-q)u}{q}\right)\Differential u,
  \label{p12:eq:q-cdf-integral}\\
  f_q(x)
- &=\frac{F_q(x/q)-F_q((x-(1-q))/q)}{1-q}.
+ &=\frac{F_q(x/q)-F_q((x-(1-q))/q)}{1-q},
  \label{p12:eq:q-density-difference}
 \end{align}
-We use the centered characteristic function
-\begin{equation}
- \Phi_q(t)=\Expectation\EulerE^{\ImaginaryUnit tZ_q}
- =\prod_{j\ge0}\SincRad\!\left(\frac{c_j(q)t}{2}\right),
- \qquad \SincRad z=\frac{\sin z}{z}.
- \label{p12:eq:centered-sinc-product}
-\end{equation}
+the second being the $u$-derivative of the first after the substitution
+$u\mapsto(x-qy)/(1-q)$; both are used throughout this part's response
+calculus.
 
 \section{Joint smoothness and flat nonanalytic parameter fronts}
 \label{p12:sec:fronts}
