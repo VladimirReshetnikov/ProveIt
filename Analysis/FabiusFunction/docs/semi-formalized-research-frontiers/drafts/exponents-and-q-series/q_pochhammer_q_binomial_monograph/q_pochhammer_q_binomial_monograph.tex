@@ -12865,7 +12865,7 @@ inside the proof below does not formalize the result the proof concludes.
   than a mathematical claim.
 \end{description}
 
-Of the 282 labelled forward results, 150 are \statusexact, 81 are
+Of the 282 labelled forward results, 148 are \statusexact, 83 are
 \statuspartial, 43 are \statusnone, and 8 are \statusna.  The original
 191-result pre-Fabius core had 36 \statusexact, 29 \statuspartial, 123
 \statusnone, and 3 \statusna{} entries.  The four integrated guide chapters
@@ -13436,8 +13436,8 @@ $q$-difference calculus and the quantum binomial & 10 & 0 & 0 & 0\\
 The $q$-gamma and $q$-beta functions & 7 & 1 & 0 & 0\\
 Jacobi's triple product & 8 & 0 & 0 & 0\\
 Theta modularity, lattice dissection, and sums of squares & 2 & 1 & 11 & 4\\
-Partitions and product--sum identities & 4 & 0 & 0 & 0\\
-Bailey pairs and the Rogers--Ramanujan identities & 7 & 0 & 0 & 0\\
+Partitions and product--sum identities & 3 & 1 & 0 & 0\\
+Bailey pairs and the Rogers--Ramanujan identities & 6 & 1 & 0 & 0\\
 Bailey transforms and the Andrews--Gordon identities & 5 & 2 & 1 & 1\\
 Cyclotomic factorization and congruences & 8 & 0 & 1 & 0\\
 Negative upper indices and geometric Newton interpolation & 9 & 0 & 0 & 0\\
@@ -13450,7 +13450,7 @@ Half-base arithmetic and Prouhet--Thue--Morse cancellation & 6 & 3 & 0 & 0\\
 Geometric uniform sums, $q$-cumulants, and the Fabius--Rvachev functions & 2 & 11 & 0 & 0\\
 Dyadic Gaussian--Thue--Morse structure and the values of $F$ & 7 & 45 & 4 & 0\\
 \midrule
-\textbf{Forward total} & 150 & 81 & 43 & 8\\
+\textbf{Forward total} & 148 & 83 & 43 & 8\\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -14293,7 +14293,7 @@ theorem; $(-q;q)_\infty=1/(q;q^2)_\infty$ from
 $(q^2;q^2)_\infty=(q;q)_\infty(-q;q)_\infty$ and the dissection
 $(q;q)_\infty=(q;q^2)_\infty(q^2;q^2)_\infty$; and $d(n)=o(n)$ by comparing
 coefficients (\texttt{PowerSeriesUniqueness})}\\[2pt]
-\Cref{prop:bounded-partitions} & \statusexact &
+\Cref{prop:bounded-partitions} & \statuspartial &
 \texttt{hasSum\_\allowbreak{}boundedCount\_\allowbreak{}mul\_\allowbreak{}pow},
 \texttt{card\_\allowbreak{}restricted\_\allowbreak{}le\_\allowbreak{}eq}\newline
 {\footnotesize\texttt{PartitionBoundedParts}; $p_{\le r}(n)$ read as the number
@@ -14301,7 +14301,9 @@ of partitions of $n$ with every part at most $r$ (Mathlib's
 \texttt{Nat.Partition.restricted n (fun k => k $\le$ r)}), identified with the
 multiplicity vectors on $\{1,\dots,r\}$ of weight $n$; the identity for
 $\lVert q\rVert<1$ in any complete normed field; the conjugation equivalence
-with ``at most $r$ parts'' is not formalized}\\[2pt]
+with ``at most $r$ parts'' is not formalized.  The proposition asserts the two readings of $p_{\le r}(n)$ --- largest part at most
+$r$, and at most $r$ parts --- are the same count, and that conjugation bijection is not
+formalized, so only one half of the printed statement is covered}\\[2pt]
 \Cref{cor:durfee-all} & \statusexact &
 \texttt{hasSum\_\allowbreak{}durfee},
 \texttt{gaussianBinomial\_\allowbreak{}add\_\allowbreak{}eq\_\allowbreak{}sum\_\allowbreak{}sq}\newline
@@ -14323,7 +14325,7 @@ sequences of sum $N$ (\texttt{conjugateVector}/\texttt{differenceVector})}\\[2pt
 \multicolumn{3}{@{}l}{\itshape Bailey pairs and the Rogers--Ramanujan identities}\\
 \midrule
 \Cref{lem:qdiff-annihilation} & \statusexact & \texttt{qDifference\_\allowbreak{}sum\_\allowbreak{}eval}\textsubscript{2}\texttt{\_\allowbreak{}eq\_\allowbreak{}zero\_\allowbreak{}of\_\allowbreak{}degree\_\allowbreak{}lt}\newline{\footnotesize\texttt{QDifferenceAnnihilation}; semiring coefficients, arbitrary scalar extension, commutative-ring target; no division or distinct-node hypothesis}\\[2pt]
-\Cref{thm:bailey-inversion} & \statusexact &
+\Cref{thm:bailey-inversion} & \statuspartial &
 \texttt{isBaileyPair\_\allowbreak{}iff\_\allowbreak{}eq\_\allowbreak{}baileyInverse},
 \texttt{IsBaileyPair.eq\_\allowbreak{}baileyInverse},
 \texttt{baileySolve}\newline
@@ -14332,7 +14334,9 @@ nonvanishing denominators: the inverse formula is a left inverse by the
 $q$-difference annihilation of \Cref{lem:qdiff-annihilation}, and a two-sided one
 because every $\beta$ is the Bailey transform of the forward-substitution solution
 \texttt{baileySolve}; the removable-limit reading at $a=1$ is not formalised as
-such (the $a=1$ unit pair is verified directly in \texttt{BaileyUnitPairs})}\\[2pt]
+such (the $a=1$ unit pair is verified directly in \texttt{BaileyUnitPairs}).  The theorem's closing sentence, that at $a=1$ the right side is read by its removable
+limit, is part of the statement and is not formalized, so the equivalence is established only on
+$a\ne1$}\\[2pt]
 \Cref{cor:unit-bailey-pairs} & \statusexact &
 \texttt{isBaileyPair\_\allowbreak{}unit\_\allowbreak{}one},
 \texttt{isBaileyPair\_\allowbreak{}unit\_\allowbreak{}q},
