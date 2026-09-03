@@ -62,7 +62,35 @@ This `README.md` is the permanent explanation of the directory and
 **must not be deleted** — it also keeps the directory present in git
 when no archives are waiting.
 
-Most recent processed batch (three archives, filed and removed on 2026-09-03): the three Fibonacci-inversion articles, all to
+Most recent processed batch (three archives, filed and removed on 2026-09-03,
+later the same day than the Fibonacci batch below): three independently
+written articles on the diagonal polynomials of repeated signed Thue–Morse
+summation, all to `../thue-morse/` as separate members beside the
+consolidated volume.
+
+- `thue_morse_diagonal_polynomials.zip` → `thue_morse_diagonal_polynomials/`:
+  1,763-line/56,520-byte source, 24-page A4/724,035-byte PDF.
+- `thue_morse_diagonal_polynomials-2.zip` → `thue_morse_diagonal_polynomials-2/`:
+  2,202-line/72,380-byte source, 37-page A4/801,220-byte PDF.
+- `thue_morse_diagonal_polynomials_article_and_code.zip` →
+  `thue_morse_diagonal_polynomials_article_and_code/`: 2,136-line/76,590-byte
+  source, 33-page A4/536,235-byte PDF, with `generated/` and `figures/` trees.
+
+Every archive passed a CRC check with no absolute path, parent-directory
+traversal, or symlink entry. **All three wrapped an inner directory of the
+same name**, `thue_morse_diagonal_polynomials/`, so the archive stems — which
+are distinct — were used as directory names, the same resolution as for the
+earlier same-named subfactorial siblings; the longest filed path is 230
+characters. All three sources are LF with a final newline; no normalization
+was applied. All three PDFs are readable, unencrypted, pdfTeX-1.40.26, A4;
+one is fully embedded and Type-3-free, the other two carry two or three Type-3
+rows inherited from a Matplotlib figure. Two carry Libertinus faces. None loads
+`docs/fabius-notation.tex`. Two archives ship a submitted `SHA256SUMS` and one a
+`MANIFEST.sha256`; they are kept as payload, and no repository ledger was
+added. Comparison, deduplication, canonical selection, proof checking,
+numerical reproduction and Lean crosswalking were all deferred.
+
+Previous batch (three archives, filed and removed on 2026-09-03): the three Fibonacci-inversion articles, all to
 `../series-and-transseries/special-function-inversion/` as its fourth subject.
 
 - `Fibonacci_Inverse_LogPeriodic_Transseries.zip` → `Fibonacci_Inverse_LogPeriodic_Transseries/`: 2,554-line/89,365-byte source, 33-page A4/787,646-byte PDF.
