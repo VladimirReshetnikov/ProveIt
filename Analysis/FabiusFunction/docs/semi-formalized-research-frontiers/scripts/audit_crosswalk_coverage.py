@@ -32,7 +32,9 @@ ENV = re.compile(
     r'(?:\[[^\]]*\])?'
     r'\s*(?:\\label(?:\[[^\]]*\])?\{([^}]*)\})?',
     re.S)
-LEAN = re.compile(r'\\(?:lean(?:Part|Partx)?|decl)\{')
+# `\path{Fabius.name}` is the Spectra and Arithmetic volume's citation form
+# (that volume defines no `\lean` macro).
+LEAN = re.compile(r'\\(?:lean(?:Part|Partx)?|decl)\{|\\path\{Fabius\.')
 # Labels named by a cross-reference: \cref{a,b}, \Cref{a}, \ref{a}, \eqref{a}.
 XREF = re.compile(r'\\(?:[cC]ref|ref|eqref)\{([^}]*)\}')
 # A unit of a ledger: a paragraph, or a row of a table (ended by \\).

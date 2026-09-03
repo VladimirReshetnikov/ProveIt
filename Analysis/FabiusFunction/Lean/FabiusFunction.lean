@@ -1,3 +1,11 @@
+import FabiusFunction.IntervalParseval
+import FabiusFunction.IntSumFolding
+import FabiusFunction.PascalTailIdentity
+import FabiusFunction.PeriodicOrbitGelfondBound
+import FabiusFunction.PascalParityPeriodic
+import FabiusFunction.RvachevHalfIntegerEnergy
+import FabiusFunction.LambertWElementaryBounds
+import FabiusFunction.LambertWLowerBranchLogBounds
 import FabiusFunction.CompleteHomogeneous
 import FabiusFunction.CompleteHomogeneousGenerating
 import FabiusFunction.CompleteHomogeneousBell
@@ -239,6 +247,8 @@ import FabiusFunction.ThueMorseSineProduct
 import FabiusFunction.ThueMorseFourierInversion
 import FabiusFunction.HalfIntegerOddDFT
 import FabiusFunction.SummableCyclicAlias
+import FabiusFunction.HalfIntegerAliasIdentity
+import FabiusFunction.CyclicCharacterSums
 import FabiusFunction.ThueMorseParseval
 import FabiusFunction.ThueMorseComplexity
 import FabiusFunction.ThueMorseArithmeticFilter
@@ -538,6 +548,8 @@ import FabiusFunction.EvenZetaSeries
 import FabiusFunction.EvenZetaValues
 import FabiusFunction.SincZetaSeries
 import FabiusFunction.SincZetaDyadic
+import FabiusFunction.GeometricSincZeta
+import FabiusFunction.LaplaceEndpointAllOrders
 import FabiusFunction.GeneralizedSincZeta
 import FabiusFunction.AlternatingNewtonCumulantKernel
 import FabiusFunction.ExponentialDiskMaximality

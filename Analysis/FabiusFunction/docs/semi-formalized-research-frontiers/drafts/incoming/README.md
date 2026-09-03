@@ -65,23 +65,23 @@ when no archives are waiting.
 Most recent processed batch (all filed and removed on 2026-09-01):
 
 - `Polynomial-Logarithmic-Transseries-1/` became
-  [`../series-and-transseries/polynomial-logarithmic-transseries/Polynomial-Logarithmic-Transseries-1/`](../series-and-transseries/polynomial-logarithmic-transseries/Polynomial-Logarithmic-Transseries-1/):
+  `../series-and-transseries/polynomial-logarithmic-transseries/Polynomial-Logarithmic-Transseries-1/`:
   4,023-line/182,487-byte source, 119-page/584,392-byte PDF.
 - `Polynomial-Logarithmic-Transseries-2/` became
-  [`../series-and-transseries/polynomial-logarithmic-transseries/Polynomial-Logarithmic-Transseries-2/`](../series-and-transseries/polynomial-logarithmic-transseries/Polynomial-Logarithmic-Transseries-2/):
+  `../series-and-transseries/polynomial-logarithmic-transseries/Polynomial-Logarithmic-Transseries-2/`:
   5,014-line/168,311-byte source, 102-page/571,108-byte PDF.
 - `Polynomial_Logarithmic_Transseries-3/` became
-  [`../series-and-transseries/polynomial-logarithmic-transseries/Polynomial_Logarithmic_Transseries-3/`](../series-and-transseries/polynomial-logarithmic-transseries/Polynomial_Logarithmic_Transseries-3/):
+  `../series-and-transseries/polynomial-logarithmic-transseries/Polynomial_Logarithmic_Transseries-3/`:
   4,255-line/146,006-byte source, 87-page/510,663-byte PDF; its submitted
   line-411 trailing whitespace remains intact.
 - `Polynomial-Logarithmic-Transseries-4/` became
-  [`../series-and-transseries/polynomial-logarithmic-transseries/Polynomial-Logarithmic-Transseries-4/`](../series-and-transseries/polynomial-logarithmic-transseries/Polynomial-Logarithmic-Transseries-4/):
+  `../series-and-transseries/polynomial-logarithmic-transseries/Polynomial-Logarithmic-Transseries-4/`:
   3,138-line/118,001-byte source, 47-page/428,534-byte PDF.
 - `Polynomial_Logarithmic_Transseries-5/` became
-  [`../series-and-transseries/polynomial-logarithmic-transseries/Polynomial_Logarithmic_Transseries-5/`](../series-and-transseries/polynomial-logarithmic-transseries/Polynomial_Logarithmic_Transseries-5/):
+  `../series-and-transseries/polynomial-logarithmic-transseries/Polynomial_Logarithmic_Transseries-5/`:
   2,440-line/102,903-byte source, 44-page/389,188-byte PDF.
 - `Polynomial_Logarithmic_Transseries-6/` became
-  [`../series-and-transseries/polynomial-logarithmic-transseries/Polynomial_Logarithmic_Transseries-6/`](../series-and-transseries/polynomial-logarithmic-transseries/Polynomial_Logarithmic_Transseries-6/):
+  `../series-and-transseries/polynomial-logarithmic-transseries/Polynomial_Logarithmic_Transseries-6/`:
   4,354-line/150,235-byte source, 100-page/701,319-byte PDF.
 
 These six bare-directory arrivals landed together in direct-arrival commit
@@ -93,11 +93,17 @@ All PDFs are readable,
 unencrypted, embedded/subset, and Type-3-free, but none uses Libertinus; two
 have a custom 522-by-738-point page, two are Letter, and two are A4.  Styling
 repair, comparison, deduplication, claim review, PDF rebuilding, and Lean
-crosswalking remain deferred until this checkpoint is published.  Full source
-and PDF hashes are recorded in the destination README and package receipts.
-The destination shown above is the current one: these six packages were filed
-under `../lambert-w/` on 2026-09-01 and regrouped into
-`../series-and-transseries/polynomial-logarithmic-transseries/` on 2026-09-02.
+crosswalking were deferred at intake and have since been carried out.
+
+**The six destination paths above no longer exist.**  They record where each
+arrival was filed, which is what this log is for, but the packages were filed
+under `../lambert-w/` on 2026-09-01, regrouped into
+`../series-and-transseries/polynomial-logarithmic-transseries/` on 2026-09-02,
+and merged editorially the same day into the single canonical volume
+[`../series-and-transseries/polynomial-logarithmic-transseries/Polynomial_Logarithmic_Transseries/`](../series-and-transseries/polynomial-logarithmic-transseries/Polynomial_Logarithmic_Transseries/).
+The six directories were then deleted; git history is the archive, and that
+volume's provenance appendix carries every source's intake and absorbed
+SHA-256 receipt together with what each one uniquely contributed.
 
 The immediately preceding processed batch, also filed and removed on
 2026-09-01, comprised these six archives:

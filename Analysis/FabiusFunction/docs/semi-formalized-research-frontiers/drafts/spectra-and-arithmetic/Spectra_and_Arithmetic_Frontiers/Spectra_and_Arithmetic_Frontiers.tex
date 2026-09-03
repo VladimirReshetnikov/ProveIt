@@ -79,6 +79,11 @@
 \newcommand{\imported}{\textcolor{importblue}{\textsc{Imported baseline.}}}
 \newcommand{\openstatus}{\textcolor{conjectureorange}{\textsc{Open or conjectural.}}}
 \newcommand{\SpectralPowerSum}[1]{\mathfrak{s}_{#1}}
+% Crosswalk macros, as in the other frontier volumes: a Lean module or
+% declaration name, typeset verbatim.
+\newcommand{\lean}[1]{%
+  \ifmmode\text{\texttt{\detokenize{#1}}}\else\nolinkurl{#1}\fi}
+\newcommand{\decl}[1]{\nolinkurl{#1}}
 \newenvironment{boxedremark}{\par\smallskip\noindent\begin{center}\begin{minipage}{0.94\textwidth}\hrule\vspace{0.6em}\small}{\vspace{0.6em}\hrule\end{minipage}\end{center}\smallskip}
 \lstdefinestyle{pseudo}{basicstyle=\ttfamily\footnotesize,backgroundcolor=\color{shadegray},frame=single,
  rulecolor=\color{rulegray},columns=fullflexible,keepspaces=true,showstringspaces=false,breaklines=true,
@@ -874,10 +879,11 @@ statements are
 \path{Fabius.sum_intResidueTsum},
 \path{Fabius.dft_intResidueTsum}, and
 \path{Fabius.intResidueTsum_eq_dft_average}, all in
-\path{SummableCyclicAlias.lean}.  This foundation does not by itself prove
-\eqref{p1:eq:alias-identity}: that specialization still requires inserting the
+\path{SummableCyclicAlias.lean}.  That specialization --- inserting the
 absolutely convergent Fourier series of \(P\) and identifying its finite DFT
-with the sampled values \(A_{n,r}\).
+with the sampled values \(A_{n,r}\) --- is now carried out in
+\path{HalfIntegerAliasIdentity.lean}; see the Lean status after
+\cref{p1:thm:alias-identity}.
 
 \subsection{Folded coefficients}
 
@@ -938,6 +944,28 @@ $\RvachevUp(j/N)=1-\FabiusBounded(j/N)$.  Since $r$ is odd,
 which yields \eqref{p1:eq:A-F-DCT}.
 \end{proof}
 
+\paragraph{Lean status.}
+The boxed identity \eqref{p1:eq:alias-identity} is formal, in
+\path{HalfIntegerAliasIdentity.lean}, and for every modulus: with
+\path{Fabius.periodizedUp} the two-periodization, \path{Fabius.gridSample} its sample
+vector on \(\IntegerNumbers/2N\IntegerNumbers\), and \path{Fabius.foldedCoefficient}
+the coefficient \(A_{N,r}=N^{-1}\,\mathcal D_{2N}(\text{samples})(r)\) in Mathlib's DFT
+normalization, \path{Fabius.foldedCoefficient_eq_tsum} is
+\(A_{N,r}=\sum_{q\in\IntegerNumbers}\PhiU(qN+r/2)\) for every \(N\ge1\) and every residue
+\(r\) modulo \(2N\) --- neither \(N=2^n\) nor the oddness of \(r\) is used.  The proof is
+the one above, carried out as a chain of rewrites: sampling the period-two Fourier series
+\path{Fabius.rvachev_even_translate_fourier} at \(j/N\) turns \(\EulerE^{\pi\ImaginaryUnit
+kj/N}\) into the standard character of \(\IntegerNumbers/2N\IntegerNumbers\)
+(\path{Fabius.exp_pi_mul_I_eq_stdAddChar}), so the sample vector is \(\tfrac12\) times
+the bilateral Fourier sums of \path{SummableCyclicAlias.lean} at \(-j\)
+(\path{Fabius.gridSample_eq}); the DFT of those sums is the residue-class sums
+(\path{Fabius.dft_intResidueTsum}), and two Mathlib identities, \path{ZMod.dft_comp_neg}
+and \path{ZMod.dft_dft}, give \(\mathcal D_{2N}(\text{samples})=N\cdot\mathcal R_\bullet\)
+(\path{Fabius.dft_gridSample}).  The residue class is finally re-indexed as the affine
+line \(q\mapsto2Nq+r\) (\path{Fabius.residueClassEquiv}).  The two cosine displays
+\eqref{p1:eq:A-Up-DCT}--\eqref{p1:eq:A-F-DCT}, which pair \(j\) with \(2N-j\) and use
+\(P=\RvachevUp\) on \([0,1]\), are not separately formalized.
+
 \subsection{Exact inverse transform}
 
 \begin{theorem}[Dyadic spectral reconstruction]\label{p1:thm:inverse-DCT}
@@ -966,6 +994,18 @@ $A_{n,2N-r}=A_{n,r}$.  Pairing the odd frequencies gives
 \eqref{p1:eq:inverse-DCT}.
 \end{proof}
 
+\paragraph{Lean status.}
+The three facts the proof uses are formal in \path{HalfIntegerAliasIdentity.lean}, for every
+\(N\ge1\): the inverse transform in complex form,
+\(P(j/N)=\tfrac12\sum_{r\in\IntegerNumbers/2N\IntegerNumbers}A_{N,r}\chi_{2N}(rj)\)
+(\path{Fabius.gridSample_eq_sum_foldedCoefficient}, from Mathlib's \path{ZMod.dft_dft});
+\(A_{N,0}=1\) (\path{Fabius.foldedCoefficient_zero}); the vanishing of every nonzero even
+mode, \(A_{N,2s}=0\) for \(0<s<N\) (\path{Fabius.foldedCoefficient_two_mul_eq_zero}, since
+each alias point \(qN+s\) is a nonzero integer, where \(\FourierTwoPi{\RvachevUp}\) vanishes);
+and the symmetry \(A_{N,-r}=A_{N,r}\) (\path{Fabius.foldedCoefficient_neg}, from the
+evenness of \(\FourierTwoPi{\RvachevUp}\)).  The final pairing of \(r\) with \(2N-r\) into the
+cosine form \eqref{p1:eq:inverse-DCT} is not separately formalized.
+
 \begin{corollary}[Exact discrete energy identity]\label{p1:cor:discrete-energy}
 One has
 \begin{equation}\label{p1:eq:discrete-energy}
@@ -982,6 +1022,19 @@ Apply finite Parseval to \eqref{p1:eq:inverse-DCT}.  The constant mode contribut
 $1/4$, and each nonconstant cosine has mean square $1/2$ on the length-$2N$
 grid.  Use $P(0)=1$, $P(1)=0$, and symmetry of the remaining samples.
 \end{proof}
+
+\paragraph{Lean status.}
+The energy identity is formal before the odd/even split and the sample pairing:
+\path{Fabius.sum_foldedCoefficient_sq} in \path{HalfIntegerAliasIdentity.lean} gives
+\(\sum_{r\in\IntegerNumbers/2N\IntegerNumbers}A_{N,r}^2=\tfrac2N\sum_{j<2N}P(j/N)^2\)
+for every \(N\ge1\).  It rests on a Parseval-type identity for Mathlib's DFT on
+\(\IntegerNumbers/M\IntegerNumbers\) proved for every vector \(\Phi\),
+\(\sum_r\mathcal D\Phi(r)\,\mathcal D\Phi(-r)=M\sum_j\Phi(j)^2\)
+(\path{Fabius.sum_dft_mul_dft_neg}, from \path{ZMod.dft_apply} and \path{ZMod.dft_dft} alone),
+combined with the symmetry \path{Fabius.foldedCoefficient_neg}.  Restricting the left side
+to odd \(r<N\) (the even modes vanish, \path{Fabius.foldedCoefficient_two_mul_eq_zero}, and
+\(A_{N,0}=1\)) and folding the right side with \(P(0)=1\), \(P(1)=0\) produces the displayed
+\eqref{p1:eq:discrete-energy}; that bookkeeping is not separately formalized.
 
 \begin{remark}[Continuous limit]
 As $n\to\infty$, the right side of \eqref{p1:eq:discrete-energy} tends
@@ -1294,6 +1347,23 @@ Substitution gives \eqref{p1:eq:Ramanujan-traces}.  For $m=1$, the only indices
 with $N\mid j$ are $j=0,N$, so
 $p_1(n)=\tfrac12(P_0-P_N)=1/2$.
 \end{proof}
+
+\paragraph{Lean status.}
+The two finite character sums the proof rests on are formal in
+\path{CyclicCharacterSums.lean}, for every modulus rather than only powers of two: the
+orthogonality \(\sum_{j\in\IntegerNumbers/M\IntegerNumbers}\chi_M(jk)=M[k=0]\)
+(\path{Fabius.sum_stdAddChar_mul}, obtained from Mathlib's \path{ZMod.dft_apply} and
+\path{ZMod.dft_dft} applied to the delta at \(0\), with no orthogonality lemma), and the
+Ramanujan sum \eqref{p1:eq:Ramanujan-power-two} over the odd residues modulo \(2N\),
+\(c_{2N}(S)=N(-1)^{S/N}\) if \(N\mid S\) and \(0\) otherwise
+(\path{Fabius.ramanujanOddSum_eq}, with \path{Fabius.ramanujanOddSum} the sum
+parametrized as \(r=2s+1\), \(s\in\IntegerNumbers/N\IntegerNumbers\)).  The power-trace
+formula \eqref{p1:eq:Ramanujan-traces} itself --- the \(m\)-fold expansion of
+\(A_{n,r}^m\) and the resummation over the odd residues --- is not formalized; the
+universal trace \eqref{p1:eq:universal-trace} is within reach of the inverse transform
+\path{Fabius.gridSample_eq_sum_foldedCoefficient} at \(j=0\) together with
+\path{Fabius.foldedCoefficient_zero} and the even-mode vanishing, but is not stated
+separately.
 
 \begin{remark}[A trace that does not disperse]
 The orbit degree is $N/2\to\infty$, yet the unnormalized first trace remains
@@ -3549,6 +3619,20 @@ finite algebra, elementary real analysis, or existing cyclotomic infrastructure.
 This section gives a concrete path from the report to the repository's formalized
 core.
 
+\paragraph{Repository status.}  The module boundary below was proposed before
+the library's flat layout settled, so the nested paths name nothing that
+exists; and part of the plan has since been built under other names.  The
+exact ray factorization of \cref{p2:thm:exact-factorization} is
+\decl{norm_rvachevFourierProduct_fixedMantissa_of_mem_Ioo} in module
+\lean{RvachevFixedMantissaRay}, stated for $N\in\mathbb N$ and mantissa
+$y\in(1,2)$; the same module's
+\decl{normalizedDyadicSineProduct_add_of_dyadic_period} is the periodic-orbit
+engine, the identity $Q_{n+d}(t)=Q_d(t)Q_n(t)$ whenever $2^dt=t+z$ for an
+integer $z$, which is the returning-seed hypothesis with no rationality
+required.  The cyclotomic layer (the relative norm, the orbit polynomial, and
+the mean exponent) has no counterpart in the library; the cyclotomic values it
+would use are Mathlib's.
+
 \subsection{Suggested module boundary}
 
 \begin{description}[style=nextline,leftmargin=2.8em]
@@ -4382,9 +4466,24 @@ The finite arithmetic equality in \eqref{p3:eq:mu-r} is now machine-checked:
 \path{WeightedScaleMultiplicity.lean}, specialized to base $2$ and Lean's
 Pascal index $r-1$, proves
 $\sum_{h=0}^{\TwoAdicValuation(n)}\binom h{r-1}=\binom{\TwoAdicValuation(n)+1}r$.
-It does \emph{not} by itself prove that this number is the analytic zero
-order of $\Phi_r$, nor does it establish \eqref{p3:eq:canonical-r} or normal
-convergence.  Those assertions remain in the analytic frontier.
+It does not by itself prove that this number is the analytic zero order of
+$\Phi_r$; that, the canonical product \eqref{p3:eq:canonical-r}, and locally
+uniform convergence are now separate machine-checked statements, for an
+arbitrary weight sequence $a$ with $\sum_h a_h2^{-h}<\infty$ and hence for the
+Pascal weights $a_h=\binom h{r-1}$ (Lean's \decl{weightedScaleMultiplicity}
+carries the index $r-1$ as its own parameter):
+\decl{analyticOrderAt_generalizedRvachevProduct_int} (module
+\lean{GeneralizedZeroDivisor}) identifies the analytic order of
+$\Phi_a$ at every nonzero integer $n$ with the weighted scale multiplicity of
+$|n|$, with \decl{generalizedRvachevProduct_eq_zero_iff_int} the zero set;
+\decl{generalizedRvachevProduct_eq_canonical} (module
+\lean{GeneralizedCanonicalForm}) is the canonical product
+$\Phi_a(z)=\prod_{m\ge1}(1-z^2/m^2)^{\mu_a(m)}$; and
+\decl{hasProdLocallyUniformlyOn_generalizedRvachevProduct} with
+\decl{generalizedRvachevProduct_differentiable} (module
+\lean{GeneralizedRvachevEntire}) give locally uniform convergence on every
+disc and entireness.  Earlier text here placed all three in the analytic
+frontier; that is no longer the state of the library.
 
 Thus $\Phi_r$ has a zero at $n$ exactly when $2^{r-1}\mid n$.  Higher rank does not spread the zeros; it thins their locations while increasing their multiplicities according to the $r$th binomial coefficient in $\TwoAdicValuation(n)+1$.
 
@@ -4541,9 +4640,15 @@ The floor-sum half \eqref{p3:eq:Nr-floor} is now formally covered by
 \path{sum_range_padicValNat_choose} in
 \path{WeightedScaleMultiplicity.lean}; its finite sum over $h<N$ equals the
 displayed infinite sum because all later natural quotients vanish.  The
-binary digit formula \eqref{p3:eq:Nr-digital}, the sharp discrepancy statements,
-and their parity consequences are not consequences of that generic layer-cake
-theorem and remain to be formalized.
+binary digit formula \eqref{p3:eq:Nr-digital} and the sharp discrepancy
+statements are not consequences of that generic layer-cake theorem and remain
+to be formalized.  The parity consequence that matters downstream --- the sign
+law $\operatorname{sgn}\Phi_r(x)=\varepsilon_r(\lfloor x\rfloor)$ on every
+open unit interval --- is formal for every admissible weight sequence:
+\decl{generalizedRvachevProduct_ofReal_eq_parityCharacter_mul_norm} (module
+\lean{LobeSignLaw}) writes $\Phi_a(x)$ as the parity character
+\decl{parityCharacter} of $\lfloor x\rfloor$ times $|\Phi_a(x)|$ for
+$N<x<N+1$.
 
 \begin{corollary}[Sharp discrepancy range]\label{p3:cor:discrepancy-range}
 For $0\le N<2^m$,
@@ -8167,6 +8272,146 @@ through command-line options documented by
 \begin{lstlisting}[style=code,language=bash]
 python numerical_experiments.py --help
 \end{lstlisting}
+
+\section{Lean formalization crosswalk}\label{app:lean-crosswalk}
+
+The four parts above cite Lean declarations in their prose where the authors
+knew of them, but carry no theorem-level crosswalk.  This appendix records the
+correspondence for the results whose formal counterpart was verified by
+reading the Lean statement, in the discipline of the Rvachev decay volume's
+parity ledger: a row is listed only when the Lean statement has the displayed
+mathematical content, and it says where Lean is weaker, more general, or
+normalized differently.  All declarations are in namespace \lean{Fabius}.
+The convention agrees on both sides: \decl{rvachevFourier} is this volume's
+$\FourierTwoPi{\RvachevUp}$, \decl{rvachevFourierProduct} is $\prod_n\SincPi(z/2^n)$, and
+\decl{generalizedRvachevProduct} at the weights $a_h=\binom h{r-1}$ is
+$\Phi_r$, with \decl{parityCharacter} at those weights the sign character
+$\varepsilon_r$.
+
+\begin{longtable}{@{}p{0.29\textwidth}p{0.42\textwidth}p{0.23\textwidth}@{}}
+\toprule
+Statement in this volume & Exact Lean declaration(s) & Remarks\\
+\midrule
+\endfirsthead
+\toprule
+Statement in this volume & Exact Lean declaration(s) & Remarks\\
+\midrule
+\endhead
+\Cref{p1:prop:cosine-spectrum}: the half-integer cosine series of
+$\RvachevUp$ on $[-1,1]$ &
+\decl{rvachev_cosine_series} (module \lean{PoissonSummation}) &
+Exact; stated as a complex-valued series with the real
+$\FourierTwoPi{\RvachevUp}(k+\tfrac12)$ coefficients.\\
+\addlinespace
+\Cref{p1:lem:selected-factor-bound}, \Cref{p4:cor:IBP-envelope}: the
+selected-factor envelope $|\Phi(x)|\le 2^{\binom K2}/(\pi|x|)^K$ &
+\decl{norm_rvachevFourierProduct_le_prefix_div} (module
+\lean{SincPrefixBound}) &
+More general: every $K\in\mathbb N$, including $K=0$, for every real
+$x\neq0$.\\
+\addlinespace
+\Cref{p2:thm:exact-factorization}: the exact ray factorization at
+$x=2^Ny$, $y\in(1,2)$ &
+\decl{norm_rvachevFourierProduct_fixedMantissa_of_mem_Ioo} (module
+\lean{RvachevFixedMantissaRay}) &
+Exact, in modulus form.  The periodic-orbit identity
+$Q_{n+d}(t)=Q_d(t)Q_n(t)$ under $2^dt=t+z$, $z\in\mathbb Z$, is
+\decl{normalizedDyadicSineProduct_add_of_dyadic_period}, with no
+rationality hypothesis.\\
+\addlinespace
+\Cref{p3:thm:classical-count}: $\sum_{n\le N}\mu(n)=2N-w(N)$ &
+\decl{sum_dyadicZeroMultiplicity_eq} (module
+\lean{DyadicZeroMultiplicity}) &
+Exact, over $\mathbb N$ with $w$ the binary weight.\\
+\addlinespace
+\Cref{p3:thm:zero-multiplicity}: the multiplicity
+$\binom{\TwoAdicValuation(n)+1}r$, the canonical product, and entireness of
+$\Phi_r$ &
+\decl{weightedScaleMultiplicity_choose},
+\decl{analyticOrderAt_generalizedRvachevProduct_int},
+\decl{generalizedRvachevProduct_eq_zero_iff_int},
+\decl{generalizedRvachevProduct_eq_canonical},
+\decl{hasProdLocallyUniformlyOn_generalizedRvachevProduct},
+\decl{generalizedRvachevProduct_differentiable} &
+More general: every weight sequence $a$ with $\sum_ha_h2^{-h}<\infty$; the
+Pascal case is $a_h=\binom h{r-1}$.  Lean's Pascal index is $r-1$, so its
+\texttt{choose r} is this volume's $\binom{\cdot}{r-1}$.\\
+\addlinespace
+\Cref{p3:thm:sign-law-r}: $\operatorname{sgn}\Phi_r(x)=\varepsilon_r(\lfloor
+x\rfloor)$ &
+\decl{generalizedRvachevProduct_ofReal_eq_parityCharacter_mul_norm} (module
+\lean{LobeSignLaw}), \decl{parityCharacter} &
+More general: every admissible weight sequence, on every open unit interval
+$(N,N+1)$.\\
+\addlinespace
+\Cref{p3:thm:prouhet-r}: the generalized Prouhet cancellation
+$\sum_{n<2^L}\varepsilon_r(n)n^k=0$ &
+\decl{sum_range_two_pow_parityCharacter_mul_pow_eq_zero} (module
+\lean{GeneralizedProuhetBlock}) &
+More general: every weight sequence, every block length $L$, every
+$k$ below the number of odd layers.\\
+\addlinespace
+\Cref{p3:prop:Lambert-coordinate}: the saddle equation solved by the
+generalized Lambert coordinate &
+\decl{generalizedLambertCoordinate_solves_saddle} (module
+\lean{GeneralizedLambertCoordinate}) &
+Exact, under the explicit lower-branch domain hypothesis.\\
+\addlinespace
+\Cref{p3:cor:rank-one-Psi}: the exact periodic decomposition of the
+rank-one Laplace exponent &
+\decl{negativeLaplaceLog_exact_periodic_decomposition} (module
+\lean{NegativeLaplace}) &
+\textbf{Convention differs}: Lean's \decl{negativeLaplaceLog} is
+$+\log L$ at argument $2t$, i.e.\ $\operatorname{negativeLaplaceLog}(s)=-\Psi_1(s/2)$
+in this volume's notation; the periodic correction and the tail-error term
+are separate named objects there.\\
+\addlinespace
+\Cref{p3:lem:pascal-tail}: \(\sum_{h\le j}\binom h{r-1}2^{j-h}=2^{j+1}-Q_r(j)\) &
+\decl{PascalTail.sum_choose_mul_two_pow_eq}, in the additive form
+\decl{PascalTail.sum_choose_mul_two_pow_add_tailCount} (module
+\lean{PascalTailIdentity}) &
+Exact, over \(\mathbb N\): with Lean's index \(k=r-1\),
+\decl{PascalTail.tailCount} \(j\,k=\sum_{i\le k}\binom{j+1}i\) is \(Q_r(j)\).
+The additive form holds with no side condition; the subtraction form is its
+corollary.  Proved by induction with Pascal's rule, not by the subset count.\\
+\addlinespace
+\Cref{p2:thm:sqrt3-bound}: \(A_{a,q}^{1/d}\le\sqrt3\) for odd \(q\) and
+\((a,q)=1\) &
+\decl{normalizedDyadicSineProduct_le_sqrt_three_pow_of_dyadic_period} (module
+\lean{PeriodicOrbitGelfondBound}), from the one-shot bound
+\decl{normalizedDyadicSineProduct_succ_le} and the extraction lemma
+\decl{le_of_pow_le_mul_pow} &
+More general: for \emph{every} real \(t\) whose orbit returns,
+\(2^dt=t+z\) with \(z\in\mathbb Z\), the normalized product
+\(\prod_{j<d}|2\sin(\pi2^jt)|\) is at most \(\sqrt3^{\,d}\); the volume's
+statement is \(t=a/q\), \(2^d\equiv1\pmod q\), together with the identity
+\(|1-e^{2\pi i\theta}|=2|\sin\pi\theta|\), which is not part of the module.
+The equality case \(q=3\) is not formal.\\
+\addlinespace
+\Cref{p3:thm:sign-law-r}, periodicity part: the parity of \(\binom j{r-1}\)
+is periodic in \(j\) (Lucas), hence \(\varepsilon_r\) is \(2\)-automatic &
+\decl{PascalParity.choose_mod_two_eq_mod_two_pow},
+\decl{PascalParity.choose_add_two_pow_mod_two},
+\decl{eventuallyPeriodic_parityWord_choose},
+\decl{finite_twoKernel_parityCharacter_choose} (module
+\lean{PascalParityPeriodic}) &
+Lucas mod \(2\), iterated: for \(k<2^m\) the parity of \(\binom hk\) depends
+only on \(h\bmod 2^m\), for every \(h,k,m\).  The library takes the period
+\(2^{r-1}\), which is a period but not the minimal one; the exact minimal
+period \(P_r=2^{m_r}\) and the count \(d_r\) of \(-1\) values per period in
+\eqref{p3:eq:Pr-dr} are not formal.  \(2\)-automaticity is the library's
+finiteness of the \(2\)-kernel of \(\varepsilon_r\), through
+\decl{finite_twoKernel_parityCharacter_iff}.\\
+\bottomrule
+\end{longtable}
+
+The Part~4 derivative-distribution results already name their declarations in
+the status boxes beside each theorem and are not repeated here.  Everything
+else in this volume --- in particular the alias identity of Part~1 beyond its
+abstract engine, the equality case \(q=3\) of the periodic-orbit bound and the
+cyclotomic layer of Part~2, the digital count and discrepancy statements of
+Part~3, the rank-$r$ global decay and sharp ray, and the spectral moments of
+Part~4 --- is unformalized.
 
 \begin{thebibliography}{99}
 
