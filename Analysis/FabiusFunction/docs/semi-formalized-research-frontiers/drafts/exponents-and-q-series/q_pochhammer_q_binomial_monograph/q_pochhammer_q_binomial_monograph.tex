@@ -12903,8 +12903,8 @@ inside the proof below does not formalize the result the proof concludes.
   than a mathematical claim.
 \end{description}
 
-Of the 282 labelled forward results, 165 are \statusexact, 89 are
-\statuspartial, 20 are \statusnone, and 8 are \statusna.  The original
+Of the 282 labelled forward results, 167 are \statusexact, 89 are
+\statuspartial, 18 are \statusnone, and 8 are \statusna.  The original
 191-result pre-Fabius core had 36 \statusexact, 29 \statuspartial, 123
 \statusnone, and 3 \statusna{} entries.  The four integrated guide chapters
 add 31 human-proved but not Lean-formalized assertions and five labelled
@@ -13473,7 +13473,7 @@ Bilateral series and Ramanujan's \texorpdfstring{${}_1\psi_1$}{1psi1} sum & 2 & 
 $q$-difference calculus and the quantum binomial & 10 & 0 & 0 & 0\\
 The $q$-gamma and $q$-beta functions & 7 & 1 & 0 & 0\\
 Jacobi's triple product & 8 & 0 & 0 & 0\\
-Theta modularity, lattice dissection, and sums of squares & 6 & 5 & 3 & 4\\
+Theta modularity, lattice dissection, and sums of squares & 7 & 5 & 2 & 4\\
 Partitions and product--sum identities & 3 & 1 & 0 & 0\\
 Bailey pairs and the Rogers--Ramanujan identities & 6 & 1 & 0 & 0\\
 Bailey transforms and the Andrews--Gordon identities & 5 & 3 & 0 & 1\\
@@ -13481,14 +13481,14 @@ Cyclotomic factorization and congruences & 9 & 0 & 0 & 0\\
 Negative upper indices and geometric Newton interpolation & 9 & 0 & 0 & 0\\
 Central $q$-binomial sums and Lambert series & 2 & 0 & 5 & 0\\
 Asymptotic regimes and Bernoulli expansions & 3 & 3 & 2 & 0\\
-Exact limits, reciprocity, and research frontiers & 4 & 0 & 1 & 0\\
+Exact limits, reciprocity, and research frontiers & 5 & 0 & 0 & 0\\
 Computation, certification, and formal proof architecture & 7 & 2 & 2 & 3\\
 Geometric interpolation and exact $q$-filters & 7 & 2 & 0 & 0\\
 Half-base arithmetic and Prouhet--Thue--Morse cancellation & 6 & 3 & 0 & 0\\
 Geometric uniform sums, $q$-cumulants, and the Fabius--Rvachev functions & 2 & 11 & 0 & 0\\
 Dyadic Gaussian--Thue--Morse structure and the values of $F$ & 8 & 45 & 3 & 0\\
 \midrule
-\textbf{Forward total} & 165 & 89 & 20 & 8\\
+\textbf{Forward total} & 167 & 89 & 18 & 8\\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -15240,7 +15240,20 @@ proof uses without checking are made explicit.  Partial because the corpus has n
 $\ComplexNumbers$-definition of $\vartheta_2$ or $\vartheta_4$ carrying the prefactor
 $q^{1/4}\zeta^{1/2}$: the two $\vartheta_2$ displays are therefore stated with that prefactor
 stripped, as statements about $\vartheta_3(z+\tau/2\mid\tau)$.  The other four are exact}\\[2pt]
-\Cref{qg:prop-theta-heat} & \statusnone & ---\\[2pt]
+\Cref{qg:prop-theta-heat} & \statusexact &
+\texttt{thetaTwo\_\allowbreak{}heat},
+\texttt{thetaThree\_\allowbreak{}heat},
+\texttt{thetaFour\_\allowbreak{}heat},
+\texttt{thetaThree\_\allowbreak{}heat\_\allowbreak{}iteratedDeriv},
+\texttt{hasSum\_\allowbreak{}jacobiTheta\_\allowbreak{}zz\_\allowbreak{}term}\newline
+{\footnotesize\texttt{ThetaHeatEquation}; all three printed cases $j=2,3,4$, each as
+$\partial\vartheta_j/\partial\tau=(1/(4\pi i))\,\partial^2\vartheta_j/\partial z^2$ on the upper
+half-plane, with $\partial/\partial\tau$ and $\partial/\partial z$ the complex holomorphic
+derivative and the second $z$-derivative also restated as an iterated derivative.  The functions
+are the corpus's own $\vartheta_2,\vartheta_3,\vartheta_4$, whose \texttt{HasSum} bridges identify
+them with the monograph's three series, so these are the printed statements and not surrogates.
+Over $\ComplexNumbers$ only: the statement lives on the upper half-plane and uses holomorphy, so
+there is no free commutative-ring or normed-field version}\\[2pt]
 \Cref{qg:def-fourier-transform} & \statusna & transform convention\\[2pt]
 \Cref{qg:thm-poisson} & \statusexact &
 \texttt{poisson\_\allowbreak{}summation\_\allowbreak{}schwartz},
@@ -15442,7 +15455,19 @@ formalized}\\[2pt]
 \midrule
 \multicolumn{3}{@{}l}{\itshape Exact limits, reciprocity, and research frontiers}\\
 \midrule
-\Cref{qg:thm-qpochhammer-modular-asymptotic} & \statusnone & ---\\[2pt]
+\Cref{qg:thm-qpochhammer-modular-asymptotic} & \statusexact &
+\texttt{qPochhammerInfIn\_\allowbreak{}exp\_\allowbreak{}neg\_\allowbreak{}modular},
+\texttt{eta\_\allowbreak{}eq\_\allowbreak{}qPochhammerInfIn},
+\texttt{neg\_\allowbreak{}one\_\allowbreak{}div\_\allowbreak{}modularPoint},
+\texttt{isBigO\_\allowbreak{}log\_\allowbreak{}qPochhammerInfIn\_\allowbreak{}exp\_\allowbreak{}neg\_\allowbreak{}sub},
+\texttt{isBigO\_\allowbreak{}qPochhammerInfIn\_\allowbreak{}exp\_\allowbreak{}neg\_\allowbreak{}ratio\_\allowbreak{}sub\_\allowbreak{}one}\newline
+{\footnotesize\texttt{QPochhammerModularAsymptotic}; the exact identity
+$(q;q)_\infty=\sqrt{2\pi/t}\,\EulerE^{-\pi^2/(6t)+t/24}\,(Q;Q)_\infty$ at $q=\EulerE^{-t}$,
+$Q=\EulerE^{-4\pi^2/t}$, proved for \emph{every} $t>0$ with no smallness restriction, and both
+printed corollaries with explicit constants.  The $S$-involution is isolated as
+$-1/\tau=\,$\texttt{modularPoint}$(4\pi^2/t)$ on the imaginary axis so that it can be reused for
+the theta asymptotics, and the bridge $\eta(z)=\mathfrak q_{24}(z)\,(\mathfrak q_1(z);\mathfrak
+q_1(z))_\infty$ to Mathlib's Dedekind eta holds for every $z$}\\[2pt]
 \Cref{qg:prop-coefficientwise-limit} & \statusexact &
 \texttt{existsUnique\_\allowbreak{}coefficientwise\_\allowbreak{}limit},
 \texttt{tendsto\_\allowbreak{}of\_\allowbreak{}eventually\_\allowbreak{}coeff\_\allowbreak{}eq},
