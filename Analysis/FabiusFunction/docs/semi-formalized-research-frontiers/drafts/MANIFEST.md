@@ -336,27 +336,31 @@ single special function.  The group was split off from `lambert-w/` on
 polynomial-logarithmic transseries arrivals develop the algebra, division,
 composition, and reversion of polynomial-logarithmic transseries and use
 Lambert W only as their guiding example, so they are filed by that subject,
-leaving `lambert-w/` to the articles about the function itself.  Its single
-subgroup is `polynomial-logarithmic-transseries/`.  The directories moved
-verbatim — no source, checksum ledger, or PDF changed — so every receipt
-below is the one recorded at intake, and each package's own `README.md` and
-`SHA256SUMS` are unchanged.
+leaving `lambert-w/` to the articles about the function itself.  That move was
+verbatim: no source, checksum ledger, or PDF changed.
+
+The group now has three subgroups.  `polynomial-logarithmic-transseries/` holds
+the operational treatment of one scale, consolidated into the single canonical
+volume recorded below; `lambert-inverse-transseries/` holds three articles that
+invert `x + W(x)`; and `transseries-tutorials/` holds four general expositions.
+The first two overlap enough that a later consolidation may merge them, but
+that comparison has not been made.
 
 | Directory | Document | Previous path |
 | --- | --- | --- |
-| `polynomial-logarithmic-transseries/Polynomial-Logarithmic-Transseries-1/` | *Polynomial–Logarithmic Transseries: Algebra, Composition, Series Reversal, and the Lambert W Archetype* — current 4,020-line/187,071-byte source (`01a03e09…14f4e61`) and retained historical 119-page/584,392-byte custom-size PDF (`a4fc4af0…69e886`); paired artifact hashes are recorded | bare `incoming/Polynomial-Logarithmic-Transseries-1/`; direct-arrival commit `730e1763…95ab4f`; later source-only notation/remainder migration; filed under `lambert-w/` until the 2026-09-02 regrouping |
-| `polynomial-logarithmic-transseries/Polynomial-Logarithmic-Transseries-2/` | *Polynomial-Logarithmic Transseries: Arithmetic, Division, Composition, and Series Reversal* — current 5,006-line/173,396-byte source (`aa25baa0…8ef83e5`) and retained historical 102-page/571,108-byte custom-size PDF (`5e9ff596…bfc68e`); paired artifact hashes are recorded | bare `incoming/Polynomial-Logarithmic-Transseries-2/`; direct-arrival commit `730e1763…95ab4f`; later source-only notation/remainder migration; filed under `lambert-w/` until the 2026-09-02 regrouping |
-| `polynomial-logarithmic-transseries/Polynomial_Logarithmic_Transseries-3/` | *Polynomial-Logarithmic Transseries: Arithmetic, Composition, Series Reversal, and the Lambert W Expansion* — current 4,249-line/150,182-byte source (`0962c156…e6ad348`) and retained historical 87-page/510,663-byte Letter PDF (`3f7c4bc1…58a4af`); paired artifact hashes are recorded | bare `incoming/Polynomial_Logarithmic_Transseries-3/`; direct-arrival commit `730e1763…95ab4f`; later source-only notation/remainder migration; filed under `lambert-w/` until the 2026-09-02 regrouping |
-| `polynomial-logarithmic-transseries/Polynomial-Logarithmic-Transseries-4/` | *Polynomial-Logarithmic Transseries: Algebra, Composition, Reversion, and the Lambert W Function* — current 3,132-line/120,607-byte source (`387ca51f…32ff564`) and retained historical 47-page/428,534-byte A4 PDF (`c2d75b35…45a3eb`); paired artifact hashes are recorded | bare `incoming/Polynomial-Logarithmic-Transseries-4/`; direct-arrival commit `730e1763…95ab4f`; later source-only notation/remainder migration; filed under `lambert-w/` until the 2026-09-02 regrouping |
-| `polynomial-logarithmic-transseries/Polynomial_Logarithmic_Transseries-5/` | *Polynomial-Logarithmic Transseries: Algebra, Composition, Series Reversal, and the Lambert W Function* — current 2,443-line/106,141-byte source (`1149ae68…c8d26cc`) and retained historical 44-page/389,188-byte Letter PDF (`189e95ab…58a2db`); paired artifact hashes are recorded | bare `incoming/Polynomial_Logarithmic_Transseries-5/`; direct-arrival commit `730e1763…95ab4f`; later source-only notation/remainder migration; filed under `lambert-w/` until the 2026-09-02 regrouping |
-| `polynomial-logarithmic-transseries/Polynomial_Logarithmic_Transseries-6/` | *Polynomial–Logarithmic Transseries: Algebra, Division, Composition, and Asymptotic Series Reversal* (cover adds “with Lambert's W function as the guiding example”) — current 4,388-line/155,846-byte source (`df4e4bc5…47f8491`) and retained historical 100-page/701,319-byte A4 PDF (`b5142bad…467aa`); paired artifact hashes are recorded | bare `incoming/Polynomial_Logarithmic-Transseries-6/`; direct-arrival commit `730e1763…95ab4f`; later source-only notation/remainder migration; filed under `lambert-w/` until the 2026-09-02 regrouping |
+| `polynomial-logarithmic-transseries/Polynomial_Logarithmic_Transseries/` | **Canonical, consolidation complete:** *Polynomial--Logarithmic Transseries: Algebra, Composition, Series Reversal, and the Lambert W Archetype* — 35{,}172-line/1{,}760{,}242-byte source (`388ba72b…d9f3cb`) and the 399-page A4 PDF built from it in the same three-pass run (4{,}419{,}014 bytes, `ef995bb5…9337da`) | Editorial merge (2026-09-02) of the six 2026-09-01 arrivals `Polynomial-Logarithmic-Transseries-1/`, `-2/`, `-4/` and `Polynomial_Logarithmic_Transseries-3/`, `-5/`, `-6/`, all from direct-arrival commit `730e1763…95ab4f`; absorbed sources deleted, git history is the archive, per-source receipts in the volume's provenance appendix |
 
-The six retained arrival PDFs have embedded/subset fonts and no Type 3 font,
-but none uses Libertinus; two are custom 522-by-738-point, two are Letter, and
-two are A4.  Styling repair, comparison, claim review, consolidation, and Lean
-crosswalking remain deferred until after the intake publication gate.
+The consolidation is complete.  The six arrival packages and their
+retained historical PDFs were deleted once every source was absorbed and
+a residue audit found nothing of substance outside the volume; git
+history is the archive, and the volume's provenance appendix records
+each source's intake and absorbed receipts, what it uniquely contributed,
+and every convention reconciled against the notation catalogue.  The
+canonical volume is A4 with Libertinus, which also clears the styling
+debt recorded against the arrivals.  Lean crosswalking remains open and
+is scoped in the volume's formalization register.
 
-The second subgroup, `lambert-inverse-transseries/`, received three
+A second subgroup, `lambert-inverse-transseries/`, received three
 independently written articles on 2026-09-02 that invert `f(x) = x + W(x)`
 at infinity and develop logarithmic-transseries calculus around that example.
 They are filed here rather than under `lambert-w/` for the same reason as the
@@ -368,6 +372,28 @@ worked case.  Quick intake only; no comparison or review yet.
 | `lambert-inverse-transseries/lambert_inverse_transseries/` | *Asymptotic Reversion of x + W(x) and a Calculus for Logarithmic Transseries* (1,846-line/61,003-byte source, 24-page/667,582-byte PDF) | none | `drafts/incoming/lambert_inverse_transseries.zip` (outer SHA-256 `8bef8fbbe36688daca7631bff16354dc486496cf49ce016e090fef64e86bf879`), filed 2026-09-02 |
 | `lambert-inverse-transseries/lambert_inverse_transseries_bundle/` | *Reversing x + W(x): Exact Reduction and Logarithmic Transseries* (1,378-line/48,108-byte source, 21-page/299,709-byte PDF) | none | `drafts/incoming/lambert_inverse_transseries_bundle.zip` (outer SHA-256 `9c4ea8f8b2e7d0129aa95afaea5715cf629704e6c025bcc78729d38798756654`), filed 2026-09-02 |
 | `lambert-inverse-transseries/reversing_x_plus_lambert_w_transseries/` | *Reversing x+W(x): Exact Reduction, All-Orders Asymptotics, and Logarithmic Transseries* (1,871-line/64,213-byte source, 28-page/332,829-byte PDF) | none | `drafts/incoming/reversing_x_plus_lambert_w_transseries.zip` (outer SHA-256 `4a628a31c4f95a1bafb85206ced18e341af7257afb53cf232dfe1489e237a867`), filed 2026-09-02 |
+
+A third subgroup, `transseries-tutorials/`, was filed on 2026-09-02 from the
+direct-arrival commit `e23bad1bb0ab91fea6df5a1cfd2525eea28dcb16`.  Its four
+packages are general expositions of transseries rather than treatments of one
+scale, so they are kept apart from both subgroups above.
+No archive or checksum ledger was submitted; the receipts below are
+repository-generated.  None of the four loads `docs/fabius-notation.tex`, so
+all four are free of the notation-migration defect classes recorded against
+their neighbours.  Comparison, deduplication, canonical selection, and
+consolidation are deferred; see
+[`series-and-transseries/transseries-tutorials/README.md`](series-and-transseries/transseries-tutorials/README.md).
+
+| Directory | Document | Previous path / provenance |
+| --- | --- | --- |
+| `transseries-tutorials/Transseries_Tutorial-1/` | *Transseries Tutorial* — 5,159-line/188,639-byte source (`75f427b8…0fcd324`) and 143-page/793,390-byte Letter PDF (`81e6c8b0…f10b841a`) | bare arrival; direct-arrival commit `e23bad1b…28dcb16` |
+| `transseries-tutorials/Transseries_Tutorial-2/` | *Transseries Tutorial* (second treatment) — 7,749-line/250,478-byte source (`50da0899…8d95ffb2`) and 164-page/817,544-byte Letter PDF (`4bc99417…39b26453`) | bare arrival; direct-arrival commit `e23bad1b…28dcb16` |
+| `transseries-tutorials/Transseries_Tutorial-3/` | *Transseries for Mere Mortals* — 4,410-line/134,470-byte source (`26fb3f4a…5412c348`) and 121-page/656,187-byte Letter PDF (`8d34824a…5477bbf7`) | bare arrival; direct-arrival commit `e23bad1b…28dcb16` |
+| `transseries-tutorials/Transseries_Tutorial-4/` | *Transseries Tutorial* (fourth treatment) — 8,781-line/344,893-byte source (`f00fe3aa…c1779105`) and 217-page/893,129-byte custom 522-by-738-point PDF (`6e2065d4…401fe4ba`) | bare arrival; direct-arrival commit `e23bad1b…28dcb16` |
+
+All four tutorial PDFs are readable and unencrypted, every font row is embedded,
+and none is Type 3 or Libertinus; three are Letter and one is custom
+522-by-738-point, so canonical restyling is post-publication debt here too.
 
 ## spectra-and-arithmetic — `spectra-and-arithmetic/`
 
