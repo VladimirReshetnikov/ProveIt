@@ -641,6 +641,13 @@ import FabiusFunction.IntegerParameterTranslation
 import FabiusFunction.MultisetInversions
 import FabiusFunction.GeometricSimplexReindex
 import FabiusFunction.RatioExpansion
+import FabiusFunction.BasicBernoulliLog
+import FabiusFunction.GaussianFourierTheta
+import FabiusFunction.JacksonRationalCertificate
+import FabiusFunction.JacobiImaginaryTransform
+import FabiusFunction.ThetaProductIdentities
+import FabiusFunction.CyclicSievingSubsets
+import FabiusFunction.SchurPrincipalSpecialization
 import FabiusFunction.RankMatrixCount
 import FabiusFunction.QExponentialFactorization
 import FabiusFunction.LambertTailLimit
