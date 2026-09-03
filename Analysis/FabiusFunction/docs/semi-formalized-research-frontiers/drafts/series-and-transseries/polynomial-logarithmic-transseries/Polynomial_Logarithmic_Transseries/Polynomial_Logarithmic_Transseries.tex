@@ -17200,8 +17200,15 @@ about all of them}]
 polynomials serve every \(a\) and every branch.  It does not say that
 \(\LamP{n}\) is the coefficient family of every logarithmic reversion.  Even
 inside the affine-logarithmic family the scalar \(a^{n+1}\) is present, and
+% ed.: the degree law and leading coefficient quoted here for X + aL^2 were
+% printed for all n >= 0, but they fail at n = 0: the t^0 coefficient is
+% -aL^2, of degree 2, and the formula 2a^{n+1}/n is undefined at n = 0.
+% Restricted to n >= 1 and the n = 0 value recorded; verified by explicit
+% reversion through n = 4 (c_1 = 2a^2L^3, c_2 = a^3L^5 - 5a^3L^4,
+% c_3 = (2/3)a^4L^7 - 7a^4L^6 + 14a^4L^5).
 as soon as the perturbation ceases to be \(aL\) --- for instance for
-\(X+aL^{2}\) with \(a\ne0\), whose \(t^{n}\)-coefficient has degree
+\(X+aL^{2}\) with \(a\ne0\), whose \(t^{0}\)-coefficient is \(-aL^{2}\) and
+whose \(t^{n}\)-coefficient for \(n\ge1\) has degree
 \(2n+1\) in \(L\) and leading coefficient \(2a^{n+1}/n\) by
 \cref{plt:thm:lag-degree-sharp} --- the coefficients are new polynomials.
 The universality of \(\LamP{n}\) is exactly the universality of the single
@@ -17600,10 +17607,13 @@ Sources that write ``in an admissible sector'' without saying which are
 conflating these two roles with the estimate itself.  With
 \cref{plt:cor:lw-canonical,plt:prop:lw-branch-label} one may take, for
 instance,
+% ed.: the exhibited S_k was written with non-strict inequalities, hence was
+% not open, while a coordinate sector is required to be open by
+% Definition lw-coordinates.  Made strict.
 \[
  S_k=\SetOf{z:\AbsoluteValue{\operatorname{Arg}z}<\pi,\
- \AbsoluteValue{\xi_k}\ge100,\
- \AbsoluteValue{\operatorname{Arg}\xi_k}\le\pi-\tfrac34},
+ \AbsoluteValue{\xi_k}>100,\
+ \AbsoluteValue{\operatorname{Arg}\xi_k}<\pi-\tfrac34},
 \]
 on which \(\xi_k\) and \(\ell_k=\PrincipalLogarithm\xi_k\) are analytic,
 \(w_k\) is analytic, and all hypotheses hold.
@@ -18663,6 +18673,13 @@ Let \(f(w)=w\EulerE^{w}+rw\).  Then \(f'(w)=(1+w)\EulerE^{w}+r\), and
 bijection from \([w_r,\infty)\) onto \([f(w_r),\infty)\).  Put
 \(z_r=\max\SetOf{f(w_r),\EulerE^{2}}\); for \(z>z_r\) let \(w>w_r\) be the
 unique preimage.  As \(z\to\infty\), \(w\to\infty\).
+% ed.: the proof establishes the residual bound only "for z large", while
+% the statement attaches it to the same z_r that governs existence.  The
+% quantifier is repaired here by enlarging z_r once, which is legitimate
+% because the statement is existential in z_r.
+Each of the finitely many smallness conditions used below holds for all
+sufficiently large \(z\); we enlarge \(z_r\) once, at the end of the proof,
+so that all of them hold for \(z>z_r\).
 
 From \cref{plt:eq:lw-r-lambert}, \(w\EulerE^{w}=z-rw\), so
 \begin{equation}\label{plt:eq:lw-r-residual}
@@ -18877,8 +18894,14 @@ is \(2\AbsoluteValue{\mu}(1+\AbsoluteValue{\ell})
 \(\AbsoluteValue{\rho}\).
 \end{proof}
 
+% ed.: the drafted sentence said rho appears "only in the leading term and
+% inside ell", which the displayed formula contradicts: rho also sits in the
+% overall prefactor mu/rho.  What is true is that rho is absent from the
+% ratio a/X = mu/(xi - beta) that drives the series.
 Note the shape of \cref{plt:eq:lw-template-closed}: the exponent \(\rho\) of
-the monomial appears only in the leading term and inside \(\ell\), while
+the monomial appears only in the leading term, in the overall prefactor
+\(\mu/\rho\) and inside \(\ell\) --- never in the ratio
+\(a/X=\mu/(\xi-\beta)\) that drives the series --- while
 the exponent \(\mu\) of the logarithm is the expansion parameter.  This is
 why the generalized Lambert family is a one-parameter family and not a
 two-parameter one.
@@ -18990,11 +19013,25 @@ the first three Lagrange--B\"urmann terms of
  +\frac{A^{2}}{2}\left(\alpha+\frac{\gamma}{L}
  +\frac{\gamma}{L^{2}}\right)\right]
  \notag\\
- &+\BigOAt{L^{4}/Y^{3}}{Y\to+\infty}.
+ &+\FormalBigOAt{t^{3}}{t}.
  \label{plt:eq:lw-ex2-inverse}
 \end{align}
-The instructive point is where the coefficient ring first fails to be
-polynomial.
+% ed.: the remainder in this display was printed as an analytic estimate
+% BigO(L^4/Y^3) although the three blocks are computed by formal
+% Lagrange--Burmann; per the volume's own rule the three O-roles must not be
+% conflated.  Downgraded to the formal tail, with the analytic upgrade
+% stated as a separate sentence carrying its hypothesis.
+The remainder here is the \emph{formal} tail of \cref{plt:thm:lag-burmann},
+not an analytic estimate: the three displayed blocks are produced by a
+computation in the depth-two reversion chart and say nothing by themselves
+about the function \(\CompositionalInverseOf{F}\).  They do become an
+asymptotic statement, with remainder
+\(\BigOAt{L^{4}/Y^{3}}{Y\to+\infty}\), once one adds that \(F\) realises its
+expansion in the sense of \cref{plt:def:cmp-realization} --- which it does,
+being a sum of three elementary functions --- and invokes the transfer of
+\cref{plt:prop:rev-analytic-transfer}; that step is analysis, and it is not
+supplied by the template.  The instructive point of the example is
+elsewhere: it is where the coefficient ring first fails to be polynomial.
 \end{example}
 
 % ed.: S6 states that ``the coefficient of Y^{-2} is no longer a polynomial
@@ -19109,8 +19146,21 @@ for some \(d\in\NaturalNumbers\) and all large \(Y\),
 \begin{equation}\label{plt:eq:lw-notpl}
  X=p_{-1}(L)\,Y+\BigOAt{L^{d}}{Y\to+\infty},
 \end{equation}
-the error absorbing the block \(p_0(L)\) together with the tail.  Dividing
-by \(Y\), \cref{plt:eq:lw-ex3-X} gives
+the error absorbing the block \(p_0(L)\) together with the tail.
+% ed.: the proof as drafted read the two leading blocks off
+% Equation lw-ex3-X, which the template produces only FORMALLY; using it as
+% an analytic asymptotic statement here would be circular.  Replaced by a
+% direct three-line derivation from the defining equation, which needs
+% nothing beyond X -> infinity.
+The two leading terms of \(X/Y\) are obtained directly from
+\cref{plt:eq:lw-ex3-map}, with no appeal to \cref{plt:eq:lw-ex3-X}: writing
+\(Z=\log X\), the equation \(Y=X(1+1/Z)\) gives
+\[
+ \frac XY=\frac{Z}{Z+1}=1-\frac1{Z+1},
+ \qquad
+ L=\log Y=Z+\log\Bigl(1+\frac1Z\Bigr)=Z+\BigOAt{Z^{-1}}{Y\to+\infty},
+\]
+so \(Z=L+\BigOAt{L^{-1}}{Y\to+\infty}\) and hence
 \[
  \frac XY=1-\frac1L+\BigOAt{L^{-2}}{Y\to+\infty},
 \]
@@ -19358,18 +19408,43 @@ associated parameter is
  \le-\log\!\left(1-\frac{\AbsoluteValue{M}}{\AbsoluteValue{K}}\right),
 \end{equation}
 so that \(\widetilde M\to0\) when \(M/K\to0\).  If
-\(2(1+\AbsoluteValue{\widetilde M})<\AbsoluteValue{\widetilde K}\), then
-\(w=\widetilde K+\sum_{a\ge0}\LamP{a}(\widetilde M)\widetilde K^{-a}\)
-absolutely, with the remainder bound
-\cref{plt:eq:lw-remainder} in the reseated data.  In the canonical case
-\(K=\xi_k\), \(M=\ell_k\), and under the hypotheses of
-\cref{plt:prop:lw-branch-label}, this reads
+\(2(1+\AbsoluteValue{\widetilde M})<\AbsoluteValue{\widetilde K}\), then the
+series
+\(\widetilde w\DefinitionEquals\widetilde K
++\sum_{a\ge0}\LamP{a}(\widetilde M)\widetilde K^{-a}\)
+converges absolutely, with the remainder bound
+\cref{plt:eq:lw-remainder} in the reseated data, and
+\(\widetilde w\EulerE^{\widetilde w}=\EulerE^{\xi}\).
+% ed.: as drafted this corollary wrote the reseated sum as "w", silently
+% asserting that the reseated base point returns the SAME solution as the
+% canonical one, and its proof discharged the point in one clause.  That
+% does not follow from the stated hypotheses: Theorem lw-basepoint attaches
+% to each base point SOME solution of w e^w = e^xi, and the reseated one is
+% only known to satisfy |w~ - (xi - ell)| <= |M~| + log 2, which may exceed
+% the radius 1 of the uniqueness disc of Proposition lw-branch-label.
+% Repaired: the identification is now a separate clause with the printed
+% hypothesis 4(1 + |ell_k|) <= |xi_k|, under which the disc argument does
+% apply, and the real case is noted to need nothing at all.
+In the canonical case
+\(K=\xi_k\), \(M=\ell_k\), assume in addition to the hypotheses of
+\cref{plt:prop:lw-branch-label} that
+\begin{equation}\label{plt:eq:lw-reseated-hyp}
+ 4\bigl(1+\AbsoluteValue{\ell_k}\bigr)\le\AbsoluteValue{\xi_k}.
+\end{equation}
+Then the reseated seating condition holds automatically,
+\(\widetilde w=\LambertW_k(z)\), and
 \begin{equation}\label{plt:eq:lw-reseated-canonical}
  \LambertW_k(z)
  =\bigl(\xi_k-\ell_k\bigr)
  +\sum_{a\ge0}\frac{\LamP{a}\bigl(
  \PrincipalLogarithm(1-\ell_k/\xi_k)\bigr)}{(\xi_k-\ell_k)^{a}} .
 \end{equation}
+For real \(z>1\) and \(k=0\) the identification
+\(\widetilde w=\LambertW_0(z)\) needs neither
+\cref{plt:eq:lw-reseated-hyp} nor \cref{plt:prop:lw-branch-label}: all the
+reseated data are then real, hence so is \(\widetilde w\), and a positive
+real argument has exactly one real preimage under \(w\EulerE^{w}\) by
+\cref{plt:prop:lw-real-branches}\,\textup{(iii)}.
 \end{corollary}
 
 \begin{proof}
@@ -19385,9 +19460,45 @@ and the bracket is \(M\), leaving
 \(\widetilde M=\PrincipalLogarithm(1-M/K)\).  The stated modulus bound is
 \cref{plt:eq:lw-log-bound}.  Note \(\EulerE^{\log\widetilde K}
 =K(1-M/K)=K-M=\widetilde K\), so the chosen logarithm is legitimate.  The
-rest is \cref{plt:thm:lw-basepoint,plt:thm:lw-uniform-remainder} applied to
-the reseated data, and both base points produce the same \(w\), namely the
-solution of \(w+\log_{*}w=\xi\) in the relevant region.
+convergence statement, the remainder bound and
+\(\widetilde w\EulerE^{\widetilde w}=\EulerE^{\xi}\) are then
+\cref{plt:thm:lw-basepoint,plt:thm:lw-uniform-remainder} applied verbatim to
+the reseated data \((\widetilde K,\widetilde M)\).
+
+It remains to identify \(\widetilde w\) in the canonical case.  Assume
+\cref{plt:eq:lw-reseated-hyp}, so \(\AbsoluteValue{\ell_k}
+\le\tfrac14\AbsoluteValue{\xi_k}-1\) and in particular
+\(\AbsoluteValue{\ell_k}/\AbsoluteValue{\xi_k}\le\tfrac14\) and
+\(\AbsoluteValue{\xi_k}\ge4\).  By \cref{plt:eq:lw-reseated-M},
+\(\AbsoluteValue{\widetilde M}\le-\log(1-\tfrac14)=\log\tfrac43<0.2877\),
+while \(\AbsoluteValue{\widetilde K}\ge\AbsoluteValue{\xi_k}
+-\AbsoluteValue{\ell_k}\ge\tfrac34\AbsoluteValue{\xi_k}+1\ge4\); since
+\(2(1+\AbsoluteValue{\widetilde M})<2.576<4\), the reseated seating
+condition holds automatically.  \Cref{plt:thm:lw-basepoint}\,(ii) applied to
+the reseated data gives
+\(\AbsoluteValue{\widetilde w-(\widetilde K-\widetilde M)}\le\log2\), hence
+\[
+ \bigl\lvert\widetilde w-(\xi_k-\ell_k)\bigr\rvert
+ \le\AbsoluteValue{\widetilde M}+\log2<0.2877+0.6932<1 .
+\]
+So \(\widetilde w\) is a solution of \(w\EulerE^{w}=z\) lying in the closed
+disc \(\AbsoluteValue{v-(\xi_k-\ell_k)}\le1\); by the uniqueness clause of
+\cref{plt:prop:lw-branch-label} --- whose hypothesis
+\(2(1+\AbsoluteValue{\ell_k})<\AbsoluteValue{\xi_k}\) follows from
+\cref{plt:eq:lw-reseated-hyp} --- it equals \(w_k(z)\), which under the
+distance-to-the-cut hypothesis \cref{plt:eq:lw-cut-distance} is
+\(\LambertW_k(z)\).  This is \cref{plt:eq:lw-reseated-canonical}.
+
+For the real case, let \(z>1\) be real and \(k=0\).  Then \(\xi_0=\log z>0\)
+and \(\ell_0=\log\xi_0<\xi_0\), so \(\widetilde K=\xi_0-\ell_0>0\) and
+\(\widetilde M=\log(1-\ell_0/\xi_0)\) are real; the fixed point
+\(\mathcal Y(\sigma,\tau)\) of \cref{plt:lem:lw-two-variable} is real for
+real \((\sigma,\tau)\in D\), because the contraction \(\Phi\) then maps
+\([-1,1]\) into itself and its fixed point there must be the unique fixed
+point in \(\AbsoluteValue{y}\le1\).  Hence \(\widetilde w\) is real and
+satisfies \(\widetilde w\EulerE^{\widetilde w}=z>0\), and
+\cref{plt:prop:lw-real-branches}\,(iii) leaves it no choice but
+\(\LambertW_0(z)\).
 \end{proof}
 
 \begin{remark}[What this buys, quantitatively]
@@ -19396,10 +19507,15 @@ The reseated parameter \(\widetilde M=\PrincipalLogarithm(1-\ell_k/\xi_k)\)
 is \(\BigOAt{\ell_k/\xi_k}{\AbsoluteValue{\xi_k}\to\infty}\), whereas
 \(M=\ell_k\to\infty\).  The seating condition
 \cref{plt:eq:lw-seating} therefore holds for the reseated series on a
+% ed.: the canonical threshold was printed as 5.3569...; the root of
+% xi = 2 + 2 log xi is 5.356693980..., i.e. 5.3567 to four decimals.
+% Corrected, and the threshold of the reseated condition added.
 strictly larger region: for real \(z\) it becomes
-\(2(1+\AbsoluteValue{\log(1-\ell_0/\xi_0)})<\xi_0-\ell_0\), which holds
-already at \(\xi_0=5\), whereas the canonical condition needs
-\(\xi_0>5.3569\ldots\).  Numerically, with \(K=\xi_0\) and
+\(2(1+\AbsoluteValue{\log(1-\ell_0/\xi_0)})<\xi_0-\ell_0\), whose threshold
+is \(\xi_0=4.2849\ldots\), so that it holds already at \(\xi_0=5\), whereas
+the canonical condition \(2(1+\log\xi_0)<\xi_0\) needs
+\(\xi_0>5.3567\ldots\) (the root of \(\xi=2+2\log\xi\), namely
+\(5.356693980\ldots\)).  Numerically, with \(K=\xi_0\) and
 \(\widetilde K=\xi_0-\ell_0\):
 \begin{center}
 \begin{tabular}{@{}rlllll@{}}
@@ -19421,11 +19537,18 @@ already at \(\xi_0=5\), whereas the canonical condition needs
 \bottomrule
 \end{tabular}
 \end{center}
+% ed.: the drafted reading said reseating "is numerically better at xi_0 =
+% 10 and 30", which its own table contradicts at xi_0 = 10, N = 10
+% (6.4e-10 canonical against 1.7e-9 reseated).  Corrected to what the
+% table shows.
 The honest reading: reseating enlarges the region on which convergence is
-\emph{proved}, and it is numerically better at \(\xi_0=10\) and \(30\);
-at \(\xi_0=5\) the canonical series happens to be better even though nothing
-here proves it converges.  A larger proved domain and a smaller error at a
-given point are different goods.
+\emph{proved}, and it is numerically better at \(\xi_0=30\) throughout the
+displayed range, and at \(\xi_0=10\) at the two lower orders --- but not at
+\(N=10\), where the canonical series is already ahead by a factor of about
+three; at \(\xi_0=5\) the canonical series is better at every displayed
+order, even though nothing here proves that it converges at all.  A larger
+proved domain and a smaller error at a given point are different goods, and
+the table shows that neither implies the other.
 \end{remark}
 
 \begin{remark}[Associated Stirling numbers]
@@ -20106,8 +20229,12 @@ holomorphic on \(\AbsoluteValue{z}<r\) with coefficients in \(\K\).  Then
 \[
  h\compose u\ \approx\ \sum_{k\ge0}h_{k}U^{k},
 \]
+% ed.: the right-hand side was attributed to \cref{plt:prop:tay-scalar-outer},
+% ed.: which is stated for arguments in t\PLpow.  Here U has rational blocks, so
+% ed.: the ambient is \(\K(L)[[t]]\); that case is covered by the last sentence
+% ed.: of \cref{plt:prop:dif-substitution}, which is the citation used now.
 the right side being the formally summable substitution of
-\cref{plt:prop:tay-scalar-outer}.
+\cref{plt:prop:dif-substitution}, applied in \(\K(L)[[t]]\).
 \end{proposition}
 
 \begin{proof}
@@ -20147,8 +20274,16 @@ the real logarithm and the principal branch of the power for large real
  (1+u)^{\alpha}\approx(1+U)^{\alpha},\qquad
  \EulerE^{u}\approx\exp U,
 \]
-where the right-hand sides are the formal operations of
-\cref{plt:lem:cmp-exp-log} and \cref{plt:thm:mul-binomial}.  In particular the
+% ed.: the right-hand sides were identified outright with the formal operations
+% ed.: of \cref{plt:lem:cmp-exp-log} and \cref{plt:thm:mul-binomial}, both of
+% ed.: which are stated over \PLpow; for a genuinely rational \(U\) the formal
+% ed.: object is the scalar substitution of \cref{plt:prop:dif-substitution} in
+% ed.: \(\K(L)[[t]]\), and the identification with the named operations is
+% ed.: asserted only where they are defined.  Restricted accordingly.
+where the right-hand sides are the scalar substitutions of
+\cref{plt:prop:dif-substitution} in \(\K(L)[[t]]\); when \(U\in\PLpow\) they
+are the formal operations of \cref{plt:lem:cmp-exp-log} and
+\cref{plt:thm:mul-binomial}.  In particular the
 formal geometric, logarithmic and binomial series may be substituted
 termwise, with no hypothesis beyond \(\ordt U\ge1\).
 \end{corollary}
@@ -20158,8 +20293,11 @@ Apply \cref{plt:prop:an-holomorphic-substitution} to \(h(z)=\log(1+z)\) and
 \(h(z)=(1+z)^{\alpha}\), both holomorphic on \(\AbsoluteValue{z}<1\), and to
 \(h(z)=\EulerE^{z}\), entire; \(u\to0\) puts the argument in the disc for
 large \(X\), and on the positive real ray the principal branches agree with
-the power series.  The formal sums coincide with the named formal operations
-by \cref{plt:prop:tay-scalar-outer}.
+the power series.  That the formal sums are the substitutions named, and that
+for \(U\in\PLpow\) they coincide with the operations of
+\cref{plt:lem:cmp-exp-log} and \cref{plt:thm:mul-binomial}, is
+\cref{plt:prop:dif-substitution} together with the uniqueness of the
+continuous \(\K\)-algebra homomorphism sending \(z\) to \(U\).
 \end{proof}
 
 \begin{remark}[Composition: the hypotheses are geometric, not algebraic]
@@ -20226,7 +20364,7 @@ sufficient hypotheses that do work are given in
 % ed.: differentiability hypotheses".  No such hypotheses are named, and the
 % ed.: implication is false without them, by the display in the box above.
 % ed.: S6 uses the conclusion to justify choosing m close to 1 in its
-% ed.: residual-transfer theorem.  The repair is (plt:thm:an-omega-computable)
+% ed.: residual-transfer theorem.  The repair is (plt:prop:an-omega-computable)
 % ed.: and (plt:thm:an-inverse-transfer), which take the derivative bound as a
 % ed.: hypothesis and verify it directly for the map at hand instead of
 % ed.: deducing it from an expansion.
@@ -20322,9 +20460,13 @@ every \(N\ge2\), that is, \eqref{plt:eq:an-strong} holds for \(h-c\) against
 so \(h-c\approx A\).
 \end{proof}
 
+% ed.: the hypothesis "locally integrable" was missing here although the proof
+% ed.: invokes \cref{plt:thm:an-integration}, which requires it; without it the
+% ed.: integrals below need not exist.  Restored.
 \begin{corollary}[The tail integral of an integrable expansion]
 \label{plt:cor:an-tail}
-If \(g\approx G\) with \(\ordt G\ge2\), then \(g\) is integrable near
+If \(g\colon[X_{0},\infty)\to\ComplexNumbers\) is locally integrable and
+\(g\approx G\) with \(\ordt G\ge2\), then \(g\) is integrable near
 \(+\infty\) and
 \[
  \int_{X}^{\infty}g(s)\,\Differential s\ \approx\ -A,
@@ -20443,12 +20585,18 @@ are \(C,M,R''\) with
 \]
 For \(\AbsoluteValue{z}\ge2R''\) with \(\AbsoluteValue{\arg z}\le\theta'\),
 the circle \(\AbsoluteValue{w-z}=\delta\AbsoluteValue{z}\) lies in that
-region, so Cauchy's estimate gives
+region, so Cauchy's estimate gives, with
+% ed.: the displayed constant was written (1-\delta)^{-N-1}, which bounds
+% ed.: |w|^{-N-1} by ((1-\delta)|z|)^{-N-1} only when N+1\ge0.  Cutoffs here run
+% ed.: over all of Z (\ordt F may be negative), and for N\le-2 the maximum of
+% ed.: |w|^{-N-1} on the circle is attained at the outer end instead.  Replaced
+% ed.: by the two-sided constant \kappa, which covers both signs.
+\(\kappa=\max\bigl((1-\delta)^{-N-1},(1+\delta)^{-N-1}\bigr)\),
 \[
  \AbsoluteValue{G'(z)}
  \le\frac{1}{\delta\AbsoluteValue{z}}
    \max_{\AbsoluteValue{w-z}=\delta\AbsoluteValue{z}}\AbsoluteValue{G(w)}
- \le\frac{C\,(1-\delta)^{-N-1}\bigl(\log((1+\delta)\AbsoluteValue{z})\bigr)^{M}}
+ \le\frac{C\,\kappa\,\bigl(\log((1+\delta)\AbsoluteValue{z})\bigr)^{M}}
         {\delta\,\AbsoluteValue{z}^{\,N+2}}
  \le C'\AbsoluteValue{z}^{-(N+2)}\bigl(\log\AbsoluteValue{z}\bigr)^{M}
 \]
@@ -20520,8 +20668,17 @@ Steps (2) and (3) are exactly what the sources omit.
 \begin{remark}[What \cref{plt:prop:rev-analytic-transfer} does and does not
 assume]
 \label{plt:rmk:an-transfer-recall}
+% ed.: \cref{plt:prop:rev-analytic-transfer} is printed with the analytic
+% ed.: inverse written \rev{f}.  In this volume that symbol is reserved for the
+% ed.: FORMAL compositional inverse -- and the whole content of
+% ed.: (plt:thm:an-inverse-transfer) is that the formal and the analytic
+% ed.: inverse agree asymptotically, a statement that is vacuous if the two are
+% ed.: written with one glyph.  This is the same collision the ed. note before
+% ed.: (plt:sec:an-omega-constants) records against S2.  The recollection below
+% ed.: therefore names x_* by the equation it solves.
 \Cref{plt:prop:rev-analytic-transfer} states: if \(f\) is \(C^{1}\) and
-injective on an interval \(I\), \(y\in f(I)\), \(x_{*}=\rev{f}(y)\),
+injective on an interval \(I\), \(y\in f(I)\), \(x_{*}\) is the unique point of
+\(I\) with \(f(x_{*})=y\),
 \(x_{N}\in I\) and \(\AbsoluteValue{f'}\ge m>0\) between \(x_{N}\) and
 \(x_{*}\), then
 \begin{equation}\label{plt:eq:an-transfer}
@@ -20680,9 +20837,14 @@ analytic fact about a function, of the kind that
 \subsection{From the formal residual order to an analytic residual size}
 \label{plt:sec:an-residual-size}
 
+% ed.: the coefficient field was left at the ambient \(\K\subseteq\ComplexNumbers\)
+% ed.: of this part, but the proof applies \cref{plt:thm:cmp-analytic-transfer},
+% ed.: whose hypothesis (A2) asks for an inner realization with REAL
+% ed.: coefficients, and both \(\varphi\) and \(h\) are real valued here.  The
+% ed.: real coefficient field is now printed, as house rule 5 requires.
 \begin{theorem}[Analytic size of a residual]
 \label{plt:thm:an-residual-analytic}
-Let \(Y_{0}>1\), let \(\Phi=X+A\in\Gnear\), and let
+Let \(\K\subseteq\RealNumbers\), let \(Y_{0}>1\), let \(\Phi=X+A\in\Gnear\), and let
 \(\varphi\colon[Y_{0},\infty)\to\RealNumbers\) satisfy \(\varphi\approx\Phi\)
 in the sense of \cref{plt:def:an-expansion}, with the real logarithm and the
 regime \(Y\to+\infty\).  Let \(H=X+B\in\Gnear\) with \(B\in\K[L][t]\) a
@@ -20709,7 +20871,9 @@ defined there.
 We verify the three hypotheses of \cref{plt:thm:cmp-analytic-transfer} for
 the outer function \(\varphi\) and the inner function \(h\).  (A1) is the
 previous paragraph.  (A2) holds with \(c=1\), \(\rho=1\) and \(U=tB\in
-t\PLpow\): the function \(u\) is the evaluation of the finite sum \(tB\), so
+t\PLpow\), whose coefficients are real because \(\K\subseteq\RealNumbers\), as
+that hypothesis of \cref{plt:thm:cmp-analytic-transfer} requires: the function
+\(u\) is the evaluation of the finite sum \(tB\), so
 \(u\approx U\) exactly (its remainder vanishes at every cutoff beyond the
 \(t\)-degree of \(tB\)), and \(u\to0\).  (A3) holds automatically on the
 positive real ray with \(c=1>0\).  By \cref{plt:thm:an-equivalence} the
@@ -20731,7 +20895,9 @@ The identity function realizes the series \(X\), so by
 \begin{theorem}[Transfer of a formal inverse expansion to the analytic
 inverse]
 \label{plt:thm:an-inverse-transfer}
-Assume:
+% ed.: coefficient field printed: \cref{plt:thm:an-residual-analytic} is applied
+% ed.: below, and it now carries \(\K\subseteq\RealNumbers\).
+Let \(\K\subseteq\RealNumbers\) and assume:
 \begin{enumerate}
 \item[\textup{(H1)}] \emph{Regime and derivative bound.}
 \(\varphi\colon[Y_{0},\infty)\to\RealNumbers\) is \(C^{1}\) with
@@ -20811,9 +20977,19 @@ nonetheless indispensable at any \emph{specific} \(x\) at which one wants to
 use the resulting inequality: a truncated formal inverse can take values
 outside \([Y_{0},\infty)\) for moderate \(x\), and then
 \(\varphi(g_{N}(x))\) is not even defined, so the numerical bound is vacuous
-while the asymptotic theorem remains true.  Item (2) of the list preceding
-\cref{plt:thm:om-analytic} is the specialisation of (H2) to
-\(\varphi(Y)=Y+\log Y\).
+while the asymptotic theorem remains true.
+% ed.: this sentence read "Item (2) of the list preceding
+% ed.: \cref{plt:thm:om-analytic} is the specialisation of (H2) to
+% ed.: \varphi(Y)=Y+\log Y", which is wrong in an instructive way: (H2)
+% ed.: specialised to that map is the trivial statement \varphi\approx X+L (the
+% ed.: remainder vanishes identically), whereas item (2) asks for an analytic
+% ed.: remainder for log applied to the TRUNCATION.  Item (2) is the conclusion
+% ed.: of \cref{plt:thm:an-residual-analytic}, not its hypothesis.  Corrected.
+Item (2) of the list preceding \cref{plt:thm:om-analytic} --- an analytic
+remainder for the truncated logarithm --- is not (H2) but what
+\cref{plt:thm:an-residual-analytic} \emph{deduces} from (H2); for
+\(\varphi(Y)=Y+\log Y\) the hypothesis (H2) itself is trivial, since
+\(\Phi=X+L\) is realized by \(\varphi\) with zero remainder at every cutoff.
 \end{remark}
 
 % ed.: S2's transfer theorem lists the hypotheses "F(y) = y + o(y)" and
@@ -20861,7 +21037,12 @@ implied constant, an unspecified threshold, or a limit.
 \begin{proof}
 By \cref{plt:prop:om-real-bijection}, \(\varphi(Y)=Y+\log Y\) is a strictly
 increasing bijection \((0,\infty)\to\RealNumbers\) with
-\(\varphi'(Y)=1+Y^{-1}\), and for \(x>1\) the envelope
+\(\varphi'(Y)=1+Y^{-1}\); the same proposition gives \(\WrightOmega(1)=1\) and
+% ed.: the step "for x>1 the envelope gives omega(x) > x - log x" skipped the
+% ed.: verification of that envelope's own hypothesis, which is omega(x)>1 and
+% ed.: not x>1.  Supplied: omega is strictly increasing with omega(1)=1.
+\(\WrightOmega\) strictly increasing, so \(\WrightOmega(x)>1\) for \(x>1\),
+which is the hypothesis under which the envelope
 \eqref{plt:eq:om-envelope} gives \(\WrightOmega(x)>x-\log x\).  Also
 \(x-\log x\ge1>0\) for every \(x>0\), because \(x\mapsto x-\log x\) has its
 minimum at \(x=1\).  Hence both \(\WrightOmega(x)\) and
@@ -20915,7 +21096,14 @@ Then
  =u+\frac{u^{2}}{2(1-u)}\le u+u^{2},
 \]
 the last step because \(u\le\tfrac12\).  This is
-\eqref{plt:eq:an-R0-bracket}.  Now apply
+\eqref{plt:eq:an-R0-bracket}.
+% ed.: the proof invoked \cref{plt:prop:an-omega-computable}, which is stated
+% ed.: for x>1, while this proposition is stated for x\ge1.  The endpoint is
+% ed.: dispatched separately rather than left to a proposition that does not
+% ed.: cover it.
+At \(x=1\) all three quantities in
+\eqref{plt:eq:an-omega0-bracket} vanish, since \(L=0\) and
+\(\WrightOmega(1)=1=x-\log x\), so assume \(x>1\).  Now apply
 \cref{plt:prop:an-omega-computable} with \(N=0\), where
 \(\WrightOmega_{0}(x)=x-L\) and hence \(\mu_{0}(x)=x-L\): the sign of
 \(-R_{0}\ge0\) gives \(\WrightOmega(x)\ge x-L\), the upper bound of
@@ -20992,6 +21180,10 @@ true value, computed independently to \(40\) digits from
 inside the enclosure and within \(5\times10^{-6}\) relative of its lower end.
 The lower bound is close to sharp because \(\varphi'(\zeta)=1+\zeta^{-1}\) is
 close to \(1\); the whole enclosure has relative width
+% ed.: the relative width was quoted as \mu_3^{-1}.  Width divided by the upper
+% ed.: end is 1-(1+\mu^{-1})^{-1}=(1+\mu)^{-1}, which is slightly smaller;
+% ed.: recomputed, it is 1.0374 per cent against \mu_3^{-1}=1.0483 per cent.
+\((1+\mu_{3})^{-1}=1.037\%\), and in particular at most
 \(\mu_{3}^{-1}\approx1.05\%\).
 
 For comparison, \cref{plt:thm:om-analytic} predicts the error
@@ -21178,8 +21370,11 @@ follow from its formal \(t\)-order; it follows from the formal order
 inverse is the asymptotic expansion of the analytic inverse
 (\cref{plt:thm:an-inverse-transfer}).  For \(\varphi(Y)=Y+\log Y\) all
 constants are explicit and the enclosure
+% ed.: "with relative width 1/(x-\log x)": the exact relative width is
+% ed.: (1+x-\log x)^{-1}; the quoted quantity is an upper bound for it, so the
+% ed.: sentence is corrected to say so.
 \eqref{plt:eq:an-omega-bracket} holds at every single \(x>1\), with relative
-width \(1/(x-\log x)\); at \(x=100\), \(N=3\) it brackets the true error
+width at most \(1/(x-\log x)\); at \(x=100\), \(N=3\) it brackets the true error
 \(8.153845\times10^{-8}\) between \(8.153804\times10^{-8}\) and
 \(8.239278\times10^{-8}\).  Where the derivative vanishes --- the Lambert
 branch point --- a residual of \(10^{-8}\) coexists with an error of
@@ -21267,6 +21462,17 @@ by
   \qquad
   \frac{\Differential\Lambda}{\Differential x}=-\frac1x .
 \end{equation}
+% ed.: this sentence originally attributed the derivation to all four
+% classes.  Unlike its mirror \PLpow at infinity, the power-series class
+% K[Lambda][[x]] is NOT stable under d/dx: d(Lambda)/dx = -1/x already leaves
+% it.  This is trap (T6) in its sharpest form, and it is why the near-identity
+% class of plt:def:du-near-identity is described inside K[Lambda]((x)).
+The last three of these classes are stable under
+\(\Differential/\Differential x\); the first is not, since
+\(\Differential\Lambda/\Differential x=-x^{-1}\notin\K[\Lambda][[x]]\).  This
+is the first asymmetry with the situation at infinity, where \(\PLpow\) is
+\(\DX\)-stable, and it recurs as trap~\textup{(T6)} of
+\cref{plt:prop:du-traps}.
 For a complex germ one replaces the interval by a sector
 \(\SetOf{0<\AbsoluteValue{x}<x_{0},\ \AbsoluteValue{\arg x}<\theta}\) and
 fixes a branch of \(\log\); every statement below that mentions positivity or a
@@ -21465,7 +21671,16 @@ also supplies the practical criterion.
 Work on \(0<x<\EulerE^{-1}\) with the real branches, so that
 \(\Lambda>1\) and \(\Lambda_{2}>0\).
 \begin{enumerate}[label=\textup{(\roman*)}]
-\item Every nonzero \(f\in\tau(\PLlau)\), evaluated at the generators, satisfies
+% ed.: this item said "every nonzero f in tau(PLlau), evaluated at the
+% generators".  A general element of K[Lambda_2]((Lambda^{-1})) is a formal,
+% typically divergent, series and has no evaluation; and the proof uses only
+% asymptotic equivalence to the leading monomial.  Restated for functions.
+\item Let \(F\in\PLlau\) be nonzero, with leading monomial \(c\,t^{n}L^{j}\),
+  and let \(f\) be a function on \((0,x_{0})\) that realizes \(\tau(F)\) at
+  leading order, that is, \(f\sim c\,\Lambda^{-n}\Lambda_{2}^{\,j}\) as
+  \(x\to0^{+}\); this holds in particular whenever \(f\approx\tau(F)\) in the
+  sense of \cref{plt:def:mul-asymptotic} read in the variable \(X=\Lambda\).
+  Then
   \[
     \log\AbsoluteValue{f(x)}=\BigOAt{\Lambda_{2}}{x\to0^{+}}
     =\LittleOAt{\Lambda}{x\to0^{+}} ;
@@ -21487,9 +21702,13 @@ Work on \(0<x<\EulerE^{-1}\) with the real branches, so that
 \end{proposition}
 
 \begin{proof}
-(i)  Let \(c\,\Lambda^{-n}\Lambda_{2}^{\,j}\), with \(c\ne0\), be the leading
-term of \(f\).  Then \(f/(c\,\Lambda^{-n}\Lambda_{2}^{\,j})\to1\), by
-\cref{plt:lem:ring-dominance-analytic} transported through \(\tau\).  Hence
+(i)  By hypothesis \(f/(c\,\Lambda^{-n}\Lambda_{2}^{\,j})\to1\).  That
+\(f\approx\tau(F)\) implies this is the estimate
+\eqref{plt:eq:mul-asymptotic} at the cutoff \(N=n+1\), which reads
+\(\AbsoluteValue{f-p_{n}(\Lambda_{2})\Lambda^{-n}}\le
+C\Lambda^{-(n+1)}\Lambda_{2}^{M}\), combined with
+\(p_{n}(\Lambda_{2})\sim c\,\Lambda_{2}^{\,j}\) and
+\(\Lambda^{-1}\Lambda_{2}^{M-j}\to0\).  Hence
 \[
   \log\AbsoluteValue f
   =-n\Lambda_{2}+j\log\Lambda_{2}+\BigOAt{1}{x\to0^{+}}
@@ -21607,9 +21826,18 @@ Then there are \(K_{N}\in\NaturalNumbers\), \(C_{N}>0\) and
   \le C_{N}\,\frac{\Lambda_{2}^{K_{N}}}{\Lambda^{N+1}}
   \qquad(\Lambda\ge\Lambda_{N}).
 \end{equation}
-In particular \eqref{plt:eq:du-lower-branch} is an asymptotic expansion of
-\(\LambertW_{-1}(-x)\) as \(x\to0^{+}\) on the scale
-\(\SetOf{\Lambda^{-n}\Lambda_{2}^{\,j}}\), and
+% ed.: "asymptotic expansion on the scale of all monomials Lambda^{-n}
+% Lambda_2^j" would presuppose that this doubly indexed family is a Poincare
+% scale, which it is not (plt:prop:an-no-enumeration).  The precise assertion
+% is the relation of plt:def:mul-asymptotic read in the variable X=Lambda,
+% which is exactly what plt:eq:du-lower-branch-error states.
+In particular \eqref{plt:eq:du-lower-branch} holds in the sense of
+\cref{plt:def:mul-asymptotic} read in the large variable \(X=\Lambda\), with
+\(L=\Lambda_{2}\): the estimate \eqref{plt:eq:du-lower-branch-error} is
+\eqref{plt:eq:mul-asymptotic} at the cutoff \(N+1\), and the cutoffs \(N+1\),
+\(N\in\NaturalNumbers\), are cofinal, so
+\cref{plt:lem:mul-asymptotic-basic}(1) supplies the remaining ones.
+Concretely,
 \[
   \LambertW_{-1}(-x)
   =-\Lambda-\Lambda_{2}-\frac{\Lambda_{2}}{\Lambda}
@@ -22316,9 +22544,17 @@ the bound being uniform in \(k\).  Thus every \(f^{(k)}\) lies in the
 using \(\mathrm{ev}(\varepsilon)=1\) and multiplicativity.  This is
 \eqref{plt:eq:du-lagrange-fixedpoint}.
 
+% ed.: the appeal to the enlarged exponent group also needs
+% plt:lem:du-taylor-zero there, which was stated for m_0; its proof uses
+% nu_x(B) >= 2 only through nu_x(B) - 1 > 0, so it generalises as stated.
 For the Puiseux-log and Hahn versions, every step used only
 \(\delta=\nu_{x}(h)-1>0\) and the properties (F1), (F2) of \(\nu_{x}\), which
-hold verbatim over the enlarged exponent group.
+hold verbatim over the enlarged exponent group; and
+\cref{plt:lem:du-taylor-zero}, whose proof uses \(\nu_{x}(B)\ge2\) only
+through the estimate \(\nu_{x}\bigl(B^{k}\partial^{k}f/k!\bigr)\ge\nu_{x}(f)
++k\bigl(\nu_{x}(B)-1\bigr)\) and the membership
+\(\nu_{x}(B/x)>0\), holds there with \(\mathfrak m_{0}\) replaced by
+\(\SetOf{B:\nu_{x}(B)>1}\).
 \end{proof}
 
 \begin{proposition}[Logarithmic degree of a finite-point reversion]
@@ -22630,9 +22866,14 @@ The condition \(\alpha_{j}\to+\infty\) that every source imposes on a Dulac
 series is left-finiteness, not well-basedness.  The distinction is invisible in
 \(\PLlau\), where the two coincide by
 \cref{plt:thm:du-dulac-vs-class}(iii), and is essential the moment real
-exponents enter: a Hahn series such as \(\sum_{k}x^{1-1/k}\) has a perfectly
-legitimate support, a leading term, and a well-defined product, but has no
-finite truncation \(\Trunc{\cdot}{1}\) other than \(0\) --- so every algorithm
+% ed.: this read "has no finite truncation Trunc_{<1} other than 0", which is
+% doubly wrong: Trunc_{<N} of that series IS finite (and in general nonzero)
+% for every N < 1, and Trunc_{<1} is the whole infinite series, not 0.  The
+% correct statement is that truncation stops being finite at the cutoff 1.
+exponents enter: a Hahn series such as \(\sum_{k\ge1}x^{1-1/k}\) has a
+perfectly legitimate support, a leading term, and a well-defined product, but
+its truncation \(\Trunc{\cdot}{N}\) is an infinite sum for every \(N\ge1\), and
+already \(\Trunc{\cdot}{1}\) is the whole series --- so every algorithm
 of \cref{plt:sec:algorithms}, every finite-determination theorem, and the very
 notion of ``computing the expansion to order \(N\)'' fails for it.  Dulac
 theory needs left-finiteness precisely because it needs those.
@@ -22658,12 +22899,19 @@ Let \(f,g\) be germs at \(0^{+}\) and
 \item \(f\approx_{0}0\) if and only if
   \(f(x)=\BigOAt{x^{N}}{x\to0^{+}}\) for every \(N\).  Such germs exist and are
   nonzero: \(\EulerE^{-1/x}\approx_{0}0\).
+% ed.: this item asserted that f |-> f-hat is a ring homomorphism ONTO
+% D(R).  Surjectivity is a Borel--Ritt statement for left-finite real
+% exponent sets; it is not proved here and is not needed for anything below,
+% so the claim is downgraded to "into" and the gap is named.
 \item If \(f\approx_{0}\hat f\) and \(g\approx_{0}\hat g\) then
   \(f+g\approx_{0}\hat f+\hat g\) and \(fg\approx_{0}\hat f\hat g\).
   Consequently the germs admitting a Dulac series form a ring, the map
-  \(f\mapsto\hat f\) is a ring homomorphism onto \(\mathfrak D(\RealNumbers)\),
-  and by \textup{(ii)} its kernel --- the flat germs --- is a nonzero ideal.
-  The map is therefore \emph{not} injective.
+  \(f\mapsto\hat f\) is a ring homomorphism \emph{into}
+  \(\mathfrak D(\RealNumbers)\), and by \textup{(ii)} its kernel --- the flat
+  germs --- is a nonzero ideal.  The map is therefore \emph{not} injective.
+  Whether it is surjective --- a Borel--Ritt theorem for left-finite real
+  exponent sets, of which \cref{plt:thm:an-borel-ritt} is the integer-exponent
+  case at infinity --- is not decided here and is used nowhere below.
 \end{enumerate}
 \end{proposition}
 
@@ -23046,8 +23294,15 @@ carried by a finitely generated grid, with
   \bigl[x^{r}\bigr]\hat P\in\RealNumbers_{>0}
   \ \text{a constant},
 \end{equation}
-and \(\hat P\) is independent of the analytic parametrisation of \(\Sigma\) in
-the sense of \cref{plt:cor:du-chart-independence}.  In particular, if
+% ed.: "P-hat is independent of the parametrisation" would be false as
+% literally read -- a change of chart conjugates P-hat.  What is invariant is
+% the membership and the leading data, which is what cor:du-chart-independence
+% supplies.
+and a change of the analytic parametrisation of \(\Sigma\) conjugates
+\(\hat P\) by an analytic chart change \(\varphi\) as in
+\cref{plt:cor:du-chart-independence}, which changes neither membership in
+\(\mathfrak D(\RealNumbers)\), nor \(\nu_{x}(\hat P)=r\), nor the leading
+logarithmic degree, nor the finite generation of the grid.  In particular, if
 \(r\ne1\) then \(\hat P(x)-x\) has leading term
 \(\bigl([x^{r}]\hat P\bigr)x^{r}\) when \(r<1\) and \(-x\) when \(r>1\); if
 \(r=1\) the leading block of \(\hat P-x\) is not determined by the ratios
@@ -23117,10 +23372,15 @@ let \(D(x)=cx^{r}\) be the model transition map.
   \(\hat D\in\sigma\bigl(\K[L]((t^{1/q}))\bigr)\) and in no
   \(\sigma\bigl(\K[L]((t^{1/s}))\bigr)\) with \(q\nmid s\); the Puiseux-log
   ramification index is exactly \(q\).
+% ed.: "is the semigroup generated by r and 1" asserts an equality that the
+% grid bookkeeping of plt:thm:du-composition-closure(ii) does not give; it
+% gives a containment, which is all that is used.
 \item If \(r\notin\RationalNumbers\) then \(\hat D\) lies in no Puiseux-log
-  ring at all.  The grid produced by composing \(\hat D\) with analytic charts,
-  by \cref{plt:cor:du-chart-independence}, is the semigroup generated by \(r\)
-  and \(1\); it is left-finite by \cref{plt:lem:du-fg-semigroup}, but the group
+  ring at all.  The grid produced by composing \(\hat D\) with analytic charts
+  on either side is contained, by
+  \cref{plt:cor:du-chart-independence} and
+  \cref{plt:thm:du-composition-closure}(ii), in the semigroup generated by
+  \(r\) and \(1\); it is left-finite by \cref{plt:lem:du-fg-semigroup}, but the group
   \(\IntegerNumbers+r\IntegerNumbers\) it generates is dense in
   \(\RealNumbers\), so no ramification index bounds it.
 \end{enumerate}
@@ -23157,14 +23417,24 @@ Work in a Hahn ambient admitting monomials \(x^{a}\Lambda^{b}\) with
     \qquad
     \binom\rho k\ne0\ \text{for every }k\ge0 .
   \]
+% ed.: the statement here read "it lies in none of sigma(PLlau),
+% sigma(PLrat), sigma(PLit), nor in any Puiseux-log or Dulac class".  That is
+% false for rho a negative integer, where item (i) exhibits the element inside
+% sigma(PLrat) and sigma(PLit); the exclusion from those two classes needs
+% rho not an integer, and only the exclusion from the polynomial-block classes
+% holds for every rho outside the natural numbers.  Split accordingly.
   Consequently \(\bigl(x(\Lambda+1)\bigr)^{\rho}
   =x^{\rho}\Lambda^{\rho}\sum_{k}\binom\rho k\Lambda^{-k}\) has infinitely many
-  nonzero logarithmic coefficients \emph{and}, if
-  \(\rho\notin\IntegerNumbers\), a non-integer leading logarithmic exponent;
-  it lies in none of \(\sigma(\PLlau)\), \(\sigma(\PLrat)\),
-  \(\sigma(\PLit)\), nor in any Puiseux-log or Dulac class, all of which have
-  integer logarithmic exponents.  The \emph{degree} has ceased to be a natural
-  number.
+  nonzero logarithmic coefficients, hence lies in no class with polynomial
+  coefficient blocks: not in \(\sigma(\PLlau)\), not in a Puiseux-log ring
+  \(\sigma\bigl(\K[L]((t^{1/s}))\bigr)\), and not in \(\mathfrak D(\K)\).  If
+  moreover \(\rho\notin\IntegerNumbers\), its leading logarithmic exponent
+  \(\rho\) is not an integer, and it then lies in neither \(\sigma(\PLrat)\)
+  nor \(\sigma(\PLit)\), every monomial of those two classes having
+  logarithmic exponent in \(\IntegerNumbers\); for
+  \(\rho\in\IntegerNumbers_{<0}\), by contrast, it does lie in both, as
+  \textup{(i)} shows for \(\rho=-1\).  In the non-integer case the
+  \emph{degree} has ceased to be a natural number.
 \item Neither failure is exotic.  Failure \textup{(i)} is forced by a single
   division, since \(\Lambda+1\) is not a unit of \(\K[\Lambda]\)
   (\cref{plt:thm:div-unit-criterion} transported).  Failure \textup{(ii)} is
@@ -23191,13 +23461,18 @@ support is infinite; membership in \(\sigma(\PLit)\) is the definition of
 converges \(\Lambda^{-1}\)-adically and
 \(\binom\rho k=\rho(\rho-1)\cdots(\rho-k+1)/k!\) vanishes only if
 \(\rho\in\SetOf{0,1,\dots,k-1}\), which is excluded by
-\(\rho\notin\NaturalNumbers\).  The leading monomial is
-\(x^{\rho}\Lambda^{\rho}\); if \(\rho\notin\IntegerNumbers\) its logarithmic
-exponent is not an integer, whereas every monomial of the listed classes has
-logarithmic exponent in \(\IntegerNumbers\) --- for \(\sigma(\PLlau)\) and the
-Dulac and Puiseux-log classes in \(\NaturalNumbers\), for \(\sigma(\PLrat)\)
-and \(\sigma(\PLit)\) in \(\IntegerNumbers\) --- and Hahn representations are
-unique.
+\(\rho\notin\NaturalNumbers\).  Since all these coefficients are nonzero, the
+single \(x\)-block at the exponent \(\rho\) is an infinite series in
+\(\Lambda\), so the element is not in any class whose blocks are polynomials
+in \(\Lambda\), that is, not in \(\sigma(\PLlau)\), not in
+\(\sigma\bigl(\K[L]((t^{1/s}))\bigr)\) and not in \(\mathfrak D(\K)\); Hahn
+representations are unique, so no rewriting can repair this.  The leading
+monomial is \(x^{\rho}\Lambda^{\rho}\); if \(\rho\notin\IntegerNumbers\) its
+logarithmic exponent is not an integer, whereas every monomial of
+\(\sigma(\PLrat)\) and of \(\sigma(\PLit)\) has logarithmic exponent in
+\(\IntegerNumbers\), which excludes those two classes as well.  For
+\(\rho\in\IntegerNumbers_{<0}\) no such exclusion is available, and indeed
+\textup{(i)} places \(\rho=-1\) inside both.
 
 (iii)  The reciprocal of \(x(\Lambda+1)\) is not in \(\sigma(\PLlau)\) because
 \(\Lambda+1\) is not a unit of \(\K[\Lambda]\); this is
@@ -23224,13 +23499,25 @@ so that for \(\hat f=\sum_{\alpha}x^{\alpha}p_{\alpha}(\Lambda)\):
 \begin{enumerate}[label=\textup{(\roman*)}]
 \item if \(\gamma=0\), \cref{plt:thm:du-composition-closure} applies and
   \(\hat f\compose\hat g\) stays in \(\mathfrak D(\K)\);
+% ed.: the second clause read "for every alpha with p_alpha nonzero and
+% gamma*alpha not a natural number".  Only the summand of the SMALLEST alpha
+% is protected from interference: for alpha' < alpha the summand of alpha'
+% also contributes at the x-exponent alpha*beta (through its u-tail), with
+% Lambda-exponents in gamma*alpha' + N, and these can meet gamma*alpha, so no
+% cancellation argument is available for a general alpha.  Restricted to
+% alpha_0 = nu_x(f-hat), where the leading block stands alone.
 \item if \(\gamma\ne0\), the second logarithm \(\Lambda_{2}\) occurs in
   \(\hat f\compose\hat g\) if and only if \(p_{\alpha}\notin\K\) for some
-  \(\alpha\); and for every \(\alpha\) with \(p_{\alpha}\ne0\) and
-  \(\gamma\alpha\notin\NaturalNumbers\) a \(\Lambda\)-exponent outside
-  \(\NaturalNumbers\) occurs.  In either case \(\hat f\compose\hat g\) lies in
-  no class of depth one at a finite point, that is, in no class whose monomials
-  are \(x^{a}\Lambda^{b}\).
+  \(\alpha\); and if \(\alpha_{0}=\nu_{x}(\hat f)=\min S\) satisfies
+  \(\gamma\alpha_{0}\notin\NaturalNumbers\), then a \(\Lambda\)-exponent
+  outside \(\NaturalNumbers\) occurs.  In the first case
+  \(\hat f\compose\hat g\) lies in no class of depth one at a finite point,
+  that is, in no class whose monomials are \(x^{a}\Lambda^{b}\); in the second
+  it lies in no depth-one class whose logarithmic exponents are natural
+  numbers --- \(\K[\Lambda][[x]]\), \(\K[\Lambda]((x))\), the Puiseux-log
+  rings \(\K[\Lambda]((x^{1/s}))\) and \(\mathfrak D(\K)\) --- and, if moreover
+  \(\gamma\alpha_{0}\notin\IntegerNumbers\), in none of the four classes of
+  \cref{plt:def:du-generators}.
 \end{enumerate}
 \end{proposition}
 
@@ -23249,12 +23536,19 @@ For (ii), substitute the generator images into
 \]
 which is summable by the argument of
 \cref{plt:thm:du-composition-closure} verbatim, since the extra factor
-\(\Lambda^{\gamma\alpha}\) affects no \(x\)-exponent.  Because
-\(\alpha\mapsto\alpha\beta\) is injective, distinct \(\alpha\) contribute at
-distinct \(x\)-exponents and there is no cancellation between them; so it
-suffices to examine one summand.  At the \(x\)-exponent \(\alpha\beta\)
-exactly, the factors \((1+u)^{\alpha}\) and \(\log(1+u)\) contribute only their
-constant terms \(1\) and \(0\), so that block is
+\(\Lambda^{\gamma\alpha}\) affects no \(x\)-exponent.
+% ed.: the argument here claimed that injectivity of alpha |-> alpha*beta
+% makes the summands non-interfering.  It does not: the summand of alpha'
+% has x-support in alpha'*beta + Gamma_u, so for alpha' < alpha it also
+% reaches the x-exponent alpha*beta.  What is true, and all that is needed,
+% is that only summands with alpha' <= alpha reach it.
+The \(\alpha\)-th summand has \(x\)-support in
+\(\alpha\beta+\Gamma_{u}\subseteq[\alpha\beta,+\infty)\), so the \(x\)-exponent
+\(\alpha\beta\) receives a contribution only from summands with
+\(\alpha'\le\alpha\), and from the summand \(\alpha\) itself only through the
+\(\Gamma_{u}\)-degree-zero part, in which the factors \((1+u)^{\alpha}\) and
+\(\log(1+u)\) contribute only their constant terms \(1\) and \(0\).  That
+part is
 \begin{equation}\label{plt:eq:du-inner-log-block}
   c^{\alpha}\Lambda^{\gamma\alpha}\,
   p_{\alpha}\bigl(\beta\Lambda-\gamma\Lambda_{2}-\log c\bigr).
@@ -23263,14 +23557,28 @@ Writing \(d=\deg p_{\alpha}\) and \(a_{d}\ne0\) for its leading coefficient,
 the coefficient of \(\Lambda_{2}^{\,d}\) in \eqref{plt:eq:du-inner-log-block}
 is \(c^{\alpha}\Lambda^{\gamma\alpha}a_{d}(-\gamma)^{d}\), which is nonzero
 when \(d\ge1\) because \(\gamma\ne0\); and it is \(0\) for every \(\alpha\)
-when every \(p_{\alpha}\) is a constant, in which case
-\eqref{plt:eq:du-inner-log-block} contains no \(\Lambda_{2}\) at all.  This
-proves the ``if and only if''.  For the second assertion, the
-\(\Lambda\)-exponents occurring in \eqref{plt:eq:du-inner-log-block} form the
-set \(\gamma\alpha+\SetOf{0,1,\dots,d}\), and the exponent \(\gamma\alpha\)
-itself occurs with coefficient \(c^{\alpha}p_{\alpha}(-\gamma\Lambda_{2}
--\log c)\ne0\); so if \(\gamma\alpha\notin\NaturalNumbers\) a \(\Lambda\)-exponent
-outside \(\NaturalNumbers\) occurs.  Finally, depth one at a finite point means
+when every \(p_{\alpha}\) is a constant, in which case no summand contains
+\(\Lambda_{2}\) at all, since \((1+u)^{\alpha}\) and \(\log(1+u)\) do not.
+That settles the ``only if''.  For the ``if'', let
+\(\alpha_{\ast}=\min\SetOf{\alpha\in S:p_{\alpha}\notin\K}\), which exists
+because \(S\) is left-finite.  Every summand \(\alpha'<\alpha_{\ast}\) has
+\(p_{\alpha'}\in\K\) and therefore contributes no \(\Lambda_{2}\) anywhere,
+while the summand \(\alpha_{\ast}\) contributes at the \(x\)-exponent
+\(\alpha_{\ast}\beta\) the nonzero \(\Lambda_{2}^{\,d}\)-coefficient just
+computed; nothing can cancel it, so \(\Lambda_{2}\) occurs.
+
+For the second assertion take \(\alpha=\alpha_{0}=\min S\).  No summand
+\(\alpha'<\alpha_{0}\) exists, so the block of \(\hat f\compose\hat g\) at the
+\(x\)-exponent \(\alpha_{0}\beta\) is exactly
+\eqref{plt:eq:du-inner-log-block}.  Its \(\Lambda\)-exponents form the set
+\(\gamma\alpha_{0}+\SetOf{0,1,\dots,\deg p_{\alpha_{0}}}\), and the exponent
+\(\gamma\alpha_{0}\) itself occurs with coefficient
+\(c^{\alpha_{0}}p_{\alpha_{0}}(-\gamma\Lambda_{2}-\log c)\), a nonzero
+polynomial in \(\Lambda_{2}\) because \(\gamma\ne0\) and
+\(p_{\alpha_{0}}\ne0\); so if \(\gamma\alpha_{0}\notin\NaturalNumbers\) a
+\(\Lambda\)-exponent outside \(\NaturalNumbers\) occurs, and if
+\(\gamma\alpha_{0}\notin\IntegerNumbers\) one outside \(\IntegerNumbers\)
+occurs.  Finally, depth one at a finite point means
 support in \(\SetOf{(a,b,0)}\) in the coordinates of
 \eqref{plt:eq:du-zero-order}, which a nonzero \(\Lambda_{2}\)-exponent
 contradicts; and a non-natural \(\Lambda\)-exponent excludes every class with
@@ -23298,7 +23606,7 @@ ratio \(r=p/q\in\RationalNumbers\)
   & \(\K[\Lambda]((x^{1/q}))\)
   & \cref{plt:prop:du-puiseux-zero}(ii)\\
 ratio \(r\notin\RationalNumbers\)
-  & \(\mathfrak D(\K)\), grid \(\NaturalNumbers+r\NaturalNumbers\)
+  & \(\mathfrak D(\K)\), grid in \(\NaturalNumbers+r\NaturalNumbers\)
   & \cref{plt:prop:du-puiseux-zero}(iii)\\
 non-integer power of a block
   & real \(\Lambda\)-exponents, rank-two Hahn
@@ -23629,9 +23937,13 @@ case \ref{plt:thm:alg-precision-calculus:comp}.
 \item\label{plt:thm:alg-precision-calculus:deriv}
       \emph{Derivation.}  \(N_{\mathrm{out}}=N_1+1\) for \(\DX\), and this is
       sharp without exception.  The output order bound \(m_1+1\) is always
-      sound, and it is attained if and only if
-      \((\partial_L-m_1)v_1(m_1)\ne0\), that is (for \(v_1\ne0\)) unless
-      \(m_1=0\) and \(v_1(0)\in\K^{\times}\); in that exceptional case the true
+      sound; for \(v_1\ne0\) it is attained if and only if
+      \((\partial_L-m_1)v_1(m_1)\ne0\), that is, unless
+% ed.: the criterion was stated without the hypothesis v_1 != 0, at which it
+% ed.: fails: there v_1(m_1)=0, yet the returned representative is (0,N_1+1),
+% ed.: whose order bound is N_1+1=m_1+1, so the bound is attained.
+      \(m_1=0\) and \(v_1(0)\in\K^{\times}\), while for \(v_1=0\) it is
+      attained trivially, both sides being \(N_1+1\); in the exceptional case the true
       order is strictly larger and must be recomputed from the returned
       canonical form (\cref{plt:rmk:alg-derived-order}).
 \item\label{plt:thm:alg-precision-calculus:comp}
@@ -23805,10 +24117,20 @@ part~\ref{plt:thm:alg-precision-calculus:comp},
 % ed.: part (v) the output ORDER gains more than one, so the difference --
 % ed.: which is rho -- can only fall.  The extreme case v_1 = c in K^x returns
 % ed.: the zero representative, whose relative precision is 0.
-For the derivation, \(\rho(\DX F)\le\rho_1\), with equality if and only if
-\((\partial_L-m_1)v_1(m_1)\ne0\); in the exceptional case the drop can be
-total, and is so for \(v_1=c\in\K^{\times}\).  For the sum, no bound in terms
-of \(\rho_1,\rho_2\) holds in either direction: \(\rho\) can drop to \(1\).
+% ed.: two further repairs to this clause.  (a) The equality criterion for the
+% ed.: derivation fails at the zero representative: there \(v_1(m_1)=0\) while
+% ed.: \(m_{\mathrm{out}}=N_1+1=m_1+1\), so equality holds although the
+% ed.: criterion does not; the clause is restricted to \(v_1\ne0\).  (b) "no
+% ed.: bound in either direction" was an overclaim for the sum: an upper bound
+% ed.: does hold, \(\rho\le\max\{\rho_1,\rho_2\}\) (proved below), so what the
+% ed.: witness shows is that no LOWER bound holds -- and \(\rho\) can drop to
+% ed.: \(0\), not merely to \(1\).
+For the derivation, \(\rho(\DX F)\le\rho_1\); for \(v_1\ne0\), equality holds
+if and only if \((\partial_L-m_1)v_1(m_1)\ne0\), and in the exceptional case
+the drop can be total, as it is for \(v_1=c\in\K^{\times}\); for \(v_1=0\)
+both sides are \(0\).  For the sum,
+\(\rho\le\max\SetOf{\rho_1,\rho_2}\) always, but no lower bound in terms of
+\(\rho_1,\rho_2\) holds: \(\rho\) can drop to \(0\).
 \end{corollary}
 
 \begin{proof}
@@ -23828,11 +24150,23 @@ For the derivation, the output cutoff is
 \(N_1+1\) and the output order is
 \(m_{\mathrm{out}}=\ordt(\DX v_1)\ge m_1+1\), so
 \(\rho(\DX F)=N_1+1-m_{\mathrm{out}}\le N_1-m_1=\rho_1\), with equality
-exactly when \(m_{\mathrm{out}}=m_1+1\), which by
+exactly when \(m_{\mathrm{out}}=m_1+1\), which for \(v_1\ne0\) is by
 \cref{plt:thm:alg-precision-calculus}\ref{plt:thm:alg-precision-calculus:deriv}
-is the condition \((\partial_L-m_1)v_1(m_1)\ne0\); for \(v_1=c\in\K^{\times}\)
-the returned representative is \((0,N_1+1)\), of relative precision \(0\).
-For the sum, take
+the condition \((\partial_L-m_1)v_1(m_1)\ne0\); for \(v_1=c\in\K^{\times}\)
+the returned representative is \((0,N_1+1)\), of relative precision \(0\); and
+for \(v_1=0\) one has \(m_1=N_1\) and \(m_{\mathrm{out}}=N_1+1=m_1+1\), so
+\(\rho=0=\rho_1\).
+% ed.: the upper bound for the sum was asserted to be absent; it is not.
+For the sum, the returned representative is
+\(\bigl(v_1+v_2,\min\SetOf{N_1,N_2}\bigr)\).  If \(v_1+v_2=0\) then
+\(\rho=0\).  Otherwise \(m_{\mathrm{out}}=\ordt(v_1+v_2)\ge
+\min\SetOf{m_1,m_2}\), where the right-hand side is read as \(m_2\) when
+\(v_1=0\) and as \(m_1\) when \(v_2=0\); hence
+\(\rho\le\min\SetOf{N_1,N_2}-\min\SetOf{m_1,m_2}\), and assuming without loss
+of generality \(N_1\le N_2\) this last quantity equals \(N_1-m_1=\rho_1\) when
+\(m_1\le m_2\) and is at most \(N_2-m_2=\rho_2\) when \(m_2<m_1\).  In either
+case \(\rho\le\max\SetOf{\rho_1,\rho_2}\).  That no lower bound holds is shown
+by
 \[
  F=\sum_{n=-1}^{N-1}t^n,
  \qquad
@@ -23840,7 +24174,8 @@ For the sum, take
 \]
 both with \(m=-1\) and \(N_i=N\), hence \(\rho_i=N+1\); their sum is
 \(t^{N-1}\), with order bound \(N-1\) and absolute precision \(N\), so
-\(\rho=1\).
+\(\rho=1\); and by \(G=-F\), for which the sum is the zero representative
+\((0,N)\) and \(\rho=0\).
 \end{proof}
 
 \begin{remark}[Addition, not multiplication, is the dangerous primitive]
@@ -23986,8 +24321,11 @@ form.  Part~(iii) is the displayed example.
 % ed.: the inverse of X+L is d(0)=1, d(n)=n for n>=1, which differs from
 % ed.: case (ii) in the block of index 0; the exact count is corrected below.
 \begin{warningbox}
+% ed.: "the profile of the compositional inverse of X+L" names the wrong
+% ed.: object: that inverse has a block of index -1, namely X itself.  The
+% ed.: profile in question is the profile of its CORRECTION.
 The profile of case~(ii) is not artificial: up to the single block of index
-\(0\) it is the profile of the compositional inverse of \(X+L\), by
+\(0\) it is the profile of the correction \(\rev{(X+L)}-X\), by
 \cref{plt:prop:fail-reversion-degree} below, for which the exact scalar count
 is \(\binom{N+3}{4}+N^{2}+N+1\).  So the natural output of the reversion
 algorithms already costs \(N^4/24+\BigO(N^3)\) scalar multiplications per
@@ -24422,9 +24760,17 @@ By \cref{plt:thm:grp-taylor} the identity
 \(F\compose(X+H)=\sum_{k\ge0}H^k\DX^kF/k!\) is exact, and the family is
 summable because \(\ordt(H^k\DX^kF)\ge kh+a+k=a+k(h+1)\) by
 \cref{plt:lem:rev-deriv-gain}.  A summand can influence a block of index
-\(<N\) only if \(a+k(h+1)<N\), that is, \(k<(N-a)/(h+1)\); the number of
-nonnegative integers \(k\) satisfying this is \(\Ceiling{(N-a)/(h+1)}\) and the
-largest is \(\Floor{(N-1-a)/(h+1)}\).
+\(<N\) only if \(a+k(h+1)<N\), that is, \(k<(N-a)/(h+1)\).
+% ed.: the count was quoted without the hypothesis N>a under which it is
+% ed.: valid; for N<=a the ceiling is nonpositive and counts nothing, which is
+% ed.: the right answer only because both sides of the displayed identity then
+% ed.: vanish.  The case is separated.
+For \(N>a\) the number of nonnegative integers \(k\) satisfying this is
+\(\Ceiling{(N-a)/(h+1)}\) and the largest is \(\Floor{(N-1-a)/(h+1)}\).  For
+\(N\le a\) there is no such \(k\), the stated \(K\) is nonpositive, the sum is
+empty, and both sides of the displayed identity vanish because
+\(\ordt\bigl(F\compose(X+H)\bigr)=\ordt(F)\ge a\ge N\) by
+\cref{plt:eq:alg-right-composition-isometry}.
 % ed.: the witness F=t^a fails whenever a<0 and K-1>|a|, because then
 % ed.: shiftop{a}{K-1} annihilates the constant 1 -- e.g. a=-1, h=0, N=10
 % ed.: needs k=9 while DX^k t^{-1}=0 already for k=2.  Taking the block to be L
@@ -24517,16 +24863,47 @@ sides.  Characteristic zero is used only to divide by \(k!\).
 first be enlarged; \(\varrho\in\PositiveIntegers\), failing which the output
 lives in a Puiseux or Hahn extension
 (\cref{plt:prop:cmp-fractional-rho}) and the type must say so.\\
-\textbf{Output.}  \(\Trunc{F\compose G}{N}\) at the precision furnished by
-\cref{plt:cor:cmp-precision-budget}.\\
+% ed.: the output line used a cutoff N that no line of the algorithm defined,
+% ed.: and attributed it to plt:cor:cmp-precision-budget, which furnishes the
+% ed.: INTERNAL budget for the auxiliary powers, not the output cutoff.  The
+% ed.: output cutoff must be a function of the input cutoffs -- item (2) of
+% ed.: plt:cor:cert-reproducible -- and the one the stability estimates
+% ed.: deliver is min{varrho N_F, varrho m_F + N_U}.
+\textbf{Output.}  \(\Trunc{F\compose G}{N}\) with
+\[
+ N=\min\SetOf{\varrho N_F,\ \varrho m_F+N_U},
+\]
+which is sound by \cref{plt:prop:cmp-stability}: perturbing the outer argument
+below its cutoff moves the value by at least \(\varrho N_F\), and perturbing
+\(U\) below \(N_U\) moves it by at least \(\varrho m_F+N_U\).  The internal
+budget for the auxiliary powers is \cref{plt:cor:cmp-precision-budget}.\\
 \textbf{Steps.}
 \begin{enumerate}
 \item \(V\leftarrow\log(1+U)\) by \cref{plt:alg:explog};
       \(R\leftarrow\MultiplicativeInverseOf{(1+U)}\) by
       \cref{plt:alg:reciprocal-linear} or \cref{plt:alg:reciprocal-newton}.
-\item Let \(D=\max_n\deg v_F(n)\) over retained blocks.  Precompute
-      \(V^k/k!\) for \(1\le k\le\min\SetOf{D,N-1}\); the cap is legitimate
-      because \(\ordt(V^k)\ge k\).
+% ed.: ALGORITHM BUG, the generator-engine twin of the one repaired in
+% ed.: plt:alg:compose-taylor.  The cap on the powers of V was min{D,N-1},
+% ed.: justified by ordt(V^k)>=k alone.  That ignores the factor t^{varrho n}
+% ed.: multiplying block n: the summand for the outer index n contributes to a
+% ed.: block of index below N whenever varrho n + k < N, so for a Laurent
+% ed.: outer series (m_F<0) powers with k>=N are still needed.  Concretely,
+% ed.: F=t^{-1}L^5, varrho=1, N=1 has cap min{5,0}=0 and returns a wrong block
+% ed.: of index -1, although V^1 is required.  The correct cap is
+% ed.: min{D, N-varrho*m_F-1}, which reduces to at most N-1 exactly when
+% ed.: m_F>=0.
+\item Let \(D=\max_n\deg v_F(n)\) over retained blocks and let \(m_F\) be the
+      order bound of \(\mathcal T_F\).  Precompute
+      \(V^k/k!\) for \(1\le k\le\min\SetOf{D,\ N-\varrho m_F-1}\).  The second
+      entry of the minimum is exactly the budget of
+      \cref{plt:cor:cmp-precision-budget}, and it cannot be lowered: the
+      summand carrying the outer index
+      \(n\) is \(c^{-n}t^{\varrho n}R^{n}\,(\partial_L^kp_n)(\ldots)V^k/k!\),
+      of valuation at least \(\varrho n+k\), so it can reach a block of index
+      \(<N\) only for \(k<N-\varrho n\), and \(n\ge m_F\) with
+      \(\varrho\ge1\) makes \(N-\varrho m_F-1\) the largest useful \(k\).  For
+      \(m_F\ge0\) this cap is at most \(N-1\); for \(m_F<0\) it is strictly
+      larger, and the value \(N-1\) is \emph{wrong}, not merely wasteful.
 \item Precompute \(R^{n}\) incrementally for the retained outer indices \(n\)
       (for negative \(n\), \(R^{n}=(1+U)^{|n|}\), an ordinary positive power).
 \item Accumulate
@@ -24535,8 +24912,11 @@ lives in a Puiseux or Hahn extension
       with the inner evaluation performed by \cref{plt:eq:alg-shift} applied to
       \(p_n(\varrho L+\log c+\,\cdot\,)\), truncating after every product.
 \end{enumerate}
-\textbf{Cost.}  At most \(\min\SetOf{D,N-1}\) truncated products for the powers
-of \(V\), at most \(N\) for the powers of \(R\), and
+% ed.: the two step counts inherited the wrong cap and the wrong index range;
+% ed.: the retained outer indices run from m_F to N-1, of which there are
+% ed.: N-m_F, not N.
+\textbf{Cost.}  At most \(\min\SetOf{D,\ N-\varrho m_F-1}\) truncated products
+for the powers of \(V\), at most \(N-m_F\) for the powers of \(R\), and
 \(\sum_n(\deg v_F(n)+1)\) polynomial-by-series products for the shifts: in the
 coefficient-operation model \(\BigO\bigl((N+D)N^2\bigr)\).
 \end{algorithm}
@@ -24638,7 +25018,9 @@ precision \(\mu_0\ge1\).\\
 holds automatically since it equals \(1+\FormalBigOAt{t}{t}\)
 (\cref{plt:lem:rev-newton-unit}).\\
 \textbf{Output.}  \(B\) at precision \(N\).\\
-\textbf{Steps.}  While \(\mu<N\): set \(\mu'\leftarrow\min\SetOf{2\mu,N}\) and
+% ed.: the loop tested a variable mu that the step list never initialised.
+\textbf{Steps.}  Set \(\mu\leftarrow\mu_0\).  While \(\mu<N\): set
+\(\mu'\leftarrow\min\SetOf{2\mu,N}\) and
 \[
  G\leftarrow\Trunc{\,G-\frac{F\compose G-X}{(\DX F)\compose G}\,}{\mu'},
  \qquad \mu\leftarrow\mu'.
@@ -24665,8 +25047,16 @@ request, is \cref{plt:thm:rev-newton-guard}, and the schedule is
 \textbf{Input.}  \(A\) at precision \(N\).\\
 \textbf{Precondition.}  \(\ordt(A)\ge h\ge0\).\\
 \textbf{Output.}  \(B\) at precision \(N\).\\
+% ed.: the cutoff carried by the running power was left as an ellipsis, which
+% ed.: is exactly the datum a precision contract may not omit.  It is N-r+1:
+% ed.: the block of index n of DX^{r-1}P is built from the block of index
+% ed.: n-(r-1) of P, so the blocks of P of index < N-r+1 are the ones the
+% ed.: accumulator can see, and no earlier truncation is thereby too coarse,
+% ed.: since the cutoff demanded of P decreases by one at each step while the
+% ed.: product law (plt:thm:alg-precision-calculus(ii)) delivers
+% ed.: min{(N-r+2)+h, N+(r-1)h} >= N-r+2 from the previous power and A.
 \textbf{Steps.}  \(B\leftarrow0\), \(P\leftarrow1\); for \(r=1,2,\dots\): set
-\(P\leftarrow\Trunc{PA}{\,\cdot\,}\), form \(Q\leftarrow\DX^{r-1}P\) by
+\(P\leftarrow\Trunc{PA}{\,N-r+1\,}\), form \(Q\leftarrow\DX^{r-1}P\) by
 \(r-1\) applications of \cref{plt:alg:derivative}, and accumulate
 \(B\leftarrow\Trunc{B+(-1)^rQ/r!}{N}\).  Stop when
 \(r(h+1)-1\ge N\), that is, after
@@ -24783,11 +25173,24 @@ is made precise below.
 \begin{itemize}
 \item A residual certifies a \emph{coset}, and only when the residual equation
       is \emph{faithful} --- when the valuation of the residual determines the
+% ed.: "every primitive has a faithful equation, with exactly one exception"
+% ed.: overstated what plt:tab:cert-gauges contains: the table covers the
+% ed.: primitives that invert a cheaper one, and lists no equation at all for
+% ed.: the sum, the product and the derivation, which invert nothing.  For
+% ed.: those the natural test is the Leibniz identity, and it is unfaithful in
+% ed.: precisely the way plt:rmk:cert-derivative-defect records.  The claim is
+% ed.: restricted to what is proved.
       valuation of the error.  Every primitive of
-      \cref{plt:sec:algorithms} has a faithful equation with an explicit
-      offset (\cref{plt:tab:cert-gauges}), with exactly one exception, the
+      \cref{plt:sec:algorithms} that inverts a cheaper one --- reciprocal,
+      quotient, root, logarithm, exponential, composition, reversion --- has a
+      faithful equation with an explicit offset
+      (\cref{plt:tab:cert-gauges}), with exactly one exception, the
       antiderivative, and the exception is the resonant constant
-      (\cref{plt:prop:cert-antiderivative}).
+      (\cref{plt:prop:cert-antiderivative}).  The three primitives that invert
+      nothing --- addition, multiplication, the derivation --- have no entry
+      in that table: they are certified by independent recomputation, or by
+      the unfaithful derivative tests of
+      \cref{plt:rmk:cert-derivative-defect}.
 \item A residual test is a statement about coefficients in \(R\), decided by
       comparison of canonical forms.  Substituting numbers for \(L\) does not
       decide it (\cref{plt:prop:cert-exact-zero}).
@@ -25220,21 +25623,29 @@ reach the same block for opposite reasons.
 
 \begin{proposition}[Power and root certificates]
 \label{plt:prop:cert-power}
-Let \(B\in\PLpow\) with \(\ordt(B)=0\) and leading scalar
-\(b_0\in\K^{\times}\), let \(p\in\IntegerNumbers\) and
+Let \(B\in\PLpow\) whose block of index \(0\) is a scalar
+\(b_0\in\K^{\times}\) --- equivalently, by
+\cref{plt:thm:div-unit-criterion}, a unit of \(\PLpow\) --- let
+\(p\in\IntegerNumbers\) and
 \(q\in\PositiveIntegers\), and let \(C=B^{p/q}\) be the power determined by a
 chosen value \(b_0^{p/q}\in\K^{\times}\) satisfying
 \(\bigl(b_0^{p/q}\bigr)^{q}=b_0^{p}\), the powers being those of
+% ed.: the hypothesis was "whose leading scalar equals b_0^{p/q}", but the
+% ed.: leading scalar of D is by plt:def:lead-leading-data the coefficient of
+% ed.: its leading MONOMIAL t^0 L^j, which for a block of positive L-degree is
+% ed.: not the block; the proof uses the block.  The hypothesis is restated in
+% ed.: the form the proof needs and the counterexample clause requires.
 \cref{plt:thm:mul-binomial}.  Then \(C^{q}=B^{p}\), and for every candidate
-\(D\in\PLpow\) of order \(0\) whose leading scalar equals \(b_0^{p/q}\),
+\(D\in\PLpow\) whose block of index \(0\) is the scalar \(b_0^{p/q}\),
 \[
  \ordt\bigl(D^{q}-B^{p}\bigr)=\ordt(D-C):
 \]
-gauge \(0\).  The restriction on the leading scalar of \(D\) cannot be
+gauge \(0\).  The restriction on the block of index \(0\) of \(D\) cannot be
 dropped, and the equation cannot replace it: if \(\zeta\in\K^{\times}\)
 satisfies \(\zeta^{q}=1\) and \(\zeta\ne1\), then \(D=\zeta C\) satisfies
 \(D^{q}-B^{p}=0\) identically while \(D\ne C\).  The branch datum is part of
-the specification and is certified only by comparing leading scalars.
+the specification and is certified only by comparing the blocks of index
+\(0\).
 \end{proposition}
 
 \begin{proof}
@@ -25249,10 +25660,10 @@ Next,
 \[
  D^{q}-C^{q}=(D-C)\sum_{i=0}^{q-1}D^{i}C^{\,q-1-i},
 \]
-and each summand has order \(0\) with leading scalar
-\(d_0^{i}c_0^{\,q-1-i}\), where \(c_0=b_0^{p/q}\) and \(d_0\) is the leading
-scalar of \(D\).  Under the hypothesis \(d_0=c_0\) the sum has leading scalar
-\(qc_0^{\,q-1}\ne0\), because \(\K\) has characteristic zero and \(c_0\ne0\);
+and each summand has order \(0\) with block of index \(0\) equal to
+\(d_0^{i}c_0^{\,q-1-i}\), where \(c_0=b_0^{p/q}\) and \(d_0\) is the block of
+index \(0\) of \(D\).  Under the hypothesis \(d_0=c_0\) the sum has block
+\(qc_0^{\,q-1}\ne0\) there, because \(\K\) has characteristic zero and \(c_0\ne0\);
 hence the sum has order exactly \(0\) and the displayed identity follows from
 additivity of \(\ordt\).  For the final assertion, \((\zeta C)^{q}=\zeta^{q}
 C^{q}=C^{q}=B^{p}\) while \(\zeta C-C=(\zeta-1)C\ne0\).
@@ -25393,8 +25804,12 @@ exact arithmetic.
 
 Two of them need an object to test against.  The Wright omega expansion is the
 canonical choice, because it is the reversion of the single map \(X+L\), its
-blocks are the Lambert polynomials, and it satisfies four mutually independent
-identities: the reversion residual (\cref{plt:thm:om-residual}), the integral
+% ed.: "four mutually independent identities" is not what is meant and is not
+% ed.: true: all four characterise the same family, so they are logically
+% ed.: equivalent, not independent.  What is claimed, and what matters, is
+% ed.: that they share no code path.
+blocks are the Lambert polynomials, and it satisfies four identities that
+share no code path: the reversion residual (\cref{plt:thm:om-residual}), the integral
 recurrence \eqref{plt:eq:lambert-int-rec}, the Stirling formula
 (\cref{plt:thm:lambert-stirling}), and the block recurrence of the
 differentiated equation, which we now record because it is the only one of the
@@ -25552,7 +25967,13 @@ T1 & Declared cutoffs of \(+,\times,/,\compose,\DX\) equal those of
 T2 & \(\Trunc{F}{N}\) retains the block of index \(N-1\) and discards the
      block of index \(N\) &
      inclusive/exclusive confusion; \cref{plt:sec:fail-offbyone}\\
-T3 & \(BQ-A\) vanishes below \(N-\ordt(B)\) after a quotient at cutoff \(N\)
+% ed.: T3 had the gauge subtracted where it must be added.  By
+% ed.: plt:prop:cert-reciprocal, ordt(BQ-A)=ordt(Q-A/B)+ordt(B); a quotient
+% ed.: sound at cutoff N has ordt(Q-A/B)>=N, so its residual vanishes below
+% ed.: N+ordt(B).  The printed N-ordt(B) is the threshold a WRONG answer
+% ed.: already passes when ordt(B)>0, so the test as printed was vacuous in
+% ed.: exactly the case the remark plt:rmk:cert-division-gauge is about.
+T3 & \(BQ-A\) vanishes below \(N+\ordt(B)\) after a quotient at cutoff \(N\)
      &
      a gauge dropped from the division test;
      \cref{plt:rmk:cert-division-gauge}\\
@@ -25706,9 +26127,13 @@ outside the declared \(R\) can silently change the type, which is failure
 \begin{summarybox}
 A certificate is a defining equation plus a checked valuation, and it
 certifies a coset up to the equation's gauge.  Every primitive of
-\cref{plt:sec:algorithms} has a faithful equation with a known gauge, except
-the antiderivative, whose equation is blind to a constant --- which is exactly
-the resonance.  Both reversion residuals certify the same blocks; the reason
+% ed.: same overclaim as in the opening list: the table has no entry for the
+% ed.: sum, the product or the derivation.
+\cref{plt:sec:algorithms} that inverts a cheaper primitive has a faithful
+equation with a known gauge, except the antiderivative, whose equation is
+blind to a constant --- which is exactly the resonance; addition,
+multiplication and the derivation have none, and are certified by
+recomputation.  Both reversion residuals certify the same blocks; the reason
 to compute both is that a residual which drove the iteration certifies
 nothing.  Zero tests are comparisons of canonical forms, never numerical
 samples.  Reproducibility is then not a matter of discipline but a corollary
@@ -26057,11 +26482,22 @@ log-degrees of the discarded ones.
 \emph{Diagnosis.}  The dominance \(t^{n+1}L^{D}\precdom t^{n}\) is a statement
 about \(X\to+\infty\) at \emph{fixed} \(D\)
 (\cref{plt:lem:mot-dominance,plt:lem:ring-dominance-analytic}).  Since
-\(L=\log X\) grows, the crossover at which the monomial \(L^{D}X^{-1}\)
-actually becomes small is at \(\log X>x^{*}(D)\), where \(x^{*}(D)\) is the
-largest root of \(x=D\log x\), so \(x^{*}(D)\sim D\log D\).  A profile that
-grows with the block index therefore pushes the crossover out with it, and no
-constant covers all blocks at once.
+% ed.: the crossover was quoted without the hypothesis D>=3 under which the
+% ed.: root exists, and the asymptotic x^{*}(D) ~ D\log D was asserted; a
+% ed.: one-line proof is supplied, since the volume states nothing else about
+% ed.: this root.
+\(L=\log X\) grows, the crossover beyond which the monomial \(L^{D}X^{-1}\)
+stays small is, for \(D\ge3\), at \(\log X>x^{*}(D)\), where \(x^{*}(D)\) is
+the largest root of \(x=D\log x\) (\cref{plt:prop:fail-no-uniform-constant}(iv);
+for \(D\le2\) there is no crossover).  Moreover
+\(x^{*}(D)\sim D\log D\) as \(D\to\infty\).  Indeed, writing
+\(y=\log x^{*}\), the equation \(x^{*}=D\log x^{*}\) reads
+\(y-\log y=\log D\); the left side is strictly increasing to \(+\infty\) on
+\(y>1\), and \(y>\log D\ge\log3>1\), so \(y\to\infty\) with \(D\), whence
+\(\log y=\LittleOAt{y}{D\to\infty}\), \(y\sim\log D\), and
+\(x^{*}=Dy\sim D\log D\).
+A profile that grows with the block index therefore pushes the crossover out
+with it, and no constant covers all blocks at once.
 
 \begin{proposition}[No constant is uniform in the number of blocks]
 \label{plt:prop:fail-no-uniform-constant}
@@ -26081,11 +26517,25 @@ positive real ray with the real logarithm.
 \item There is no pair \((C,X_0)\) with
       \(\AbsoluteValue{f(X)-\sum_{n<N}L^{Dn}X^{-n}}\le CX^{-N}\) for all
       \(N\ge0\) and all \(X\ge X_0\).
-\item The blocks decrease in size at a given \(X\) if and only if
-      \(\log X>x^{*}(D)\).  For \(D=10\), \(x^{*}=35.77\ldots\); so at
+% ed.: three repairs.  (a) The clause was stated for every D>=1, but
+% ed.: x=D\log x has NO real root for D=1,2 (the function x-D\log x attains
+% ed.: its minimum D(1-\log D)>0 there), so x^{*}(D) does not exist and the
+% ed.: "if and only if" cannot be read; for those D the blocks decrease at
+% ed.: every X>1.  (b) Even for D>=3 the equivalence as printed was false near
+% ed.: X=1: x-D\log x has TWO roots, and the blocks also decrease below the
+% ed.: smaller one -- at X=2 and D=10, L^{10}=0.025<2.  What x^{*}(D) is, is
+% ed.: the threshold beyond which they decrease for good.  (c) The printed
+% ed.: factor 2.42... is not the truncated decimal expansion of
+% ed.: L^{10}/X=2.41584..., only its rounding.
+\item Suppose \(D\ge3\).  Then \(x=D\log x\) has exactly two roots
+      \(x_{-}(D)<D<x^{*}(D)\), and at a given \(X>1\) the blocks decrease in
+      size if and only if \(\log X<x_{-}(D)\) or \(\log X>x^{*}(D)\); thus
+      \(x^{*}(D)\) is the threshold beyond which they decrease for good.  For
+      \(D=10\), \(x_{-}=1.1183\ldots\) and \(x^{*}=35.7715\ldots\); so at
       \(X=10^{15}\) the block of index \(1\) exceeds the block of index \(0\)
-      by the factor \(L^{10}/X=2.42\ldots\), and the expansion becomes
-      numerically decreasing only for \(X>3.4\times10^{15}\).
+      by the factor \(L^{10}/X=2.4158\ldots\), and the expansion becomes
+      permanently decreasing only for \(X>3.4\times10^{15}\).  For \(D\le2\)
+      there is no threshold at all: the blocks decrease at every \(X>1\).
 \end{enumerate}
 \end{proposition}
 
@@ -26109,20 +26559,35 @@ unbounded as \(X\to+\infty\); hence it is not
 \(\BigOAt{X^{-N}}{X\to+\infty}\).  The little-o statement is the estimate just
 made.
 
-(iii)  Fix any \(X\ge\max\SetOf{X_0,\EulerE^{2}}\), so \(L=\log X\ge2\) and in
+% ed.: the proof chose only X >= max{X_0, e^2}, at which the series can still
+% ed.: diverge (D=10, X=e^2 has L^{D}=1024>X) and f(X) is then undefined; the
+% ed.: choice must also put X in the convergence range, which is possible
+% ed.: because L^{D}/X -> 0.
+(iii)  Since \(L^{D}X^{-1}=(\log X)^{D}/X\to0\), one may fix an
+\(X\ge\max\SetOf{X_0,\EulerE^{2}}\) with \(L^{D}<X\), so that \(f(X)\) is
+defined by (i); then \(L=\log X\ge2\) and in
 particular \(L^{D}\ge2\).  The remainder at cutoff \(N\) is at least
 \(L^{DN}X^{-N}\), so the asserted bound would force \(C\ge L^{DN}\ge2^{DN}\)
 for every \(N\), which is impossible for a finite \(C\).
 
 (iv)  The block of index \(n\) evaluates to \(\bigl(L^{D}X^{-1}\bigr)^{n}\),
 so the blocks decrease if and only if \(L^{D}<X\), that is
-\(D\log L<L\) with \(L=\log X\), that is \(L>x^{*}(D)\), where \(x^{*}(D)\) is
-the largest solution of \(x=D\log x\); the function \(x-D\log x\) is negative
-at \(x=D\) for \(D\ge3\) and tends to \(+\infty\), and its only critical point
-is \(x=D\), so it has exactly one root above \(D\).  For \(D=10\),
-\(x-10\log x\) is \(-0.55\) at \(x=35\) and \(+0.17\) at \(x=36\), so
-\(x^{*}=35.77\ldots\) and \(\EulerE^{x^{*}}=3.4\times10^{15}\).  At
-\(X=10^{15}\) one has \(L=34.54\) and \(L^{10}/X=2.42\).
+\(D\log L<L\) with \(L=\log X\), that is \(\psi(L)>0\) for
+\(\psi(x)=x-D\log x\).  On \((0,\infty)\) the function \(\psi\) is smooth with
+\(\psi'(x)=1-D/x\), so its only critical point is \(x=D\), a minimum, with
+\(\psi(D)=D(1-\log D)\), and \(\psi\to+\infty\) at both ends.
+% ed.: the existence of the threshold was asserted for every D and the second
+% ed.: root was overlooked; both are repaired here.
+Hence: for \(D\le2\) one has \(\log D<1\), so \(\psi(D)=D(1-\log D)>0\) and
+therefore \(\psi>0\) everywhere, and the blocks decrease at every \(X>1\); for
+\(D\ge3\) one has \(\psi(D)<0\), so \(\psi\) has exactly one root
+\(x_{-}(D)\in(0,D)\) and exactly one root \(x^{*}(D)\in(D,\infty)\), and
+\(\psi(L)>0\) is equivalent to \(L<x_{-}(D)\) or \(L>x^{*}(D)\).  For
+\(D=10\), \(x-10\log x\) is \(+0.147\) at \(x=1.1\) and \(-0.092\) at
+\(x=1.13\), and \(-0.553\) at \(x=35\) and \(+0.165\) at \(x=36\), so
+\(x_{-}=1.1183\ldots\), \(x^{*}=35.7715\ldots\) and
+\(\EulerE^{x^{*}}=3.43\times10^{15}\).  At
+\(X=10^{15}\) one has \(L=34.5388\ldots\) and \(L^{10}/X=2.4158\ldots\).
 \end{proof}
 
 \emph{Minimal reproducing example.}
@@ -26370,7 +26835,7 @@ Power, \(\alpha\) a small nonnegative integer & binary powering,
   \cref{plt:alg:power} & \(D^{q}-B^{p}\) with \(q=1\)\\
 Power, general \(\alpha\); formal roots &
   recurrence \cref{plt:eq:alg-power-recurrence} &
-  \(D^{q}-B^{p}\) and a leading-scalar check
+  \(D^{q}-B^{p}\) and a check of the block of index \(0\)
   (\cref{plt:prop:cert-power})\\
 \(\log(1+U)\), \(\exp U\), \(\ordt U\ge1\) & \cref{plt:alg:explog} &
   \cref{plt:prop:cert-explog}, either form\\
@@ -26438,8 +26903,11 @@ Two runs of the same input differ at all &
 \begin{summarybox}
 The eight failure modes are eight implicit decisions.  Truncation convention
 and guard blocks are decisions about indices; the generator images and the
-unit test are decisions about the class; the resonant constant and the branch
-are decisions about which of several correct answers is wanted; the formal
+% ed.: the list ran to nine items against eight failure modes, the branch
+% ed.: being the extra one; it is folded into the item it travels with.
+unit test are decisions about the class; the resonant constant --- and with it
+the branch datum of \cref{plt:prop:cert-power} --- is a decision about which of
+several correct answers is wanted; the formal
 tail and the uniformity in \(L\) are decisions about what kind of statement is
 being made; and the degree bound is a decision about which hypotheses are in
 force.  \Cref{plt:alg:decision} orders them so that each is made when its
@@ -31207,8 +31675,12 @@ sum is therefore \(t^{-1}\in\PLlau\).  Nevertheless
 \(\ordt(S_i)=-i-1\to-\infty\), so the family is not summable, and indeed the
 partial sums
 \(\sum_{i=1}^{m}S_i=t^{-1}-t^{-m-1}\)
-do not converge: \(\ordt\bigl(t^{-1}-t^{-m-1}\bigr)-\)differences are
-\(-(m+2)\to-\infty\).  So a blockwise sum can exist in the ring and still fail
+% ed.: the sentence printed here was garbled ("ordt(...)-differences are ...").
+% ed.: What is meant is the outer order of the difference of two consecutive
+% ed.: partial sums, which is what Cauchyness is about.
+do not converge: consecutive partial sums differ by
+\(S_{m+1}=t^{-m-1}-t^{-m-2}\), of outer order \(-(m+2)\to-\infty\), so the
+sequence is not Cauchy.  So a blockwise sum can exist in the ring and still fail
 to be the limit of the partial sums in any sense the filtration recognises.
 Summability is a statement about the family, not about the array of
 coefficients it produces.
@@ -31533,11 +32005,10 @@ admissible.  This is the support the divergent family of
 
 \(S_4\): exponents bounded below by \(0\), but the fibre at \(n=0\) is
 \(\NaturalNumbers\), infinite: a block would have to be a power series in
-\(L\), not a polynomial.  Not admissible in \(\PLlau\).  It \emph{is} the
-support of an element of the Hahn ambient of
-\cref{plt:thm:ring-hahn} only if that ambient still requires reverse
-well-ordering, which criterion (c) shows it does; and \(S_4\) fails (c) as
-well, since \(\SetOf{(0,j):j\ge0}\) has no \(\succdom\)-greatest element ---
+\(L\), not a polynomial.  Not admissible in \(\PLlau\).  Nor is it rescued by
+passing to the Hahn ambient of \cref{plt:thm:ring-hahn}: that ambient still
+demands a reverse well-ordered support, which is criterion~(c), and \(S_4\)
+fails (c), since \(\SetOf{(0,j):j\ge0}\) has no \(\succdom\)-greatest element ---
 larger \(j\) at fixed \(n\) means larger monomial \(t^{n}L^{j}\).  So \(S_4\)
 is not admissible in any of the four classes.
 \end{proof}
@@ -32214,7 +32685,12 @@ however, the source's formula retains one term too many whenever
 \((h+1)\mid(N-a)\).  That is harmless for \emph{correctness} --- the extra term
 is invisible below \(t^{N}\) --- but not for cost, and not for a routine that
 uses the budget in reverse to decide how much of \(H\) to compute.  This is
-the discrepancy recorded at \cref{plt:prop:alg-shift}.
+% ed.: this sentence cited \cref{plt:prop:alg-shift}, the polynomial-shift
+% ed.: formula, which has nothing to do with the truncation convention.  The
+% ed.: discrepancy is recorded with the sharp budget itself.
+the discrepancy recorded at \cref{plt:prop:alg-taylor-budget}, whose last
+line prints the exclusive form \(k\le\Floor{(N-1-a)/(h+1)}\) explicitly for
+this reason.
 \end{proof}
 
 % ed.: source 1 records the budget as k <= floor((N - r)/(h + 1)) without
@@ -32376,26 +32852,35 @@ the admissibility checklist of \cref{plt:sec:scale-change}.
 \label{plt:exer:exr-constant-inner}
 \Cref{plt:thm:cmp-substitution-hom} composes \(F\) with an inner argument
 \(G=cX^{\rho}(1+U)\) subject to \(\rho>0\).  Show that the hypothesis
-\(\rho>0\) cannot be weakened to \(\rho\ge0\): prove that if
-\(\ordt\bigl(t\compose G\bigr)=0\) then \(F\compose G\) is undefined for
-\emph{every} \(F\) whose coefficient support is infinite, whatever the
-coefficient field, and identify the exact failure.
+\(\rho>0\) cannot be weakened to \(\rho\ge0\).  Precisely: write
+\(\tau=t\compose G\), \(\lambda=L\compose G\), and suppose
+\(\ordt\tau=0\).  Prove that the substitution family
+\(\bigl(\tau^{n}p_n(\lambda)\bigr)_{n}\) fails to be summable as soon as
+\(p_n(\lambda)\ne0\) for infinitely many \(n\), whatever the coefficient
+field; exhibit such an \(F\); and identify the exact failure.  Then show that
+the quantifier cannot be improved to ``every \(F\) with infinite coefficient
+support''.
 \end{exercise}
 
 \begin{proof}[Solution]
 Suppose \(G\) is such that \(\tau\DefinitionEquals t\compose G\) has
 \(\ordt\tau=0\); the simplest instance is \(G=c\in\K^{\times}\), where
-\(\tau=c^{-1}\).  Let \(F=\sum_{n\ge n_0}p_n(L)t^{n}\) have infinitely many
-nonzero blocks.  The defining formula for the composite is the sum of the
-family
-\(\bigl(\tau^{n}p_n(\lambda)\bigr)_{n}\), \(\lambda=L\compose G\).  Since
-\(\ordt(\tau^{n})=n\ordt(\tau)=0\) for every \(n\), every member of the family
-has outer order \(\ge\ordt\bigl(p_n(\lambda)\bigr)\), and for the constant
-inner argument \(G=c\) --- where \(\lambda=\log c\in\K\) and
-\(p_n(\lambda)\in\K\) --- every member sits in the single block \(t^{0}\).
-The set \(\SetOf{n:\ordt<1}\) is then infinite, so
-\cref{plt:def:trunc-summable} fails; concretely the \(t^{0}\)-block of the
-putative composite would be
+\(\tau=c^{-1}\) and \(\lambda=\log c\in\K\).  Let
+\(F=\sum_{n\ge n_0}p_n(L)t^{n}\).  The defining formula for the composite is
+the sum of the family \(\bigl(\tau^{n}p_n(\lambda)\bigr)_{n}\).  Since
+\(\PLlau\) is a domain and \(\ordt(\tau^{n})=n\ordt(\tau)=0\),
+\[
+ \ordt\bigl(\tau^{n}p_n(\lambda)\bigr)=\ordt\bigl(p_n(\lambda)\bigr)
+ \qquad\text{for every }n .
+\]
+So no member of the family can be pushed to a high outer order by the factor
+\(\tau^{n}\): the whole family sits at the orders of the substituted
+coefficients.  For the constant inner argument \(G=c\) those are scalars, so
+every nonzero member sits in the single block \(t^{0}\).  Hence if
+\(p_n(\log c)\ne0\) for infinitely many \(n\) --- take \(F=1/(1-t)\), where
+\(p_n=1\) for all \(n\ge0\) --- the set \(\SetOf{n:\ordt<1}\) is infinite,
+\cref{plt:def:trunc-summable} fails, and the \(t^{0}\)-block of the putative
+composite would be
 \[
  \sum_{n\ge n_0}c^{-n}p_n(\log c),
 \]
@@ -32404,6 +32889,21 @@ happens to terminate.  No enlargement of the coefficient field repairs this:
 the obstruction is that infinitely many summands land in one block, which is a
 statement about the outer filtration alone.  The same argument applies to any
 \(G\) with \(\rho=0\), since then \(\ordt(t\compose G)=0\).
+
+% ed.: the exercise as inherited asked for the failure "for every F whose
+% ed.: coefficient support is infinite".  That quantifier is too strong, and
+% ed.: the following paragraph is the counterexample to it.
+\emph{The quantifier.}  It is not enough that \(F\) have infinite coefficient
+support: what must be infinite is the set of indices surviving the
+substitution.  With \(G=c\) take
+\[
+ F=\frac{L-\log c}{1-t}=\sum_{n\ge0}\bigl(L-\log c\bigr)t^{n},
+\]
+whose support \(\SetOf{(n,0),(n,1):n\ge0}\) is infinite.  Every substituted
+coefficient \(p_n(\lambda)=\log c-\log c\) vanishes, the family is
+\((0,0,\dots)\), which is vacuously summable, and \(F\compose c=0\) is
+perfectly well defined.  The honest statement is the one proved above, with
+the hypothesis on \(p_n(\lambda)\) and not on \(F\).
 
 For contrast, when \(\rho>0\) one has \(\ordt(\tau)=\rho>0\) and
 \(\ordt(\tau^{n})=n\rho\to+\infty\), so the family is summable --- in a Hahn
@@ -32502,8 +33002,12 @@ Solving in order, with \(b_0=-a\) and \(b_1=aa'-b\),
 \end{equation}
 Three consistency checks.  For \(b=c=0\) this is
 \(b_2=\tfrac12a^{2}a'-a(a')^{2}-\tfrac12a^{2}a''\), the form used in
-\cref{plt:exer:exr-reverse-quadratic}.  For \(a=aL\) with \(a\in\K\) constant
-and \(b=c=0\) it gives \(a^{3}(L^{2}/2-L)=a^{3}\LamP{2}(L)\), matching
+% ed.: the check was printed as "a = aL with a in K", using the letter a for
+% ed.: both the coefficient a(L) and the scalar; renamed.
+\cref{plt:exer:exr-reverse-quadratic}.  For \(a=\alpha L\) with
+\(\alpha\in\K\) constant
+and \(b=c=0\) it gives
+\(\alpha^{3}(L^{2}/2-L)=\alpha^{3}\LamP{2}(L)\), matching
 \cref{plt:cor:lag-poly-perturbation}.  For \(a\), \(b\) constants and \(c=0\)
 it gives \(b_2=-ab\), matching \eqref{plt:eq:rev-ab-b2} at \(\degL a=0\).
 \end{proof}
@@ -32877,11 +33381,15 @@ identity''.  Refute it.
 \item For \(A=\alpha X\) with \(\alpha\in\K^{\times}\), compute every
 Lagrange--B\"urmann summand exactly and show they all have the same outer
 order, so the family is never summable.
-\item Show that the formal sum of those summands is a geometric series whose
-\emph{numerical} value reproduces the correct inverse
-\(\rev{\bigl((1+\alpha)X\bigr)}=X/(1+\alpha)\) when \(|\alpha|<1\) and is
-divergent when \(|\alpha|\ge1\).  Conclude that the threshold is not a
-technicality.
+% ed.: part (3) compares moduli, so it needs an absolute value on the
+% ed.: coefficient field; the inherited statement left K unnamed.
+\item For this part only, take \(\K\subseteq\ComplexNumbers\) with the usual
+absolute value.  Show that the formal sum of those summands is a geometric
+series whose \emph{numerical} value reproduces the correct inverse
+\(\rev{\bigl((1+\alpha)X\bigr)}=X/(1+\alpha)\) when
+\(\AbsoluteValue{\alpha}<1\) and is
+divergent when \(\AbsoluteValue{\alpha}\ge1\).  Conclude that the threshold is
+not a technicality.
 \end{enumerate}
 \end{exercise}
 
@@ -32911,7 +33419,8 @@ the family fails \cref{plt:def:trunc-summable}.  This matches the exact order
 formula \eqref{plt:eq:lag-order-exact}: with \(\alpha_{\ordt}=\ordt(A)=-1\),
 \(\ordt\bigl(\DX^{r-1}(A^{r})\bigr)=r(\ordt(A)+1)-1=-1\) for every \(r\).
 
-(3)  Formally summing \eqref{plt:eq:exr-lag-alpha-term} as a geometric series,
+(3)  Here \(\K\subseteq\ComplexNumbers\).  Formally summing
+\eqref{plt:eq:exr-lag-alpha-term} as a geometric series,
 \[
  X+\sum_{r\ge1}(-\alpha)^{r}X
  \ \text{``}=\text{''}\
@@ -32919,7 +33428,8 @@ formula \eqref{plt:eq:lag-order-exact}: with \(\alpha_{\ordt}=\ordt(A)=-1\),
  =\frac{X}{1+\alpha},
 \]
 which is indeed \(\rev{F}\) for \(F=X+\alpha X=(1+\alpha)X\).  For
-\(|\alpha|<1\) the scalar series converges and the manipulation is a valid
+\(\AbsoluteValue{\alpha}<1\) the scalar series converges and the manipulation
+is a valid
 computation with numbers --- but not with formal series: the family is not
 summable, so the left-hand side names no element of \(\PLlau\), and the
 agreement is a coincidence of the geometric series, not a theorem.  For
@@ -33000,6 +33510,23 @@ the printed \(S^{-4}\) numerator divided by \(6\).  Every coefficient is a
 polynomial in \(\Lambda\), which is (1) again.  The body records this
 expansion through \(S^{-2}\) only, at \eqref{plt:eq:lag-xlogx-expansion}; the
 two further blocks are computed here.
+
+% ed.: the O-term in \eqref{plt:eq:exr-xlogx} is an ANALYTIC estimate, and the
+% ed.: computation above is formal.  What licenses it is the explicit
+% ed.: remainder bound of the Lambert part, not \cref{plt:thm:om-expansion};
+% ed.: the citation is supplied rather than left to the reader, in line with
+% ed.: \cref{plt:exer:exr-trap-formal-to-analytic}.
+One word on the remainder.  Everything above is an identity between formal
+series in \(S^{-1}\) with coefficients in \(\K[\Lambda]\); by itself that
+justifies only a \(\FormalBigOAt{S^{-5}}{S^{-1}}\).  The analytic
+\(\BigOAt{\Lambda^{5}S^{-5}}{Y\to+\infty}\) printed in
+\eqref{plt:eq:exr-xlogx} is legitimate, but it comes from
+\cref{plt:cor:lw-canonical}\,(ii): with \(\xi_0=S\) and \(\ell_0=\Lambda\)
+that corollary bounds the error of the \(N\)-block truncation of
+\(\LambertW(Y)\) by \(2\bigl(5(1+\Lambda)/S\bigr)^{N+1}\) once
+\(S\ge10(1+\Lambda)\), and dividing \(Y\) by a quantity bounded away from
+\(0\) preserves the order.  Without that input the display is a formal
+identity and nothing more.
 \end{proof}
 
 \begin{exercise}[Trap: a scale change applied to one generator only]
@@ -33192,10 +33719,15 @@ exact threshold for \(N=1\).
 (1)  \(\LamP{0}(u)=-u\).  Its degree is \(1\), not \(0\); the assertion
 \([u^{0}]\LamP{0}=1/0\) is meaningless; and \([u]\LamP{0}=-1\) whereas
 \((-1)^{0-1}=-1\) --- so the third statement happens to hold, by accident, and
-should not be quoted as evidence.  What does survive at \(n=0\) is exactly the
+% ed.: "exactly item (i)" contradicted the sentence just above, which already
+% ed.: observed that (v) also evaluates correctly at n = 0.
+should not be quoted as evidence.  What survives at \(n=0\) is the
 part of \cref{plt:cor:lambert-coefficients} that does not mention the degree
 or a coefficient indexed from the top: the constant term vanishes and
-\(u\mid\LamP{0}\), i.e.\ item~(i) minus its degree clause.  Every statement
+\(u\mid\LamP{0}\), i.e.\ item~(i) minus its degree clause.  The two
+bottom-indexed items also evaluate correctly there --- (v) as noted, and (vii)
+as the identity \(0=0\) --- but by accident, each being proved only for
+\(n\ge1\) and \(n\ge2\) respectively.  Every statement
 indexed relative to the top --- (ii) on the number of nonzero coefficients,
 (iii), (iv), (vi) --- fails or is vacuous.  The integrality normalisation
 \(\LamPsc{n}=n!\LamP{n}\) is likewise an \(n\ge1\) statement; at \(n=0\) it
@@ -33210,19 +33742,55 @@ paid entirely at \(n=0\), and it is the reason
 (2)  The claim would follow if \(\LamP{N+1}(L)>0\) for all \(x>1\), i.e.\ for
 all \(L>0\).  It is false.  For \(N=1\) the relevant polynomial is
 \(\LamP{2}(u)=\tfrac12u(u-2)\), which is \emph{negative} for \(0<u<2\) and
-positive for \(u>2\).  So the sign of \(\WrightOmega-\WrightOmega_1\) changes
-at \(L=2\), that is at
+positive for \(u>2\).  So the leading term \(\LamP{2}(L)x^{-2}\) of the error
+changes sign at \(L=2\), that is at \(x=\EulerE^{2}=7.389056\ldots\), and the
+truncation \(\WrightOmega_1\) overshoots on one side of that point and
+undershoots on the other.
+
+% ed.: the inherited solution asserted that the sign of omega - Omega_1 itself
+% ed.: changes at x = e^2.  That is the sign change of the LEADING TERM only.
+% ed.: The true difference crosses zero at x = 8.7465..., recomputed here; the
+% ed.: gap between the two numbers is the whole moral of the exercise, so
+% ed.: printing e^2 as the exact threshold defeats it.
+The exact threshold is a different number, and this is precisely the trap the
+exercise is about.  The function
+\(x\mapsto\WrightOmega(x)-\WrightOmega_1(x)\) is negative on \((1,x_\ast)\)
+and positive on \((x_\ast,\infty)\), with a single zero at
 \[
- x=\EulerE^{2}=7.389056\ldots
+ x_\ast=8.746508640\ldots,\qquad \log x_\ast=2.168654608\ldots,
 \]
+not at \(\EulerE^{2}\).  The leading term locates the crossing only to the
+accuracy with which it approximates the error, and \(\LamP{3}(L)x^{-3}\) is
+still of comparable size at these values of \(x\).  What the body's
+\eqref{plt:eq:om-sharp-order} asserts is an equivalence as \(x\to+\infty\); it
+does not name a finite crossing point, and nothing here entitles one to read
+\(L=2\) as such a point.
+
 Numerically: at \(x=\EulerE\) (so \(L=1\)) one has
-\(\WrightOmega(\EulerE)=2.0167797\ldots\) while
+\(\WrightOmega(\EulerE)=2.0167798\ldots\) while
 \(\WrightOmega_1(\EulerE)=\EulerE-1+\EulerE^{-1}=2.0861613\ldots\), an
 overshoot; at \(x=10\) (so \(L=2.302585\ldots\)) one has
 \(\WrightOmega(10)=7.9294201\ldots\) and
-\(\WrightOmega_1(10)=7.9276734\ldots\), an undershoot.  In both cases the
-error agrees in sign and to one digit with \(\LamP{2}(L)x^{-2}\), which is
-\(-6.77\times10^{-2}\) and \(+3.48\times10^{-3}\) respectively.
+\(\WrightOmega_1(10)=7.9276734\ldots\), an undershoot.  The two errors are
+\[
+ -6.938\times10^{-2}
+ \qquad\text{and}\qquad
+ +1.747\times10^{-3},
+\]
+% ed.: the inherited solution claimed both errors agree "to one digit" with
+% ed.: LamP_2(L)x^{-2}.  At x = 10 the leading term is 3.484e-3 against a true
+% ed.: error of 1.747e-3 -- a factor of two, not one digit.  Only the signs
+% ed.: agree at that point, and the reason is printed below.
+against the leading term \(\LamP{2}(L)x^{-2}\), which is
+\(-6.767\times10^{-2}\) and \(+3.484\times10^{-3}\) respectively.  The signs
+agree in both cases, which is all the sign discussion needs.  The magnitudes
+agree only at \(x=\EulerE\): at \(x=10\) the leading term is too large by a
+factor of about two, because the next two blocks,
+\(\LamP{3}(L)x^{-3}=-1.581\times10^{-3}\) and
+\(\LamP{4}(L)x^{-4}=-1.752\times10^{-4}\), cancel most of it.  That is again
+the same lesson: at \(L\approx2.3\) the expansion is nowhere near its
+asymptotic regime, and \eqref{plt:eq:om-sharp-order} claims nothing at a
+finite \(x\).
 
 More generally \([u]\LamP{n}=(-1)^{n-1}\), so near \(u=0^{+}\) --- that is for
 \(x\) slightly above~\(1\) --- the sign of \(\LamP{n}(L)\) is \((-1)^{n-1}\)
@@ -33274,8 +33842,22 @@ this volume proves more than an asymptotic statement here: by
 \(\sum_{n\ge1}(-1)^{n}\LamP{n}(M)\eta^{-n}\) \emph{converges} once
 \(2(1+\AbsoluteValue{M})<\eta\), with an explicit remainder bound.  That is a
 theorem about this particular family, proved by a Cauchy estimate; it is not
-a consequence of the formal reversion, and nothing analogous is claimed for
-\(\WrightOmega\) in \cref{plt:exer:exr-omega-numerics}.
+a consequence of the formal reversion.
+% ed.: the inherited text added "and nothing analogous is claimed for
+% ed.: WrightOmega".  That is false: the same lemma
+% ed.: (plt:lem:lw-two-variable) applied at sigma = +1/x rather than -1/S
+% ed.: gives the omega statement, and it is printed in the volume as
+% ed.: plt:thm:lw-basepoint / plt:cor:lw-canonical.  The claim is corrected
+% ed.: here and in plt:exer:exr-omega-numerics, which repeated it.
+The corresponding statement for \(\WrightOmega\) is \emph{not} missing from
+the volume, contrary to what one might expect from the asymptotic framing of
+\cref{plt:sec:wright-omega}: \cref{plt:thm:lw-basepoint} applied with
+\(\xi=x\), \(K=x\) and \(\log K=L\) gives \(M=L\), so its seating condition
+reads \(2(1+L)<x\), and under it the series
+\(\sum_{n\ge1}\LamP{n}(L)x^{-n}\) converges absolutely to
+\(\WrightOmega(x)-x+L\).  The two branches are the two signs
+\(\sigma=\pm1/\,\cdot\,\) of one and the same Cauchy estimate,
+\cref{plt:lem:lw-two-variable}.
 
 (3)  The two weights belong to two different objects, and conflating them is
 the error the sources make.  The reversion of \(X-\log X\) carries
@@ -33580,9 +34162,30 @@ the derived identities.
 (v) \([u]\LamP{5}=1=(-1)^{4}\) and \([u]\LamP{6}=-1=(-1)^{5}\).
 (vii) \([u^{2}]\LamP{5}=-5=(-1)^{5}\tfrac{5\cdot4}{4}\) and
 \([u^{2}]\LamP{6}=\tfrac{15}2=(-1)^{6}\tfrac{6\cdot5}{4}\).
-Finally (vi): \([u^{3}]\LamP{5}=\tfrac{35}6\) should equal
-\(\tfrac{n-1}2(H_{n-1}^{2}-H_{n-1}^{(2)})=2\bigl(\tfrac{625}{144}
- -\tfrac{205}{144}\bigr)=2\cdot\tfrac{420}{144}=\tfrac{35}6\), which it does.
+% ed.: item (vi) of \cref{plt:cor:lambert-coefficients} is indexed from the
+% ed.: top, [u^{n-2}], not at the fixed exponent 3.  The two coincide at n = 5
+% ed.: and only there; read as "[u^3]" the check would fail at n = 6, where
+% ed.: [u^3]LamP_6 = -85/6 while the right-hand side is 75/8 = [u^4]LamP_6.
+% ed.: The inherited solution printed the fixed exponent and verified (vi) on
+% ed.: LamP_5 only, although the exercise asks for both.
+Finally (vi), which reads \([u^{\,n-2}]\LamP{n}
+ =\tfrac{n-1}2\bigl(H_{n-1}^{2}-H_{n-1}^{(2)}\bigr)\) --- an index counted
+from the top, not the fixed exponent \(3\), the two agreeing at \(n=5\) alone.
+At \(n=5\), with \(H_4^{(2)}=\tfrac{205}{144}\),
+\[
+ [u^{3}]\LamP{5}=\tfrac{35}6
+ =2\Bigl(\tfrac{625}{144}-\tfrac{205}{144}\Bigr)
+ =2\cdot\tfrac{420}{144}=\tfrac{35}6 ;
+\]
+at \(n=6\), with \(H_5^{(2)}=\tfrac{5269}{3600}\),
+\[
+ [u^{4}]\LamP{6}=\tfrac{75}8
+ =\tfrac52\Bigl(\tfrac{18769}{3600}-\tfrac{5269}{3600}\Bigr)
+ =\tfrac52\cdot\tfrac{15}4=\tfrac{75}8 .
+\]
+Both hold.  Reading (vi) at the fixed exponent \(3\) instead would compare
+\([u^{3}]\LamP{6}=-\tfrac{85}6\) with \(\tfrac{75}8\) and report a failure
+that is entirely an indexing error.
 Multiplying by \(n!\) turns every coefficient into an integer, as
 \cref{plt:cor:lambert-integrality} requires: \(\LamPsc{5}\) and
 \(\LamPsc{6}\) are the numerators displayed above.
@@ -33815,18 +34418,34 @@ correct formal algebra produces the second.
 % ed.: ingredient is the substituted-tail estimate, which is why this
 % ed.: exercise exists.
 
-\begin{exercise}[Counterexample: the Poincar\'e condition does not determine the blocks]
+\begin{exercise}[Counterexample: what the minimal Poincar\'e condition fails to do]
 \label{plt:exer:exr-poincare}
 A source proposes to define ``\(f\) has the asymptotic expansion
 \(\sum_np_n(\log x)x^{-n}\)'' by the minimal Poincar\'e requirement that, for
 each \(N\), the remainder after the term \(n=N\) be
-\(\LittleOAt{p_N(\log x)x^{-N}}{x\to+\infty}\).  Show that this does not
-determine the blocks \(p_n\), and that the definition actually used
-(\cref{plt:def:mul-asymptotic}) does.
+\(\LittleOAt{p_N(\log x)x^{-N}}{x\to+\infty}\).
+\begin{enumerate}
+\item Show that at a \emph{single} index \(N\) the requirement pins \(p_N\)
+only modulo polynomials of strictly smaller degree.
+\item Show that, imposed at \emph{every} index, it does nevertheless pin the
+blocks --- so nonuniqueness is not the objection to it.
+\item Give the two objections that are real: the requirement is degenerate as
+soon as one block vanishes, and at any single index it controls the remainder
+only within its own outer order, not at the next one.
+\item Show that the definition actually used (\cref{plt:def:mul-asymptotic})
+has neither defect and determines the blocks.
+\end{enumerate}
 \end{exercise}
 
+% ed.: the inherited version of this exercise asserted outright that the
+% ed.: minimal condition "does not determine the blocks", and proved it by
+% ed.: changing one block and checking the condition at that index alone.
+% ed.: The check at index N+1 then fails, so the modified family does not
+% ed.: satisfy the definition and the claimed nonuniqueness is not there.
+% ed.: Part (2) below proves uniqueness; the defects the exercise exists to
+% ed.: expose are the two in part (3), and they are genuine.
 \begin{proof}[Solution]
-\emph{Nonuniqueness.}  Fix \(N\) and take the two candidate blocks
+(1)  Fix \(N\) and take the two candidate blocks
 \[
  p_N(u)=u^{5},
  \qquad
@@ -33837,20 +34456,60 @@ They differ by \(u^{3}\), and
  \bigl(q_N(\log x)-p_N(\log x)\bigr)x^{-N}=(\log x)^{3}x^{-N}
  =\LittleOAt{(\log x)^{5}x^{-N}}{x\to+\infty}.
 \]
-So if \(f\) satisfies the Poincar\'e condition with block \(p_N\) it satisfies
-it with block \(q_N\) as well: the remainder after \(q_N\) differs from the
-remainder after \(p_N\) by something that is little-o of \emph{either} of the
-two last retained terms.  Hence the condition determines the block only up to
-anything of strictly smaller \(L\)-degree, which is to say not at all.  The
-same construction works at every index and with \(u^{3}\) replaced by any
-polynomial of degree \(<5\).
-
-The root cause is that the Poincar\'e condition compares the remainder with
-the last retained \emph{term}, and on a two-generator scale a term is a whole
-block, whose parts have different growth.  On a one-generator scale
+So the remainder after \(q_N\) differs from the remainder after \(p_N\) by
+something that is little-o of \emph{either} of the two last retained terms: the
+requirement read at the index \(N\) alone cannot distinguish the two.  The same
+computation works with \(u^{3}\) replaced by any polynomial of degree \(<5\).
+The reason is that the requirement compares the remainder with the last
+retained \emph{term}, and on a two-generator scale a term is a whole block,
+whose parts have different growth.  On a one-generator scale
 \(\SetOf{x^{-n}}\) the terms are monomials and the classical condition
-\cite{olver-asymptotics} is fine; on \(\SetOf{(\log x)^{m}x^{-n}}\) it is
-not.
+\cite{olver-asymptotics} suffers from none of this.
+
+(2)  Now impose the requirement at every index, which is what the proposed
+definition says.  Suppose \((p_n)\) and \((q_n)\) both work for the same
+\(f\), and let \(n_0\) be least with \(d\DefinitionEquals q_{n_0}-p_{n_0}\ne0\).
+Write \(R_p\) and \(R_q\) for the two remainders after the index \(n_0+1\).
+Since \(p_n=q_n\) for \(n<n_0\),
+\[
+ R_q-R_p=d(\log x)\,x^{-n_0}
+  +\bigl(p_{n_0+1}-q_{n_0+1}\bigr)(\log x)\,x^{-n_0-1}.
+\]
+Multiply by \(x^{n_0}\).  The requirement at \(n_0+1\) makes \(R_p\) and
+\(R_q\) little-o of a fixed block times \(x^{-n_0-1}\), so
+\(x^{n_0}\AbsoluteValue{R_p}\) and \(x^{n_0}\AbsoluteValue{R_q}\) are
+\(\LittleOAt{(\log x)^{K}/x}{x\to+\infty}\) for some \(K\), and so is the last
+displayed summand.  Hence \(\AbsoluteValue{d(\log x)}\to0\).  But \(d\ne0\) is
+a polynomial, so \(\AbsoluteValue{d(\log x)}\) is bounded below by a positive
+constant for large \(x\).  Contradiction; \(d=0\), and the blocks agree.
+It is the clause at \(n_0+1\), not the one at \(n_0\), that does the work ---
+which is exactly the observation part~(1) makes, read the other way round.
+
+(3)  Two defects survive part~(2), and they are what disqualify the
+requirement.
+
+\emph{It degenerates at a vanishing block.}  ``\(g=\LittleOAt{0}{x\to+\infty}\)''
+says \(\AbsoluteValue g\le\varepsilon\cdot0\) eventually for every
+\(\varepsilon>0\), i.e.\ that \(g\) vanishes identically for large \(x\).  So
+as soon as one block \(p_N\) is zero, the requirement at that index demands an
+exactly vanishing remainder.  Take \(f(x)=1+x^{-2}\), which has the finite
+expansion \(F=1+t^{2}\) and no expansion problem whatsoever.  Its blocks are
+\(p_0=1\), \(p_1=0\), \(p_2=1\), and the requirement at \(N=1\) reads
+\(x^{-2}=\LittleOAt{0}{x\to+\infty}\), which is false.  The proposed
+definition therefore does not apply to \(f\) at all, although \(f\) is a
+polynomial in \(x^{-1}\).
+
+\emph{It gives no next-order control.}  At the index \(N\) the requirement
+permits a remainder as large as \((\log x)^{\degL p_N-1}x^{-N}\), which
+dominates the whole next block \(p_{N+1}(\log x)x^{-N-1}\) by a factor of
+\(x/\log x\).  A reader who takes ``expansion through \(n=N\)'' to mean
+``correct to the order of the next block'' is therefore reading in an estimate
+that the requirement never made --- the same confusion, one level down, as
+\cref{plt:exer:exr-trap-formal-to-analytic}.
+
+(4)  Neither defect afflicts \cref{plt:def:mul-asymptotic}, which never
+divides by a block and never compares the remainder with the last retained
+term.
 
 \emph{What does determine them.}  \Cref{plt:def:mul-asymptotic}, and its
 extension to rational blocks in \cref{plt:def:an-expansion}, compare the
@@ -33863,12 +34522,15 @@ every \(N\) there are \(M_N,C_N,x_N\) with
 \]
 Suppose \(F\) and \(G\) both satisfy this and \(F\ne G\); let
 \(n_0=\ordt(F-G)\) and \(p=[t^{n_0}](F-G)\ne0\).  Applying the condition at
-\(N=n_0+1\) to both and subtracting,
+\(N=n_0+1\) to both and subtracting --- the two truncations
+\(\Trunc{F}{n_0+1}\) and \(\Trunc{G}{n_0+1}\) retain the blocks of index
+\(\le n_0\), and those agree below \(n_0\), so their difference is the
+\emph{single} term \(p(\log x)x^{-n_0}\) ---
 \[
- \AbsoluteValue{p(\log x)x^{-n_0}+\bigl(\text{lower-order blocks}\bigr)}
+ \AbsoluteValue{p(\log x)}\,x^{-n_0}
  \le C\,x^{-n_0-1}(\log x)^{M}
 \]
-for large \(x\), where the omitted blocks have outer order \(>n_0\).  Dividing
+for large \(x\).  Dividing
 by \(x^{-n_0}\), the left side tends to \(\infty\) or to a nonzero constant in
 absolute value if \(p\ne0\) --- indeed
 \(\AbsoluteValue{p(\log x)}\ge c(\log x)^{\degL p}\) for large \(x\) --- while
@@ -33974,9 +34636,13 @@ sum of \(F\)'' without extra hypotheses.
 (1)  This is the uniqueness argument of
 \cref{plt:exer:exr-poincare}: if \(f\approx F\) and \(f\approx G\) with
 \(F\ne G\), let \(n_0=\ordt(F-G)\) and \(p=[t^{n_0}](F-G)\ne0\).  Subtracting
+% ed.: this step was written as an inequality on "(F-G)(X)", which is a formal
+% ed.: series and not a function.  What the two estimates bound is the
+% ed.: difference of the two TRUNCATIONS, which is a polynomial expression.
 the two estimates at cutoff \(N=n_0+1\) gives
-\(\AbsoluteValue{(F-G)(X)}\le C X^{-n_0-1}(\log X)^{M}\) for large \(X\), where
-\((F-G)(X)=p(\log X)X^{-n_0}+\bigl(\text{blocks of order}>n_0\bigr)\); dividing
+\(\AbsoluteValue{\bigl(\Trunc{F}{n_0+1}-\Trunc{G}{n_0+1}\bigr)(X)}
+ \le C X^{-n_0-1}(\log X)^{M}\) for large \(X\), and that difference is the
+single term \(p(\log X)X^{-n_0}\); dividing
 by \(X^{-n_0}\) makes the left side bounded below by a positive constant times
 \((\log X)^{\degL p}\) and the right side tend to \(0\).  Contradiction.
 
@@ -34053,10 +34719,16 @@ that show that the series \(\sum_n\LamP{n}(\log x)\,x^{-n}\) converges at
 \end{exercise}
 
 \begin{proof}[Solution]
+% ed.: the display here was garbled ("1 - LamP_0(0)(-1) + ...").  By
+% ed.: \cref{plt:def:om-truncation}, Omega_N = X + Trunc(P)_{N+1}, so the
+% ed.: evaluation is the single sum written below.
 (1)  At \(x=1\) one has \(L=\log1=0\), and \(\LamP{n}(0)=0\) for every \(n\)
-by \eqref{plt:eq:lambert-boundary}.  Hence
-\(\WrightOmega_N(1)=1-\LamP{0}(0)\cdot(-1)+\sum_{n=1}^{N}\LamP{n}(0)=1\) ---
-more directly, \(\WrightOmega_N(1)=1-0+0=1\).  And
+by \eqref{plt:eq:lambert-boundary}.  By \cref{plt:def:om-truncation},
+\(\WrightOmega_N=X+\Trunc{\mathcal P}{N+1}\), so
+\[
+ \WrightOmega_N(1)=1+\sum_{n=0}^{N}\LamP{n}(0)\cdot1^{-n}=1+0=1 .
+\]
+And
 \(\WrightOmega(1)=1\) because \(1+\log1=1\).  So every truncation is exact at
 that one point.
 
@@ -34085,18 +34757,20 @@ and so on down to \(8.975\times10^{-10}\) against \(1.047\times10^{-9}\).
 Both magnitude and sign agree throughout, which is
 \eqref{plt:eq:om-sharp-order} in action.
 
-The signs are themselves informative.  Here \(L=2.9957>2\), so
-\(\LamP{2}(L)>0\) and \(\WrightOmega_1\) undershoots, in accordance with
-\cref{plt:exer:exr-degree-law-zero}\,(2); the later signs follow the sign of
+The signs are themselves informative.  Here \(x=20\) lies above the crossing
+point \(x_\ast=8.7465\ldots\) of \cref{plt:exer:exr-degree-law-zero}\,(2), and
+\(\LamP{2}(L)>0\) since \(L=2.9957>2\); so \(\WrightOmega_1\) undershoots, as
+that exercise predicts.  The later signs follow the sign of
 \(\LamP{n}(L)\), which changes as \(L\) passes the real roots of the
 successive Lambert polynomials.  There is no alternating pattern in \(n\) to
 be read off, and none should be expected: the sign is the sign of a
 polynomial value, not of a coefficient.
 
-(3)  No.  Monotone decrease of finitely many computed terms is evidence, not
-proof, and in an asymptotic series the terms typically decrease for a long
-time before turning.  What this volume proves is three separate things, and
-none of them is convergence of the substituted series:
+(3)  No --- monotone decrease of finitely many computed terms is evidence, not
+proof, and in an asymptotic series the terms typically decrease for a long time
+before turning.  The series does converge at \(x=20\), but for a reason that
+has nothing to do with the table.  This volume proves four separate things,
+which must be kept apart:
 \begin{itemize}
 \item the \emph{formal} identity \eqref{plt:eq:om-expansion}, an equality in
 \(\Gnear\);
@@ -34104,16 +34778,33 @@ none of them is convergence of the substituted series:
 as \(x\to+\infty\) with an explicit logarithmic loss \(K=(N+2)^{2}\);
 \item the \emph{frozen} convergence of \cref{plt:prop:om-frozen-convergence}:
 for each fixed \(u_0\) the series \(\sum_{n\ge1}\LamP{n}(u)s^{n}\) has a
-positive radius in \(s\), uniformly near \(u_0\).
+positive radius in \(s\), uniformly near \(u_0\);
+% ed.: the inherited solution stopped at the third item and concluded that
+% ed.: "this volume does not determine whether that series converges".  That
+% ed.: is false.  \cref{plt:thm:lw-basepoint}, taken at K = x and log K = L,
+% ed.: gives M = L and a seating condition 2(1+L) < x, under which the
+% ed.: substituted series converges absolutely.  At x = 20 the condition reads
+% ed.: 7.99 < 20.  Recomputed: the partial sum through n = 40 agrees with
+% ed.: omega(20) - 20 + log 20 to fifteen digits.
+\item the \emph{substituted} convergence of \cref{plt:thm:lw-basepoint}: with
+\(\xi=x\), \(K=x\) and \(\log K=L\) that theorem has \(M=L\), its seating
+condition \eqref{plt:eq:lw-seating} reads \(2(1+L)<x\), and under it the
+series \(\sum_{n\ge1}\LamP{n}(L)x^{-n}\) converges absolutely, with sum
+\(\WrightOmega(x)-x+L\).
 \end{itemize}
-The third is the reason the numbers look convergent: at \(x=20\) the pair
-\((s,u)=(1/20,\log20)\) is one point, and the frozen series at \(u=\log20\)
-has some positive radius which \(1/20\) may well be inside.  But in the
-asymptotic regime \(u=\log x\) and \(s=1/x\) are linked and \(u\to\infty\),
-so the frozen radius \(r(u)\) is itself moving, and no convergence statement
-about the substituted series follows.  This volume does not determine whether
-that series converges; the honest reading of the table is the sharp-order
-statement of (2), and nothing more.
+The fourth item settles the question the table raises, and settles it in the
+affirmative: at \(x=20\) the seating condition reads \(7.991<20\), so the
+series converges absolutely there.  The two statements must still not be
+confused.  Convergence at a fixed \(x\) is a statement about one point, proved
+by a Cauchy estimate on a two-variable holomorphic function; the sharp order
+of (2) is a statement about the limit \(x\to+\infty\), with \(u=\log x\) and
+\(s=1/x\) linked.  Neither implies the other, and
+\cref{plt:prop:om-frozen-convergence} implies neither: it freezes \(u\) and
+its radius \(r(u)\) is not claimed to be bounded below as
+\(\AbsoluteValue{u}\to\infty\) (\cref{plt:rmk:om-open}).  What the table
+alone shows is the sharp-order statement of (2), and nothing more; the
+convergence is a theorem imported from \cref{plt:sec:lambert-branches}, not a
+reading of the numbers.
 \end{proof}
 
 \begin{remark}[Where each exercise came from]
