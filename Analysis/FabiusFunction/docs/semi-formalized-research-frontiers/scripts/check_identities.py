@@ -26,6 +26,7 @@ Usage:  python check_identities.py [-v]
 Exit status is 1 if any identity fails.
 """
 import sys
+from decimal import Decimal, getcontext
 from fractions import Fraction as F
 from itertools import permutations, product
 from math import comb, factorial
@@ -538,6 +539,103 @@ for n in range(1, 8):
         bad.append(n)
 check('thm:cycle-index-bell',
       'Z(S_n) = (1/n!) B_n(0! a_1, .., (n-1)! a_n), against enumeration of S_n', bad, t)
+
+# ------------------------------------------------------- thm:eulerian-irwin-hall
+def _irwin_hall_cdf(tt, n):
+    """vol{x in [0,1]^n : sum x_i < tt}, exact for integer tt."""
+    return F(sum((-1) ** j * comb(n, j) * max(tt - j, 0) ** n for j in range(0, n + 1)),
+             factorial(n))
+
+
+bad, t = [], 0
+for n in range(1, 13):
+    for k in range(0, n):
+        t += 1
+        if _irwin_hall_cdf(k + 1, n) - _irwin_hall_cdf(k, n) != F(E[n][k], factorial(n)):
+            bad.append((n, k))
+check('thm:eulerian-irwin-hall', 'vol{k <= sum x_i < k+1} = A(n,k)/n!, from the Irwin-Hall CDF',
+      bad, t)
+
+# ------------------------------------------------- thm:merged-inverse-derivative
+def _compose_inverse(a, N):
+    """g with f(g(y)) = y, for f = sum_{i>=1} a_i x^i, a_1 invertible."""
+    g = [F(0)] * (N + 1)
+    g[1] = F(1) / a[1]
+    for n in range(2, N + 1):
+        gg = g[:]
+        gg[n] = F(0)
+        pw = [F(0)] * (N + 1)
+        pw[0] = F(1)
+        tot = [F(0)] * (N + 1)
+        for i in range(1, N + 1):
+            nxt = [F(0)] * (N + 1)
+            for p in range(N + 1):
+                if pw[p]:
+                    for q in range(1, N + 1 - p):
+                        if gg[q]:
+                            nxt[p + q] += pw[p] * gg[q]
+            pw = nxt
+            if a[i]:
+                for p in range(N + 1):
+                    tot[p] += a[i] * pw[p]
+        g[n] = -tot[n] / a[1]
+    return g
+
+
+bad, t = [], 0
+NN = 6
+for _ in range(20):
+    a = [F(0)] * (NN + 2)
+    a[1] = F(random.choice([-3, -2, -1, 1, 2, 3]), random.randint(1, 3))
+    for i in range(2, NN + 2):
+        a[i] = F(random.randint(-4, 4), random.randint(1, 3))
+    g = _compose_inverse(a, NN)
+    fd = [F(0)] + [F(factorial(k)) * a[k] for k in range(1, NN + 2)]
+    gd = [F(0)] + [F(factorial(k)) * g[k] for k in range(1, NN + 1)]
+    for n in range(2, NN + 1):
+        t += 1
+        rhs = -sum((fd[k] * _partial_bell(n, k, gd[1:n + 1])
+                    for k in range(2, n + 1)), F(0)) / fd[1]
+        if gd[n] != rhs:
+            bad.append(('recursion', n))
+    f1, f2, f3, f4 = fd[1], fd[2], fd[3], fd[4]
+    want = [F(1) / f1, -f2 / f1 ** 3, (3 * f2 ** 2 - f1 * f3) / f1 ** 5,
+            (-15 * f2 ** 3 + 10 * f1 * f2 * f3 - f1 ** 2 * f4) / f1 ** 7]
+    for idx in range(4):
+        t += 1
+        if gd[idx + 1] != want[idx]:
+            bad.append(('explicit', idx + 1))
+check('thm:merged-inverse-derivative',
+      'the Bell recursion for g^{(n)} and the four explicit forms, by series reversion',
+      bad, t)
+
+# ---------------------------------------------------- cor:merged-harmonic-expansion
+# Precision matters here and the naive version of this check is worthless: comparing a
+# double-precision H_N at N = 1000 measures the rounding error of the summation (~1e-14),
+# not the residual (~4e-21).  H_N is taken exactly and log/gamma to 60 digits, and the test
+# is that residual * N^6 approaches the NEXT term -beta_6/6 = -1/252 rather than merely
+# staying bounded.
+getcontext().prec = 60
+GAMMA = Decimal('0.577215664901532860606512090082402431042159335939923598805767')
+bad, t = [], 0
+ratio = None
+for Nn in (10, 20, 40, 80, 160):
+    Hn = sum((F(1, k) for k in range(1, Nn + 1)), F(0))
+    Hd = Decimal(Hn.numerator) / Decimal(Hn.denominator)
+    Nd = Decimal(Nn)
+    approx = (Nd.ln() + GAMMA + Decimal(1) / (2 * Nd)
+              - Decimal(1) / (12 * Nd ** 2) + Decimal(1) / (120 * Nd ** 4))
+    ratio = (Hd - approx) * Nd ** 6
+t += 1
+if abs(float(ratio) - (-1.0 / 252)) >= 1e-6:
+    bad.append(('limit', float(ratio)))
+for lab, lhs, rhs in (('-beta_2/2', -F(1, 6) / 2, F(-1, 12)),
+                      ('-beta_4/4', -F(-1, 30) / 4, F(1, 120))):
+    t += 1
+    if lhs != rhs:
+        bad.append((lab, lhs, rhs))
+check('cor:merged-harmonic-expansion',
+      'residual * N^6 -> -1/252, and the quoted terms match -beta_{2r}/(2r)', bad, t)
 
 # --------------------------------------------------------------------- report
 width = max(len(lab) for lab, _, _, _ in RESULTS)
