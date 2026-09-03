@@ -767,6 +767,557 @@ for _ in range(25):
         bad.append((tot, aco.get(-1, F(0))))
 check('thm:res-subst', "Res_z A(u(z))u'(z) = Res_u A(u), Laurent A with poles", bad, t)
 
+# ------------------------------------------------- thm:merged-good (d = 2)
+# Lagrange-Good inversion.  Both sides are built independently on truncated bivariate series:
+# the left by solving the fixed point w_i = t_i phi_i(w) by iteration and composing F with it,
+# the right by forming F * prod phi_i^{n_i} * det(delta_ij - (x_j/phi_i) d phi_i/d x_j).
+NG = 7
+
+
+def _g_mul(a, b):
+    r = {}
+    for (i, j), u in a.items():
+        for (p, q), v in b.items():
+            if i + p + j + q < NG:
+                r[(i + p, j + q)] = r.get((i + p, j + q), F(0)) + u * v
+    return {k: v for k, v in r.items() if v != 0}
+
+
+def _g_add(a, b):
+    r = dict(a)
+    for k, v in b.items():
+        r[k] = r.get(k, F(0)) + v
+    return {k: v for k, v in r.items() if v != 0}
+
+
+def _g_neg(a):
+    return {k: -v for k, v in a.items()}
+
+
+def _g_one():
+    return {(0, 0): F(1)}
+
+
+def _g_inv(a):
+    c = a[(0, 0)]
+    r = {(0, 0): F(1) / c}
+    for deg in range(1, NG):
+        for i in range(deg + 1):
+            j = deg - i
+            s = F(0)
+            for (p, q), u in a.items():
+                if (p, q) != (0, 0) and p <= i and q <= j:
+                    s += u * r.get((i - p, j - q), F(0))
+            if s != 0:
+                r[(i, j)] = -s / c
+    return {k: v for k, v in r.items() if v != 0}
+
+
+def _g_pow(a, n):
+    r = _g_one()
+    for _ in range(n):
+        r = _g_mul(r, a)
+    return r
+
+
+def _g_dx(a, which):
+    r = {}
+    for (i, j), v in a.items():
+        if which == 0 and i >= 1:
+            r[(i - 1, j)] = r.get((i - 1, j), F(0)) + v * i
+        if which == 1 and j >= 1:
+            r[(i, j - 1)] = r.get((i, j - 1), F(0)) + v * j
+    return {k: v for k, v in r.items() if v != 0}
+
+
+def _g_shift(a, which):
+    out = {}
+    for (i, j), v in a.items():
+        key = (i + 1, j) if which == 0 else (i, j + 1)
+        if key[0] + key[1] < NG:
+            out[key] = v
+    return out
+
+
+def _g_comp(Fs, w1, w2):
+    p1, p2 = [_g_one()], [_g_one()]
+    for _ in range(NG):
+        p1.append(_g_mul(p1[-1], w1))
+        p2.append(_g_mul(p2[-1], w2))
+    res = {}
+    for (i, j), c in Fs.items():
+        if i < len(p1) and j < len(p2):
+            res = _g_add(res, {k: c * v for k, v in _g_mul(p1[i], p2[j]).items()})
+    return res
+
+
+def _g_rand(const_nonzero):
+    s = {}
+    for i in range(NG):
+        for j in range(NG - i):
+            if random.random() < 0.55:
+                v = F(random.randint(-3, 3), random.randint(1, 2))
+                if v != 0:
+                    s[(i, j)] = v
+    if const_nonzero:
+        s[(0, 0)] = F(random.randint(1, 3))
+    else:
+        s.pop((0, 0), None)
+    return s
+
+
+bad, t = [], 0
+for _ in range(5):
+    phi1, phi2 = _g_rand(True), _g_rand(True)
+    Fs = _g_rand(random.random() < 0.5)
+    w1, w2 = {}, {}
+    for _ in range(NG + 1):
+        w1, w2 = (_g_shift(_g_comp(phi1, w1, w2), 0),
+                  _g_shift(_g_comp(phi2, w1, w2), 1))
+    lhs = _g_comp(Fs, w1, w2)
+    i1, i2 = _g_inv(phi1), _g_inv(phi2)
+    m11 = _g_add(_g_one(), _g_neg(_g_mul(i1, _g_shift(_g_dx(phi1, 0), 0))))
+    m12 = _g_neg(_g_mul(i1, _g_shift(_g_dx(phi1, 1), 1)))
+    m21 = _g_neg(_g_mul(i2, _g_shift(_g_dx(phi2, 0), 0)))
+    m22 = _g_add(_g_one(), _g_neg(_g_mul(i2, _g_shift(_g_dx(phi2, 1), 1))))
+    det = _g_add(_g_mul(m11, m22), _g_neg(_g_mul(m12, m21)))
+    for n1 in range(0, 3):
+        for n2 in range(0, 3):
+            if n1 + n2 >= NG - 3:
+                continue
+            rhs = _g_mul(_g_mul(Fs, _g_pow(phi1, n1)), _g_mul(_g_pow(phi2, n2), det))
+            t += 1
+            if lhs.get((n1, n2), F(0)) != rhs.get((n1, n2), F(0)):
+                bad.append((n1, n2))
+check('thm:merged-good', 'Lagrange-Good inversion in dimension 2, both sides built separately',
+      bad, t)
+
+# ------------------------------------------- thm:shifted-lagrange-reversion
+# With v solving v = x + y f(v):  g(v) = g(x) + sum_k (y^k/k!) (d/dx)^{k-1}(f^k g').
+# f and g are polynomials, so v is computed exactly as a y-series with polynomial
+# coefficients by iterating the fixed point, and the comparison at each y^k is between
+# polynomials in x -- an identity, not a check at sample points.
+KR = 7
+
+
+def _q_mul(a, b):
+    r = [F(0)] * (len(a) + len(b) - 1)
+    for i, u in enumerate(a):
+        if u:
+            for j, v in enumerate(b):
+                r[i + j] += u * v
+    return _q_trim(r)
+
+
+def _q_add(a, b):
+    m = max(len(a), len(b))
+    return _q_trim([(a[i] if i < len(a) else F(0)) + (b[i] if i < len(b) else F(0))
+                    for i in range(m)])
+
+
+def _q_trim(a):
+    while len(a) > 1 and a[-1] == 0:
+        a.pop()
+    return a
+
+
+def _q_der(a):
+    return _q_trim([a[i] * i for i in range(1, len(a))] or [F(0)])
+
+
+def _q_pow(a, n):
+    r = [F(1)]
+    for _ in range(n):
+        r = _q_mul(r, a)
+    return r
+
+
+def _q_apply(poly, vser):
+    """poly(v) where v is a y-series of polynomials."""
+    out = [[F(0)] for _ in range(KR)]
+    pw = [[[F(1)]] + [[F(0)] for _ in range(KR - 1)]]
+    for _d in range(len(poly) - 1):
+        prev = pw[-1]
+        nxt = [[F(0)] for _ in range(KR)]
+        for i in range(KR):
+            if prev[i] == [F(0)]:
+                continue
+            for j in range(KR - i):
+                if vser[j] != [F(0)]:
+                    nxt[i + j] = _q_add(nxt[i + j], _q_mul(prev[i], vser[j]))
+        pw.append(nxt)
+    for d, cc in enumerate(poly):
+        if cc:
+            for i in range(KR):
+                out[i] = _q_add(out[i], [cc * z for z in pw[d][i]])
+    return out
+
+
+bad, t = [], 0
+for _ in range(10):
+    f = _q_trim([F(random.randint(-3, 3), random.randint(1, 2)) for _ in range(4)])
+    g = _q_trim([F(random.randint(-3, 3), random.randint(1, 2)) for _ in range(4)])
+    v = [[F(0), F(1)]] + [[F(0)] for _ in range(KR - 1)]
+    for _ in range(KR):
+        fv = _q_apply(f, v)
+        v = [[F(0), F(1)]] + [fv[i - 1] for i in range(1, KR)]
+    gv = _q_apply(g, v)
+    gp = _q_der(g)
+    for k in range(1, KR):
+        term = _q_mul(_q_pow(f, k), gp)
+        term2 = _q_pow(f, k)
+        for _ in range(k - 1):
+            term = _q_der(term)
+            term2 = _q_der(term2)
+        t += 2
+        if _q_trim(list(gv[k])) != _q_trim([cc / factorial(k) for cc in term]):
+            bad.append(('g', k))
+        if _q_trim(list(v[k])) != _q_trim([cc / factorial(k) for cc in term2]):
+            bad.append(('v', k))
+check('thm:shifted-lagrange-reversion',
+      "g(v) = g(x) + sum (y^k/k!) d^{k-1}(f^k g'), and the g = id case", bad, t)
+
+# ----------------------------------------------------------- thm:bell-near-diagonal
+# B_{n,n-a}(x_1..x_{a+1}) = sum_{j=a+1}^{2a} (j!/a!) C(n,j) x_1^{n-j}
+#                             B_{a,j-a}(x_2/2, x_3/3, .., x_{2a-j+2}/(2a-j+2)).
+# The inner arguments are both shifted and divided, which is the part of the statement most
+# easily mis-transcribed, so it is evaluated rather than read.
+bad, t = [], 0
+for n in range(2, 11):
+    for a in range(1, n):
+        xs = [F(random.randint(-5, 5), random.randint(1, 3))
+              for _ in range(max(n, 2 * a + 2))]
+        lhs = _partial_bell(n, n - a, xs)
+        rhs = F(0)
+        for j in range(a + 1, 2 * a + 1):
+            if j > n:            # C(n,j) = 0 there, and x_1^{n-j} would need a negative power
+                continue
+            y = [xs[i] / F(i + 1) for i in range(1, max(a, 1) + 1)]
+            rhs += (F(factorial(j), factorial(a)) * F(comb(n, j)) * xs[0] ** (n - j)
+                    * _partial_bell(a, j - a, y))
+        t += 1
+        if lhs != rhs:
+            bad.append((n, a))
+check('thm:bell-near-diagonal',
+      'B_{n,n-a} through B_{a,j-a} at shifted and divided arguments', bad, t)
+
+# --------------------------------------------------------------- thm:faa-multivariate
+# d^n/(dx_1..dx_n) f(y) = sum_{pi} f^{(|pi|)}(y) prod_{B in pi} d_B y, y = g(x_1,..,x_n).
+# The left side is obtained by actually differentiating the composite once in each variable as
+# an exact multivariate polynomial; the right by summing over set partitions of [n].  n = 4
+# gives 15 partitions across 5 shapes, so the block structure is exercised rather than only
+# the two extreme partitions.
+def _m_mul(a, b, nv):
+    r = {}
+    for ea, ca in a.items():
+        for eb, cb in b.items():
+            e = tuple(ea[i] + eb[i] for i in range(nv))
+            r[e] = r.get(e, F(0)) + ca * cb
+    return {k: v for k, v in r.items() if v != 0}
+
+
+def _m_add(a, b):
+    r = dict(a)
+    for k, v in b.items():
+        r[k] = r.get(k, F(0)) + v
+    return {k: v for k, v in r.items() if v != 0}
+
+
+def _m_diff(a, i):
+    r = {}
+    for e, c in a.items():
+        if e[i] > 0:
+            e2 = list(e)
+            e2[i] -= 1
+            r[tuple(e2)] = r.get(tuple(e2), F(0)) + c * e[i]
+    return {k: v for k, v in r.items() if v != 0}
+
+
+def _m_parts(n):
+    def rec(i, maxb, cur):
+        if i == n:
+            blocks = [[] for _ in range(maxb + 1)]
+            for idx, b in enumerate(cur):
+                blocks[b].append(idx)
+            yield blocks
+            return
+        for b in range(maxb + 2):
+            yield from rec(i + 1, max(maxb, b), cur + [b])
+    yield from rec(0, -1, [])
+
+
+bad, t = [], 0
+for n in (2, 3, 4):
+    for _ in range(4):
+        nv = n
+        g = {}
+        for _k in range(8):
+            e = tuple(random.randint(0, 2) for _ in range(nv))
+            g[e] = g.get(e, F(0)) + F(random.randint(-3, 3), random.randint(1, 2))
+        g = {k: v for k, v in g.items() if v != 0} or {tuple(0 for _ in range(nv)): F(1)}
+        fc = [F(random.randint(-3, 3), random.randint(1, 2)) for _ in range(6)]
+
+        def f_at(m, g=g, fc=fc, nv=nv):
+            cvec = list(fc)
+            for _ in range(m):
+                cvec = [cvec[i] * i for i in range(1, len(cvec))] or [F(0)]
+            out = {}
+            gp = {tuple(0 for _ in range(nv)): F(1)}
+            for d, cd in enumerate(cvec):
+                if cd:
+                    out = _m_add(out, {k: cd * v for k, v in gp.items()})
+                gp = _m_mul(gp, g, nv)
+            return out
+
+        lhs = f_at(0)
+        for i in range(n):
+            lhs = _m_diff(lhs, i)
+        rhs = {}
+        for blocks in _m_parts(n):
+            term = f_at(len(blocks))
+            for B in blocks:
+                dB = dict(g)
+                for i in B:
+                    dB = _m_diff(dB, i)
+                term = _m_mul(term, dB, nv)
+                if not term:
+                    break
+            rhs = _m_add(rhs, term)
+        t += 1
+        if lhs != rhs:
+            bad.append(n)
+check('thm:faa-multivariate',
+      'mixed partial of f(g) as a sum over set partitions of the variables', bad, t)
+
+# ------------------------------- thm:merged-inverse-derivative-operator
+# g^{(n)}(y) = ((1/f') d/dx)^{n-1} (1/f') at x = g(y).  A different statement from the Bell-sum
+# form above -- here one operator is iterated -- and checked independently of it: g by exact
+# series reversion, the right side by iterating the operator and reading the constant term,
+# which is the evaluation at x = g(0) = 0.
+NO = 9
+
+
+def _o_mul(a, b):
+    r = [F(0)] * NO
+    for i, u in enumerate(a):
+        if u:
+            for j, v in enumerate(b):
+                if i + j >= NO:
+                    break
+                r[i + j] += u * v
+    return r
+
+
+def _o_inv(a):
+    r = [F(0)] * NO
+    r[0] = F(1) / a[0]
+    for n in range(1, NO):
+        r[n] = -sum(a[k] * r[n - k] for k in range(1, n + 1)) / a[0]
+    return r
+
+
+def _o_der(a):
+    r = [F(0)] * NO
+    for i in range(1, NO):
+        r[i - 1] = a[i] * i
+    return r
+
+
+bad, t = [], 0
+for _ in range(15):
+    M = NO - 2
+    a = [F(0)] * (M + 2)
+    a[1] = F(random.choice([-3, -2, -1, 1, 2, 3]), random.randint(1, 3))
+    for i in range(2, M + 2):
+        a[i] = F(random.randint(-4, 4), random.randint(1, 3))
+    g = _compose_inverse(a, M)
+    fp = [F(0)] * NO
+    for i in range(1, min(M + 2, NO + 1)):
+        if i - 1 < NO:
+            fp[i - 1] = a[i] * i
+    invfp = _o_inv(fp)
+    cur = invfp[:]
+    for n in range(1, M + 1):
+        t += 1
+        if F(factorial(n)) * g[n] != cur[0]:
+            bad.append(n)
+        cur = _o_mul(invfp, _o_der(cur))
+check('thm:merged-inverse-derivative-operator',
+      "g^{(n)} = ((1/f') d/dx)^{n-1}(1/f') at x = g(y)", bad, t)
+
+# ------------------------------ prop:merged-beta-integral, thm:merged-pochhammer
+def _poch(a, n):
+    r = F(1)
+    for i in range(n):
+        r *= (a + i)
+    return r
+
+
+def _fall(a, n):
+    r = F(1)
+    for i in range(n):
+        r *= (a - i)
+    return r
+
+
+# int_0^1 t^{a-1}(1-t)^n dt = n!/(a)_{n+1}, the left side by expanding and integrating
+# term by term rather than by quoting the Beta function.
+bad, t = [], 0
+for _ in range(30):
+    a = F(random.randint(1, 12), random.randint(1, 5))
+    for n in range(0, 9):
+        t += 1
+        if sum((F((-1) ** k * comb(n, k)) / (a + k) for k in range(n + 1)), F(0)) \
+                != F(factorial(n)) / _poch(a, n + 1):
+            bad.append((a, n))
+check('prop:merged-beta-integral', 'int_0^1 t^{a-1}(1-t)^n = n!/(a)_{n+1}', bad, t)
+
+# (1-z)^{-a} = sum (a)_n z^n/n!, the series generated from (1-z)F' = aF so the closed form
+# is not presupposed; plus the two splitting laws.
+bad, t = [], 0
+NP = 12
+for _ in range(20):
+    a = F(random.randint(-9, 9), random.randint(1, 4))
+    c = [F(1)] + [F(0)] * NP
+    for n in range(NP):
+        c[n + 1] = (a + n) * c[n] / (n + 1)
+    for n in range(NP + 1):
+        t += 1
+        if c[n] != _poch(a, n) / factorial(n):
+            bad.append(('series', n))
+for _ in range(40):
+    a = F(random.randint(-9, 9), random.randint(1, 4))
+    m, n = random.randint(0, 6), random.randint(0, 6)
+    t += 2
+    if _poch(a, m + n) != _poch(a, m) * _poch(a + m, n):
+        bad.append(('rising', m, n))
+    if _fall(a, m + n) != _fall(a, m) * _fall(a - m, n):
+        bad.append(('falling', m, n))
+check('thm:merged-pochhammer',
+      'binomial series (1-z)^{-a} = sum (a)_n z^n/n!, and both splitting laws', bad, t)
+
+# --------------------------------------------- thm:bell-quadratic-differential
+# Compared as a POLYNOMIAL identity in x_1..x_N, not at sample points: B_n is built
+# symbolically from the convolution recurrence and the partials are taken formally.
+# The manuscript's caveat that terms with unavailable variables vanish takes care of itself --
+# B_{n-1} is weighted-homogeneous of weighted degree n-1, so d^2/dx_j dx_{i-j} drops the
+# weighted degree by i and is identically zero at i = n, which is why no x_{n+1} survives.
+def _v_var(i, nv):
+    e = [0] * nv
+    e[i] = 1
+    return {tuple(e): F(1)}
+
+
+def _v_bell(n, nv):
+    B = [{tuple([0] * nv): F(1)}]
+    for m in range(1, n + 1):
+        acc = {}
+        for i in range(1, m + 1):
+            piece = _m_mul(_v_var(i - 1, nv), B[m - i], nv)
+            acc = _m_add(acc, {k: F(comb(m - 1, i - 1)) * v for k, v in piece.items()})
+        B.append(acc)
+    return B
+
+
+bad, t = [], 0
+for n in range(2, 7):
+    nv = n + 2
+    B = _v_bell(n, nv)
+    Bn, Bm1 = B[n], B[n - 1]
+    rhs = {}
+    for i in range(2, n + 1):
+        for j in range(1, i):
+            piece = _m_mul(_m_mul(_v_var(j - 1, nv), _v_var(i - j - 1, nv), nv),
+                           _m_diff(Bm1, i - 2), nv)
+            rhs = _m_add(rhs, {k: F((i - 1) * comb(i - 2, j - 1)) * v
+                               for k, v in piece.items()})
+            d2 = _m_diff(_m_diff(Bm1, j - 1), i - j - 1)
+            if d2:
+                piece = _m_mul(_v_var(i, nv), d2, nv)
+                rhs = _m_add(rhs, {k: F(1, comb(i, j)) * v for k, v in piece.items()})
+        rhs = _m_add(rhs, _m_mul(_v_var(i - 1, nv), _m_diff(Bm1, i - 2), nv))
+    rhs = {k: F(1, n - 1) * v for k, v in rhs.items()}
+    t += 1
+    if rhs != Bn:
+        bad.append(n)
+check('thm:bell-quadratic-differential',
+      'the quadratic differential recurrence for B_n, as a polynomial identity', bad, t)
+
+# ------------------------------------------------ thm:associahedral-inversion
+# b_n = sum over faces F of K_{n-1} of (-1)^{n - dim F} a_F, where faces are plane rooted
+# trees with n+1 leaves and internal arities >= 2, and a_F multiplies a_{r-1} over internal
+# vertices of arity r.
+#
+# The sign simplifies, and the manuscript's own indexing forces it: a tree with n+1 leaves and
+# m internal vertices satisfies sum (r_v - 1) = n, and a vertex of arity r contributes r - 2
+# to the dimension (the corolla r = n+1 being the whole polytope, dimension n-1).  So
+# dim F = sum (r_v - 2) = n - m and (-1)^{n - dim F} = (-1)^m -- the parity of the number of
+# internal vertices.  The face sum is evaluated by the tree recursion; b_n independently by
+# series reversion.
+def _t_face_sum(a, kmax):
+    S = [F(0)] * (kmax + 1)
+    S[1] = F(1)
+    for k in range(2, kmax + 1):
+        tot = F(0)
+        for r in range(2, k + 1):
+            comp = [F(0)] * (k + 1)
+            comp[0] = F(1)
+            for _ in range(r):
+                nxt = [F(0)] * (k + 1)
+                for s in range(k + 1):
+                    if comp[s]:
+                        for j in range(1, k + 1 - s):
+                            if S[j]:
+                                nxt[s + j] += comp[s] * S[j]
+                comp = nxt
+            tot += F(-1) * a[r - 1] * comp[k]
+        S[k] = tot
+    return S
+
+
+def _t_reversion(a, NN):
+    A = [F(0)] * (NN + 3)
+    A[1] = F(1)
+    for n in range(1, NN + 2):
+        if n < len(a):
+            A[n + 1] = a[n]
+    B = [F(0)] * (NN + 3)
+    B[1] = F(1)
+    for n in range(2, NN + 2):
+        Bt = B[:]
+        Bt[n] = F(0)
+        pw = [F(0)] * (NN + 3)
+        pw[0] = F(1)
+        tot = [F(0)] * (NN + 3)
+        for i in range(1, NN + 3):
+            nxt = [F(0)] * (NN + 3)
+            for p in range(NN + 3):
+                if pw[p]:
+                    for q in range(1, NN + 3 - p):
+                        if Bt[q]:
+                            nxt[p + q] += pw[p] * Bt[q]
+            pw = nxt
+            if A[i]:
+                for p in range(NN + 3):
+                    tot[p] += A[i] * pw[p]
+        B[n] = -tot[n] / A[1]
+    return B
+
+
+bad, t = [], 0
+NA = 7
+for _ in range(8):
+    a = [F(0)] + [F(random.randint(-4, 4), random.randint(1, 3)) for _ in range(NA + 2)]
+    S = _t_face_sum(a, NA + 1)
+    B = _t_reversion(a, NA)
+    for n in range(1, NA + 1):
+        t += 1
+        if B[n + 1] != S[n + 1]:
+            bad.append(n)
+check('thm:associahedral-inversion',
+      'b_n as the signed face sum over the associahedron, sign = parity of internal vertices',
+      bad, t)
+
 # --------------------------------------------------------------------- report
 width = max(len(lab) for lab, _, _, _ in RESULTS)
 failed = 0
