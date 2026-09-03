@@ -277,7 +277,20 @@ too, since Lambert W is their guiding example; because their subject is
 the transseries calculus rather than the function, they were regrouped on
 2026-09-02 into the new `series-and-transseries/` group, under its
 `polynomial-logarithmic-transseries/` subgroup.  That move was verbatim —
-no source or PDF changed.  By the same precedent, a
+no source or PDF changed — and the same day the six were merged editorially
+into the single canonical volume *Polynomial–Logarithmic Transseries:
+Algebra, Composition, Series Reversal, and the Lambert W Archetype* (399 A4
+pages).  None of the six was a superset of the others and each contributed a
+layer no other supplied, so the merge kept every distinct result and collapsed
+only repetition.  Every statement in the volume carries a proof: where a source
+asserted a result without one it was supplied, and where a source claimed
+analytic validity on the strength of formal algebra the claim was weakened to
+what the algebra establishes, each repair marked at the point of repair and
+collected in the volume's ledger.  Its formalization register records what the
+Lean corpus does and does not cover, distinguishing a formalized *neighbour* —
+the corpus proves Lagrange inversion and the Lambert series at the **origin**,
+while this volume works at **infinity** — from actual coverage.  The absorbed
+directories were deleted after a residue audit.  By the same precedent, a
 standalone reference monograph on q-Pochhammer symbols and q-binomial
 coefficients — the machinery consumed by the exponents
 volume's Parts II/VI/VII and the formalized Gaussian-binomial core —
