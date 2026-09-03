@@ -8300,15 +8300,38 @@ rank-one Laplace exponent &
 $+\log L$ at argument $2t$, i.e.\ $\operatorname{negativeLaplaceLog}(s)=-\Psi_1(s/2)$
 in this volume's notation; the periodic correction and the tail-error term
 are separate named objects there.\\
+\addlinespace
+\Cref{p3:lem:pascal-tail}: \(\sum_{h\le j}\binom h{r-1}2^{j-h}=2^{j+1}-Q_r(j)\) &
+\decl{PascalTail.sum_choose_mul_two_pow_eq}, in the additive form
+\decl{PascalTail.sum_choose_mul_two_pow_add_tailCount} (module
+\lean{PascalTailIdentity}) &
+Exact, over \(\mathbb N\): with Lean's index \(k=r-1\),
+\decl{PascalTail.tailCount} \(j\,k=\sum_{i\le k}\binom{j+1}i\) is \(Q_r(j)\).
+The additive form holds with no side condition; the subtraction form is its
+corollary.  Proved by induction with Pascal's rule, not by the subset count.\\
+\addlinespace
+\Cref{p2:thm:sqrt3-bound}: \(A_{a,q}^{1/d}\le\sqrt3\) for odd \(q\) and
+\((a,q)=1\) &
+\decl{normalizedDyadicSineProduct_le_sqrt_three_pow_of_dyadic_period} (module
+\lean{PeriodicOrbitGelfondBound}), from the one-shot bound
+\decl{normalizedDyadicSineProduct_succ_le} and the extraction lemma
+\decl{le_of_pow_le_mul_pow} &
+More general: for \emph{every} real \(t\) whose orbit returns,
+\(2^dt=t+z\) with \(z\in\mathbb Z\), the normalized product
+\(\prod_{j<d}|2\sin(\pi2^jt)|\) is at most \(\sqrt3^{\,d}\); the volume's
+statement is \(t=a/q\), \(2^d\equiv1\pmod q\), together with the identity
+\(|1-e^{2\pi i\theta}|=2|\sin\pi\theta|\), which is not part of the module.
+The equality case \(q=3\) is not formal.\\
 \bottomrule
 \end{longtable}
 
 The Part~4 derivative-distribution results already name their declarations in
 the status boxes beside each theorem and are not repeated here.  Everything
 else in this volume --- in particular the alias identity of Part~1 beyond its
-abstract engine, the periodic-orbit sharp Gelfond bound of Part~2, the
-Pascal-tail identity and digital count of Part~3, the rank-$r$ global decay and
-sharp ray, and the spectral moments of Part~4 --- is unformalized.
+abstract engine, the equality case \(q=3\) of the periodic-orbit bound and the
+cyclotomic layer of Part~2, the digital count and discrepancy statements of
+Part~3, the rank-$r$ global decay and sharp ray, and the spectral moments of
+Part~4 --- is unformalized.
 
 \begin{thebibliography}{99}
 
