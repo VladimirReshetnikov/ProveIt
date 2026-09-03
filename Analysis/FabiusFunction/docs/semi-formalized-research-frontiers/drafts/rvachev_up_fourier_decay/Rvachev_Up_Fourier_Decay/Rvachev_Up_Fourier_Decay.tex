@@ -3868,10 +3868,19 @@ Exact nonzero complex zero set and analytic multiplicity $1+\TwoAdicValuation(m)
  & \decl{rvachevFourierProduct_eq_zero_iff},
    \decl{analyticOrderAt_rvachevFourierProduct_int}
  & \Cref{prop:zero-divisor}\\
-Exact zero-safe dyadic shell factorization and exponent algebra
+Exact zero-safe dyadic shell factorization and exponent algebra, and the
+explicit $K$-shell envelope
+$(\pi|y|)^K\,\AbsoluteValue{\FourierTwoPi{\RvachevUp}(y)}
+ =2^{K(K-1)/2}\prod_{k<K}|\sin(\pi y/2^k)|\cdot
+ \AbsoluteValue{\FourierTwoPi{\RvachevUp}(y/2^K)}$
+as a hypothesis-free equality (including $y=0$), with the classical corollary
+$\AbsoluteValue{\FourierTwoPi{\RvachevUp}(y)}\le2^{K(K-1)/2}(\pi|y|)^{-K}$
  & \decl{norm_rvachevFourierProduct_two_pow_mul_cross},
    \decl{norm_rvachevFourierProduct_two_pow_mul},
-   \decl{shell_exponent_identity}
+   \decl{shell_exponent_identity},
+   \decl{norm_rvachevFourierProduct_shell_cross},
+   \decl{norm_rvachevFourierProduct_shell_div},
+   \decl{norm_rvachevFourierProduct_le_pow_div}
  & \Cref{thm:exact-dyadic-factorization}\\
 Finite Thue--Morse product-to-sum identity
  & \decl{prod_sin_two_pow_eq_thueMorse_sum}
@@ -4016,6 +4025,14 @@ Finite-partition measure equalization and the diagonal selection mechanism
  & \decl{setIntegral_equalizer}, \decl{abs_setIntegral_equalizer_sub_le},
    \decl{exists_diagonal_tendsto_zero}
  & Smooth bridges, global gluing, and Carleman--Hoischen approximation\\
+The Collatz--Wielandt principle of \Cref{prop:rho1-rigorous-bound}: for any continuous
+positive test function $f$ with $mf\le\mathcal L_1f\le Mf$ on $[0,1]$, $m\le\rho_1\le M$
+(proved abstractly for every monotone positively homogeneous operator, then instantiated)
+ & \decl{iterate_bracket}, \decl{collatzWielandt_bracket},
+   \decl{perron_root_mem_of_two_sided}
+ & The exact rational test function of \Cref{app:certificate} and the Sturm-theorem
+   evaluation of $\inf$ and $\sup$ of $\mathcal L_1f/f$, which supply the concrete
+   $m$ and $M$ of \eqref{eq:rho1-rigorous-bound}\\
 \bottomrule
 \end{longtable}
 
@@ -4037,8 +4054,11 @@ The remaining frontier is now explicit rather than hidden in prose:
 \item the quantitative peak--area estimate and any eventual peak-height CLT;
 \item the first-zero-extracted and arbitrary-$J$ Pochhammer series;
 \item the strict human Collatz--Wielandt/Sturm bracket in
-      \Cref{prop:rho1-rigorous-bound}; the existing Lean Bernstein certificate is a
-      distinct, wider enclosure;
+      \Cref{prop:rho1-rigorous-bound}: the Collatz--Wielandt \emph{principle} it rests on
+      is now formal (\decl{perron_root_mem_of_two_sided}, from the abstract
+      \decl{collatzWielandt_bracket}), so what remains is the Lean evaluation of the
+      certificate's rational test function, i.e.\ the concrete $m$ and $M$; the existing
+      Lean Bernstein certificate is a distinct, wider enclosure;
 \item the integer-$b$ shell law, typical exponent, covariance, variance, and general
       martingale decomposition from \Cref{sec:integer-ratios}, and the integer-ratio zero
       divisor of \Cref{cor:integer-ratio-zero-divisor} (its dyadic instance is exact,
