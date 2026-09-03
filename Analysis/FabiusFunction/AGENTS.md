@@ -228,6 +228,23 @@ compiled PDF is committed with it.**
    `docs/semi-formalized-research-frontiers/`, whose canonical TeX/PDF pair is
    `semi-formalized-research-frontiers.*`.
 
+   **Watch the path length: this tree has no headroom.** The frontier drafts
+   nest as
+   `docs/semi-formalized-research-frontiers/drafts/<group>/<subgroup>/<package>/<file>`,
+   and after the 2026-09-03 intake the longest filed path is **259 characters
+   — one inside the Windows `MAX_PATH` limit of 260.** Past that limit tools do
+   not report a length problem; they report the file as missing. `pdfinfo`
+   said *"No such file or directory"* for a 724,630-byte PDF that `ls` listed
+   correctly, and the only reason it was noticed is that a receipts loop failed
+   on exactly one package of nine. An arrival whose archive stem is long enough
+   will therefore break silently rather than error.
+
+   So: name a filed package after its **document**, not after the archive it
+   came in — archive names carry noise like `_LaTeX_and_PDF` that costs
+   characters and says nothing — and measure the full path of every filed file
+   before committing. Do not add another nesting level under `drafts/` without
+   first shortening something above it.
+
 4. **The PDF is committed.** Build it before committing and commit it in the
    same commit as the source:
 
