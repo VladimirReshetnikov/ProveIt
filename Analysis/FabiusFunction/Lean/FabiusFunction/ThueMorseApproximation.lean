@@ -335,6 +335,23 @@ theorem correctedPrefixGridSample_eq_stepApproximant
   have hpow : (0 : ℝ) < (2 : ℝ) ^ (n + 1) := by positivity
   nlinarith
 
+/-- A symmetric continuity bracket at `y`: a step `d`, positive and at
+most `c`, such that `g` at both `y - d` and `y + d` lies within `ε / 2`
+of `g y`.  The cap `c` lets the caller keep `y ± d` on one side of the
+origin. -/
+private theorem exists_symmetric_bracket
+    {g : ℝ → ℝ} {y : ℝ} (hgcont : ContinuousAt g y)
+    {ε c : ℝ} (hε : 0 < ε) (hc : 0 < c) :
+    ∃ d : ℝ, 0 < d ∧ d ≤ c ∧ dist (g (y - d)) (g y) < ε / 2 ∧
+      dist (g (y + d)) (g y) < ε / 2 := by
+  rcases (Metric.continuousAt_iff.1 hgcont) (ε / 2) (by positivity) with
+    ⟨δ, hδ, hgδ⟩
+  obtain ⟨d, hd, hdδ, hdc⟩ : ∃ d : ℝ, 0 < d ∧ d < δ ∧ d ≤ c :=
+    ⟨min (δ / 2) c, lt_min (by linarith) hc,
+      (min_le_left _ _).trans_lt (by linarith), min_le_right _ _⟩
+  refine ⟨d, hd, hdc, ?_, ?_⟩ <;>
+    (apply hgδ; simpa [Real.dist_eq, abs_of_nonneg hd.le] using hdδ)
+
 /-- Abstract moving-argument squeeze for a unimodal family.  A family `f` of
 real functions that increases on `Iio 0`, decreases on `Ioi 0`, matches the
 limit at the origin, never exceeds the peak value `g 0`, and converges
@@ -354,87 +371,45 @@ theorem tendsto_moving_of_unimodal_of_tendsto
     Tendsto (fun n => f n (u n)) l (nhds (g y)) := by
   rw [Metric.tendsto_nhds]
   intro ε hε
+  -- a bracket half-width capped by `|y| / 2`, so that for `y ≠ 0` both
+  -- `y ± d` stay on the side of the origin containing `y`
+  obtain ⟨d, hd, hdy, hga, hgb⟩ := exists_symmetric_bracket hgcont hε
+    (c := if y = 0 then 1 else |y| / 2) (by
+      split_ifs with hy0
+      · exact one_pos
+      · exact half_pos (abs_pos.2 hy0))
+  have hua := (Metric.tendsto_nhds.1 hu) d hd
+  have hfa :=
+    (Metric.tendsto_nhds.1 (hpt (y - d))) (ε / 2) (by positivity)
+  have hfb :=
+    (Metric.tendsto_nhds.1 (hpt (y + d))) (ε / 2) (by positivity)
+  filter_upwards [hua, hfa, hfb] with n hun hfan hfbn
+  rw [Real.dist_eq, abs_lt] at hun hfan hfbn hga hgb ⊢
+  have hau : y - d ≤ u n := by linarith [hun.1]
+  have hub : u n ≤ y + d := by linarith [hun.2]
   rcases lt_trichotomy y 0 with hy | rfl | hy
-  · rcases (Metric.continuousAt_iff.1 hgcont) (ε / 2) (by positivity) with
-      ⟨δ, hδ, hgδ⟩
-    let d : ℝ := min (δ / 2) (-y / 2)
-    have hd : 0 < d := by
-      dsimp [d]
-      exact lt_min (by linarith) (by linarith)
-    have hdδ : d < δ := by
-      exact (min_le_left _ _).trans_lt (by linarith)
-    have hdy : d ≤ -y / 2 := min_le_right _ _
+  · rw [if_neg hy.ne, abs_of_neg hy] at hdy
     have ha0 : y - d < 0 := by linarith
     have hb0 : y + d < 0 := by linarith
-    have hga : dist (g (y - d)) (g y) < ε / 2 := by
-      apply hgδ
-      simpa [Real.dist_eq, abs_of_nonneg hd.le] using hdδ
-    have hgb : dist (g (y + d)) (g y) < ε / 2 := by
-      apply hgδ
-      simpa [Real.dist_eq, abs_of_nonneg hd.le] using hdδ
-    have hua := (Metric.tendsto_nhds.1 hu) d hd
-    have hfa := (Metric.tendsto_nhds.1 (hpt (y - d))) (ε / 2) (by positivity)
-    have hfb := (Metric.tendsto_nhds.1 (hpt (y + d))) (ε / 2) (by positivity)
-    filter_upwards [hua, hfa, hfb] with n hun hfan hfbn
-    rw [Real.dist_eq, abs_lt] at hun hfan hfbn hga hgb ⊢
-    have hau : y - d ≤ u n := by linarith [hun.1]
-    have hub : u n ≤ y + d := by linarith [hun.2]
     have hu0 : u n < 0 := lt_of_le_of_lt hub hb0
     have hlower := hfmono n ha0 hu0 hau
     have hupper := hfmono n hu0 hb0 hub
     constructor <;> linarith
-  · rcases (Metric.continuousAt_iff.1 hgcont) (ε / 2) (by positivity) with
-      ⟨δ, hδ, hgδ⟩
-    let d : ℝ := δ / 2
-    have hd : 0 < d := by dsimp [d]; positivity
-    have hdδ : d < δ := by dsimp [d]; linarith
-    have hga : dist (g (-d)) (g 0) < ε / 2 := by
-      apply hgδ
-      simpa [Real.dist_eq, abs_of_nonneg hd.le] using hdδ
-    have hgb : dist (g d) (g 0) < ε / 2 := by
-      apply hgδ
-      simpa [Real.dist_eq, abs_of_nonneg hd.le] using hdδ
-    have hua := (Metric.tendsto_nhds.1 hu) d hd
-    have hfa := (Metric.tendsto_nhds.1 (hpt (-d))) (ε / 2) (by positivity)
-    have hfb := (Metric.tendsto_nhds.1 (hpt d)) (ε / 2) (by positivity)
-    filter_upwards [hua, hfa, hfb] with n hun hfan hfbn
-    rw [Real.dist_eq, abs_lt] at hun hfan hfbn hga hgb ⊢
-    have hleft : -d < u n := by linarith [hun.1]
-    have hright : u n < d := by linarith [hun.2]
-    have hlower : g 0 - ε < f n (u n) := by
+  · have hlower : g 0 - ε < f n (u n) := by
       rcases lt_trichotomy (u n) 0 with huneg | huzero | hupos
-      · have hmono := hfmono n (neg_neg_of_pos hd) huneg hleft.le
+      · have hmono :=
+          hfmono n (by linarith : (0 : ℝ) - d < 0) huneg hau
         linarith
       · rw [huzero, hfzero n]
         linarith
-      · have hanti := hfanti n hupos hd hright.le
+      · have hanti :=
+          hfanti n hupos (by linarith : (0 : ℝ) < 0 + d) hub
         linarith
     have hupper : f n (u n) ≤ g 0 := hfle n (u n)
     constructor <;> linarith
-  · rcases (Metric.continuousAt_iff.1 hgcont) (ε / 2) (by positivity) with
-      ⟨δ, hδ, hgδ⟩
-    let d : ℝ := min (δ / 2) (y / 2)
-    have hd : 0 < d := by
-      dsimp [d]
-      exact lt_min (by linarith) (by linarith)
-    have hdδ : d < δ := by
-      exact (min_le_left _ _).trans_lt (by linarith)
-    have hdy : d ≤ y / 2 := min_le_right _ _
+  · rw [if_neg hy.ne', abs_of_pos hy] at hdy
     have ha0 : 0 < y - d := by linarith
     have hb0 : 0 < y + d := by linarith
-    have hga : dist (g (y - d)) (g y) < ε / 2 := by
-      apply hgδ
-      simpa [Real.dist_eq, abs_of_nonneg hd.le] using hdδ
-    have hgb : dist (g (y + d)) (g y) < ε / 2 := by
-      apply hgδ
-      simpa [Real.dist_eq, abs_of_nonneg hd.le] using hdδ
-    have hua := (Metric.tendsto_nhds.1 hu) d hd
-    have hfa := (Metric.tendsto_nhds.1 (hpt (y - d))) (ε / 2) (by positivity)
-    have hfb := (Metric.tendsto_nhds.1 (hpt (y + d))) (ε / 2) (by positivity)
-    filter_upwards [hua, hfa, hfb] with n hun hfan hfbn
-    rw [Real.dist_eq, abs_lt] at hun hfan hfbn hga hgb ⊢
-    have hau : y - d ≤ u n := by linarith [hun.1]
-    have hub : u n ≤ y + d := by linarith [hun.2]
     have hu0 : 0 < u n := lt_of_lt_of_le ha0 hau
     have hlower := hfanti n hu0 hb0 hub
     have hupper := hfanti n ha0 hu0 hau
