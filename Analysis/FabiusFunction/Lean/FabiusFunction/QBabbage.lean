@@ -100,13 +100,13 @@ the `b` within-block contributions and the `C(b,2)` cross-block ones. -/
 theorem choose_two_mul (b n : ℕ) : (b * n).choose 2 = b * n.choose 2 + n ^ 2 * b.choose 2 := by
   induction b with
   | zero =>
-      have hc0 : Nat.choose 0 2 = 0 := rfl
+      have hc0 : Nat.choose 0 2 = 0 := Nat.choose_eq_zero_of_lt (by omega)
       simp [hc0]
   | succ b ih =>
       have h1 : (b + 1) * n = b * n + n := add_one_mul b n
       have h2 : (b + 1).choose 2 = b.choose 2 + b := by
         have h := choose_two_add b 1
-        have hc1 : Nat.choose 1 2 = 0 := rfl
+        have hc1 : Nat.choose 1 2 = 0 := Nat.choose_eq_zero_of_lt (by omega)
         omega
       rw [h1, choose_two_add (b * n) n, ih, h2]
       ring
@@ -241,19 +241,19 @@ private theorem prod_range_block_eq_add {R : Type*} [CommRing R] (q : R) {n : �
     (∏ j ∈ range n, ((1 : R[X]) + X * C (q ^ (i * n + j)))) =
       babbageBlockMain q n i + babbageBlockError q n i := by
   obtain ⟨m, rfl⟩ : ∃ m, n = m + 1 := ⟨n - 1, by omega⟩
-  have hc0 : (0 : ℕ).choose 2 = 0 := rfl
+  have hc0 : Nat.choose 0 2 = 0 := Nat.choose_eq_zero_of_lt (by omega)
   have h0 : C (q ^ ((0 : ℕ).choose 2 + i * (m + 1) * 0) * gaussianBinomial q (m + 1) 0) *
       (X : R[X]) ^ (0 : ℕ) = 1 := by
-    simp only [hc0, mul_zero, add_zero, pow_zero, gaussianBinomial_zero_right, mul_one, one_mul,
-      Polynomial.C_1]
+    simp only [hc0, mul_zero, zero_add, add_zero, pow_zero, gaussianBinomial_zero_right, mul_one,
+      one_mul, Polynomial.C_1]
   have htop : C (q ^ ((m + 1).choose 2 + i * (m + 1) * (m + 1)) *
         gaussianBinomial q (m + 1) (m + 1)) * (X : R[X]) ^ (m + 1) =
       C (q ^ ((m + 1).choose 2 + i * (m + 1) ^ 2)) * (X : R[X]) ^ (m + 1) := by
     rw [gaussianBinomial_self, mul_one, mul_assoc, ← pow_two]
   unfold babbageBlockMain babbageBlockError
-  rw [prod_range_block_eq q (m + 1) i, Finset.sum_range_succ, Finset.sum_range_succ', h0, htop,
+  rw [prod_range_block_eq q (m + 1) i, Finset.sum_range_succ, Finset.sum_range_succ',
     Nat.add_sub_cancel]
-  ring
+  linear_combination h0 + htop
 
 /-! ## The block induction -/
 
@@ -290,7 +290,7 @@ private theorem babbage_block_induction {R : Type*} [CommRing R] (q φ : R) {n :
           coeff_mul_eq_zero_of_dvd (coeff_prod_babbageBlockMain_eq_zero q n a)
             (coeff_babbageBlockError_eq_zero q n a) k hk
         have h2 : (H * babbageBlockMain q n a).coeff k = 0 := by
-          rw [mul_comm]
+          rw [mul_comm H (babbageBlockMain q n a)]
           exact coeff_mul_eq_zero_of_dvd (coeff_babbageBlockMain_eq_zero q n a) hHc k hk
         rw [Polynomial.coeff_add, h1, h2, add_zero]
       · exact dvd_add (dvd_mul_of_dvd_right (C_dvd_babbageBlockError q φ hφ a) _)
@@ -353,28 +353,24 @@ private theorem coeff_prod_babbageBlockMain {R : Type*} [CommRing R] (q : R) {n 
           X ^ (n * r) :=
     Finset.sum_congr rfl fun r _ => hterm r
   -- and extract the coefficient
-  have hcoeff : ∀ r ∈ range (a + 1),
-      (C (q ^ (n ^ 2 * r.choose 2 + n.choose 2 * r) * gaussianBinomial (q ^ n ^ 2) a r) *
-          (X : R[X]) ^ (n * r)).coeff (b * n) =
-        if b * n = n * r then
-          q ^ (n ^ 2 * r.choose 2 + n.choose 2 * r) * gaussianBinomial (q ^ n ^ 2) a r
-        else 0 := fun r _ => Polynomial.coeff_C_mul_X_pow _ _ _
-  have hsingle : (∑ r ∈ range (a + 1),
-      if b * n = n * r then
-        q ^ (n ^ 2 * r.choose 2 + n.choose 2 * r) * gaussianBinomial (q ^ n ^ 2) a r
-      else 0) =
-      (if b * n = n * b then
-        q ^ (n ^ 2 * b.choose 2 + n.choose 2 * b) * gaussianBinomial (q ^ n ^ 2) a b
-      else 0) := by
-    refine Finset.sum_eq_single_of_mem b (Finset.mem_range.mpr (by omega)) fun r _ hrb => ?_
-    have hne : ¬ (b * n = n * r) := by
-      intro hcon
-      have hnb : n * b = n * r := (mul_comm n b).trans hcon
-      exact hrb (Nat.eq_of_mul_eq_mul_left hn hnb).symm
-    exact if_neg hne
-  rw [hprod, prod_one_add_mul_pow_eq_gaussianBinomial, hsum, Polynomial.finsetSum_coeff,
-    Finset.sum_congr rfl hcoeff, hsingle, if_pos (mul_comm b n), choose_two_mul,
-    show n ^ 2 * b.choose 2 + n.choose 2 * b = b * n.choose 2 + n ^ 2 * b.choose 2 by ring]
+  calc (∏ i ∈ range a, babbageBlockMain q n i).coeff (b * n)
+      = (∑ r ∈ range (a + 1),
+          C (q ^ (n ^ 2 * r.choose 2 + n.choose 2 * r) * gaussianBinomial (q ^ n ^ 2) a r) *
+            (X : R[X]) ^ (n * r)).coeff (b * n) := by
+        rw [hprod, prod_one_add_mul_pow_eq_gaussianBinomial, hsum]
+    _ = ∑ r ∈ range (a + 1),
+          (C (q ^ (n ^ 2 * r.choose 2 + n.choose 2 * r) * gaussianBinomial (q ^ n ^ 2) a r) *
+            (X : R[X]) ^ (n * r)).coeff (b * n) := by
+        rw [Polynomial.finsetSum_coeff]
+    _ = (C (q ^ (n ^ 2 * b.choose 2 + n.choose 2 * b) * gaussianBinomial (q ^ n ^ 2) a b) *
+            (X : R[X]) ^ (n * b)).coeff (b * n) := by
+        refine Finset.sum_eq_single_of_mem b (Finset.mem_range.mpr (by omega)) fun r _ hrb => ?_
+        have hne : ¬ (b * n = n * r) := fun hcon =>
+          hrb (Nat.eq_of_mul_eq_mul_left hn ((mul_comm n b).trans hcon)).symm
+        rw [Polynomial.coeff_C_mul_X_pow, if_neg hne]
+    _ = q ^ ((b * n).choose 2) * gaussianBinomial (q ^ n ^ 2) a b := by
+        rw [Polynomial.coeff_C_mul_X_pow, if_pos (mul_comm b n), choose_two_mul,
+          show b * n.choose 2 + n ^ 2 * b.choose 2 = n ^ 2 * b.choose 2 + n.choose 2 * b by ring]
 
 /-! ## The generic congruence -/
 
@@ -394,10 +390,9 @@ theorem sq_dvd_pow_mul_gaussianBinomial_sub {R : Type*} [CommRing R] (q φ : R) 
   rcases Nat.lt_or_ge a b with hab | hb
   · -- above the diagonal both sides vanish
     have hlt : a * n < b * n := by
-      have h1 : a * n + n ≤ b * n := by
-        have h2 : (a + 1) * n ≤ b * n := Nat.mul_le_mul (show a + 1 ≤ b from hab) le_rfl
-        rwa [add_one_mul] at h2
-      exact lt_of_lt_of_le (lt_add_of_pos_right (a * n) hn) h1
+      have h2 : (a + 1) * n ≤ b * n := Nat.mul_le_mul (by omega : a + 1 ≤ b) le_rfl
+      rw [add_one_mul] at h2
+      exact lt_of_lt_of_le (lt_add_of_pos_right (a * n) hn) h2
     rw [gaussianBinomial_eq_zero_of_lt q hlt, gaussianBinomial_eq_zero_of_lt (q ^ n ^ 2) hab,
       sub_self, mul_zero]
     exact dvd_zero _
@@ -445,7 +440,7 @@ theorem cyclotomic_dvd_gaussianBinomial_of_lt {R : Type*} [CommRing R] [IsDomain
   have hmem : cyclotomic n R ^ (n / n - k / n - (n - k) / n) ∣
       ∏ d ∈ Icc 1 n, cyclotomic d R ^ (n / d - k / d - (n - k) / d) :=
     Finset.dvd_prod_of_mem (fun d => cyclotomic d R ^ (n / d - k / d - (n - k) / d))
-      (Finset.mem_Icc.mpr ⟨hn, le_rfl⟩)
+      (Finset.mem_Icc.mpr ⟨(by omega : 1 ≤ n), le_rfl⟩)
   rw [hexp, pow_one] at hmem
   rw [gaussianBinomial_X_eq_prod_cyclotomic hkn.le]
   exact hmem
