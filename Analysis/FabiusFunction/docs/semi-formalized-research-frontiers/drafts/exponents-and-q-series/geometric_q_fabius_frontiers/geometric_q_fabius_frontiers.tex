@@ -3747,10 +3747,12 @@ rather than silently promoting a formal residue calculation to a theorem.
 \section{Numerical experiments and reproducibility audit}
 \label{p1:sec:numerics}
 
-The numerical work was designed to falsify algebraic mistakes, not to replace proofs.  The
-accompanying script \path{numerical_experiments.py} uses 100-digit arithmetic for the
+The numerical work was designed to falsify algebraic mistakes, not to replace proofs.  This
+part's verification material is kept in the volume directory under
+\path{assets/Fabius_Newton_Rvachev_Frontier_Report/}, whose script
+\path{numerical_experiments.py} uses 100-digit arithmetic for the
 $q$-Richardson identities and deterministic FFT inversion for the boundary-layer curves.
-No Monte Carlo sampling is used.  The archive contains the script, generated CSV tables,
+No Monte Carlo sampling is used.  That directory also holds the generated CSV tables,
 verification log, and both figures.
 
 \subsection{Exact identity checks}
@@ -3821,7 +3823,7 @@ floating-point weights.
 
 \subsection{The sparse zero spectrum for $d=2$}
 
-The generated file \path{zero_multiplicities_d2.csv} compares the prefix sum of the original
+The generated file \path{assets/Fabius_Newton_Rvachev_Frontier_Report/data/zero_multiplicities_d2.csv} compares the prefix sum of the original
 exponents with $1+\binom{\TwoAdicValuation(n)}3$.  The first exceptional values are
 \begin{center}
 \begin{tabular}{@{}r r r@{}}
@@ -4325,27 +4327,29 @@ actual infinite-product Rvachev instantiation is now formalized in
 \section{Reproducibility manifest}
 \label{p1:app:manifest}
 
-The companion archive contains:
+This part's verification material is kept in the volume directory under
+\path{assets/Fabius_Newton_Rvachev_Frontier_Report/}.  The paths below are
+relative to the volume root; the absorbed report's own source and PDF were
+deleted when it was merged, and git history is their archive.
 \begin{center}
-\begin{tabularx}{0.96\textwidth}{@{}p{0.34\textwidth}X@{}}
+\begin{tabularx}{0.96\textwidth}{@{}p{0.52\textwidth}X@{}}
 \toprule
 Path & Purpose\\
 \midrule
-\path{Exponent_Sequence_Newton_Rvachev_Frontiers.tex} & Complete manuscript source.\\
-\path{Exponent_Sequence_Newton_Rvachev_Frontiers.pdf} & Rendered report.\\
-\path{numerical_experiments.py} & Commented high-precision and FFT verification program.\\
-\path{figures/richardson_tomography.png} & Figure used in \cref{p1:fig:richardson}.\\
-\path{figures/boundary_layers.png} & Figure used in \cref{p1:fig:boundary-layers}.\\
-\path{data/richardson_tomography.csv} & Full signed extrapolation errors.\\
-\path{data/boundary_layer_errors.csv} & Deterministic standardized-CDF errors.\\
-\path{data/zero_multiplicities_d2.csv} & Direct and closed-form zero orders for the $d=2$ family.\\
-\path{data/verification_log.txt} & Precision settings, assertion status, and headline values.\\
-\path{README.md} & Build and reproduction commands.\\
-\path{requirements.txt} & Exact Python package versions used for the numerical audit.\\
-\path{SHA256SUMS} & Checksums for the report, code, figures, and data.\\
+\path{assets/Fabius_Newton_Rvachev_Frontier_Report/numerical_experiments.py} & Commented high-precision and FFT verification program.\\
+\path{assets/Fabius_Newton_Rvachev_Frontier_Report/figures/richardson_tomography.png} & Figure used in \cref{p1:fig:richardson}.\\
+\path{assets/Fabius_Newton_Rvachev_Frontier_Report/figures/boundary_layers.png} & Figure used in \cref{p1:fig:boundary-layers}.\\
+\path{assets/Fabius_Newton_Rvachev_Frontier_Report/data/richardson_tomography.csv} & Full signed extrapolation errors.\\
+\path{assets/Fabius_Newton_Rvachev_Frontier_Report/data/boundary_layer_errors.csv} & Deterministic standardized-CDF errors.\\
+\path{assets/Fabius_Newton_Rvachev_Frontier_Report/data/zero_multiplicities_d2.csv} & Direct and closed-form zero orders for the $d=2$ family.\\
+\path{assets/Fabius_Newton_Rvachev_Frontier_Report/data/verification_log.txt} & Precision settings, assertion status, and headline values.\\
+\path{assets/Fabius_Newton_Rvachev_Frontier_Report/README.md} & The absorbed package's own run notes.\\
+\path{assets/Fabius_Newton_Rvachev_Frontier_Report/requirements.txt} & Exact Python package versions used for the numerical audit.\\
 \bottomrule
 \end{tabularx}
 \end{center}
+
+The volume itself is rebuilt from its own directory by running \texttt{pdflatex} on \path{geometric_q_fabius_frontiers.tex} three times, so that the table of contents and every cross-reference settle.
 
 The numerical script fixes the precision and grid sizes explicitly.  Its formulas use
 \texttt{numpy.sinc(x)}=$\sin(\pi x)/(\pi x)$, matching the normalization in
@@ -4509,7 +4513,7 @@ priority search over the entire literature has been completed.
 \noindent\textbf{Status of results.}
 Every result labelled theorem, proposition, lemma, or corollary below has a proof
 in this report. The numerical tables are reproducible from
-\path{verify_frontier_results.py}.  The denominator-free finite
+\path{assets/fabius_frontier_results/verify_frontier_results.py}.  The denominator-free finite
 \(q\)-binomial theorem is formalized in \path{FiniteQBinomialCore.lean}.
 The exact elementary base-reversal, terminating-factor, and adjacent-ratio
 layer is in \path{QPochhammerElementaryIdentities.lean}, with root-safe
@@ -6398,16 +6402,19 @@ checking whether a proposed statement was genuinely absent or merely moved.
 \section{Reproducibility notes}
 \label{p2:app:repro}
 
-The archive accompanying this report contains:
+The verification material for this part is kept in the volume directory under
+\path{assets/fabius_frontier_results/}:
 \begin{itemize}[leftmargin=8mm]
-\item \path{q_richardson_sinc_frontier.tex} --- the present source;
-\item \path{q_richardson_sinc_frontier.pdf} --- the rendered report;
-\item \path{verify_frontier_results.py} --- exact symbolic and high-precision
+\item \path{assets/fabius_frontier_results/verify_frontier_results.py} --- exact symbolic and high-precision
 numerical checks;
-\item \path{numerical_results.txt} and \path{numerical_results.csv} ---
+\item \path{assets/fabius_frontier_results/numerical_results.txt} and
+\path{assets/fabius_frontier_results/numerical_results.csv} ---
 machine-readable output;
-\item \path{README.txt} --- compilation and reproduction commands.
+\item \path{assets/fabius_frontier_results/README.txt} --- the absorbed package's own run notes.
 \end{itemize}
+The absorbed report's source and PDF are not part of the package: they were
+deleted when it was merged into this volume, and git history is their archive.
+The volume itself is rebuilt from its own directory by running \texttt{pdflatex} on \path{geometric_q_fabius_frontiers.tex} three times, so that the table of contents and every cross-reference settle.
 
 The script checks the q-moment identity symbolically for several arbitrary
 orders, generates the exact Bernoulli and Bell coefficients, verifies agreement
@@ -7590,8 +7597,8 @@ Radau-2 & 0 & 7 & $1.56639950187\times10^{-12}$ & $1.000079775969$\\
 The raw and fourth-order laws agree essentially to machine precision.  The Radau error
 is already $1.6\times10^{-12}$ at its first admissible $n$, so Fourier truncation and
 roundoff visibly affect the last digits.  Full tables are included in
-\texttt{sharp\_error\_verification.csv} and
-\texttt{positive\_acceleration\_verification.csv}.
+\path{assets/finite_sinc_products_report/sharp_error_verification.csv} and
+\path{assets/finite_sinc_products_report/positive_acceleration_verification.csv}.
 
 \section{Algorithms and implementation considerations}
 \label{p3:sec:algorithms}
@@ -7786,24 +7793,24 @@ Taylor expansion.
 \section{Reproducibility manifest}
 \label{p3:app:manifest}
 
-The archive accompanying this report contains:
+The verification material for this part is kept in the volume directory under
+\path{assets/finite_sinc_products_report/}:
 \begin{itemize}[leftmargin=2em]
-\item \path{finite_sinc_products_report.tex} -- the complete source;
-\item \path{finite_sinc_products_report.pdf} -- the rendered report;
-\item \path{finite_sinc_experiments.py} -- documented numerical and exact code;
-\item \path{finite_sinc_approximants.pdf} -- generated approximation figure;
-\item \path{scaled_error_profiles.pdf} -- generated error-profile figure;
-\item \path{convergence_comparison.pdf} -- generated convergence figure;
-\item \path{sharp_error_verification.csv} -- raw-prefix numerical table;
-\item \path{positive_acceleration_verification.csv} -- accelerated numerical table;
-\item \path{exact_coefficients.txt} -- exact series and Richardson coefficients;
-\item \path{exact_rational_samples.csv} -- exact rational spline samples.
+\item \path{assets/finite_sinc_products_report/finite_sinc_experiments.py} -- documented numerical and exact code;
+\item \path{assets/finite_sinc_products_report/finite_sinc_approximants.pdf} -- generated approximation figure;
+\item \path{assets/finite_sinc_products_report/scaled_error_profiles.pdf} -- generated error-profile figure;
+\item \path{assets/finite_sinc_products_report/convergence_comparison.pdf} -- generated convergence figure;
+\item \path{assets/finite_sinc_products_report/sharp_error_verification.csv} -- raw-prefix numerical table;
+\item \path{assets/finite_sinc_products_report/positive_acceleration_verification.csv} -- accelerated numerical table;
+\item \path{assets/finite_sinc_products_report/exact_coefficients.txt} -- exact series and Richardson coefficients;
+\item \path{assets/finite_sinc_products_report/exact_rational_samples.csv} -- exact rational spline samples.
 \end{itemize}
-Run
+The absorbed report's own source and PDF were deleted when it was merged; git
+history is their archive.  Run, from that directory,
 \begin{lstlisting}[style=reportcode,language=bash]
 python finite_sinc_experiments.py --output-dir . --fft-power 17
 \end{lstlisting}
-to regenerate every figure and table.
+to regenerate every figure and table.  The volume itself is rebuilt from its own directory by running \texttt{pdflatex} on \path{geometric_q_fabius_frontiers.tex} three times, so that the table of contents and every cross-reference settle.
 
 \begin{thebibliography}{99}
 
@@ -9993,7 +10000,7 @@ For the limit, every nonzero even coefficient vanishes and the odd coefficients 
 \]
 these series are inverse FFTs after the phase correction $(-1)^n$.  Derivatives are obtained by multiplying the $n$th coefficient by $(\ImaginaryUnit\pi n)^r$.  CDFs and call potentials are then cumulative trapezoidal integrals.  This route avoids the catastrophic cancellation of \eqref{p5:eq:spline-formula}.
 
-The archive contains the fully commented script \texttt{finite\_sinc\_experiments.py}.  It has no network dependency and writes all figures and tables from scratch.
+The script \path{assets/fabius_finite_products_frontier/finite_sinc_experiments.py}, kept in the volume directory, is fully commented.  It has no network dependency and writes all figures and tables from scratch.
 
 \subsection{Approximants and leading profiles}
 
@@ -10461,23 +10468,24 @@ Multiplication by $\eps_N^2/18$ therefore yields the conjectured first correctio
 
 \subsection{Archive contents}
 
-The companion archive contains:
+This part's verification material is kept in the volume directory under
+\path{assets/fabius_finite_products_frontier/}.  The paths below are relative to
+the volume root; the absorbed report's own source and PDF were deleted when it
+was merged, and git history is their archive.
 
 % ed.: first column widened so the long mono paths fit without overfull
-\begin{longtable}{@{}p{0.43\textwidth}p{0.49\textwidth}@{}}
+\begin{longtable}{@{}p{0.54\textwidth}p{0.40\textwidth}@{}}
 \toprule
 Path & Purpose\\
 \midrule
-\texttt{finite\_sinc\_frontier.tex} & Complete source of this report.\\
-\texttt{finite\_sinc\_frontier.pdf} & Compiled report.\\
-\texttt{finite\_sinc\_experiments.py} & Standalone, fully commented numerical experiment.\\
-\texttt{figures/*.pdf} & Vector figures included in the report.\\
-\texttt{figures/*.png} & Raster previews of the same figures.\\
-\texttt{data/metric\_verification.csv} & Numerical and exact metric values.\\
-\texttt{data/information\_transport.csv} & Entropy, KL, Fisher, and $W_2$ data.\\
-\texttt{data/reference\_constants.csv} & Computed normalization and information constants.\\
-\texttt{data/verification\_log.txt} & Human-readable diagnostics and maximum errors.\\
-\texttt{README.md} & Commands and dependency notes.\\
+\path{assets/fabius_finite_products_frontier/finite_sinc_experiments.py} & Standalone, fully commented numerical experiment.\\
+\path{assets/fabius_finite_products_frontier/figures/} & Vector figures included in this part, with raster previews.\\
+\path{assets/fabius_finite_products_frontier/data/metric_verification.csv} & Numerical and exact metric values.\\
+\path{assets/fabius_finite_products_frontier/data/information_transport.csv} & Entropy, KL, Fisher, and $W_2$ data.\\
+\path{assets/fabius_finite_products_frontier/data/reference_constants.csv} & Computed normalization and information constants.\\
+\path{assets/fabius_finite_products_frontier/data/verification_log.txt} & Human-readable diagnostics and maximum errors.\\
+\path{assets/fabius_finite_products_frontier/README.md} & The absorbed package's own run notes.\\
+\path{assets/fabius_finite_products_frontier/requirements.txt} & Python dependencies.\\
 \bottomrule
 \end{longtable}
 
@@ -10498,14 +10506,12 @@ Source & SHA-256\\
 
 \subsection{Numerical command}
 
-From the report directory, the complete numerical layer is regenerated by
+From \path{assets/fabius_finite_products_frontier/}, the complete numerical layer
+is regenerated by
 \begin{lstlisting}[style=python]
 python finite_sinc_experiments.py --output . --grid-power 18 --max-stage 10
 \end{lstlisting}
-The PDF is then built with
-\begin{lstlisting}[style=python]
-latexmk -lualatex -interaction=nonstopmode -halt-on-error finite_sinc_frontier.tex
-\end{lstlisting}
+The volume itself is rebuilt from its own directory by running \texttt{pdflatex} on \path{geometric_q_fabius_frontiers.tex} three times, so that the table of contents and every cross-reference settle.
 
 \begin{thebibliography}{99}
 
@@ -11335,17 +11341,50 @@ gives the triangular recurrence
  \sum_{\ell=0}^{k-1}
  \frac{(-1)^{k-\ell}c_{2\ell}(a)}{(2k-2\ell+1)!}.
 \end{equation}
-The source iterates this recurrence to show much more than ordinary exponential
-decay: for fixed $a>1$,
+The source iterates this recurrence to obtain a decay estimate.  The sharp
+statement, and the one used below, is
 \begin{equation}\label{p6:eq:c-coeff-superdecay}
- |c_{2k}(a)|\le C_a\,
- a^{-k(k+1)}\left(\prod_{j=1}^{k}j!\right)^{-1}
+ |c_{2k}(a)|
+ =\frac{\Expectation X_a^{2k}}{(2k)!}
+ \le\frac{b_a^{2k}}{(2k)!}
+ =\frac1{(a-1)^{2k}(2k)!},
+ \qquad b_a=\frac1{a-1},
 \end{equation}
-for a suitable constant $C_a$.  Since
+where $X_a$ is the random variable \eqref{p6:eq:Xa} and $b_a$ its support
+endpoint \eqref{p6:eq:ha-support}.
+Indeed $G(t)\DefinitionEquals\Phi_a(t/2\pi)=\Expectation\EulerE^{\ImaginaryUnit tX_a}$ is
+entire, its Maclaurin coefficients are
+$c_{2k}=(-1)^k\Expectation X_a^{2k}/(2k)!$ and $c_{2k+1}=0$ by symmetry, and
+$\AbsoluteValue{X_a}\le b_a$ almost surely; equivalently, $G$ has exponential
+type $b_a$ because
+$\AbsoluteValue{\SincRad w}\le\sinh\AbsoluteValue w/\AbsoluteValue w
+ \le\EulerE^{\AbsoluteValue w}$ makes
+$\AbsoluteValue{G(t)}\le\EulerE^{\AbsoluteValue t\sum_ja^{-j}}$.
+
+\begin{warning}[A superfactorial bound would be false here]
+\label{p6:warn:superdecay}
+A decay estimate of the shape
+$\AbsoluteValue{c_{2k}(a)}\le C_aa^{-k(k+1)}\bigl(\prod_{j\le k}j!\bigr)^{-1}$
+cannot hold for any constant $C_a$: the superfactorial $\prod_{j\le k}j!$ grows
+like $k^{k^2/2}$ and so outgrows $(2k)!$, while $\AbsoluteValue{c_{2k}}$ is of
+exact order $(2k)!^{-1}$ by \eqref{p6:eq:c-coeff-superdecay} and the fact that
+$G$ has positive type.  Solving the recurrence
+\eqref{p6:eq:source-c-recurrence} in exact rational arithmetic makes the
+failure explicit: at $a=2$ the ratio of $\AbsoluteValue{c_{2k}}$ to that
+expression with $C_a=1$ is $6.7\times10^{-1}$ at $k=3$ but already
+$4.2\times10^{38}$ at $k=10$ and $9.4\times10^{62}$ at $k=12$, and it grows
+without bound; the same happens at $a=3$ and $a=3/2$.  The genuine
+quadratic-in-$n$ scale in this theory is not in the Maclaurin coefficients but
+in the derivative ladder on the real axis,
+$\Norm{h_a^{(n)}}_\infty=a^{n(n+3)/2+1}/2^{n+1}$, which is what places $h_a$ in
+a quadratic-exponential Denjoy--Carleman class.
+\end{warning}
+
+Since
 \[
  \Phi_a^{(2k)}(0)=(-1)^k(2\pi)^{2k}\int x^{2k}h_a(x)\,\Differential x,
 \]
-this also yields strong moment bounds.  In later sections the coefficient
+\eqref{p6:eq:c-coeff-superdecay} is exactly a moment bound.  In later sections the coefficient
 recurrence is replaced by a closed Bernoulli--Bell calculus.
 
 \section{English translation IV: the separated regime \texorpdfstring{$a>2$}{a greater than 2}}
@@ -14752,8 +14791,11 @@ of $(1,\infty)$.
 
 \subsection{Reproducibility design}
 
-The supplied program \texttt{numerics.py} uses three independent modes of
-verification.
+The thirteenth-wave package is preserved in the volume directory under
+\path{assets/atomic_sinc_splines_report_package/}; the \path{data/} and
+\path{figures/} names used in the thirteenth-wave subsections below are
+relative to that directory.  Its program \path{numerics.py} uses three
+independent modes of verification.
 \begin{enumerate}
 \item \textbf{Exact rational arithmetic.}  SymPy evaluates Bernoulli numbers,
 cumulants, and moments as exact fractions.  The weighted Prouhet sums are
@@ -15373,26 +15415,25 @@ $\SincRad z=\cos(z/2)\SincRad(z/2)$.\\
 
 \section{Reproducibility and package contents}
 
-The thirteenth-wave archive contains:
+The thirteenth-wave verification material is kept in the volume directory
+under \path{assets/atomic_sinc_splines_report_package/}:
 \begin{itemize}
-\item \texttt{atomic\_sinc\_splines\_report.tex} and the compiled PDF;
-\item \texttt{numerics.py}, with detailed comments and deterministic algorithms;
-\item \texttt{figures/}, containing all four PNG figures used in the report;
-\item \texttt{data/moments.csv}, \texttt{data/prouhet\_checks.csv}, and
-\texttt{data/prefix\_errors.csv};
-\item \texttt{requirements.txt}, \texttt{README.md},
-\texttt{corpus\_audit.txt}, and \texttt{SHA256SUMS}.
+\item \path{assets/atomic_sinc_splines_report_package/numerics.py}, with detailed comments and deterministic algorithms;
+\item \path{assets/atomic_sinc_splines_report_package/figures/}, containing all four PNG figures used in this part;
+\item \path{assets/atomic_sinc_splines_report_package/data/moments.csv},
+\path{assets/atomic_sinc_splines_report_package/data/prouhet_checks.csv}, and
+\path{assets/atomic_sinc_splines_report_package/data/prefix_errors.csv};
+\item \path{assets/atomic_sinc_splines_report_package/requirements.txt},
+\path{assets/atomic_sinc_splines_report_package/README.md}, and
+\path{assets/atomic_sinc_splines_report_package/corpus_audit.txt}.
 \end{itemize}
-
-From the package directory, reproduce the numerical outputs with
+The absorbed report's own source and PDF were deleted when it was merged; git
+history is their archive.  From that directory, reproduce the numerical outputs
+with
 \begin{lstlisting}[style=repoPython]
 python numerics.py
 \end{lstlisting}
-and compile the report with
-\begin{lstlisting}[style=repoPython]
-latexmk -pdf -interaction=nonstopmode -halt-on-error \
-  atomic_sinc_splines_report.tex
-\end{lstlisting}
+The volume itself is rebuilt from its own directory by running \texttt{pdflatex} on \path{geometric_q_fabius_frontiers.tex} three times, so that the table of contents and every cross-reference settle.
 The computations require no network access.
 
 The fourteenth-wave archive
@@ -17092,6 +17133,21 @@ partition function $\Zpart_N$ supplies finite approximants with explicit
 root-of-unity zero orders.
 \end{conjecture}
 
+\begin{remark}[Proved on an explicit interval; the merge closed part of it]
+\label{p7:rem:natural-boundary-status}
+\cref{p9:cor:germ-natural-boundary} proves the statement outright for
+every real $t$ with $0<|t|<\pi$ --- for all such $t$, not merely generic
+ones, and with no removable degeneracies to discard.  The mechanism is not
+the cumulant-cancellation strategy sketched above but Part~IX's radial
+action: $C_q(t)=\Phi(q,-\ImaginaryUnit t/2)$ places the germ on the purely
+imaginary frequency slice of the cyclotomic sinc product, where the
+spectral dilogarithm $\mathscr A_\omega$ of Part~IX is real and of one sign
+for every root of unity, forcing super-polynomial blow-up or decay along
+every radius.
+What remains open is the range $|t|\ge\pi$, where the dilogarithm arguments
+leave the unit disc and cancellation between spectral terms is possible.
+\end{remark}
+
 \begin{problem}[Reciprocal orthogonal polynomials]
 Determine the Jacobi coefficients $\beta_n^{(r)}$ of the Laplace dual law
 \eqref{p7:eq:Lr} exactly or asymptotically; find the $q$-difference structure
@@ -18346,7 +18402,7 @@ tail control supplied by log-concavity.
 
 \subsection{Reproducibility and deterministic error control}
 
-The accompanying script \texttt{numerical\_experiments.py} uses NumPy, SciPy, and
+The script \path{assets/geometric-sinc-and-exponent-families/Fabius_Rvachev_Frontier_Report/numerical_experiments.py} uses NumPy, SciPy, and
 Matplotlib with seed \texttt{20260830}.  It truncates \cref{p8:eq:Xq-def} only after the
 deterministic tail bound
 \begin{equation}
@@ -18567,16 +18623,19 @@ polynomials and higher Edgeworth terms.
 
 \section{Numerical file manifest}
 
-The archive accompanying this report contains:
+This part's verification material is kept in the volume directory under
+\path{assets/geometric-sinc-and-exponent-families/Fabius_Rvachev_Frontier_Report/}:
 \begin{itemize}[leftmargin=2.2em]
-\item \texttt{fabius\_frontier\_report.tex} --- this source;
-\item \texttt{fabius\_frontier\_report.pdf} --- compiled report;
-\item \texttt{numerical\_experiments.py} --- fully commented reproducible code;
-\item \texttt{numerical\_results.tex} --- generated tables;
-\item three CSV files containing the machine-readable results;
-\item PDF and PNG versions of all figures;
-\item \texttt{README.txt} with compilation and execution commands.
+\item \path{assets/geometric-sinc-and-exponent-families/Fabius_Rvachev_Frontier_Report/numerical_experiments.py} --- fully commented reproducible code;
+\item \path{assets/geometric-sinc-and-exponent-families/Fabius_Rvachev_Frontier_Report/numerical_results.tex} --- the generated tables, read directly by this volume;
+\item \path{assets/geometric-sinc-and-exponent-families/Fabius_Rvachev_Frontier_Report/gaussian_convergence.csv},
+\path{assets/geometric-sinc-and-exponent-families/Fabius_Rvachev_Frontier_Report/negative_coupling.csv}, and
+\path{assets/geometric-sinc-and-exponent-families/Fabius_Rvachev_Frontier_Report/reciprocal_coupling.csv} --- the machine-readable results;
+\item \path{assets/geometric-sinc-and-exponent-families/Fabius_Rvachev_Frontier_Report/figures/} --- PDF and PNG versions of all figures;
+\item \path{assets/geometric-sinc-and-exponent-families/Fabius_Rvachev_Frontier_Report/README.txt} --- the absorbed package's own run notes.
 \end{itemize}
+The absorbed report's source and PDF were deleted when it was merged; git
+history is their archive.  The volume itself is rebuilt from its own directory by running \texttt{pdflatex} on \path{geometric_q_fabius_frontiers.tex} three times, so that the table of contents and every cross-reference settle.
 
 \begin{thebibliography}{99}
 
@@ -18723,7 +18782,7 @@ locally uniformly for $|(1-\omega)z|<\pi$.  The action is an explicit spectral d
  \mathscr A_\omega(z)=\frac1{2d^2}
  \sum_{n\ge1}\Polylogarithm_2\!\left(\left(\frac{(1-\omega)z}{\pi n}\right)^{2d}\right).
 \]
-Its sign is never zero for real $0<|z|<\pi/2$.  Because roots of unity are dense, this proves that the unit circle is a natural boundary for $q\mapsto\Phi(q,z)$ throughout that entire frequency interval, strengthening the repository's generic conjecture to an explicit theorem.
+The action never vanishes for $0<|z|<\pi/2$ with $z$ real or purely imaginary.  Because roots of unity are dense, this proves that the unit circle is a natural boundary for $q\mapsto\Phi(q,z)$ throughout that entire frequency interval, on both slices.  The imaginary slice is the centered exponential germ $C_q(t)=\Phi(q,-\ImaginaryUnit t/2)$ of Part~VII, so the theorem settles \cref{p7:conj:natural-boundary} for every real $t$ with $0<|t|<\pi$ --- for all such $t$, not merely generic ones --- replacing that conjecture's cumulant-cancellation strategy by an explicit action.
 
 A double scaling
 \(q=\omega(1-\varepsilon^d)\), \(z=\sqrt\varepsilon\,w\)
@@ -19246,14 +19305,21 @@ If $m$ is odd then $d=m$ and $\EulerE^{\ImaginaryUnit d\theta}=1$, while $d$ is 
 \end{proof}
 
 \begin{theorem}[Nonvanishing action on a universal interval]
-For every primitive root $\omega\ne1$ and every real $z$ with
+\label{p9:thm:nonvanishing-action}
+Let $\omega\ne1$ be a primitive $m$th root of unity and let $z$ be
+\emph{either real or purely imaginary}, with
 \begin{equation}
- 0<|z|<\frac\pi2,
+ 0<|z|<\frac\pi2 .
  \label{p9:eq:zinterval}
 \end{equation}
-$\Aact_\omega(z)$ is real, nonzero, and
+Then $\Aact_\omega(z)$ is real, nonzero, and
 \begin{equation}
- \Sign\Aact_\omega(z)=\Sign(a_\omega^{2d}).
+ \Sign\Aact_\omega(z)=
+ \begin{cases}
+  \Sign\bigl(a_\omega^{2d}\bigr), & z\in\RealNumbers,\\[0.25em]
+  (-1)^{d}\Sign\bigl(a_\omega^{2d}\bigr),
+   & z\in\ImaginaryUnit\RealNumbers .
+ \end{cases}
  \label{p9:eq:sign-action}
 \end{equation}
 \end{theorem}
@@ -19262,20 +19328,46 @@ $\Aact_\omega(z)$ is real, nonzero, and
 Because $|a_\omega|\le2$, condition \cref{p9:eq:zinterval} implies
 \(
  |a_\omega z/(\pi n)|<1
-\) for every $n\ge1$.  By \cref{p9:eq:sign-a},
+\) for every $n\ge1$.  Write $z=\varsigma$ in the real case and
+$z=\ImaginaryUnit\varsigma$ with $\varsigma$ real in the imaginary case; in
+both cases $z^{2d}=\epsilon\,\varsigma^{2d}$ with
+$\epsilon=1$ and $\epsilon=(-1)^{d}$ respectively, because
+$\ImaginaryUnit^{2d}=(-1)^{d}$.  Hence, by \cref{p9:eq:sign-a},
 \[
  \left(\frac{a_\omega z}{\pi n}\right)^{2d}
+ =a_\omega^{2d}\,\epsilon\left(\frac{\varsigma}{\pi n}\right)^{2d}
  =\sigma x_n,
  \qquad
- \sigma\in\SetOf{-1,1},\quad 0<x_n<1.
+ \sigma=\epsilon\Sign\bigl(a_\omega^{2d}\bigr)\in\SetOf{-1,1},
+ \quad 0<x_n<1,
 \]
-For $0<x<1$, $\Polylogarithm_2(x)>0$ and $\Polylogarithm_2(-x)<0$.  Every summand in \cref{p9:eq:spectral-dilog} therefore has sign $\sigma$, proving the claim.
+the sign $\sigma$ being the same for every $n$ and the bound $x_n<1$ coming
+from \cref{p9:eq:zinterval} exactly as in the real case, since
+$|z|=|\varsigma|$.  For $0<x<1$, $\Polylogarithm_2(x)>0$ and
+$\Polylogarithm_2(-x)<0$, and the series
+\cref{p9:eq:spectral-dilog} converges absolutely.  Every summand therefore has
+sign $\sigma$, so the sum is real and nonzero with that sign, which is
+\cref{p9:eq:sign-action}.
 \end{proof}
+
+\begin{remark}[Why the imaginary slice is worth the extra line]
+\label{p9:rem:two-slices}
+The real slice $z\in\RealNumbers$ is the characteristic-function slice; the
+imaginary slice $z\in\ImaginaryUnit\RealNumbers$ is the \emph{exponential}
+slice, on which $\Phi$ becomes the centered moment generating germ of
+Part~VII.  The two are transverse, and the natural-boundary statement that
+Part~VII conjectures lives on the second one.  The only change in the proof is
+the factor $\ImaginaryUnit^{2d}=(-1)^{d}$, which moves the common sign without
+ever making it depend on $n$; that is what
+\cref{p9:cor:germ-natural-boundary} needs.
+\end{remark}
 
 \subsection{Natural boundary}
 
 \begin{theorem}[Natural boundary on a universal frequency interval]
-Fix real $z$ with $0<|z|<\pi/2$.  The holomorphic function
+\label{p9:thm:natural-boundary}
+Fix $z$ either real or purely imaginary with $0<|z|<\pi/2$.  The holomorphic
+function
 \begin{equation}
  q\longmapsto\Phi(q,z),\qquad |q|<1,
  \label{p9:eq:qmap}
@@ -19300,11 +19392,43 @@ If $A<0$, the modulus grows faster than every power of $\delta$.  This is incomp
 Thus every nontrivial root of unity is a nonmeromorphic boundary singularity.  Roots of unity are dense on $|q|=1$, so no open boundary arc can be crossed.
 \end{proof}
 
+\begin{corollary}[The centered exponential germ of Part~VII]
+\label{p9:cor:germ-natural-boundary}
+For every real $t$ with $0<|t|<\pi$, the unit circle is a natural boundary for
+\[
+ q\longmapsto C_q(t)
+ =\EulerE^{-t/2}\MomentGeneratingFunction{q}(t),
+ \qquad |q|<1,
+\]
+the centered exponential germ of \cref{p7:eq:Cq}, and no single-valued
+meromorphic continuation crosses a nontrivial boundary arc.  In particular
+\cref{p7:conj:natural-boundary} holds on that interval, with its hypothesis
+``generic fixed $t\ne0$'' replaced by the explicit punctured interval
+$0<|t|<\pi$ and with no removable degeneracies to discard.
+\end{corollary}
+
+\begin{proof}
+By \cref{p9:eq:Phi-def} and the dictionary \cref{p0:tab:dictionary},
+$\Phi(q,z)=\CharacteristicFunction{q}(2z)
+ =\Expectation\EulerE^{2\ImaginaryUnit z\GeoLawCentered{q}}$,
+while $C_q(t)=\Expectation\EulerE^{t\GeoLawCentered{q}}$ by
+\cref{p0:prop:mahler}.  Both expressions are entire in their argument, so
+setting $z=-\ImaginaryUnit t/2$ gives the identity of holomorphic functions
+\begin{equation}
+ C_q(t)=\Phi\!\left(q,-\frac{\ImaginaryUnit t}{2}\right),
+ \qquad t\in\ComplexNumbers,\ |q|<1 .
+ \label{p9:eq:germ-slice}
+\end{equation}
+For real $t\ne0$ the frequency $-\ImaginaryUnit t/2$ is purely imaginary, and
+the constraint $0<|z|<\pi/2$ of \cref{p9:thm:natural-boundary} reads
+$0<|t|<\pi$.  Apply that theorem.
+\end{proof}
+
 \begin{remark}[Scope of the theorem]
 The theorem gives an explicit, root-independent interval
-$0<|z|<\pi/2$.  It does not classify exceptional complex frequencies outside
-that interval.  There the action can cross dilogarithm branch cuts, and
-cancellation between spectral terms is a genuine possibility.
+$0<|z|<\pi/2$ on each of the two slices.  It does not classify exceptional
+complex frequencies off them.  There the action can cross dilogarithm branch
+cuts, and cancellation between spectral terms is a genuine possibility.
 \end{remark}
 
 \section{Cyclotomic blow-ups}
@@ -19845,12 +19969,17 @@ Fourier inversion gives smoothness, mass, the PDE, and scaling.  Suppose $d\ge2$
 \end{proof}
 
 \begin{corollary}[The sixth-order Rvachev cyclotomic heat limit]
-At a primitive sixth root, $d=3$ and $A_\omega=1/17010$.  The rescaled complex $q$-Fabius transform converges to the Fourier multiplier of
+At a primitive sixth root, $d=3$ and $A_\omega=1/17010$.  The rescaled complex $q$-Fabius transform converges to $\EulerE^{-w^{6}/17010}$, the \emph{time-one} Fourier multiplier of
 \begin{equation}
- \partial_\tau u=\frac1{17010}\partial_x^6u.
+ \partial_\tau u=\frac1{17010}\partial_x^6u ;
  \label{p9:eq:sixth-pde}
 \end{equation}
-The associated fundamental solution has unit mass but alternating sign.
+the multiplier at a general time $\tau>0$ is recovered from the same limit
+after the substitution $w\mapsto\tau^{1/6}w$.
+The associated fundamental solution has unit mass but is not of one sign: by
+the preceding proposition it changes sign, and the classical oscillatory
+asymptotics for polyharmonic kernels \cite{p9:EvgrafovPostnikov} show that it
+in fact oscillates.
 \end{corollary}
 
 \subsection{Backward roots and contour rotation}
@@ -20381,31 +20510,29 @@ The magnitude can be written
 
 \section{Reproducibility manifest}
 
-The companion archive contains:
-\begin{center}
-\begin{tabularx}{0.96\textwidth}{@{}p{0.45\textwidth}X@{}}
-\toprule
-path & purpose\\
-\midrule
-\texttt{cyclotomic\_q\_fabius\_frontier.tex} & complete manuscript\\
-\texttt{cyclotomic\_q\_fabius\_frontier.pdf} & compiled and visually inspected PDF\\
-\texttt{numerical\_experiments.py} & commented high-precision experiments\\
-\texttt{data/*.csv} & raw deterministic numerical tables\\
-\texttt{data/experiment\_summary.txt} & concise diagnostic output\\
-\texttt{figures/*.pdf, figures/*.png} & vector and raster figures\\
-\texttt{corpus\_audit\_note.txt} & audit method and novelty boundary\\
-\texttt{corpus\_inventory\_2026-08-27.txt} & preserved 57-path recursive ledger\\
-\texttt{requirements.txt} & Python dependencies\\
-\texttt{README.txt} & build and reproduction instructions\\
-\bottomrule
-\end{tabularx}
-\end{center}
+This part's verification material is kept in the volume directory under
+\path{assets/geometric-sinc-and-exponent-families/Cyclotomic_q_Fabius_Rvachev_Frontier/}.  The absorbed report's own
+source and PDF were deleted when it was merged; git history is their archive.
+The directory holds:
+\begin{itemize}[leftmargin=2em]
+\item \path{assets/geometric-sinc-and-exponent-families/Cyclotomic_q_Fabius_Rvachev_Frontier/numerical_experiments.py} --- commented high-precision experiments;
+\item \path{assets/geometric-sinc-and-exponent-families/Cyclotomic_q_Fabius_Rvachev_Frontier/data/} --- the raw deterministic numerical tables, the generated
+\path{numerical_slopes_table.tex} read by this volume, and the diagnostic
+\path{experiment_summary.txt};
+\item \path{assets/geometric-sinc-and-exponent-families/Cyclotomic_q_Fabius_Rvachev_Frontier/figures/} --- vector and raster figures;
+\item \path{assets/geometric-sinc-and-exponent-families/Cyclotomic_q_Fabius_Rvachev_Frontier/corpus_audit_note.txt} --- audit method and novelty boundary;
+\item \path{assets/geometric-sinc-and-exponent-families/Cyclotomic_q_Fabius_Rvachev_Frontier/corpus_inventory_2026-08-27.txt} --- the preserved 57-path recursive ledger;
+\item \path{assets/geometric-sinc-and-exponent-families/Cyclotomic_q_Fabius_Rvachev_Frontier/requirements.txt} --- Python dependencies;
+\item \path{assets/geometric-sinc-and-exponent-families/Cyclotomic_q_Fabius_Rvachev_Frontier/README.md}, \path{assets/geometric-sinc-and-exponent-families/Cyclotomic_q_Fabius_Rvachev_Frontier/README.txt}, and
+\path{assets/geometric-sinc-and-exponent-families/Cyclotomic_q_Fabius_Rvachev_Frontier/PDF_VALIDATION.txt} --- the absorbed package's own notes.
+\end{itemize}
 
 The script uses the exact convergent logarithmic series rather than a truncated product.  To reproduce the tables and figures, run
 \begin{lstlisting}[style=python]
 python numerical_experiments.py --dps 80
 \end{lstlisting}
-from the archive root.  The LaTeX source expects the generated figure and data directories in their packaged relative locations.
+from that directory; this volume reads the regenerated figures and data table
+in place.  The volume itself is rebuilt from its own directory by running \texttt{pdflatex} on \path{geometric_q_fabius_frontiers.tex} three times, so that the table of contents and every cross-reference settle.
 
 \begin{thebibliography}{99}
 
@@ -21548,13 +21675,16 @@ amplitude is hidden in the finite-$q$ cumulant transform.
 \section{Numerical experiments and reproducibility}
 \label{p10:sec:numerics}
 
-The archive contains two documented programs.
+This part's verification material is kept in the volume directory under
+\path{assets/q-fabius-parameter-deformations/fabius_q_frontiers_report/}, which holds two
+documented programs; paths written \path{data/...} and \path{figures/...} below
+are relative to it.
 
 \begin{itemize}
-\item \texttt{experiments.py} performs direct infinite-product Fourier
+\item \path{assets/q-fabius-parameter-deformations/fabius_q_frontiers_report/experiments.py} performs direct infinite-product Fourier
 inversion, midpoint cumulant-transform comparisons, rate-function and
 Lambert computations, and a Monte-Carlo stop-loss diagnostic.
-\item \texttt{symbolic\_checks.py} uses exact SymPy rational arithmetic to
+\item \path{assets/q-fabius-parameter-deformations/fabius_q_frontiers_report/symbolic_checks.py} uses exact SymPy rational arithmetic to
 verify cumulants, Hermite coefficients, the rate series, the kernel cocycle,
 and the first Euler--Maclaurin operators.
 \end{itemize}
@@ -21815,17 +21945,22 @@ and
 
 \section{Files in the reproducibility package}
 
-The ZIP archive contains:
+This part's verification material is kept in the volume directory under
+\path{assets/q-fabius-parameter-deformations/fabius_q_frontiers_report/}; the absorbed report's own
+source and PDF were deleted when it was merged, and git history is their
+archive.  The directory holds:
 \begin{itemize}
-\item \texttt{q\_fabius\_parameter\_frontiers.tex} and the compiled PDF;
-\item \texttt{experiments.py}, \texttt{symbolic\_checks.py}, and\linebreak[1] \texttt{requirements.txt};
-\item CSV tables for the cumulant-transform, rate, Edgeworth, and stop-loss
-experiments;
-\item \texttt{numerical\_summary.txt} and
-\texttt{symbolic\_checks.txt};
-\item the four figures in PDF and PNG formats;
-\item a short \texttt{README.md} with reproduction commands.
+\item \path{assets/q-fabius-parameter-deformations/fabius_q_frontiers_report/experiments.py},
+\path{assets/q-fabius-parameter-deformations/fabius_q_frontiers_report/symbolic_checks.py}, and
+\path{assets/q-fabius-parameter-deformations/fabius_q_frontiers_report/requirements.txt};
+\item CSV tables under \path{assets/q-fabius-parameter-deformations/fabius_q_frontiers_report/data/} for the
+cumulant-transform, rate, Edgeworth, and stop-loss experiments;
+\item \path{assets/q-fabius-parameter-deformations/fabius_q_frontiers_report/data/numerical_summary.txt} and
+\path{assets/q-fabius-parameter-deformations/fabius_q_frontiers_report/data/symbolic_checks.txt};
+\item the four figures, in PDF and PNG, under \path{assets/q-fabius-parameter-deformations/fabius_q_frontiers_report/figures/};
+\item \path{assets/q-fabius-parameter-deformations/fabius_q_frontiers_report/README.md}, the absorbed package's own run notes.
 \end{itemize}
+The volume itself is rebuilt from its own directory by running \texttt{pdflatex} on \path{geometric_q_fabius_frontiers.tex} three times, so that the table of contents and every cross-reference settle.
 
 \begin{thebibliography}{99}
 
@@ -22050,9 +22185,9 @@ The tree includes reorganized drafts and frozen versions whose text is intention
 
 All computations in \Cref{p11:sec:numerics} are reproduced by
 \begin{center}
-\texttt{numerics/fabius\_q\_edgeworth.py}.
+\path{assets/q-fabius-parameter-deformations/Continuous_Parameter_Edgeworth_and_q_Gevrey_Frontier/numerics/fabius_q_edgeworth.py}.
 \end{center}
-The archive accompanying this report contains the script, generated CSV and LaTeX tables, and vector/PNG figures.
+That directory, under the volume, holds the script together with the generated CSV and LaTeX tables and the vector/PNG figures.
 
 \section{Preliminaries: Fabius, Rvachev, and the geometric \texorpdfstring{$q$}{q}-family}\label{p11:sec:prelim}
 
@@ -23057,35 +23192,26 @@ This yields \eqref{p11:eq:Lambda-series}.  To compute \(I\), solve \(y=\Lambda'(
 Substitution into \(I(y)=ys(y)-\Lambda(s(y))\) gives \eqref{p11:eq:I-center-series}.
 
 \section{Reproducibility and files}\label{p11:app:repro}
-The accompanying archive has the following layout:
-\begin{lstlisting}
-fabius_frontier_report.tex
-fabius_frontier_report.pdf
-README.md
-requirements.txt
-MANIFEST.txt
-SHA256SUMS
-numerics/fabius_q_edgeworth.py
-numerics/README.md
-data/edgeworth_errors.csv
-  data/edgeworth_table.tex
-data/quantile_errors.csv
-  data/quantile_table.tex
-data/large_deviation_edge.csv
-  data/ldp_edge_table.tex
-figures/edgeworth_error_scaling.{pdf,png}
-figures/density_edgeworth_comparison.{pdf,png}
-figures/large_deviation_rate.{pdf,png}
-\end{lstlisting}
-To install the numerical dependencies and regenerate every CSV table, LaTeX table, and figure:
+This part's verification material is kept in the volume directory under
+\path{assets/q-fabius-parameter-deformations/Continuous_Parameter_Edgeworth_and_q_Gevrey_Frontier/}.  The
+absorbed report's own source and PDF were deleted when it was merged; git
+history is their archive.  The directory holds:
+\begin{itemize}[leftmargin=2em]
+\item \path{assets/q-fabius-parameter-deformations/Continuous_Parameter_Edgeworth_and_q_Gevrey_Frontier/numerics/fabius_q_edgeworth.py} and \path{assets/q-fabius-parameter-deformations/Continuous_Parameter_Edgeworth_and_q_Gevrey_Frontier/numerics/README.md};
+\item \path{assets/q-fabius-parameter-deformations/Continuous_Parameter_Edgeworth_and_q_Gevrey_Frontier/data/edgeworth_errors.csv} and \path{assets/q-fabius-parameter-deformations/Continuous_Parameter_Edgeworth_and_q_Gevrey_Frontier/data/edgeworth_table.tex};
+\item \path{assets/q-fabius-parameter-deformations/Continuous_Parameter_Edgeworth_and_q_Gevrey_Frontier/data/quantile_errors.csv} and \path{assets/q-fabius-parameter-deformations/Continuous_Parameter_Edgeworth_and_q_Gevrey_Frontier/data/quantile_table.tex};
+\item \path{assets/q-fabius-parameter-deformations/Continuous_Parameter_Edgeworth_and_q_Gevrey_Frontier/data/large_deviation_edge.csv} and \path{assets/q-fabius-parameter-deformations/Continuous_Parameter_Edgeworth_and_q_Gevrey_Frontier/data/ldp_edge_table.tex};
+\item \path{assets/q-fabius-parameter-deformations/Continuous_Parameter_Edgeworth_and_q_Gevrey_Frontier/figures/edgeworth_error_scaling.pdf}, \path{assets/q-fabius-parameter-deformations/Continuous_Parameter_Edgeworth_and_q_Gevrey_Frontier/figures/density_edgeworth_comparison.pdf}, and \path{assets/q-fabius-parameter-deformations/Continuous_Parameter_Edgeworth_and_q_Gevrey_Frontier/figures/large_deviation_rate.pdf}, each with a PNG raster beside it;
+\item \path{assets/q-fabius-parameter-deformations/Continuous_Parameter_Edgeworth_and_q_Gevrey_Frontier/README.md}, \path{assets/q-fabius-parameter-deformations/Continuous_Parameter_Edgeworth_and_q_Gevrey_Frontier/requirements.txt}, and \path{assets/q-fabius-parameter-deformations/Continuous_Parameter_Edgeworth_and_q_Gevrey_Frontier/MANIFEST.txt}.
+\end{itemize}
+The three generated LaTeX tables and the three figures are read from those
+locations by this volume.  To install the numerical dependencies and regenerate
+every CSV table, LaTeX table, and figure, run from that directory:
 \begin{lstlisting}[language=bash]
 python -m pip install -r requirements.txt
 python numerics/fabius_q_edgeworth.py --output-dir .
 \end{lstlisting}
-To rebuild the report:
-\begin{lstlisting}[language=bash]
-latexmk -pdf -interaction=nonstopmode -halt-on-error fabius_frontier_report.tex
-\end{lstlisting}
+The volume itself is rebuilt from its own directory by running \texttt{pdflatex} on \path{geometric_q_fabius_frontiers.tex} three times, so that the table of contents and every cross-reference settle.
 
 \section{Repository source inventory used in the audit}\label{p11:app:inventory}
 The main live source files and inventory documents consulted were (each canonical file is in its same-named directory):
@@ -24554,13 +24680,14 @@ Carlo only as a consistency check of the pathwise derivative formula.
 
 \subsection{Reproducibility package}
 
-The archive contains
+This part's verification material is kept in the volume directory under
+\path{assets/q-fabius-parameter-deformations/Fabius_Flat_Parameter_Response_Dynamics/}, which holds
 \begin{itemize}
-\item \path{code/fabius_q_response_experiments.py}, with detailed comments;
-\item exact CSV tables under \path{data/};
-\item Monte Carlo validation tables under \path{data/};
-\item the figures under \path{figures/}; and
-\item \path{NUMERICAL_README.txt} with the run parameters.
+\item \path{assets/q-fabius-parameter-deformations/Fabius_Flat_Parameter_Response_Dynamics/code/fabius_q_response_experiments.py}, with detailed comments;
+\item exact CSV tables under \path{assets/q-fabius-parameter-deformations/Fabius_Flat_Parameter_Response_Dynamics/data/};
+\item Monte Carlo validation tables in the same \path{data/} directory;
+\item the figures under \path{assets/q-fabius-parameter-deformations/Fabius_Flat_Parameter_Response_Dynamics/figures/}; and
+\item \path{assets/q-fabius-parameter-deformations/Fabius_Flat_Parameter_Response_Dynamics/NUMERICAL_README.txt} with the run parameters.
 \end{itemize}
 The reported run used \(10^6\) pathwise samples, \(1.5\times10^6\) common-random-number CDF
 samples, \(32\) geometric digits, and a central-difference step \(h=0.005\).  The omitted tail
@@ -24880,32 +25007,31 @@ all operations in exact rational arithmetic.
 \section{Numerical file inventory}
 \label{p12:app:file-inventory}
 
-\begin{longtable}{@{}p{0.42\textwidth}p{0.50\textwidth}@{}}
-\toprule
-File & Contents\\
-\midrule
-\endhead
-\path{code/fabius_q_response_experiments.py}
-& Exact symbolic tables, pathwise Monte Carlo checks, common-random-number CDF experiment, and
-figure generation.\\
-\path{data/exact_cumulant_and_moment_jets.csv}
-& Exact \(\kappa_n,\dot\kappa_n,\mu_n,\dot\mu_n\) through the configured order.\\
-\path{data/exact_tangent_legendre_coefficients.csv}
-& Exact shifted-Legendre coefficients through degree \(20\).\\
-\path{data/monte_carlo_moment_derivative_validation.csv}
-& Estimates, standard errors, and \(z\)-scores for \(\dot\mu_{2m}\).\\
-\path{data/monte_carlo_legendre_validation.csv}
-& Pathwise estimates and standard errors for the exact Legendre coefficients.\\
-\path{data/tangent_cdf_common_random_numbers.csv}
-& Grid values of the central-difference estimate of \(G\) and its antisymmetry residual.\\
-\path{figures/tangent_cdf.png}
-& Plot used in \cref{p12:fig:tangent-cdf}.\\
-\path{figures/tangent_legendre_coefficients.png}
-& Plot used in \cref{p12:fig:legendre-coeffs}.\\
-\path{NUMERICAL_README.txt}
-& Reproduction parameters and a concise explanation of the numerical layer.\\
-\bottomrule
-\end{longtable}
+The files below are kept in the volume directory under
+\path{assets/q-fabius-parameter-deformations/Fabius_Flat_Parameter_Response_Dynamics/}; the absorbed report's
+own source and PDF were deleted when it was merged, and git history is their
+archive.
+\begin{itemize}[leftmargin=2em]
+\item \path{assets/q-fabius-parameter-deformations/Fabius_Flat_Parameter_Response_Dynamics/code/fabius_q_response_experiments.py}
+--- exact symbolic tables, pathwise Monte Carlo checks, common-random-number CDF experiment, and
+figure generation.
+\item \path{assets/q-fabius-parameter-deformations/Fabius_Flat_Parameter_Response_Dynamics/data/exact_cumulant_and_moment_jets.csv}
+--- exact \(\kappa_n,\dot\kappa_n,\mu_n,\dot\mu_n\) through the configured order.
+\item \path{assets/q-fabius-parameter-deformations/Fabius_Flat_Parameter_Response_Dynamics/data/exact_tangent_legendre_coefficients.csv}
+--- exact shifted-Legendre coefficients through degree \(20\).
+\item \path{assets/q-fabius-parameter-deformations/Fabius_Flat_Parameter_Response_Dynamics/data/monte_carlo_moment_derivative_validation.csv}
+--- estimates, standard errors, and \(z\)-scores for \(\dot\mu_{2m}\).
+\item \path{assets/q-fabius-parameter-deformations/Fabius_Flat_Parameter_Response_Dynamics/data/monte_carlo_legendre_validation.csv}
+--- pathwise estimates and standard errors for the exact Legendre coefficients.
+\item \path{assets/q-fabius-parameter-deformations/Fabius_Flat_Parameter_Response_Dynamics/data/tangent_cdf_common_random_numbers.csv}
+--- grid values of the central-difference estimate of \(G\) and its antisymmetry residual.
+\item \path{assets/q-fabius-parameter-deformations/Fabius_Flat_Parameter_Response_Dynamics/figures/tangent_cdf.png}
+--- plot used in \cref{p12:fig:tangent-cdf}.
+\item \path{assets/q-fabius-parameter-deformations/Fabius_Flat_Parameter_Response_Dynamics/figures/tangent_legendre_coefficients.png}
+--- plot used in \cref{p12:fig:legendre-coeffs}.
+\item \path{assets/q-fabius-parameter-deformations/Fabius_Flat_Parameter_Response_Dynamics/NUMERICAL_README.txt}
+--- reproduction parameters and a concise explanation of the numerical layer.
+\end{itemize}
 
 \begin{thebibliography}{99}
 
