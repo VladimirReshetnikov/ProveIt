@@ -12314,8 +12314,10 @@ $C_{a,n}=a^{n(n+3)/2}/2^n$ for the prefactor of
 \eqref{p6:eq:ha-derivative-hierarchy}.
 
 \begin{theorem}[Derivative equimeasurability]\label{p6:thm:equimeasurability}
-Let $a>2$, $n\ge1$, and let $\Phi:\RealNumbers\to\RealNumbers$ be Borel measurable, whenever the
-integrals exist.  Then
+Let $a\ge2$, $n\ge1$, and let $\Phi:\RealNumbers\to\RealNumbers$ be Borel measurable, whenever the
+integrals exist.  (At $a=2$ the cylinders of the proof tile the support rather
+than being separated, meeting only in a null set; the change of variables is
+unaffected, and the atom at $0$ has weight $1-(2/a)^n=0$.)  Then
 \begin{align}
  \frac1{2b_a}\int_{-b_a}^{b_a}\Phi\bigl(h_a^{(n)}(x)\bigr)\Differential x
  &=\Bigl[1-\bigl(\tfrac2a\bigr)^{n}\Bigr]\,\Phi(0)
@@ -12431,7 +12433,7 @@ level-$n$ Hutchinson approximant of the attractor $K_a$ of
  =\frac{a-2}{a^{\,n+1}(a-1)},
 \end{equation}
 and $\nu_a$ is the equal-weight self-similar measure on $K_a$, of Hausdorff
-and information dimension $D_a=\log2/\log a$.  At $a=2$, $\TwoAdicValuation$ is the
+and information dimension $D_a=\log2/\log a$.  At $a=2$, $\nu_2$ is the
 uniform law on $[-1,1]$.
 \end{theorem}
 
@@ -12923,8 +12925,9 @@ and the closure of the polynomials in
 $L^2\bigl(\mathbb T,\Theta_a\,\frac{d\theta}{2\pi}\bigr)$: each parity tower
 of normalized derivatives is the monomial sequence of a weighted Hardy space
 whose weight is the wrapped heat kernel at time $\log a$, centred at the
-antipode $\theta=\pi$.  The sign correction $e_j=(-1)^j\psi_{2j+\epsilon}$
-rotates the weight to $\vartheta_3(\theta/2,q)$, centred at $\theta=0$.
+antipode $\theta=\pi$.  The sign correction $\eta_j=(-1)^je_j$ of
+\eqref{p6:eq:q-gaussian-kernel} rotates the weight to
+$\vartheta_3(\theta/2,q)$, centred at $\theta=0$.
 \end{proposition}
 
 \begin{proof}
@@ -14711,6 +14714,64 @@ grows substantially with the base, following the mode formula
 \eqref{p6:eq:general-gamma-zeta}.}
 \label{p6:fig:periodic-correction}
 \end{figure}
+
+The mean of the profile, which \eqref{p6:eq:Psi-a} introduces but does not
+evaluate, is the $k=0$ member of the same computation.
+
+\begin{corollary}[Mean of the periodic profile]
+\label{p6:cor:barP}
+For every $a>1$,
+\begin{equation}\label{p6:eq:barP}
+ \overline P_a
+ =-\frac{\log a}{12}
+  +\frac{\gamma_1+\dfrac{\gamma^{2}}{2}-\dfrac{\pi^{2}}{12}}{\log a},
+\end{equation}
+where $\gamma$ is Euler's constant and $\gamma_1$ the first Stieltjes constant
+in the convention $\RiemannZeta(1+s)=s^{-1}+\gamma-\gamma_1s+\BigO(s^{2})$.
+\end{corollary}
+
+\begin{proof}
+The Fourier coefficients of $\Psi_a$ come from the simple poles of
+$1/(1-a^{s})$ in the proof of \cref{p6:thm:general-fourier-modes}; the mean
+$\overline P_a$ is what the triple pole at $s=0$ contributes beyond the
+quadratic and linear terms already displayed in
+\eqref{p6:eq:general-exact-Laplace}.  Expanding the two factors of the Mellin
+integrand at $s=0$,
+\[
+ \Gamma(s)\RiemannZeta(s+1)=\frac1{s^{2}}
+  -\left(\gamma_1+\frac{\gamma^{2}}{2}-\frac{\pi^{2}}{12}\right)+\BigO(s),
+ \qquad
+ \frac{a^{s}}{1-a^{s}}=-\frac1{s\log a}-\frac12-\frac{s\log a}{12}+\BigO(s^{2}),
+\]
+the constant term of the product $-\Gamma(s)\RiemannZeta(s+1)a^{s}/(1-a^{s})$
+is $-\log a/12+(\gamma_1+\gamma^{2}/2-\pi^{2}/12)/\log a$, which is
+\eqref{p6:eq:barP}.  Note that the $1/s$ coefficient of
+$\Gamma(s)\RiemannZeta(s+1)$ vanishes, which is why no $\gamma$-linear term
+survives.
+\end{proof}
+
+\begin{remark}[The same Mellin constant, two different constants]
+\label{p6:rem:mellin-constant-clash}
+The combination $\gamma_1+\gamma^{2}/2-\pi^{2}/12$ in \eqref{p6:eq:barP} is
+the same Laurent constant of $-\Gamma(s)\RiemannZeta(s+1)$ at $s=0$ that
+governs the $q\uparrow1$ large-deviation rate of Parts~X and~XI, where it
+appears as \eqref{p11:eq:Cstar}.  The two constants are nevertheless
+\emph{not} equal, and a reader who meets the same Greek letters twice should
+not assume one theorem.  Here
+\[
+ (\log a)\,\overline P_a
+ =\left(\gamma_1+\frac{\gamma^{2}}{2}-\frac{\pi^{2}}{12}\right)
+   -\frac{(\log a)^{2}}{12},
+\]
+whereas the endpoint constant of Part~X carries $-(\log2)^{2}/2$ in place of
+$-(\log a)^{2}/12$.  The objects differ in kind as well as in coefficient:
+\eqref{p6:eq:barP} is the mean of a periodic profile at a \emph{fixed} base,
+in the spatial variable near a support endpoint, while Part~X's constant is a
+\emph{parameter-limit} rate as $q\uparrow1$.  What they share is the kernel,
+not the theorem.  Numerically, \eqref{p6:eq:barP} agrees with direct
+quadrature of $\int_0^1P_a$ to twenty-six digits at $a=3/2,2,3,5$; at $a=2$,
+$\overline P_2=-1.10904536543418668\ldots$
+\end{remark}
 
 \begin{repobox}
 At $a=2$, the mode lattice $\chi_k=2\pi\ImaginaryUnit k/\log2$ is precisely the vertical
