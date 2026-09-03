@@ -38,6 +38,12 @@ residue `r`, not only for `N = 2^n` and odd `r`.
 * `dft_gridSample` — `𝓕(samples) = N • R`.
 * `foldedCoefficient_eq_intResidueTsum` — **the alias identity**, residue form.
 * `foldedCoefficient_eq_tsum` — **`p1:eq:alias-identity`**, as `∑_q Û(qN + r/2)`.
+* `foldedCoefficient_zero`, `foldedCoefficient_two_mul_eq_zero` — the constant mode is
+  `1`; every nonzero even mode vanishes.
+* `gridSample_eq_sum_foldedCoefficient` — the inverse transform.
+* `foldedCoefficient_neg` — `A_{N,-r} = A_{N,r}`.
+* `sum_dft_mul_dft_neg` — a Parseval-type identity for `ZMod.dft`, for every vector.
+* `sum_foldedCoefficient_sq` — the discrete energy identity, all residues.
 -/
 
 set_option autoImplicit false
@@ -230,5 +236,96 @@ theorem gridSample_eq_sum_foldedCoefficient (F : BoundedFabius) (N : ℕ) [NeZer
         rw [mul_sum, mul_sum]
         refine sum_congr rfl fun r _ => ?_
         field_simp
+
+/-! ## Symmetry and the discrete energy identity -/
+
+/-- The residue classes of `r` and `-r` are exchanged by negation. -/
+noncomputable def residueClassNegEquiv (M : ℕ) (r : ZMod M) :
+    (fun n : ℤ => (n : ZMod M)) ⁻¹' {-r} ≃ (fun n : ℤ => (n : ZMod M)) ⁻¹' {r} where
+  toFun k := ⟨-k.1, by
+    have hk := k.2
+    simp only [Set.mem_preimage, Set.mem_singleton_iff] at hk ⊢
+    rw [Int.cast_neg, hk, neg_neg]⟩
+  invFun k := ⟨-k.1, by
+    have hk := k.2
+    simp only [Set.mem_preimage, Set.mem_singleton_iff] at hk ⊢
+    rw [Int.cast_neg, hk]⟩
+  left_inv k := by apply Subtype.ext; simp
+  right_inv k := by apply Subtype.ext; simp
+
+/-- The half-integer coefficients are even, `a_{-k} = a_k`. -/
+theorem halfIntegerCoefficient_neg (F : BoundedFabius) (hF : IsFabius F) (k : ℤ) :
+    halfIntegerCoefficient F (-k) = halfIntegerCoefficient F k := by
+  unfold halfIntegerCoefficient
+  rw [← rvachevFourier_neg F hF]
+  congr 1
+  push_cast
+  ring
+
+/-- **Folded coefficients are even in the residue**: `A_{N,-r} = A_{N,r}`. -/
+theorem foldedCoefficient_neg (F : BoundedFabius) (hF : IsFabius F) (N : ℕ) [NeZero N]
+    (r : ZMod (2 * N)) :
+    foldedCoefficient F N (-r) = foldedCoefficient F N r := by
+  rw [foldedCoefficient_eq_intResidueTsum F hF N, foldedCoefficient_eq_intResidueTsum F hF N,
+    intResidueTsum, intResidueTsum, ← (residueClassNegEquiv (2 * N) r).tsum_eq]
+  refine tsum_congr fun k => ?_
+  simp only [residueClassNegEquiv, Equiv.coe_fn_mk]
+  exact halfIntegerCoefficient_neg F hF _
+
+/-- **A Parseval-type identity for Mathlib's DFT on `ℤ/Mℤ`**, for every
+`Φ : ZMod M → ℂ`: `∑_r 𝓕Φ(r) 𝓕Φ(-r) = M ∑_j Φ(j)²`.  Only `dft_apply`,
+`dft_dft`, and an exchange of finite sums are used. -/
+theorem sum_dft_mul_dft_neg {M : ℕ} [NeZero M] (Φ : ZMod M → ℂ) :
+    ∑ r : ZMod M, ZMod.dft Φ r * ZMod.dft Φ (-r) = (M : ℂ) * ∑ j : ZMod M, Φ j ^ 2 := by
+  have hdd := ZMod.dft_dft Φ
+  calc ∑ r : ZMod M, ZMod.dft Φ r * ZMod.dft Φ (-r)
+      = ∑ r : ZMod M, ∑ j : ZMod M, ZMod.stdAddChar (-(j * -r)) * (ZMod.dft Φ r * Φ j) := by
+        refine sum_congr rfl fun r _ => ?_
+        rw [ZMod.dft_apply Φ (-r), mul_sum]
+        refine sum_congr rfl fun j _ => ?_
+        rw [smul_eq_mul]
+        ring
+    _ = ∑ j : ZMod M, Φ j * ∑ r : ZMod M, ZMod.stdAddChar (-(r * -j)) * ZMod.dft Φ r := by
+        rw [sum_comm]
+        refine sum_congr rfl fun j _ => ?_
+        rw [mul_sum]
+        refine sum_congr rfl fun r _ => ?_
+        rw [show -(j * -r) = -(r * -j) by ring]
+        ring
+    _ = ∑ j : ZMod M, Φ j * ZMod.dft (ZMod.dft Φ) (-j) := by
+        refine sum_congr rfl fun j _ => ?_
+        rw [ZMod.dft_apply (ZMod.dft Φ) (-j)]
+        congr 1
+        refine sum_congr rfl fun r _ => ?_
+        rw [smul_eq_mul]
+    _ = (M : ℂ) * ∑ j : ZMod M, Φ j ^ 2 := by
+        rw [hdd, mul_sum]
+        refine sum_congr rfl fun j _ => ?_
+        simp only [neg_neg, smul_eq_mul]
+        ring
+
+/-- **The discrete energy identity, all residues**
+(`p1:cor:discrete-energy` before pairing the odd modes):
+
+`∑_{r} A_{N,r}² = (2/N) ∑_{j<2N} P(j/N)²`. -/
+theorem sum_foldedCoefficient_sq (F : BoundedFabius) (hF : IsFabius F) (N : ℕ) [NeZero N] :
+    ∑ r : ZMod (2 * N), foldedCoefficient F N r ^ 2 =
+      2 / (N : ℂ) * ∑ j : ZMod (2 * N), gridSample F N j ^ 2 := by
+  have hN : (N : ℂ) ≠ 0 := by exact_mod_cast NeZero.ne N
+  have h := sum_dft_mul_dft_neg (gridSample F N)
+  have hsq : ∀ r : ZMod (2 * N), foldedCoefficient F N r ^ 2
+      = (N : ℂ)⁻¹ ^ 2 * (ZMod.dft (gridSample F N) r * ZMod.dft (gridSample F N) (-r)) := by
+    intro r
+    have hneg : ZMod.dft (gridSample F N) (-r) = ZMod.dft (gridSample F N) r := by
+      have h1 := foldedCoefficient_neg F hF N r
+      simp only [foldedCoefficient] at h1
+      exact mul_left_cancel₀ (inv_ne_zero hN) h1
+    simp only [foldedCoefficient]
+    rw [hneg]
+    ring
+  rw [sum_congr rfl fun r _ => hsq r, ← mul_sum, h]
+  push_cast
+  field_simp
+  ring
 
 end Fabius
