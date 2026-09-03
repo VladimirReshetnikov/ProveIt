@@ -5,7 +5,6 @@ import FabiusFunction.PeriodicOrbitGelfondBound
 import FabiusFunction.PascalParityPeriodic
 import FabiusFunction.RvachevHalfIntegerEnergy
 import FabiusFunction.LambertWElementaryBounds
-import FabiusFunction.LambertWLowerBranchLogBounds
 import FabiusFunction.CompleteHomogeneous
 import FabiusFunction.CompleteHomogeneousGenerating
 import FabiusFunction.CompleteHomogeneousBell
@@ -708,7 +707,11 @@ import FabiusFunction.GaussianBinomialPalindromic
 import FabiusFunction.ThetaQuasiPeriodicity
 import FabiusFunction.FabiusDyadicGaussianForm
 import FabiusFunction.FabiusGeneralLinearDenominator
+import FabiusFunction.ThueMorseComplexHalfAngle
 import FabiusFunction.ThueMorseQPochhammer
+import FabiusFunction.ThueMorseEulerFunction
+import FabiusFunction.LambertWAnalytic
+import FabiusFunction.MixedDifferenceForwardDiff
 import FabiusFunction.GeneralLinearThueMorseSum
 
 set_option autoImplicit false
