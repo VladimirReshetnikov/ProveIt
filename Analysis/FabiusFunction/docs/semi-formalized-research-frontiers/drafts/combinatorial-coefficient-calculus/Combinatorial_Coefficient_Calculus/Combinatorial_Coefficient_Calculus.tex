@@ -244,6 +244,21 @@ bound follows by estimating the contour integral by its length $2\pi r$.
 % ed.: crosswalk added 2026-09-02; the three formal rules are Lean, the analytic one is not.
 Module \lean{CoefficientRules} proves the three formal rules over an arbitrary
 commutative ring: \cref{eq:cauchy} is
+\lean{Fabius.PowerSeries.coeff_mul_eq_sum_range}, \cref{eq:der-coeff} is
+\lean{Fabius.PowerSeries.coeff_derivative_eq}, and \cref{eq:geom-conv} is
+\lean{Fabius.PowerSeries.coeff_mul_geomSeries}, where $F/(1-az)$ is read as
+$F\cdot\sum_na^nz^n$; that the geometric series really is the reciprocal of
+$1-az$ is \lean{Fabius.PowerSeries.one_sub_C_mul_X_mul_geomSeries}, and
+\lean{Fabius.PowerSeries.eq_mul_geomSeries_iff} lets the same rule be applied
+to a series presented by the equation $(1-az)G=F$, which is how it is used in
+the Stirling column arguments.  The analytic Cauchy coefficient formula and
+bound \cref{eq:cauchy-coeff} are not formalized.
+\end{remark}
+
+\begin{remark}[Formal crosswalk]
+% ed.: crosswalk added 2026-09-02; the three formal rules are Lean, the analytic one is not.
+Module \lean{CoefficientRules} proves the three formal rules over an arbitrary
+commutative ring: \cref{eq:cauchy} is
 \lean{Fabius.coeff_mul_eq_sum_range}, \cref{eq:der-coeff} is
 \lean{Fabius.coeff_derivative_eq}, and \cref{eq:geom-conv} is
 \lean{Fabius.coeff_mul_geomSeries}, where $F/(1-az)$ is read as
@@ -4134,6 +4149,38 @@ $\sum_{r\ge1}(-1)^{r-1}p_rt^r/r=\log(1+\sum_{j\ge1}e_jt^j)$, and expanding
 the logarithm through ordinary Bell polynomials yields the second pair of forms.
 The exponential form follows from \eqref{eq:ordinary-exponential-scaling}.
 \end{proof}
+
+\begin{remark}[Formal crosswalk]
+% ed.: crosswalk added 2026-09-02; three of the four displayed forms are formal.
+Everything here is proved for a finite family $u:\iota\to A$ indexed by a
+finite set, over any commutative $\mathbb Q$-algebra, with
+$e_n=\sum_{|t|=n}\prod_{i\in t}u_i$ and $p_r=\sum_i u_i^r$.
+\cref{eq:elementary-via-bell} is \lean{Fabius.esymm_eq_bell_complete} in module
+\lean{ElementarySymmetricBell}, and its sign variant is
+\lean{Fabius.esymm_eq_neg_bell_complete}, which follows from the weighted
+homogeneity \lean{Fabius.partialBell_pow_mul}.
+\cref{eq:powersum-via-bell} is \lean{Fabius.newton_power_sum} in
+\lean{NewtonPowerSumBell}, stated multiplied through by $(-1)^{n-1}(n-1)!$ so
+that it is division-free, with the displayed divided form as
+\lean{Fabius.power_sum_eq}.
+The formal proof of the first identity is not the one given here.  Taking
+logarithms needs $\exp\circ\log=\mathrm{id}$ for formal power series, which
+Mathlib does not have; that gap is now filled by
+\lean{Fabius.exp_subst_logOf} in module \lean{ExpLog}, proved through the
+differential equation $F'=FW$ rather than by a coefficient computation, with
+$f'/f$ written as a substituted geometric series so that no inverse is ever
+formed.  The symmetric-function identity itself is then obtained the same way:
+$\prod_i(1+u_it)$ and $\sum_n\ExponentialCompleteBellPolynomial n t^n/n!$ satisfy
+the same equation and agree at $t=0$.
+The second identity is a corollary rather than a separate argument.  The Newton
+weights have the scaled elementary symmetric functions $n!e_n$ as their complete
+Bell family, so they are that sequence's cumulants, and the cumulants have the
+closed form \lean{Fabius.cumulant_eq_cumulantSum} in
+\lean{CumulantBellFormula} — the moment-to-cumulant formula, which the corpus
+also lacked and which is proved here from the same $\exp\circ\log$ inverse.
+The second form of \cref{eq:powersum-via-bell}, through the ordinary partial
+Bell polynomials, is not formalized.
+\end{remark}
 
 \begin{corollary}[Determinant from traces]\label{cor:det-traces-bell}
 For an $n\times n$ matrix $A$, set
@@ -8167,6 +8214,28 @@ term $1$.
 \end{proof}
 
 \begin{remark}[Formal crosswalk]
+% ed.: crosswalk added 2026-09-02; both displays are now formal.
+$C=1+zC^2$ is \lean{Fabius.catalanSeries_eq}, and the uniqueness the proof
+appeals to — that only one power series satisfies it — is
+\lean{Fabius.eq_catalanSeries_of_eq_one_add_X_mul_sq}, both in module
+\lean{CatalanGeneratingFunction}.
+The closed form is \lean{Fabius.sqrtOf_one_sub_four_X} in module
+\lean{SquareRootSeries}, stated as $\sqrt{1-4z}=1-2zC(z)$ rather than as
+$C=(1-\sqrt{1-4z})/(2z)$ so that nothing is divided by $z$.  The square root is
+\lean{Fabius.sqrtOf}, defined as $\exp(\tfrac12\log)$ on series with constant
+term $1$ and unique among such series by \lean{Fabius.sqrt_unique}; the
+existence rests on the formal exponential law \lean{Fabius.exp_subst_add} and on
+\lean{Fabius.exp_subst_logOf}, in modules \lean{ExpAddLog} and \lean{ExpLog}.
+The formal proof uses no binomial series and no analysis: squaring $1-2zC$ and
+substituting $zC^2=C-1$ gives $1-4z$ outright.
+Two things this does not say.  The $\sqrt{\cdot}$ is the formal square root just
+described, not a real or complex one, so the identity is between power series
+over a commutative $\mathbb Q$-algebra.  And the radius of convergence, together
+with the branch of the square root that the analytic statement selects, is not
+formalized.
+\end{remark}
+
+\begin{remark}[Formal crosswalk]
 % ed.: crosswalk added 2026-09-02.
 \lean{Fabius.catalanSeries_eq} (module \lean{CatalanGeneratingFunction}) is
 $C(z)=1+zC(z)^2$ in $R[[z]]$ over any commutative ring, read off from
@@ -9841,7 +9910,7 @@ coefficient calculus rather than a catalogue of isolated identities.
 
 \section{Lean formalization register}
 \label{sec:lean-register}
-Every theorem-like environment of this monograph is listed here with the status of its formalization in the Lean development \path{Analysis/FabiusFunction/Lean/FabiusFunction} (Mathlib \texttt{v4.32.0}).  \emph{Lean} means that a public, compiled declaration proves the exact statement or a more general one (the generalization is then noted next to the result); \emph{partial} means that a named part of the statement is proved and the rest is named; \emph{none} means that no Lean counterpart exists yet.  A citation, a numerical check, or a plausible derivation does not count.  The register is generated from the source and must be regenerated when results are added.  Current totals: 53 Lean, 35 partial, 113 none, of 201 results.
+Every theorem-like environment of this monograph is listed here with the status of its formalization in the Lean development \path{Analysis/FabiusFunction/Lean/FabiusFunction} (Mathlib \texttt{v4.32.0}).  \emph{Lean} means that a public, compiled declaration proves the exact statement or a more general one (the generalization is then noted next to the result); \emph{partial} means that a named part of the statement is proved and the rest is named; \emph{none} means that no Lean counterpart exists yet.  A citation, a numerical check, or a plausible derivation does not count.  The register is generated from the source and must be regenerated when results are added.  Current totals: 54 Lean, 35 partial, 112 none, of 201 results.
 
 \begin{footnotesize}
 \begin{longtable}{@{}p{0.16\textwidth}p{0.22\textwidth}p{0.08\textwidth}p{0.40\textwidth}@{}}
@@ -9871,7 +9940,7 @@ Result & Title & Status & Lean declarations (module) \\
 \Cref{thm:poisson-stirling-moments} & Poisson moments & partial & the moment series $\sum_m m^n\lambda^m/m! = e^{\lambda}\sum_k S(n,k)\lambda^k$ is \lean{Fabius.tsum_pow_mul_pow_div_factorial} (\lean{BellStirling}) for every real $\lambda$; the probabilistic phrasing is not formalized \\
 \Cref{thm:fixed-point-stirling-moments} & Moments of the number of fixed points & none &  \\
 \Cref{thm:lah-conv} & Conversion between rising and falling factorials & Lean & \lean{Fabius.ascPochhammer_eq_sum_lahNumber_mul_descPochhammer}, \lean{Fabius.descPochhammer_eq_sum_lahNumber_mul_ascPochhammer}, \lean{Fabius.sum_range_lahNumber_mul_lahNumber}, \lean{Fabius.lahNumber_eq_sum_stirlingFirst_mul_stirlingSecond} (\lean{LahNumbers}); the closed form of the definition is \lean{Fabius.lahNumber_succ_succ_mul_factorial} \\
-\Cref{thm:stirling-egfs} & Column generating functions & partial & \lean{Fabius.exp_sub_one_pow}, \lean{Fabius.egf_stirlingSecond}, \lean{Fabius.negLogOneSub_pow}, \lean{Fabius.egf_stirlingFirst}, \lean{Fabius.log_pow} (\lean{StirlingGeneratingFunctions}), as formal power series over any commutative $\mathbb Q$-algebra; the bivariate generating function \cref{eq:second-double-egf} is not formalized \\
+\Cref{thm:stirling-egfs} & Column generating functions & Lean & \lean{Fabius.exp_sub_one_pow}, \lean{Fabius.egf_stirlingSecond}, \lean{Fabius.negLogOneSub_pow}, \lean{Fabius.egf_stirlingFirst}, \lean{Fabius.log_pow} (\lean{StirlingGeneratingFunctions}), as formal power series over any commutative $\mathbb Q$-algebra.  \cref{eq:second-double-egf} is \lean{Fabius.exp_subst_smul_exp_sub_one} (\lean{BellHomogeneity}), which proves $\exp(y(\EulerE^z-1))=\sum_n\bigl(\sum_k\StirlingSecondKind nk y^k\bigr)z^n/n!$ for every scalar $y$ of the coefficient algebra; taking that algebra to be $\mathbb Q[y]$ and the scalar to be $y$ recovers the display, so the content is formalized even though no Lean statement writes $y$ as a formal variable \\
 \Cref{thm:second-ogf} & Fixed-$k$ ordinary generating function & partial & \lean{Fabius.prod_one_sub_mul_X_mul_stirlingColumnOGF} and \lean{Fabius.stirlingColumnOGF_eq_prod_mk_pow} (\lean{StirlingOrdinaryGF}): the column series $\sum_r\StirlingSecondKind{k+r}{k}x^r$ times $\prod_{j\le k}(1-jx)$ is $1$, and equals the product of the geometric series $\sum_r j^rx^r$, in $R[[x]]$ for every commutative ring $R$; \cref{eq:second-complete-symmetric}, which reads the coefficient off the product as a complete homogeneous symmetric polynomial, is displayed inside the theorem and is not formalized \\
 \Cref{thm:stirling-transform} & Stirling transform and its inverse & Lean & the inversion formula is \lean{Fabius.stirling_inversion}, \lean{Fabius.stirling_inversion_symm}, \lean{Fabius.stirling_inversion_iff} (\lean{StirlingBasisChange}), for sequences in any additive commutative group; the generating-function form is \lean{Fabius.egfA_subst_exp_sub_one} and \lean{Fabius.egfA_subst_log} (\lean{StirlingTransformEGF}): substituting $\EulerE^t-1$, respectively $\log(1+t)$, into an exponential generating function applies the second-kind, respectively signed first-kind, Stirling transform \\
 \Cref{thm:normal-order} & Stirling normal-ordering identities & partial & \lean{Fabius.iterate_X_mul_derivative} (\cref{eq:normal1}) and \lean{Fabius.xkDk_eq_sum_signedStirlingFirst} (\cref{eq:normal2}, by Stirling inversion) in \lean{StirlingNormalOrder}, as identities of operators applied to an arbitrary polynomial over any commutative ring; the falling-factorial form $\FallingFactorial{xD}{n}$ and the operator series \cref{eq:der-from-diff,eq:diff-from-der} are not formalized \\
@@ -9930,7 +9999,7 @@ corollary (unlabelled, no.~4) & Cauchy integral & none &  \\
 \Cref{thm:bell-transform-inverse} & Bell transform and its inverse & Lean & \cref{eq:bell-transform-x} is \lean{Fabius.bell_transform_inverse} (\lean{BellComposition}), from $X=\log(1+Y)$ formalized as \lean{Fabius.log_subst_exp_sub_one} and the composition theorem; the recursive inversion over every commutative ring is \lean{Bell.complete_cumulant} and \lean{Bell.cumulant_complete} (\lean{BellPolynomialInversion}).  The more general locally-inverse transform \cref{eq:general-bell-inverse}, which the text states after this theorem rather than inside it, is not formalized \\
 \Cref{thm:bell-determinants} & Bell determinants & none &  \\
 \Cref{thm:diamond-bell} &  & Lean & \lean{Fabius.diamondPow_apply} and \lean{Fabius.partialBell_eq_diamondPow_div} (\lean{DiamondPower}); the diamond product is \lean{Bell.binomialConv}, and \lean{Fabius.binomialConv_eq_sum_Ico} checks that the two extreme terms the source omits do vanish, so the two definitions agree.  The proof is the source's: \lean{Bell.egfA_mul} makes the generating function of the power a power (\lean{Fabius.egfA_diamondPow}), and \lean{Fabius.bellWeightSeries_pow} reads off its coefficients \\
-\Cref{thm:bell-symmetric-functions} &  & none &  \\
+\Cref{thm:bell-symmetric-functions} &  & partial & \cref{eq:elementary-via-bell} is \lean{Fabius.esymm_eq_bell_complete} and its sign variant \lean{Fabius.esymm_eq_neg_bell_complete} (\lean{ElementarySymmetricBell}), for a finite family in any commutative $\mathbb Q$-algebra; \cref{eq:powersum-via-bell} is \lean{Fabius.newton_power_sum} in cleared form and \lean{Fabius.power_sum_eq} in the divided form (\lean{NewtonPowerSumBell}).  Both rest on \lean{Fabius.exp_subst_logOf} (\lean{ExpLog}), which supplies the $\exp\circ\log$ inverse Mathlib lacks, and on \lean{Fabius.cumulant_eq_cumulantSum} (\lean{CumulantBellFormula}).  The second form of \cref{eq:powersum-via-bell}, through the ordinary partial Bell polynomials, is not formalized \\
 \Cref{cor:det-traces-bell} & Determinant from traces & none &  \\
 \Cref{thm:cycle-index-bell} &  & none &  \\
 \Cref{thm:moment-cumulant} & Moment--cumulant relations & Lean & \cref{eq:moments-from-cumulants} is \lean{Fabius.bell_complete_eq_sum_partialBell} with \lean{Fabius.exp_subst_bellWeightSeries}, and \cref{eq:cumulants-from-moments} is \lean{Fabius.bell_transform_inverse} (\lean{BellComposition}); the recursive forms are \lean{Fabius.completeBellPolynomial_momentCumulant}, \lean{Fabius.momentCumulant_completeBellPolynomial} (\lean{MomentCumulantAlgebra}) and \lean{Bell.complete_cumulant} \\
@@ -9966,7 +10035,7 @@ theorem (unlabelled, no.~76) &  & none &  \\
 \Cref{thm:laplace-bell} & Laplace--Erd\'elyi coefficient formula & none &  \\
 \Cref{thm:merged-binomial-inversion} & Binomial inversion & Lean & the equivalence of \cref{eq:merged-binomial-forward,eq:merged-binomial-backward} is \lean{Fabius.binomial_inversion_iff} (additive commutative groups) and \lean{Fabius.binomial_inversion_ring_iff} (commutative rings) (\lean{BinomialInversion}), with the kernel orthogonality \lean{Fabius.sum_Icc_neg_one_pow_choose_mul_choose}; \cref{eq:merged-binomial-egf} is \lean{Fabius.egfA_eq_exp_mul_iff} and \lean{Fabius.egfA_eq_altSeries_mul_iff} (\lean{BinomialInversionEGF}), each an iff with its sequence form, together with \lean{Fabius.egfA_eq_exp_mul_iff_egfA_eq_altSeries_mul} for the equivalence of the two generating-function equations \\
 \Cref{thm:merged-partition-mobius} & Möbius function of $\Pi\_n$ & none &  \\
-\Cref{thm:merged-moment-cumulant} & Moment--cumulant inversion & partial & In the block-size form: \lean{Bell.complete} and \lean{Bell.cumulant} are mutually inverse (\lean{Bell.complete_cumulant}, \lean{Bell.cumulant_complete}, module \lean{BellPolynomialInversion}) and $M=\EulerE^K$ is \lean{Fabius.exp_subst_bellWeightSeries}; the sums over set partitions and $K=\log M$ are not formalized. \\
+\Cref{thm:merged-moment-cumulant} & Moment--cumulant inversion & partial & In the block-size form: \lean{Bell.complete} and \lean{Bell.cumulant} are mutually inverse (\lean{Bell.complete_cumulant}, \lean{Bell.cumulant_complete}, module \lean{BellPolynomialInversion}) and $M=\EulerE^K$ is \lean{Fabius.exp_subst_bellWeightSeries}; $K=\log M$ is now \lean{Fabius.logOf_egfA} together with \lean{Fabius.cumulant_eq_cumulantSum} (\lean{CumulantBellFormula}), which also gives the closed form $\kappa_n=\sum_k(-1)^{k-1}(k-1)!\,\ExponentialPartialBellPolynomial nk(m)$, resting on the formal $\exp\circ\log$ inverse \lean{Fabius.exp_subst_logOf} (\lean{ExpLog}); the sums over set partitions are not formalized. \\
 \Cref{thm:merged-binomial-type-characterization} & Generating-function characterization of binomial type & none &  \\
 \Cref{thm:merged-sheffer} & Addition and lowering & partial & \cref{eq:merged-sheffer-addition} is \lean{Fabius.shefferPoly_add} (\lean{BinomialType}), for \lean{Fabius.shefferPoly} $=c\star p$ (binomial convolution of the coefficients of $g$ with the binomial-type sequence), with generating function \lean{Fabius.egfA_mul_exp_subst_smul_bellWeightSeries}; the lowering law \cref{eq:merged-sheffer-lowering} is not formalized \\
 \Cref{prop:merged-abel} & Abel polynomials & none &  \\
@@ -10016,7 +10085,7 @@ corollary (unlabelled, no.~19) &  & none &  \\
 \Cref{thm:merged-barnes-asymptotic} & Barnes asymptotics on the positive ray & none &  \\
 \Cref{cor:merged-hyperfactorial-asymptotic} & Complete hyperfactorial expansion & none &  \\
 \Cref{thm:merged-catalan-reflection} & Catalan formula & Lean & The Dyck-word count is Mathlib's \lean{DyckWord.card_dyckWord_semilength_eq_catalan}; $\CatalanNumber n=\binom{2n}{n}/(n+1)$ is \lean{catalan_eq_centralBinom_div} and the difference form is \lean{Fabius.catalan_succ_eq_choose_sub_choose} (module \lean{CatalanGeneratingFunction}). \\
-\Cref{thm:merged-catalan-first-return} & First return & partial & $C=1+zC^2$ is \lean{Fabius.catalanSeries_eq} and its uniqueness among power series \lean{Fabius.eq_catalanSeries_of_eq_one_add_X_mul_sq} (module \lean{CatalanGeneratingFunction}); the square-root closed form is not formalized. \\
+\Cref{thm:merged-catalan-first-return} & First return & partial & $C=1+zC^2$ is \lean{Fabius.catalanSeries_eq} and its uniqueness among power series \lean{Fabius.eq_catalanSeries_of_eq_one_add_X_mul_sq} (module \lean{CatalanGeneratingFunction}); the square-root closed form is \lean{Fabius.sqrtOf_one_sub_four_X} (\lean{SquareRootSeries}), where $\sqrt{\cdot}$ is the formal square root \lean{Fabius.sqrtOf} of a series with constant term $1$, defined as $\exp(\tfrac12\log)$ and unique by \lean{Fabius.sqrt_unique}; the radius of convergence and the branch cut are analytic and are not formalized. \\
 \Cref{thm:merged-narayana} & Narayana formula & partial & Module \lean{NarayanaNumbers} defines $N(n,k)$ by the division-free determinant $\binom nk\binom{n-1}{k-1}-\binom n{k-1}\binom{n-1}k$ over $\IntegerNumbers$ (\lean{Fabius.narayana}), which vanishes outside $1\le k\le n$ without a side condition: \cref{eq:merged-narayana} is \lean{Fabius.narayana_mul} in the cleared form $nN(n,k)=\binom nk\binom n{k-1}$, the symmetry is \lean{Fabius.narayana_symm} and the row sum $\sum_kN(n,k)=\CatalanNumber n$ is \lean{Fabius.sum_narayana}; the peak-counting interpretation and the bivariate generating function \cref{eq:merged-narayana-gf} are not formalized. \\
 corollary (unlabelled, no.~21) & Peak mean and variance & none &  \\
 \Cref{thm:merged-catalan-bijection} & Binary trees and parenthesizations & none &  \\

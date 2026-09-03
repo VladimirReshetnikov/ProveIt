@@ -70,12 +70,16 @@ STATUS = {
    r"\lean{Fabius.sum_range_lahNumber_mul_lahNumber}, "
    r"\lean{Fabius.lahNumber_eq_sum_stirlingFirst_mul_stirlingSecond} (\lean{LahNumbers}); "
    r"the closed form of the definition is \lean{Fabius.lahNumber_succ_succ_mul_factorial}"),
- 'thm:stirling-egfs': ('partial',
+ 'thm:stirling-egfs': ('Lean',
    r"\lean{Fabius.exp_sub_one_pow}, \lean{Fabius.egf_stirlingSecond}, "
    r"\lean{Fabius.negLogOneSub_pow}, \lean{Fabius.egf_stirlingFirst}, "
    r"\lean{Fabius.log_pow} (\lean{StirlingGeneratingFunctions}), as formal power series "
-   r"over any commutative $\mathbb Q$-algebra; the bivariate generating function "
-   r"\cref{eq:second-double-egf} is not formalized"),
+   r"over any commutative $\mathbb Q$-algebra.  \cref{eq:second-double-egf} is "
+   r"\lean{Fabius.exp_subst_smul_exp_sub_one} (\lean{BellHomogeneity}), which proves "
+   r"$\exp(y(\EulerE^z-1))=\sum_n\bigl(\sum_k\StirlingSecondKind nk y^k\bigr)z^n/n!$ "
+   r"for every scalar $y$ of the coefficient algebra; taking that algebra to be "
+   r"$\mathbb Q[y]$ and the scalar to be $y$ recovers the display, so the content is "
+   r"formalized even though no Lean statement writes $y$ as a formal variable"),
  'thm:stirling-transform': ('Lean',
    r"the inversion formula is \lean{Fabius.stirling_inversion}, "
    r"\lean{Fabius.stirling_inversion_symm}, \lean{Fabius.stirling_inversion_iff} "
@@ -389,7 +393,11 @@ STATUS = {
  'thm:merged-catalan-first-return': ('partial',
    r"$C=1+zC^2$ is \lean{Fabius.catalanSeries_eq} and its uniqueness among power series "
    r"\lean{Fabius.eq_catalanSeries_of_eq_one_add_X_mul_sq} (module "
-   r"\lean{CatalanGeneratingFunction}); the square-root closed form is not formalized."),
+   r"\lean{CatalanGeneratingFunction}); the square-root closed form is "
+   r"\lean{Fabius.sqrtOf_one_sub_four_X} (\lean{SquareRootSeries}), where $\sqrt{\cdot}$ is "
+   r"the formal square root \lean{Fabius.sqrtOf} of a series with constant term $1$, defined "
+   r"as $\exp(\tfrac12\log)$ and unique by \lean{Fabius.sqrt_unique}; the radius of "
+   r"convergence and the branch cut are analytic and are not formalized."),
  'thm:first-reverse-recurrences': ('Lean',
    r"\cref{eq:first-reverse-row} is \lean{Fabius.first_reverse_row} and "
    r"\cref{eq:first-reverse-column} is \lean{Fabius.first_reverse_column} (module "
@@ -421,7 +429,11 @@ STATUS = {
    r"In the block-size form: \lean{Bell.complete} and \lean{Bell.cumulant} are mutually inverse "
    r"(\lean{Bell.complete_cumulant}, \lean{Bell.cumulant_complete}, module "
    r"\lean{BellPolynomialInversion}) and $M=\EulerE^K$ is \lean{Fabius.exp_subst_bellWeightSeries}; "
-   r"the sums over set partitions and $K=\log M$ are not formalized."),
+   r"$K=\log M$ is now \lean{Fabius.logOf_egfA} together with "
+   r"\lean{Fabius.cumulant_eq_cumulantSum} (\lean{CumulantBellFormula}), which also "
+   r"gives the closed form $\kappa_n=\sum_k(-1)^{k-1}(k-1)!\,\ExponentialPartialBellPolynomial nk(m)$, resting on the formal $\exp\circ\log$ "
+   r"inverse \lean{Fabius.exp_subst_logOf} (\lean{ExpLog}); the sums over set "
+   r"partitions are not formalized."),
  'thm:associated-stirling-recurrence': ('partial',
    r"With $\mathsf S_r$ defined as the partial Bell polynomial with weights $[j\ge r]$ "
    r"(\lean{Fabius.associatedStirling}, module \lean{AssociatedStirling}): "
@@ -523,6 +535,16 @@ STATUS = {
    r"\lean{Bell.egfA_mul} makes the generating function of the power a power "
    r"(\lean{Fabius.egfA_diamondPow}), and \lean{Fabius.bellWeightSeries_pow} reads off its "
    r"coefficients"),
+ 'thm:bell-symmetric-functions': ('partial',
+   r"\cref{eq:elementary-via-bell} is \lean{Fabius.esymm_eq_bell_complete} and its sign "
+   r"variant \lean{Fabius.esymm_eq_neg_bell_complete} (\lean{ElementarySymmetricBell}), for a "
+   r"finite family in any commutative $\mathbb Q$-algebra; \cref{eq:powersum-via-bell} is "
+   r"\lean{Fabius.newton_power_sum} in cleared form and \lean{Fabius.power_sum_eq} in the "
+   r"divided form (\lean{NewtonPowerSumBell}).  Both rest on "
+   r"\lean{Fabius.exp_subst_logOf} (\lean{ExpLog}), which supplies the $\exp\circ\log$ "
+   r"inverse Mathlib lacks, and on \lean{Fabius.cumulant_eq_cumulantSum} "
+   r"(\lean{CumulantBellFormula}).  The second form of \cref{eq:powersum-via-bell}, through "
+   r"the ordinary partial Bell polynomials, is not formalized"),
  'thm:touchard-poly': ('Lean',
    r"\cref{eq:touchard-poly} is \lean{Fabius.touchardPolynomial_add_prime} "
    r"(\lean{TouchardPolyCongruence}), an identity in $(\mathbb Z/p)[x]$, read off from Spivey's "

@@ -111,6 +111,17 @@ def main():
         bad += 1
         print('DANGLING REFERENCE  %s' % r)
 
+    # Control characters.  Editing this text through a shell heredoc collapses a
+    # doubled backslash, and Python then reads the survivor as an escape: `\b`
+    # becomes U+0008, so `\bigl` reaches the manuscript as a backspace followed
+    # by "igl".  pdflatex dies on it with an undefined-Unicode error pointing at
+    # a line that looks correct, which is a bad afternoon.  Catch it here.
+    for name, text in (('register', src), ('pending', pen), ('manuscript', tex)):
+        ctrl = sorted({c for c in text if ord(c) < 32 and c != '\n'})
+        if ctrl:
+            bad += 1
+            print('CONTROL CHARS       %s contains %s' % (name, [hex(ord(c)) for c in ctrl]))
+
     print()
     print('%d register rows: %s' % (len(labels),
                                     ', '.join('%d %s' % (v, k) for k, v in sorted(counts.items()))))

@@ -1649,6 +1649,70 @@ while the kernel here is elementary.
 \cref{eq:second-reverse-row} is not formalized.""")),
 ]
 
+PENDING += [
+ # --- thm:bell-symmetric-functions ---
+ (r"""the logarithm through ordinary Bell polynomials yields the second pair of forms.
+The exponential form follows from \eqref{eq:ordinary-exponential-scaling}.
+\end{proof}
+""",
+  remark(r"""% ed.: crosswalk added 2026-09-02; three of the four displayed forms are formal.
+Everything here is proved for a finite family $u:\iota\to A$ indexed by a
+finite set, over any commutative $\mathbb Q$-algebra, with
+$e_n=\sum_{|t|=n}\prod_{i\in t}u_i$ and $p_r=\sum_i u_i^r$.
+\cref{eq:elementary-via-bell} is \lean{Fabius.esymm_eq_bell_complete} in module
+\lean{ElementarySymmetricBell}, and its sign variant is
+\lean{Fabius.esymm_eq_neg_bell_complete}, which follows from the weighted
+homogeneity \lean{Fabius.partialBell_pow_mul}.
+\cref{eq:powersum-via-bell} is \lean{Fabius.newton_power_sum} in
+\lean{NewtonPowerSumBell}, stated multiplied through by $(-1)^{n-1}(n-1)!$ so
+that it is division-free, with the displayed divided form as
+\lean{Fabius.power_sum_eq}.
+The formal proof of the first identity is not the one given here.  Taking
+logarithms needs $\exp\circ\log=\mathrm{id}$ for formal power series, which
+Mathlib does not have; that gap is now filled by
+\lean{Fabius.exp_subst_logOf} in module \lean{ExpLog}, proved through the
+differential equation $F'=FW$ rather than by a coefficient computation, with
+$f'/f$ written as a substituted geometric series so that no inverse is ever
+formed.  The symmetric-function identity itself is then obtained the same way:
+$\prod_i(1+u_it)$ and $\sum_n\ExponentialCompleteBellPolynomial n t^n/n!$ satisfy
+the same equation and agree at $t=0$.
+The second identity is a corollary rather than a separate argument.  The Newton
+weights have the scaled elementary symmetric functions $n!e_n$ as their complete
+Bell family, so they are that sequence's cumulants, and the cumulants have the
+closed form \lean{Fabius.cumulant_eq_cumulantSum} in
+\lean{CumulantBellFormula} — the moment-to-cumulant formula, which the corpus
+also lacked and which is proved here from the same $\exp\circ\log$ inverse.
+The second form of \cref{eq:powersum-via-bell}, through the ordinary partial
+Bell polynomials, is not formalized.""")),
+]
+
+PENDING += [
+ # --- thm:merged-catalan-first-return ---
+ (r"""equation.  Of the two quadratic roots, only the displayed branch has constant
+term $1$.
+\end{proof}
+""",
+  remark(r"""% ed.: crosswalk added 2026-09-02; both displays are now formal.
+$C=1+zC^2$ is \lean{Fabius.catalanSeries_eq}, and the uniqueness the proof
+appeals to — that only one power series satisfies it — is
+\lean{Fabius.eq_catalanSeries_of_eq_one_add_X_mul_sq}, both in module
+\lean{CatalanGeneratingFunction}.
+The closed form is \lean{Fabius.sqrtOf_one_sub_four_X} in module
+\lean{SquareRootSeries}, stated as $\sqrt{1-4z}=1-2zC(z)$ rather than as
+$C=(1-\sqrt{1-4z})/(2z)$ so that nothing is divided by $z$.  The square root is
+\lean{Fabius.sqrtOf}, defined as $\exp(\tfrac12\log)$ on series with constant
+term $1$ and unique among such series by \lean{Fabius.sqrt_unique}; the
+existence rests on the formal exponential law \lean{Fabius.exp_subst_add} and on
+\lean{Fabius.exp_subst_logOf}, in modules \lean{ExpAddLog} and \lean{ExpLog}.
+The formal proof uses no binomial series and no analysis: squaring $1-2zC$ and
+substituting $zC^2=C-1$ gives $1-4z$ outright.
+Two things this does not say.  The $\sqrt{\cdot}$ is the formal square root just
+described, not a real or complex one, so the identity is between power series
+over a commutative $\mathbb Q$-algebra.  And the radius of convergence, together
+with the branch of the square root that the analytic statement selects, is not
+formalized.""")),
+]
+
 applied = 0
 for anchor, text in PENDING:
     if text.strip() in s:
