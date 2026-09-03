@@ -127,6 +127,8 @@ import FabiusFunction.FabiusLambertPhaseExtraction
 import FabiusFunction.FabiusLambertPhaseExtractionBell
 import FabiusFunction.PrincipalLambertW
 import FabiusFunction.PrincipalLambertWAtTop
+import FabiusFunction.AutonomousIteratedDeriv
+import FabiusFunction.LambertWHigherDerivatives
 import FabiusFunction.LowerLambertW
 import FabiusFunction.GeneralizedLambertCoordinate
 import FabiusFunction.LambertBranchDichotomy
