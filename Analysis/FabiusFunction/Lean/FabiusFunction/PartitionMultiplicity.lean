@@ -36,6 +36,9 @@ def partMultiplicity {n : ℕ} (N : ℕ) (p : Nat.Partition n) : Fin N → ℕ :
 def multisetOfMultiplicity {N : ℕ} (m : Fin N → ℕ) : Multiset ℕ :=
   ∑ k : Fin N, Multiset.replicate (m k) ((k : ℕ) + 1)
 
+/-- The multiset with `m k` copies of `k + 1` has sum `∑_k (k+1) m_k`, the weight of the
+multiplicity vector `m`.  This is what lets `partitionOfMultiplicity` produce a partition of `n`
+out of a vector of weight `n`. -/
 theorem sum_multisetOfMultiplicity {N : ℕ} (m : Fin N → ℕ) :
     (multisetOfMultiplicity m).sum = ∑ k : Fin N, ((k : ℕ) + 1) * m k := by
   unfold multisetOfMultiplicity
@@ -43,6 +46,10 @@ theorem sum_multisetOfMultiplicity {N : ℕ} (m : Fin N → ℕ) :
   simp only [Multiset.coe_sumAddMonoidHom, Multiset.sum_replicate, smul_eq_mul]
   exact sum_congr rfl fun k _ => mul_comm _ _
 
+/-- The multiplicity vector is read back off the multiset: `k + 1` occurs exactly `m k` times in
+`multisetOfMultiplicity m`, the summands for `j ≠ k` contributing nothing.  Hence
+`multisetOfMultiplicity` is injective, which is the surjectivity half of
+`partitionEquivMultiplicity`. -/
 theorem count_multisetOfMultiplicity {N : ℕ} (m : Fin N → ℕ) (k : Fin N) :
     (multisetOfMultiplicity m).count ((k : ℕ) + 1) = m k := by
   unfold multisetOfMultiplicity
@@ -56,6 +63,9 @@ theorem count_multisetOfMultiplicity {N : ℕ} (m : Fin N → ℕ) (k : Fin N) :
   · intro h
     exact absurd (mem_univ k) h
 
+/-- Every element of `multisetOfMultiplicity m` is of the form `k + 1`, hence positive.  This is
+the hypothesis `Nat.Partition` imposes on its parts, and it is what makes the `filter (· ≠ 0)`
+inside `Nat.Partition.ofSums` a no-op in `partitionOfMultiplicity_parts`. -/
 theorem pos_of_mem_multisetOfMultiplicity {N : ℕ} {m : Fin N → ℕ} {i : ℕ}
     (hi : i ∈ multisetOfMultiplicity m) : 0 < i := by
   unfold multisetOfMultiplicity at hi
@@ -69,6 +79,9 @@ def partitionOfMultiplicity (n : ℕ) {N : ℕ} (m : Fin N → ℕ)
     (h : ∑ k : Fin N, ((k : ℕ) + 1) * m k = n) : Nat.Partition n :=
   Nat.Partition.ofSums n (multisetOfMultiplicity m) (by rw [sum_multisetOfMultiplicity, h])
 
+/-- The parts of `partitionOfMultiplicity n m h` are exactly `multisetOfMultiplicity m`: no part is
+discarded, because `Nat.Partition.ofSums` only drops zero entries and every element of
+`multisetOfMultiplicity m` is positive. -/
 theorem partitionOfMultiplicity_parts (n : ℕ) {N : ℕ} (m : Fin N → ℕ)
     (h : ∑ k : Fin N, ((k : ℕ) + 1) * m k = n) :
     (partitionOfMultiplicity n m h).parts = multisetOfMultiplicity m := by
@@ -107,6 +120,9 @@ theorem parts_eq_multisetOfMultiplicity {n N : ℕ} (hN : n ≤ N) (p : Nat.Part
       symm
       exact sum_eq_zero fun k _ => if_neg (by omega)
 
+/-- The multiplicity vector of a partition of `n` has weight `n`, provided the alphabet is large
+enough (`n ≤ N`), so that no part is missed: counting each part `k + 1` with multiplicity just
+re-sums the parts of `p`. -/
 theorem sum_partMultiplicity {n N : ℕ} (hN : n ≤ N) (p : Nat.Partition n) :
     ∑ k : Fin N, ((k : ℕ) + 1) * partMultiplicity N p k = n := by
   rw [← sum_multisetOfMultiplicity, ← parts_eq_multisetOfMultiplicity hN, p.parts_sum]
@@ -131,6 +147,9 @@ def multiplicityVectors (N n : ℕ) : Finset (Fin N → ℕ) :=
   (Fintype.piFinset fun _ : Fin N => range (n + 1)).filter
     fun m => ∑ k : Fin N, ((k : ℕ) + 1) * m k = n
 
+/-- Membership in `multiplicityVectors N n` is exactly the weight condition `∑ (k+1) m_k = n`: the
+entrywise bound `m k ≤ n` built into the definition (to make the set a `Finset`) is automatic, since
+`m k ≤ (k+1) m k ≤ ∑_j (j+1) m_j = n`. -/
 theorem mem_multiplicityVectors {N n : ℕ} {m : Fin N → ℕ} :
     m ∈ multiplicityVectors N n ↔ ∑ k : Fin N, ((k : ℕ) + 1) * m k = n := by
   unfold multiplicityVectors
