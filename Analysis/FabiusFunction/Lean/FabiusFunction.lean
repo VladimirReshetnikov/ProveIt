@@ -89,6 +89,7 @@ import FabiusFunction.CumulantBellFormula
 import FabiusFunction.NewtonPowerSumBell
 import FabiusFunction.ExpAddLog
 import FabiusFunction.SquareRootSeries
+import FabiusFunction.PowerSumOrdinaryBell
 import FabiusFunction.SymmetricFunctionTransform
 import FabiusFunction.SymmetricFunctionGenerating
 import FabiusFunction.FiniteQBinomialCore
