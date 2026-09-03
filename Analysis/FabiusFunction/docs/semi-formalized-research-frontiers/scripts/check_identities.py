@@ -1089,6 +1089,62 @@ for n in (2, 3, 4):
 check('thm:faa-multivariate',
       'mixed partial of f(g) as a sum over set partitions of the variables', bad, t)
 
+# ------------------------------- thm:merged-inverse-derivative-operator
+# g^{(n)}(y) = ((1/f') d/dx)^{n-1} (1/f') at x = g(y).  A different statement from the Bell-sum
+# form above -- here one operator is iterated -- and checked independently of it: g by exact
+# series reversion, the right side by iterating the operator and reading the constant term,
+# which is the evaluation at x = g(0) = 0.
+NO = 9
+
+
+def _o_mul(a, b):
+    r = [F(0)] * NO
+    for i, u in enumerate(a):
+        if u:
+            for j, v in enumerate(b):
+                if i + j >= NO:
+                    break
+                r[i + j] += u * v
+    return r
+
+
+def _o_inv(a):
+    r = [F(0)] * NO
+    r[0] = F(1) / a[0]
+    for n in range(1, NO):
+        r[n] = -sum(a[k] * r[n - k] for k in range(1, n + 1)) / a[0]
+    return r
+
+
+def _o_der(a):
+    r = [F(0)] * NO
+    for i in range(1, NO):
+        r[i - 1] = a[i] * i
+    return r
+
+
+bad, t = [], 0
+for _ in range(15):
+    M = NO - 2
+    a = [F(0)] * (M + 2)
+    a[1] = F(random.choice([-3, -2, -1, 1, 2, 3]), random.randint(1, 3))
+    for i in range(2, M + 2):
+        a[i] = F(random.randint(-4, 4), random.randint(1, 3))
+    g = _compose_inverse(a, M)
+    fp = [F(0)] * NO
+    for i in range(1, min(M + 2, NO + 1)):
+        if i - 1 < NO:
+            fp[i - 1] = a[i] * i
+    invfp = _o_inv(fp)
+    cur = invfp[:]
+    for n in range(1, M + 1):
+        t += 1
+        if F(factorial(n)) * g[n] != cur[0]:
+            bad.append(n)
+        cur = _o_mul(invfp, _o_der(cur))
+check('thm:merged-inverse-derivative-operator',
+      "g^{(n)} = ((1/f') d/dx)^{n-1}(1/f') at x = g(y)", bad, t)
+
 # --------------------------------------------------------------------- report
 width = max(len(lab) for lab, _, _, _ in RESULTS)
 failed = 0
