@@ -740,6 +740,25 @@ case is simply the unreduced dyadic argument displayed in
 The critical value is nonzero, while all larger orders vanish.
 \end{proof}
 
+\paragraph{Lean status.}
+The two exact parts of \cref{p1:thm:dyadic-filtration} are formal in
+\path{DyadicDerivativeFiltration.lean}, for the derivatives themselves (the volume's
+\(S_m=\RvachevUp^{(m)}/\pi^m\) differs by the fixed factor \(\pi^{-m}\)).  Above the depth,
+\path{Fabius.iteratedDeriv_rvachevUp_dyadic_eq_zero} gives
+\(\RvachevUp^{(m)}(a/2^n)=0\) for every \(m>n\) and every odd \(a\)
+(\eqref{p1:eq:filtration-above}); at the critical order,
+\path{Fabius.iteratedDeriv_rvachevUp_dyadic_critical} gives
+\(\RvachevUp^{(n)}\bigl((2c+1)/2^n\bigr)=-\ThueMorseSign{c}\,2^{n(n+1)/2}\) for
+\(c<2^{n-1}\) (\eqref{p1:eq:filtration-critical}).  Both are read off the corpus's closed
+form of the derivatives as finite Thue--Morse sums of translates
+(\path{Fabius.iteratedDeriv_rvachevUp_eq_thueMorse_sum}): above the depth every translate
+argument is an odd integer, where \(\RvachevUp\) vanishes
+(\path{Fabius.rvachevUp_eq_zero_of_one_le_abs}); at the depth every argument is an even
+integer and only \(j=c+2^{n-1}\) survives, with the sign
+\(\ThueMorseSign{c+2^{n-1}}=-\ThueMorseSign{c}\) (\path{Fabius.thueMorseSign_add_pow_two}).
+The remaining case \eqref{p1:eq:filtration-below}, through the global \(q\)-binomial
+formula, is not formalized here.
+
 \begin{corollary}[Spectral detection of the denominator]\label{p1:cor:denominator-detection}
 For an interior reduced dyadic point $t=a/2^n$ with odd $a$,
 \begin{equation}\label{p1:eq:denominator-detection}
@@ -748,6 +767,15 @@ For an interior reduced dyadic point $t=a/2^n$ with odd $a$,
 Thus the denominator depth is encoded intrinsically in the half-integer
 Fourier spectrum, without inspecting the binary expansion of $t$.
 \end{corollary}
+
+\paragraph{Lean status.}
+Formal, for the derivatives themselves:
+\path{Fabius.dyadic_depth_eq_max_nonzero_iteratedDeriv} in
+\path{DyadicDerivativeFiltration.lean} states, for \(t=(2c+1)/2^n\) with \(c<2^{n-1}\), that
+\(\RvachevUp^{(n)}(t)\ne0\) while \(\RvachevUp^{(m)}(t)=0\) for every \(m>n\), which is
+\eqref{p1:eq:denominator-detection} with the maximum spelled out as its two defining
+clauses; the passage to \(S_m=\RvachevUp^{(m)}/\pi^m\) is the fixed nonzero factor
+\(\pi^{-m}\).
 
 \begin{remark}
 The underlying finite derivative jet at a dyadic point is baseline material in
@@ -1121,6 +1149,23 @@ $\sum_{q\ge1}(q-1/2)^{-K}=(2^K-1)\zeta(K)$.
 Substitute $N=2^n$ and $K=n$; collecting powers of two gives
 \eqref{p1:eq:alias-error-n}.
 \end{proof}
+
+\paragraph{Lean status.}
+The general bound \eqref{p1:eq:alias-error-general} is formal in
+\path{AliasErrorBound.lean}, with a slightly larger constant: for every \(K\ge2\), every
+\(N\ge1\) and every residue \(r<N\) (no parity assumption, no restriction to \(N=2^n\)),
+\path{Fabius.norm_foldedCoefficient_sub_le'} gives
+\[
+ |A_{N,r}-\PhiU(r/2)|\le 2^{K+1}C_KN^{-K}\sum_{n\ge1}n^{-K},
+\]
+that is, \(2^K\zeta(K)\) where the display has \((2^K-1)\zeta(K)\): the formal proof bounds
+every alias point by \(|qN+r/2|\ge N|q|/2\) (\path{Fabius.abs_alias_point_ge}) and sums over
+all integers (\path{Fabius.norm_foldedCoefficient_sub_le}, \path{Fabius.tsum_abs_int_rpow_eq})
+instead of over the odd ones.  The termwise input is the selected-factor bound of
+\cref{p1:lem:selected-factor-bound} at the alias point (\path{Fabius.norm_alias_term_le}),
+and the alias terms are separated from \(\PhiU(r/2)\) through the formal alias identity
+\path{Fabius.foldedCoefficient_eq_tsum}.  The specialization \(K=n\), \(N=2^n\) giving
+\eqref{p1:eq:alias-error-n} is not restated.
 
 \begin{remark}[Why the rate is so fast]
 At level $n$, the unwanted aliases begin a distance comparable with $2^n$
