@@ -79,6 +79,11 @@
 \newcommand{\imported}{\textcolor{importblue}{\textsc{Imported baseline.}}}
 \newcommand{\openstatus}{\textcolor{conjectureorange}{\textsc{Open or conjectural.}}}
 \newcommand{\SpectralPowerSum}[1]{\mathfrak{s}_{#1}}
+% Crosswalk macros, as in the other frontier volumes: a Lean module or
+% declaration name, typeset verbatim.
+\newcommand{\lean}[1]{%
+  \ifmmode\text{\texttt{\detokenize{#1}}}\else\nolinkurl{#1}\fi}
+\newcommand{\decl}[1]{\nolinkurl{#1}}
 \newenvironment{boxedremark}{\par\smallskip\noindent\begin{center}\begin{minipage}{0.94\textwidth}\hrule\vspace{0.6em}\small}{\vspace{0.6em}\hrule\end{minipage}\end{center}\smallskip}
 \lstdefinestyle{pseudo}{basicstyle=\ttfamily\footnotesize,backgroundcolor=\color{shadegray},frame=single,
  rulecolor=\color{rulegray},columns=fullflexible,keepspaces=true,showstringspaces=false,breaklines=true,
@@ -3549,6 +3554,20 @@ finite algebra, elementary real analysis, or existing cyclotomic infrastructure.
 This section gives a concrete path from the report to the repository's formalized
 core.
 
+\paragraph{Repository status.}  The module boundary below was proposed before
+the library's flat layout settled, so the nested paths name nothing that
+exists; and part of the plan has since been built under other names.  The
+exact ray factorization of \cref{p2:thm:exact-factorization} is
+\decl{norm_rvachevFourierProduct_fixedMantissa_of_mem_Ioo} in module
+\lean{RvachevFixedMantissaRay}, stated for $N\in\mathbb N$ and mantissa
+$y\in(1,2)$; the same module's
+\decl{normalizedDyadicSineProduct_add_of_dyadic_period} is the periodic-orbit
+engine, the identity $Q_{n+d}(t)=Q_d(t)Q_n(t)$ whenever $2^dt=t+z$ for an
+integer $z$, which is the returning-seed hypothesis with no rationality
+required.  The cyclotomic layer (the relative norm, the orbit polynomial, and
+the mean exponent) has no counterpart in the library; the cyclotomic values it
+would use are Mathlib's.
+
 \subsection{Suggested module boundary}
 
 \begin{description}[style=nextline,leftmargin=2.8em]
@@ -4382,9 +4401,24 @@ The finite arithmetic equality in \eqref{p3:eq:mu-r} is now machine-checked:
 \path{WeightedScaleMultiplicity.lean}, specialized to base $2$ and Lean's
 Pascal index $r-1$, proves
 $\sum_{h=0}^{\TwoAdicValuation(n)}\binom h{r-1}=\binom{\TwoAdicValuation(n)+1}r$.
-It does \emph{not} by itself prove that this number is the analytic zero
-order of $\Phi_r$, nor does it establish \eqref{p3:eq:canonical-r} or normal
-convergence.  Those assertions remain in the analytic frontier.
+It does not by itself prove that this number is the analytic zero order of
+$\Phi_r$; that, the canonical product \eqref{p3:eq:canonical-r}, and locally
+uniform convergence are now separate machine-checked statements, for an
+arbitrary weight sequence $a$ with $\sum_h a_h2^{-h}<\infty$ and hence for the
+Pascal weights $a_h=\binom h{r-1}$ (Lean's \decl{weightedScaleMultiplicity}
+carries the index $r-1$ as its own parameter):
+\decl{analyticOrderAt_generalizedRvachevProduct_int} (module
+\lean{GeneralizedZeroDivisor}) identifies the analytic order of
+$\Phi_a$ at every nonzero integer $n$ with the weighted scale multiplicity of
+$|n|$, with \decl{generalizedRvachevProduct_eq_zero_iff_int} the zero set;
+\decl{generalizedRvachevProduct_eq_canonical} (module
+\lean{GeneralizedCanonicalForm}) is the canonical product
+$\Phi_a(z)=\prod_{m\ge1}(1-z^2/m^2)^{\mu_a(m)}$; and
+\decl{hasProdLocallyUniformlyOn_generalizedRvachevProduct} with
+\decl{generalizedRvachevProduct_differentiable} (module
+\lean{GeneralizedRvachevEntire}) give locally uniform convergence on every
+disc and entireness.  Earlier text here placed all three in the analytic
+frontier; that is no longer the state of the library.
 
 Thus $\Phi_r$ has a zero at $n$ exactly when $2^{r-1}\mid n$.  Higher rank does not spread the zeros; it thins their locations while increasing their multiplicities according to the $r$th binomial coefficient in $\TwoAdicValuation(n)+1$.
 
@@ -4541,9 +4575,15 @@ The floor-sum half \eqref{p3:eq:Nr-floor} is now formally covered by
 \path{sum_range_padicValNat_choose} in
 \path{WeightedScaleMultiplicity.lean}; its finite sum over $h<N$ equals the
 displayed infinite sum because all later natural quotients vanish.  The
-binary digit formula \eqref{p3:eq:Nr-digital}, the sharp discrepancy statements,
-and their parity consequences are not consequences of that generic layer-cake
-theorem and remain to be formalized.
+binary digit formula \eqref{p3:eq:Nr-digital} and the sharp discrepancy
+statements are not consequences of that generic layer-cake theorem and remain
+to be formalized.  The parity consequence that matters downstream --- the sign
+law $\operatorname{sgn}\Phi_r(x)=\varepsilon_r(\lfloor x\rfloor)$ on every
+open unit interval --- is formal for every admissible weight sequence:
+\decl{generalizedRvachevProduct_ofReal_eq_parityCharacter_mul_norm} (module
+\lean{LobeSignLaw}) writes $\Phi_a(x)$ as the parity character
+\decl{parityCharacter} of $\lfloor x\rfloor$ times $|\Phi_a(x)|$ for
+$N<x<N+1$.
 
 \begin{corollary}[Sharp discrepancy range]\label{p3:cor:discrepancy-range}
 For $0\le N<2^m$,
@@ -8167,6 +8207,108 @@ through command-line options documented by
 \begin{lstlisting}[style=code,language=bash]
 python numerical_experiments.py --help
 \end{lstlisting}
+
+\section{Lean formalization crosswalk}\label{app:lean-crosswalk}
+
+The four parts above cite Lean declarations in their prose where the authors
+knew of them, but carry no theorem-level crosswalk.  This appendix records the
+correspondence for the results whose formal counterpart was verified by
+reading the Lean statement, in the discipline of the Rvachev decay volume's
+parity ledger: a row is listed only when the Lean statement has the displayed
+mathematical content, and it says where Lean is weaker, more general, or
+normalized differently.  All declarations are in namespace \lean{Fabius}.
+The convention agrees on both sides: \decl{rvachevFourier} is this volume's
+$\FourierTwoPi$, \decl{rvachevFourierProduct} is $\prod_n\SincPi(z/2^n)$, and
+\decl{generalizedRvachevProduct} at the weights $a_h=\binom h{r-1}$ is
+$\Phi_r$, with \decl{parityCharacter} at those weights the sign character
+$\varepsilon_r$.
+
+\begin{longtable}{@{}p{0.29\textwidth}p{0.42\textwidth}p{0.23\textwidth}@{}}
+\toprule
+Statement in this volume & Exact Lean declaration(s) & Remarks\\
+\midrule
+\endfirsthead
+\toprule
+Statement in this volume & Exact Lean declaration(s) & Remarks\\
+\midrule
+\endhead
+\Cref{p1:prop:cosine-spectrum}: the half-integer cosine series of
+$\RvachevUp$ on $[-1,1]$ &
+\decl{rvachev_cosine_series} (module \lean{PoissonSummation}) &
+Exact; stated as a complex-valued series with the real
+$\FourierTwoPi{\RvachevUp}(k+\tfrac12)$ coefficients.\\
+\addlinespace
+\Cref{p1:lem:selected-factor-bound}, \Cref{p4:cor:IBP-envelope}: the
+selected-factor envelope $|\Phi(x)|\le 2^{\binom K2}/(\pi|x|)^K$ &
+\decl{norm_rvachevFourierProduct_le_prefix_div} (module
+\lean{SincPrefixBound}) &
+More general: every $K\in\mathbb N$, including $K=0$, for every real
+$x\neq0$.\\
+\addlinespace
+\Cref{p2:thm:exact-factorization}: the exact ray factorization at
+$x=2^Ny$, $y\in(1,2)$ &
+\decl{norm_rvachevFourierProduct_fixedMantissa_of_mem_Ioo} (module
+\lean{RvachevFixedMantissaRay}) &
+Exact, in modulus form.  The periodic-orbit identity
+$Q_{n+d}(t)=Q_d(t)Q_n(t)$ under $2^dt=t+z$, $z\in\mathbb Z$, is
+\decl{normalizedDyadicSineProduct_add_of_dyadic_period}, with no
+rationality hypothesis.\\
+\addlinespace
+\Cref{p3:thm:classical-count}: $\sum_{n\le N}\mu(n)=2N-w(N)$ &
+\decl{sum_dyadicZeroMultiplicity_eq} (module
+\lean{DyadicZeroMultiplicity}) &
+Exact, over $\mathbb N$ with $w$ the binary weight.\\
+\addlinespace
+\Cref{p3:thm:zero-multiplicity}: the multiplicity
+$\binom{\TwoAdicValuation(n)+1}r$, the canonical product, and entireness of
+$\Phi_r$ &
+\decl{weightedScaleMultiplicity_choose},
+\decl{analyticOrderAt_generalizedRvachevProduct_int},
+\decl{generalizedRvachevProduct_eq_zero_iff_int},
+\decl{generalizedRvachevProduct_eq_canonical},
+\decl{hasProdLocallyUniformlyOn_generalizedRvachevProduct},
+\decl{generalizedRvachevProduct_differentiable} &
+More general: every weight sequence $a$ with $\sum_ha_h2^{-h}<\infty$; the
+Pascal case is $a_h=\binom h{r-1}$.  Lean's Pascal index is $r-1$, so its
+\texttt{choose r} is this volume's $\binom{\cdot}{r-1}$.\\
+\addlinespace
+\Cref{p3:thm:sign-law-r}: $\operatorname{sgn}\Phi_r(x)=\varepsilon_r(\lfloor
+x\rfloor)$ &
+\decl{generalizedRvachevProduct_ofReal_eq_parityCharacter_mul_norm} (module
+\lean{LobeSignLaw}), \decl{parityCharacter} &
+More general: every admissible weight sequence, on every open unit interval
+$(N,N+1)$.\\
+\addlinespace
+\Cref{p3:thm:prouhet-r}: the generalized Prouhet cancellation
+$\sum_{n<2^L}\varepsilon_r(n)n^k=0$ &
+\decl{sum_range_two_pow_parityCharacter_mul_pow_eq_zero} (module
+\lean{GeneralizedProuhetBlock}) &
+More general: every weight sequence, every block length $L$, every
+$k$ below the number of odd layers.\\
+\addlinespace
+\Cref{p3:prop:Lambert-coordinate}: the saddle equation solved by the
+generalized Lambert coordinate &
+\decl{generalizedLambertCoordinate_solves_saddle} (module
+\lean{GeneralizedLambertCoordinate}) &
+Exact, under the explicit lower-branch domain hypothesis.\\
+\addlinespace
+\Cref{p3:cor:rank-one-Psi}: the exact periodic decomposition of the
+rank-one Laplace exponent &
+\decl{negativeLaplaceLog_exact_periodic_decomposition} (module
+\lean{NegativeLaplace}) &
+\textbf{Convention differs}: Lean's \decl{negativeLaplaceLog} is
+$+\log L$ at argument $2t$, i.e.\ $\operatorname{negativeLaplaceLog}(s)=-\Psi_1(s/2)$
+in this volume's notation; the periodic correction and the tail-error term
+are separate named objects there.\\
+\bottomrule
+\end{longtable}
+
+The Part~4 derivative-distribution results already name their declarations in
+the status boxes beside each theorem and are not repeated here.  Everything
+else in this volume --- in particular the alias identity of Part~1 beyond its
+abstract engine, the periodic-orbit sharp Gelfond bound of Part~2, the
+Pascal-tail identity and digital count of Part~3, the rank-$r$ global decay and
+sharp ray, and the spectral moments of Part~4 --- is unformalized.
 
 \begin{thebibliography}{99}
 
