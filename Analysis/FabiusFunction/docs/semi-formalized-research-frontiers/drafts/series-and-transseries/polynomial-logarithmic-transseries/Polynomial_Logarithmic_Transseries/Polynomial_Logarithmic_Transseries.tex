@@ -10375,43 +10375,56 @@ polynomials: substituting a polynomial-logarithmic series of positive
 valuation into a scalar power series, and differentiating a composite
 repeatedly.
 
-\begin{proposition}[Substitution into a scalar power series]
+% ed.: this proposition restated three results of the elementary-series part
+% ed.: under a different normalisation of the outer coefficients: the
+% ed.: substitution homomorphism (\cref{plt:prop:dif-substitution}), its
+% ed.: finite determination (\cref{plt:thm:dif-finite-determination}), and the
+% ed.: Bell-polynomial coefficient formula \eqref{plt:eq:dif-bell} of
+% ed.: \cref{plt:prop:dif-bell}, which the displayed formula reproduces
+% ed.: verbatim once \(c_{k}=\varphi_{k}/k!\) is substituted.  The
+% ed.: restatement and its proof are deleted in favour of the pointer below;
+% ed.: the label is kept so that \cref{plt:ex:tay-standard-outer} and any
+% ed.: citation from elsewhere in the volume continue to resolve.  Only the
+% ed.: translation clause was genuinely new, and it is retained with its
+% ed.: one-line proof, as is the second route to the coefficient formula.
+\begin{remark}[Substitution into a scalar power series: where it is proved]
 \label{plt:prop:tay-scalar-outer}
 Let \(\varphi(z)=\sum_{k\ge0}\frac{\varphi_{k}}{k!}z^{k}\in\K[[z]]\) and let
-\(W=\sum_{j\ge1}w_{j}(L)t^{j}\in t\PLpow\).  Then the family
-\((\tfrac{\varphi_{k}}{k!}W^{k})_{k\ge0}\) is summable, so
-\begin{equation}\label{plt:eq:tay-phi-of-W}
- \varphi(W)\DefinitionEquals\sum_{k\ge0}\frac{\varphi_{k}}{k!}W^{k}
- \in\PLpow,
-\end{equation}
-and
-\begin{equation}\label{plt:eq:tay-faa-coefficients}
+\(W=\sum_{j\ge1}w_{j}(L)t^{j}\in t\PLpow\), so that \(\ordt W\ge1\).
+Everything used below about
+\(\varphi(W)\DefinitionEquals\sum_{k\ge0}\frac{\varphi_{k}}{k!}W^{k}\) is
+proved in the elementary-series part, applied to
+\(\Phi=\sum_{r\ge0}c_{r}z^{r}\) with \(c_{r}=\varphi_{r}/r!\) and \(U=W\).
+The family is summable, \(\varphi(W)\in\PLpow\), and
+\(\varphi\mapsto\varphi(W)\) is the unique continuous \(\K\)-algebra
+homomorphism \(\K[[z]]\to\PLpow\) sending \(z\) to \(W\)
+(\cref{plt:prop:dif-substitution}); only \(\varphi_{0},\ldots,\varphi_{r}\)
+are needed for the block \(t^{r}\)
+(\cref{plt:thm:dif-finite-determination}); and
+\[
  [t^{0}]\varphi(W)=\varphi_{0},
  \qquad
  [t^{r}]\varphi(W)
  =\frac{1}{r!}\sum_{k=1}^{r}\varphi_{k}\,
    \ExponentialPartialBellPolynomial{r}{k}
    \bigl(1!\,w_{1},2!\,w_{2},\ldots,(r-k+1)!\,w_{r-k+1}\bigr)
- \quad(r\ge1).
-\end{equation}
-In particular \(\varphi\mapsto\varphi(W)\) is a \(\K\)-algebra homomorphism
-\(\K[[z]]\to\PLpow\), and only \(\varphi_{0},\ldots,\varphi_{r}\) are needed
-for the block \(t^{r}\).  If \(\varphi\) is analytic at \(z_{0}\) with Taylor
-coefficients in \(\K\) and \(W-z_{0}\in t\PLpow\), the same statements hold
-after translation.
-\end{proposition}
-
-\begin{proof}
-Summability is \(\ordt(W^{k})\ge k\).  By
-\cref{plt:prop:tay-convolution}(iv) applied to \(W\) in place of \(H\) (whose
-block \(w_{0}\) vanishes),
-\([t^{r}]W^{k}=\frac{k!}{r!}\ExponentialPartialBellPolynomial{r}{k}(1!w_{1},\ldots)\)
-for \(r\ge k\ge1\) and \(0\) for \(r<k\); multiply by
-\(\varphi_{k}/k!\) and sum over \(k\le r\).  The case \(r=0\) is
-\(W^{k}\in t^{k}\PLpow\).  Multiplicativity in \(\varphi\) follows from
-\cref{plt:lem:cmp-summable} exactly as in the proof of
-\cref{plt:lem:tay-homomorphism}.
-\end{proof}
+ \quad(r\ge1),
+\]
+which is \eqref{plt:eq:dif-bell} of \cref{plt:prop:dif-bell} after that
+normalisation.  Two additions to what is proved there.  First, if \(\varphi\)
+is analytic at \(z_{0}\) with Taylor coefficients in \(\K\) and
+\(W-z_{0}\in t\PLpow\), then the same three statements hold after
+translation: apply them to
+\(\psi(z)\DefinitionEquals\varphi(z_{0}+z)\in\K[[z]]\) and to \(W-z_{0}\).
+Second, the coefficient formula also follows from the convolution structure
+established in this part, without the generating identity for the partial Bell
+polynomials: \cref{plt:prop:tay-convolution}(iv), applied to \(W\) in place of
+\(H\) (whose block \(w_{0}\) vanishes), gives
+\([t^{r}]W^{k}
+=\frac{k!}{r!}\ExponentialPartialBellPolynomial{r}{k}(1!w_{1},\ldots)\) for
+\(r\ge k\ge1\) and \(0\) for \(r<k\); multiplying by \(\varphi_{k}/k!\) and
+summing over \(k\le r\) reproduces the display.
+\end{remark}
 
 \begin{example}\label{plt:ex:tay-standard-outer}
 Taking \(\varphi(z)=(1+z)^{-n}\), \(\varphi(z)=\log(1+z)\) and
@@ -12357,7 +12370,7 @@ only if \(B=-A\compose(X+B)\).
 \end{proposition}
 
 \begin{proof}
-By \cref{plt:lem:rev-closure}, \(F\compose G=X+B+A\compose G\), which equals
+By \eqref{plt:eq:rev-closure}, \(F\compose G=X+B+A\compose G\), which equals
 \(X\) exactly when \(B+A\compose(X+B)=0\).
 \end{proof}
 
@@ -12379,30 +12392,31 @@ generator of the formal algebra and the renaming is the identity map.  We use
 \(X\) throughout, in agreement with the notation catalogue.
 \end{remark}
 
-\begin{lemma}[Filtered Lipschitz gain]
+% ed.: this estimate was proved twice in the volume: here from the two-point
+% ed.: Taylor expansion, and in the composition-group part from the exact
+% ed.: Taylor formula, where it is \eqref{plt:eq:grp-gain-lipschitz}.  The two
+% ed.: arguments are the same computation, and the group-part statement was
+% ed.: missing the summand \(\ordt(A)\) that its own proof produces; that
+% ed.: omission is repaired at \cref{plt:cor:grp-gain} and the duplicate proof
+% ed.: is deleted here.  The inequality is recorded below as a fifth standing
+% ed.: import, in the instantiated form used throughout this part.
+\begin{remark}[Filtered Lipschitz gain: the fifth standing import]
 \label{plt:lem:rev-gain}
 Let \(A\in\PLpow\) with \(\alpha\DefinitionEquals\ordt(A)\), and let
 \(B,C\in\PLpow\).  Then
 \begin{equation}\label{plt:eq:rev-gain}
  \ordt\bigl(A\compose(X+B)-A\compose(X+C)\bigr)
- \ \ge\ \alpha+\ordt(B-C)+1 .
+ \ \ge\ \alpha+\ordt(B-C)+1 ,
 \end{equation}
-In particular \(\ordt\bigl(\Phi(B)-\Phi(C)\bigr)\ge\alpha+\ordt(B-C)+1\).
-\end{lemma}
-
-\begin{proof}
-Put \(S=A\), \(P=C\), \(Q=B-C\) in \cref{plt:lem:rev-shifted-taylor}.  The
-\(j=0\) term is \(A\compose(X+C)\), so
-\[
- A\compose(X+B)-A\compose(X+C)
- =\sum_{j\ge1}\frac{Q^j}{j!}\,\bigl(\DX^jA\bigr)\compose(X+C).
-\]
-By \cref{plt:lem:rev-order-preserved} and \cref{plt:lem:rev-deriv-gain},
-\(\ordt\bigl((\DX^jA)\compose(X+C)\bigr)=\ordt(\DX^jA)\ge\alpha+j\).  Hence the
-\(j\)-th term has \(\ordt\ge j\,\ordt(Q)+\alpha+j=\alpha+j(\ordt(Q)+1)\).
-Since \(\ordt(Q)\ge0\), the minimum over \(j\ge1\) is attained at \(j=1\) and
-equals \(\alpha+\ordt(Q)+1\).
-\end{proof}
+which is \eqref{plt:eq:grp-gain-lipschitz} of \cref{plt:cor:grp-gain}, proved
+there.  In particular, for the map \(\Phi\) of \eqref{plt:eq:rev-Phi},
+\(\ordt\bigl(\Phi(B)-\Phi(C)\bigr)\ge\alpha+\ordt(B-C)+1\).  The reader who
+prefers an argument internal to this part may instead put \(S=A\), \(P=C\),
+\(Q=B-C\) in \cref{plt:lem:rev-shifted-taylor} and bound the \(j\)-th term by
+\(\alpha+j(\ordt(Q)+1)\) using
+\cref{plt:lem:rev-order-preserved,plt:lem:rev-deriv-gain}; the minimum over
+\(j\ge1\) is at \(j=1\).
+\end{remark}
 
 \begin{remark}[What ``a gain of one block'' means, precisely]
 \label{plt:rmk:rev-gain-meaning}
@@ -12506,21 +12520,16 @@ so \(G\compose F=G\compose H=X\).  If \(G'\in\Gnear\) also satisfies
 \(\ordt(B)=\ordt(A)=\alpha\) and \([t^\alpha]B=-[t^\alpha]A\).
 \end{proof}
 
-% ed.: the group statement is announced in the composition-group part of this
-% volume (theorem plt:thm:grp-group, item (4)); the existence, uniqueness and
-% two-sidedness of the inverse are proved here and nowhere else, so that
-% announcement should cite plt:thm:rev-existence rather than repeat a proof.
-\begin{corollary}[The near-identity composition group]
-\label{plt:cor:rev-group}
-\((\Gnear,\compose)\) is a group with identity \(X\), and \(F\mapsto\rev{F}\)
-is its inversion map.  This completes the inverse clause of the group theorem
-stated in the composition-group part of this volume.
-\end{corollary}
-
-\begin{proof}
-Closure is \cref{plt:lem:rev-closure}; associativity and the identity are (I3);
-two-sided inverses exist by \cref{plt:thm:rev-existence}(3).
-\end{proof}
+% ed.: this corollary restated \cref{plt:thm:grp-group} in full.  The group
+% ed.: statement now stands once, in the composition-group part, and its item
+% ed.: (4) cites \cref{plt:thm:rev-existence}; the restatement and its proof
+% ed.: are replaced by the sentence below, which records what has just been
+% ed.: supplied.
+Together with closure and associativity, which are (I3), part (3) of
+\cref{plt:thm:rev-existence} supplies the missing clause of
+\cref{plt:thm:grp-group}: \((\Gnear,\compose)\) is a group with identity
+\(X\), and \(F\mapsto\rev{F}\) is its inversion map.  This is the only place in
+the volume where the inverse is constructed.
 
 \begin{corollary}[First-order form of the inverse]
 \label{plt:cor:rev-first-order}
@@ -14767,51 +14776,24 @@ the signs, the derivative order \(r-1\), and the branch selection implicit in
 the near-identity normalisation.
 \end{example}
 
-\begin{proposition}[Finite certificate]
-\label{plt:prop:lag-certificate}
-Let \(F=X+A\) with \(A\in\PLpow\) and let
-\(G_N=X+\sum_{j=0}^{N}g_j(L)t^j\) with \(g_j\in\K[L]\).  Then
-\(G_N=\Trunc{\rev{F}}{N+1}\), that is \(g_j=b_j\) for \(0\le j\le N\), if and
-only if
-\begin{equation}
-\label{plt:eq:lag-certificate}
-  \RevErr{F}{G_N}=F\compose G_N-X=\FormalBigOAt{t^{N+1}}{t}.
-\end{equation}
-The corresponding left certificate is
-\(G_N\compose F-X=\FormalBigOAt{t^{N+1}}{t}\).
-\end{proposition}
-
-\begin{proof}
-Write \(\rev{F}=X+B\), \(G_N=X+C\), and \(\Delta=C-B\).  Since
-\(F\compose G_N=T_C(F)\) and \(F\compose\rev{F}=T_B(F)=X\),
-\cref{plt:eq:lag-shift} gives
-\begin{equation}
-\label{plt:eq:lag-certificate-expansion}
-  F\compose G_N-X
-  =\sum_{k\ge1}\frac{C^k-B^k}{k!}\,\DX^{\,k}F
-  =\Delta\bigl(1+\DX A\bigr)
-   +\sum_{k\ge2}\frac{C^k-B^k}{k!}\,\DX^{\,k}A,
-\end{equation}
-the terms \(k=0\) cancelling and \(\DX^{\,k}X\) vanishing for \(k\ge2\).  For
-\(k\ge1\), \(C^k-B^k=\Delta\sum_{i=0}^{k-1}C^{i}B^{k-1-i}\) has
-\(\ordt\ge\ordt(\Delta)\), while \(\ordt(\DX^{\,k}A)\ge k\).  Hence the sum over
-\(k\ge2\) has \(\ordt\ge\ordt(\Delta)+2\), and since
-\(\ordt(\DX A)\ge1\),
-\[
-  \ordt\bigl(F\compose G_N-X-\Delta\bigr)\ge\ordt(\Delta)+1 .
-\]
-Therefore \(\ordt\bigl(F\compose G_N-X\bigr)=\ordt(\Delta)\) exactly, with the
-same leading block.  Both directions follow: \cref{plt:eq:lag-certificate}
-holds if and only if \(\ordt(\Delta)\ge N+1\), which for a \(C\) supported in
-\(0\le j\le N\) means precisely \(g_j=b_j\) for those \(j\).
-
-For the left certificate, \(G_N\compose F=T_A(\rev{F}+\Delta)
-=T_A(\rev{F})+T_A(\Delta)=X+T_A(\Delta)\) by
-\cref{plt:lem:lag-substitution}(2) and (5), and
-\(T_A(\Delta)=\Delta+\sum_{k\ge1}A^k\DX^{\,k}\Delta/k!\) has
-\(\ordt\bigl(T_A(\Delta)-\Delta\bigr)\ge\ordt(\Delta)+1\).  So
-\(\ordt\bigl(G_N\compose F-X\bigr)=\ordt(\Delta)\) as well.
-\end{proof}
+% ed.: this proposition restated \cref{plt:cor:rev-finite-certificate}, and its
+% ed.: proof re-derived \cref{plt:prop:rev-residual-order} along the way.  The
+% ed.: statements are identical --- the hypothesis \(F=X+A\) with
+% ed.: \(A\in\PLpow\) is membership in \(\Gnear\), and the two candidate
+% ed.: truncations \(G_N\) are the same object.  The restatement and its proof
+% ed.: are deleted in favour of the pointer below; every citation of the
+% ed.: deleted label in this part now cites the reversion part.
+The coefficients produced by \cref{plt:thm:lag-coefficients} are certified by
+a finite computation, and the certificate is the one already established in
+the reversion part: for \(F=X+A\in\Gnear\) and
+\(G_N=X+\sum_{j=0}^{N}g_j(L)t^j\), the three conditions
+\(G_N=\Trunc{\rev{F}}{N+1}\), \(\RevErr{F}{G_N}=\FormalBigOAt{t^{N+1}}{t}\)
+and \(G_N\compose F-X=\FormalBigOAt{t^{N+1}}{t}\) are equivalent
+(\cref{plt:cor:rev-finite-certificate}); moreover the order of either residual
+equals \(\ordt(G_N-\rev{F})\) exactly, with the same leading block
+(\cref{plt:prop:rev-residual-order}).  Nothing in that argument uses the
+Lagrange--B\"urmann representation, so it certifies coefficients obtained by
+any of the routes of this part.
 
 \begin{example}
 \label{plt:ex:lag-certificate-mixed}
@@ -15252,7 +15234,7 @@ Input: a germ \(F\) at \(+\infty\) presented as
       \cref{plt:eq:lag-generator-substitution}.
 \item \textbf{Certify.}  Verify \(F\compose\rev{F}-X=\FormalBigOAt{t^{N+1}}{t}\)
       and, independently, \(\rev{F}\compose F-X=\FormalBigOAt{t^{N+1}}{t}\), as
-      in \cref{plt:prop:lag-certificate}.  The two residuals detect different
+      in \cref{plt:cor:rev-finite-certificate}.  The two residuals detect different
       substitution-order errors.
 \end{enumerate}
 \end{algorithm}
@@ -15420,7 +15402,7 @@ observations belong with this example.
       the identity \cref{plt:eq:lag-scale-correct} is not even a statement about
       \(\PLlau\); the field has to be extended first
       (\cref{plt:alg:lag-dominant-balance}, step~1).
-\item The residual certificate \cref{plt:eq:lag-certificate} does catch the
+\item The residual certificate of \cref{plt:cor:rev-finite-certificate} does catch the
       error, because it is computed against \(F\), not against \(G\).  This is
       why step~7 of \cref{plt:alg:lag-dominant-balance} certifies against the
       original map and never against the normalised one.
@@ -15505,7 +15487,7 @@ they come from and exactly what is being asserted when one writes them down.
 
 Throughout, \(\K\) is a field of characteristic zero, so that
 \(\RationalNumbers\subseteq\K\).  On the formal side we work in the rings of
-\cref{plt:def:pl-laurent} with the large variable \(X\), the small generator
+\cref{plt:def:ring-four-classes} with the large variable \(X\), the small generator
 \(t=X^{-1}\), and the logarithmic generator \(L=\log X\); the near-identity
 class is \(\Gnear=X+\K[L][[t]]\) of \cref{plt:def:grp-gnear}, the derivation is
 \(\DX=t\,\partial_L-t^2\,\partial_t\), and truncation is always the
@@ -15687,7 +15669,7 @@ so
 \]
 by \eqref{plt:eq:om-alpha-implicit}.  Thus \(G\) is a right inverse of
 \(F_a\) in \(\Gnear\), hence the two-sided inverse by uniqueness
-(\cref{plt:cor:rev-group}).  Finally
+(\cref{plt:thm:rev-existence}(2),(3)).  Finally
 \(g=a\sum_{n\ge0}\LamP{n}(L)a^{n}t^{n}=\sum_{n\ge0}a^{n+1}\LamP{n}(L)t^{n}\),
 which is \eqref{plt:eq:om-alpha-family}; and
 \(a^{n+1}\big|_{a=-1}=(-1)^{n+1}\), with
@@ -15821,7 +15803,7 @@ Finally put \(G=X+\mathcal P\in\Gnear\).  By
 \cref{plt:prop:cmp-generator-substitution},
 \((X+L)\compose G=G+L+\log(1+t\mathcal P)=X\) by
 \eqref{plt:eq:om-implicit}, so \(G\) is a right inverse of \(X+L\), hence
-\(G=\rev{(X+L)}\) by \cref{plt:cor:rev-group}.  That \(\rev{(X+L)}\) is what
+\(G=\rev{(X+L)}\) by \cref{plt:thm:rev-existence}(2),(3).  That \(\rev{(X+L)}\) is what
 the notation \(\WrightOmega\) denotes formally is
 \cref{plt:prop:om-real-bijection} together with
 \cref{plt:thm:om-analytic} below; at this point
@@ -15847,7 +15829,12 @@ Lagrange--B\"urmann summand for \(F=X+L\) is a \emph{single} block:
 \end{theorem}
 
 \begin{proof}
-Apply the Lagrange--B\"urmann formula \cref{plt:thm:lagrange-burmann} to
+% ed.: the citation named a label "plt:thm:lagrange-burmann" that is defined
+% ed.: nowhere in the volume; the theorem meant is the one labelled
+% ed.: plt:thm:lag-burmann in the Lagrange--Buermann part, whose
+% ed.: polynomial--logarithmic form is equation plt:eq:lag-burmann-pl.
+Apply the Lagrange--B\"urmann formula \cref{plt:thm:lag-burmann}, in the form
+\eqref{plt:eq:lag-burmann-pl}, to
 \(F=X+A\) with \(A=L\):
 \[
  \rev{F}(X)=X+\sum_{r\ge1}\frac{(-1)^{r}}{r!}\DX^{\,r-1}\bigl(L^{r}\bigr),
@@ -15941,7 +15928,11 @@ Exactness of the order follows because \(\LamP{N+1}\ne0\) for every
 \(N\ge0\), by \cref{plt:cor:lambert-coefficients}.
 \end{proof}
 
-\begin{corollary}[Finite certificate for the family]
+% ed.: retitled.  This is not the general finite certificate
+% ed.: (\cref{plt:cor:rev-finite-certificate}, which it invokes) but its
+% ed.: specialisation to the single map \(X+L\), where the criterion becomes a
+% ed.: characterisation of the Lambert polynomials themselves.
+\begin{corollary}[Finite certificate for the Lambert polynomials]
 \label{plt:cor:om-certificate}
 Let \(p_0,\ldots,p_N\in\K[L]\) and set
 \(H=X+\sum_{n=0}^{N}p_n(L)t^{n}\).  Then \(p_n=\LamP{n}\) for
@@ -17052,7 +17043,10 @@ source of the guard-block failures catalogued in
 Let \(\mathcal T_i=(v_i,N_i)\) be truncated representatives with finite \(N_i\),
 order bounds \(m_i=m(\mathcal T_i)\) and relative precisions
 \(\rho_i=N_i-m_i\).  Then the following output precisions are sound, and each
-is sharp.
+is sharp in the sense of \cref{plt:def:alg-sound} --- for \emph{every} instance
+in cases \ref{plt:thm:alg-precision-calculus:sum}--\ref{plt:thm:alg-precision-calculus:deriv},
+and for every instance satisfying the nondegeneracy hypothesis stated there in
+case \ref{plt:thm:alg-precision-calculus:comp}.
 \begin{enumerate}
 \item\label{plt:thm:alg-precision-calculus:sum}
       \emph{Sum.}  \(N_{\mathrm{out}}=\min\SetOf{N_1,N_2}\).
@@ -17067,10 +17061,23 @@ is sharp.
       \emph{Quotient.}  If every \(G\in\operatorname{Den}(\mathcal T_2)\) is a unit, then
       \(N_{\mathrm{out}}=\min\SetOf{N_1-m_2,\ N_2+m_1-2m_2}\), with output order
       bound \(m_1-m_2\).
+% ed.: the previous version of (v) asserted that sharpness fails at N_1=0
+% ed.: because DX annihilates the unknown constant block.  That is an artifact
+% ed.: of scalar power series and is false over R=K[L]: the unknown block of
+% ed.: index N_1 is an arbitrary polynomial, and a=t^{N_1}L already has
+% ed.: DX a = t^{N_1+1}(1-N_1 L) \ne 0 for every N_1, including N_1=0.  What is
+% ed.: true, and is what the sources were reaching for, is that the output
+% ed.: ORDER bound can fail to be attained -- exactly when the leading block is
+% ed.: a nonzero constant sitting at index 0 -- and that this is a loss of
+% ed.: relative precision, not of absolute precision.
 \item\label{plt:thm:alg-precision-calculus:deriv}
-      \emph{Derivation.}  \(N_{\mathrm{out}}=N_1+1\) for \(\DX\), with output
-      order bound \(m_1+1\).  Sharpness fails only in the single case
-      \(N_1=0\), where \(\DX\) annihilates the omitted constant block.
+      \emph{Derivation.}  \(N_{\mathrm{out}}=N_1+1\) for \(\DX\), and this is
+      sharp without exception.  The output order bound \(m_1+1\) is always
+      sound, and it is attained if and only if
+      \((\partial_L-m_1)v_1(m_1)\ne0\), that is (for \(v_1\ne0\)) unless
+      \(m_1=0\) and \(v_1(0)\in\K^{\times}\); in that exceptional case the true
+      order is strictly larger and must be recomputed from the returned
+      canonical form (\cref{plt:rmk:alg-derived-order}).
 \item\label{plt:thm:alg-precision-calculus:comp}
       \emph{Near-identity composition.}  Let \(\mathcal T_1\) represent the
       outer series \(F\in\PLlau\) and let \(\mathcal T_2=(u,N_2)\) represent
@@ -17078,7 +17085,13 @@ is sharp.
       \[
         N_{\mathrm{out}}=\min\SetOf{N_1,\ N_2+m_1+1},
       \]
-      with output order bound \(m_1\).
+      with output order bound \(m_1\).  Sharpness holds for every instance in
+      which \(N_1\le N_2+m_1+1\), and, when \(N_2+m_1+1<N_1\), for every
+      instance with \(\ordt(\DX v_1)=m_1+1\).  The excluded case is real: for
+      \(v_1=c\in\K^{\times}\) every admissible pair gives
+      \(F\compose(X+H)=c+a\compose(X+H)\) with \(\ordt(a)\ge N_1\), so the
+      composite is in fact determined to the larger cutoff \(N_1\), and the
+      declared \(N_{\mathrm{out}}=N_2+1\) is sound but pessimistic.
 \end{enumerate}
 \end{theorem}
 
@@ -17087,10 +17100,19 @@ Write \(F=v_1+a\) and \(G=v_2+b\) with \(\ordt(a)\ge N_1\), \(\ordt(b)\ge N_2\);
 by \cref{plt:lem:alg-denotation-coset} this parametrises the denotations, and
 \(\ordt(v_i)\ge m_i\), \(N_i\ge m_i\).
 
+% ed.: the sharpness witnesses below were originally exhibited only at the zero
+% ed.: representative (sum) or for one of the two competing bounds (product,
+% ed.: quotient), which proves sharpness of the LAW but not of each instance.
+% ed.: Since Definition plt:def:alg-sound quantifies sharpness per instance,
+% ed.: the witnesses are now chosen so that the block that differs is exactly
+% ed.: the declared cutoff, for every instance.
 \emph{\ref{plt:thm:alg-precision-calculus:sum}.}
 \((F+G)-(v_1+v_2)=a+b\) has valuation at least \(\min\SetOf{N_1,N_2}\).
-For sharpness take \(v_1=v_2=0\) and \(N_1\le N_2\); then \(F=t^{N_1}\),
-\(G=0\) and \(F=G=0\) are admissible and their sums differ in block \(N_1\).
+For sharpness assume \(N_1\le N_2\) (otherwise exchange the two arguments) and
+compare the admissible pairs \((v_1,v_2)\) and \((v_1+t^{N_1},v_2)\): their
+sums differ by \(t^{N_1}\), a nonzero block of index exactly
+\(N_1=N_{\mathrm{out}}\).  This witness exists for every instance, not only for
+\(v_1=v_2=0\).
 
 \emph{\ref{plt:thm:alg-precision-calculus:prod}.}
 \(FG-v_1v_2=v_1b+av_2+ab\).  The three summands have valuations at least
@@ -18553,6 +18575,7 @@ The formal Taylor formula & as in (plt:thm:cmp-substitution-hom), the earlier te
 \cref{plt:thm:tay-coefficients} & S4 and S5 prove the Taylor formula by "inserting a scalar parameter s, forming F(x+sA), and differentiating in s". That argument is circular: the object F(x+sA) is defined only by the composition being constructed, and "formal differentiation in s" of it presupposes the chain rule for that composition. The homomorphism argument above avoids the circle.\\
 \cref{plt:prop:tay-convolution} & the two index orders in the corpus are transposes of each other; the collision is silent because both symbols are two-index arrays of polynomials.\\
 \cref{plt:ex:tay-four-block} & the source that supplies this example specifies F only modulo Y\textasciicircum \{-3\} and G only modulo t\textasciicircum 2, yet quotes h\_3, which depends on the coefficient of Y\textasciicircum \{-3\} in F and on the coefficients of t\textasciicircum 2, t\textasciicircum 3 in G. The data are restated here as exact finite series, which is what the quoted answer actually assumes.\\
+\cref{plt:prop:tay-scalar-outer} & this proposition restated three results of the elementary-series part under a different normalisation of the outer coefficients: the substitution homomorphism (\textbackslash cref\{plt:prop:dif-substitution\}), its finite determination (\textbackslash cref\{plt:thm:dif-finite-determination\}), and the Bell-polynomial coefficient formula \textbackslash eqref\{plt:eq:dif-bell\} of \textbackslash cref\{plt:prop:dif-bell\}, which the displayed formula reproduces verbatim once \textbackslash (c\_\{k\}=\textbackslash varphi\_\{k\}/k!\textbackslash ) is substituted. The restatement and its proof are deleted in favour of the pointer below; the label is kept so that \textbackslash cref\{plt:ex:tay-standard-outer\} and any citation from elsewhere in the volume continue to resolve. Only the translation clause was genuinely new, and it is retained with its one-line proof, as is the second route to the coefficient formula.\\
 \cref{plt:lem:grp-explog} & S6 writes \$F/X = 1+tA = 1+o(1)\$ "formally". A little-o symbol with no regime attached is not a formal statement; the three O-roles must not be conflated. The correct formal assertion is \$tA \textbackslash in t\textbackslash PLpow\$, equivalently \$1+tA-1=\textbackslash FormalBigOAt\{t\}\{t\}\$, equivalently \$tA\textbackslash precdom1\$.\\
 \cref{plt:lem:grp-explog} & this lemma was stated and proved twice in the volume, here and as \textbackslash cref\{plt:lem:cmp-exp-log\} in the composition part, with the same transport-of-identities proof. The composition-part statement is the stronger of the two --- it is set in an arbitrary polynomial-logarithmic Hahn ring, and it adds the additivity of \textbackslash (\textbackslash exp\textbackslash ), the law \textbackslash (\textbackslash log(P\textasciicircum \{n\})=n\textbackslash log P\textbackslash ) for all \textbackslash (n\textbackslash in\textbackslash IntegerNumbers\textbackslash ), and the commutation with any homomorphism compatible with summable families, all of which are used below. The restatement and its proof are deleted and replaced by this pointer; the label is kept so that the citations to it elsewhere in the volume continue to resolve.\\
 \cref{plt:thm:grp-taylor} & the exact formal Taylor formula was stated and proved twice, here and as \textbackslash cref\{plt:thm:tay-formula\} in the composition part, where an entire subsection (the Taylor operator, its summability budget, its multiplicativity, and the generator-determination lemma) is built to prove it. The statements are identical, so the restatement and its proof are deleted in favour of a pointer; the label is kept because the reversion part and the algorithms part cite it. The repair recorded here --- S3 concludes from agreement on the generators without proving that the normally ordered operator is multiplicative --- is carried out at the surviving site, in \textbackslash cref\{plt:lem:tay-homomorphism\}.\\
@@ -18569,8 +18592,9 @@ The formal Taylor formula & as in (plt:thm:cmp-substitution-hom), the earlier te
 \cref{plt:rmk:rev-imports} & report 6 states its reversion algorithms with the inclusive cutoff [F]\_\{\textbackslash le N\}; every cutoff index taken from that source is shifted by one here.\\
 \cref{plt:lem:rev-deriv-gain} & the closure of \textbackslash (\textbackslash Gnear\textbackslash ) under composition was stated and proved a second time in this part, as a separate lemma. It is item (1) of the group theorem, proved there from the substitution proposition, so it is imported here with the other three standing facts. Note that only items (1)--(3) of that theorem are imported: its item (4) cites \textbackslash cref\{plt:thm:rev-existence\} below, and importing it here would be circular.\\
 \cref{plt:lem:rev-shifted-taylor} & the closure lemma stated here duplicated \textbackslash cref\{plt:thm:grp-group\}\textbackslash ,(1), which is proved in the composition-group part with the same one-line argument. It is deleted; closure is now imported as part of (I3) and appears as \textbackslash eqref\{plt:eq:rev-closure\}. For the record, the argument is that \textbackslash (F\textbackslash compose G=G+A\textbackslash compose G\textbackslash ) and that \textbackslash (A\textbackslash compose G=\textbackslash sum\_\{k\textbackslash ge0\}B\textasciicircum k\textbackslash DX\textasciicircum kA/k!\textbackslash ) has all summands in \textbackslash (\textbackslash PLpow\textbackslash ) by \textbackslash cref\{plt:lem:rev-deriv-gain\}.\\
+\cref{plt:lem:rev-gain} & this estimate was proved twice in the volume: here from the two-point Taylor expansion, and in the composition-group part from the exact Taylor formula, where it is \textbackslash eqref\{plt:eq:grp-gain-lipschitz\}. The two arguments are the same computation, and the group-part statement was missing the summand \textbackslash (\textbackslash ordt(A)\textbackslash ) that its own proof produces; that omission is repaired at \textbackslash cref\{plt:cor:grp-gain\} and the duplicate proof is deleted here. The inequality is recorded below as a fifth standing import, in the instantiated form used throughout this part.\\
 \cref{plt:thm:rev-existence} & all six sources call this a contraction; none says in what sense. The statement is about nu\_t, not about coefficient size, and the constant term alpha = nu\_t(A) is absent from every source formulation.\\
-\cref{plt:cor:rev-group} & the group statement is announced in the composition-group part of this volume (theorem plt:thm:grp-group, item (4)); the existence, uniqueness and two-sidedness of the inverse are proved here and nowhere else, so that announcement should cite plt:thm:rev-existence rather than repeat a proof.\\
+\cref{plt:cor:rev-first-order} & this corollary restated \textbackslash cref\{plt:thm:grp-group\} in full. The group statement now stands once, in the composition-group part, and its item (4) cites \textbackslash cref\{plt:thm:rev-existence\}; the restatement and its proof are replaced by the sentence below, which records what has just been supplied.\\
 \cref{plt:prop:rev-derivative-certificate} & report 1 asserts that at finite order the two residuals "need not have identical first omitted blocks"; for an exact G\_N in the group that is false.\\
 \cref{plt:prop:rev-analytic-transfer} & report 1 claims the derivative residual "often detects a wrong block one order earlier"; it detects it one level later, and is blind at level 0.\\
 \cref{plt:prop:rev-truncation-safe} & report 4 states the rule as "for a leading slope F = ax + o(x) the correction is divided by a", with no hypothesis on a and no discussion of a nonconstant leading block of D\_X F.\\
@@ -18580,18 +18604,25 @@ The formal Taylor formula & as in (plt:thm:cmp-substitution-hom), the earlier te
 \cref{plt:rmk:lag-residue-route} & S3's appendix proves the unshifted formula by a formal residue change of variables, which is valid only when the constant term of the auxiliary series is invertible, and repairs this by a universal-coefficient localisation argument. S6 replaces that argument by the phrase "an integration by parts reduces the resulting residue". The proof above needs neither device.\\
 \cref{plt:cor:lag-observables} & S3 states this "whenever both sides are interpreted to a fixed finite t-precision" and S6 "for any H for which the family is summable"; both hypotheses are vacuous or unverifiable. The order estimate plt:eq:lag-transport-order shows that no hypothesis beyond membership in the frame is needed, since nu(phi) is finite for phi nonzero.\\
 \cref{plt:ex:lag-mixed} & S4 gives only b\_0, b\_1, b\_2 in this universal form; the b\_3 line plt:eq:lag-b3 is derived here and verified against the two independent worked examples plt:ex:lag-mixed and plt:ex:lag-abc.\\
+\cref{plt:ex:lag-certificate-mixed} & this proposition restated \textbackslash cref\{plt:cor:rev-finite-certificate\}, and its proof re-derived \textbackslash cref\{plt:prop:rev-residual-order\} along the way. The statements are identical --- the hypothesis \textbackslash (F=X+A\textbackslash ) with \textbackslash (A\textbackslash in\textbackslash PLpow\textbackslash ) is membership in \textbackslash (\textbackslash Gnear\textbackslash ), and the two candidate truncations \textbackslash (G\_N\textbackslash ) are the same object. The restatement and its proof are deleted in favour of the pointer below; every citation of the deleted label in this part now cites the reversion part.\\
 \cref{plt:rmk:lag-nonscalar-leading} & the requirement log d in K is stated in the catalogue and is omitted in S1, S2 and S6, which write log c freely over an unspecified coefficient field. Over K = Q it fails already for d = 2; see plt:warn:lag-scale-trap.\\
 \cref{plt:rmk:lag-log-frame-scale} & S6 derives plt:eq:lag-u-expansion by inserting an undetermined ansatz u = rho\textasciicircum \{-1\}(S - sigma log S + C + (a log S + b)/S + ...) and matching three constants by hand. The derivation above obtains the same coefficients from the near-identity coefficient formula, so the pattern continues to all orders with no further ansatz, and the branch and field hypotheses (log c, log rho in K) become visible.\\
 \cref{plt:rmk:lag-normalisation-care} & S4 asserts that after the substitution y = d x\textasciicircum \{1/q\}(1+V) "the formal implicit-function recursion is triangular" for any leading exponent q, which is true, but it does not record that the intermediate normalisation Phi = F o rev(F\_0) can leave the near-identity class, as it does in plt:ex:lag-puiseux. The correct general statement is the converse half of plt:thm:lag-rigidity, where Phi = X(1 + U o rev(F\_0)) because F\_0 is the exact leading monomial of F, not merely its leading power.\\
 \cref{plt:rmk:om-branches} & S1's prose ("the same P\_n occur, multiplied by (-1)\textasciicircum n") contradicts its own displayed expansion of the inverse of X - log X, where P\_1 = L occurs with a plus sign. The correct weight is (-1)\textasciicircum \{n+1\}; the weight (-1)\textasciicircum n belongs to the negated quantity -rev(X-L), which is what enters W\_\{-1\}.\\
 \cref{plt:thm:om-expansion} & S5 states uniqueness only inside -L + t K[L][[t]]; the contraction estimate holds on all of K[L][[t]], so uniqueness is unconditional there and membership in -L + t K[L][[t]] is a conclusion, not a hypothesis.\\
+\cref{plt:rmk:om-normalisation} & the citation named a label "plt:thm:lagrange-burmann" that is defined nowhere in the volume; the theorem meant is the one labelled plt:thm:lag-burmann in the Lagrange--Buermann part, whose polynomial--logarithmic form is equation plt:eq:lag-burmann-pl.\\
+\cref{plt:cor:om-certificate} & retitled. This is not the general finite certificate (\textbackslash cref\{plt:cor:rev-finite-certificate\}, which it invokes) but its specialisation to the single map \textbackslash (X+L\textbackslash ), where the criterion becomes a characterisation of the Lambert polynomials themselves.\\
 \cref{plt:thm:om-analytic} & S5 asserts that the residual-to-error principle "proves the asymptotic validity of every truncation directly from" the FORMAL residual identity, and S1 asserts an analytic O-bound for the branch residual "by construction". Neither is a proof: a formal t-adic identity supplies no inequality. The missing ingredient is item (2), supplied below.\\
 \cref{plt:thm:lambert-stirling} & S3 and S6 start the recurrence at P\_1 = u and impose P\_\{n\}(0)=0 as a side condition of the theorem rather than proving it; S4 derives the linear recurrence by "equating coefficients" in a NONLINEAR generating ODE, which does not produce it. The proof above is direct from the definition and proves the boundary condition instead of assuming it.\\
 \cref{plt:cor:om-reversion-free} & this corollary carried its own argument inside the statement, so it read as an assertion with no proof. The claim and the argument are separated.\\
 \cref{plt:rmk:alg-derived-order} & S4 stores the least allowed exponent n\_min as an independent field and then warns that a stale zero at that exponent corrupts order and unit tests. Lemma plt:lem:alg-denotation-coset shows the field is redundant: the order bound is a function of the canonical form, so the failure is eliminated by deriving it rather than by documenting it.\\
+Data structures and finite-order algorit & the previous version of (v) asserted that sharpness fails at N\_1=0 because DX annihilates the unknown constant block. That is an artifact of scalar power series and is false over R=K[L]: the unknown block of index N\_1 is an arbitrary polynomial, and a=t\textasciicircum \{N\_1\}L already has DX a = t\textasciicircum \{N\_1+1\}(1-N\_1 L) \textbackslash ne 0 for every N\_1, including N\_1=0. What is true, and is what the sources were reaching for, is that the output ORDER bound can fail to be attained -- exactly when the leading block is a nonzero constant sitting at index 0 -- and that this is a loss of relative precision, not of absolute precision.\\
+Data structures and finite-order algorit & the sharpness witnesses below were originally exhibited only at the zero representative (sum) or for one of the two competing bounds (product, quotient), which proves sharpness of the LAW but not of each instance. Since Definition plt:def:alg-sound quantifies sharpness per instance, the witnesses are now chosen so that the block that differs is exactly the declared cutoff, for every instance.\\
 \cref{plt:def:alg-cost-models} & S2 states only that inputs known modulo t\textasciicircum N with nonnegative valuation give a sum and product known modulo t\textasciicircum N. That is sound but not sharp: by part (ii) the product is known modulo t\textasciicircum \{N+min(m\_1,m\_2)\}, which is strictly better whenever a factor has positive order, and strictly worse -- the case S2's formulation hides -- as soon as a factor is Laurent.\\
 \cref{plt:prop:alg-shift} & S1 records the budget as k <= floor((N-r)/(h+1)). Under the exclusive cutoff adopted here that admits one Taylor term too many; the sharp exclusive bound is k <= floor((N-1-a)/(h+1)). The discrepancy is exactly the inclusive/exclusive one-block conversion of the catalogue and is harmless for correctness but not for cost.\\
 \cref{plt:prop:alg-reversion-comparison} & S4's driver hard-codes the schedule as q := min(N, max(1, 2p+2)). The additive +2 is a fudge for an unstated guard; the guard actually required is the one computed by plt:thm:rev-newton-guard together with the composition law of plt:thm:alg-precision-calculus(vi), and the abort test above makes any residual shortfall visible instead of silently absorbing it.\\
+\cref{plt:prop:ext-leftfinite} & S1 ("What changes is the proof that every target coefficient receives only finitely many contributions ... generalized supports make it a central axiom") and S3 ("The well-order condition guarantees that each coefficient receives only an admissible family of contributions") both present well-ordering as if it were equivalent to local finiteness of one product. It is sufficient, and it is necessary for the class, but it is not necessary for an individual product; the witness below shows this.\\
+Generalized power--log classes, nested l & S1 ("The arithmetic formulas from Part II therefore survive almost unchanged"), S3 ("The differential rule is again ... Near-identity composition remains controlled") and S5 ("Near-identity composition and reversion continue to work when the support conditions ensure coefficientwise finiteness") all extend Parts I-IV to Hahn supports without recording that the finite bookkeeping of Part IV -- truncation, sparse representation, precision calculus -- requires strictly more than well-basedness. Proposition \textbackslash ref\{plt:prop:ext-hahn-trunc-fails\} isolates what is lost, and Theorem \textbackslash ref\{plt:thm:ext-lf-completion\} isolates the class where nothing is.\\
 (front matter) & the six sources cited this work inconsistently as a 2010 preprint and as a 2013 journal article; the published version is given, with the preprint retained as a secondary pointer.\\
 \bottomrule
 \end{longtable}
@@ -18754,10 +18785,45 @@ which in the coordinates of \cref{plt:sec:lambert-branches}, with
 \(\LambertW_{-1}(-\varepsilon)=-S-L+\LittleOAt{1}{\varepsilon\downarrow0}\):
 precisely the first two blocks of the lower-branch expansion derived there.
 
-This is the only place where a coefficient claim of this volume is
-kernel-verified, and it is verified only to two terms and only with an
-\(\LittleO(1)\) remainder.  Everything beyond the second block --- the
-\(\LamP{n}\) coefficients, the remainder order, and any uniformity --- is
+A second, sharper declaration pins the next block as well.
+\texttt{Fabius.lowerLambertW\_near\_zero\_bounds} proves, for
+\(x\in(-\EulerE^{-1},0)\) and \(\eta=\log(1/(-x))\),
+\[
+  -\eta-\frac{\eta\log\eta}{\eta-1}
+  \ \le\ \LambertW_{-1}(x)\ <\ -\eta-\log\eta .
+\]
+In the coordinates above, \(\eta=S\) and \(\log\eta=L\), so the bracket says
+that the deviation of \(\LambertW_{-1}\) from the two-block truncation
+\(-S-L\) lies in \(\bigl(-L/(S-1),\,0\bigr]\).  That is a two-sided,
+non-asymptotic statement: it fixes the sign of the third block and its order
+\(L/S\), which is exactly what \cref{plt:sec:lambert-branches} derives
+formally.  The strictness of the upper bound is the formal statement that the
+third block is nonzero and negative.
+
+The supporting declaration is worth naming separately, because it is the piece
+most likely to be reusable:
+\texttt{Fabius.SubLog.bracket\_of\_sub\_log\_eq} brackets the inverse of
+\(y\mapsto y-\log y\) for \(y>1\) with no Lambert content at all, and
+\texttt{Fabius.SubLog.strictMonoOn\_sub\_log} supplies the monotonicity that
+makes that inverse well defined.  Since this volume's lower-branch treatment
+\emph{runs} on the inverse of \(u\mapsto u-\log u\) rather than on
+\(\LambertW_{-1}\) directly, that lemma --- not the branch-specific one --- is
+the natural target for a future crosswalk of the whole lower-branch section.
+The side condition \(\eta>1\) is itself a lemma
+(\texttt{Fabius.one\_lt\_log\_one\_div\_neg}) rather than a hypothesis the
+caller must discharge, so the \((\eta-1)\) denominator cannot be reached at
+zero.
+
+Two elementary bounds on the principal branch are also available and are used
+here only as sanity constraints:
+\texttt{Fabius.principalLambertW\_elementary\_bounds} gives
+\(x/(1+x)\le\LambertW_{0}(x)\le\log(1+x)\le x\) for \(x\ge0\), resting on the
+Lambert-free inequality
+\texttt{Fabius.exp\_le\_one\_add\_mul\_exp\_self}, valid for every real
+argument.
+
+Beyond the third block --- the \(\LamP{n}\) coefficients for \(n\ge2\), the
+remainder order at every order, and any uniformity --- everything is
 human-proved here and unformalized.
 
 \subsection{Summary}
