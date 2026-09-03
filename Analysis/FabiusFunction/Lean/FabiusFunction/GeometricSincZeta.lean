@@ -143,7 +143,6 @@ theorem geometricSincProduct_eq_cexp {q z : ℂ} (hq : ‖q‖ < 1) (hz : ‖z�
   rw [geometric_sinc_pair_powerSum hq, div_div,
     mul_comm (1 - q ^ (2 * (r + 1))) ((r : ℂ) + 1)]
 
-/-- The prefix shift: `S_q(z) = (∏_{j<m} sinc(π q^j z)) · S_q(q^m z)`. -/
 /-- The one-step peel: `S_q(z) = sinc(π z) · S_q(q z)`.  Same mechanism as the
 corpus's `tprod_geom_scale`: peel the first factor with `tprod_eq_zero_mul'`
 and re-index the tail. -/
@@ -160,6 +159,8 @@ theorem geometricSincProduct_mul_shift {q : ℂ} (hq : ‖q‖ < 1) (z : ℂ) :
   unfold geometricSincProduct
   rw [tprod_eq_zero_mul' (harg ▸ hmult), harg, pow_zero, one_mul]
 
+/-- The prefix shift: `S_q(z) = (∏_{j<m} sinc(π q^j z)) · S_q(q^m z)`, by
+iterating the one-step peel. -/
 theorem geometricSincProduct_pow_mul {q : ℂ} (hq : ‖q‖ < 1) (z : ℂ) (m : ℕ) :
     geometricSincProduct q z =
       (∏ j ∈ range m, complexSinc (π * (q ^ j * z))) * geometricSincProduct q (q ^ m * z) := by
