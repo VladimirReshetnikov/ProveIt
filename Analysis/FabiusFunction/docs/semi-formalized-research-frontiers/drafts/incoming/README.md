@@ -63,7 +63,7 @@ This `README.md` is the permanent explanation of the directory and
 when no archives are waiting.
 
 Most recent processed batch (three archives, filed and removed on 2026-09-03,
-arrival commit `912d3bfbe`): the three Fibonacci-inversion articles, all to
+arrival commit `0aedf78ae`): the three Fibonacci-inversion articles, all to
 `../series-and-transseries/special-function-inversion/` as its fourth subject.
 
 - `Fibonacci_Inverse_LogPeriodic_Transseries.zip` → `Fibonacci_Inverse_LogPeriodic_Transseries/`: 2,554-line/89,365-byte source, 33-page A4/787,646-byte PDF.
