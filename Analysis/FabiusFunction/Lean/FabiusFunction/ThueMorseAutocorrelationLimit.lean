@@ -73,9 +73,13 @@ noncomputable def limitingAutocorrelation : ℕ → ℝ
       else -(limitingAutocorrelation ((k + 1) / 2) + limitingAutocorrelation ((k + 1) / 2 + 1)) / 2
   decreasing_by all_goals omega
 
+/-- The limiting autocorrelation at lag zero is `1`, the mean square of a
+sequence of signs. -/
 @[simp] theorem limitingAutocorrelation_zero : limitingAutocorrelation 0 = 1 := by
   rw [limitingAutocorrelation]
 
+/-- `eta(1) = -1/3`: the classical value of the Thue-Morse correlation at
+lag one. -/
 @[simp] theorem limitingAutocorrelation_one : limitingAutocorrelation 1 = -1 / 3 := by
   rw [limitingAutocorrelation]
 
