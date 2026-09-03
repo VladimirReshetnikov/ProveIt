@@ -303,4 +303,36 @@ theorem abs_residual_le_two_mul_abs_sub_lambertShiftInv {z x : ℝ} (hz : 0 ≤ 
   have := abs_lambertShift_sub_le_two_mul hx (lambertShiftInv_nonneg hz)
   rwa [lambertShift_lambertShiftInv hz] at this
 
+/-- The residual and the error have the same sign: `0 < f(x̃) - z ↔ g(z) < x̃`. -/
+theorem residual_pos_iff {z x : ℝ} (hz : 0 ≤ z) (hx : 0 ≤ x) :
+    0 < lambertShift x - z ↔ lambertShiftInv z < x := by
+  have h := lambertShift_lambertShiftInv hz
+  have hg : lambertShiftInv z ∈ Ici (0 : ℝ) := mem_Ici.mpr (lambertShiftInv_nonneg hz)
+  constructor
+  · intro hpos
+    have hlt : lambertShift (lambertShiftInv z) < lambertShift x := by
+      rw [h]
+      linarith
+    exact (lambertShift_strictMonoOn.lt_iff_lt hg (mem_Ici.mpr hx)).mp hlt
+  · intro hlt
+    have := lambertShift_strictMonoOn hg (mem_Ici.mpr hx) hlt
+    rw [h] at this
+    linarith
+
+/-- `f(x̃) - z < 0 ↔ x̃ < g(z)`. -/
+theorem residual_neg_iff {z x : ℝ} (hz : 0 ≤ z) (hx : 0 ≤ x) :
+    lambertShift x - z < 0 ↔ x < lambertShiftInv z := by
+  have h := lambertShift_lambertShiftInv hz
+  have hg : lambertShiftInv z ∈ Ici (0 : ℝ) := mem_Ici.mpr (lambertShiftInv_nonneg hz)
+  constructor
+  · intro hneg
+    have hlt : lambertShift x < lambertShift (lambertShiftInv z) := by
+      rw [h]
+      linarith
+    exact (lambertShift_strictMonoOn.lt_iff_lt (mem_Ici.mpr hx) hg).mp hlt
+  · intro hlt
+    have := lambertShift_strictMonoOn (mem_Ici.mpr hx) hg hlt
+    rw [h] at this
+    linarith
+
 end Fabius
