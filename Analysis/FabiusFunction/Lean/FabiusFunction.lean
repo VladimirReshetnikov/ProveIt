@@ -126,6 +126,7 @@ import FabiusFunction.FabiusLambertPhaseLockedPullback
 import FabiusFunction.FabiusLambertPhaseExtraction
 import FabiusFunction.FabiusLambertPhaseExtractionBell
 import FabiusFunction.PrincipalLambertW
+import FabiusFunction.PrincipalLambertWAtTop
 import FabiusFunction.LowerLambertW
 import FabiusFunction.GeneralizedLambertCoordinate
 import FabiusFunction.LambertBranchDichotomy
