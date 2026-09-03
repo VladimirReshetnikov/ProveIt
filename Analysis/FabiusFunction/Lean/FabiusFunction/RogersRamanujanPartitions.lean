@@ -23,7 +23,7 @@ the two final theorems are the coefficient identities
 where `p_{≤ k}(m) = boundedCount k m` is the number of partitions of `m` with every part at
 most `k`.  Both sides are genuine partition counts and both are computed here as Taylor
 coefficients of the two Rogers–Ramanujan products, the analytic input being the already
-sorry-free `Fabius.hasSum_rogersRamanujan_first` and `Fabius.hasSum_rogersRamanujan_second`.
+`sorry`-free `Fabius.hasSum_rogersRamanujan_first` and `Fabius.hasSum_rogersRamanujan_second`.
 
 ## What is *not* covered relative to the printed statement
 
@@ -40,7 +40,7 @@ substitute encoding (send a multiplicity vector `m : Fin k → ℕ` to the parti
 `2i + 1 + ∑_{j ≥ k-1-i} m j`) is a module of its own.  Consequently this module does **not**
 deliver clauses (i) and (ii) of `qg:cor-rr-partitions` as printed; it delivers them with the
 gap count replaced by `staircaseCount`.  The register entry for `qg:cor-rr-partitions` must
-therefore stay partial.
+therefore stay partial.  (The printed argument itself is correct; nothing here withdraws it.)
 
 Two further gaps of the printed proof are closed here rather than assumed: the proof fixes the
 number of parts, computes the generating function of that stratum and then sums over the
@@ -53,14 +53,19 @@ its intended form, holomorphy on the open unit disk, through `Fabius.eq_of_hasSu
 
 Everything except the two final coefficient identities is proved for an arbitrary complete
 normed field `𝕜` and `‖q‖ < 1`, not just for `ℂ`; only the passage from equality of generating
-functions to equality of counts needs `ℂ`.  Moreover the restricted-parts generating function
-is proved here for an **arbitrary decidable predicate** `P : ℕ → Prop` on part sizes
-(`hasSum_restrictedCount_mul_pow`), along an arbitrary exhausting alphabet sequence; this
-subsumes `Fabius.hasSum_oddCount_mul_pow` (odd parts) and `Fabius.hasSum_boundedCount_mul_pow`
-(parts at most `r`) as well as the two mod-`5` cases used below.  Likewise the staircase side
-is proved for an arbitrary offset `e : ℕ → ℕ` with `k ≤ e k` (`hasSum_staircaseCount`), so that
-the two Rogers–Ramanujan offsets `k²` and `k² + k` — and any Andrews–Gordon offset a later
-module may need — are instances of one lemma.
+functions to equality of counts needs `ℂ`.  The four finite-product evaluations
+(`prod_range_mod5_14_inv`, `prod_range_mod5_23_inv`, `prod_mod5_14_inv`, `prod_mod5_23_inv`)
+are pure field algebra and are stated over an **arbitrary field** `K`: no norm, no
+completeness, and no hypothesis on `q` (they are correct verbatim when some factor vanishes,
+both sides then being `0` under the convention `0⁻¹ = 0`).  Moreover the restricted-parts
+generating function is proved here for an **arbitrary decidable predicate** `P : ℕ → Prop` on
+part sizes (`hasSum_restrictedCount_mul_pow`), along an arbitrary exhausting alphabet sequence;
+it specialises to `Fabius.hasSum_oddCount_mul_pow` (take `P = (¬ Even ·)`, `N M = 2 * M`) and
+to `Fabius.hasSum_boundedCount_mul_pow` (take `P = (· ≤ r)`, `N M = M`) as well as to the two
+mod-`5` cases used below.  Likewise the staircase side is proved for an arbitrary offset
+`e : ℕ → ℕ` with `k ≤ e k` (`hasSum_staircaseCount`), so that the two Rogers–Ramanujan offsets
+`k²` and `k² + k` — and any Andrews–Gordon offset a later module may need — are instances of
+one lemma.
 
 ## Main declarations
 
@@ -97,6 +102,8 @@ def restrictedVectors (P : ℕ → Prop) [DecidablePred P] (N n : ℕ) : Finset 
   (multiplicityVectors N n).filter
     fun m : Fin N → ℕ => ∀ k : Fin N, ¬ P ((k : ℕ) + 1) → m k = 0
 
+/-- Membership in `restrictedVectors`: weight `n`, and multiplicity `0` at every part size
+violating `P`. -/
 theorem mem_restrictedVectors {P : ℕ → Prop} [DecidablePred P] {N n : ℕ} {m : Fin N → ℕ} :
     m ∈ restrictedVectors P N n ↔
       (∑ k : Fin N, ((k : ℕ) + 1) * m k = n) ∧
@@ -131,9 +138,11 @@ theorem card_restricted_eq (P : ℕ → Prop) [DecidablePred P] {n N : ℕ} (hN 
     by_contra hP
     exact hk0 (hm.2 k hP)
 
+/-- Partitions of `n` with all parts satisfying `P` are at most `p(n)` in number. -/
 theorem card_restricted_le_partitionCount (P : ℕ → Prop) [DecidablePred P] (n : ℕ) :
     (Nat.Partition.restricted n P).card ≤ partitionCount n := card_le_univ _
 
+/-- `p_{≤ r}(n) ≤ p(n)`: the dominating bound used for the staircase double series. -/
 theorem boundedCount_le (r n : ℕ) : boundedCount r n ≤ partitionCount n := card_le_univ _
 
 /-! ### The finite-alphabet generating function -/
@@ -141,7 +150,8 @@ theorem boundedCount_le (r n : ℕ) : boundedCount r n ≤ partitionCount n := c
 variable {𝕜 : Type*} [NormedField 𝕜] [CompleteSpace 𝕜]
 
 /-- `∑_n #restrictedVectors P N n · q^n = ∏_{k<N, P (k+1)} (1 - q^{k+1})⁻¹` for `‖q‖ < 1`.
-This generalises `Fabius.hasSum_card_oddVectors`. -/
+This generalises `Fabius.hasSum_card_oddVectors`, and is stated over an arbitrary complete
+normed field. -/
 theorem hasSum_card_restrictedVectors (P : ℕ → Prop) [DecidablePred P] {q : 𝕜} (hq : ‖q‖ < 1)
     (N : ℕ) :
     HasSum (fun n : ℕ => ((restrictedVectors P N n).card : 𝕜) * q ^ n)
@@ -216,8 +226,9 @@ sizes `N M` tend to infinity and the associated finite products converge to `L`,
 `∑_n #{partitions of n with all parts satisfying P} q^n = L` for `‖q‖ < 1`.
 
 This is the general form of `Fabius.hasSum_oddCount_mul_pow` (take `P = (¬ Even ·)` and
-`N M = 2 * M`) and of `Fabius.hasSum_boundedCount_mul_pow` (take `P = (· ≤ r)`); it is stated
-for an arbitrary complete normed field. -/
+`N M = 2 * M`) and of `Fabius.hasSum_boundedCount_mul_pow` (take `P = (· ≤ r)` and `N M = M`,
+the finite products then being eventually constant); it is stated for an arbitrary complete
+normed field. -/
 theorem hasSum_restrictedCount_mul_pow (P : ℕ → Prop) [DecidablePred P] {q : 𝕜} (hq : ‖q‖ < 1)
     {L : 𝕜} {N : ℕ → ℕ} (hN : Tendsto N atTop atTop)
     (hL : Tendsto (fun M : ℕ => ∏ k : Fin (N M),
@@ -256,15 +267,25 @@ theorem hasSum_restrictedCount_mul_pow (P : ℕ → Prop) [DecidablePred P] {q :
   rw [← heq]
   exact hsum.hasSum
 
-/-! ### The two mod-`5` finite products -/
-
+/-- The alphabet sequence `M ↦ 5M` exhausts `ℕ`. -/
 theorem tendsto_five_mul_atTop : Tendsto (fun M : ℕ => 5 * M) atTop atTop := by
   refine Filter.tendsto_atTop_atTop.mpr fun b => ⟨b, fun a ha => ?_⟩
   show b ≤ 5 * a
   omega
 
-/-- The parts `≡ 1, 4 (mod 5)` below `5M`, as a reciprocal pair of finite `q`-Pochhammers. -/
-theorem prod_range_mod5_14_inv (q : 𝕜) (M : ℕ) :
+/-! ### The two mod-`5` finite products
+
+These four evaluations are pure field algebra: they need no norm, no completeness and no
+hypothesis on `q`, so they are stated over an arbitrary field `K`.  (When some factor
+`1 - q^{k+1}` vanishes both sides are `0`, under the convention `0⁻¹ = 0`.) -/
+
+section FiniteProducts
+
+variable {K : Type*} [Field K]
+
+/-- The parts `≡ 1, 4 (mod 5)` below `5M`, as a reciprocal pair of finite `q`-Pochhammers:
+`∏_{k < 5M, k+1 ≡ 1,4 (5)} (1 - q^{k+1})⁻¹ = 1/((q;q⁵)_M (q⁴;q⁵)_M)` over any field. -/
+theorem prod_range_mod5_14_inv (q : K) (M : ℕ) :
     (∏ k ∈ range (5 * M),
         if (k + 1) % 5 = 1 ∨ (k + 1) % 5 = 4 then (1 - q ^ (k + 1))⁻¹ else 1) =
       (finiteQPochhammerIn q (q ^ 5) M * finiteQPochhammerIn (q ^ 4) (q ^ 5) M)⁻¹ := by
@@ -290,8 +311,9 @@ theorem prod_range_mod5_14_inv (q : 𝕜) (M : ℕ) :
     simp only [mul_one, mul_inv]
     ring
 
-/-- The parts `≡ 2, 3 (mod 5)` below `5M`, as a reciprocal pair of finite `q`-Pochhammers. -/
-theorem prod_range_mod5_23_inv (q : 𝕜) (M : ℕ) :
+/-- The parts `≡ 2, 3 (mod 5)` below `5M`, as a reciprocal pair of finite `q`-Pochhammers:
+`∏_{k < 5M, k+1 ≡ 2,3 (5)} (1 - q^{k+1})⁻¹ = 1/((q²;q⁵)_M (q³;q⁵)_M)` over any field. -/
+theorem prod_range_mod5_23_inv (q : K) (M : ℕ) :
     (∏ k ∈ range (5 * M),
         if (k + 1) % 5 = 2 ∨ (k + 1) % 5 = 3 then (1 - q ^ (k + 1))⁻¹ else 1) =
       (finiteQPochhammerIn (q ^ 2) (q ^ 5) M * finiteQPochhammerIn (q ^ 3) (q ^ 5) M)⁻¹ := by
@@ -316,8 +338,9 @@ theorem prod_range_mod5_23_inv (q : 𝕜) (M : ℕ) :
     simp only [mul_one, mul_inv]
     ring
 
-/-- `∏_{k < 5M, k+1 ≡ 1,4 (5)} (1 - q^{k+1})⁻¹ = 1/((q;q⁵)_M (q⁴;q⁵)_M)`. -/
-theorem prod_mod5_14_inv (q : 𝕜) (M : ℕ) :
+/-- `∏_{k < 5M, k+1 ≡ 1,4 (5)} (1 - q^{k+1})⁻¹ = 1/((q;q⁵)_M (q⁴;q⁵)_M)`, in the `Fin (5M)`
+indexing used by `hasSum_card_restrictedVectors`. -/
+theorem prod_mod5_14_inv (q : K) (M : ℕ) :
     (∏ k : Fin (5 * M), if ((k : ℕ) + 1) % 5 = 1 ∨ ((k : ℕ) + 1) % 5 = 4
         then (1 - q ^ ((k : ℕ) + 1))⁻¹ else 1) =
       (finiteQPochhammerIn q (q ^ 5) M * finiteQPochhammerIn (q ^ 4) (q ^ 5) M)⁻¹ := by
@@ -325,14 +348,17 @@ theorem prod_mod5_14_inv (q : 𝕜) (M : ℕ) :
     then (1 - q ^ (k + 1))⁻¹ else 1) (5 * M)]
   exact prod_range_mod5_14_inv q M
 
-/-- `∏_{k < 5M, k+1 ≡ 2,3 (5)} (1 - q^{k+1})⁻¹ = 1/((q²;q⁵)_M (q³;q⁵)_M)`. -/
-theorem prod_mod5_23_inv (q : 𝕜) (M : ℕ) :
+/-- `∏_{k < 5M, k+1 ≡ 2,3 (5)} (1 - q^{k+1})⁻¹ = 1/((q²;q⁵)_M (q³;q⁵)_M)`, in the `Fin (5M)`
+indexing used by `hasSum_card_restrictedVectors`. -/
+theorem prod_mod5_23_inv (q : K) (M : ℕ) :
     (∏ k : Fin (5 * M), if ((k : ℕ) + 1) % 5 = 2 ∨ ((k : ℕ) + 1) % 5 = 3
         then (1 - q ^ ((k : ℕ) + 1))⁻¹ else 1) =
       (finiteQPochhammerIn (q ^ 2) (q ^ 5) M * finiteQPochhammerIn (q ^ 3) (q ^ 5) M)⁻¹ := by
   rw [Fin.prod_univ_eq_prod_range (fun k => if (k + 1) % 5 = 2 ∨ (k + 1) % 5 = 3
     then (1 - q ^ (k + 1))⁻¹ else 1) (5 * M)]
   exact prod_range_mod5_23_inv q M
+
+end FiniteProducts
 
 /-! ### The two mod-`5` partition counts -/
 
@@ -345,7 +371,8 @@ def partsMod5_23 (n : ℕ) : ℕ :=
   (Nat.Partition.restricted n (fun i : ℕ => i % 5 = 2 ∨ i % 5 = 3)).card
 
 /-- **The product side of the first Rogers–Ramanujan identity as a partition count**:
-`∑_n p_{1,4}(n) q^n = 1/((q;q⁵)_∞ (q⁴;q⁵)_∞)` for `‖q‖ < 1`. -/
+`∑_n p_{1,4}(n) q^n = 1/((q;q⁵)_∞ (q⁴;q⁵)_∞)` for `‖q‖ < 1`, over any complete normed
+field. -/
 theorem hasSum_partsMod5_14 {q : 𝕜} (hq : ‖q‖ < 1) :
     HasSum (fun n : ℕ => (partsMod5_14 n : 𝕜) * q ^ n)
       ((qPochhammerInfIn q (q ^ 5) * qPochhammerInfIn (q ^ 4) (q ^ 5))⁻¹) := by
@@ -360,11 +387,13 @@ theorem hasSum_partsMod5_14 {q : 𝕜} (hq : ‖q‖ < 1) :
     simp_rw [prod_mod5_14_inv]
     exact ((tendsto_finiteQPochhammerIn_qPochhammerInfIn q h5).mul
       (tendsto_finiteQPochhammerIn_qPochhammerInfIn (q ^ 4) h5)).inv₀ (mul_ne_zero hne1 hne4)
+  -- `partsMod5_14 n` is by definition the cardinality on the right, so `rfl` closes the fibre
   exact (hasSum_restrictedCount_mul_pow (fun i : ℕ => i % 5 = 1 ∨ i % 5 = 4) hq
-    tendsto_five_mul_atTop hprod).congr_fun fun n => by rw [partsMod5_14]
+    tendsto_five_mul_atTop hprod).congr_fun fun _ => rfl
 
 /-- **The product side of the second Rogers–Ramanujan identity as a partition count**:
-`∑_n p_{2,3}(n) q^n = 1/((q²;q⁵)_∞ (q³;q⁵)_∞)` for `‖q‖ < 1`. -/
+`∑_n p_{2,3}(n) q^n = 1/((q²;q⁵)_∞ (q³;q⁵)_∞)` for `‖q‖ < 1`, over any complete normed
+field. -/
 theorem hasSum_partsMod5_23 {q : 𝕜} (hq : ‖q‖ < 1) :
     HasSum (fun n : ℕ => (partsMod5_23 n : 𝕜) * q ^ n)
       ((qPochhammerInfIn (q ^ 2) (q ^ 5) * qPochhammerInfIn (q ^ 3) (q ^ 5))⁻¹) := by
@@ -380,8 +409,9 @@ theorem hasSum_partsMod5_23 {q : 𝕜} (hq : ‖q‖ < 1) :
     simp_rw [prod_mod5_23_inv]
     exact ((tendsto_finiteQPochhammerIn_qPochhammerInfIn (q ^ 2) h5).mul
       (tendsto_finiteQPochhammerIn_qPochhammerInfIn (q ^ 3) h5)).inv₀ (mul_ne_zero hne2 hne3)
+  -- `partsMod5_23 n` is by definition the cardinality on the right, so `rfl` closes the fibre
   exact (hasSum_restrictedCount_mul_pow (fun i : ℕ => i % 5 = 2 ∨ i % 5 = 3) hq
-    tendsto_five_mul_atTop hprod).congr_fun fun n => by rw [partsMod5_23]
+    tendsto_five_mul_atTop hprod).congr_fun fun _ => rfl
 
 /-- The first Rogers–Ramanujan identity, read as a partition statement:
 `∑_n p_{1,4}(n) q^n = ∑_n q^{n²}/(q;q)_n`. -/
@@ -402,7 +432,12 @@ theorem hasSum_partsMod5_23_rogersRamanujan {q : 𝕜} (hq : ‖q‖ < 1) :
 /-! ### The Durfee-staircase side -/
 
 /-- The Durfee-staircase count with offset `e`:
-`staircaseCount e n = ∑_{k : e k ≤ n} p_{≤ k}(n - e k)`.
+
+`staircaseCount e n = ∑_{k ≤ n, e k ≤ n} p_{≤ k}(n - e k)`.
+
+The bound `k ≤ n` in the index set is not a restriction whenever `k ≤ e k` (the hypothesis
+`he` of `hasSum_staircaseCount`), since then `e k ≤ n` already forces `k ≤ n`; it is present
+only to keep the index set a `Finset` for an unconstrained `e`.
 
 For `e k = k²` this is the coefficient extracted from `∑_k q^{k²}/(q;q)_k`, and for
 `e k = k² + k` the one extracted from `∑_k q^{k²+k}/(q;q)_k`.  The printed proof of
@@ -413,7 +448,8 @@ def staircaseCount (e : ℕ → ℕ) (n : ℕ) : ℕ :=
   ∑ k ∈ (range (n + 1)).filter (fun k : ℕ => e k ≤ n), boundedCount k (n - e k)
 
 /-- **The staircase generating function**: for an offset `e` with `k ≤ e k` and `‖q‖ < 1`, if
-`∑_k q^{e k}/(q;q)_k = S` then `∑_n staircaseCount e n · q^n = S`.
+`∑_k q^{e k}/(q;q)_k = S` then `∑_n staircaseCount e n · q^n = S`.  Stated over an arbitrary
+complete normed field.
 
 This is the step the printed proof leaves implicit: it fixes the number `k` of parts, computes
 the generating function `q^{e k}/(q;q)_k` of that stratum, and then sums over `k`.  Here the
@@ -462,8 +498,7 @@ theorem hasSum_staircaseCount (e : ℕ → ℕ) (he : ∀ k : ℕ, k ≤ e k) {q
   -- regroup by the total degree
   have hinj : ∀ m : ℕ, Function.Injective (fun k : ℕ => ((k, m - e k) : ℕ × ℕ)) := by
     intro m a b hab
-    have h := congrArg Prod.fst hab
-    simpa using h
+    exact congrArg Prod.fst hab
   refine (hasSum_regroup hFS (fun p : ℕ × ℕ => e p.1 + p.2)
     (fun n : ℕ => ((range (n + 1)).filter (fun k : ℕ => e k ≤ n)).map
       ⟨fun k : ℕ => ((k, n - e k) : ℕ × ℕ), hinj n⟩) ?_).congr_fun ?_
@@ -474,15 +509,15 @@ theorem hasSum_staircaseCount (e : ℕ → ℕ) (he : ∀ k : ℕ, k ≤ e k) {q
       show e k + (n - e k) = n
       omega
     · intro hp
-      have h1 := he p.1
+      have h1 : p.1 ≤ e p.1 := he p.1
       refine ⟨p.1, ⟨by omega, by omega⟩, ?_⟩
       have h2 : n - e p.1 = p.2 := by omega
-      rw [h2]
+      rw [h2, Prod.mk.eta]
   · intro n
     simp only [Finset.sum_map, Function.Embedding.coeFn_mk]
     rw [staircaseCount, Nat.cast_sum, sum_mul]
     refine sum_congr rfl fun k hk => ?_
-    rw [mem_filter] at hk
+    have hk2 : e k ≤ n := (mem_filter.mp hk).2
     have hval : F (k, n - e k) = (boundedCount k (n - e k) : 𝕜) * q ^ (e k + (n - e k)) := by
       rw [hFdef]
     rw [hval, show e k + (n - e k) = n by omega]
@@ -502,6 +537,8 @@ theorem hasSum_staircaseCount_sq_add {q : 𝕜} (hq : ‖q‖ < 1) :
       ((qPochhammerInfIn (q ^ 2) (q ^ 5) * qPochhammerInfIn (q ^ 3) (q ^ 5))⁻¹) :=
   hasSum_staircaseCount (fun k : ℕ => k * k + k) (fun k => Nat.le_add_left k (k * k)) hq
     ((hasSum_rogersRamanujan_second hq).congr_fun fun n => by
+      show q ^ (n * n + n) / finiteQPochhammerIn q q n =
+        q ^ (n * (n + 1)) / finiteQPochhammerIn q q n
       rw [show n * (n + 1) = n * n + n by ring])
 
 /-! ### The coefficient identities -/

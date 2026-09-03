@@ -30,15 +30,15 @@ formal power series by truncating it.
 **(A) `qg:prop-coefficientwise-limit`, the formal half** — verbatim and strictly stronger.
 `existsUnique_coefficientwise_limit` proves existence and uniqueness of the coefficientwise
 limit, and `tendsto_of_eventually_coeff_eq` upgrades it to a genuine `Tendsto` once `R`
-carries a topology.  The generalisations over the printed statement are all free, and are
-*required* for the paper's own use of the proposition:
+carries a topology.  The generalisations over the printed statement are all free, and one
+of them is *required* for the paper's own use of the proposition:
 
 * the approximants are arbitrary **power series** `P : ι → R⟦X⟧`, not polynomials
-  `P_N ∈ R[q]`.  The paper states the proposition for polynomials but applies it to the
-  truncated products `∏_{j≤M}(1-q^j)^{e_j}`, which lie in `ℤ[[q]] ∖ ℤ[q]` as soon as one
-  `e_j` is negative.  Nothing in the printed proof uses polynomiality, and nothing here
-  does either;
-* `R` is an arbitrary `CommSemiring` (indeed `Semiring`), not a commutative ring;
+  `P_N ∈ R[q]`.  The printed proposition is stated for polynomials, but the printed proof
+  of `qg:prop-truncation-principle` applies it to the truncated products
+  `∏_{j≤M}(1-q^j)^{e_j}`, which lie in `ℤ[[q]] ∖ ℤ[q]` as soon as one `e_j` is negative.
+  Nothing in the printed argument uses polynomiality, and nothing here does either;
+* `R` is an arbitrary `Semiring`, not a commutative ring;
 * the index set is an arbitrary type `ι` and the limit is along an arbitrary filter `l`
   with `[l.NeBot]`; the printed `N → ∞` over `ℕ` is the case `l = atTop`.  It is this
   generality that lets the same lemma serve products indexed by finsets.
@@ -88,6 +88,14 @@ form, and `coeff_tsum_eq_coeff_sum` restates it for `∑' m, S m`.  Generalisati
   The displayed binomial identity is therefore *not* a declaration of this module.  The
   element produced is the same one; only the definition is different.
 * `qg:thm-qpochhammer-modular-asymptotic`, the modular acceleration of the same section.
+
+## Worked instances (none of the statements below is vacuous)
+
+* (A)/(B): `R = ℤ`, `ι = ℕ`, `l = atTop`, `e` arbitrary, `m j = j + 1` — this is the
+  paper's own setting, and `hm : ∀ j, j < j + 1` holds.
+* (C): `ι = ℕ`, `S m = X ^ m`, so `{m | order (S m) ≤ N} = {m | m ≤ N}` is finite, and
+  `t = (hfin N).toFinset` satisfies the hypothesis `ht` of `coeff_qAdicSum_eq_coeff_sum`.
+* (D): `P N = ∑_{k < N} z^k`, `f z = (1-z)⁻¹`, `U = Metric.ball 0 1`, `c d = 1`.
 
 ## Main declarations
 
@@ -318,7 +326,7 @@ theorem coeff_qTruncProduct_stabilises (R : Type*) [CommRing R] (e : ℕ → ℤ
   unfold qTruncProduct
   exact coeff_prod_zpow_stabilises (R := R) (v := fun j => oneSubXPowUnit R (j + 1))
     (m := fun j => j + 1)
-    (fun j => X_pow_dvd_val_oneSubXPowUnit_sub_one R (Nat.succ_ne_zero j))
+    (fun j => X_pow_dvd_val_oneSubXPowUnit_sub_one R (n := j + 1) (Nat.succ_ne_zero j))
     (fun j => Nat.lt_succ_self j) e hNM hd
 
 /-- **`eq:qg-truncation-product`.**  `F(q) ≡ ∏_{j=1}^{N}(1-q^j)^{e_j} (mod q^{N+1})`,
@@ -327,8 +335,9 @@ theorem coeff_qInfProduct (R : Type*) [CommRing R] (e : ℕ → ℤ) {N d : ℕ}
     PowerSeries.coeff d (qInfProduct R e)
       = PowerSeries.coeff d ((qTruncProduct R e N : (R⟦X⟧)ˣ) : R⟦X⟧) := by
   have h1 : PowerSeries.coeff d (qInfProduct R e)
-      = PowerSeries.coeff d ((qTruncProduct R e d : (R⟦X⟧)ˣ) : R⟦X⟧) :=
-    PowerSeries.coeff_mk d _
+      = PowerSeries.coeff d ((qTruncProduct R e d : (R⟦X⟧)ˣ) : R⟦X⟧) := by
+    unfold qInfProduct
+    exact PowerSeries.coeff_mk d _
   rw [h1]
   exact (coeff_qTruncProduct_stabilises R e hd le_rfl).symm
 
@@ -386,8 +395,9 @@ noncomputable def qAdicSum {R : Type*} [Semiring R] {ι : Type*} (S : ι → R�
 theorem coeff_qAdicSum {R : Type*} [Semiring R] {ι : Type*} (S : ι → R⟦X⟧)
     (hfin : ∀ N : ℕ, {m : ι | (S m).order ≤ (N : ℕ∞)}.Finite) (d : ℕ) :
     PowerSeries.coeff d (qAdicSum S hfin)
-      = ∑ m ∈ (hfin d).toFinset, PowerSeries.coeff d (S m) :=
-  PowerSeries.coeff_mk d _
+      = ∑ m ∈ (hfin d).toFinset, PowerSeries.coeff d (S m) := by
+  unfold qAdicSum
+  exact PowerSeries.coeff_mk d _
 
 /-- **The `q`-adic sum is well defined**, and not merely by convention: if for each `N`
 only finitely many `S_m` have order at most `N`, then the family `S` is summable in the
@@ -475,7 +485,8 @@ theorem iterate_deriv_polynomial_eval_zero (p : Polynomial ℂ) (k : ℕ) :
 
 /-- **Weierstrass, iterated.**  If polynomials converge locally uniformly on an open set to
 `f`, then all their iterated derivatives converge locally uniformly to the corresponding
-iterated derivative of `f`. -/
+iterated derivative of `f`.  No `[NeBot]` hypothesis is needed: `TendstoLocallyUniformlyOn.deriv`
+handles the trivial filter itself. -/
 theorem tendstoLocallyUniformlyOn_iterate_deriv {ι : Type*} {l : Filter ι} {U : Set ℂ}
     {P : ι → Polynomial ℂ} {f : ℂ → ℂ} (hU : IsOpen U)
     (hP : TendstoLocallyUniformlyOn (fun i z => (P i).eval z) f l U) (k : ℕ) :
@@ -524,11 +535,13 @@ theorem iteratedDeriv_eq_of_eventually_coeff {ι : Type*} {l : Filter ι} [l.NeB
   have hconv : Tendsto (fun i => deriv^[d] (fun z : ℂ => (P i).eval z) 0) l
       (nhds (deriv^[d] f 0)) :=
     (tendstoLocallyUniformlyOn_iterate_deriv hU hP d).tendsto_at h0
-  have hconst : Tendsto (fun i => deriv^[d] (fun z : ℂ => (P i).eval z) 0) l
-      (nhds ((Nat.factorial d : ℂ) * c d)) := by
-    refine Tendsto.congr' ?_ tendsto_const_nhds
+  have heq : ∀ᶠ i in l, (Nat.factorial d : ℂ) * c d
+      = deriv^[d] (fun z : ℂ => (P i).eval z) 0 := by
     filter_upwards [hc] with i hi
     rw [iterate_deriv_polynomial_eval_zero (P i) d, hi]
+  have hconst : Tendsto (fun i => deriv^[d] (fun z : ℂ => (P i).eval z) 0) l
+      (nhds ((Nat.factorial d : ℂ) * c d)) :=
+    Tendsto.congr' heq tendsto_const_nhds
   have hval : deriv^[d] f 0 = (Nat.factorial d : ℂ) * c d := tendsto_nhds_unique hconv hconst
   rw [iteratedDeriv_eq_iterate]
   exact hval
