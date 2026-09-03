@@ -977,6 +977,118 @@ for _ in range(10):
 check('thm:shifted-lagrange-reversion',
       "g(v) = g(x) + sum (y^k/k!) d^{k-1}(f^k g'), and the g = id case", bad, t)
 
+# ----------------------------------------------------------- thm:bell-near-diagonal
+# B_{n,n-a}(x_1..x_{a+1}) = sum_{j=a+1}^{2a} (j!/a!) C(n,j) x_1^{n-j}
+#                             B_{a,j-a}(x_2/2, x_3/3, .., x_{2a-j+2}/(2a-j+2)).
+# The inner arguments are both shifted and divided, which is the part of the statement most
+# easily mis-transcribed, so it is evaluated rather than read.
+bad, t = [], 0
+for n in range(2, 11):
+    for a in range(1, n):
+        xs = [F(random.randint(-5, 5), random.randint(1, 3))
+              for _ in range(max(n, 2 * a + 2))]
+        lhs = _partial_bell(n, n - a, xs)
+        rhs = F(0)
+        for j in range(a + 1, 2 * a + 1):
+            if j > n:            # C(n,j) = 0 there, and x_1^{n-j} would need a negative power
+                continue
+            y = [xs[i] / F(i + 1) for i in range(1, max(a, 1) + 1)]
+            rhs += (F(factorial(j), factorial(a)) * F(comb(n, j)) * xs[0] ** (n - j)
+                    * _partial_bell(a, j - a, y))
+        t += 1
+        if lhs != rhs:
+            bad.append((n, a))
+check('thm:bell-near-diagonal',
+      'B_{n,n-a} through B_{a,j-a} at shifted and divided arguments', bad, t)
+
+# --------------------------------------------------------------- thm:faa-multivariate
+# d^n/(dx_1..dx_n) f(y) = sum_{pi} f^{(|pi|)}(y) prod_{B in pi} d_B y, y = g(x_1,..,x_n).
+# The left side is obtained by actually differentiating the composite once in each variable as
+# an exact multivariate polynomial; the right by summing over set partitions of [n].  n = 4
+# gives 15 partitions across 5 shapes, so the block structure is exercised rather than only
+# the two extreme partitions.
+def _m_mul(a, b, nv):
+    r = {}
+    for ea, ca in a.items():
+        for eb, cb in b.items():
+            e = tuple(ea[i] + eb[i] for i in range(nv))
+            r[e] = r.get(e, F(0)) + ca * cb
+    return {k: v for k, v in r.items() if v != 0}
+
+
+def _m_add(a, b):
+    r = dict(a)
+    for k, v in b.items():
+        r[k] = r.get(k, F(0)) + v
+    return {k: v for k, v in r.items() if v != 0}
+
+
+def _m_diff(a, i):
+    r = {}
+    for e, c in a.items():
+        if e[i] > 0:
+            e2 = list(e)
+            e2[i] -= 1
+            r[tuple(e2)] = r.get(tuple(e2), F(0)) + c * e[i]
+    return {k: v for k, v in r.items() if v != 0}
+
+
+def _m_parts(n):
+    def rec(i, maxb, cur):
+        if i == n:
+            blocks = [[] for _ in range(maxb + 1)]
+            for idx, b in enumerate(cur):
+                blocks[b].append(idx)
+            yield blocks
+            return
+        for b in range(maxb + 2):
+            yield from rec(i + 1, max(maxb, b), cur + [b])
+    yield from rec(0, -1, [])
+
+
+bad, t = [], 0
+for n in (2, 3, 4):
+    for _ in range(4):
+        nv = n
+        g = {}
+        for _k in range(8):
+            e = tuple(random.randint(0, 2) for _ in range(nv))
+            g[e] = g.get(e, F(0)) + F(random.randint(-3, 3), random.randint(1, 2))
+        g = {k: v for k, v in g.items() if v != 0} or {tuple(0 for _ in range(nv)): F(1)}
+        fc = [F(random.randint(-3, 3), random.randint(1, 2)) for _ in range(6)]
+
+        def f_at(m, g=g, fc=fc, nv=nv):
+            cvec = list(fc)
+            for _ in range(m):
+                cvec = [cvec[i] * i for i in range(1, len(cvec))] or [F(0)]
+            out = {}
+            gp = {tuple(0 for _ in range(nv)): F(1)}
+            for d, cd in enumerate(cvec):
+                if cd:
+                    out = _m_add(out, {k: cd * v for k, v in gp.items()})
+                gp = _m_mul(gp, g, nv)
+            return out
+
+        lhs = f_at(0)
+        for i in range(n):
+            lhs = _m_diff(lhs, i)
+        rhs = {}
+        for blocks in _m_parts(n):
+            term = f_at(len(blocks))
+            for B in blocks:
+                dB = dict(g)
+                for i in B:
+                    dB = _m_diff(dB, i)
+                term = _m_mul(term, dB, nv)
+                if not term:
+                    break
+            rhs = _m_add(rhs, term)
+        t += 1
+        if lhs != rhs:
+            bad.append(n)
+check('thm:faa-multivariate',
+      'mixed partial of f(g) as a sum over set partitions of the variables', bad, t)
+
 # --------------------------------------------------------------------- report
 width = max(len(lab) for lab, _, _, _ in RESULTS)
 failed = 0
