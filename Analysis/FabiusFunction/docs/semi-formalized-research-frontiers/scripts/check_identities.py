@@ -1145,6 +1145,57 @@ for _ in range(15):
 check('thm:merged-inverse-derivative-operator',
       "g^{(n)} = ((1/f') d/dx)^{n-1}(1/f') at x = g(y)", bad, t)
 
+# ------------------------------ prop:merged-beta-integral, thm:merged-pochhammer
+def _poch(a, n):
+    r = F(1)
+    for i in range(n):
+        r *= (a + i)
+    return r
+
+
+def _fall(a, n):
+    r = F(1)
+    for i in range(n):
+        r *= (a - i)
+    return r
+
+
+# int_0^1 t^{a-1}(1-t)^n dt = n!/(a)_{n+1}, the left side by expanding and integrating
+# term by term rather than by quoting the Beta function.
+bad, t = [], 0
+for _ in range(30):
+    a = F(random.randint(1, 12), random.randint(1, 5))
+    for n in range(0, 9):
+        t += 1
+        if sum((F((-1) ** k * comb(n, k)) / (a + k) for k in range(n + 1)), F(0)) \
+                != F(factorial(n)) / _poch(a, n + 1):
+            bad.append((a, n))
+check('prop:merged-beta-integral', 'int_0^1 t^{a-1}(1-t)^n = n!/(a)_{n+1}', bad, t)
+
+# (1-z)^{-a} = sum (a)_n z^n/n!, the series generated from (1-z)F' = aF so the closed form
+# is not presupposed; plus the two splitting laws.
+bad, t = [], 0
+NP = 12
+for _ in range(20):
+    a = F(random.randint(-9, 9), random.randint(1, 4))
+    c = [F(1)] + [F(0)] * NP
+    for n in range(NP):
+        c[n + 1] = (a + n) * c[n] / (n + 1)
+    for n in range(NP + 1):
+        t += 1
+        if c[n] != _poch(a, n) / factorial(n):
+            bad.append(('series', n))
+for _ in range(40):
+    a = F(random.randint(-9, 9), random.randint(1, 4))
+    m, n = random.randint(0, 6), random.randint(0, 6)
+    t += 2
+    if _poch(a, m + n) != _poch(a, m) * _poch(a + m, n):
+        bad.append(('rising', m, n))
+    if _fall(a, m + n) != _fall(a, m) * _fall(a - m, n):
+        bad.append(('falling', m, n))
+check('thm:merged-pochhammer',
+      'binomial series (1-z)^{-a} = sum (a)_n z^n/n!, and both splitting laws', bad, t)
+
 # --------------------------------------------------------------------- report
 width = max(len(lab) for lab, _, _, _ in RESULTS)
 failed = 0
