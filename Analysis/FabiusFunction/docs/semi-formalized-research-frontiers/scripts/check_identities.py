@@ -767,6 +767,131 @@ for _ in range(25):
         bad.append((tot, aco.get(-1, F(0))))
 check('thm:res-subst', "Res_z A(u(z))u'(z) = Res_u A(u), Laurent A with poles", bad, t)
 
+# ------------------------------------------------- thm:merged-good (d = 2)
+# Lagrange-Good inversion.  Both sides are built independently on truncated bivariate series:
+# the left by solving the fixed point w_i = t_i phi_i(w) by iteration and composing F with it,
+# the right by forming F * prod phi_i^{n_i} * det(delta_ij - (x_j/phi_i) d phi_i/d x_j).
+NG = 7
+
+
+def _g_mul(a, b):
+    r = {}
+    for (i, j), u in a.items():
+        for (p, q), v in b.items():
+            if i + p + j + q < NG:
+                r[(i + p, j + q)] = r.get((i + p, j + q), F(0)) + u * v
+    return {k: v for k, v in r.items() if v != 0}
+
+
+def _g_add(a, b):
+    r = dict(a)
+    for k, v in b.items():
+        r[k] = r.get(k, F(0)) + v
+    return {k: v for k, v in r.items() if v != 0}
+
+
+def _g_neg(a):
+    return {k: -v for k, v in a.items()}
+
+
+def _g_one():
+    return {(0, 0): F(1)}
+
+
+def _g_inv(a):
+    c = a[(0, 0)]
+    r = {(0, 0): F(1) / c}
+    for deg in range(1, NG):
+        for i in range(deg + 1):
+            j = deg - i
+            s = F(0)
+            for (p, q), u in a.items():
+                if (p, q) != (0, 0) and p <= i and q <= j:
+                    s += u * r.get((i - p, j - q), F(0))
+            if s != 0:
+                r[(i, j)] = -s / c
+    return {k: v for k, v in r.items() if v != 0}
+
+
+def _g_pow(a, n):
+    r = _g_one()
+    for _ in range(n):
+        r = _g_mul(r, a)
+    return r
+
+
+def _g_dx(a, which):
+    r = {}
+    for (i, j), v in a.items():
+        if which == 0 and i >= 1:
+            r[(i - 1, j)] = r.get((i - 1, j), F(0)) + v * i
+        if which == 1 and j >= 1:
+            r[(i, j - 1)] = r.get((i, j - 1), F(0)) + v * j
+    return {k: v for k, v in r.items() if v != 0}
+
+
+def _g_shift(a, which):
+    out = {}
+    for (i, j), v in a.items():
+        key = (i + 1, j) if which == 0 else (i, j + 1)
+        if key[0] + key[1] < NG:
+            out[key] = v
+    return out
+
+
+def _g_comp(Fs, w1, w2):
+    p1, p2 = [_g_one()], [_g_one()]
+    for _ in range(NG):
+        p1.append(_g_mul(p1[-1], w1))
+        p2.append(_g_mul(p2[-1], w2))
+    res = {}
+    for (i, j), c in Fs.items():
+        if i < len(p1) and j < len(p2):
+            res = _g_add(res, {k: c * v for k, v in _g_mul(p1[i], p2[j]).items()})
+    return res
+
+
+def _g_rand(const_nonzero):
+    s = {}
+    for i in range(NG):
+        for j in range(NG - i):
+            if random.random() < 0.55:
+                v = F(random.randint(-3, 3), random.randint(1, 2))
+                if v != 0:
+                    s[(i, j)] = v
+    if const_nonzero:
+        s[(0, 0)] = F(random.randint(1, 3))
+    else:
+        s.pop((0, 0), None)
+    return s
+
+
+bad, t = [], 0
+for _ in range(5):
+    phi1, phi2 = _g_rand(True), _g_rand(True)
+    Fs = _g_rand(random.random() < 0.5)
+    w1, w2 = {}, {}
+    for _ in range(NG + 1):
+        w1, w2 = (_g_shift(_g_comp(phi1, w1, w2), 0),
+                  _g_shift(_g_comp(phi2, w1, w2), 1))
+    lhs = _g_comp(Fs, w1, w2)
+    i1, i2 = _g_inv(phi1), _g_inv(phi2)
+    m11 = _g_add(_g_one(), _g_neg(_g_mul(i1, _g_shift(_g_dx(phi1, 0), 0))))
+    m12 = _g_neg(_g_mul(i1, _g_shift(_g_dx(phi1, 1), 1)))
+    m21 = _g_neg(_g_mul(i2, _g_shift(_g_dx(phi2, 0), 0)))
+    m22 = _g_add(_g_one(), _g_neg(_g_mul(i2, _g_shift(_g_dx(phi2, 1), 1))))
+    det = _g_add(_g_mul(m11, m22), _g_neg(_g_mul(m12, m21)))
+    for n1 in range(0, 3):
+        for n2 in range(0, 3):
+            if n1 + n2 >= NG - 3:
+                continue
+            rhs = _g_mul(_g_mul(Fs, _g_pow(phi1, n1)), _g_mul(_g_pow(phi2, n2), det))
+            t += 1
+            if lhs.get((n1, n2), F(0)) != rhs.get((n1, n2), F(0)):
+                bad.append((n1, n2))
+check('thm:merged-good', 'Lagrange-Good inversion in dimension 2, both sides built separately',
+      bad, t)
+
 # --------------------------------------------------------------------- report
 width = max(len(lab) for lab, _, _, _ in RESULTS)
 failed = 0
