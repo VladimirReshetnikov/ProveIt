@@ -116,6 +116,13 @@
 \newcommand{\PLrat}{\RationalLogLaurentField{\K}}        % K(L)((t))
 \newcommand{\PLit}{\IteratedLaurentLogField{\K}}         % K((L^{-1}))((t))
 \newcommand{\Gnear}{\NearIdentityPolynomialLogGroup{\K}} % X + K[L][[t]]
+% LOCAL-FILTRATION-SUBGROUP: \Gfilt{r} is the r-th term of the valuation
+% filtration of the near-identity group, {X + A : nu_t(A) >= r}.  The catalogue
+% names the group but not this filtration, and \Gnear_{r} is not available:
+% \NearIdentityPolynomialLogGroup already ends in a subscript, so a second one
+% is a fatal "Double subscript".  Declared here and recorded in the notation
+% appendix; it introduces no meaning the surrounding text does not define.
+\newcommand{\Gfilt}[1]{\mathcal{G}^{(#1)}_{\mathrm{poly},\K}}
 \newcommand{\ordt}{\nu_{t}}                              % outer valuation
 \DeclareMathOperator{\lm}{lm}
 \DeclareMathOperator{\lc}{lc}
