@@ -1,4 +1,5 @@
 import FabiusFunction.FabiusComputability
+import FabiusFunction.PrimrecNatPow
 import Mathlib.Topology.Order.ProjIcc
 import Mathlib.Topology.UnitInterval
 
@@ -36,7 +37,7 @@ private def unitClampNumerator (c : DyadicNumerator) (p : ℕ) : DyadicNumerator
 private theorem unitClampNumerator_primrec :
     Primrec₂ unitClampNumerator := by
   have hpow : Primrec₂ (fun (_c : DyadicNumerator) (p : ℕ) => 2 ^ p) :=
-    (Primrec₂.unpaired'.1 Nat.Primrec.pow).comp₂ (Primrec.const 2).to₂
+    primrec₂_nat_pow.comp₂ (Primrec.const 2).to₂
       Primrec₂.right
   have hsub : Primrec₂ (fun (c : DyadicNumerator) (_p : ℕ) => c.1 - c.2) :=
     Primrec.nat_sub.comp₂
@@ -590,7 +591,7 @@ private theorem tolerantBisectionNoneStep_computable
   have hpd5 : Computable (fun z : X => z.1.2 + den z.1.2 + 5) :=
     Primrec.nat_add.to_comp.comp hpd (Computable.const 5)
   have hpow : Computable₂ ((· ^ ·) : ℕ → ℕ → ℕ) :=
-    (Primrec₂.unpaired'.1 Nat.Primrec.pow).to_comp
+    computable₂_nat_pow
   have hscale : Computable (fun z : X => 2 ^ (z.1.2 + den z.1.2 + 5)) :=
     hpow.comp (Computable.const 2) hpd5
   have hnum : Computable

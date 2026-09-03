@@ -328,19 +328,11 @@ theorem intervalIntegral_deriv_mul_fabiusReal_add_fabiusInv_mul_deriv
     (hB : AbsolutelyContinuousOnInterval B 0 1) :
     (∫ x in (0 : ℝ)..1, deriv A x * B (fabiusReal F x)) +
       (∫ u in (0 : ℝ)..1, A (fabiusInv F hF u) * deriv B u) =
-        A 1 * B 1 - A 0 * B 0 := by
-  apply intervalIntegral_deriv_mul_comp_add_comp_mul_deriv_of_lt_iff_lt
-    (C := fabiusReal F) (Q := fabiusInv F hF)
-  · norm_num
-  · norm_num
-  · intro x _hx
-    exact ⟨fabiusReal_nonneg F x, fabiusReal_le_one F x⟩
-  · intro u _hu
-    exact fabiusInv_mem_Icc F hF u
-  · intro x u hx hu
-    exact fabiusReal_lt_iff_lt_fabiusInv F hF hx hu
-  · exact hA
-  · exact hB
+        A 1 * B 1 - A 0 * B 0 :=
+  intervalIntegral_deriv_mul_comp_add_comp_mul_deriv_of_lt_iff_lt
+    (fabiusReal F) (fabiusInv F hF) zero_le_one zero_le_one
+    (fabiusReal_mapsTo_Icc F) (fabiusInv_mapsTo_Icc F hF)
+    (fabiusReal_lt_iff_lt_fabiusInv_of_mem F hF) A B hA hB
 
 /-- **Variable-upper-endpoint Fabius inverse-pair identity.**  For every
 `y ∈ [0,1]`, the complete proper-compact identity restricts to the inverse
@@ -354,21 +346,11 @@ theorem intervalIntegral_deriv_mul_fabiusReal_add_fabiusInv_mul_deriv_to
     (∫ x in (0 : ℝ)..y, deriv A x * B (fabiusReal F x)) +
       (∫ u in (0 : ℝ)..fabiusReal F y,
         A (fabiusInv F hF u) * deriv B u) =
-        A y * B (fabiusReal F y) - A 0 * B 0 := by
-  apply intervalIntegral_deriv_mul_comp_add_comp_mul_deriv_to_of_lt_iff_lt
-    (C := fabiusReal F) (Q := fabiusInv F hF)
-    (a := 0) (b := 1) (c := 0) (d := 1)
-  · norm_num
-  · norm_num
-  · intro x _hx
-    exact ⟨fabiusReal_nonneg F x, fabiusReal_le_one F x⟩
-  · intro u _hu
-    exact fabiusInv_mem_Icc F hF u
-  · intro x u hx hu
-    exact fabiusReal_lt_iff_lt_fabiusInv F hF hx hu
-  · exact hA
-  · exact hB
-  · exact hy
+        A y * B (fabiusReal F y) - A 0 * B 0 :=
+  intervalIntegral_deriv_mul_comp_add_comp_mul_deriv_to_of_lt_iff_lt
+    (fabiusReal F) (fabiusInv F hF) zero_le_one zero_le_one
+    (fabiusReal_mapsTo_Icc F) (fabiusInv_mapsTo_Icc F hF)
+    (fabiusReal_lt_iff_lt_fabiusInv_of_mem F hF) A B hA hB hy
 
 /-- The classical inverse-graph area identity for the Fabius inverse pair:
 the areas below `fabiusReal` and `fabiusInv` on the unit interval add to the

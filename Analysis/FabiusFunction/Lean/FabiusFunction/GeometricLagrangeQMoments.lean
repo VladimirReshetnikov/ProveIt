@@ -60,6 +60,28 @@ open Finset
 
 namespace Fabius
 
+/-! ## Sign bookkeeping
+
+Two facts about `(-1)^k` that the weight computations below use a dozen
+times.  Both hold in any monoid with a distributive negation, so they are
+stated there rather than over `ℚ`. -/
+
+/-- `(-1)^p · (-1)^p = 1`. -/
+theorem neg_one_pow_mul_self {R : Type*} [Monoid R] [HasDistribNeg R]
+    (p : ℕ) : (-1 : R) ^ p * (-1 : R) ^ p = 1 := by
+  rw [← pow_add]
+  exact Even.neg_one_pow ⟨p, rfl⟩
+
+/-- `(-1)^(p-k) = (-1)^p · (-1)^k` for `k ≤ p`: the two copies of
+`(-1)^k` cancel. -/
+theorem neg_one_pow_sub {R : Type*} [Monoid R] [HasDistribNeg R]
+    {p k : ℕ} (hk : k ≤ p) :
+    (-1 : R) ^ (p - k) = (-1 : R) ^ p * (-1 : R) ^ k := by
+  have h : (-1 : R) ^ (p - k) * ((-1 : R) ^ k * (-1 : R) ^ k) =
+      (-1 : R) ^ p * (-1 : R) ^ k := by
+    rw [← mul_assoc, ← pow_add, Nat.sub_add_cancel hk]
+  rwa [neg_one_pow_mul_self, mul_one] at h
+
 /-! ## The moment functional and its Richardson-polynomial realization -/
 
 /-- The `m`-th power moment of the evaluation-at-zero Lagrange weights on
@@ -321,21 +343,8 @@ order hypothesis is needed. -/
 theorem qPochhammer_self_add (q : ℚ) (a p : ℕ) :
     qPochhammer q q (a + p) =
       qPochhammer q q a * qPochhammer (q ^ (a + 1)) q p := by
-  induction p with
-  | zero => simp
-  | succ p ih =>
-      rw [Nat.add_succ, qPochhammer_succ q q (a + p), ih,
-        qPochhammer_succ (q ^ (a + 1)) q p]
-      have hfactor : q * q ^ (a + p) = q ^ (a + 1) * q ^ p := by
-        calc
-          q * q ^ (a + p) = q ^ 1 * q ^ (a + p) := by rw [pow_one]
-          _ = q ^ (1 + (a + p)) := by rw [← pow_add]
-          _ = q ^ ((a + 1) + p) := by
-            congr 1
-            omega
-          _ = q ^ (a + 1) * q ^ p := by rw [pow_add]
-      rw [hfactor]
-      ring
+  simpa only [finiteQPochhammerIn_rat_eq] using
+    (finiteQPochhammerIn_self_add q a p)
 
 /-! ## Positivity infrastructure for `0 < q < 1` -/
 
@@ -369,20 +378,57 @@ theorem qBinomial_pos_of_pos_of_lt_one
       (qPochhammer_self_pos_of_pos_of_lt_one q hqpos hqone k)
       (qPochhammer_self_pos_of_pos_of_lt_one q hqpos hqone (n - k)))
 
-/-- On `0 < q < 1`, the quotient-defined rational `qBinomial` agrees with
-the denominator-free Gaussian coefficient from the finite q-binomial core.
+/-- **The three-way non-root-of-unity criterion.**  For a nonzero `q` in a
+field, the `n+1` geometric nodes `1, q, …, qⁿ` are distinct exactly when the
+finite q-Pochhammer symbol `(q;q)_n` does not vanish, exactly when no
+`q^(r+1)` with `r < n` is a root of unity.  The two implications were
+available separately (`finiteQPochhammerIn_self_ne_zero_of_injOn` needs no
+side condition; the converse needs `q ≠ 0`, and indeed at `q = 0` the nodes
+`1,0,0,…` collide while `(0;0)_n = 1`), but the equivalence the docstrings
+advertise was never stated. -/
+theorem injOn_pow_range_iff_finiteQPochhammerIn_self_ne_zero
+    {F : Type*} [Field F] (q : F) (hq : q ≠ 0) (n : ℕ) :
+    Set.InjOn (fun k : ℕ => q ^ k) (Finset.range (n + 1)) ↔
+      finiteQPochhammerIn q q n ≠ 0 :=
+  ⟨finiteQPochhammerIn_self_ne_zero_of_injOn q n,
+    fun h => pow_injOn_range_of_geometricQPochhammer_ne_zero q hq n
+      (by rwa [geometricQPochhammer_eq_finiteQPochhammerIn])⟩
+
+/-- The same criterion in its root-of-unity form: distinct geometric nodes
+are exactly the absence of an `(r+1)`-th root of unity among the powers,
+`r < n`. -/
+theorem injOn_pow_range_iff_forall_pow_ne_one
+    {F : Type*} [Field F] (q : F) (hq : q ≠ 0) (n : ℕ) :
+    Set.InjOn (fun k : ℕ => q ^ k) (Finset.range (n + 1)) ↔
+      ∀ r < n, q ^ (r + 1) ≠ 1 := by
+  rw [injOn_pow_range_iff_finiteQPochhammerIn_self_ne_zero q hq n,
+    ← geometricQPochhammer_eq_finiteQPochhammerIn]
+  exact geometricQPochhammer_ne_zero_iff q n
+
+/-- Nonvanishing of `(q;q)_n` passes to every prefix: the criterion
+`∀ r < n, q^(r+1) ≠ 1` is monotone in `n`. -/
+theorem qPochhammer_self_ne_zero_of_le {q : ℚ} {m n : ℕ} (hmn : m ≤ n)
+    (h : qPochhammer q q n ≠ 0) : qPochhammer q q m ≠ 0 :=
+  (qPochhammer_self_ne_zero_iff q m).2 fun r hr =>
+    (qPochhammer_self_ne_zero_iff q n).1 h r (lt_of_lt_of_le hr hmn)
+
+/-- **The Gaussian and rational q-binomial coefficients agree whenever
+`(q;q)_n ≠ 0`** — the exact hypothesis, replacing the interval
+`0 < q < 1`.  Only two denominators have to be nonzero, `(q;q)_k` and
+`(q;q)_{n−k}`, and both are prefixes of `(q;q)_n`.  The identity therefore
+holds at every negative `q`, every `q > 1`, and every non-root-of-unity
+`q`, not merely inside the unit interval.
 
 The proof uses the denominator-free q-factorial identity and one legitimate
 cancellation; it does not replay q-Pascal. -/
-theorem gaussianBinomial_eq_qBinomial_of_pos_of_lt_one
-    (q : ℚ) (hqpos : 0 < q) (hqone : q < 1) (n k : ℕ) :
+theorem gaussianBinomial_eq_qBinomial_of_qPochhammer_ne_zero
+    (q : ℚ) {n : ℕ} (hq : qPochhammer q q n ≠ 0) (k : ℕ) :
     gaussianBinomial q n k = qBinomial n k q := by
   by_cases hk : k ≤ n
   · have hkNe : qPochhammer q q k ≠ 0 :=
-      (qPochhammer_self_pos_of_pos_of_lt_one q hqpos hqone k).ne'
+      qPochhammer_self_ne_zero_of_le hk hq
     have hnkNe : qPochhammer q q (n - k) ≠ 0 :=
-      (qPochhammer_self_pos_of_pos_of_lt_one
-        q hqpos hqone (n - k)).ne'
+      qPochhammer_self_ne_zero_of_le (Nat.sub_le n k) hq
     have hfactorial :
         qPochhammer q q k * gaussianBinomial q n k =
           qPochhammer (q ^ (n - k + 1)) q k := by
@@ -399,6 +445,16 @@ theorem gaussianBinomial_eq_qBinomial_of_pos_of_lt_one
   · have hkn : n < k := Nat.lt_of_not_ge hk
     rw [gaussianBinomial_eq_zero_of_lt q hkn,
       qBinomial_eq_zero_of_lt q hkn]
+
+/-- The interval form of
+`gaussianBinomial_eq_qBinomial_of_qPochhammer_ne_zero`, kept so that
+existing call sites are untouched: on `0 < q < 1` the symbol `(q;q)_n` is
+positive, hence nonzero. -/
+theorem gaussianBinomial_eq_qBinomial_of_pos_of_lt_one
+    (q : ℚ) (hqpos : 0 < q) (hqone : q < 1) (n k : ℕ) :
+    gaussianBinomial q n k = qBinomial n k q :=
+  gaussianBinomial_eq_qBinomial_of_qPochhammer_ne_zero q
+    (qPochhammer_self_pos_of_pos_of_lt_one q hqpos hqone n).ne' k
 
 /-- If `d` is positive, then `(q^d;q)_n` is positive for `0 < q < 1`.
 This is the positivity input for every factor in the residual moment. -/
@@ -482,9 +538,8 @@ theorem negOnePow_mul_geometricLagrangeQMoment_eq_positiveResidual
     (-1 : ℚ) ^ p * geometricLagrangeQMoment q p m =
       q ^ (p + 1).choose 2 * qPochhammer (q ^ (m - p)) q p /
         qPochhammer q q p := by
-  have hsign : (-1 : ℚ) ^ p * (-1 : ℚ) ^ p = 1 := by
-    rw [← mul_pow]
-    norm_num
+  have hsign : (-1 : ℚ) ^ p * (-1 : ℚ) ^ p = 1 :=
+    neg_one_pow_mul_self p
   rw [geometricLagrangeQMoment_eq_residual_qPochhammer q hqpos.ne'
     p m (qPochhammer_self_pos_of_pos_of_lt_one q hqpos hqone p).ne' hpm]
   calc
@@ -572,21 +627,34 @@ theorem qBinomial_succ_succ_of_pos_of_lt_one
         qBinomial_eq_zero_of_lt q (by omega)]
       ring
 
-/-- Finite q-binomial theorem over the rational interval `0 < q < 1`:
+/-- **The finite q-binomial theorem at every non-root-of-unity `q`**:
 
-`sum_(k=0)^n (-1)^k q^choose(k,2) [n choose k]_q z^k = (z;q)_n`.
+`sum_(k=0)^n (-1)^k q^choose(k,2) [n choose k]_q z^k = (z;q)_n`
 
-The interval hypothesis is used only to make every quotient denominator
-nonzero; no limiting or analytic argument appears. -/
+whenever `(q;q)_n ≠ 0`.  The interval `0 < q < 1` of the earlier statement
+was used only to make the quotient denominators nonzero, and that is
+exactly what `(q;q)_n ≠ 0` says; the identity is therefore available at
+negative `q`, at `q > 1`, and at every `q` no power of which is a root of
+unity.  No limiting or analytic argument appears. -/
+theorem qBinomial_theorem_of_qPochhammer_ne_zero
+    (q : ℚ) {n : ℕ} (hq : qPochhammer q q n ≠ 0) (z : ℚ) :
+    (∑ k ∈ Finset.range (n + 1),
+      (-1 : ℚ) ^ k * q ^ (k.choose 2) * qBinomial n k q * z ^ k) =
+      qPochhammer z q n := by
+  simpa only [gaussianBinomial_eq_qBinomial_of_qPochhammer_ne_zero q hq,
+      finiteQPochhammerIn_rat_eq] using
+    (finite_qBinomial_theorem q z n)
+
+/-- Finite q-binomial theorem over the rational interval `0 < q < 1`, the
+interval instance of `qBinomial_theorem_of_qPochhammer_ne_zero`. -/
 theorem qBinomial_theorem_of_pos_of_lt_one
     (q : ℚ) (hqpos : 0 < q) (hqone : q < 1)
     (n : ℕ) (z : ℚ) :
     (∑ k ∈ Finset.range (n + 1),
       (-1 : ℚ) ^ k * q ^ (k.choose 2) * qBinomial n k q * z ^ k) =
-      qPochhammer z q n := by
-  simpa only [gaussianBinomial_eq_qBinomial_of_pos_of_lt_one
-      q hqpos hqone, finiteQPochhammerIn_rat_eq] using
-    (finite_qBinomial_theorem q z n)
+      qPochhammer z q n :=
+  qBinomial_theorem_of_qPochhammer_ne_zero q
+    (qPochhammer_self_pos_of_pos_of_lt_one q hqpos hqone n).ne' z
 
 /-- The positive triangular Gaussian sum is the numerator `(-q;q)_p` of
 the exact condition number. -/
@@ -603,9 +671,8 @@ theorem sum_qBinomial_triangular_succ_eq_neg_qPochhammer
             qBinomial p k q * (-q) ^ k := by
       apply Finset.sum_congr rfl
       intro k _hk
-      have hsign : (-1 : ℚ) ^ k * (-1 : ℚ) ^ k = 1 := by
-        rw [← mul_pow]
-        norm_num
+      have hsign : (-1 : ℚ) ^ k * (-1 : ℚ) ^ k = 1 :=
+        neg_one_pow_mul_self k
       have hneg : (-q) ^ k = (-1 : ℚ) ^ k * q ^ k := by
         rw [neg_pow]
       rw [choose_succ_two, pow_add, hneg]
@@ -677,9 +744,8 @@ theorem abs_geometricLagrangeWeight_eq_sign_mul
   have hPochhammer :=
     (qPochhammer_self_pos_of_pos_of_lt_one q hqpos hqone p).ne'
   have hsign :
-      (-1 : ℚ) ^ (p - k) * (-1 : ℚ) ^ (p - k) = 1 := by
-    rw [← mul_pow]
-    norm_num
+      (-1 : ℚ) ^ (p - k) * (-1 : ℚ) ^ (p - k) = 1 :=
+    neg_one_pow_mul_self (p - k)
   rw [abs_geometricLagrangeWeight_eq_qBinomial q hqpos hqone p k hk,
     geometricLagrangeWeight_eq_qBinomial
       q hqpos.ne' p k hk hPochhammer]
@@ -727,23 +793,11 @@ theorem sum_abs_geometricLagrangeWeight_eq_qPochhammer_ratio
   have hden : (geometricRootPolynomial q⁻¹ p).eval 1 ≠ 0 :=
     geometricRootPolynomial_inv_eval_one_ne_zero_of_nodes_injective
       q hqpos.ne' p hnodes
-  have hsignSq : (-1 : ℚ) ^ p * (-1 : ℚ) ^ p = 1 := by
-    rw [← mul_pow]
-    norm_num
+  have hsignSq : (-1 : ℚ) ^ p * (-1 : ℚ) ^ p = 1 :=
+    neg_one_pow_mul_self p
   have hsubSign (k : ℕ) (hk : k ≤ p) :
-      (-1 : ℚ) ^ (p - k) = (-1 : ℚ) ^ p * (-1 : ℚ) ^ k := by
-    have hkSq : (-1 : ℚ) ^ k * (-1 : ℚ) ^ k = 1 := by
-      rw [← mul_pow]
-      norm_num
-    calc
-      (-1 : ℚ) ^ (p - k) =
-          (-1 : ℚ) ^ (p - k) * 1 := by rw [mul_one]
-      _ = (-1 : ℚ) ^ (p - k) *
-          ((-1 : ℚ) ^ k * (-1 : ℚ) ^ k) := by rw [hkSq]
-      _ = ((-1 : ℚ) ^ (p - k) * (-1 : ℚ) ^ k) *
-          (-1 : ℚ) ^ k := by ring
-      _ = (-1 : ℚ) ^ p * (-1 : ℚ) ^ k := by
-        rw [← pow_add, Nat.sub_add_cancel hk]
+      (-1 : ℚ) ^ (p - k) = (-1 : ℚ) ^ p * (-1 : ℚ) ^ k :=
+    neg_one_pow_sub hk
   calc
     (∑ j ∈ Finset.range (p + 1),
         |geometricLagrangeWeight q p j|) =

@@ -496,6 +496,8 @@ import FabiusFunction.BoseFinitePartIntegral
 import FabiusFunction.PeriodicMean
 import FabiusFunction.PeriodicRegularity
 import FabiusFunction.LaplacePeriodicSecondOrder
+import FabiusFunction.EndpointLogDerivativeExpansion
+import FabiusFunction.LaplaceMomentBoundsSharp
 import FabiusFunction.FabiusTranslatedLegendreSeries
 import FabiusFunction.FabiusLegendreLeastSquares
 import FabiusFunction.LegendreGaunt
@@ -547,7 +549,9 @@ import FabiusFunction.InverseBranch
 import FabiusFunction.InverseNotElementary
 import FabiusFunction.FabiusComputableSpline
 import FabiusFunction.EffectiveMonotoneInverse
+import FabiusFunction.PrimrecNatPow
 import FabiusFunction.EffectiveGapInverse
+import FabiusFunction.FabiusGapInversion
 import FabiusFunction.FabiusInverseComputable
 import FabiusFunction.FabiusSaddleJetClosedForm
 import FabiusFunction.FabiusSaddleExponentClosedForm
