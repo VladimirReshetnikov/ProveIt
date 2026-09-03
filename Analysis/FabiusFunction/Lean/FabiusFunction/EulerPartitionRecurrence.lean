@@ -49,6 +49,9 @@ theorem natAbs_le_pentagonalExponent (k : ℤ) : k.natAbs ≤ pentagonalExponent
 noncomputable def pentagonalFibre (n : ℕ) : Finset ℤ :=
   (Finset.Icc (-(n : ℤ)) n).filter fun k => pentagonalExponent k = n
 
+/-- Membership in `pentagonalFibre n` is exactly the equation `k(3k-1)/2 = n`: the bound
+`-n ≤ k ≤ n` built into the definition costs nothing, because `|k| ≤ k(3k-1)/2`
+(`natAbs_le_pentagonalExponent`) already forces it. -/
 theorem mem_pentagonalFibre {n : ℕ} {k : ℤ} :
     k ∈ pentagonalFibre n ↔ pentagonalExponent k = n := by
   unfold pentagonalFibre
@@ -66,9 +69,12 @@ theorem mem_pentagonalFibre {n : ℕ} {k : ℤ} :
 /-- **Euler's pentagonal coefficients** `e(n) = ∑_{k : k(3k-1)/2 = n} (-1)^k`. -/
 noncomputable def pentagonalCoeff (n : ℕ) : ℂ := ∑ k ∈ pentagonalFibre n, (-1 : ℂ) ^ k
 
+/-- The pentagonal exponent vanishes at `k = 0`: `0·(3·0-1)/2 = 0`. -/
 theorem pentagonalExponent_zero : pentagonalExponent 0 = 0 := by
   simp [pentagonalExponent]
 
+/-- `k = 0` is the only integer with `k(3k-1)/2 = 0`, since the exponent is strictly positive at
+every `k ≠ 0` (`pentagonalExponent_pos`); so the fibre over `0` is the singleton `{0}`. -/
 theorem pentagonalFibre_zero : pentagonalFibre 0 = {0} := by
   ext k
   rw [mem_pentagonalFibre, mem_singleton]
@@ -79,9 +85,14 @@ theorem pentagonalFibre_zero : pentagonalFibre 0 = {0} := by
   · rintro rfl
     exact pentagonalExponent_zero
 
+/-- `e(0) = 1`: the constant term of `(q;q)_∞`, contributed by the single index `k = 0` of the
+fibre over `0`. -/
 theorem pentagonalCoeff_zero : pentagonalCoeff 0 = 1 := by
   rw [pentagonalCoeff, pentagonalFibre_zero, sum_singleton, zpow_zero]
 
+/-- The crude bound `‖e(n)‖ ≤ 2n + 1`: the fibre `pentagonalFibre n` sits inside `Icc (-n) n`,
+which has `2n + 1` elements, and each summand `(-1)^k` has norm `1`. Only polynomial growth is
+needed, to sum `∑ e(n) q^n` absolutely against a geometric series. -/
 theorem norm_pentagonalCoeff_le (n : ℕ) : ‖pentagonalCoeff n‖ ≤ 2 * n + 1 := by
   unfold pentagonalCoeff
   refine (norm_sum_le _ _).trans ?_
@@ -104,6 +115,9 @@ theorem hasSum_pentagonalCoeff_mul_pow {q : ℂ} (hq : ‖q‖ < 1) :
   rw [pentagonalCoeff, sum_mul]
   exact sum_congr rfl fun k hk => by rw [mem_pentagonalFibre.mp hk]
 
+/-- For `‖q‖ < 1` the pentagonal series `∑_n e(n) q^n` converges absolutely: by
+`norm_pentagonalCoeff_le` its terms are dominated by `2 n ‖q‖^n + ‖q‖^n`. This is the hypothesis
+under which its Cauchy product with `∑_n p(n) q^n` may be formed. -/
 theorem summable_norm_pentagonalCoeff_mul_pow {q : ℂ} (hq : ‖q‖ < 1) :
     Summable fun n : ℕ => ‖pentagonalCoeff n * q ^ n‖ := by
   have hq' : ‖(‖q‖ : ℝ)‖ < 1 := by rwa [Real.norm_of_nonneg (norm_nonneg q)]
@@ -115,6 +129,9 @@ theorem summable_norm_pentagonalCoeff_mul_pow {q : ℂ} (hq : ‖q‖ < 1) :
         mul_le_mul_of_nonneg_right (norm_pentagonalCoeff_le n) (by positivity)
     _ = 2 * ((n : ℝ) ^ 1 * ‖q‖ ^ n) + ‖q‖ ^ n := by ring
 
+/-- For `‖q‖ < 1` the partition series `∑_n p(n) q^n` converges absolutely. This is the real
+dominating series `summable_partitionCount_mul_pow` at `r = ‖q‖`, restated with the norm inside,
+which is the shape the antidiagonal (Cauchy product) lemmas ask for. -/
 theorem summable_norm_partitionCount_mul_pow {q : ℂ} (hq : ‖q‖ < 1) :
     Summable fun n : ℕ => ‖(partitionCount n : ℂ) * q ^ n‖ := by
   refine (summable_partitionCount_mul_pow (norm_nonneg q) hq).congr fun n => ?_

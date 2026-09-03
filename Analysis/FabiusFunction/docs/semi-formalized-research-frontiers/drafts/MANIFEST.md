@@ -339,12 +339,14 @@ Lambert W only as their guiding example, so they are filed by that subject,
 leaving `lambert-w/` to the articles about the function itself.  That move was
 verbatim: no source, checksum ledger, or PDF changed.
 
-The group now has three subgroups.  `polynomial-logarithmic-transseries/` holds
+The group now has four subgroups.  `polynomial-logarithmic-transseries/` holds
 the operational treatment of one scale, consolidated into the single canonical
 volume recorded below; `lambert-inverse-transseries/` holds three articles that
-invert `x + W(x)`; and `transseries-tutorials/` holds four general expositions.
-The first two overlap enough that a later consolidation may merge them, but
-that comparison has not been made.
+invert `x + W(x)`; `transseries-tutorials/` holds four general expositions; and
+`special-function-inversion/` holds three articles that apply the Lambert-core
+technique to several different special functions.  The first two overlap enough
+that a later consolidation may merge them, but that comparison has not been
+made, and neither has the comparison between the second and the fourth.
 
 | Directory | Document | Previous path |
 | --- | --- | --- |
@@ -394,6 +396,49 @@ consolidation are deferred; see
 All four tutorial PDFs are readable and unencrypted, every font row is embedded,
 and none is Type 3 or Libertinus; three are Letter and one is custom
 522-by-738-point, so canonical restyling is post-publication debt here too.
+
+A fourth subgroup, `special-function-inversion/`, was filed on 2026-09-03 from
+nine ZIP arrivals in two batches: the three of commit `5a453e1dc`, and six more
+that arrived while that batch was being published and were taken in the next
+quick-intake commit, as the gate requires.  Its articles invert a rapidly
+growing special function at infinity to all orders: the map's dominant phase is
+power-logarithmic, so ordinary reversion does not apply, and the first step is
+to invert that phase exactly with the Lambert `W`-function, above which the
+Stirling-type corrections generate a finer grid of transseries blocks.  They
+are kept apart from `lambert-inverse-transseries/` because that subgroup treats
+the single map `x + W(x)` in depth whereas this one applies the shared technique
+across different functions; each of the three also extracts a general reversion
+calculus, and whether those calculi coincide with each other or with the second
+subgroup's is an open comparison, deliberately not made at intake.
+
+All nine sources are LF with a final newline, so no normalization was applied
+and the filed bytes are the submitted bytes.  Every archive passed a CRC check
+and carried no absolute path, parent-directory traversal, or symlink entry; all
+were deleted after unpacking, and git history is the archive.  All nine PDFs
+are readable and unencrypted, produced by pdfTeX-1.40.26, with every font row
+embedded and no Type 3 font.  Eight are A4, the canonical page size; one,
+`inverse_subfactorial_transseries-3/`, is Letter.  Five carry Libertinus faces
+and four do not, which together with that one page size are the subgroup's only
+styling debts.  None of the nine loads `docs/fabius-notation.tex`, so all nine
+are outside the notation migration.  The nine fall into three subjects — Gamma
+and Barnes `G`, the hyperfactorial `K`-function, and the subfactorial — with
+three independently written articles each; that grouping was recorded at intake
+as provenance, and no comparison among them has been made.
+Comparison, deduplication, proof checking, numerical reproduction and Lean
+crosswalking are deferred; see
+[`series-and-transseries/special-function-inversion/README.md`](series-and-transseries/special-function-inversion/README.md).
+
+| Directory | Document | Previous path / provenance |
+| --- | --- | --- |
+| `special-function-inversion/Asymptotic_Inversion_Gamma_Barnes_G/` | *Asymptotic Inversion of the Gamma and Barnes `G`-Functions: Lambert-Core Transseries and a General Reversion Calculus* — 2,376-line/83,252-byte source and 29-page A4/646,225-byte PDF | `drafts/incoming/Asymptotic_Inversion_Gamma_Barnes_G.zip`, arrival commit `5a453e1dc`, filed 2026-09-03 |
+| `special-function-inversion/inverse_k_function_transseries/` | *Inverting the K-Function at Infinity: Lambert--W Normalization, All-Orders Transseries, and a General Theory of Power--Logarithmic Reversion* — 2,259-line/66,867-byte source and 29-page A4/349,822-byte PDF | `drafts/incoming/inverse_k_function_transseries.zip`, arrival commit `5a453e1dc`, filed 2026-09-03 |
+| `special-function-inversion/inverse_subfactorial_transseries/` | *Inverting the Subfactorial at Infinity: Bell-Sector Transseries, Inverse-Gamma Geometry, and a General Reversion Calculus for Rapid Cores with Tiny Oscillatory Tails* — 2,631-line/95,404-byte source and 38-page A4/688,626-byte PDF | `drafts/incoming/inverse_subfactorial_transseries.zip`, arrival commit `5a453e1dc`, filed 2026-09-03 |
+| `special-function-inversion/inverse_gamma_barnesG_transseries/` | *Asymptotic Transseries for the Inverses of the Gamma and Barnes `G`-Functions: Lambert--`W` Normal Forms, All-Orders Reversion, and Residual Certification* — 1,655-line/72,966-byte source and 28-page A4/663,480-byte PDF | `drafts/incoming/inverse_gamma_barnesG_transseries.zip`, second batch, filed 2026-09-03 |
+| `special-function-inversion/inverse_gamma_barnes_transseries/` | *Asymptotic Inversion of the Gamma and Barnes `G` Functions: Lambert-Normalized Transseries, Explicit Coefficients, and a General Power--Logarithmic Reversion Calculus* — 1,827-line/60,596-byte source and 25-page A4/324,795-byte PDF | `drafts/incoming/inverse_gamma_barnes_transseries.zip`, second batch, filed 2026-09-03 |
+| `special-function-inversion/K_Function_Inverse_Transseries/` | *Asymptotic Inversion of the Generalized Hyperfactorial `K`-Function: Lambert and `r`-Lambert Anchors, Centered Bernoulli Structure, and a General Calculus for Power--Logarithmic Transseries* — 2,644-line/90,380-byte source and 33-page A4/724,630-byte PDF | `drafts/incoming/K_Function_Inverse_Transseries_LaTeX_and_PDF.zip`, second batch, filed 2026-09-03; **directory renamed from the archive stem** because the archive name pushed the PDF path to 263 characters, past the Windows `MAX_PATH` limit of 260, after which tools report a missing file that exists |
+| `special-function-inversion/K_function_inverse_transseries_article/` | *Asymptotic Inversion of the Kinkelin--Bendersky `K`-Function: Lambert-Anchored Transseries for the Generalized Hyperfactorial and a General Theory of `x^p log x` Reversion* — 2,581-line/84,722-byte source and 30-page A4/743,783-byte PDF | `drafts/incoming/K_function_inverse_transseries_article.zip`, second batch, filed 2026-09-03 |
+| `special-function-inversion/inverse_subfactorial_transseries-2/` | *Asymptotic Inversion of the Subfactorial: Bell-Number Tails, Inverse-Gamma Anchoring, and a Calculus for Exponentially Separated Transseries* — 2,188-line/73,742-byte source and 27-page A4/725,870-byte PDF; inner files are plain `inverse_subfactorial_transseries.*`, kept as submitted | `drafts/incoming/inverse_subfactorial_transseries-2.zip`, second batch, filed 2026-09-03 |
+| `special-function-inversion/inverse_subfactorial_transseries-3/` | *Inverse Subfactorials at Infinity: Lambert--`W` Carriers, Bell-Number Sectors, and a General Calculus of Gamma-Dominant Transseries* — 1,878-line/81,203-byte source and 35-page **Letter**/530,302-byte PDF; inner files kept as submitted | `drafts/incoming/inverse_subfactorial_transseries-3.zip`, second batch, filed 2026-09-03 |
 
 ## spectra-and-arithmetic — `spectra-and-arithmetic/`
 

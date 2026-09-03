@@ -17,12 +17,27 @@ rather than any one special function.
   - `reversing_x_plus_lambert_w_transseries/` — *Reversing x+W(x): Exact Reduction, All-Orders Asymptotics, and Logarithmic Transseries*
 - [`transseries-tutorials/`](transseries-tutorials/) holds four expository
   introductions to transseries in general, filed on 2026-09-02.
+- [`special-function-inversion/`](special-function-inversion/) holds nine
+  articles received on 2026-09-03 that invert a rapidly growing special
+  function at infinity by first normalizing its power-logarithmic phase with
+  the Lambert `W`-function (quick intake only; not yet compared or reviewed).
+  They fall into three subjects, three independently written articles each:
+  - the Gamma and Barnes `G`-functions;
+  - the hyperfactorial `K`-function; and
+  - the subfactorial.
 
-The three subgroups overlap in subject but not in purpose: the first develops
+The four subgroups overlap in subject but not in purpose: the first develops
 one scale in operational depth, the second inverts one specific map and builds
-its calculus, and the third introduces the field.  The first and second are
-close enough that a later consolidation may merge them; that comparison has not
-been made.
+its calculus, the third introduces the field, and the fourth applies the
+Lambert-core technique across several different special functions, with three
+independent treatments of each.  The first
+and second are close enough that a later consolidation may merge them; that
+comparison has not been made.  The second and fourth share the Lambert-core
+step but differ in scope — one map treated deeply against one technique applied
+broadly — and each of the fourth's nine articles additionally extracts a
+general reversion calculus, so whether those calculi coincide with each other
+or with the second subgroup's is an open comparison, deliberately not made at
+intake.
 
 The group was created on 2026-09-02 by splitting the polynomial-logarithmic
 packages out of [`../lambert-w/`](../lambert-w/), where they had been filed on

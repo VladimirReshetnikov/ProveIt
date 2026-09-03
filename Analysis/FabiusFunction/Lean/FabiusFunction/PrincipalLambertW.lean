@@ -19,7 +19,12 @@ that map is strictly increasing.
 * `principalLambertW_image_Icc` — the exact restricted image
   `W₀ '' [-e⁻¹, 0] = [-1, 0]`;
 * continuity on the full closed natural domain, the derivative value
-  `W₀'(0) = 1`, and the local equivalence `W₀(z) ~ z`.
+  `W₀'(0) = 1`, and the local equivalence `W₀(z) ~ z`;
+* `hasDerivAt_mul_exp` and `principalLambertW_mul_exp_eventually` — the
+  derivative of the forward map `w ↦ w·eʷ` and the eventual right-inverse
+  identity, the two ingredients of every inverse-function argument for this
+  branch.  `FabiusFunction.LambertWAnalytic` feeds them to the analytic
+  inverse function theorem and obtains real analyticity on `(-e⁻¹, ∞)`.
 
 Together with the lower branch this completes the real Lambert pair —
 the subject of the `lambert-w` draft group and the function behind
@@ -150,6 +155,23 @@ theorem mul_exp_strictMonoOn :
     (Real.exp_lt_exp.mpr hst)
   simpa [Real.log_exp, mul_comm] using h
 
+/-- **Derivative of the forward map** `t ↦ t·eᵗ`, at every real point:
+`(t·eᵗ)' = eᵗ·(t + 1)`.
+
+The value vanishes exactly at `t = -1`, the branch point of the Lambert
+pair; that single zero is the reason both real branches are analytic away
+from `-e⁻¹` and neither is analytic at it. -/
+theorem hasDerivAt_mul_exp (t : ℝ) :
+    HasDerivAt (fun w : ℝ => w * Real.exp w) (Real.exp t * (t + 1)) t := by
+  have h0 := (hasDerivAt_id t).mul (Real.hasDerivAt_exp t)
+  have hfun : (fun w : ℝ => w * Real.exp w)
+      =ᶠ[nhds t] (id * Real.exp) :=
+    Filter.Eventually.of_forall fun w => by
+      simp only [Pi.mul_apply, id_eq]
+  exact (h0.congr_of_eventuallyEq hfun).congr_deriv (by
+    simp only [id_eq]
+    ring_nf)
+
 /-- The principal branch is strictly increasing on its domain. -/
 theorem principalLambertW_strictMonoOn :
     StrictMonoOn principalLambertW (Ici (-Real.exp (-1))) := by
@@ -261,34 +283,33 @@ theorem principalLambertW_continuousOn_Ici :
     exact principalLambertW_continuousWithinAt_branchPoint
   · exact (principalLambertW_continuousAt h).continuousWithinAt
 
+/-- **The defining equation holds on a whole neighbourhood** of any point
+above the branch point: `W₀(y)·e^{W₀(y)} = y` for all `y` near `z`.
+
+This is the eventual right-inverse identity that both the inverse-function
+derivative and the inverse-function *analyticity* of the branch consume; it
+is the reason the open domain `(-e⁻¹, ∞)`, rather than the closed one, is
+the natural home of the differential theory. -/
+theorem principalLambertW_mul_exp_eventually {z : ℝ}
+    (hz : -Real.exp (-1) < z) :
+    ∀ᶠ y in nhds z,
+      principalLambertW y * Real.exp (principalLambertW y) = y := by
+  filter_upwards [isOpen_Ioi.mem_nhds hz] with y hy
+  exact principalLambertW_mul_exp (le_of_lt hy)
+
 /-- Inverse-function derivative of the principal branch. -/
 theorem principalLambertW_hasDerivAt {z : ℝ}
     (hz : -Real.exp (-1) < z) :
     HasDerivAt principalLambertW
       (Real.exp (principalLambertW z) *
         (principalLambertW z + 1))⁻¹ z := by
-  have hf : HasDerivAt (fun w : ℝ => w * Real.exp w)
-      (Real.exp (principalLambertW z) * (principalLambertW z + 1))
-      (principalLambertW z) := by
-    have h0 := (hasDerivAt_id (principalLambertW z)).mul
-      (Real.hasDerivAt_exp (principalLambertW z))
-    have hfun : (fun w : ℝ => w * Real.exp w)
-        =ᶠ[nhds (principalLambertW z)] (id * Real.exp) :=
-      Filter.Eventually.of_forall fun w => by
-        simp only [Pi.mul_apply, id_eq]
-    exact (h0.congr_of_eventuallyEq hfun).congr_deriv (by
-      simp only [id_eq]
-      ring_nf)
   have hW := neg_one_lt_principalLambertW hz
   have hderiv : Real.exp (principalLambertW z) *
       (principalLambertW z + 1) ≠ 0 :=
     mul_ne_zero (Real.exp_ne_zero _) (by linarith)
-  have hinverse : ∀ᶠ y in nhds z,
-      principalLambertW y * Real.exp (principalLambertW y) = y := by
-    filter_upwards [isOpen_Ioi.mem_nhds hz] with y hy
-    exact principalLambertW_mul_exp (le_of_lt hy)
-  exact hf.of_local_left_inverse
-    (principalLambertW_continuousAt hz) hderiv hinverse
+  exact (hasDerivAt_mul_exp (principalLambertW z)).of_local_left_inverse
+    (principalLambertW_continuousAt hz) hderiv
+    (principalLambertW_mul_exp_eventually hz)
 
 /-- The derivative of the principal branch is strictly positive on
 the open domain. -/

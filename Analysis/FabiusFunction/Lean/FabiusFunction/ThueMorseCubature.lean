@@ -59,9 +59,13 @@ noncomputable def nestedDyadicIntegral : ℕ → (ℝ → ℝ) → ℝ → ℝ �
   | 0, g, x, _ => g x
   | m + 1, g, x, h => ∫ t in (0 : ℝ)..h, nestedDyadicIntegral m g (x + t) (2 * h)
 
+/-- The empty nest of integrations is evaluation: `I_0 g x h = g x`. -/
 @[simp] theorem nestedDyadicIntegral_zero (g : ℝ → ℝ) (x h : ℝ) :
     nestedDyadicIntegral 0 g x h = g x := rfl
 
+/-- Peeling the outermost integration of the nested dyadic integral, with
+the step doubling at each level.  This is the defining recursion, exposed
+so that clients need not unfold the definition. -/
 theorem nestedDyadicIntegral_succ (m : ℕ) (g : ℝ → ℝ) (x h : ℝ) :
     nestedDyadicIntegral (m + 1) g x h
       = ∫ t in (0 : ℝ)..h, nestedDyadicIntegral m g (x + t) (2 * h) := rfl
@@ -328,6 +332,9 @@ noncomputable def nestedUnitIntegral : ℕ → (ℝ → ℝ) → ℝ → ℝ →
   | 0, g, x, _ => g x
   | m + 1, g, x, h => ∫ u in (0 : ℝ)..1, nestedUnitIntegral m g (x + h * u) (2 * h)
 
+/-- Peeling the outermost integration of the unit-cube form, whose inner
+variable ranges over `[0,1]` while the step doubles.  The defining
+recursion, exposed for clients. -/
 theorem nestedUnitIntegral_succ (m : ℕ) (g : ℝ → ℝ) (x h : ℝ) :
     nestedUnitIntegral (m + 1) g x h
       = ∫ u in (0 : ℝ)..1, nestedUnitIntegral m g (x + h * u) (2 * h) := rfl

@@ -207,10 +207,12 @@ def main(argv):
         if note:
             print(note)
             continue
-        for kind, label in gaps[:12]:
+        # AUDIT_ALL=1 in the environment lists every gap instead of the first 12.
+        cap = len(gaps) if os.environ.get('AUDIT_ALL') else 12
+        for kind, label in gaps[:cap]:
             print('      %-12s %s' % (kind, label))
-        if len(gaps) > 12:
-            print('      ... and %d more' % (len(gaps) - 12))
+        if len(gaps) > cap:
+            print('      ... and %d more' % (len(gaps) - cap))
 
     print()
     print('TOTAL  cited %d   disclaimed %d   NO POINTER %d'

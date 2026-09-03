@@ -33,19 +33,24 @@ open Filter
 
 namespace Fabius
 
+/-- Zero has no one bits, so `w(0) = 0`. -/
 @[simp] theorem binaryWeight_zero : binaryWeight 0 = 0 := by
   simp [binaryWeight]
 
+/-- One has a single one bit, so `w(1) = 1`. -/
 @[simp] theorem binaryWeight_one : binaryWeight 1 = 1 := by
   rw [binaryWeight, Nat.digits_def' one_lt_two one_pos]
   simp
 
+/-- The Thue-Morse sequence opens with `+1`: `e(0) = (-1)^{w(0)} = 1`. -/
 @[simp] theorem thueMorseSign_zero : thueMorseSign 0 = 1 := by
   simp [thueMorseSign]
 
+/-- `e(1) = -1`, the first sign change. -/
 @[simp] theorem thueMorseSign_one : thueMorseSign 1 = -1 := by
   simp [thueMorseSign]
 
+/-- `e(2) = -1`, since `2 = 10` in binary also has odd digit sum. -/
 @[simp] theorem thueMorseSign_two : thueMorseSign 2 = -1 := by
   rw [thueMorseSign, binaryWeight, Nat.digits_def' one_lt_two two_pos]
   simp
@@ -87,18 +92,14 @@ theorem norm_thueMorseSign_complex (n : ℕ) :
 /-- `(-1)^a = (-1)^b` whenever `a + b` is even, in any monoid with a
 distributive negation — the sign-collapse step of every parity identity
 in the corpus (`ThueMorseValuation.neg_one_pow_eq_of_add_even` is the
-`ℤ` instance). -/
+`ℤ` retyping).  The hypothesis is written as `a + b = 2 * c` rather than
+`Even (a + b)` so that the even sum can be exhibited to `omega` at the
+call sites; `Nat.even_add` then converts it to the parity equivalence
+that Mathlib's `neg_one_pow_congr` consumes. -/
 theorem neg_one_pow_eq_of_add_eq_two_mul {R : Type*} [Monoid R]
     [HasDistribNeg R] {a b c : ℕ} (h : a + b = 2 * c) :
-    ((-1 : R)) ^ a = (-1) ^ b := by
-  have hab : ((-1 : R)) ^ a * (-1) ^ b = 1 := by
-    rw [← pow_add, h, pow_mul, neg_one_sq, one_pow]
-  have hbb : ((-1 : R)) ^ b * (-1) ^ b = 1 := by
-    rw [← pow_add, ← two_mul, pow_mul, neg_one_sq, one_pow]
-  calc ((-1 : R)) ^ a
-      = (-1) ^ a * ((-1) ^ b * (-1) ^ b) := by rw [hbb, mul_one]
-    _ = ((-1) ^ a * (-1) ^ b) * (-1) ^ b := by rw [mul_assoc]
-    _ = (-1) ^ b := by rw [hab, one_mul]
+    ((-1 : R)) ^ a = (-1) ^ b :=
+  neg_one_pow_congr ((Nat.even_add (m := a) (n := b)).mp ⟨c, by omega⟩)
 
 /-- `d ≤ j` implies `d < 2^j`: every index below the exponent lies in
 the dyadic block. -/
