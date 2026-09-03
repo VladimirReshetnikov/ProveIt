@@ -44,13 +44,18 @@ def rStirlingShift (r : ℕ) : ℕ → ℕ → ℕ
 def rStirling (r n k : ℕ) : ℕ :=
   if r ≤ n ∧ r ≤ k then rStirlingShift r (n - r) (k - r) else 0
 
+/-- The shifted `r`-Stirling triangle starts at `1`. -/
 @[simp] theorem rStirlingShift_zero_zero (r : ℕ) : rStirlingShift r 0 0 = 1 := rfl
 
+/-- Row `0` of the shifted `r`-Stirling triangle vanishes beyond
+its first entry. -/
 @[simp] theorem rStirlingShift_zero_succ (r k : ℕ) : rStirlingShift r 0 (k + 1) = 0 := rfl
 
+/-- Column `0` of the shifted `r`-Stirling triangle multiplies by `r` at each step. -/
 theorem rStirlingShift_succ_zero (r n : ℕ) :
     rStirlingShift r (n + 1) 0 = r * rStirlingShift r n 0 := rfl
 
+/-- The shifted `r`-Stirling recurrence. -/
 theorem rStirlingShift_succ_succ (r n k : ℕ) :
     rStirlingShift r (n + 1) (k + 1) =
       (k + 1 + r) * rStirlingShift r n (k + 1) + rStirlingShift r n k := rfl
@@ -88,16 +93,19 @@ section Conv
 
 variable {R : Type*} [CommSemiring R]
 
+/-- The binomial convolution is homogeneous in its left argument. -/
 theorem binomialConv_const_mul_left (c : R) (a b : ℕ → R) (n : ℕ) :
     Bell.binomialConv (fun j => c * a j) b n = c * Bell.binomialConv a b n := by
   rw [Bell.binomialConv_eq_sum_range, Bell.binomialConv_eq_sum_range, Finset.mul_sum]
   exact Finset.sum_congr rfl fun i _ => by ring
 
+/-- The binomial convolution is homogeneous in its right argument. -/
 theorem binomialConv_const_mul_right (c : R) (a b : ℕ → R) (n : ℕ) :
     Bell.binomialConv a (fun j => c * b j) n = c * Bell.binomialConv a b n := by
   rw [Bell.binomialConv_eq_sum_range, Bell.binomialConv_eq_sum_range, Finset.mul_sum]
   exact Finset.sum_congr rfl fun i _ => by ring
 
+/-- The binomial convolution against the zero sequence vanishes. -/
 theorem binomialConv_zero_right (a : ℕ → R) (n : ℕ) :
     Bell.binomialConv a (fun _ => 0) n = 0 := by
   rw [Bell.binomialConv_eq_sum_range]

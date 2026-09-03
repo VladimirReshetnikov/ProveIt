@@ -63,6 +63,7 @@ open Finset PowerSeries SaddleExpansion
 /-- Coefficients of `G(y) = (e^y - 1)/y`: `1/(q+1)!`. -/
 def expm1DivCoefficient (q : ℕ) : ℚ := 1 / ((q + 1).factorial : ℚ)
 
+/-- The series `(e^t - 1)/t` has constant coefficient `1`. -/
 @[simp] theorem expm1DivCoefficient_zero : expm1DivCoefficient 0 = 1 := by
   simp [expm1DivCoefficient]
 
@@ -71,9 +72,12 @@ def expm1DivCoefficient (q : ℕ) : ℚ := 1 / ((q + 1).factorial : ℚ)
 def bernoulliLogCoefficient (n : ℕ) : ℚ :=
   if n = 0 then 0 else bernoulli' n / (n * n.factorial)
 
+/-- The Bernoulli-log coefficient vanishes at index `0`. -/
 @[simp] theorem bernoulliLogCoefficient_zero : bernoulliLogCoefficient 0 = 0 := by
   simp [bernoulliLogCoefficient]
 
+/-- Over `ℚ`, the `n`-th coefficient of Mathlib's `bernoulli'PowerSeries` is
+`bernoulli' n / n!`. -/
 theorem coeff_bernoulli'PowerSeries_rat (n : ℕ) :
     coeff n (bernoulli'PowerSeries ℚ) = bernoulli' n / n.factorial := by
   simp [bernoulli'PowerSeries, coeff_mk]
@@ -161,10 +165,12 @@ theorem expm1Div_logCoeff_eq_bernoulli (n : ℕ) :
 /-- The coefficient family of a power series. -/
 noncomputable def coeffFamily (F : PowerSeries ℚ) : ℕ → ℚ := fun n => coeff n F
 
+/-- Rebuilding a power series from its own coefficient family returns it. -/
 @[simp] theorem massSeries_coeffFamily (F : PowerSeries ℚ) : massSeries (coeffFamily F) = F := by
   ext n
   simp [coeffFamily, coeff_massSeries]
 
+/-- Reading the coefficient family off the series built from `a` returns `a`. -/
 @[simp] theorem coeffFamily_massSeries (a : ℕ → ℚ) : coeffFamily (massSeries a) = a := by
   funext n
   simp [coeffFamily, coeff_massSeries]
@@ -213,6 +219,7 @@ theorem logCoeff_prod_range (A : ℕ → PowerSeries ℚ) (hA : ∀ j, coeff 0 (
 def blockCumulant (m n : ℕ) : ℚ :=
   (n.factorial : ℚ) * ∑ j ∈ range m, ((2 : ℚ) ^ j) ^ n * bernoulliLogCoefficient n
 
+/-- The block cumulant vanishes when the block count is `0`. -/
 @[simp] theorem blockCumulant_zero (m : ℕ) : blockCumulant m 0 = 0 := by
   simp [blockCumulant]
 

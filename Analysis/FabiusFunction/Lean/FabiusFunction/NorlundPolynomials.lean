@@ -38,6 +38,8 @@ noncomputable def norlundSeries (a : ℕ) : (Polynomial ℚ)⟦X⟧ :=
 noncomputable def norlund (a n : ℕ) : Polynomial ℚ :=
   (n.factorial : ℚ) • coeff n (norlundSeries a)
 
+/-- The `n`-th coefficient of the Nörlund series of order `a` is the Nörlund polynomial
+divided by `n!`. -/
 theorem coeff_norlundSeries (a n : ℕ) :
     coeff n (norlundSeries a) = (1 / n.factorial : ℚ) • norlund a n := by
   rw [norlund, smul_smul, one_div_mul_cancel (by positivity), one_smul]

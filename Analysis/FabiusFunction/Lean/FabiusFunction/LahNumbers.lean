@@ -55,10 +55,13 @@ def lahNumber : ℕ → ℕ → ℕ
   | _ + 1, 0 => 0
   | n + 1, k + 1 => (n + k + 1) * lahNumber n (k + 1) + lahNumber n k
 
+/-- The empty set has one partition into no blocks: `L(0,0) = 1`. -/
 @[simp] theorem lahNumber_zero_zero : lahNumber 0 0 = 1 := rfl
 
+/-- The empty set has no partition into a positive number of blocks: `L(0,k+1) = 0`. -/
 @[simp] theorem lahNumber_zero_succ (k : ℕ) : lahNumber 0 (k + 1) = 0 := rfl
 
+/-- A nonempty set has no partition into zero blocks: `L(n+1,0) = 0`. -/
 @[simp] theorem lahNumber_succ_zero (n : ℕ) : lahNumber (n + 1) 0 = 0 := rfl
 
 /-- The Lah recurrence `L(n+1,k+1) = (n+k+1) L(n,k+1) + L(n,k)`. -/

@@ -59,12 +59,15 @@ noncomputable def partialBell (x : ℕ → R) : ℕ → ℕ → R
 termination_by n _ => n
 decreasing_by omega
 
+/-- `B_{0,0} = 1`. -/
 @[simp] theorem partialBell_zero_zero (x : ℕ → R) : partialBell x 0 0 = 1 := by
   rw [partialBell]
 
+/-- `B_{0,k+1} = 0`: no partition of the empty set into `k+1` parts. -/
 @[simp] theorem partialBell_zero_succ (x : ℕ → R) (k : ℕ) : partialBell x 0 (k + 1) = 0 := by
   rw [partialBell]
 
+/-- `B_{n+1,0} = 0`: no partition of a nonempty set into no parts. -/
 @[simp] theorem partialBell_succ_zero (x : ℕ → R) (n : ℕ) : partialBell x (n + 1) 0 = 0 := by
   rw [partialBell]
 

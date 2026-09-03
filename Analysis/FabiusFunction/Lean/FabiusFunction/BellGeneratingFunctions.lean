@@ -46,10 +46,12 @@ sequence. -/
 noncomputable def egfA (a : ℕ → A) : A⟦X⟧ :=
   PowerSeries.mk fun n => algebraMap ℚ A (1 / n.factorial) * a n
 
+/-- The `n`-th coefficient of the exponential generating series of `a` is `a n / n!`. -/
 @[simp] theorem coeff_egfA (a : ℕ → A) (n : ℕ) :
     coeff n (egfA A a) = algebraMap ℚ A (1 / n.factorial) * a n :=
   coeff_mk _ _
 
+/-- The exponential generating series of `a` has constant term `a 0`. -/
 @[simp] theorem constantCoeff_egfA (a : ℕ → A) : constantCoeff (egfA A a) = a 0 := by
   rw [← coeff_zero_eq_constantCoeff_apply, coeff_egfA]
   simp
@@ -141,6 +143,7 @@ theorem eq_zero_of_derivative_eq_mul {D g : A⟦X⟧} (hD : d⁄dX A D = D * g)
 noncomputable def bellWeightSeries (x : ℕ → A) : A⟦X⟧ :=
   egfA A fun j => if j = 0 then 0 else x j
 
+/-- The Bell weight series has zero constant term, so it may be substituted into. -/
 @[simp] theorem constantCoeff_bellWeightSeries (x : ℕ → A) :
     constantCoeff (bellWeightSeries A x) = 0 := by
   rw [bellWeightSeries, constantCoeff_egfA, if_pos rfl]
