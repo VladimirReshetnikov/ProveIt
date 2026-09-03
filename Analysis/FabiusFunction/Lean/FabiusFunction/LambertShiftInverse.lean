@@ -99,7 +99,7 @@ theorem le_shiftedMulExp {u : ℝ} (hu : 0 ≤ u) : u ≤ shiftedMulExp u := by
 theorem exists_shiftedMulExp_eq {z : ℝ} (hz : 0 ≤ z) :
     ∃ u ∈ Icc 0 z, shiftedMulExp u = z := by
   have h := intermediate_value_Icc hz shiftedMulExp_continuous.continuousOn
-  exact h ⟨by rw [shiftedMulExp_zero], le_shiftedMulExp hz⟩
+  exact h ⟨by rw [shiftedMulExp_zero]; exact hz, le_shiftedMulExp hz⟩
 
 /-- The `r = 1` Lambert function: the root `u ≥ 0` of `u e^u + u = z`. -/
 noncomputable def shiftedLambertW (z : ℝ) : ℝ :=
@@ -251,7 +251,7 @@ theorem lambertShift_differentiableOn : DifferentiableOn ℝ lambertShift (inter
 /-- Two-sided Lipschitz bracket for `f` on `[0,∞)`, ordered form. -/
 theorem sub_le_lambertShift_sub {x y : ℝ} (hx : 0 ≤ x) (hxy : x ≤ y) :
     y - x ≤ lambertShift y - lambertShift x := by
-  have h := mul_sub_le_image_sub_of_le_deriv (convex_Ici 0) lambertShift_continuousOn
+  have h := (convex_Ici (0 : ℝ)).mul_sub_le_image_sub_of_le_deriv lambertShift_continuousOn
     lambertShift_differentiableOn
     (fun t ht => one_le_deriv_lambertShift (by rw [interior_Ici] at ht; exact mem_Ioi.mp ht))
     x (mem_Ici.mpr hx) y (mem_Ici.mpr (hx.trans hxy)) hxy
@@ -259,7 +259,7 @@ theorem sub_le_lambertShift_sub {x y : ℝ} (hx : 0 ≤ x) (hxy : x ≤ y) :
 
 theorem lambertShift_sub_le_two_mul_sub {x y : ℝ} (hx : 0 ≤ x) (hxy : x ≤ y) :
     lambertShift y - lambertShift x ≤ 2 * (y - x) :=
-  image_sub_le_mul_sub_of_deriv_le (convex_Ici 0) lambertShift_continuousOn
+  (convex_Ici (0 : ℝ)).image_sub_le_mul_sub_of_deriv_le lambertShift_continuousOn
     lambertShift_differentiableOn
     (fun t ht => deriv_lambertShift_le_two (by rw [interior_Ici] at ht; exact mem_Ioi.mp ht))
     x (mem_Ici.mpr hx) y (mem_Ici.mpr (hx.trans hxy)) hxy

@@ -146,10 +146,10 @@ theorem foldedCoefficient_two_pow_eq_fabiusDyadic (F : BoundedFabius) (hF : IsFa
     congr 1
     push_cast
     rw [sub_div, div_self h2.ne']
-  have hsum : ∑ k ∈ Ico 1 (2 ^ n),
+  have hsum : ∑ k ∈ (Ico 1 (2 ^ n) : Finset ℕ),
         (rvachevUp F ((k : ℝ) / 2 ^ n) : ℂ) *
           Complex.cos ((Real.pi * r.val * k / 2 ^ n : ℝ) : ℂ)
-      = ∑ k ∈ Ico 1 (2 ^ n),
+      = ∑ k ∈ (Ico 1 (2 ^ n) : Finset ℕ),
         ((fabiusDyadic n (2 ^ n - k) : ℝ) : ℂ) *
           Complex.cos ((Real.pi * r.val * k / 2 ^ n : ℝ) : ℂ) := by
     refine Finset.sum_congr rfl fun k hk => ?_
