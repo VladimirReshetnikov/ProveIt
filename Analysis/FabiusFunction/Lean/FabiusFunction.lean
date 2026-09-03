@@ -90,6 +90,7 @@ import FabiusFunction.ExpAddLog
 import FabiusFunction.SquareRootSeries
 import FabiusFunction.PowerSumOrdinaryBell
 import FabiusFunction.StirlingParityBitwise
+import FabiusFunction.StirlingSecondReverseRow
 import FabiusFunction.SymmetricFunctionTransform
 import FabiusFunction.SymmetricFunctionGenerating
 import FabiusFunction.FiniteQBinomialCore
