@@ -1196,6 +1196,53 @@ for _ in range(40):
 check('thm:merged-pochhammer',
       'binomial series (1-z)^{-a} = sum (a)_n z^n/n!, and both splitting laws', bad, t)
 
+# --------------------------------------------- thm:bell-quadratic-differential
+# Compared as a POLYNOMIAL identity in x_1..x_N, not at sample points: B_n is built
+# symbolically from the convolution recurrence and the partials are taken formally.
+# The manuscript's caveat that terms with unavailable variables vanish takes care of itself --
+# B_{n-1} is weighted-homogeneous of weighted degree n-1, so d^2/dx_j dx_{i-j} drops the
+# weighted degree by i and is identically zero at i = n, which is why no x_{n+1} survives.
+def _v_var(i, nv):
+    e = [0] * nv
+    e[i] = 1
+    return {tuple(e): F(1)}
+
+
+def _v_bell(n, nv):
+    B = [{tuple([0] * nv): F(1)}]
+    for m in range(1, n + 1):
+        acc = {}
+        for i in range(1, m + 1):
+            piece = _m_mul(_v_var(i - 1, nv), B[m - i], nv)
+            acc = _m_add(acc, {k: F(comb(m - 1, i - 1)) * v for k, v in piece.items()})
+        B.append(acc)
+    return B
+
+
+bad, t = [], 0
+for n in range(2, 7):
+    nv = n + 2
+    B = _v_bell(n, nv)
+    Bn, Bm1 = B[n], B[n - 1]
+    rhs = {}
+    for i in range(2, n + 1):
+        for j in range(1, i):
+            piece = _m_mul(_m_mul(_v_var(j - 1, nv), _v_var(i - j - 1, nv), nv),
+                           _m_diff(Bm1, i - 2), nv)
+            rhs = _m_add(rhs, {k: F((i - 1) * comb(i - 2, j - 1)) * v
+                               for k, v in piece.items()})
+            d2 = _m_diff(_m_diff(Bm1, j - 1), i - j - 1)
+            if d2:
+                piece = _m_mul(_v_var(i, nv), d2, nv)
+                rhs = _m_add(rhs, {k: F(1, comb(i, j)) * v for k, v in piece.items()})
+        rhs = _m_add(rhs, _m_mul(_v_var(i - 1, nv), _m_diff(Bm1, i - 2), nv))
+    rhs = {k: F(1, n - 1) * v for k, v in rhs.items()}
+    t += 1
+    if rhs != Bn:
+        bad.append(n)
+check('thm:bell-quadratic-differential',
+      'the quadratic differential recurrence for B_n, as a polynomial identity', bad, t)
+
 # --------------------------------------------------------------------- report
 width = max(len(lab) for lab, _, _, _ in RESULTS)
 failed = 0
