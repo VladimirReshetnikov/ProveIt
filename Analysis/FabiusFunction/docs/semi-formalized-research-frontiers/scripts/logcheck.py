@@ -40,8 +40,11 @@ print('multiply defined      : %d' % len(multi))
 print('duplicate destinations: %d' % len(dupdest))
 print('missing cref formats  : %d' % len(crefmiss))
 print('missing files         : %d' % len([l for l in nofile if 'No file' not in l]))
+overvbox = re.findall(r'Overfull \\vbox \((\d+(?:\.\d+)?)pt', log)
 print('overfull hboxes       : %d total, %d over 15pt (max %.1fpt)'
       % (len(overfull), len(big), max(big) if big else 0.0))
+print('overfull vboxes       : %d (max %.1fpt)'
+      % (len(overvbox), max((float(x) for x in overvbox), default=0.0)))
 if undef:
     keys = collections.Counter(re.findall(r"Reference `([^']+)' on page", log))
     print('  first undefined keys : %s'
