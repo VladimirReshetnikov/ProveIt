@@ -72,14 +72,16 @@ theorem norm_alias_term_le (F : BoundedFabius) (hF : IsFabius F) (N : ℕ) [NeZe
   refine (norm_rvachevFourierProduct_le_prefix_div K hxne).trans ?_
   -- `C_K / (π|x|)^K ≤ C_K / (π N|q|/2)^K`, since `|x| ≥ N|q|/2`
   have hden : (Real.pi * (N * |(q : ℝ)| / 2)) ^ K ≤ (Real.pi * |x|) ^ K :=
-    pow_le_pow_left (by positivity) (mul_le_mul_of_nonneg_left hge Real.pi_pos.le) K
+    pow_le_pow_left₀ (by positivity) (mul_le_mul_of_nonneg_left hge Real.pi_pos.le) K
   have hpos1 : 0 < (Real.pi * (N * |(q : ℝ)| / 2)) ^ K := by positivity
+  have hqpos : 0 < |(q : ℝ)| := by linarith
+  have hpi : Real.pi ≠ 0 := Real.pi_ne_zero
   calc (2 : ℝ) ^ (K.choose 2) / (Real.pi * |x|) ^ K
       ≤ (2 : ℝ) ^ (K.choose 2) / (Real.pi * (N * |(q : ℝ)| / 2)) ^ K :=
         div_le_div_of_nonneg_left (by positivity) hpos1 hden
     _ = (2 : ℝ) ^ (K.choose 2) / Real.pi ^ K * (2 / (N : ℝ)) ^ K * |(q : ℝ)| ^ (-(K : ℝ)) := by
-        rw [Real.rpow_neg (abs_nonneg _), Real.rpow_natCast]
-        have hqpos : 0 < |(q : ℝ)| := by linarith
+        rw [Real.rpow_neg (abs_nonneg _), Real.rpow_natCast, mul_pow, div_pow, mul_pow,
+          div_pow]
         field_simp
         ring
 
@@ -103,8 +105,11 @@ theorem norm_foldedCoefficient_sub_le (F : BoundedFabius) (hF : IsFabius F) (N :
   have hbound : ∀ q : ℤ, ‖f' q‖ ≤ g q := by
     intro q
     by_cases hq : q = 0
-    · simp only [hf', hg, if_pos hq, norm_zero, hq, Int.cast_zero, abs_zero]
-      rw [Real.zero_rpow (by exact_mod_cast (by omega : K ≠ 0) : -(K : ℝ) ≠ 0)]
+    · have hKne : -(K : ℝ) ≠ 0 := by
+        have : (K : ℝ) ≠ 0 := by exact_mod_cast (by omega : K ≠ 0)
+        exact neg_ne_zero.mpr this
+      simp only [hf', hg, hq, Int.cast_zero, abs_zero]
+      rw [Real.zero_rpow hKne]
       simp
     · simp only [hf', if_neg hq]
       exact norm_alias_term_le F hF N hr K hq
@@ -112,19 +117,17 @@ theorem norm_foldedCoefficient_sub_le (F : BoundedFabius) (hF : IsFabius F) (N :
   -- `f = f' + (single at 0)`, so `∑' f = ∑' f' + f 0`
   have hsplit : foldedCoefficient F N r = (∑' q : ℤ, f' q) + f 0 := by
     rw [foldedCoefficient_eq_tsum F hF N r]
-    have hdec : (fun q : ℤ => f q) = fun q => f' q + (if q = 0 then f 0 else 0) := by
+    have hdec : f = fun q => f' q + (if q = 0 then f 0 else 0) := by
       funext q
       by_cases hq : q = 0
       · simp [hf', hq]
       · simp [hf', hq]
     have hsingle : Summable fun q : ℤ => if q = 0 then f 0 else 0 :=
       (hasSum_ite_eq (0 : ℤ) (f 0)).summable
-    calc ∑' q : ℤ, rvachevFourier F ((q : ℂ) * N + (r.val : ℂ) / 2)
-        = ∑' q : ℤ, (f' q + if q = 0 then f 0 else 0) := by
-          rw [show (fun q : ℤ => rvachevFourier F ((q : ℂ) * N + (r.val : ℂ) / 2)) = f from rfl,
-            hdec]
-      _ = (∑' q : ℤ, f' q) + f 0 := by
-          rw [tsum_add hf'sum hsingle, tsum_ite_eq]
+    change ∑' q : ℤ, f q = _
+    rw [hdec]
+    simp only []
+    rw [Summable.tsum_add hf'sum hsingle, tsum_ite_eq]
   have hf0 : f 0 = rvachevFourier F ((r.val : ℂ) / 2) := by
     simp [hf]
   rw [hsplit, hf0, add_sub_cancel_right]
@@ -139,8 +142,11 @@ theorem tsum_abs_int_rpow_eq {K : ℕ} (hK : 2 ≤ K) :
     intro k
     rw [Int.cast_neg, abs_neg]
   rw [IntSum.tsum_eq_zero_add_two_mul_tsum_add_one hs heven]
+  have hKne : -(K : ℝ) ≠ 0 := by
+    have : (K : ℝ) ≠ 0 := by exact_mod_cast (by omega : K ≠ 0)
+    exact neg_ne_zero.mpr this
   have h0 : |((0 : ℤ) : ℝ)| ^ (-(K : ℝ)) = 0 := by
-    rw [Int.cast_zero, abs_zero, Real.zero_rpow (by exact_mod_cast (by omega : K ≠ 0))]
+    rw [Int.cast_zero, abs_zero, Real.zero_rpow hKne]
   rw [h0, zero_add]
   congr 1
   refine tsum_congr fun n => ?_
