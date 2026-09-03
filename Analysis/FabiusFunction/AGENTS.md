@@ -409,16 +409,24 @@ when given an invocation of their own.
 changed break anything downstream of it", and those differ by the several hundred
 untouched modules that make the facade an overnight job. Compute the transitive
 dependents of what actually changed and build those in topological order, one
-invocation each, so every dependency is already compiled when its turn comes:
+invocation each, so every dependency is already compiled when its turn comes.
+Two scripts do exactly this:
 
 ```sh
-git diff --name-only <base> HEAD -- Analysis/FabiusFunction/Lean/FabiusFunction
+python3 Analysis/FabiusFunction/scripts/affected_modules.py <base> --stats --out affected.txt
+sh Analysis/FabiusFunction/scripts/validate_affected.sh affected.txt
 ```
 
-then close that set under the reverse of the `import FabiusFunction.*` graph.
+The first closes the change set under the *reverse* `import FabiusFunction.*`
+graph and emits a topological order; `--stats` reports how many of those lack a
+built olean, which is the honest estimate of remaining work. The second drives
+one `lake` invocation per module and writes a log ending in
+`VALIDATE-DONE modules=N failures=M`.
+
 Measured the same night: 59 changed modules closed to 270 dependents, of which
 only 74 lacked an olean — roughly two hours instead of eleven, and it covers
-exactly the risk the edits introduced.
+exactly the risk the edits introduced. The several hundred untouched modules a
+facade build would also compile cannot have been broken by the diff.
 
 ### When to pay a root-module invalidation
 
