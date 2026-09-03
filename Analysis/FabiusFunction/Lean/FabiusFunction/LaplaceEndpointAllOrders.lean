@@ -108,7 +108,7 @@ theorem zeta_term_eq_bernoulli_term (u : ℂ) (r : ℕ) :
             (((4 : ℂ) ^ (r + 1)) - 1)) := by
         rw [hζ, hI]
         field_simp
-        ring
+        try ring
     _ = ((2 : ℂ) ^ (2 * (r + 1) - 1) * ((bernoulli (2 * (r + 1)) : ℚ) : ℂ) *
             u ^ (2 * (r + 1))) /
           (((2 * (r + 1)).factorial : ℂ) * (4 : ℂ) ^ (r + 1) * ((r : ℂ) + 1) *
@@ -118,7 +118,7 @@ theorem zeta_term_eq_bernoulli_term (u : ℂ) (r : ℕ) :
           (2 * ((r : ℂ) + 1) * ((2 * (r + 1)).factorial : ℂ) * (((4 : ℂ) ^ (r + 1)) - 1)) := by
         rw [← h2]
         field_simp
-        ring
+        try ring
 
 /-- **`p2:thm:G-all-orders`.**  On `‖u‖ < 4π`,
 
@@ -181,7 +181,7 @@ theorem prod_negativeLaplaceDyadicFactor_eq_thueMorse {s : ℂ} (hs : s ≠ 0) (
     rw [h2m']
     push_cast
     field_simp
-    ring
+    try ring
   rw [prod_congr rfl hpt]
   exact prod_range_reflect (fun j => 1 - Complex.exp (-(s / 2 ^ m)) ^ (2 ^ j)) m
 

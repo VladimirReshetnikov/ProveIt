@@ -147,19 +147,15 @@ theorem geometricSincProduct_eq_cexp {q z : ℂ} (hq : ‖q‖ < 1) (hz : ‖z�
 theorem geometricSincProduct_pow_mul {q : ℂ} (hq : ‖q‖ < 1) (z : ℂ) (m : ℕ) :
     geometricSincProduct q z =
       (∏ j ∈ range m, complexSinc (π * (q ^ j * z))) * geometricSincProduct q (q ^ m * z) := by
-  -- Every `tprod` below is taken from `hasProd_geometricSincProduct`, so the
-  -- instances agree syntactically and no definitional unfolding is needed.
-  have hP := hasProd_geometricSincProduct q z hq
-  have h := hP.multipliable.prod_mul_tprod_nat_add m
-  rw [hP.tprod_eq] at h
-  rw [← h]
-  congr 1
-  have hP2 := hasProd_geometricSincProduct q (q ^ m * z) hq
-  rw [← hP2.tprod_eq]
-  refine tprod_congr fun i => ?_
-  congr 1
-  rw [pow_add]
-  ring
+  have h := (geometricSincProductFactors_multipliable q z hq).prod_mul_tprod_nat_add m
+  beta_reduce at h
+  have h2 : (∏' i : ℕ, complexSinc (Real.pi * (q ^ (i + m) * z)))
+      = geometricSincProduct q (q ^ m * z) := by
+    unfold geometricSincProduct
+    exact tprod_congr fun i => by rw [pow_add, mul_assoc]
+  rw [h2] at h
+  unfold geometricSincProduct
+  exact h.symm
 
 /-- **The all-orders prefix form** at ratio `q`: on `‖q^m z‖ < 1`,
 
