@@ -205,9 +205,11 @@ theorem isUnit_constantCoeff_right (hψ : φ * ψ = 1) : IsUnit (constantCoeff �
   have h' : constantCoeff ψ * constantCoeff φ = 1 := by rw [mul_comm]; exact h
   exact IsUnit.of_mul_eq_one _ h'
 
+/-- Multiplying by `X` kills the constant term. -/
 theorem constantCoeff_X_mul (f : R⟦X⟧) : constantCoeff (X * f) = 0 := by
   rw [← coeff_zero_eq_constantCoeff_apply, coeff_zero_X_mul]
 
+/-- Multiplying by `X` moves the constant term into degree one. -/
 theorem coeff_one_X_mul (f : R⟦X⟧) : coeff 1 (X * f) = constantCoeff f := by
   rw [coeff_succ_X_mul, coeff_zero_eq_constantCoeff_apply]
 
@@ -217,6 +219,7 @@ noncomputable def solution (hψ : φ * ψ = 1) : R⟦X⟧ :=
   substInvOfIsUnit (X * ψ)
     (by rw [coeff_one_X_mul]; exact isUnit_constantCoeff_right φ ψ hψ)
 
+/-- The Lagrange solution has zero constant term, so it may be substituted into. -/
 theorem hasSubst_solution (hψ : φ * ψ = 1) : HasSubst (solution φ ψ hψ) :=
   HasSubst.of_constantCoeff_zero' (by rw [solution, constantCoeff_substInvOfIsUnit])
 

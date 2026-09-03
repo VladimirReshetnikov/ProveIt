@@ -368,10 +368,7 @@ private theorem false_of_window_eq_of_lt (ℓ : ℕ)
   -- transport to signs and contradict aperiodicity
   apply thueMorseSign_not_eventually_periodic
   refine ⟨b - a, a, by omega, fun n hn => ?_⟩
-  have hb := hper n hn
-  have h1 := thueMorseSign_eq_one_sub_two_mul_bit (n + (b - a))
-  have h2 := thueMorseSign_eq_one_sub_two_mul_bit n
-  omega
+  exact (thueMorseBit_eq_iff_thueMorseSign_eq _ _).mp (hper n hn)
 
 /-- **Strict growth** (Morse–Hedlund): `p(ℓ) < p(ℓ+1)`. -/
 theorem thueMorseComplexity_lt_succ (ℓ : ℕ) :

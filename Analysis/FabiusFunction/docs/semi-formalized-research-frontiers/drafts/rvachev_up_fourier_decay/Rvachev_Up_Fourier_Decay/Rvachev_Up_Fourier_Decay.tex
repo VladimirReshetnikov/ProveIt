@@ -3937,6 +3937,20 @@ Global dyadic Pochhammer and reciprocal-Gamma products (not the extracted tail s
    \decl{dyadicReciprocalGamma_mul_neg},
    \decl{rvachevFourierProduct_eq_one_div_dyadicGamma_mul}
  & \Cref{thm:pochhammer-tail}\\
+Sharp two-step logarithmic inequality \(\tfrac23\log s(x)+\tfrac13\log s(Tx)\le\log\lambda\),
+in its cube form \(s(x)^2s(Tx)\le\lambda^3\), and the equality value along the orbit of
+\(1/3\)
+ & \decl{abs_sin_sq_mul_abs_sin_two_mul_le}, \decl{abs_sin_two_pow_third}
+ & \Cref{lem:sharp-sine-inequality} (the ``precisely when'' clause, that equality forces
+   \(x\equiv1/3,2/3\), is not formal)\\
+Integer-ratio prefix factorization of \(\GeometricSincProduct{b}\) into its first
+\(N\) sinc factors times \(\GeometricSincProduct{b}(b^{-N}y)\), and the all-orders zeta
+expansion of that tail on \(|b^{-N}y|<1\)
+ & \decl{geometricSincProduct_pow_mul}, \decl{geometricSincProduct_eq_cexp},
+   \decl{geometricSincProduct_eq_prefix_mul_cexp},
+   \decl{base_geometric_sinc_eq_prefix_mul_cexp}
+ & \Cref{thm:b-adic-shell} (the algebraic core only: the potential \(\phi\) and its
+   Birkhoff sum along \(T_b\) are not formal)\\
 \bottomrule
 \end{longtable}
 
@@ -4026,7 +4040,10 @@ The remaining frontier is now explicit rather than hidden in prose:
       \Cref{prop:rho1-rigorous-bound}; the existing Lean Bernstein certificate is a
       distinct, wider enclosure;
 \item the integer-$b$ shell law, typical exponent, covariance, variance, and general
-      martingale decomposition from \Cref{sec:integer-ratios};
+      martingale decomposition from \Cref{sec:integer-ratios}, and the integer-ratio zero
+      divisor of \Cref{cor:integer-ratio-zero-divisor} (its dyadic instance is exact,
+      \decl{analyticOrderAt_rvachevFourierProduct_int}; the base-\(b\) multiplicity
+      \(1+\BasePowerValuation{b}(|M|)\) is not);
 \item nothing of \Cref{prop:total-energy} beyond its decimal: both equalities are
       formal (the Plancherel half in \lean{FabiusSquareEnergyFourier}, the half-integer
       sampling half in \lean{RvachevHalfIntegerEnergy}); the numerical value

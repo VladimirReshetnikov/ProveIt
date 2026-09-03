@@ -81,6 +81,43 @@ theorem deriv_fabiusInv_ne_zero (F : BoundedFabius) (hF : IsFabius F)
 
 /-! ## The inverse is analytic at no point of the unit interval -/
 
+/-- The inverse is not analytic at the left clamping point: it vanishes to
+the left, so — being analytic — it would vanish on both sides, contradicting
+strict monotonicity on the unit interval. -/
+theorem fabiusInv_not_analyticAt_zero (F : BoundedFabius) (hF : IsFabius F) :
+    ¬ AnalyticAt ℝ (fabiusInv F hF) 0 := by
+  intro hana
+  have hzero : ∀ᶠ t in 𝓝 (0 : ℝ), fabiusInv F hF t = 0 := by
+    rcases hana.eventually_eq_zero_or_eventually_ne_zero with h | h
+    · exact h
+    · exfalso
+      have hleft : ∀ᶠ t in 𝓝[<] (0 : ℝ), fabiusInv F hF t = 0 := by
+        filter_upwards [self_mem_nhdsWithin] with t ht
+        exact fabiusInv_eq_zero_of_nonpos F hF (le_of_lt ht)
+      have hle : 𝓝[<] (0 : ℝ) ≤ 𝓝[≠] (0 : ℝ) :=
+        nhdsWithin_mono _ fun t ht => ne_of_lt ht
+      obtain ⟨t, ht₁, ht₂⟩ := ((h.filter_mono hle).and hleft).exists
+      exact ht₁ ht₂
+  obtain ⟨t, ht0, htpos, htlt⟩ : ∃ t : ℝ, fabiusInv F hF t = 0 ∧ 0 < t ∧ t < 1 := by
+    have hev : ∀ᶠ t in 𝓝[>] (0 : ℝ), fabiusInv F hF t = 0 ∧ 0 < t ∧ t < 1 := by
+      filter_upwards [nhdsWithin_le_nhds hzero, self_mem_nhdsWithin,
+        nhdsWithin_le_nhds (Iio_mem_nhds (zero_lt_one : (0 : ℝ) < 1))] with t h1 h2 h3
+      exact ⟨h1, h2, h3⟩
+    exact hev.exists
+  have h0' : fabiusInv F hF 0 = 0 := fabiusInv_eq_zero_of_nonpos F hF le_rfl
+  have hlt := strictMonoOn_fabiusInv F hF (left_mem_Icc.2 zero_le_one)
+    ⟨le_of_lt htpos, le_of_lt htlt⟩ htpos
+  rw [h0', ht0] at hlt
+  exact lt_irrefl _ hlt
+
+/-- The inverse is not analytic at the right clamping point: the reflection
+of the left one, through `fabiusInv_analyticAt_one_sub_iff`. -/
+theorem fabiusInv_not_analyticAt_one (F : BoundedFabius) (hF : IsFabius F) :
+    ¬ AnalyticAt ℝ (fabiusInv F hF) 1 := by
+  intro hana
+  apply fabiusInv_not_analyticAt_zero F hF
+  exact (fabiusInv_analyticAt_one_sub_iff F hF 0).mp (by simpa using hana)
+
 /-- **The inverse Fabius function is real analytic at no point of `[0,1]`.**
 
 In the interior this is the inverse function theorem run backwards: an
@@ -93,59 +130,11 @@ theorem fabiusInv_not_analyticAt (F : BoundedFabius) (hF : IsFabius F)
     {y : ℝ} (hy : y ∈ Icc (0 : ℝ) 1) : ¬ AnalyticAt ℝ (fabiusInv F hF) y := by
   intro hana
   rcases eq_or_lt_of_le hy.1 with h0 | h0
-  · -- `y = 0`: the inverse vanishes to the left, hence — being analytic — on both sides.
-    subst h0
-    have hzero : ∀ᶠ t in 𝓝 (0 : ℝ), fabiusInv F hF t = 0 := by
-      rcases hana.eventually_eq_zero_or_eventually_ne_zero with h | h
-      · exact h
-      · exfalso
-        have hleft : ∀ᶠ t in 𝓝[<] (0 : ℝ), fabiusInv F hF t = 0 := by
-          filter_upwards [self_mem_nhdsWithin] with t ht
-          exact fabiusInv_eq_zero_of_nonpos F hF (le_of_lt ht)
-        have hle : 𝓝[<] (0 : ℝ) ≤ 𝓝[≠] (0 : ℝ) :=
-          nhdsWithin_mono _ fun t ht => ne_of_lt ht
-        obtain ⟨t, ht₁, ht₂⟩ := ((h.filter_mono hle).and hleft).exists
-        exact ht₁ ht₂
-    obtain ⟨t, ht0, htpos, htlt⟩ : ∃ t : ℝ, fabiusInv F hF t = 0 ∧ 0 < t ∧ t < 1 := by
-      have hev : ∀ᶠ t in 𝓝[>] (0 : ℝ), fabiusInv F hF t = 0 ∧ 0 < t ∧ t < 1 := by
-        filter_upwards [nhdsWithin_le_nhds hzero, self_mem_nhdsWithin,
-          nhdsWithin_le_nhds (Iio_mem_nhds (zero_lt_one : (0 : ℝ) < 1))] with t h1 h2 h3
-        exact ⟨h1, h2, h3⟩
-      exact hev.exists
-    have h0' : fabiusInv F hF 0 = 0 := fabiusInv_eq_zero_of_nonpos F hF le_rfl
-    have hlt := strictMonoOn_fabiusInv F hF (left_mem_Icc.2 zero_le_one)
-      ⟨le_of_lt htpos, le_of_lt htlt⟩ htpos
-    rw [h0', ht0] at hlt
-    exact lt_irrefl _ hlt
+  · subst h0
+    exact fabiusInv_not_analyticAt_zero F hF hana
   · rcases eq_or_lt_of_le hy.2 with h1 | h1
-    · -- `y = 1`: the same argument, reflected.
-      subst h1
-      have hsub : AnalyticAt ℝ (fun t : ℝ => fabiusInv F hF t - 1) 1 :=
-        hana.fun_sub (analyticAt_const (v := (1 : ℝ)))
-      have hzero : ∀ᶠ t in 𝓝 (1 : ℝ), fabiusInv F hF t - 1 = 0 := by
-        rcases hsub.eventually_eq_zero_or_eventually_ne_zero with h | h
-        · exact h
-        · exfalso
-          have hright : ∀ᶠ t in 𝓝[>] (1 : ℝ), fabiusInv F hF t - 1 = 0 := by
-            filter_upwards [self_mem_nhdsWithin] with t ht
-            rw [fabiusInv_eq_one_of_one_le F hF (le_of_lt ht), sub_self]
-          have hle : 𝓝[>] (1 : ℝ) ≤ 𝓝[≠] (1 : ℝ) :=
-            nhdsWithin_mono _ fun t ht => ne_of_gt ht
-          obtain ⟨t, ht₁, ht₂⟩ := ((h.filter_mono hle).and hright).exists
-          exact ht₁ ht₂
-      obtain ⟨t, ht0, htpos, htlt⟩ :
-          ∃ t : ℝ, fabiusInv F hF t - 1 = 0 ∧ 0 < t ∧ t < 1 := by
-        have hev : ∀ᶠ t in 𝓝[<] (1 : ℝ), fabiusInv F hF t - 1 = 0 ∧ 0 < t ∧ t < 1 := by
-          filter_upwards [nhdsWithin_le_nhds hzero,
-            nhdsWithin_le_nhds (Ioi_mem_nhds (zero_lt_one : (0 : ℝ) < 1)),
-            self_mem_nhdsWithin] with t h1 h2 h3
-          exact ⟨h1, h2, h3⟩
-        exact hev.exists
-      have h1' : fabiusInv F hF 1 = 1 := fabiusInv_eq_one_of_one_le F hF le_rfl
-      have hlt := strictMonoOn_fabiusInv F hF ⟨le_of_lt htpos, le_of_lt htlt⟩
-        (right_mem_Icc.2 zero_le_one) htlt
-      rw [h1', sub_eq_zero.1 ht0] at hlt
-      exact lt_irrefl _ hlt
+    · subst h1
+      exact fabiusInv_not_analyticAt_one F hF hana
     · -- the interior: the inverse function theorem, run backwards
       have hyIoo : y ∈ Ioo (0 : ℝ) 1 := ⟨h0, h1⟩
       have hx₀ : fabiusInv F hF y ∈ Ioo (0 : ℝ) 1 := fabiusInv_mem_Ioo F hF hyIoo

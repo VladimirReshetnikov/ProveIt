@@ -81,7 +81,7 @@ theorem zeta_term_eq_bernoulli_term (u : ℂ) (r : ℕ) :
   have hζ : (evenZeta (r + 1) : ℂ)
       = -e * 2 ^ (2 * (r + 1) - 1) * (π : ℂ) ^ (2 * (r + 1)) *
           ((bernoulli (2 * (r + 1)) : ℚ) : ℂ) / ((2 * (r + 1)).factorial : ℂ) := by
-    rw [evenZeta_eq_bernoulli r.succ_ne_zero]
+    rw [evenZeta_eq_bernoulli (k := r + 1) (by omega)]
     push_cast
     rw [he, pow_succ]
     ring
@@ -97,14 +97,28 @@ theorem zeta_term_eq_bernoulli_term (u : ℂ) (r : ℕ) :
   have h4' : (4 : ℂ) ^ (r + 1) ≠ 0 := pow_ne_zero _ (by norm_num)
   have hf : ((2 * (r + 1)).factorial : ℂ) ≠ 0 := by exact_mod_cast Nat.factorial_ne_zero _
   have hr : ((r : ℂ) + 1) ≠ 0 := Nat.cast_add_one_ne_zero r
-  rw [hζ, hI, ← h2]
   have h2' : (2 : ℂ) ^ (2 * (r + 1) - 1) ≠ 0 := pow_ne_zero _ two_ne_zero
-  field_simp
-  linear_combination
-    (2 * (2 : ℂ) ^ (2 * (r + 1) - 1) * (π : ℂ) ^ (2 * (r + 1)) *
-      ((bernoulli (2 * (r + 1)) : ℚ) : ℂ) * u ^ (2 * (r + 1)) * ((r : ℂ) + 1) *
-      ((2 * (r + 1)).factorial : ℂ) * ((2 : ℂ) ^ (2 * (r + 1) - 1) * 2 - 1) *
-      (2 : ℂ) ^ (2 * (r + 1) - 1) * 2 * (2 : ℂ) ^ (2 * (r + 1) - 1) * 2) * he2
+  -- Isolate the sign product `e * e`, evaluate it, then trade
+  -- `2^(2k-1) · 2` for `4^k`.
+  calc -((evenZeta (r + 1) : ℂ) * (Complex.I * (-u) / (4 * π)) ^ (2 * (r + 1)) * 4 ^ (r + 1) /
+          (((r : ℂ) + 1) * (((4 : ℂ) ^ (r + 1)) - 1)))
+      = (e * e) * ((2 : ℂ) ^ (2 * (r + 1) - 1) * ((bernoulli (2 * (r + 1)) : ℚ) : ℂ) *
+            u ^ (2 * (r + 1))) /
+          (((2 * (r + 1)).factorial : ℂ) * (4 : ℂ) ^ (r + 1) * ((r : ℂ) + 1) *
+            (((4 : ℂ) ^ (r + 1)) - 1)) := by
+        rw [hζ, hI]
+        field_simp
+        try ring
+    _ = ((2 : ℂ) ^ (2 * (r + 1) - 1) * ((bernoulli (2 * (r + 1)) : ℚ) : ℂ) *
+            u ^ (2 * (r + 1))) /
+          (((2 * (r + 1)).factorial : ℂ) * (4 : ℂ) ^ (r + 1) * ((r : ℂ) + 1) *
+            (((4 : ℂ) ^ (r + 1)) - 1)) := by
+        rw [he2, one_mul]
+    _ = ((bernoulli (2 * (r + 1)) : ℚ) : ℂ) * u ^ (2 * (r + 1)) /
+          (2 * ((r : ℂ) + 1) * ((2 * (r + 1)).factorial : ℂ) * (((4 : ℂ) ^ (r + 1)) - 1)) := by
+        rw [← h2]
+        field_simp
+        try ring
 
 /-- **`p2:thm:G-all-orders`.**  On `‖u‖ < 4π`,
 
@@ -161,13 +175,15 @@ theorem prod_negativeLaplaceDyadicFactor_eq_thueMorse {s : ℂ} (hs : s ≠ 0) (
     rw [← Complex.exp_nat_mul]
     congr 2
     have h2n : ((2 : ℂ) ^ (n + 1)) ≠ 0 := pow_ne_zero _ two_ne_zero
-    have h2m : ((2 : ℂ) ^ m) ≠ 0 := pow_ne_zero _ two_ne_zero
-    rw [← he, pow_add]
+    have h2k : ((2 : ℂ) ^ (m - 1 - n)) ≠ 0 := pow_ne_zero _ two_ne_zero
+    have h2m' : (2 : ℂ) ^ m = 2 ^ (n + 1) * 2 ^ (m - 1 - n) := by
+      rw [← pow_add, he]
+    rw [h2m']
     push_cast
     field_simp
-    ring
+    try ring
   rw [prod_congr rfl hpt]
-  exact (prod_range_reflect (fun j => 1 - Complex.exp (-(s / 2 ^ m)) ^ (2 ^ j)) m).symm
+  exact prod_range_reflect (fun j => 1 - Complex.exp (-(s / 2 ^ m)) ^ (2 ^ j)) m
 
 /-- **`p2:eq:full-G-TM`**: for `s ≠ 0`,
 

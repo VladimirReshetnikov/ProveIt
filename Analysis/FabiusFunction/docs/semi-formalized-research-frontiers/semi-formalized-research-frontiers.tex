@@ -900,7 +900,7 @@ For a strict increasing inverse pair on \([0,1]\), the lower bound
 \(\alpha(p)\le f(x+2^{-p})-f(x)\) for every
 \(x\in[0,1-2^{-p}]\) yields the inverse modulus, sequential computability,
 and effective uniform continuity.  The total result is precisely the clamped
-extension \(x\mapsto g(\nolinkurl{unitClamp}(x))\), not a claim about the
+extension \(x\mapsto g(\lean{unitClamp}(x))\), not a claim about the
 unclamped values of \(g\) outside \([0,1]\). &
 \nolinkurl{EffectivelyUniformContinuousOn},
 \nolinkurl{ComputablePositiveRationalSequence},
@@ -16678,7 +16678,7 @@ computable dyadic approximation of \(f\) and both interval maps, the next
 theorem proves sequential computability and effective uniform continuity of
 \(g\) on the unit interval.  The last proves
 \path{IsComputableRealFunction} only for
-\(x\mapsto g(\path{unitClamp}(x))\), which agrees with \(g\) on \([0,1]\) but
+\(x\mapsto g(\lean{unitClamp}(x))\), which agrees with \(g\) on \([0,1]\) but
 does not constrain its unclamped values outside that interval.  The separate
 \path{FabiusInverseComputable.lean} has zero public definitions and the single
 public theorem \path{Fabius.fabiusInv_isComputableRealFunction}.  It
@@ -16918,6 +16918,213 @@ snapshot 25 August 2026.
 
 \renewcommand{\arraystretch}{1}
 % END SYNTHESIZED TOPIC: inverse and small-argument saddle analysis
+
+% BEGIN FRONTIER PART: general-nome value identity (added 2026-09-02)
+\clearpage
+\part{The General-Nome Value Identity for the Geometric Fabius Recursion}
+
+\begin{boxedremark}
+\textbf{Status.}  Everything in this part is a frontier claim: numerically
+verified in exact rational arithmetic, not formalized.  The two negative
+results of \Cref{genq:sec:negative} \emph{are} settled, in the sense that a
+single exact counterexample refutes each; they are recorded here because both
+refuted statements are the ones a reader would guess.  Added 2 September 2026.
+\end{boxedremark}
+
+\section{The dyadic identity and the shape of its deformation}
+\label{genq:sec:statement}
+
+The primary exposition's central dyadic result evaluates the Fabius function at
+the points \(2^{-n}\) through a \(q\)-binomial--Thue--Morse sum at the fixed
+nome \(q=1/2\):
+\begin{equation}
+\label{genq:eq:dyadic}
+  F\!\left(2^{-n}\right)
+  =\frac{1}{2^{n^{2}}\QPochhammer{1/2}{1/2}{n}}
+   \sum_{k=0}^{n}
+     \frac{\GaussianBinomial nk{1/2}}{4^{\Btri k}\,(n+k)!}
+     \sum_{r<2^{k}}\ThueMorseSign r\,\bigl(r-2^{k}\bigr)^{n+k}.
+\end{equation}
+This is formalized: \lean{fabiusAtInverseTwoPow_eq_qBinomialThueMorse_sum} in
+\path{FabiusQBinomialFormula.lean}.  Its prefactor is now also identified with a
+group order, \(2^{n^{2}}\QPochhammer{1/2}{1/2}{n}=\lvert\mathrm{GL}_{n}(\mathbb
+F_{2})\rvert\), by \lean{two_pow_nat_sq_mul_qPochhammer_half_eq_card_GL} in
+\path{FabiusGeneralLinearDenominator.lean}.
+
+The nome \(1/2\) is written into \eqref{genq:eq:dyadic} in three separate
+places, and it is not obvious which of them are essential.  Two of the three are
+not.  The outer Gaussian weights are governed by the finite \(q\)-binomial
+theorem, which the atlas proves over an arbitrary commutative ring
+(\lean{finite_qBinomial_theorem}, \path{FiniteQBinomialCore.lean}); and the
+inner signed block is governed by a powerset annihilation engine stated for an
+\emph{arbitrary} family of step weights over an arbitrary commutative ring
+(\lean{sum_powerset_neg_one_pow_eval} and
+\lean{sum_powerset_neg_one_pow_pow_card}, \path{ThueMorseSparseProuhet.lean}),
+in which the dyadic steps \(2^{j}\) are never used.  Only the left-hand side is
+genuinely base-two: \lean{halfMoment} hard-codes the denominator
+\((n+2)(2^{n+1}-1)\), and the formal-series engine of the proof rescales by
+\(2\) throughout.
+
+The deformation below replaces the steps \(2^{j}\) by \(q^{-j}\) and the
+half-moment recursion by its \(q\)-analogue.
+
+\begin{definition}[The \(q\)-deformed data]
+\label{genq:def:data}
+Let \(K\) be a field of characteristic zero and let \(q\in K\) satisfy
+\(q^{m}\neq1\) for \(1\le m\le n\); equivalently
+\(\QPochhammer qqn\neq0\), which in particular forces \(q\neq0,1\).  Define
+\begin{align}
+  d_{q}(0)&=1, &
+  d_{q}(n+1)&=\frac{\displaystyle\sum_{k=0}^{n}\binom{n+2}{k}d_{q}(k)}
+                  {(n+2)\bigl(q^{-(n+1)}-1\bigr)}, &
+  a_{q}(n)&=\frac{d_{q}(n)}{n!},
+\end{align}
+and, for \(k,d\in\NaturalNumbers\) and \(x\in K\), the \emph{\(q\)-Prouhet
+block}
+\begin{equation}
+\label{genq:eq:block}
+  P_{q}(k,d,x)=\sum_{T\subseteq\{0,\dots,k-1\}}(-1)^{\lvert T\rvert}
+    \Bigl(x+\sum_{j\in T}q^{-j}\Bigr)^{d}.
+\end{equation}
+\end{definition}
+
+At \(q=1/2\) the Mersenne factor reappears, since
+\(q^{-(n+1)}-1=2^{n+1}-1\); this is precisely why
+\(\QPochhammer{1/2}{1/2}{n}\) occurs in \eqref{genq:eq:dyadic}, and
+\(d_{1/2}=\lean{halfMoment}\), \(a_{1/2}=\lean{fabiusRecurrenceSequence}\).
+
+\begin{candidate}[General-nome value identity]
+\label{genq:cand:main}
+With the data of \Cref{genq:def:data}, for every \(n\in\NaturalNumbers\),
+\begin{equation}
+\label{genq:eq:general}
+  q^{\Btri n}\,a_{q}(n)
+  =\frac{1}{q^{-n^{2}}\QPochhammer qqn}
+   \sum_{k=0}^{n}
+     \frac{\GaussianBinomial nkq}{q^{-2\Btri k}\,(n+k)!}\,
+     P_{q}\Bigl(k,\;n+k,\;-\sum_{j<k}q^{-j}\Bigr).
+\end{equation}
+\end{candidate}
+
+Note the exponent \(q^{+\Btri n}\) on the left, and that the inner block is
+centred at \(-\sum_{j<k}q^{-j}\), the negative of the largest node of the
+block, rather than at any single power of \(q\).  Both points are sharp; see
+\Cref{genq:sec:negative}.
+
+\section{Numerical evidence}
+\label{genq:sec:evidence}
+
+\Cref{genq:cand:main} was checked in exact rational arithmetic --- no floating
+point --- for \(q\in\{1/2,\;1/3,\;2/5,\;3/4,\;1/4\}\) and \(0\le n\le6\), both
+sides agreeing as rationals in all thirty-five cases.  At \(q=1/2\) the left
+side reproduces the Fabius dyadic values
+\[
+  1,\quad \tfrac12,\quad \tfrac5{72},\quad \tfrac1{288},\quad
+  \tfrac{143}{2073600},\quad \tfrac{19}{33177600},
+\]
+which are exactly the values \eqref{genq:eq:dyadic} produces, so
+\eqref{genq:eq:general} contains the formalized dyadic identity as its
+\(q=1/2\) specialization.
+
+That specialization is a corollary and not a restatement.  Under the Boolean
+cube reindexing \(T\mapsto r=\sum_{j\in T}2^{j}\)
+(\lean{sum_powerset_two_pow}), \(P_{1/2}(k,d,x)\) becomes
+\(\sum_{r<2^{k}}\ThueMorseSign r\,(x+r)^{d}\) with \(x=-(2^{k}-1)\), whereas
+\eqref{genq:eq:dyadic} uses \(x=-2^{k}\).  The two centrings differ term by
+term and agree only after the full \(\GaussianBinomial nkq\)-weighted sum over
+\(k\) has been taken; a centring-shift lemma is therefore part of the
+obligation below.
+
+\section{Two refutations}
+\label{genq:sec:negative}
+
+Both statements refuted here are the natural guesses, which is why they are
+recorded rather than passed over.
+
+\begin{warning}[The naive centring is wrong off the dyadic point]
+\label{genq:warn:centring}
+Replacing the centring \(-\sum_{j<k}q^{-j}\) in \eqref{genq:eq:general} by the
+single power \(-q^{-k}\) --- the literal transcription of the \(-2^{k}\) of
+\eqref{genq:eq:dyadic} --- yields a statement that is true for every \(n\) at
+\(q=1/2\) and false at every \(n\ge1\) for \(q=1/3\) and \(q=3/4\), by exact
+computation.  The dyadic case is thus accidental: at \(q=1/2\),
+\(\sum_{j<k}2^{j}=2^{k}-1\) and the discrepancy is absorbed by the outer sum.
+\end{warning}
+
+\begin{warning}[The left-hand side is not a distribution function]
+\label{genq:warn:cdf}
+It is tempting to read \(q^{\Btri n}a_{q}(n)\) as the geometric-uniform
+distribution function \lean{geometricUniformCDF} evaluated at \(q^{n}\),
+because that reading is correct at \(q=1/2\), where it is the Fabius
+CDF.  It is false in general: at \(q=3/4\) and \(n=1\) the recursion gives
+\(d_{q}(1)=\tfrac32\) and \(\Btri1=0\), so the left side of
+\eqref{genq:eq:general} equals \(3/2>1\) and cannot be the value of any
+distribution function.  Whether some renormalization of \(a_{q}\) admits a
+probabilistic reading is open; the naive one does not.
+\end{warning}
+
+\Cref{genq:warn:cdf} is worth stating explicitly because the corresponding
+dyadic statement is both true and formalized
+(\lean{geometricUniformCDF_one_half_eq_fabiusReal},
+\path{ProbabilityRepresentation.lean}), so the false generalization inherits an
+unusually strong appearance of support.
+
+\section{What remains to be formalized}
+\label{genq:sec:obligation}
+
+\begin{obligation}[General-nome value identity]
+\label{genq:obl:main}
+Prove \eqref{genq:eq:general} in Lean.  Three components are already available
+at the required generality and need only to be instantiated:
+\begin{enumerate}[label=(\roman*)]
+  \item the outer Gaussian weights, by \lean{finite_qBinomial_theorem} over an
+        arbitrary commutative ring;
+  \item the vanishing of \(P_{q}(k,d,x)\) for \(d<k\) and its sharp value at
+        \(d=k\), by \lean{sum_powerset_neg_one_pow_eval} and
+        \lean{sum_powerset_neg_one_pow_pow_card} at the step weights
+        \(w_{j}=q^{-j}\), whose product \(\prod_{j<k}q^{-j}=q^{-\Btri k}\)
+        supplies the denominator \(q^{-2\Btri k}\) after squaring;
+  \item the centring-shift lemma of \Cref{genq:sec:evidence}.
+\end{enumerate}
+The genuinely missing components are:
+\begin{enumerate}[label=(\alph*)]
+  \item a definition of \(d_{q}\) and \(a_{q}\) --- the atlas has only the
+        base-two \lean{halfMoment} and \lean{fabiusRecurrenceSequence}, whose
+        denominator \((n+2)(2^{n+1}-1)\) is hard-coded; and
+  \item a nome-general replacement for the formal-series engine of
+        \path{FabiusQBinomialFormula.lean}, whose
+        \lean{recurrenceSeries_rescale_two} rescales by \(2\) and whose
+        \lean{refinementFactorSeries} is a product over
+        \(\mathrm{rescale}(-2^{j})\).  The abstract coefficient extractor
+        \lean{weighted_factor_coefficient} in the same file is already stated
+        for an abstract weight, node and annihilation family, so its
+        \emph{statement} should transfer unchanged.
+\end{enumerate}
+
+\begin{warning}[Three of those declarations are \texttt{private}]
+\label{genq:warn:private}
+\lean{recurrenceSeries_rescale_two}, \lean{refinementFactorSeries} and
+\lean{weighted_factor_coefficient} are all declared \texttt{private} in
+\path{FabiusQBinomialFormula.lean}, so none of them is accessible from another
+module as things stand.  Component (b) therefore begins with a step this
+register originally omitted: making those three public, or relocating the
+abstract extractor to a module the general-nome development can import.  That
+is bookkeeping rather than mathematics, but it is not nothing --- the extractor
+is the piece the whole route was supposed to reuse, and "reuse it unchanged" is
+not available until it is visible.
+\end{warning}
+\end{obligation}
+
+\begin{obligation}[Probabilistic reading, if any]
+\label{genq:obl:prob}
+Decide whether \(a_{q}\) admits a probabilistic interpretation generalizing the
+Fabius one.  \Cref{genq:warn:cdf} refutes the naive candidate, so this
+obligation is to find the correct normalization or to show that none exists.
+Note that \path{GeometricUniformCDF.lean} already develops
+\lean{geometricUniformCDF} at a general nome with its density, support and
+smoothness, so only the closed form at the grid points \(q^{n}\) is missing.
+\end{obligation}
+% END FRONTIER PART: general-nome value identity
 
 % BEGIN POST-CONSOLIDATION REGISTER: Primary_Exposition_Gap_Register/Primary_Exposition_Gap_Register.tex
 % Original source SHA-256: 06c7b888d9601b67ad7a5c0aee3f087d44d9ecaaa9abfb3bf3edfda4bd29c0d1

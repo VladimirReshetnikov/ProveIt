@@ -74,9 +74,12 @@ namespace Fabius
 the coefficients of the falling factorial `X (X-1) ⋯ (X-n+1)`. -/
 def signedStirlingFirst (n k : ℕ) : ℤ := (-1) ^ (n - k) * Nat.stirlingFirst n k
 
+/-- The signed first-kind triangle starts at `1`. -/
 @[simp] theorem signedStirlingFirst_zero_zero : signedStirlingFirst 0 0 = 1 := by
   simp [signedStirlingFirst]
 
+/-- Column `0` of the signed first-kind triangle vanishes
+below the top entry. -/
 @[simp] theorem signedStirlingFirst_succ_zero (n : ℕ) : signedStirlingFirst (n + 1) 0 = 0 := by
   simp [signedStirlingFirst]
 
@@ -85,6 +88,7 @@ theorem signedStirlingFirst_eq_zero_of_lt {n k : ℕ} (h : n < k) :
     signedStirlingFirst n k = 0 := by
   simp [signedStirlingFirst, Nat.stirlingFirst_eq_zero_of_lt h]
 
+/-- The diagonal of the signed first-kind triangle is `1`. -/
 @[simp] theorem signedStirlingFirst_self (n : ℕ) : signedStirlingFirst n n = 1 := by
   simp [signedStirlingFirst, Nat.stirlingFirst_self]
 

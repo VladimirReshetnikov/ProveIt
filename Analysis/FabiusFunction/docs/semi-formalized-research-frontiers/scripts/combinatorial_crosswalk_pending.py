@@ -760,7 +760,7 @@ solve for the half-value.
 for $q\ge1$ and rational $x$.  In $(\RationalNumbers[x])[[t]]$, Mathlib's
 \lean{Polynomial.bernoulli_generating_function} gives
 $B(a;t)(\EulerE^t-1)=t\EulerE^{at}$ for polynomial arguments $a$
-(\lean{Fabius.bernoulliPolySeries_mul_exp_sub_one}); summing over
+(\lean{Fabius.bernoulliPolySeriesAt_mul_exp_sub_one}); summing over
 $a=x+r/q$ and using the finite geometric sum
 $\bigl(\sum_{r<q}\EulerE^{rt/q}\bigr)(\EulerE^{t/q}-1)=\EulerE^t-1$
 (\lean{Fabius.sum_pow_mul_sub_one}) gives $G(t)(\EulerE^{t/q}-1)=t\EulerE^{xt}$
@@ -923,8 +923,8 @@ moments of the Bell umbra are $1$ (\lean{Fabius.bellUmbra_descPochhammer})."""))
 
 PENDING += [
  # --- thm:second-parity ---
- (r"""Putting $k=n$ in \cref{eq:second-parity-bit} gives
-$n\BitwiseAnd\Floor{(n-1)/2}=0$, which is equivalent to $n$ having one $1$-bit.
+ (r"""condition is the same.  Powers of two are the $n$ with a single $1$-bit, a strictly
+smaller class.
 \end{proof}
 """,
   remark(r"""% ed.: crosswalk added 2026-09-02; the Lean proof is the reduction of the column series modulo 2.
@@ -939,8 +939,17 @@ parity of the new factor), so the column series of \cref{eq:second-ogf}
 becomes $(1-t)^{-\lceil k/2\rceil}$ (\lean{Fabius.stirlingColumnOGF_zmod_two})
 and its coefficients are the binomial coefficients
 (\lean{Fabius.stirlingSecond_add_zmod_two}).  The bitwise form
-\cref{eq:second-parity-bit} and the power-of-two criterion for
-$\StirlingSecondKind{2n}{n}$ rest on Lucas's theorem and are not formalized.""")),
+\cref{eq:second-parity-bit} is \lean{Fabius.stirlingSecond_odd_iff} and the central case
+is \lean{Fabius.stirlingSecond_two_mul_odd_iff} (module \lean{StirlingParityBitwise}).
+Both rest on Kummer's theorem at the prime two, \lean{Fabius.odd_choose_add_iff}: the
+coefficient $\binom{w+d}{w}$ is odd exactly when $w\BitwiseAnd d=0$.  Mathlib has
+Lucas's theorem but not this consequence, so it is proved in that module by induction on
+the binary digits, the digit factor of Lucas being $1$ in the three cases where the
+lowest digits of $w$ and $d$ do not collide and $0$ in the one case where they do.  The
+central case is where the corrected form of the statement matters: the $n$ for which
+$\StirlingSecondKind{2n}{n}$ is odd are those with no two adjacent $1$-bits, and
+\lean{Fabius.land_pred_div_two_iff} is the step that turns the criterion
+$n\BitwiseAnd\Floor{(n-1)/2}=0$ into that condition.""")),
 ]
 
 PENDING += [
@@ -1208,12 +1217,12 @@ PENDING += [
   remark(r"""% ed.: crosswalk added 2026-09-02; the three formal rules are Lean, the analytic one is not.
 Module \lean{CoefficientRules} proves the three formal rules over an arbitrary
 commutative ring: \cref{eq:cauchy} is
-\lean{Fabius.PowerSeries.coeff_mul_eq_sum_range}, \cref{eq:der-coeff} is
-\lean{Fabius.PowerSeries.coeff_derivative_eq}, and \cref{eq:geom-conv} is
-\lean{Fabius.PowerSeries.coeff_mul_geomSeries}, where $F/(1-az)$ is read as
+\lean{Fabius.coeff_mul_eq_sum_range}, \cref{eq:der-coeff} is
+\lean{Fabius.coeff_derivative_eq}, and \cref{eq:geom-conv} is
+\lean{Fabius.coeff_mul_geomSeries}, where $F/(1-az)$ is read as
 $F\cdot\sum_na^nz^n$; that the geometric series really is the reciprocal of
-$1-az$ is \lean{Fabius.PowerSeries.one_sub_C_mul_X_mul_geomSeries}, and
-\lean{Fabius.PowerSeries.eq_mul_geomSeries_iff} lets the same rule be applied
+$1-az$ is \lean{Fabius.one_sub_C_mul_X_mul_geomSeries}, and
+\lean{Fabius.eq_mul_geomSeries_iff} lets the same rule be applied
 to a series presented by the equation $(1-az)G=F$, which is how it is used in
 the Stirling column arguments.  The analytic Cauchy coefficient formula and
 bound \cref{eq:cauchy-coeff} are not formalized.""")),
@@ -1406,6 +1415,310 @@ negative binomial coefficients come straight from
 \lean{PowerSeries.coeff_expand_of_not_dvd}.
 The radius \cref{eq:fuss-radius}, the critical-point argument that identifies
 it, and the absolute convergence on $|z|=R_p$ are analytic and are not
+formalized.""")),
+]
+
+PENDING += [
+ # --- thm:inverse-bell-coeff ---
+ (r"""at $n=1$ it is the whole sum and returns $g_1=f_1^{-1}$.  The one displayed
+formula therefore covers both cases if the sum is read as $\sum_{k=0}^{n-1}$.
+\end{proof}
+""",
+  remark(r"""% ed.: crosswalk added 2026-09-02; the whole theorem is formal.
+Module \lean{InverseBellCoefficients} follows the proof above and constructs
+$g$ rather than assuming it: $w/f(w)$ is invertible because $f_1$ is, so
+\lean{Fabius.Lagrange.solution} applies, and
+\lean{Fabius.subst_egfA_reversion} proves $f(g(z))=z$.  The normalization is
+\lean{Fabius.normRev}, and \lean{Fabius.egfA_eq_X_mul_normRev} is the
+factorization $f(w)=w\,f_1(1+U(w))$ that makes it the right one; $f_1^{-1}$ is
+carried as an explicit inverse rather than a division, so the module needs no
+field.  \cref{eq:inverse-bell-coeff} is
+\lean{Fabius.factorial_mul_coeff_reversion} with the sum from $k=0$, and
+\lean{Fabius.factorial_mul_coeff_reversion_of_two_le} with the sum from $k=1$
+for $n\ge2$; $g_1=f_1^{-1}$ is \lean{Fabius.coeff_reversion_one}, obtained from
+the same formula at $n=1$.  The negative binomial expansion is separated out as
+\lean{Fabius.negBinomSeries} over an arbitrary commutative ring, with
+\lean{Fabius.negBinomSeries_mul} for $(1+w)^{-(d+1)}(1+w)^{d+1}=1$ and
+\lean{Fabius.negBinomSeries_eq_egfA} for the rising-factorial exponential
+coefficients; the passage to Bell polynomials is the corpus's exponential
+composition theorem \lean{Fabius.egfA_subst_bellWeightSeries}.""")),
+]
+
+PENDING += [
+ # --- thm:second-eulerian-first-diagonal ---
+ (r"""which is \eqref{eq:second-eulerian-first-diagonal}.  Both sides are polynomials in
+$m$ of degree at most $2p$, so the same identity gives the stated polynomial
+continuation.
+\end{proof}
+""",
+  remark(r"""% ed.: crosswalk added 2026-09-02; formal proof by induction, not by generating function.
+\lean{Fabius.stirlingFirst_diagonal} in module \lean{StirlingFirstDiagonal}
+states the identity with the upper index written as $m+p$:
+$\UnsignedStirlingFirstKind{m+p}{m}=\sum_{j\le p}\SecondOrderEulerianNumber
+pj\binom{m+p+j}{2p}$.  The reindexing is not cosmetic.  The convention that an
+out-of-range first-kind number vanishes cannot be read off truncated
+subtraction in $\mathbb N$, where $m-p$ is $0$ rather than negative: at $m=0$,
+$p\ge1$ the truncated reading would assert $1=0$.  Writing $m+p$ states the
+intended range and needs no convention.
+The formal proof does not follow the generating function above.  It is a double
+induction, on $p$ and then on $m$, resting on the single termwise identity
+\lean{Fabius.choose_termwise},
+$(j+1)\binom{N+j}{r+1}+(r-j)\binom{N+j+1}{r+1}=N\binom{N+j}{r}$ for $j\le r$,
+which is Pascal's rule followed by Mathlib's
+\lean{Nat.choose_succ_right_eq}; the second-order Eulerian recurrence enters
+through \lean{Fabius.sum_secondEulerian_choose_succ}.  Everything stays in
+$\mathbb N$: no formal power series, no derivative, and no division.
+The polynomial continuation is not stated separately in Lean: both sides are
+polynomials in $m$ agreeing at every natural number, so it carries no
+information beyond what is proved, and the corpus has no definition of the
+continuation of $c$ in its upper index to state it against.""")),
+]
+
+PENDING += [
+ # --- thm:diamond-bell ---
+ (r"""The EGF of $x^{k\diamondsuit}$ is $X(t)^k$.  Compare with
+\eqref{eq:partial-bell-egf}.
+\end{proof}
+""",
+  remark(r"""% ed.: crosswalk added 2026-09-02; the formal proof is the one given here.
+Module \lean{DiamondPower} takes the diamond product to be
+\lean{Bell.binomialConv}, the full binomial convolution, and
+\lean{Fabius.binomialConv_eq_sum_Ico} shows that this agrees with
+\eqref{eq:diamond} for sequences vanishing at $0$: the terms $j=0$ and
+$j=n$, which the source's index range omits, are $x_0y_n$ and $x_ny_0$ and
+vanish for that reason rather than by convention.
+\lean{Fabius.diamondPow} takes the unit sequence $\delta_{n,0}$ as the empty
+product, so that $k=0$ gives $\ExponentialPartialBellPolynomial n0=\delta_{n,0}$
+and $x^{1\diamondsuit}=x$ (\lean{Fabius.diamondPow_one}); for $k\ge1$ this is
+the $k$-fold product of the source.
+The proof is the one above.  \lean{Bell.egfA_mul} turns a binomial convolution
+into a product of exponential generating functions, so
+\lean{Fabius.egfA_diamondPow} gives $X(t)^k$ by induction, and
+\lean{Fabius.bellWeightSeries_pow} already reads the coefficients of $X(t)^k$
+off the partial Bell polynomials.  \eqref{eq:diamond-bell} is then
+\lean{Fabius.diamondPow_apply} in the product form $(x^{k\diamondsuit})_n=k!\,
+\ExponentialPartialBellPolynomial nk$, and
+\lean{Fabius.partialBell_eq_diamondPow_div} in the divided form displayed
+above.""")),
+]
+
+PENDING += [
+ # --- thm:bell-poly-egf ---
+ (r"""identities.  The ordinary identities follow by the same multinomial argument or
+by \eqref{eq:ordinary-exponential-scaling}.
+\end{proof}
+""",
+  remark(r"""% ed.: crosswalk added 2026-09-02; all five identities are formal.
+Everything here holds as an identity of formal power series over an arbitrary
+commutative $\mathbb Q$-algebra.  The first identity is
+\lean{Fabius.bellWeightSeries_pow} and the third
+\lean{Fabius.exp_subst_bellWeightSeries}, both in module
+\lean{BellGeneratingFunctions}; the second is
+\lean{Fabius.exp_subst_smul_bellWeightSeries} in \lean{ExponentialFormula}.
+On the ordinary side \lean{Fabius.ordPartialBell} is the ordinary partial Bell
+polynomial, \cref{eq:ordinary-bell-ogf} is
+\lean{Fabius.coeff_pow_eq_ordPartialBell} in \lean{OrdinaryBellComposition},
+and \cref{eq:ordinary-bell-bivariate} is \lean{Fabius.coeff_exp_subst_smul} in
+\lean{OrdinaryBellBivariate}, proved from the ordinary composition theorem
+\lean{Fabius.coeff_subst_eq_sum_ordPartialBell} together with the homogeneity
+\lean{Fabius.ordPartialBell_mul_left}, which is what converts the scaled weights
+$ux_i$ into the factor $u^k$.
+In both bivariate statements $u$ is a scalar in the algebra rather than a second
+formal variable, and the identity is read on the coefficient of $t^n$; the
+formal statements are also slightly more general than the displays, since they
+ask only that the substituted series have no constant term rather than that it
+be presented as $\sum_{j\ge1}x_jt^j$.""")),
+]
+
+PENDING += [
+ # --- thm:merged-binomial-inversion ---
+ (r"""\sum_{k=j}^{n}(-1)^{n-k}\binom nk\binom kj
+ =\binom nj\sum_{r=0}^{n-j}(-1)^{n-j-r}\binom{n-j}{r}
+ =\delta_{nj},
+\]
+which independently verifies the inverse matrices.
+\end{proof}
+""",
+  remark(r"""% ed.: crosswalk added 2026-09-02; both the sequence form and the EGF form are formal.
+The equivalence of \cref{eq:merged-binomial-forward} and
+\cref{eq:merged-binomial-backward} is \lean{Fabius.binomial_inversion_iff} for
+additive commutative groups and \lean{Fabius.binomial_inversion_ring_iff} for
+commutative rings, in module \lean{BinomialInversion}; the orthogonality
+displayed at the end of the proof is
+\lean{Fabius.sum_Icc_neg_one_pow_choose_mul_choose}.
+\cref{eq:merged-binomial-egf} is module \lean{BinomialInversionEGF}, where
+$\EulerE^{-z}$ is \lean{Fabius.altSeries}, the exponential generating function of
+$(-1)^n$, and \lean{Fabius.exp_mul_altSeries} proves it inverts $\EulerE^{z}$.
+Each half is stated as an equivalence with its sequence form rather than as an
+implication: \lean{Fabius.egfA_eq_exp_mul_iff} and
+\lean{Fabius.egfA_eq_altSeries_mul_iff}, with
+\lean{Fabius.egfA_eq_exp_mul_iff_egfA_eq_altSeries_mul} relating the two
+generating-function equations directly.
+Two remarks on the formal proofs.  Multiplying exponential generating functions
+is binomial convolution (\lean{Bell.egfA_mul}), so the only content is that
+convolving against the constant sequence $1$, or against $(-1)^n$, gives the
+displayed sums after reflecting the summation index
+(\lean{Fabius.binomialConv_one_left},
+\lean{Fabius.binomialConv_altSeries_left}).  And
+\lean{Fabius.exp_mul_altSeries} is the binomial theorem at $-1+1=0$ rather than
+a separate alternating-sum computation, which keeps it valid over an arbitrary
+commutative ring instead of only over $\IntegerNumbers$.""")),
+]
+
+PENDING += [
+ # --- thm:eulerian-recurrence ---
+ (r"""\eqref{eq:eulerian-recurrence}.  Multiply by $t^k$, sum over $k$, and collect the
+terms containing $k$ to obtain \eqref{eq:eulerian-poly-recurrence}.
+\end{proof}
+""",
+  remark(r"""% ed.: crosswalk added 2026-09-02; both recurrences formal, the descent count is not.
+\cref{eq:eulerian-recurrence} is the definition of \lean{Fabius.eulerianNumber}
+in module \lean{EulerianNumbers} (\lean{Fabius.eulerianNumber_succ_succ}, with
+the textbook indexing $\TypeAEulerianNumber nk=(k+1)\TypeAEulerianNumber{n-1}k
++(n-k)\TypeAEulerianNumber{n-1}{k-1}$ as
+\lean{Fabius.eulerianNumber_succ_left}).  \cref{eq:eulerian-poly-recurrence} is
+\lean{Fabius.eulerianPolynomial_succ} in module
+\lean{EulerianPolynomialRecurrence}, over an arbitrary commutative ring.
+Two points make the formal proof shorter than the coefficient bookkeeping the
+text describes.  Every coefficient of $\TypeAEulerianPolynomial n$ is the
+corresponding Eulerian number with no range condition
+(\lean{Fabius.coeff_eulerianPolynomial}), since the entries above the diagonal
+already vanish; and $t\bigl(\TypeAEulerianPolynomial n\bigr)'$ has the uniform coefficient
+$k\TypeAEulerianNumber nk$ (\lean{Fabius.coeff_X_mul_derivative}), so the
+derivative term needs no separate treatment at $k=0$.
+One point does need care, and is recorded as
+\lean{Fabius.natCast_sub_mul_eulerianNumber}: the numerical recurrence carries
+$n-k$ as a truncated subtraction of natural numbers while the polynomial
+identity carries the ring difference, and the two disagree exactly where the
+Eulerian number they multiply is zero.
+The combinatorial reading of $\TypeAEulerianNumber nk$ as a descent count, and
+with it the insertion argument given above, is not formalized; the Lean
+development takes the recurrence as the definition.""")),
+]
+
+PENDING += [
+ # --- thm:bell-inversions ---
+ (r"""iterated $k$ times in the equivalent form
+$\Expectation[X^{n+1}(X-1)^k]=\Expectation[(X+1)^nX^k]$, turns it into the right side after expanding
+$(X-1)^k$.
+\end{proof}
+""",
+  remark(r"""% ed.: crosswalk added 2026-09-02; the second identity is formal by a different route.
+\cref{eq:bell-inversion-one} is
+\lean{Fabius.bell_eq_sum_neg_one_pow_choose_bell_succ} in module
+\lean{BellShiftEGF}, exactly as the text says: ordinary binomial inversion
+(\lean{Fabius.binomial_inversion_ring}) applied to the Bell recurrence
+\lean{Fabius.bell_succ_eq_sum_choose}.
+\cref{eq:bell-inversion-two} is
+\lean{Fabius.sum_choose_bell_add_eq_sum_neg_one_pow} in module
+\lean{BellInversionTwo}, but not by the argument above.  The Poisson route needs
+the moments of a Poisson variable and the summation-by-parts identity
+\cref{eq:poisson-sbp}; neither is available in the corpus, and formalizing them
+would be a considerably larger undertaking than the identity itself.  Instead
+both sides are given names, \lean{Fabius.bellForward} and
+\lean{Fabius.bellBackward}, and are shown to satisfy the same recurrence in $k$,
+\[
+ H(n,k+1)=H(n+1,k)-H(n,k),
+\]
+(\lean{Fabius.bellForward_succ}, \lean{Fabius.bellBackward_succ}) and to agree at
+$k=0$, where both equal $\BellNumber{n+1}$ by the Bell recurrence
+(\lean{Fabius.bellForward_zero}, \lean{Fabius.bellBackward_zero}).  Each
+recurrence is Pascal's rule together with a shift of the summation index, so the
+formal proof is a double induction over $\IntegerNumbers$ with no probability
+and no generating function in it.
+The probabilistic proof in the text is not thereby superseded; it explains where
+the identity comes from, which the induction does not.""")),
+]
+
+PENDING += [
+ # --- thm:second-reverse-recurrences ---
+ (r"""They are equal because direct differentiation gives
+$(1-\EulerE^{-x})F_k'(x)=kF_k(x)$.
+\end{proof}
+""",
+  remark(r"""% ed.: crosswalk added 2026-09-02; two of the three identities are formal.
+\cref{eq:second-triangular-explicit} is
+\lean{Fabius.stirlingSecond_eq_pow_div_factorial_sub_sum} in module
+\lean{StirlingTriangularExplicit}, for all $n,k$ with the $r=0$ term left in the
+sum.
+\cref{eq:second-reverse-column} is \lean{Fabius.second_reverse_column} in module
+\lean{StirlingSecondReverseColumn}, and the formal proof is the one given here.
+The right-hand side is read as a binomial convolution of the kernel
+$j\mapsto(-1)^j$, restricted to $j\ge2$, against the shifted column
+$m\mapsto\StirlingSecondKind{m+1}k$, so its exponential generating function is
+$(\EulerE^{-x}-1+x)F_k'$ (\lean{Fabius.egfA_altKernel},
+\lean{Fabius.egfA_second_reverse_column_rhs}); the displayed differential
+equation is
+\lean{Fabius.one_sub_altSeries_mul_derivative_egfA_stirlingSecond}, where
+$\EulerE^{-x}$ is \lean{Fabius.altSeries}, the exponential generating function of
+$(-1)^n$, and $\EulerE^{-x}\EulerE^{x}=1$ is \lean{Fabius.exp_mul_altSeries}.
+Worth noting beside the first-kind case: the first-kind column satisfies
+$(1-x)\log(1-x)F'=-kF$, whose kernel needs a logarithm and a dedicated series,
+while the kernel here is elementary.
+\cref{eq:second-reverse-row} is not formalized.""")),
+]
+
+PENDING += [
+ # --- thm:bell-symmetric-functions ---
+ (r"""the logarithm through ordinary Bell polynomials yields the second pair of forms.
+The exponential form follows from \eqref{eq:ordinary-exponential-scaling}.
+\end{proof}
+""",
+  remark(r"""% ed.: crosswalk added 2026-09-02; three of the four displayed forms are formal.
+Everything here is proved for a finite family $u:\iota\to A$ indexed by a
+finite set, over any commutative $\mathbb Q$-algebra, with
+$e_n=\sum_{|t|=n}\prod_{i\in t}u_i$ and $p_r=\sum_i u_i^r$.
+\cref{eq:elementary-via-bell} is \lean{Fabius.esymm_eq_bell_complete} in module
+\lean{ElementarySymmetricBell}, and its sign variant is
+\lean{Fabius.esymm_eq_neg_bell_complete}, which follows from the weighted
+homogeneity \lean{Fabius.partialBell_pow_mul}.
+\cref{eq:powersum-via-bell} is \lean{Fabius.newton_power_sum} in
+\lean{NewtonPowerSumBell}, stated multiplied through by $(-1)^{n-1}(n-1)!$ so
+that it is division-free, with the displayed divided form as
+\lean{Fabius.power_sum_eq}.
+The formal proof of the first identity is not the one given here.  Taking
+logarithms needs $\exp\circ\log=\mathrm{id}$ for formal power series, which
+Mathlib does not have; that gap is now filled by
+\lean{Fabius.exp_subst_logOf} in module \lean{ExpLog}, proved through the
+differential equation $F'=FW$ rather than by a coefficient computation, with
+$f'/f$ written as a substituted geometric series so that no inverse is ever
+formed.  The symmetric-function identity itself is then obtained the same way:
+$\prod_i(1+u_it)$ and $\sum_n\ExponentialCompleteBellPolynomial n t^n/n!$ satisfy
+the same equation and agree at $t=0$.
+The second identity is a corollary rather than a separate argument.  The Newton
+weights have the scaled elementary symmetric functions $n!e_n$ as their complete
+Bell family, so they are that sequence's cumulants, and the cumulants have the
+closed form \lean{Fabius.cumulant_eq_cumulantSum} in
+\lean{CumulantBellFormula} — the moment-to-cumulant formula, which the corpus
+also lacked and which is proved here from the same $\exp\circ\log$ inverse.
+The second form of \cref{eq:powersum-via-bell}, through the ordinary partial
+Bell polynomials, is not formalized.""")),
+]
+
+PENDING += [
+ # --- thm:merged-catalan-first-return ---
+ (r"""equation.  Of the two quadratic roots, only the displayed branch has constant
+term $1$.
+\end{proof}
+""",
+  remark(r"""% ed.: crosswalk added 2026-09-02; both displays are now formal.
+$C=1+zC^2$ is \lean{Fabius.catalanSeries_eq}, and the uniqueness the proof
+appeals to — that only one power series satisfies it — is
+\lean{Fabius.eq_catalanSeries_of_eq_one_add_X_mul_sq}, both in module
+\lean{CatalanGeneratingFunction}.
+The closed form is \lean{Fabius.sqrtOf_one_sub_four_X} in module
+\lean{SquareRootSeries}, stated as $\sqrt{1-4z}=1-2zC(z)$ rather than as
+$C=(1-\sqrt{1-4z})/(2z)$ so that nothing is divided by $z$.  The square root is
+\lean{Fabius.sqrtOf}, defined as $\exp(\tfrac12\log)$ on series with constant
+term $1$ and unique among such series by \lean{Fabius.sqrt_unique}; the
+existence rests on the formal exponential law \lean{Fabius.exp_subst_add} and on
+\lean{Fabius.exp_subst_logOf}, in modules \lean{ExpAddLog} and \lean{ExpLog}.
+The formal proof uses no binomial series and no analysis: squaring $1-2zC$ and
+substituting $zC^2=C-1$ gives $1-4z$ outright.
+Two things this does not say.  The $\sqrt{\cdot}$ is the formal square root just
+described, not a real or complex one, so the identity is between power series
+over a commutative $\mathbb Q$-algebra.  And the radius of convergence, together
+with the branch of the square root that the analytic statement selects, is not
 formalized.""")),
 ]
 

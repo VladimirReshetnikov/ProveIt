@@ -49,7 +49,15 @@ DECL = re.compile(
 MODULE_DOC = re.compile(r'/-!(.*?)-/', re.S)
 # `P_d`, `R_n`, `A_P`: mathematical notation, not Lean identifiers.
 SUBSCRIPT = re.compile(r"^[A-Za-z]_[A-Za-z0-9]{1,2}$")
-BULLET = re.compile(r'^\s*\*\s.*$', re.M)
+# A bullet is its first line PLUS any indented continuation lines.  The obvious
+# `^\s*\*\s.*$` stops at the newline, so a bullet wrapped across lines was only
+# half-read and every name after the wrap was invisible.  That is not
+# hypothetical: PartialBellPolynomials advertises five names in one wrapped
+# bullet, and only the two on its first line were ever checked --
+# `lahNumber_succ_succ_eq_sum`, on the continuation line, exists nowhere in the
+# Lean tree and went unreported for as long as this audit has run.  Continuation
+# lines are indented and do not themselves start a bullet.
+BULLET = re.compile(r'^[ \t]*\*[ \t].*(?:\n[ \t]+(?!\*)[^\n]*)*', re.M)
 TICKED = re.compile(r'`([^`\n]+)`')
 IDENT = re.compile(r"^[A-Za-z_][A-Za-z0-9_'!?]*(?:\.[A-Za-z_][A-Za-z0-9_'!?]*)*$")
 

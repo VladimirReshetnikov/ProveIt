@@ -20,14 +20,20 @@ On `0 ≤ δ ≤ 1 / 2` the transmutation gives
 `E = F(δ / 2 + E) / 2`.
 
 The offset and defect are globally odd because the totalized inverse inherits
-reflection symmetry.  This file proves only that exact finite layer.  It does
-not infer all-orders flatness, an asymptotic equivalence, a logarithmic
-expansion, or a Lambert--W transfer from the fixed-point equation alone.
+reflection symmetry.
+
+The fixed-point layer already squeezes the defect by the Fabius function
+itself: `δ = 2h - F(h) ≥ h` since `F(h) ≤ h` on `[0, 1/2]`, so
+`0 ≤ E(δ) = F(h)/2 ≤ F(δ)/2`, and `E` inherits the **all-orders flatness**
+of `F` at `0` (`fabiusInvMidpointDefect_isLittleO_pow`, two-sided by
+oddness).  This file does not infer an asymptotic equivalence, a
+logarithmic expansion, or a Lambert--W transfer from the fixed-point
+equation.
 -/
 
 set_option autoImplicit false
 
-open Set
+open Set Filter Asymptotics
 
 namespace Fabius
 
@@ -177,6 +183,87 @@ theorem fabiusInvMidpointDefect_neg
       -fabiusInvMidpointDefect F hF δ := by
   simp only [fabiusInvMidpointDefect, fabiusInvMidpointOffset_neg]
   ring
+
+/-! ## All-orders flatness of the defect -/
+
+/-- `F(x) ≤ x` on the closed first half `[0, 1/2]`: the strict interior
+inequality `fabiusReal_lt_self_of_mem_Ioo_zero_half` plus the two
+endpoint values `F(0) = 0`, `F(1/2) = 1/2`. -/
+theorem fabiusReal_le_self_of_mem_Icc_zero_half
+    (F : BoundedFabius) (hF : IsFabius F) {x : ℝ}
+    (hx : x ∈ Icc (0 : ℝ) (1 / 2)) :
+    fabiusReal F x ≤ x := by
+  rcases eq_or_lt_of_le hx.1 with h0 | h0
+  · rw [← h0, hF.zero_of_nonpos 0 le_rfl]
+  · rcases eq_or_lt_of_le hx.2 with h1 | h1
+    · rw [h1, fabius_half F hF]
+    · exact (fabiusReal_lt_self_of_mem_Ioo_zero_half F hF ⟨h0, h1⟩).le
+
+/-- The inverse midpoint offset is at most the vertical displacement:
+`h ≤ δ`, because `δ = 2h - F(h)` and `F(h) ≤ h`. -/
+theorem fabiusInvMidpointOffset_le
+    (F : BoundedFabius) (hF : IsFabius F) {δ : ℝ}
+    (hδ0 : 0 ≤ δ) (hδhalf : δ ≤ 1 / 2) :
+    fabiusInvMidpointOffset F hF δ ≤ δ := by
+  have hh := fabiusInvMidpointOffset_mem_Icc F hF hδ0
+  have heq := fabiusInvMidpointOffset_equation F hF hδ0 hδhalf
+  have hle := fabiusReal_le_self_of_mem_Icc_zero_half F hF hh
+  linarith
+
+/-- **The defect is squeezed by the Fabius function itself**:
+`0 ≤ E(δ) ≤ F(δ)/2` on the closed half-cell. -/
+theorem fabiusInvMidpointDefect_le_half_fabiusReal
+    (F : BoundedFabius) (hF : IsFabius F) {δ : ℝ}
+    (hδ0 : 0 ≤ δ) (hδhalf : δ ≤ 1 / 2) :
+    fabiusInvMidpointDefect F hF δ ≤ fabiusReal F δ / 2 := by
+  rw [fabiusInvMidpointDefect_eq_half_fabiusReal F hF hδ0 hδhalf]
+  have := fabius_monotone F hF (fabiusInvMidpointOffset_le F hF hδ0 hδhalf)
+  linarith
+
+/-- The two-sided squeeze, by oddness: `|E(δ)| ≤ F(|δ|)/2` for
+`|δ| ≤ 1/2`. -/
+theorem abs_fabiusInvMidpointDefect_le
+    (F : BoundedFabius) (hF : IsFabius F) {δ : ℝ} (hδ : |δ| ≤ 1 / 2) :
+    |fabiusInvMidpointDefect F hF δ| ≤ fabiusReal F |δ| / 2 := by
+  rcases le_or_gt 0 δ with h0 | h0
+  · rw [abs_of_nonneg h0] at hδ ⊢
+    have hE := fabiusInvMidpointDefect_mem_Icc F hF h0 hδ
+    rw [abs_of_nonneg hE.1]
+    exact fabiusInvMidpointDefect_le_half_fabiusReal F hF h0 hδ
+  · rw [abs_of_neg h0] at hδ ⊢
+    have h0' : 0 ≤ -δ := by linarith
+    have hE := fabiusInvMidpointDefect_mem_Icc F hF h0' hδ
+    have hodd : fabiusInvMidpointDefect F hF δ =
+        -fabiusInvMidpointDefect F hF (-δ) := by
+      rw [← fabiusInvMidpointDefect_neg, neg_neg]
+    rw [hodd, abs_neg, abs_of_nonneg hE.1]
+    exact fabiusInvMidpointDefect_le_half_fabiusReal F hF h0' hδ
+
+/-- **All-orders flatness of the inverse midpoint defect**: for every `n`,
+`E(δ) = o(δⁿ)` as `δ → 0` (two-sided).  The defect is bounded by
+`F(|δ|)/2`, and the Fabius function is flat to all orders at `0`. -/
+theorem fabiusInvMidpointDefect_isLittleO_pow
+    (F : BoundedFabius) (hF : IsFabius F) (n : ℕ) :
+    fabiusInvMidpointDefect F hF =o[nhds 0] (fun δ : ℝ => δ ^ n) := by
+  have habs : Tendsto (fun δ : ℝ => |δ|) (nhds (0 : ℝ)) (nhds (0 : ℝ)) := by
+    have := continuous_abs.tendsto (0 : ℝ)
+    simpa only [abs_zero] using this
+  have hflat : (fun δ : ℝ => fabiusReal F |δ|) =o[nhds 0]
+      (fun δ : ℝ => δ ^ n) := by
+    have h := (fabiusReal_isLittleO_pow_at_zero F hF n).comp_tendsto habs
+    have h' : (fun δ : ℝ => fabiusReal F |δ|) =o[nhds 0]
+        (fun δ : ℝ => ‖δ ^ n‖) := by
+      refine h.congr' (Filter.Eventually.of_forall fun _ => rfl)
+        (Filter.Eventually.of_forall fun δ => ?_)
+      simp only [Function.comp_apply, Real.norm_eq_abs, abs_pow]
+    exact isLittleO_norm_right.mp h'
+  refine (IsBigO.of_bound (1 / 2) ?_).trans_isLittleO hflat
+  filter_upwards [Ioo_mem_nhds (show (-(1 / 2) : ℝ) < 0 by norm_num)
+    (show (0 : ℝ) < 1 / 2 by norm_num)] with δ hδ
+  have hδ' : |δ| ≤ 1 / 2 := (abs_lt.mpr ⟨hδ.1, hδ.2⟩).le
+  rw [Real.norm_eq_abs, Real.norm_eq_abs, abs_of_nonneg (fabiusReal_nonneg F _)]
+  have := abs_fabiusInvMidpointDefect_le F hF hδ'
+  linarith
 
 end
 

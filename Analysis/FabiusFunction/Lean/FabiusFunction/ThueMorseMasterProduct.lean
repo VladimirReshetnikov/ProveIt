@@ -150,52 +150,34 @@ theorem mpLimit_cocycle (a b c : ℝ) (ha : 0 < a) (hb : 0 < b)
     refine (tendsto_mpLimit a c ha hc).congr fun N => (hpart N).symm
   exact tendsto_nhds_unique h1 h2
 
-/-- Interleaving: `mpLog a b (2N)` splits dyadically. -/
+/-- Interleaving: `mpLog a b (2N)` splits dyadically.  The even/odd sign
+split is the shared `sum_thueMorseSign_mul_two_mul`; what remains is the
+pointwise ratio identity `(2j+a)/(2j+b) = (j+a/2)/(j+b/2)`. -/
 private theorem mpLog_two_mul (a b : ℝ) (hb : 0 < b)
     (N : ℕ) :
     mpLog a b (2 * N) =
       mpLog (a / 2) (b / 2) N - mpLog ((a + 1) / 2) ((b + 1) / 2) N := by
-  rw [mpLog, sum_range_two_mul]
-  have hterm : ∀ j ∈ range N,
-      ((thueMorseSign (2 * j) : ℝ) *
-          Real.log ((((2 * j : ℕ) : ℝ) + a) / (((2 * j : ℕ) : ℝ) + b)) +
-        (thueMorseSign (2 * j + 1) : ℝ) *
-          Real.log ((((2 * j + 1 : ℕ) : ℝ) + a) /
-            (((2 * j + 1 : ℕ) : ℝ) + b))) =
-      (thueMorseSign j : ℝ) *
-          Real.log (((j : ℝ) + a / 2) / ((j : ℝ) + b / 2)) -
-        (thueMorseSign j : ℝ) *
-          Real.log (((j : ℝ) + (a + 1) / 2) /
-            ((j : ℝ) + (b + 1) / 2)) := by
-    intro j _
-    have hsign1 : (thueMorseSign (2 * j) : ℝ) =
-        (thueMorseSign j : ℝ) := by
-      exact_mod_cast congrArg (fun z : ℤ => (z : ℝ))
-        (thueMorseSign_two_mul j)
-    have hsign2 : (thueMorseSign (2 * j + 1) : ℝ) =
-        -(thueMorseSign j : ℝ) := by
-      have h := thueMorseSign_two_mul_add_one j
-      push_cast [h]
-      ring
-    have hr1 : (((2 * j : ℕ) : ℝ) + a) / (((2 * j : ℕ) : ℝ) + b) =
-        ((j : ℝ) + a / 2) / ((j : ℝ) + b / 2) := by
-      have h1 : (((2 * j : ℕ) : ℝ) + b) ≠ 0 := by positivity
-      have h2 : ((j : ℝ) + b / 2) ≠ 0 := by positivity
-      rw [div_eq_div_iff h1 h2]
-      push_cast
-      ring
-    have hr2 : (((2 * j + 1 : ℕ) : ℝ) + a) /
-        (((2 * j + 1 : ℕ) : ℝ) + b) =
-        ((j : ℝ) + (a + 1) / 2) / ((j : ℝ) + (b + 1) / 2) := by
-      have h1 : (((2 * j + 1 : ℕ) : ℝ) + b) ≠ 0 := by positivity
-      have h2 : ((j : ℝ) + (b + 1) / 2) ≠ 0 := by positivity
-      rw [div_eq_div_iff h1 h2]
-      push_cast
-      ring
-    rw [hsign1, hsign2, hr1, hr2]
+  rw [mpLog, sum_thueMorseSign_mul_two_mul N
+      (fun n : ℕ => Real.log (((n : ℝ) + a) / ((n : ℝ) + b))),
+    mpLog, mpLog, ← Finset.sum_sub_distrib]
+  refine Finset.sum_congr rfl fun j _ => ?_
+  have hr1 : (((2 * j : ℕ) : ℝ) + a) / (((2 * j : ℕ) : ℝ) + b) =
+      ((j : ℝ) + a / 2) / ((j : ℝ) + b / 2) := by
+    have h1 : (((2 * j : ℕ) : ℝ) + b) ≠ 0 := by positivity
+    have h2 : ((j : ℝ) + b / 2) ≠ 0 := by positivity
+    rw [div_eq_div_iff h1 h2]
+    push_cast
     ring
-  rw [Finset.sum_congr rfl hterm, Finset.sum_sub_distrib]
-  rfl
+  have hr2 : (((2 * j + 1 : ℕ) : ℝ) + a) /
+      (((2 * j + 1 : ℕ) : ℝ) + b) =
+      ((j : ℝ) + (a + 1) / 2) / ((j : ℝ) + (b + 1) / 2) := by
+    have h1 : (((2 * j + 1 : ℕ) : ℝ) + b) ≠ 0 := by positivity
+    have h2 : ((j : ℝ) + (b + 1) / 2) ≠ 0 := by positivity
+    rw [div_eq_div_iff h1 h2]
+    push_cast
+    ring
+  rw [hr1, hr2]
+  ring
 
 /-- **The dyadic functional equation** (`thm:G-functional`,
 logarithmic form): `L(a,b) = L(a/2,b/2) - L((a+1)/2,(b+1)/2)`. -/

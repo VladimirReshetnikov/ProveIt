@@ -34,9 +34,12 @@ noncomputable def hessenbergSeq (β : ℕ → ℕ → R) : ℕ → R
 termination_by n => n
 decreasing_by exact k.isLt
 
+/-- The Hessenberg sequence starts at `1`. -/
 theorem hessenbergSeq_zero (β : ℕ → ℕ → R) : hessenbergSeq β 0 = 1 := by
   rw [hessenbergSeq]
 
+/-- The defining expansion of the Hessenberg sequence: each term is the weighted sum of all
+earlier ones. -/
 theorem hessenbergSeq_succ (β : ℕ → ℕ → R) (n : ℕ) :
     hessenbergSeq β (n + 1) = ∑ k ∈ range (n + 1), β (n + 1) k * hessenbergSeq β k := by
   rw [hessenbergSeq, Fin.sum_univ_eq_sum_range (fun k => β (n + 1) k * hessenbergSeq β k)]

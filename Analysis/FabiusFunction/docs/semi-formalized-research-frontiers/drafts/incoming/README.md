@@ -62,7 +62,80 @@ This `README.md` is the permanent explanation of the directory and
 **must not be deleted** — it also keeps the directory present in git
 when no archives are waiting.
 
-Most recent processed batch (all filed and removed on 2026-09-01):
+Most recent processed batch (three archives, filed and removed on 2026-09-03): the three Fibonacci-inversion articles, all to
+`../series-and-transseries/special-function-inversion/` as its fourth subject.
+
+- `Fibonacci_Inverse_LogPeriodic_Transseries.zip` → `Fibonacci_Inverse_LogPeriodic_Transseries/`: 2,554-line/89,365-byte source, 33-page A4/787,646-byte PDF.
+- `fibonacci_inverse_transseries_article.zip` → `fibonacci_inverse_transseries_article/`: 2,857-line/98,788-byte source, 36-page A4/797,090-byte PDF.
+- `fibonacci_inverse_transseries_article-2.zip` → `fibonacci_inverse_transseries_article-2/`: 1,884-line/64,334-byte source, 24-page A4/759,845-byte PDF.
+
+Previous batch (six archives, filed and removed on 2026-09-03).
+These arrived *while the batch below was being published*, which is the case the
+rule at the top of this file covers: the first batch was finished and pushed to
+`origin/main` before any of these was touched, and they were then taken in the
+next quick-intake commit.  All six went to
+`../series-and-transseries/special-function-inversion/`, joining the three
+already there, and the nine now fall into three subjects with three
+independently written articles each.
+
+- `inverse_gamma_barnesG_transseries.zip` → `inverse_gamma_barnesG_transseries/`:
+  1,655-line/72,966-byte source, 28-page A4/663,480-byte PDF.
+- `inverse_gamma_barnes_transseries.zip` → `inverse_gamma_barnes_transseries/`:
+  1,827-line/60,596-byte source, 25-page A4/324,795-byte PDF.
+- `K_Function_Inverse_Transseries_LaTeX_and_PDF.zip` → `K_Function_Inverse_Transseries/`:
+  2,644-line/90,380-byte source, 33-page A4/724,630-byte PDF.  **Renamed at
+  filing**: the archive stem would have put the PDF at a 263-character path,
+  past the Windows `MAX_PATH` limit of 260, after which `pdfinfo` reports
+  *"No such file or directory"* for a file that plainly exists.  The directory
+  is named after the document instead, which is also the corpus convention.
+- `K_function_inverse_transseries_article.zip` → `K_function_inverse_transseries_article/`:
+  2,581-line/84,722-byte source, 30-page A4/743,783-byte PDF.
+- `inverse_subfactorial_transseries-2.zip` → `inverse_subfactorial_transseries-2/`:
+  2,188-line/73,742-byte source, 27-page A4/725,870-byte PDF.
+- `inverse_subfactorial_transseries-3.zip` → `inverse_subfactorial_transseries-3/`:
+  1,878-line/81,203-byte source, 35-page Letter/530,302-byte PDF.
+
+Every archive passed a CRC check with no absolute path, parent-directory
+traversal, or symlink entry, and each held exactly one `.tex` and one `.pdf` at
+top level.  All six sources are LF with a final newline; no normalization was
+applied.  The last two archives both contain inner files named plainly
+`inverse_subfactorial_transseries.*`, which were kept as submitted — the
+directory name carries the distinction, following the precedent of
+`lambert_inverse_transseries_bundle/`.  All six PDFs are readable, unencrypted,
+pdfTeX-1.40.26, fully embedded and Type-3-free; five are A4 and one is Letter,
+and three carry Libertinus faces.  None loads `docs/fabius-notation.tex`.
+Comparison, deduplication, canonical selection, proof checking, numerical
+reproduction and Lean crosswalking were all deferred.
+
+The batch immediately before it (three archives, filed and removed the same
+day):
+
+- `Asymptotic_Inversion_Gamma_Barnes_G.zip` became
+  `../series-and-transseries/special-function-inversion/Asymptotic_Inversion_Gamma_Barnes_G/`:
+  2,376-line/83,252-byte source, 29-page A4/646,225-byte PDF.
+- `inverse_k_function_transseries.zip` became
+  `../series-and-transseries/special-function-inversion/inverse_k_function_transseries/`:
+  2,259-line/66,867-byte source, 29-page A4/349,822-byte PDF.
+- `inverse_subfactorial_transseries.zip` became
+  `../series-and-transseries/special-function-inversion/inverse_subfactorial_transseries/`:
+  2,631-line/95,404-byte source, 38-page A4/688,626-byte PDF.
+
+These three archives landed together in commit `5a453e1dc`.  Each contained
+exactly one `.tex` and one `.pdf` at top level with no wrapping directory, so
+the destination directory was created at filing; none included a checksum
+ledger, and none was added.  Every archive passed a CRC check and carried no
+absolute path, parent-directory traversal, or symlink entry.  All three sources
+were already LF with a final newline, so no normalization was applied and the
+filed bytes are exactly the submitted bytes.  All three PDFs are readable and
+unencrypted, produced by pdfTeX-1.40.26 at PDF version 1.7, with every font row
+embedded and no Type 3 font; all three are A4, which is canonical, and two of
+the three carry Libertinus faces — `inverse_k_function_transseries` does not,
+which is the only styling debt recorded against this batch.  None of the three
+loads `docs/fabius-notation.tex`.  Comparison, deduplication, proof checking,
+numerical reproduction, editorial consolidation, and Lean crosswalking were all
+deferred at intake and have not been carried out.
+
+The preceding processed batch (all filed and removed on 2026-09-01):
 
 - `Polynomial-Logarithmic-Transseries-1/` became
   `../series-and-transseries/polynomial-logarithmic-transseries/Polynomial-Logarithmic-Transseries-1/`:
