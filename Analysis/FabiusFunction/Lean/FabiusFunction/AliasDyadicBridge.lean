@@ -51,7 +51,9 @@ theorem sum_zmod_even_eq_fold (N : ℕ) [NeZero N] (f : ZMod (2 * N) → ℂ)
     ∑ j : ZMod (2 * N), f j
       = f 0 + f (N : ZMod (2 * N)) + 2 * ∑ k ∈ Ico 1 N, f (k : ZMod (2 * N)) := by
   have hN : 0 < N := Nat.pos_of_ne_zero (NeZero.ne N)
-  rw [sum_zmod_eq_sum_range, two_mul, sum_range_add, range_eq_Ico,
+  have hsplit := sum_range_add (fun k : ℕ => f (k : ZMod (2 * N))) N N
+  rw [show N + N = 2 * N by ring] at hsplit
+  rw [sum_zmod_eq_sum_range, hsplit, range_eq_Ico,
     sum_eq_sum_Ico_succ_bot hN, sum_eq_sum_Ico_succ_bot hN]
   have hrefl : ∑ k ∈ Ico 1 N, f (((N + k : ℕ)) : ZMod (2 * N))
       = ∑ k ∈ Ico 1 N, f (k : ZMod (2 * N)) := by
@@ -135,16 +137,18 @@ theorem foldedCoefficient_two_pow_eq_fabiusDyadic (F : BoundedFabius) (hF : IsFa
           ((fabiusDyadic n (2 ^ n - k) : ℝ) : ℂ) *
             Complex.cos ((Real.pi * r.val * k / 2 ^ n : ℝ) : ℂ)) := by
   rw [foldedCoefficient_eq_halfRange_cos F hF]
-  push_cast
+  simp only [Nat.cast_pow, Nat.cast_ofNat]
   congr 2
-  refine sum_congr rfl fun k hk => ?_
-  rw [mem_Ico] at hk
-  congr 2
-  rw [fabiusDyadic_cast F hF n (2 ^ n - k) (Nat.sub_le _ _), rvachevUp_eq_fabiusReal_one_sub_abs]
-  congr 1
+  refine Finset.sum_congr rfl fun k hk => ?_
+  rw [Finset.mem_Ico] at hk
   have h2 : (0 : ℝ) < 2 ^ n := by positivity
-  rw [abs_of_nonneg (by positivity), Nat.cast_sub hk.2.le]
-  push_cast
-  field_simp
+  have hup : rvachevUp F ((k : ℝ) / 2 ^ n) = (fabiusDyadic n (2 ^ n - k) : ℝ) := by
+    rw [fabiusDyadic_cast F hF n (2 ^ n - k) (Nat.sub_le _ _),
+      rvachevUp_eq_fabiusReal_one_sub_abs, abs_of_nonneg (by positivity),
+      Nat.cast_sub hk.2.le]
+    congr 1
+    push_cast
+    field_simp
+  rw [hup]
 
 end Fabius
