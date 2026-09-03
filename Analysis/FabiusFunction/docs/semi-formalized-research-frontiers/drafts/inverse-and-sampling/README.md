@@ -121,4 +121,17 @@ Gaussian closed forms, a bundled matrix/right-inverse wrapper, or an
 optimal/minimum-variation decoder theorem; the exhaustive public inventory is
 in the root [`Analysis/FabiusFunction/README.md`](../../../../README.md).
 
+The subgroup [`dyadic-up-extraction/`](dyadic-up-extraction/) holds six
+reports received on 2026-09-02 on exact extraction and extrapolation of dyadic
+up-function values from finite sinc-product splines (geometric tails,
+q-binomial and quarter-base extrapolation).  Quick intake only; several are
+successive drafts of each other and have not been compared or reviewed:
+
+- `Dyadic-Up-Extraction/` -- *Exact Dyadic Extrapolation for Finite Rvachev Sinc-Product Splines*
+- `Exact_Dyadic_Up_Extraction/` -- *Exact q-Binomial Extraction of Rvachev Up-Function Values from Finite Sinc-Product Splines*
+- `Exact_Geometric_Tails_Rvachev_Up/` -- *Exact Geometric Tails and q-Pochhammer Extraction for Finite-Sinc Approximants*
+- `dyadic_up_extraction_package/` -- *Exact q-Extrapolation of Finite Sinc-Product Splines at Dyadic Points*
+- `rvachev_q_extrapolation/` -- *Exact Geometric Tails and q-Binomial Extrapolation for Dyadic Values of Rvachev's Up-Function*
+- `rvachev_up_dyadic_extrapolation_package/` -- *Exact quarter-base extrapolation for dyadic samples of Rvachev's up-function spline prefixes*
+
 See [`../MANIFEST.md`](../MANIFEST.md) for titles, scope, and historical paths.

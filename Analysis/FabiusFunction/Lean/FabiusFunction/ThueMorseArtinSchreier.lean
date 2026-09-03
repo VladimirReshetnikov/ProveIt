@@ -64,7 +64,10 @@ denominator-free form:
 Everything is exact coefficient algebra: the characteristic-two inputs are
 `x + x = 0`, Frobenius additivity, and, over `𝔽₂`, the idempotence
 `x² = x`.  The closing telescope uses Frobenius alone, so it is stated in
-any exponential characteristic.
+any exponential characteristic.  The characteristic-two facts about
+`𝔽₂[[z]]` itself — `2 = 0`, `y + y = 0`, `1 - z = 1 + z` — are read off
+the general instance `instCharPPowerSeries`: a power-series ring has the
+characteristic of its coefficient ring.
 -/
 
 set_option autoImplicit false
@@ -73,7 +76,40 @@ open Finset
 
 namespace Fabius
 
+/-! ### The characteristic of a power-series ring -/
+
+/-- A power-series ring has the characteristic of its coefficient ring:
+the constant embedding `C : R →+* R⟦X⟧` is injective. -/
+instance instCharPPowerSeries {R : Type*} [Semiring R] {p : ℕ}
+    [CharP R p] : CharP (PowerSeries R) p where
+  cast_eq_zero_iff x := by
+    rw [← CharP.cast_eq_zero_iff R p x,
+      ← map_natCast (PowerSeries.C (R := R)) x,
+      map_eq_zero_iff (PowerSeries.C (R := R)) PowerSeries.C_injective]
+
 /-! ### The power-series Frobenius in characteristic two -/
+
+/-- **Pair cancellation in characteristic two.**  A sum of the products
+`a i * a (n - i)` over an index set that is closed under `i ↦ n - i` and
+contains no fixed point of that involution vanishes: the terms cancel in
+pairs, because `x + x = 0`. -/
+private theorem sum_pair_swap_eq_zero {R : Type*} [CommRing R]
+    [CharP R 2] (a : ℕ → R) (n : ℕ) (s : Finset ℕ)
+    (hsub : ∀ i ∈ s, i ≤ n) (hclosed : ∀ i ∈ s, n - i ∈ s)
+    (hfree : ∀ i ∈ s, n - i ≠ i) :
+    ∑ i ∈ s, a i * a (n - i) = 0 := by
+  apply Finset.sum_involution (fun i _ => n - i)
+  · intro i hi
+    have hi' := hsub i hi
+    rw [show n - (n - i) = i by omega, mul_comm]
+    exact CharTwo.add_self_eq_zero _
+  · intro i hi _
+    exact hfree i hi
+  · intro i hi
+    exact hclosed i hi
+  · intro i hi
+    have hi' := hsub i hi
+    omega
 
 /-- **Power-series Frobenius.**  Over a commutative ring of characteristic
 two, the coefficients of `φ²` are the squared coefficients of `φ` spread
@@ -91,44 +127,35 @@ theorem coeff_sq_charTwo {R : Type*} [CommRing R] [CharP R 2]
     rw [← Finset.sum_erase_add _ _ hmem]
     have hzero : ∑ i ∈ (Finset.range (2 * t).succ).erase t,
         PowerSeries.coeff i φ * PowerSeries.coeff (2 * t - i) φ = 0 := by
-      apply Finset.sum_involution (fun i _ => 2 * t - i)
+      refine sum_pair_swap_eq_zero (fun i => PowerSeries.coeff i φ)
+        (2 * t) _ ?_ ?_ ?_
       · intro i hi
-        have hi' : i ≤ 2 * t := by
-          have := Finset.mem_range.mp (Finset.mem_of_mem_erase hi); omega
-        rw [show 2 * t - (2 * t - i) = i by omega, mul_comm]
-        exact CharTwo.add_self_eq_zero _
-      · intro i hi _
-        have hne := Finset.ne_of_mem_erase hi
-        have hi' : i ≤ 2 * t := by
-          have := Finset.mem_range.mp (Finset.mem_of_mem_erase hi); omega
+        have := Finset.mem_range.mp (Finset.mem_of_mem_erase hi)
         omega
       · intro i hi
         have hne := Finset.ne_of_mem_erase hi
-        have hi' : i ≤ 2 * t := by
-          have := Finset.mem_range.mp (Finset.mem_of_mem_erase hi); omega
-        exact Finset.mem_erase.mpr ⟨by omega, Finset.mem_range.mpr (by omega)⟩
+        have := Finset.mem_range.mp (Finset.mem_of_mem_erase hi)
+        exact Finset.mem_erase.mpr
+          ⟨by omega, Finset.mem_range.mpr (by omega)⟩
       · intro i hi
-        have hi' : i ≤ 2 * t := by
-          have := Finset.mem_range.mp (Finset.mem_of_mem_erase hi); omega
+        have hne := Finset.ne_of_mem_erase hi
+        have := Finset.mem_range.mp (Finset.mem_of_mem_erase hi)
         omega
     rw [hzero, zero_add, show 2 * t - t = t by omega,
       show 2 * t / 2 = t by omega, sq]
   · rw [if_neg hn]
-    apply Finset.sum_involution (fun i _ => n - i)
+    refine sum_pair_swap_eq_zero (fun i => PowerSeries.coeff i φ) n _
+      ?_ ?_ ?_
     · intro i hi
-      have hi' : i ≤ n := by have := Finset.mem_range.mp hi; omega
-      rw [show n - (n - i) = i by omega, mul_comm]
-      exact CharTwo.add_self_eq_zero _
-    · intro i hi _
-      have hi' : i ≤ n := by have := Finset.mem_range.mp hi; omega
-      intro heq
-      exact hn ⟨i, by omega⟩
+      have := Finset.mem_range.mp hi
+      omega
     · intro i hi
-      have hi' : i ≤ n := by have := Finset.mem_range.mp hi; omega
+      have := Finset.mem_range.mp hi
       exact Finset.mem_range.mpr (by omega)
     · intro i hi
-      have hi' : i ≤ n := by have := Finset.mem_range.mp hi; omega
-      omega
+      have := Finset.mem_range.mp hi
+      intro heq
+      exact hn ⟨i, by omega⟩
 
 /-- Over `𝔽₂` the Frobenius is the identity on coefficients:
 `[z^n] φ² = [z^(n/2)] φ` for even `n`, `0` for odd `n` — that is,
@@ -162,14 +189,9 @@ theorem constantCoeff_thueMorseBitSeries :
   rw [h, coeff_thueMorseBitSeries]
   simp [thueMorseBit, binaryWeight]
 
-private theorem two_eq_zero : (2 : PowerSeries (ZMod 2)) = 0 := by
-  have hz : (1 + 1 : ZMod 2) = 0 := by decide
-  calc (2 : PowerSeries (ZMod 2)) = 1 + 1 := by norm_num
-    _ = PowerSeries.C (1 + 1 : ZMod 2) := by rw [map_add, map_one]
-    _ = 0 := by rw [hz, map_zero]
-
-private theorem add_self_eq_zero' (y : PowerSeries (ZMod 2)) : y + y = 0 := by
-  rw [← two_mul, two_eq_zero, zero_mul]
+/-- `2 = 0` in `𝔽₂[[z]]`, as a closed term for `linear_combination`. -/
+private theorem two_eq_zero : (2 : PowerSeries (ZMod 2)) = 0 :=
+  CharTwo.two_eq_zero
 
 private theorem bit_cast_odd (n : ℕ) :
     ((thueMorseBit (2 * n + 1) : ℕ) : ZMod 2) =
@@ -265,7 +287,9 @@ theorem thueMorseBitSeries_quadratic :
       = ((1 + PowerSeries.X) ^ 3 * thueMorseBitSeries ^ 2 +
           (1 + PowerSeries.X) ^ 3 * thueMorseBitSeries ^ 2) +
           (PowerSeries.X + PowerSeries.X) := by ring
-    _ = 0 := by rw [add_self_eq_zero', add_self_eq_zero', add_zero]
+    _ = 0 := by
+        rw [CharTwo.add_self_eq_zero, CharTwo.add_self_eq_zero,
+          add_zero]
 
 /-- **The second Artin–Schreier root.**  Adding the geometric series
 `G = ∑ z^n` to the bit series produces the other solution of the same
@@ -307,7 +331,7 @@ theorem artinSchreier_one_add_X_mul :
     _ = ((1 + PowerSeries.X) ^ 3 * thueMorseBitSeries ^ 2 +
           (1 + PowerSeries.X) ^ 3 * thueMorseBitSeries ^ 2) +
           PowerSeries.X := by ring
-    _ = PowerSeries.X := by rw [add_self_eq_zero', zero_add]
+    _ = PowerSeries.X := by rw [CharTwo.add_self_eq_zero, zero_add]
 
 /-! ### The solution set of the Artin–Schreier quadratic -/
 
@@ -404,16 +428,16 @@ theorem integerLift_parity (c : ℕ → ℤ) (h0 : c 0 = 0)
     rw [hφ, PowerSeries.coeff_map, PowerSeries.coeff_mk]
     rfl
   have hsub : (1 : PowerSeries (ZMod 2)) - PowerSeries.X =
-      1 + PowerSeries.X := by
-    have h := add_self_eq_zero' (PowerSeries.X : PowerSeries (ZMod 2))
-    linear_combination -h
+      1 + PowerSeries.X :=
+    CharTwo.sub_eq_add _ _
   have hmapped : (1 + PowerSeries.X) ^ 3 * φ ^ 2 +
       (1 + PowerSeries.X) ^ 2 * φ + PowerSeries.X = 0 := by
     have h := congrArg (PowerSeries.map (Int.castRingHom (ZMod 2))) heq
     simp only [map_add, map_mul, map_pow, map_sub, map_one,
       PowerSeries.map_X] at h
     rw [hsub] at h
-    have hX := add_self_eq_zero' (PowerSeries.X : PowerSeries (ZMod 2))
+    have hX := CharTwo.add_self_eq_zero
+      (PowerSeries.X : PowerSeries (ZMod 2))
     linear_combination h + hX
   have h0' : PowerSeries.constantCoeff φ = 0 := by
     have := hcoeff 0

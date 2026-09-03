@@ -297,7 +297,7 @@ theorem rvachev_even_translate_fourier
       norm_num
       ring
 
-private lemma rvachevFourier_half_int_summable
+lemma rvachevFourier_half_int_summable
     (F : BoundedFabius) (hF : IsFabius F) :
     Summable fun k : ℤ ↦ rvachevFourier F ((((k : ℝ) / 2 : ℝ) : ℂ)) := by
   let φ : SchwartzMap ℝ ℂ :=
