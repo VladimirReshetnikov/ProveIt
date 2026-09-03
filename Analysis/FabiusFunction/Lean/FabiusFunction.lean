@@ -83,6 +83,11 @@ import FabiusFunction.EulerianPolynomialRecurrence
 import FabiusFunction.BellFactorialRowSum
 import FabiusFunction.BellInversionTwo
 import FabiusFunction.StirlingSecondReverseColumn
+import FabiusFunction.ElementarySymmetricBell
+import FabiusFunction.ExpLog
+import FabiusFunction.CumulantBellFormula
+import FabiusFunction.NewtonPowerSumBell
+import FabiusFunction.ExpAddLog
 import FabiusFunction.SymmetricFunctionTransform
 import FabiusFunction.SymmetricFunctionGenerating
 import FabiusFunction.FiniteQBinomialCore
@@ -641,6 +646,14 @@ import FabiusFunction.IntegerParameterTranslation
 import FabiusFunction.MultisetInversions
 import FabiusFunction.GeometricSimplexReindex
 import FabiusFunction.RatioExpansion
+import FabiusFunction.SubspaceMobius
+import FabiusFunction.BasicBernoulliLog
+import FabiusFunction.GaussianFourierTheta
+import FabiusFunction.JacksonRationalCertificate
+import FabiusFunction.JacobiImaginaryTransform
+import FabiusFunction.ThetaProductIdentities
+import FabiusFunction.CyclicSievingSubsets
+import FabiusFunction.SchurPrincipalSpecialization
 import FabiusFunction.RankMatrixCount
 import FabiusFunction.QExponentialFactorization
 import FabiusFunction.LambertTailLimit
