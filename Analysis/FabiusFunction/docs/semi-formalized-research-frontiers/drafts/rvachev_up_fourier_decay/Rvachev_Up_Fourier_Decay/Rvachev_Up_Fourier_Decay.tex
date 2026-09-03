@@ -1564,8 +1564,22 @@ The Plancherel/sinc-square part of this result is represented by the exact Lean 
 \decl{integral_norm_sq_rvachevFourier_eq_two_mul_fabiusSquareEnergy} and
 \decl{fabiusSquareEnergy_eq_integral_Ioi_tprod_sinc_sq} in module
 \lean{FabiusSquareEnergyFourier}.
-The half-integer sampling identity above is a concise human-readable target for completing
-that formalized energy layer.
+The half-integer sampling identity is now formal in its two-sided lattice form:
+\decl{integral_sq_rvachevUp_eq_half_tsum_sq_rvachevFourier} in module
+\lean{RvachevHalfIntegerEnergy} proves
+\(\int_{\RealNumbers}\RvachevUp(t)^2\,\Differential t
+=\tfrac12\sum_{k\in\mathbb Z}\AbsoluteValue{\FourierTwoPi{\RvachevUp}(k/2)}^2\),
+as the instance of a general interval Parseval identity with no Fabius content,
+\decl{IntervalParseval.integral_sq_eq_tsum_sq_fourierIntegral}: a square-integrable
+function supported in an interval of length \(T\) has energy
+\(T^{-1}\sum_{n\in\mathbb Z}\AbsoluteValue{\hat h(n/T)}^2\), and the oversampled form
+\decl{IntervalParseval.integral_sq_eq_tsum_sq_fourierIntegral_of_le} allows any period
+\(T\) at least the diameter of the support.  Folding the two-sided sum onto
+\(m\geq0\) --- discarding the vanishing nonzero integer samples through
+\decl{rvachevFourier_int_eq_ite} and reflecting the negative half through
+\decl{rvachevFourier_neg} --- is bookkeeping about \(\sum\) over \(\mathbb Z\) that the
+module does not yet perform, so the displayed \(\tfrac12+\sum_{m\ge0}\) form remains a
+one-step human deduction from a formal identity.
 
 \section{Arithmetic-mean decay and the Cesaro question}
 \label{sec:L1-Cesaro}
@@ -3834,6 +3848,14 @@ Fourier-product bridge
 Super-polynomial real-axis decay of the Fourier transform
  & \decl{rvachevFourier_real_rapidDecay}
  & \Cref{cor:superpoly-subexp}\\
+Energy from the dual-lattice samples, in two-sided form
+\(\int\RvachevUp^2=\tfrac12\sum_{k\in\mathbb Z}\AbsoluteValue{\FourierTwoPi{\RvachevUp}(k/2)}^2\),
+as an instance of interval Parseval for any time-limited square-integrable function
+ & \decl{integral_sq_rvachevUp_eq_half_tsum_sq_rvachevFourier},
+   \decl{rvachevFourier_eq_fourierIntegral},
+   \decl{IntervalParseval.integral_sq_eq_tsum_sq_fourierIntegral},
+   \decl{IntervalParseval.integral_sq_eq_tsum_sq_fourierIntegral_of_le}
+ & \Cref{prop:total-energy} (second equality; the folding onto \(m\ge0\) is not formal)\\
 Exact nonzero complex zero set and analytic multiplicity $1+\TwoAdicValuation(m)$
  & \decl{rvachevFourierProduct_eq_zero_iff},
    \decl{analyticOrderAt_rvachevFourierProduct_int}
@@ -3997,8 +4019,10 @@ The remaining frontier is now explicit rather than hidden in prose:
       distinct, wider enclosure;
 \item the integer-$b$ shell law, typical exponent, covariance, variance, and general
       martingale decomposition from \Cref{sec:integer-ratios};
-\item the half-integer sampling equality in \Cref{prop:total-energy}, if not yet exported as
-      a named theorem by the energy module.
+\item the folding of the formal two-sided sampling identity of \Cref{prop:total-energy}
+      onto the nonnegative half-integers (the \(\tfrac12+\sum_{m\ge0}\) display), which is
+      \(\mathbb Z\)-summation bookkeeping on top of
+      \decl{integral_sq_rvachevUp_eq_half_tsum_sq_rvachevFourier} rather than new analysis.
 \end{enumerate}
 
 The principal theorem families promoted in the prose now appear in the exact, abstract, or
