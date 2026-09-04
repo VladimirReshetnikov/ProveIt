@@ -1,4 +1,4 @@
-import Mathlib.Computability.Primrec
+import Mathlib.Computability.Partrec
 
 /-!
 # Primitive recursiveness of natural exponentiation, in curried form
