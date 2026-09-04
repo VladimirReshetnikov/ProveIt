@@ -28,6 +28,7 @@ import FabiusFunction.EulerianGeneratingFunctions
 import FabiusFunction.ExponentialRiordan
 import FabiusFunction.ExponentialFormula
 import FabiusFunction.OrderedBell
+import FabiusFunction.OrdinaryPartialBell
 import FabiusFunction.EulerianStirling
 import FabiusFunction.NewtonExpansion
 import FabiusFunction.ComplementaryBell
@@ -289,6 +290,7 @@ import FabiusFunction.MeanValueBracket
 import FabiusFunction.TransseriesHeight
 import FabiusFunction.TransseriesScale
 import FabiusFunction.TransseriesWellBased
+import FabiusFunction.WrightOmega
 import FabiusFunction.LambertShiftInverse
 import FabiusFunction.LambertInverseCoefficients
 import FabiusFunction.CyclicCharacterSums
