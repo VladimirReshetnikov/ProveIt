@@ -170,7 +170,7 @@ theorem isFlat_exp_neg : IsFlat atTop powScale fun x : ℝ => Real.exp (-x) := b
   · have hlim := Real.tendsto_pow_mul_exp_neg_atTop_nhds_zero n
     refine hlim.congr' ?_
     filter_upwards [eventually_gt_atTop (0 : ℝ)] with X hX
-    rw [powScale_eq_rpow, Real.rpow_neg hX.le, div_inv_eq, ← Real.rpow_natCast X n]
+    rw [powScale_eq_rpow, Real.rpow_neg hX.le, div_eq_mul_inv, inv_inv, ← Real.rpow_natCast X n]
     ring
 
 /-- Consequently `e^{-x}` is invisible to the power scale: for every `f` with a
