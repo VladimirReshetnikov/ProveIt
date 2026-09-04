@@ -361,8 +361,9 @@ ten-theorem effective fixed-column Gaussian-rate leaf; and the one-definition/
 fourteen-theorem Rvachev--Appell Hasse leaf; the zero-definition/two-theorem
 greater-than-one Gaussian asymptotics leaf; the one-definition/fourteen-theorem
 nodes-only Rvachev amplitude leaf; and the one-definition/eight-theorem
-geometric-uniform moment-polynomial algebra leaf.  The live source census is
-913 facade-reachable modules and 11,551 public declarations; the moment-
+geometric-uniform moment-polynomial algebra leaf; and the zero-definition/
+three-theorem Thue--Morse GammaLog differential leaf.  The live source census is
+914 facade-reachable modules and 11,554 public declarations; the moment-
 polynomial row remains Partial because its analytic normalization is absent.
 The retained
 257-page, 2,438,299-byte A4 PDF, SHA-256
@@ -2676,11 +2677,57 @@ semiring.  The later \path{LambertWBranchGapBernoulli.lean} (0+5),
 the historical 910/11,525 checkpoint.  The later
 \path{GaussianBinomialGreaterOneAsymptotics.lean} (0+2),
 \path{RvachevLagrangeNodesOnly.lean} (1+14), and
-\path{GeometricUniformMomentPolynomial.lean} (1+8) leaves bring the current
-source census to 913/11,551.  The nodes-only leaf makes
+\path{GeometricUniformMomentPolynomial.lean} (1+8) leaves bring the next
+source checkpoint to 913/11,551.  The subsequent
+\path{ThueMorseGammaTowerDifferential.lean} (0+3) leaf brings the live
+source census to 914/11,554.  The nodes-only leaf makes
 \nolinkurl{cor:lag-nodes-only} Exact/Complete by composition, with rationality
 only at rational evaluation points and a formal coefficient-level Bell
 identity; it does not promote the larger right-inverse row.  Within this
+
+The exhaustive nodes-only surface is the definition
+\lean{rvachevDeconvolvedPolynomialRat} and the fourteen theorems
+\lean{map_rvachevDeconvolvedPolynomialRat},
+\lean{rvachevDeconvolvedPolynomial_eq_sum_appell},
+\lean{eval_rvachevDeconvolvedPolynomial_eq_sum_even_iterateDerivative},
+\lean{rvachevDeconvolvedPolynomial_prod_X_sub_C_eq_sum_appell},
+\lean{eval_rvachevDeconvolvedPolynomial_lagrangeBasis_eq_sum_even_iterateDerivative},
+\lean{eval_rvachevDeconvolvedPolynomial_lagrangeBasis_eq_nodalWeight_mul_sum_appell},
+\lean{lagrangeRvachevDecoder_eq_nodalWeight_mul_sum_appell},
+\lean{map_lagrangeBasis_ratCast},
+\lean{map_rvachevDeconvolvedPolynomialRat_lagrangeBasis},
+\lean{lagrangeRvachevDecoder_eq_ratCast},
+\lean{rvachevRawMomentRat_eq_centeredRvachevFullMoment},
+\lean{momentCumulant_rvachevRawMomentRat_eq_centeredRvachevFullCumulant},
+\lean{momentCumulant_rvachevRawMomentRat_even_eq_bernoulliMersenne}, and
+\lean{rvachevReciprocalMomentRat_eq_completeBellPolynomial_neg_centeredCumulant}.
+Its Exact/Complete status is compositional rather than a claim of one wrapper:
+rationality holds at rational evaluation points, the Bell identity is formal
+coefficient algebra rather than analytic reciprocal-MGF convergence, and
+neither \nolinkurl{thm:lag-cardinal} nor the still-Partial
+\nolinkurl{thm:lag-right-inverse} is promoted.
+
+\path{GaussianBinomialGreaterOneAsymptotics.lean} consists exactly of
+\lean{gaussianBinomial_gt_one_fixedColumn_relativeError_isBigO} and
+\lean{gaussianBinomial_gt_one_central_isEquivalent}.  For real \(q>1\), they
+give the printed fixed-column relative-error rate
+\((q^{-1})^{n-k+1}\) and central equivalence
+\([2m,m]_q\sim q^{m^2}(q^{-1};q^{-1})_\infty^{-1}\).
+Together with evaluated reciprocity they make \nolinkurl{cor:qgreaterone}
+Exact.  Natural subtraction is total and reciprocity is used only eventually
+when \(k\le n\); no shifted-central, non-real, or wider-nome result is claimed.
+
+\path{ThueMorseGammaTowerDifferential.lean} consists exactly of
+\lean{hasDerivAt_mellin_mellinKernel_parameter},
+\lean{hasDerivAt_thueMorseGammaLog_succ}, and
+\lean{iteratedDeriv_thueMorseGammaLog}.  They prove the Mellin parameter-shift
+derivative for every complex spectral exponent, the successor GammaLog law,
+and its falling-factorial iteration for \(k\le r\), all under \(a>0\).
+Hence \nolinkurl{p2:thm:gamma-tower} is Exact when its logarithm is read as
+the existing chosen GammaLog coordinate; no principal-complex-log identity
+or nonpositive-parameter differential law is asserted.
+
+Within this
 source chronology, the initial zero-definition/
 four-theorem \path{LambertWBranchGapBernoulli.lean} tranche first brought the
 exact-radius checkpoint to 903/11,447, and its fifth theorem raised that
@@ -2700,7 +2747,7 @@ value at zero, and the cases \(P_0,\ldots,P_4\).  It does not prove the
 analytic normalization identifying that family with the source moment
 coefficients, nor the leading-coefficient formula and consequent strict
 odd-degree drop.  Hence \nolinkurl{p7:thm:Pn} remains Partial rather than
-Exact.  The q forward ledger is 173 Exact / 85 Partial / 16 None / 8
+Exact.  The q forward ledger is 174 Exact / 84 Partial / 16 None / 8
 interface rows.  These additions are source-only, and the retained 257-page PDF
 remains explicitly historical; no PDF was built for this update.
 The newest six module counts are

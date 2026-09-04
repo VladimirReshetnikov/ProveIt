@@ -126,8 +126,59 @@ they brought the preceding documentation checkpoint to 910 modules and 11,525
 public declarations. The subsequent zero-definition/two-theorem
 `GaussianBinomialGreaterOneAsymptotics`, one-definition/fourteen-theorem
 `RvachevLagrangeNodesOnly`, and one-definition/eight-theorem
-`GeometricUniformMomentPolynomial` leaves bring the current source census to
-913 modules and 11,551 public declarations.
+`GeometricUniformMomentPolynomial` leaves brought the next source checkpoint
+to 913 modules and 11,551 public declarations. The final zero-definition/
+three-theorem `ThueMorseGammaTowerDifferential` leaf brings the live census to
+914 modules and 11,554 public declarations.
+
+`FabiusFunction.GaussianBinomialGreaterOneAsymptotics` has exactly the two
+theorems
+`Fabius.gaussianBinomial_gt_one_fixedColumn_relativeError_isBigO` and
+`Fabius.gaussianBinomial_gt_one_central_isEquivalent`. For real `q > 1`, they
+prove the printed normalized fixed-column error at rate
+`(q⁻¹)^(n-k+1)` and
+`[2m,m]_q ~ q^(m*m) (q⁻¹;q⁻¹)_∞⁻¹`. Together with the existing evaluated
+reciprocity theorem, they make `cor:qgreaterone` Exact. Natural subtraction
+is total in the rate theorem and reciprocity is used only eventually when
+`k ≤ n`; no shifted-central, non-real, or wider-nome result is asserted.
+
+`FabiusFunction.RvachevLagrangeNodesOnly` has the one definition
+`Fabius.rvachevDeconvolvedPolynomialRat` and exactly fourteen theorems:
+`Fabius.map_rvachevDeconvolvedPolynomialRat`,
+`Fabius.rvachevDeconvolvedPolynomial_eq_sum_appell`,
+`Fabius.eval_rvachevDeconvolvedPolynomial_eq_sum_even_iterateDerivative`,
+`Fabius.rvachevDeconvolvedPolynomial_prod_X_sub_C_eq_sum_appell`,
+`Fabius.eval_rvachevDeconvolvedPolynomial_lagrangeBasis_eq_sum_even_iterateDerivative`,
+`Fabius.eval_rvachevDeconvolvedPolynomial_lagrangeBasis_eq_nodalWeight_mul_sum_appell`,
+`Fabius.lagrangeRvachevDecoder_eq_nodalWeight_mul_sum_appell`,
+`Fabius.map_lagrangeBasis_ratCast`,
+`Fabius.map_rvachevDeconvolvedPolynomialRat_lagrangeBasis`,
+`Fabius.lagrangeRvachevDecoder_eq_ratCast`,
+`Fabius.rvachevRawMomentRat_eq_centeredRvachevFullMoment`,
+`Fabius.momentCumulant_rvachevRawMomentRat_eq_centeredRvachevFullCumulant`,
+`Fabius.momentCumulant_rvachevRawMomentRat_even_eq_bernoulliMersenne`, and
+`Fabius.rvachevReciprocalMomentRat_eq_completeBellPolynomial_neg_centeredCumulant`.
+By composition these give an Exact/Complete counterpart of
+`cor:lag-nodes-only`: the ordinary-derivative and raw omitted-node Appell
+forms, coefficientwise rational descent and rational lattice samples, and
+the formal complete-Bell/Bernoulli--Mersenne coefficient description.
+Rationality is asserted only at rational evaluation points, and the Bell
+identity is formal coefficient algebra rather than analytic reciprocal-MGF
+convergence. There is no single wrapper theorem, and this promotion does not
+promote `thm:lag-cardinal` or the still-Partial `thm:lag-right-inverse`.
+
+`FabiusFunction.ThueMorseGammaTowerDifferential` has no definitions and
+exactly three theorems:
+`Fabius.hasDerivAt_mellin_mellinKernel_parameter`,
+`Fabius.hasDerivAt_thueMorseGammaLog_succ`, and
+`Fabius.iteratedDeriv_thueMorseGammaLog`. They prove the arbitrary-complex-
+spectral Mellin parameter derivative, the successor law
+`L_(r+1)'(a) = (r+1)L_r(a)`, and the full falling-factorial iteration for
+`k ≤ r`, always under `0 < a`. Consequently `p2:thm:gamma-tower` is Exact
+when its logarithm is read as the existing chosen GammaLog coordinate. No
+principal-`Complex.log` identity or nonpositive-parameter differential law
+is claimed. These additions are source-only; the retained frontier and
+package PDFs remain historical renders and make no current-parity claim.
 
 The final source-only `FabiusFunction.GaussianBinomialFixedColumnRate` leaf has
 no definitions and ten theorems:
@@ -207,7 +258,7 @@ the later Euler, q-binomial, Jacobi, quantum-binomial, Rogers--Szegő,
 cyclotomic-divisibility, q-Catalan, primitive-root-block, q-Lucas, Jackson
 q-beta, geometric Newton-interpolation, integer/complex upper Gaussian, and
 q-Pfaff--Saalschütz, and noncommutative q-multinomial tranches. Its 282-result
-forward status totals are now 173 exact / 85 partial / 16 none / 8 interface.
+forward status totals are now 174 Exact / 84 Partial / 16 None / 8 interface.
 The partition-symmetry row is exact; the basic geometric-uniform row is now
 exact because `GeometricUniformRealization.lean` transfers the canonical law
 to an arbitrary ambient probability space carrying independent coordinates
