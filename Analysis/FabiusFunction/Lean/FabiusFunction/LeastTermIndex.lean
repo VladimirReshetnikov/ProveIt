@@ -54,6 +54,7 @@ theorem gevreyTerm_succ {β s : ℝ} (hs : s ≠ 0) {M : ℕ} (hM : (M : ℝ) + 
   rw [show (M : ℝ) + 1 + β = ((M : ℝ) + β) + 1 from by ring, Real.Gamma_add_one hM, pow_succ]
   field_simp
 
+/-- The profile is positive wherever `Γ` is, that is for `M + β > 0`. -/
 theorem gevreyTerm_pos {β s : ℝ} (hs : 0 < s) {M : ℕ} (hM : 0 < (M : ℝ) + β) :
     0 < gevreyTerm β s M := by
   rw [gevreyTerm]
