@@ -83,6 +83,18 @@ The merged register has 208 rows: 63 `Lean`, 35 `partial`, and 110 `none`.
 The new local Bell multiplicity and arbitrary-order Nörlund statements
 remain pending compilation.
 
+The final synchronization incorporates main `da90f69d1` and reviews its two
+proposed correspondence upgrades. The Abel declaration references are retained,
+but the row stays `none`: source review is not compilation, and its present
+binomial-identity proof requires a rational algebra. The coordinate-free
+composition theorem now has explicit local smoothness hypotheses and canonical
+ordered-partition indexing. Direct inspection of Mathlib's
+`iteratedFDeriv_comp` and `FormalMultilinearSeries.taylorComp` establishes
+that exact correspondence; the human induction prepends the new least label,
+so it permutes no derivative arguments. Completeness is unnecessary.
+The resulting register is 208 rows: 64 `Lean`, 35 `partial`, and 109 `none`.
+This Mathlib correspondence is not a fresh local compiler run.
+
 `NewtonReciprocal.lean` passed focused compilation on 2026-09-04 using
 `lake env lean -o .lake/build/lib/lean/FabiusFunction/NewtonReciprocal.olean
 Analysis/FabiusFunction/Lean/FabiusFunction/NewtonReciprocal.lean` (exit zero).
@@ -209,10 +221,11 @@ source has no further concrete blocker identified, but awaits compilation.
    integration by parts still need actual Lean statements and proofs. No existing
    Darboux register row should be promoted merely because the human proof was
    repaired.
-5. **Analytic and formal differential calculus.** Formal power-series composition
-   and the two-factor formal Leibniz theorem are useful infrastructure, but do not
-   prove the analytic Faà di Bruno theorem, the general multinomial product rule,
-   or analytic inverse-derivative claims without explicit bridges.
+5. **Analytic and formal differential calculus.** The canonical ordered
+   iterated-Fréchet-derivative composition formula is now explicitly mapped to
+   Mathlib. Its partial-Bell tensor regrouping, the general multinomial product
+   rule, and analytic inverse-derivative claims still require separate bridges;
+   formal power-series identities alone do not discharge them.
 6. **Two-way exposition coverage.** Give every presently unlabelled theorem-like
    environment a stable claim identifier. Extend the existing register to cover
    mathematical prose and examples, and identify which public Lean support

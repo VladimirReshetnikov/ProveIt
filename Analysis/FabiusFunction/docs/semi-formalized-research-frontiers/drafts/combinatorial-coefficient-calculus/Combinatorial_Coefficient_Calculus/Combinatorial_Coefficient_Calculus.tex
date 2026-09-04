@@ -6654,6 +6654,24 @@ Finally, $T(0)=0$ and its unit linear coefficient show that the EGF uses
 a delta series, as required by the definition of binomial type.
 \end{proof}
 
+\begin{remark}[Formal crosswalk]
+% ed.: source correspondence; compiler validation is still pending.
+Module \lean{AbelPolynomialSeries} supplies source for all clauses of this
+statement, with compiler validation still pending.
+\lean{Fabius.abelPolynomial} is $P_n(a,x)=x(x-na)^{n-1}$ over any commutative
+ring, with $P_0=1$; \eqref{eq:merged-abel-binomial} is
+\lean{Fabius.abelPolynomial_eval_add}, whose current source requires a
+commutative $\RationalNumbers$-algebra.  The series clauses use the same
+rational-algebra hypothesis: \lean{Fabius.abelSeries_eq} is
+a solution of $T=t\EulerE^{-aT}$, and \eqref{eq:merged-abel-egf} is
+\lean{Fabius.exp_subst_eq_egfA_abelPolynomial}, which is stated for an
+\emph{arbitrary} series $T$ satisfying that equation rather than for the
+constructed one --- so the phrase ``every such solution'' above is exactly
+what the source states, not a strengthening left to the reader.
+Reading that source is not a compiler receipt; the register therefore
+retains \emph{none} until validation of this module and its dependencies.
+\end{remark}
+
 \section{Exponential Riordan arrays}
 
 \begin{definition}
@@ -6815,8 +6833,15 @@ applied to component weights $+1$ and $-1$.
 
 \begin{theorem}[Coordinate-free Faà di Bruno]
 \label{thm:merged-frechet-faa}
-Let $E,F,G$ be Banach spaces, $g:E\to F$, $f:F\to G$, and let $D^r$ denote
-the symmetric $r$-linear Fréchet derivative.  Then
+Fix an integer $n\geq1$.  Let $E,F,G$ be normed spaces over
+$\mathbb K=\RealNumbers$ or $\ComplexNumbers$, let $V\subseteq E$ and
+$W\subseteq F$ be open, and let $g:E\to F$ and $f:F\to G$ satisfy
+$g(V)\subseteq W$.  Suppose $g$ on $V$ and $f$ on $W$ are
+$\mathcal C^n$ in the Fréchet sense over $\mathbb K$.
+Write $\Pi_n$ for partitions of $\{1,\ldots,n\}$ represented with blocks
+ordered by increasing maximum and each block enumerated increasingly.
+For $x\in V$, directions $h_1,\ldots,h_n\in E$, and $D^r$ denoting
+the iterated $r$-linear Fréchet derivative in that order, one has
 \begin{equation}
  D^n(f\circ g)(x)[h_1,\ldots,h_n]
  =\sum_{\pi\in\Pi_n}D^{|\pi|}f(g(x))
@@ -6825,15 +6850,48 @@ the symmetric $r$-linear Fréchet derivative.  Then
 \end{theorem}
 
 \begin{proof}
-Induct on $n$.  For $n=1$ this is the chain rule.  Differentiate a term
-indexed by $\pi\in\Pi_n$ in direction $h_{n+1}$.  Either the derivative hits
-the outer derivative, creating the new singleton block $\{n+1\}$, or it hits
-one inner derivative associated with a block $B$, adjoining $n+1$ to $B$.
-Every partition of $[n+1]$ is obtained uniquely in one of these two ways,
-according as $\{n+1\}$ is a singleton or not.  The product and chain rules for
-multilinear maps supply no further multiplicities because blocks are already
-labelled subsets.
+Prove the identity simultaneously at every point of $V$ by induction on
+the derivative order $m=1,\ldots,n$.  At $m=1$ there is exactly one
+partition and the identity is the chain rule.  For $m<n$, all derivatives
+in the order-$m$ formula are differentiable on the stated open sets,
+and $g(V)\subseteq W$ permits the chain rule for every outer factor.
+To form the next iterated derivative, shift the existing labels from
+$\{1,\ldots,m\}$ to $\{2,\ldots,m+1\}$ and prepend the direction
+with label $1$.  Differentiating the outer derivative creates the first
+singleton block $\{1\}$.  Differentiating the inner derivative associated
+with a block $B$ inserts $1$ as its first element.  This insertion changes
+no block maximum, so the blocks retain their prescribed order.
+The derivative of a multilinear
+evaluation is the sum of its derivative in the operator and its derivative
+in each argument, so these are exactly all terms, each with coefficient one.
+Every represented partition of $[m+1]$ is obtained uniquely: remove the
+singleton $\{1\}$ if present; otherwise delete $1$ from its unique block,
+then shift all remaining labels down by one.
+No derivative arguments are permuted in either construction.
+Thus the differentiated
+sum is precisely the order-$m+1$ formula, completing the induction using
+only the assumed derivatives through order $n$.
 \end{proof}
+
+\begin{remark}[Formal crosswalk]
+The actual derivative identity is Mathlib's \lean{iteratedFDeriv_comp}
+in \path{Mathlib/Analysis/Calculus/ContDiff/Comp.lean}, applied at order $n$.
+Its \lean{ContDiffAt} hypotheses follow from the stated local
+$\mathcal C^n$ assumptions on open sets.  Its conclusion unfolds using
+\lean{FormalMultilinearSeries.taylorComp} and
+\lean{FormalMultilinearSeries.compAlongOrderedFinpartition_apply}
+to exactly \cref{eq:merged-frechet-faa}.
+The index \lean{OrderedFinpartition} uses the same increasing-maximum
+block order and increasing order inside each block, with labels
+$0,\ldots,n-1$ instead of $1,\ldots,n$.
+The proof's insertion of the new least label is the
+\lean{OrderedFinpartition.extendLeft}/\lean{OrderedFinpartition.extendMiddle}
+decomposition.  No symmetry or unordered-index conversion is needed.
+Mathlib in fact allows normed spaces over any nontrivially normed field;
+neither completeness nor finite dimension is required here.
+The distinct regrouping into the partial-Bell tensor form
+\eqref{eq:merged-frechet-bell} below is not yet formal in the corpus.
+\end{remark}
 
 \begin{corollary}
 When all directions are equal to $h$,
@@ -10853,7 +10911,7 @@ coefficient calculus rather than a catalogue of isolated identities.
 
 \section{Lean formalization register}
 \label{sec:lean-register}
-Every theorem-like environment of this monograph is listed here with the status of its formalization in the Lean development \path{Analysis/FabiusFunction/Lean/FabiusFunction} (Mathlib \texttt{v4.32.0}).  \emph{Lean} means that a public, compiled declaration proves the exact statement or a more general one (the generalization is then noted next to the result); \emph{partial} means that a named part of the statement is proved and the rest is named; \emph{none} means that no compiler-verified counterpart is recorded yet, even if source under validation is identified.  A citation, a numerical check, or a plausible derivation does not count.  The register is generated from the source; its mappings must be updated when results are added or validated.  Current totals: 63 Lean, 35 partial, 110 none, of 208 results.
+Every theorem-like environment of this monograph is listed here with the status of its formalization in the Lean development \path{Analysis/FabiusFunction/Lean/FabiusFunction} (Mathlib \texttt{v4.32.0}).  \emph{Lean} means that a public, compiled declaration proves the exact statement or a more general one (the generalization is then noted next to the result); \emph{partial} means that a named part of the statement is proved and the rest is named; \emph{none} means that no compiler-verified counterpart is recorded yet, even if source under validation is identified.  A citation, a numerical check, or a plausible derivation does not count.  The register is generated from the source; its mappings must be updated when results are added or validated.  Current totals: 64 Lean, 35 partial, 109 none, of 208 results.
 
 \begin{footnotesize}
 \begin{longtable}{@{}p{0.16\textwidth}p{0.22\textwidth}p{0.08\textwidth}p{0.40\textwidth}@{}}
@@ -10987,11 +11045,11 @@ theorem (unlabelled, no.~77) &  & none &  \\
 \Cref{thm:merged-binomial-type-characterization} & Generating-function characterization of binomial type & none &  \\
 \Cref{thm:merged-sheffer} & Addition and lowering & partial & \cref{eq:merged-sheffer-addition} is \lean{Fabius.shefferPoly_add} (\lean{BinomialType}), for \lean{Fabius.shefferPoly} $=c\star p$ (binomial convolution of the coefficients of $g$ with the binomial-type sequence), with generating function \lean{Fabius.egfA_mul_exp_subst_smul_bellWeightSeries}; the lowering law \cref{eq:merged-sheffer-lowering} is not formalized \\
 \Cref{lem:merged-formal-rescaling} & Formal rescaling and exponentials & Lean & \cref{eq:merged-formal-rescaling-derivative} is \lean{Fabius.derivative_rescale} over every commutative semiring; \lean{Fabius.derivative_rescale_exp}, \lean{Fabius.rescale_zero_exp}, and \lean{Fabius.rescale_exp_add_one} give the exponential specializations over every commutative $\RationalNumbers$-algebra (\lean{ExponentialRescaling}). The general product law is Mathlib's \lean{PowerSeries.exp_mul_exp_eq_exp_add}. \\
-\Cref{prop:merged-abel} & Abel polynomials & none &  \\
+\Cref{prop:merged-abel} & Abel polynomials & none & \lean{Fabius.abelPolynomial}, \lean{Fabius.abelPolynomial_eval_add}, \lean{Fabius.abelSeries_eq}, \lean{Fabius.exp_subst_eq_egfA_abelPolynomial} (\lean{AbelPolynomialSeries}) state the EGF for every solution of $T=te^{-aT}$ over a commutative rational algebra, not only the constructed one. The polynomial definition needs only a commutative ring, but the current binomial-identity proof also assumes a rational algebra. Compiler validation is pending. \\
 \Cref{thm:merged-riordan} & Riordan action, product, and inverse & partial & \lean{Fabius.expRiordan_action}, \lean{Fabius.expRiordan_mul}, \lean{Fabius.expRiordan_mul_inverse} (\lean{ExponentialRiordan}) prove the action, product, and a conditional one-sided inverse law, assuming the inverse series and $g\,(h\circ f)=1$.  Construction of these inverse series from the theorem's unit hypotheses and the full two-sided inverse statement remain to be formalized.  The Stirling examples are \lean{Fabius.expRiordan_one_exp_sub_one} and \lean{Fabius.expRiordan_one_log}. \\
 \Cref{thm:merged-complementary-bell} & EGF, recurrence, and Dobiński-type series & Lean & \lean{Fabius.complementaryBell} (\lean{ComplementaryBell}); \cref{eq:merged-complementary-egf} is \lean{Fabius.exp_subst_neg_exp_sub_one}, \cref{eq:merged-complementary-recurrence} is \lean{Fabius.complementaryBell_succ}, and \cref{eq:merged-complementary-dobinski} is \lean{Fabius.complementaryBell_eq_exp_mul_tsum} (the series converges absolutely as the Poisson moment series of \lean{Fabius.tsum_pow_mul_pow_div_factorial}) \\
 \Cref{cor:merged-bell-convolution-inverse} & Convolution inverse of the Bell sequence & Lean & \lean{Fabius.sum_choose_bell_mul_complementaryBell} (\lean{ComplementaryBell}), from the addition law \lean{Bell.complete_add} of complete Bell polynomials at weights $\pm1$ \\
-\Cref{thm:merged-frechet-faa} & Coordinate-free Faà di Bruno & none &  \\
+\Cref{thm:merged-frechet-faa} & Coordinate-free Faà di Bruno & Lean & Mathlib's \lean{iteratedFDeriv_comp} (ContDiff/Comp.lean), unfolded with \lean{FormalMultilinearSeries.taylorComp} and \lean{FormalMultilinearSeries.compAlongOrderedFinpartition_apply}. The statement includes local $C^n$ hypotheses and explicitly uses \lean{OrderedFinpartition}'s increasing-maximum block order. No symmetry conversion is required; the separate partial-Bell regrouping remains open. \\
 corollary (unlabelled, no.~11) &  & none &  \\
 \Cref{thm:merged-inverse-derivative} & Inverse derivative recursion & none &  \\
 \Cref{thm:merged-inverse-derivative-operator} & Inverse-derivative operator & none &  \\
