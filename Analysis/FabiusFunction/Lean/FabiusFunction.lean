@@ -7,6 +7,7 @@ import FabiusFunction.RvachevHalfIntegerEnergy
 import FabiusFunction.LambertWElementaryBounds
 import FabiusFunction.CayleyTreeFunction
 import FabiusFunction.CayleyKernel
+import FabiusFunction.DivisorTransform
 import FabiusFunction.CompleteHomogeneous
 import FabiusFunction.CompleteHomogeneousGenerating
 import FabiusFunction.CompleteHomogeneousBell

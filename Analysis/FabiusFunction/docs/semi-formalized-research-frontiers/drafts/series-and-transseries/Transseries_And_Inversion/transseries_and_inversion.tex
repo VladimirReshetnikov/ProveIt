@@ -39933,6 +39933,29 @@ $\mathcal C(0)=0$.  It is analytic on $|w|<\e^{-1}$ and
 \end{equation}
 where $\Wlam_0$ is the principal Lambert branch.
 \end{definition}
+\emph{Lean status.}  Formal in \lean{CayleyTreeFunction.lean}, with
+\eqref{p1:eq:cayley-lambert} taken as the \emph{definition}:
+\lean{Fabius.cayleyTree}\ \(w=-\Wlam_{0}(-w)\).  That makes the identification with the
+principal branch a rewriting step in both directions ---
+\lean{Fabius.principalLambertW_eq_neg_cayleyTree} reads it as a statement about
+\(\Wlam_{0}\) --- and leaves the rest of the definition as consequences of the Lambert
+API: the functional equation \(\mathcal C=w\EulerE^{\mathcal C}\) is
+\lean{Fabius.cayleyTree_eq_mul_exp}, the initial condition
+\lean{Fabius.cayleyTree_zero}, positivity \lean{Fabius.cayleyTree_nonneg}, strict growth
+\lean{Fabius.cayleyTree_strictMonoOn} and the bound \lean{Fabius.cayleyTree_le_one}.  The
+boundary value \(\mathcal C(\EulerE^{-1})=1\) is \lean{Fabius.cayleyTree_exp_neg_one}: the
+tree function reaches \(1\) exactly where \(\Wlam_{0}\) reaches its branch point, which
+is why that is also where \(\mathcal C\) ceases to be analytic.
+
+Two limitations of the formal statement, both deliberate.  The domain is real: the corpus
+carries the real principal branch on \([-\EulerE^{-1},\infty)\), so \(\mathcal C(w)\) is
+available for \(w\le\EulerE^{-1}\), and the analyticity on the complex disc
+\(\lvert w\rvert<\EulerE^{-1}\) asserted here is not formalized.  And uniqueness carries the
+branch condition explicitly: \lean{Fabius.cayleyTree_unique} asks \(c\le1\), which is
+\(-c\ge-1\), the principal side of \(\Wlam_{0}\).  That hypothesis is not decoration ---
+for \(0<w<\EulerE^{-1}\) the equation \(c=w\EulerE^{c}\) has a second, larger root coming
+from the lower branch, so the statement without it is false, not merely unproved.
+
 
 Comparing \cref{p1:eq:T-zeta} with \cref{p1:def:cayley},
 \begin{equation}
@@ -40118,6 +40141,29 @@ Put
  \label{p1:eq:Phi}
 \end{equation}
 \end{definition}
+\emph{Lean status.}  Formal in \lean{CayleyKernel.lean}, all three displays of
+\eqref{p1:eq:Phi}.  That the two coefficient formulas agree ---
+\(2(m+1)/(m+2)!=2/((m+2)m!)\), since \((m+2)!=(m+2)(m+1)m!\) --- is
+\lean{Fabius.cayleyKernelCoeff_eq_factorial}; the numerical values \(1,\ 2/3,\ 1/4,\ 1/15\)
+are \lean{Fabius.cayleyKernelCoeff_zero} through \lean{Fabius.cayleyKernelCoeff_three}.  The
+closed form is \lean{Fabius.tsum_cayleyKernelTerm}, and its denominator-free version
+\lean{Fabius.tsum_cayleyKernelTerm_mul_sq}, \(v^{2}\Phi(v)=2(1-(1-v)\EulerE^{v})\), holds
+with no hypothesis on \(v\) at all.  The proof is a subtraction of two shifted exponential
+series, \lean{Fabius.tsum_exp_shift_one} and \lean{Fabius.tsum_exp_shift_two}, after the
+termwise identity \lean{Fabius.cayleyKernelCoeff_mul_pow_eq_sub}, which is where the two
+coefficient formulas do their work.  The kernel is entire:
+\lean{Fabius.summable_cayleyKernelTerm} holds for every real \(v\).
+
+Which display is the definition matters, and the formal treatment differs from the one the
+notation above suggests.  The closed form \(2(1-(1-v)\EulerE^{v})/v^{2}\) is undefined at
+\(v=0\); the series is not, and \(\Phi(0)=1\).  So the series is primitive in the corpus,
+the closed form is a theorem for \(v\ne0\), and the removable singularity is recorded
+separately as \lean{Fabius.tsum_cayleyKernelTerm_zero}.  Taking the closed form as the
+definition would have been actively harmful: Lean's convention \(x/0=0\) would have made
+\(\Phi(0)=0\) rather than \(1\), and every statement about the kernel at the origin ---
+which is where it is used --- would have been silently wrong, with nothing in the type
+checker to object.
+
 
 The two displayed coefficient forms agree because $2(m+1)/(m+2)!=2/((m+2)\,m!)$; \textsf{S1}
 and \textsf{S3} use the first, \textsf{S2} the second.
