@@ -366,13 +366,18 @@ exhaustive 2+12 \path{TwoPhiOneReversal.lean}, 0+10
 \path{QChuVandermonde.lean}, and 3+7
 \path{GeometricRichardsonGenerating.lean} surfaces, and the three-theorem
 second-moment extension that brings \path{GaussianBinomialCumulants.lean} to
-2+24.  The origin-side source census is 903 facade-reachable modules and
-11,448 public declarations; retaining the unconditional public
+2+24, followed by the one-definition/eight-theorem
+\path{GeometricUniformMomentPolynomial.lean} algebraic surface.  The latter
+supplies the recursive rational polynomial, residual-product recurrence,
+triangular degree bound, reciprocal-factorial value at zero, and
+\(P_0,\ldots,P_4\), but not the analytic normalization or the leading-coefficient
+and strict odd-degree conclusions; \nolinkurl{p7:thm:Pn} therefore remains
+Partial.  The origin-side source census is 904 facade-reachable modules and
+11,457 public declarations; retaining the unconditional public
 \lean{complexQPochhammerInf_eq_qPochhammerInfIn} bridge gives the merged live
-census of exactly 903 modules and 11,449 unique public declarations, with no
-missing module headers or declaration documentation.  The retained PDF
-predates the Lambert--Bernoulli source update and remains an explicitly
-historical render until the current TeX is rebuilt; it makes no parity claim.
+census of exactly 904 modules and 11,458 unique public declarations, with no
+missing module headers or declaration documentation.  The companion PDF is a
+synchronized render of this source.
 Exact source and PDF validation receipts are kept externally in the repository
 documentation so that neither artifact embeds a self-invalidating fingerprint.
 No \nolinkurl{SHA256SUMS*} ledger exists or participates in validation.
@@ -2554,7 +2559,7 @@ zero-definition/four-theorem
 \path{LambertWBranchGapBernoulli.lean} tranche brings the exact-radius origin
 checkpoint to 903/11,447.  Its fifth theorem,
 \lean{hasSum_bernoulli_mul_pow_div_factorial_complex_iff}, makes the exhaustive
-leaf 0+5 and raises the origin-side live census to 903/11,448.  It crosswalks
+leaf 0+5 and raises the origin-side historical checkpoint to 903/11,448.  It crosswalks
 \nolinkurl{eq:pair-Bernoulli-general} and, under the canonical removable-origin
 convention, \nolinkurl{eq:bernoulli-gen}.  Its
 \lean{summable_bernoulli_mul_pow_div_factorial_iff} theorem proves that the
@@ -2564,11 +2569,18 @@ on and outside the radius.  The fifth theorem gives the actual complex
 on that disk, including value one at \(z=0\).  This is the canonical removable
 representation, not the literal Lean quotient at zero, and it asserts no
 holomorphy.  The real value theorem still assumes \(z\ne0\); remainders and
-higher Puiseux claims remain open.  Retaining the unconditional
-public \lean{complexQPochhammerInf_eq_qPochhammerInfIn} bridge yields the final
-merged live union 903/11,449 with both documentation-gap counts zero.  The
-retained PDF remains explicitly historical until rebuild and does not claim
-parity with the current TeX.  Exact source and PDF receipts are kept externally
+higher Puiseux claims remain open.  The subsequent one-definition/eight-theorem
+\path{GeometricUniformMomentPolynomial.lean} leaf raises the origin-side live
+census to 904/11,457.  It supplies the recursively defined rational polynomial,
+its residual-product recurrence, triangular degree bound,
+reciprocal-factorial value at zero, and the cases \(P_0,\ldots,P_4\).  It does
+not prove the analytic normalization identifying that family with the source
+moment coefficients, nor the leading-coefficient formula and consequent
+strict odd-degree drop, so \nolinkurl{p7:thm:Pn} remains Partial.  Retaining
+the unconditional public
+\lean{complexQPochhammerInf_eq_qPochhammerInfIn} bridge yields the final merged
+live union 904/11,458 with both documentation-gap counts zero.  The companion
+PDF is synchronized with the current TeX.  Exact source and PDF receipts are kept externally
 so that no artifact embeds a mutable self-receipt.
 The newest six module counts are
 \path{QPochhammerInfiniteBounds.lean} (0+5),
@@ -2680,8 +2692,8 @@ Consequently the growth, uniform-bound, and extreme-specialization rows are
 Exact, while the \(q>1\) transfer row remains Partial because only its
 reciprocity clause is formalized.
 
-The rigorous 282-row forward q-series ledger is therefore 165 Exact, 91
-Partial, 18 None, and 8 interface rows.  The evaluated q-Lucas theorem remains
+The rigorous 282-row forward q-series ledger is therefore 165 Exact, 92
+Partial, 17 None, and 8 interface rows.  The evaluated q-Lucas theorem remains
 Partial because its polynomial-congruence lift is absent; the Gaussian
 majorant is Exact; and the \(Q>1\) asymptotic row remains Partial.  The
 parity-selected synthesis module
@@ -9517,6 +9529,25 @@ analytic \path{HasSum} theorems additionally assume a complete normed field,
 strict nome contraction, and absolute summability of the normalized data
 series.  They do not provide convergence without those hypotheses or an
 analytic acceleration bound.
+
+\item \path{GeometricUniformMomentPolynomial.lean} has the one public
+definition \path{Fabius.geometricUniformMomentPolynomial} and exactly eight
+public theorems:
+\path{Fabius.geometricUniformMomentPolynomial_zero},
+\path{Fabius.geometricUniformMomentPolynomial_succ},
+\path{Fabius.geometricUniformMomentPolynomial_natDegree_le},
+\path{Fabius.geometricUniformMomentPolynomial_eval_zero},
+\path{Fabius.geometricUniformMomentPolynomial_one},
+\path{Fabius.geometricUniformMomentPolynomial_two},
+\path{Fabius.geometricUniformMomentPolynomial_three}, and
+\path{Fabius.geometricUniformMomentPolynomial_four}.  These declarations
+define the recursive family directly in \(\RationalNumbers[X]\), prove its
+division-free residual-product recurrence, triangular degree bound and value
+at zero, and calculate \(P_0,\ldots,P_4\).  They do not identify the family
+with the normalized analytic moment coefficients in
+\nolinkurl{p7:eq:Pn-def}, and they prove neither the leading-coefficient
+formula nor the strict degree drop for odd \(n>1\).  Therefore the compound
+frontier label \nolinkurl{p7:thm:Pn} is Partial, not Exact.
 
 \item The five theorems of \path{FinitePolynomialFilterExactness.lean} are
 \path{Fabius.polynomialFilter_response_eq},

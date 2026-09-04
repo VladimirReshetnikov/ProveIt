@@ -126,12 +126,12 @@ A mathematically oriented reader should begin with Sections~\ref{ch:objects}, \r
 \end{boxedremark}
 
 \begin{boxedremark}\textbf{Artifact status (4 September 2026).}\space
-The authoritative live lexical audit of the facade contains exactly 903
-source modules and 11,449 public declarations.  It finds no missing module
+The authoritative live lexical audit of the facade contains exactly 904
+source modules and 11,458 public declarations.  It finds no missing module
 headers and no public declarations without doc comments; the checked baseline
 records this zero-gap state.  The historical 671/8,859 local
 checkpoint was the 649/8,698 checkpoint plus 22 modules and 161 declarations;
-the substantially newer origin corpus has 11,448 declarations, and the
+the substantially newer origin corpus has 11,457 declarations, and the
 retained local bridge produces the present union.  The
 Pochhammer ownership census remains
 \nolinkurl{RvachevPochhammerFactorization.lean} (1+10), including
@@ -165,7 +165,12 @@ surface, together with the three-theorem extension that brings
 zero-definition/five-theorem
 \nolinkurl{LambertWBranchGapBernoulli.lean} leaf, while retaining the public
 \nolinkurl{complexQPochhammerInf_eq_qPochhammerInfIn} bridge.
-The rigorous forward q-monograph ledger is 165 Exact, 91 Partial, 18 None,
+The subsequent one-definition/eight-theorem
+\nolinkurl{GeometricUniformMomentPolynomial.lean} leaf supplies the algebraic
+part of \nolinkurl{p7:thm:Pn} and moves that row from None to Partial; the
+analytic normalization and leading-coefficient/strict-odd-degree clause remain
+open.
+The rigorous forward q-monograph ledger is 165 Exact, 92 Partial, 17 None,
 and 8 interface rows.  The new bound leaf changes
 \nolinkurl{prop:gaussian-bound} from None to Exact, witnessed by
 \nolinkurl{one_le_gaussianBinomial} and
@@ -174,9 +179,8 @@ and 8 interface rows.  The new bound leaf changes
 primitive-root identity, while the manuscript's polynomial congruence modulo
 \(\Phi_d\) still needs a minimal-polynomial lift.
 \nolinkurl{cor:babbage-derivative} also remains Partial because its value,
-but not its derivative, is formalized.  The retained PDF predates the
-Lambert--Bernoulli source update and remains an explicitly historical render
-until the current TeX is rebuilt; it makes no parity claim.  Exact source and
+but not its derivative, is formalized.  The companion PDF is a synchronized
+render of this source.  Exact source and
 PDF validation receipts are kept externally in the repository documentation
 so that neither artifact embeds a self-invalidating fingerprint.  No
 \nolinkurl{SHA256SUMS*} ledger exists or participates in validation.
@@ -3673,6 +3677,31 @@ form the nodes are \(q^{start+k}\), and the exponent of \(q\) is exactly
 by themselves they assert no analytic Richardson remainder, convergence rate,
 or sign bound for a sampled function.
 
+\subsection{The recursive geometric-uniform moment polynomial}
+The source-only leaf
+\nolinkurl{GeometricUniformMomentPolynomial.lean} has one public definition,
+\nolinkurl{geometricUniformMomentPolynomial}, and exactly eight public
+theorems.  The base and residual-product recurrence are
+\nolinkurl{geometricUniformMomentPolynomial_zero} and
+\nolinkurl{geometricUniformMomentPolynomial_succ};
+\nolinkurl{geometricUniformMomentPolynomial_natDegree_le} proves the
+triangular bound, and
+\nolinkurl{geometricUniformMomentPolynomial_eval_zero} gives the reciprocal
+factorial value at zero.  The remaining four theorems,
+\nolinkurl{geometricUniformMomentPolynomial_one} through
+\nolinkurl{geometricUniformMomentPolynomial_four}, are the displayed small
+polynomials.  The finite residual product makes this recursively defined
+family meaningful at \(q=0\), \(q=1\), and roots of unity without a quotient.
+
+This is the complete algebraic tranche, not an analytic moment theorem.  No
+declaration identifies the recursive family with the normalized Taylor or
+moment coefficients used to define the manuscript's \(\mathcal P_n\), and the
+leading-coefficient formula and consequent strict degree drop at odd
+\(n>1\) are absent.  Consequently the external frontier label
+\nolinkurl{p7:thm:Pn} remains Partial: its recurrence, degree bound, value at
+zero, and cases \(P_0,\ldots,P_4\) are supplied, but its analytic
+normalization and leading/odd-degree clause are not.
+
 \subsection{Fixed-order phase-locked Lambert extraction}
 The later current-tree phase-extraction tranche supplies the analytic layer
 for the actual logarithmic Fabius samples.  At the exact lower-Lambert nodes
@@ -5725,6 +5754,7 @@ Newton interpolation and geometric divided differences & \nolinkurl{newtonCoeff}
 Jackson q-beta integral & \nolinkurl{qBeta}; \nolinkurl{qNumber_pos}, \nolinkurl{qBeta_term_eq}, \nolinkurl{qBeta_eq_prod}, \nolinkurl{qBeta_eq_qGamma}, \nolinkurl{qBeta_comm}, \nolinkurl{qBeta_pos}, \nolinkurl{qBeta_add_one_left}, \nolinkurl{qBeta_add_one_right} & Exhaustive one-definition/eight-theorem surface of \nolinkurl{QBetaIntegral.lean}; product and q-Gamma evaluations for \(0<q<1\) \\
 Quantum binomial theorem & \nolinkurl{quantumPlane_mul_pow}, \nolinkurl{quantum_binomial} & Exhaustive zero-definition/two-theorem noncommutative surface of \nolinkurl{QuantumBinomial.lean} \\
 Rogers--Szeg\H{o} polynomials & \nolinkurl{rogersSzego}, \nolinkurl{rogersSzego_succ}, \nolinkurl{rogersSzego_three_term}, \nolinkurl{hasSum_rogersSzego_generating} & \nolinkurl{RogersSzegoPolynomial.lean}; one definition and nine theorems, listed exhaustively above \\
+Geometric-uniform moment-polynomial algebra & \nolinkurl{geometricUniformMomentPolynomial}; \nolinkurl{geometricUniformMomentPolynomial_zero}, \nolinkurl{geometricUniformMomentPolynomial_succ}, \nolinkurl{geometricUniformMomentPolynomial_natDegree_le}, \nolinkurl{geometricUniformMomentPolynomial_eval_zero}, \nolinkurl{geometricUniformMomentPolynomial_one}, \nolinkurl{geometricUniformMomentPolynomial_two}, \nolinkurl{geometricUniformMomentPolynomial_three}, \nolinkurl{geometricUniformMomentPolynomial_four} & Exhaustive one-definition/eight-theorem surface of \nolinkurl{GeometricUniformMomentPolynomial.lean}.  It proves the recursive polynomial algebra, bound, zero value, and \(P_0\) through \(P_4\); \nolinkurl{p7:thm:Pn} remains Partial because the analytic normalization and leading/odd-degree clause are absent \\
 Geometric CDF \(F_q\) and density \(f_q\) & \nolinkurl{geometricUniformCDF}, \nolinkurl{geometricUniformDensity}, \nolinkurl{geometricUniformDensity_zero}, \nolinkurl{geometricUniformDensity_nonpos_of_neg}, \nolinkurl{volume_withDensity_geometricUniformDensity_eq_zero_of_nonpos}, \nolinkurl{geometricUniformDistribution_ne_withDensity_geometricUniformDensity_of_nonpos}, \nolinkurl{geometricUniformCDF_hasDerivAt}, \nolinkurl{geometricUniformDistribution_eq_withDensity}, \nolinkurl{contDiff_geometricUniformCDF}, \nolinkurl{contDiff_geometricUniformDensity} & \nolinkurl{GeometricUniformCDF.lean} \\
 Weighted-sum CDF and half-base bridges & \nolinkurl{weightedSumCDF}, \nolinkurl{weightedSumCDF_eq_geometricUniformCDF_one_half}, \nolinkurl{geometricUniformCDF_one_half_eq_fabiusReal}, \nolinkurl{geometricUniformDensity_one_half_eq_rvachevUp} & \nolinkurl{ProbabilityRepresentation.lean} \\
 Totalized activation kernel \(p\) & \nolinkurl{activationProbability}, \nolinkurl{tanhDiv_eq_dslope}, \nolinkurl{activationProbability_le_min_one_sq_div_three}, \nolinkurl{activationProbability_mul_le_quadratic}, \nolinkurl{tendsto_activationProbability_mul_div_sq} & \nolinkurl{HyperbolicActivation.lean}, \nolinkurl{ActivationSeries.lean}, and \nolinkurl{ActivationAsymptotics.lean} \\
@@ -6013,6 +6043,7 @@ Module & Role in the development \\
 \nolinkurl{GeometricLagrangeQBinomial.lean} & Field-valued q-Pochhammer weight formulas and report-facing rational q-binomial and quarter-base coefficient formulas. \\
 \nolinkurl{GeometricLagrangeQMoments.lean} & Closed forms for every rational geometric moment under nonzero-base and nonvanishing finite-denominator hypotheses, with exact residual sign and finite total variation for \(0<q<1\) and dedicated quarter-base corollaries. \\
 \nolinkurl{GeometricRichardsonGenerating.lean} & Exhaustive three-definition/seven-theorem surface.  The definitions are \nolinkurl{geometricRichardsonKernel}, \nolinkurl{qPochhammerNormalizedDataSeries}, and \nolinkurl{geometricRichardsonTransform}; the theorems are \nolinkurl{coeff_rescale_qPochhammerSeries_eq_geometricRichardsonKernel}, \nolinkurl{coeff_qPochhammerNormalizedDataSeries}, \nolinkurl{geometricRichardsonTransform_generating}, \nolinkurl{geometricRichardsonTransform_eq_sum_lagrange}, \nolinkurl{geometricLagrangeRichardson_generating}, \nolinkurl{hasSum_geometricRichardsonTransform_mul_pow}, and \nolinkurl{hasSum_geometricLagrangeRichardson_mul_pow}.  The first generating identity is formal over a commutative ring with totalized inverses; the exact geometric-Lagrange form assumes a field and nonzero nome; the two analytic \nolinkurl{HasSum} forms additionally require completeness, strict nome contraction, and absolute summability of the normalized data. \\
+\nolinkurl{GeometricUniformMomentPolynomial.lean} & Exhaustive one-definition/eight-theorem algebraic surface: recursive rational polynomial family, residual-product recurrence, triangular \nolinkurl{natDegree} bound, reciprocal-factorial value at zero, and \(P_0\) through \(P_4\).  It supplies no bridge to the analytic moment coefficients and no leading-coefficient or strict odd-degree theorem, so \nolinkurl{p7:thm:Pn} remains Partial. \\
 \nolinkurl{LambertPhaseLockedRichardson.lean} & Exact lower-Lambert phase locking, reciprocal-grid Lagrange weights, cancellation, and every complete-homogeneous residual moment. \\
 \nolinkurl{LambertPhaseLockedBell.lean} & Generalized harmonic power sums and Bell input for the shifted reciprocal alphabet, together with exact complete-homogeneous and reciprocal-Lagrange moment rewrites in factorially normalized complete-Bell form over characteristic-zero fields (with the direct rewrite using the rational-algebra structure).  Total field inversion requires no positivity or nonvanishing hypothesis on the shift. \\
 \nolinkurl{FabiusLambertPhaseLockedPullback.lean} & Pullback of the arbitrary-order logarithmic Fabius expansion to every fixed phase-locked Lambert node, with the periodic correction and saddle coefficients frozen at the base phase. \\
@@ -6186,9 +6217,9 @@ listed above.  It makes the Lambert guide's compact
 radius-\(2\pi\), boundary-divergence, and canonical-removable
 \nolinkurl{eq:bernoulli-gen} clauses Exact.  The literal totalized quotient at
 zero and holomorphy of a named sum function are not claimed, and all higher
-Puiseux claims remain open.  The
-retained walkthrough and Lambert-guide PDFs predate this source change, and
-no source/PDF parity is claimed.
+Puiseux claims remain open.  The walkthrough and Lambert-guide PDFs have been
+rebuilt from their respective current sources; their validation receipts are
+kept externally in the repository documentation.
 The \nolinkurl{FabiusInverseLogarithmicModulus.lean} row is a still later
 current-tree addition inspected declaration-by-declaration on 30 August 2026.
 Its three definitions and fifteen theorems close the least logarithmic scale
@@ -6225,9 +6256,9 @@ Lean audits of the previously recorded new or refactored declarations,
 for each.  At that upstream checkpoint, static inspection found all 610 modules
 below \nolinkurl{FabiusFunction/} reachable from the facade and every one of
 the 105 activation declarations documented.  The merged live current-tree
-lexical audit scans 903 modules and 11,449 public declarations, with no missing
+lexical audit scans 904 modules and 11,458 public declarations, with no missing
 module headers and no missing declaration comments.  The origin-side census is
-903/11,448; the extra declaration is the retained unconditional public
+904/11,457; the extra declaration is the retained unconditional public
 Pochhammer bridge.  The checked baseline records both zero-gap invariants.  At
 the retained historical mainline checkpoint before the latest
 six-module q-series tranche was 623 modules and 8,476 declarations.  Its
@@ -6319,11 +6350,9 @@ zero-definition/four-theorem
 \nolinkurl{LambertWBranchGapBernoulli.lean} tranche raises the exact-radius
 origin checkpoint to 903/11,447.  Its fifth theorem,
 \nolinkurl{hasSum_bernoulli_mul_pow_div_factorial_complex_iff}, makes the
-exhaustive leaf 0+5 and raises the origin-side live census to 903/11,448.
-Retaining the unconditional public
-\nolinkurl{complexQPochhammerInf_eq_qPochhammerInfIn} bridge yields the final
-merged live census 903/11,449.  Together with the three finite branch-coordinate
-modules, the Bernoulli companion gives four definitions and thirty-seven
+exhaustive leaf 0+5 and raises the origin-side historical checkpoint to 903/11,448.
+Together with the three finite branch-coordinate modules, the Bernoulli
+companion gives four definitions and thirty-seven
 theorems, forty-one public declarations in all.  Its
 \nolinkurl{summable_bernoulli_mul_pow_div_factorial_iff} theorem says that the
 complex series is summable exactly when \(\lvert z\rvert<2\pi\), hence diverges
@@ -6333,13 +6362,21 @@ on that disk, including value one at \(z=0\).  This is the canonical removable
 representation, not the literal totalized quotient at zero, and it asserts no
 holomorphy.  The real quotient evaluation still assumes \(z\ne0\); remainders
 and higher Puiseux claims remain open.
+The subsequent one-definition/eight-theorem
+\nolinkurl{GeometricUniformMomentPolynomial.lean} leaf raises the origin-side
+live census to 904/11,457.  It supplies the recursive rational polynomial,
+its residual-product recurrence, triangular degree bound,
+reciprocal-factorial value at zero, and the cases \(P_0,\ldots,P_4\).  It does
+not identify that family with the analytic moment coefficients or prove the
+leading-coefficient formula and consequent strict odd-degree drop, so
+\nolinkurl{p7:thm:Pn} remains Partial.  Retaining the unconditional public
+\nolinkurl{complexQPochhammerInf_eq_qPochhammerInfIn} bridge yields the final
+merged live census 904/11,458, with both documentation-gap counts zero.
 \nolinkurl{DyadicDerivativeFiltration.lean} contains zero definitions and six
 theorems after its two-theorem extension.  No aggregate facade build is
-claimed for this current-tree census.  The retained PDF and title-page pin
-remain historical and do not claim parity with the merged source; exact source
-and PDF receipts are kept externally so that no artifact embeds a mutable
-self-receipt.
-
+claimed for this current-tree census.  The companion PDF is synchronized with
+the merged source; exact source and PDF receipts are kept externally so that no
+artifact embeds a mutable self-receipt.
 Those six counts are \nolinkurl{QPochhammerInfiniteBounds.lean} (0+5),
 \nolinkurl{HeineTransformation.lean} (2+5),
 \nolinkurl{QGaussSummation.lean} (0+2),

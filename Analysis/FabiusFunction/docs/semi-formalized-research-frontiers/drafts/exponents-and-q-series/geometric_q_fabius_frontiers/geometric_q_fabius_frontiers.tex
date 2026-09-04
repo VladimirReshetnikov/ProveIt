@@ -16321,11 +16321,11 @@ zero-definition, five-theorem \(\NaturalNumbers[X]\) compatibility surface:
 \path{gaussianBinomial_universal_monic},
 \path{coeff_zero_gaussianBinomial_universal},
 \path{gaussianBinomial_universal_reflect}, and
-\path{coeff_gaussianBinomial_universal_symm}.  With this tranche the live
-facade census is exactly 657 modules and 8,756 public declarations.  The
-retained 238-page PDF predates this union and remains a historical artifact;
-a final-source build and ledger refresh are pending, so no live-TeX/PDF parity
-or final source fingerprint is asserted here.
+\path{coeff_gaussianBinomial_universal_symm}.  At this historical tranche the
+facade census was exactly 657 modules and 8,756 public declarations.  The
+238-page PDF from that stage remains a historical artifact; the current
+synchronized source/PDF receipt is recorded externally in the repository
+documentation, without any package-wide checksum ledger.
 \end{statusbox}
 
 The nome is $q^2$, not $q$: centering makes every factor even, and evenness
@@ -16554,6 +16554,34 @@ cyclotomic indices $e$, repeated cyclotomic jets --- not mere vanishing at
 primitive odd roots of unity --- must be controlled; the cancellation-order
 calculus of the two-nome partition function below is a candidate mechanism.
 \end{conjecture}
+
+\begin{statusbox}{Post-snapshot Lean status: Partial}
+The source-only module \path{GeometricUniformMomentPolynomial.lean} has one
+public definition, \lean{geometricUniformMomentPolynomial}, and exactly eight
+public theorems:
+\lean{geometricUniformMomentPolynomial_zero},
+\lean{geometricUniformMomentPolynomial_succ},
+\lean{geometricUniformMomentPolynomial_natDegree_le},
+\lean{geometricUniformMomentPolynomial_eval_zero},
+\lean{geometricUniformMomentPolynomial_one},
+\lean{geometricUniformMomentPolynomial_two},
+\lean{geometricUniformMomentPolynomial_three}, and
+\lean{geometricUniformMomentPolynomial_four}.  It supplies the recursively
+defined rational polynomial, the residual-product recurrence
+\eqref{p7:eq:Pn-recurrence}, the triangular degree bound, the value at zero,
+and the displayed cases \(P_0,\ldots,P_4\).  It does not identify that family
+with the normalized analytic moment coefficients in
+\eqref{p7:eq:Pn-def}, nor does it prove the leading-coefficient formula and
+the consequent strict degree drop for odd \(n>1\).  Thus the compound theorem
+\cref{p7:thm:Pn} is Partial, not Exact: its algebraic
+recurrence/bound/zero/small-case clauses are supplied, while its analytic
+normalization and leading/odd-degree clause remain open.  This \(1+8\) leaf
+raises origin's facade census from the historical 903/11,448 checkpoint to
+904 modules and 11,457 public declarations; retaining the unconditional public
+q-Pochhammer bridge gives the semantic union 904/11,458, from the preceding
+local checkpoint 903/11,449.  The synchronized publication PDF renders this
+source crosswalk and its Partial boundary.
+\end{statusbox}
 
 The polynomial is not decorative: the exact endpoint lattice of
 \cref{p7:sec:endpoints} reads

@@ -7,8 +7,8 @@ This theme has three live navigation targets:
 - [`comb-interpolation/comb_interpolation_synthesis/`](comb-interpolation/comb_interpolation_synthesis/)
   — the canonical additive and geometric comb synthesis;
 - [`fabius_information_frontier/`](fabius_information_frontier/)
-  — a separate information-geometry intake whose source/PDF synchronization
-  and claim-level acceptance remain explicitly qualified.
+  — a separate information-geometry intake with a synchronized canonical
+  source/PDF pair; claim-level acceptance remains explicitly qualified.
 
 ## Canonical inverse synthesis
 
@@ -82,7 +82,17 @@ Richardson update.
 [`fabius_information_frontier/`](fabius_information_frontier/) remains an
 archival information-geometry intake. Its retired arrival and operational
 ledger checkpoints remain recoverable from Git and distinguish the submitted
-PDF from later source changes; manuscript theorem
+PDF from the current canonical publication. The current source is 2,138 lines
+and 78,310 bytes (SHA-256
+`57a06279153b6e4c97ea0c084a193867b2f5c60a0163983149f36453eb196c9d`);
+exactly three serial halt-on-error passes from absent auxiliaries produced
+28 pages/778,760 bytes, 29 pages/790,804 bytes, and a final 29-page,
+790,802-byte PDF (SHA-256
+`3af03cd4dcc7fb1a502976f47edb56ee7d5c2b8dc9a8da537e79f8382ef885d5`).
+The final log and metadata gates passed; every page is A4 at rotation zero,
+rendered, and has extractable text; all 23 font rows are embedded/subset, six
+are Libertinus, and none is Type 3; representative visuals passed. Generated
+sidecars are absent, and no checksum ledger is a live gate. Manuscript theorem
 labels do not by themselves establish current Lean verification.
 
 ## Formalization notes
@@ -100,10 +110,10 @@ monomial and polynomial rules, generic-mesh physical quadrature, deconvolved
 polynomial synthesis, and the Rvachev--Appell specialization. These two latest
 row promotions bring the canonical concordance to 50 Lean-proved, 95
 human-proved frontier results, 10 conjectures, 15 open problems, and 24
-nonassertoric environments. The live Lean documentation census is 672 modules
-and 8,876 public declarations with no gaps. The retired source layouts remain
-immutable provenance only; the source is newer than the retained historical
-PDF.
+nonassertoric environments. The live Lean documentation census is 904 modules
+and 11,458 public declarations with no gaps. The retired source layouts remain
+immutable provenance only; the current information-frontier source and PDF are
+synchronized under the receipt above.
 
 `QuarterCatalanGerm.lean` proves that the distinguished rational quarter germ
 becomes the Catalan inverse of `X + 4 X^2` under the exact `9/4` parameter

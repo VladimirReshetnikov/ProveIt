@@ -197,10 +197,10 @@ an exact Lean theorem are kept in the companion volume under
 \end{abstract}
 
 \begin{boxedremark}\textbf{Artifact status (4 September 2026).}\space
-The authoritative live lexical audit contains exactly 903 facade-reachable
-source modules and 11,449 unique public declarations: 293 modules and 3,131
-declarations beyond the 610/8,318 activation checkpoint, and 254 modules and
-2,751 declarations beyond the 649/8,698 publication-union checkpoint.  Module
+The authoritative live lexical audit contains exactly 904 facade-reachable
+source modules and 11,458 unique public declarations: 294 modules and 3,140
+declarations beyond the 610/8,318 activation checkpoint, and 255 modules and
+2,760 declarations beyond the 649/8,698 publication-union checkpoint.  Module
 headers and declaration documentation are complete; the checked baseline records
 both zero-gap invariants.  This source includes the earlier finite and
 infinite q-series APIs together with the final Gaussian-palindromic, Jackson
@@ -214,9 +214,8 @@ superconvergent Rvachev synthesis, Gaussian bounds, the complete terminating
 Richardson generating-function module, the complete Lambert branch-coordinate
 surfaces and their zero-definition/five-theorem Bernoulli branch-gap
 companion, the six-theorem dyadic derivative filtration, and the three-theorem
-second-moment extension of \path{GaussianBinomialCumulants.lean}.  The retained
-PDF predates the Lambert--Bernoulli source update and remains an explicitly
-historical render until the current TeX is rebuilt; it makes no parity claim.
+second-moment extension of \path{GaussianBinomialCumulants.lean}.  The
+companion PDF is a synchronized render of this source.
 Exact source and PDF validation receipts are kept externally in the repository
 documentation so that neither artifact embeds a self-invalidating fingerprint.
 No \nolinkurl{SHA256SUMS*} ledger exists or participates in validation.
@@ -3993,10 +3992,12 @@ The two summability hypotheses in the comparison theorem are essential
 because the underlying infinite product is totalized outside its admissible
 range.  No spectral-zeta recovery, cumulant-sample recovery, or
 identifiability of an underlying probability law is asserted; those remain
-open interfaces.  The origin-side source union contains 903 modules and
-11,448 public declarations.  Retaining the unconditional public
+open interfaces.  With the later concurrent source union, the origin-side
+facade census is exactly 904 modules and 11,457 public declarations; the
+immediately preceding complex Bernoulli value-completion checkpoint was
+903/11,448.  Retaining the unconditional public
 \lean{complexQPochhammerInf_eq_qPochhammerInfIn} bridge gives the merged live
-facade census of exactly 903 modules and 11,449 unique public declarations,
+facade census of exactly 904 modules and 11,458 unique public declarations,
 with no missing module headers or declaration documentation.  The current TeX also
 contains the six-theorem prime-power companion-row API and the
 zero-definition/three-theorem outer Pochhammer normal-convergence API, plus
@@ -4025,8 +4026,13 @@ pair contributes two definitions and twenty-two theorems, and
 \path{GeometricRichardsonGenerating.lean} contributes three definitions and
 seven theorems.  Three subsequent theorems expand
 \path{GaussianBinomialCumulants.lean} from 2+21 to its current 2+24 surface.
-These source overlays are integrated into the TeX, while the retained PDF
-remains historical until rebuild.  Exact source and PDF receipts are kept
+The subsequent \path{GeometricUniformMomentPolynomial.lean} module contributes
+one definition and eight theorems, supplying the recursive polynomial algebra,
+triangular degree bound, value at zero, and the cases \(P_0,\ldots,P_4\), but
+not the analytic normalization or the leading-coefficient and strict
+odd-degree conclusions.
+These source overlays are integrated into both the TeX and its synchronized
+PDF.  Exact source and PDF receipts are kept
 externally in the repository documentation so that no artifact embeds a
 mutable self-receipt.
 
@@ -4057,6 +4063,24 @@ The four newest module counts are
 universal Gaussian polynomial structure over \(\NaturalNumbers[X]\), Jacobi's cubic
 identity, the q-Pochhammer logarithmic derivative and Lambert-series form, and
 the derivative with respect to complex order under the displayed hypotheses.
+
+The newest algebraic moment-polynomial count is
+\path{GeometricUniformMomentPolynomial.lean} (1+8).  Its definition is
+\lean{geometricUniformMomentPolynomial}; its theorems are
+\lean{geometricUniformMomentPolynomial_zero},
+\lean{geometricUniformMomentPolynomial_succ},
+\lean{geometricUniformMomentPolynomial_natDegree_le},
+\lean{geometricUniformMomentPolynomial_eval_zero}, and the four explicit
+specializations
+\lean{geometricUniformMomentPolynomial_one},
+\lean{geometricUniformMomentPolynomial_two},
+\lean{geometricUniformMomentPolynomial_three}, and
+\lean{geometricUniformMomentPolynomial_four}.  This supplies the recursive
+polynomial family, residual-product recurrence, triangular degree bound,
+value at zero, and the cases \(P_0,\ldots,P_4\).  It does not identify that
+family with the analytically defined moment coefficients or prove the leading
+coefficient and strict odd-degree drop.  Accordingly the frontier label
+\nolinkurl{p7:thm:Pn} remains Partial rather than Exact.
 
 The final two module counts are
 \path{CentralQBinomialReduction.lean} (0+6) and
@@ -4300,8 +4324,8 @@ Its proof
 reuses the stronger ordered-field theorem
 \lean{finiteQPochhammerIn_self_pos} from
 \path{GeneralQConditionNumber.lean} rather than exporting a duplicate.
-The rigorous 282-row forward q-series ledger is therefore 165 Exact, 91
-Partial, 18 None, and 8 interface rows.  In particular q-Lucas remains Partial
+The rigorous 282-row forward q-series ledger is therefore 165 Exact, 92
+Partial, 17 None, and 8 interface rows.  In particular q-Lucas remains Partial
 because Lean proves the evaluated primitive-root identity rather than the
 polynomial congruence modulo \(\Phi_d\); the Gaussian majorant row is Exact,
 while the \(Q>1\) asymptotic row remains Partial because only reciprocity and
@@ -13771,6 +13795,7 @@ Moments and exact arithmetic &
 \path{CenteredMomentCumulants.lean}, \path{CenteredMomentParity.lean},
 \path{SinhDivBernoulliLog.lean},
 \path{PolynomialExpectationCumulant.lean}, \path{RvachevMomentAppell.lean},
+\path{GeometricUniformMomentPolynomial.lean},
 \path{WeightedScaleMultiplicity.lean}, \path{BaseDigitMultiplicity.lean},
 \path{ExactInversePower.lean}, \path{Parity.lean}, \path{TwoAdic.lean},
 \path{CentralBinomialValuation.lean},

@@ -73,8 +73,8 @@ validation record in `README.md` gives the complete page-render and visual
 sample receipt. Package-local checksum ledgers have been abolished. PDFs retained beneath
 `assets/` are research figures, not manuscripts.
 
-The most recent retained publication checkpoint supersedes that earlier
-historical receipt. Its
+The subsequent pre-`9135` publication checkpoint supersedes that earlier
+historical receipt for its own named source. Its
 16,834-line, 837,715-byte TeX source has SHA-256
 `4785625c1399558f3ca59481888fc76514e0a327a1faa16945c61851f874f3d5`;
 exactly three successful serial passes produced 386, 395, and 395 pages, and
@@ -87,12 +87,26 @@ confirmed readable and unclipped. No `SHA256SUMS*` file exists or participates
 in validation, and none should be recreated. The validation record in
 `README.md` gives the complete gate and visual-sample receipt for that named
 source. The checkpoint predates the `9135` final source union, so its 395-page
-PDF is now historical and the merged source remains pending a final union
-rebuild.
+PDF is historical and is superseded by the synchronized receipt below.
 
-The repository-wide documentation census is 903 facade-reachable modules and
-11,449 public declarations, with zero missing module headers and zero
-declaration-documentation gaps. The final count is one above origin's 11,448
+The synchronized publication receipt (2026-09-04) records the current
+16,910-line, 842,514-byte TeX source at SHA-256
+`196f219d5e1efba463ebabb69659697b1afb28989ef1a8da6219226d3262ad32`.
+Exactly three successful serial halt-on-error passes from absent sidecars ran
+390 pages / 2,386,364 bytes → 398 / 2,501,624 → 398 / 2,501,638; during every
+pass `makeindex` accepted 164 entries, rejected none, produced 254 lines, and
+emitted no warning. The final 398-page, 2,501,638-byte A4 PDF has SHA-256
+`e8094b054f52b1fb71c7540f0834155fae0eac17887cb7cac1567848bd65d3b3`.
+All 43 font rows are embedded and subset, five are Libertinus, and none is Type
+3. Final-log reference/rerun/error checks, metadata, every-page render and
+nonblank-text checks, and representative visuals passed; generated sidecars
+and forbidden checksum basenames both close at zero. The sole retained
+32.5659 pt overfull paragraph at source lines 590--598 is readable and
+unclipped; the final log has zero underfull diagnostics.
+
+The repository-wide documentation census is 904 facade-reachable modules and
+11,458 public declarations, with zero missing module headers and zero
+declaration-documentation gaps. The final count is one above origin's 11,457
 because the union retains the public
 `Fabius.complexQPochhammerInf_eq_qPochhammerInfIn` bridge.
 Sibling source-only promotions are recorded here only to delimit this
@@ -100,8 +114,9 @@ q-volume's receipt: `LambertWBranchPairing.lean`,
 `LambertWGapBijection.lean`, and `LambertWBranchSymmetry.lean` have exhaustive
 surfaces 0+7, 4+16, and 0+9; `DyadicDerivativeFiltration.lean` is 0+6; and
 `GeometricRichardsonGenerating.lean` is 3+7. The last module changes no row in
-this monograph's forward-status inventory. None of these source-only
-promotions is claimed to be rendered by the retained PDF.
+this monograph's forward-status inventory. These promotions were absent from
+the historical 395-page PDF; the synchronized 398-page artifact renders the
+current q-volume source.
 
 The current source incorporates exhaustive crosswalks for
 `QPochhammerEntire` (zero definitions and five legacy compatibility theorems),
@@ -155,8 +170,8 @@ complex strict contraction, including `q = 0`, and gives the dyadic Rvachev
 product and bounded-Fabius Fourier specializations. The compound
 `thm:qF-spectral` row remains Partial because its named centered/MGF packaging
 and exterior reciprocal, pole-divisor, and zero--pole clauses are absent. The
-live facade audit contains 903 modules and 11,449 public declarations with
-zero documentation gaps. Origin's 11,448-declaration inventory omits the
+live facade audit contains 904 modules and 11,458 public declarations with
+zero documentation gaps. Origin's 11,457-declaration inventory omits the
 retained public `complexQPochhammerInf_eq_qPochhammerInfIn` bridge. Ten
 declarations come from the sibling
 `FabiusFunction.GeometricRichardsonGenerating` source-only module, three are
@@ -179,13 +194,37 @@ clause, Guide label `eq:pair-Bernoulli-general`, and canonical-removable
 reading of `eq:bernoulli-gen` are Exact. Here `complexExpm1Div 0 = 1` and it
 equals `(exp z - 1) / z` away from zero; this is not the literal totalized
 quotient at zero and asserts no holomorphy. Higher/full Puiseux and logarithmic
-expansions remain open. None of
-these source-only changes alters this monograph's forward-status counts or
-retained historical artifact, and no render parity is claimed. The
-forward status inventory covers 282 labelled results: 165 Exact / 91 Partial /
-18 None / 8 interface; the 191-result pre-Fabius core remains 36 / 29 / 123 / 3
-interface. The five-publication concordance has 86 Lean-proved, 392
-human-proved frontier, 60 not-applicable, and 9
+expansions remain open. That sibling tranche produced the historical
+origin-side checkpoint 903/11,448 and, with the retained public bridge, the
+semantic-union checkpoint 903/11,449, without changing this monograph's
+forward-status or source-concordance counts.
+
+The current q-series increment is the one-definition/eight-theorem
+`GeometricUniformMomentPolynomial.lean` leaf. Its exhaustive public surface is
+`geometricUniformMomentPolynomial`,
+`geometricUniformMomentPolynomial_zero`,
+`geometricUniformMomentPolynomial_succ`,
+`geometricUniformMomentPolynomial_natDegree_le`,
+`geometricUniformMomentPolynomial_eval_zero`,
+`geometricUniformMomentPolynomial_one`,
+`geometricUniformMomentPolynomial_two`,
+`geometricUniformMomentPolynomial_three`, and
+`geometricUniformMomentPolynomial_four`.  The recursive rational polynomial,
+its zeroth value and residual-product recurrence, the triangular degree bound,
+the value at zero, and the first four nonconstant cases are exact.  The
+division-free recurrence is total at `q=0`, `q=1`, and roots of unity.  The module
+does not identify this recursive family with the normalized analytic
+coefficients `a_n(q)` or with the geometric-uniform moment-generating product.
+Accordingly `thm:qF-moment-polynomial` moves from None to Partial, not Exact;
+the sharp-degree proposition stays None.  The live semantic census is
+904/11,458; origin has 11,457 declarations because it lacks the public bridge.
+Neither source-only addition changed the historical 395-page artifact; the
+synchronized 398-page PDF now renders the current source. The
+forward status inventory covers 282 labelled results:
+165 Exact / 92 Partial / 17 None / 8 interface; the 191-result pre-Fabius core is
+36 / 29 / 123 / 3.
+The five-publication concordance
+has 86 Lean-proved, 392 human-proved frontier, 60 not-applicable, and 9
 conjecture rows. The `cor:positivity`, `thm:qbinom-structure`, and
 `prop:gq-positive-palindromic` rows are Exact: both Gaussian structure APIs
 support the structure row, and the fourteen-theorem generic API now gives
@@ -222,9 +261,9 @@ evaluated reciprocity and the finite growth bounds on both sides of `q = 1`;
 the imported positivity theorem is not counted as a declaration of the
 bounds leaf. Its six exported theorems close the exact finite-growth row, while
 the greater-than-one compound row remains Partial only at its asymptotic
-clauses. No PDF was generated locally while resolving this merge; the retained
-395-page artifact remains a historical pre-`9135` publication checkpoint and
-does not render the final source; a final union rebuild remains pending.
+clauses. No PDF was generated locally while resolving that merge; the retained
+395-page artifact remains a historical pre-`9135` publication checkpoint. The
+synchronized 398-page artifact now renders the final source.
 
 The former q-Pochhammer/q-binomial monograph arrived in commit
 `47172bc03ec078961d8b023dfe156ecd712efb65`. Its pre-repair source SHA-256 was

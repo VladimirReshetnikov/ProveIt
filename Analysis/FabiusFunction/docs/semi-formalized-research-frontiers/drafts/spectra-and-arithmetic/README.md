@@ -16,12 +16,13 @@ The exact current live-TeX snapshots are:
 | `Spectra_and_Arithmetic_Frontiers/Spectra_and_Arithmetic_Frontiers.tex` | 8,183 | 349,076 | `683a560044772216980b05c4dd26957c6bbfb6c34019cc8d4cae815d9cff8df1` |
 
 These metrics and hashes describe the live TeX only. No PDFs were regenerated
-for this pass. Consequently, every page-count, font, visual-inspection, and
-three-pass-build statement below remains evidence about its earlier retained
-PDF checkpoint, not evidence of byte-level or rendered parity with the current
-source. Package-local checksum ledgers are retired; their prior checkpoint
-bytes, arrival provenance, and historical build hashes remain recoverable from
-Git history and the package receipts.
+for that notation pass. Except for the later synchronized Dyadic Radon and
+Carleman receipts stated explicitly below, every page-count, font,
+visual-inspection, and three-pass-build statement remains evidence about its
+earlier retained PDF checkpoint, not evidence of byte-level or rendered parity
+with the current source. Package-local checksum ledgers are retired; their
+prior checkpoint bytes, arrival provenance, and historical build hashes remain
+recoverable from Git history and the package receipts.
 `Fabius_Pascal_Frontiers_Report` likewise retains its already documented mixed
 checkpoint: its reviewed PDF predates its current TeX.
 
@@ -63,8 +64,8 @@ Lean verification.
   and a Lean crosswalk.
 
 - [`Dyadic_Radon_Profiles_Fabius_Rvachev_2026-08-30/`](Dyadic_Radon_Profiles_Fabius_Rvachev_2026-08-30/)
-  contains *Dyadic Radon Profiles in the Fabius--Rvachev Web* (31
-  letter-paper pp, 2,064 source lines; with a 624-line program, ten data
+  contains *Dyadic Radon Profiles in the Fabius--Rvachev Web* (at arrival: 31
+  letter-paper pp and 2,064 source lines; with a 624-line program, ten data
   files, and four PDF/PNG figure pairs), from
   `03b2f61889674f7d64ac86d3233236f5fa7ce660`. Its former complete 26-entry
   ledger recorded the repository-normalized bytes; nine CSV entries changed
@@ -72,7 +73,15 @@ Lean verification.
   from Git history. The title and abstract concern spectral
   reconstruction of dyadic projection profiles, zero multiplicities,
   q-sampled cumulants, automatic signs, Pascal factorizations, and exact
-  cubature.
+  cubature. The current 2,050-line, 74,839-byte source has SHA-256
+  `0ac7695620cb22896bb912598e2e91fd404e70dbd3c5d1e769ee76a6e92578d4`.
+  Three serial halt-on-error passes from absent auxiliaries produced
+  27 pages/984,841 bytes, 29 pages/998,017 bytes, and a final 29-page,
+  998,017-byte PDF with SHA-256
+  `39e76001f71c6628308ccdb8232251538674faee3c9102fa26e4cec00eb276c0`.
+  The final log, metadata, A4/rotation-zero, all-page render/text, and
+  representative visual gates passed; all 24 font rows are embedded/subset,
+  six are Libertinus, none is Type 3, and generated sidecars are absent.
 
 - [`Fabius_Pascal_Frontiers_Report/`](Fabius_Pascal_Frontiers_Report/)
   contains *Automatic Spectra, Exact Dyadic Cubature, and Probabilistic Duals
@@ -109,13 +118,21 @@ Lean verification.
 
 - [`Fabius_Rvachev_Carleman_Frontiers_2026-08-30/`](Fabius_Rvachev_Carleman_Frontiers_2026-08-30/)
   contains *Critical Ultradifferentiable Geometry of the Fabius--Rvachev
-  System* (24 A4 pp, 1,941 source lines; with a 544-line program, four CSV
-  tables, and five PDF/PNG figure pairs), from
+  System* (at arrival: 24 A4 pp and 1,941 source lines; with a 544-line program,
+  four CSV tables, and five PDF/PNG figure pairs), from
   `92c9909242ed6a2ab51d68ed816d1aa2a5339719`. Four CSV hashes in its complete
   21-entry ledger were refreshed for LF storage. Its derivative spectrum,
   Denjoy--Carleman scales, discrete Fourier duality, lattice corrections,
   Lambert-W saddles, and Bell-edge behavior remain pending comparison and
-  formalization.
+  formalization. The current 1,934-line, 71,224-byte source has SHA-256
+  `49dd91c71df292725e9dfe6de450ac014b47f3c3ba4a5bc8ec02e2d2e76d34e3`.
+  Three serial halt-on-error passes from absent auxiliaries produced
+  24 pages/952,942 bytes, 24 pages/973,424 bytes, and a final 24-page,
+  973,424-byte PDF with SHA-256
+  `13a7f35e23dc5a794d46b431059ce35c0b48c199f1996539b65dee9bc8c16047`.
+  The final log, metadata, A4/rotation-zero, all-page render/text, and
+  representative visual gates passed; all 22 font rows are embedded/subset,
+  four are Libertinus, none is Type 3, and generated sidecars are absent.
 
 - [`Dyadic_Spectral_Divisors_and_Gamma_Duality/`](Dyadic_Spectral_Divisors_and_Gamma_Duality/)
   is the title-derived filing of the generic incoming wrapper

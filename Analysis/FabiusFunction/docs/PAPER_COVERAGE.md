@@ -11,10 +11,10 @@ see its
 or [rendered PDF](Fabius_Function_and_Rvachev_Up/Fabius_Function_and_Rvachev_Up.pdf).
 
 > **Artifact status (2026-09-04).**  The live lexical audit of the facade
-> semantic union contains exactly 903 source modules and 11,449 public declarations.
+> semantic union contains exactly 904 source modules and 11,458 public declarations.
 > It reports no missing module headers and no missing declaration comments;
 > the checked baseline records this zero-gap state.  The corresponding origin
-> inventory has 11,448 declarations because it lacks this tree's unique
+> inventory has 11,457 declarations because it lacks this tree's unique
 > unconditional public `complexQPochhammerInf_eq_qPochhammerInfIn` bridge.
 > This crosswalk records all
 > 30 declarations in `LegendreGauntClosedForm.lean` and
@@ -62,7 +62,7 @@ or [rendered PDF](Fabius_Function_and_Rvachev_Up/Fabius_Function_and_Rvachev_Up.
 > modules, the four-module Lambert union is 4+37, forty-one declarations.
 > The bounds module reuses `finiteQPochhammerIn_self_pos` from
 > `GeneralQConditionNumber`; it does not redeclare it.  The rigorous forward
-> q-monograph ledger is 165 Exact, 91 Partial, 18 None, and 8 interface
+> q-monograph ledger is 165 Exact, 92 Partial, 17 None, and 8 interface
 > rows; its source concordance is 86 Lean, 392 human, 60 N/A, and 9 conjecture
 > rows, and the concordance extractor passes.  `prop:gaussian-bound` is Exact;
 > `thm:q-lucas` and
@@ -71,8 +71,9 @@ or [rendered PDF](Fabius_Function_and_Rvachev_Up/Fabius_Function_and_Rvachev_Up.
 >
 > Four exact direct receipts record the last synchronized pre-9135 source/PDF
 > pairs and are now historical because the live sources include the new
-> q-Chu/reversal, geometric-generating, Gaussian second-moment, and Lambert
-> branch-gap Bernoulli APIs.  The primary exposition's
+> q-Chu/reversal, geometric-generating, Gaussian second-moment, Lambert
+> branch-gap Bernoulli, and geometric-uniform moment-polynomial APIs.  The
+> primary exposition's
 > 14,037-line, 702,119-byte TeX has SHA-256
 > `6a20e02cf300c0b29ba8d175831b4f86e4b336601cc5bd5f5752d5c5889be69a`,
 > and its 197-page, 1,602,500-byte PDF has SHA-256
@@ -95,19 +96,19 @@ or [rendered PDF](Fabius_Function_and_Rvachev_Up/Fabius_Function_and_Rvachev_Up.
 > expected underfull diagnostics, and the q-series master retains one harmless,
 > readable 32.5659 pt overfull line.  All page, metadata, font, render, text,
 > and representative-visual gates passed.  These receipts certify their named
-> pre-9135 pairs, not parity with the 903/11,449 live union; all four publications
-> require new final-source rebuilds.
+> pre-9135 pairs only and are superseded by the synchronized 2026-09-04 receipts
+> below.
 >
 > The independently scoped Sequence publication remains current.  The Lambert
-> guide's last synchronized receipt is a 4,829-line, 174,423-byte TeX with SHA-256
+> guide's preceding synchronized receipt is a 4,829-line, 174,423-byte TeX with SHA-256
 > `724dfe5b1effcda29325a5bdfb066ff970eb74ab460f650185339fefce40ebc1`;
 > its 69-page, 952,929-byte PDF has SHA-256
 > `0b5f28dbfe590658e74150e8ccff6f023ecd0b8fb4e3e978ec275d9ddd244de6`.
 > Its successful page sequence was 67→69→69; machine and visual gates passed,
 > with expected underfull diagnostics and one harmless readable 0.825 pt
-> internal overfull line.  The new Bernoulli-series source overlay makes that
-> Lambert PDF historical pending a parity rebuild.  The Sequence
-> inversion/transseries volume's
+> internal overfull line.  The Bernoulli-series source overlay made that
+> Lambert PDF historical; the synchronized 2026-09-04 receipt below supersedes
+> it.  The Sequence inversion/transseries volume's
 > 16,705-line, 778,477-byte TeX has SHA-256
 > `4aa038c10ddd931b7c1248095ddfdf0ce8769c69cc0df4f344f6365d0e45e8e1`;
 > its 205-page, 2,198,655-byte PDF has SHA-256
@@ -116,6 +117,56 @@ or [rendered PDF](Fabius_Function_and_Rvachev_Up/Fabius_Function_and_Rvachev_Up.
 > machine gates, and extensive visual checks passed.  The final log retains one
 > duplicate-page-destination notice, nine PDF-string notices, 47 overfull and
 > 12 underfull diagnostics; sampled largest cases are clean and unclipped.
+>
+> **Synchronized publication receipts (2026-09-04).** Each pass tuple below is
+> `pages/bytes`.  All six named current TeX/PDF pairs completed exactly three
+> successful serial halt-on-error passes from absent sidecars.  Final-log
+> reference/rerun/error checks, metadata, A4 rotation zero, every-page render
+> and nonblank-text checks, embedded/subset fonts with Libertinus and no Type 3,
+> and representative visual checks all passed; generated sidecars and forbidden
+> checksum basenames both close at zero.
+>
+> - Primary exposition: TeX 14,328 lines / 715,760 bytes / SHA-256
+>   `60c0a6ff4e75ec37e6928067859671d87622ad8f430a1006dd4c71c7e7b25674`;
+>   passes 197/1,579,558 → 200/1,621,473 → 200/1,621,467; final PDF
+>   200 pages / 1,621,467 bytes / SHA-256
+>   `50febffeb7dda743330bd346b8f5fd45f85668db97c19fb52d4cd741d1692826`;
+>   fonts 29 total / 6 Libertinus / 0 Type 3.
+> - Lean walkthrough: TeX 6,855 lines / 482,759 bytes / SHA-256
+>   `1c48c54b194eb9e99dae64ddca70e2aa5d2edd995160ee2d5bc6455b545683f7`;
+>   passes 149/1,225,017 → 154/1,262,552 → 154/1,262,574; final PDF
+>   154 pages / 1,262,574 bytes / SHA-256
+>   `f9cba79348ffb81c41fc08b6523548effcc45ded9a2eb2b18e618ac9d59d0648`;
+>   fonts 30 / 7 / 0.
+> - Lambert Guide: TeX 4,876 lines / 177,511 bytes / SHA-256
+>   `d852a345685dd61335a89fc4fd1092680bdc597a5d1e6ac612883946ad0d99ea`;
+>   passes 68/963,230 → 70/986,865 → 70/986,865; final PDF 70 pages /
+>   986,865 bytes / SHA-256
+>   `0b8801649a6dd43d9f02dcfc2f60cac50b5c8f88bd782645bf97d30cc3dfbd41`;
+>   fonts 42 / 5 / 0; one harmless readable 0.82504 pt overfull and 133
+>   underfull diagnostics.
+> - Canonical frontier: TeX 18,173 lines / 826,738 bytes / SHA-256
+>   `844842bf699a24651f660bd7d81d814f6396b4fe6fc6de66a04908904221860b`;
+>   passes 257/1,822,725 → 265/1,904,567 → 265/1,904,551; final PDF
+>   265 pages / 1,904,551 bytes / SHA-256
+>   `dcaa7ac1e5397912c97a474b4023521e49d0785eb6ef67d83d0ce002d9cbb6e6`;
+>   fonts 40 / 8 / 0; one readable unclipped 9.43108 pt overfull at source
+>   lines 1032–1043 and 299 underfull diagnostics.
+> - Geometric q-frontier: TeX 27,598 lines / 1,270,870 bytes / SHA-256
+>   `6db4e211b0588ed75a0e89e13d97306f1d5d38b42a2bf941914ea16b9ca93dae`;
+>   passes 386/8,157,293 → 403/8,339,780 → 403/8,339,736; final PDF
+>   403 pages / 8,339,736 bytes / SHA-256
+>   `4d909b5e228e2053d473dc75da502382c7a4fe2b096f798e124e6530d3a15027`;
+>   fonts 43 / 11 / 0; zero overfull and 37 underfull diagnostics.
+> - Canonical q-series synthesis: TeX 16,910 lines / 842,514 bytes / SHA-256
+>   `196f219d5e1efba463ebabb69659697b1afb28989ef1a8da6219226d3262ad32`;
+>   passes 390/2,386,364 → 398/2,501,624 → 398/2,501,638; final PDF
+>   398 pages / 2,501,638 bytes / SHA-256
+>   `e8094b054f52b1fb71c7540f0834155fae0eac17887cb7cac1567848bd65d3b3`;
+>   fonts 43 / 5 / 0.  Every pass's index run accepted 164 entries, rejected
+>   none, produced 254 lines, and emitted no warning.  The sole retained
+>   32.5659 pt overfull paragraph at source lines 590–598 is readable and
+>   unclipped; the final log has zero underfull diagnostics.
 >
 > For provenance, the superseded pre-d8b pairs remain historical receipts:
 > primary TeX/PDF `938517a92565685ac9f7194b879cfe752ce783f258bde8b7b685aee41aed13dc` /
@@ -129,10 +180,12 @@ or [rendered PDF](Fabius_Function_and_Rvachev_Up/Fabius_Function_and_Rvachev_Up.
 > (808,185 / 1,877,159 bytes; 260 pages); and q-series
 > `d8f730b8eb6602d4d16112aea77a3e67dfbeadf46bcd28c1cdf3b12450b7d4fb` /
 > `5d25df07e6df1cd32118ee87e64c1cc54ad32da7c578a182231f98dd9fee9d5c`
-> (837,715 / 2,494,949 bytes; 395 pages).  Representation Frontiers, filed New
-> Frontiers, the notation catalogue, comb-interpolation synthesis, and
-> Integration-and-Transform master likewise retain historical 301-, 41-, 88-,
-> 158-, and 377-page receipts.  Checksum ledgers remain abolished and hardened
+> (837,715 / 2,494,949 bytes; 395 pages).  Representation Frontiers and the
+> Integration-and-Transform master now have synchronized current 301- and
+> 377-page receipts in the frontier manifest and their local group records.
+> Filed New Frontiers, the notation catalogue, and the comb-interpolation
+> synthesis retain historical 41-, 88-, and 158-page receipts.  Checksum
+> ledgers remain abolished and hardened
 > repository-wide; no `SHA256SUMS*` files exist or participate in validation.
 
 The Wigner boundary in this crosswalk is literal: the directly defined
@@ -367,6 +420,7 @@ prefixes on the real frequency line and uniform convergence on its compact sets.
 | Contractive affine independent-copy laws (reusable foundation) | At compiled checkpoint `d312c0603`, `AffineIndependentCopy.lean` defines the convolution law of `digit D + q • X` for an arbitrary measurable digit space and a second-countable Borel real inner-product target.  It proves probability preservation, equality with the direct product pushforward, one-step characteristic-function factorization, and the fixed-point recurrence with its finite iterate.  For a measurable digit and probability digit/candidate laws, `|q| < 1` makes the fixed point unique; this includes `q=0` and negative `q` and assumes no support, density, or moments.  Completeness of the target occurs only in the characteristic-recurrence uniqueness theorem and its two fixed-point wrappers. | `ProbabilityTheory.affineIndependentCopyLaw`, `ProbabilityTheory.affineIndependentCopyLaw_isProbabilityMeasure`, `ProbabilityTheory.affineIndependentCopyLaw_eq_map_prod`, `ProbabilityTheory.charFun_affineIndependentCopyLaw`, `ProbabilityTheory.charFun_eq_mul_charFun_of_affineIndependentCopy_fixedPoint`, `ProbabilityTheory.charFun_iterate_of_affineIndependentCopy_fixedPoint`, `ProbabilityTheory.eq_of_charFun_affine_recurrence`, `ProbabilityTheory.affineIndependentCopyLaw_fixedPoint_unique`, `ProbabilityTheory.affineIndependentCopy_map_fixedPoint_unique` |
 | Named geometric uniform-coordinate law | For every real `q`, the weights are `(1-q)q^n` with exact zero/successor formulas.  If the absolute value of `q` is less than one, they are norm-summable with total mass one; the resulting series is continuous and measurable, splits as `X_q = (1-q)U_0 + q X_q'`, and reflects to `1-X_q`.  Its law is a probability measure with the exact head--tail product law, affine self-similarity, reflection, absolute continuity with respect to Lebesgue measure, null singletons, and topological support equal to the exact range of `X_q`; the absolute-continuity statements need no positivity assumption on `q`.  The wrapper in `GeometricUniformUniqueness.lean` says that, for `|q| < 1`, this self-similarity uniquely characterizes the law among all probability measures, including at `q=0` and negative `q`, without support, density, or moment hypotheses.  Under `0 ≤ q < 1`, the weights are nonnegative, the series range and law support are exactly `[0,1]`; `q=0` is included.  At `q=1/2`, exact bridges identify both the random series and law with the classical dyadic construction.  The CDF and density layer is recorded in the next two rows. | `Fabius.ProbabilityRepresentation.geometricUniformWeight`, `Fabius.ProbabilityRepresentation.geometricUniformWeight_zero`, `Fabius.ProbabilityRepresentation.geometricUniformWeight_succ`, `Fabius.ProbabilityRepresentation.hasSum_geometricUniformWeight`, `Fabius.ProbabilityRepresentation.summable_norm_geometricUniformWeight`, `Fabius.ProbabilityRepresentation.geometricUniformWeight_nonneg`, `Fabius.ProbabilityRepresentation.geometricUniformSeries`, `Fabius.ProbabilityRepresentation.continuous_geometricUniformSeries`, `Fabius.ProbabilityRepresentation.measurable_geometricUniformSeries`, `Fabius.ProbabilityRepresentation.geometricUniformSeries_split`, `Fabius.ProbabilityRepresentation.geometricUniformSeries_reflect`, `Fabius.ProbabilityRepresentation.geometricUniformSeries_mem_Icc`, `Fabius.ProbabilityRepresentation.geometricUniformDistribution`, `Fabius.ProbabilityRepresentation.geometricUniformDistribution_isProbabilityMeasure`, `Fabius.ProbabilityRepresentation.geometricUniformDistribution_absolutelyContinuous`, `Fabius.ProbabilityRepresentation.geometricUniformDistribution_nullSingletonClass`, `Fabius.ProbabilityRepresentation.uniformProduct_map_head_tail_geometricUniformSeries`, `Fabius.ProbabilityRepresentation.geometricUniformDistribution_selfSimilar`, `Fabius.ProbabilityRepresentation.geometricUniformDistribution_reflection`, `Fabius.ProbabilityRepresentation.geometricUniformDistribution_Icc`, `Fabius.ProbabilityRepresentation.geometricUniformDistribution_compl_Icc`, `Fabius.ProbabilityRepresentation.geometricUniformDistribution_support_eq_range`, `Fabius.ProbabilityRepresentation.geometricUniformDistribution_support_eq_Icc`, `Fabius.ProbabilityRepresentation.eq_geometricUniformDistribution_of_selfSimilar`, `Fabius.ProbabilityRepresentation.weightedCoordinateSum_eq_geometricUniformSeries_one_half`, `Fabius.ProbabilityRepresentation.weightedSumDistribution_eq_geometricUniformDistribution_one_half` |
 | Fixed half--quarter multisection of the normalized geometric-uniform law | With `evenCoordinates ω n = ω (2n)` and `oddCoordinates ω n = ω (2n+1)`, the ratio-`1/2` series is pointwise `(2/3)` times the even ratio-`1/4` series plus `(1/3)` times the odd one.  Under the product-uniform law the two coordinate processes are independent copies, so the half law is exactly the pushforward of the product of two quarter laws, equivalently the convolution of their `2/3`- and `1/3`-scaled pushforwards.  These fixed identities need no user hypotheses.  They do not assert a general ratio or general multisection theorem, MGF/cumulant compatibility, the centered-density convolution, or a Pochhammer/Fourier dissection. | `Fabius.ProbabilityRepresentation.evenCoordinates`, `Fabius.ProbabilityRepresentation.oddCoordinates`, `Fabius.ProbabilityRepresentation.geometricUniformSeries_one_half_multisection`, `Fabius.ProbabilityRepresentation.geometricUniformDistribution_one_half_multisection`, `Fabius.ProbabilityRepresentation.geometricUniformDistribution_one_half_conv_one_quarter` |
+| Monograph `thm:qF-moment-polynomial` (algebraic tranche) | **Partial.**  `GeometricUniformMomentPolynomial.lean` has exactly one public definition and eight public theorems.  Its recursively defined `ℚ[X]` family has `P_0=1`, the exact division-free residual-product recurrence, `natDegree P_n ≤ n.choose 2`, `P_n(0)=1/(n+1)!`, and the displayed values through `P_4`.  Thus every algebraic clause is exact, including `q=0`.  The canonical label is nevertheless not wholly Exact: the monograph defines `P_n(q)=((q;q)_n/(1-q)^n)a_n(q)` before stating the recurrence, and no Lean theorem yet bridges that analytic coefficient/MGF normalization to the recursive family.  The leading and subleading coefficients and sharp exact degree of `prop:qF-P-degree-sharp` are also absent. | `Fabius.geometricUniformMomentPolynomial`, `Fabius.geometricUniformMomentPolynomial_zero`, `Fabius.geometricUniformMomentPolynomial_succ`, `Fabius.geometricUniformMomentPolynomial_natDegree_le`, `Fabius.geometricUniformMomentPolynomial_eval_zero`, `Fabius.geometricUniformMomentPolynomial_one`, `Fabius.geometricUniformMomentPolynomial_two`, `Fabius.geometricUniformMomentPolynomial_three`, `Fabius.geometricUniformMomentPolynomial_four` |
 | Geometric-uniform tail dictionary and sinc-prefix convergence | The predecessor dictionary proves finite measure, characteristic-function, MGF, and CGF tail factorizations.  The sinc module evaluates the scaled uniform digit for every real `q`; for `|q| < 1` it gives both the closed-factor and phase-collapsed finite identities `φ_q(t) = exp(i(1-q^m)t/2) · ∏_{k<m} sinc((1-q)q^k t/2) · φ_q(q^m t)`, then proves that the phase-bearing prefix without the residual converges pointwise to `φ_q(t)`.  The scope includes `q=0` and negative `q`; the dyadic results are exact wrappers for `weightedSumDistribution`.  This predecessor module itself remains pointwise; the next row records the named locally uniform real-frequency upgrade and its compact-set uniform corollary. | `Fabius.charFun_geometricUniformDigit`, `Fabius.charFun_geometricUniformDistribution_prefix`, `Fabius.charFun_geometricUniformDistribution_prefix_sinc`, `Fabius.tendsto_prefix_sinc_charFun`, `Fabius.charFun_weightedSumDistribution_prefix_sinc`, `Fabius.tendsto_prefix_sinc_charFun_weightedSumDistribution` |
 | Geometric sinc/Gamma characteristic-function bridge and phase-prefix convergence | `GeometricSincCharacteristicFunction.lean` has exactly four public theorems and no public definitions.  For every real `q` with the sharp hypothesis `|q| < 1`, including `q=0` and negative `q`, and every real frequency `t`, set `z=(1-q)t/(2π)`.  The first two theorems prove `φ_q(t)=exp(it/2) S_q(z)` for `S_q=geometricSincProduct (q : ℂ)` and, by reflection, `φ_q(t)=exp(it/2) G_q(z)G_q(-z)` for `G_q=geometricReciprocalGamma (q : ℂ)`.  For `P_m(t)=exp(i(1-q^m)t/2) · ∏_{k<m} sinc((1-q)q^k t/2)`, the other two prove `P_m → φ_q` locally uniformly on `ℝ` and uniformly on every compact `K ⊆ ℝ`.  Together with the Gamma-side row, this closes the named `HasProd`, locally uniform pure-product, entire-product, characteristic-function, real-frequency locally uniform, and compact-real-uniform bridges.  No complex-frequency analogue for the full phase-bearing prefixes or uniform-convergence claim on all of `ℝ` is made.  General-`q` rapid-decay bounds and Fourier inversion, a separately packaged centered family and MGF wrapper, explicit Bernoulli-cumulant/Bell-moment formulas or asymptotics, further transform formulas, and shape theory remain outside Lean.  The fixed-dyadic Pochhammer factorization above is not a substitute for these remaining general-`q` statements. | `Fabius.charFun_geometricUniformDistribution_eq_phase_mul_geometricSincProduct`, `Fabius.charFun_geometricUniformDistribution_eq_phase_mul_geometricReciprocalGamma`, `Fabius.tendstoLocallyUniformly_prefix_sinc_charFun`, `Fabius.tendstoUniformlyOn_prefix_sinc_charFun` |
 | Continuous CDF and density extraction for atomless real probability laws (reusable foundation) | Every real probability law with null singletons has a continuous CDF.  If such a law is invariant under `y ↦ a-y`, then its CDF satisfies `F(a-x)=1-F(x)`.  More strongly, if an arbitrary real probability CDF has the everywhere pointwise derivative `f`, then the law is exactly Lebesgue measure with density `ENNReal.ofReal ∘ f`.  This last theorem assumes neither continuity of `f`, null singletons, nor prior absolute continuity: CDF monotonicity supplies nonnegativity and local integrability. | `Fabius.continuous_cdf_of_nullSingleton`, `Fabius.cdf_reflection_sub`, `Fabius.measure_eq_withDensity_of_cdf_hasDerivAt` |

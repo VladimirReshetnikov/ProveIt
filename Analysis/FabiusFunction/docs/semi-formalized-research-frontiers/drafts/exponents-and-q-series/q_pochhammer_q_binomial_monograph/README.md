@@ -95,8 +95,8 @@ checksum manifests must not be recreated. Historical SHA-256 values recorded
 directly in this README and in `PROVENANCE.md` remain provenance receipts for
 the named artifacts.
 
-The most recent retained publication checkpoint was rebuilt on 2026-09-03 from a clean
-auxiliary state. Exactly three successful
+The immediately preceding publication checkpoint was rebuilt on 2026-09-03
+from a clean auxiliary state. Exactly three successful
 serial `pdflatex -interaction=nonstopmode -halt-on-error` passes produced 386,
 395, and 395 pages. During each pass `imakeidx` ran `makeindex` successfully:
 164 entries were accepted, none rejected, and the 254-line index was generated
@@ -119,10 +119,27 @@ the index. All blocking compilation, index, reference, font, page-render, and
 visual gates passed; the one harmless, readable 32.5659 pt overfull paragraph
 is the only disclosed exception to otherwise clean diagnostics. This receipt
 validates only its named source checkpoint: it predates the `9135` final source
-union, so the 395-page PDF is now historical and a final union rebuild remains
-pending. The current formalization ledger closes at 165 Exact, 91 Partial, 18
-None, and 8 interface rows. Files under `assets/experiments/**/figures/`
+union, so the 395-page PDF is historical and is superseded by the synchronized
+receipt below. The current formalization ledger closes at 165 Exact, 92
+Partial, 17 None, and 8 interface rows. Files under
+`assets/experiments/**/figures/`
 remain research figures, not publication manuscripts.
+
+The synchronized publication receipt (2026-09-04) records the current
+16,910-line, 842,514-byte TeX source at SHA-256
+`196f219d5e1efba463ebabb69659697b1afb28989ef1a8da6219226d3262ad32`.
+Exactly three successful serial halt-on-error passes from absent sidecars ran
+390 pages / 2,386,364 bytes → 398 / 2,501,624 → 398 / 2,501,638. During every
+pass `makeindex` accepted 164 entries, rejected none, produced 254 lines, and
+emitted no warning. The final 398-page, 2,501,638-byte A4 PDF has SHA-256
+`e8094b054f52b1fb71c7540f0834155fae0eac17887cb7cac1567848bd65d3b3`.
+All 43 font rows are embedded and subset, five are Libertinus, and none is Type
+3. Final-log reference/rerun/error checks, metadata, every-page render and
+nonblank-text checks, and representative visuals passed; generated sidecars
+and forbidden checksum basenames both close at zero. The sole retained
+32.5659 pt overfull paragraph at source lines 590--598 is readable and
+unclipped; the final log has zero underfull diagnostics.
+
 The current source includes exhaustive crosswalks for `QPochhammerEntire`
 (zero definitions
 and five legacy compatibility theorems), `QPochhammerInfinite` (one definition
@@ -177,20 +194,20 @@ The newest combinatorial and certification tranche adds
 binary-word inversion and path-area generating functions, rectangular-box
 partition generating functions and counts, finite telescoping certificates,
 recurrence uniqueness, and rational-identity specialization. The live facade
-audit now contains 903 modules and 11,449 public declarations, with zero
+audit now contains 904 modules and 11,458 public declarations, with zero
 missing module headers and zero declaration-documentation gaps. The
 ten-declaration increase is the unrelated sibling
 `FabiusFunction.GeometricRichardsonGenerating` module (three definitions and
 seven theorems), whose exact comb-manuscript crosswalk is
 `Fabius.geometricLagrangeRichardson_generating`; it does not change this
 monograph's forward-status inventory or make its retained PDF current.
-The final declaration count is one above origin's 11,448 because this union
+The final declaration count is one above origin's 11,457 because this union
 retains the public `Fabius.complexQPochhammerInf_eq_qPochhammerInfIn` bridge.
 The other three new declarations are the explicit second-derivative,
 division-free raw-second-moment, and division-free variance-numerator theorems
 in `GaussianBinomialCumulants`; they strengthen the already-Exact
 `thm:qbinom-moments` row without changing its disposition.
-The final one-module/five-declaration increase is the unrelated sibling
+The subsequent one-module/five-declaration increase is the unrelated sibling
 `LambertWBranchGapBernoulli.lean` leaf. Its exhaustive zero-definition public
 surface is `summable_norm_bernoulli_mul_pow_div_factorial`,
 `summable_bernoulli_mul_pow_div_factorial_iff`,
@@ -208,9 +225,36 @@ clause, Guide label `eq:pair-Bernoulli-general`, and canonical-removable
 reading of `eq:bernoulli-gen` are Exact. Here `complexExpm1Div 0 = 1` and it
 equals `(exp z - 1) / z` away from zero; this is not the literal totalized
 quotient at zero and asserts no holomorphy. Higher/full Puiseux and logarithmic
-expansions remain open. This
-sibling promotion changes none of the forward-status or concordance totals
-below, and the retained historical PDF does not render it.
+expansions remain open. That sibling promotion produced the historical
+903/11,448 checkpoint and changed none of the q-series forward-status or
+source-concordance totals.
+
+The newest source-only q-series leaf is
+`GeometricUniformMomentPolynomial.lean`, with one definition,
+`geometricUniformMomentPolynomial`, and exactly eight theorems:
+`geometricUniformMomentPolynomial_zero`,
+`geometricUniformMomentPolynomial_succ`,
+`geometricUniformMomentPolynomial_natDegree_le`,
+`geometricUniformMomentPolynomial_eval_zero`,
+`geometricUniformMomentPolynomial_one`,
+`geometricUniformMomentPolynomial_two`,
+`geometricUniformMomentPolynomial_three`, and
+`geometricUniformMomentPolynomial_four`.  It formalizes the recursive
+rational polynomial family, the zeroth value and residual-product recurrence,
+the triangular degree bound, the specialization at zero, and all displayed
+cases through the fourth polynomial.  The division-free recurrence is total at
+`q=0`, `q=1`, and roots of unity.  It deliberately does not identify that
+recursive family with the normalized coefficients `a_n(q)` of the analytic
+moment-generating product.  Consequently `thm:qF-moment-polynomial` moves
+from None to Partial, not Exact; `prop:qF-P-degree-sharp` remains None, and
+`cor:qF-halfbase-dictionary` remains Partial.  This one-definition,
+eight-theorem addition brings the live semantic census to 904/11,458 (one
+declaration above origin because of the retained public q-Pochhammer bridge)
+and changes the forward ledger by exactly one None-to-Partial move.  The source concordance
+is unchanged because its provenance disposition remains a human-proved
+frontier result.  The historical 395-page PDF renders neither this tranche nor
+the preceding Lambert tranche; the synchronized 398-page PDF renders the
+current source.
 
 The two newest generic theorems are
 `deriv_qPochhammerInfIn_ne_zero_of_mul_pow_eq_one`, which gives a nonzero
@@ -225,7 +269,7 @@ complex parameter and nome; it is a definitional equality, not a convergence
 claim. In `QBinomialTheoremInfinite`,
 `finiteQPochhammerIn_zero_left` remains the unique declaration owned by
 `GaussianBinomialAtOne` and is imported rather than redeclared. The forward
-status ledger is 165 Exact, 91 Partial, 18 None, and 8 interface rows; the
+status ledger is 165 Exact, 92 Partial, 17 None, and 8 interface rows; the
 original 191-result pre-Fabius core is 36/29/123/3, and the
 completed source concordance records 86 Lean-proved rows, 392 human-proved
 frontier rows, 60 not-applicable rows, and 9 conjectures.
@@ -324,6 +368,5 @@ classical-limit rows stay unformalized.
 
 The retained 395-page PDF and source SHA-256
 `4785625c1399558f3ca59481888fc76514e0a327a1faa16945c61851f874f3d5`
-were synchronized at the historical checkpoint recorded above. The final
-`9135` source union is newer; these edits are source-only, make no current
-source/PDF parity claim, and remain pending a final union rebuild.
+remain synchronized historical evidence for the checkpoint recorded above.
+The current 398-page source/PDF pair is synchronized by the 2026-09-04 receipt.

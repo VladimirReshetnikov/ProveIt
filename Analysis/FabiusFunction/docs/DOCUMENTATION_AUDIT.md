@@ -109,13 +109,16 @@ only 4,606 declarations and
 declarations, including 69 undocumented ones.  Run the script for the live
 numbers rather than copying these historical values.
 
-The live 2026-09-04 semantic union contains 903 modules and 11,449 lexically
+The live 2026-09-04 semantic union contains 904 modules and 11,458 lexically
 visible public declarations, with zero missing module headers and zero missing
 doc comments; the checked JSON baseline records this clean state.  The
-corresponding origin inventory has 11,448 declarations because it lacks this
-tree's unique public `complexQPochhammerInf_eq_qPochhammerInfIn` bridge.  The
-earlier 901/11,419 local semantic union remains a historical checkpoint, as
-does the post-merge 2026-09-01 inventory of 675 modules and 8,909 declarations.
+corresponding origin inventory has 904 modules and 11,457 declarations because
+it lacks this tree's unique public
+`complexQPochhammerInf_eq_qPochhammerInfIn` bridge.  The immediately preceding
+Lambert-series origin checkpoint of 903 modules and 11,448 declarations, the
+corresponding 903/11,449 semantic-union checkpoint with the public bridge, and
+the earlier 901/11,419 local semantic union remain historical, as does the
+post-merge 2026-09-01 inventory of 675 modules and 8,909 declarations.
 Relative to the 610/8,318 activation checkpoint, that tree added sixty-five
 modules and 591 declarations, and relative to the earlier 630/8,552 merged checkpoint it added
 forty-five modules and 357 declarations.
@@ -277,9 +280,9 @@ asymptotic; the separate analytic series leaf is inventoried next.
 `LambertWBranchGapBernoulli.lean` first added one source module and four public
 theorems to the historical 902/11,443 checkpoint, giving the historical exact-radius
 checkpoint 903/11,447.  Its fifth public theorem leaves the module count fixed
-and brings the origin census to 903/11,448; retaining this tree's unique public
-q-Pochhammer bridge gives the authoritative semantic union 903/11,449.  Its
-exhaustive public surface is
+and brings the origin checkpoint to 903/11,448; retaining this tree's unique
+public q-Pochhammer bridge gives the corresponding historical semantic-union
+checkpoint 903/11,449.  Its exhaustive public surface is
 `summable_norm_bernoulli_mul_pow_div_factorial`,
 `summable_bernoulli_mul_pow_div_factorial_iff`,
 `hasSum_bernoulli_mul_pow_div_factorial`,
@@ -309,6 +312,36 @@ does not assert equality to Lean's literal totalized quotient at `z=0` or a
 holomorphy theorem.  The real quotient theorem deliberately excludes `z=0`,
 while the branch theorem excludes both endpoints.  No remainder estimate or
 higher/convergent Puiseux expansion is included.
+
+#### Algebraic geometric-uniform moment-polynomial tranche
+
+`GeometricUniformMomentPolynomial.lean` adds one source module and nine public
+declarations to the preceding 903/11,449 semantic-union checkpoint, bringing
+the live census to 904/11,458.  The corresponding origin-only census is
+904/11,457 because it lacks the retained public q-Pochhammer bridge.  The
+exhaustive 1+8 surface is the definition
+`geometricUniformMomentPolynomial` and the theorems
+`geometricUniformMomentPolynomial_zero`,
+`geometricUniformMomentPolynomial_succ`,
+`geometricUniformMomentPolynomial_natDegree_le`,
+`geometricUniformMomentPolynomial_eval_zero`,
+`geometricUniformMomentPolynomial_one`,
+`geometricUniformMomentPolynomial_two`,
+`geometricUniformMomentPolynomial_three`, and
+`geometricUniformMomentPolynomial_four`.  Two documented residual-product
+helpers are private and therefore excluded from the public count.
+
+The recursive family is total over `ℚ[X]`.  Its zero and successor theorems
+give `P_0=1` and the residual finite q-Pochhammer recurrence; the degree theorem
+gives `natDegree P_n ≤ n.choose 2`; evaluation at zero gives
+`P_n(0)=1/(n+1)!`; and the four final theorems give the displayed values
+`P_1` through `P_4`.  These exactly close the algebraic clauses of monograph
+label `thm:qF-moment-polynomial`, including the `q=0` boundary.  The canonical
+label remains **Partial**, however, because the source defines its polynomial
+by the analytic normalization `((q;q)_n/(1-q)^n)a_n(q)` and no theorem yet
+identifies those analytic/MGF coefficients with the recursive Lean family.
+The leading and subleading coefficients and exact degree asserted by
+`prop:qF-P-degree-sharp` remain unformalized.
 
 #### Completed dyadic derivative filtration
 
@@ -396,7 +429,7 @@ dimension-dominant real bounds for `Q > 1`, with `k ≤ n` and all nonzero and
 order hypotheses explicit.  The module reuses the stronger ordered-field
 `finiteQPochhammerIn_self_pos` theorem from `GeneralQConditionNumber.lean`
 rather than exporting a duplicate.
-The rigorous forward q-monograph ledger is 165 Exact, 91 Partial, 18 None,
+The rigorous forward q-monograph ledger is 165 Exact, 92 Partial, 17 None,
 and 8 interface rows; its source concordance is 86 Lean, 392 human, 60 N/A,
 and 9 conjecture rows, and the concordance extractor passes.
 `prop:gaussian-bound` is Exact.  `thm:q-lucas` remains
@@ -1235,19 +1268,19 @@ walkthrough logs and publication gates are clean; the frontier retains only
 expected underfull diagnostics, and the q-series master retains one harmless,
 readable 32.5659 pt overfull line.  All page, metadata, font, render, text,
 and representative-visual gates passed.  These receipts certify their named
-pre-9135 pairs, not parity with the 903/11,449 live union; all four publications
-require new final-source rebuilds.
+pre-9135 pairs only and are superseded by the synchronized 2026-09-04 receipts
+below.
 
 The independently scoped Sequence publication remains current.  The Lambert
-guide's last synchronized receipt is a 4,829-line, 174,423-byte TeX with SHA-256
+guide's preceding synchronized receipt is a 4,829-line, 174,423-byte TeX with SHA-256
 `724dfe5b1effcda29325a5bdfb066ff970eb74ab460f650185339fefce40ebc1`;
 its 69-page, 952,929-byte PDF has SHA-256
 `0b5f28dbfe590658e74150e8ccff6f023ecd0b8fb4e3e978ec275d9ddd244de6`.
 Its successful page sequence was 67→69→69; machine and visual gates passed,
 with expected underfull diagnostics and one harmless readable 0.825 pt
-internal overfull line.  The new Bernoulli-series source overlay makes that
-Lambert PDF historical pending a parity rebuild.  The Sequence
-inversion/transseries volume's
+internal overfull line.  The Bernoulli-series source overlay made that Lambert
+PDF historical; the synchronized 2026-09-04 receipt below supersedes it.  The
+Sequence inversion/transseries volume's
 16,705-line, 778,477-byte TeX has SHA-256
 `4aa038c10ddd931b7c1248095ddfdf0ce8769c69cc0df4f344f6365d0e45e8e1`;
 its 205-page, 2,198,655-byte PDF has SHA-256
@@ -1256,6 +1289,102 @@ Its successful page sequence was 198→205→205; corrected title/author metadat
 machine gates, and extensive visual checks passed.  The final log retains one
 duplicate-page-destination notice, nine PDF-string notices, 47 overfull and
 12 underfull diagnostics; sampled largest cases are clean and unclipped.
+
+**Synchronized publication receipts (2026-09-04).** Each pass tuple below is
+`pages/bytes`.  All six named current TeX/PDF pairs completed exactly three
+successful serial halt-on-error passes from absent sidecars.  Final-log
+reference/rerun/error checks, metadata, A4 rotation zero, every-page render and
+nonblank-text checks, embedded/subset fonts with Libertinus and no Type 3, and
+representative visual checks all passed; generated sidecars and forbidden
+checksum basenames both close at zero.
+
+- Primary exposition: TeX 14,328 lines / 715,760 bytes / SHA-256
+  `60c0a6ff4e75ec37e6928067859671d87622ad8f430a1006dd4c71c7e7b25674`;
+  passes 197/1,579,558 → 200/1,621,473 → 200/1,621,467; final PDF 200 pages /
+  1,621,467 bytes / SHA-256
+  `50febffeb7dda743330bd346b8f5fd45f85668db97c19fb52d4cd741d1692826`;
+  fonts 29 total / 6 Libertinus / 0 Type 3.
+- Lean walkthrough: TeX 6,855 lines / 482,759 bytes / SHA-256
+  `1c48c54b194eb9e99dae64ddca70e2aa5d2edd995160ee2d5bc6455b545683f7`;
+  passes 149/1,225,017 → 154/1,262,552 → 154/1,262,574; final PDF 154 pages /
+  1,262,574 bytes / SHA-256
+  `f9cba79348ffb81c41fc08b6523548effcc45ded9a2eb2b18e618ac9d59d0648`;
+  fonts 30 / 7 / 0.
+- Lambert Guide: TeX 4,876 lines / 177,511 bytes / SHA-256
+  `d852a345685dd61335a89fc4fd1092680bdc597a5d1e6ac612883946ad0d99ea`;
+  passes 68/963,230 → 70/986,865 → 70/986,865; final PDF 70 pages /
+  986,865 bytes / SHA-256
+  `0b8801649a6dd43d9f02dcfc2f60cac50b5c8f88bd782645bf97d30cc3dfbd41`;
+  fonts 42 / 5 / 0; one harmless readable 0.82504 pt overfull and 133
+  underfull diagnostics.
+- Canonical frontier: TeX 18,173 lines / 826,738 bytes / SHA-256
+  `844842bf699a24651f660bd7d81d814f6396b4fe6fc6de66a04908904221860b`;
+  passes 257/1,822,725 → 265/1,904,567 → 265/1,904,551; final PDF 265 pages /
+  1,904,551 bytes / SHA-256
+  `dcaa7ac1e5397912c97a474b4023521e49d0785eb6ef67d83d0ce002d9cbb6e6`;
+  fonts 40 / 8 / 0; one readable unclipped 9.43108 pt overfull at source
+  lines 1032–1043 and 299 underfull diagnostics.
+- Geometric q-frontier: TeX 27,598 lines / 1,270,870 bytes / SHA-256
+  `6db4e211b0588ed75a0e89e13d97306f1d5d38b42a2bf941914ea16b9ca93dae`;
+  passes 386/8,157,293 → 403/8,339,780 → 403/8,339,736; final PDF 403 pages /
+  8,339,736 bytes / SHA-256
+  `4d909b5e228e2053d473dc75da502382c7a4fe2b096f798e124e6530d3a15027`;
+  fonts 43 / 11 / 0; zero overfull and 37 underfull diagnostics.
+- Canonical q-series synthesis: TeX 16,910 lines / 842,514 bytes / SHA-256
+  `196f219d5e1efba463ebabb69659697b1afb28989ef1a8da6219226d3262ad32`;
+  passes 390/2,386,364 → 398/2,501,624 → 398/2,501,638; final PDF 398 pages /
+  2,501,638 bytes / SHA-256
+  `e8094b054f52b1fb71c7540f0834155fae0eac17887cb7cac1567848bd65d3b3`;
+  fonts 43 / 5 / 0.  Every pass's index run accepted 164 entries, rejected none,
+  produced 254 lines, and emitted no warning.  The sole retained 32.5659 pt
+  overfull paragraph at source lines 590–598 is readable and unclipped; the
+  final log has zero underfull diagnostics.
+
+The B2--B11 publication roots are likewise synchronized.  Their exact pass,
+byte-progression, font, and common-gate receipts are recorded in
+`docs/semi-formalized-research-frontiers/drafts/MANIFEST.md` and the local
+package records.  The final source/PDF pairs are:
+
+- B2 Frontier Compilations: 17,311 lines / 748,733 bytes /
+  `600bab0556c95661c6963438ea3e8e5ed1c691af36d64e1c105435199e605736` →
+  275 pages / 2,790,721 bytes /
+  `49159c19d59fdd5bd397d3ab70bd024ea5bc7995fb037a532bc1fded9c9ad4fa`.
+- B3 Integration and Transform Frontiers: 25,147 / 1,058,819 /
+  `b60b232e55af7c021e82dec476823e727ef8398388bda9af0a3334aba4a30be3` →
+  377 / 3,292,594 /
+  `52b1b7e5cd86cbd8d00cb0d90580ea555b2762d7a638aa52b5ea680dcbca7199`.
+- B4 Fabius Information Frontier: 2,138 / 78,310 /
+  `57a06279153b6e4c97ea0c084a193867b2f5c60a0163983149f36453eb196c9d` →
+  29 / 790,802 /
+  `3af03cd4dcc7fb1a502976f47edb56ee7d5c2b8dc9a8da537e79f8382ef885d5`.
+- B5 Matrix-Dilated Fabius--Rvachev: 1,997 / 76,958 /
+  `5311ff92a6d6d430f3c6e94d61974ffb549a8fe99bb20636a5c47116ad7d9aba` →
+  29 / 878,932 /
+  `1c7ca0f14f2b456c4bd9692057b63f0941b15ee0810c6f1a3947a2a128a9c76b`.
+- B6 Representation Frontiers: 18,637 / 776,458 /
+  `dd41bc90b03d1f54d9fae71c116061b0130d505740cb92fe908d6db3c21f3d95` →
+  301 / 3,609,120 /
+  `4dae6f87e6cc4da953319ba85c18316c23bf6e34a8bdac5680f20255356c4ba7`.
+- B7 Up Polynomial Synthesis: 2,324 / 95,757 /
+  `15f7c593895ed4a06b7f9d90c72d55078a193cd01f0818cb3b3cfa4f4d585a52` →
+  60 / 1,056,613 /
+  `0b7fc962bcb4509affc322571100cc4f27252b1ec113ca8116b05c59d23ffd35`.
+- B8 Common-Digit Fabius Zonoids: 2,092 / 89,360 /
+  `ad6d0bfa137efe0c79cf0ee599845b8708d82ef31f6fc2c3016e80ff14a7675e` →
+  36 / 1,171,153 /
+  `4169b907f96b46cb75b1aab067e237a431798cfb612bbad11e2a74a38d494cd4`.
+- B9 Dyadic Radon Profiles: 2,050 / 74,839 /
+  `0ac7695620cb22896bb912598e2e91fd404e70dbd3c5d1e769ee76a6e92578d4` →
+  29 / 998,017 /
+  `39e76001f71c6628308ccdb8232251538674faee3c9102fa26e4cec00eb276c0`.
+- B10 Fabius--Rvachev Carleman Frontiers: 1,934 / 71,224 /
+  `49dd91c71df292725e9dfe6de450ac014b47f3c3ba4a5bc8ec02e2d2e76d34e3` →
+  24 / 973,424 /
+  `13a7f35e23dc5a794d46b431059ce35c0b48c199f1996539b65dee9bc8c16047`.
+- B11 Thue--Morse Diagonal Polynomials: 1,763 / 56,530 /
+  `eee5751653bb19ec04042f51ded34d74bf8862f5b06b49d47e68ea78bb689c45` →
+  24 / 778,595 /
+  `8db0c4e0a4fcf682bd3e1311f7d8197ea04dcca56e102236b52494267d99cbbe`.
 
 For provenance, the superseded pre-d8b pairs remain historical receipts:
 primary TeX/PDF `938517a92565685ac9f7194b879cfe752ce783f258bde8b7b685aee41aed13dc` /
@@ -1273,22 +1402,22 @@ primary TeX/PDF `938517a92565685ac9f7194b879cfe752ce783f258bde8b7b685aee41aed13d
 
 The retained comb-interpolation synthesis PDF is a validated 158-page A4
 historical receipt: the current source includes a post-render update to its
-additive-dyadic chapter, so a fresh parity build remains pending.  The rebuilt
-Integration-and-Transform master retains a historical 377-page PDF.  The canonical
-q-series synthesis is a validated 389-page historical receipt synchronized to
-the immediately preceding source checkpoint.  The current merged source adds
-the terminating q-Chu/reversal, geometric-generating, Gaussian second-moment,
-and Lambert branch-gap Bernoulli tranches, so final parity is again pending.
-The retained 183-page primary, 130-page walkthrough, 257-page canonical
-frontier, 69-page Lambert Guide, 301-page Representation Frontiers, 41-page
-New Frontiers, and 88-page notation-catalogue artifacts likewise predate their
-current merged sources.  Their package notices treat those PDFs as historical
-validation receipts, not parity claims, until fresh uninterrupted three-pass
-builds complete.  The inverse-computability receipt likewise still reflects
-the historical 675/8,909 census and requires refresh against the live
-903/11,449 inventory.  Checksum ledgers remain abolished and hardened
-repository-wide; no `SHA256SUMS*` files exist or participate in validation.
-The canonical inverse-theory publication retains a 134-page
+additive-dyadic chapter, so a fresh parity build remains pending.  The current
+B2--B11 roots, including Integration-and-Transform and Representation
+Frontiers, have the synchronized receipts above; their earlier artifacts remain
+historical.  Earlier
+389-page q-series, 183-page primary, 130-page walkthrough, 257-page canonical
+frontier, and 69-page Lambert Guide artifacts remain historical receipts for
+their named source states; the synchronized replacements are recorded above.
+The retained 41-page New Frontiers and 88-page notation-catalogue artifacts
+predate their current merged sources, and
+their package notices continue to treat those PDFs as historical validation
+receipts rather than parity claims.  The inverse-computability
+receipt likewise still reflects the historical 675/8,909 census and requires
+refresh against the live 904/11,458 inventory.  Checksum ledgers remain
+abolished and hardened repository-wide; no `SHA256SUMS*` files exist or
+participate in validation.  The canonical inverse-theory publication retains a
+134-page
 artifact synchronized at its latest-main source checkpoint; the merged
 effective-inversion and superconvergent-synthesis tranches make current parity
 pending.

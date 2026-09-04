@@ -21,7 +21,16 @@ are filed as separate members, not yet compared or merged into the volume:
 - [`thue_morse_diagonal_polynomials/`](thue_morse_diagonal_polynomials/) —
   *Diagonal Polynomials and Dyadic Block Geometry in Repeated Thue–Morse
   Summation* (24 pp A4; 14 theorems; Wolfram Language table code, Python
-  verification, one profile figure).
+  verification, one profile figure). Its current 1,763-line, 56,530-byte
+  source has SHA-256
+  `eee5751653bb19ec04042f51ded34d74bf8862f5b06b49d47e68ea78bb689c45`.
+  Three serial halt-on-error passes from absent auxiliaries produced
+  23 pages/768,048 bytes, 24 pages/778,598 bytes, and a final 24-page,
+  778,595-byte PDF with SHA-256
+  `8db0c4e0a4fcf682bd3e1311f7d8197ea04dcca56e102236b52494267d99cbbe`.
+  The final log, metadata, A4/rotation-zero, all-page render/text, and
+  representative visual gates passed; all 22 font rows are embedded/subset,
+  seven are Libertinus, none is Type 3, and generated sidecars are absent.
 - [`thue_morse_diagonal_polynomials-2/`](thue_morse_diagonal_polynomials-2/) —
   *Diagonal Polynomial Laws in Odd Iterated Thue–Morse Summation* (37 pp A4;
   11 theorems, 1 conjecture; Riordan-array structure and 2-adic Bell
@@ -36,9 +45,11 @@ prefix row by the weighted recurrence `s(n,k) = Σ_{j<k} (k−j) s(n−1,j)`; al
 three identify it with the odd iterated prefix sums, `s(n,k) = σ_{2n+1}(k−n−1)`,
 and derive the polynomial on every diagonal from the generating identity
 `Σ_m D_m(x) z^m = TM(z²)/(1−z)^{2x}`, `TM(z) = Π_j (1 − z^{2^j})`. None of the
-three loads `docs/fabius-notation.tex`. Comparison, canonical selection,
-proof checking, numerical reproduction, and Lean crosswalking are deferred;
-the volume's own Prouhet and prefix-sum material is the natural merge target.
+three loads `docs/fabius-notation.tex`. Cross-package comparison, canonical
+selection, proof checking, numerical reproduction, and Lean crosswalking remain
+deferred; the first package alone now has the synchronized publication receipt
+above. The volume's own Prouhet and prefix-sum material is the natural merge
+target.
 
 Both parts carry extensive inline Lean crosswalks. As of 2026-08-28,
 `ThueMorseComplexProductBridge.lean` supplies the finite-product core in total

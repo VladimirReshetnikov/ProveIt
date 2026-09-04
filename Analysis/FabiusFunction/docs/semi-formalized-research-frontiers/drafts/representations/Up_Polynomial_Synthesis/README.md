@@ -18,7 +18,9 @@ normalization claims have been demoted to problems.
 
 ## Canonical artifacts
 
-- Up_Polynomial_Synthesis.tex — report driver.
+- Up_Polynomial_Synthesis.tex — 2,324-line, 95,757-byte report driver;
+  SHA-256
+  `15f7c593895ed4a06b7f9d90c72d55078a193cd01f0818cb3b3cfa4f4d585a52`.
 - chapters/Lagrange_Cardinal_Loops.tex — exact cardinal synthesis, right
   inverses, projectors, ghosts, nested details, conditioning, q-binomial rows,
   Appell--Vandermonde growth, and denominator support.
@@ -29,7 +31,11 @@ normalization claims have been demoted to problems.
   conjugated operators, Gauss/Christoffel--Darboux synthesis, smoothed
   Legendre--Appell connections, parity, central q-determinants, asymptotics,
   exact Sturm evidence, and consolidated conjectures.
-- Up_Polynomial_Synthesis.pdf — rendered report.
+- The driver plus its three chapter sources total 5,279 lines and 202,019
+  bytes.
+- Up_Polynomial_Synthesis.pdf — synchronized 60-page, 1,056,613-byte report;
+  SHA-256
+  `0b7fc962bcb4509affc322571100cc4f27252b1ec113ca8116b05c59d23ffd35`.
 - assets/provenance/THEOREM_CROSSWALK.md — one-to-one provenance and evidence
   ledger for all 80 theorem-like assertions.
 - assets/provenance/ — source snapshots, migration map, and asset policy.
@@ -68,6 +74,17 @@ Then inspect the log for undefined references, missing files, overfull boxes,
 and font substitution. Render all pages to images and inspect the full contact
 sheet plus representative pages at original resolution. The committed PDF
 must be A4, have embedded/subset fonts, and contain no Type 3 fonts.
+
+The current publication was rebuilt from absent auxiliaries on 2026-09-04 by
+the exact procedure above. The three successful halt-on-error passes produced
+59 pages/1,030,964 bytes, 60 pages/1,056,607 bytes, and finally 60
+pages/1,056,613 bytes. The final log has no TeX error, unresolved reference or
+citation, or rerun request; title, author, subject, and keywords metadata are
+present. Every page is A4 at rotation zero, rendered, and contains extractable
+text. All 27 font rows are embedded and subset, four are Libertinus, and none
+is Type 3. Representative title, chapter-opening, theorem, table, figure, and
+final pages passed visual inspection. Generated sidecars were removed, and no
+package-local checksum ledger is a live publication gate.
 
 The focused exact Sturm verifier requires SymPy:
 

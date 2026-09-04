@@ -31,8 +31,12 @@ and Meixner-Pollaczek orthogonality are cited in the report.
 
 ## Archive contents
 
-- `common_digit_fabius_zonoids.tex` — complete LaTeX source.
-- `common_digit_fabius_zonoids.pdf` — compiled report.
+- `common_digit_fabius_zonoids.tex` — complete 2,092-line, 89,360-byte
+  LaTeX source; SHA-256
+  `ad6d0bfa137efe0c79cf0ee599845b8708d82ef31f6fc2c3016e80ff14a7675e`.
+- `common_digit_fabius_zonoids.pdf` — synchronized 36-page, 1,171,153-byte
+  report; SHA-256
+  `4169b907f96b46cb75b1aab067e237a431798cfb612bbad11e2a74a38d494cd4`.
 - `code/experiments.py` — fully commented symbolic/numerical experiment script.
 - `generated/*.csv` — numerical and exact-symbolic verification tables.
 - `generated/legendre_coefficients.tex` — exact symbolic coefficient table.
@@ -57,14 +61,18 @@ pdflatex -interaction=nonstopmode -halt-on-error common_digit_fabius_zonoids.tex
 pdflatex -interaction=nonstopmode -halt-on-error common_digit_fabius_zonoids.tex
 ```
 
-The repository PDF was rebuilt by that exact procedure on 2026-08-31 with
-pdfTeX 1.40.22. It has 36 A4 pages, all at rotation zero and nonblank. All 27
-font rows are embedded and subset, five are Libertinus, and none is Type 3.
-The source selects the retained PNG figure twins because the vector plot
-companions contain Type-3 fonts. The final log has no error, unresolved
-reference, rerun request, or overfull box; its two underfull notices are a
+The synchronized repository PDF was rebuilt by that exact procedure on
+2026-09-04 with pdfTeX 1.40.22. Starting from absent auxiliaries, the three
+successful halt-on-error passes produced 34 pages/1,152,987 bytes, 36
+pages/1,171,153 bytes, and 36 pages/1,171,153 bytes. All pages are A4 at
+rotation zero, rendered, and contain extractable text. All 27 font rows are
+embedded and subset, five are Libertinus, and none is Type 3. The source
+selects the retained PNG figure twins because the vector plot companions
+contain Type-3 fonts. The final log has no error, unresolved reference or
+citation, rerun request, or overfull box; its two underfull notices are a
 status-table cell and the long repository URL. Title, author, subject, and
-keywords metadata are present.
+keywords metadata are present. Representative title, body, table, figure, and
+final pages passed visual inspection; generated sidecars were removed.
 
 ## Reproduce the experiments and figures
 

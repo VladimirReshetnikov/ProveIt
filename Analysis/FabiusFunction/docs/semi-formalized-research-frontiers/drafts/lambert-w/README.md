@@ -20,9 +20,9 @@ Four independently written article packages arrived together on
 consolidated volume:
 
 Member: `Lambert_W_Guide/` — *The Lambert W Function: A Real-Variable
-Guide*.  Its retained PDF is a historical 66-page A4 artifact of 1,107,064
-bytes; the current source is newer, so no render parity is claimed.  The most
-complete of the four treatments forms the body; the unique layers of the
+Guide*.  Its earlier 66-page, 1,107,064-byte A4 artifact remains a historical
+receipt for its named source.  The most complete of the four treatments forms
+the body; the unique layers of the
 other three (the
 complete power-tower convergence theorem, inverse-Taylor corrections,
 the branch-exchange involution, the transcendence theorem, a
@@ -35,6 +35,21 @@ verification scripts are preserved under `Lambert_W_Guide/assets/`;
 the absorbed source documents themselves are deleted after merging,
 with SHA-256 provenance in the document itself (git history is the
 archive).
+
+The synchronized publication receipt (2026-09-04) records the current
+4,876-line, 177,511-byte TeX source at SHA-256
+`d852a345685dd61335a89fc4fd1092680bdc597a5d1e6ac612883946ad0d99ea`.
+Exactly three successful serial halt-on-error passes from absent sidecars ran
+68 pages / 963,230 bytes → 70 / 986,865 → 70 / 986,865. The final 70-page,
+986,865-byte A4 PDF has SHA-256
+`0b8801649a6dd43d9f02dcfc2f60cac50b5c8f88bd782645bf97d30cc3dfbd41`.
+All 42 font rows are embedded and subset, five are Libertinus, and none is Type
+3. Final-log reference/rerun/error checks, PDF metadata (with intentionally
+empty author and keywords), every-page render and
+nonblank-text checks, and representative visuals passed; generated sidecars
+and forbidden checksum basenames both close at zero. The previous clipped-box
+warning is gone; the sole harmless 0.82504 pt overfull box is readable, and the
+final log has 133 underfull diagnostics.
 
 Six polynomial-logarithmic transseries packages were also filed here on
 2026-09-01, because Lambert W is their guiding example.  Their subject is the
@@ -108,12 +123,19 @@ that explicit removable-origin convention.  The Guide's nearest-nonzero-zero
 argument is not the formal proof route.  With the three finite
 branch-coordinate modules, the four-module union is four definitions and 37
 theorems, 41 declarations.  The signed higher/convergent Puiseux program
-remains open.  The latest Guide PDF predates this fifth-theorem source overlay,
-so no render parity is claimed until its final rebuild.  The exact-radius
-four-theorem checkpoint had census 903/11,447; the fifth theorem brings
-origin's inventory to 903/11,448, and retaining this tree's unconditional
-public q-Pochhammer bridge gives the live census of 903 modules and 11,449
-public declarations.
+remains open.  The synchronized 70-page Guide PDF recorded above renders the
+current source overlay.  The exact-radius
+four-theorem checkpoint had census 903/11,447; the fifth theorem brought the
+next local checkpoint to 903 modules and 11,449 public declarations, including
+the retained unconditional public q-Pochhammer bridge.  The later sibling
+`FabiusFunction.GeometricUniformMomentPolynomial` module has one definition
+and eight theorems for its recursive polynomial, residual-product recurrence,
+degree bound, value at zero, and first four nonconstant cases.  It raises the
+semantic-union census to 904 modules and 11,458 public declarations; its
+external source label `p7:thm:Pn` remains Partial because the analytic
+moment-coefficient normalization and leading/odd-degree clause are not part of
+that algebraic leaf.  The sibling source-only addition is likewise absent from the retained
+historical PDFs.
 
 The exact raw second-order package is `LambertWCurvature.lean`.  Its
 principal API is `deriv_principalLambertW`,

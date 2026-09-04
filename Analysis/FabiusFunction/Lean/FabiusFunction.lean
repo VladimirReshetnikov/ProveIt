@@ -160,6 +160,7 @@ import FabiusFunction.GeometricUniformLaw
 import FabiusFunction.GeometricUniformMultisection
 import FabiusFunction.GeometricUniformUniqueness
 import FabiusFunction.GeometricUniformCDF
+import FabiusFunction.GeometricUniformMomentPolynomial
 import FabiusFunction.Paper05442
 import FabiusFunction.Paper06487
 import FabiusFunction.PaperFabiusAsymptotic
@@ -918,6 +919,26 @@ representation, not as Lean's literal totalized quotient at zero, and no
 holomorphy theorem is asserted.  The branch point and zero endpoint are
 excluded from the branch series, and no remainder or higher Puiseux claim is
 made.
+
+The geometric-uniform moment-polynomial leaf has the exhaustive public surface
+of one definition and eight theorems:
+`geometricUniformMomentPolynomial`,
+`geometricUniformMomentPolynomial_zero`,
+`geometricUniformMomentPolynomial_succ`,
+`geometricUniformMomentPolynomial_natDegree_le`,
+`geometricUniformMomentPolynomial_eval_zero`,
+`geometricUniformMomentPolynomial_one`,
+`geometricUniformMomentPolynomial_two`,
+`geometricUniformMomentPolynomial_three`, and
+`geometricUniformMomentPolynomial_four`.  It proves the division-free
+residual-product recursion over `ℚ[X]`, the bound `natDegree P_n ≤ n.choose 2`,
+the specialization `P_n(0) = 1/(n+1)!`, and the displayed values through
+`P_4`.  This is precisely the algebraic tranche of monograph label
+`thm:qF-moment-polynomial`; that canonical label remains Partial because no
+theorem yet identifies this recursive family with the analytically defined
+coefficient normalization involving `a_n(q)`.  The sharp leading/subleading
+coefficient and exact-degree claims of `prop:qF-P-degree-sharp` are also not
+included.
 
 The parity-selected Rvachev synthesis layer exports exactly one definition and
 eight theorems.  `IsRvachevSuperconvergentPhase` selects the endpoint phases

@@ -29,8 +29,9 @@ The canonical frontier artifacts are:
 > `7f7e1279e38c766a465e640638ea7e0079a942de0bc84a5c22be497af27c7bab`.
 > The recorded publication gates were clean apart from the expected underfull
 > box diagnostics.  The subsequent q-Chu/Richardson, Gaussian second-moment,
-> and Lambert branch-gap Bernoulli source union means this
-> PDF is historical and a final-source rebuild is pending.  No `SHA256SUMS*`
+> Lambert branch-gap Bernoulli, and geometric-uniform moment-polynomial source
+> union means this PDF is historical; the synchronized receipt below supersedes
+> it.  No `SHA256SUMS*`
 > file exists or participates in validation.  Earlier renders remain
 > historical receipts for their own named
 > source states only: the immediately preceding 808,185-byte TeX file
@@ -47,10 +48,24 @@ The canonical frontier artifacts are:
 > and a 257-page, 2,438,299-byte PDF (SHA-256
 > `3766761aac90247061f5c955dc84a0feb8567454e10839f1508b9431797ee980`).
 
-The authoritative live Lean audit now contains exactly 903 facade-reachable
-modules and 11,449 unique public declarations, with no missing module headers
+> **Synchronized canonical-frontier receipt (2026-09-04).** The current
+> 18,173-line, 826,738-byte TeX source has SHA-256
+> `844842bf699a24651f660bd7d81d814f6396b4fe6fc6de66a04908904221860b`.
+> Exactly three successful serial halt-on-error passes from absent sidecars ran
+> 257 pages / 1,822,725 bytes → 265 / 1,904,567 → 265 / 1,904,551.  The final
+> 265-page, 1,904,551-byte PDF has SHA-256
+> `dcaa7ac1e5397912c97a474b4023521e49d0785eb6ef67d83d0ce002d9cbb6e6`.
+> Its 40 font rows are embedded and subset, eight are Libertinus, and none is
+> Type 3.  Final-log reference/rerun/error checks, metadata, A4 rotation zero,
+> every-page render and nonblank-text checks, and representative visuals all
+> passed; generated sidecars and forbidden checksum basenames both close at
+> zero.  The sole 9.43108 pt overfull box at source lines 1032–1043 is readable
+> and unclipped; the final log has 299 underfull diagnostics.
+
+The authoritative live Lean audit now contains exactly 904 facade-reachable
+modules and 11,458 unique public declarations, with no missing module headers
 or declaration documentation.  The checked baseline records both zero-gap
-invariants.  The corresponding origin inventory has 11,448 declarations
+invariants.  The corresponding origin inventory has 11,457 declarations
 because it lacks this tree's retained unconditional public
 `complexQPochhammerInf_eq_qPochhammerInfIn` bridge.  The q-Pochhammer ownership remains
 `RvachevPochhammerFactorization` 1+10, `QPochhammerEntire` 0+5, and
@@ -101,8 +116,34 @@ assert holomorphy.  The branch theorem excludes both real-branch endpoints.
 No remainder estimate or higher/convergent Puiseux or logarithmic expansion
 is included.  Together with the three finite branch-coordinate modules, the
 four-module union has 4 definitions and 37 theorems, 41 declarations.
-The retained frontier, primary, walkthrough, and Lambert Guide PDFs all predate
-this source overlay and remain historical pending parity rebuilds.
+The older frontier, primary, walkthrough, and Lambert Guide receipts predate
+this source overlay; synchronized current artifacts have since been rebuilt and
+validated, with the frontier receipt recorded above and the others in their
+package and audit records.
+
+The newest source-only addition is
+`FabiusFunction.GeometricUniformMomentPolynomial`, with the one definition
+`geometricUniformMomentPolynomial` and exactly eight theorems:
+`geometricUniformMomentPolynomial_zero`,
+`geometricUniformMomentPolynomial_succ`,
+`geometricUniformMomentPolynomial_natDegree_le`,
+`geometricUniformMomentPolynomial_eval_zero`,
+`geometricUniformMomentPolynomial_one`,
+`geometricUniformMomentPolynomial_two`,
+`geometricUniformMomentPolynomial_three`, and
+`geometricUniformMomentPolynomial_four`.  This total recursive family over
+`ℚ[X]` has `P_0=1`, the division-free residual finite-q-Pochhammer recurrence,
+`natDegree P_n ≤ n.choose 2`, `P_n(0)=1/(n+1)!`, and the displayed values
+through `P_4`.  It remains meaningful at `q=0`, `q=1`, and roots of unity.
+It does not identify the recursive family with the normalized analytic Taylor,
+MGF, or moment coefficients, and it proves neither the leading/subleading
+coefficient formulas nor sharp exact degree.  Thus `p7:thm:Pn` moves from None
+to **Partial**, while `prop:qF-P-degree-sharp` remains None.  This one-module,
+nine-declaration increment brings origin to 904/11,457 and, with the retained
+public q-Pochhammer bridge, the live semantic union to 904/11,458.  The older
+frontier, primary, walkthrough, geometric-q, and q-monograph receipts predate
+this source overlay; synchronized current artifacts have since been rebuilt and
+validated.
 
 The zero-definition/six-theorem `DyadicDerivativeFiltration.lean` surface is
 also complete.  In addition to support vanishing, above-depth vanishing, the
@@ -127,7 +168,7 @@ nonnegative lower bounds, finite and infinite Pochhammer bounds for
 fixed-column or central asymptotic.  The stronger generic positivity theorem
 `finiteQPochhammerIn_self_pos` is reused from `GeneralQConditionNumber` and is
 not counted again.  The rigorous 282-row q-monograph totals
-are therefore 165 Exact / 91 Partial / 18 None / 8 interface: q-Lucas remains
+are therefore 165 Exact / 92 Partial / 17 None / 8 interface: q-Lucas remains
 Partial because the polynomial-congruence lift is absent, the Gaussian
 majorant is Exact, and the `Q > 1` asymptotic row remains Partial.
 
@@ -138,10 +179,10 @@ seven theorems. Its
 counterpart of canonical comb label `gq:thm:richardson-generating`; the module
 also supplies the report-facing analytic companion
 `Fabius.hasSum_geometricLagrangeRichardson_mul_pow` under strict nome
-contraction and absolute summability. The retained canonical-frontier,
-primary, walkthrough, q-series, and comb-synthesis PDFs all predate this
-crosswalk and remain historical artifacts until their affected roots are
-rebuilt.
+contraction and absolute summability. The canonical-frontier, primary,
+walkthrough, and q-series PDFs have since been rebuilt from sources containing
+this crosswalk.  The comb-synthesis PDF remains the historical artifact whose
+package record calls for a separate rebuild.
 
 The newest source-only addition leaves the module count unchanged and adds
 three theorems to `FabiusFunction.GaussianBinomialCumulants`: the explicit
@@ -155,8 +196,9 @@ over every commutative semiring, including the above-row zero case. Their
 probability language is the normalized-generating-polynomial interpretation of
 algebraic identities, not a new probability-space construction.
 
-The 1 September 2026 source-only q-Pochhammer overlay is likewise newer than
-the retained PDFs.  The new `QPochhammerEntire.lean` leaf has zero definitions
+At the 1 September 2026 checkpoint, the source-only q-Pochhammer overlay was
+newer than the PDFs retained at that time.  The new `QPochhammerEntire.lean`
+leaf has zero definitions
 and five theorems: for a fixed complex nome with norm less than one it proves
 local uniform convergence of the infinite product, differentiability in the
 symbol, the division-free factor-zero criterion, the reciprocal-power zero
@@ -167,7 +209,7 @@ the later Euler, q-binomial, Jacobi, quantum-binomial, Rogers--Szegő,
 cyclotomic-divisibility, q-Catalan, primitive-root-block, q-Lucas, Jackson
 q-beta, geometric Newton-interpolation, integer/complex upper Gaussian, and
 q-Pfaff--Saalschütz, and noncommutative q-multinomial tranches. Its 282-result forward
-status totals are now 165 exact / 91 partial / 18 none / 8 interface. The
+status totals are now 165 exact / 92 partial / 17 none / 8 interface. The
 outer spectral product now has an exact
 locally-uniform/normal-convergence theorem; the compound centered/MGF and
 exterior reciprocal/pole layers remain partial.
@@ -181,17 +223,41 @@ domain remains partial: the compiled by-reversal theorem retains `C ≠ 0` and
 `(A;q)_n ≠ 0`, while the unrestricted theorem uses finite q-Cauchy directly;
 no rational-continuation or cleared commutative-ring extension is claimed.
 
-The latest pre-`9135bd7e` q-series receipt names the 16,834-line,
+The pre-`9135bd7e` q-series receipt names the 16,834-line,
 837,715-byte source (SHA-256
 `4785625c1399558f3ca59481888fc76514e0a327a1faa16945c61851f874f3d5`)
 and its 395-page, 2,494,961-byte A4 PDF (SHA-256
 `89159b2635f489a42d4c972fac95332808b1d637dee7921085db1ed7d6e055af`).
-The present q-Chu/Richardson and Gaussian second-moment source union postdates
-that exact receipt.  Its
+The q-Chu/Richardson, Gaussian second-moment, Lambert branch-gap Bernoulli, and
+geometric-uniform moment-polynomial source union postdates that exact historical
+receipt.  Its
 completed source concordance now records 86 Lean-proved, 392 human-proved,
 60 not-applicable, and 9 conjectural rows; the forward ledger is 165
-Exact / 91 Partial / 18 None / 8 interface.  No current source/PDF parity is
-claimed until the final union is rebuilt.
+Exact / 92 Partial / 17 None / 8 interface.
+
+The synchronized q-series receipt (2026-09-04) records the current 16,910-line,
+842,514-byte TeX source at SHA-256
+`196f219d5e1efba463ebabb69659697b1afb28989ef1a8da6219226d3262ad32`.
+Its exact three-pass sequence was 390 pages / 2,386,364 bytes → 398 /
+2,501,624 → 398 / 2,501,638; every pass's index run accepted 164 entries,
+rejected none, produced 254 lines, and emitted no warning.  The final 398-page,
+2,501,638-byte PDF has SHA-256
+`e8094b054f52b1fb71c7540f0834155fae0eac17887cb7cac1567848bd65d3b3`;
+all 43 font rows are embedded and subset, five are Libertinus, and none is Type
+3.  The synchronized geometric q-frontier receipt records its 27,598-line,
+1,270,870-byte TeX source at SHA-256
+`6db4e211b0588ed75a0e89e13d97306f1d5d38b42a2bf941914ea16b9ca93dae`;
+its passes ran 386 pages / 8,157,293 bytes → 403 / 8,339,780 → 403 /
+8,339,736, and the final 403-page, 8,339,736-byte PDF has SHA-256
+`4d909b5e228e2053d473dc75da502382c7a4fe2b096f798e124e6530d3a15027`.
+Its 43 font rows are embedded and subset, eleven are Libertinus, and none is
+Type 3.  Both pairs completed exactly three successful serial halt-on-error
+passes from absent sidecars; final-log reference/rerun/error checks, metadata,
+A4 rotation zero, every-page render and nonblank-text checks, and representative
+visuals passed, with generated sidecars and forbidden checksum basenames at
+zero.  The q-series log's sole retained 32.5659 pt overfull paragraph at source
+lines 590–598 is readable and unclipped, with zero underfull diagnostics; the
+geometric q-frontier log has zero overfull and 37 underfull diagnostics.
 
 The current finite-moment/Legendre/Gaunt crosswalk covers eleven modules with
 20 public definitions and 109 public theorems, 129 declarations in all. The
