@@ -4508,17 +4508,90 @@ Lean's \(P_n\) is this guide's \(P_{n+1}\): the recurrence is stated as
 arbitrary solution of an autonomous equation \(W'=\varphi\circ W\) on an open
 set, with the derivative family as hypotheses, so it applies beyond Lambert's
 function.\\
+\addlinespace
+\Cref{thm:antiderivatives}: \(\int W_k=\EulerE^{W_k}(W_k^2-W_k+1)
+=x(W_k-1+1/W_k)\) and \(\int W_k/x=W_k+\tfrac12W_k^2\) &
+\decl{hasDerivAt\_principalLambertW\_antiderivative},
+\decl{hasDerivAt\_lowerLambertW\_antiderivative},
+\decl{hasDerivAt\_principalLambertW\_add\_half\_sq},
+\decl{hasDerivAt\_lowerLambertW\_add\_half\_sq} (module
+\lean{LambertWAntiderivative}); the general forms
+\decl{LambertAntiderivative.hasDerivAt\_exp\_mul\_sq\_sub\_add\_one},
+\decl{LambertAntiderivative.hasDerivAt\_add\_half\_sq} and the two-form
+identity \decl{LambertAntiderivative.exp\_mul\_sq\_sub\_add\_one\_eq} &
+Stated as derivative facts (\(F'=W\), \(G'=W/x\)) on the open branch
+domains, which is the content of the antiderivative statement.  The general
+forms assume only \(W'=(\EulerE^{W}(1+W))^{-1}\) at the point, with
+\(W\neq-1\), so they hold for any local inverse of \(w\mapsto w\EulerE^w\);
+the \(x\)-form needs \(W\neq0\) and the \(W/x\) form needs \(x\neq0\), as in
+the guide.\\
+\addlinespace
+\Cref{thm:W0logbounds}: for \(x>\EulerE\), \(L=\log x\),
+\(L-\log L<\Wz(x)<L-\log(L-\log L)<L\) &
+\decl{principalLambertW\_log\_bounds}, with the halves
+\decl{log\_sub\_log\_log\_lt\_principalLambertW},
+\decl{principalLambertW\_lt\_log\_sub\_log\_log\_sub\_log\_log},
+\decl{principalLambertW\_lt\_log} (module \lean{LambertWLogBounds}); the
+non-strict outer bracket for \(x\geq\EulerE\) is
+\decl{principalLambertW\_log\_bracket} (module
+\lean{PrincipalLambertWAtTop}) and the non-strict sharper upper bound
+\decl{principalLambertW\_le\_log\_sub\_log\_log\_sub\_log\_log} &
+Exact.  All from \(W+\log W=L\) (\decl{principalLambertW\_add\_log}) and
+monotonicity of the logarithm; the equality \(\Wz(\EulerE)=1\) at the
+endpoint is \decl{principalLambertW\_exp\_one}.\\
+\addlinespace
+\Cref{prop:addition}: \((a+b)\EulerE^{a+b}=xy(1/a+1/b)\) for Lambert
+values \(a,b\neq0\) of \(x,y\), hence \(a+b=W_m(xy(1/a+1/b))\) on the branch
+containing \(a+b\) &
+\decl{mul\_exp\_add\_of\_mul\_exp} (the identity, for any reals satisfying
+their defining equations), \decl{add\_eq\_principalLambertW\_of\_mul\_exp},
+\decl{add\_eq\_lowerLambertW\_of\_mul\_exp},
+\decl{principalLambertW\_add\_principalLambertW} (module
+\lean{LambertWAdditionIdentity}) &
+Exact.  The branch consequence is stated through the uniqueness theorems:
+\(a+b\geq-1\) selects \(\Wz\), and \(a+b\leq-1\) with the product in
+\([-1/\EulerE,0)\) selects \(\Wm\); for \(x,y>0\) the two principal values
+add to the principal value, with no side condition.\\
+\addlinespace
+\Cref{thm:pairing}, forward direction: with \(\Delta=\Wz(x)-\Wm(x)>0\) on
+\((-1/\EulerE,0)\), \(\Wz=-\Delta/(\EulerE^\Delta-1)\),
+\(\Wm=-\Delta\EulerE^\Delta/(\EulerE^\Delta-1)\),
+\(x=\Wz\EulerE^{\Wz}\) in the \(\Delta\)-form, and the \(t=\EulerE^\Delta\)
+forms &
+\decl{principalLambertW\_sub\_lowerLambertW\_pos},
+\decl{lowerLambertW\_eq\_principalLambertW\_mul\_exp\_gap},
+\decl{principalLambertW\_eq\_neg\_gap\_div},
+\decl{lowerLambertW\_eq\_neg\_gap\_mul\_exp\_div},
+\decl{eq\_neg\_gap\_div\_mul\_exp},
+\decl{principalLambertW\_lowerLambertW\_eq\_of\_exp\_gap} (module
+\lean{LambertWBranchPairing}) &
+Forward direction only: the guide's converse, that every \(\Delta>0\) arises
+from exactly one \(x\in(-1/\EulerE,0)\), is not formalized.  The whole
+computation is \(\Wm=\Wz\EulerE^\Delta\) from dividing the two defining
+equations.\\
+\addlinespace
+\Cref{thm:W0negativebounds}: for \(-1/\EulerE<x<0\),
+\(-1+\sqrt{1+\EulerE x}<\Wz(x)<-1+\sqrt{2(1+\EulerE x)}\) and \(\Wz(x)<x\) &
+\decl{principalLambertW\_negative\_bounds}, with the halves
+\decl{neg\_one\_add\_sqrt\_lt\_principalLambertW},
+\decl{principalLambertW\_lt\_neg\_one\_add\_sqrt},
+\decl{principalLambertW\_lt\_self\_of\_neg} (module
+\lean{LambertWNegativeBounds}) &
+Exact.  In the shifted variable \(s=\Wz+1\in(0,1)\) the two square-root bounds
+are the exponential inequalities \(\EulerE^s>1+s\) and
+\(\EulerE^s(1-s)<1-s^2/2\); the second is
+\decl{exp\_mul\_one\_sub\_lt\_one\_sub\_half\_sq}, proved from its derivative
+\(s(\EulerE^s-1)>0\), with no Lambert content.\\
 \bottomrule
 \end{longtable}
 
-Not formalized, in the order they appear above: the addition identity of
-\Cref{prop:addition}, the exact branch pairing of \Cref{sec:pairing}, the
-antiderivatives and moments of \Cref{sec:integrals}, the local Taylor
+Not formalized, in the order they appear above: the converse half of
+\Cref{thm:pairing} (that every gap \(\Delta>0\) arises from exactly one
+\(x\)), the moments of \Cref{sec:integrals}, the local Taylor
 expansion, convergence of the Maclaurin series, the full Puiseux and
 logarithmic asymptotic expansions, the remaining bounds of
-\Cref{sec:bounds} (the logarithmic bounds for large positive arguments, the
-square-root bounds on the negative part of the principal branch, and the
-two-sided \(W_{-1}\) bound of \Cref{thm:chatzbound}), and everything from
+\Cref{sec:bounds} (the two-sided \(W_{-1}\) bound of
+\Cref{thm:chatzbound}), and everything from
 \Cref{sec:rational} onward.
 
 \section{Concordance of the four merged treatments}\label{app:concordance}
