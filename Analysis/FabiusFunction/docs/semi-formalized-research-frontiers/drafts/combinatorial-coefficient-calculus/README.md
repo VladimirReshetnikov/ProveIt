@@ -15,25 +15,27 @@ with the strongest correct hypotheses and one complete proof. A second proof
 survives only where it exposes a different mechanism.
 
 The consolidation boundary is recorded in
-[`PROVENANCE.md`](Combinatorial_Coefficient_Calculus/PROVENANCE.md), the live
-and historical hashes in
-[`SOURCE_CLOSURE.sha256`](Combinatorial_Coefficient_Calculus/SOURCE_CLOSURE.sha256),
+[`PROVENANCE.md`](Combinatorial_Coefficient_Calculus/PROVENANCE.md), the six
+original sources and their immutable Git recovery locators in
+[`SOURCE_INVENTORY.csv`](Combinatorial_Coefficient_Calculus/SOURCE_INVENTORY.csv),
 and the topic/claim decisions in
 [`SOURCE_DISPOSITION.csv`](Combinatorial_Coefficient_Calculus/SOURCE_DISPOSITION.csv).
 The standard-library
 [`validate_canonical.py`](Combinatorial_Coefficient_Calculus/validate_canonical.py)
-checks LaTeX structure, labels, references, citations, proof pairing, source
-coverage, and the one-publication layout; run it with `--final`, which is the
+checks LaTeX structure, labels, references, citations, proof pairing, exact
+source coverage, Git object availability, and the one-publication layout;
+run it with `--final`, which is the
 mode this package is now expected to pass.
 
 | Directory | Document |
 | --- | --- |
-| `Combinatorial_Coefficient_Calculus/` | **Canonical:** *Combinatorial Coefficient Calculus* — 8,966-line, 390,732-byte source and the 174-page A4 PDF built from it |
+| `Combinatorial_Coefficient_Calculus/` | **Canonical:** *Combinatorial Coefficient Calculus* — the evolving source and a historical 174-page A4 PDF |
 
-Unlike every earlier state of this package, the filed PDF renders the filed
-TeX: both come from the same three-pass `pdflatex` run, so the former
-"no render-parity claim" caveat no longer applies. That run reports no errors,
-no undefined references, and no multiply-defined labels.
+The TeX has changed since the committed PDF was rendered. PDF rebuilding is
+currently skipped at the user's request, so the pair has no current
+render-parity claim. Standalone checksum files are retired; provenance is kept
+in Git and the source inventory, and the validator does not maintain or require
+file digests.
 
 ## What the final merge changed
 
@@ -74,3 +76,24 @@ The manuscript is research-frontier mathematical writing. Its theorem and proof
 environments are human-readable mathematics, not evidence of Lean verification.
 The section "Lean formalization register" states, per result, what is formalized
 and what is not; it is maintained separately from this consolidation.
+
+## Weighted-transform checkpoint (2026-09-04)
+
+The `AppellSequence` extension has passed a focused Lean build with
+`LAKE_JOBS=1`: eleven public lemmas provide weighted binomial translation,
+convolution transport, cancellation, and inversion. The manuscript gives their
+complete human proofs and exact declaration crosswalks. Three private rational
+helpers in `FinitePrefixThueMorseCollapse` were replaced by the shared API; that
+caller refactor has been independently source-reviewed but awaits its own build.
+
+The register contains 203 rows: 58 marked Lean, 34 partial, and 111 without a
+Lean counterpart. The earlier classifications are inherited; this checkpoint
+adds two compiler-backed entries and does not claim a fresh build of the whole
+corpus. The final structural/provenance validator passes with 203 adjacent
+proofs, 27 disposition records, and six original-source inventory rows. PDF
+rebuilding remains deferred at the user's request.
+
+The same-day upstream crosswalk connects the Bell normalization and unit-series
+coefficient formulas to `UnitSeriesBellCoefficients`; its labelled-set partition
+interpretation remains unformalized. That partial result is included in the
+register totals above.

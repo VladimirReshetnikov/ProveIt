@@ -51,13 +51,15 @@ module is a Mathlib-only leaf: it imports nothing from the rest of the corpus.
   *is* the generalized binomial coefficient `binom(1/2, n+1)`.
 * `quadCoef_zero` and `quadCoef_rec`: the coefficients
   `ε_{n+1} = ((-4cσ)^{n+1}/2c) · binom(1/2,n+1) · A^{-(2n+1)}` satisfy the
-  recursion defining the quadratic model, which is the content of
-  `p6:lem:quadratic-core`.
+  coefficientwise recursion of the quadratic model.
 
-What is *not* formalized here: that these coefficients are the deepest-pole
-coefficients of the Gamma and Barnes `G` inversions.  That identification is
-`p6:thm:deepest-pole` and needs the transseries apparatus; this module supplies
-only the algebraic core it reduces to.
+The Catalan closed form and convolution exactly formalize
+`p6:prop:quadratic-core-catalan`. What is *not* formalized here is the full
+power-series existence/uniqueness and square-root identity in
+`p6:lem:quadratic-core`, its exact denominator-exponent clause, or the
+identification of these coefficients with the deepest poles of the Gamma and
+Barnes `G` inversions (`p6:thm:deepest-pole`). This module supplies the finite
+algebraic core to which those statements reduce.
 -/
 
 set_option autoImplicit false
@@ -199,9 +201,11 @@ theorem quadCoef_zero (A c σ : K) (hA : A ≠ 0) (hc : c ≠ 0) :
   field_simp
   ring
 
-/-- The recursion of the quadratic model at every order beyond the first:
-`A ε_n + c ∑_{j+k=n} ε_j ε_k = 0`.  Together with `quadCoef_zero` this is
-`p6:lem:quadratic-core`. -/
+/-- The coefficientwise recursion of the quadratic model at every order
+beyond the first: `A ε_n + c ∑_{j+k=n} ε_j ε_k = 0`. Together with
+`quadCoef_zero`, this verifies the displayed coefficient family from
+`p6:lem:quadratic-core` order by order; it does not package the full formal
+power-series solution theorem. -/
 theorem quadCoef_rec (A c σ : K) (hA : A ≠ 0) (hc : c ≠ 0) (m : ℕ) :
     A * quadCoef A c σ (m + 1)
       + c * ∑ p ∈ Finset.antidiagonal m, quadCoef A c σ p.1 * quadCoef A c σ p.2 = 0 := by

@@ -75,6 +75,11 @@ available over any commutative semiring.
 * `Appell.eval_poly_eq_sum` — the closed form `Aₙ(x) = ∑ C(n,k) bₙ₋ₖ xᵏ`.
 * `Appell.poly_translate`, `Appell.poly_dilate_comp` and `Appell.poly_affine` —
   transport under an arbitrary affine change of variable.
+* `Appell.translate_translate`, `Appell.translate_eq_sum` and
+  `Appell.translate_eq_iff` — weighted binomial transforms add their
+  parameters, with parameter negation giving the inverse over a ring.
+* `Appell.binomialConv_translate` — translation parameters add under
+  binomial convolution, so opposite translations cancel.
 * `Appell.sum_choose_eval_poly` — moment reproduction: if `b` is reciprocal to
   `m`, then `∑ C(n,k) mₖ Aₙ₋ₖ(x) = xⁿ`.
 -/
@@ -121,6 +126,21 @@ theorem binomialConv_pow (x y : R) (n : ℕ) :
   rw [binomialConv_eq_sum_range, add_pow]
   exact Finset.sum_congr rfl fun k _ => by ring
 
+/-- Four binomial-convolution factors may be paired in either order.  This
+is the commutative-semiring identity `(a * b) * (c * d) = (a * c) * (b * d)`
+for coefficient sequences. -/
+theorem binomialConv_four_swap (a b c d : ℕ → R) :
+    binomialConv (binomialConv a b) (binomialConv c d) =
+      binomialConv (binomialConv a c) (binomialConv b d) := by
+  calc
+    binomialConv (binomialConv a b) (binomialConv c d) =
+        binomialConv a (binomialConv b (binomialConv c d)) :=
+      binomialConv_assoc _ _ _
+    _ = binomialConv a (binomialConv c (binomialConv b d)) := by
+      rw [← binomialConv_assoc b c d, binomialConv_comm b c, binomialConv_assoc]
+    _ = binomialConv (binomialConv a c) (binomialConv b d) :=
+      (binomialConv_assoc _ _ _).symm
+
 /-- **Homogeneity under geometric rescaling.**  Multiplying a coefficient
 sequence by `k ↦ uᵏ` is the substitution `t ↦ u t` on generating functions, and
 substitution is a ring homomorphism. -/
@@ -141,6 +161,8 @@ end Bell
 namespace Appell
 
 open Bell
+
+section CommSemiring
 
 variable {R : Type*} [CommSemiring R]
 
@@ -291,6 +313,21 @@ so the values of an Appell sequence at a point again form a sequence of the
 same kind. -/
 def translate (c : R) (b : ℕ → R) (n : ℕ) : R := (poly b n).eval c
 
+/-- Translation is convolution with the geometric sequence of its parameter.
+This is the coefficient form of multiplication by `exp(c t)`. -/
+theorem translate_eq_binomialConv_pow (c : R) (b : ℕ → R) :
+    translate c b = binomialConv (fun n => c ^ n) b := by
+  funext n
+  exact eval_poly b c n
+
+/-- The weighted binomial transform, with the original sequence at index `k`:
+`(T_c b)_n = ∑_{k ≤ n} C(n,k) c^(n-k) b_k`. -/
+theorem translate_eq_sum (c : R) (b : ℕ → R) (n : ℕ) :
+    translate c b n =
+      ∑ k ∈ Finset.range (n + 1), (n.choose k : R) * c ^ (n - k) * b k := by
+  rw [translate_eq_binomialConv_pow, binomialConv_comm, binomialConv_eq_sum_range]
+  exact Finset.sum_congr rfl fun k _ => by ring
+
 /-- Translating by `0` changes nothing. -/
 @[simp] theorem translate_zero (b : ℕ → R) : translate 0 b = b := by
   funext n
@@ -317,6 +354,37 @@ theorem poly_translate (b : ℕ → R) (c : R) (n : ℕ) :
       = binomialConv (fun k => (X : R[X]) ^ k) (fun k => (C c : R[X]) ^ k) :=
     funext fun k => (binomialConv_pow (X : R[X]) (C c) k).symm
   rw [poly_comp, hpow, binomialConv_assoc, poly_eq_binomialConv, hC]
+
+/-- Successive weighted binomial transforms add their parameters.  This
+holds without division or subtraction, over every commutative semiring. -/
+theorem translate_translate (c d : R) (b : ℕ → R) :
+    translate c (translate d b) = translate (c + d) b := by
+  funext n
+  change (poly (translate d b) n).eval c = (poly b n).eval (c + d)
+  rw [poly_translate]
+  simp only [eval_comp, eval_add, eval_X, eval_C]
+
+/-- Translating both factors of a binomial convolution adds the two
+translation parameters: `T_c a ⋆ T_d b = T_(c+d) (a ⋆ b)`. -/
+theorem binomialConv_translate (c d : R) (a b : ℕ → R) :
+    binomialConv (translate c a) (translate d b) =
+      translate (c + d) (binomialConv a b) := by
+  simp only [translate_eq_binomialConv_pow]
+  rw [binomialConv_four_swap]
+  have h : binomialConv (fun n => c ^ n) (fun n => d ^ n) =
+      fun n => (c + d) ^ n := funext fun n => binomialConv_pow c d n
+  rw [h]
+
+/-- Weighted binomial transforms are injective whenever addition is
+left-cancellative.  The triangular kernel has diagonal `1`, so a ring or
+an inverse parameter is unnecessary. -/
+theorem translate_injective [IsLeftCancelAdd R] (c : R) :
+    Function.Injective (translate c : (ℕ → R) → ℕ → R) := by
+  intro a b h
+  simp only [translate_eq_binomialConv_pow] at h
+  rw [binomialConv_comm (fun n => c ^ n) a,
+    binomialConv_comm (fun n => c ^ n) b] at h
+  exact binomialConv_right_cancel (by simp) (congrFun h)
 
 /-- The geometric rescaling `n ↦ sⁿ · bₙ` of a sequence: the coefficient form
 of the substitution `t ↦ s t`. -/
@@ -388,5 +456,48 @@ theorem sum_choose_eval_poly {m b : ℕ → R} (h : binomialConv m b = unitSeq R
   rwa [binomialConv_eq_sum_range] at hn
 
 end
+
+end CommSemiring
+
+section Ring
+
+variable {R : Type*} [CommRing R]
+
+/-- Negating the parameter gives a left inverse to the weighted binomial
+transform, including at the zero parameter and in positive characteristic. -/
+@[simp] theorem translate_neg_translate (c : R) (b : ℕ → R) :
+    translate (-c) (translate c b) = b := by
+  rw [translate_translate, neg_add_cancel, translate_zero]
+
+/-- Negating the parameter also gives a right inverse to the weighted
+binomial transform. -/
+@[simp] theorem translate_translate_neg (c : R) (b : ℕ → R) :
+    translate c (translate (-c) b) = b := by
+  rw [translate_translate, add_neg_cancel, translate_zero]
+
+/-- Weighted binomial inversion as an equivalence of sequence identities. -/
+theorem translate_eq_iff (c : R) (a b : ℕ → R) :
+    b = translate c a ↔ a = translate (-c) b := by
+  constructor
+  · intro h
+    rw [h, translate_neg_translate]
+  · intro h
+    rw [h, translate_translate_neg]
+
+/-- Weighted binomial inversion written as the two explicit finite sums;
+no invertibility assumption on the parameter is necessary. -/
+theorem weighted_binomial_inversion_iff (c : R) (a b : ℕ → R) :
+    (∀ n, b n = ∑ k ∈ Finset.range (n + 1),
+      (n.choose k : R) * c ^ (n - k) * a k) ↔
+    (∀ n, a n = ∑ k ∈ Finset.range (n + 1),
+      (n.choose k : R) * (-c) ^ (n - k) * b k) := by
+  simpa only [funext_iff, translate_eq_sum] using translate_eq_iff c a b
+
+/-- Opposite translations cancel in binomial convolution. -/
+theorem binomialConv_translate_neg_translate (c : R) (a b : ℕ → R) :
+    binomialConv (translate (-c) a) (translate c b) = binomialConv a b := by
+  rw [binomialConv_translate, neg_add_cancel, translate_zero]
+
+end Ring
 
 end Appell
