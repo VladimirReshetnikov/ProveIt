@@ -348,8 +348,8 @@ branch-pairing, gap-bijection, and symmetric-identity tranche (respectively
 0+7, 4+16, and 0+9), the three-definition/seven-theorem geometric Richardson
 generating-function module, the three-theorem second-moment strengthening that
 enlarges the Gaussian-binomial cumulant module from 2+21 to 2+24, the
-five-theorem effective fixed-column q-binomial closure, and the subsequent
-zero-definition/five-theorem Bernoulli branch-gap companion.  Its earlier four
+zero-definition/five-theorem Bernoulli branch-gap companion, and the local
+five-theorem effective fixed-column q-binomial closure.  The Bernoulli leaf's earlier four
 theorems prove the exact complex convergence radius and boundary divergence,
 the nonzero-real sum, and the paired real branch formulas; its added fifth gives the
 complex removable-origin sum given by the inverse of
@@ -357,8 +357,12 @@ complex removable-origin sum given by the inverse of
 \(\lVert z\rVert<2\pi\).  It therefore crosswalks
 \nolinkurl{eq:pair-Bernoulli-general} and, under the standard removable-origin
 convention, \nolinkurl{eq:bernoulli-gen}.  The four Lambert modules total four
-definitions and 37 theorems, 41 declarations.  The live source census is 903
-facade-reachable modules and 11,453 public declarations, with no missing
+definitions and 37 theorems, 41 declarations.  Their completed checkpoint is
+903/11,448; the local fixed-column extension reaches 903/11,453.  Independently,
+the upstream-only one-definition/eight-theorem geometric-uniform
+moment-polynomial branch reaches 904/11,457 from the Lambert checkpoint.
+Merging those parallel extensions gives a live source census of 904
+facade-reachable modules and 11,462 public declarations, with no missing
 module headers or public-declaration doc comments.
 \end{boxedremark}
 
@@ -2430,8 +2434,10 @@ specialization: for every fixed \(r\in\NaturalNumbers\),
 For \(r=k\), the quantitative wrapper gives
 \(\GaussianBinomial{n+k}{k}{q}-(q;q)_k^{-1}
 =\operatorname{O}(q^{n+1})\).
-This promotes exactly the fixed-column row from Partial to Exact, so the
-282-result forward q ledger is now 167 Exact, 89 Partial, 18 None, and 8 N/A.
+This promotes exactly the fixed-column row from Partial to Exact.  In the
+combined tree, the parallel moment-polynomial row also moves from None to
+Partial, so the 282-result forward q ledger is 167 Exact, 90 Partial, 17 None,
+and 8 N/A.
 
 The two-definition/twenty-five-theorem \path{JacobiTripleProduct.lean}
 inventory is \lean{thetaExponent}, \lean{pentagonalExponent},
@@ -2554,19 +2560,29 @@ to 902/11,440.  Three later theorems enlarge the existing
 \path{GaussianBinomialCumulants.lean} module from 2+21 to 2+24 and bring that
 source census to 902/11,443: the characteristic-zero second-derivative formula
 and the two division-free raw-second-moment and variance-numerator identities
-over every commutative semiring.  The five-theorem effective fixed-column
-q-binomial closure enlarges \path{QBinomialTheoremInfinite.lean} to 1+27 and
-brings the next source census to 902/11,448.  The initial
-zero-definition/four-theorem \path{LambertWBranchGapBernoulli.lean} tranche
-then brings the exact-radius checkpoint to 903/11,452.  Its fifth theorem,
-\nolinkurl{hasSum_bernoulli_mul_pow_div_factorial_complex_iff}, brings the live
-source census to 903/11,453 and gives the complex \(\operatorname{HasSum}\)
+over every commutative semiring.  The subsequent Lambert--Bernoulli branch
+begins with three theorems at 903/11,446, adds its exact-radius fourth theorem
+at 903/11,447, and reaches 903/11,448 with its fifth theorem,
+\nolinkurl{hasSum_bernoulli_mul_pow_div_factorial_complex_iff}, which gives the
+complex \(\operatorname{HasSum}\)
 value given by the inverse of \nolinkurl{complexExpm1Div} at \(z\), exactly when
 \(\lVert z\rVert<2\pi\).  Thus the exhaustive 0+5 leaf crosswalks
 \nolinkurl{eq:pair-Bernoulli-general} and, under the explicit standard
 removable-origin convention, the whole \nolinkurl{eq:bernoulli-gen}.  This
 does not claim the literal Lean quotient at zero or formalize the Guide's
-nearest-zero proof route; Puiseux claims remain open.
+nearest-zero proof route; Puiseux claims remain open.  The local five-theorem
+effective fixed-column q-binomial closure then enlarges
+\path{QBinomialTheoremInfinite.lean} to 1+27 and reaches 903/11,453.
+Independently, the upstream-only one-definition/eight-theorem
+\path{GeometricUniformMomentPolynomial.lean} branch reaches 904/11,457 from
+the Lambert checkpoint; merging it with the local fixed-column branch gives
+the live 904/11,462 union.  It supplies the recursively defined
+rational polynomial, its residual-product recurrence, triangular degree bound,
+reciprocal-factorial value at zero, and the cases \(P_0,\ldots,P_4\).  It does not prove the
+analytic normalization identifying that family with the source moment
+coefficients, nor the leading-coefficient formula and consequent strict
+odd-degree drop.  Hence \nolinkurl{p7:thm:Pn} remains Partial rather than
+Exact.
 The newest six module counts are
 \path{QPochhammerInfiniteBounds.lean} (0+5),
 \path{HeineTransformation.lean} (2+5),
@@ -9367,6 +9383,25 @@ strict nome contraction, and absolute summability of the normalized data
 series.  They do not provide convergence without those hypotheses or an
 analytic acceleration bound.
 
+\item \path{GeometricUniformMomentPolynomial.lean} has the one public
+definition \path{Fabius.geometricUniformMomentPolynomial} and exactly eight
+public theorems:
+\path{Fabius.geometricUniformMomentPolynomial_zero},
+\path{Fabius.geometricUniformMomentPolynomial_succ},
+\path{Fabius.geometricUniformMomentPolynomial_natDegree_le},
+\path{Fabius.geometricUniformMomentPolynomial_eval_zero},
+\path{Fabius.geometricUniformMomentPolynomial_one},
+\path{Fabius.geometricUniformMomentPolynomial_two},
+\path{Fabius.geometricUniformMomentPolynomial_three}, and
+\path{Fabius.geometricUniformMomentPolynomial_four}.  These declarations
+define the recursive family directly in \(\RationalNumbers[X]\), prove its
+division-free residual-product recurrence, triangular degree bound and value
+at zero, and calculate \(P_0,\ldots,P_4\).  They do not identify the family
+with the normalized analytic moment coefficients in
+\nolinkurl{p7:eq:Pn-def}, and they prove neither the leading-coefficient
+formula nor the strict degree drop for odd \(n>1\).  Therefore the compound
+frontier label \nolinkurl{p7:thm:Pn} is Partial, not Exact.
+
 \item The five theorems of \path{FinitePolynomialFilterExactness.lean} are
 \path{Fabius.polynomialFilter_response_eq},
 \path{Fabius.polynomialFilter_exact},
@@ -11974,6 +12009,7 @@ proof device; it is the stable evaluation strategy.
 \end{remark}
 
 \section{How much of the full small-argument asymptotic is encoded by inverse dyadics?}
+\sectionmark{Inverse-dyadic sampling}
 \label{dyadicasym:sec:general-x}
 
 \subsection{The arbitrary-argument formula}

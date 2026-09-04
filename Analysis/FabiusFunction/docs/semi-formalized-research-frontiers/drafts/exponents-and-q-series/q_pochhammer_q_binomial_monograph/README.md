@@ -92,12 +92,26 @@ validation state. Deleted package ledgers must not be recreated. Historical
 SHA-256 values recorded directly in this README and in `PROVENANCE.md` remain
 provenance receipts for the named artifacts.
 
-The accepted current `q_pochhammer_q_binomial_monograph.tex` has 16,433 lines
-and 815,194 bytes, with SHA-256
+At the pre-upstream commit `581bf`,
+`q_pochhammer_q_binomial_monograph.tex` had 16,433 lines and 815,194 bytes,
+with SHA-256
 `f2aae6ddc3d7a399f9ed47806a0abe6458cbcab37bf2aac9f55ad3913b5a0e2d`.
 Its matching `q_pochhammer_q_binomial_monograph.pdf` is a 391-page,
 2,464,122-byte A4 artifact with SHA-256
 `c0a00720685f40e0684b4858e7ce18ce134701529898fd4574d09b6c090e0e91`.
+After merging parallel revision `3b6396`, the live source has 16,448 lines and 816,185 bytes, with
+SHA-256
+`a463abef7bb3c70e12a568a46fc192aac88a8ce240f8f781fff2b018a4aa086d`.
+The full source graph has 26,114 lines and 1,168,039 bytes, with aggregate
+SHA-256 `d4c5b84cc07f6abb99279c5bba4fdf7404326426cbe81f4b33b72ba01e62739c`.
+Three passes at 383/391/391 pages, with `makeindex` after each pass (164
+accepted, 0 rejected, 0 warnings), produced the accepted 391-page,
+2,464,712-byte A4 PDF with SHA-256
+`a52eb90dec7b874cc29dea891a107b9eb2d55e6727eb8bd8943d0aab609c58a6`.
+The final 1,231-line, 44,343-byte log has SHA-256
+`fb74b0c4cbd75d9022c78c1df5c1d567120bd67728d5b418697ddc5a2aa8f450`;
+all documented log, page, font, Type-3, extraction, and visual gates passed.
+The `581bf` pair above is retained as an exact historical pre-upstream receipt.
 The preceding 389-page, 3,254,138-byte A4 artifact with SHA-256
 `b8add607c85ee35be98dabf36879e1d45fb093c6b453e93679c80295fae715bc`
 was synchronized to the source checkpoint at commit
@@ -163,11 +177,14 @@ The newest combinatorial and certification tranche adds
 binary-word inversion and path-area generating functions, rectangular-box
 partition generating functions and counts, finite telescoping certificates,
 recurrence uniqueness, and rational-identity specialization. The live facade
-audit now contains 903 modules and 11,453 public declarations, with no
-documentation gaps. The recent declaration chronology is 11,440
-after `GeometricRichardsonGenerating`, 11,443 after the Gaussian second-moment
-tranche, 11,448 after the five fixed-column q-binomial declarations, and 11,453
-after the five-theorem `LambertWBranchGapBernoulli` leaf. Ten declarations come
+audit now contains 904 modules and 11,462 public declarations, with no
+documentation gaps. The local declaration chronology is 902/11,440 after
+`GeometricRichardsonGenerating`, 902/11,443 at Gaussian checkpoint `71c908e`,
+903/11,448 at completed Lambert checkpoint `217a6b9`, and 903/11,453 after the
+five fixed-column q-binomial declarations at `581bf`. On the parallel upstream
+branch, the one-definition/eight-theorem moment-polynomial leaf gives
+checkpoint `3b6396` at 904/11,457; merging the independent increments gives
+the live 904/11,462 union. Ten declarations come
 from the sibling
 `FabiusFunction.GeometricRichardsonGenerating` module (three definitions and
 seven theorems), whose exact comb-manuscript crosswalk is
@@ -181,7 +198,8 @@ they strengthen the already-Exact
 The five effective fixed-column limit and rate declarations belong to the
 one-definition, twenty-seven-theorem `QBinomialTheoremInfinite` surface and
 promote that fixed-column row from Partial to Exact.
-The final one-module/five-declaration increase is the unrelated sibling
+The one-module/five-declaration increase from Gaussian checkpoint `71c908e`
+to completed Lambert checkpoint `217a6b9` is the unrelated sibling
 `LambertWBranchGapBernoulli.lean` leaf. Its exhaustive zero-definition public
 surface is `summable_norm_bernoulli_mul_pow_div_factorial`,
 `summable_bernoulli_mul_pow_div_factorial_iff`,
@@ -199,10 +217,39 @@ clause, Guide label `eq:pair-Bernoulli-general`, and canonical-removable
 reading of `eq:bernoulli-gen` are Exact. Here `complexExpm1Div 0 = 1` and it
 equals `(exp z - 1) / z` away from zero; this is not the literal totalized
 quotient at zero and asserts no holomorphy. Higher/full Puiseux and logarithmic
-expansions remain open. This
-sibling promotion changes none of the forward-status or concordance totals
-below and is outside the q-series publication; neither the accepted current
-PDF nor its historical predecessor renders it.
+expansions remain open. That sibling promotion produced the 903/11,448
+checkpoint and changed none of the q-series forward-status or source-
+concordance totals. The five fixed-column declarations later produced local
+checkpoint `581bf` at 903/11,453. The Lambert crosswalk is outside the q-series
+publication and is not rendered by its exact `581bf` receipt.
+
+The parallel upstream q-series leaf is
+`GeometricUniformMomentPolynomial.lean`, with one definition,
+`geometricUniformMomentPolynomial`, and exactly eight theorems:
+`geometricUniformMomentPolynomial_zero`,
+`geometricUniformMomentPolynomial_succ`,
+`geometricUniformMomentPolynomial_natDegree_le`,
+`geometricUniformMomentPolynomial_eval_zero`,
+`geometricUniformMomentPolynomial_one`,
+`geometricUniformMomentPolynomial_two`,
+`geometricUniformMomentPolynomial_three`, and
+`geometricUniformMomentPolynomial_four`.  It formalizes the recursive
+rational polynomial family, the zeroth value and residual-product recurrence,
+the triangular degree bound, the specialization at zero, and all displayed
+cases through the fourth polynomial.  It deliberately does not identify that
+recursive family with the normalized coefficients `a_n(q)` of the analytic
+moment-generating product.  Consequently `thm:qF-moment-polynomial` moves
+from None to Partial, not Exact; `prop:qF-P-degree-sharp` remains None, and
+`cor:qF-halfbase-dictionary` remains Partial.  Based on completed Lambert
+checkpoint `217a6b9`, this one-definition/eight-theorem addition produces
+upstream-only checkpoint `3b6396` at 904/11,457; its merge with the independent
+fixed-column checkpoint `581bf` brings the live census to 904/11,462 and
+changes the combined forward ledger by exactly one None-to-Partial move.  The source concordance
+is unchanged because its provenance disposition remains a human-proved
+frontier result. The retained 391-page PDF renders neither the unrelated
+Lambert tranche nor this parallel q-series tranche and remains historical. The
+accepted current 391-page PDF renders the parallel q-series tranche; the
+Lambert crosswalk remains outside this publication.
 
 The two newest generic theorems are
 `deriv_qPochhammerInfIn_ne_zero_of_mul_pow_eq_one`, which gives a nonzero
@@ -222,7 +269,7 @@ which are equivalent to the manuscript's multiplicative relative errors
 because `(q;q)_k` is fixed and nonzero when `‖q‖ < 1`.
 `finiteQPochhammerIn_zero_left` remains the unique declaration owned by
 `GaussianBinomialAtOne` and is imported rather than redeclared. The forward
-status ledger is 167 Exact, 89 Partial, 18 None, and 8 interface rows; the
+status ledger is 167 Exact, 90 Partial, 17 None, and 8 N/A interface rows; the
 original 191-result pre-Fabius core is 35/30/123/3, and the
 completed source concordance records 78 Lean-proved rows, 400 human-proved
 frontier rows, 60 not-applicable rows, and 9 conjectures.
@@ -318,5 +365,6 @@ classical-limit rows stay unformalized.
 
 The PDF and source at commit
 `736a241d1a025d64ac73b1573b17a7b3fc02652d` were synchronized at the
-historical checkpoint recorded above.  The accepted current source/PDF pair is
-identified by the 391-page receipt above.
+historical checkpoint recorded above. The later 391-page receipt identifies
+the exact historical `581bf` pre-upstream source/PDF pair; the accepted current
+391-page receipt identifies the post-merge source graph.

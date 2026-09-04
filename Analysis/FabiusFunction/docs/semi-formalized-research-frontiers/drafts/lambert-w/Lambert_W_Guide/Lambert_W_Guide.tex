@@ -4385,9 +4385,17 @@ The focused branch-pair and Bernoulli tranche is exhaustive at this checkpoint:
 \lean{LambertWBranchSymmetry} has \(0+9\), while
 \lean{LambertWBranchGapBernoulli} has \(0+5\).  Their four-module union is
 therefore four definitions and 37 theorems, 41 public declarations in all.
-The preceding fixed-column (q)-binomial checkpoint had the live census
-902/11,448; the exact-radius Bernoulli tranche raised it to 903/11,452, and
-the complex value-completion theorem brings the live census to 903/11,453.
+The preceding Gaussian second-moment checkpoint had the live census
+902/11,443.  The Lambert--Bernoulli branch begins with three theorems at
+903/11,446, adds its exact-radius fourth theorem at 903/11,447, and reaches
+903/11,448 with the complex value-completion theorem.  The local five-theorem
+fixed-column \(q\)-binomial extension then reaches 903/11,453.  Independently,
+the upstream-only \path{GeometricUniformMomentPolynomial.lean} branch has
+\(1+8\) public definitions/theorems and reaches 904/11,457 from the Lambert
+checkpoint; merging it with the local fixed-column branch gives the live
+904/11,462 union.  The moment-polynomial module supplies only the recursive
+polynomial algebra; the analytic normalization and leading/odd-degree clause
+of the external label \nolinkurl{p7:thm:Pn} remain Partial.
 
 \begin{longtable}{@{}p{0.30\textwidth}p{0.42\textwidth}p{0.22\textwidth}@{}}
 \toprule
@@ -4640,8 +4648,9 @@ identity and the compact paired series for \(0<\Delta<2\pi\) on
 \decl{principalLambertW\_lowerLambertW\_eq\_bernoulliSeries} (module
 \lean{LambertWBranchGapBernoulli}) &
 Exact for the complex generating identity, the compact real branch pair, and
-the convergence locus.  The
-first theorem proves absolute summability for every real
+the convergence locus.\\
+\multicolumn{3}{@{}p{0.94\textwidth}@{}}{\emph{Details for the preceding row.}
+The first theorem proves absolute summability for every real
 \(z\) with \(\lvert z\rvert<2\pi\); the second proves, for complex \(z\), that
 the Bernoulli series is summable if and only if \(\lVert z\rVert<2\pi\), hence
 it diverges on \(\lVert z\rVert=2\pi\) and throughout the exterior; the third
@@ -4656,7 +4665,7 @@ identities in this row Exact under the stated convention, but claims no
 equality with Lean's totalized quotient at zero.  The compiled radius proof
 uses even Bernoulli--zeta coefficient bounds and a positive even subsequence;
 it does not formalize the Guide's nearest-nonzero-zero explanation.  The
-surrounding expanded displays and every Puiseux claim remain unpromoted.\\
+surrounding expanded displays and every Puiseux claim remain unpromoted.}\\
 \addlinespace
 \Cref{thm:W0negativebounds}: for \(-1/\EulerE<x<0\),
 \(-1+\sqrt{1+\EulerE x}<\Wz(x)<-1+\sqrt{2(1+\EulerE x)}\) and \(\Wz(x)<x\) &

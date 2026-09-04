@@ -21,24 +21,44 @@ The canonical frontier artifacts are:
 - [`semi-formalized-research-frontiers.tex`](semi-formalized-research-frontiers.tex)
 - [`semi-formalized-research-frontiers.pdf`](semi-formalized-research-frontiers.pdf)
 
-> **Source/PDF synchronization.** The accepted current source has 17,947 lines
-> and 804,625 bytes, with SHA-256
+> **Accepted final-source receipt.** The current source has 17,983 lines and
+> 806,798 bytes, with SHA-256
+> `a1cb1c0db2784116ca1f1d6fd1ce7e8b29afc52c64c93e7001bbffb91f775039`.
+> Three passes produced 252/260/260 pages.  The accepted 260-page,
+> 1,877,420-byte A4 PDF has SHA-256
+> `78c19b361da06836c20c62fa5bd50131eb8fa47d3e89d37a7f089a51568953b3`;
+> its final 2,990-line, 101,866-byte log has SHA-256
+> `4854a89ba1a3bb41248b9428cfed572f6ed593125b5a8fb43d5625d8d392dc0f`.
+> All documented log, page, font, Type-3, extraction, and visual gates passed;
+> the page-176 running-head collision was repaired before acceptance.
+>
+> **Historical receipts.** At commit `581bf`, the source had 17,947 lines and
+> 804,625 bytes, with SHA-256
 > `ac6b28fb8a98d97ed4b7a0fe7a5ba2cdfab852fb6de1ee2ecfda4aed75804371`.
 > Its matching 260-page, 1,875,190-byte A4 PDF has SHA-256
 > `fee3b5af21b01b16c41cf8291ba0508d1e6c613bfd098cdef457cde44ea693c2`.
+> The later 17,982-line, 806,760-byte source-only pin, SHA-256
+> `6edfc099f275f74d6e3ae5b74e60a2fcf4aeca313089967dafbae4b2585bf2d4`,
+> records the post-merge state before the final running-head repair and is now
+> superseded historical evidence.
 > The preceding 257-page, 2,438,299-byte A4 PDF, SHA-256
 > `3766761aac90247061f5c955dc84a0feb8567454e10839f1508b9431797ee980`,
 > remains a historical receipt for the source before the later q-Pochhammer
 > overlay and expanded ledger.
 
-After integration of upstream revision `71c908e` and the subsequent
-Lambert--Bernoulli overlay, the primary exposition, Lean walkthrough, and
-Lambert Guide received accepted final-source renders: respectively 187, 150,
-and 70 A4 pages.  Their exact source and PDF receipts are recorded in the root
-README and documentation audit.  The consolidated q-series synthesis likewise
-has the accepted current 391-page receipt recorded below.  The canonical
-frontier's accepted 260-page receipt above completes those four formerly queued
-renders.
+On the local publication line, Gaussian revision `71c908e` was the
+902/11,443 checkpoint, completed Lambert--Bernoulli revision `217a6b9` was
+903/11,448, and the five fixed-column declarations brought commit `581bf` to
+903/11,453. At `581bf`, the primary exposition, Lean walkthrough, Lambert
+Guide, consolidated q-series synthesis, and canonical frontier received exact
+final-source renders: respectively 187, 150, 70, 391, and 260 A4 pages. Their
+exact source and PDF receipts remain recorded here, in the root README, and in
+the documentation audit as historical evidence. The parallel upstream-only
+moment-polynomial revision `3b6396` was 904/11,457; merging it with `581bf`
+gives the 904/11,462 union and changes those five TeX sources as well as the
+independently published standalone geometric-q root. All six final-source
+renders are now accepted with exact source, PDF, and final-log receipts; their
+documented log, A4 page, font, Type-3, extraction, and visual gates passed.
 
 The superconvergence overlay initially postdated every then-retained frontier
 PDF. `RvachevSuperconvergentSynthesis.lean` contributes one
@@ -51,9 +71,11 @@ this promotes exactly `is:p3:cor:forced-superconvergence` and
 49 Lean-proved / 96 human-proved / 10 conjectural / 15 open / 24
 nonassertoric. At that superconvergence checkpoint the documentation census
 was 671 modules and 8,858 public declarations; no PDF was rebuilt for that
-source-only update.  The overlay is now present in the accepted primary,
-walkthrough, and canonical-frontier renders; the unrelated inverse and comb
-artifacts remain historical.
+source-only update. The overlay is present in the exact `581bf` primary,
+walkthrough, and canonical-frontier receipts, which are now historical after
+`3b6396`. The accepted current primary, walkthrough, and canonical-frontier
+renders also include it; the unrelated inverse and comb artifacts remain
+historical with their existing statuses unchanged.
 
 The later Lambert branch-coordinate overlay formalizes the exact
 pairing theorem, its symmetric corollary, the compact Bernoulli-series identity,
@@ -90,12 +112,34 @@ removable-origin convention. The Guide's nearest-nonzero-zero explanation is
 not the formal proof route. With the three finite branch-coordinate modules,
 the four-module union is 4 definitions + 37 theorems = 41 declarations.
 Higher or convergent Puiseux/logarithmic
-expansions remain open. The accepted primary, walkthrough, and Lambert-Guide
-PDFs now render this overlay, as does the accepted canonical-frontier PDF. The
-live documentation census reached 902 modules and 11,448 public declarations
-after the fixed-column q-binomial closure.  The initial four-theorem Bernoulli leaf gave
-the exact-radius checkpoint 903/11,452; the value-completion theorem brings the
-live census to 903 modules and 11,453 public declarations.
+expansions remain open. Gaussian checkpoint `71c908e` contained 902 modules
+and 11,443 public declarations. The initial four-theorem Bernoulli leaf gave
+the exact-radius checkpoint 903/11,447; the value-completion theorem brought
+completed Lambert checkpoint `217a6b9` to 903/11,448. The five fixed-column
+q-binomial declarations then brought local checkpoint `581bf` to 903/11,453.
+The exact `581bf` primary,
+walkthrough, Lambert-Guide, and canonical-frontier PDFs include that overlay;
+the q-series PDF is the exact receipt for its own pre-upstream source. Those
+five and the older standalone geometric-q PDF remain historical receipts. The
+accepted current renders of all six roots include the post-merge union.
+
+The parallel upstream addition is
+`FabiusFunction.GeometricUniformMomentPolynomial`, with one definition and
+eight theorems. It defines the recursive rational polynomial family and proves
+its base case, residual-product recurrence, triangular degree bound,
+reciprocal-factorial value at zero, and the explicit cases `P1` through `P4`.
+Together with the zero theorem this is the complete displayed `P0`--`P4`
+algebraic surface. It does not identify the recursive family with the
+normalized analytic Taylor or moment coefficients, and it does not prove the
+leading-coefficient formula or the resulting strict odd-degree drop. Thus
+`p7:thm:Pn` remains **Partial**, with only its algebraic recurrence, degree
+bound, zero value, and small-case clauses supplied. Based on completed Lambert
+checkpoint `217a6b9`, this one-module/nine-declaration increment produced
+upstream-only checkpoint `3b6396` at 904/11,457; its merge with the independent
+five fixed-column declarations in `581bf` brings the live documentation census
+to 904 modules and 11,462 public declarations. It was not rendered by any of
+the five retained pre-upstream PDFs; it is included in the accepted current
+renders of all six roots.
 
 The preceding declaration addition is
 `FabiusFunction.GeometricRichardsonGenerating`, with three definitions and
@@ -104,10 +148,11 @@ seven theorems. Its
 counterpart of canonical comb label `gq:thm:richardson-generating`; the module
 also supplies the report-facing analytic companion
 `Fabius.hasSum_geometricLagrangeRichardson_mul_pow` under strict nome
-contraction and absolute summability. The accepted primary and walkthrough
-PDFs now include this crosswalk, as does the accepted canonical-frontier PDF.
-The retained comb-synthesis PDF still predates it and remains a historical
-artifact.
+contraction and absolute summability. The exact `581bf` primary, walkthrough,
+and canonical-frontier receipts include this crosswalk, but are historical
+after merging parallel revision `3b6396`. The accepted current primary,
+walkthrough, and canonical-frontier renders preserve the crosswalk. The
+retained comb-synthesis PDF still predates it and remains a historical artifact.
 
 The next declaration addition leaves the module count unchanged and adds
 three theorems to `FabiusFunction.GaussianBinomialCumulants`: the explicit
@@ -122,8 +167,10 @@ probability language is the normalized-generating-polynomial interpretation of
 algebraic identities, not a new probability-space construction.
 
 The 1 September 2026 q-Pochhammer overlay initially postdated the retained
-PDFs; it is now included in the accepted q-series, primary, walkthrough, and
-canonical-frontier renders.  The new
+PDFs and is included in the exact `581bf` q-series, primary, walkthrough, and
+canonical-frontier receipts. Those receipts are now historical after
+`3b6396`; the accepted current renders of those four roots also include the
+overlay. The new
 `QPochhammerEntire.lean` leaf has zero definitions
 and five theorems: for a fixed complex nome with norm less than one it proves
 local uniform convergence of the infinite product, differentiability in the
@@ -148,9 +195,10 @@ fixed-column limit/rate claim is therefore Exact.  Lean states the errors in
 additive `IsBigO` form as `O(q^(n-k+1))` and, after shifting by `k`,
 `O(q^(n+1))`; multiplying by the fixed nonzero denominator `(q;q)_k` gives
 the equivalent relative-error form used in the manuscript.  Its
-282-result forward status totals are now 167 Exact / 89 Partial / 18 None / 8
-interface, with the fixed-column row promoted from Partial to Exact.  The
-outer spectral product now has an exact
+282-result forward status totals are now 167 Exact / 90 Partial / 17 None / 8
+N/A interface rows: the fixed-column row is Exact, while the newest
+moment-polynomial row has moved from None to Partial. The outer spectral
+product now has an exact
 locally-uniform/normal-convergence theorem; the compound centered/MGF and
 exterior reciprocal/pole layers remain partial.
 
@@ -172,11 +220,24 @@ was synchronized to the preceding 16,339-line, 810,779-byte source checkpoint
 (SHA-256 `14c444feb14c435bc300becd9c8cd2765c1e96f608dd79da462becc41b28ed22`).
 The 16,359-line checkpoint already included the merged q-Chu/reversal union.
 The Gaussian-moment and fixed-column theorem tranches postdated that historical
-receipt.  The accepted current q-series receipt is now a 391-page,
-2,464,122-byte A4 PDF with SHA-256
+receipt. The exact pre-upstream q-series receipt frozen at `581bf` is a
+391-page, 2,464,122-byte A4 PDF with SHA-256
 `c0a00720685f40e0684b4858e7ce18ce134701529898fd4574d09b6c090e0e91`.
-It matches the current 16,433-line, 815,194-byte master with SHA-256
+It matched the 16,433-line, 815,194-byte master with SHA-256
 `f2aae6ddc3d7a399f9ed47806a0abe6458cbcab37bf2aac9f55ad3913b5a0e2d`.
+After merging parallel revision `3b6396`, the live master has 16,448 lines and 816,185 bytes, with
+SHA-256
+`a463abef7bb3c70e12a568a46fc192aac88a8ce240f8f781fff2b018a4aa086d`;
+the full 26,114-line, 1,168,039-byte source graph has aggregate SHA-256
+`d4c5b84cc07f6abb99279c5bba4fdf7404326426cbe81f4b33b72ba01e62739c`.
+Three passes at 383/391/391 pages, with `makeindex` after each pass (164
+accepted, 0 rejected, 0 warnings), produced the accepted 391-page,
+2,464,712-byte A4 PDF with SHA-256
+`a52eb90dec7b874cc29dea891a107b9eb2d55e6727eb8bd8943d0aab609c58a6`.
+The final 1,231-line, 44,343-byte log has SHA-256
+`fb74b0c4cbd75d9022c78c1df5c1d567120bd67728d5b418697ddc5a2aa8f450`;
+all documented gates passed. The 391-page `581bf` PDF above remains a
+historical receipt rather than the current artifact.
 
 The current finite-moment/Legendre/Gaunt crosswalk covers eleven modules with
 20 public definitions and 109 public theorems, 129 declarations in all. The

@@ -20,12 +20,25 @@ Four independently written article packages arrived together on
 consolidated volume:
 
 Member: `Lambert_W_Guide/` — *The Lambert W Function: A Real-Variable
-Guide*.  Its accepted current source has 4,864 lines and 176,796 bytes, with
-SHA-256
+Guide*. At the pre-upstream commit `581bf`, its source had 4,864 lines and
+176,796 bytes, with SHA-256
 `3f3552983a73db2dab94f3625d10d054b747ee03fc2758e257af86f6216deab5`.
 The matching 70-page, 958,713-byte A4 PDF has SHA-256
 `24e8bf561283ffc5427297df6f656696a7e2538731e53d03d59e4268b50772fc`.
-The preceding 66-page, 1,107,064-byte artifact remains a historical receipt.
+After merging parallel revision `3b6396` and reconciling the branch chronology,
+the accepted source has 4,873 lines and 177,465 bytes, with SHA-256
+`90413f46373415edef411e9ea3b2d94006f7342bd2fa3ea931ca975d7f64b97e`.
+Three passes at 67/69/69 pages produced the accepted 69-page, 958,516-byte A4
+PDF with SHA-256
+`b159cd41f5b3e53060fa85fcfc4812d504cc1fff8400c03ecb7ef4018f37cd2c`;
+the final 1,574-line, 57,795-byte log has SHA-256
+`5c81cd6b8dc2cf070c4b1995c98c0d046c54d28f0e682b78b5ad9e16c0a8caa7`.
+All documented log, page, font, Type-3, extraction, and visual gates passed
+after the clipping repair. The `581bf` pair above is retained as a historical
+pre-upstream receipt. The superseded 4,872-line, 177,384-byte source-only pin,
+SHA-256 `4200ac6ccd23e950bcbd0cba61aca256cd9e1a647667436120cc82e8e7876b11`,
+records the state before that repair. The preceding 66-page, 1,107,064-byte
+artifact remains an earlier historical receipt.
 The most complete of the four treatments forms the body; the unique layers of the
 other three (the
 complete power-tower convergence theorem, inverse-Taylor corrections,
@@ -112,13 +125,29 @@ that explicit removable-origin convention.  The Guide's nearest-nonzero-zero
 argument is not the formal proof route.  With the three finite
 branch-coordinate modules, the four-module union is four definitions and 37
 theorems, 41 declarations.  The signed higher/convergent Puiseux program
-remains open.  The accepted 70-page Guide PDF renders this overlay, and the
-accepted primary, walkthrough, and canonical-frontier PDFs incorporate it as
-well.  The recent declaration chronology is 11,440 after
-`GeometricRichardsonGenerating`, 11,443 after the Gaussian second-moment
-tranche, 11,448 after the five fixed-column q-binomial declarations, and
-11,453 after this five-theorem leaf.  The live documentation census is
-therefore 903 modules and 11,453 public declarations.
+remains open. The exact `581bf` Guide, primary, walkthrough, and canonical-
+frontier receipts include this overlay; the q-series PDF is the exact receipt
+for its own pre-upstream source. Those five PDFs and the older independently
+published standalone geometric-q PDF remain historical. Accepted current
+source/PDF receipts now exist for all six roots, and all documented gates
+passed.
+The local declaration
+chronology is 902/11,440 after `GeometricRichardsonGenerating`, 902/11,443 at
+Gaussian checkpoint `71c908e`, 903/11,448 after this five-theorem leaf at
+completed Lambert checkpoint `217a6b9`, and 903/11,453 after the five
+fixed-column q-binomial declarations at `581bf`. On the parallel upstream
+branch, the sibling `FabiusFunction.GeometricUniformMomentPolynomial` module
+has one definition
+and eight theorems for its recursive polynomial, residual-product recurrence,
+degree bound, value at zero, and the four positive-index cases `P1`--`P4`.  It gives
+upstream-only checkpoint `3b6396` at 904/11,457; its merge with the independent
+fixed-column increment gives the live 904/11,462 documentation census. Its
+external source label `p7:thm:Pn` remains Partial because the analytic
+moment-coefficient normalization and leading/odd-degree clause are not part of
+that algebraic leaf. The sibling addition is absent from the retained historical
+PDFs but included in the accepted current Guide and other final-source renders.
+The preceding 66-page Guide remains an earlier historical artifact with its
+status unchanged.
 
 The exact raw second-order package is `LambertWCurvature.lean`.  Its
 principal API is `deriv_principalLambertW`,

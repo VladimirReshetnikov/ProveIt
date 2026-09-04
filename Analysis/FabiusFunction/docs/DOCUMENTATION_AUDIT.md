@@ -109,9 +109,15 @@ only 4,606 declarations and
 declarations, including 69 undocumented ones.  Run the script for the live
 numbers rather than copying these historical values.
 
-The live 2026-09-04 inventory contains 903 modules and 11,453 lexically
+The live 2026-09-04 inventory contains 904 modules and 11,462 lexically
 visible public declarations, with zero missing module headers and zero missing
-doc comments.  The post-merge 2026-09-01 inventory of 675 modules and 8,909
+doc comments.  On the local publication line, the Gaussian checkpoint
+`71c908e` was 902/11,443, the completed Lambert-series checkpoint `217a6b9`
+was 903/11,448, and the fixed-column checkpoint `581bf17` was 903/11,453.
+The parallel upstream-only moment-polynomial checkpoint `3b6396d` was
+904/11,457; merging those independent five- and nine-declaration increments
+gives the live 904/11,462 union.  The post-merge 2026-09-01
+inventory of 675 modules and 8,909
 declarations remains a historical checkpoint: relative to the 610/8,318
 activation checkpoint, that tree added sixty-five modules and 591
 declarations, and relative to the earlier 630/8,552 merged checkpoint it added
@@ -166,11 +172,14 @@ extension remain unformalized.
 `GeometricRichardsonGenerating.lean` added one source module and exactly ten
 public declarations to the 901/11,430 q-Chu checkpoint.  The resulting
 historical checkpoint was 902 modules and 11,440 public declarations.  The
-three Gaussian second-moment declarations recorded next give the subsequent
-902/11,443 checkpoint; the five fixed-column declarations recorded below give
-the 902/11,448 checkpoint; the first four theorems of the new
-Lambert--Bernoulli leaf give the exact-radius 903/11,452 checkpoint; and its
-fifth theorem gives the live 903/11,453 union.  Its three definitions are
+three Gaussian second-moment declarations recorded next give checkpoint
+`71c908e` at 902/11,443.  The first four theorems of the new
+Lambert--Bernoulli leaf then give the exact-radius 903/11,447 checkpoint, and
+its fifth theorem gives completed Lambert checkpoint `217a6b9` at
+903/11,448.  The five fixed-column declarations give local checkpoint
+`581bf17` at 903/11,453.  Independently, the nine-declaration moment-polynomial
+leaf gives parallel upstream-only checkpoint `3b6396d` at 904/11,457; merging
+the two branches gives the live 904/11,462 union.  Its three definitions are
 `geometricRichardsonKernel`, `qPochhammerNormalizedDataSeries`, and
 `geometricRichardsonTransform`.  Its seven theorems are
 `coeff_rescale_qPochhammerSeries_eq_geometricRichardsonKernel`,
@@ -201,10 +210,12 @@ arbitrary formal power series.
 
 The later strengthening of the existing `GaussianBinomialCumulants.lean`
 module leaves the module count at 902 and adds three public theorems, bringing
-that historical checkpoint to 11,443 public declarations.  The five subsequent
-fixed-column declarations give the 902/11,448 checkpoint, the first four
-theorems of the subsequent Lambert--Bernoulli leaf give the exact-radius
-903/11,452 checkpoint, and its fifth theorem gives the live 903/11,453 census.  The
+checkpoint `71c908e` to 11,443 public declarations.  The first four theorems
+of the Lambert--Bernoulli leaf give 903/11,447, and its fifth gives completed
+Lambert checkpoint `217a6b9` at 903/11,448.  The five fixed-column declarations
+then give local checkpoint `581bf17` at 903/11,453.  On the parallel upstream
+branch, the moment-polynomial leaf instead gives checkpoint `3b6396d` at
+904/11,457; their merge gives the live 904/11,462 census.  The
 module's exhaustive public
 inventory is two definitions, `meanAtOne` and `varAtOne`, and twenty-four
 theorems: `meanAtOne_one`, `varAtOne_one`, `meanAtOne_mul`, `varAtOne_mul`,
@@ -275,9 +286,10 @@ asymptotic; the separate analytic series leaf is inventoried next.
 #### Exact Lambert branch-gap Bernoulli tranche
 
 `LambertWBranchGapBernoulli.lean` first added one source module and four public
-theorems after the 902/11,448 fixed-column checkpoint, giving the historical
-exact-radius checkpoint 903/11,452.  Its fifth public theorem leaves the module
-count fixed and brings the live census to 903/11,453.  Its exhaustive public
+theorems after Gaussian checkpoint `71c908e` at 902/11,443, giving the
+historical exact-radius checkpoint 903/11,447.  Its fifth public theorem leaves
+the module count fixed and brings completed Lambert checkpoint `217a6b9` to
+903/11,448.  Its exhaustive public
 surface is
 `summable_norm_bernoulli_mul_pow_div_factorial`,
 `summable_bernoulli_mul_pow_div_factorial_iff`,
@@ -308,6 +320,40 @@ does not assert equality to Lean's literal totalized quotient at `z=0` or a
 holomorphy theorem.  The real quotient theorem deliberately excludes `z=0`,
 while the branch theorem excludes both endpoints.  No remainder estimate or
 higher/convergent Puiseux expansion is included.
+
+#### Algebraic geometric-uniform moment-polynomial tranche
+
+On the parallel upstream branch, `GeometricUniformMomentPolynomial.lean` adds
+one source module and nine public declarations to completed Lambert checkpoint
+`217a6b9` at 903/11,448, giving upstream-only checkpoint `3b6396d` at
+904/11,457.  Its merge with the independent five-declaration fixed-column
+checkpoint `581bf17` gives the live 904/11,462 census.  Its exhaustive 1+8
+surface is the definition
+`geometricUniformMomentPolynomial` and the theorems
+`geometricUniformMomentPolynomial_zero`,
+`geometricUniformMomentPolynomial_succ`,
+`geometricUniformMomentPolynomial_natDegree_le`,
+`geometricUniformMomentPolynomial_eval_zero`,
+`geometricUniformMomentPolynomial_one`,
+`geometricUniformMomentPolynomial_two`,
+`geometricUniformMomentPolynomial_three`, and
+`geometricUniformMomentPolynomial_four`.  Two documented residual-product
+helpers are private and therefore excluded from the public count.
+
+The recursive family is total over `ℚ[X]`.  Its zero and successor theorems
+give `P_0=1` and the residual finite q-Pochhammer recurrence; the degree theorem
+gives `natDegree P_n ≤ n.choose 2`; evaluation at zero gives
+`P_n(0)=1/(n+1)!`; and the four final theorems give the displayed values
+`P_1` through `P_4`.  These exactly close the algebraic clauses of monograph
+label `thm:qF-moment-polynomial`, including the `q=0` boundary.  The canonical
+label remains **Partial**, however, because the source defines its polynomial
+by the analytic normalization `((q;q)_n/(1-q)^n)a_n(q)` and no theorem yet
+identifies those analytic/MGF coefficients with the recursive Lean family.
+The leading and subleading coefficients and exact degree asserted by
+`prop:qF-P-degree-sharp` remain unformalized.
+Together with the independent fixed-column promotion from Partial to Exact,
+this label's None-to-Partial promotion gives the combined 282-result forward
+ledger 167 Exact / 90 Partial / 17 None / 8 interface rows.
 
 The one-definition/eight-theorem
 `RvachevSuperconvergentSynthesis.lean` leaf contributes
@@ -996,29 +1042,80 @@ The retained comb-interpolation synthesis PDF is a validated 158-page A4
 historical receipt: the current source includes a post-render update to its
 additive-dyadic chapter, so a fresh parity build remains pending.  The rebuilt
 Integration-and-Transform master retains a historical 377-page PDF.  The
-canonical q-series synthesis has an accepted current 391-page,
+five source/PDF pairs synchronized by commit
+`581bf177f8e784ab5d4836acc2b4a47e285e6ce0` are now historical because merging
+the parallel upstream-only moment-polynomial checkpoint
+`3b6396deb6056523d944d79602d1bf7ecf18ec10` changes all five TeX sources and the
+independently published standalone geometric-q root.  Those five PDFs and the
+standalone geometric-q PDF are historical receipts.  Final-source rendering is
+now complete for all six roots.  The accepted receipts are:
+
+- primary exposition: source 13,748 lines / 686,081 bytes / SHA-256
+  `661ebb4e337f2ce79e8c3d5ca823bcdcce519fe220ff4b02d9dd5aef08d42cf9`;
+  passes 185/187/187; PDF 187 A4 pages / 1,581,617 bytes / SHA-256
+  `41e95844c6e5dc04933cc7256d285346c10eb29ff7eadf5a4165c472fa453eab`;
+  final log 1,309 lines / 52,641 bytes / SHA-256
+  `f177cb91c161f4dfc60017ddfd5efed1586ef28a4c80c68a9ae78cf19cf75da6`.
+- Lean walkthrough: source 6,638 lines / 460,643 bytes / SHA-256
+  `c44ab7ab38da46f8959a63916437b3d8ded628a3930f81dfa1a87996c7c66b8d`;
+  passes 146/151/151; PDF 151 A4 pages / 1,188,993 bytes / SHA-256
+  `907b3d2dbfc66192b63b86ada1015779229636855734815402ae5af9ea9bf015`;
+  final log 1,296 lines / 52,126 bytes / SHA-256
+  `0962c255aeb75bce3bcee89cbc1db9defe369e8c79ee6b6aa0435befdca410cf`.
+- canonical frontier: source 17,983 lines / 806,798 bytes / SHA-256
+  `a1cb1c0db2784116ca1f1d6fd1ce7e8b29afc52c64c93e7001bbffb91f775039`;
+  passes 252/260/260; PDF 260 A4 pages / 1,877,420 bytes / SHA-256
+  `78c19b361da06836c20c62fa5bd50131eb8fa47d3e89d37a7f089a51568953b3`;
+  final log 2,990 lines / 101,866 bytes / SHA-256
+  `4854a89ba1a3bb41248b9428cfed572f6ed593125b5a8fb43d5625d8d392dc0f`.
+- Lambert Guide: source 4,873 lines / 177,465 bytes / SHA-256
+  `90413f46373415edef411e9ea3b2d94006f7342bd2fa3ea931ca975d7f64b97e`;
+  passes 67/69/69; PDF 69 A4 pages / 958,516 bytes / SHA-256
+  `b159cd41f5b3e53060fa85fcfc4812d504cc1fff8400c03ecb7ef4018f37cd2c`;
+  final log 1,574 lines / 57,795 bytes / SHA-256
+  `5c81cd6b8dc2cf070c4b1995c98c0d046c54d28f0e682b78b5ad9e16c0a8caa7`.
+- q-Pochhammer/q-binomial monograph: master 16,448 lines / 816,185 bytes /
+  SHA-256 `a463abef7bb3c70e12a568a46fc192aac88a8ce240f8f781fff2b018a4aa086d`;
+  full graph 26,114 lines / 1,168,039 bytes / aggregate SHA-256
+  `d4c5b84cc07f6abb99279c5bba4fdf7404326426cbe81f4b33b72ba01e62739c`;
+  passes 383/391/391 with `makeindex` after each pass (164 accepted, 0 rejected,
+  0 warnings); PDF 391 A4 pages / 2,464,712 bytes / SHA-256
+  `a52eb90dec7b874cc29dea891a107b9eb2d55e6727eb8bd8943d0aab609c58a6`;
+  final log 1,231 lines / 44,343 bytes / SHA-256
+  `fb74b0c4cbd75d9022c78c1df5c1d567120bd67728d5b418697ddc5a2aa8f450`.
+- standalone geometric-q root: source 27,520 lines / 1,266,515 bytes /
+  SHA-256 `8292f10862334cb809139259eeb4906bb14f517d41b9600c9b7ad53bb21525b1`;
+  passes 385/402/402; PDF 402 A4 pages / 8,332,886 bytes / SHA-256
+  `d47431e4d3e721fccf12f90226db77f1898e44b477878954acca3a6e90127cf4`;
+  final log 2,557 lines / 114,331 bytes / SHA-256
+  `4d6f8c7974def4a3f9e6bc8ccdffefc3eef7ca8cb7c2f0145a075f95b82ff45e`.
+
+All six passed the documented log, A4 page, font, Type-3, extraction, and visual
+gates; the Lambert clipping defect and canonical page-176 running-head collision
+were repaired before acceptance.  The following `581bf` pairs remain explicit
+historical receipts.  The canonical q-series checkpoint is a 391-page,
 2,464,122-byte A4 receipt with SHA-256
 `c0a00720685f40e0684b4858e7ce18ce134701529898fd4574d09b6c090e0e91`,
-matching its 16,433-line, 815,194-byte master with SHA-256
+which matched its 16,433-line, 815,194-byte master with SHA-256
 `f2aae6ddc3d7a399f9ed47806a0abe6458cbcab37bf2aac9f55ad3913b5a0e2d`.
 The preceding 389-page artifact remains a historical receipt.  The primary
-exposition now has an accepted 187-page, 1,578,751-byte A4 PDF with SHA-256
+checkpoint is a 187-page, 1,578,751-byte A4 PDF with SHA-256
 `7a93d9c47c22c62dc50cda6a64d030bfad5f44a9ef4cc5568b3b8b16b014bc8f`,
-matching its 13,720-line, 684,413-byte source with SHA-256
+which matched its 13,720-line, 684,413-byte source with SHA-256
 `7efb8d2294a15cf6b150bb0b04b35db74cf68db3f3cdb4bc5d765b7738504019`.
-The Lean walkthrough now has an accepted 150-page, 1,185,846-byte A4 PDF with
+The Lean-walkthrough checkpoint is a 150-page, 1,185,846-byte A4 PDF with
 SHA-256
 `8a5416061addfb480f410e8306340994fe7f5160927a928112087b6b1d5c0cf5`,
-matching its 6,603-line, 457,421-byte source with SHA-256
+which matched its 6,603-line, 457,421-byte source with SHA-256
 `4e6ea24897a31683c53e71c6cb97eb21f37eff3ae4e452add429bd9f47646ea6`.
-The canonical frontier now has an accepted 260-page, 1,875,190-byte A4 PDF
+The canonical-frontier checkpoint is a 260-page, 1,875,190-byte A4 PDF
 with SHA-256
 `fee3b5af21b01b16c41cf8291ba0508d1e6c613bfd098cdef457cde44ea693c2`,
-matching its 17,947-line, 804,625-byte source with SHA-256
+which matched its 17,947-line, 804,625-byte source with SHA-256
 `ac6b28fb8a98d97ed4b7a0fe7a5ba2cdfab852fb6de1ee2ecfda4aed75804371`.
-The Lambert Guide now has an accepted 70-page, 958,713-byte A4 PDF with SHA-256
+The Lambert-Guide checkpoint is a 70-page, 958,713-byte A4 PDF with SHA-256
 `24e8bf561283ffc5427297df6f656696a7e2538731e53d03d59e4268b50772fc`,
-matching its 4,864-line, 176,796-byte source with SHA-256
+which matched its 4,864-line, 176,796-byte source with SHA-256
 `3f3552983a73db2dab94f3625d10d054b747ee03fc2758e257af86f6216deab5`.
 Their preceding 183-page, 130-page, 257-page, and 66-page artifacts remain
 historical receipts.  The 301-page Representation Frontiers, 41-page New
@@ -1027,7 +1124,7 @@ current merged sources; their package notices correctly treat them as
 historical validation receipts rather than parity claims.  The
 inverse-computability receipt likewise still
 reflects the historical 675/8,909 census and requires refresh against the live
-903/11,453 inventory.  The canonical inverse-theory publication retains a 134-page
+904/11,462 inventory.  The canonical inverse-theory publication retains a 134-page
 artifact synchronized at its latest-main source checkpoint; the merged
 effective-inversion and superconvergent-synthesis tranches make current parity
 pending.

@@ -840,21 +840,32 @@ Thus `is:p3:cor:forced-superconvergence` and
 concordance. This source postdates the retained Representation and inverse
 PDFs, which remain historical artifacts rather than renders of the promotion.
 The corresponding historical documentation checkpoint was 671 modules and
-8,858 public declarations. The later live repository census is 903 modules
-and 11,453 public declarations. The recent source-only declaration chronology
-is 11,440 after `GeometricRichardsonGenerating`, 11,443 after the Gaussian
-second-moment tranche, 11,448 after the five fixed-column q-binomial
-declarations, and 11,453 after the five-theorem
-`LambertWBranchGapBernoulli` leaf. Ten declarations
-come from the unrelated sibling `FabiusFunction.GeometricRichardsonGenerating`
-module (three
+8,858 public declarations. The live repository census is 904 modules and
+11,462 public declarations. The local declaration chronology is 902/11,440
+after `GeometricRichardsonGenerating`, 902/11,443 at Gaussian checkpoint
+`71c908e`, 903/11,448 at completed Lambert checkpoint `217a6b9`, and
+903/11,453 after the five fixed-column q-binomial declarations at `581bf`. On
+the parallel upstream branch, the sibling
+`FabiusFunction.GeometricUniformMomentPolynomial` module (one definition and
+eight theorems) gives checkpoint `3b6396` at 904/11,457; merging it with the
+independent fixed-column increment gives the live 904/11,462 union. It supplies
+the recursive rational polynomial, residual-product
+recurrence, triangular degree bound, value at zero, and explicit cases `P0`
+through `P4`, but not the analytic moment-coefficient normalization or the
+leading-coefficient and strict odd-degree clauses; accordingly `p7:thm:Pn`
+remains Partial. This sibling source-only module is not rendered by the
+retained Representation or inverse PDFs. The completed complex
+Bernoulli value-completion checkpoint `217a6b9` was 903 modules and 11,448
+public declarations; local fixed-column checkpoint `581bf` was 903/11,453. The earlier
+ten-declaration increment was the unrelated sibling
+`FabiusFunction.GeometricRichardsonGenerating` module (three
 definitions and seven theorems), whose exact comb-manuscript crosswalk is
-`Fabius.geometricLagrangeRichardson_generating`; three strengthen the sibling
-`FabiusFunction.GaussianBinomialCumulants` module with second-derivative,
-raw-second-moment, and variance-numerator identities; and five give effective
-fixed-column Gaussian limits and rates. None changes the Representation or
-inverse results, and none is rendered by the retained Representation or inverse
-PDFs.
+`Fabius.geometricLagrangeRichardson_generating`. The next three declarations
+strengthen the sibling `FabiusFunction.GaussianBinomialCumulants` module with
+second-derivative, raw-second-moment, and variance-numerator identities; the
+five after that give effective fixed-column Gaussian limits and rates. None
+changes the Representation or inverse results, and none is rendered by the
+retained Representation or inverse PDFs.
 The census also includes the
 sibling source-only Lambert
 branch-coordinate tranche: `LambertWBranchPairing.lean` has 0 definitions + 7
@@ -879,8 +890,9 @@ radius/boundary clause, Guide label `eq:pair-Bernoulli-general`, and the
 canonical-removable reading of `eq:bernoulli-gen` are Exact. Here
 `complexExpm1Div 0 = 1` and it equals `(exp z - 1) / z` away from zero; this
 does not assert the literal totalized quotient at zero or holomorphy of a named
-sum function. Higher or full Puiseux/logarithmic expansions remain open. This unrelated
-addition is not rendered by the retained Representation or inverse PDFs; no
+sum function. Higher or full Puiseux/logarithmic expansions remain open. This
+unrelated addition is not rendered by the retained Representation or inverse
+PDFs; no
 PDF was rebuilt for this source-only update.
 
 The focused-build `CompositeMeshSharpness.lean` module exports one public

@@ -77,7 +77,7 @@ That primary exposition is deliberately proof-backed: every mathematical claim
 in it must have a proved counterpart in the Lean development.
 
 > **Artifact status (2026-09-04).**  The live facade union contains exactly
-> 903 source modules and 11,453 public declarations.  The documentation audit
+> 904 source modules and 11,462 public declarations.  The documentation audit
 > reports no missing module headers or declaration comments.  Its q-series union retains
 > `QPochhammerEntire` 0+5, `GeometricPochhammerNormalConvergence` 0+3,
 > `QPochhammerDissection` 0+2,
@@ -106,29 +106,86 @@ in it must have a proved counterpart in the Lean development.
 > `QChuVandermonde` 0+10, `QuantumMultinomial` 0+5, and
 > `GaussianBinomialBounds` 0+6.  The geometric-interpolation union now also
 > includes `GeometricRichardsonGenerating` 3+7.
+> The algebraic geometric-uniform moment-polynomial leaf contributes its
+> exhaustive 1+8 public surface.  In the combined 282-result forward ledger,
+> the fixed-column row is Exact and the moment-polynomial row is Partial, giving
+> 167 Exact / 90 Partial / 17 None / 8 interface rows.
 > The Lambert branch-gap union now also includes
 > `LambertWBranchGapBernoulli` 0+5; the four-module union is 4+37, forty-one
 > declarations.
-> Five final-source publications now have accepted source/PDF-parity receipts.
-> The 187-page, 1,578,751-byte primary PDF has SHA-256
+> On the local publication line, Gaussian checkpoint `71c908e` was
+> 902/11,443, completed Lambert checkpoint `217a6b9` was 903/11,448, and
+> fixed-column commit `581bf177f8e784ab5d4836acc2b4a47e285e6ce0` was
+> 903/11,453 and synchronized five source/PDF pairs.  The parallel upstream-only
+> moment-polynomial checkpoint `3b6396deb6056523d944d79602d1bf7ecf18ec10`
+> was 904/11,457; merging it with `581bf` gives the live 904/11,462 union and
+> changes those five TeX sources as well as the independently published
+> standalone geometric-q root.  Final-source rendering of all six roots is now
+> complete.  Their accepted receipts are:
+>
+> - primary exposition: 13,748-line, 686,081-byte source, SHA-256
+>   `661ebb4e337f2ce79e8c3d5ca823bcdcce519fe220ff4b02d9dd5aef08d42cf9`;
+>   three passes at 185/187/187 pages; 187-page A4 PDF, 1,581,617 bytes,
+>   SHA-256 `41e95844c6e5dc04933cc7256d285346c10eb29ff7eadf5a4165c472fa453eab`;
+>   final 1,309-line, 52,641-byte log, SHA-256
+>   `f177cb91c161f4dfc60017ddfd5efed1586ef28a4c80c68a9ae78cf19cf75da6`;
+> - Lean walkthrough: 6,638-line, 460,643-byte source, SHA-256
+>   `c44ab7ab38da46f8959a63916437b3d8ded628a3930f81dfa1a87996c7c66b8d`;
+>   three passes at 146/151/151 pages; 151-page A4 PDF, 1,188,993 bytes,
+>   SHA-256 `907b3d2dbfc66192b63b86ada1015779229636855734815402ae5af9ea9bf015`;
+>   final 1,296-line, 52,126-byte log, SHA-256
+>   `0962c255aeb75bce3bcee89cbc1db9defe369e8c79ee6b6aa0435befdca410cf`;
+> - canonical frontier: 17,983-line, 806,798-byte source, SHA-256
+>   `a1cb1c0db2784116ca1f1d6fd1ce7e8b29afc52c64c93e7001bbffb91f775039`;
+>   three passes at 252/260/260 pages; 260-page A4 PDF, 1,877,420 bytes,
+>   SHA-256 `78c19b361da06836c20c62fa5bd50131eb8fa47d3e89d37a7f089a51568953b3`;
+>   final 2,990-line, 101,866-byte log, SHA-256
+>   `4854a89ba1a3bb41248b9428cfed572f6ed593125b5a8fb43d5625d8d392dc0f`;
+> - Lambert Guide: 4,873-line, 177,465-byte source, SHA-256
+>   `90413f46373415edef411e9ea3b2d94006f7342bd2fa3ea931ca975d7f64b97e`;
+>   three passes at 67/69/69 pages; 69-page A4 PDF, 958,516 bytes, SHA-256
+>   `b159cd41f5b3e53060fa85fcfc4812d504cc1fff8400c03ecb7ef4018f37cd2c`;
+>   final 1,574-line, 57,795-byte log, SHA-256
+>   `5c81cd6b8dc2cf070c4b1995c98c0d046c54d28f0e682b78b5ad9e16c0a8caa7`;
+> - q-Pochhammer/q-binomial monograph: 16,448-line, 816,185-byte master,
+>   SHA-256 `a463abef7bb3c70e12a568a46fc192aac88a8ce240f8f781fff2b018a4aa086d`,
+>   and 26,114-line, 1,168,039-byte full source graph, aggregate SHA-256
+>   `d4c5b84cc07f6abb99279c5bba4fdf7404326426cbe81f4b33b72ba01e62739c`;
+>   three passes at 383/391/391 pages, with `makeindex` after each pass
+>   (164 accepted, 0 rejected, 0 warnings); 391-page A4 PDF, 2,464,712 bytes,
+>   SHA-256 `a52eb90dec7b874cc29dea891a107b9eb2d55e6727eb8bd8943d0aab609c58a6`;
+>   final 1,231-line, 44,343-byte log, SHA-256
+>   `fb74b0c4cbd75d9022c78c1df5c1d567120bd67728d5b418697ddc5a2aa8f450`;
+> - standalone geometric-q root: 27,520-line, 1,266,515-byte source,
+>   SHA-256 `8292f10862334cb809139259eeb4906bb14f517d41b9600c9b7ad53bb21525b1`;
+>   three passes at 385/402/402 pages; 402-page A4 PDF, 8,332,886 bytes,
+>   SHA-256 `d47431e4d3e721fccf12f90226db77f1898e44b477878954acca3a6e90127cf4`;
+>   final 2,557-line, 114,331-byte log, SHA-256
+>   `4d6f8c7974def4a3f9e6bc8ccdffefc3eef7ca8cb7c2f0145a075f95b82ff45e`.
+>
+> All six passed the documented log, A4 page, font, Type-3, text-extraction,
+> and visual gates; the Lambert clipping defect and canonical page-176 running
+> head collision were repaired before acceptance.  The five exact `581bf`
+> source/PDF pairs below are retained explicitly as historical checkpoints.
+> The historical 187-page, 1,578,751-byte primary PDF has SHA-256
 > `7a93d9c47c22c62dc50cda6a64d030bfad5f44a9ef4cc5568b3b8b16b014bc8f`
-> and matches its 13,720-line, 684,413-byte source with SHA-256
+> and matched its 13,720-line, 684,413-byte source with SHA-256
 > `7efb8d2294a15cf6b150bb0b04b35db74cf68db3f3cdb4bc5d765b7738504019`.
-> The 150-page, 1,185,846-byte Lean-walkthrough PDF has SHA-256
+> The historical 150-page, 1,185,846-byte Lean-walkthrough PDF has SHA-256
 > `8a5416061addfb480f410e8306340994fe7f5160927a928112087b6b1d5c0cf5`
-> and matches its 6,603-line, 457,421-byte source with SHA-256
+> and matched its 6,603-line, 457,421-byte source with SHA-256
 > `4e6ea24897a31683c53e71c6cb97eb21f37eff3ae4e452add429bd9f47646ea6`.
-> The 260-page, 1,875,190-byte canonical-frontier PDF has SHA-256
+> The historical 260-page, 1,875,190-byte canonical-frontier PDF has SHA-256
 > `fee3b5af21b01b16c41cf8291ba0508d1e6c613bfd098cdef457cde44ea693c2`
-> and matches its 17,947-line, 804,625-byte source with SHA-256
+> and matched its 17,947-line, 804,625-byte source with SHA-256
 > `ac6b28fb8a98d97ed4b7a0fe7a5ba2cdfab852fb6de1ee2ecfda4aed75804371`.
-> The 70-page, 958,713-byte Lambert Guide PDF has SHA-256
+> The historical 70-page, 958,713-byte Lambert Guide PDF has SHA-256
 > `24e8bf561283ffc5427297df6f656696a7e2538731e53d03d59e4268b50772fc`
-> and matches its 4,864-line, 176,796-byte source with SHA-256
+> and matched its 4,864-line, 176,796-byte source with SHA-256
 > `3f3552983a73db2dab94f3625d10d054b747ee03fc2758e257af86f6216deab5`.
-> The 391-page, 2,464,122-byte q-series PDF has SHA-256
+> The historical 391-page, 2,464,122-byte q-series PDF has SHA-256
 > `c0a00720685f40e0684b4858e7ce18ce134701529898fd4574d09b6c090e0e91`
-> and matches its 16,433-line, 815,194-byte master with SHA-256
+> and matched its 16,433-line, 815,194-byte master with SHA-256
 > `f2aae6ddc3d7a399f9ed47806a0abe6458cbcab37bf2aac9f55ad3913b5a0e2d`.
 > The preceding 257-page canonical-frontier artifact remains a historical
 > receipt.  The 301-page Representation Frontiers, 41-page filed New Frontiers,
@@ -320,6 +377,7 @@ Padé/J-fractions, infinite Jacobi theory, and asymptotics also remain open.
 | Contractive affine independent-copy probability laws | `FabiusFunction.AffineIndependentCopy` | At compiled checkpoint `d312c0603`: `affineIndependentCopyLaw`, `affineIndependentCopyLaw_isProbabilityMeasure`, `affineIndependentCopyLaw_eq_map_prod`, `charFun_affineIndependentCopyLaw`, `charFun_eq_mul_charFun_of_affineIndependentCopy_fixedPoint`, `charFun_iterate_of_affineIndependentCopy_fixedPoint`, `eq_of_charFun_affine_recurrence`, `affineIndependentCopyLaw_fixedPoint_unique`, `affineIndependentCopy_map_fixedPoint_unique`; the digit space is an arbitrary measurable space and the target is a second-countable Borel real inner-product space; a measurable digit map and probability digit/candidate laws suffice for the operator-level fixed-point API, while completeness is assumed only by the characteristic-recurrence and two fixed-point uniqueness theorems; uniqueness requires `|q| < 1`, includes `q = 0` and negative `q`, and uses no support, density, or moment hypothesis |
 | Geometrically weighted uniform laws and their characterization | `FabiusFunction.GeometricUniformLaw`, `FabiusFunction.GeometricUniformUniqueness` | `geometricUniformWeight`, `hasSum_geometricUniformWeight`, `geometricUniformSeries`, `geometricUniformSeries_split`, `geometricUniformDistribution_selfSimilar`, `geometricUniformDistribution_absolutelyContinuous`, `geometricUniformDistribution_nullSingletonClass`, `geometricUniformDistribution_reflection`, `geometricUniformDistribution_Icc`, `eq_geometricUniformDistribution_of_selfSimilar`; the last theorem characterizes the law among all probability measures satisfying the affine product-map equation whenever `|q| < 1`, including `q = 0` and negative `q`, without support, density, or moment assumptions |
 | Fixed half--quarter geometric multisection | `FabiusFunction.GeometricUniformMultisection` | `evenCoordinates`, `oddCoordinates`, `geometricUniformSeries_one_half_multisection`, `geometricUniformDistribution_one_half_multisection`, `geometricUniformDistribution_one_half_conv_one_quarter`; the pointwise normalized series splits exactly as `Y_(1/2)(ω) = (2/3) Y_(1/4)(ω_even) + (1/3) Y_(1/4)(ω_odd)`, and under the product-uniform law the parity processes are independent copies, yielding both the exact product-map law and the convolution of the `2/3`- and `1/3`-scaled quarter laws; this fixed theorem needs no user hypotheses and does not claim general `q`/multisection, MGF or cumulant identities, centered-density formulas, or spectral dissection |
+| Algebraic geometric-uniform moment polynomials | `FabiusFunction.GeometricUniformMomentPolynomial` | Exhaustive public surface (one definition and eight theorems): `geometricUniformMomentPolynomial`, `geometricUniformMomentPolynomial_zero`, `geometricUniformMomentPolynomial_succ`, `geometricUniformMomentPolynomial_natDegree_le`, `geometricUniformMomentPolynomial_eval_zero`, `geometricUniformMomentPolynomial_one`, `geometricUniformMomentPolynomial_two`, `geometricUniformMomentPolynomial_three`, and `geometricUniformMomentPolynomial_four`.  The total recursive family over `ℚ[X]` satisfies the division-free residual finite q-Pochhammer recurrence, `natDegree P_n ≤ n.choose 2`, `P_n(0)=1/(n+1)!`, and the displayed values `P_1` through `P_4` (`P_0=1` is the zero theorem).  These are exactly the algebraic clauses of monograph label `thm:qF-moment-polynomial`, but that canonical label remains **Partial**: the source first defines `P_n` from the analytic coefficient `a_n(q)`, and Lean does not yet identify that normalization or the MGF coefficients with this recursive polynomial family.  The leading/subleading coefficients and sharp degree in `prop:qF-P-degree-sharp` remain open. |
 | Geometric tail dictionary and sinc-prefix factorization | `FabiusFunction.GeometricUniformDictionary`, `FabiusFunction.GeometricSincFactorization` | `charFun_geometricUniformDigit`, `charFun_geometricUniformDistribution_prefix`, `charFun_geometricUniformDistribution_prefix_sinc`, `tendsto_prefix_sinc_charFun`, `charFun_weightedSumDistribution_prefix_sinc`, `tendsto_prefix_sinc_charFun_weightedSumDistribution`; the digit formula is unconditional, while for every real `q` with `|q| < 1`, depth `m`, and frequency `t`, the law has the exact residual factorization `φ_q(t) = exp(i(1-q^m)t/2) · ∏_{k<m} sinc((1-q)q^k t/2) · φ_q(q^m t)`, and the phase-bearing prefix without the residual converges pointwise to `φ_q(t)`; this includes `q = 0` and negative `q`, and the final two declarations are the `q = 1/2` weighted-sum wrappers.  `geometric_tail_dictionary_geometricUniform` already supplies finite characteristic-function, MGF, and CGF tail factorizations.  This predecessor module itself remains pointwise; the next row records the named upgrade of the same full prefixes to locally uniform convergence on the real frequency line and uniform convergence on every compact real frequency set. |
 | Geometric sinc/Gamma characteristic-function bridge and phase-prefix convergence | `FabiusFunction.GeometricSincCharacteristicFunction` | Exhaustive public surface (zero definitions and four theorems): `charFun_geometricUniformDistribution_eq_phase_mul_geometricSincProduct`, `charFun_geometricUniformDistribution_eq_phase_mul_geometricReciprocalGamma`, `tendstoLocallyUniformly_prefix_sinc_charFun`, and `tendstoUniformlyOn_prefix_sinc_charFun`.  For every real `q` with the sharp hypothesis `|q| < 1`—including `q = 0` and negative `q`—and every real `t`, put `z = (1-q)t/(2π)`.  Then exactly `φ_q(t) = exp(it/2) · geometricSincProduct q z = exp(it/2) · geometricReciprocalGamma q z · geometricReciprocalGamma q (-z)`, with the real parameters cast to `ℂ` in Lean.  Moreover the full prefixes `P_m(t) = exp(i(1-q^m)t/2) · ∏_{k<m} sinc((1-q)q^k t/2)` converge locally uniformly on `ℝ` to `φ_q`, and hence uniformly on every compact `K ⊆ ℝ`.  The Gamma-side row below supplies the named locally uniform complex-variable pure product, pointwise `Multipliable`/`HasProd`, and entireness of `geometricSincProduct`.  No complex-frequency analogue for the full phase-bearing prefixes or uniform-convergence claim on all of `ℝ` is made.  Still absent are general-`q` rapid-decay bounds and Fourier inversion, a separately packaged centered family and MGF wrapper, explicit Bernoulli-cumulant/Bell-moment formulas and asymptotics, further transform formulas, and shape theory. |
 | CDF and explicit density of the geometric uniform law | `FabiusFunction.GeometricUniformCDF` | `geometricUniformCDF`, `monotone_geometricUniformCDF`, `geometricUniformCDF_nonneg`, `geometricUniformCDF_le_one`, `measurable_geometricUniformCDF`, `continuous_geometricUniformCDF`, `geometricUniformCDF_reflection`, `geometricUniformCDF_one_half`, `geometricUniformCDF_zero_of_nonpos`, `geometricUniformCDF_one_of_one_le`, `geometricUniformCDF_eq_integral`, `geometricUniformCDF_eq_intervalIntegral`, `geometricUniformDensity`, `geometricUniformDensity_zero`, `geometricUniformDensity_nonpos_of_neg`, `volume_withDensity_geometricUniformDensity_eq_zero_of_nonpos`, `geometricUniformDistribution_ne_withDensity_geometricUniformDensity_of_nonpos`, `geometricUniformCDF_hasDerivAt`, `deriv_geometricUniformCDF`, `continuous_geometricUniformDensity`, `geometricUniformDensity_nonneg`, `geometricUniformDensity_zero_of_nonpos`, `geometricUniformDensity_zero_of_one_le`, `support_geometricUniformDensity_subset_Ioo`, `support_geometricUniformDensity_subset_Icc`, `tsupport_geometricUniformDensity_subset_Icc`, `geometricUniformDensity_hasCompactSupport`, `geometricUniformDensity_reflection`, `geometricUniformDistribution_eq_withDensity`, `contDiff_geometricUniformCDF`, `contDiff_geometricUniformDensity`; continuity and CDF reflection assume `|q| < 1`, exterior CDF values assume `0 ≤ q < 1`, and the conditioning, derivative-density, positive `withDensity`, compact-support, and `C∞` results assume `0 < q < 1`.  The selected total formula is identically zero at `q = 0` and nonpositive for `q < 0`; hence its `ENNReal.ofReal` `withDensity` measure is zero for `q ≤ 0` and cannot equal the probability law when also `|q| < 1`.  A Lean theorem for the paper-level corrected signed-ratio density at negative `q` remains open; the characteristic-function sinc-prefix results are listed separately above. |

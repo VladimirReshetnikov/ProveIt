@@ -3348,8 +3348,10 @@ specialization: for every fixed \(r\in\NaturalNumbers\),
 For the specialization \(r=k\), the quantitative wrapper gives the cleaner
 error \(\GaussianBinomial{n+k}{k}{q}-(q;q)_k^{-1}
 =\operatorname{O}(q^{n+1})\).
-This promotes exactly the fixed-column row from Partial to Exact, so the
-282-result forward q ledger is now 167 Exact, 89 Partial, 18 None, and 8 N/A.
+This promotes exactly the fixed-column row from Partial to Exact.  In the
+combined tree, the parallel moment-polynomial row also moves from None to
+Partial, so the 282-result forward q ledger is 167 Exact, 90 Partial, 17 None,
+and 8 N/A.
 
 \path{JacobiTripleProduct.lean} has two definitions and twenty-five theorems.
 Its exact public inventory is \lean{thetaExponent},
@@ -3849,8 +3851,14 @@ because the underlying infinite product is totalized outside its admissible
 range.  No spectral-zeta recovery, cumulant-sample recovery, or
 identifiability of an underlying probability law is asserted; those remain
 open interfaces.  With the later concurrent source union, the live facade
-census is 903 modules and 11,453 public declarations, with no missing module
-headers or public-declaration doc comments.  The current TeX also
+census is 904 modules and 11,462 public declarations, with no missing module
+headers or public-declaration doc comments.  The immutable checkpoint chain
+after the 902/11,440 Richardson state is: the Gaussian second-moment extension
+at 902/11,443; the completed five-theorem Lambert--Bernoulli leaf at
+903/11,448; and the local five-theorem fixed-column extension at 903/11,453.
+The upstream-only moment-polynomial branch instead reached 904/11,457 from
+the Lambert checkpoint; merging that parallel branch with the fixed-column
+extension gives the live 904/11,462 union.  The current TeX also
 contains the six-theorem prime-power companion-row API and the
 zero-definition/three-theorem outer Pochhammer normal-convergence API, plus
 the two-module/nine-declaration fixed-depth effective-inverse tranche, the
@@ -3872,14 +3880,17 @@ every commutative semiring; the five-theorem effective fixed-column q-binomial
 closure, comprising an explicit finite-product exponential bound, its geometric
 \(\operatorname{O}(q^m)\) consequence, arbitrary fixed upper-index shifts,
 and the unshifted and shifted Gaussian-binomial error estimates; and the
-subsequent zero-definition/five-theorem
+zero-definition/five-theorem
 \path{LambertWBranchGapBernoulli.lean} leaf.  Its earlier four APIs prove
 absolute real convergence, the exact complex convergence radius and boundary
 divergence, the nonzero-real sum, and the paired real branch formulas.  Its
 added fifth theorem packages the exact complex removable-origin sum
 \(\lean{complexExpm1Div}(z)^{-1}\) if and only if
 \(\lVert z\rVert<2\pi\).  The four Lambert modules therefore have four
-definitions and thirty-seven theorems (forty-one public declarations).
+definitions and thirty-seven theorems (forty-one public declarations).  The
+parallel upstream one-definition/eight-theorem
+\path{GeometricUniformMomentPolynomial.lean} leaf, when united with the local
+fixed-column branch, raises the census from 903/11,453 to 904/11,462.
 
 The six q-calculus module counts are
 \path{QPochhammerInfiniteBounds.lean} (0+5),
@@ -3908,6 +3919,22 @@ The four newest module counts are
 universal Gaussian polynomial structure over \(\NaturalNumbers[X]\), Jacobi's cubic
 identity, the q-Pochhammer logarithmic derivative and Lambert-series form, and
 the derivative with respect to complex order under the displayed hypotheses.
+
+The newest algebraic moment-polynomial count is
+\path{GeometricUniformMomentPolynomial.lean} (1+8).  Its definition is
+\lean{geometricUniformMomentPolynomial}; its theorems are
+\lean{geometricUniformMomentPolynomial_zero},
+\lean{geometricUniformMomentPolynomial_succ},
+\lean{geometricUniformMomentPolynomial_natDegree_le},
+\lean{geometricUniformMomentPolynomial_eval_zero}, and the four explicit
+specializations
+\lean{geometricUniformMomentPolynomial_one} through
+\lean{geometricUniformMomentPolynomial_four}.  This supplies the recursive
+polynomial family, residual-product recurrence, triangular degree bound,
+value at zero, and the cases \(P_0,\ldots,P_4\).  It does not identify that
+family with the analytically defined moment coefficients or prove the leading
+coefficient and strict odd-degree drop.  Accordingly the frontier label
+\nolinkurl{p7:thm:Pn} remains Partial rather than Exact.
 
 The final two module counts are
 \path{CentralQBinomialReduction.lean} (0+6) and
@@ -13341,6 +13368,7 @@ Moments and exact arithmetic &
 \path{CenteredMomentCumulants.lean}, \path{CenteredMomentParity.lean},
 \path{SinhDivBernoulliLog.lean},
 \path{PolynomialExpectationCumulant.lean}, \path{RvachevMomentAppell.lean},
+\path{GeometricUniformMomentPolynomial.lean},
 \path{WeightedScaleMultiplicity.lean}, \path{BaseDigitMultiplicity.lean},
 \path{ExactInversePower.lean}, \path{Parity.lean}, \path{TwoAdic.lean},
 \path{CentralBinomialValuation.lean},

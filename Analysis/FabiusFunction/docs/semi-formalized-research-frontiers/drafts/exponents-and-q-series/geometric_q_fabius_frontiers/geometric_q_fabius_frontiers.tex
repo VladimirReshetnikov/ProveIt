@@ -16479,6 +16479,32 @@ primitive odd roots of unity --- must be controlled; the cancellation-order
 calculus of the two-nome partition function below is a candidate mechanism.
 \end{conjecture}
 
+\begin{statusbox}{Post-snapshot Lean status: Partial}
+The module \path{GeometricUniformMomentPolynomial.lean} has one
+public definition, \lean{geometricUniformMomentPolynomial}, and exactly eight
+public theorems:
+\lean{geometricUniformMomentPolynomial_zero},
+\lean{geometricUniformMomentPolynomial_succ},
+\lean{geometricUniformMomentPolynomial_natDegree_le},
+\lean{geometricUniformMomentPolynomial_eval_zero}, and
+\lean{geometricUniformMomentPolynomial_one} through
+\lean{geometricUniformMomentPolynomial_four}.  It supplies the recursively
+defined rational polynomial, the residual-product recurrence
+\eqref{p7:eq:Pn-recurrence}, the triangular degree bound, the value at zero,
+and the displayed cases \(P_0,\ldots,P_4\).  It does not identify that family
+with the normalized analytic moment coefficients in
+\eqref{p7:eq:Pn-def}, nor does it prove the leading-coefficient formula and
+the consequent strict degree drop for odd \(n>1\).  Thus the compound theorem
+\cref{p7:thm:Pn} is Partial, not Exact: its algebraic
+recurrence/bound/zero/small-case clauses are supplied, while its analytic
+normalization and leading/odd-degree clause remain open.  This \(1+8\) leaf
+was developed on a parallel upstream branch: from the Lambert-complete
+903/11,448 checkpoint that branch reached 904 modules and 11,457 public
+declarations.  Combining it with the local fixed-column branch, whose own
+checkpoint was 903/11,453, gives the live union of 904 modules and 11,462
+public declarations.
+\end{statusbox}
+
 The polynomial is not decorative: the exact endpoint lattice of
 \cref{p7:sec:endpoints} reads
 $G_q(q^n)=q^{\binom{n+1}2}\mathcal P_n(q)/(q;q)_n$, so $(q;q)_n$ is precisely
@@ -22255,7 +22281,7 @@ alternate irregularly Pringsheim's theorem does not apply.
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.92\textwidth]{assets/q-fabius-parameter-deformations/fabius_q_frontiers_report/figures/rate_function_lambert.pdf}
+\includegraphics[width=0.92\textwidth]{assets/q-fabius-parameter-deformations/fabius_q_frontiers_report/figures/rate_function_lambert.png}
 \caption{The exact parametric rate $I(x)$, its rational center expansion, and
 the Lambert-$W_{-1}$ boundary approximation.  The latter is already visually
 indistinguishable from the exact curve for $x\gtrsim0.8$.}
@@ -22719,7 +22745,7 @@ is what this part adds to them.
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.92\textwidth]{assets/q-fabius-parameter-deformations/fabius_q_frontiers_report/figures/edgeworth_errors.pdf}
+\includegraphics[width=0.92\textwidth]{assets/q-fabius-parameter-deformations/fabius_q_frontiers_report/figures/edgeworth_errors.png}
 \caption{Sup-norm density errors from direct Fourier inversion.  Fitted
 slopes $1.02$, $2.05$, $3.07$, and $4.10$ agree with
 \eqref{p10:eq:Edgeworth-theorem} and \cref{p11:thm:edgeworth-schwartz}.}
@@ -22880,7 +22906,7 @@ Maximum sampled stop-loss gap, $r=.35,s=.72$ & $0.0757670$ \\
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.92\textwidth]{assets/q-fabius-parameter-deformations/fabius_q_frontiers_report/figures/cgf_midpoint_correction.pdf}
+\includegraphics[width=0.92\textwidth]{assets/q-fabius-parameter-deformations/fabius_q_frontiers_report/figures/cgf_midpoint_correction.png}
 \caption{The raw midpoint-sum error is quadratic in $\delta$; subtracting the
 proved first correction exposes the quartic remainder.}
 \label{p10:fig:cgf}
@@ -22888,7 +22914,7 @@ proved first correction exposes the quartic remainder.}
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.92\textwidth]{assets/q-fabius-parameter-deformations/fabius_q_frontiers_report/figures/convex_order_stoploss.pdf}
+\includegraphics[width=0.92\textwidth]{assets/q-fabius-parameter-deformations/fabius_q_frontiers_report/figures/convex_order_stoploss.png}
 \caption{Empirical stop-loss gap for two parameter values.  The plot is only
 a diagnostic; nonnegativity is proved exactly by the martingale coupling in
 \cref{p10:thm:martingale-transport}.}
@@ -24675,14 +24701,14 @@ The normalized errors \(E_R(h)/h^{R+1}\) remain bounded and settle toward finite
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=0.88\textwidth]{assets/q-fabius-parameter-deformations/Continuous_Parameter_Edgeworth_and_q_Gevrey_Frontier/figures/edgeworth_error_scaling.pdf}
+\includegraphics[width=0.88\textwidth]{assets/q-fabius-parameter-deformations/Continuous_Parameter_Edgeworth_and_q_Gevrey_Frontier/figures/edgeworth_error_scaling.png}
 \caption{Log--log error curves for the Gaussian approximation and the first three continuous-parameter Edgeworth corrections.}
 \label{p11:fig:edgeworth-scaling}
 \end{figure}
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=0.88\textwidth]{assets/q-fabius-parameter-deformations/Continuous_Parameter_Edgeworth_and_q_Gevrey_Frontier/figures/density_edgeworth_comparison.pdf}
+\includegraphics[width=0.88\textwidth]{assets/q-fabius-parameter-deformations/Continuous_Parameter_Edgeworth_and_q_Gevrey_Frontier/figures/density_edgeworth_comparison.png}
 \caption{Exact sinc-product densities and the second-order approximation for two values of \(h\).  The curves are visually indistinguishable near the center at \(h=0.07\).}
 \label{p11:fig:density-comparison}
 \end{figure}
@@ -24709,7 +24735,7 @@ The difference is already below \(10^{-10}\) at \(a=10\), despite \(\delta\appro
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=0.88\textwidth]{assets/q-fabius-parameter-deformations/Continuous_Parameter_Edgeworth_and_q_Gevrey_Frontier/figures/large_deviation_rate.pdf}
+\includegraphics[width=0.88\textwidth]{assets/q-fabius-parameter-deformations/Continuous_Parameter_Edgeworth_and_q_Gevrey_Frontier/figures/large_deviation_rate.png}
 \caption{The exact limiting compact-scale rate.  It is quadratic near the origin and diverges at the limiting support endpoints \(\pm\sqrt6\).}
 \label{p11:fig:ldp-rate}
 \end{figure}
