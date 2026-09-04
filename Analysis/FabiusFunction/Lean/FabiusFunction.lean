@@ -533,6 +533,7 @@ import FabiusFunction.FabiusLegendreGaunt
 import FabiusFunction.FabiusLegendreGauntClosedForm
 import FabiusFunction.FabiusSquareEnergyFourier
 import FabiusFunction.FabiusLegendreTranslateBlocks
+import FabiusFunction.RvachevLegendreCentralSum
 import FabiusFunction.FabiusLegendreTranslateSeries
 import FabiusFunction.FabiusBinaryReductionSeries
 import FabiusFunction.FabiusComputability
