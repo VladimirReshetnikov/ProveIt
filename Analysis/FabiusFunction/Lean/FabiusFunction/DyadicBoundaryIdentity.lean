@@ -48,12 +48,14 @@ theorem prod_complexSinc_prefix_mul_rvachevFourierProduct (k : ℕ) (w : ℂ) :
     refine Finset.prod_congr rfl fun j hj => ?_
     have hjk : j ≤ k := Nat.le_of_lt_succ (mem_range.mp hj)
     have hsub : k + 1 - 1 - j = k - j := by omega
+    have hp : (2 : ℂ) ^ (j + 1) * (2 : ℂ) ^ (k - j) = (2 : ℂ) ^ (k + 1) := by
+      rw [← pow_add]
+      congr 1
+      omega
     congr 1
     rw [hsub]
     field_simp
-    rw [mul_assoc, ← pow_add]
-    congr 2
-    omega
+    linear_combination w * hp
   rw [hreindex] at hshell
   exact hshell.symm
 
