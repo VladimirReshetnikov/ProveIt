@@ -6900,9 +6900,10 @@ a delta series, as required by the definition of binomial type.
 \end{proof}
 
 \begin{remark}[Formal crosswalk]
-% ed.: source correspondence; compiler validation is still pending.
-Module \lean{AbelPolynomialSeries} supplies source for all clauses of this
-statement, with compiler validation still pending.
+% ed.: focused compiler correspondence recorded upstream 2026-09-04.
+Module \lean{AbelPolynomialSeries} supplies the declarations for all clauses
+of this statement; its focused target has passed Lean compilation, while the
+affected dependent closure remains pending.
 \lean{Fabius.abelPolynomial} is $P_n(a,x)=x(x-na)^{n-1}$ over any commutative
 ring, with $P_0=1$; \eqref{eq:merged-abel-binomial} is
 \lean{Fabius.abelPolynomial_eval_add}, whose current source requires a
@@ -6912,9 +6913,9 @@ a solution of $T=t\EulerE^{-aT}$, and \eqref{eq:merged-abel-egf} is
 \lean{Fabius.exp_subst_eq_egfA_abelPolynomial}, which is stated for an
 \emph{arbitrary} series $T$ satisfying that equation rather than for the
 constructed one --- so the phrase ``every such solution'' above is exactly
-what the source states, not a strengthening left to the reader.
-Reading that source is not a compiler receipt; the register therefore
-retains \emph{none} until validation of this module and its dependencies.
+what the source states, not a strengthening left to the reader.  The focused
+target receipt is recorded in the campaign status; no aggregate dependent
+build is implied.
 \end{remark}
 
 \section{Exponential Riordan arrays}
