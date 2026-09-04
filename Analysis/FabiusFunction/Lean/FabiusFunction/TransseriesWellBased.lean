@@ -1,6 +1,7 @@
 import Mathlib.Order.WellQuasiOrder
 import Mathlib.Data.Set.MulAntidiagonal
 import Mathlib.Data.Finset.MulAntidiagonal
+import Mathlib.Algebra.Group.Pointwise.Set.Basic
 
 /-!
 # Well-based supports: Dickson's lemma and Neumann's lemma
@@ -24,7 +25,7 @@ hypothesis, since it is what closes under products.
 
 set_option autoImplicit false
 
-open Set
+open Set Pointwise
 
 namespace Fabius
 
@@ -48,20 +49,38 @@ theorem dickson_isPWO_pi {ι : Type*} [Finite ι] (s : Set (ι → ℕ)) : s.IsP
 
 /-! ### Neumann's lemma -/
 
+section Additive
+
 variable {α : Type*} [CommMonoid α] [PartialOrder α] [IsOrderedCancelMonoid α]
 
 /-- **`q0:lem:neumann`, first half.**  The product of two well-based sets is
 well-based. -/
-@[to_additive "The additive form: `A + B` is well-based when `A` and `B` are."]
 theorem neumann_isPWO {A B : Set α} (hA : A.IsPWO) (hB : B.IsPWO) : (A * B).IsPWO :=
   hA.mul hB
 
 /-- **`q0:lem:neumann`, second half.**  Every element of `A * B` has only
 finitely many factorizations with one factor in each set.  This is what makes
 the convolution defining a Hahn-series product a finite sum. -/
-@[to_additive "The additive form: finitely many decompositions `c = a + b`."]
 theorem neumann_finite_factorizations {A B : Set α} (hA : A.IsPWO) (hB : B.IsPWO) (c : α) :
     (Set.mulAntidiagonal A B c).Finite :=
   Set.MulAntidiagonal.finite_of_isPWO hA hB c
+
+end Additive
+
+section AdditiveForm
+
+variable {α : Type*} [AddCommMonoid α] [PartialOrder α] [IsOrderedCancelAddMonoid α]
+
+/-- Neumann's lemma with the monomial group written additively, the form the
+Hahn-series construction uses. -/
+theorem neumann_isPWO_add {A B : Set α} (hA : A.IsPWO) (hB : B.IsPWO) : (A + B).IsPWO :=
+  hA.add hB
+
+/-- Finitely many additive decompositions `c = a + b`. -/
+theorem neumann_finite_decompositions {A B : Set α} (hA : A.IsPWO) (hB : B.IsPWO) (c : α) :
+    (Set.addAntidiagonal A B c).Finite :=
+  Set.AddAntidiagonal.finite_of_isPWO hA hB c
+
+end AdditiveForm
 
 end Fabius
