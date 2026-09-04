@@ -1430,9 +1430,9 @@ two product definitions is counted.
 The final incoming seven-module increment consists of the four-theorem
 `GaussianBinomialAtNegOneDerivative.lean` leaf described above and six further
 q-series modules contributing exactly sixty-nine declarations.
-`QBinomialTheoremInfinite.lean` contributes one definition and twenty-two
-theorems: real comparison products and Gaussian majorants, fixed-column
-convergence, Tannery transfer, Euler's product and reciprocal expansions, and
+At that checkpoint, `QBinomialTheoremInfinite.lean` contributed one definition
+and twenty-two theorems: real comparison products and Gaussian majorants,
+fixed-column convergence, Tannery transfer, Euler's product and reciprocal expansions, and
 the infinite q-binomial theorem over complete normed fields under the stated
 strict nome and series-variable contractions.  The reused theorem
 `finiteQPochhammerIn_zero_left` remains canonically owned by
@@ -1452,7 +1452,9 @@ one definition and nine theorems: finite commutative-(semi)ring boundary and
 recurrence laws, plus the complete-normed-field generating series under
 `‖q‖ < 1`, `‖t‖ < 1`, and `‖z*t‖ < 1`.  These six module counts sum to
 69, and with the four q=-1 derivative declarations give the deduplicated
-73-name incoming increment.  The two subsequent
+73-name incoming increment.  Those 1+22, 69, and 73 counts are historical;
+the current-tip expansion of `QBinomialTheoremInfinite.lean` is recorded in
+the synchronized inventory below.  The two subsequent
 `QPochhammerInfinite.lean` theorems brought that historical feature snapshot
 from 622/8,472 to 629/8,547, a seven-module/75-declaration change.  The two
 inverse-computability modules then brought that feature snapshot to 631/8,556,
@@ -1465,8 +1467,11 @@ thirteen declarations and brought the audit to 659/8,768.  Two Gaussian
 linear-coefficient theorems then brought it to 659/8,770, and the
 eight-declaration `EffectiveGapInverse.lean` leaf brought the audit to
 660/8,778.  The superconvergent synthesis leaf adds one module and nine
-declarations, yielding 661/8,787.  The four root-of-unity/q-Catalan modules
-add twenty-six declarations, yielding 665/8,813.  The original Jackson
+declarations, yielding 661/8,787.  At that checkpoint the four
+root-of-unity/q-Catalan modules were recorded as a twenty-six-declaration
+tranche, yielding 665/8,813.  After the later `QLucas` correction, their
+current exhaustive total is twenty-five declarations (0+3, 0+3, 1+11,
+and 0+7).  The original Jackson
 q-beta/Newton pair adds twenty-four declarations, yielding 667/8,837; the
 integer/complex upper Gaussian and q-Pfaff--Saalschuetz leaves add twenty,
 yielding 670/8,857; and the noncommutative q-multinomial leaf adds five,

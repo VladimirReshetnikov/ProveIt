@@ -275,9 +275,11 @@ clause, Guide label `eq:pair-Bernoulli-general`, and canonical-removable
 reading of `eq:bernoulli-gen` are Exact. Here `complexExpm1Div 0 = 1` and it
 equals `(exp z - 1) / z` away from zero; this is not the literal totalized
 quotient at zero and asserts no holomorphy. Higher/full Puiseux and logarithmic
-expansions remain open. That sibling promotion produced the historical
-903/11,448 checkpoint and changed none of the q-series forward-status or
-source-concordance totals.
+expansions remain open. That sibling promotion produced the 903/11,448
+checkpoint and changed none of the q-series forward-status or source-
+concordance totals. The five fixed-column declarations later produced local
+checkpoint `581bf` at 903/11,453. The Lambert crosswalk is outside the q-series
+publication and is not rendered by its exact `581bf` receipt.
 
 The newest q-series tranche starts with
 `GeometricUniformMomentPolynomial.lean`, with one definition,

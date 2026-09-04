@@ -193,7 +193,8 @@ rewritten. They do not certify the current canonical payloads.
   result environments (149 proof-required), 800 labels, 782 references, 62
   bibliography keys, source disposition, post-pin reconciliation, historical-
   ledger audit, companion-payload provenance, 232-row theorem concordance, and
-  canonical source/evidence checks. No package checksum manifest is required.
+  canonical source/evidence checks. No live package-wide checksum manifest is
+  required.
 
 ## Historical canonical publication checkpoints
 
@@ -271,10 +272,11 @@ rewritten. They do not certify the current canonical payloads.
   37, 38, 45, 149, 150, and 156 were additionally inspected at full size; no
   clipping, overlap, corrupt image, missing glyph, or unintended blank page
   was found.
-- The now-retired root checksum manifest exhaustively covered every other
-  permanent package file, including the complete evidence tree, without
-  duplicate or stale paths, and verified in full at this historical checkpoint. The eight historical source-package
-  ledgers summarized by the audit remain unchanged and are not live manifests.
+- At this historical checkpoint, the now-retired root checksum manifest
+  exhaustively covered every other permanent package file, including the
+  complete evidence tree, without duplicate or stale paths, and was verified in
+  full. The eight historical source-package ledgers summarized by the audit
+  remain unchanged and are not live manifests.
 
 ### Replayed-side pre-merge checkpoint
 

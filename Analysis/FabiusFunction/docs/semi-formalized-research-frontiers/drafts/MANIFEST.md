@@ -640,8 +640,9 @@ nothing else records. Their Directory cells now name the absorbing part
 rather than a live path. The former `q-pochhammer-and-inversion/` locations
 are likewise provenance-only.
 
-For the canonical q-series and Exponents packages, the exact source and
-retained-artifact checkpoints above govern; older numbers embedded in the long
+For the canonical q-series and whole-root geometric-q packages, the accepted
+current receipts above govern; the older Parts-I--VII and other artifact
+checkpoints remain explicitly historical. Older numbers embedded in the long
 provenance rows are superseded and do not assert current source/PDF parity.
 
 | Directory | Document | Previous path |

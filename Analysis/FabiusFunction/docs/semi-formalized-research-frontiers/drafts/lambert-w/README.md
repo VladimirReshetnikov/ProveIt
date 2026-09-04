@@ -119,7 +119,7 @@ statements connect exactly the two open domains.  At the input interval's
 left endpoint both branches equal `-1`, so the sum is exactly `-2` and the
 product exactly `1`, while the lower branch has no finite value at zero.
 
-The source-only companion `LambertWBranchGapBernoulli.lean` has the exhaustive
+The companion `LambertWBranchGapBernoulli.lean` has the exhaustive
 surface zero definitions and five theorems:
 `summable_norm_bernoulli_mul_pow_div_factorial`,
 `summable_bernoulli_mul_pow_div_factorial_iff`,

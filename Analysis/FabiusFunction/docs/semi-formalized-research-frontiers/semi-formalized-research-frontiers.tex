@@ -348,8 +348,16 @@ eight-declaration rational-gap inverse module, and the parity-selected Rvachev
 superconvergence leaf and the subsequent binary-word, box-partition, and
 telescoping-certificate leaves, as well as the exact three-module Lambert
 branch-pairing, gap-bijection, and symmetric-identity tranche (respectively
-0+7, 4+16, and 0+9), its subsequent zero-definition/five-theorem
-Bernoulli branch-gap companion crosswalking
+0+7, 4+16, and 0+9), the three-definition/seven-theorem geometric Richardson
+generating-function module, the three-theorem second-moment strengthening that
+enlarges the Gaussian-binomial cumulant module from 2+21 to 2+24, the
+zero-definition/five-theorem Bernoulli branch-gap companion, and the local
+five-theorem effective fixed-column q-binomial closure.  The Bernoulli leaf's earlier four
+theorems prove the exact complex convergence radius and boundary divergence,
+the nonzero-real sum, and the paired real branch formulas; its added fifth gives the
+complex removable-origin sum given by the inverse of
+\nolinkurl{complexExpm1Div} at \(z\), exactly when
+\(\lVert z\rVert<2\pi\).  It therefore crosswalks
 \nolinkurl{eq:pair-Bernoulli-general} and, under the standard removable-origin
 convention, \nolinkurl{eq:bernoulli-gen}; those four Lambert modules total four
 definitions and 37 theorems, 41 declarations; the exact inverse-recursion
@@ -690,7 +698,7 @@ theorems, distinct from the complex analytic-order wrapper above \\
 Infinite q-binomial theorem and Euler expansions &
 \nolinkurl{gaussianMajorant}, \nolinkurl{hasSum_qBinomial_theorem},
 \nolinkurl{hasSum_euler_product}, \nolinkurl{hasSum_euler_reciprocal} &
-\nolinkurl{QBinomialTheoremInfinite.lean}; one definition and twenty-two
+\nolinkurl{QBinomialTheoremInfinite.lean}; one definition and twenty-seven
 theorems, inventoried below \\
 Effective fixed-column Gaussian limit and rates &
 \nolinkurl{tendsto_gaussianBinomial_add_atTop},
@@ -1179,8 +1187,8 @@ The Bernoulli branch-gap series and complex generating identity
 removable-origin convention, \nolinkurl{eq:bernoulli-gen}.  The complex
 Bernoulli exponential generating series is summable if and only if
 \(\lVert z\rVert<2\pi\), so it diverges on the boundary and throughout the
-exterior; precisely on that disk it has sum
-\(\lean{complexExpm1Div}(z)^{-1}\), which is \(1\) at zero and rewrites to
+exterior; precisely on that disk its sum is the inverse of
+\nolinkurl{complexExpm1Div} at \(z\), which is \(1\) at zero and rewrites to
 \(z/(e^z-1)\) away from zero.  On
 \(x\in(-e^{-1},0)\) with positive gap \(\delta<2\pi\), the two sums are
 \(W_0=-\sum_{n\geq0}B_n\delta^n/n!\) and
@@ -2468,7 +2476,7 @@ this closes the canonical forward q-binomial structure theorem.  The adjacent
 general-semiring theorem \lean{coeff_gaussianBinomial_one} supplies the
 complete linear-coefficient classifier.
 
-The source-only \path{CentralQBinomialReduction.lean} has no definitions and
+The \path{CentralQBinomialReduction.lean} has no definitions and
 six theorems: \lean{finiteQPochhammerIn_mul_neg},
 \lean{finiteQPochhammerIn_two_mul},
 \lean{finiteQPochhammerIn_map_ringHom},
@@ -2547,7 +2555,8 @@ retains its field, distinct-node, nonzero-product, and geometric-grid
 hypotheses; the second retains \(0<q<1\) and its positive-argument hypotheses.
 
 Six further facade-reachable modules contribute exactly four definitions and
-sixty-five theorems.  The small public inventories are
+seventy theorems, seventy-four public declarations in total.  The small public
+inventories are
 \lean{continuous_gaussianBinomial},
 \lean{tendsto_gaussianBinomial_nhds_one}, and
 \lean{gaussianBinomial_eq_finiteQPochhammerIn_div} in the zero-definition,
@@ -2560,7 +2569,7 @@ three-theorem \path{GaussianBinomialContinuity.lean};
 \lean{quantum_binomial} in the zero-definition, two-theorem
 \path{QuantumBinomial.lean}.
 
-The one-definition/twenty-two-theorem
+The one-definition/twenty-seven-theorem
 \path{QBinomialTheoremInfinite.lean} surface is
 \lean{gaussianMajorant}, \lean{hasSum_of_tendsto_of_dominated},
 \lean{one_le_qPochhammerInfIn_neg},
@@ -2577,7 +2586,12 @@ The one-definition/twenty-two-theorem
 \lean{gaussianBinomial_eq_div}, \lean{gaussianMajorant_nonneg},
 \lean{norm_gaussianBinomial_le},
 \lean{tendsto_finiteQPochhammerIn_pow_atTop},
+\lean{norm_finiteQPochhammerIn_pow_sub_one_le_exp},
+\lean{isBigO_finiteQPochhammerIn_pow_sub_one},
 \lean{tendsto_gaussianBinomial_atTop},
+\lean{tendsto_gaussianBinomial_add_atTop},
+\lean{isBigO_gaussianBinomial_sub_inv},
+\lean{isBigO_gaussianBinomial_add_sub_inv},
 \lean{summable_pow_choose_two_mul_pow}, \lean{hasSum_euler_product},
 \lean{qPochhammerInfIn_ne_zero_of_norm_lt_one},
 \lean{hasSum_qBinomial_theorem}, and \lean{hasSum_euler_reciprocal}.
@@ -12959,6 +12973,7 @@ proof device; it is the stable evaluation strategy.
 \end{remark}
 
 \section{How much of the full small-argument asymptotic is encoded by inverse dyadics?}
+\sectionmark{Inverse-dyadic sampling}
 \label{dyadicasym:sec:general-x}
 
 \subsection{The arbitrary-argument formula}

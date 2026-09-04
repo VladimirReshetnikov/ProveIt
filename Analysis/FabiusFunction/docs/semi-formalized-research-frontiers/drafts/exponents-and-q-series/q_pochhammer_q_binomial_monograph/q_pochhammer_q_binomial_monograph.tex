@@ -3805,8 +3805,8 @@ $q^{\binom k2}$, and the $k$-th summand of the transcribed identity is the
 $k$-th summand of \eqref{eq:qchu1-cleared}.  Thus \eqref{eq:qchu1} holds in
 every field with $q\ne0$, $a\ne0$, $(q;q)_n\ne0$ and $(c;q)_n\ne0$, with no
 limiting process; combined with \Cref{prop:qchu2-by-reversal} the same is
-true of \eqref{eq:qchu2} (with the additional hypothesis $(a;q)_n\ne0$ that
-the reversal uses).
+true of \eqref{eq:qchu2} (with the additional hypotheses $c\ne0$ and
+$(a;q)_n\ne0$ that the reversal uses).
 \end{remark}
 
 % -----------------------------------------------------------------
@@ -3910,7 +3910,17 @@ Fix $n\in\NaturalNumbers$ and nonzero parameters $A,C$ with $(A;q)_n\ne0$ and $(
  c=\frac{q^{1-n}}{A},\qquad
  z=\frac{cq^{n}}{a}=\frac{Cq^{n}}{A}.
 \]
-These are nonzero, and by \Cref{prop:base-reversal} the hypotheses of \Cref{lem:2phi1-reversal} hold: $(c;q)_n=(q^{1-n}/A;q)_n=(-A)^{-n}q^{-\binom n2}(A;q)_n\ne0$ and $(q^{1-n}/a;q)_n=(C;q)_n\ne0$.  Since $az=cq^{n}$, the reflected argument in \eqref{eq:2phi1-reversal} is $cq^{n+1}/(az)=q$, and the reflected parameters are $q^{1-n}/c=A$ and $q^{1-n}/a=C$.  Hence \eqref{eq:2phi1-reversal} reads
+These are nonzero, and by \Cref{prop:base-reversal} the hypotheses of
+\Cref{lem:2phi1-reversal} hold:
+\[
+ (c;q)_n=(q^{1-n}/A;q)_n
+ =(-A)^{-n}q^{-\binom n2}(A;q)_n\ne0,
+ \qquad
+ (q^{1-n}/a;q)_n=(C;q)_n\ne0.
+\]
+Since $az=cq^{n}$, the reflected argument in \eqref{eq:2phi1-reversal} is
+$cq^{n+1}/(az)=q$, and the reflected parameters are $q^{1-n}/c=A$ and
+$q^{1-n}/a=C$.  Hence \eqref{eq:2phi1-reversal} reads
 \[
  {}_2\phi_1\!\left[
  \begin{matrix}q^{-n},a\\c\end{matrix};q,\frac{cq^n}{a}\right]
@@ -3940,7 +3950,7 @@ By \Cref{prop:base-reversal} once more, $(a;q)_n=(q^{1-n}/C;q)_n=(-C)^{-n}q^{-\b
  =q^{\binom{n+1}{2}+\binom n2-n^2}\,A^{n}\frac{(C/A;q)_n}{(C;q)_n}
  =A^{n}\frac{(C/A;q)_n}{(C;q)_n},
 \]
-because $\binom{n+1}{2}+\binom n2=\tfrac{n^2+n}{2}+\tfrac{n^2-n}{2}=n^2$.  This is \eqref{eq:qchu2} at the pair $(A,C)$, which was an arbitrary admissible pair.  The auxiliary condition $(A;q)_n\ne0$ excludes only a proper algebraic
+because $\binom{n+1}{2}+\binom n2=\tfrac{n^2+n}{2}+\tfrac{n^2-n}{2}=n^2$.  This is \eqref{eq:qchu2} at the pair $(A,C)$, which was an arbitrary admissible pair.  The auxiliary conditions $C\ne0$ and $(A;q)_n\ne0$ exclude only a proper algebraic
 subset of the parameter space, and both sides of \eqref{eq:qchu2} are
 rational functions of $(A,C)$ there; agreeing off a proper algebraic
 subset, they agree wherever both are defined.  This is the same
@@ -13935,7 +13945,7 @@ declaration from \path{GaussianBinomialAtOne.lean};\\
 \end{center}
 
 The imported \path{QBinomialTheoremInfinite.lean} surface has one definition
-and 22 theorems.  In particular,
+and twenty-seven theorems.  In particular,
 \path{Fabius.finiteQPochhammerIn_zero_left} is canonically declared in
 \path{GaussianBinomialAtOne.lean} and merely made available by that import; it
 is not redeclared in \path{QBinomialTheoremInfinite.lean}.

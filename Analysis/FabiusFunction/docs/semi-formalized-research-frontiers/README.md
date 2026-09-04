@@ -329,7 +329,7 @@ missing declaration comments.
 The retained frontier, primary, walkthrough, geometric-q, and representation
 PDFs predate these source-only overlays and claim no render parity.
 
-The preceding source-only addition is
+The preceding declaration addition is
 `FabiusFunction.GeometricRichardsonGenerating`, with three definitions and
 seven theorems. Its
 `Fabius.geometricLagrangeRichardson_generating` theorem is the exact formal
@@ -603,7 +603,7 @@ field inversion is total, while the manuscript cardinal use assumes `c > 0`
 and `0 < q < 1` (together with its mesh, interval, and degree hypotheses).
 No larger matrix right inverse or decoder-optimality result is asserted.
 
-The newest source-only addition leaves the module count unchanged and adds
+The next declaration addition leaves the module count unchanged and adds
 three theorems to `FabiusFunction.GaussianBinomialCumulants`: the explicit
 second derivative at one
 `Fabius.eval_one_derivative_derivative_gaussianBinomial_X`, the division-free
@@ -797,6 +797,9 @@ metadata, not a formalization claim; where no reachable repository blob
 reproduces it, the canonical TeX labels it explicitly as unverified rather than
 silently treating it as authenticated. The source snapshots consolidated on
 25 August 2026 were recorded as follows:
+
+No live `SHA256SUMS` or `SHA256SUMS.*` manifest is maintained; the inline
+values below are historical provenance receipts only.
 
 | Former source | SHA-256 |
 | --- | --- |

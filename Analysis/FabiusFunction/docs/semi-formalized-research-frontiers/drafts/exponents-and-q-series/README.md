@@ -40,6 +40,16 @@ carries is its own re-derivation of the shared layer.
 Every absorbed report's verification material — scripts, data tables, and
 figures — is preserved under `geometric_q_fabius_frontiers/assets/`.
 
+The accepted current whole-root receipt for
+`geometric_q_fabius_frontiers/` is a 27,520-line, 1,266,515-byte source with
+SHA-256 `8292f10862334cb809139259eeb4906bb14f517d41b9600c9b7ad53bb21525b1`.
+Three passes at 385/402/402 pages produced the 402-page, 8,332,886-byte A4 PDF
+with SHA-256
+`d47431e4d3e721fccf12f90226db77f1898e44b477878954acca3a6e90127cf4`;
+the final 2,557-line, 114,331-byte log has SHA-256
+`4d6f8c7974def4a3f9e6bc8ccdffefc3eef7ca8cb7c2f0145a075f95b82ff45e`.
+All documented log, page, font, Type-3, extraction, and visual gates passed.
+
 The detailed package record below still describes the six absorbed documents
 individually; those entries are retained as provenance, and their directory
 paths are dead. Resolve any path through the table above or through the
@@ -118,10 +128,17 @@ forward-status totals.
 Its exact comb crosswalk is
 `Fabius.geometricLagrangeRichardson_generating`, with
 `Fabius.hasSum_geometricLagrangeRichardson_mul_pow` as the analytic companion.
-No retained PDF in this group renders that unrelated promotion.
+No retained PDF in this group rendered that unrelated promotion at its initial
+source-only checkpoint. The accepted current q-series and standalone
+geometric-q renders include the post-union crosswalk.
 The additional three declarations are the second-derivative, raw-second-moment,
 and variance-numerator identities in `GaussianBinomialCumulants`; they
 strengthen the existing q-series moment crosswalk without changing its status.
+That module's exhaustive public surface is two definitions and twenty-four
+theorems. The next five declarations belong to the one-definition,
+twenty-seven-theorem `QBinomialTheoremInfinite` surface and prove the effective
+fixed-column limits and geometric rates; they are the only part of this recent
+repository-wide sequence that changes this package's forward-status totals.
 
 That repository-wide census includes a sibling, source-only Lambert-W
 promotion rather than a new q-series result. Its exhaustive module counts are
@@ -150,9 +167,10 @@ canonical-removable reading of `eq:bernoulli-gen` are Exact. Here
 `complexExpm1Div 0 = 1` and it equals `(exp z - 1) / z` away from zero; this
 does not assert the literal totalized quotient at zero or holomorphy of a named
 sum function. Higher or full Puiseux/logarithmic branch expansions remain open.
-No retained PDF in this group renders this unrelated source-only promotion,
-and none was rebuilt for this update.  It is the historical 903/11,448
-checkpoint immediately preceding the current q-series leaf.
+No retained PDF in this group rendered this unrelated promotion at its original
+source-only checkpoint. The accepted current Lambert Guide does render the
+completed branch-gap union. Its completed checkpoint is `217a6b9` at
+903/11,448; the later local fixed-column commit `581bf` is 903/11,453.
 
 The current q-series tranche starts with `GeometricUniformMomentPolynomial.lean`, with the one
 definition `geometricUniformMomentPolynomial` and the eight theorems
