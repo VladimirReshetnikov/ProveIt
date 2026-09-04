@@ -74,6 +74,31 @@ $|k|<2m$.  Multiply by $y_j$, sum over the finite node set, and use linearity
 of $\mathscr D_u$ to obtain \eqref{eq:lag-interpolant}.
 \end{proof}
 
+\paragraph{Exact Lean counterpart.}
+The two displayed synthesis identities are Exact/Complete in the existing
+module \path{FabiusFunction.LagrangeRvachevSynthesis}, by composition rather
+than through a redundant report-shaped wrapper.  The theorem
+\path{normalized_sum_Ioo_lagrangeRvachevDecoder_mul_shifted_rvachevUp}
+is \eqref{eq:lag-cardinal}: its finite node set has
+$\lvert s\rvert=d+1$, the hypothesis
+\path{s.card - 1 <= padicValNat 2 M} is
+$d\le\TwoAdicValuation(M)$, \path{M != 0} is the positive-mesh condition,
+and \path{x in Icc (-1) 1} is exactly $x\in[-1,1]$.  Its integer index set
+\path{Finset.Ioo (-(2 * M)) (2 * M)} is $\lvert k\rvert<2M$, its prefactor is
+$M^{-1}=h$, and its atoms are the literal unit-radius translates
+$u(x-k/M)$.
+
+The theorem
+\path{sum_Ioo_lagrangeRvachevAtomCoefficient_mul_shifted_rvachevUp}
+is \eqref{eq:lag-interpolant} for arbitrary nodal data: the definition
+\path{lagrangeRvachevAtomCoefficient} is the same normalized decoder applied
+to the data, and \path{Lagrange.interpolate} is $I_Xy$.  The Lean results do
+not need node injectivity for these polynomial identities; the pairwise
+distinct nodes fixed above supply the usual cardinal interpretation.  No new
+wrapper theorem or source declaration is needed.  This promotion concerns
+only \Cref{thm:lag-cardinal}; it does not promote any still-human clause of
+\Cref{thm:lag-right-inverse}.
+
 The coefficients are closed algebraic expressions in the nodes.  Put
 \[
  \lambda_j=\left(\prod_{r\ne j}(x_j-x_r)\right)^{-1},
@@ -143,9 +168,10 @@ existing \path{centeredRvachevFullCumulant_odd} give the even
 Bernoulli--Mersenne formula and odd vanishing.  This is an equality of formal
 coefficient sequences; it does not assert analytic convergence of a
 reciprocal moment-generating function.  Accordingly
-\Cref{cor:lag-nodes-only} is Exact/Complete in Lean.  This promotion does not
-promote the global synthesis statement \Cref{thm:lag-cardinal} or any of the
-still-human clauses of \Cref{thm:lag-right-inverse}.
+\Cref{cor:lag-nodes-only} is Exact/Complete in Lean.  Its compositional
+promotion is logically separate from the preceding, already-existing exact
+synthesis counterpart for \Cref{thm:lag-cardinal}, and neither promotion
+formalizes any still-human clause of \Cref{thm:lag-right-inverse}.
 
 \subsection{The exact right inverse and its projector}
 

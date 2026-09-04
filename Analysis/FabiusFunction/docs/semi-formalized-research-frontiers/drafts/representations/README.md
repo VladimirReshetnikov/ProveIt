@@ -861,9 +861,19 @@ elementary-symmetric/Rvachev--Appell expansion, rational coefficient descent
 and rational lattice samples, and the formal complete-Bell identity in the
 negated centered cumulants with the Bernoulli--Mersenne even specialization.
 Rationality is not claimed at irrational evaluation points, the Bell identity
-does not supply analytic reciprocal-MGF convergence, and neither
-`thm:lag-cardinal` nor the compound `thm:lag-right-inverse` is promoted. This
-source-only addition is not rendered in the retained Representation PDFs.
+does not supply analytic reciprocal-MGF convergence, and this source-only
+addition does not promote the compound `thm:lag-right-inverse`. Independently,
+the existing `FabiusFunction.LagrangeRvachevSynthesis` module makes
+`thm:lag-cardinal` Exact/Complete by assembly: the individual-cardinal and
+arbitrary-data identities are respectively
+`normalized_sum_Ioo_lagrangeRvachevDecoder_mul_shifted_rvachevUp` and
+`sum_Ioo_lagrangeRvachevAtomCoefficient_mul_shifted_rvachevUp`. Their `M ≠ 0`,
+`s.card - 1 ≤ padicValNat 2 M`, `x ∈ [-1,1]`, integer-open-interval, and
+inverse-mesh hypotheses and notation are exactly the report's positive mesh,
+degree admissibility, evaluation domain, `|k| < 2M`, and `h=M⁻¹`; the atoms
+are literal unit-radius translates. No redundant report wrapper is claimed,
+and `thm:lag-right-inverse` remains Partial. These source-only status
+annotations are not rendered in the retained Representation PDFs.
 The sibling
 `FabiusFunction.GeometricUniformMomentPolynomial` module (one definition and
 eight theorems). It supplies the recursive rational polynomial, residual-product

@@ -108,6 +108,20 @@ Cauchy--Binet clauses remain human proofs. The crosswalk therefore remains at
 80 canonical assertion rows (including 11 conjectures); no assertion-count
 delta accompanies these evidence-status changes.
 
+The older compiled module `FabiusFunction.LagrangeRvachevSynthesis` already
+closes `thm:lag-cardinal` Exact/Complete by assembly, without a redundant
+report-shaped wrapper. The individual-cardinal declaration is
+`normalized_sum_Ioo_lagrangeRvachevDecoder_mul_shifted_rvachevUp`; the
+arbitrary-data declaration is
+`sum_Ioo_lagrangeRvachevAtomCoefficient_mul_shifted_rvachevUp`. Here `M ≠ 0`
+is the positive-mesh condition, `s.card - 1 ≤ padicValNat 2 M` is admissibility
+through degree `d = |s|-1`, the evaluation point remains in `[-1,1]`, the
+integer open interval is exactly `|k| < 2M`, and `(M : ℝ)⁻¹` is the displayed
+spacing `h`. The atoms are literal unit-radius translates. Node injectivity is
+not needed for the polynomial identities and is supplied by the report when
+they are read as cardinal interpolation. This promotion does not promote any
+additional clause of the compound `thm:lag-right-inverse`.
+
 The compiled source-only `FabiusFunction.RvachevLagrangeNodesOnly` module
 promotes `cor:lag-nodes-only` from a human proof with no Lean anchor to an
 Exact/Complete compositional counterpart. Its exhaustive public surface is
@@ -131,9 +145,10 @@ elementary-symmetric/Appell expansion, rational coefficient descent and
 rational lattice values, and the complete-Bell link to formal centered
 cumulants. This is exact by assembly rather than by a single wrapper theorem.
 It does not claim rational values at irrational evaluation points or analytic
-convergence of the reciprocal MGF, and it does not promote either
-`thm:lag-cardinal` or the larger `thm:lag-right-inverse`. The retained package
-PDF predates this source-only status promotion and was not rebuilt.
+convergence of the reciprocal MGF. Its promotion is independent of the
+existing synthesis assembly for `thm:lag-cardinal`, and neither result
+promotes the larger `thm:lag-right-inverse`. The retained package PDF predates
+these source-only status annotations and was not rebuilt.
 
 The Q12 root transition is exact computer-assisted mathematics: rational
 polynomials and rational Sturm chains decide root counts. Approximate complex
