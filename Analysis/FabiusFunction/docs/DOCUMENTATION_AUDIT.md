@@ -112,7 +112,7 @@ numbers rather than copying these historical values.
 The historical post-merge 2026-09-01 inventory contained 675 modules and 8,909
 lexically visible public declarations, with zero missing module headers and
 zero missing doc comments.  A fresh 2026-09-04 audit for this documentation
-pass scans 923 facade-reachable modules and 11,610 public declarations.  It
+pass scans 924 facade-reachable modules and 11,614 public declarations.  It
 finds no missing module header or declaration comment, including throughout
 `FabiusInverseExactDyadicModulus.lean`, `JacobiTwoSquareCount.lean`, and
 `LagrangeRvachevMatrix.lean`, as well as the incoming
@@ -129,12 +129,14 @@ finds no missing module header or declaration comment, including throughout
 `RvachevLegendreCentralSum.lean`, `HalfQBinomialRootSimplicity.lean`,
 `GeometricUniformExteriorComplexMomentGerm.lean`,
 `GeometricUniformMomentPolynomialDegree.lean`,
-`RvachevLaurentLeading.lean`, and `FinitePrefixAppellRecovery.lean` leaves,
-as well as the sixteenth theorem in `FinitePolynomialFunctional.lean`.
+`RvachevLaurentLeading.lean`, `FinitePrefixAppellRecovery.lean`, and
+`RvachevLegendreBiorthogonality.lean` leaves, as well as the sixteenth theorem
+in `FinitePolynomialFunctional.lean` and the two newest theorems in
+`ProbabilityLaplaceMoments.lean`.
 Relative to the
-610/8,318 activation checkpoint, the current tree adds 313 modules and 3,292 declarations.
+610/8,318 activation checkpoint, the current tree adds 314 modules and 3,296 declarations.
 Relative to the earlier 630/8,552 merged checkpoint, concurrent source work
-adds 293 modules and 3,058 declarations.  The post-merge 675/8,909 inventory,
+adds 294 modules and 3,062 declarations.  The post-merge 675/8,909 inventory,
 the intervening 903/11,448 Lambert-series inventory, and the immediately
 preceding 914/11,555 scaled-geometric and 915/11,556 real-MGF-bridge
 checkpoints, together with the incoming branch's 906/11,461 complex-product
@@ -144,9 +146,10 @@ followed by the half-base root-simplicity leaf at the merged-main pre-local
 checkpoint 919/11,569, the exterior reciprocal-germ leaf at 920/11,572, and
 the sharp coefficient-and-degree leaf at the historical 921/11,575
 checkpoint.  The one-definition/six-theorem Laurent-leading leaf then gave
-922/11,582, and the
-eleven-definition/seventeen-theorem finite-prefix leaf gives the live
-923/11,610 census.  On the earlier
+922/11,582, and the eleven-definition/seventeen-theorem finite-prefix leaf
+gave the historical 923/11,610 checkpoint.  The two-theorem
+`ProbabilityLaplaceMoments` delta and the one-definition/one-theorem
+`RvachevLegendreBiorthogonality` leaf give the live 924/11,614 census.  On the earlier
 exterior-germ branch, the inner-complex 906/11,461 checkpoint was followed by
 the branch-local 907/11,464 checkpoint; its preceding real-MGF and algebraic
 moment-polynomial checkpoints were 905/11,458 and 904/11,457.  These older
@@ -702,9 +705,10 @@ and 11,568 public declarations.  The half-base root-simplicity leaf gave the
 merged-main pre-local checkpoint 919/11,569; the exterior reciprocal-germ leaf
 then gave 920/11,572; and the sharp coefficient-and-degree leaf gave the
 historical 921/11,575 checkpoint.  `RvachevLaurentLeading.lean` then gave
-922/11,582, and `FinitePrefixAppellRecovery.lean` gives the live facade
-inventory 923 modules and 11,610 public declarations, with no missing module
-header or public declaration comment.
+922/11,582, and `FinitePrefixAppellRecovery.lean` gave the historical
+923/11,610 checkpoint.  The current facade inventory is 924 modules and
+11,614 public declarations, with no missing module header or public
+declaration comment.
 
 `FinitePolynomialFunctional.lean` remains a zero-definition module and now has
 exactly sixteen public theorems:
@@ -769,6 +773,41 @@ No Jacobi closed form, all-degree decoder parity or rationality, reverse
 spectral closure, mesh minimality, or larger Lagrange right-inverse statement
 is inferred.
 
+#### Closed up tails, tail moments, and Legendre biorthogonality
+
+The final two source changes after the finite-prefix checkpoint add four
+public declarations while adding one module, giving the current 924-module,
+11,614-declaration facade inventory.  The existing
+`ProbabilityLaplaceMoments.lean` module contributes exactly two new theorems:
+`weightedSumDistribution_real_Ici_eq_rvachevUp_of_nonneg` and
+`integral_pow_weightedSumDistribution_eq_mul_intervalIntegral_rvachevUp`.
+The first uses `weightedSumDistribution_singleton` to convert the established
+strict-Ioi survival identity into
+`weightedSumDistribution.real (Ici t) = rvachevUp F t` for every `t >= 0`.
+Together with `rvachevUp_eq_fabiusReal_one_sub_abs` and
+`rvachevUp_eq_one_sub_fabiusReal_of_nonneg`, whose domains are stronger than
+the printed restrictions, it closes every clause of `prop:up-tail`.  The
+second theorem directly proves, for every natural `n >= 1`,
+`integral x^n d(weightedSumDistribution) =
+n * integral_0^1 t^(n-1) rvachevUp(F,t) dt`; it is exactly
+`cor:up-moments`.  The expectation is a full-line integral against the
+canonical law representing the manuscript's `X`.  No report-shaped
+conjunction or arbitrary-random-variable wrapper is counted.
+
+`RvachevLegendreBiorthogonality.lean` has exactly one public definition,
+`rvachevLegendreAnalysisKernel`, and one public theorem,
+`rvachevLegendreBiorthogonality`.  The definition is literally the normalized
+analysis kernel `((2*m+1)/2) * integral_(-1)^1 up(x-c) P_m(x) dx`.  For
+natural `l,m`, a natural mesh `M != 0`, and exactly
+`l <= padicValNat 2 M`, the theorem proves
+`M⁻¹ * sum_(|k|<2M) Q_l⁻(k/M) Lambda_m(k/M) =
+if m=l then 1 else 0`.  Its integer index set is
+`Finset.Ioo (-(2*M)) (2*M)`, precisely the manuscript's open block, and the
+natural nonzero mesh is precisely its positive-mesh hypothesis.  Thus
+`thm:leg-biorthogonality` is **Exact**.  This leaf does not assert the
+following finite-matrix projector identities, reverse spectral closure, or
+the separate rationality theorem for the analysis kernel.
+
 #### Half-base roots, Laurent-leading, and finite-prefix Appell recovery tranche
 
 The half-base root leaf first raised the historical 918/11,568 complex-product
@@ -776,8 +815,9 @@ checkpoint to 919/11,569.  After the exterior and sharp-degree leaves produced
 920/11,572 and the historical sharp checkpoint 921/11,575, the two subsequent
 upstream leaves add exactly two modules and 35 public declarations:
 `RvachevLaurentLeading.lean` gives 922/11,582, and
-`FinitePrefixAppellRecovery.lean` gives the live 923 modules and 11,610 public
-declarations, with no missing module header or public declaration comment.
+`FinitePrefixAppellRecovery.lean` gives the historical 923/11,610 checkpoint.
+The current inventory is 924 modules and 11,614 public declarations, with no
+missing module header or public declaration comment.
 
 `HalfQBinomialRootSimplicity.lean` has no public definitions and exactly one
 public theorem, `halfQBinomial_sum_rootMultiplicity_two_pow`.  Over `ℚ`, for
@@ -1598,7 +1638,7 @@ and 88-page notation-catalogue artifacts likewise predate their current merged
 sources.  Their package notices treat those PDFs as historical validation
 receipts, not parity claims, until fresh uninterrupted three-pass builds
 complete.  The inverse-computability receipt likewise still reflects the
-historical 675/8,909 census and requires refresh against the live 923/11,610
+historical 675/8,909 census and requires refresh against the live 924/11,614
 inventory.  The canonical inverse-theory publication retains a 134-page
 artifact synchronized at its latest-main source checkpoint; the merged
 effective-inversion and superconvergent-synthesis tranches make current parity
