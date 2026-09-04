@@ -80,6 +80,13 @@ STATUS = {
    r"The statement includes local $C^n$ hypotheses and explicitly uses "
    r"\lean{OrderedFinpartition}'s increasing-maximum block order. "
    r"No symmetry conversion is required; the separate partial-Bell regrouping remains open."),
+ 'thm:bell-poly-partitions': ('Lean',
+   r"\lean{Fabius.partialBell_eq_sum_setPartitions} and "
+   r"\lean{Fabius.bell_complete_eq_sum_allSetPartitions} (\lean{BellSetPartitions}), over any "
+   r"commutative semiring of weights -- the weight of actual set partitions; the "
+   r"multiplicity-vector form is \lean{Fabius.coeff_exp_subst_eq_sum_weightedPartitions} "
+   r"(\lean{UnitSeriesBellCoefficients}); the per-type count \cref{cor:partition-type} is "
+   r"not yet covered"),
  'thm:eulerian-irwin-hall': ('partial',
    r"\lean{Fabius.cubeSliceCount_succ_sub} (\lean{EulerianPermutohedron}), the combinatorial "
    r"slab count; the Fubini volume step is not formal"),
@@ -118,11 +125,6 @@ STATUS = {
    r"equal-marks case \lean{Fabius.bell_complete_cycleWeightConst} and its instance "
    r"\lean{Fabius.card_perm_eq_bell_complete} (\lean{BellDeterminants}); the cycle-removal "
    r"bijection is not formal"),
- 'thm:bell-poly-partitions': ('Lean',
-   r"\lean{Fabius.partialBell_eq_sum_setPartitions} and "
-   r"\lean{Fabius.bell_complete_eq_sum_allSetPartitions} (\lean{BellSetPartitions}), "
-   r"over any commutative semiring of weights; the per-type count "
-   r"\cref{cor:partition-type} is not covered"),
  'thm:second-explicit': ('Lean',
    r"\lean{Fabius.factorial_mul_stirlingSecond_eq_sum} (over $\mathbb Z$) and "
    r"\lean{Fabius.stirlingSecond_eq_sum_div_factorial} (over $\mathbb Q$) "
@@ -348,16 +350,6 @@ STATUS = {
    r"The all-index commutative-ring theorem \lean{Fabius.coeff_subst_eq_sum_multinomial} "
    r"combines these forms; at $n=0$ its unique empty profile gives $c_0=a_0$.  "
    r"The reciprocal specialization is \lean{Fabius.coeff_reciprocalSeries}"),
- 'prop:merged-abel': ('Lean',
-   r"\lean{Fabius.abelPolynomial}, \lean{Fabius.abelPolynomial_zero}, "
-   r"\lean{Fabius.abelPolynomial_succ}, and \lean{Fabius.abelPolynomial_succ_eval} "
-   r"give the polynomial formulas over every commutative ring.  Over every commutative "
-   r"$\RationalNumbers$-algebra, \lean{Fabius.abelSeries_eq} constructs a solution, "
-   r"\lean{Fabius.abel_eq_zero_and_one} gives the boundary coefficients for every solution, "
-   r"and \lean{Fabius.exp_subst_eq_egfA_abelPolynomial} proves "
-   r"\cref{eq:merged-abel-egf} for every solution, including degree zero.  "
-   r"\cref{eq:merged-abel-binomial} is \lean{Fabius.abelPolynomial_eval_add}, also for "
-   r"every $n\geq0$ (\lean{AbelPolynomialSeries})"),
  'thm:merged-kirkman-cayley': ('partial',
    r"The arithmetic formula is formalized in \lean{AssociahedronFaceNumbers}: "
    r"\lean{Fabius.dissectionNumber_mul_of_three_le} is the denominator-free manuscript "
@@ -389,6 +381,16 @@ STATUS = {
    r"\lean{Fabius.natCast_mul_coeff_raneyT_pow} is the positive-degree denominator-free "
    r"form (\lean{RaneyNumbers}).  The manuscript quantifies over every solution $T$; "
    r"uniqueness or transfer from an arbitrary solution to the constructed one is not formalized"),
+ 'prop:merged-abel': ('Lean',
+   r"\lean{Fabius.abelPolynomial}, \lean{Fabius.abelPolynomial_zero}, "
+   r"\lean{Fabius.abelPolynomial_succ}, and \lean{Fabius.abelPolynomial_succ_eval} "
+   r"give the polynomial formulas over every commutative ring.  Over every commutative "
+   r"$\RationalNumbers$-algebra, \lean{Fabius.abelSeries_eq} constructs a solution, "
+   r"\lean{Fabius.abel_eq_zero_and_one} gives the boundary coefficients for every solution, "
+   r"and \lean{Fabius.exp_subst_eq_egfA_abelPolynomial} proves "
+   r"\cref{eq:merged-abel-egf} for every solution, including degree zero.  "
+   r"\cref{eq:merged-abel-binomial} is \lean{Fabius.abelPolynomial_eval_add}, also for "
+   r"every $n\geq0$ (\lean{AbelPolynomialSeries})"),
  'thm:eulerian-binomial-recurrence': ('Lean',
    r"\lean{Fabius.eulerianPolynomial_binomial_recurrence} in $R[t]$ and "
    r"\lean{Fabius.eulerian_binomial_recurrence_series} in $R[[t]]$ (\lean{EulerianEGF}), for "
@@ -479,18 +481,21 @@ STATUS = {
    r"\lean{Fabius.prod_inv_one_sub_natCast_mul_eq_inv_pow_mul_descPochhammer_eval_inv} cover "
    r"the scalar falling-factorial factorization under $x\ne0$ and its reciprocal under "
    r"nonvanishing of every $1-jx$."),
- 'thm:stirling-symmetric-semirings': ('partial',
+ 'thm:stirling-symmetric-semirings': ('Lean',
    r"The second-kind identities are compiled as "
    r"\lean{Fabius.stirlingSecond_add_eq_completeHomogeneousEvalOn} and "
    r"\lean{Fabius.stirlingSecond_eq_completeHomogeneousEvalOn_of_le} in "
    r"\lean{StirlingCompleteHomogeneous}, over every commutative semiring.  New source "
    r"\lean{Fabius.stirlingFirst_eq_sum_powersetCard} and "
    r"\lean{Fabius.stirlingFirst_eq_esymm} in \lean{StirlingSymmetricFunctions} supplies "
-   r"the first-kind identities; compiler validation of those additions is pending."),
- 'cor:stirling-symmetric-scaling': ('none',
-   r"New source: \lean{Fabius.completeHomogeneousEvalOn_scaled_range} and "
-   r"\lean{Fabius.esymm_scaled_range} in \lean{StirlingSymmetricFunctions}; "
-   r"compiler validation pending."),
+   r"the first-kind identities over every commutative semiring; the empty-family cases "
+   r"are included. The displayed symmetric-function notation is represented by the "
+   r"corresponding finite multiset evaluations."),
+ 'cor:stirling-symmetric-scaling': ('Lean',
+   r"\lean{Fabius.completeHomogeneousEvalOn_scaled_range} and "
+   r"\lean{Fabius.esymm_scaled_range} in \lean{StirlingSymmetricFunctions} prove both "
+   r"homogeneous scaling identities over every commutative semiring, including zero "
+   r"scalars and the first-kind guard $r\le n$."),
  'thm:eulerian-power-series': ('Lean',
    r"\lean{Fabius.one_sub_X_pow_mul_succPowSeries} (the identity "
    r"$(1-t)^{n+1}\sum_m(m+1)^nt^m=\TypeAEulerianPolynomial{n}(t)$ in $R[[t]]$) and "
@@ -502,7 +507,7 @@ STATUS = {
    r"\lean{Fabius.expRiordan_mul_inverse} (\lean{ExponentialRiordan}) prove the action, "
    r"product, and a conditional one-sided inverse law, assuming the inverse series and "
    r"$g\,(h\circ f)=1$.  Construction of these inverse series from the theorem's unit "
-   r"hypotheses and the full two-sided inverse statement remain to be formalized.  "
+   r"hypotheses and the full two-sided inverse statement are not formalized.  "
    r"The Stirling examples are \lean{Fabius.expRiordan_one_exp_sub_one} and "
    r"\lean{Fabius.expRiordan_one_log}."),
  'thm:merged-appell': ('Lean',
@@ -594,6 +599,14 @@ STATUS = {
    r"$\beta_n=\sum_k\frac{(-1)^k}{k+1}\Delta^k0^n$, and with the surjection formula "
    r"\lean{Fabius.factorial_mul_stirlingSecond_eq_sum} this is "
    r"\lean{Fabius.bernoulli_eq_sum_stirlingSecond}."),
+ 'lem:merged-log-base-change': ('Lean',
+   r"\lean{Fabius.map_logOf} proves that coefficientwise application of every unital "
+   r"ring homomorphism between commutative $\mathbb Q$-algebras commutes with the "
+   r"normalized formal logarithm of a series with constant coefficient one; "
+   r"\lean{Fabius.map_bernoulliPowerSeries} gives the Bernoulli-kernel specialization, "
+   r"and \lean{Fabius.logOf_bernoulliPowerSeries_algebra} together with "
+   r"\lean{Fabius.coeff_logOf_bernoulliPowerSeries_algebra} transports all logarithmic "
+   r"coefficients, including degree zero (\lean{BernoulliFormalLog})."),
  'thm:merged-norlund-calculus': ('partial',
    r"For natural orders $\alpha,\gamma\in\mathbb N$ (module \lean{NorlundPolynomials}, "
    r"$\beta_n^{(a)}$ defined by \lean{Fabius.norlund}): \cref{eq:merged-norlund-appell} is "
@@ -691,7 +704,7 @@ STATUS = {
    r"\lean{Fabius.ascPochhammer_eq_prod_range}; the eventual vanishing that makes the spectral "
    r"reading vacuous is \lean{Fabius.stirlingFirst_cast_eq_zero_of_lt}.  The linear recurrence "
    r"over $\IntegerNumbers/h\IntegerNumbers$ and the Jordan decomposition are not formalized."),
- 'thm:lagrange-burmann': ('partial',
+ 'thm:lagrange-burmann': ('Lean',
    r"\cref{eq:lagrange-burmann} is \lean{Fabius.Lagrange.coeff_subst_derivative} and "
    r"\cref{eq:lagrange-basic} is \lean{Fabius.Lagrange.coeff_subst_id} (module "
    r"\lean{LagrangeInversion}), over any commutative $\RationalNumbers$-algebra and in the "
@@ -701,10 +714,14 @@ STATUS = {
    r"(\lean{Fabius.Lagrange.solution}, \lean{Fabius.Lagrange.solution_eq}), so "
    r"\lean{Fabius.Lagrange.coeff_solution_subst_derivative} and "
    r"\lean{Fabius.Lagrange.coeff_solution} concern the constructed solution under the "
-   r"inverse-series hypothesis.  New source in "
-   r"\lean{LagrangeInversionUniqueness} supplies uniqueness over any commutative ring and "
-   r"\cref{eq:lagrange-burmann-alt} via \lean{Fabius.Lagrange.coeff_solution_subst_alt}; "
-   r"compiler validation pending."),
+   r"inverse-series hypothesis.  \lean{Fabius.Lagrange.eq_solution_of_eq_X_mul_subst}, "
+   r"\lean{Fabius.Lagrange.existsUnique_solution}, and "
+   r"\lean{Fabius.Lagrange.existsUnique_of_isUnit_constantCoeff} prove the stated "
+   r"uniqueness, already over every commutative ring; "
+   r"\lean{Fabius.Lagrange.coeff_jacobian_mul} gives the division-free coefficient "
+   r"integration-by-parts identity, and \lean{Fabius.Lagrange.coeff_subst_alt} and "
+   r"\lean{Fabius.Lagrange.coeff_solution_subst_alt} give "
+   r"\cref{eq:lagrange-burmann-alt} (\lean{LagrangeInversionUniqueness})."),
  'thm:lambert-W-zero': ('partial',
    r"The series \cref{eq:lambert-W-zero} is \lean{Fabius.coeff_lambertW} (module "
    r"\lean{LambertWSeries}), for \lean{Fabius.lambertW} constructed as the Lagrange solution of "
@@ -833,6 +850,49 @@ STATUS = {
    r"\lean{Fabius.coeff_mul_newtonReciprocalStep}, and actual truncation "
    r"\lean{Fabius.X_pow_dvd_one_sub_mul_trunc_newtonReciprocalStep}; all over an arbitrary "
    r"commutative ring and checked by focused compilation."),
+ # --- second half (from the Bernoulli/Euler/Genocchi chapter on), session funny-gates ---
+ 'prop:merged-loday-hyperplane': ('Lean',
+   r"\lean{Fabius.lodaySum_eq}, \lean{Fabius.two_mul_lodaySum_add_numLeaves}, "
+   r"\lean{Fabius.sum_lodayCoordinates_eq_of_mem_treesOfNumNodesEq} "
+   r"(\lean{BinaryTreeRotations}); the lowest-common-ancestor bijection is not formalized"),
+ 'thm:merged-tamari-order': ('Lean',
+   r"\lean{Fabius.TamariRotate}, \lean{Fabius.tamariPotential_lt_of_tamariRotate}, "
+   r"\lean{Fabius.reflTransGen_tamariRotate_antisymm}, \lean{Fabius.instPartialOrderTamari} "
+   r"(\lean{BinaryTreeRotations})"),
+ 'thm:merged-pochhammer': ('partial',
+   r"\lean{Fabius.ascPochhammer_eval_add_index}, \lean{Fabius.descPochhammer_eval_add_index}, "
+   r"\lean{Fabius.ascPochhammer_eval_eq_Gamma_div}, "
+   r"\lean{Fabius.Gamma_add_natCast_eq_ascPochhammer_mul} (\lean{PochhammerFalling}); "
+   r"the binomial series is not formalized in Pochhammer form"),
+ 'thm:merged-pochhammer-derivatives': ('partial',
+   r"$m=1$: \lean{Fabius.derivative_ascPochhammer}, \lean{Fabius.derivative_ascPochhammer_eval}, "
+   r"\lean{Fabius.hasDerivAt_ascPochhammer_eval} (\lean{PochhammerFalling})"),
+ 'cor:merged-reciprocal-pochhammer': ('partial',
+   r"$m=1$: \lean{Fabius.hasDerivAt_inv_ascPochhammer_eval} (\lean{PochhammerFalling})"),
+ 'prop:merged-beta-integral': ('Lean',
+   r"\lean{Fabius.integral_cpow_mul_one_sub_natPow}, "
+   r"\lean{Fabius.betaIntegral_eq_factorial_div_ascPochhammer} (\lean{PochhammerFalling}), "
+   r"on Mathlib's \lean{Complex.betaIntegral_eval_nat_add_one_right}"),
+ 'thm:merged-catalan-bijection': ('partial',
+   r"Mathlib's \lean{DyckWord.equivTreesOfNumNodesEq} and "
+   r"\lean{card_dyckWord_semilength_eq_catalan}; parenthesizations not a separate type"),
+ 'thm:merged-periodic-bernoulli-fourier': ('partial',
+   r"$n\ge2$: Mathlib's \lean{fourierCoeff_bernoulli_eq}, \lean{summable_bernoulli_fourier}, "
+   r"\lean{hasSum_one_div_nat_pow_mul_cos}, \lean{hasSum_one_div_nat_pow_mul_sin}, "
+   r"\lean{hasSum_zeta_nat}; the $n=1$ clauses are not formalized"),
+ 'thm:merged-euler-gamma-limit': ('partial',
+   r"Euler's limit is Mathlib's \lean{Complex.GammaSeq_tendsto_Gamma} (pointwise); "
+   r"the Weierstrass product is not formalized"),
+ 'cor:merged-harmonic-expansion': ('partial',
+   r"leading order: Mathlib's \lean{Real.tendsto_harmonic_sub_log}; the Bernoulli tail "
+   r"needs Euler--Maclaurin, not formalized"),
+ 'prop:merged-modified-bernoulli': ('partial',
+   r"\lean{Fabius.sinhDivLogCoefficient_eq_bernoulli_formula} (\lean{SinhDivBernoulliLog}) "
+   r"at unit scale; the rescaling to $\beta^{\sharp}$ is not recorded"),
+ 'prop:merged-recurrence-uniqueness': ('Lean',
+   r"\lean{Fabius.eq_of_row_recurrence} (\lean{IdentityCertificates}), arrays with equal "
+   r"row 0, equal boundary values and equal row step; one-index ancestor "
+   r"\lean{Fabius.eq_of_recurrence} (\lean{TelescopingCertificate})"),
 }
 
 # A dict literal keeps the LAST of two equal keys and reports nothing, so a

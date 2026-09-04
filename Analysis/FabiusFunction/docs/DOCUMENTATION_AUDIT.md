@@ -1772,14 +1772,396 @@ Lambert relation, envelope, and divergence clauses of
 the pointwise statement `AnalyticAt ℝ wrightOmega X` for every real `X`; no
 complex branch or complex-holomorphic Wright-omega claim is made.
 
-Finally, the four unit-valued declarations in `TransseriesDifferentialBlock.lean`
-are exactly `derivation_val_inv`, `derivation_pow_inv`,
-`derivation_zpow_t`, and `derivation_block_zpow`.  Together with the eight
-retained theorems, they make the displayed
-integer block law `plt:eq:mot-block-derivative` **Exact** whenever `t` is
-represented by a unit.  They do not construct the concrete Laurent ambient
-ring, and the module's primitive-existence results remain natural-exponent
-statements; the larger `plt:prop:dif-block` therefore remains **Partial**.
+The four compatibility declarations `derivation_val_inv`,
+`derivation_pow_inv`, `derivation_zpow_t`, and `derivation_block_zpow`, plus
+the later `derivation_zpow_block`, `exists_zpow_block_primitive`, and
+`existsUnique_zpow_block_primitive`, bring
+`TransseriesDifferentialBlock.lean` to 0+12.  They make the displayed integer
+block law `plt:eq:mot-block-derivative` **Exact** and provide nonresonant
+Laurent-block existence in an ambient field, with uniqueness under injective
+evaluation at `L`.  They do not construct the concrete Laurent ambient ring
+or prove that evaluation is faithful in that model, and there is no single
+resonant uniqueness-up-to-constants wrapper; the larger
+`plt:prop:dif-block` therefore remains **Partial**.
+
+#### Merged Cayley, Lambert, endpoint, and transseries tranche
+
+The current merged tranche contributes fifteen facade modules, fourteen
+definitions, and 98 theorems, hence 112 explicit public declarations:
+
+- `BackwardErrorExistence.lean` 1+6: `HasSlopeLowerBound`,
+  `hasSlopeLowerBound_of_le_deriv`, `exists_eq_of_residual`,
+  `injOn_of_hasSlopeLowerBound`, `existsUnique_eq_of_residual`,
+  `exists_eq_and_abs_sub_le`, `exists_eq_of_le_deriv`.
+- `CayleyKernel.lean` 1+14: `cayleyKernelCoeff`, `factorial_pos_real`,
+  `cayleyKernelCoeff_eq_factorial`, `cayleyKernelCoeff_zero`,
+  `cayleyKernelCoeff_one`, `cayleyKernelCoeff_two`,
+  `cayleyKernelCoeff_three`, `exp_eq_tsum_pow_div_factorial`,
+  `tsum_exp_shift_one`, `tsum_exp_shift_two`,
+  `cayleyKernelCoeff_mul_pow_eq_sub`, `summable_cayleyKernelTerm`,
+  `tsum_cayleyKernelTerm_mul_sq`, `tsum_cayleyKernelTerm`,
+  `tsum_cayleyKernelTerm_zero`.
+- `CayleyLocalCoordinate.lean` 1+7: `one_sub_mul_exp_le_one`,
+  `cayleyUpsilon`, `cayleyUpsilon_zero`, `cayleyUpsilon_nonneg`,
+  `cayleyUpsilon_eq_half_mul_kernel`, `cayleyUpsilon_eq_half_mul_sq_kernel`,
+  `one_sub_upsilon_div_exp_one_le`, `cayleyTree_eq_one_sub`.
+- `CayleyTreeFunction.lean` 1+8: `cayleyTree`,
+  `principalLambertW_eq_neg_cayleyTree`, `cayleyTree_eq_mul_exp`,
+  `cayleyTree_zero`, `cayleyTree_nonneg`, `cayleyTree_exp_neg_one`,
+  `cayleyTree_strictMonoOn`, `cayleyTree_le_one`, `cayleyTree_unique`.
+- `DivisorTransform.lean` 2+9: `divisorTransform`,
+  `divisorTransform_zero`, `divisorTransform_eq_add_properDivisors`,
+  `divisorTransform_sub`, `two_mul_le_of_mem_properDivisors`,
+  `disturbanceCoeff`, `disturbanceCoeff_eq_divisorTransform`,
+  `disturbanceCoeff_one`, `disturbanceCoeff_congr`,
+  `disturbanceCoeff_prime`, `disturbanceCoeff_nonneg`.
+- `ExpSeriesRecurrence.lean` 1+3: `expCoeff`, `expCoeff_zero`,
+  `succ_mul_expCoeff_succ`, `natCast_mul_expCoeff`.
+- `FabiusEndpointTwoTerm.lean` 0+2: `fabiusReal_le_exp_endpoint`,
+  `log_fabiusReal_le_endpoint`.
+- `LambertCorrectionEquation.lean` 2+9: `corrB`, `corrCoeff`,
+  `corrCoeff_zero`, `corrCoeff_one`, `corrB_zero`, `hasDerivAt_corrB`,
+  `hasDerivAt_corrB_zero`, `deriv_corrB_zero_pos`,
+  `summable_corrExpTerm`, `tsum_corrExpTerm`, `corrB_eq_tsum`.
+- `LambertShiftConcavity.lean` 0+5: `strictConcaveOn_lambertShift`,
+  `strictConcaveOn_lambertShift_Ici_zero`,
+  `abs_sub_lambertShiftInv_sandwich`, `residual_sign_agrees`,
+  `residual_eq_zero_iff`.
+- `LaplaceMomentBoundsSharp.lean` 0+7:
+  `normalizedLaplaceMoment_three_le_sharp`,
+  `normalizedLaplaceMoment_four_le_sharp`,
+  `dyadicHigherLaplaceMoments_le_sharp`,
+  `abs_negativeLaplaceTailError_nat_le_four_div`,
+  `abs_dyadicEndpointLaplaceLogError_add_secondOrder_le_sharp`,
+  `abs_dyadicEndpointLaplaceLogError_add_secondOrder_le_sharp'`,
+  `abs_log_fabius_dyadic_sub_cumulantMain_le_sharp`.
+- `LeastTermIndex.lean` 1+6: `gevreyTerm`, `gevreyTerm_succ`,
+  `gevreyTerm_pos`, `gevreyTerm_succ_lt`, `gevreyTerm_lt_succ`,
+  `gevreyTerm_antitoneOn`, `gevreyTerm_monotoneOn`.
+- `TouchardEulerOperator.lean` 2+8: `touchardPolynomial_zero`,
+  `coeff_touchardPolynomial`,
+  `touchardPolynomial_succ_eq_X_mul_add_derivative`, `eulerOp`,
+  `iterate_eulerOp_exp`, `exp_neg_mul_iterate_eulerOp_exp`,
+  `eval_touchardPolynomial_succ_eq_sum_Icc`, `touchardQ`,
+  `touchardQ_mul`, `touchardQ_one`.
+- `TransseriesBlockClasses.lean` 0+3: `plMonomial_zero_left`,
+  `exists_log_bracket_iff`, `exists_log_bracket_div_iff`.
+- `TransseriesDifferentialClosure.lean` 2+9: `IsDerivationStable`,
+  `isDerivationStable_top`, `isDerivationStable_iInf`,
+  `isDerivationStable_adjoin`, `derivationOrbit`,
+  `subset_derivationOrbit`, `derivation_mem_derivationOrbit`,
+  `isLeast_adjoin_derivationOrbit`,
+  `isLeast_adjoin_singleton_of_derivation_eq_one`,
+  `isLeast_adjoin_pair_of_derivation_log`,
+  `isLeast_adjoin_triple_of_derivation_log`.
+- `TransseriesMonomialUniqueness.lean` 0+2:
+  `tendsto_plMonomial_div_const_mul_one_iff`,
+  `isEquivalent_plMonomial_const_mul_iff`.
+
+The same merge adds five net declarations in existing modules:
+`QBinomialTheoremInfinite.lean` gains
+`norm_finiteQPochhammerIn_pow_sub_one_le_exp_of_norm_le_one`,
+`isBigO_finiteQPochhammerIn_pow_sub_one`,
+`tendsto_gaussianBinomial_add_const_atTop`,
+`isBigO_gaussianBinomial_sub_inv`, and
+`isBigO_gaussianBinomial_add_sub_inv`; `RemainderTransport.lean` gains
+`transport_first_order`; and the shifted-limit ownership move reduces
+`GaussianBinomialFixedColumnRate.lean` from 0+10 to 0+9.  This accounts for
+the exact historical delta from the 952/11,884 checkpoint to
+967/12,001.  This paragraph records that historical tranche completely; the
+later 970/12,051 union is inventoried separately below; the final incoming and
+ordinary-multinomial overlay is inventoried after it.
+
+The label crosswalk is deliberately scoped.  `q3:prop:transfer`,
+`plt:prop:mot-fabius-endpoint`, `q1:prop:certificate`,
+`q2:def:touchard`, and `plt:prop:mot-blocks` are **Exact**.  The real
+coefficient and summation content of `p1:def:cayley-kernel` is exact, without
+a complex `Analytic` assertion.  `p1:def:cayley` remains **Partial** only at
+complex-disc analyticity; `p1:thm:omega` remains **Partial** at square-root
+reversion, the Bell master formula, and the Puiseux expansion;
+`p1:lem:R-coefficients`, `p1:lem:gamma-ratio`, `q1:prop:B`,
+`p0:thm:optimal-truncation`,
+`plt:thm:mot-smallest-differential-algebra`, and
+`plt:cor:mot-both-generators-needed` retain the limitations recorded in the
+coverage ledger.  `q1:prop:brackets` is now partial only at the two one-sided
+endpoint derivative values.  The sharp Laplace bounds retain their square-root
+denominators and explicit threshold/constants, with no claim that those
+constants are optimal.
+
+#### Two-order, Stirling, Appell, and formal-power overlay
+
+From the historical 967/12,001 checkpoint, two new modules and 24 declarations
+in existing modules give the historical 969/12,048 checkpoint.  The new leaves
+are `StirlingSeriesCoefficients.lean` 3+12 and
+`WrightOmegaTwoOrders.lean` 0+8.  The existing-module delta is exactly four
+declarations in `TransseriesScale.lean` (`poincarePartialSum`,
+`poincarePartialSum_zero`, `poincarePartialSum_succ`, and
+`IsPoincareExpansion.tendsto_coeff_div`), six in `TransseriesFlat.lean`
+(`isFlat_exp_neg_rpow_atTop`, `IsPoincareExpansion.add_flat`,
+`IsPoincareExpansion.sub_same_coeff_isFlat`,
+`IsPoincareExpansion.iff_sub_isFlat`,
+`IsFlat.smul_of_scale_absorption`, `IsFlat.smul_of_isBigO_inv_pow`), three in
+`TransseriesDifferentialBlock.lean` (`derivation_zpow_block`,
+`exists_zpow_block_primitive`, `existsUnique_zpow_block_primitive`), and the
+following eleven in `AppellSequence.lean`: `Bell.binomialConv_unitSeq`,
+`Bell.binomialConv_four_swap`, `Appell.translate_zero`,
+`Appell.translate_translate`, `Appell.binomialConv_translate`,
+`Appell.translate_injective`, `Appell.translate_neg_translate`,
+`Appell.translate_translate_neg`, `Appell.translate_eq_iff`,
+`Appell.weighted_binomial_inversion_iff`, and
+`Appell.binomialConv_translate_neg_translate`.
+
+`StirlingSeriesCoefficients.lean` defines `stirlingKernelCoeff`,
+`stirlingKernel`, and `stirlingCoeff`; its twelve theorems are
+`coeff_stirlingKernel`, `constantCoeff_stirlingKernel`,
+`stirlingCoeff_zero`, `stirlingCoeff_recurrence`, `bernoulli_three`,
+`bernoulli_four`, `stirlingKernelCoeff_one`, `stirlingKernelCoeff_two`,
+`stirlingKernelCoeff_three`, `stirlingCoeff_one`, `stirlingCoeff_two`, and
+`stirlingCoeff_three`.  The formal definition, recurrence, and displayed
+values in `q2:eq:stirling-cj` are **Exact**; the surrounding analytic
+Fubini-sector expansion is not claimed.
+
+`WrightOmegaTwoOrders.lean` has eight theorems: `wrightOmega_lt_self`,
+`tendsto_log_wrightOmega_div_atTop_zero`,
+`tendsto_wrightOmega_div_atTop_one`,
+`tendsto_log_wrightOmega_sub_log_atTop_zero`,
+`tendsto_log_wrightOmega_div_log_atTop_one`,
+`self_sub_wrightOmega_isEquivalent_log`,
+`wrightOmega_sub_self_isEquivalent_neg_log`, and
+`wrightOmega_residual_isEquivalent`.  The two concluding real equivalences of
+`plt:prop:mot-two-orders` are **Exact** at `atTop`; the proposition remains
+**Partial** at its four-term expansion and explicit quantitative envelope.
+
+The Appell extension makes `thm:merged-weighted-binomial-translation`
+**Exact** over a commutative semiring, with additive left cancellation needed
+only for injectivity, and `cor:merged-weighted-binomial-inversion` **Exact**
+over a commutative ring.  These are finite coefficient identities, not
+analytic EGF claims.
+
+Finally, `UnitSeriesPowerRecurrence.lean` is 0+3:
+`coeff_recurrence_of_mul_derivative_eq`,
+`mul_derivative_fallingSeries_subst_sub_one`, and
+`coeff_fallingSeries_subst_sub_one_recurrence`.  The first is denominator-free
+over any commutative ring and does not assume `F(0)=1`; the latter two work
+over a commutative rational algebra with `F(0)=1`.  They make all of
+`alg:merged-exp-log-power` **Exact**, with no analytic power or branch claim.
+At that checkpoint the coefficient-calculus register was 59 Lean, 33 Partial,
+and 111 None, 203 rows total.  This leaf gives the historical 970/12,051
+census.
+
+#### Rescaling, Abel, Catalan, and ordinary-multiplicity overlay
+
+The next source merge adds five modules with ten definitions and 53 theorems.
+Three of those theorems retain existing public names moved from
+`NorlundDiagonal.lean` to `ExponentialRescaling.lean`, so the net delta is five
+modules and 60 declarations: the historical pre-ordinary checkpoint is
+975/12,111, while `NorlundDiagonal.lean` is now 0+10.
+
+`ExponentialRescaling.lean` is 0+4: `derivative_rescale`,
+`derivative_rescale_exp`, `rescale_zero_exp`, and `rescale_exp_add_one`.
+The first theorem is a division-free coefficientwise chain rule over every
+commutative semiring; the other three are formal-exponential identities over a
+commutative rational algebra.  The last three names moved here from
+`NorlundDiagonal`; only `derivative_rescale` is a new declaration in the
+combined inventory.  This makes `lem:merged-formal-rescaling` **Exact** as a
+formal-power-series result, with no analytic exponential claim.
+
+`AbelPolynomialSeries.lean` is 2+9.  Its definitions are `abelPolynomial` and
+`abelSeries`; its theorems are `abelPolynomial_zero`,
+`abelPolynomial_succ`, `abelPolynomial_succ_eval`, `abelSeries_eq`,
+`hasSubst_abelSeries`, `abel_eq_zero_and_one`,
+`coeff_exp_subst_of_abel_eq`, `exp_subst_eq_egfA_abelPolynomial`, and
+`abelPolynomial_eval_add`.  The polynomial formulas hold over every
+commutative ring; the formal EGF statements use a commutative rational
+algebra.  The canonical Abel series is constructed, and the coefficient/EGF
+theorems also apply to every series satisfying the functional equation.
+Thus `prop:merged-abel` is **Exact**, including degree zero and the binomial
+identity, without an analytic convergence assertion.
+
+`BernoulliFormalLog.lean` is 0+5:
+`bernoulliPowerSeries_mul_massSeries_expm1Div`,
+`logOf_bernoulliPowerSeries`, `coeff_logOf_bernoulliPowerSeries`,
+`coeff_one_logOf_bernoulliPowerSeries`, and
+`coeff_logOf_bernoulliPowerSeries_of_two_le`.  It proves over `ℚ` the exact
+formal logarithm of `t/(exp t-1)`, explicitly separating the degree-one
+Bernoulli convention.  The formal-logarithm clause
+`eq:merged-log-bernoulli-kernel` is **Exact**; no analytic logarithm or radius
+is asserted.  The larger `thm:merged-norlund-bell-diagonal` remains
+**Partial** at its Bell-polynomial construction.
+
+`RaneyNumbers.lean` is 4+12.  Its definitions are `raneyPhi`, `raneyPsi`,
+`raneyG`, and `raneyT`; its theorems are `coeff_one_add_X_pow`,
+`constantCoeff_raneyPhi`, `raneyPhi_mul_raneyPsi`, `raneyG_def`,
+`hasSubst_raneyG`, `constantCoeff_raneyG`,
+`subst_one_add_X_pow_raneyG`, `raneyT_eq`, `constantCoeff_raneyT`,
+`natCast_mul_coeff_raneyT_pow`, `coeff_raneyT_pow`, and `coeff_raneyT`.
+It constructs the canonical rational formal series, proves its functional
+equation, and proves both division-free and divided coefficient formulas,
+including degree zero.  This is an exact coefficient formula for that
+constructed solution; `thm:merged-raney` remains **Partial** if read as a
+statement about an arbitrary solution, because no uniqueness/transfer theorem
+is supplied.  No analytic convergence is claimed.
+
+`AssociahedronFaceNumbers.lean` is 4+23.  Its definitions are
+`dissectionNumber`, `associahedronFaceNumber`, `associahedronH`, and
+`associahedronHPoly`.  The dissection group is `dissectionNumber_mul`,
+`succ_dvd_choose_mul_choose`, `dissectionNumber_eq_div`,
+`dissectionNumber_nonneg`, `dissectionNumber_eq_zero_of_lt`,
+`dissectionNumber_mul_of_three_le`,
+`succ_dvd_choose_mul_choose_of_three_le`,
+`dissectionNumber_zero_right`, `dissectionNumber_one`, and
+`dissectionNumber_self`.  The face group is `associahedronFaceNumber_eq`,
+`associahedronFaceNumber_mul`, `associahedronFaceNumber_zero`,
+`two_mul_associahedronFaceNumber_facet`, and
+`associahedronFaceNumber_top`.  The `h`-group is `associahedronH_eq`,
+`associahedronH_mul`, `associahedronH_symm`, `associahedronH_zero`,
+`associahedronH_top`, `sum_associahedronH`, `associahedronHPoly_one`, and
+`associahedronHPoly_one_eq_faceNumber_zero`.  The division-free formulas,
+integrality, boundary values, Narayana-row symmetry, and Catalan sum are exact
+arithmetic.  `thm:merged-kirkman-cayley`,
+`cor:merged-associahedron-f`, and `thm:merged-associahedron-h` remain
+**Partial** as geometric claims: no dissections, face lattice, bijection, or
+face-transform derivation is constructed, and the face and `h` values are
+defined by the claimed arithmetic formulas.
+
+Finally, `OrdinaryBellComposition.lean` is now 2+9: the new
+`ordPartialBell_congr_of_le` records dependence only on weights with
+`1 ≤ i ≤ n`, and the older `ordPartialBell_congr` remains its unbounded
+wrapper.  `OrdinaryBellMultinomial.lean` is 1+3: its definition is
+`ordinaryMultiplicityProfiles`, and its theorems are
+`mem_ordinaryMultiplicityProfiles`, `ordPartialBell_eq_sum_multinomial`, and
+`coeff_subst_eq_sum_multinomial`.  Multiplicity profiles are functions
+`Fin n → ℕ` constrained by their part count and weighted sum.  The Bell
+multinomial theorem works over every commutative semiring; the substitution
+corollary works over a commutative ring, assumes zero constant term for the
+inner series, and includes degree zero.  This makes
+`thm:ordinary-composition` **Exact** as formal coefficient algebra, with no
+analytic-composition or convergence claim.
+
+The ordinary leaf plus the existing-module theorem add one module and five
+declarations, giving the historical 976/12,116 census with zero documentation
+gaps.  At that checkpoint the coefficient-calculus register was 62 Lean, 36
+Partial, and 106 None, 204 rows total.  Lexical and inventory checks passed.  Direct sequential
+compilation passed for `OrdinaryBellComposition`, `OrdinaryBellMultinomial`,
+`ExponentialRescaling`, `LambertWSeries`, `NorlundDiagonal`,
+`BernoulliFormalLog`, `AbelPolynomialSeries`, `RaneyNumbers`, and
+`AssociahedronFaceNumbers`; this is a focused receipt, not a full-rebuild
+claim.
+The direct callers `UnitSeriesBellCoefficients`, `OrdinaryBellBivariate`,
+and `ExpLog` also passed, followed by an import check of the complete
+`FabiusFunction.lean` facade against the compiled dependency cache. The
+pre-existing unused-section-variable warnings in the latter two callers
+do not affect those successful checks.
+
+#### Pochhammer, Nörlund, Lagrange, Stirling, and Wright-term union
+
+The final union adds ten modules with exactly 80 declarations, then the
+three-theorem Raney uniqueness leaf.  The exhaustive new-module inventory is:
+
+- `PochhammerFalling.lean` 1+13: `shiftedHarmonic`;
+  `shiftedHarmonic_one`, `ascPochhammer_eval_add_index`,
+  `descPochhammer_eval_add_index`, `ascFactorial_add_index`,
+  `descFactorial_add_index`, `derivative_ascPochhammer`,
+  `derivative_ascPochhammer_eval`, `hasDerivAt_ascPochhammer_eval`,
+  `hasDerivAt_inv_ascPochhammer_eval`,
+  `Gamma_add_natCast_eq_ascPochhammer_mul`,
+  `ascPochhammer_eval_eq_Gamma_div`,
+  `betaIntegral_eq_factorial_div_ascPochhammer`, and
+  `integral_cpow_mul_one_sub_natPow`.  Splitting, the stated Gamma quotient,
+  and the beta integral are exact; the two general higher-derivative claims
+  remain Partial because this leaf proves only derivative order one.
+- `GridEvaluationCertificate.lean` 0+4 and
+  `IntegerCRTCertificate.lean` 0+5.  The grid names are
+  `mvPolynomial_eq_of_eval_eq_on_grid`,
+  `mvPolynomial_eq_of_eval_eq_on_grid_of_degreeOf_sub_le`,
+  `mvPolynomial_eq_of_eval_eq_on_grid_of_degreeOf_le`, and
+  `mvPolynomial_grid_eval_injective`.  The integer names are
+  `int_prod_dvd_of_pairwise_coprime`,
+  `int_eq_zero_of_modEq_zero_of_natAbs_lt_prod`,
+  `int_eq_of_modEq_of_natAbs_sub_lt_prod`,
+  `int_eq_of_modEq_of_natAbs_add_lt_prod`, and
+  `int_eq_of_modEq_of_two_mul_natAbs_lt_prod`.  These are deterministic
+  certificates, not probabilistic tests or reconstruction algorithms.
+- `NorlundGeneralized.lean` 3+18.  Its definitions are
+  `generalizedNorlundKernel`, `generalizedNorlund`, and
+  `generalizedNorlundCumulant`.  Its theorems are
+  `constantCoeff_generalizedNorlundKernel`,
+  `generalizedNorlundKernel_zero`, `generalizedNorlundKernel_one`,
+  `generalizedNorlundKernel_add`, `generalizedNorlundKernel_natCast`,
+  `generalizedNorlund_zero`, `generalizedNorlund_monic`,
+  `natDegree_generalizedNorlund`, `derivative_generalizedNorlund_succ`,
+  `egfA_generalizedNorlund_eval`, `generalizedNorlund_eval_add`,
+  `generalizedNorlund_add_eval_add`, `generalizedNorlund_natCast`,
+  `generalizedNorlundCumulant_zero`, `generalizedNorlundCumulant_one`,
+  `generalizedNorlundCumulant_of_two_le`,
+  `bellWeightSeries_generalizedNorlundCumulant`, and
+  `generalizedNorlund_eval_eq_completeBell`.  The order may be any scalar in
+  a commutative rational algebra, including zero and negatives.  All claims
+  are formal series or polynomial statements; no analytic logarithm or
+  convergence is asserted.
+- `LagrangeInversionUniqueness.lean` 0+6:
+  `Lagrange.eq_solution_of_eq_X_mul_subst`,
+  `Lagrange.existsUnique_solution`,
+  `Lagrange.existsUnique_of_isUnit_constantCoeff`,
+  `Lagrange.coeff_jacobian_mul`, `Lagrange.coeff_subst_alt`, and
+  `Lagrange.coeff_solution_subst_alt`.  Existence and uniqueness and the
+  denominator-retaining Jacobian identity are commutative-ring results; the
+  divided alternative coefficient formula requires a commutative rational
+  algebra and `1 ≤ n`.  Focused compilation passed, making
+  `thm:lagrange-burmann` Exact in this formal scope.
+- `NewtonReciprocal.lean` 1+5: `newtonReciprocalStep`;
+  `one_sub_mul_newtonReciprocalStep`, `X_dvd_one_sub_mul_C`,
+  `X_pow_dvd_one_sub_mul_newtonReciprocalStep`,
+  `coeff_mul_newtonReciprocalStep`, and
+  `X_pow_dvd_one_sub_mul_trunc_newtonReciprocalStep`.  The exact residual
+  square and doubled `X`-adic precision, including actual truncation, hold
+  over every commutative ring.  No complexity bound is asserted.
+- `StirlingCompleteHomogeneous.lean` 0+8, with the exhaustive names and scope
+  in its dedicated registration subsection above;
+  `StirlingSecondReverseRowIdentity.lean` 0+2,
+  `second_reverse_row_sum` and `second_reverse_row`; and
+  `StirlingSymmetricFunctions.lean` 0+4,
+  `completeHomogeneousEvalOn_scaled_range`,
+  `stirlingFirst_eq_sum_powersetCard`, `stirlingFirst_eq_esymm`, and
+  `esymm_scaled_range`.  The reverse-row theorem holds over every
+  commutative ring with exactly `1 ≤ k ≤ n`; the symmetric-function formulas
+  hold over every commutative semiring, with `r ≤ n` only where displayed.
+- `TransseriesWrightOmegaTerms.lean` 0+10:
+  `plMonomial_one_zero_eventuallyEq`,
+  `plMonomial_zero_one_eventuallyEq`,
+  `plMonomial_neg_one_one_eventuallyEq`, `exponents_of_wrightOmega`,
+  `exponents_of_wrightOmega_sub`, `exponents_of_wrightOmega_residual`,
+  `not_pure_of_wrightOmega_three_terms`,
+  `not_isEquivalent_pure_power_wrightOmega_sub`,
+  `tendsto_wrightOmega_div_plMonomial_zero_atTop`, and
+  `isLittleO_wrightOmega_residual_plMonomial_zero`.  Together with the two
+  new general-coefficient comparisons in `TransseriesMonomialUniqueness`, it
+  proves the unique first three exponent/coefficient triples and both
+  pure-scale failures over the reals at `atTop`.  It constructs no abstract
+  transseries field or complex Wright-omega branch.
+
+The two in-place declaration extensions are exhaustive: the six new
+`BernoulliFormalLog.lean` theorems are
+`constantCoeff_bernoulliPowerSeries`, `map_logOf`,
+`map_bernoulliPowerSeries`, `logOf_bernoulliPowerSeries_algebra`,
+`coeff_logOf_bernoulliPowerSeries_algebra`, and
+`coeff_logOf_bernoulliPowerSeries_algebra_of_two_le`; the module is now
+0+11.  `TransseriesMonomialUniqueness.lean` is now 0+4 after adding
+`tendsto_const_mul_plMonomial_div_one_iff` and
+`isEquivalent_const_mul_plMonomial_iff`.  These +8 declarations produce the
+pre-uniqueness 986/12,204 census from 976/12,116 together with the ten new
+modules above.
+
+Finally, `RaneyNumbersUniqueness.lean` is 0+3:
+`eq_raneyT_of_eq_one_add_X_mul_pow`,
+`natCast_mul_coeff_pow_of_eq_one_add_X_mul_pow`, and
+`coeff_pow_of_eq_one_add_X_mul_pow`.  Focused compilation passed.  The leaf
+proves uniqueness and transports the existing denominator-cleared and divided
+coefficient formulas to every rational formal solution of `T = 1 + X*T^p`.
+It permits `p=0`, includes degree zero in the divided formula, and retains
+exactly `1≤r`.  Thus `thm:merged-raney` is Exact as a formal-series statement,
+without an analytic convergence claim.  This final leaf gives the live
+987/12,207 census with zero documentation gaps.
 
 The one-definition/eight-theorem
 `RvachevSuperconvergentSynthesis.lean` leaf contributes

@@ -147,14 +147,31 @@ interpretation and the Stirling block-count specialization; its compiled
 status is recorded by upstream commit `dd554e5a8`, not a fresh local replay.
 The prescribed-block-size type count remains a separate obligation.
 
+## Formal-power recurrence (2026-09-04)
+
+`UnitSeriesPowerRecurrence` supplies three checked theorems. Over any
+commutative ring, the differential equation `A C' = α A' C` implies
+`n a₀ cₙ = Σ_{j=1}^n ((α+1)j−n) aⱼ cₙ₋ⱼ`, without assuming `a₀` is
+invertible. Over a commutative rational algebra with `a₀=1`, formal binomial
+substitution gives `C=A^α`, satisfies that differential equation, and yields
+the manuscript's triangular coefficient algorithm. Its proof and crosswalk
+now cover all three clauses of `alg:merged-exp-log-power` exactly.
+
+The proof uses the Euler derivative `z d/dz` to keep degree indices aligned,
+then separates the constant-coefficient term of the Cauchy product. The
+canonical source includes that complete argument, including the constant
+term and inductive uniqueness of the resulting coefficient sequence. This
+is formal algebra; no analytic branch choice or convergence claim is made.
+
 ## Coefficient-calculus campaign (2026-09-04)
 
-Four new leaf modules supply seventeen public theorem statements, with complete
-human proofs and exact declaration names in the manuscript. `NewtonReciprocal`
-has passed focused Lean compilation, including the actual truncated update.
-`StirlingSymmetricFunctions`, `LagrangeInversionUniqueness`, and
-`StirlingSecondReverseRowIdentity` have received independent source/API reviews;
-their compiler validation is pending. The register preserves that distinction.
+The new leaf modules supply the public theorem statements listed in the
+register, with complete human proofs and exact declaration names in the
+manuscript. `NewtonReciprocal`, `StirlingSymmetricFunctions`,
+`LagrangeInversionUniqueness`, and `StirlingSecondReverseRowIdentity` have all
+passed direct sequential Lean compilation, including the actual truncated
+Newton update and the integer-transport reverse-row identity. The register
+preserves the remaining claim-level distinctions.
 The two second-kind symmetric-function formulas are shared with the compiled
 upstream `StirlingCompleteHomogeneous` module; their duplicate implementations
 were removed from this campaign's leaf.
