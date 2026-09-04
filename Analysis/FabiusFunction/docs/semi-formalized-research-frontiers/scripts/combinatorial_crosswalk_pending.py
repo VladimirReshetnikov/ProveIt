@@ -1104,23 +1104,39 @@ formalized.""")),
 
 PENDING += [
  # --- thm:merged-moment-cumulant ---
- (r"""partitions by block sizes is exactly the coefficient expansion of $\EulerE^K$ and
-$\log M$.
+ (r"""Each unordered partition into $k$ blocks has $k!$ block orders, so its
+logarithmic weight is $(-1)^{k-1}k!/k=(-1)^{k-1}(k-1)!$.
+This gives the backward relation coefficientwise and proves the two
+formal-series equivalences without any convergence assumption.
 \end{proof}
 """,
-  remark(r"""% ed.: crosswalk added 2026-09-02; the formal statement is the block-size (Bell polynomial) form.
-Module \lean{BellPolynomialInversion} defines the complete Bell polynomials
-\lean{Bell.complete} by the recurrence $m_{n+1}=\sum_k\binom nk\kappa_{k+1}m_{n-k}$
-(the sum over partitions grouped by the block containing $n+1$) and the
-cumulant sequence \lean{Bell.cumulant} by the inverse recurrence, and proves
-that the two constructions are mutually inverse
-(\lean{Bell.complete_cumulant} for $m_0=1$, \lean{Bell.cumulant_complete}
-for $\kappa_0=0$), over any commutative ring; the generating-function form
-$M=\EulerE^K$ is \lean{Fabius.exp_subst_bellWeightSeries} (module
-\lean{BellGeneratingFunctions}), where $K$ is the weight series
-\lean{Fabius.bellWeightSeries}.  The sums over the partition lattice
-\cref{eq:merged-moment-cumulant-forward,eq:merged-moment-cumulant-backward}
-and the identity $K=\log M$ are not formalized.""")),
+  remark(r"""% ed.: crosswalk updated 2026-09-04; recurrence, formal series, and partitions have distinct scopes.
+Module \lean{BellPolynomialInversion} defines the complete Bell family
+\lean{Bell.complete} and its inverse recurrence \lean{Bell.cumulant}.
+They are mutually inverse over every commutative ring:
+\lean{Bell.complete_cumulant} assumes $m_0=1$, and
+\lean{Bell.cumulant_complete} assumes $\kappa_0=0$.
+
+The generating-function statements are formal power-series identities over
+every commutative $\RationalNumbers$-algebra.
+\lean{Fabius.exp_subst_bellWeightSeries} in
+\lean{BellGeneratingFunctions} identifies the exponential of the cumulant
+weight series with the EGF of its complete Bell family.
+For $m_0=1$, \lean{Fabius.logOf_egfA} in
+\lean{CumulantBellFormula} identifies $\log M$ with the EGF of the
+alternating factorial-weighted partial Bell sum
+\lean{Fabius.cumulantSum}; \lean{Fabius.cumulant_eq_cumulantSum}
+identifies that sequence with \lean{Bell.cumulant}.
+Together they prove $K=\log M$ for the recursively defined cumulants.
+The inverse identity used in the proof is
+\lean{Fabius.exp_subst_logOf} in \lean{ExpLog}, for a formal series with
+constant coefficient $1$.
+
+The remaining obligation is the identification with the sums over actual
+set partitions in
+\cref{eq:merged-moment-cumulant-forward,eq:merged-moment-cumulant-backward}.
+Thus the formal-series and block-size formulas are formalized, while the
+set-partition formulation remains partial.""")),
 ]
 
 PENDING += [
@@ -1558,14 +1574,19 @@ implication: \lean{Fabius.egfA_eq_exp_mul_iff} and
 \lean{Fabius.egfA_eq_exp_mul_iff_egfA_eq_altSeries_mul} relating the two
 generating-function equations directly.
 Two remarks on the formal proofs.  Multiplying exponential generating functions
-is binomial convolution (\lean{Bell.egfA_mul}), so the only content is that
+is binomial convolution (\lean{Fabius.egfA_mul}), so the only content is that
 convolving against the constant sequence $1$, or against $(-1)^n$, gives the
 displayed sums after reflecting the summation index
 (\lean{Fabius.binomialConv_one_left},
 \lean{Fabius.binomialConv_altSeries_left}).  And
-\lean{Fabius.exp_mul_altSeries} is the binomial theorem at $-1+1=0$ rather than
-a separate alternating-sum computation, which keeps it valid over an arbitrary
-commutative ring instead of only over $\IntegerNumbers$.""")),
+\lean{Fabius.exp_mul_altSeries} uses the binomial theorem at $-1+1=0$ for
+coefficient cancellation.  This cancellation is valid in every commutative
+ring; the EGF statements retain their $\RationalNumbers$-algebra hypothesis
+because their coefficients contain inverse factorials.
+The reverse triangular product is supplied by the general commutation theorem
+\lean{Fabius.lowerTriangular_orthogonal_comm}, and both directions are
+instances of the finite triangular transform calculus of
+\lean{Fabius.lowerTriangularTransform}.""")),
 ]
 
 PENDING += [

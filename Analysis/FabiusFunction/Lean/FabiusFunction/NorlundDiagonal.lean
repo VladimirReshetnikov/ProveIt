@@ -1,5 +1,6 @@
 import FabiusFunction.NorlundPolynomials
 import FabiusFunction.StirlingBasisChange
+import FabiusFunction.ExponentialRescaling
 
 /-!
 # The Nörlund diagonal
@@ -55,26 +56,6 @@ theorem descPochhammer_eval_neg_one (n : ℕ) :
   rw [h, ascPochhammer_eval_one]
 
 /-! ### The exponential and the Bernoulli generating function -/
-
-/-- `d/dt e^{xt} = x e^{xt}`. -/
-theorem derivative_rescale_exp (x : ℚ) :
-    d⁄dX ℚ (rescale x (exp ℚ)) = PowerSeries.C x * rescale x (exp ℚ) := by
-  ext n
-  simp only [coeff_derivative, coeff_rescale, coeff_exp, coeff_C_mul, Algebra.algebraMap_self,
-    RingHom.id_apply, Nat.factorial_succ]
-  have hf : (n.factorial : ℚ) ≠ 0 := by positivity
-  push_cast
-  field_simp
-  ring
-
-/-- `e^{0·t} = 1`. -/
-theorem rescale_zero_exp : rescale (0 : ℚ) (exp ℚ) = 1 := by
-  rw [rescale_zero, RingHom.comp_apply, constantCoeff_exp, map_one]
-
-/-- `e^{(x+1)t} = e^{xt} e^t`. -/
-theorem rescale_exp_add_one (x : ℚ) :
-    rescale (x + 1) (exp ℚ) = rescale x (exp ℚ) * exp ℚ := by
-  rw [← exp_mul_exp_eq_exp_add, rescale_one, RingHom.id_apply]
 
 /-- **The Riccati equation for `B = t/(e^t-1)`:** `t B' = B - B² - t B`. -/
 theorem X_mul_derivative_bernoulliPowerSeries :
