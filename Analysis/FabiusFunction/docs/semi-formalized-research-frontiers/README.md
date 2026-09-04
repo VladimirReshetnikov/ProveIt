@@ -172,7 +172,9 @@ not close the distinct global `RatFunc` and root-of-unity continuation gap, so
 `thm:qF-moment-polynomial` remains **Partial**. The 0+3 leaf gives the
 historical sharp checkpoint 921 modules and 11,575 public declarations.
 `RvachevLaurentLeading` 1+6 then gives 922/11,582, and
-`FinitePrefixAppellRecovery` 11+17 gives the live 923/11,610 census. The
+`FinitePrefixAppellRecovery` 11+17 gives the historical 923/11,610
+checkpoint. The two new probability theorems and the 1+1 Legendre--Rvachev
+biorthogonality leaf give the live 924/11,614 census. The
 retained frontier, primary,
 walkthrough, and geometric-q PDFs predate these source-only overlays and claim
 no render parity.
@@ -217,7 +219,9 @@ historical 918/11,568 checkpoint; `HalfQBinomialRootSimplicity` gave the actual
 merged-main pre-local checkpoint 919/11,569; the exterior reciprocal-germ leaf
 gave 920/11,572; and the sharp-degree leaf gave the historical 921/11,575
 checkpoint. `RvachevLaurentLeading` then gives 922/11,582, and
-`FinitePrefixAppellRecovery` gives the live 923/11,610 union.
+`FinitePrefixAppellRecovery` gives the historical 923/11,610 checkpoint. The
+two-theorem extension of `ProbabilityLaplaceMoments` gives 923/11,612, and
+`RvachevLegendreBiorthogonality` 1+1 gives the live 924/11,614 union.
 
 `FabiusFunction.RvachevLaurentLeading` has one definition and six theorems.
 Its manuscript-normalized punctured-neighborhood limit, together with the
@@ -240,6 +244,31 @@ prefix moments are an algebraic finite-convolution model, not a new
 random-variable, `HasLaw`, or analytic-MGF realization. These promotions give
 the inverse package's current 54 Lean-proved / 91 human-proved totals.
 
+The existing `FabiusFunction.ProbabilityLaplaceMoments` module now adds
+exactly two public theorems:
+`Fabius.weightedSumDistribution_real_Ici_eq_rvachevUp_of_nonneg` and
+`Fabius.integral_pow_weightedSumDistribution_eq_mul_intervalIntegral_rvachevUp`.
+Atomlessness changes the established strict tail to the manuscript's closed
+event `X ≥ t` for every `t ≥ 0`; survival layer cake gives
+`E[X^n] = n ∫₀¹ t^(n-1) up(t) dt` for every natural `n ≥ 1`, with the
+expectation over the full weighted-sum law. Composed with the existing global
+up/Fabius identities, these make `prop:up-tail` and `cor:up-moments` Exact.
+No density assertion or degree-zero extension is claimed.
+
+`FabiusFunction.RvachevLegendreBiorthogonality` has exactly one definition,
+`Fabius.rvachevLegendreAnalysisKernel`, and one theorem,
+`Fabius.rvachevLegendreBiorthogonality`. For `F : BoundedFabius` with
+`IsFabius F`, natural `M ≠ 0`, arbitrary synthesis and analysis degrees
+`l,m`, and `l ≤ padicValNat 2 M`, it proves the literal normalized open-block
+identity
+`M⁻¹ ∑_{-2M<k<2M} Q_l⁻(k/M) Λ_m(k/M) = if m=l then 1 else 0`.
+The proof integrates the exact degree-`l` Rvachev synthesis against the
+normalized Legendre mode and applies orthogonality; there is no restriction
+on `m`. Thus `thm:leg-biorthogonality` is Exact. The larger
+`cor:leg-biorthogonal-matrices` remains Partial because the reverse
+projector, rank/trace, and Cauchy--Binet clauses are not Lean-covered; the
+leaf also makes no dyadic-rationality claim for the analysis kernel.
+
 The zero-definition/one-theorem
 `FabiusFunction.HalfQBinomialRootSimplicity` leaf adds
 `Fabius.halfQBinomial_sum_rootMultiplicity_two_pow`. Composed with the
@@ -247,9 +276,9 @@ existing rational zero classifier and Gaussian/half-q coefficient identity,
 it makes `cor:halfbase-root-locus` Exact under the canonical rational-polynomial
 and rational-root convention. Injective scalar extension preserves
 the displayed multiplicities, but the leaf does not classify all roots over
-every extension field. The q forward ledger is now 178 Exact / 81 Partial /
-15 None / 8 interface rows, and its source concordance is 91 Lean-proved /
-387 human-proved frontier / 60 non-applicable / 9 conjectures.
+every extension field. The q forward ledger is now 180 Exact / 79 Partial /
+15 None / 8 interface rows, and its source concordance is 93 Lean-proved /
+385 human-proved frontier / 60 non-applicable / 9 conjectures.
 
 `FabiusFunction.GaussianBinomialGreaterOneAsymptotics` has exactly the two
 theorems
@@ -310,7 +339,7 @@ theorems: `Fabius.centeredBoxIntegral`,
 `Fabius.symmetricMixedDifference_range_eq_centeredBoxIntegral`, and
 `Fabius.symmetricMixedDifference_univ_eq_centeredBoxIntegral`. Together with
 the existing `ThueMorseSymmetricDifference` algebra, they make
-`thm:TM-corner` Complete exactly by composition. The range theorem assumes
+`thm:TM-corner` Exact/Complete exactly by composition. The range theorem assumes
 nonnegative half-steps, `IsOpen I`, `OrdConnected I`,
 `ContDiffOn ℝ N g I`, and containment of the full closed symmetric segment
 in `I`; it is local rather than a global smoothness shortcut and includes
@@ -408,9 +437,10 @@ the later Euler, q-binomial, Jacobi, quantum-binomial, Rogers--Szegő,
 cyclotomic-divisibility, q-Catalan, primitive-root-block, q-Lucas, Jackson
 q-beta, geometric Newton-interpolation, integer/complex upper Gaussian, and
 q-Pfaff--Saalschütz, and noncommutative q-multinomial tranches. Its 282-result
-forward status totals are now 178 Exact / 81 Partial / 15 None / 8 interface:
-`p7:thm:Pn` moves Partial-to-Exact and `prop:qF-P-degree-sharp` moves
-None-to-Exact, while `thm:qF-moment-polynomial` remains Partial.
+forward status totals are now 180 Exact / 79 Partial / 15 None / 8 interface:
+the later probability tail and moment promotions add two Exact rows to the
+previous sharp-degree status moves, while `thm:qF-moment-polynomial` remains
+Partial.
 `FabiusFunction.GeometricResidualMoments` now has zero definitions and nine
 public theorems. Its existing
 `Fabius.sum_geometricLagrangeWeight_mul_scaled_geometric_pow_of_pos` supplies

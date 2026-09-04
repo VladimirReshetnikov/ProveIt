@@ -3979,7 +3979,12 @@ checkpoint to 920/11,572, and the exhaustive sharp moment-polynomial degree
 leaf raises it to the historical 921/11,575 checkpoint.  The exhaustive
 one-definition/six-theorem \path{RvachevLaurentLeading.lean} leaf then gives
 922/11,582, and the eleven-definition/seventeen-theorem
-\path{FinitePrefixAppellRecovery.lean} leaf gives the live 923/11,610 census.
+\path{FinitePrefixAppellRecovery.lean} leaf gives the historical 923/11,610
+checkpoint.  Two further theorems in the existing
+\path{ProbabilityLaplaceMoments.lean} module raise the declaration count to
+11,612, and the one-definition/one-theorem
+\path{RvachevLegendreBiorthogonality.lean} leaf gives the live 924/11,614
+census.
 The immediately preceding algebraic moment-polynomial checkpoint was
 904/11,457, and the complex Bernoulli value-completion checkpoint 903/11,448
 remains historical.  The merged chronology also records the scaled-geometric
@@ -4026,7 +4031,9 @@ and the sixteenth theorem in the zero-definition
 zero-definition/one-theorem \path{HalfQBinomialRootSimplicity.lean},
 one-definition/six-theorem \path{RvachevLaurentLeading.lean}, and
 eleven-definition/seventeen-theorem \path{FinitePrefixAppellRecovery.lean}
-leaves.
+leaves, the two-theorem strengthening of the existing
+\path{ProbabilityLaplaceMoments.lean} module, and the one-definition/
+one-theorem \path{RvachevLegendreBiorthogonality.lean} leaf.
 These are
 source-only overlays; the retained 183-page, 1,899,243-byte PDF is explicitly
 historical and has not been regenerated for these additions.
@@ -4136,7 +4143,9 @@ merged-main checkpoint was 919/11,569, the exterior \(1+2\) leaf raises it to
 920/11,572, and this sharp \(0+3\) leaf raises it to the historical
 921/11,575 checkpoint.  The following \path{RvachevLaurentLeading.lean}
 \((1+6)\) and \path{FinitePrefixAppellRecovery.lean} \((11+17)\) leaves give
-922/11,582 and the live 923/11,610 census, respectively.
+922/11,582 and the historical 923/11,610 checkpoint, respectively.  The two
+new probability declarations and the \((1+1)\) Legendre--Rvachev
+biorthogonality leaf give the live 924/11,614 census.
 
 The final two module counts are
 \path{CentralQBinomialReduction.lean} (0+6) and
@@ -6456,7 +6465,7 @@ uniqueness and the generic Appell transform then give
   &=\sum_{r=0}^{n}\binom nr\,mu_r,2^{-Nr}P_{n-r}(X),
        &&\mu_r=\lean{halfMoment}\,r,                       \label{eq:finite-prefix-appell-uncentered}\
  A_n^{[N]}(X)
-  &=\sum_{r=0}^{\lfloor n/2\rfloor}\binom n{2r},m_{2r},
+  &=\sum_{r=0}^{\Floor{n/2}}\binom n{2r},m_{2r},
        4^{-Nr}A_{n-2r}(X),
        &&m_{2r}=\lean{moment}\,r.                          \label{eq:finite-prefix-appell-centered}
 \end{align}
@@ -6483,7 +6492,7 @@ Promoting the scale to a formal outer variable (Q) produces elements of
 \begin{equation}
  \operatorname{natDegree}_Q P_n^{[\,\cdot\,]}=n,
  \qquad
- \operatorname{natDegree}_Q A_n^{[\,\cdot\,]}=\lfloor n/2\rfloor,          \label{eq:finite-prefix-appell-outer-degrees}
+ \operatorname{natDegree}_Q A_n^{[\,\cdot\,]}=\Floor{n/2},          \label{eq:finite-prefix-appell-outer-degrees}
 \end{equation}
 by \lean{natDegree_uncenteredDyadicPrefixAppellScalePolynomialRat} and
 \lean{natDegree_centeredDyadicPrefixAppellScalePolynomialRat}.  The
@@ -6498,8 +6507,8 @@ the two scale polynomials at zero gives, for every starting depth (N),
 \begin{align}
  P_n(X)&=\sum_{j=0}^{n}w_{n,j}(1/2)P_n^{[N+j]}(X),
                                                                \label{eq:finite-prefix-appell-recovery}\
- A_n(X)&=\sum_{j=0}^{\lfloor n/2\rfloor}
-   w_{\lfloor n/2\rfloor,j}(1/4)A_n^{[N+j]}(X).               \label{eq:finite-prefix-centered-recovery}
+ A_n(X)&=\sum_{j=0}^{\Floor{n/2}}
+   w_{\Floor{n/2},j}(1/4)A_n^{[N+j]}(X).               \label{eq:finite-prefix-centered-recovery}
 \end{align}
 They are \lean{kabayaIriAppellPolynomialRat_eq_sum_prefix} and
 \lean{rvachevAppellPolynomialRat_eq_sum_prefix}.  Hence the full uncentered
@@ -6631,9 +6640,11 @@ target-by-target minimality statement for the synthesis formulas.
 \label{sec:probability-laplace-bridge}
 
 Let \(\mu_X\) be the distribution of the weighted sum \(X\) from
-\eqref{eq:random-X}.  Its survival function on the nonnegative half-line is exactly
+\eqref{eq:random-X}.  Its atomlessness makes the open and closed survival
+conventions agree on the nonnegative half-line, and both are exactly
 \begin{equation}
- \mu_X((t,\infty))=\RvachevUp(t)\qquad(t\ge0).                    \label{eq:survival-up}
+ \mu_X([t,\infty))=\mu_X((t,\infty))=\RvachevUp(t)
+ \qquad(t\ge0).                                                   \label{eq:survival-up}
 \end{equation}
 More generally, let \(E\) be a real Banach space and let
 \(k:[0,1]\to E\) be Bochner integrable.  Fubini gives the
@@ -6651,6 +6662,11 @@ family
 Thus the scalar formula
 \(\int_0^1 k(t)\RvachevUp(t)\Differential t=\Expectation[K(X)]\), where
 \(K(x)=\int_0^xk(t)\Differential t\), needs only \(k\in L^1(0,1)\).
+In particular, for every natural \(n\ge1\),
+\begin{equation}
+ \int_{\RealNumbers}x^n\Differential\mu_X(x)
+ =n\int_0^1t^{n-1}\RvachevUp(t)\Differential t.                  \label{eq:survival-up-moments}
+\end{equation}
 Taking \(E=\ComplexNumbers\), regarded as a real Banach space, includes complex-valued
 kernels with no separate argument.
 If \(g,g':\RealNumbers\to\RealNumbers\) are continuous and \(g\) has derivative \(g'(t)\) at every
@@ -6764,7 +6780,10 @@ variables real, are
 
 \begin{proof}[Formal proof]
 The survival identity is
-\lean{weightedSumDistribution_real_Ioi_eq_rvachevUp_of_nonneg}.
+\lean{weightedSumDistribution_real_Ioi_eq_rvachevUp_of_nonneg}; its exact
+closed-tail form is the new theorem
+\lean{weightedSumDistribution_real_Ici_eq_rvachevUp_of_nonneg}, which uses
+atomlessness to replace \((t,\infty)\) by \([t,\infty)\).
 The general Banach-valued finite-measure Fubini theorem behind
 \eqref{eq:survival-kernel-banach} is
 \lean{integral_Icc_intervalIntegral_eq_intervalIntegral_smul_survival}.
@@ -6779,8 +6798,15 @@ and
 \lean{intervalIntegral_mul_rvachevUp_eq_integral_Icc_intervalIntegral_min}.
 The continuously differentiable formula \eqref{eq:survival-fubini} is the
 corollary
-\lean{integral_unit_eq_zero_add_integral_deriv_mul_rvachevUp}; these seven
-integration declarations are in \path{ProbabilityLaplaceMoments.lean}.
+\lean{integral_unit_eq_zero_add_integral_deriv_mul_rvachevUp}.  The second
+new theorem
+\lean{integral_pow_weightedSumDistribution_eq_mul_intervalIntegral_rvachevUp}
+is exactly \eqref{eq:survival-up-moments}; it quantifies over the full
+weighted-sum law and every natural \(n\ge1\).  These declarations are in
+\path{ProbabilityLaplaceMoments.lean}.  Together with the existing global
+up/Fabius identities, the two additions make the frontier labels
+\nolinkurl{prop:up-tail} and \nolinkurl{cor:up-moments} Exact; no density or
+degree-zero moment claim is being added.
 The Banach-valued partial and full formulas
 \eqref{eq:survival-layer-cake-partial}--\eqref{eq:survival-layer-cake-full}
 are additionally exposed under their local interval-integrability hypotheses as
@@ -7192,7 +7218,8 @@ Finite linearity moves the powerset sum through that integral.  The induction
 hypothesis applied to \(g'\), whose local regularity is \(C^{N-1}\), gives the
 remaining nested integral.  The zero-order case is evaluation by definition.
 Together with the finite algebra above, this proves every clause of the
-continuous-chaos report's \nolinkurl{thm:TM-corner}, now \emph{Exact}.  It does
+continuous-chaos report's \nolinkurl{thm:TM-corner}, now
+\emph{Exact/Complete}.  It does
 not provide the separate Walsh conditional-expectation construction or its
 normalization.
 
@@ -12705,6 +12732,33 @@ finite argument supplies no Jacobi closed form, all-degree decoder parity or
 rationality, reverse spectral closure, mesh minimality, or larger Lagrange
 right inverse.
 
+The subsequent compiled leaf
+\path{RvachevLegendreBiorthogonality.lean} has exactly one public definition
+and one theorem.  Its normalized translated analysis kernel is
+\begin{equation}
+ \Lambda_m(c)=\frac{2m+1}{2}\int_{-1}^{1}
+ \RvachevUp(x-c)P_m(x)\Differential x,
+ \qquad
+ \Lambda_m=\lean{rvachevLegendreAnalysisKernel}(F,m,\cdot),       \label{eq:rvachev-legendre-analysis-kernel}
+\end{equation}
+and \lean{rvachevLegendreBiorthogonality} proves, for every
+\(F:\lean{BoundedFabius}\) satisfying \(\lean{IsFabius}\,F\), natural
+\(M\ne0\), arbitrary \(\ell,m\), and
+\(\ell\le\TwoAdicValuation(M)\),
+\begin{equation}
+ \frac1M\sum_{-2M<k<2M}Q_\ell^-(k/M)\Lambda_m(k/M)
+ =\begin{cases}1,&m=\ell,\\0,&m\ne\ell.\end{cases}             \label{eq:rvachev-legendre-biorthogonality}
+\end{equation}
+The open integer block and normalization are literal, and there is no degree
+restriction on the analysis index \(m\).  The proof inserts the already exact
+degree-\(\ell\) finite Rvachev synthesis on \([-1,1]\), multiplies by
+\((2m+1)P_m/2\), interchanges the finite sum with the interval integral, and
+applies Legendre orthogonality.  Thus the representation label
+\nolinkurl{thm:leg-biorthogonality} is \emph{Exact}.  The larger
+\nolinkurl{cor:leg-biorthogonal-matrices} remains Partial: this leaf does not
+formalize the reverse finite projector, its rank and trace, or the
+Cauchy--Binet identity, and it makes no rationality claim for \(\Lambda_m\).
+
 More explicitly, let
 \[
  M_n=4^n,\qquad I_n=\{k\in\IntegerNumbers:-2M_n<k<2M_n\},\qquad
@@ -13989,6 +14043,7 @@ renormalization, Laurent/Herglotz/inversion layers, initial Jacobi data, and fin
 \path{FabiusLegendreGauntClosedForm.lean},
 \path{FabiusLegendreRationalGramValues.lean},
 \path{RvachevLegendreCentralSum.lean},
+\path{RvachevLegendreBiorthogonality.lean},
 \path{EarlyApproximants.lean},
 \path{EarlyMeasureBridge.lean}, \path{WeakConvergence.lean},
 \path{ProbabilityLaplaceMoments.lean}, \path{LaplaceMoments.lean},
