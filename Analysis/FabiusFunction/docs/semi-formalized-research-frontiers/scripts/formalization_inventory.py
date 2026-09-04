@@ -2,10 +2,10 @@
 """Inventory every labelled result in the frontier corpus, and how much is formalized.
 
 The goal for this corpus is that every theorem stated in a `.tex` document under
-`docs/semi-formalized-research-frontiers/` has a Lean proof.  Only one package,
-the Combinatorial Coefficient Calculus, has a per-result register tracking that.
-For every other package the gap is unmeasured, and an unmeasured gap cannot be
-planned against.  This script supplies the denominator.
+`docs/semi-formalized-research-frontiers/` has a Lean proof.  Some packages now
+carry per-result `Formal crosswalk` remarks, while others use tables, CSV
+registers, or package-specific prose.  This script supplies a uniform
+denominator without mistaking one documentation style for proof status.
 
 For each package it reports:
 
@@ -96,13 +96,14 @@ def main(argv):
     print('%-58s %6s %6d %7d' % ('TOTAL', '', tot_r, tot_x))
     pct = (100.0 * tot_x / tot_r) if tot_r else 0.0
     linked = sum(1 for _, v in rows if v['lean'])
+    remarked = sum(1 for _, v in rows if v['remarks'])
     allnames = set()
     for _, v in rows:
         allnames |= v['lean']
     print()
     print('%d labelled results in %d packages.' % (tot_r, len(rows)))
-    print('%d of them (%.1f%%) carry a per-result formal-crosswalk remark, all in one package.'
-          % (tot_x, pct))
+    print('%d of them (%.1f%%) carry a per-result formal-crosswalk remark across %d packages.'
+          % (tot_x, pct, remarked))
     print('%d packages cite Lean names at all, %d distinct names in total.'
           % (linked, len(allnames)))
     print()

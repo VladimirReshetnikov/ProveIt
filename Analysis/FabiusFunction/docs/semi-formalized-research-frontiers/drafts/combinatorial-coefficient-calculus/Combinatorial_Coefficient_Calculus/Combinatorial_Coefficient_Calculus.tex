@@ -3564,6 +3564,22 @@ $(i!)^{j_i}$ cancel, and multiplication by $k!/n!$ leaves exactly
 \eqref{eq:ordinary-bell-definition}.
 \end{proof}
 
+\begin{remark}[Formal crosswalk]
+% ed.: crosswalk added 2026-09-04; exact algebraic normalization only.
+The displayed conversion is
+\lean{Fabius.ordPartialBell_eq_factorialRatio_partialBell} in module
+\lean{UnitSeriesBellCoefficients}, over every commutative $\mathbb Q$-algebra
+and for all $n,k\geq0$; thus Lean also covers the automatically vanishing
+out-of-range cases.  Its denominator-cleared companion is
+\lean{Fabius.factorial_mul_ordPartialBell_eq_factorial_mul_partialBell}:
+$n!\OrdinaryPartialBellPolynomial nk(x)=k!\ExponentialPartialBellPolynomial
+nk(1!x_1,2!x_2,\ldots)$.  The Lean proof compares the ordinary coefficient of
+the $k$-th power of the factorially weighted Bell series with its exponential
+Bell coefficient.  These declarations prove the polynomial normalization;
+they do not formalize the labelled-set partition interpretation of
+\cref{thm:bell-poly-partitions}, whose register row remains \emph{none}.
+\end{remark}
+
 \section{Combinatorial interpretation}
 Give each block of size $i$ a weight $x_i$, and define the weight of a partition as
 the product of its block weights.
@@ -5793,21 +5809,112 @@ repeatedly lead to the same matrices.
 
 \section{Binomial inversion}
 
+\begin{theorem}[Weighted binomial transforms as translations]
+\label{thm:merged-weighted-binomial-translation}
+Let $R$ be a commutative semiring.  For sequences $a,b:\NaturalNumbers\to R$
+and $c\in R$, define
+\[
+ (a\star b)_n=\sum_{k=0}^n\binom nk a_kb_{n-k},\qquad
+ (T_ca)_n=\sum_{k=0}^n\binom nk c^{n-k}a_k.
+\]
+All coefficients and powers are interpreted in $R$, with $c^0=1$ even when
+$c=0$.  Then, for $c,d\in R$,
+\begin{align}
+ T_0a&=a,& T_c(T_da)&=T_{c+d}a,                                  \label{eq:merged-weighted-translation-law}\\
+ (T_ca)\star(T_db)&=T_{c+d}(a\star b).                            \label{eq:merged-weighted-convolution-law}
+\end{align}
+If addition in $R$ is cancellative, each $T_c$ is injective.
+\end{theorem}
+
+\begin{proof}
+Write $g_c(n)=c^n$ and let $\epsilon$ be the sequence whose zeroth entry is
+$1$ and whose positive entries are zero.  Reflecting the summation index and
+using $\binom n{n-k}=\binom nk$ gives $T_ca=g_c\star a$.
+The binomial theorem gives $g_c\star g_d=g_{c+d}$, and $g_0=\epsilon$.
+Binomial convolution is commutative and associative: after expanding a triple
+product, the coefficient of $a_ib_jb'_{\ell}$ with $i+j+\ell=n$ is
+$\binom ni\binom{n-i}j=\binom n{i+j}\binom{i+j}i$ in either association.
+This is an identity of natural numbers, so it remains valid in every semiring.
+Also $\epsilon\star a=a$, since only the summand of index zero survives.
+Reassociating and commuting the middle two factors in particular gives the
+general four-factor identity
+$(a\star b)\star(u\star v)=(a\star u)\star(b\star v)$.
+Consequently
+\[
+ T_c(T_da)=(g_c\star g_d)\star a=g_{c+d}\star a,
+\]
+and commutativity and associativity give
+\[
+ (g_c\star a)\star(g_d\star b)
+   =(g_c\star g_d)\star(a\star b)
+   =g_{c+d}\star(a\star b).
+\]
+This proves both identities and the zero-shift statement.  Finally,
+$(T_ca)_n=a_n+\sum_{k<n}\binom nk c^{n-k}a_k$.
+If $T_ca=T_cb$, induction on $n$ identifies all lower entries, and cancellation
+of their common sum identifies $a_n$ and $b_n$.  Thus $a=b$.
+\end{proof}
+
+\begin{corollary}[Weighted binomial inversion and reciprocal pairs]
+\label{cor:merged-weighted-binomial-inversion}
+If $R$ is a commutative ring, $T_{-c}$ is the two-sided inverse of $T_c$.
+In particular,
+\begin{equation}
+ b_n=\sum_{k=0}^n\binom nk c^{n-k}a_k\quad\hbox{for every }n
+ \quad\Longleftrightarrow\quad
+ a_n=\sum_{k=0}^n\binom nk(-c)^{n-k}b_k\quad\hbox{for every }n.   \label{eq:merged-weighted-binomial-inversion}
+\end{equation}
+Opposite shifts preserve convolution:
+$(T_{-c}a)\star(T_cb)=a\star b$.  Thus, if $a\star b=\epsilon$,
+the oppositely shifted sequences are again a reciprocal pair.
+\end{corollary}
+
+\begin{proof}
+Substitute $d=-c$ and $d=c$ with first shift $-c$ into
+\cref{eq:merged-weighted-translation-law}, and use $T_0=\mathrm{id}$.
+Applying $T_{-c}$ or $T_c$ to an equality gives the two implications in
+\cref{eq:merged-weighted-binomial-inversion}.
+The convolution assertion is \cref{eq:merged-weighted-convolution-law} with
+the shifts $-c,c$; substituting $a\star b=\epsilon$ proves the final assertion.
+\end{proof}
+
+\begin{remark}[Weighted-transform formal crosswalk]
+The source counterparts are in \lean{AppellSequence}, with no new transform
+definition: $T_c$ is \lean{Appell.translate}.
+\lean{Appell.translate_eq_sum} and
+\lean{Appell.translate_eq_binomialConv_pow} identify its two finite forms.
+\lean{Appell.translate_translate} and \lean{Appell.binomialConv_translate}
+state \cref{eq:merged-weighted-translation-law,eq:merged-weighted-convolution-law};
+the four-factor rearrangement is \lean{Bell.binomialConv_four_swap}, and the
+cancellative-semiring result is \lean{Appell.translate_injective}.
+\lean{Appell.translate_neg_translate} and
+\lean{Appell.translate_translate_neg} give the two inverse compositions.
+\lean{Appell.translate_eq_iff} is the sequence form of
+\lean{Appell.weighted_binomial_inversion_iff}, while
+\lean{Appell.binomialConv_translate_neg_translate} preserves reciprocal pairs.
+The extension was checked by the focused \lean{AppellSequence} build on
+2026-09-04.  The specialized rational proofs in
+\lean{FinitePrefixThueMorseCollapse} now reuse these shared declarations;
+the caller refactor has been source-reviewed and awaits its own rebuild.
+\end{remark}
+
 \begin{theorem}[Binomial inversion]
 \label{thm:merged-binomial-inversion}
-For sequences $(a_n)$ and $(b_n)$ in a commutative $\RationalNumbers$-algebra, the formulas
+For sequences $(a_n)$ and $(b_n)$ in a commutative ring, the formulas
 \begin{align}
  b_n&=\sum_{k=0}^{n}\binom nk a_k,                                  \label{eq:merged-binomial-forward}\\
  a_n&=\sum_{k=0}^{n}(-1)^{n-k}\binom nk b_k                         \label{eq:merged-binomial-backward}
 \end{align}
-are equivalent.  In exponential generating functions,
+are equivalent.  If the ring is a commutative $\RationalNumbers$-algebra, the
+equivalent exponential-generating-function identities are
 \begin{equation}
  B(z)=\EulerE^zA(z),\qquad A(z)=\EulerE^{-z}B(z).                               \label{eq:merged-binomial-egf}
 \end{equation}
 \end{theorem}
 
 \begin{proof}
-Multiplication of EGFs gives
+The finite formulas are \cref{eq:merged-weighted-binomial-inversion} with
+$c=1$.  In a $\RationalNumbers$-algebra, multiplication of EGFs gives
 \[
  \EulerE^zA(z)=\sum_{n\geq0}\left(\sum_{k=0}^{n}\binom nk a_k\right)
              \frac{z^n}{n!},
@@ -5873,28 +5980,14 @@ convolving against the constant sequence $1$, or against $(-1)^n$, gives the
 displayed sums after reflecting the summation index
 (\lean{Fabius.binomialConv_one_left},
 \lean{Fabius.binomialConv_altSeries_left}).  And
-\lean{Fabius.exp_mul_altSeries} is the binomial theorem at $-1+1=0$ rather than
-a separate alternating-sum computation, which keeps it valid over an arbitrary
-commutative ring instead of only over $\IntegerNumbers$.
-\end{remark}
-
-\begin{remark}[Formal crosswalk]
-% ed.: crosswalk added 2026-09-01; the Lean statement drops the Q-algebra
-% hypothesis.
-The equivalence of \cref{eq:merged-binomial-forward} and
-\cref{eq:merged-binomial-backward} is \lean{Fabius.binomial_inversion_ring_iff}
-for sequences in any commutative ring and
-\lean{Fabius.binomial_inversion_iff} for sequences in any additive commutative
-group (module \lean{BinomialInversion}); the hypothesis of a commutative
-$\mathbb Q$-algebra is unnecessary, since the proof is the inverse-matrix
-computation of the last display,
-\lean{Fabius.sum_Icc_neg_one_pow_choose_mul_choose}, which reduces through
-\lean{Nat.choose_mul} to the alternating row sums of Pascal's triangle.  The
-reverse product is supplied by the general commutation theorem
+\lean{Fabius.exp_mul_altSeries} uses the binomial theorem at $-1+1=0$ for
+coefficient cancellation.  This cancellation is valid in every commutative
+ring; the EGF statements retain their $\RationalNumbers$-algebra hypothesis
+because their coefficients contain inverse factorials.
+The reverse triangular product is supplied by the general commutation theorem
 \lean{Fabius.lowerTriangular_orthogonal_comm}, and both directions are
 instances of the finite triangular transform calculus of
-\lean{Fabius.lowerTriangularTransform}.  The exponential-generating-function
-form \cref{eq:merged-binomial-egf} is not formalized.
+\lean{Fabius.lowerTriangularTransform}.
 \end{remark}
 
 \section{The partition lattice and cumulants}
@@ -9406,6 +9499,18 @@ The coefficient on the left is $\OrdinaryPartialBellPolynomial nk(x)/k!$ in ordi
 Comparison proves the conversion.
 \end{proof}
 
+\begin{remark}[Formal crosswalk]
+% ed.: crosswalk added 2026-09-04; exact normalization dictionary.
+Equation~\eqref{eq:merged-bell-normalization} is exactly
+\lean{Fabius.ordPartialBell_eq_factorialRatio_partialBell}; the integral,
+denominator-cleared form is
+\lean{Fabius.factorial_mul_ordPartialBell_eq_factorial_mul_partialBell}, both
+in module \lean{UnitSeriesBellCoefficients}.  They hold for every pair
+$n,k\geq0$ over a commutative $\mathbb Q$-algebra and use precisely the
+factorially weighted input $(j!x_j)_{j\geq0}$.  This crosswalk certifies the
+algebraic normalization only, not the separate labelled-set interpretation.
+\end{remark}
+
 \begin{center}
 \renewcommand{\arraystretch}{1.18}
 \begin{tabularx}{\textwidth}{@{}>{\bfseries}l X X@{}}
@@ -9471,6 +9576,25 @@ If $C=A^\alpha$, then
 Compare coefficients in $A'=AL'$ to obtain the first two recurrences.  For
 powers, compare degree $n-1$ in $AC'=\alpha A'C$ and isolate $nc_n$.
 \end{proof}
+
+\begin{remark}[Formal crosswalk]
+% ed.: crosswalk added 2026-09-04; two recurrences exact, one open.
+The logarithmic recurrence \eqref{eq:merged-alg-log} is the positive-degree
+unfolding \lean{Fabius.SaddleExpansion.logCoeff_succ}, after reflecting its
+finite summation index; its output is identified with Mathlib's formal
+logarithm by \lean{Fabius.SaddleExpansion.logSeries_eq_logOf} (modules
+\lean{SaddleLogExpansionAlgebra} and \lean{SaddleLogExpansionPowerSeries}).
+The exponential recurrence \eqref{eq:merged-alg-exp} is
+\lean{Fabius.coeff_exp_subst_recurrence} in module
+\lean{UnitSeriesBellCoefficients}, stated in the denominator-cleared form
+$na_n=\sum_{j=1}^n j\ell_j a_{n-j}$ and valid also at $n=0$.
+The same module gives nonrecursive Bell-polynomial coefficient formulas for
+arbitrary formal powers in
+\lean{Fabius.coeff_fallingSeries_subst_eq_sum_ordPartialBell_of_pos} and
+\lean{Fabius.coeff_fallingSeries_subst_eq_sum_partialBell}.  It does not prove
+the distinct recursive identity \eqref{eq:merged-alg-power}; that clause remains
+the precise missing obligation, so the algorithm is only \emph{partial}.
+\end{remark}
 
 \begin{algorithm}[Differentiation and integration]
 \label{alg:merged-differentiation-integration}
@@ -10001,7 +10125,7 @@ coefficient calculus rather than a catalogue of isolated identities.
 
 \section{Lean formalization register}
 \label{sec:lean-register}
-Every theorem-like environment of this monograph is listed here with the status of its formalization in the Lean development \path{Analysis/FabiusFunction/Lean/FabiusFunction} (Mathlib \texttt{v4.32.0}).  \emph{Lean} means that a public, compiled declaration proves the exact statement or a more general one (the generalization is then noted next to the result); \emph{partial} means that a named part of the statement is proved and the rest is named; \emph{none} means that no Lean counterpart exists yet.  A citation, a numerical check, or a plausible derivation does not count.  The register is generated from the source and must be regenerated when results are added.  Current totals: 56 Lean, 33 partial, 112 none, of 201 results.
+Every theorem-like environment of this monograph is listed here with the status of its formalization in the Lean development \path{Analysis/FabiusFunction/Lean/FabiusFunction} (Mathlib \texttt{v4.32.0}).  \emph{Lean} means that a public, compiled declaration proves the exact statement or a more general one (the generalization is then noted next to the result); \emph{partial} means that a named part of the statement is proved and the rest is named; \emph{none} means that no Lean counterpart exists yet.  A citation, a numerical check, or a plausible derivation does not count.  The register is generated from the source and must be regenerated when results are added.  Current totals: 58 Lean, 34 partial, 111 none, of 203 results.
 
 \begin{footnotesize}
 \begin{longtable}{@{}p{0.16\textwidth}p{0.22\textwidth}p{0.08\textwidth}p{0.40\textwidth}@{}}
@@ -10124,6 +10248,8 @@ theorem (unlabelled, no.~76) &  & none &  \\
 \Cref{thm:lambert-W-zero} &  & partial & The series \cref{eq:lambert-W-zero} is \lean{Fabius.coeff_lambertW} (module \lean{LambertWSeries}), for \lean{Fabius.lambertW} constructed as the Lagrange solution of $W=z\EulerE^{-W}$; the defining equation in the form $W\EulerE^W=z$ is \lean{Fabius.lambertW_mul_exp_subst}.  The radius of convergence $\EulerE^{-1}$ is analytic and is not formalized. \\
 \Cref{thm:shifted-lagrange-reversion} & Lagrange reversion & none &  \\
 \Cref{thm:laplace-bell} & Laplace--Erd\'elyi coefficient formula & none &  \\
+\Cref{thm:merged-weighted-binomial-translation} & Weighted binomial transforms as translations & Lean & \lean{Appell.translate_eq_sum}, \lean{Appell.translate_translate}, \lean{Appell.binomialConv_translate}, and \lean{Appell.translate_injective} (\lean{AppellSequence}); semiring identities, with additive cancellation only for injectivity \\
+\Cref{cor:merged-weighted-binomial-inversion} & Weighted binomial inversion and reciprocal pairs & Lean & \lean{Appell.weighted_binomial_inversion_iff}, \lean{Appell.translate_neg_translate}, \lean{Appell.translate_translate_neg}, and \lean{Appell.binomialConv_translate_neg_translate} (\lean{AppellSequence}), over arbitrary commutative rings \\
 \Cref{thm:merged-binomial-inversion} & Binomial inversion & Lean & the equivalence of \cref{eq:merged-binomial-forward,eq:merged-binomial-backward} is \lean{Fabius.binomial_inversion_iff} (additive commutative groups) and \lean{Fabius.binomial_inversion_ring_iff} (commutative rings) (\lean{BinomialInversion}), with the kernel orthogonality \lean{Fabius.sum_Icc_neg_one_pow_choose_mul_choose}; \cref{eq:merged-binomial-egf} is \lean{Fabius.egfA_eq_exp_mul_iff} and \lean{Fabius.egfA_eq_altSeries_mul_iff} (\lean{BinomialInversionEGF}), each an iff with its sequence form, together with \lean{Fabius.egfA_eq_exp_mul_iff_egfA_eq_altSeries_mul} for the equivalence of the two generating-function equations \\
 \Cref{thm:merged-partition-mobius} & Möbius function of $\Pi\_n$ & none &  \\
 \Cref{thm:merged-moment-cumulant} & Moment--cumulant inversion & partial & In the block-size form: \lean{Bell.complete} and \lean{Bell.cumulant} are mutually inverse (\lean{Bell.complete_cumulant}, \lean{Bell.cumulant_complete}, module \lean{BellPolynomialInversion}) and $M=\EulerE^K$ is \lean{Fabius.exp_subst_bellWeightSeries}; $K=\log M$ is now \lean{Fabius.logOf_egfA} together with \lean{Fabius.cumulant_eq_cumulantSum} (\lean{CumulantBellFormula}), which also gives the closed form $\kappa_n=\sum_k(-1)^{k-1}(k-1)!\,\ExponentialPartialBellPolynomial nk(m)$, resting on the formal $\exp\circ\log$ inverse \lean{Fabius.exp_subst_logOf} (\lean{ExpLog}); the sums over set partitions are not formalized. \\
@@ -10134,7 +10260,7 @@ theorem (unlabelled, no.~76) &  & none &  \\
 \Cref{thm:merged-complementary-bell} & EGF, recurrence, and Dobiński-type series & Lean & \lean{Fabius.complementaryBell} (\lean{ComplementaryBell}); \cref{eq:merged-complementary-egf} is \lean{Fabius.exp_subst_neg_exp_sub_one}, \cref{eq:merged-complementary-recurrence} is \lean{Fabius.complementaryBell_succ}, and \cref{eq:merged-complementary-dobinski} is \lean{Fabius.complementaryBell_eq_exp_mul_tsum} (the series converges absolutely as the Poisson moment series of \lean{Fabius.tsum_pow_mul_pow_div_factorial}) \\
 \Cref{cor:merged-bell-convolution-inverse} & Convolution inverse of the Bell sequence & Lean & \lean{Fabius.sum_choose_bell_mul_complementaryBell} (\lean{ComplementaryBell}), from the addition law \lean{Bell.complete_add} of complete Bell polynomials at weights $\pm1$ \\
 \Cref{thm:merged-frechet-faa} & Coordinate-free Faà di Bruno & none &  \\
-corollary (unlabelled, no.~9) &  & none &  \\
+corollary (unlabelled, no.~10) &  & none &  \\
 \Cref{thm:merged-inverse-derivative} & Inverse derivative recursion & none &  \\
 \Cref{thm:merged-inverse-derivative-operator} & Inverse-derivative operator & none &  \\
 \Cref{lem:merged-multiresidue} & Multivariate residue substitution & none &  \\
@@ -10156,29 +10282,29 @@ proposition (unlabelled, no.~6) &  & none &  \\
 \Cref{thm:merged-periodic-bernoulli-fourier} & Fourier expansion with exact convergence qualifications & none &  \\
 \Cref{thm:merged-euler-maclaurin} & Euler--Maclaurin with remainder & none &  \\
 \Cref{cor:merged-euler-maclaurin-constant} & Constant-of-integration form & none &  \\
-corollary (unlabelled, no.~12) & Stirling's expansion & none &  \\
+corollary (unlabelled, no.~13) & Stirling's expansion & none &  \\
 \Cref{cor:merged-harmonic-expansion} & Harmonic-number expansion & none &  \\
 \Cref{thm:merged-pochhammer} & Gamma quotient and binomial series & none &  \\
-corollary (unlabelled, no.~14) & Chu--Vandermonde & none &  \\
+corollary (unlabelled, no.~15) & Chu--Vandermonde & none &  \\
 \Cref{thm:merged-pochhammer-derivatives} & All parameter derivatives & none &  \\
 \Cref{cor:merged-reciprocal-pochhammer} & Derivatives of a reciprocal Pochhammer symbol & none &  \\
 \Cref{prop:merged-beta-integral} & Beta integral with an integer parameter & none &  \\
 \Cref{thm:merged-euler-gamma-limit} & Euler's limit and the Weierstrass product & none &  \\
 \Cref{thm:merged-polygamma-series} & Partial fractions & none &  \\
-corollary (unlabelled, no.~16) & Recurrences and special values & none &  \\
+corollary (unlabelled, no.~17) & Recurrences and special values & none &  \\
 \Cref{cor:merged-polygamma-hurwitz} & Hurwitz-zeta form & none &  \\
 \Cref{thm:merged-polygamma-reflection} & Reflection & none &  \\
 \Cref{thm:merged-gauss-multiplication} & Gauss multiplication & none &  \\
-corollary (unlabelled, no.~18) &  & none &  \\
+corollary (unlabelled, no.~19) &  & none &  \\
 \Cref{thm:merged-barnes-product} & Canonical product & none &  \\
 \Cref{thm:merged-alexeiewsky} & Alexeiewsky identity & none &  \\
-corollary (unlabelled, no.~19) &  & none &  \\
+corollary (unlabelled, no.~20) &  & none &  \\
 \Cref{thm:merged-barnes-asymptotic} & Barnes asymptotics on the positive ray & none &  \\
 \Cref{cor:merged-hyperfactorial-asymptotic} & Complete hyperfactorial expansion & none &  \\
 \Cref{thm:merged-catalan-reflection} & Catalan formula & Lean & The Dyck-word count is Mathlib's \lean{DyckWord.card_dyckWord_semilength_eq_catalan}; $\CatalanNumber n=\binom{2n}{n}/(n+1)$ is \lean{catalan_eq_centralBinom_div} and the difference form is \lean{Fabius.catalan_succ_eq_choose_sub_choose} (module \lean{CatalanGeneratingFunction}). \\
 \Cref{thm:merged-catalan-first-return} & First return & partial & $C=1+zC^2$ is \lean{Fabius.catalanSeries_eq} and its uniqueness among power series \lean{Fabius.eq_catalanSeries_of_eq_one_add_X_mul_sq} (module \lean{CatalanGeneratingFunction}); the square-root closed form is \lean{Fabius.sqrtOf_one_sub_four_X} (\lean{SquareRootSeries}), where $\sqrt{\cdot}$ is the formal square root \lean{Fabius.sqrtOf} of a series with constant term $1$, defined as $\exp(\tfrac12\log)$ and unique by \lean{Fabius.sqrt_unique}; the radius of convergence and the branch cut are analytic and are not formalized. \\
 \Cref{thm:merged-narayana} & Narayana formula & partial & Module \lean{NarayanaNumbers} defines $N(n,k)$ by the division-free determinant $\binom nk\binom{n-1}{k-1}-\binom n{k-1}\binom{n-1}k$ over $\IntegerNumbers$ (\lean{Fabius.narayana}), which vanishes outside $1\le k\le n$ without a side condition: \cref{eq:merged-narayana} is \lean{Fabius.narayana_mul} in the cleared form $nN(n,k)=\binom nk\binom n{k-1}$, the symmetry is \lean{Fabius.narayana_symm} and the row sum $\sum_kN(n,k)=\CatalanNumber n$ is \lean{Fabius.sum_narayana}; the peak-counting interpretation and the bivariate generating function \cref{eq:merged-narayana-gf} are not formalized. \\
-corollary (unlabelled, no.~21) & Peak mean and variance & none &  \\
+corollary (unlabelled, no.~22) & Peak mean and variance & none &  \\
 \Cref{thm:merged-catalan-bijection} & Binary trees and parenthesizations & none &  \\
 \Cref{thm:merged-triangulations} & Triangulations & none &  \\
 \Cref{thm:merged-noncrossing} & Noncrossing partitions & none &  \\
@@ -10189,16 +10315,16 @@ corollary (unlabelled, no.~21) & Peak mean and variance & none &  \\
 \Cref{thm:merged-tamari-order} & The rotation relation is a partial order & none &  \\
 \Cref{thm:merged-raney} & Raney numbers & none &  \\
 \Cref{thm:merged-darboux-finite} & Darboux formula & none &  \\
-corollary (unlabelled, no.~23) & Taylor integral remainder & none &  \\
+corollary (unlabelled, no.~24) & Taylor integral remainder & none &  \\
 \Cref{lem:merged-singular-binomial} & Exact algebraic coefficient, including polynomial cases & none &  \\
 \Cref{thm:merged-darboux-transfer} & Darboux transfer with an analytic multiplier & none &  \\
 \Cref{thm:merged-darboux-finite-smoothness} & Finite-smoothness Darboux subtraction & none &  \\
-corollary (unlabelled, no.~24) & Multiple dominant points & none &  \\
+corollary (unlabelled, no.~25) & Multiple dominant points & none &  \\
 proposition (unlabelled, no.~9) & Logarithmic and meromorphic cases & none &  \\
-theorem (unlabelled, no.~142) &  & none &  \\
+theorem (unlabelled, no.~143) &  & none &  \\
 \Cref{thm:merged-multinomial-leibniz} & Multinomial Leibniz rule & partial & The two-factor case, in the formal reading the proof itself sanctions, is \lean{Fabius.derivative_iterate_mul} (module \lean{IteratedLeibniz}): $(\Differential/\Differential t)^n(fg)=\sum_k\binom nk f^{(k)}g^{(n-k)}$ in $R[[t]]$ over any commutative ring; the general $q$-factor multinomial form is not formalized. \\
 \Cref{thm:merged-higher-quotient} & Higher reciprocal and quotient rules & partial & the analytic statement is not formalized; its formal power-series analogue, the coefficients of $1/A$ through ordinary Bell polynomials, is \lean{Fabius.coeff_reciprocalSeries} (\lean{OrdinaryBellComposition}) \\
-corollary (unlabelled, no.~25) & Trigonometric outer functions & none &  \\
+corollary (unlabelled, no.~26) & Trigonometric outer functions & none &  \\
 \Cref{thm:merged-four-inverse-series} & Four classical inverse series and their diagonals & none &  \\
 \Cref{prop:merged-cauchy-diagonal} & Logarithmic diagonal & none &  \\
 \Cref{thm:merged-offset-lagrange} & Offset Lagrange--B\"urmann formula & none &  \\
@@ -10206,7 +10332,7 @@ corollary (unlabelled, no.~25) & Trigonometric outer functions & none &  \\
 \Cref{cor:merged-square-root-coefficients} & Universal coefficient signature & none &  \\
 \Cref{thm:merged-kepler} & Lagrange and Fourier--Bessel forms & none &  \\
 \Cref{alg:merged-product-quotient} & Product, reciprocal, and quotient & none &  \\
-\Cref{alg:merged-exp-log-power} & Logarithm, exponential, and powers & none &  \\
+\Cref{alg:merged-exp-log-power} & Logarithm, exponential, and powers & partial & \cref{eq:merged-alg-log} is the reflected-index form of \lean{Fabius.SaddleExpansion.logCoeff_succ}, with \lean{Fabius.SaddleExpansion.logSeries_eq_logOf} identifying that recurrence with the formal logarithm (\lean{SaddleLogExpansionAlgebra}, \lean{SaddleLogExpansionPowerSeries}); \cref{eq:merged-alg-exp} is \lean{Fabius.coeff_exp_subst_recurrence} (\lean{UnitSeriesBellCoefficients}) in the denominator-cleared form $na_n=\sum_{j=1}^n j\ell_j a_{n-j}$.  The same module proves closed Bell-polynomial formulas for arbitrary powers as \lean{Fabius.coeff_fallingSeries_subst_eq_sum_ordPartialBell_of_pos} and \lean{Fabius.coeff_fallingSeries_subst_eq_sum_partialBell}, but the separate recurrence \cref{eq:merged-alg-power} is not formalized \\
 \Cref{alg:merged-differentiation-integration} & Differentiation and integration & none &  \\
 \Cref{alg:merged-composition} & Composition power table & none &  \\
 \Cref{alg:merged-lagrange-reversion} & Lagrange reversion & none &  \\

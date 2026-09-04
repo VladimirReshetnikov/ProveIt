@@ -14,13 +14,15 @@ over any commutative `ℚ`-algebra, with `e^{-z}` written as the exponential gen
 `altSeries` of `(-1)^n` and shown to invert `exp` (`exp_mul_altSeries`).
 
 Both are the same one-line argument: multiplying exponential generating functions is binomial
-convolution (`Bell.egfA_mul`), convolving against the constant sequence `1` or against
+convolution (`Fabius.egfA_mul`), convolving against the constant sequence `1` or against
 `(-1)^n` produces exactly the two displayed sums once the summation index is reflected
 (`binomialConv_one_left`, `binomialConv_altSeries_left`), and a sequence is determined by its
 exponential generating function (`seq_eq_of_egfA_eq`).
 
-`exp_mul_altSeries` is the binomial theorem at `1 + (-1) = 0` rather than a separate
-computation, which keeps it valid over an arbitrary commutative ring rather than only over `ℤ`.
+The coefficient cancellation in `exp_mul_altSeries` is the binomial theorem at
+`1 + (-1) = 0` and is valid over any commutative ring. The ordinary exponential
+generating functions themselves require the stated `ℚ`-algebra structure, which
+supplies the inverse factorials.
 
 ## Main results
 
