@@ -114,7 +114,7 @@ strict odd-degree drop remain unproved, so the compound `p7:thm:Pn` remains
 **Partial** with only those clauses outstanding. This exhaustive zero-
 definition/one-theorem bridge produced the incoming branch checkpoint of
 905 modules and 11,458 public declarations; after the merged source-only
-tranches, the live documentation census is 915 modules and 11,556 public
+tranches, the live documentation census is 917 modules and 11,565 public
 declarations. The retained frontier, primary,
 walkthrough, and geometric-q PDFs predate these source-only overlays and claim
 no render parity.
@@ -147,8 +147,14 @@ checkpoint to 914 modules and 11,554 public declarations. The one-theorem
 strengthening of the existing `GeometricResidualMoments` module left the
 module count unchanged and brought the next checkpoint to 914 modules and
 11,555 public declarations. The zero-definition/one-theorem
-`GeometricUniformMomentPolynomialBridge` leaf brings the live census to 915
-modules and 11,556 public declarations.
+`GeometricUniformMomentPolynomialBridge` leaf brought the next historical
+checkpoint to 915 modules and 11,556 public declarations. The affine-Prouhet
+strengthening of the existing `FinitePolynomialFunctional` module left the
+module count unchanged and raised the next checkpoint to 915/11,557. The
+one-definition/four-theorem `ThueMorseCornerIntegral` leaf then raised it to
+916/11,562, and the zero-definition/three-theorem
+`RvachevLegendreCentralSum` leaf brings the live census to 917 modules and
+11,565 public declarations.
 
 `FabiusFunction.GaussianBinomialGreaterOneAsymptotics` has exactly the two
 theorems
@@ -202,6 +208,32 @@ when its logarithm is read as the existing chosen GammaLog coordinate. No
 principal-`Complex.log` identity or nonpositive-parameter differential law
 is claimed. These additions are source-only; the retained frontier and
 package PDFs remain historical renders and make no current-parity claim.
+
+`FabiusFunction.ThueMorseCornerIntegral` has one public definition and four
+theorems: `Fabius.centeredBoxIntegral`,
+`Fabius.centeredBoxIntegral_zero`, `Fabius.centeredBoxIntegral_succ`,
+`Fabius.symmetricMixedDifference_range_eq_centeredBoxIntegral`, and
+`Fabius.symmetricMixedDifference_univ_eq_centeredBoxIntegral`. Together with
+the existing `ThueMorseSymmetricDifference` algebra, they make
+`thm:TM-corner` Complete exactly by composition. The range theorem assumes
+nonnegative half-steps, `IsOpen I`, `OrdConnected I`,
+`ContDiffOn ℝ N g I`, and containment of the full closed symmetric segment
+in `I`; it is local rather than a global smoothness shortcut and includes
+zero steps and `N = 0`. It is real-valued and fixes the recursive integration
+order. The following Walsh conditional-expectation construction and its
+`2^(-N)` normalization remain outside this result.
+
+`FabiusFunction.RvachevLegendreCentralSum` has no definitions and exactly
+three theorems: `Fabius.eval_legendrePolynomial_even_zero`,
+`Fabius.eval_rvachevLegendreDeconvolutionPolynomial_even`, and
+`Fabius.rvachevLegendreCentralSum`. For every `F : BoundedFabius` with
+`IsFabius F` and every `n`, including `n = 0`, the last theorem proves the
+literal finite central cancellation at mesh `4^n` by combining the normalized
+Legendre value at zero, evenness, compact-support truncation, and pairing of
+the positive and negative indices. This makes only `cor:leg-central-sum`
+Exact; it adds no Jacobi decoder formula, reverse spectral closure, or larger
+Lagrange right-inverse theorem. These source-only declarations are not
+rendered by the retained frontier or synthesis PDFs.
 
 The final source-only `FabiusFunction.GaussianBinomialFixedColumnRate` leaf has
 no definitions and ten theorems:
@@ -281,7 +313,7 @@ the later Euler, q-binomial, Jacobi, quantum-binomial, Rogers--Szegő,
 cyclotomic-divisibility, q-Catalan, primitive-root-block, q-Lucas, Jackson
 q-beta, geometric Newton-interpolation, integer/complex upper Gaussian, and
 q-Pfaff--Saalschütz, and noncommutative q-multinomial tranches. Its 282-result
-forward status totals are now 175 Exact / 83 Partial / 16 None / 8 interface.
+forward status totals are now 176 Exact / 82 Partial / 16 None / 8 interface.
 `FabiusFunction.GeometricResidualMoments` now has zero definitions and nine
 public theorems. Its existing
 `Fabius.sum_geometricLagrangeWeight_mul_scaled_geometric_pow_of_pos` supplies
@@ -293,6 +325,16 @@ Both results hold over an arbitrary field under injectivity of the nodes
 `k ↦ q^k` on `range (p + 1)`; the polynomial theorem permits every scale `c`,
 including zero, and therefore subsumes the manuscript's `c ≠ 0` case. No
 larger interpolation or node-collision claim is made.
+The new `Fabius.sum_weight_mul_eval_affine_of_topCoeff_extractor` theorem in
+the existing zero-definition/sixteen-theorem
+`FinitePolynomialFunctional.lean` module transports a same-ring
+top-coefficient extractor across `a + b*x` over every commutative semiring.
+Composed with
+`Fabius.halfQBinomial_negativeDyadic_polynomial_sum_eq_mersenne`, it makes
+`cor:geometric-prouhet-affine` Exact under the established rational-polynomial
+half-base convention. No `b ≠ 0` or distinct-node premise is needed, and the
+cases `b = 0` and `n = 0` are included; this does not assert a half-base
+extractor over arbitrary coefficient rings.
 The partition-symmetry row is exact; the basic geometric-uniform row is now
 exact because `GeometricUniformRealization.lean` transfers the canonical law
 to an arbitrary ambient probability space carrying independent coordinates

@@ -2902,6 +2902,41 @@ The positive-order spelling with \(m+1\) differences and mesh \(2^{-m}\) is
 These are all two definitions and eleven theorems in the module; it proves no
 analytic limit or differentiability statement.
 
+The companion \nolinkurl{ThueMorseCornerIntegral.lean} supplies precisely that
+local analytic step.  Its one public definition,
+\nolinkurl{centeredBoxIntegral}, recursively nests the intervals
+\([-a_i,a_i]\); its zero and successor equations are
+\nolinkurl{centeredBoxIntegral_zero} and
+\nolinkurl{centeredBoxIntegral_succ}.  If \(a_i\geq0\) for \(i<N\), \(I\) is
+open and order-connected, \(g\) is \nolinkurl{ContDiffOn} of order \(N\) on
+\(I\), and
+\[
+ [x-\sum_{i<N}a_i,\ x+\sum_{i<N}a_i]\subseteq I,
+\]
+then
+\[
+ \Delta^{\mathrm{sym}}_{a,\{0,\ldots,N-1\}}g(x)
+ =\mathcal B_{a,N}(g^{(N)};x).
+\]
+This is
+\nolinkurl{symmetricMixedDifference_range_eq_centeredBoxIntegral};
+\nolinkurl{symmetricMixedDifference_univ_eq_centeredBoxIntegral} is its
+\nolinkurl{Fin N}-indexed reindexing.  Those four theorems plus the definition
+are the exhaustive 1+4 public surface.
+
+The proof is an induction on \(N\).  Peeling the last symmetric difference
+reduces each Boolean-cube corner to an endpoint difference.  The full-segment
+containment and order-connectedness put every translated interval inside
+\(I\), so the local interval fundamental theorem of calculus replaces that
+difference by an integral of \(g'\).  Finite linearity moves the corner sum
+through the outer integral, and the induction hypothesis applies to \(g'\).
+Thus the theorem keeps the manuscript's local regularity rather than assuming
+global smoothness.  It includes zero half-steps and \(N=0\), strengthening the
+printed positive-step case, but does not cover arbitrary signed half-steps.
+Together with the algebraic module it makes
+\nolinkurl{thm:TM-corner} \emph{Exact}; the following Walsh probability
+corollary remains separate.
+
 \subsection{The finite q-Pochhammer infrastructure}
 \nolinkurl{HalfQBinomial.lean} develops exact q-binomial algebra at \(q=1/2\) over \(\RationalNumbers\).  The finite q-Pochhammer product is represented without analytic convergence issues:
 \[
@@ -2921,6 +2956,45 @@ q-Cauchy layer over every commutative ring.  Its five public theorem names are
 \nolinkurl{qBernsteinBasis}.  All five theorems include degree zero,
 \(q=0\), roots of unity, positive characteristic, and zero divisors; none
 uses division, cancellation, or a nonvanishing hypothesis.
+
+\subsection{Finite moment functionals and affine Prouhet transport}
+\nolinkurl{FinitePolynomialFunctional.lean} has no public definitions and
+exactly sixteen public theorems:
+\nolinkurl{sum_weight_mul_eval₂_eq_sum_coeff_mul_moment},
+\nolinkurl{sum_weight_mul_eval₂_eq_eval₂_of_moments},
+\nolinkurl{sum_weight_mul_eval₂_eq_coeff_mul_moment},
+\nolinkurl{sum_weight_mul_eval₂_eq_topCoeff_mul_moment},
+\nolinkurl{sum_weight_mul_eval₂_eq_constantCoeff_mul_sum},
+\nolinkurl{sum_weight_mul_eval₂_eq_constantCoeff},
+\nolinkurl{sum_weight_mul_eval₂_eq_map_coeff_mul_of_moments},
+\nolinkurl{sum_weight_mul_eval₂_eq_map_coeff_mul_top_moment},
+\nolinkurl{sum_weight_mul_eval₂_eq_zero_of_degree_lt},
+\nolinkurl{sum_weight_mul_eval₂_congr_of_map_coeff_eq},
+\nolinkurl{sum_weight_mul_eval_eq_eval_of_moments},
+\nolinkurl{sum_weight_mul_eval_eq_coeff_mul_of_moments},
+\nolinkurl{sum_weight_mul_eval_eq_coeff_mul_top_moment},
+\nolinkurl{sum_weight_mul_eval_eq_zero_of_degree_lt},
+\nolinkurl{sum_weight_mul_eval_congr_of_coeff_eq}, and
+\nolinkurl{sum_weight_mul_eval_affine_of_topCoeff_extractor}.
+The scalar-extension results work from an arbitrary semiring into a
+commutative semiring; the same-ring results need only a commutative semiring.
+Expanding polynomial evaluation, interchanging the two finite sums, and
+substituting the prescribed monomial moments prove reproduction, selected
+coefficient extraction, strict-degree cancellation, and congruence.  Repeated
+nodes and a zero selected moment are allowed.
+
+The last theorem says that any same-ring functional extracting
+\([X^n]p\,c\) at nodes \(x_i\) extracts
+\[
+ b^n c[X^n]p
+\]
+after the affine replacement \(x_i\mapsto a+b x_i\).  Its proof applies the
+original extractor to \(p(a+bX)\) and computes the top coefficient; the
+zero-scale case is included, so neither \(b\ne0\) nor distinct transformed
+nodes is assumed.  Composing this transport with
+\nolinkurl{halfQBinomial_negativeDyadic_polynomial_sum_eq_mersenne} proves
+\nolinkurl{cor:geometric-prouhet-affine} exactly under the established
+\(\RationalNumbers[X]\) convention, including \(b=0\) and \(n=0\).
 
 \subsection{Why prove a specialized q-binomial theorem?}
 Mathlib contains general polynomial and combinatorial infrastructure, but a specialized theorem at \(q=1/2\) gives the repository:
@@ -4002,6 +4076,32 @@ degree class.
 The formal proof represents the finite span either as a submodule of \(L^2\)-type functions or directly through polynomial coefficients.  It proves orthogonality term by term and then expands the square of the norm.  Uniqueness follows because equality of errors forces
 \(\lVert S_N^{\mathrm{even}}-p\rVert_2=0\), hence equality almost everywhere;
 polynomial continuity upgrades this to pointwise polynomial equality.
+
+\subsection{Central cancellation in the finite even-mode synthesis}
+The existing Legendre translate synthesis has the exact mesh \(M=4^n\) for
+the even mode.  Evaluating it at zero gives the representation-frontier
+corollary
+\[
+ Q_{2n}(0)+2\sum_{0<k<M}Q_{2n}(k/M)\RvachevUp(k/M)
+ =(-1)^n\binom{2n}{n}.
+\]
+\nolinkurl{RvachevLegendreCentralSum.lean} has no public definitions and
+exactly three public theorems:
+\nolinkurl{eval_legendrePolynomial_even_zero},
+\nolinkurl{eval_rvachevLegendreDeconvolutionPolynomial_even}, and
+\nolinkurl{rvachevLegendreCentralSum}.  The last quantifies over every
+\nolinkurl{F : BoundedFabius} satisfying \nolinkurl{IsFabius F} and includes
+\(n=0\).
+
+The proof starts from the finite synthesis block \(-2M<k<2M\).  Compact
+support removes the terms with \(M\leq |k|<2M\).  The second theorem makes the
+deconvolved even mode even; evenness of \(\RvachevUp\) then pairs \(k\) with
+\(-k\), and the central term uses \(\RvachevUp(0)=1\).  Clearing \(M=4^n\)
+and applying the first theorem,
+\(P_{2n}(0)=(-1)^n4^{-n}\binom{2n}{n}\), proves the formula.  Thus
+\nolinkurl{cor:leg-central-sum} is \emph{Exact/Complete}.  This result does not
+add a Jacobi closed form, all-degree decoder parity or rationality, reverse
+spectral closure, mesh minimality, or a larger Lagrange right inverse.
 
 The later module \nolinkurl{FabiusLegendreEnergy.lean} closes the coefficient
 energy side of the same expansion.  It defines the polynomial-form blocks
@@ -5738,6 +5838,9 @@ Positive-rational-gap effective inversion & \nolinkurl{EffectivelyUniformContinu
 Computable totalized Fabius inverse & \nolinkurl{fabiusInv_isComputableRealFunction} & \nolinkurl{FabiusInverseComputable.lean}; zero definitions and one theorem combining clamped tolerant-bisection sequential computability with logarithmic-Delta effective uniform continuity \\
 Actual quarter inverse jet & \nolinkurl{iteratedDeriv_centeredFabiusInv_quarter_eq_quadraticInverse}, \nolinkurl{iteratedDeriv_fabiusInv_five_seventy_two_succ} & \nolinkurl{FabiusInverseQuarterJet.lean}; equality of jets, not local analytic equality \\
 Centered Thue--Morse mixed differences & \nolinkurl{symmetricMixedDifference}, \nolinkurl{symmetricMixedDifference_polynomial_eq_coeff_card}, \nolinkurl{symmetricDyadicMixedDifference_eq_sum_thueMorseSign_smul} & \nolinkurl{ThueMorseSymmetricDifference.lean}; finite algebraic identities, with no analytic limit claim \\
+Local Thue--Morse corner integral & \nolinkurl{centeredBoxIntegral}, \nolinkurl{symmetricMixedDifference_range_eq_centeredBoxIntegral}, \nolinkurl{symmetricMixedDifference_univ_eq_centeredBoxIntegral} & Exhaustive 1+4 \nolinkurl{ThueMorseCornerIntegral.lean} surface; local open/order-connected \nolinkurl{ContDiffOn} hypotheses on the full symmetric segment, zero widths and order zero included; makes \nolinkurl{thm:TM-corner} Exact with the preceding algebra \\
+Finite moment functional and affine Prouhet transport & \nolinkurl{sum_weight_mul_eval₂_eq_sum_coeff_mul_moment}, \nolinkurl{sum_weight_mul_eval₂_eq_eval₂_of_moments}, \nolinkurl{sum_weight_mul_eval_affine_of_topCoeff_extractor} & Exhaustive 0+16 \nolinkurl{FinitePolynomialFunctional.lean} surface; scalar-extension extraction and same-ring affine transport over commutative semirings, including zero scale; makes \nolinkurl{cor:geometric-prouhet-affine} Exact with the half-base extractor \\
+Central Rvachev--Legendre cancellation & \nolinkurl{eval_legendrePolynomial_even_zero}, \nolinkurl{eval_rvachevLegendreDeconvolutionPolynomial_even}, \nolinkurl{rvachevLegendreCentralSum} & Exhaustive 0+3 \nolinkurl{RvachevLegendreCentralSum.lean} surface; exact (M=4^n) finite identity, including (n=0), making \nolinkurl{cor:leg-central-sum} Exact/Complete \\
 Uniform spline \(S_p\) & \nolinkurl{fabiusUniformSpline} & \nolinkurl{FabiusUniformSpline.lean} and \nolinkurl{FabiusComputability.lean} \\
 Logarithmic profile & \nolinkurl{fabiusLogProfile} & \nolinkurl{FabiusLogScale.lean} \\
 Forward real Lambert branch pairing & \nolinkurl{principalLambertW_sub_lowerLambertW_pos}, \nolinkurl{principalLambertW_eq_neg_gap_div}, \nolinkurl{lowerLambertW_eq_neg_gap_mul_exp_div}, \nolinkurl{lowerLambertW_eq_neg_gap_div_one_sub_exp_neg}, \nolinkurl{eq_neg_gap_div_mul_exp} & Exhaustive zero-definition/seven-theorem surface of \nolinkurl{LambertWBranchPairing.lean}; exact \(\delta\)- and \(t=e^\delta\)-forms on \((-e^{-1},0)\) only \\
@@ -5923,6 +6026,8 @@ Module & Role in the development \\
 \nolinkurl{QBinomialCauchy.lean} & One q-Bernstein definition and five denominator-free finite q-Cauchy/q-Bernstein theorems over arbitrary commutative rings, including the compatibility alias \nolinkurl{finiteQPochhammerIn_mul_eq_sum_gaussianBinomial}. \\
 \nolinkurl{ThueMorseMixedDifference.lean} & Order-independent translation differences, Boolean-cube expansion, polynomial coefficient extraction, and dyadic Thue--Morse specialization. \\
 \nolinkurl{ThueMorseSymmetricDifference.lean} & Centered half-step recurrence and Boolean-cube expansion, sign-free sharp polynomial extraction, strict-degree cancellation, and centered/increasing-grid dyadic Thue--Morse block formulas. \\
+\nolinkurl{ThueMorseCornerIntegral.lean} & Exhaustive one-definition/four-theorem surface giving the recursive centered box integral and the exact range/\nolinkurl{Fin N} local corner identities under open, order-connected, segment-local \nolinkurl{ContDiffOn} hypotheses. \\
+\nolinkurl{FinitePolynomialFunctional.lean} & Exhaustive zero-definition/sixteen-theorem surface giving scalar-extended moment expansion, reproduction, coefficient extraction, cancellation and congruence, same-ring forms, and affine top-coefficient transport including zero scale. \\
 \nolinkurl{FabiusRawQBinomialFormula.lean} & Raw coefficient-valued finite q-binomial identity before scalar or analytic specialization. \\
 \nolinkurl{FabiusRawQBinomialScalar.lean} & Scalar evaluation of the raw finite identity. \\
 \nolinkurl{FabiusQBinomialFormula.lean} & Principal exact Thue--Morse/q-binomial formula for unrestricted natural parameters. \\
@@ -6064,6 +6169,7 @@ Module & Role in the development \\
 \nolinkurl{FabiusLegendreSeries.lean} & Orthogonality, absolute/uniform convergence, and pointwise identification of the up-function series. \\
 \nolinkurl{FabiusTranslatedLegendreSeries.lean} & Affine translation to the signed Fabius function and monomial expansion of the translated series. \\
 \nolinkurl{FabiusLegendreLeastSquares.lean} & Pythagorean identity and unique least-squares optimality of finite Legendre truncations. \\
+\nolinkurl{RvachevLegendreCentralSum.lean} & Exhaustive zero-definition/three-theorem surface: the central value of (P_{2n}), evenness of the deconvolved even mode, and the exact finite central-binomial cancellation at mesh (4^n), including (n=0). \\
 \nolinkurl{FabiusLegendreEnergy.lean} & Polynomial-form Legendre blocks, their complete orthogonality, full coefficient Parseval identity, exact shifted coefficient-energy tails in \nolinkurl{HasSum} and \nolinkurl{tsum} form, and the real-variable Legendre series for \(\int_0^1F(t)^2\,dt\).  Finite up-translate realization, Fourier/sinc energy formulas, and rationality of partial sums remain outside the module. \\
 \nolinkurl{LegendreGaunt.lean} & Four definitions and twelve theorems giving executable rational Lebesgue moments and Gaunt coefficients, real-cast and moment-functional bridges, two index swaps, finite real/rational Legendre product linearizations, and the proved parity and triangle-support zeros; see \cref{ch:legendre-gaunt}. \\
 \nolinkurl{LegendreGauntClosedForm.lean} & Two definitions and twenty-five theorems giving the total rational integer-index zero-row Wigner-square datum, pairwise-coordinate central-binomial and factorial forms, the half-sum factorial form, exact global rational and real Gaunt identities, sharp support, positivity, nonnegativity, degenerate and zero-index boundary values, and product-coefficient laws; no signed phase, half-integer or nonzero magnetic indices, Wigner orthogonality, or recoupling; see \cref{ch:legendre-gaunt-closed-form}. \\
@@ -6224,7 +6330,7 @@ Lean audits of the previously recorded new or refactored declarations,
 for each.  At that upstream checkpoint, static inspection found all 610 modules
 below \nolinkurl{FabiusFunction/} reachable from the facade and every one of
 the 105 activation declarations documented.  The live current-tree audit scans
-915 modules and 11,556 public declarations, with no missing module headers or
+917 modules and 11,565 public declarations, with no missing module headers or
 declaration comments.  At the retained historical mainline checkpoint before the latest
 six-module q-series tranche was 623 modules and 8,476 declarations.  Its
 immediately preceding census, after the Rvachev Appell and original
@@ -6339,12 +6445,16 @@ in \nolinkurl{GeometricResidualMoments.lean} raises the live declaration count
 to 11,555 and makes \nolinkurl{cor:scaled-geometric-moments} Exact by
 composition.  The exhaustive zero-definition/one-theorem
 \nolinkurl{GeometricUniformMomentPolynomialBridge.lean} companion then raises
-the live census to 915/11,556; its sole theorem,
+that checkpoint to 915/11,556; its sole theorem,
 \nolinkurl{geometricUniformMomentPolynomial_eval₂_eq_mgf_taylorCoefficient},
 supplies the real-\(\lvert q\rvert<1\) analytic normalization and makes
 \nolinkurl{p7:eq:Pn-def} Exact in that regime.  The leading-coefficient and
 strict odd-degree clauses remain absent, so the compound
-\nolinkurl{p7:thm:Pn} remains Partial.  Every module is reachable from the
+\nolinkurl{p7:thm:Pn} remains Partial.  The final exact-closure tranche adds
+the 1+4 \nolinkurl{ThueMorseCornerIntegral.lean} and 0+3
+\nolinkurl{RvachevLegendreCentralSum.lean} leaves, while the existing
+zero-definition \nolinkurl{FinitePolynomialFunctional.lean} module grows to
+sixteen theorems.  This gives the live 917/11,565 census.  Every module is reachable from the
 facade.  No aggregate facade
 build is claimed for this current-tree census.  The retained PDF and the
 title-page pin remain historical receipts and do not claim parity with the

@@ -147,8 +147,22 @@ cumulants. This is exact by assembly rather than by a single wrapper theorem.
 It does not claim rational values at irrational evaluation points or analytic
 convergence of the reciprocal MGF. Its promotion is independent of the
 existing synthesis assembly for `thm:lag-cardinal`, and neither result
-promotes the larger `thm:lag-right-inverse`. The retained package PDF predates
-these source-only status annotations and was not rebuilt.
+promotes the larger `thm:lag-right-inverse`.
+
+The compiled `FabiusFunction.RvachevLegendreCentralSum` module promotes
+`cor:leg-central-sum` to Exact/Complete. Its exhaustive public surface has no
+definitions and three theorems: `eval_legendrePolynomial_even_zero`,
+`eval_rvachevLegendreDeconvolutionPolynomial_even`, and
+`rvachevLegendreCentralSum`. The last theorem is the printed identity with
+`M = 4 ^ n`: it evaluates the existing even Legendre synthesis at zero,
+removes `|k| >= M` by compact support, pairs the remaining nonzero nodes by
+evenness, clears the mesh factor, and uses the exact central Legendre value.
+It is slightly stronger only in allowing any `BoundedFabius` satisfying
+`IsFabius`, and it includes `n = 0`. This promotion does not formalize the
+Jacobi closed form, all-degree parity or rationality in `thm:leg-mode-synthesis`,
+nor reverse closure, mesh minimality, or any larger Lagrange right-inverse
+claim. The retained package PDF predates these source-only status annotations
+and was not rebuilt.
 
 The Q12 root transition is exact computer-assisted mathematics: rational
 polynomials and rational Sturm chains decide root counts. Approximate complex

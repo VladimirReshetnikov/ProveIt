@@ -3905,7 +3905,7 @@ because the underlying infinite product is totalized outside its admissible
 range.  No spectral-zeta recovery, cumulant-sample recovery, or
 identifiability of an underlying probability law is asserted; those remain
 open interfaces.  With the later concurrent source union, the live facade
-census is 915 modules and 11,556 public declarations.  The immediately
+census is 917 modules and 11,565 public declarations.  The immediately
 preceding scaled-geometric checkpoint was 914/11,555; the earlier
 Appell/fixed-column/barycenter/Matrix checkpoint was 910/11,525;
 the complex Bernoulli value-completion checkpoint 903/11,448 remains
@@ -3936,7 +3936,11 @@ one-definition/eight-theorem
 \path{GeometricUniformMomentPolynomial.lean} module, the zero-definition/
 three-theorem \path{ThueMorseGammaTowerDifferential.lean} leaf, and the
 zero-definition/one-theorem
-\path{GeometricUniformMomentPolynomialBridge.lean} companion.
+\path{GeometricUniformMomentPolynomialBridge.lean} companion, followed by
+the one-definition/four-theorem \path{ThueMorseCornerIntegral.lean} and
+zero-definition/three-theorem \path{RvachevLegendreCentralSum.lean} leaves
+and the sixteenth theorem in the zero-definition
+\path{FinitePolynomialFunctional.lean} module.
 These are
 source-only overlays; the retained 183-page, 1,899,243-byte PDF is explicitly
 historical and has not been regenerated for these additions.
@@ -6922,6 +6926,50 @@ These two definitions and eleven theorems are the exhaustive public API of
 \path{ThueMorseSymmetricDifference.lean}; no limiting or differentiability
 claim is made there.
 
+The analytic corner formula is supplied by the companion
+\path{ThueMorseCornerIntegral.lean}.  For a sequence of half-widths \(a_i\),
+define the centered box integral recursively by
+\begin{equation*}
+ \mathcal B_{a,0}(h;x)=h(x),\qquad
+ \mathcal B_{a,N+1}(h;x)=
+   \int_{-a_N}^{a_N}\mathcal B_{a,N}(h;x+u)\Differential u.
+\end{equation*}
+This is \lean{centeredBoxIntegral}; its two recursion equations are
+\lean{centeredBoxIntegral_zero} and \lean{centeredBoxIntegral_succ}.  Suppose
+\(a_i\geq0\) for \(i<N\), \(I\subseteq\RealNumbers\) is open and
+order-connected, \(g\) is \(C^N\) on \(I\), and the entire segment
+\[
+ \left[x-\sum_{i<N}a_i,\ x+\sum_{i<N}a_i\right]
+ \quad\hbox{is contained in }I.
+\]
+Then
+\begin{equation}
+ \Delta^{\mathrm{sym}}_{a,\{0,\ldots,N-1\}}g(x)
+ =\mathcal B_{a,N}\!\left(g^{(N)};x\right).              \label{eq:symmetric-corner-box-integral}
+\end{equation}
+The range-indexed statement is
+\lean{symmetricMixedDifference_range_eq_centeredBoxIntegral};
+\lean{symmetricMixedDifference_univ_eq_centeredBoxIntegral} is the identical
+formula reindexed by \(\operatorname{Fin}N\).  These, the definition, and the
+two recursion equations are the exhaustive one-definition/four-theorem
+public surface of the module.  The assumptions are genuinely local: no
+global \(C^N\) hypothesis is substituted.  They permit zero half-steps and
+\(N=0\), hence strengthen the manuscript's positive-step case, but do not
+assert a signed-half-step formula.
+
+For the proof of \eqref{eq:symmetric-corner-box-integral}, peel the last
+symmetric difference by \eqref{eq:symmetric-mixed-recurrence}.  At each
+Boolean-cube corner, order-connectedness and containment of the full segment
+place the translated interval inside \(I\), so the local fundamental theorem
+of calculus replaces the endpoint difference by an integral of \(g'\).
+Finite linearity moves the powerset sum through that integral.  The induction
+hypothesis applied to \(g'\), whose local regularity is \(C^{N-1}\), gives the
+remaining nested integral.  The zero-order case is evaluation by definition.
+Together with the finite algebra above, this proves every clause of the
+continuous-chaos report's \nolinkurl{thm:TM-corner}, now \emph{Exact}.  It does
+not provide the separate Walsh conditional-expectation construction or its
+normalization.
+
 The finite block polynomial packages the same signs without introducing an analytic
 exponential identity:
 \begin{equation}
@@ -9263,6 +9311,43 @@ coefficient and strict-cancellation forms are
 \lean{sum_weight_mul_eval_eq_zero_of_degree_lt} in
 \path{FinitePolynomialFunctional.lean}; that module also contains the scalar-extension
 forms used by the later Prouhet arguments.
+
+Its exhaustive public surface has no definitions and exactly sixteen theorems:
+\lean{sum_weight_mul_eval₂_eq_sum_coeff_mul_moment},
+\lean{sum_weight_mul_eval₂_eq_eval₂_of_moments},
+\lean{sum_weight_mul_eval₂_eq_coeff_mul_moment},
+\lean{sum_weight_mul_eval₂_eq_topCoeff_mul_moment},
+\lean{sum_weight_mul_eval₂_eq_constantCoeff_mul_sum},
+\lean{sum_weight_mul_eval₂_eq_constantCoeff},
+\lean{sum_weight_mul_eval₂_eq_map_coeff_mul_of_moments},
+\lean{sum_weight_mul_eval₂_eq_map_coeff_mul_top_moment},
+\lean{sum_weight_mul_eval₂_eq_zero_of_degree_lt},
+\lean{sum_weight_mul_eval₂_congr_of_map_coeff_eq},
+\lean{sum_weight_mul_eval_eq_eval_of_moments},
+\lean{sum_weight_mul_eval_eq_coeff_mul_of_moments},
+\lean{sum_weight_mul_eval_eq_coeff_mul_top_moment},
+\lean{sum_weight_mul_eval_eq_zero_of_degree_lt},
+\lean{sum_weight_mul_eval_congr_of_coeff_eq}, and
+\lean{sum_weight_mul_eval_affine_of_topCoeff_extractor}.
+The first ten allow scalar extension from an arbitrary semiring into a
+commutative semiring; the remaining same-ring forms require only a commutative
+semiring.  Repeated nodes and a zero selected moment are allowed, and the
+degree-valued statements include \(n=0\) and the zero polynomial.
+
+The last theorem is the general affine transport principle.  If a weighted
+functional extracts \([X^n]q\,c\) from every \(q\) of degree at most \(n\), then
+\begin{equation}
+ \sum_i w_i p(a+b x_i)=b^n c[X^n]p                         \label{eq:finite-functional-affine}
+\end{equation}
+for every \(p\) of degree at most \(n\).  Put
+\(q(X)=p(a+bX)\), apply the supplied extractor to \(q\), and compute
+\([X^n]q=b^n[X^n]p\).  The implementation treats \(b=0\) separately when
+proving this coefficient formula, so \eqref{eq:finite-functional-affine}
+needs neither \(b\ne0\) nor distinct transformed nodes and includes \(n=0\).
+Composing it with
+\lean{halfQBinomial_negativeDyadic_polynomial_sum_eq_mersenne} proves the
+q-monograph's \nolinkurl{cor:geometric-prouhet-affine} exactly under its
+established \(\RationalNumbers[X]\) convention.
 
 Second, over a field, distinct nodes $v_i$ have evaluation weights
 $\lambda_i(x)$ given by the Lagrange basis at $x$.  They reproduce every polynomial of
@@ -12338,6 +12423,40 @@ coefficient.  The two synthesis theorems then give
 \end{align}
 for \(-1\le x\le1\).  More explicitly, let
 \[
+ M=4^n.
+\]
+Setting \(x=0\) in the even synthesis gives the exact central cancellation
+\begin{equation}
+ Q_{2n}(0)+2\sum_{0<k<M}Q_{2n}(k/M)\RvachevUp(k/M)
+ =(-1)^n\binom{2n}{n}.                                   \label{eq:legendre-central-sum}
+\end{equation}
+The exhaustive public surface of
+\path{RvachevLegendreCentralSum.lean} consists of no definitions and the
+three theorems \lean{eval_legendrePolynomial_even_zero},
+\lean{eval_rvachevLegendreDeconvolutionPolynomial_even}, and
+\lean{rvachevLegendreCentralSum}.  The last theorem proves
+\eqref{eq:legendre-central-sum} for every \(F:\lean{BoundedFabius}\) satisfying
+\lean{IsFabius}\(F\), a harmless strengthening from the canonical function,
+and includes \(n=0\).
+
+Indeed, begin with \eqref{eq:legendre-rvachev-even-synthesis} at zero.
+Compact support removes every term with \(M\leq |k|<2M\).  The deconvolved
+even mode is even by
+\lean{eval_rvachevLegendreDeconvolutionPolynomial_even}, while
+\(\RvachevUp\) is even, so the surviving nonzero indices pair as \(k,-k\).
+The central term uses \(\RvachevUp(0)=1\).  Finally clear the mesh \(M=4^n\)
+and insert
+\[
+ P_{2n}(0)=(-1)^n4^{-n}\binom{2n}{n},
+\]
+which is \lean{eval_legendrePolynomial_even_zero}.  Thus the representation
+frontier's \nolinkurl{cor:leg-central-sum} is \emph{Exact/Complete}.  This
+finite argument supplies no Jacobi closed form, all-degree decoder parity or
+rationality, reverse spectral closure, mesh minimality, or larger Lagrange
+right inverse.
+
+More explicitly, let
+\[
  M_n=4^n,\qquad I_n=\{k\in\IntegerNumbers:-2M_n<k<2M_n\},\qquad
  a_{n,k}=\frac{u_n}{M_n}Q_{2n}(k/M_n),
 \]
@@ -13619,6 +13738,7 @@ renormalization, Laurent/Herglotz/inversion layers, initial Jacobi data, and fin
 \path{FabiusLegendreGaunt.lean},
 \path{FabiusLegendreGauntClosedForm.lean},
 \path{FabiusLegendreRationalGramValues.lean},
+\path{RvachevLegendreCentralSum.lean},
 \path{EarlyApproximants.lean},
 \path{EarlyMeasureBridge.lean}, \path{WeakConvergence.lean},
 \path{ProbabilityLaplaceMoments.lean}, \path{LaplaceMoments.lean},
@@ -13697,9 +13817,10 @@ polynomials &
 \path{QPascalSummation.lean}, \path{GaussianBinomialContinuity.lean},
 \path{QuantumBinomial.lean}, \path{RogersSzegoPolynomial.lean}\\
 Reciprocal-Gamma first jets and the Thue--Morse Gamma tower, including its
-positive-parameter differential ladder &
+positive-parameter differential ladder and the local centered-corner integral &
 \path{ReciprocalGammaJets.lean}, \path{ThueMorseGammaTower.lean},
-\path{ThueMorseGammaTowerDifferential.lean}\\
+\path{ThueMorseGammaTowerDifferential.lean},
+\path{ThueMorseCornerIntegral.lean}\\
 Local all-order jet calculus &
 \path{LeadingJet.lean}\\
 Normalized integer- and positive-real-order Volterra calculus, affine covariance,

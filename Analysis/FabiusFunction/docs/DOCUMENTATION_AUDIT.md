@@ -112,7 +112,7 @@ numbers rather than copying these historical values.
 The historical post-merge 2026-09-01 inventory contained 675 modules and 8,909
 lexically visible public declarations, with zero missing module headers and
 zero missing doc comments.  A fresh 2026-09-04 audit for this documentation
-pass scans 915 facade-reachable modules and 11,556 public declarations.  It
+pass scans 917 facade-reachable modules and 11,565 public declarations.  It
 finds no missing module header or declaration comment, including throughout
 `FabiusInverseExactDyadicModulus.lean`, `JacobiTwoSquareCount.lean`, and
 `LagrangeRvachevMatrix.lean`, as well as the incoming
@@ -123,13 +123,17 @@ finds no missing module header or declaration comment, including throughout
 `LambertWBranchGapBernoulli.lean`, `GaussianBinomialFixedColumnRate.lean`, and
 `RvachevAppellHasse.lean`, `GeometricUniformMomentPolynomial.lean`,
 `RvachevLagrangeNodesOnly.lean`, `GaussianBinomialGreaterOneAsymptotics.lean`,
-`ThueMorseGammaTowerDifferential.lean`, and
-`GeometricUniformMomentPolynomialBridge.lean` leaves.  Relative to the
-610/8,318 activation checkpoint, the current tree adds 305 modules and 3,238 declarations.
+`ThueMorseGammaTowerDifferential.lean`,
+`GeometricUniformMomentPolynomialBridge.lean`,
+`ThueMorseCornerIntegral.lean`, and `RvachevLegendreCentralSum.lean` leaves,
+as well as the sixteenth theorem in `FinitePolynomialFunctional.lean`.
+Relative to the
+610/8,318 activation checkpoint, the current tree adds 307 modules and 3,247 declarations.
 Relative to the earlier 630/8,552 merged checkpoint, concurrent source work
-adds 285 modules and 3,004 declarations.  The post-merge 675/8,909 inventory,
+adds 287 modules and 3,013 declarations.  The post-merge 675/8,909 inventory,
 the intervening 903/11,448 Lambert-series inventory, and the immediately
-preceding 914/11,555 scaled-geometric checkpoint remain historical, not
+preceding 914/11,555 scaled-geometric and 915/11,556 real-MGF-bridge
+checkpoints remain historical, not
 descriptions of the live facade.
 
 #### Terminating `₂φ₁` reversal and q-Chu--Vandermonde tranche
@@ -532,7 +536,7 @@ recursive Lean family.
 
 `GeometricUniformMomentPolynomialBridge.lean` adds one source module and one
 public theorem to the immediately preceding 914/11,555 scaled-geometric
-checkpoint, bringing the live census to 915/11,556.  Its exhaustive 0+1 surface is
+checkpoint, bringing that checkpoint to 915/11,556.  Its exhaustive 0+1 surface is
 `geometricUniformMomentPolynomial_eval₂_eq_mgf_taylorCoefficient`; every helper
 declaration in the module is private and excluded from the public count.
 
@@ -580,8 +584,78 @@ including zero.  Together with
 `cor:scaled-geometric-moments` **Exact** by composition and strengthens the
 manuscript's `c ≠ 0` hypothesis.
 
-The resulting live inventory is 915 modules and 11,556 public declarations,
+The resulting bridge-stage inventory was 915 modules and 11,556 public declarations,
 with no missing module header or declaration comment.
+
+#### Finite-functional, local-corner, and central-Legendre closure tranche
+
+The final exact-closure tranche adds two modules and nine public declarations
+to the 915/11,556 bridge checkpoint.  The live facade inventory is therefore
+917 modules and 11,565 public declarations, with no missing module header or
+public declaration comment.
+
+`FinitePolynomialFunctional.lean` remains a zero-definition module and now has
+exactly sixteen public theorems:
+`sum_weight_mul_eval₂_eq_sum_coeff_mul_moment`,
+`sum_weight_mul_eval₂_eq_eval₂_of_moments`,
+`sum_weight_mul_eval₂_eq_coeff_mul_moment`,
+`sum_weight_mul_eval₂_eq_topCoeff_mul_moment`,
+`sum_weight_mul_eval₂_eq_constantCoeff_mul_sum`,
+`sum_weight_mul_eval₂_eq_constantCoeff`,
+`sum_weight_mul_eval₂_eq_map_coeff_mul_of_moments`,
+`sum_weight_mul_eval₂_eq_map_coeff_mul_top_moment`,
+`sum_weight_mul_eval₂_eq_zero_of_degree_lt`,
+`sum_weight_mul_eval₂_congr_of_map_coeff_eq`,
+`sum_weight_mul_eval_eq_eval_of_moments`,
+`sum_weight_mul_eval_eq_coeff_mul_of_moments`,
+`sum_weight_mul_eval_eq_coeff_mul_top_moment`,
+`sum_weight_mul_eval_eq_zero_of_degree_lt`,
+`sum_weight_mul_eval_congr_of_coeff_eq`, and
+`sum_weight_mul_eval_affine_of_topCoeff_extractor`.
+The first ten are scalar-extension results from an arbitrary semiring to a
+commutative semiring; the five same-ring conveniences and the affine theorem
+need only a commutative semiring.  The common proof expands `eval₂` into its
+finite coefficient sum, swaps the two finite sums, and inserts the prescribed
+moments.  For affine transport, apply the supplied extractor to
+`p.comp (C b * X + C a)` and compute its degree-`n` coefficient as
+`p.coeff n * b^n`; a separate zero-scale argument retains `b=0` and `n=0`.
+No distinctness, nonzero scale, subtraction, or nonzero surviving moment is
+assumed.  Composing the affine theorem with
+`halfQBinomial_negativeDyadic_polynomial_sum_eq_mersenne` makes
+`cor:geometric-prouhet-affine` **Exact** under the existing rational-polynomial
+convention.
+
+`ThueMorseCornerIntegral.lean` has one public definition,
+`centeredBoxIntegral`, and exactly four public theorems:
+`centeredBoxIntegral_zero`, `centeredBoxIntegral_succ`,
+`symmetricMixedDifference_range_eq_centeredBoxIntegral`, and
+`symmetricMixedDifference_univ_eq_centeredBoxIntegral`.
+For nonnegative half-steps, an open order-connected set `I`,
+`ContDiffOn ℝ N g I`, and containment of the full symmetric segment
+`[x-∑i<N,a i,x+∑i<N,a i]` in `I`, the last two theorems identify the range and
+`Fin N` corner sums with the centered nested integral of `iteratedDeriv N g`.
+The induction peels the final mixed difference, applies the local interval FTC
+at every powerset corner, moves the finite sum through the outer integral, and
+recurses on `deriv g`.  These are genuinely local hypotheses, not a global
+`ContDiff` replacement.  Zero half-steps and `N=0` are included, strengthening
+the printed positive-step domain; arbitrary signed half-steps are not claimed.
+Together with `ThueMorseSymmetricDifference.lean`, this makes
+`thm:TM-corner` **Exact**.  The following Walsh conditional-expectation
+corollary remains outside the surface.
+
+`RvachevLegendreCentralSum.lean` has no public definitions and exactly three
+public theorems: `eval_legendrePolynomial_even_zero`,
+`eval_rvachevLegendreDeconvolutionPolynomial_even`, and
+`rvachevLegendreCentralSum`.  The last theorem assumes
+`F : BoundedFabius`, `IsFabius F`, and `n : ℕ`, sets the exact mesh
+`M=4^n`, and proves the printed finite central-binomial cancellation, including
+`n=0`.  Its proof evaluates the existing even-mode synthesis at zero, truncates
+the open block from `|k|<2M` to `|k|<M` by compact support, pairs the remaining
+nonzero nodes using the two evenness facts, clears `M`, and inserts the exact
+central value of `P_(2n)`.  Hence `cor:leg-central-sum` is **Exact/Complete**.
+No Jacobi closed form, all-degree decoder parity or rationality, reverse
+spectral closure, mesh minimality, or larger Lagrange right-inverse statement
+is inferred.
 
 The one-definition/eight-theorem
 `RvachevSuperconvergentSynthesis.lean` leaf contributes
@@ -1324,7 +1398,7 @@ and 88-page notation-catalogue artifacts likewise predate their current merged
 sources.  Their package notices treat those PDFs as historical validation
 receipts, not parity claims, until fresh uninterrupted three-pass builds
 complete.  The inverse-computability receipt likewise still reflects the
-historical 675/8,909 census and requires refresh against the live 915/11,556
+historical 675/8,909 census and requires refresh against the live 917/11,565
 inventory.  The canonical inverse-theory publication retains a 134-page
 artifact synchronized at its latest-main source checkpoint; the merged
 effective-inversion and superconvergent-synthesis tranches make current parity
