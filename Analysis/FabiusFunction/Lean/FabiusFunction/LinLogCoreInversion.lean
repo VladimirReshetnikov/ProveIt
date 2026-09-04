@@ -117,8 +117,8 @@ theorem principalLambertW_linLogCoreArg_pos {a b : ℝ} (ha : 0 < a) (hb : 0 < b
     (mem_Ici.mpr (le_of_lt (lt_of_le_of_lt neg_exp_neg_one_le_zero hz))) hz
   rwa [principalLambertW_zero] at h
 
-/-- For `a, b > 0` the principal-branch root is positive, so it lies in the
-domain `(0,∞)` on which the phase is defined. -/
+/-- For positive coefficients, the principal-branch linear--logarithmic root
+is positive. -/
 theorem linLogCoreRoot_pos {a b : ℝ} (ha : 0 < a) (hb : 0 < b) (L : ℝ) :
     0 < linLogCoreRoot a b L := by
   have hW := principalLambertW_linLogCoreArg_pos ha hb L
@@ -225,8 +225,7 @@ theorem linLogCoreArg_mem_Ioo_iff {a b : ℝ} (ha : 0 < a) (hb : b < 0) (L : ℝ
 noncomputable def linLogCoreRootLower (a b L : ℝ) : ℝ :=
   b / a * lowerLambertW (linLogCoreArg a b L)
 
-/-- Inside the two-branch window the principal branch is negative, which is what
-makes `(b/a) W₀(z)` positive when `b < 0`. -/
+/-- On the two-real-branch window, the principal Lambert value is negative. -/
 theorem principalLambertW_linLogCoreArg_neg {a b L : ℝ}
     (hz : linLogCoreArg a b L ∈ Ioo (-Real.exp (-1)) 0) :
     principalLambertW (linLogCoreArg a b L) < 0 := by
@@ -234,7 +233,8 @@ theorem principalLambertW_linLogCoreArg_neg {a b L : ℝ}
     (mem_Ici.mpr neg_exp_neg_one_le_zero) hz.2
   rwa [principalLambertW_zero] at h
 
-/-- For `b < 0`, above the threshold, the principal-branch root is positive. -/
+/-- When `b < 0`, the root obtained from the principal Lambert branch is
+positive throughout the two-real-branch window. -/
 theorem linLogCoreRoot_pos_of_neg {a b : ℝ} (ha : 0 < a) (hb : b < 0) {L : ℝ}
     (hz : linLogCoreArg a b L ∈ Ioo (-Real.exp (-1)) 0) :
     0 < linLogCoreRoot a b L := by
@@ -242,7 +242,8 @@ theorem linLogCoreRoot_pos_of_neg {a b : ℝ} (ha : 0 < a) (hb : b < 0) {L : ℝ
   exact mul_pos_of_neg_of_neg (div_neg_of_neg_of_pos hb ha)
     (principalLambertW_linLogCoreArg_neg hz)
 
-/-- For `b < 0`, above the threshold, the lower-branch root is positive. -/
+/-- When `b < 0`, the root obtained from the lower Lambert branch is positive
+throughout the two-real-branch window. -/
 theorem linLogCoreRootLower_pos {a b : ℝ} (ha : 0 < a) (hb : b < 0) {L : ℝ}
     (hz : linLogCoreArg a b L ∈ Ioo (-Real.exp (-1)) 0) :
     0 < linLogCoreRootLower a b L := by
@@ -288,7 +289,7 @@ theorem linLogCoreRoot_lt_critical {a b : ℝ} (ha : 0 < a) (hb : b < 0) {L : �
   calc b / a * principalLambertW (linLogCoreArg a b L) < b / a * (-1) := h
     _ = -b / a := by ring
 
-/-- The lower-branch root lies above the critical point `|b|/a`. -/
+/-- The lower-branch root lies strictly above the critical point `-b / a`. -/
 theorem critical_lt_linLogCoreRootLower {a b : ℝ} (ha : 0 < a) (hb : b < 0) {L : ℝ}
     (hz : linLogCoreArg a b L ∈ Ioo (-Real.exp (-1)) 0) :
     -b / a < linLogCoreRootLower a b L := by

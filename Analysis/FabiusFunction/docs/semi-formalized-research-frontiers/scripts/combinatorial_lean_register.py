@@ -550,7 +550,7 @@ STATUS = {
    r"(\lean{DiamondPower}); the diamond product is \lean{Bell.binomialConv}, and "
    r"\lean{Fabius.binomialConv_eq_sum_Ico} checks that the two extreme terms the source "
    r"omits do vanish, so the two definitions agree.  The proof is the source's: "
-   r"\lean{Bell.egfA_mul} makes the generating function of the power a power "
+   r"\lean{Fabius.egfA_mul} makes the generating function of the power a power "
    r"(\lean{Fabius.egfA_diamondPow}), and \lean{Fabius.bellWeightSeries_pow} reads off its "
    r"coefficients"),
  'thm:bell-symmetric-functions': ('Lean',

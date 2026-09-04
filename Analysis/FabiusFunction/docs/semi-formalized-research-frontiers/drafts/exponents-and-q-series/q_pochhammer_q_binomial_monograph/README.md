@@ -16,7 +16,7 @@ their repeated results map to one strongest canonical statement, while only
 genuinely stronger or independent material was transplanted. The completed
 `source_concordance.csv` assigns every one of the 547 source result
 environments a reviewed disposition. This immutable merger ledger's current
-canonical-status projection is 99 Lean-proved rows, 379 human-proved frontier
+canonical-status projection is 103 Lean-proved rows, 375 human-proved frontier
 result rows, 60 not-applicable rows, and 9 conjecture rows. All five
 source-publication trees are
 therefore historical inputs preserved by the pinned revision and repository
@@ -241,8 +241,13 @@ declarations beyond the historical reciprocity checkpoint 931/11,685. The
 incoming union adds one module and fourteen public declarations: the new
 zero-definition/six-theorem `ProuhetBaseTwoBridge.lean` module, one theorem
 added to `DyadicBoundaryIdentity.lean`, and seven theorems added to
-`ThueMorseNewmanSelfSimilarity.lean`. This makes the live facade audit 934
-modules and 11,709 public declarations. Ten declarations come from the sibling
+`ThueMorseNewmanSelfSimilarity.lean`. This made 934 modules and 11,709 public
+declarations an explicitly historical post-Prouhet checkpoint. Subsequent
+source-only transseries/Catalan and Thue--Morse additions made 943/11,791 the
+next historical checkpoint. The finalized one-definition/eleven-theorem
+`TransseriesFlat.lean` module and three integer-zpow theorems in
+`TransseriesDifferentialBlock.lean` make the live facade audit 944 modules and
+11,806 public declarations. Ten declarations come from the sibling
 `FabiusFunction.GeometricRichardsonGenerating` module (three definitions and
 seven theorems), whose exact comb-manuscript crosswalk is
 `Fabius.geometricLagrangeRichardson_generating`; it does not change this
@@ -381,7 +386,12 @@ dyadic/finite-prefix census 933/11,695.  The incoming union adds one module and
 fourteen public declarations: the new zero-definition/six-theorem
 `ProuhetBaseTwoBridge.lean` module, one theorem added to
 `DyadicBoundaryIdentity.lean`, and seven theorems added to
-`ThueMorseNewmanSelfSimilarity.lean`.  This makes the live census 934/11,709.
+`ThueMorseNewmanSelfSimilarity.lean`.  This made 934/11,709 an explicitly
+historical post-Prouhet checkpoint.  Subsequent source-only
+transseries/Catalan and Thue--Morse additions made 943/11,791 the next
+historical checkpoint.  The finalized one-definition/eleven-theorem
+`TransseriesFlat.lean` module and three integer-zpow theorems in
+`TransseriesDifferentialBlock.lean` make the live census 944/11,806.
 The existing `ProbabilityLaplaceMoments.lean` module now adds exactly the two
 theorems
 `weightedSumDistribution_real_Ici_eq_rvachevUp_of_nonneg` and
@@ -393,9 +403,9 @@ second gives `E[X^n] = n * integral_0^1 t^(n-1) up(t) dt` for every natural
 with `rvachevUp_eq_fabiusReal_one_sub_abs` and
 `rvachevUp_eq_one_sub_fabiusReal_of_nonneg`, these declarations make
 `prop:up-tail` and `cor:up-moments` Exact without changing any broader row.
-The forward ledger is 182 Exact / 78 Partial / 14 None / 8 N/A, the relevant
+The forward ledger is 181 Exact / 79 Partial / 14 None / 8 N/A, the relevant
 Dyadic Gaussian--Thue--Morse chapter is 13/43/0/0, and the source concordance
-is 95 Lean-proved / 383 human-proved frontier / 60 N/A / 9 conjectures.
+is 103 Lean-proved / 375 human-proved frontier / 60 N/A / 9 conjectures.
 The zero-definition/one-theorem `HalfQBinomialRootSimplicity.lean` leaf exports
 `halfQBinomial_sum_rootMultiplicity_two_pow`; composed with
 `halfQBinomial_sum_eq_zero_iff` and
@@ -550,9 +560,9 @@ complex parameter and nome; it is a definitional equality, not a convergence
 claim. In `QBinomialTheoremInfinite`,
 `finiteQPochhammerIn_zero_left` remains the unique declaration owned by
 `GaussianBinomialAtOne` and is imported rather than redeclared. The forward
-status ledger is 182 Exact, 78 Partial, 14 None, and 8 interface rows; the
+status ledger is 181 Exact, 79 Partial, 14 None, and 8 interface rows; the
 original 191-result pre-Fabius core is 36/29/123/3, and the
-completed source concordance records 95 Lean-proved rows, 383 human-proved
+completed source concordance records 103 Lean-proved rows, 375 human-proved
 frontier rows, 60 not-applicable rows, and 9 conjectures.  Its
 immutable source inventory and editorial dispositions remain unchanged; the
 generator's current-status projection records the q-Chu, terminating-reversal,

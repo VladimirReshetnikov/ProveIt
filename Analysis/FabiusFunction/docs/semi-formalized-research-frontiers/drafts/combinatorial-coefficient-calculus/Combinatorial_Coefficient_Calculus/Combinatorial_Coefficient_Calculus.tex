@@ -3845,6 +3845,31 @@ The first cases, obtained by listing integer partitions of the excess, are
 Their coefficients are the corresponding block-size counts from
 \cref{thm:bell-poly-partitions}.
 
+\begin{remark}[Formal crosswalk]
+% ed.: crosswalk added 2026-09-04; edge values only, deliberately.
+Two of the values displayed above are formal, and they are the two that are
+structural rather than computational.  The diagonal
+$\ExponentialPartialBellPolynomial nn=x_1^{n}$ is
+\lean{Fabius.partialBell_self} (module \lean{PartialBellPolynomials}), proved
+directly from the block recurrence \lean{Fabius.partialBell_succ_succ}; and the
+vanishing above the diagonal, $\ExponentialPartialBellPolynomial nk=0$ for
+$n<k$, is \lean{Fabius.partialBell_eq_zero_of_lt}.
+
+The remaining displayed cases --- \cref{eq:bell-edge-first} and the sub-diagonal
+rows through $\ExponentialPartialBellPolynomial n{n-4}$ --- are \emph{not}
+individually formal, and neither is the sentence above about their
+coefficients, which appeals to \cref{thm:bell-poly-partitions}.  They would follow
+from \cref{thm:bell-near-diagonal} once that theorem is formal, since each is
+one instance of it; formalizing them one at a time would be the wrong order of
+work.
+
+A caution for anyone extending this crosswalk: \lean{Fabius.partialBell_one} is
+\emph{not} the edge value $\ExponentialPartialBellPolynomial n1=x_n$.  It is
+the specialization at all weights equal to $1$, giving the Stirling numbers of
+the second kind, and Mathlib spells those \texttt{Nat.stirlingSecond}.  The name
+is short for ``all weights one'', not for ``second column''.
+\end{remark}
+
 \section{Partial derivatives}
 \begin{theorem}[Derivative identities]\label{thm:bell-poly-derivatives}
 For $i\ge1$,
@@ -4198,6 +4223,29 @@ If $x^{k\diamondsuit}$ denotes the $k$-fold diamond power, then
 The EGF of $x^{k\diamondsuit}$ is $X(t)^k$.  Compare with
 \eqref{eq:partial-bell-egf}.
 \end{proof}
+
+\begin{remark}[Formal crosswalk]
+% ed.: crosswalk added 2026-09-02; the formal proof is the one given here.
+Module \lean{DiamondPower} takes the diamond product to be
+\lean{Bell.binomialConv}, the full binomial convolution, and
+\lean{Fabius.binomialConv_eq_sum_Ico} shows that this agrees with
+\eqref{eq:diamond} for sequences vanishing at $0$: the terms $j=0$ and
+$j=n$, which the source's index range omits, are $x_0y_n$ and $x_ny_0$ and
+vanish for that reason rather than by convention.
+\lean{Fabius.diamondPow} takes the unit sequence $\delta_{n,0}$ as the empty
+product, so that $k=0$ gives $\ExponentialPartialBellPolynomial n0=\delta_{n,0}$
+and $x^{1\diamondsuit}=x$ (\lean{Fabius.diamondPow_one}); for $k\ge1$ this is
+the $k$-fold product of the source.
+The proof is the one above.  \lean{Fabius.egfA_mul} turns a binomial convolution
+into a product of exponential generating functions, so
+\lean{Fabius.egfA_diamondPow} gives $X(t)^k$ by induction, and
+\lean{Fabius.bellWeightSeries_pow} already reads the coefficients of $X(t)^k$
+off the partial Bell polynomials.  \eqref{eq:diamond-bell} is then
+\lean{Fabius.diamondPow_apply} in the product form $(x^{k\diamondsuit})_n=k!\,
+\ExponentialPartialBellPolynomial nk$, and
+\lean{Fabius.partialBell_eq_diamondPow_div} in the divided form displayed
+above.
+\end{remark}
 
 \begin{remark}[Formal crosswalk]
 % ed.: crosswalk added 2026-09-02; the formal proof is the one given here.
@@ -6048,6 +6096,33 @@ of the forward formula into the backward one makes the coefficient of $a_j$
 \]
 which independently verifies the inverse matrices.
 \end{proof}
+
+\begin{remark}[Formal crosswalk]
+% ed.: crosswalk added 2026-09-02; both the sequence form and the EGF form are formal.
+The equivalence of \cref{eq:merged-binomial-forward} and
+\cref{eq:merged-binomial-backward} is \lean{Fabius.binomial_inversion_iff} for
+additive commutative groups and \lean{Fabius.binomial_inversion_ring_iff} for
+commutative rings, in module \lean{BinomialInversion}; the orthogonality
+displayed at the end of the proof is
+\lean{Fabius.sum_Icc_neg_one_pow_choose_mul_choose}.
+\cref{eq:merged-binomial-egf} is module \lean{BinomialInversionEGF}, where
+$\EulerE^{-z}$ is \lean{Fabius.altSeries}, the exponential generating function of
+$(-1)^n$, and \lean{Fabius.exp_mul_altSeries} proves it inverts $\EulerE^{z}$.
+Each half is stated as an equivalence with its sequence form rather than as an
+implication: \lean{Fabius.egfA_eq_exp_mul_iff} and
+\lean{Fabius.egfA_eq_altSeries_mul_iff}, with
+\lean{Fabius.egfA_eq_exp_mul_iff_egfA_eq_altSeries_mul} relating the two
+generating-function equations directly.
+Two remarks on the formal proofs.  Multiplying exponential generating functions
+is binomial convolution (\lean{Fabius.egfA_mul}), so the only content is that
+convolving against the constant sequence $1$, or against $(-1)^n$, gives the
+displayed sums after reflecting the summation index
+(\lean{Fabius.binomialConv_one_left},
+\lean{Fabius.binomialConv_altSeries_left}).  And
+\lean{Fabius.exp_mul_altSeries} is the binomial theorem at $-1+1=0$ rather than
+a separate alternating-sum computation, which keeps it valid over an arbitrary
+commutative ring instead of only over $\IntegerNumbers$.
+\end{remark}
 
 \begin{remark}[Formal crosswalk]
 % ed.: crosswalk added 2026-09-02; both the sequence form and the EGF form are formal.
@@ -10244,7 +10319,7 @@ coefficient calculus rather than a catalogue of isolated identities.
 
 \section{Lean formalization register}
 \label{sec:lean-register}
-Every theorem-like environment of this monograph is listed here with the status of its formalization in the Lean development \path{Analysis/FabiusFunction/Lean/FabiusFunction} (Mathlib \texttt{v4.32.0}).  \emph{Lean} means that a public, compiled declaration proves the exact statement or a more general one (the generalization is then noted next to the result); \emph{partial} means that a named part of the statement is proved and the rest is named; \emph{none} means that no Lean counterpart exists yet.  A citation, a numerical check, or a plausible derivation does not count.  The register is generated from the source and must be regenerated when results are added.  Current totals: 58 Lean, 34 partial, 111 none, of 203 results.
+Every theorem-like environment of this monograph is listed here with the status of its formalization in the Lean development \path{Analysis/FabiusFunction/Lean/FabiusFunction} (Mathlib \texttt{v4.32.0}).  \emph{Lean} means that a public, compiled declaration proves the exact statement or a more general one (the generalization is then noted next to the result); \emph{partial} means that a named part of the statement is proved and the rest is named; \emph{none} means that no compiler-verified counterpart is recorded yet, even if source under validation is identified.  A citation, a numerical check, or a plausible derivation does not count.  The register and its generator mappings must be updated when results are added or validated.  Current totals: 57 Lean, 36 partial, 112 none, of 205 results.
 
 \begin{footnotesize}
 \begin{longtable}{@{}p{0.16\textwidth}p{0.22\textwidth}p{0.08\textwidth}p{0.40\textwidth}@{}}
@@ -10334,7 +10409,7 @@ corollary (unlabelled, no.~4) & Cauchy integral & none &  \\
 \Cref{thm:bell-leading-zeros} & Insertion of $q$ leading zeros & Lean & \lean{Fabius.partialBell_leadingZeros} (\lean{BellLeadingZeros}), over any $\RationalNumbers$-algebra, with the zero-padded weights \lean{Fabius.leadingZeros} and the rescaled weights \lean{Fabius.qScaled}; the proof compares the weight series (\lean{Fabius.bellWeightSeries_leadingZeros}) exactly as in the text \\
 \Cref{thm:bell-transform-inverse} & Bell transform and its inverse & Lean & \cref{eq:bell-transform-x} is \lean{Fabius.bell_transform_inverse} (\lean{BellComposition}), from $X=\log(1+Y)$ formalized as \lean{Fabius.log_subst_exp_sub_one} and the composition theorem; the recursive inversion over every commutative ring is \lean{Bell.complete_cumulant} and \lean{Bell.cumulant_complete} (\lean{BellPolynomialInversion}).  The more general locally-inverse transform \cref{eq:general-bell-inverse}, which the text states after this theorem rather than inside it, is not formalized \\
 \Cref{thm:bell-determinants} & Bell determinants & none &  \\
-\Cref{thm:diamond-bell} &  & Lean & \lean{Fabius.diamondPow_apply} and \lean{Fabius.partialBell_eq_diamondPow_div} (\lean{DiamondPower}); the diamond product is \lean{Bell.binomialConv}, and \lean{Fabius.binomialConv_eq_sum_Ico} checks that the two extreme terms the source omits do vanish, so the two definitions agree.  The proof is the source's: \lean{Bell.egfA_mul} makes the generating function of the power a power (\lean{Fabius.egfA_diamondPow}), and \lean{Fabius.bellWeightSeries_pow} reads off its coefficients \\
+\Cref{thm:diamond-bell} &  & Lean & \lean{Fabius.diamondPow_apply} and \lean{Fabius.partialBell_eq_diamondPow_div} (\lean{DiamondPower}); the diamond product is \lean{Bell.binomialConv}, and \lean{Fabius.binomialConv_eq_sum_Ico} checks that the two extreme terms the source omits do vanish, so the two definitions agree.  The proof is the source's: \lean{Fabius.egfA_mul} makes the generating function of the power a power (\lean{Fabius.egfA_diamondPow}), and \lean{Fabius.bellWeightSeries_pow} reads off its coefficients \\
 \Cref{thm:bell-symmetric-functions} &  & Lean & \cref{eq:elementary-via-bell} is \lean{Fabius.esymm_eq_bell_complete} and its sign variant \lean{Fabius.esymm_eq_neg_bell_complete} (\lean{ElementarySymmetricBell}), for a finite family in any commutative $\mathbb Q$-algebra; \cref{eq:powersum-via-bell} is \lean{Fabius.newton_power_sum} in cleared form and \lean{Fabius.power_sum_eq} in the divided form (\lean{NewtonPowerSumBell}), with its second form, through the ordinary partial Bell polynomials, as \lean{Fabius.power_sum_eq_ord_bell} (\lean{PowerSumOrdinaryBell}).  All of it rests on \lean{Fabius.exp_subst_logOf} (\lean{ExpLog}), which supplies the $\exp\circ\log$ inverse Mathlib lacks, and on \lean{Fabius.cumulant_eq_cumulantSum} (\lean{CumulantBellFormula}); the two forms of \cref{eq:powersum-via-bell} are the exponential and the ordinary reading of the same $\log E$, equated \\
 \Cref{cor:det-traces-bell} & Determinant from traces & none &  \\
 \Cref{thm:cycle-index-bell} &  & none &  \\

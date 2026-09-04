@@ -354,6 +354,23 @@ the unordered-set, finite-maximal, positive-monomial, or nonzero-coefficient
 conventions of \cref{plt:def:mot-scale}.
 \end{remark}
 
+\emph{Lean status.}  Exact, in \lean{TransseriesScale.lean}.  The structure
+\lean{Fabius.IsAsymptoticScale} is \cref{q0:def:scale}, including eventual
+nonvanishing, and \lean{Fabius.IsPoincareExpansion} is
+\cref{q0:def:poincare}; its finite sums are
+\lean{Fabius.poincarePartialSum}, with boundary and successor identities
+\lean{Fabius.poincarePartialSum_zero} and
+\lean{Fabius.poincarePartialSum_succ}.  The step in the proof above is
+\lean{Fabius.IsPoincareExpansion.isLittleO_succ_remainder}; coefficient
+recovery is \lean{Fabius.IsPoincareExpansion.tendsto_coeff}, or the literal
+quotient printed in \eqref{q0:eq:coefficients} in
+\lean{Fabius.IsPoincareExpansion.tendsto_coeff_div}; and uniqueness is
+\lean{Fabius.IsPoincareExpansion.coeff_unique}.  Lean proves the statements
+for an arbitrary filter, an arbitrary normed scalar field, and coefficients
+in an arbitrary normed vector space.  Its explicit \texttt{NeBot} hypothesis
+on uniqueness is the formal version of the tacit requirement here that the
+limiting filter be proper.
+
 \begin{remark}[Uniqueness is relative, and that is the whole point]
 \label{q0:rem:relative}
 \Cref{q0:prop:uniqueness} says the coefficients are unique \emph{given the
@@ -382,19 +399,26 @@ verbatim to every scale used in this volume.  The power-scale instance
 
 
 \begin{proposition}[The invisible-function problem]\label{q0:prop:invisible}
-$\e^{-x}$ is flat relative to $(x^{-n})_{n\ge0}$, and the set of functions
-flat relative to a given scale is a vector space closed under multiplication
-by anything of at most polynomial growth.  Consequently a Poincar\'e
-expansion on the power scale determines $f$ only up to a flat function, and no
-refinement of the coefficients can recover the difference.
+$\e^{-x}$ is flat relative to the power scale $(x^{-n})_{n\ge0}$.  Relative
+to that scale, the flat functions form a vector space and are closed under
+multiplication by anything of at most polynomial growth.  Consequently a
+Poincar\'e expansion on the power scale determines $f$ only up to a flat
+function, and no refinement of the coefficients can recover the difference.
 \end{proposition}
 
 \begin{proof}
 For any $N$, $x^{N}\e^{-x}\to0$ as $x\to+\infty$, since $\e^{x}$ exceeds
 $x^{N+1}/(N+1)!$; hence $\e^{-x}=\littleo(x^{-N})$ for every $N$.  Closure
-under sums and under multiplication by $\bigO(x^{M})$ is immediate from the
-definition.  The last sentence is \cref{q0:prop:uniqueness} applied to $f$ and
-$f+\varepsilon$: both have the same coefficients, so the expansion cannot
+under scalar multiplication and finite sums follows from the corresponding
+rules for $\bigO$.  For the multiplier assertion, let
+$h=\bigO(x^{M})$ for some integer $M\ge0$ and let $\varepsilon$ be flat on the
+power scale.  Given $N$, flatness at index $N+M$ gives
+$\varepsilon=\bigO(x^{-(N+M)})$, and therefore
+$h\varepsilon=\bigO(x^{M}x^{-(N+M)})=\bigO(x^{-N})$.  This holds for every
+$N$, so $h\varepsilon$ is flat.  Finally, if
+$f-\sum_{n<N}a_nx^{-n}=\bigO(x^{-N})$ for every $N$, adding a flat
+$\varepsilon$ preserves every one of those estimates.  Thus $f$ and
+$f+\varepsilon$ have the same coefficient sequence, and the expansion cannot
 separate them.
 \end{proof}
 \emph{Lean status.}  Formal in \lean{TransseriesFlat.lean}, all three clauses, and the
@@ -423,6 +447,33 @@ identically zero Poincar\'e expansion.  None of this needs the scale to be an as
 scale, nor the filter to be nontrivial, both of which \cref{q0:prop:uniqueness} does need
 --- invisibility is a statement about \(\bigO\) alone.
 
+
+\begin{remark}[Editorial boundary of the multiplier claim]
+\label{q0:rem:invisible-multiplier}
+An earlier version asserted polynomial-growth multiplier closure for the flat
+functions of an arbitrary asymptotic scale.  The scale axioms alone do not
+give the index shift used in the proof: for a general scale one must separately
+know that, for every $N$, some later $m$ satisfies
+$h\varphi_m=\bigO(\varphi_N)$.  The power scale has this compatibility with
+$m=N+M$.  The proposition is therefore restricted to the power scale, which
+is also the only scale needed for its consequence here.
+\end{remark}
+
+\emph{Lean status.}  Exact, by composition, in
+\lean{TransseriesFlat.lean}.  The definition \cref{q0:def:flat} is
+\lean{Fabius.IsFlat}; its vector-space operations are
+\lean{Fabius.isFlat_zero}, \lean{Fabius.IsFlat.add},
+\lean{Fabius.IsFlat.neg}, \lean{Fabius.IsFlat.sub}, and
+\lean{Fabius.IsFlat.const_smul}.  The concrete exponential estimate is
+\lean{Fabius.isFlat_exp_neg_rpow_atTop}.  The corrected multiplier clause on
+the power scale is \lean{Fabius.IsFlat.smul_of_isBigO_inv_pow}; the more general
+and explicitly necessary scale-compatibility premise is isolated in
+\lean{Fabius.IsFlat.smul_of_scale_absorption}.  Finally,
+\lean{Fabius.IsPoincareExpansion.add_flat},
+\lean{Fabius.IsPoincareExpansion.sub_same_coeff_isFlat}, and
+\lean{Fabius.IsPoincareExpansion.iff_sub_isFlat} prove precisely that adding a
+flat remainder preserves all coefficients, and characterize equality of a
+fixed coefficient sequence by a flat difference.
 
 \begin{remark}[This volume is a catalogue of the phenomenon]
 \label{q0:rem:catalogue}
@@ -615,6 +666,20 @@ order is a specialization of the stronger partial-order hypotheses.  This
 status covers the support and finite-factorization assertions, not a
 construction of the ambient Hahn-series object.
 \end{remark}
+
+\emph{Lean status.}  Exact, in \lean{TransseriesWellBased.lean}, with one
+order translation made explicit.  The Dickson statements are
+\lean{Fabius.dickson_isPWO}, \lean{Fabius.dickson_antichain_finite}, and the
+finite-index generalization \lean{Fabius.dickson_isPWO_pi}.  The two clauses of
+Neumann's lemma are \lean{Fabius.neumann_isPWO} and
+\lean{Fabius.neumann_finite_factorizations}; the module also generates their
+additive companions.  Mathlib's \texttt{Set.IsPWO} uses its native order,
+whereas \(\mathfrak m\prec\mathfrak n\) here means that
+\(\mathfrak m\) is the \emph{smaller} asymptotic monomial and well-basedness
+forbids an infinite \(\prec\)-increasing chain.  Thus the faithful
+instantiation of the Neumann declarations is on
+\texttt{OrderDual}~\(\mathfrak M\); without that dual, the order convention
+would be reversed.
 
 \begin{remark}[What these two are for]\label{q0:rem:why-lemmas}
 \Cref{q0:lem:neumann} is what makes the \emph{product} of two Hahn series
@@ -1783,6 +1848,14 @@ first partial sum is therefore exactly \(X\), and the second term satisfies
 \((0,1)\) generate \(\IntegerNumbers^{2}\).
 \end{proof}
 
+\emph{Lean status: partial, with the uniqueness engine formal.}  The first
+paragraph of the proof is \lean{Fabius.isEquivalent_plMonomial_const_mul_iff}
+in \lean{TransseriesMonomialUniqueness.lean}: for a positive coefficient, an
+asymptotic equivalence of two power--logarithmic monomials forces both
+exponents to agree and the coefficient to be one.  The analytic three-term
+Wright-omega residual input used afterwards is not packaged as this corollary,
+so the corollary itself is not claimed Exact.
+
 \begin{remark}[Scope of the corollary]
 \label{plt:rmk:mot-corollary-scope}
 The corollary is stated for monomial scales in the two generators, and the
@@ -1822,7 +1895,8 @@ consider the \(\K\)-linear operator \(\partial_{L}-c\) on \(\K[L]\).
 \item If \(c=0\), then \(\partial_{L}\) is surjective on \(\K[L]\) with kernel
   \(\K\), and \(\deg q=\deg(\partial_{L}q)+1\) for nonconstant \(q\).
   Consequently \(t\,p(L)\) has antiderivative \(q(L)\) with \(q'=p\), unique up
-  to an additive constant, and \(\deg q=\deg p+1\).
+  to an additive constant; when \(p\ne0\), the explicit primitive with zero
+  constant term has \(\deg q=\deg p+1\).
 \end{enumerate}
 In particular \(t=X^{-1}\) integrates to \(L=\log X\).  The outer level
 \(n=1\) is the unique block at which antidifferentiation raises logarithmic
@@ -1847,7 +1921,8 @@ the same degree.
 exactly one on nonconstant polynomials.  Taking \(n=1\) in
 \eqref{plt:eq:mot-block-derivative}, with \(n-1=0\), gives
 \(\DX q(L)=t\,q'(L)\), so the antiderivatives of \(t\,p(L)\) are exactly the
-\(q\) with \(q'=p\).  The case \(p=1\), \(q=L\) is
+\(q\) with \(q'=p\).  If \(p\ne0\), termwise integration with zero constant
+term raises degree by one.  The case \(p=1\), \(q=L\) is
 \(\int X^{-1}\Differential X=\log X\).
 \end{proof}
 \emph{Lean status.}  Partial overall.  The polynomial-operator core is formalized in
@@ -29866,15 +29941,16 @@ we have not verified any substitute.
 \begin{remark}[Open problem: which of these statements are machine-checkable
 today]
 \label{plt:rmk:ext-open-formalization}
-The formalisation register of this volume records, for each stated result, its
-status in a proof assistant.  The support-theoretic results of
-\cref{plt:sec:ext-supports} are finitary in character --- they are statements
-about ordered abelian groups and well-quasi-orders --- and should be reachable.
-\Cref{plt:thm:ext-tower-strict} is a finite computation with a monomial
-bookkeeping argument.  \Cref{plt:thm:ext-lf-completion} needs a formal Hahn
-series library with a \(\Gamma\)-indexed filtration.  Which of these is
-actually within reach of a current library, and at what cost, is not known to
-us, and the register should be read as a plan rather than as a claim.
+The formalisation register records each audited result's current proof-assistant
+status.  The basic support-theoretic inputs are no longer merely prospective:
+\cref{q0:lem:dickson,q0:lem:neumann} are Exact in Lean, with
+\texttt{OrderDual} implementing the volume's well-based orientation.  The
+stronger Hahn-series constructions of \cref{plt:sec:ext-supports} are not
+thereby formalized.  \Cref{plt:thm:ext-tower-strict} remains a finite
+computation with a monomial-bookkeeping argument, while
+\cref{plt:thm:ext-lf-completion} still needs a formal Hahn-series library with a
+\(\Gamma\)-indexed filtration.  Those remaining entries should be read as a
+plan, not as claims of coverage.
 \end{remark}
 
 \begin{summarybox}
@@ -36436,9 +36512,11 @@ build, in order:
 \item the outer valuation and the leading-data trio, which are three different
   objects and are easy to conflate in a formal setting
   (\cref{plt:sec:leading-data});
-\item the derivation \(\DX\) characterized by \(\DX t=-t^{2}\),
-  \(\DX L=t\), and the repeated-derivative operator \(\shiftop{n}{k}\)
-  (\cref{plt:sec:differential});
+\item the concrete derivation \(\DX\) characterized by \(\DX t=-t^{2}\),
+  \(\DX L=t\), instantiate the existing integer-power bridge in the free
+  Laurent model, prove injectivity of evaluation and the resonant kernel
+  statement there, and construct the repeated-derivative operator
+  \(\shiftop{n}{k}\) (\cref{plt:sec:differential});
 \item composition by generator substitution, which is where an informal
   treatment most often goes wrong, since \(t\mapsto t+H\) is \emph{not} the
   substitution meant (\cref{plt:sec:composition});
@@ -50800,6 +50878,12 @@ The next two statements are the chapter's first new contribution.  They say
 that the bound of \cref{p6:prop:denominator} is exactly attained, and identify
 the coefficient of the deepest pole in closed form, in both subjects at once.
 
+% ed.: an earlier version put the quadratic formula in an arbitrary
+% commutative Q-algebra, assumed only c != 0, and then divided by 2c.  A
+% nonzero element need not be a unit there.  It also inferred an exact
+% denominator after arbitrary specialization, which fails in rings with zero
+% divisors or nilpotents.  The closed-form lemma is now stated over a field,
+% and exact pole order is asserted only in the universal indeterminate case.
 \begin{lemma}[The quadratic core]\label{p6:lem:quadratic-core}
 Let $\K$ be a field of characteristic zero, let \(A,c,\sigma\in\K\), and
 assume \(A\ne0\) and \(c\ne0\).  Let
@@ -50814,17 +50898,36 @@ Then
  \qquad
  \epsilon_n=\frac{(-4c\sigma)^{n}}{2c}\binom{1/2}{n}A^{-(2n-1)} .
 \end{equation}
-In particular the denominator exponent of $\epsilon_n$ in $A$ is exactly
-$2n-1$ whenever $c\sigma\ne0$.
+Here the square root denotes the unique formal square root with constant term
+$1$.  In the universal case, with $A$ an indeterminate over a
+characteristic-zero field containing nonzero $c$ and $\sigma$, the
+$A$-valuation of $\epsilon_n$ is exactly $-(2n-1)$.  Under an arbitrary field
+specialization, \eqref{p6:eq:quadratic-solution} is the claim; no intrinsic
+\emph{exact denominator in $A$} is inferred from the specialization.
 \end{lemma}
 
 \begin{proof}
-Solving the quadratic and choosing the root that vanishes at $q=0$ gives
+Because $A$ is invertible, comparison of coefficients determines a
+positive-valuation solution uniquely: the coefficient of $q$ gives
+$A\epsilon_1+\sigma=0$, and for $n\ge2$ the coefficient of $q^n$ gives
 \[
- \epsilon=\frac{-A+\sqrt{A^{2}-4c\sigma q}}{2c},
+ A\epsilon_n+c\sum_{j=1}^{n-1}\epsilon_j\epsilon_{n-j}=0,
 \]
-which is the first formula.  Expanding $\sqrt{1+w}=\sum_{n\ge0}\binom{1/2}{n}w^{n}$ at
+whose right-hand side involves only earlier coefficients.  In $\K[[q]]$ the
+formal binomial series with constant term $1$ is the square root of
+$1-4c\sigma q/A^2$.  Substitution in the quadratic identity, choosing the
+root with zero constant term, gives
+\[
+ \epsilon=\frac{A}{2c}
+ \left(\sqrt{1-\frac{4c\sigma q}{A^2}}-1\right),
+\]
+which is the first formula and supplies existence.  Expanding the formal
+identity
+$\sqrt{1+w}=\sum_{n\ge0}\binom{1/2}{n}w^{n}$ at
 $w=-4c\sigma q/A^{2}$ and multiplying by $A/(2c)$ gives the second.
+In the universal indeterminate case the remaining factor is nonzero and
+independent of $A$, while $\binom{1/2}{n}\ne0$ in characteristic zero, so the
+$A$-valuation is exactly $-(2n-1)$.
 \end{proof}
 
 \begin{proposition}[The coefficients of the quadratic core are Catalan numbers]
@@ -50860,11 +50963,11 @@ recursion.
 
 \begin{remark}[What the reduction buys, and the formalization]
 \label{p6:rem:quadratic-core-lean}
-The proof of \cref{p6:lem:quadratic-core} given above is analytic: it passes
-through the binomial series for $\sqrt{1+w}$, hence through a question of
-convergence that the formal statement does not need.  \Cref{p6:prop:quadratic-core-catalan}
-removes that detour.  The only property of the coefficient family the
-quadratic model actually uses is the convolution
+The proof of \cref{p6:lem:quadratic-core} above is formal: its square root is a
+power series, so no convergence claim is involved.
+\Cref{p6:prop:quadratic-core-catalan} replaces even that formal infinite-series
+packaging by a finite coefficient recursion.  The only property of the
+coefficient family the quadratic model actually uses is the convolution
 \eqref{p6:eq:half-binom-convolution}, and under
 \eqref{p6:eq:half-binom-catalan} that convolution is a finite combinatorial
 recursion.  Thus the Catalan identities and the coefficient recurrence rest
