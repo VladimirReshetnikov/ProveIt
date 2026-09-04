@@ -151,8 +151,9 @@ theorem iteratedDeriv_rvachevUp_eq_extendedFabius (F : BoundedFabius) (hF : IsFa
   have hev : (fun y : ℝ => rvachevUp F y) =ᶠ[nhds x] fun y : ℝ => extendedFabius F (y + 1) := by
     filter_upwards [(isOpen_Iio (a := (1 : ℝ))).mem_nhds hx] with y hy
     exact (extendedFabius_add_one_eq_rvachevUp F hF (le_of_lt hy)).symm
-  rw [hev.iteratedDeriv_eq m, iteratedDeriv_comp_add_const,
-    iteratedDeriv_extendedFabius F hF m (x + 1)]
+  rw [hev.iteratedDeriv_eq m, iteratedDeriv_comp_add_const]
+  show iteratedDeriv m (extendedFabius F) (x + 1) = _
+  rw [iteratedDeriv_extendedFabius F hF m (x + 1)]
 
 /-- The volume's own form, at a dyadic point: for `a ≤ 2^n` and `m < n`,
 `up^{(m)}(a/2^n) = 2^{m(m+1)/2} F((2^n + a)/2^{n-m})`. -/
@@ -167,12 +168,13 @@ theorem iteratedDeriv_rvachevUp_dyadic_below (F : BoundedFabius) (hF : IsFabius 
     exact_mod_cast ha
   rw [iteratedDeriv_rvachevUp_eq_extendedFabius F hF m hx]
   congr 2
-  have hnm : n - m + m = n := by omega
+  have hnm : m + (n - m) = n := by omega
   have h2 : (2 : ℝ) ^ (n - m) ≠ 0 := by positivity
+  have hpow : (2 : ℝ) ^ m * 2 ^ (n - m) = 2 ^ n := by
+    rw [← pow_add, hnm]
   rw [eq_div_iff h2]
   push_cast
   field_simp
-  rw [← pow_add, hnm]
-  ring
+  linear_combination ((a : ℝ) + 2 ^ n) * hpow
 
 end Fabius
