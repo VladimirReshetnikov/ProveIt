@@ -49,7 +49,7 @@ noncomputable def cumulantSum (m : ℕ → A) (n : ℕ) : A :=
   ∑ k ∈ Finset.Ico 1 (n + 1),
     (-1 : A) ^ (k - 1) * (((k - 1).factorial : ℕ) : A) * partialBell m n k
 
-/-- The zeroth cumulant sum is zero. -/
+/-- The closed-form cumulant sum vanishes in degree zero. -/
 @[simp] theorem cumulantSum_zero (m : ℕ → A) : cumulantSum A m 0 = 0 := by
   rw [cumulantSum, show Finset.Ico 1 (0 + 1) = (∅ : Finset ℕ) from rfl, Finset.sum_empty]
 

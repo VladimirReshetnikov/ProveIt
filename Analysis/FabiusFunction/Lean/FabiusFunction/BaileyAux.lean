@@ -31,7 +31,7 @@ def baileyAuxSum (q z : R) (N : ℕ) : R :=
     z ^ k * q ^ (k * (k - 1)) * gaussianBinomial q N k *
       finiteQPochhammerIn (z * q ^ k) q (N - k)
 
-/-- The auxiliary Bailey sum at level zero is one. -/
+/-- The Bailey auxiliary sum at level zero (the zeroth sum) is `1`. -/
 theorem baileyAuxSum_zero (q z : R) : baileyAuxSum q z 0 = 1 := by
   simp [baileyAuxSum, finiteQPochhammerIn, gaussianBinomial]
 

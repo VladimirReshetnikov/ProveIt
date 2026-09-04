@@ -91,8 +91,8 @@ monomial and polynomial rules, generic-mesh physical quadrature, deconvolved
 polynomial synthesis, and the Rvachev--Appell specialization. These two latest
 row promotions bring the canonical concordance to 51 Lean-proved, 94
 human-proved frontier results, 10 conjectures, 15 open problems, and 24
-nonassertoric environments. The live Lean documentation census is 902 modules
-and 11,424 public declarations with no gaps. The retired source layouts remain
+nonassertoric environments. The live Lean documentation census is 903 modules
+and 11,437 public declarations with no gaps. The retired source layouts remain
 immutable provenance only; the source is newer than the retained historical
 PDF.
 

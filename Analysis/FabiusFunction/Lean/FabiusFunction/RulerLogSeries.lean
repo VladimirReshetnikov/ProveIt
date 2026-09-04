@@ -74,7 +74,7 @@ theorem X_mul_derivative_thueMorseSeriesRat :
 noncomputable def rulerLogCoefficient (k : ℕ) : ℚ :=
   if k = 0 then 0 else -((rulerCoeff k : ℚ) / k)
 
-/-- The zeroth candidate logarithmic coefficient vanishes. -/
+/-- The zeroth candidate logarithmic coefficient is zero. -/
 @[simp] theorem rulerLogCoefficient_zero : rulerLogCoefficient 0 = 0 := by
   simp [rulerLogCoefficient]
 

@@ -3817,7 +3817,7 @@ because the underlying infinite product is totalized outside its admissible
 range.  No spectral-zeta recovery, cumulant-sample recovery, or
 identifiability of an underlying probability law is asserted; those remain
 open interfaces.  With the later concurrent source union, the live facade
-census is 902 modules and 11,424 public declarations.  The current TeX also
+census is 903 modules and 11,437 public declarations.  The current TeX also
 contains the six-theorem prime-power companion-row API and the
 zero-definition/three-theorem outer Pochhammer normal-convergence API, plus
 the two-module/nine-declaration fixed-depth effective-inverse tranche, the
@@ -3826,10 +3826,12 @@ sharp exact-dyadic inverse-modulus leaf, and six new
 q-calculus modules contributing 36 declarations, plus the two source-only
 central-reduction and cyclotomic-factorization modules contributing thirteen
 theorems, and the four-module root-of-unity, q-Lucas, cyclotomic-divisibility,
-and q-Catalan tranche contributing one definition and twenty-four theorems.
+and q-Catalan tranche contributing one definition and twenty-four theorems,
+and the three-module Lambert branch-pairing, gap-bijection, and symmetric-
+identity tranche contributing four definitions and thirty-two theorems.
 These are
-source-only overlays; the retained 167-page PDF is explicitly historical and
-has not been regenerated for these additions.
+source-only overlays; the retained 183-page, 1,899,243-byte PDF is explicitly
+historical and has not been regenerated for these additions.
 
 The six q-calculus module counts are
 \path{QPochhammerInfiniteBounds.lean} (0+5),
@@ -10450,6 +10452,115 @@ The strict-shape theorems include the finite branch point by continuity; they do
 a derivative or a second derivative there.  The later branch-point leaves close the
 one-sided vertical geometry and the first square-root term, as follows.
 
+\subsubsection{The exact branch-gap coordinate and its symmetric laws}
+On the common open branch domain, put
+\begin{equation}
+ -\EulerE^{-1}<x<0,
+ \qquad a=W_0(x),\qquad b=W_{-1}(x),\qquad
+ \delta=a-b>0.                                             \label{eq:lambert-branch-gap}
+\end{equation}
+Then the two branches and their common argument are determined by the single
+positive coordinate \(\delta\):
+\begin{align}
+ a&=-\frac{\delta}{\exp(\delta)-1},
+ &b&=-\frac{\delta\exp(\delta)}{\exp(\delta)-1}
+     =-\frac{\delta}{1-\exp(-\delta)},                    \label{eq:lambert-gap-pair}\\
+ x&=-\frac{\delta}{\exp(\delta)-1}
+       \exp\!\left(-\frac{\delta}{\exp(\delta)-1}\right). \label{eq:lambert-gap-arg}
+\end{align}
+Conversely, every \(\delta>0\) inserted into these formulas produces exactly
+one \(x\in(-\EulerE^{-1},0)\), and the displayed \(a,b\) are respectively
+\(W_0(x),W_{-1}(x)\).  Thus
+\(x\mapsto W_0(x)-W_{-1}(x)\) is a bijection from
+\((-\EulerE^{-1},0)\) onto \((0,\infty)\), with inverse given by
+\eqref{eq:lambert-gap-arg}.  In the equivalent coordinate
+\(t=\exp(\delta)>1\),
+\begin{equation}
+ W_0(x)=-\frac{\log t}{t-1},\qquad
+ W_{-1}(x)=-\frac{t\log t}{t-1},\qquad
+ x=-\frac{\log t}{t-1}\,t^{-1/(t-1)}.                    \label{eq:lambert-gap-t}
+\end{equation}
+
+Here is the elementary proof mirrored by the Lean decomposition.  The two
+defining equations give \(a\exp(a)=b\exp(b)\).  Since neither branch value is
+zero, division yields \(b/a=\exp(a-b)=\exp(\delta)\).  Hence
+\(b=a\exp(\delta)\), while
+\(\delta=a-b=a(1-\exp(\delta))\); solving gives
+\eqref{eq:lambert-gap-pair}, and substitution into \(x=a\exp(a)\) gives
+\eqref{eq:lambert-gap-arg}.  For the converse define \(a,b\) by the same
+formulas.  The strict tangent inequality
+\(1+\delta<\exp(\delta)\) gives \(-1<a<0\), its negative-argument form gives
+\(b<-1\), and direct algebra gives \(b=a-\delta\) and
+\(b\exp(b)=a\exp(a)\).  The two real-branch uniqueness theorems therefore
+identify these values with \(W_0,W_{-1}\).  They also prove both inverse laws,
+and hence the claimed bijection.
+
+The same coordinate makes every symmetric identity immediate:
+\begin{align}
+ \frac{W_{-1}(x)}{W_0(x)}&=\exp(\delta),                  \label{eq:lambert-gap-ratio}\\
+ W_0(x)+W_{-1}(x)&=-\delta\coth(\delta/2),               \label{eq:lambert-gap-sum}\\
+ W_0(x)W_{-1}(x)&=\frac{\delta^2}{4\sinh^2(\delta/2)}.  \label{eq:lambert-gap-product}
+\end{align}
+Indeed, adding and multiplying \eqref{eq:lambert-gap-pair} gives the
+exponential-rational forms; the definitions of \(\cosh\) and \(\sinh\)
+give \eqref{eq:lambert-gap-sum}--\eqref{eq:lambert-gap-product}.  For
+\(y>0\), \(\sinh y>y\) and
+\((y\cosh y-\sinh y)'=y\sinh y>0\).  With \(y=\delta/2\), these facts give
+the strict interior bounds
+\begin{equation}
+ W_0(x)+W_{-1}(x)<-2,
+ \qquad 0<W_0(x)W_{-1}(x)<1.                              \label{eq:lambert-gap-strict}
+\end{equation}
+
+The three files have the following exhaustive public inventories.  The
+forward file \path{LambertWBranchPairing.lean} has zero definitions and seven
+theorems:
+\lean{principalLambertW_sub_lowerLambertW_pos},
+\lean{lowerLambertW_eq_principalLambertW_mul_exp_gap},
+\lean{principalLambertW_eq_neg_gap_div},
+\lean{lowerLambertW_eq_neg_gap_mul_exp_div},
+\lean{lowerLambertW_eq_neg_gap_div_one_sub_exp_neg},
+\lean{eq_neg_gap_div_mul_exp}, and
+\lean{principalLambertW_lowerLambertW_eq_of_exp_gap}.
+The converse file \path{LambertWGapBijection.lean} has the four
+noncomputable definitions
+\lean{gapPrincipal}, \lean{gapLower}, \lean{gapArg}, and \lean{branchGap},
+and exactly sixteen theorems:
+\lean{gap_denominator_pos}, \lean{gapPrincipal_mem_Ioo},
+\lean{gapLower_eq_mul_exp}, \lean{gapLower_eq_sub},
+\lean{gapLower_lt_neg_one}, \lean{gapLower_mul_exp},
+\lean{gapArg_mem_Ioo}, \lean{principalLambertW_gapArg},
+\lean{lowerLambertW_gapArg}, \lean{branchGap_gapArg},
+\lean{gapArg_branchGap}, \lean{branchGap_invOn},
+\lean{branchGap_bijOn}, \lean{principalLambertW_gapArg_log},
+\lean{lowerLambertW_gapArg_log}, and \lean{gapArg_log}.
+Finally, \path{LambertWBranchSymmetry.lean} has zero definitions and nine
+theorems:
+\lean{lowerLambertW_div_principalLambertW_eq_exp_branchGap},
+\lean{principalLambertW_add_lowerLambertW_eq_exp_branchGap},
+\lean{principalLambertW_add_lowerLambertW_eq_cosh_div_sinh_branchGap},
+\lean{principalLambertW_mul_lowerLambertW_eq_exp_branchGap},
+\lean{principalLambertW_mul_lowerLambertW_eq_sinh_sq_branchGap},
+\lean{principalLambertW_add_lowerLambertW_lt_neg_two},
+\lean{principalLambertW_mul_lowerLambertW_pos},
+\lean{principalLambertW_mul_lowerLambertW_lt_one}, and
+\lean{principalLambertW_mul_lowerLambertW_mem_Ioo}.
+
+The forward pairing and symmetric identities have the strict input hypotheses
+in \eqref{eq:lambert-branch-gap}.  The four converse-coordinate definitions
+are total, \lean{gapLower_eq_mul_exp} is unconditional, the reconstruction
+theorems use \(\delta>0\), and the logarithmic-coordinate theorems use
+\(t>1\); the inverse and bijection packages connect exactly the two open
+domains.  At the branch point \(x=-\EulerE^{-1}\), the
+gap is zero, the displayed quotients have zero denominators, and the limiting
+sum and product attain \(-2\) and \(1\), so neither the parametrization as
+stated nor the strict inequalities include that endpoint.  At \(x=0\), the
+classical lower branch has a singular extended endpoint, so it too is
+excluded; no claim is made about the all-real totalization there.  These
+three modules prove exact finite identities only.  They do not formalize the
+Bernoulli-number power-series expansions in the gap, their convergence, or
+any higher Puiseux or logarithmic branch expansion.
+
 \subsubsection{Branch-point vertical geometry and leading square-root law}
 Put
 \begin{equation}
@@ -13267,6 +13378,8 @@ Endpoint asymptotics &
 \path{PowerExponentialLambertInverse.lean},
 \path{PowerExponentialLambertAsymptotics.lean},
 \path{PowerExponentialLambertFabius}\texttt{.lean}, \path{FabiusLambertPhase.lean},
+\path{LambertWBranchPairing.lean}, \path{LambertWGapBijection.lean},
+\path{LambertWBranchSymmetry.lean},
 \path{LambertWCurvature.lean}, \path{LambertWBranchPointGeometry.lean},
 \path{LambertWBranchPointAsymptotics.lean},
 \path{PowerExponentialLambertCurvature.lean},

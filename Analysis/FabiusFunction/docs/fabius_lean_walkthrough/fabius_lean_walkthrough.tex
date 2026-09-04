@@ -1768,7 +1768,8 @@ interfaces remain open.  The zero-definition/six-theorem module
 the head and successor decoders, the dyadic-order uniqueness theorem, its
 general-base additive-cancellation core, and
 \nolinkurl{generalizedRvachevProduct_eq_iff}.  This is a source-only overlay;
-the retained 126-page walkthrough PDF is historical and was not rebuilt.
+the retained 130-page, 1,343,646-byte walkthrough PDF is historical and was
+not rebuilt.
 
 \subsection{Fourier injectivity and uniqueness}
 If two original candidates satisfy the same hypotheses, the iteration argument gives the same Fourier transform for both.  The source then uses injectivity of the Fourier transform on Schwartz functions to conclude equality.  The final transition is:
@@ -2180,7 +2181,7 @@ wrapper.  The separate three-theorem normal-convergence leaf proves the
 locally uniform outer spectral product
 \(\prod_k(z^2/(k+1)^2;q^2)_\infty\) and its two dyadic specializations, but
 does not close those other compound spectral clauses.  This subsection is
-source-only: the retained 126-page walkthrough PDF predates both the
+source-only: the retained 130-page, 1,343,646-byte walkthrough PDF predates both the
 five-theorem fixed-nome overlay and the outer-product convergence overlay and
 is a historical render until the documented three-pass Libertinus rebuild is
 performed.
@@ -4466,6 +4467,107 @@ its right, and zero exactly there.  Consequently
 theorems that include the finite branch point and shared inflection endpoint;
 the lower domain remains open at zero.
 
+\subsubsection{A global coordinate for the branch pair}
+The two branches on their common open domain admit a more economical
+description than two unrelated inverse functions.  For
+\(-\exp(-1)<x<0\), define
+\[
+ a=W_0(x),\qquad b=W_{-1}(x),\qquad
+ \delta=a-b>0.
+\]
+The exact forward identities are
+\begin{align*}
+ a&=-\frac{\delta}{\exp(\delta)-1},&
+ b&=-\frac{\delta\exp(\delta)}{\exp(\delta)-1}
+    =-\frac{\delta}{1-\exp(-\delta)},\\
+ x&=-\frac{\delta}{\exp(\delta)-1}
+       \exp\!\left(-\frac{\delta}{\exp(\delta)-1}\right).
+\end{align*}
+They come from one cancellation.  Since
+\(a\exp(a)=b\exp(b)=x\) and \(a,b\ne0\), division gives
+\(b/a=\exp(a-b)=\exp(\delta)\).  Thus
+\(b=a\exp(\delta)\) and
+\(\delta=a-b=a(1-\exp(\delta))\), which yields the first two formulas;
+the defining equation yields the third.
+
+The converse is just as explicit.  For \(\delta>0\), define
+\[
+ A(\delta)=-\frac{\delta}{\exp(\delta)-1},\quad
+ B(\delta)=-\frac{\delta\exp(\delta)}{\exp(\delta)-1},\quad
+ X(\delta)=A(\delta)\exp(A(\delta)).
+\]
+The strict exponential tangent inequalities give
+\(-1<A(\delta)<0\) and \(B(\delta)<-1\).  Direct algebra gives
+\(B=A-\delta\) and \(B\exp(B)=A\exp(A)\), so branch uniqueness proves
+\(W_0(X(\delta))=A(\delta)\),
+\(W_{-1}(X(\delta))=B(\delta)\), and
+\(W_0(X(\delta))-W_{-1}(X(\delta))=\delta\).  Conversely,
+substituting the gap of \(x\) into \(X\) returns \(x\).  Hence the branch-gap
+map is a bijection
+\[
+ (-\exp(-1),0)\longleftrightarrow(0,\infty).
+\]
+With \(t=\exp(\delta)>1\), the inverse coordinate becomes
+\[
+ W_0=-\frac{\log t}{t-1},\qquad
+ W_{-1}=-\frac{t\log t}{t-1},\qquad
+ x=-\frac{\log t}{t-1}\,t^{-1/(t-1)}.
+\]
+
+Adding, multiplying, and dividing the paired formulas gives
+\[
+ \frac{W_{-1}(x)}{W_0(x)}=\exp(\delta),\qquad
+ W_0(x)+W_{-1}(x)=-\delta\coth(\delta/2),\qquad
+ W_0(x)W_{-1}(x)=\frac{\delta^2}{4\sinh^2(\delta/2)}.
+\]
+For \(y>0\), the inequalities \(\sinh y>y\) and
+\(y\coth y>1\) prove the strict consequences
+\[
+ W_0(x)+W_{-1}(x)<-2,
+ \qquad 0<W_0(x)W_{-1}(x)<1.
+\]
+
+The Lean layering follows the proof rather than merging all of this into one
+opaque theorem.  \nolinkurl{LambertWBranchPairing.lean} has no definitions
+and exactly seven theorems:
+\nolinkurl{principalLambertW_sub_lowerLambertW_pos},
+\nolinkurl{lowerLambertW_eq_principalLambertW_mul_exp_gap},
+\nolinkurl{principalLambertW_eq_neg_gap_div},
+\nolinkurl{lowerLambertW_eq_neg_gap_mul_exp_div},
+\nolinkurl{lowerLambertW_eq_neg_gap_div_one_sub_exp_neg},
+\nolinkurl{eq_neg_gap_div_mul_exp}, and
+\nolinkurl{principalLambertW_lowerLambertW_eq_of_exp_gap}.
+\nolinkurl{LambertWGapBijection.lean} has the four definitions
+\nolinkurl{gapPrincipal}, \nolinkurl{gapLower}, \nolinkurl{gapArg}, and
+\nolinkurl{branchGap}, followed by exactly sixteen theorems:
+\nolinkurl{gap_denominator_pos}, \nolinkurl{gapPrincipal_mem_Ioo},
+\nolinkurl{gapLower_eq_mul_exp}, \nolinkurl{gapLower_eq_sub},
+\nolinkurl{gapLower_lt_neg_one}, \nolinkurl{gapLower_mul_exp},
+\nolinkurl{gapArg_mem_Ioo}, \nolinkurl{principalLambertW_gapArg},
+\nolinkurl{lowerLambertW_gapArg}, \nolinkurl{branchGap_gapArg},
+\nolinkurl{gapArg_branchGap}, \nolinkurl{branchGap_invOn},
+\nolinkurl{branchGap_bijOn}, \nolinkurl{principalLambertW_gapArg_log},
+\nolinkurl{lowerLambertW_gapArg_log}, and \nolinkurl{gapArg_log}.
+The zero-definition/nine-theorem
+\nolinkurl{LambertWBranchSymmetry.lean} surface is
+\nolinkurl{lowerLambertW_div_principalLambertW_eq_exp_branchGap},
+\nolinkurl{principalLambertW_add_lowerLambertW_eq_exp_branchGap},
+\nolinkurl{principalLambertW_add_lowerLambertW_eq_cosh_div_sinh_branchGap},
+\nolinkurl{principalLambertW_mul_lowerLambertW_eq_exp_branchGap},
+\nolinkurl{principalLambertW_mul_lowerLambertW_eq_sinh_sq_branchGap},
+\nolinkurl{principalLambertW_add_lowerLambertW_lt_neg_two},
+\nolinkurl{principalLambertW_mul_lowerLambertW_pos},
+\nolinkurl{principalLambertW_mul_lowerLambertW_lt_one}, and
+\nolinkurl{principalLambertW_mul_lowerLambertW_mem_Ioo}.
+
+The openness of both intervals is substantive.  At the finite branch point
+the gap is zero, the rational formulas have a zero denominator, and their
+limiting sum and product are \(-2\) and \(1\), so the strict inequalities do
+not extend there.  At zero the classical lower branch is singular; the
+theorems make no assertion about its all-real totalization.  Nor do these
+three exact-identity modules prove the guide's Bernoulli expansion in
+\(\delta\), its convergence, or any higher Puiseux or logarithmic expansion.
+
 The next two raw-branch leaves resolve the formerly open branch-point
 geometry.  Write
 \[
@@ -5422,6 +5524,9 @@ Actual quarter inverse jet & \nolinkurl{iteratedDeriv_centeredFabiusInv_quarter_
 Centered Thue--Morse mixed differences & \nolinkurl{symmetricMixedDifference}, \nolinkurl{symmetricMixedDifference_polynomial_eq_coeff_card}, \nolinkurl{symmetricDyadicMixedDifference_eq_sum_thueMorseSign_smul} & \nolinkurl{ThueMorseSymmetricDifference.lean}; finite algebraic identities, with no analytic limit claim \\
 Uniform spline \(S_p\) & \nolinkurl{fabiusUniformSpline} & \nolinkurl{FabiusUniformSpline.lean} and \nolinkurl{FabiusComputability.lean} \\
 Logarithmic profile & \nolinkurl{fabiusLogProfile} & \nolinkurl{FabiusLogScale.lean} \\
+Forward real Lambert branch pairing & \nolinkurl{principalLambertW_sub_lowerLambertW_pos}, \nolinkurl{principalLambertW_eq_neg_gap_div}, \nolinkurl{lowerLambertW_eq_neg_gap_mul_exp_div}, \nolinkurl{lowerLambertW_eq_neg_gap_div_one_sub_exp_neg}, \nolinkurl{eq_neg_gap_div_mul_exp} & Exhaustive zero-definition/seven-theorem surface of \nolinkurl{LambertWBranchPairing.lean}; exact \(\delta\)- and \(t=e^\delta\)-forms on \((-e^{-1},0)\) only \\
+Lambert branch-gap coordinate and inverse & \nolinkurl{gapPrincipal}, \nolinkurl{gapLower}, \nolinkurl{gapArg}, \nolinkurl{branchGap}, \nolinkurl{branchGap_invOn}, \nolinkurl{branchGap_bijOn}, \nolinkurl{gapArg_log} & Exhaustive four-definition/sixteen-theorem surface of \nolinkurl{LambertWGapBijection.lean}; explicit bijection \((-e^{-1},0)\leftrightarrow(0,\infty)\), with the \(t>1\) inverse formulas \\
+Symmetric real Lambert branch laws & \nolinkurl{lowerLambertW_div_principalLambertW_eq_exp_branchGap}, \nolinkurl{principalLambertW_add_lowerLambertW_eq_cosh_div_sinh_branchGap}, \nolinkurl{principalLambertW_mul_lowerLambertW_eq_sinh_sq_branchGap}, \nolinkurl{principalLambertW_add_lowerLambertW_lt_neg_two}, \nolinkurl{principalLambertW_mul_lowerLambertW_mem_Ioo} & Exhaustive zero-definition/nine-theorem surface of \nolinkurl{LambertWBranchSymmetry.lean}; ratio, sum, product, and strict open-domain bounds, with no endpoint or Bernoulli/higher-expansion claim \\
 Real Lambert-branch curvature & \nolinkurl{deriv_deriv_principalLambertW}, \nolinkurl{deriv_deriv_lowerLambertW}, the lower sign iff family, \nolinkurl{strictConcaveOn_principalLambertW}, \nolinkurl{strictConvexOn_lowerLambertW_left}, \nolinkurl{strictConcaveOn_lowerLambertW_right} & \nolinkurl{LambertWCurvature.lean}; exact regular-domain second derivatives, with shape theorems including the branch point and inflection while the lower domain stays open at zero \\
 Real Lambert branch-point vertical geometry & \nolinkurl{tendsto_deriv_principalLambertW_branchPoint_atTop}, \nolinkurl{tendsto_deriv_lowerLambertW_branchPoint_atBot}, the two \nolinkurl{secantSlope_branchPoint} limits, and the four \nolinkurl{not_differentiable} endpoint theorems & \nolinkurl{LambertWBranchPointGeometry.lean}; exactly eight theorems giving signed right-hand derivative/secant blow-up, failure of finite right derivatives, and failure of full differentiability \\
 Real Lambert leading branch-point asymptotics & \nolinkurl{lambertWBranchPointScale}, the two squared-ratio limits, the two squared equivalences, and \nolinkurl{principalLambertW_add_one_isEquivalent_branchPoint}, \nolinkurl{lowerLambertW_add_one_isEquivalent_branchPoint} & \nolinkurl{LambertWBranchPointAsymptotics.lean}; one definition and eight theorems, with signed \(+\sqrt{2e\Delta}\) and \(-\sqrt{2e\Delta}\) laws only \\
@@ -5883,7 +5988,7 @@ Lean audits of the previously recorded new or refactored declarations,
 for each.  At that upstream checkpoint, static inspection found all 610 modules
 below \nolinkurl{FabiusFunction/} reachable from the facade and every one of
 the 105 activation declarations documented.  The live current-tree audit scans
-675 modules and 8,909 public declarations, with no missing module headers or
+903 modules and 11,437 public declarations, with no missing module headers or
 declaration comments.  At the retained historical mainline checkpoint before the latest
 six-module q-series tranche was 623 modules and 8,476 declarations.  Its
 immediately preceding census, after the Rvachev Appell and original
@@ -5953,11 +6058,14 @@ intermediate census is therefore 672/8,875.  The subsequent
 5+14 \nolinkurl{BinaryWordInversions.lean}, 2+8
 \nolinkurl{BoxPartitions.lean}, and 0+5
 \nolinkurl{TelescopingCertificate.lean} leaves add three modules and thirty-four
-declarations, giving the historical 675/8,909 census.  A fresh source audit of
-the post-merge tree reports 902/11,424, with every one of those modules
+declarations, giving the historical 675/8,909 checkpoint.  The subsequent
+source union, including the exact 0+7, 4+16, and 0+9 Lambert branch-pairing,
+gap-bijection, and symmetry surfaces, was followed by the exact inverse and
+Jacobi two-square leaves; the live census is 903/11,437, with every module
 reachable from the facade.  No aggregate facade build is claimed for this
 current-tree census.  The retained PDF and the title-page pin remain historical
-receipts and do not claim parity with the merged source.
+receipts and do not claim parity with the merged source; no PDF was built for
+this source-only update.
 
 Those six counts are \nolinkurl{QPochhammerInfiniteBounds.lean} (0+5),
 \nolinkurl{HeineTransformation.lean} (2+5),

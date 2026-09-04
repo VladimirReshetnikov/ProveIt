@@ -53,13 +53,13 @@ def eulerianNumber : ℕ → ℕ → ℕ
   | n + 1, 0 => eulerianNumber n 0
   | n + 1, k + 1 => (k + 2) * eulerianNumber n (k + 1) + (n - k) * eulerianNumber n k
 
-/-- The initial Eulerian entry is one. -/
+/-- The initial Eulerian number is `A(0,0) = 1`. -/
 @[simp] theorem eulerianNumber_zero_zero : eulerianNumber 0 0 = 1 := rfl
 
-/-- All positive-index entries in the zeroth Eulerian row vanish. -/
+/-- Every positive-index entry in the zeroth Eulerian row vanishes. -/
 @[simp] theorem eulerianNumber_zero_succ (k : ℕ) : eulerianNumber 0 (k + 1) = 0 := rfl
 
-/-- The first Eulerian column is unchanged by passing to the next row. -/
+/-- The zeroth Eulerian column is preserved when the row index is incremented. -/
 theorem eulerianNumber_succ_zero (n : ℕ) : eulerianNumber (n + 1) 0 = eulerianNumber n 0 := rfl
 
 /-- The insertion recurrence in the form `A(n+1,k+1) = (k+2) A(n,k+1) + (n-k) A(n,k)`. -/

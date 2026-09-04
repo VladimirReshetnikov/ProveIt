@@ -135,6 +135,7 @@ import FabiusFunction.LambertWNegativeBounds
 import FabiusFunction.LambertWAdditionIdentity
 import FabiusFunction.LambertWBranchPairing
 import FabiusFunction.LambertWGapBijection
+import FabiusFunction.LambertWBranchSymmetry
 import FabiusFunction.LowerLambertW
 import FabiusFunction.GeneralizedLambertCoordinate
 import FabiusFunction.LambertBranchDichotomy
@@ -886,6 +887,15 @@ bounds for every dyadic forward gap, and proves total computability exactly for
 the unit-clamped extension.  Together with `EffectiveMonotoneInverse` (2+6)
 and `FabiusInverseComputable` (0+1), this effective-inverse union contains
 three modules and seventeen public declarations.
+
+The real Lambert branch layer packages the positive gap between the principal
+and lower branches as an explicit bijective coordinate on the open two-branch
+interval.  Its pairing, inverse-gap, and symmetry modules expose four
+definitions and thirty-two theorems: both branch reconstructions (including
+the `t = exp gap` coordinate), the inverse bijection, exact ratio, sum, and
+product formulas, and the sharp strict sum and product bounds.  The endpoints
+at the branch point and at zero are deliberately excluded; this layer does not
+claim the subsequent Bernoulli gap expansion or branch-point asymptotics.
 
 The parity-selected Rvachev synthesis layer exports exactly one definition and
 eight theorems.  `IsRvachevSuperconvergentPhase` selects the endpoint phases

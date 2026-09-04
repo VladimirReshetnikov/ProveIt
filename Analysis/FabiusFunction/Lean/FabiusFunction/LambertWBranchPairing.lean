@@ -18,8 +18,9 @@ or, with `t = e^Δ > 1`, `W₀ = -log t/(t - 1)` and `W₋₁ = -t log t/(t - 1)
 
 Dividing the two defining equations `W₀ e^{W₀} = x = W₋₁ e^{W₋₁}` gives
 `W₋₁ = W₀ e^Δ`; then `Δ = W₀ - W₀ e^Δ = W₀ (1 - e^Δ)` is the whole
-computation.  Only the forward direction is formalized here: the guide's
-converse, that every `Δ > 0` arises from exactly one `x ∈ (-1/e, 0)`, is not.
+computation.  This module isolates the forward direction; the companion
+`LambertWGapBijection` proves the guide's converse that every `Δ > 0` arises
+from exactly one `x ∈ (-1/e, 0)`.
 -/
 
 set_option autoImplicit false
@@ -77,6 +78,29 @@ theorem lowerLambertW_eq_neg_gap_mul_exp_div {x : ℝ} (hx : x ∈ Ioo (-Real.ex
   -- `W₀ e^Δ - W₀ = -(W₀ - W₋₁)`; no rewriting of `W₋₁` inside `Δ` is needed
   rw [eq_div_iff hne]
   linear_combination (-1 : ℝ) * h
+
+/-- **The lower branch from the gap, alternate form**:
+`W₋₁(x) = -Δ/(1 - e⁻Δ)`. -/
+theorem lowerLambertW_eq_neg_gap_div_one_sub_exp_neg {x : ℝ}
+    (hx : x ∈ Ioo (-Real.exp (-1)) 0) :
+    lowerLambertW x =
+      -(principalLambertW x - lowerLambertW x) /
+        (1 - Real.exp (-(principalLambertW x - lowerLambertW x))) := by
+  have hΔ := principalLambertW_sub_lowerLambertW_pos hx
+  have he : Real.exp (principalLambertW x - lowerLambertW x) ≠ 0 :=
+    Real.exp_ne_zero _
+  have hden : Real.exp (principalLambertW x - lowerLambertW x) - 1 ≠ 0 := by
+    linarith [Real.one_lt_exp_iff.mpr hΔ]
+  calc
+    lowerLambertW x =
+        -(principalLambertW x - lowerLambertW x) *
+            Real.exp (principalLambertW x - lowerLambertW x) /
+          (Real.exp (principalLambertW x - lowerLambertW x) - 1) :=
+      lowerLambertW_eq_neg_gap_mul_exp_div hx
+    _ = -(principalLambertW x - lowerLambertW x) /
+          (1 - Real.exp (-(principalLambertW x - lowerLambertW x))) := by
+      rw [Real.exp_neg]
+      field_simp [he, hden]
 
 /-- **The argument from the gap**: `x = W₀(x) e^{W₀(x)}` with `W₀` written
 through `Δ`, i.e. `x = -Δ/(e^Δ - 1) · exp(-Δ/(e^Δ - 1))`. -/

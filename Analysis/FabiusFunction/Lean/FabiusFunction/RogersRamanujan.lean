@@ -37,12 +37,12 @@ theorem qPochhammerInfIn_self_dissection_five {q : 𝕜} (hq : ‖q‖ < 1) :
     show q * q ^ 3 = q ^ 4 by ring, show q * q ^ 4 = q ^ 5 by ring]
 
 omit [CompleteSpace 𝕜] in
-/-- A fifth power still has norm below one when the base does. -/
+/-- If `‖q‖ < 1`, then the fifth power also has norm less than one. -/
 theorem norm_pow_five_lt_one {q : 𝕜} (hq : ‖q‖ < 1) : ‖q ^ 5‖ < 1 := by
   rw [norm_pow]
   exact pow_lt_one₀ (norm_nonneg q) hq (by norm_num)
 
-/-- Positive q-power factors in base `q⁵` have nonvanishing infinite q-Pochhammer products. -/
+/-- For `k ≥ 1` and `‖q‖ < 1`, the infinite product `(q^k;q^5)_∞` is nonzero. -/
 theorem qPochhammerInfIn_pow_pow_five_ne_zero {q : 𝕜} (hq : ‖q‖ < 1) {k : ℕ} (hk : 1 ≤ k) :
     qPochhammerInfIn (q ^ k) (q ^ 5) ≠ 0 :=
   qPochhammerInfIn_ne_zero_of_norm_lt_one (norm_pow_five_lt_one hq)

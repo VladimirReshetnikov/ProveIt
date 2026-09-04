@@ -41,11 +41,12 @@ theorem constantCoeff_logDivSeries : constantCoeff (logDivSeries ℚ) = 1 := by
 /-- `t/log(1+t)`, the inverse of `log(1+t)/t`. -/
 noncomputable def tOverLog : ℚ⟦X⟧ := (logDivSeries ℚ)⁻¹
 
-/-- The divided logarithm and `tOverLog` multiply to one. -/
+/-- The divided logarithm `log(1+t)/t` and `tOverLog = t/log(1+t)` multiply to one. -/
 theorem logDivSeries_mul_tOverLog : logDivSeries ℚ * tOverLog = 1 :=
   PowerSeries.mul_inv_cancel _ (by rw [constantCoeff_logDivSeries]; exact one_ne_zero)
 
-/-- Multiplying `tOverLog` by the formal logarithm recovers the series variable. -/
+/-- Multiplying the formal logarithm `log(1+t)` by `tOverLog = t/log(1+t)` recovers the
+series variable. -/
 theorem log_mul_tOverLog : log ℚ * tOverLog = X := by
   rw [← X_mul_logDivSeries, mul_assoc, logDivSeries_mul_tOverLog, mul_one]
 
@@ -53,11 +54,13 @@ theorem log_mul_tOverLog : log ℚ * tOverLog = X := by
 noncomputable def tOverLogPoly : (Polynomial ℚ)⟦X⟧ :=
   PowerSeries.map (Polynomial.C : ℚ →+* Polynomial ℚ) tOverLog
 
-/-- The polynomial-coefficient lifts of `log(1+t)` and `t/log(1+t)` multiply to `t`. -/
+/-- The constant-polynomial lifts of `log(1+t)` and `tOverLog = t/log(1+t)` satisfy
+`logPoly * tOverLogPoly = X`. -/
 theorem logPoly_mul_tOverLogPoly : logPoly * tOverLogPoly = X := by
   rw [logPoly, tOverLogPoly, ← map_mul, log_mul_tOverLog, PowerSeries.map_X]
 
-/-- The lifted series `tOverLogPoly` is constant with respect to `Dx`. -/
+/-- Because `tOverLogPoly` has constant polynomial coefficients, its coefficientwise
+polynomial derivative `Dx` vanishes. -/
 theorem Dx_tOverLogPoly : Dx tOverLogPoly = 0 := Dx_map_C _
 
 /-- The generating function `t (1+t)^x / log(1+t)`. -/
@@ -66,7 +69,7 @@ noncomputable def cauchySeries : (Polynomial ℚ)⟦X⟧ := fallingPoly * tOverL
 /-- The Cauchy polynomials `b_n(x) = n! [t^n] t(1+t)^x/log(1+t)`. -/
 noncomputable def cauchyPoly (n : ℕ) : Polynomial ℚ := (n.factorial : ℚ) • coeff n cauchySeries
 
-/-- Coefficient normalization relating the Cauchy generating series to `cauchyPoly`. -/
+/-- The coefficient of degree `n` in the Cauchy series is `b_n/n!`. -/
 theorem coeff_cauchySeries (n : ℕ) :
     coeff n cauchySeries = (1 / n.factorial : ℚ) • cauchyPoly n := by
   rw [cauchyPoly, smul_smul, one_div_mul_cancel (by positivity), one_smul]
@@ -210,7 +213,7 @@ noncomputable def intPoly : Polynomial ℚ →ₗ[ℚ] ℚ where
       Polynomial.sum_def, Finset.mul_sum]
     exact Finset.sum_congr rfl fun i _ => by ring
 
-/-- The formal integral of a monomial is `a / (k + 1)`. -/
+/-- The formal integral of the monomial `a x^k` over `[0,1]` is `a / (k + 1)`. -/
 theorem intPoly_monomial (k : ℕ) (a : ℚ) : intPoly (Polynomial.monomial k a) = a / (k + 1) := by
   show (Polynomial.monomial k a).sum (fun k a => a / (k + 1 : ℚ)) = a / (k + 1)
   exact Polynomial.sum_monomial_index a _ (zero_div _)

@@ -241,7 +241,7 @@ theorem coeff_qBinomialSeries (a q : A) (n : ℕ) :
       = Ring.inverse (finiteQPochhammerIn q q n) * finiteQPochhammerIn a q n :=
   coeff_mk _ _
 
-/-- The formal q-binomial series has constant coefficient one. -/
+/-- The formal q-binomial series has constant coefficient `1`. -/
 @[simp] theorem constantCoeff_qBinomialSeries (a q : A) :
     constantCoeff (qBinomialSeries a q) = 1 := by
   rw [← coeff_zero_eq_constantCoeff_apply, coeff_qBinomialSeries]
@@ -324,7 +324,7 @@ theorem coeff_qPochhammerSeries (q : A) (n : ℕ) :
       = (-1 : A) ^ n * q ^ n.choose 2 * Ring.inverse (finiteQPochhammerIn q q n) :=
   coeff_mk _ _
 
-/-- The formal infinite q-Pochhammer series has constant coefficient one. -/
+/-- The formal infinite q-Pochhammer series has constant coefficient `1`. -/
 @[simp] theorem constantCoeff_qPochhammerSeries (q : A) :
     constantCoeff (qPochhammerSeries q) = 1 := by
   have hc : Nat.choose 0 2 = 0 := by decide

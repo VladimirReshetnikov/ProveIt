@@ -52,7 +52,8 @@ noncomputable def coeffDerivation (D : Derivation R A A) : Derivation R A⟦X⟧
     rw [← Finset.Nat.sum_antidiagonal_swap]
     simp only [Prod.fst_swap, Prod.snd_swap]
 
-/-- Coefficient extraction commutes with the coefficientwise derivation. -/
+/-- Coefficient extraction commutes with the coefficientwise derivation: the `n`-th coefficient
+is `D` applied to the `n`-th coefficient. -/
 theorem coeff_coeffDerivation (D : Derivation R A A) (f : A⟦X⟧) (n : ℕ) :
     coeff n (coeffDerivation D f) = D (coeff n f) := by
   show coeff n (PowerSeries.mk fun n => D (coeff n f)) = D (coeff n f)
