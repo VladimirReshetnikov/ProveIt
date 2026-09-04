@@ -37,7 +37,7 @@ Verified: all five conflict modules (`DerangementNearestInteger`,
 compiled serially under the machine-wide mutex. The aggregate facade and all
 other incoming modules were not compiled in this merge pass.
 
-The lexical documentation baseline is 1003 modules / 12,485 declarations, with
+The lexical documentation baseline is 1004 modules / 12,500 declarations, with
 zero documentation gaps; every module is facade-reachable, and the duplicate
 declaration audit passes. The q, inverse, and comb canonical validators pass,
 as does the 23-input inverse source-closure check. The q ledger is
@@ -46,10 +46,11 @@ properly distinguishes root evaluation from the still-unformalized polynomial
 congruence. Its source concordance is 103 / 375 / 60 / 9.
 
 The broader `audit_all.sh` does **not** pass: its register-consistency stage
-reports eight pre-existing CCC issues (five unnamed gaps, one None row citing
-Lean, and two stale anchors). The affected register scripts and CCC source are
-unchanged from the incoming tip. The other stages pass, including all 34 exact
-identity checks. No forbidden `SHA256SUMS` or `SHA256SUMS.*` file was restored.
+reports 19 known CCC issues (16 unnamed gaps, two None rows citing Lean, and
+one contradiction). The affected register scripts
+and CCC source are unchanged from the incoming tip. The other stages pass,
+including all 37 exact identity checks. No forbidden `SHA256SUMS` or
+`SHA256SUMS.*` file was restored.
 
 ## Draft inventory
 
@@ -108,7 +109,8 @@ merge of `origin/main`. Existing PDFs, including generated outputs whose
 validation was interrupted, are retained without a new source/render-parity
 claim. The inventory below records that earlier frozen-source publication
 work; pending rows are not accepted publication receipts. Fresh regeneration
-for the present merged source is in progress; parity requires final gates and receipts.
+for the present merged source remains skipped at the user's request; parity
+requires final gates and receipts.
 
 **Fixed-26 publication checkpoint (2026-09-04; historical deferral).** This is
 the historical inventory for the 26 publication roots affected by the source
