@@ -3790,6 +3790,31 @@ The first cases, obtained by listing integer partitions of the excess, are
 Their coefficients are the corresponding block-size counts from
 \cref{thm:bell-poly-partitions}.
 
+\begin{remark}[Formal crosswalk]
+% ed.: crosswalk added 2026-09-04; edge values only, deliberately.
+Two of the values displayed above are formal, and they are the two that are
+structural rather than computational.  The diagonal
+$\ExponentialPartialBellPolynomial nn=x_1^{n}$ is
+\lean{Fabius.partialBell_self} (module \lean{PartialBellPolynomials}), proved
+directly from the block recurrence \lean{Fabius.partialBell_succ_succ}; and the
+vanishing above the diagonal, $\ExponentialPartialBellPolynomial nk=0$ for
+$n<k$, is \lean{Fabius.partialBell_eq_zero_of_lt}.
+
+The remaining displayed cases --- \cref{eq:bell-edge-first} and the sub-diagonal
+rows through $\ExponentialPartialBellPolynomial n{n-4}$ --- are \emph{not}
+individually formal, and neither is the sentence above about their
+coefficients, which appeals to \cref{thm:bell-poly-partitions}.  They would follow
+from \cref{thm:bell-near-diagonal} once that theorem is formal, since each is
+one instance of it; formalizing them one at a time would be the wrong order of
+work.
+
+A caution for anyone extending this crosswalk: \lean{Fabius.partialBell_one} is
+\emph{not} the edge value $\ExponentialPartialBellPolynomial n1=x_n$.  It is
+the specialization at all weights equal to $1$, giving the Stirling numbers of
+the second kind, and Mathlib spells those \texttt{Nat.stirlingSecond}.  The name
+is short for ``all weights one'', not for ``second column''.
+\end{remark}
+
 \section{Partial derivatives}
 \begin{theorem}[Derivative identities]\label{thm:bell-poly-derivatives}
 For $i\ge1$,
@@ -4143,6 +4168,29 @@ If $x^{k\diamondsuit}$ denotes the $k$-fold diamond power, then
 The EGF of $x^{k\diamondsuit}$ is $X(t)^k$.  Compare with
 \eqref{eq:partial-bell-egf}.
 \end{proof}
+
+\begin{remark}[Formal crosswalk]
+% ed.: crosswalk added 2026-09-02; the formal proof is the one given here.
+Module \lean{DiamondPower} takes the diamond product to be
+\lean{Bell.binomialConv}, the full binomial convolution, and
+\lean{Fabius.binomialConv_eq_sum_Ico} shows that this agrees with
+\eqref{eq:diamond} for sequences vanishing at $0$: the terms $j=0$ and
+$j=n$, which the source's index range omits, are $x_0y_n$ and $x_ny_0$ and
+vanish for that reason rather than by convention.
+\lean{Fabius.diamondPow} takes the unit sequence $\delta_{n,0}$ as the empty
+product, so that $k=0$ gives $\ExponentialPartialBellPolynomial n0=\delta_{n,0}$
+and $x^{1\diamondsuit}=x$ (\lean{Fabius.diamondPow_one}); for $k\ge1$ this is
+the $k$-fold product of the source.
+The proof is the one above.  \lean{Bell.egfA_mul} turns a binomial convolution
+into a product of exponential generating functions, so
+\lean{Fabius.egfA_diamondPow} gives $X(t)^k$ by induction, and
+\lean{Fabius.bellWeightSeries_pow} already reads the coefficients of $X(t)^k$
+off the partial Bell polynomials.  \eqref{eq:diamond-bell} is then
+\lean{Fabius.diamondPow_apply} in the product form $(x^{k\diamondsuit})_n=k!\,
+\ExponentialPartialBellPolynomial nk$, and
+\lean{Fabius.partialBell_eq_diamondPow_div} in the divided form displayed
+above.
+\end{remark}
 
 \begin{remark}[Formal crosswalk]
 % ed.: crosswalk added 2026-09-02; the formal proof is the one given here.
@@ -5907,6 +5955,33 @@ of the forward formula into the backward one makes the coefficient of $a_j$
 \]
 which independently verifies the inverse matrices.
 \end{proof}
+
+\begin{remark}[Formal crosswalk]
+% ed.: crosswalk added 2026-09-02; both the sequence form and the EGF form are formal.
+The equivalence of \cref{eq:merged-binomial-forward} and
+\cref{eq:merged-binomial-backward} is \lean{Fabius.binomial_inversion_iff} for
+additive commutative groups and \lean{Fabius.binomial_inversion_ring_iff} for
+commutative rings, in module \lean{BinomialInversion}; the orthogonality
+displayed at the end of the proof is
+\lean{Fabius.sum_Icc_neg_one_pow_choose_mul_choose}.
+\cref{eq:merged-binomial-egf} is module \lean{BinomialInversionEGF}, where
+$\EulerE^{-z}$ is \lean{Fabius.altSeries}, the exponential generating function of
+$(-1)^n$, and \lean{Fabius.exp_mul_altSeries} proves it inverts $\EulerE^{z}$.
+Each half is stated as an equivalence with its sequence form rather than as an
+implication: \lean{Fabius.egfA_eq_exp_mul_iff} and
+\lean{Fabius.egfA_eq_altSeries_mul_iff}, with
+\lean{Fabius.egfA_eq_exp_mul_iff_egfA_eq_altSeries_mul} relating the two
+generating-function equations directly.
+Two remarks on the formal proofs.  Multiplying exponential generating functions
+is binomial convolution (\lean{Bell.egfA_mul}), so the only content is that
+convolving against the constant sequence $1$, or against $(-1)^n$, gives the
+displayed sums after reflecting the summation index
+(\lean{Fabius.binomialConv_one_left},
+\lean{Fabius.binomialConv_altSeries_left}).  And
+\lean{Fabius.exp_mul_altSeries} is the binomial theorem at $-1+1=0$ rather than
+a separate alternating-sum computation, which keeps it valid over an arbitrary
+commutative ring instead of only over $\IntegerNumbers$.
+\end{remark}
 
 \begin{remark}[Formal crosswalk]
 % ed.: crosswalk added 2026-09-02; both the sequence form and the EGF form are formal.

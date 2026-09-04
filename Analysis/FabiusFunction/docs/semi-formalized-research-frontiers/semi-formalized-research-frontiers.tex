@@ -2872,10 +2872,10 @@ The one-definition/twenty-seven-theorem
 \lean{gaussianBinomial_eq_div}, \lean{gaussianMajorant_nonneg},
 \lean{norm_gaussianBinomial_le},
 \lean{tendsto_finiteQPochhammerIn_pow_atTop},
-\lean{norm_finiteQPochhammerIn_pow_sub_one_le_exp},
+\lean{norm_finiteQPochhammerIn_pow_sub_one_le_exp_of_norm_le_one},
 \lean{isBigO_finiteQPochhammerIn_pow_sub_one},
 \lean{tendsto_gaussianBinomial_atTop},
-\lean{tendsto_gaussianBinomial_add_atTop},
+\lean{tendsto_gaussianBinomial_add_const_atTop},
 \lean{isBigO_gaussianBinomial_sub_inv},
 \lean{isBigO_gaussianBinomial_add_sub_inv},
 \lean{summable_pow_choose_two_mul_pow}, \lean{hasSum_euler_product},
@@ -3224,8 +3224,8 @@ rational root classifier and Gaussian/half-q coefficient identification,
 makes \nolinkurl{cor:halfbase-root-locus} Exact for the canonical rational
 polynomial.  Injective scalar extension preserves the multiplicities, but
 this does not classify all roots over every extension field.  The q forward
-ledger is 182 Exact / 78 Partial / 14 None / 8 interface rows; its source
-concordance is 95 Lean-proved / 383 human-proved frontier /
+ledger is 181 Exact / 79 Partial / 14 None / 8 interface rows; its source
+concordance is 103 Lean-proved / 375 human-proved frontier /
 60 non-applicable / 9 conjectures.
 
 The nodes-only leaf makes
@@ -3484,7 +3484,7 @@ commutative semiring.  Composed with
 rational-polynomial half-base convention.  It needs neither \(b\ne0\) nor
 distinct transformed nodes and includes \(b=0\) and \(n=0\); it does not
 extend the concrete half-base extractor to arbitrary coefficient rings.
-The q forward ledger is 182 Exact / 78 Partial / 14 None / 8 interface rows:
+The q forward ledger is 181 Exact / 79 Partial / 14 None / 8 interface rows:
 \nolinkurl{p7:thm:Pn} moves Partial-to-Exact and
 \nolinkurl{prop:qF-P-degree-sharp} moves None-to-Exact, while the RatFunc
 assembly moves \nolinkurl{thm:qF-moment-polynomial} Partial-to-Exact and the
@@ -3605,8 +3605,8 @@ Consequently the growth, uniform-bound, and extreme-specialization rows are
 Exact; the later greater-than-one asymptotics leaf also makes the \(q>1\)
 transfer row Exact.
 
-The rigorous 282-row forward q-series ledger is therefore 177 Exact, 82
-Partial, 15 None, and 8 interface rows.  The evaluated q-Lucas theorem remains
+The rigorous 282-row forward q-series ledger is therefore 181 Exact, 79
+Partial, 14 None, and 8 interface rows.  The evaluated q-Lucas theorem remains
 Partial because its polynomial-congruence lift is absent; the Gaussian
 majorant and the \(Q>1\) asymptotic row are Exact.  The
 parity-selected synthesis module
@@ -5753,9 +5753,9 @@ Gaussian derivative evaluations and simple-root multiplicity for the
 even-row/odd-column locus, first over \(\IntegerNumbers\) and then over
 characteristic-zero commutative rings under the strict interior hypothesis.\\
 \path{QBinomialTheoremInfinite.lean} &
-The one-definition, twenty-two-theorem Euler/Cauchy interface: a Banach-valued
+The one-definition, twenty-seven-theorem Euler/Cauchy interface: a Banach-valued
 Tannery lemma, real comparison products, normed-field bounds and fixed-column
-limits, and, over complete normed fields, Euler product and reciprocal
+rates, and, over complete normed fields, Euler product and reciprocal
 expansions and the infinite q-binomial theorem under the stated strict nome
 and series-variable bounds.\\
 \path{GaussianBinomialFixedColumnRate.lean} &
@@ -12109,7 +12109,7 @@ Module & Role in the present article \\
 \path{HalfQBinomial.lean} & Finite $q$-Pochhammer and Gaussian-binomial calculus at $q=1/2$, including the interpolation annihilation row. \\
 \path{GaussianBinomialContinuity.lean} & Zero definitions and exactly three theorems: \lean{continuous_gaussianBinomial}, \lean{tendsto_gaussianBinomial_nhds_one}, and \lean{gaussianBinomial_eq_finiteQPochhammerIn_div}.  The first two hold for all \(n,k\) in every topological semiring with continuous operations.  The quotient identity needs only a field, \(k\le n\), and \((q;q)_k\ne0\), with no topology. \\
 \path{JacobiTripleProduct.lean} & Two definitions, \lean{thetaExponent} and \lean{pentagonalExponent}, and exactly twenty-five theorems: \lean{two_dvd_mul_sub_one}, \lean{mul_sub_one_nonneg}, \lean{two_mul_thetaExponent}, \lean{thetaExponent_natCast}, \lean{thetaExponent_neg_natCast}, \lean{choose_two_add_choose_two_succ_eq}, \lean{sum_mul_sum_eq_sum_antidiagonal}, \lean{thetaCoeff_pair_eq}, \lean{sum_antidiagonal_thetaCoeff}, \lean{finite_triple_product_poly}, \lean{pow_mul_finiteQPochhammerIn_div}, \lean{neg_one_zpow_natCast_sub}, \lean{finite_triple_product}, \lean{norm_gaussianBinomialInt_le}, \lean{tendsto_gaussianBinomialInt_central}, \lean{summable_pow_thetaExponent_mul_zpow}, \lean{hasSum_jacobi_triple_product}, \lean{hasSum_jacobi_triple_product'}, \lean{mul_three_mul_sub_one_nonneg}, \lean{two_dvd_mul_three_mul_sub_one}, \lean{two_mul_pentagonalExponent}, \lean{pentagonalExponent_eq}, \lean{pentagonalExponent_pos}, \lean{hasSum_pentagonal}, and \lean{hasSum_pentagonal_pairs}.  Exponent arithmetic is unconditional; the finite polynomial block is over commutative rings, while the Laurent block is over fields and its divided-product formulas assume \(z\ne0\).  The norm bound needs a normed field and \(\lVert q\rVert<1\); the central limit, Jacobi, and pentagonal identities add completeness, with \(z\ne0\) exactly for Jacobi.  The pentagonal results include \(q=0\); the real theta majorant assumes \(0\le r<1\) and \(0<s\). \\
-\path{QBinomialTheoremInfinite.lean} & One definition, \lean{gaussianMajorant}, and exactly twenty-two theorems: \lean{hasSum_of_tendsto_of_dominated}, \lean{one_le_qPochhammerInfIn_neg}, \lean{finiteQPochhammerIn_neg_le_qPochhammerInfIn}, \lean{qPochhammerInfIn_nonneg}, \lean{qPochhammerInfIn_le_finiteQPochhammerIn}, \lean{qPochhammerInfIn_pos_of_lt_one}, \lean{qPochhammerInfIn_zero_left}, \lean{norm_finiteQPochhammerIn_le_neg_norm}, \lean{finiteQPochhammerIn_norm_le_norm}, \lean{norm_finiteQPochhammerIn_le}, \lean{qPochhammerInfIn_norm_le_norm_finiteQPochhammerIn}, \lean{finiteQPochhammerIn_ne_zero_of_norm_lt_one}, \lean{gaussianBinomial_eq_div}, \lean{gaussianMajorant_nonneg}, \lean{norm_gaussianBinomial_le}, \lean{tendsto_finiteQPochhammerIn_pow_atTop}, \lean{tendsto_gaussianBinomial_atTop}, \lean{summable_pow_choose_two_mul_pow}, \lean{hasSum_euler_product}, \lean{qPochhammerInfIn_ne_zero_of_norm_lt_one}, \lean{hasSum_qBinomial_theorem}, and \lean{hasSum_euler_reciprocal}.  The Tannery theorem is Banach-valued with its common summable bound, row limits, row \texttt{HasSum}s, and sum limit.  The real comparison block uses exactly \(0\le r<1\) and its displayed hypotheses on \(x\); the infinite zero-left theorem is unconditional over a topological commutative ring.  Norm bounds and fixed-column limits need a normed field and their displayed contraction/unit-ball hypotheses.  Over a complete normed field Euler's product needs only \(\lVert q\rVert<1\) and arbitrary \(z\), while the infinite q-binomial and reciprocal identities add \(\lVert z\rVert<1\), with arbitrary \(a\) and no \(q\ne0\).  The finite zero-left theorem belongs to \path{GaussianBinomialAtOne.lean}. \\
+\path{QBinomialTheoremInfinite.lean} & One definition, \lean{gaussianMajorant}, and exactly twenty-seven theorems: \lean{hasSum_of_tendsto_of_dominated}, \lean{one_le_qPochhammerInfIn_neg}, \lean{finiteQPochhammerIn_neg_le_qPochhammerInfIn}, \lean{qPochhammerInfIn_nonneg}, \lean{qPochhammerInfIn_le_finiteQPochhammerIn}, \lean{qPochhammerInfIn_pos_of_lt_one}, \lean{qPochhammerInfIn_zero_left}, \lean{norm_finiteQPochhammerIn_le_neg_norm}, \lean{finiteQPochhammerIn_norm_le_norm}, \lean{norm_finiteQPochhammerIn_le}, \lean{qPochhammerInfIn_norm_le_norm_finiteQPochhammerIn}, \lean{finiteQPochhammerIn_ne_zero_of_norm_lt_one}, \lean{gaussianBinomial_eq_div}, \lean{gaussianMajorant_nonneg}, \lean{norm_gaussianBinomial_le}, \lean{tendsto_finiteQPochhammerIn_pow_atTop}, \lean{norm_finiteQPochhammerIn_pow_sub_one_le_exp_of_norm_le_one}, \lean{isBigO_finiteQPochhammerIn_pow_sub_one}, \lean{tendsto_gaussianBinomial_atTop}, \lean{tendsto_gaussianBinomial_add_const_atTop}, \lean{isBigO_gaussianBinomial_sub_inv}, \lean{isBigO_gaussianBinomial_add_sub_inv}, \lean{summable_pow_choose_two_mul_pow}, \lean{hasSum_euler_product}, \lean{qPochhammerInfIn_ne_zero_of_norm_lt_one}, \lean{hasSum_qBinomial_theorem}, and \lean{hasSum_euler_reciprocal}.  The Tannery theorem is Banach-valued with its common summable bound, row limits, row \texttt{HasSum}s, and sum limit.  The real comparison block uses exactly \(0\le r<1\) and its displayed hypotheses on \(x\); the infinite zero-left theorem is unconditional over a topological commutative ring.  Norm bounds and fixed-column limits need a normed field and their displayed contraction/unit-ball hypotheses.  Over a complete normed field Euler's product needs only \(\lVert q\rVert<1\) and arbitrary \(z\), while the infinite q-binomial and reciprocal identities add \(\lVert z\rVert<1\), with arbitrary \(a\) and no \(q\ne0\).  The finite zero-left theorem belongs to \path{GaussianBinomialAtOne.lean}. \\
 \path{QPascalSummation.lean} & Zero definitions and exactly four theorems: \lean{sum_gaussianBinomial_succ_mul}, \lean{sum_gaussianBinomial_succ_mul'}, \lean{Commute.gaussianBinomial_left}, and \lean{Commute.gaussianBinomial_right}.  The first summation and both commutation laws hold in every semiring, with only the indicated \texttt{Commute} hypothesis for the latter; the second summation assumes a commutative semiring.  There is no division, order, topology, or restriction on \(q,n\), or the weight sequence. \\
 \path{QuantumBinomial.lean} & Zero definitions and exactly two theorems, \lean{quantumPlane_mul_pow} and \lean{quantum_binomial}, over an arbitrary possibly noncommutative semiring.  The first assumes that \(q\) commutes with \(X\) and \(YX=q(XY)\); the second additionally assumes that \(q\) commutes with \(Y\).  No division or topology is used. \\
 \path{RogersSzegoPolynomial.lean} & One definition, \lean{rogersSzego}, and exactly nine theorems: \lean{rogersSzego_zero}, \lean{rogersSzego_one}, \lean{rogersSzego_succ}, \lean{one_sub_pow_succ_mul_gaussianBinomial_succ_succ}, \lean{rogersSzego_dilation}, \lean{rogersSzego_three_term}, \lean{summable_norm_pow_div_finiteQPochhammerIn_self}, \lean{sum_antidiagonal_euler_mul_euler}, and \lean{hasSum_rogersSzego_generating}.  The definition and first three theorems use a commutative semiring; the cross, dilation, and three-term laws use a commutative ring and are total in their natural indices.  The summability theorem needs a normed field, \(\lVert q\rVert<1\), and \(\lVert z\rVert<1\); the antidiagonal identity needs only the contraction.  The generating function adds completeness and assumes exactly \(\lVert q\rVert<1\), \(\lVert t\rVert<1\), and \(\lVert zt\rVert<1\). \\
