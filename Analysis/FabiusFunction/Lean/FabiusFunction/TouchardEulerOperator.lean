@@ -1,5 +1,7 @@
 import FabiusFunction.BellStirling
 import Mathlib.Analysis.Calculus.Deriv.Polynomial
+import Mathlib.Analysis.SpecialFunctions.ExpDeriv
+import Mathlib.Analysis.SpecialFunctions.Pow.Real
 
 /-!
 # The Touchard cumulants as iterates of the Euler operator
@@ -49,7 +51,7 @@ theorem coeff_touchardPolynomial (n m : ℕ) :
     (touchardPolynomial R n).coeff m = (Nat.stirlingSecond n m : R) := by
   rw [touchardPolynomial, finset_sum_coeff]
   simp only [← C_eq_natCast, coeff_C_mul, coeff_X_pow, mul_ite, mul_one, mul_zero]
-  rw [Finset.sum_ite_eq' (Finset.range (n + 1)) m fun k => (Nat.stirlingSecond n k : R)]
+  rw [Finset.sum_ite_eq (Finset.range (n + 1)) m fun k => (Nat.stirlingSecond n k : R)]
   by_cases hm : m ∈ Finset.range (n + 1)
   · rw [if_pos hm]
   · rw [if_neg hm, Nat.stirlingSecond_eq_zero_of_lt (by simpa using hm), Nat.cast_zero]
@@ -102,7 +104,7 @@ and the Stirling sum are the same function of `r`. -/
 theorem exp_neg_mul_iterate_eulerOp_exp (j : ℕ) (r : ℝ) :
     Real.exp (-r) * eulerOp^[j] Real.exp r =
       ∑ k ∈ Finset.range (j + 1), (Nat.stirlingSecond j k : ℝ) * r ^ k := by
-  rw [iterate_eulerOp_exp, touchardPolynomial, eval_finsetSum]
+  rw [congrFun (iterate_eulerOp_exp j) r, touchardPolynomial, eval_finsetSum]
   simp only [eval_mul, eval_pow, eval_X, eval_natCast]
   rw [← mul_assoc, ← Real.exp_add, neg_add_cancel, Real.exp_zero, one_mul]
 
@@ -111,9 +113,13 @@ from `1` as the volume writes it. -/
 theorem eval_touchardPolynomial_succ_eq_sum_Icc (j : ℕ) (r : ℝ) :
     (touchardPolynomial ℝ (j + 1)).eval r =
       ∑ k ∈ Finset.Icc 1 (j + 1), (Nat.stirlingSecond (j + 1) k : ℝ) * r ^ k := by
+  have hrange : Finset.range (j + 1 + 1) = insert 0 (Finset.Icc 1 (j + 1)) := by
+    ext k
+    simp only [Finset.mem_range, Finset.mem_insert, Finset.mem_Icc]
+    omega
   rw [touchardPolynomial, eval_finsetSum]
   simp only [eval_mul, eval_pow, eval_X, eval_natCast]
-  rw [Finset.range_eq_Ico, ← Nat.Ico_succ_right, Finset.sum_eq_sum_Ico_succ_bot (by omega)]
+  rw [hrange, Finset.sum_insert (by simp)]
   simp
 
 /-! ### The normalized cumulants -/
@@ -128,16 +134,17 @@ denominator is nonzero. -/
 theorem touchardQ_mul (j : ℕ) {r : ℝ} (hr : r ≠ 0) (hr1 : 0 < 1 + r) :
     touchardQ j r * (r * (1 + r) ^ ((j : ℝ) / 2)) =
       Real.exp (-r) * eulerOp^[j] Real.exp r := by
-  rw [touchardQ, div_mul_cancel₀, exp_neg_mul_iterate_eulerOp_exp, touchardPolynomial,
-    eval_finsetSum]
-  · simp only [eval_mul, eval_pow, eval_X, eval_natCast]
-  · exact mul_ne_zero hr (Real.rpow_pos_of_pos hr1 _).ne'
+  simp only [touchardQ]
+  rw [div_mul_cancel₀ _ (mul_ne_zero hr (Real.rpow_pos_of_pos hr1 _).ne'),
+    exp_neg_mul_iterate_eulerOp_exp, touchardPolynomial, eval_finsetSum]
+  simp only [eval_mul, eval_pow, eval_X, eval_natCast]
 
 /-- `T_j(1)` is the `j`-th Bell number, so `q_j(1) = B_j / 2^{j/2}`: the
 normalization is exactly the one that makes the central value the Bell number
 divided by the Gaussian factor. -/
 theorem touchardQ_one (j : ℕ) : touchardQ j 1 = (Nat.bell j : ℝ) / 2 ^ ((j : ℝ) / 2) := by
-  rw [touchardQ, touchardPolynomial_eval_one, one_mul]
+  simp only [touchardQ]
+  rw [touchardPolynomial_eval_one, one_mul]
   norm_num
 
 end Fabius
