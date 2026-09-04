@@ -1309,6 +1309,27 @@ extension.  Probability language describes the normalized coefficient
 generating polynomial; these declarations prove its algebraic moment
 identities and do not construct a separate random variable.
 
+`FinitePrefixThueMorseCollapse` is an exhaustive zero-definition/eight-theorem
+leaf.  Its public surface is `Appell.sum_thueMorseSign_mul_eval_poly`,
+`sum_thueMorseSign_mul_uncenteredDyadicPrefixAppellPolynomialRat`,
+`sum_thueMorseSign_mul_uncenteredDyadicPrefixAppellPolynomialRat_of_lt`,
+`sum_thueMorseSign_mul_uncenteredDyadicPrefixAppellPolynomialRat_self`,
+`sum_thueMorseSign_mul_centeredDyadicPrefixAppellPolynomialRat`,
+`sum_thueMorseSign_mul_centeredDyadicPrefixAppellPolynomialRat_succ`,
+`sum_thueMorseSign_mul_centeredDyadicPrefixAppellPolynomialRat_of_lt`, and
+`sum_thueMorseSign_mul_centeredDyadicPrefixAppellPolynomialRat_self`.  These
+are finite rational coefficient identities, total at depth zero; they add no
+analytic generating-function or convergence claim.
+
+`DyadicBoundaryIdentity` is an exhaustive zero-definition/two-theorem leaf.
+`prod_complexSinc_prefix_mul_rvachevFourierProduct` clears the finite sinc
+prefix against the rescaled product, and
+`rvachevFourierProduct_dyadic_boundary` composes that result with the
+integer-zero factorization to give the entire denominator-cleared boundary
+identity for every natural shell and complex displacement.  No nonvanishing
+hypothesis is needed until one passes to a quotient formulation.  These two
+upstream API descriptions do not change any source-coverage status.
+
 The probabilistic layer is closed at the level of measures.  The up-measure
 `μ_up = up·Leb` satisfies the refinement equation
 `μ_up = Uniform[-½,½] ∗ (μ_up ∘ (·/2)⁻¹)` and its iterate, the

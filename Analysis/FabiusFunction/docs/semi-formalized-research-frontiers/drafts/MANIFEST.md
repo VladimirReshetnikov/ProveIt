@@ -21,9 +21,12 @@ so no PDF was rebuilt for it.  The same holds for the 2026-09-02 split that
 moved the six polynomial-logarithmic transseries packages out of `lambert-w/`
 into the new `series-and-transseries/` group.
 
-**Current artifact checkpoint (2026-09-04).** The live Lean audit scans 925
-source modules and 11,619 public declarations, with no missing module headers or
-declaration comments.
+**Current artifact checkpoint (2026-09-04).** The live Lean audit scans 933
+source modules and 11,695 public declarations, with no missing module headers or
+declaration comments. The reciprocity leaf's 931/11,685 checkpoint remains
+historical; the subsequently merged upstream `DyadicBoundaryIdentity.lean`
+and `FinitePrefixThueMorseCollapse.lean` modules add two modules and ten public
+declarations.
 Several PDFs below are retained,
 readable publication checkpoints rather than renders of the final merged TeX.
 In particular, the primary exposition, Lean walkthrough, canonical frontier,
@@ -568,7 +571,10 @@ historical 924/11,614 checkpoint.  Their semantic union gives the live
 925/11,619 census of that checkpoint. Subsequent merged-main additions give
 the pre-reciprocity 930/11,678 checkpoint. Publicizing
 `differentiable_geometricUniformComplexMomentProduct` gives 930/11,679, and
-the reciprocity 1+5 leaf gives the live 931/11,685 census. In the current
+the reciprocity 1+5 leaf gives the historical 931/11,685 census. The
+subsequently merged upstream `DyadicBoundaryIdentity.lean` and
+`FinitePrefixThueMorseCollapse.lean` modules add two modules and ten public
+declarations, giving the live 933/11,695 census. In the current
 semantic union, the subsequent
 zero-definition/two-theorem greater-than-one leaf makes `cor:qgreaterone`
 Exact, and the scaled-geometric polynomial theorem completes
@@ -579,7 +585,8 @@ in `HalfQBinomialRootSimplicity.lean`, composed with the complete rational
 root classification in `HalfQBinomial.lean`, makes
 `cor:halfbase-root-locus` Exact while leaving
 `cor:qbinom-inversion-law` Partial. The live semantic-union facade census is
-931/11,685; the RatFunc-only 924/11,615 and incoming-only 924/11,614 counts
+933/11,695; the historical reciprocity census is 931/11,685, while the
+RatFunc-only 924/11,615 and incoming-only 924/11,614 counts
 remain historical branch checkpoints. The q forward totals are 182 Exact / 78
 Partial / 14 None / 8 N/A, the relevant Dyadic Gaussian--Thue--Morse chapter
 is 13/43/0/0, and the source concordance is 95 Lean-proved / 383 human-proved

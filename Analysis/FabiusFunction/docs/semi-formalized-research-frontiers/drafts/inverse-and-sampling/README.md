@@ -159,8 +159,11 @@ zero off the unit circle, and proves for `q != 0`, `‖q‖ != 1` the local
 derivative convolution.  It makes q-monograph label `thm:qF-reciprocity`
 Exact; no global pointwise identity through genuine inner-product zeros is
 claimed.  Subsequent source-only tranches, including that reciprocity leaf,
-give the live 931/11,685 census.  The q forward ledger is now 182 Exact / 78
-Partial / 14 None / 8 interface rows, its relevant Dyadic
+give the historical reciprocity checkpoint 931/11,685.  The subsequently
+merged upstream `DyadicBoundaryIdentity.lean` and
+`FinitePrefixThueMorseCollapse.lean` modules add two modules and ten public
+declarations, making the live census 933/11,695.  The q forward ledger is now
+182 Exact / 78 Partial / 14 None / 8 interface rows, its relevant Dyadic
 Gaussian--Thue--Morse chapter is 13/43/0/0, and its source concordance is 95
 Lean-proved / 383 human-proved frontier / 60 non-applicable / 9 conjectures.
 The preceding finite-prefix checkpoint was 923/11,610.  The retired source layouts remain immutable

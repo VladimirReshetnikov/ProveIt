@@ -100,8 +100,11 @@ complex strict contraction, including `q = 0`, and gives the dyadic Rvachev
 product and bounded-Fabius Fourier specializations. The compound
 `thm:qF-spectral` row remains Partial because its named centered/MGF packaging
 and exterior reciprocal, pole-divisor, and zero--pole clauses are absent. The
-live facade audit contains 931 modules and 11,685 public declarations with no
-documentation gaps. Those corpus-wide totals include the q--Chu, Richardson,
+live facade audit contains 933 modules and 11,695 public declarations with no
+documentation gaps. The merged upstream `DyadicBoundaryIdentity.lean` and
+`FinitePrefixThueMorseCollapse.lean` modules add two modules and ten public
+declarations beyond the historical reciprocity checkpoint 931/11,685. Those
+corpus-wide totals include the q--Chu, Richardson,
 geometric-law barycenter, Lagrange--Rvachev matrix, arbitrary-space geometric
 realization, regular-central-sum, Lambert branch-gap Bernoulli, affine
 Prouhet, and complex moment-product follow-ups; they do not make the retained
@@ -232,7 +235,10 @@ historical 924/11,615 checkpoint.  After adjoining the unrelated
 one-definition/one-theorem `RvachevLegendreBiorthogonality.lean` leaf and the
 two new declarations in the existing `ProbabilityLaplaceMoments.lean` module,
 the historical census reached 925/11,619.  Subsequent source-only tranches,
-including the reciprocity leaf, give the live census 931/11,685.
+including the reciprocity leaf, give the historical reciprocity checkpoint
+931/11,685.  The subsequently merged upstream `DyadicBoundaryIdentity.lean`
+and `FinitePrefixThueMorseCollapse.lean` modules add two modules and ten
+public declarations, making the live census 933/11,695.
 The facade also contains the zero-definition/two-theorem
 `GaussianBinomialGreaterOneAsymptotics.lean` leaf; its exhaustive declarations
 are `gaussianBinomial_gt_one_fixedColumn_relativeError_isBigO` and
@@ -268,8 +274,12 @@ therefore includes `b = 0` and `n = 0`. The zero-definition, one-theorem
 rational-root convention: all rational roots are the displayed `2^j`, and
 each has multiplicity one. Injective scalar extension preserves those
 displayed multiplicities, but the leaf does not package an all-roots
-classification over every extension field. The current semantic-union census
-is 931/11,685.  The existing `ProbabilityLaplaceMoments.lean` module now also
+classification over every extension field. The historical reciprocity
+checkpoint of the semantic union is 931/11,685.  The subsequently merged
+upstream `DyadicBoundaryIdentity.lean` and
+`FinitePrefixThueMorseCollapse.lean` modules add two modules and ten public
+declarations, making the current semantic-union census 933/11,695.  The
+existing `ProbabilityLaplaceMoments.lean` module now also
 contains exactly the two new declarations
 `weightedSumDistribution_real_Ici_eq_rvachevUp_of_nonneg` and
 `integral_pow_weightedSumDistribution_eq_mul_intervalIntegral_rvachevUp`.

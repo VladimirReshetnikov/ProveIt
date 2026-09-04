@@ -112,7 +112,7 @@ numbers rather than copying these historical values.
 The historical post-merge 2026-09-01 inventory contained 675 modules and 8,909
 lexically visible public declarations, with zero missing module headers and
 zero missing doc comments.  A fresh 2026-09-04 audit for this documentation
-pass scans 931 facade-reachable modules and 11,685 public declarations.  It
+pass scans 933 facade-reachable modules and 11,695 public declarations.  It
 finds no missing module header or declaration comment, including throughout
 `FabiusInverseExactDyadicModulus.lean`, `JacobiTwoSquareCount.lean`, and
 `LagrangeRvachevMatrix.lean`, as well as the incoming
@@ -131,14 +131,15 @@ finds no missing module header or declaration comment, including throughout
 `GeometricUniformMomentPolynomialDegree.lean`,
 `RvachevLaurentLeading.lean`, `FinitePrefixAppellRecovery.lean`,
 `GeometricUniformMomentRatFunc.lean`,
-`GeometricUniformMomentReciprocity.lean`, and
+`GeometricUniformMomentReciprocity.lean`, `DyadicBoundaryIdentity.lean`,
+`FinitePrefixThueMorseCollapse.lean`, and
 `RvachevLegendreBiorthogonality.lean` leaves, together with the strengthened
 `ProbabilityLaplaceMoments.lean` surface,
 as well as the sixteenth theorem in `FinitePolynomialFunctional.lean`.
 Relative to the
-610/8,318 activation checkpoint, the current tree adds 321 modules and 3,367 declarations.
+610/8,318 activation checkpoint, the current tree adds 323 modules and 3,377 declarations.
 Relative to the earlier 630/8,552 merged checkpoint, concurrent source work
-adds 301 modules and 3,133 declarations.  The post-merge 675/8,909 inventory,
+adds 303 modules and 3,143 declarations.  The post-merge 675/8,909 inventory,
 the intervening 903/11,448 Lambert-series inventory, and the immediately
 preceding 914/11,555 scaled-geometric and 915/11,556 real-MGF-bridge
 checkpoints, together with the incoming branch's 906/11,461 complex-product
@@ -157,7 +158,10 @@ the historical 925/11,619 census.  Merged upstream work then reached the
 immediate pre-reciprocity checkpoint 930/11,678.  Promoting the complex-product
 differentiability theorem and adding the exhaustive one-definition/five-theorem
 reciprocity leaf add one source module and seven public declarations in total,
-giving the live 931/11,685 census.  On the earlier
+giving the historical reciprocity checkpoint 931/11,685.  The subsequently
+merged zero-definition leaves `DyadicBoundaryIdentity.lean` (two theorems) and
+`FinitePrefixThueMorseCollapse.lean` (eight theorems) add two modules and ten
+public declarations, giving the live 933/11,695 census.  On the earlier
 exterior-germ branch, the inner-complex 906/11,461 checkpoint was followed by
 the branch-local 907/11,464 checkpoint; its preceding real-MGF and algebraic
 moment-polynomial checkpoints were 905/11,458 and 904/11,457.  These older
@@ -732,9 +736,11 @@ historical RatFunc checkpoint 924/11,615.  The two new
 `RvachevLegendreBiorthogonality.lean` gave the historical facade inventory 925
 modules and 11,619 public declarations.  Subsequent merged upstream work gave
 the immediate pre-reciprocity checkpoint 930/11,678; the reciprocity tranche
-then added one module and seven public declarations in total, giving the live
-931/11,685 inventory with no missing module header or public declaration
-comment.
+then added one module and seven public declarations in total, giving the
+historical reciprocity checkpoint 931/11,685.  The subsequently merged
+`DyadicBoundaryIdentity.lean` 0+2 and `FinitePrefixThueMorseCollapse.lean` 0+8
+leaves give the live 933/11,695 inventory with no missing module header or
+public declaration comment.
 
 `FinitePolynomialFunctional.lean` remains a zero-definition module and now has
 exactly sixteen public theorems:
@@ -811,9 +817,11 @@ upstream leaves add exactly two modules and 35 public declarations:
 leaf gives the historical 924 modules and 11,615 public declarations; the
 post-RatFunc probability and finite-biorthogonality additions below give the
 historical 925 modules and 11,619 public declarations.  Subsequent merged
-upstream additions and the reciprocity tranche give the live 931 modules and
-11,685 public declarations, with no missing module header or public declaration
-comment.
+upstream additions and the reciprocity tranche give the historical reciprocity
+checkpoint of 931 modules and 11,685 public declarations.  The two later
+zero-definition leaves add two modules and ten theorems, giving the live 933
+modules and 11,695 public declarations, with no missing module header or public
+declaration comment.
 
 `HalfQBinomialRootSimplicity.lean` has no public definitions and exactly one
 public theorem, `halfQBinomial_sum_rootMultiplicity_two_pow`.  Over `ℚ`, for
@@ -927,7 +935,7 @@ Merged upstream additions reached the immediate pre-reciprocity checkpoint
 one theorem in the existing complex-product module and adds the new
 `GeometricUniformMomentReciprocity.lean` module with one definition and five
 theorems.  It therefore adds one source module and seven public declarations
-in total, giving the live 931/11,685 inventory.
+in total, giving the historical reciprocity checkpoint 931/11,685.
 
 The current exhaustive 1+3 surface of
 `GeometricUniformComplexMomentProduct.lean` is the definition
@@ -955,6 +963,37 @@ boundary is deliberate: the inner product can have remote zeros and Lean's
 inverse is total, so no global pointwise reciprocal identity or unit-circle
 continuation is asserted.  This makes canonical `thm:qF-reciprocity`
 **Exact**.
+
+#### Dyadic-boundary and finite-prefix Thue--Morse-collapse census overlay
+
+Two subsequently merged zero-definition leaves add two source modules and ten
+public theorems to the historical reciprocity checkpoint 931/11,685, giving
+the live 933/11,695 inventory.
+
+`DyadicBoundaryIdentity.lean` has exactly two public theorems,
+`prod_complexSinc_prefix_mul_rvachevFourierProduct` and
+`rvachevFourierProduct_dyadic_boundary`.  The first clears the finite sinc
+prefix against the rescaled Rvachev product.  The second composes that identity
+with the integer-zero factorization to give the denominator-cleared
+dyadic-boundary equality for every natural shell and complex displacement,
+without a nonvanishing hypothesis.  A quotient formulation still requires the
+denominator to be nonzero.
+
+`FinitePrefixThueMorseCollapse.lean` has exactly eight public theorems:
+`Appell.sum_thueMorseSign_mul_eval_poly`,
+`sum_thueMorseSign_mul_uncenteredDyadicPrefixAppellPolynomialRat`,
+`sum_thueMorseSign_mul_uncenteredDyadicPrefixAppellPolynomialRat_of_lt`,
+`sum_thueMorseSign_mul_uncenteredDyadicPrefixAppellPolynomialRat_self`,
+`sum_thueMorseSign_mul_centeredDyadicPrefixAppellPolynomialRat`,
+`sum_thueMorseSign_mul_centeredDyadicPrefixAppellPolynomialRat_succ`,
+`sum_thueMorseSign_mul_centeredDyadicPrefixAppellPolynomialRat_of_lt`, and
+`sum_thueMorseSign_mul_centeredDyadicPrefixAppellPolynomialRat_self`.  The
+general Appell theorem reduces a complete signed block to its Thue--Morse
+power moments; the rational prefix specializations are total at depth zero,
+with lower-degree cancellation and first-surviving-response corollaries.
+These are finite coefficient identities rather than analytic convergence
+statements.  This overlay records the merged APIs and changes no source-result
+coverage status.
 
 #### Closed-tail moments and finite Legendre--Rvachev biorthogonality
 
@@ -1736,7 +1775,7 @@ and 88-page notation-catalogue artifacts likewise predate their current merged
 sources.  Their package notices treat those PDFs as historical validation
 receipts, not parity claims, until fresh uninterrupted three-pass builds
 complete.  The inverse-computability receipt likewise still reflects the
-historical 675/8,909 census and requires refresh against the live 931/11,685
+historical 675/8,909 census and requires refresh against the live 933/11,695
 inventory.
 The canonical inverse-theory publication retains a 134-page artifact
 synchronized at its latest-main source checkpoint; the merged

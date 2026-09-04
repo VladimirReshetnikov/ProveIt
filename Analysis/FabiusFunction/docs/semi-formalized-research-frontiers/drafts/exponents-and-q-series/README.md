@@ -63,8 +63,11 @@ module tranches and the zero-definition, three-theorem
 crosswalk. That source is a source-only successor to the fresh artifact receipt
 and requires a later synchronized three-pass build. Retained PDFs under its `assets/` tree are
 research figures, not alternate manuscript renderings. The current Lean audit
-contains 931 facade-reachable modules and 11,685 public declarations, with no
-missing module headers or declaration documentation.
+contains 933 facade-reachable modules and 11,695 public declarations, with no
+missing module headers or declaration documentation.  The merged upstream
+`DyadicBoundaryIdentity.lean` and `FinitePrefixThueMorseCollapse.lean` modules
+account for the two-module/ten-declaration increase beyond the historical
+reciprocity checkpoint 931/11,685.
 
 The sibling source-only `FabiusFunction.GeometricRichardsonGenerating` module
 (three definitions and seven theorems) does not change this q-series package's
@@ -199,8 +202,11 @@ fixed-evaluation-point degree claim.  The RatFunc leaf gives the historical
 one-theorem `RvachevLegendreBiorthogonality.lean` leaf and the following two
 declarations in the existing `ProbabilityLaplaceMoments.lean` module, the
 historical census reached 925/11,619.  Subsequent source-only tranches,
-including the reciprocity leaf above, give the live census 931/11,685.  That
-existing module adds
+including the reciprocity leaf above, give the historical reciprocity
+checkpoint 931/11,685.  The subsequently merged upstream
+`DyadicBoundaryIdentity.lean` and `FinitePrefixThueMorseCollapse.lean` modules
+add two modules and ten public declarations, making the live census
+933/11,695.  That existing module adds
 `weightedSumDistribution_real_Ici_eq_rvachevUp_of_nonneg` and
 `integral_pow_weightedSumDistribution_eq_mul_intervalIntegral_rvachevUp`.
 Atomlessness identifies the strict and closed tails, and the second theorem

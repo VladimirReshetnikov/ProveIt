@@ -866,7 +866,11 @@ the exhaustive one-definition/one-theorem
 `FabiusFunction.RvachevLegendreBiorthogonality` leaf gives the repository
 checkpoint of 925 modules and 11,619 public declarations. This is now the
 historical pre-reciprocity checkpoint; subsequent source-only tranches give
-the live census of 931 modules and 11,685 public declarations. The census also includes
+the historical reciprocity checkpoint of 931 modules and 11,685 public
+declarations. The subsequently merged upstream `DyadicBoundaryIdentity.lean`
+and `FinitePrefixThueMorseCollapse.lean` modules add two modules and ten public
+declarations, making the live census 933 modules and 11,695 public
+declarations. The census also includes
 the unrelated
 sibling source-only
 `FabiusFunction.GeometricRichardsonGenerating` module (three definitions and
@@ -991,8 +995,11 @@ zero off the unit circle, and proves for `q != 0`, `‖q‖ != 1` the local
 `EventuallyEq` `M_q(z) * M_(q⁻¹)(-z) = 1` and its exact all-order binomial
 derivative convolution.  This makes `thm:qF-reciprocity` Exact.  No global
 pointwise identity through genuine inner-product zeros is claimed.  Together
-with the other subsequent source-only tranches, it belongs to the live
-931/11,685 census.
+with the other subsequent source-only tranches, it gives the historical
+reciprocity checkpoint 931/11,685.  The subsequently merged upstream
+`DyadicBoundaryIdentity.lean` and `FinitePrefixThueMorseCollapse.lean` modules
+add two modules and ten public declarations, making the live census
+933/11,695.
 
 The existing `FabiusFunction.ProbabilityLaplaceMoments` module adds exactly
 the two theorems

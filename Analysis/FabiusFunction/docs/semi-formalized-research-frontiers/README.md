@@ -213,8 +213,11 @@ They do not assert a value at `q = 0` or on `‖q‖ = 1`, a global identity, an
 explicit maximal germ disc, Mahler-germ uniqueness, or the exterior pole
 divisor. The later merged-main additions give the pre-reciprocity
 930/11,678 checkpoint; public complex-product differentiability gives
-930/11,679, and the exhaustive reciprocity 1+5 leaf gives the live
-931/11,685 census.
+930/11,679, and the exhaustive reciprocity 1+5 leaf gives the historical
+931/11,685 reciprocity checkpoint. The subsequently merged upstream
+`DyadicBoundaryIdentity.lean` and `FinitePrefixThueMorseCollapse.lean` modules
+add two facade modules and ten public declarations, giving the live
+933/11,695 census.
 
 The existing `FabiusFunction.ProbabilityLaplaceMoments` module then adds
 exactly two public theorems:
@@ -241,7 +244,8 @@ natural mesh `M`, every `l,m`, and `l <= padicValNat 2 M`. Thus
 `def:leg-Lambda` and `thm:leg-biorthogonality` are **Exact/Complete**. The leaf
 does not prove the larger support/smoothness/parity/Fourier--Bessel theorem
 `thm:leg-Lambda` or the matrix-projector corollary. It gives the historical
-925/11,619 census; the current live census is 931/11,685 as recorded above.
+925/11,619 census; the historical reciprocity census is 931/11,685 and the
+current live census is 933/11,695, as recorded above.
 
 The retained frontier, primary, walkthrough, geometric-q, and representation
 PDFs predate these source-only overlays and claim no render parity.
@@ -291,7 +295,10 @@ RatFunc leaf gives the historical 924/11,615 checkpoint, the two probability
 theorems give 924/11,617, and the Legendre biorthogonality 1+1 leaf gives the
 historical 925/11,619 union. The subsequent merged-main additions give
 930/11,678 before this reciprocity tranche, and the public differentiability
-theorem plus the reciprocity leaf give the live 931/11,685 union.
+theorem plus the reciprocity leaf give the historical 931/11,685 union. The
+subsequently merged upstream `DyadicBoundaryIdentity.lean` and
+`FinitePrefixThueMorseCollapse.lean` modules add two modules and ten public
+declarations, giving the live 933/11,695 union.
 
 `FabiusFunction.RvachevLaurentLeading` has one definition and six theorems.
 Its manuscript-normalized punctured-neighborhood limit, together with the

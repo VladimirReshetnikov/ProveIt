@@ -166,8 +166,11 @@ The newest combinatorial and certification tranche adds
 binary-word inversion and path-area generating functions, rectangular-box
 partition generating functions and counts, finite telescoping certificates,
 recurrence uniqueness, and rational-identity specialization. The live facade
-audit now contains 931 modules and 11,685 public declarations, with no
-documentation gaps. Ten declarations come from the sibling
+audit now contains 933 modules and 11,695 public declarations, with no
+documentation gaps. The merged upstream `DyadicBoundaryIdentity.lean` and
+`FinitePrefixThueMorseCollapse.lean` modules add two modules and ten public
+declarations beyond the historical reciprocity checkpoint 931/11,685. Ten
+declarations come from the sibling
 `FabiusFunction.GeometricRichardsonGenerating` module (three definitions and
 seven theorems), whose exact comb-manuscript crosswalk is
 `Fabius.geometricLagrangeRichardson_generating`; it does not change this
@@ -296,8 +299,11 @@ Laurent and finite-prefix tranches give the historical 922/11,582 and
 `RvachevLegendreBiorthogonality.lean` leaf and the following two declarations
 in the existing `ProbabilityLaplaceMoments.lean` module are adjoined, the
 historical facade census reached 925/11,619.  Subsequent source-only tranches,
-including `GeometricUniformMomentReciprocity.lean`, give the live census
-931/11,685.
+including `GeometricUniformMomentReciprocity.lean`, give the historical
+reciprocity checkpoint 931/11,685.  The subsequently merged upstream
+`DyadicBoundaryIdentity.lean` and `FinitePrefixThueMorseCollapse.lean` modules
+add two modules and ten public declarations, making the live census
+933/11,695.
 The existing `ProbabilityLaplaceMoments.lean` module now adds exactly the two
 theorems
 `weightedSumDistribution_real_Ici_eq_rvachevUp_of_nonneg` and
