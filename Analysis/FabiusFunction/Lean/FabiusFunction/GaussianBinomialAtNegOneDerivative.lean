@@ -14,6 +14,8 @@ the proof.
 
 ## Main results
 
+* `gaussianBinomial_X_eval` evaluates the universal Gaussian polynomial
+  `[n,k]_X` at any point of any commutative semiring.
 * `gaussianBinomial_derivative_eval_neg_one_of_even_degree` gives the exact
   derivative of every even-degree Gaussian polynomial over any commutative
   ring.
@@ -31,15 +33,33 @@ open scoped DualNumber
 
 namespace Fabius
 
+/-- Evaluating the universal Gaussian polynomial `[n,k]_X ∈ R[X]` at `c`
+gives `[n,k]_c`, over every commutative semiring.  (This generalises
+`eval_gaussianBinomial_X` of `CyclicSievingSubsets`, which asks for a
+commutative ring; the two should eventually be unified in a core
+module.) -/
+theorem gaussianBinomial_X_eval {R : Type*} [CommSemiring R] (c : R)
+    (n k : ℕ) :
+    (gaussianBinomial (Polynomial.X : Polynomial R) n k).eval c =
+      gaussianBinomial c n k := by
+  have h := map_gaussianBinomial (Polynomial.evalRingHom c)
+    (Polynomial.X : Polynomial R) n k
+  rwa [Polynomial.coe_evalRingHom, Polynomial.eval_X] at h
+
 private noncomputable abbrev gaussianPolynomialInt (n k : ℕ) : Polynomial ℤ :=
   gaussianBinomial (Polynomial.X : Polynomial ℤ) n k
 
-private theorem gaussianPolynomialInt_aeval_dual_add_eps (n k : ℕ) :
-    gaussianBinomial ((-1 : DualNumber ℤ) + ε) n k =
+/-- The first-order jet of `[n,k]_q` at `q = -1` along any square-zero
+direction `e` in the dual numbers:
+`[n,k]_{-1+e} = [n,k]_{-1} + G'(-1) e`.  The two lemmas below are the
+cases `e = ε` and `e = -ε`. -/
+private theorem gaussianPolynomialInt_aeval_dual_add_of_sq_eq_zero
+    (n k : ℕ) {e : DualNumber ℤ} (he : e ^ 2 = 0) :
+    gaussianBinomial ((-1 : DualNumber ℤ) + e) n k =
       algebraMap ℤ (DualNumber ℤ) (gaussianBinomial (-1 : ℤ) n k) +
         algebraMap ℤ (DualNumber ℤ)
-            ((gaussianPolynomialInt n k).derivative.eval (-1)) * ε := by
-  let q : DualNumber ℤ := (-1 : DualNumber ℤ) + ε
+            ((gaussianPolynomialInt n k).derivative.eval (-1)) * e := by
+  let q : DualNumber ℤ := (-1 : DualNumber ℤ) + e
   change gaussianBinomial q n k = _
   have hmap := map_gaussianBinomial
     (Polynomial.aeval q).toRingHom (Polynomial.X : Polynomial ℤ) n k
@@ -50,74 +70,47 @@ private theorem gaussianPolynomialInt_aeval_dual_add_eps (n k : ℕ) :
         gaussianBinomial q n k
     rw [hmap]
     simp
-  have hq : q = algebraMap ℤ (DualNumber ℤ) (-1) + ε := by
+  have hq : q = algebraMap ℤ (DualNumber ℤ) (-1) + e := by
     simp [q]
   have heval :
-      (gaussianPolynomialInt n k).eval (-1) = gaussianBinomial (-1 : ℤ) n k := by
-    simpa only [gaussianPolynomialInt, Polynomial.coe_evalRingHom,
-      Polynomial.eval_X] using
-      (map_gaussianBinomial (Polynomial.evalRingHom (-1))
-        (Polynomial.X : Polynomial ℤ) n k)
+      (gaussianPolynomialInt n k).eval (-1) =
+        gaussianBinomial (-1 : ℤ) n k :=
+    gaussianBinomial_X_eval (-1 : ℤ) n k
   calc
     gaussianBinomial q n k = (gaussianPolynomialInt n k).aeval q := hmap'.symm
     _ = (gaussianPolynomialInt n k).aeval
             (algebraMap ℤ (DualNumber ℤ) (-1)) +
           (gaussianPolynomialInt n k).derivative.aeval
-            (algebraMap ℤ (DualNumber ℤ) (-1)) * ε := by
+            (algebraMap ℤ (DualNumber ℤ) (-1)) * e := by
       rw [hq]
       exact
         (Polynomial.aeval_add_of_sq_eq_zero
           (gaussianPolynomialInt n k)
-          (algebraMap ℤ (DualNumber ℤ) (-1)) ε DualNumber.eps_pow_two)
+          (algebraMap ℤ (DualNumber ℤ) (-1)) e he)
     _ = algebraMap ℤ (DualNumber ℤ) (gaussianBinomial (-1 : ℤ) n k) +
           algebraMap ℤ (DualNumber ℤ)
-              ((gaussianPolynomialInt n k).derivative.eval (-1)) * ε := by
+              ((gaussianPolynomialInt n k).derivative.eval (-1)) *
+            e := by
       rw [Polynomial.aeval_algebraMap_apply_eq_algebraMap_eval,
         Polynomial.aeval_algebraMap_apply_eq_algebraMap_eval]
       rw [heval]
+
+private theorem gaussianPolynomialInt_aeval_dual_add_eps (n k : ℕ) :
+    gaussianBinomial ((-1 : DualNumber ℤ) + ε) n k =
+      algebraMap ℤ (DualNumber ℤ) (gaussianBinomial (-1 : ℤ) n k) +
+        algebraMap ℤ (DualNumber ℤ)
+            ((gaussianPolynomialInt n k).derivative.eval (-1)) * ε :=
+  gaussianPolynomialInt_aeval_dual_add_of_sq_eq_zero n k
+    DualNumber.eps_pow_two
 
 private theorem gaussianPolynomialInt_aeval_dual_sub_eps (n k : ℕ) :
     gaussianBinomial ((-1 : DualNumber ℤ) - ε) n k =
       algebraMap ℤ (DualNumber ℤ) (gaussianBinomial (-1 : ℤ) n k) -
         algebraMap ℤ (DualNumber ℤ)
             ((gaussianPolynomialInt n k).derivative.eval (-1)) * ε := by
-  let q : DualNumber ℤ := (-1 : DualNumber ℤ) - ε
-  change gaussianBinomial q n k = _
-  have hmap := map_gaussianBinomial
-    (Polynomial.aeval q).toRingHom (Polynomial.X : Polynomial ℤ) n k
-  have hmap' :
-      (gaussianPolynomialInt n k).aeval q = gaussianBinomial q n k := by
-    change (Polynomial.aeval q).toRingHom
-      (gaussianBinomial (Polynomial.X : Polynomial ℤ) n k) =
-        gaussianBinomial q n k
-    rw [hmap]
-    simp
-  have hq : q = algebraMap ℤ (DualNumber ℤ) (-1) - ε := by
-    simp [q]
-  have heval :
-      (gaussianPolynomialInt n k).eval (-1) = gaussianBinomial (-1 : ℤ) n k := by
-    simpa only [gaussianPolynomialInt, Polynomial.coe_evalRingHom,
-      Polynomial.eval_X] using
-      (map_gaussianBinomial (Polynomial.evalRingHom (-1))
-        (Polynomial.X : Polynomial ℤ) n k)
-  calc
-    gaussianBinomial q n k = (gaussianPolynomialInt n k).aeval q := hmap'.symm
-    _ = (gaussianPolynomialInt n k).aeval
-            (algebraMap ℤ (DualNumber ℤ) (-1)) +
-          (gaussianPolynomialInt n k).derivative.aeval
-            (algebraMap ℤ (DualNumber ℤ) (-1)) * (-ε) := by
-      rw [hq, sub_eq_add_neg]
-      exact Polynomial.aeval_add_of_sq_eq_zero
-        (gaussianPolynomialInt n k)
-        (algebraMap ℤ (DualNumber ℤ) (-1)) (-ε)
-        (by simp : (-ε : DualNumber ℤ) ^ 2 = 0)
-    _ = algebraMap ℤ (DualNumber ℤ) (gaussianBinomial (-1 : ℤ) n k) -
-          algebraMap ℤ (DualNumber ℤ)
-              ((gaussianPolynomialInt n k).derivative.eval (-1)) * ε := by
-      rw [Polynomial.aeval_algebraMap_apply_eq_algebraMap_eval,
-        Polynomial.aeval_algebraMap_apply_eq_algebraMap_eval]
-      rw [heval]
-      ring
+  rw [sub_eq_add_neg, sub_eq_add_neg, ← mul_neg]
+  exact gaussianPolynomialInt_aeval_dual_add_of_sq_eq_zero n k
+    (by simp : (-ε : DualNumber ℤ) ^ 2 = 0)
 
 private theorem dual_neg_one_add_eps_pow_even (d : ℕ) :
     ((-1 : DualNumber ℤ) + ε) ^ (d + d) =
@@ -226,28 +219,14 @@ private theorem gaussianBinomial_derivative_eval_neg_one_even_odd_int
         Polynomial.eval (-1)
             (gaussianBinomial (Polynomial.X : Polynomial ℤ)
               (2 * a) (2 * b + 1)) = 0 := by
-      calc
-        Polynomial.eval (-1)
-            (gaussianBinomial (Polynomial.X : Polynomial ℤ)
-              (2 * a) (2 * b + 1)) =
-            gaussianBinomial (-1 : ℤ) (2 * a) (2 * b + 1) := by
-          simpa only [Polynomial.coe_evalRingHom, Polynomial.eval_X] using
-            (map_gaussianBinomial (Polynomial.evalRingHom (-1))
-              (Polynomial.X : Polynomial ℤ) (2 * a) (2 * b + 1))
-        _ = 0 := gaussianBinomial_neg_one_even_odd_eq_zero a b
+      rw [gaussianBinomial_X_eval]
+      exact gaussianBinomial_neg_one_even_odd_eq_zero a b
     have hevenval :
         Polynomial.eval (-1)
             (gaussianBinomial (Polynomial.X : Polynomial ℤ)
               (2 * a) (2 * b)) = (a.choose b : ℤ) := by
-      calc
-        Polynomial.eval (-1)
-            (gaussianBinomial (Polynomial.X : Polynomial ℤ)
-              (2 * a) (2 * b)) =
-            gaussianBinomial (-1 : ℤ) (2 * a) (2 * b) := by
-          simpa only [Polynomial.coe_evalRingHom, Polynomial.eval_X] using
-            (map_gaussianBinomial (Polynomial.evalRingHom (-1))
-              (Polynomial.X : Polynomial ℤ) (2 * a) (2 * b))
-        _ = (a.choose b : ℤ) := gaussianBinomial_neg_one_even_even a b
+      rw [gaussianBinomial_X_eval]
+      exact gaussianBinomial_neg_one_even_even a b
     have hgap : 2 * a - 2 * b = 2 * (a - b) := by omega
     have hcol_odd : Odd (2 * b + 1) := ⟨b, by omega⟩
     have hgap_even : Even (2 * (a - b)) := ⟨a - b, by omega⟩
@@ -340,10 +319,8 @@ theorem gaussianBinomial_even_odd_rootMultiplicity_int
   have hroot : p.IsRoot (-1) := by
     rw [Polynomial.IsRoot]
     have heval :
-        p.eval (-1) = gaussianBinomial (-1 : ℤ) (2 * a) (2 * b + 1) := by
-      simpa only [p, Polynomial.coe_evalRingHom, Polynomial.eval_X] using
-        (map_gaussianBinomial (Polynomial.evalRingHom (-1))
-          (Polynomial.X : Polynomial ℤ) (2 * a) (2 * b + 1))
+        p.eval (-1) = gaussianBinomial (-1 : ℤ) (2 * a) (2 * b + 1) :=
+      gaussianBinomial_X_eval (-1 : ℤ) (2 * a) (2 * b + 1)
     rw [heval, gaussianBinomial_neg_one_even_odd_eq_zero]
   have hpos : 0 < p.rootMultiplicity (-1) :=
     (Polynomial.rootMultiplicity_pos hp).2 hroot

@@ -44,7 +44,7 @@ theorem powerExponentialLambertArgument_image_Icc
   · intro z hz
     have hmR : (m : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr hm
     have hturn : 0 < (m : ℝ) / beta :=
-      div_pos (Nat.cast_pos.mpr (Nat.pos_of_ne_zero hm)) hbeta
+      powerExponentialTurningPoint_pos hm hbeta
     let q : ℝ := -((m : ℝ) / beta) * z
     let x : ℝ := A * q ^ m
     have hq0 : 0 ≤ q := by
@@ -115,7 +115,7 @@ theorem principalPowerExponentialPhase_image_Icc
     exact principalPowerExponentialPhase_mem_Icc hm hA hbeta hx
   · intro y hy
     have hturn : 0 < (m : ℝ) / beta :=
-      div_pos (Nat.cast_pos.mpr (Nat.pos_of_ne_zero hm)) hbeta
+      powerExponentialTurningPoint_pos hm hbeta
     let w : ℝ := -(y / ((m : ℝ) / beta))
     have hw : w ∈ Icc (-1) 0 := by
       constructor
@@ -152,7 +152,7 @@ theorem lowerPowerExponentialPhase_image_Ioc
     exact lowerPowerExponentialPhase_mem_Ici hm hA hbeta hx
   · intro y hy
     have hturn : 0 < (m : ℝ) / beta :=
-      div_pos (Nat.cast_pos.mpr (Nat.pos_of_ne_zero hm)) hbeta
+      powerExponentialTurningPoint_pos hm hbeta
     let w : ℝ := -(y / ((m : ℝ) / beta))
     have hw : w ∈ Iic (-1) := by
       dsimp only [w]

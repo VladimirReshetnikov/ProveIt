@@ -26,9 +26,10 @@ division-free ring identity
 `[n,k]_q (q;q)_k (q;q)_{n-k} = (q;q)_n`   (`gaussianBinomial_mul_finiteQPochhammer_mul`),
 
 valid over *every* commutative ring with no hypothesis on `q` whatsoever — including `q = 0`, `q =
-1` and roots of unity — obtained by splitting `(q;q)_n` at `n-k` and applying
-`finiteQPochhammerIn_self_mul_gaussianBinomial`.  Only the passage from Pochhammer symbols to
-`q`-factorials costs a hypothesis, namely `q ≠ 1`, since it cancels `(1-q)^n`.
+1` and roots of unity — which is the core identity
+`finiteQPochhammerIn_self_eq_mul_mul_gaussianBinomial` with its factors reordered.  Only the
+passage from Pochhammer symbols to `q`-factorials costs a hypothesis, namely `q ≠ 1`, since it
+cancels `(1-q)^n`.
 
 ## Main declarations
 
@@ -64,16 +65,7 @@ theorem gaussianBinomial_mul_finiteQPochhammer_mul (q : R) {n k : ℕ} (hk : k �
     gaussianBinomial q n k *
         (finiteQPochhammerIn q q k * finiteQPochhammerIn q q (n - k)) =
       finiteQPochhammerIn q q n := by
-  have hn : n - k + k = n := by omega
-  have hsplit : finiteQPochhammerIn q q n =
-      finiteQPochhammerIn q q (n - k) * finiteQPochhammerIn (q * q ^ (n - k)) q k := by
-    conv_lhs => rw [← hn]
-    exact finiteQPochhammerIn_add q q (n - k) k
-  have hpow : q * q ^ (n - k) = q ^ (n - k + 1) := by
-    rw [pow_succ]
-    ring
-  have hsel := finiteQPochhammerIn_self_mul_gaussianBinomial q hk
-  rw [hsplit, hpow, ← hsel]
+  rw [finiteQPochhammerIn_self_eq_mul_mul_gaussianBinomial q hk]
   ring
 
 end CommRing

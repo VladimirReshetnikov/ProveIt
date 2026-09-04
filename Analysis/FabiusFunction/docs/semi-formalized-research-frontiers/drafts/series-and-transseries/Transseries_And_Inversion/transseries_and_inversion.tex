@@ -1,7 +1,9 @@
 %% =====================================================================
 %%  Transseries: the polynomial--logarithmic calculus and its inversions
 %%  Single consolidated volume for drafts/series-and-transseries/.
-%%  ASSEMBLED FILE -- do not edit here; edit the sources and re-run build.py.
+%%  This file is now the canonical source: the five source groups it was
+%%  assembled from were merged into it and deleted on 2026-09-04, and the
+%%  assembler cannot be re-run.  Edit here.
 %% =====================================================================
 \documentclass[11pt,openany]{book}
 \usepackage[a4paper,margin=26mm,headheight=15pt]{geometry}
@@ -38644,9 +38646,11 @@ and $g$ is \path{Fabius.lambertShiftInv}; the three identities of
 \path{Fabius.lambertShiftInv_eq_mul_exp} and
 \path{Fabius.principalLambertW_lambertShiftInv}, and $g$ is the two-sided
 inverse of $f$ by \path{Fabius.lambertShiftInv_lambertShift} together with
-\path{Fabius.lambertShift_eq_iff}.  This is the only result in the present
-volume with a formal counterpart, and it is recorded because the corpus keeps
-a register of what is proved and what is merely written down.
+\path{Fabius.lambertShift_eq_iff}.  This chapter is the only place in the present
+volume with formal counterparts --- this theorem, the numerator recursion of
+\cref{q1:prop:recursion}, and the general bracket of \cref{q1:rem:two-sided} ---
+and they are recorded because the corpus keeps a register of what is proved
+and what is merely written down.
 \end{remark}
 
 \begin{proposition}[Brackets]\label{q1:prop:brackets}
@@ -38704,7 +38708,25 @@ improves with $z$ but with a $z$-dependent constant.  Here the certificate is
 uniform, which is what makes numerical work on this map unusually comfortable.
 The sandwich is machine-checked as well, as
 \path{Fabius.abs_sub_lambertShiftInv_le_abs_residual} and
-\path{Fabius.abs_residual_le_two_mul_abs_sub_lambertShiftInv}.
+\path{Fabius.abs_residual_le_two_mul_abs_sub_lambertShiftInv}; and so is the
+general two-sided statement, for an arbitrary function on a convex set, in
+\path{MeanValueBracket.lean} --- the brackets are
+\path{Fabius.mul_abs_sub_le_abs_sub_of_le_deriv} and
+\path{Fabius.abs_sub_le_of_le_deriv}, and the transfer against a right inverse
+is \path{Fabius.abs_sub_right_inverse_le_div} together with
+\path{Fabius.div_le_abs_sub_right_inverse}.
+\end{remark}
+
+\begin{remark}[The sign hypothesis is not decoration]\label{q1:rem:sign}
+\Cref{p0:thm:backward-error} assumes $0<m\le f'\le M$, and the positivity of
+$m$ is needed for the \emph{upper} bracket, not merely for the interpretation.
+Dropping it fails at once: with $f'\equiv-10$ the bracket $m\le f'\le M$ holds
+for $m=-10$, $M=0$, while $|f(x)-f(y)|=10|x-y|$ exceeds $M|x-y|=0$.  What the
+sign supplies is monotonicity, which is what makes $|f(x)-f(y)|$ the signed
+increment.  The lower bracket needs no sign condition.  This is worth stating
+because a theorem quoted as ``$f$ strictly increasing with $m\le f'\le M$''
+leaves the role of the sign implicit, and the two-sided form is the one this
+volume uses most.
 \end{remark}
 
 \section{The small parameter, and reduction to an ordinary reversion}
@@ -38837,6 +38859,61 @@ $P_4=6v^{6}-8v^{5}-69v^{4}-40v^{3}+96v^{2}+72v-24$ read off
 \eqref{q1:eq:A1}--\eqref{q1:eq:A4} satisfy \eqref{q1:eq:Pm-data} exactly, as
 recorded in \cref{q1:rem:verification}.
 \end{proof}
+
+
+\begin{proposition}[A recursion for the numerators]\label{q1:prop:recursion}
+Define $R_{n,k}\in\Int[v]$ by
+\begin{equation}\label{q1:eq:recursion}
+ R_{n,1}=n,
+ \qquad
+ R_{n,k+1}=v(1+v)\,R_{n,k}'
+ +\Bigl(n(1+v)-(2k-1)v-k(1+v)^{2}\Bigr)R_{n,k}.
+\end{equation}
+Then $R_{n,k}\in n\,\Int[v]$, $\deg R_{n,k}=2(k-1)$,
+$\Coef{v^{2(k-1)}}R_{n,k}=n(-1)^{k-1}(k-1)!$ and
+$R_{n,k}(0)=n(n-1)\cdots(n-k+1)$; and the numerators of
+\cref{q1:prop:structure} are the diagonal
+\begin{equation}\label{q1:eq:Pm-from-R}
+ P_m=\frac{(-1)^{m+1}}{m+1}\,R_{m+1,m}.
+\end{equation}
+The three data \eqref{q1:eq:Pm-data} are exactly the three displayed facts
+read on that diagonal.
+\end{proposition}
+
+\begin{proof}
+Divisibility by $n$ is immediate from \eqref{q1:eq:recursion} by induction,
+since $R_{n,1}=n$ and every step is $\Int[v]$-linear in $R_{n,k}$.  For the
+degree, the derivative term $v(1+v)R_{n,k}'$ has degree at most
+$2+\bigl(2(k-1)-1\bigr)=2k-1$, strictly below the degree
+$2+2(k-1)=2k$ of the multiplier term, whose leading coefficient is that of
+$-k(1+v)^{2}$ against $R_{n,k}$, namely $-k$ times $n(-1)^{k-1}(k-1)!$; and
+$-k\cdot(-1)^{k-1}(k-1)!=(-1)^{k}k!$, which is the claim at $k+1$.  The value
+at $v=0$ satisfies $R_{n,k+1}(0)=(n-k)R_{n,k}(0)$, giving the falling
+factorial.  Substituting $n=m+1$, $k=m$ into the three then gives
+$\deg P_m=2m-2$, $\Coef{v^{2m-2}}P_m=(m-1)!$ and
+$P_m(0)=(-1)^{m+1}m!$, which is \eqref{q1:eq:Pm-data}; the normalization
+\eqref{q1:eq:Pm-from-R} is fixed by matching $P_1=1$.
+\end{proof}
+
+\begin{remark}[Formalization status of the numerator family]
+\label{q1:rem:lean-coefficients}
+\Cref{q1:prop:recursion} is machine-checked, in
+\path{LambertInverseCoefficients.lean}, a module of pure polynomial algebra
+with no dependence on the rest of the corpus.  With indices shifted so the
+recursion starts at $0$, \path{Fabius.lambertNumerator} is $R_{n,j+1}$;
+\path{Fabius.lambertNumerator_succ_eq_draft} is \eqref{q1:eq:recursion},
+\path{Fabius.natCast_dvd_lambertNumerator} is $R_{n,k}\in n\Int[v]$,
+\path{Fabius.natDegree_lambertNumerator} the degree,
+\path{Fabius.leadingCoeff_lambertNumerator} the leading coefficient, and
+\path{Fabius.eval_zero_lambertNumerator} the value at $0$.
+
+What is \emph{not} formalized, and should not be read as though it were: the
+closed form for $(\dd/\dd z)^{k}v^{n}$, and hence the identification of this
+polynomial family with the coefficients $A_m$ of \cref{q1:thm:blocks}; and the
+asymptotic reading $A_m\sim v^{m}/m$ of \eqref{q1:eq:Am-leading}.  Both need
+the operator calculus on functions rather than the recursion, and the
+formalized statements are about $\Int[v]$ alone.
+\end{remark}
 
 \begin{theorem}[The error law, and how slowly it is approached]
 \label{q1:thm:error-law}
@@ -52902,6 +52979,44 @@ For $j\ge1$ put
 \end{equation}
 \end{definition}
 
+\begin{lemma}[Central and complementary arcs]\label{q2:lem:localization}
+Write $\Phi_r(\theta)$ for the exponent of the Cauchy integrand on the circle
+$|z|=r$, normalized so that $\Phi_r(0)=0$.  There are absolute constants
+$\delta,c_1,c_2>0$ such that, for all large $n$ and $r=\Wlam_0(n)$,
+\begin{align}
+ \Re\Phi_r(\theta)&\le-c_1n(1+r)\theta^{2},
+ && |\theta|\le\delta/r,
+ \label{q2:eq:central}\\
+ \Re\Phi_r(\theta)&\le-c_2\,n/r^{2},
+ && \delta/r\le|\theta|\le\pi .
+ \label{q2:eq:outer}
+\end{align}
+Consequently the complementary arc contributes
+\begin{equation}\label{q2:eq:outer-small}
+ \int_{\delta/r\le|\theta|\le\pi}\e^{\Phi_r(\theta)}\dd\theta
+ =\bigO\!\bigl(\e^{-c_2n/r^{2}}\bigr),
+\end{equation}
+which is smaller than $(r/n)^{M}$ for every fixed $M$.
+\end{lemma}
+
+\begin{proof}
+On $|z|=r$ the exponent is $\e^{r\cos\theta}\cos(r\sin\theta)-\e^{r}
+-\ii n\theta$ up to the terms that cancel at $\theta=0$; its real part is
+$\e^{r\cos\theta}\cos(r\sin\theta)-\e^{r}$.  For $|\theta|\le\delta/r$ with
+$\delta$ small, expanding to second order gives
+$\Re\Phi_r(\theta)=-\tfrac12\e^{r}r(1+r)\theta^{2}\bigl(1+\bigO(\delta)\bigr)$,
+and $\e^{r}r=n$, which is \eqref{q2:eq:central}.  For
+$\delta/r\le|\theta|\le\pi$ the factor $\cos(r\sin\theta)$ is bounded away
+from $1$ except near $\theta=0$, while $\e^{r\cos\theta}\le\e^{r}$; a short
+computation --- splitting at $|\theta|=\pi/2$ and using
+$\cos\theta\le1-2\theta^{2}/\pi^{2}$ on $[0,\pi/2]$ --- gives
+$\Re\Phi_r\le-c_2\e^{r}/r=-c_2n/r^{2}$, which is \eqref{q2:eq:outer}.
+Integrating \eqref{q2:eq:outer} over an arc of length at most $2\pi$ gives
+\eqref{q2:eq:outer-small}, and $\e^{-c_2n/r^{2}}$ beats every power of
+$r/n=\e^{-r}$ because $n/r^{2}=\e^{r}/r$ grows faster than any multiple
+of $r$.
+\end{proof}
+
 \begin{theorem}[All-orders saddle expansion]\label{q2:thm:bell}
 Let $r=\Wlam_0(n)$.  For every fixed $M\ge1$, as $n\to\infty$,
 \begin{equation}\label{q2:eq:bell-main}
@@ -52921,7 +53036,7 @@ Equivalently, $c_m$ is the Gaussian average of a complete exponential Bell
 polynomial in the $q_j$.
 \end{theorem}
 
-\begin{proof}[Proof sketch and provenance]
+\begin{proof}
 The Cauchy integral
 $\mathfrak{B}_n/n!=(2\pi\ii)^{-1}\oint\exp(\e^{z}-1)z^{-n-1}\dd z$ is put on
 the circle $|z|=r$ with $r$ the saddle \eqref{q2:eq:saddle}; writing
@@ -52930,11 +53045,18 @@ higher Taylor coefficients of the exponent are exactly the $q_j$ of
 \eqref{q2:eq:touchard}.  Expanding $\exp(\text{cubic and higher})$ and
 integrating the resulting Gaussian moments term by term gives
 \eqref{q2:eq:cm-partition}, the double factorial being the Gaussian moment
-$\mathbb{E}Z^{2m+2K}=(2m+2K-1)!!$.  The remainder statement is the standard
-saddle-point estimate on the same contour.  This is the classical mechanism;
-what \eqref{q2:eq:cm-partition} adds is that every coefficient is a
-\emph{finite} explicit sum, which is what \cref{q2:prop:bell-structure} then
-exploits.
+$\mathbb{E}Z^{2m+2K}=(2m+2K-1)!!$.
+
+Two steps make this an asymptotic statement rather than a formal one, and
+both are \cref{q2:lem:localization}.  First, \eqref{q2:eq:outer-small} discards
+the complementary arc at a cost smaller than every retained term, so the
+integral may be replaced by the central one.  Second, \eqref{q2:eq:central}
+bounds the central integrand by a Gaussian, which justifies integrating the
+expansion term by term and bounds the tail after $M$ terms by the first
+omitted Gaussian moment; that is the $\bigO_M\bigl((r/n)^{M}\bigr)$ of
+\eqref{q2:eq:bell-main}.  What \eqref{q2:eq:cm-partition} adds to the classical
+mechanism is that every coefficient is a \emph{finite} explicit sum, which is
+what \cref{q2:prop:bell-structure} then exploits.
 \end{proof}
 
 \begin{proposition}[Structure of the coefficients]\label{q2:prop:bell-structure}
@@ -53138,6 +53260,118 @@ the constant $\rho/\zeta_k$ of \cref{q2:rem:simple-pole}; no $k$-dependence
 enters the $j$-sum, which is why the same series multiplies every sector.
 \end{proof}
 
+\section{Certified truncation}
+\label{q2:sec:fubini-truncation}
+
+The lattice sum converges, so truncating it is a numerical choice rather than
+an asymptotic one, and the cost can be bounded exactly.  Write
+\begin{equation}\label{q2:eq:Tn}
+ T_n=\sum_{k\in\Int}u_k^{\,n+1},
+ \qquad
+ u_k=\frac{\rho}{\zeta_k},
+ \qquad
+ T_{n,K}=\sum_{|k|\le K}u_k^{\,n+1},
+\end{equation}
+so that $\mathfrak{F}_n=\tfrac12 n!\,\rho^{-n-1}T_n$ by
+\cref{q2:thm:fubini}.
+
+\begin{theorem}[Pole-tail bounds]\label{q2:thm:pole-tail}
+For $n\ge1$ and $K\ge0$,
+\begin{equation}\label{q2:eq:tail}
+ |T_n-T_{n,K}|\ \le\ 2\sum_{k>K}|u_k|^{\,n+1}
+ \ \le\ 2\Bigl(\frac{\rho}{2\pi}\Bigr)^{n+1}\zeta(n+1,K+1),
+\end{equation}
+$\zeta(s,a)$ being the Hurwitz zeta function, and for $K\ge1$ also
+\begin{equation}\label{q2:eq:tail-integral}
+ |T_n-T_{n,K}|\ \le\ \frac2n\Bigl(\frac{\rho}{2\pi}\Bigr)^{n+1}K^{-n}.
+\end{equation}
+For the leading approximation $K=0$ one has the uniform estimate
+\begin{equation}\label{q2:eq:uniform}
+ |T_n-1|\ \le\ \frac{\rho^{2}}{12}=0.04003775115985011\ldots
+ \qquad(n\ge1).
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+$|\zeta_k|^{2}=\rho^{2}+4\pi^{2}k^{2}\ge4\pi^{2}k^{2}$, so
+$|u_k|\le\rho/(2\pi|k|)$, and pairing $k$ with $-k$ gives the first inequality
+in \eqref{q2:eq:tail}; summing $|u_k|^{n+1}\le(\rho/2\pi)^{n+1}k^{-n-1}$ over
+$k>K$ gives the second, by the definition of the Hurwitz zeta function.  For
+\eqref{q2:eq:tail-integral}, compare that sum with
+$\int_K^{\infty}t^{-n-1}\dd t=K^{-n}/n$.  For \eqref{q2:eq:uniform}, take
+$K=0$ in \eqref{q2:eq:tail}: $|T_n-1|\le2(\rho/2\pi)^{n+1}\zeta(n+1)$, which
+decreases in $n$, so its value at $n=1$ bounds it; that value is
+$2(\rho/2\pi)^{2}\zeta(2)=2\cdot\rho^{2}/(4\pi^{2})\cdot\pi^{2}/6
+=\rho^{2}/12$.
+\end{proof}
+
+\begin{proposition}[A sufficient linear pole budget]\label{q2:prop:budget}
+Fix $\delta>0$ and choose $K=K_n$ with
+\begin{equation}\label{q2:eq:budget}
+ K_n+1\ \ge\ \frac{(1+\delta)\,n}{2\pi\e}.
+\end{equation}
+Then the bound \eqref{q2:eq:tail-integral}, transported to $\mathfrak{F}_n$, is
+$\bigO_\delta\bigl(n^{-1/2}(1+\delta)^{-n}\bigr)$ relative to
+$\mathfrak{F}_n$.  In particular a number of poles \emph{linear} in $n$
+suffices to determine $\mathfrak{F}_n$ to within less than $\tfrac12$, so the
+integer is recovered by rounding.
+\end{proposition}
+
+\begin{proof}
+By \eqref{q2:eq:tail-integral} the relative error is at most
+$\tfrac2n(\rho/2\pi K_n)^{n}\rho/(2\pi)$ divided by $T_n\ge1-\rho^{2}/12$,
+which by \eqref{q2:eq:budget} is at most a constant times
+$n^{-1}\bigl(\e/(1+\delta)\bigr)^{n}\rho/(2\pi)\cdot(\rho/2\pi)^{n}
+\cdot(2\pi)^{n}$; collecting the powers and using
+$\rho\e<2\pi$ leaves $\bigO_\delta((1+\delta)^{-n})$, and the elementary
+Stirling upper bound $n!\le C\sqrt n\,(n/\e)^{n}$ contributes the remaining
+$n^{-1/2}$.
+\end{proof}
+
+\section{Weighted Fubini polynomials}
+\label{q2:sec:weighted}
+
+Everything above is the case $x=1$ of a one-parameter family, and the
+parameter costs nothing.
+
+\begin{theorem}[Full weighted pole formula]\label{q2:thm:weighted}
+For $x>0$ let $\mathfrak{F}_n(x)=\sum_j j!\stirlingsecond nj x^{j}$, whose
+exponential generating function is $\bigl(1-x(\e^{z}-1)\bigr)^{-1}$.  Put
+\begin{equation}\label{q2:eq:rhox}
+ \rho_x=\log\Bigl(1+\frac1x\Bigr),
+ \qquad
+ \zeta_k(x)=\rho_x+2\pi\ii k .
+\end{equation}
+Then, for every $n\ge1$,
+\begin{equation}\label{q2:eq:weighted}
+ \mathfrak{F}_n(x)=\frac{n!}{1+x}\sum_{k\in\Int}\zeta_k(x)^{-n-1},
+\end{equation}
+an exact convergent identity, which at $x=1$ is \cref{q2:thm:fubini}.
+\end{theorem}
+
+\begin{proof}
+The poles of $\bigl(1-x(\e^{z}-1)\bigr)^{-1}$ are the solutions of
+$\e^{z}=1+1/x$, that is the $\zeta_k(x)$ of \eqref{q2:eq:rhox}, and each is
+simple because the derivative of the denominator is $-x\e^{z}=-(1+x)\ne0$
+there; the residue is therefore $-1/(1+x)$, constant in $k$.  The
+Mittag--Leffler argument of \cref{q2:thm:fubini} applies verbatim, with
+$\tfrac12$ replaced by $1/(1+x)$, and gives \eqref{q2:eq:weighted}.  At $x=1$,
+$\rho_1=\log2=\rho$ and $1/(1+x)=\tfrac12$.
+\end{proof}
+
+\begin{remark}[What the parameter shows]\label{q2:rem:weighted}
+The residue is constant in $k$ for every $x$, which is
+\cref{q2:rem:simple-pole} again: a simple pole contributes one
+constant-amplitude sector whatever the weight.  What the weight moves is the
+\emph{location} of the lattice, through $\rho_x=\log(1+1/x)$; as $x\to\infty$
+the lattice spacing stays $2\pi$ but $\rho_x\to0$, so the sectors become
+comparable in size and the leading-pole approximation degrades.  The
+uniformity of \eqref{q2:eq:uniform} in $n$ is therefore \emph{not} uniform in
+$x$, and a statement about $\mathfrak{F}_n(x)$ on a compact $x$-interval needs
+the bound of \cref{q2:thm:pole-tail} with $\rho$ replaced by
+$\min_x\rho_x$.
+\end{remark}
+
 \section{Two sequences, two kinds of expansion}
 \label{q2:sec:compare}
 
@@ -53201,6 +53435,10 @@ $n=1$ the tail of the $k$-sum is only $\bigO(K^{-1})$ and a truncation at
 $K=4000$ leaves $6\times10^{-6}$, exactly the observed discrepancy; the cosine
 form against the same integers; and the coefficients $c_0=1$, $c_1=1/12$,
 $c_2=1/288$, $c_3=-139/51840$ from \eqref{q2:eq:stirling-cj}.  Bell: the
+weighted formula \eqref{q2:eq:weighted} against
+$\sum_jj!\stirlingsecond njx^{j}$ at $x=\tfrac12,1,2,3$ and $n=3,6,10$, exact
+to $10^{-17}$ or better in every one of the twelve cases; the constant
+$\rho^{2}/12=0.04003775115985011\ldots$ of \eqref{q2:eq:uniform}; and the
 expansion \eqref{q2:eq:bell-main} against exact Bell numbers at
 $n=20,50,200,1000$, the relative error falling from $1.5\times10^{-2}$ to
 $7.6\times10^{-7}$ at $n=20$ and from $5.6\times10^{-4}$ to
@@ -53617,7 +53855,142 @@ converged on the same apparatus independently.
 
 \appendix
 
-\chapter{Provenance}\label{app:provenance}
+\chapter{Provenance}
+\label{q4:app:provenance}
+
+This volume consolidates \emph{forty-two} independently written articles,
+filed in this repository between 1 and 3 September 2026.  Thirty of them had
+already been consolidated once, into the two volumes that became the calculus
+parts and the inversion parts; those two carry their own provenance records,
+which are reproduced unchanged inside this volume.  The remaining twelve are
+merged here for the first time and are listed below.
+
+\begin{center}\small
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.36\textwidth}
+                    >{\raggedright\arraybackslash}p{0.13\textwidth}
+                    >{\raggedright\arraybackslash}p{0.15\textwidth}
+                    >{\raggedright\arraybackslash}p{0.28\textwidth}@{}}
+\toprule
+\textbf{Source directory} & \textbf{Source} & \textbf{PDF} & \textbf{Absorbed into}\\
+\midrule
+\endfirsthead
+\toprule
+\textbf{Source directory} & \textbf{Source} & \textbf{PDF} & \textbf{Absorbed into}\\
+\midrule
+\endhead
+\multicolumn{4}{@{}l@{}}{\emph{Orientation, from \texttt{transseries-tutorials/}}}\\
+\texttt{Transseries\_\allowbreak Tutorial-1} & 5\,159 lines & 143 pp, Letter & \cref{q0:sec:why}, \cref{q0:sec:algebra}\\
+\texttt{Transseries\_\allowbreak Tutorial-2} & 7\,749 lines & 164 pp, Letter & \cref{q0:sec:why}, \cref{q0:sec:algebra}\\
+\texttt{Transseries\_\allowbreak Tutorial-3} & 4\,410 lines & 121 pp, Letter & \cref{q0:sec:why}\\
+\texttt{Transseries\_\allowbreak Tutorial-4} & 8\,781 lines & 217 pp, $522\times738$\,pt & \cref{q0:sec:why}, \cref{q0:sec:algebra}\\
+\addlinespace
+\multicolumn{4}{@{}l@{}}{\emph{Reversing $x+\LambertW(x)$, from \texttt{lambert-inverse-transseries/}}}\\
+\texttt{lambert\_\allowbreak inverse\_\allowbreak transseries} & 1\,907 lines & 25 pp, A4 & \cref{q1:sec:top}\\
+\texttt{lambert\_\allowbreak inverse\_\allowbreak transseries\_\allowbreak bundle} & 1\,384 lines & 21 pp, Letter & \cref{q1:sec:top}\\
+\texttt{reversing\_\allowbreak x\_\allowbreak plus\_\allowbreak lambert\_\allowbreak w\_\allowbreak transseries} & 1\,918 lines & 29 pp, A4 & \cref{q1:sec:top}\\
+\addlinespace
+\multicolumn{4}{@{}l@{}}{\emph{Bell and Fubini numbers, from \texttt{sequence-transseries/}}}\\
+\texttt{Bell\_\allowbreak Number\_\allowbreak Asymptotic\_\allowbreak Transseries} & 2\,211 lines & 32 pp, A4 & \cref{q2:sec:bell}\\
+\texttt{Bell\_\allowbreak Number\_\allowbreak Transseries\_\allowbreak Article} & 1\,714 lines & 23 pp, A4 & \cref{q2:sec:bell}\\
+\texttt{Fubini\_\allowbreak Number\_\allowbreak Full\_\allowbreak Transseries} & 2\,465 lines & 33 pp, A4 & \cref{q2:sec:fubini}\\
+\texttt{Fubini\_\allowbreak Number\_\allowbreak Transseries} & 1\,881 lines & 25 pp, A4 & \cref{q2:sec:fubini}\\
+\texttt{Fubini\_\allowbreak Number\_\allowbreak Transseries\_\allowbreak Article} & 1\,472 lines & 25 pp, Letter & \cref{q2:sec:fubini}\\
+\bottomrule
+\end{longtable}
+\end{center}
+
+\noindent
+The other thirty are documented in place.  The six sources of the calculus
+parts are listed, with a notation concordance and a repair ledger, in the
+final part of the calculus itself; the twenty-four sources of the inversion
+parts are listed in \cref{app:provenance} below, which is the
+provenance appendix of that volume reproduced unchanged.  All forty-two
+remain in git history.
+
+\section{Counts}
+\label{q4:sec:counts}
+
+\begin{center}\small
+\begin{tabular}{@{}lrrl@{}}
+\toprule
+Group & Articles & Source lines & Absorbed as\\
+\midrule
+\texttt{transseries-tutorials/} & 4 & 26\,099 & Orientation\\
+\texttt{polynomial-logarithmic-transseries/} & 6 & 36\,033 & the calculus parts\\
+\texttt{special-function-inversion/} & 24 & 16\,771 & the inversion parts\\
+\texttt{lambert-inverse-transseries/} & 3 & 5\,209 & $x+\LambertW(x)$\\
+\texttt{sequence-transseries/} & 5 & 9\,743 & Bell and Fubini\\
+\midrule
+total & 42 & --- & this volume\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\noindent
+The line counts in the middle column are those of the \emph{immediate}
+sources: for the two groups that had already been consolidated, the figure is
+the size of the consolidated volume, not of the six or twenty-four articles
+behind it.
+
+\chapter{Repairs made in this merge}
+\label{q4:app:repairs-merge}
+
+Corrections made while merging the twelve newly consolidated sources.  Repairs
+made in the two earlier consolidations are listed in their own ledgers, which
+this volume reproduces: the calculus's in its final part, the inversion
+volume's in \cref{app:repairs}.
+
+\paragraph{An error law quoted without its rate.}
+All three $x+\LambertW(x)$ sources state
+$g(z)-G_N(z)\sim(N+1)^{-1}\bigl(\LambertW(z)/z\bigr)^{N+1}$ and stop there.
+The law is correct --- \cref{q1:thm:error-law} proves it --- but it is
+approached at relative rate only $\bigO(1/\log z)$, so it is a poor predictor
+at any accessible argument: the ratio of the true error to the stated law is
+$0.55$ at $z=10^{3}$, $0.72$ at $10^{5}$, $0.82$ at $10^{8}$, $0.88$ at
+$10^{12}$ and $0.93$ at $10^{20}$, and at $z=50$ the law is wrong by a factor
+of three.  \Cref{q1:rem:slow} states the rate and recommends the uniform
+two-sided certificate instead.
+
+\paragraph{A structure theorem stated in the wrong normalization.}
+Two of the same three sources normalize the correction coefficients
+differently --- one in powers of $q=\LambertW(z)/z$, the other in powers of
+$z^{-1}$ --- and the integer-polynomial structure theorem is true only of the
+second family.  Carried across unchanged it fails at the first coefficient.
+\Cref{q1:rem:normalization} records the dictionary
+$\mathcal A_n=A_n/L^{n}$, and the chapter uses throughout the normalization in
+which the theorem holds.
+
+\paragraph{Five theorems stated without proof, demoted.}
+The tutorials state real closedness of the transseries field, closure under
+antidifferentiation, a formal Taylor principle, a formal contraction principle
+and generalized Borel reconstruction as named theorems, three of them
+explicitly labelled ``stated without proof'' or ``schematic''.  They are
+recorded in \cref{q0:sec:quoted} as attributed quotations rather than as
+theorems of this volume, together with the observation --- checked --- that no
+result proved here depends on any of them.
+
+\paragraph{A hand-wavy structure argument, replaced.}
+The Bell sources assert that the saddle coefficients have the form
+$c_m=P_m/(1+r)^{3m}$ with $\deg P_m\le4m$ without exhibiting the cancellation
+that makes it true.  \Cref{q2:prop:bell-structure} proves it by tracking the
+factor $r^{K}$ that cancels between the Touchard numerators and the
+denominators of the $q_j$, after which the degree count is exact and index
+independent.
+
+\paragraph{An overstatement made by this merge, and corrected in it.}
+Working from a title-level concordance, an intermediate stage of this
+consolidation recorded that the calculus already contained most of the
+inversion apparatus.  Reading the statements showed otherwise, and
+\cref{q3:sec:top} is the corrected comparison: of six apparent overlaps only
+one is a genuine duplicate, one is a strengthening in the inversion
+apparatus's favour, one has no counterpart at all, and three are distinct
+theorems.  The episode is recorded in \cref{q3:rem:correction} rather than
+quietly fixed, because the failure mode --- treating shared vocabulary as
+evidence of shared content --- is one a reader of a merged volume should be
+warned about.
+
+
+\chapter{Provenance of the inversion sources}\label{app:provenance}
 
 This volume consolidates twenty-four independently written articles, three on
 each of its eight subjects.  All twenty-four were filed in this repository on
@@ -53690,7 +54063,7 @@ coefficients, follow the presentation in
 \(\alpha\)-reduction that brings the partition numbers into the same frame is
 this volume's, since no source needed it.
 
-\chapter{Repairs to the sources}\label{app:repairs}
+\chapter{Repairs to the inversion sources}\label{app:repairs}
 
 Every correction this volume makes to one of its twenty-four sources is boxed
 in the text where it occurs and listed here.  A repair is recorded when a source
@@ -54004,6 +54377,7 @@ volume.  No value is therefore quoted, and the question is recorded as open in
 \cref{p9:sec:open}(ii).  This is listed here because a reader comparing the
 volume with its source will find a number in one and not the other, and the
 reason is deliberate.
+
 
 
 \end{document}

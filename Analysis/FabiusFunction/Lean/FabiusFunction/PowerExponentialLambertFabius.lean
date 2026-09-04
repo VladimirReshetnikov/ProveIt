@@ -18,7 +18,9 @@ natural Lambert-domain premise of the older generalized saddle theorem and
 an endpoint-inclusive replacement based on the generic closed-branch solve
 law.  It also exports the principal Fabius phase, the exact two-root
 classification on the nonnegative half-line, endpoint-inclusive continuity,
-and the principal small-input equivalence.  No new branch choice or analytic
+the principal small-input equivalence, and the exact two-sided
+inversion of the Fabius saddle map by the lower phase
+(`fabiusLambertPhase_invOn`).  No new branch choice or analytic
 assumption is introduced.
 -/
 
@@ -161,6 +163,44 @@ theorem fabiusPrincipalLambertPhase_ne_fabiusLambertPhase
       (principalPowerExponentialPhase_ne_lowerPowerExponentialPhase
         (m := 1) one_ne_zero (A := 1) (beta := Real.log 2)
         zero_lt_one (Real.log_pos (by norm_num)) hx')
+
+/-! ## Exact inversion of the classical Fabius saddle map -/
+
+/-- **Two-sided inversion.**  The lower Fabius phase and the saddle map
+`lambda ↦ lambda * 2 ^ (-lambda)` are exact setwise inverses between
+`[1 / log 2, ∞)` and the positive endpoint-inclusive profile-value
+interval `(0, exp (-1) / log 2]`.  This is the
+`(m, A, beta) = (1, 1, log 2)` instance of
+`lowerPowerExponentialPhase_invOn`. -/
+theorem fabiusLambertPhase_invOn :
+    InvOn fabiusLambertPhase (fun lam : ℝ ↦ lam * (2 : ℝ) ^ (-lam))
+      (Ici (Real.log 2)⁻¹) (Ioc 0 (Real.exp (-1) / Real.log 2)) := by
+  have h := lowerPowerExponentialPhase_invOn
+    (m := 1) one_ne_zero (A := 1) (beta := Real.log 2)
+    zero_lt_one (Real.log_pos (by norm_num))
+  have hphase : lowerPowerExponentialPhase 1 1 (Real.log 2) =
+      fabiusLambertPhase :=
+    funext lowerPowerExponentialPhase_one_one_log_two
+  have hsaddle : powerExponentialSaddle 1 1 (Real.log 2) =
+      (fun lam : ℝ ↦ lam * (2 : ℝ) ^ (-lam)) :=
+    funext powerExponentialSaddle_one_one_log_two
+  simpa only [hphase, hsaddle, powerExponentialPeak_one_one_log_two,
+    Nat.cast_one, one_div] using h
+
+/-- On `[1 / log 2, ∞)` the lower Fabius phase inverts the saddle map
+pointwise: `fabiusLambertPhase (lam * 2 ^ (-lam)) = lam`. -/
+theorem fabiusLambertPhase_leftInv {lam : ℝ}
+    (h : (Real.log 2)⁻¹ ≤ lam) :
+    fabiusLambertPhase (lam * (2 : ℝ) ^ (-lam)) = lam :=
+  fabiusLambertPhase_invOn.1 (mem_Ici.mpr h)
+
+/-- On `(0, exp (-1) / log 2]` the saddle map inverts the lower Fabius
+phase pointwise:
+`fabiusLambertPhase x * 2 ^ (-fabiusLambertPhase x) = x`. -/
+theorem fabiusLambertPhase_rightInv {x : ℝ}
+    (hx : x ∈ Ioc 0 (Real.exp (-1) / Real.log 2)) :
+    fabiusLambertPhase x * (2 : ℝ) ^ (-fabiusLambertPhase x) = x :=
+  fabiusLambertPhase_invOn.2 hx
 
 /-- The principal Fabius saddle phase is continuous on the full closed
 profile-value interval. -/
