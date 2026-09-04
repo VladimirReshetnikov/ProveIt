@@ -66,6 +66,22 @@ certified-remainder, and measure-refinement results named in the volume also
 have formal counterparts; the remaining roadmap obligations stay explicitly
 labeled.
 
+The local analytic companion `ThueMorseCornerIntegral.lean` has one
+definition and four theorems: `centeredBoxIntegral`,
+`centeredBoxIntegral_zero`, `centeredBoxIntegral_succ`,
+`symmetricMixedDifference_range_eq_centeredBoxIntegral`, and
+`symmetricMixedDifference_univ_eq_centeredBoxIntegral`.  It proves the
+repeated-integral clause of the continuous Thue--Morse corner theorem without
+replacing the manuscript's local regularity by a global assumption.  On an
+open order-connected set containing the full symmetric segment, local
+`ContDiffOn` regularity lets interval FTC peel one centered difference at a
+time; induction then identifies the Boolean corner sum with the nested box
+integral of the iterated derivative.  Together with
+`ThueMorseSymmetricDifference.lean`, this makes `thm:TM-corner` Exact by
+composition.  Zero half-steps and depth zero are included; the analytic leaf
+is real-valued and does not prove the separate Walsh conditional-expectation
+corollary.
+
 The current reciprocal-Gamma jet/tower overlay preserves that historical
 status and pins the first tranche to `0ba35abd4`.  The exhaustive five-theorem
 API of `ReciprocalGammaJets.lean` is `deriv_Gamma_inv_neg_nat`,

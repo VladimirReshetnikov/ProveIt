@@ -30,6 +30,7 @@
   citecolor=linkblue,
   urlcolor=linkblue,
   pdftitle={Fourier Decay of Rvachev's Up-Function: A Consolidated Account},
+  pdfauthor={A human-readable synthesis for the ProveIt repository},
   pdfsubject={Pointwise, metric, mean, extremal, and annular asymptotics of the dyadic sinc product},
   pdfkeywords={Rvachev up-function, Fabius function, sinc product, Fourier transform, Thue-Morse, transfer operator, asymptotic decay}
 }
@@ -781,6 +782,30 @@ Reindexing the remaining tails gives
 \]
 Combining the finite and infinite parts proves the identity.
 \end{proof}
+
+\emph{Formal status.}  Formal, in division-free form, in module
+\path{DyadicBoundaryIdentity.lean}:
+\decl{rvachevFourierProduct_dyadic_boundary} states
+\[
+ (N+w)^{n}\,\FourierTwoPi{\RvachevUp}(N+w)\,
+   \FourierTwoPi{\RvachevUp}\!\left(\frac{w}{2N}\right)
+ =-w^{n}\,\FourierTwoPi{\RvachevUp}(w)\,
+   \FourierTwoPi{\RvachevUp}\!\left(\frac12+\frac{w}{2N}\right),
+ \qquad N=2^{\,n-1},
+\]
+for every complex $w$ and with no hypothesis at all, both sides being entire.  The displayed
+quotient form is \decl{norm_rvachevFourierProduct_dyadic_boundary}, on the lemma's own range
+$0<z<N$: there $\AbsoluteValue{z/(2N)}<1$, so
+$\FourierTwoPi{\RvachevUp}(z/(2N))\ne0$ by the central-lobe positivity
+\decl{norm_rvachevFourierProduct_pos}, and the division is legitimate.  It is the composite of two facts already in the corpus: the local
+factorization at the dyadic center (\decl{rvachevFourierProduct_two_pow_mul_add_factorization}
+at $q=1$), which clears the first $n$ sinc denominators and exposes the zero factor $w^{n}$,
+and the shell factorization (\decl{rvachevFourierProduct_two_pow_mul}) applied to $w/2^{n}$,
+which identifies the same prefix product with
+$\FourierTwoPi{\RvachevUp}(w)/\FourierTwoPi{\RvachevUp}(w/2^{n})$ after reflecting the index
+(\decl{prod_complexSinc_prefix_mul_rvachevFourierProduct}).  The proof of the lemma above,
+which separates finite and infinite parts, is thus replaced by an identity between finite
+products.
 
 \section{Exactly one extremum per unit interval}
 \label{sec:extrema}

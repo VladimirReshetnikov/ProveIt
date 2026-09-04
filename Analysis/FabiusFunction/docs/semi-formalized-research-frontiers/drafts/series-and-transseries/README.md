@@ -1,64 +1,79 @@
 # Series and transseries
 
-Draft packages whose subject is the formal-series calculus itself — the
-algebra, division, composition, and reversion of asymptotic expansions —
-rather than any one special function.
+Everything in this group is now one document.
 
-- [`polynomial-logarithmic-transseries/`](polynomial-logarithmic-transseries/)
-  holds the operational treatment of one specific scale: the six
-  independently written articles on polynomial-logarithmic transseries, now
-  consolidated into a single canonical volume.
-- [`lambert-inverse-transseries/`](lambert-inverse-transseries/) holds three
-  articles received on 2026-09-02 that invert `x + W(x)` at infinity and build
-  a logarithmic-transseries calculus around that example (quick intake only;
-  not yet compared or reviewed):
-  - `lambert_inverse_transseries/` — *Asymptotic Reversion of x + W(x) and a Calculus for Logarithmic Transseries*
-  - `lambert_inverse_transseries_bundle/` — *Reversing x + W(x): Exact Reduction and Logarithmic Transseries*
-  - `reversing_x_plus_lambert_w_transseries/` — *Reversing x+W(x): Exact Reduction, All-Orders Asymptotics, and Logarithmic Transseries*
-- [`transseries-tutorials/`](transseries-tutorials/) holds four expository
-  introductions to transseries in general, filed on 2026-09-02.
-- [`special-function-inversion/`](special-function-inversion/) holds twelve
-  articles received on 2026-09-03 that invert a rapidly growing special
-  function at infinity to all orders (quick intake only; not yet compared or
-  reviewed).  They fall into four subjects, three independently written
-  articles each:
-  - the Gamma and Barnes `G`-functions;
-  - the hyperfactorial `K`-function;
-  - the subfactorial (these three normalize a power-logarithmic phase with the
-    Lambert `W`-function); and
-  - a real-argument continuation of the Fibonacci function, whose inverse
-    transseries is log-periodic in the golden-ratio phase.
-- [`sequence-transseries/`](sequence-transseries/)
-  holds five articles received on 2026-09-03, in the evening batch, on the
-  complete asymptotic transseries of two classical integer sequences (quick
-  intake only; not yet compared or reviewed): two on the Bell numbers, whose
-  expansion is a saddle-point series at `r = W_0(n)` with a finite rule for
-  every coefficient, and three on the Fubini (ordered Bell) numbers, whose
-  exponential generating function `1/(2 - e^z)` has a vertical lattice of
-  simple poles, so that the pole-sector transseries is exact and convergent
-  rather than asymptotic.
+> [`Transseries_And_Inversion/`](Transseries_And_Inversion/) —
+> *Transseries: the polynomial–logarithmic calculus, series reversal at
+> infinity, and the inversion of rapidly growing functions*.  The retained
+> 703-page A4 PDF is a historical checkpoint that predates the current
+> crosswalk source; a fresh three-pass rebuild is pending (4 September 2026).
 
-The first four subgroups overlap in subject but not in purpose: the first develops
-one scale in operational depth, the second inverts one specific map and builds
-its calculus, the third introduces the field, and the fourth applies the
-Lambert-core technique across several different special functions, with three
-independent treatments of each.  The first
-and second are close enough that a later consolidation may merge them; that
-comparison has not been made.  The second and fourth share the Lambert-core
-step but differ in scope — one map treated deeply against one technique applied
-broadly — and each of the fourth's nine articles additionally extracts a
-general reversion calculus, so whether those calculi coincide with each other
-or with the second subgroup's is an open comparison, deliberately not made at
-intake.  The fifth subgroup applies the method to number sequences rather than
-to functions; its Bell-number articles meet the Lambert `W` saddle `r = W_0(n)`
-that [`../lambert-w/`](../lambert-w/) treats and the Touchard and Stirling
-apparatus of [`../combinatorial-coefficient-calculus/`](../combinatorial-coefficient-calculus/),
-and those crosswalks are likewise open.
+## What was merged
 
-The group was created on 2026-09-02 by splitting the polynomial-logarithmic
-packages out of [`../lambert-w/`](../lambert-w/), where they had been filed on
-2026-09-01 because Lambert W is their guiding example.  That move was verbatim:
-no source, checksum ledger, or PDF changed, and no PDF was rebuilt for it.  The
-tutorials and the Lambert-inverse articles arrived directly later the same day.
+Forty-two independently written articles, filed between 1 and 3 September
+2026, in five groups. Thirty of them had already been consolidated once, into
+two volumes; those two and the remaining twelve articles are now a single
+volume, and all five source directories have been deleted. Git history is the
+archive, and the volume's provenance appendix lists every source with the part
+that absorbed it.
 
-See [`../MANIFEST.md`](../MANIFEST.md) for the group record.
+| Group | Articles | Absorbed as |
+| --- | --- | --- |
+| `transseries-tutorials/` | 4 | Part I, Orientation |
+| `polynomial-logarithmic-transseries/` | 6 | the calculus parts |
+| `special-function-inversion/` | 24 | the inversion parts |
+| `lambert-inverse-transseries/` | 3 | reversing `x + W(x)` |
+| `sequence-transseries/` | 5 | the Bell and Fubini chapters |
+
+## The comparison this group had left open
+
+The previous version of this README recorded, as explicitly unmade, the
+comparison between the polynomial–logarithmic calculus and the inversion
+calculi that the special-function and Lambert-inverse articles each extract.
+The merge makes it, and the volume's concordance chapter states it pair by
+pair.
+
+The result is **less overlap than a title-level comparison suggests**. Of six
+apparent overlaps, one is a genuine duplicate (the exponential partial Bell
+polynomials, the same definition in two notations), one is a strengthening in
+the inversion apparatus's favour (a two-sided residual bracket with a
+root-existence certificate, now machine-checked as
+`Fabius.exists_eq_in_residual_interval`, against a one-sided mean-value bound),
+one item has no counterpart at all (the ordinary Bell family), and three are
+different theorems about the same subject — most notably the two results both called
+Lagrange–Bürmann, which are the near-identity *operator* form and the classical
+*coefficient* form, neither implying the other without a genuine argument.
+
+Shared vocabulary turned out to be a weak signal, and an intermediate stage of
+this merge was misled by it; the volume records the correction rather than
+quietly fixing it.
+
+What the inversion apparatus genuinely adds over the calculus is the
+exponential–power model and its axiomatized dominant core, the monomial
+α-reduction, perturbed inversion around an exactly invertible core, the
+two-sided backward-error certificate, and — with no analogue anywhere in the
+calculus — the theory of inverting a **sequence**: three distinct inverse
+objects, the staircase theorem, and the separation condition under which an
+asymptotic inverse determines an integer one. The calculus is a theory of
+functions on a scale; that last group is about the passage to a sequence.
+
+## Residue audit
+
+Deletion followed an audit of the twelve newly merged sources against the
+assembled volume, and of the two consolidated volumes by direct containment.
+The two volumes are absorbed verbatim: 32 of 32,874 substantive lines of the
+calculus and 4 of 14,980 of the inversion volume differ, and every difference
+is a transformation made deliberately at assembly — the sectioning shift, with
+its 49 consequent "this section" → "this chapter" rewrites, and three retitled
+chapters.
+
+For the twelve articles, matching every named result against the volume's 768
+titled results left six with no close counterpart; all six were checked
+individually and are covered under other names, are alternative derivations of
+a theorem the volume does state (a Lipschitz–Poisson route and a
+Bose–Einstein-kernel route to the same pole expansion), or were demoted on
+purpose. The audit's first pass left ten such results, and the four that were
+genuinely missing — the saddle-localization lemma, the certified pole-tail
+bounds, the linear pole budget, and the weighted Fubini polynomials — were
+absorbed before deleting. Numeric residue is sequence values, numerical-table
+mantissas and worked-example integers, none of them a result.

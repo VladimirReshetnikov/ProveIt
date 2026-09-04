@@ -37,7 +37,7 @@ with SHA-256 provenance in the document itself (git history is the
 archive).
 
 The synchronized publication receipt (2026-09-04) records a historical
-checkpoint superseded by the current `b899` receipt below. The checkpoint
+checkpoint superseded by the historical `69b447f7c` receipt below. The checkpoint
 comprised the
 4,876-line, 177,511-byte TeX source at SHA-256
 `d852a345685dd61335a89fc4fd1092680bdc597a5d1e6ac612883946ad0d99ea`.
@@ -53,7 +53,7 @@ and forbidden checksum basenames both close at zero. The previous clipped-box
 warning is gone; the sole harmless 0.82504 pt overfull box is readable, and the
 final log has 133 underfull diagnostics.
 
-The current synchronized `b899` source has 4,940 lines and 181,577 bytes, with
+The historical synchronized `69b447f7c` source has 4,940 lines and 181,577 bytes, with
 SHA-256
 `2e6a4782fc4e4b945869f5fb45b39cf94e8dc34296866edf26b4cdfe19b1898b`.
 Exactly three serial halt-on-error passes from absent sidecars ran 68 pages /
@@ -70,9 +70,11 @@ Six polynomial-logarithmic transseries packages were also filed here on
 2026-09-01, because Lambert W is their guiding example.  Their subject is the
 transseries calculus rather than the function, so on 2026-09-02 they were
 regrouped into
-[`../series-and-transseries/polynomial-logarithmic-transseries/`](../series-and-transseries/polynomial-logarithmic-transseries/),
-which now holds their intake receipts.  This group keeps only the articles
-about the Lambert W function itself.
+[`../series-and-transseries/polynomial-logarithmic-transseries/`](../series-and-transseries/Transseries_And_Inversion/),
+which held their intake receipts.  Those six were consolidated, and on
+2026-09-04 the whole `series-and-transseries` group became the single volume
+linked above.  This group keeps only the articles about the Lambert W
+function itself.
 
 See [`../MANIFEST.md`](../MANIFEST.md) for the group record.
 
@@ -138,7 +140,7 @@ that explicit removable-origin convention.  The Guide's nearest-nonzero-zero
 argument is not the formal proof route.  With the three finite
 branch-coordinate modules, the four-module union is four definitions and 37
 theorems, 41 declarations.  The signed higher/convergent Puiseux program
-remains open. The current 70-page `b899` Guide PDF recorded above renders the
+remains open. The historical 70-page `69b447f7c` Guide PDF recorded above renders the
 source overlay and is synchronized; the preceding 70-page receipt remains
 historical. The exact-radius
 four-theorem checkpoint had census 903/11,447; the fifth theorem brought the
@@ -160,17 +162,21 @@ compound `p7:thm:Pn` was then Partial; the later sharp-degree sibling below
 makes it Exact.  This bridge produced the historical checkpoint 905 modules
 and 11,458 public declarations.  The subsequent sibling
 `FabiusFunction.GeometricUniformComplexMomentProduct` has the exhaustive
-surface one public definition and two public theorems:
+current surface one public definition and three public theorems:
 `Fabius.geometricUniformComplexMomentProduct`,
-`Fabius.hasProdLocallyUniformly_geometricUniformComplexMomentProduct`, and
+`Fabius.hasProdLocallyUniformly_geometricUniformComplexMomentProduct`,
+`Fabius.differentiable_geometricUniformComplexMomentProduct`, and
 `Fabius.geometricUniformMomentPolynomial_eval₂_eq_complexMomentProduct_taylorCoefficient`.
 For complex `‖q‖ < 1` it supplies the actual locally uniform product and its
-normalized Taylor-coefficient bridge.  This is an analytic analogue; it does
+complex differentiability on the whole plane, together with its normalized
+Taylor-coefficient bridge.  This is an analytic analogue; it does
 not extend the probability-moment reading of `p7:eq:Pn-def` beyond real
-`|q| < 1`.  The canonical q-monograph `thm:qF-moment-polynomial` remains
-Partial because the global `RatFunc` identification and its pole-clearing
-polynomial continuation at roots are absent.  This exhaustive `1+2` leaf
-produced the historical checkpoint 906 modules and 11,461 public declarations.
+`|q| < 1`.  At this historical checkpoint the canonical q-monograph
+`thm:qF-moment-polynomial` remained Partial because the global `RatFunc`
+identification and its pole-clearing polynomial continuation at roots were
+absent.  The original `1+2` surface produced the historical checkpoint 906
+modules and 11,461 public declarations; the subsequently exposed
+differentiability theorem belongs only to the live census below.
 The zero-definition/one-theorem
 `FabiusFunction.HalfQBinomialRootSimplicity` sibling exposes
 `Fabius.halfQBinomial_sum_rootMultiplicity_two_pow`; composed with the
@@ -190,8 +196,36 @@ consists of `Fabius.coeff_geometricUniformMomentPolynomial_choose_two`,
 `Fabius.coeff_geometricUniformMomentPolynomial_choose_two_sub_one`, and
 `Fabius.geometricUniformMomentPolynomial_natDegree_eq`.  It proves the exact
 top and subleading Bernoulli coefficients and the parity-sensitive degree,
-making `p7:thm:Pn` and `prop:qF-P-degree-sharp` Exact while leaving
-`thm:qF-moment-polynomial` Partial at the global `RatFunc` boundary.
+making `p7:thm:Pn` and `prop:qF-P-degree-sharp` Exact.  At that checkpoint
+`thm:qF-moment-polynomial` was still Partial at the global `RatFunc` boundary.
+
+The final `FabiusFunction.GeometricUniformMomentRatFunc` sibling has one
+public definition, `Fabius.geometricUniformMomentRatFunc`, and four public
+theorems: `Fabius.qFactorial_mul_geometricUniformMomentRatFunc`,
+`Fabius.eval_geometricUniformMomentRatFunc_eq_complexMomentProduct_taylorCoefficient`,
+`Fabius.eval_geometricUniformMomentRatFunc_eq_exteriorComplexMomentGerm_taylorCoefficient`,
+and `Fabius.eval_geometricUniformMomentRatFunc_one`.  It packages one
+`RatFunc ℚ`, proves the global q-factorial clearing identity, identifies that
+same rational function with both strict off-unit-circle Taylor-coefficient
+regimes, and treats `q = 1` through `[n]₁! = n!`.  Together with the algebraic
+polynomial leaf, this makes `thm:qF-moment-polynomial` Exact.  It does not
+assign analytic values at genuine unit-root poles or prove their divisor or
+orders.
+
+The later `FabiusFunction.GeometricUniformMomentReciprocity` sibling has one
+public definition, `Fabius.geometricUniformComplexMomentGerm`, and five public
+theorems:
+`Fabius.geometricUniformComplexMomentGerm_of_norm_lt_one`,
+`Fabius.geometricUniformComplexMomentGerm_of_one_lt_norm`,
+`Fabius.analyticAt_geometricUniformComplexMomentGerm`,
+`Fabius.geometricUniformComplexMomentGerm_reciprocity`, and
+`Fabius.geometricUniformComplexMomentGerm_moment_convolution`.  It joins and
+identifies the strict inner and exterior branches, proves analyticity at zero
+off the unit circle, and, for `q != 0` and `‖q‖ != 1`, proves the local
+`EventuallyEq` `M_q(z) * M_(q⁻¹)(-z) = 1` and its exact all-order binomial
+derivative convolution.  It makes `thm:qF-reciprocity` Exact.  A global
+pointwise identity through genuine inner-product zeros is deliberately not
+claimed.
 
 The later germ-related addition
 `FabiusFunction.RvachevLaurentLeading` has one definition and six theorems and
@@ -209,13 +243,38 @@ random-variable or analytic-MGF realization.
 
 In the origin-side chronology the sharp leaf gave the historical 921/11,575
 checkpoint, `RvachevLaurentLeading` gave 922/11,582, and
-`FinitePrefixAppellRecovery` gives 923/11,610.  Retaining the unconditional
-public `Fabius.complexQPochhammerInf_eq_qPochhammerInfIn` bridge gives the live
-semantic union 923/11,611.  The rigorous q ledger is 177 Exact / 82 Partial /
-15 None / 8 interface, and the source concordance is 99 Lean-proved / 379
-human-proved frontier / 60 non-applicable / 9 conjectures.  The q-Lucas row
-remains Partial because the Lean declaration proves only primitive-root
-evaluation, not the polynomial congruence modulo the cyclotomic polynomial.
+`FinitePrefixAppellRecovery` gave 923/11,610.  The RatFunc leaf gives the
+historical 924/11,615 checkpoint.  Two later theorems in
+`ProbabilityLaplaceMoments` make `prop:up-tail` and `cor:up-moments` Exact,
+and the unrelated exhaustive 1+1
+`FabiusFunction.RvachevLegendreBiorthogonality` leaf gives the historical
+925/11,619 checkpoint.  Its public declarations are
+`Fabius.rvachevLegendreAnalysisKernel` and
+`Fabius.rvachevLegendreBiorthogonality`; they close the normalized translated
+kernel definition and finite Legendre biorthogonality, but not the larger
+Fourier--Bessel or matrix-projector claims.  Subsequent source-only tranches,
+including the reciprocity sibling, give the historical reciprocity checkpoint
+931/11,685.  The subsequently merged upstream `DyadicBoundaryIdentity.lean`
+and `FinitePrefixThueMorseCollapse.lean` modules add two modules and ten
+public declarations, making the historical dyadic/finite-prefix census
+933/11,695.  The incoming union adds one module and fourteen public
+declarations: the new zero-definition/six-theorem
+`ProuhetBaseTwoBridge.lean` module, one theorem added to
+`DyadicBoundaryIdentity.lean`, and seven theorems added to
+`ThueMorseNewmanSelfSimilarity.lean`.  That historical tranche reached
+934/11,709.  The frozen merge target now contains 957 modules and 11,920
+public declarations; retaining the unconditional public
+`Fabius.complexQPochhammerInf_eq_qPochhammerInfIn` bridge gives the historical
+merge-union checkpoint 957/11,921, and
+`Fabius.exists_eq_in_residual_interval` is included in the current semantic
+union computed by `scripts/doc_audit.py` and pinned in
+`docs/doc_audit_baseline.json`, with zero documentation gaps.  The rigorous q
+ledger is 181 Exact / 79 Partial / 14 None / 8 interface, the relevant Dyadic
+Gaussian--Thue--Morse chapter is 13/43/0/0, and the source concordance is 103
+Lean-proved / 375 human-proved frontier / 60 non-applicable / 9 conjectures.
+The q-Lucas row remains Partial because the Lean declaration proves only
+primitive-root evaluation, not the polynomial congruence modulo the
+cyclotomic polynomial.
 All of these sibling source-only additions are likewise absent
 from the retained historical PDFs.
 

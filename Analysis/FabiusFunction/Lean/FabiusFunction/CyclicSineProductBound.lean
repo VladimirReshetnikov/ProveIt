@@ -207,4 +207,42 @@ theorem rational_ray_exponent_ge_min {q d a : ℕ} (hd : 0 < d) (hq : 1 < q) (ho
     nlinarith [hlogA, hlog2]
   linarith
 
+/-! ## The bound is attained at `q = 3`
+
+`abs_prod_sin_orbit_le_sharp` bounds the periodic-orbit sine product by
+`(√3/2)^d`.  The volume adds that equality holds exactly when `q = 3`.  The
+substantive half of that clause — that the constant cannot be lowered — is the
+computation below: the orbit of `a = 1` modulo `3` has period `d = 2`, its two
+points are `π/3` and `2π/3`, and the product is exactly `(√3/2)^2 = 3/4`.
+
+The converse half, that no other odd `q` attains the bound, is not formalized. -/
+
+/-- The two orbit points of `a = 1` modulo `3` both have `|sin| = √3/2`. -/
+theorem abs_sin_orbit_three (j : ℕ) (hj : j < 2) :
+    |Real.sin (π * ((1 : ℕ) * 2 ^ j / (3 : ℕ)))| = Real.sqrt 3 / 2 := by
+  have hs3 : (0 : ℝ) ≤ Real.sqrt 3 := Real.sqrt_nonneg 3
+  interval_cases j
+  · have harg : π * (((1 : ℕ) : ℝ) * 2 ^ (0 : ℕ) / ((3 : ℕ) : ℝ)) = π / 3 := by
+      push_cast
+      ring
+    rw [harg, Real.sin_pi_div_three, abs_of_nonneg (by positivity)]
+  · have harg : π * (((1 : ℕ) : ℝ) * 2 ^ (1 : ℕ) / ((3 : ℕ) : ℝ)) = π - π / 3 := by
+      push_cast
+      ring
+    rw [harg, Real.sin_pi_sub, Real.sin_pi_div_three, abs_of_nonneg (by positivity)]
+
+/-- **The sharp bound is attained.**  At `q = 3`, `a = 1`, `d = 2` the
+periodic-orbit sine product equals `(√3/2)^2`, so the constant `√3` of
+`abs_prod_sin_orbit_le_sharp` cannot be lowered. -/
+theorem abs_prod_sin_orbit_three_eq_sharp :
+    ∏ j ∈ range 2, |Real.sin (π * ((1 : ℕ) * 2 ^ j / (3 : ℕ)))| = (Real.sqrt 3 / 2) ^ 2 := by
+  rw [Finset.prod_congr rfl (fun j hj => abs_sin_orbit_three j (Finset.mem_range.mp hj))]
+  rw [Finset.prod_const, Finset.card_range]
+
+/-- The attained value in closed form: the product is `3/4`. -/
+theorem abs_prod_sin_orbit_three_eq :
+    ∏ j ∈ range 2, |Real.sin (π * ((1 : ℕ) * 2 ^ j / (3 : ℕ)))| = 3 / 4 := by
+  rw [abs_prod_sin_orbit_three_eq_sharp, div_pow, Real.sq_sqrt (by norm_num : (0 : ℝ) ≤ 3)]
+  norm_num
+
 end Fabius

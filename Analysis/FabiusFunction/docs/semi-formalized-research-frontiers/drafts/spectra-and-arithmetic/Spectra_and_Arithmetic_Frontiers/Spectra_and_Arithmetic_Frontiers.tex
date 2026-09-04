@@ -28,6 +28,7 @@
   hypertexnames=false,% ed.: avoid duplicate destinations across parts
  colorlinks=true,linkcolor=linkblue,citecolor=linkblue,urlcolor=linkblue,
  pdftitle={Half-Integer Spectral Arithmetic for the Fabius--Rvachev System},
+ pdfauthor={Frontier research report based on Vladimir Reshetnikov's ProveIt repository},
  pdfsubject={Weighted Prouhet cancellation, dyadic q-binomial aliasing, cyclotomic traces, and a Lambert-W bridge},
  pdfkeywords={Fabius function,Rvachev up-function,Thue-Morse,q-binomial,sinc product,Lambert W,Prouhet,cyclotomic field,discrete cosine transform}}
 
@@ -101,7 +102,7 @@ cyclotomic traces, and a Lambert--$W$ endpoint bridge}
 \usepackage[most]{tcolorbox}
 \usepackage{needspace}
 \title{\bfseries Spectral Arithmetic Frontiers of the Fabius--Rvachev System}
-\author{}
+\author{Frontier research report based on Vladimir Reshetnikov's \texttt{ProveIt} repository}
 \date{Consolidated 28 August 2026}
 \begin{document}
 \maketitle
@@ -1323,9 +1324,15 @@ where \(Q(m,n)\) is \path{Fabius.qBinomialThueMorseDyadicTranslatedFormulaIn}, t
 for every \(m\le2^n\) and every translation parameter, not only at the single point
 \(1/2^n\).  The reflected index \(2^n-k\) is the sample identity
 \(\RvachevUp(k/2^n)=\FabiusBounded((2^n-k)/2^n)\)
-(\path{Fabius.rvachevUp_dyadic_eq_qBinomial}).  So the whole of \eqref{p1:eq:q-approximant}
-except its convergence, which is analytic, is now formal: the folded alias class of the
-infinite sinc product equals a finite cosine sum of \(q\)-binomial expressions.
+(\path{Fabius.rvachevUp_dyadic_eq_qBinomial}).  The convergence clause is formal as well:
+\path{Fabius.tendsto_foldedCoefficient_two_pow} in \path{AliasErrorBound.lean} is
+\(A_{2^n,r}\to\PhiU(r/2)\) as \(n\to\infty\), for every fixed \(r\), obtained from the alias
+error bound \path{Fabius.norm_foldedCoefficient_sub_le'} at the fixed order \(K=2\), which
+already forces the difference below a multiple of \(4^{-n}\).  The sharp rate \(E_n\) of the
+theorem, which optimizes \(K\) with \(n\) and gives \(2^{-n^2/2+\BigO(n\log n)}\), is not
+claimed there.  So the whole of \eqref{p1:eq:q-approximant} is now formal, rate excepted: the
+folded alias class of the infinite sinc product equals a finite cosine sum of \(q\)-binomial
+expressions, and converges to the sinc-product value.
 
 \begin{remark}[Three structures in one finite expression]
 Formula \eqref{p1:eq:q-approximant} simultaneously contains
@@ -1495,7 +1502,11 @@ formula \eqref{p1:eq:Ramanujan-traces} itself --- the \(m\)-fold expansion of
 \eqref{p1:eq:discrete-energy}, is \path{Fabius.sum_odd_foldedCoefficient_sq} in
 \path{AliasDyadicBridge.lean}, for every even \(N\); it is proved there not by the \(m\)-fold
 expansion but by folding both sides of the Parseval identity onto the half range, which for
-\(m=2\) replaces the Ramanujan resummation entirely.  The universal trace
+\(m=2\) replaces the Ramanujan resummation entirely.  At a dyadic modulus the rationality the
+theorem advertises is literal:
+\path{Fabius.sum_odd_foldedCoefficient_sq_two_pow} states \(p_2(n)\) for \(N=2^n\), \(n\ge1\),
+as a finite expression in the exact rational values \(\mathtt{fabiusDyadic}\,n\,(2^n-k)\),
+through the sample identity \path{Fabius.rvachevUp_two_pow_eq_fabiusDyadic}.  The universal trace
 \eqref{p1:eq:universal-trace} is formal in the form
 \(\sum_{s<N}A_{N,2s+1}=1\), for every \(N\ge1\)
 (\path{Fabius.sum_foldedCoefficient_odd}, in \path{HalfIntegerAliasIdentity.lean}): the
@@ -3147,7 +3158,13 @@ $d$ pairs, take cube roots --- gives $\prod_{j<d}|\sin(\pi a2^{j}/q)|\le(\sqrt3/
 (\path{Fabius.abs_prod_sin_orbit_le_sharp}).  The linear (non-cyclic) pairing of
 \path{SharpGelfondBound.lean} leaves one factor uncovered and yields only
 $2^{1/d}\cdot3^{(d-1)/2d}$; closing the orbit is exactly what removes that loss.  The
-equality clause --- equality if and only if $q=3$ --- is not formalized.
+equality clause --- equality if and only if $q=3$ --- is half formalized.  The half that
+matters for sharpness is: at $q=3$ the bound is attained, so the constant $\sqrt3$ cannot be
+lowered.  That is \path{Fabius.abs_prod_sin_orbit_three_eq_sharp} in
+\path{CyclicSineProductBound.lean}, with the two orbit points $\pi/3$ and $2\pi/3$ evaluated in
+\path{Fabius.abs_sin_orbit_three} and the closed value $3/4$ in
+\path{Fabius.abs_prod_sin_orbit_three_eq}.  The converse, that no other odd $q$ attains it, is
+not formalized.
 
 \begin{corollary}[Sharp minimum of the rational-ray exponent]\label{p2:cor:kappa-minimum}
 Every nonzero rational ray satisfies

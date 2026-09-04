@@ -379,6 +379,9 @@ CURRENT_Q_STATUS_OVERRIDES = {
     "cor:partition-symmetries": "Lean-proved",
     "cor:thue-morse-prouhet-partition": "Lean-proved",
     "thm:geometric-uniform-basic": "Lean-proved",
+    "thm:qF-reciprocity": "Lean-proved",
+    "prop:up-tail": "Lean-proved",
+    "cor:up-moments": "Lean-proved",
     "thm:regular-central-sum": "Lean-proved",
     "prop:dissection": "Lean-proved",
     "cor:dissection-remainder": "Lean-proved",
@@ -397,6 +400,7 @@ CURRENT_Q_STATUS_OVERRIDES = {
     "thm:q-leibniz": "Lean-proved",
     "prop:qgamma-reflection": "Lean-proved",
     "cor:qgamma-theta": "Lean-proved",
+    "thm:qF-moment-polynomial": "Lean-proved",
     "prop:qF-P-degree-sharp": "Lean-proved",
 }
 

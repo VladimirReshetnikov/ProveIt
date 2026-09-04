@@ -26,7 +26,9 @@ series.
   reproducibility replay, and formalization boundary.
 - `audit/corpus_manifest_2026-08-27.txt` - preserved recursive TeX path ledger.
 - Package-local `SHA256SUMS*` ledgers are retired. The submitted ledger and
-  its exact digest remain recoverable from Git history and are recorded below.
+  later normalized-package ledger are both retired. Their exact historical
+  bytes remain recoverable from Git history, and the submitted digest is
+  recorded below.
 
 ## Mathematical contribution map
 
@@ -223,7 +225,12 @@ Package-local `SHA256SUMS*` ledgers are abolished; no live ledger is maintained
 or should be recreated. The current source and retained-PDF receipts are listed
 above. Build, PDF, experiment-replay, and formalization-boundary evidence is
 recorded in `audit/POST_INTAKE_REVIEW.md` and `LEAN_CROSSWALK.md`, while Git
-history preserves the retired arrival evidence.
+history preserves the retired arrival evidence. Before retirement, the
+normalized-package ledger contained exactly 33 entries covering every other
+regular package file, including this README, the submitted checksum record, the
+Lean crosswalk, and all four audit files. Its exact bytes and verification
+result remain historical, and that verification did not claim that the
+retained report PDF renders the current TeX.
 
 ## Repository filing provenance
 
@@ -239,7 +246,8 @@ historical basename `SHA256SUMS.arrival.txt` and remains recoverable from Git
 history; its SHA-256 is
 `85c42740d869c520d5264049f945e52b3c9cfc1bc837a19aaf05c886c55aa6ea`.
 Nine CSV files were then normalized from CRLF to the repository's required LF
-line endings. No current package checksum ledger is retained.
+line endings. The subsequent normalized-package ledger was later retired under
+the repository-wide policy; no current package checksum ledger is retained.
 
 After that intake checkpoint was published, the repository-side review
 replayed the numerical program, repaired the six vector figures to remove

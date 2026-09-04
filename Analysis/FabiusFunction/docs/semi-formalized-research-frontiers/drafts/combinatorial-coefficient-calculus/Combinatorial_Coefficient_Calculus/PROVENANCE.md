@@ -5,18 +5,23 @@ combinatorial-coefficient-calculus consolidation.  It freezes the
 pre-consolidation source pool at commit
 `55038f2fc7d20a483a48125f086a6c8488e45530`.
 
-**The consolidation is now closed.**  The editorial union, claim review, proof
-repair, donor retirement, and the final PDF build have all occurred.  Every row
-of `SOURCE_DISPOSITION.csv` carries a completed disposition, the five donor
-directories have been deleted, the active closure has contracted to the single
-canonical TeX/PDF pair, and `validate_canonical.py --final` passes with no
-errors and no warnings.  What this file continues to do is identify the six
-original inputs and give two independent Git routes back to each of them.
+**The editorial consolidation is closed.**  The union, claim review, proof
+repair, and donor retirement have all occurred.  Every row of
+`SOURCE_DISPOSITION.csv` carries a completed disposition, the five donor
+directories have been deleted, and the payload closure has contracted to the
+single canonical TeX/PDF pair.  The canonical source has since received a new
+formalization-register pass and currently has 10,391 lines and 504,431 bytes;
+its replacement PDF and live closure receipt are pending.  The structural
+validator accounts for 201 theorem-like or algorithm items and 201 adjacent
+proofs, while the register classifies them as 59 Lean, 35 partial, and 107
+none.  What this file continues to do is identify the six original inputs and
+give two independent Git routes back to each of them.
 
-The six TeX files are research-frontier manuscripts.  Their theorem and proof
-environments are human-readable mathematical writing, not evidence of Lean
-verification.  No Lean build was run for this provenance checkpoint, and no
-claim in the source pool is represented here as machine checked.
+The six intake TeX files are research-frontier manuscripts.  Their theorem and
+proof environments are human-readable mathematical writing, not evidence of
+Lean verification.  Machine-checked coverage added to the evolving canonical
+source is asserted only by its result-by-result Lean formalization register;
+the immutable intake records below make no such claim.
 
 ## Immutable intake chain
 
@@ -46,8 +51,8 @@ The records distinguish four intentionally different identities.
    snapshot source.
 4. **Live canonical source** means the evolving TeX at the surviving
    non-suffixed path.  Its active row in `SOURCE_CLOSURE.sha256` is refreshed at
-   every consolidation checkpoint; its immutable `CCC` snapshot identity remains
-   recorded here even after the canonical text diverges from that donor.
+   synchronized publication checkpoints; its immutable `CCC` snapshot identity
+   remains recorded here even after the canonical text diverges from that donor.
 
 The former six package-local `SHA256SUMS` checksum manifests were derivative
 two-row ledgers, not additional research payloads.  They were removed under the
@@ -63,11 +68,13 @@ identify all six inputs.
 
 One point of the identity model changed at retirement.  The retained
 historical PDFs were never asserted to render their notation-migrated TeX, and
-that caveat was carried in every earlier revision of these records.  It no
-longer applies to the surviving pair: the canonical PDF was produced from the
-canonical TeX in a single three-pass `pdflatex` run reporting no errors, no
-undefined references, and no multiply-defined labels, and both bytes are hashed
-in the active closure rows.  The five arrival PDFs remain historical artifacts
+that caveat was carried in every earlier revision of these records.  A later
+synchronized checkpoint did establish parity for the surviving pair: its
+canonical PDF was produced from its canonical TeX in one clean three-pass
+`pdflatex` run and both bytes were recorded together.  Publication parity is
+checkpoint-specific, however.  The live source now postdates that PDF, so the
+old receipt is historical and no current parity is claimed pending the next
+build and closure refresh.  The five arrival PDFs remain historical artifacts
 with no render-parity claim, recoverable only through the Git locators below.
 
 The stable source identifiers used below and in the disposition ledger are:
@@ -179,15 +186,18 @@ filed paths have the common prefix
 
 ## Reproduction and verification
 
-From the repository root, the live transitional payloads are checked with:
+From the repository root, a synchronized live pair is checked with:
 
 ```text
 sha256sum -c Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/combinatorial-coefficient-calculus/Combinatorial_Coefficient_Calculus/SOURCE_CLOSURE.sha256
 ```
 
-The active rows in that file are conventional `sha256sum` rows and describe the
-working consolidation tree at the current checkpoint.  Its commented
-`HISTORICAL_*` rows identify immutable intake data rather than mutable live paths.
+The active rows in that file are conventional `sha256sum` rows.  During a
+source-only editorial interval they continue to identify the preceding
+synchronized publication pair and are refreshed only when the replacement PDF
+receipt is complete; the current interval is such a case.  Its commented
+`HISTORICAL_*` rows identify immutable intake data rather than mutable live paths
+and must not be rewritten during that refresh.
 To reproduce one historical record, obtain the ZIP by its Git blob ID in a
 binary-safe shell, verify the archive, and stream the named member:
 
@@ -213,16 +223,18 @@ extraction commit.
 No command above establishes mathematical correctness or Lean verification;
 those remain separate publication and formalization gates, and the
 in-document "Lean formalization register" states the formalization status
-result by result.  Two things that earlier revisions of this file listed as
-open are, however, now established by commands here.  Render parity holds for
-the surviving pair, since the hashed PDF is the output of the run that
-consumed the hashed TeX.  Proof pairing is checked mechanically:
+result by result.  Render parity is established only by a publication receipt
+that hashes the source actually consumed by the PDF build.  Proof pairing is
+checked mechanically:
 
 ```text
 python Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/combinatorial-coefficient-calculus/Combinatorial_Coefficient_Calculus/validate_canonical.py --final
 ```
 
-reports 201 theorem-like or algorithm items with 201 adjacent proofs and no
-explicit open-status markers, together with the completed disposition ledger,
-the contracted closure, and the one-document layout.  "Adjacent proof" is a
-structural property, not a claim that each proof is correct.
+At the current source checkpoint the structural portion reports 201
+theorem-like or algorithm items with 201 adjacent proofs and no explicit
+open-status markers, together with the completed disposition ledger and the
+one-document layout.  The expected closure mismatch remains until the new PDF
+receipt is installed.  "Adjacent proof" is a structural property, not a claim
+that each proof is correct; the separate register split is 59 Lean, 35 partial,
+and 107 none.

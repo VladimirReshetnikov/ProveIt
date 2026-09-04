@@ -894,9 +894,10 @@ concordance. The synchronized Representation volume does not present this
 inverse-concordance promotion; the retained inverse PDF remains a historical
 artifact rather than a render of it.
 The corresponding historical documentation checkpoint was 671 modules and
-8,858 public declarations. The q forward ledger is 177 Exact / 82 Partial /
-15 None / 8 N/A, with chapter splits 9/0/0/0 for Half-base and 9/46/1/0 for
-Dyadic, while the source concordance is 99/379/60/9. The merged-main
+8,858 public declarations. After the reciprocity promotion, the q forward
+ledger's semantic union is 181 Exact / 79 Partial / 14 None / 8 N/A, with chapter splits
+9/0/0/0 for Half-base and 13/43/0/0 for Dyadic, while the source concordance
+is 103/375/60/9. The merged-main
 increment to 919/11,569 is the exhaustive zero-definition/one-theorem sibling
 `FabiusFunction.HalfQBinomialRootSimplicity`, whose
 `Fabius.halfQBinomial_sum_rootMultiplicity_two_pow` proves multiplicity one
@@ -916,12 +917,33 @@ bases `1/2` and `1/4`. The prefix module's exact degrees are symbolic outer
 degrees in `Polynomial (Polynomial ℚ)`; a fixed-inner-variable centered
 degree can drop, and its algebraic finite-convolution moments are not a
 random-variable or MGF realization. The Laurent leaf gives checkpoint
-922/11,582, and the finite-prefix leaf gives the origin-side census 923
-modules and 11,610 public declarations. Retaining the unconditional public
-`Fabius.complexQPochhammerInf_eq_qPochhammerInfIn` bridge gives the live
-semantic union 923/11,611. The q-Lucas manuscript row remains Partial because
-Lean proves only primitive-root evaluation, not the polynomial congruence
-modulo the cyclotomic polynomial. The census also includes the unrelated
+922/11,582, and the finite-prefix leaf gives 923/11,610.  The subsequent
+one-definition/four-theorem geometric-uniform RatFunc leaf gives the
+historical 924/11,615 checkpoint.  The two-theorem extension of the existing
+`FabiusFunction.ProbabilityLaplaceMoments` module then gives 924/11,617, and
+the exhaustive one-definition/one-theorem
+`FabiusFunction.RvachevLegendreBiorthogonality` leaf gives the repository
+checkpoint of 925 modules and 11,619 public declarations. This is now the
+historical pre-reciprocity checkpoint; subsequent source-only tranches give
+the historical reciprocity checkpoint of 931 modules and 11,685 public
+declarations. The subsequently merged upstream `DyadicBoundaryIdentity.lean`
+and `FinitePrefixThueMorseCollapse.lean` modules add two modules and ten public
+declarations, making the historical dyadic/finite-prefix census 933 modules
+and 11,695 public declarations. The incoming union adds one module and
+fourteen public declarations: the new zero-definition/six-theorem
+`ProuhetBaseTwoBridge.lean` module, one theorem added to
+`DyadicBoundaryIdentity.lean`, and seven theorems added to
+`ThueMorseNewmanSelfSimilarity.lean`. This makes 934 modules and 11,709 public
+declarations a historical checkpoint. Later post-baseline additions add 23
+modules and 211 public declarations, giving 957/11,920; retaining the public
+`Fabius.complexQPochhammerInf_eq_qPochhammerInfIn` compatibility theorem gives
+the historical merge-union checkpoint 957/11,921, and the residual-existence
+certificate `Fabius.exists_eq_in_residual_interval` is included in the current
+semantic union computed by `scripts/doc_audit.py` and pinned in
+`docs/doc_audit_baseline.json`. The q-Lucas manuscript row remains Partial
+because Lean proves only primitive-root evaluation, not the polynomial
+congruence modulo the cyclotomic polynomial. The census also includes the
+unrelated
 sibling source-only
 `FabiusFunction.GeometricRichardsonGenerating` module (three definitions and
 seven theorems), whose exact comb-manuscript crosswalk is
@@ -978,17 +1000,20 @@ making `p7:eq:Pn-def` Exact in that real regime, including signed `q` and
 `q = 0`. It supplies no complex-q infinite-product realization by itself and
 formed the historical 905/11,458 checkpoint. The
 subsequent sibling `FabiusFunction.GeometricUniformComplexMomentProduct` has
-the exhaustive surface one public definition and two public theorems:
+the exhaustive current surface one public definition and three public theorems:
 `Fabius.geometricUniformComplexMomentProduct`,
-`Fabius.hasProdLocallyUniformly_geometricUniformComplexMomentProduct`, and
+`Fabius.hasProdLocallyUniformly_geometricUniformComplexMomentProduct`,
+`Fabius.differentiable_geometricUniformComplexMomentProduct`, and
 `Fabius.geometricUniformMomentPolynomial_eval₂_eq_complexMomentProduct_taylorCoefficient`.
 For complex `‖q‖ < 1` these construct the actual locally uniform product and
-give its normalized Taylor-coefficient bridge to the recursive polynomial.
+prove complex differentiability on the whole plane, and give its normalized
+Taylor-coefficient bridge to the recursive polynomial.
 This is an analytic analogue rather than a complex probability-moment
-extension of `p7:eq:Pn-def`, whose Exact scope remains real `|q| < 1`. The
-canonical q-monograph `thm:qF-moment-polynomial` remains Partial because its
-global `RatFunc` identification and pole-clearing polynomial continuation at
-roots are not formalized. The complex `1+2` leaf produced the historical checkpoint 906
+extension of `p7:eq:Pn-def`, whose Exact scope remains real `|q| < 1`. At this
+historical checkpoint the canonical q-monograph `thm:qF-moment-polynomial`
+remained Partial because its global `RatFunc` identification and pole-clearing
+polynomial continuation at roots were not formalized. The original complex
+`1+2` surface produced the historical checkpoint 906
 modules and 11,461 public declarations. The subsequent sibling
 `FabiusFunction.GeometricUniformExteriorComplexMomentGerm` has the exhaustive
 surface one public definition and two public theorems:
@@ -1012,11 +1037,76 @@ subleading coefficient
 and degree `T_n` for even `n` or `n = 1`, versus `T_n - 1` otherwise.
 Mathlib uses `B₁ = -1/2`, so its `bernoulli' n` is the source convention
 `B_n(1) = (-1)^n B_n`. This sharp `0+3` leaf makes `p7:thm:Pn` and
-`prop:qF-P-degree-sharp` Exact while leaving the global
-`thm:qF-moment-polynomial` Partial, and raises the historical sharp checkpoint
+`prop:qF-P-degree-sharp` Exact; at that point the global
+`thm:qF-moment-polynomial` was still Partial.  It raises the historical sharp checkpoint
 to 921 modules and 11,575 public declarations. The Laurent and finite-prefix
-leaves then give the origin-side 922/11,582 and 923/11,610 checkpoints; the
-bridge-preserving live census is 923/11,611. These sibling source-only modules are
+leaves then give 922/11,582 and 923/11,610.  The exhaustive `1+4`
+`FabiusFunction.GeometricUniformMomentRatFunc` leaf adds
+`Fabius.geometricUniformMomentRatFunc`,
+`Fabius.qFactorial_mul_geometricUniformMomentRatFunc`,
+`Fabius.eval_geometricUniformMomentRatFunc_eq_complexMomentProduct_taylorCoefficient`,
+`Fabius.eval_geometricUniformMomentRatFunc_eq_exteriorComplexMomentGerm_taylorCoefficient`,
+and `Fabius.eval_geometricUniformMomentRatFunc_one`.  One global `RatFunc ℚ`
+now has a named q-factorial clearing identity, safe inner and exterior
+Taylor-coefficient specializations, and the removable `q = 1` value.  This
+makes `thm:qF-moment-polynomial` Exact and gives the historical 924/11,615
+checkpoint; the probability and Legendre additions described below give the
+historical 925/11,619 checkpoint. No analytic value or pole order is asserted at a
+genuine unit-root pole.
+
+The later exhaustive `1+5`
+`FabiusFunction.GeometricUniformMomentReciprocity` leaf adds
+`Fabius.geometricUniformComplexMomentGerm`,
+`Fabius.geometricUniformComplexMomentGerm_of_norm_lt_one`,
+`Fabius.geometricUniformComplexMomentGerm_of_one_lt_norm`,
+`Fabius.analyticAt_geometricUniformComplexMomentGerm`,
+`Fabius.geometricUniformComplexMomentGerm_reciprocity`, and
+`Fabius.geometricUniformComplexMomentGerm_moment_convolution`.  It identifies
+the combined germ's strict inner and exterior branches, proves analyticity at
+zero off the unit circle, and proves for `q != 0`, `‖q‖ != 1` the local
+`EventuallyEq` `M_q(z) * M_(q⁻¹)(-z) = 1` and its exact all-order binomial
+derivative convolution.  This makes `thm:qF-reciprocity` Exact.  No global
+pointwise identity through genuine inner-product zeros is claimed.  Together
+with the other subsequent source-only tranches, it gives the historical
+reciprocity checkpoint 931/11,685.  The subsequently merged upstream
+`DyadicBoundaryIdentity.lean` and `FinitePrefixThueMorseCollapse.lean` modules
+add two modules and ten public declarations, making the historical
+dyadic/finite-prefix census 933/11,695.  The incoming union adds one module and
+fourteen public declarations: the new zero-definition/six-theorem
+`ProuhetBaseTwoBridge.lean` module, one theorem added to
+`DyadicBoundaryIdentity.lean`, and seven theorems added to
+`ThueMorseNewmanSelfSimilarity.lean`.  This makes 934/11,709 a historical
+checkpoint. Later post-baseline additions give 957/11,920, and the retained
+public Pochhammer compatibility theorem gives the historical merge-union
+checkpoint 957/11,921. The residual-existence certificate is included in the
+current semantic union computed by `scripts/doc_audit.py` and pinned in
+`docs/doc_audit_baseline.json`.
+
+The existing `FabiusFunction.ProbabilityLaplaceMoments` module adds exactly
+the two theorems
+`Fabius.ProbabilityRepresentation.weightedSumDistribution_real_Ici_eq_rvachevUp_of_nonneg`
+and
+`Fabius.ProbabilityRepresentation.integral_pow_weightedSumDistribution_eq_mul_intervalIntegral_rvachevUp`.
+Atomlessness turns the established strict tail into the manuscript's closed
+`P(X >= t)` tail for every `t >= 0`; the second theorem is the exact full-law
+moment formula for every natural `n >= 1`. Together with the existing global
+up/Fabius identities, these make `prop:up-tail` and `cor:up-moments` Exact.
+Degree zero, fractional moments, complex moments, and broader MGF claims are
+not included.
+
+The exhaustive public surface of
+`FabiusFunction.RvachevLegendreBiorthogonality` is one definition,
+`Fabius.rvachevLegendreAnalysisKernel`, and one theorem,
+`Fabius.rvachevLegendreBiorthogonality`. The definition is precisely the
+normalized translated Legendre analysis kernel of `def:leg-Lambda`. For every
+nonzero natural mesh `M`, all `l,m`, and `l <= padicValNat 2 M`, the theorem
+proves the canonical finite Kronecker pairing over the literal open integer
+block `-2*M < k < 2*M`. Thus `def:leg-Lambda` and
+`thm:leg-biorthogonality` are Exact/Complete. The broader support, smoothness,
+parity, origin-value, and Fourier--Bessel theorem `thm:leg-Lambda` and the
+matrix-projector corollary remain unpromoted.
+
+These sibling source-only modules are
 not rendered by the retained Representation or inverse PDFs. The immediately
 preceding complex Bernoulli value-completion checkpoint was 903 modules and
 11,448 public declarations. The earlier
@@ -1099,6 +1189,25 @@ evaluation of the existing even-mode synthesis, compact-support truncation,
 and parity pairing. It does not promote the Jacobi decoder, all-degree parity
 or rationality, reverse spectral closure, target-specific mesh minimality, or
 the larger Lagrange right-inverse.
+
+The subsequent source-only
+`FabiusFunction.RvachevLegendreBiorthogonality` leaf has the exhaustive public
+surface of one definition, `rvachevLegendreAnalysisKernel`, and one theorem,
+`rvachevLegendreBiorthogonality`. It makes only
+`thm:leg-biorthogonality` Exact/Complete, preserving `M != 0`,
+`l <= padicValNat 2 M`, the open block `|k| < 2M`, the factor `M^-1`, the
+`(2m+1)/2` analysis normalization, and the Kronecker value, including degree
+zero. The arbitrary `BoundedFabius`/`IsFabius` quantification is a harmless
+strengthening. This does not promote `thm:leg-Lambda`,
+`cor:leg-biorthogonal-matrices`, the full mode/reverse/Gram packages, or the
+Lagrange right inverse. Independently, existing
+`FabiusFunction.TwoAdic` theorems `moment_padicVal_two` and
+`moment_num_den_odd` make `thm:leg2-moment-units` Exact/Complete: Lean's
+`moment m` is `mu_(2m)`, and valuation zero plus odd reduced numerator and
+denominator gives exactly the printed rational two-adic unit and residue-one
+clauses, including `m = 0`. This is rational valuation/parity data rather than
+construction of a separate topological `ℚ_2` value. Neither promotion is
+rendered in the retained Representation PDFs.
 
 At compiled checkpoint `a3854643d`, the focused-build
 `FabiusLegendreTranslateSeries.lean` exports five public

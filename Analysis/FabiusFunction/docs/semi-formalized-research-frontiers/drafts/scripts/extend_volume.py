@@ -316,6 +316,10 @@ def build(cfg):
         for root, dirs, files in os.walk(srcdir):
             rel = os.path.relpath(root, srcdir)
             for fn in files:
+                if fn == 'SHA256SUMS' or fn.startswith('SHA256SUMS.'):
+                    # Package checksum manifests are retired repository-wide;
+                    # consolidation must not copy or regenerate them.
+                    continue
                 if rel == '.' and fn == mtex:
                     continue
                 if (rel == '.' and fn.lower().endswith('.pdf')

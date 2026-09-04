@@ -109,7 +109,8 @@ partial ones by \lean{Fabius.bell_complete_eq_sum_partialBell}; their
 generating function $\exp X(t)$ is \lean{Fabius.exp_subst_bellWeightSeries},
 from the equation $Y'=X'Y$, $Y(0)=1$
 (\lean{Fabius.eq_zero_of_derivative_eq_mul}).  The factorial row sum
-\cref{eq:bell-factorial-complete} is not formalized; the Touchard identity
+\cref{eq:bell-factorial-complete} is \lean{Fabius.bell_complete_factorial_pred}
+(\lean{BellFactorialRowSum}); the Touchard identity
 \cref{eq:touchard-bell-specialization} is
 \lean{Fabius.bell_complete_const_eq_touchard_eval} (\lean{BellHomogeneity}).""")),
 

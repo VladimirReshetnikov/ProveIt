@@ -23,7 +23,7 @@ whose special case is formalized is not labelled Lean-proved unless the
 specialization and all of its hypotheses match exactly.
 
 In the current reviewed concordance, the resulting classification is
-\(54\) Lean-proved rows, \(91\) human-proved frontier
+\(57\) Lean-proved rows, \(88\) human-proved frontier
 rows, \(10\) conjectures, \(15\) open problems, and \(24\) nonassertoric
 rows, for \(194\) rows in all.  These are source-result counts, not counts of
 distinct canonical theorem environments: deduplication may send several
@@ -84,6 +84,21 @@ can lower the centered degree.  Its two direct recovery theorems use exactly
 bases, for all \(N\), with no limit.  The formal prefix is an algebraic
 finite-convolution moment model; this classification does not assert a
 random-variable, \path{HasLaw}, or analytic-MGF realization theorem.
+
+Three further source rows are Lean-proved by the zero-definition,
+eight-theorem module
+\path{FabiusFunction.FinitePrefixThueMorseCollapse}.  The principal
+uncentered theorem gives the exact sign $(-1)^N$, scale
+$2^{-\binom{N+1}{2}}$, falling-factorial multiplier, and residual monomial
+for all $N,n$, including $N=0$.  Its \path{_of_lt} and \path{_self}
+companions, together with the main theorem, cover all three clauses of
+\cref{is:p2:cor:Prouhet-canonical}.  The principal centered
+\path{_succ} theorem uses the manuscript's literal positive-depth grid and
+has the sign-free scale $2^{-\binom{N}{2}}$; the unsuffixed common-denominator
+form strengthens it to $N=0$, with its own cancellation and first-response
+companions.  These are rational coefficient-model identities.  They do not
+assert a random-variable or \path{HasLaw} realization, an analytic MGF, or
+the separate Barnes identification.
 
 Five canonical results were added after the immutable source snapshot and
 therefore do not alter the \(194\)-row totals.  Three are Lean-proved:
@@ -165,11 +180,17 @@ umbrella-library build but exact for the declaration used in the crosswalk.
 The focused command
 \path{lake build +FabiusFunction.FinitePrefixAppellRecovery} likewise
 completed its (2947)-job target successfully before this documentation pass.
-No Lean or Lake command was run while updating the package-local ledgers.
+The focused command
+\path{lake build +FabiusFunction.FinitePrefixThueMorseCollapse} then completed
+its (3307)-job target successfully, and the full
+\path{lake build +FabiusFunction} facade completed all (4939) jobs.  The new
+leaf emitted no warnings; the facade replay retained only pre-existing
+warnings in other modules.  No Lean or Lake command was run while updating
+the package-local ledgers.
 
 At the same editorial checkpoint,
 \path{audit/validate_canonical.py} verified all nine chapter inputs,
-(748) distinct labels, (596) references, and all (194) immutable source
+(748) distinct labels, (601) references, and all (194) immutable source
 rows with no incomplete disposition.  The independent asset check verified
 all (88) source-file dispositions, all (63) deduplicated live payloads,
 and no duplicate canonical payload.  These checks establish structural and

@@ -45,7 +45,8 @@ and Meixner-Pollaczek orthogonality are cited in the report.
 - `SOURCE_AUDIT.md` — repository-reading and novelty-boundary notes.
 - `requirements.txt` — Python dependencies used for the supplied outputs.
 - Package-local `SHA256SUMS*` ledgers are retired; Git history preserves the
-  arrival evidence without making a checksum manifest a live dependency.
+  former package manifest and its arrival evidence, including its exact bytes,
+  without making a checksum manifest a live dependency.
 
 ## Build the PDF
 
@@ -99,7 +100,9 @@ NumPy is used for floating-point determinant and covariance checks.
 No package-local `SHA256SUMS*` ledger exists or should be recreated. The exact
 three-pass build and PDF gates are recorded above, `SOURCE_AUDIT.md` records the
 repository-reading boundary, and Git history preserves the retired package
-evidence.
+evidence. The former manifest was validated at its archival checkpoint; that
+historical verification result remains recoverable from Git history and is not
+a current validation dependency.
 
 The final PDF was rendered page-by-page at 170 dpi and visually checked for
 clipped text, overlap, missing figures, black boxes, and broken glyphs.

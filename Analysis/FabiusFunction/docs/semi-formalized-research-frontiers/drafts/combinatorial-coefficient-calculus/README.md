@@ -23,17 +23,39 @@ and the topic/claim decisions in
 The standard-library
 [`validate_canonical.py`](Combinatorial_Coefficient_Calculus/validate_canonical.py)
 checks LaTeX structure, labels, references, citations, proof pairing, source
-coverage, and the one-publication layout; run it with `--final`, which is the
-mode this package is now expected to pass.
+coverage, and the one-publication layout. Run it with `--final` at a
+synchronized publication checkpoint. The current source is structurally
+complete, but its closure row and publication PDF still await refresh.
 
 | Directory | Document |
 | --- | --- |
-| `Combinatorial_Coefficient_Calculus/` | **Canonical:** *Combinatorial Coefficient Calculus* — 8,966-line, 390,732-byte source and the 174-page A4 PDF built from it |
+| `Combinatorial_Coefficient_Calculus/` | **Canonical:** *Combinatorial Coefficient Calculus* — current 10,391-line, 504,431-byte source; the retained 174-page A4 PDF belongs to the preceding synchronized checkpoint |
 
-Unlike every earlier state of this package, the filed PDF renders the filed
-TeX: both come from the same three-pass `pdflatex` run, so the former
-"no render-parity claim" caveat no longer applies. That run reports no errors,
-no undefined references, and no multiply-defined labels.
+The preceding publication receipt paired an 8,966-line, 390,732-byte source
+with the retained 174-page PDF in one clean three-pass `pdflatex` run. The
+canonical TeX has since advanced, so that receipt is historical and no render
+parity is asserted for the current source until a new PDF is built and the
+purpose-specific closure is refreshed.
+
+## Current formalization checkpoint
+
+The in-document register covers 201 theorem-like or algorithm items: 59 are
+classified Lean, 35 partial, and 107 none. Its 201 adjacent proof environments
+remain a structural property, separate from those formalization statuses.
+
+Recent crosswalk work closes the full Cauchy-polynomial theorem block: the
+formal and real interval integrals, reflection, and generic generating-function
+and addition laws are now represented, with the latter two valid after
+evaluation in any commutative rational algebra. The analytic convergence and
+branch assertion attached to the generating function remains outside that
+formalized theorem block. The second-kind reverse-row recurrence is now
+machine checked in a division-free integral form, including its zero boundary
+case beyond the range used by the displayed human formula. The ordinary versus
+exponential Bell normalization now has both its rational ratio form and a
+denominator-free commutative-semiring form, together with functoriality and the
+upper variable-support cutoff. The sharpness witness for that cutoff, the
+general Bell near-diagonal reduction, its two-block case, and the higher
+subdiagonals remain human-only or partial as recorded in the register.
 
 ## What the final merge changed
 

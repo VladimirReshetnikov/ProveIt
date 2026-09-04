@@ -843,6 +843,26 @@ $\delta_{m\ell}$ by Legendre orthogonality, and each atom integral is
 $\Lambda_m(k/M)$.
 \end{proof}
 
+\begin{statusbox}{Lean status: Exact/Complete}
+The source-only module
+\path{FabiusFunction.RvachevLegendreBiorthogonality} has exactly one public
+definition and one public theorem.  The definition
+\path{rvachevLegendreAnalysisKernel} is \eqref{eq:leg-Lambda}, with the same
+factor $(2m+1)/2$ and interval $[-1,1]$.  The theorem
+\path{rvachevLegendreBiorthogonality} is \eqref{eq:leg-biorthogonality}:
+\path{M != 0} is the positive-natural-mesh condition,
+\path{l <= padicValNat 2 M} is $\TwoAdicValuation(M)\ge\ell$,
+\path{Finset.Ioo (-(2*M)) (2*M)} is exactly $\lvert k\rvert<2M$, and Lean
+retains the factors $M^{-1}$ and $(2m+1)/2$ and the value
+\path{if m = l then 1 else 0}.  It includes both zero-degree boundary cases
+and harmlessly quantifies over every bounded Fabius realization satisfying
+the canonical axioms.  This promotion is confined to
+\cref{thm:leg-biorthogonality}: it does not prove the remaining clauses of
+\cref{thm:leg-Lambda}, the matrix/projector/trace/Cauchy--Binet conclusions of
+\cref{cor:leg-biorthogonal-matrices}, reverse closure, the full compound mode
+theorem, or any Lagrange right-inverse clause.
+\end{statusbox}
+
 \begin{corollary}[Finite biorthogonal matrices and projector identities]
 \label{cor:leg-biorthogonal-matrices}
 Let $d\ge0$ and $M\in\PositiveIntegers$ satisfy $\TwoAdicValuation(M)\ge d$.  Then the matrices

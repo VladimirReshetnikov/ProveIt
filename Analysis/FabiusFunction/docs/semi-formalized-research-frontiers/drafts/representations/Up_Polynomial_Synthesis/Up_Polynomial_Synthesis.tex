@@ -302,6 +302,27 @@ bounded Fabius realization satisfying the canonical axioms.  It does not
 formalize the Jacobi formula, all-degree parity or rationality in
 \cref{thm:leg-mode-synthesis}, reverse closure, target-specific mesh
 minimality, or any clause of \cref{thm:lag-right-inverse}.
+The compiled source-only module
+\path{RvachevLegendreBiorthogonality.lean} makes only
+\cref{thm:leg-biorthogonality} Exact/Complete.  Its one definition,
+\path{rvachevLegendreAnalysisKernel}, is the displayed
+$(2m+1)/2$-normalized integral, and its one theorem,
+\path{rvachevLegendreBiorthogonality}, has exactly the positive-mesh condition
+\path{M != 0}, admissibility \path{l <= padicValNat 2 M}, open block
+$\lvert k\rvert<2M$, factor $M^{-1}$, and Kronecker normalization.  It
+includes degree zero and allows any bounded Fabius realization satisfying the
+canonical axioms.  It does not formalize the other support, smoothness,
+Fourier--Bessel, or rationality clauses of \cref{thm:leg-Lambda}, nor the
+matrix/projector conclusions of \cref{cor:leg-biorthogonal-matrices}, reverse
+closure, the full mode theorem, or a Lagrange right inverse.
+Independently, the existing \path{TwoAdic.lean} declarations
+\path{moment_padicVal_two} and \path{moment_num_den_odd} make
+\cref{thm:leg2-moment-units} Exact/Complete.  Lean's \path{moment m} is
+$\mu_{2m}$: the first declaration gives valuation zero, and the second gives
+odd reduced numerator and denominator, equivalently residue one modulo two
+for a rational two-adic unit.  Both include $m=0$.  This is the report's
+rational valuation/residue convention, not a new construction in a separate
+topological $\RationalNumbers_2$ type, and it promotes no neighboring Legendre row.
 \end{statusbox}
 
 \subsection*{Notation}

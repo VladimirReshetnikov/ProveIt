@@ -22,6 +22,9 @@ first nonzero term at `w = -1` is quadratic.  Exact branch equations then
 transport that quadratic ratio to both inverse branches, and positivity of
 the appropriate signed displacement selects the correct square root.
 
+The square-root step is the branch-free lemma `isEquivalent_sqrt_of_sq`
+(`u ^ 2 ~ v` with `u`, `v` eventually nonnegative gives `u ~ √v`).
+
 Only the leading square-root law is asserted here.  In particular, no
 higher Puiseux coefficient or remainder estimate is claimed.
 -/
@@ -147,19 +150,9 @@ private theorem tendsto_lowerLambertW_branchPoint_nhdsNE :
           (𝓝 (-1 : ℝ)) := by
       simpa only [lowerLambertW_branchPoint] using
         lowerLambertW_continuousWithinAt_branchPoint.tendsto
-    have hsource :
-        𝓝[>] (-Real.exp (-1)) ≤
-          𝓝[Set.Ico (-Real.exp (-1)) 0] (-Real.exp (-1)) := by
-      rw [nhdsWithin_le_iff]
-      filter_upwards [self_mem_nhdsWithin,
-        nhdsWithin_le_nhds
-          (Iio_mem_nhds (neg_lt_zero.mpr (Real.exp_pos (-1))))] with z hz hz0
-      exact ⟨hz.le, hz0⟩
-    exact hWclosed.mono_left hsource
-  · filter_upwards [self_mem_nhdsWithin,
-      nhdsWithin_le_nhds
-        (Iio_mem_nhds (neg_lt_zero.mpr (Real.exp_pos (-1))))] with z hz hz0
-    simpa using (ne_of_lt (lowerLambertW_lt_neg_one ⟨hz, hz0⟩))
+    exact hWclosed.mono_left nhdsGT_branchPoint_le_nhdsWithin_Ico
+  · filter_upwards [Ioo_mem_nhdsGT_branchPoint] with z hz
+    simpa using (ne_of_lt (lowerLambertW_lt_neg_one hz))
 
 /-! ## Exact squared ratios -/
 
@@ -205,11 +198,9 @@ theorem tendsto_lowerLambertW_add_one_sq_div_branchPoint :
             ((lowerLambertW z + 1) * (lowerLambertW z + 1)))
         (𝓝[>] (-Real.exp (-1))) (𝓝 (Real.exp (-1) / 2)) := by
     refine hforward.congr' ?_
-    filter_upwards [self_mem_nhdsWithin,
-      nhdsWithin_le_nhds
-        (Iio_mem_nhds (neg_lt_zero.mpr (Real.exp_pos (-1))))] with z hz hz0
+    filter_upwards [Ioo_mem_nhdsGT_branchPoint] with z hz
     simp only [Function.comp_apply]
-    rw [lowerLambertW_mul_exp ⟨hz, hz0⟩]
+    rw [lowerLambertW_mul_exp hz]
   have hinv := hratio.inv₀ (by positivity : Real.exp (-1) / 2 ≠ 0)
   rw [inv_exp_neg_one_div_two] at hinv
   simpa only [Pi.inv_apply, inv_div, pow_two] using hinv
@@ -248,16 +239,19 @@ theorem lowerLambertW_add_one_sq_isEquivalent_branchPoint :
     ring
   · field_simp [Real.exp_ne_zero]
 
-private theorem isEquivalent_sqrt_of_sq
+/-- **Square roots of asymptotic equivalences.**  If `u ^ 2 ~ v` along
+`l`, with `u` and `v` eventually nonnegative, then `u ~ √v`.  The lemma
+carries no Lambert content. -/
+theorem isEquivalent_sqrt_of_sq
     {u v : ℝ → ℝ} {l : Filter ℝ}
-    (hu : ∀ᶠ z in l, 0 < u z)
-    (hv : ∀ᶠ z in l, 0 < v z)
+    (hu : ∀ᶠ z in l, 0 ≤ u z)
+    (hv : ∀ᶠ z in l, 0 ≤ v z)
     (hsq : (fun z : ℝ ↦ u z ^ 2) ~[l] v) :
     u ~[l] (fun z : ℝ ↦ Real.sqrt (v z)) := by
   have hvmax :
       v =ᶠ[l] (fun z : ℝ ↦ max 0 (v z)) := by
     filter_upwards [hv] with z hz
-    exact (max_eq_right hz.le).symm
+    exact (max_eq_right hz).symm
   have hsqMax :
       (fun z : ℝ ↦ u z ^ 2) ~[l]
         (fun z : ℝ ↦ max 0 (v z)) :=
@@ -275,9 +269,9 @@ private theorem isEquivalent_sqrt_of_sq
     simpa only [Real.sqrt_eq_rpow] using hrpow
   refine (hsqrt.congr_left ?_).congr_right ?_
   · filter_upwards [hu] with z hz
-    rw [Real.sqrt_sq_eq_abs, abs_of_pos hz]
+    rw [Real.sqrt_sq hz]
   · filter_upwards [hv] with z hz
-    rw [max_eq_right hz.le]
+    rw [max_eq_right hz]
 
 /-- Leading principal-branch Puiseux law: the displacement above `-1` is
 asymptotic to the intrinsic positive square-root scale. -/
@@ -300,7 +294,8 @@ theorem principalLambertW_add_one_isEquivalent_branchPoint :
       ~[𝓝[>] (-Real.exp (-1))]
         (fun z : ℝ ↦ Real.sqrt
           (2 * Real.exp 1 * (z + Real.exp (-1))))
-  exact isEquivalent_sqrt_of_sq hu hv
+  exact isEquivalent_sqrt_of_sq (hu.mono fun _ h ↦ h.le)
+    (hv.mono fun _ h ↦ h.le)
     principalLambertW_add_one_sq_isEquivalent_branchPoint
 
 /-- Leading lower-branch Puiseux law: the displacement below `-1` is
@@ -312,10 +307,8 @@ theorem lowerLambertW_add_one_isEquivalent_branchPoint :
   have hu :
       ∀ᶠ z in 𝓝[>] (-Real.exp (-1)),
         0 < -(lowerLambertW z + 1) := by
-    filter_upwards [self_mem_nhdsWithin,
-      nhdsWithin_le_nhds
-        (Iio_mem_nhds (neg_lt_zero.mpr (Real.exp_pos (-1))))] with z hz hz0
-    linarith [lowerLambertW_lt_neg_one ⟨hz, hz0⟩]
+    filter_upwards [Ioo_mem_nhdsGT_branchPoint] with z hz
+    linarith [lowerLambertW_lt_neg_one hz]
   have hv :
       ∀ᶠ z in 𝓝[>] (-Real.exp (-1)),
         0 < 2 * Real.exp 1 * (z + Real.exp (-1)) := by
@@ -338,7 +331,8 @@ theorem lowerLambertW_add_one_isEquivalent_branchPoint :
         ~[𝓝[>] (-Real.exp (-1))]
           (fun z : ℝ ↦ Real.sqrt
             (2 * Real.exp 1 * (z + Real.exp (-1))))
-    exact isEquivalent_sqrt_of_sq hu hv hsq
+    exact isEquivalent_sqrt_of_sq (hu.mono fun _ h ↦ h.le)
+      (hv.mono fun _ h ↦ h.le) hsq
   simpa only [Pi.neg_apply, neg_neg] using hmag.neg
 
 end

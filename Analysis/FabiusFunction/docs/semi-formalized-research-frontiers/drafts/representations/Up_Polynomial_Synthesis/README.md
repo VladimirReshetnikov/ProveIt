@@ -127,7 +127,8 @@ Several analytical and finite-dimensional results in the new Lagrange and
 Legendre chapters remain human proofs backed by exact scripts rather than Lean
 theorems. The report says so explicitly. Existing compiled Lean declarations
 are named where they discharge a claim; no source-only statement is presented
-as kernel verified.
+as kernel verified. The translated Legendre analysis kernel and its finite
+biorthogonality identity are now the explicit exception described below.
 
 The current `FabiusFunction.LagrangeRvachevMatrix` surface consists of the
 finite-index declarations `rvachevAtomIndexSet` and `RvachevAtomIndex`, the
@@ -201,6 +202,33 @@ Jacobi closed form, all-degree parity or rationality in `thm:leg-mode-synthesis`
 nor reverse closure, mesh minimality, or any larger Lagrange right-inverse
 claim. The current 62-page `b899` package PDF renders these status annotations;
 the preceding 60-page PDF remains historical.
+
+The compiled source-only `FabiusFunction.RvachevLegendreBiorthogonality`
+module promotes only `thm:leg-biorthogonality` to Exact/Complete. Its
+exhaustive public surface is one definition,
+`rvachevLegendreAnalysisKernel`, and one theorem,
+`rvachevLegendreBiorthogonality`. The definition is exactly the printed
+translated kernel `def:leg-Lambda`, the `(2m+1)/2`-normalized integral against
+`P_m`; the theorem has exactly the
+positive natural mesh encoded by `M != 0`, admissibility
+`l <= padicValNat 2 M`, the open integer block `|k| < 2M`, the outer factor
+`M^-1`, and the Kronecker value `if m = l then 1 else 0`. It includes
+`l = 0` and `m = 0` and harmlessly allows any `BoundedFabius` satisfying
+`IsFabius`. It does not promote the support, smoothness, Fourier--Bessel, or
+rationality package in `thm:leg-Lambda`, nor
+`cor:leg-biorthogonal-matrices`, the compound mode-synthesis/reverse/Gram
+rows, or any Lagrange right-inverse claim.
+
+Independently, the existing `FabiusFunction.TwoAdic` declarations make
+`thm:leg2-moment-units` Exact/Complete by assembly. The repository sequence
+`moment m : ℚ` is the manuscript's even moment `mu_(2m)`;
+`moment_padicVal_two` proves its rational two-adic valuation is zero, and
+`moment_num_den_odd` proves that its reduced numerator and denominator are
+both odd. The latter is exactly `mu_(2m) = 1 mod 2` under the standard residue
+convention for rational two-adic units. Both declarations include `m = 0`.
+This is executable rational valuation/parity data, not construction of a
+separate topological `ℚ_2` value, and it promotes no neighboring Legendre
+asymptotic or matrix row. The retained package PDF predates both promotions.
 
 The Q12 root transition is exact computer-assisted mathematics: rational
 polynomials and rational Sturm chains decide root counts. Approximate complex

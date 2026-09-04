@@ -16,10 +16,12 @@ import FabiusFunction.BinomialInversion
 import FabiusFunction.StirlingBasisChange
 import FabiusFunction.LahNumbers
 import FabiusFunction.BellStirling
+import FabiusFunction.TouchardEulerOperator
 import FabiusFunction.StirlingGeneratingFunctions
 import FabiusFunction.EulerianNumbers
 import FabiusFunction.PartialBellPolynomials
 import FabiusFunction.BellGeneratingFunctions
+import FabiusFunction.BellLeibnizTower
 import FabiusFunction.BellComposition
 import FabiusFunction.BernoulliStirling
 import FabiusFunction.BellHomogeneity
@@ -28,6 +30,7 @@ import FabiusFunction.EulerianGeneratingFunctions
 import FabiusFunction.ExponentialRiordan
 import FabiusFunction.ExponentialFormula
 import FabiusFunction.OrderedBell
+import FabiusFunction.OrdinaryPartialBell
 import FabiusFunction.EulerianStirling
 import FabiusFunction.NewtonExpansion
 import FabiusFunction.ComplementaryBell
@@ -65,6 +68,7 @@ import FabiusFunction.AssociatedStirling
 import FabiusFunction.RStirling
 import FabiusFunction.FallingFactorialSeries
 import FabiusFunction.CauchyPolynomials
+import FabiusFunction.CauchyPolynomialReflection
 import FabiusFunction.CoefficientRules
 import FabiusFunction.IteratedLeibniz
 import FabiusFunction.NorlundDiagonal
@@ -128,6 +132,7 @@ import FabiusFunction.FabiusLambertPhaseExtraction
 import FabiusFunction.FabiusLambertPhaseExtractionBell
 import FabiusFunction.PrincipalLambertW
 import FabiusFunction.PrincipalLambertWAtTop
+import FabiusFunction.ProuhetBaseTwoBridge
 import FabiusFunction.AutonomousIteratedDeriv
 import FabiusFunction.LambertWHigherDerivatives
 import FabiusFunction.LambertWAntiderivative
@@ -165,6 +170,8 @@ import FabiusFunction.GeometricUniformMomentPolynomial
 import FabiusFunction.GeometricUniformMomentPolynomialBridge
 import FabiusFunction.GeometricUniformComplexMomentProduct
 import FabiusFunction.GeometricUniformExteriorComplexMomentGerm
+import FabiusFunction.GeometricUniformMomentReciprocity
+import FabiusFunction.GeometricUniformMomentRatFunc
 import FabiusFunction.GeometricUniformMomentPolynomialDegree
 import FabiusFunction.Paper05442
 import FabiusFunction.Paper06487
@@ -253,6 +260,7 @@ import FabiusFunction.ThueMorseBlockAlgebra
 import FabiusFunction.ThueMorseProductIdentity
 import FabiusFunction.ApproximationLadder
 import FabiusFunction.ThueMorseMoments
+import FabiusFunction.FinitePrefixThueMorseCollapse
 import FabiusFunction.ThueMorseArtinSchreier
 import FabiusFunction.ThueMorseEulerTransform
 import FabiusFunction.ThueMorseLucasSupport
@@ -278,9 +286,17 @@ import FabiusFunction.ThueMorseFourierInversion
 import FabiusFunction.HalfIntegerOddDFT
 import FabiusFunction.SummableCyclicAlias
 import FabiusFunction.HalfIntegerAliasIdentity
+import FabiusFunction.DyadicBoundaryIdentity
 import FabiusFunction.AliasDyadicBridge
 import FabiusFunction.AliasQBinomialBridge
+import FabiusFunction.MeanValueBracket
+import FabiusFunction.TransseriesHeight
+import FabiusFunction.TransseriesScale
+import FabiusFunction.TransseriesWellBased
+import FabiusFunction.WrightOmega
 import FabiusFunction.LambertShiftInverse
+import FabiusFunction.LambertShiftConcavity
+import FabiusFunction.LambertCorrectionEquation
 import FabiusFunction.LambertInverseCoefficients
 import FabiusFunction.CyclicCharacterSums
 import FabiusFunction.AliasErrorBound
@@ -294,6 +310,7 @@ import FabiusFunction.ThueMorseHessenberg
 import FabiusFunction.ExponentialPartition
 import FabiusFunction.ThueMorsePartition
 import FabiusFunction.ExponentialBell
+import FabiusFunction.UnitSeriesBellCoefficients
 import FabiusFunction.ThueMorseIntegerLift
 import FabiusFunction.ThueMorseBoundaryFlatness
 import FabiusFunction.ThueMorseDirichlet
@@ -321,6 +338,7 @@ import FabiusFunction.WordComplexity
 import FabiusFunction.ThueMorseNewman
 import FabiusFunction.ThueMorseNewmanQuantitative
 import FabiusFunction.ThueMorseNewmanResidues
+import FabiusFunction.ThueMorseNewmanSelfSimilarity
 import FabiusFunction.ThueMorseGelfond
 import FabiusFunction.ThueMorseGelfondSharpness
 import FabiusFunction.PeriodDoublingHankel
@@ -507,6 +525,13 @@ import FabiusFunction.ThueMorseSinhProduct
 import FabiusFunction.RvachevFourierDecay
 import FabiusFunction.BoundednessSkeleton
 import FabiusFunction.TransferOperatorStep
+import FabiusFunction.TransseriesBlockAntiderivative
+import FabiusFunction.TransseriesDifferentialBlock
+import FabiusFunction.TransseriesHarmonicIncrement
+import FabiusFunction.TransseriesScaleDominance
+import FabiusFunction.TransseriesPolyLogScale
+import FabiusFunction.TransseriesFlat
+import FabiusFunction.TriangularPowerProduct
 import FabiusFunction.LasotaYorkeIteration
 import FabiusFunction.TransferPositivity
 import FabiusFunction.PerronRootExistence
@@ -538,6 +563,7 @@ import FabiusFunction.FabiusLegendreGaunt
 import FabiusFunction.FabiusLegendreGauntClosedForm
 import FabiusFunction.FabiusSquareEnergyFourier
 import FabiusFunction.FabiusLegendreTranslateBlocks
+import FabiusFunction.RvachevLegendreBiorthogonality
 import FabiusFunction.RvachevLegendreCentralSum
 import FabiusFunction.FabiusLegendreTranslateSeries
 import FabiusFunction.FabiusBinaryReductionSeries
@@ -652,10 +678,12 @@ import FabiusFunction.QMultinomial
 import FabiusFunction.QExponential
 import FabiusFunction.JacksonIntegral
 import FabiusFunction.QPochhammerLogDerivative
+import FabiusFunction.QPochhammerLambertForm
 import FabiusFunction.QPochhammerOrderDerivative
 import FabiusFunction.JacobiCubic
 import FabiusFunction.CyclotomicFactorization
 import FabiusFunction.CentralQBinomialReduction
+import FabiusFunction.CentralQVandermondeInfinite
 import FabiusFunction.PrimitiveRootBlock
 import FabiusFunction.QLucas
 import FabiusFunction.CyclotomicDivisibility
@@ -771,6 +799,13 @@ import FabiusFunction.LambertWAnalytic
 import FabiusFunction.MixedDifferenceForwardDiff
 import FabiusFunction.GeometricProuhetBlock
 import FabiusFunction.GeneralLinearThueMorseSum
+import FabiusFunction.QuadraticCoreCatalan
+import FabiusFunction.DerangementNearestInteger
+import FabiusFunction.PowerLogCoreInversion
+import FabiusFunction.LinLogCoreInversion
+import FabiusFunction.StaircaseInversion
+import FabiusFunction.RemainderTransport
+import FabiusFunction.LeastTermIndex
 
 set_option autoImplicit false
 
@@ -971,13 +1006,15 @@ recursive polynomial by the exact formula
 geometric-uniform MGF.  The range includes `q = 0` and negative contractions.
 
 The complex-product companion has the exhaustive public surface of one
-definition and two theorems: `geometricUniformComplexMomentProduct`,
-`hasProdLocallyUniformly_geometricUniformComplexMomentProduct`, and
+definition and three theorems: `geometricUniformComplexMomentProduct`,
+`hasProdLocallyUniformly_geometricUniformComplexMomentProduct`,
+`differentiable_geometricUniformComplexMomentProduct`, and
 `geometricUniformMomentPolynomial_eval₂_eq_complexMomentProduct_taylorCoefficient`.
 For every complex `q` with `‖q‖ < 1`, including `q = 0` and negative real
 contractions, it constructs the genuine product
 `A_q(z) = ∏' j, complexExpm1Div ((1-q) * q^j * z)`, proves locally uniform
-convergence on the whole complex plane, and proves
+convergence on the whole complex plane, proves that the resulting function is
+entire, and proves
 `P_n(q) = ((q;q)_n / (1-q)^n) * (iteratedDeriv n A_q 0 / n!)`.
 For nonreal `q`, this analytic product is not described as a probability MGF.
 
@@ -991,6 +1028,36 @@ For every complex `q` with `1 < ‖q‖`, it defines the actual manuscript germ
 `P_n(q) = ((q;q)_n / (1-q)^n) * (iteratedDeriv n M_q 0 / n!)`.
 The inverse is total in Lean, but only the germ at zero is asserted analytic;
 no boundary or global pole statement is included.
+
+The reciprocity companion has the exhaustive public surface of one definition
+and five theorems: `geometricUniformComplexMomentGerm`,
+`geometricUniformComplexMomentGerm_of_norm_lt_one`,
+`geometricUniformComplexMomentGerm_of_one_lt_norm`,
+`analyticAt_geometricUniformComplexMomentGerm`,
+`geometricUniformComplexMomentGerm_reciprocity`, and
+`geometricUniformComplexMomentGerm_moment_convolution`.  It joins the inner
+product and exterior reciprocal into the canonical two-regime germ, proves
+analyticity at zero away from the unit circle, and for `q ≠ 0`, `‖q‖ ≠ 1`
+proves both `M_q(z) M_{q⁻¹}(-z) = 1` as an `EventuallyEq` germ identity and
+the exact all-order binomial convolution of its Taylor moments.  The local
+statement is essential: the inner product can have zeros away from the
+origin, and no unit-circle continuation is asserted.  This makes canonical
+label `thm:qF-reciprocity` Exact.
+
+The rational-coefficient companion has the exhaustive public surface of one
+definition and four theorems:
+`geometricUniformMomentRatFunc`,
+`qFactorial_mul_geometricUniformMomentRatFunc`,
+`eval_geometricUniformMomentRatFunc_eq_complexMomentProduct_taylorCoefficient`,
+`eval_geometricUniformMomentRatFunc_eq_exteriorComplexMomentGerm_taylorCoefficient`,
+and `eval_geometricUniformMomentRatFunc_one`.  It packages the common
+coefficient as the single `RatFunc ℚ` given by `P_n / [n]_X!`, proves the
+global pole-clearing identity `[n]_X! * a_n = P_n`, identifies safe evaluation
+of that same rational function with the inner product for `‖q‖ < 1` and the
+exterior reciprocal germ for `1 < ‖q‖`, and proves the removable specialization
+at `q = 1`, where `[n]_1! = n!`.  It assigns no value at a genuine pole and
+asserts no exact pole divisor, unit-circle analytic continuation, or global
+holomorphy of the exterior inverse.
 
 The sharp-degree companion has the exhaustive public surface of zero
 definitions and three theorems:
@@ -1006,19 +1073,40 @@ degree: the triangular bound is attained for `n = 1` and even `n`, while odd
 These leaves make the real probability-law normalization and both the inner
 complex-disc and exterior complex-germ Taylor normalizations exact.  Together
 with the sharp coefficient and degree theorem they make frontier label
-`p7:thm:Pn` Exact.  Monograph label
-`thm:qF-moment-polynomial` also remains Partial: its source uses one
-rational-function coefficient object across the inner product and the
-`|q| > 1` reciprocal germ, while no named `RatFunc` or root-of-unity
-continuation theorem identifies the two analytic regimes as that same global
-parameter object in Lean.
-Label `thm:geometric-uniform-mgf` remains Partial: no public theorem packages
-the product's dilation/Mahler law, entireness and normalization, formal
-uniqueness, coefficient rationality and pole data, or its direct
-identification with the real MGF or characteristic function.  The
+`p7:thm:Pn` Exact.  The global rational-function definition, pole-clearing
+identity, two regime specializations, and safe value at `q = 1` also make
+monograph label `thm:qF-moment-polynomial` Exact by assembly with the
+algebraic polynomial leaf.  This is a polynomial continuation statement, not
+an analytic continuation of either product through `‖q‖ = 1`.
+Label `thm:geometric-uniform-mgf` remains Partial: although coefficient
+rationality is now packaged, no public theorem packages the product's
+dilation/Mahler law, normalization, formal uniqueness, exact
+root-of-unity pole data, or its direct identification with the real MGF or
+characteristic function.  The
 leading/subleading coefficient and exact-degree claims of
 `prop:qF-P-degree-sharp` are exactly the sharp-degree companion's three
 theorems, so that label is Exact.
+
+The post-RatFunc union adds exactly two public theorems to
+`ProbabilityLaplaceMoments`:
+`weightedSumDistribution_real_Ici_eq_rvachevUp_of_nonneg` identifies the
+closed survival tail with `rvachevUp` on the whole nonnegative ray, using
+atomlessness to pass from the strict tail, and
+`integral_pow_weightedSumDistribution_eq_mul_intervalIntegral_rvachevUp`
+gives the full-law raw-moment layer-cake formula for every `1 ≤ n`.  Together
+with the existing global up/Fabius identifications these make monograph labels
+`prop:up-tail` and `cor:up-moments` Exact; no degree-zero instance is inferred
+from the positive-degree moment theorem.
+
+The exhaustive public surface of `RvachevLegendreBiorthogonality` is one
+definition, `rvachevLegendreAnalysisKernel`, and one theorem,
+`rvachevLegendreBiorthogonality`.  For `F : BoundedFabius` satisfying
+`IsFabius`, a nonzero natural mesh `M`, and `l ≤ padicValNat 2 M`, the theorem
+gives the exact finite Kronecker pairing on the open block `|k| < 2M`.  Thus
+`thm:leg-biorthogonality` is Exact.  The broader `thm:leg-Lambda` and
+`cor:leg-biorthogonal-matrices` remain incomplete: this leaf supplies neither
+the kernel's support, smoothness, parity, origin, Fourier--Bessel, or dyadic
+rationality clauses nor the bundled projector and reverse-closure results.
 
 The parity-selected Rvachev synthesis layer exports exactly one definition and
 eight theorems.  `IsRvachevSuperconvergentPhase` selects the endpoint phases
@@ -1245,6 +1333,27 @@ natural `n,k` over every commutative semiring, including above-row zero
 extension.  Probability language describes the normalized coefficient
 generating polynomial; these declarations prove its algebraic moment
 identities and do not construct a separate random variable.
+
+`FinitePrefixThueMorseCollapse` is an exhaustive zero-definition/eight-theorem
+leaf.  Its public surface is `Appell.sum_thueMorseSign_mul_eval_poly`,
+`sum_thueMorseSign_mul_uncenteredDyadicPrefixAppellPolynomialRat`,
+`sum_thueMorseSign_mul_uncenteredDyadicPrefixAppellPolynomialRat_of_lt`,
+`sum_thueMorseSign_mul_uncenteredDyadicPrefixAppellPolynomialRat_self`,
+`sum_thueMorseSign_mul_centeredDyadicPrefixAppellPolynomialRat`,
+`sum_thueMorseSign_mul_centeredDyadicPrefixAppellPolynomialRat_succ`,
+`sum_thueMorseSign_mul_centeredDyadicPrefixAppellPolynomialRat_of_lt`, and
+`sum_thueMorseSign_mul_centeredDyadicPrefixAppellPolynomialRat_self`.  These
+are finite rational coefficient identities, total at depth zero; they add no
+analytic generating-function or convergence claim.
+
+`DyadicBoundaryIdentity` is an exhaustive zero-definition/two-theorem leaf.
+`prod_complexSinc_prefix_mul_rvachevFourierProduct` clears the finite sinc
+prefix against the rescaled product, and
+`rvachevFourierProduct_dyadic_boundary` composes that result with the
+integer-zero factorization to give the entire denominator-cleared boundary
+identity for every natural shell and complex displacement.  No nonvanishing
+hypothesis is needed until one passes to a quotient formulation.  These two
+upstream API descriptions do not change any source-coverage status.
 
 The probabilistic layer is closed at the level of measures.  The up-measure
 `μ_up = up·Leb` satisfies the refinement equation
