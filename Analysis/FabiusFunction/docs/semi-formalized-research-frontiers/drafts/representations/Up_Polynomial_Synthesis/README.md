@@ -89,7 +89,8 @@ Several analytical and finite-dimensional results in the new Lagrange and
 Legendre chapters remain human proofs backed by exact scripts rather than Lean
 theorems. The report says so explicitly. Existing compiled Lean declarations
 are named where they discharge a claim; no source-only statement is presented
-as kernel verified.
+as kernel verified. The translated Legendre analysis kernel and its finite
+biorthogonality identity are now the explicit exception described below.
 
 The current `FabiusFunction.LagrangeRvachevMatrix` surface consists of the
 finite-index declarations `rvachevAtomIndexSet` and `RvachevAtomIndex`, the
@@ -163,6 +164,21 @@ Jacobi closed form, all-degree parity or rationality in `thm:leg-mode-synthesis`
 nor reverse closure, mesh minimality, or any larger Lagrange right-inverse
 claim. The retained package PDF predates these source-only status annotations
 and was not rebuilt.
+
+The source-only `FabiusFunction.RvachevLegendreBiorthogonality` leaf has the
+exhaustive public surface of one definition,
+`rvachevLegendreAnalysisKernel`, and one theorem,
+`rvachevLegendreBiorthogonality`. The definition is exactly the normalized
+translated Legendre kernel `def:leg-Lambda`. For every nonzero natural mesh
+`M`, degrees `l,m`, and `l ≤ padicValNat 2 M`, the theorem pairs the finite
+open block `|k| < 2M` of the existing Legendre--Rvachev synthesis formula with
+that kernel and obtains `if m = l then 1 else 0`. Thus
+`thm:leg-biorthogonality` is Exact/Complete, including `l=0` and `m=0`.
+It does not prove the support, smoothness, parity, origin-value, or
+Fourier--Bessel clauses of `thm:leg-Lambda`, the rational dyadic-truncation
+lemma, or the matrix projector, trace, and Cauchy--Binet clauses of
+`cor:leg-biorthogonal-matrices`. The retained package PDF predates this
+source-only crosswalk and was not rebuilt.
 
 The Q12 root transition is exact computer-assisted mathematics: rational
 polynomials and rational Sturm chains decide root counts. Approximate complex

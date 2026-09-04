@@ -140,12 +140,20 @@ leaf packages one rational moment coefficient, proves its global
 q-factorial clearing identity, identifies its safe inner and exterior
 specializations, and handles the removable `q = 1` value.  It makes the
 q-monograph label `thm:qF-moment-polynomial` Exact without assigning analytic
-values at genuine unit-root poles.  The q forward ledger is now 179 Exact /
-80 Partial / 15 None / 8 interface rows, and its source concordance is 92
-Lean-proved / 386 human-proved frontier / 60 non-applicable / 9 conjectures.
-After these compiled tranches the live Lean documentation census is 924
-modules and 11,615 public declarations with no gaps.  The preceding
-finite-prefix checkpoint was 923/11,610.  The retired source layouts remain immutable
+values at genuine unit-root poles.  That RatFunc tranche produced the
+historical 924-module/11,615-declaration checkpoint.  The subsequent
+`ProbabilityLaplaceMoments` theorems
+`weightedSumDistribution_real_Ici_eq_rvachevUp_of_nonneg` and
+`integral_pow_weightedSumDistribution_eq_mul_intervalIntegral_rvachevUp`
+make q-frontier labels `prop:up-tail` and `cor:up-moments` Exact, including
+the closed-tail convention and every positive natural moment order.  The
+unrelated one-definition/one-theorem
+`FabiusFunction.RvachevLegendreBiorthogonality` leaf then gives the live
+925-module/11,619-declaration census.  Its exact finite Legendre pairing does
+not change this inverse-package ledger.  The q forward ledger is now 181
+Exact / 78 Partial / 15 None / 8 interface rows, and its source concordance
+is 94 Lean-proved / 384 human-proved frontier / 60 non-applicable / 9
+conjectures.  The preceding finite-prefix checkpoint was 923/11,610.  The retired source layouts remain immutable
 provenance only; the source is newer than the retained historical PDF.
 
 `QuarterCatalanGerm.lean` proves that the distinguished rational quarter germ

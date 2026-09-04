@@ -843,6 +843,19 @@ $\delta_{m\ell}$ by Legendre orthogonality, and each atom integral is
 $\Lambda_m(k/M)$.
 \end{proof}
 
+\emph{Lean status.}  Exact/Complete in
+\path{RvachevLegendreBiorthogonality.lean}.  The definition
+\path{Fabius.rvachevLegendreAnalysisKernel} is precisely
+\eqref{eq:leg-Lambda}, and
+\path{Fabius.rvachevLegendreBiorthogonality} proves
+\eqref{eq:leg-biorthogonality} for every nonzero natural $M$, every
+$\ell,m\in\NaturalNumbersZero$, and
+$\ell\le\TwoAdicValuation(M)$.  Its finite integer index set is the open
+interval $-2M<k<2M$, exactly the displayed $|k|<2M$ convention.  This
+source-only closure does not promote the larger support/Fourier--Bessel
+theorem above or the matrix-projector corollary below; the retained PDF
+predates it and was not rebuilt.
+
 \begin{corollary}[Finite biorthogonal matrices and projector identities]
 \label{cor:leg-biorthogonal-matrices}
 Let $d\ge0$ and $M\in\PositiveIntegers$ satisfy $\TwoAdicValuation(M)\ge d$.  Then the matrices

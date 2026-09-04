@@ -3555,15 +3555,18 @@ No. & Declaration & Formal content \\
 \bottomrule
 \end{longtable}
 
-This algebraic module does not prove the next multiple-integral corollary.
-More precisely, it closes the Boolean-cube, arbitrary-step polynomial
-extraction/cancellation/top-value, and exact affine-grid clauses of the
-continuous-chaos report's Thue--Morse corner theorem, but not that theorem's
-repeated-integral identity under its \(C^N\) hypotheses.  The report theorem
-therefore remains near-complete rather than fully formalized; a final
-analytic bridge and report-shaped wrapper remain.  Its following Walsh
-conditional-expectation corollary also still lacks the sign--magnitude
-probability construction, conditioning, and \(2^{-N}\) normalization.
+Together with \path{ThueMorseCornerIntegral.lean}, this algebraic module now
+proves every clause of the continuous-chaos report's Thue--Morse corner
+theorem.  The companion leaf defines the recursive centered box integral and
+proves, by local interval FTC and induction, that the symmetric mixed
+difference is the repeated integral of \(g^{(N)}\).  Its hypotheses match the
+printed local statement: the half-steps are nonnegative, \(g\) is
+\(C^N\) on an open order-connected set, and that set contains the full closed
+symmetric segment.  Thus zero half-steps and \(N=0\) are harmless
+strengthenings of the printed positive-step case.  The following Walsh
+conditional-expectation corollary remains open: it still lacks the
+sign--magnitude probability construction, conditioning, and \(2^{-N}\)
+normalization.
 
 \subsection{Exact multiple-integral remainder}
 
@@ -7041,7 +7044,8 @@ Module & Contents \\
 \path{ThueMorseWalsh.lean} & All-ones digit patterns and masked two-power sums, \(\eps\) as a Walsh character, character orthogonality on the block, the one-point Walsh spectrum. \\
 \path{ThueMorseSparseMoments.lean} & The atlas's all-sparse-moments formula on the submask cube (\cref{p1:cor:all-sparse-moments}), as the \(S=J(n)\) instance of the arbitrary-support composition of \path{ThueMorseMoments.lean}. \\
 \path{ThueMorseMixedDifference.lean} & The dyadic mixed-difference operator and the finite-difference factorization for arbitrary functions from an additive commutative monoid into an additive commutative group, with the powerset expansion. \\
-\path{ThueMorseSymmetricDifference.lean} & Exhaustive two-definition/eleven-theorem centered companion: arbitrary half-steps and the symmetric Boolean cube, sharp commutative-ring polynomial extraction/cancellation/top value, the centered dyadic block, and both characteristic-zero increasing-grid forms.  It does not supply the repeated-integral clause of the continuous-chaos report. \\
+\path{ThueMorseSymmetricDifference.lean} & Exhaustive two-definition/eleven-theorem centered companion: arbitrary half-steps and the symmetric Boolean cube, sharp commutative-ring polynomial extraction/cancellation/top value, the centered dyadic block, and both characteristic-zero increasing-grid forms. \\
+\path{ThueMorseCornerIntegral.lean} & Exhaustive one-definition/four-theorem analytic companion: the recursive centered box integral and its zero/successor equations, the exact local first-\(N\) symmetric-difference identity, and its \(\operatorname{Fin} N\)-indexed wrapper.  The hypotheses are \(\operatorname{IsOpen}\), \(\operatorname{OrdConnected}\), local \(C^N\) regularity, and containment of the full symmetric segment; zero half-steps are allowed. \\
 \path{ThueMorseAutocorrelation.lean} & Finite autocorrelation recursion in exact integer form along \emph{any even} window, \(R_{2K}(2r)=2R_K(r)\) and \(R_{2K}(2r+1)=-(R_K(r)+R_K(r+1))\), with the dyadic layer \(A_m(k)=R_{2^m}(k)\) as its power-of-two case: zero-shift value, trivial bound, closed values at shifts one and two, and the normalized limits at shifts zero, one and two. \\
 \path{ThueMorseOverlapFree.lean} & Thue's overlap-freeness theorem with cube-freeness, the attained critical exponent two, the alphabet-free implication ``overlap-free \(\Rightarrow\) not eventually periodic'', and constructive complement and reversal closure of the factor language. \\
 \path{ThueMorseRecurrence.lean} & Full block-concatenation laws for weight and bit, all two-letter factors in every fourteen-letter window, uniform recurrence with an explicit linear bound. \\

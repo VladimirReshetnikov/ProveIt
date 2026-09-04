@@ -3801,6 +3801,30 @@ not evaluate through genuine poles at nontrivial roots of unity or assert a
 unit-circle analytic continuation; the broader MGF and reciprocal-germ claims
 remain Partial at those boundaries.
 
+\subsection{Closed Rvachev survival and positive raw moments}
+The existing module \nolinkurl{ProbabilityLaplaceMoments.lean} now adds
+exactly two public theorems.  The first,
+\nolinkurl{weightedSumDistribution_real_Ici_eq_rvachevUp_of_nonneg}, states
+for every bounded Fabius solution and every \(t\geq0\) that
+\[
+ \operatorname{weightedSumDistribution}([t,\infty))=\RvachevUp(t).
+\]
+It obtains the closed ray from the existing strict-survival identity using
+the proved nullity of every singleton.  Together with the global reflection
+identity and the nonnegative-ray formula \(\RvachevUp(t)=1-F(t)\), this makes
+the q-monograph label \nolinkurl{prop:up-tail} Exact with its literal
+\(\Probability(X\geq t)\) convention.  The second theorem,
+\nolinkurl{integral_pow_weightedSumDistribution_eq_mul_intervalIntegral_rvachevUp},
+states for every natural \(n\geq1\) that
+\[
+ \int_{\RealNumbers}x^n\,\Differential\mu_X(x)
+ =n\int_0^1t^{n-1}\RvachevUp(t)\,\Differential t.
+\]
+It is the exact full-law expectation in \nolinkurl{cor:up-moments}.  The
+restriction \(n\geq1\) is essential: at \(n=0\) the left side is one and the
+displayed right side is zero.  Neither theorem adds a fractional-, complex-,
+or general-q moment statement.
+
 \subsection{Fixed-order phase-locked Lambert extraction}
 The later current-tree phase-extraction tranche supplies the analytic layer
 for the actual logarithmic Fabius samples.  At the exact lower-Lambert nodes
@@ -4170,6 +4194,28 @@ and applying the first theorem,
 \nolinkurl{cor:leg-central-sum} is \emph{Exact/Complete}.  This result does not
 add a Jacobi closed form, all-degree decoder parity or rationality, reverse
 spectral closure, mesh minimality, or a larger Lagrange right inverse.
+
+\subsection{Finite Legendre--Rvachev biorthogonality}
+The exhaustive public surface of
+\nolinkurl{RvachevLegendreBiorthogonality.lean} is one definition,
+\nolinkurl{rvachevLegendreAnalysisKernel}, and one theorem,
+\nolinkurl{rvachevLegendreBiorthogonality}.  The definition is exactly
+\[
+ \Lambda_m(c)=\frac{2m+1}{2}\int_{-1}^{1}
+   \RvachevUp(x-c)P_m(x)\,\Differential x,
+\]
+so the representation label \nolinkurl{def:leg-Lambda} is Exact.  For every
+nonzero natural mesh \(M\), all \(\ell,m\), and
+\(\ell\leq\TwoAdicValuation(M)\), the theorem proves
+\[
+ \frac1M\sum_{-2M<k<2M}Q_\ell(k/M)\Lambda_m(k/M)
+ =\begin{cases}1,&m=\ell,\\0,&m\ne\ell.\end{cases}
+\]
+The open integer block is exactly \(\lvert k\rvert<2M\), and degrees zero are
+included.  Hence \nolinkurl{thm:leg-biorthogonality} is Exact/Complete.  The
+larger \nolinkurl{thm:leg-Lambda} support, smoothness, parity, origin-value,
+and Fourier--Bessel claims and the matrix-projector corollary are not proved
+by this leaf and remain outside the promotion.
 
 The later module \nolinkurl{FabiusLegendreEnergy.lean} closes the coefficient
 energy side of the same expansion.  It defines the polynomial-form blocks
@@ -5917,6 +5963,7 @@ Centered Thue--Morse mixed differences & \nolinkurl{symmetricMixedDifference}, \
 Local Thue--Morse corner integral & \nolinkurl{centeredBoxIntegral}, \nolinkurl{symmetricMixedDifference_range_eq_centeredBoxIntegral}, \nolinkurl{symmetricMixedDifference_univ_eq_centeredBoxIntegral} & Exhaustive 1+4 \nolinkurl{ThueMorseCornerIntegral.lean} surface; local open/order-connected \nolinkurl{ContDiffOn} hypotheses on the full symmetric segment, zero widths and order zero included; makes \nolinkurl{thm:TM-corner} Exact with the preceding algebra \\
 Finite moment functional and affine Prouhet transport & \nolinkurl{sum_weight_mul_eval₂_eq_sum_coeff_mul_moment}, \nolinkurl{sum_weight_mul_eval₂_eq_eval₂_of_moments}, \nolinkurl{sum_weight_mul_eval_affine_of_topCoeff_extractor} & Exhaustive 0+16 \nolinkurl{FinitePolynomialFunctional.lean} surface; scalar-extension extraction and same-ring affine transport over commutative semirings, including zero scale; makes \nolinkurl{cor:geometric-prouhet-affine} Exact with the half-base extractor \\
 Central Rvachev--Legendre cancellation & \nolinkurl{eval_legendrePolynomial_even_zero}, \nolinkurl{eval_rvachevLegendreDeconvolutionPolynomial_even}, \nolinkurl{rvachevLegendreCentralSum} & Exhaustive 0+3 \nolinkurl{RvachevLegendreCentralSum.lean} surface; exact (M=4^n) finite identity, including (n=0), making \nolinkurl{cor:leg-central-sum} Exact/Complete \\
+Finite Rvachev--Legendre biorthogonality & \nolinkurl{rvachevLegendreAnalysisKernel}, \nolinkurl{rvachevLegendreBiorthogonality} & Exhaustive 1+1 \nolinkurl{RvachevLegendreBiorthogonality.lean} surface; exact translated analysis kernel and open-block Kronecker pairing for \(M\ne0\) and \(\ell\leq v_2(M)\), making \nolinkurl{def:leg-Lambda} and \nolinkurl{thm:leg-biorthogonality} Exact without promoting the Fourier--Bessel or projector clauses \\
 Uniform spline \(S_p\) & \nolinkurl{fabiusUniformSpline} & \nolinkurl{FabiusUniformSpline.lean} and \nolinkurl{FabiusComputability.lean} \\
 Logarithmic profile & \nolinkurl{fabiusLogProfile} & \nolinkurl{FabiusLogScale.lean} \\
 Forward real Lambert branch pairing & \nolinkurl{principalLambertW_sub_lowerLambertW_pos}, \nolinkurl{principalLambertW_eq_neg_gap_div}, \nolinkurl{lowerLambertW_eq_neg_gap_mul_exp_div}, \nolinkurl{lowerLambertW_eq_neg_gap_div_one_sub_exp_neg}, \nolinkurl{eq_neg_gap_div_mul_exp} & Exhaustive zero-definition/seven-theorem surface of \nolinkurl{LambertWBranchPairing.lean}; exact \(\delta\)- and \(t=e^\delta\)-forms on \((-e^{-1},0)\) only \\
@@ -6029,7 +6076,7 @@ Module & Role in the development \\
 \nolinkurl{BernoulliRecurrences.lean} & Translation of moment recurrences into Bernoulli-number identities used by the arithmetic paper. \\
 \nolinkurl{LaplaceMoments.lean} & Moment identities in the Laplace-transform normalization. \\
 \nolinkurl{LaplaceMomentBounds.lean} & Uniform factorial/exponential bounds needed for transform series and differentiation. \\
-\nolinkurl{ProbabilityLaplaceMoments.lean} & Moment and Laplace identities connecting the weighted-sum probability model with the analytic generating function. \\
+\nolinkurl{ProbabilityLaplaceMoments.lean} & Moment and Laplace identities connecting the weighted-sum probability model with the analytic generating function, including the two-theorem closed-tail/raw-moment extension \nolinkurl{weightedSumDistribution_real_Ici_eq_rvachevUp_of_nonneg} and \nolinkurl{integral_pow_weightedSumDistribution_eq_mul_intervalIntegral_rvachevUp}; these close \nolinkurl{prop:up-tail} and \nolinkurl{cor:up-moments} exactly, with \(t\geq0\) and natural \(n\geq1\). \\
 \nolinkurl{FabiusRecurrenceSequence.lean} & Auxiliary exact recurrence sequence used in asymptotic and dyadic estimates. \\
 \addlinespace[0.45em]
 \multicolumn{2}{l}{\textbf{Fourier, probability, and the first paper}}\\[0.25em]
@@ -6253,6 +6300,7 @@ Module & Role in the development \\
 \nolinkurl{FabiusTranslatedLegendreSeries.lean} & Affine translation to the signed Fabius function and monomial expansion of the translated series. \\
 \nolinkurl{FabiusLegendreLeastSquares.lean} & Pythagorean identity and unique least-squares optimality of finite Legendre truncations. \\
 \nolinkurl{RvachevLegendreCentralSum.lean} & Exhaustive zero-definition/three-theorem surface: the central value of (P_{2n}), evenness of the deconvolved even mode, and the exact finite central-binomial cancellation at mesh (4^n), including (n=0). \\
+\nolinkurl{RvachevLegendreBiorthogonality.lean} & Exhaustive one-definition/one-theorem surface: \nolinkurl{rvachevLegendreAnalysisKernel} is the translated Legendre analysis kernel and \nolinkurl{rvachevLegendreBiorthogonality} is the finite open-block Kronecker identity for every nonzero natural mesh with \(\ell\leq v_2(M)\).  It closes \nolinkurl{def:leg-Lambda} and \nolinkurl{thm:leg-biorthogonality}, not the larger Fourier--Bessel or projector statements. \\
 \nolinkurl{FabiusLegendreEnergy.lean} & Polynomial-form Legendre blocks, their complete orthogonality, full coefficient Parseval identity, exact shifted coefficient-energy tails in \nolinkurl{HasSum} and \nolinkurl{tsum} form, and the real-variable Legendre series for \(\int_0^1F(t)^2\,dt\).  Finite up-translate realization, Fourier/sinc energy formulas, and rationality of partial sums remain outside the module. \\
 \nolinkurl{LegendreGaunt.lean} & Four definitions and twelve theorems giving executable rational Lebesgue moments and Gaunt coefficients, real-cast and moment-functional bridges, two index swaps, finite real/rational Legendre product linearizations, and the proved parity and triangle-support zeros; see \cref{ch:legendre-gaunt}. \\
 \nolinkurl{LegendreGauntClosedForm.lean} & Two definitions and twenty-five theorems giving the total rational integer-index zero-row Wigner-square datum, pairwise-coordinate central-binomial and factorial forms, the half-sum factorial form, exact global rational and real Gaunt identities, sharp support, positivity, nonnegativity, degenerate and zero-index boundary values, and product-coefficient laws; no signed phase, half-integer or nonzero magnetic indices, Wigner orthogonality, or recoupling; see \cref{ch:legendre-gaunt-closed-form}. \\
@@ -6413,7 +6461,7 @@ Lean audits of the previously recorded new or refactored declarations,
 for each.  At that upstream checkpoint, static inspection found all 610 modules
 below \nolinkurl{FabiusFunction/} reachable from the facade and every one of
 the 105 activation declarations documented.  The live current-tree audit scans
-924 modules and 11,615 public declarations, with no missing module headers or
+925 modules and 11,619 public declarations, with no missing module headers or
 declaration comments.  At the retained historical mainline checkpoint before the latest
 six-module q-series tranche was 623 modules and 8,476 declarations.  Its
 immediately preceding census, after the Rvachev Appell and original
@@ -6521,10 +6569,10 @@ nearest-zero proof route.  The later 1+17
 to 913/11,551 and supplies the algebraic portion of \nolinkurl{p7:thm:Pn}; the
 analytic normalization and sharp leading, subleading, and exact-degree claims
 remain absent.  The final 0+3
-\nolinkurl{ThueMorseGammaTowerDifferential.lean} leaf raises the live census
+\nolinkurl{ThueMorseGammaTowerDifferential.lean} leaf raises the historical census
 to 914/11,554 and makes \nolinkurl{p2:thm:gamma-tower} Exact on \(a>0\) for
 the chosen GammaLog coordinate.  The subsequent polynomial-exactness theorem
-in \nolinkurl{GeometricResidualMoments.lean} raises the live declaration count
+in \nolinkurl{GeometricResidualMoments.lean} raises that declaration count
 to 11,555 and makes \nolinkurl{cor:scaled-geometric-moments} Exact by
 composition.  The exhaustive zero-definition/one-theorem
 \nolinkurl{GeometricUniformMomentPolynomialBridge.lean} companion then raises
@@ -6568,8 +6616,12 @@ exhaustive \(11+17\) \nolinkurl{FinitePrefixAppellRecovery.lean} leaf makes
 \nolinkurl{GeometricUniformMomentRatFunc.lean} leaf then packages the common
 rational coefficient, its global q-factorial clearing, both safe analytic
 evaluations, and the removable \(q=1\) value.  It makes
-\nolinkurl{thm:qF-moment-polynomial} Exact and gives the live 924/11,615
-census.  Every module is reachable from the facade.  No aggregate facade build
+\nolinkurl{thm:qF-moment-polynomial} Exact and gives the historical
+924/11,615 checkpoint.  The two new theorems in the existing
+\nolinkurl{ProbabilityLaplaceMoments.lean} module then give 924/11,617, and
+the exhaustive one-definition/one-theorem
+\nolinkurl{RvachevLegendreBiorthogonality.lean} leaf gives the live
+925/11,619 census.  Every module is reachable from the facade.  No aggregate facade build
 is claimed for this current-tree census.  The retained PDF and title-page pin
 remain historical receipts and do not claim parity with the merged source; no
 PDF was built for this source-only union.

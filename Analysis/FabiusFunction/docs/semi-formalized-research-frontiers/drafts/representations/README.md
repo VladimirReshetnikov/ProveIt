@@ -835,9 +835,10 @@ Thus `is:p3:cor:forced-superconvergence` and
 concordance. This source postdates the retained Representation and inverse
 PDFs, which remain historical artifacts rather than renders of the promotion.
 The corresponding historical documentation checkpoint was 671 modules and
-8,858 public declarations. The q forward ledger is 179 Exact / 80 Partial /
-15 None / 8 N/A, with chapter splits 9/0/0/0 for Half-base and 10/45/1/0 for
-Dyadic, while the source concordance is 92/386/60/9. The merged-main
+8,858 public declarations. After the probability-row promotions, the q
+forward ledger is 181 Exact / 78 Partial / 15 None / 8 N/A, with chapter
+splits 9/0/0/0 for Half-base and 12/43/1/0 for Dyadic, while the source
+concordance is 94/384/60/9. The merged-main
 increment to 919/11,569 is the exhaustive zero-definition/one-theorem sibling
 `FabiusFunction.HalfQBinomialRootSimplicity`, whose
 `Fabius.halfQBinomial_sum_rootMultiplicity_two_pow` proves multiplicity one
@@ -858,8 +859,12 @@ degrees in `Polynomial (Polynomial ℚ)`; a fixed-inner-variable centered
 degree can drop, and its algebraic finite-convolution moments are not a
 random-variable or MGF realization. The Laurent leaf gives checkpoint
 922/11,582, and the finite-prefix leaf gives 923/11,610.  The subsequent
-one-definition/four-theorem geometric-uniform RatFunc leaf gives the live
-repository census 924 modules and 11,615 public declarations. The census also includes the unrelated
+one-definition/four-theorem geometric-uniform RatFunc leaf gives the
+historical 924/11,615 checkpoint.  The two-theorem extension of the existing
+`FabiusFunction.ProbabilityLaplaceMoments` module then gives 924/11,617, and
+the exhaustive one-definition/one-theorem
+`FabiusFunction.RvachevLegendreBiorthogonality` leaf gives the live repository
+census of 925 modules and 11,619 public declarations. The census also includes the unrelated
 sibling source-only
 `FabiusFunction.GeometricRichardsonGenerating` module (three definitions and
 seven theorems), whose exact comb-manuscript crosswalk is
@@ -962,8 +967,35 @@ leaves then give 922/11,582 and 923/11,610.  The exhaustive `1+4`
 and `Fabius.eval_geometricUniformMomentRatFunc_one`.  One global `RatFunc ℚ`
 now has a named q-factorial clearing identity, safe inner and exterior
 Taylor-coefficient specializations, and the removable `q = 1` value.  This
-makes `thm:qF-moment-polynomial` Exact and gives the live 924/11,615 census;
-no analytic value or pole order is asserted at a genuine unit-root pole.
+makes `thm:qF-moment-polynomial` Exact and gives the historical 924/11,615
+checkpoint; the probability and Legendre additions described below give the
+live 925/11,619 census. No analytic value or pole order is asserted at a
+genuine unit-root pole.
+
+The existing `FabiusFunction.ProbabilityLaplaceMoments` module adds exactly
+the two theorems
+`Fabius.ProbabilityRepresentation.weightedSumDistribution_real_Ici_eq_rvachevUp_of_nonneg`
+and
+`Fabius.ProbabilityRepresentation.integral_pow_weightedSumDistribution_eq_mul_intervalIntegral_rvachevUp`.
+Atomlessness turns the established strict tail into the manuscript's closed
+`P(X >= t)` tail for every `t >= 0`; the second theorem is the exact full-law
+moment formula for every natural `n >= 1`. Together with the existing global
+up/Fabius identities, these make `prop:up-tail` and `cor:up-moments` Exact.
+Degree zero, fractional moments, complex moments, and broader MGF claims are
+not included.
+
+The exhaustive public surface of
+`FabiusFunction.RvachevLegendreBiorthogonality` is one definition,
+`Fabius.rvachevLegendreAnalysisKernel`, and one theorem,
+`Fabius.rvachevLegendreBiorthogonality`. The definition is precisely the
+normalized translated Legendre analysis kernel of `def:leg-Lambda`. For every
+nonzero natural mesh `M`, all `l,m`, and `l <= padicValNat 2 M`, the theorem
+proves the canonical finite Kronecker pairing over the literal open integer
+block `-2*M < k < 2*M`. Thus `def:leg-Lambda` and
+`thm:leg-biorthogonality` are Exact/Complete. The broader support, smoothness,
+parity, origin-value, and Fourier--Bessel theorem `thm:leg-Lambda` and the
+matrix-projector corollary remain unpromoted.
+
 These sibling source-only modules are
 not rendered by the retained Representation or inverse PDFs. The immediately
 preceding complex Bernoulli value-completion checkpoint was 903 modules and

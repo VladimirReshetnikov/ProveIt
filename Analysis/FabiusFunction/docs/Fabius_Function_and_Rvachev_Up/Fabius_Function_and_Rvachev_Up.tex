@@ -3981,7 +3981,11 @@ one-definition/six-theorem \path{RvachevLaurentLeading.lean} leaf then gives
 922/11,582, and the eleven-definition/seventeen-theorem
 \path{FinitePrefixAppellRecovery.lean} leaf gives the historical 923/11,610
 checkpoint.  The exhaustive one-definition/four-theorem
-\path{GeometricUniformMomentRatFunc.lean} leaf gives the live 924/11,615
+\path{GeometricUniformMomentRatFunc.lean} leaf gives the historical
+924/11,615 checkpoint.  The two-theorem extension of the existing
+\path{ProbabilityLaplaceMoments.lean} module then gives 924/11,617, and the
+exhaustive one-definition/one-theorem
+\path{RvachevLegendreBiorthogonality.lean} leaf gives the live 925/11,619
 census.
 The immediately preceding algebraic moment-polynomial checkpoint was
 904/11,457, and the complex Bernoulli value-completion checkpoint 903/11,448
@@ -4029,8 +4033,10 @@ and the sixteenth theorem in the zero-definition
 zero-definition/one-theorem \path{HalfQBinomialRootSimplicity.lean},
 one-definition/six-theorem \path{RvachevLaurentLeading.lean}, and
 eleven-definition/seventeen-theorem \path{FinitePrefixAppellRecovery.lean},
-and one-definition/four-theorem
-\path{GeometricUniformMomentRatFunc.lean} leaves.
+the one-definition/four-theorem
+\path{GeometricUniformMomentRatFunc.lean} leaf, the two new theorems in
+\path{ProbabilityLaplaceMoments.lean}, and the one-definition/one-theorem
+\path{RvachevLegendreBiorthogonality.lean} leaf.
 These are
 source-only overlays; the retained 183-page, 1,899,243-byte PDF is explicitly
 historical and has not been regenerated for these additions.
@@ -4157,7 +4163,10 @@ merged-main checkpoint was 919/11,569, the exterior \(1+2\) leaf raises it to
 921/11,575 checkpoint.  The following \path{RvachevLaurentLeading.lean}
 \((1+6)\) and \path{FinitePrefixAppellRecovery.lean} \((11+17)\) leaves give
 922/11,582 and the historical 923/11,610 checkpoint, respectively; the
-RatFunc \((1+4)\) leaf gives the live 924/11,615 census.
+RatFunc \((1+4)\) leaf gives the historical 924/11,615 checkpoint.  The
+closed-tail and raw-moment additions to \path{ProbabilityLaplaceMoments.lean}
+then give 924/11,617, and the Legendre biorthogonality \((1+1)\) leaf gives
+the live 925/11,619 census.
 
 The final two module counts are
 \path{CentralQBinomialReduction.lean} (0+6) and
@@ -6827,6 +6836,31 @@ identities are
 \lean{fabiusLaplaceMoment_midpoint_sq_le_all} and
 \lean{fabiusLaplaceMoment_le_shift} in \path{UnitLaplaceMomentBounds.lean}.
 \end{proof}
+
+The later exhaustive two-theorem extension of
+\path{ProbabilityLaplaceMoments.lean} removes two remaining source-level
+conventions.  The theorem
+\lean{weightedSumDistribution_real_Ici_eq_rvachevUp_of_nonneg} proves
+\begin{equation}
+ \mu_X([t,\infty))=\RvachevUp(t)\qquad(t\geq0),              \label{eq:closed-rvachev-survival}
+\end{equation}
+using the atomlessness of the canonical weighted-sum law to replace the
+strict survival ray by the closed one.  Together with
+\lean{rvachevUp_eq_fabiusReal_one_sub_abs} and
+\lean{rvachevUp_eq_one_sub_fabiusReal_of_nonneg}, this makes the q-monograph
+label \nolinkurl{prop:up-tail} Exact, including its literal
+\(\Probability(X\geq t)\) convention.  The second theorem,
+\lean{integral_pow_weightedSumDistribution_eq_mul_intervalIntegral_rvachevUp},
+proves for every natural \(n\geq1\)
+\begin{equation}
+ \int_{\RealNumbers}x^n\,\Differential\mu_X(x)
+ =n\int_0^1t^{n-1}\RvachevUp(t)\,\Differential t,           \label{eq:closed-rvachev-moments}
+\end{equation}
+so \nolinkurl{cor:up-moments} is Exact with expectation interpreted as the
+full-line integral against the law of \(X\).  Degree zero is deliberately
+outside this formula: its left side is one whereas the displayed right side
+would vanish.  These two declarations do not promote any broader MGF,
+fractional-moment, or complex-moment claim.
 
 \subsection{Exact values at reciprocal powers of two}
 \label{sec:inverse-powers}
@@ -12726,6 +12760,30 @@ finite argument supplies no Jacobi closed form, all-degree decoder parity or
 rationality, reverse spectral closure, mesh minimality, or larger Lagrange
 right inverse.
 
+The subsequent exhaustive one-definition/one-theorem module
+\path{RvachevLegendreBiorthogonality.lean} defines the translated analysis
+kernel
+\begin{equation}
+ \Lambda_m(c)=\frac{2m+1}{2}\int_{-1}^{1}
+ \RvachevUp(x-c)P_m(x)\,\Differential x                   \label{eq:rvachev-legendre-analysis-kernel}
+\end{equation}
+as \lean{rvachevLegendreAnalysisKernel}.  Thus the representation-frontier
+definition \nolinkurl{def:leg-Lambda} is Exact.  Its sole theorem
+\lean{rvachevLegendreBiorthogonality} proves, for every nonzero natural mesh
+\(M\), every \(\ell,m\in\NaturalNumbers\), and
+\(\ell\leq\TwoAdicValuation(M)\),
+\begin{equation}
+ \frac1M\sum_{-2M<k<2M}Q_\ell(k/M)\Lambda_m(k/M)
+ =\begin{cases}1,&m=\ell,\\0,&m\ne\ell.\end{cases}       \label{eq:rvachev-legendre-biorthogonality}
+\end{equation}
+The finite integer block is exactly the source convention \(\lvert k\rvert<2M\),
+so \nolinkurl{thm:leg-biorthogonality} is Exact/Complete, including
+\(\ell=0\) and \(m=0\).  This leaf proves neither the support, smoothness,
+parity, origin-value, or Fourier--Bessel clauses of
+\nolinkurl{thm:leg-Lambda} nor the matrix-projector identities of
+\nolinkurl{cor:leg-biorthogonal-matrices}; those labels remain outside this
+promotion.
+
 More explicitly, let
 \[
  M_n=4^n,\qquad I_n=\{k\in\IntegerNumbers:-2M_n<k<2M_n\},\qquad
@@ -14010,6 +14068,7 @@ renormalization, Laurent/Herglotz/inversion layers, initial Jacobi data, and fin
 \path{FabiusLegendreGauntClosedForm.lean},
 \path{FabiusLegendreRationalGramValues.lean},
 \path{RvachevLegendreCentralSum.lean},
+\path{RvachevLegendreBiorthogonality.lean},
 \path{EarlyApproximants.lean},
 \path{EarlyMeasureBridge.lean}, \path{WeakConvergence.lean},
 \path{ProbabilityLaplaceMoments.lean}, \path{LaplaceMoments.lean},

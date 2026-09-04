@@ -193,9 +193,17 @@ random-variable or analytic-MGF realization.
 In the merged chronology the sharp leaf gave the historical 921/11,575
 checkpoint, `RvachevLaurentLeading` gave 922/11,582, and
 `FinitePrefixAppellRecovery` gave 923/11,610.  The RatFunc leaf gives the live
-924/11,615 census.  The q ledger is 179 Exact / 80 Partial / 15 None / 8
-interface, and the source concordance is 92 Lean-proved / 386 human-proved
-frontier / 60 non-applicable / 9 conjectures.
+historical 924/11,615 checkpoint.  Two later theorems in
+`ProbabilityLaplaceMoments` make `prop:up-tail` and `cor:up-moments` Exact,
+and the unrelated exhaustive 1+1
+`FabiusFunction.RvachevLegendreBiorthogonality` leaf gives the live
+925/11,619 census.  Its public declarations are
+`Fabius.rvachevLegendreAnalysisKernel` and
+`Fabius.rvachevLegendreBiorthogonality`; they close the normalized translated
+kernel definition and finite Legendre biorthogonality, but not the larger
+Fourier--Bessel or matrix-projector claims.  The q ledger is 181 Exact / 78
+Partial / 15 None / 8 interface, and the source concordance is 94 Lean-proved
+/ 384 human-proved frontier / 60 non-applicable / 9 conjectures.
 All of these sibling source-only additions are likewise absent
 from the retained historical PDFs.
 

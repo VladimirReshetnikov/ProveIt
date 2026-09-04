@@ -383,8 +383,11 @@ three-theorem sharp coefficient-and-degree leaf
 theorem \path{RvachevLaurentLeading.lean} leaf; and the eleven-definition/
 seventeen-theorem \path{FinitePrefixAppellRecovery.lean} leaf; and the
 one-definition/four-theorem
-\path{GeometricUniformMomentRatFunc.lean} leaf.  The live source census is
-924 facade-reachable modules and 11,615 public declarations.
+\path{GeometricUniformMomentRatFunc.lean} leaf; the two-theorem extension of
+the existing \path{ProbabilityLaplaceMoments.lean} module; and the exhaustive
+one-definition/one-theorem
+\path{RvachevLegendreBiorthogonality.lean} leaf.  The live source census is
+925 facade-reachable modules and 11,619 public declarations.
 The sharp
 leaf makes \nolinkurl{prop:qF-P-degree-sharp} Exact and supplies the formerly
 missing leading/odd-degree clause, so the represented
@@ -404,7 +407,9 @@ half-base root-simplicity leaf gave the actual merged-main pre-local checkpoint
 919/11,569, the exterior leaf gave 920/11,572, and the sharp leaf gave the
 historical 921/11,575 checkpoint.  The Laurent leaf then gave 922/11,582, and
 the finite-prefix leaf gave the historical 923/11,610 checkpoint.  The RatFunc
-leaf gives the live 924/11,615 union.  The incoming-branch
+leaf gives the historical 924/11,615 checkpoint, the two probability theorems
+give 924/11,617, and the Legendre biorthogonality leaf gives the live
+925/11,619 union.  The incoming-branch
 906/11,461 and earlier exterior-branch 907/11,464 censuses remain explicitly
 historical.
 The retained
@@ -2728,7 +2733,7 @@ semiring.  The later \path{LambertWBranchGapBernoulli.lean} (0+5),
 \path{GeometricUniformRealization.lean} (1+17), and
 \path{RegularCentralQBinomialSum.lean} (2+1), and
 \path{GaussianBinomialFixedColumnRate.lean} (0+10), and
-\path{RvachevAppellHasse.lean} (1+14) leaves bring the live source census to
+\path{RvachevAppellHasse.lean} (1+14) leaves bring the historical source census to
 the historical 910/11,525 checkpoint.  The later
 \path{GaussianBinomialGreaterOneAsymptotics.lean} (0+2),
 \path{RvachevLagrangeNodesOnly.lean} (1+14), and
@@ -2754,7 +2759,10 @@ historical 921/11,575 checkpoint.  The
 \path{RvachevLaurentLeading.lean} (1+6) leaf then gave 922/11,582, and
 \path{FinitePrefixAppellRecovery.lean} (11+17) gave the historical 923/11,610
 checkpoint.  The \path{GeometricUniformMomentRatFunc.lean} (1+4) leaf gives
-the live 924/11,615 union.
+the historical 924/11,615 checkpoint.  The two-theorem
+\path{ProbabilityLaplaceMoments.lean} extension then gives 924/11,617, and
+the \path{RvachevLegendreBiorthogonality.lean} (1+1) leaf gives the live
+925/11,619 union.
 
 The Laurent leaf makes \nolinkurl{is:p2:thm:Laurent-leading} Exact through
 the manuscript-normalized punctured-neighborhood limit and its Fourier
@@ -2780,8 +2788,8 @@ rational root classifier and Gaussian/half-q coefficient identification,
 makes \nolinkurl{cor:halfbase-root-locus} Exact for the canonical rational
 polynomial.  Injective scalar extension preserves the multiplicities, but
 this does not classify all roots over every extension field.  The q forward
-ledger is 179 Exact / 80 Partial / 15 None / 8 interface rows; its source
-concordance is 92 Lean-proved / 386 human-proved frontier /
+ledger is 181 Exact / 78 Partial / 15 None / 8 interface rows; its source
+concordance is 94 Lean-proved / 384 human-proved frontier /
 60 non-applicable / 9 conjectures.
 
 The nodes-only leaf makes
@@ -2858,6 +2866,26 @@ from central Legendre evaluation, evenness, support truncation, and pairing of
 opposite indices.  It makes only \nolinkurl{cor:leg-central-sum} Exact; no
 Jacobi decoder, reverse spectral closure, or larger Lagrange right-inverse row
 is promoted.
+
+\path{RvachevLegendreBiorthogonality.lean} has exactly the one definition
+\lean{rvachevLegendreAnalysisKernel} and the one theorem
+\lean{rvachevLegendreBiorthogonality}.  The definition is precisely the
+translated normalized analysis kernel
+\[
+ \Lambda_m(c)=\frac{2m+1}{2}\int_{-1}^{1}
+   \RvachevUp(x-c)P_m(x)\,\Differential x,
+\]
+so \nolinkurl{def:leg-Lambda} is Exact.  For every nonzero natural \(M\), all
+\(\ell,m\), and \(\ell\leq\TwoAdicValuation(M)\), the theorem proves
+\[
+ \frac1M\sum_{-2M<k<2M}Q_\ell(k/M)\Lambda_m(k/M)
+ =\begin{cases}1,&m=\ell,\\0,&m\ne\ell.\end{cases}
+\]
+Its integer index set is the literal open block \(\lvert k\rvert<2M\), and
+degree zero is included.  Hence \nolinkurl{thm:leg-biorthogonality} is
+Exact/Complete.  This leaf does not establish the support, smoothness, parity,
+origin-value, and Fourier--Bessel clauses of \nolinkurl{thm:leg-Lambda}, nor
+the finite-matrix projector corollary; those remain outside the promotion.
 
 Within this
 source chronology, the initial zero-definition/
@@ -2944,7 +2972,9 @@ checkpoint.  In the merged chronology the complex product gave the historical
 pre-local 919/11,569 checkpoint, the exterior leaf gave 920/11,572, and the
 sharp-degree leaf gave the historical 921/11,575 checkpoint.  The Laurent leaf
 then gave 922/11,582, and the finite-prefix leaf gave the historical
-923/11,610 checkpoint.  The RatFunc leaf gives the live 924/11,615 census.
+923/11,610 checkpoint.  The RatFunc leaf gives the historical 924/11,615
+checkpoint, the two probability theorems give 924/11,617, and the Legendre
+biorthogonality leaf gives the live 925/11,619 census.
 The existing
 \path{GeometricResidualMoments.lean} module now has zero definitions and nine
 public theorems.  Its
@@ -2967,10 +2997,12 @@ commutative semiring.  Composed with
 rational-polynomial half-base convention.  It needs neither \(b\ne0\) nor
 distinct transformed nodes and includes \(b=0\) and \(n=0\); it does not
 extend the concrete half-base extractor to arbitrary coefficient rings.
-The q forward ledger is 179 Exact / 80 Partial / 15 None / 8 interface rows:
+The q forward ledger is 181 Exact / 78 Partial / 15 None / 8 interface rows:
 \nolinkurl{p7:thm:Pn} moves Partial-to-Exact and
 \nolinkurl{prop:qF-P-degree-sharp} moves None-to-Exact, while the RatFunc
-assembly moves \nolinkurl{thm:qF-moment-polynomial} Partial-to-Exact.
+assembly moves \nolinkurl{thm:qF-moment-polynomial} Partial-to-Exact and the
+probability extension moves \nolinkurl{prop:up-tail} and
+\nolinkurl{cor:up-moments} Partial-to-Exact.
 These
 additions are source-only, and the retained 257-page PDF
 remains explicitly historical; no PDF was built for this update.
@@ -3420,6 +3452,26 @@ the support-free clamped identity---are the three
 \lean{intervalIntegral_survival_smul_eq_integral_of_ae_mem_Icc} declarations in
 \path{SurvivalLayerCake.lean}, all derived from
 \lean{integral_smul_setIntegral_subgraph} in \path{SubgraphFubini.lean}.
+
+The later two-theorem extension of \path{ProbabilityLaplaceMoments.lean} is
+exhaustively
+\lean{weightedSumDistribution_real_Ici_eq_rvachevUp_of_nonneg} and
+\lean{integral_pow_weightedSumDistribution_eq_mul_intervalIntegral_rvachevUp}.
+The first uses the established singleton-null law to identify
+\(\mu_X([t,\infty))=\RvachevUp(t)\) for every \(t\geq0\).  Composed with the
+existing global reflection and nonnegative complement formulas, it makes
+\nolinkurl{prop:up-tail} Exact with the manuscript's closed-tail
+\(\Probability(X\geq t)\) convention.  The second proves
+\[
+ \int_{\RealNumbers}x^n\,\Differential\mu_X(x)
+ =n\int_0^1t^{n-1}\RvachevUp(t)\,\Differential t
+ \qquad(n\in\NaturalNumbers,\ n\geq1),
+\]
+and makes \nolinkurl{cor:up-moments} Exact.  Its expectation is the full-line
+integral against the canonical weighted-sum law; degree zero is intentionally
+excluded because the displayed right side would be zero rather than the
+law's total mass one.  No broader MGF, fractional-moment, or complex-moment
+row is promoted.
 
 \begin{theorem}[Atom-preserving lower-CDF and fractional Fabius layer cake]
 \label{integration:thm:fractional-cdf-layer-cake}
@@ -5574,7 +5626,13 @@ transform/tail series, or inverse specialization;
 The survival function, the finite-measure Banach-valued $L^1$ full and clipped
 survival-kernel identities, their partial/full Rvachev layer-cake specializations,
 the differentiable compact-support Fubini identity, raw and endpoint moment
-identifications, zero-tilt normalization, and positivity; the dyadic almost-sure
+identifications, zero-tilt normalization, and positivity.  Its later exhaustive
+two-theorem extension consists of
+\lean{weightedSumDistribution_real_Ici_eq_rvachevUp_of_nonneg} and
+\lean{integral_pow_weightedSumDistribution_eq_mul_intervalIntegral_rvachevUp},
+which make \nolinkurl{prop:up-tail} and \nolinkurl{cor:up-moments} Exact for
+the closed tail on \(t\geq0\) and natural moments \(n\geq1\), respectively;
+the dyadic almost-sure
 support and restriction declarations
 are owned upstream by \path{ProbabilityRepresentation.lean};
 \cref{integration:sec:survival-fubini,integration:sec:probability-laplace}.\\
@@ -5957,6 +6015,17 @@ synthesis to mesh $2^d$, then to $4^n$ for the even mode, identify each literal 
 translate block with the existing polynomial block on $[-1,1]$, and prove both its complete
 orthogonality and the expanded finite atom-Gram identity.
 
+The later \path{RvachevLegendreBiorthogonality.lean} leaf has the exhaustive
+one-definition/one-theorem public surface
+\lean{rvachevLegendreAnalysisKernel} and
+\lean{rvachevLegendreBiorthogonality}.  The former is the canonical translated
+Legendre analysis kernel, and the latter gives its exact finite Kronecker
+pairing with the deconvolved modes for every nonzero natural mesh satisfying
+\(\ell\leq\TwoAdicValuation(M)\), over the literal open block
+\(-2M<k<2M\).  It makes \nolinkurl{def:leg-Lambda} and
+\nolinkurl{thm:leg-biorthogonality} Exact/Complete, but proves no
+Fourier--Bessel representation or matrix-projector identity.
+
 At compiled source checkpoint \texttt{a3854643d}, the focused-build
 \path{FabiusLegendreTranslateSeries.lean} exports five public definitions:
 \lean{rvachevLegendrePartialSumDeconvolutionPolynomial},
@@ -6001,16 +6070,17 @@ interval supremum norm; raw \texttt{TendstoUniformlyOn}, norm-error-to-zero, and
 forms are exported as well.  No rate, coefficientwise limit, or uniform convergence outside
 $[-1,1]$ is asserted.
 
-The eight modules \path{RvachevMomentAppell.lean},
+The nine modules \path{RvachevMomentAppell.lean},
 \path{RvachevPolynomialSynthesis.lean},
 \path{RvachevSuperconvergentSynthesis.lean},
 \path{LagrangeRvachevSynthesis.lean},
 \path{LagrangeRvachevMatrix.lean},
 \path{CompositeMeshSharpness.lean},
-\path{FabiusLegendreTranslateBlocks.lean}, and
-\path{FabiusLegendreTranslateSeries.lean} have public definition/theorem
-inventories $6/33$, $0/5$, $1/8$, $2/7$, $4/6$, $1/7$, $6/7$, and $5/25$,
-respectively, for exactly $123$ public declarations.  Universal
+\path{FabiusLegendreTranslateBlocks.lean},
+\path{FabiusLegendreTranslateSeries.lean}, and
+\path{RvachevLegendreBiorthogonality.lean} have public definition/theorem
+inventories $6/33$, $0/5$, $1/8$, $2/7$, $4/6$, $1/7$, $6/7$, $5/25$, and
+$1/1$, respectively, for exactly $125$ public declarations.  Universal
 whole-space mesh sharpness is now proved, but minimality for an individual Legendre mode,
 block, or partial sum is not.  Their APIs also do not prove an analytic
 reciprocal-MGF or Appell generating-series identity, a literal differential-series

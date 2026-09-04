@@ -539,6 +539,7 @@ import FabiusFunction.FabiusLegendreGaunt
 import FabiusFunction.FabiusLegendreGauntClosedForm
 import FabiusFunction.FabiusSquareEnergyFourier
 import FabiusFunction.FabiusLegendreTranslateBlocks
+import FabiusFunction.RvachevLegendreBiorthogonality
 import FabiusFunction.RvachevLegendreCentralSum
 import FabiusFunction.FabiusLegendreTranslateSeries
 import FabiusFunction.FabiusBinaryReductionSeries
@@ -1035,6 +1036,27 @@ characteristic function.  The
 leading/subleading coefficient and exact-degree claims of
 `prop:qF-P-degree-sharp` are exactly the sharp-degree companion's three
 theorems, so that label is Exact.
+
+The post-RatFunc union adds exactly two public theorems to
+`ProbabilityLaplaceMoments`:
+`weightedSumDistribution_real_Ici_eq_rvachevUp_of_nonneg` identifies the
+closed survival tail with `rvachevUp` on the whole nonnegative ray, using
+atomlessness to pass from the strict tail, and
+`integral_pow_weightedSumDistribution_eq_mul_intervalIntegral_rvachevUp`
+gives the full-law raw-moment layer-cake formula for every `1 ≤ n`.  Together
+with the existing global up/Fabius identifications these make monograph labels
+`prop:up-tail` and `cor:up-moments` Exact; no degree-zero instance is inferred
+from the positive-degree moment theorem.
+
+The exhaustive public surface of `RvachevLegendreBiorthogonality` is one
+definition, `rvachevLegendreAnalysisKernel`, and one theorem,
+`rvachevLegendreBiorthogonality`.  For `F : BoundedFabius` satisfying
+`IsFabius`, a nonzero natural mesh `M`, and `l ≤ padicValNat 2 M`, the theorem
+gives the exact finite Kronecker pairing on the open block `|k| < 2M`.  Thus
+`thm:leg-biorthogonality` is Exact.  The broader `thm:leg-Lambda` and
+`cor:leg-biorthogonal-matrices` remain incomplete: this leaf supplies neither
+the kernel's support, smoothness, parity, origin, Fourier--Bessel, or dyadic
+rationality clauses nor the bundled projector and reverse-closure results.
 
 The parity-selected Rvachev synthesis layer exports exactly one definition and
 eight theorems.  `IsRvachevSuperconvergentPhase` selects the endpoint phases

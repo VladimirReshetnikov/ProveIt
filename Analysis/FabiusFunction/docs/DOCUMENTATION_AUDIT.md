@@ -112,7 +112,7 @@ numbers rather than copying these historical values.
 The historical post-merge 2026-09-01 inventory contained 675 modules and 8,909
 lexically visible public declarations, with zero missing module headers and
 zero missing doc comments.  A fresh 2026-09-04 audit for this documentation
-pass scans 924 facade-reachable modules and 11,615 public declarations.  It
+pass scans 925 facade-reachable modules and 11,619 public declarations.  It
 finds no missing module header or declaration comment, including throughout
 `FabiusInverseExactDyadicModulus.lean`, `JacobiTwoSquareCount.lean`, and
 `LagrangeRvachevMatrix.lean`, as well as the incoming
@@ -129,13 +129,15 @@ finds no missing module header or declaration comment, including throughout
 `RvachevLegendreCentralSum.lean`, `HalfQBinomialRootSimplicity.lean`,
 `GeometricUniformExteriorComplexMomentGerm.lean`,
 `GeometricUniformMomentPolynomialDegree.lean`,
-`RvachevLaurentLeading.lean`, `FinitePrefixAppellRecovery.lean`, and
-`GeometricUniformMomentRatFunc.lean` leaves,
+`RvachevLaurentLeading.lean`, `FinitePrefixAppellRecovery.lean`,
+`GeometricUniformMomentRatFunc.lean`, and
+`RvachevLegendreBiorthogonality.lean` leaves, together with the strengthened
+`ProbabilityLaplaceMoments.lean` surface,
 as well as the sixteenth theorem in `FinitePolynomialFunctional.lean`.
 Relative to the
-610/8,318 activation checkpoint, the current tree adds 314 modules and 3,297 declarations.
+610/8,318 activation checkpoint, the current tree adds 315 modules and 3,301 declarations.
 Relative to the earlier 630/8,552 merged checkpoint, concurrent source work
-adds 294 modules and 3,063 declarations.  The post-merge 675/8,909 inventory,
+adds 295 modules and 3,067 declarations.  The post-merge 675/8,909 inventory,
 the intervening 903/11,448 Lambert-series inventory, and the immediately
 preceding 914/11,555 scaled-geometric and 915/11,556 real-MGF-bridge
 checkpoints, together with the incoming branch's 906/11,461 complex-product
@@ -147,7 +149,10 @@ the sharp coefficient-and-degree leaf at the historical 921/11,575
 checkpoint.  The one-definition/six-theorem Laurent-leading leaf then gave
 922/11,582, the eleven-definition/seventeen-theorem finite-prefix leaf gave
 the historical pre-RatFunc checkpoint 923/11,610, and the one-definition/
-four-theorem global RatFunc leaf gives the live 924/11,615 census.  On the earlier
+four-theorem global RatFunc leaf gave the historical 924/11,615 checkpoint.
+Two theorems added to `ProbabilityLaplaceMoments.lean` then gave 924/11,617,
+and the one-definition/one-theorem Legendre--Rvachev biorthogonality leaf gives
+the live 925/11,619 census.  On the earlier
 exterior-germ branch, the inner-complex 906/11,461 checkpoint was followed by
 the branch-local 907/11,464 checkpoint; its preceding real-MGF and algebraic
 moment-polynomial checkpoints were 905/11,458 and 904/11,457.  These older
@@ -705,9 +710,12 @@ merged-main pre-local checkpoint 919/11,569; the exterior reciprocal-germ leaf
 then gave 920/11,572; and the sharp coefficient-and-degree leaf gave the
 historical 921/11,575 checkpoint.  `RvachevLaurentLeading.lean` then gave
 922/11,582, `FinitePrefixAppellRecovery.lean` gave the historical pre-RatFunc
-checkpoint 923/11,610, and `GeometricUniformMomentRatFunc.lean` gives the live
-facade inventory 924 modules and 11,615 public declarations, with no missing
-module header or public declaration comment.
+checkpoint 923/11,610, and `GeometricUniformMomentRatFunc.lean` gave the
+historical RatFunc checkpoint 924/11,615.  The two new
+`ProbabilityLaplaceMoments.lean` theorems gave 924/11,617, and
+`RvachevLegendreBiorthogonality.lean` gives the live facade inventory 925
+modules and 11,619 public declarations, with no missing module header or public
+declaration comment.
 
 `FinitePolynomialFunctional.lean` remains a zero-definition module and now has
 exactly sixteen public theorems:
@@ -781,8 +789,10 @@ upstream leaves add exactly two modules and 35 public declarations:
 `RvachevLaurentLeading.lean` gives 922/11,582, and
 `FinitePrefixAppellRecovery.lean` gives the historical pre-RatFunc checkpoint
 923 modules and 11,610 public declarations.  The subsequent global RatFunc
-leaf gives the live 924 modules and 11,615 public declarations, with no missing
-module header or public declaration comment.
+leaf gives the historical 924 modules and 11,615 public declarations; the
+post-RatFunc probability and finite-biorthogonality additions below give the
+live 925 modules and 11,619 public declarations, with no missing module header
+or public declaration comment.
 
 `HalfQBinomialRootSimplicity.lean` has no public definitions and exactly one
 public theorem, `halfQBinomial_sum_rootMultiplicity_two_pow`.  Over `ℚ`, for
@@ -866,7 +876,8 @@ universal fixed-`x` degree statement is added.
 
 `GeometricUniformMomentRatFunc.lean` adds one source module and five public
 declarations to the historical pre-RatFunc 923/11,610 checkpoint, giving the
-live 924 modules and 11,615 public declarations.  Its exhaustive 1+4 surface
+historical RatFunc checkpoint 924 modules and 11,615 public declarations.  Its
+exhaustive 1+4 surface
 is the definition `geometricUniformMomentRatFunc` and the theorems
 `qFactorial_mul_geometricUniformMomentRatFunc`,
 `eval_geometricUniformMomentRatFunc_eq_complexMomentProduct_taylorCoefficient`,
@@ -887,6 +898,38 @@ value is assigned at a genuine pole, and no exact pole divisor or pole-order
 theorem, analytic continuation through `‖q‖=1`, or global holomorphy of the
 exterior reciprocal is claimed.  Label `thm:geometric-uniform-mgf` remains
 **Partial** under the boundary stated above.
+
+#### Closed-tail moments and finite Legendre--Rvachev biorthogonality
+
+The post-RatFunc union first adds exactly two public theorems to the existing
+`ProbabilityLaplaceMoments.lean` module, taking the historical 924/11,615
+RatFunc checkpoint to 924/11,617.  The exhaustive added surface is
+`weightedSumDistribution_real_Ici_eq_rvachevUp_of_nonneg` and
+`integral_pow_weightedSumDistribution_eq_mul_intervalIntegral_rvachevUp`,
+both in `Fabius.ProbabilityRepresentation`.  For `F : BoundedFabius`,
+`IsFabius F`, and real `t ≥ 0`, the first theorem identifies the closed tail
+of `weightedSumDistribution` with `rvachevUp F t`; atomlessness is what passes
+from the previously formalized strict tail to the closed tail.  For every
+natural `n ≥ 1`, the second identifies the full-line expectation of `x^n`
+with `n * ∫ t in (0)..1, t^(n-1) * rvachevUp F t`.  Together with the existing
+global distribution and integrability results, these make `prop:up-tail` and
+`cor:up-moments` **Exact**.  The moment theorem does not assert the `n=0`
+case.
+
+`RvachevLegendreBiorthogonality.lean` then adds one source module and exactly
+one definition plus one theorem, giving the live 925/11,619 inventory.  Its
+exhaustive public surface is `rvachevLegendreAnalysisKernel` and
+`rvachevLegendreBiorthogonality`, both in `Fabius`.  For
+`F : BoundedFabius`, `IsFabius F`, `M : ℕ`, `M ≠ 0`, and
+`l ≤ padicValNat 2 M`, the theorem proves the exact normalized
+analysis/synthesis pairing over the finite open block
+`Finset.Ioo (-(2*M)) (2*M)` (equivalently `|k| < 2M`): the result is
+`if m = l then 1 else 0`.  Thus `thm:leg-biorthogonality` is **Exact**.
+The broader `thm:leg-Lambda` remains incomplete because the kernel's support,
+smoothness, parity, origin values, Fourier--Bessel formula, and dyadic
+rationality are not all formalized; `cor:leg-biorthogonal-matrices` remains
+incomplete because no bundled matrix projector or reverse spectral closure is
+provided.
 
 The one-definition/eight-theorem
 `RvachevSuperconvergentSynthesis.lean` leaf contributes
@@ -1629,7 +1672,7 @@ and 88-page notation-catalogue artifacts likewise predate their current merged
 sources.  Their package notices treat those PDFs as historical validation
 receipts, not parity claims, until fresh uninterrupted three-pass builds
 complete.  The inverse-computability receipt likewise still reflects the
-historical 675/8,909 census and requires refresh against the live 924/11,615
+historical 675/8,909 census and requires refresh against the live 925/11,619
 inventory.  The canonical inverse-theory publication retains a 134-page
 artifact synchronized at its latest-main source checkpoint; the merged
 effective-inversion and superconvergent-synthesis tranches make current parity
