@@ -797,6 +797,7 @@ import FabiusFunction.QuadraticCoreCatalan
 import FabiusFunction.DerangementNearestInteger
 import FabiusFunction.PowerLogCoreInversion
 import FabiusFunction.LinLogCoreInversion
+import FabiusFunction.StaircaseInversion
 
 set_option autoImplicit false
 
