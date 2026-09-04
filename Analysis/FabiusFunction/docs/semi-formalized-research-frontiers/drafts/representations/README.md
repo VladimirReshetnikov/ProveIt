@@ -888,7 +888,7 @@ inverse-concordance promotion; the retained inverse PDF remains a historical
 artifact rather than a render of it.
 The corresponding historical documentation checkpoint was 671 modules and
 8,858 public declarations. After the reciprocity promotion, the q forward
-ledger is 181 Exact / 79 Partial / 14 None / 8 N/A, with chapter splits
+ledger's semantic union is 181 Exact / 79 Partial / 14 None / 8 N/A, with chapter splits
 9/0/0/0 for Half-base and 13/43/0/0 for Dyadic, while the source concordance
 is 103/375/60/9. The merged-main
 increment to 919/11,569 is the exhaustive zero-definition/one-theorem sibling

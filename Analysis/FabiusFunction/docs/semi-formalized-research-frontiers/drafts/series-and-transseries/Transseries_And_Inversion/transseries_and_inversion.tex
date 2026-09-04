@@ -46,6 +46,12 @@
 \usepackage{listings}
 \usepackage[most]{tcolorbox}
 \usepackage[hidelinks]{hyperref}
+\hypersetup{
+  pdftitle={Transseries: the polynomial-logarithmic calculus, series reversal at infinity, and inversion},
+  pdfauthor={Vladimir Reshetnikov; ProveIt formal-development synthesis},
+  pdfsubject={A consolidated and Lean-crosswalked treatment of polynomial-logarithmic transseries and asymptotic inversion},
+  pdfkeywords={transseries, asymptotic inversion, Lambert W, Bell polynomials, Lean formalization}
+}
 \usepackage[nameinlink,noabbrev,capitalise]{cleveref}
 
 \setlength{\parindent}{1.1em}
@@ -37238,12 +37244,12 @@ Lecture Notes in Mathematics, vol.~1888, Springer, Berlin, 2006.
 \chapter{Apparatus for inverting a rapidly growing function}\label{p0:sec:top}
 
 \begin{sourcebox}
-All twelve filed articles carry a private copy of the material of this
+All of the first twelve filed articles carry a private copy of the material of this
 chapter.  The presentation below follows, in the main, the two sections
 \emph{A universal coefficient calculus for exponential--power inversion} and
 \emph{Lambert-normalized inverse transseries} of
 \textsf{Swing\_Factorial\_Transseries\_Article}, which state the reversion in
-the greatest generality of the twelve.  Four things have been changed.
+the greatest generality of the first twelve.  Four things have been changed.
 (i)~The Lagrange fixed-point lemma is reproved: the swing article's proof
 appeals to Lagrange--B\"urmann inversion in a setting where the required
 invertibility hypothesis fails, and the gap is closed here by a universality
@@ -39153,6 +39159,22 @@ value theorem is applied: the proof above takes $[x_\ast-\varrho,x_\ast]$
 precisely because $r_\ast>0$, the slope bound guaranteeing that $f$ has already
 fallen to $\lambda$ by the far end.  Same quantity, two roles, and only the
 second is essential.
+\end{remark}
+
+\begin{remark}[Formal residual certificate]\label{p0:rem:backward-error-lean}
+The ``moreover'' clause is machine-checked by
+\lean{Fabius.exists_eq_in_residual_interval} in
+\lean{MeanValueBracket.lean}.  The Lean theorem is slightly stronger and more
+structural than the displayed specialization: for an arbitrary convex set
+\(D\), continuity on \(D\), differentiability on its interior, and the sole
+lower derivative bound \(m\le f'\) with \(m>0\), containment of
+\([x-|f(x)-z|/m,x+|f(x)-z|/m]\) in \(D\) produces a point \(y\) in that
+same interval with \(f(y)=z\).  It assumes neither a previously known root nor
+the unused upper derivative bound \(M\), and includes the zero-residual and
+degenerate-interval cases.  The two-sided error inequalities remain the
+separate theorems \lean{Fabius.abs_sub_right_inverse_le_div} and
+\lean{Fabius.div_le_abs_sub_right_inverse}, which appropriately require a
+chosen right-inverse value.
 \end{remark}
 
 \begin{remark}[Use in the logarithmic variable]\label{p0:rem:log-residual}
@@ -51100,7 +51122,7 @@ ratio, closed falling-product bridge, and antidiagonal convolution; the last
 four package the displayed shifted coefficient family and verify
 \eqref{p6:eq:quadratic-model} coefficient by coefficient under
 \(A\ne0\) and \(c\ne0\).  The index is shifted so that the convolution runs
-over \texttt{Finset.antidiagonal}; the empty boundary case at (n=1) is
+over \texttt{Finset.antidiagonal}; the empty boundary case at \(n=1\) is
 carried by \lean{Fabius.quadCoef_zero} rather than folded into the recurrence.
 
 The larger \cref{p6:lem:quadratic-core} is only Partial.  The Lean leaf does
@@ -55165,7 +55187,7 @@ prove.
 
 \section{One inversion, four dictionaries}\label{p5:sec:one-inversion}
 
-The four subjects of this volume were written about independently, and their
+The first four subjects of this volume were written about independently, and their
 \emph{forward} analyses have almost nothing in common: a singularity analysis
 of a Pólya functional equation, a pair of gamma-quotient branches, a
 convergent Rademacher series over root-of-unity sectors, and a second, quite
@@ -55223,7 +55245,7 @@ therefore not ``four instances of one model'' but ``four instances of one
 \emph{core calculus}, of which three share a model''.
 
 \paragraph{The Lambert branch is determined by a sign.}
-Each of the twelve articles verifies by hand, for its own case, which branch
+Each of the first twelve articles verifies by hand, for its own case, which branch
 of $\Wlam$ produces the large root; several remark that the appearance of
 $\Wlam_{-1}$ is essential and surprising.  With the signed convention of
 \cref{p0:rem:conventions} it is neither: by \cref{p0:cor:branch-rule} the
@@ -55314,14 +55336,14 @@ inverse.  No amount of further reversion crosses it.
 
 \section{What this consolidation establishes}\label{p5:sec:new}
 
-Several statements in this volume are not in any of its twelve sources.  They
+Several statements in this volume are not in any of its first twelve sources.  They
 are listed here because a reader who knows the sources should be able to see
 quickly what has changed; the corrections themselves are boxed where they
 occur and collected in \cref{app:repairs}.
 
 \begin{enumerate}[label=(\arabic*),leftmargin=*]
 \item \emph{A correct proof of the Lagrange fixed-point formula.}  Five of the
-      twelve articles derive
+      first twelve articles derive
       $\Coef{t^n}U=\sum_{m\le n}\tfrac1m\Coef{t^nu^{m-1}}\Psi^m$ by
       introducing a marker $z$ and applying Lagrange--Bürmann in $z$.  That
       application is not available: Lagrange--Bürmann needs $\varphi(0)$
@@ -55683,7 +55705,7 @@ This volume consolidates twenty-four independently written articles, three on
 each of its eight subjects.  All twenty-four were filed in this repository on
 3~September 2026 as a single quick-intake batch, at
 \texttt{drafts/series-and-transseries/special-function-inversion/}; the
-directories below are relative to that path.  Nothing in the twelve was
+directories below are relative to that path.  Nothing in the twenty-four was
 edited in place: this volume is a new document, and the sources remain
 available in git history.
 
@@ -55878,7 +55900,7 @@ at eighty digits --- give
   r_0^{-}=0.468636627924845548087202621931819314\ldots,
 \]
 and the volume prints only digits it has verified.  This is the one place in
-the twelve articles where a printed numeral is wrong; it is a precision
+the twenty-four articles where a printed numeral is wrong; it is a precision
 failure rather than a mistake in a formula.
 
 \paragraph{An audit appendix that contradicts its own main text.}

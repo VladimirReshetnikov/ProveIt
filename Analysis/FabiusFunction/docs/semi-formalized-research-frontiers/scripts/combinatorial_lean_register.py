@@ -207,7 +207,16 @@ STATUS = {
    r"\cref{eq:complete-bell-recurrence} is Mathlib-free \lean{Bell.complete_succ} together with "
    r"\lean{Fabius.bell_complete_eq_sum_partialBell} (\lean{PartialBellPolynomials}, "
    r"\lean{BellPolynomialInversion}); the boundary values are \lean{Fabius.partialBell_zero_succ}, "
-   r"\lean{Fabius.partialBell_succ_zero}, \lean{Fabius.partialBell_eq_zero_of_lt}"),
+   r"\lean{Fabius.partialBell_succ_zero}, \lean{Fabius.partialBell_eq_zero_of_lt}; the upper "
+   r"variable-support cutoff stated with \cref{eq:partial-bell-definition} is "
+   r"\lean{Fabius.partialBell_congr_of_eq_of_le}, over every commutative semiring"),
+ 'thm:bell-poly-partitions': ('partial',
+   r"\lean{Fabius.coeff_exp_subst_eq_sum_weightedPartitions} "
+   r"(\lean{UnitSeriesBellCoefficients}) identifies a formal exponential coefficient with "
+   r"the finite multiplicity-vector sum indexed by \lean{Fabius.weightedPartitions}; together "
+   r"with \lean{Fabius.coeff_exp_subst_eq_completeBell}, this formalizes the complete weighted "
+   r"multiplicity formula.  Labelled set partitions and the exact-$k$ partial interpretation "
+   r"are not formalized"),
  'thm:bell-poly-egf': ('Lean',
    r"all five identities, as formal power series over any commutative $\mathbb Q$-algebra.  "
    r"The first is \lean{Fabius.bellWeightSeries_pow} and the third "
@@ -217,7 +226,12 @@ STATUS = {
    r"\lean{Fabius.ordPartialBell} with \cref{eq:ordinary-bell-ogf} as "
    r"\lean{Fabius.coeff_pow_eq_ordPartialBell} (\lean{OrdinaryBellComposition}); and "
    r"\cref{eq:ordinary-bell-bivariate} is \lean{Fabius.coeff_exp_subst_smul} "
-   r"(\lean{OrdinaryBellBivariate}).  In both bivariate statements $u$ is a scalar parameter "
+   r"(\lean{OrdinaryBellBivariate}).  The adjacent scaling "
+   r"\cref{eq:ordinary-exponential-scaling} is "
+   r"\lean{Fabius.ordPartialBell_eq_factorialRatio_partialBell}, strengthened without division "
+   r"to \lean{Fabius.factorial_mul_ordPartialBell_eq_factorial_mul_partialBell} over every "
+   r"commutative semiring (\lean{UnitSeriesBellCoefficients}).  In both bivariate statements "
+   r"$u$ is a scalar parameter "
    r"rather than a second formal variable"),
  'thm:bell-poly-specializations': ('Lean',
    r"\cref{eq:bell-first-specialization} is \lean{Fabius.partialBell_factorial_pred}, "
@@ -232,6 +246,15 @@ STATUS = {
  'thm:bell-partial-convolution': ('Lean',
    r"\lean{Fabius.factorial_mul_partialBell_add} (\lean{BellComposition}), in the division-free "
    r"form $(k_1+k_2)!\,B_{n,k_1+k_2}=k_1!k_2!\sum_i\binom ni B_{i,k_1}B_{n-i,k_2}$"),
+ 'thm:bell-near-diagonal': ('partial',
+   r"The edge identities $\ExponentialPartialBellPolynomial nn=x_1^n$, "
+   r"$\ExponentialPartialBellPolynomial n1=x_n$ for $n\ge1$, and "
+   r"$\ExponentialPartialBellPolynomial n{n-1}=\binom n2x_1^{n-2}x_2$ for $n\ge2$ are "
+   r"respectively "
+   r"\lean{Fabius.partialBell_self}, \lean{Fabius.partialBell_one_right}, and "
+   r"\lean{Fabius.partialBell_pred_right} (\lean{PartialBellPolynomials}), over every "
+   r"commutative semiring; the general reduction \cref{eq:bell-near-diagonal}, the two-block "
+   r"identity, and the remaining higher subdiagonals are not formalized"),
  'thm:exponential-composition': ('Lean',
    r"\lean{Fabius.egfA_subst_bellWeightSeries} (\lean{BellComposition}): substitution of "
    r"exponential generating functions over any commutative $\mathbb Q$-algebra"),
@@ -261,10 +284,11 @@ STATUS = {
    r"\lean{Fabius.bernoulliPowerSeries_eq_logDivSeries_subst}: the Bernoulli generating "
    r"function is $\log(1+u)/u$ at $u=\EulerE^t-1$; the two integral representations are not "
    r"formalized"),
- 'thm:bell-bihomogeneous': ('Lean',
-   r"\lean{Fabius.partialBell_mul_left}, \lean{Fabius.partialBell_pow_mul}, "
-   r"\lean{Fabius.partialBell_bihomogeneous} (\lean{BellHomogeneity}), over every commutative "
-   r"semiring"),
+ 'thm:bell-bihomogeneous': ('partial',
+   r"\cref{eq:bell-bihomogeneous} is \lean{Fabius.partialBell_bihomogeneous}, assembled from "
+   r"\lean{Fabius.partialBell_mul_left} and \lean{Fabius.partialBell_pow_mul} "
+   r"(\lean{BellHomogeneity}), over every commutative semiring; "
+   r"\cref{eq:bell-linear-arguments} is not formalized"),
  'thm:eulerian-alternating': ('partial',
    r"\cref{eq:eulerian-alternating} is \lean{Fabius.sum_neg_one_pow_mul_eulerianNumber} "
    r"(\lean{EulerianAlternating}), from the Eulerian EGF at $t=-1$ "
@@ -359,18 +383,22 @@ STATUS = {
    r"\lean{Fabius.sum_choose_bell_add_eq_sum_neg_one_pow} (\lean{BellInversionTwo}), proved "
    r"not by the Poisson argument but by showing both sides satisfy "
    r"$H(n,k+1)=H(n+1,k)-H(n,k)$ and agree at $k=0$"),
- 'thm:second-reverse-recurrences': ('partial',
+ 'thm:second-reverse-recurrences': ('Lean',
    r"\cref{eq:second-triangular-explicit} is "
    r"\lean{Fabius.stirlingSecond_eq_pow_div_factorial_sub_sum} (\lean{StirlingTriangularExplicit}), "
-   r"for all $n,k$ with the $r=0$ term included; \cref{eq:second-reverse-column} is "
+   r"for all $n,k$ with the $r=0$ term included; \cref{eq:second-reverse-row} is "
+   r"\lean{Fabius.second_reverse_row} (\lean{StirlingSecondReverseRow}), in a division-free "
+   r"integral form assuming only $1\le k$ and covering $n\le k$, with $i=j-2$ and "
+   r"$\binom{-k}{i+2}=(-1)^{i+2}\binom{k+i+1}{i+2}$; its one-variable series steps are "
+   r"\lean{Fabius.coeff_logTail} and \lean{Fabius.subst_logTail}.  "
+   r"\cref{eq:second-reverse-column} is "
    r"\lean{Fabius.second_reverse_column} (\lean{StirlingSecondReverseColumn}), by the "
    r"column differential equation $(1-\EulerE^{-x})F_k'=kF_k$ "
-   r"(\lean{Fabius.one_sub_altSeries_mul_derivative_egfA_stirlingSecond}); "
-   r"new source \lean{Fabius.second_reverse_row} (\lean{StirlingSecondReverseRowIdentity}) "
-   r"supplies \cref{eq:second-reverse-row} over every commutative ring by extracting "
-   r"coefficients from \lean{Fabius.subst_logTail}; \lean{Fabius.second_reverse_row_sum} "
-   r"gives the unrestricted rational-index version.  Compiler validation of the new "
-   r"row identities is pending."),
+   r"(\lean{Fabius.one_sub_altSeries_mul_derivative_egfA_stirlingSecond}).  The alternate "
+   r"commutative-ring form \lean{Fabius.second_reverse_row_commRing_of_le} and the stronger "
+   r"unrestricted rational-index form \lean{Fabius.second_reverse_row_sum} in "
+   r"\lean{StirlingSecondReverseRowIdentity} remain source-reviewed pending compiler "
+   r"validation and are not used for this status."),
  'thm:eulerian-stirling': ('Lean',
    r"\lean{Fabius.sum_eulerianNumber_mul_X_pow_eq_sum_stirlingSecond} (\lean{EulerianStirling}), "
    r"as an identity in $R[[t]]$ over any commutative ring $R$, from the rising-factorial "
@@ -582,16 +610,22 @@ STATUS = {
    r"$\StirlingSecondKind{n+r}{k+r}_{\!r}=\sum_j\binom nj\StirlingSecondKind jk r^{n-j}$ is "
    r"\lean{Fabius.rStirlingShift_eq_sum} and \cref{eq:r-stirling-egf} is "
    r"\lean{Fabius.egfA_rStirlingPoly}; the distinct-blocks count is not formalized."),
- 'thm:merged-cauchy-polynomials': ('partial',
+ 'thm:merged-cauchy-polynomials': ('Lean',
    r"Module \lean{CauchyPolynomials} defines $b_n$ by \cref{eq:merged-bernoulli-second-egf} "
-   r"(\lean{Fabius.cauchyPoly}): \cref{eq:merged-cauchy-derivative} is "
-   r"\lean{Fabius.derivative_cauchyPoly_succ}, \cref{eq:merged-cauchy-difference} is "
-   r"\lean{Fabius.cauchyPoly_succ_eval_add_one_sub}, \cref{eq:merged-cauchy-addition} is "
-   r"\lean{Fabius.cauchyPoly_eval_add}, \cref{eq:merged-cauchy-explicit} is "
+   r"(\lean{Fabius.cauchyPoly}); its evaluated EGF over every commutative $\mathbb Q$-algebra "
+   r"is \lean{Fabius.egfA_cauchyPoly_aeval}.  \cref{eq:merged-cauchy-derivative} is "
+   r"\lean{Fabius.derivative_cauchyPoly_succ}, and \cref{eq:merged-cauchy-addition} is "
+   r"\lean{Fabius.cauchyPoly_aeval_add}, including $n=0$ and over every commutative "
+   r"$\mathbb Q$-algebra.  Module \lean{CauchyPolynomialReflection} supplies "
+   r"\cref{eq:merged-cauchy-difference} as \lean{Fabius.cauchyPoly_succ_aeval_add_one_sub}.  "
+   r"\cref{eq:merged-cauchy-explicit} is "
    r"\lean{Fabius.cauchyPoly_succ_eq} and \cref{eq:merged-cauchy-stirling-numbers} is "
-   r"\lean{Fabius.cauchyPoly_eval_zero}; the integral representation "
-   r"\cref{eq:merged-cauchy-integral} and the reflection \cref{eq:merged-cauchy-reflection} "
-   r"are not formalized."),
+   r"\lean{Fabius.cauchyPoly_eval_zero}.  Module \lean{CauchyPolynomialReflection} proves the "
+   r"actual real interval integral as \lean{Fabius.cauchyPoly_aeval_eq_integral} and the "
+   r"reflection in $\mathbb Q[X]$ and every commutative $\mathbb Q$-algebra as "
+   r"\lean{Fabius.cauchyPoly_reflect} and \lean{Fabius.cauchyPoly_aeval_reflect}, including "
+   r"$n=0$.  The analytic convergence and branch assertion attached to the defining EGF lies "
+   r"outside this theorem and outside the scope of these formal declarations"),
  'lem:coeff-rules': ('partial',
    r"The three formal rules are \lean{Fabius.coeff_mul_eq_sum_range} "
    r"(\cref{eq:cauchy}), \lean{Fabius.coeff_derivative_eq} (\cref{eq:der-coeff}) and "
@@ -697,14 +731,29 @@ STATUS = {
    r"\lean{Fabius.stirlingSecond_prime_eq_zero_zmod} ($p\mid\StirlingSecondKind pk$ for $1<k<p$); "
    r"\cref{eq:touchard} is \lean{Fabius.bell_add_prime_modEq} (\lean{TouchardCongruence})"),
  'thm:faa-partition': ('partial',
-   r"the analytic statement is not formalized; its formal power-series analogue, the "
-   r"coefficients of $F(G(t))$ through partial Bell polynomials, is "
+   r"the analytic set-partition sum is not formalized; its Bell-grouped abstract derivation "
+   r"analogue is \lean{Fabius.iterate_derivation_eq_sum_partialBell} "
+   r"(\lean{BellLeibnizTower}), for any commutative $\mathbb Q$-algebra with a derivation and "
+   r"a Leibniz tower.  The formal-power-series composition analogue is "
    r"\lean{Fabius.egfA_subst_bellWeightSeries} (\lean{BellComposition})"),
  'thm:faa-multiplicity': ('partial',
-   r"the analytic statement is not formalized; the formal power-series analogue "
-   r"\lean{Fabius.egfA_subst_bellWeightSeries} carries the Bell-polynomial form, with the "
-   r"partial Bell polynomials defined by the pointing recurrence rather than by the multiplicity "
-   r"sum"),
+   r"the Bell-polynomial form \cref{eq:faa-bell} has the abstract derivation generalization "
+   r"\lean{Fabius.iterate_derivation_eq_sum_partialBell} (\lean{BellLeibnizTower}), for any "
+   r"commutative $\mathbb Q$-algebra with a derivation and a Leibniz tower; the analytic "
+   r"function instance and the explicit multiplicity sum \cref{eq:faa-multiplicity} are not "
+   r"formalized"),
+ 'alg:merged-composition': ('Lean',
+   r"\lean{Fabius.coeff_pow_eq_ordPartialBell}, with "
+   r"\lean{Fabius.ordPartialBell_zero_right} and \lean{Fabius.ordPartialBell_succ_right}, gives "
+   r"the initialized power table and its recurrence; "
+   r"\lean{Fabius.coeff_subst_eq_sum_ordPartialBell} gives the composition coefficient "
+   r"(\lean{OrdinaryBellComposition}), over every commutative ring"),
+ 'alg:merged-lagrange-reversion': ('Lean',
+   r"the division-free form $n g_n=[z^{n-1}]\phi^n$ is "
+   r"\lean{Fabius.Lagrange.coeff_solution} (\lean{LagrangeInversion}) for the constructed "
+   r"solution of $G=z\phi(G)$; \lean{Fabius.reversion} and "
+   r"\lean{Fabius.subst_egfA_reversion} (\lean{InverseBellCoefficients}) specialize this to "
+   r"$\phi=z/F(z)$ and prove that the constructed series inverts $F$"),
  'thm:merged-raabe': ('Lean',
    r"\lean{Fabius.raabe} (\lean{RaabeMultiplication}), in the form "
    r"$\sum_{r<q}\beta_n(x+r/q)=q\,(1/q)^n\beta_n(qx)$, proved from the generating functions in "

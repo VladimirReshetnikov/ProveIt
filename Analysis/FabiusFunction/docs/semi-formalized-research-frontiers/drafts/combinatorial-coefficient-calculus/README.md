@@ -24,20 +24,37 @@ The standard-library
 [`validate_canonical.py`](Combinatorial_Coefficient_Calculus/validate_canonical.py)
 checks LaTeX structure, labels, references, citations, proof pairing, exact
 source coverage, Git object availability, and the one-publication layout;
-run it with `--final`, which is the
-mode this package is now expected to pass.
+run it with `--final`, which is the mode this package is expected to pass at a
+publication checkpoint.
 
 | Directory | Document |
 | --- | --- |
 | `Combinatorial_Coefficient_Calculus/` | **Canonical:** *Combinatorial Coefficient Calculus* — the evolving source and the retained upstream A4 PDF |
 
-Upstream supplied a rebuilt PDF at its checkpoint. The latest merged source
-includes subsequent Stirling and Nörlund changes, so that retained PDF is not
-claimed to render the current source. Further PDF building remains skipped in
-this work at the user's request. Standalone
-checksum files are retired; provenance is kept
-in Git and the source inventory, and the validator does not maintain or require
-file digests.
+Upstream supplied a rebuilt PDF at its checkpoint. The merged source includes
+subsequent Stirling, Nörlund, Bell, and Cauchy-polynomial changes, so that
+retained PDF is historical and is not claimed to render the current source.
+Further PDF building is deferred at the user's request. Standalone checksum
+files are retired; provenance is kept in Git and the source inventory, and the
+validator does not maintain or require file digests.
+
+## Additional exact correspondences retained in the merge
+
+Crosswalk work closes the full Cauchy-polynomial theorem block: the
+formal and real interval integrals, reflection, and generic generating-function
+and addition laws are now represented, with the latter two valid after
+evaluation in any commutative rational algebra. The analytic convergence and
+branch assertion attached to the generating function remains outside that
+formalized theorem block. The second-kind reverse-row recurrence is now
+machine checked in a division-free integral form, including its zero boundary
+case beyond the range used by the displayed human formula; the separately
+merged unrestricted rational-index source identity remains pending validation
+under its collision-free declaration name. The ordinary versus
+exponential Bell normalization now has both its rational ratio form and a
+denominator-free commutative-semiring form, together with functoriality and the
+upper variable-support cutoff. The sharpness witness for that cutoff, the
+general Bell near-diagonal reduction, its two-block case, and the higher
+subdiagonals remain human-only or partial as recorded in the register.
 
 ## What the final merge changed
 
@@ -96,7 +113,7 @@ The compiled zero-definition/eight-theorem
 `prod_inv_one_sub_natCast_mul_eq_inv_pow_mul_descPochhammer_eval_inv`, cover
 the scalar factorization and reciprocal spelling. Together they make
 `thm:second-ogf` **Lean** with the corrected hypotheses. The retained PDF was
-not rebuilt for this source-only overlay, so no PDF or checksum parity is
+not rebuilt for this source-only overlay, so no current render parity is
 claimed for it.
 
 ## What this package does not claim

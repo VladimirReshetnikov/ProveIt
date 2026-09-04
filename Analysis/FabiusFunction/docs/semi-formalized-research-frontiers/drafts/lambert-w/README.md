@@ -56,7 +56,7 @@ with SHA-256 provenance in the document itself (git history is the
 archive).
 
 The synchronized publication receipt (2026-09-04) records a historical
-checkpoint superseded by the current `b899` receipt below. The checkpoint
+checkpoint superseded by the historical `69b447f7c` receipt below. The checkpoint
 comprised the
 4,876-line, 177,511-byte TeX source at SHA-256
 `d852a345685dd61335a89fc4fd1092680bdc597a5d1e6ac612883946ad0d99ea`.

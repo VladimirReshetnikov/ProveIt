@@ -135,28 +135,7 @@ finds no missing module header or declaration comment, including throughout
 `QPochhammerLambertForm.lean`, `CentralQVandermondeInfinite.lean`,
 `ThueMorseNewmanSelfSimilarity.lean`, `TriangularPowerProduct.lean`,
 `DyadicBoundaryIdentity.lean`, `MeanValueBracket.lean`, and
-`FinitePrefixThueMorseCollapse.lean`, `ProuhetBaseTwoBridge.lean`,
-`UnitSeriesBellCoefficients.lean`, `TransseriesWellBased.lean`,
-`TransseriesHeight.lean`, `TransseriesScale.lean`,
-`TransseriesScaleDominance.lean`, `TransseriesPolyLogScale.lean`,
-`TransseriesBlockAntiderivative.lean`, `TransseriesDifferentialBlock.lean`, and
-`QuadraticCoreCatalan.lean` leaves, and the later
-`DerangementNearestInteger.lean`, `LinLogCoreInversion.lean`,
-`OrdinaryPartialBell.lean`, `PowerLogCoreInversion.lean`,
-`RemainderTransport.lean`, `StaircaseInversion.lean`,
-`TransseriesFlat.lean`, `TransseriesHarmonicIncrement.lean`, and
-`WrightOmega.lean` tranche together with the integer-exponent extension of
-`TransseriesDifferentialBlock.lean`,
-together with `BackwardErrorExistence.lean`, `CayleyKernel.lean`,
-`CayleyLocalCoordinate.lean`, `CayleyTreeFunction.lean`,
-`DivisorTransform.lean`, `ExpSeriesRecurrence.lean`,
-`FabiusEndpointTwoTerm.lean`, `LambertCorrectionEquation.lean`,
-`LambertShiftConcavity.lean`, `LaplaceMomentBoundsSharp.lean`,
-`LeastTermIndex.lean`, `TouchardEulerOperator.lean`,
-`TransseriesBlockClasses.lean`, `TransseriesDifferentialClosure.lean`, and
-`TransseriesMonomialUniqueness.lean`,
-together with `StirlingSeriesCoefficients.lean`,
-`WrightOmegaTwoOrders.lean`, and `UnitSeriesPowerRecurrence.lean`,
+`FinitePrefixThueMorseCollapse.lean`, `ProuhetBaseTwoBridge.lean` leaves,
 together with the strengthened
 `ProbabilityLaplaceMoments.lean` surface,
 as well as the sixteenth theorem in `FinitePolynomialFunctional.lean` and the
@@ -718,29 +697,25 @@ q-Gamma quotient, like the product evaluation used in the proof, is zero.
 This closes `thm:regular-central-sum`; it does not formalize the separate
 classical-limit corollary.
 
-#### Effective fixed-column Gaussian-rate tranche and current ownership
+#### Effective fixed-column Gaussian-rate tranche
 
-At its historical incoming checkpoint, `GaussianBinomialFixedColumnRate.lean`
-was 0+10.  In the merged union it is 0+9, while the generalized product bound
-and arbitrary fixed-shift limit are canonically owned by
-`QBinomialTheoremInfinite.lean`.  Its current exhaustive names are
-`norm_finiteQPochhammerIn_pow_sub_one_le_exp'`,
+`GaussianBinomialFixedColumnRate.lean` adds one source module, no definitions,
+and exactly ten theorems:
+`norm_finiteQPochhammerIn_pow_sub_one_le_exp`,
 `norm_finiteQPochhammerIn_pow_sub_one_le`,
 `norm_finiteQPochhammerIn_self_mul_gaussianBinomial_sub_one_le`,
 `norm_gaussianBinomial_sub_inv_finiteQPochhammerIn_le`,
 `norm_gaussianBinomial_add_sub_inv_finiteQPochhammerIn_le`,
+`tendsto_gaussianBinomial_add_atTop`,
 `gaussianBinomial_fixedColumn_relativeError_isBigO`,
 `gaussianBinomial_shifted_fixedColumn_relativeError_isBigO`,
 `gaussianBinomial_fixedColumn_error_isBigO`, and
-`gaussianBinomial_shifted_fixedColumn_error_isBigO`.  The two current
-`QBinomialTheoremInfinite` names are
-`norm_finiteQPochhammerIn_pow_sub_one_le_exp_of_norm_le_one` and
-`tendsto_gaussianBinomial_add_const_atTop`.
+`gaussianBinomial_shifted_fixedColumn_error_isBigO`.
 
-The upstream `norm_finiteQPochhammerIn_pow_sub_one_le_exp` and the first local
-estimate hold in every normed commutative ring with normalized multiplicative
-norm when `‖q‖ ≤ 1`: they bound `‖(q^m;q)_k-1‖` first by
-`exp(k‖q‖^m)-1` and then by `(k exp k)‖q‖^m`.  Under `k≤n`, the next local theorem gives the denominator-free relative
+The first two estimates hold in every normed commutative ring with normalized
+multiplicative norm when `‖q‖ ≤ 1`: they bound
+`‖(q^m;q)_k-1‖` by `exp(k‖q‖^m)-1` and then by
+`(k exp k)‖q‖^m`.  Under `k≤n`, the third gives the denominator-free relative
 bound `‖(q;q)_k[n,k]_q-1‖ ≤ (k exp k)‖q‖^(n-k+1)`, which remains meaningful at
 roots of unity.  Over any normed field, `‖q‖<1` suffices for the fixed and
 shifted nonasymptotic additive bounds and all four
@@ -754,11 +729,9 @@ theorems discharge every clause of `thm:fixed-column-limit`; the two additive
 theorems are stronger companion estimates.
 
 Together with the prior 905/11,474 branch inventory and the three-declaration
-Lambert leaf, the geometric-uniform and regular-central leaves, the incoming
-pre-dedup ten-theorem version gave the historical fixed-column checkpoint of
-909 modules and 11,508 public declarations.  Canonical upstream ownership of
-the two shared names changes the per-module split, not that historical branch
-census.
+Lambert leaf, the geometric-uniform and regular-central leaves, and this final
+ten-theorem leaf, the fixed-column checkpoint was 909 modules and 11,508
+public declarations.
 
 #### Greater-than-one Gaussian asymptotics
 
@@ -1245,6 +1218,21 @@ not limits.  Accordingly both `is:p2:thm:finite-prefix-expansion` and
 `is:p2:thm:exact-recovery` are **Exact**.  No analytic MGF convergence or
 universal fixed-`x` degree statement is added.
 
+#### Completed dyadic derivative filtration
+
+`DyadicDerivativeFiltration.lean` has zero definitions and six theorems:
+`rvachevUp_eq_zero_of_one_le_abs`,
+`iteratedDeriv_rvachevUp_dyadic_eq_zero`,
+`iteratedDeriv_rvachevUp_dyadic_critical`,
+`dyadic_depth_eq_max_nonzero_iteratedDeriv`,
+`iteratedDeriv_rvachevUp_eq_extendedFabius`, and
+`iteratedDeriv_rvachevUp_dyadic_below`.  The first four give support
+vanishing, above-depth vanishing, the signed critical-depth value, and exact
+depth detection.  The final two are the new declarations: the first identifies
+every up derivative at every `x<1` with the scaled signed global Fabius value,
+and the second specializes it for `m<n` and `a<2^n` to the report's
+denominator-`2^(n-m)` dyadic formula.
+
 #### Global geometric-uniform moment RatFunc bridge
 
 `GeometricUniformMomentRatFunc.lean` adds one source module and five public
@@ -1448,7 +1436,8 @@ Barnes-function identification.
 #### Base-two Prouhet, printed dyadic boundary, and Newman oscillation overlay
 
 The incoming tranche adds one module and fourteen public declarations to the
-historical 933/11,695 checkpoint, giving the historical 934/11,709 inventory.  The
+historical 933/11,695 checkpoint, giving the historical 934/11,709
+pre-transseries inventory.  The
 delta is the union of the new zero-definition/six-theorem
 `ProuhetBaseTwoBridge.lean` leaf, one theorem added to
 `DyadicBoundaryIdentity.lean`, and seven theorems added to
@@ -2050,9 +2039,9 @@ two product definitions is counted.
 The final incoming seven-module increment consists of the four-theorem
 `GaussianBinomialAtNegOneDerivative.lean` leaf described above and six further
 q-series modules contributing exactly sixty-nine declarations.
-At that checkpoint, `QBinomialTheoremInfinite.lean` contributed one definition
-and twenty-two theorems: real comparison products and Gaussian majorants,
-fixed-column convergence, Tannery transfer, Euler's product and reciprocal expansions, and
+`QBinomialTheoremInfinite.lean` contributes one definition and twenty-two
+theorems: real comparison products and Gaussian majorants, fixed-column
+convergence, Tannery transfer, Euler's product and reciprocal expansions, and
 the infinite q-binomial theorem over complete normed fields under the stated
 strict nome and series-variable contractions.  The reused theorem
 `finiteQPochhammerIn_zero_left` remains canonically owned by
@@ -2072,9 +2061,7 @@ one definition and nine theorems: finite commutative-(semi)ring boundary and
 recurrence laws, plus the complete-normed-field generating series under
 `‖q‖ < 1`, `‖t‖ < 1`, and `‖z*t‖ < 1`.  These six module counts sum to
 69, and with the four q=-1 derivative declarations give the deduplicated
-73-name incoming increment.  Those 1+22, 69, and 73 counts are historical;
-the current-tip expansion of `QBinomialTheoremInfinite.lean` is recorded in
-the synchronized inventory below.  The two subsequent
+73-name incoming increment.  The two subsequent
 `QPochhammerInfinite.lean` theorems brought that historical feature snapshot
 from 622/8,472 to 629/8,547, a seven-module/75-declaration change.  The two
 inverse-computability modules then brought that feature snapshot to 631/8,556,
@@ -2087,11 +2074,8 @@ thirteen declarations and brought the audit to 659/8,768.  Two Gaussian
 linear-coefficient theorems then brought it to 659/8,770, and the
 eight-declaration `EffectiveGapInverse.lean` leaf brought the audit to
 660/8,778.  The superconvergent synthesis leaf adds one module and nine
-declarations, yielding 661/8,787.  At that checkpoint the four
-root-of-unity/q-Catalan modules were recorded as a twenty-six-declaration
-tranche, yielding 665/8,813.  After the later `QLucas` correction, their
-current exhaustive total is twenty-five declarations (0+3, 0+3, 1+11,
-and 0+7).  The original Jackson
+declarations, yielding 661/8,787.  The four root-of-unity/q-Catalan modules
+add twenty-six declarations, yielding 665/8,813.  The original Jackson
 q-beta/Newton pair adds twenty-four declarations, yielding 667/8,837; the
 integer/complex upper Gaussian and q-Pfaff--Saalschuetz leaves add twenty,
 yielding 670/8,857; and the noncommutative q-multinomial leaf adds five,
@@ -2722,6 +2706,13 @@ an exact least endpoint-mass denominator.  The third module,
 above, and supplies the generic rational-gap-to-modulus bridge; its clamped
 extension boundary remains explicit.
 
+**Deferred publication status.**  The fixed-26 publication check—14 fresh build
+cycles and 12 retained verified pairs—is recorded once in the
+[draft manifest](semi-formalized-research-frontiers/drafts/MANIFEST.md#fixed-26-publication-checkpoint).
+A row still marked pending makes no synchronization claim.  The exact older
+receipts below remain historical evidence; under the user-directed deferral,
+the fixed-26 table is an inventory rather than a merged-current parity receipt.
+
 Four direct artifact receipts record the last synchronized pre-9135 source/PDF
 pairs and are now historical because the live sources include the new
 q-Chu/reversal, geometric-generating, Gaussian second-moment, and Lambert
@@ -2780,8 +2771,8 @@ reference/rerun/error checks, metadata, A4 rotation zero, every-page render and
 nonblank-text checks, embedded/subset fonts with Libertinus and no Type 3, and
 representative visual checks all passed; generated sidecars were cleaned and
 forbidden checksum-ledger basenames were absent.  These six pairs remain
-historical receipts for their named source checkpoints; the current `b899`
-publication receipts below supersede them where a rebuilt root is listed.
+historical receipts for their named source checkpoints; the later historical
+`b899` receipts below superseded them where a rebuilt root was listed.
 
 - Primary exposition: TeX 14,328 lines / 715,760 bytes / SHA-256
   `60c0a6ff4e75ec37e6928067859671d87622ad8f430a1006dd4c71c7e7b25674`;
@@ -2827,7 +2818,9 @@ publication receipts below supersede them where a rebuilt root is listed.
 
 **Historical `b899` synchronized publication receipts (2026-09-04).** Each pass
 tuple below is `pages/bytes`.  All ten roots were frozen and built in exactly
-three serial halt-on-error passes from absent sidecars.
+three serial halt-on-error passes from absent sidecars.  Subsequent merged
+source changes make these receipts historical; the deferred rebuild inventory
+is recorded in the fixed-26 checkpoint linked above.
 
 - Primary exposition: TeX 15,148 lines / 759,509 bytes / SHA-256
   `721cb901de2254ef48991452c4831762f54a36e0a405b4bbeb7f812653e71754`;
@@ -2912,15 +2905,14 @@ Lambert horizontal box (0.83 pt), and one canonical-frontier horizontal box
 (9.43108 pt), all nonblocking. The final aggregate TeX closure contains 76
 files / 140,223 lines / 6,439,569 bytes, with direct aggregate digest
 `ae8690ad8d160055cbae36eff96d858f87572d171e7aacf7540d67543998af21`.
-At `b899`, all ten source/PDF rows were synchronized.  They are now historical
-provenance for their named checkpoints because the merged Lean sources have
-moved beyond them.
+All ten rows were synchronized at the named `b899` checkpoint; they and the
+earlier receipts below remain historical provenance for their named sources.
 
 The B2--B11 publication roots retain exact synchronized or historical receipts
 at their named checkpoints. Their pass, byte-progression, font, and common-gate records are kept in
 `docs/semi-formalized-research-frontiers/drafts/MANIFEST.md` and the local
 package records. The rows below are the earlier B2--B11 checkpoint ledger; B7
-is superseded by the current Up receipt above. The recorded pairs were:
+was superseded by the later historical Up receipt above. The recorded pairs were:
 
 - B2 Frontier Compilations: 17,311 lines / 748,733 bytes /
   `600bab0556c95661c6963438ea3e8e5ed1c691af36d64e1c105435199e605736` →

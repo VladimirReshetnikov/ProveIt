@@ -73,13 +73,17 @@ Automatically generated structure projections are outside both tallies.
   `natDegree_blockOperator`, `blockOperator_injective`,
   `blockOperator_bijective`, `derivative_resonantAntiderivative`,
   `derivative_surjective`, and `natDegree_resonantAntiderivative`.
-- `TransseriesDifferentialBlock.lean` (twelve theorems):
-  `derivation_pow_t`, `derivation_block`, `derivation_zpow_block`,
+- `TransseriesDifferentialBlock.lean` (one definition, twenty theorems):
+  `derivation_pow_t`, `derivation_block`, `successiveBlockOperator`,
+  `successiveBlockOperator_zero`, `successiveBlockOperator_succ_last`,
+  `blockOperator_comm`, `blockOperator_successiveBlockOperator`,
+  `successiveBlockOperator_add`, `successiveBlockOperator_succ_first`,
+  `derivation_iterate_block`, `derivation_zpow_block`,
   `exists_zpow_block_primitive`, `existsUnique_zpow_block_primitive`,
   `exists_block_primitive`,
   `derivation_block_zero`, `exists_block_primitive_resonant`,
-  `derivation_val_inv`, `derivation_pow_inv`, `derivation_zpow_t`, and
-  `derivation_block_zpow`.
+  `derivation_val_inv`, `derivation_pow_inv`, `derivation_zpow_t`,
+  `derivation_block_zpow`, and `derivation_iterate_block_zpow`.
 - `UnitSeriesBellCoefficients.lean` (sixteen theorems):
   `ordPartialBell_eq_factorialRatio_partialBell`,
   `factorial_mul_ordPartialBell_eq_factorial_mul_partialBell`,
@@ -247,7 +251,9 @@ overstated it. The accurate tally, of six apparent overlaps:
 * **one strengthening in the inversion apparatus's favour** — the calculus has
   the one-sided mean-value bound, while the inversion apparatus has the
   two-sided bracket *and* the root-existence certificate, so the calculus's
-  proposition is a corollary of it and not conversely;
+  proposition is a corollary of it and not conversely.  The certificate is now
+  machine-checked as `Fabius.exists_eq_in_residual_interval`; unlike the two
+  error inequalities, it assumes no pre-existing root or right inverse;
 * **one item with no counterpart** — the calculus defines only the exponential
   Bell family; the ordinary family is new;
 * **three pairs that are different theorems about the same subject** —

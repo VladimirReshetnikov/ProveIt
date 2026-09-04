@@ -3,6 +3,7 @@ import FabiusFunction.ExponentialBell
 import FabiusFunction.FallingFactorialSeries
 import FabiusFunction.InverseBellCoefficients
 import FabiusFunction.OrdinaryBellComposition
+import Mathlib.Algebra.MvPolynomial.Eval
 
 /-!
 # Bell-polynomial coefficients of powers, logarithms, and exponentials
@@ -23,6 +24,8 @@ or choice of a logarithm branch is involved.
 
 * `ordPartialBell_eq_factorialRatio_partialBell` is the ordinary/exponential
   Bell normalization.
+* `factorial_mul_ordPartialBell_eq_factorial_mul_partialBell` is its
+  division-free form over every commutative semiring.
 * `coeff_fallingSeries_subst_eq_sum_ordPartialBell` gives arbitrary formal
   powers of a unit series.
 * `coeff_negBinomSeries_subst_eq_sum_ordPartialBell` gives negative integral
@@ -79,20 +82,47 @@ theorem ordPartialBell_eq_factorialRatio_partialBell
       congr 2
       ring
 
-/-- Denominator-cleared form of the ordinary/exponential Bell conversion. -/
-theorem factorial_mul_ordPartialBell_eq_factorial_mul_partialBell
-    (x : ℕ → A) (n k : ℕ) :
-    (n.factorial : A) * ordPartialBell x n k =
-      (k.factorial : A) *
-        partialBell (fun j => (j.factorial : A) * x j) n k := by
-  rw [ordPartialBell_eq_factorialRatio_partialBell A]
-  rw [show (n.factorial : A) = algebraMap ℚ A (n.factorial : ℚ) by simp,
-    show (k.factorial : A) = algebraMap ℚ A (k.factorial : ℚ) by simp]
-  rw [← mul_assoc, ← map_mul]
-  congr 2
-  field_simp
-
 end BellConversion
+
+section BellConversionCleared
+
+variable {R : Type*} [CommSemiring R]
+
+/-- **Division-free ordinary/exponential Bell conversion.** For every
+commutative semiring,
+`n! B̂_{n,k}(x) = k! B_{n,k}(1!x₁, 2!x₂, …)`.
+
+The statement is first descended from the rational identity to the universal
+polynomial over `ℕ`; evaluating that polynomial gives the result in an
+arbitrary commutative semiring. -/
+theorem factorial_mul_ordPartialBell_eq_factorial_mul_partialBell
+    (x : ℕ → R) (n k : ℕ) :
+    (n.factorial : R) * ordPartialBell x n k =
+      (k.factorial : R) *
+        partialBell (fun j => (j.factorial : R) * x j) n k := by
+  have hpoly :
+      (n.factorial : MvPolynomial ℕ ℕ) *
+          ordPartialBell (fun j => MvPolynomial.X j) n k =
+        (k.factorial : MvPolynomial ℕ ℕ) *
+          partialBell
+            (fun j => (j.factorial : MvPolynomial ℕ ℕ) * MvPolynomial.X j) n k := by
+    apply MvPolynomial.map_injective (Nat.castRingHom ℚ) Nat.cast_injective
+    rw [map_mul, map_ordPartialBell, map_mul, map_partialBell]
+    simp only [map_mul, map_natCast, MvPolynomial.map_X]
+    rw [ordPartialBell_eq_factorialRatio_partialBell (MvPolynomial ℕ ℚ)]
+    rw [show (n.factorial : MvPolynomial ℕ ℚ) =
+          algebraMap ℚ (MvPolynomial ℕ ℚ) (n.factorial : ℚ) by simp,
+      show (k.factorial : MvPolynomial ℕ ℚ) =
+          algebraMap ℚ (MvPolynomial ℕ ℚ) (k.factorial : ℚ) by simp,
+      ← mul_assoc, ← map_mul]
+    congr 2
+    field_simp
+  have heval := congrArg
+    (MvPolynomial.eval₂Hom (Nat.castRingHom R) x) hpoly
+  simpa only [map_mul, map_natCast, map_ordPartialBell, map_partialBell,
+    MvPolynomial.eval₂Hom_X'] using heval
+
+end BellConversionCleared
 
 section UnitPowers
 

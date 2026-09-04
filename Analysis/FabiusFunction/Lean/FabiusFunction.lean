@@ -74,6 +74,7 @@ import FabiusFunction.RStirling
 import FabiusFunction.FallingFactorialSeries
 import FabiusFunction.PochhammerFalling
 import FabiusFunction.CauchyPolynomials
+import FabiusFunction.CauchyPolynomialReflection
 import FabiusFunction.CoefficientRules
 import FabiusFunction.GridEvaluationCertificate
 import FabiusFunction.IntegerCRTCertificate

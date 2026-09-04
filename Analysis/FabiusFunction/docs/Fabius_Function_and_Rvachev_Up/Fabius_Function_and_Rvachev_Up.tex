@@ -3647,6 +3647,146 @@ the ten theorems
 complex continuation, a pole classification, the \(q\to1\) classical-gamma
 limit, log-convexity, a uniqueness characterization, or a q-digamma formula.
 
+\subsection{Polynomial \texorpdfstring{\(q\)}{q}-calculus, finite parameter derivatives, Lambert
+logarithms, and the real \texorpdfstring{\(q\)}{q}-gamma function}
+\label{sec:q-calculus-gamma}
+
+The coefficientwise Jackson derivative is formalized without division.  In a
+semiring put
+\[
+ [n]_q=\sum_{i=0}^{n-1}q^i.
+\]
+Over a commutative semiring, the linear map on \(R[X]\) is
+\[
+ D_q\!\left(\sum_n a_nX^n\right)
+   =\sum_n a_n[n]_qX^{n-1}.
+\]
+It has the expected monomial and constant values, the scaling law
+\[
+ D_q\bigl(p(c\,{\cdot})\bigr)=c(D_qp)(c\,{\cdot}),
+\]
+and both product rules
+\[
+ D_q(fg)=(D_qf)g+f(q\,{\cdot})D_qg
+        =fD_qg+g(q\,{\cdot})D_qf.
+\]
+Over a commutative ring it additionally satisfies the division-free
+characterization
+\[
+ (D_qp)(x)(1-q)x=p(x)-p(qx).
+\]
+No restriction is imposed on \(q\), so the formulas include \(q=0\) and
+\(q=1\).  Iteration over a commutative semiring gives, for every
+\(n\in\NaturalNumbers\),
+\[
+ D_q^n(fg)=\sum_{k=0}^{n}
+  \genfrac{[}{]}{0pt}{}{n}{k}_q\,
+  (D_q^kf)(q^{\,n-k}{\cdot})\,D_q^{\,n-k}g.
+\]
+This is finite polynomial algebra, not a derivative theory for analytic
+functions and not a \(q\to1\) limiting theorem.
+
+The exhaustive \path{PolynomialQDerivative.lean} surface is two definitions,
+\lean{qInt} and \lean{qDerivative}, and seventeen theorems:
+\lean{qInt_zero}, \lean{qInt_one}, \lean{qInt_succ},
+\lean{qInt_succ'}, \lean{qInt_add}, \lean{qInt_one_left},
+\lean{one_sub_mul_qInt}, \lean{qDerivative_apply},
+\lean{qDerivative_monomial}, \lean{qDerivative_C},
+\lean{qDerivative_X_pow}, \lean{qDerivative_X},
+\lean{qDerivative_C_mul_X_pow}, \lean{eval_qDerivative_mul},
+\lean{qDerivative_comp_C_mul_X}, \lean{qDerivative_mul}, and
+\lean{qDerivative_mul'}.  The q-integer definition and its first six laws use
+only a semiring; \lean{one_sub_mul_qInt} and
+\lean{eval_qDerivative_mul} use a commutative ring; all other derivative
+declarations use a commutative semiring.  The exhaustive
+\path{PolynomialQLeibniz.lean} surface has no public definition and four
+theorems, all over a commutative semiring:
+\lean{comp_C_mul_X_comp_C_mul_X}, \lean{qDerivative_C_mul},
+\lean{qDerivative_iterate_comp_C_mul_X}, and
+\lean{qDerivative_iterate_mul}.  They include iteration order zero and assume
+neither division nor a nonzero nome.
+
+For a nontrivially normed field, finite q-Pochhammer products also have a
+parameter derivative for arbitrary \(q,a\) and \(n\):
+\[
+ \frac{\Differential}{\Differential a}(a;q)_n
+ =-\sum_{j<n}q^j\prod_{\substack{i<n\\i\ne j}}(1-aq^i).
+\]
+If every factor \(1-aq^j\), \(j<n\), is nonzero, this is equivalently
+\[
+ \frac{\Differential}{\Differential a}(a;q)_n
+ =-(a;q)_n\sum_{j<n}\frac{q^j}{1-aq^j}.
+\]
+Composition with a pointwise witness \(\lean{HasDerivAt}\,f\,f'\,x\) supplies
+the corresponding chain rule.  These are exactly the three public theorems of
+\path{QPochhammerDerivative.lean}:
+\lean{hasDerivAt_finiteQPochhammerIn},
+\lean{hasDerivAt_finiteQPochhammerIn_of_ne_zero}, and
+\lean{hasDerivAt_finiteQPochhammerIn_comp}.  The first has no nonvanishing
+hypothesis; the second has exactly the factorwise hypothesis just displayed;
+the third assumes exactly the supplied derivative of \(f\).  This leaf makes
+no assertion about differentiating the infinite product.
+
+For \(a,q\in\ComplexNumbers\) with exactly
+\(\lVert a\rVert<1\) and \(\lVert q\rVert<1\), the Lambert series is absolutely
+summable and
+\[
+ \sum_{m=0}^{\infty}
+ \frac{a^{m+1}}{(m+1)(1-q^{m+1})}
+ =-\sum_{j=0}^{\infty}\log(1-aq^j),
+\qquad
+ \exp\!\left(-\sum_{m=0}^{\infty}
+ \frac{a^{m+1}}{(m+1)(1-q^{m+1})}\right)=(a;q)_\infty.
+\]
+Here each factor uses the principal complex logarithm, whereas the
+exponentiated conclusion is branch-free.  The exhaustive
+\path{LambertSeriesLog.lean} surface has no definition and four theorems:
+\lean{one_le_norm_natCast_add_one},
+\lean{summable_lambert_series},
+\lean{hasSum_lambert_log_complex}, and
+\lean{exp_neg_tsum_lambert_eq_qPochhammerInfIn}.  The first is an
+unconditional natural-cast norm bound; the other three have precisely the two
+strict norm hypotheses above.  They include \(a=0\) and \(q=0\), but prove no
+norm-one boundary, principal-log identity for \((a;q)_\infty\) itself,
+analytic continuation, or differentiated Lambert series.
+
+Finally, the total real definitions
+\[
+ \Gamma_q(x)=\frac{(q;q)_\infty}{(q^x;q)_\infty}(1-q)^{1-x},
+ \qquad [x]_q=\frac{1-q^x}{1-q}
+\]
+are \lean{qGamma} and \lean{qNumber}.  For \(0<q<1\), the formalized API gives
+positivity for \(x>0\), \(\Gamma_q(1)=1\), the recurrence
+\(\Gamma_q(x+1)=[x]_q\Gamma_q(x)\) for \(x>0\), and
+\[
+ \Gamma_q(n+1)=\prod_{j=0}^{n-1}[j+1]_q.
+\]
+For natural \(n\), \([n]_q=\lean{qInt}\,q\,n\) needs only \(q\ne1\).
+For every real \(x\), the totalized algebraic reflection identity assumes only
+\(q<1\):
+\[
+ \Gamma_q(x)\Gamma_q(1-x)
+ =\frac{(1-q)(q;q)_\infty^2}
+ {(q^x;q)_\infty(q^{1-x};q)_\infty}.
+\]
+Under \(0<q<1\) and \(0<x<1\), Jacobi's product supplies the exact
+\texttt{HasSum}
+\[
+ \sum_{n\in\IntegerNumbers}(-1)^nq^{n(n-1)/2}(q^x)^n
+ =\frac{(1-q)(q;q)_\infty^3}
+ {\Gamma_q(x)\Gamma_q(1-x)}.
+\]
+The exhaustive \path{QGamma.lean} surface is the two definitions above and
+the ten theorems
+\lean{norm_lt_one_of_pos_of_lt_one},
+\lean{qPochhammerInfIn_rpow_pos},
+\lean{qPochhammerInfIn_self_pos}, \lean{qGamma_pos},
+\lean{qGamma_one}, \lean{qGamma_add_one}, \lean{qGamma_nat_succ},
+\lean{qNumber_natCast}, \lean{qGamma_mul_qGamma_one_sub}, and
+\lean{hasSum_theta_qGamma_reflection}.  This is a real API.  It does not prove
+complex continuation, a pole classification, the \(q\to1\) classical-gamma
+limit, log-convexity, a uniqueness characterization, or a q-digamma formula.
+
 The exponent in the canonical product has a finite, base-generic double-counting
 origin that is useful independently of sinc products.  For \(b,N,J\in\NaturalNumbers\), put
 \[
@@ -4858,7 +4998,7 @@ Its proof
 reuses the stronger ordered-field theorem
 \lean{finiteQPochhammerIn_self_pos} from
 \path{GeneralQConditionNumber.lean} rather than exporting a duplicate.
-The rigorous 282-row forward q-series ledger is now 181 Exact, 79 Partial,
+The rigorous 282-row forward q-series ledger is therefore 181 Exact, 79 Partial,
 14 None, and 8 interface rows; its 547-row source concordance is 103 Lean,
 375 human, 60 N/A, and 9 conjecture rows.  In particular q-Lucas remains Partial
 because Lean proves the evaluated primitive-root identity rather than the

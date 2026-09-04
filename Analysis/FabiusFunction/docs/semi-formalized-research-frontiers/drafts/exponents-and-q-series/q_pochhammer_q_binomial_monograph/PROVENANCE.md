@@ -21,8 +21,10 @@ That projection is the semantic union of thirteen incoming Lean overrides
 overrides (`cor:qbinom-classical`, `cor:qgamma-theta`, `prop:logder-finite`,
 `prop:qbinom-products`, `prop:qderivative-rules`, `prop:qgamma-reflection`,
 `thm:q-leibniz`, and `thm:quantum-binomial`). It changes no immutable source
-field. In particular, it does not promote `thm:q-lucas`, whose polynomial
-congruence still lacks a Lean proof.
+field. The union also retains the later upstream promotions
+`thm:qF-reciprocity`, `prop:up-tail`, `cor:up-moments`, and
+`thm:qF-moment-polynomial`. In particular, it does not promote
+`thm:q-lucas`, whose polynomial congruence still lacks a Lean proof.
 
 The 2026-09-04 merge-regression check restored the seven missing generator
 entries from that local override set; the classical-limit entry was already
@@ -31,7 +33,6 @@ present. The retained CSV needed no changes. Direct counting gives the
 282 result rows give 181/79/14/8. Their stale grand total and narrative were
 corrected without changing any result-level status. The source-only canonical
 validator passes; this repair performs no Lean or PDF build.
-
 Directory names
 in the table are historical paths in that pinned snapshot, not live package
 paths.

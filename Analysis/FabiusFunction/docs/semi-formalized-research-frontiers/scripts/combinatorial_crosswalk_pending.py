@@ -112,7 +112,8 @@ partial ones by \lean{Fabius.bell_complete_eq_sum_partialBell}; their
 generating function $\exp X(t)$ is \lean{Fabius.exp_subst_bellWeightSeries},
 from the equation $Y'=X'Y$, $Y(0)=1$
 (\lean{Fabius.eq_zero_of_derivative_eq_mul}).  The factorial row sum
-\cref{eq:bell-factorial-complete} is not formalized; the Touchard identity
+\cref{eq:bell-factorial-complete} is \lean{Fabius.bell_complete_factorial_pred}
+(\lean{BellFactorialRowSum}); the Touchard identity
 \cref{eq:touchard-bell-specialization} is
 \lean{Fabius.bell_complete_const_eq_touchard_eval} (\lean{BellHomogeneity}).""")),
 
@@ -1781,47 +1782,8 @@ formalized.""")),
 ]
 
 PENDING += [
- # --- eq:ordinary-exponential-scaling ---
- (r"""\begin{proof}[Proof of \eqref{eq:ordinary-exponential-scaling}]
-Substitute $i!x_i$ for $x_i$ in \eqref{eq:partial-bell-definition}; the factorials
-$(i!)^{j_i}$ cancel, and multiplication by $k!/n!$ leaves exactly
-\eqref{eq:ordinary-bell-definition}.
-\end{proof}
-""",
-  remark(r"""% ed.: crosswalk added 2026-09-04; exact algebraic normalization only.
-The displayed conversion is
-\lean{Fabius.ordPartialBell_eq_factorialRatio_partialBell} in module
-\lean{UnitSeriesBellCoefficients}, over every commutative $\mathbb Q$-algebra
-and for all $n,k\geq0$; thus Lean also covers the automatically vanishing
-out-of-range cases.  Its denominator-cleared companion is
-\lean{Fabius.factorial_mul_ordPartialBell_eq_factorial_mul_partialBell}:
-$n!\OrdinaryPartialBellPolynomial nk(x)=k!\ExponentialPartialBellPolynomial
-nk(1!x_1,2!x_2,\ldots)$.  The Lean proof compares the ordinary coefficient of
-the $k$-th power of the factorially weighted Bell series with its exponential
-Bell coefficient.  These declarations prove the polynomial normalization;
-they do not formalize the labelled-set partition interpretation of
-\cref{thm:bell-poly-partitions}, whose register row remains \emph{none}.""")),
-
- # --- eq:merged-bell-normalization ---
- (r"""\begin{proof}[Proof of \eqref{eq:merged-bell-normalization}]
-The exponential definition gives
-\[
- \frac1{k!}\left(\sum_{j\geq1}x_jt^j\right)^k
- =\sum_{n\geq k}\ExponentialPartialBellPolynomial nk(1!x_1,2!x_2,\ldots)\frac{t^n}{n!}.
-\]
-The coefficient on the left is $\OrdinaryPartialBellPolynomial nk(x)/k!$ in ordinary normalization.
-Comparison proves the conversion.
-\end{proof}
-""",
-  remark(r"""% ed.: crosswalk added 2026-09-04; exact normalization dictionary.
-Equation~\eqref{eq:merged-bell-normalization} is exactly
-\lean{Fabius.ordPartialBell_eq_factorialRatio_partialBell}; the integral,
-denominator-cleared form is
-\lean{Fabius.factorial_mul_ordPartialBell_eq_factorial_mul_partialBell}, both
-in module \lean{UnitSeriesBellCoefficients}.  They hold for every pair
-$n,k\geq0$ over a commutative $\mathbb Q$-algebra and use precisely the
-factorially weighted input $(j!x_j)_{j\geq0}$.  This crosswalk certifies the
-algebraic normalization only, not the separate labelled-set interpretation.""")),
+ # Both Bell-normalization crosswalks are already integrated in the canonical
+ # source with the stronger denominator-cleared commutative-semiring theorem.
 
  # --- alg:merged-exp-log-power ---
  (r"""\begin{proof}

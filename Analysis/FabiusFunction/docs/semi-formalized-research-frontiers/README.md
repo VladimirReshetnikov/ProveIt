@@ -88,14 +88,23 @@ The canonical frontier artifacts are:
 > files / 140,223 lines / 6,439,569 bytes, with direct aggregate digest
 > `ae8690ad8d160055cbae36eff96d858f87572d171e7aacf7540d67543998af21`.
 
-The `b899` publication rebuild touched ten roots: the primary exposition, Lean
+> **Deferred publication status.**  The fixed-26 publication check—14 fresh
+> build cycles and 12 retained verified pairs—is recorded once in the
+> [fixed-26 publication checkpoint](drafts/MANIFEST.md#fixed-26-publication-checkpoint).
+> A row still marked pending makes no synchronization claim.  The exact older
+> receipts on this page remain historical evidence; under the user-directed
+> deferral, the fixed-26 table is an inventory rather than a merged-current
+> parity receipt.
+
+The historical `69b447f7c` publication rebuild touched ten roots: the primary exposition, Lean
 walkthrough, canonical frontier, geometric-q synthesis, canonical q-series
 synthesis, inverse-theory synthesis, comb synthesis, Lambert Guide, Up
-Polynomial Synthesis, and Thue--Morse Atlas. At that checkpoint all ten roots
-had exact synchronized final-source/PDF receipts in the draft manifest and
-their local records. Those and earlier artifacts remain historical receipts
-for their named source states; the subsequently changed global sources claim
-no current PDF parity.
+Polynomial Synthesis, and Thue--Morse Atlas. All ten roots have exact
+synchronized source/PDF receipts for that checkpoint in the draft manifest
+and their local records. The merged source closures make those pairs
+historical; the deferred replacement batch is recorded in the fixed-26
+checkpoint linked above.  Receipts outside that batch remain valid only for
+their named source states.
 
 The authoritative live Lean audit now contains exactly 985 facade-reachable
 modules and 12,199 unique public declarations, with no missing module headers
@@ -415,7 +424,8 @@ historical. The current merged census is 985/12,199, as recorded above,
 with zero missing module headers and zero
 missing declaration comments.
 
-### Series/transseries Lean overlays
+The retained frontier, primary, walkthrough, geometric-q, and representation
+PDFs predate these source-only overlays and claim no render parity.
 
 The first overlay exhausts the public surfaces of nine modules that crosswalk
 the canonical `Transseries_And_Inversion` volume. The incoming overlay adds
@@ -728,9 +738,9 @@ counterpart of canonical comb label `gq:thm:richardson-generating`; the module
 also supplies the report-facing analytic companion
 `Fabius.hasSum_geometricLagrangeRichardson_mul_pow` under strict nome
 contraction and absolute summability. The historical `b899` primary,
-walkthrough, q-series, comb-synthesis, and canonical-frontier PDFs render that
-named source checkpoint and have synchronized receipts for it; they do not
-render the current source union.
+walkthrough, q-series, comb-synthesis, and canonical-frontier PDFs rendered
+this source union at their named checkpoint; the deferred replacement
+inventory is recorded in the fixed-26 table without a merged-current parity claim.
 
 The one-definition/seventeen-theorem
 `FabiusFunction.GeometricUniformRealization` module transfers the canonical
@@ -862,10 +872,12 @@ existing rational zero classifier and Gaussian/half-q coefficient identity,
 it makes `cor:halfbase-root-locus` Exact under the canonical rational-polynomial
 and rational-root convention. Injective scalar extension preserves
 the displayed multiplicities, but the leaf does not classify all roots over
-every extension field. After the reciprocity promotion, the q
-forward ledger is now 181 Exact / 79 Partial / 14 None / 8 interface rows,
-and its source concordance is 103 Lean-proved / 375 human-proved frontier /
-60 non-applicable / 9 conjectures.
+every extension field. After all valid promotions, the rigorous q forward
+ledger is now 181 Exact / 79 Partial / 14 None / 8 interface rows, and its
+source concordance is 103 Lean-proved / 375 human-proved frontier / 60
+non-applicable / 9 conjectures. The q-Lucas row remains Partial because Lean
+proves primitive-root evaluation, not the polynomial congruence modulo the
+cyclotomic polynomial.
 
 `FabiusFunction.GaussianBinomialGreaterOneAsymptotics` has exactly the two
 theorems
@@ -917,8 +929,9 @@ spectral Mellin parameter derivative, the successor law
 `k ≤ r`, always under `0 < a`. Consequently `p2:thm:gamma-tower` is Exact
 when its logarithm is read as the existing chosen GammaLog coordinate. No
 principal-`Complex.log` identity or nonpositive-parameter differential law
-is claimed. The historical `b899` Thue--Morse Atlas and canonical-frontier PDFs
-render these additions and have synchronized receipts.
+is claimed. The historical `b899` Thue--Morse Atlas and canonical-frontier
+PDFs rendered these additions at their named checkpoint; the deferred
+replacement inventory is recorded in the fixed-26 table.
 
 `FabiusFunction.ThueMorseCornerIntegral` has one public definition and four
 theorems: `Fabius.centeredBoxIntegral`,
@@ -954,6 +967,7 @@ no definitions and exactly nine theorems:
 `Fabius.norm_finiteQPochhammerIn_self_mul_gaussianBinomial_sub_one_le`,
 `Fabius.norm_gaussianBinomial_sub_inv_finiteQPochhammerIn_le`,
 `Fabius.norm_gaussianBinomial_add_sub_inv_finiteQPochhammerIn_le`,
+`Fabius.tendsto_gaussianBinomial_add_atTop`,
 `Fabius.gaussianBinomial_fixedColumn_relativeError_isBigO`,
 `Fabius.gaussianBinomial_shifted_fixedColumn_relativeError_isBigO`,
 `Fabius.gaussianBinomial_fixedColumn_error_isBigO`, and
@@ -1003,7 +1017,7 @@ field inversion is total, while the manuscript cardinal use assumes `c > 0`
 and `0 < q < 1` (together with its mesh, interval, and degree hypotheses).
 No larger matrix right inverse or decoder-optimality result is asserted.
 
-The next declaration addition leaves the module count unchanged and adds
+The newest source-only addition leaves the module count unchanged and adds
 three theorems to `FabiusFunction.GaussianBinomialCumulants`: the explicit
 second derivative at one
 `Fabius.eval_one_derivative_derivative_gaussianBinomial_X`, the division-free
@@ -1037,6 +1051,9 @@ None-to-Exact, while the RatFunc assembly now moves
 `thm:qF-moment-polynomial` Partial-to-Exact and the probability extension
 moves `prop:up-tail` and `cor:up-moments` Partial-to-Exact. The reciprocity
 leaf additionally moves `thm:qF-reciprocity` None-to-Exact.
+The q-Lucas row remains Partial: its evaluated primitive-root identity does
+not by itself prove the manuscript's polynomial congruence modulo the
+cyclotomic polynomial.
 `FabiusFunction.GeometricResidualMoments` now has zero definitions and nine
 public theorems. Its existing
 `Fabius.sum_geometricLagrangeWeight_mul_scaled_geometric_pow_of_pos` supplies
@@ -1228,9 +1245,6 @@ reproduces it, the canonical TeX labels it explicitly as unverified rather than
 silently treating it as authenticated. The source snapshots consolidated on
 25 August 2026 were recorded as follows:
 
-No live `SHA256SUMS` or `SHA256SUMS.*` manifest is maintained; the inline
-values below are historical provenance receipts only.
-
 | Former source | SHA-256 |
 | --- | --- |
 | `Fabius_Dyadic_Formulae_and_Alternative_Representations/Fabius_Dyadic_Formulae_and_Alternative_Representations.tex` | `462276b10fcd32b0446deb7cfedc4ec07c2ae55dbd333d5ff9b1d98f07df89e1` |
@@ -1393,14 +1407,9 @@ asserted a result without one it was supplied, and where a source claimed
 analytic validity on the strength of formal algebra the claim was weakened to
 what the algebra establishes, each repair marked at the point of repair and
 collected in the volume's ledger.  Its formalization register records what the
-Lean corpus does and does not cover.  The current source overlay gives exact
-counterparts for the formal unit-series Bell identities, sequence-scale
-foundations, elementary power--logarithmic dominance and height comparisons,
-and polynomial block antidifferentiation, while keeping the unordered maximal
-scale, full Laurent wrapper, and deepest-pole identification outside the exact
-surface.  It still distinguishes those direct counterparts from a formalized
-*neighbour* — for example, the corpus proves Lagrange inversion and the Lambert
-series at the **origin**, while this volume works at **infinity**.  The absorbed
+Lean corpus does and does not cover, distinguishing a formalized *neighbour* —
+the corpus proves Lagrange inversion and the Lambert series at the **origin**,
+while this volume works at **infinity** — from actual coverage.  The absorbed
 directories were deleted after a residue audit.  By the same precedent, a
 standalone reference monograph on q-Pochhammer symbols and q-binomial
 coefficients — the machinery consumed by the exponents

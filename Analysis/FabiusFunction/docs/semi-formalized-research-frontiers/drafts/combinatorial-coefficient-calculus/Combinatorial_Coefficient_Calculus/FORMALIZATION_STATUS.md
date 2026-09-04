@@ -101,14 +101,18 @@ Analysis/FabiusFunction/Lean/FabiusFunction/NewtonReciprocal.lean` (exit zero).
 Its five public theorems are compiler-checked. The other twelve new public
 theorems in the three Stirling/Lagrange leaves remain source-reviewed and await
 compilation, including any missing prerequisites. No aggregate build is claimed.
-After the latest synchronization, the cited-name and duplicate-name structural
-audits pass: 3,439 distinct cited names resolve and there are no duplicate
-declaration names. The facade audit found two missing upstream imports,
+At the upstream synchronization checkpoint the cited-name and duplicate-name
+structural audits passed:
+3,439 distinct cited names resolved and there were no duplicate declaration
+names. The incoming alternate reverse-row declaration is now named
+`Fabius.second_reverse_row_commRing_of_le`, avoiding a collision with the
+compiled theorem while its own validation remains pending. The facade audit found two missing upstream imports,
 `AssociahedronFaceNumbers` and `PochhammerFalling`; both were restored. These
-structural checks are not a fresh aggregate Lean build. All new modules have facade imports and contain no
-`sorry`, `admit`, `axiom`, or `opaque` declarations. The register-generator mappings
-preserve the new pending and compiled distinctions; both generator scripts passed
-read-only syntax and mapping checks without rewriting the canonical document.
+structural checks are not a fresh aggregate Lean build. The reviewed new modules
+contain no `sorry`, `admit`, `axiom`, or `opaque` declarations; import integration
+for the alternate reverse-row source remains part of its pending validation. The register-generator mappings
+preserve the pending and compiled distinctions; a dry run on a temporary source
+copy reproduces the canonical register and its 207-row totals.
 
 ## Source correspondences inspected
 
