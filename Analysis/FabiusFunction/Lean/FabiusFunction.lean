@@ -523,6 +523,7 @@ import FabiusFunction.BoundednessSkeleton
 import FabiusFunction.TransferOperatorStep
 import FabiusFunction.TransseriesBlockAntiderivative
 import FabiusFunction.TransseriesDifferentialBlock
+import FabiusFunction.TransseriesDifferentialClosure
 import FabiusFunction.TransseriesHarmonicIncrement
 import FabiusFunction.TransseriesScaleDominance
 import FabiusFunction.TransseriesPolyLogScale
