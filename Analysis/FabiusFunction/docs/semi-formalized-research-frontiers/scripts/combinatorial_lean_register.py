@@ -120,7 +120,7 @@ STATUS = {
    r"corpus Hessenberg matrix rather than by expansion"),
  'cor:det-traces-bell': ('partial',
    r"\lean{Fabius.det_eq_bell_complete_traceWeight} (\lean{BellDeterminants}), assuming an "
-   r"eigenvalue family; tr(A^k) as a power sum of eigenvalues is not in Mathlib"),
+   r"eigenvalue family; $\operatorname{tr}(A^k)$ as a power sum of eigenvalues is not in Mathlib"),
  'thm:cycle-index-bell': ('partial',
    r"equal-marks case \lean{Fabius.bell_complete_cycleWeightConst} and its instance "
    r"\lean{Fabius.card_perm_eq_bell_complete} (\lean{BellDeterminants}); the cycle-removal "
@@ -210,13 +210,6 @@ STATUS = {
    r"\lean{Fabius.partialBell_succ_zero}, \lean{Fabius.partialBell_eq_zero_of_lt}; the upper "
    r"variable-support cutoff stated with \cref{eq:partial-bell-definition} is "
    r"\lean{Fabius.partialBell_congr_of_eq_of_le}, over every commutative semiring"),
- 'thm:bell-poly-partitions': ('partial',
-   r"\lean{Fabius.coeff_exp_subst_eq_sum_weightedPartitions} "
-   r"(\lean{UnitSeriesBellCoefficients}) identifies a formal exponential coefficient with "
-   r"the finite multiplicity-vector sum indexed by \lean{Fabius.weightedPartitions}; together "
-   r"with \lean{Fabius.coeff_exp_subst_eq_completeBell}, this formalizes the complete weighted "
-   r"multiplicity formula.  Labelled set partitions and the exact-$k$ partial interpretation "
-   r"are not formalized"),
  'thm:bell-poly-egf': ('Lean',
    r"all five identities, as formal power series over any commutative $\mathbb Q$-algebra.  "
    r"The first is \lean{Fabius.bellWeightSeries_pow} and the third "
@@ -362,47 +355,6 @@ STATUS = {
    r"The all-index commutative-ring theorem \lean{Fabius.coeff_subst_eq_sum_multinomial} "
    r"combines these forms; at $n=0$ its unique empty profile gives $c_0=a_0$.  "
    r"The reciprocal specialization is \lean{Fabius.coeff_reciprocalSeries}"),
- 'prop:merged-abel': ('Lean',
-   r"\lean{Fabius.abelPolynomial}, \lean{Fabius.abelPolynomial_zero}, "
-   r"\lean{Fabius.abelPolynomial_succ}, and \lean{Fabius.abelPolynomial_succ_eval} "
-   r"give the polynomial formulas over every commutative ring.  Over every commutative "
-   r"$\RationalNumbers$-algebra, \lean{Fabius.abelSeries_eq} constructs a solution, "
-   r"\lean{Fabius.abel_eq_zero_and_one} gives the boundary coefficients for every solution, "
-   r"and \lean{Fabius.exp_subst_eq_egfA_abelPolynomial} proves "
-   r"\cref{eq:merged-abel-egf} for every solution, including degree zero.  "
-   r"\cref{eq:merged-abel-binomial} is \lean{Fabius.abelPolynomial_eval_add}, also for "
-   r"every $n\geq0$ (\lean{AbelPolynomialSeries})"),
- 'thm:merged-kirkman-cayley': ('partial',
-   r"The arithmetic formula is formalized in \lean{AssociahedronFaceNumbers}: "
-   r"\lean{Fabius.dissectionNumber_mul_of_three_le} is the denominator-free manuscript "
-   r"formula, with integrality and the literal quotient supplied by "
-   r"\lean{Fabius.succ_dvd_choose_mul_choose_of_three_le} and "
-   r"\lean{Fabius.dissectionNumber_eq_div}.  The quantity "
-   r"\lean{Fabius.dissectionNumber} is defined arithmetically; the polygon-dissection "
-   r"type, its cardinality theorem, and a cycle-lemma bijection are not formalized"),
- 'cor:merged-associahedron-f': ('partial',
-   r"\lean{Fabius.associahedronFaceNumber_mul} gives the division-free face-array formula, "
-   r"and \lean{Fabius.associahedronFaceNumber_zero}, "
-   r"\lean{Fabius.two_mul_associahedronFaceNumber_facet}, and "
-   r"\lean{Fabius.associahedronFaceNumber_top} give the three boundary values "
-   r"(\lean{AssociahedronFaceNumbers}).  The array is defined from the dissection numbers; "
-   r"an associahedron face lattice and its noncrossing-diagonal correspondence are not "
-   r"formalized"),
- 'thm:merged-associahedron-h': ('partial',
-   r"For the arithmetically defined Narayana row \lean{Fabius.associahedronH}, "
-   r"\lean{Fabius.associahedronH_mul} gives the closed form, "
-   r"\lean{Fabius.associahedronH_symm} gives palindromicity, and "
-   r"\lean{Fabius.sum_associahedronH}, \lean{Fabius.associahedronHPoly_one}, and "
-   r"\lean{Fabius.associahedronHPoly_one_eq_faceNumber_zero} give the Catalan sum and "
-   r"$h(1)=f_0$ (\lean{AssociahedronFaceNumbers}).  The geometric $h$-polynomial, face "
-   r"transform, and alternating Vandermonde derivation are not formalized"),
- 'thm:merged-raney': ('partial',
-   r"\lean{Fabius.raneyT_eq} constructs the canonical solution, and "
-   r"\lean{Fabius.coeff_raneyT_pow} proves \cref{eq:merged-raney} for it for every "
-   r"$p,n\geq0$ and $r\geq1$, including degree zero; "
-   r"\lean{Fabius.natCast_mul_coeff_raneyT_pow} is the positive-degree denominator-free "
-   r"form (\lean{RaneyNumbers}).  The manuscript quantifies over every solution $T$; "
-   r"uniqueness or transfer from an arbitrary solution to the constructed one is not formalized"),
  'thm:eulerian-binomial-recurrence': ('Lean',
    r"\lean{Fabius.eulerianPolynomial_binomial_recurrence} in $R[t]$ and "
    r"\lean{Fabius.eulerian_binomial_recurrence_series} in $R[[t]]$ (\lean{EulerianEGF}), for "
@@ -904,8 +856,8 @@ STATUS = {
    r"\lean{Fabius.eq_of_row_recurrence} (\lean{IdentityCertificates}), arrays with equal "
    r"row 0, equal boundary values and equal row step; one-index ancestor "
    r"\lean{Fabius.eq_of_recurrence} (\lean{TelescopingCertificate})"),
- 'thm:merged-raney': ('Lean',
-   r"\lean{Fabius.coeff_raneyT_pow} is \cref{eq:merged-raney} for every $p,n\ge0$ and "
+ 'thm:merged-raney': ('partial',
+   r"for the constructed solution: \lean{Fabius.coeff_raneyT_pow} is \cref{eq:merged-raney} for every $p,n\ge0$ and "
    r"$r\ge1$, with the series constructed as \lean{Fabius.raneyT} from "
    r"\lean{Fabius.Lagrange.solution}; \lean{Fabius.raneyT_eq} is the functional equation, "
    r"\lean{Fabius.natCast_mul_coeff_raneyT_pow} the division-free form, "

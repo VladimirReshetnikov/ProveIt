@@ -9665,26 +9665,6 @@ $D(N,N-3)=\CatalanNumber{N-2}$ (\lean{Fabius.dissectionNumber_zero_right},
 \lean{Fabius.dissectionNumber_one}, \lean{Fabius.dissectionNumber_self}).
 \end{remark}
 
-
-\begin{remark}[Formal crosswalk]
-% ed.: crosswalk added 2026-09-04; arithmetic exact, bijective count open.
-Module \lean{AssociahedronFaceNumbers} defines the arithmetic quantity
-\lean{Fabius.dissectionNumber} in the shifted variable $a=N-3$ by a
-division-free determinant.  The cleared Kirkman--Cayley formula is
-\lean{Fabius.dissectionNumber_mul}; its manuscript-variable form is
-\lean{Fabius.dissectionNumber_mul_of_three_le}.  Exact divisibility and the
-literal natural-number quotient are
-\lean{Fabius.succ_dvd_choose_mul_choose},
-\lean{Fabius.succ_dvd_choose_mul_choose_of_three_le}, and
-\lean{Fabius.dissectionNumber_eq_div}; nonnegativity and vanishing outside the
-range are \lean{Fabius.dissectionNumber_nonneg} and
-\lean{Fabius.dissectionNumber_eq_zero_of_lt}.  Thus the complete arithmetic
-formula, including its integrality, is formalized.  The polygon-dissection
-type, the interpretation of this arithmetic quantity as its cardinality, and
-the cycle-lemma bijection in the human proof are not formalized, so the theorem
-remains \emph{partial}.
-\end{remark}
-
 \begin{corollary}[Associahedral face vector]
 \label{cor:merged-associahedron-f}
 A $j$-face of $\AssociahedronByDimension{N-3}$ corresponds to $N-3-j$ fixed noncrossing
@@ -9713,24 +9693,6 @@ in division-free form, and the three special values are
 corpus's \lean{Fabius.succ_mul_catalan_succ}),
 \lean{Fabius.two_mul_associahedronFaceNumber_facet} and
 \lean{Fabius.associahedronFaceNumber_top}.
-\end{remark}
-
-
-\begin{remark}[Formal crosswalk]
-% ed.: crosswalk added 2026-09-04; arithmetic face array only.
-Module \lean{AssociahedronFaceNumbers} defines
-\lean{Fabius.associahedronFaceNumber} from
-\lean{Fabius.dissectionNumber}.  With $N=j+e+3$, the division-free form of
-\cref{eq:merged-associahedron-f} is
-\lean{Fabius.associahedronFaceNumber_mul}, and
-\lean{Fabius.associahedronFaceNumber_eq} identifies the shifted parameters.
-The three displayed boundary values are
-\lean{Fabius.associahedronFaceNumber_zero},
-\lean{Fabius.two_mul_associahedronFaceNumber_facet}, and
-\lean{Fabius.associahedronFaceNumber_top}.  These theorems establish the
-arithmetic face-number array.  No associahedron face lattice or bijection
-between its faces and noncrossing diagonal sets is defined, so the geometric
-corollary remains \emph{partial}.
 \end{remark}
 
 \section{The associahedral \texorpdfstring{$h$}{h}-polynomial}
@@ -9828,25 +9790,6 @@ palindromy \lean{Fabius.associahedronH_symm} (a transport of the corpus's
 $h(1)=\CatalanNumber{N-2}$ as \lean{Fabius.associahedronHPoly_one} (a transport
 of \lean{Fabius.sum_narayana}), with the one bridge to the face numbers being
 \lean{Fabius.associahedronHPoly_one_eq_faceNumber_zero}, $h(1)=f_0$.
-\end{remark}
-
-
-\begin{remark}[Formal crosswalk]
-% ed.: crosswalk added 2026-09-04; Narayana arithmetic exact, face transform open.
-Module \lean{AssociahedronFaceNumbers} defines
-\lean{Fabius.associahedronH} to be the relevant Narayana row and proves the
-closed form in denominator-free shape as
-\lean{Fabius.associahedronH_mul}.  The identification with the shifted
-Narayana indices is \lean{Fabius.associahedronH_eq}, palindromicity is
-\lean{Fabius.associahedronH_symm}, and the Catalan row sum is
-\lean{Fabius.sum_associahedronH}.  For the polynomial
-\lean{Fabius.associahedronHPoly}, the specializations $h(1)=\CatalanNumber{N-2}$
-and $h(1)=f_0$ are \lean{Fabius.associahedronHPoly_one} and
-\lean{Fabius.associahedronHPoly_one_eq_faceNumber_zero}.  The actual
-associahedron $h$-polynomial, the transform from its face vector, and
-\cref{eq:merged-alternating-vandermonde} are not formalized; the theorem is
-therefore \emph{partial} rather than an identification with a formalized
-geometric object.
 \end{remark}
 
 \begin{example}
@@ -10012,20 +9955,10 @@ formula reads $\frac rr\binom r0=1$, which is the constant term of $T^r$; at
 $p=0$ the series is $1+z$ and the formula degenerates to $\binom rn$.  The
 hypothesis $r\ge1$ cannot be dropped, since at $r=0$ the right-hand side
 divides by $pn+r=0$ when $n=0$.
-% ed.: crosswalk added 2026-09-04; constructed solution exact, transfer open.
-Module \lean{RaneyNumbers} constructs \lean{Fabius.raneyT} by the formal
-Lagrange inverse and proves its functional equation as
-\lean{Fabius.raneyT_eq}.  For this constructed solution,
-\lean{Fabius.natCast_mul_coeff_raneyT_pow} is the denominator-free positive-
-degree identity, and \lean{Fabius.coeff_raneyT_pow} is exactly
-\cref{eq:merged-raney}, including $n=0$; it allows $p=0$ as well as the
-manuscript's $p\geq1$ and assumes precisely $r\geq1$.  The specialization
-$r=1$ is \lean{Fabius.coeff_raneyT}.  The manuscript theorem quantifies over
-an arbitrary $T$ satisfying the functional equation, whereas the formal
-development has no uniqueness or coefficient-transfer theorem from such a
-solution to \lean{Fabius.raneyT}.  Consequently the displayed formula is
-formalized for the canonical constructed solution, but the theorem remains
-\emph{partial} at its stated universal scope.
+The one respect in which the formal statement is narrower than the display: the
+theorem above quantifies over every $T$ satisfying $T=1+zT^{p}$, whereas the
+module proves the formula for the constructed solution; the uniqueness of that
+solution, which would close the gap, is not formal.
 \end{remark}
 
 \chapter{Darboux's finite formula and transfer from singularities}
@@ -11525,7 +11458,7 @@ coefficient calculus rather than a catalogue of isolated identities.
 
 \section{Lean formalization register}
 \label{sec:lean-register}
-Every theorem-like environment of this monograph is listed here with the status of its formalization in the Lean development \path{Analysis/FabiusFunction/Lean/FabiusFunction} (Mathlib \texttt{v4.32.0}).  \emph{Lean} means that a public, compiled declaration proves the exact statement or a more general one (the generalization is then noted next to the result); \emph{partial} means that a named part of the statement is proved and the rest is named; \emph{none} means that no compiler-verified counterpart is recorded yet, even if source under validation is identified.  A citation, a numerical check, or a plausible derivation does not count.  The register is generated from the source; its mappings must be updated when results are added or validated.  Current totals: 74 Lean, 46 partial, 88 none, of 208 results.
+Every theorem-like environment of this monograph is listed here with the status of its formalization in the Lean development \path{Analysis/FabiusFunction/Lean/FabiusFunction} (Mathlib \texttt{v4.32.0}).  \emph{Lean} means that a public, compiled declaration proves the exact statement or a more general one (the generalization is then noted next to the result); \emph{partial} means that a named part of the statement is proved and the rest is named; \emph{none} means that no compiler-verified counterpart is recorded yet, even if source under validation is identified.  A citation, a numerical check, or a plausible derivation does not count.  The register is generated from the source; its mappings must be updated when results are added or validated.  Current totals: 79 Lean, 50 partial, 79 none, of 208 results.
 
 \begin{footnotesize}
 \begin{longtable}{@{}p{0.16\textwidth}p{0.22\textwidth}p{0.08\textwidth}p{0.40\textwidth}@{}}
@@ -11603,9 +11536,9 @@ corollary (unlabelled, no.~5) & Cauchy integral & none &  \\
 \Cref{thm:bell-leading-asymptotic} & Leading Bell asymptotic & none &  \\
 \Cref{cor:bell-debruijn} & de Bruijn logarithmic expansion & none &  \\
 \Cref{thm:bell-poly-partitions} & Weighted-partition interpretation & Lean & \lean{Fabius.partialBell_eq_sum_setPartitions} and \lean{Fabius.bell_complete_eq_sum_allSetPartitions} (\lean{BellSetPartitions}), over any commutative semiring of weights; the per-type count \cref{cor:partition-type} is not covered \\
-\Cref{thm:bell-poly-egf} & Bell-polynomial generating functions & Lean & all five identities, as formal power series over any commutative $\mathbb Q$-algebra.  The first is \lean{Fabius.bellWeightSeries_pow} and the third \lean{Fabius.exp_subst_bellWeightSeries} (\lean{BellGeneratingFunctions}); the exponential bivariate form is \lean{Fabius.exp_subst_smul_bellWeightSeries} (\lean{ExponentialFormula}); the ordinary Bell polynomials are \lean{Fabius.ordPartialBell} with \cref{eq:ordinary-bell-ogf} as \lean{Fabius.coeff_pow_eq_ordPartialBell} (\lean{OrdinaryBellComposition}); and \cref{eq:ordinary-bell-bivariate} is \lean{Fabius.coeff_exp_subst_smul} (\lean{OrdinaryBellBivariate}).  In both bivariate statements $u$ is a scalar parameter rather than a second formal variable \\
+\Cref{thm:bell-poly-egf} & Bell-polynomial generating functions & Lean & all five identities, as formal power series over any commutative $\mathbb Q$-algebra.  The first is \lean{Fabius.bellWeightSeries_pow} and the third \lean{Fabius.exp_subst_bellWeightSeries} (\lean{BellGeneratingFunctions}); the exponential bivariate form is \lean{Fabius.exp_subst_smul_bellWeightSeries} (\lean{ExponentialFormula}); the ordinary Bell polynomials are \lean{Fabius.ordPartialBell} with \cref{eq:ordinary-bell-ogf} as \lean{Fabius.coeff_pow_eq_ordPartialBell} (\lean{OrdinaryBellComposition}); and \cref{eq:ordinary-bell-bivariate} is \lean{Fabius.coeff_exp_subst_smul} (\lean{OrdinaryBellBivariate}).  The adjacent scaling \cref{eq:ordinary-exponential-scaling} is \lean{Fabius.ordPartialBell_eq_factorialRatio_partialBell}, strengthened without division to \lean{Fabius.factorial_mul_ordPartialBell_eq_factorial_mul_partialBell} over every commutative semiring (\lean{UnitSeriesBellCoefficients}).  In both bivariate statements $u$ is a scalar parameter rather than a second formal variable \\
 \Cref{lem:merged-complete-bell-multiplicities} & Complete Bell multiplicity formula & none & The new \lean{BellCompletePartitions} source states \lean{Fabius.bell_complete_eq_sum_weightedPartitions}, \lean{Fabius.inv_factorial_smul_complete_eq_sum_weightedPartitions}, and \lean{Fabius.bell_complete_eq_sum_div_weightedPartitions}, including degree zero and unrestricted zeroth input. It shares the existing complete-Bell and weighted-partition bridges, but still awaits compilation. This is an integer-multiplicity sum, not a labelled-set partition theorem. \\
-\Cref{thm:bell-poly-recurrences} & Complete and partial recurrences & Lean & \lean{Fabius.partialBell} is defined by \cref{eq:partial-bell-recurrence} (\lean{Fabius.partialBell_succ_succ}, \lean{Fabius.partialBell_succ_succ_eq_binomialConv}); \cref{eq:complete-bell-recurrence} is Mathlib-free \lean{Bell.complete_succ} together with \lean{Fabius.bell_complete_eq_sum_partialBell} (\lean{PartialBellPolynomials}, \lean{BellPolynomialInversion}); the boundary values are \lean{Fabius.partialBell_zero_succ}, \lean{Fabius.partialBell_succ_zero}, \lean{Fabius.partialBell_eq_zero_of_lt} \\
+\Cref{thm:bell-poly-recurrences} & Complete and partial recurrences & Lean & \lean{Fabius.partialBell} is defined by \cref{eq:partial-bell-recurrence} (\lean{Fabius.partialBell_succ_succ}, \lean{Fabius.partialBell_succ_succ_eq_binomialConv}); \cref{eq:complete-bell-recurrence} is Mathlib-free \lean{Bell.complete_succ} together with \lean{Fabius.bell_complete_eq_sum_partialBell} (\lean{PartialBellPolynomials}, \lean{BellPolynomialInversion}); the boundary values are \lean{Fabius.partialBell_zero_succ}, \lean{Fabius.partialBell_succ_zero}, \lean{Fabius.partialBell_eq_zero_of_lt}; the upper variable-support cutoff stated with \cref{eq:partial-bell-definition} is \lean{Fabius.partialBell_congr_of_eq_of_le}, over every commutative semiring \\
 \Cref{thm:bell-partial-convolution} & Block-colour convolution & Lean & \lean{Fabius.factorial_mul_partialBell_add} (\lean{BellComposition}), in the division-free form $(k_1+k_2)!\,B_{n,k_1+k_2}=k_1!k_2!\sum_i\binom ni B_{i,k_1}B_{n-i,k_2}$ \\
 \Cref{thm:bell-near-diagonal} &  & partial & The edge identities $\ExponentialPartialBellPolynomial nn=x_1^n$, $\ExponentialPartialBellPolynomial n1=x_n$ for $n\ge1$, and $\ExponentialPartialBellPolynomial n{n-1}=\binom n2x_1^{n-2}x_2$ for $n\ge2$ are respectively \lean{Fabius.partialBell_self}, \lean{Fabius.partialBell_one_right}, and \lean{Fabius.partialBell_pred_right} (\lean{PartialBellPolynomials}), over every commutative semiring; the general reduction \cref{eq:bell-near-diagonal}, the two-block identity, and the remaining higher subdiagonals are not formalized \\
 \Cref{thm:bell-poly-derivatives} & Derivative identities & partial & \cref{eq:partial-bell-derivative} is \lean{Fabius.pderiv_partialBell_succ} and \cref{eq:complete-bell-derivative} is \lean{Fabius.pderiv_bellComplete} (module \lean{BellDerivative}), in $\mathbb Q[x_1,x_2,\dots]$ via the coefficientwise derivation \lean{Fabius.coeffDerivation}; the chain rule \cref{eq:bell-poly-chain} is not formalized. \\
@@ -11618,7 +11551,7 @@ corollary (unlabelled, no.~5) & Cauchy integral & none &  \\
 \Cref{thm:bell-determinants} & Bell determinants & Lean & \lean{Fabius.det_bellMatrixH}, \lean{Fabius.det_bellMatrixK}, \lean{Fabius.det_bellMatrixK_invFactorial} (\lean{BellDeterminants}), by reindexing to the corpus Hessenberg matrix rather than by expansion \\
 \Cref{thm:diamond-bell} &  & Lean & \lean{Fabius.diamondPow_apply} and \lean{Fabius.partialBell_eq_diamondPow_div} (\lean{DiamondPower}); the diamond product is \lean{Bell.binomialConv}, and \lean{Fabius.binomialConv_eq_sum_Ico} checks that the two extreme terms the source omits do vanish, so the two definitions agree.  Raw diamond powers and their zero/successor/one laws hold over every commutative semiring; the EGF and partial-Bell bridge retain commutative $\RationalNumbers$-algebra hypotheses.  The proof is the source's: \lean{Fabius.egfA_mul} makes the generating function of the power a power (\lean{Fabius.egfA_diamondPow}), and \lean{Fabius.bellWeightSeries_pow} reads off its coefficients. \\
 \Cref{thm:bell-symmetric-functions} &  & Lean & \cref{eq:elementary-via-bell} is \lean{Fabius.esymm_eq_bell_complete} and its sign variant \lean{Fabius.esymm_eq_neg_bell_complete} (\lean{ElementarySymmetricBell}), for a finite family in any commutative $\mathbb Q$-algebra; \cref{eq:powersum-via-bell} is \lean{Fabius.newton_power_sum} in cleared form and \lean{Fabius.power_sum_eq} in the divided form (\lean{NewtonPowerSumBell}), with its second form, through the ordinary partial Bell polynomials, as \lean{Fabius.power_sum_eq_ord_bell} (\lean{PowerSumOrdinaryBell}).  All of it rests on \lean{Fabius.exp_subst_logOf} (\lean{ExpLog}), which supplies the $\exp\circ\log$ inverse Mathlib lacks, and on \lean{Fabius.cumulant_eq_cumulantSum} (\lean{CumulantBellFormula}); the two forms of \cref{eq:powersum-via-bell} are the exponential and the ordinary reading of the same $\log E$, equated \\
-\Cref{cor:det-traces-bell} & Determinant from traces & partial & \lean{Fabius.det_eq_bell_complete_traceWeight} (\lean{BellDeterminants}), assuming an eigenvalue family; tr(A^k) as a power sum of eigenvalues is not in Mathlib \\
+\Cref{cor:det-traces-bell} & Determinant from traces & partial & \lean{Fabius.det_eq_bell_complete_traceWeight} (\lean{BellDeterminants}), assuming an eigenvalue family; $\operatorname{tr}(A^k)$ as a power sum of eigenvalues is not in Mathlib \\
 \Cref{thm:cycle-index-bell} &  & partial & equal-marks case \lean{Fabius.bell_complete_cycleWeightConst} and its instance \lean{Fabius.card_perm_eq_bell_complete} (\lean{BellDeterminants}); the cycle-removal bijection is not formal \\
 \Cref{thm:moment-cumulant} & Moment--cumulant relations & Lean & \cref{eq:moments-from-cumulants} is \lean{Fabius.bell_complete_eq_sum_partialBell} with \lean{Fabius.exp_subst_bellWeightSeries}, and \cref{eq:cumulants-from-moments} is \lean{Fabius.bell_transform_inverse} (\lean{BellComposition}); the recursive forms are \lean{Fabius.completeBellPolynomial_momentCumulant}, \lean{Fabius.momentCumulant_completeBellPolynomial} (\lean{MomentCumulantAlgebra}) and \lean{Bell.complete_cumulant} \\
 \Cref{thm:binomial-type-bell} &  & partial & with \lean{Fabius.binomialTypePoly} defined by \cref{eq:binomial-type-bell} (\lean{BinomialType}): \cref{eq:binomial-type-egf} is \lean{Fabius.exp_subst_smul_bellWeightSeries_eq_egfA_binomialTypePoly} and \cref{eq:binomial-type-identity} is \lean{Fabius.binomialTypePoly_add} (from the addition law \lean{Bell.complete_add}), over any commutative ring; the delta operator \cref{eq:delta-operator} is not formalized \\
@@ -11682,7 +11615,7 @@ corollary (unlabelled, no.~11) &  & none &  \\
 \Cref{thm:merged-norlund-calculus} & Appell, difference, and convolution calculus & partial & For natural orders $\alpha,\gamma\in\mathbb N$ (module \lean{NorlundPolynomials}, $\beta_n^{(a)}$ defined by \lean{Fabius.norlund}): \cref{eq:merged-norlund-appell} is \lean{Fabius.derivative_norlund_succ}, \cref{eq:merged-norlund-translation} is \lean{Fabius.norlund_eval_add}, \cref{eq:merged-norlund-difference} is \lean{Fabius.norlund_succ_eval_add_one_sub} and \cref{eq:merged-norlund-convolution} is \lean{Fabius.norlund_add_eval_add}. The arbitrary-order source in \lean{NorlundGeneralized}, including \lean{Fabius.generalizedNorlund_succ_eval_add_one_sub} and \lean{Fabius.generalizedNorlund_eval_add_one_sub}, awaits compilation; the row is not promoted on source review alone. \\
 \Cref{thm:merged-norlund-bell-diagonal} & Bell-polynomial construction and the N\"orlund diagonal & partial & The three diagonal displays are formalized for natural orders and rational evaluation points (module \lean{NorlundDiagonal}): \cref{eq:merged-norlund-polynomial-diagonal} is \lean{Fabius.norlund_diagonal}, \cref{eq:merged-norlund-number-diagonal} is \lean{Fabius.norlund_eval_zero_diagonal} and \cref{eq:merged-norlund-diagonal} is \lean{Fabius.coeff_bernoulliPowerSeries_pow_succ}. The arbitrary-order Bell and multiplicity constructions in \lean{NorlundGeneralized} and \lean{BellCompletePartitions} await compilation. Transport of the polynomial diagonal to an arbitrary coefficient algebra remains open. \\
 \Cref{thm:merged-genocchi} & Bernoulli--Euler--Genocchi relations & Lean & with \lean{Fabius.genocchi} defined by $2(1-2^n)\beta_n$, the generating function \cref{eq:merged-genocchi-egf} is \lean{Fabius.egf_genocchi_mul_exp_add_one} (\lean{GenocchiNumbers}), i.e. the first equality of \cref{eq:merged-genocchi}, and the second equality is \lean{Fabius.genocchi_succ_eq} (\lean{EulerPolynomials}); \lean{Fabius.genocchi_one}, \lean{Fabius.genocchi_two}, \lean{Fabius.genocchi_odd} give the initial values and the parity \\
-\Cref{thm:merged-cauchy-polynomials} & Integral, Stirling, difference, addition, and reflection formulas & partial & Module \lean{CauchyPolynomials} defines $b_n$ by \cref{eq:merged-bernoulli-second-egf} (\lean{Fabius.cauchyPoly}): \cref{eq:merged-cauchy-derivative} is \lean{Fabius.derivative_cauchyPoly_succ}, \cref{eq:merged-cauchy-difference} is \lean{Fabius.cauchyPoly_succ_eval_add_one_sub}, \cref{eq:merged-cauchy-addition} is \lean{Fabius.cauchyPoly_eval_add}, \cref{eq:merged-cauchy-explicit} is \lean{Fabius.cauchyPoly_succ_eq} and \cref{eq:merged-cauchy-stirling-numbers} is \lean{Fabius.cauchyPoly_eval_zero}; the integral representation \cref{eq:merged-cauchy-integral} and the reflection \cref{eq:merged-cauchy-reflection} are not formalized. \\
+\Cref{thm:merged-cauchy-polynomials} & Integral, Stirling, difference, addition, and reflection formulas & Lean & Module \lean{CauchyPolynomials} defines $b_n$ by \cref{eq:merged-bernoulli-second-egf} (\lean{Fabius.cauchyPoly}); its evaluated EGF over every commutative $\mathbb Q$-algebra is \lean{Fabius.egfA_cauchyPoly_aeval}.  \cref{eq:merged-cauchy-derivative} is \lean{Fabius.derivative_cauchyPoly_succ}, and \cref{eq:merged-cauchy-addition} is \lean{Fabius.cauchyPoly_aeval_add}, including $n=0$ and over every commutative $\mathbb Q$-algebra.  Module \lean{CauchyPolynomialReflection} supplies \cref{eq:merged-cauchy-difference} as \lean{Fabius.cauchyPoly_succ_aeval_add_one_sub}.  \cref{eq:merged-cauchy-explicit} is \lean{Fabius.cauchyPoly_succ_eq} and \cref{eq:merged-cauchy-stirling-numbers} is \lean{Fabius.cauchyPoly_eval_zero}.  Module \lean{CauchyPolynomialReflection} proves the actual real interval integral as \lean{Fabius.cauchyPoly_aeval_eq_integral} and the reflection in $\mathbb Q[X]$ and every commutative $\mathbb Q$-algebra as \lean{Fabius.cauchyPoly_reflect} and \lean{Fabius.cauchyPoly_aeval_reflect}, including $n=0$.  The analytic convergence and branch assertion attached to the defining EGF lies outside this theorem and outside the scope of these formal declarations \\
 \Cref{prop:merged-modified-bernoulli} &  & partial & \lean{Fabius.sinhDivLogCoefficient_eq_bernoulli_formula} (\lean{SinhDivBernoulliLog}) at unit scale; the rescaling to $\beta^{\sharp}$ is not recorded \\
 \Cref{thm:merged-periodic-bernoulli-fourier} & Fourier expansion with exact convergence qualifications & partial & $n\ge2$: Mathlib's \lean{fourierCoeff_bernoulli_eq}, \lean{summable_bernoulli_fourier}, \lean{hasSum_one_div_nat_pow_mul_cos}, \lean{hasSum_one_div_nat_pow_mul_sin}, \lean{hasSum_zeta_nat}; the $n=1$ clauses are not formalized \\
 \Cref{thm:merged-euler-maclaurin} & Euler--Maclaurin with remainder & none &  \\
@@ -11718,7 +11651,7 @@ corollary (unlabelled, no.~23) & Peak mean and variance & none &  \\
 \Cref{thm:merged-associahedron-h} & Associahedral \texorpdfstring{$h$}{h}-polynomial & partial & \lean{Fabius.associahedronH_mul}, \lean{Fabius.associahedronH_symm}, \lean{Fabius.associahedronHPoly_one} (\lean{AssociahedronFaceNumbers}); the $h$-vector is defined as the Narayana row, the face transform is not formalized \\
 \Cref{prop:merged-loday-hyperplane} & Loday's constant hyperplane & Lean & \lean{Fabius.lodaySum_eq}, \lean{Fabius.two_mul_lodaySum_add_numLeaves}, \lean{Fabius.sum_lodayCoordinates_eq_of_mem_treesOfNumNodesEq} (\lean{BinaryTreeRotations}); the lowest-common-ancestor bijection is not formalized \\
 \Cref{thm:merged-tamari-order} & The rotation relation is a partial order & Lean & \lean{Fabius.TamariRotate}, \lean{Fabius.tamariPotential_lt_of_tamariRotate}, \lean{Fabius.reflTransGen_tamariRotate_antisymm}, \lean{Fabius.instPartialOrderTamari} (\lean{BinaryTreeRotations}) \\
-\Cref{thm:merged-raney} & Raney numbers & Lean & \lean{Fabius.coeff_raneyT_pow} is \cref{eq:merged-raney} for every $p,n\ge0$ and $r\ge1$, with the series constructed as \lean{Fabius.raneyT} from \lean{Fabius.Lagrange.solution}; \lean{Fabius.raneyT_eq} is the functional equation, \lean{Fabius.natCast_mul_coeff_raneyT_pow} the division-free form, \lean{Fabius.coeff_raneyT} the Fuss--Catalan case (\lean{RaneyNumbers}) \\
+\Cref{thm:merged-raney} & Raney numbers & partial & for the constructed solution: \lean{Fabius.coeff_raneyT_pow} is \cref{eq:merged-raney} for every $p,n\ge0$ and $r\ge1$, with the series constructed as \lean{Fabius.raneyT} from \lean{Fabius.Lagrange.solution}; \lean{Fabius.raneyT_eq} is the functional equation, \lean{Fabius.natCast_mul_coeff_raneyT_pow} the division-free form, \lean{Fabius.coeff_raneyT} the Fuss--Catalan case (\lean{RaneyNumbers}) \\
 \Cref{thm:merged-darboux-finite} & Darboux formula & none &  \\
 corollary (unlabelled, no.~25) & Taylor integral remainder & none &  \\
 \Cref{lem:merged-singular-binomial} & Exact algebraic coefficient, including polynomial cases & none &  \\
