@@ -909,17 +909,24 @@ RatFunc checkpoint to 924/11,617.  The exhaustive added surface is
 both in `Fabius.ProbabilityRepresentation`.  For `F : BoundedFabius`,
 `IsFabius F`, and real `t ≥ 0`, the first theorem identifies the closed tail
 of `weightedSumDistribution` with `rvachevUp F t`; atomlessness is what passes
-from the previously formalized strict tail to the closed tail.  For every
+from the previously formalized strict tail to the closed tail, via
+`weightedSumDistribution_singleton`.  For every
 natural `n ≥ 1`, the second identifies the full-line expectation of `x^n`
 with `n * ∫ t in (0)..1, t^(n-1) * rvachevUp F t`.  Together with the existing
-global distribution and integrability results, these make `prop:up-tail` and
-`cor:up-moments` **Exact**.  The moment theorem does not assert the `n=0`
-case.
+global distribution and integrability results, including
+`rvachevUp_eq_fabiusReal_one_sub_abs` and
+`rvachevUp_eq_one_sub_fabiusReal_of_nonneg`, these make every clause of
+`prop:up-tail` and `cor:up-moments` **Exact** on domains at least as strong as
+printed.  These are full-line identities for the canonical law representing
+the manuscript's `X`, not a new arbitrary-random-variable wrapper.  The moment
+theorem does not assert the `n=0` case.
 
 `RvachevLegendreBiorthogonality.lean` then adds one source module and exactly
 one definition plus one theorem, giving the live 925/11,619 inventory.  Its
 exhaustive public surface is `rvachevLegendreAnalysisKernel` and
 `rvachevLegendreBiorthogonality`, both in `Fabius`.  For
+clarity, the former is literally the normalized kernel
+`((2*m+1)/2) * integral_(-1)^1 up(x-c) P_m(x) dx`.  For
 `F : BoundedFabius`, `IsFabius F`, `M : ℕ`, `M ≠ 0`, and
 `l ≤ padicValNat 2 M`, the theorem proves the exact normalized
 analysis/synthesis pairing over the finite open block

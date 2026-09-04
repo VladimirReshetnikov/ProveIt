@@ -540,7 +540,7 @@ nonnegative half-steps it proves the repeated-integral identity under exactly
 \(\lean{ContDiffOn}\,\RealNumbers\,N\,g\,I\), and containment in \(I\) of the
 full closed symmetric segment.  The result is local, real-valued, fixes the
 recursive nesting order, and includes zero steps and \(N=0\).  Together with
-the preceding algebra it makes \nolinkurl{thm:TM-corner} Complete exactly by
+the preceding algebra it makes \nolinkurl{thm:TM-corner} Exact/Complete exactly by
 composition.  It does not prove the following Walsh conditional-expectation
 corollary or its \(2^{-N}\) normalization. &
 \nolinkurl{centeredBoxIntegral},
@@ -2782,6 +2782,43 @@ centered specialization can drop degree, for example for odd \(n\) at
 random-variable, \lean{HasLaw}, or analytic-MGF realization.  The inverse
 package therefore has 54 Lean-proved and 91 human-proved frontier rows.
 
+The existing \path{ProbabilityLaplaceMoments.lean} module adds exactly the
+two theorems
+\lean{weightedSumDistribution_real_Ici_eq_rvachevUp_of_nonneg} and
+\lean{integral_pow_weightedSumDistribution_eq_mul_intervalIntegral_rvachevUp}.
+The first uses atomlessness of the weighted-sum law to replace the established
+strict tail by the manuscript's closed event \(X\geq t\) for every \(t\geq0\).
+The second gives, for every natural \(n\geq1\),
+\[
+ \int_{\RealNumbers}x^n\Differential\mu_X(x)
+ =n\int_0^1t^{n-1}\RvachevUp(t)\Differential t,
+\]
+with the expectation over the full law and compact support consumed by the
+existing survival layer-cake theorem.  Together with the global up/Fabius
+identities these make \nolinkurl{prop:up-tail} and
+\nolinkurl{cor:up-moments} Exact.  No density theorem or degree-zero extension
+is asserted.
+
+The exhaustive public surface of
+\path{RvachevLegendreBiorthogonality.lean} is the definition
+\lean{rvachevLegendreAnalysisKernel} and the theorem
+\lean{rvachevLegendreBiorthogonality}.  For every
+\(F:\lean{BoundedFabius}\) satisfying \(\lean{IsFabius}\,F\), natural
+\(M\ne0\), arbitrary \(\ell,m\), and
+\(\ell\leq\lean{padicValNat}\,2\,M\), the theorem is the literal normalized
+open-block identity
+\[
+ \frac1M\sum_{-2M<k<2M}Q_\ell^-(k/M)\Lambda_m(k/M)
+ =\begin{cases}1,&m=\ell,\\0,&m\ne\ell.\end{cases}
+\]
+The analysis degree \(m\) is unrestricted.  The proof integrates the existing
+exact degree-\(\ell\) finite Rvachev synthesis on \([-1,1]\) against
+\((2m+1)P_m/2\), interchanges the finite sum and interval integral, and applies
+Legendre orthogonality.  This makes \nolinkurl{thm:leg-biorthogonality}
+Exact.  It does not prove rationality of \(\Lambda_m\), the reverse finite
+projector, rank or trace, or Cauchy--Binet; hence
+\nolinkurl{cor:leg-biorthogonal-matrices} remains Partial.
+
 Finally,
 \lean{halfQBinomial_sum_rootMultiplicity_two_pow}, composed with the existing
 rational root classifier and Gaussian/half-q coefficient identification,
@@ -2848,7 +2885,7 @@ or nonpositive-parameter differential law is asserted.
 \lean{symmetricMixedDifference_range_eq_centeredBoxIntegral}, and
 \lean{symmetricMixedDifference_univ_eq_centeredBoxIntegral}.  Composed with
 the existing symmetric-difference and report-grid algebra, this makes
-\nolinkurl{thm:TM-corner} Complete.  The analytic theorem assumes nonnegative
+\nolinkurl{thm:TM-corner} Exact/Complete.  The analytic theorem assumes nonnegative
 half-steps, \(\lean{IsOpen}\,I\), \(\lean{OrdConnected}\,I\),
 \(\lean{ContDiffOn}\,\RealNumbers\,N\,g\,I\), and containment of the full
 closed symmetric segment in \(I\), rather than global smoothness.  It includes
@@ -3339,9 +3376,10 @@ support-free clamped and interval-supported partial/full layer-cake forms.
 This section retains the Fubini mechanism and records the exact stronger API
 below.
 
-For $t\ge0$, support and \eqref{integration:eq:CDF-is-F} give
+For $t\ge0$, support, atomlessness, and
+\eqref{integration:eq:CDF-is-F} give
 \begin{equation}
- \mu((t,\infty))=1-F(t)=\RvachevUp(t).
+ \mu([t,\infty))=\mu((t,\infty))=1-F(t)=\RvachevUp(t).
  \label{integration:eq:survival-is-up}
 \end{equation}
 The equality remains correct for $t>1$, when both sides are zero.
@@ -3359,6 +3397,11 @@ In particular, for scalar $k$ and
 $K(x)=\int_0^xk(t)\Differential t$,
 \[
  \int_0^1k(t)\RvachevUp(t)\Differential t=\Expectation[K(X)].
+\]
+Taking \(k(t)=nt^{n-1}\) gives, for every natural \(n\geq1\),
+\[
+ \int_{\RealNumbers}x^n\Differential\mu(x)
+ =n\int_0^1t^{n-1}\RvachevUp(t)\Differential t.
 \]
 The choice $E=\ComplexNumbers$, regarded as a real Banach space, gives the same identity
 for complex kernels.
@@ -3413,12 +3456,21 @@ the corresponding clipped declarations proving the full
 and
 \lean{intervalIntegral_mul_rvachevUp_eq_integral_Icc_intervalIntegral_min};
 the differentiable corollary is
-\lean{integral_unit_eq_zero_add_integral_deriv_mul_rvachevUp}, all in
-\path{ProbabilityLaplaceMoments.lean}.
+\lean{integral_unit_eq_zero_add_integral_deriv_mul_rvachevUp}.  The two newest
+theorems in \path{ProbabilityLaplaceMoments.lean} are
+\lean{weightedSumDistribution_real_Ici_eq_rvachevUp_of_nonneg}, the exact
+closed-tail form above, and
+\lean{integral_pow_weightedSumDistribution_eq_mul_intervalIntegral_rvachevUp},
+the full-law moment identity for every natural \(n\geq1\).  Together with the
+existing global up/Fabius bridges they make \nolinkurl{prop:up-tail} and
+\nolinkurl{cor:up-moments} Exact.  No density theorem or degree-zero extension
+is asserted.
 
 \begin{remark}[Endpoint conventions disappear under integration]
-The survival function uses the open ray $(t,\infty)$.  The CDF uses $(-\infty,t]$.  Their
-complements are exact, and no endpoint atom enters because $\mu$ has a continuous CDF.
+The Fubini kernel naturally uses the open ray $(t,\infty)$, while the
+probabilistic tail proposition uses $[t,\infty)$.  Atomlessness makes those
+events equimeasurable.  The CDF uses $(-\infty,t]$; its complement is exact,
+and no endpoint atom enters because $\mu$ has a continuous CDF.
 Likewise, replacing $(0,1)$ by any of the standard half-open versions changes no Lebesgue
 integral.  The formal proof nevertheless records these null-set conversions explicitly.
 \end{remark}
@@ -5630,9 +5682,9 @@ identifications, zero-tilt normalization, and positivity.  Its later exhaustive
 two-theorem extension consists of
 \lean{weightedSumDistribution_real_Ici_eq_rvachevUp_of_nonneg} and
 \lean{integral_pow_weightedSumDistribution_eq_mul_intervalIntegral_rvachevUp},
-which make \nolinkurl{prop:up-tail} and \nolinkurl{cor:up-moments} Exact for
-the closed tail on \(t\geq0\) and natural moments \(n\geq1\), respectively;
-the dyadic almost-sure
+the atomless closed-tail identity on \(t\geq0\) and the full-law
+positive-natural-degree moment identity for \(n\geq1\), respectively.  They
+make \nolinkurl{prop:up-tail} and \nolinkurl{cor:up-moments} Exact; the dyadic almost-sure
 support and restriction declarations
 are owned upstream by \path{ProbabilityRepresentation.lean};
 \cref{integration:sec:survival-fubini,integration:sec:probability-laplace}.\\

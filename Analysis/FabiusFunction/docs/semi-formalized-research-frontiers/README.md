@@ -284,6 +284,31 @@ prefix moments are an algebraic finite-convolution model, not a new
 random-variable, `HasLaw`, or analytic-MGF realization. These promotions give
 the inverse package's current 54 Lean-proved / 91 human-proved totals.
 
+The existing `FabiusFunction.ProbabilityLaplaceMoments` module now adds
+exactly two public theorems:
+`Fabius.weightedSumDistribution_real_Ici_eq_rvachevUp_of_nonneg` and
+`Fabius.integral_pow_weightedSumDistribution_eq_mul_intervalIntegral_rvachevUp`.
+Atomlessness changes the established strict tail to the manuscript's closed
+event `X ≥ t` for every `t ≥ 0`; survival layer cake gives
+`E[X^n] = n ∫₀¹ t^(n-1) up(t) dt` for every natural `n ≥ 1`, with the
+expectation over the full weighted-sum law. Composed with the existing global
+up/Fabius identities, these make `prop:up-tail` and `cor:up-moments` Exact.
+No density assertion or degree-zero extension is claimed.
+
+`FabiusFunction.RvachevLegendreBiorthogonality` has exactly one definition,
+`Fabius.rvachevLegendreAnalysisKernel`, and one theorem,
+`Fabius.rvachevLegendreBiorthogonality`. For `F : BoundedFabius` with
+`IsFabius F`, natural `M ≠ 0`, arbitrary synthesis and analysis degrees
+`l,m`, and `l ≤ padicValNat 2 M`, it proves the literal normalized open-block
+identity
+`M⁻¹ ∑_{-2M<k<2M} Q_l⁻(k/M) Λ_m(k/M) = if m=l then 1 else 0`.
+The proof integrates the exact degree-`l` Rvachev synthesis against the
+normalized Legendre mode and applies orthogonality; there is no restriction
+on `m`. Thus `thm:leg-biorthogonality` is Exact. The larger
+`cor:leg-biorthogonal-matrices` remains Partial because the reverse
+projector, rank/trace, and Cauchy--Binet clauses are not Lean-covered; the
+leaf also makes no dyadic-rationality claim for the analysis kernel.
+
 The zero-definition/one-theorem
 `FabiusFunction.HalfQBinomialRootSimplicity` leaf adds
 `Fabius.halfQBinomial_sum_rootMultiplicity_two_pow`. Composed with the
@@ -355,7 +380,7 @@ theorems: `Fabius.centeredBoxIntegral`,
 `Fabius.symmetricMixedDifference_range_eq_centeredBoxIntegral`, and
 `Fabius.symmetricMixedDifference_univ_eq_centeredBoxIntegral`. Together with
 the existing `ThueMorseSymmetricDifference` algebra, they make
-`thm:TM-corner` Complete exactly by composition. The range theorem assumes
+`thm:TM-corner` Exact/Complete exactly by composition. The range theorem assumes
 nonnegative half-steps, `IsOpen I`, `OrdConnected I`,
 `ContDiffOn ℝ N g I`, and containment of the full closed symmetric segment
 in `I`; it is local rather than a global smoothness shortcut and includes
