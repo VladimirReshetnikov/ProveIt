@@ -259,6 +259,7 @@ import FabiusFunction.ThueMorseComplexProductBridge
 import FabiusFunction.ThueMorseSparseMoments
 import FabiusFunction.ThueMorseMixedDifference
 import FabiusFunction.ThueMorseSymmetricDifference
+import FabiusFunction.ThueMorseCornerIntegral
 import FabiusFunction.ThueMorseAutocorrelation
 import FabiusFunction.ThueMorseOverlapFree
 import FabiusFunction.ThueMorseRecurrence
