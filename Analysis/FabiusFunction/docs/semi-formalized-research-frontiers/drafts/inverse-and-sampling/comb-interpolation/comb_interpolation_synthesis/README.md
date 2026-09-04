@@ -220,7 +220,7 @@ documentation census recorded at the earlier merge checkpoint was 629 modules
 and 8,546 public declarations. That historical census is contextual evidence,
 not a claim that every manuscript result in this volume is formalized.
 
-The deterministic validator passes the nine-file TeX graph, structural and
+The deterministic validator checks the nine-file TeX graph, structural and
 proof discipline (213 result environments, 150 proof-required), 801 labels,
 783 references, 62 bibliography keys,
 disposition, historical-ledger, companion-payload, 232-row

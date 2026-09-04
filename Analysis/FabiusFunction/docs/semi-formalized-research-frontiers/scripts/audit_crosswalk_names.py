@@ -92,7 +92,12 @@ for full in list(defined) + list(namespaces):
         resolvable.add('.'.join(parts[i:]))
 
 # 2. Citations.  Dotted names are captured whole.
-CITE = re.compile(r"Fabius\.((?:[A-Za-z0-9_'\\]|\.(?=[A-Za-z_]))+)")
+# The negative lookbehind is necessary, not decorative: without it the
+# module name `PowerExponentialLambertFabius.lean` matches as the citation
+# `Fabius.lean`, which is then reported MISSING.  A false positive against
+# correct text is the worst kind of audit failure, so the match must not
+# be allowed to start in the middle of an identifier.
+CITE = re.compile(r"(?<![A-Za-z0-9_])Fabius\.((?:[A-Za-z0-9_'\\]|\.(?=[A-Za-z_]))+)")
 # Ledger-style citations `\decl{name}` (Fourier-decay, Integration, Lambert W
 # volumes): a bare declaration name understood in namespace `Fabius`, or a
 # module path `FabiusFunction.Foo`.  A bare name resolves through the

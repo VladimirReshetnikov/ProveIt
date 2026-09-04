@@ -1376,6 +1376,18 @@ two constants; by the equivalence just proved, its classes are the fibres of
 \(t^{n}L^{j}\mapsto n\).  That \(\succdom\) induces the order of \(-n\) on
 classes is \eqref{plt:eq:mot-dominance}.
 \end{proof}
+\emph{Lean status.}  Formal in \lean{TransseriesBlockClasses.lean}, and generalized past
+the statement above.  The equivalence as displayed, for integer exponents, is
+\lean{Fabius.exists_log_bracket_div_iff}; it rests on
+\lean{Fabius.exists_log_bracket_iff}, the same statement with \emph{real} exponents ---
+\(X^{a}(\log X)^{b}\) is trapped between two fixed powers of \(\log X\) if and only if
+\(a=0\).  The generalization is not decoration: with real exponents the quantifier over
+\(N\) never has to be handled, because \(a\ne0\) destroys the bracket for every \(N\) at
+once through the two dominance limits, whereas the integer form invites an induction on
+\(N\).  \lean{Fabius.plMonomial_zero_left} is the degenerate case \(a=0\), and the last
+clause --- that \(\succdom\) descends to the order of \(-n\) on classes --- is
+\lean{Fabius.plMonomial_generators_dominance} in \lean{TransseriesScaleDominance.lean}.
+
 
 \Cref{plt:prop:mot-blocks} is the structural justification for the normal form
 used throughout this volume: a polynomial-logarithmic transseries is written
@@ -38740,8 +38752,30 @@ instances with $\varepsilon$ a sinusoid of exactly the permitted Lipschitz
 constant, the ratio of the true displacement to the bound reached $0.9999$.
 So the denominator $m-\theta$ is the right one and cannot be improved to $m$.
 
-Not formalized: part (2), the first-order law \eqref{p0:eq:transport-first-order},
-which needs $f_0\in C^{2}$ and a second-order Taylor estimate.
+Part (2), \eqref{p0:eq:transport-first-order}, is formalized as well, as
+\lean{Fabius.transport_first_order} --- and formalizing it showed that it does
+\emph{not} need the second-order Taylor estimate the proof above reaches for.
+The mean value point already gives
+\begin{equation}\label{p0:eq:transport-exact}
+ x-x_0=-\frac{\varepsilon(x_0)}{f'(\xi)},
+\end{equation}
+which is \emph{exact}, so the whole of $E$ is the mismatch between $f'(\xi)$ and
+$f_0'(x_0)$ --- a perturbation $\varepsilon'(\xi)$ and a curvature
+$M_2|\xi-x_0|$.  Two consequences.  The hypothesis $f_0\in C^{2}$ is not used:
+what the argument consumes is a Lipschitz bound on $f_0'$, which is weaker, and
+which \lean{Fabius.lipschitzOn_of_abs_deriv_le} supplies from $|f_0''|\le M_2$.
+And part (1) is not an input to part (2): the same $\xi$ that gives
+\eqref{p0:eq:transport-exact} gives \eqref{p0:eq:transport-bound} too, so the
+two parts are siblings rather than a chain.
+
+The bound is close to sharp.  Over four hundred random instances with $f_0$ of
+controlled curvature and $\varepsilon$ a sinusoid at exactly the permitted
+Lipschitz constant, $|E|$ reached $0.92$ of the stated bound, mean $0.28$, with no
+violations.
+
+Still not formalized: the closing asymptotic clause, that $\varepsilon(x)=\bigO(x^{-M-1})$
+and $\varepsilon'(x)=\littleo(1)$ give
+$x-x_0=-\varepsilon(x_0)/f_0'(x_0)\,(1+\littleo(1))$.
 \end{remark}
 
 \begin{corollary}[Forward truncation to inverse accuracy]
@@ -40744,6 +40778,32 @@ $\beta=0$, so a monomial $\prod\varkappa_{m_i}$ with $\sum m_i=r$ has degree $\l
 r+\#\{i\}\le2r$; the displayed $g_1,\ldots,g_4$ were recomputed here from
 \cref{p1:eq:varkappa} by exact rational arithmetic.
 \end{proof}
+\emph{Lean status: partial, the coefficient recurrence only.}  The recurrence
+in~\eqref{p1:eq:g-recurrence} is formal in \lean{ExpSeriesRecurrence.lean}, and in the
+generality it deserves: it has nothing to do with gamma ratios.  For an arbitrary power
+series \(K\) without constant term over a commutative \(\RationalNumbers\)-algebra,
+\lean{Fabius.expCoeff} is the coefficient sequence of \(\exp K\),
+\lean{Fabius.expCoeff_zero} is \(g_{0}=1\), and \lean{Fabius.natCast_mul_expCoeff} is
+\(n\,g_{n}=\sum_{m\le n}m\,\varkappa_{m}\,g_{n-m}\) with \(\varkappa_{m}\) the
+coefficients of \(K\).  \lean{Fabius.succ_mul_expCoeff_succ} is the same fact in the shape
+the Cauchy product produces, before reindexing.
+
+Two remarks on the formal statement.  It is the coefficient form of \(G'=K'G\), so
+\lean{derivative_subst} and \lean{derivative_exp} give it at once and all the work is the
+reindexing --- the convolution runs the other way round from the display above.  And the
+sum is taken over \(0\le m\le n\) rather than \(1\le m\le n\); the \(m=0\) term carries the
+factor \(m\) and vanishes, which costs nothing and makes the identity true at \(n=0\) as
+well, where the volume's indexing would compare an empty sum with \(0\cdot g_{0}\).
+
+What is \emph{not} formalized: everything else in the lemma.  The definition of
+\(\varkappa_{m}(\beta)\) through Bernoulli polynomials, the closed forms
+\eqref{p1:eq:g-first} and~\eqref{p1:eq:g4} and the degree-\(2r\) statement, the ordinary
+Bell form of \eqref{p1:eq:g-recurrence} --- which would need the ordinary partial Bell
+polynomials, themselves unformalized, see \cref{plt:lem:bell-normalizations} --- and the
+asymptotic~\eqref{p1:eq:gamma-ratio} itself, which needs Stirling's expansion to all orders
+in a sector.  The formalized content is the recurrence that turns \(\varkappa\) into
+\(g\), and nothing about where \(\varkappa\) comes from.
+
 
 \begin{remark}[Part~0 candidate]
 \label{p1:rem:gamma-part0}
