@@ -115,11 +115,12 @@ complete human proofs and exact declaration crosswalks. Three private rational
 helpers in `FinitePrefixThueMorseCollapse` were replaced by the shared API; that
 caller refactor has now passed its own direct Lean check as well.
 
-The merged register contains 207 rows: 60 marked Lean, 35 partial, and 112
-without a compiler-verified counterpart. These include inherited classifications
-and the upstream formal-power, Stirling, and Newton checkpoints; they are not
-a fresh compilation of the whole corpus. The final structural/provenance
-validator passes with 207 adjacent
+The merged register contains 207 rows: 62 marked Lean, 35 partial, and 110
+without a compiler-verified counterpart. The grid and CRT certificates retain
+two compiler-backed entries alongside the incoming classifications; this is
+not a fresh build of the whole corpus. The earlier 204-row checkpoint had
+63 Lean, 32 partial, and 109 none after correcting its stale header.
+The final structural/provenance validator passes with 207 adjacent
 proofs, 27 disposition records, and six original-source inventory rows. PDF
 building remains skipped for this latest source-only synchronization.
 
@@ -158,11 +159,18 @@ proves the full EGF and binomial identity including degree zero. The new
 `BernoulliFormalLog` source derives the rational formal logarithm of the
 Bernoulli kernel using the existing recurrence-to-logarithm bridge. Its
 coefficient formula separates degree zero and preserves the distinction between
-the two degree-one Bernoulli conventions. These two modules and the affected
-Norlund and Lambert callers still await compilation; the ThueMorse caller's
-direct check is recorded by the upstream checkpoint above. Independent
-source reviews are not compiler validation, and their register classifications
-have not been promoted on that basis.
+the two degree-one Bernoulli conventions. The Abel target passed a focused
+build; `BernoulliFormalLog` and the complete affected-dependent closure have
+not been rebuilt for this checkpoint. Independent source reviews are not
+compiler validation, and no further register row is promoted here.
+
+`GridEvaluationCertificate` and `IntegerCRTCertificate` supply nine compiled
+public theorems, each with only the standard project axioms. Their full human
+statements and proofs remain grouped in the two existing certificate theorems:
+grid uniqueness over any integral domain, and product-divisibility plus
+zero/equality certificates for signed pairwise-coprime integer moduli.
+The zero test uses the stronger full-product bound. The adjacent discussion now
+distinguishes probabilistic identity testing from exact grid certificates.
 
 The human moment-cumulant proof now states its normalization and positive-degree
 boundaries explicitly, with formal logarithm identities separated from the

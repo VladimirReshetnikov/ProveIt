@@ -457,7 +457,11 @@ def consolidate(group_dir, members, out_name, title, out_subdir=None):
                 os.makedirs(d, exist_ok=True)
                 src = os.path.join(root, fn)
                 dst = os.path.join(d, fn)
-                if fn.lower().endswith('.tex'):
+                if fn == 'SHA256SUMS' or fn.startswith('SHA256SUMS.'):
+                    # Package checksum manifests are retired repository-wide;
+                    # consolidation must not copy or regenerate them.
+                    continue
+                elif fn.lower().endswith('.tex'):
                     frag = io.open(src, encoding='utf-8').read()
                     frag = prefix_labels(frag, pfx)
                     frag = asset_paths(frag, mdir)

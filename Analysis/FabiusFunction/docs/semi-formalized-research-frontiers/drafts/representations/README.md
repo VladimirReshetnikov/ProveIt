@@ -940,7 +940,7 @@ source-only transseries/Catalan and Thue--Morse additions made 943/11,791 the
 next historical checkpoint. The finalized one-definition/eleven-theorem
 `TransseriesFlat.lean` module and three integer-zpow theorems in
 `TransseriesDifferentialBlock.lean` gave the historical census 944 modules and
-11,806 public declarations; the merged live census is 977/12,133. The census also includes
+11,806 public declarations; the merged live census is 985/12,199. The census also includes
 the unrelated
 sibling source-only
 `FabiusFunction.GeometricRichardsonGenerating` module (three definitions and
@@ -1079,7 +1079,7 @@ historical post-Prouhet checkpoint.  Subsequent source-only
 transseries/Catalan and Thue--Morse additions made 943/11,791 the next
 historical checkpoint.  The finalized one-definition/eleven-theorem
 `TransseriesFlat.lean` module and three integer-zpow theorems in
-`TransseriesDifferentialBlock.lean` gave the historical census 944/11,806; the merged live census is 977/12,133.
+`TransseriesDifferentialBlock.lean` gave the historical census 944/11,806; the merged live census is 985/12,199.
 
 The existing `FabiusFunction.ProbabilityLaplaceMoments` module adds exactly
 the two theorems

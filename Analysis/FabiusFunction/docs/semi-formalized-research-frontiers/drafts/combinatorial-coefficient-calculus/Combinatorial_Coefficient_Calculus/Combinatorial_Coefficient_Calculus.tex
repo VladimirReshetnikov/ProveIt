@@ -10286,10 +10286,18 @@ entries in the preceding row.
 
 \begin{theorem}[Polynomial grid certificate]
 \label{thm:merged-grid-certificate}
-Let $K$ be a field, let $P,Q\in K[x_1,\ldots,x_d]$, and suppose
-$\deg_{x_i}(P-Q)\leq D_i$.  If $P=Q$ on a Cartesian grid
-$S_1\times\cdots\times S_d$ with $D_i+1$ distinct values in $S_i$, then
-$P=Q$ identically.
+Let $R$ be a commutative integral domain, let $I$ be a finite index set, and
+let $S_i\subset R$ be finite for every $i\in I$.  For coordinatewise degree
+bounds, give the zero polynomial degree zero, as in Lean.  If
+$P,Q\in R[x_i\mid i\in I]$ agree on $\prod_{i\in I}S_i$ and
+\[
+ \deg_{x_i}(P-Q)<|S_i|\qquad(i\in I),
+\]
+then $P=Q$.  In particular, it suffices to have natural-number bounds
+$\deg_{x_i}(P-Q)\leq D_i$ and $D_i+1\leq|S_i|$; alternatively, one may
+bound both $\deg_{x_i}P$ and $\deg_{x_i}Q$ by $D_i$.
+Consequently, evaluation on the grid is injective on the class of
+polynomials satisfying $\deg_{x_i}P<|S_i|$ for every $i$.
 \end{theorem}
 
 \begin{proof}
@@ -10367,16 +10375,15 @@ doubled inequalities, avoiding integer-division conventions.
 \end{remark}
 
 \begin{remark}
-Random evaluations are error detectors.  A degree bound together with the
-Schwartz--Zippel estimate bounds the probability of accepting a nonzero
-polynomial; it does not turn a random sample into a deterministic proof.
-Exact vanishing on a full interpolation grid over a field does prove the
-identity when each coordinate set has more distinct points than the known
-degree in that variable: apply the univariate root bound successively in
-each variable.
-Modular computations become exact certificates only after an integer-size
-bound is recorded.  This distinction prevents numerical evidence from being
-silently promoted to an identity.
+An exact evaluation at which two polynomials differ disproves their equality.
+Agreement at randomly sampled points remains probabilistic evidence even
+when a degree bound is known: Schwartz--Zippel bounds false acceptance
+under its field and sampling hypotheses, but does not turn successful
+random tests into a deterministic identity proof.  Agreement on a full
+grid satisfying the preceding degree bounds is an exact certificate.
+The modular certificate likewise combines proved congruences, pairwise
+coprimality, and a proved size bound.  Neither numerical nor modular
+agreement alone is silently promoted to an identity.
 \end{remark}
 
 \section{Disposition of the Bell-number decimal table}
@@ -10688,7 +10695,7 @@ coefficient calculus rather than a catalogue of isolated identities.
 
 \section{Lean formalization register}
 \label{sec:lean-register}
-Every theorem-like environment of this monograph is listed here with the status of its formalization in the Lean development \path{Analysis/FabiusFunction/Lean/FabiusFunction} (Mathlib \texttt{v4.32.0}).  \emph{Lean} means that a public, compiled declaration proves the exact statement or a more general one (the generalization is then noted next to the result); \emph{partial} means that a named part of the statement is proved and the rest is named; \emph{none} means that no compiler-verified counterpart is recorded yet, even if source under validation is identified.  A citation, a numerical check, or a plausible derivation does not count.  The register is generated from the source; its mappings must be updated when results are added or validated.  Current totals: 60 Lean, 35 partial, 112 none, of 207 results.
+Every theorem-like environment of this monograph is listed here with the status of its formalization in the Lean development \path{Analysis/FabiusFunction/Lean/FabiusFunction} (Mathlib \texttt{v4.32.0}).  \emph{Lean} means that a public, compiled declaration proves the exact statement or a more general one (the generalization is then noted next to the result); \emph{partial} means that a named part of the statement is proved and the rest is named; \emph{none} means that no compiler-verified counterpart is recorded yet, even if source under validation is identified.  A citation, a numerical check, or a plausible derivation does not count.  The register is generated from the source; its mappings must be updated when results are added or validated.  Current totals: 62 Lean, 35 partial, 110 none, of 207 results.
 
 \begin{footnotesize}
 \begin{longtable}{@{}p{0.16\textwidth}p{0.22\textwidth}p{0.08\textwidth}p{0.40\textwidth}@{}}

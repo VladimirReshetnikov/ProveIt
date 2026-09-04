@@ -82,9 +82,10 @@ That primary exposition is deliberately proof-backed: every mathematical claim
 in it must have a proved counterpart in the Lean development.
 
 > **Artifact status (2026-09-04).**  The live facade union contains exactly
-> 977 source modules and 12,133 explicit public declarations.  The documentation
-> audit reports no missing module headers or declaration comments.  The previous
-> reconciled 970/12,056 inventory remains a historical checkpoint.  The exact-dyadic
+> 985 source modules and 12,199 explicit public declarations.  The documentation
+> audit reports no missing module headers or declaration comments.  The preceding
+> 979/12,142, 977/12,133, and earlier reconciled 970/12,056 inventories remain historical
+> checkpoints.  The exact-dyadic
 > inverse, Jacobi two-square, Lagrange--Rvachev Matrix, geometric Richardson,
 > Gaussian-binomial second-moment, fixed-column rate, and half-base root
 > simplicity, Rvachev--Appell Hasse,
@@ -224,13 +225,21 @@ in it must have a proved counterpart in the Lean development.
 > analyticity.  Those overlapping branch counts are receipts, not additive
 > deltas; later branch receipts are 967/12,001, 969/12,048, and 970/12,051.
 > Their reconciliation produced the historical 970/12,056 checkpoint.  The
-> current seven-module overlay is `AbelPolynomialSeries` 2+9,
+> following seven-module overlay is `AbelPolynomialSeries` 2+9,
 > `AssociahedronFaceNumbers` 4+23, `BernoulliFormalLog` 0+5,
 > `ExponentialRescaling` 0+4, `PochhammerFalling` 1+13,
 > `RaneyNumbers` 4+12, and `UnitSeriesPowerRecurrence` 0+3.  These modules
 > contain 80 declarations; moving three existing theorems from
-> `NorlundDiagonal` to `ExponentialRescaling` makes the net change +77 and the
-> live census 977/12,133, with no documentation gaps.  This is a conservative
+> `NorlundDiagonal` to `ExponentialRescaling` makes the net change +77 and gives
+> the preceding 977/12,133 checkpoint.  `GridEvaluationCertificate` 0+4 and
+> `IntegerCRTCertificate` 0+5 then add two modules and nine theorems, producing
+> the historical 979/12,142 checkpoint.  The six-module successor adds
+> `NorlundGeneralized` 3+18, `StirlingSymmetricFunctions` 0+4,
+> `LagrangeInversionUniqueness` 0+6, `NewtonReciprocal` 1+5,
+> `StirlingSecondReverseRowIdentity` 0+2, and
+> `TransseriesWrightOmegaTerms` 0+10, together with eight declarations in
+> existing modules.  Its +6-module/+57-declaration delta yields the live
+> 985/12,199 census with no documentation gaps.  This is a conservative
 > API inventory, not an automatic promotion of broader manuscript claims.  The separate
 > incoming-branch inner/exterior checkpoints
 > 906/11,461 and 907/11,464 remain historical.

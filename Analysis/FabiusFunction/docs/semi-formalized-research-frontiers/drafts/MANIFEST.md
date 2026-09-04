@@ -26,8 +26,8 @@ declarations and the nine-theorem fixed-column inventory. Its retained
 405-page PDF and `b899` receipt are historical; that correction made no PDF
 or checksum update.
 
-**Current artifact checkpoint (2026-09-04).** The live Lean audit scans 970
-source modules and 12,133 explicit public declarations, with no missing module headers or
+**Current artifact checkpoint (2026-09-04).** The live Lean audit scans 985
+source modules and 12,199 explicit public declarations, with no missing module headers or
 declaration comments. The reciprocity leaf's 931/11,685 checkpoint remains
 historical; the subsequently merged upstream `DyadicBoundaryIdentity.lean`
 and `FinitePrefixThueMorseCollapse.lean` modules add two modules and ten public
@@ -85,12 +85,15 @@ leaf still has eight theorems. The later incoming branch recorded 967/12,001 aft
 the three-theorem power-recurrence leaf gave its historical 970/12,051
 checkpoint. These counts overlap the local inventories and are not additive.
 
-The current merged audit is **977 modules and 12,133 explicit public
+The preceding merged audit was **977 modules and 12,133 explicit public
 declarations**, with zero documentation gaps. Relative to 970/12,056, seven
 new leaves contribute 80 declarations while three existing declarations move
 from `NorlundDiagonal.lean` to `ExponentialRescaling.lean`, a net increase
 of 77. The eight-theorem Stirling leaf is retained.
-No new aggregate-build or PDF-parity claim is made.
+The two certificate leaves added nine public theorems at the historical
+979/12,142 checkpoint. The current merged inventory is 985/12,199 after six
+further leaves add 57 declarations. No new aggregate-build or PDF-parity
+claim is made.
 
 The abstract Faà di Bruno result, ordinary Bell normalization, and Touchard
 definition and displayed Euler-operator equation are **Exact**. The real
@@ -465,12 +468,12 @@ evaluated reciprocity, nonnegative-nome lower and strict-contraction upper
 bounds, and dimension-dominant two-sided estimates for real nomes greater than
 one. Its positivity input is the already-counted
 `finiteQPochhammerIn_self_pos` imported from `GeneralQConditionNumber.lean`.
-`GaussianBinomialFixedColumnRate.lean` adds no definitions and eight theorems:
-the elementary product-defect bound, the denominator-free relative Gaussian
+`GaussianBinomialFixedColumnRate.lean` adds no definitions and nine theorems:
+the exponential and elementary product-defect bounds, the denominator-free relative Gaussian
 estimate, fixed and shifted nonasymptotic additive errors, and four
 fixed/shifted relative/additive Big-O wrappers. The closure reuses
-`norm_finiteQPochhammerIn_pow_sub_one_le_exp` and
-`tendsto_gaussianBinomial_add_atTop` from the one-definition,
+`norm_finiteQPochhammerIn_pow_sub_one_le_exp_of_norm_le_one` and
+`tendsto_gaussianBinomial_add_const_atTop` from the one-definition,
 twenty-seven-theorem `QBinomialTheoremInfinite.lean` surface. The ring-level
 bounds need a multiplicative norm, the quotient statements need a normed field
 with `‖q‖ < 1`, and every result includes `q = 0`.
@@ -667,15 +670,14 @@ The final pass proved the sharp Bell bound the arrivals had only asserted,
 supplied Euler's limit and the Weierstrass product on which an existing
 polygamma proof silently depended, merged thirteen further donor-only results,
 repaired eight double-superscript errors that had made the source fail to
-compile at all, and completed the notation-catalogue migration. The retained
-174-page PDF is an earlier render; the source has changed since that checkpoint,
-and rebuilding remains deferred at the user's request. None of the manuscript proofs is claimed as Lean
+compile at all, and completed the notation-catalogue migration. The retained upstream PDF is a historical render; the latest merged source
+contains subsequent changes and makes no current source/PDF-parity claim. None of the manuscript proofs is claimed as Lean
 verification; the in-document "Lean formalization register" states the
 formalization status per result.
 
 | Directory | Document | Previous path / provenance |
 | --- | --- | --- |
-| `Combinatorial_Coefficient_Calculus/` | **Canonical, editorial consolidation complete:** *Combinatorial Coefficient Calculus* — current source with 204 adjacent proofs and a 59 Lean / 34 partial / 111 none register. `UnitSeriesPowerRecurrence.lean` supplies the generic differential-equation recurrence and unit-series specialization that make `alg:merged-exp-log-power` Exact. The retained 174-page A4 PDF is an earlier render; PDF rebuilding is deferred by user instruction. | Six-source provenance and disposition records in the package; original non-suffixed arrival was `incoming/Combinatorial_Coefficient_Calculus.zip`; `SOURCE_INVENTORY.csv` records immutable Git locators for all six inputs, including the five retired donors. The mutable `SOURCE_CLOSURE.sha256` ledger is retired and no checksum ledger is required. |
+| `Combinatorial_Coefficient_Calculus/` | **Canonical, editorial consolidation complete:** *Combinatorial Coefficient Calculus* — current source with 207 adjacent proofs and a 62 Lean / 35 partial / 110 none register. `UnitSeriesPowerRecurrence.lean` supplies the generic differential-equation recurrence and unit-series specialization that make `alg:merged-exp-log-power` Exact. The retained upstream A4 PDF is historical; the latest merged source makes no current source/PDF-parity claim. | Six-source provenance and disposition records in the package; original non-suffixed arrival was `incoming/Combinatorial_Coefficient_Calculus.zip`; `SOURCE_INVENTORY.csv` records immutable Git locators for all six inputs, including the five retired donors. The mutable `SOURCE_CLOSURE.sha256` ledger is retired and no checksum ledger is required. |
 
 ## exponents-and-q-series — `exponents-and-q-series/`
 
@@ -901,7 +903,7 @@ and 961/11,974 inventories and the incoming branch's 943/11,787, 952/11,881,
 and 952/11,884 inventories, followed by incoming 967/12,001, 969/12,048,
 and 970/12,051, are historical and overlap. The preceding local merged
 970/12,056 inventory is also historical. The reconciled merged
-audit is 977/12,133, with zero documentation gaps, as inventoried above.
+audit is 985/12,199, with zero documentation gaps, as inventoried above.
 In the current semantic union, the subsequent
 zero-definition/two-theorem greater-than-one leaf makes `cor:qgreaterone`
 Exact, and the scaled-geometric polynomial theorem completes
@@ -912,7 +914,7 @@ in `HalfQBinomialRootSimplicity.lean`, composed with the complete rational
 root classification in `HalfQBinomial.lean`, makes
 `cor:halfbase-root-locus` Exact while leaving
 `cor:qbinom-inversion-law` Partial. The live semantic-union facade census is
-977/12,133; the local 961/11,974, 960/11,966, 944/11,806, and 943/11,791
+985/12,199; the local 961/11,974, 960/11,966, 944/11,806, and 943/11,791
 inventories, the preceding local merge 970/12,056, and the incoming
 970/12,051, 969/12,048, 967/12,001, 952/11,884, 952/11,881, and 943/11,787 inventories
 remain historical branch checkpoints. The historical dyadic/Prouhet census
@@ -985,7 +987,7 @@ explicit public commands and two generated names. The later incoming
 snapshot expanded this to thirty-five focused surfaces with 304 explicit
 public commands plus two names generated by `to_additive` (306 named API
 entries). These are historical incoming inventories, not a recount of the
-merged 977/12,133 corpus; the module interfaces below retain their stated
+merged 985/12,199 corpus; the module interfaces below retain their stated
 scope boundaries. The preceding local merge census was 970/12,056.
 
 Fourteen of the fifteen incoming leaves contribute 95 focused declarations:

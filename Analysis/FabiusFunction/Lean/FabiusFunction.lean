@@ -87,7 +87,6 @@ import FabiusFunction.BernoulliFormalLog
 import FabiusFunction.NorlundGeneralized
 import FabiusFunction.NarayanaNumbers
 import FabiusFunction.AssociahedronFaceNumbers
-import FabiusFunction.PochhammerFalling
 import FabiusFunction.StirlingFirstModH
 import FabiusFunction.StirlingSymmetricFunctions
 import FabiusFunction.LagrangeInversion
