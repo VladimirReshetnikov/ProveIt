@@ -95,6 +95,7 @@ theorem tendsto_jackson_sum_qDeriv (q : 𝕜) (G : 𝕜 → 𝕜) (a : 𝕜) {l 
   simp_rw [hsum]
   exact tendsto_const_nhds.sub hG
 
+omit [CompleteSpace 𝕜] in
 /-- **The fundamental theorem, second half (summable form)**: if `G(aq^n) → l` and the
 Jackson series of `D_qG` is summable, then `∫₀ᵃ D_qG(t) d_q t = G(a) - l`. -/
 theorem jacksonIntegral_qDeriv (q : 𝕜) (G : 𝕜 → 𝕜) (a : 𝕜) {l : 𝕜}
@@ -104,6 +105,7 @@ theorem jacksonIntegral_qDeriv (q : 𝕜) (G : 𝕜 → 𝕜) (a : 𝕜) {l : �
   have h := (hs.hasSum.tendsto_sum_nat.const_mul ((1 - q) * a))
   exact tendsto_nhds_unique h (tendsto_jackson_sum_qDeriv q G a hG)
 
+omit [CompleteSpace 𝕜] in
 /-- **Integration by parts (partial sums)**: if `f(aq^n) g(aq^n) → l`, the partial
 Jackson sums of `f D_qg + g(q·) D_qf` converge to `f(a)g(a) - l`. -/
 theorem tendsto_jackson_sum_parts (q : 𝕜) (f g : 𝕜 → 𝕜) (a : 𝕜) {l : 𝕜}
@@ -115,6 +117,7 @@ theorem tendsto_jackson_sum_parts (q : 𝕜) (f g : 𝕜 → 𝕜) (a : 𝕜) {l
   have := tendsto_jackson_sum_qDeriv q (fun y => f y * g y) a h
   simpa only [qDeriv_mul] using this
 
+omit [CompleteSpace 𝕜] in
 /-- **Integration by parts (convergent series)**: if `f(aq^n) g(aq^n) → l` and the two
 Jackson series converge, with sums `S₁` and `S₂`, then
 `(1-q) a S₁ = f(a)g(a) - l - (1-q) a S₂`. -/
@@ -141,6 +144,7 @@ theorem jackson_parts_of_tendsto (q : 𝕜) (f g : 𝕜 → 𝕜) (a : 𝕜) {l 
   have := tendsto_nhds_unique hsum hlim
   linear_combination this
 
+omit [CompleteSpace 𝕜] in
 /-- **Integration by parts (summable form)**: if `f(aq^n) g(aq^n) → l` and both Jackson
 series are summable, then
 `∫₀ᵃ f D_qg d_q t = f(a)g(a) - l - ∫₀ᵃ g(qt) D_qf(t) d_q t`. -/

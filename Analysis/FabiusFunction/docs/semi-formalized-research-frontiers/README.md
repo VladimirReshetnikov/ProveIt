@@ -21,42 +21,101 @@ The canonical frontier artifacts are:
 - [`semi-formalized-research-frontiers.tex`](semi-formalized-research-frontiers.tex)
 - [`semi-formalized-research-frontiers.pdf`](semi-formalized-research-frontiers.pdf)
 
-> **Source/PDF synchronization.** The retained 257-page, 2,438,299-byte A4 PDF
-> includes the 31 August 2026 Legendre Gaunt--Wigner-square closed-form overlay.
-> Its PDF (SHA-256
-> `3766761aac90247061f5c955dc84a0feb8567454e10839f1508b9431797ee980`)
-> source predates the later q-Pochhammer overlay and expanded ledger, so it is
-> a historical render and must not be cited as displaying the final source union.
+> **Historical publication receipt (2026-09-03).** The most recent pre-`9135bd7e`
+> source is the 17,954-line, 813,297-byte TeX file with SHA-256
+> `bcd9eefce2ead08e2cbb283e091a859aa31f36c67416543e994e10e8f9db3075`.
+> Its exact guarded three-pass cycle ran 254 -> 262 -> 262 pages and produced
+> the then-current 262-page, 1,885,642-byte A4 PDF with SHA-256
+> `7f7e1279e38c766a465e640638ea7e0079a942de0bc84a5c22be497af27c7bab`.
+> The recorded publication gates were clean apart from the expected underfull
+> box diagnostics.  The subsequent q-Chu/Richardson, Gaussian second-moment,
+> Lambert branch-gap Bernoulli, and geometric-uniform moment-polynomial source
+> union means this PDF is historical; the later receipt below records a newer
+> but now likewise historical source checkpoint.  No `SHA256SUMS*`
+> file exists or participates in validation.  Earlier renders remain
+> historical receipts for their own named
+> source states only: the immediately preceding 808,185-byte TeX file
+> (SHA-256
+> `7dd140370a0ac68522364a83a3c6423df93570741eafaef2ee8c1fac17670e2f`)
+> and its 260-page, 1,877,159-byte PDF (SHA-256
+> `9d38ab9d43befd6e26fd06ab9680b4a761365fb9d8a9f0de18489c243bd62d3e`),
+> a 237-page PDF (SHA-256
+> `21180fa05a754b52a057495464674e9d6ac26a51488c2c770730c641b5ffe887`),
+> a post-`c5633206e` 243-page, 1,789,269-byte PDF from source SHA-256
+> `8daa2e6ee194f3f98799699beb56761289a0a1bd0f94745c0ebc7fefad6c454f`
+> (PDF SHA-256
+> `45552dfbaa48ecd3183830b403cd651a979a57b50d2da6c3ff58af2ac1f02549`),
+> and a 257-page, 2,438,299-byte PDF (SHA-256
+> `3766761aac90247061f5c955dc84a0feb8567454e10839f1508b9431797ee980`).
 
-The current source-only superconvergence overlay is also newer than every
-retained frontier PDF. `RvachevSuperconvergentSynthesis.lean` contributes one
-definition and eight theorems for arbitrary nonzero natural meshes: it
-packages the parity-selected phases, exactness through degree `v₂(M)+1`,
-physical-coordinate quadrature, deconvolved-polynomial synthesis, and the
-explicit Rvachev--Appell specialization. In the canonical inverse synthesis
-this promotes exactly `is:p3:cor:forced-superconvergence` and
-`is:p3:thm:Appell-lattice-reproduction`, bringing its 194 immutable rows to
-49 Lean-proved / 96 human-proved / 10 conjectural / 15 open / 24
-nonassertoric. At that superconvergence checkpoint the documentation census
-was 671 modules and 8,858 public declarations; no PDF was rebuilt for that
-source-only update.
+> **Historical canonical-frontier receipt (2026-09-04 source checkpoint).** The then-current
+> 18,173-line, 826,738-byte TeX source has SHA-256
+> `844842bf699a24651f660bd7d81d814f6396b4fe6fc6de66a04908904221860b`.
+> Exactly three successful serial halt-on-error passes from absent sidecars ran
+> 257 pages / 1,822,725 bytes → 265 / 1,904,567 → 265 / 1,904,551.  The final
+> 265-page, 1,904,551-byte PDF has SHA-256
+> `dcaa7ac1e5397912c97a474b4023521e49d0785eb6ef67d83d0ce002d9cbb6e6`.
+> Its 40 font rows are embedded and subset, eight are Libertinus, and none is
+> Type 3.  Final-log reference/rerun/error checks, metadata, A4 rotation zero,
+> every-page render and nonblank-text checks, and representative visuals all
+> passed; generated sidecars and forbidden checksum basenames both close at
+> zero.  The sole 9.43108 pt overfull box at source lines 1032–1043 is readable
+> and unclipped; the final log has 299 underfull diagnostics.
 
-The newest source-only Lambert branch-coordinate overlay formalizes the exact
-pairing theorem, its symmetric corollary, the compact Bernoulli-series identity,
-and the complex Bernoulli generating function with its standard removable
-value and exact convergence radius from `Lambert_W_Guide/`.
+> **Current synchronized `b899` canonical-frontier receipt (2026-09-04).** The
+> TeX source has 18,651 lines and 858,502 bytes, with SHA-256
+> `140256058b7a01bcdb4f1592cfab9e6c2ac170f5f0863572627a9b2f93ab7793`.
+> Exactly three serial halt-on-error passes from absent sidecars ran 265 pages /
+> 1,868,249 bytes → 273 / 1,950,120 → 273 / 1,950,112. The final
+> 273-page, 1,950,112-byte PDF has SHA-256
+> `17525c7623bf774f515ecf1a949d533bbe125fde036356c4bb9f787eedad0322`.
+> All 273 pages are A4 at rotation zero, render successfully, and contain
+> nonblank text. All 40 font rows are embedded and subset, eight are Libertinus,
+> and none is Type 3. Required log, reference/rerun, metadata, visual, cleanup,
+> and forbidden-basename gates passed. The only box diagnostic is one
+> nonblocking 9.43108 pt horizontal box. Visual inspection covered pages 1,
+> 2--3, 57, 104--106, and 273. The final aggregate TeX closure contains 76
+> files / 140,223 lines / 6,439,569 bytes, with direct aggregate digest
+> `ae8690ad8d160055cbae36eff96d858f87572d171e7aacf7540d67543998af21`.
+
+The `b899` publication rebuild touches ten roots: the primary exposition, Lean
+walkthrough, canonical frontier, geometric-q synthesis, canonical q-series
+synthesis, inverse-theory synthesis, comb synthesis, Lambert Guide, Up
+Polynomial Synthesis, and Thue--Morse Atlas. All ten roots now have exact
+synchronized final-source/PDF receipts in the draft manifest and their local
+records. Their preceding artifacts remain historical receipts for their named
+checkpoints. Unaffected synchronized receipts remain valid for
+their named source states.
+
+The authoritative live Lean audit now contains exactly 923 facade-reachable
+modules and 11,611 unique public declarations, with no missing module headers
+or declaration documentation.  The checked baseline records both zero-gap
+invariants.  The corresponding origin inventory has 11,610 declarations
+because it lacks this tree's retained unconditional public
+`complexQPochhammerInf_eq_qPochhammerInfIn` bridge.  The q-Pochhammer ownership remains
+`RvachevPochhammerFactorization` 1+10, `QPochhammerEntire` 0+5, and
+`QPochhammerInfinite` 1+29;
+`complexQPochhammerInf_eq_qPochhammerInfIn` remains the unconditional public
+definitional bridge to the generic symbol.  Fixed-nome normal convergence,
+product identifiability, all finite/infinite q-calculus tranches, the
+root-of-unity and q-Catalan layers, finite Newton interpolation, q-beta
+integration, integer and complex Gaussian upper indices,
+q-Pfaff--Saalschütz, and the noncommutative quantum multinomial theorem all
+have declaration-level crosswalks.
+
+The Lambert branch-coordinate surface is exhaustive.  Its newest analytic
+companion formalizes the Bernoulli-series identity, its canonical removable
+complex value, and its exact convergence radius from `Lambert_W_Guide/`:
 `LambertWBranchPairing.lean` has 0 definitions + 7 theorems,
-`LambertWGapBijection.lean` has 4 definitions + 16 theorems, and
-`LambertWBranchSymmetry.lean` has 0 definitions + 9 theorems. For
-`x in (-exp(-1), 0)` and `delta = W_0(x) - W_{-1}(x) > 0`, they prove the two
-exact branch formulas, the explicit inverse and gap bijection, the equivalent
-`t = exp(delta) > 1` coordinate, the ratio/sum/product identities, and the
-strict bounds `W_0 + W_{-1} < -2` and `0 < W_0 W_{-1} < 1`. The proof divides
-the two equations `W_j exp(W_j) = x`, then uses branch-range uniqueness for
-the converse; `sinh(y) > y` and `y coth(y) > 1` give the strict bounds.
-The interval is deliberately open: at the branch point the rational formulas
-have zero denominator and their limiting sum/product are `-2` and `1`, while
-zero is the singular classical lower endpoint.
+`LambertWGapBijection.lean` has 4 + 16, and
+`LambertWBranchSymmetry.lean` has 0 + 9.  These are 36 current declarations,
+13 of them supplied by the upstream delta.  On `(-exp(-1), 0)` they prove the
+exact branch pairing, explicit gap inverse and bijection, the
+`t = exp(delta) > 1` coordinate, ratio/sum/product identities, and the strict
+bounds `W_0 + W_{-1} < -2` and `0 < W_0 W_{-1} < 1`.  They include neither
+endpoint.  These three finite modules do not themselves prove the Guide's
+Bernoulli gap series or higher branch expansions; the companion analytic leaf
+does prove the series statement below.
 
 The companion `LambertWBranchGapBernoulli.lean` has the exhaustive surface
 0 definitions + 5 theorems. Alongside the real open-disk absolute-summability
@@ -76,20 +135,33 @@ removable-origin convention. The Guide's nearest-nonzero-zero explanation is
 not the formal proof route. With the three finite branch-coordinate modules,
 the four-module union is 4 definitions + 37 theorems = 41 declarations.
 Higher or convergent Puiseux/logarithmic
-expansions remain open. The affected retained frontier, primary, walkthrough,
-and Lambert-Guide PDFs are historical artifacts and do not render this
-source-only overlay; no render parity is claimed. The live documentation
+expansions remain open. The `b899` primary, walkthrough, Lambert-Guide, and
+canonical-frontier PDFs render this integration and have synchronized receipts.
+The live documentation
 census on the incoming Lambert branch at the exact-radius four-theorem
 checkpoint was 903 modules and 11,447 public declarations; the value-completion
 theorem gave that branch's historical 903/11,448 checkpoint.
+
+The completed zero-definition/six-theorem
+`FabiusFunction.DyadicDerivativeFiltration` surface includes
+`iteratedDeriv_rvachevUp_eq_extendedFabius` and
+`iteratedDeriv_rvachevUp_dyadic_below`, identifying every below-depth
+derivative with the corresponding rescaled global Fabius value.  The
+one-definition/eight-theorem `RvachevSuperconvergentSynthesis` surface gives
+the parity-selected phases and exactness through degree `v₂(M)+1` for every
+nonzero natural mesh, without claiming phase completeness or maximality.
+`GaussianBinomialBounds` contributes its six reciprocity, lower-bound,
+strict-contraction, and greater-than-one dimension estimates; its stronger
+positivity input is reused rather than counted again.
 
 The source-only `FabiusFunction.LagrangeRvachevMatrix` module adds three
 definitions, one abbreviation, and six theorems. It promotes
 `gq:thm:gaussian-Appell-biorthogonality` and the representation proposition
 `prop:lag-markov`; the larger `thm:lag-right-inverse` remains partial because
 only its `UB = I` clause is formalized. Its negative-decoder theorem retains
-strictly positive row overlap as an explicit hypothesis. No retained frontier,
-primary, walkthrough, comb, or representation PDF renders this addition.
+strictly positive row overlap as an explicit hypothesis. The `b899` primary,
+walkthrough, comb, and canonical-frontier PDFs render this addition; the
+retained Representation Frontiers PDF does not.
 
 The subsequent source-only algebraic addition is
 `FabiusFunction.GeometricUniformMomentPolynomial`, with one definition and
@@ -264,9 +336,9 @@ seven theorems. Its
 counterpart of canonical comb label `gq:thm:richardson-generating`; the module
 also supplies the report-facing analytic companion
 `Fabius.hasSum_geometricLagrangeRichardson_mul_pow` under strict nome
-contraction and absolute summability. The retained canonical-frontier,
-primary, walkthrough, and comb-synthesis PDFs all predate this crosswalk and
-remain historical artifacts; none was rebuilt for this update.
+contraction and absolute summability. The `b899` primary, walkthrough,
+q-series, comb-synthesis, and canonical-frontier PDFs render the current source
+union and have synchronized receipts.
 
 The one-definition/seventeen-theorem
 `FabiusFunction.GeometricUniformRealization` module transfers the canonical
@@ -448,8 +520,8 @@ spectral Mellin parameter derivative, the successor law
 `k ≤ r`, always under `0 < a`. Consequently `p2:thm:gamma-tower` is Exact
 when its logarithm is read as the existing chosen GammaLog coordinate. No
 principal-`Complex.log` identity or nonpositive-parameter differential law
-is claimed. These additions are source-only; the retained frontier and
-package PDFs remain historical renders and make no current-parity claim.
+is claimed. The current `b899` Thue--Morse Atlas and canonical-frontier PDFs
+render these additions and have synchronized receipts.
 
 `FabiusFunction.ThueMorseCornerIntegral` has one public definition and four
 theorems: `Fabius.centeredBoxIntegral`,
@@ -474,8 +546,8 @@ literal finite central cancellation at mesh `4^n` by combining the normalized
 Legendre value at zero, evenness, compact-support truncation, and pairing of
 the positive and negative indices. This makes only `cor:leg-central-sum`
 Exact; it adds no Jacobi decoder formula, reverse spectral closure, or larger
-Lagrange right-inverse theorem. These source-only declarations are not
-rendered by the retained frontier or synthesis PDFs.
+Lagrange right-inverse theorem. These declarations are rendered by the current
+`b899` Up-synthesis and canonical-frontier PDFs.
 
 The final source-only `FabiusFunction.GaussianBinomialFixedColumnRate` leaf has
 no definitions and ten theorems:
@@ -543,8 +615,9 @@ over every commutative semiring, including the above-row zero case. Their
 probability language is the normalized-generating-polynomial interpretation of
 algebraic identities, not a new probability-space construction.
 
-The 1 September 2026 source-only q-Pochhammer overlay is likewise newer than
-the retained PDFs.  The new `QPochhammerEntire.lean` leaf has zero definitions
+At the 1 September 2026 checkpoint, the source-only q-Pochhammer overlay was
+newer than the PDFs retained at that time.  The new `QPochhammerEntire.lean`
+leaf has zero definitions
 and five theorems: for a fixed complex nome with norm less than one it proves
 local uniform convergence of the infinite product, differentiability in the
 symbol, the division-free factor-zero criterion, the reciprocal-power zero
@@ -600,13 +673,64 @@ domain remains partial: the compiled by-reversal theorem retains `C ≠ 0` and
 `(A;q)_n ≠ 0`, while the unrestricted theorem uses finite q-Cauchy directly;
 no rational-continuation or cleared commutative-ring extension is claimed.
 
-The retained 389-page A4 PDF (3,254,138 bytes; historical SHA-256
-`b8add607c85ee35be98dabf36879e1d45fb093c6b453e93679c80295fae715bc`)
-was synchronized to the preceding 16,339-line, 810,779-byte source checkpoint
-(SHA-256 `14c444feb14c435bc300becd9c8cd2765c1e96f608dd79da462becc41b28ed22`).
-The live source and its current theorem promotions postdate that artifact, so
-no current source/PDF parity is claimed. No live checksum manifest or
-current-source digest is maintained.
+The pre-`9135bd7e` q-series receipt names the 16,834-line,
+837,715-byte source (SHA-256
+`4785625c1399558f3ca59481888fc76514e0a327a1faa16945c61851f874f3d5`)
+and its 395-page, 2,494,961-byte A4 PDF (SHA-256
+`89159b2635f489a42d4c972fac95332808b1d637dee7921085db1ed7d6e055af`).
+The q-Chu/Richardson, Gaussian second-moment, Lambert branch-gap Bernoulli, and
+geometric-uniform moment-polynomial source union postdates that exact historical
+receipt.  Its
+current source concordance now records 99 Lean-proved, 379 human-proved,
+60 not-applicable, and 9 conjectural rows; the rigorous forward ledger is 177
+Exact / 82 Partial / 15 None / 8 interface, with q-Lucas still Partial.
+
+The historical q-series receipt (2026-09-04 source checkpoint) records the then-current 16,910-line,
+842,514-byte TeX source at SHA-256
+`196f219d5e1efba463ebabb69659697b1afb28989ef1a8da6219226d3262ad32`.
+Its exact three-pass sequence was 390 pages / 2,386,364 bytes → 398 /
+2,501,624 → 398 / 2,501,638; every pass's index run accepted 164 entries,
+rejected none, produced 254 lines, and emitted no warning.  The final 398-page,
+2,501,638-byte PDF has SHA-256
+`e8094b054f52b1fb71c7540f0834155fae0eac17887cb7cac1567848bd65d3b3`;
+all 43 font rows are embedded and subset, five are Libertinus, and none is Type
+3.  The historical geometric q-frontier receipt records its then-current 27,598-line,
+1,270,870-byte TeX source at SHA-256
+`6db4e211b0588ed75a0e89e13d97306f1d5d38b42a2bf941914ea16b9ca93dae`;
+its passes ran 386 pages / 8,157,293 bytes → 403 / 8,339,780 → 403 /
+8,339,736, and the final 403-page, 8,339,736-byte PDF has SHA-256
+`4d909b5e228e2053d473dc75da502382c7a4fe2b096f798e124e6530d3a15027`.
+Its 43 font rows are embedded and subset, eleven are Libertinus, and none is
+Type 3.  Both pairs completed exactly three successful serial halt-on-error
+passes from absent sidecars; final-log reference/rerun/error checks, metadata,
+A4 rotation zero, every-page render and nonblank-text checks, and representative
+visuals passed, with generated sidecars and forbidden checksum basenames at
+zero.  The q-series log's sole retained 32.5659 pt overfull paragraph at source
+lines 590–598 is readable and unclipped, with zero underfull diagnostics; the
+geometric q-frontier log has zero overfull and 37 underfull diagnostics. These
+remain historical receipts for their named checkpoints and are superseded by
+the synchronized `b899` receipts below.
+
+The current `b899` q-series driver has 17,265 lines and 864,659 bytes (SHA-256
+`4dd3f7fb22387d8e3d039e8d49cd870a63ebe0881f7f215c7074854825a27bb9`);
+its 14-file recursive TeX closure has 26,762 lines and 1,210,902 bytes, with
+digest `b567430fdd64f6d50bd24fcb070216c27f7e3e81e8b0c76c3228767ebdf980c6`.
+Its passes ran 397 pages / 2,417,476 bytes → 405 / 2,533,717 → 405 /
+2,533,715, and the final 405-page PDF has SHA-256
+`055eb1fc26467857394a5b3bd8cd327f6985ea5d2f966ab5f099ac20bb2b8fb2`.
+Every pass's index run accepted 164 entries, rejected none, produced 254 lines,
+and emitted no warning; all common publication gates passed, with five minor
+horizontal boxes (maximum 10.14 pt). The current geometric-q driver has 27,671
+lines and 1,275,367 bytes (SHA-256
+`d47c0ad93eb359d13e7e9772668f16dbc98bcb4d880f3679366e1d461451bbcd`);
+its 8-file recursive TeX closure has 27,777 lines and 1,281,413 bytes, with
+digest `39f7cd41e706314f2cafb903c2da2e6e83d2b17f5bb0612492204d15c1a28d91`.
+Its passes ran 388 pages / 8,163,847 bytes → 405 / 8,346,265 → 405 /
+8,346,247, and the final 405-page PDF has SHA-256
+`fef7d8260543ad1d20d69e9e41fa0cfc31603de7961f6aeb97a50740aecd596c`.
+Both 405-page PDFs are A4 at rotation zero on every page, render with nonblank
+text throughout, use embedded/subset fonts with Libertinus and no Type 3, and
+passed metadata, visual, log, cleanup, and forbidden-basename gates.
 
 The current finite-moment/Legendre/Gaunt crosswalk covers eleven modules with
 20 public definitions and 109 public theorems, 129 declarations in all. The
@@ -718,18 +842,29 @@ Sampling*](drafts/inverse-and-sampling/Inverse_Fabius_Analyticity_Asymptotics_an
 Its immutable extraction input is pinned at
 `0a0cdabeb72a6f7d67cfdfb76d02a8f7381c7bf7`; all 194 source-result rows have
 reviewed dispositions, all 88 files in the two superseded source subgroups have
-asset dispositions, and the deduplicated live asset ledger covers 63 retained
-payloads. The former package paths, source hashes, nested lineage, and recovery
+asset dispositions, and the deduplicated inventory covers 55 retained files;
+eight checksum-ledger rows from the former 63-payload checkpoint are retired.
+The former package paths, source hashes, nested lineage, and recovery
 revisions remain in the package's
 [`PROVENANCE.md`](drafts/inverse-and-sampling/Inverse_Fabius_Analyticity_Asymptotics_and_Computability/PROVENANCE.md).
 Its retained 134-page, 2,027,726-byte A4 publication has SHA-256
 `22bc68d855ad04dde9654e9fbd20b3ba7f05a33e3c5df0e5b80bb8991c94b41d`.
 The package README records that historical checkpoint's clean three-pass
-build, font preflight, and visual inspection.  The current 23-input source
-closure has SHA-256
+build, font preflight, and visual inspection. The purpose-specific 23-input
+`SOURCE_CLOSURE.sha256` file is a historical pre-overlay record with file
+SHA-256
 `aedf007c2cd150b1f83de6d8996b4bf31e267b3dbcec2d5cd4720f5d92122bdb`
-and postdates the retained PDF, so a fresh three-pass build is required before
-source/PDF synchronization may be claimed. The reviewed concordance classifies
+and was intentionally not regenerated. It is not the current publication
+closure. The `b899` driver is 293 lines / 11,514 bytes / SHA-256
+`92fab1fae38bbcf86a45b51bfe7ff34e2801361df9d2f3d6aa3de4dc966eaa3c`;
+its independently measured recursive TeX closure is 17 files / 10,682 lines /
+431,748 bytes / digest
+`6e4e6fde424fd5046467b1f1cec0c19b6c10eb681fae4ba7cc53e14b6a5bf61e`.
+Three passes ran 132 pages / 1,983,313 bytes → 137 / 2,045,485 → 137 /
+2,045,486; the final 137-page PDF has SHA-256
+`cee0de894656562fbdb75d6304055fc03fae06203985119419e465a5cd213995`.
+All publication gates passed; the only box diagnostics are two nonblocking
+horizontal boxes of 2.42 and 2.45 pt. The reviewed concordance classifies
 54 source rows as Lean-proved and 91 as human-proved frontier results, with 10
 conjectures, 15 open problems, and 24 non-applicable rows. Its newest exact
 matches include the punctured leading-Laurent theorem and the full uncentered/

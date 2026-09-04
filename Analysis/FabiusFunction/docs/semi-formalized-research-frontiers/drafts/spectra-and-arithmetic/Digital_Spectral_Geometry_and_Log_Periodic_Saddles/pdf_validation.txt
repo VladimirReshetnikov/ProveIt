@@ -2,8 +2,8 @@ PDF validation — retained build checkpoint and current live source, 2026-08-31
 
 Checkpoint status: the PDF, final-pass transcript, and build-source fingerprint
 below form the retained synchronized checkpoint.  The current TeX is a later
-notation-only successor, so no current source/PDF parity is claimed.  The
-separate arrival ledger remains byte-for-byte preserved.
+notation-only successor, so no current source/PDF parity is claimed. The
+former arrival ledger is retired and recoverable from Git history.
 
 Current live source:
 - TeX lines: 1940
@@ -24,7 +24,7 @@ Repository audit:
   70e66ec477a46666b3acfe5d81123ebf50576b92b4f9d25deb6cf6a93d27b5fb
 - a second independent output-path run matched repository_audit.md byte for byte
 - phrase-cluster hit counts, in report order: 43, 88, 36, 24, 75, 37
-- preserved ARRIVAL_SHA256SUMS SHA-256:
+- former arrival-ledger SHA-256 (ledger retired; bytes recoverable from Git):
   4c177281eec24f00edf6041ec11779444e24e455db965503207b32c301749629
 
 Build:
@@ -75,8 +75,9 @@ Numerical outputs:
 - numerical_results.tex, numerical_summary.txt, and all three PNG figures remain
   byte-identical to the previously validated regenerated outputs
 
-Checksum ledger:
-- CHECKSUMS.sha256 covers all 18 other regular files in this package exactly
-  once, excluding only the ledger itself
-- all 18 live-ledger hashes pass independently; this verifies byte inventory,
-  not source/PDF parity
+Historical checksum checkpoint:
+- the former repository ledger covered all 18 other regular files in this
+  package exactly once, excluding only itself
+- all 18 hashes passed independently at that checkpoint; the retired ledger
+  remains recoverable from Git history, and this verified byte inventory, not
+  source/PDF parity

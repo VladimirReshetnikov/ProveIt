@@ -56,6 +56,11 @@ theorem complexQPochhammerInf_eq_tprod (a q : ℂ) :
     complexQPochhammerInf a q =
       ∏' j : ℕ, (1 - a * q ^ j) := rfl
 
+/-- The historical complex q-Pochhammer name is exactly the specialization of
+the generic infinite q-Pochhammer symbol to the complex numbers. -/
+theorem complexQPochhammerInf_eq_qPochhammerInfIn (a q : ℂ) :
+    complexQPochhammerInf a q = qPochhammerInfIn a q := rfl
+
 /-- The complex q-Pochhammer factor family is multipliable whenever the nome
 has norm strictly below one; the complex instance of
 `multipliable_one_sub_mul_pow_of_norm_lt_one`. -/

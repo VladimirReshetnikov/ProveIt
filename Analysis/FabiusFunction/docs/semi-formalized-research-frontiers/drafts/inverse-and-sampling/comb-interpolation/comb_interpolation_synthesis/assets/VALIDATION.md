@@ -1,7 +1,7 @@
 # Validation record
 
 This record distinguishes completed inventory work, historical publication
-checkpoints, and the current source graph. The immutable source
+checkpoints, and the current synchronized `b899` source/PDF graph. The immutable source
 baseline is `73f0b373126ef22a3b5dccadfa7b99d61d445345`. Historical artifacts remain
 receipts only for their stated input graphs. Full numerical replay and
 fresh-checkout reproduction remain separate.
@@ -20,12 +20,11 @@ the geometric Newton coefficient family consistently across the driver,
 chapter 01, and chapter 90 as
 `\FabiusGeometricNewtonCoefficient{k}{q}`. The repository-wide documentation
 census recorded at the earlier merge checkpoint was 629 Lean modules and 8,546
-public declarations. The checked-in PDF was built from the earlier source graph
-and passed the complete publication gate recorded below. Later
-canonical-notation edits in chapters 01, 03, and 90 and in the driver require
-a fresh exact three-pass render. Package checksum manifests are retired and no
-longer participate in current validation. The retained PDF and current source
-remain distinct payloads.
+public declarations. The retained 158-page PDF was built from the earlier source
+graph and passed the historical publication gate recorded below. The current
+160-page PDF renders the later canonical-notation edits in chapters 01, 03, and
+90 and in the driver; its exact receipt appears below. Package checksum
+manifests are retired and do not participate in current validation.
 
 ## Completed source and evidence checks
 
@@ -75,13 +74,14 @@ The complete row-level audit is
 are historical manifests, mismatches are reported rather than silently
 rewritten. They do not certify the current canonical payloads.
 
-## Current source-only Lean crosswalk checkpoint
+## Current Lean crosswalk checkpoint
 
 - The current source-only notation layer uses
   `\FabiusGeometricNewtonCoefficient{k}{q}` for the Fabius divided-difference
   coefficient on the complete node list $1,q,\ldots,q^k$, including the
   $k=0$ boundary, and reserves `\TwoAdicValuation` for the actual dyadic
-  valuation.  The retained PDF predates these notation-only edits.
+  valuation. The historical 158-page PDF predates these notation-only edits;
+  the current 160-page `b899` PDF renders them.
 - The existing strict-interior dyadic comb-weight theorem remains crosswalked
   exactly to `Fabius.twoPowChoose_padicValNat`; the arbitrary-prime row-$p^m$
   declarations and their positive right endpoint remain unchanged.
@@ -114,14 +114,35 @@ rewritten. They do not certify the current canonical payloads.
   normalized data series.
 - The source validator passes the nine-file TeX graph, environment and proof
   discipline (213 result environments, 150 proof-required), 801 labels, 783
-  references, 62 bibliography keys, all disposition and evidence audits, the
-  concordance, and the exhaustive package ledger.
-- No PDF was rebuilt.  The retained 158-page PDF remains the validated
-  historical checkpoint with 2,456,105 bytes and SHA-256
+  references, 62 bibliography keys, all disposition and evidence audits, and
+  the concordance.
+- The retained 158-page PDF remains the validated historical checkpoint with
+  2,456,105 bytes and SHA-256
   `81d249c8b2bb124836c858bd8e0ef9c8764606a2f9655a798d69e7565b1759b4`;
   the former root ledger recorded it separately from that checkpoint's source.
+  The synchronized current PDF is recorded next.
 
-## Retained semantic-union publication checkpoint
+## Current `b899` publication checkpoint
+
+- Driver: 187 lines / 6,724 bytes / SHA-256
+  `a4c1e33165ff7291682cd890f23fe4af98e9f11f7ad1d9a7f8b68c78d53f9a56`.
+- Recursive TeX closure: 15 files / 12,597 lines / 477,163 bytes / digest
+  `9e22455b3f65eb48306ad21c57445b6052a56498cb363666ffb9b160f5cc8090`.
+- Exactly three serial halt-on-error passes from absent sidecars ran 153 pages /
+  2,383,950 bytes → 160 / 2,467,995 → 160 / 2,468,000.
+- Final PDF: 160 A4 pages / 2,468,000 bytes / SHA-256
+  `ad8587049580e6fde371f534b6f8b4e56fa4c929173f87d3021ed369e5225d4c`.
+- Required final-log error, undefined-control, reference/citation,
+  multiply-defined, duplicate-destination, missing-file, rerun, horizontal-box,
+  and vertical-box gates all close at zero.
+- All 160 pages are A4 at rotation zero, render successfully, and contain
+  nonblank extracted text. All 33 font rows are embedded and subset, seven are
+  Libertinus, and none is Type 3. Metadata passed.
+- Targeted visual inspection covered physical pages 1, 32, 38, 39, 154, and
+  160; every sampled page was clean. Generated sidecars and temporary audit
+  files were removed, and the forbidden-checksum-basename search passed.
+
+## Historical retained semantic-union publication checkpoint
 
 - The current union retains the incoming `chapters/01_geometric_core.tex` and
   `chapters/99_bibliography.tex` path corrections together with the local
@@ -279,9 +300,8 @@ rewritten. They do not certify the current canonical payloads.
   79, and 157 were additionally inspected at full size; no clipping, overlap,
   corrupt image, or unintended blank page was found.
 - The then-existing checksum records verified against that pre-merge source
-  state. They are retained here only as historical receipt facts, do not
-  certify the current union, and do not define the current single-root-ledger
-  architecture.
+  state. They survive only as historical receipt facts in this record, do not
+  certify the current union, and do not define current package state.
 
 ### Pre-PrimePower semantic-union build (historical, incomplete gate)
 
@@ -382,5 +402,7 @@ and overfull boxes; inspect PDF metadata and fonts; render every page; and
 visually examine every rendered page. Record the new measurements here, update
 the README, refresh `COMPANION_PAYLOADS.csv` if the retained evidence inventory
 changed, and rerun the canonical validator without recreating a package
-checksum manifest. The current receipt above remains valid only while the
-publication-source, documentation, and PDF bytes are unchanged.
+checksum manifest. Do not create or check a live package-wide checksum ledger.
+The current receipt above is scoped to the frozen 15-file TeX source graph and
+the resulting PDF bytes. Later documentation-only edits do not invalidate that
+source/PDF identity; a TeX-input or PDF change requires a new receipt.

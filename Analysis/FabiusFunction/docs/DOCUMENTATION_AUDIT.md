@@ -179,13 +179,15 @@ branch-local counts are explicitly historical.
 
 #### Terminating `₂φ₁` reversal and q-Chu--Vandermonde tranche
 
-That public API growth left the module count unchanged and added twelve
-declarations to the immediately preceding 901/11,418 live inventory.
+In the origin progression, that public API growth left the module count
+unchanged and added twelve declarations to the immediately preceding
+901/11,418 inventory.
 `TwoPhiOneReversal.lean` grows from 1+6 to 2+12 (one definition and six
 theorems added), and `QChuVandermonde.lean` grows from 0+5 to 0+10 (five
-theorems added).  The resulting q-Chu checkpoint was therefore exactly 901
-modules and 11,430 public declarations; the generating-function tranche below
-is the subsequent live increment.
+theorems added).  The resulting origin q-Chu checkpoint was therefore exactly
+901 modules and 11,430 public declarations; carrying the unique local bridge
+gives 11,431.  The generating-function tranche below is the subsequent live
+increment.
 
 The exhaustive `TwoPhiOneReversal.lean` inventory is two definitions,
 `twoPhiOneFinite` and `twoPhiOneReflection`, and twelve theorems:
@@ -223,11 +225,11 @@ extension remain unformalized.
 
 #### Geometric Richardson generating-function tranche
 
-`GeometricRichardsonGenerating.lean` added one source module and exactly ten
-public declarations to the 901/11,430 q-Chu checkpoint.  The resulting
-historical checkpoint was 902 modules and 11,440 public declarations.  Its
-three definitions are `geometricRichardsonKernel`,
-`qPochhammerNormalizedDataSeries`, and
+`GeometricRichardsonGenerating.lean` adds one source module and exactly ten
+public declarations to the origin 901/11,430 q-Chu checkpoint, giving the
+origin 902/11,440 inventory and the authoritative local 902/11,441 union after
+the unique public bridge is retained.  Its three definitions
+are `geometricRichardsonKernel`, `qPochhammerNormalizedDataSeries`, and
 `geometricRichardsonTransform`.  Its seven theorems are
 `coeff_rescale_qPochhammerSeries_eq_geometricRichardsonKernel`,
 `coeff_qPochhammerNormalizedDataSeries`,
@@ -257,8 +259,11 @@ arbitrary formal power series.
 
 The later strengthening of the existing `GaussianBinomialCumulants.lean`
 module left its then-live module count at 905 and added three public theorems,
-bringing that historical checkpoint to 11,474 public declarations.  The
-module's exhaustive public
+bringing that target-side historical checkpoint to 11,474 public declarations;
+with the retained public q-Pochhammer bridge the corresponding semantic-union
+count is 11,475.  On the earlier source branch the same three-theorem delta left
+the module count at 902 and brought the target census to 11,443 and the
+bridge-retaining semantic union to 11,444.  The module's exhaustive public
 inventory is two definitions, `meanAtOne` and `varAtOne`, and twenty-four
 theorems: `meanAtOne_one`, `varAtOne_one`, `meanAtOne_mul`, `varAtOne_mul`,
 `meanAtOne_prod`, `varAtOne_prod`, `eval_one_derivative_X_pow`,
@@ -287,7 +292,8 @@ are excluded from the public census.
 The three-module Lambert branch-pairing union is exhaustively counted as
 `LambertWBranchPairing.lean` 0+7, `LambertWGapBijection.lean` 4+16, and
 `LambertWBranchSymmetry.lean` 0+9: four definitions and 32 theorems, hence 36
-public declarations.  The seven pairing theorems are
+public declarations.  The incoming d8b delta contributes thirteen declarations
+across this final surface.  The seven pairing theorems are
 `principalLambertW_sub_lowerLambertW_pos`,
 `lowerLambertW_eq_principalLambertW_mul_exp_gap`,
 `principalLambertW_eq_neg_gap_div`,
@@ -330,8 +336,9 @@ asymptotic; the separate analytic series leaf is inventoried next.
 `LambertWBranchGapBernoulli.lean` first added one source module and four public
 theorems to the historical 902/11,443 checkpoint, giving the historical exact-radius
 checkpoint 903/11,447.  Its fifth public theorem leaves the module count fixed
-and gives the historical 903/11,448 Lambert checkpoint.  Its exhaustive public
-surface is
+and brings the target checkpoint to 903/11,448; retaining this tree's unique
+public q-Pochhammer bridge gives the corresponding historical semantic-union
+checkpoint 903/11,449.  Its exhaustive public surface is
 `summable_norm_bernoulli_mul_pow_div_factorial`,
 `summable_bernoulli_mul_pow_div_factorial_iff`,
 `hasSum_bernoulli_mul_pow_div_factorial`,
@@ -550,8 +557,12 @@ unpromoted.
 declarations.  Concurrently, the one-definition/fourteen-theorem
 `RvachevLagrangeNodesOnly.lean` and zero-definition/two-theorem
 `GaussianBinomialGreaterOneAsymptotics.lean` leaves moved the 910/11,525
-checkpoint to 912/11,542; the moment-polynomial leaf brought that checkpoint
-to 913/11,551.  Its exhaustive 1+8 surface is the definition
+target checkpoint to 912/11,542; the moment-polynomial leaf brought that target
+checkpoint to 913/11,551, or 913/11,552 with the retained public Pochhammer
+bridge.  On the earlier branch the same leaf moved the target census from
+903/11,448 to 904/11,457 and the bridge-retaining semantic union from
+903/11,449 to 904/11,458; those are historical checkpoints.  Its exhaustive
+1+8 surface is the definition
 `geometricUniformMomentPolynomial` and the theorems
 `geometricUniformMomentPolynomial_zero`,
 `geometricUniformMomentPolynomial_succ`,
@@ -1220,6 +1231,13 @@ dimension-dominant real bounds for `Q > 1`, with `k ≤ n` and all nonzero and
 order hypotheses explicit.  The module reuses the stronger ordered-field
 `finiteQPochhammerIn_self_pos` theorem from `GeneralQConditionNumber.lean`
 rather than exporting a duplicate.
+The rigorous forward q-monograph ledger is 177 Exact, 82 Partial, 15 None,
+and 8 interface rows; its source concordance is 99 Lean, 379 human, 60 N/A,
+and 9 conjecture rows, and the concordance extractor passes.
+`prop:gaussian-bound` is Exact.  `thm:q-lucas` remains
+Partial because the proved evaluated primitive-root identity is weaker than
+the manuscript's polynomial congruence modulo `Φ_d`, and
+`cor:babbage-derivative` remains Partial because only its value is formalized.
 The older 622/8,472, 623/8,476, 629/8,546, 630/8,552,
 641/8,650, and 643/8,661 values below are historical checkpoints, not
 descriptions of the live tree.  The earlier additions and q-series tranches are
@@ -1457,7 +1475,7 @@ yielding 672/8,868, and the seven collision-free Newton compatibility names
 yield the intermediate 672/8,875 census.  The 5+14
 `BinaryWordInversions.lean`, 2+8 `BoxPartitions.lean`, and 0+5
 `TelescopingCertificate.lean` leaves then add three modules and thirty-four
-declarations, yielding that historical 675/8,909 census.
+declarations, yielding the historical 675/8,909 checkpoint.
 
 `GaussianBinomialPalindromic.lean` is an exhaustive zero-definition,
 fourteen-theorem leaf: `Fabius.reflect_add_of_natDegree_le`,
@@ -1480,14 +1498,18 @@ coefficient is one under exactly `0 < k` and `k < n`; the total classifier is
 and `n < k` are explicit.  Both coefficient theorems hold over every
 commutative semiring; exact degree and monicity alone require nontriviality.
 
-That increment is exhaustively counted as
+An earlier retained six-module increment is exhaustively counted as
 `QPochhammerInfiniteBounds.lean` 0+5, `HeineTransformation.lean` 2+5,
 `QGaussSummation.lean` 0+2, `QPochhammerComplexOrder.lean` 1+4,
 `BasicHypergeometricSeries.lean` 2+5, and `QMultinomial.lean` 1+9: six
 definitions and thirty theorems.  It adds finite-prefix bounds, the Heine and
 q-Gauss identities, a ratio-defined complex-order q-Pochhammer API, general
 basic-hypergeometric terms and summability, and the division-free recursive
-q-multinomial interface.  The displayed contraction, nonvanishing, and
+q-multinomial interface.  In that interface, `qMultinomial`,
+`qMultinomial_nil`, and `qMultinomial_cons` need only `Semiring`; the
+diagonal, singleton, pair, naturality, and universal laws use `CommSemiring`,
+the factorial law uses `CommRing`, and the field quotient assumes exactly
+`(q;q)_(sum l) ≠ 0`.  The displayed contraction, nonvanishing, and other
 denominator hypotheses remain part of these APIs.
 The four-module increment is now exhaustively counted as
 `GaussianBinomialPalindromic.lean` 0+14, `JacksonIntegral.lean` 1+7,
@@ -1509,7 +1531,7 @@ q-Pochhammer logarithmic derivative and Lambert-series form on the unit disc,
 and the derivative with respect to complex order.  The strict-contraction,
 unit-disc, nonzero-nome, and shifted-argument hypotheses remain explicit.
 
-The final two-module increment is exhaustively counted as
+The following two-module increment is exhaustively counted as
 `CentralQBinomialReduction.lean` 0+6 and
 `CyclotomicFactorization.lean` 0+7.  It adds finite q-Pochhammer sign pairing,
 even--odd dissection and ring-hom naturality; the division-free central
@@ -1670,6 +1692,68 @@ with the logarithmic-Delta effective-uniform-continuity witness.  This closes
 the total inverse computability certificate without asserting a practical
 running-time or input-bit complexity bound.
 
+The five-module q-calculus increment is exhaustively accounted for as follows.
+`PolynomialQDerivative.lean` has the two definitions `qInt` and `qDerivative`
+and the seventeen theorems `qInt_zero`, `qInt_one`, `qInt_succ`, `qInt_succ'`,
+`qInt_add`, `qInt_one_left`, `one_sub_mul_qInt`, `qDerivative_apply`,
+`qDerivative_monomial`, `qDerivative_C`, `qDerivative_X_pow`, `qDerivative_X`,
+`qDerivative_C_mul_X_pow`, `eval_qDerivative_mul`,
+`qDerivative_comp_C_mul_X`, `qDerivative_mul`, and `qDerivative_mul'`.
+The q-integer definition and its first six laws need only a semiring;
+`one_sub_mul_qInt` and the division-free evaluation identity use a commutative
+ring; the coefficientwise linear map, monomial/scaling laws, and both product
+rules use a commutative semiring.  Every nome is allowed, including zero and
+one; there is no analytic-function or limiting derivative claim.
+
+`PolynomialQLeibniz.lean` has no definition and the four theorems
+`comp_C_mul_X_comp_C_mul_X`, `qDerivative_C_mul`,
+`qDerivative_iterate_comp_C_mul_X`, and `qDerivative_iterate_mul`.  Every one
+holds over an arbitrary commutative semiring, for arbitrary nome and every
+natural iteration order including zero, with no division, topology, or
+nonvanishing assumption.
+
+`QPochhammerDerivative.lean` has no definition and the three theorems
+`hasDerivAt_finiteQPochhammerIn`,
+`hasDerivAt_finiteQPochhammerIn_of_ne_zero`, and
+`hasDerivAt_finiteQPochhammerIn_comp`.  They work over every nontrivially
+normed field with arbitrary nome and finite order.  The cofactor formula is
+unconditional; the logarithmic rewrite assumes exactly that every displayed
+factor is nonzero; the chain rule assumes exactly the supplied pointwise
+`HasDerivAt`.  No infinite-product derivative is added.
+
+`LambertSeriesLog.lean` has no definition and the four theorems
+`one_le_norm_natCast_add_one`, `summable_lambert_series`,
+`hasSum_lambert_log_complex`, and
+`exp_neg_tsum_lambert_eq_qPochhammerInfIn`.  Apart from the unconditional
+natural-cast norm helper, they assume exactly complex `a,q` with `‖a‖ < 1`
+and `‖q‖ < 1`; they give absolute summability, the `HasSum` against principal
+factor logarithms, and the branch-free exponential product identity.  They do
+not assert a principal logarithm of the product, a norm-one boundary, or
+analytic continuation.
+
+`QGamma.lean` has the two total real definitions `qGamma` and `qNumber` and
+the ten theorems `norm_lt_one_of_pos_of_lt_one`,
+`qPochhammerInfIn_rpow_pos`, `qPochhammerInfIn_self_pos`, `qGamma_pos`,
+`qGamma_one`, `qGamma_add_one`, `qGamma_nat_succ`, `qNumber_natCast`,
+`qGamma_mul_qGamma_one_sub`, and `hasSum_theta_qGamma_reflection`.
+Positivity, the value at one, recurrence, and natural factorial product use
+`0 < q < 1`, with `0 < x` additionally where displayed.  The natural-cast
+q-number bridge assumes only `q ≠ 1`; the totalized algebraic reflection
+product assumes only `q < 1` and arbitrary real `x`; its theta `HasSum` form
+assumes `0 < q < 1` and `0 < x < 1`.  This module supplies no complex
+continuation, classical-gamma limit, pole, log-convexity, uniqueness, or
+digamma result.
+
+The valuation leaf `PrimePowerBinomialValuation.lean` now contributes no
+definitions and exactly six theorems: `primePowerChoose_padicValNat_add`,
+`primePowerChoose_padicValNat`, `primePowerSubOneChoose_padicValNat`,
+`primePowerSubTwoChoose_padicValNat`, `twoPowChoose_padicValNat`, and
+`twoPowSubTwoChoose_padicValNat`.  The first two are the additive and
+subtraction forms for an arbitrary prime-power Pascal row.  The third says
+every column `j < p^m` in row `p^m-1` is a `p`-adic unit, including `m = 0`.
+The fourth identifies the row-`p^m-2`, column-`j-1` valuation with `v_p(j)`
+under exactly `0 < j < p^m`; the last two are the strict-interior dyadic
+specializations.  No valuation-histogram count is included.
 The closed-form Gaunt leaf `LegendreGauntClosedForm.lean` contributes two definitions and
 twenty-five theorems: the total integer zero-row Wigner-square datum, its exact
 central-binomial and factorial forms, the all-degree Gaunt identification,
@@ -1709,17 +1793,19 @@ names are `rvachevLegendreGramEntryRat_eq_two_mul_sum_wignerThreeJZeroSqRat`,
 `rvachevLegendreGramMatrixRat_apply_eq_two_mul_sum_wignerThreeJZeroSqRat`, and
 `upLegendreGramMatrix_apply_eq_two_mul_sum_wignerThreeJZeroSqRat`.
 
-The new `QPochhammerEntire.lean` leaf contributes no public definitions and
-five public theorems:
+The canonical fixed-nome inventory is `QPochhammerEntire.lean`: no public
+definitions and exactly five public theorems,
 `hasProdLocallyUniformly_complexQPochhammerInf`,
 `complexQPochhammerInf_differentiable`,
 `complexQPochhammerInf_eq_zero_iff`,
-`complexQPochhammerInf_eq_zero_iff_eq_inv_pow`, and
-`analyticOrderAt_complexQPochhammerInf_of_eq_zero`.  For a fixed complex
+`complexQPochhammerInf_eq_zero_iff_eq_inv_pow`,
+and `analyticOrderAt_complexQPochhammerInf_of_eq_zero`.  For a fixed complex
 strict contraction `q`, they give locally uniform convergence in the symbol
 variable, entireness, the division-free factor-zero criterion, the exact
 reciprocal-power zero lattice when `q ≠ 0`, and analytic order one at every
-zero.  The raw factor criterion includes `q = 0`; no joint holomorphy,
+zero under the historical complex-product name.  The raw factor criterion and
+order theorem include `q = 0`; the generic-name analytic-order theorem is
+owned by `QPochhammerInfinite.lean`.  No joint holomorphy,
 outside-disk reciprocal formula, or centered characteristic-function/MGF
 package is counted in this leaf.  The separately counted
 `GeometricPochhammerNormalConvergence.lean` leaf is 0+3 and supplies the
@@ -1741,8 +1827,10 @@ factor zero over `ℂ`, including `q=0`.  These two leaves therefore contribute
 thirty-two declarations.  Their
 generic `qPochhammerInfIn` is distinct from the older
 `complexQPochhammerInf`; the five-theorem `QPochhammerEntire` API above remains
-the analytic-order layer for the latter symbol, and no named equality bridge
-between the two definitions is counted.
+the legacy compatibility layer, while the generic analytic-order theorem is
+canonically owned by `QPochhammerInfinite`.  The named equality bridge
+`complexQPochhammerInf_eq_qPochhammerInfIn` is counted in the separate
+one-definition/ten-theorem `RvachevPochhammerFactorization.lean` surface.
 
 The synchronized q-series API also retains the full `origin/main` theorem
 inventory.  `GaussianBinomialAtNegOneDerivative.lean` is 0+5, including the
@@ -1797,6 +1885,143 @@ recurrences, the Euler antidiagonal convolution, and
 `hasSum_rogersSzego_generating`.  None of these retained APIs is replaced by
 the fixed-nome `QPochhammerEntire` layer.
 
+The eight-module increment is exhaustive and contributes 60 public
+declarations.  The 0+5 `GaussianBinomialPolynomialStructure.lean` inventory is
+listed immediately above.  `GaussianBinomialPalindromic.lean` is 0+14:
+`reflect_add_of_natDegree_le`, `reflect_one'`,
+`gaussianBinomial_natDegree_le`, `gaussianBinomial_zero_left`,
+`gaussianBinomial_diag'`, `reflect_gaussianBinomial`,
+`coeff_gaussianBinomial_reflect`, `coeff_gaussianBinomial_zero`,
+`coeff_gaussianBinomial_top`, `gaussianBinomial_natDegree`,
+`gaussianBinomial_monic`, and
+`two_mul_derivative_gaussianBinomial_eval_one`,
+`coeff_gaussianBinomial_one_of_pos_of_lt`, and
+`coeff_gaussianBinomial_one`.  Its degree bound,
+palindromicity, endpoint coefficients, and division-free mean identity hold
+over a commutative semiring under exactly `k ≤ n`; coefficient reversal also
+uses `j ≤ k*(n-k)`, and exact degree and monicity add `Nontrivial R`.  It does
+identify the coefficient of `q` as one under exactly `0 < k < n`, with a
+total if-and-only-if classifier covering both boundary and out-of-range cases.
+
+`QExponential.lean` is 3+8.  Its definitions are `qDeriv`, `qExp`, and
+`qExpBig`; its theorems are `qFactorial_mul_one_sub_pow`,
+`qFactorial_ne_zero`, `qDeriv_mul`, `hasSum_qExp`, `hasSum_qExpBig`,
+`qExp_mul_qExpBig_neg`, `qDeriv_qExp`, and `qDeriv_qExpBig`.  The factorial
+clearing identity is ring algebra and the function product rule is total.
+The series and eigenfunction laws work over a complete normed field under
+`‖q‖ < 1`; the small exponential additionally uses
+`‖(1-q)*x‖ < 1`, while both eigenfunction statements assume `x ≠ 0`.
+`JacksonIntegral.lean` is 1+7: `jacksonIntegral`;
+`qDeriv_jacksonIntegral`, `one_sub_mul_pow_mul_qDeriv`,
+`tendsto_jackson_sum_qDeriv`, `jacksonIntegral_qDeriv`,
+`tendsto_jackson_sum_parts`, `jackson_parts_of_tendsto`, and
+`jacksonIntegral_mul_qDeriv`.  The first fundamental theorem assumes exactly
+`q ≠ 1`, `x ≠ 0`, and summability of the displayed Jackson series.  The
+telescoping identity is unconditional; partial-sum forms use the stated limit,
+and `jacksonIntegral` forms add summability.
+
+`ThetaQuasiPeriodicity.lean` is 1+6: `bilateralTheta`;
+`thetaExponent_add_one`, `pow_thetaExponent_add_one`,
+`hasSum_bilateralTheta`, `bilateralTheta_eq_prod`,
+`bilateralTheta_mul_left`, and `bilateralTheta_eq_zero_iff`.  Its sum and
+product require a complete normed field, `‖q‖ < 1`, and `z ≠ 0`;
+quasi-periodicity and the exact lattice `z = -q^m` additionally require
+`q ≠ 0`.  `JacobiCubic.lean` is 0+2:
+`two_mul_add_one_le_three_pow` and `hasSum_jacobi_cubic`; the second gives the
+complex cubic identity in `HasSum` form under exactly `‖q‖ < 1`.
+
+`QPochhammerLogDerivative.lean` is 0+10:
+`one_sub_le_norm_one_sub_mul_pow`,
+`summable_pow_div_one_sub_mul_pow`, `summable_log_one_sub_mul_pow`,
+`one_sub_mul_pow_ne_zero`, `qPochhammerInfIn_eq_cexp_tsum_log`,
+`hasDerivAt_tsum_log_one_sub_mul_pow`,
+`hasDerivAt_qPochhammerInfIn`, `hasDerivAt_lambert_series`,
+`tsum_neg_pow_div_one_sub_mul_pow_eq`, and
+`hasDerivAt_qPochhammerInfIn_lambert`.  The logarithm series is summable for
+every complex `a` when `‖q‖ < 1`; reciprocal-factor summability and both final
+product derivatives use `‖a‖ < 1`, with termwise differentiation established
+on every disk `‖a‖ < r < 1`.  `QPochhammerOrderDerivative.lean` is 0+3:
+`hasDerivAt_const_cpow'`, `hasDerivAt_qPochhammerInfIn_mul_cpow`, and
+`hasDerivAt_qPochhammerC`.  The first assumes `q ≠ 0`; the latter two assume
+exactly `‖q‖ < 1`, `q ≠ 0`, and `‖a*q^α‖ < 1`.  None of these derivative
+leaves claims a nome derivative, boundary continuation, or branch-independent
+complex-order coordinate.
+
+The cumulative seven-module closure is also exhaustive.  The already listed
+`GeneralizedRvachevIdentifiability.lean` contributes `0+6` declarations.
+`GeometricPochhammerNormalConvergence.lean` contributes no definitions and
+three theorems:
+`hasProdLocallyUniformly_geometricSincProduct_complexQPochhammerInf`,
+`hasProdLocallyUniformly_rvachevFourierProduct_complexQPochhammerInf`, and
+`hasProdLocallyUniformly_rvachevFourier_complexQPochhammerInf`.  The first
+assumes exactly complex `‖q‖ < 1` and proves locally uniform convergence on all
+of `ℂ` of the outer Pochhammer product, including `q = 0`; the second is the
+unconditional dyadic specialization and the third additionally assumes a
+bounded Fabius witness and `IsFabius`.  It proves no joint normality in `(q,z)`
+or boundary theorem at `‖q‖ = 1`.
+
+`ClassicalPochhammerLimit.lean` contributes no definitions and five theorems:
+`ascPochhammer_eval_eq_prod_range`,
+`tendsto_one_sub_div_one_sub_of_hasDerivAt`,
+`tendsto_finiteQPochhammerIn_div_pow_of_hasDerivAt`,
+`tendsto_finiteQPochhammerIn_cpow_div_pow`, and
+`tendsto_finiteQPochhammerIn_rpow_div_pow`.  The rising-product identity is
+commutative-semiring algebra.  The generic punctured-neighborhood limit works
+over every nontrivially normed field under exactly `HasDerivAt f c 1` and
+`f 1 = 1`; the complex-principal-power and real-power forms are valid for
+every exponent and finite order.  No rate, uniformity, infinite-product limit,
+or classical-gamma limit is counted.
+
+`GaussianBinomialUniversal.lean` contributes no definitions and exactly two
+theorems, `gaussianBinomial_eq_eval₂_universal` and
+`gaussianBinomial_eq_eval_map_universal`.  Over every commutative semiring and
+for arbitrary `q,n,k`, they identify `[n,k]_q` with evaluation of the universal
+polynomial in `ℕ[X]`, directly or after coefficient mapping.  No degree,
+unimodality, log-concavity, or factorization result is added.
+
+`PolynomialQTaylor.lean` contributes two definitions, `qFactorial` and
+`qFallingPower`, and eighteen theorems: `qFactorial_zero`,
+`qFactorial_succ`, `qDerivative_one`, `qDerivative_iterate_add`,
+`qDerivative_iterate_C_mul`, `qDerivative_iterate_sum`,
+`qDerivative_iterate_C_mul_X_pow`,
+`qDerivative_iterate_eq_zero_of_natDegree_le`, `qFallingPower_zero`,
+`qFallingPower_succ`, `qFallingPower_succ'`, `qFallingPower_monic`,
+`qFallingPower_natDegree`, `qFallingPower_eval_self`,
+`qDerivative_qFallingPower_succ`, `qDerivative_iterate_qFallingPower`,
+`prod_qInt_sub_eq_qFactorial`, and `qTaylor`.  The factorial and iterator
+algebra are commutative-semiring results, the falling-power layer is over a
+commutative ring, and exact degree also assumes nontriviality.  The field-valued
+Taylor theorem assumes exactly `[j]_q ≠ 0` for `1 ≤ j ≤ N` and
+`f.natDegree ≤ N`.  It is a finite polynomial identity, not an analytic
+expansion, remainder estimate, convergence theorem, or `q → 1` result.
+
+`QPartialFractions.lean` contributes the definition `partialFractionCoeff` and
+five theorems: `prod_erase_one_sub_inv_pow_mul_pow`,
+`finiteQPochhammerIn_self_ne_zero_of_le`,
+`partialFractionCoeff_mul_prod_eq_one`,
+`sum_partialFractionCoeff_mul_prod_erase`, and
+`one_div_finiteQPochhammerIn_eq_sum`.  Over a field, `(q;q)_n ≠ 0` suffices for
+the polynomial identity and includes `q = 0`; the pointwise reciprocal formula
+also assumes every displayed pole factor nonzero.  The two normalization
+helpers state their explicit `q ≠ 0` and index hypotheses.  There is no
+infinite expansion, repeated-pole theory, or convergence claim.
+
+`QPochhammerIntegerIndex.lean` contributes the definitions `qIntervalProd` and
+`finiteQPochhammerZ` and fifteen theorems: `Ico_int_eq_image_range`,
+`prod_Ico_int_eq_prod_range`, `qIntervalProd_of_le`, `qIntervalProd_of_lt`,
+`qIntervalProd_self`, `qIntervalProd_symm`, `qIntervalProd_trans_of_le`,
+`qIntervalProd_trans`, `finiteQPochhammerZ_natCast`,
+`finiteQPochhammerZ_neg_natCast`, `prod_Ico_add_zpow`,
+`qIntervalProd_add_eq`, `finiteQPochhammerZ_add`,
+`finiteQPochhammerZ_add_one`, and `finiteQPochhammerZ_neg_natCast_eq`.
+The ordered cocycle is unconditional; the all-order cocycle assumes its two
+factors nonzero.  Translation and concatenation require `q ≠ 0`, concatenation
+also requires both factors nonzero, the one-step shift requires its two
+displayed nonzero factors, and the closed negative-index form requires
+`a ≠ 0` and `q ≠ 0`.  Empty intervals and natural/negative-natural indices are
+included; no continuation in the index or root-of-unity regularization is
+claimed.
+
 The audited formula contract is equally exact.  Admissibility is even total
 degree plus the three weak triangle inequalities, equivalently
 `i=b+c`, `j=a+c`, `k=a+b`.  If `C_n=choose (2*n) n` and `s=a+b+c`, then the
@@ -1829,10 +2054,10 @@ predecessor nine-module subtotal was `18+81=99`, and the two closed-form leaves
 contribute `2+25` and `0+3`.  The integer-index zero-row square datum and finite
 Wigner-square Gram route are closed, while signed/phase, half-integer,
 nonzero-magnetic-index, general Wigner/recoupling, and later infinite spectral
-layers remain outside this tranche.  The baseline records zero missing headers
-and zero missing doc comments, so every future source addition must preserve
-that invariant.  Run the script for
-live numbers after merging concurrent source work.
+layers remain outside this tranche.  The live baseline records zero missing
+headers and zero missing doc comments.  Future source additions must preserve
+both zero-gap invariants.  Run the script for live numbers after merging
+concurrent source work.
 
 The additional declaration in `PolynomialCombExactness.lean` is
 `integral_polynomial_mul_rvachevUp_eq_dyadic_tsum`, the exact normalized
@@ -1858,6 +2083,260 @@ an exact least endpoint-mass denominator.  The third module,
 `EffectiveGapInverse.lean`, contributes 4+4, the eight declarations listed
 above, and supplies the generic rational-gap-to-modulus bridge; its clamped
 extension boundary remains explicit.
+
+Four direct artifact receipts record the last synchronized pre-9135 source/PDF
+pairs and are now historical because the live sources include the new
+q-Chu/reversal, geometric-generating, Gaussian second-moment, and Lambert
+branch-gap Bernoulli APIs.  The primary receipt is a
+14,037-line, 702,119-byte TeX source
+(SHA-256
+`6a20e02cf300c0b29ba8d175831b4f86e4b336601cc5bd5f5752d5c5889be69a`)
+and a 197-page, 1,602,500-byte PDF (SHA-256
+`f083cd78308aba99d23d42372786c4b0a946ea8f5d47445c44d664fccfdde5e3`).
+The Lean-walkthrough receipt is a 6,598-line, 465,231-byte TeX source (SHA-256
+`796dd849fa423ba07413eaf0a1f30dc608355c5a3cd877aa7409ad089c54794e`)
+and a 149-page, 1,231,442-byte PDF (SHA-256
+`bc6e3e716a1a10daf24a065f6c97e2d00cbc95071ada777050a95f91598db4a0`).
+The canonical-frontier receipt is a 17,954-line, 813,297-byte TeX source
+(SHA-256
+`bcd9eefce2ead08e2cbb283e091a859aa31f36c67416543e994e10e8f9db3075`)
+and a 262-page, 1,885,642-byte PDF (SHA-256
+`7f7e1279e38c766a465e640638ea7e0079a942de0bc84a5c22be497af27c7bab`).
+The q-series receipt is a 16,834-line, 837,715-byte TeX source (SHA-256
+`4785625c1399558f3ca59481888fc76514e0a327a1faa16945c61851f874f3d5`)
+and a 395-page, 2,494,961-byte PDF (SHA-256
+`89159b2635f489a42d4c972fac95332808b1d637dee7921085db1ed7d6e055af`).
+Their exact successful three-pass page sequences were respectively
+194→197→197, 144→149→149, 254→262→262, and 386→395→395.  Primary and
+walkthrough logs and publication gates are clean; the frontier retains only
+expected underfull diagnostics, and the q-series master retains one harmless,
+readable 32.5659 pt overfull line.  All page, metadata, font, render, text,
+and representative-visual gates passed.  These receipts certify their named
+pre-9135 pairs only and are superseded by the synchronized 2026-09-04 receipts
+below.
+
+The independently scoped Sequence publication remains current.  The Lambert
+guide's preceding synchronized receipt is a 4,829-line, 174,423-byte TeX with SHA-256
+`724dfe5b1effcda29325a5bdfb066ff970eb74ab460f650185339fefce40ebc1`;
+its 69-page, 952,929-byte PDF has SHA-256
+`0b5f28dbfe590658e74150e8ccff6f023ecd0b8fb4e3e978ec275d9ddd244de6`.
+Its successful page sequence was 67→69→69; machine and visual gates passed,
+with expected underfull diagnostics and one harmless readable 0.825 pt
+internal overfull line.  The Bernoulli-series source overlay made that Lambert
+PDF historical; the synchronized 2026-09-04 receipt below supersedes it.  The
+Sequence inversion/transseries volume's
+16,705-line, 778,477-byte TeX has SHA-256
+`4aa038c10ddd931b7c1248095ddfdf0ce8769c69cc0df4f344f6365d0e45e8e1`;
+its 205-page, 2,198,655-byte PDF has SHA-256
+`ec1f4d2ac608786f33be97d040fdfd03b6f74494dee74f044fd2e6631217d4fb`.
+Its successful page sequence was 198→205→205; corrected title/author metadata,
+machine gates, and extensive visual checks passed.  The final log retains one
+duplicate-page-destination notice, nine PDF-string notices, 47 overfull and
+12 underfull diagnostics; sampled largest cases are clean and unclipped.
+
+**Historical synchronized publication receipts (2026-09-04).** Each pass tuple
+below is `pages/bytes`.  At their named source checkpoints, all six TeX/PDF
+pairs completed exactly three
+successful serial halt-on-error passes from absent sidecars.  Final-log
+reference/rerun/error checks, metadata, A4 rotation zero, every-page render and
+nonblank-text checks, embedded/subset fonts with Libertinus and no Type 3, and
+representative visual checks all passed; generated sidecars were cleaned and
+forbidden checksum-ledger basenames were absent.  These six pairs remain
+historical receipts for their named source checkpoints; the current `b899`
+publication receipts below supersede them where a rebuilt root is listed.
+
+- Primary exposition: TeX 14,328 lines / 715,760 bytes / SHA-256
+  `60c0a6ff4e75ec37e6928067859671d87622ad8f430a1006dd4c71c7e7b25674`;
+  passes 197/1,579,558 → 200/1,621,473 → 200/1,621,467; final PDF 200 pages /
+  1,621,467 bytes / SHA-256
+  `50febffeb7dda743330bd346b8f5fd45f85668db97c19fb52d4cd741d1692826`;
+  fonts 29 total / 6 Libertinus / 0 Type 3.
+- Lean walkthrough: TeX 6,855 lines / 482,759 bytes / SHA-256
+  `1c48c54b194eb9e99dae64ddca70e2aa5d2edd995160ee2d5bc6455b545683f7`;
+  passes 149/1,225,017 → 154/1,262,552 → 154/1,262,574; final PDF 154 pages /
+  1,262,574 bytes / SHA-256
+  `f9cba79348ffb81c41fc08b6523548effcc45ded9a2eb2b18e618ac9d59d0648`;
+  fonts 30 / 7 / 0.
+- Lambert Guide: TeX 4,876 lines / 177,511 bytes / SHA-256
+  `d852a345685dd61335a89fc4fd1092680bdc597a5d1e6ac612883946ad0d99ea`;
+  passes 68/963,230 → 70/986,865 → 70/986,865; final PDF 70 pages /
+  986,865 bytes / SHA-256
+  `0b8801649a6dd43d9f02dcfc2f60cac50b5c8f88bd782645bf97d30cc3dfbd41`;
+  fonts 42 / 5 / 0; one harmless readable 0.82504 pt overfull and 133
+  underfull diagnostics.
+- Canonical frontier: TeX 18,173 lines / 826,738 bytes / SHA-256
+  `844842bf699a24651f660bd7d81d814f6396b4fe6fc6de66a04908904221860b`;
+  passes 257/1,822,725 → 265/1,904,567 → 265/1,904,551; final PDF 265 pages /
+  1,904,551 bytes / SHA-256
+  `dcaa7ac1e5397912c97a474b4023521e49d0785eb6ef67d83d0ce002d9cbb6e6`;
+  fonts 40 / 8 / 0; one readable unclipped 9.43108 pt overfull at source
+  lines 1032–1043 and 299 underfull diagnostics.
+- Geometric q-frontier: TeX 27,598 lines / 1,270,870 bytes / SHA-256
+  `6db4e211b0588ed75a0e89e13d97306f1d5d38b42a2bf941914ea16b9ca93dae`;
+  passes 386/8,157,293 → 403/8,339,780 → 403/8,339,736; final PDF 403 pages /
+  8,339,736 bytes / SHA-256
+  `4d909b5e228e2053d473dc75da502382c7a4fe2b096f798e124e6530d3a15027`;
+  fonts 43 / 11 / 0; zero overfull and 37 underfull diagnostics.
+- Canonical q-series synthesis: TeX 16,910 lines / 842,514 bytes / SHA-256
+  `196f219d5e1efba463ebabb69659697b1afb28989ef1a8da6219226d3262ad32`;
+  passes 390/2,386,364 → 398/2,501,624 → 398/2,501,638; final PDF 398 pages /
+  2,501,638 bytes / SHA-256
+  `e8094b054f52b1fb71c7540f0834155fae0eac17887cb7cac1567848bd65d3b3`;
+  fonts 43 / 5 / 0.  Every pass's index run accepted 164 entries, rejected none,
+  produced 254 lines, and emitted no warning.  The sole retained 32.5659 pt
+  overfull paragraph at source lines 590–598 is readable and unclipped; the
+  final log has zero underfull diagnostics.
+
+**Current `b899` synchronized publication receipts (2026-09-04).** Each pass
+tuple below is `pages/bytes`.  All ten roots were frozen and built in exactly
+three serial halt-on-error passes from absent sidecars.
+
+- Primary exposition: TeX 15,148 lines / 759,509 bytes / SHA-256
+  `721cb901de2254ef48991452c4831762f54a36e0a405b4bbeb7f812653e71754`;
+  passes 208/1,640,077 → 210/1,683,143 → 210/1,683,141; final PDF
+  210 pages / 1,683,141 bytes / SHA-256
+  `afe85efec5716fe85cc7d8a5d6af459fd72775526f4bda11df04e6ff275b36c9`;
+  fonts 29 total / 6 Libertinus / 0 Type 3.
+- Lean walkthrough: TeX 7,260 lines / 526,929 bytes / SHA-256
+  `2005d4a70a66a1d8f3eac9be6d83585ea70c9312b09b098f2c65025db9fca814`;
+  passes 160/1,281,609 → 165/1,319,585 → 165/1,319,594; final PDF
+  165 pages / 1,319,594 bytes / SHA-256
+  `b5e886d7c76db56fd9e9e1552bdd78fbd65ea9075ea1e04d62c00a7c04e948fb`;
+  fonts 30 / 7 / 0.
+- Geometric q-frontier: driver 27,671 lines / 1,275,367 bytes / SHA-256
+  `d47c0ad93eb359d13e7e9772668f16dbc98bcb4d880f3679366e1d461451bbcd`;
+  recursive TeX closure 8 files / 27,777 lines / 1,281,413 bytes / digest
+  `39f7cd41e706314f2cafb903c2da2e6e83d2b17f5bb0612492204d15c1a28d91`;
+  passes 388/8,163,847 → 405/8,346,265 → 405/8,346,247; final PDF
+  405 pages / 8,346,247 bytes / SHA-256
+  `fef7d8260543ad1d20d69e9e41fa0cfc31603de7961f6aeb97a50740aecd596c`;
+  fonts 43 / 11 / 0.
+- Canonical q-series synthesis: driver 17,265 lines / 864,659 bytes / SHA-256
+  `4dd3f7fb22387d8e3d039e8d49cd870a63ebe0881f7f215c7074854825a27bb9`;
+  recursive TeX closure 14 files / 26,762 lines / 1,210,902 bytes / digest
+  `b567430fdd64f6d50bd24fcb070216c27f7e3e81e8b0c76c3228767ebdf980c6`;
+  passes 397/2,417,476 → 405/2,533,717 → 405/2,533,715; final PDF
+  405 pages / 2,533,715 bytes / SHA-256
+  `055eb1fc26467857394a5b3bd8cd327f6985ea5d2f966ab5f099ac20bb2b8fb2`;
+  fonts 43 / 5 / 0; every pass's index run accepted 164 entries, rejected
+  none, produced 254 lines, and emitted no warning.
+- Inverse-theory synthesis: driver 293 lines / 11,514 bytes / SHA-256
+  `92fab1fae38bbcf86a45b51bfe7ff34e2801361df9d2f3d6aa3de4dc966eaa3c`;
+  recursive TeX closure 17 files / 10,682 lines / 431,748 bytes / digest
+  `6e4e6fde424fd5046467b1f1cec0c19b6c10eb681fae4ba7cc53e14b6a5bf61e`;
+  passes 132/1,983,313 → 137/2,045,485 → 137/2,045,486; final PDF
+  137 pages / 2,045,486 bytes / SHA-256
+  `cee0de894656562fbdb75d6304055fc03fae06203985119419e465a5cd213995`;
+  fonts 31 / 6 / 0.
+- Comb-interpolation synthesis: driver 187 lines / 6,724 bytes / SHA-256
+  `a4c1e33165ff7291682cd890f23fe4af98e9f11f7ad1d9a7f8b68c78d53f9a56`;
+  recursive TeX closure 15 files / 12,597 lines / 477,163 bytes / digest
+  `9e22455b3f65eb48306ad21c57445b6052a56498cb363666ffb9b160f5cc8090`;
+  passes 153/2,383,950 → 160/2,467,995 → 160/2,468,000; final PDF
+  160 pages / 2,468,000 bytes / SHA-256
+  `ad8587049580e6fde371f534b6f8b4e56fa4c929173f87d3021ed369e5225d4c`;
+  fonts 33 / 7 / 0.
+- Lambert Guide: TeX 4,940 lines / 181,577 bytes / SHA-256
+  `2e6a4782fc4e4b945869f5fb45b39cf94e8dc34296866edf26b4cdfe19b1898b`;
+  passes 68/968,083 → 70/991,847 → 70/991,848; final PDF 70 pages /
+  991,848 bytes / SHA-256
+  `f802d78299f8f6aca7d31b935a4884f9343389a7307decb04c18b5159c8a4f04`;
+  fonts 42 / 5 / 0.
+- Up Polynomial Synthesis: driver 2,368 lines / 98,609 bytes / SHA-256
+  `95d293e34559e910cca2df4547e6e181a8d26bc8e8cf61c4445cf12c57ed8e0e`;
+  four-file TeX closure 5,434 lines / 211,270 bytes / digest
+  `62aa76428089cd164705b1d31e038d4e48545681eedc01cb491e6a94f07b0e41`;
+  passes 61/1,045,488 → 62/1,071,179 → 62/1,071,181; final PDF
+  62 pages / 1,071,181 bytes / SHA-256
+  `99c5d8256b983652755fe8e46ef015277e61b94941a4ca6c875bddaf0493b101`;
+  fonts 27 / 4 / 0.
+- Thue--Morse Atlas: TeX 10,553 lines / 481,614 bytes / SHA-256
+  `cced4128c359ec467baaf1a55c21c68424397f783a39ea7fe2af5a94975b9dd5`;
+  passes 139/1,681,559 → 144/1,739,891 → 144/1,739,884; final PDF
+  144 pages / 1,739,884 bytes / SHA-256
+  `1c81863b0976017fab1b7f5972c50cd541b3ffb05306bf85994548a56a782fc0`;
+  fonts 38 / 8 / 0.
+- Canonical semi-formalized frontier: TeX 18,651 lines / 858,502 bytes /
+  SHA-256
+  `140256058b7a01bcdb4f1592cfab9e6c2ac170f5f0863572627a9b2f93ab7793`;
+  passes 265/1,868,249 → 273/1,950,120 → 273/1,950,112; final PDF
+  273 pages / 1,950,112 bytes / SHA-256
+  `17525c7623bf774f515ecf1a949d533bbe125fde036356c4bb9f787eedad0322`;
+  fonts 40 / 8 / 0.
+
+Across all ten roots, required final-log error/reference/rerun
+gates, metadata, A4/rotation-zero checks, every-page render and nonblank-text
+checks, embedded/subset fonts with Libertinus and no Type 3, representative
+visual checks, sidecar cleanup, and the forbidden-checksum-basename search all
+passed. Diagnostics are clean except for five minor q-series horizontal boxes
+(maximum 10.14 pt), two inverse horizontal boxes (2.42 and 2.45 pt), one
+Lambert horizontal box (0.83 pt), and one canonical-frontier horizontal box
+(9.43108 pt), all nonblocking. The final aggregate TeX closure contains 76
+files / 140,223 lines / 6,439,569 bytes, with direct aggregate digest
+`ae8690ad8d160055cbae36eff96d858f87572d171e7aacf7540d67543998af21`.
+All ten current source/PDF rows are synchronized; earlier receipts below remain
+historical provenance for their named checkpoints.
+
+The B2--B11 publication roots retain exact synchronized or historical receipts
+at their named checkpoints. Their pass, byte-progression, font, and common-gate records are kept in
+`docs/semi-formalized-research-frontiers/drafts/MANIFEST.md` and the local
+package records. The rows below are the earlier B2--B11 checkpoint ledger; B7
+is superseded by the current Up receipt above. The recorded pairs were:
+
+- B2 Frontier Compilations: 17,311 lines / 748,733 bytes /
+  `600bab0556c95661c6963438ea3e8e5ed1c691af36d64e1c105435199e605736` →
+  275 pages / 2,790,721 bytes /
+  `49159c19d59fdd5bd397d3ab70bd024ea5bc7995fb037a532bc1fded9c9ad4fa`.
+- B3 Integration and Transform Frontiers: 25,147 / 1,058,819 /
+  `b60b232e55af7c021e82dec476823e727ef8398388bda9af0a3334aba4a30be3` →
+  377 / 3,292,594 /
+  `52b1b7e5cd86cbd8d00cb0d90580ea555b2762d7a638aa52b5ea680dcbca7199`.
+- B4 Fabius Information Frontier: 2,138 / 78,310 /
+  `57a06279153b6e4c97ea0c084a193867b2f5c60a0163983149f36453eb196c9d` →
+  29 / 790,802 /
+  `3af03cd4dcc7fb1a502976f47edb56ee7d5c2b8dc9a8da537e79f8382ef885d5`.
+- B5 Matrix-Dilated Fabius--Rvachev: 1,997 / 76,958 /
+  `5311ff92a6d6d430f3c6e94d61974ffb549a8fe99bb20636a5c47116ad7d9aba` →
+  29 / 878,932 /
+  `1c7ca0f14f2b456c4bd9692057b63f0941b15ee0810c6f1a3947a2a128a9c76b`.
+- B6 Representation Frontiers: 18,637 / 776,458 /
+  `dd41bc90b03d1f54d9fae71c116061b0130d505740cb92fe908d6db3c21f3d95` →
+  301 / 3,609,120 /
+  `4dae6f87e6cc4da953319ba85c18316c23bf6e34a8bdac5680f20255356c4ba7`.
+- B7 Up Polynomial Synthesis (historical): 2,324 / 95,757 /
+  `15f7c593895ed4a06b7f9d90c72d55078a193cd01f0818cb3b3cfa4f4d585a52` →
+  60 / 1,056,613 /
+  `0b7fc962bcb4509affc322571100cc4f27252b1ec113ca8116b05c59d23ffd35`.
+- B8 Common-Digit Fabius Zonoids: 2,092 / 89,360 /
+  `ad6d0bfa137efe0c79cf0ee599845b8708d82ef31f6fc2c3016e80ff14a7675e` →
+  36 / 1,171,153 /
+  `4169b907f96b46cb75b1aab067e237a431798cfb612bbad11e2a74a38d494cd4`.
+- B9 Dyadic Radon Profiles: 2,050 / 74,839 /
+  `0ac7695620cb22896bb912598e2e91fd404e70dbd3c5d1e769ee76a6e92578d4` →
+  29 / 998,017 /
+  `39e76001f71c6628308ccdb8232251538674faee3c9102fa26e4cec00eb276c0`.
+- B10 Fabius--Rvachev Carleman Frontiers: 1,934 / 71,224 /
+  `49dd91c71df292725e9dfe6de450ac014b47f3c3ba4a5bc8ec02e2d2e76d34e3` →
+  24 / 973,424 /
+  `13a7f35e23dc5a794d46b431059ce35c0b48c199f1996539b65dee9bc8c16047`.
+- B11 Thue--Morse Diagonal Polynomials: 1,763 / 56,530 /
+  `eee5751653bb19ec04042f51ded34d74bf8862f5b06b49d47e68ea78bb689c45` →
+  24 / 778,595 /
+  `8db0c4e0a4fcf682bd3e1311f7d8197ea04dcca56e102236b52494267d99cbbe`.
+
+For provenance, the superseded pre-d8b pairs remain historical receipts:
+primary TeX/PDF `938517a92565685ac9f7194b879cfe752ce783f258bde8b7b685aee41aed13dc` /
+`bf26d78dd2cc49feb87a85413ef9c04c7a8a3dac4f793cf86e3436f7502cb2a7`
+(694,350 / 1,593,577 bytes; 195 PDF pages); walkthrough
+`e598aa02d4d10eda8bcfdafe3731f4a663bdcba58407f454485fae6796b41050` /
+`5ff79c24fbced37dfaa5eb9c34447d0e7661b2b2bc5a0597687e43f93d7e189a`
+(456,855 / 1,219,336 bytes; 145 pages); frontier
+`7dd140370a0ac68522364a83a3c6423df93570741eafaef2ee8c1fac17670e2f` /
+`9d38ab9d43befd6e26fd06ab9680b4a761365fb9d8a9f0de18489c243bd62d3e`
+(808,185 / 1,877,159 bytes; 260 pages); and q-series
+`d8f730b8eb6602d4d16112aea77a3e67dfbeadf46bcd28c1cdf3b12450b7d4fb` /
+`5d25df07e6df1cd32118ee87e64c1cc54ad32da7c578a182231f98dd9fee9d5c`
+(837,715 / 2,494,949 bytes; 395 pages).
 
 `FabiusInverseExactDyadicModulus.lean` contributes two definitions and ten
 theorems.  The definitions are `inverseFabiusExactDyadicDenominator` and
@@ -1949,17 +2428,17 @@ good shape here; three defects were found and fixed.
    and analytic exactly off `[0,1]`; a doc comment that says "smooth" over an
    `ω` statement is the one confusion the library exists to prevent.
 
-## Suggested order of work
+## Ongoing documentation maintenance
 
 1. Any new file: header and doc comments at the time of writing.  The ratchet
    gate makes this cheap to enforce.
-2. The five worst files.  Clearing them removes about a quarter of the
-   backlog.
-3. Doc comments on public declarations that appear in `PAPER_COVERAGE.md`,
-   since those are the ones an outside reader reaches first.
-4. The long interior estimate chains, one module at a time, ideally by the
-   agent that most recently worked in the module and still has its structure
-   in mind.
+2. Run the audit after each source tranche and update the checked baseline only
+   after reviewing the reported declarations.
+3. Keep comments on declarations cited by `PAPER_COVERAGE.md` synchronized
+   with their exact proved strength, since those are the ones an outside reader
+   reaches first.
+4. Review long interior estimate chains when they change, ideally while their
+   local proof structure is still fresh.
 
 Adding a doc comment cannot change elaboration, so this work needs no build
 slot.  On a machine where a full rebuild costs the better part of a day, that

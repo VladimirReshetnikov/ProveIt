@@ -39,6 +39,8 @@ LEGACY_DIRECTORIES = (
     "Legendre_Rvachev_Closed_Loop_Report_v4",
     "Legendre_Rvachev_Self_Reconstruction",
 )
+
+
 def fail(message: str) -> None:
     raise SystemExit(f"consolidation audit failed: {message}")
 
@@ -117,19 +119,33 @@ def verify_companion_payloads() -> int:
     if not rows or set(rows[0]) != required:
         fail("companion mapping has the wrong columns")
     old_paths = {row["old_path"] for row in rows}
-    new_paths = {row["new_path"] for row in rows}
-    if len(old_paths) != 113 or len(new_paths) != 113:
-        fail("companion mapping is not one-to-one")
+    if len(old_paths) != 113 or "" in old_paths:
+        fail("companion mapping does not identify 113 unique historical sources")
     dispositions = [row["disposition"] for row in rows]
-    if dispositions.count("migrated") != 111 or dispositions.count("already-canonical") != 2:
-        fail("companion disposition counts are not 111 migrated plus 2 canonical")
+    if (
+        dispositions.count("migrated") != 104
+        or dispositions.count("already-canonical") != 2
+        or dispositions.count("retired_checksum_ledger") != 7
+    ):
+        fail(
+            "companion disposition counts are not 104 migrated, 2 canonical, "
+            "and 7 retired checksum ledgers"
+        )
+    retired = [row for row in rows if row["disposition"] == "retired_checksum_ledger"]
+    live = [row for row in rows if row["disposition"] != "retired_checksum_ledger"]
+    for row in retired:
+        basename = Path(row["old_path"]).name
+        if basename != "SHA256SUMS" and not basename.startswith("SHA256SUMS."):
+            fail(f"retired checksum row has an unexpected source: {row['old_path']}")
+        if row["new_path"]:
+            fail(f"retired checksum row still has a live destination: {row['old_path']}")
+        if re.fullmatch(r"[0-9a-f]{64}", row["sha256"]) is None:
+            fail(f"retired checksum row has an invalid historical digest: {row['old_path']}")
+    new_paths = {row["new_path"] for row in live}
+    if len(new_paths) != len(live) or "" in new_paths:
+        fail("live companion mapping is not one-to-one")
     mapped_entries: dict[Path, str] = {}
-    for row in rows:
-        name = Path(row["new_path"]).name
-        if name == "SHA256SUMS" or name.startswith("SHA256SUMS."):
-            # Keep the historical mapping row, but do not require a retired
-            # package checksum manifest in the live payload tree.
-            continue
+    for row in live:
         target = (PACKAGE / row["new_path"]).resolve()
         try:
             target.relative_to(PACKAGE)

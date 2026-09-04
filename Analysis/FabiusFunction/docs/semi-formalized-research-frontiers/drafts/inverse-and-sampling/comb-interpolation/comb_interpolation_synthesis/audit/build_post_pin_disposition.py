@@ -126,8 +126,8 @@ def editorial_disposition(relative: str) -> tuple[str, str, str]:
         return (
             "retired-historical-ledger",
             PROVENANCE,
-            "The package-local historical ledger is superseded by canonical "
-            "provenance and the exhaustive live package manifest.",
+            "The package-local historical ledger is retired; canonical provenance "
+            "and the reconciliation pin preserve the recoverable record.",
         )
     if relative in RETIRED_VALIDATION:
         return (

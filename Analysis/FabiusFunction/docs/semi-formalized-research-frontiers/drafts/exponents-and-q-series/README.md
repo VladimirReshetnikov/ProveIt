@@ -52,10 +52,47 @@ general-q-series guides, forward q-Pochhammer/q-binomial monograph, and
 inverse-q synthesis have been dispositioned into
 [`q_pochhammer_q_binomial_monograph/`](q_pochhammer_q_binomial_monograph/).
 Their earlier names, arrival hashes, and publication facts remain provenance,
-not parallel live documents. The current canonical TeX postdates its retained
-historical PDF; the historical source-and-artifact receipt appears once in the
-detailed package record below. The merged source incorporates the later
-five-theorem
+not parallel live documents. The most recent pre-`d8b` canonical publication
+receipt names a
+16,834-line, 837,715-byte TeX source (SHA-256
+`d8f730b8eb6602d4d16112aea77a3e67dfbeadf46bcd28c1cdf3b12450b7d4fb`)
+and its 395-page, 2,494,949-byte PDF (SHA-256
+`5d25df07e6df1cd32118ee87e64c1cc54ad32da7c578a182231f98dd9fee9d5c`).
+Its exact final three-pass cycle and publication gates were clean for that
+named source. That artifact remains a historical receipt. Package-local checksum ledgers have been
+abolished and must not be regenerated.
+
+The latest retained q-series receipt (2026-09-04) records a historical 16,910-line,
+842,514-byte TeX source at SHA-256
+`196f219d5e1efba463ebabb69659697b1afb28989ef1a8da6219226d3262ad32`.
+Exactly three successful serial halt-on-error passes from absent sidecars ran
+390 pages / 2,386,364 bytes → 398 / 2,501,624 → 398 / 2,501,638; every pass's
+index run accepted 164 entries, rejected none, produced 254 lines, and emitted
+no warning. The final 398-page, 2,501,638-byte A4 PDF has SHA-256
+`e8094b054f52b1fb71c7540f0834155fae0eac17887cb7cac1567848bd65d3b3`.
+All 43 font rows are embedded and subset, five are Libertinus, and none is Type
+3. Final-log reference/rerun/error checks, metadata, every-page render and
+nonblank-text checks, and representative visuals passed; generated sidecars
+and forbidden checksum basenames both close at zero. The sole retained
+32.5659 pt overfull paragraph at source lines 590–598 is readable and
+unclipped; the final log has zero underfull diagnostics. The merged source has
+advanced beyond this receipt, so the retained PDF is historical and a rebuild
+was then pending; the current `b899` receipt below supersedes it.
+
+The current q-series driver has 17,265 lines and 864,659 bytes (SHA-256
+`4dd3f7fb22387d8e3d039e8d49cd870a63ebe0881f7f215c7074854825a27bb9`),
+and its 14-file recursive TeX closure has 26,762 lines and 1,210,902 bytes
+(digest `b567430fdd64f6d50bd24fcb070216c27f7e3e81e8b0c76c3228767ebdf980c6`).
+Three passes ran 397 pages / 2,417,476 bytes → 405 / 2,533,717 → 405 /
+2,533,715; every pass's index run accepted 164 entries, rejected none, produced
+254 lines, and emitted no warning. The final 405-page PDF has SHA-256
+`055eb1fc26467857394a5b3bd8cd327f6985ea5d2f966ab5f099ac20bb2b8fb2`.
+All 405 pages are A4 at rotation zero, render with nonblank text, and use 43
+embedded/subset font rows (five Libertinus, no Type 3). Metadata, log,
+representative-visual, cleanup, and forbidden-basename gates passed; the final
+log has five minor horizontal boxes, none above 10.14 pt, and no vertical box.
+
+The merged source incorporates the later five-theorem
 `QPochhammerEntire.lean`, `QPochhammerInfinite.lean`, and
 `QPochhammerDissection.lean` surfaces, together with the subsequent q-series
 module tranches and the zero-definition, three-theorem
@@ -241,7 +278,18 @@ use exactly the normalized fixed-column error
 `O((q⁻¹)^(n-k+1))`, and the central scale
 `q^(m*m) (q⁻¹;q⁻¹)_∞⁻¹`. Natural subtraction is total, reciprocity is used
 only eventually when `k ≤ n`, and no shifted-central or wider nome-domain
-claim is made. No retained PDF renders the new source-only crosswalk.
+claim is made. The current `b899` q-series and geometric-q PDFs render this
+crosswalk under the synchronized receipts below.
+
+The sibling `DyadicDerivativeFiltration.lean` module has zero definitions and
+exactly six theorems. Its exhaustive surface consists of
+`rvachevUp_eq_zero_of_one_le_abs`,
+`iteratedDeriv_rvachevUp_dyadic_eq_zero`,
+`iteratedDeriv_rvachevUp_dyadic_critical`,
+`dyadic_depth_eq_max_nonzero_iteratedDeriv`,
+`iteratedDeriv_rvachevUp_eq_extendedFabius`, and
+`iteratedDeriv_rvachevUp_dyadic_below`. The final pair completes the
+below-depth derivative formula through the rescaled global Fabius value.
 
 ## Detailed package record
 
@@ -296,12 +344,14 @@ Current packages and retained intake records:
   results are stated once in their strongest proved form, while independent or
   genuinely stronger results are retained with complete human-readable proofs.
   Its
-  [`PROVENANCE.md`](q_pochhammer_q_binomial_monograph/PROVENANCE.md)
-  records the five-publication merge surface and the earlier six-package
-  inverse lineage. The completed
+  [`PROVENANCE.md`](q_pochhammer_q_binomial_monograph/PROVENANCE.md) records
+  the five-publication merge surface, the earlier six-package inverse lineage,
+  and the historical artifact lineage. The completed
   [`source_concordance.csv`](q_pochhammer_q_binomial_monograph/source_concordance.csv)
   gives a reviewed disposition for all 547 source result environments from the
-  five merged publications. The historical
+  five merged publications. Its canonical destinations comprise 99 Lean-proved
+  rows, 379 human-proved
+  frontier results, 60 not-applicable rows, and 9 conjectures. The historical
   [`theorem_concordance.csv`](q_pochhammer_q_binomial_monograph/theorem_concordance.csv)
   continues to account for all 260 inverse-source result environments, and
   [`assets/ASSET_DISPOSITION.csv`](q_pochhammer_q_binomial_monograph/assets/ASSET_DISPOSITION.csv)
@@ -309,20 +359,23 @@ Current packages and retained intake records:
   figures. Pinned source revisions and Git history preserve every superseded
   layout and arrival fact.
 
-  The current `q_pochhammer_q_binomial_monograph.tex` has 16,392 lines and
-  814,045 bytes, with SHA-256
-  `184f828b53b95cbc8580af1750cc868ac6b68aee982657af1414f9889ac6c718`.
-  Its retained `q_pochhammer_q_binomial_monograph.pdf` is a historical
-  389-page A4 artifact of 3,254,138 bytes, with SHA-256
-  `b8add607c85ee35be98dabf36879e1d45fb093c6b453e93679c80295fae715bc`.
-  That PDF was synchronized to the preceding 16,339-line, 810,779-byte source
-  checkpoint with SHA-256
-  `14c444feb14c435bc300becd9c8cd2765c1e96f608dd79da462becc41b28ed22`.
-  Its A4 boxes, text extraction, embedded/subset Type-1 fonts including
-  Libertinus, absence of Type-3 fonts, and targeted visual review passed at
-  that checkpoint. The current TeX additionally records the exact Gaussian
-  raw-second-moment and second-derivative identities and normalizes the merged
-  status formulas; because it is newer, no current render parity is claimed.
+  An upstream publication receipt before the present source union
+  records a historical 378-page A4 artifact of 3,175,603 bytes, with SHA-256
+  `5d0dac5a8d1cba7bedab9055a51f59478054de22969dcf75b0f58ce3f3c265bc`.
+  It was built in exactly three guarded serial passes (378, 378, and 378 pages)
+  from a 15,630-line, 764,952-byte source with SHA-256
+  `403a25dccadc15e7a34bedd8d28a2dc3369cb6e6a046cd199a30ed178742a32d`.
+  Its A4 and embedded/subset-font checks passed, with five Libertinus rows and
+  no Type-3 fonts. Those fingerprints remain historical receipts for that
+  source state. The next retained historical checkpoint was built in
+  exactly three guarded serial passes (386, 395, and 395 pages) from a
+  16,834-line, 837,715-byte source with SHA-256
+  `4785625c1399558f3ca59481888fc76514e0a327a1faa16945c61851f874f3d5`.
+  Its 395-page, 2,494,961-byte A4 PDF has SHA-256
+  `89159b2635f489a42d4c972fac95332808b1d637dee7921085db1ed7d6e055af`;
+  its compilation, index, reference, font, page-render, and visual gates
+  passed. That receipt predates the `9135` final source union and is historical;
+  the later 398-page historical receipt above supersedes it.
   It carries the five-theorem `QPochhammerEntire.lean`, the generic
   `QPochhammerInfinite.lean` and `QPochhammerDissection.lean` APIs, both
   Gaussian structure modules, `GaussianBinomialFixedColumnRate.lean`,
@@ -348,9 +401,10 @@ Current packages and retained intake records:
   182 Exact, 78 Partial, 14 None, and 8 interface rows; the source ledger is
   95 Lean-proved, 383 human-proved
   frontier, 60 not
-  applicable, and 9 conjectures. No PDF was generated locally while resolving
-  this source-only merge, so the retained 389-page artifact does not render
-  the current source. PDF files retained
+  applicable, and 9 conjectures. The current `b899` 405-page monograph PDF
+  renders this merged source and is synchronized by the receipt above; the
+  former 398-page PDF remains a historical artifact.
+  PDF files retained
   beneath `assets/` are vector research figures, not manuscript builds.
   Manuscript result labels and numerical checks remain
   distinct from Lean verification.
@@ -786,33 +840,53 @@ remain research frontiers. These fractional-Volterra API claims were checked at 
 Geometric-sinc subgroup member:
 [`geometric_q_fabius_frontiers/`](geometric_q_fabius_frontiers/), whose
 Parts~I--VII are the former `Exponents_and_q_Series_Frontiers/`
-(current semantic-union TeX: 16,369 lines and 737,912 bytes, SHA-256
-`a4aecd625f7eb405de866e2b368bbdc648fb0f9e11b423cb936a2f319d195f02`;
-retained PDF: 238 A4 pages and 6,953,898 bytes, SHA-256
-`fa719a8ea68d3c474928b9fae7449f827eb35a5452613f2b660d8e88ba27267e`;
-across seven parts). Exactly three serial passes from the preceding 16,274-line,
-731,692-byte source SHA-256
-`4be184dc95f7c9d7665e5edf56cd22dc66bdacbc2f113b03b700468836018f8b`
-produced 228, 238, and 238 pages. Basic A4, text-extraction, embedded-font, and
-no-Type-3 checks passed, but the containing multi-document batch stopped before
-a fresh full log, page-box, and visual audit. The current TeX and retained PDF
-remain distinct payloads; that does not assert render parity. The
-semantic-union source adds the upstream q-API crosswalk
+(pre-`d8b` receipt TeX: 808,185 bytes, SHA-256
+`7dd140370a0ac68522364a83a3c6423df93570741eafaef2ee8c1fac17670e2f`;
+historical PDF: 260 A4 pages and 1,877,159 bytes, SHA-256
+`9d38ab9d43befd6e26fd06ab9680b4a761365fb9d8a9f0de18489c243bd62d3e`).
+An exact clean final three-pass cycle produced that PDF, and its recorded
+publication gates are clean. The merged source postdates that historical
+receipt; the historical 2026-09-04 checkpoint and then the current `b899`
+receipt below supersede it. The current
+source includes the upstream q-API crosswalk
 material and the exact `GeneralizedRvachevIdentifiability.lean`
 zero-order/exponent crosswalk after the PDF's source checkpoint. The latter
 gives constructive dyadic-order first differences and full-product rigidity;
 zeta-quotient, cumulant/analytic-sample, and probability-law identifiability
-remain Partial in Lean. The source also records the exact zero-definition,
-three-theorem `GeometricPochhammerNormalConvergence.lean` crosswalk: the outer
-spectral product converges locally uniformly for every complex strict
-contraction, including `q = 0`, with dyadic Rvachev-product and bounded-Fabius
-Fourier specializations. The compound centered/MGF and exterior reciprocal
-formula, pole divisor, and zero--pole exchange remain Partial. Final-source
-rendering and full publication validation remain pending.  The current TeX
-also replaces all raw dyadic-valuation spellings by the shared
-`\TwoAdicValuation` command; this notation-only successor is not represented
-by the retained PDF. This is the
-2026-08-28 consolidation of the two former drafts (Part I:
+remain Partial in Lean. It also replaces raw dyadic-valuation spellings by the
+shared `\TwoAdicValuation` command. The preceding 238-page PDF and its
+16,274-line build source, together with the intermediate 16,369-line source,
+remain historical receipts only.
+
+The synchronized geometric q-frontier receipt (2026-09-04) records a historical
+source checkpoint superseded by the current `b899` receipt below. The merged
+source later added the geometric moment, exterior-germ, degree, and related
+proof crosswalks. The historical checkpoint comprised the
+27,598-line, 1,270,870-byte TeX source at SHA-256
+`6db4e211b0588ed75a0e89e13d97306f1d5d38b42a2bf941914ea16b9ca93dae`.
+Exactly three successful serial halt-on-error passes from absent sidecars ran
+386 pages / 8,157,293 bytes → 403 / 8,339,780 → 403 / 8,339,736. The final
+403-page, 8,339,736-byte A4 PDF has SHA-256
+`4d909b5e228e2053d473dc75da502382c7a4fe2b096f798e124e6530d3a15027`.
+All 43 font rows are embedded and subset, eleven are Libertinus, and none is
+Type 3. Final-log reference/rerun/error checks, metadata, every-page render and
+nonblank-text checks, and representative visuals passed; generated sidecars
+and forbidden checksum basenames both close at zero. The final log has zero
+overfull and 37 underfull diagnostics.
+
+The current `b899` geometric-q driver has 27,671 lines and 1,275,367 bytes
+(SHA-256 `d47c0ad93eb359d13e7e9772668f16dbc98bcb4d880f3679366e1d461451bbcd`),
+and its 8-file recursive TeX closure has 27,777 lines and 1,281,413 bytes
+(digest `39f7cd41e706314f2cafb903c2da2e6e83d2b17f5bb0612492204d15c1a28d91`).
+Three passes ran 388 pages / 8,163,847 bytes → 405 / 8,346,265 → 405 /
+8,346,247; the final 405-page PDF has SHA-256
+`fef7d8260543ad1d20d69e9e41fa0cfc31603de7961f6aeb97a50740aecd596c`.
+All 405 pages are A4 at rotation zero, render with nonblank text, and use 43
+embedded/subset font rows (eleven Libertinus, no Type 3). The final log has no
+horizontal or vertical box; metadata, visual, cleanup, and forbidden-basename
+gates passed.
+
+This is the 2026-08-28 consolidation of the two former drafts (Part I:
 Newton-basis frontiers; Part II: q-binomial Richardson), joined the
 same day by the eighth-wave report as **Part III** — *Finite Dyadic
 Sinc Products and Piecewise-Polynomial Approximants to Rvachev's
@@ -1044,8 +1118,8 @@ volume's Part VII; their figures/data are likewise under `assets/`.)
 
 Canonical forward/inverse publication:
 [`q_pochhammer_q_binomial_monograph/`](q_pochhammer_q_binomial_monograph/)
-(current TeX with a retained historical A4 publication checkpoint; exact
-receipt in the detailed package record above) — *q-Series and Inverse q-Analogs:
+(current synchronized `b899` TeX/PDF pair with a 405-page A4 PDF; exact current
+and historical details appear above) — *q-Series and Inverse q-Analogs:
 A Proof-Oriented Synthesis*. Its forward backbone proves from first principles
 the shifted-factorial, Gaussian, hypergeometric, theta, partition, Bailey,
 cyclotomic, interpolation, and Fabius--Rvachev machinery consumed by Parts II,
@@ -1062,9 +1136,9 @@ pre-consolidation rendered checkpoint had 13,117 source lines (SHA-256
 and a 1,582,997-byte, 213-page PDF (SHA-256
 `7ee6f8f6d8e72228a5b20daa119caa4d834b11063f910b526897b2677a2ede7b`).
 Those figures identify a retired historical artifact; they are not build
-claims about the current canonical source. The canonical synthesis's current
-source and retained historical PDF are identified by the single exact receipt
-in the detailed package record above.
+claims about the current canonical source. The historical pre-`d8b` and
+2026-09-04 receipts both appear above; neither is a parity claim for the
+current merged source.
 
 The latest validated forward formalization ledger has 282 rows: 182 Exact, 78
 Partial, 14 with no counterpart, and 8 interface-only. The basic
@@ -1094,8 +1168,10 @@ unformalized result; the q-integer and Gaussian-coefficient chapter for
 q-binomial/inversion chapter now accounts for 10 exact, 0 partial, and 0
 unformalized results; the weighted chapter for 5 exact, 3 partial, and 0
 unformalized results; and the basic-hypergeometric chapter for 6 exact, 3
-partial, and 0 unformalized results. The cyclotomic chapter now has 9 exact,
-0 partial, and 0 unformalized results. The exact rows include the primary and
+partial, and 0 unformalized results. The cyclotomic chapter now has 8 exact,
+1 partial, and 0 unformalized results; q-gamma/q-beta has 7 exact, 1 partial,
+and 0 unformalized results; and negative upper indices/geometric Newton has 9
+exact, 0 partial, and 0 unformalized results. The exact rows include the primary and
 second q-Cauchy identities, both weighted-Pascal recurrences,
 elementary--complete orthogonality, and weighted symmetric-function inversion.
 Their adjacent strengthenings are recorded human-readably in the canonical
@@ -1104,8 +1180,9 @@ reflected q-Cauchy and the q-Bernstein partition of unity, plus total
 empty-family and degree-zero boundaries. Weighted generating products and the
 reciprocal finite theorem are partial because their formal power-series
 identities are exact while their analytic evaluation and convergence clauses
-remain open. The q-Pfaff--Saalschütz summation is now formalized under its
-explicit field and denominator hypotheses. These counts and boundaries were
+remain open. The terminating q-Pfaff--Saalschütz summation is Exact as finite
+field algebra under its explicit nonzero-factor hypotheses; it makes no
+convergence claim. These counts and boundaries were
 statically cross-checked against the exhaustive public surfaces of
 `QBinomialCauchy.lean` (one definition and five theorems, including the
 compatibility spelling of its primary identity),
@@ -1127,24 +1204,23 @@ compatibility spelling of its primary identity),
 `CentralQBinomialReduction.lean` (zero definitions, six theorems),
 `RegularCentralQBinomialSum.lean` (two definitions, one theorem),
 `CyclotomicFactorization.lean` (zero definitions, seven theorems),
-`CyclotomicDivisibility.lean` (zero definitions, three theorems),
 `PrimitiveRootBlock.lean` (zero definitions, three theorems),
+`QLucas.lean` (zero definitions, seven public theorems),
+`CyclotomicDivisibility.lean` (zero definitions, three theorems),
 `QCatalan.lean` (one definition, eleven theorems),
-`QLucas.lean` (zero definitions, seven theorems; its local
-`two_mul_choose_two` is private),
+`NewtonInterpolation.lean` (three definitions, nineteen theorems),
 `TwoPhiOneReversal.lean` (two definitions, twelve theorems),
 `QChuVandermonde.lean` (zero definitions, ten theorems, including the public
 `two_mul_choose_two`),
 `JacobiTwoSquareCount.lean` (zero definitions, four theorems),
 `QBetaIntegral.lean` (one definition, eight theorems),
-`NewtonInterpolation.lean` (two definitions, thirteen theorems),
 `GaussianBinomialInteger.lean` (one definition, ten theorems),
 `GaussianBinomialComplexOrder.lean` (one definition, five theorems),
 `QPfaffSaalschutz.lean` (zero definitions, three theorems),
 `QuantumMultinomial.lean` (zero definitions, five theorems),
 `GaussianBinomialBounds.lean` (zero definitions, six theorems),
 `GaussianBinomialAtNegOne.lean` (five theorems),
-`RvachevPochhammerFactorization.lean` (one definition, nine theorems), and
+`RvachevPochhammerFactorization.lean` (one definition, ten theorems), and
 `QPochhammerEntire.lean` (zero definitions; four legacy compatibility
 wrappers plus one analytic-order compatibility theorem),
 `GeometricPochhammerNormalConvergence.lean` (zero definitions, three
@@ -1182,8 +1258,10 @@ The five `GaussianBinomialAtNegOne` theorems are
 `gaussianBinomial_neg_one_even_odd_eq_zero` theorem from
 `QBinomialReciprocity` prove the forward backbone's complete `q = -1` value
 formula over every commutative ring, for all natural parameters including
-above-row zero extension. The evaluated `q`-Lucas theorem is now formalized at
-every primitive root of unity of every integral domain.
+above-row zero extension. The evaluated `q`-Lucas identity is now formalized at
+every primitive root of unity of every integral domain. The manuscript's
+polynomial congruence modulo `Φ_d(q)` remains outside Lean, so `thm:q-lucas`
+is Partial.
 The q-difference annihilation row is exact through
 `qDifference_sum_eval₂_eq_zero_of_degree_lt`, with the stronger
 characteristic-polynomial, all-moment, and scalar-extension top-coefficient
@@ -1299,7 +1377,8 @@ and negative contractions.
 
 `RvachevPochhammerFactorization.lean` adds the exhaustive complex
 Pochhammer surface: the one definition `Fabius.complexQPochhammerInf` and
-the nine theorems `Fabius.complexQPochhammerInf_eq_tprod`,
+the ten theorems `Fabius.complexQPochhammerInf_eq_tprod`,
+`Fabius.complexQPochhammerInf_eq_qPochhammerInfIn`,
 `Fabius.multipliable_one_sub_mul_pow_complex`,
 `Fabius.hasProd_complexQPochhammerInf`,
 `Fabius.tendsto_finiteQPochhammerIn_complex`,
@@ -1307,9 +1386,11 @@ the nine theorems `Fabius.complexQPochhammerInf_eq_tprod`,
 `Fabius.geometricSincProduct_eq_tprod_pair`,
 `Fabius.geometricSincProduct_eq_tprod_complexQPochhammerInf`,
 `Fabius.rvachevFourierProduct_eq_tprod_complexQPochhammerInf`, and
-`Fabius.rvachevFourier_eq_tprod_complexQPochhammerInf`.  The symbol is total;
-the named multipliability, product, and finite-prefix convergence theorems
-require exactly `‖q‖ < 1` and allow arbitrary complex `a`.  The two dyadic
+`Fabius.rvachevFourier_eq_tprod_complexQPochhammerInf`. The new equality to
+`Fabius.qPochhammerInfIn` is an unconditional definitional bridge and needs no
+contraction hypothesis. The symbol is total; the named multipliability,
+product, and finite-prefix convergence theorems require exactly `‖q‖ < 1` and
+allow arbitrary complex `a`. The two dyadic
 spectral theorems are the last two: they fix the scale and nome `1/4`, hold for
 every complex `z` including at zero factors, and the Fourier form assumes
 exactly a bounded Fabius witness satisfying `IsFabius`.  Before those
@@ -1363,25 +1444,8 @@ eight-theorem sinc-product tranche above
 supplies the general-`q` uncentered real-frequency bridge, locally uniform
 entire `S_q`, and real-frequency local and compact uniform convergence of the
 full phase-bearing prefixes.  There is still no named centered or MGF wrapper
-or outside-disk reciprocal formula. The later entire and generic
-infinite-product leaves supply the parameter-local-uniform and normal-
-convergence layer described below.
-
-`QPochhammerEntire.lean` retains exactly five compatibility theorems for the
-older complex-symbol names:
-`Fabius.hasProdLocallyUniformly_complexQPochhammerInf`,
-`Fabius.complexQPochhammerInf_differentiable`,
-`Fabius.complexQPochhammerInf_eq_zero_iff`,
-`Fabius.complexQPochhammerInf_eq_zero_iff_eq_inv_pow`, and
-`Fabius.analyticOrderAt_complexQPochhammerInf_of_eq_zero`. For every complex
-strict contraction, they prove locally uniform convergence in the parameter
-`a`, entire-ness of `a ↦ (a;q)_∞`, the exact factor-zero locus, and analytic
-order one at every zero. The division-free factor formulation includes the
-degenerate nome `q = 0`; under `q ≠ 0`, the additional theorem rewrites that
-locus as the literal reciprocal-power lattice. These facade-reachable wrappers
-transfer the generic results without duplicating their analytic proofs. Their
-exact human-readable counterparts and refreshed crosswalk rows are now present
-in the current source, whose next canonical three-pass build remains pending.
+or outside-disk reciprocal formula. Parameter-local statements in the generic
+leaves alone do not imply joint nome analyticity.
 
 `GeometricPochhammerNormalConvergence.lean` adds zero definitions and exactly
 three public theorems. The general theorem
@@ -1419,19 +1483,14 @@ theorems require no contraction or nonvanishing. These APIs are regularity
 statements in the free parameter, not joint analyticity or continuation in the
 nome.
 
-The latest finite and infinite q-series tranche adds six further
-facade-reachable modules. `GaussianBinomialContinuity.lean` has three theorems
-for continuity, the classical `q → 1` limit, and the finite-Pochhammer
-quotient formula. `JacobiTripleProduct.lean` has 27 declarations covering its
-integer exponents, finite and infinite triple products, and Euler's pentagonal
-sum. `QBinomialTheoremInfinite.lean` has 23 declarations, including the
-dominated-limit engine, Gaussian majorant, Euler product/reciprocal expansions,
-and the infinite q-binomial theorem. `QPascalSummation.lean` has four theorems,
-`QuantumBinomial.lean` has two noncommutative q-binomial theorems, and
-`RogersSzegoPolynomial.lean` has ten declarations for the polynomial,
-recurrences, and generating function. Together they contribute 69 public
-declarations without weakening the strict-contraction or noncommutative
-hypotheses recorded in their source modules.
+`GeometricPochhammerNormalConvergence.lean` closes the former outer-product
+boundary with exactly three public theorems.  They give locally uniform
+convergence of the complex q-Pochhammer product over the spectral index to the
+general geometric sinc product for every strict complex contraction, specialize
+it to the dyadic standalone Rvachev Fourier product with nome `1/4`, and
+transport it to the Fourier transform of every bounded Fabius witness.  The
+general statement includes `q = 0`; it is not a joint-holomorphy theorem in the
+nome.
 
 The next six-module inventory adds `QMultinomial.lean` (one definition, nine
 theorems), `QPochhammerInfiniteBounds.lean` (five theorems),
@@ -1467,10 +1526,11 @@ factorization holds over every integral domain, with the exponent bounded in
 `{0,1}` by the proved divisibility inequalities.
 The root-of-unity tail adds `CyclotomicDivisibility.lean` (three theorems),
 `PrimitiveRootBlock.lean` (three theorems), `QCatalan.lean` (one definition
-and eleven theorems), and `QLucas.lean` (seven theorems).  These twenty-five
-declarations prove the carry criterion, complete primitive-root block,
-q-Lucas theorem, and integral q-Catalan polynomial at their stated ring and
-primitive-root hypotheses.
+and eleven theorems), and `QLucas.lean` (seven public theorems). These
+twenty-five declarations prove the carry criterion, complete primitive-root
+block, evaluated q-Lucas identity, and integral q-Catalan polynomial at their
+stated ring and primitive-root hypotheses. The polynomial q-Lucas congruence
+remains outside Lean.
 The terminating reversal tail adds `TwoPhiOneReversal.lean` (one definition
 and six theorems) and `QChuVandermonde.lean` (five theorems), which owns the
 public `two_mul_choose_two`.  Its generic-field nonvanishing hypotheses remain

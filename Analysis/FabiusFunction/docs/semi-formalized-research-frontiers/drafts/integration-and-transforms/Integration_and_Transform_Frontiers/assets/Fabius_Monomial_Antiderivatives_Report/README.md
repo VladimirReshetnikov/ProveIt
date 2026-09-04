@@ -63,7 +63,6 @@ claims.
 - `numerical_results.txt` — full output from the production run.
 - `series_convergence.csv` — selected partial sums of the complex-exponent series.
 - `README.md` — this file.
-- `SHA256SUMS` — checksums for the files above, excluding the checksum file itself.
 
 ## Principal results
 
