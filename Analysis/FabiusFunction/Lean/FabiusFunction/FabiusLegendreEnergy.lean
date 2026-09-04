@@ -1,3 +1,4 @@
+import FabiusFunction.DyadicCombTrapezoid
 import FabiusFunction.FabiusLegendreLeastSquares
 
 /-!
@@ -303,9 +304,6 @@ theorem integral_sq_rvachevUp_eq_two_mul_fabiusSquareEnergy
   have hhalf :
       (∫ x in (0 : ℝ)..1, (rvachevUp F x) ^ 2) =
         fabiusSquareEnergy F := by
-    have hcomp := intervalIntegral.integral_comp_sub_left
-      (f := fun t : ℝ => (fabiusReal F t) ^ 2)
-      (a := (0 : ℝ)) (b := 1) 1
     rw [fabiusSquareEnergy]
     calc
       (∫ x in (0 : ℝ)..1, (rvachevUp F x) ^ 2) =
@@ -316,8 +314,8 @@ theorem integral_sq_rvachevUp_eq_two_mul_fabiusSquareEnergy
         rw [uIcc_of_le (by norm_num : (0 : ℝ) ≤ 1)] at hx'
         change (rvachevUp F x) ^ 2 = (fabiusReal F (1 - x)) ^ 2
         rw [rvachevUp_eq_fabiusReal_one_sub F hx'.1]
-      _ = ∫ t in (0 : ℝ)..1, (fabiusReal F t) ^ 2 := by
-        simpa using hcomp
+      _ = ∫ t in (0 : ℝ)..1, (fabiusReal F t) ^ 2 :=
+        intervalIntegral_comp_one_sub_unit fun t => (fabiusReal F t) ^ 2
   calc
     (∫ x in (-1 : ℝ)..1, (rvachevUp F x) ^ 2) =
         (∫ x in (-1 : ℝ)..0, (rvachevUp F x) ^ 2) +

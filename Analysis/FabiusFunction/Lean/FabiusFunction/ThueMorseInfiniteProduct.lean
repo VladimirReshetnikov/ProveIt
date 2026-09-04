@@ -46,13 +46,6 @@ open Finset Filter Topology
 
 namespace Fabius
 
-/-- The Thue–Morse sign has norm one over `ℂ`. -/
-theorem norm_thueMorseSign_complex (n : ℕ) :
-    ‖(thueMorseSign n : ℂ)‖ = 1 := by
-  rw [show ((thueMorseSign n : ℂ)) = (((thueMorseSign n : ℝ) : ℂ)) by
-      push_cast; ring,
-    Complex.norm_real, Real.norm_eq_abs, abs_thueMorseSign_real]
-
 /-- **Absolute convergence** of the signed Thue–Morse series on the
 whole interval `|x| < 1`: since `|ε(n)| = 1`, the series is dominated
 termwise by the geometric series `∑ |x|ⁿ`. -/
@@ -135,11 +128,7 @@ theorem tsum_thueMorseSign_mul_pow {x : ℝ} (hx : |x| < 1) :
   have hS : Tendsto (fun m : ℕ =>
       ∑ n ∈ range (2 ^ m), (thueMorseSign n : ℝ) * x ^ n)
       atTop (𝓝 (∑' n : ℕ, (thueMorseSign n : ℝ) * x ^ n)) := by
-    have h1 := hsum.hasSum.tendsto_sum_nat
-    have h2 : Tendsto (fun m : ℕ => 2 ^ m) atTop atTop :=
-      tendsto_atTop_mono (fun m => (Nat.lt_two_pow_self (n := m)).le)
-        tendsto_id
-    exact h1.comp h2
+    exact hsum.hasSum.tendsto_sum_nat.comp tendsto_two_pow_atTop
   -- the product side converges along partial products
   have hP : Tendsto (fun m : ℕ => ∏ j ∈ range m, (1 - x ^ (2 ^ j)))
       atTop (𝓝 (∏' j : ℕ, (1 - x ^ (2 ^ j)))) :=
@@ -166,11 +155,7 @@ theorem tsum_thueMorseSign_mul_pow_complex {z : ℂ} (hz : ‖z‖ < 1) :
   have hS : Tendsto (fun m : ℕ =>
       ∑ n ∈ range (2 ^ m), (thueMorseSign n : ℂ) * z ^ n)
       atTop (𝓝 (∑' n : ℕ, (thueMorseSign n : ℂ) * z ^ n)) := by
-    have h1 := hsum.hasSum.tendsto_sum_nat
-    have h2 : Tendsto (fun m : ℕ => 2 ^ m) atTop atTop :=
-      tendsto_atTop_mono (fun m => (Nat.lt_two_pow_self (n := m)).le)
-        tendsto_id
-    exact h1.comp h2
+    exact hsum.hasSum.tendsto_sum_nat.comp tendsto_two_pow_atTop
   have hP : Tendsto (fun m : ℕ => ∏ j ∈ range m, (1 - z ^ (2 ^ j)))
       atTop (𝓝 (∏' j : ℕ, (1 - z ^ (2 ^ j)))) :=
     (multipliable_one_sub_pow_two_pow_complex hz).hasProd.tendsto_prod_nat

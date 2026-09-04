@@ -1,5 +1,6 @@
 import FabiusFunction.FabiusComputability
 import FabiusFunction.ThueMorseBinomialLog
+import FabiusFunction.PrimrecNatPow
 
 /-!
 # A primitive-recursive Fabius evaluator
@@ -21,9 +22,6 @@ set_option autoImplicit false
 
 open scoped BigOperators
 open Finset
-
-private theorem nat_pow_primrec : Primrec₂ ((· ^ ·) : ℕ → ℕ → ℕ) :=
-  Primrec₂.unpaired'.1 Nat.Primrec.pow
 
 /-! ## A primitive-recursive Thue--Morse bit -/
 
@@ -130,7 +128,7 @@ def splineTermPR (p a r : ℕ) : ℕ :=
 private theorem splineTermPR_primrec :
     Primrec₂ (fun pa : ℕ × ℕ => splineTermPR pa.1 pa.2) := by
   unfold splineTermPR
-  exact nat_pow_primrec.comp₂
+  exact primrec₂_nat_pow.comp₂
     (Primrec.nat_sub.comp₂
       (Primrec.nat_sub.comp₂
         (Primrec.nat_mul.comp₂ (Primrec.const 2).to₂
@@ -200,7 +198,7 @@ private theorem splineDenStep_primrec :
     Primrec₂ (fun p d : ℕ => d * 2 ^ (p + 1) * (p + 1)) := by
   exact Primrec.nat_mul.comp₂
     (Primrec.nat_mul.comp₂ Primrec₂.right
-      (nat_pow_primrec.comp₂ (Primrec.const 2).to₂
+      (primrec₂_nat_pow.comp₂ (Primrec.const 2).to₂
         (Primrec.succ.comp₂ Primrec₂.left)))
     (Primrec.succ.comp₂ Primrec₂.left)
 
@@ -450,7 +448,7 @@ theorem clampDyadicNumeratorPR_primrec : Primrec₂ clampDyadicNumeratorPR := by
     (Primrec.nat_min.comp
       (Primrec.nat_sub.comp (Primrec.fst.comp Primrec.fst)
         (Primrec.snd.comp Primrec.fst))
-      (nat_pow_primrec.comp (Primrec.const 2) Primrec.snd))
+      (primrec₂_nat_pow.comp (Primrec.const 2) Primrec.snd))
 
 /-- The clamped numerator never exceeds `2 ^ s`, so the grid point it names
 is at most `1`. -/
@@ -616,7 +614,7 @@ theorem roundSignedRatCodePR_primrec : Primrec₂ roundSignedRatCodePR := by
   let hdenominator : Primrec (fun q : SignedRatCode × ℕ => q.1.2) :=
     Primrec.snd.comp Primrec.fst
   let hscale : Primrec (fun q : SignedRatCode × ℕ => 2 ^ q.2) :=
-    nat_pow_primrec.comp (Primrec.const 2) Primrec.snd
+    primrec₂_nat_pow.comp (Primrec.const 2) Primrec.snd
   let hpositiveMagnitude : Primrec (fun q : SignedRatCode × ℕ =>
       q.1.1.1 - q.1.1.2) :=
     Primrec.nat_sub.comp hpositive hnegative
@@ -700,7 +698,7 @@ theorem fabiusSplineApproxPR_primrec : Primrec₂ fabiusSplineApproxPR := by
   let hden : Primrec₂ (fun (_ : DyadicNumerator) p => splineDenPR (p + 3)) :=
     splineDenPR_primrec.comp₂ hs
   let hpTwo : Primrec₂ (fun (_ : DyadicNumerator) p => 2 ^ p) :=
-    nat_pow_primrec.comp₂ (Primrec.const 2).to₂ Primrec₂.right
+    primrec₂_nat_pow.comp₂ (Primrec.const 2).to₂ Primrec₂.right
   apply Primrec₂.pair.comp₂
   · exact Primrec.nat_div.comp₂
       (Primrec.nat_add.comp₂

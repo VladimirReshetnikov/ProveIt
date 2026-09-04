@@ -18,11 +18,18 @@ way:
 * `trapezoid_symmetric` — hence the trapezoidal sum is exactly `½`,
   with the endpoint weights supplied by the symmetry itself
   (`g(0) + g(1) = 1`).
-* `integral_fabiusReal_unit` — `∫₀¹ F = ½`, again by reflection.
+* `intervalIntegral_comp_one_sub_unit` — the unit-interval reflection
+  `∫₀¹ g(1-t) dt = ∫₀¹ g`, for every `g`.
+* `integral_unit_of_reflect` — `∫₀¹ g = ½` for every integrable `g`
+  with the reflection symmetry.
+* `integral_fabiusReal_unit` — `∫₀¹ F = ½`, the Fabius instance.
 * `fabius_trapezoid_exact` — **the trapezoidal rule is exact for the
   Fabius function on every uniform partition of `[0,1]`**: the
   trapezoidal sum equals `∫₀¹ F` for every `M ≥ 1`.  The drafts state
   the dyadic case; the symmetry argument gives all `M` at once.
+* `tsum_odd_pow_mul_of_even` — centered odd-power comb sums of any
+  even function vanish; `tsum_odd_pow_mul_rvachevUp` is the instance
+  for Rvachev's `up`.
 -/
 
 set_option autoImplicit false
@@ -94,6 +101,73 @@ theorem trapezoid_symmetric (hsym : ∀ x, g (1 - x) = 1 - g x)
 
 end Symmetric
 
+section UnitReflection
+
+/-- **The unit-interval reflection**: `∫₀¹ g(1-t) dt = ∫₀¹ g(t) dt`
+for every `g`, the case `d = 1` of
+`intervalIntegral.integral_comp_sub_left` with the endpoints
+`1 - 1 = 0` and `1 - 0 = 1` simplified. -/
+theorem intervalIntegral_comp_one_sub_unit (g : ℝ → ℝ) :
+    (∫ t in (0:ℝ)..1, g (1 - t)) = ∫ t in (0:ℝ)..1, g t := by
+  rw [intervalIntegral.integral_comp_sub_left g 1]
+  norm_num
+
+/-- **The unit integral of a reflection-symmetric function is `½`**:
+if `g(1-x) = 1 - g(x)` and `g` is integrable on `[0,1]`, then
+`∫₀¹ g = ½`.  Reflecting the integral and using the symmetry gives
+`∫₀¹ g = 1 - ∫₀¹ g`. -/
+theorem integral_unit_of_reflect {g : ℝ → ℝ}
+    (hsym : ∀ x, g (1 - x) = 1 - g x)
+    (hint : IntervalIntegrable g MeasureTheory.volume 0 1) :
+    ∫ x in (0 : ℝ)..1, g x = 1 / 2 := by
+  have hrefl : ∫ x in (0 : ℝ)..1, g (1 - x) =
+      ∫ x in (0 : ℝ)..1, g x :=
+    intervalIntegral_comp_one_sub_unit g
+  have hcongr : ∫ x in (0 : ℝ)..1, g (1 - x) =
+      ∫ x in (0 : ℝ)..1, (1 - g x) :=
+    intervalIntegral.integral_congr fun x _ => hsym x
+  rw [hcongr, intervalIntegral.integral_sub
+    intervalIntegrable_const hint,
+    intervalIntegral.integral_const] at hrefl
+  simp only [sub_zero, smul_eq_mul, mul_one] at hrefl
+  linarith
+
+/-- **The unit integral of a reflection-antisymmetric function is `0`**:
+if `g(1-x) = -g(x)` then `∫₀¹ g = 0`.  No integrability is assumed: a
+non-integrable `g` has interval integral `0` as well. -/
+theorem integral_unit_eq_zero_of_reflect_neg {g : ℝ → ℝ}
+    (hodd : ∀ x, g (1 - x) = -g x) :
+    ∫ x in (0 : ℝ)..1, g x = 0 := by
+  have hrefl : ∫ x in (0 : ℝ)..1, g (1 - x) =
+      ∫ x in (0 : ℝ)..1, g x :=
+    intervalIntegral_comp_one_sub_unit g
+  have hcongr : ∫ x in (0 : ℝ)..1, g (1 - x) =
+      ∫ x in (0 : ℝ)..1, (-g x) :=
+    intervalIntegral.integral_congr fun x _ => hodd x
+  rw [hcongr, intervalIntegral.integral_neg] at hrefl
+  linarith
+
+end UnitReflection
+
+section OddSummation
+
+/-- **A sum over `ℤ` of a function odd under `k ↦ -k` vanishes**, in any
+topological ring without zero divisors and of characteristic zero (so in
+`ℝ` and `ℂ`).  No summability is assumed: `k ↦ -k` is a bijection of `ℤ`
+that negates every term, so the sum equals its own negative — and a
+non-summable `tsum` is `0` as well. -/
+theorem tsum_int_eq_zero_of_neg {α : Type*} [Ring α] [NoZeroDivisors α]
+    [CharZero α] [TopologicalSpace α] [IsTopologicalAddGroup α] [T2Space α]
+    {f : ℤ → α} (hf : ∀ k, f (-k) = -f k) :
+    ∑' k : ℤ, f k = 0 := by
+  have h : ∑' k : ℤ, f k = -∑' k : ℤ, f k := by
+    calc ∑' k : ℤ, f k = ∑' k : ℤ, f (-k) := ((Equiv.neg ℤ).tsum_eq f).symm
+      _ = ∑' k : ℤ, -f k := tsum_congr hf
+      _ = -∑' k : ℤ, f k := tsum_neg
+  exact add_self_eq_zero.mp (eq_neg_iff_add_eq_zero.mp h)
+
+end OddSummation
+
 section FabiusInstance
 
 /-- The interior dyadic (indeed arbitrary-grid) samples of the Fabius
@@ -104,23 +178,13 @@ theorem fabius_sum_symmetric_grid (F : BoundedFabius) (hF : IsFabius F)
       ((M : ℝ) - 1) / 2 :=
   sum_symmetric_grid hF.symmetry_all hM
 
-/-- The unit integral of the Fabius function is `½`, by reflection. -/
+/-- The unit integral of the Fabius function is `½`, by reflection: the
+instance of `integral_unit_of_reflect` for the symmetry
+`hF.symmetry_all` and the continuity of `fabiusReal F`. -/
 theorem integral_fabiusReal_unit (F : BoundedFabius) (hF : IsFabius F) :
-    ∫ x in (0 : ℝ)..1, fabiusReal F x = 1 / 2 := by
-  have hInt : IntervalIntegrable (fabiusReal F) MeasureTheory.volume
-      0 1 := (hF.contDiff.continuous).intervalIntegrable 0 1
-  have hrefl : ∫ x in (0 : ℝ)..1, fabiusReal F (1 - x) =
-      ∫ x in (0 : ℝ)..1, fabiusReal F x := by
-    rw [intervalIntegral.integral_comp_sub_left (fabiusReal F) 1]
-    norm_num
-  have hcongr : ∫ x in (0 : ℝ)..1, fabiusReal F (1 - x) =
-      ∫ x in (0 : ℝ)..1, (1 - fabiusReal F x) :=
-    intervalIntegral.integral_congr fun x _ => hF.symmetry_all x
-  rw [hcongr, intervalIntegral.integral_sub
-    intervalIntegrable_const hInt,
-    intervalIntegral.integral_const] at hrefl
-  simp only [sub_zero, smul_eq_mul, mul_one] at hrefl
-  linarith
+    ∫ x in (0 : ℝ)..1, fabiusReal F x = 1 / 2 :=
+  integral_unit_of_reflect hF.symmetry_all
+    ((hF.contDiff.continuous).intervalIntegrable 0 1)
 
 /-- **The trapezoidal rule is exact for the Fabius function on every
 uniform partition of `[0,1]`**: for every `M ≥ 1`,
@@ -139,38 +203,34 @@ end FabiusInstance
 
 section OddComb
 
+/-- **Centered odd-power comb sums of an even function vanish at every
+real scale**: if `g(-x) = g(x)`, then
+`∑_{k∈ℤ} (uk)^{2r+1}·g(uk) = 0` for every `u` and `r`.  The map
+`k ↦ -k` is a bijection of `ℤ` that negates every term, so the sum
+equals its own negative.  No summability is assumed: a non-summable
+`tsum` is `0` as well. -/
+theorem tsum_odd_pow_mul_of_even {g : ℝ → ℝ} (hg : ∀ x, g (-x) = g x)
+    (u : ℝ) (r : ℕ) :
+    ∑' k : ℤ, (u * k) ^ (2 * r + 1) * g (u * k) = 0 := by
+  refine tsum_int_eq_zero_of_neg fun k => ?_
+  show (u * ((-k : ℤ) : ℝ)) ^ (2 * r + 1) * g (u * ((-k : ℤ) : ℝ)) =
+    -((u * k) ^ (2 * r + 1) * g (u * k))
+  have h1 : (u * ((-k : ℤ) : ℝ)) = -(u * k) := by
+    push_cast
+    ring
+  rw [h1, hg (u * k), Odd.neg_pow ⟨r, by ring⟩]
+  ring
+
 /-- **Centered odd-power Rvachev comb sums vanish at every real
 scale**: `∑_{k∈ℤ} (uk)^{2r+1}·up(uk) = 0` for every `u` and `r`, by
-evenness of `up` alone.  This is the odd half of the comb volume's
-centered-moment corollary, valid at arbitrary — not only dyadic —
-scales and with no level restriction. -/
+evenness of `up` alone (`tsum_odd_pow_mul_of_even`).  This is the odd
+half of the comb volume's centered-moment corollary, valid at
+arbitrary — not only dyadic — scales and with no level restriction. -/
 theorem tsum_odd_pow_mul_rvachevUp (F : BoundedFabius) (u : ℝ)
     (r : ℕ) :
-    ∑' k : ℤ, (u * k) ^ (2 * r + 1) * rvachevUp F (u * k) = 0 := by
-  have hneg : ∀ k : ℤ,
-      (u * ((-k : ℤ) : ℝ)) ^ (2 * r + 1) *
-        rvachevUp F (u * ((-k : ℤ) : ℝ)) =
-      -((u * k) ^ (2 * r + 1) * rvachevUp F (u * k)) := by
-    intro k
-    have h1 : (u * ((-k : ℤ) : ℝ)) = -(u * k) := by
-      push_cast
-      ring
-    rw [h1, (rvachevUp_even F) (u * k),
-      Odd.neg_pow ⟨r, by ring⟩]
-    ring
-  have key : ∑' k : ℤ, (u * k) ^ (2 * r + 1) * rvachevUp F (u * k) =
-      -∑' k : ℤ, (u * k) ^ (2 * r + 1) * rvachevUp F (u * k) := by
-    conv_lhs => rw [← (Equiv.neg ℤ).tsum_eq
-      (fun k : ℤ => (u * k) ^ (2 * r + 1) * rvachevUp F (u * k))]
-    have hterm : ∀ k : ℤ,
-        (fun k : ℤ => (u * k) ^ (2 * r + 1) * rvachevUp F (u * k))
-          ((Equiv.neg ℤ) k) =
-        -((u * k) ^ (2 * r + 1) * rvachevUp F (u * k)) := by
-      intro k
-      simp only [Equiv.neg_apply]
-      exact hneg k
-    rw [tsum_congr hterm, tsum_neg]
-  linarith
+    ∑' k : ℤ, (u * k) ^ (2 * r + 1) * rvachevUp F (u * k) = 0 :=
+  tsum_odd_pow_mul_of_even (g := rvachevUp F)
+    (fun x => rvachevUp_even F x) u r
 
 end OddComb
 

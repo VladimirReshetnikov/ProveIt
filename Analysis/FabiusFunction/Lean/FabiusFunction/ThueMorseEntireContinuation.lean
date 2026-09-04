@@ -29,8 +29,7 @@ accumulates at every one of its points.
 * `mellinKernel_isBigO_exp` — the exponential comparison at infinity.
 * `mellinKernel_isBigO_rpow_all` — flatness of every order at `0`, for every
   real damping parameter `a` (from the effective bound
-  `E(t) ≤ 2^(m(m-1)/2)·t^m`); `mellinKernel_isBigO_rpow` is the original
-  positive-`a` compatibility form.
+  `E(t) ≤ 2^(m(m-1)/2)·t^m`).
 * `mellin_mellinKernel_differentiable` — the *undamped* Mellin
   transform is already entire; this is what flatness buys.
 * `dirichletMellinContinuation`, `dirichletMellinContinuation_apply` — the
@@ -127,13 +126,6 @@ theorem mellinKernel_isBigO_rpow_all (a b : ℝ) :
       (Real.exp |a| * (2 : ℝ) ^ (m * (m - 1) / 2)) * t ^ (-b) :=
     mul_le_mul_of_nonneg_left hpow (by positivity)
   exact hmid.trans hlast
-
-set_option linter.unusedVariables false in
-/-- Positive-damping compatibility form of `mellinKernel_isBigO_rpow_all`;
-the hypothesis `ha` is retained for API compatibility. -/
-theorem mellinKernel_isBigO_rpow (a b : ℝ) (ha : 0 < a) :
-    (mellinKernel a) =O[𝓝[>] (0 : ℝ)] fun t => t ^ (-b) := by
-  exact mellinKernel_isBigO_rpow_all a b
 
 /-- The kernel is locally integrable on `(0,∞)`: the product of a
 continuous factor and a monotone factor. -/

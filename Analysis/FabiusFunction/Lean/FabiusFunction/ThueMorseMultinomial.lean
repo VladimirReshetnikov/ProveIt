@@ -55,16 +55,7 @@ namespace Fabius
 
 /-- The binary weight vanishes only at zero. -/
 theorem binaryWeight_eq_zero_iff (n : ℕ) : binaryWeight n = 0 ↔ n = 0 := by
-  constructor
-  · intro h
-    have hcard : (bitSupport n).card = 0 := by
-      rw [card_bitSupport, h]
-    have hempty : bitSupport n = ∅ := Finset.card_eq_zero.mp hcard
-    have := sum_two_pow_bitSupport n
-    rw [hempty, Finset.sum_empty] at this
-    omega
-  · rintro rfl
-    simp [binaryWeight]
+  rw [← card_bitSupport, Finset.card_eq_zero, bitSupport_eq_empty_iff]
 
 /-! ## Legendre's formula in base `p` -/
 

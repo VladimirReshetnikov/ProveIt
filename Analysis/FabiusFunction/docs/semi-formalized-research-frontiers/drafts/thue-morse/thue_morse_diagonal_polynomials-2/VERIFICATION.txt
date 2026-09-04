@@ -1,0 +1,25 @@
+VERIFICATION RECORD
+===================
+
+Python: 3.13.5
+SymPy: 1.14.0
+Latexmk, John Collins, 11 Dec. 2024. Version 4.86
+pdfTeX 3.141592653-2.6-1.40.26 (TeX Live 2025/dev/Debian)
+
+Executed checks:
+  1. python -m py_compile diagonal_polynomials.py
+  2. python diagonal_polynomials.py --max-degree 16 --verify
+     Result: all exact checks passed.
+  3. python diagonal_polynomials.py --max-degree 0 --scan-negative-half
+             --scan-max-b 63 --scan-max-m 10000
+     Result: 0 strict-negative-half zeros.
+  4. Clean latexmk build with -halt-on-error.
+     Result: 37 pages; no LaTeX warnings, underfull boxes, or overfull boxes.
+  5. PDF structural preflight and full-page raster inspection.
+     Result: passed; A4; searchable; all fonts embedded; no preflight warnings.
+  6. Wolfram source static delimiter/comment/string scan.
+     Result: passed.
+  7. Independent clean rebuild versus the visually inspected PDF.
+     Result: 0 changed pages at 100 dpi in pdftoppm pixel comparison.
+
+Wolfram runtime execution: not performed (runtime absent in build environment).

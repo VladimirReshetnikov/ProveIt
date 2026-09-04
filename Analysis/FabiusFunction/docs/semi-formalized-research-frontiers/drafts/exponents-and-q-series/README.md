@@ -1,17 +1,49 @@
 # Exponents and q-series
 
-The seven live document packages are organized by their primary mathematical
-overlap:
+There are two live document packages:
 
 - [`q_pochhammer_q_binomial_monograph/`](q_pochhammer_q_binomial_monograph/)
   is the single canonical synthesis of forward q-series and branch-aware
   inverse-q theory.
-- [`q-fabius-parameter-deformations/`](q-fabius-parameter-deformations/)
-  contains the continuous-parameter, limit-regime, susceptibility, and smooth
-  response reports for the geometric q-Fabius family.
-- [`geometric-sinc-and-exponent-families/`](geometric-sinc-and-exponent-families/)
-  contains the central exponent/geometric-sinc synthesis and its
-  negative/reciprocal and cyclotomic companion reports.
+- [`geometric_q_fabius_frontiers/`](geometric_q_fabius_frontiers/) is the
+  single consolidated frontier volume for the geometric q-deformation of the
+  Fabius–Rvachev system: exponent sequences, sinc products, atomic splines,
+  and parameter deformations.
+
+## The 2026-09-02 consolidation
+
+The two former subgroups `q-fabius-parameter-deformations/` and
+`geometric-sinc-and-exponent-families/` no longer exist. Their six standalone
+documents were merged into `geometric_q_fabius_frontiers/` and deleted from the
+working tree; git history is the archive, and the volume's own provenance
+section pins every absorbed snapshot by SHA-256.
+
+| Former package | Now |
+| --- | --- |
+| `geometric-sinc-and-exponent-families/Exponents_and_q_Series_Frontiers/` | Parts I–VII (the volume's spine; renamed in place, assets retained) |
+| `geometric-sinc-and-exponent-families/Fabius_Rvachev_Frontier_Report/` | Part VIII |
+| `geometric-sinc-and-exponent-families/Cyclotomic_q_Fabius_Rvachev_Frontier/` | Part IX |
+| `q-fabius-parameter-deformations/fabius_q_frontiers_report/` | Part X |
+| `q-fabius-parameter-deformations/Continuous_Parameter_Edgeworth_and_q_Gevrey_Frontier/` | Part XI |
+| `q-fabius-parameter-deformations/Fabius_Flat_Parameter_Response_Dynamics/` | Part XII |
+
+The consolidation added a new **Part 0, Common Framework**, written for the
+merge rather than absorbed from any source. The six reports had fixed the same
+objects independently and inconsistently — three affine normalizations of one
+random variable, two sinc arguments, and the letters `X_q` and `Y_q` denoting
+different objects in different reports — so Part 0 states the shared
+definitions, transforms, and cumulant identities once with complete proofs and
+tabulates the exact dictionary from each part's local convention to the
+canonical one. Each absorbed part keeps its own mathematics; what it no longer
+carries is its own re-derivation of the shared layer.
+
+Every absorbed report's verification material — scripts, data tables, and
+figures — is preserved under `geometric_q_fabius_frontiers/assets/`.
+
+The detailed package record below still describes the six absorbed documents
+individually; those entries are retained as provenance, and their directory
+paths are dead. Resolve any path through the table above or through the
+[draft manifest](../MANIFEST.md).
 
 The former `q-pochhammer-and-inversion/` locations are recorded in pinned
 history; no live index or package remains at that path. Every live package
@@ -20,62 +52,50 @@ general-q-series guides, forward q-Pochhammer/q-binomial monograph, and
 inverse-q synthesis have been dispositioned into
 [`q_pochhammer_q_binomial_monograph/`](q_pochhammer_q_binomial_monograph/).
 Their earlier names, arrival hashes, and publication facts remain provenance,
-not parallel live documents. The current canonical TeX postdates its retained
-historical PDF; the exact source and artifact receipt appears once in the
-detailed package record below. Its crosswalk preserves the generic
-`QPochhammerInfinite.lean` and `QPochhammerDissection.lean` layers, the
-five-theorem `QPochhammerEntire.lean`, the three-theorem outer-product
-normal-convergence leaf, the six-theorem exponent-identifiability leaf, the
-earlier 69-declaration q-series tranche, and the five `6c7a69be9` modules
-contributing 50 declarations. The newest basic-hypergeometric, Heine,
-q-Gauss, infinite-bound, and complex-order modules contribute 26 declarations
-(five definitions and 21 theorems); `QMultinomial.lean` contributes one
-definition and nine theorems, including the empty- and singleton-list boundary
-cases. The final eight-module q-calculus/theta tranche contributes five
-definitions and 53 theorems across `GaussianBinomialPalindromic.lean`,
-`JacksonIntegral.lean`, `QExponential.lean`, `ThetaQuasiPeriodicity.lean`,
-`JacobiCubic.lean`, `QPochhammerLogDerivative.lean`,
-`QPochhammerOrderDerivative.lean`, and
-`GaussianBinomialPolynomialStructure.lean`. The next source-only extension is
-`CentralQBinomialReduction.lean` (0+6) together with
-`CyclotomicFactorization.lean` (0+7). The latest extension adds
-`PrimitiveRootBlock.lean` (0+3), `QLucas.lean` (0+8),
-`CyclotomicDivisibility.lean` (0+3), `QCatalan.lean` (1+11),
-`NewtonInterpolation.lean` (2+13), and `QBetaIntegral.lean` (1+8): four
-definitions and 46 theorems. The final q tail adds
-`GaussianBinomialInteger.lean` (1+10),
-`GaussianBinomialComplexOrder.lean` (1+5), `QPfaffSaalschutz.lean` (0+3),
-`QuantumMultinomial.lean` (0+5), and `GaussianBinomialBounds.lean` (0+6),
-while `RvachevSuperconvergentSynthesis.lean` (1+8) changes the corpus census
-but no q-series status row. The rigorous forward ledger is
-90 Exact / 85 Partial / 99 None / 8 interface rows. A fresh three-pass render
-and validation are pending. Retained PDFs under its `assets/` tree are research
-figures, not alternate manuscript renderings. The current Lean audit contains
-exactly 671 facade-reachable modules and 8,859 public declarations, with no
+not parallel live documents. The current canonical publication has a
+16,834-line, 837,715-byte TeX source (SHA-256
+`d8f730b8eb6602d4d16112aea77a3e67dfbeadf46bcd28c1cdf3b12450b7d4fb`)
+and a synchronized 395-page, 2,494,949-byte PDF (SHA-256
+`5d25df07e6df1cd32118ee87e64c1cc54ad32da7c578a182231f98dd9fee9d5c`).
+Its exact final three-pass cycle and publication gates are recorded in the
+package README. The merged source incorporates the later
+five-theorem
+`QPochhammerEntire.lean`, `QPochhammerInfinite.lean`, and
+`QPochhammerDissection.lean` surfaces, together with the subsequent q-series
+module tranches and the zero-definition, three-theorem
+`GeometricPochhammerNormalConvergence.lean` leaf, in its formalization
+crosswalk. Retained PDFs under its `assets/` tree are
+research figures, not alternate manuscript renderings. The current Lean audit
+contains 900 facade-reachable modules and 11,404 public declarations, with no
 missing module headers or declaration documentation.
 
 ## Detailed package record
 
 Current packages and retained intake records:
 
-- [`fabius_q_frontiers_report/`](q-fabius-parameter-deformations/fabius_q_frontiers_report/),
+- **Absorbed 2026-09-02 as Part~X of
+  [`geometric_q_fabius_frontiers/`](geometric_q_fabius_frontiers/);
+  the directory `q-fabius-parameter-deformations/fabius_q_frontiers_report/` no longer exists.**
+  Formerly `fabius_q_frontiers_report/`,
   *Parameter-Flow, Gaussian, and Large-Deviation Frontiers for the
   q-Fabius--Rvachev Family* (23 A4 pp and 1,506 source lines at arrival;
   current main artifact: 22 A4 pp from 1,492 source lines; with two scripts,
   four CSV tables, two captured outputs, and four PDF/PNG figure pairs),
   arrived as a bare directory in direct-arrival commit
   `8a184546747082cbd92ad4675fb61981c6b8c3b6`; no archive or outer hash was
-  supplied. At intake, all 20 delivered payload hashes were verified; four CSV
-  payloads were subsequently normalized from CRLF to LF. The later strict
-  rebuild replaced the main TeX/PDF pair, after which all 20 current payloads
-  were hash-verified. All five current PDFs
+  supplied. Its arrival receipt covered all 20 payloads; four CSV entries later
+  received CRLF-to-LF normalization. The later strict rebuild replaced the
+  main TeX/PDF pair. All five current PDFs
   are readable and unencrypted (26 pages total). The main report has 33
   embedded/subset font rows, including five Libertinus rows and eight Type-3
   rows inherited from the four included vector figures; the standalone figure
   PDFs contain the same eight Type-3 rows. Figure-font normalization remains
   deferred.
 
-- [`Continuous_Parameter_Edgeworth_and_q_Gevrey_Frontier/`](q-fabius-parameter-deformations/Continuous_Parameter_Edgeworth_and_q_Gevrey_Frontier/),
+- **Absorbed 2026-09-02 as Part~XI of
+  [`geometric_q_fabius_frontiers/`](geometric_q_fabius_frontiers/);
+  the directory `q-fabius-parameter-deformations/Continuous_Parameter_Edgeworth_and_q_Gevrey_Frontier/` no longer exists.**
+  Formerly `Continuous_Parameter_Edgeworth_and_q_Gevrey_Frontier/`,
   *Continuous-Parameter Edgeworth Theory, Large Deviations, and Quadratic
   q-Gevrey Regularity at the Fabius--Rvachev Frontier* (29 A4 pp and 1,387
   main-source lines at arrival; current main artifact: 29 A4 pp from 1,372
@@ -85,8 +105,8 @@ Current packages and retained intake records:
   `52179f63fe955a64508915eedaa560de9f3056da` under the bare generic wrapper
   `Fabius_Rvachev_Frontier_Report_2026-08-30-G/` and was filed under this
   title-derived collision-safe name. Its manifest covers the full delivery.
-  The current PDF was rebuilt from the final source in three strict passes;
-  all 19 current payloads were hash-verified at that checkpoint. The main PDF
+  The current PDF was rebuilt from the final source in three strict passes.
+  The main PDF
   has 33 embedded/subset font rows, including six Libertinus rows and six
   Type-3 rows inherited from the three included vector figures; the standalone
   figure PDFs contain the same six Type-3 rows. Its title and abstract concern
@@ -107,8 +127,8 @@ Current packages and retained intake records:
   and the historical artifact lineage. The completed
   [`source_concordance.csv`](q_pochhammer_q_binomial_monograph/source_concordance.csv)
   gives a reviewed disposition for all 547 source result environments from the
-  five merged publications. Its canonical destinations comprise 73 Lean-proved
-  rows, 405 human-proved
+  five merged publications. Its canonical destinations comprise 74 Lean-proved
+  rows, 404 human-proved
   frontier results, 60 not-applicable rows, and 9 conjectures. The historical
   [`theorem_concordance.csv`](q_pochhammer_q_binomial_monograph/theorem_concordance.csv)
   continues to account for all 260 inverse-source result environments, and
@@ -117,27 +137,36 @@ Current packages and retained intake records:
   figures. Pinned source revisions and Git history preserve every superseded
   layout and arrival fact.
 
-  The earlier 335-, 340-, 345-, 347-, and 348-page synchronized pairs remain
-  historical provenance. The retained
-  `q_pochhammer_q_binomial_monograph.pdf` is the validated pre-union 357-page A4
-  artifact, with SHA-256
-  `3673b2cb7d617ccbcc9e3c32af17dbb9f4e8d8c16882d889d2a299bd128e0593`.
-  Its A4 boxes, text extraction, embedded/subset Type-1 fonts including
-  Libertinus, absence of Type-3 fonts, and targeted visual review passed at
-  that checkpoint. The current TeX is newer and includes the generic
-  infinite/dissection API, five compatibility wrappers, outer normal
-  convergence, exponent identifiability, the complete q-series/q-calculus
-  union, and the central-reduction and cyclotomic-factorization modules. That
-  PDF validates the preceding 659-module/8,769-declaration source and omits
-  the later twelve-module/ninety-declaration extension.
-  Consequently the source and retained PDF are distinct payloads and no render
-  parity is claimed. The current source fingerprint is intentionally deferred
-  until the pending final-source build and validation. PDF files retained
+  An upstream publication receipt before the present source union
+  records a historical 378-page A4 artifact of 3,175,603 bytes, with SHA-256
+  `5d0dac5a8d1cba7bedab9055a51f59478054de22969dcf75b0f58ce3f3c265bc`.
+  It was built in exactly three guarded serial passes (378, 378, and 378 pages)
+  from a 15,630-line, 764,952-byte source with SHA-256
+  `403a25dccadc15e7a34bedd8d28a2dc3369cb6e6a046cd199a30ed178742a32d`.
+  Its A4 and embedded/subset-font checks passed, with five Libertinus rows and
+  no Type-3 fonts. Those fingerprints remain historical receipts for that
+  source state. The current synchronized 16,834-line source and 395-page PDF
+  have the hashes and validation receipt stated above.
+  It carries the five-theorem `QPochhammerEntire.lean`, the generic
+  `QPochhammerInfinite.lean` and `QPochhammerDissection.lean` APIs, both
+  Gaussian structure modules, `CentralQBinomialReduction.lean`,
+  `CyclotomicFactorization.lean`, `PrimitiveRootBlock.lean`, `QLucas.lean`,
+  `QCatalan.lean`, `CyclotomicDivisibility.lean`, the subsequent q-series
+  module tranches including the q-beta, collision-free Newton,
+  integer/complex-order Gaussian, q-Pfaff--Saalschuetz, quantum-multinomial,
+  and Gaussian reciprocity/growth APIs, and the three-theorem
+  `GeometricPochhammerNormalConvergence.lean` outer-product API. The forward
+  crosswalk is now 166 Exact, 90 Partial, 18 None, and 8 interface rows; the
+  source ledger is 74 Lean-proved, 404 human-proved frontier, 60 not
+  applicable, and 9 conjectures. PDF files retained
   beneath `assets/` are vector research figures, not manuscript builds.
   Manuscript result labels and numerical checks remain
   distinct from Lean verification.
 
-- [`Cyclotomic_q_Fabius_Rvachev_Frontier/`](geometric-sinc-and-exponent-families/Cyclotomic_q_Fabius_Rvachev_Frontier/),
+- **Absorbed 2026-09-02 as Part~IX of
+  [`geometric_q_fabius_frontiers/`](geometric_q_fabius_frontiers/);
+  the directory `geometric-sinc-and-exponent-families/Cyclotomic_q_Fabius_Rvachev_Frontier/` no longer exists.**
+  Formerly `Cyclotomic_q_Fabius_Rvachev_Frontier/`,
   *Cyclotomic Blow-Ups and Natural Boundaries for the q-Fabius--Rvachev Sinc
   Product* (25 pp at arrival; currently 28 A4 pp and 1,875 source lines),
   arrived on 2026-08-30 from
@@ -152,18 +181,20 @@ Current packages and retained intake records:
   cyclotomic asymptotic and natural-boundary layers manuscript-only. The
   retained main PDF has 28 A4 pages, so the five PDFs have 32 pages in total
   (28 main plus four one-page figures). Its current 1,875-line source postdates
-  that rendering; a fresh strict three-pass build and payload validation are
-  pending. The retained main PDF uses
+  that rendering; a fresh strict three-pass build remains pending. The
+  retained main PDF uses
   embedded/subset Type-1 Libertinus fonts with no Type 3 font; the unchanged
   standalone vector figures retain nine embedded/subset Type-3 rows as
   disclosed archival debt.
 
-- [`Fabius_Rvachev_Frontier_Report/`](geometric-sinc-and-exponent-families/Fabius_Rvachev_Frontier_Report/),
+- **Absorbed 2026-09-02 as Part~VIII of
+  [`geometric_q_fabius_frontiers/`](geometric_q_fabius_frontiers/);
+  the directory `geometric-sinc-and-exponent-families/Fabius_Rvachev_Frontier_Report/` no longer exists.**
+  Formerly `Fabius_Rvachev_Frontier_Report/`,
 *Negative Parameters, Reciprocal Bases, and the Gaussian Boundary* (current
 1,475-line source and matching 26-page A4 PDF), arrived on 2026-08-30 with all
-13 delivered payload digests verified. Its current PDF was rebuilt from the
-final source, and all thirteen current payloads were hash-verified at that
-checkpoint. It develops
+13 payload checksums verified. Its current PDF was rebuilt from the final
+source. It develops
 negative-parameter affine transport, reciprocal-base digit reversal,
 multisection, shape theory, and the Gaussian boundary for geometric-uniform
 laws.  Because much of that subject already appears in Part VII of the
@@ -171,15 +202,17 @@ consolidated volume, the report remains standalone until its genuinely new
 claims are isolated and the overlap is deliberately deduplicated.  Paper
 theorem labels do not by themselves assert Lean formalization.
 
-- [`Fabius_Flat_Parameter_Response_Dynamics/`](q-fabius-parameter-deformations/Fabius_Flat_Parameter_Response_Dynamics/),
+- **Absorbed 2026-09-02 as Part~XII of
+  [`geometric_q_fabius_frontiers/`](geometric_q_fabius_frontiers/);
+  the directory `q-fabius-parameter-deformations/Fabius_Flat_Parameter_Response_Dynamics/` no longer exists.**
+  Formerly `Fabius_Flat_Parameter_Response_Dynamics/`,
   *Flat Parameter Fronts, q-Susceptibility, and Smooth Dynamics* (26 A4 pp;
   current 1,890-line TeX and 519-line deterministic exact/Monte-Carlo program),
   was filed on 2026-08-30 from `fabius_frontier_report_2026.zip` (803,598 bytes;
   SHA-256
   `afdcf522589a7baad82c81a527c02dcc09e58455ab14c57a9c492e65563c647e`).
-  All thirteen arrival payload hashes verified. The current PDF was rebuilt
-  from the final source, and all seventeen current payloads were hash-verified
-  at that checkpoint. The pinned replay reproduced the two exact
+  Its immutable 13-entry arrival digest receipt records 13/13. The current PDF was
+  rebuilt from the final source. The pinned replay reproduced the two exact
   algebra tables, common-random-number table, and two figures byte-for-byte;
   the two Monte-Carlo tables differed only at documented last-bit levels far
   below their sampling errors. A hostile review repaired the conditional-law
@@ -535,51 +568,22 @@ remain research frontiers. These fractional-Volterra API claims were checked at 
 `149332f9d`.
 
 Geometric-sinc subgroup member:
-[`Exponents_and_q_Series_Frontiers/`](geometric-sinc-and-exponent-families/Exponents_and_q_Series_Frontiers/)
-(retained historical PDF: 238 A4 pages and 6,953,898 bytes, SHA-256
-`fa719a8ea68d3c474928b9fae7449f827eb35a5452613f2b660d8e88ba27267e`,
-across seven parts). That PDF was rendered in three serial passes from the
-preceding 16,274-line, 731,692-byte source checkpoint, SHA-256
-`4be184dc95f7c9d7665e5edf56cd22dc66bdacbc2f113b03b700468836018f8b`;
-the passes produced 228, 238, and 238 pages. Basic A4, text-extraction,
-embedded-font, and no-Type-3 checks passed, but the containing batch stopped
-before a fresh full log, page-box, and visual audit.
-
-Earlier publication provenance includes a 238-page, 6,317,278-byte PDF with
-SHA-256
-`113d0318216db3ceaab160d0d1024f7adb48193420c385e700a7dd34c698b7cd`,
-rendered from the 16,279-line source checkpoint
-`d8b23a27965e0d242708e441d69d9a41fa5c7ac41f8146f12645d08ef6765dfe`.
-Its final log had no fatal error, undefined reference, rerun request, or
-missing-character diagnostic; all 238 pages were text-bearing, A4, rotation
-zero, and raster-renderable, and its font and visual gates passed.
-
-A parallel pre-replay receipt records a 238-page, 6,316,535-byte PDF with
-SHA-256
-`df7b9ad69e0310b17988dd42cc22559cf22ff26027395c005c374ad51f9e62aa`,
-built in exactly three guarded passes from layout-fixed source
-`2adbe7b1e450a858bb02e80e6b4c4c6420060733f2ae1fe25eb61b6546f58e0f`;
-the pass page counts were 228, 238, and 238, its 41-input closure did not drift,
-all 1,190 page boxes matched A4, and the recorded targeted visual inspection
-was clean.  The later 16,344-line semantic-source checkpoint has SHA-256
-`2c34d526f18379822ced4d807fd4049ecb85231f4a42a1cd2773fd3c990dd3b9`.
-
-The retired-analysis-alias migration produced a 16,369-line, 737,768-byte
-source checkpoint with SHA-256
-`4313bddb87a0f248a8bad4bd5e5a7cfbb25da51d1b994abc0c9d4c62525ca78c`.
-The live TeX changed again after that checkpoint and every named source/PDF
-pair. A current fingerprint is not asserted before final-source validation.
-It adds the upstream
-q-API material, exact zero-order/exponent identifiability with constructive
-dyadic first differences, and the later normal-convergence and `6c7a69be9`
-crosswalks, followed by the final eight-module q-calculus/theta tranche. The
-exact `GeneralizedRvachevIdentifiability.lean` crosswalk gives constructive
-dyadic-order first differences and full-product rigidity;
+[`geometric_q_fabius_frontiers/`](geometric_q_fabius_frontiers/), whose
+Parts~I--VII are the former `Exponents_and_q_Series_Frontiers/`
+(current TeX: 808,185 bytes, SHA-256
+`7dd140370a0ac68522364a83a3c6423df93570741eafaef2ee8c1fac17670e2f`;
+current PDF: 260 A4 pages and 1,877,159 bytes, SHA-256
+`9d38ab9d43befd6e26fd06ab9680b4a761365fb9d8a9f0de18489c243bd62d3e`).
+An exact clean final three-pass cycle produced the synchronized PDF, and the
+recorded publication gates are clean. The current source includes the upstream q-API crosswalk
+material and the exact `GeneralizedRvachevIdentifiability.lean`
+zero-order/exponent crosswalk after the PDF's source checkpoint. The latter
+gives constructive dyadic-order first differences and full-product rigidity;
 zeta-quotient, cumulant/analytic-sample, and probability-law identifiability
 remain Partial in Lean. It also replaces raw dyadic-valuation spellings by the
-shared `\TwoAdicValuation` command. The retained PDF is therefore historical;
-final-source rendering, fingerprinting, and full publication validation remain
-pending. This is the
+shared `\TwoAdicValuation` command. The preceding 238-page PDF and its
+16,274-line build source, together with the intermediate 16,369-line source,
+remain historical receipts only. This is the
 2026-08-28 consolidation of the two former drafts (Part I:
 Newton-basis frontiers; Part II: q-binomial Richardson), joined the
 same day by the eighth-wave report as **Part III** — *Finite Dyadic
@@ -812,8 +816,8 @@ volume's Part VII; their figures/data are likewise under `assets/`.)
 
 Canonical forward/inverse publication:
 [`q_pochhammer_q_binomial_monograph/`](q_pochhammer_q_binomial_monograph/)
-(current TeX with a retained historical A4 publication checkpoint; exact
-receipt in the detailed package record above) — *q-Series and Inverse q-Analogs:
+(current synchronized 16,834-line TeX and 395-page A4 PDF; exact receipt in the
+detailed package record above) — *q-Series and Inverse q-Analogs:
 A Proof-Oriented Synthesis*. Its forward backbone proves from first principles
 the shifted-factorial, Gaussian, hypergeometric, theta, partition, Bailey,
 cyclotomic, interpolation, and Fabius--Rvachev machinery consumed by Parts II,
@@ -830,12 +834,11 @@ pre-consolidation rendered checkpoint had 13,117 source lines (SHA-256
 and a 1,582,997-byte, 213-page PDF (SHA-256
 `7ee6f8f6d8e72228a5b20daa119caa4d834b11063f910b526897b2677a2ede7b`).
 Those figures identify a retired historical artifact; they are not build
-claims about the current canonical source. The canonical synthesis's current
-source and retained historical PDF are identified by the single exact receipt
-in the detailed package record above.
+claims about the current canonical source. The current receipt appears in the
+detailed package record above and establishes source/PDF parity.
 
-The latest validated forward formalization ledger has 282 rows: 90 Exact, 85
-Partial, 99 with no counterpart, and 8 interface-only. The original
+The latest validated forward formalization ledger has 282 rows: 166 Exact, 90
+Partial, 18 with no counterpart, and 8 interface-only. The original
 191-result pre-Fabius core had 36 exact, 29 partial, 123 with no counterpart,
 and 3 interface-only entries. The four integrated-guide chapters add 31
 human-proved but not Lean-formalized assertions and five labelled definitions;
@@ -844,16 +847,16 @@ inside-`q^2` Pochhammer factorization and the outer product's locally uniform
 (normal) convergence are now formal for every complex strict contraction,
 including `q = 0`. The compound spectral theorem remains partial at its named
 centered/MGF wrappers and exterior reciprocal clauses. The algebra of
-q-shifted factorials now accounts for 11 exact, 2 partial, and 2
-unformalized results; the q-integer and Gaussian-coefficient chapter for
-8 exact, 1 partial, and 0 unformalized results. The finite
-q-binomial/inversion chapter now accounts for 9 exact, 1 partial, and 0
-unformalized results; the weighted chapter for 3 exact, 2 partial, and 3
-unformalized results; and the basic-hypergeometric chapter for 2 exact, 3
-partial, and 4 unformalized results. The cyclotomic chapter now has 5 exact,
-2 partial, and 2 unformalized results; q-gamma/q-beta has 3 exact, 1 partial,
-and 4 unformalized results; and negative upper indices/geometric Newton has 7
-exact, 0 partial, and 2 unformalized results. The exact rows include the primary and
+q-shifted factorials now accounts for 13 exact, 1 partial, and 1
+unformalized result; the q-integer and Gaussian-coefficient chapter for
+9 exact, 0 partial, and 0 unformalized results. The finite
+q-binomial/inversion chapter now accounts for 10 exact, 0 partial, and 0
+unformalized results; the weighted chapter for 5 exact, 3 partial, and 0
+unformalized results; and the basic-hypergeometric chapter for 7 exact, 2
+partial, and 0 unformalized results. The cyclotomic chapter now has 8 exact,
+1 partial, and 0 unformalized results; q-gamma/q-beta has 7 exact, 1 partial,
+and 0 unformalized results; and negative upper indices/geometric Newton has 9
+exact, 0 partial, and 0 unformalized results. The exact rows include the primary and
 second q-Cauchy identities, both weighted-Pascal recurrences,
 elementary--complete orthogonality, and weighted symmetric-function inversion.
 Their adjacent strengthenings are recorded human-readably in the canonical
@@ -878,35 +881,41 @@ compatibility spelling of its primary identity),
 `QPochhammerDissection.lean` (two theorems),
 `QPochhammerInfinite.lean` (one definition, 29 theorems),
 `QBinomialReciprocity.lean` (four theorems),
-`GaussianBinomialPalindromic.lean` (zero definitions, twelve theorems),
+`GaussianBinomialPalindromic.lean` (zero definitions, fourteen theorems),
 `GaussianBinomialPolynomialStructure.lean` (zero definitions, five theorems),
 `CentralQBinomialReduction.lean` (zero definitions, six theorems),
 `CyclotomicFactorization.lean` (zero definitions, seven theorems),
 `PrimitiveRootBlock.lean` (zero definitions, three theorems),
-`QLucas.lean` (zero definitions, eight theorems),
+`QLucas.lean` (zero definitions, seven public theorems),
 `CyclotomicDivisibility.lean` (zero definitions, three theorems),
 `QCatalan.lean` (one definition, eleven theorems),
-`NewtonInterpolation.lean` (two definitions, thirteen theorems),
+`NewtonInterpolation.lean` (three definitions, nineteen theorems),
 `QBetaIntegral.lean` (one definition, eight theorems),
 `GaussianBinomialInteger.lean` (one definition, ten theorems),
 `GaussianBinomialComplexOrder.lean` (one definition, five theorems),
 `QPfaffSaalschutz.lean` (zero definitions, three theorems),
 `QuantumMultinomial.lean` (zero definitions, five theorems),
-`GaussianBinomialBounds.lean` (zero definitions, six new theorems),
+`GaussianBinomialBounds.lean` (zero definitions, six theorems),
 `GaussianBinomialAtNegOne.lean` (five theorems),
-`RvachevPochhammerFactorization.lean` (one definition, ten theorems),
-`QPochhammerEntire.lean` (zero definitions, five theorems),
-`GeometricPochhammerNormalConvergence.lean` (zero definitions, three theorems),
-`GaussianBinomialContinuity.lean` (zero definitions, three theorems),
-`JacobiTripleProduct.lean` (two definitions, twenty-five theorems),
-`QBinomialTheoremInfinite.lean` (one definition, twenty-two theorems),
-`QPascalSummation.lean` (zero definitions, four theorems),
-`QuantumBinomial.lean` (zero definitions, two theorems), and
-`RogersSzegoPolynomial.lean` (one definition, nine theorems), together with
-the earlier source-union modules `JacksonIntegral.lean` (1+7), `QExponential.lean` (3+8),
-`ThetaQuasiPeriodicity.lean` (1+6), `JacobiCubic.lean` (0+2),
-`QPochhammerLogDerivative.lean` (0+10),
-and `QPochhammerOrderDerivative.lean` (0+3).
+`RvachevPochhammerFactorization.lean` (one definition, ten theorems), and
+`QPochhammerEntire.lean` (zero definitions; four legacy compatibility
+wrappers plus one analytic-order compatibility theorem),
+`GeometricPochhammerNormalConvergence.lean` (zero definitions, three
+theorems), `QPochhammerLogDerivative.lean` (zero definitions, ten theorems),
+`QPochhammerOrderDerivative.lean` (zero definitions, three theorems), and
+`JacobiCubic.lean` (zero definitions, two theorems).
+The direct structure theorems in `GaussianBinomialPalindromic` are
+`gaussianBinomial_natDegree`, `gaussianBinomial_monic`,
+`coeff_gaussianBinomial_zero`, `reflect_gaussianBinomial`, and
+`coeff_gaussianBinomial_reflect`. The same generic commutative-semiring API
+exports the top coefficient, degree bound, boundary evaluations, and the
+division-free mean identity
+`two_mul_derivative_gaussianBinomial_eval_one`. The new
+`coeff_gaussianBinomial_one_of_pos_of_lt` and
+`coeff_gaussianBinomial_one` theorems give coefficient one in every strict
+interior column and zero on every boundary. The `cor:positivity`,
+`thm:qbinom-structure`, and inverse-source
+`prop:gq-positive-palindromic` rows are therefore Exact.
 The five `GaussianBinomialAtNegOne` theorems are
 `gaussianBinomial_neg_one_even_even`,
 `gaussianBinomial_neg_one_odd_even`,
@@ -916,9 +925,10 @@ The five `GaussianBinomialAtNegOne` theorems are
 `gaussianBinomial_neg_one_even_odd_eq_zero` theorem from
 `QBinomialReciprocity` prove the forward backbone's complete `q = -1` value
 formula over every commutative ring, for all natural parameters including
-above-row zero extension. Lean now proves the evaluated-root q-Lucas identity
-in `gaussianBinomial_q_lucas`, but not the printed polynomial congruence modulo
-`Φ_d`; that row is therefore Partial pending the minimal-polynomial lift.
+above-row zero extension. The evaluated `q`-Lucas identity is now formalized at
+every primitive root of unity of every integral domain. The manuscript's
+polynomial congruence modulo `Φ_d(q)` remains outside Lean, so `thm:q-lucas`
+is Partial.
 The q-difference annihilation row is exact through
 `qDifference_sum_eval₂_eq_zero_of_degree_lt`, with the stronger
 characteristic-polynomial, all-moment, and scalar-extension top-coefficient
@@ -1129,230 +1139,64 @@ transport it to the Fourier transform of every bounded Fabius witness.  The
 general statement includes `q = 0`; it is not a joint-holomorphy theorem in the
 nome.
 
-`GeneralizedRvachevIdentifiability.lean` has zero definitions and six
-theorems.  It identifies dyadic analytic orders with inclusive exponent
-prefixes, decodes the head and successive exponents by first differences,
-recovers the exponent sequence, and makes equality of admissible generalized
-products equivalent to equality of exponents.  It does not identify from a
-bare zero set, cumulant samples, or a probability law.
+The next six-module inventory adds `QMultinomial.lean` (one definition, nine
+theorems), `QPochhammerInfiniteBounds.lean` (five theorems),
+`QPochhammerComplexOrder.lean` (one definition, four theorems),
+`BasicHypergeometricSeries.lean` (two definitions, five theorems),
+`HeineTransformation.lean` (two definitions, five theorems), and
+`QGaussSummation.lean` (two theorems). Together these 36 declarations cover
+q-multinomial algebra, quantitative infinite-product bounds, principal-branch
+complex order, basic-hypergeometric convergence, Heine transformation, and the
+q-Gauss specialization, with each analytic-continuation boundary retained at
+its audited status.
 
-The six newly crosswalked modules contribute 69 public declarations.
-`GaussianBinomialContinuity.lean` has zero definitions and three theorems:
-continuity and the `q → 1` classical limit hold for every natural row and
-column over a topological semiring, including the zero-extended boundary, while
-its separate quotient theorem keeps `k ≤ n` and a nonzero finite denominator.
-`QPascalSummation.lean` has zero definitions and four theorems, giving total
-finite Pascal sums (including the noncommutative left-coefficient form) and
-the two root-namespace `Commute.gaussianBinomial_left` and
-`Commute.gaussianBinomial_right` wrappers. `QuantumBinomial.lean` has zero
-definitions and two theorems; its ordered expansion is division-free over an
-arbitrary semiring under the stated commutation relations and includes `n = 0`.
+The newest four-module inventory adds `GaussianBinomialPalindromic.lean`
+(14 theorems), `JacksonIntegral.lean` (one definition, seven theorems),
+`QExponential.lean` (three definitions, eight theorems), and
+`ThetaQuasiPeriodicity.lean` (one definition, six theorems). The resulting
+status changes make the q-exponential eigenfunction and Jackson
+integration-by-parts subclaims Exact; q-exponential factorization, the Jackson
+fundamental theorem, and theta quasi-periodicity remain Partial at the
+unformalized clauses stated in their rows.
 
-`JacobiTripleProduct.lean` has two definitions and twenty-five theorems. Its
-finite polynomial identity is ring-level and total, its Laurent form requires
-only `z ≠ 0`, and its Jacobi and pentagonal `HasSum` results require a complete
-normed field with `‖q‖ < 1`, including `q = 0`; the bilateral results do not
-extend to `z = 0`. `QBinomialTheoremInfinite.lean` has one definition and
-twenty-two theorems: under `‖q‖ < 1`, Euler's product holds for every series
-variable, while the infinite q-binomial and reciprocal expansions additionally
-require its norm to be below one; `q = 0` is included. The ownership of
-`Fabius.finiteQPochhammerIn_zero_left` remains with
-`GaussianBinomialAtOne.lean`, so it is not counted again here.
-`RogersSzegoPolynomial.lean` has one definition and nine theorems: its finite
-identities are algebraic, while the generating-function `HasSum` theorem needs
-exactly `‖q‖ < 1`, `‖t‖ < 1`, and `‖z * t‖ < 1`, with no separate bound on
-`z` and with `q = 0` and `t = 0` included.
-
-The five `6c7a69be9` q-series leaves contribute exactly 50 more public
-declarations: `ClassicalPochhammerLimit.lean` has five theorems;
-`GaussianBinomialUniversal.lean` has two; `PolynomialQTaylor.lean` has two
-definitions and 18 theorems; `QPartialFractions.lean` has one definition and
-five theorems; and `QPochhammerIntegerIndex.lean` has two definitions and 15
-theorems.  They add the classical q-to-one Pochhammer limit, universal
-Gaussian-polynomial evaluation, iterated q-derivatives and the q-Taylor
-formula, finite q-partial fractions, and signed integer-index symbols with
-concatenation laws.
-
-The five newest analytic q-series leaves contribute 26 public declarations.
-`BasicHypergeometricSeries.lean` has two definitions and five theorems: for
-`‖q‖ < 1` and nonvanishing denominator products, absolute convergence holds
-for every `z` when `r ≤ s`, and for `‖z‖ < 1` when `r = s + 1`.
-`HeineTransformation.lean` has two definitions and five theorems, retaining
-its strict nome and argument contractions and each displayed nonvanishing
-hypothesis. `QGaussSummation.lean` has zero definitions and two theorems, on
-the specialization domain stated by its strict norm, nonzero-parameter, and
-nonvanishing-product hypotheses. `QPochhammerInfiniteBounds.lean` has zero
-definitions and five theorems for the uniform product and reciprocal-prefix
-bounds. `QPochhammerComplexOrder.lean` has one definition and four theorems;
-its complex powers use the principal branch, and its concatenation and shift
-identities retain their explicit nonvanishing conditions.
-
-`QMultinomial.lean` has one definition and nine theorems, including the empty
-and singleton boundary values. Its semiring-level recursion, pair reduction,
-naturality, and universal-polynomial evaluation are division-free; the
-factorial identity is ring-level, and the quotient form retains its stated
-nonzero-denominator hypothesis over a field.
-
-`CentralQBinomialReduction.lean` has zero definitions and exactly six
-theorems: `finiteQPochhammerIn_mul_neg`,
-`finiteQPochhammerIn_two_mul`, `finiteQPochhammerIn_map_ringHom`,
-`central_gaussianBinomial_sq_mul_int`,
-`central_gaussianBinomial_sq_mul`, and
-`central_gaussianBinomial_sq_div`. The first five give sign pairing,
-even--odd dissection, naturality, and the universal and general
-division-free central reductions over polynomial or arbitrary commutative
-rings. The quotient wrapper is over a field and assumes exactly that
-`finiteQPochhammerIn (-q) q (2*k)` and
-`finiteQPochhammerIn (q^2) (q^2) k` are nonzero.
-
-`CyclotomicFactorization.lean` has zero definitions and exactly seven
-theorems: `div_add_div_le_div`, `div_le_div_add_div_add_one`,
-`mem_range_and_mem_divisors_iff`,
-`finiteQPochhammerIn_X_eq_prod_cyclotomic`,
-`finiteQPochhammerIn_X_eq_gaussianBinomial_mul`,
-`prod_cyclotomic_pow_div_extend`, and
-`gaussianBinomial_X_eq_prod_cyclotomic`. The first two inequalities show that
-the Gaussian cyclotomic exponents are in `{0,1}`. The shifted-factorial
-factorization and factorial identity hold over every commutative ring; only
-the final cancellation to the Gaussian factorization requires an integral
-domain, and the Gaussian statements retain `k ≤ n`.
-
-`PrimitiveRootBlock.lean` has zero definitions and exactly three theorems:
-`gaussianBinomial_isPrimitiveRoot_eq_zero`,
-`neg_one_pow_mul_pow_choose_two`, and
-`finiteQPochhammerIn_isPrimitiveRoot`. They work over a commutative integral
-domain at a primitive `d`th root. Interior Gaussian vanishing assumes exactly
-`0 < k < d`; the phase and complete root block explicitly assume `0 < d`.
-
-`QLucas.lean` has zero definitions and exactly eight theorems:
-`two_mul_choose_two`, `add_mul_add_sub_one`, `choose_two_add`,
-`coeff_finiteQPochhammerIn_neg_X`, `finiteQPochhammerIn_neg_X_block`,
-`coeff_block_pow_mul`, `pow_choose_two_add_mul_eq`, and
-`gaussianBinomial_q_lucas`. The first three are identities in `ℕ`; the two
-coefficient formulas need only a commutative ring. Complete-block, phase, and
-q-Lucas statements use an integral domain, `0 < d`, and a primitive `d`th
-root; q-Lucas also assumes `b,s < d`. Its exact endpoint is the evaluated-root
-identity, not a named polynomial congruence modulo `Φ_d`.
-
-`CyclotomicDivisibility.lean` has zero definitions and exactly three theorems:
-`cyclotomic_exponent_eq_one_iff`,
-`cyclotomic_dvd_gaussianBinomial_iff`, and
-`gaussianBinomial_mul_isPrimitiveRoot`. Carry and divisibility require
-`k ≤ n` and `0 < d`, with the divisibility equivalence specifically in
-`ℚ[X]`. The multiple-index root value is over a commutative integral domain
-and requires `0 < n`. These results plus the earlier exponent bound prove the
-squarefreeness row, but no separately named squarefree theorem exists. The
-Babbage-derivative row is Partial: the value is formalized, the derivative is
-not.
-
-`QCatalan.lean` has the one definition `qCatalan` and exactly eleven theorems:
-`map_qInt`, `qInt_X_monic`, `qInt_X_natDegree`, `X_sub_one_mul_qInt`,
-`qInt_X_eq_prod_cyclotomic`, `qInt_X_dvd_gaussianBinomial_rat`,
-`qInt_X_dvd_gaussianBinomial_int`, `qInt_X_mul_qCatalan`,
-`qCatalan_natDegree`, `qCatalan_eval_one_mul`, and `qCatalan_eval_one`.
-Functoriality is semiring-level; monicity and degree use a nontrivial
-commutative ring. The noncomputable `divByMonic` quotient in `ℤ[X]` is defined
-for every `n`, including zero, has degree `n(n-1)`, and evaluates at one to the
-Catalan number. No coefficient nonnegativity or unimodality is asserted.
-
-`NewtonInterpolation.lean` has the two definitions `newtonCoeff` and
-`newtonInterpolant` and exactly thirteen theorems: `newtonCoeff_eq`,
-`newtonCoeff_zero`, `newtonCoeff_mul_prod`, `newtonPoly_succ`,
-`eval_newtonPoly`, `degree_newtonPoly_lt`, `newtonPoly_eq_interpolate`,
-`eq_newtonPoly_of_eval_eq`, `coeff_newtonPoly_self`, `newtonCoeff_eq_sum`,
-`nodal_range_pow`, `prod_erase_pow_sub_pow`, and
-`newtonCoeff_pow_eq_sum`. This is finite interpolation over a field.
-Evaluation assumes the relevant earlier-node difference product is nonzero;
-uniqueness and divided differences assume finite-range injectivity. The
-geometric basis assumes `q ≠ 0`, and its coefficient sum assumes injectivity
-of `j ↦ q^j`. The name `newtonInterpolant` preserves the established
-scalar-sequence `Fabius.newtonPoly` API. No topology or convergence is used.
-
-`QBetaIntegral.lean` has the total real definition `qBeta` and exactly eight
-theorems: `qNumber_pos`, `qBeta_term_eq`, `qBeta_eq_prod`,
-`qBeta_eq_qGamma`, `qBeta_comm`, `qBeta_pos`, `qBeta_add_one_left`, and
-`qBeta_add_one_right`. Product and q-gamma evaluation, symmetry, positivity,
-and both recurrences assume `0 < q < 1` and `x,y > 0`; term cancellation
-assumes `y > 0` with arbitrary real `x`. No complex continuation or classical
-limit is formalized.
-
-`GaussianBinomialInteger.lean` has the definition `gaussianBinomialZ` and
-exactly ten theorems: `finiteQPochhammerIn_inv_base_eq`,
-`finiteQPochhammerIn_mul_pow_inv_base`, `finiteQPochhammerIn_pow_div`,
-`gaussianBinomialZ_zero_right`, `gaussianBinomialZ_natCast`,
-`gaussianBinomialZ_succ`, `gaussianBinomialZ_succ'`,
-`gaussianBinomialZ_neg_natCast`,
-`hasSum_reciprocal_finiteQPochhammerIn`, and
-`hasSum_reciprocal_finiteQPochhammerIn_neg`. Its algebraic declarations are
-over a field. Inverse-base and natural-index comparison require `q ≠ 0`,
-quotient and Pascal forms retain the displayed nonzero denominators, and the
-two `HasSum` results require a complete normed field, `‖q‖ < 1`, and
-`‖z‖ < 1`, with `q ≠ 0` additionally required for the negative-index series.
-
-`GaussianBinomialComplexOrder.lean` has the principal-power definition
-`gaussianBinomialC` and exactly five theorems:
-`gaussianBinomialC_intCast`, `gaussianBinomialC_natCast`,
-`hasSum_gaussianBinomialC_add`, `hasSum_qPochhammerC_inv`, and
-`hasSum_qPochhammerC`. Integer agreement is unconditional; natural
-agreement requires `q ≠ 0` and its nonzero finite denominator. The first two
-series assume `‖q‖ < 1` and `‖z‖ < 1`; the generalized finite series assumes
-`q ≠ 0` and `‖z*q^α‖ < 1`.
-
-`QPfaffSaalschutz.lean` has zero definitions and exactly three theorems:
-`finiteQPochhammerIn_ne_zero_of_le`, `q_pfaff_saalschutz_term`, and
-`q_pfaff_saalschutz`. The terminating identity is field algebra under
-nonzero `q,a,b,c` and nonzero `(q;q)_n`, `(c;q)_n`,
-`(abq/(cq^n);q)_n`, and `(c/(ab);q)_n`; the term theorem additionally
-assumes `k ≤ n`. No convergence claim is made.
-
-`QuantumMultinomial.lean` has zero definitions and exactly five theorems:
-`sum_antidiagonalTuple_succ`, `gaussianBinomial_eq_evalRingHom_quantum`,
-`gaussianBinomial_symm'`, `Commute.qMultinomial_left`, and
-`quantum_multinomial`. The ordered theorem holds in every semiring when `q`
-commutes with each variable and `x_j*x_i = q*(x_i*x_j)` for `i < j`; it
-uses `Nat.antidiagonalTuple` and a list product and assumes no centrality,
-ambient commutativity, division, or convergence.
-
-`GaussianBinomialBounds.lean` has zero definitions and exactly six new
-theorems: `gaussianBinomial_inv`, `one_le_gaussianBinomial`,
-`finiteQPochhammerIn_pow_le_one`,
-`gaussianBinomial_le_inv_qPochhammerInfIn`,
-`pow_le_gaussianBinomial_of_one_lt`, and
-`gaussianBinomial_le_pow_div_of_one_lt`. Reciprocity holds over a field for
-`q ≠ 0` and `k ≤ n`; the lower bound is ordered-field algebra for `q ≥ 0`;
-the other bounds are real under the displayed `0 ≤ q < 1` or `Q > 1`
-hypotheses. Positivity of `(q;q)_k` reuses the established
-`GeneralQConditionNumber.finiteQPochhammerIn_self_pos` theorem instead of
-redeclaring it. No asymptotic error term is proved. The module makes
-`prop:qbinom-growth`, `prop:gaussian-bound`, and
-`prop:extreme-specializations` Exact; `cor:qgreaterone` remains Partial
-because only reciprocity is formalized.
-
-The corpus-only `RvachevSuperconvergentSynthesis.lean` surface has the one
-definition `IsRvachevSuperconvergentPhase` and exactly eight theorems:
-`isRvachevSuperconvergentPhase_two_pow_iff`,
-`tsum_quarter_monomial_eq_integral_of_even_deg`,
-`tsum_three_quarters_monomial_eq_integral_of_even_deg`,
-`tsum_shifted_monomial_eq_integral_superconvergent`,
-`tsum_shifted_polynomial_eq_integral_superconvergent`,
-`integral_polynomial_mul_rvachevUp_eq_normalized_tsum_superconvergent`,
-`normalized_tsum_shifted_rvachevDeconvolvedPolynomial_mul_rvachevUp_superconvergent`,
-and `normalized_tsum_shifted_rvachevAppellPolynomial_mul_rvachevUp_superconvergent`.
-For every nonzero natural mesh it selects the stated endpoint, half, or
-quarter phases and proves exactness through degree `padicValNat 2 M + 1`,
-physical quadrature, deconvolved reconstruction, and the Appell
-specialization. It asserts no complete phase classification, maximality,
-positivity, or rationality and changes no q-series status row.
-
-These six modules promote seven forward rows from None to Exact: the root
-block, squarefreeness, q-Catalan, q-beta evaluation, q-beta recurrence,
-geometric Newton, and its triangular corollary. Q-Lucas and the Babbage
-derivative move from None to Partial for the exact boundaries above. Thus the
-282-row ledger is 90 Exact / 85 Partial / 99 None / 8 N/A. The evaluated
-q-Lucas theorem remains Partial because Lean supplies no minimal-polynomial
-lift to the manuscript polynomial congruence modulo `Φ_d`.
-
-The live audit across the facade is exactly 671 modules and 8,859 public
-declarations. The Exponents TeX contains these semantic-union crosswalk
-additions, but its retained 238-page PDF predates them and remains
-rebuild-pending.
+The subsequent tail adds `QPochhammerLogDerivative.lean` (ten theorems),
+`QPochhammerOrderDerivative.lean` (three theorems), `JacobiCubic.lean` (two
+theorems), `CentralQBinomialReduction.lean` (six theorems), and
+`CyclotomicFactorization.lean` (seven theorems). The last two modules make the
+central-reduction and cyclotomic-Pochhammer rows Exact: the central identity is
+division-free over every commutative ring with a field/nonzero-denominator
+quotient wrapper, while the factorial cyclotomic factorization holds over every
+commutative ring and the Gaussian factorization over every integral domain,
+with the exponent bounded in `{0,1}` by the proved divisibility inequalities.
+The root-of-unity tail adds `CyclotomicDivisibility.lean` (three theorems),
+`PrimitiveRootBlock.lean` (three theorems), `QCatalan.lean` (one definition
+and eleven theorems), and `QLucas.lean` (seven public theorems). These
+twenty-five declarations prove the carry criterion, complete primitive-root
+block, evaluated q-Lucas identity, and integral q-Catalan polynomial at their
+stated ring and primitive-root hypotheses. The polynomial q-Lucas congruence
+remains outside Lean.
+The newest analytic/algebraic tail adds `QBetaIntegral.lean` (one definition,
+eight theorems) and `NewtonInterpolation.lean` (three definitions, nineteen
+theorems). It formalizes the Jackson q-beta product and q-gamma evaluation,
+symmetry, positivity, and recurrences, together with generic Newton
+interpolation and its geometric-grid specialization; the interpolation
+polynomial is named `nodeNewtonPoly` to remain distinct from the older
+Newton-basis generating-function `newtonPoly`.
+The final three-module tail adds integer and principal-complex upper-index
+Gaussian coefficients and the terminating balanced q-Pfaff--Saalschütz sum:
+`GaussianBinomialInteger.lean` is 1+10,
+`GaussianBinomialComplexOrder.lean` is 1+5, and
+`QPfaffSaalschutz.lean` is 0+3. Their nonzero-nome,
+strict-contraction, and denominator hypotheses remain explicit.
+`QuantumMultinomial.lean` adds five theorems for antidiagonal tuple recursion,
+noncommutative Gaussian symmetry, and the ordered q-multinomial expansion for
+pairwise q-commuting variables.
+`GaussianBinomialBounds.lean` adds six theorems and reuses the stronger
+`finiteQPochhammerIn_self_pos` from `GeneralQConditionNumber`: evaluated
+reciprocity, the finite bounds for `0 <= q < 1`, and the dimension-dominant
+lower and upper bounds for `q > 1`. The imported positivity theorem is not
+counted as a declaration of the bounds leaf. The exact finite-growth row is
+closed, while the compound
+greater-than-one row remains Partial at its asymptotic clauses. The
+primitive-root value in the Babbage corollary is exact, while its derivative
+clause keeps that compound row Partial.

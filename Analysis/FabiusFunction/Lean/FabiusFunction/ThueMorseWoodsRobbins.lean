@@ -260,42 +260,24 @@ private theorem wrA_add_wrB (N : ℕ) (hN : 1 ≤ N) :
   rw [Finset.sum_ite_eq' (range N) 0 (fun _ => -Real.log 2),
     if_pos (Finset.mem_range.mpr (by omega))]
 
-/-- Interleaving: `wrC (2N) = wrB N - wrA N`. -/
+/-- Interleaving: `wrC (2N) = wrB N - wrA N`.  The even/odd sign split is
+the shared `sum_thueMorseSign_mul_two_mul`; all that is specific to `wrC`
+is the guard at `j = 0`. -/
 private theorem wrC_two_mul (N : ℕ) :
     wrC (2 * N) = wrB N - wrA N := by
-  rw [wrC, sum_range_two_mul]
-  have hterm : ∀ j ∈ range N,
-      ((thueMorseSign (2 * j) : ℝ) *
-          (if 2 * j = 0 then 0 else
-            Real.log (((2 * j : ℕ) : ℝ) / (((2 * j : ℕ) : ℝ) + 1))) +
-        (thueMorseSign (2 * j + 1) : ℝ) *
-          (if 2 * j + 1 = 0 then 0 else
-            Real.log (((2 * j + 1 : ℕ) : ℝ) /
-              (((2 * j + 1 : ℕ) : ℝ) + 1)))) =
-      (thueMorseSign j : ℝ) *
-          (if j = 0 then 0 else
-            Real.log ((2 * (j : ℝ)) / (2 * (j : ℝ) + 1))) -
-        (thueMorseSign j : ℝ) *
-          Real.log ((2 * (j : ℝ) + 1) / (2 * (j : ℝ) + 2)) := by
-    intro j _
-    have hsign1 : (thueMorseSign (2 * j) : ℝ) =
-        (thueMorseSign j : ℝ) := by
-      exact_mod_cast congrArg (fun z : ℤ => (z : ℝ))
-        (thueMorseSign_two_mul j)
-    have hsign2 : (thueMorseSign (2 * j + 1) : ℝ) =
-        -(thueMorseSign j : ℝ) := by
-      have h := thueMorseSign_two_mul_add_one j
-      push_cast [h]
-      ring
-    rw [hsign1, hsign2, if_neg (by omega : ¬ 2 * j + 1 = 0)]
-    rcases Nat.eq_zero_or_pos j with rfl | hj
-    · simp only [mul_zero, zero_add]
-      push_cast
-      ring_nf
-    · rw [if_neg (by omega : ¬ 2 * j = 0), if_neg (by omega)]
-      push_cast
-      ring_nf
-  rw [Finset.sum_congr rfl hterm, Finset.sum_sub_distrib, wrA, wrB]
+  rw [wrC, sum_thueMorseSign_mul_two_mul N
+      (fun n : ℕ =>
+        if n = 0 then (0 : ℝ) else Real.log ((n : ℝ) / ((n : ℝ) + 1))),
+    wrB, wrA, ← Finset.sum_sub_distrib]
+  refine Finset.sum_congr rfl fun j _ => ?_
+  rw [if_neg (by omega : ¬ 2 * j + 1 = 0)]
+  rcases Nat.eq_zero_or_pos j with rfl | hj
+  · simp only [mul_zero, zero_add]
+    push_cast
+    ring_nf
+  · rw [if_neg (by omega : ¬ 2 * j = 0), if_neg (by omega : ¬ j = 0)]
+    push_cast
+    ring_nf
 
 /-- The limit of the Woods–Robbins log-series is `-(log 2)/2`. -/
 theorem tendsto_wrA : Tendsto wrA atTop (𝓝 (-Real.log 2 / 2)) := by

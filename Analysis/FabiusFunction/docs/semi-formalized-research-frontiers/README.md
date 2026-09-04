@@ -21,8 +21,15 @@ The canonical frontier artifacts are:
 - [`semi-formalized-research-frontiers.tex`](semi-formalized-research-frontiers.tex)
 - [`semi-formalized-research-frontiers.pdf`](semi-formalized-research-frontiers.pdf)
 
-> **Source/PDF synchronization.** Two retained canonical-frontier renders are
-> publication checkpoints, not renders of the present TeX.  The earlier
+> **Source/PDF synchronization (2026-09-03).** The current 808,185-byte TeX
+> source has SHA-256
+> `7dd140370a0ac68522364a83a3c6423df93570741eafaef2ee8c1fac17670e2f`.
+> An exact clean final three-pass cycle produced the synchronized 260-page,
+> 1,877,159-byte A4 PDF with SHA-256
+> `9d38ab9d43befd6e26fd06ab9680b4a761365fb9d8a9f0de18489c243bd62d3e`;
+> the recorded final log and publication gates are clean.  Two earlier
+> canonical-frontier renders remain historical publication checkpoints.  The
+> first is the
 > 237-page A4 PDF (SHA-256
 > `21180fa05a754b52a057495464674e9d6ac26a51488c2c770730c641b5ffe887`)
 > includes the 31 August 2026 Legendre Gaunt--Wigner-square overlay.  After the
@@ -32,15 +39,17 @@ The canonical frontier artifacts are:
 > produced a later 243-page, 1,789,269-byte A4 PDF with SHA-256
 > `45552dfbaa48ecd3183830b403cd651a979a57b50d2da6c3ff58af2ac1f02549`.
 > That render passed the recorded page, text, rotation, Type-1 embedding,
-> Libertinus, and no-Type-3 checks.  The live TeX has advanced since both
-> builds, so a fresh three-pass build and inspection are pending.
+> Libertinus, and no-Type-3 checks.  Both older fingerprints remain receipts
+> for their named source states only.
 
-The live Lean audit now contains exactly 671 facade-reachable modules and
-8,859 public declarations, with no missing module headers or declaration
-documentation.  The current q-Pochhammer ownership is
+The live Lean audit now contains exactly 900 facade-reachable modules and
+11,404 unique public declarations, with no missing module headers and no
+missing documentation comments.  The checked baseline records this zero-gap
+state.  The current q-Pochhammer ownership is
 `RvachevPochhammerFactorization` 1+10, `QPochhammerEntire` 0+5, and
-`QPochhammerInfinite` 1+29; the public definitional bridge to the generic
-symbol is retained.  Fixed-nome normal convergence, product identifiability,
+`QPochhammerInfinite` 1+29;
+`complexQPochhammerInf_eq_qPochhammerInfIn` is retained as the unconditional
+public definitional bridge to the generic symbol.  Fixed-nome normal convergence, product identifiability,
 the finite/infinite q-calculus tranches, the root-of-unity and q-Catalan
 layers, finite Newton interpolation, q-beta integration, integer and complex
 Gaussian upper indices, q-Pfaff--Saalschütz, and the noncommutative quantum
@@ -62,14 +71,14 @@ nonnegative lower bounds, finite and infinite Pochhammer bounds for
 fixed-column or central asymptotic.  The stronger generic positivity theorem
 `finiteQPochhammerIn_self_pos` is reused from `GeneralQConditionNumber` and is
 not counted again.  The rigorous 282-row q-monograph totals
-are therefore 90 exact / 85 partial / 99 none / 8 interface: q-Lucas remains
+are therefore 166 Exact / 90 Partial / 18 None / 8 interface: q-Lucas remains
 Partial because the polynomial-congruence lift is absent, the Gaussian
 majorant is Exact, and the `Q > 1` asymptotic row remains Partial.
 
-All retained frontier and q-series PDFs predate this semantic union.  They
+The synchronized canonical-frontier PDF above and the current 395-page
+q-series master display this semantic union.  Other retained subgroup PDFs
 remain historical publication checkpoints and must not be cited as displaying
-the present theorem promotions until their live sources are rebuilt and
-inspected.
+later source changes unless their own package records current parity.
 
 The current finite-moment/Legendre/Gaunt crosswalk covers eleven modules with
 20 public definitions and 109 public theorems, 129 declarations in all. The
@@ -167,8 +176,10 @@ The draft inboxes under [`drafts/`](drafts/) are grouped thematically
 (2026-08-28): `rvachev_up_fourier_decay/` (the Fourier-decay corpus),
 `thue-morse/`, `exponents-and-q-series/`, `spectra-and-arithmetic/`,
 `integration-and-transforms/`, `inverse-and-sampling/`,
-`representations/`, `frontier-compilations/`, and `lambert-w/` (added
-when four articles on the Lambert W function itself arrived), with new
+`representations/`, `frontier-compilations/`, `lambert-w/` (added
+when four articles on the Lambert W function itself arrived), and
+`series-and-transseries/` (added 2026-09-02 for packages about the
+formal-series calculus itself), with new
 archives arriving through `drafts/incoming/` (see its README for the
 protocol).
 
@@ -185,13 +196,16 @@ revisions remain in the package's
 [`PROVENANCE.md`](drafts/inverse-and-sampling/Inverse_Fabius_Analyticity_Asymptotics_and_Computability/PROVENANCE.md).
 Its retained 134-page, 2,027,726-byte A4 publication has SHA-256
 `22bc68d855ad04dde9654e9fbd20b3ba7f05a33e3c5df0e5b80bb8991c94b41d`.
-It is a fully reviewed historical checkpoint, but the current source changed
-after that render and therefore requires a fresh three-pass build before
-synchronization is claimed. The reviewed concordance classifies 49 source rows
-as Lean-proved and 96 as human-proved frontier results. Its two newest exact
-matches are the forced parity-selected superconvergence corollary and the full
-Appell lattice-reproduction theorem, including its degree-`N+1` selected-phase
-clause.
+The package README records that historical checkpoint's clean three-pass
+build, font preflight, and visual inspection.  The current 23-input source
+closure has SHA-256
+`aedf007c2cd150b1f83de6d8996b4bf31e267b3dbcec2d5cd4720f5d92122bdb`
+and postdates the retained PDF, so a fresh three-pass build is required before
+source/PDF synchronization may be claimed. The reviewed concordance classifies
+49 source rows as Lean-proved and 96 as human-proved frontier results. Its two
+newest exact matches are the forced parity-selected superconvergence corollary
+and the full Appell lattice-reproduction theorem, including its degree-`N+1`
+selected-phase clause.
 
 Later the same day the groups other than the Fourier-decay corpus were
 **consolidated into volumes**, in two styles: the original members were
@@ -272,7 +286,26 @@ the Lambert W function itself; they were merged editorially into the
 single consolidated volume `Lambert_W_Guide/` (the most complete
 treatment as the body, the other three's unique layers in a
 complements section, a four-way concordance, and a corpus-role
-section tying W₋₁ to the endpoint theory).  By the same precedent, a
+section tying W₋₁ to the endpoint theory).  Six polynomial-logarithmic
+transseries articles that arrived on 2026-09-01 were filed in that group
+too, since Lambert W is their guiding example; because their subject is
+the transseries calculus rather than the function, they were regrouped on
+2026-09-02 into the new `series-and-transseries/` group, under its
+`polynomial-logarithmic-transseries/` subgroup.  That move was verbatim —
+no source or PDF changed — and the same day the six were merged editorially
+into the single canonical volume *Polynomial–Logarithmic Transseries:
+Algebra, Composition, Series Reversal, and the Lambert W Archetype* (412 A4
+pages).  None of the six was a superset of the others and each contributed a
+layer no other supplied, so the merge kept every distinct result and collapsed
+only repetition.  Every statement in the volume carries a proof: where a source
+asserted a result without one it was supplied, and where a source claimed
+analytic validity on the strength of formal algebra the claim was weakened to
+what the algebra establishes, each repair marked at the point of repair and
+collected in the volume's ledger.  Its formalization register records what the
+Lean corpus does and does not cover, distinguishing a formalized *neighbour* —
+the corpus proves Lagrange inversion and the Lambert series at the **origin**,
+while this volume works at **infinity** — from actual coverage.  The absorbed
+directories were deleted after a residue audit.  By the same precedent, a
 standalone reference monograph on q-Pochhammer symbols and q-binomial
 coefficients — the machinery consumed by the exponents
 volume's Parts II/VI/VII and the formalized Gaussian-binomial core —

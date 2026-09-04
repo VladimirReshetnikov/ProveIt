@@ -1,0 +1,1905 @@
+\documentclass[11pt]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage[margin=1.02in,headheight=14pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,bm,mathrsfs}
+\usepackage{booktabs,array,longtable,tabularx}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage[most]{tcolorbox}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\usepackage[nameinlink,capitalise,noabbrev]{cleveref}
+\usepackage{listings}
+\usepackage{url}
+
+\definecolor{DeepBlue}{HTML}{17365D}
+\definecolor{Teal}{HTML}{0B6E75}
+\definecolor{LightBlue}{HTML}{EAF3F8}
+\definecolor{LightTeal}{HTML}{EAF7F5}
+\definecolor{WarmGray}{HTML}{F5F3EF}
+\definecolor{DarkGray}{HTML}{353A40}
+\definecolor{Accent}{HTML}{9B4D26}
+\definecolor{CodeBack}{HTML}{F4F5F7}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=DeepBlue,
+  citecolor=Teal,
+  urlcolor=Accent,
+  pdftitle={Rademacher Towers and the Asymptotic Inverse of the Partition Numbers},
+  pdfauthor={Research note prepared for Vladimir Reshetnikov},
+  pdfsubject={Full asymptotic transseries for partition numbers and their inverse},
+  pdfkeywords={partition numbers, Rademacher series, transseries, Lambert W, inverse asymptotics, Bell polynomials, Dedekind sums}
+}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\textsc{Partition-Number Transseries}}
+\fancyhead[R]{\small\textsc{Rademacher Towers and Inversion}}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.55em}
+\setlist[itemize]{topsep=0.25em,itemsep=0.2em,leftmargin=1.6em}
+\setlist[enumerate]{topsep=0.25em,itemsep=0.25em,leftmargin=1.8em}
+\allowdisplaybreaks
+\numberwithin{equation}{section}
+
+\newtheoremstyle{mainthm}
+  {0.8em}{0.8em}{\itshape}{}{\color{DeepBlue}\bfseries}{.}{0.55em}{}
+\theoremstyle{mainthm}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+
+\newtheoremstyle{defstyle}
+  {0.7em}{0.7em}{}{}{\color{Teal}\bfseries}{.}{0.55em}{}
+\theoremstyle{defstyle}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{algorithm}[theorem]{Algorithm}
+
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{problem}[theorem]{Problem}
+
+\newtcolorbox{resultbox}[1][]{
+  enhanced,breakable,
+  colback=LightBlue,colframe=DeepBlue,
+  boxrule=0.7pt,arc=1.5mm,
+  left=2mm,right=2mm,top=1.5mm,bottom=1.5mm,
+  title={#1},fonttitle=\bfseries
+}
+\newtcolorbox{methodbox}[1][]{
+  enhanced,breakable,
+  colback=LightTeal,colframe=Teal,
+  boxrule=0.6pt,arc=1.5mm,
+  left=2mm,right=2mm,top=1.5mm,bottom=1.5mm,
+  title={#1},fonttitle=\bfseries
+}
+\newtcolorbox{warningbox}[1][]{
+  enhanced,breakable,
+  colback=WarmGray,colframe=Accent,
+  boxrule=0.6pt,arc=1.5mm,
+  left=2mm,right=2mm,top=1.5mm,bottom=1.5mm,
+  title={#1},fonttitle=\bfseries
+}
+
+\lstset{
+  language=Python,
+  basicstyle=\ttfamily\footnotesize,
+  backgroundcolor=\color{CodeBack},
+  frame=single,
+  rulecolor=\color{DarkGray},
+  breaklines=true,
+  columns=fullflexible,
+  showstringspaces=false,
+  keywordstyle=\bfseries\color{DeepBlue},
+  commentstyle=\itshape\color{Teal},
+  numbers=left,
+  numberstyle=\scriptsize\color{DarkGray},
+  xleftmargin=1.2em,
+  framexleftmargin=0.8em
+}
+
+\newcommand{\e}{\mathrm e}
+\newcommand{\ii}{\mathrm i}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\cO}{\mathcal O}
+\newcommand{\W}{W}
+\newcommand{\Res}{\operatorname{Res}}
+\newcommand{\Log}{\operatorname{Log}}
+\newcommand{\sgn}{\operatorname{sgn}}
+\newcommand{\coeff}[2]{\left[#1\right]#2}
+\newcommand{\abs}[1]{\left|#1\right|}
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+\newcommand{\set}[1]{\left\{#1\right\}}
+\newcommand{\paren}[1]{\left(#1\right)}
+\newcommand{\bracks}[1]{\left[#1\right]}
+\newcommand{\floor}[1]{\left\lfloor#1\right\rfloor}
+\newcommand{\ceil}[1]{\left\lceil#1\right\rceil}
+\newcommand{\A}{\mathcal A}
+\newcommand{\Bbell}{\mathcal B}
+\newcommand{\Ybell}{\mathcal Y}
+\newcommand{\Rtail}{\mathcal R}
+\newcommand{\Pcal}{\mathcal P}
+\newcommand{\Ncal}{\mathcal N}
+\newcommand{\Zrad}{\mathcal Z}
+\newcommand{\Dop}{\mathscr D}
+
+\title{\vspace{-2.0em}\textbf{Rademacher Towers and the Asymptotic Inverse of the Partition Numbers}\\[0.35em]
+\large Exact root-of-unity sectors, all-order coefficient formulae, Lambert--\(W\) reversion, and the discrete staircase}
+\author{Research note prepared for Vladimir Reshetnikov\\
+\small ProveIt series-and-transseries project}
+\date{September 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Let \(p(n)\) be the unrestricted partition number, OEIS A000041.  The usual Hardy--Ramanujan formula records only the dominant exponential scale.  The exact Rademacher series reveals a much richer object: a countable tower of root-of-unity sectors with periodic Dedekind-sum amplitudes.  Introduce
+\[
+ N=n-\frac1{24},\qquad
+ \mu=\pi\sqrt{\frac{2N}{3}}=\frac{\pi}{6}\sqrt{24n-1},
+ \qquad D=\frac{\pi^2}{6\sqrt3}.
+\]
+We prove the exact sector decomposition
+\[
+ p(n)=D\mu^{-3}\sum_{k\ge1}A_k(n)\sqrt{k}
+ \left[\left(\frac\mu k-1\right)\e^{\mu/k}
+       +\left(\frac\mu k+1\right)\e^{-\mu/k}\right].
+\]
+Thus every fixed Rademacher sector has only two algebraic prefactors in the natural shifted variable.  Re-expansion in unshifted \(n\) gives, for \(\sigma=\pm1\),
+\[
+ \frac{A_k(n)}{4\sqrt3\sqrt{k}\,n}\e^{\sigma\pi\sqrt{2n/3}/k}
+ \sum_{t\ge0}\omega_t^{(k,\sigma)}n^{-t/2},
+\]
+where the series is sectorwise convergent and
+\[
+ \omega_t^{(k,\sigma)}=
+ \frac{1}{(-4\sqrt6)^t}
+ \sum_{j=0}^{\floor{(t+1)/2}}
+ \binom{t+1}{j}\frac{t+1-j}{(t+1-2j)!}
+ \left(\frac{\sigma\pi}{6k}\right)^{t-2j}.
+\]
+This simultaneously generalizes the known all-order Poincare coefficients of the dominant sector and supplies the coefficients of every exponentially small sector.
+
+A sequence has no unique ordinary inverse, so we treat three objects separately: a natural entire trigonometric interpolation of the Rademacher amplitudes and its eventually increasing real inverse, a holomorphic deformation inverse, and the generalized inverse of the integer sequence.  For the dominant shifted envelope
+\[
+ F(\mu)=D\e^\mu\frac{\mu-1}{\mu^3},
+\]
+put
+\[
+ q=-2W_{-1}\!\left(-\frac{\pi}{\sqrt{24\sqrt3\,Y}}\right).
+\]
+The exact envelope inverse is \(\mu=q+\delta(q)\), where
+\[
+ \delta(q)\sim\sum_{r\ge1}d_rq^{-r},\qquad
+ \delta=3\log(1+q^{-1}\delta)
+        -\log\bigl(1+q^{-1}(\delta-1)\bigr).
+\]
+We give a triangular ordinary-Bell-polynomial formula for every \(d_r\), a signed-Stirling formula for the subsequent nested-logarithm expansion, and explicit coefficients through high order.
+
+Finally, the inverse of the full Rademacher interpolation is obtained by an exact additive Lagrange--Buermann expansion around \(F^{-1}\).  Every inverse transmonomial has a finite residue formula and an equivalent complete/partial Bell-polynomial formula.  The first correction from sector \((k,\sigma)\) is
+\[
+ -\frac{3\widetilde A_k(n(\mu))}{\pi^2\sqrt{k}}
+ \frac{\mu^2(\mu-\sigma k)}{\mu^2-3\mu+3}
+ \e^{-(1-\sigma/k)\mu}.
+\]
+The positive-sector actions \(1-1/k\) approach \(1\) from below, whereas the negative-sector actions \(1+1/k\) approach it from above.  We show why this accumulation forces a grouped Rademacher resummation at action \(1\), and provide that completion both as the exact convergent Rademacher tail and as a Kloosterman-zeta power series.  The integer generalized inverse is the ceiling of the smooth inverse and therefore contains an unavoidable order-one sawtooth sector.
+\end{abstract}
+
+\tableofcontents
+\bigskip
+
+\section{Introduction}
+
+\subsection{The problem and the meaning of ``inverse''}
+
+The unrestricted partition number \(p(n)\) counts decompositions of the nonnegative integer \(n\) into positive summands, with order ignored.  Its ordinary generating function is
+\begin{equation}\label{eq:euler-product}
+ \sum_{n=0}^{\infty}p(n)q^n=\prod_{m=1}^{\infty}\frac1{1-q^m},
+ \qquad |q|<1.
+\end{equation}
+The first terms are
+\[
+ 1,1,2,3,5,7,11,15,22,30,42,\ldots.
+\]
+The classical leading asymptotic is
+\begin{equation}\label{eq:HR-leading}
+ p(n)\sim\frac{1}{4\sqrt3\,n}
+ \exp\!\left(\pi\sqrt{\frac{2n}{3}}\right).
+\end{equation}
+Formula \eqref{eq:HR-leading} is excellent as a first approximation, but it suppresses two structures needed for a genuine transseries:
+\begin{enumerate}
+\item the complete inverse-power expansion attached to the dominant exponential;
+\item all exponentially smaller root-of-unity sectors, whose amplitudes are periodic arithmetic functions of \(n\).
+\end{enumerate}
+Rademacher's convergent refinement of the Hardy--Ramanujan circle method contains both.
+
+The word \emph{inverse} is ambiguous for a sequence.  We shall distinguish:
+\begin{enumerate}
+\item a smooth inverse \(\Ncal(Y)\) of a specified real interpolation \(\Pcal(x)\) satisfying \(\Pcal(n)=p(n)\);
+\item a locally holomorphic inverse of a deformation of the same interpolation;
+\item the generalized inverse of the increasing integer sequence,
+\begin{equation}\label{eq:discrete-inverse-def}
+ p^{\leftarrow}(Y)=\min\set{n\in\mathbb Z_{\ge0}:p(n)\ge Y};
+\end{equation}
+\item the reciprocal \(1/p(n)\), which is sometimes informally called an inverse but is mathematically a different object.
+\end{enumerate}
+The first two possess exponentially refined transseries.  The third differs from the smooth inverse by a bounded rounding term, which is much larger than every exponentially small Rademacher sector.  The fourth follows by ordinary multiplicative transseries inversion and is included for completeness.
+
+\subsection{Four asymptotic layers}
+
+The natural large coordinate is not \(n\) itself but
+\begin{equation}\label{eq:mu-def}
+ N=n-\frac1{24},\qquad
+ B=\pi\sqrt{\frac23},\qquad
+ \mu=B\sqrt N=\frac\pi6\sqrt{24n-1},
+ \qquad D=\frac{\pi^2}{6\sqrt3}.
+\end{equation}
+For the inverse problem \(Y\to+\infty\), one has
+\[
+ \mu\asymp\log Y,
+ \qquad n\asymp(\log Y)^2.
+\]
+The analysis has four layers.
+
+\begin{enumerate}
+\item \textbf{Shifted algebraic layer.}  In \(\mu\), every fixed Rademacher sector has exactly two elementary prefactors.
+\item \textbf{Unshifted half-power layer.}  Replacing \(N\) by \(n\) generates convergent series in \(n^{-1/2}\), with coefficients given by a finite binomial sum.
+\item \textbf{Lambert-logarithmic inverse layer.}  The dominant inverse is carried by the branch \(W_{-1}\), followed by convergent corrections in \(1/W_{-1}\) and then by nested logarithms.
+\item \textbf{Arithmetic transmonomial layer.}  Root-of-unity sectors become exponentially small, periodically or chirp-modulated corrections to the inverse.
+\end{enumerate}
+The root-of-unity actions accumulate at \(1\).  Consequently, the full answer is naturally a \emph{Rademacher tower}: finite action truncations below the accumulation level, followed by an exact grouped tail rather than an illegally reordered sum of individual exponentials.
+
+\subsection{Main formulae at a glance}
+
+\begin{resultbox}[Forward and inverse carriers]
+The dominant forward envelope and its Lambert carrier are
+\begin{align}
+ F(\mu)&=D\e^\mu\frac{\mu-1}{\mu^3},\label{eq:F-intro}\\
+ q(Y)&=-2W_{-1}\!\left(-\frac12\sqrt{\frac{D}{Y}}\right)
+      =-2W_{-1}\!\left(-\frac{\pi}{\sqrt{24\sqrt3\,Y}}\right).
+ \label{eq:q-intro}
+\end{align}
+If \(u(Y)=F^{-1}(Y)\), then
+\begin{equation}\label{eq:u-intro}
+ u=q+\frac1q+\frac{5}{2q^2}+\frac{13}{3q^3}
+   +\frac{53}{12q^4}-\frac{14}{5q^5}-\frac{763}{30q^6}+\cdots,
+\end{equation}
+and the dominant smooth inverse in the original index is
+\begin{equation}\label{eq:N0-intro}
+ N_0(Y)=\frac1{24}+\frac{3u(Y)^2}{2\pi^2}.
+\end{equation}
+All root-of-unity corrections are generated by the additive reversion formula of \cref{thm:additive-LB}.
+\end{resultbox}
+
+\subsection{Conventions}
+
+All logarithms of positive real variables are natural.  The Lambert branch \(W_{-1}\) is the real branch satisfying \(W_{-1}(x)\le-1\) for \(-\e^{-1}\le x<0\).  The symbol \([z^n]H(z)\) denotes coefficient extraction.  Unless explicitly called convergent, an expansion is a Poincare expansion: the truncation order is fixed before the large-variable limit is taken.
+
+The arithmetic factor \(A_k(n)\) is periodic modulo \(k\).  Therefore coefficients in the forward Rademacher tower are not constants but periodic sequences.  Under smooth inversion those periodic factors become bounded oscillatory functions of a logarithmic-square phase.
+
+\section{Coefficient calculus used throughout}\label{sec:coefficient-calculus}
+
+This section fixes the Bell-polynomial and coefficient-extraction conventions.  They agree with the operational viewpoint of the ProveIt \emph{Combinatorial Coefficient Calculus} draft \cite{ProveItCCC}.
+
+\subsection{Ordinary partial Bell coefficients}
+
+\begin{definition}[Ordinary partial Bell coefficient]
+For a sequence \(x_1,x_2,\ldots\), define
+\begin{equation}\label{eq:ordinary-bell-def}
+ \widehat B_{n,k}(x_1,x_2,\ldots)
+ =[z^n]\left(\sum_{j\ge1}x_jz^j\right)^k.
+\end{equation}
+Equivalently,
+\begin{equation}\label{eq:ordinary-bell-sum}
+ \widehat B_{n,k}(x)=
+ \sum_{\substack{m_1,m_2,\ldots\ge0\\
+                 \sum_jm_j=k,\ \sum_jjm_j=n}}
+ \frac{k!}{\prod_jm_j!}\prod_jx_j^{m_j}.
+\end{equation}
+We use \(\widehat B_{0,0}=1\), and it is zero when the constraints are impossible.
+\end{definition}
+
+If \(X(z)=\sum_{j\ge1}x_jz^j\), then for arbitrary \(\alpha\)
+\begin{equation}\label{eq:potential-coeff}
+ [z^n](1+X(z))^\alpha
+ =\sum_{k=0}^{n}\binom{\alpha}{k}\widehat B_{n,k}(x_1,x_2,\ldots).
+\end{equation}
+This is merely the binomial theorem followed by coefficient extraction, but it is the basic engine for all power, reciprocal, and composition coefficients below.
+
+\subsection{Exponential Bell polynomials and logarithmic jets}
+
+The exponential partial Bell polynomial is
+\begin{equation}\label{eq:exp-bell-def}
+ B_{n,k}(x_1,x_2,\ldots)=
+ n!\sum_{\substack{m_1,m_2,\ldots\ge0\\
+                 \sum_jm_j=k,\ \sum_jjm_j=n}}
+ \prod_j\frac1{m_j!}\left(\frac{x_j}{j!}\right)^{m_j}.
+\end{equation}
+The two normalizations satisfy
+\begin{equation}\label{eq:bell-normalization-relation}
+ \widehat B_{n,k}(x_1,x_2,\ldots)
+ =\frac{k!}{n!}B_{n,k}(1!x_1,2!x_2,\ldots).
+\end{equation}
+The complete exponential Bell polynomial is
+\begin{equation}\label{eq:complete-bell}
+ \Ybell_n(x_1,\ldots,x_n)=\sum_{k=0}^{n}B_{n,k}(x_1,\ldots,x_{n-k+1}).
+\end{equation}
+It packages logarithmic differentiation:
+\begin{equation}\label{eq:exp-derivative-bell}
+ \frac{\dd^n}{\dd z^n}\e^{g(z)}
+ =\e^{g(z)}\Ybell_n\bigl(g'(z),g''(z),\ldots,g^{(n)}(z)\bigr).
+\end{equation}
+More generally, Faa di Bruno's formula is
+\begin{equation}\label{eq:faa-di-bruno}
+ \frac{\dd^n}{\dd z^n}f(g(z))
+ =\sum_{k=0}^{n}f^{(k)}(g(z))
+ B_{n,k}\bigl(g'(z),g''(z),\ldots\bigr).
+\end{equation}
+
+\subsection{Inverse derivatives}
+
+Suppose \(y=F(u)\), with \(F'(u)\ne0\), and write \(u_j=\dd^ju/\dd y^j\).  Then
+\begin{equation}\label{eq:inverse-derivative-operator}
+ u_1=\frac1{F'(u)},\qquad
+ u_{j+1}=\frac1{F'(u)}\frac{\dd u_j}{\dd u}.
+\end{equation}
+Equivalently, differentiating \(F(u(y))=y\) and using \eqref{eq:faa-di-bruno} gives the triangular Bell recurrence
+\begin{equation}\label{eq:inverse-derivative-bell}
+ u_n=-\frac1{F'(u)}
+ \sum_{k=2}^{n}F^{(k)}(u)
+ B_{n,k}(u_1,u_2,\ldots,u_{n-k+1}),
+ \qquad n\ge2.
+\end{equation}
+These identities turn the all-order inverse-sector formula in \cref{sec:full-inverse} into a finite combinatorial calculation at every order.
+
+\section{Rademacher's exact formula in the natural coordinate}\label{sec:rademacher}
+
+\subsection{Dedekind sums and the arithmetic amplitudes}
+
+For real \(x\), define the sawtooth function
+\begin{equation}\label{eq:sawtooth}
+ ((x))=\begin{cases}
+ x-\floor{x}-\frac12,&x\notin\mathbb Z,\\
+ 0,&x\in\mathbb Z.
+ \end{cases}
+\end{equation}
+For coprime integers \(h,k\) with \(k\ge1\), the Dedekind sum is
+\begin{equation}\label{eq:dedekind-sum}
+ s(h,k)=\sum_{r=1}^{k-1}\left(\left(\frac rk\right)\right)
+                         \left(\left(\frac{hr}{k}\right)\right).
+\end{equation}
+Let \(U_k\) be the reduced residue system \(0\le h<k\), with the convention \(U_1=\set{0}\).  Put
+\begin{equation}\label{eq:Ak-def}
+ A_k(n)=\sum_{h\in U_k}
+ \exp\!\left(\pi\ii s(h,k)-\frac{2\pi\ii hn}{k}\right),
+ \qquad s(0,1)=0.
+\end{equation}
+Pairing \(h\) with \(k-h\) shows that \(A_k(n)\) is real for integer \(n\).  It is periodic modulo \(k\), and the elementary estimate
+\begin{equation}\label{eq:Ak-trivial-bound}
+ |A_k(n)|\le\varphi(k)\le k
+\end{equation}
+will suffice for all convergence arguments in this article.  Sharper Weil-type estimates are available but are not needed.
+
+The first amplitudes are
+\begin{align}
+ A_1(n)&=1,\nonumber\\
+ A_2(n)&=(-1)^n,\nonumber\\
+ A_3(n)&=2\cos\left(\frac\pi{18}-\frac{2\pi n}{3}\right),\nonumber\\
+ A_4(n)&=2\cos\left(\frac\pi8-\frac{\pi n}{2}\right),\label{eq:small-Ak}\\
+ A_5(n)&=2\cos\left(\frac\pi5-\frac{2\pi n}{5}\right)
+        +2\cos\left(\frac{4\pi n}{5}\right),\nonumber\\
+ A_6(n)&=2\cos\left(\frac{5\pi}{18}-\frac{\pi n}{3}\right).\nonumber
+\end{align}
+
+\subsection{The classical convergent series}
+
+\begin{theorem}[Hardy--Ramanujan--Rademacher]\label{thm:rademacher-classical}
+For every integer \(n\ge1\),
+\begin{equation}\label{eq:rademacher-classical}
+ p(n)=\frac1{\pi\sqrt2}\sum_{k=1}^{\infty}A_k(n)\sqrt{k}
+ \frac{\dd}{\dd n}
+ \left[
+ \frac{\sinh\!\left(\dfrac{B}{k}\sqrt{n-\dfrac1{24}}\right)}
+      {\sqrt{n-\dfrac1{24}}}
+ \right],
+ \qquad B=\pi\sqrt{\frac23}.
+\end{equation}
+The series converges to \(p(n)\).
+\end{theorem}
+
+Rademacher's theorem is the classical analytic-number-theoretic input.  It follows by applying the modular transformation of the Dedekind eta function to Ford-circle arcs in the circle method and then evaluating the resulting contour integrals.  Complete proofs may be found in Rademacher's original papers and in Apostol's treatment \cite{Rademacher1937,Rademacher1938,Apostol}.  Everything from \cref{eq:rademacher-classical} onward is derived explicitly here.
+
+\subsection{Exact exponential splitting}
+
+\begin{theorem}[Exact shifted Rademacher tower]\label{thm:shifted-rademacher}
+With \(N,\mu,D\) as in \eqref{eq:mu-def},
+\begin{equation}\label{eq:shifted-rademacher}
+ \boxed{
+ p(n)=D\mu^{-3}\sum_{k=1}^{\infty}A_k(n)\sqrt{k}
+ \left[
+ \left(\frac\mu k-1\right)\e^{\mu/k}
+ +\left(\frac\mu k+1\right)\e^{-\mu/k}
+ \right].}
+\end{equation}
+Equivalently, for \(\sigma\in\set{+1,-1}\), define
+\begin{equation}\label{eq:E-k-sigma-forward}
+ E_{k,\sigma}(n)=
+ \frac{D}{\sqrt{k}}A_k(n)\frac{\mu-\sigma k}{\mu^3}
+ \e^{\sigma\mu/k}.
+\end{equation}
+Then \(p(n)=\sum_{k\ge1}(E_{k,+}+E_{k,-})\), with the two signs grouped for each \(k\).
+\end{theorem}
+
+\begin{proof}
+Set \(N=n-1/24\), so \(\mu=B\sqrt N\) and
+\(
+ \dd\mu/\dd n=B^2/(2\mu).
+\)
+Since
+\[
+ \frac{\sinh(\mu/k)}{\sqrt N}
+ =B\frac{\sinh(\mu/k)}{\mu},
+\]
+one obtains
+\[
+ \frac{\dd}{\dd n}\frac{\sinh(\mu/k)}{\sqrt N}
+ =\frac{B^3}{2\mu^3}
+ \left(\frac\mu k\cosh\frac\mu k-\sinh\frac\mu k\right).
+\]
+The constant simplifies to
+\[
+ \frac1{\pi\sqrt2}\frac{B^3}{2}=\frac{\pi^2}{3\sqrt3}=2D.
+\]
+Finally,
+\[
+ 2\left(y\cosh y-\sinh y\right)
+ =(y-1)\e^y+(y+1)\e^{-y}.
+\]
+Substitution in \eqref{eq:rademacher-classical} gives \eqref{eq:shifted-rademacher}; factoring \(\sqrt{k}/k=1/\sqrt{k}\) gives \eqref{eq:E-k-sigma-forward}.
+\end{proof}
+
+\begin{remark}[Why the shift is decisive]
+In the variable \(n\), the dominant sector is usually displayed as an infinite half-power series.  In the exact variable \(\mu=\pi\sqrt{2(n-1/24)/3}\), each \((k,\sigma)\) sector has only the two factors \(\mu^{-2}\) and \(\mu^{-3}\).  The entire infinite algebraic expansion comes from re-expanding the shift \(n-1/24\).
+\end{remark}
+
+\subsection{Normalization by the dominant envelope}
+
+The \((1,+)\) sector is
+\begin{equation}\label{eq:F-def}
+ F(\mu)=E_{1,+}=D\e^\mu\frac{\mu-1}{\mu^3}
+ =\frac{\e^\mu}{4\sqrt3\,N}\left(1-\frac1\mu\right).
+\end{equation}
+For every other sector define the relative action
+\begin{equation}\label{eq:action-def}
+ a_{k,\sigma}=1-\frac{\sigma}{k}.
+\end{equation}
+Then, for finite Rademacher truncations,
+\begin{equation}\label{eq:normalized-tower}
+ \frac{E_{k,\sigma}}{F}
+ =\frac{A_k(n)}{\sqrt{k}}
+  \frac{\mu-\sigma k}{\mu-1}\e^{-a_{k,\sigma}\mu}.
+\end{equation}
+The positive actions are
+\[
+ \frac12,\frac23,\frac34,\ldots,1-\frac1k,\ldots\uparrow1,
+\]
+whereas the negative actions are
+\[
+ 2,\frac32,\frac43,\ldots,1+\frac1k,\ldots\downarrow1.
+\]
+The second family has no smallest action.  This is the analytic signal that the two signs may not be separated and summed over all \(k\): their cancellation for large \(k\) is essential.
+
+\subsection{A rigorous finite-action truncation theorem}
+
+\begin{theorem}[Rademacher-tail scale]\label{thm:rademacher-tail}
+Fix an integer \(K\ge2\).  As \(\mu\to+\infty\) through integer values of \(n\),
+\begin{equation}\label{eq:rademacher-tail-bound}
+ \sum_{k\ge K}\bigl(E_{k,+}(n)+E_{k,-}(n)\bigr)
+ =\cO_K\!\left(\mu^{-1/2}\e^{\mu/K}\right).
+\end{equation}
+Consequently, relative to \(F(\mu)\), the tail is
+\begin{equation}\label{eq:rademacher-relative-tail}
+ \cO_K\!\left(\mu^{3/2}\e^{-(1-1/K)\mu}\right).
+\end{equation}
+Thus every action cutoff strictly below \(1\) contains only finitely many primary sectors and has an exponentially smaller grouped remainder.
+\end{theorem}
+
+\begin{proof}
+Write
+\[
+ f(y)=(y-1)\e^y+(y+1)\e^{-y}=2(y\cosh y-\sinh y).
+\]
+For \(K\le k\le\mu\), the trivial estimate \eqref{eq:Ak-trivial-bound} and \(y=\mu/k\ge1\) give
+\[
+ \abs{D\mu^{-3}A_k(n)\sqrt{k}f(\mu/k)}
+ \le C\mu^{-2}k^{1/2}\e^{\mu/k}.
+\]
+Summing and using \(\e^{\mu/k}\le\e^{\mu/K}\) gives
+\(
+ \cO(\mu^{-1/2}\e^{\mu/K}).
+\)
+For \(k>\mu\), one has \(0<y<1\) and the Taylor expansion of \(f\) begins with \(2y^3/3\), so \(|f(y)|\le Cy^3\).  The corresponding terms are \(\cO(k^{-3/2})\), whose tail is \(\cO(\mu^{-1/2})\).  This proves \eqref{eq:rademacher-tail-bound}.  Since \(F(\mu)\asymp\e^\mu\mu^{-2}\), division gives \eqref{eq:rademacher-relative-tail}.
+\end{proof}
+
+\begin{warningbox}[The action-one accumulation barrier]
+The separated series \(\sum_kE_{k,+}\) and \(\sum_kE_{k,-}\) are not legitimate global rearrangements of Rademacher's series.  For \(k\gg\mu\), the leading pieces of the two signs cancel through second order in \(\mu/k\).  Below action \(1\), fixed positive sectors may be extracted one by one.  At and beyond action \(1\), the canonical object is the grouped exact tail, or an equivalent resummation such as \cref{thm:zeta-condensation}.
+\end{warningbox}
+
+\subsection{Exact Kloosterman-zeta condensation}
+
+Define, initially for \(\Re s>2\),
+\begin{equation}\label{eq:Zrad-def}
+ \Zrad_n(s)=\sum_{k=1}^{\infty}\frac{A_k(n)}{k^s}.
+\end{equation}
+Absolute convergence follows from \(|A_k(n)|\le k\).  The function \(\Zrad_n\) is a Kloosterman-type Dirichlet series associated with the eta multiplier.
+
+\begin{theorem}[Exact zeta condensation]\label{thm:zeta-condensation}
+For each integer \(n\ge1\),
+\begin{equation}\label{eq:zeta-condensation}
+ \boxed{
+ p(n)=D\sum_{r=1}^{\infty}
+ \frac{4r}{(2r+1)!}\mu^{2r-2}
+ \Zrad_n\!\left(2r+\frac12\right).}
+\end{equation}
+The double series obtained by inserting \eqref{eq:Zrad-def} is absolutely convergent.
+\end{theorem}
+
+\begin{proof}
+The elementary entire expansion
+\begin{equation}\label{eq:f-entire-expansion}
+ (y-1)\e^y+(y+1)\e^{-y}
+ =2(y\cosh y-\sinh y)
+ =\sum_{r=1}^{\infty}\frac{4r}{(2r+1)!}y^{2r+1}
+\end{equation}
+inserted into \eqref{eq:shifted-rademacher} yields \eqref{eq:zeta-condensation} formally.  For \(r\ge1\),
+\[
+ \sum_{k\ge1}|A_k(n)|k^{-2r-1/2}
+ \le\sum_{k\ge1}k^{-2r+1/2}<\infty.
+\]
+The remaining sum over \(r\) is dominated by a constant multiple of
+\(
+ \sum_{r\ge1}r\mu^{2r-2}/(2r+1)!,
+\)
+which converges for every fixed \(\mu\).  Tonelli's theorem therefore justifies interchange of the sums.
+\end{proof}
+
+Formula \eqref{eq:zeta-condensation} is complementary to the exponential tower.  It does not order terms by asymptotic size; rather, it is an exact analytic condensation of all root-of-unity sectors and is useful precisely where the action spectrum accumulates.
+
+\section{All-order half-power expansions for every sector}\label{sec:forward-coefficients}
+
+\subsection{A sectorwise generating function}
+
+Set \(x=n^{-1/2}\).  Since
+\[
+ N=n\left(1-\frac{x^2}{24}\right),
+ \qquad
+ \mu=\frac{B}{x}\sqrt{1-\frac{x^2}{24}},
+\]
+we may factor the unshifted exponential from \eqref{eq:E-k-sigma-forward}.
+
+\begin{theorem}[Sectorwise convergent half-power expansion]\label{thm:sector-generating-function}
+For fixed \(k\ge1\) and \(\sigma=\pm1\),
+\begin{equation}\label{eq:sector-half-power}
+ E_{k,\sigma}(n)=
+ \frac{A_k(n)}{4\sqrt3\sqrt{k}\,n}
+ \exp\!\left(\frac{\sigma B\sqrt n}{k}\right)
+ \sum_{t=0}^{\infty}\omega_t^{(k,\sigma)}n^{-t/2},
+\end{equation}
+where
+\begin{equation}\label{eq:omega-generating}
+ \sum_{t=0}^{\infty}\omega_t^{(k,\sigma)}x^t
+ =\Omega_{k,\sigma}(x)
+ :=\frac{1}{1-x^2/24}
+ \exp\!\left[
+ \frac{\sigma B}{kx}
+ \left(\sqrt{1-\frac{x^2}{24}}-1\right)
+ \right]
+ \left(
+ 1-\frac{\sigma kx}{B\sqrt{1-x^2/24}}
+ \right).
+\end{equation}
+The Taylor series converges for \(|x|<\sqrt{24}\), hence for every real \(n>1/24\).
+\end{theorem}
+
+\begin{proof}
+Using \(D/B^2=1/(4\sqrt3)\), one has
+\[
+ \frac{D}{\sqrt{k}}\frac{\mu-\sigma k}{\mu^3}
+ =\frac{1}{4\sqrt3\sqrt{k}\,n}
+ \frac1{1-x^2/24}
+ \left(1-\frac{\sigma kx}{B\sqrt{1-x^2/24}}\right).
+\]
+Also
+\[
+ \e^{\sigma\mu/k}
+ =\e^{\sigma B/(kx)}
+ \exp\!\left[
+ \frac{\sigma B}{kx}
+ \left(\sqrt{1-x^2/24}-1\right)
+ \right].
+\]
+Multiplication proves \eqref{eq:sector-half-power} and \eqref{eq:omega-generating}.  The apparent singularity at \(x=0\) in the exponential is removable because
+\(
+ (\sqrt{1-x^2/24}-1)/x=-x/48+\cO(x^3).
+\)
+The nearest branch singularities are at \(x=\pm\sqrt{24}\), proving the stated radius.
+\end{proof}
+
+\subsection{Closed finite formula for every coefficient}
+
+\begin{theorem}[General coefficient formula]\label{thm:omega-closed}
+Let
+\begin{equation}\label{eq:a-k-sigma}
+ a=\frac{\sigma\pi}{6k}.
+\end{equation}
+Then, for every \(t\ge0\),
+\begin{equation}\label{eq:omega-closed}
+ \boxed{
+ \omega_t^{(k,\sigma)}=
+ \frac{1}{(-4\sqrt6)^t}
+ \sum_{j=0}^{\floor{(t+1)/2}}
+ \binom{t+1}{j}
+ \frac{t+1-j}{(t+1-2j)!}
+ a^{t-2j}.}
+\end{equation}
+Thus the coefficient of every algebraic order in every positive or negative Rademacher sector is an explicit finite sum.
+\end{theorem}
+
+\begin{proof}
+Put
+\[
+ z=\frac{x}{2\sqrt6},\qquad
+ s=\sqrt{1-z^2},\qquad
+ y=-\frac z2,
+ \qquad q=y^2=\frac{z^2}{4}.
+\]
+Then \eqref{eq:omega-generating} becomes
+\begin{equation}\label{eq:Omega-z-form}
+ \Omega_{k,\sigma}(x)
+ =\frac1{s^2}\exp\!\left(\frac{a(s-1)}z\right)
+ \left(1-\frac{z}{as}\right).
+\end{equation}
+Let
+\begin{equation}\label{eq:Catalan-C}
+ C(q)=\frac{2}{1+\sqrt{1-4q}}.
+\end{equation}
+The elementary generalized-Catalan identity
+\begin{equation}\label{eq:binomial-Catalan-identity}
+ \sum_{j\ge0}\binom{m+2j}{j}q^j
+ =\frac{C(q)^m}{\sqrt{1-4q}}
+\end{equation}
+follows, for example, from Lagrange inversion applied to \(C=1+qC^2\).
+
+Now form the generating series of the right-hand side of \eqref{eq:omega-closed}.  Since \((-4\sqrt6)^{-t}x^t=y^t\), set
+\(
+ m=t+1-2j,
+\)
+so \(t=m+2j-1\).  The weight becomes
+\[
+ \binom{m+2j}{j}\frac{m+j}{m!}a^{m-1}y^{m+2j-1}.
+\]
+The formally excluded pair \((m,j)=(0,0)\) has zero weight and may be restored.  Therefore the sum is
+\begin{align*}
+ &\sum_{m,j\ge0}
+ \binom{m+2j}{j}\frac{m+j}{m!}a^{m-1}y^{m+2j-1}\\
+ &\quad=\sum_{m\ge0}\frac{a^{m-1}y^{m-1}}{m!}
+ \left(mS_m(q)+qS_m'(q)\right),
+ \qquad
+ S_m(q)=\frac{C(q)^m}{\sqrt{1-4q}}.
+\end{align*}
+Summing over \(m\) gives
+\begin{equation}\label{eq:Omega-proof-mid}
+ \frac{C(q)}{\sqrt{1-4q}}\e^{ayC(q)}
+ +\frac{q}{ay}\frac{\dd}{\dd q}
+ \left(\frac{\e^{ayC(q)}}{\sqrt{1-4q}}\right).
+\end{equation}
+With \(q=z^2/4\), one has \(\sqrt{1-4q}=s\),
+\[
+ ayC(q)=-\frac{az}{1+s}=\frac{a(s-1)}z,
+ \qquad
+ C(q)+qC'(q)=\frac1s.
+\]
+A direct simplification of \eqref{eq:Omega-proof-mid} now yields exactly
+\[
+ \frac1{s^2}\e^{a(s-1)/z}\left(1-\frac{z}{as}\right),
+\]
+which is \eqref{eq:Omega-z-form}.  Equality of coefficients proves the theorem.
+\end{proof}
+
+\subsection{Low-order coefficients}
+
+In terms of \(a=\sigma\pi/(6k)\), the first coefficients are
+\begin{align}
+ \omega_0&=1,\nonumber\\
+ \omega_1&=-\frac{\sqrt6(a^2+2)}{24a},\nonumber\\
+ \omega_2&=\frac{a^2+12}{192},\nonumber\\
+ \omega_3&=-\frac{\sqrt6(a^4+36a^2+72)}{13824a},\label{eq:omega-low}\\
+ \omega_4&=\frac{a^4+80a^2+720}{221184},\nonumber\\
+ \omega_5&=-\frac{\sqrt6(a^6+150a^4+3600a^2+7200)}{26542080a},\nonumber\\
+ \omega_6&=\frac{a^6+252a^4+12600a^2+100800}{637009920}.\nonumber
+\end{align}
+For \((k,\sigma)=(1,+1)\), \cref{thm:omega-closed} becomes the compact formula obtained by O'Sullivan and used by Banerjee, Paule, Radu, and Schneider in their error analysis \cite{OSullivanBell,BanerjeeEtAl}:
+\begin{equation}\label{eq:dominant-Poincare}
+ p(n)=\frac{\e^{B\sqrt n}}{4\sqrt3\,n}
+ \left(1+\sum_{t=1}^{R-1}\frac{\omega_t^{(1,+)}}{n^{t/2}}
+ +\cO(n^{-R/2})\right).
+\end{equation}
+The remainder in \eqref{eq:dominant-Poincare} is algebraic notation for a much stronger fact: the entire series in parentheses converges to the exact \((1,+)\) sector, and the difference between that sector and \(p(n)\) is exponentially small, beginning at relative action \(1/2\).
+
+\subsection{The complete forward transseries statement}
+
+For each fixed integer \(K\ge2\), combine \cref{thm:sector-generating-function,thm:rademacher-tail} to obtain
+\begin{align}
+ p(n)
+ &=\sum_{k=1}^{K-1}\sum_{\sigma=\pm1}
+ \frac{A_k(n)}{4\sqrt3\sqrt{k}\,n}
+ \e^{\sigma B\sqrt n/k}
+ \sum_{t=0}^{\infty}\omega_t^{(k,\sigma)}n^{-t/2}
+ \nonumber\\
+ &\quad+\cO_K\!\left(n^{-1/4}
+ \exp\!\left(\frac{B\sqrt n}{K}+\cO(n^{-1/2})\right)\right).
+ \label{eq:full-forward-finite-K}
+\end{align}
+Every displayed algebraic series is convergent.  Equation \eqref{eq:full-forward-finite-K}, together with the exact grouped Rademacher tail as \(K\to\infty\), is the full forward asymptotic Rademacher tower.
+
+\begin{remark}[Periodic coefficients]
+Because \(A_k(n+k)=A_k(n)\), the coefficient of a fixed exponential sector is a periodic sequence rather than a single constant.  One may equivalently split the asymptotics by residue classes of \(n\) modulo the least common multiple of the retained \(k\)'s.  The compact amplitude notation is usually preferable.
+\end{remark}
+
+\section{A natural interpolation and the inverse problem}\label{sec:interpolation}
+
+\subsection{A symmetric entire interpolation of the amplitudes}
+
+A smooth inverse requires an interpolation.  There is no uniquely forced choice, but the finite Fourier form of \(A_k(n)\) supplies a particularly natural one.
+
+For \(k\ge2\), define the entire, \(k\)-periodic function
+\begin{equation}\label{eq:Atilde-def}
+ \widetilde A_k(z)=\frac12\sum_{h\in U_k}
+ \left[
+ \e^{\pi\ii s(h,k)-2\pi\ii hz/k}
+ +\e^{-\pi\ii s(h,k)+2\pi\ii hz/k}
+ \right],
+\end{equation}
+and put \(\widetilde A_1(z)=1\).  It is real for real \(z\).  Since \(A_k(n)\) is real at integer \(n\),
+\begin{equation}\label{eq:Atilde-interpolates}
+ \widetilde A_k(n)=A_k(n),\qquad n\in\mathbb Z.
+\end{equation}
+For example,
+\begin{equation}\label{eq:Atilde2}
+ \widetilde A_2(x)=\cos(\pi x).
+\end{equation}
+
+\subsection{The real Rademacher interpolation}
+
+For real \(x>1/24\), let
+\begin{equation}\label{eq:mu-x}
+ \mu(x)=\frac\pi6\sqrt{24x-1}
+\end{equation}
+and define
+\begin{equation}\label{eq:Pcal-def}
+ \Pcal(x)=D\mu(x)^{-3}\sum_{k=1}^{\infty}\widetilde A_k(x)\sqrt{k}
+ \left[
+ \left(\frac{\mu(x)}k-1\right)\e^{\mu(x)/k}
+ +\left(\frac{\mu(x)}k+1\right)\e^{-\mu(x)/k}
+ \right].
+\end{equation}
+
+\begin{theorem}[Interpolation, regularity, and eventual monotonicity]\label{thm:Pcal-properties}
+The series \eqref{eq:Pcal-def} and all of its derivatives converge locally uniformly on \((1/24,\infty)\).  It defines a real-analytic function satisfying
+\[
+ \Pcal(n)=p(n),\qquad n=1,2,3,\ldots.
+\]
+Moreover, there exists \(x_0\) such that \(\Pcal'(x)>0\) for \(x>x_0\).  Hence \(\Pcal\) has an ordinary real inverse \(\Ncal(Y)\) for all sufficiently large \(Y\).
+\end{theorem}
+
+\begin{proof}
+On a fixed compact complex neighborhood of a real compact interval in \((1/24,\infty)\), every derivative of \(\widetilde A_k\) is \(\cO_r(k)\), uniformly in \(k\), because \(|h/k|\le1\) and the number of reduced residues is at most \(k\).  For fixed bounded \(\mu\), the grouped kernel satisfies
+\[
+ \left(\frac\mu k-1\right)\e^{\mu/k}
+ +\left(\frac\mu k+1\right)\e^{-\mu/k}
+ =\cO(k^{-3}),
+\]
+uniformly with all parameter derivatives.  After multiplication by \(\widetilde A_k\sqrt{k}\), the summand is \(\cO(k^{-3/2})\).  The Weierstrass test proves local uniform convergence of the series and its derivatives.  Equation \eqref{eq:Atilde-interpolates} and Rademacher's theorem give interpolation.
+
+For large \(x\), the derivative of the dominant term \(F(\mu(x))\) has size \(\asymp\e^\mu\) times a power of \(\mu\), whereas \cref{thm:rademacher-tail} and the same argument after differentiation show that all remaining terms are \(\cO(\e^{\mu/2}\mu^C)\).  The dominant derivative is positive for large \(\mu\), proving eventual strict monotonicity.
+\end{proof}
+
+\begin{remark}[Dependence on interpolation]
+Any smooth interpolation agreeing at the integers has the same dominant inverse expansion through all purely algebraic Lambert-logarithmic orders.  The exponentially small arithmetic sectors do depend on the chosen interpolation between integers.  Formula \eqref{eq:Atilde-def} is singled out here because it is finite-Fourier, entire, real on the real axis, and directly inherited from Rademacher's amplitudes.
+\end{remark}
+
+\subsection{The inverse coordinate}
+
+It is convenient to invert first in \(\mu\).  Define
+\begin{equation}\label{eq:n-of-mu}
+ n(\mu)=\frac1{24}+\frac{3\mu^2}{2\pi^2}.
+\end{equation}
+Then
+\begin{equation}\label{eq:Pmu-decomposition}
+ \Pcal(n(\mu))=F(\mu)+\Rtail(\mu),
+\end{equation}
+where
+\begin{align}
+ \Rtail(\mu)
+ &=D\mu^{-3}(\mu+1)\e^{-\mu}\nonumber\\
+ &\quad+\sum_{k=2}^{\infty}\frac{D\widetilde A_k(n(\mu))}{\sqrt{k}\,\mu^3}
+ \left[(\mu-k)\e^{\mu/k}+(\mu+k)\e^{-\mu/k}\right].
+ \label{eq:Rtail-def}
+\end{align}
+The signs remain grouped in the infinite sum.  If \(u(Y)=F^{-1}(Y)\), the full inverse coordinate has the form
+\begin{equation}\label{eq:mu-full-inverse-form}
+ \mu(Y)=u(Y)+\Delta(Y),
+ \qquad
+ \Ncal(Y)=n(\mu(Y)).
+\end{equation}
+The next two sections first compute \(u\) to all orders and then compute \(\Delta\) to all transseries orders.
+
+\section{Lambert inversion of the dominant envelope}\label{sec:dominant-inverse}
+
+\subsection{The exact Lambert carrier}
+
+Discard for one step the factor \(1-1/\mu\) in \(F\), and define
+\begin{equation}\label{eq:G-def}
+ G(q)=D\frac{\e^q}{q^2}.
+\end{equation}
+The equation \(G(q)=Y\) is exactly soluble.
+
+\begin{proposition}[Lambert carrier]\label{prop:Lambert-carrier}
+For sufficiently large positive \(Y\), the large positive solution of \(G(q)=Y\) is
+\begin{equation}\label{eq:q-def}
+ \boxed{
+ q=q(Y)=-2W_{-1}\!\left(-\frac12\sqrt{\frac DY}\right)
+ =-2W_{-1}\!\left(-\frac{\pi}{\sqrt{24\sqrt3\,Y}}\right).}
+\end{equation}
+Consequently, the leading Hardy--Ramanujan inverse is
+\begin{equation}\label{eq:leading-HR-inverse}
+ n_{\mathrm{HR}}(Y)=\frac{3q(Y)^2}{2\pi^2}
+ =\frac6{\pi^2}
+ W_{-1}\!\left(-\frac{\pi}{\sqrt{24\sqrt3\,Y}}\right)^2.
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+The equation \(D\e^q/q^2=Y\) is equivalent to
+\[
+ \left(-\frac q2\right)\e^{-q/2}=-\frac12\sqrt{\frac DY}.
+\]
+The large positive solution requires \(-q/2\le-1\), hence the branch \(W_{-1}\).  Equation \eqref{eq:leading-HR-inverse} follows from \(n\sim3q^2/(2\pi^2)\).
+\end{proof}
+
+\subsection{Restoring the exact shifted prefactor}
+
+Let \(u(Y)\) be the large positive solution of
+\begin{equation}\label{eq:F-u-Y}
+ F(u)=D\e^u\frac{u-1}{u^3}=Y.
+\end{equation}
+Write
+\begin{equation}\label{eq:u-q-delta}
+ u=q+\delta(q),\qquad t=\frac1q.
+\end{equation}
+
+\begin{theorem}[Implicit equation and convergent correction series]\label{thm:delta-equation}
+The correction \(\delta=\delta(t)\) is the analytic solution near \((t,\delta)=(0,0)\) of
+\begin{align}
+ \e^\delta\bigl(1+t(\delta-1)\bigr)&=(1+t\delta)^3,
+ \label{eq:delta-exponential-equation}\\
+ \delta&=3\log(1+t\delta)-\log\bigl(1+t(\delta-1)\bigr).
+ \label{eq:delta-log-equation}
+\end{align}
+It has a convergent Taylor series
+\begin{equation}\label{eq:delta-series}
+ \delta(t)=\sum_{r=1}^{\infty}d_rt^r.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Substitute \(u=q+\delta=q(1+t\delta)\) into \(F(u)=G(q)\).  Since
+\[
+ u-1=q\bigl(1+t(\delta-1)\bigr),
+ \qquad u^3=q^3(1+t\delta)^3,
+\]
+cancellation gives \eqref{eq:delta-exponential-equation}, and taking the logarithm gives \eqref{eq:delta-log-equation}.  If the latter is written as \(H(t,\delta)=0\), then \(H(0,0)=0\) and \(\partial H/\partial\delta(0,0)=1\).  The analytic implicit-function theorem gives a unique convergent Taylor series.
+\end{proof}
+
+\subsection{General Bell-polynomial recurrence for the envelope coefficients}
+
+For the coefficient sequence \(d=(d_1,d_2,\ldots)\), abbreviate
+\begin{equation}\label{eq:C-r-m-def}
+ C_{s,m}(d)=[t^s]\delta(t)^m
+ =\widehat B_{s,m}(d_1,d_2,\ldots),
+ \qquad C_{0,0}=1.
+\end{equation}
+
+\begin{theorem}[Triangular all-order recurrence]\label{thm:d-recurrence}
+For \(r\ge1\),
+\begin{equation}\label{eq:d-recurrence}
+ \boxed{
+ \begin{aligned}
+ d_r={}&3\sum_{m=1}^{r}\frac{(-1)^{m+1}}m C_{r-m,m}(d)\\
+ &-\sum_{m=1}^{r}\frac{(-1)^{m+1}}m
+ \sum_{j=0}^{m}(-1)^{m-j}\binom mj C_{r-m,j}(d).
+ \end{aligned}}
+\end{equation}
+Every term on the right depends only on \(d_1,\ldots,d_{r-1}\); hence \eqref{eq:d-recurrence} determines all coefficients uniquely by finite arithmetic.
+\end{theorem}
+
+\begin{proof}
+Expand both logarithms in \eqref{eq:delta-log-equation}:
+\[
+ 3\sum_{m\ge1}\frac{(-1)^{m+1}}m t^m\delta^m
+ -\sum_{m\ge1}\frac{(-1)^{m+1}}m t^m(\delta-1)^m.
+\]
+The coefficient of \(t^r\) in the first sum is the first line of \eqref{eq:d-recurrence}.  Expanding
+\[
+ (\delta-1)^m=\sum_{j=0}^m(-1)^{m-j}\binom mj\delta^j
+\]
+gives the second line.  Because every occurrence of \(\delta\) is multiplied by at least one explicit factor of \(t\), no \(d_r\) occurs on the right.
+\end{proof}
+
+The first twelve coefficients are
+\begin{equation}\label{eq:d-values}
+\begin{aligned}
+ d_1&=1,&
+ d_2&=\frac52,&
+ d_3&=\frac{13}{3},&
+ d_4&=\frac{53}{12},\\
+ d_5&=-\frac{14}{5},&
+ d_6&=-\frac{763}{30},&
+ d_7&=-\frac{2179}{35},&
+ d_8&=-\frac{42289}{630},\\
+ d_9&=\frac{132973}{1260},&
+ d_{10}&=\frac{3449711}{5040},&
+ d_{11}&=\frac{29813143}{18480},&
+ d_{12}&=\frac{496569589}{356400}.
+\end{aligned}
+\end{equation}
+Thus
+\begin{equation}\label{eq:u-q-expanded}
+ u=q+\frac1q+\frac{5}{2q^2}+\frac{13}{3q^3}
+ +\frac{53}{12q^4}-\frac{14}{5q^5}
+ -\frac{763}{30q^6}-\frac{2179}{35q^7}+\cdots.
+\end{equation}
+
+\subsection{The dominant inverse in the original index}
+
+Define
+\begin{equation}\label{eq:N0-def}
+ N_0(Y)=n(u(Y))=\frac1{24}+\frac{3u(Y)^2}{2\pi^2}.
+\end{equation}
+Squaring \eqref{eq:delta-series} gives an immediate all-order coefficient formula.
+
+\begin{proposition}[Coefficients of the envelope inverse]\label{prop:N0-q-coefficients}
+Write
+\begin{equation}\label{eq:N0-q-general}
+ N_0(Y)=\frac{3q^2}{2\pi^2}+b_0+\sum_{m\ge1}b_mq^{-m}.
+\end{equation}
+Then
+\begin{align}
+ b_0&=\frac1{24}+\frac{3d_1}{\pi^2},\label{eq:b0}\\
+ b_m&=\frac{3d_{m+1}}{\pi^2}
+ +\frac{3}{2\pi^2}\sum_{\substack{a+b=m\\a,b\ge1}}d_ad_b,
+ \qquad m\ge1.
+ \label{eq:bm}
+\end{align}
+In particular,
+\begin{align}
+ N_0(Y)
+ &=\frac{3q^2}{2\pi^2}
+ +\left(\frac1{24}+\frac3{\pi^2}\right)
+ +\frac{15}{2\pi^2q}
+ +\frac{29}{2\pi^2q^2}
+ +\frac{83}{4\pi^2q^3}
+ +\frac{559}{40\pi^2q^4}\nonumber\\
+ &\quad-\frac{611}{20\pi^2q^5}
+ -\frac{112459}{840\pi^2q^6}
+ -\frac{101329}{420\pi^2q^7}
+ -\frac{228677}{3360\pi^2q^8}
+ +\cO(q^{-9}).
+ \label{eq:N0-q-expanded}
+\end{align}
+\end{proposition}
+
+\begin{proof}
+Use \(u=q+\sum_{r\ge1}d_rq^{-r}\) in \eqref{eq:N0-def}.  The constant term of \(u^2\) is \(2d_1\).  The coefficient of \(q^{-m}\) is
+\(
+ 2d_{m+1}+\sum_{a+b=m}d_ad_b.
+\)
+Multiplication by \(3/(2\pi^2)\) proves the result.
+\end{proof}
+
+\subsection{Nested logarithms and signed Stirling numbers}
+
+The Lambert form \eqref{eq:q-def} is exact and is the preferred numerical carrier.  For a pure logarithmic transseries, set
+\begin{equation}\label{eq:H-ell-def}
+ H=\log\frac{4Y}{D}
+ =\log\left(\frac{24\sqrt3}{\pi^2}Y\right),
+ \qquad
+ \ell=\log\frac H2.
+\end{equation}
+If \(q=2w\), then \(w-\log w=H/2\).
+
+Let \(s(r,m)\) denote the signed Stirling number of the first kind, defined by
+\begin{equation}\label{eq:signed-stirling}
+ x(x-1)\cdots(x-r+1)=\sum_{m=0}^{r}s(r,m)x^m.
+\end{equation}
+Define the Lambert polynomials
+\begin{equation}\label{eq:Lambert-polynomials}
+ P_r(\ell)=\frac1{r!}\sum_{m=1}^{r}
+ (m-1)!\,s(r,m)\binom r{m-1}\ell^{r-m+1}.
+\end{equation}
+The first five are
+\begin{align}
+ P_1&=\ell,\nonumber\\
+ P_2&=\frac{\ell(2-\ell)}2,\nonumber\\
+ P_3&=\frac{\ell(6-9\ell+2\ell^2)}6,\label{eq:P-first}\\
+ P_4&=-\frac{\ell(3\ell^3-22\ell^2+36\ell-12)}{12},\nonumber\\
+ P_5&=\frac{\ell(12\ell^4-125\ell^3+350\ell^2-300\ell+60)}{60}.
+\end{align}
+The standard large-branch expansion of Lambert \(W\) \cite{CorlessEtAl} becomes
+\begin{equation}\label{eq:q-H-expansion}
+ \boxed{
+ q=H+2\ell+\sum_{r=1}^{\infty}\frac{2^{r+1}P_r(\ell)}{H^r}.}
+\end{equation}
+Formula \eqref{eq:Lambert-polynomials} is itself a complete coefficient formula; it may be derived by substituting
+\(
+ w=x+\log x+\sum_{r\ge1}P_r(\log x)x^{-r}
+\)
+into \(w-\log w=x\) and applying \eqref{eq:potential-coeff}.
+
+Combining \eqref{eq:q-H-expansion} with \eqref{eq:delta-series} gives
+\begin{align}
+ u
+ &=H+2\ell+\frac{4\ell+1}{H}
+ +\frac{-8\ell^2+12\ell+5}{2H^2}
+ +\frac{16\ell^3-60\ell^2+6\ell+13}{3H^3}\nonumber\\
+ &\quad+\frac{-96\ell^4+608\ell^3-552\ell^2-264\ell+53}{12H^4}
+ +\cO\!\left(\frac{\ell^5}{H^5}\right).
+ \label{eq:u-H-expansion}
+\end{align}
+Consequently,
+\begin{align}
+ N_0(Y)
+ &=\frac{3H^2}{2\pi^2}+\frac{6\ell H}{\pi^2}
+ +\frac1{24}+\frac{6\ell^2+12\ell+3}{\pi^2}\nonumber\\
+ &\quad+\frac{3(8\ell^2+16\ell+5)}{2\pi^2H}
+ -\frac{16\ell^3-66\ell-29}{2\pi^2H^2}\nonumber\\
+ &\quad+\frac{32\ell^4-64\ell^3-264\ell^2+32\ell+83}{4\pi^2H^3}
+ +\cO\!\left(\frac{\ell^5}{H^4}\right).
+ \label{eq:N0-H-expansion}
+\end{align}
+
+\subsection{A coefficient extractor for every nested-logarithm order}
+
+Put \(z=H^{-1}\) and define the formal Laurent series
+\begin{align}
+ Q(z,\ell)
+ &=z^{-1}+2\ell+\sum_{r\ge1}2^{r+1}P_r(\ell)z^r,
+ \label{eq:Q-z-def}\\
+ U(z,\ell)
+ &=Q(z,\ell)+\sum_{m\ge1}d_mQ(z,\ell)^{-m},
+ \label{eq:U-z-def}\\
+ V(z,\ell)
+ &=\frac1{24}+\frac{3}{2\pi^2}U(z,\ell)^2.
+ \label{eq:V-z-def}
+\end{align}
+
+\begin{theorem}[All nested-logarithm coefficients]\label{thm:nested-log-coefficients}
+For every fixed order,
+\begin{equation}\label{eq:nested-log-extract}
+ u(Y)\sim U(H^{-1},\ell),
+ \qquad
+ N_0(Y)\sim V(H^{-1},\ell).
+\end{equation}
+Thus the coefficient polynomials are
+\begin{equation}\label{eq:U-V-coefficients}
+ U_r(\ell)=[z^r]U(z,\ell),
+ \qquad
+ V_r(\ell)=[z^r]V(z,\ell).
+\end{equation}
+They are finite combinations of signed Stirling numbers and ordinary partial Bell coefficients.
+\end{theorem}
+
+\begin{proof}
+Equation \eqref{eq:Q-z-def} is exactly \eqref{eq:q-H-expansion}.  Substitution into the convergent formal expansion \eqref{eq:delta-series} gives \eqref{eq:U-z-def}; squaring gives \eqref{eq:V-z-def}.  At any prescribed power of \(z\), only finitely many terms contribute.  More explicitly, if
+\(
+ Q=z^{-1}(1+\sum_{j\ge1}q_j(\ell)z^j),
+\)
+then
+\begin{equation}\label{eq:inverse-power-Q-bell}
+ [z^r]Q^{-m}
+ =\sum_{j=0}^{r-m}\binom{-m}{j}
+ \widehat B_{r-m,j}(q_1,q_2,\ldots),
+ \qquad r\ge m,
+\end{equation}
+by \eqref{eq:potential-coeff}.  This supplies the claimed finite Bell-polynomial construction.
+\end{proof}
+
+\section{The full inverse Rademacher transseries}\label{sec:full-inverse}
+
+\subsection{Additive Lagrange--Buermann reversion}
+
+We now invert
+\begin{equation}\label{eq:full-inverse-equation}
+ Y=F(\mu)+\Rtail(\mu)
+\end{equation}
+about the exact envelope inverse \(u=F^{-1}(Y)\).  Introduce the differential operator
+\begin{equation}\label{eq:Dop-def}
+ \Dop=\frac{\dd}{\dd Y}\bigg|_{u=u(Y)}
+ =\frac1{F'(u)}\frac{\dd}{\dd u}.
+\end{equation}
+
+\begin{theorem}[Additive Lagrange--Buermann formula]\label{thm:additive-LB}
+Let \(F\) and \(R\) be analytic near \(u\), with \(F'(u)\ne0\), and let \(u=F^{-1}(Y)\).  The inverse near \(u\) of
+\(
+ Y=F(\mu)+\varepsilon R(\mu)
+\)
+has the expansion
+\begin{equation}\label{eq:additive-LB}
+ \boxed{
+ \mu(Y;\varepsilon)=u(Y)+
+ \sum_{m=1}^{\infty}\frac{(-\varepsilon)^m}{m!}
+ \Dop^{m-1}\!\left(\frac{R(u)^m}{F'(u)}\right).}
+\end{equation}
+For the partition interpolation, take \(R=\Rtail\) and \(\varepsilon=1\).  For all sufficiently large \(Y\), the series in \(\varepsilon\) converges at \(\varepsilon=1\).
+\end{theorem}
+
+\begin{proof}
+Let \(\gamma\) be a small positively oriented circle around \(u\), enclosing no other zero of \(F(z)-Y\).  The nearby zero of
+\(
+ F(z)-Y+\varepsilon R(z)
+\)
+is
+\[
+ \mu(Y;\varepsilon)=\frac{1}{2\pi\ii}
+ \int_\gamma z\,\dd_z\log\bigl(F(z)-Y+\varepsilon R(z)\bigr).
+\]
+Subtract the corresponding formula for \(u\), expand the logarithm, and integrate by parts.  The coefficient of \(\varepsilon^m\) is
+\begin{equation}\label{eq:LB-residue-mid}
+ \frac{(-1)^m}{m}\Res_{z=u}
+ \frac{R(z)^m}{(F(z)-F(u))^m}.
+\end{equation}
+Under the local change of coordinate \(w=F(z)\), the residue is
+\begin{equation}\label{eq:LB-residue-change}
+ \Res_{z=u}\frac{R(z)^m}{(F(z)-F(u))^m}
+ =\frac1{(m-1)!}
+ \frac{\dd^{m-1}}{\dd Y^{m-1}}
+ \left(\frac{R(u)^m}{F'(u)}\right).
+\end{equation}
+Combining \eqref{eq:LB-residue-mid} and \eqref{eq:LB-residue-change} proves \eqref{eq:additive-LB}.
+
+For the partition problem, \(\Rtail/F=\cO(\mu^C\e^{-\mu/2})\), with the same estimate for finitely many derivatives.  On a sufficiently small fixed relative neighborhood of large \(u\), Rouche's theorem gives one simple zero for all \(|\varepsilon|\le1+\eta\), with \(\eta>0\).  Hence the Taylor series in \(\varepsilon\) converges at \(1\).
+\end{proof}
+
+The first two displacement terms are
+\begin{align}
+ \Delta_1&=-\frac{R}{F'},\label{eq:Delta1-general}\\
+ \Delta_2&=\frac{RR'}{F'^2}-\frac{F''R^2}{2F'^3}.
+ \label{eq:Delta2-general}
+\end{align}
+It is important that \(\Dop^{m-1}\) in \eqref{eq:additive-LB} is an \emph{iterated} operator.  Replacing it by a single ordinary \((m-1)\)-st derivative after pulling out powers of \(F'\) is generally incorrect from order \(m=3\) onward.
+
+\subsection{Multisector coefficient formula}
+
+Let a finite block decomposition of the remainder be
+\begin{equation}\label{eq:R-block-decomposition}
+ R(u)=\sum_{j\in J}E_j(u).
+\end{equation}
+A block may be one primitive Fourier exponential, one complete \((k,\sigma)\) amplitude, or a grouped Rademacher tail.  Introduce independent bookkeeping variables \(\varepsilon_j\) and replace \(R\) by \(\sum_j\varepsilon_jE_j\).  For a finitely supported multi-index \(\bm m=(m_j)_{j\in J}\), write
+\[
+ |\bm m|=\sum_jm_j,
+ \qquad
+ \bm m!=\prod_jm_j!,
+ \qquad
+ E^{\bm m}=\prod_jE_j^{m_j}.
+\]
+
+\begin{theorem}[Coefficient of every inverse transmonomial]\label{thm:multi-LB}
+For \(|\bm m|=M\ge1\), the coefficient of \(\prod_j\varepsilon_j^{m_j}\) in the inverse displacement is
+\begin{equation}\label{eq:multi-LB-operator}
+ \boxed{
+ \Delta_{\bm m}(u)=
+ \frac{(-1)^M}{\bm m!}
+ \Dop^{M-1}\!\left(\frac{E^{\bm m}(u)}{F'(u)}\right).}
+\end{equation}
+Equivalently,
+\begin{equation}\label{eq:multi-LB-residue}
+ \boxed{
+ \Delta_{\bm m}(u)=
+ \frac{(-1)^M(M-1)!}{\bm m!}
+ \Res_{z=u}
+ \frac{E^{\bm m}(z)}{(F(z)-F(u))^M}.}
+\end{equation}
+Both formulae are finite coefficient engines for every prescribed multi-index.
+\end{theorem}
+
+\begin{proof}
+Expand \((\sum_j\varepsilon_jE_j)^M\) in \eqref{eq:additive-LB}.  The multinomial coefficient \(M!/\bm m!\) cancels the \(M!\) in the denominator, proving \eqref{eq:multi-LB-operator}.  Formula \eqref{eq:multi-LB-residue} follows from \eqref{eq:LB-residue-change}.
+\end{proof}
+
+\subsection{Complete Bell-polynomial realization}
+
+Formula \eqref{eq:multi-LB-operator} is already all-orders, but it is useful to make its finite combinatorics explicit.  Let
+\begin{equation}\label{eq:Hm-lambda}
+ H_{\bm m}(u)=\frac{E^{\bm m}(u)}{F'(u)},
+ \qquad
+ \lambda_r^{(\bm m)}(u)=\frac{\dd^r}{\dd u^r}\log H_{\bm m}(u).
+\end{equation}
+Let \(u_r=\dd^ru/\dd Y^r\), generated by \eqref{eq:inverse-derivative-operator} or \eqref{eq:inverse-derivative-bell}.
+
+\begin{theorem}[Bell formula for every multisector coefficient]\label{thm:multi-Bell}
+For \(M=|\bm m|\ge1\),
+\begin{equation}\label{eq:multi-Bell}
+ \boxed{
+ \Delta_{\bm m}(u)=
+ \frac{(-1)^M H_{\bm m}(u)}{\bm m!}
+ \sum_{\ell=0}^{M-1}
+ B_{M-1,\ell}(u_1,u_2,\ldots)
+ \Ybell_\ell\!\left(
+ \lambda_1^{(\bm m)},\ldots,\lambda_\ell^{(\bm m)}
+ \right).}
+\end{equation}
+The conventions \(B_{0,0}=\Ybell_0=1\) make the formula valid for \(M=1\).
+\end{theorem}
+
+\begin{proof}
+By Faa di Bruno,
+\[
+ \frac{\dd^{M-1}}{\dd Y^{M-1}}H_{\bm m}(u(Y))
+ =\sum_{\ell=0}^{M-1}H_{\bm m}^{(\ell)}(u)
+ B_{M-1,\ell}(u_1,u_2,\ldots).
+\]
+Equation \eqref{eq:exp-derivative-bell}, applied to
+\(
+ H_{\bm m}=\exp(\log H_{\bm m}),
+\)
+gives
+\[
+ H_{\bm m}^{(\ell)}=H_{\bm m}
+ \Ybell_\ell(\lambda_1^{(\bm m)},\ldots,\lambda_\ell^{(\bm m)}).
+\]
+Substitute in \eqref{eq:multi-LB-operator}.
+\end{proof}
+
+The formula involves only partial Bell polynomials, complete Bell polynomials, and rational/exponential logarithmic jets.  It is therefore directly implementable in exact symbolic arithmetic.
+
+\subsection{Primitive arithmetic sectors and explicit logarithmic jets}
+
+For \(k\ge2\), \(h\in U_k\), \(\sigma=\pm1\), and \(\epsilon=\pm1\), define a primitive sector of the symmetric interpolation by
+\begin{equation}\label{eq:primitive-E}
+ E_{k,h,\sigma,\epsilon}(u)=
+ \frac{D}{2\sqrt{k}}\frac{u-\sigma k}{u^3}
+ \exp\!\left[
+ \frac{\sigma u}{k}
+ +\ii\epsilon\left(\pi s(h,k)-\frac{2\pi h}{k}n(u)\right)
+ \right].
+\end{equation}
+Summing over \(h,\epsilon\) gives the aggregate \((k,\sigma)\) sector.  The \(k=1\) negative sector is treated separately and has unit amplitude.
+
+Let
+\begin{equation}\label{eq:n-derivatives}
+ n'(u)=\frac{3u}{\pi^2},
+ \qquad n''(u)=\frac3{\pi^2},
+ \qquad n^{(r)}(u)=0\quad(r\ge3).
+\end{equation}
+Then every logarithmic derivative of \eqref{eq:primitive-E} is explicit:
+\begin{equation}\label{eq:e-j-r}
+ \boxed{
+ \begin{aligned}
+ e_{k,h,\sigma,\epsilon;r}(u)
+ &:=\frac{\dd^r}{\dd u^r}\log E_{k,h,\sigma,\epsilon}(u)\\
+ &=(-1)^{r-1}(r-1)!
+ \left[\frac1{(u-\sigma k)^r}-\frac3{u^r}\right]
+ +\delta_{r1}\frac\sigma k
+ -\ii\epsilon\frac{2\pi h}{k}n^{(r)}(u).
+ \end{aligned}}
+\end{equation}
+
+For the envelope,
+\begin{equation}\label{eq:F-prime}
+ F'(u)=D\e^u\frac{u^2-3u+3}{u^4}.
+\end{equation}
+Put
+\begin{equation}\label{eq:rho-pm}
+ \rho_\pm=\frac{3\pm\ii\sqrt3}{2},
+ \qquad u^2-3u+3=(u-\rho_+)(u-\rho_-).
+\end{equation}
+Then
+\begin{equation}\label{eq:f-r-log-Fprime}
+ \boxed{
+ f_r(u):=\frac{\dd^r}{\dd u^r}\log F'(u)
+ =\delta_{r1}+(-1)^{r-1}(r-1)!
+ \left[
+ \frac1{(u-\rho_+)^r}+\frac1{(u-\rho_-)^r}-\frac4{u^r}
+ \right].}
+\end{equation}
+For a primitive multi-index, the jet entering \eqref{eq:multi-Bell} is simply
+\begin{equation}\label{eq:lambda-explicit}
+ \lambda_r^{(\bm m)}
+ =\sum_jm_je_{j;r}-f_r.
+\end{equation}
+Equations \eqref{eq:e-j-r}, \eqref{eq:f-r-log-Fprime}, and the inverse-derivative recurrence \eqref{eq:inverse-derivative-operator} make \eqref{eq:multi-Bell} an explicit general formula with no hidden differentiation.
+
+\subsection{First-order sector corrections}
+
+For the aggregate real sector
+\begin{equation}\label{eq:E-aggregate-u}
+ E_{k,\sigma}(u)=
+ \frac{D\widetilde A_k(n(u))}{\sqrt{k}}
+ \frac{u-\sigma k}{u^3}\e^{\sigma u/k},
+\end{equation}
+formula \eqref{eq:Delta1-general} gives the exact first-order displacement in \(u\).
+
+\begin{proposition}[First inverse correction from \((k,\sigma)\)]\label{prop:first-sector-inverse}
+Let \(a_{k,\sigma}=1-\sigma/k\).  Then
+\begin{align}
+ \Delta_{k,\sigma}^{(1)}(u)
+ &=-\frac{\widetilde A_k(n(u))}{\sqrt{k}}
+ \frac{u(u-\sigma k)}{u^2-3u+3}
+ \e^{-a_{k,\sigma}u},
+ \label{eq:first-u-sector}\\
+ \delta N_{k,\sigma}^{(1)}(u)
+ &=-\frac{3\widetilde A_k(n(u))}{\pi^2\sqrt{k}}
+ \frac{u^2(u-\sigma k)}{u^2-3u+3}
+ \e^{-a_{k,\sigma}u}.
+ \label{eq:first-n-sector}
+\end{align}
+The second formula is the first-order correction to \(n(u)\).
+\end{proposition}
+
+\begin{proof}
+Divide \eqref{eq:E-aggregate-u} by \eqref{eq:F-prime} and insert a minus sign.  This proves \eqref{eq:first-u-sector}.  Since \(n'(u)=3u/\pi^2\), multiplication by \(n'(u)\) proves \eqref{eq:first-n-sector}.
+\end{proof}
+
+Because \(Y=F(u)\),
+\begin{equation}\label{eq:exp-action-to-Y}
+ \e^{-au}=\left(\frac{D(u-1)}{Yu^3}\right)^a.
+\end{equation}
+Therefore every first-order sector may be written as a fractional power of \(Y^{-1}\) times a convergent inverse-power series in \(u\).
+
+\begin{corollary}[All algebraic coefficients inside a first-order sector]\label{cor:first-sector-algebraic}
+Define
+\begin{equation}\label{eq:g-generating}
+ G_{k,\sigma}(z)=
+ \frac{(1-\sigma kz)(1-z)^{a_{k,\sigma}}}{1-3z+3z^2}
+ =\sum_{r=0}^{\infty}g_r^{(k,\sigma)}z^r.
+\end{equation}
+Then
+\begin{equation}\label{eq:first-sector-Y-form}
+ \boxed{
+ \delta N_{k,\sigma}^{(1)}
+ =-\frac{3D^{a_{k,\sigma}}}{\pi^2\sqrt{k}}
+ \widetilde A_k(n(u))Y^{-a_{k,\sigma}}
+ u^{1-2a_{k,\sigma}}
+ \sum_{r=0}^{\infty}g_r^{(k,\sigma)}u^{-r}.}
+\end{equation}
+If
+\begin{equation}\label{eq:c-r-def}
+ \frac1{1-3z+3z^2}=\sum_{r\ge0}c_rz^r,
+ \qquad
+ c_r=\frac{\rho_+^{r+1}-\rho_-^{r+1}}{\rho_+-\rho_-},
+\end{equation}
+then a finite coefficient formula is
+\begin{equation}\label{eq:g-r-finite}
+ g_r^{(k,\sigma)}=
+ \sum_{j=0}^{r}(-1)^j\binom{a_{k,\sigma}}j
+ \left(c_{r-j}-\sigma k\,c_{r-j-1}\right),
+ \qquad c_{-1}=0.
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+Insert \eqref{eq:exp-action-to-Y} into \eqref{eq:first-n-sector}, factor out \(u^{1-2a}\), and set \(z=1/u\).  This gives \eqref{eq:g-generating}.  Expanding \((1-z)^a\) and using \eqref{eq:c-r-def} proves \eqref{eq:g-r-finite}.
+\end{proof}
+
+The leading positive sectors are therefore
+\begin{align}
+ \delta N_{2,+}^{(1)}
+ &\sim-\frac{3^{1/4}}{2\pi}
+ \widetilde A_2(n(u))Y^{-1/2}
+ =-\frac{3^{1/4}}{2\pi}
+ \cos\!\left(\frac\pi{24}+\frac{3u^2}{2\pi}\right)Y^{-1/2},
+ \label{eq:k2-leading}\\
+ \delta N_{3,+}^{(1)}
+ &\sim-\frac{3D^{2/3}}{\pi^2\sqrt3}
+ \widetilde A_3(n(u))Y^{-2/3}u^{-1/3},
+ \label{eq:k3-leading}\\
+ \delta N_{k,+}^{(1)}
+ &\asymp Y^{-(1-1/k)}u^{-1+2/k},
+ \qquad k\ge2.
+ \label{eq:k-general-leading}
+\end{align}
+The cosine in \eqref{eq:k2-leading} exhibits the characteristic \emph{logarithmic-square chirp}: since \(u\sim\log Y\), its phase is quadratic in \(\log Y\) to leading order.
+
+\subsection{From the carrier displacement to the inverse index}
+
+Write the full displacement as
+\begin{equation}\label{eq:Delta-sum}
+ \Delta=\sum_{\bm m\ne0}\Delta_{\bm m}.
+\end{equation}
+Because \(n(u)\) is exactly quadratic,
+\begin{equation}\label{eq:n-Delta-exact}
+ n(u+\Delta)=n(u)+\frac{3u}{\pi^2}\Delta
+ +\frac{3}{2\pi^2}\Delta^2.
+\end{equation}
+Thus the coefficient of a multi-index \(\bm m\) in the smooth inverse \(\Ncal(Y)\) is
+\begin{equation}\label{eq:N-multi-coefficient}
+ \boxed{
+ C_{\bm m}(u)=\frac{3u}{\pi^2}\Delta_{\bm m}(u)
+ +\frac{3}{2\pi^2}
+ \sum_{\substack{\bm a+\bm b=\bm m\\
+                  \bm a\ne0,\ \bm b\ne0}}
+ \Delta_{\bm a}(u)\Delta_{\bm b}(u).}
+\end{equation}
+Together, \eqref{eq:multi-LB-operator} or \eqref{eq:multi-Bell} and \eqref{eq:N-multi-coefficient} give every coefficient of the full inverse transseries.
+
+\subsection{Action bookkeeping and the accumulation level}
+
+For a multi-index built from primitive sectors, define its real action
+\begin{equation}\label{eq:multi-action}
+ \mathfrak a(\bm m)=\sum_jm_ja_j,
+ \qquad a_j=1-\frac{\sigma_j}{k_j}.
+\end{equation}
+After using \eqref{eq:exp-action-to-Y}, its magnitude has the form
+\begin{equation}\label{eq:multi-sector-shape}
+ Y^{-\mathfrak a(\bm m)}
+ u^{\beta(\bm m)}
+ \e^{\ii\Theta_{\bm m}(u)}
+ \sum_{r\ge0}c_{\bm m,r}u^{-r},
+\end{equation}
+where \(\Theta_{\bm m}\) is a finite linear combination of the quadratic phases \(-2\pi h n(u)/k\).  The power \(\beta(\bm m)\) and all \(c_{\bm m,r}\) are produced by \cref{thm:multi-Bell}.
+
+The smallest action is \(1/2\), from \((2,+)\).  Every product of two non-dominant positive sectors has action at least \(1\), because \(1/2+1/2=1\).  Hence the entire strict sub-action-one inverse tower consists only of the first-order positive sectors
+\begin{equation}\label{eq:sub-action-one}
+ (k,+),\qquad k=2,3,4,\ldots,
+ \qquad a=1-\frac1k<1.
+\end{equation}
+At action \(1\), the square of the \(k=2\) sector meets the accumulation of the primary positive tower.  Immediately above \(1\), the negative actions \(1+1/k\) have no least member.  A globally well-ordered list of individually separated exponentials therefore ceases to exist there.
+
+\begin{methodbox}[Canonical full-transseries prescription]
+To compute the inverse through any action \(A<1\), retain the finitely many positive sectors with \(1-1/k\le A\), apply \eqref{eq:first-n-sector}, and use the grouped tail estimate.  To compute at or beyond action \(1\), choose a finite set of explicit sectors and treat the remaining exact Rademacher sum \eqref{eq:Rtail-def} as one resummed block in \eqref{eq:additive-LB}.  The resulting coefficients remain exact and finite.  This is the natural transasymptotic completion of the action accumulation.
+\end{methodbox}
+
+\section{The reciprocal transseries}\label{sec:reciprocal}
+
+Although the principal inverse in this article is functional, the reciprocal has an especially simple all-order form.  Write
+\begin{equation}\label{eq:S-relative}
+ p(n)=F(\mu)(1+S(\mu)),
+ \qquad
+ S=\frac{\Rtail}{F}.
+\end{equation}
+Then
+\begin{equation}\label{eq:reciprocal-master}
+ \frac1{p(n)}=\frac1{F(\mu)}\sum_{m=0}^{\infty}(-S(\mu))^m,
+\end{equation}
+with
+\begin{equation}\label{eq:inverse-F-reciprocal}
+ \frac1{F(\mu)}=\frac1D\e^{-\mu}\frac{\mu^3}{\mu-1}
+ =\frac1D\e^{-\mu}\mu^2\sum_{r=0}^{\infty}\mu^{-r},
+ \qquad \mu>1.
+\end{equation}
+For a finite block decomposition \(S=\sum_jS_j\), the coefficient of the multi-index \(\bm m\) is
+\begin{equation}\label{eq:reciprocal-multi}
+ \frac1F(-1)^{|\bm m|}
+ \frac{|\bm m|!}{\bm m!}\prod_jS_j^{m_j}.
+\end{equation}
+Thus the reciprocal requires no series reversion: it is ordinary multinomial inversion.  The same action-one grouping caveat applies when infinitely many Rademacher sectors are present.
+
+\section{The integer staircase inverse}\label{sec:staircase}
+
+\subsection{Ceiling of the smooth inverse}
+
+The partition numbers are strictly increasing for \(n\ge1\): inject the partitions of \(n\) into those of \(n+1\) by adjoining a part \(1\), and observe that the one-part partition \((n+1)\) is not in the image.  Since \(\Pcal\) is eventually increasing and interpolates all integers, its inverse locates the steps exactly.
+
+\begin{theorem}[Discrete generalized inverse]\label{thm:staircase-ceiling}
+For all sufficiently large \(Y\),
+\begin{equation}\label{eq:staircase-ceiling}
+ \boxed{
+ p^{\leftarrow}(Y)=\ceil{\Ncal(Y)}.}
+\end{equation}
+At an integer value \(Y=p(n)\), both sides equal \(n\).
+\end{theorem}
+
+\begin{proof}
+Let \(m=p^{\leftarrow}(Y)\).  By definition,
+\(
+ p(m-1)<Y\le p(m)
+\)
+(with the evident boundary convention).  Since \(\Pcal\) is increasing and \(\Pcal(j)=p(j)\),
+\[
+ m-1<\Ncal(Y)\le m.
+\]
+Taking the ceiling gives \eqref{eq:staircase-ceiling}.  Equality at \(Y=p(n)\) follows from \(\Ncal(p(n))=n\).
+\end{proof}
+
+For noninteger \(x\), the rounding correction has the Fourier expansion
+\begin{equation}\label{eq:ceiling-Fourier}
+ \ceil{x}-x=\frac12+\frac1\pi\sum_{r=1}^{\infty}\frac{\sin(2\pi r x)}r.
+\end{equation}
+At integers the Fourier series converges to the midpoint value \(1/2\), whereas the ceiling correction is \(0\); this is the usual endpoint convention for a sawtooth.
+
+\begin{warningbox}[Precision hierarchy for the discrete inverse]
+For generic \(Y\), the rounding correction in \eqref{eq:staircase-ceiling} is of order \(1\).  The first arithmetic correction to the smooth inverse is of order \(Y^{-1/2}\).  Therefore exponentially precise analysis of \(\Ncal(Y)\) does not by itself produce a correspondingly smooth expansion of the staircase: the order-one sawtooth is an intrinsic final sector, not an error to be removed.
+\end{warningbox}
+
+\subsection{Inverse along the exact sequence}
+
+When \(Y=p(n)\), the exact smooth inverse is \(n\).  The envelope inverse \(N_0(p(n))\) misses \(n\) by the Rademacher sectors.  For even and odd \(n\), the leading sign is controlled by \(A_2(n)=(-1)^n\), and \eqref{eq:k2-leading} explains the alternating displacement.  Thus inverse asymptotics along the sequence provide a sensitive test of the exponentially small arithmetic terms: after the algebraic Lambert layer is removed, the residual alternates at the predicted \(Y^{-1/2}\) scale.
+
+\section{Numerical verification}\label{sec:numerics}
+
+All calculations in this section use exact integer partition values and high-precision arithmetic.  They are not proofs, but they check constants, signs, phases, and the hierarchy of actions.
+
+\subsection{Forward truncations}
+
+Let
+\[
+ R_k(n)=E_{k,+}(n)+E_{k,-}(n).
+\]
+The next table gives relative errors.  The middle approximation includes the tiny \(k=1\) negative exponential and the complete grouped \(k=2\) term.
+
+\begin{table}[htbp]
+\centering
+\caption{Relative errors of successive forward Rademacher truncations.}
+\label{tab:forward-errors}
+\begin{tabular}{r r r r}
+\toprule
+\(n\) & \((F-p)/p\) & \((F+E_{1,-}+R_2-p)/p\) & add \(R_3\) \\
+\midrule
+10  & \(-8.86224\times10^{-3}\) & \( 1.66058\times10^{-3}\) & \( 3.73914\times10^{-4}\) \\
+20  & \(-1.98138\times10^{-3}\) & \( 9.15512\times10^{-5}\) & \(-1.96849\times10^{-4}\) \\
+50  & \(-7.30736\times10^{-5}\) & \( 3.90276\times10^{-6}\) & \( 2.10496\times10^{-7}\) \\
+100 & \(-1.82200\times10^{-6}\) & \( 8.68377\times10^{-9}\) & \(-4.94912\times10^{-9}\) \\
+200 & \(-9.11203\times10^{-9}\) & \( 2.03560\times10^{-11}\) & \(-1.68882\times10^{-12}\) \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+At modest \(n\), asymptotic truncation need not improve monotonically because periodic amplitudes can suppress or enhance an individual sector.  The exponential hierarchy is nevertheless clear by \(n=50\) and beyond.
+
+\subsection{Inverse truncations}
+
+For \(Y=p(n)\), define:
+\begin{enumerate}
+\item \(n_{\mathrm{HR}}=3q^2/(2\pi^2)\), using only the Lambert carrier;
+\item \(N_0=1/24+3u^2/(2\pi^2)\), using the exact dominant envelope;
+\item \(N_0+\delta N_{2,+}^{(1)}\);
+\item \(N_0+\sum_{k=2}^{5}\delta N_{k,+}^{(1)}\).
+\end{enumerate}
+The table records approximation minus the exact index \(n\).
+
+\begin{table}[htbp]
+\centering
+\caption{Absolute errors of inverse approximations at \(Y=p(n)\).}
+\label{tab:inverse-errors}
+\begin{tabular}{r r r r r}
+\toprule
+\(n\) & \(n_{\mathrm{HR}}-n\) & \(N_0-n\) & add \(k=2\) & add \(k=2,3,4,5\) \\
+\midrule
+20   & \(-4.17190\times10^{-1}\) & \( 8.28615\times10^{-3}\) & \(-3.79027\times10^{-4}\) & \(-1.00811\times10^{-4}\) \\
+50   & \(-3.92109\times10^{-1}\) & \( 4.51024\times10^{-4}\) & \(-2.40871\times10^{-5}\) & \( 7.17374\times10^{-7}\) \\
+100  & \(-3.77665\times10^{-1}\) & \( 1.53780\times10^{-5}\) & \(-7.32923\times10^{-8}\) & \(-2.65803\times10^{-9}\) \\
+200  & \(-3.67761\times10^{-1}\) & \( 1.06239\times10^{-7}\) & \(-2.37334\times10^{-10}\) & \( 4.07720\times10^{-13}\) \\
+500  & \(-3.59342\times10^{-1}\) & \( 4.40423\times10^{-12}\) & \(-3.16676\times10^{-16}\) & \( 6.48882\times10^{-21}\) \\
+1000 & \(-3.55227\times10^{-1}\) & \( 4.29600\times10^{-17}\) & \(-3.17804\times10^{-23}\) & \(-9.97173\times10^{-29}\) \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Two points are worth emphasizing.  First, restoring the exact shifted factor \((1-1/u)\) removes an order-one bias left by the bare Lambert carrier.  Second, the \(k=2\) correction removes the alternating leading residual by many orders of magnitude, exactly as predicted by \eqref{eq:k2-leading}.
+
+\subsection{Residual checks}
+
+For symbolic verification, one may perform three independent checks at any chosen order:
+\begin{enumerate}
+\item substitute \(\sum_{r\le M}d_rq^{-r}\) into \eqref{eq:delta-log-equation} and verify a residual \(\cO(q^{-M-1})\);
+\item expand \(\Omega_{k,\sigma}(x)\) directly and compare with \eqref{eq:omega-closed};
+\item substitute a truncated inverse displacement from \eqref{eq:additive-LB} into \(F(\mu)+\varepsilon R(\mu)-Y\) and verify cancellation through the corresponding power of \(\varepsilon\).
+\end{enumerate}
+These residual tests are more reliable than trusting any printed coefficient table.
+
+\section{Algorithms for exact coefficient generation}\label{sec:algorithms}
+
+\subsection{Forward coefficients}
+
+\begin{algorithm}[Generating \(\omega_t^{(k,\sigma)}\)]
+Given \(t,k,\sigma\), set \(a=\sigma\pi/(6k)\) and evaluate the finite sum \eqref{eq:omega-closed}.  No series manipulation is required.  If exact symbolic dependence on \(k\) is desired, retain \(a\) as an indeterminate.
+\end{algorithm}
+
+\subsection{Envelope inverse coefficients}
+
+\begin{algorithm}[Generating \(d_1,\ldots,d_M\)]
+Initialize \(\delta=0\).  For \(r=1,\ldots,M\), insert the already known coefficients into the right side of \eqref{eq:d-recurrence}; ordinary partial Bell coefficients with total degree at most \(r\) determine \(d_r\).  Equivalently, insert an undetermined \(d_rt^r\) in \eqref{eq:delta-log-equation} and set the coefficient of \(t^r\) to zero.
+\end{algorithm}
+
+\subsection{Full inverse coefficients}
+
+\begin{algorithm}[Generating a prescribed inverse multisector]
+Choose a finite sector/tail block decomposition and a multi-index \(\bm m\).
+\begin{enumerate}
+\item Form the logarithmic jets \(e_{j;r}\) from \eqref{eq:e-j-r} and \(f_r\) from \eqref{eq:f-r-log-Fprime}.
+\item Generate \(u_1,\ldots,u_{M-1}\) from \eqref{eq:inverse-derivative-operator}.
+\item Evaluate the finite Bell sum \eqref{eq:multi-Bell}, or the residue \eqref{eq:multi-LB-residue}.
+\item Convert the \(u\)-displacement to the index coefficient with \eqref{eq:N-multi-coefficient}.
+\item If desired, replace each \(\e^{-au}\) by \eqref{eq:exp-action-to-Y} and expand the remaining rational powers with ordinary partial Bell coefficients.
+\end{enumerate}
+\end{algorithm}
+
+\subsection{Compact exact-arithmetic reference code}
+
+The following SymPy fragment regenerates the forward coefficients and the envelope coefficients without hard-coded tables.
+
+\begin{lstlisting}
+import sympy as sp
+
+
+def omega(t, k=1, sigma=1):
+    """Exact coefficient omega_t^(k,sigma)."""
+    a = sp.Rational(sigma, 1) * sp.pi / (6 * k)
+    total = 0
+    for j in range((t + 1) // 2 + 1):
+        total += (
+            sp.binomial(t + 1, j)
+            * sp.Rational(t + 1 - j, sp.factorial(t + 1 - 2*j))
+            * a**(t - 2*j)
+        )
+    return sp.factor(total / (-4 * sp.sqrt(6))**t)
+
+
+def envelope_coefficients(order):
+    """Return d_1,...,d_order from the defining residual."""
+    t = sp.Symbol("t")
+    d = sp.symbols(f"d1:{order + 1}")
+    delta = sum(d[r-1] * t**r for r in range(1, order + 1))
+    residual = (
+        delta
+        - 3 * sp.log(1 + t*delta)
+        + sp.log(1 + t*(delta - 1))
+    )
+    solution = {}
+    for r in range(1, order + 1):
+        truncated = sp.series(
+            residual.subs(solution), t, 0, r + 1
+        ).removeO().expand()
+        equation = sp.Eq(truncated.coeff(t, r), 0)
+        solution[d[r-1]] = sp.factor(sp.solve(equation, d[r-1])[0])
+    return [solution[x] for x in d]
+
+
+print([omega(t) for t in range(7)])
+print(envelope_coefficients(12))
+\end{lstlisting}
+
+\section{Structural consequences and extensions}\label{sec:extensions}
+
+\subsection{Why the dominant algebraic series converges}
+
+Many asymptotic expansions derived by steepest descent are divergent because neighboring saddles control late coefficients.  Here the standard algebraic expansion of \(p(n)\) is simply the Taylor expansion of the exact shifted \((1,+)\) Rademacher term in \(x=n^{-1/2}\).  Its only nearby singularities come from \(n-1/24=0\), so its radius is exactly \(\sqrt{24}\) in \(x\).  Exponentially small sectors are not encoded in late factorial divergence of this algebraic series; they are supplied independently by other Ford-circle arcs.
+
+\subsection{Transseries with periodic and chirped coefficients}
+
+For a fixed residue class of \(n\), every \(A_k(n)\) is constant once a finite set of \(k\)'s is retained.  In the inverse, however, the canonical interpolation yields factors
+\[
+ \exp\!\left(-\frac{2\pi\ii h}{k}n(u(Y))\right)
+ =\exp\!\left[-\frac{2\pi\ii h}{k}
+ \left(\frac1{24}+\frac{3u(Y)^2}{2\pi^2}\right)\right].
+\]
+These are neither ordinary powers of \(\log Y\) nor fixed-frequency functions of \(\log Y\); they are quadratic logarithmic chirps.  The coefficient calculus remains elementary because their logarithmic derivatives terminate after the second derivative of the phase.
+
+\subsection{Uniform treatment near the action-one barrier}
+
+The exact zeta condensation \eqref{eq:zeta-condensation} suggests a complementary inverse scheme: rather than separating a large number of \(k\)-sectors, evaluate the grouped tail through the Dirichlet values \(\Zrad_x(2r+1/2)\) and use it as one block in \eqref{eq:additive-LB}.  This is particularly attractive when the requested accuracy reaches action \(1\), where individual positive and negative exponential labels cease to provide a well-ordered computational sequence.
+
+A deeper spectral analysis of the Kloosterman-type zeta function may yield uniform hyperasymptotics for this condensation block.  Such a development would connect the present elementary coefficient calculus with the spectral theory of automorphic forms.  The exact Rademacher representation already supplies a complete, rigorous fallback, so this is an optimization problem rather than a gap in the expansion.
+
+\subsection{Other modular coefficient sequences}
+
+The derivation extends almost verbatim to many negative-weight modular forms and eta-quotients admitting Rademacher-type series.  The ingredients are:
+\begin{enumerate}
+\item an exact Bessel or hyperbolic kernel attached to each cusp/root-of-unity sector;
+\item finite Fourier/Kloosterman amplitudes;
+\item a dominant exponential envelope invertible by Lambert \(W\) after an algebraic normalization;
+\item Bell-polynomial coefficient extraction for the remaining prefactors and for additive reversion.
+\end{enumerate}
+The partition function is unusually clean because the Bessel index \(3/2\) reduces the kernel to elementary exponentials, giving exactly two algebraic terms in \(\mu\).
+
+\section{Summary of the complete result}\label{sec:summary}
+
+The requested forward and inverse transseries can be summarized as follows.
+
+\begin{resultbox}[Forward partition-number transseries]
+For every fixed action cutoff below \(1\), \(p(n)\) is the finite sum of the exact sectors \eqref{eq:E-k-sigma-forward} whose actions lie below the cutoff, with grouped remainder bounded by \cref{thm:rademacher-tail}.  Every sector has the convergent unshifted expansion \eqref{eq:sector-half-power}, and every coefficient is the finite sum \eqref{eq:omega-closed}.  At the action-one accumulation, the canonical completion is the exact Rademacher tail, equivalently the zeta condensation \eqref{eq:zeta-condensation}.
+\end{resultbox}
+
+\begin{resultbox}[Smooth functional inverse]
+The dominant inverse is
+\[
+ N_0(Y)=\frac1{24}+\frac{3}{2\pi^2}
+ \left(q+\sum_{r\ge1}d_rq^{-r}\right)^2,
+ \qquad
+ q=-2W_{-1}\!\left(-\frac{\pi}{\sqrt{24\sqrt3\,Y}}\right),
+\]
+where all \(d_r\) are given by \eqref{eq:d-recurrence}.  Its pure logarithmic expansion is generated by the signed-Stirling polynomials \eqref{eq:Lambert-polynomials} and the coefficient extractors \eqref{eq:Q-z-def}--\eqref{eq:V-z-def}.  Every Rademacher correction to the inverse is given by the residue formula \eqref{eq:multi-LB-residue}, equivalently the Bell formula \eqref{eq:multi-Bell}; conversion from \(u\) to the original index is exactly \eqref{eq:N-multi-coefficient}.
+\end{resultbox}
+
+\begin{resultbox}[Discrete inverse]
+For the generalized inverse of the integer sequence,
+\[
+ p^{\leftarrow}(Y)=\ceil{\Ncal(Y)}.
+\]
+The ceiling contributes a bounded sawtooth sector.  It must be retained whenever the desired object is the integer index rather than the smooth interpolating inverse.
+\end{resultbox}
+
+The central simplification is the coordinate \(\mu=\pi\sqrt{2(n-1/24)/3}\).  In that coordinate, the forward problem is elementary sector by sector, while the inverse separates cleanly into a Lambert carrier, a convergent algebraic correction, and an exact additive Rademacher reversion.
+
+\appendix
+
+\section{Additional coefficient tables}\label{app:tables}
+
+\subsection{More forward coefficients}
+
+Continuing \eqref{eq:omega-low}, one finds
+\begin{align}
+ \omega_7&=-\frac{\sqrt6\left(a^8+392a^6+35280a^4+705600a^2+1411200\right)}
+ {107017666560a},\label{eq:omega7}\\
+ \omega_8&=\frac{a^8+576a^6+84672a^4+3386880a^2+25401600}
+ {3424565329920}.
+ \label{eq:omega8}
+\end{align}
+The finite formula \eqref{eq:omega-closed} is preferable beyond these orders.
+
+\subsection{More envelope coefficients}
+
+Beyond \eqref{eq:d-values},
+\begin{align}
+ d_{13}&=-\frac{4334124833}{926640},&
+ d_{14}&=-\frac{509723063851}{21621600},\nonumber\\
+ d_{15}&=-\frac{298798016297}{5896800},&
+ d_{16}&=-\frac{933244850273}{33633600},\label{eq:d13-d16}\\
+ d_{17}&=\frac{4993013022640963}{23156733600},&
+ d_{18}&=\frac{208843210189406957}{231567336000}.\nonumber
+\end{align}
+Their changing signs and eventual growth are irrelevant to formal generation; near \(t=0\), the full \(\delta(t)\) is an ordinary convergent analytic series up to its nearest implicit-function singularity.
+
+\section{A direct proof of the inverse residue formula}\label{app:residue}
+
+For reference, we spell out the residue-to-derivative conversion used in \cref{thm:additive-LB}.  Let \(w=F(z)\), so \(z=u(w)\) and \(\dd z=u'(w)\dd w\).  Then
+\begin{align*}
+ \Res_{z=u}\frac{R(z)^m}{(F(z)-F(u))^m}\dd z
+ &=\Res_{w=Y}
+ \frac{R(u(w))^mu'(w)}{(w-Y)^m}\dd w\\
+ &=\frac1{(m-1)!}
+ \left.\frac{\dd^{m-1}}{\dd w^{m-1}}
+ \bigl(R(u(w))^mu'(w)\bigr)\right|_{w=Y}\\
+ &=\frac1{(m-1)!}
+ \frac{\dd^{m-1}}{\dd Y^{m-1}}
+ \left(\frac{R(u(Y))^m}{F'(u(Y))}\right).
+\end{align*}
+This proves \eqref{eq:LB-residue-change} without any formal-series assumptions.  The multi-index formula follows by multinomial extraction.
+
+\section{Notation crosswalk}\label{app:notation}
+
+\begin{longtable}{p{0.18\textwidth}p{0.72\textwidth}}
+\toprule
+Symbol & Meaning \\
+\midrule
+\endfirsthead
+\toprule
+Symbol & Meaning \\
+\midrule
+\endhead
+\(p(n)\) & unrestricted partition number, OEIS A000041 \\
+\(N=n-1/24\) & modularly natural shifted index \\
+\(B=\pi\sqrt{2/3}\) & Hardy--Ramanujan exponential constant \\
+\(\mu=B\sqrt N\) & shifted exponential coordinate \\
+\(D=\pi^2/(6\sqrt3)\) & normalization in the elementary Rademacher kernel \\
+\(A_k(n)\) & Dedekind-sum/Rademacher amplitude \\
+\(E_{k,\sigma}\) & positive or negative exponential sector for denominator \(k\) \\
+\(a_{k,\sigma}=1-\sigma/k\) & action relative to the dominant sector \\
+\(F(\mu)\) & exact dominant \((1,+)\) envelope \\
+\(q(Y)\) & exact Lambert \(W_{-1}\) carrier solving \(D\e^q/q^2=Y\) \\
+\(u(Y)\) & exact inverse of \(F\) \\
+\(\Pcal(x)\) & symmetric entire-Fourier Rademacher interpolation \\
+\(\Ncal(Y)\) & its eventually defined real inverse \\
+\(\Rtail(\mu)\) & exact grouped non-dominant Rademacher remainder \\
+\(\widehat B_{n,k}\) & ordinary partial Bell coefficient \\
+\(B_{n,k}\) & exponential partial Bell polynomial \\
+\(\Ybell_n\) & complete exponential Bell polynomial \\
+\bottomrule
+\end{longtable}
+
+\begin{thebibliography}{99}
+
+\bibitem{Andrews}
+G.~E. Andrews,
+\emph{The Theory of Partitions},
+Addison--Wesley, 1976; Cambridge University Press reprint, 1998.
+
+\bibitem{Apostol}
+T.~M. Apostol,
+\emph{Modular Functions and Dirichlet Series in Number Theory},
+2nd ed., Graduate Texts in Mathematics 41, Springer, 1990.
+
+\bibitem{BanerjeeEtAl}
+K.~Banerjee, P.~Paule, C.-S.~Radu, and C.~Schneider,
+``Error bounds for the asymptotic expansion of the partition function,''
+preprint, arXiv:2209.07887, 2022.
+
+\bibitem{Comtet}
+L.~Comtet,
+\emph{Advanced Combinatorics: The Art of Finite and Infinite Expansions},
+Reidel, 1974.
+
+\bibitem{CorlessEtAl}
+R.~M. Corless, G.~H. Gonnet, D.~E.~G. Hare, D.~J. Jeffrey, and D.~E. Knuth,
+``On the Lambert \(W\) function,''
+\emph{Advances in Computational Mathematics} \textbf{5} (1996), 329--359.
+
+\bibitem{DLMF}
+NIST Digital Library of Mathematical Functions,
+Section 27.14, ``Unrestricted Partitions,''
+\url{https://dlmf.nist.gov/27.14}.
+
+\bibitem{FlajoletSedgewick}
+P.~Flajolet and R.~Sedgewick,
+\emph{Analytic Combinatorics},
+Cambridge University Press, 2009.
+
+\bibitem{HardyRamanujan}
+G.~H. Hardy and S.~Ramanujan,
+``Asymptotic formulae in combinatory analysis,''
+\emph{Proceedings of the London Mathematical Society} (2)
+\textbf{17} (1918), 75--115.
+
+\bibitem{Lehmer}
+D.~H. Lehmer,
+``On the series for the partition function,''
+\emph{Transactions of the American Mathematical Society}
+\textbf{43} (1938), 271--295.
+
+\bibitem{OEIS}
+OEIS Foundation Inc.,
+``A000041: number of partitions of \(n\),''
+\url{https://oeis.org/A000041}.
+
+\bibitem{OSullivanBell}
+C.~O'Sullivan,
+``De Moivre and Bell polynomials,''
+preprint, arXiv:2203.02868, 2022.
+
+\bibitem{Rademacher1937}
+H.~Rademacher,
+``A convergent series for the partition function \(p(n)\),''
+\emph{Proceedings of the National Academy of Sciences USA}
+\textbf{23} (1937), 78--84.
+
+\bibitem{Rademacher1938}
+H.~Rademacher,
+``On the partition function \(p(n)\),''
+\emph{Proceedings of the London Mathematical Society} (2)
+\textbf{43} (1938), 241--254.
+
+\bibitem{ProveItCCC}
+V.~Reshetnikov,
+\emph{Combinatorial Coefficient Calculus},
+ProveIt research draft, 2026,
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/combinatorial-coefficient-calculus/Combinatorial_Coefficient_Calculus}{online repository}.
+
+\bibitem{ProveItSeries}
+V.~Reshetnikov,
+\emph{Series and Transseries Draft Collection},
+ProveIt research repository, 2026,
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/series-and-transseries}{online repository}.
+
+\end{thebibliography}
+
+\end{document}

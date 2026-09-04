@@ -196,11 +196,12 @@ an exact Lean theorem are kept in the companion volume under
 \path{docs/semi-formalized-research-frontiers/}, not in this primary exposition.
 \end{abstract}
 
-\begin{boxedremark}\textbf{Artifact status (1 September 2026).}\space
-The live facade contains exactly 671 source modules and 8,859 public
-declarations: 61 modules and 541 declarations beyond the 610/8,318 activation
-checkpoint, and 22 modules and 161 declarations beyond the 649/8,698
-publication-union checkpoint.  This source includes the earlier finite and
+\begin{boxedremark}\textbf{Artifact status (3 September 2026).}\space
+The live facade contains exactly 900 source modules and 11,404 unique public
+declarations: 290 modules and 3,086 declarations beyond the 610/8,318 activation
+checkpoint, and 251 modules and 2,706 declarations beyond the 649/8,698
+publication-union checkpoint.  Module headers are complete, while 85 public
+declarations still need documentation comments.  This source includes the earlier finite and
 infinite q-series APIs together with the final Gaussian-palindromic, Jackson
 integral, q-exponential, theta, Jacobi-cubic, logarithmic-derivative,
 order-derivative, universal-polynomial, central-reduction, and cyclotomic-
@@ -210,7 +211,7 @@ the real Jackson q-beta integral, Gaussian upper-index and quantum identities,
 superconvergent Rvachev synthesis, and Gaussian bounds.  The retained
 189-page A4 PDF, SHA-256
 \nolinkurl{de0fc11a0ee45cd5a8942385aea543ec456b869a09e560878b021363a657796c},
-is the validated pre-aed checkpoint for the 659-module/8,769-declaration
+is the validated pre-union checkpoint for the 659-module/8,769-declaration
 source.  It is a historical publication receipt, not a render of the present
 TeX; a fresh strict build is pending.
 \end{boxedremark}
@@ -3986,19 +3987,20 @@ The two summability hypotheses in the comparison theorem are essential
 because the underlying infinite product is totalized outside its admissible
 range.  No spectral-zeta recovery, cumulant-sample recovery, or
 identifiability of an underlying probability law is asserted; those remain
-open interfaces.  With the final concurrent source union, the live facade
-census is exactly 671 modules and 8,859 public declarations.  The current TeX
-contains the six-theorem prime-power companion-row API, the
-zero-definition/three-theorem outer Pochhammer normal-convergence API, the
-two-module/nine-declaration effective-inverse tranche, the preceding six
-q-series modules, the eight-module/fifty-eight-declaration tranche below, the
-two-module/thirteen-theorem central-reduction and cyclotomic-factorization
-layer, the six-module/fifty-declaration extension, the four-module/
-twenty-five-declaration upper-index and quantum tranche, the six new Gaussian
-bounds theorems, and the one-definition/eight-theorem superconvergent
-synthesis API recorded later.  These are source-only overlays; the retained
-189-page pre-union PDF is explicitly historical and has not been regenerated
-for this source.
+open interfaces.  With the latest concurrent source union, the live facade
+census is exactly 900 modules and 11,404 unique public declarations; 85 of
+those declarations still need documentation comments.  The current TeX also
+contains the six-theorem prime-power companion-row API and the
+zero-definition/three-theorem outer Pochhammer normal-convergence API, plus
+the two-module/nine-declaration fixed-depth effective-inverse tranche, the
+eight-declaration rational-gap inverse module, and six new
+q-calculus modules contributing 36 declarations, plus the two source-only
+central-reduction and cyclotomic-factorization modules contributing thirteen
+theorems, and the four-module root-of-unity, q-Lucas, cyclotomic-divisibility,
+and q-Catalan tranche contributing one definition and twenty-five theorems.
+These and the later extensions recorded below are source-only overlays.  The
+retained PDF is explicitly historical and has not been regenerated for the
+present source union.
 
 The six q-calculus module counts are
 \path{QPochhammerInfiniteBounds.lean} (0+5),
@@ -4010,11 +4012,12 @@ The six q-calculus module counts are
 complex order, general basic-hypergeometric summability, and the recursive
 q-multinomial API under their displayed hypotheses.
 The four subsequent module counts are
-\path{GaussianBinomialPalindromic.lean} (0+12),
+\path{GaussianBinomialPalindromic.lean} (0+14),
 \path{JacksonIntegral.lean} (1+7),
 \path{QExponential.lean} (3+8), and
 \path{ThetaQuasiPeriodicity.lean} (1+6).  Their five definitions and
-thirty-three theorems add Gaussian-polynomial degree and palindromicity,
+thirty-five theorems add Gaussian-polynomial degree, palindromicity, and the
+total linear-coefficient classifier,
 q-exponential and q-derivative laws, Jackson integration, and bilateral-theta
 quasi-periodicity and zeros, with all analytic hypotheses displayed.
 
@@ -4214,13 +4217,15 @@ q-Lucas over integral domains, and the integral q-Catalan polynomial with its
 exact degree and Catalan specialization.
 
 The newest interpolation and q-integral module counts are
-\path{NewtonInterpolation.lean} (2+13) and
-\path{QBetaIntegral.lean} (1+8).  Their three definitions and twenty-one
+\path{NewtonInterpolation.lean} (3+19) and
+\path{QBetaIntegral.lean} (1+8).  Their four definitions and twenty-seven
 theorems construct triangular Newton coefficients and interpolants, prove
 evaluation, uniqueness, divided differences, and the geometric-grid formula,
 and evaluate the Jackson q-beta integral in product and q-gamma forms for
 \(0<q<1\) and positive arguments, with symmetry, positivity, and both
-successor recurrences.  No endpoint or \(q\to1\) limit is claimed.
+successor recurrences.  The Newton count includes the node-qualified family
+and all seven definitionally identical \path{newtonInterpolant} compatibility
+declarations.  No endpoint or \(q\to1\) limit is claimed.
 
 The latest three q-series module counts are
 \path{GaussianBinomialInteger.lean} (1+10),
@@ -4232,6 +4237,11 @@ derive the reciprocal finite and generalized complex-order q-binomial series,
 and establish the terminating balanced \({}_3\phi_2\) q-Pfaff--Saalsch\"utz
 summation over a field.  Nonzero nomes and parameters, strict-contraction
 bounds, and every finite-product nonvanishing premise remain explicit.
+The q-Pfaff--Saalsch\"utz surface is exactly
+\lean{finiteQPochhammerIn_ne_zero_of_le},
+\lean{q_pfaff_saalschutz_term}, and \lean{q_pfaff_saalschutz}.  The term
+identity additionally assumes \(k\le n\), and no convergence or limiting
+claim is made.
 
 The zero-definition/five-theorem module
 \path{QuantumMultinomial.lean} then decomposes natural tuple antidiagonals,
@@ -4242,26 +4252,28 @@ each variable and that \(x_jx_i=q(x_ix_j)\) for \(i<j\).  The statement is
 finite and division-free, with no ambient commutativity or convergence
 assumption.
 
-The zero-definition module
-\path{GaussianBinomialBounds.lean} contributes the six new theorems
+The final bound module \path{GaussianBinomialBounds.lean} has no public
+definitions and six theorems:
 \lean{gaussianBinomial_inv}, \lean{one_le_gaussianBinomial},
 \lean{finiteQPochhammerIn_pow_le_one},
 \lean{gaussianBinomial_le_inv_qPochhammerInfIn},
 \lean{pow_le_gaussianBinomial_of_one_lt}, and
-\lean{gaussianBinomial_le_pow_div_of_one_lt}.  Reciprocity is over a field
-with (q\ne0) and (k\le n); the ordered lower bound needs (q\ge0); the
-finite and infinite real-product bounds use respectively (0\le q\le1) and
-(0\le q<1); and the two dimension-dominant estimates assume (Q>1).
-The module proves no fixed-column or central asymptotic and no quantitative
-error term.  It reuses the stronger generic positivity theorem
+\lean{gaussianBinomial_le_pow_div_of_one_lt}.  It evaluates Gaussian
+reciprocity over fields, proves the constant-term lower bound and the uniform
+infinite-q-Pochhammer upper bound for nonnegative real strict contractions,
+and transfers them to reciprocal dimension-dominant two-sided bounds for
+every real \(Q>1\).  The index condition \(k\le n\), nonzero nome for
+reciprocity, and all order and strict-contraction hypotheses remain explicit.
+Its proof
+reuses the stronger ordered-field theorem
 \lean{finiteQPochhammerIn_self_pos} from
-\path{GeneralQConditionNumber.lean}; that declaration is not counted again.
-With these rows and the upper-index and quantum tranche, the
-282-row forward ledger is 90 Exact, 85 Partial, 99 None, and 8 interface
-rows.  In particular q-Lucas remains Partial because Lean proves the
-evaluated primitive-root identity, not a polynomial congruence modulo
-\(\Phi_d\); the Gaussian majorant row is Exact, while the (Q>1) asymptotic
-row remains Partial because only reciprocity and finite bounds are proved.
+\path{GeneralQConditionNumber.lean} rather than exporting a duplicate.
+The rigorous 282-row forward q-series ledger is therefore 90 Exact, 85
+Partial, 99 None, and 8 interface rows.  In particular q-Lucas remains Partial
+because Lean proves the evaluated primitive-root identity rather than the
+polynomial congruence modulo \(\Phi_d\); the Gaussian majorant row is Exact,
+while the \(Q>1\) asymptotic row remains Partial because only reciprocity and
+finite bounds are proved.
 
 On the real axis the origin is the unique global point of unit modulus:
 \begin{equation}
@@ -5784,10 +5796,46 @@ the implication
  |u-v|<d(p)^{-1}\Longrightarrow |g(u)-g(v)|<2^{-p}.
 \]
 It concludes \lean{SequentiallyComputableOn} for \(g\) on the unit interval.
-This is deliberately an inverse-modulus consumer: it does not derive \(d\), or
-the displayed implication, from the paper's positive gap sequence.  In
+This theorem is deliberately an inverse-modulus consumer.  The adjacent
+gap-to-modulus layer below derives such a \(d\) from a supplied computable
+positive rational lower bound for every dyadic forward gap.  In
 particular, the name \lean{effectiveInversionOn_Icc} does not claim an
 arbitrary-endpoint interval algorithm without computable endpoint data.
+
+The module \path{EffectiveGapInverse.lean} exposes exactly four public
+definitions and four public theorems: \lean{EffectivelyUniformContinuousOn},
+the structure
+\lean{ComputablePositiveRationalSequence},
+\lean{ComputablePositiveRationalSequence.value},
+\lean{ComputablePositiveRationalSequence.reciprocalDenominator},
+\lean{ComputablePositiveRationalSequence.reciprocalDenominator_spec},
+\lean{inverseModulus_of_positiveRationalGap},
+\lean{effectiveInversionOn_Icc_of_computablePositiveRationalGap}, and
+\lean{clampedEffectiveInversion_of_computablePositiveRationalGap}.  Its
+sequence consists of computable positive natural numerators and denominators.
+The natural number
+\[
+ \frac{\lean{denominator}(p)}{\lean{numerator}(p)}+1
+\]
+is computable and positive, and its reciprocal is strictly below the encoded
+rational value.  If \(f\) is strictly increasing on \([0,1]\), \(g\) maps that
+interval to itself and is inverse to \(f\) there, and
+\[
+ \alpha(p)\le f(x+2^{-p})-f(x)
+ \qquad (0\le x\le 1-2^{-p}),
+\]
+then \lean{inverseModulus_of_positiveRationalGap} gives the corresponding
+\(2^{-p}\) inverse modulus.  Adding a computable dyadic evaluator for \(f\)
+and the interval map for \(f\) proves both
+\lean{SequentiallyComputableOn} and
+\lean{EffectivelyUniformContinuousOn} for \(g\) on \([0,1]\).
+The final theorem proves exactly
+\[
+ \lean{IsComputableRealFunction}\,(x\mapsto g(\lean{unitClamp}(x))).
+\]
+This clamped extension agrees with \(g\) on \([0,1]\); it does not assert
+computability or continuity of the unclamped values of an arbitrary \(g\)
+outside the unit interval.
 
 The concrete module \path{FabiusInverseComputable.lean} has no public
 definition and exactly one public theorem,
@@ -5802,9 +5850,11 @@ result is the full statement
 \[
  \lean{IsComputableRealFunction}\,(\lean{fabiusInv}\,F\,h_F).
 \]
-Together these two modules expose exactly nine public declarations.  They do
-not add a running-time or input-bit asymptotic theorem, and the generic module
-continues to assume rather than synthesize its inverse modulus.
+The fixed-depth module and Fabius specialization expose exactly nine public
+declarations, while the rational-gap module adds the eight declarations above.
+None adds a running-time or input-bit asymptotic theorem.  The generic
+fixed-depth theorem still consumes its modulus; the gap theorem constructs one
+only after the positive rational gap sequence is supplied.
 
 \subsection{Precise non-elementarity}
 
@@ -7323,7 +7373,7 @@ algebraic identities: they use no quotient formula, cancellation, integral-domai
 characteristic, topology, or convergence hypothesis.
 
 The downstream \path{GaussianBinomialPalindromic.lean} has no public
-definitions and exactly twelve public theorems:
+definitions and exactly fourteen public theorems:
 \lean{reflect_add_of_natDegree_le}, \lean{reflect_one'},
 \lean{gaussianBinomial_natDegree_le},
 \lean{gaussianBinomial_zero_left}, \lean{gaussianBinomial_diag'},
@@ -7331,8 +7381,10 @@ definitions and exactly twelve public theorems:
 \lean{coeff_gaussianBinomial_reflect},
 \lean{coeff_gaussianBinomial_zero},
 \lean{coeff_gaussianBinomial_top},
-\lean{gaussianBinomial_natDegree}, \lean{gaussianBinomial_monic}, and
-\lean{two_mul_derivative_gaussianBinomial_eval_one}.  Over every commutative
+\lean{gaussianBinomial_natDegree}, \lean{gaussianBinomial_monic},
+\lean{two_mul_derivative_gaussianBinomial_eval_one},
+\lean{coeff_gaussianBinomial_one_of_pos_of_lt}, and
+\lean{coeff_gaussianBinomial_one}.  Over every commutative
 semiring the module supplies the two generic reflection helpers, the Gaussian
 degree bound, zero and diagonal values, reflection in degree \(k(n-k)\),
 constant and top coefficients one, bounded-index coefficient reversal, and
@@ -7341,11 +7393,15 @@ the division-free derivative-at-one mean identity
  2\GaussianBinomial{n}{k}{X}'\big|_{X=1}
  = k(n-k)\binom nk .
 \]
-Exact degree and monicity require only that the commutative semiring be
-nontrivial.  Together with the existing row symmetry and reciprocal
-identities, this keeps the canonical forward q-binomial structure theorem
-exact.  No declaration in this surface says that the coefficient of \(q\)
-is one.
+The interior linear coefficient theorem assumes exactly \(0<k<n\) and gives
+coefficient one.  The total theorem classifies it as
+\[
+ [X^1]\GaussianBinomial{n}{k}{X}
+ =\begin{cases}1,&0<k<n,\\0,&\text{otherwise},\end{cases}
+\]
+thereby covering \(k=0\), \(k=n\), and \(n<k\).  Both results hold over every
+commutative semiring, without nontriviality; exact degree and monicity alone
+require the semiring to be nontrivial.
 
 The companion \path{GaussianBinomialPolynomialStructure.lean} has no public
 definitions and exactly five public theorems:
@@ -7360,9 +7416,81 @@ the universal natural-coefficient polynomial
 in that degree.  Under the additional bound \(d\le k(n-k)\), the last theorem
 identifies the coefficients in degrees \(d\) and \(k(n-k)-d\).  Together with
 the row symmetry and reciprocal identities above, this supplies the universal
-natural-coefficient-polynomial form of the same structure theorem.  No
-declaration in this five-theorem surface says that the coefficient of \(q\) is
-one.
+natural-coefficient-polynomial form of the same structure theorem.  The
+adjacent fourteen-theorem module supplies the complete linear-coefficient
+classifier over every commutative semiring.
+
+Two further source-only modules have exhaustive finite-algebra inventories.
+\path{CentralQBinomialReduction.lean} has no definitions and six theorems:
+\lean{finiteQPochhammerIn_mul_neg}, \lean{finiteQPochhammerIn_two_mul},
+\lean{finiteQPochhammerIn_map_ringHom},
+\lean{central_gaussianBinomial_sq_mul_int},
+\lean{central_gaussianBinomial_sq_mul}, and
+\lean{central_gaussianBinomial_sq_div}.  They give sign pairing, even--odd
+dissection, naturality, the integral certificate and division-free central
+squared-base reduction over commutative rings, and its field quotient under
+the two displayed nonvanishing hypotheses.
+\path{CyclotomicFactorization.lean} has no definitions and seven theorems:
+\lean{div_add_div_le_div}, \lean{div_le_div_add_div_add_one},
+\lean{mem_range_and_mem_divisors_iff},
+\lean{finiteQPochhammerIn_X_eq_prod_cyclotomic},
+\lean{finiteQPochhammerIn_X_eq_gaussianBinomial_mul},
+\lean{prod_cyclotomic_pow_div_extend}, and
+\lean{gaussianBinomial_X_eq_prod_cyclotomic}.  These bound the cyclotomic
+exponents by zero and one, reorganize divisor indices, factor the finite
+q-product over commutative rings, and give the final Gaussian factorization
+over an integral domain.
+
+Four further modules supply the exhaustive root-of-unity and q-Catalan layer.
+The zero-definition/three-theorem \path{PrimitiveRootBlock.lean} surface is
+\lean{gaussianBinomial_isPrimitiveRoot_eq_zero},
+\lean{neg_one_pow_mul_pow_choose_two}, and
+\lean{finiteQPochhammerIn_isPrimitiveRoot}.  In a commutative integral domain,
+a primitive \(d\)-th root \(\zeta\) makes
+\(\GaussianBinomial{d}{k}{\zeta}=0\) for \(0<k<d\); for \(d>0\), its top phase is
+\((-1)^d\zeta^{\binom d2}=-1\), and consequently
+\((y;\zeta)_d=1-y^d\).
+
+The zero-definition/eight-theorem \path{QLucas.lean} surface is
+\lean{two_mul_choose_two}, \lean{add_mul_add_sub_one},
+\lean{choose_two_add}, \lean{coeff_finiteQPochhammerIn_neg_X},
+\lean{finiteQPochhammerIn_neg_X_block}, \lean{coeff_block_pow_mul},
+\lean{pow_choose_two_add_mul_eq}, and \lean{gaussianBinomial_q_lucas}.
+The first three are natural-number quadratic identities.  The polynomial
+coefficient and block formulas compare the finite q-binomial expansion with
+complete primitive-root blocks.  If \(d>0\), \(\zeta\) is a primitive
+\(d\)-th root in a commutative integral domain, and \(b,s<d\), the final theorem is
+\[
+ \GaussianBinomial{ad+b}{rd+s}{\zeta}
+   =\binom ar\GaussianBinomial{b}{s}{\zeta}.
+\]
+
+The zero-definition/three-theorem \path{CyclotomicDivisibility.lean} surface is
+\lean{cyclotomic_exponent_eq_one_iff},
+\lean{cyclotomic_dvd_gaussianBinomial_iff}, and
+\lean{gaussianBinomial_mul_isPrimitiveRoot}.  For \(k\le n\) and \(d>0\), the
+Gaussian cyclotomic exponent equals one exactly when
+\(n\bmod d<k\bmod d\); over \(\RationalNumbers[X]\) this is exactly the
+criterion for \(\Phi_d\) to divide \(\GaussianBinomial{n}{k}{X}\).  In a
+commutative integral domain, a primitive \(n\)-th root with \(n>0\) also gives
+\(\GaussianBinomial{an}{bn}{\zeta}=\binom ab\).
+
+Finally, \path{QCatalan.lean} has the single noncomputable definition
+\lean{qCatalan} and exactly eleven theorems:
+\lean{map_qInt}, \lean{qInt_X_monic}, \lean{qInt_X_natDegree},
+\lean{X_sub_one_mul_qInt}, \lean{qInt_X_eq_prod_cyclotomic},
+\lean{qInt_X_dvd_gaussianBinomial_rat},
+\lean{qInt_X_dvd_gaussianBinomial_int},
+\lean{qInt_X_mul_qCatalan}, \lean{qCatalan_natDegree},
+\lean{qCatalan_eval_one_mul}, and \lean{qCatalan_eval_one}.  The semiring-level
+naturality theorem and commutative-ring q-integer formulas lead to
+\([n+1]_X\mid\GaussianBinomial{2n}{n}{X}\) over both
+\(\RationalNumbers[X]\) and \(\IntegerNumbers[X]\).  Thus the integral polynomial
+\[
+ C_n(X)=\frac{\GaussianBinomial{2n}{n}{X}}{[n+1]_X}
+\]
+has natural degree \(n(n-1)\), satisfies
+\((n+1)C_n(1)=\binom{2n}{n}\), and evaluates to the ordinary Catalan number.
 
 Four denominator-free product identities make this recursion especially useful downstream.
 For natural \(m,n\), and for \(k\le n\),
@@ -8361,6 +8489,159 @@ one uses the \texttt{RCLike} hypothesis only to embed the real Fabius value.
 Variable-base \(q\)-interpolation formulas, barycentric identities, numerical
 cancellation studies, and complexity comparisons are maintained in the
 consolidated research-frontier volume rather than used as theorems here.
+
+% BEGIN GL(n,F_2) SUBSECTION (added 2026-09-02)
+\subsection{The prefactor is the order of \texorpdfstring{\(\mathrm{GL}_n(\mathbb F_2)\)}{GL(n,F2)}}
+\label{sec:qs-general-linear}
+
+The constant \(2^{n^2}(1/2;1/2)_n\) standing in front of every form of the
+dyadic identity above is not merely a normalization: it is the order of the
+general linear group over the two-element field.  Both halves of the identity
+can in fact be freed of the base \(1/2\) altogether, and what is left counts
+subspaces.
+
+The first step is a falling-product identity with no hypotheses at all.
+
+\begin{lemma}[Falling product of powers]
+\label{lem:qs-falling-product}
+In every commutative ring and for every \(q\),
+\begin{equation}
+ \prod_{i<n}\bigl(q^{n}-q^{i}\bigr)
+ =q^{\binom n2}\prod_{j<n}\bigl(q^{j+1}-1\bigr).
+ \label{eq:qs-falling-product}
+\end{equation}
+\end{lemma}
+
+This is \lean{prod_pow_sub_pow_eq_pow_choose_two_mul} in
+\path{GLOrderProduct.lean}.  No invertibility or nonvanishing assumption
+occurs, so \eqref{eq:qs-falling-product} holds at roots of unity, in positive
+characteristic and in the presence of zero divisors.
+
+Applied at \(q=2\), and combined with the Mersenne normalization
+\lean{two_pow_nat_sq_mul_halfQPochhammer}, it identifies the prefactor:
+\begin{equation}
+ 2^{n^{2}}(1/2;1/2)_n=\prod_{i<n}\bigl(2^{n}-2^{i}\bigr),
+ \label{eq:qs-prefactor-product}
+\end{equation}
+which is \lean{two_pow_nat_sq_mul_qPochhammer_half_eq_prod} in
+\path{FabiusDyadicGaussianForm.lean}.  The right-hand side of
+\eqref{eq:qs-prefactor-product} is the number of ordered bases of
+\(\mathbb F_2^{\,n}\).
+
+\begin{theorem}[The dyadic prefactor is a group order]
+\label{thm:qs-prefactor-gl}
+For every \(n\in\NaturalNumbers\),
+\begin{equation}
+ 2^{n^{2}}(1/2;1/2)_n=\bigl|\mathrm{GL}_n(\mathbb F_2)\bigr|.
+ \label{eq:qs-prefactor-gl}
+\end{equation}
+More generally, over a finite field \(K\) with \(Q=|K|\) elements,
+\begin{equation}
+ \bigl|\mathrm{GL}_n(K)\bigr|
+ =Q^{\binom n2}\prod_{j<n}\bigl(Q^{j+1}-1\bigr)
+ =Q^{n^{2}}\,(1/Q;1/Q)_n .
+ \label{eq:qs-gl-qpochhammer}
+\end{equation}
+\end{theorem}
+
+The three statements are
+\lean{two_pow_nat_sq_mul_qPochhammer_half_eq_card_GL},
+\lean{cast_card_generalLinearGroup_eq_pow_choose_mul_prod} and
+\lean{cast_card_generalLinearGroup_eq_pow_sq_mul_qPochhammer} in
+\path{FabiusGeneralLinearDenominator.lean}.  The exponent bookkeeping in
+\eqref{eq:qs-gl-qpochhammer} is the square split
+\(\binom n2+\binom{n+1}2=n^{2}\), which is \lean{choose_square_split} in
+\path{Arithmetic.lean}.  So the denominators of the exact dyadic Fabius values
+are the group orders
+\[
+ 1,\;1,\;6,\;168,\;20160,\;9999360,\;20158709760,\;\dots
+\]
+
+\begin{remark}[What is and is not proved here]
+\label{rem:qs-gl-provenance}
+The order of \(\mathrm{GL}_n\) is Mathlib's \lean{Matrix.card_GL_field} and is
+not reproved anywhere in this development;
+\lean{card_generalLinearGroup_eq_prod_range} of \path{RankMatrixCount.lean}
+only reindexes it from \(\mathrm{Fin}\,r\) to \(\mathrm{Finset.range}\,r\), so
+it is a bridge and not a source.  What is established here is the cast to
+\(\RationalNumbers\) --- the ambient statement lives in \(\NaturalNumbers\)
+with truncated subtraction --- together with the identification of the
+resulting product with the \(q\)-Pochhammer prefactor.
+\end{remark}
+
+The second step removes the base \(1/2\) from the summand.  Gaussian
+reciprocity, \lean{gaussianBinomial_reciprocity}, converts the quotient
+\(q\)-binomial at \(1/2\) into the polynomial Gaussian binomial at \(2\) at
+the cost of a monomial \(2^{k(n-k)}\), and \lean{four_pow_choose_two} rewrites
+\(4^{\binom k2}\) as \(2^{k(k-1)}\).  The two exponents merge, because for
+\(k\le n\)
+\begin{equation}
+ k(n-k)+k(k-1)+k=kn
+ \label{eq:qs-exponent-collapse}
+\end{equation}
+in \(\NaturalNumbers\) with truncated subtraction
+(\lean{exponent_collapse}).  Consequently
+\[
+ \frac{\GaussianBinomial nk{1/2}}{4^{\binom k2}}
+ =\frac{\GaussianBinomial nk2\cdot 2^{k}}{2^{kn}},
+\]
+in which \(\GaussianBinomial nk2\) is an \emph{integer}: the number of
+\(k\)-dimensional subspaces of \(\mathbb F_2^{\,n}\).
+
+\begin{theorem}[Subspace form of the dyadic identity]
+\label{thm:qs-subspace-form}
+For every \(n\in\NaturalNumbers\),
+\begin{equation}
+ F\!\left(2^{-n}\right)
+ =\frac{1}{\bigl|\mathrm{GL}_n(\mathbb F_2)\bigr|}
+  \sum_{k=0}^{n}
+   \frac{\GaussianBinomial nk2\cdot 2^{k}}{2^{kn}\,(n+k)!}
+   \sum_{r<2^{k}}\varepsilon_r\bigl(r-2^{k}\bigr)^{n+k}.
+ \label{eq:qs-subspace-form}
+\end{equation}
+\end{theorem}
+
+This is \lean{fabiusAtInverseTwoPow_eq_card_GL_sum} in
+\path{FabiusGeneralLinearDenominator.lean}, with the product form
+\lean{fabiusAtInverseTwoPow_eq_gaussian_sum} of
+\path{FabiusDyadicGaussianForm.lean} and the real-valued transfers
+\lean{fabius_inverse_two_pow_eq_card_GL_inv_mul} and
+\lean{fabius_inverse_two_pow_eq_gaussian_div_prod} alongside.
+
+Neither side of \eqref{eq:qs-subspace-form} mentions the base \(1/2\), and no
+\(q\)-Pochhammer quotient, no \(4^{\binom k2}\) and no \(2^{n^{2}}\) survives.
+Every constant on the right counts something over \(\mathbb F_2\): the weight
+\(\GaussianBinomial nk2\) enumerates the \(k\)-dimensional subspaces of
+\(\mathbb F_2^{\,n}\), and the normalizing constant is the order of the
+automorphism group of that space.  The exact dyadic values of the Fabius
+function are therefore a signed, factorially weighted average over the
+subspace lattice of \(\mathbb F_2^{\,n}\).
+
+\begin{remark}[The Thue--Morse sign inside the \(q\)-Pochhammer]
+\label{rem:qs-tm-pochhammer}
+The appearance of a \(q\)-Pochhammer symbol beside a Thue--Morse block sum in
+\eqref{eq:qs-subspace-form} is not a coincidence of normalizations.  Over any
+commutative ring and with no hypothesis on \(z\) or \(q\),
+\begin{equation}
+ \sum_{n<2^{N}}\varepsilon_n\,z^{\BinaryDigitSum(n)}q^{\sigma(n)}
+ =(z;q)_N ,
+ \label{eq:qs-tm-pochhammer}
+\end{equation}
+where \(\sigma(n)\) is the sum of the positions of the one bits of \(n\):
+a finite \(q\)-Pochhammer symbol \emph{is} a Thue--Morse alternating sum,
+bigraded by the two binary statistics.  This is
+\lean{sum_thueMorseSign_mul_pow_bigraded_eq_finiteQPochhammerIn} in
+\path{ThueMorseQPochhammer.lean}.  Combining it with
+\eqref{eq:qs-gl-qpochhammer} expresses the group order itself as an
+alternating digit sum,
+\(\bigl|\mathrm{GL}_n(K)\bigr|
+ =\sum_{m<2^{n}}\varepsilon_m\,Q^{\,n^{2}-\BinaryDigitSum(m)-\sigma(m)}\)
+(\lean{cast_card_generalLinearGroup_eq_thueMorse_sum} in
+\path{GeneralLinearThueMorseSum.lean}), the exponent being non-negative
+because \(\BinaryDigitSum(m)+\sigma(m)\le\binom{n+1}2\le n^{2}\).
+\end{remark}
+
+% END GL(n,F_2) SUBSECTION
 
 \section{The global binary-reduction telescope}
 \label{sec:global-binary-reduction}
@@ -13010,24 +13291,18 @@ Rogers--Szeg\H{o} polynomial APIs &
 \path{QPochhammerInfinite.lean}, \path{QPochhammerEntire.lean},
 \path{GeometricPochhammerNormalConvergence.lean},
 \path{ReciprocalIntegerGammaZeros.lean}, \path{DyadicGammaOrder.lean}\\
-Gaussian (q=-1) first jets, both universal Gaussian-polynomial structure
-interfaces, Euler and infinite q-binomial expansions, Jacobi triple and cubic
-identities, bilateral-theta quasi-periodicity and zeros, q-Pascal summation,
-Gaussian continuity, the quantum binomial theorem, Rogers--Szeg\H{o}
-polynomials, polynomial and function-level Jackson calculus, Jackson
-integration, q-exponentials, finite and infinite q-Pochhammer derivatives,
-the complex Lambert logarithm, order derivatives, central Gaussian reduction,
-primitive-root blocks, q-Lucas evaluation, cyclotomic factorization and
-divisibility, q-Catalan polynomials, finite Newton interpolation, and the real
-q-gamma and q-beta APIs &
+Gaussian (q=-1) first jets, generic and universal Gaussian-polynomial degree,
+palindromicity, mean and linear coefficient, central/cyclotomic factorization,
+primitive-root blocks, q-Lucas and q-Catalan theory, Euler and infinite
+q-binomial expansions, Jacobi and pentagonal products, q-Pascal summation,
+Gaussian continuity, the quantum binomial theorem, and Rogers--Szeg\H{o}
+polynomials &
 \path{GaussianBinomialAtNegOneDerivative.lean},
 \path{GaussianBinomialPalindromic.lean},
 \path{GaussianBinomialPolynomialStructure.lean},
-\path{CentralQBinomialReduction.lean},
-\path{CyclotomicFactorization.lean},
+\path{CentralQBinomialReduction.lean}, \path{CyclotomicFactorization.lean},
 \path{PrimitiveRootBlock.lean}, \path{QLucas.lean},
 \path{CyclotomicDivisibility.lean}, \path{QCatalan.lean},
-\path{NewtonInterpolation.lean}, \path{QBetaIntegral.lean},
 \path{QBinomialTheoremInfinite.lean}, \path{JacobiTripleProduct.lean},
 \path{JacobiCubic.lean}, \path{ThetaQuasiPeriodicity.lean},
 \path{QPascalSummation.lean}, \path{GaussianBinomialContinuity.lean},
@@ -13062,6 +13337,7 @@ Analyticity, inverse, effective inverse continuity, elementary obstruction &
 \path{FabiusInverseEffectiveContinuity.lean},
 \path{FabiusInverseLogarithmicModulus.lean},
 \path{EffectiveMonotoneInverse.lean},
+\path{EffectiveGapInverse.lean},
 \path{FabiusInverseComputable.lean},
 \path{ElementaryFunction.lean}, \path{NotElementary.lean},
 \path{InverseBranch.lean}, \path{InverseNotElementary.lean}\\
@@ -13070,6 +13346,9 @@ definitions and six theorems in the generic module, followed by zero
 definitions and one theorem in the Fabius specialization) &
 \path{EffectiveMonotoneInverse.lean},
 \path{FabiusInverseComputable.lean}\\
+Effective inversion from computable positive rational dyadic gaps (exactly
+four definitions and four theorems, including the clamped total extension) &
+\path{EffectiveGapInverse.lean}\\
 Moments and exact arithmetic &
 \path{Arithmetic.lean}, \path{AnalyticMoments.lean},
 \path{MomentPowerSeries.lean}, \path{UnitLaplaceMomentBounds.lean},
@@ -13294,8 +13573,7 @@ Dyadic and \(q\)-binomial formulas &
 \path{QBinomialReciprocity.lean},
 \path{GaussianBinomialPalindromic.lean},
 \path{GaussianBinomialPolynomialStructure.lean},
-\path{CentralQBinomialReduction.lean},
-\path{CyclotomicFactorization.lean},
+\path{CentralQBinomialReduction.lean}, \path{CyclotomicFactorization.lean},
 \path{PrimitiveRootBlock.lean}, \path{QLucas.lean},
 \path{CyclotomicDivisibility.lean}, \path{QCatalan.lean},
 \path{QPochhammerElementaryIdentities.lean},

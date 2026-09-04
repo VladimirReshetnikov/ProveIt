@@ -58,28 +58,51 @@ theorem extendedFabiusDyadicValue_block_fold (n : ℕ) {a B R : ℕ}
   rw [hdiv, hmod]
 
 /-- **The triangular block reduction** (the register's candidate): for
-every bounded Fabius function and every positive numerator decomposed
-as `a = 2·2^n·B + R` with `R < 2·2^n`,
+every bounded Fabius function and every numerator decomposed
+as `a = 2·2^n·B + R` with `R < 2·2^n` (positivity of `a` is not needed:
+at `a = 0` both sides vanish),
 
 `ℱ(a/2^n) = (-1)^{wt(B)} · F(C/2^n)`
 
 with the folded numerator `C = R` on the first half-period and
 `C = 2·2^n - R` on the second, so that `0 ≤ C ≤ 2^n`
 (`blockFoldCore_le`). -/
-theorem extendedFabius_block_fold (F : BoundedFabius) (hF : IsFabius F)
-    (n : ℕ) {a B R : ℕ} (ha : 0 < a)
+theorem extendedFabius_block_fold_of_decomp (F : BoundedFabius)
+    (hF : IsFabius F) (n : ℕ) {a B R : ℕ}
     (hdecomp : a = 2 * 2 ^ n * B + R) (hR : R < 2 * 2 ^ n) :
     extendedFabius F ((a : ℝ) / 2 ^ n) =
       (thueMorseSign B : ℝ) *
         fabiusReal F
           ((↑(if R ≤ 2 ^ n then R else 2 * 2 ^ n - R) : ℝ) / 2 ^ n) := by
-  have hcast := extendedFabiusDyadicValue_cast F hF n (a : ℤ)
-  rw [show (((a : ℤ) : ℝ)) = (a : ℝ) by push_cast; ring] at hcast
-  rw [← hcast, extendedFabiusDyadicValue_block_fold n ha hdecomp hR]
-  push_cast
-  rw [fabiusDyadicUnit_eq_fabiusDyadic n _ (blockFoldCore_le n R hR),
-    fabiusDyadic_cast F hF n _ (blockFoldCore_le n R hR)]
-  push_cast
-  ring
+  rcases Nat.eq_zero_or_pos a with rfl | ha
+  · -- `a = 0` forces `B = R = 0`, and both sides vanish
+    have hR0 : R = 0 := by omega
+    have hB0 : 2 * 2 ^ n * B = 0 := by omega
+    have hB : B = 0 := by
+      rcases Nat.mul_eq_zero.mp hB0 with h | h
+      · exact absurd h (by positivity)
+      · exact h
+    subst hR0 hB
+    simp [extendedFabius_zero F hF, hF.zero_of_nonpos 0 le_rfl,
+      thueMorseSign, binaryWeight]
+  · have hcast := extendedFabiusDyadicValue_cast F hF n (a : ℤ)
+    rw [show (((a : ℤ) : ℝ)) = (a : ℝ) by push_cast; ring] at hcast
+    rw [← hcast, extendedFabiusDyadicValue_block_fold n ha hdecomp hR]
+    push_cast
+    rw [fabiusDyadicUnit_eq_fabiusDyadic n _ (blockFoldCore_le n R hR),
+      fabiusDyadic_cast F hF n _ (blockFoldCore_le n R hR)]
+    push_cast
+    ring
+
+/-- The triangular block reduction with the register's positivity
+hypothesis, an instance of `extendedFabius_block_fold_of_decomp`. -/
+theorem extendedFabius_block_fold (F : BoundedFabius) (hF : IsFabius F)
+    (n : ℕ) {a B R : ℕ} (_ha : 0 < a)
+    (hdecomp : a = 2 * 2 ^ n * B + R) (hR : R < 2 * 2 ^ n) :
+    extendedFabius F ((a : ℝ) / 2 ^ n) =
+      (thueMorseSign B : ℝ) *
+        fabiusReal F
+          ((↑(if R ≤ 2 ^ n then R else 2 * 2 ^ n - R) : ℝ) / 2 ^ n) :=
+  extendedFabius_block_fold_of_decomp F hF n hdecomp hR
 
 end Fabius

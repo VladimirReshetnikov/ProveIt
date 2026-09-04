@@ -102,6 +102,11 @@
 
 \newcommand{\Wz}{\LambertW_{0}}
 \newcommand{\Wm}{\LambertW_{-1}}
+% Crosswalk macros, as in the other frontier volumes: a Lean module or
+% declaration name, typeset verbatim.
+\newcommand{\lean}[1]{%
+  \ifmmode\text{\texttt{\detokenize{#1}}}\else\nolinkurl{#1}\fi}
+\newcommand{\decl}[1]{\nolinkurl{#1}}
 \newcommand{\stirling}[2]{\genfrac{[}{]}{0pt}{}{#1}{#2}}
 \newcommand{\brak}[1]{\left(#1\right)}
 % LOCAL-NON-FOURIER-HAT: \LambertRootApproximation denotes a numerical approximation to the exact Lambert root on the selected real branch.
@@ -4346,6 +4351,263 @@ Residual certificate &
 \(I\) between \(w\) and the root avoids \(-1\).\\
 \bottomrule
 \end{longtable}
+
+\section{Lean formalization crosswalk}\label{app:lean-crosswalk}
+
+The repository's Lean library carries a two-branch development of the real
+Lambert function, and several of the foundational statements of this guide
+are exact theorems there.  This appendix records the correspondence, in the
+discipline of the other frontier volumes: a row names declarations, all in
+namespace \lean{Fabius}, and a row is listed only when the Lean statement
+has the displayed mathematical content.  Where the Lean statement is
+weaker, more general, or differently normalized than the guide's, the
+difference is stated.  Everything not listed here is unformalized.
+
+The two branches are \decl{principalLambertW} (\(\Wz\), totalized, intended
+domain \([-1/\EulerE,\infty)\); module \lean{PrincipalLambertW}) and
+\decl{lowerLambertW} (\(\Wm\), intended domain \([-1/\EulerE,0)\); module
+\lean{LowerLambertW}).  Both are defined as the logarithm of an inverse of
+\(u\mapsto u\log u\) on the appropriate ray, so ``\(W(x)\)'' is a total
+real function whose values off the intended domain are junk; every theorem
+below carries the domain hypothesis explicitly.
+
+\begin{longtable}{@{}p{0.30\textwidth}p{0.42\textwidth}p{0.22\textwidth}@{}}
+\toprule
+Statement in this guide & Exact Lean declaration(s) & Remarks\\
+\midrule
+\endfirsthead
+\toprule
+Statement in this guide & Exact Lean declaration(s) & Remarks\\
+\midrule
+\endhead
+\Cref{thm:realbranches}: \(\Wz\) is a strictly increasing bijection
+\([-1/\EulerE,\infty)\to[-1,\infty)\), \(\Wm\) a strictly decreasing
+bijection \([-1/\EulerE,0)\to(-\infty,-1]\), and every real solution of
+\(w\EulerE^w=x\) is one of the two &
+\decl{principalLambertW\_strictMonoOn},
+\decl{principalLambertW\_image\_Ioi}, \decl{principalLambertW\_image\_Icc},
+\decl{neg\_one\_le\_principalLambertW},
+\decl{lowerLambertW\_strictAntiOn}, \decl{lowerLambertW\_image},
+\decl{lowerLambertW\_le\_neg\_one},
+\decl{eq\_principalLambertW\_or\_eq\_lowerLambertW} &
+The last, in module \lean{LambertBranchDichotomy}, is the dichotomy:
+\(w\EulerE^w=z\) forces \(w=\Wz(z)\) or \(w=\Wm(z)\).  The images are
+stated for the open ray \((-1/\EulerE,\infty)\) and the interval
+\([-1/\EulerE,0]\) on the principal side and the open interval
+\((-1/\EulerE,0)\) on the lower side; the endpoint values are separate
+lemmas.\\
+\addlinespace
+\Cref{cor:inverse}: \(\Wz(a\EulerE^a)=a\) for \(a\geq-1\) and
+\(\Wm(a\EulerE^a)=a\) for \(a\leq-1\) &
+\decl{principalLambertW\_unique},
+\decl{lowerLambertW\_unique\_of\_mem\_Ico}; the defining equations
+\(W(x)\EulerE^{W(x)}=x\) are \decl{principalLambertW\_mul\_exp} and
+\decl{lowerLambertW\_mul\_exp\_of\_mem\_Ico} &
+Stated as uniqueness: any \(w\geq-1\) with \(w\EulerE^w=z\) equals
+\(\Wz(z)\), and dually for \(w\leq-1\).\\
+\addlinespace
+\Cref{thm:derivatives}, first and second derivatives &
+\decl{deriv\_principalLambertW}, \decl{deriv\_deriv\_principalLambertW}
+(module \lean{LambertWCurvature});
+\decl{deriv\_lowerLambertW}, \decl{deriv\_deriv\_lowerLambertW} &
+The principal-branch first derivative is in the form
+\eqref{eq:firstder}, the lower-branch one in the form
+\eqref{eq:firstder-x}; both second derivatives are in the exponential form
+\eqref{eq:secondder-exp}.  \(\Wz'(0)=1\) is
+\decl{principalLambertW\_isEquivalent\_zero}, stated as
+\(\Wz(z)\sim z\) at \(0\).  Positivity of \(\Wz'\) is
+\decl{deriv\_principalLambertW\_pos}.\\
+\addlinespace
+\Cref{thm:curvature}: \(\Wz\) strictly concave; \(\Wm\) strictly convex on
+\((-1/\EulerE,-2/\EulerE^2)\), inflection at \(-2/\EulerE^2\), strictly
+concave on \((-2/\EulerE^2,0)\) &
+\decl{strictConcaveOn\_principalLambertW},
+\decl{strictConvexOn\_lowerLambertW\_left},
+\decl{strictConcaveOn\_lowerLambertW\_right},
+\decl{deriv\_deriv\_lowerLambertW\_eq\_zero\_iff} &
+Lean's concavity of \(\Wz\) is on the closed ray \([-1/\EulerE,\infty)\),
+slightly more than stated here; the lower-branch pieces are on the closed
+interval \([-1/\EulerE,-2/\EulerE^2]\) and the half-open
+\([-2/\EulerE^2,0)\).  The inflection is stated as
+\(\Wm''(x)=0\iff x=-2/\EulerE^2\) on the open domain.\\
+\addlinespace
+\Cref{thm:maclaurin}, \Cref{thm:cayley}: the Maclaurin coefficients
+\((-n)^{n-1}/n!\) &
+\decl{coeff\_lambertW} (module \lean{LambertWSeries}) &
+A statement about the \emph{formal} series over \(\mathbb{Q}\): the
+compositional inverse of \(X\EulerE^{X}\) has \((n+1)\)-st coefficient
+\((-(n+1))^n/(n+1)!\).  It is obtained from the library's
+Lagrange--B\"urmann inversion (\Cref{thm:lagrange}), and carries no
+statement about convergence, the radius \(1/\EulerE\), or the endpoint;
+those remain unformalized.\\
+\addlinespace
+\Cref{thm:puiseux}, leading term: \(\Wz(x)+1\sim q\) and
+\(\Wm(x)+1\sim-q\) as \(x\downarrow-1/\EulerE\), with
+\(q=\sqrt{2(1+\EulerE x)}\) &
+\decl{principalLambertW\_add\_one\_isEquivalent\_branchPoint},
+\decl{lowerLambertW\_add\_one\_isEquivalent\_branchPoint} (module
+\lean{LambertWBranchPointAsymptotics}); non-differentiability at the branch
+point, \decl{principalLambertW\_not\_differentiableAt\_branchPoint} and
+\decl{lowerLambertW\_not\_differentiableAt\_branchPoint} (module
+\lean{LambertWBranchPointGeometry}) &
+Only the leading square-root term is formal; the full signed Puiseux series
+and its coefficients are not.\\
+\addlinespace
+\Cref{lem:logineq}: \(t/(1+t)\leq\log(1+t)\leq t\) for \(t>-1\) &
+Mathlib: \nolinkurl{Real.log_le_sub_one_of_pos} and
+\nolinkurl{Real.one_sub_inv_le_log_of_pos} &
+Both halves are Mathlib lemmas (not repository declarations), stated at
+\(1+t>0\); the strict upper form is
+\nolinkurl{Real.log_lt_sub_one_of_pos}.\\
+\addlinespace
+\Cref{thm:W0positivebounds}: \(x/(1+x)\leq\Wz(x)\leq\log(1+x)\leq x\) for
+\(x\geq0\), strict for \(x>0\) &
+\decl{principalLambertW\_elementary\_bounds},
+\decl{div\_one\_add\_le\_principalLambertW},
+\decl{principalLambertW\_le\_log\_one\_add},
+\decl{principalLambertW\_le\_self}, and the strict
+\decl{div\_one\_add\_lt\_principalLambertW},
+\decl{principalLambertW\_lt\_log\_one\_add} (module
+\lean{LambertWElementaryBounds}) &
+Proved from a single inequality with no Lambert content, valid for
+\emph{every} real \(w\): \decl{exp\_le\_one\_add\_mul\_exp\_self},
+\(\EulerE^w\leq1+w\EulerE^w\), strict for \(w\neq0\); the guide's
+\(w=\Wz(x)\) is one instance, and \decl{le\_log\_one\_add\_mul\_exp} states
+the upper bound for every real \(w\) in the form
+\(w\leq\log(1+w\EulerE^w)\).\\
+\addlinespace
+\Cref{thm:Wmzerobounds}: for \(-1/\EulerE<x<0\) and
+\(\eta=\log(1/(-x))\),
+\(-\eta-\eta\log\eta/(\eta-1)\leq\Wm(x)<-\eta-\log\eta\) &
+\decl{lowerLambertW\_near\_zero\_bounds}, with the halves
+\decl{neg\_log\_sub\_div\_le\_lowerLambertW} and
+\decl{lowerLambertW\_lt\_neg\_log\_sub} (module
+\lean{LowerLambertW}) &
+The mechanism is the bracket for the inverse of \(z-\log z\), stated with no
+Lambert content for every \(y>1\) with \(y-\log y=\eta\):
+\decl{SubLog.bracket\_of\_sub\_log\_eq}, from
+\decl{SubLog.strictMonoOn\_sub\_log}.  The reduction
+\(y=-\Wm(x)\), \(y-\log y=\eta\) is
+\decl{neg\_lowerLambertW\_sub\_log\_eq}, and \(\eta>1\) on the whole domain is
+\decl{one\_lt\_log\_one\_div\_neg}, so the denominator \(\eta-1\) is never a
+side condition for the caller.\\
+\addlinespace
+\Cref{thm:higherder}: every derivative of either branch is
+\(W^{(n)}=\EulerE^{-nW}P_n(W)/(1+W)^{2n-1}\) with
+\(P_{n+1}=(1+w)P_n'-(nw+3n-1)P_n\) &
+\decl{lambertDerivPoly}, \decl{lambertDerivPoly\_succ},
+\decl{iteratedDeriv\_principalLambertW},
+\decl{iteratedDeriv\_lowerLambertW} (module
+\lean{LambertWHigherDerivatives}); the general engine is
+\decl{AutonomousODE.iteratedDeriv\_eq\_comp} (module
+\lean{AutonomousIteratedDeriv}) &
+Lean's \(P_n\) is this guide's \(P_{n+1}\): the recurrence is stated as
+\(P_{n+1}=(1+w)P_n'-((n+1)w+3n+2)P_n\) from \(P_0=1\), and the formula as
+\(W^{(n+1)}=\EulerE^{-(n+1)W}P_n(W)/(1+W)^{2n+1}\), on the open domains
+\((-1/\EulerE,\infty)\) and \((-1/\EulerE,0)\).  The engine is stated for an
+arbitrary solution of an autonomous equation \(W'=\varphi\circ W\) on an open
+set, with the derivative family as hypotheses, so it applies beyond Lambert's
+function.\\
+\addlinespace
+\Cref{thm:antiderivatives}: \(\int W_k=\EulerE^{W_k}(W_k^2-W_k+1)
+=x(W_k-1+1/W_k)\) and \(\int W_k/x=W_k+\tfrac12W_k^2\) &
+\decl{hasDerivAt\_principalLambertW\_antiderivative},
+\decl{hasDerivAt\_lowerLambertW\_antiderivative},
+\decl{hasDerivAt\_principalLambertW\_add\_half\_sq},
+\decl{hasDerivAt\_lowerLambertW\_add\_half\_sq} (module
+\lean{LambertWAntiderivative}); the general forms
+\decl{LambertAntiderivative.hasDerivAt\_exp\_mul\_sq\_sub\_add\_one},
+\decl{LambertAntiderivative.hasDerivAt\_add\_half\_sq} and the two-form
+identity \decl{LambertAntiderivative.exp\_mul\_sq\_sub\_add\_one\_eq} &
+Stated as derivative facts (\(F'=W\), \(G'=W/x\)) on the open branch
+domains, which is the content of the antiderivative statement.  The general
+forms assume only \(W'=(\EulerE^{W}(1+W))^{-1}\) at the point, with
+\(W\neq-1\), so they hold for any local inverse of \(w\mapsto w\EulerE^w\);
+the \(x\)-form needs \(W\neq0\) and the \(W/x\) form needs \(x\neq0\), as in
+the guide.\\
+\addlinespace
+\Cref{thm:W0logbounds}: for \(x>\EulerE\), \(L=\log x\),
+\(L-\log L<\Wz(x)<L-\log(L-\log L)<L\) &
+\decl{principalLambertW\_log\_bounds}, with the halves
+\decl{log\_sub\_log\_log\_lt\_principalLambertW},
+\decl{principalLambertW\_lt\_log\_sub\_log\_log\_sub\_log\_log},
+\decl{principalLambertW\_lt\_log} (module \lean{LambertWLogBounds}); the
+non-strict outer bracket for \(x\geq\EulerE\) is
+\decl{principalLambertW\_log\_bracket} (module
+\lean{PrincipalLambertWAtTop}) and the non-strict sharper upper bound
+\decl{principalLambertW\_le\_log\_sub\_log\_log\_sub\_log\_log} &
+Exact.  All from \(W+\log W=L\) (\decl{principalLambertW\_add\_log}) and
+monotonicity of the logarithm; the equality \(\Wz(\EulerE)=1\) at the
+endpoint is \decl{principalLambertW\_exp\_one}.\\
+\addlinespace
+\Cref{prop:addition}: \((a+b)\EulerE^{a+b}=xy(1/a+1/b)\) for Lambert
+values \(a,b\neq0\) of \(x,y\), hence \(a+b=W_m(xy(1/a+1/b))\) on the branch
+containing \(a+b\) &
+\decl{mul\_exp\_add\_of\_mul\_exp} (the identity, for any reals satisfying
+their defining equations), \decl{add\_eq\_principalLambertW\_of\_mul\_exp},
+\decl{add\_eq\_lowerLambertW\_of\_mul\_exp},
+\decl{principalLambertW\_add\_principalLambertW} (module
+\lean{LambertWAdditionIdentity}) &
+Exact.  The branch consequence is stated through the uniqueness theorems:
+\(a+b\geq-1\) selects \(\Wz\), and \(a+b\leq-1\) with the product in
+\([-1/\EulerE,0)\) selects \(\Wm\); for \(x,y>0\) the two principal values
+add to the principal value, with no side condition.\\
+\addlinespace
+\Cref{thm:pairing}, forward direction: with \(\Delta=\Wz(x)-\Wm(x)>0\) on
+\((-1/\EulerE,0)\), \(\Wz=-\Delta/(\EulerE^\Delta-1)\),
+\(\Wm=-\Delta\EulerE^\Delta/(\EulerE^\Delta-1)\),
+\(x=\Wz\EulerE^{\Wz}\) in the \(\Delta\)-form, and the \(t=\EulerE^\Delta\)
+forms &
+\decl{principalLambertW\_sub\_lowerLambertW\_pos},
+\decl{lowerLambertW\_eq\_principalLambertW\_mul\_exp\_gap},
+\decl{principalLambertW\_eq\_neg\_gap\_div},
+\decl{lowerLambertW\_eq\_neg\_gap\_mul\_exp\_div},
+\decl{eq\_neg\_gap\_div\_mul\_exp},
+\decl{principalLambertW\_lowerLambertW\_eq\_of\_exp\_gap} (module
+\lean{LambertWBranchPairing}) &
+Exact for the forward direction.  The whole computation is
+\(\Wm=\Wz\EulerE^\Delta\) from dividing the two defining equations.\\
+\addlinespace
+\Cref{thm:pairing}, converse: every \(\Delta>0\) inserted into the formulas
+produces one and only one \(x\in(-1/\EulerE,0)\), with the displayed values
+equal to \(\Wz(x)\) and \(\Wm(x)\) &
+\decl{gapPrincipal}, \decl{gapLower}, \decl{gapArg} (the three formulas as
+functions of \(\Delta\)), \decl{branchGap} (the map
+\(x\mapsto\Wz(x)-\Wm(x)\)); \decl{gapArg\_mem\_Ioo},
+\decl{principalLambertW\_gapArg}, \decl{lowerLambertW\_gapArg},
+\decl{branchGap\_gapArg}, \decl{gapArg\_branchGap}; the two directions
+packaged as \decl{branchGap\_invOn} and \decl{branchGap\_bijOn} (module
+\lean{LambertWGapBijection}) &
+Exact, and stated as a bijection: \(x\mapsto\Delta\) is a bijection from
+\((-1/\EulerE,0)\) onto \((0,\infty)\) with the explicit inverse
+\(\Delta\mapsto a(\Delta)\EulerE^{a(\Delta)}\), \(a(\Delta)=-\Delta/(\EulerE^\Delta-1)\).
+The proof is uniqueness on each branch: \(b(\Delta)=a(\Delta)\EulerE^\Delta\)
+equals \(a(\Delta)-\Delta\), so \(b\EulerE^b=a\EulerE^a\), and
+\(-1<a<0\), \(b<-1\) are the tangent-line inequalities
+\(\Delta<\EulerE^\Delta-1\) and \(\EulerE^\Delta(1-\Delta)<1\).\\
+\addlinespace
+\Cref{thm:W0negativebounds}: for \(-1/\EulerE<x<0\),
+\(-1+\sqrt{1+\EulerE x}<\Wz(x)<-1+\sqrt{2(1+\EulerE x)}\) and \(\Wz(x)<x\) &
+\decl{principalLambertW\_negative\_bounds}, with the halves
+\decl{neg\_one\_add\_sqrt\_lt\_principalLambertW},
+\decl{principalLambertW\_lt\_neg\_one\_add\_sqrt},
+\decl{principalLambertW\_lt\_self\_of\_neg} (module
+\lean{LambertWNegativeBounds}) &
+Exact.  In the shifted variable \(s=\Wz+1\in(0,1)\) the two square-root bounds
+are the exponential inequalities \(\EulerE^s>1+s\) and
+\(\EulerE^s(1-s)<1-s^2/2\); the second is
+\decl{exp\_mul\_one\_sub\_lt\_one\_sub\_half\_sq}, proved from its derivative
+\(s(\EulerE^s-1)>0\), with no Lambert content.\\
+\bottomrule
+\end{longtable}
+
+Not formalized, in the order they appear above: the moments of
+\Cref{sec:integrals}, the local Taylor
+expansion, convergence of the Maclaurin series, the full Puiseux and
+logarithmic asymptotic expansions, the remaining bounds of
+\Cref{sec:bounds} (the two-sided \(W_{-1}\) bound of
+\Cref{thm:chatzbound}), and everything from
+\Cref{sec:rational} onward.
 
 \section{Concordance of the four merged treatments}\label{app:concordance}
 

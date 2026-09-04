@@ -9,6 +9,10 @@ Catalan–binomial series (the substituted Catalan generating function),
 and products of such series collapse through a *diagonal Vandermonde*
 identity.
 
+* `sum_Icc_peel_bot`, `sum_Icc_succ_succ`, `sum_Icc_shift_one` — the
+  two **interval manipulations** every boundary argument below needs:
+  peeling the bottom endpoint off a sum over `Icc a b`, and shifting the
+  index of such a sum by one.
 * `sum_range_choose_mul_choose` — reusable **diagonal Vandermonde**
   (parallel summation): `∑_{i≤M} C(i,p)·C(M-i,q) = C(M+1, p+q+1)`.
 * `sum_antidiagonal_choose_mul_choose` — the same identity in the
@@ -33,6 +37,39 @@ set_option autoImplicit false
 open Finset
 
 namespace Fabius
+
+/-! ### Interval bookkeeping -/
+
+/-- **Peeling the bottom endpoint** off a sum over `Icc a b`:
+`∑_{k=a}^{b} f k = f a + ∑_{k=a+1}^{b} f k` for `a ≤ b`. -/
+theorem sum_Icc_peel_bot {M : Type*} [AddCommMonoid M] {a b : ℕ}
+    (hab : a ≤ b) (f : ℕ → M) :
+    ∑ k ∈ Icc a b, f k = f a + ∑ k ∈ Icc (a + 1) b, f k := by
+  have hIoc : Icc (a + 1) b = Ioc a b := by
+    ext x
+    simp only [Finset.mem_Icc, Finset.mem_Ioc]
+    omega
+  rw [Finset.Icc_eq_cons_Ioc hab, Finset.sum_cons, hIoc]
+
+/-- **Shifting the index by one**, endpoint-free form:
+`∑_{k=a+1}^{b+1} f k = ∑_{t=a}^{b} f (t+1)`. -/
+theorem sum_Icc_succ_succ {M : Type*} [AddCommMonoid M] (a b : ℕ)
+    (f : ℕ → M) :
+    ∑ k ∈ Icc (a + 1) (b + 1), f k = ∑ t ∈ Icc a b, f (t + 1) := by
+  rw [← Finset.map_add_right_Icc, Finset.sum_map]
+  rfl
+
+/-- **Shifting the index by one**, subtraction form: for `1 ≤ a` and
+`1 ≤ b`, `∑_{k=a}^{b} f k = ∑_{t=a-1}^{b-1} f (t+1)`.  (Both bounds
+must be positive: at `a = 1`, `b = 0` the left side is empty while the
+right side is `f 1`.) -/
+theorem sum_Icc_shift_one {M : Type*} [AddCommMonoid M] (a b : ℕ)
+    (ha : 1 ≤ a) (hb : 1 ≤ b) (f : ℕ → M) :
+    ∑ k ∈ Icc a b, f k = ∑ t ∈ Icc (a - 1) (b - 1), f (t + 1) := by
+  have h := sum_Icc_succ_succ (a - 1) (b - 1) f
+  rwa [Nat.sub_add_cancel ha, Nat.sub_add_cancel hb] at h
+
+/-! ### The diagonal Vandermonde identity -/
 
 /-- **Diagonal Vandermonde** (parallel summation), reusable:
 `∑_{i=0}^{M} C(i,p)·C(M-i,q) = C(M+1, p+q+1)`. -/
@@ -212,12 +249,7 @@ theorem integerLift_delta_bridge_all (n : ℕ) :
             ring
   rw [Finset.sum_congr rfl hterm]
   -- drop the vanishing `k = 1` term and reindex `t := k - 1`
-  have h1mem : (1 : ℕ) ∈ Icc 1 n := Finset.mem_Icc.mpr (by omega)
-  have herase : (Icc 1 n).erase 1 = Icc 2 n := by
-    ext x
-    simp only [Finset.mem_erase, Finset.mem_Icc]
-    omega
-  rw [← Finset.add_sum_erase _ _ h1mem, herase, if_pos rfl, mul_zero,
+  rw [sum_Icc_peel_bot (by omega : 1 ≤ n), if_pos rfl, mul_zero,
     zero_add]
   have hcong : ∀ k ∈ Icc 2 n,
       (-1) ^ (k - 1) * (catalan (k - 1) : ℤ) *
@@ -228,23 +260,11 @@ theorem integerLift_delta_bridge_all (n : ℕ) :
     have := Finset.mem_Icc.mp hk
     rw [if_neg (by omega), mul_one]
   rw [Finset.sum_congr rfl hcong, catalanSeriesDelta,
-    if_neg (by omega : ¬ n - 1 = 0)]
-  refine Finset.sum_nbij' (fun k => k - 1) (fun t => t + 1)
-    ?_ ?_ ?_ ?_ ?_
-  · intro k hk
-    have := Finset.mem_Icc.mp hk
-    exact Finset.mem_Icc.mpr (by omega)
-  · intro t ht
-    have := Finset.mem_Icc.mp ht
-    exact Finset.mem_Icc.mpr (by omega)
-  · intro k hk
-    have := Finset.mem_Icc.mp hk
-    omega
-  · intro t ht
-    omega
-  · intro k hk
-    have := Finset.mem_Icc.mp hk
-    rw [show n - 1 - 1 = n - 2 by omega, show k - 1 - 1 = k - 2 by omega]
+    if_neg (by omega : ¬ n - 1 = 0),
+    sum_Icc_shift_one 2 n (by norm_num) (by omega)]
+  refine Finset.sum_congr (by norm_num) fun t _ => ?_
+  rw [Nat.add_sub_cancel, show t + 1 - 2 = t - 1 by omega,
+    show n - 1 - 1 = n - 2 by omega]
 
 /-- **The second-difference bridge for every positive degree**:
 `c(n) - 2c(n-1) + c(n-2) = h(n-1)` for all `n ≥ 1`.  Only `n = 0` has
