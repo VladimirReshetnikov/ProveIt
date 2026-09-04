@@ -41,13 +41,15 @@ theorem eq_solution_of_eq_X_mul_subst (hψ : φ * ψ = 1)
       _ = X := by rw [mul_assoc, hunit, mul_one]
   have hf : HasSubst (X * ψ) :=
     HasSubst.of_constantCoeff_zero' (constantCoeff_X_mul ψ)
-  have hinv : (solution φ ψ hψ).subst (X * ψ) = X :=
-    subst_substInvOfIsUnit_left (X * ψ) (constantCoeff_X_mul ψ) _
+  have hinv : (solution φ ψ hψ).subst (X * ψ) = X := by
+    unfold solution
+    exact subst_substInvOfIsUnit_left (X * ψ) (constantCoeff_X_mul ψ)
+      (by rw [coeff_one_X_mul]; exact isUnit_constantCoeff_right φ ψ hψ)
   calc
     g = X.subst g := (subst_X hs).symm
     _ = ((solution φ ψ hψ).subst (X * ψ)).subst g := by rw [hinv]
     _ = (solution φ ψ hψ).subst ((X * ψ).subst g) :=
-      subst_comp_subst_apply hf hs _
+      subst_comp_subst_apply hf hs (solution φ ψ hψ)
     _ = solution φ ψ hψ := by rw [hcomp, X_subst]
 
 /-- Over any commutative ring, an invertible weight series has exactly one Lagrange solution. -/
