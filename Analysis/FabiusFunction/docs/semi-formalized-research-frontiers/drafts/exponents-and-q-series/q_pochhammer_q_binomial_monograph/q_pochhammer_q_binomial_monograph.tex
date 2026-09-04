@@ -770,9 +770,10 @@ recovers the finite product.  If $\alpha=-n<0$, the same relation, applied after
 \emph{Lean status.}  Exactly \path{Fabius.qPochhammerC_add} in
 \path{QPochhammerComplexOrder.lean}, for the complex-order symbol
 \path{Fabius.qPochhammerC} (defined as the quotient $(a;q)_\infty/(aq^\alpha;q)_\infty$),
-under $q\ne0$ and $(aq^\alpha;q)_\infty\ne0$; the specializations $\alpha=0$ and
-$\alpha\in\NaturalNumbers$ are \path{Fabius.qPochhammerC_zero} and
-\path{Fabius.qPochhammerC_natCast}.
+under $q\ne0$ and $(aq^\alpha;q)_\infty\ne0$.  The shift \eqref{eq:complex-shift} is
+\path{Fabius.qPochhammerC_add_one}, under $\lVert q\rVert<1$, $q\ne0$ and $1-aq^\alpha\ne0$,
+and the specializations $\alpha=0$ and $\alpha\in\NaturalNumbers$ are
+\path{Fabius.qPochhammerC_zero} and \path{Fabius.qPochhammerC_natCast}.
 
 
 \begin{proposition}[Derivative with respect to the order]\label{prop:order-derivative}
@@ -1536,10 +1537,14 @@ The term with $j$ chosen from the first factor and $r-j$ from the second has exp
 Subtracting $\binom r2$ gives $(m-j)(r-j)$, proving \eqref{eq:qvand1}.  Splitting the product in the reverse order gives \eqref{eq:qvand2}.
 \end{proof}
 
-\emph{Lean status.}  The first display is exactly
-\path{Fabius.gaussianBinomial_add_vandermonde} in \path{QBinomialVandermonde.lean}, over
-every commutative semiring, with the sum over $0\le j\le r$ (the terms outside that range
-vanish); \path{Fabius.gaussianBinomial_add_vandermonde'} is the companion form.
+\emph{Lean status.}  Both displays are formal in \path{QBinomialVandermonde.lean}, over
+every commutative semiring, with the sum taken over $0\le j\le r$ (the terms outside that
+range vanish because the Gaussian coefficient does):
+\eqref{eq:qvand1} is \path{Fabius.gaussianBinomial_add_vandermonde} and \eqref{eq:qvand2} is
+\path{Fabius.gaussianBinomial_add_vandermonde'}.  In the second, the printed exponent
+$j(n-r+j)$ appears as $j\,(n-(r-j))$ with truncated subtraction on $\NaturalNumbers$; the two
+agree whenever $r-j\le n$, and when $r-j>n$ both sides of that term vanish through
+$\GaussianBinomial{n}{r-j}{q}=0$.
 
 
 \begin{corollary}[Central form]\label{cor:central-vandermonde}
