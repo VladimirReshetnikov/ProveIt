@@ -31,7 +31,7 @@ absorbed each; the repair appendix lists every correction made.
 
 ## Lean formalization inventory
 
-The live corpus census is 988 modules and 12,257 explicit public declarations,
+The live corpus census is 1003 modules and 12,485 explicit public declarations,
 with zero missing declaration comments and zero missing module headers. The
 thirty-five directly relevant modules contain 304 explicit public commands; two
 named `to_additive` declarations bring this inventory to 306 named API entries.
@@ -73,13 +73,17 @@ Automatically generated structure projections are outside both tallies.
   `natDegree_blockOperator`, `blockOperator_injective`,
   `blockOperator_bijective`, `derivative_resonantAntiderivative`,
   `derivative_surjective`, and `natDegree_resonantAntiderivative`.
-- `TransseriesDifferentialBlock.lean` (twelve theorems):
-  `derivation_pow_t`, `derivation_block`, `derivation_zpow_block`,
+- `TransseriesDifferentialBlock.lean` (one definition, twenty theorems):
+  `derivation_pow_t`, `derivation_block`, `successiveBlockOperator`,
+  `successiveBlockOperator_zero`, `successiveBlockOperator_succ_last`,
+  `blockOperator_comm`, `blockOperator_successiveBlockOperator`,
+  `successiveBlockOperator_add`, `successiveBlockOperator_succ_first`,
+  `derivation_iterate_block`, `derivation_zpow_block`,
   `exists_zpow_block_primitive`, `existsUnique_zpow_block_primitive`,
   `exists_block_primitive`,
   `derivation_block_zero`, `exists_block_primitive_resonant`,
-  `derivation_val_inv`, `derivation_pow_inv`, `derivation_zpow_t`, and
-  `derivation_block_zpow`.
+  `derivation_val_inv`, `derivation_pow_inv`, `derivation_zpow_t`,
+  `derivation_block_zpow`, and `derivation_iterate_block_zpow`.
 - `UnitSeriesBellCoefficients.lean` (sixteen theorems):
   `ordPartialBell_eq_factorialRatio_partialBell`,
   `factorial_mul_ordPartialBell_eq_factorial_mul_partialBell`,
@@ -114,12 +118,7 @@ Automatically generated structure projections are outside both tallies.
   `isPoincareExpansion_iff_isFlat_sub`,
   `isPoincareExpansion_zero_iff`, `powScale_eq_rpow`,
   `absorbsScale_of_isBigO_pow`, `isFlat_exp_neg`, and
-  `isPoincareExpansion_add_exp_neg`, together with
-  `isFlat_exp_neg_rpow_atTop`, `IsPoincareExpansion.add_flat`,
-  `IsPoincareExpansion.sub_same_coeff_isFlat`,
-  `IsPoincareExpansion.iff_sub_isFlat`,
-  `IsFlat.smul_of_scale_absorption`, and
-  `IsFlat.smul_of_isBigO_inv_pow`.
+  `isPoincareExpansion_add_exp_neg`.
 - `WrightOmega.lean` (one definition, thirteen theorems): `wrightOmega`,
   `analyticAt_wrightOmega`, `wrightOmega_pos`, `wrightOmega_add_log`,
   `principalLambertW_eq_wrightOmega_log`, `wrightOmega_leftInverse`,
@@ -165,7 +164,8 @@ Automatically generated structure projections are outside both tallies.
   `abs_numDerangements_sub_lt_half`, and
   `round_factorial_mul_exp_neg_one`.
 
-Fourteen incoming leaves add 95 focused declarations:
+At the earlier focused checkpoint, fourteen incoming leaves added 95 focused
+declarations:
 `BackwardErrorExistence.lean` (7), `BellLeibnizTower.lean` (5),
 `CayleyKernel.lean` (10), `CayleyLocalCoordinate.lean` (7),
 `CayleyTreeFunction.lean` (7), `DivisorTransform.lean` (9),
@@ -182,6 +182,21 @@ focused package. Three later focused leaves add
 new `AppellSequence.lean` declarations are included only in the global corpus
 census above.
 
+The final focused addition is the ten-theorem
+`TransseriesWrightOmegaTerms.lean` leaf:
+`plMonomial_one_zero_eventuallyEq`, `plMonomial_zero_one_eventuallyEq`,
+`plMonomial_neg_one_one_eventuallyEq`, `exponents_of_wrightOmega`,
+`exponents_of_wrightOmega_sub`, `exponents_of_wrightOmega_residual`,
+`not_pure_of_wrightOmega_three_terms`,
+`not_isEquivalent_pure_power_wrightOmega_sub`,
+`tendsto_wrightOmega_div_plMonomial_zero_atTop`, and
+`isLittleO_wrightOmega_residual_plMonomial_zero`.  The two added theorems in
+`TransseriesMonomialUniqueness.lean` are
+`tendsto_const_mul_plMonomial_div_one_iff` and
+`isEquivalent_const_mul_plMonomial_iff`; the two earlier compatibility
+wrappers remain.  These twelve declarations account exactly for the change
+from the historical 35/304/306 focused inventory to 36/316/318.
+
 The exact status map is deliberately narrower than the inventory:
 
 - Exact: `q0:def:scale`, `q0:eq:scale`, `q0:def:poincare`,
@@ -190,6 +205,9 @@ The exact status map is deliberately narrower than the inventory:
   through its literal `OrderDual` wrappers (the printed total order is a
   specialization), the analytic content of `plt:lem:mot-dominance`,
   `plt:prop:mot-blocks`, `plt:prop:mot-omega-basic` over the reals only,
+  the unique first three Wright-omega monomial terms, and the real-`atTop`
+  statements `plt:cor:mot-both-generators-needed` and
+  `plt:prop:mot-one-generator-fails`,
   `plt:lem:tay-bell-recurrence`, and the displayed equations
   `plt:eq:mot-block-derivative` and `plt:eq:dif-block` in the abstract unit
   model, `plt:lem:bell-normalizations`, all three
@@ -199,9 +217,10 @@ The exact status map is deliberately narrower than the inventory:
 - Partial: `q0:prop:height` beyond its two exact displayed estimates;
   `plt:def:mot-scale` beyond the ordered-sequence version;
   `plt:lem:mot-harmonic` beyond its leading Stolz limit;
-  `plt:prop:mot-two-orders` beyond its exact concluding equivalences;
-  `plt:cor:mot-both-generators-needed` beyond its exact monomial-uniqueness and
-  Wright-omega residual engines; `plt:thm:mot-smallest-differential-algebra` beyond its exact
+  `plt:prop:mot-two-orders` beyond its exact concluding equivalences and at
+  its four-term quantitative expansion; the abstract construction of a full
+  transseries scale beyond the proved monomial set consequences;
+  `plt:thm:mot-smallest-differential-algebra` beyond its exact
   abstract minimality statements and integer block law, since the concrete
   germ-model growth and algebraic-independence clauses remain absent;
   the compound `plt:lem:mot-block-antiderivative` and `plt:prop:dif-block`
@@ -247,7 +266,9 @@ overstated it. The accurate tally, of six apparent overlaps:
 * **one strengthening in the inversion apparatus's favour** — the calculus has
   the one-sided mean-value bound, while the inversion apparatus has the
   two-sided bracket *and* the root-existence certificate, so the calculus's
-  proposition is a corollary of it and not conversely;
+  proposition is a corollary of it and not conversely.  The certificate is now
+  machine-checked as `Fabius.exists_eq_in_residual_interval`; unlike the two
+  error inequalities, it assumes no pre-existing root or right inverse;
 * **one item with no counterpart** — the calculus defines only the exponential
   Bell family; the ordinary family is new;
 * **three pairs that are different theorems about the same subject** —
@@ -280,7 +301,7 @@ is about the passage from a function to a sequence.
 
 ## Lean crosswalk
 
-The current integrated inventory is 988 modules and 12,257 public declarations,
+The current integrated inventory is 1003 modules and 12,485 public declarations,
 with no documentation gaps. The preceding 979/12,142 inventory is a historical
 checkpoint. `TransseriesFlat` now has 4 definitions
 and 22 theorems, preserving the general vector-valued API together with the
@@ -292,7 +313,8 @@ sequence-indexed asymptotic-scale/Poincaré definitions and uniqueness,
 flatness and the corrected invisible-function proposition, Dickson and Neumann
 (with `OrderDual` matching the manuscript's well-based orientation), the
 displayed power–log ratio limits and chosen decreasing
-sequence scales, the unit-series Bell coefficient formulas, and the quadratic
+sequence scales, the unique first three Wright-omega monomial terms and both
+real one-generator failures, the unit-series Bell coefficient formulas, and the quadratic
 Catalan identity. The full unordered power–log scale lemma, the all-integer
 Laurent block-antiderivative lemma, and the complete quadratic-core lemma are
 Partial at the boundaries stated in the source. No status promotion should be

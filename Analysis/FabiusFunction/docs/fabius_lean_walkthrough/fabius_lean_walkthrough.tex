@@ -131,10 +131,12 @@ A mathematically oriented reader should begin with Sections~\ref{ch:objects}, \r
 
 \begin{boxedremark}\textbf{Artifact status (4 September 2026).}\space
 The authoritative live lexical audit of the facade semantic union contains
-exactly 988 source modules and 12,257 public declarations.  It finds no
+exactly 1003 source modules and 12,485 public declarations.  It finds no
 missing module headers and no public declarations without doc comments.  The
 historical 923/11,611 snapshot comprised the merge target's 11,610
-declarations and the retained unconditional public Pochhammer bridge.  The
+declarations and the retained unconditional public Pochhammer bridge.  Later
+branch inventories, including 952/11,884, 967/12,001, 970/12,051,
+976/12,116, and 977/12,133, are historical and overlap.  The
 historical 671/8,859 local checkpoint was the 649/8,698 checkpoint plus 22
 modules and 161 declarations.  The
 Pochhammer ownership census remains
@@ -169,11 +171,15 @@ surface, together with the three-theorem extension that brings
 zero-definition/five-theorem
 \nolinkurl{LambertWBranchGapBernoulli.lean} leaf, while retaining the public
 \nolinkurl{complexQPochhammerInf_eq_qPochhammerInfIn} bridge.
-The subsequent one-definition/eight-theorem
+The one-definition/eight-theorem
 \nolinkurl{GeometricUniformMomentPolynomial.lean} leaf supplies the algebraic
-part of \nolinkurl{p7:thm:Pn} and moves that row from None to Partial; the
-analytic normalization and leading-coefficient/strict-odd-degree clause remain
-open.
+part of \nolinkurl{p7:thm:Pn}.  Together with the real and complex coefficient
+bridges, the sharp-degree theorem, and the global q-factorial-cleared
+\nolinkurl{GeometricUniformMomentRatFunc.lean} coefficient, it makes the
+moment-polynomial row Exact on its stated algebraic and safe-evaluation
+domains.  \nolinkurl{GeometricUniformMomentReciprocity.lean} likewise makes
+the germ-reciprocity row Exact under \(q\ne0\) and \(\lVert q\rVert\ne1\),
+without asserting a unit-circle or global analytic identity.
 The retained five-module polynomial q-calculus increment is exactly
 \nolinkurl{PolynomialQDerivative.lean} (2+17),
 \nolinkurl{PolynomialQLeibniz.lean} (0+4),
@@ -1115,8 +1121,10 @@ the two exact denominator maps are primitive recursive by
 \nolinkurl{inverseFabiusExactLogarithmicDenominator_primrec}; the proof uses
 natural recurrence codes and does not assume normalized-rational
 computability.  These two definitions and ten theorems are
-its complete public surface.  This is a source-only overlay: the retained
-walkthrough PDF is historical and was not rebuilt for it.
+its complete public surface.  This surface first entered as a source-only
+overlay whose preceding walkthrough PDF did not include it.  It is included
+in this rendered publication; the current source/PDF publication receipt is
+kept externally in the repository documentation.
 
 The generic \nolinkurl{EffectiveMonotoneInverse.lean} layer has exactly two
 public definitions and six theorems.  Its definitions are
@@ -2728,6 +2736,7 @@ Finally, \nolinkurl{RogersSzegoPolynomial.lean} has the definition
 \nolinkurl{sum_antidiagonal_euler_mul_euler}, and
 \nolinkurl{hasSum_rogersSzego_generating}.  The six-module total is four
 definitions and seventy theorems, seventy-four declarations.
+This source inventory does not assert a fresh aggregate Lean build.
 
 The definition of \(F_q\), together with its monotonicity, range bounds, and
 measurability, is total in real \(q\).  If \(\lvert q\rvert<1\), then \(F_q\)
@@ -6246,8 +6255,8 @@ coefficient, and isolating the \(j=0\) term gives
 ring.  Formal substitution in the falling-factorial series gives the
 unit-constant power specialization over a rational algebra.  Thus the power
 clause of \nolinkurl{alg:merged-exp-log-power} is Exact, with no analytic
-branch claim.  The 204-row coefficient-calculus concordance is 63 Lean,
-32 Partial, and 109 None. \\
+branch claim.  The 207-row coefficient-calculus concordance is 65 Lean,
+35 Partial, and 107 None. \\
 Weighted binomial translation and inversion &
 \nolinkurl{Bell.binomialConv_unitSeq},
 \nolinkurl{Bell.binomialConv_four_swap},
@@ -7027,7 +7036,9 @@ fixed-dyadic ceiling, endpoint counterexample, and target-specific strict
 leastness, and composes them with the logarithmic selector to obtain a
 reciprocal \(1/n\) witness, and proves both denominator maps primitive
 recursive.  It does not claim leastness for \(1/n\) or assert a modulus at its convention-only zero
-input.  The retained walkthrough PDF predates this row.
+input.  When this row first landed, the preceding walkthrough PDF predated it;
+the row is included in this rendered publication, whose current receipt is
+kept externally.
 The still later compiled current-tree tranche
 \nolinkurl{EffectiveMonotoneInverse.lean} and
 \nolinkurl{FabiusInverseComputable.lean} has exactly the two-definition,
@@ -7061,7 +7072,7 @@ module headers or declaration comments.  The later 934/11,709 checkpoint
 and both branches' subsequent inventories are historical: the local branch
 reached 961/11,974 and then 970/12,056, while the incoming branch reached
 952/11,884, 967/12,001, 969/12,048, and 970/12,051.
-The live merged audit scans 988 modules and 12,257 explicit public
+The live merged audit scans 1003 modules and 12,485 explicit public
 declarations, with zero missing module headers and zero missing declaration
 comments.  The Legendre-biorthogonality 925/11,619 census remains an explicit
 historical checkpoint.  At the retained historical
@@ -7235,7 +7246,14 @@ historical 921/11,575 checkpoint.  The exhaustive \(1+6\)
 exhaustive \(11+17\) \nolinkurl{FinitePrefixAppellRecovery.lean} leaf makes
 \nolinkurl{is:p2:thm:finite-prefix-expansion} and
 \nolinkurl{is:p2:thm:exact-recovery} Exact and gives the historical
-923/11,610 checkpoint.  The exhaustive \(1+4\)
+923/11,610 checkpoint.  The separately inventoried five-module polynomial
+q-calculus increment---\nolinkurl{PolynomialQDerivative.lean} (2+17),
+\nolinkurl{PolynomialQLeibniz.lean} (0+4),
+\nolinkurl{QPochhammerDerivative.lean} (0+3),
+\nolinkurl{LambertSeriesLog.lean} (0+4), and
+\nolinkurl{QGamma.lean} (2+10)---is retained in full: four definitions and
+thirty-eight theorems, forty-two public declarations, with the exact
+hypotheses and boundaries stated in its rows above.  The exhaustive \(1+4\)
 \nolinkurl{GeometricUniformMomentRatFunc.lean} leaf then packages the common
 rational coefficient, its global q-factorial clearing, both safe analytic
 evaluations, and the removable \(q=1\) value.  It makes
@@ -7331,9 +7349,10 @@ new leaves contribute 80 declarations, while three existing declarations
 move from \path{NorlundDiagonal.lean} to \path{ExponentialRescaling.lean},
 for a net increase of 77.  The eight-theorem Stirling leaf is retained.
 The two certificate leaves added nine public theorems at the historical
-979/12,142 checkpoint. The current merged inventory is 988/12,257 after six
-further leaves add 57 declarations. No new aggregate-build or PDF-parity
-claim is made.
+979/12,142 checkpoint. Six further leaves and extensions to existing modules
+then added 57 declarations. The incoming BellSetPartitions module adds 34
+more, giving the historical 986/12,233 checkpoint. The merged current inventory
+is 1003/12,485. No new aggregate-build or PDF-parity claim is made.
 
 The crosswalk remains conservative: the abstract Fa\`a di Bruno result, the
 ordinary Bell normalization, and the Touchard definition and displayed
@@ -7346,7 +7365,7 @@ bounds, linear-logarithmic inversion, power-logarithmic inversion, remainder
 transport, and staircase inversion remain Partial; the least-term-index row
 is Neighboring.  Every module is reachable from the facade.  No aggregate facade
 build is claimed for this current-tree census.  The title-page pin remains historical; current publication receipts are external.
-The present union has 988 modules and 12,257 public declarations, with zero
+The present union has 1003 modules and 12,485 public declarations, with zero
 module-header or declaration-comment gaps.  Its QBinomialTheoremInfinite
 surface is 1+29 and GaussianBinomialFixedColumnRate is 0+9, retaining
 compatibility names for the stronger upstream product and shifted-limit APIs.

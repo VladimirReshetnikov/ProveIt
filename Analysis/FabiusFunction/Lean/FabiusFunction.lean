@@ -33,6 +33,7 @@ import FabiusFunction.StirlingOrdinaryGF
 import FabiusFunction.StirlingCompleteHomogeneous
 import FabiusFunction.EulerianGeneratingFunctions
 import FabiusFunction.ExponentialRiordan
+import FabiusFunction.ExponentialRiordanInverse
 import FabiusFunction.ExponentialFormula
 import FabiusFunction.OrderedBell
 import FabiusFunction.OrdinaryPartialBell
@@ -42,6 +43,7 @@ import FabiusFunction.ComplementaryBell
 import FabiusFunction.StirlingTriangularExplicit
 import FabiusFunction.BellShiftEGF
 import FabiusFunction.OrdinaryBellComposition
+import FabiusFunction.OrdinaryBellMultinomial
 import FabiusFunction.EulerianEGF
 import FabiusFunction.BernoulliAppell
 import FabiusFunction.StirlingShiftedEvaluations
@@ -49,6 +51,7 @@ import FabiusFunction.StirlingTransformEGF
 import FabiusFunction.StirlingSummations
 import FabiusFunction.StirlingNormalOrder
 import FabiusFunction.BinomialType
+import FabiusFunction.BinomialTypeCharacterization
 import FabiusFunction.BellLeadingZeros
 import FabiusFunction.GenocchiNumbers
 import FabiusFunction.EulerianAlternating
@@ -74,6 +77,7 @@ import FabiusFunction.RStirling
 import FabiusFunction.FallingFactorialSeries
 import FabiusFunction.PochhammerFalling
 import FabiusFunction.CauchyPolynomials
+import FabiusFunction.CauchyPolynomialReflection
 import FabiusFunction.CoefficientRules
 import FabiusFunction.GridEvaluationCertificate
 import FabiusFunction.IntegerCRTCertificate
@@ -91,10 +95,12 @@ import FabiusFunction.StirlingFirstModH
 import FabiusFunction.StirlingSymmetricFunctions
 import FabiusFunction.LagrangeInversion
 import FabiusFunction.LagrangeInversionUniqueness
+import FabiusFunction.LagrangeExistence
 import FabiusFunction.NewtonReciprocal
 import FabiusFunction.RaneyNumbers
-import FabiusFunction.AssociahedronFaceNumbers
-import FabiusFunction.PochhammerFalling
+import FabiusFunction.RaneyNumbersUniqueness
+import FabiusFunction.IdentityCertificates
+import FabiusFunction.BinaryTreeRotations
 import FabiusFunction.AbelPolynomialSeries
 import FabiusFunction.LambertWSeries
 import FabiusFunction.FussCatalanSeries
@@ -554,12 +560,15 @@ import FabiusFunction.TransferOperatorStep
 import FabiusFunction.TransseriesBlockAntiderivative
 import FabiusFunction.TransseriesDifferentialBlock
 import FabiusFunction.TransseriesDifferentialClosure
+import FabiusFunction.TransseriesIteratedBlock
 import FabiusFunction.TransseriesHarmonicIncrement
 import FabiusFunction.TransseriesScaleDominance
 import FabiusFunction.TransseriesBlockClasses
 import FabiusFunction.TransseriesMonomialUniqueness
 import FabiusFunction.TransseriesWrightOmegaTerms
 import FabiusFunction.LambertCoefficientPolynomials
+import FabiusFunction.LambertPolynomialStirling
+import FabiusFunction.LambertPolynomialCoefficients
 import FabiusFunction.TransseriesPolyLogScale
 import FabiusFunction.TriangularPowerProduct
 import FabiusFunction.LasotaYorkeIteration
@@ -838,6 +847,10 @@ import FabiusFunction.StaircaseInversion
 import FabiusFunction.RemainderTransport
 import FabiusFunction.LeastTermIndex
 import FabiusFunction.BellSetPartitions
+import FabiusFunction.EulerianPermutohedron
+import FabiusFunction.InverseDerivativeRecursion
+import FabiusFunction.StirlingIdentities
+import FabiusFunction.BellDeterminants
 
 set_option autoImplicit false
 

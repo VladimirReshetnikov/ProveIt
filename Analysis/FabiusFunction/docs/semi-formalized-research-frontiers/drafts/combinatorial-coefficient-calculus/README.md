@@ -24,20 +24,37 @@ The standard-library
 [`validate_canonical.py`](Combinatorial_Coefficient_Calculus/validate_canonical.py)
 checks LaTeX structure, labels, references, citations, proof pairing, exact
 source coverage, Git object availability, and the one-publication layout;
-run it with `--final`, which is the
-mode this package is now expected to pass.
+run it with `--final`, which is the mode this package is expected to pass at a
+publication checkpoint.
 
 | Directory | Document |
 | --- | --- |
 | `Combinatorial_Coefficient_Calculus/` | **Canonical:** *Combinatorial Coefficient Calculus* — the evolving source and the retained upstream A4 PDF |
 
-Upstream supplied a rebuilt PDF at its checkpoint. The latest merged source
-includes subsequent Stirling and Nörlund changes, so that retained PDF is not
-claimed to render the current source. Further PDF building remains skipped in
-this work at the user's request. Standalone
-checksum files are retired; provenance is kept
-in Git and the source inventory, and the validator does not maintain or require
-file digests.
+Upstream supplied a rebuilt PDF at its checkpoint. The merged source includes
+subsequent Stirling, Nörlund, Bell, and Cauchy-polynomial changes, so that
+retained PDF is historical and is not claimed to render the current source.
+Further PDF building is deferred at the user's request. Standalone checksum
+files are retired; provenance is kept in Git and the source inventory, and the
+validator does not maintain or require file digests.
+
+## Additional exact correspondences retained in the merge
+
+Crosswalk work closes the full Cauchy-polynomial theorem block: the
+formal and real interval integrals, reflection, and generic generating-function
+and addition laws are now represented, with the latter two valid after
+evaluation in any commutative rational algebra. The analytic convergence and
+branch assertion attached to the generating function remains outside that
+formalized theorem block. The second-kind reverse-row recurrence is now
+machine checked in a division-free integral form, including its zero boundary
+case beyond the range used by the displayed human formula; the separately
+merged unrestricted rational-index source identity remains pending validation
+under its collision-free declaration name. The ordinary versus
+exponential Bell normalization now has both its rational ratio form and a
+denominator-free commutative-semiring form, together with functoriality and the
+upper variable-support cutoff. The sharpness witness for that cutoff, the
+general Bell near-diagonal reduction, its two-block case, and the higher
+subdiagonals remain human-only or partial as recorded in the register.
 
 ## What the final merge changed
 
@@ -96,7 +113,7 @@ The compiled zero-definition/eight-theorem
 `prod_inv_one_sub_natCast_mul_eq_inv_pow_mul_descPochhammer_eval_inv`, cover
 the scalar factorization and reciprocal spelling. Together they make
 `thm:second-ogf` **Lean** with the corrected hypotheses. The retained PDF was
-not rebuilt for this source-only overlay, so no PDF or checksum parity is
+not rebuilt for this source-only overlay, so no current render parity is
 claimed for it.
 
 ## What this package does not claim
@@ -130,14 +147,31 @@ interpretation and the Stirling block-count specialization; its compiled
 status is recorded by upstream commit `dd554e5a8`, not a fresh local replay.
 The prescribed-block-size type count remains a separate obligation.
 
+## Formal-power recurrence (2026-09-04)
+
+`UnitSeriesPowerRecurrence` supplies three checked theorems. Over any
+commutative ring, the differential equation `A C' = α A' C` implies
+`n a₀ cₙ = Σ_{j=1}^n ((α+1)j−n) aⱼ cₙ₋ⱼ`, without assuming `a₀` is
+invertible. Over a commutative rational algebra with `a₀=1`, formal binomial
+substitution gives `C=A^α`, satisfies that differential equation, and yields
+the manuscript's triangular coefficient algorithm. Its proof and crosswalk
+now cover all three clauses of `alg:merged-exp-log-power` exactly.
+
+The proof uses the Euler derivative `z d/dz` to keep degree indices aligned,
+then separates the constant-coefficient term of the Cauchy product. The
+canonical source includes that complete argument, including the constant
+term and inductive uniqueness of the resulting coefficient sequence. This
+is formal algebra; no analytic branch choice or convergence claim is made.
+
 ## Coefficient-calculus campaign (2026-09-04)
 
-Four new leaf modules supply seventeen public theorem statements, with complete
-human proofs and exact declaration names in the manuscript. `NewtonReciprocal`
-has passed focused Lean compilation, including the actual truncated update.
-`StirlingSymmetricFunctions`, `LagrangeInversionUniqueness`, and
-`StirlingSecondReverseRowIdentity` have received independent source/API reviews;
-their compiler validation is pending. The register preserves that distinction.
+The new leaf modules supply the public theorem statements listed in the
+register, with complete human proofs and exact declaration names in the
+manuscript. `NewtonReciprocal`, `StirlingSymmetricFunctions`,
+`LagrangeInversionUniqueness`, and `StirlingSecondReverseRowIdentity` have all
+passed direct sequential Lean compilation, including the actual truncated
+Newton update and the integer-transport reverse-row identity. The register
+preserves the remaining claim-level distinctions.
 The two second-kind symmetric-function formulas are shared with the compiled
 upstream `StirlingCompleteHomogeneous` module; their duplicate implementations
 were removed from this campaign's leaf.
@@ -147,6 +181,24 @@ hypotheses and full remainder estimates, removes contradictory duplicate
 crosswalks, and corrects boundary cases and coefficient-ring assumptions.
 The brief [campaign status](Combinatorial_Coefficient_Calculus/FORMALIZATION_STATUS.md)
 records remaining obligations without duplicating the canonical claim register.
+
+## Formal-power recurrence (2026-09-04)
+
+`UnitSeriesPowerRecurrence` supplies three checked theorems. Over any
+commutative ring, the differential equation `A C' = α A' C` implies
+`n a₀ cₙ = Σ_{j=1}^n ((α+1)j−n) aⱼ cₙ₋ⱼ`, without assuming `a₀` is
+invertible. Over a commutative rational algebra with `a₀=1`, formal binomial
+substitution gives `C=A^α`, satisfies that differential equation, and yields
+the manuscript's triangular coefficient algorithm. Its proof and crosswalk
+now cover all three clauses of `alg:merged-exp-log-power` exactly.
+
+The proof uses the Euler derivative `z d/dz` to keep degree indices aligned,
+then separates the constant-coefficient term of the Cauchy product. The
+canonical source includes that complete argument, including the constant
+term and inductive uniqueness of the resulting coefficient sequence. This
+is formal algebra; no analytic branch choice or convergence claim is made.
+
+## Additional formal-series checkpoints (2026-09-04)
 
 `ExponentialRescaling` has passed a focused build. Its four public lemmas give
 the rescaling chain rule over every commutative semiring and exponential

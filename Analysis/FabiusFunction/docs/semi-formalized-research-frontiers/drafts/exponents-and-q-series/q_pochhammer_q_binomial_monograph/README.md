@@ -33,8 +33,11 @@ redirected `prop:fixed-k-limit`, `prop:qF-P-degree-sharp`,
 `cor:qbinom-classical`, `cor:qgamma-theta`, `prop:logder-finite`,
 `prop:qbinom-products`, `prop:qderivative-rules`, `prop:qgamma-reflection`,
 `thm:q-leibniz`, and `thm:quantum-binomial`. The immutable source fields do
-not change. `thm:q-lucas` is deliberately absent from this promotion set and
-remains Partial for the polynomial-congruence gap described below.
+not change. The union also retains the later upstream promotions
+`thm:qF-reciprocity`, `prop:up-tail`, `cor:up-moments`, and
+`thm:qF-moment-polynomial`. `thm:q-lucas` is deliberately absent from this
+promotion set and remains Partial for the polynomial-congruence gap described
+below.
 
 The editorial contract is mathematical rather than mechanical:
 
@@ -134,7 +137,8 @@ visual gates passed; the one harmless, readable 32.5659 pt overfull paragraph
 is the only disclosed exception to otherwise clean diagnostics. This receipt
 validates only its named source checkpoint: it predates the `9135` final source
 union, so the 395-page PDF is historical and is superseded by the later
-historical receipt below. The rigorous current formalization ledger closes at
+historical receipt below. The then-current formalization ledger for that
+historical checkpoint closes at
 177 Exact, 82 Partial, 15 None, and 8 interface rows. Files under
 `assets/experiments/**/figures/`
 remain research figures, not publication manuscripts.
@@ -154,9 +158,10 @@ and forbidden checksum basenames both close at zero. The sole retained
 32.5659 pt overfull paragraph at source lines 590--598 is readable and
 unclipped; the final log has zero underfull diagnostics. The merged source has
 advanced beyond that receipt, so the PDF is historical; a rebuild was then
-pending. It is superseded by the later historical receipt below.
+pending. It is superseded by the later historical `b899` receipt below.
 
-The historical synchronized `b899` driver had 17,265 lines and 864,659 bytes, with
+The historical synchronized `b899` driver has 17,265 lines and 864,659 bytes,
+with
 SHA-256
 `4dd3f7fb22387d8e3d039e8d49cd870a63ebe0881f7f215c7074854825a27bb9`.
 Its 14-file recursive TeX closure has 26,762 lines and 1,210,902 bytes, with
@@ -175,7 +180,8 @@ minor horizontal boxes, none above 10.14 pt.
 The later source-only crosswalk corrections use the renamed shifted-limit
 theorem and distinguish the nine-theorem generic fixed-column module from
 the field-level convergence module. No PDF was rebuilt for these corrections;
-the `b899` receipt does not assert parity with the current source.
+the `b899` receipt does not assert parity with the current source. PDF
+regeneration for this merge is deferred by user approval.
 
 The local first-merge receipt is also retained as history: master
 `16812L/840316B/64dc18dedbd1966624162b64129128b24b51ca88d8a9e496c661cc1a46a24ba6`,
@@ -196,7 +202,8 @@ and log
 Both passed their recorded gates. The merged q-series source is newer than
 every retained receipt, so a fresh synchronized render is pending.
 
-The current source includes exhaustive crosswalks for `QPochhammerEntire`
+The source at that historical checkpoint includes exhaustive crosswalks for
+`QPochhammerEntire`
 (zero definitions
 and five legacy compatibility theorems), `QPochhammerInfinite` (one definition
 and twenty-nine theorems), `QPochhammerDissection` (zero definitions and two
@@ -271,7 +278,7 @@ source-only transseries/Catalan and Thue--Morse additions made 943/11,791 the
 next historical checkpoint. The finalized one-definition/eleven-theorem
 `TransseriesFlat.lean` module and three integer-zpow theorems in
 `TransseriesDifferentialBlock.lean` gave the historical facade audit 944 modules and
-11,806 public declarations; the merged live census is 988/12,257. Ten declarations come from the sibling
+11,806 public declarations; the merged live census is 1003/12,485. Ten declarations come from the sibling
 `FabiusFunction.GeometricRichardsonGenerating` module (three definitions and
 seven theorems), whose exact comb-manuscript crosswalk is
 `Fabius.geometricLagrangeRichardson_generating`; it does not change this
@@ -415,7 +422,7 @@ historical post-Prouhet checkpoint.  Subsequent source-only
 transseries/Catalan and Thue--Morse additions made 943/11,791 the next
 historical checkpoint.  The finalized one-definition/eleven-theorem
 `TransseriesFlat.lean` module and three integer-zpow theorems in
-`TransseriesDifferentialBlock.lean` gave the historical census 944/11,806; the merged live census is 988/12,257.
+`TransseriesDifferentialBlock.lean` gave the historical census 944/11,806; the merged live census is 1003/12,485.
 The existing `ProbabilityLaplaceMoments.lean` module now adds exactly the two
 theorems
 `weightedSumDistribution_real_Ici_eq_rvachevUp_of_nonneg` and
@@ -430,6 +437,9 @@ with `rvachevUp_eq_fabiusReal_one_sub_abs` and
 The forward ledger is 181 Exact / 79 Partial / 14 None / 8 N/A, the relevant
 Dyadic Gaussian--Thue--Morse chapter is 13/43/0/0, and the source concordance
 is 103 Lean-proved / 375 human-proved frontier / 60 N/A / 9 conjectures.
+`thm:q-lucas` remains Partial: `QLucas.lean` proves the evaluated
+primitive-root identity, but no declaration proves the polynomial congruence
+modulo `Phi_d(q)` or its minimal-polynomial lift.
 The zero-definition/one-theorem `HalfQBinomialRootSimplicity.lean` leaf exports
 `halfQBinomial_sum_rootMultiplicity_two_pow`; composed with
 `halfQBinomial_sum_eq_zero_iff` and

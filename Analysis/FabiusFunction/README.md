@@ -82,9 +82,9 @@ That primary exposition is deliberately proof-backed: every mathematical claim
 in it must have a proved counterpart in the Lean development.
 
 > **Artifact status (2026-09-04).**  The live facade union contains exactly
-> 988 source modules and 12,257 explicit public declarations.  The documentation
+> 1003 source modules and 12,485 explicit public declarations.  The documentation
 > audit reports no missing module headers or declaration comments.  The preceding
-> 979/12,142, 977/12,133, and earlier reconciled 970/12,056 inventories remain historical
+> 985/12,199, 979/12,142, 977/12,133, and earlier reconciled 970/12,056 inventories remain historical
 > checkpoints.  The exact-dyadic
 > inverse, Jacobi two-square, Lagrange--Rvachev Matrix, geometric Richardson,
 > Gaussian-binomial second-moment, fixed-column rate, and half-base root
@@ -170,6 +170,267 @@ in it must have a proved counterpart in the Lean development.
 > The geometric-uniform moment-polynomial union consists of
 > `GeometricUniformMomentPolynomial` 1+8 and its real-MGF normalization bridge
 > `GeometricUniformMomentPolynomialBridge` 0+1, together with the inner
+> complex-product bridge `GeometricUniformComplexMomentProduct` 1+3, the
+> exterior reciprocal-germ bridge `GeometricUniformExteriorComplexMomentGerm`
+> 1+2, and the sharp coefficient-and-degree leaf
+> `GeometricUniformMomentPolynomialDegree` 0+3.  In the target chronology the
+> historical complex-product checkpoint 918/11,568 was followed by
+> `HalfQBinomialRootSimplicity` 0+1 at 919/11,569, the exterior leaf at
+> 920/11,572, the sharp leaf at 921/11,575, `RvachevLaurentLeading` at
+> 922/11,582, and `FinitePrefixAppellRecovery` at the target 923/11,610
+> checkpoint.  Retaining the unconditional public Pochhammer bridge shifts the
+> declaration count by one and yielded the historical `b899` 923/11,611
+> semantic union.  The
+> separate incoming-branch inner/exterior checkpoints 906/11,461 and
+> 907/11,464 remain historical.
+> The final exact-closure tranche also retains `ThueMorseCornerIntegral` 1+4,
+> `RvachevLegendreCentralSum` 0+3, and the sixteenth theorem in the existing
+> zero-definition `FinitePolynomialFunctional` module.
+> The separate five-module polynomial q-calculus increment is retained in full:
+> `PolynomialQDerivative` 2+17, `PolynomialQLeibniz` 0+4,
+> `QPochhammerDerivative` 0+3, `LambertSeriesLog` 0+4, and `QGamma` 2+10,
+> totaling four definitions and thirty-eight theorems, forty-two public
+> declarations; their exact algebraic, analytic, nonvanishing, and boundary
+> hypotheses are recorded in the audit and walkthrough.
+> The bounds module reuses `finiteQPochhammerIn_self_pos` from
+> `GeneralQConditionNumber`; it does not redeclare that theorem.  The rigorous
+> forward q-monograph ledger is 181 Exact, 79 Partial, 14 None, and 8
+> interface rows; its source concordance is 103 Lean, 375 human, 60 N/A, and
+> 9 conjecture rows, and the concordance extractor passes.  In particular,
+> `prop:gaussian-bound` is Exact, while
+> `thm:q-lucas` remains Partial because Lean proves the evaluated primitive-root
+> identity rather than the manuscript's polynomial congruence modulo `Φ_d`;
+> `cor:babbage-derivative` remains Partial because only its value is formalized.
+>
+> **Deferred publication status.**  The fixed-26 publication check—14 fresh
+> build cycles and 12 retained verified pairs—is recorded once in the
+> [draft manifest](docs/semi-formalized-research-frontiers/drafts/MANIFEST.md#fixed-26-publication-checkpoint).
+> A row still marked pending makes no synchronization claim.  The exact older
+> receipts below remain historical evidence; under the user-directed deferral,
+> the fixed-26 table is an inventory rather than a merged-current parity receipt.
+>
+> Four exact direct receipts record the last synchronized pre-9135 source/PDF
+> pairs and are now historical because the live sources include the new
+> q-Chu/reversal, geometric-generating, Gaussian second-moment, Lambert
+> branch-gap Bernoulli, and geometric-uniform moment-polynomial APIs.  The
+> 14,037-line, 702,119-byte
+> primary TeX has SHA-256
+> `6a20e02cf300c0b29ba8d175831b4f86e4b336601cc5bd5f5752d5c5889be69a`;
+> its 197-page, 1,602,500-byte PDF has SHA-256
+> `f083cd78308aba99d23d42372786c4b0a946ea8f5d47445c44d664fccfdde5e3`.
+> The 6,598-line, 465,231-byte Lean-walkthrough TeX has SHA-256
+> `796dd849fa423ba07413eaf0a1f30dc608355c5a3cd877aa7409ad089c54794e`;
+> its 149-page, 1,231,442-byte PDF has SHA-256
+> `bc6e3e716a1a10daf24a065f6c97e2d00cbc95071ada777050a95f91598db4a0`.
+> The 17,954-line, 813,297-byte canonical-frontier TeX has SHA-256
+> `bcd9eefce2ead08e2cbb283e091a859aa31f36c67416543e994e10e8f9db3075`;
+> its 262-page, 1,885,642-byte PDF has SHA-256
+> `7f7e1279e38c766a465e640638ea7e0079a942de0bc84a5c22be497af27c7bab`.
+> The 16,834-line, 837,715-byte q-series master has SHA-256
+> `4785625c1399558f3ca59481888fc76514e0a327a1faa16945c61851f874f3d5`;
+> its 395-page, 2,494,961-byte PDF has SHA-256
+> `89159b2635f489a42d4c972fac95332808b1d637dee7921085db1ed7d6e055af`.
+> Their exact successful three-pass page sequences were respectively
+> 194→197→197, 144→149→149, 254→262→262, and 386→395→395.  Primary and
+> walkthrough logs and publication gates are clean; the frontier retains only
+> expected underfull diagnostics, and the q-series master retains one harmless,
+> readable 32.5659 pt overfull line.  All page, metadata, font, render, text,
+> and representative-visual gates passed.  These receipts certify their named
+> pre-9135 pairs only and are superseded by the synchronized 2026-09-04 receipts
+> below.
+>
+> The formerly independent Sequence publication receipt is historical: its
+> material is now absorbed into the consolidated `Transseries_And_Inversion`
+> root listed in the fixed-26 checkpoint.  The Lambert
+> guide's preceding synchronized receipt is a 4,829-line, 174,423-byte TeX with SHA-256
+> `724dfe5b1effcda29325a5bdfb066ff970eb74ab460f650185339fefce40ebc1`;
+> its 69-page, 952,929-byte PDF has SHA-256
+> `0b5f28dbfe590658e74150e8ccff6f023ecd0b8fb4e3e978ec275d9ddd244de6`.
+> Its successful page sequence was 67→69→69; machine and visual gates passed,
+> with expected underfull diagnostics and one harmless readable 0.825 pt
+> internal overfull line.  The Bernoulli-series source overlay made that
+> Lambert PDF historical; the synchronized 2026-09-04 receipt below supersedes
+> it.  The Sequence inversion/transseries volume's
+> 16,705-line, 778,477-byte TeX has SHA-256
+> `4aa038c10ddd931b7c1248095ddfdf0ce8769c69cc0df4f344f6365d0e45e8e1`;
+> its 205-page, 2,198,655-byte PDF has SHA-256
+> `ec1f4d2ac608786f33be97d040fdfd03b6f74494dee74f044fd2e6631217d4fb`.
+> Its successful page sequence was 198→205→205; corrected title/author metadata,
+> machine gates, and extensive visual checks passed.  The final log retains one
+> duplicate-page-destination notice, nine PDF-string notices, 47 overfull and
+> 12 underfull diagnostics; sampled largest cases are clean and unclipped.
+>
+> **Historical synchronized publication receipts (2026-09-04).** Each pass
+> tuple below is `pages/bytes`.  At their named source checkpoints, all six
+> TeX/PDF pairs completed exactly three
+> successful serial halt-on-error passes from absent sidecars.  Final-log
+> reference/rerun/error checks, metadata, A4 rotation zero, every-page render
+> and nonblank-text checks, embedded/subset fonts with Libertinus and no Type 3,
+> and representative visual checks all passed; generated sidecars were cleaned
+> and forbidden checksum-ledger basenames were absent.  These six pairs remain
+> historical receipts for their named source checkpoints; the later historical
+> `b899` receipts below superseded them where a rebuilt root was listed.
+>
+> - Primary exposition: TeX 14,328 lines / 715,760 bytes / SHA-256
+>   `60c0a6ff4e75ec37e6928067859671d87622ad8f430a1006dd4c71c7e7b25674`;
+>   passes 197/1,579,558 → 200/1,621,473 → 200/1,621,467; final PDF
+>   200 pages / 1,621,467 bytes / SHA-256
+>   `50febffeb7dda743330bd346b8f5fd45f85668db97c19fb52d4cd741d1692826`;
+>   fonts 29 total / 6 Libertinus / 0 Type 3.
+> - Lean walkthrough: TeX 6,855 lines / 482,759 bytes / SHA-256
+>   `1c48c54b194eb9e99dae64ddca70e2aa5d2edd995160ee2d5bc6455b545683f7`;
+>   passes 149/1,225,017 → 154/1,262,552 → 154/1,262,574; final PDF
+>   154 pages / 1,262,574 bytes / SHA-256
+>   `f9cba79348ffb81c41fc08b6523548effcc45ded9a2eb2b18e618ac9d59d0648`;
+>   fonts 30 / 7 / 0.
+> - Lambert Guide: TeX 4,876 lines / 177,511 bytes / SHA-256
+>   `d852a345685dd61335a89fc4fd1092680bdc597a5d1e6ac612883946ad0d99ea`;
+>   passes 68/963,230 → 70/986,865 → 70/986,865; final PDF 70 pages /
+>   986,865 bytes / SHA-256
+>   `0b8801649a6dd43d9f02dcfc2f60cac50b5c8f88bd782645bf97d30cc3dfbd41`;
+>   fonts 42 / 5 / 0; one harmless readable 0.82504 pt overfull and 133
+>   underfull diagnostics.
+> - Canonical frontier: TeX 18,173 lines / 826,738 bytes / SHA-256
+>   `844842bf699a24651f660bd7d81d814f6396b4fe6fc6de66a04908904221860b`;
+>   passes 257/1,822,725 → 265/1,904,567 → 265/1,904,551; final PDF
+>   265 pages / 1,904,551 bytes / SHA-256
+>   `dcaa7ac1e5397912c97a474b4023521e49d0785eb6ef67d83d0ce002d9cbb6e6`;
+>   fonts 40 / 8 / 0; one readable unclipped 9.43108 pt overfull at source
+>   lines 1032–1043 and 299 underfull diagnostics.
+> - Geometric q-frontier: TeX 27,598 lines / 1,270,870 bytes / SHA-256
+>   `6db4e211b0588ed75a0e89e13d97306f1d5d38b42a2bf941914ea16b9ca93dae`;
+>   passes 386/8,157,293 → 403/8,339,780 → 403/8,339,736; final PDF
+>   403 pages / 8,339,736 bytes / SHA-256
+>   `4d909b5e228e2053d473dc75da502382c7a4fe2b096f798e124e6530d3a15027`;
+>   fonts 43 / 11 / 0; zero overfull and 37 underfull diagnostics.
+> - Canonical q-series synthesis: TeX 16,910 lines / 842,514 bytes / SHA-256
+>   `196f219d5e1efba463ebabb69659697b1afb28989ef1a8da6219226d3262ad32`;
+>   passes 390/2,386,364 → 398/2,501,624 → 398/2,501,638; final PDF
+>   398 pages / 2,501,638 bytes / SHA-256
+>   `e8094b054f52b1fb71c7540f0834155fae0eac17887cb7cac1567848bd65d3b3`;
+>   fonts 43 / 5 / 0.  Every pass's index run accepted 164 entries, rejected
+>   none, produced 254 lines, and emitted no warning.  The sole retained
+>   32.5659 pt overfull paragraph at source lines 590–598 is readable and
+>   unclipped; the final log has zero underfull diagnostics.
+>
+> **Historical `b899` synchronized publication receipts (2026-09-04).** Each pass
+> tuple below is `pages/bytes`.  All ten roots were frozen and built in exactly
+> three serial halt-on-error passes from absent sidecars.  Subsequent merged
+> source changes make these receipts historical; current rebuild state is
+> recorded only in the fixed-26 checkpoint linked above.
+>
+> - Primary exposition: TeX 15,148 lines / 759,509 bytes / SHA-256
+>   `721cb901de2254ef48991452c4831762f54a36e0a405b4bbeb7f812653e71754`;
+>   passes 208/1,640,077 → 210/1,683,143 → 210/1,683,141; final PDF
+>   210 pages / 1,683,141 bytes / SHA-256
+>   `afe85efec5716fe85cc7d8a5d6af459fd72775526f4bda11df04e6ff275b36c9`;
+>   fonts 29 total / 6 Libertinus / 0 Type 3.
+> - Lean walkthrough: TeX 7,260 lines / 526,929 bytes / SHA-256
+>   `2005d4a70a66a1d8f3eac9be6d83585ea70c9312b09b098f2c65025db9fca814`;
+>   passes 160/1,281,609 → 165/1,319,585 → 165/1,319,594; final PDF
+>   165 pages / 1,319,594 bytes / SHA-256
+>   `b5e886d7c76db56fd9e9e1552bdd78fbd65ea9075ea1e04d62c00a7c04e948fb`;
+>   fonts 30 / 7 / 0.
+> - Geometric q-frontier: driver 27,671 lines / 1,275,367 bytes / SHA-256
+>   `d47c0ad93eb359d13e7e9772668f16dbc98bcb4d880f3679366e1d461451bbcd`;
+>   recursive TeX closure 8 files / 27,777 lines / 1,281,413 bytes / digest
+>   `39f7cd41e706314f2cafb903c2da2e6e83d2b17f5bb0612492204d15c1a28d91`;
+>   passes 388/8,163,847 → 405/8,346,265 → 405/8,346,247; final PDF
+>   405 pages / 8,346,247 bytes / SHA-256
+>   `fef7d8260543ad1d20d69e9e41fa0cfc31603de7961f6aeb97a50740aecd596c`;
+>   fonts 43 / 11 / 0.
+> - Canonical q-series synthesis: driver 17,265 lines / 864,659 bytes /
+>   SHA-256
+>   `4dd3f7fb22387d8e3d039e8d49cd870a63ebe0881f7f215c7074854825a27bb9`;
+>   recursive TeX closure 14 files / 26,762 lines / 1,210,902 bytes / digest
+>   `b567430fdd64f6d50bd24fcb070216c27f7e3e81e8b0c76c3228767ebdf980c6`;
+>   passes 397/2,417,476 → 405/2,533,717 → 405/2,533,715; final PDF
+>   405 pages / 2,533,715 bytes / SHA-256
+>   `055eb1fc26467857394a5b3bd8cd327f6985ea5d2f966ab5f099ac20bb2b8fb2`;
+>   fonts 43 / 5 / 0; every pass's index run accepted 164 entries, rejected
+>   none, produced 254 lines, and emitted no warning.
+> - Inverse-theory synthesis: driver 293 lines / 11,514 bytes / SHA-256
+>   `92fab1fae38bbcf86a45b51bfe7ff34e2801361df9d2f3d6aa3de4dc966eaa3c`;
+>   recursive TeX closure 17 files / 10,682 lines / 431,748 bytes / digest
+>   `6e4e6fde424fd5046467b1f1cec0c19b6c10eb681fae4ba7cc53e14b6a5bf61e`;
+>   passes 132/1,983,313 → 137/2,045,485 → 137/2,045,486; final PDF
+>   137 pages / 2,045,486 bytes / SHA-256
+>   `cee0de894656562fbdb75d6304055fc03fae06203985119419e465a5cd213995`;
+>   fonts 31 / 6 / 0.
+> - Comb-interpolation synthesis: driver 187 lines / 6,724 bytes / SHA-256
+>   `a4c1e33165ff7291682cd890f23fe4af98e9f11f7ad1d9a7f8b68c78d53f9a56`;
+>   recursive TeX closure 15 files / 12,597 lines / 477,163 bytes / digest
+>   `9e22455b3f65eb48306ad21c57445b6052a56498cb363666ffb9b160f5cc8090`;
+>   passes 153/2,383,950 → 160/2,467,995 → 160/2,468,000; final PDF
+>   160 pages / 2,468,000 bytes / SHA-256
+>   `ad8587049580e6fde371f534b6f8b4e56fa4c929173f87d3021ed369e5225d4c`;
+>   fonts 33 / 7 / 0.
+> - Lambert Guide: TeX 4,940 lines / 181,577 bytes / SHA-256
+>   `2e6a4782fc4e4b945869f5fb45b39cf94e8dc34296866edf26b4cdfe19b1898b`;
+>   passes 68/968,083 → 70/991,847 → 70/991,848; final PDF 70 pages /
+>   991,848 bytes / SHA-256
+>   `f802d78299f8f6aca7d31b935a4884f9343389a7307decb04c18b5159c8a4f04`;
+>   fonts 42 / 5 / 0.
+> - Up Polynomial Synthesis: driver 2,368 lines / 98,609 bytes / SHA-256
+>   `95d293e34559e910cca2df4547e6e181a8d26bc8e8cf61c4445cf12c57ed8e0e`;
+>   four-file TeX closure 5,434 lines / 211,270 bytes / digest
+>   `62aa76428089cd164705b1d31e038d4e48545681eedc01cb491e6a94f07b0e41`;
+>   passes 61/1,045,488 → 62/1,071,179 → 62/1,071,181; final PDF
+>   62 pages / 1,071,181 bytes / SHA-256
+>   `99c5d8256b983652755fe8e46ef015277e61b94941a4ca6c875bddaf0493b101`;
+>   fonts 27 / 4 / 0.
+> - Thue--Morse Atlas: TeX 10,553 lines / 481,614 bytes / SHA-256
+>   `cced4128c359ec467baaf1a55c21c68424397f783a39ea7fe2af5a94975b9dd5`;
+>   passes 139/1,681,559 → 144/1,739,891 → 144/1,739,884; final PDF
+>   144 pages / 1,739,884 bytes / SHA-256
+>   `1c81863b0976017fab1b7f5972c50cd541b3ffb05306bf85994548a56a782fc0`;
+>   fonts 38 / 8 / 0.
+> - Canonical semi-formalized frontier: TeX 18,651 lines / 858,502 bytes /
+>   SHA-256
+>   `140256058b7a01bcdb4f1592cfab9e6c2ac170f5f0863572627a9b2f93ab7793`;
+>   passes 265/1,868,249 → 273/1,950,120 → 273/1,950,112; final PDF
+>   273 pages / 1,950,112 bytes / SHA-256
+>   `17525c7623bf774f515ecf1a949d533bbe125fde036356c4bb9f787eedad0322`;
+>   fonts 40 / 8 / 0.
+>
+> Across all ten roots, required final-log error/reference/rerun
+> gates, metadata, A4/rotation-zero checks, every-page render and nonblank-text
+> checks, embedded/subset fonts with Libertinus and no Type 3, representative
+> visual checks, sidecar cleanup, and the forbidden-checksum-basename search all
+> passed. Diagnostics are clean except for five minor q-series horizontal boxes
+> (maximum 10.14 pt), two inverse horizontal boxes (2.42 and 2.45 pt), one
+> Lambert horizontal box (0.83 pt), and one canonical-frontier horizontal box
+> (9.43108 pt), all nonblocking. The final aggregate TeX closure contains 76
+> files / 140,223 lines / 6,439,569 bytes, with direct aggregate digest
+> `ae8690ad8d160055cbae36eff96d858f87572d171e7aacf7540d67543998af21`.
+> All ten rows were synchronized at the named `b899` checkpoint; they and the
+> earlier receipts below remain historical provenance for their named sources.
+>
+> For provenance, the superseded pre-d8b pairs remain historical receipts:
+> primary TeX/PDF `938517a92565685ac9f7194b879cfe752ce783f258bde8b7b685aee41aed13dc` /
+> `bf26d78dd2cc49feb87a85413ef9c04c7a8a3dac4f793cf86e3436f7502cb2a7`
+> (694,350 / 1,593,577 bytes; 195 PDF pages); walkthrough
+> `e598aa02d4d10eda8bcfdafe3731f4a663bdcba58407f454485fae6796b41050` /
+> `5ff79c24fbced37dfaa5eb9c34447d0e7661b2b2bc5a0597687e43f93d7e189a`
+> (456,855 / 1,219,336 bytes; 145 pages); frontier
+> `7dd140370a0ac68522364a83a3c6423df93570741eafaef2ee8c1fac17670e2f` /
+> `9d38ab9d43befd6e26fd06ab9680b4a761365fb9d8a9f0de18489c243bd62d3e`
+> (808,185 / 1,877,159 bytes; 260 pages); and q-series
+> `d8f730b8eb6602d4d16112aea77a3e67dfbeadf46bcd28c1cdf3b12450b7d4fb` /
+> `5d25df07e6df1cd32118ee87e64c1cc54ad32da7c578a182231f98dd9fee9d5c`
+> (837,715 / 2,494,949 bytes; 395 pages).  Representation Frontiers and the
+> Integration-and-Transform master retain exact historical 301- and 377-page
+> receipts in the frontier manifest and their local group records; those
+> receipts certify only their named source checkpoints.  Replacement parity is
+> recorded only in the fixed-26 checkpoint linked above.
+> Filed New Frontiers and the notation catalogue retain historical 41- and
+> 88-page receipts; the comb-interpolation 158-page receipt is historical and
+> was superseded by the later historical 160-page receipt above.  Checksum ledgers remain
+> abolished and hardened
+> repository-wide; no
+> `SHA256SUMS*` files exist or participate in validation.
+>
+> **Post-`b899` upstream API chronology.**  The geometric-uniform union adds the
 > complex-product bridge `GeometricUniformComplexMomentProduct` 1+3 and the
 > exterior reciprocal-germ bridge
 > `GeometricUniformExteriorComplexMomentGerm` 1+2, the combined inner/exterior
@@ -243,8 +504,10 @@ in it must have a proved counterpart in the Lean development.
 > `LagrangeInversionUniqueness` 0+6, `NewtonReciprocal` 1+5,
 > `StirlingSecondReverseRowIdentity` 0+2, and
 > `TransseriesWrightOmegaTerms` 0+10, together with eight declarations in
-> existing modules.  Its +6-module/+57-declaration delta yields the live
-> 988/12,257 census with no documentation gaps.  This is a conservative
+> existing modules.  Its +6-module/+57-declaration delta yields the historical
+> 985/12,199 census.  The `BellSetPartitions` successor adds one module and
+> 34 public declarations, giving the historical 986/12,233 checkpoint.  The
+> merged current inventory is 1003/12,485 with no documentation gaps.  This is a conservative
 > API inventory, not an automatic promotion of broader manuscript claims.  The separate
 > incoming-branch inner/exterior checkpoints
 > 906/11,461 and 907/11,464 remain historical.
@@ -271,6 +534,9 @@ in it must have a proved counterpart in the Lean development.
 > finite/infinite q-Pochhammer material, as well as the fixed-depth effective
 > inverse realizer, total inverse computability theorem, sharp exact
 > endpoint-mass denominator, and actual Lambert branch-gap Bernoulli series.
+> Those page counts are historical receipts, not source/PDF-parity claims for
+> the merged bytes.  The fixed-26 checkpoint linked above records the deferred
+> publication batch and makes no current-parity claim for pending rows.
 > The older Representation Frontiers, filed New Frontiers, notation
 > catalogue, and Integration-and-Transform artifacts are separately historical
 > or unsynchronized; they are not members of this exact ten-root merge set and
@@ -425,7 +691,18 @@ Padé/J-fractions, infinite Jacobi theory, and asymptotics also remain open.
 | Polynomial block operators and Laurent-block differentiation (`plt:eq:mot-block-derivative`, `plt:lem:mot-block-antiderivative`) | `FabiusFunction.TransseriesBlockAntiderivative`, `FabiusFunction.TransseriesDifferentialBlock` | `TransseriesBlockAntiderivative` remains 3+12.  `TransseriesDifferentialBlock` is now 0+12: `derivation_pow_t`, `derivation_block`, `derivation_zpow_block`, `exists_zpow_block_primitive`, `existsUnique_zpow_block_primitive`, `exists_block_primitive`, `derivation_block_zero`, `exists_block_primitive_resonant`, `derivation_val_inv`, `derivation_pow_inv`, `derivation_zpow_t`, `derivation_block_zpow`.  The integer Laurent block formula is **Exact**.  The compound antiderivative lemma remains **Partial** because generic uniqueness assumes injective evaluation at `L` and no concrete Laurent-polynomial model or resonant uniqueness-up-to-constants wrapper is constructed. |
 | Bell-polynomial coefficients of powers, logarithms, and exponentials of unit series (`p0:lem:bell-conversion`, `p0:lem:power-log`, `p0:cor:exp-log-jets`) | `FabiusFunction.UnitSeriesBellCoefficients` | **Exact as formal power-series algebra; no analytic convergence or logarithm branch is asserted.**  Exhaustive 0+16 surface: `ordPartialBell_eq_factorialRatio_partialBell`, `factorial_mul_ordPartialBell_eq_factorial_mul_partialBell`, `coeff_fallingSeries_subst_eq_sum_ordPartialBell`, `coeff_fallingSeries_subst_eq_sum_ordPartialBell_of_pos`, `coeff_fallingSeries_subst_eq_sum_partialBell`, `coeff_negBinomSeries_subst_eq_sum_ordPartialBell`, `coeff_negBinomSeries_subst_eq_sum_ordPartialBell_of_pos`, `coeff_logOf_eq_sum_ordPartialBell`, `egfA_factorialDenormalize_coeff_eq`, `bellWeightSeries_factorialDenormalize_coeff_eq`, `coeff_logOf_eq_sum_partialBell`, `coeff_exp_subst_eq_completeBell`, `coeff_exp_subst_eq_partitionExpSum`, `coeff_exp_subst_eq_sum_weightedPartitions`, `coeff_exp_subst_eq_sum_div_weightedPartitions`, `coeff_exp_subst_recurrence`. |
 | Formal arbitrary-power coefficient recurrence (`alg:merged-exp-log-power`) | `FabiusFunction.UnitSeriesPowerRecurrence` | Exhaustive 0+3 surface: `coeff_recurrence_of_mul_derivative_eq`, `mul_derivative_fallingSeries_subst_sub_one`, `coeff_fallingSeries_subst_sub_one_recurrence`.  The first theorem is denominator-free over every commutative ring and assumes neither `F(0)=1` nor invertibility; the falling-series specialization is over a commutative rational algebra with `F(0)=1`.  Together with the existing logarithm and exponential recurrences this makes all of `alg:merged-exp-log-power` **Exact**.  These are formal-series identities, not analytic powers or branch choices. |
+| Formal rescaling and exponentials (`lem:merged-formal-rescaling`) | `FabiusFunction.ExponentialRescaling` | **Exact as formal power series.** Exhaustive 0+4 surface: `derivative_rescale`, `derivative_rescale_exp`, `rescale_zero_exp`, `rescale_exp_add_one`.  The chain rule is division-free over every commutative semiring; the exponential specializations use a commutative rational algebra.  The last three names moved here from `NorlundDiagonal`, which is now 0+10; only the general chain rule is new in the combined inventory.  No analytic exponential claim is made. |
+| Abel polynomials (`prop:merged-abel`) | `FabiusFunction.AbelPolynomialSeries` | **Exact.** Exhaustive 2+9 surface.  Definitions: `abelPolynomial`, `abelSeries`.  Theorems: `abelPolynomial_zero`, `abelPolynomial_succ`, `abelPolynomial_succ_eval`, `abelSeries_eq`, `hasSubst_abelSeries`, `abel_eq_zero_and_one`, `coeff_exp_subst_of_abel_eq`, `exp_subst_eq_egfA_abelPolynomial`, `abelPolynomial_eval_add`.  The polynomial layer works over every commutative ring; the formal EGF layer uses a commutative rational algebra, constructs a canonical solution, and also treats every solution of the functional equation.  Degree zero and the binomial identity are included; analytic convergence is not. |
+| Formal logarithm of the Bernoulli kernel (`eq:merged-log-bernoulli-kernel`) | `FabiusFunction.BernoulliFormalLog` | **Exact as formal algebra.** Exhaustive 0+11 surface: `constantCoeff_bernoulliPowerSeries`, `bernoulliPowerSeries_mul_massSeries_expm1Div`, `logOf_bernoulliPowerSeries`, `coeff_logOf_bernoulliPowerSeries`, `coeff_one_logOf_bernoulliPowerSeries`, `coeff_logOf_bernoulliPowerSeries_of_two_le`, `map_logOf`, `map_bernoulliPowerSeries`, `logOf_bernoulliPowerSeries_algebra`, `coeff_logOf_bernoulliPowerSeries_algebra`, `coeff_logOf_bernoulliPowerSeries_algebra_of_two_le`.  The last six declarations transport the rational identity to every commutative rational algebra, including zero divisors.  Degree one retains the positive-Bernoulli convention; no analytic logarithm or convergence radius is asserted. |
+| Ordinary composition in multiplicity form (`thm:ordinary-composition`) | `FabiusFunction.OrdinaryBellComposition`, `FabiusFunction.OrdinaryBellMultinomial` | **Exact as formal coefficient algebra.** `OrdinaryBellComposition` is now 2+9; `ordPartialBell_congr_of_le` is the new bounded-dependence theorem and `ordPartialBell_congr` remains its wrapper.  The new leaf is exhaustively 1+3: `ordinaryMultiplicityProfiles`; `mem_ordinaryMultiplicityProfiles`, `ordPartialBell_eq_sum_multinomial`, `coeff_subst_eq_sum_multinomial`.  The multinomial Bell identity works over every commutative semiring; the substitution corollary works over a commutative ring with zero constant term for the inner series and includes degree zero.  No analytic composition or convergence is claimed.  The coefficient-calculus register is 62 Lean / 36 Partial / 106 None / 204 total. |
+| Raney numbers (`thm:merged-raney`) | `FabiusFunction.RaneyNumbers`, `FabiusFunction.RaneyNumbersUniqueness` | **Exact as a formal-series statement.** `RaneyNumbers` is exhaustively 4+12: `raneyPhi`, `raneyPsi`, `raneyG`, `raneyT`; `coeff_one_add_X_pow`, `constantCoeff_raneyPhi`, `raneyPhi_mul_raneyPsi`, `raneyG_def`, `hasSubst_raneyG`, `constantCoeff_raneyG`, `subst_one_add_X_pow_raneyG`, `raneyT_eq`, `constantCoeff_raneyT`, `natCast_mul_coeff_raneyT_pow`, `coeff_raneyT_pow`, `coeff_raneyT`.  The 0+3 uniqueness leaf adds `eq_raneyT_of_eq_one_add_X_mul_pow`, `natCast_mul_coeff_pow_of_eq_one_add_X_mul_pow`, and `coeff_pow_of_eq_one_add_X_mul_pow`, transferring both formulas to every rational formal solution of `T=1+XT^p`.  It includes `p=0` and degree zero; the divided power formula keeps `1≤r` because division is totalized.  No convergence claim is made. |
+| Kirkman--Cayley and associahedron arithmetic (`thm:merged-kirkman-cayley`, `cor:merged-associahedron-f`, `thm:merged-associahedron-h`) | `FabiusFunction.AssociahedronFaceNumbers` | **Exact arithmetic; geometric statements Partial.** Exhaustive 4+23 surface.  Definitions: `dissectionNumber`, `associahedronFaceNumber`, `associahedronH`, `associahedronHPoly`.  Dissection theorems: `dissectionNumber_mul`, `succ_dvd_choose_mul_choose`, `dissectionNumber_eq_div`, `dissectionNumber_nonneg`, `dissectionNumber_eq_zero_of_lt`, `dissectionNumber_mul_of_three_le`, `succ_dvd_choose_mul_choose_of_three_le`, `dissectionNumber_zero_right`, `dissectionNumber_one`, `dissectionNumber_self`.  Face theorems: `associahedronFaceNumber_eq`, `associahedronFaceNumber_mul`, `associahedronFaceNumber_zero`, `two_mul_associahedronFaceNumber_facet`, `associahedronFaceNumber_top`.  `h`-theorems: `associahedronH_eq`, `associahedronH_mul`, `associahedronH_symm`, `associahedronH_zero`, `associahedronH_top`, `sum_associahedronH`, `associahedronHPoly_one`, `associahedronHPoly_one_eq_faceNumber_zero`.  The division-free formulas, integrality, boundary values, symmetry, and Catalan sum are proved; dissections, face lattices, their bijections, and the face transform are not constructed, and the face/`h` values are defined arithmetically. |
 | Deterministic grid and integer residue certificates | `FabiusFunction.GridEvaluationCertificate`, `FabiusFunction.IntegerCRTCertificate` | Exhaustive 0+4 and 0+5 surfaces.  Grid API: `mvPolynomial_eq_of_eval_eq_on_grid`, `mvPolynomial_eq_of_eval_eq_on_grid_of_degreeOf_sub_le`, `mvPolynomial_eq_of_eval_eq_on_grid_of_degreeOf_le`, `mvPolynomial_grid_eval_injective`.  It works for finitely many variables over any commutative integral domain; no field or characteristic-zero assumption is used.  Integer API: `int_prod_dvd_of_pairwise_coprime`, `int_eq_zero_of_modEq_zero_of_natAbs_lt_prod`, `int_eq_of_modEq_of_natAbs_sub_lt_prod`, `int_eq_of_modEq_of_natAbs_add_lt_prod`, `int_eq_of_modEq_of_two_mul_natAbs_lt_prod`.  The moduli may be signed or composite and the divisibility theorem includes the empty family; the equality tests retain their strict magnitude bounds.  No reconstruction algorithm or primality claim is made. |
+| Pochhammer splitting, first derivatives, and beta integral | `FabiusFunction.PochhammerFalling` | Exhaustive 1+13 surface: `shiftedHarmonic`; `shiftedHarmonic_one`, `ascPochhammer_eval_add_index`, `descPochhammer_eval_add_index`, `ascFactorial_add_index`, `descFactorial_add_index`, `derivative_ascPochhammer`, `derivative_ascPochhammer_eval`, `hasDerivAt_ascPochhammer_eval`, `hasDerivAt_inv_ascPochhammer_eval`, `Gamma_add_natCast_eq_ascPochhammer_mul`, `ascPochhammer_eval_eq_Gamma_div`, `betaIntegral_eq_factorial_div_ascPochhammer`, `integral_cpow_mul_one_sub_natPow`.  Splitting, the positive-real-part Gamma quotient, and the complex beta integral are exact under the displayed hypotheses.  The two general Bell-polynomial derivative claims remain **Partial** because only derivative order one is proved; no analytic binomial-series or general Chu--Vandermonde restatement is added. |
+| Arbitrary-order Nörlund polynomials | `FabiusFunction.NorlundGeneralized` | Exhaustive 3+18 formal surface.  Definitions: `generalizedNorlundKernel`, `generalizedNorlund`, `generalizedNorlundCumulant`.  Kernel/polynomial API: `constantCoeff_generalizedNorlundKernel`, `generalizedNorlundKernel_zero`, `generalizedNorlundKernel_one`, `generalizedNorlundKernel_add`, `generalizedNorlundKernel_natCast`, `generalizedNorlund_zero`, `generalizedNorlund_monic`, `natDegree_generalizedNorlund`, `derivative_generalizedNorlund_succ`, `egfA_generalizedNorlund_eval`, `generalizedNorlund_eval_add`, `generalizedNorlund_add_eval_add`, `generalizedNorlund_natCast`.  Cumulant/Bell API: `generalizedNorlundCumulant_zero`, `_one`, `_of_two_le`, `bellWeightSeries_generalizedNorlundCumulant`, `generalizedNorlund_eval_eq_completeBell`.  It works over commutative rational algebras, allows zero and negative scalar orders, and asserts formal series and polynomial identities only—no analytic logarithm branch or convergence. |
+| Lagrange uniqueness and reciprocal Newton iteration | `FabiusFunction.LagrangeInversionUniqueness`, `FabiusFunction.NewtonReciprocal` | The 0+6 Lagrange leaf adds `Lagrange.eq_solution_of_eq_X_mul_subst`, `.existsUnique_solution`, `.existsUnique_of_isUnit_constantCoeff`, `.coeff_jacobian_mul`, `.coeff_subst_alt`, `.coeff_solution_subst_alt`.  Existence and uniqueness hold over every commutative ring when the weight constant coefficient is a unit; the alternative coefficient formula uses a commutative rational algebra and `1≤n`.  This makes `thm:lagrange-burmann` **Exact as formal power-series algebra**.  The exhaustive 1+5 Newton surface is `newtonReciprocalStep`; `one_sub_mul_newtonReciprocalStep`, `X_dvd_one_sub_mul_C`, `X_pow_dvd_one_sub_mul_newtonReciprocalStep`, `coeff_mul_newtonReciprocalStep`, `X_pow_dvd_one_sub_mul_trunc_newtonReciprocalStep`.  It doubles `X`-adic precision over every commutative ring, including after actual truncation; it makes no complexity claim. |
+| Diamond powers and binomial-inversion EGFs | `FabiusFunction.DiamondPower`, `FabiusFunction.BinomialInversionEGF` | `DiamondPower` is 1+10: `diamondPow`; `binomialConv_eq_sum_Ico`, `diamondPow_zero`, `diamondPow_succ`, `diamondPow_one`, `egfA_unitSeq`, `smul_egfA`, `egfA_diamondPow`, `egfA_eq_bellWeightSeries`, `diamondPow_apply`, `partialBell_eq_diamondPow_div`.  The finite convolution layer is semiring-level; EGF and factorial normalization use a commutative rational algebra.  `BinomialInversionEGF` is 1+7: `altSeries`; `exp_eq_egfA_one`, `binomialConv_one_left`, `binomialConv_altSeries_left`, `exp_mul_altSeries`, `egfA_eq_exp_mul_iff`, `egfA_eq_altSeries_mul_iff`, `egfA_eq_exp_mul_iff_egfA_eq_altSeries_mul`.  These are exact formal coefficient identities, with no convergence claim. |
+| Stirling symmetric functions and the finite reverse row | `FabiusFunction.StirlingCompleteHomogeneous`, `FabiusFunction.StirlingSymmetricFunctions`, `FabiusFunction.StirlingSecondReverseRowIdentity` | The focused 0+8 complete-homogeneous surface is inventoried below.  The new 0+4 symmetric-function leaf adds `completeHomogeneousEvalOn_scaled_range`, `stirlingFirst_eq_sum_powersetCard`, `stirlingFirst_eq_esymm`, `esymm_scaled_range`, over every commutative semiring; it needs only `r≤n` on the first-kind forms.  The 0+2 reverse-row leaf adds `second_reverse_row_sum` over `ℚ` and `second_reverse_row` over every commutative ring with exactly `1≤k≤n`.  These are finite, division-free after integer transport, and include the diagonal empty sum. |
 | Weighted Appell translation and inversion | `FabiusFunction.AppellSequence` | The +11 extension is `Bell.binomialConv_unitSeq`, `Bell.binomialConv_four_swap`, `Appell.translate_zero`, `Appell.translate_translate`, `Appell.binomialConv_translate`, `Appell.translate_injective`, `Appell.translate_neg_translate`, `Appell.translate_translate_neg`, `Appell.translate_eq_iff`, `Appell.weighted_binomial_inversion_iff`, and `Appell.binomialConv_translate_neg_translate`.  `thm:merged-weighted-binomial-translation` is **Exact** over a commutative semiring, with additive left cancellation only for injectivity; `cor:merged-weighted-binomial-inversion` is **Exact** over a commutative ring.  No analytic EGF claim is made. |
 | Stirling-series coefficients (`q2:eq:stirling-cj`) | `FabiusFunction.StirlingSeriesCoefficients` | Exhaustive 3+12 surface.  Definitions: `stirlingKernelCoeff`, `stirlingKernel`, `stirlingCoeff`.  Theorems: `coeff_stirlingKernel`, `constantCoeff_stirlingKernel`, `stirlingCoeff_zero`, `stirlingCoeff_recurrence`, `bernoulli_three`, `bernoulli_four`, `stirlingKernelCoeff_one`, `stirlingKernelCoeff_two`, `stirlingKernelCoeff_three`, `stirlingCoeff_one`, `stirlingCoeff_two`, `stirlingCoeff_three`.  The formal definition, recurrence, and displayed values `c₀=1`, `c₁=1/12`, `c₂=1/288`, `c₃=-139/51840` are **Exact**; the surrounding analytic Fubini-sector expansion is not claimed. |
 | Two Wright-omega orders (`plt:prop:mot-two-orders`) | `FabiusFunction.WrightOmegaTwoOrders` | Exhaustive 0+8 surface: `wrightOmega_lt_self`, `tendsto_log_wrightOmega_div_atTop_zero`, `tendsto_wrightOmega_div_atTop_one`, `tendsto_log_wrightOmega_sub_log_atTop_zero`, `tendsto_log_wrightOmega_div_log_atTop_one`, `self_sub_wrightOmega_isEquivalent_log`, `wrightOmega_sub_self_isEquivalent_neg_log`, `wrightOmega_residual_isEquivalent`.  The two concluding real equivalences `ω(X)-X∼-log X` and `ω(X)-X+log X∼(log X)/X` are **Exact** at `atTop`.  The proposition remains **Partial** at its four-term quantitative expansion and explicit envelope. |
@@ -547,7 +824,7 @@ Padé/J-fractions, infinite Jacobi theory, and asymptotics also remain open.
 | Endpoint two-term estimate and sharp Laplace-moment bounds | `FabiusFunction.FabiusEndpointTwoTerm`, `FabiusFunction.LaplaceMomentBoundsSharp` | `FabiusEndpointTwoTerm` is 0+2: `fabiusReal_le_exp_endpoint`, `log_fabiusReal_le_endpoint`; it makes `plt:prop:mot-fabius-endpoint` **Exact** for every `0<x≤1/4` in exponential and logarithmic form.  `LaplaceMomentBoundsSharp` is 0+7: `normalizedLaplaceMoment_three_le_sharp`, `normalizedLaplaceMoment_four_le_sharp`, `dyadicHigherLaplaceMoments_le_sharp`, `abs_negativeLaplaceTailError_nat_le_four_div`, `abs_dyadicEndpointLaplaceLogError_add_secondOrder_le_sharp`, `abs_dyadicEndpointLaplaceLogError_add_secondOrder_le_sharp'`, `abs_log_fabius_dyadic_sub_cumulantMain_le_sharp`.  It retains the square-root denominator for the third/fourth moments, gives an `O(n⁻³⁄²)` higher term, and provides the explicit threshold 5329 and constants `3374/n` and `40537/(12n)`; no optimality claim is made. |
 | Lambert-shift concavity and certificates | `FabiusFunction.LambertShiftConcavity` | Exhaustive zero-definition/five-theorem surface: `strictConcaveOn_lambertShift`, `strictConcaveOn_lambertShift_Ici_zero`, `abs_sub_lambertShiftInv_sandwich`, `residual_sign_agrees`, and `residual_eq_zero_iff`.  `q1:prop:certificate` is **Exact** for `z,x≥0`, including the sign and sandwich.  `q1:prop:brackets` remains **Partial** only at the one-sided endpoint derivative values `f'(0)=2` and `g'(0)=1/2`; strict concavity on the closed domain and all interior bounds are formal. |
 | Least-term Gevrey index | `FabiusFunction.LeastTermIndex` | Exhaustive one-definition/six-theorem surface: `gevreyTerm`, `gevreyTerm_succ`, `gevreyTerm_pos`, `gevreyTerm_succ_lt`, `gevreyTerm_lt_succ`, `gevreyTerm_antitoneOn`, and `gevreyTerm_monotoneOn`.  The exact ratio and unimodality mechanism is formal, while `p0:thm:optimal-truncation` remains **Partial** at its Stirling envelope, transported inverse error, and exponential floor. |
-| Power--log block classes and monomial uniqueness | `FabiusFunction.TransseriesBlockClasses`, `FabiusFunction.TransseriesMonomialUniqueness` | `TransseriesBlockClasses` is 0+3: `plMonomial_zero_left`, `exists_log_bracket_iff`, `exists_log_bracket_div_iff`; it makes `plt:prop:mot-blocks` **Exact**, strengthened to real base exponents, while constructing neither a quotient type nor a whole transseries normal form.  `TransseriesMonomialUniqueness` is 0+2: `tendsto_plMonomial_div_const_mul_one_iff`, `isEquivalent_plMonomial_const_mul_iff`; positive-coefficient asymptotic equivalence forces both exponents equal and coefficient one.  This is the uniqueness engine for `plt:cor:mot-both-generators-needed`, which remains **Partial** because the required three-term Wright-omega asymptotics and assembled scale conclusion are not named proofs. |
+| Power--log block classes and Wright-omega monomial rigidity | `FabiusFunction.TransseriesBlockClasses`, `FabiusFunction.TransseriesMonomialUniqueness`, `FabiusFunction.TransseriesWrightOmegaTerms` | `TransseriesBlockClasses` is 0+3 and makes `plt:prop:mot-blocks` **Exact** without constructing a quotient type or full normal form.  `TransseriesMonomialUniqueness` is now 0+4: `tendsto_const_mul_plMonomial_div_one_iff`, `isEquivalent_const_mul_plMonomial_iff`, `tendsto_plMonomial_div_const_mul_one_iff`, `isEquivalent_plMonomial_const_mul_iff`; the first two compare arbitrary nonzero coefficients.  The exhaustive 0+10 Wright-omega leaf is `plMonomial_one_zero_eventuallyEq`, `plMonomial_zero_one_eventuallyEq`, `plMonomial_neg_one_one_eventuallyEq`, `exponents_of_wrightOmega`, `exponents_of_wrightOmega_sub`, `exponents_of_wrightOmega_residual`, `not_pure_of_wrightOmega_three_terms`, `not_isEquivalent_pure_power_wrightOmega_sub`, `tendsto_wrightOmega_div_plMonomial_zero_atTop`, `isLittleO_wrightOmega_residual_plMonomial_zero`.  It proves the unique exponent/coefficient triples for the first three terms and both pure-scale failures; `plt:cor:mot-both-generators-needed` and `plt:prop:mot-one-generator-fails` are **Exact** for the stated real `atTop` formulations. |
 | Smallest differential algebra | `FabiusFunction.TransseriesDifferentialClosure` | Exhaustive two-definition/nine-theorem surface: `IsDerivationStable`, `isDerivationStable_top`, `isDerivationStable_iInf`, `isDerivationStable_adjoin`, `derivationOrbit`, `subset_derivationOrbit`, `derivation_mem_derivationOrbit`, `isLeast_adjoin_derivationOrbit`, `isLeast_adjoin_singleton_of_derivation_eq_one`, `isLeast_adjoin_pair_of_derivation_log`, and `isLeast_adjoin_triple_of_derivation_log`.  The algebraic minimality clauses (i)--(iii) of `plt:thm:mot-smallest-differential-algebra` are exact in an arbitrary commutative-ring/algebra derivation, and the generic orbit construction strengthens them.  The full theorem remains **Partial** at the growth clause of (i) and the algebraic-independence/unique-representation clause (iv); part (v) is already exact through `TransseriesDifferentialBlock`. |
 | Order-theoretic staircase recovery | `FabiusFunction.StaircaseInversion` | Exhaustive zero-definition/seven-theorem surface: `isLeast_ceil`, `staircase_ceil`, `staircase_separation`, `staircase_separation_fails`, `staircase_round`, `isLeast_residue_class`, and `exists_half_error_of_jump`.  These formalize the five recovery clauses of `p0:thm:staircase` under the exact `StrictMono`/inverse hypotheses actually used and prove that the separation hypothesis cannot be removed.  The analytic construction of admissible interpolations and the Fourier expansion of the periodic layer remain outside the module. |
 | Subfactorial defect and nearest-integer derangements | `FabiusFunction.DerangementNearestInteger` | Exhaustive one-definition/seven-theorem surface: `subfactorialDefect`, `subfactorialDefect_zero`, `subfactorialDefect_succ`, `subfactorialDefect_pos`, `subfactorialDefect_lt`, `numDerangements_sub_eq`, `abs_numDerangements_sub_lt_half`, and `round_factorial_mul_exp_neg_one`.  The integral recursion, signed defect identity, integer-argument bounds, and nearest-integer conclusion for every `n≥1` are exact.  The surrounding `p8:cor:nearest-integer` remains partial at the real-argument bound `x>-1`, and `p8:thm:branch-splitting` and its interpolation family remain unformalized. |

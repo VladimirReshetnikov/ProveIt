@@ -56,7 +56,7 @@ with SHA-256 provenance in the document itself (git history is the
 archive).
 
 The synchronized publication receipt (2026-09-04) records a historical
-checkpoint superseded by the current `b899` receipt below. The checkpoint
+checkpoint superseded by the historical `69b447f7c` receipt below. The checkpoint
 comprised the
 4,876-line, 177,511-byte TeX source at SHA-256
 `d852a345685dd61335a89fc4fd1092680bdc597a5d1e6ac612883946ad0d99ea`.
@@ -286,7 +286,7 @@ historical post-Prouhet checkpoint.  Subsequent source-only
 transseries/Catalan and Thue--Morse additions made 943/11,791 the next
 historical checkpoint.  The finalized one-definition/eleven-theorem
 `TransseriesFlat.lean` module and three integer-zpow theorems in
-`TransseriesDifferentialBlock.lean` gave the historical census 944/11,806; the merged live census is 988/12,257.
+`TransseriesDifferentialBlock.lean` gave the historical census 944/11,806; the merged live census is 1003/12,485.
 The q ledger is 181 Exact / 79 Partial / 14 None / 8 interface, the relevant Dyadic
 Gaussian--Thue--Morse chapter is 13/43/0/0, and the source concordance is 103
 Lean-proved / 375 human-proved frontier / 60 non-applicable / 9 conjectures.

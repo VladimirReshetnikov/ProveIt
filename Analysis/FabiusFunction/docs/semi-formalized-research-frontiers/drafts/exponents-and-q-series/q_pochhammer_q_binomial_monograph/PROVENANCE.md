@@ -21,8 +21,10 @@ That projection is the semantic union of thirteen incoming Lean overrides
 overrides (`cor:qbinom-classical`, `cor:qgamma-theta`, `prop:logder-finite`,
 `prop:qbinom-products`, `prop:qderivative-rules`, `prop:qgamma-reflection`,
 `thm:q-leibniz`, and `thm:quantum-binomial`). It changes no immutable source
-field. In particular, it does not promote `thm:q-lucas`, whose polynomial
-congruence still lacks a Lean proof.
+field. The union also retains the later upstream promotions
+`thm:qF-reciprocity`, `prop:up-tail`, `cor:up-moments`, and
+`thm:qF-moment-polynomial`. In particular, it does not promote
+`thm:q-lucas`, whose polynomial congruence still lacks a Lean proof.
 
 The 2026-09-04 merge-regression check restored the seven missing generator
 entries from that local override set; the classical-limit entry was already
@@ -31,7 +33,6 @@ present. The retained CSV needed no changes. Direct counting gives the
 282 result rows give 181/79/14/8. Their stale grand total and narrative were
 corrected without changing any result-level status. The source-only canonical
 validator passes; this repair performs no Lean or PDF build.
-
 Directory names
 in the table are historical paths in that pinned snapshot, not live package
 paths.
@@ -143,7 +144,7 @@ and none is Type 3. Required log, reference/rerun, metadata, visual, cleanup,
 and forbidden-basename gates passed. The final log has no vertical box and five
 minor horizontal boxes, none above 10.14 pt.
 
-The authoritative merged semantic documentation census is 988 facade-reachable\nmodules and 12,257 public declarations, with zero missing module headers and\nzero declaration-documentation gaps. The union retains the public\n`Fabius.complexQPochhammerInf_eq_qPochhammerInfIn` bridge.
+The authoritative merged semantic documentation census is 1003 facade-reachable\nmodules and 12,485 public declarations, with zero missing module headers and\nzero declaration-documentation gaps. The union retains the public\n`Fabius.complexQPochhammerInf_eq_qPochhammerInfIn` bridge.
 Sibling source-only promotions are recorded here only to delimit this
 q-volume's receipt: `LambertWBranchPairing.lean`,
 `LambertWGapBijection.lean`, and `LambertWBranchSymmetry.lean` have exhaustive
@@ -252,7 +253,7 @@ source-only transseries/Catalan and Thue--Morse additions made 943/11,791 the
 next historical checkpoint. The finalized one-definition/eleven-theorem
 `TransseriesFlat.lean` module and three integer-zpow theorems in
 `TransseriesDifferentialBlock.lean` gave the historical facade audit 944 modules and
-11,806 public declarations; the merged live census is 988/12,257. The historical 933/11,695 corpus-wide
+11,806 public declarations; the merged live census is 1003/12,485. The historical 933/11,695 corpus-wide
 totals include the q--Chu, Richardson,
 geometric-law barycenter, Lagrange--Rvachev matrix, arbitrary-space geometric
 realization, regular-central-sum, Lambert branch-gap Bernoulli, affine
@@ -405,7 +406,7 @@ historical post-Prouhet checkpoint.  Subsequent source-only
 transseries/Catalan and Thue--Morse additions made 943/11,791 the next
 historical checkpoint.  The finalized one-definition/eleven-theorem
 `TransseriesFlat.lean` module and three integer-zpow theorems in
-`TransseriesDifferentialBlock.lean` gave the historical census 944/11,806; the merged live census is 988/12,257.
+`TransseriesDifferentialBlock.lean` gave the historical census 944/11,806; the merged live census is 1003/12,485.
 The facade also contains the zero-definition/two-theorem
 `GaussianBinomialGreaterOneAsymptotics.lean` leaf; its exhaustive declarations
 are `gaussianBinomial_gt_one_fixedColumn_relativeError_isBigO` and
@@ -456,7 +457,7 @@ transseries/Catalan and Thue--Morse additions made 943/11,791 the next
 historical checkpoint.  The finalized one-definition/eleven-theorem
 `TransseriesFlat.lean` module and three integer-zpow theorems in
 `TransseriesDifferentialBlock.lean` gave the historical census
-944/11,806; the merged live census is 988/12,257.  The existing `ProbabilityLaplaceMoments.lean` module now also
+944/11,806; the merged live census is 1003/12,485.  The existing `ProbabilityLaplaceMoments.lean` module now also
 contains exactly the two new declarations
 `weightedSumDistribution_real_Ici_eq_rvachevUp_of_nonneg` and
 `integral_pow_weightedSumDistribution_eq_mul_intervalIntegral_rvachevUp`.

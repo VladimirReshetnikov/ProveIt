@@ -146,7 +146,7 @@ Subsequent source-only transseries/Catalan and Thue--Morse additions made
 943/11,791 the next historical checkpoint.  The finalized one-definition/
 eleven-theorem `TransseriesFlat.lean` module and three integer-zpow theorems
 in `TransseriesDifferentialBlock.lean` gave the historical Lean audit 944 modules
-and 11,806 public declarations; the merged live census is 988/12,257.
+and 11,806 public declarations; the merged live census is 1003/12,485.
 
 The sibling source-only `FabiusFunction.GeometricRichardsonGenerating` module
 (three definitions and seven theorems) does not change this q-series package's
@@ -314,7 +314,7 @@ historical post-Prouhet checkpoint.  Subsequent source-only
 transseries/Catalan and Thue--Morse additions made 943/11,791 the next
 historical checkpoint.  The finalized one-definition/eleven-theorem
 `TransseriesFlat.lean` module and three integer-zpow theorems in
-`TransseriesDifferentialBlock.lean` gave the historical census 944/11,806; the merged live census is 988/12,257.
+`TransseriesDifferentialBlock.lean` gave the historical census 944/11,806; the merged live census is 1003/12,485.
 That existing module adds
 `weightedSumDistribution_real_Ici_eq_rvachevUp_of_nonneg` and
 `integral_pow_weightedSumDistribution_eq_mul_intervalIntegral_rvachevUp`.
@@ -323,7 +323,9 @@ is the exact full-law moment formula for every natural `n >= 1`; together
 with the existing global up/Fabius identities, these promote `prop:up-tail`
 and `cor:up-moments` to Exact.  The q ledger is 181/79/14/8, its relevant
 Dyadic Gaussian--Thue--Morse chapter is 13/43/0/0, and the source projection
-is 103/375/60/9. The zero-definition/one-theorem
+is 103/375/60/9. `thm:q-lucas` remains Partial because Lean proves only its
+evaluated primitive-root identity, not the polynomial congruence modulo
+`Phi_d(q)` or its minimal-polynomial lift. The zero-definition/one-theorem
 `HalfQBinomialRootSimplicity.lean` leaf exports
 `halfQBinomial_sum_rootMultiplicity_two_pow`; with the complete rational
 root classification `halfQBinomial_sum_eq_zero_iff`, it makes
@@ -947,7 +949,7 @@ shared `\TwoAdicValuation` command. The preceding 238-page PDF and its
 remain historical receipts only.
 
 The synchronized geometric q-frontier receipt (2026-09-04) records a historical
-source checkpoint superseded by the current `b899` receipt below. The merged
+source checkpoint superseded by the later historical `b899` receipt below. The merged
 source later added the geometric moment, exterior-germ, degree, and related
 proof crosswalks. The historical checkpoint comprised the
 27,598-line, 1,270,870-byte TeX source at SHA-256
@@ -973,6 +975,9 @@ All 405 pages are A4 at rotation zero, render with nonblank text, and use 43
 embedded/subset font rows (eleven Libertinus, no Type 3). The final log has no
 horizontal or vertical box; metadata, visual, cleanup, and forbidden-basename
 gates passed.
+The merged driver has advanced beyond this receipt, so the retained PDF is
+historical and PDF regeneration of the changed geometric-q root is
+deferred by user approval.
 
 This is the 2026-08-28 consolidation of the two former drafts (Part I:
 

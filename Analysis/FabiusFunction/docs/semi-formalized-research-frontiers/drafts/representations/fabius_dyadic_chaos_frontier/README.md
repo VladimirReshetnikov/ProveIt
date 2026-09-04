@@ -25,9 +25,10 @@ series.
 - `audit/POST_INTAKE_REVIEW.md` - repository-side mathematical corrections,
   reproducibility replay, and formalization boundary.
 - `audit/corpus_manifest_2026-08-27.txt` - preserved recursive TeX path ledger.
-- Historical checksum records - the submitted 30-entry ledger and the later
-  normalized-package ledger are retired; their exact bytes remain recoverable
-  from Git history.
+- Package-local `SHA256SUMS*` ledgers are retired. The submitted ledger and
+  later normalized-package ledger are both retired. Their exact historical
+  bytes remain recoverable from Git history, and the submitted digest is
+  recorded below.
 
 ## Mathematical contribution map
 
@@ -218,15 +219,18 @@ Libertinus fonts when available and Latin Modern as a fallback.
   output for the vector plots; the numerical data were retained where the
   replay audit found only the documented last-bit platform drift.
 
-## Integrity provenance
+## Integrity and validation
 
-Package-local checksum manifests are retired repository-wide and must not be
-recreated.  Before retirement, the normalized-package ledger contained exactly
-33 entries covering every other regular package file, including this README,
-the submitted checksum record, the Lean crosswalk, and all four audit files.
-Its exact bytes and verification result remain recoverable from Git history.
-That historical verification did not claim that the retained report PDF
-renders the current TeX.
+Package-local `SHA256SUMS*` ledgers are abolished; no live ledger is maintained
+or should be recreated. The current source and retained-PDF receipts are listed
+above. Build, PDF, experiment-replay, and formalization-boundary evidence is
+recorded in `audit/POST_INTAKE_REVIEW.md` and `LEAN_CROSSWALK.md`, while Git
+history preserves the retired arrival evidence. Before retirement, the
+normalized-package ledger contained exactly 33 entries covering every other
+regular package file, including this README, the submitted checksum record, the
+Lean crosswalk, and all four audit files. Its exact bytes and verification
+result remain historical, and that verification did not claim that the
+retained report PDF renders the current TeX.
 
 ## Repository filing provenance
 
@@ -237,13 +241,13 @@ SHA-256
 The archive was a safe single-wrapper delivery: it contained no absolute or
 parent-traversal paths, symlinks, encrypted entries, duplicate paths, or
 case-folding collisions, and its CRC check passed.  The submitted 30-entry
-ledger verified 30/30 against the arrival bytes.  Its exact historical bytes
-remain recoverable from Git at the former path `SHA256SUMS.arrival.txt`
-(SHA-256
-`85c42740d869c520d5264049f945e52b3c9cfc1bc837a19aaf05c886c55aa6ea`).
+ledger verified 30/30 against the arrival bytes. It was submitted under the
+historical basename `SHA256SUMS.arrival.txt` and remains recoverable from Git
+history; its SHA-256 is
+`85c42740d869c520d5264049f945e52b3c9cfc1bc837a19aaf05c886c55aa6ea`.
 Nine CSV files were then normalized from CRLF to the repository's required LF
-line endings; the subsequent normalized-package checksum ledger was later
-retired under the repository-wide policy.
+line endings. The subsequent normalized-package ledger was later retired under
+the repository-wide policy; no current package checksum ledger is retained.
 
 After that intake checkpoint was published, the repository-side review
 replayed the numerical program, repaired the six vector figures to remove

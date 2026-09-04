@@ -510,9 +510,10 @@ new leaves contribute 80 declarations, while three existing declarations
 move from \path{NorlundDiagonal.lean} to \path{ExponentialRescaling.lean},
 for a net increase of 77.  The eight-theorem Stirling leaf is retained.
 The two certificate leaves added nine public theorems at the historical
-979/12,142 checkpoint. The current merged inventory is 988/12,257 after six
-further leaves add 57 declarations. No new aggregate-build or PDF-parity
-claim is made.
+979/12,142 checkpoint. Six further leaves and extensions to existing modules
+then added 57 declarations. The incoming BellSetPartitions module adds 34
+more, giving the historical 986/12,233 checkpoint. The merged current inventory
+is 1003/12,485. No new aggregate-build or PDF-parity claim is made.
 
 The crosswalk remains conservative.  The abstract Fa\`a di Bruno result, the
 ordinary Bell normalization, and the Touchard definition and displayed
@@ -523,7 +524,7 @@ differential closure,
 harmonic increments, Cayley, derangement, Lambert correction and its bracket
 bounds, linear-logarithmic inversion, power-logarithmic inversion, remainder
 transport, and staircase inversion remain Partial; the least-term-index row
-is Neighboring.  The current union has 988 modules and 12,257 public
+is Neighboring.  The current union has 1003 modules and 12,485 public
 declarations, with zero documentation gaps.  The
 Legendre-biorthogonality 925/11,619 census remains an explicit historical
 checkpoint.
@@ -570,7 +571,7 @@ branch recorded historical 943/11,787, 952/11,881, 952/11,884, 967/12,001,
 969/12,048, and 970/12,051 inventories.  The preceding local merge
 970/12,056 checkpoint is also historical.
 The overlapping branches are reconciled in the inventory above: the current
-merged audit is 988/12,257, with zero documentation gaps.
+merged audit is 1003/12,485, with zero documentation gaps.
 The incoming-branch
 906/11,461 and earlier exterior-branch 907/11,464 censuses remain explicitly
 historical.
@@ -1437,12 +1438,92 @@ derivative coefficient extraction gives
 The formal falling-factorial substitution supplies the unit-constant power
 case over a rational algebra, making the power clause of
 \nolinkurl{alg:merged-exp-log-power} Exact.  No analytic branch is asserted;
-the 204-row coefficient-calculus concordance is 63 Lean, 32 Partial, and
-109 None. &
+the 207-row coefficient-calculus concordance is 65 Lean, 35 Partial, and
+107 None. &
 \nolinkurl{Fabius.coeff_recurrence_of_mul_derivative_eq},
 \nolinkurl{Fabius.mul_derivative_fallingSeries_subst_sub_one},
 \nolinkurl{Fabius.coeff_fallingSeries_subst_sub_one_recurrence} &
 \nolinkurl{UnitSeriesPowerRecurrence.lean} \\
+Ordinary composition in multiplicity form (one upstream theorem plus 1+3).
+A \(\lean{Fin}\,n\)-profile records part count and weighted sum, with
+\nolinkurl{Nat.multinomial} counting its orderings.  The formal identity
+includes \(n=0\) through the unique empty profile and has an empty \(k=0\)
+term for \(n>0\), so \nolinkurl{thm:ordinary-composition} is Exact.  It does
+not prove the separate labelled-set-partition interpretation. &
+\nolinkurl{Fabius.ordPartialBell_congr_of_le},
+\nolinkurl{Fabius.ordinaryMultiplicityProfiles},
+\nolinkurl{Fabius.mem_ordinaryMultiplicityProfiles},
+\nolinkurl{Fabius.ordPartialBell_eq_sum_multinomial},
+\nolinkurl{Fabius.coeff_subst_eq_sum_multinomial} &
+\nolinkurl{OrdinaryBellComposition.lean},
+\nolinkurl{OrdinaryBellMultinomial.lean} \\
+Formal rescaling (0+4).  Coefficient comparison proves
+\((f(cX))'=cf'(cX)\) over a commutative semiring; the exponential cases use a
+commutative rational algebra.  Three helpers moved from the N\"orlund module
+without changing the global declaration total. &
+\nolinkurl{Fabius.derivative_rescale},
+\nolinkurl{Fabius.derivative_rescale_exp},
+\nolinkurl{Fabius.rescale_zero_exp},
+\nolinkurl{Fabius.rescale_exp_add_one} &
+\nolinkurl{ExponentialRescaling.lean} \\
+Abel polynomials (2+9).  The closed polynomial formula is division-free; over
+a commutative rational algebra, Lagrange--B\"urmann proves the exponential
+generating function for every solution of \(T=X\exp(-aT)\), including its
+constant term, and multiplication proves the all-index binomial law.  Thus
+\nolinkurl{prop:merged-abel} is Exact. &
+\nolinkurl{Fabius.abelPolynomial},
+\nolinkurl{Fabius.abelPolynomial_zero},
+\nolinkurl{Fabius.abelPolynomial_succ},
+\nolinkurl{Fabius.abelPolynomial_succ_eval},
+\nolinkurl{Fabius.abelSeries},
+\nolinkurl{Fabius.abelSeries_eq},
+\nolinkurl{Fabius.hasSubst_abelSeries},
+\nolinkurl{Fabius.abel_eq_zero_and_one},
+\nolinkurl{Fabius.coeff_exp_subst_of_abel_eq},
+\nolinkurl{Fabius.exp_subst_eq_egfA_abelPolynomial},
+\nolinkurl{Fabius.abelPolynomial_eval_add} &
+\nolinkurl{AbelPolynomialSeries.lean} \\
+Formal Bernoulli-kernel logarithm (0+5).  The constructed reciprocal and the
+logarithm product law give
+\(\log(X/(\exp X-1))=-X/2-\sum_{n\ge2}\beta_nX^n/(n\,n!)\) over
+\(\RationalNumbers\).  Degree one is separated because the Bernoulli
+conventions differ; no analytic logarithm is asserted. &
+\nolinkurl{Fabius.bernoulliPowerSeries_mul_massSeries_expm1Div},
+\nolinkurl{Fabius.logOf_bernoulliPowerSeries},
+\nolinkurl{Fabius.coeff_logOf_bernoulliPowerSeries},
+\nolinkurl{Fabius.coeff_one_logOf_bernoulliPowerSeries},
+\nolinkurl{Fabius.coeff_logOf_bernoulliPowerSeries_of_two_le} &
+\nolinkurl{BernoulliFormalLog.lean} \\
+Raney numbers (4+12).  Lagrange--B\"urmann gives both the denominator-cleared
+and divided coefficient formulas, including \(n=0\), for the canonically
+constructed \(T_p\).  No uniqueness theorem transports them to an arbitrary
+solution of \(T=1+XT^p\), so the printed row remains Partial. &
+\nolinkurl{Fabius.raneyPhi}, \nolinkurl{Fabius.raneyPsi},
+\nolinkurl{Fabius.raneyG}, \nolinkurl{Fabius.raneyT},
+\nolinkurl{Fabius.raneyT_eq},
+\nolinkurl{Fabius.natCast_mul_coeff_raneyT_pow},
+\nolinkurl{Fabius.coeff_raneyT_pow},
+\nolinkurl{Fabius.coeff_raneyT} &
+\nolinkurl{RaneyNumbers.lean} \\
+Kirkman--Cayley and associahedral arithmetic (4+23).  Binomial absorption
+proves the determinant, exact quotient, divisibility, support, and boundary
+values; reindexing and existing Narayana identities prove the face- and
+\(h\)-array formulas.  The arrays are definitions, with no dissection type,
+face lattice, bijection, or face-to-\(h\) transform, so all three geometric
+rows remain Partial.  The current 204-row concordance is 62 Lean, 36 Partial,
+and 106 None. &
+\nolinkurl{Fabius.dissectionNumber},
+\nolinkurl{Fabius.dissectionNumber_mul},
+\nolinkurl{Fabius.succ_dvd_choose_mul_choose},
+\nolinkurl{Fabius.dissectionNumber_eq_div},
+\nolinkurl{Fabius.dissectionNumber_nonneg},
+\nolinkurl{Fabius.associahedronFaceNumber},
+\nolinkurl{Fabius.associahedronFaceNumber_mul},
+\nolinkurl{Fabius.associahedronH},
+\nolinkurl{Fabius.associahedronH_symm},
+\nolinkurl{Fabius.sum_associahedronH},
+\nolinkurl{Fabius.associahedronHPoly_one} &
+\nolinkurl{AssociahedronFaceNumbers.lean} \\
 Weighted binomial translation and inversion (+11).
 \nolinkurl{thm:merged-weighted-binomial-translation} is Exact over
 commutative semirings, with left-cancellative addition needed only for
@@ -3351,7 +3432,7 @@ branch recorded historical 943/11,787, 952/11,881, 952/11,884, 967/12,001,
 969/12,048, and 970/12,051 inventories.  The preceding local merge
 970/12,056 checkpoint is also historical.
 The overlapping branches are reconciled in the inventory above: the current
-merged audit is 988/12,257, with zero documentation gaps.
+merged audit is 1003/12,485, with zero documentation gaps.
 
 The Laurent leaf makes \nolinkurl{is:p2:thm:Laurent-leading} Exact through
 the manuscript-normalized punctured-neighborhood limit and its Fourier
@@ -3456,10 +3537,10 @@ Finally,
 rational root classifier and Gaussian/half-q coefficient identification,
 makes \nolinkurl{cor:halfbase-root-locus} Exact for the canonical rational
 polynomial.  Injective scalar extension preserves the multiplicities, but
-this does not classify all roots over every extension field.  The q forward
-ledger is 181 Exact / 79 Partial / 14 None / 8 interface rows; its source
-concordance is 103 Lean-proved / 375 human-proved frontier /
-60 non-applicable / 9 conjectures.
+this does not classify all roots over every extension field.  The rigorous q
+forward ledger is 181 Exact / 79 Partial / 14 None / 8 interface rows;
+q-Lucas remains Partial.  Its source concordance is 103 Lean-proved / 375
+human-proved frontier / 60 non-applicable / 9 conjectures.
 
 The nodes-only leaf makes
 \nolinkurl{cor:lag-nodes-only} Exact/Complete by composition, with rationality
@@ -3585,7 +3666,7 @@ contraction regime, including signed \(q\) and \(q=0\).  The subsequent
 \path{GeometricUniformComplexMomentProduct.lean} leaf has the exhaustive
 public surface one definition and three theorems:
 \lean{geometricUniformComplexMomentProduct},
-\lean{hasProdLocallyUniformly_geometricUniformComplexMomentProduct},
+\lean{hasProdLocallyUniformly_geometricUniformComplexMomentProduct}, and
 \lean{differentiable_geometricUniformComplexMomentProduct}, and
 \nolinkurl{geometricUniformMomentPolynomial_eval}\texttt{\textsubscript{2}}\nolinkurl{_eq_complexMomentProduct_taylorCoefficient}.
 For every complex \(q\) with \(\lVert q\rVert<1\), these construct the actual
@@ -3695,7 +3776,7 @@ branch recorded historical 943/11,787, 952/11,881, 952/11,884, 967/12,001,
 969/12,048, and 970/12,051 inventories.  The preceding local merge
 970/12,056 checkpoint is also historical.
 The overlapping branches are reconciled in the inventory above: the current
-merged audit is 988/12,257, with zero documentation gaps.
+merged audit is 1003/12,485, with zero documentation gaps.
 The existing
 \path{GeometricResidualMoments.lean} module now has zero definitions and nine
 public theorems.  Its
@@ -3718,7 +3799,8 @@ commutative semiring.  Composed with
 rational-polynomial half-base convention.  It needs neither \(b\ne0\) nor
 distinct transformed nodes and includes \(b=0\) and \(n=0\); it does not
 extend the concrete half-base extractor to arbitrary coefficient rings.
-The q forward ledger is 181 Exact / 79 Partial / 14 None / 8 interface rows:
+The rigorous q forward ledger is 181 Exact / 79 Partial / 14 None / 8
+interface rows: q-Lucas remains Partial;
 \nolinkurl{p7:thm:Pn} moves Partial-to-Exact and
 \nolinkurl{prop:qF-P-degree-sharp} moves None-to-Exact, while the RatFunc
 assembly moves \nolinkurl{thm:qF-moment-polynomial} Partial-to-Exact and the
