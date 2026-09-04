@@ -183,23 +183,6 @@ private theorem reciprocal_dilate_unitUniformRawMomentRat (a : ℚ) :
     funext n
     cases n <;> simp [Appell.dilate, Bell.unitSeq]
 
-private theorem binomialConv_four_swap
-    (a b c d : ℕ → ℚ) :
-    Bell.binomialConv (Bell.binomialConv a b) (Bell.binomialConv c d) =
-      Bell.binomialConv (Bell.binomialConv a c) (Bell.binomialConv b d) := by
-  calc
-    Bell.binomialConv (Bell.binomialConv a b) (Bell.binomialConv c d) =
-        Bell.binomialConv a
-          (Bell.binomialConv b (Bell.binomialConv c d)) :=
-      Bell.binomialConv_assoc _ _ _
-    _ = Bell.binomialConv a
-          (Bell.binomialConv c (Bell.binomialConv b d)) := by
-      rw [← Bell.binomialConv_assoc b c d,
-        Bell.binomialConv_comm b c, Bell.binomialConv_assoc]
-    _ = Bell.binomialConv (Bell.binomialConv a c)
-          (Bell.binomialConv b d) :=
-      (Bell.binomialConv_assoc _ _ _).symm
-
 private theorem reciprocal_uncenteredDyadicPrefixMomentRat_succ (N : ℕ) :
     Bell.reciprocal (uncenteredDyadicPrefixMomentRat (N + 1)) =
       Bell.binomialConv
@@ -226,7 +209,7 @@ private theorem reciprocal_uncenteredDyadicPrefixMomentRat_succ (N : ℕ) :
                 unitUniformRawMomentRat)
               (Appell.dilate (dyadicPrefixScaleRat (N + 1))
                 (_root_.bernoulli : ℕ → ℚ))) :=
-          binomialConv_four_swap _ _ _ _
+          Bell.binomialConv_four_swap _ _ _ _
       _ = Bell.binomialConv (Bell.unitSeq ℚ)
             (Bell.binomialConv
               (Appell.dilate (dyadicPrefixScaleRat (N + 1))
@@ -579,29 +562,6 @@ private noncomputable def centeredBernoulliRat : ℕ → ℚ :=
   Appell.dilate 2
     (Appell.translate (1 / 2 : ℚ) (_root_.bernoulli : ℕ → ℚ))
 
-private theorem Appell.translate_eq_binomialConv_pow
-    (c : ℚ) (b : ℕ → ℚ) :
-    Appell.translate c b = Bell.binomialConv (fun n ↦ c ^ n) b := by
-  funext n
-  exact Appell.eval_poly b c n
-
-private theorem binomialConv_translate_neg_translate
-    (c : ℚ) (a b : ℕ → ℚ) :
-    Bell.binomialConv (Appell.translate (-c) a) (Appell.translate c b) =
-      Bell.binomialConv a b := by
-  rw [Appell.translate_eq_binomialConv_pow,
-    Appell.translate_eq_binomialConv_pow, binomialConv_four_swap]
-  have hpowers :
-      Bell.binomialConv (fun n : ℕ ↦ (-c) ^ n) (fun n : ℕ ↦ c ^ n) =
-        fun n : ℕ ↦ (-c + c) ^ n := by
-    funext n
-    exact Bell.binomialConv_pow (-c) c n
-  rw [hpowers]
-  have hzero : (fun n : ℕ ↦ ((-c + c : ℚ) ^ n)) = Bell.unitSeq ℚ := by
-    funext n
-    cases n <;> simp [Bell.unitSeq]
-  rw [hzero, Bell.binomialConv_unitSeq_left]
-
 private theorem binomialConv_centeredUnitUniformRawMomentRat_centeredBernoulliRat :
     Bell.binomialConv centeredUnitUniformRawMomentRat centeredBernoulliRat =
       Bell.unitSeq ℚ := by
@@ -614,7 +574,7 @@ private theorem binomialConv_centeredUnitUniformRawMomentRat_centeredBernoulliRa
             (_root_.bernoulli : ℕ → ℚ)) =
         Bell.binomialConv unitUniformRawMomentRat
           (_root_.bernoulli : ℕ → ℚ) := by
-    convert binomialConv_translate_neg_translate (1 / 2 : ℚ)
+    convert Appell.binomialConv_translate_neg_translate (1 / 2 : ℚ)
       unitUniformRawMomentRat (_root_.bernoulli : ℕ → ℚ) using 1
     norm_num
   rw [htranslate, binomialConv_unitUniformRawMomentRat_bernoulli]
@@ -657,7 +617,7 @@ private theorem reciprocal_centeredDyadicPrefixMomentRat_succ (N : ℕ) :
                 centeredUnitUniformRawMomentRat)
               (Appell.dilate (dyadicPrefixScaleRat (N + 1))
                 centeredBernoulliRat)) :=
-          binomialConv_four_swap _ _ _ _
+          Bell.binomialConv_four_swap _ _ _ _
       _ = Bell.binomialConv (Bell.unitSeq ℚ)
             (Bell.binomialConv
               (Appell.dilate (dyadicPrefixScaleRat (N + 1))

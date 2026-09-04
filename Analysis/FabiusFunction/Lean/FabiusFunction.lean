@@ -74,6 +74,7 @@ import FabiusFunction.FallingFactorialSeries
 import FabiusFunction.CauchyPolynomials
 import FabiusFunction.CoefficientRules
 import FabiusFunction.ExpSeriesRecurrence
+import FabiusFunction.StirlingSeriesCoefficients
 import FabiusFunction.IteratedLeibniz
 import FabiusFunction.NorlundDiagonal
 import FabiusFunction.NarayanaNumbers
