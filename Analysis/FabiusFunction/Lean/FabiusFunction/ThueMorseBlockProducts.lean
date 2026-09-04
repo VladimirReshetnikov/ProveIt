@@ -1,3 +1,4 @@
+import FabiusFunction.ThueMorseBasicLemmas
 import FabiusFunction.ThueMorseMasterProduct
 import FabiusFunction.ThueMorseWoodsRobbins
 import FabiusFunction.ThueMorseEulerTransform
@@ -54,10 +55,20 @@ namespace Fabius
 
 /-- Every dyadic ladder `m ↦ 2^(m-d)` tends to infinity. -/
 private theorem tendsto_two_pow_sub (d : ℕ) :
-    Tendsto (fun m : ℕ => 2 ^ (m - d)) atTop atTop := by
-  have h2 : Tendsto (fun k : ℕ => 2 ^ k) atTop atTop :=
-    tendsto_atTop_mono (fun k => (Nat.lt_two_pow_self (n := k)).le) tendsto_id
-  exact h2.comp (tendsto_sub_atTop_nat d)
+    Tendsto (fun m : ℕ => 2 ^ (m - d)) atTop atTop :=
+  tendsto_two_pow_atTop.comp (tendsto_sub_atTop_nat d)
+
+/-- A limit along the multiples `c·M` of `c = 2^d` restricts to the dyadic
+ladder: `g (c·M) → a` implies `g (2^m) → a`, since `2^m = c·2^(m-d)` for
+`m ≥ d`.  All three dyadic fingerprint limits below are instances. -/
+private theorem tendsto_two_pow_of_tendsto_mul {α : Type*} [TopologicalSpace α]
+    {d c : ℕ} (hc : 2 ^ d = c) {g : ℕ → α} {a : α}
+    (h : Tendsto (fun M : ℕ => g (c * M)) atTop (𝓝 a)) :
+    Tendsto (fun m : ℕ => g (2 ^ m)) atTop (𝓝 a) := by
+  refine (h.comp (tendsto_two_pow_sub d)).congr' ?_
+  filter_upwards [eventually_ge_atTop d] with m hm
+  show g (c * 2 ^ (m - d)) = g (2 ^ m)
+  rw [← hc, ← pow_add, Nat.add_sub_cancel' hm]
 
 /-! ### The shift-general block collapse -/
 
@@ -147,17 +158,10 @@ theorem tendsto_block_product_one_even :
 subsequence `M = 2^(m-1)` of `tendsto_block_product_one_even`. -/
 theorem tendsto_block_product_one :
     Tendsto (fun m : ℕ => ∏ k ∈ range (2 ^ m),
-      ((k : ℝ) + 1) ^ (thueMorseSign k)) atTop (𝓝 (1 / Real.sqrt 2)) := by
-  refine (tendsto_block_product_one_even.comp
-    (tendsto_two_pow_sub 1)).congr' ?_
-  filter_upwards [eventually_ge_atTop 1] with m hm
-  have hsplit : (2 : ℕ) ^ m = 2 * 2 ^ (m - 1) := by
-    rw [← pow_succ']
-    congr 1
-    omega
-  show ∏ k ∈ range (2 * 2 ^ (m - 1)), ((k : ℝ) + 1) ^ (thueMorseSign k) =
-    ∏ k ∈ range (2 ^ m), ((k : ℝ) + 1) ^ (thueMorseSign k)
-  rw [hsplit]
+      ((k : ℝ) + 1) ^ (thueMorseSign k)) atTop (𝓝 (1 / Real.sqrt 2)) :=
+  tendsto_two_pow_of_tendsto_mul (d := 1) (by norm_num)
+    (g := fun N => ∏ k ∈ range N, ((k : ℝ) + 1) ^ (thueMorseSign k))
+    tendsto_block_product_one_even
 
 /-! ### The alternating (mixed) block -/
 
@@ -227,9 +231,7 @@ theorem tendsto_block_product_mixed_four :
     (fun k => by positivity) ?_
   rw [show -(3 / 2 * Real.log 2) =
     -Real.log 2 / 2 + 2 * (-Real.log 2 / 2) from by ring]
-  have hdouble : Tendsto (fun M : ℕ => 2 * M) atTop atTop :=
-    tendsto_atTop_mono (fun n => (by omega : n ≤ 2 * n)) tendsto_id
-  refine ((tendsto_wrA.comp hdouble).add
+  refine ((tendsto_wrA.comp tendsto_two_mul_atTop).add
     (tendsto_wrA.const_mul (2 : ℝ))).congr fun M => ?_
   exact (block_log_mixed_four M).symm
 
@@ -239,21 +241,11 @@ theorem tendsto_block_product_mixed_four :
 theorem tendsto_block_product_mixed :
     Tendsto (fun m : ℕ => ∏ k ∈ range (2 ^ m),
       ((k : ℝ) + 1) ^ ((-1 : ℤ) ^ k * thueMorseSign k)) atTop
-      (𝓝 (1 / (2 * Real.sqrt 2))) := by
-  refine (tendsto_block_product_mixed_four.comp
-    (tendsto_two_pow_sub 2)).congr' ?_
-  filter_upwards [eventually_ge_atTop 2] with m hm
-  have hsplit : (2 : ℕ) ^ m = 4 * 2 ^ (m - 2) := by
-    rw [show 4 * 2 ^ (m - 2) = 2 ^ (m - 2 + 1 + 1) by
-      rw [pow_succ, pow_succ]
-      ring]
-    congr 1
-    omega
-  show ∏ k ∈ range (4 * 2 ^ (m - 2)),
-      ((k : ℝ) + 1) ^ ((-1 : ℤ) ^ k * thueMorseSign k) =
-    ∏ k ∈ range (2 ^ m),
-      ((k : ℝ) + 1) ^ ((-1 : ℤ) ^ k * thueMorseSign k)
-  rw [hsplit]
+      (𝓝 (1 / (2 * Real.sqrt 2))) :=
+  tendsto_two_pow_of_tendsto_mul (d := 2) (by norm_num)
+    (g := fun N => ∏ k ∈ range N,
+      ((k : ℝ) + 1) ^ ((-1 : ℤ) ^ k * thueMorseSign k))
+    tendsto_block_product_mixed_four
 
 /-! ### The half-shifted block -/
 
@@ -279,17 +271,9 @@ the Allouche–Riasat–Shallit quarter product, proved in
 theorem tendsto_block_product_half' :
     Tendsto (fun m : ℕ => ∏ k ∈ range (2 ^ m),
       ((k : ℝ) + 1 / 2) ^ (thueMorseSign k)) atTop
-      (𝓝 (Real.exp (mpLimit (1 / 4) (3 / 4)))) := by
-  refine (tendsto_block_product_half_even'.comp
-    (tendsto_two_pow_sub 1)).congr' ?_
-  filter_upwards [eventually_ge_atTop 1] with m hm
-  have hsplit : (2 : ℕ) ^ m = 2 * 2 ^ (m - 1) := by
-    rw [← pow_succ']
-    congr 1
-    omega
-  show ∏ k ∈ range (2 * 2 ^ (m - 1)),
-      ((k : ℝ) + 1 / 2) ^ (thueMorseSign k) =
-    ∏ k ∈ range (2 ^ m), ((k : ℝ) + 1 / 2) ^ (thueMorseSign k)
-  rw [hsplit]
+      (𝓝 (Real.exp (mpLimit (1 / 4) (3 / 4)))) :=
+  tendsto_two_pow_of_tendsto_mul (d := 1) (by norm_num)
+    (g := fun N => ∏ k ∈ range N, ((k : ℝ) + 1 / 2) ^ (thueMorseSign k))
+    tendsto_block_product_half_even'
 
 end Fabius

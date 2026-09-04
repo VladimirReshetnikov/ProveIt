@@ -121,4 +121,16 @@ Gaussian closed forms, a bundled matrix/right-inverse wrapper, or an
 optimal/minimum-variation decoder theorem; the exhaustive public inventory is
 in the root [`Analysis/FabiusFunction/README.md`](../../../../README.md).
 
+The subgroup [`dyadic-up-extraction/`](dyadic-up-extraction/) holds one
+document, the canonical volume
+[*Exact Dyadic Extraction of Rvachev's Up-Function from Finite Sinc-Product
+Splines*](dyadic-up-extraction/Dyadic_Up_Extraction/Dyadic_Up_Extraction.tex)
+(77 A4 pages), consolidated on 2026-09-03 from six reports received on
+2026-09-02.  It proves that at a dyadic point of depth `s` the finite
+sinc-product spline equals the up-function value plus exactly `⌊s/2⌋`
+geometric modes of ratio `1/4, 1/16, …` for every level `n ≥ s`, with no
+remainder, and derives the quarter-base Gaussian-binomial row that recovers
+the exact value from `⌊s/2⌋ + 1` consecutive rational samples; it ships one
+exact-arithmetic verifier.  The six absorbed reports are listed in the
+volume's provenance appendix and in the manifest; git history is the archive.
 See [`../MANIFEST.md`](../MANIFEST.md) for titles, scope, and historical paths.

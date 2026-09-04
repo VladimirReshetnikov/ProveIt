@@ -79,6 +79,11 @@
 \newcommand{\imported}{\textcolor{importblue}{\textsc{Imported baseline.}}}
 \newcommand{\openstatus}{\textcolor{conjectureorange}{\textsc{Open or conjectural.}}}
 \newcommand{\SpectralPowerSum}[1]{\mathfrak{s}_{#1}}
+% Crosswalk macros, as in the other frontier volumes: a Lean module or
+% declaration name, typeset verbatim.
+\newcommand{\lean}[1]{%
+  \ifmmode\text{\texttt{\detokenize{#1}}}\else\nolinkurl{#1}\fi}
+\newcommand{\decl}[1]{\nolinkurl{#1}}
 \newenvironment{boxedremark}{\par\smallskip\noindent\begin{center}\begin{minipage}{0.94\textwidth}\hrule\vspace{0.6em}\small}{\vspace{0.6em}\hrule\end{minipage}\end{center}\smallskip}
 \lstdefinestyle{pseudo}{basicstyle=\ttfamily\footnotesize,backgroundcolor=\color{shadegray},frame=single,
  rulecolor=\color{rulegray},columns=fullflexible,keepspaces=true,showstringspaces=false,breaklines=true,
@@ -735,6 +740,25 @@ case is simply the unreduced dyadic argument displayed in
 The critical value is nonzero, while all larger orders vanish.
 \end{proof}
 
+\paragraph{Lean status.}
+The two exact parts of \cref{p1:thm:dyadic-filtration} are formal in
+\path{DyadicDerivativeFiltration.lean}, for the derivatives themselves (the volume's
+\(S_m=\RvachevUp^{(m)}/\pi^m\) differs by the fixed factor \(\pi^{-m}\)).  Above the depth,
+\path{Fabius.iteratedDeriv_rvachevUp_dyadic_eq_zero} gives
+\(\RvachevUp^{(m)}(a/2^n)=0\) for every \(m>n\) and every odd \(a\)
+(\eqref{p1:eq:filtration-above}); at the critical order,
+\path{Fabius.iteratedDeriv_rvachevUp_dyadic_critical} gives
+\(\RvachevUp^{(n)}\bigl((2c+1)/2^n\bigr)=-\ThueMorseSign{c}\,2^{n(n+1)/2}\) for
+\(c<2^{n-1}\) (\eqref{p1:eq:filtration-critical}).  Both are read off the corpus's closed
+form of the derivatives as finite Thue--Morse sums of translates
+(\path{Fabius.iteratedDeriv_rvachevUp_eq_thueMorse_sum}): above the depth every translate
+argument is an odd integer, where \(\RvachevUp\) vanishes
+(\path{Fabius.rvachevUp_eq_zero_of_one_le_abs}); at the depth every argument is an even
+integer and only \(j=c+2^{n-1}\) survives, with the sign
+\(\ThueMorseSign{c+2^{n-1}}=-\ThueMorseSign{c}\) (\path{Fabius.thueMorseSign_add_pow_two}).
+The remaining case \eqref{p1:eq:filtration-below}, through the global \(q\)-binomial
+formula, is not formalized here.
+
 \begin{corollary}[Spectral detection of the denominator]\label{p1:cor:denominator-detection}
 For an interior reduced dyadic point $t=a/2^n$ with odd $a$,
 \begin{equation}\label{p1:eq:denominator-detection}
@@ -743,6 +767,15 @@ For an interior reduced dyadic point $t=a/2^n$ with odd $a$,
 Thus the denominator depth is encoded intrinsically in the half-integer
 Fourier spectrum, without inspecting the binary expansion of $t$.
 \end{corollary}
+
+\paragraph{Lean status.}
+Formal, for the derivatives themselves:
+\path{Fabius.dyadic_depth_eq_max_nonzero_iteratedDeriv} in
+\path{DyadicDerivativeFiltration.lean} states, for \(t=(2c+1)/2^n\) with \(c<2^{n-1}\), that
+\(\RvachevUp^{(n)}(t)\ne0\) while \(\RvachevUp^{(m)}(t)=0\) for every \(m>n\), which is
+\eqref{p1:eq:denominator-detection} with the maximum spelled out as its two defining
+clauses; the passage to \(S_m=\RvachevUp^{(m)}/\pi^m\) is the fixed nonzero factor
+\(\pi^{-m}\).
 
 \begin{remark}
 The underlying finite derivative jet at a dyadic point is baseline material in
@@ -874,10 +907,11 @@ statements are
 \path{Fabius.sum_intResidueTsum},
 \path{Fabius.dft_intResidueTsum}, and
 \path{Fabius.intResidueTsum_eq_dft_average}, all in
-\path{SummableCyclicAlias.lean}.  This foundation does not by itself prove
-\eqref{p1:eq:alias-identity}: that specialization still requires inserting the
+\path{SummableCyclicAlias.lean}.  That specialization --- inserting the
 absolutely convergent Fourier series of \(P\) and identifying its finite DFT
-with the sampled values \(A_{n,r}\).
+with the sampled values \(A_{n,r}\) --- is now carried out in
+\path{HalfIntegerAliasIdentity.lean}; see the Lean status after
+\cref{p1:thm:alias-identity}.
 
 \subsection{Folded coefficients}
 
@@ -938,6 +972,53 @@ $\RvachevUp(j/N)=1-\FabiusBounded(j/N)$.  Since $r$ is odd,
 which yields \eqref{p1:eq:A-F-DCT}.
 \end{proof}
 
+\paragraph{Lean status.}
+The boxed identity \eqref{p1:eq:alias-identity} is formal, in
+\path{HalfIntegerAliasIdentity.lean}, and for every modulus: with
+\path{Fabius.periodizedUp} the two-periodization, \path{Fabius.gridSample} its sample
+vector on \(\IntegerNumbers/2N\IntegerNumbers\), and \path{Fabius.foldedCoefficient}
+the coefficient \(A_{N,r}=N^{-1}\,\mathcal D_{2N}(\text{samples})(r)\) in Mathlib's DFT
+normalization, \path{Fabius.foldedCoefficient_eq_tsum} is
+\(A_{N,r}=\sum_{q\in\IntegerNumbers}\PhiU(qN+r/2)\) for every \(N\ge1\) and every residue
+\(r\) modulo \(2N\) --- neither \(N=2^n\) nor the oddness of \(r\) is used.  The proof is
+the one above, carried out as a chain of rewrites: sampling the period-two Fourier series
+\path{Fabius.rvachev_even_translate_fourier} at \(j/N\) turns \(\EulerE^{\pi\ImaginaryUnit
+kj/N}\) into the standard character of \(\IntegerNumbers/2N\IntegerNumbers\)
+(\path{Fabius.exp_pi_mul_I_eq_stdAddChar}), so the sample vector is \(\tfrac12\) times
+the bilateral Fourier sums of \path{SummableCyclicAlias.lean} at \(-j\)
+(\path{Fabius.gridSample_eq}); the DFT of those sums is the residue-class sums
+(\path{Fabius.dft_intResidueTsum}), and two Mathlib identities, \path{ZMod.dft_comp_neg}
+and \path{ZMod.dft_dft}, give \(\mathcal D_{2N}(\text{samples})=N\cdot\mathcal R_\bullet\)
+(\path{Fabius.dft_gridSample}).  The residue class is finally re-indexed as the affine
+line \(q\mapsto2Nq+r\) (\path{Fabius.residueClassEquiv}).  The cosine form is formal
+over the full residue range: \path{Fabius.foldedCoefficient_eq_sum_cos} is
+\(A_{N,r}=N^{-1}\sum_{j\in\IntegerNumbers/2N\IntegerNumbers}P(j/N)\cos(\pi rj/N)\), obtained
+by re-indexing the character sum through \(j\mapsto-j\), which fixes the sample vector
+(\path{Fabius.gridSample_neg}, from the period \(2\) and the evenness of the periodization,
+\path{Fabius.periodizedUp_add_two} and \path{Fabius.periodizedUp_neg}), and writing the
+character at \(\pm rj\) as \(\EulerE^{\pm\pi\ImaginaryUnit rj/N}\)
+(\path{Fabius.stdAddChar_mul_eq_exp}, \path{Fabius.stdAddChar_neg_mul_eq_exp}).  The
+identification \(P(j/N)=\RvachevUp(j/N)\) for \(0\le j\le N\) is
+\path{Fabius.gridSample_natCast_of_le} (from \path{Fabius.periodizedUp_of_mem_Icc}, the
+statement that the periodization is \(\RvachevUp\) on \([-1,1]\)).  The fold of \(j\)
+with \(2N-j\) onto \(1\le j\le N-1\) is \path{Fabius.sum_zmod_even_eq_fold} in
+\path{AliasDyadicBridge.lean}, a half-range fold for every even function on
+\(\IntegerNumbers/2N\IntegerNumbers\) (the sum over \(\IntegerNumbers/2N\IntegerNumbers\) is first
+written as a sum over \(0\le k<2N\), \path{Fabius.sum_zmod_eq_sum_range}); applied to the
+cosine form, with \(P(0)=1\), \(P(1)=\RvachevUp(1)=0\) and the periodicity of the cosine
+factor (\path{Fabius.cos_alias_angle_neg}), it gives \eqref{p1:eq:A-Up-DCT} verbatim,
+\path{Fabius.foldedCoefficient_eq_halfRange_cos}, for every \(N\ge1\) and every residue
+\(r\).  For \(N=2^n\) the samples are the exact rational dyadic values,
+\(\RvachevUp(k/2^n)=\FabiusBounded\bigl((2^n-k)/2^n\bigr)=\mathtt{fabiusDyadic}\,n\,(2^n-k)\)
+(\path{Fabius.foldedCoefficient_two_pow_eq_fabiusDyadic}, through
+\path{Fabius.rvachevUp_eq_fabiusReal_one_sub_abs} and \path{Fabius.fabiusDyadic_cast}).
+The variant \eqref{p1:eq:A-F-DCT} additionally uses
+\(\sum_{j=1}^{N-1}\cos(\pi rj/N)=0\) for odd \(r\), which is
+\path{Fabius.sum_Ico_cos_alias_angle_odd} (from the vanishing of the full character sum,
+\path{Fabius.sum_cos_alias_angle_eq_zero}, folded to the half range); the resulting display,
+with \(1-\RvachevUp(j/N)\) in place of \(\FabiusBounded(j/N)\), is
+\path{Fabius.foldedCoefficient_eq_halfRange_cos_odd}, for every odd residue \(r\).
+
 \subsection{Exact inverse transform}
 
 \begin{theorem}[Dyadic spectral reconstruction]\label{p1:thm:inverse-DCT}
@@ -966,6 +1047,28 @@ $A_{n,2N-r}=A_{n,r}$.  Pairing the odd frequencies gives
 \eqref{p1:eq:inverse-DCT}.
 \end{proof}
 
+\paragraph{Lean status.}
+The three facts the proof uses are formal in \path{HalfIntegerAliasIdentity.lean}, for every
+\(N\ge1\): the inverse transform in complex form,
+\(P(j/N)=\tfrac12\sum_{r\in\IntegerNumbers/2N\IntegerNumbers}A_{N,r}\chi_{2N}(rj)\)
+(\path{Fabius.gridSample_eq_sum_foldedCoefficient}, from Mathlib's \path{ZMod.dft_dft});
+\(A_{N,0}=1\) (\path{Fabius.foldedCoefficient_zero}); the vanishing of every nonzero even
+mode, \(A_{N,2s}=0\) for \(0<s<N\) (\path{Fabius.foldedCoefficient_two_mul_eq_zero}, since
+each alias point \(qN+s\) is a nonzero integer, where \(\FourierTwoPi{\RvachevUp}\) vanishes);
+and the symmetry \(A_{N,-r}=A_{N,r}\) (\path{Fabius.foldedCoefficient_neg}, from the
+evenness of \(\FourierTwoPi{\RvachevUp}\)).  The pairing of \(r\) with \(2N-r\) into the cosine
+form \eqref{p1:eq:inverse-DCT} is formal as well, for every even \(N\):
+\path{Fabius.gridSample_eq_half_add_sum_odd} in \path{AliasDyadicBridge.lean} is the boxed
+display verbatim.  It is the same two steps as on the sample side --- the reconstruction sum is
+made real by pairing \(r\) with \(-r\) (\path{Fabius.sum_char_mul_foldedCoefficient_eq_sum_cos},
+using \(A_{N,-r}=A_{N,r}\) and \(\chi(rj)+\chi(-rj)=2\cos(\pi rj/N)\)), and the resulting even
+sum is folded to \(1\le r<N\) by \path{Fabius.sum_zmod_even_eq_fold}, the cosine factor being
+even in the frequency by \path{Fabius.cos_alias_angle_neg_left}.  The constant \(\tfrac12\) is
+\(A_{N,0}=1\) halved, the frequency \(r=N\) drops out because \(N\) is then an even residue, and
+the surviving even frequencies below \(N\) vanish by
+\path{Fabius.foldedCoefficient_two_mul_eq_zero}, which is what leaves the odd ones alone.  The
+dual statement on the sample side is \path{Fabius.foldedCoefficient_eq_sum_cos}.
+
 \begin{corollary}[Exact discrete energy identity]\label{p1:cor:discrete-energy}
 One has
 \begin{equation}\label{p1:eq:discrete-energy}
@@ -982,6 +1085,30 @@ Apply finite Parseval to \eqref{p1:eq:inverse-DCT}.  The constant mode contribut
 $1/4$, and each nonconstant cosine has mean square $1/2$ on the length-$2N$
 grid.  Use $P(0)=1$, $P(1)=0$, and symmetry of the remaining samples.
 \end{proof}
+
+\paragraph{Lean status.}
+The energy identity is formal before the odd/even split and the sample pairing:
+\path{Fabius.sum_foldedCoefficient_sq} in \path{HalfIntegerAliasIdentity.lean} gives
+\(\sum_{r\in\IntegerNumbers/2N\IntegerNumbers}A_{N,r}^2=\tfrac2N\sum_{j<2N}P(j/N)^2\)
+for every \(N\ge1\).  It rests on a Parseval-type identity for Mathlib's DFT on
+\(\IntegerNumbers/M\IntegerNumbers\) proved for every vector \(\Phi\),
+\(\sum_r\mathcal D\Phi(r)\,\mathcal D\Phi(-r)=M\sum_j\Phi(j)^2\)
+(\path{Fabius.sum_dft_mul_dft_neg}, from \path{ZMod.dft_apply} and \path{ZMod.dft_dft} alone),
+combined with the symmetry \path{Fabius.foldedCoefficient_neg}.  The bookkeeping that turns it
+into the displayed \eqref{p1:eq:discrete-energy} is formal too, for every even \(N\):
+\path{Fabius.sum_odd_foldedCoefficient_sq} in \path{AliasDyadicBridge.lean} is
+\[
+  \sum_{\substack{1\le r<N\\ r\ \mathrm{odd}}}A_{N,r}^2
+  =\frac1N\Bigl[1+2\sum_{j=1}^{N-1}\RvachevUp(j/N)^2\Bigr]-\frac12 .
+\]
+Both sides of the Parseval identity are sums of an even function over
+\(\IntegerNumbers/2N\IntegerNumbers\), so the same half-range fold applies to each
+(\path{Fabius.sum_gridSample_sq_eq_fold} on the samples, using \(P(0)=1\) and \(P(1)=0\);
+\path{Fabius.sum_foldedCoefficient_sq_eq_fold} on the coefficients, using \(A_{N,0}=1\) and,
+because \(N\) is even, \(A_{N,N}=0\)); the even residues strictly between \(0\) and \(N\) then
+drop out by \path{Fabius.foldedCoefficient_sq_eq_zero_of_even}, leaving only the odd ones.  The
+hypothesis that \(N\) be even is what makes \(r\mapsto2N-r\) fix no odd residue; it holds in
+every dyadic case \(N=2^n\), \(n\ge1\).
 
 \begin{remark}[Continuous limit]
 As $n\to\infty$, the right side of \eqref{p1:eq:discrete-energy} tends
@@ -1069,6 +1196,23 @@ Substitute $N=2^n$ and $K=n$; collecting powers of two gives
 \eqref{p1:eq:alias-error-n}.
 \end{proof}
 
+\paragraph{Lean status.}
+The general bound \eqref{p1:eq:alias-error-general} is formal in
+\path{AliasErrorBound.lean}, with a slightly larger constant: for every \(K\ge2\), every
+\(N\ge1\) and every residue \(r<N\) (no parity assumption, no restriction to \(N=2^n\)),
+\path{Fabius.norm_foldedCoefficient_sub_le'} gives
+\[
+ |A_{N,r}-\PhiU(r/2)|\le 2^{K+1}C_KN^{-K}\sum_{n\ge1}n^{-K},
+\]
+that is, \(2^K\zeta(K)\) where the display has \((2^K-1)\zeta(K)\): the formal proof bounds
+every alias point by \(|qN+r/2|\ge N|q|/2\) (\path{Fabius.abs_alias_point_ge}) and sums over
+all integers (\path{Fabius.norm_foldedCoefficient_sub_le}, \path{Fabius.tsum_abs_int_rpow_eq})
+instead of over the odd ones.  The termwise input is the selected-factor bound of
+\cref{p1:lem:selected-factor-bound} at the alias point (\path{Fabius.norm_alias_term_le}),
+and the alias terms are separated from \(\PhiU(r/2)\) through the formal alias identity
+\path{Fabius.foldedCoefficient_eq_tsum}.  The specialization \(K=n\), \(N=2^n\) giving
+\eqref{p1:eq:alias-error-n} is not restated.
+
 \begin{remark}[Why the rate is so fast]
 At level $n$, the unwanted aliases begin a distance comparable with $2^n$
 from the target.  The same sinc product permits an $n$-factor power bound, so
@@ -1142,6 +1286,35 @@ Insert \eqref{p1:eq:baseline-qbinomial} with $m=j$ and $c=0$ into
 \eqref{p1:eq:A-F-DCT}.  The convergence statement is
 \cref{p1:thm:alias-error}.
 \end{proof}
+
+\paragraph{Lean status.}
+Partial.  The dyadic values that \eqref{p1:eq:q-approximant} feeds into the cosine transform
+are formal through the \(q\)-binomial formula
+\path{Fabius.qBinomialThueMorseTranslatedFormulaIn_eq_fabiusAtInverseTwoPow}
+(\path{FabiusQBinomialScalarFormula.lean}), and the alias identity underlying the left side
+is \path{Fabius.foldedCoefficient_eq_tsum} (\path{HalfIntegerAliasIdentity.lean}).  The
+assembly is formal up to the half-range fold: the cosine form of \(A_{N,r}\) over all
+residues is \path{Fabius.foldedCoefficient_eq_sum_cos}, its half-range fold is
+\path{Fabius.foldedCoefficient_eq_halfRange_cos}, and at \(N=2^n\) the samples are the
+exact rational values \(\mathtt{fabiusDyadic}\,n\,(2^n-k)\)
+(\path{Fabius.foldedCoefficient_two_pow_eq_fabiusDyadic}, \path{AliasDyadicBridge.lean}).
+The sign form \eqref{p1:eq:A-F-DCT} is \path{Fabius.foldedCoefficient_eq_halfRange_cos_odd}
+(odd \(r\), with \(1-\RvachevUp\) for \(\FabiusBounded\)).  The substitution of the
+\(q\)-binomial closed form for those rational values into the transform is formal too, in
+\path{AliasQBinomialBridge.lean}: \path{Fabius.foldedCoefficient_two_pow_eq_qBinomial} is
+\[
+  A_{2^n,r}=\frac1{2^n}\Bigl[1+2\sum_{k=1}^{2^n-1}
+    Q(2^n-k,n)\cos\Bigl(\frac{\pi rk}{2^n}\Bigr)\Bigr],
+\]
+where \(Q(m,n)\) is \path{Fabius.qBinomialThueMorseDyadicTranslatedFormulaIn}, the
+\(q\)-binomial closed form of \(\FabiusBounded(m/2^n)\) --- the general dyadic identity
+\path{Fabius.fabiusFunction_dyadic_eq_qBinomialThueMorseDyadicTranslatedFormulaIn_real}, valid
+for every \(m\le2^n\) and every translation parameter, not only at the single point
+\(1/2^n\).  The reflected index \(2^n-k\) is the sample identity
+\(\RvachevUp(k/2^n)=\FabiusBounded((2^n-k)/2^n)\)
+(\path{Fabius.rvachevUp_dyadic_eq_qBinomial}).  So the whole of \eqref{p1:eq:q-approximant}
+except its convergence, which is analytic, is now formal: the folded alias class of the
+infinite sinc product equals a finite cosine sum of \(q\)-binomial expressions.
 
 \begin{remark}[Three structures in one finite expression]
 Formula \eqref{p1:eq:q-approximant} simultaneously contains
@@ -1294,6 +1467,33 @@ Substitution gives \eqref{p1:eq:Ramanujan-traces}.  For $m=1$, the only indices
 with $N\mid j$ are $j=0,N$, so
 $p_1(n)=\tfrac12(P_0-P_N)=1/2$.
 \end{proof}
+
+\paragraph{Lean status.}
+The two finite character sums the proof rests on are formal in
+\path{CyclicCharacterSums.lean}, for every modulus rather than only powers of two: the
+orthogonality \(\sum_{j\in\IntegerNumbers/M\IntegerNumbers}\chi_M(jk)=M[k=0]\)
+(\path{Fabius.sum_stdAddChar_mul}, obtained from Mathlib's \path{ZMod.dft_apply} and
+\path{ZMod.dft_dft} applied to the delta at \(0\), with no orthogonality lemma), and the
+Ramanujan sum \eqref{p1:eq:Ramanujan-power-two} over the odd residues modulo \(2N\),
+\(c_{2N}(S)=N(-1)^{S/N}\) if \(N\mid S\) and \(0\) otherwise
+(\path{Fabius.ramanujanOddSum_eq}, with \path{Fabius.ramanujanOddSum} the sum
+parametrized as \(r=2s+1\), \(s\in\IntegerNumbers/N\IntegerNumbers\)).  The power-trace
+formula \eqref{p1:eq:Ramanujan-traces} itself --- the \(m\)-fold expansion of
+\(A_{n,r}^m\) and the resummation over the odd residues --- is not formalized for general
+\(m\).  Its first two cases are.  The case \(m=2\), which the theorem records as reducing to
+\eqref{p1:eq:discrete-energy}, is \path{Fabius.sum_odd_foldedCoefficient_sq} in
+\path{AliasDyadicBridge.lean}, for every even \(N\); it is proved there not by the \(m\)-fold
+expansion but by folding both sides of the Parseval identity onto the half range, which for
+\(m=2\) replaces the Ramanujan resummation entirely.  The universal trace
+\eqref{p1:eq:universal-trace} is formal in the form
+\(\sum_{s<N}A_{N,2s+1}=1\), for every \(N\ge1\)
+(\path{Fabius.sum_foldedCoefficient_odd}, in \path{HalfIntegerAliasIdentity.lean}): the
+inverse transform at \(j=0\) gives \(\sum_{r}A_{N,r}=2\)
+(\path{Fabius.sum_foldedCoefficient}, using \(P(0)=1\)), the even residues contribute
+exactly \(A_{N,0}=1\), and the parity split of a sum over
+\(\IntegerNumbers/2N\IntegerNumbers\) (\path{Fabius.sum_zmod_two_mul_eq_sum_even_add_odd})
+isolates the odd ones.  Halving to \(p_1(n)=1/2\) by pairing \(r\) with \(2N-r\)
+(\path{Fabius.foldedCoefficient_neg}) is the one step not restated.
 
 \begin{remark}[A trace that does not disperse]
 The orbit degree is $N/2\to\infty$, yet the unnormalized first trace remains
@@ -1549,6 +1749,23 @@ Write $r=2c+1$.  Then $\BinaryDigitSum(r)=\BinaryDigitSum(c)+1$, so
 $r-\BinaryDigitSum(r)\equiv \BinaryDigitSum(c)\pmod2$.  Hence the sign is $\ThueMorseSign{c}$ with
 $c=(r-1)/2$.
 \end{proof}
+
+\paragraph{Lean status.}
+Both halves of \cref{p1:prop:TM-sign-carrier} are formal in the Thue--Morse layer of the
+corpus.  The magnitude \eqref{p1:eq:T-root-magnitude} is
+\path{Fabius.norm_sum_thueMorseSign_exp} in \path{ThueMorseGelfond.lean}, which evaluates
+$\bigl|\sum_{m<2^n}\ThueMorseSign m\,\EulerE^{\ImaginaryUnit mx}\bigr|$ to
+$\prod_{j<n}2|\sin(2^jx/2)|$ for every real $x$ and every $n$; at $x=2\pi r/N$ with
+$N=2^n$ the factors are $2|\sin(\pi r/2^{n-j})|$, the display above with the scales
+reversed.  The sign word \eqref{p1:eq:Gamma-sign} is
+\path{Fabius.neg_one_pow_sum_floor_odd_div_two_pow} in \path{RademacherSine.lean}:
+for $c<2^n$, $(-1)^{\sum_{h=1}^{n}\Floor{(2c+1)/2^h}}=\ThueMorseSign{c}$, obtained from the
+corpus identity $(-1)^{\sum_{h<n}\Floor{c/2^h}}=\ThueMorseSign{c}$
+(\path{Fabius.neg_one_pow_sum_div_two_pow_const_one},
+\path{DigitCharacterCongruence.lean}) through $\Floor{(2c+1)/2^{h+1}}=\Floor{c/2^h}$
+(\path{Fabius.two_mul_add_one_div_two_pow_succ}).  The reading of the sign as the
+square wave $\Sign\sin(\pi x)=(-1)^{\Floor{x}}$, used in the proof, is
+\path{Fabius.sign_sin_pi_mul} in the same file.
 
 \begin{remark}
 The earlier arithmetic-ray report uses root-of-unity values of finite
@@ -2452,6 +2669,20 @@ $|\sin(\pi2^ky)|=|\sin(\pi2^kt)|$. The denominator of the finite product is
 whereas its numerator is $2^{-(N+1)}Q_{N+1}(t)$. Multiplication proves the claim.
 \end{proof}
 
+\paragraph{Lean status.}
+\Cref{p2:thm:exact-factorization} is the corpus's dyadic shell factorization, formal in
+\path{SincProductShells.lean} for every real \(y\ne0\) and every \(N\):
+\path{Fabius.norm_rvachevFourierProduct_two_pow_mul} gives
+\(|\mathscr U(2^Ny)|=\prod_{j<N}|\sin(2^{j+1}\pi y)|\big/\bigl(2^{N(N+1)/2}(\pi|y|)^N\bigr)
+\cdot|\mathscr U(y)|\), and its zero-safe cross-multiplied form
+\path{Fabius.norm_rvachevFourierProduct_two_pow_mul_cross} is the assertion that the identity
+survives when both sides vanish.  The two readings differ only in bookkeeping: the display
+above splits off \(N+1\) factors and writes the tail as \(H(y)=\mathscr U(y)/\SincRad(\pi y)\),
+whereas the formal statement splits off \(N\) and keeps \(\mathscr U(y)\); the passage
+\(|\sin(\pi2^ky)|=|\sin(\pi2^kt)|\) for \(t=y-1\) and the identification
+\(Q_{N+1}(t)=|T_{N+1}(\EulerE^{2\pi\ImaginaryUnit t})|\) are not restated in Lean.  The
+exponent algebra behind the master cocycle is \path{Fabius.shell_exponent_identity}.
+
 Put
 \begin{equation}
  \begin{aligned}
@@ -2887,6 +3118,26 @@ all $c_j=-1/2$. Every orbit point is therefore $1/3$ or $2/3$ modulo one, so the
 reduced orbit is exactly $\{1/3,2/3\}$ and $q=3$. The converse is immediate.
 \end{proof}
 
+\paragraph{Lean status.}
+The inequality \eqref{p2:eq:sqrt3-bound} is formal, division-free, in
+\path{CyclicSineProductBound.lean}: \path{Fabius.prod_norm_one_sub_exp_orbit_le} gives
+$\prod_{j<d}|1-\EulerE^{2\pi\ImaginaryUnit a2^j/q}|\le(\sqrt3)^{d}$, that is
+$A_{a,q}^{1/d}\le\sqrt3$, for every $a$ and every $d$ with $2^{d}\equiv1\pmod q$ --- the
+order of $2$ or any multiple of it --- with no coprimality or oddness hypothesis beyond
+what the congruence forces.  The proof is not the cosine averaging above but a cyclic
+form of the corpus's sharp Gelfond pairing: the two-step inequality
+$|\sin\theta|^{2}|\sin2\theta|\le(\sqrt3/2)^{3}$
+(\path{Fabius.abs_sin_sq_mul_abs_sin_two_mul_le}, \path{SharpGelfondBound.lean}) is
+applied around the closed orbit, the last factor pairing with the first because
+$|\sin(\pi a2^{d}/q)|=|\sin(\pi a/q)|$
+(\path{Fabius.abs_sin_pi_mul_two_pow_div_of_mod}), and the general principle
+\path{Fabius.prod_le_pow_of_sq_mul_succ_le_cyclic} --- cube the product, regroup as the
+$d$ pairs, take cube roots --- gives $\prod_{j<d}|\sin(\pi a2^{j}/q)|\le(\sqrt3/2)^{d}$
+(\path{Fabius.abs_prod_sin_orbit_le_sharp}).  The linear (non-cyclic) pairing of
+\path{SharpGelfondBound.lean} leaves one factor uncovered and yields only
+$2^{1/d}\cdot3^{(d-1)/2d}$; closing the orbit is exactly what removes that loss.  The
+equality clause --- equality if and only if $q=3$ --- is not formalized.
+
 \begin{corollary}[Sharp minimum of the rational-ray exponent]\label{p2:cor:kappa-minimum}
 Every nonzero rational ray satisfies
 \begin{equation}
@@ -2903,6 +3154,18 @@ Equality is attained only by the denominator-three doubling orbit.
 \begin{proof}
 Insert \eqref{p2:eq:sqrt3-bound} into \eqref{p2:eq:kappa-aq}.
 \end{proof}
+
+\paragraph{Lean status.}
+The inequality \eqref{p2:eq:kappa-minimum} is \path{Fabius.rational_ray_exponent_ge_min}
+in \path{CyclicSineProductBound.lean}, stated with $\kappa_{a,q}$ written out as
+$\tfrac12+\log(2\pi)/\log2-\log A_{a,q}/(d\log2)$ and $A_{a,q}$ as the explicit product
+of moduli, for odd $q>1$, $(a,q)=1$, and any $d$ with $2^{d}\equiv1\pmod q$.  The
+positivity $A_{a,q}>0$ that makes the logarithm meaningful is
+\path{Fabius.prod_norm_one_sub_exp_orbit_pos}: no factor vanishes because $a2^{j}/q$ is
+never an integer when $q$ is odd and coprime to $a$
+(\path{Fabius.orbit_point_not_int}, via $1-\EulerE^{2\pi\ImaginaryUnit x}\ne0$ off the
+integers, \path{Fabius.one_sub_exp_two_pi_mul_I_ne_zero}).  The equality clause is not
+formalized.
 
 \begin{remark}[A spectral interpretation]
 The arithmetic exponents form a spectrum of cycle averages of
@@ -3500,6 +3763,20 @@ finite algebra, elementary real analysis, or existing cyclotomic infrastructure.
 This section gives a concrete path from the report to the repository's formalized
 core.
 
+\paragraph{Repository status.}  The module boundary below was proposed before
+the library's flat layout settled, so the nested paths name nothing that
+exists; and part of the plan has since been built under other names.  The
+exact ray factorization of \cref{p2:thm:exact-factorization} is
+\decl{norm_rvachevFourierProduct_fixedMantissa_of_mem_Ioo} in module
+\lean{RvachevFixedMantissaRay}, stated for $N\in\mathbb N$ and mantissa
+$y\in(1,2)$; the same module's
+\decl{normalizedDyadicSineProduct_add_of_dyadic_period} is the periodic-orbit
+engine, the identity $Q_{n+d}(t)=Q_d(t)Q_n(t)$ whenever $2^dt=t+z$ for an
+integer $z$, which is the returning-seed hypothesis with no rationality
+required.  The cyclotomic layer (the relative norm, the orbit polynomial, and
+the mean exponent) has no counterpart in the library; the cyclotomic values it
+would use are Mathlib's.
+
 \subsection{Suggested module boundary}
 
 \begin{description}[style=nextline,leftmargin=2.8em]
@@ -4080,6 +4357,24 @@ Every factor indexed by $h$ contributes a simple zero at each positive multiple 
 Legendre's digit formula gives $\sum_{h\ge1}\Floor{N/2^h}=N-\BinaryDigitSum(N)$, proving \eqref{p3:eq:classical-count}.  Since $2N$ is even, \eqref{p3:eq:spectral-thue-morse} follows.  Finally, $\Phi_1(0)>0$, and crossing the zero at $n$ changes the sign exactly when $\mu_1(n)$ is odd.  Therefore the sign on $(N,N+1)$ is $(-1)^{\mathcal N_1(N)}$.
 \end{proof}
 
+\paragraph{Lean status.}
+\Cref{p3:thm:classical-count} is formal through two corpus statements.  The count
+\eqref{p3:eq:classical-count} is Legendre's digit formula in the form
+\(\sum_{h<M}\Floor{N/2^h}+\BinaryDigitSum(N)=2N\) for every \(M>\log_2N\),
+\path{Fabius.sum_range_div_two_pow_add_digitSum} in \path{DigitDefectCounting.lean}; the
+finite window is exactly the observation that all floors beyond \(h=\Floor{\log_2N}\)
+vanish, so \(\mathcal N_1(N)=\sum_{h<M}\Floor{N/2^h}\).  The parity statement
+\eqref{p3:eq:spectral-thue-morse} is
+\path{Fabius.neg_one_pow_sum_div_two_pow_const_one} in
+\path{DigitCharacterCongruence.lean}, \((-1)^{\sum_{h<m}\Floor{N/2^h}}=\ThueMorseSign N\)
+for \(N<2^m\), which is the mod-\(2\) shadow of the count without passing through the
+digit sum.  The identification of \(\mathcal N_1\) with the zero counting function of
+\(\Phi_1\) itself (each factor \(h\) contributing a simple zero at every positive multiple
+of \(2^h\)) is the zero-divisor description
+\path{Fabius.analyticOrderAt_generalizedRvachevProduct_int} at unit weight, in
+\path{GeneralizedZeroDivisor.lean}; the cumulative sum over \(n\le N\) is not separately
+stated.
+
 \begin{remark}
 The familiar sign law is therefore not merely an incidental binary identity.  It is a mod-$2$ shadow of an exact Weyl-type counting formula whose discrepancy from the linear main term is the binary digit sum.
 \end{remark}
@@ -4315,9 +4610,24 @@ The finite arithmetic equality in \eqref{p3:eq:mu-r} is now machine-checked:
 \path{WeightedScaleMultiplicity.lean}, specialized to base $2$ and Lean's
 Pascal index $r-1$, proves
 $\sum_{h=0}^{\TwoAdicValuation(n)}\binom h{r-1}=\binom{\TwoAdicValuation(n)+1}r$.
-It does \emph{not} by itself prove that this number is the analytic zero
-order of $\Phi_r$, nor does it establish \eqref{p3:eq:canonical-r} or normal
-convergence.  Those assertions remain in the analytic frontier.
+It does not by itself prove that this number is the analytic zero order of
+$\Phi_r$; that, the canonical product \eqref{p3:eq:canonical-r}, and locally
+uniform convergence are now separate machine-checked statements, for an
+arbitrary weight sequence $a$ with $\sum_h a_h2^{-h}<\infty$ and hence for the
+Pascal weights $a_h=\binom h{r-1}$ (Lean's \decl{weightedScaleMultiplicity}
+carries the index $r-1$ as its own parameter):
+\decl{analyticOrderAt_generalizedRvachevProduct_int} (module
+\lean{GeneralizedZeroDivisor}) identifies the analytic order of
+$\Phi_a$ at every nonzero integer $n$ with the weighted scale multiplicity of
+$|n|$, with \decl{generalizedRvachevProduct_eq_zero_iff_int} the zero set;
+\decl{generalizedRvachevProduct_eq_canonical} (module
+\lean{GeneralizedCanonicalForm}) is the canonical product
+$\Phi_a(z)=\prod_{m\ge1}(1-z^2/m^2)^{\mu_a(m)}$; and
+\decl{hasProdLocallyUniformlyOn_generalizedRvachevProduct} with
+\decl{generalizedRvachevProduct_differentiable} (module
+\lean{GeneralizedRvachevEntire}) give locally uniform convergence on every
+disc and entireness.  Earlier text here placed all three in the analytic
+frontier; that is no longer the state of the library.
 
 Thus $\Phi_r$ has a zero at $n$ exactly when $2^{r-1}\mid n$.  Higher rank does not spread the zeros; it thins their locations while increasing their multiplicities according to the $r$th binomial coefficient in $\TwoAdicValuation(n)+1$.
 
@@ -4474,9 +4784,15 @@ The floor-sum half \eqref{p3:eq:Nr-floor} is now formally covered by
 \path{sum_range_padicValNat_choose} in
 \path{WeightedScaleMultiplicity.lean}; its finite sum over $h<N$ equals the
 displayed infinite sum because all later natural quotients vanish.  The
-binary digit formula \eqref{p3:eq:Nr-digital}, the sharp discrepancy statements,
-and their parity consequences are not consequences of that generic layer-cake
-theorem and remain to be formalized.
+binary digit formula \eqref{p3:eq:Nr-digital} and the sharp discrepancy
+statements are not consequences of that generic layer-cake theorem and remain
+to be formalized.  The parity consequence that matters downstream --- the sign
+law $\operatorname{sgn}\Phi_r(x)=\varepsilon_r(\lfloor x\rfloor)$ on every
+open unit interval --- is formal for every admissible weight sequence:
+\decl{generalizedRvachevProduct_ofReal_eq_parityCharacter_mul_norm} (module
+\lean{LobeSignLaw}) writes $\Phi_a(x)$ as the parity character
+\decl{parityCharacter} of $\lfloor x\rfloor$ times $|\Phi_a(x)|$ for
+$N<x<N+1$.
 
 \begin{corollary}[Sharp discrepancy range]\label{p3:cor:discrepancy-range}
 For $0\le N<2^m$,
@@ -8100,6 +8416,146 @@ through command-line options documented by
 \begin{lstlisting}[style=code,language=bash]
 python numerical_experiments.py --help
 \end{lstlisting}
+
+\section{Lean formalization crosswalk}\label{app:lean-crosswalk}
+
+The four parts above cite Lean declarations in their prose where the authors
+knew of them, but carry no theorem-level crosswalk.  This appendix records the
+correspondence for the results whose formal counterpart was verified by
+reading the Lean statement, in the discipline of the Rvachev decay volume's
+parity ledger: a row is listed only when the Lean statement has the displayed
+mathematical content, and it says where Lean is weaker, more general, or
+normalized differently.  All declarations are in namespace \lean{Fabius}.
+The convention agrees on both sides: \decl{rvachevFourier} is this volume's
+$\FourierTwoPi{\RvachevUp}$, \decl{rvachevFourierProduct} is $\prod_n\SincPi(z/2^n)$, and
+\decl{generalizedRvachevProduct} at the weights $a_h=\binom h{r-1}$ is
+$\Phi_r$, with \decl{parityCharacter} at those weights the sign character
+$\varepsilon_r$.
+
+\begin{longtable}{@{}p{0.29\textwidth}p{0.42\textwidth}p{0.23\textwidth}@{}}
+\toprule
+Statement in this volume & Exact Lean declaration(s) & Remarks\\
+\midrule
+\endfirsthead
+\toprule
+Statement in this volume & Exact Lean declaration(s) & Remarks\\
+\midrule
+\endhead
+\Cref{p1:prop:cosine-spectrum}: the half-integer cosine series of
+$\RvachevUp$ on $[-1,1]$ &
+\decl{rvachev_cosine_series} (module \lean{PoissonSummation}) &
+Exact; stated as a complex-valued series with the real
+$\FourierTwoPi{\RvachevUp}(k+\tfrac12)$ coefficients.\\
+\addlinespace
+\Cref{p1:lem:selected-factor-bound}, \Cref{p4:cor:IBP-envelope}: the
+selected-factor envelope $|\Phi(x)|\le 2^{\binom K2}/(\pi|x|)^K$ &
+\decl{norm_rvachevFourierProduct_le_prefix_div} (module
+\lean{SincPrefixBound}) &
+More general: every $K\in\mathbb N$, including $K=0$, for every real
+$x\neq0$.\\
+\addlinespace
+\Cref{p2:thm:exact-factorization}: the exact ray factorization at
+$x=2^Ny$, $y\in(1,2)$ &
+\decl{norm_rvachevFourierProduct_fixedMantissa_of_mem_Ioo} (module
+\lean{RvachevFixedMantissaRay}) &
+Exact, in modulus form.  The periodic-orbit identity
+$Q_{n+d}(t)=Q_d(t)Q_n(t)$ under $2^dt=t+z$, $z\in\mathbb Z$, is
+\decl{normalizedDyadicSineProduct_add_of_dyadic_period}, with no
+rationality hypothesis.\\
+\addlinespace
+\Cref{p3:thm:classical-count}: $\sum_{n\le N}\mu(n)=2N-w(N)$ &
+\decl{sum_dyadicZeroMultiplicity_eq} (module
+\lean{DyadicZeroMultiplicity}) &
+Exact, over $\mathbb N$ with $w$ the binary weight.\\
+\addlinespace
+\Cref{p3:thm:zero-multiplicity}: the multiplicity
+$\binom{\TwoAdicValuation(n)+1}r$, the canonical product, and entireness of
+$\Phi_r$ &
+\decl{weightedScaleMultiplicity_choose},
+\decl{analyticOrderAt_generalizedRvachevProduct_int},
+\decl{generalizedRvachevProduct_eq_zero_iff_int},
+\decl{generalizedRvachevProduct_eq_canonical},
+\decl{hasProdLocallyUniformlyOn_generalizedRvachevProduct},
+\decl{generalizedRvachevProduct_differentiable} &
+More general: every weight sequence $a$ with $\sum_ha_h2^{-h}<\infty$; the
+Pascal case is $a_h=\binom h{r-1}$.  Lean's Pascal index is $r-1$, so its
+\texttt{choose r} is this volume's $\binom{\cdot}{r-1}$.\\
+\addlinespace
+\Cref{p3:thm:sign-law-r}: $\operatorname{sgn}\Phi_r(x)=\varepsilon_r(\lfloor
+x\rfloor)$ &
+\decl{generalizedRvachevProduct_ofReal_eq_parityCharacter_mul_norm} (module
+\lean{LobeSignLaw}), \decl{parityCharacter} &
+More general: every admissible weight sequence, on every open unit interval
+$(N,N+1)$.\\
+\addlinespace
+\Cref{p3:thm:prouhet-r}: the generalized Prouhet cancellation
+$\sum_{n<2^L}\varepsilon_r(n)n^k=0$ &
+\decl{sum_range_two_pow_parityCharacter_mul_pow_eq_zero} (module
+\lean{GeneralizedProuhetBlock}) &
+More general: every weight sequence, every block length $L$, every
+$k$ below the number of odd layers.\\
+\addlinespace
+\Cref{p3:prop:Lambert-coordinate}: the saddle equation solved by the
+generalized Lambert coordinate &
+\decl{generalizedLambertCoordinate_solves_saddle} (module
+\lean{GeneralizedLambertCoordinate}) &
+Exact, under the explicit lower-branch domain hypothesis.\\
+\addlinespace
+\Cref{p3:cor:rank-one-Psi}: the exact periodic decomposition of the
+rank-one Laplace exponent &
+\decl{negativeLaplaceLog_exact_periodic_decomposition} (module
+\lean{NegativeLaplace}) &
+\textbf{Convention differs}: Lean's \decl{negativeLaplaceLog} is
+$+\log L$ at argument $2t$, i.e.\ $\operatorname{negativeLaplaceLog}(s)=-\Psi_1(s/2)$
+in this volume's notation; the periodic correction and the tail-error term
+are separate named objects there.\\
+\addlinespace
+\Cref{p3:lem:pascal-tail}: \(\sum_{h\le j}\binom h{r-1}2^{j-h}=2^{j+1}-Q_r(j)\) &
+\decl{PascalTail.sum_choose_mul_two_pow_eq}, in the additive form
+\decl{PascalTail.sum_choose_mul_two_pow_add_tailCount} (module
+\lean{PascalTailIdentity}) &
+Exact, over \(\mathbb N\): with Lean's index \(k=r-1\),
+\decl{PascalTail.tailCount} \(j\,k=\sum_{i\le k}\binom{j+1}i\) is \(Q_r(j)\).
+The additive form holds with no side condition; the subtraction form is its
+corollary.  Proved by induction with Pascal's rule, not by the subset count.\\
+\addlinespace
+\Cref{p2:thm:sqrt3-bound}: \(A_{a,q}^{1/d}\le\sqrt3\) for odd \(q\) and
+\((a,q)=1\) &
+\decl{normalizedDyadicSineProduct_le_sqrt_three_pow_of_dyadic_period} (module
+\lean{PeriodicOrbitGelfondBound}), from the one-shot bound
+\decl{normalizedDyadicSineProduct_succ_le} and the extraction lemma
+\decl{le_of_pow_le_mul_pow} &
+More general: for \emph{every} real \(t\) whose orbit returns,
+\(2^dt=t+z\) with \(z\in\mathbb Z\), the normalized product
+\(\prod_{j<d}|2\sin(\pi2^jt)|\) is at most \(\sqrt3^{\,d}\); the volume's
+statement is \(t=a/q\), \(2^d\equiv1\pmod q\), together with the identity
+\(|1-e^{2\pi i\theta}|=2|\sin\pi\theta|\), which is not part of the module.
+The equality case \(q=3\) is not formal.\\
+\addlinespace
+\Cref{p3:thm:sign-law-r}, periodicity part: the parity of \(\binom j{r-1}\)
+is periodic in \(j\) (Lucas), hence \(\varepsilon_r\) is \(2\)-automatic &
+\decl{PascalParity.choose_mod_two_eq_mod_two_pow},
+\decl{PascalParity.choose_add_two_pow_mod_two},
+\decl{eventuallyPeriodic_parityWord_choose},
+\decl{finite_twoKernel_parityCharacter_choose} (module
+\lean{PascalParityPeriodic}) &
+Lucas mod \(2\), iterated: for \(k<2^m\) the parity of \(\binom hk\) depends
+only on \(h\bmod 2^m\), for every \(h,k,m\).  The library takes the period
+\(2^{r-1}\), which is a period but not the minimal one; the exact minimal
+period \(P_r=2^{m_r}\) and the count \(d_r\) of \(-1\) values per period in
+\eqref{p3:eq:Pr-dr} are not formal.  \(2\)-automaticity is the library's
+finiteness of the \(2\)-kernel of \(\varepsilon_r\), through
+\decl{finite_twoKernel_parityCharacter_iff}.\\
+\bottomrule
+\end{longtable}
+
+The Part~4 derivative-distribution results already name their declarations in
+the status boxes beside each theorem and are not repeated here.  Everything
+else in this volume --- in particular the alias identity of Part~1 beyond its
+abstract engine, the equality case \(q=3\) of the periodic-orbit bound and the
+cyclotomic layer of Part~2, the digital count and discrepancy statements of
+Part~3, the rank-$r$ global decay and sharp ray, and the spectral moments of
+Part~4 --- is unformalized.
 
 \begin{thebibliography}{99}
 

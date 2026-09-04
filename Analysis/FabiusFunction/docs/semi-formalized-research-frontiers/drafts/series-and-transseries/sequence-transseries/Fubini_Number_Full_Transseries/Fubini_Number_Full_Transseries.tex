@@ -1,0 +1,2465 @@
+\documentclass[11pt,a4paper,oneside]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{libertinus}
+\usepackage{microtype}
+\usepackage[a4paper,margin=27mm,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{bm,mathrsfs}
+\usepackage{booktabs,longtable,array,tabularx,multirow}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning,calc,decorations.pathreplacing}
+\usepackage[most]{tcolorbox}
+\usepackage{fancyhdr}
+\usepackage{xurl}
+\usepackage{hyperref}
+\usepackage[nameinlink,noabbrev,capitalise]{cleveref}
+\usepackage{listings}
+\usepackage{etoolbox}
+
+\definecolor{deepolive}{RGB}{67,79,45}
+\definecolor{softolive}{RGB}{236,239,226}
+\definecolor{darkteal}{RGB}{31,83,84}
+\definecolor{warmgray}{RGB}{92,87,78}
+\definecolor{softcoral}{RGB}{246,225,219}
+\definecolor{linkblue}{RGB}{31,76,122}
+\definecolor{codeback}{RGB}{247,247,242}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=deepolive,
+  citecolor=darkteal,
+  urlcolor=linkblue,
+  pdftitle={The Full Asymptotic Transseries of the Fubini Numbers},
+  pdfauthor={A self-contained research article with proofs},
+  pdfsubject={Ordered Bell numbers, Fubini numbers, pole-lattice transseries, asymptotics, Bell polynomials}
+}
+
+\allowdisplaybreaks[3]
+\raggedbottom
+\emergencystretch=2em
+\setcounter{tocdepth}{2}
+\setcounter{secnumdepth}{3}
+\setlist{itemsep=2pt,topsep=5pt,parsep=1pt}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\nouppercase{\leftmark}}
+\fancyhead[R]{\small\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{identity}[theorem]{Identity}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{algorithm}[theorem]{Algorithm}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{historical}[theorem]{Historical note}
+
+\newtcolorbox{masterbox}[1][]{
+  enhanced,breakable,colback=softolive,colframe=deepolive,
+  boxrule=0.7pt,arc=1mm,left=2mm,right=2mm,top=1.5mm,bottom=1.5mm,
+  title={Master result},fonttitle=\bfseries,#1
+}
+\newtcolorbox{interpretbox}[1][]{
+  enhanced,breakable,colback=white,colframe=darkteal,
+  boxrule=0.6pt,arc=1mm,left=2mm,right=2mm,top=1.5mm,bottom=1.5mm,
+  title={Interpretation},fonttitle=\bfseries,#1
+}
+\newtcolorbox{warningbox}[1][]{
+  enhanced,breakable,colback=softcoral,colframe=warmgray,
+  boxrule=0.6pt,arc=1mm,left=2mm,right=2mm,top=1.5mm,bottom=1.5mm,
+  title={Normalization point},fonttitle=\bfseries,#1
+}
+
+\lstdefinestyle{articlecode}{
+  basicstyle=\ttfamily\small,
+  backgroundcolor=\color{codeback},
+  frame=single,
+  rulecolor=\color{warmgray},
+  breaklines=true,
+  columns=fullflexible,
+  keepspaces=true,
+  showstringspaces=false,
+  xleftmargin=1em,
+  xrightmargin=1em
+}
+\lstset{style=articlecode}
+
+\newcommand{\Fub}{\mathsf{F}}
+\newcommand{\Fubx}{\mathsf{F}}
+\newcommand{\StirlingII}[2]{\genfrac\{\}{0pt}{}{#1}{#2}}
+\newcommand{\Eulerian}[2]{\genfrac{\langle}{\rangle}{0pt}{}{#1}{#2}}
+\newcommand{\Coeff}[3]{[\,#1^{#2}\,]#3}
+\newcommand{\Res}{\operatorname*{Res}}
+\newcommand{\Li}{\operatorname{Li}}
+\newcommand{\Log}{\operatorname{Log}}
+\newcommand{\e}{\mathrm{e}}
+\newcommand{\ii}{\mathrm{i}}
+\newcommand{\dd}{\,\mathrm{d}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\BellY}{\mathrm{Y}}
+\newcommand{\falling}[2]{(#1)^{\underline{#2}}}
+\newcommand{\GammaStar}{\Gamma^{\!*}}
+\newcommand{\asympseries}{\mathrel{\sim}}
+\DeclareMathOperator{\supp}{supp}
+
+\title{\Huge\bfseries The Full Asymptotic Transseries\\[2mm]
+       of the Fubini Numbers\\[3mm]
+       \Large Exact Pole Sectors, General Bell-Polynomial Coefficients,\\
+       Nonlinear Transforms, and Rigorous Remainders}
+\author{A self-contained research article with complete derivations}
+\date{September 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+The Fubini numbers, also called ordered Bell numbers or preferential-arrangement
+numbers, are
+\[
+  \Fub_n=\sum_{j=0}^{n}j!\StirlingII{n}{j}
+  \qquad(n\geq 0),
+\]
+and have exponential generating function $(2-\e^z)^{-1}$.  Their familiar
+leading estimate
+\(
+ \Fub_n\sim n!/[2(\log 2)^{n+1}]
+\)
+uses only the nearest singularity $z=\log 2$.  The generating function actually
+has the complete vertical lattice of simple poles
+\(
+ \zeta_k=\log 2+2\pi\ii k
+\), $k\in\mathbb Z$.  Summing their contributions gives an exact, convergent
+exponential transseries rather than merely a first-order singularity estimate.
+
+Writing $\rho=\log 2$, $u_k=\rho/(\rho+2\pi\ii k)$, and
+\(
+ \GammaStar(n)=n!/[\sqrt{2\pi n}(n/\e)^n]
+\), we prove the exact factorization
+\[
+ \Fub_n=
+ \frac{\sqrt{2\pi n}}{2\rho}
+ \left(\frac{n}{\e\rho}\right)^n
+ \GammaStar(n)\sum_{k\in\mathbb Z}u_k^{n+1}
+ \qquad(n\geq1).
+\]
+The pole sum is absolutely convergent and contains every exponentially small
+oscillatory sector.  The common algebraic fluctuation factor has the all-orders
+Stirling expansion
+\(
+ \GammaStar(n)\sim\sum_{j\ge0}c_jn^{-j}
+\), where the coefficients are given explicitly by complete exponential Bell
+polynomials, integer partitions, and a triangular Bernoulli recurrence.  Thus
+all mixed transseries coefficients are
+\(
+ C_{j,k}=c_j\rho/(\rho+2\pi\ii k)
+\).
+
+We supply explicit two-parameter remainder bounds for simultaneous truncation
+of the algebraic order and the pole lattice; an exact Borel--Laplace
+representation of the common Stirling factor; convergent multi-index formulae
+for logarithms, reciprocals, arbitrary analytic functions of the normalized
+sequence, and the ratio $n\Fub_{n-1}/\Fub_n$; and a uniform extension to the
+Fubini polynomials
+\(
+ \Fub_n(x)=\sum_j j!\StirlingII{n}{j}x^j
+\), $x>0$.  A final meromorphic-EGF theorem explains why simple poles have
+constant sector amplitudes and how higher-order Fubini generating functions
+produce polynomial-in-$n$ amplitudes governed by generalized Bernoulli
+numbers.
+\end{abstract}
+
+\begin{masterbox}
+Put
+\[
+ \rho=\log 2,\qquad
+ \zeta_k=\rho+2\pi\ii k,\qquad
+ \Lambda_k=\Log\!\left(\frac{\zeta_k}{\rho}\right),
+ \qquad k\in\mathbb Z,
+\]
+with the principal logarithm.  For every integer $n\ge1$,
+\begin{align*}
+ \Fub_n
+ &=\frac{n!}{2}\sum_{k\in\mathbb Z}\zeta_k^{-n-1}\\
+ &=\frac{n!}{2\rho^{n+1}}
+   \left[1+2\sum_{k\ge1}
+   \left(\frac{\rho}{|\zeta_k|}\right)^{n+1}
+   \cos\!\bigl((n+1)\arg\zeta_k\bigr)\right].
+\end{align*}
+This is an \emph{exact convergent pole-lattice transseries}.  If
+\[
+ \exp\!\left(\sum_{r\ge1}
+   \frac{B_{r+1}}{r(r+1)}t^r\right)
+   =\sum_{j\ge0}c_jt^j,
+\]
+where $B_m$ are the Bernoulli numbers and the vanishing odd Bernoulli numbers
+are understood, then the elementary-scale transseries is
+\[
+ \Fub_n\asympseries
+ \frac{\sqrt{2\pi n}}{2\rho}
+ \left(\frac{n}{\e\rho}\right)^n
+ \sum_{k\in\mathbb Z}\e^{-n\Lambda_k}
+ \sum_{j\ge0}\frac{C_{j,k}}{n^j},
+ \qquad
+ C_{j,k}=c_j\e^{-\Lambda_k}=c_j\frac{\rho}{\zeta_k}.
+\]
+The $k$-sum is convergent for every $n\ge1$; the $j$-sum is the usual
+Poincar\'e expansion of the scaled gamma factor and is interpreted
+asymptotically or by its positive-axis Borel sum.
+\end{masterbox}
+
+\tableofcontents
+
+\section*{Notation and conventions}
+\addcontentsline{toc}{section}{Notation and conventions}
+Throughout,
+\[
+ \rho:=\log 2,
+ \qquad \zeta_k:=\rho+2\pi\ii k\quad(k\in\mathbb Z).
+\]
+The principal logarithm is denoted by $\Log$.  Bernoulli numbers use
+\[
+ \frac{t}{\e^t-1}=\sum_{m\ge0}B_m\frac{t^m}{m!},
+ \qquad B_1=-\frac12.
+\]
+The complete exponential Bell polynomials $\BellY_j$ are normalized by
+\[
+ \exp\!\left(\sum_{r\ge1}x_r\frac{t^r}{r!}\right)
+ =\sum_{j\ge0}\BellY_j(x_1,\ldots,x_j)\frac{t^j}{j!}.
+\]
+A sum over $k\in\mathbb Z$ is ordinary and absolutely convergent whenever the
+summand is $O(|k|^{-1-\varepsilon})$.  At exponent one we write
+$\sum_{k\in\mathbb Z}^{\mathrm{sym}}$ for the symmetric limit
+$\lim_{K\to\infty}\sum_{k=-K}^{K}$.
+
+The symbol $\sim$ has two related uses.  Between functions it denotes
+asymptotic equivalence.  Between a function and a formal inverse-power series
+it denotes a Poincar\'e asymptotic expansion.  All exact identities are marked
+with equality, in particular the complete pole-lattice sum.
+
+\section{Introduction and scope}\label{sec:introduction}
+
+\subsection{From one dominant pole to a complete transseries}
+The elementary derivation of the leading asymptotic formula for $\Fub_n$ is a
+standard application of singularity analysis.  The nearest singularity of
+$(2-\e^z)^{-1}$ to the origin is the positive real pole $\rho=\log2$, whose
+residue is $-1/2$.  Therefore
+\[
+ \Fub_n\sim\frac{n!}{2\rho^{n+1}}.
+\]
+This statement is correct but discards far more structure than it retains.
+Every solution of $\e^z=2$ is a pole, and those solutions form the lattice
+\[
+ \rho+2\pi\ii\mathbb Z.
+\]
+The nonreal poles occur in conjugate pairs.  Their coefficient contributions
+are exponentially smaller than the real-pole contribution and oscillate with
+$n$.  If $q_k:=\rho/|\rho+2\pi\ii k|$, the principal-pole approximation
+has error $O(q_1^{n+1})$, whereas retaining the first conjugate pair leaves
+$O(q_2^{n+1})$; the improvement factor is therefore
+$O((q_2/q_1)^{n+1})$.  Retaining the entire lattice gives an exact formula.
+
+The word \emph{full} in the title is used in the following precise sense.
+\begin{enumerate}
+ \item Every singularity of the Fubini exponential generating function is
+       represented by a transseries sector.
+ \item Every algebraic inverse-power coefficient multiplying every sector is
+       given in closed form and by an effective recurrence.
+ \item Fixed finite truncations in both directions come with rigorous error
+       estimates.
+ \item The factorial fluctuation may either be retained exactly, expanded to
+       arbitrary algebraic order, or reconstructed by an exact Borel--Laplace
+       integral on the positive axis.
+\end{enumerate}
+Thus no pole sector is omitted.  The only divergent object is the familiar
+Stirling series that appears when the exact factor $n!$ is replaced by an
+elementary expression.  Keeping $n!$ or $\GammaStar(n)$ exact removes even
+that divergence.
+
+\subsection{Three normalizations that should not be conflated}
+It is useful to separate three layers:
+\begin{align*}
+ \text{exact factorial normalization:}\quad
+ &\frac{2\rho^{n+1}}{n!}\Fub_n,\\
+ \text{elementary normalization:}\quad
+ &\frac{2\rho}{\sqrt{2\pi n}}
+   \left(\frac{\e\rho}{n}\right)^n\Fub_n,\\
+ \text{logarithmic normalization:}\quad
+ &\log\Fub_n-\bigl((n+\tfrac12)\log n-n-(n+1)\log\rho
+      +\tfrac12\log(2\pi)-\log2\bigr).
+\end{align*}
+In the first normalization the answer is an exact convergent sum of
+exponentials with constant amplitudes.  In the second, every exponential
+sector is multiplied by the same Stirling series.  In the third, the
+algebraic and exponential corrections add, but products of pole sectors
+appear because of the logarithm.  A substantial part of the paper is devoted
+to making these translations explicit.
+
+\begin{warningbox}
+A simple pole contributes \emph{one exact constant-amplitude sector}.  It does
+not produce an independent infinite $1/n$ fluctuation series.  The inverse
+powers in the elementary normalization come solely from replacing $n!$ by
+Stirling's expansion.  Higher-order poles do produce polynomial-in-$n$
+sector amplitudes; this distinction is proved in \cref{sec:meromorphic}.
+\end{warningbox}
+
+\subsection{Relation to coefficient calculus}
+The derivation uses a small number of reusable coefficient-calculus
+principles:
+\begin{enumerate}
+ \item labelled set partitions turn the Stirling sum into a geometric series
+       of exponential generating functions;
+ \item the Mittag--Leffler decomposition turns a meromorphic generating
+       function into a sum of elementary coefficient contributions;
+ \item exponentiating the Bernoulli expansion of $\log\GammaStar$ turns
+       logarithmic coefficients into complete Bell polynomials;
+ \item applying an analytic function to a convergent exponential correction
+       turns ordinary powers into multinomial or multi-index coefficients.
+\end{enumerate}
+These are exactly the points at which Stirling numbers, Bell polynomials,
+formal composition, and transseries algebra meet.
+
+\section{Combinatorial and probabilistic foundations}\label{sec:foundations}
+
+\subsection{Ordered set partitions}
+
+\begin{definition}
+An \emph{ordered set partition} of an $n$-element labelled set is a sequence
+$(B_1,\ldots,B_j)$ of nonempty pairwise disjoint blocks whose union is the
+whole set.  Equivalently, it is a weak ordering: elements in the same block
+are tied, while the blocks themselves are linearly ordered.
+\end{definition}
+
+\begin{theorem}[Stirling transform]\label{thm:stirling-sum}
+The number of ordered set partitions of an $n$-element labelled set is
+\[
+ \Fub_n=\sum_{j=0}^{n}j!\StirlingII{n}{j}.
+\]
+In particular,
+\[
+ \Fub_0=1,\quad \Fub_1=1,\quad \Fub_2=3,\quad \Fub_3=13,
+ \quad \Fub_4=75,
+\]
+and the sequence continues $541,4683,47293,545835,\ldots$.
+\end{theorem}
+
+\begin{proof}
+First partition the labelled set into $j$ nonempty unordered blocks.  There
+are $\StirlingII{n}{j}$ choices.  Then put the $j$ blocks in one of their $j!$
+linear orders.  Summation over every possible number of blocks gives the
+formula.  The empty set has one empty ordered partition, accounting for
+$\Fub_0=1$.
+\end{proof}
+
+\subsection{Exponential generating function}
+
+\begin{theorem}[Fubini EGF]\label{thm:egf}
+The exponential generating function is
+\[
+ \mathcal F(z):=\sum_{n\ge0}\Fub_n\frac{z^n}{n!}
+ =\frac{1}{2-\e^z}.
+\]
+\end{theorem}
+
+\begin{proof}
+For fixed $j$, the standard exponential generating function of partitions
+into $j$ nonempty blocks is
+\[
+ \sum_{n\ge0}\StirlingII{n}{j}\frac{z^n}{n!}
+ =\frac{(\e^z-1)^j}{j!}.
+\]
+Multiplication by $j!$ orders the blocks.  Therefore, as a formal power series,
+\[
+ \mathcal F(z)
+ =\sum_{j\ge0}(\e^z-1)^j
+ =\frac{1}{1-(\e^z-1)}
+ =\frac{1}{2-\e^z}.
+\]
+The same calculation is analytic whenever $|\e^z-1|<1$, and analytic
+continuation gives the displayed meromorphic function.
+\end{proof}
+
+\begin{corollary}[Binomial recurrence]\label{cor:recurrence}
+For $n\ge1$,
+\[
+ \Fub_n=\sum_{j=0}^{n-1}\binom{n}{j}\Fub_j
+       =\sum_{j=1}^{n}\binom{n}{j}\Fub_{n-j}.
+\]
+\end{corollary}
+
+\begin{proof}
+The identity $(2-\e^z)\mathcal F(z)=1$ gives, in positive degree,
+\[
+ 2\Fub_n-\sum_{j=0}^{n}\binom{n}{j}\Fub_j=0.
+\]
+The $j=n$ summand is $\Fub_n$; moving it to the other side proves the first
+form.  Replacing $j$ by $n-j$ gives the second.
+\end{proof}
+
+\subsection{A Dobinski-type moment formula}
+The geometric expansion of the EGF already anticipates the pole formula:
+\[
+ \frac{1}{2-\e^z}
+ =\frac12\frac{1}{1-\e^z/2}
+ =\frac12\sum_{m\ge0}\frac{\e^{mz}}{2^m}.
+\]
+Coefficient extraction gives the following exact analogue of Dobinski's
+formula for ordinary Bell numbers.
+
+\begin{theorem}[Geometric moment representation]\label{thm:moment}
+For every $n\ge0$,
+\[
+ \Fub_n=\frac12\sum_{m=0}^{\infty}\frac{m^n}{2^m},
+\]
+where $0^0=1$.  For $n\ge1$ this is equivalently
+\[
+ \Fub_n=\frac12\Li_{-n}\!\left(\frac12\right).
+\]
+\end{theorem}
+
+\begin{proof}
+Expand each exponential in the preceding geometric series and interchange the
+absolutely convergent sums in a neighborhood of $z=0$:
+\[
+ \frac12\sum_{m\ge0}2^{-m}\e^{mz}
+ =\sum_{n\ge0}\left(\frac12\sum_{m\ge0}\frac{m^n}{2^m}\right)
+  \frac{z^n}{n!}.
+\]
+Comparison with \cref{thm:egf} proves the result.  When $n\ge1$ the $m=0$
+term vanishes, and the remaining series is the defining series for the
+polylogarithm at negative integer order.
+\end{proof}
+
+\begin{interpretbox}
+Let $G$ be the geometric random variable
+\[
+ \Pr(G=m)=2^{-m-1},\qquad m=0,1,2,\ldots.
+\]
+Then $\Fub_n=\mathbb E[G^n]$.  The Fubini numbers are therefore a genuine Stieltjes
+moment sequence, not merely a combinatorial counting sequence.  The same
+probability model will yield the weighted Fubini polynomials in
+\cref{sec:weighted}.
+\end{interpretbox}
+
+\subsection{Eulerian form and cumulant Bell polynomials}
+Let $\Eulerian{n}{j}$ be the Eulerian number counting
+permutations of $n$ elements with $j$ descents, and put
+\[
+ A_n(t)=\sum_{j=0}^{n-1}\Eulerian{n}{j} t^j
+ \qquad(n\ge1).
+\]
+The classical rational form of the negative polylogarithm is
+\[
+ \Li_{-n}(t)=\frac{tA_n(t)}{(1-t)^{n+1}}.
+\]
+Using the symmetry of the Eulerian numbers gives
+\begin{equation}\label{eq:eulerian-form}
+ \Fub_n=2^{n-1}A_n\!\left(\frac12\right)
+ =\sum_{j=0}^{n-1}2^j\Eulerian{n}{j},
+ \qquad n\ge1.
+\end{equation}
+
+The moment generating function of $G$ is $\mathcal F(z)$.  Its cumulant
+generating function is
+\[
+ K(z)=\log\mathcal F(z)
+ =-\log2-\log\!\left(1-\frac{\e^z}{2}\right)
+ =\sum_{m\ge1}\frac{\e^{mz}}{m2^m}-\log2.
+\]
+Consequently the $r$th cumulant is
+\begin{equation}\label{eq:cumulants}
+ \kappa_r=K^{(r)}(0)=\Li_{1-r}\!\left(\frac12\right),
+ \qquad r\ge1.
+\end{equation}
+Moment--cumulant conversion now gives a second Bell-polynomial formula.
+
+\begin{proposition}[Moment--cumulant formula]\label{prop:moment-cumulant}
+For $n\ge0$,
+\[
+ \Fub_n=\BellY_n(\kappa_1,\ldots,\kappa_n),
+ \qquad
+ \kappa_r=\Li_{1-r}\!\left(\frac12\right).
+\]
+For $r\ge2$, $\kappa_r=2\Fub_{r-1}$, while $\kappa_1=\Fub_0=1$.
+\end{proposition}
+
+\begin{proof}
+The defining identity for complete exponential Bell polynomials is precisely
+\[
+ \exp\!\left(\sum_{r\ge1}\kappa_r\frac{z^r}{r!}\right)
+ =\sum_{n\ge0}\BellY_n(\kappa_1,\ldots,\kappa_n)\frac{z^n}{n!}.
+\]
+The left-hand side is $\exp K(z)=\mathcal F(z)$, so coefficient comparison
+proves the first formula.  The relation with $\Fub_{r-1}$ follows from
+\cref{thm:moment}, noting separately the exceptional $0^0$ contribution at
+$r=1$.
+\end{proof}
+
+
+\section{The exact pole lattice}\label{sec:poles}
+
+\subsection{Location and residues}
+The singularities of $\mathcal F(z)=(2-\e^z)^{-1}$ are the solutions of
+$\e^z=2$:
+\[
+ \zeta_k=\rho+2\pi\ii k,\qquad k\in\mathbb Z.
+\]
+Since
+\[
+ \frac{\dd}{\dd z}(2-\e^z)\bigg|_{z=\zeta_k}=-2,
+\]
+every pole is simple and
+\begin{equation}\label{eq:residue}
+ \Res_{z=\zeta_k}\mathcal F(z)=-\frac12.
+\end{equation}
+The moduli $|\zeta_k|$ increase strictly with $|k|$.  Thus the real pole
+$\zeta_0=\rho$ is dominant, followed by the conjugate pair
+$\zeta_{\pm1}$, then $\zeta_{\pm2}$, and so forth.
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[scale=0.72,>=Latex]
+  \draw[->,warmgray] (-1.1,0)--(4.7,0) node[right] {$\Re z$};
+  \draw[->,warmgray] (0,-4.5)--(0,4.7) node[above] {$\Im z$};
+  \draw[dashed,darkteal] (1.25,-4.2)--(1.25,4.2);
+  \node[below,darkteal] at (1.25,0) {$\rho$};
+  \foreach \j in {-3,-2,-1,0,1,2,3}{
+    \fill[deepolive] (1.25,{1.25*\j}) circle (2.1pt);
+  }
+  \node[right] at (1.25,0.12) {$\zeta_0$};
+  \node[right] at (1.25,1.25) {$\zeta_1$};
+  \node[right] at (1.25,-1.25) {$\zeta_{-1}$};
+  \draw[->,linkblue,thick] (0,0)--(1.25,1.25);
+  \draw[linkblue] (0.53,0) arc[start angle=0,end angle=45,radius=0.53];
+  \node[linkblue] at (0.72,0.25) {$\theta_1$};
+  \node[linkblue,above left] at (0.7,0.75) {$R_1$};
+  \draw[decorate,decoration={brace,amplitude=4pt},warmgray]
+    (1.55,1.25)--(1.55,2.5) node[midway,right=5pt] {$2\pi$};
+\end{tikzpicture}
+\caption{The poles of $(2-\e^z)^{-1}$ lie on the vertical line
+$\Re z=\rho$.  Their equal residues and increasing moduli make the pole
+ordering identical to the exponential-sector ordering.  The drawing rescales
+the vertical direction for legibility.}
+\label{fig:pole-lattice}
+\end{figure}
+
+\subsection{A global Mittag--Leffler decomposition}
+Put $w=z-\rho$.  Since $\e^z=2\e^w$,
+\begin{equation}\label{eq:coth-start}
+ \mathcal F(z)=\frac{1}{2(1-\e^w)}
+ =\frac14-\frac14\coth\!\left(\frac w2\right).
+\end{equation}
+The paired partial-fraction expansion
+\begin{equation}\label{eq:coth-ml}
+ \coth\!\left(\frac w2\right)
+ =\frac{2}{w}+4w\sum_{k\ge1}\frac{1}{w^2+4\pi^2k^2}
+ =2\sum_{k\in\mathbb Z}^{\mathrm{sym}}\frac{1}{w-2\pi\ii k}
+\end{equation}
+is locally uniformly convergent away from its poles.  Combining
+\cref{eq:coth-start,eq:coth-ml} yields the exact global decomposition.
+
+\begin{theorem}[Exact Mittag--Leffler expansion]\label{thm:mittag}
+For $z\notin\rho+2\pi\ii\mathbb Z$,
+\begin{equation}\label{eq:mittag}
+ \frac{1}{2-\e^z}
+ =\frac14-\frac12\sum_{k\in\mathbb Z}^{\mathrm{sym}}
+   \frac{1}{z-\zeta_k}.
+\end{equation}
+The paired series converges locally uniformly on the complement of the pole
+lattice.
+\end{theorem}
+
+\begin{proof}
+Pairing $k$ with $-k$ gives
+\[
+ \frac{1}{w-2\pi\ii k}+\frac{1}{w+2\pi\ii k}
+ =\frac{2w}{w^2+4\pi^2k^2}=O(k^{-2})
+\]
+uniformly on compact $w$-sets.  Hence the paired sum is locally normally
+convergent away from the poles.  The classical product
+\(
+ \sinh(w/2)=(w/2)\prod_{k\ge1}(1+w^2/(4\pi^2k^2))
+\)
+and logarithmic differentiation give \cref{eq:coth-ml}.  Substitution into
+\cref{eq:coth-start} proves \cref{eq:mittag}.
+\end{proof}
+
+\subsection{Exact coefficient extraction}
+For a fixed nonzero $\zeta$,
+\[
+ -\frac{1}{2(z-\zeta)}
+ =\frac{1}{2\zeta}\frac{1}{1-z/\zeta}
+ =\frac12\sum_{n\ge0}\frac{z^n}{\zeta^{n+1}}.
+\]
+When $n\ge1$, the resulting sum over $k$ is absolutely convergent because its
+terms are $O(|k|^{-n-1})$.
+
+\begin{theorem}[Exact all-pole coefficient formula]\label{thm:exact-poles}
+For every integer $n\ge1$,
+\begin{equation}\label{eq:exact-poles}
+ \boxed{\displaystyle
+ \Fub_n=\frac{n!}{2}\sum_{k\in\mathbb Z}
+       \frac{1}{(\rho+2\pi\ii k)^{n+1}}.}
+\end{equation}
+For $n=0$, the regularized unified formula is
+\begin{equation}\label{eq:nzero-regularized}
+ \Fub_0=\frac14+\frac12\sum_{k\in\mathbb Z}^{\mathrm{sym}}
+       \frac{1}{\rho+2\pi\ii k}=1.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Take the coefficient of $z^n$ in \cref{eq:mittag} and multiply by $n!$.
+For $n\ge1$, absolute convergence justifies termwise coefficient extraction.
+For $n=0$, the symmetric sum is
+\[
+ \sum_{k\in\mathbb Z}^{\mathrm{sym}}\frac{1}{\rho+2\pi\ii k}
+ =\frac12\coth\!\left(\frac\rho2\right).
+\]
+Because $\e^\rho=2$, one has
+\(
+ \coth(\rho/2)=(2+1)/(2-1)=3
+\), so the right-hand side of \cref{eq:nzero-regularized} is
+$1/4+3/4=1$.
+\end{proof}
+
+\begin{remark}
+The separate constant $1/4$ matters only at $n=0$.  This is why the clean
+bilateral pole formula is usually stated for $n\ge1$.  No regularization is
+needed at any positive order.
+\end{remark}
+
+\subsection{A second proof by Poisson summation}
+The geometric-moment formula supplies an independent route to the same
+identity and simultaneously permits a continuous order parameter.
+
+\begin{theorem}[Lipschitz--Poisson formula]\label{thm:poisson}
+For $\nu\in\mathbb C$ with $\Re\nu>0$, define
+\[
+ \mathscr F(\nu):=\frac12\sum_{m\ge1}m^\nu\e^{-\rho m}
+ =\frac12\Li_{-\nu}\!\left(\frac12\right),
+\]
+using the real logarithm in $m^\nu$.  Then
+\begin{equation}\label{eq:continuous-poles}
+ \mathscr F(\nu)
+ =\frac{\Gamma(\nu+1)}{2}
+  \sum_{k\in\mathbb Z}(\rho+2\pi\ii k)^{-\nu-1},
+\end{equation}
+where the complex powers use the principal logarithm.  At every integer
+$\nu=n\ge1$, this is \cref{eq:exact-poles}.
+\end{theorem}
+
+\begin{proof}
+Set
+\[
+ f_\nu(x)=\begin{cases}
+ x^\nu\e^{-\rho x},&x>0,\\
+ 0,&x\le0.
+ \end{cases}
+\]
+For $\Re\nu>0$ the function is continuous at the origin, integrable, and has
+sufficient decay and local regularity for the classical Poisson summation
+formula (or for its standard Abel-regularized form followed by a limit).  With
+the Fourier-transform convention
+\(
+ \widehat f(\xi)=\int_{\mathbb R}f(x)\e^{-2\pi\ii x\xi}\dd x
+\),
+\[
+ \widehat f_\nu(\xi)
+ =\int_0^\infty x^\nu\e^{-(\rho+2\pi\ii\xi)x}\dd x
+ =\frac{\Gamma(\nu+1)}{(\rho+2\pi\ii\xi)^{\nu+1}}.
+\]
+The Fourier series is absolutely convergent because
+$\Re(\nu+1)>1$.  Hence
+\[
+ \sum_{m\in\mathbb Z}f_\nu(m)
+ =\sum_{k\in\mathbb Z}\widehat f_\nu(k).
+\]
+The left side is $\sum_{m\ge1}m^\nu\e^{-\rho m}$.  Division by two proves
+\cref{eq:continuous-poles}.
+\end{proof}
+
+\begin{interpretbox}
+The exact pole transseries is not an accident restricted to integer
+coefficients.  It is the sampling duality between an exponentially damped
+power on the positive half-line and a vertical reciprocal-power lattice in
+the Fourier domain.  The integer Fubini numbers are special values of this
+continuous-order identity.
+\end{interpretbox}
+
+\subsection{Hurwitz-zeta and differential forms}
+Let
+\[
+ a:=\frac{\rho}{2\pi\ii}=-\frac{\ii\rho}{2\pi}.
+\]
+Splitting the bilateral sum into $k\ge0$ and $k\le-1$ gives, for $n\ge1$,
+\begin{equation}\label{eq:hurwitz-form}
+ \Fub_n=\frac{n!}{2(2\pi\ii)^{n+1}}
+ \left[
+  \zeta(n+1,a)+(-1)^{n+1}\zeta(n+1,1-a)
+ \right],
+\end{equation}
+where the zeta symbols on the right are Hurwitz zeta functions.  This form is
+occasionally convenient for symbolic manipulation, although the conjugate
+pole-pair form developed below is numerically more transparent.
+
+Define
+\[
+ S_s(\rho):=\sum_{k\in\mathbb Z}^{\mathrm{sym}}
+             (\rho+2\pi\ii k)^{-s}.
+\]
+Then
+\[
+ S_1(\rho)=\frac12\coth\!\left(\frac\rho2\right),
+ \qquad
+ S_{s+1}(\rho)=-\frac1s\frac{\dd}{\dd\rho}S_s(\rho).
+\]
+Consequently, for $n\ge1$,
+\begin{equation}\label{eq:coth-derivative}
+ \Fub_n=\frac{(-1)^n}{4}
+ \left.\frac{\dd^n}{\dd x^n}\coth\!\left(\frac x2\right)
+ \right|_{x=\rho}.
+\end{equation}
+The derivative-polynomial description of $\coth$ is another route from the
+pole lattice to Eulerian polynomials and hence to \cref{eq:eulerian-form}.
+
+\section{The complete exponential transseries}\label{sec:exp-transseries}
+
+\subsection{Complex and real sector coordinates}
+Define
+\begin{equation}\label{eq:u-def}
+ u_k:=\frac{\rho}{\zeta_k}
+ =\frac{\rho}{\rho+2\pi\ii k},
+ \qquad k\in\mathbb Z.
+\end{equation}
+Thus $u_0=1$, $u_{-k}=\overline{u_k}$, and $|u_k|<1$ for $k\ne0$.
+For $k\ge1$, write
+\begin{align}
+ R_k&:=|\zeta_k|=\sqrt{\rho^2+4\pi^2k^2},\label{eq:Rk}\\
+ q_k&:=|u_k|=\frac{\rho}{R_k},\label{eq:qk}\\
+ \alpha_k&:=-\log q_k
+ =\frac12\log\!\left(1+\frac{4\pi^2k^2}{\rho^2}\right),\label{eq:alphak}\\
+ \theta_k&:=\arg\zeta_k=\arctan\!\left(\frac{2\pi k}{\rho}\right).
+ \label{eq:thetak}
+\end{align}
+Then
+\[
+ u_k=q_k\e^{-\ii\theta_k}
+     =\e^{-\alpha_k-\ii\theta_k},
+ \qquad
+ u_{-k}=q_k\e^{\ii\theta_k}.
+\]
+The real actions satisfy
+\(
+ 0<\alpha_1<\alpha_2<\cdots
+\) and $\alpha_k\to\infty$.
+
+\begin{theorem}[Exact pole-lattice transseries]\label{thm:exact-transseries}
+For every $n\ge1$, put
+\[
+ T_n:=\frac{2\rho^{n+1}}{n!}\Fub_n.
+\]
+Then the following are exact identities:
+\begin{align}
+ T_n
+ &=\sum_{k\in\mathbb Z}u_k^{n+1},\label{eq:T-complex}\\
+ &=1+2\sum_{k\ge1}q_k^{n+1}
+       \cos\!\bigl((n+1)\theta_k\bigr),\label{eq:T-real}\\
+ \Fub_n
+ &=\frac{n!}{2\rho^{n+1}}
+   \left[1+2\sum_{k\ge1}\e^{-(n+1)\alpha_k}
+       \cos\!\bigl((n+1)\theta_k\bigr)\right].
+ \label{eq:exact-real-transseries}
+\end{align}
+Both series are absolutely convergent.
+\end{theorem}
+
+\begin{proof}
+Multiply \cref{eq:exact-poles} by $2\rho^{n+1}/n!$ to obtain
+\cref{eq:T-complex}.  Pairing $k$ and $-k$ gives
+\[
+ u_k^{n+1}+u_{-k}^{n+1}
+ =2q_k^{n+1}\cos((n+1)\theta_k),
+\]
+which proves the real forms.  Absolute convergence follows from
+$q_k^{n+1}=O(k^{-n-1})$.
+\end{proof}
+
+\begin{remark}[Why this is a transseries]
+Each $k\ne0$ contributes a transmonomial
+\(
+ \e^{-n\alpha_{|k|}}\e^{\mp\ii n\theta_{|k|}}
+\)
+with an additional constant factor $u_k$.  The support is locally finite in
+real action: below any fixed action bound there are only finitely many $k$.
+The conjugate-pair form is real, while the complex form is algebraically more
+convenient.  Unlike a generic formal transseries, this one converges and sums
+exactly to the normalized integer sequence.
+\end{remark}
+
+\subsection{The first sectors}
+The first six action parameters are shown in \cref{tab:actions}.  Angles are in
+radians.
+
+\begin{table}[htbp]
+\centering
+\caption{Pole moduli, sector ratios, real actions, and phases for
+$\rho=\log2$.}
+\label{tab:actions}
+\begin{tabular}{@{}rllll@{}}
+\toprule
+$k$ & $R_k$ & $q_k$ & $\alpha_k$ & $\theta_k$\\
+\midrule
+1 & 6.32130292093929 & 0.109652580999385 & 2.21043826586918 & 1.46092281020826\\
+2 & 12.5854727138613 & 0.055075180433750 & 2.89905611015294 & 1.51569326525480\\
+3 & 18.8622960281387 & 0.036747762813494 & 3.30367793099960 & 1.53404028826676\\
+4 & 25.1422977208456 & 0.027568967174597 & 3.59106451657788 & 1.54322386613582\\
+5 & 31.4235722527350 & 0.022058191697146 & 3.81407124054088 & 1.54873634591964\\
+6 & 37.7054835106352 & 0.018383193000679 & 3.99631845566911 & 1.55241209822855\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Thus the beginning of the exact expansion is
+\begin{align}\label{eq:first-sectors}
+ \Fub_n=\frac{n!}{2\rho^{n+1}}\bigl[&1
+ +2q_1^{n+1}\cos((n+1)\theta_1)
+ +2q_2^{n+1}\cos((n+1)\theta_2)\nonumber\\
+ &+2q_3^{n+1}\cos((n+1)\theta_3)+\cdots\bigr].
+\end{align}
+The leading correction is not of fixed sign.  Since $\theta_1$ is close to
+$\pi/2$, its sign exhibits a near four-step oscillation with a slowly drifting
+phase.  This is why pointwise error ratios can be much smaller than their
+envelopes at accidental cancellations.
+
+\subsection{Rigorous truncation bounds}
+For $K\ge0$, define the $K$-pair truncation
+\begin{equation}\label{eq:TK}
+ T_{n,K}:=1+2\sum_{k=1}^{K}q_k^{n+1}
+                   \cos((n+1)\theta_k),
+\end{equation}
+where an empty sum means $T_{n,0}=1$.
+
+\begin{theorem}[Pole-tail bounds]\label{thm:pole-tail}
+For $n\ge1$ and $K\ge0$,
+\begin{align}
+ |T_n-T_{n,K}|
+ &\le B_{n,K}:=2\sum_{k>K}q_k^{n+1},\label{eq:B-exact}\\
+ &\le 2\left(\frac{\rho}{2\pi}\right)^{n+1}
+       \zeta(n+1,K+1),\label{eq:B-hurwitz}
+\end{align}
+where $\zeta(s,a)$ is the Hurwitz zeta function.  If $K\ge1$, then also
+\begin{equation}\label{eq:B-integral}
+ |T_n-T_{n,K}|
+ \le \frac{2}{n}\left(\frac{\rho}{2\pi}\right)^{n+1}K^{-n}.
+\end{equation}
+For the leading approximation $K=0$ one has the uniform estimate
+\begin{equation}\label{eq:global-relative-bound}
+ |T_n-1|\le\frac{\rho^2}{12}=0.0400377511598501\ldots
+ \qquad(n\ge1).
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+The triangle inequality applied to the omitted conjugate pairs gives
+\cref{eq:B-exact}.  Since
+\[
+ q_k=\frac{\rho}{\sqrt{\rho^2+4\pi^2k^2}}
+ \le\frac{\rho}{2\pi k},
+\]
+summing the majorant proves \cref{eq:B-hurwitz}.  For $K\ge1$ and $s=n+1$,
+\[
+ \sum_{k=K+1}^{\infty}k^{-s}
+ \le\int_K^\infty x^{-s}\dd x=\frac{K^{-n}}{n},
+\]
+which proves \cref{eq:B-integral}.  Finally,
+$\rho/(2\pi)<1$ and $\zeta(n+1)\le\zeta(2)$, so
+\[
+ B_{n,0}
+ \le2\left(\frac{\rho}{2\pi}\right)^2\zeta(2)
+ =2\frac{\rho^2}{4\pi^2}\frac{\pi^2}{6}
+ =\frac{\rho^2}{12}.
+\]
+\end{proof}
+
+\begin{corollary}[Successive asymptotic levels]\label{cor:successive}
+As $n\to\infty$,
+\begin{align}
+ \Fub_n
+ &\sim\frac{n!}{2\rho^{n+1}},\label{eq:leading-asymp}\\
+ \Fub_n
+ &=\frac{n!}{2\rho^{n+1}}
+ \left[1+2q_1^{n+1}\cos((n+1)\theta_1)
+ +O(q_2^{n+1})\right].\label{eq:first-correction}
+\end{align}
+More generally, after $K$ conjugate pairs the relative remainder is bounded by
+\cref{eq:B-hurwitz} and is therefore
+$O((\rho/(2\pi(K+1)))^{n+1})$ for fixed $K$.
+\end{corollary}
+
+\begin{proof}
+The first statement follows from \cref{eq:global-relative-bound} together with
+$B_{n,0}\to0$.  For the second, separate the $k=1$ pair and apply
+\cref{eq:B-hurwitz} with $K=1$.  The general case is identical.
+\end{proof}
+
+\subsection{No hidden local inverse-power coefficients}
+Near a pole $\zeta_k$,
+\[
+ \mathcal F(z)=-\frac{1}{2(z-\zeta_k)}+H_k(z),
+\]
+where $H_k$ is analytic near $\zeta_k$.  The singular term contributes exactly
+\(
+ \tfrac12\zeta_k^{-n-1}
+\)
+to the ordinary Taylor coefficient.  There is no expansion of the residue in
+$n^{-1}$.  Once the singularity at $\zeta_k$ has been subtracted, the analytic
+remainder is controlled by other singularities, not by an infinite local
+series at the same pole.  This elementary observation explains the constant
+sector amplitudes in \cref{eq:T-complex}.  The inverse-power coefficients that
+appear after elementary normalization will come entirely from $n!$.
+
+
+\section{The factorial fluctuation and its general coefficients}
+\label{sec:stirling-layer}
+
+\subsection{Exact elementary normalization}
+Define the scaled gamma function for $z>0$ by
+\begin{equation}\label{eq:scaled-gamma-def}
+ \GammaStar(z):=
+ \frac{\Gamma(z)}{\sqrt{2\pi}\,z^{z-1/2}\e^{-z}}.
+\end{equation}
+At a positive integer $n$ this may be written in the especially useful form
+\begin{equation}\label{eq:factorial-scaled}
+ n!=\sqrt{2\pi n}\left(\frac n\e\right)^n\GammaStar(n).
+\end{equation}
+Introduce the elementary leading scale
+\begin{equation}\label{eq:A-def}
+ \mathcal A(n):=
+ \frac{\sqrt{2\pi n}}{2\rho}
+ \left(\frac{n}{\e\rho}\right)^n.
+\end{equation}
+Combining \cref{eq:factorial-scaled,eq:T-complex} gives the exact factorization
+\begin{equation}\label{eq:exact-factorization}
+ \boxed{\displaystyle
+ \Fub_n=\mathcal A(n)\GammaStar(n)T_n,
+ \qquad
+ T_n=\sum_{k\in\mathbb Z}u_k^{n+1}.}
+\end{equation}
+The transseries problem has therefore split into two independent pieces:
+$T_n$ is an exact convergent exponential sum, while $\GammaStar(n)$ carries the
+common inverse-power fluctuation.
+
+\subsection{Binet's exact Borel--Laplace representation}
+For $\Re z>0$, Binet's formula can be written as
+\begin{equation}\label{eq:binet-laplace}
+ \log\GammaStar(z)
+ =\int_0^\infty \e^{-zt}h(t)\dd t,
+ \qquad
+ h(t):=\frac1t\left(\frac{1}{\e^t-1}-\frac1t+\frac12\right).
+\end{equation}
+The apparent singularity of $h$ at $t=0$ is removable.  Its Taylor expansion is
+\begin{equation}\label{eq:h-series}
+ h(t)=\sum_{m\ge1}\frac{B_{2m}}{(2m)!}t^{2m-2}
+ =\frac1{12}-\frac{t^2}{720}+\frac{t^4}{30240}-\cdots.
+\end{equation}
+The nearest complex singularities of $h$ are at $t=\pm2\pi\ii$.
+
+\begin{proposition}[Exact summation of the logarithmic Stirling series]
+\label{prop:binet-borel}
+For $z>0$, \cref{eq:binet-laplace} is an exact positive-axis
+Borel--Laplace representation.  Watson's lemma gives
+\begin{equation}\label{eq:log-gammastar-asymp}
+ \log\GammaStar(z)
+ \asympseries
+ \sum_{m\ge1}\frac{B_{2m}}{2m(2m-1)z^{2m-1}}
+ =\sum_{r\ge1}\frac{b_r}{z^r},
+\end{equation}
+where
+\begin{equation}\label{eq:b-def}
+ b_r:=\frac{B_{r+1}}{r(r+1)}.
+\end{equation}
+Thus $b_{2m}=0$ and
+$\displaystyle b_{2m-1}=B_{2m}/[2m(2m-1)]$.
+\end{proposition}
+
+\begin{proof}
+The expansion \cref{eq:h-series} follows from the Bernoulli generating
+function after the singular terms $t^{-1}-1/2$ are removed.  Termwise Laplace
+integration formally gives
+\[
+ \int_0^\infty \e^{-zt}
+ \frac{B_{2m}}{(2m)!}t^{2m-2}\dd t
+ =\frac{B_{2m}(2m-2)!}{(2m)!z^{2m-1}}
+ =\frac{B_{2m}}{2m(2m-1)z^{2m-1}}.
+\]
+Watson's lemma makes this a Poincar\'e expansion.  The exact integral is
+analytic and unambiguous on the positive Laplace ray because the poles of
+$h$ lie off that ray.  Binet's formula identifies it with
+$\log\GammaStar(z)$.
+\end{proof}
+
+\begin{remark}
+The singularities $\pm2\pi\ii,\pm4\pi\ii,\ldots$ of the Borel kernel control
+the factorial divergence and hyperasymptotic behavior of Stirling's series.
+They are conceptually distinct from the poles
+$\rho+2\pi\ii k$ of the Fubini EGF.  Formula \cref{eq:exact-factorization}
+keeps these two singularity geometries separate.
+\end{remark}
+
+\subsection{Complete Bell-polynomial formula for the Stirling coefficients}
+Define $c_j$ by the formal exponential
+\begin{equation}\label{eq:c-generating}
+ C(t):=\exp\!\left(\sum_{r\ge1}b_rt^r\right)
+ =\sum_{j\ge0}c_jt^j.
+\end{equation}
+Then
+\begin{equation}\label{eq:gammastar-series}
+ \GammaStar(n)\asympseries\sum_{j\ge0}\frac{c_j}{n^j}.
+\end{equation}
+The next theorem gives several equivalent all-orders formulae.
+
+\begin{theorem}[General Stirling coefficient formulae]\label{thm:cj-formulas}
+Let $c_0=1$.  For every $j\ge1$,
+\begin{align}
+ c_j
+ &=\Coeff{t}{j}{\exp\!\left(\sum_{r\ge1}
+        \frac{B_{r+1}}{r(r+1)}t^r\right)},
+ \label{eq:c-coeff}\\
+ &=\frac1{j!}\BellY_j\bigl(1!b_1,2!b_2,\ldots,j!b_j\bigr),
+ \label{eq:c-bell}\\
+ &=\sum_{\substack{m_1,\ldots,m_j\ge0\\
+                    m_1+2m_2+\cdots+jm_j=j}}
+     \prod_{r=1}^{j}\frac{b_r^{m_r}}{m_r!},
+ \label{eq:c-partitions}\\
+ &=\sum_{\substack{\nu_1,\nu_2,\ldots\ge0\\
+       \sum_{m\ge1}(2m-1)\nu_m=j}}
+   \prod_{m\ge1}\frac{1}{\nu_m!}
+   \left(\frac{B_{2m}}{2m(2m-1)}\right)^{\nu_m}.
+ \label{eq:c-odd-partitions}
+\end{align}
+Only finitely many factors occur in \cref{eq:c-odd-partitions}.  The
+coefficients also satisfy the triangular recurrences
+\begin{align}
+ c_j&=\frac1j\sum_{r=1}^{j}
+       \frac{B_{r+1}}{r+1}c_{j-r},
+ \label{eq:c-recurrence}\\
+ c_j&=\frac1j\sum_{m=1}^{\lfloor(j+1)/2\rfloor}
+       \frac{B_{2m}}{2m}c_{j-2m+1}.
+ \label{eq:c-recurrence-odd}
+\end{align}
+In particular every $c_j$ is rational and is effectively computable from
+$c_0,\ldots,c_{j-1}$.
+\end{theorem}
+
+\begin{proof}
+Formula \cref{eq:c-coeff} is the definition \cref{eq:c-generating} with
+\cref{eq:b-def}.  Comparing \cref{eq:c-generating} with the defining
+generating function of the complete exponential Bell polynomial gives
+\cref{eq:c-bell}.  Expanding each factor
+\(
+ \exp(b_rt^r)=\sum_{m_r\ge0}b_r^{m_r}t^{rm_r}/m_r!
+\)
+and collecting the coefficient of $t^j$ gives
+\cref{eq:c-partitions}.  Since $b_r=0$ for even $r$, reindexing odd parts as
+$r=2m-1$ gives \cref{eq:c-odd-partitions}.
+
+For the recurrence, logarithmically differentiate \cref{eq:c-generating}:
+\[
+ C'(t)=C(t)\sum_{r\ge1}r b_rt^{r-1}.
+\]
+The coefficient of $t^{j-1}$ is
+\[
+ jc_j=\sum_{r=1}^{j}r b_r c_{j-r}
+ =\sum_{r=1}^{j}\frac{B_{r+1}}{r+1}c_{j-r},
+\]
+which proves \cref{eq:c-recurrence}.  Deleting the zero even-$r$ terms gives
+\cref{eq:c-recurrence-odd}.
+\end{proof}
+
+\begin{table}[htbp]
+\centering
+\caption{The first Stirling coefficients $c_j$ in
+$\GammaStar(n)\sim\sum c_jn^{-j}$.}
+\label{tab:stirling-coefficients}
+\small
+\begin{tabular}{@{}r l r l@{}}
+\toprule
+$j$ & $c_j$ & $j$ & $c_j$\\
+\midrule
+0 & $1$ & 7 & $-534703531/902961561600$\\
+1 & $1/12$ & 8 & $-4483131259/86684309913600$\\
+2 & $1/288$ & 9 & $432261921612371/514904800886784000$\\
+3 & $-139/51840$ & 10 & $6232523202521089/86504006548979712000$\\
+4 & $-571/2488320$ & 11 & $-25834629665134204969/13494625021640835072000$\\
+5 & $163879/209018880$ & 12 & $-1579029138854919086429/9716130015581401251840000$\\
+6 & $5246819/75246796800$ & & \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Divergence versus exact reconstruction}
+The Bernoulli asymptotic
+\[
+ B_{2m}=(-1)^{m-1}\frac{2(2m)!}{(2\pi)^{2m}}\zeta(2m)
+\]
+shows that the logarithmic coefficients grow factorially.  Hence neither
+\cref{eq:log-gammastar-asymp} nor \cref{eq:gammastar-series} is a convergent
+power series in $1/n$.  This does not impair the exact result:
+\begin{enumerate}
+ \item use $n!$ in \cref{eq:exact-real-transseries} and no Stirling expansion
+       is present;
+ \item use $\GammaStar(n)$ in \cref{eq:exact-factorization} and the
+       fluctuation is exact;
+ \item use finitely many $c_j$ for a Poincar\'e approximation;
+ \item use the Binet integral \cref{eq:binet-laplace} to reconstruct the
+       positive-axis Borel sum exactly.
+\end{enumerate}
+This hierarchy is important when the phrase ``full transseries'' is used:
+the complete pole content is convergent, while the standard factorial
+fluctuation has the familiar asymptotic status of Stirling's series.
+
+\section{The full mixed transseries and rigorous two-parameter errors}
+\label{sec:mixed-transseries}
+
+\subsection{Complex actions and the complete coefficient array}
+Define the principal complex actions
+\begin{equation}\label{eq:Lambda-def}
+ \Lambda_k:=\Log\!\left(\frac{\zeta_k}{\rho}\right)
+ =\begin{cases}
+ 0,&k=0,\\
+ \alpha_k+\ii\theta_k,&k>0,\\
+ \alpha_{|k|}-\ii\theta_{|k|},&k<0.
+ \end{cases}
+\end{equation}
+Then $u_k=\e^{-\Lambda_k}$ and
+\[
+ u_k^{n+1}=\e^{-n\Lambda_k}\e^{-\Lambda_k}.
+\]
+
+\begin{theorem}[Full elementary-scale transseries]\label{thm:full-transseries}
+As $n\to+\infty$ through the positive integers,
+\begin{equation}\label{eq:full-transseries}
+ \boxed{\displaystyle
+ \Fub_n\asympseries
+ \mathcal A(n)
+ \sum_{k\in\mathbb Z}\e^{-n\Lambda_k}
+ \sum_{j\ge0}\frac{C_{j,k}}{n^j},
+ \qquad
+ C_{j,k}=c_j\e^{-\Lambda_k}
+        =c_j\frac{\rho}{\rho+2\pi\ii k}.}
+\end{equation}
+Equivalently, in conjugate-pair form,
+\begin{equation}\label{eq:full-real-transseries}
+ \Fub_n\asympseries
+ \mathcal A(n)
+ \left(\sum_{j\ge0}\frac{c_j}{n^j}\right)
+ \left[1+2\sum_{k\ge1}q_k^{n+1}
+             \cos((n+1)\theta_k)\right].
+\end{equation}
+For each fixed pole sector $k$, every algebraic coefficient is obtained from
+the principal-sector coefficient by multiplication by $\rho/\zeta_k$.
+\end{theorem}
+
+\begin{proof}
+Insert the Poincar\'e expansion
+$\GammaStar(n)\sim\sum_{j\ge0}c_jn^{-j}$ into the exact factorization
+\cref{eq:exact-factorization}.  Next use
+$T_n=\sum_k\e^{-n\Lambda_k}\e^{-\Lambda_k}$.  Since the pole sum is
+absolutely convergent for each $n\ge1$, the coefficient attached to
+$\e^{-n\Lambda_k}n^{-j}$ is exactly
+$c_j\e^{-\Lambda_k}$.  Pairing conjugates gives
+\cref{eq:full-real-transseries}.
+\end{proof}
+
+\begin{corollary}[General coefficient formulae in every sector]
+\label{cor:Cjk}
+For $j\ge0$ and $k\in\mathbb Z$,
+\begin{align}
+ C_{j,k}
+ &=\frac{\rho}{\zeta_k}\frac1{j!}
+   \BellY_j(1!b_1,\ldots,j!b_j),\label{eq:C-bell}\\
+ &=\frac{\rho}{\zeta_k}
+   \sum_{\substack{m_1+2m_2+\cdots+jm_j=j}}
+   \prod_{r=1}^{j}\frac{b_r^{m_r}}{m_r!},
+ \label{eq:C-partition}\\
+ C_{0,k}&=\frac{\rho}{\zeta_k},\qquad
+ C_{j,k}=\frac1j\sum_{r=1}^{j}
+       \frac{B_{r+1}}{r+1}C_{j-r,k}.
+ \label{eq:C-recurrence}
+\end{align}
+\end{corollary}
+
+\begin{proof}
+Multiply the corresponding formulae of \cref{thm:cj-formulas} by
+$\rho/\zeta_k$.  The sector factor is independent of $j$, so the same
+triangular recurrence is inherited unchanged.
+\end{proof}
+
+\subsection{A rigorous mixed truncation theorem}
+Let
+\begin{equation}\label{eq:SJ}
+ S_J(n):=\sum_{j=0}^{J-1}\frac{c_j}{n^j},
+ \qquad J\ge1,
+\end{equation}
+and retain the pole truncation $T_{n,K}$ from \cref{eq:TK}.  Define
+\begin{equation}\label{eq:GJ}
+ G_J(n):=
+ \begin{cases}
+ \displaystyle\frac{1}{\pi^2n},&J=1,\\[2mm]
+ \displaystyle\frac{(1+\zeta(J))\Gamma(J)}
+ {(2\pi)^{J+1}n^J},&J\ge2.
+ \end{cases}
+\end{equation}
+Here $\zeta(J)$ is the Riemann zeta function.
+
+\begin{theorem}[Two-parameter certified remainder]\label{thm:mixed-error}
+For integers $n\ge1$, $J\ge1$, and $K\ge0$,
+\begin{equation}\label{eq:mixed-error}
+ \left|\frac{\Fub_n}{\mathcal A(n)}-S_J(n)T_{n,K}\right|
+ \le G_J(n)(1+B_{n,0})+|S_J(n)|B_{n,K},
+\end{equation}
+where $B_{n,K}$ may be taken from
+\cref{eq:B-exact,eq:B-hurwitz,eq:B-integral}.  Consequently, for fixed
+$J,K$,
+\begin{equation}\label{eq:mixed-bigO}
+ \frac{\Fub_n}{\mathcal A(n)}
+ =S_J(n)T_{n,K}+O(n^{-J})
+  +O\!\left(q_{K+1}^{n+1}\right).
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+For positive real $n$, the standard scaled-gamma remainder bound
+\cite[\S5.11(ii)]{DLMF} gives
+\begin{equation}\label{eq:gammastar-bound}
+ |\GammaStar(n)-S_J(n)|\le G_J(n).
+\end{equation}
+For $J\ge2$ this is the positive-axis specialization of the classical bound
+\[
+ |R_J(z)|\le
+ \frac{(1+\zeta(J))\Gamma(J)}
+ {2(2\pi)^{J+1}|z|^J}
+ \left(1+\min(\sec(\arg z),2\sqrt J)\right);
+\]
+at $z=n>0$ the last parenthesis is $2$.  For $J=1$, the prescribed
+replacement of $1+\zeta(J)$ by $4$ gives $1/(\pi^2n)$.
+
+Using the exact identity $\Fub_n/\mathcal A(n)=\GammaStar(n)T_n$,
+\[
+ \GammaStar(n)T_n-S_J(n)T_{n,K}
+ =\bigl(\GammaStar(n)-S_J(n)\bigr)T_n
+  +S_J(n)\bigl(T_n-T_{n,K}\bigr).
+\]
+Now $|T_n|\le1+B_{n,0}$ and
+$|T_n-T_{n,K}|\le B_{n,K}$.  The triangle inequality proves
+\cref{eq:mixed-error}; the fixed-truncation asymptotic statement follows.
+\end{proof}
+
+\begin{interpretbox}
+The two truncation directions behave differently.
+\begin{itemize}
+ \item Increasing $K$ adds terms of a convergent series and monotonically
+       improves the rigorous envelope $B_{n,K}$.
+ \item Increasing $J$ traverses a divergent Poincar\'e series.  It improves the
+       approximation only until the terms approach their least magnitude;
+       the exact Binet integral remains available beyond that point.
+\end{itemize}
+Thus pole truncation is ordinary convergence, whereas algebraic truncation is
+asymptotic optimization.
+\end{interpretbox}
+
+\subsection{Numerical behavior}
+The next table records the actual absolute relative error
+\[
+ \left|\frac{n!}{2\rho^{n+1}}\frac{T_{n,K}}{\Fub_n}-1\right|
+ =\left|\frac{T_{n,K}}{T_n}-1\right|
+\]
+for several $n$ and numbers $K$ of retained conjugate pole pairs.
+
+\begin{table}[htbp]
+\centering
+\caption{Actual relative error of exact-factorial pole truncations.}
+\label{tab:pole-errors}
+\small
+\begin{tabular}{@{}rllll@{}}
+\toprule
+$n$ & $K=0$ & $K=1$ & $K=2$ & $K=3$\\
+\midrule
+1  & $4.06845\times 10^{-2}$ & $1.62606\times 10^{-2}$ & $9.98550\times 10^{-3}$ & $7.18241\times 10^{-3}$\\
+2  & $9.26902\times 10^{-4}$ & $7.26028\times 10^{-5}$ & $1.75705\times 10^{-5}$ & $6.63865\times 10^{-6}$\\
+3  & $2.85346\times 10^{-4}$ & $2.37599\times 10^{-5}$ & $5.80868\times 10^{-6}$ & $2.20191\times 10^{-6}$\\
+5  & $2.80687\times 10^{-6}$ & $5.88313\times 10^{-8}$ & $6.03717\times 10^{-9}$ & $1.23133\times 10^{-9}$\\
+10 & $5.15518\times 10^{-11}$ & $1.62477\times 10^{-14}$ & $1.34341\times 10^{-16}$ & $4.50497\times 10^{-18}$\\
+20 & $1.02594\times 10^{-20}$ & $6.65135\times 10^{-27}$ & $1.03570\times 10^{-30}$ & $1.95587\times 10^{-33}$\\
+50 & $1.38135\times 10^{-49}$ & $4.00015\times 10^{-65}$ & $1.28072\times 10^{-73}$ & $5.70913\times 10^{-80}$\\
+100& $2.19123\times 10^{-97}$ & $9.02847\times 10^{-128}$& $1.32425\times 10^{-145}$& $2.12149\times 10^{-158}$\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The nonmonotone-looking comparison between $n=2$ and $n=3$ at $K=0$ is a
+phase effect, not a failure of the envelope.  The bounds in
+\cref{thm:pole-tail} decrease monotonically with $n$ and $K$ even when the
+actual oscillatory error experiences cancellation.
+
+For the mixed elementary approximation, representative relative errors are
+shown in \cref{tab:mixed-errors}.  Here $(J,K)$ means $J$ Stirling terms and
+$K$ conjugate pole pairs.
+
+\begin{table}[htbp]
+\centering
+\caption{Actual relative error of selected mixed truncations.}
+\label{tab:mixed-errors}
+\begingroup
+\scriptsize
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{@{}rllllll@{}}
+\toprule
+$n$ & $(1,0)$ & $(3,0)$ & $(6,0)$ & $(3,1)$ & $(6,1)$ & $(10,1)$\\
+\midrule
+5  & $1.65042\times 10^{-2}$ & $2.40206\times 10^{-5}$ & $2.80967\times 10^{-6}$ & $2.12725\times 10^{-5}$ & $6.16319\times 10^{-8}$ & $5.88588\times 10^{-8}$\\
+10 & $8.29596\times 10^{-3}$ & $2.67411\times 10^{-6}$ & $4.08192\times 10^{-11}$& $2.67405\times 10^{-6}$ & $1.07163\times 10^{-11}$& $2.76368\times 10^{-14}$\\
+20 & $4.15765\times 10^{-3}$ & $3.34956\times 10^{-7}$ & $6.23885\times 10^{-13}$& $3.34956\times 10^{-7}$ & $6.23885\times 10^{-13}$& $2.26443\times 10^{-18}$\\
+50 & $1.66526\times 10^{-3}$ & $2.14490\times 10^{-8}$ & $3.69757\times 10^{-15}$& $2.14490\times 10^{-8}$ & $3.69757\times 10^{-15}$& $3.44988\times 10^{-22}$\\
+\bottomrule
+\end{tabular}
+\endgroup
+\end{table}
+
+
+\section{Nonlinear transseries and multi-index coefficient calculus}
+\label{sec:nonlinear}
+
+\subsection{A uniformly small exponential correction}
+Write
+\begin{equation}\label{eq:Delta-def}
+ T_n=1+\Delta_n,
+ \qquad
+ \Delta_n:=\sum_{k\in\mathbb Z\setminus\{0\}}u_k^{n+1}.
+\end{equation}
+The proof of \cref{eq:global-relative-bound} gives the stronger absolute-majorant
+statement
+\begin{equation}\label{eq:Delta-majorant}
+ \sum_{k\ne0}|u_k|^{n+1}
+ \le\frac{\rho^2}{12}<0.041,
+ \qquad n\ge1.
+\end{equation}
+Therefore Taylor expansions of analytic functions around $T_n=1$ are not
+merely formal: they converge absolutely and uniformly in $n\ge1$ whenever
+their disk of analyticity has radius greater than $\rho^2/12$.
+
+Let $I:=\mathbb Z\setminus\{0\}$.  A \emph{finite multi-index} is a family
+$\bm m=(m_k)_{k\in I}$ of nonnegative integers with finite support.  Put
+\[
+ |\bm m|:=\sum_{k\in I}m_k,
+ \qquad
+ \bm m!:=\prod_{k\in I}m_k!,
+ \qquad
+ u^{\bm m}:=\prod_{k\in I}u_k^{m_k}.
+\]
+The zero multi-index has $|\bm0|=0$, $\bm0!=1$, and $u^{\bm0}=1$.
+
+\begin{theorem}[Master analytic-transform formula]\label{thm:analytic-transform}
+Let $\Phi$ be analytic in $|z-1|<R$ for some
+$R>\rho^2/12$.  Then for every $n\ge1$,
+\begin{equation}\label{eq:analytic-transform}
+ \boxed{\displaystyle
+ \Phi(T_n)=
+ \sum_{\bm m}
+ \frac{\Phi^{(|\bm m|)}(1)}{\bm m!}
+ \bigl(u^{\bm m}\bigr)^{n+1}.}
+\end{equation}
+The sum extends over all finite multi-indices and is absolutely convergent.
+It is the complete nonlinear exponential transseries of $\Phi(T_n)$.
+\end{theorem}
+
+\begin{proof}
+Taylor's theorem gives
+\[
+ \Phi(1+\Delta_n)=\sum_{r\ge0}\frac{\Phi^{(r)}(1)}{r!}\Delta_n^r.
+\]
+By \cref{eq:Delta-majorant}, the series converges absolutely.  The multinomial
+expansion in countably many absolutely summable variables is
+\[
+ \Delta_n^r
+ =\sum_{\substack{\bm m\\|\bm m|=r}}
+   \frac{r!}{\bm m!}
+   \prod_{k\in I}\bigl(u_k^{n+1}\bigr)^{m_k}
+ =\sum_{|\bm m|=r}\frac{r!}{\bm m!}
+   \bigl(u^{\bm m}\bigr)^{n+1}.
+\]
+Substitution cancels $r!$ and proves \cref{eq:analytic-transform}.  Absolute
+convergence follows by repeating the same calculation with absolute values
+and using a slightly smaller circle inside the disk of analyticity.
+\end{proof}
+
+\subsection{Powers, reciprocals, and logarithms}
+Taking $\Phi(z)=z^\sigma$, with the branch analytic in $|z-1|<1$, gives
+\begin{equation}\label{eq:T-power}
+ T_n^\sigma
+ =\sum_{\bm m}
+   \frac{\falling{\sigma}{|\bm m|}}{\bm m!}
+   \bigl(u^{\bm m}\bigr)^{n+1},
+ \qquad \sigma\in\mathbb C,
+\end{equation}
+where
+\(
+ \falling{\sigma}{r}=\sigma(\sigma-1)\cdots(\sigma-r+1)
+\).
+Two important special cases are
+\begin{align}
+ \frac1{T_n}
+ &=\sum_{\bm m}(-1)^{|\bm m|}
+       \frac{|\bm m|!}{\bm m!}
+       \bigl(u^{\bm m}\bigr)^{n+1},
+ \label{eq:T-reciprocal}\\
+ \log T_n
+ &=\sum_{\bm m\ne\bm0}(-1)^{|\bm m|-1}
+       \frac{(|\bm m|-1)!}{\bm m!}
+       \bigl(u^{\bm m}\bigr)^{n+1}.
+ \label{eq:T-log}
+\end{align}
+The coefficient in \cref{eq:T-log} is the connected, or cumulant, version of
+the multinomial coefficient.  Products of distinct pole sectors and repeated
+powers of a single sector appear automatically.
+
+\subsection{Arbitrary powers of the Fubini numbers}
+For $\sigma\in\mathbb C$, define the generalized Stirling coefficients
+$d_j(\sigma)$ by
+\begin{equation}\label{eq:d-sigma}
+ \exp\!\left(\sigma\sum_{r\ge1}b_rt^r\right)
+ =\sum_{j\ge0}d_j(\sigma)t^j.
+\end{equation}
+The same Bell-polynomial argument as before gives
+\begin{align}
+ d_j(\sigma)
+ &=\frac1{j!}\BellY_j\bigl(\sigma1!b_1,\ldots,
+                             \sigma j!b_j\bigr),
+ \label{eq:d-bell}\\
+ d_0(\sigma)&=1,
+ \qquad
+ d_j(\sigma)=\frac{\sigma}{j}\sum_{r=1}^{j}
+     \frac{B_{r+1}}{r+1}d_{j-r}(\sigma).
+ \label{eq:d-recurrence}
+\end{align}
+Thus
+\(
+ \GammaStar(n)^\sigma\sim\sum_{j\ge0}d_j(\sigma)n^{-j}
+\).
+Combining this with \cref{eq:T-power} yields the full coefficient calculus
+for arbitrary powers.
+
+\begin{corollary}[Full transseries for $\Fub_n^\sigma$]
+\label{cor:F-power}
+For any fixed $\sigma\in\mathbb C$,
+\begin{equation}\label{eq:F-power}
+ \Fub_n^\sigma\asympseries
+ \mathcal A(n)^\sigma
+ \sum_{\bm m}
+ \frac{\falling{\sigma}{|\bm m|}}{\bm m!}
+ \bigl(u^{\bm m}\bigr)^{n+1}
+ \sum_{j\ge0}\frac{d_j(\sigma)}{n^j}.
+\end{equation}
+For positive real $\Fub_n$ the principal real power is understood; the
+right-hand side supplies its analytic continuation in $\sigma$.
+\end{corollary}
+
+\subsection{The complete logarithmic transseries}
+Taking the logarithm of \cref{eq:exact-factorization} gives an exact additive
+decomposition:
+\begin{align}
+ \log\Fub_n
+ ={}&(n+\tfrac12)\log n-n-(n+1)\log\rho
+      +\tfrac12\log(2\pi)-\log2\nonumber\\
+ &+\log\GammaStar(n)+\log T_n.
+ \label{eq:log-exact-decomp}
+\end{align}
+Inserting the Binet integral and the convergent multi-index sum yields an
+entirely exact representation.
+
+\begin{theorem}[Exact and asymptotic logarithmic forms]\label{thm:log-F}
+For every $n\ge1$,
+\begin{align}
+ \log\Fub_n
+ ={}&(n+\tfrac12)\log n-n-(n+1)\log\rho
+      +\tfrac12\log(2\pi)-\log2\nonumber\\
+ &+\int_0^\infty \e^{-nt}h(t)\dd t
+ +\sum_{\bm m\ne\bm0}(-1)^{|\bm m|-1}
+       \frac{(|\bm m|-1)!}{\bm m!}
+       \bigl(u^{\bm m}\bigr)^{n+1}.
+ \label{eq:log-F-exact}
+\end{align}
+The integral and multi-index sum converge.  Its all-orders Poincar\'e form is
+\begin{align}
+ \log\Fub_n\asympseries{}&(n+\tfrac12)\log n-n-(n+1)\log\rho
+      +\tfrac12\log(2\pi)-\log2\nonumber\\
+ &+\sum_{r\ge1}\frac{B_{r+1}}{r(r+1)n^r}
+ +\sum_{\bm m\ne\bm0}(-1)^{|\bm m|-1}
+       \frac{(|\bm m|-1)!}{\bm m!}
+       \bigl(u^{\bm m}\bigr)^{n+1}.
+ \label{eq:log-F-asymp}
+\end{align}
+\end{theorem}
+
+\begin{proof}
+Equation \cref{eq:log-exact-decomp}, Binet's formula
+\cref{eq:binet-laplace}, and the absolutely convergent identity
+\cref{eq:T-log} prove \cref{eq:log-F-exact}.  Replacing the integral by its
+Watson expansion \cref{eq:log-gammastar-asymp} gives
+\cref{eq:log-F-asymp}.
+\end{proof}
+
+The first nonlinear exponential terms are
+\begin{align*}
+ \log T_n={}&
+ \sum_{k\ne0}u_k^{n+1}
+ -\frac12\sum_{k,\ell\ne0}(u_ku_\ell)^{n+1}
+ +\frac13\sum_{k,\ell,m\ne0}(u_ku_\ell u_m)^{n+1}-\cdots.
+\end{align*}
+The multi-index form is preferable because it collects repeated products and
+gives their exact multinomial coefficients.
+
+\subsection{The ratio of consecutive Fubini numbers}
+The exact factorial factors cancel almost completely:
+\begin{equation}\label{eq:ratio-exact}
+ \mathcal R_n:=\frac{n\Fub_{n-1}}{\Fub_n}
+ =\rho\frac{T_{n-1}}{T_n},
+ \qquad n\ge1.
+\end{equation}
+For an absolutely convergent multi-index expansion of the numerator we take
+$n\ge2$.  In terms of $y_k=u_k^{n+1}$,
+\[
+ T_n=1+\sum_{k\ne0}y_k,
+ \qquad
+ T_{n-1}=1+\sum_{k\ne0}u_k^{-1}y_k.
+\]
+
+\begin{theorem}[General ratio coefficients]\label{thm:ratio}
+For $n\ge2$,
+\begin{equation}\label{eq:ratio-multi}
+ \frac{\mathcal R_n}{\rho}
+ =1+\sum_{\bm m\ne\bm0}r_{\bm m}
+      \bigl(u^{\bm m}\bigr)^{n+1},
+\end{equation}
+where, with $M=|\bm m|$,
+\begin{equation}\label{eq:ratio-coeff}
+ \boxed{\displaystyle
+ r_{\bm m}=(-1)^{M-1}\frac{(M-1)!}{\bm m!}
+ \left(\sum_{k\ne0}m_ku_k^{-1}-M\right).}
+\end{equation}
+The series is absolutely convergent.  In particular,
+\begin{align}
+ \frac{\mathcal R_n}{\rho}
+ ={}&1+\sum_{k\ne0}(u_k^{-1}-1)u_k^{n+1}
+ +O\!\left(q_2^n+q_1^{2n}\right)\nonumber\\
+ ={}&1+2q_1^n\left[
+ \cos(n\theta_1)-q_1\cos((n+1)\theta_1)
+ \right]
+ +O\!\left(q_2^n+q_1^{2n}\right).
+ \label{eq:ratio-first}
+\end{align}
+Consequently
+\(
+ \Fub_n/\Fub_{n-1}\sim n/\rho
+\), with exponentially small rather than algebraic relative corrections.
+\end{theorem}
+
+\begin{proof}
+Multiply
+\[
+ \left(1+\sum_{k\ne0}u_k^{-1}y_k\right)
+ \left(1+\sum_{k\ne0}y_k\right)^{-1}.
+\]
+For a nonzero multi-index $\bm m$ of total degree $M$, the contribution from
+the constant numerator is
+$(-1)^MM!/\bm m!$.  Choosing the term $u_k^{-1}y_k$ from the numerator leaves
+multi-index $\bm m-\bm e_k$ in the reciprocal and contributes
+\[
+ u_k^{-1}(-1)^{M-1}\frac{(M-1)!}{(\bm m-\bm e_k)!}
+ =(-1)^{M-1}\frac{(M-1)!}{\bm m!}m_ku_k^{-1}.
+\]
+Summing over $k$ and combining the constant-numerator term gives
+\cref{eq:ratio-coeff}.  Absolute convergence follows from
+$\sum_{k\ne0}|u_k|^n<\infty$ for $n\ge2$ and from
+$\sum|u_k|^{n+1}<1$.  Keeping only the linear multi-indices and pairing
+$k=\pm1$ gives \cref{eq:ratio-first}; the next envelopes come from the
+$k=\pm2$ linear terms and quadratic products of the first pair.
+\end{proof}
+
+\section{Weighted Fubini polynomials and geometric moments}
+\label{sec:weighted}
+
+\subsection{Definition and generating functions}
+For $x>0$, define the Fubini polynomial
+\begin{equation}\label{eq:Fubini-poly-def}
+ \Fub_n(x):=\sum_{j=0}^{n}j!\StirlingII{n}{j}x^j.
+\end{equation}
+The same labelled-block argument as in \cref{thm:egf} gives
+\begin{equation}\label{eq:Fubini-poly-egf}
+ \sum_{n\ge0}\Fub_n(x)\frac{z^n}{n!}
+ =\frac{1}{1-x(\e^z-1)}
+ =\frac{1}{1+x-x\e^z}.
+\end{equation}
+Put
+\begin{equation}\label{eq:q-rhox}
+ q:=\frac{x}{1+x},
+ \qquad
+ \rho_x:=-\log q=\log\!\left(1+\frac1x\right).
+\end{equation}
+Then
+\begin{equation}\label{eq:weighted-moment}
+ \Fub_n(x)=(1-q)\sum_{m\ge0}q^m m^n.
+\end{equation}
+Thus $\Fub_n(x)$ is the $n$th moment of the geometric distribution
+$\Pr(G_x=m)=(1-q)q^m$.  For $n\ge1$,
+\begin{equation}\label{eq:weighted-polylog}
+ \Fub_n(x)=(1-q)\Li_{-n}(q).
+\end{equation}
+The Eulerian form is
+\begin{equation}\label{eq:weighted-eulerian}
+ \Fub_n(x)=x(1+x)^{n-1}
+ A_n\!\left(\frac{x}{1+x}\right),
+ \qquad n\ge1.
+\end{equation}
+
+\subsection{Exact poles and the weighted transseries}
+The poles of \cref{eq:Fubini-poly-egf} are
+\[
+ \zeta_k(x)=\rho_x+2\pi\ii k,
+ \qquad k\in\mathbb Z,
+\]
+and the residue at every pole is $-1/(1+x)$.  Repeating the coth decomposition
+or Poisson summation gives the following master extension.
+
+\begin{theorem}[Full weighted pole formula]\label{thm:weighted-poles}
+For $x>0$ and $n\ge1$,
+\begin{equation}\label{eq:weighted-poles}
+ \boxed{\displaystyle
+ \Fub_n(x)=\frac{n!}{1+x}
+ \sum_{k\in\mathbb Z}
+ \frac{1}{(\rho_x+2\pi\ii k)^{n+1}}.}
+\end{equation}
+Let
+\[
+ u_k(x):=\frac{\rho_x}{\rho_x+2\pi\ii k},
+ \qquad
+ T_n(x):=\sum_{k\in\mathbb Z}u_k(x)^{n+1}.
+\]
+Then
+\begin{equation}\label{eq:weighted-exact-factor}
+ \Fub_n(x)=\mathcal A_x(n)\GammaStar(n)T_n(x),
+ \qquad
+ \mathcal A_x(n):=
+ \frac{\sqrt{2\pi n}}{(1+x)\rho_x}
+ \left(\frac{n}{\e\rho_x}\right)^n.
+\end{equation}
+Its full elementary-scale coefficients are
+\begin{equation}\label{eq:weighted-Cjk}
+ C_{j,k}(x)=c_j\frac{\rho_x}{\rho_x+2\pi\ii k}.
+\end{equation}
+In particular,
+\begin{equation}\label{eq:weighted-leading}
+ \Fub_n(x)\sim\frac{n!}{(1+x)\rho_x^{n+1}}
+ \qquad(n\to\infty,\text{ fixed }x>0).
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Factor the EGF as
+\[
+ \frac{1}{1+x-x\e^z}
+ =\frac{1}{1+x}\frac{1}{1-q\e^z}.
+\]
+With $w=z-\rho_x$, one has $q\e^z=\e^w$, hence
+\[
+ \frac{1}{1+x-x\e^z}
+ =\frac{1}{2(1+x)}-
+  \frac{1}{2(1+x)}\coth\!\left(\frac w2\right).
+\]
+The coefficient extraction of \cref{thm:mittag,thm:exact-poles} now applies
+with residue $-1/(1+x)$ and $\rho$ replaced by $\rho_x$, proving
+\cref{eq:weighted-poles}.  The remaining statements follow from
+\cref{eq:factorial-scaled} exactly as before.
+\end{proof}
+
+\begin{corollary}[Uniformity on compact weight intervals]
+Fix $0<a\le x\le b<\infty$.  For every fixed $K$ and $J$, the weighted
+analogues of \cref{eq:mixed-bigO} hold uniformly in $x\in[a,b]$.
+\end{corollary}
+
+\begin{proof}
+On $[a,b]$, $\rho_x$ stays in a compact subinterval of $(0,\infty)$.  Hence
+$|u_k(x)|$ is uniformly bounded away from one for every fixed $k\ne0$, and
+the tails are uniformly dominated by a constant multiple of
+$\sum_{k>K}k^{-n-1}$.  The scaled-gamma remainder is independent of $x$.
+\end{proof}
+
+\begin{remark}[Nonuniform endpoint regimes]
+The fixed-$x$ transseries is not uniform as $x\downarrow0$.  In that limit
+$\rho_x\to\infty$ and
+$|u_1(x)|\to1$, so many pole sectors become comparable before the eventual
+$n\to\infty$ hierarchy separates them.  By contrast, as $x\to\infty$,
+$\rho_x\sim x^{-1}$ and the nonreal sectors are extremely suppressed.  A
+double-scaling theory in which $n$ and $x$ vary together is therefore a
+separate asymptotic problem rather than a formal substitution into the
+fixed-$x$ result.
+\end{remark}
+
+\subsection{Weighted cumulants and Bell-polynomial reconstruction}
+The cumulant generating function of the geometric law in
+\cref{eq:weighted-moment} is
+\[
+ K_x(z)=\log(1-q)-\log(1-q\e^z).
+\]
+Thus
+\begin{equation}\label{eq:weighted-cumulants}
+ \kappa_r(x)=\Li_{1-r}(q),
+ \qquad q=\frac{x}{1+x},
+\end{equation}
+and
+\begin{equation}\label{eq:weighted-bell}
+ \Fub_n(x)=\BellY_n(\kappa_1(x),\ldots,\kappa_n(x)).
+\end{equation}
+This identity supplies an exact coefficient bridge between ordered set
+partitions, geometric moments, and the Bell-polynomial calculus used for the
+Stirling fluctuation.  The two appearances of Bell polynomials play different
+roles: \cref{eq:weighted-bell} converts probabilistic cumulants into exact
+moments, whereas \cref{eq:c-bell} exponentiates the asymptotic logarithm of a
+gamma factor.
+
+
+\section{A general meromorphic-EGF principle and higher-order poles}
+\label{sec:meromorphic}
+
+\subsection{Coefficient contributions of arbitrary principal parts}
+The Fubini case is a particularly transparent instance of a general theorem.
+
+\begin{theorem}[Meromorphic exponential generating functions]
+\label{thm:meromorphic-egf}
+Let
+\[
+ A(z)=\sum_{n\ge0}a_n\frac{z^n}{n!}
+\]
+be meromorphic in a neighborhood of the closed disk $|z|\le R$, with no pole
+on $|z|=R$.  Let its poles in the disk be $\xi_1,\ldots,\xi_M$, and write the
+principal part at $\xi_\ell$ as
+\[
+ \sum_{s=1}^{d_\ell}a_{\ell,-s}(z-\xi_\ell)^{-s}.
+\]
+Then
+\begin{equation}\label{eq:meromorphic-coeff}
+ a_n=n!\sum_{\ell=1}^{M}\sum_{s=1}^{d_\ell}
+ (-1)^s a_{\ell,-s}
+ \binom{n+s-1}{s-1}\xi_\ell^{-n-s}+E_n,
+\end{equation}
+where, after subtracting all principal parts, the analytic remainder $H$ obeys
+\begin{equation}\label{eq:meromorphic-error}
+ |E_n|\le n!R^{-n}\max_{|z|=R}|H(z)|.
+\end{equation}
+In particular, a simple pole of residue $r_\ell$ contributes exactly
+\[
+ -n!r_\ell\xi_\ell^{-n-1},
+\]
+whereas a pole of order $d$ contributes an exponential factor
+$\xi^{-n}$ multiplied by a polynomial in $n$ of degree at most $d-1$.
+\end{theorem}
+
+\begin{proof}
+Subtract the principal parts and call the result $H(z)$.  It is analytic on a
+neighborhood of the closed disk.  For a single principal-part term,
+\[
+ (z-\xi)^{-s}
+ =(-\xi)^{-s}(1-z/\xi)^{-s}
+ =(-1)^s\sum_{n\ge0}
+   \binom{n+s-1}{s-1}\xi^{-n-s}z^n.
+\]
+Summing these coefficient contributions and multiplying by $n!$ gives the
+main term in \cref{eq:meromorphic-coeff}.  Cauchy's coefficient estimate on
+$|z|=R$ gives \cref{eq:meromorphic-error}.  The binomial coefficient is a
+polynomial in $n$ of degree $s-1$, proving the final statement.
+\end{proof}
+
+\begin{remark}
+For a function with infinitely many poles one applies
+\cref{thm:meromorphic-egf} on expanding disks.  If a global Mittag--Leffler
+decomposition is available, as in \cref{thm:mittag}, the limiting sum may be
+exact.  The theorem also explains the sector ordering: poles are ranked by
+modulus, while equal-modulus conjugates must be retained together for a real
+approximation.
+\end{remark}
+
+\subsection{Higher-order Fubini numbers}
+For an integer $r\ge1$, define the order-$r$ Fubini numbers by
+\begin{equation}\label{eq:higher-fubini-def}
+ \frac{1}{(2-\e^z)^r}
+ =\sum_{n\ge0}\Fub_n^{\langle r\rangle}\frac{z^n}{n!}.
+\end{equation}
+Every pole now has order $r$.  Introduce the generalized Bernoulli, or
+N\o rlund, numbers by
+\begin{equation}\label{eq:norlund-def}
+ \left(\frac{t}{\e^t-1}\right)^r
+ =\sum_{j\ge0}B_j^{(r)}\frac{t^j}{j!}.
+\end{equation}
+For example,
+\[
+ B_0^{(r)}=1,
+ \qquad B_1^{(r)}=-\frac r2,
+ \qquad B_2^{(r)}=\frac{r(3r-1)}{12}.
+\]
+
+\begin{theorem}[Exact pole transseries for higher order]
+\label{thm:higher-fubini}
+For integers $r\ge1$ and $n\ge1$,
+\begin{equation}\label{eq:higher-fubini-poles}
+ \boxed{\displaystyle
+ \Fub_n^{\langle r\rangle}
+ =\frac{n!}{2^r}\sum_{k\in\mathbb Z}
+   \sum_{j=0}^{r-1}
+   \frac{(-1)^jB_j^{(r)}}{j!}
+   \binom{n+r-j-1}{r-j-1}
+   \zeta_k^{-n-r+j}.}
+\end{equation}
+The sums are absolutely convergent.  In particular,
+\begin{equation}\label{eq:higher-leading}
+ \Fub_n^{\langle r\rangle}
+ \sim\frac{n!}{2^r}
+ \binom{n+r-1}{r-1}\rho^{-n-r}.
+\end{equation}
+Every pole sector has a polynomial amplitude of degree $r-1$, whose complete
+coefficients are the generalized Bernoulli numbers in
+\cref{eq:higher-fubini-poles}.
+\end{theorem}
+
+\begin{proof}
+Near $z=\zeta_k$, put $w=z-\zeta_k$.  Since $\e^{\zeta_k}=2$,
+\begin{align*}
+ \frac{1}{(2-\e^z)^r}
+ &=\frac{1}{2^r(1-\e^w)^r}\\
+ &=\frac{(-1)^r}{2^r}w^{-r}
+   \left(\frac{w}{\e^w-1}\right)^r\\
+ &=\frac{(-1)^r}{2^r}
+   \sum_{j\ge0}\frac{B_j^{(r)}}{j!}w^{j-r}.
+\end{align*}
+The principal part consists of $0\le j\le r-1$.  Apply
+\cref{thm:meromorphic-egf} to each principal-part term.  If
+$s=r-j$, then the sign from coefficient extraction is $(-1)^s$; combined
+with $(-1)^r$ it is $(-1)^j$.  This gives exactly the summand in
+\cref{eq:higher-fubini-poles}.
+
+For completeness, exactness rather than merely an asymptotic sum can be seen
+without any global convergence subtlety.  For $a>1$ and $n\ge1$,
+\[
+ n!\Coeff{z}{n}{\frac{1}{a-\e^z}}
+ =\frac{n!}{a}\sum_{k\in\mathbb Z}
+    (\log a+2\pi\ii k)^{-n-1}.
+\]
+Moreover,
+\[
+ (a-\e^z)^{-r}
+ =\frac{(-1)^{r-1}}{(r-1)!}
+   \frac{\partial^{r-1}}{\partial a^{r-1}}(a-\e^z)^{-1}.
+\]
+The bilateral series and its first $r-1$ parameter derivatives converge
+locally uniformly for $n\ge1$, so differentiation followed by $a=2$ proves
+that the sum of all pole contributions is exact.  Finally the unique dominant
+term is $k=0,j=0$, which gives \cref{eq:higher-leading}.
+\end{proof}
+
+\begin{example}[Order two]
+Since $B_0^{(2)}=1$ and $B_1^{(2)}=-1$,
+\begin{equation}\label{eq:order-two}
+ \Fub_n^{\langle2\rangle}
+ =\frac{n!}{4}\sum_{k\in\mathbb Z}
+ \left[(n+1)\zeta_k^{-n-2}+\zeta_k^{-n-1}\right].
+\end{equation}
+The first values are
+\(
+ 1,2,8,44,308,2612,25988,\ldots
+\).
+The linear polynomial $n+1$ is the characteristic signature of a double
+pole.
+\end{example}
+
+\subsection{What the general theorem says about ``full'' expansions}
+The preceding results separate three sources of coefficients that are often
+mixed together:
+\begin{enumerate}
+ \item the \emph{principal-part coefficients} at a generating-function pole,
+       which determine the polynomial sector amplitude;
+ \item the \emph{pole location}, which determines the exponential action and
+       phase;
+ \item any \emph{external normalization}, such as replacing $n!$ by an
+       elementary Stirling scale, which supplies a common algebraic series.
+\end{enumerate}
+For ordinary Fubini numbers the first item is only the residue $-1/2$, so the
+native pole sectors have no internal $1/n$ series.  Formula
+\cref{eq:full-transseries} contains inverse powers only because of the third
+item.  Formula \cref{eq:higher-fubini-poles} shows explicitly how the answer
+changes when the first item becomes nontrivial.
+
+\section{Derived asymptotic quantities}\label{sec:derived}
+
+\subsection{Root asymptotics}
+Dividing \cref{eq:log-F-exact} by $n$ gives a convenient form for the root
+growth.  In particular,
+\begin{align}
+ \Fub_n^{1/n}
+ ={}&\frac{n}{\e\rho}
+ \exp\!\left[
+  \frac{\frac12\log(2\pi n)-\log(2\rho)}{n}
+  +\frac{1}{12n^2}-\frac{1}{360n^4}+\frac{1}{1260n^6}
+  +O(n^{-8})
+ \right]\nonumber\\
+ &\times
+ \exp\!\left[
+  \frac{2q_1^{n+1}\cos((n+1)\theta_1)+O(q_2^{n+1}+q_1^{2n+2})}{n}
+ \right].
+ \label{eq:nth-root}
+\end{align}
+The first line is the algebraic expansion; the second is the exponentially
+small oscillatory correction.  At leading order,
+\[
+ \Fub_n^{1/n}\sim\frac{n}{\e\log2}.
+\]
+
+\subsection{Successive quotients}
+The ratio theorem gives
+\begin{equation}\label{eq:successive-quotient}
+ \frac{\Fub_n}{\Fub_{n-1}}
+ =\frac{n}{\rho}
+ \left\{1-2q_1^n\left[
+ \cos(n\theta_1)-q_1\cos((n+1)\theta_1)
+ \right]+O(q_2^n+q_1^{2n})\right\}.
+\end{equation}
+There are no algebraic $1/n$ corrections.  This cancellation is exact:
+$n!/(n-1)!=n$, and the common power of $\rho$ contributes $1/\rho$.
+Only the exponentially small pole corrections survive.
+
+\subsection{Logarithmic convexity at large order}
+For $n\ge1$, the geometric-moment representation implies log-convexity
+directly by Cauchy--Schwarz:
+\[
+ \Fub_n^2=\mathbb E[G^n]^2
+ \le\mathbb E[G^{n-1}]\mathbb E[G^{n+1}]
+ =\Fub_{n-1}\Fub_{n+1}.
+\]
+The transseries refines the asymptotic size of the log-convexity quotient.  Set
+\[
+ Q_n:=\frac{\Fub_{n-1}\Fub_{n+1}}{\Fub_n^2}.
+\]
+The factorial and dominant-pole factors give
+\(
+ Q_n=(n+1)T_{n-1}T_{n+1}/(nT_n^2)
+\), hence
+\begin{equation}\label{eq:logconvex-ratio}
+ Q_n=1+\frac1n+O(q_1^{n}).
+\end{equation}
+A complete multi-index expansion follows from
+\cref{thm:analytic-transform} after adjoining the shifted sector variables
+$u_k^{n}$ and $u_k^{n+2}$.
+
+\section{Computation, verification, and implementation}\label{sec:computation}
+
+\subsection{Which formula should be used?}
+The available formulae serve different computational regimes.
+\begin{enumerate}
+ \item For small exact $n$, use the Stirling sum
+       \cref{thm:stirling-sum} or the binomial recurrence
+       \cref{cor:recurrence}; both use exact integers.
+ \item For high-precision asymptotics with moderate or large $n$, evaluate a
+       few conjugate pole pairs in polar form and keep $n!$ through
+       $\log\Gamma(n+1)$.
+ \item For an elementary closed approximation, use $S_J(n)T_{n,K}$ and the
+       certified error \cref{eq:mixed-error}.
+ \item For extremely high algebraic accuracy, use the Binet integral rather
+       than forcing the divergent Stirling series past its least term.
+\end{enumerate}
+
+The pole-pair form avoids cancellation between huge complex quantities:
+\[
+ \log\!\left(\frac{n!}{2\rho^{n+1}}\right)
+ =\log\Gamma(n+1)-\log2-(n+1)\log\rho,
+\]
+followed by multiplication by the real quantity $T_{n,K}$.
+
+\subsection{A priori choice of the number of pole pairs}
+Let
+\[
+ \eta:=1-\frac{\rho^2}{12}=0.959962248840149\ldots.
+\]
+By \cref{eq:global-relative-bound}, $|T_n|\ge\eta$.  Hence the relative error
+of the exact-factorial $K$-pair approximation satisfies
+\[
+ \left|\frac{T_{n,K}}{T_n}-1\right|\le\frac{B_{n,K}}{\eta}.
+\]
+For a target relative tolerance $\varepsilon$, it is therefore enough to
+choose an integer $K\ge1$ such that
+\begin{equation}\label{eq:choose-K}
+ \frac{2}{n}\left(\frac{\rho}{2\pi}\right)^{n+1}K^{-n}
+ \le\eta\varepsilon.
+\end{equation}
+Equivalently, one may take
+\begin{equation}\label{eq:choose-K-solved}
+ K\ge
+ \left[
+ \frac{2}{n\eta\varepsilon}
+ \left(\frac{\rho}{2\pi}\right)^{n+1}
+ \right]^{1/n}
+\end{equation}
+and round the right-hand side upward.  For an absolute tolerance in the
+normalized factor $T_n$, simply omit $\eta$.  These bounds are intentionally
+simple and conservative; the exact majorant
+$B_{n,K}=2\sum_{k>K}q_k^{n+1}$ or the Hurwitz-zeta bound is usually sharper.
+
+\subsection{Wolfram Language reference implementation}
+The following definitions compute exact Fubini numbers, pole approximations,
+Stirling coefficients, and certified pole-tail envelopes.
+
+\begin{lstlisting}[language=Mathematica,caption={Reference implementation in Wolfram Language.}]
+ClearAll[fubiniExact, fubiniPole, stirlingCoefficient, poleTailBound];
+
+fubiniExact[n_Integer?NonNegative] :=
+  Sum[k! StirlingS2[n, k], {k, 0, n}];
+
+fubiniPole[n_Integer?Positive, K_Integer?NonNegative,
+   wp_Integer : 80] := Module[{rho = N[Log[2], wp]},
+  N[n!/2 Sum[(rho + 2 Pi I k)^(-n - 1), {k, -K, K}], wp]
+  ];
+
+stirlingCoefficient[0] = 1;
+stirlingCoefficient[j_Integer?Positive] :=
+  stirlingCoefficient[j] = Together[
+    1/j Sum[
+      BernoulliB[r + 1]/(r + 1) stirlingCoefficient[j - r],
+      {r, 1, j}]
+    ];
+
+poleTailBound[n_Integer?Positive, K_Integer?NonNegative] :=
+  2 (Log[2]/(2 Pi))^(n + 1) HurwitzZeta[n + 1, K + 1];
+
+Table[fubiniExact[n], {n, 0, 10}]
+Table[stirlingCoefficient[j], {j, 0, 12}]
+\end{lstlisting}
+
+For a real-valued and phase-stable pole calculation one may replace the
+bilateral complex sum with
+
+\begin{lstlisting}[language=Mathematica]
+fubiniPoleReal[n_Integer?Positive, K_Integer?NonNegative,
+   wp_Integer : 80] := Module[{rho, term},
+  rho = N[Log[2], wp];
+  term[k_] := Module[{z = rho + 2 Pi I k},
+    (rho/Abs[z])^(n + 1) Cos[(n + 1) Arg[z]]
+    ];
+  N[n!/(2 rho^(n + 1)) (1 + 2 Sum[term[k], {k, 1, K}]), wp]
+  ];
+\end{lstlisting}
+
+\subsection{Internal consistency checks}
+Several identities provide independent tests of an implementation:
+\begin{align*}
+ \Fub_n
+ &=\sum_{j=0}^{n}j!\StirlingII{n}{j},\\
+ &=\sum_{j=0}^{n-1}\binom{n}{j}\Fub_j,\\
+ &=\frac12\sum_{m\ge0}\frac{m^n}{2^m},\\
+ &=\frac{n!}{2}\sum_{k\in\mathbb Z}\zeta_k^{-n-1},\\
+ &=2^{n-1}A_n(1/2)\qquad(n\ge1).
+\end{align*}
+The first two are finite exact integer computations, the third and fourth are
+independent rapidly convergent numerical sums, and the fifth uses a different
+combinatorial triangle.  Agreement among all five is a strong guard against
+normalization, indexing, and $n=0$ errors.
+
+\begin{table}[htbp]
+\centering
+\caption{Exact initial values used in the numerical checks.}
+\label{tab:initial-values}
+\begin{tabular}{@{}r r@{\qquad}r r@{}}
+\toprule
+$n$ & $\Fub_n$ & $n$ & $\Fub_n$\\
+\midrule
+0 & 1 & 6 & 4683\\
+1 & 1 & 7 & 47293\\
+2 & 3 & 8 & 545835\\
+3 & 13 & 9 & 7087261\\
+4 & 75 & 10 & 102247563\\
+5 & 541 & 11 & 1622632573\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+
+\section{Literature context and relation to the linked research drafts}
+\label{sec:literature}
+The numbers studied here have circulated under several names.  Gross's
+``preferential arrangements'' terminology and Good's study of rankings with
+ties are standard early modern references
+\cite{Gross1962,Good1975}; Comtet popularized the name Fubini numbers in the
+coefficient-calculus literature \cite{Comtet1974}.  Good's Theorem~4
+already records the exact reciprocal-pole/cosine expansion underlying
+\cref{thm:exact-poles,thm:exact-transseries}; the present organization recasts
+that identity as a convergent pole-lattice transseries and develops its
+all-orders coefficient, remainder, and nonlinear-transform calculus.
+Their combinatorial and analytic identities are also catalogued as OEIS
+A000670 \cite{OEIS}.  The appearance of Fubini numbers as coefficients in
+asymptotic expansions of
+hypercube resistance was developed by Pippenger \cite{Pippenger2010}; barred
+preferential arrangements give one of many related higher-order families
+\cite{Ahlbach2013}.
+
+The leading-pole estimate is a direct instance of meromorphic singularity
+analysis, for which \cite{FlajoletSedgewick2009} provides a broad systematic
+framework.  What is emphasized in the present article is the \emph{complete}
+pole lattice and its exact Mittag--Leffler sum, together with the resulting
+transseries algebra.  The Stirling fluctuation and its bounds are standard
+gamma-function asymptotics; useful general sources include
+\cite{DLMF,Olver1997,WhittakerWatson1927,ParisKaminski2001}.  The distinction
+between a divergent Poincar\'e series and its summation is classical
+\cite{Hardy1949}.
+
+The notation and organization deliberately align with the two linked
+research areas in the ProveIt repository.  The first develops Stirling,
+Bell-polynomial, Fa\`a di Bruno, and inversion coefficient calculus
+\cite{ProveItCoefficient}; the second organizes formal series and transseries
+by their asymptotic scales and algebraic operations \cite{ProveItTransseries}.
+The present paper supplies a worked synthesis: the EGF pole lattice provides
+the transmonomials, complete Bell polynomials provide all factorial
+coefficients, and multi-index multinomial calculus provides nonlinear sector
+products.  No claim is made here that the analytic pole and remainder
+theorems have been machine-checked in Lean.
+
+\section{Conclusions and further directions}\label{sec:conclusion}
+The Fubini numbers admit a stronger description than the customary leading
+asymptotic formula suggests.  In exact factorial normalization,
+\[
+ \frac{2(\log2)^{n+1}}{n!}\Fub_n
+ =\sum_{k\in\mathbb Z}
+  \left(\frac{\log2}{\log2+2\pi\ii k}\right)^{n+1},
+\]
+so the complete exponentially small structure is an absolutely convergent
+sum indexed by every EGF pole.  The conjugate-pair form makes each real action
+and oscillatory phase explicit.  Because the poles are simple, their native
+amplitudes are constants.
+
+Replacing $n!$ by its elementary Stirling scale introduces a common
+inverse-power series.  Its coefficients are
+\[
+ c_j=\frac1{j!}\BellY_j(1!b_1,\ldots,j!b_j),
+ \qquad
+ b_r=\frac{B_{r+1}}{r(r+1)},
+\]
+and the complete mixed coefficient array is the rank-one factorization
+\[
+ C_{j,k}=c_j\frac{\log2}{\log2+2\pi\ii k}.
+\]
+This factorization is the central all-orders result: the $j$-dependence is
+universal across sectors, and the $k$-dependence is a single pole multiplier.
+The two-parameter theorem \cref{thm:mixed-error} turns any finite rectangle in
+this coefficient array into a certified approximation.
+
+The same framework remains exact under analytic nonlinear operations on the
+normalized pole sum, yielding closed multi-index coefficients for powers,
+reciprocals, logarithms, and ratios.  It extends uniformly to positive weights
+on compact intervals and, after replacing simple poles by multiple poles, to
+higher-order Fubini families with generalized-Bernoulli polynomial
+amplitudes.
+
+Several directions are natural continuations.
+\begin{enumerate}
+ \item \textbf{Uniform small-weight scaling.}  For $x\downarrow0$,
+       $\rho_x\to\infty$ and the fixed-$x$ sector hierarchy loses uniformity.
+       Regimes such as $n/\rho_x$ fixed should lead to a different continuum
+       approximation to the pole lattice.
+ \item \textbf{Complex order and Stokes geometry.}  The continuous-order
+       formula \cref{eq:continuous-poles} defines sectors for complex $\nu$.
+       Their dominance ordering changes with $\arg\nu$, giving a natural
+       Stokes and anti-Stokes diagram even though the positive real sequence
+       has a globally convergent pole sum.
+ \item \textbf{Hyperasymptotics of the common gamma factor.}  The Borel
+       singularities at $\pm2\pi\ii m$ can be resolved with terminant
+       functions.  Combining that hyperasymptotic layer with the exact Fubini
+       pole lattice would produce a two-geometry resurgent description.
+ \item \textbf{Higher-order and barred arrangements.}  Formula
+       \cref{eq:higher-fubini-poles} suggests a general catalogue in which
+       combinatorial constructions are classified by the orders and residues
+       of their meromorphic EGF poles.
+ \item \textbf{Formal verification.}  The Stirling-transform EGF, Bell
+       coefficient recurrence, finite pole truncations, and algebraic
+       multi-index identities are plausible first targets.  The analytic
+       Mittag--Leffler, Poisson, and remainder layers require a developed
+       complex-analysis interface.
+\end{enumerate}
+
+\appendix
+
+\section{Explicit derivation of the first algebraic coefficients}
+\label{app:first-coefficients}
+The logarithmic coefficients begin
+\[
+ b_1=\frac1{12},\qquad b_2=0,\qquad
+ b_3=-\frac1{360},\qquad b_4=0,\qquad
+ b_5=\frac1{1260},\ldots.
+\]
+Expanding $\exp(\sum b_rt^r)$ by partitions of $j$ gives
+\begin{align*}
+ c_0&=1,\\
+ c_1&=b_1=\frac1{12},\\
+ c_2&=b_2+\frac{b_1^2}{2!}=\frac1{288},\\
+ c_3&=b_3+b_1b_2+\frac{b_1^3}{3!}
+     =-\frac{139}{51840},\\
+ c_4&=b_4+b_1b_3+\frac{b_2^2}{2!}
+      +\frac{b_1^2b_2}{2!}+\frac{b_1^4}{4!}
+     =-\frac{571}{2488320},\\
+ c_5&=b_5+b_2b_3+b_1b_4
+      +\frac{b_1^2b_3}{2!}
+      +\frac{b_1b_2^2}{2!}
+      +\frac{b_1^3b_2}{3!}
+      +\frac{b_1^5}{5!}
+     =\frac{163879}{209018880}.
+\end{align*}
+These examples illustrate why the Bell-polynomial notation is not cosmetic:
+at order $j$, one must sum over every partition of $j$ using the admissible
+odd part sizes.  Formula \cref{eq:c-odd-partitions} performs that bookkeeping
+at arbitrary order.
+
+For a fixed pole $k$, multiplication by $\rho/\zeta_k$ gives immediately
+\[
+ C_{0,k}=\frac{\rho}{\zeta_k},\qquad
+ C_{1,k}=\frac{\rho}{12\zeta_k},\qquad
+ C_{2,k}=\frac{\rho}{288\zeta_k},\qquad
+ C_{3,k}=-\frac{139\rho}{51840\zeta_k},\ldots.
+\]
+No second recurrence in $k$ is needed.
+
+\section{A proof-oriented transseries dictionary}\label{app:dictionary}
+\begin{longtable}{@{}p{0.24\textwidth}p{0.68\textwidth}@{}}
+\caption{Objects in the Fubini calculation and their analytic roles.}
+\label{tab:dictionary}\\
+\toprule
+Object & Role\\
+\midrule
+\endfirsthead
+\toprule
+Object & Role\\
+\midrule
+\endhead
+$\Fub_n=\sum_jj!\StirlingII{n}{j}$
+& Exact ordered-partition count; a Stirling transform of factorials.\\[1mm]
+$(2-\e^z)^{-1}$
+& Exponential generating function; its meromorphic geometry determines the
+  exponential sectors.\\[1mm]
+$\zeta_k=\rho+2\pi\ii k$
+& Complete pole lattice.  Modulus determines suppression; argument determines
+  oscillation.\\[1mm]
+$u_k=\rho/\zeta_k$
+& Dimensionless sector multiplier.  The normalized exact transmonomial is
+  $u_k^{n+1}$.\\[1mm]
+$\Lambda_k=\Log(\zeta_k/\rho)$
+& Complex action; $u_k^{n+1}=\e^{-n\Lambda_k}\e^{-\Lambda_k}$.\\[1mm]
+$T_n=\sum_ku_k^{n+1}$
+& Exact, absolutely convergent pole-lattice transseries in factorial
+  normalization.\\[1mm]
+$\GammaStar(n)$
+& Exact common factorial fluctuation in elementary normalization.\\[1mm]
+$b_r=B_{r+1}/[r(r+1)]$
+& Coefficients of the logarithmic Stirling series.\\[1mm]
+$c_j$
+& Coefficients after exponentiation; complete Bell polynomials in the $b_r$.\\[1mm]
+$C_{j,k}=c_j\rho/\zeta_k$
+& Complete mixed coefficient array for algebraic order $j$ and pole sector
+  $k$.\\[1mm]
+$B_{n,K}$
+& Rigorous envelope of all omitted pole pairs beyond $K$.\\[1mm]
+$G_J(n)$
+& Rigorous scaled-gamma remainder after $J$ algebraic terms.\\[1mm]
+finite multi-index $\bm m$
+& Records products of nonprincipal pole sectors created by nonlinear
+  operations.\\
+\bottomrule
+\end{longtable}
+
+\section{Continuous-order asymptotics}\label{app:continuous}
+For real $\nu>0$, the exact formula \cref{eq:continuous-poles} may be written
+\begin{equation}\label{eq:continuous-factorization}
+ \mathscr F(\nu)
+ =\frac{\sqrt{2\pi\nu}}{2\rho}
+  \left(\frac{\nu}{\e\rho}\right)^\nu
+  \GammaStar(\nu)
+  \sum_{k\in\mathbb Z}u_k^{\nu+1}.
+\end{equation}
+Here powers use the principal logarithm.  Since $u_{-k}=\overline{u_k}$, the
+sum is real for real $\nu$.  Therefore
+\begin{align}
+ \mathscr F(\nu)
+ ={}&\frac{\sqrt{2\pi\nu}}{2\rho}
+  \left(\frac{\nu}{\e\rho}\right)^\nu
+  \GammaStar(\nu)\nonumber\\
+ &\times\left[1+2\sum_{k\ge1}
+  q_k^{\nu+1}\cos((\nu+1)\theta_k)\right].
+ \label{eq:continuous-real}
+\end{align}
+The same coefficients $c_j$ and $C_{j,k}$ apply with $n$ replaced by $\nu$.
+For complex $\nu$ with $\Re\nu>0$, the bilateral sum remains absolutely
+convergent, but conjugate pairing no longer produces a real expression and
+the relative dominance of $k$ and $-k$ depends on $\Im\nu$.
+
+\section{Sharper elementary pole-tail estimates}\label{app:tail}
+The Hurwitz-zeta bound in \cref{eq:B-hurwitz} is simple and uniform.  Several
+refinements are occasionally useful.  Since $q_k$ decreases with $k$,
+\begin{equation}\label{eq:tail-first-plus}
+ B_{n,K}=2q_{K+1}^{n+1}
+ \left[1+\sum_{r\ge1}
+  \left(\frac{R_{K+1}}{R_{K+1+r}}\right)^{n+1}\right].
+\end{equation}
+Thus the first omitted conjugate pair gives the correct exponential scale.
+Using $R_k\ge2\pi k$ only in the remaining tail yields
+\begin{equation}\label{eq:tail-hybrid}
+ B_{n,K}
+ \le2q_{K+1}^{n+1}
+ +2\left(\frac{\rho}{2\pi}\right)^{n+1}
+   \zeta(n+1,K+2).
+\end{equation}
+This is often considerably sharper than applying the elementary majorant to
+the first omitted pair as well.
+
+For $K=0$, a phase-blind two-sided estimate follows from
+\cref{eq:global-relative-bound}:
+\begin{equation}\label{eq:two-sided-leading}
+ 1-\frac{\rho^2}{12}
+ \le\frac{2\rho^{n+1}\Fub_n}{n!}
+ \le1+\frac{\rho^2}{12},
+ \qquad n\ge1.
+\end{equation}
+The lower bound is positive, so logarithms, reciprocals, and arbitrary real
+powers of the normalized sequence are globally well-defined for all positive
+integer $n$.
+
+\section{Generalized Bernoulli coefficients for multiple poles}
+\label{app:norlund}
+The generalized Bernoulli numbers in \cref{eq:norlund-def} themselves admit
+Bell-polynomial formulae.  Write
+\[
+ \log\!\left(\frac{t}{\e^t-1}\right)
+ =-\frac t2-
+ \sum_{m\ge1}\frac{B_{2m}}{2m(2m)!}t^{2m}.
+\]
+If $\ell_j$ denotes the coefficient of $t^j$ in this logarithm, then
+\[
+ B_j^{(r)}=
+ \BellY_j(1!r\ell_1,2!r\ell_2,\ldots,j!r\ell_j).
+\]
+Writing
+\(
+ \log(t/(\e^t-1))=\sum_{m\ge1}\ell_m t^m
+\), logarithmic differentiation of \cref{eq:norlund-def} gives the
+triangular recurrence
+\begin{equation}\label{eq:norlund-recurrence}
+ B_0^{(r)}=1,
+ \qquad
+ B_j^{(r)}=
+ r\sum_{m=1}^{j}\binom{j-1}{m-1}
+ (m!\ell_m)\,B_{j-m}^{(r)}.
+\end{equation}
+Here $\ell_1=-1/2$, $\ell_{2m}=-B_{2m}/[2m(2m)!]$, and
+$\ell_{2m+1}=0$ for $m\ge1$.  Any preferred standard recurrence for
+N\o rlund numbers may be substituted in \cref{eq:higher-fubini-poles}; the
+pole formula itself requires only the generating definition
+\cref{eq:norlund-def}.
+
+\begin{thebibliography}{99}\sloppy\raggedright
+
+\bibitem{Ahlbach2013}
+C.~Ahlbach, J.~Usatine, and N.~Pippenger,
+``Barred preferential arrangements,''
+\emph{Electronic Journal of Combinatorics} \textbf{20} (2013), no.~2,
+Paper P55.
+
+\bibitem{Comtet1974}
+L.~Comtet,
+\emph{Advanced Combinatorics: The Art of Finite and Infinite Expansions},
+D.~Reidel, Dordrecht, 1974.
+
+\bibitem{DLMF}
+NIST Digital Library of Mathematical Functions,
+``Gamma Function, \S5.11: Asymptotic Expansions,''
+\url{https://dlmf.nist.gov/5.11}, accessed September 2026.
+
+\bibitem{FlajoletSedgewick2009}
+P.~Flajolet and R.~Sedgewick,
+\emph{Analytic Combinatorics}, Cambridge University Press, Cambridge, 2009.
+
+\bibitem{Good1975}
+I.~J.~Good,
+``The number of orderings of $n$ candidates when ties are permitted,''
+\emph{The Fibonacci Quarterly} \textbf{13} (1975), no.~1, 11--18.
+\url{https://doi.org/10.1080/00150517.1975.12430678}.
+
+\bibitem{Gross1962}
+O.~A.~Gross,
+``Preferential arrangements,''
+\emph{American Mathematical Monthly} \textbf{69} (1962), no.~1, 4--8.
+
+\bibitem{Hardy1949}
+G.~H.~Hardy,
+\emph{Divergent Series}, Oxford University Press, Oxford, 1949.
+
+\bibitem{Norlund1924}
+N.~E.~N\o rlund,
+\emph{Vorlesungen \"uber Differenzenrechnung}, Springer, Berlin, 1924.
+
+\bibitem{OEIS}
+OEIS Foundation Inc.,
+``The On-Line Encyclopedia of Integer Sequences, A000670: Fubini numbers,''
+\url{https://oeis.org/A000670}, accessed September 2026.
+
+\bibitem{Olver1997}
+F.~W.~J.~Olver,
+\emph{Asymptotics and Special Functions}, AKP Classics, A K Peters,
+Wellesley, MA, 1997.
+
+\bibitem{ParisKaminski2001}
+R.~B.~Paris and D.~Kaminski,
+\emph{Asymptotics and Mellin--Barnes Integrals},
+Cambridge University Press, Cambridge, 2001.
+
+\bibitem{Pippenger2010}
+N.~Pippenger,
+``The hypercube of resistors, asymptotic expansions, and\linebreak[3]
+preferential arrangements,''
+\emph{Mathematics Magazine} \textbf{83} (2010), no.~5, 331--346.
+\href{https://doi.org/10.4169/002557010X529752}{doi:10.4169/002557010X529752}.
+
+\bibitem{ProveItCoefficient}
+V.~Reshetnikov,
+``Combinatorial Coefficient Calculus,'' research draft in the ProveIt
+repository,
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/combinatorial-coefficient-calculus/Combinatorial_Coefficient_Calculus},
+accessed September 2026.
+
+\bibitem{ProveItTransseries}
+V.~Reshetnikov,
+``Series and transseries,'' research-draft collection in the ProveIt
+repository,
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/series-and-transseries},
+accessed September 2026.
+
+\bibitem{WhittakerWatson1927}
+E.~T.~Whittaker and G.~N.~Watson,
+\emph{A Course of Modern Analysis}, 4th ed., Cambridge University Press,
+Cambridge, 1927.
+
+\end{thebibliography}
+
+\end{document}

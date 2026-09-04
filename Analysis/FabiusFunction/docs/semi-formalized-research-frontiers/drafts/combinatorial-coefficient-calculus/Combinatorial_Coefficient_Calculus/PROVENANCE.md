@@ -3,10 +3,15 @@
 This ledger identifies the six manuscripts that are inputs to the
 combinatorial-coefficient-calculus consolidation.  It freezes the
 pre-consolidation source pool at commit
-`55038f2fc7d20a483a48125f086a6c8488e45530`.  It does **not** claim that the
-editorial union, claim review, proof repair, donor retirement, or final PDF
-build has occurred.  The live plan and its deliberately pending rows are in
-`SOURCE_DISPOSITION.csv`.
+`55038f2fc7d20a483a48125f086a6c8488e45530`.
+
+**The consolidation is now closed.**  The editorial union, claim review, proof
+repair, donor retirement, and the final PDF build have all occurred.  Every row
+of `SOURCE_DISPOSITION.csv` carries a completed disposition, the five donor
+directories have been deleted, the active closure has contracted to the single
+canonical TeX/PDF pair, and `validate_canonical.py --final` passes with no
+errors and no warnings.  What this file continues to do is identify the six
+original inputs and give two independent Git routes back to each of them.
 
 The six TeX files are research-frontier manuscripts.  Their theorem and proof
 environments are human-readable mathematical writing, not evidence of Lean
@@ -44,14 +49,23 @@ The records distinguish four intentionally different identities.
    every consolidation checkpoint; its immutable `CCC` snapshot identity remains
    recorded here even after the canonical text diverges from that donor.
 
-The six package-local `SHA256SUMS` files are derivative two-row ledgers, not
-additional research payloads.  They are therefore outside the transitional
-twelve-payload closure (the live canonical TeX/PDF pair and the five donor
-TeX/PDF pairs).  This file, `SOURCE_DISPOSITION.csv`, and
-`SOURCE_CLOSURE.sha256` are likewise consolidation metadata rather than source
-manuscripts.  At final retirement the active closure contracts to the one
-canonical TeX/PDF pair; the commented historical records continue to identify all
+The former six package-local checksum files were derivative two-row ledgers,
+not additional research payloads, and were removed under the repository-wide
+policy abolishing that filename convention.  This file,
+`SOURCE_DISPOSITION.csv`, and `SOURCE_CLOSURE.sha256` are consolidation
+metadata rather than source manuscripts.  Retirement has now happened: the
+transitional twelve-payload closure has contracted to the one canonical
+TeX/PDF pair, and the commented historical records continue to identify all
 six inputs.
+
+One point of the identity model changed at retirement.  The retained
+historical PDFs were never asserted to render their notation-migrated TeX, and
+that caveat was carried in every earlier revision of these records.  It no
+longer applies to the surviving pair: the canonical PDF was produced from the
+canonical TeX in a single three-pass `pdflatex` run reporting no errors, no
+undefined references, and no multiply-defined labels, and both bytes are hashed
+in the active closure rows.  The five arrival PDFs remain historical artifacts
+with no render-parity claim, recoverable only through the Git locators below.
 
 The stable source identifiers used below and in the disposition ledger are:
 
@@ -193,6 +207,19 @@ the commented historical records.  This gives two independent Git routes to
 each original TeX/PDF identity: through the arrival ZIP and through the filed
 extraction commit.
 
-No command above establishes current-TeX/PDF render parity, mathematical
-correctness, proof completeness, or Lean verification.  Those are separate
-publication and formalization gates.
+No command above establishes mathematical correctness or Lean verification;
+those remain separate publication and formalization gates, and the
+in-document "Lean formalization register" states the formalization status
+result by result.  Two things that earlier revisions of this file listed as
+open are, however, now established by commands here.  Render parity holds for
+the surviving pair, since the hashed PDF is the output of the run that
+consumed the hashed TeX.  Proof pairing is checked mechanically:
+
+```text
+python Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/combinatorial-coefficient-calculus/Combinatorial_Coefficient_Calculus/validate_canonical.py --final
+```
+
+reports 201 theorem-like or algorithm items with 201 adjacent proofs and no
+explicit open-status markers, together with the completed disposition ledger,
+the contracted closure, and the one-document layout.  "Adjacent proof" is a
+structural property, not a claim that each proof is correct.

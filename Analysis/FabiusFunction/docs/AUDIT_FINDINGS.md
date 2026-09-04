@@ -135,6 +135,21 @@ below rather than deleted.
 | Public analytic bridge for `fabiusAtInverseTwoPow` | `9458b1949` | Serialized `+FabiusFunction.DyadicAnalytic` and `+FabiusFunction.Paper05442` at integration merge `04d619814`, both exit 0. |
 | Strict sign of `gammaZetaConstant` and strict first-Stieltjes bound | `ec23d663f`, `991add419` | Serialized `+FabiusFunction.BoseFinitePartIntegral`, `+FabiusFunction.PeriodicMean`, and `+FabiusFunction.PaperFabiusAsymptotic` at `04d619814`, all exit 0. |
 | Four duplicated periodic dyadic-exponential helpers | `c7c2321bc` | Serialized `+FabiusFunction.PeriodicRegularity`, `+FabiusFunction.PeriodicSmooth`, and `+FabiusFunction.PaperFabiusAsymptotic` at `04d619814`, all exit 0. |
+| `rvachevUp_eq_one_sub_fabiusReal_of_nonneg`: the complementary-CDF identity on the whole nonnegative ray (hypothesis weakening, cluster lambert-asymptotics) | `fb30750ab` | Landed with the twenty-finding batch of 2026-08-25; the declaration is in `LaplaceTransform.lean`. |
+| `neg_one_pow_thueMorseBit_ring`: the sign identity over an arbitrary `[Ring R]` rather than `ℚ` (cluster thuemorse-qbinomial, first half of the entry) | `fb30750ab` | In `ThueMorseBinomialLog.lean`.  The entry's other half, dropping `1 ≤ N` from `norm_binaryReductionRemainder_le`, is recorded separately below. |
+| `remainder_eq_log_perturbation`, a byte-identical private copy across two Lambert modules, replaced by the public `dyadicLambertRemainder_eq_log_perturbation` | `1ca898aec`, `fb30750ab` | In `FabiusLambertPhase.lean`; the private copy in `FabiusLambertHigherExpansion.lean` is gone. |
+| Three verbatim "bounded range ⇒ explicit sup bound" copies in `PeriodicRegularity` and `FabiusLambertDerivativeBounds` | `fb30750ab` | No `isBounded_iff` unpacking remains in either module. |
+| `fabiusReal_le_two_mul_of_mem_Icc_half`, a weaker private re-proof of the public `fabiusReal_le_two_mul` | `942fd6b68` | Deleted; the call sites use `Regularity.fabiusReal_le_two_mul`. |
+| `self_le_two_pow` / `succ_le_two_pow` / `index_le_two_pow`, three private re-proofs of Mathlib's `Nat.lt_two_pow_self` | `7371bfec5`, `fb30750ab` | Deleted from `ThueMorsePrefix`, `Monotonicity`, and `NegativeLaplace`. |
+
+| `norm_binaryReductionRemainder_le` and its three descendants no longer carry `1 ≤ N`; the two `_total` variants collapse to aliases (cluster thuemorse-qbinomial, second half of the entry) | `947660d8d` | Serialized `+FabiusFunction.FabiusBinaryReductionSeries` with dependencies compiled, exit 0, no warnings; the 59 downstream modules were queued for verification in the same session. |
+| `abs_log_sub_log_le_div` exposed as a public, documented general logarithm Lipschitz bound (cluster lambert-asymptotics) | `947660d8d` | Serialized `+FabiusFunction.FabiusLambertAllOrderRemainder`, exit 0.  Left in place rather than moved: its one call site is local and nothing else needs the import. |
+| `real_log_second_order_isBigO` reproved in twelve lines from `Real.abs_log_sub_add_sum_range_le`, never leaving the reals (cluster lambert-asymptotics) | `947660d8d` | Serialized `+FabiusFunction.FabiusLogMainDefect`, exit 0. |
+
+The six rows above the three dated `947660d8d` were closed by other sessions without updating this table;
+they were reconciled on 2026-09-02 by checking that each proposed declaration
+exists (or each deleted one is gone) in current source and reading the commit
+that made the change.
 
 The original audit workstream's two builds ran on a peer's build slot at the
 SHAs named above, in a sparse detached worktree whose `.lake/packages` is a
@@ -718,7 +733,9 @@ Confirmed:
 
 ### Cluster: thuemorse-qbinomial
 
-#### `norm_binaryReductionRemainder_le` does not need `1 ≤ N`, and `norm_globalBinaryReductionSummand_le_ge_two` then needs only `1 ≤ m`, not `2 ≤ m`
+#### DONE — `norm_binaryReductionRemainder_le` does not need `1 ≤ N`, and `norm_globalBinaryReductionSummand_le_ge_two` then needs only `1 ≤ m`, not `2 ≤ m`
+
+**DONE** in `947660d8d` for the `1 ≤ N` half, in place rather than through a primed wrapper: the hypothesis is gone from the base theorem and its three descendants, and the two `_total` variants that existed only to supply an `N = 0` case are now aliases.  The `2 ≤ m` half is deliberately not changed: `norm_globalBinaryReductionSummand_le_ge_two`'s docstring records it as a compatibility wrapper over `norm_globalBinaryReductionSummand_le_three_mul_inv_pow`, which already holds for `1 ≤ m` with the sharper constant `3`.
 
 Confidence high.  `FabiusBinaryReductionSeries.lean:444`, `FabiusBinaryReductionSeries.lean:479`, `FabiusBinaryReductionSeries.lean:505`
 
@@ -2033,7 +2050,9 @@ Corrections to the original proposal:
 
 ### Cluster: lambert-asymptotics
 
-#### `abs_log_sub_log_le_div`, a general logarithm Lipschitz bound with no Fabius content, is buried as `private`
+#### DONE — `abs_log_sub_log_le_div`, a general logarithm Lipschitz bound with no Fabius content, is buried as `private`
+
+**DONE** in `947660d8d`: public and documented, in place (see the status table for why it was not moved).
 
 Confidence medium.  `FabiusLambertAllOrderRemainder.lean:589`, `FabiusLambertAllOrderRemainder.lean:629`
 
@@ -2279,7 +2298,9 @@ Corrected rationale: the two Mersenne blocks are character-for-character the bod
 
 ### Cluster: lambert-asymptotics
 
-#### `real_log_second_order_isBigO` is a six-line consequence of a Mathlib lemma the corpus already uses elsewhere
+#### DONE — `real_log_second_order_isBigO` is a six-line consequence of a Mathlib lemma the corpus already uses elsewhere
+
+**DONE** in `947660d8d`: twelve lines from `Real.abs_log_sub_add_sum_range_le`, never leaving the reals.
 
 Confidence medium.  `FabiusLogMainDefect.lean:23`, `FabiusLambertAllOrderRemainder.lean:401`
 

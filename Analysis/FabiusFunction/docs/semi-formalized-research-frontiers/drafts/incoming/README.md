@@ -62,26 +62,194 @@ This `README.md` is the permanent explanation of the directory and
 **must not be deleted** — it also keeps the directory present in git
 when no archives are waiting.
 
-Most recent processed batch (all filed and removed on 2026-09-01):
+Most recent processed batch (twelve archives, filed and removed on 2026-09-03,
+after the Bell/Fubini batch below): twelve independently written articles on
+the asymptotic transseries **and asymptotic inverse** of four combinatorial
+sequences, three articles each, all to
+`../series-and-transseries/special-function-inversion/` beside the twelve
+already there.  Each inverts its sequence at infinity to all orders and ends at
+a Lambert-`W` reversion, which is the subgroup's criterion; unlike the earlier
+Bell and Fubini batch these are inversions, not forward asymptotics only.
+
+- `Butcher_Tree_Transseries.zip` → `Butcher_Tree_Transseries/`: 1,674-line/55,275-byte source, 21-page A4/593,560-byte PDF.
+- `Butcher_Tree_Transseries-2.zip` → `Butcher_Tree_Transseries-2/`: 2,853-line/100,576-byte source, 62-page A4/763,748-byte PDF; `book` class.
+- `Butcher_Tree_Transseries-3.zip` → `Butcher_Tree_Transseries-3/`: 2,382-line/91,654-byte source, 35-page A4/697,611-byte PDF.
+- `Double_Factorial_Transseries.zip` → `Double_Factorial_Transseries/`: 1,552-line/52,202-byte source, 18-page A4/632,400-byte PDF.
+- `Double_Factorial_Transseries-3.zip` → `Double_Factorial_Transseries-3/`: 2,287-line/79,355-byte source, 28-page A4/662,997-byte PDF.
+- `double_factorial_transseries-2.zip` → `double_factorial_transseries-2/`: 2,138-line/63,319-byte source, 44-page A4/622,907-byte PDF; `book` class.
+- `Partition_Number_Transseries_and_Asymptotic_Inverse.zip` → same-named directory: 1,901-line/83,252-byte source, 32-page A4/369,259-byte PDF.
+- `Partition_Number_Transseries_and_Inverse.zip` → same-named directory: 2,020-line/72,533-byte source, 27-page A4/354,685-byte PDF.
+- `Partition_Numbers_Transseries_and_Inverse.zip` → same-named directory: 1,905-line/78,298-byte source, 33-page **Letter**/553,908-byte PDF.
+- `Swing_Factorial_Transseries.zip` → `Swing_Factorial_Transseries/`: 1,885-line/75,057-byte source, 28-page A4/688,586-byte PDF.
+- `Swing_Factorial_Transseries_Article.zip` → `Swing_Factorial_Transseries_Article/`: 1,824-line/62,179-byte source, 25-page A4/666,609-byte PDF.
+- `Swing_Factorial_Transseries_and_Inverse.zip` → same-named directory: 1,389-line/56,138-byte source, 22-page A4/326,626-byte PDF.
+
+Every archive passed a CRC check with no absolute path, parent-directory
+traversal, or symlink entry; each held exactly one `.tex` and one `.pdf` with
+no wrapping directory, so the distinct archive stems name the directories.  Two
+collision hazards were checked rather than assumed: the three Butcher archives
+ship identical inner filenames, and two double-factorial archives ship inner
+names differing only in case — the exact case-insensitive nesting trap — so
+each destination directory was created explicitly and the thirteen pre-existing
+members of the group were verified intact afterwards.  All twelve sources are
+LF with a final newline, filed byte-for-byte; git reported no line-ending
+normalization at staging.  All twelve PDFs are readable, unencrypted,
+pdfTeX-1.40.26, every font subset-embedded, no Type 3 rows; eleven A4 and one
+Letter; eight carry Libertinus faces; two documents are `book` class.  None
+loads `docs/fabius-notation.tex`.  No checksum ledgers submitted or added.
+Longest filed path 228 characters from the repository root, though four of the
+twelve exceed the Windows 260-character limit when the repository is checked
+out as a nested git worktree.  Comparison, deduplication, proof checking and
+crosswalking deferred.
+
+Previous batch (five archives, filed and removed on 2026-09-03,
+after the Thue–Morse batch below): two independently written articles on the
+asymptotic transseries of the Bell numbers and three on the Fubini numbers,
+all to a new subgroup `../series-and-transseries/sequence-transseries/`
+(forward asymptotics of a sequence, not an inversion — hence not filed under
+`special-function-inversion/`).
+
+- `Bell_Number_Asymptotic_Transseries.zip` → `Bell_Number_Asymptotic_Transseries/`: 2,211-line source, 32-page A4 PDF.
+- `Bell_Number_Transseries_Article.zip` → `Bell_Number_Transseries_Article/`: 1,714-line source, 23-page A4 PDF.
+- `Fubini_Number_Full_Transseries.zip` → `Fubini_Number_Full_Transseries/`: 2,465-line source, 33-page A4 PDF.
+- `Fubini_Number_Transseries.zip` → `Fubini_Number_Transseries/`: 1,881-line source, 25-page A4 PDF.
+- `Fubini_Number_Transseries_Article.zip` → `Fubini_Number_Transseries_Article/`: 1,472-line source, 25-page Letter PDF.
+
+Every archive passed a CRC check with no absolute path, parent-directory
+traversal, or symlink entry; each held exactly one `.tex` and one `.pdf` with
+no wrapping directory, so the archive stems name the directories (two archives
+shipped the same inner file name, `Fubini_Number_Transseries.tex`). Longest
+filed path 252 characters. All sources LF with a final newline, filed
+byte-for-byte; git reported no line-ending normalization at staging. All PDFs
+readable, unencrypted, pdfTeX-1.40.26, every font embedded, no Type 3 rows.
+None loads `docs/fabius-notation.tex`. No checksum ledgers submitted or added.
+Comparison, deduplication, proof checking, and crosswalking deferred.
+
+Previous batch (three archives, filed and removed on 2026-09-03,
+later the same day than the Fibonacci batch below): three independently
+written articles on the diagonal polynomials of repeated signed Thue–Morse
+summation, all to `../thue-morse/` as separate members beside the
+consolidated volume.
+
+- `thue_morse_diagonal_polynomials.zip` → `thue_morse_diagonal_polynomials/`:
+  1,763-line/56,520-byte source, 24-page A4/724,035-byte PDF.
+- `thue_morse_diagonal_polynomials-2.zip` → `thue_morse_diagonal_polynomials-2/`:
+  2,202-line/72,380-byte source, 37-page A4/801,220-byte PDF.
+- `thue_morse_diagonal_polynomials_article_and_code.zip` →
+  `thue_morse_diagonal_polynomials_article_and_code/`: 2,136-line/76,590-byte
+  source, 33-page A4/536,235-byte PDF, with `generated/` and `figures/` trees.
+
+Every archive passed a CRC check with no absolute path, parent-directory
+traversal, or symlink entry. **All three wrapped an inner directory of the
+same name**, `thue_morse_diagonal_polynomials/`, so the archive stems — which
+are distinct — were used as directory names, the same resolution as for the
+earlier same-named subfactorial siblings; the longest filed path is 230
+characters. All three sources are LF with a final newline and were filed
+byte-for-byte; the only normalization is the repository's own CRLF-to-LF
+conversion of the two generated CSV tables
+(`generated/diagonal_polynomials.csv`, `generated/half_grid_roots.csv`) in the
+third package, which git applied at commit. All three PDFs are readable,
+unencrypted, pdfTeX-1.40.26, A4;
+one is fully embedded and Type-3-free, the other two carry two or three Type-3
+rows inherited from a Matplotlib figure. Two carry Libertinus faces. None loads
+`docs/fabius-notation.tex`. Two archives ship a submitted `SHA256SUMS` and one a
+`MANIFEST.sha256`; they are kept as payload, and no repository ledger was
+added. Comparison, deduplication, canonical selection, proof checking,
+numerical reproduction and Lean crosswalking were all deferred.
+
+Previous batch (three archives, filed and removed on 2026-09-03): the three Fibonacci-inversion articles, all to
+`../series-and-transseries/special-function-inversion/` as its fourth subject.
+
+- `Fibonacci_Inverse_LogPeriodic_Transseries.zip` → `Fibonacci_Inverse_LogPeriodic_Transseries/`: 2,554-line/89,365-byte source, 33-page A4/787,646-byte PDF.
+- `fibonacci_inverse_transseries_article.zip` → `fibonacci_inverse_transseries_article/`: 2,857-line/98,788-byte source, 36-page A4/797,090-byte PDF.
+- `fibonacci_inverse_transseries_article-2.zip` → `fibonacci_inverse_transseries_article-2/`: 1,884-line/64,334-byte source, 24-page A4/759,845-byte PDF.
+
+Previous batch (six archives, filed and removed on 2026-09-03).
+These arrived *while the batch below was being published*, which is the case the
+rule at the top of this file covers: the first batch was finished and pushed to
+`origin/main` before any of these was touched, and they were then taken in the
+next quick-intake commit.  All six went to
+`../series-and-transseries/special-function-inversion/`, joining the three
+already there, and the nine now fall into three subjects with three
+independently written articles each.
+
+- `inverse_gamma_barnesG_transseries.zip` → `inverse_gamma_barnesG_transseries/`:
+  1,655-line/72,966-byte source, 28-page A4/663,480-byte PDF.
+- `inverse_gamma_barnes_transseries.zip` → `inverse_gamma_barnes_transseries/`:
+  1,827-line/60,596-byte source, 25-page A4/324,795-byte PDF.
+- `K_Function_Inverse_Transseries_LaTeX_and_PDF.zip` → `K_Function_Inverse_Transseries/`:
+  2,644-line/90,380-byte source, 33-page A4/724,630-byte PDF.  **Renamed at
+  filing**: the archive stem would have put the PDF at a 263-character path,
+  past the Windows `MAX_PATH` limit of 260, after which `pdfinfo` reports
+  *"No such file or directory"* for a file that plainly exists.  The directory
+  is named after the document instead, which is also the corpus convention.
+- `K_function_inverse_transseries_article.zip` → `K_function_inverse_transseries_article/`:
+  2,581-line/84,722-byte source, 30-page A4/743,783-byte PDF.
+- `inverse_subfactorial_transseries-2.zip` → `inverse_subfactorial_transseries-2/`:
+  2,188-line/73,742-byte source, 27-page A4/725,870-byte PDF.
+- `inverse_subfactorial_transseries-3.zip` → `inverse_subfactorial_transseries-3/`:
+  1,878-line/81,203-byte source, 35-page Letter/530,302-byte PDF.
+
+Every archive passed a CRC check with no absolute path, parent-directory
+traversal, or symlink entry, and each held exactly one `.tex` and one `.pdf` at
+top level.  All six sources are LF with a final newline; no normalization was
+applied.  The last two archives both contain inner files named plainly
+`inverse_subfactorial_transseries.*`, which were kept as submitted — the
+directory name carries the distinction, following the precedent of
+`lambert_inverse_transseries_bundle/`.  All six PDFs are readable, unencrypted,
+pdfTeX-1.40.26, fully embedded and Type-3-free; five are A4 and one is Letter,
+and three carry Libertinus faces.  None loads `docs/fabius-notation.tex`.
+Comparison, deduplication, canonical selection, proof checking, numerical
+reproduction and Lean crosswalking were all deferred.
+
+The batch immediately before it (three archives, filed and removed the same
+day):
+
+- `Asymptotic_Inversion_Gamma_Barnes_G.zip` became
+  `../series-and-transseries/special-function-inversion/Asymptotic_Inversion_Gamma_Barnes_G/`:
+  2,376-line/83,252-byte source, 29-page A4/646,225-byte PDF.
+- `inverse_k_function_transseries.zip` became
+  `../series-and-transseries/special-function-inversion/inverse_k_function_transseries/`:
+  2,259-line/66,867-byte source, 29-page A4/349,822-byte PDF.
+- `inverse_subfactorial_transseries.zip` became
+  `../series-and-transseries/special-function-inversion/inverse_subfactorial_transseries/`:
+  2,631-line/95,404-byte source, 38-page A4/688,626-byte PDF.
+
+These three archives landed together in commit `5a453e1dc`.  Each contained
+exactly one `.tex` and one `.pdf` at top level with no wrapping directory, so
+the destination directory was created at filing; none included a checksum
+ledger, and none was added.  Every archive passed a CRC check and carried no
+absolute path, parent-directory traversal, or symlink entry.  All three sources
+were already LF with a final newline, so no normalization was applied and the
+filed bytes are exactly the submitted bytes.  All three PDFs are readable and
+unencrypted, produced by pdfTeX-1.40.26 at PDF version 1.7, with every font row
+embedded and no Type 3 font; all three are A4, which is canonical, and two of
+the three carry Libertinus faces — `inverse_k_function_transseries` does not,
+which is the only styling debt recorded against this batch.  None of the three
+loads `docs/fabius-notation.tex`.  Comparison, deduplication, proof checking,
+numerical reproduction, editorial consolidation, and Lean crosswalking were all
+deferred at intake and have not been carried out.
+
+The preceding processed batch (all filed and removed on 2026-09-01):
 
 - `Polynomial-Logarithmic-Transseries-1/` became
-  [`../lambert-w/Polynomial-Logarithmic-Transseries-1/`](../lambert-w/Polynomial-Logarithmic-Transseries-1/):
+  `../series-and-transseries/polynomial-logarithmic-transseries/Polynomial-Logarithmic-Transseries-1/`:
   4,023-line/182,487-byte source, 119-page/584,392-byte PDF.
 - `Polynomial-Logarithmic-Transseries-2/` became
-  [`../lambert-w/Polynomial-Logarithmic-Transseries-2/`](../lambert-w/Polynomial-Logarithmic-Transseries-2/):
+  `../series-and-transseries/polynomial-logarithmic-transseries/Polynomial-Logarithmic-Transseries-2/`:
   5,014-line/168,311-byte source, 102-page/571,108-byte PDF.
 - `Polynomial_Logarithmic_Transseries-3/` became
-  [`../lambert-w/Polynomial_Logarithmic_Transseries-3/`](../lambert-w/Polynomial_Logarithmic_Transseries-3/):
+  `../series-and-transseries/polynomial-logarithmic-transseries/Polynomial_Logarithmic_Transseries-3/`:
   4,255-line/146,006-byte source, 87-page/510,663-byte PDF; its submitted
   line-411 trailing whitespace remains intact.
 - `Polynomial-Logarithmic-Transseries-4/` became
-  [`../lambert-w/Polynomial-Logarithmic-Transseries-4/`](../lambert-w/Polynomial-Logarithmic-Transseries-4/):
+  `../series-and-transseries/polynomial-logarithmic-transseries/Polynomial-Logarithmic-Transseries-4/`:
   3,138-line/118,001-byte source, 47-page/428,534-byte PDF.
 - `Polynomial_Logarithmic_Transseries-5/` became
-  [`../lambert-w/Polynomial_Logarithmic_Transseries-5/`](../lambert-w/Polynomial_Logarithmic_Transseries-5/):
+  `../series-and-transseries/polynomial-logarithmic-transseries/Polynomial_Logarithmic_Transseries-5/`:
   2,440-line/102,903-byte source, 44-page/389,188-byte PDF.
 - `Polynomial_Logarithmic_Transseries-6/` became
-  [`../lambert-w/Polynomial_Logarithmic_Transseries-6/`](../lambert-w/Polynomial_Logarithmic_Transseries-6/):
+  `../series-and-transseries/polynomial-logarithmic-transseries/Polynomial_Logarithmic_Transseries-6/`:
   4,354-line/150,235-byte source, 100-page/701,319-byte PDF.
 
 These six bare-directory arrivals landed together in direct-arrival commit
@@ -93,8 +261,17 @@ All PDFs are readable,
 unencrypted, embedded/subset, and Type-3-free, but none uses Libertinus; two
 have a custom 522-by-738-point page, two are Letter, and two are A4.  Styling
 repair, comparison, deduplication, claim review, PDF rebuilding, and Lean
-crosswalking remain deferred until this checkpoint is published.  Full source
-and PDF hashes are recorded in the destination README and package receipts.
+crosswalking were deferred at intake and have since been carried out.
+
+**The six destination paths above no longer exist.**  They record where each
+arrival was filed, which is what this log is for, but the packages were filed
+under `../lambert-w/` on 2026-09-01, regrouped into
+`../series-and-transseries/polynomial-logarithmic-transseries/` on 2026-09-02,
+and merged editorially the same day into the single canonical volume
+[`../series-and-transseries/polynomial-logarithmic-transseries/Polynomial_Logarithmic_Transseries/`](../series-and-transseries/polynomial-logarithmic-transseries/Polynomial_Logarithmic_Transseries/).
+The six directories were then deleted; git history is the archive, and that
+volume's provenance appendix carries every source's intake and absorbed
+SHA-256 receipt together with what each one uniquely contributed.
 
 The immediately preceding processed batch, also filed and removed on
 2026-09-01, comprised these six archives:
