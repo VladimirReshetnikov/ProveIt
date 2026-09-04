@@ -372,6 +372,7 @@ CURRENT_Q_STATUS_OVERRIDES = {
     "thm:fixed-column-limit": "Lean-proved",
     "cor:qgreaterone": "Lean-proved",
     "cor:scaled-geometric-moments": "Lean-proved",
+    "cor:geometric-prouhet-affine": "Lean-proved",
     "thm:geometric-filter-bound": "Lean-proved",
     "cor:positivity": "Lean-proved",
     "cor:partition-symmetries": "Lean-proved",

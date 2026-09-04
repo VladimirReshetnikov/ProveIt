@@ -63,7 +63,7 @@ module tranches and the zero-definition, three-theorem
 crosswalk. That source is a source-only successor to the fresh artifact receipt
 and requires a later synchronized three-pass build. Retained PDFs under its `assets/` tree are
 research figures, not alternate manuscript renderings. The current Lean audit
-contains 915 facade-reachable modules and 11,556 public declarations, with no
+contains 915 facade-reachable modules and 11,557 public declarations, with no
 missing module headers or declaration documentation.
 
 The sibling source-only `FabiusFunction.GeometricRichardsonGenerating` module
@@ -135,7 +135,7 @@ from None to Partial; the bridge gives the historical incoming-branch
 905/11,458 checkpoint without changing the forward ledger or source
 concordance.  Together with the facade-reachable zero-definition/two-theorem
 `GaussianBinomialGreaterOneAsymptotics.lean` leaf, the current semantic-union
-census is 915/11,556. Its declarations
+census is 915/11,557. Its declarations
 `gaussianBinomial_gt_one_fixedColumn_relativeError_isBigO` and
 `gaussianBinomial_gt_one_central_isEquivalent`, together with
 `gaussianBinomial_inv`, make `cor:qgreaterone` Exact. For real `q > 1`, they
@@ -242,8 +242,10 @@ Current packages and retained intake records:
   `GeometricUniformMomentPolynomial.lean` (one definition and eight theorems),
   `GaussianBinomialGreaterOneAsymptotics.lean` (zero definitions and two
   theorems), and `GeometricResidualMoments.lean` (zero definitions and nine
-  theorems). The forward crosswalk is now 175 Exact, 83 Partial, 16 None, and
-  8 interface rows; the source ledger is 88 Lean-proved, 390 human-proved
+  theorems). The existing `FinitePolynomialFunctional.lean` module now has
+  zero definitions and sixteen public theorems. The forward crosswalk is now
+  176 Exact, 82 Partial, 16 None, and 8 interface rows; the source ledger is
+  89 Lean-proved, 389 human-proved
   frontier, 60 not
   applicable, and 9 conjectures. No PDF was generated locally while resolving
   this source-only merge, so the retained 389-page artifact does not render
@@ -578,6 +580,14 @@ crosswalk paragraphs inside the documents).
 `cor:scaled-geometric-moments` over an arbitrary field under precisely that
 injectivity hypothesis. The polynomial theorem permits arbitrary scale `c`,
 including zero, and thus subsumes the manuscript's nonzero-scale case.
+The new generic theorem
+`sum_weight_mul_eval_affine_of_topCoeff_extractor` in
+`FinitePolynomialFunctional.lean` transports any same-ring top-coefficient
+extractor across `x |-> a + b*x` over every commutative semiring. Composed
+with `halfQBinomial_negativeDyadic_polynomial_sum_eq_mersenne`, it proves
+`cor:geometric-prouhet-affine` exactly under the established rational-polynomial
+convention. It requires neither a nonzero scale nor distinct transformed
+nodes, so `b = 0` and `n = 0` are included.
 `AnalyticSeriesFilter.lean` carries the core to exact
 diagonal and Gaussian-tail identities for unconditionally summable sampled
 series. Its hypotheses are sharp at zero-weight nodes. The current
@@ -946,7 +956,7 @@ claims about the current canonical source. The canonical synthesis's current
 source and retained historical PDF are identified by the single exact receipt
 in the detailed package record above.
 
-The latest validated forward formalization ledger has 282 rows: 175 Exact, 83
+The latest validated forward formalization ledger has 282 rows: 176 Exact, 82
 Partial, 16 with no counterpart, and 8 interface-only. The basic
 geometric-uniform row is Exact: `GeometricUniformRealization.lean` proves that
 an `iIndepFun` process of unit-interval coordinates with uniform marginal laws

@@ -165,7 +165,7 @@ The newest combinatorial and certification tranche adds
 binary-word inversion and path-area generating functions, rectangular-box
 partition generating functions and counts, finite telescoping certificates,
 recurrence uniqueness, and rational-identity specialization. The live facade
-audit now contains 915 modules and 11,556 public declarations, with no
+audit now contains 915 modules and 11,557 public declarations, with no
 documentation gaps. Ten declarations come from the sibling
 `FabiusFunction.GeometricRichardsonGenerating` module (three definitions and
 seven theorems), whose exact comb-manuscript crosswalk is
@@ -238,7 +238,7 @@ when `k ≤ n`. The second is exactly
 `[2m,m]_q ~ q^(m*m) (q⁻¹;q⁻¹)_∞⁻¹`. Together with
 `gaussianBinomial_inv`, whose explicit hypotheses are `q ≠ 0` and `k ≤ n`,
 these declarations make `cor:qgreaterone` Exact. No shifted-central or wider
-nome-domain statement is claimed. The live census is 915 modules and 11,556
+nome-domain statement is claimed. The live census is 915 modules and 11,557
 public declarations. The retained historical PDF renders neither q-series
 leaf nor the preceding Lambert tranche, and no source/PDF parity is claimed.
 
@@ -251,6 +251,16 @@ exactness clause. Both work over an arbitrary field under injectivity of
 `k |-> q^k` on `range (n+1)`. The latter permits every scale `c`, including
 zero, so it subsumes the manuscript's `c != 0` premise. Together they make
 `cor:scaled-geometric-moments` Exact by composition.
+
+The existing `FinitePolynomialFunctional.lean` module now has zero definitions
+and sixteen public theorems. Its new
+`sum_weight_mul_eval_affine_of_topCoeff_extractor` transports any same-ring
+top-coefficient extractor across the affine nodes `a + b * node i` over every
+commutative semiring. Composed with
+`halfQBinomial_negativeDyadic_polynomial_sum_eq_mersenne`, it makes
+`cor:geometric-prouhet-affine` Exact under the established rational-polynomial
+convention. Neither a nonzero scale nor distinct transformed nodes are
+required, so `b = 0` and `n = 0` are covered.
 
 The arbitrary-space realization leaf proves that an `iIndepFun` family of
 unit-interval coordinates, each with the uniform marginal law, has full joint
@@ -326,16 +336,16 @@ entireness, zero-locus, reciprocal-power, and analytic-order results rather
 than duplicating their analytic proofs. In `QBinomialTheoremInfinite`,
 `finiteQPochhammerIn_zero_left` remains the unique declaration owned by
 `GaussianBinomialAtOne` and is imported rather than redeclared. The forward
-status ledger is 175 Exact, 83 Partial, 16 None, and 8 interface rows; the
+status ledger is 176 Exact, 82 Partial, 16 None, and 8 interface rows; the
 original 191-result pre-Fabius core is 36/29/123/3, and the
-completed source concordance records 88 Lean-proved rows, 390 human-proved
+completed source concordance records 89 Lean-proved rows, 389 human-proved
 frontier rows, 60 not-applicable rows, and 9 conjectures.  Its
 immutable source inventory and editorial dispositions remain unchanged; the
 generator's current-status projection records the q-Chu, terminating-reversal,
 q-Pfaff, two retained Jacobi two-square, partition-symmetry,
 Prouhet-partition, arbitrary-space geometric-uniform, and regular-central-sum
-advances, together with the fixed-column rate, greater-than-one, and scaled
-geometric polynomial-exactness closures.
+advances, together with the fixed-column rate, greater-than-one,
+scaled-geometric polynomial-exactness, and affine geometric-Prouhet closures.
 The basic geometric-uniform row is Exact under its arbitrary-space wording.
 The generic Banach-valued barycenter is
 `integral_id_weightedUniformDistribution`, and its real geometric

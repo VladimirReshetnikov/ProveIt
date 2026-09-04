@@ -8256,8 +8256,18 @@ For constants $a,b$ and every polynomial $p$ of degree at most $n$,
 \end{corollary}
 
 \begin{proof}
-Apply \Cref{thm:geometric-prouhet} to the polynomial $X\mapsto p(a+bX)$.  Its leading coefficient is $b^n[X^n]p(X)$.
+Set $q(X)=p(a+bX)$.  Then $\deg q\leq\deg p\leq n$, and the binomial
+expansion gives $[X^n]q=b^n[X^n]p$, including the cases $b=0$ and $n=0$.
+Applying \Cref{thm:geometric-prouhet} to $q$ gives the displayed identity.
 \end{proof}
+\emph{Lean status.}  Exact by composition of
+\path{Fabius.sum_weight_mul_eval_affine_of_topCoeff_extractor} in
+\path{FinitePolynomialFunctional.lean} with
+\path{Fabius.halfQBinomial_negativeDyadic_polynomial_sum_eq_mersenne} in
+\path{HalfQBinomial.lean}.  The transport theorem works over every
+commutative semiring and requires neither $b\ne0$ nor distinct transformed
+nodes; the half-base specialization retains the established
+$\RationalNumbers[X]$ convention.
 
 \begin{remark}
 The identity uses only $n+1$ geometrically spaced nodes.  The price for this compression is that the weights are nonuniform rational numbers involving the half-base Gaussian row.  The Thue--Morse construction below uses $2^n$ equally weighted signs on an arithmetic grid instead.
@@ -13651,7 +13661,7 @@ inside the proof below does not formalize the result the proof concludes.
   than a mathematical claim.
 \end{description}
 
-Of the 282 labelled forward results, 175 are \statusexact, 83 are
+Of the 282 labelled forward results, 176 are \statusexact, 82 are
 \statuspartial, 16 are \statusnone, and 8 are \statusna.  The original
 191-result pre-Fabius core had 36 \statusexact, 29 \statuspartial, 123
 \statusnone, and 3 \statusna{} entries.  The four integrated guide chapters
@@ -14266,11 +14276,11 @@ Asymptotic regimes and Bernoulli expansions & 5 & 1 & 2 & 0\\
 Exact limits, reciprocity, and research frontiers & 5 & 0 & 0 & 0\\
 Computation, certification, and formal proof architecture & 7 & 2 & 2 & 3\\
 Geometric interpolation and exact $q$-filters & 8 & 1 & 0 & 0\\
-Half-base arithmetic and Prouhet--Thue--Morse cancellation & 7 & 2 & 0 & 0\\
+Half-base arithmetic and Prouhet--Thue--Morse cancellation & 8 & 1 & 0 & 0\\
 Geometric uniform sums, $q$-cumulants, and the Fabius--Rvachev functions & 3 & 10 & 0 & 0\\
 Dyadic Gaussian--Thue--Morse structure and the values of $F$ & 8 & 46 & 2 & 0\\
 \midrule
-\textbf{Forward total} & 175 & 83 & 16 & 8\\
+\textbf{Forward total} & 176 & 82 & 16 & 8\\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -15677,7 +15687,12 @@ $0\le[m-1,n]_q\le1/(q;q)_n$; the exponent is written $n(n+1)/2$}\\[2pt]
 \Cref{thm:dyadic-product-evaluation} & \statusexact & \texttt{qPochhammer\_\allowbreak{}two\_\allowbreak{}pow\_\allowbreak{}eq\_\allowbreak{}ite}\newline{\footnotesize\texttt{HalfQBinomial}}\\[2pt]
 \Cref{cor:halfbase-root-locus} & \statuspartial & \texttt{halfQBinomial\_\allowbreak{}sum\_\allowbreak{}eq\_\allowbreak{}zero\_\allowbreak{}iff}\newline{\footnotesize\texttt{HalfQBinomial}}\\[2pt]
 \Cref{thm:geometric-prouhet} & \statusexact & \texttt{halfQBinomial\_\allowbreak{}negativeDyadic\_\allowbreak{}polynomial\_\allowbreak{}sum\_\allowbreak{}eq\_\allowbreak{}mersenne}\newline{\footnotesize\texttt{HalfQBinomial}}\\[2pt]
-\Cref{cor:geometric-prouhet-affine} & \statuspartial & \texttt{halfQBinomial\_\allowbreak{}negativeDyadic\_\allowbreak{}polynomial\_\allowbreak{}sum\_\allowbreak{}eq\_\allowbreak{}mersenne}\newline{\footnotesize\texttt{HalfQBinomial}}\\[2pt]
+\Cref{cor:geometric-prouhet-affine} & \statusexact &
+\texttt{sum\_\allowbreak{}weight\_\allowbreak{}mul\_\allowbreak{}eval\_\allowbreak{}affine\_\allowbreak{}of\_\allowbreak{}topCoeff\_\allowbreak{}extractor},
+\texttt{halfQBinomial\_\allowbreak{}negativeDyadic\_\allowbreak{}polynomial\_\allowbreak{}sum\_\allowbreak{}eq\_\allowbreak{}mersenne}\newline
+{\footnotesize\texttt{FinitePolynomialFunctional}; \texttt{HalfQBinomial};
+exact by composition under the canonical rational-polynomial convention;
+the generic affine transport needs neither $b\ne0$ nor distinct nodes}\\[2pt]
 \Cref{thm:thue-morse-product} & \statusexact & \texttt{prod\_\allowbreak{}one\_\allowbreak{}sub\_\allowbreak{}pow\_\allowbreak{}two\_\allowbreak{}pow}\newline{\footnotesize\texttt{ThueMorseProductIdentity}}\\[2pt]
 \Cref{thm:thue-morse-moments} & \statusexact & \texttt{sum\_\allowbreak{}thueMorseSign\_\allowbreak{}mul\_\allowbreak{}affine\_\allowbreak{}pow\_\allowbreak{}eq\_\allowbreak{}zero}\newline{\footnotesize\texttt{ThueMorseSparseProuhet}}\\[2pt]
 \Cref{cor:thue-morse-prouhet-partition} & \statusexact &
