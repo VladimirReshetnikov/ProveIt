@@ -578,6 +578,7 @@ import FabiusFunction.Regularity
 import FabiusFunction.Convexity
 import FabiusFunction.EffectiveFlatness
 import FabiusFunction.SharpFlatness
+import FabiusFunction.FabiusEndpointTwoTerm
 import FabiusFunction.FabiusInverse
 import FabiusFunction.InverseModulus
 import FabiusFunction.FabiusInverseEffectiveContinuity
