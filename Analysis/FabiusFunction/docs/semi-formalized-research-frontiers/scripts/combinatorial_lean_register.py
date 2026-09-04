@@ -38,6 +38,14 @@ if '\\newcommand{\\lean}' not in s:
 # ---------------------------------------------------------------- statuses
 # label -> (status, "declarations (module)")
 STATUS = {
+ 'lem:merged-formal-rescaling': ('Lean',
+   r"\cref{eq:merged-formal-rescaling-derivative} is "
+   r"\lean{Fabius.derivative_rescale} over every commutative semiring; "
+   r"\lean{Fabius.derivative_rescale_exp}, \lean{Fabius.rescale_zero_exp}, and "
+   r"\lean{Fabius.rescale_exp_add_one} give the exponential specializations "
+   r"over every commutative $\RationalNumbers$-algebra "
+   r"(\lean{ExponentialRescaling}). The general product law is Mathlib's "
+   r"\lean{PowerSeries.exp_mul_exp_eq_exp_add}."),
  'thm:first-cycle': ('partial',
    r"recurrence and boundary values are Mathlib's \lean{Nat.stirlingFirst_succ_succ}, "
    r"\lean{Nat.stirlingFirst_succ_zero}, \lean{Nat.stirlingFirst_eq_zero_of_lt}; the "
