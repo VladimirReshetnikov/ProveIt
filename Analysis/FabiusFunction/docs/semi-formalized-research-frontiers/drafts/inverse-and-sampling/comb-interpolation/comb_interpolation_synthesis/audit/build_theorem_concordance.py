@@ -162,17 +162,28 @@ LEAN_PROOFS = {
         "Fabius.normalized_sum_Ioo_"
         "rvachevDeconvolvedPolynomial_mul_shifted_rvachevUp",
     ),
+    "gq:prop:q-Appell-falling": (
+        "FabiusFunction.RvachevAppellHasse",
+        "Fabius.eval_rvachevDeconvolvedPolynomial_qFallingPower",
+    ),
+    "gq:thm:gaussian-Appell-decoder": (
+        "FabiusFunction.RvachevAppellHasse",
+        "Fabius.geometric_lagrangeRvachevDecoder_eq",
+    ),
     "gq:cor:interpolation-up-factorization": (
         "FabiusFunction.LagrangeRvachevSynthesis",
         "Fabius.sum_Ioo_lagrangeRvachevAtomCoefficient_"
         "mul_shifted_rvachevUp",
     ),
+    "gq:thm:gaussian-Appell-biorthogonality": (
+        "FabiusFunction.LagrangeRvachevMatrix",
+        "Fabius.lagrangeRvachevEncoderMatrix_mul_decoderMatrix",
+    ),
 }
 
-# These declarations verify exact generic scalar ingredients of compound
-# manuscript results without upgrading the whole source row to Lean-proved.
-# In particular, the Gaussian closed forms and Matrix-level packaging in the
-# paper are stronger than the declarations named here.
+# These declarations record additional checked ingredients of compound
+# manuscript results.  A row is upgraded only when its primary declaration
+# and the support listed here jointly discharge the whole source statement.
 LEAN_SUPPORT: dict[str, tuple[str, tuple[str, ...], str]] = {
     "thm:weight-valuation": (
         "FabiusFunction.PrimePowerBinomialValuation",
@@ -199,7 +210,21 @@ LEAN_SUPPORT: dict[str, tuple[str, tuple[str, ...], str]] = {
         "assumes a complete normed field, norm(q) < 1, q != 0, and absolute "
         "summability of the normalized data series. A separate explicit-"
         "convolution theorem is unconditional over commutative rings, even "
-        "at q = 0, but does not supply Lagrange interpolation semantics there.",
+            "at q = 0, but does not supply Lagrange interpolation semantics there.",
+    ),
+    "gq:prop:q-Appell-falling": (
+        "FabiusFunction.RvachevPolynomialSynthesis",
+        (
+            "Fabius.normalized_sum_Ioo_"
+            "rvachevDeconvolvedPolynomial_mul_shifted_rvachevUp",
+        ),
+        "The primary declaration proves the displayed elementary-symmetric "
+        "q-falling-power formula. Combined with the generic finite polynomial "
+        "synthesis theorem at M = 2^n, its degree theorem, and k <= n, it also "
+        "gives the proposition's consequent on [-1, 1]. The coefficients are "
+        "the finite Bell/binomial-convolution reciprocal of the formally "
+        "verified Rvachev raw moments; this does not add a separate analytic "
+        "reciprocal-MGF power-series theorem.",
     ),
     "gq:thm:gaussian-Appell-decoder": (
         "FabiusFunction.LagrangeRvachevSynthesis",
@@ -207,9 +232,15 @@ LEAN_SUPPORT: dict[str, tuple[str, tuple[str, ...], str]] = {
             "Fabius.normalized_sum_Ioo_lagrangeRvachevDecoder_"
             "mul_shifted_rvachevUp",
         ),
-        "Lean proves the generic finite scalar decoder synthesis; the "
-        "geometric Gaussian closed form, elementary-symmetric formula, and "
-        "prefactor in this compound theorem remain manuscript-only.",
+        "The primary declaration proves the geometric elementary-symmetric "
+        "decoder entry and Gaussian q-Pochhammer prefactor. Combined with the "
+        "generic finite scalar decoder synthesis at M = 2^n, it proves all "
+        "three displayed formulas in this compound theorem. Under the "
+        "manuscript assumptions 0 < q < 1 and c > 0, Lean's division by "
+        "c^n*q^(choose(j,2)+j*(n-j)) is the same prefactor as "
+        "c^(-n)*q^(-n*j+choose(j+1,2)). The algebraic Lean identity is "
+        "totalized at zero or colliding nodes, where it is not a cardinal "
+        "interpolation claim.",
     ),
     "gq:cor:interpolation-up-factorization": (
         "FabiusFunction.LagrangeRvachevSynthesis",
@@ -224,14 +255,16 @@ LEAN_SUPPORT: dict[str, tuple[str, tuple[str, ...], str]] = {
         "is the exact compiled crosswalk recorded in this row.",
     ),
     "gq:thm:gaussian-Appell-biorthogonality": (
-        "FabiusFunction.LagrangeRvachevSynthesis",
+        "FabiusFunction.LagrangeRvachevMatrix",
         (
-            "Fabius.normalized_sum_Ioo_lagrangeRvachevDecoder_eval_node",
-            "Fabius.sum_lagrangeRvachevDecoder_eq_one",
+            "Fabius.lagrangeRvachevEncoderMatrix_nonneg",
+            "Fabius.sum_lagrangeRvachevEncoderMatrix_row_eq_one",
+            "Fabius.sum_lagrangeRvachevDecoderMatrix_row_eq_one",
         ),
-        "Lean proves componentwise node biorthogonality and the unnormalized "
-        "decoder row-sum law; no Matrix wrapper or row-stochastic encoder "
-        "package is formalized.",
+        "The generic typed Matrix theorem proves the exact right inverse, "
+        "and the supporting declarations prove encoder nonnegativity, "
+        "encoder row stochasticity, and decoder row unitality under the "
+        "same finite hypotheses.",
     ),
 }
 

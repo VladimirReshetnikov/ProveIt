@@ -53,9 +53,11 @@ declaration.  The formal API was audited at the source snapshot
 \path{e5175d5eb78d66f4e31db3bc506541b9bae12c57}; the relevant files and
 declarations listed below were unchanged when rechecked at intake head
 \path{ffcdbdac47246bd553f272bd1ceac441f8dd4f0c}.  The current crosswalk also
-audits the later compiled modules
-\path{FabiusFunction.LagrangeRvachevSynthesis} and
-\path{FabiusFunction.GeometricRichardsonGenerating}; that current formal API is
+audits the later source modules
+\path{FabiusFunction.LagrangeRvachevSynthesis},
+\path{FabiusFunction.LagrangeRvachevMatrix}, and
+\path{FabiusFunction.GeometricRichardsonGenerating}, and
+\path{FabiusFunction.RvachevAppellHasse}; that current formal API is
 separate from the immutable manuscript source pin.
 
 The repository already formalizes substantial finite foundations:
@@ -83,6 +85,20 @@ The repository already formalizes substantial finite foundations:
       \path{lagrangeRvachevAtomCoefficient_eq_deconvolved_interpolate},
       \path{sum_Ioo_lagrangeRvachevAtomCoefficient_mul_shifted_rvachevUp},
       and \path{sum_lagrangeRvachevDecoder_eq_one}.
+\item finite Appell--Hasse and explicit geometric-decoder formulas, including
+      \path{rvachevReciprocalMomentRat_odd},
+      \path{rvachevDeconvolvedPolynomial_eq_sum_even_hasseDeriv},
+      \path{eval_rvachevDeconvolvedPolynomial_qFallingPower},
+      \path{geometric_nodalWeight_eq_geometricQPochhammer}, and
+      \path{geometric_lagrangeRvachevDecoder_eq};
+\item the corresponding typed finite matrices
+      \path{lagrangeRvachevEncoderMatrix} and
+      \path{lagrangeRvachevDecoderMatrix}, with encoder nonnegativity and row
+      stochasticity, decoder row unitality, and the exact right inverse in
+      \path{lagrangeRvachevEncoderMatrix_nonneg},
+      \path{sum_lagrangeRvachevEncoderMatrix_row_eq_one},
+      \path{sum_lagrangeRvachevDecoderMatrix_row_eq_one}, and
+      \path{lagrangeRvachevEncoderMatrix_mul_decoderMatrix}.
 \end{enumerate}
 
 No one-to-one Lean declaration was found for this report's Jackson
@@ -90,11 +106,12 @@ divided-difference theorem, Gaussian Newton basis pair, arbitrary-evaluation
 complete-homogeneous interpolation remainder, analytic infinite Newton
 convergence theorem, boundary-layer or global Lebesgue asymptotics,
 Newton--Jackson quadrature, Fabius boundary-residue and fixed-jet bounds,
-gap-growth bound, the closed geometric Gaussian--Appell decoder formula and
-prefactor, or the Matrix-level right-inverse/stochastic-encoder package.
-The new scalar Lagrange--Rvachev API covers the generic synthesis,
-coefficient, nodewise-biorthogonality, and decoder-row-sum layers only.  Some
-remaining statements follow on paper from formalized finite ingredients, but
+or the gap-growth bound.  The scalar, Hasse, and Matrix Lagrange--Rvachev APIs
+cover the generic synthesis, q-falling and geometric closed formulas,
+coefficient, nodewise-biorthogonality, decoder-row-sum, and finite
+Markov/right-inverse layers.  They do not add an analytic reciprocal-MGF
+power-series identity or decoder optimization.  Some remaining statements
+follow on paper from formalized finite ingredients, but
 that is not the same as a checked Lean theorem.  The conjectures and research
 problems have no proof status in either layer.
 
@@ -1679,8 +1696,8 @@ This transform is a meeting point of three triangular arrays:
 The resulting coefficients need not be small.  Exact values begin
 \begin{align}
  \FabiusGeometricNewtonCoefficient{0}{1/2}&=1,
- &\FabiusGeometricNewtonCoefficient{1}{1/2}&=1,
- &\FabiusGeometricNewtonCoefficient{2}{1/2}&=-\frac{26}{27},
+ &\FabiusGeometricNewtonCoefficient{1}{1/2}&=1,\notag\\
+ \FabiusGeometricNewtonCoefficient{2}{1/2}&=-\frac{26}{27},
  &\FabiusGeometricNewtonCoefficient{3}{1/2}&=-\frac{128}{27},
  \label{gq:eq:first-fabius-newton-1}\\
  \FabiusGeometricNewtonCoefficient{4}{1/2}&=-\frac{4253248}{637875},
@@ -2215,6 +2232,17 @@ Substitute $r=2s$ into \eqref{gq:eq:up-Appell-operator}, and then apply
 \Cref{gq:thm:up-polynomial-synthesis}.
 \end{proof}
 
+\paragraph{Lean counterpart.}
+\path{eval_rvachevDeconvolvedPolynomial_qFallingPower} proves
+\eqref{gq:eq:q-Appell-falling} with the finite Bell/binomial-convolution
+reciprocal Rvachev moments.  Combined with
+\path{normalized_sum_Ioo_rvachevDeconvolvedPolynomial_mul_shifted_rvachevUp}
+at \(M=2^n\), the exact degree of the q-falling power, and \(k\le n\), it also
+proves \eqref{gq:eq:q-falling-up-synthesis}.  Thus
+\cref{gq:prop:q-Appell-falling} is recorded as Lean-proved.  This finite
+identity does not separately formalize the analytic reciprocal-MGF expansion
+\eqref{gq:eq:up-inverse-moments}.
+
 The polynomials $\mathscr A_k$ simultaneously deform two classical
 sequences: setting all inverse moments except $\gamma_0$ to zero recovers the
 $q$-Pochhammer Newton basis, while letting $q\to1$ in logarithmic coordinates
@@ -2279,10 +2307,18 @@ The generic cardinal-synthesis identity in
 \eqref{gq:eq:decoder-entry-definition}, is formalized for arbitrary finite
 node families by
 \path{normalized_sum_Ioo_lagrangeRvachevDecoder_mul_shifted_rvachevUp}.
-That declaration does not derive the geometric elementary-symmetric formula
-\eqref{gq:eq:decoder-entry-explicit} or the Gaussian prefactor
-\eqref{gq:eq:decoder-gaussian-prefactor}.  Because this theorem asserts all
-three formulas, its concordance row remains a human-proved frontier result.
+The downstream theorem \path{geometric_lagrangeRvachevDecoder_eq} proves
+the geometric elementary-symmetric formula
+\eqref{gq:eq:decoder-entry-explicit} together with the Gaussian prefactor
+\eqref{gq:eq:decoder-gaussian-prefactor}.  Lean writes the latter as division
+by
+\(c^nq^{\binom{j}{2}+j(n-j)}\), which under \(c>0\) and \(0<q<1\) is exactly
+the displayed \(c^{-n}q^{-nj+\binom{j+1}{2}}\) form.  Combined with the generic
+synthesis theorem at \(M=2^n\), these declarations prove all three formulas,
+so \cref{gq:thm:gaussian-Appell-decoder} is recorded as Lean-proved.  The
+algebraic coefficient theorem is totalized even at zero or colliding nodes;
+only the manuscript's distinct positive nodes carry the cardinal
+interpretation.
 
 \begin{corollary}[Interpolation through an atomic dictionary]
 \label{gq:cor:interpolation-up-factorization}
@@ -2361,18 +2397,23 @@ from $u\ge0$.  Finally
 \end{proof}
 
 \paragraph{Formalization boundary.}
-The component identity is formalized by
-\path{normalized_sum_Ioo_lagrangeRvachevDecoder_eval_node}, and
-\path{sum_lagrangeRvachevDecoder_eq_one} proves that the unnormalized decoder
-row sums to one for a nonempty distinct node family.  The module does not
-package these scalar sums as a typed Matrix identity, nor does it formalize
-the row-stochastic encoder assertion.  The compound theorem therefore remains
-a human-proved frontier result in the concordance.
+In \path{FabiusFunction.LagrangeRvachevMatrix}, the definitions
+\path{lagrangeRvachevEncoderMatrix} and
+\path{lagrangeRvachevDecoderMatrix} specialize here to $hB$ and $D$.
+The declarations \path{lagrangeRvachevEncoderMatrix_nonneg},
+\path{sum_lagrangeRvachevEncoderMatrix_row_eq_one},
+\path{sum_lagrangeRvachevDecoderMatrix_row_eq_one}, and
+\path{lagrangeRvachevEncoderMatrix_mul_decoderMatrix} prove, respectively,
+all four assertions above under the displayed admissibility hypotheses.  This
+theorem is therefore recorded as Lean-proved in the concordance; the separate
+closed Gaussian formula for the decoder remains manuscript-only.
 
-Thus a positive averaging map has an exact signed polynomial decoder.  The
-right inverse cannot generally be nonnegative: reconstructing high-degree
-cardinals requires cancellation, and the size of that cancellation reflects
-the geometric Lebesgue growth.
+Thus a nonnegative averaging map has an exact polynomial decoder.  Whenever
+two distinct encoder rows overlap in a strictly positive column,
+\path{exists_lagrangeRvachevDecoderMatrix_entry_neg_of_row_overlap} produces
+a negative decoder entry; this is the precise condition under which the
+formal API forces signs.  The size of that cancellation reflects the geometric
+Lebesgue growth.
 
 \subsection{Closing the loop for the Rvachev function}
 
@@ -2851,10 +2892,11 @@ itself a worthwhile problem.
 
 \subsection{Decoder variation, total positivity, and optimal gauges}
 
-The matrix $hB$ in \Cref{gq:thm:gaussian-Appell-biorthogonality} is a positive
-row-stochastic sampling operator.  Its right inverse $D$ has row sum one but
-must use signs.  The size of its row variation controls amplification from
-nodal perturbations to atom amplitudes.
+The matrix $hB$ in \Cref{gq:thm:gaussian-Appell-biorthogonality} is a
+nonnegative row-stochastic sampling operator.  Its right inverse $D$ has row
+sum one and, whenever two distinct encoder rows overlap in a strictly positive
+column, must have a negative entry.  The size of its row variation controls
+amplification from nodal perturbations to atom amplitudes.
 
 \begin{problem}[Minimum-variation atomic decoder]
 \label{gq:prob:minimum-variation-decoder}
@@ -2947,13 +2989,13 @@ a claim that the whole report is already formalized.
 \item \textbf{Atomic synthesis.}  The generic scalar decoder synthesis,
       coefficient factorization, full interpolation loop, componentwise node
       biorthogonality, and unnormalized decoder row-sum law are formalized in
-      \path{FabiusFunction.LagrangeRvachevSynthesis}.  The remaining tasks are
-      to derive the geometric elementary-symmetric decoder and Gaussian
-      prefactor in
-      \eqref{gq:eq:decoder-entry-explicit}--\eqref{gq:eq:decoder-gaussian-prefactor}
-      and to package the resulting scalar identities as the Matrix statement
-      \eqref{gq:eq:stochastic-right-inverse}.  Decoder optimization remains
-      the open problem \Cref{gq:prob:minimum-variation-decoder}.
+      \path{FabiusFunction.LagrangeRvachevSynthesis}; the typed Markov encoder,
+      decoder, row laws, exact right inverse, and conditional sign obstruction
+      are formalized in \path{FabiusFunction.LagrangeRvachevMatrix}.  The
+      finite Appell--Hasse, q-falling, geometric elementary-symmetric decoder,
+      and Gaussian prefactor formulas are formalized in
+      \path{FabiusFunction.RvachevAppellHasse}.  Decoder optimization remains the open problem
+      \Cref{gq:prob:minimum-variation-decoder}.
 \end{enumerate}
 
 The sharp global Lebesgue theorem is the most analytically demanding new

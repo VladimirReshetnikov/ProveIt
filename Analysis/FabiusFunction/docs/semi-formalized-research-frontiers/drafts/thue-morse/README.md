@@ -3,7 +3,7 @@
 The Thue-Morse side of the corpus, consolidated (2026-08-28) into the
 single volume [`Thue_Morse_Atlas_and_Frontiers.tex`](Thue_Morse_Atlas_and_Frontiers/Thue_Morse_Atlas_and_Frontiers.tex)
 ([PDF](Thue_Morse_Atlas_and_Frontiers/Thue_Morse_Atlas_and_Frontiers.pdf),
-137 pp):
+current synchronized 144-page `b899` publication; historical predecessor 137 pages):
 
 - **Part I** — *A Unified Formula Atlas for the Thue–Morse Sequence*
   (formerly `Thue_Morse_Formula_Atlas/`);
@@ -85,8 +85,31 @@ At the same commit, the first eight public declarations of
 `ofReal_exp_mpLimit_eq_gammaTower_div`.  The two definitions are total for real
 `a`; the Mellin, integral, dyadic, and ratio theorems require positive
 parameters.  GammaLog is the chosen derivative coordinate, not a proved
-`Complex.log` identity.  Only the parameter-`a` differential and iterated
-differential ladder remains open in this tower tranche.
+`Complex.log` identity.  The source-only
+`ThueMorseGammaTowerDifferential.lean` leaf adds no definitions and exactly
+three theorems: `hasDerivAt_mellin_mellinKernel_parameter`,
+`hasDerivAt_thueMorseGammaLog_succ`, and
+`iteratedDeriv_thueMorseGammaLog`.  For every complex Mellin exponent and
+positive real damping parameter the first theorem proves differentiation
+under the integral with the exponent shift `s ↦ s + 1`; the other two give
+`L_(r+1)'(a) = (r+1)L_r(a)` and the full falling-factorial iterated law for
+`k ≤ r`.  Thus `p2:thm:gamma-tower` is Exact when its displayed logarithm is
+read, as above, as the chosen GammaLog coordinate.  Every differential theorem
+retains `0 < a`; no principal-`Complex.log` identity or nonpositive-parameter
+extension is asserted. The retained 137-page PDF predates this source closure
+and is a historical render. The current synchronized `b899` TeX has 10,553
+lines and 481,614 bytes, with SHA-256
+`cced4128c359ec467baaf1a55c21c68424397f783a39ea7fe2af5a94975b9dd5`.
+Exactly three serial halt-on-error passes from absent sidecars ran 139 pages /
+1,681,559 bytes → 144 / 1,739,891 → 144 / 1,739,884. The final 144-page,
+1,739,884-byte PDF has SHA-256
+`1c81863b0976017fab1b7f5972c50cd541b3ffb05306bf85994548a56a782fc0`.
+All 144 pages are A4 at rotation zero, render successfully, and contain
+nonblank text. All 38 font rows are embedded and subset, eight are Libertinus,
+and none is Type 3. Required log, reference/rerun, metadata (including the
+populated intended author), visual, cleanup, and forbidden-basename gates
+passed with no horizontal or vertical box. Visual inspection covered physical
+pages 1, 93, 128, 138, and 144; every sample was clean.
 
 `CentralBinomialValuation.lean` supplies the atlas's direct central-binomial
 crosswalk.  Its exhaustive public API is

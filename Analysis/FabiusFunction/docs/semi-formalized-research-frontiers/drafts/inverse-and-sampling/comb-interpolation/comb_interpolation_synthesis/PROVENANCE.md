@@ -154,6 +154,18 @@ volume retain package-level hashes, contribution summaries, and original bytes
 in its predecessor provenance appendix and Git history; this package does not
 claim a second theorem-by-theorem concordance for those nine earlier sources.
 
+The current-status projection of those immutable rows contains 7 Lean-proved,
+159 human-proved frontier, 20 conjecture, 30 open-problem, and 16
+non-applicable rows.  The source-only `FabiusFunction.RvachevAppellHasse`
+overlay promotes exactly `gq:prop:q-Appell-falling` and
+`gq:thm:gaussian-Appell-decoder`: their explicit finite formulas are supplied
+by `Fabius.eval_rvachevDeconvolvedPolynomial_qFallingPower` and
+`Fabius.geometric_lagrangeRvachevDecoder_eq`, and their synthesis clauses are
+the corresponding already-formalized generic finite polynomial and Lagrange
+decoder theorems.  This is a finite algebraic closure, not a new analytic
+reciprocal-MGF power-series theorem; totalized formulas at zero or colliding
+nodes are not asserted to be cardinal interpolation schemes.
+
 ## Historical checksum ledgers
 
 Eight source-package ledgers contain 151 entries in total. Re-evaluating them
@@ -187,9 +199,13 @@ store for superseded wrappers and publications.
 
 Publication validation is recorded once in
 [`assets/VALIDATION.md`](assets/VALIDATION.md). It preserves the completed
-historical PDF, canonical-validator, and root-ledger gates while marking the
-current semantic union—upstream Lagrange-crosswalk material together with the
-replayed general-$q$ and endpoint-jet chapter edits—as requiring a new build
-and validation cycle. Full numerical replay and fresh-checkout reproduction
+historical PDF, canonical-validator, and root-ledger gates and records the
+current synchronized `b899` semantic union: a 187-line / 6,724-byte driver,
+15-file / 12,597-line / 477,163-byte recursive TeX closure, and 160-page /
+2,468,000-byte PDF. Their SHA-256 receipts and three-pass/gate evidence are kept
+there. This current build renders the upstream Lagrange-crosswalk material,
+replayed general-$q$ and endpoint-jet chapter edits, and Rvachev--Appell Hasse
+crosswalk.
+Full numerical replay and fresh-checkout reproduction
 remain separate reproducibility work; this provenance record neither
 duplicates nor supersedes those checks.

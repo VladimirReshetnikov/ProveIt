@@ -836,6 +836,17 @@ Lean module & Exact source declarations & Legitimate human crosswalk \\
 \endfoot
 \bottomrule
 \endlastfoot
+\nolinkurl{GeometricResidualMoments}
+&
+\nolinkurl{sum_geometricLagrangeWeight_mul_scaled_geometric_pow_of_pos};
+\nolinkurl{sum_geometricLagrangeWeight_mul_eval_scaled_geometric}
+&
+The positive-degree scaled geometric moments and polynomial exactness at zero.
+Both declarations work over an arbitrary field under injectivity of
+\(k\mapsto q^k\) on the finite node range.  The polynomial theorem allows an
+arbitrary scale, so it subsumes the manuscript's \(c\ne0\) hypothesis and also
+includes the mass-one boundary \(c=0\). \\
+
 \nolinkurl{FabiusInverse}
 &
 \nolinkurl{fabiusReal_fabiusInv};
@@ -879,18 +890,98 @@ identify the correct signed leading square-root scale for a possible
 regularization; they establish neither a regularized analytic coordinate
 chart nor a higher Puiseux remainder bound. \\
 
-\nolinkurl{GeometricUniformLaw}
+\nolinkurl{WeightedUniformDistribution};
+\nolinkurl{GeometricUniformLaw};
+\nolinkurl{GeometricUniformRealization}
 &
+\nolinkurl{integral_id_weightedUniformDistribution};
 \nolinkurl{hasSum_geometricUniformWeight};
 \nolinkurl{geometricUniformSeries_mem_Icc};
 \nolinkurl{geometricUniformDistribution_selfSimilar};
-\nolinkurl{geometricUniformDistribution_support_eq_Icc}
+\nolinkurl{integral_id_geometricUniformDistribution_eq_one_half};
+\nolinkurl{geometricUniformDistribution_support_eq_Icc};
+\nolinkurl{uniformProcess_hasLaw_uniformProduct};
+\nolinkurl{geometricUniformRealization_hasLaw};
+\nolinkurl{summable_norm_geometricUniformRealization_terms};
+\nolinkurl{geometricUniformRealization_mem_Icc};
+\nolinkurl{map_geometricUniformRealization_support_eq_Icc};
+\nolinkurl{integral_geometricUniformRealization_eq_one_half};
+\nolinkurl{geometricUniformRealization_identDistrib_one_sub};
+\nolinkurl{geometricUniformRealization_identDistrib_affine};
+\nolinkurl{measureReal_geometricUniformRealization_le_eq_integral}
 &
-Convergence, support, and self-similarity of Lean's normalized \([0,1]\)
-geometric uniform law.  If
+The generic Banach-valued barycenter and its mean-one-half geometric
+specialization, together with the arbitrary-space realization of the
+normalized \([0,1]\) geometric uniform law.  Independent coordinates with
+uniform marginal laws are assumed \nolinkurl{iIndepFun}; their joint law is
+the canonical product law, so pointwise convergence, support, mean,
+reflection, and the CDF equation transfer exactly.  The affine fixed-point
+theorem uses a fresh copy with the canonical law that is independent of the
+head coordinate.  If
 \(Z=(1-q)\sum_{j\ge0}q^jV_j\) and \(U_j=2V_j-1\), then
 \(\sum_{j\ge0}q^jU_j=(2Z-1)/(1-q)\).  This affine rescaling underlies
 Theorem~\ref{thm:fr-total-identifiability}. \\
+
+\nolinkurl{RegularCentralQBinomialSum}
+&
+\nolinkurl{qNumberC};
+\nolinkurl{regularCentralQBinomialTerm};
+\nolinkurl{hasSum_regularCentralQBinomial}
+&
+The regular central \(q\)-binomial sum for \(0<q<1\), with no real-part
+restriction on the complex parameter.  Its one infinite-product
+nonvanishing premise is exactly the simultaneous generalized-\(q\)-number
+denominator condition.  Even negative integral parameters remain allowed;
+there the totalized \nolinkurl{qGammaC} quotient is zero in agreement with the
+product side, without asserting holomorphy at a pole. \\
+
+\nolinkurl{GaussianBinomialFixedColumnRate}
+&
+\nolinkurl{norm_finiteQPochhammerIn_pow_sub_one_le_exp};
+\nolinkurl{norm_finiteQPochhammerIn_pow_sub_one_le};
+\nolinkurl{norm_finiteQPochhammerIn_self_mul_gaussianBinomial_sub_one_le};
+\nolinkurl{norm_gaussianBinomial_sub_inv_finiteQPochhammerIn_le};
+\nolinkurl{norm_gaussianBinomial_add_sub_inv_finiteQPochhammerIn_le};
+\nolinkurl{tendsto_gaussianBinomial_add_atTop};
+\nolinkurl{gaussianBinomial_fixedColumn_relativeError_isBigO};
+\nolinkurl{gaussianBinomial_shifted_fixedColumn_relativeError_isBigO};
+\nolinkurl{gaussianBinomial_fixedColumn_error_isBigO};
+\nolinkurl{gaussianBinomial_shifted_fixedColumn_error_isBigO}
+&
+The generic product defect and denominator-free relative bound, explicit
+fixed and shifted additive bounds, shifted fixed-column limit, and all four
+relative/additive Big-O wrappers.  The product bounds need only a normed
+commutative ring with multiplicative norm; the Gaussian quotient statements
+hold over every normed field for \(\lVert q\rVert<1\).  No nonzero-nome
+assumption is used, so \(q=0\) is included. \\
+
+\nolinkurl{GaussianBinomialGreaterOneAsymptotics}
+&
+\nolinkurl{gaussianBinomial_gt_one_fixedColumn_relativeError_isBigO};
+\nolinkurl{gaussianBinomial_gt_one_central_isEquivalent}
+&
+For real \(q>1\), the fixed-column result controls the exact normalized
+relative error
+\((q^{-1};q^{-1})_k(q^{k(n-k)})^{-1}[n,k]_q-1\) by
+\(O((q^{-1})^{n-k+1})\), and the central result proves
+\([2m,m]_q\sim q^{m^2}(q^{-1};q^{-1})_\infty^{-1}\).  Together with
+\nolinkurl{gaussianBinomial_inv}, these are precisely the three clauses of
+\Cref{cor:qgreaterone}.  Natural subtraction is total in the fixed-column
+declaration, reciprocity is needed only eventually when \(k\le n\), and no
+shifted-central or non-real extension is asserted. \\
+
+\nolinkurl{HalfQBinomialRootSimplicity}
+&
+\nolinkurl{halfQBinomial_sum_rootMultiplicity_two_pow}
+&
+The zero-definition, one-theorem leaf proves multiplicity exactly one for
+every displayed root \(2^j\), \(j<n\), of the rational half-base polynomial.
+Together with \nolinkurl{halfQBinomial_sum_eq_zero_iff} and
+\nolinkurl{gaussianBinomial_half_eq_halfQBinomial}, it makes
+\Cref{cor:halfbase-root-locus} exact by composition under the canonical
+\(\RationalNumbers[X]\) and rational-root convention.  Injective scalar
+extension preserves the displayed multiplicities, but the leaf does not
+state a separate all-roots classification over every extension field. \\
 
 \nolinkurl{GeometricSincCharacteristicFunction}
 &

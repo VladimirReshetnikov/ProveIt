@@ -36,7 +36,9 @@ the absorbed source documents themselves are deleted after merging,
 with SHA-256 provenance in the document itself (git history is the
 archive).
 
-The synchronized publication receipt (2026-09-04) records the current
+The synchronized publication receipt (2026-09-04) records a historical
+checkpoint superseded by the current `b899` receipt below. The checkpoint
+comprised the
 4,876-line, 177,511-byte TeX source at SHA-256
 `d852a345685dd61335a89fc4fd1092680bdc597a5d1e6ac612883946ad0d99ea`.
 Exactly three successful serial halt-on-error passes from absent sidecars ran
@@ -50,6 +52,19 @@ nonblank-text checks, and representative visuals passed; generated sidecars
 and forbidden checksum basenames both close at zero. The previous clipped-box
 warning is gone; the sole harmless 0.82504 pt overfull box is readable, and the
 final log has 133 underfull diagnostics.
+
+The current synchronized `b899` source has 4,940 lines and 181,577 bytes, with
+SHA-256
+`2e6a4782fc4e4b945869f5fb45b39cf94e8dc34296866edf26b4cdfe19b1898b`.
+Exactly three serial halt-on-error passes from absent sidecars ran 68 pages /
+968,083 bytes → 70 / 991,847 → 70 / 991,848. The final 70-page,
+991,848-byte PDF has SHA-256
+`f802d78299f8f6aca7d31b935a4884f9343389a7307decb04c18b5159c8a4f04`.
+All 70 pages are A4 at rotation zero, render successfully, and contain nonblank
+text. All 42 font rows are embedded and subset, five are Libertinus, and none
+is Type 3. Required log, reference/rerun, metadata (with intentionally blank
+author and keywords), visual, cleanup, and forbidden-basename gates passed. The
+only box diagnostic is one nonblocking 0.83 pt horizontal box.
 
 Six polynomial-logarithmic transseries packages were also filed here on
 2026-09-01, because Lambert W is their guiding example.  Their subject is the
@@ -123,19 +138,86 @@ that explicit removable-origin convention.  The Guide's nearest-nonzero-zero
 argument is not the formal proof route.  With the three finite
 branch-coordinate modules, the four-module union is four definitions and 37
 theorems, 41 declarations.  The signed higher/convergent Puiseux program
-remains open.  The synchronized 70-page Guide PDF recorded above renders the
-current source overlay.  The exact-radius
+remains open. The current 70-page `b899` Guide PDF recorded above renders the
+source overlay and is synchronized; the preceding 70-page receipt remains
+historical. The exact-radius
 four-theorem checkpoint had census 903/11,447; the fifth theorem brought the
 next local checkpoint to 903 modules and 11,449 public declarations, including
 the retained unconditional public q-Pochhammer bridge.  The later sibling
 `FabiusFunction.GeometricUniformMomentPolynomial` module has one definition
 and eight theorems for its recursive polynomial, residual-product recurrence,
-degree bound, value at zero, and first four nonconstant cases.  It raises the
-semantic-union census to 904 modules and 11,458 public declarations; its
-external source label `p7:thm:Pn` remains Partial because the analytic
-moment-coefficient normalization and leading/odd-degree clause are not part of
-that algebraic leaf.  The sibling source-only addition is likewise absent from the retained
-historical PDFs.
+degree bound, value at zero, and first four nonconstant cases.  That algebraic
+leaf produced the historical checkpoint 904 modules and 11,457 public
+declarations.  Its companion
+`FabiusFunction.GeometricUniformMomentPolynomialBridge` has the exhaustive
+surface zero definitions and one theorem,
+`Fabius.geometricUniformMomentPolynomial_eval₂_eq_mgf_taylorCoefficient`.
+For every real `|q| < 1`, it supplies the actual-MGF normalization and makes
+external source label `p7:eq:Pn-def` Exact in that real regime.  It constructs
+no complex-q infinite product by itself.  At this bridge checkpoint the
+leading-coefficient and strict odd-degree clauses were still absent, so the
+compound `p7:thm:Pn` was then Partial; the later sharp-degree sibling below
+makes it Exact.  This bridge produced the historical checkpoint 905 modules
+and 11,458 public declarations.  The subsequent sibling
+`FabiusFunction.GeometricUniformComplexMomentProduct` has the exhaustive
+surface one public definition and two public theorems:
+`Fabius.geometricUniformComplexMomentProduct`,
+`Fabius.hasProdLocallyUniformly_geometricUniformComplexMomentProduct`, and
+`Fabius.geometricUniformMomentPolynomial_eval₂_eq_complexMomentProduct_taylorCoefficient`.
+For complex `‖q‖ < 1` it supplies the actual locally uniform product and its
+normalized Taylor-coefficient bridge.  This is an analytic analogue; it does
+not extend the probability-moment reading of `p7:eq:Pn-def` beyond real
+`|q| < 1`.  The canonical q-monograph `thm:qF-moment-polynomial` remains
+Partial because the global `RatFunc` identification and its pole-clearing
+polynomial continuation at roots are absent.  This exhaustive `1+2` leaf
+produced the historical checkpoint 906 modules and 11,461 public declarations.
+The zero-definition/one-theorem
+`FabiusFunction.HalfQBinomialRootSimplicity` sibling exposes
+`Fabius.halfQBinomial_sum_rootMultiplicity_two_pow`; composed with the
+existing rational root classifier, it makes `cor:halfbase-root-locus` Exact
+without an arbitrary-base or arbitrary-field claim.
+The subsequent sibling
+`FabiusFunction.GeometricUniformExteriorComplexMomentGerm` also has the
+exhaustive surface one public definition and two public theorems:
+`Fabius.geometricUniformExteriorComplexMomentGerm`,
+`Fabius.analyticAt_geometricUniformExteriorComplexMomentGerm`, and
+`Fabius.geometricUniformMomentPolynomial_eval₂_eq_exteriorComplexMomentGerm_taylorCoefficient`.
+For complex `1 < ‖q‖` it supplies the actual reciprocal germ, analyticity at
+the origin, and its normalized Taylor-coefficient bridge.  It makes no unit-
+circle or global rational-function claim.  The exhaustive zero-definition/
+three-theorem `FabiusFunction.GeometricUniformMomentPolynomialDegree` sibling
+consists of `Fabius.coeff_geometricUniformMomentPolynomial_choose_two`,
+`Fabius.coeff_geometricUniformMomentPolynomial_choose_two_sub_one`, and
+`Fabius.geometricUniformMomentPolynomial_natDegree_eq`.  It proves the exact
+top and subleading Bernoulli coefficients and the parity-sensitive degree,
+making `p7:thm:Pn` and `prop:qF-P-degree-sharp` Exact while leaving
+`thm:qF-moment-polynomial` Partial at the global `RatFunc` boundary.
+
+The later germ-related addition
+`FabiusFunction.RvachevLaurentLeading` has one definition and six theorems and
+makes `is:p2:thm:Laurent-leading` exact through the manuscript-normalized
+punctured-neighborhood limit and its coordinate, odd-core, nonvanishing,
+cofactor, and general-pole companions.  Puncturing is essential because Lean
+totalizes inversion at a pole; no lower Laurent coefficient is claimed.  The
+eleven-definition/seventeen-theorem
+`FabiusFunction.FinitePrefixAppellRecovery` sibling makes
+`is:p2:thm:finite-prefix-expansion` and `is:p2:thm:exact-recovery` Exact for
+every starting depth, including zero, at bases `1/2` and `1/4`.  Its exact
+degrees are outer degrees in `Polynomial (Polynomial ℚ)` and may drop after a
+fixed-inner-variable specialization; its finite-convolution moments are not a
+random-variable or analytic-MGF realization.
+
+In the origin-side chronology the sharp leaf gave the historical 921/11,575
+checkpoint, `RvachevLaurentLeading` gave 922/11,582, and
+`FinitePrefixAppellRecovery` gives 923/11,610.  Retaining the unconditional
+public `Fabius.complexQPochhammerInf_eq_qPochhammerInfIn` bridge gives the live
+semantic union 923/11,611.  The rigorous q ledger is 177 Exact / 82 Partial /
+15 None / 8 interface, and the source concordance is 99 Lean-proved / 379
+human-proved frontier / 60 non-applicable / 9 conjectures.  The q-Lucas row
+remains Partial because the Lean declaration proves only primitive-root
+evaluation, not the polynomial congruence modulo the cyclotomic polynomial.
+All of these sibling source-only additions are likewise absent
+from the retained historical PDFs.
 
 The exact raw second-order package is `LambertWCurvature.lean`.  Its
 principal API is `deriv_principalLambertW`,

@@ -14,11 +14,13 @@ the perfectly regular interior value \(q=1/2\).  Thus the radial inverse
 the boundary, but they should not be conflated with statistical recovery of
 the geometric contraction parameter.
 
-The law, support, CDF refinement, smooth density, and half-base
+The law, exact mean, support, CDF refinement, smooth density, and half-base
 identification are represented in Lean by the modules
 \lean{FabiusFunction.GeometricUniformLaw},
 \lean{FabiusFunction.GeometricUniformCDF}, and
 \lean{FabiusFunction.ProbabilityRepresentation}.  In particular,
+\lean{integral_id_geometricUniformDistribution_eq_one_half} proves the mean
+for every real \(\lvert q\rvert<1\), including zero and negative ratios, while
 \lean{geometricUniformCDF_one_half_eq_fabiusReal} is the exact formal bridge
 at \(q=1/2\).  The phase-bearing sinc-product bridge is formalized separately
 in \lean{FabiusFunction.GeometricSincCharacteristicFunction}, as

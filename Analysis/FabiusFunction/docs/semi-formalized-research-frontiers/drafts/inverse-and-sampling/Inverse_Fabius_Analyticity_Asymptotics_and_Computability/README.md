@@ -19,7 +19,7 @@ only as reproducible checks.
 The package audit surfaces are:
 
 - [`theorem_concordance.csv`](theorem_concordance.csv): all 194 immutable
-  source-result rows, fully dispositioned as 50 Lean-proved, 95 human-proved
+  source-result rows, fully dispositioned as 54 Lean-proved, 91 human-proved
   frontier results, 10 conjectures, 15 open problems, and 24 non-applicable
   source environments;
 - [`LEAN_CROSSWALK.md`](LEAN_CROSSWALK.md): exact module and declaration
@@ -28,23 +28,29 @@ The package audit surfaces are:
 - [`ASSET_DISPOSITION.csv`](ASSET_DISPOSITION.csv): the disposition of all 88
   files in the two superseded source subgroups and the migration from the
   former 63-payload checkpoint to the current 55-file canonical asset tree;
-- [`SOURCE_CLOSURE.sha256`](SOURCE_CLOSURE.sha256): the reproducible ledger
-  of the current 23 files consumed by the TeX build;
+- [`SOURCE_CLOSURE.sha256`](SOURCE_CLOSURE.sha256): the historical 23-input
+  build-graph ledger retained from the pre-overlay checkpoint; it was
+  intentionally not regenerated and is not the current closure receipt;
 - [`PROVENANCE.md`](PROVENANCE.md): source hashes, arrival lineage, nested
   predecessors, and immutable recovery points.
 
-The source-closure ledger and migrated-asset audit are checked independently:
+The two independent check commands are retained for a future authorized ledger
+refresh:
 
 ```bash
 python -B audit/build_source_closure.py --check
 python -B audit/build_asset_manifest.py --check
 ```
 
+The asset audit remains separate. The historical closure file is not promoted
+to current status by the `b899` publication build; that build's independently
+measured recursive TeX closure is recorded below without rewriting the file.
+
 `theorem_concordance.csv` records the disposition of all 194 source-result
 environments while preserving the ten immutable source fields reproduced from
-`audit/SOURCE_REVISION`.  Its current totals are 50 Lean-proved, 95
+`audit/SOURCE_REVISION`.  Its current totals are 54 Lean-proved, 91
 human-proved frontier results, 10 conjectures, 15 open problems, and 24
-nonassertoric rows.  Nine inverse-computability rows now have exact compiled
+nonassertoric rows.  Ten inverse-computability rows now have exact compiled
 counterparts: the main theorem, the three tolerant-difference branch
 certificates, tolerant-bisection correctness, unit-interval sequential
 inversion, computable clamping, and sequential computability of the totalized
@@ -52,7 +58,8 @@ inverse.  `FabiusFunction.EffectiveGapInverse` closes the ninth, abstract row:
 it derives a computable reciprocal inverse modulus from computable positive
 rational gap data and concludes both subset sequential computability and
 effective uniform continuity; its companion theorem packages the clamped
-inverse as a total computable real function.  The centered Appell
+inverse as a total computable real function.  The exact-dyadic proposition
+described below closes the tenth row.  The centered Appell
 deconvolution, positive-degree Appell
 mean-zero, and arbitrarily phased polynomial-deconvolution rows also have exact
 named Lean counterparts.  The Appell lattice theorem is now Lean-proved:
@@ -65,11 +72,28 @@ classification of every superconvergent phase or sharpness beyond the stated
 degree.  The static canonical validator passes.  `PROVENANCE.md` records source
 and asset lineage.
 
+The new `FabiusFunction.FabiusInverseExactDyadicModulus` module supplies the
+complete formal counterpart of `co:prop:exact-dyadic-modulus`: two definitions
+and ten theorems cover the exact ceiling, positivity, endpoint bound, fixed-dyadic
+arithmetic and strict-modulus leastness, the smaller-denominator endpoint
+counterexample, and the logarithmic `1/n` witness with convention `d(0)=1`.
+The compiled declarations
+`Fabius.inverseFabiusExactDyadicDenominator_primrec` and
+`Fabius.inverseFabiusExactLogarithmicDenominator_primrec` close the remaining
+recursion clause, so that source proposition is now one of the 54 Lean-proved
+rows.  Its leastness is only for the fixed dyadic target; `1/n` is witness-only,
+and `d(0)=1` is a convention with no modulus asserted at zero.
+
+There is no package-wide checksum gate. The retained `SOURCE_CLOSURE.sha256`
+receipt and migrated-asset disposition have narrower historical roles and were
+not regenerated for `b899`.
+
 The former root and asset `SHA256SUMS` inventory workflows are retired and no
 longer generated. The repository ban applies exactly to basenames
 `SHA256SUMS` and `SHA256SUMS.*`; six alternately named historical ledger
 payloads were retired separately and are not regenerated. The purpose-specific
-`SOURCE_CLOSURE.sha256` remains the current 23-input build-graph record.
+`SOURCE_CLOSURE.sha256` remains a historical 23-input build-graph record, not a
+live whole-package or current-publication gate.
 
 The result and asset extractors are pinned by
 [`audit/SOURCE_REVISION`](audit/SOURCE_REVISION) to
@@ -79,15 +103,54 @@ at `93db15ad3c0645bd3cfd0a3e6e694e3c86a3aa2b`, a complete pre-retirement
 repository snapshot. The old paths are retained as provenance locators, not
 as live links.
 
-The six newest exact source-row matches are abstract effective inversion,
+The ten newest exact source-row matches are abstract effective inversion,
 centered Appell deconvolution, positive-degree Appell mean-zero,
 arbitrary-phase polynomial deconvolution, forced superconvergence, and finite
-Appell lattice reproduction.  The last two use
+Appell lattice reproduction, together with the exact-dyadic repository modulus
+and the leading Laurent coefficient at every nonzero centered-MGF pole, plus
+the exact finite-prefix Appell expansions and their finite Richardson recovery.
+The superconvergence pair uses
 `FabiusFunction.RvachevSuperconvergentSynthesis`: its phase dictionary
 specializes the selected phases at `M = 2^N`, its physical quadrature wrapper
 proves polynomial exactness through degree `N+1`, and its Appell wrapper proves
 the corresponding finite lattice identity.  These declarations do not assert
 an all-phase classification or a sharpness theorem.
+
+`FabiusFunction.RvachevLaurentLeading` supplies the exact one-definition,
+six-theorem correspondence for `is:p2:thm:Laurent-leading`.
+`Fabius.rvachevCenteredMGF` fixes the manuscript normalization, while
+`Fabius.rvachevCenteredMGF_eq_rvachevFourierProduct`,
+`Fabius.rvachevCenteredMGF_pi_mul_I_int`,
+`Fabius.rvachevCenteredMGF_pi_mul_I_int_ne_zero_of_odd`,
+`Fabius.tendsto_sub_pow_mul_inv_rvachevFourierProduct_int`,
+`Fabius.tendsto_rvachevCenteredMGF_laurent_int`, and
+`Fabius.tendsto_rvachevCenteredMGF_laurent_two_pow_mul_odd` prove the rotation,
+odd-core value and nonvanishing, generic cofactor limit, and both general and
+manuscript-normalized Laurent limits.  The three limits use punctured
+neighborhoods: Lean totalizes the inverse to zero at a pole, so an unpunctured
+limit would be false.  This promotion does not cover lower Laurent
+coefficients or the later Appell-coefficient asymptotics.
+
+`FabiusFunction.FinitePrefixAppellRecovery` is the exact eleven-definition,
+seventeen-theorem compositional package for
+`is:p2:thm:finite-prefix-expansion` and
+`is:p2:thm:exact-recovery`.  The declarations
+`Fabius.uncenteredDyadicPrefixAppellPolynomialRat_eq_sum` and
+`Fabius.centeredDyadicPrefixAppellPolynomialRat_eq_sum_even` give the printed
+uncentered and centered expansions for every `N,n`, including `N = 0`, with
+`mu_r = halfMoment r`, `m_(2r) = moment r`, and exact bases `1/2` and `1/4`.
+The two free-scale polynomials, their `eq_eval_scale` bridges, and
+`Fabius.natDegree_uncenteredDyadicPrefixAppellScalePolynomialRat` and
+`Fabius.natDegree_centeredDyadicPrefixAppellScalePolynomialRat` prove degrees
+`n` and `n/2` in `Polynomial (Polynomial ℚ)`.  That coefficient-ring statement
+is essential: after fixing the inner variable, the centered leading
+coefficient can vanish (for example for odd degree at `x = 0`).  Finally,
+`Fabius.kabayaIriAppellPolynomialRat_eq_sum_prefix` and
+`Fabius.rvachevAppellPolynomialRat_eq_sum_prefix` recover the full polynomials
+from respectively `n+1` prefixes at base `1/2` and `n/2+1` prefixes at base
+`1/4`, at every starting depth and without a limit.  The prefix moments are an
+algebraic finite-binomial-convolution model; no random-variable, `HasLaw`, or
+MGF realization bridge is claimed.
 
 ## Inverse-asymptotics subgroup closure
 
@@ -99,7 +162,7 @@ masters contribute 152 of the 194 concordance rows:
 - `Inverse_Endpoint_All_Orders`: 29 rows; and
 - `Inverse_Fabius_Computability_Report`: 40 rows.
 
-Their canonical classifications are 34 exact Lean matches, 77 complete
+Their canonical classifications are 38 exact Lean matches, 73 complete
 human-proved frontier results, 18 non-live source environments (seven
 definitions, three algorithms, two examples, four editorial obligations, and
 two superseded source conjectures), nine explicitly retained conjectures, and
@@ -112,28 +175,37 @@ from the immutable pre-retirement revision. Thus the historical subgroup
 contains no live theorem, proof, or reproducibility payload that is absent or
 unaccounted for here.
 
-## Current source and retained publication artifact
+## Current source and synchronized publication artifact
 
-The canonical source surface is current and exhaustively inventoried:
+The current `b899` source and publication receipts are:
 
 - `inverse_fabius_theory.tex`: 293 lines, 11,514 bytes, SHA-256
   `92fab1fae38bbcf86a45b51bfe7ff34e2801361df9d2f3d6aa3de4dc966eaa3c`;
-- its purpose-specific 23-input source closure has SHA-256
-  `aedf007c2cd150b1f83de6d8996b4bf31e267b3dbcec2d5cd4720f5d92122bdb`;
-- the retained `inverse_fabius_theory.pdf`: 134 A4 pages, 2,027,726 bytes,
+- its independently measured recursive TeX closure has 17 files, 10,682 lines,
+  431,748 bytes, and digest
+  `6e4e6fde424fd5046467b1f1cec0c19b6c10eb681fae4ba7cc53e14b6a5bf61e`;
+- the synchronized `inverse_fabius_theory.pdf`: 137 A4 pages, 2,045,486 bytes,
   SHA-256
-  `22bc68d855ad04dde9654e9fbd20b3ba7f05a33e3c5df0e5b80bb8991c94b41d`.
+  `cee0de894656562fbdb75d6304055fc03fae06203985119419e465a5cd213995`.
 
-The PDF is the last fully reviewed publication checkpoint.  Its historical
-three-pass sequence was 127, 134, and 134 pages, and its log, page, text, box,
-font, and visual checks remain valid for those exact PDF bytes.  The master and
-shared notation have changed since that render, so this document does **not**
-claim that the retained PDF renders the current source.  A fresh three-pass
-render is required before source/PDF synchronization is claimed again.
-`VALIDATION.md` separates current source-integrity evidence from the retained
-artifact receipt. The former root and asset `SHA256SUMS` ledgers are retired;
-the purpose-specific source-closure record and asset-disposition audit remain
-live.
+Exactly three serial halt-on-error passes from absent sidecars ran 132 pages /
+1,983,313 bytes → 137 / 2,045,485 → 137 / 2,045,486. All 137 pages are A4
+at rotation zero, render successfully, and contain nonblank text. All 31 font
+rows are embedded and subset, six are Libertinus, and none is Type 3. Required
+log, reference/rerun, metadata, visual, cleanup, and forbidden-basename gates
+passed. The only box diagnostics are two nonblocking horizontal boxes of 2.42
+and 2.45 pt.
+
+For history, the unregenerated 23-input `SOURCE_CLOSURE.sha256` file has
+SHA-256 `aedf007c2cd150b1f83de6d8996b4bf31e267b3dbcec2d5cd4720f5d92122bdb`;
+it predates the exact-dyadic chapter and crosswalk overlay and is not the
+current closure. The prior 134-page, 2,027,726-byte PDF has SHA-256
+`22bc68d855ad04dde9654e9fbd20b3ba7f05a33e3c5df0e5b80bb8991c94b41d`;
+its historical passes ran 127 → 134 → 134 pages. `VALIDATION.md` keeps those
+historical records separate from the synchronized receipt above. Package
+checksum manifests are retired repository-wide; `SOURCE_CLOSURE.sha256` and
+`ASSET_DISPOSITION.csv` retain scoped provenance without acting as live
+whole-package checksum gates.
 
 The mathematical consolidation and provenance gate are complete.  The five
 source packages and their retained renderings are historical inputs represented

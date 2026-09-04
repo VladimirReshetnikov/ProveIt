@@ -106,6 +106,8 @@
 % declaration name, typeset verbatim.
 \newcommand{\lean}[1]{%
   \ifmmode\text{\texttt{\detokenize{#1}}}\else\nolinkurl{#1}\fi}
+\newcommand{\leansubtwo}[2]{%
+  \nolinkurl{#1}\texttt{\textsubscript{2}}\nolinkurl{#2}}
 \newcommand{\decl}[1]{\nolinkurl{#1}}
 \newcommand{\stirling}[2]{\genfrac{[}{]}{0pt}{}{#1}{#2}}
 \newcommand{\brak}[1]{\left(#1\right)}
@@ -173,12 +175,13 @@ unique layers of the other three are merged in
 data, and deterministic scripts --- is preserved under \path{assets/}; the
 absorbed source documents themselves are deleted once merged (git history is
 the archive, pinned by the SHA-256 hashes below).
-The final-source publication is validated by exactly three successful serial
-halt-on-error passes and the repository's PDF gates. Exact page-count,
-byte-count, and SHA-256 receipts for the frozen TeX and resulting PDF are kept
-externally in the repository documentation so that neither artifact embeds a
-self-invalidating fingerprint. No \nolinkurl{SHA256SUMS*} ledger exists or
-participates in validation.
+The last synchronized source checkpoint was validated by exactly three
+successful serial halt-on-error passes and the repository's PDF gates.  The
+merged source now postdates that checkpoint, so the retained PDF is historical
+until a fresh three-pass parity rebuild.  Exact page-count, byte-count, and
+SHA-256 receipts are kept externally in the repository documentation so that
+neither artifact embeds a self-invalidating fingerprint. No
+\nolinkurl{SHA256SUMS*} ledger exists or participates in validation.
 \begin{itemize}
 \item \path{Lambert_W_Function_Article/Lambert_W_Function_Article.tex} (the spine)\\
 {\footnotesize SHA-256 \path{5bca61c4e906ca8a92f283bc92913355ccd4aee26d65112b41474fd16862c6ba}}
@@ -4389,17 +4392,78 @@ The focused branch-pair and Bernoulli tranche is exhaustive at this checkpoint:
 \lean{LambertWBranchSymmetry} has \(0+9\), while
 \lean{LambertWBranchGapBernoulli} has \(0+5\).  Their four-module union is
 therefore four definitions and 37 theorems, 41 public declarations in all.
-The preceding exact-radius checkpoint had the historical census 903/11,447; the
+The preceding exact-radius checkpoint had the then-current census 903/11,447; the
 complex value-completion theorem brought the next historical checkpoint to
 903/11,448.  The later sibling
 \path{GeometricUniformMomentPolynomial.lean} module has \(1+8\) public
-definitions/theorems and raises origin's inventory to 904/11,457.  Retaining
-the unconditional public
-\lean{complexQPochhammerInf_eq_qPochhammerInfIn} bridge gives the merged live
-union 904/11,458, with both documentation-gap counts zero.  The moment-polynomial
-module supplies only the recursive polynomial algebra; the analytic
-normalization and leading/odd-degree clause of the external label
-\nolinkurl{p7:thm:Pn} remain Partial.
+definitions/theorems and raised the next historical census to 904/11,457.
+Its companion \path{GeometricUniformMomentPolynomialBridge.lean} has the
+exhaustive count \(0+1\) and raised the next historical census to 905/11,458.
+Its sole
+theorem,
+\leansubtwo{geometricUniformMomentPolynomial_eval}{_eq_mgf_taylorCoefficient},
+supplies the real-\(\lvert q\rvert<1\) actual-MGF normalization and makes
+\nolinkurl{p7:eq:Pn-def} Exact in that regime.  It supplies no complex-q
+infinite-product realization by itself.  The subsequent exhaustive \(1+2\)
+\path{GeometricUniformComplexMomentProduct.lean} leaf consists of
+\nolinkurl{geometricUniformComplexMomentProduct},
+\nolinkurl{hasProdLocallyUniformly_geometricUniformComplexMomentProduct}, and
+\leansubtwo{geometricUniformMomentPolynomial_eval}{_eq_complexMomentProduct_taylorCoefficient}.
+For every complex \(\lVert q\rVert<1\), these give the actual locally uniform
+product and identify its normalized Taylor coefficient with the recursive
+polynomial.  This is a complex analytic analogue, not a complex
+probability-moment extension of \nolinkurl{p7:eq:Pn-def}, whose Exact status
+remains restricted to real \(\lvert q\rvert<1\).  The canonical q-monograph
+compound \nolinkurl{thm:qF-moment-polynomial} remains Partial because neither
+the global \texttt{RatFunc} identification nor its pole-clearing polynomial
+continuation at roots is formalized.  The complex leaf raised the next
+incoming-branch checkpoint to the historical 906/11,461, and in the merged
+chronology it formed the historical 918/11,568 checkpoint.  The exhaustive
+zero-definition/one-theorem \path{HalfQBinomialRootSimplicity.lean} leaf then
+gave the merged-main 919/11,569 checkpoint.  Its
+\nolinkurl{halfQBinomial_sum_rootMultiplicity_two_pow}, together with the
+existing complete rational root classification, makes
+\nolinkurl{cor:halfbase-root-locus} Exact.  No arbitrary-base or
+arbitrary-field simplicity is claimed, and
+\nolinkurl{cor:qbinom-inversion-law} remains Partial.  The subsequent
+exhaustive \(1+2\)
+\path{GeometricUniformExteriorComplexMomentGerm.lean} sibling consists of
+\nolinkurl{geometricUniformExteriorComplexMomentGerm},
+\nolinkurl{analyticAt_geometricUniformExteriorComplexMomentGerm}, and
+\leansubtwo{geometricUniformMomentPolynomial_eval}{_eq_exteriorComplexMomentGerm_taylorCoefficient}.
+For every complex \(q\) with \(1<\lVert q\rVert\), these define the actual
+reciprocal germ, prove its analyticity at the origin, and identify its
+normalized Taylor coefficient with the recursive polynomial.  No unit-circle
+or global rational-function claim is made.  The exterior leaf raises the
+census to 920/11,572.
+
+The final exhaustive \(0+3\)
+\path{GeometricUniformMomentPolynomialDegree.lean} sibling consists of
+\nolinkurl{coeff_geometricUniformMomentPolynomial_choose_two},
+\nolinkurl{coeff_geometricUniformMomentPolynomial_choose_two_sub_one}, and
+\nolinkurl{geometricUniformMomentPolynomial_natDegree_eq}.  With
+\(T_n=\binom n2\), these prove the top coefficient \(B_n(1)/n!\), the
+subleading coefficient
+\(-B_n(1)/n!+B_{n-1}(1)/(2(n-1)!)\) for \(n\geq2\), and degree \(T_n\) for
+even \(n\) or \(n=1\), one less otherwise.  Here Lean's
+\nolinkurl{bernoulli'} is \(B_n(1)=(-1)^nB_n\) under Mathlib's convention
+\(B_1=-1/2\).  This makes \nolinkurl{p7:thm:Pn} and
+\nolinkurl{prop:qF-P-degree-sharp} Exact, while the global
+\nolinkurl{thm:qF-moment-polynomial} remains Partial for the separate
+\texttt{RatFunc}/root-continuation gap.  The sharp leaf raises the census to
+the historical 921/11,575 checkpoint.  The exhaustive
+\path{RvachevLaurentLeading.lean} \((1+6)\) sibling then gives 922/11,582 and
+makes \nolinkurl{is:p2:thm:Laurent-leading} Exact.  The exhaustive
+\path{FinitePrefixAppellRecovery.lean} \((11+17)\) sibling gives the
+origin-side 923/11,610 census and makes
+\nolinkurl{is:p2:thm:finite-prefix-expansion} and
+\nolinkurl{is:p2:thm:exact-recovery} Exact as finite rational identities.
+Retaining the unconditional public
+\lean{complexQPochhammerInf_eq_qPochhammerInfIn} bridge gives the semantic
+live union 923 modules and 11,611 public declarations, with both documentation
+gap counts zero.  The q-Lucas manuscript result remains Partial: Lean proves
+the evaluated primitive-root identity, not the polynomial congruence modulo
+the cyclotomic polynomial.
 
 \begin{longtable}{@{}p{0.30\textwidth}p{0.42\textwidth}p{0.22\textwidth}@{}}
 \toprule

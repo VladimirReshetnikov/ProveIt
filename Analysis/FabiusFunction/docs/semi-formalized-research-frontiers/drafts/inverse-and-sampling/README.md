@@ -23,8 +23,8 @@ computation.
 
 Its
 [`theorem_concordance.csv`](Inverse_Fabius_Analyticity_Asymptotics_and_Computability/theorem_concordance.csv)
-fully dispositions all 194 immutable source-result rows: 50 are Lean-proved,
-95 are human-proved frontier results, 10 are conjectures, 15 are open
+fully dispositions all 194 immutable source-result rows: 54 are Lean-proved,
+91 are human-proved frontier results, 10 are conjectures, 15 are open
 problems, and 24 are non-applicable source environments.
 [`LEAN_CROSSWALK.md`](Inverse_Fabius_Analyticity_Asymptotics_and_Computability/LEAN_CROSSWALK.md)
 records exact module/declaration matches and separately classifies five
@@ -34,23 +34,56 @@ accounts for all 88 source-subgroup files, and the asset inventory covers 55
 retained files. Eight checksum-ledger rows from the former 63-payload checkpoint
 are retired.
 
-The six newest exact source-row matches are abstract effective inversion,
+The ten newest exact source-row matches are abstract effective inversion,
 centered Appell deconvolution, positive-degree Appell mean-zero,
 arbitrary-phase polynomial deconvolution,
 `is:p3:cor:forced-superconvergence`, and
-`is:p3:thm:Appell-lattice-reproduction`. The last two are the newest
-promotions: the parity-selected degree-`N+1` quadrature and its explicit
-Rvachev--Appell lattice specialization now have exact compiled counterparts.
+`is:p3:thm:Appell-lattice-reproduction`, together with the exact-dyadic
+repository modulus, `is:p2:thm:Laurent-leading`,
+`is:p2:thm:finite-prefix-expansion`, and `is:p2:thm:exact-recovery`.
+The superconvergence pair is the parity-selected degree-`N+1` quadrature and
+its explicit Rvachev--Appell lattice specialization.
+
+`FabiusFunction.RvachevLaurentLeading` contributes one definition and six
+theorems. Its manuscript-normalized punctured-neighborhood limit makes
+`is:p2:thm:Laurent-leading` exact, together with the Fourier-product
+coordinate, odd-core evaluation and nonvanishing, generic cofactor limit, and
+general integer-pole companion. Puncturing is essential because Lean
+totalizes inversion at the pole; lower Laurent coefficients and downstream
+coefficient asymptotics remain outside this promotion. This first raised the
+inverse concordance to 52 Lean-proved rows.
+
+The eleven-definition/seventeen-theorem
+`FabiusFunction.FinitePrefixAppellRecovery` module then makes both
+finite-prefix rows exact. Its direct formulas hold for all `N,n`, including `N = 0`,
+with uncentered base `1/2` and centered base `1/4`; its recovery theorems use
+respectively `n+1` and `⌊n/2⌋+1` consecutive prefixes. Exact degrees `n` and
+`⌊n/2⌋` are degrees of the outer scale polynomials in
+`Polynomial (Polynomial ℚ)`. A fixed-inner-`x` centered specialization can
+drop degree, for example at odd `n` and `x = 0`. The prefix moments form an
+algebraic finite-convolution model; no random-variable, `HasLaw`, or
+analytic-MGF realization is claimed. These two promotions give the current
+inverse concordance totals: 54 Lean-proved and 91 human-proved frontier rows,
+with the other categories unchanged.
 
 The retained, fully reviewed publication checkpoint has 134 A4 pages and
 2,027,726 bytes, with SHA-256
 `22bc68d855ad04dde9654e9fbd20b3ba7f05a33e3c5df0e5b80bb8991c94b41d`.
 Its historical three-pass receipt and page/font/visual gates, together with the
-independently checked current 23-input source closure, are recorded in the
+historical 23-input `SOURCE_CLOSURE.sha256` record, are recorded in the
 canonical package's
 [`VALIDATION.md`](Inverse_Fabius_Analyticity_Asymptotics_and_Computability/VALIDATION.md).
-The source changed after that render, so a fresh three-pass build remains
-necessary before source/PDF synchronization is claimed.
+That closure file was intentionally not regenerated and does not describe the
+current build graph. The synchronized `b899` receipt superseding both historical
+records has a 293-line / 11,514-byte driver (SHA-256
+`92fab1fae38bbcf86a45b51bfe7ff34e2801361df9d2f3d6aa3de4dc966eaa3c`),
+a 17-file / 10,682-line / 431,748-byte recursive TeX closure (digest
+`6e4e6fde424fd5046467b1f1cec0c19b6c10eb681fae4ba7cc53e14b6a5bf61e`),
+passes 132 pages / 1,983,313 bytes → 137 / 2,045,485 → 137 / 2,045,486,
+and a final 137-page PDF with SHA-256
+`cee0de894656562fbdb75d6304055fc03fae06203985119419e465a5cd213995`.
+All publication gates passed; the two 2.42/2.45 pt horizontal boxes are
+nonblocking.
 
 The immutable extraction pin is
 `0a0cdabeb72a6f7d67cfdfb76d02a8f7381c7bf7`. The five old layouts are also
@@ -69,15 +102,25 @@ It preserves the distinct modal, Mellin, regular-variation, spline,
 reciprocal-product, Euler--Maclaurin, Ruffa, Thue--Morse, and interpolation
 results while stating their common Gaussian--Pascal and Jackson--Newton spine
 once. Its 180-row source disposition and 151-row historical-ledger audit pass;
-its 232-row theorem concordance now maps canonical label
+its 232-row theorem concordance records 7 Lean-proved, 159 human-proved
+frontier, 20 conjecture, 30 open-problem, and 16 non-applicable rows. It maps
+canonical label
 `gq:thm:richardson-generating` exactly to
 `Fabius.geometricLagrangeRichardson_generating` in the new three-definition,
 seven-theorem `FabiusFunction.GeometricRichardsonGenerating` module. The module
 also exposes `Fabius.hasSum_geometricLagrangeRichardson_mul_pow` as the analytic
-companion under its explicit convergence hypotheses. The retained 158-page PDF
-predates both the notation normalization and this chapter-01 crosswalk, so it
-remains a historical checkpoint; no PDF was generated for the source-only
-Richardson update.
+companion under its explicit convergence hypotheses. The one-definition,
+fourteen-theorem `FabiusFunction.RvachevAppellHasse` leaf additionally makes
+`gq:prop:q-Appell-falling` and `gq:thm:gaussian-Appell-decoder` exact by
+combining their explicit q-falling and geometric decoder formulas with the
+existing finite synthesis theorems. The retained 158-page PDF remains the
+historical pre-update checkpoint. The current synchronized `b899` comb receipt
+has a 187-line / 6,724-byte driver (SHA-256
+`a4c1e33165ff7291682cd890f23fe4af98e9f11f7ad1d9a7f8b68c78d53f9a56`),
+a 15-file / 12,597-line / 477,163-byte closure (digest
+`9e22455b3f65eb48306ad21c57445b6052a56498cb363666ffb9b160f5cc8090`),
+and a 160-page / 2,468,000-byte PDF (SHA-256
+`ad8587049580e6fde371f534b6f8b4e56fa4c929173f87d3021ed369e5225d4c`).
 
 [`fabius_information_frontier/`](fabius_information_frontier/) remains an
 archival information-geometry intake. Its retired arrival and operational
@@ -108,12 +151,27 @@ wrapper yields a total computable real function.  The newer
 eight theorems: it packages the parity-selected phases, the extra-degree
 monomial and polynomial rules, generic-mesh physical quadrature, deconvolved
 polynomial synthesis, and the Rvachev--Appell specialization. These two latest
-row promotions bring the canonical concordance to 50 Lean-proved, 95
-human-proved frontier results, 10 conjectures, 15 open problems, and 24
-nonassertoric environments. The live Lean documentation census is 904 modules
-and 11,458 public declarations with no gaps. The retired source layouts remain
-immutable provenance only; the current information-frontier source and PDF are
-synchronized under the receipt above.
+row promotions brought the canonical concordance to the historical
+51 Lean-proved / 94 human-proved checkpoint. The Laurent promotion then made
+that 52 / 93, and the finite-prefix pair gives the current 54 / 91, with 10
+conjectures, 15 open problems, and 24 nonassertoric environments. The
+zero-definition/one-theorem `FabiusFunction.HalfQBinomialRootSimplicity` leaf
+also completes the separate q-frontier label `cor:halfbase-root-locus` over
+the canonical rational polynomial: its simple-root theorem composes with the
+existing rational zero classifier and Gaussian/half-q coefficient identity.
+Injective scalar extension preserves the multiplicities, but this does not
+classify every root over every extension field. The q forward ledger is now
+177 Exact / 82 Partial / 15 None / 8 interface rows, and its source
+concordance is 99 Lean-proved / 379 human-proved frontier / 60 non-applicable /
+9 conjectures. After these compiled
+tranches the live Lean documentation census is 923 modules and 11,611 public
+declarations with no gaps. The retired source layouts remain immutable
+provenance only; the canonical inverse-synthesis source and 137-page PDF are
+synchronized under the `b899` receipt above, while the separate information-
+frontier source and PDF remain synchronized under their own receipt. The
+q-Lucas manuscript row
+remains Partial because Lean proves only the primitive-root evaluation, not
+the polynomial congruence modulo the cyclotomic polynomial.
 
 `QuarterCatalanGerm.lean` proves that the distinguished rational quarter germ
 becomes the Catalan inverse of `X + 4 X^2` under the exact `9/4` parameter
@@ -136,8 +194,10 @@ formula.
 `FabiusFunction.LagrangeRvachevSynthesis` supplies two definitions and seven
 theorems closing the generic finite-node decoder, cardinal biorthogonality,
 and exact interpolation loop. It does not by itself prove the geometric-node
-Gaussian closed forms, a bundled matrix/right-inverse wrapper, or an
-optimal/minimum-variation decoder theorem; the exhaustive public inventory is
+Gaussian closed forms, but the downstream `FabiusFunction.RvachevAppellHasse`
+leaf now proves their q-Pochhammer prefactor and elementary-symmetric formula.
+The Matrix leaf supplies the typed right inverse; no module proves an
+optimal/minimum-variation decoder theorem. The exhaustive public inventory is
 in the root [`Analysis/FabiusFunction/README.md`](../../../../README.md).
 
 The subgroup [`dyadic-up-extraction/`](dyadic-up-extraction/) holds one

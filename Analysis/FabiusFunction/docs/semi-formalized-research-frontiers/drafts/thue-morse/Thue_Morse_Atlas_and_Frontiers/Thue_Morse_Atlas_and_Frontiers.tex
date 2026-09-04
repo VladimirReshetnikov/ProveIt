@@ -30,6 +30,7 @@
   citecolor=linkblue,
   urlcolor=linkblue,
   pdftitle={The Thue--Morse Sequence: Formula Atlas and Fabius--Rvachev Frontier Results},
+  pdfauthor={Merged and expanded companion report to the Fabius--Rvachev formal development; Vladimir Reshetnikov's ProveIt repository},
   pdfsubject={Formula atlas, finite-block calculus, Fourier and Laplace products, q-binomial extrapolation, and Lean crosswalks},
   pdfkeywords={Thue-Morse, Prouhet, binary digit sum, Lucas theorem, Kummer theorem, Pascal triangle, Mahler equation, Walsh transform, Riesz product, Fabius function, Rvachev up-function, sinc product, q-binomial extrapolation}
 }
@@ -124,7 +125,6 @@
 
 \usepackage{multirow}
 \title{\bfseries The Thue--Morse Sequence: Formula Atlas and Fabius--Rvachev Frontier Results}
-\author{}
 \date{Consolidated 28 August 2026}
 \begin{document}
 \maketitle
@@ -309,7 +309,7 @@ is not by itself evidence of formalization.  Statements proved in Lean carry the
 declaration names in the text, typeset as \lean{Fabius.thueMorseSign}; statements without
 such a citation must not be inferred to have a formal counterpart.
 
-The current inventory in \cref{p1:sec:formalized-modules} consists of one hundred and three compiled
+The current inventory in \cref{p1:sec:formalized-modules} consists of one hundred and four compiled
 Lean modules.  It covers the finite algebraic, automata, moment, Fourier, rarefaction,
 Dirichlet--Mellin, word-combinatorial, and Fabius--Rvachev bridges recorded there, often in
 greater generality than the displayed prose.  The dependency-aware map in
@@ -6980,7 +6980,7 @@ valuation, carry, and Pascal-row formulas remain genuinely base-two features.
 \subsection{Formalized modules (August 2026)}
 \label{p1:sec:formalized-modules}
 
-The first tranches of the formalization now exist as one hundred and three
+The first tranches of the formalization now exist as one hundred and four
 compiled Lean modules in \repo{}, complementing the corpus modules
 (\path{Parity.lean}, \path{TwoAdic.lean}, \path{ThueMorsePrefix.lean},
 \path{ThueMorseGenerating.lean}, \path{ThueMorseExponential.lean},
@@ -7083,7 +7083,8 @@ Module & Contents \\
 \path{FrullaniIntegral.lean} & The Frullani integral \(\int_0^\infty(\EulerE^{-pt}-\EulerE^{-qt})t^{-1}\Differential t=\log(q/p)\), by differentiation under the integral sign; not in Mathlib. \\
 \path{ThueMorseGDirichlet.lean} & The derivative bridge \(\log G(a,b)=D'(0,b)-D'(0,a)\): the closed integral form of \(\log G\), \((1/\Gamma)'(0)=1\), and the derivative of the entire continuation at zero. \\
 \path{ReciprocalGammaJets.lean} & Exact first jets of the entire reciprocal Gamma function at every nonpositive integer: derivative \((-1)^r r!\), simple analytic order, the punctured local coefficient, and the retained origin compatibility theorem; no derivative is assigned to raw Gamma at a pole. \\
-\path{ThueMorseGammaTower.lean} & Exact first jets of the entire Dirichlet--Mellin continuation, total GammaLog and exponentiated tower definitions, Mellin and real-integral GammaLog formulas, dyadic log and tower laws for positive parameter, and the positive-parameter level-zero master-product ratio; GammaLog is a chosen coordinate, while the parameter-differential ladder remains outside the module. \\
+\path{ThueMorseGammaTower.lean} & Exact first jets of the entire Dirichlet--Mellin continuation, total GammaLog and exponentiated tower definitions, Mellin and real-integral GammaLog formulas, dyadic log and tower laws for positive parameter, and the positive-parameter level-zero master-product ratio; GammaLog is a chosen coordinate rather than a proved principal-complex-log identity. \\
+\path{ThueMorseGammaTowerDifferential.lean} & Exhaustive zero-definition/three-theorem differential closure: differentiation of the Mellin kernel in its positive real damping parameter for every complex spectral exponent, the successor GammaLog law, and its full falling-factorial iteration for \(k\le r\).  All three theorems retain \(a>0\), and concern the chosen GammaLog coordinate rather than a branch of \(\operatorname{Complex.log}\). \\
 \path{ThueMorseQuarterProduct.lean} & The quarter product \(G(1/4,3/4)=1/2\) from Woods--Robbins by parity splitting, and the value \(1/2\) of the half-shifted block product. \\
 \path{ThueMorseDiscSeries.lean} & The Thue--Morse power series as a holomorphic function on the unit disc: the complex-disc product wrapper \(F(z)=\prod_{j=0}^{\infty}(1-z^{2^j})\), locally uniform convergence, the analytic Mahler equation and its iterate, and the real-ray bound \(|F(x)|\le1-x\). \\
 \path{ThueMorseNaturalBoundary.lean} & The natural-boundary theorem: radial vanishing at dyadic roots of unity, two-power roots approximating every circle point, and the double identity-theorem argument. \\
@@ -9555,10 +9556,25 @@ The current integrated tree adds the ninth public tower declaration
 \leanPartx{Fabius.ofReal_exp_mpLimit_eq_gammaTower_div}: for \(a,b>0\), the
 complex embedding of \(\exp(\operatorname{mpLimit}(a,b))\) is
 \(T_0(b)/T_0(a)\), exactly the formal ratio law for
-\eqref{p2:eq:WR-gamma}.  The only unformalized assertions within
-\cref{p2:thm:gamma-tower} are now the parameter-\(a\) differential and iterated
-differential laws \eqref{p2:eq:gamma-differential}--\eqref{p2:eq:gamma-iterated};
-they require differentiation under the Mellin integral.
+\eqref{p2:eq:WR-gamma}.  The source-only
+\path{ThueMorseGammaTowerDifferential.lean} leaf adds no definitions and
+exactly three theorems:
+\leanPartx{Fabius.hasDerivAt_mellin_mellinKernel_parameter},
+\leanPartx{Fabius.hasDerivAt_thueMorseGammaLog_succ}, and
+\leanPartx{Fabius.iteratedDeriv_thueMorseGammaLog}.  The first differentiates
+the positive real damping parameter under the Mellin integral at every
+complex spectral exponent,
+\[
+ \frac{d}{da}\operatorname{Mellin}(\operatorname{mellinKernel}(a),s)
+ =-\operatorname{Mellin}(\operatorname{mellinKernel}(a),s+1).
+\]
+The second proves \(L_{r+1}'(a)=(r+1)L_r(a)\), and the third proves
+\eqref{p2:eq:gamma-iterated} for exactly \(k\le r\).  Each theorem assumes
+\(a>0\).  Consequently \cref{p2:thm:gamma-tower} is Exact under its stated
+positive-parameter domain and the already-explicit convention that its
+displayed logarithm denotes the chosen GammaLog coordinate; no identity with
+a branch of \(\operatorname{Complex.log}\), and no nonpositive-parameter
+differential law, is asserted.
 
 \begin{remark}[Why ``Barnes-type'']
 The hierarchy is not asserted to be a classical Barnes multiple-gamma family.  The name refers
@@ -9774,7 +9790,8 @@ tail self-similarity, the Fourier--Laplace rotation, the Lagrange characterizati
 $q$-Richardson weights with all three of its moment identities together with their closed
 $q$-binomial form (compiled in \path{GeometricQBinomialLagrange.lean}), every spectral
 level of the GammaLog/tower Mellin and dyadic laws together with the level-zero
-master-product ratio, and now the entire zeta--Lambert tail calculus --- the Euler--zeta
+master-product ratio and the full positive-parameter differential ladder
+(\path{ThueMorseGammaTowerDifferential.lean}), and now the entire zeta--Lambert tail calculus --- the Euler--zeta
 logarithm, the all-orders expansion, the certified remainder, and the exact
 prefix--corrections--tail split (\path{EulerLogTransform.lean}, \path{SincZetaSeries.lean},
 \path{SincZetaDyadic.lean}, \path{SincZetaRemainder.lean}) --- already have Lean
@@ -9911,12 +9928,14 @@ a convenient formal API for the lower real Lambert branch. \\
 Thue--Morse gamma tower
 \eqref{p2:eq:gamma-Mellin}--\eqref{p2:eq:gamma-iterated} & reciprocal-Gamma
 first jets, Atlas Dirichlet continuation, parameter differentiation &
-\emph{Mellin and dyadic layers delivered}: \path{ReciprocalGammaJets.lean}
+\emph{Exact}: \path{ReciprocalGammaJets.lean}
 proves the exact simple reciprocal-Gamma jet at every nonpositive integer, and
 \path{ThueMorseGammaTower.lean} proves every continuation first jet, the
 Mellin/integral GammaLog levels, both dyadic laws, and the level-zero
-master-product ratio.  Only \eqref{p2:eq:gamma-differential}--\eqref{p2:eq:gamma-iterated}
-remain; they need a parameter-under-the-Mellin-integral theorem. \\
+master-product ratio.  \path{ThueMorseGammaTowerDifferential.lean} proves the
+parameter-under-the-Mellin-integral derivative and both
+\eqref{p2:eq:gamma-differential} and \eqref{p2:eq:gamma-iterated} on the stated
+positive-parameter domain, for the chosen GammaLog coordinate. \\
 \bottomrule
 \end{longtable}
 \endgroup
