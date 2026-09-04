@@ -42,8 +42,9 @@ was 671 modules and 8,858 public declarations; no PDF was rebuilt for that
 source-only update.
 
 The newest source-only Lambert branch-coordinate overlay formalizes the exact
-pairing theorem, its symmetric corollary, and one compact Bernoulli-series
-identity from `Lambert_W_Guide/`.
+pairing theorem, its symmetric corollary, the compact Bernoulli-series identity,
+and the complex Bernoulli generating function with its standard removable
+value and exact convergence radius from `Lambert_W_Guide/`.
 `LambertWBranchPairing.lean` has 0 definitions + 7 theorems,
 `LambertWGapBijection.lean` has 4 definitions + 16 theorems, and
 `LambertWBranchSymmetry.lean` has 0 definitions + 9 theorems. For
@@ -58,17 +59,29 @@ have zero denominator and their limiting sum/product are `-2` and `1`, while
 zero is the singular classical lower endpoint.
 
 The companion `LambertWBranchGapBernoulli.lean` has the exhaustive surface
-0 definitions + 3 theorems. It proves absolute summability of the real
-Bernoulli exponential generating series on `|z| < 2*pi`, its actual all-index
-`HasSum` value `z / (exp z - 1)` for `z != 0`, and the two paired branch sums
-when `x in (-exp(-1), 0)` and the positive branch gap is below `2*pi`. This is
-an exact crosswalk only for `eq:pair-Bernoulli-general`. At `z = 0` the
-convergence theorem still applies, but the quotient evaluation excludes the
-removable value; the endpoint `|z| = 2*pi`, exact maximality of the radius,
-and higher or convergent Puiseux/logarithmic expansions remain open. The
-affected retained frontier, primary, walkthrough, and Lambert-Guide PDFs are
-historical artifacts and do not render this source-only overlay; no render
-parity is claimed.
+0 definitions + 5 theorems. Alongside the real open-disk absolute-summability
+theorem, `summable_bernoulli_mul_pow_div_factorial_iff` proves for complex `z`
+that the Bernoulli exponential generating series is summable exactly when
+`‖z‖ < 2*pi`; in particular, it diverges on `‖z‖ = 2*pi` and throughout the
+exterior. The new theorem
+`hasSum_bernoulli_mul_pow_div_factorial_complex_iff` gives the complex value
+as `(complexExpm1Div z)⁻¹` exactly on that disk. This target is `1` at `z = 0`
+and rewrites to `z / (exp z - 1)` when `z != 0`; it does not identify the
+series with Lean's literal totalized quotient, which is `0` at the origin.
+The other theorems give the all-index real quotient value away from zero and
+the two paired branch sums when `x in (-exp(-1), 0)` and the positive branch
+gap is below `2*pi`. Thus `eq:pair-Bernoulli-general` is Exact, and
+`eq:bernoulli-gen` is wholly Exact under the explicit standard
+removable-origin convention. The Guide's nearest-nonzero-zero explanation is
+not the formal proof route. With the three finite branch-coordinate modules,
+the four-module union is 4 definitions + 37 theorems = 41 declarations.
+Higher or convergent Puiseux/logarithmic
+expansions remain open. The affected retained frontier, primary, walkthrough,
+and Lambert-Guide PDFs are historical artifacts and do not render this
+source-only overlay; no render parity is claimed. The live documentation
+census on the incoming Lambert branch at the exact-radius four-theorem
+checkpoint was 903 modules and 11,447 public declarations; the value-completion
+theorem gave that branch's historical 903/11,448 checkpoint.
 
 The source-only `FabiusFunction.LagrangeRvachevMatrix` module adds three
 definitions, one abbreviation, and six theorems. It promotes
@@ -95,7 +108,7 @@ law to arbitrary probability spaces carrying independent uniform coordinates;
 the two-definition/one-theorem `FabiusFunction.RegularCentralQBinomialSum`
 leaf proves `thm:regular-central-sum` under its exact product-nonvanishing
 hypothesis. Together with the Lambert--Bernoulli and fixed-column-rate leaves,
-they bring the live documentation census to 910 modules and 11,523 public
+they bring the live documentation census to 910 modules and 11,525 public
 declarations.
 
 The final source-only `FabiusFunction.GaussianBinomialFixedColumnRate` leaf has

@@ -345,19 +345,22 @@ eight-declaration rational-gap inverse module, and the parity-selected Rvachev
 superconvergence leaf and the subsequent binary-word, box-partition, and
 telescoping-certificate leaves, as well as the exact three-module Lambert
 branch-pairing, gap-bijection, and symmetric-identity tranche (respectively
-0+7, 4+16, and 0+9), its subsequent zero-definition/three-theorem real
-Bernoulli branch-gap companion crosswalking only
-\nolinkurl{eq:pair-Bernoulli-general}, the exact inverse-recursion certificates,
-the Jacobi two-square counting and Lagrange--Rvachev Matrix leaves, the
-weighted/geometric barycenter pair, the three-definition/seven-theorem
-geometric Richardson generating-function module, the three-theorem
-second-moment strengthening of the existing Gaussian-binomial cumulant
-module, the one-definition/seventeen-theorem arbitrary-space geometric-uniform
-realization module, the two-definition/one-theorem regular central
-q-binomial sum leaf, the zero-definition/ten-theorem effective fixed-column
-Gaussian-rate leaf, and the one-definition/fourteen-theorem Rvachev--Appell
-Hasse leaf.  The live source census is 910 facade-reachable modules
-and 11,523 public declarations.  The retained
+0+7, 4+16, and 0+9), its subsequent zero-definition/five-theorem
+Bernoulli branch-gap companion crosswalking
+\nolinkurl{eq:pair-Bernoulli-general} and, under the standard removable-origin
+convention, \nolinkurl{eq:bernoulli-gen}; those four Lambert modules total four
+definitions and 37 theorems, 41 declarations; the exact inverse-recursion
+certificates, the Jacobi two-square counting and Lagrange--Rvachev Matrix
+leaves, the weighted/geometric barycenter pair, and the
+three-definition/seven-theorem geometric Richardson generating-function
+module; the three-theorem second-moment strengthening of the existing
+Gaussian-binomial cumulant module; the one-definition/seventeen-theorem
+arbitrary-space geometric-uniform realization module; the two-definition/
+one-theorem regular central q-binomial sum leaf; the zero-definition/
+ten-theorem effective fixed-column Gaussian-rate leaf; and the one-definition/
+fourteen-theorem Rvachev--Appell Hasse leaf.  The live source census is 910
+facade-reachable modules and 11,525 public declarations.
+The retained
 257-page, 2,438,299-byte A4 PDF, SHA-256
 \nolinkurl{3766761aac90247061f5c955dc84a0feb8567454e10839f1508b9431797ee980},
 predates these source-only overlays and the expanded ledger and is therefore a
@@ -1049,22 +1052,29 @@ branch point the gap is zero and the limiting sum/product equal \(-2,1\);
 zero is the singular lower endpoint.  Neither endpoint is in these theorems,
 and this symmetry leaf itself asserts no Bernoulli-gap series or higher
 Puiseux/logarithmic expansion. \\
-The real Bernoulli branch-gap series (zero definitions and three theorems),
-crosswalking exactly \nolinkurl{eq:pair-Bernoulli-general} and no other label
-in its surrounding Guide corollary.  The Bernoulli exponential generating
-series is absolutely summable for \(\lvert z\rvert<2\pi\) and has its actual
-all-index sum \(z/(e^z-1)\) for \(z\ne0\).  On
+The Bernoulli branch-gap series and complex generating identity
+(zero definitions and five theorems), crosswalking exactly
+\nolinkurl{eq:pair-Bernoulli-general} and, under the explicit standard
+removable-origin convention, \nolinkurl{eq:bernoulli-gen}.  The complex
+Bernoulli exponential generating series is summable if and only if
+\(\lVert z\rVert<2\pi\), so it diverges on the boundary and throughout the
+exterior; precisely on that disk it has sum
+\(\lean{complexExpm1Div}(z)^{-1}\), which is \(1\) at zero and rewrites to
+\(z/(e^z-1)\) away from zero.  On
 \(x\in(-e^{-1},0)\) with positive gap \(\delta<2\pi\), the two sums are
 \(W_0=-\sum_{n\geq0}B_n\delta^n/n!\) and
 \(W_{-1}=-\delta-\sum_{n\geq0}B_n\delta^n/n!\). &
 \nolinkurl{summable_norm_bernoulli_mul_pow_div_factorial},
+\nolinkurl{summable_bernoulli_mul_pow_div_factorial_iff},
 \nolinkurl{hasSum_bernoulli_mul_pow_div_factorial},
+\nolinkurl{hasSum_bernoulli_mul_pow_div_factorial_complex_iff},
 \nolinkurl{principalLambertW_lowerLambertW_eq_bernoulliSeries} &
 \nolinkurl{LambertWBranchGapBernoulli.lean}; exhaustive public surface.
-The convergence theorem includes \(z=0\), but the quotient theorem excludes
-the removable value because Lean's totalized quotient is zero there.  The
-boundary \(\lvert z\rvert=2\pi\), exact maximality of the radius, and all
-higher or convergent Puiseux claims remain open. \\
+No equality with Lean's literal totalized quotient at zero is claimed.  The
+compiled exact-radius proof uses even Bernoulli--zeta coefficient bounds and
+a positive even subsequence, not the Guide's nearest-nonzero-zero route.  Both
+labelled identities are Exact under the stated convention; all higher or
+convergent Puiseux claims remain open. \\
 Raw real Lambert curvature (the first 13 declarations of the exact 36-name
 curvature inventory).  For \(z>-e^{-1}\), the principal branch has the
 nonsingular formula
@@ -2654,15 +2664,25 @@ basic-hypergeometric closure, and the three-definition/seven-theorem
 existing \path{GaussianBinomialCumulants.lean} module add the
 characteristic-zero second-derivative formula and the two division-free raw-
 second-moment and variance-numerator identities over every commutative
-semiring.  The later \path{LambertWBranchGapBernoulli.lean} (0+3),
+semiring.  The later \path{LambertWBranchGapBernoulli.lean} (0+5),
 \path{GeometricUniformRealization.lean} (1+17), and
 \path{RegularCentralQBinomialSum.lean} (2+1), and
 \path{GaussianBinomialFixedColumnRate.lean} (0+10), and
 \path{RvachevAppellHasse.lean} (1+14) leaves bring the live source census to
-910/11,523.  The Lambert companion crosswalks only
-\nolinkurl{eq:pair-Bernoulli-general}; exact radius and Puiseux claims remain
-open.  These additions are source-only, and the retained 257-page PDF remains
-explicitly historical; no PDF was built for this update.
+910/11,525.  Within this source chronology, the initial zero-definition/
+four-theorem \path{LambertWBranchGapBernoulli.lean} tranche first brought the
+exact-radius checkpoint to 903/11,447, and its fifth theorem raised that
+historical checkpoint to 903/11,448.  The two new declarations are
+\lean{summable_bernoulli_mul_pow_div_factorial_iff} and
+\lean{hasSum_bernoulli_mul_pow_div_factorial_complex_iff}; the latter gives the
+complex \(\operatorname{HasSum}\) value
+\(\lean{complexExpm1Div}(z)^{-1}\) exactly on the open disk.  Thus the leaf crosswalks
+\nolinkurl{eq:pair-Bernoulli-general} and, under the explicit standard
+removable-origin convention, the whole \nolinkurl{eq:bernoulli-gen}.  This
+does not claim the literal Lean quotient at zero or formalize the Guide's
+nearest-zero proof route; Puiseux claims remain open.  These additions are
+source-only, and the retained 257-page PDF
+remains explicitly historical; no PDF was built for this update.
 The newest six module counts are
 \path{QPochhammerInfiniteBounds.lean} (0+5),
 \path{HeineTransformation.lean} (2+5),

@@ -112,7 +112,7 @@ numbers rather than copying these historical values.
 The historical post-merge 2026-09-01 inventory contained 675 modules and 8,909
 lexically visible public declarations, with zero missing module headers and
 zero missing doc comments.  A fresh 2026-09-04 audit for this documentation
-pass scans 910 facade-reachable modules and 11,523 public declarations.  It
+pass scans 910 facade-reachable modules and 11,525 public declarations.  It
 finds no missing module header or declaration comment, including throughout
 `FabiusInverseExactDyadicModulus.lean`, `JacobiTwoSquareCount.lean`, and
 `LagrangeRvachevMatrix.lean`, as well as the incoming
@@ -122,9 +122,9 @@ finds no missing module header or declaration comment, including throughout
 `GeometricUniformRealization.lean`, `RegularCentralQBinomialSum.lean`,
 `LambertWBranchGapBernoulli.lean`, `GaussianBinomialFixedColumnRate.lean`, and
 `RvachevAppellHasse.lean` leaves.  Relative to the 610/8,318 activation
-checkpoint, the current tree adds 300 modules and 3,205 declarations.
+checkpoint, the current tree adds 300 modules and 3,207 declarations.
 Relative to the earlier 630/8,552 merged checkpoint, concurrent source work
-adds 280 modules and 2,971 declarations.  The post-merge 675/8,909 inventory
+adds 280 modules and 2,973 declarations.  The post-merge 675/8,909 inventory
 and the intervening 903/11,446 Lambert-series inventory remain historical
 checkpoints, not descriptions of the live facade.
 
@@ -278,24 +278,40 @@ asymptotic; the separate analytic series leaf is inventoried next.
 
 #### Exact Lambert branch-gap Bernoulli tranche
 
-`LambertWBranchGapBernoulli.lean` adds one source module and exactly three
-public theorems to the historical 902/11,443 checkpoint, giving the historical
-903/11,446 census.  Its exhaustive public surface is
+`LambertWBranchGapBernoulli.lean` first added one source module and four public
+theorems to the historical 902/11,443 checkpoint, giving the historical exact-radius
+checkpoint 903/11,447.  Its fifth public theorem leaves the module count fixed
+and gives the historical 903/11,448 Lambert checkpoint.  Its exhaustive public
+surface is
 `summable_norm_bernoulli_mul_pow_div_factorial`,
-`hasSum_bernoulli_mul_pow_div_factorial`, and
-`principalLambertW_lowerLambertW_eq_bernoulliSeries`; two private majorant and
-coefficient-transport helpers are excluded from the public count.
+`summable_bernoulli_mul_pow_div_factorial_iff`,
+`hasSum_bernoulli_mul_pow_div_factorial`,
+`hasSum_bernoulli_mul_pow_div_factorial_complex_iff`, and
+`principalLambertW_lowerLambertW_eq_bernoulliSeries`; five private majorant,
+coefficient-transport, norm-transport, zeta-lower-bound, and even-term helpers
+are excluded from the public count.  Together with the three finite
+branch-coordinate modules, this makes the four-module Lambert union four
+definitions and 37 theorems, 41 declarations.
 
 The first theorem proves absolute convergence of the real Bernoulli
-exponential generating series for `|z| < 2π`.  The second gives its actual
-`HasSum` value `z/(exp z-1)` under the additional condition `z ≠ 0`.  The final
-theorem specializes this evaluation to `x ∈ (-exp(-1),0)` and
+exponential generating series for `|z| < 2π`.  The second proves for every
+complex `z` that the series is summable exactly when `‖z‖ < 2π`; consequently
+every boundary and exterior point diverges, and its proof exhibits an
+even-indexed subsequence whose term norms stay at least `2`.  The third gives the real
+series its actual `HasSum` value `z/(exp z-1)` under the additional condition
+`z ≠ 0`.  The fourth theorem gives the strongest complete complex statement:
+the series has sum `(complexExpm1Div z)⁻¹` exactly when `‖z‖ < 2π`, including
+value `1` at the removable origin.  The final theorem specializes the real
+evaluation to
+`x ∈ (-exp(-1),0)` and
 `branchGap x < 2π`, returning both branch identities as one conjunction.  It
-makes only the Lambert Guide label `eq:pair-Bernoulli-general` **Exact**.  The
-quotient theorem deliberately excludes the removable point `z=0`, while the
-branch theorem excludes both endpoints.  No exact or maximal radius theorem,
-boundary convergence or divergence statement at `|z|=2π`, remainder estimate,
-or higher/convergent Puiseux expansion is included.
+makes Lambert Guide label `eq:pair-Bernoulli-general` **Exact**.  Label
+`eq:bernoulli-gen` is also **Exact** only when its displayed quotient is read as
+the canonical removable-origin representation `(complexExpm1Div z)⁻¹`; this
+does not assert equality to Lean's literal totalized quotient at `z=0` or a
+holomorphy theorem.  The real quotient theorem deliberately excludes `z=0`,
+while the branch theorem excludes both endpoints.  No remainder estimate or
+higher/convergent Puiseux expansion is included.
 
 #### Arbitrary-space geometric-uniform realization tranche
 
@@ -425,7 +441,7 @@ sequence; no convergence of an analytic reciprocal MGF is asserted.  Atom
 reconstruction remains owned by the separate synthesis API, and there is no
 new larger matrix right-inverse or decoder-optimality theorem.
 
-The resulting live inventory is 910 modules and 11,523 public declarations,
+The resulting live inventory is 910 modules and 11,525 public declarations,
 with no missing module header or declaration comment.
 
 The one-definition/eight-theorem
@@ -1169,7 +1185,7 @@ and 88-page notation-catalogue artifacts likewise predate their current merged
 sources.  Their package notices treat those PDFs as historical validation
 receipts, not parity claims, until fresh uninterrupted three-pass builds
 complete.  The inverse-computability receipt likewise still reflects the
-historical 675/8,909 census and requires refresh against the live 910/11,523
+historical 675/8,909 census and requires refresh against the live 910/11,525
 inventory.  The canonical inverse-theory publication retains a 134-page
 artifact synchronized at its latest-main source checkpoint; the merged
 effective-inversion and superconvergent-synthesis tranches make current parity

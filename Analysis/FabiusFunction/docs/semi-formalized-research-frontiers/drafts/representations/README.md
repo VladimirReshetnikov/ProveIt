@@ -830,8 +830,8 @@ Thus `is:p3:cor:forced-superconvergence` and
 concordance. This source postdates the retained Representation and inverse
 PDFs, which remain historical artifacts rather than renders of the promotion.
 The corresponding historical documentation checkpoint was 671 modules and
-8,858 public declarations. The later live repository census is 908 modules
-and 11,498 public declarations. It includes the unrelated sibling source-only
+8,858 public declarations. The later live repository census is 910 modules
+and 11,525 public declarations. It includes the unrelated sibling source-only
 `FabiusFunction.GeometricRichardsonGenerating` module (three definitions and
 seven theorems), whose exact comb-manuscript crosswalk is
 `Fabius.geometricLagrangeRichardson_generating`. It also includes the
@@ -846,7 +846,13 @@ identity `U B = I`, not a coefficient-space projector identity, and the
 negative-entry conclusion retains the source proposition's strictly positive
 row-overlap hypothesis. Neither source-only promotion is rendered by the
 retained Representation or inverse PDFs; no PDF was rebuilt for them. The
-newest three declarations
+source-only `FabiusFunction.RvachevAppellHasse` leaf contributes one definition
+and fourteen theorems. Its explicit finite Hasse-derivative, q-falling-power,
+and geometric decoder formulas combine with the existing synthesis theorems
+to make comb rows `gq:prop:q-Appell-falling` and
+`gq:thm:gaussian-Appell-decoder` Exact. It asserts neither analytic
+reciprocal-MGF convergence nor decoder optimality and is likewise absent from
+the retained PDFs. The newest three declarations
 strengthen the existing sibling `FabiusFunction.GaussianBinomialCumulants`
 module with second-derivative, raw-second-moment, and variance-numerator
 identities; they likewise do not change the Representation or inverse results.
@@ -854,19 +860,28 @@ The census also includes the sibling source-only Lambert
 branch-coordinate tranche: `LambertWBranchPairing.lean` has 0 definitions + 7
 theorems, `LambertWGapBijection.lean` has 4 + 16,
 `LambertWBranchSymmetry.lean` has 0 + 9, and the subsequent
-`LambertWBranchGapBernoulli.lean` has 0 + 3. The first three modules prove the
-exact gap parametrization, its inverse bijection, and the symmetric ratio,
-sum, and product laws with strict bounds on `(-exp(-1), 0)`. The final
-module's exhaustive theorem list is
+`LambertWBranchGapBernoulli.lean` has 0 + 5. Their exhaustive four-module
+union is 4 definitions + 37 theorems, 41 public declarations. The first three
+modules prove the exact gap parametrization, its inverse bijection, and the
+symmetric ratio, sum, and product laws with strict bounds on
+`(-exp(-1), 0)`. The final module's exhaustive theorem list is
 `summable_norm_bernoulli_mul_pow_div_factorial`,
-`hasSum_bernoulli_mul_pow_div_factorial`, and
+`summable_bernoulli_mul_pow_div_factorial_iff`,
+`hasSum_bernoulli_mul_pow_div_factorial`,
+`hasSum_bernoulli_mul_pow_div_factorial_complex_iff`, and
 `principalLambertW_lowerLambertW_eq_bernoulliSeries`; these give real absolute
-convergence for `|z| < 2*pi`, the nonzero quotient evaluation, and both branch
-series on the strict two-branch domain when the positive gap is below `2*pi`.
-They prove no value at `|z| = 2*pi`, no exact-radius theorem, and no higher or
-full Puiseux/logarithmic expansion. This unrelated addition is not rendered by
-the retained Representation or inverse PDFs; no PDF was rebuilt for this
-source-only update.
+convergence for `|z| < 2*pi`, complex summability exactly when
+`‖z‖ < 2*pi` and therefore boundary/exterior divergence, the nonzero real
+quotient evaluation, the actual complex `HasSum` value
+`(complexExpm1Div z)⁻¹` throughout the open disk, and both branch series on the
+strict two-branch domain when the positive gap is below `2*pi`. Thus the exact
+radius/boundary clause, Guide label `eq:pair-Bernoulli-general`, and the
+canonical-removable reading of `eq:bernoulli-gen` are Exact. Here
+`complexExpm1Div 0 = 1` and it equals `(exp z - 1) / z` away from zero; this
+does not assert the literal totalized quotient at zero or holomorphy of a named
+sum function. Higher or full Puiseux/logarithmic expansions remain open. This unrelated
+addition is not rendered by the retained Representation or inverse PDFs; no
+PDF was rebuilt for this source-only update.
 
 The focused-build `CompositeMeshSharpness.lean` module exports one public
 definition, `rvachevCombExactThrough`, and seven public theorems:
