@@ -2,9 +2,10 @@
 
 **Single consolidated volume for the whole `series-and-transseries` group.**
 `transseries_and_inversion.tex` is the canonical editable source. The retained
-695-page PDF was built on 4 September 2026 before the current Lean-crosswalk
-edits; it is historical and unrebuilt, and no current source/render parity is
-claimed.
+702-page PDF was built on 4 September 2026 from the 55,005-line publication
+checkpoint. The current 55,300-line source includes later Lean-crosswalk edits;
+the retained artifact is therefore historical and no current source/render
+parity is claimed.
 
 ## Status
 
@@ -25,10 +26,10 @@ absorbed each; the repair appendix lists every correction made.
 
 ## Lean formalization inventory
 
-The live corpus census is 943 modules and 11,787 explicit public declarations,
+The live corpus census is 952 modules and 11,881 explicit public declarations,
 with zero missing declaration comments and zero missing module headers. The
-nine directly relevant modules contain 72 explicit public commands; two named
-`to_additive` declarations bring this inventory to 74 named API entries.
+eighteen directly relevant modules contain 166 explicit public commands; two
+named `to_additive` declarations bring this inventory to 168 named API entries.
 Automatically generated structure projections are outside both tallies.
 
 - `TransseriesScale.lean` (one structure, one definition, three theorems):
@@ -63,9 +64,11 @@ Automatically generated structure projections are outside both tallies.
   `natDegree_blockOperator`, `blockOperator_injective`,
   `blockOperator_bijective`, `derivative_resonantAntiderivative`,
   `derivative_surjective`, and `natDegree_resonantAntiderivative`.
-- `TransseriesDifferentialBlock.lean` (five theorems):
+- `TransseriesDifferentialBlock.lean` (nine theorems):
   `derivation_pow_t`, `derivation_block`, `exists_block_primitive`,
-  `derivation_block_zero`, and `exists_block_primitive_resonant`.
+  `derivation_block_zero`, `exists_block_primitive_resonant`,
+  `derivation_val_inv`, `derivation_pow_inv`, `derivation_zpow_t`, and
+  `derivation_block_zpow`.
 - `UnitSeriesBellCoefficients.lean` (sixteen theorems):
   `ordPartialBell_eq_factorialRatio_partialBell`,
   `factorial_mul_ordPartialBell_eq_factorial_mul_partialBell`,
@@ -87,20 +90,83 @@ Automatically generated structure projections are outside both tallies.
   `quadHalf`, `halfBinom`, `quadCoef`, `catalan_two_step`,
   `quadHalf_zero`, `quadHalf_antidiagonal`, `halfBinom_step`,
   `quadHalf_rat`, `quadCoef_rat`, `quadCoef_zero`, and `quadCoef_rec`.
+- `TransseriesFlat.lean` (four definitions, sixteen theorems): `IsFlat`,
+  `flatSubmodule`, `AbsorbsScale`, `powScale`, `isFlat_zero`, `IsFlat.add`,
+  `IsFlat.neg`, `IsFlat.sub`, `IsFlat.const_smul`,
+  `mem_flatSubmodule_iff`, `IsFlat.mul_absorbsScale`,
+  `absorbsScale_const`, `IsPoincareExpansion.add_isFlat`,
+  `isFlat_sub_of_isPoincareExpansion`,
+  `isPoincareExpansion_iff_isFlat_sub`,
+  `isPoincareExpansion_zero_iff`, `powScale_eq_rpow`,
+  `absorbsScale_of_isBigO_pow`, `isFlat_exp_neg`, and
+  `isPoincareExpansion_add_exp_neg`.
+- `WrightOmega.lean` (one definition, twelve theorems): `wrightOmega`,
+  `wrightOmega_pos`, `wrightOmega_add_log`,
+  `principalLambertW_eq_wrightOmega_log`, `wrightOmega_leftInverse`,
+  `wrightOmega_strictMono`, `wrightOmega_one`, `one_le_wrightOmega`,
+  `wrightOmega_le_self`, `sub_log_le_wrightOmega`, `wrightOmega_envelope`,
+  `add_one_div_two_le_wrightOmega`, and `tendsto_wrightOmega_atTop`.
+- `TransseriesHarmonicIncrement.lean` (two theorems):
+  `tendsto_div_atTop_of_tendsto_sub` and
+  `tendsto_div_atTop_of_harmonic_increment`.
+- `OrdinaryPartialBell.lean` (two definitions, four theorems):
+  `ordinarySeries`, `ordinaryPartialBell`, `ordinaryPartialBell_pow`,
+  `bellWeightSeries_eq_ordinarySeries`,
+  `factorial_mul_ordinaryPartialBell`, and
+  `ordinaryPartialBell_eq_zero_of_lt`.
+- `LinLogCoreInversion.lean` (four definitions, eighteen theorems):
+  `linLogCoreArg`, `linLogCoreRoot`, `linLogCoreThreshold`,
+  `linLogCoreRootLower`, `linLogCore_eq_iff`,
+  `principalLambertW_linLogCoreArg_pos`, `linLogCoreRoot_pos`,
+  `linLogCore_linLogCoreRoot`, `strictMonoOn_linLogCore`,
+  `linLogCoreRoot_unique`, `hasDerivAt_linLogCore`,
+  `linLogCore_slope_eq`, `linLogCore_critical`,
+  `linLogCoreArg_mem_Ioo_iff`, `principalLambertW_linLogCoreArg_neg`,
+  `linLogCoreRoot_pos_of_neg`, `linLogCoreRootLower_pos`,
+  `linLogCore_linLogCoreRoot_of_neg`, `linLogCore_linLogCoreRootLower`,
+  `linLogCoreRoot_lt_critical`, `critical_lt_linLogCoreRootLower`, and
+  `linLogCoreRoot_ne_linLogCoreRootLower`.
+- `PowerLogCoreInversion.lean` (three definitions, six theorems):
+  `powerLogCore`, `powerLogCoreArg`, `powerLogCoreRoot`,
+  `powerLogCore_exp`, `log_powerLogCoreRoot_sub`,
+  `powerLogCore_of_lambert`, `powerLogCore_powerLogCoreRoot`,
+  `hasDerivAt_powerLogCore`, and `hasDerivAt_powerLogCore_root`.
+- `RemainderTransport.lean` (three theorems):
+  `lipschitzOn_of_abs_deriv_le`, `transport_bound_mul`, and
+  `transport_bound`.
+- `StaircaseInversion.lean` (seven theorems): `isLeast_ceil`,
+  `staircase_ceil`, `staircase_separation`, `staircase_separation_fails`,
+  `staircase_round`, `isLeast_residue_class`, and
+  `exists_half_error_of_jump`.
+- `DerangementNearestInteger.lean` (one definition, seven theorems):
+  `subfactorialDefect`, `subfactorialDefect_zero`,
+  `subfactorialDefect_succ`, `subfactorialDefect_pos`,
+  `subfactorialDefect_lt`, `numDerangements_sub_eq`,
+  `abs_numDerangements_sub_lt_half`, and
+  `round_factorial_mul_exp_neg_one`.
 
 The exact status map is deliberately narrower than the inventory:
 
 - Exact: `q0:def:scale`, `q0:eq:scale`, `q0:def:poincare`,
   `q0:eq:poincare`, `q0:eq:coefficients`, `q0:prop:uniqueness`,
-  `q0:lem:dickson`, the analytic content of
-  `plt:lem:mot-dominance`, all three unit-series Bell results
+  `q0:def:flat`, `q0:prop:invisible`, `q0:lem:dickson`, the analytic
+  content of `plt:lem:mot-dominance`, the integer block-derivative identity
+  with a unit power generator, `plt:lem:bell-normalizations`, all three
+  unit-series Bell results
   `p0:lem:bell-conversion`, `p0:lem:power-log`, and
   `p0:cor:exp-log-jets`, and `p6:prop:quadratic-core-catalan`.
 - Partial: `q0:lem:neumann` until the order-dual wrapper is exposed;
   `q0:prop:height` beyond its two exact displayed estimates;
   `plt:def:mot-scale` beyond the ordered-sequence version;
-  `plt:lem:mot-block-antiderivative` and `plt:prop:dif-block` beyond natural
-  powers and the polynomial coefficient operator; and
+  `plt:prop:mot-omega-basic` only because real analyticity is absent;
+  `plt:lem:mot-harmonic` beyond its leading Stolz limit;
+  `plt:lem:mot-block-antiderivative` and `plt:prop:dif-block` beyond the
+  integer block identity and polynomial coefficient operator;
+  `p0:thm:lambert-core` beyond its real algebra and branch rules;
+  `p0:thm:staircase` beyond its order-theoretic clauses;
+  `p0:thm:remainder-transport` beyond the displacement bound;
+  `p6:lem:core` beyond the real `r = 1` case;
+  `p8:cor:nearest-integer` beyond integer arguments; and
   `p6:lem:quadratic-core` beyond its verified coefficient recurrence.
 - Absent: the assembled two-generator Laurent-series calculus, composition
   and reversion at infinity, and `p6:thm:deepest-pole`.
@@ -172,5 +238,6 @@ a real-argument Fibonacci function); the reversal of `x + W(x)` in depth; the Be
 The former assembler cannot be rerun; the `.tex` header identifies the
 consolidated file as the canonical source and it is now edited in place. A
 future publication build would use three `pdflatex` passes, but none was run
-for this tranche. The current TeX has 3,111 distinct labels. The retained
-historical PDF has 695 A4 pages and predates the present source.
+for this tranche. The current TeX has 3,118 distinct labels. The retained
+historical PDF has 702 A4 pages and was built from the preceding 55,005-line
+source checkpoint.

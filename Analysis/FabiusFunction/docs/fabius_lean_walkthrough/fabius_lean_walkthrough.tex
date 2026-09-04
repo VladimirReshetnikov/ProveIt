@@ -6127,13 +6127,20 @@ operator dichotomy of \nolinkurl{plt:lem:mot-block-antiderivative} is Exact:
 explicit degree-preserving nonresonant inverse and degree-raising resonant
 primitive.  It does not construct the full Laurent ring. \\
 Abstract differential-block bridge &
-\nolinkurl{derivation_pow_t}, \nolinkurl{derivation_block},
-\nolinkurl{exists_block_primitive}, \nolinkurl{derivation_block_zero},
-\nolinkurl{exists_block_primitive_resonant} & Exhaustive 0+5
-\nolinkurl{TransseriesDifferentialBlock.lean} surface.  It transports the
-polynomial calculation through any derivation with (d(t)=-t^2,d(L)=t) for
-natural exponents; it does not instantiate the manuscript's full
-integer-exponent Laurent ambient wrapper. \\
+\nolinkurl{Fabius.derivation_pow_t}, \nolinkurl{Fabius.derivation_block},
+\nolinkurl{Fabius.exists_block_primitive},
+\nolinkurl{Fabius.derivation_block_zero},
+\nolinkurl{Fabius.exists_block_primitive_resonant},
+\nolinkurl{Fabius.derivation_val_inv},
+\nolinkurl{Fabius.derivation_pow_inv},
+\nolinkurl{Fabius.derivation_zpow_t},
+\nolinkurl{Fabius.derivation_block_zpow} & Exhaustive
+0+9 \nolinkurl{TransseriesDifferentialBlock.lean} surface.  The natural and
+integer-exponent forms of \nolinkurl{plt:eq:mot-block-derivative} are Exact,
+the latter for unit \(t\).  This closes exactly item~(v) of
+\nolinkurl{plt:thm:mot-smallest-differential-algebra}; that compound theorem
+remains Partial because the minimal-ring, growth, algebraic-independence, and
+concrete Laurent-ring clauses are absent. \\
 Catalan quadratic core &
 \nolinkurl{quadHalf}, \nolinkurl{halfBinom}, \nolinkurl{quadCoef};
 \nolinkurl{catalan_two_step}, \nolinkurl{quadHalf_zero},
@@ -6146,6 +6153,136 @@ Catalan quadratic core &
 family and coefficientwise recursion are proved; and
 \nolinkurl{p6:thm:deepest-pole} is Absent because no Gamma/Barnes
 identification is formalized. \\
+Derangement nearest integer &
+\nolinkurl{Fabius.subfactorialDefect},
+\nolinkurl{Fabius.subfactorialDefect_zero},
+\nolinkurl{Fabius.subfactorialDefect_succ},
+\nolinkurl{Fabius.subfactorialDefect_pos},
+\nolinkurl{Fabius.subfactorialDefect_lt},
+\nolinkurl{Fabius.numDerangements_sub_eq},
+\nolinkurl{Fabius.abs_numDerangements_sub_lt_half},
+\nolinkurl{Fabius.round_factorial_mul_exp_neg_one} & Exhaustive 1+7
+\nolinkurl{DerangementNearestInteger.lean} surface.  The integer identity,
+bounds, and nearest-integer conclusion of
+\nolinkurl{p8:cor:nearest-integer} are Exact.  The compound printed result is
+Partial at arbitrary real \(x>-1\), while
+\nolinkurl{p8:thm:branch-splitting} and its branch family are Absent. \\
+Linear--logarithmic core inversion &
+\nolinkurl{Fabius.linLogCoreArg}, \nolinkurl{Fabius.linLogCoreRoot},
+\nolinkurl{Fabius.linLogCoreThreshold},
+\nolinkurl{Fabius.linLogCoreRootLower},
+\nolinkurl{Fabius.linLogCore_eq_iff},
+\nolinkurl{Fabius.principalLambertW_linLogCoreArg_pos},
+\nolinkurl{Fabius.linLogCoreRoot_pos},
+\nolinkurl{Fabius.linLogCore_linLogCoreRoot},
+\nolinkurl{Fabius.strictMonoOn_linLogCore},
+\nolinkurl{Fabius.linLogCoreRoot_unique},
+\nolinkurl{Fabius.hasDerivAt_linLogCore},
+\nolinkurl{Fabius.linLogCore_slope_eq},
+\nolinkurl{Fabius.linLogCore_critical},
+\nolinkurl{Fabius.linLogCoreArg_mem_Ioo_iff},
+\nolinkurl{Fabius.principalLambertW_linLogCoreArg_neg},
+\nolinkurl{Fabius.linLogCoreRoot_pos_of_neg},
+\nolinkurl{Fabius.linLogCoreRootLower_pos},
+\nolinkurl{Fabius.linLogCore_linLogCoreRoot_of_neg},
+\nolinkurl{Fabius.linLogCore_linLogCoreRootLower},
+\nolinkurl{Fabius.linLogCoreRoot_lt_critical},
+\nolinkurl{Fabius.critical_lt_linLogCoreRootLower},
+\nolinkurl{Fabius.linLogCoreRoot_ne_linLogCoreRootLower} & Exhaustive 4+18
+\nolinkurl{LinLogCoreInversion.lean} surface.  Parts (2)--(4) of
+\nolinkurl{p0:thm:lambert-core} are Exact over the reals, including both
+signs of \(b\).  The compound theorem remains Partial because the asymptotic
+clause and complex general-\(W_k\) reading are absent. \\
+Ordinary partial Bell normalization &
+\nolinkurl{Fabius.ordinarySeries},
+\nolinkurl{Fabius.ordinaryPartialBell},
+\nolinkurl{Fabius.ordinaryPartialBell_pow},
+\nolinkurl{Fabius.bellWeightSeries_eq_ordinarySeries},
+\nolinkurl{Fabius.factorial_mul_ordinaryPartialBell},
+\nolinkurl{Fabius.ordinaryPartialBell_eq_zero_of_lt} & Exhaustive 2+4
+\nolinkurl{OrdinaryPartialBell.lean} surface.  The generating
+characterization, normalization bridge, and vanishing clause of
+\nolinkurl{plt:lem:bell-normalizations} are Exact.  The compound printed
+lemma is Partial at its displayed multinomial-sum definition and separate
+\(C_{n,k}\) identification, which this module does not prove. \\
+Power--logarithmic core inversion &
+\nolinkurl{Fabius.powerLogCore}, \nolinkurl{Fabius.powerLogCoreArg},
+\nolinkurl{Fabius.powerLogCoreRoot},
+\nolinkurl{Fabius.powerLogCore_exp},
+\nolinkurl{Fabius.log_powerLogCoreRoot_sub},
+\nolinkurl{Fabius.powerLogCore_of_lambert},
+\nolinkurl{Fabius.powerLogCore_powerLogCoreRoot},
+\nolinkurl{Fabius.hasDerivAt_powerLogCore},
+\nolinkurl{Fabius.hasDerivAt_powerLogCore_root} & Exhaustive 3+6
+\nolinkurl{PowerLogCoreInversion.lean} surface.  The real \(r=1\) inversion
+and slope clauses of \nolinkurl{p6:lem:core} are Exact.  The compound lemma
+is Partial because general \(r\), its root determination, and the complex
+general-\(W_k\) reading are absent. \\
+Remainder transport &
+\nolinkurl{Fabius.lipschitzOn_of_abs_deriv_le},
+\nolinkurl{Fabius.transport_bound_mul},
+\nolinkurl{Fabius.transport_bound} & Exhaustive 0+3
+\nolinkurl{RemainderTransport.lean} surface.  Part (1),
+\nolinkurl{p0:eq:transport-bound}, of
+\nolinkurl{p0:thm:remainder-transport} is Exact.  The compound theorem is
+Partial because part (2), the first-order law needing a second-order Taylor
+estimate, is absent. \\
+Staircase inversion &
+\nolinkurl{Fabius.isLeast_ceil}, \nolinkurl{Fabius.staircase_ceil},
+\nolinkurl{Fabius.staircase_separation},
+\nolinkurl{Fabius.staircase_separation_fails},
+\nolinkurl{Fabius.staircase_round},
+\nolinkurl{Fabius.isLeast_residue_class},
+\nolinkurl{Fabius.exists_half_error_of_jump} & Exhaustive 0+7
+\nolinkurl{StaircaseInversion.lean} surface.  All five clauses of
+\nolinkurl{p0:thm:staircase} are Exact at the strict-monotonicity and inverse
+equation interface, including the genuine separation failure.  Construction
+of an interpolation and the periodic Fourier expansion are absent. \\
+Flatness and invisible remainders &
+\nolinkurl{Fabius.IsFlat}, \nolinkurl{Fabius.flatSubmodule},
+\nolinkurl{Fabius.AbsorbsScale}, \nolinkurl{Fabius.powScale},
+\nolinkurl{Fabius.isFlat_zero}, \nolinkurl{Fabius.IsFlat.add},
+\nolinkurl{Fabius.IsFlat.neg}, \nolinkurl{Fabius.IsFlat.sub},
+\nolinkurl{Fabius.IsFlat.const_smul},
+\nolinkurl{Fabius.mem_flatSubmodule_iff},
+\nolinkurl{Fabius.IsFlat.mul_absorbsScale},
+\nolinkurl{Fabius.absorbsScale_const},
+\nolinkurl{Fabius.IsPoincareExpansion.add_isFlat},
+\nolinkurl{Fabius.isFlat_sub_of_isPoincareExpansion},
+\nolinkurl{Fabius.isPoincareExpansion_iff_isFlat_sub},
+\nolinkurl{Fabius.isPoincareExpansion_zero_iff},
+\nolinkurl{Fabius.powScale_eq_rpow},
+\nolinkurl{Fabius.absorbsScale_of_isBigO_pow},
+\nolinkurl{Fabius.isFlat_exp_neg},
+\nolinkurl{Fabius.isPoincareExpansion_add_exp_neg} & Exhaustive 4+16
+\nolinkurl{TransseriesFlat.lean} surface.  \nolinkurl{q0:def:flat} and all
+three clauses of \nolinkurl{q0:prop:invisible} are Exact, with the
+same-coefficient statement strengthened to an equivalence.  No convergence
+or recovery beyond flat remainders is asserted. \\
+Harmonic-increment leading order &
+\nolinkurl{Fabius.tendsto_div_atTop_of_tendsto_sub},
+\nolinkurl{Fabius.tendsto_div_atTop_of_harmonic_increment} & Exhaustive 0+2
+\nolinkurl{TransseriesHarmonicIncrement.lean} surface.  The leading
+\(w_n/n\to c_0\) clause of \nolinkurl{plt:lem:mot-harmonic} is Exact.  The
+compound lemma is Partial because the logarithmic correction, constant, and
+\(o(1)\) remainder are absent. \\
+Wright omega basics &
+\nolinkurl{Fabius.wrightOmega}, \nolinkurl{Fabius.wrightOmega_pos},
+\nolinkurl{Fabius.wrightOmega_add_log},
+\nolinkurl{Fabius.principalLambertW_eq_wrightOmega_log},
+\nolinkurl{Fabius.wrightOmega_leftInverse},
+\nolinkurl{Fabius.wrightOmega_strictMono},
+\nolinkurl{Fabius.wrightOmega_one},
+\nolinkurl{Fabius.one_le_wrightOmega},
+\nolinkurl{Fabius.wrightOmega_le_self},
+\nolinkurl{Fabius.sub_log_le_wrightOmega},
+\nolinkurl{Fabius.wrightOmega_envelope},
+\nolinkurl{Fabius.add_one_div_two_le_wrightOmega},
+\nolinkurl{Fabius.tendsto_wrightOmega_atTop} & Exhaustive 1+12
+\nolinkurl{WrightOmega.lean} surface.  The equation, inverse, positivity,
+strict monotonicity, Lambert bridge, envelope, and divergence clauses of
+\nolinkurl{plt:prop:mot-omega-basic} are Exact.  The proposition is Partial
+because real analyticity is not formalized. \\
 \bottomrule
 \end{longtable}
 
@@ -6629,10 +6766,10 @@ for each.  At that upstream checkpoint, static inspection found all 610 modules
 below \nolinkurl{FabiusFunction/} reachable from the facade and every one of
 the 105 activation declarations documented.  A later historical current-tree
 audit scanned 925 modules and 11,619 public declarations, with no missing
-module headers or declaration comments.  The 934/11,709 source checkpoint is
-now historical.  The live current-tree audit scans 943 modules and 11,787
-explicit public declarations, with zero missing module headers and zero missing
-declaration comments; the Legendre-biorthogonality 925/11,619
+module headers or declaration comments.  The 934/11,709 and 943/11,787 source
+checkpoints are now historical.  The live current-tree audit scans 952 modules
+and 11,881 explicit public declarations, with zero missing module headers and
+zero missing declaration comments; the Legendre-biorthogonality 925/11,619
 census remains an explicit historical checkpoint.  At the retained historical
 mainline checkpoint before the latest
 six-module q-series tranche was 623 modules and 8,476 declarations.  Its
@@ -6809,10 +6946,13 @@ declarations: the new zero-definition/six-theorem
 \nolinkurl{ThueMorseNewmanSelfSimilarity.lean}.  This gives the historical
 934/11,709 census.  The subsequent nine series/transseries modules carry 72
 explicit public declarations, and two additional Neumann names are generated
-by \nolinkurl{to_additive}; six concurrent declarations elsewhere give the live
-943/11,787 census, with zero missing module headers and zero missing declaration
-comments.  Every module is reachable from the facade.  No aggregate facade
-build is claimed for this current-tree census.  The retained PDF and title-page pin
+by \nolinkurl{to_additive}; six concurrent declarations elsewhere give the
+historical 943/11,787 checkpoint.  The incoming nine-module tranche adds 90
+explicit public declarations, and four integer-exponent theorems extend
+\nolinkurl{TransseriesDifferentialBlock.lean}, giving the live 952/11,881
+census, with zero missing module headers and zero missing declaration comments.
+Every module is reachable from the facade.  No aggregate facade build is
+claimed for this current-tree census.  The retained PDF and title-page pin
 remain historical receipts and do not claim parity with the merged source; no
 PDF was built for this source-only union.
 

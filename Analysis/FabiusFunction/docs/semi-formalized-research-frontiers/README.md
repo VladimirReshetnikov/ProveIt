@@ -26,7 +26,9 @@ The canonical frontier artifacts are:
 > Its PDF (SHA-256
 > `3766761aac90247061f5c955dc84a0feb8567454e10839f1508b9431797ee980`)
 > source predates the later q-Pochhammer overlay and expanded ledger, so it is
-> a historical render and must not be cited as displaying the final source union.
+> a historical render and must not be cited as displaying the final source
+> union, including either series/transseries overlay or the live 952/11,881
+> census.
 
 The current source-only superconvergence overlay is also newer than every
 retained frontier PDF. `RvachevSuperconvergentSynthesis.lean` contributes one
@@ -224,8 +226,12 @@ and fourteen public declarations: the new zero-definition/six-theorem
 `ThueMorseNewmanSelfSimilarity.lean`. This gives the historical 934/11,709
 census. The following nine-module series/transseries overlay contributes 72
 explicit declarations; `to_additive` generates two further Neumann names, and
-six concurrent declarations elsewhere give the live 943/11,787 census, with
-zero missing module headers and zero missing declaration comments.
+six concurrent declarations elsewhere give the historical 943/11,787
+checkpoint. The next incoming series/transseries tranche adds nine
+facade-reachable modules with 90 explicit declarations and four
+integer-exponent theorems to `TransseriesDifferentialBlock.lean`, giving the
+live 952/11,881 census, with zero missing module headers and zero missing
+declaration comments.
 
 The existing `FabiusFunction.ProbabilityLaplaceMoments` module then adds
 exactly two public theorems:
@@ -254,13 +260,18 @@ does not prove the larger support/smoothness/parity/Fourier--Bessel theorem
 `thm:leg-Lambda` or the matrix-projector corollary. It gives the historical
 925/11,619 census; the historical reciprocity census is 931/11,685 and the
 historical dyadic/finite-prefix census is 933/11,695. The current live census
-is 943/11,787, as recorded above, with zero missing module headers and zero
+is 952/11,881, as recorded above, with zero missing module headers and zero
 missing declaration comments.
 
-### Series/transseries Lean overlay
+### Series/transseries Lean overlays
 
-The current overlay exhausts the public surfaces of the nine modules that now
-crosswalk the canonical `Transseries_And_Inversion` volume:
+The first overlay exhausts the public surfaces of nine modules that crosswalk
+the canonical `Transseries_And_Inversion` volume. The incoming overlay adds
+nine more modules (90 explicit public declarations) and four theorems to
+`TransseriesDifferentialBlock.lean`. Thus 943/11,787 is a historical
+pre-incoming checkpoint and 952/11,881/0 is the live
+modules/declarations/missing-comments census. The retained PDFs predate the
+incoming source-only overlay and claim no render parity.
 
 - `UnitSeriesBellCoefficients.lean` is 0+16:
   `ordPartialBell_eq_factorialRatio_partialBell`,
@@ -335,11 +346,19 @@ crosswalk the canonical `Transseries_And_Inversion` volume:
   primitive at resonance.  It does not construct the full Laurent ambient
   ring.
 
-- `TransseriesDifferentialBlock.lean` is 0+5: `derivation_pow_t`,
-  `derivation_block`, `exists_block_primitive`, `derivation_block_zero`, and
-  `exists_block_primitive_resonant`.  It is the exact abstract bridge for
-  natural exponents in any commutative algebra with `d(t)=-t²` and `d(L)=t`;
-  it does not instantiate the manuscript's integer-exponent Laurent wrapper.
+- `TransseriesDifferentialBlock.lean` is 0+9:
+  `Fabius.derivation_pow_t`, `Fabius.derivation_block`,
+  `Fabius.exists_block_primitive`, `Fabius.derivation_block_zero`, and
+  `Fabius.exists_block_primitive_resonant`, together with
+  `Fabius.derivation_val_inv`, `Fabius.derivation_pow_inv`,
+  `Fabius.derivation_zpow_t`, and `Fabius.derivation_block_zpow`.
+  The natural-exponent bridge and integer-exponent block law
+  `plt:eq:mot-block-derivative` are **Exact**, with the latter assuming that
+  `t` is a unit. Only item (v) of
+  `plt:thm:mot-smallest-differential-algebra` is closed, so that compound
+  theorem remains **Partial**: the minimal-ring, growth, and
+  algebraic-independence clauses are absent, and no concrete Laurent ambient
+  ring is constructed.
 
 - `QuadraticCoreCatalan.lean` is 3+8.  Its definitions are `quadHalf`,
   `halfBinom`, and `quadCoef`; its theorems are `catalan_two_step`,
@@ -351,6 +370,113 @@ crosswalk the canonical `Transseries_And_Inversion` volume:
   existence/uniqueness, a square-root identity, or the exact denominator
   exponent.  `p6:thm:deepest-pole` is **Absent** because no Gamma/Barnes
   identification is formalized.
+
+- `DerangementNearestInteger.lean` is 1+7:
+  `Fabius.subfactorialDefect`, `Fabius.subfactorialDefect_zero`,
+  `Fabius.subfactorialDefect_succ`, `Fabius.subfactorialDefect_pos`,
+  `Fabius.subfactorialDefect_lt`, `Fabius.numDerangements_sub_eq`,
+  `Fabius.abs_numDerangements_sub_lt_half`, and
+  `Fabius.round_factorial_mul_exp_neg_one`. The integer identity, strict
+  defect bounds, and nearest-integer conclusion of
+  `p8:cor:nearest-integer` are **Exact**. The compound printed result is
+  **Partial** because the bound at arbitrary real `x > -1` is absent;
+  `p8:thm:branch-splitting` and its branch family are **Absent**.
+
+- `LinLogCoreInversion.lean` is 4+18. Its definitions are
+  `Fabius.linLogCoreArg`, `Fabius.linLogCoreRoot`,
+  `Fabius.linLogCoreThreshold`, and `Fabius.linLogCoreRootLower`; its
+  theorems are `Fabius.linLogCore_eq_iff`,
+  `Fabius.principalLambertW_linLogCoreArg_pos`,
+  `Fabius.linLogCoreRoot_pos`, `Fabius.linLogCore_linLogCoreRoot`,
+  `Fabius.strictMonoOn_linLogCore`, `Fabius.linLogCoreRoot_unique`,
+  `Fabius.hasDerivAt_linLogCore`, `Fabius.linLogCore_slope_eq`,
+  `Fabius.linLogCore_critical`, `Fabius.linLogCoreArg_mem_Ioo_iff`,
+  `Fabius.principalLambertW_linLogCoreArg_neg`,
+  `Fabius.linLogCoreRoot_pos_of_neg`, `Fabius.linLogCoreRootLower_pos`,
+  `Fabius.linLogCore_linLogCoreRoot_of_neg`,
+  `Fabius.linLogCore_linLogCoreRootLower`,
+  `Fabius.linLogCoreRoot_lt_critical`,
+  `Fabius.critical_lt_linLogCoreRootLower`, and
+  `Fabius.linLogCoreRoot_ne_linLogCoreRootLower`. Parts (2)--(4) of
+  `p0:thm:lambert-core` are **Exact** over the reals, including both signs of
+  `b`. The compound theorem remains **Partial** because its asymptotic clause
+  and complex general-`W_k` reading are absent.
+
+- `OrdinaryPartialBell.lean` is 2+4: `Fabius.ordinarySeries`,
+  `Fabius.ordinaryPartialBell`, `Fabius.ordinaryPartialBell_pow`,
+  `Fabius.bellWeightSeries_eq_ordinarySeries`,
+  `Fabius.factorial_mul_ordinaryPartialBell`, and
+  `Fabius.ordinaryPartialBell_eq_zero_of_lt`. The ordinary generating
+  characterization, normalization bridge, and vanishing clause of
+  `plt:lem:bell-normalizations` are **Exact**. The compound printed lemma is
+  **Partial** if read as requiring the displayed multinomial-sum definition
+  and its separate `C_{n,k}` identification: the module defines the family
+  coefficientwise rather than proving that finite-sum formula.
+
+- `PowerLogCoreInversion.lean` is 3+6: `Fabius.powerLogCore`,
+  `Fabius.powerLogCoreArg`, `Fabius.powerLogCoreRoot`,
+  `Fabius.powerLogCore_exp`, `Fabius.log_powerLogCoreRoot_sub`,
+  `Fabius.powerLogCore_of_lambert`,
+  `Fabius.powerLogCore_powerLogCoreRoot`,
+  `Fabius.hasDerivAt_powerLogCore`, and
+  `Fabius.hasDerivAt_powerLogCore_root`. The real `r = 1` inversion and slope
+  clauses of `p6:lem:core` are **Exact**. The compound lemma is **Partial**:
+  general `r`, its root determination, and the complex general-`W_k` reading
+  remain absent.
+
+- `RemainderTransport.lean` is 0+3:
+  `Fabius.lipschitzOn_of_abs_deriv_le`, `Fabius.transport_bound_mul`, and
+  `Fabius.transport_bound`. Part (1), `p0:eq:transport-bound`, of
+  `p0:thm:remainder-transport` is **Exact**, with one-sided derivative and
+  two-sided Lipschitz hypotheses kept distinct. The compound theorem is
+  **Partial** because part (2), the first-order law needing a second-order
+  Taylor estimate, is absent.
+
+- `StaircaseInversion.lean` is 0+7: `Fabius.isLeast_ceil`,
+  `Fabius.staircase_ceil`, `Fabius.staircase_separation`,
+  `Fabius.staircase_separation_fails`, `Fabius.staircase_round`,
+  `Fabius.isLeast_residue_class`, and
+  `Fabius.exists_half_error_of_jump`. All five clauses of
+  `p0:thm:staircase` are **Exact** at the strict-monotonicity/inverse-equation
+  interface, and the separation failure is formal too. No admissible
+  interpolation is constructed, and the periodic layer's Fourier expansion
+  is absent.
+
+- `TransseriesFlat.lean` is 4+16. Its definitions are `Fabius.IsFlat`,
+  `Fabius.flatSubmodule`, `Fabius.AbsorbsScale`, and `Fabius.powScale`; its
+  theorems are `Fabius.isFlat_zero`, `Fabius.IsFlat.add`,
+  `Fabius.IsFlat.neg`, `Fabius.IsFlat.sub`, `Fabius.IsFlat.const_smul`,
+  `Fabius.mem_flatSubmodule_iff`, `Fabius.IsFlat.mul_absorbsScale`,
+  `Fabius.absorbsScale_const`,
+  `Fabius.IsPoincareExpansion.add_isFlat`,
+  `Fabius.isFlat_sub_of_isPoincareExpansion`,
+  `Fabius.isPoincareExpansion_iff_isFlat_sub`,
+  `Fabius.isPoincareExpansion_zero_iff`, `Fabius.powScale_eq_rpow`,
+  `Fabius.absorbsScale_of_isBigO_pow`, `Fabius.isFlat_exp_neg`, and
+  `Fabius.isPoincareExpansion_add_exp_neg`. `q0:def:flat` and all three
+  clauses of `q0:prop:invisible` are **Exact**, with the same-coefficient
+  clause strengthened to an equivalence. No convergence or recovery beyond
+  flat remainders is asserted.
+
+- `TransseriesHarmonicIncrement.lean` is 0+2:
+  `Fabius.tendsto_div_atTop_of_tendsto_sub` and
+  `Fabius.tendsto_div_atTop_of_harmonic_increment`. The leading-order
+  `w_n/n -> c_0` clause of `plt:lem:mot-harmonic` is **Exact**. The compound
+  lemma remains **Partial** because the logarithmic correction, constant,
+  and `o(1)` remainder are absent.
+
+- `WrightOmega.lean` is 1+12: `Fabius.wrightOmega`,
+  `Fabius.wrightOmega_pos`, `Fabius.wrightOmega_add_log`,
+  `Fabius.principalLambertW_eq_wrightOmega_log`,
+  `Fabius.wrightOmega_leftInverse`, `Fabius.wrightOmega_strictMono`,
+  `Fabius.wrightOmega_one`, `Fabius.one_le_wrightOmega`,
+  `Fabius.wrightOmega_le_self`, `Fabius.sub_log_le_wrightOmega`,
+  `Fabius.wrightOmega_envelope`,
+  `Fabius.add_one_div_two_le_wrightOmega`, and
+  `Fabius.tendsto_wrightOmega_atTop`. The equation, inverse, positivity,
+  strict monotonicity, Lambert bridge, envelope, and divergence clauses of
+  `plt:prop:mot-omega-basic` are **Exact**. The proposition is **Partial**
+  because real analyticity is not formalized.
 
 The retained frontier, primary, walkthrough, geometric-q, and representation
 PDFs predate these source-only overlays and claim no render parity.
@@ -409,7 +535,10 @@ zero-definition/six-theorem `ProuhetBaseTwoBridge.lean` module, one theorem
 added to `DyadicBoundaryIdentity.lean`, and seven theorems added to
 `ThueMorseNewmanSelfSimilarity.lean`. This gives the historical 934/11,709
 union. The nine series/transseries modules and six concurrent declarations
-then give the live 943/11,787 union, with zero documentation gaps.
+then give the historical 943/11,787 checkpoint. The subsequent nine-module,
+90-declaration incoming tranche and four new declarations in
+`TransseriesDifferentialBlock.lean` give the live 952/11,881 union, with zero
+documentation gaps.
 
 `FabiusFunction.RvachevLaurentLeading` has one definition and six theorems.
 Its manuscript-normalized punctured-neighborhood limit, together with the

@@ -28,6 +28,7 @@ import FabiusFunction.EulerianGeneratingFunctions
 import FabiusFunction.ExponentialRiordan
 import FabiusFunction.ExponentialFormula
 import FabiusFunction.OrderedBell
+import FabiusFunction.OrdinaryPartialBell
 import FabiusFunction.EulerianStirling
 import FabiusFunction.NewtonExpansion
 import FabiusFunction.ComplementaryBell
@@ -289,6 +290,7 @@ import FabiusFunction.MeanValueBracket
 import FabiusFunction.TransseriesHeight
 import FabiusFunction.TransseriesScale
 import FabiusFunction.TransseriesWellBased
+import FabiusFunction.WrightOmega
 import FabiusFunction.LambertShiftInverse
 import FabiusFunction.LambertInverseCoefficients
 import FabiusFunction.CyclicCharacterSums
@@ -520,8 +522,10 @@ import FabiusFunction.BoundednessSkeleton
 import FabiusFunction.TransferOperatorStep
 import FabiusFunction.TransseriesBlockAntiderivative
 import FabiusFunction.TransseriesDifferentialBlock
+import FabiusFunction.TransseriesHarmonicIncrement
 import FabiusFunction.TransseriesScaleDominance
 import FabiusFunction.TransseriesPolyLogScale
+import FabiusFunction.TransseriesFlat
 import FabiusFunction.TriangularPowerProduct
 import FabiusFunction.LasotaYorkeIteration
 import FabiusFunction.TransferPositivity
@@ -791,6 +795,11 @@ import FabiusFunction.MixedDifferenceForwardDiff
 import FabiusFunction.GeometricProuhetBlock
 import FabiusFunction.GeneralLinearThueMorseSum
 import FabiusFunction.QuadraticCoreCatalan
+import FabiusFunction.DerangementNearestInteger
+import FabiusFunction.PowerLogCoreInversion
+import FabiusFunction.LinLogCoreInversion
+import FabiusFunction.StaircaseInversion
+import FabiusFunction.RemainderTransport
 
 set_option autoImplicit false
 
