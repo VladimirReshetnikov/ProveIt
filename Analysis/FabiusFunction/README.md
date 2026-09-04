@@ -82,9 +82,9 @@ That primary exposition is deliberately proof-backed: every mathematical claim
 in it must have a proved counterpart in the Lean development.
 
 > **Artifact status (2026-09-04).**  The live facade union contains exactly
-> 979 source modules and 12,142 explicit public declarations.  The documentation
+> 985 source modules and 12,199 explicit public declarations.  The documentation
 > audit reports no missing module headers or declaration comments.  The preceding
-> 977/12,133 and earlier reconciled 970/12,056 inventories remain historical
+> 979/12,142, 977/12,133, and earlier reconciled 970/12,056 inventories remain historical
 > checkpoints.  The exact-dyadic
 > inverse, Jacobi two-square, Lagrange--Rvachev Matrix, geometric Richardson,
 > Gaussian-binomial second-moment, fixed-column rate, and half-base root
@@ -233,7 +233,13 @@ in it must have a proved counterpart in the Lean development.
 > `NorlundDiagonal` to `ExponentialRescaling` makes the net change +77 and gives
 > the preceding 977/12,133 checkpoint.  `GridEvaluationCertificate` 0+4 and
 > `IntegerCRTCertificate` 0+5 then add two modules and nine theorems, producing
-> the live 979/12,142 census with no documentation gaps.  This is a conservative
+> the historical 979/12,142 checkpoint.  The six-module successor adds
+> `NorlundGeneralized` 3+18, `StirlingSymmetricFunctions` 0+4,
+> `LagrangeInversionUniqueness` 0+6, `NewtonReciprocal` 1+5,
+> `StirlingSecondReverseRowIdentity` 0+2, and
+> `TransseriesWrightOmegaTerms` 0+10, together with eight declarations in
+> existing modules.  Its +6-module/+57-declaration delta yields the live
+> 985/12,199 census with no documentation gaps.  This is a conservative
 > API inventory, not an automatic promotion of broader manuscript claims.  The separate
 > incoming-branch inner/exterior checkpoints
 > 906/11,461 and 907/11,464 remain historical.
@@ -253,10 +259,10 @@ in it must have a proved counterpart in the Lean development.
 > finite/infinite q-Pochhammer material, as well as the fixed-depth effective
 > inverse realizer, total inverse computability theorem, sharp exact
 > endpoint-mass denominator, and actual Lambert branch-gap Bernoulli series.
-> These retained PDFs
-> are historical receipts, not source/PDF-parity claims; fresh uninterrupted three-pass
-> Libertinus rebuilds remain pending.  The reorganized q-series roots whose
-> shared-notation input paths changed likewise remain pending parity rebuilds.
+> The older Representation Frontiers, filed New Frontiers, notation
+> catalogue, and Integration-and-Transform artifacts are separately historical
+> or unsynchronized; they are not members of this exact ten-root merge set and
+> retain the pending status recorded by their package notices.
 
 The formally proved small-argument hierarchy—including the corrected sharp
 asymptotic, the general coefficient algebra for the recursive all-orders

@@ -360,15 +360,27 @@ complex removable-origin sum given by the inverse of
 \(\lVert z\rVert<2\pi\).  It therefore crosswalks
 \nolinkurl{eq:pair-Bernoulli-general} and, under the standard removable-origin
 convention, \nolinkurl{eq:bernoulli-gen}; those four Lambert modules total four
-definitions and 37 theorems, 41 declarations; the exact inverse-recursion
+definitions and 37 theorems, 41 declarations.  Their completed local
+checkpoint is 903/11,448; the five-theorem fixed-column extension gives
+903/11,453.  Independently, the one-definition/eight-theorem geometric-uniform
+moment-polynomial branch gives 904/11,457 from the Lambert checkpoint, and the
+first union of those parallel extensions is the historical 904/11,462 receipt.
+\end{boxedremark}
+
+\begin{boxedremark}
+\textbf{Current merged census.}
+The current source also includes the exact inverse-recursion
 certificates, the Jacobi two-square counting and Lagrange--Rvachev Matrix
 leaves, the weighted/geometric barycenter pair, and the
 three-definition/seven-theorem geometric Richardson generating-function
 module; the three-theorem second-moment strengthening of the existing
 Gaussian-binomial cumulant module; the one-definition/seventeen-theorem
 arbitrary-space geometric-uniform realization module; the two-definition/
-one-theorem regular central q-binomial sum leaf; the zero-definition/
-ten-theorem effective fixed-column Gaussian-rate leaf; and the one-definition/
+one-theorem regular central q-binomial sum leaf; the deduplicated zero-definition/
+eight-theorem effective fixed-column Gaussian-rate leaf, with the shared
+generalized product bound and arbitrary-shift convergence retained upstream in
+the one-definition/twenty-seven-theorem
+\path{QBinomialTheoremInfinite.lean} surface; and the one-definition/
 fourteen-theorem Rvachev--Appell Hasse leaf; the zero-definition/two-theorem
 greater-than-one Gaussian asymptotics leaf; the one-definition/fourteen-theorem
 nodes-only Rvachev amplitude leaf; and the one-definition/eight-theorem
@@ -489,8 +501,10 @@ declarations, with zero documentation gaps.  Relative to 970/12,056, seven
 new leaves contribute 80 declarations, while three existing declarations
 move from \path{NorlundDiagonal.lean} to \path{ExponentialRescaling.lean},
 for a net increase of 77.  The eight-theorem Stirling leaf is retained.
-The current inventory is 979/12,142 after two certificate leaves add nine public
-theorems. No new aggregate-build or PDF-parity claim is made.
+The two certificate leaves added nine public theorems at the historical
+979/12,142 checkpoint. The current merged inventory is 985/12,199 after six
+further leaves add 57 declarations. No new aggregate-build or PDF-parity
+claim is made.
 
 The crosswalk remains conservative.  The abstract Fa\`a di Bruno result, the
 ordinary Bell normalization, and the Touchard definition and displayed
@@ -511,8 +525,9 @@ missing leading/odd-degree clause, so the represented
 rational coefficient, proves its q-factorial clearing, supplies safe inner and
 exterior analytic evaluations, and handles the removable value at \(q=1\);
 hence \nolinkurl{thm:qF-moment-polynomial} is Exact.  The actual-MGF
-normalization remains Exact for real \(\lvert q\rvert<1\), while no analytic
-value at a genuine unit-root pole is asserted.  The incoming bridge branch recorded the
+normalization subclaim is Exact for real \(\lvert q\rvert<1\), but the full MGF
+row remains Partial and no analytic value at a genuine unit-root pole is
+asserted.  The incoming bridge branch recorded the
 successive historical checkpoints 903/11,447,
 903/11,448, 904/11,457, and 905/11,458.  In the merged chronology the
 real-MGF bridge first reached
@@ -542,7 +557,7 @@ branch recorded historical 943/11,787, 952/11,881, 952/11,884, 967/12,001,
 969/12,048, and 970/12,051 inventories.  The preceding local merge
 970/12,056 checkpoint is also historical.
 The overlapping branches are reconciled in the inventory above: the current
-merged audit is 979/12,142, with zero documentation gaps.
+merged audit is 985/12,199, with zero documentation gaps.
 The incoming-branch
 906/11,461 and earlier exterior-branch 907/11,464 censuses remain explicitly
 historical.
@@ -556,8 +571,12 @@ self-receipt.  No \nolinkurl{SHA256SUMS*} ledger exists or participates in
 validation.
 \end{boxedremark}
 
+\clearpage
+\begingroup
+\pagestyle{plain}
 \tableofcontents
 \clearpage
+\endgroup
 
 \markboth{Consolidation map and reading conventions}{}
 \section*{Consolidation map and reading conventions}
@@ -793,12 +812,14 @@ Infinite q-binomial theorem and Euler expansions &
 \nolinkurl{QBinomialTheoremInfinite.lean}; one definition and twenty-seven
 theorems, inventoried below \\
 Effective fixed-column Gaussian limit and rates &
-\nolinkurl{tendsto_gaussianBinomial_add_atTop},
+\nolinkurl{norm_finiteQPochhammerIn_pow_sub_one_le},
+\nolinkurl{norm_finiteQPochhammerIn_self_mul_gaussianBinomial_sub_one_le},
 \nolinkurl{gaussianBinomial_fixedColumn_relativeError_isBigO},
 \nolinkurl{gaussianBinomial_shifted_fixedColumn_relativeError_isBigO} &
-\nolinkurl{GaussianBinomialFixedColumnRate.lean}; zero definitions and ten
-theorems, inventoried below.  Together with the existing fixed-column limit,
-this makes \nolinkurl{thm:fixed-column-limit} exact, including \(q=0\). \\
+\nolinkurl{GaussianBinomialFixedColumnRate.lean}; zero definitions and nine
+theorems, inventoried below. The normed-field product bound and
+arbitrary-shift convergence live upstream in the 1+27 q-binomial module;
+together they make \nolinkurl{thm:fixed-column-limit} Exact, including \(q=0\). \\
 Jacobi triple product and pentagonal sums &
 \nolinkurl{thetaExponent}, \nolinkurl{pentagonalExponent},
 \nolinkurl{hasSum_jacobi_triple_product}, \nolinkurl{hasSum_pentagonal_pairs} &
@@ -1409,8 +1430,8 @@ derivative coefficient extraction gives
 The formal falling-factorial substitution supplies the unit-constant power
 case over a rational algebra, making the power clause of
 \nolinkurl{alg:merged-exp-log-power} Exact.  No analytic branch is asserted;
-the 204-row coefficient-calculus concordance is 63 Lean, 32 Partial, and
-109 None. &
+the 207-row coefficient-calculus concordance is 62 Lean, 35 Partial, and
+110 None. &
 \nolinkurl{Fabius.coeff_recurrence_of_mul_derivative_eq},
 \nolinkurl{Fabius.mul_derivative_fallingSeries_subst_sub_one},
 \nolinkurl{Fabius.coeff_fallingSeries_subst_sub_one_recurrence} &
@@ -3042,27 +3063,57 @@ The one-definition/twenty-seven-theorem
 \lean{qPochhammerInfIn_ne_zero_of_norm_lt_one},
 \lean{hasSum_qBinomial_theorem}, and \lean{hasSum_euler_reciprocal}.
 
-The subsequent zero-definition/ten-theorem
+The five effective fixed-column additions are exact.  For \(\lVert q\rVert\le1\),
+the finite-product estimate is
+\[
+ \left\lVert(q^m;q)_k-1\right\rVert
+ \le \exp\!\left(k\lVert q\rVert^m\right)-1.
+\]
+For fixed \(k\) and \(\lVert q\rVert<1\), Lean states the resulting rate in
+the equivalent additive \texttt{IsBigO} form
+\[
+ (q^m;q)_k-1=\operatorname{O}(q^m),\qquad
+ \GaussianBinomial{n}{k}{q}-(q;q)_k^{-1}
+ =\operatorname{O}\!\left(q^{n-k+1}\right).
+\]
+Since \((q;q)_k\ne0\) under the same strict-contraction hypothesis,
+multiplying the Gaussian additive error by the fixed denominator \((q;q)_k\)
+gives the manuscript's relative-error form.
+The shifted convergence theorem is stronger than the usual \(n+k\)
+specialization: for every fixed \(r\in\NaturalNumbers\),
+\[
+ \GaussianBinomial{n+r}{k}{q}\longrightarrow(q;q)_k^{-1}.
+\]
+For \(r=k\), the quantitative wrapper gives
+\(\GaussianBinomial{n+k}{k}{q}-(q;q)_k^{-1}
+=\operatorname{O}(q^{n+1})\).
+This promotes the fixed-column row from Partial to Exact.  With the later
+one-definition/four-theorem RatFunc closure, the moment-polynomial row is also
+Exact while the stronger MGF row remains Partial.  The authoritative
+282-result forward q ledger is therefore 181 Exact, 78 Partial, 15 None, and
+8 N/A.
+The subsequent zero-definition/nine-theorem
 \path{GaussianBinomialFixedColumnRate.lean} surface is
-\lean{norm_finiteQPochhammerIn_pow_sub_one_le_exp},
+\lean{norm_finiteQPochhammerIn_pow_sub_one_le_exp'},
 \lean{norm_finiteQPochhammerIn_pow_sub_one_le},
 \lean{norm_finiteQPochhammerIn_self_mul_gaussianBinomial_sub_one_le},
 \lean{norm_gaussianBinomial_sub_inv_finiteQPochhammerIn_le},
 \lean{norm_gaussianBinomial_add_sub_inv_finiteQPochhammerIn_le},
-\lean{tendsto_gaussianBinomial_add_atTop},
 \lean{gaussianBinomial_fixedColumn_relativeError_isBigO},
 \lean{gaussianBinomial_shifted_fixedColumn_relativeError_isBigO},
 \lean{gaussianBinomial_fixedColumn_error_isBigO}, and
 \lean{gaussianBinomial_shifted_fixedColumn_error_isBigO}.
 For a normed commutative ring with normalized multiplicative norm and
-\(\lVert q\rVert\le1\), the first two bound
+\(\lVert q\rVert\le1\), the generalized product bound upstream and the first
+theorem here bound
 \(\lVert(q^m;q)_k-1\rVert\) by
 \(\exp(k\lVert q\rVert^m)-1\) and
-\(k e^k\lVert q\rVert^m\); the third gives
+\(k e^k\lVert q\rVert^m\); the second theorem here gives
 the denominator-free relative Gaussian bound for \(k\le n\), still meaningful
 at roots of unity.  Over any normed field, \(\lVert q\rVert<1\) gives the
-fixed and shifted nonasymptotic additive estimates, shifted convergence, and
-the four relative/additive \texttt{IsBigO} laws at rates \(q^{n-k+1}\) and
+fixed and shifted nonasymptotic additive estimates; the arbitrary-shift
+convergence theorem remains upstream.  The final four declarations give the
+relative/additive \texttt{IsBigO} laws at rates \(q^{n-k+1}\) and
 \(q^{n+1}\).  No completeness or \(q\ne0\) premise is present and no sharpness
 is claimed for the elementary constant.  With
 \lean{tendsto_gaussianBinomial_atTop}, this proves all four clauses of
@@ -3217,6 +3268,21 @@ intermediate source census is 672/8,875.  The three later
 \path{BinaryWordInversions.lean}, \path{BoxPartitions.lean}, and
 \path{TelescopingCertificate.lean} leaves add thirty-four declarations and
 bring the historical source checkpoint to 675/8,909.  The subsequent source
+chronology first combines the exact 36-declaration Lambert branch-coordinate
+tranche with the twelve-declaration terminating-basic-hypergeometric closure
+at 901/11,430.  The 3+7
+\path{GeometricRichardsonGenerating.lean} leaf gives 902/11,440, and the three
+second-moment additions to \path{GaussianBinomialCumulants.lean} give
+902/11,443.  The successive three-, four-, and five-theorem
+Lambert--Bernoulli receipts are 903/11,446, 903/11,447, and 903/11,448.
+The local five-theorem effective fixed-column q-binomial closure then enlarges
+\path{QBinomialTheoremInfinite.lean} to 1+27 and gives 903/11,453.
+Independently, the 1+8
+\path{GeometricUniformMomentPolynomial.lean} branch gives 904/11,457 from the
+Lambert checkpoint, and its first union with the local fixed-column branch is
+the historical 904/11,462 receipt.  At that intermediate receipt the
+polynomial row was still Partial because its later analytic and sharp-degree
+closures had not yet landed.  The later merged
 union includes the exact 36-declaration Lambert branch-coordinate tranche,
 exact inverse and Jacobi two-square leaves, the Lagrange--Rvachev Matrix and
 weighted/geometric barycenter additions, the twelve-declaration terminating-
@@ -3228,14 +3294,14 @@ second-moment and variance-numerator identities over every commutative
 semiring.  The later \path{LambertWBranchGapBernoulli.lean} (0+5),
 \path{GeometricUniformRealization.lean} (1+17), and
 \path{RegularCentralQBinomialSum.lean} (2+1), and
-\path{GaussianBinomialFixedColumnRate.lean} (0+10), and
+the incoming-branch \path{GaussianBinomialFixedColumnRate.lean} (0+10), and
 \path{RvachevAppellHasse.lean} (1+14) leaves bring the historical source census to
 the historical 910/11,525 checkpoint.  The later
 \path{GaussianBinomialGreaterOneAsymptotics.lean} (0+2),
 \path{RvachevLagrangeNodesOnly.lean} (1+14), and
 \path{GeometricUniformMomentPolynomial.lean} (1+8) leaves bring the next
 source checkpoint to 913/11,551.  The subsequent
-\path{ThueMorseGammaTowerDifferential.lean} (0+3) leaf brings the live
+\path{ThueMorseGammaTowerDifferential.lean} (0+3) leaf brings the historical
 source checkpoint to 914/11,554.  The subsequent one-theorem strengthening
 of the existing \path{GeometricResidualMoments.lean} module leaves the module
 count unchanged and brings the next source checkpoint to 914/11,555.  The
@@ -3276,7 +3342,7 @@ branch recorded historical 943/11,787, 952/11,881, 952/11,884, 967/12,001,
 969/12,048, and 970/12,051 inventories.  The preceding local merge
 970/12,056 checkpoint is also historical.
 The overlapping branches are reconciled in the inventory above: the current
-merged audit is 979/12,142, with zero documentation gaps.
+merged audit is 985/12,199, with zero documentation gaps.
 
 The Laurent leaf makes \nolinkurl{is:p2:thm:Laurent-leading} Exact through
 the manuscript-normalized punctured-neighborhood limit and its Fourier
@@ -3620,7 +3686,7 @@ branch recorded historical 943/11,787, 952/11,881, 952/11,884, 967/12,001,
 969/12,048, and 970/12,051 inventories.  The preceding local merge
 970/12,056 checkpoint is also historical.
 The overlapping branches are reconciled in the inventory above: the current
-merged audit is 979/12,142, with zero documentation gaps.
+merged audit is 985/12,199, with zero documentation gaps.
 The existing
 \path{GeometricResidualMoments.lean} module now has zero definitions and nine
 public theorems.  Its
@@ -5918,10 +5984,12 @@ rates, and, over complete normed fields, Euler product and reciprocal
 expansions and the infinite q-binomial theorem under the stated strict nome
 and series-variable bounds.\\
 \path{GaussianBinomialFixedColumnRate.lean} &
-The exhaustive zero-definition, ten-theorem effective fixed-column interface:
-finite-product defect bounds, a denominator-free relative Gaussian bound,
-fixed and shifted nonasymptotic additive estimates, shifted convergence, and
-four relative/additive geometric \texttt{IsBigO} results.  The ring layer uses
+The exhaustive zero-definition, nine-theorem effective fixed-column interface:
+two finite-product defect bounds, a denominator-free relative Gaussian bound,
+fixed and shifted nonasymptotic additive estimates, and four relative/additive
+geometric \texttt{IsBigO} results. The normed-field product bound and
+arbitrary-shift convergence live upstream in
+\path{QBinomialTheoremInfinite.lean}.  The ring layer uses
 \(\lVert q\rVert\le1\); the normed-field layer uses only
 \(\lVert q\rVert<1\), without completeness or \(q\ne0\).\\
 \path{JacobiTripleProduct.lean} &

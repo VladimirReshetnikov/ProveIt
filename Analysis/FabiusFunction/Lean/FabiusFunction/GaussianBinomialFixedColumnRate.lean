@@ -20,6 +20,11 @@ Their `IsBigO` corollaries are the two effective clauses of the manuscript's
 fixed-column theorem.  All results include `q = 0`; in that case the errors
 vanish once the displayed exponent is positive.
 
+The upstream `QBinomialTheoremInfinite` module already supplies the general
+exponential product-defect estimate and the shifted limit (for an arbitrary
+fixed additive shift).  This leaf reuses those declarations and adds the
+eight sharper nonasymptotic and relative/additive error results below.
+
 ## Main declarations
 
 * `norm_finiteQPochhammerIn_pow_sub_one_le_exp'` bounds the product defect by

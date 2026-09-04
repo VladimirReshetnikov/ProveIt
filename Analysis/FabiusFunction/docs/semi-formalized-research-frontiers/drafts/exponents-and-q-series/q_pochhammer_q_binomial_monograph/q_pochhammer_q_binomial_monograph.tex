@@ -227,6 +227,12 @@
 \maketitle
 \hypersetup{pageanchor=true}
 
+\begin{center}
+\small\itshape This merged source edition incorporates the post-receipt
+closures described below.  Any pre-merge PDF receipt is retained solely as
+historical provenance and is not a receipt for this edition.
+\end{center}
+
 \chapter*{Abstract}
 \addcontentsline{toc}{chapter}{Abstract}
 The finite and infinite $q$-Pochhammer symbols and the Gaussian, or
@@ -13892,7 +13898,7 @@ theorems;\\
 \path{QBinomialTheoremInfinite.lean}: one definition and 22 theorems; its
 use of \path{Fabius.finiteQPochhammerIn_zero_left} imports the unique
 declaration from \path{GaussianBinomialAtOne.lean};\\
-\path{GaussianBinomialFixedColumnRate.lean}: zero definitions and ten
+\path{GaussianBinomialFixedColumnRate.lean}: zero definitions and nine
 theorems;\\
 \path{BasicHypergeometricSeries.lean}: two definitions and five theorems;\\
 \path{HeineTransformation.lean}: two definitions and five theorems;\\
@@ -16142,15 +16148,19 @@ convergence}\\[2pt]
 \Cref{thm:fixed-column-limit} & \statusexact &
 \texttt{tendsto\_\allowbreak{}gaussianBinomial\_\allowbreak{}atTop},
 \texttt{tendsto\_\allowbreak{}gaussianBinomial\_\allowbreak{}add\_\allowbreak{}atTop},
+\texttt{norm\_\allowbreak{}finiteQPochhammerIn\_\allowbreak{}pow\_\allowbreak{}sub\_\allowbreak{}one\_\allowbreak{}le\_\allowbreak{}exp},
+\texttt{isBigO\_\allowbreak{}finiteQPochhammerIn\_\allowbreak{}pow\_\allowbreak{}sub\_\allowbreak{}one},
+\texttt{isBigO\_\allowbreak{}gaussianBinomial\_\allowbreak{}sub\_\allowbreak{}inv},
+\texttt{isBigO\_\allowbreak{}gaussianBinomial\_\allowbreak{}add\_\allowbreak{}sub\_\allowbreak{}inv},
 \texttt{gaussianBinomial\_\allowbreak{}fixedColumn\_\allowbreak{}relativeError\_\allowbreak{}isBigO},
 \texttt{gaussianBinomial\_\allowbreak{}shifted\_\allowbreak{}fixedColumn\_\allowbreak{}relativeError\_\allowbreak{}isBigO},
 \texttt{gaussianBinomial\_\allowbreak{}fixedColumn\_\allowbreak{}error\_\allowbreak{}isBigO},
 \texttt{gaussianBinomial\_\allowbreak{}shifted\_\allowbreak{}fixedColumn\_\allowbreak{}error\_\allowbreak{}isBigO}\newline
 {\footnotesize\texttt{QBinomialTheoremInfinite};
 \texttt{GaussianBinomialFixedColumnRate}; over every normed field for
-\(\lVert q\rVert<1\).  The relative wrappers are exactly the two printed
-multiplicative errors; the additive wrappers and explicit nonasymptotic
-\(k\exp(k)\)-bounds are stronger.  No \(q\ne0\) premise is used, so the zero
+\(\lVert q\rVert<1\).  The upstream theorem permits an arbitrary fixed shift;
+the nine-theorem rate leaf supplies the relative wrappers and explicit
+nonasymptotic \(k\exp(k)\)-bounds.  No \(q\ne0\) premise is used, so the zero
 nome is included.}\\[2pt]
 \Cref{thm:central-fixed-q} & \statuspartial &
 \texttt{tendsto\_\allowbreak{}gaussianBinomialInt\_\allowbreak{}central}\newline
@@ -16411,7 +16421,7 @@ $n\ge1$, with the expectation represented by the full-line measure integral}\\[2
 {\footnotesize\texttt{FabiusComplexMGF};
 \texttt{GeometricUniformMomentPolynomialBridge};
 \texttt{GeometricUniformComplexMomentProduct};
-\texttt{GeometricUniformExteriorComplexMomentGerm};
+\texttt{GeometricUniformExterior}\allowbreak{}\texttt{ComplexMomentGerm};
 \texttt{GeometricUniformMomentRatFunc}; the half-base transform, the
 zero-definition/one-theorem real genuine-MGF coefficient bridge, and the
 one-definition/three-theorem complex strict-contraction product, local-uniformity,
@@ -16628,7 +16638,7 @@ zero--pole exchange are not packaged}\\[2pt]
 {\footnotesize\texttt{GeometricUniformMomentPolynomial};
 \texttt{GeometricUniformMomentPolynomialBridge};
 \texttt{GeometricUniformComplexMomentProduct};
-\texttt{GeometricUniformExteriorComplexMomentGerm};
+\texttt{GeometricUniformExterior}\allowbreak{}\texttt{ComplexMomentGerm};
 \texttt{GeometricUniformMomentRatFunc}; the recursively defined
 polynomial family, its zeroth value and residual-product recurrence, the degree
 bound, the specialization at $q=0$, and the displayed cases $\mathcal P_1$
@@ -16671,7 +16681,7 @@ historical post-Prouhet checkpoint.  Subsequent source-only
 transseries/Catalan and Thue--Morse additions made 943/11,791 the next
 historical checkpoint.  The finalized one-definition/eleven-theorem
 \texttt{TransseriesFlat} module and three integer-zpow theorems in
-\texttt{TransseriesDifferentialBlock} gave the historical census 944/11,806; the merged live census is 979/12,142}\\[2pt]
+\texttt{TransseriesDifferentialBlock} gave the historical census 944/11,806; the merged live census is 985/12,199}\\[2pt]
 \Cref{prop:qF-P-degree-sharp} & \statusexact &
 \texttt{coeff\_geometricUniformMomentPolynomial\_choose\_two},
 \texttt{coeff\_geometricUniformMomentPolynomial\_choose\_two\_sub\_one}, and
@@ -16694,7 +16704,7 @@ Subsequent source-only transseries/Catalan and Thue--Morse additions made
 943/11,791 the next historical checkpoint.  The finalized one-definition/
 eleven-theorem \texttt{TransseriesFlat} module and three integer-zpow theorems
 in \texttt{TransseriesDifferentialBlock} gave the historical facade census 944
-modules and 11,806 public declarations; the merged live census is 979/12,142}\\[2pt]
+modules and 11,806 public declarations; the merged live census is 985/12,199}\\[2pt]
 \Cref{cor:qF-halfbase-dictionary} & \statuspartial &
 \texttt{fabiusAtInverseTwoPow\_eq\_halfMoment},
 \texttt{halfQPochhammer\_eq\_mersenne\_div}\newline

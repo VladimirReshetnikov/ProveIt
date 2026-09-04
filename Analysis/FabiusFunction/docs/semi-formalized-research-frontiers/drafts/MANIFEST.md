@@ -26,8 +26,8 @@ declarations and the nine-theorem fixed-column inventory. Its retained
 405-page PDF and `b899` receipt are historical; that correction made no PDF
 or checksum update.
 
-**Current artifact checkpoint (2026-09-04).** The live Lean audit scans 979
-source modules and 12,142 explicit public declarations, with no missing module headers or
+**Current artifact checkpoint (2026-09-04).** The live Lean audit scans 985
+source modules and 12,199 explicit public declarations, with no missing module headers or
 declaration comments. The reciprocity leaf's 931/11,685 checkpoint remains
 historical; the subsequently merged upstream `DyadicBoundaryIdentity.lean`
 and `FinitePrefixThueMorseCollapse.lean` modules add two modules and ten public
@@ -90,8 +90,10 @@ declarations**, with zero documentation gaps. Relative to 970/12,056, seven
 new leaves contribute 80 declarations while three existing declarations move
 from `NorlundDiagonal.lean` to `ExponentialRescaling.lean`, a net increase
 of 77. The eight-theorem Stirling leaf is retained.
-The current inventory is 979/12,142 after two certificate leaves add nine public
-theorems. No new aggregate-build or PDF-parity claim is made.
+The two certificate leaves added nine public theorems at the historical
+979/12,142 checkpoint. The current merged inventory is 985/12,199 after six
+further leaves add 57 declarations. No new aggregate-build or PDF-parity
+claim is made.
 
 The abstract Faà di Bruno result, ordinary Bell normalization, and Touchard
 definition and displayed Euler-operator equation are **Exact**. The real
@@ -466,12 +468,15 @@ evaluated reciprocity, nonnegative-nome lower and strict-contraction upper
 bounds, and dimension-dominant two-sided estimates for real nomes greater than
 one. Its positivity input is the already-counted
 `finiteQPochhammerIn_self_pos` imported from `GeneralQConditionNumber.lean`.
-`GaussianBinomialFixedColumnRate.lean` adds no definitions and ten theorems:
-two generic product-defect bounds, the denominator-free relative Gaussian
-estimate, fixed and shifted nonasymptotic additive errors, the shifted limit,
-and four fixed/shifted relative/additive Big-O wrappers. The ring-level bounds
-need a multiplicative norm, the quotient statements need a normed field with
-`‖q‖ < 1`, and every result includes `q = 0`.
+`GaussianBinomialFixedColumnRate.lean` adds no definitions and nine theorems:
+the exponential and elementary product-defect bounds, the denominator-free relative Gaussian
+estimate, fixed and shifted nonasymptotic additive errors, and four
+fixed/shifted relative/additive Big-O wrappers. The closure reuses
+`norm_finiteQPochhammerIn_pow_sub_one_le_exp_of_norm_le_one` and
+`tendsto_gaussianBinomial_add_const_atTop` from the one-definition,
+twenty-seven-theorem `QBinomialTheoremInfinite.lean` surface. The ring-level
+bounds need a multiplicative norm, the quotient statements need a normed field
+with `‖q‖ < 1`, and every result includes `q = 0`.
 `GaussianBinomialGreaterOneAsymptotics.lean` adds no definitions and two
 theorems. For real `q > 1`,
 `gaussianBinomial_gt_one_fixedColumn_relativeError_isBigO` proves the printed
@@ -567,8 +572,8 @@ provenance theorem retains two auxiliary nonvanishing assumptions. The former
 is superseded by root 4 above. The comb synthesis also has later chapter-03 notation and
 chapter-01 Richardson, Matrix, and Rvachev--Appell Hasse crosswalk edits. Its
 232-row concordance now records 7 Lean-proved, 159 human-proved frontier, 20 conjecture, 30 open-problem,
-and 16 non-applicable rows. Its retained 158-page, 2,456,105-byte
-A4 PDF has SHA-256
+and 16 non-applicable rows. Its former 158-page, 2,456,105-byte
+A4 PDF had SHA-256
 `81d249c8b2bb124836c858bd8e0ef9c8764606a2f9655a798d69e7565b1759b4`;
 it is a validated historical checkpoint superseded by the current root-6
 160-page receipt above.
@@ -665,15 +670,14 @@ The final pass proved the sharp Bell bound the arrivals had only asserted,
 supplied Euler's limit and the Weierstrass product on which an existing
 polygamma proof silently depended, merged thirteen further donor-only results,
 repaired eight double-superscript errors that had made the source fail to
-compile at all, and completed the notation-catalogue migration. The retained
-174-page PDF is an earlier render; the source has changed since that checkpoint,
-and rebuilding remains deferred at the user's request. None of the manuscript proofs is claimed as Lean
+compile at all, and completed the notation-catalogue migration. The retained upstream PDF is a historical render; the latest merged source
+contains subsequent changes and makes no current source/PDF-parity claim. None of the manuscript proofs is claimed as Lean
 verification; the in-document "Lean formalization register" states the
 formalization status per result.
 
 | Directory | Document | Previous path / provenance |
 | --- | --- | --- |
-| `Combinatorial_Coefficient_Calculus/` | **Canonical, editorial consolidation complete:** *Combinatorial Coefficient Calculus* — current source with 204 adjacent proofs and a 63 Lean / 32 partial / 109 none register. `UnitSeriesPowerRecurrence.lean` supplies the generic differential-equation recurrence and unit-series specialization that make `alg:merged-exp-log-power` Exact. The retained 174-page A4 PDF is an earlier render; PDF rebuilding is deferred by user instruction. | Six-source provenance and disposition records in the package; original non-suffixed arrival was `incoming/Combinatorial_Coefficient_Calculus.zip`; `SOURCE_INVENTORY.csv` records immutable Git locators for all six inputs, including the five retired donors. The mutable `SOURCE_CLOSURE.sha256` ledger is retired and no checksum ledger is required. |
+| `Combinatorial_Coefficient_Calculus/` | **Canonical, editorial consolidation complete:** *Combinatorial Coefficient Calculus* — current source with 207 adjacent proofs and a 62 Lean / 35 partial / 110 none register. `UnitSeriesPowerRecurrence.lean` supplies the generic differential-equation recurrence and unit-series specialization that make `alg:merged-exp-log-power` Exact. The retained upstream A4 PDF is historical; the latest merged source makes no current source/PDF-parity claim. | Six-source provenance and disposition records in the package; original non-suffixed arrival was `incoming/Combinatorial_Coefficient_Calculus.zip`; `SOURCE_INVENTORY.csv` records immutable Git locators for all six inputs, including the five retired donors. The mutable `SOURCE_CLOSURE.sha256` ledger is retired and no checksum ledger is required. |
 
 ## exponents-and-q-series — `exponents-and-q-series/`
 
@@ -899,7 +903,7 @@ and 961/11,974 inventories and the incoming branch's 943/11,787, 952/11,881,
 and 952/11,884 inventories, followed by incoming 967/12,001, 969/12,048,
 and 970/12,051, are historical and overlap. The preceding local merged
 970/12,056 inventory is also historical. The reconciled merged
-audit is 979/12,142, with zero documentation gaps, as inventoried above.
+audit is 985/12,199, with zero documentation gaps, as inventoried above.
 In the current semantic union, the subsequent
 zero-definition/two-theorem greater-than-one leaf makes `cor:qgreaterone`
 Exact, and the scaled-geometric polynomial theorem completes
@@ -910,7 +914,7 @@ in `HalfQBinomialRootSimplicity.lean`, composed with the complete rational
 root classification in `HalfQBinomial.lean`, makes
 `cor:halfbase-root-locus` Exact while leaving
 `cor:qbinom-inversion-law` Partial. The live semantic-union facade census is
-979/12,142; the local 961/11,974, 960/11,966, 944/11,806, and 943/11,791
+985/12,199; the local 961/11,974, 960/11,966, 944/11,806, and 943/11,791
 inventories, the preceding local merge 970/12,056, and the incoming
 970/12,051, 969/12,048, 967/12,001, 952/11,884, 952/11,881, and 943/11,787 inventories
 remain historical branch checkpoints. The historical dyadic/Prouhet census
@@ -983,7 +987,7 @@ explicit public commands and two generated names. The later incoming
 snapshot expanded this to thirty-five focused surfaces with 304 explicit
 public commands plus two names generated by `to_additive` (306 named API
 entries). These are historical incoming inventories, not a recount of the
-merged 979/12,142 corpus; the module interfaces below retain their stated
+merged 985/12,199 corpus; the module interfaces below retain their stated
 scope boundaries. The preceding local merge census was 970/12,056.
 
 Fourteen of the fifteen incoming leaves contribute 95 focused declarations:
@@ -1474,7 +1478,7 @@ while all arrival and historical build hashes remain unchanged.
 | `Fabius_Rvachev_Shape_Divisibility_Stein_Geometry/` | *Shape, Divisibility, and Stein Geometry of the Fabius--Rvachev Law* (retained historical 34-page A4 PDF; current notation-source TeX: 2,057 lines, 83,124 bytes, SHA-256 `975ec7078562d88ba76c870ef1d90363380cbe422507762c305695b61f1c9bec`; with a 466-line numerical experiment, three CSV tables, four retained vector-PDF figures plus four PNG companions, readable diagnostics, Makefile, requirements, and README). Landed 2026-08-30 from `drafts/incoming/Fabius_Rvachev_Frontier_Report_2026-08-30-C.zip` (outer SHA-256 `200e65588b824d05f863ec0dae50b983408af3a7a2cf000c55556560e8e49d2e`); all 14 submitted hashes verified. The repaired title-derived pair uses canonical A4/27 mm/Libertinus styling and embeds PNG companions; three `pdflatex` passes produced a 34-page PDF with all fonts embedded/subset, no Type 3 font or overfull box, and historical hashes for its 18 payloads. Its strict log-concavity, rootlessness, diffusion, and Legendre-jet strands remain paper-only and distinct, while scalar Stein-kernel, Bell-moment, shape, and endpoint material overlaps `Fabius_Stein_Koopman_Frontier_Report/`. The report now crosswalks the exact existing `rvachev_not_analyticAt` inputs separately from its prospective APIs and imports the stronger two-term endpoint theorem honestly. It remains standalone pending editorial integration; manuscript labels do not establish Lean status. The original 50-page Letter/Latin-Modern/Type-3 artifact is recoverable from history | arrived through `drafts/incoming/`; archive unpacked here and deleted |
 | `Fabius_Stein_Koopman_Frontier_Report/` | *Dyadic Stein--Koopman and q-Oscillator Calculus for the Fabius--Rvachev Law* (32 pp, 1929 source lines; with exact-symbolic and numerical experiments, five generated data files, two dual-format figures, a corpus audit, build/preflight records, and reproducibility metadata). Landed 2026-08-30 from `drafts/incoming/Fabius_Stein_Koopman_Frontier_Report.zip`; all 20 payload checksums verified. The report develops Appell Koopman eigenmodes, finite and Fock-space transfer determinants, q-Weyl calculus, Poisson/Stein resolvents, martingales and nonreversibility, an exact scalar Stein kernel in Fabius coordinates, and Lambert-periodic endpoint asymptotics. It remains a separate representation member pending claim-by-claim Lean crosswalk and deliberate consolidation; theorem labels record paper proofs, not current Lean status | arrived through `drafts/incoming/`; archive unpacked here and deleted |
 | `Representation_Frontiers/` | *Representation Frontiers for the Fabius–Rvachev System* (301 pp, 8 parts) — consolidation (2026-08-28) of all eight representation drafts. Parts I–III (first wave): `Fabius_Rvachev_Representation_Frontiers/` (*Fabius–Rvachev Representation Frontiers*: Jacobi coefficients, exact even moments, resolvent and logarithmic-derivative identities), `fabius_rvachev_representation_frontier/` (*Representation Atlas and New Analytic Bridges*), `Fabius_Rvachev_Multiresolution_Report/` (*Dyadic Multiresolution and Product–Series Representations*). Parts IV–VIII (second wave, folded in from the interim `Representation_Second_Wave/` volume on 2026-08-28): `fabius_rvachev_report_package/` (*Integral, Series, Product, and Operator Representations*), `Fabius_Rvachev_Polyphase_Representation_Report/` (*Polyphase, Operator, and Jump-Measure Representations*), `Fabius_Rvachev_Thue_Morse_Representation_Frontiers/` (*Sampling, Padé, Mellin, Resolvent, and Product–Integral Representations*), `rvachev_fabius_representations_2026/` (*Unit-Circle, Bessel, and Spectral–Monodromy Representations*), `Fabius_Rvachev_Multiresolution_Representations/` (*Dyadic Multiresolution and Sampling Frontiers*). The fold restored per-part arabic section numbering (the standalone second-wave volume let `\appendix` lettering run across part boundaries), restored the members' full part titles, and deduplicated colliding macros (all edits marked `% ed.:`); assets under `assets/`, provenance with SHA-256 in the document | absorbed drafts and the interim second-wave volume deleted; git history is the archive |
-| `Up_Polynomial_Synthesis/` | *Exact Rvachev Up-Function Polynomial Synthesis* (60-page retained A4 PDF; 5,487 current source lines across a driver and three chapters; 80 theorem-like assertions, 80 proofs, and 80 one-to-one crosswalk rows: 25 + 16 + 17 + 22). Canonical editorial consolidation (2026-08-30) of three exact-polynomial, six Lagrange--Rvachev, and four Legendre--Rvachev packages, with repeated foundations deduplicated, exact Sturm evidence retained, and Lean anchors scoped claim by claim. The three earlier package payloads are under `assets/`; all 113 selected later-report payloads have canonical destinations and live hashes under `assets/companion-evidence/`, `assets/evidence/`, and `assets/provenance/COMPANION_PAYLOADS.csv`. The ten individual report directories were retired on 2026-08-31 after the exact gate passed; their source bytes remain recoverable at immutable commit `443793e846934e7363e314ea01129b9f50197a58`. The source-only `RvachevLegendreCentralSum.lean` leaf adds zero definitions and three theorems—`eval_legendrePolynomial_even_zero`, `eval_rvachevLegendreDeconvolutionPolynomial_even`, and `rvachevLegendreCentralSum`—and makes only `cor:leg-central-sum` Exact. For every bounded Fabius witness and every `n`, including zero, it proves the literal mesh-`4^n` finite cancellation by central evaluation, parity pairing, and compact-support truncation. The subsequent one-definition/one-theorem `RvachevLegendreBiorthogonality.lean` leaf makes only `thm:leg-biorthogonality` Exact with the printed positive/admissible mesh, open block, `M^-1`, analysis-kernel, and Kronecker normalizations. Independently, existing `TwoAdic.lean` declarations `moment_padicVal_two` and `moment_num_den_odd` make `thm:leg2-moment-units` Exact under the report's rational valuation and residue convention, including `m=0`. These promotions do not promote the Jacobi decoder, complete analysis-kernel package, biorthogonal matrix/projector corollary, reverse spectral closure, or larger Lagrange right-inverse claims. | canonical volume; ten individual reports retired; current master plus three chapter sources are not yet recompiled; the current inventory lists every payload, including the retained 60-page PDF as a historical artifact |
+| `Up_Polynomial_Synthesis/` | *Exact Rvachev Up-Function Polynomial Synthesis* (accepted current 63-page A4 PDF; current receipt: root `2385L/99806B/81f3ba09894aca8331ae33c77e2a56f78c107fa3b04072878cff8ad60e815b5a`; five-file aggregate `11bd62d880f5ba4c63d872fb0ba5d801d10ba2a2337ef5d098643383639086dd`; passes `61/63/63`; PDF `63pp/1077921B/0903f2920d21f0ea8182822c31338e0be268d4d77bc8ddb7a2ff861ba2a6aa5f`; log `964L/38999B/52bd9d03864853f1ee31fa682fa96806345bb355582831c55fcc152c1acb2e7d`; all recorded gates passed; former 60-page artifact retained as explicit history; 80 theorem-like assertions, 80 proofs, and 80 one-to-one crosswalk rows: 25 + 16 + 17 + 22). Canonical editorial consolidation (2026-08-30) of three exact-polynomial, six Lagrange--Rvachev, and four Legendre--Rvachev packages, with repeated foundations deduplicated, exact Sturm evidence retained, and Lean anchors scoped claim by claim. The three earlier package payloads are under `assets/`; the 113-row `assets/provenance/COMPANION_PAYLOADS.csv` records 106 retained or migrated later-report payloads with live destinations and seven retired checksum-ledger payloads with blank destinations. The ten individual report directories were retired on 2026-08-31 after the exact gate passed; their source bytes remain recoverable at immutable commit `443793e846934e7363e314ea01129b9f50197a58`. The `RvachevLegendreCentralSum.lean` leaf adds zero definitions and three theorems—`eval_legendrePolynomial_even_zero`, `eval_rvachevLegendreDeconvolutionPolynomial_even`, and `rvachevLegendreCentralSum`—and makes only `cor:leg-central-sum` Exact. For every bounded Fabius witness and every `n`, including zero, it proves the literal mesh-`4^n` finite cancellation by central evaluation, parity pairing, and compact-support truncation. The subsequent one-definition/one-theorem `RvachevLegendreBiorthogonality.lean` leaf makes only `thm:leg-biorthogonality` Exact with the printed positive/admissible mesh, open block, `M^-1`, analysis-kernel, and Kronecker normalizations. Independently, existing `TwoAdic.lean` declarations `moment_padicVal_two` and `moment_num_den_odd` make `thm:leg2-moment-units` Exact under the report's rational valuation and residue convention, including `m=0`. These promotions do not promote the Jacobi decoder, complete analysis-kernel package, biorthogonal matrix/projector corollary, reverse spectral closure, or larger Lagrange right-inverse claims. | canonical volume; ten individual reports retired; current inventory lists every payload and preserves the former 60-page PDF as a historical artifact |
 
 Final post-union status for `Fabius_Rvachev_New_Frontiers-2/`: the row above
 records the repaired package, whose filed TeX crosswalks the generic and

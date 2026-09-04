@@ -11,9 +11,9 @@ see its
 or [rendered PDF](Fabius_Function_and_Rvachev_Up/Fabius_Function_and_Rvachev_Up.pdf).
 
 > **Artifact status (2026-09-04).**  The live facade union contains exactly
-> 979 source modules and 12,142 explicit public declarations.  The live audit
+> 985 source modules and 12,199 explicit public declarations.  The live audit
 > reports no missing module headers or declaration comments.  The preceding
-> 977/12,133 and earlier reconciled 970/12,056 inventories remain historical
+> 979/12,142, 977/12,133, and earlier reconciled 970/12,056 inventories remain historical
 > checkpoints.  The exact-dyadic inverse,
 > Jacobi two-square, Lagrange--Rvachev Matrix, geometric Richardson,
 > Gaussian-binomial second-moment, fixed-column rate, and half-base root
@@ -74,7 +74,168 @@ or [rendered PDF](Fabius_Function_and_Rvachev_Up/Fabius_Function_and_Rvachev_Up.
 > `QChuVandermonde` 0+10, `JacobiTwoSquareCount` 0+4,
 > `QuantumMultinomial` 0+5, and
 > `GaussianBinomialBounds` 0+6.  The geometric-interpolation union now also
-> includes `GeometricRichardsonGenerating` 3+7,
+> includes `GeometricRichardsonGenerating` 3+7.
+> On the earlier local publication line, Gaussian checkpoint `71c908e` was
+> 902/11,443, completed Lambert checkpoint `217a6b9` was 903/11,448, and
+> fixed-column commit `581bf177f8e784ab5d4836acc2b4a47e285e6ce0` was
+> 903/11,453 and synchronized the five source/PDF pairs recorded below.  The
+> parallel upstream-only moment-polynomial checkpoint
+> `3b6396deb6056523d944d79602d1bf7ecf18ec10` was 904/11,457.  These are
+> historical checkpoints, not descriptions of the live facade.
+>
+> **Current merged-source publication receipts (10/10 accepted).** Primary:
+> root `14628L/733516B/39d1b0b87cabbd75622b2c882db34bc842f9057561efa8d8a93918acaa97d7ea`;
+> two-file aggregate
+> `14912L/745351B/2f56e31a0545297886fd0b9f2c9005053f6d902a99f3b1b965b5d659277c71b2`;
+> passes `197/199/199`; PDF
+> `199pp/1645695B/fe3a27d09c19404a0b0827b047e57ed3d688c465487bf7054e10ca18c7f78cef`;
+> log `1315L/52885B/d6e65808a1bd2bc9e3305154e883a2e4f892d4508b63b6da4b27f83b382e1800`.
+> Walkthrough: root
+> `7135L/514216B/0e726220d274add480fedd771af140d2d5da77497b64fba4bf14294c72817fa5`;
+> two-file aggregate
+> `7419L/526051B/9599230f56ce10be66991a4c7f2923a91806a988426053dfed69d01fa8c9830f`;
+> passes `166/171/171`; PDF
+> `171pp/1250845B/e731f6af11f4f00b65b827a7a713794010c0cdf846621df91254b9e2ff2fa0f5`;
+> log `1311L/52881B/730df857bc56dab609d1599b66ac3710382b54331754b529a0b987c14d44a41f`.
+> Canonical: root
+> `18680L/851566B/8e0f799dead1a3d7d7df6a33d1b4cbe61a3fafcfc39bd68e6fb7f4fc6f63f31a`;
+> two-file aggregate
+> `18964L/863401B/07c65c06d64e0230f68cc644c4594bb47bc1f77fa43e35f04a5d4327124317d8`;
+> passes `265/273/273`; PDF
+> `273pp/1938114B/ad2362be615a8592a308abe920de982121b58e670409d3bc725e506dcae0a765`;
+> log `3123L/105692B/1bedd5ffae49c5ad85f5ce2de3069fb7e7da432ec7d5095475376982fe6437d6`.
+> Lambert: root
+> `4961L/183269B/83301b4c66660713a70974263b6f191ea01f9ed8f5ae228495f644887b616568`;
+> two-file aggregate
+> `5245L/195104B/25141b9ee818b20ddf8349d88ec4f2dc977ff0ab35ca34e62cd62da64c2cf06a`;
+> passes `68/70/70`; PDF
+> `70pp/966637B/6c150ff18889030345de3e1a8581d5ea0ac75789a9720c1d5164ed4e7ec4b7fb`;
+> log `1574L/57800B/9f995a50e3ab25256083edee745a1889027787194e3b3c6d1f12f60bf687145c`.
+> q series: root
+> `16812L/840316B/64dc18dedbd1966624162b64129128b24b51ca88d8a9e496c661cc1a46a24ba6`;
+> 15-file aggregate
+> `26593L/1198416B/762e6d6ca441de51db9679f95d6a01d8353e8044639f99803734719b8a65a5f8`;
+> passes `393/401/401` plus three clean `makeindex` runs (`164/0/254/0`);
+> PDF `401pp/2500131B/fd54459baf10845b5a89cc8b204f59ea33a0665b434ad270e738884072a1e6e1`;
+> log `1230L/44401B/37dca6371ea8bf9285e5f104d550bd584a290f4aa92fcf5679b028c9dfd3079d`.
+> Inverse: root
+> `293L/11514B/92fab1fae38bbcf86a45b51bfe7ff34e2801361df9d2f3d6aa3de4dc966eaa3c`;
+> 14-file aggregate
+> `10909L/438542B/24bdab6491f5ca84fbb9e716f92c7923e8961b6acbc793d9aa5e0faa68852444`;
+> passes `132/137/137`; PDF
+> `137pp/2045463B/ca403c74e2b46923ce9ac1eda547ab1bcb5e71039b35c8ee394acdd2014c4f8e`;
+> log `1569L/64081B/d4aa25579c958e11c59d914c74dfca331fc2bbccf7bba4715dcd18fa050e771f`;
+> source-only 23-input closure digest
+> `e07cb51f4fe072cd79a014cc891cb8cede62880593d7659b17da9377a21099bc`.
+> Comb: root
+> `187L/6724B/a4c1e33165ff7291682cd890f23fe4af98e9f11f7ad1d9a7f8b68c78d53f9a56`;
+> nine-file aggregate
+> `12773L/483551B/cef466ee56f6bb864faaac2244bccf1dbc2fd4032a717b6c81604551c0427309`;
+> passes `153/160/160`; PDF
+> `160pp/2468109B/bb714c8be4b82de2a888e0302da3aaf957b9e885f2c5f59466b3ea5d659e3f71`;
+> log `1370L/58773B/8df53a7db51c85b7a046c5f58587319095b3d28c61b0091861bdeb1f43b342e3`.
+> Up: root
+> `2385L/99806B/81f3ba09894aca8331ae33c77e2a56f78c107fa3b04072878cff8ad60e815b5a`;
+> five-file aggregate
+> `11bd62d880f5ba4c63d872fb0ba5d801d10ba2a2337ef5d098643383639086dd`;
+> passes `61/63/63`; PDF
+> `63pp/1077921B/0903f2920d21f0ea8182822c31338e0be268d4d77bc8ddb7a2ff861ba2a6aa5f`;
+> log `964L/38999B/52bd9d03864853f1ee31fa682fa96806345bb355582831c55fcc152c1acb2e7d`.
+> Thue--Morse: root
+> `10557L/482022B/8cef828c3d92a0017e22463ac90878a5e3a98e1138059d5f4793d47c04a88404`;
+> two-file aggregate
+> `10841L/493857B/79a43711c6989336166d6b2ed1faa306cc985b8d70557025ab139791d455723c`;
+> passes `139/144/144`; PDF
+> `144pp/1740015B/deb63fe66fc8f020bb072acbc4301e9b7c9f0559b165cbae2c076f261405c5be`;
+> log `1503L/59417B/1219dbc87bc4f9920c40b24659182220b14e7908a45a9eb33d0f19390148c64b`.
+> Geometric-q: root
+> `27624L/1273010B/0839b42a3fb055d860b8e8a3d1ff5e84c2f4addce314d04707c5a067e81553d9`;
+> seven-file aggregate
+> `27997L/1288647B/18c4c6607e9b7564909ca7e647152a26e517f54d5007e157265b3f61adf8e4f0`;
+> passes `387/404/404`; PDF
+> `404pp/8341830B/a083b130a1568dc37af824294b033485f82c97dbeb30a4c4de4d463d04e99530`;
+> log `2557L/114343B/4de474675a2dcde519c36ff1ac7067717c64b60b92bd40b999d0d117ba1f8df6`.
+> All ten passed every recorded log, A4/rotation, PDF 1.5, encryption,
+> font/subsetting, Libertinus, Type-3, and visual gate. For geometric-q,
+> all 404 pages are A4 at rotation zero, the PDF is unencrypted PDF 1.5,
+> all 43 font rows are embedded and subset, Libertinus has 11 rows, Type-3 has
+> zero rows, and checksum basenames and PDF/source references are absent.
+>
+> **Earlier accepted receipts (history).** The following six tuples validate
+> only their recorded pre-merge source snapshots:
+>
+> - primary exposition: source 13,748 lines / 686,081 bytes / SHA-256
+>   `661ebb4e337f2ce79e8c3d5ca823bcdcce519fe220ff4b02d9dd5aef08d42cf9`;
+>   passes 185/187/187; PDF 187 A4 pages / 1,581,617 bytes / SHA-256
+>   `41e95844c6e5dc04933cc7256d285346c10eb29ff7eadf5a4165c472fa453eab`;
+>   final log 1,309 lines / 52,641 bytes / SHA-256
+>   `f177cb91c161f4dfc60017ddfd5efed1586ef28a4c80c68a9ae78cf19cf75da6`;
+> - Lean walkthrough: source 6,638 lines / 460,643 bytes / SHA-256
+>   `c44ab7ab38da46f8959a63916437b3d8ded628a3930f81dfa1a87996c7c66b8d`;
+>   passes 146/151/151; PDF 151 A4 pages / 1,188,993 bytes / SHA-256
+>   `907b3d2dbfc66192b63b86ada1015779229636855734815402ae5af9ea9bf015`;
+>   final log 1,296 lines / 52,126 bytes / SHA-256
+>   `0962c255aeb75bce3bcee89cbc1db9defe369e8c79ee6b6aa0435befdca410cf`;
+> - canonical frontier: source 17,983 lines / 806,798 bytes / SHA-256
+>   `a1cb1c0db2784116ca1f1d6fd1ce7e8b29afc52c64c93e7001bbffb91f775039`;
+>   passes 252/260/260; PDF 260 A4 pages / 1,877,420 bytes / SHA-256
+>   `78c19b361da06836c20c62fa5bd50131eb8fa47d3e89d37a7f089a51568953b3`;
+>   final log 2,990 lines / 101,866 bytes / SHA-256
+>   `4854a89ba1a3bb41248b9428cfed572f6ed593125b5a8fb43d5625d8d392dc0f`;
+> - Lambert Guide: source 4,873 lines / 177,465 bytes / SHA-256
+>   `90413f46373415edef411e9ea3b2d94006f7342bd2fa3ea931ca975d7f64b97e`;
+>   passes 67/69/69; PDF 69 A4 pages / 958,516 bytes / SHA-256
+>   `b159cd41f5b3e53060fa85fcfc4812d504cc1fff8400c03ecb7ef4018f37cd2c`;
+>   final log 1,574 lines / 57,795 bytes / SHA-256
+>   `5c81cd6b8dc2cf070c4b1995c98c0d046c54d28f0e682b78b5ad9e16c0a8caa7`;
+> - q-Pochhammer/q-binomial monograph: master 16,448 lines / 816,185 bytes /
+>   SHA-256 `a463abef7bb3c70e12a568a46fc192aac88a8ce240f8f781fff2b018a4aa086d`;
+>   full graph 26,114 lines / 1,168,039 bytes / aggregate SHA-256
+>   `d4c5b84cc07f6abb99279c5bba4fdf7404326426cbe81f4b33b72ba01e62739c`;
+>   passes 383/391/391 with `makeindex` after each pass (164 accepted,
+>   0 rejected, 0 warnings); PDF 391 A4 pages / 2,464,712 bytes / SHA-256
+>   `a52eb90dec7b874cc29dea891a107b9eb2d55e6727eb8bd8943d0aab609c58a6`;
+>   final log 1,231 lines / 44,343 bytes / SHA-256
+>   `fb74b0c4cbd75d9022c78c1df5c1d567120bd67728d5b418697ddc5a2aa8f450`;
+> - standalone geometric-q root: source 27,520 lines / 1,266,515 bytes /
+>   SHA-256 `8292f10862334cb809139259eeb4906bb14f517d41b9600c9b7ad53bb21525b1`;
+>   passes 385/402/402; PDF 402 A4 pages / 8,332,886 bytes / SHA-256
+>   `d47431e4d3e721fccf12f90226db77f1898e44b477878954acca3a6e90127cf4`;
+>   final log 2,557 lines / 114,331 bytes / SHA-256
+>   `4d6f8c7974def4a3f9e6bc8ccdffefc3eef7ca8cb7c2f0145a075f95b82ff45e`.
+>
+> At those recorded source snapshots, all six passed the documented log, A4
+> page, font, Type-3, extraction, and visual gates; the Lambert clipping defect
+> and canonical page-176 running-head collision were repaired before
+> acceptance.  The five `581bf` pairs retained
+> below are historical receipts.  They are the historical 187-page,
+> 1,578,751-byte primary PDF (SHA-256
+> `7a93d9c47c22c62dc50cda6a64d030bfad5f44a9ef4cc5568b3b8b16b014bc8f`)
+> from its 13,720-line, 684,413-byte source (SHA-256
+> `7efb8d2294a15cf6b150bb0b04b35db74cf68db3f3cdb4bc5d765b7738504019`);
+> the historical 150-page, 1,185,846-byte Lean-walkthrough PDF (SHA-256
+> `8a5416061addfb480f410e8306340994fe7f5160927a928112087b6b1d5c0cf5`)
+> from its 6,603-line, 457,421-byte source (SHA-256
+> `4e6ea24897a31683c53e71c6cb97eb21f37eff3ae4e452add429bd9f47646ea6`);
+> the historical 260-page, 1,875,190-byte canonical-frontier PDF (SHA-256
+> `fee3b5af21b01b16c41cf8291ba0508d1e6c613bfd098cdef457cde44ea693c2`)
+> from its 17,947-line, 804,625-byte source (SHA-256
+> `ac6b28fb8a98d97ed4b7a0fe7a5ba2cdfab852fb6de1ee2ecfda4aed75804371`);
+> the historical 70-page, 958,713-byte Lambert Guide PDF (SHA-256
+> `24e8bf561283ffc5427297df6f656696a7e2538731e53d03d59e4268b50772fc`)
+> from its 4,864-line, 176,796-byte source (SHA-256
+> `3f3552983a73db2dab94f3625d10d054b747ee03fc2758e257af86f6216deab5`);
+> and the historical 391-page, 2,464,122-byte q-series PDF (SHA-256
+> `c0a00720685f40e0684b4858e7ce18ce134701529898fd4574d09b6c090e0e91`)
+> from its 16,433-line, 815,194-byte master (SHA-256
+> `f2aae6ddc3d7a399f9ed47806a0abe6458cbcab37bf2aac9f55ad3913b5a0e2d`).
+> The preceding 257-page canonical-frontier artifact remains historical.
+> Representation Frontiers (301 pages), filed New
+> Frontiers (41), the notation catalogue (88), the Integration-and-Transform
+> master (377) remain historical or unsynchronized under their package notices.
+> The 158-page comb artifact is historical and is superseded by the accepted
+> 160-page receipt above.
+> The geometric-interpolation and decoder union also includes
 > `RvachevAppellHasse` 1+14, `RvachevLagrangeNodesOnly` 1+14, and
 > `FinitePrefixAppellRecovery` 11+17.  The Fourier/inverse union now also
 > includes `RvachevLaurentLeading` 1+6.
@@ -121,7 +282,13 @@ or [rendered PDF](Fabius_Function_and_Rvachev_Up/Fabius_Function_and_Rvachev_Up.
 > `NorlundDiagonal` to `ExponentialRescaling`, yielding the preceding
 > 977/12,133 checkpoint.  `GridEvaluationCertificate` 0+4 and
 > `IntegerCRTCertificate` 0+5 then add two modules and nine theorems, yielding
-> the live 979/12,142 census with no documentation gaps.  The inventory does not by itself
+> the historical 979/12,142 checkpoint.  The successor adds the six facade
+> leaves `NorlundGeneralized` 3+18, `StirlingSymmetricFunctions` 0+4,
+> `LagrangeInversionUniqueness` 0+6, `NewtonReciprocal` 1+5,
+> `StirlingSecondReverseRowIdentity` 0+2, and
+> `TransseriesWrightOmegaTerms` 0+10, plus eight declarations in existing
+> modules.  This +6/+57 delta gives the live 985/12,199 census with no
+> documentation gaps.  The inventory does not by itself
 > promote a broader manuscript claim.
 > The retained primary exposition, Lean walkthrough, canonical frontier,
 > Representation Frontiers, filed New Frontiers, notation catalogue,
@@ -464,7 +631,7 @@ prefixes on the real frequency line and uniform convergence on its compact sets.
 | Generic complete-Bell and moment--cumulant algebra (reusable infrastructure beyond the two source papers) | Proved over every commutative `ℚ`-algebra. Factorial normalization conjugates the ordinary `expCoeff` and `logCoeff` recurrences into named complete-Bell and moment--cumulant transforms, with the classical Bell recurrence, normalized all-index inverse laws, and functoriality under algebra morphisms. This is formal coefficient algebra; no probabilistic interpretation or hierarchy-specific cumulant formula is claimed. | `Fabius.factorialNormalize`, `Fabius.factorialDenormalize`, `Fabius.completeBellPolynomial`, `Fabius.momentCumulant`, `Fabius.completeBellPolynomial_succ`, `Fabius.completeBellPolynomial_momentCumulant`, `Fabius.momentCumulant_completeBellPolynomial`, `Fabius.map_completeBellPolynomial`, `Fabius.map_momentCumulant` |
 | Division-free Bell-polynomial inversion and binomial convolution (exhaustive companion API) | The shift is structure-free, while the unit sequence needs only `[Zero R] [One R]`.  The convolution definition, its finite-sum formula, two distributivity laws, Pascal/product rules, and associativity hold over every `[Semiring R]`; right cancellation additionally assumes `[IsLeftCancelAdd R]`, `IsUnit (w 0)`, and coefficientwise equality against the fixed right factor `w`.  Commutativity and the complete-Bell definition, recurrence/uniqueness, shift law, addition law, and degree-one-through-three formulas use `[CommSemiring R]`; `κ 0` is unconstrained, and recurrence uniqueness assumes exactly `a 0 = 1` and `a (n+1) = binomialConv a (shift κ) n`.  The cumulant definition, its zero/successor laws, and its first three formulas are unconditional over `[CommRing R]`; `binomialConv_cumulant_shift` and `complete_cumulant` assume `m 0 = 1`, while `eq_cumulant_of_complete` assumes exactly `κ 0 = 0` and `complete κ = m`.  Thus the inversion includes positive characteristic and the zero ring and uses no factorial division.  This is finite formal coefficient algebra only: it supplies no analytic exponential generating function, convergence, probability law, or Fabius-function specialization. | Structure-free/unit layer: `Bell.shift`, `Bell.shift_apply`, `Bell.unitSeq`, `Bell.unitSeq_zero`, `Bell.unitSeq_succ`.  Semiring layer: `Bell.binomialConv`, `Bell.binomialConv_eq_sum_range`, `Bell.binomialConv_add_left`, `Bell.binomialConv_add_right`, `Bell.binomialConv_succ`, `Bell.shift_binomialConv`, `Bell.binomialConv_assoc`, `Bell.binomialConv_right_cancel`.  Commutative-semiring layer: `Bell.binomialConv_comm`, `Bell.complete`, `Bell.complete_zero`, `Bell.complete_succ`, `Bell.eq_complete_of_recurrence`, `Bell.shift_complete`, `Bell.complete_add`, `Bell.complete_one`, `Bell.complete_two`, `Bell.complete_three`.  Commutative-ring layer: `Bell.cumulant`, `Bell.cumulant_zero`, `Bell.cumulant_succ`, `Bell.binomialConv_cumulant_shift`, `Bell.complete_cumulant`, `Bell.eq_cumulant_of_complete`, `Bell.cumulant_one`, `Bell.cumulant_two`, `Bell.cumulant_three`. |
 | Generic Appell sequences, affine transport, and weighted-binomial inversion (exhaustive companion API) | `AppellSequence.lean` is 3+34.  Its arbitrary-sequence polynomial, degree, derivative, evaluation, affine, and reciprocal-moment APIs remain over the stated commutative-semiring hypotheses.  The +11 translation extension makes `thm:merged-weighted-binomial-translation` **Exact** over a commutative semiring (left cancellation only for injectivity) and `cor:merged-weighted-binomial-inversion` **Exact** over a commutative ring.  These are finite coefficient identities, not analytic EGF claims. | Bell theorems: `Bell.binomialConv_map`, `Bell.binomialConv_unitSeq`, `Bell.binomialConv_pow`, `Bell.binomialConv_four_swap`, `Bell.binomialConv_pow_mul`. Appell definitions: `Appell.poly`, `Appell.translate`, `Appell.dilate`. Appell theorems: `Appell.poly_eq_binomialConv`, `Appell.coeff_poly`, `Appell.coeff_poly_self`, `Appell.poly_zero`, `Appell.poly_one`, `Appell.natDegree_poly_le`, `Appell.monic_poly`, `Appell.natDegree_poly`, `Appell.derivative_poly`, `Appell.derivative_poly_nsmul`, `Appell.eval_poly`, `Appell.eval_poly_eq_sum`, `Appell.poly_comp`, `Appell.translate_eq_binomialConv_pow`, `Appell.translate_eq_sum`, `Appell.translate_zero`, `Appell.poly_translate`, `Appell.translate_translate`, `Appell.binomialConv_translate`, `Appell.translate_injective`, `Appell.poly_dilate_comp`, `Appell.poly_affine`, `Appell.binomialConv_eval_poly`, `Appell.sum_choose_eval_poly`, `Appell.translate_neg_translate`, `Appell.translate_translate_neg`, `Appell.translate_eq_iff`, `Appell.weighted_binomial_inversion_iff`, `Appell.binomialConv_translate_neg_translate` |
-| Formal power recurrence (`alg:merged-exp-log-power`) | **Exact.** `UnitSeriesPowerRecurrence.lean` is 0+3.  The general denominator-free recurrence works over every commutative ring without assuming `F(0)=1`; its falling-factorial formal-power specialization uses a commutative rational algebra and `F(0)=1`.  No analytic power or branch is asserted.  The coefficient-calculus register is 63 Lean, 32 Partial, 109 None, 204 total. | `Fabius.coeff_recurrence_of_mul_derivative_eq`, `Fabius.mul_derivative_fallingSeries_subst_sub_one`, `Fabius.coeff_fallingSeries_subst_sub_one_recurrence` |
+| Formal power recurrence (`alg:merged-exp-log-power`) | **Exact.** `UnitSeriesPowerRecurrence.lean` is 0+3.  The general denominator-free recurrence works over every commutative ring without assuming `F(0)=1`; its falling-factorial formal-power specialization uses a commutative rational algebra and `F(0)=1`.  No analytic power or branch is asserted.  The preceding 204-row coefficient-calculus register was 63 Lean, 32 Partial, and 109 None; the current 207-row register is 62 Lean, 35 Partial, and 110 None. | `Fabius.coeff_recurrence_of_mul_derivative_eq`, `Fabius.mul_derivative_fallingSeries_subst_sub_one`, `Fabius.coeff_fallingSeries_subst_sub_one_recurrence` |
 | Reciprocal exponential-generating coefficient sequences and the rational-algebra dictionary (exhaustive companion API) | The two-sided unit laws and `complete 0 = unitSeq` hold over every `[CommSemiring R]`.  Over `[CommRing R]`, negated complete-Bell families invert one another and `Bell.reciprocal m := Bell.complete (-Bell.cumulant m)` is defined for every `m`; its normalization, cumulant-negation identity, and first three coefficients need no hypothesis on `m`.  The actual left/right inverse laws, uniqueness, backward recursion, and involution assume exactly `m 0 = 1` (uniqueness also assumes `binomialConv m b = unitSeq R`).  Only the four dictionary declarations require `[Algebra ℚ R]` in addition to `[CommRing R]`: `completeBellPolynomial_eq_complete` is unconditional, while each of the other three assumes that the displayed sequence has zeroth coefficient one.  The `Fabius` namespace there is a generic notation bridge, not a specialization to the Fabius function.  No analytic reciprocal, radius of convergence, limit, probability interpretation, or Fabius-specific coefficient formula is asserted. | Commutative-semiring unit layer: `Bell.binomialConv_unitSeq_right`, `Bell.binomialConv_unitSeq_left`, `Bell.complete_zero_eq_unitSeq`.  Commutative-ring reciprocal layer: `Bell.binomialConv_complete_neg`, `Bell.reciprocal`, `Bell.reciprocal_eq_complete_neg_cumulant`, `Bell.reciprocal_zero`, `Bell.binomialConv_reciprocal`, `Bell.binomialConv_reciprocal_left`, `Bell.eq_reciprocal_of_binomialConv`, `Bell.reciprocal_succ`, `Bell.cumulant_reciprocal`, `Bell.reciprocal_reciprocal`, `Bell.reciprocal_one`, `Bell.reciprocal_two`, `Bell.reciprocal_three`.  Commutative-`ℚ`-algebra dictionary: `Fabius.completeBellPolynomial_eq_complete`, `Fabius.momentCumulant_eq_cumulant`, `Fabius.reciprocal_eq_completeBellPolynomial`, `Fabius.binomialConv_completeBellPolynomial_neg_momentCumulant`. |
 | Rvachev raw moments, reciprocal-moment Appell polynomials, and triangular injective polynomial deconvolution | In the current compiled tree, `RvachevMomentAppell` has six public definitions and thirty-three public theorems.  It constructs the full rational raw-moment sequence (the executable even moments and zero odd moments), its formal binomial-convolution reciprocal and complete-Bell description, rational and real monic Appell polynomials of exact degree, and coefficientwise deconvolution as a real linear map.  Deconvolution preserves zero, addition, scalar multiplication, finite sums, and multiplication by a constant polynomial; it sends a monomial and `X^n` to the correspondingly scaled and unscaled Rvachev--Appell polynomial.  It preserves the original top coefficient, exact natural degree, and leading coefficient, has trivial kernel, and is injective both as a linear map and as the underlying operation.  For every bounded Fabius solution, the raw moments cast to the analytic integrals, smoothing the `n`-th Appell polynomial recovers `x^n`, and smoothing the deconvolution of any real polynomial recovers that polynomial.  Reflection invariance of the even density gives the centered `x-y` counterparts `Fabius.integral_eval_rvachevDeconvolvedPolynomial_sub_mul_rvachev` and `Fabius.integral_eval_rvachevAppellPolynomial_sub_mul_rvachev`; `Fabius.integral_eval_rvachevAppellPolynomial_mul_rvachev_eq_zero` says that every positive-degree Appell polynomial has Rvachev mean zero.  The module does not prove an analytic reciprocal-MGF or Appell generating-series identity, a literal differential-operator expansion, reciprocal/deconvolution parity, or the displayed low reciprocal coefficients. | Definitions: `Fabius.rvachevRawMomentRat`, `Fabius.rvachevReciprocalMomentRat`, `Fabius.rvachevAppellPolynomialRat`, `Fabius.rvachevAppellPolynomial`, `Fabius.rvachevDeconvolvedPolynomial`, `Fabius.rvachevDeconvolutionLinearMap`.  Theorems: `Fabius.rvachevRawMomentRat_zero`, `Fabius.rvachevRawMomentRat_even`, `Fabius.rvachevRawMomentRat_odd`, `Fabius.rvachevReciprocalMomentRat_zero`, `Fabius.binomialConv_rvachevRawMomentRat_reciprocal`, `Fabius.rvachevReciprocalMomentRat_eq_completeBellPolynomial`, `Fabius.monic_rvachevAppellPolynomialRat`, `Fabius.natDegree_rvachevAppellPolynomialRat`, `Fabius.rvachevAppellPolynomial_eq_poly_cast`, `Fabius.monic_rvachevAppellPolynomial`, `Fabius.natDegree_rvachevAppellPolynomial`, `Fabius.eval_rvachevAppellPolynomial_add`, `Fabius.integral_pow_mul_rvachev_eq_rvachevRawMomentRat_cast`, `Fabius.integral_eval_rvachevAppellPolynomial_add_mul_rvachev`, `Fabius.rvachevDeconvolutionLinearMap_apply`, `Fabius.rvachevDeconvolvedPolynomial_zero`, `Fabius.rvachevDeconvolvedPolynomial_add`, `Fabius.rvachevDeconvolvedPolynomial_smul`, `Fabius.rvachevDeconvolvedPolynomial_finsetSum`, `Fabius.rvachevDeconvolvedPolynomial_C_mul`, `Fabius.rvachevDeconvolvedPolynomial_monomial`, `Fabius.rvachevDeconvolvedPolynomial_X_pow`, `Fabius.coeff_rvachevDeconvolvedPolynomial_natDegree`, `Fabius.natDegree_rvachevDeconvolvedPolynomial_le`, `Fabius.natDegree_rvachevDeconvolvedPolynomial`, `Fabius.leadingCoeff_rvachevDeconvolvedPolynomial`, `Fabius.rvachevDeconvolvedPolynomial_eq_zero_iff`, `Fabius.rvachevDeconvolutionLinearMap_injective`, `Fabius.rvachevDeconvolvedPolynomial_injective`, `Fabius.integral_eval_rvachevDeconvolvedPolynomial_add_mul_rvachev`, `Fabius.integral_eval_rvachevDeconvolvedPolynomial_sub_mul_rvachev`, `Fabius.integral_eval_rvachevAppellPolynomial_sub_mul_rvachev`, `Fabius.integral_eval_rvachevAppellPolynomial_mul_rvachev_eq_zero` |
 | Nonmonic Hensel lifting and formal implicit roots (reusable foundation) | In an `I`-adically complete commutative ring, any polynomial---not assumed monic---with an approximate root modulo `I` and derivative a unit modulo `I` has a unique exact root in that residue class.  For every commutative ring `R`, if `constantCoeff (P.eval S₀) = 0` and `constantCoeff (P.derivative.eval S₀)` is a unit, the specialization to `R⟦X⟧` gives a unique root with scalar constant coefficient `constantCoeff S₀`; in particular, a polynomial whose parameter-constant constant coefficient vanishes and whose parameter-constant linear coefficient is a unit has a distinguished unique zero-constant formal root.  No field, domain, characteristic-zero, Noetherian, finite-generation, degree, monicity, or analytic-convergence hypothesis is used.  This module does not define or instantiate the dyadic Fabius jet polynomials, prove a coefficient recursion or analytic realization, enter a finite-prefix plateau, identify a flat defect, or prove an inverse/quantile result. | `FormalImplicitRoot.exists_isRoot_sub_mem`, `FormalImplicitRoot.eq_of_isRoot_of_sub_mem`, `FormalImplicitRoot.existsUnique_isRoot_sub_mem`, `PowerSeries.Implicit.existsUnique_isRoot_constantCoeff`, `PowerSeries.Implicit.existsUnique_zeroConstant_root`, `PowerSeries.Implicit.root`, `PowerSeries.Implicit.constantCoeff_root`, `PowerSeries.Implicit.eval_root`, `PowerSeries.Implicit.eq_root` |
