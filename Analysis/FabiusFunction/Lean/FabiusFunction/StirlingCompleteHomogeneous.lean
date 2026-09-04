@@ -1,23 +1,34 @@
 import FabiusFunction.StirlingOrdinaryGF
-import FabiusFunction.CompleteHomogeneousGenerating
+import FabiusFunction.CompleteHomogeneousBell
+import FabiusFunction.CompleteHomogeneousWeakComposition
 import Mathlib.RingTheory.Polynomial.Pochhammer
 
 /-!
-# Stirling numbers as complete homogeneous evaluations
+# Stirling columns as complete homogeneous symmetric polynomials
 
-The column series for the Stirling numbers of the second kind and the
-complete homogeneous generating series at `1, ..., k` are inverses of the
-same finite product. Uniqueness of inverses identifies them without any
-domain or characteristic hypothesis.
+For every `k, r ≥ 0`, `S(k+r,k) = h_r(1,...,k)`. This is the offset form
+of `eq:second-complete-symmetric` in `thm:second-ogf` of the canonical
+`Combinatorial_Coefficient_Calculus` monograph.
 
-Extracting coefficients over the integers gives the natural-number identity
-`S(k + r, k) = h_r(1, ..., k)`. Functoriality of complete homogeneous
-evaluation then transports it to every commutative semiring, including
-positive characteristic and semirings without subtraction. The explicit
-multiplicity sum is obtained from the existing product of geometric series.
+The Stirling column series and the complete homogeneous generating series
+at `1,...,k` are inverses of the same finite product over every commutative
+ring. Uniqueness of inverses identifies them without a domain or
+characteristic hypothesis. Extracting coefficients over the integers gives
+the natural-number identity, and functoriality transports it to every
+commutative semiring, including positive characteristic and semirings
+without subtraction. Both finite-support exponent vectors and tuples give
+explicit weak-composition sums, including the empty-family cases.
 
-Using `k + r` avoids truncated subtraction; the equivalent `n - k` formula
-is stated only with the necessary hypothesis `k ≤ n`.
+The complete-homogeneous/Bell dictionary gives the division-free identity
+`Bell.complete b r = r! * S(k+r,k)`, where `b 0 = 0` and
+`b (m+1) = m! * ∑_{j=1}^k j^(m+1)`. Over a commutative rational algebra,
+factorial normalization recovers the corresponding quotient by `r!`.
+
+Using `k+r` avoids truncated subtraction; the equivalent `n-k` formula
+is stated only under `k ≤ n`. The final two results identify the scalar
+column denominator with a rescaled falling factorial when `x ≠ 0`.
+Scalar reciprocals use Lean's totalized inverse; their ordinary
+interpretation additionally excludes zeros of the linear factors.
 -/
 
 set_option autoImplicit false
@@ -74,6 +85,18 @@ theorem stirlingSecond_eq_completeHomogeneousEvalOn_of_le
   simpa only [Nat.add_sub_of_le hkn] using
     stirlingSecond_add_eq_completeHomogeneousEvalOn R k (n - k)
 
+/-- **The complete homogeneous coefficient formula in manuscript notation.**
+
+For `k ≤ n`, `S(n,k) = h_(n-k)(1,...,k)` over every commutative semiring.
+This is `eq:second-complete-symmetric` in `thm:second-ogf`, with explicit
+natural-number arguments and an inferred coefficient semiring. -/
+theorem stirlingSecond_eq_completeHomogeneousEvalOn
+    {R : Type*} [CommSemiring R] (n k : ℕ) (hk : k ≤ n) :
+    (Nat.stirlingSecond n k : R) =
+      completeHomogeneousEvalOn (Finset.range k)
+        (fun j ↦ ((j + 1 : ℕ) : R)) (n - k) :=
+  stirlingSecond_eq_completeHomogeneousEvalOn_of_le R hk
+
 /-- A `Fin k`-indexed form of the Stirling--complete-homogeneous identity. -/
 theorem stirlingSecond_add_eq_completeHomogeneousEval
     (R : Type*) [CommSemiring R] (k r : ℕ) :
@@ -116,6 +139,49 @@ theorem stirlingSecond_add_eq_sum_finsuppAntidiag
         ∏ j ∈ Finset.range k, ((j + 1 : ℕ) : R) ^ c j := by
   rw [stirlingSecond_add_eq_sum_finsuppAntidiag_nat]
   simp only [Nat.cast_sum, Nat.cast_prod, Nat.cast_pow]
+
+/-- **The explicit weak-composition formula for every Stirling column.**
+
+Each tuple `c : Fin k → ℕ` has total degree `r` and contributes
+`1^(c 0) ··· k^(c (k-1))` once. This is the second equality of
+`eq:second-complete-symmetric`, with `n = k+r`, over every commutative
+semiring and with the empty-family conventions built into the finite sum. -/
+theorem stirlingSecond_add_eq_sum_antidiagonalTuple
+    {R : Type*} [CommSemiring R] (k r : ℕ) :
+    (Nat.stirlingSecond (k + r) k : R) =
+      ∑ c ∈ Finset.Nat.antidiagonalTuple k r,
+        ∏ i : Fin k, (((i : ℕ) + 1 : ℕ) : R) ^ c i := by
+  rw [stirlingSecond_add_eq_completeHomogeneousEvalOn R,
+    completeHomogeneousEvalOn_range_eq_sum_antidiagonalTuple]
+
+/-- **A division-free Bell formula for every Stirling column.**
+
+Set `b 0 = 0` and `b (m+1) = m! * ∑_{j=1}^k j^(m+1)`. Then
+`Bell.complete b r = r! * S(k+r,k)` over every commutative semiring.
+The input is the existing `completeHomogeneousBellInput` specialized to
+the variables `1,...,k`; no factorial is assumed invertible. -/
+theorem bellComplete_stirlingSecond_powerSums
+    {R : Type*} [CommSemiring R] (k r : ℕ) :
+    Bell.complete
+        (completeHomogeneousBellInput (Finset.range k)
+          (fun j ↦ ((j + 1 : ℕ) : R))) r =
+      (r.factorial : R) * (Nat.stirlingSecond (k + r) k : R) := by
+  rw [bellComplete_completeHomogeneousBellInput,
+    ← stirlingSecond_add_eq_completeHomogeneousEvalOn R]
+
+/-- Over a commutative rational algebra, a Stirling column is the complete
+Bell polynomial of its factorially weighted power sums, divided by `r!`.
+Here `factorialNormalize` implements division by that rational scalar. -/
+theorem stirlingSecond_add_eq_factorialNormalize_completeBellPolynomial
+    {R : Type*} [CommRing R] [Algebra ℚ R] (k r : ℕ) :
+    (Nat.stirlingSecond (k + r) k : R) =
+      factorialNormalize
+        (completeBellPolynomial
+          (completeHomogeneousBellInput (Finset.range k)
+            (fun j ↦ ((j + 1 : ℕ) : R)))) r := by
+  rw [stirlingSecond_add_eq_completeHomogeneousEvalOn R]
+  exact completeHomogeneousEvalOn_eq_factorialNormalize_completeBellPolynomial
+    (Finset.range k) (fun j ↦ ((j + 1 : ℕ) : R)) r
 
 /-- Clearing the inverse argument in a falling factorial gives the
 denominator of the fixed-column Stirling generating function. The nonzero

@@ -12,6 +12,8 @@ import FabiusFunction.DivisorTransform
 import FabiusFunction.CompleteHomogeneous
 import FabiusFunction.CompleteHomogeneousGenerating
 import FabiusFunction.CompleteHomogeneousBell
+import FabiusFunction.CompleteHomogeneousWeakComposition
+import FabiusFunction.StirlingCompleteHomogeneous
 import FabiusFunction.CompleteHomogeneousAsymptotics
 import FabiusFunction.SymmetricFunctionOrthogonality
 import FabiusFunction.FiniteTriangularTransform
@@ -30,7 +32,6 @@ import FabiusFunction.BellComposition
 import FabiusFunction.BernoulliStirling
 import FabiusFunction.BellHomogeneity
 import FabiusFunction.StirlingOrdinaryGF
-import FabiusFunction.StirlingCompleteHomogeneous
 import FabiusFunction.EulerianGeneratingFunctions
 import FabiusFunction.ExponentialRiordan
 import FabiusFunction.ExponentialRiordanInverse

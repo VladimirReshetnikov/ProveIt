@@ -5740,9 +5740,9 @@ from \eqref{p2:eq:leadingerror} are
 \(m\)&predicted limit&computed at \(n=11\)\\
 \midrule
 0 & \(0.29285958826753424146\) & \(0.29285960991271731281\)\\
-1 & \(-0.022696618090733903713\) & \(-0.022696619882602340475\)\\
+1 & \(-0.022696618090733903713\) & \(-0.022696619832602340475\)\\
 2 & \(0.000365296265765254499\) & \(0.000365296293045216575\)\\
-3 & \(-1.36214818263598888\times10^{-6}\) & \(-1.36214828256045162\times10^{-6}\)\\
+3 & \(-1.36214818263598388\times10^{-6}\) & \(-1.36214828256045162\times10^{-6}\)\\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -8317,7 +8317,7 @@ computation gives
 \toprule
 $r$ & $3$ & $5$ & $10$ & $20$ & $30$ & $50$\\
 \midrule
-$\rho_r(4\pi)^{2r}$ & $1.46988$ & $3.58279$ & $3.611538$
+$\rho_r(4\pi)^{2r}$ & $1.46985$ & $3.58279$ & $3.611538$
  & $3.6115993859$ & $3.611599386028056$ & $3.6115993860280564487$\\
 \bottomrule
 \end{tabular}
@@ -16624,7 +16624,7 @@ definition, \lean{geometricUniformComplexMomentProduct}, and exactly three
 public theorems,
 \lean{hasProdLocallyUniformly_geometricUniformComplexMomentProduct},
 \lean{differentiable_geometricUniformComplexMomentProduct}, and
-\nolinkurl{geometricUniformMomentPolynomial_eval}\texttt{\textsubscript{2}}\nolinkurl{_eq_complexMomentProduct_taylorCoefficient}.
+\leansubtwo{geometricUniformMomentPolynomial_eval}{_eq_complexMomentProduct_taylorCoefficient}.
 For every complex \(q\) with \(\lVert q\rVert<1\), it constructs the actual
 infinite product, proves locally uniform convergence and complex
 differentiability on the whole plane, and identifies its normalized Taylor
@@ -16657,7 +16657,7 @@ identity is asserted at a genuine reduced-denominator zero, and no general
 unit-circle analytic-germ claim is made.
 \end{statusbox}
 
-\begin{statusbox}{Post-snapshot Lean status (continued): Reciprocity}
+\begin{statusbox}{Post-snapshot Lean status: moment reciprocity}
 The subsequent source-only
 \path{GeometricUniformMomentReciprocity.lean} leaf has one public definition,
 \lean{geometricUniformComplexMomentGerm}, and exactly five public theorems:
@@ -16749,23 +16749,24 @@ public declarations, making the historical dyadic/finite-prefix census
 declarations: the new zero-definition/six-theorem
 \path{ProuhetBaseTwoBridge.lean} module, one theorem added to
 \path{DyadicBoundaryIdentity.lean}, and seven theorems added to
-\path{ThueMorseNewmanSelfSimilarity.lean}.  This made 934/11,709 an
-explicitly historical post-Prouhet checkpoint.  Subsequent source-only
-transseries/Catalan and Thue--Morse additions made 943/11,791 the next
-historical checkpoint.  The finalized one-definition/eleven-theorem
-\path{TransseriesFlat.lean} module and three integer-zpow theorems in
-\path{TransseriesDifferentialBlock.lean} gave the historical census 944/11,806.
-Further merged tranches reached the historical 952/11,884 and 977/12,133
-checkpoints; the authoritative live census is 1003 modules and 12,485 public
-declarations.  The q forward ledger is 181 Exact / 79 Partial / 14 None / 8
+\path{ThueMorseNewmanSelfSimilarity.lean}.  That tranche formed the historical
+934/11,709 checkpoint.  At the earlier frozen-merge checkpoint, the audited
+upstream census was 957/11,920 before the retained unconditional public
+\lean{complexQPochhammerInf_eq_qPochhammerInfIn} bridge; the historical
+semantic-union checkpoint is 957/11,921.  The residual-existence certificate
+\lean{exists_eq_in_residual_interval} is included in the current union computed
+by \path{scripts/doc_audit.py} and pinned in
+\path{docs/doc_audit_baseline.json}.  The q
+forward ledger is 181 Exact / 79 Partial / 14 None / 8
 interface rows, the relevant
 Dyadic Gaussian--Thue--Morse chapter is 13/43/0/0, and the five-publication
 source concordance is 103 Lean-proved / 375 human-proved frontier / 60
 not-applicable / 9 conjecture rows.  The Laurent and finite-prefix leaves are
 included here for the census and exhaustive API counts; their Exact inverse-
-series status rows belong to the inverse-series crosswalk.  The accepted
-404-page PDF and all earlier receipts predate this source union and remain
-solely historical provenance; they are not receipts for this merged edition.
+series status rows belong to the inverse-series crosswalk.
+These crosswalks were initially published as source-only additions.  The earlier
+PDF is a historical receipt; current render-validation receipts are maintained
+externally.
 \end{statusbox}
 
 The polynomial is not decorative: the exact endpoint lattice of
@@ -18963,7 +18964,7 @@ The audit used three layers.
 \begin{enumerate}[label=\arabic*.]
 \item The current public GitHub tree, the current semi-formalized README, and the raw consolidated \emph{Exponents and $q$-Series Frontiers} source were inspected at theorem and open-problem level.
 \item A preserved recursive ledger of every \texttt{*.tex} path under \texttt{Analysis/FabiusFunction/docs} at commit
-\texttt{24da988eba70e46d862acdaddd476793a428213e} was used to retain coverage of the frozen archive and earlier source-paper layout.  The 57-path ledger is included in the companion archive as
+\texttt{24da985eba70e46d862acdaddd476793a428213e} was used to retain coverage of the frozen archive and earlier source-paper layout.  The 57-path ledger is included in the companion archive as
 \texttt{corpus\_inventory\_2026-08-27.txt}.
 \item Prior frontier reports in the user's library were phrase- and formula-searched for the proposed concepts.  In particular, Stein--Koopman calculus, transfer determinants, fractional transforms, dyadic-comb interpolation, inverse-Lambert expansions, Appell deconvolution, and spectral zero-divisor theory were treated as occupied territory and are not presented here as new.
 \end{enumerate}
@@ -21157,7 +21158,7 @@ The inverse $q$ experiment at $\omega=\ImaginaryUnit$ fixes $y=1.1$ and solves f
 \(q(z)=\ImaginaryUnit(1-\delta(z))\).  The leading approximation has error $O(z^6)$; after the $C_{1,\omega}$ correction, the fitted exponent is $7.9960$, matching the predicted $O(z^8)$ remainder.  At $z=0.145$, the computed local $q$-coordinate was
 \[
  \delta=2.57314407304007927\times10^{-5}
- +9.47348632511157988\times10^{-7}\ImaginaryUnit,
+ +9.47348632511157983\times10^{-7}\ImaginaryUnit,
 \]
 while the two-term absolute error was $3.53\times10^{-8}$.
 
@@ -23447,7 +23448,7 @@ The symbolic companion gives, through order sixteen,
 and the exact reversion carried out for this volume continues the series with
 \begin{align*}
  c_9&=\frac{514221151037184}{476522530859375},&
- c_{10}&=\frac{6034173698804}{6188604296875},\\
+ c_{10}&=\frac{6034173698304}{6188604296875},\\
  c_{11}&=\frac{9630466930063899648}{54854891139876953125},&
  c_{12}&=-\frac{3032147123502547968}{3562005918173828125},\\
  c_{13}&=-\frac{58363635922427846541312}{89139198102300048828125},&
