@@ -16,6 +16,7 @@ import FabiusFunction.BinomialInversion
 import FabiusFunction.StirlingBasisChange
 import FabiusFunction.LahNumbers
 import FabiusFunction.BellStirling
+import FabiusFunction.TouchardEulerOperator
 import FabiusFunction.StirlingGeneratingFunctions
 import FabiusFunction.EulerianNumbers
 import FabiusFunction.PartialBellPolynomials
