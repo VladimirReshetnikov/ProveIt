@@ -80,6 +80,11 @@ STATUS = {
    r"The statement includes local $C^n$ hypotheses and explicitly uses "
    r"\lean{OrderedFinpartition}'s increasing-maximum block order. "
    r"No symmetry conversion is required; the separate partial-Bell regrouping remains open."),
+ 'thm:merged-binomial-type-characterization': ('Lean',
+   r"\lean{Fabius.isBinomialType_iff_exists_egfA_eq}, "
+   r"\lean{Fabius.isBinomialType_iff_existsUnique_egfA_eq}, "
+   r"\lean{Fabius.natDegree_eq_iff_of_isBinomialType} (\lean{BinomialTypeCharacterization}); "
+   r"over a char-0 domain that is a Q-algebra, and one direction over any commutative Q-algebra"),
  'thm:bell-poly-partitions': ('Lean',
    r"\lean{Fabius.partialBell_eq_sum_setPartitions} and "
    r"\lean{Fabius.bell_complete_eq_sum_allSetPartitions} (\lean{BellSetPartitions}), over any "

@@ -6751,6 +6751,23 @@ Thus $\deg p_n=n$ for all $n$ exactly when $B'(0)\ne0$; and already
 $p_1(x)=B'(0)x$ shows that exact degree at $n=1$ forces $B'(0)\ne0$.
 \end{proof}
 
+\begin{remark}[Formal crosswalk]
+% ed.: crosswalk added 2026-09-04; both directions, uniqueness, and the degree clause.
+Fully formal in \lean{BinomialTypeCharacterization}, and slightly more general
+than stated: the proof needs a characteristic-zero domain that is a
+$\RationalNumbers$-algebra, not a field, and the direction (2)$\Rightarrow$(1)
+holds over any commutative $\RationalNumbers$-algebra
+(\lean{Fabius.isBinomialType_of_egfA_eq}).  The equivalence is
+\lean{Fabius.isBinomialType_iff_exists_egfA_eq}, uniqueness of $B$ is
+\lean{Fabius.isBinomialType_iff_existsUnique_egfA_eq} with the explicit
+$B=\sum p_n'(0)\,t^{n}/n!$ in \lean{Fabius.eq_egfA_linearCoeff_of_egfA_eq}, and the
+degree clause is \lean{Fabius.natDegree_eq_iff_of_isBinomialType}.  The formal
+proof avoids the logarithm over $K[x]$ entirely: the binomial identity is
+turned, column by column in $x$, into $\binom{i+j}{j}C_{i+j}=C_iC_j$ for the
+column generating functions, whence $j!\,C_j=C_1^{j}$ and the corpus's
+partial-Bell column theorem identifies the coefficients.
+\end{remark}
+
 \begin{theorem}[Addition and lowering]
 \label{thm:merged-sheffer}
 Let $p_n$ be the binomial-type sequence with EGF $\EulerE^{yB(t)}$.  Then
@@ -11526,7 +11543,7 @@ coefficient calculus rather than a catalogue of isolated identities.
 
 \section{Lean formalization register}
 \label{sec:lean-register}
-Every theorem-like environment of this monograph is listed here with the status of its formalization in the Lean development \path{Analysis/FabiusFunction/Lean/FabiusFunction} (Mathlib \texttt{v4.32.0}).  \emph{Lean} means that a public, compiled declaration proves the exact statement or a more general one (the generalization is then noted next to the result); \emph{partial} means that a named part of the statement is proved and the rest is named; \emph{none} means that no compiler-verified counterpart is recorded yet, even if source under validation is identified.  A citation, a numerical check, or a plausible derivation does not count.  The register is generated from the source; its mappings must be updated when results are added or validated.  Current totals: 78 Lean, 52 partial, 78 none, of 208 results.
+Every theorem-like environment of this monograph is listed here with the status of its formalization in the Lean development \path{Analysis/FabiusFunction/Lean/FabiusFunction} (Mathlib \texttt{v4.32.0}).  \emph{Lean} means that a public, compiled declaration proves the exact statement or a more general one (the generalization is then noted next to the result); \emph{partial} means that a named part of the statement is proved and the rest is named; \emph{none} means that no compiler-verified counterpart is recorded yet, even if source under validation is identified.  A citation, a numerical check, or a plausible derivation does not count.  The register is generated from the source; its mappings must be updated when results are added or validated.  Current totals: 79 Lean, 52 partial, 77 none, of 208 results.
 
 \begin{footnotesize}
 \begin{longtable}{@{}p{0.16\textwidth}p{0.22\textwidth}p{0.08\textwidth}p{0.40\textwidth}@{}}
@@ -11657,7 +11674,7 @@ theorem (unlabelled, no.~77) &  & none &  \\
 \Cref{thm:merged-binomial-inversion} & Binomial inversion & Lean & the equivalence of \cref{eq:merged-binomial-forward,eq:merged-binomial-backward} is \lean{Fabius.binomial_inversion_iff} (additive commutative groups) and \lean{Fabius.binomial_inversion_ring_iff} (commutative rings) (\lean{BinomialInversion}), with the kernel orthogonality \lean{Fabius.sum_Icc_neg_one_pow_choose_mul_choose}; \cref{eq:merged-binomial-egf} is \lean{Fabius.egfA_eq_exp_mul_iff} and \lean{Fabius.egfA_eq_altSeries_mul_iff} (\lean{BinomialInversionEGF}), each an iff with its sequence form, together with \lean{Fabius.egfA_eq_exp_mul_iff_egfA_eq_altSeries_mul} for the equivalence of the two generating-function equations \\
 \Cref{thm:merged-partition-mobius} & Möbius function of $\Pi\_n$ & none &  \\
 \Cref{thm:merged-moment-cumulant} & Moment--cumulant inversion & partial & In the block-size form: \lean{Bell.complete} and \lean{Bell.cumulant} are mutually inverse (\lean{Bell.complete_cumulant}, \lean{Bell.cumulant_complete}, module \lean{BellPolynomialInversion}) and $M=\EulerE^K$ is \lean{Fabius.exp_subst_bellWeightSeries}; $K=\log M$ is now \lean{Fabius.logOf_egfA} together with \lean{Fabius.cumulant_eq_cumulantSum} (\lean{CumulantBellFormula}), which also gives the closed form $\kappa_n=\sum_k(-1)^{k-1}(k-1)!\,\ExponentialPartialBellPolynomial nk(m)$, resting on the formal $\exp\circ\log$ inverse \lean{Fabius.exp_subst_logOf} (\lean{ExpLog}); the sums over set partitions are not formalized. \\
-\Cref{thm:merged-binomial-type-characterization} & Generating-function characterization of binomial type & none &  \\
+\Cref{thm:merged-binomial-type-characterization} & Generating-function characterization of binomial type & Lean & \lean{Fabius.isBinomialType_iff_exists_egfA_eq}, \lean{Fabius.isBinomialType_iff_existsUnique_egfA_eq}, \lean{Fabius.natDegree_eq_iff_of_isBinomialType} (\lean{BinomialTypeCharacterization}); over a char-0 domain that is a Q-algebra, and one direction over any commutative Q-algebra \\
 \Cref{thm:merged-sheffer} & Addition and lowering & partial & \cref{eq:merged-sheffer-addition} is \lean{Fabius.shefferPoly_add} (\lean{BinomialType}), for \lean{Fabius.shefferPoly} $=c\star p$ (binomial convolution of the coefficients of $g$ with the binomial-type sequence), with generating function \lean{Fabius.egfA_mul_exp_subst_smul_bellWeightSeries}; the lowering law \cref{eq:merged-sheffer-lowering} is not formalized \\
 \Cref{lem:merged-formal-rescaling} & Formal rescaling and exponentials & Lean & \cref{eq:merged-formal-rescaling-derivative} is \lean{Fabius.derivative_rescale} over every commutative semiring; \lean{Fabius.derivative_rescale_exp}, \lean{Fabius.rescale_zero_exp}, and \lean{Fabius.rescale_exp_add_one} give the exponential specializations over every commutative $\RationalNumbers$-algebra (\lean{ExponentialRescaling}). The general product law is Mathlib's \lean{PowerSeries.exp_mul_exp_eq_exp_add}. \\
 \Cref{prop:merged-abel} & Abel polynomials & Lean & \lean{Fabius.abelPolynomial}, \lean{Fabius.abelPolynomial_zero}, \lean{Fabius.abelPolynomial_succ}, and \lean{Fabius.abelPolynomial_succ_eval} give the polynomial formulas over every commutative ring.  Over every commutative $\RationalNumbers$-algebra, \lean{Fabius.abelSeries_eq} constructs a solution, \lean{Fabius.abel_eq_zero_and_one} gives the boundary coefficients for every solution, and \lean{Fabius.exp_subst_eq_egfA_abelPolynomial} proves \cref{eq:merged-abel-egf} for every solution, including degree zero.  \cref{eq:merged-abel-binomial} is \lean{Fabius.abelPolynomial_eval_add}, also for every $n\geq0$ (\lean{AbelPolynomialSeries}) \\
