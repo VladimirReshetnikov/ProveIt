@@ -31,11 +31,11 @@ New standalone intake members:
   `34241042a005ea529219aca0761c121760a2574324bbb2300c365012cc1435c2`.
   It is newer than the retained report PDF, whose 819,265 bytes have SHA-256
   `0be7f0943e8d5fb795878aa0b3ecb21af25680155ad214ee2f1598de50e705ea`;
-  a source-parity rebuild is pending. The active 33-entry mixed
-  current-source/retained-artifact checksum ledger covers every non-ledger
-  file, including the preserved immutable arrival ledger
-  `fabius_dyadic_chaos_frontier/SHA256SUMS.arrival.txt`, without asserting that
-  the retained PDF renders the current TeX.
+  a source-parity rebuild is pending. The former 33-entry mixed
+  current-source/retained-artifact checksum ledger recorded every non-ledger
+  file, including the submitted arrival ledger, at that checkpoint without
+  asserting that the retained PDF rendered the current TeX. Both ledgers are
+  now retired; their bytes remain recoverable from Git history.
 
   The [label-complete Lean crosswalk](fabius_dyadic_chaos_frontier/LEAN_CROSSWALK.md)
   inventories all 41 nonconjectural report results: 12 Unformalized, 20
@@ -55,8 +55,9 @@ New standalone intake members:
 - [`common_digit_fabius_zonoids_frontier_report/`](common_digit_fabius_zonoids_frontier_report/),
   the 36-page *Common-Digit Fabius Zonoids* bundle committed directly to
   `incoming/` by `fef364bfd162f80919cd77b808530dd0734f1cb1`.
-  All 24 non-ledger payloads are covered by its submitted ledger; six CSV
-  hashes were refreshed after repository CRLF-to-LF normalization.
+  All 24 non-ledger payloads were covered by its submitted ledger; six CSV
+  hashes were refreshed after repository CRLF-to-LF normalization. The ledger
+  is now retired and recoverable from Git history.
 
 - [`Jacobi_Digit_Fabius_Rvachev_Frontier_Report/`](Jacobi_Digit_Fabius_Rvachev_Frontier_Report/),
   the 32-page *Jacobi-Digit Deformations of the Fabius--Rvachev Law* bundle
@@ -65,9 +66,10 @@ New standalone intake members:
 
 - [`Matrix_Dilated_Fabius_Rvachev_Frontier_Report/`](Matrix_Dilated_Fabius_Rvachev_Frontier_Report/),
   the 29-page *Matrix-Dilated Fabius--Rvachev Laws* bundle from
-  `8a184546747082cbd92ad4675fb61981c6b8c3b6`.  Its complete 27-entry
-  ledger now records the LF repository bytes; seven CSV entries changed only
-  by line-ending normalization.
+  `8a184546747082cbd92ad4675fb61981c6b8c3b6`. Its former complete 27-entry
+  ledger recorded the LF repository bytes; seven CSV entries changed only by
+  line-ending normalization. The ledger is now retired and recoverable from
+  Git history.
 
 These were already-extracted tracked directories, not archives, so no outer
 ZIP hashes exist.  The common-digit and matrix-dilated manuscripts are related
@@ -83,8 +85,9 @@ of an existing draft; semantic consolidation is deferred to the post-
   Function* (22 A4 pp and 1,566 source lines, with a 469-line numerical
   diagnostic), arrived on 2026-08-30 with
   all 14 submitted payload checksums verified. The repaired package has an
-  exhaustive 15-entry live ledger; the single CSV entry was refreshed after
-  deterministic LF normalization. A Faà di Bruno partition defect, two-spine
+  exhaustive 15-entry ledger recorded that repaired checkpoint; the single
+  CSV entry was refreshed after deterministic LF normalization. The ledger is
+  now retired and recoverable from Git history. A Faà di Bruno partition defect, two-spine
   expansion,
   strict weight-unimodality argument, and Thue--Morse binary-transition lemma
   yield the manuscript's claimed nowhere-analyticity theorem for every
@@ -126,8 +129,9 @@ of an existing draft; semantic consolidation is deferred to the post-
   strict serial `pdflatex` passes from clean auxiliaries rebuilt the frozen
   1,566-line canonical A4/27 mm/Libertinus source as a 22-page PDF. The final
   log is clean; all 22 Type-1 font rows are embedded/subset, five are
-  Libertinus, and none is Latin Modern or Type 3. The exhaustive 15-entry live
-  ledger verifies 15/15. `PartitionDefect.lean` supplies exactly three
+  Libertinus, and none is Latin Modern or Type 3. The former exhaustive
+  15-entry ledger verified 15/15 at that checkpoint and is now retired; its
+  bytes remain recoverable from Git history. `PartitionDefect.lean` supplies exactly three
   definitions and 33 theorems for positive block-size lists, exhaustively
   cross-referenced below. It does not supply a set-partition wrapper, the
   manuscript's quadratic `Q` factorization, weighted Bell
@@ -164,7 +168,8 @@ of an existing draft; semantic consolidation is deferred to the post-
   PDF (SHA-256
   `e5c5b8dd1023dc57ae8a64fd5f463f62e079b99e32830a14f4268fea2e4a9478`);
   all 20 report-font entries are embedded/subset, seven are Libertinus, and
-  none is Type 3. The current mixed 18-entry ledger passes, but the retained
+  none is Type 3. The former mixed 18-entry ledger passed at its recorded
+  checkpoint but is now retired and recoverable from Git history; the retained
   PDF is not a rendering of the newer live TeX. The only
   exact Lean inputs claimed here are `rvachev_not_analyticAt` and
   `canonical_rvachev_not_analyticAt`; the report crosswalks them separately
@@ -172,8 +177,9 @@ of an existing draft; semantic consolidation is deferred to the post-
   prospective, and manuscript theorem labels do not establish Lean status.
 - [`Fabius_Zero_Bias_Frontier_Report/`](Fabius_Zero_Bias_Frontier_Report/),
   *Zero-Bias Towers and Spectral Peeling in the Fabius--Rvachev System*
-  (26 pp), arrived on 2026-08-30 with its 21-entry payload ledger verified and
-  preserved as `ARRIVAL_SHA256SUMS`.  The paper develops a random-index
+  (26 pp), arrived on 2026-08-30 with its 21-entry payload ledger verified.
+  That ledger was formerly filed as `ARRIVAL_SHA256SUMS`; it is now retired
+  and recoverable from Git history. The paper develops a random-index
   zero-bias recursion, iterated moment and spherical factorizations,
   normalized Laguerre--Pólya derivatives, arithmetic spectral peeling,
   q-occupancy, compact-support Gaussianization, and phase-sensitive endpoint
@@ -192,15 +198,17 @@ of an existing draft; semantic consolidation is deferred to the post-
   The retained exactly-three-pass 26-page PDF (771,261 bytes, SHA-256
   `e7698059db2a24985b90258683af4fde277235159379fc7b294583dbb6bf0f37`)
   has embedded/subset fonts throughout, but it predates the current source-only
-  notation edit. The mixed current-source/retained-artifact 23-entry ledger
-  passes in full without asserting render parity.
+  notation edit. The former mixed current-source/retained-artifact 23-entry
+  ledger passed in full at that checkpoint without asserting render parity;
+  it is now retired and recoverable from Git history.
 - [`Fabius_Rvachev_Noncommutative_Frontiers/`](Fabius_Rvachev_Noncommutative_Frontiers/),
   *Noncommutative Cumulant Frontiers for the Fabius--Rvachev Law* (26 A4 pp,
   1336 source lines; with a 681-line experiment), arrived on 2026-08-30 with
   all 21 payload checksums verified. The repository repair gives the report title-derived source/PDF
   stems, canonical A4/27 mm/Libertinus styling, deterministic LF CSV output,
-  PNG figure selection, a three-pass build, and a verified 21-entry live
-  ledger; every font is embedded and subset and the report has no Type 3 font.
+  PNG figure selection and a three-pass build; a former 21-entry ledger
+  verified that checkpoint and is now retired and recoverable from Git
+  history. Every font is embedded and subset and the report has no Type 3 font.
   Its free and
   Boolean cumulants, exact non-free-infinite-divisibility certificates,
   q-parametric Hankel obstruction, Jacobi stripping and increment program,
@@ -265,9 +273,10 @@ of an existing draft; semantic consolidation is deferred to the post-
   current live TeX has 2,978 lines and 122,235 bytes with SHA-256
   `e0015e424fe577c4aee3ea473ace71b67b9f250d5a96569dccd6dd03ebe20c98`.
   The retained 41-page PDF and its historical preflight are stale for that
-  source; a synchronized rebuild remains pending. The refreshed mixed
-  20-entry ledger hashes the live source/metadata and retained artifacts
-  independently and therefore does not assert render parity. The earlier
+  source; a synchronized rebuild remains pending. The former mixed 20-entry
+  ledger recorded the live source/metadata and retained artifacts independently
+  at that checkpoint and did not assert render parity. It is now retired and
+  recoverable from Git history. The earlier
   39-page cleaned-vector and 41-page local Gaunt builds remain documented as
   historical checkpoints.
 - [`Fabius_Stein_Koopman_Frontier_Report/`](Fabius_Stein_Koopman_Frontier_Report/),
@@ -667,8 +676,9 @@ generators with the exact cumulant truncation law, and
 odd-denominator cumulant arithmetic; its rational-arithmetic
 verification package lives under
 `assets/Rvachev_Up_Exact_Polynomial_Representation_Report/`.
-Absorbed directories deleted; provenance with SHA-256 in the volume's
-Appendix B and `assets/SHA256SUMS-absorbed.txt`.
+Absorbed directories deleted; provenance with SHA-256 remains in the volume's
+Appendix B, while the former absorbed-payload ledger is retired and recoverable
+from Git history.
 The focused-build `CompositeMeshSharpness.lean` module now certifies the
 natural-mesh universal slice of the sharp order statement: exactness for the
 whole polynomial space through degree `d` is equivalent to `d <= v_2(M)`, or
@@ -706,12 +716,13 @@ decomposition, Hilbert--Schmidt identities for the even-projector
 factorization, and a sharp central-coefficient root law.  Its
 theorem-level checks are exact rational with residual `0`; the reported
 energy value is a stabilized display of an exact partial sum, not a
-certified enclosure of the limit, and the report says so.  This is a
-checksum-verified 22-file package with a 31-page Libertinus rebuild and exactly
+certified enclosure of the limit, and the report says so. This is a 22-file
+package with a 31-page Libertinus rebuild and exactly
 2204 source lines, exact data certificates, four dual-format figures, and snapshot
 `faa3a9b94ac0e71abdc53c36fdf428222e4d2a8c`.
-Its checksum ledger was refreshed after the 2026-08-30 parity render and all
-21 entries verify.
+Its former checksum ledger was refreshed after the 2026-08-30 parity render,
+when all 21 entries verified; the ledger is now retired and recoverable from
+Git history.
 Subsequent Lean module `FabiusLegendreEnergy.lean` now defines the
 polynomial-form blocks `B_n = u_n*P_(2n)` and proves exactly their complete
 orthogonality, the coefficient Parseval identity, the shifted coefficient-tail

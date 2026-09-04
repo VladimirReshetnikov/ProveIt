@@ -30,8 +30,9 @@ problems, and 24 are non-applicable source environments.
 records exact module/declaration matches and separately classifies five
 post-snapshot additions without changing those source totals.
 [`ASSET_DISPOSITION.csv`](Inverse_Fabius_Analyticity_Asymptotics_and_Computability/ASSET_DISPOSITION.csv)
-accounts for all 88 source-subgroup files, and the live asset ledger covers 63
-retained, deduplicated payloads.
+accounts for all 88 source-subgroup files, and the asset inventory covers 55
+retained files. Eight checksum-ledger rows from the former 63-payload checkpoint
+are retired.
 
 The six newest exact source-row matches are abstract effective inversion,
 centered Appell deconvolution, positive-degree Appell mean-zero,
@@ -79,8 +80,9 @@ remains a historical checkpoint; no PDF was generated for the source-only
 Richardson update.
 
 [`fabius_information_frontier/`](fabius_information_frontier/) remains an
-archival information-geometry intake. Its arrival and operational ledgers
-distinguish the submitted PDF from later source changes; manuscript theorem
+archival information-geometry intake. Its retired arrival and operational
+ledger checkpoints remain recoverable from Git and distinguish the submitted
+PDF from later source changes; manuscript theorem
 labels do not by themselves establish current Lean verification.
 
 ## Formalization notes

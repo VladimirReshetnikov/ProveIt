@@ -31,8 +31,9 @@ Main files
   CORPUS_AUDIT.txt
       Scope, method, and limitations of the repository novelty screen.
 
-  SHA256SUMS.txt
-      SHA-256 checksums for the archive payload.
+  Historical checksum checkpoint
+      The former archive-payload ledger is retired and recoverable from Git
+      history.
 
 Principal mathematical results
 ------------------------------

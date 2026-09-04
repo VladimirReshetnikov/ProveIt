@@ -5,9 +5,9 @@
 > `d1b90d107a38219a2ff64bbae883d6172b49b70721b631b58cd3b6072781c6dd`).
 > The retained submitted 30-page PDF was not rebuilt after the notation
 > migration and is not claimed to be synchronized with that source.
-> The refreshed 19-entry `SHA256SUMS` verifies the current TeX and README
-> together with the retained PDF and other payloads; it does not assert
-> source/PDF synchronization.
+> The former 19-entry operational ledger recorded the current TeX and README
+> together with the retained PDF and other payloads at that checkpoint. It is
+> retired and Git-recoverable; it never asserted source/PDF synchronization.
 
 This archive accompanies the report
 `fabius_information_frontier.pdf` and its complete LaTeX source
@@ -90,7 +90,8 @@ The source expects the vector figures under `figures/`.
   coefficients.
 - `figures/*.pdf`: vector figures used in the report.
 - `figures/*.png`: raster previews.
-- `SHA256SUMS`: integrity hashes.
+- Former checksum ledgers: verified at intake or their recorded checkpoint,
+  since retired and recoverable from Git.
 
 The exact theorems do not depend on the numerical experiments.
 
@@ -99,12 +100,12 @@ The exact theorems do not depend on the numerical experiments.
 This package was quick-gate filed on 2026-08-30 from
 `fabius_information_frontier_report.zip` (751,588 bytes; SHA-256
 `41f9aba6eb85bb173827f13cb6b7b1d54b7ea9346faf7c9e5b1af859bbd42ec7`).
-The archive was path-safe and passed its CRC test.  Its submitted 18-entry
-ledger verified 18/18 before normalization and is preserved byte-for-byte as
-`SHA256SUMS.arrival.txt`.  Four CSV files are stored with repository-standard
-LF endings. `SHA256SUMS` is the refreshed 19-entry operational ledger; it
-verifies the current package while retaining the submitted PDF as a distinct
-historical payload.
+The archive was path-safe and passed its CRC test. Its submitted 18-entry
+ledger verified 18/18 before normalization and was filed byte-for-byte as
+`SHA256SUMS.arrival.txt`. Four CSV files are stored with repository-standard
+LF endings. The arrival and later 19-entry operational ledgers are now retired;
+their bytes and checkpoints remain recoverable from Git. The submitted PDF
+remains a distinct historical payload.
 
 This is an archival intake, not a claim-level acceptance.  The theorem labels
 record manuscript statements and do not assert Lean formalization.  A hostile

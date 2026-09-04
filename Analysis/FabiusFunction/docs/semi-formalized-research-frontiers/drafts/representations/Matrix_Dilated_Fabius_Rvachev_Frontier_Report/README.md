@@ -23,7 +23,8 @@ and conjectures are visibly distinguished in the LaTeX source and PDF.
 - `figures/` — all figures in PDF and PNG form.
 - `data/` — machine-readable numerical tables.
 - `results/numerical_summary.txt` — compact numerical audit trail.
-- `SHA256SUMS` — integrity hashes for the distributed payload.
+- The former distributed-payload checksum ledger is retired and recoverable
+  from Git history.
 
 ## Principal results developed in the report
 

@@ -30,7 +30,6 @@ The document explicitly distinguishes four kinds of statements:
 - `data/` — CSV audit tables for gap geometry, exact norms, tube and distance laws,
   moment formulae, Gaussian scaling, periodicity, and Gamma-zeta Fourier modes.
 - `requirements.txt` — Python dependencies.
-- `SHA256SUMS` — checksums of the files in the release, excluding the checksum file itself.
 
 ## Rebuild
 
@@ -54,4 +53,4 @@ formula-level duplication.  The labels **[N]** therefore mean “proved here and
 an exact statement in the audited repository snapshot,” not a claim of priority over all
 published literature.
 
-> **Editorial note (2026-08-28):** the report source and compiled PDF listed above (and, where listed, the supplied source scan/OCR) were removed from this directory after their content was merged into the volume `Exponents_and_q_Series_Frontiers.tex`; their SHA-256 hashes remain in the volume provenance list (and in `SHA256SUMS` here where present), and git history archives the files. This directory keeps only figures, data, and scripts.
+> **Editorial note (2026-08-28):** the report source and compiled PDF listed above (and, where listed, the supplied source scan/OCR) were removed from this directory after their content was merged into the volume `Exponents_and_q_Series_Frontiers.tex`; their SHA-256 hashes remain in the volume provenance list, and Git history archives the files. This directory keeps only figures, data, and scripts.

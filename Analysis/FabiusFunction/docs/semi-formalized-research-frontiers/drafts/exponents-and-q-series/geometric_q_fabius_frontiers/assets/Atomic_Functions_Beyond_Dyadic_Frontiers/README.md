@@ -20,7 +20,6 @@ This archive contains the English reconstruction and expansion of the attached R
 - `figures/` — vector PDF and raster PNG versions of all eight figures.
 - `data/` — machine-readable validation tables.
 - `source_notes/` — the OCR TeX and surviving printed source pages used for the reconstruction.
-- `SHA256SUMS` — checksums for the archive contents.
 
 ## Mathematical scope
 

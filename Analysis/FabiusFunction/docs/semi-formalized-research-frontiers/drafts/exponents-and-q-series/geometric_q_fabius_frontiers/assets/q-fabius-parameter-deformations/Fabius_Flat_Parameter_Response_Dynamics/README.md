@@ -12,8 +12,9 @@
 
 This directory preserves and normalizes the submitted research package
 **“Flat Parameter Fronts, q-Susceptibility, and Smooth Dynamics: New Frontier Results in the
-Fabius–Rvachev System.”** The normalization keeps the arrival record separate from the current
-working ledger and corrects the mathematical status boundaries described below.
+Fabius–Rvachev System.”** The normalization records arrival and working-tree
+provenance separately and corrects the mathematical status boundaries
+described below.
 
 ## Status of the mathematical claims
 
@@ -46,14 +47,16 @@ of priority over the mathematical literature.
 - **NUMERICAL_README.txt** and **EXPERIMENT_REPLAY.txt** — run parameters and replay comparison.
 - **REPOSITORY_AUDIT.md** — claim-status and Lean-source crosswalk.
 - **PDF_VALIDATION.txt** — final build and PDF validation record.
-- **ARRIVAL_SHA256SUMS.txt** — immutable verbatim ledger from the submitted archive.
-- **SHA256SUMS.txt** — exhaustive ledger of the current normalized package, excluding itself.
+- **Historical checksum receipts** — the verbatim arrival ledger and a later
+  exhaustive normalized-package ledger were both verified; the retired files
+  remain recoverable from Git history.
 
 The submitted ZIP was **fabius_frontier_report_2026.zip**, 803,598 bytes, with SHA-256
 **afdcf522589a7baad82c81a527c02dcc09e58455ab14c57a9c492e65563c647e** and Git blob
 **ec8727448efff206724963f5b3922ff5b8f5fc61**. It contained one wrapper directory, 14 files,
-and four directory entries; its 13-row internal ledger verified every payload file. The
-arrival ledger is preserved unchanged even though normalized files now have new hashes.
+and four directory entries; its 13-row internal ledger verified every payload
+file. That arrival ledger remains recoverable unchanged from Git history even
+though normalized files now have new hashes.
 
 ## Rebuilding the PDF
 

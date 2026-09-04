@@ -169,12 +169,12 @@ against the immutable source pin gives:
 The row-level evidence is preserved in
 [`assets/HISTORICAL_LEDGER_AUDIT.csv`](assets/HISTORICAL_LEDGER_AUDIT.csv).
 These ledgers describe earlier package states and are not a checksum manifest
-for the canonical tree. The live `assets/COMPANION_PAYLOADS.csv` provenance
-ledger is deliberately separate from this historical audit. The package uses
-no live package checksum manifest. The former root ledger was exhaustive at
-the recorded upstream publication checkpoint, but repository policy has since
-retired that gate; scoped hashes in the provenance CSVs remain historical
-receipts.
+for the canonical tree. `assets/COMPANION_PAYLOADS.csv` is a purpose-specific
+provenance map, deliberately separate from this historical audit; its scoped
+hashes remain provenance receipts rather than a live whole-package gate. Live
+package-wide checksum ledgers are retired. The former root ledger was exhaustive
+at its recorded upstream publication checkpoint, but it is now retired,
+recoverable from Git, and not a current validation requirement.
 
 ## Recoverability
 

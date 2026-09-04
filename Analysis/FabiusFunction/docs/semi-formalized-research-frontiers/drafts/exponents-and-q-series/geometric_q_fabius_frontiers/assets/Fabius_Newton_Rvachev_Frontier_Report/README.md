@@ -37,7 +37,6 @@ levels above this directory.
 - `figures/` - the two figures embedded in the report.
 - `data/` - signed q-Richardson errors, boundary-layer errors, zero
   multiplicities, and the verification log.
-- `SHA256SUMS` - checksums for the report, source, code, figures, and data.
 
 No Monte Carlo sampling is used. The boundary profiles are obtained by FFT
 inversion of exact characteristic products, while the q-Richardson identities
@@ -107,4 +106,4 @@ family `a_h = binom(h-1,d)`. It gives positive-definite entire quotients of the
 Pascal-Rvachev hierarchy; for `d=2`, the characteristic function is
 `Phi_1 Phi_3 / Phi_2`, despite the negative exponent in that factorization.
 
-> **Editorial note (2026-08-28):** the report source and compiled PDF listed above (and, where listed, the supplied source scan/OCR) were removed from this directory after their content was merged into the volume `Exponents_and_q_Series_Frontiers.tex`; their SHA-256 hashes remain in the volume provenance list (and in `SHA256SUMS` here where present), and git history archives the files. This directory keeps only figures, data, and scripts.
+> **Editorial note (2026-08-28):** the report source and compiled PDF listed above (and, where listed, the supplied source scan/OCR) were removed from this directory after their content was merged into the volume `Exponents_and_q_Series_Frontiers.tex`; their SHA-256 hashes remain in the volume provenance list, and Git history archives the files. This directory keeps only figures, data, and scripts.

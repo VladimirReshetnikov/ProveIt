@@ -92,7 +92,8 @@ See [Building Lean](#building-lean) for the full serialization recipe.
 > **quick archival intake and nothing deeper**: merge current `origin/main`,
 > verify archive safety/integrity, unpack and file the report by theme, normalize
 > repository line endings and record provenance in the surviving purpose-specific
-> records, delete the ZIP, update
+> records, retire any submitted file whose basename is `SHA256SUMS` or starts
+> with `SHA256SUMS.`, delete the ZIP, update
 > the manifest and destination README, commit, push the feature branch, push
 > ff-only to `origin/main`, and verify the remote SHA.
 >

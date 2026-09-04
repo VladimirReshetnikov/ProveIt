@@ -114,8 +114,8 @@ rewritten. They do not certify the current canonical payloads.
   normalized data series.
 - The source validator passes the nine-file TeX graph, environment and proof
   discipline (213 result environments, 150 proof-required), 801 labels, 783
-  references, 62 bibliography keys, all disposition and evidence audits, the
-  concordance, and the exhaustive package ledger.
+  references, 62 bibliography keys, all disposition and evidence audits, and
+  the concordance.
 - No PDF was rebuilt.  The retained 158-page PDF remains the validated
   historical checkpoint with 2,456,105 bytes and SHA-256
   `81d249c8b2bb124836c858bd8e0ef9c8764606a2f9655a798d69e7565b1759b4`;
@@ -279,9 +279,8 @@ rewritten. They do not certify the current canonical payloads.
   79, and 157 were additionally inspected at full size; no clipping, overlap,
   corrupt image, or unintended blank page was found.
 - The then-existing checksum records verified against that pre-merge source
-  state. They are retained here only as historical receipt facts, do not
-  certify the current union, and do not define the current single-root-ledger
-  architecture.
+  state. They survive only as historical receipt facts in this record, do not
+  certify the current union, and do not define current package state.
 
 ### Pre-PrimePower semantic-union build (historical, incomplete gate)
 
@@ -382,5 +381,6 @@ and overfull boxes; inspect PDF metadata and fonts; render every page; and
 visually examine every rendered page. Record the new measurements here, update
 the README, refresh `COMPANION_PAYLOADS.csv` if the retained evidence inventory
 changed, and rerun the canonical validator without recreating a package
-checksum manifest. The current receipt above remains valid only while the
+checksum manifest. Do not create or check a live package-wide checksum ledger.
+The current receipt above remains valid only while the
 publication-source, documentation, and PDF bytes are unchanged.

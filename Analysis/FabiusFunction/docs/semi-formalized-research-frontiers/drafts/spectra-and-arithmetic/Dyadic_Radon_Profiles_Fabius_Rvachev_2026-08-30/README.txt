@@ -109,8 +109,9 @@ and SymPy.
 INTEGRITY
 ---------
 
-SHA256SUMS.txt contains SHA-256 hashes for every deliverable file in the ZIP,
-except the checksum file itself and transient build/render files.
+The former checksum ledger covered every deliverable file in the ZIP except
+itself and transient build/render files. It is now retired and recoverable
+from Git history.
 
 NOVELTY STATUS
 --------------

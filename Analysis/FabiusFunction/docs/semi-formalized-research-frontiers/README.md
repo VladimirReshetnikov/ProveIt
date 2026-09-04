@@ -269,14 +269,16 @@ Sampling*](drafts/inverse-and-sampling/Inverse_Fabius_Analyticity_Asymptotics_an
 Its immutable extraction input is pinned at
 `0a0cdabeb72a6f7d67cfdfb76d02a8f7381c7bf7`; all 194 source-result rows have
 reviewed dispositions, all 88 files in the two superseded source subgroups have
-asset dispositions, and the deduplicated live asset ledger covers 63 retained
-payloads. The former package paths, source hashes, nested lineage, and recovery
+asset dispositions, and the deduplicated inventory covers 55 retained files;
+eight checksum-ledger rows from the former 63-payload checkpoint are retired.
+The former package paths, source hashes, nested lineage, and recovery
 revisions remain in the package's
 [`PROVENANCE.md`](drafts/inverse-and-sampling/Inverse_Fabius_Analyticity_Asymptotics_and_Computability/PROVENANCE.md).
 Its retained 134-page, 2,027,726-byte A4 publication has SHA-256
 `22bc68d855ad04dde9654e9fbd20b3ba7f05a33e3c5df0e5b80bb8991c94b41d`.
 The package README records that historical checkpoint's clean three-pass
-build, font preflight, and visual inspection.  The current 23-input source
+build, font preflight, and visual inspection.  The current purpose-specific
+23-input source
 closure has SHA-256
 `aedf007c2cd150b1f83de6d8996b4bf31e267b3dbcec2d5cd4720f5d92122bdb`
 and postdates the retained PDF, so a fresh three-pass build is required before

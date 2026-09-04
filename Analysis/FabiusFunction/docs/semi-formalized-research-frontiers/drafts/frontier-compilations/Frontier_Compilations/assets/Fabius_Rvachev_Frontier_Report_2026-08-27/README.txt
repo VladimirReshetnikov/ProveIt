@@ -36,7 +36,6 @@ Supporting-asset contents
   results/reproduction_errors.csv     Cardinal-reproduction residuals.
   figures/*.pdf, figures/*.png        Vector and raster report figures.
   requirements.txt                    Python dependencies.
-  SHA256SUMS.txt                      Checksums for retained supporting files.
 
 Reproduce the numerical work
 ----------------------------
