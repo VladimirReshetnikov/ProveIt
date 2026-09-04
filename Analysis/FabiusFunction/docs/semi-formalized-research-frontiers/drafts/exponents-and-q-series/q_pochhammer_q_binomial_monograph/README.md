@@ -106,9 +106,10 @@ fonts. The files under `assets/experiments/**/figures/` remain research
 figures, not publication manuscripts.
 
 That source hash and the PDF hash record a synchronized historical checkpoint.
-The live TeX now includes the later exact even/odd Thue--Morse partition
-crosswalk and therefore postdates the retained PDF; no current source/PDF
-parity is claimed until a fresh three-pass build is completed.
+The live TeX now includes the later exact even/odd Thue--Morse partition and
+Jacobi two-square crosswalks and therefore postdates the retained PDF; no
+current source/PDF parity is claimed until a fresh three-pass build is
+completed.
 
 The current source includes exhaustive crosswalks for `QPochhammerEntire`
 (zero definitions
@@ -137,7 +138,9 @@ theorems), `QPochhammerOrderDerivative` (zero definitions and three theorems),
 cyclotomic surfaces are `CyclotomicDivisibility` (zero definitions and three
 theorems), `PrimitiveRootBlock` (zero definitions and three theorems),
 `QCatalan` (one definition and eleven theorems), and `QLucas` (zero
-definitions and eight theorems). The analytic and interpolation tail adds
+definitions and seven public theorems). Its local `two_mul_choose_two` helper
+is private; the unique public declaration of that name belongs to
+`QChuVandermonde`. The analytic and interpolation tail adds
 `QBetaIntegral` (one definition and eight theorems) and
 `NewtonInterpolation` (two definitions and thirteen theorems), covering the
 Jackson q-beta product and arbitrary-node/geometric-grid interpolation.
@@ -149,6 +152,8 @@ eight Newton declarations retain their incoming names.
 The newest finite-q surfaces are `GaussianBinomialInteger` (one definition
 and ten theorems), `GaussianBinomialComplexOrder` (one definition and five
 theorems), `QPfaffSaalschutz` (zero definitions and three theorems),
+`TwoPhiOneReversal` (one definition and six theorems),
+`QChuVandermonde` (zero definitions and five theorems),
 `QuantumMultinomial` (zero definitions and five theorems), and
 `GaussianBinomialBounds` (zero definitions and six theorems), together with
 expanded Euler, Jacobi, and Rogers--Szegő material.
@@ -172,6 +177,19 @@ zero-definition/fifteen-theorem total.  The new declarations are
 finite-set parity decomposition, the affine dyadic-block partition, and its
 raw-power specialization, respectively.
 
+The exact `JacobiTwoSquareCount` tranche adds no definitions and four public
+theorems. `sumSqRep_two_eq_four_mul_twoSquareDivisorSum` proves the full signed
+ordered count for every nonzero natural input, and
+`sumSqRep_two_eq_four_mul_prod` gives its prime-factor product under the
+explicit even-valuation condition at primes congruent to 3 modulo 4.
+`theta_sq_eq_chi4_lambert` and `theta_sq_eq_odd_lambert` are unconditional over
+every complete normed field for `‖q‖ < 1`. The complex arithmetic core
+specializes Ramanujan's bilateral `1psi1` identity, proves absolute
+summability for the Lambert rearrangement, reduces the product quotient to the
+theta square, and applies convergent-power-series coefficient uniqueness. The
+existing conditional declarations in `TwoSquareTheorem` remain reusable
+analytic kernels.
+
 The two newest generic theorems are
 `deriv_qPochhammerInfIn_ne_zero_of_mul_pow_eq_one`, which gives a nonzero
 derivative at every raw factor zero `a*q^j = 1` including `q = 0`, and
@@ -182,12 +200,14 @@ entireness, zero-locus, reciprocal-power, and analytic-order results rather
 than duplicating their analytic proofs. In `QBinomialTheoremInfinite`,
 `finiteQPochhammerIn_zero_left` remains the unique declaration owned by
 `GaussianBinomialAtOne` and is imported rather than redeclared. The forward
-status ledger is 168 Exact, 88 Partial, 18 None, and 8 interface rows; the
+status ledger is 170 Exact, 86 Partial, 18 None, and 8 interface rows; the
 original 191-result pre-Fabius core is 36/29/123/3, and the
-completed pinned-source concordance records 66 Lean-proved rows, 412
-human-proved frontier rows, 60 not-applicable rows, and 9 conjectures.  That
-historical disposition ledger and its generator are intentionally unchanged by
-the later live-source promotion of the Prouhet-partition row.
+completed pinned-source concordance records 68 Lean-proved rows, 410
+human-proved frontier rows, 60 not-applicable rows, and 9 conjectures.  Its
+immutable source inventory and editorial dispositions remain unchanged; the
+generator's current-status projection now advances the two retained Jacobi
+two-square rows, while the later live-source promotion of the
+Prouhet-partition row remains outside the pinned ledger.
 The fourteen-theorem `GaussianBinomialPalindromic` API and five-theorem
 `GaussianBinomialPolynomialStructure` API give exact degree,
 monicity, constant and top coefficients, reflection, coefficient
@@ -219,9 +239,10 @@ Jackson integration-by-parts subclaims, and Partial formalizations of the
 q-exponential factorization, Jackson fundamental theorem, and theta
 quasi-periodicity; the remaining clauses named in their rows stay explicit.
 The incoming tail further makes the full elementary Gaussian-polynomial
-structure and Jacobi's cubic identity Exact, while adding Partial order
-derivative and Gaussian-moment rows; the Lambert logarithm row remains
-Partial with both displayed derivative formulas now formalized.
+structure, Jacobi's cubic identity, Jacobi's two-square theorem, and both
+two-square Lambert forms Exact, while adding Partial order derivative and
+Gaussian-moment rows; the Lambert logarithm row remains Partial with both
+displayed derivative formulas now formalized.
 The central-reduction row is now Exact through a division-free commutative-ring
 identity and its field quotient wrapper; the cyclotomic-factorization row is
 Exact over every commutative ring for the factorial form and every integral
@@ -239,6 +260,12 @@ two Pascal laws, and reciprocal series are Exact; so are the upper-parameter
 and generalized complex-order series on their stated norm domains.  The
 separate complex-parameter property and classical-specialization rows remain
 None and are not inferred from those series identities.
+The terminating two-phi-one reversal and both q-Chu--Vandermonde evaluations
+are Exact on their explicitly recorded generic-field domains.  The second
+q-Chu theorem retains the reversal proof's auxiliary assumptions that its
+denominator parameter is nonzero and that its numerator finite product does
+not vanish.  The monograph's subsequent rational-extension removal of those
+two assumptions is not a separate Lean theorem.
 The quantum-multinomial row is Exact over every semiring under the stated
 pairwise q-commutation laws and commutation of q with each variable; neither
 centrality of q nor commutativity of the ambient semiring is claimed.

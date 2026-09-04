@@ -67,8 +67,10 @@ theorems), `ThetaQuasiPeriodicity` (one definition and six theorems),
 `CyclotomicFactorization` (zero definitions and seven theorems), followed by
 `CyclotomicDivisibility` (zero definitions and three theorems),
 `PrimitiveRootBlock` (zero definitions and three theorems), `QCatalan` (one
-definition and eleven theorems), and `QLucas` (zero definitions and eight
-theorems). The latest tail adds `QBetaIntegral` (one definition and eight
+definition and eleven theorems), and `QLucas` (zero definitions and seven
+theorems; its local `two_mul_choose_two` helper is private, while the public
+theorem of that name belongs to `QChuVandermonde`). The latest tail adds
+`QBetaIntegral` (one definition and eight
 theorems) and `NewtonInterpolation` (two definitions and thirteen theorems),
 followed by `GaussianBinomialInteger` (one definition and ten theorems),
 `GaussianBinomialComplexOrder` (one definition and five theorems), and

@@ -1024,10 +1024,12 @@ $1/d$ and output separation exactly $h_n$.  Thus $d$ cannot certify the
 stricter conclusion $\AbsoluteValue{\InvT(u)-\InvT(v)}<h_n$.
 \end{proof}
 
-The fixed-target and modulus parts of this proposition now have an exact
-formal kernel in \path{FabiusInverseExactDyadicModulus.lean}.  At a fixed
+This proposition now has an exact Lean counterpart in
+\path{FabiusInverseExactDyadicModulus.lean}.  At a fixed
 order $r$, \path{Fabius.inverseFabiusExactDyadicDenominator} defines
 $\Ceiling{1/F(2^{-r})}$ through the exact rational evaluator;
+\path{Fabius.inverseFabiusExactDyadicDenominator_primrec} certifies this
+fixed-order denominator as primitive recursive;
 \path{Fabius.inverseFabiusExactDyadicDenominator_pos},
 \path{Fabius.inv_inverseFabiusExactDyadicDenominator_le_fabiusAtInverseTwoPow},
 and \path{Fabius.inverseFabiusExactDyadicDenominator_isLeast} prove its
@@ -1040,20 +1042,23 @@ leastness among strict integer moduli are respectively
 
 The definition \path{Fabius.inverseFabiusExactLogarithmicDenominator} then
 sets the value at zero to $1$ and composes the fixed-target denominator with
-$r(n)$ at positive inputs.  Its positive-input equation is
+$r(n)$ at positive inputs.  The theorem
+\path{Fabius.inverseFabiusExactLogarithmicDenominator_primrec} proves that
+this totalized function is primitive recursive.  Its positive-input equation is
 \path{Fabius.inverseFabiusExactLogarithmicDenominator_of_pos}, and
 \path{Fabius.abs_fabiusInv_sub_lt_inv_nat_of_lt_exactLogarithmicDenominator}
 is exactly the implication to the weaker $1/n$ target.  That last theorem is
 only a witness: it does not assert leastness for $1/n$, and its zero branch is
 only the convention $d_*(0)=1$ with no modulus conclusion there.
 
-The concordance row for \cref{co:prop:exact-dyadic-modulus} nevertheless
-remains a \emph{human-proved frontier result}.  The proposition also says that
-the logarithmic function $d_*$ is recursive, whereas the new module exports no
-named \texttt{Primrec} or computability theorem for either exact denominator.
-Thus Lean now proves every fixed-dyadic leastness clause and the logarithmic
-witness, but not that separate recursion clause; promoting the whole paper
-proposition to Lean-proved would overstate the formal surface.
+The two recursion certificates use a natural code rather than a computability
+instance for normalized rationals.  If
+$F(2^{-r})=H_r/D_r$ is the formalized exact quotient, then the ceiling is
+computed as $(D_r+H_r-1)/H_r$.  The development proves $H_r$ and $D_r$
+primitive recursive, and then composes the resulting fixed-order denominator
+with the already primitive-recursive $r(n)$.  Consequently every clause of
+\cref{co:prop:exact-dyadic-modulus} now has a compiled Lean counterpart, and
+its concordance row is classified as \emph{Lean-proved}.
 
 \begin{remark}[The genuine integer optimum for the $1/n$ target]
 The exact inverse-modulus law shows that a positive integer $d$ has the
@@ -1083,10 +1088,10 @@ required implication with output tolerance $1$.
 \end{remark}
 
 The exact-ceiling construction $d_*$, including its recursion and qualified
-denominator minimality, has not yet been translated into Lean.  The current
-logarithmic effective-continuity layer deliberately avoids the ceiling by
-using the explicit Delta or stronger factorial denominator at the formalized
-least order $r(n)$.
+fixed-dyadic denominator minimality, is therefore translated into Lean.  The
+Delta and stronger factorial denominators remain useful closed-form witnesses
+that avoid invoking the exact dyadic evaluator at the formalized least order
+$r(n)$.
 
 \subsection{Binary conditioning is quadratic}
 \label{co:sec:binary-conditioning}

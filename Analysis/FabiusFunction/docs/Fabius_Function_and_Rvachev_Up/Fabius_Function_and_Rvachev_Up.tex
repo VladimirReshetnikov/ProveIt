@@ -3817,16 +3817,16 @@ because the underlying infinite product is totalized outside its admissible
 range.  No spectral-zeta recovery, cumulant-sample recovery, or
 identifiability of an underlying probability law is asserted; those remain
 open interfaces.  With the later concurrent source union, the live facade
-census is 901 modules and 11,418 public declarations.  The current TeX also
+census is 902 modules and 11,424 public declarations.  The current TeX also
 contains the six-theorem prime-power companion-row API and the
 zero-definition/three-theorem outer Pochhammer normal-convergence API, plus
 the two-module/nine-declaration fixed-depth effective-inverse tranche, the
-eight-declaration rational-gap inverse module, the two-definition/eight-theorem
+eight-declaration rational-gap inverse module, the two-definition/ten-theorem
 sharp exact-dyadic inverse-modulus leaf, and six new
 q-calculus modules contributing 36 declarations, plus the two source-only
 central-reduction and cyclotomic-factorization modules contributing thirteen
 theorems, and the four-module root-of-unity, q-Lucas, cyclotomic-divisibility,
-and q-Catalan tranche contributing one definition and twenty-five theorems.
+and q-Catalan tranche contributing one definition and twenty-four theorems.
 These are
 source-only overlays; the retained 167-page PDF is explicitly historical and
 has not been regenerated for these additions.
@@ -3872,7 +3872,7 @@ The four root-of-unity and q-Catalan module counts are
 \path{CyclotomicDivisibility.lean} (0+3),
 \path{PrimitiveRootBlock.lean} (0+3),
 \path{QCatalan.lean} (1+11), and
-\path{QLucas.lean} (0+8).  Their one definition and twenty-five theorems add
+\path{QLucas.lean} (0+7).  Their one definition and twenty-four theorems add
 the cyclotomic carry criterion, complete primitive-root q-Pochhammer blocks,
 q-Lucas over integral domains, and the integral q-Catalan polynomial with its
 exact degree and Catalan specialization.
@@ -5476,11 +5476,14 @@ Equation \eqref{eq:inverse-exact-logarithmic-witness} is a witness only:
 leastness was proved for the stronger fixed target \(2^{-r_{\log}(n)}\), not
 for the weaker target \(1/n\).  The value \(D_{*,\log}(0)=1\) is only a total
 definition convention, and no modulus conclusion is asserted at zero.  The
-module also proves no named \lean{Primrec} or computability theorem for either
-exact denominator, so it does not by itself package an effective-uniform-
-continuity witness.
+two exact denominator maps are primitive recursive, by
+\lean{inverseFabiusExactDyadicDenominator_primrec} and
+\lean{inverseFabiusExactLogarithmicDenominator_primrec}.  Their natural-code
+proof avoids assuming a separate normalized-rational computability theorem.
+These certificates close the recursive-denominator clause, but do not by
+themselves package an effective-uniform-continuity witness.
 
-These two definitions and the eight theorems named above are the exhaustive
+These two definitions and the ten theorems named above are the exhaustive
 public surface of \path{FabiusInverseExactDyadicModulus.lean}.  In particular,
 the module closes exact fixed-dyadic ceiling minimality but does not prove an
 input-bit asymptotic or a least-denominator theorem for reciprocal target
@@ -7191,12 +7194,12 @@ a primitive \(d\)-th root \(\zeta\) makes
 \((-1)^d\zeta^{\binom d2}=-1\), and consequently
 \((y;\zeta)_d=1-y^d\).
 
-The zero-definition/eight-theorem \path{QLucas.lean} surface is
-\lean{two_mul_choose_two}, \lean{add_mul_add_sub_one},
+The zero-definition/seven-theorem \path{QLucas.lean} surface is
+\lean{add_mul_add_sub_one},
 \lean{choose_two_add}, \lean{coeff_finiteQPochhammerIn_neg_X},
 \lean{finiteQPochhammerIn_neg_X_block}, \lean{coeff_block_pow_mul},
 \lean{pow_choose_two_add_mul_eq}, and \lean{gaussianBinomial_q_lucas}.
-The first three are natural-number quadratic identities.  The polynomial
+The first two are natural-number quadratic identities.  The polynomial
 coefficient and block formulas compare the finite q-binomial expansion with
 complete primitive-root blocks.  If \(d>0\), \(\zeta\) is a primitive
 \(d\)-th root in a commutative integral domain, and \(b,s<d\), the final theorem is
@@ -7204,6 +7207,26 @@ complete primitive-root blocks.  If \(d>0\), \(\zeta\) is a primitive
  \GaussianBinomial{ad+b}{rd+s}{\zeta}
    =\binom ar\GaussianBinomial{b}{s}{\zeta}.
 \]
+Its same-shaped \path{two_mul_choose_two} helper is private; the unique public
+\lean{two_mul_choose_two} belongs to \path{QChuVandermonde.lean}.
+
+The terminating summation layer consists of
+\path{TwoPhiOneReversal.lean} (1+6) and
+\path{QChuVandermonde.lean} (0+5).  It proves the reflected finite-product
+identity, terminating \({}_2\phi_1\) reversal, a denominator-cleared first
+q-Chu--Vandermonde sum, both quotient evaluations, and the second evaluation
+by reversal.  The generic-field results retain every displayed nonzero
+parameter and finite-product denominator hypothesis; rational-extension
+removal of the second sum's auxiliary \(C\ne0\) and \((A;q)_n\ne0\) assumptions
+is not a separate Lean theorem.
+
+The zero-definition/four-theorem \path{JacobiTwoSquareCount.lean} leaf proves
+\lean{sumSqRep_two_eq_four_mul_twoSquareDivisorSum} for every nonzero natural
+input and its prime-product form under the explicit even-valuation condition
+at primes congruent to three modulo four.  Its
+\lean{theta_sq_eq_chi4_lambert} and \lean{theta_sq_eq_odd_lambert} theorems
+instantiate the reusable \path{TwoSquareTheorem.lean} kernels over every
+complete normed field under the sole analytic hypothesis \(\lVert q\rVert<1\).
 
 The zero-definition/three-theorem \path{CyclotomicDivisibility.lean} surface is
 \lean{cyclotomic_exponent_eq_one_iff},
@@ -13090,7 +13113,9 @@ polynomials &
 \path{CentralQBinomialReduction.lean}, \path{CyclotomicFactorization.lean},
 \path{PrimitiveRootBlock.lean}, \path{QLucas.lean},
 \path{CyclotomicDivisibility.lean}, \path{QCatalan.lean},
+\path{TwoPhiOneReversal.lean}, \path{QChuVandermonde.lean},
 \path{QBinomialTheoremInfinite.lean}, \path{JacobiTripleProduct.lean},
+\path{TwoSquareTheorem.lean}, \path{JacobiTwoSquareCount.lean},
 \path{QPascalSummation.lean}, \path{GaussianBinomialContinuity.lean},
 \path{QuantumBinomial.lean}, \path{RogersSzegoPolynomial.lean}\\
 Reciprocal-Gamma first jets and the Thue--Morse Gamma tower &
@@ -13206,6 +13231,7 @@ Dyadic and \(q\)-binomial formulas &
 \path{CentralQBinomialReduction.lean}, \path{CyclotomicFactorization.lean},
 \path{PrimitiveRootBlock.lean}, \path{QLucas.lean},
 \path{CyclotomicDivisibility.lean}, \path{QCatalan.lean},
+\path{TwoPhiOneReversal.lean}, \path{QChuVandermonde.lean},
 \path{QPochhammerElementaryIdentities.lean},
 \path{QBinomialCauchy.lean}, \path{QBinomialVandermonde.lean},
 \path{HalfQBinomial.lean},

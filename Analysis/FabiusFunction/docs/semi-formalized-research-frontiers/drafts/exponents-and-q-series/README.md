@@ -149,12 +149,13 @@ Current packages and retained intake records:
   Gaussian structure modules, `CentralQBinomialReduction.lean`,
   `CyclotomicFactorization.lean`, `PrimitiveRootBlock.lean`, `QLucas.lean`,
   `QCatalan.lean`, `CyclotomicDivisibility.lean`, the subsequent q-series
-  module tranches including the q-beta, collision-free Newton,
+  module tranches including `TwoPhiOneReversal.lean`,
+  `QChuVandermonde.lean`, `JacobiTwoSquareCount.lean`, the q-beta, collision-free Newton,
   integer/complex-order Gaussian, q-Pfaff--Saalschuetz, quantum-multinomial,
   and Gaussian reciprocity/growth APIs, and the three-theorem
   `GeometricPochhammerNormalConvergence.lean` outer-product API. The forward
-  crosswalk is now 90 Exact, 84 Partial, 100 None, and 8 interface rows; the
-  source ledger is 66 Lean-proved, 412 human-proved frontier, 60 not
+  crosswalk is now 170 Exact, 86 Partial, 18 None, and 8 interface rows; the
+  source ledger is 68 Lean-proved, 410 human-proved frontier, 60 not
   applicable, and 9 conjectures. No PDF was generated locally while resolving
   this source-only merge, so the retained 354-page artifact does not render
   the current source. PDF files retained
@@ -849,8 +850,8 @@ claims about the current canonical source. The canonical synthesis's current
 source and retained historical PDF are identified by the single exact receipt
 in the detailed package record above.
 
-The latest validated forward formalization ledger has 282 rows: 90 Exact, 84
-Partial, 100 with no counterpart, and 8 interface-only. The original
+The latest validated forward formalization ledger has 282 rows: 170 Exact, 86
+Partial, 18 with no counterpart, and 8 interface-only. The original
 191-result pre-Fabius core had 36 exact, 29 partial, 123 with no counterpart,
 and 3 interface-only entries. The four integrated-guide chapters add 31
 human-proved but not Lean-formalized assertions and five labelled definitions;
@@ -875,8 +876,8 @@ reflected q-Cauchy and the q-Bernstein partition of unity, plus total
 empty-family and degree-zero boundaries. Weighted generating products and the
 reciprocal finite theorem are partial because their formal power-series
 identities are exact while their analytic evaluation and convergence clauses
-remain open. The q-Pfaff--Saalschütz summation remains unformalized; no status
-is inferred from a related finite identity. These counts and boundaries were
+remain open. The q-Pfaff--Saalschütz summation is now formalized under its
+explicit field and denominator hypotheses. These counts and boundaries were
 statically cross-checked against the exhaustive public surfaces of
 `QBinomialCauchy.lean` (one definition and five theorems, including the
 compatibility spelling of its primary identity),
@@ -898,7 +899,12 @@ compatibility spelling of its primary identity),
 `CyclotomicDivisibility.lean` (zero definitions, three theorems),
 `PrimitiveRootBlock.lean` (zero definitions, three theorems),
 `QCatalan.lean` (one definition, eleven theorems),
-`QLucas.lean` (zero definitions, eight theorems),
+`QLucas.lean` (zero definitions, seven theorems; its local
+`two_mul_choose_two` is private),
+`TwoPhiOneReversal.lean` (one definition, six theorems),
+`QChuVandermonde.lean` (zero definitions, five theorems, including the public
+`two_mul_choose_two`),
+`JacobiTwoSquareCount.lean` (zero definitions, four theorems),
 `QBetaIntegral.lean` (one definition, eight theorems),
 `NewtonInterpolation.lean` (two definitions, thirteen theorems),
 `GaussianBinomialInteger.lean` (one definition, ten theorems),
@@ -1197,10 +1203,19 @@ commutative ring and the Gaussian factorization over every integral domain,
 with the exponent bounded in `{0,1}` by the proved divisibility inequalities.
 The root-of-unity tail adds `CyclotomicDivisibility.lean` (three theorems),
 `PrimitiveRootBlock.lean` (three theorems), `QCatalan.lean` (one definition
-and eleven theorems), and `QLucas.lean` (eight theorems).  These twenty-six
+and eleven theorems), and `QLucas.lean` (seven theorems).  These twenty-five
 declarations prove the carry criterion, complete primitive-root block,
 q-Lucas theorem, and integral q-Catalan polynomial at their stated ring and
 primitive-root hypotheses.
+The terminating reversal tail adds `TwoPhiOneReversal.lean` (one definition
+and six theorems) and `QChuVandermonde.lean` (five theorems), which owns the
+public `two_mul_choose_two`.  Its generic-field nonvanishing hypotheses remain
+explicit, and rational-extension removal of the auxiliary hypotheses in the
+second q-Chu evaluation is not separately formalized.  The subsequent
+`JacobiTwoSquareCount.lean` leaf has four theorems and no definitions: it
+closes the nonzero two-square count and both Lambert forms, retaining the
+prime-product valuation condition and requiring only `‖q‖ < 1` for the two
+complete-normed-field analytic identities.
 The newest analytic/algebraic tail adds `QBetaIntegral.lean` (one definition,
 eight theorems) and `NewtonInterpolation.lean` (two definitions, thirteen
 theorems). It formalizes the Jackson q-beta product and q-gamma evaluation,

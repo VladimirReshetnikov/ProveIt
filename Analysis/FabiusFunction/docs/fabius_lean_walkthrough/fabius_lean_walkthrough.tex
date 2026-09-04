@@ -1025,8 +1025,11 @@ strict dyadic modulus with \(2^{-r_{\log}(n)}<1/n\) gives
 \nolinkurl{abs_fabiusInv_sub_lt_inv_nat_of_lt_exactLogarithmicDenominator}.
 This reciprocal-target theorem is a witness only, not leastness for \(1/n\),
 and no conclusion is asserted at the convention-only input \(n=0\).  The
-module also exports no named primitive-recursiveness or computability theorem
-for either exact denominator.  These two definitions and eight theorems are
+the two exact denominator maps are primitive recursive by
+\nolinkurl{inverseFabiusExactDyadicDenominator_primrec} and
+\nolinkurl{inverseFabiusExactLogarithmicDenominator_primrec}; the proof uses
+natural recurrence codes and does not assume normalized-rational
+computability.  These two definitions and ten theorems are
 its complete public surface.  This is a source-only overlay: the retained
 walkthrough PDF is historical and was not rebuilt for it.
 
@@ -2308,12 +2311,12 @@ domain, a primitive \(d\)-th root \(\zeta\) kills the interior coefficients
 \(\GaussianBinomial{d}{k}{\zeta}\); for \(d>0\), its top phase is \(-1\) and
 the complete block is \((y;\zeta)_d=1-y^d\).
 
-\nolinkurl{QLucas.lean} is 0+8:
-\nolinkurl{two_mul_choose_two}, \nolinkurl{add_mul_add_sub_one},
+\nolinkurl{QLucas.lean} is 0+7:
+\nolinkurl{add_mul_add_sub_one},
 \nolinkurl{choose_two_add}, \nolinkurl{coeff_finiteQPochhammerIn_neg_X},
 \nolinkurl{finiteQPochhammerIn_neg_X_block},
 \nolinkurl{coeff_block_pow_mul}, \nolinkurl{pow_choose_two_add_mul_eq}, and
-\nolinkurl{gaussianBinomial_q_lucas}.  Its natural quadratic, polynomial
+\nolinkurl{gaussianBinomial_q_lucas}.  Its two natural quadratic, polynomial
 coefficient, block, and phase identities prove
 \[
  \GaussianBinomial{ad+b}{rd+s}{\zeta}
@@ -2321,6 +2324,8 @@ coefficient, block, and phase identities prove
 \]
 when \(d>0\), \(\zeta\) is a primitive \(d\)-th root in a commutative integral
 domain, and \(b,s<d\).
+Its local \nolinkurl{two_mul_choose_two} helper is private; the unique public
+theorem of that name belongs to \nolinkurl{QChuVandermonde.lean}.
 
 \nolinkurl{CyclotomicDivisibility.lean} is 0+3:
 \nolinkurl{cyclotomic_exponent_eq_one_iff},
@@ -5388,7 +5393,9 @@ Universal Gaussian-polynomial degree and palindromicity & \nolinkurl{natDegree_g
 Central squared-base Gaussian reduction & \nolinkurl{finiteQPochhammerIn_mul_neg}, \nolinkurl{finiteQPochhammerIn_two_mul}, \nolinkurl{finiteQPochhammerIn_map_ringHom}, \nolinkurl{central_gaussianBinomial_sq_mul_int}, \nolinkurl{central_gaussianBinomial_sq_mul}, \nolinkurl{central_gaussianBinomial_sq_div} & Exhaustive zero-definition/six-theorem surface of \nolinkurl{CentralQBinomialReduction.lean} \\
 Cyclotomic q-factorizations & \nolinkurl{div_add_div_le_div}, \nolinkurl{div_le_div_add_div_add_one}, \nolinkurl{mem_range_and_mem_divisors_iff}, \nolinkurl{finiteQPochhammerIn_X_eq_prod_cyclotomic}, \nolinkurl{finiteQPochhammerIn_X_eq_gaussianBinomial_mul}, \nolinkurl{prod_cyclotomic_pow_div_extend}, \nolinkurl{gaussianBinomial_X_eq_prod_cyclotomic} & Exhaustive zero-definition/seven-theorem surface of \nolinkurl{CyclotomicFactorization.lean} \\
 Primitive-root Gaussian block & \nolinkurl{gaussianBinomial_isPrimitiveRoot_eq_zero}, \nolinkurl{neg_one_pow_mul_pow_choose_two}, \nolinkurl{finiteQPochhammerIn_isPrimitiveRoot} & Exhaustive zero-definition/three-theorem surface of \nolinkurl{PrimitiveRootBlock.lean}; interior vanishing, top phase, and complete block in a commutative integral domain \\
-The q-Lucas theorem & \nolinkurl{two_mul_choose_two}, \nolinkurl{add_mul_add_sub_one}, \nolinkurl{choose_two_add}, \nolinkurl{coeff_finiteQPochhammerIn_neg_X}, \nolinkurl{finiteQPochhammerIn_neg_X_block}, \nolinkurl{coeff_block_pow_mul}, \nolinkurl{pow_choose_two_add_mul_eq}, \nolinkurl{gaussianBinomial_q_lucas} & Exhaustive zero-definition/eight-theorem surface of \nolinkurl{QLucas.lean}; positive primitive-root order and residue bounds remain explicit \\
+The q-Lucas theorem & \nolinkurl{add_mul_add_sub_one}, \nolinkurl{choose_two_add}, \nolinkurl{coeff_finiteQPochhammerIn_neg_X}, \nolinkurl{finiteQPochhammerIn_neg_X_block}, \nolinkurl{coeff_block_pow_mul}, \nolinkurl{pow_choose_two_add_mul_eq}, \nolinkurl{gaussianBinomial_q_lucas} & Exhaustive zero-definition/seven-theorem surface of \nolinkurl{QLucas.lean}; positive primitive-root order and residue bounds remain explicit, and its local \nolinkurl{two_mul_choose_two} is private \\
+Terminating two-phi-one reversal and q-Chu--Vandermonde & \nolinkurl{twoPhiOneFinite}, \nolinkurl{twoPhiOneFinite_reversal}, \nolinkurl{finiteQPochhammerIn_div_eq_sum_chu}, \nolinkurl{q_chu_vandermonde_first}, \nolinkurl{q_chu_vandermonde_second} & Exhaustive 1+6 \nolinkurl{TwoPhiOneReversal.lean} and 0+5 \nolinkurl{QChuVandermonde.lean} surfaces; the latter owns the public \nolinkurl{two_mul_choose_two}; all nonvanishing hypotheses remain explicit \\
+Jacobi two-square count and Lambert forms & \nolinkurl{sumSqRep_two_eq_four_mul_twoSquareDivisorSum}, \nolinkurl{sumSqRep_two_eq_four_mul_prod}, \nolinkurl{theta_sq_eq_chi4_lambert}, \nolinkurl{theta_sq_eq_odd_lambert} & Exhaustive zero-definition/four-theorem \nolinkurl{JacobiTwoSquareCount.lean} surface; the product retains its valuation hypothesis, while both Lambert identities are unconditional under \(\lVert q\rVert<1\) \\
 Cyclotomic carry criterion & \nolinkurl{cyclotomic_exponent_eq_one_iff}, \nolinkurl{cyclotomic_dvd_gaussianBinomial_iff}, \nolinkurl{gaussianBinomial_mul_isPrimitiveRoot} & Exhaustive zero-definition/three-theorem surface of \nolinkurl{CyclotomicDivisibility.lean}; rational-polynomial divisibility and integral-domain primitive-root value \\
 MacMahon q-Catalan polynomial & \nolinkurl{qCatalan}; \nolinkurl{map_qInt}, \nolinkurl{qInt_X_monic}, \nolinkurl{qInt_X_natDegree}, \nolinkurl{X_sub_one_mul_qInt}, \nolinkurl{qInt_X_eq_prod_cyclotomic}, \nolinkurl{qInt_X_dvd_gaussianBinomial_rat}, \nolinkurl{qInt_X_dvd_gaussianBinomial_int}, \nolinkurl{qInt_X_mul_qCatalan}, \nolinkurl{qCatalan_natDegree}, \nolinkurl{qCatalan_eval_one_mul}, \nolinkurl{qCatalan_eval_one} & Exhaustive one-definition/eleven-theorem surface of \nolinkurl{QCatalan.lean}; integral quotient, degree \(n(n-1)\), and Catalan value at one \\
 Newton interpolation and geometric divided differences & \nolinkurl{newtonCoeff}, \nolinkurl{nodeNewtonPoly}, \nolinkurl{newtonInterpolant}; \nolinkurl{newtonCoeff_eq}, \nolinkurl{newtonCoeff_zero}, \nolinkurl{newtonCoeff_mul_prod}, \nolinkurl{nodeNewtonPoly_succ}, \nolinkurl{eval_nodeNewtonPoly}, \nolinkurl{degree_nodeNewtonPoly_lt}, \nolinkurl{nodeNewtonPoly_eq_interpolate}, \nolinkurl{eq_nodeNewtonPoly_of_eval_eq}, \nolinkurl{coeff_nodeNewtonPoly_self}, \nolinkurl{newtonCoeff_eq_sum}, \nolinkurl{nodal_range_pow}, \nolinkurl{prod_erase_pow_sub_pow}, \nolinkurl{newtonCoeff_pow_eq_sum}, \nolinkurl{newtonPoly_succ}, \nolinkurl{eval_newtonPoly}, \nolinkurl{degree_newtonPoly_lt}, \nolinkurl{newtonPoly_eq_interpolate}, \nolinkurl{eq_newtonPoly_of_eval_eq}, \nolinkurl{coeff_newtonPoly_self} & Exhaustive three-definition/nineteen-theorem field-valued surface of \nolinkurl{NewtonInterpolation.lean} \\
@@ -5407,7 +5414,7 @@ Inverse curvature & \nolinkurl{deriv_deriv_fabiusInv}, \nolinkurl{deriv_deriv_fa
 Exact inverse modulus & \nolinkurl{fabiusIntervalMass}, \nolinkurl{strictMonoOn_fabiusIntervalMass_firstHalf}, \nolinkurl{fabiusIntervalMass_eq_fabiusReal_iff}, \nolinkurl{fabiusInv_sub_eq_sub_iff_of_mem_Icc}, \nolinkurl{abs_fabiusInv_sub_le}, \nolinkurl{abs_fabiusInv_sub_eq_iff_of_mem_Icc}, \nolinkurl{sSup_abs_fabiusInv_sub_eq}, \nolinkurl{forall_abs_fabiusInv_sub_lt_iff} & \nolinkurl{InverseModulus.lean}; strict and equality refinements are unit-interval qualified where clamping requires it \\
 Effective dyadic inverse modulus & \nolinkurl{inverseFabiusFactorialDenominator}, \nolinkurl{inverseFabiusDeltaDenominator}, \nolinkurl{fabiusInv_effectivelyUniformContinuous} & \nolinkurl{FabiusInverseEffectiveContinuity.lean}; explicit primitive-recursive continuity modulus, not an inverse realizer \\
 Logarithmic reciprocal inverse modulus & \nolinkurl{inverseFabiusLogarithmicOrder}, \nolinkurl{inverseFabiusLogarithmicFactorialDenominator}, \nolinkurl{inverseFabiusLogarithmicDeltaDenominator}, \nolinkurl{fabiusInv_effectivelyUniformContinuous_logarithmic}, \nolinkurl{fabiusInv_effectivelyUniformContinuous_logarithmicDelta} & \nolinkurl{FabiusInverseLogarithmicModulus.lean}; least binary-length selector and two primitive-recursive witnesses, not an inverse realizer \\
-Sharp exact dyadic inverse modulus & \nolinkurl{inverseFabiusExactDyadicDenominator}, \nolinkurl{inverseFabiusExactDyadicDenominator_isLeast_strictModulus}, \nolinkurl{inverseFabiusExactLogarithmicDenominator}, \nolinkurl{abs_fabiusInv_sub_lt_inv_nat_of_lt_exactLogarithmicDenominator} & \nolinkurl{FabiusInverseExactDyadicModulus.lean}; exact fixed-target ceiling and endpoint sharpness, with \(1/n\) only a witness and the zero input only a totalization convention \\
+Sharp exact dyadic inverse modulus & \nolinkurl{inverseFabiusExactDyadicDenominator}, \nolinkurl{inverseFabiusExactDyadicDenominator_primrec}, \nolinkurl{inverseFabiusExactDyadicDenominator_isLeast_strictModulus}, \nolinkurl{inverseFabiusExactLogarithmicDenominator}, \nolinkurl{inverseFabiusExactLogarithmicDenominator_primrec}, \nolinkurl{abs_fabiusInv_sub_lt_inv_nat_of_lt_exactLogarithmicDenominator} & \nolinkurl{FabiusInverseExactDyadicModulus.lean}; exact fixed-target ceiling and endpoint sharpness, primitive-recursive dyadic and logarithmic denominators, with \(1/n\) only a witness and the zero input only a totalization convention \\
 Fixed-depth effective monotone inversion & \nolinkurl{SequentiallyComputableOn}, \nolinkurl{unitClamp}, \nolinkurl{unitClamp_sequentiallyComputable}, \nolinkurl{tolerantDifference_error}, \nolinkurl{tolerantDifference_safe_updates}, \nolinkurl{tolerantDifference_inconclusive}, \nolinkurl{tolerantBisection_correct}, \nolinkurl{effectiveInversionOn_Icc} & \nolinkurl{EffectiveMonotoneInverse.lean}; exact two-definition/six-theorem public surface, with a fixed \(p\)-step dyadic controller consuming a supplied positive computable inverse modulus \\
 Positive-rational-gap effective inversion & \nolinkurl{EffectivelyUniformContinuousOn}, \nolinkurl{ComputablePositiveRationalSequence}, \nolinkurl{ComputablePositiveRationalSequence.value}, \nolinkurl{ComputablePositiveRationalSequence.reciprocalDenominator}, \nolinkurl{ComputablePositiveRationalSequence.reciprocalDenominator_spec}, \nolinkurl{inverseModulus_of_positiveRationalGap}, \nolinkurl{effectiveInversionOn_Icc_of_computablePositiveRationalGap}, \nolinkurl{clampedEffectiveInversion_of_computablePositiveRationalGap} & Exhaustive eight-declaration surface of \nolinkurl{EffectiveGapInverse.lean}; derives the unit-interval modulus and continuity from supplied rational dyadic-gap bounds and certifies exactly the clamped total extension \\
 Computable totalized Fabius inverse & \nolinkurl{fabiusInv_isComputableRealFunction} & \nolinkurl{FabiusInverseComputable.lean}; zero definitions and one theorem combining clamped tolerant-bisection sequential computability with logarithmic-Delta effective uniform continuity \\
@@ -5480,7 +5487,7 @@ Module & Role in the development \\
 \nolinkurl{InverseModulus.lean} & Exhaustive one-definition/thirty-one-theorem structural inverse-modulus layer: global weak and maximal strict fixed-length increment shape, exact endpoint minimizers, constrained-superadditivity equality, unit-interval inverse-gap rigidity, global sharp modulus bounds and attained suprema, and effective injectivity.  The inverse equality loci are deliberately not global because of the clamped tails. \\
 \nolinkurl{FabiusInverseEffectiveContinuity.lean} & Exhaustive two-definition/twelve-theorem effective inverse-continuity layer: primitive-recursive factorial and report denominators, recurrence and endpoint-mass lower bounds, strict and closed global inverse moduli, and \nolinkurl{EffectivelyUniformContinuous}; the inverse remains noncomputable and no sequential realizer or combined computable-function theorem is supplied. \\
 \nolinkurl{FabiusInverseLogarithmicModulus.lean} & Three definitions and fifteen theorems: the primitive-recursive least binary-length order, its exact \nolinkurl{Nat.log2} formula and minimality, factorial and Delta denominators at that order, strict/closed-input reciprocal moduli, and an effective-uniform-continuity theorem for either witness; no exact endpoint-mass ceiling, tolerant-bisection realizer, sequential computability, combined computable-real-function theorem, or input-bit asymptotic. \\
-\nolinkurl{FabiusInverseExactDyadicModulus.lean} & Exactly two definitions and eight theorems: the positive exact endpoint-mass ceiling denominator, its rational bound and arithmetic leastness, its strict inverse modulus, the endpoint counterexample for every smaller positive denominator, fixed-dyadic strict-modulus leastness, and the logarithmic \(1/n\) witness with \(d(0)=1\).  Leastness is only for the fixed dyadic target; no leastness for \(1/n\), zero-input modulus conclusion, named recursion certificate, or input-bit asymptotic is asserted. \\
+\nolinkurl{FabiusInverseExactDyadicModulus.lean} & Exactly two definitions and ten theorems: the positive primitive-recursive exact endpoint-mass ceiling denominator, its rational bound and arithmetic leastness, its strict inverse modulus, the endpoint counterexample for every smaller positive denominator, fixed-dyadic strict-modulus leastness, and the primitive-recursive logarithmic \(1/n\) witness with \(d(0)=1\).  Leastness is only for the fixed dyadic target; no leastness for \(1/n\), zero-input modulus conclusion, or input-bit asymptotic is asserted. \\
 \nolinkurl{EffectiveMonotoneInverse.lean} & Exactly two public definitions and six theorems: sequential computability on a set, the computable unit clamp, the difference certificate and its safe-update and inconclusive-success consequences, fixed-depth dyadic tolerant-bisection correctness, and the abstract unit-interval inversion theorem.  The abstract theorem consumes a positive computable inverse modulus. \\
 \nolinkurl{EffectiveGapInverse.lean} & Exactly eight public declarations: effective uniform continuity on a set; a computable positive rational sequence, its value and reciprocal denominator with specification; the rational-gap inverse modulus; unit-interval sequential computability plus effective continuity; and the total computability of the clamped extension. \\
 \nolinkurl{FabiusInverseComputable.lean} & Zero public definitions and exactly one theorem, \nolinkurl{fabiusInv_isComputableRealFunction}: the total inverse preserves computable real sequences by clamping and tolerant bisection and has the logarithmic-Delta effective continuity modulus. \\
@@ -5554,7 +5561,10 @@ Module & Role in the development \\
 \nolinkurl{CentralQBinomialReduction.lean} & Exactly six theorems and no definitions: sign pairing, even--odd dissection, naturality, integral and commutative-ring division-free central reduction, and a field quotient under two nonvanishing hypotheses. \\
 \nolinkurl{CyclotomicFactorization.lean} & Exactly seven theorems and no definitions: quotient bounds, divisor reindexing, finite-product and factorial identities over commutative rings, interval-product extension, and Gaussian cyclotomic factorization over an integral domain. \\
 \nolinkurl{PrimitiveRootBlock.lean} & Exactly three theorems and no definitions: primitive-root interior Gaussian vanishing, the top phase, and the complete finite q-Pochhammer block. \\
-\nolinkurl{QLucas.lean} & Exactly eight theorems and no definitions: three natural quadratic identities, signed-product coefficient and block formulas, the primitive-root phase, and q-Lucas. \\
+\nolinkurl{QLucas.lean} & Exactly seven theorems and no definitions: two natural quadratic identities, signed-product coefficient and block formulas, the primitive-root phase, and q-Lucas.  Its local \nolinkurl{two_mul_choose_two} is private; the public theorem is in \nolinkurl{QChuVandermonde.lean}. \\
+\nolinkurl{TwoPhiOneReversal.lean} & Exactly one definition and six theorems: the finite normalization, reflected finite-product identity, nonvanishing transfer, terminating reversal, and bridge to the established analytic term convention. \\
+\nolinkurl{QChuVandermonde.lean} & Exactly five theorems and no definitions: two exponent identities including the public \nolinkurl{two_mul_choose_two}, the denominator-cleared first sum, both quotient evaluations, and the second evaluation by reversal; rational-extension removal of auxiliary hypotheses is not separately formalized. \\
+\nolinkurl{JacobiTwoSquareCount.lean} & Exactly four theorems and no definitions: the nonzero two-square divisor count, its conditional prime product, and the unconditional chi-four and alternating-odd Lambert identities over complete normed fields under \(\lVert q\rVert<1\). \\
 \nolinkurl{CyclotomicDivisibility.lean} & Exactly three theorems and no definitions: the carry characterization of exponent one, the rational-polynomial divisibility iff, and the multiple-index primitive-root value. \\
 \nolinkurl{QCatalan.lean} & Exactly one definition and eleven theorems: q-integer naturality, degree and cyclotomic identities, rational and integral divisibility, and the integral q-Catalan quotient with its degree and value at one. \\
 \nolinkurl{NewtonInterpolation.lean} & Exactly three definitions and nineteen theorems: triangular Newton coefficients, the node polynomial, interpolation and uniqueness, divided differences, the geometric-power-grid formulas, and the definitionally identical \nolinkurl{newtonInterpolant} compatibility API over a field. \\
@@ -5839,11 +5849,11 @@ combined computable-real-function theorem, and input-bit asymptotics remain
 outside that leaf.  No aggregate checkpoint is fabricated for this merged
 surface.
 The subsequent \nolinkurl{FabiusInverseExactDyadicModulus.lean} source-only
-row has exactly two definitions and eight theorems.  It closes the exact
+row has exactly two definitions and ten theorems.  It closes the exact
 fixed-dyadic ceiling, endpoint counterexample, and target-specific strict
 leastness, and composes them with the logarithmic selector to obtain a
-reciprocal \(1/n\) witness.  It does not export a named recursion certificate,
-claim leastness for \(1/n\), or assert a modulus at its convention-only zero
+reciprocal \(1/n\) witness, and proves both denominator maps primitive
+recursive.  It does not claim leastness for \(1/n\) or assert a modulus at its convention-only zero
 input.  The retained walkthrough PDF predates this row.
 The still later compiled current-tree tranche
 \nolinkurl{EffectiveMonotoneInverse.lean} and
@@ -5944,7 +5954,7 @@ intermediate census is therefore 672/8,875.  The subsequent
 \nolinkurl{BoxPartitions.lean}, and 0+5
 \nolinkurl{TelescopingCertificate.lean} leaves add three modules and thirty-four
 declarations, giving the historical 675/8,909 census.  A fresh source audit of
-the post-merge tree reports 901/11,418, with every one of those modules
+the post-merge tree reports 902/11,424, with every one of those modules
 reachable from the facade.  No aggregate facade build is claimed for this
 current-tree census.  The retained PDF and the title-page pin remain historical
 receipts and do not claim parity with the merged source.
@@ -5982,7 +5992,7 @@ The four root-of-unity and q-Catalan counts are
 \nolinkurl{CyclotomicDivisibility.lean} (0+3),
 \nolinkurl{PrimitiveRootBlock.lean} (0+3),
 \nolinkurl{QCatalan.lean} (1+11), and
-\nolinkurl{QLucas.lean} (0+8).  Their one definition and twenty-five theorems
+\nolinkurl{QLucas.lean} (0+7).  Their one definition and twenty-four theorems
 add the cyclotomic carry criterion, primitive-root blocks, q-Lucas, and the
 integral q-Catalan polynomial with exact degree and specialization at one.
 The newest two counts are
@@ -6003,6 +6013,15 @@ reflection, give the reciprocal finite and generalized complex-order
 q-binomial series, and prove the terminating balanced \({}_3\phi_2\)
 q-Pfaff--Saalsch\"utz sum.  All nonzero, strict-contraction, and denominator
 hypotheses are retained explicitly.
+The terminating reversal pair contributes
+\nolinkurl{TwoPhiOneReversal.lean} (1+6) and
+\nolinkurl{QChuVandermonde.lean} (0+5), with the public
+\nolinkurl{two_mul_choose_two} in the latter module.  The rational-extension
+removal of the second q-Chu evaluation's auxiliary hypotheses is not a
+separate theorem.  The subsequent \nolinkurl{JacobiTwoSquareCount.lean}
+leaf is 0+4 and closes the nonzero two-square count and both Lambert forms;
+its prime-product valuation hypothesis and the analytic condition
+\(\lVert q\rVert<1\) remain explicit.
 The final zero-definition/five-theorem
 \nolinkurl{QuantumMultinomial.lean} module decomposes tuple antidiagonals,
 transports Gaussian symmetry to arbitrary semirings, proves q-multinomial

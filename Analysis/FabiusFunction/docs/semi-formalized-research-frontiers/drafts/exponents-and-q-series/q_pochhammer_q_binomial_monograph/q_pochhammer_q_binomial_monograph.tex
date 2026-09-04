@@ -13513,7 +13513,7 @@ inside the proof below does not formalize the result the proof concludes.
   than a mathematical claim.
 \end{description}
 
-Of the 282 labelled forward results, 168 are \statusexact, 88 are
+Of the 282 labelled forward results, 170 are \statusexact, 86 are
 \statuspartial, 18 are \statusnone, and 8 are \statusna.  The original
 191-result pre-Fabius core had 36 \statusexact, 29 \statuspartial, 123
 \statusnone, and 3 \statusna{} entries.  The four integrated guide chapters
@@ -13626,6 +13626,8 @@ declaration from \path{GaussianBinomialAtOne.lean};\\
 \path{HeineTransformation.lean}: two definitions and five theorems;\\
 \path{QGaussSummation.lean}: zero definitions and two theorems;\\
 \path{QPfaffSaalschutz.lean}: zero definitions and three theorems;\\
+\path{TwoPhiOneReversal.lean}: one definition and six theorems;\\
+\path{QChuVandermonde.lean}: zero definitions and five theorems;\\
 \path{ThetaQuasiPeriodicity.lean}: one definition and six theorems;\\
 \path{JacobiCubic.lean}: zero definitions and two theorems;\\
 \path{QBinomialReciprocity.lean}: four theorems;\\
@@ -13634,7 +13636,9 @@ declaration from \path{GaussianBinomialAtOne.lean};\\
 \path{CyclotomicDivisibility.lean}: zero definitions and three theorems;\\
 \path{PrimitiveRootBlock.lean}: zero definitions and three theorems;\\
 \path{QCatalan.lean}: one definition and eleven theorems;\\
-\path{QLucas.lean}: zero definitions and eight theorems;\\
+\path{QLucas.lean}: zero definitions and seven theorems (its local
+\texttt{two\_mul\_choose\_two} is private; the public declaration is owned by
+\path{QChuVandermonde.lean});\\
 \path{GaussianBinomialInteger.lean}: one definition and ten theorems;\\
 \path{GaussianBinomialComplexOrder.lean}: one definition and five theorems;\\
 \path{GaussianBinomialPalindromic.lean}: zero definitions and fourteen
@@ -14083,7 +14087,7 @@ Bilateral series and Ramanujan's \texorpdfstring{${}_1\psi_1$}{1psi1} sum & 2 & 
 $q$-difference calculus and the quantum binomial & 10 & 0 & 0 & 0\\
 The $q$-gamma and $q$-beta functions & 7 & 1 & 0 & 0\\
 Jacobi's triple product & 8 & 0 & 0 & 0\\
-Theta modularity, lattice dissection, and sums of squares & 7 & 5 & 2 & 4\\
+Theta modularity, lattice dissection, and sums of squares & 9 & 3 & 2 & 4\\
 Partitions and product--sum identities & 3 & 1 & 0 & 0\\
 Bailey pairs and the Rogers--Ramanujan identities & 6 & 1 & 0 & 0\\
 Bailey transforms and the Andrews--Gordon identities & 5 & 3 & 0 & 1\\
@@ -14098,7 +14102,7 @@ Half-base arithmetic and Prouhet--Thue--Morse cancellation & 7 & 2 & 0 & 0\\
 Geometric uniform sums, $q$-cumulants, and the Fabius--Rvachev functions & 2 & 11 & 0 & 0\\
 Dyadic Gaussian--Thue--Morse structure and the values of $F$ & 8 & 45 & 3 & 0\\
 \midrule
-\textbf{Forward total} & 168 & 88 & 18 & 8\\
+\textbf{Forward total} & 170 & 86 & 18 & 8\\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -14679,8 +14683,10 @@ $abq/(cq^n)$}\\[2pt]
 \texttt{finiteQPochhammerIn\_\allowbreak{}div\_\allowbreak{}eq\_\allowbreak{}sum\_\allowbreak{}chu}\newline
 {\footnotesize\texttt{QChuVandermonde}; both sums for the terminating sum
 \texttt{twoPhiOneFinite} in any field with $q\ne0$, $(q;q)_n\ne0$ and the
-displayed denominators nonzero (the second sum also assumes $(a;q)_n\ne0$,
-as its reversal derivation does); the first sum is proved algebraically as the
+displayed denominators nonzero; the second is the exact reversal-domain form
+and additionally assumes $c\ne0$ and $(a;q)_n\ne0$.  The later rational-extension
+removal of those two auxiliary hypotheses is not a separate Lean theorem.  The
+first sum is proved algebraically as the
 finite $q$-Cauchy identity at base $q^{-1}$ with $u=1/a$, $v=cq^{n-1}$, so
 neither the $q$-Gauss sum nor the rational-extension argument is needed}\\[2pt]
 \Cref{lem:2phi1-reversal} & \statusexact &
@@ -14695,10 +14701,13 @@ $q^{1-n}=q(q^n)^{-1}$; the four symbols are reversed by the general rule
 $(x;q)_{n-i}\,(-xq^{n-i})^i q^{\binom i2}(q^{1-n}/x;q)_i=(x;q)_n$}\\[2pt]
 \Cref{prop:qchu2-by-reversal} & \statusexact &
 \texttt{q\_\allowbreak{}chu\_\allowbreak{}vandermonde\_\allowbreak{}second}\newline
-{\footnotesize\texttt{QChuVandermonde}; the proof is the reversal argument of the
-text: \texttt{twoPhiOneFinite\_\allowbreak{}reversal} applied to
+{\footnotesize\texttt{QChuVandermonde}; on the explicit nonvanishing domain the
+proof is the reversal argument of the text:
+\texttt{twoPhiOneFinite\_\allowbreak{}reversal} applied to
 \texttt{q\_\allowbreak{}chu\_\allowbreak{}vandermonde\_\allowbreak{}first} at the reflected
-parameters $a=q^{1-n}/C$, $c=q^{1-n}/A$, $z=cq^n/a$; no limiting process}\\[2pt]
+parameters $a=q^{1-n}/C$, $c=q^{1-n}/A$, $z=cq^n/a$; no limiting process.  The
+subsequent rational-extension step to the maximal displayed domain is not a
+separate Lean declaration}\\[2pt]
 \midrule
 \multicolumn{3}{@{}l}{\itshape Bilateral series and Ramanujan's \texorpdfstring{${}_1\psi_1$}{1psi1} sum}\\
 \midrule
@@ -15949,24 +15958,28 @@ computation, (ii) from Mathlib's
 \texttt{GaussianInt.prime\_of\_nat\_prime\_of\_mod\_four\_eq\_three}, (iii) from Fermat's
 two-square theorem \texttt{Nat.Prime.sq\_add\_sq} and the norm argument, with uniqueness up to a
 unit and conjugation from primality}\\[2pt]
-\Cref{qg:thm-two-square} & \statuspartial &
-\texttt{twoSquareArith},
-\texttt{isMultiplicative\_\allowbreak{}twoSquareArith},
-\texttt{twoSquareDivisorSum\_\allowbreak{}prime\_\allowbreak{}pow},
-\texttt{twoSquareDivisorSum\_\allowbreak{}eq\_\allowbreak{}prod},
-\texttt{sumSqRep\_\allowbreak{}two\_\allowbreak{}eq\_\allowbreak{}zero\_\allowbreak{}iff}\newline
-{\footnotesize\texttt{TwoSquareTheorem}; the arithmetic half in full and unconditionally --- the
-divisor sum as the Dirichlet convolution $\zeta*\chi_4$, its multiplicativity, its exact local
-factors at $2$, at $p\equiv1$ and at $p\equiv3\pmod4$, and hence both the vanishing criterion and
-the product formula --- together with the vanishing half of \eqref{eq:qg-two-square}, that
-$r_2(n)=0$ exactly when $D(n)=0$.  \emph{Not} proved: the count $r_2(n)=4D(n)$ on the set where
-$D(n)\ne0$, which is the theorem's core and is carried as an explicit hypothesis}\\[2pt]
-\Cref{qg:cor-two-square-lambert} & \statuspartial &
-\texttt{twoSquareDivisorSum\_\allowbreak{}eq\_\allowbreak{}prod},
-\texttt{sumSqRep\_\allowbreak{}two\_\allowbreak{}eq\_\allowbreak{}zero\_\allowbreak{}iff}\newline
-{\footnotesize\texttt{TwoSquareTheorem}; the Lambert-series form is conditional on the same
-counting core as \Cref{qg:thm-two-square}, and is stated with that hypothesis explicit rather
-than assumed}\\[2pt]
+\Cref{qg:thm-two-square} & \statusexact &
+\texttt{sumSqRep\_\allowbreak{}two\_\allowbreak{}eq\_\allowbreak{}four\_\allowbreak{}mul\_\allowbreak{}twoSquareDivisorSum},
+\texttt{sumSqRep\_\allowbreak{}two\_\allowbreak{}eq\_\allowbreak{}four\_\allowbreak{}mul\_\allowbreak{}prod}\newline
+{\footnotesize\texttt{JacobiTwoSquareCount}, building on \texttt{TwoSquareTheorem}; the first
+declaration proves $r_2(n)=4D(n)$ as an identity in $\IntegerNumbers$ for every
+$n:\NaturalNumbers$ with $n\ne0$.  The second gives the printed product whenever every prime
+divisor $p\equiv3\pmod4$ has even valuation; the complementary zero case and the exact divisor
+product are the earlier unconditional
+\texttt{sumSqRep\_\allowbreak{}two\_\allowbreak{}eq\_\allowbreak{}zero\_\allowbreak{}iff} and
+\texttt{twoSquareDivisorSum\_\allowbreak{}eq\_\allowbreak{}prod}.  The new proof specializes
+Ramanujan's ${}_1\psi_1$ summation at $Q=q^2$, $a=-1$, $b=-Q$, $z=q$, identifies the even
+bilateral sum with the alternating odd Lambert series by an absolutely summable double-series
+rearrangement, reduces the product side to the theta square, and extracts coefficients by
+power-series uniqueness.  The complete Gaussian-integer proof in the chapter is retained}\\[2pt]
+\Cref{qg:cor-two-square-lambert} & \statusexact &
+\texttt{theta\_\allowbreak{}sq\_\allowbreak{}eq\_\allowbreak{}chi4\_\allowbreak{}lambert},
+\texttt{theta\_\allowbreak{}sq\_\allowbreak{}eq\_\allowbreak{}odd\_\allowbreak{}lambert}\newline
+{\footnotesize\texttt{JacobiTwoSquareCount}; both displayed identities are unconditional for
+$q$ in an arbitrary complete normed field under the chapter's sole convergence hypothesis
+$\lVert q\rVert<1$.  They instantiate the reusable hypothesis-parameterized analytic kernels in
+\texttt{TwoSquareTheorem} with the now-exact arithmetic count; the first declaration gives the
+$\chi_4$ Lambert series and the second gives the alternating odd form}\\[2pt]
 \Cref{qg:thm-four-square} & \statuspartial &
 \texttt{sumSqRep\_\allowbreak{}four\_\allowbreak{}eq\_\allowbreak{}iff},
 \texttt{sumSqRep\_\allowbreak{}four\_\allowbreak{}eq\_\allowbreak{}of\_\allowbreak{}lambert},

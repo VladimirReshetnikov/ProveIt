@@ -19,7 +19,7 @@ only as reproducible checks.
 The package audit surfaces are:
 
 - [`theorem_concordance.csv`](theorem_concordance.csv): all 194 immutable
-  source-result rows, fully dispositioned as 50 Lean-proved, 95 human-proved
+  source-result rows, fully dispositioned as 51 Lean-proved, 94 human-proved
   frontier results, 10 conjectures, 15 open problems, and 24 non-applicable
   source environments;
 - [`LEAN_CROSSWALK.md`](LEAN_CROSSWALK.md): exact module and declaration
@@ -46,9 +46,9 @@ neither checker was run in this source-only documentation pass.
 
 `theorem_concordance.csv` records the disposition of all 194 source-result
 environments while preserving the ten immutable source fields reproduced from
-`audit/SOURCE_REVISION`.  Its current totals are 50 Lean-proved, 95
+`audit/SOURCE_REVISION`.  Its current totals are 51 Lean-proved, 94
 human-proved frontier results, 10 conjectures, 15 open problems, and 24
-nonassertoric rows.  Nine inverse-computability rows now have exact compiled
+nonassertoric rows.  Ten inverse-computability rows now have exact compiled
 counterparts: the main theorem, the three tolerant-difference branch
 certificates, tolerant-bisection correctness, unit-interval sequential
 inversion, computable clamping, and sequential computability of the totalized
@@ -56,7 +56,8 @@ inverse.  `FabiusFunction.EffectiveGapInverse` closes the ninth, abstract row:
 it derives a computable reciprocal inverse modulus from computable positive
 rational gap data and concludes both subset sequential computability and
 effective uniform continuity; its companion theorem packages the clamped
-inverse as a total computable real function.  The centered Appell
+inverse as a total computable real function.  The exact-dyadic proposition
+described below closes the tenth row.  The centered Appell
 deconvolution, positive-degree Appell
 mean-zero, and arbitrarily phased polynomial-deconvolution rows also have exact
 named Lean counterparts.  The Appell lattice theorem is now Lean-proved:
@@ -70,15 +71,16 @@ degree.  The static canonical validator passes.  `PROVENANCE.md` records source
 and asset lineage.
 
 The new `FabiusFunction.FabiusInverseExactDyadicModulus` module supplies the
-formal kernel of `co:prop:exact-dyadic-modulus`: two definitions and eight
-theorems cover the exact ceiling, positivity, endpoint bound, fixed-dyadic
+complete formal counterpart of `co:prop:exact-dyadic-modulus`: two definitions
+and ten theorems cover the exact ceiling, positivity, endpoint bound, fixed-dyadic
 arithmetic and strict-modulus leastness, the smaller-denominator endpoint
 counterexample, and the logarithmic `1/n` witness with convention `d(0)=1`.
-The concordance totals do not change.  That source proposition remains one of
-the 95 human-proved frontier results because it also asserts that the exact
-logarithmic denominator is recursive, and the new module exports no named
-`Primrec` or computability theorem.  Its leastness is only for the fixed
-dyadic target; `1/n` is witness-only and no modulus is asserted at zero.
+The compiled declarations
+`Fabius.inverseFabiusExactDyadicDenominator_primrec` and
+`Fabius.inverseFabiusExactLogarithmicDenominator_primrec` close the remaining
+recursion clause, so that source proposition is now one of the 51 Lean-proved
+rows.  Its leastness is only for the fixed dyadic target; `1/n` is witness-only,
+and `d(0)=1` is a convention with no modulus asserted at zero.
 
 There is no package-wide checksum gate.  The retained source-closure receipt
 and migrated-asset disposition have their narrower historical roles and were
@@ -92,10 +94,11 @@ at `93db15ad3c0645bd3cfd0a3e6e694e3c86a3aa2b`, a complete pre-retirement
 repository snapshot. The old paths are retained as provenance locators, not
 as live links.
 
-The six newest exact source-row matches are abstract effective inversion,
+The seven newest exact source-row matches are abstract effective inversion,
 centered Appell deconvolution, positive-degree Appell mean-zero,
 arbitrary-phase polynomial deconvolution, forced superconvergence, and finite
-Appell lattice reproduction.  The last two use
+Appell lattice reproduction, together with the exact-dyadic repository modulus.
+The superconvergence pair uses
 `FabiusFunction.RvachevSuperconvergentSynthesis`: its phase dictionary
 specializes the selected phases at `M = 2^N`, its physical quadrature wrapper
 proves polynomial exactness through degree `N+1`, and its Appell wrapper proves
@@ -112,7 +115,7 @@ masters contribute 152 of the 194 concordance rows:
 - `Inverse_Endpoint_All_Orders`: 29 rows; and
 - `Inverse_Fabius_Computability_Report`: 40 rows.
 
-Their canonical classifications are 34 exact Lean matches, 77 complete
+Their canonical classifications are 35 exact Lean matches, 76 complete
 human-proved frontier results, 18 non-live source environments (seven
 definitions, three algorithms, two examples, four editorial obligations, and
 two superseded source conjectures), nine explicitly retained conjectures, and

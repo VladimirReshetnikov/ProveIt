@@ -368,6 +368,8 @@ CURRENT_Q_STATUS_OVERRIDES = {
     "cor:positivity": "Lean-proved",
     "prop:dissection": "Lean-proved",
     "cor:dissection-remainder": "Lean-proved",
+    "qg:cor-two-square-lambert": "Lean-proved",
+    "qg:thm-two-square": "Lean-proved",
     "thm:qbinom-structure": "Lean-proved",
     "thm:poch-entire": "Lean-proved",
     "prop:rogers-szego-recurrence": "Lean-proved",
@@ -624,12 +626,16 @@ def inventory_revision(
         for row in package_rows:
             groups[row["source_key"]] = group
         rows.extend(package_rows)
+    known_current_status_labels = set(q_statuses)
+    for target, _disposition in parse_guide_map().values():
+        known_current_status_labels.update(target.split("|"))
     missing_current_status_labels = sorted(
-        set(CURRENT_Q_STATUS_OVERRIDES) - set(q_statuses)
+        set(CURRENT_Q_STATUS_OVERRIDES) - known_current_status_labels
     )
     if missing_current_status_labels:
         raise ValueError(
-            "current Q status overrides do not match pinned result labels: "
+            "current Q status overrides do not match pinned Q labels or "
+            "reviewed guide destinations: "
             f"{missing_current_status_labels!r}"
         )
     q_statuses.update(CURRENT_Q_STATUS_OVERRIDES)

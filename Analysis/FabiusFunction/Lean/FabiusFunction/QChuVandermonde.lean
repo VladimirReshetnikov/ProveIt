@@ -114,7 +114,6 @@ theorem finiteQPochhammerIn_div_eq_sum_chu {q : K} (hq : q ≠ 0) {A : K} (hA : 
   have h2 : q ^ k.choose 2 ≠ 0 := pow_ne_zero _ hq
   have h3 : A ^ k ≠ 0 := pow_ne_zero _ hA
   field_simp
-  all_goals ring
 
 /-- **The first `q`-Chu–Vandermonde sum**: for `q ≠ 0`, `A ≠ 0`, `(q;q)_n ≠ 0`, `(C;q)_n ≠ 0`,
 `₂φ₁(q^{-n}, A; C; q, C q^n/A) = (C/A;q)_n / (C;q)_n`. -/

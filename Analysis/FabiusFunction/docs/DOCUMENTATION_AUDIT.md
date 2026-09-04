@@ -112,13 +112,13 @@ numbers rather than copying these historical values.
 The historical post-merge 2026-09-01 inventory contained 675 modules and 8,909
 lexically visible public declarations, with zero missing module headers and
 zero missing doc comments.  A fresh 2026-09-03 audit for this documentation
-pass scans 901 facade-reachable modules and 11,418 public declarations.  It
+pass scans 902 facade-reachable modules and 11,424 public declarations.  It
 finds no missing module header or declaration comment, including throughout
 `FabiusInverseExactDyadicModulus.lean`.  Relative to
 the 610/8,318 activation checkpoint,
-the current tree adds 291 modules and 3,100 declarations.  Relative to
+the current tree adds 292 modules and 3,106 declarations.  Relative to
 the earlier 630/8,552 merged checkpoint, concurrent source work adds 271
-modules and 2,866 declarations.  The one-definition/eight-theorem
+modules and 2,872 declarations.  The one-definition/eight-theorem
 `RvachevSuperconvergentSynthesis.lean` leaf contributes
 `IsRvachevSuperconvergentPhase`,
 `isRvachevSuperconvergentPhase_two_pow_iff`,
@@ -154,8 +154,8 @@ The two newest algebra leaves add thirteen theorems and no definitions:
 The two added Gaussian linear-coefficient theorems and the eight-declaration
 `EffectiveGapInverse.lean` leaf account for ten declarations and
 one module.
-The finite-q tranche adds four modules and 26 declarations:
-`PrimitiveRootBlock.lean` 0+3, `QLucas.lean` 0+8,
+The finite-q tranche adds four modules and 25 declarations:
+`PrimitiveRootBlock.lean` 0+3, `QLucas.lean` 0+7,
 `CyclotomicDivisibility.lean` 0+3, and `QCatalan.lean` 1+11.  They add the carry criterion,
 primitive-root block formula, q-Lucas theorem, and integral q-Catalan API.
 The interpolation/q-beta pair now contributes four definitions and twenty-seven theorems:
@@ -482,15 +482,43 @@ domain, a primitive `d`-th root `ζ` kills `[d,k]_ζ` for `0 < k < d`; for
 `0 < d`, the top phase is `(-1)^d * ζ^(choose d 2) = -1` and the complete
 block is `(y;ζ)_d = 1-y^d`.
 
-`QLucas.lean` is 0+8: `Fabius.two_mul_choose_two`,
-`Fabius.add_mul_add_sub_one`, `Fabius.choose_two_add`,
+`QLucas.lean` is 0+7: `Fabius.add_mul_add_sub_one`, `Fabius.choose_two_add`,
 `Fabius.coeff_finiteQPochhammerIn_neg_X`,
 `Fabius.finiteQPochhammerIn_neg_X_block`, `Fabius.coeff_block_pow_mul`,
 `Fabius.pow_choose_two_add_mul_eq`, and
-`Fabius.gaussianBinomial_q_lucas`.  The first three are natural-number
+`Fabius.gaussianBinomial_q_lucas`.  The first two are natural-number
 quadratic identities.  The coefficient, block, and phase lemmas prove
 `[a*d+b,r*d+s]_ζ = choose(a,r) * [b,s]_ζ` when `0 < d`, `ζ` is a primitive
-`d`-th root in a commutative integral domain, and `b,s < d`.
+`d`-th root in a commutative integral domain, and `b,s < d`.  Its local
+`two_mul_choose_two` helper is private; the unique public theorem of that name
+belongs to `QChuVandermonde.lean`.
+
+The terminating summation pair is also exhaustive.
+`TwoPhiOneReversal.lean` is 1+6: the definition `Fabius.twoPhiOneFinite` and
+the theorems `Fabius.choose_two_add_succ_choose_two`,
+`Fabius.finiteQPochhammerIn_sub_eq`,
+`Fabius.finiteQPochhammerIn_reversal_ne_zero`,
+`Fabius.finiteQPochhammerIn_inv_pow_self`,
+`Fabius.twoPhiOneFinite_reversal`, and
+`Fabius.twoPhiOneFinite_eq_sum_twoPhiOneTerm`.
+`QChuVandermonde.lean` is 0+5:
+`Fabius.two_mul_choose_two`, `Fabius.mul_sub_one_eq_mul_sub_add`,
+`Fabius.finiteQPochhammerIn_div_eq_sum_chu`,
+`Fabius.q_chu_vandermonde_first`, and
+`Fabius.q_chu_vandermonde_second`.  These are generic field identities with
+their nonzero parameters and finite-product denominators explicit; removing
+the second evaluation's auxiliary `C ≠ 0` and `(A;q)_n ≠ 0` hypotheses by
+rational extension is not a separate Lean theorem.
+
+`JacobiTwoSquareCount.lean` is 0+4:
+`Fabius.sumSqRep_two_eq_four_mul_twoSquareDivisorSum`,
+`Fabius.sumSqRep_two_eq_four_mul_prod`,
+`Fabius.theta_sq_eq_chi4_lambert`, and
+`Fabius.theta_sq_eq_odd_lambert`.  It closes the nonzero two-square count and
+instantiates both parameterized Lambert kernels from `TwoSquareTheorem.lean`.
+The product theorem retains the even-valuation condition at every prime
+divisor congruent to three modulo four; both Lambert identities are
+unconditional over a complete normed field under `‖q‖ < 1`.
 
 `CyclotomicDivisibility.lean` is 0+3:
 `Fabius.cyclotomic_exponent_eq_one_iff`,
@@ -703,7 +731,7 @@ and `central_gaussianBinomial_sq_div`.  `CyclotomicFactorization.lean` is
 `finiteQPochhammerIn_X_eq_gaussianBinomial_mul`,
 `prod_cyclotomic_pow_div_extend`, and
 `gaussianBinomial_X_eq_prod_cyclotomic`.  The
-`PrimitiveRootBlock.lean` 0+3, `QLucas.lean` 0+8,
+`PrimitiveRootBlock.lean` 0+3, `QLucas.lean` 0+7,
 `CyclotomicDivisibility.lean` 0+3, and `QCatalan.lean` 1+11 surfaces are
 listed exhaustively above.  The
 `NewtonInterpolation.lean` 3+19 and `QBetaIntegral.lean` 1+8 surfaces are
@@ -785,22 +813,24 @@ an exact least endpoint-mass denominator.  The third module,
 above, and supplies the generic rational-gap-to-modulus bridge; its clamped
 extension boundary remains explicit.
 
-`FabiusInverseExactDyadicModulus.lean` contributes two definitions and eight
+`FabiusInverseExactDyadicModulus.lean` contributes two definitions and ten
 theorems.  The definitions are `inverseFabiusExactDyadicDenominator` and
 `inverseFabiusExactLogarithmicDenominator`.  Its exhaustive theorem surface is
+`inverseFabiusExactDyadicDenominator_primrec`,
 `inverseFabiusExactDyadicDenominator_pos`,
 `inv_inverseFabiusExactDyadicDenominator_le_fabiusAtInverseTwoPow`,
 `inverseFabiusExactDyadicDenominator_isLeast`,
 `abs_fabiusInv_sub_lt_inverse_two_pow_of_lt_exactDyadicDenominator`,
 `exists_fabiusInv_gap_of_lt_exactDyadicDenominator`,
 `inverseFabiusExactDyadicDenominator_isLeast_strictModulus`,
+`inverseFabiusExactLogarithmicDenominator_primrec`,
 `inverseFabiusExactLogarithmicDenominator_of_pos`, and
 `abs_fabiusInv_sub_lt_inv_nat_of_lt_exactLogarithmicDenominator`.  The first
 denominator is least only for a fixed dyadic output target; the logarithmic
 `1/n` conclusion is a witness, not a leastness theorem.  Its value at zero is
-the convention `d(0)=1`, with no zero-input modulus conclusion.  The module
-has no named primitive-recursiveness/computability result for the exact
-denominators.
+the convention `d(0)=1`, with no zero-input modulus conclusion.  The two
+named `Primrec` theorems close the recursive-denominator clause without
+asserting an input-bit running-time bound.
 
 The retained comb-interpolation synthesis PDF is a validated 158-page A4
 historical receipt: the current source includes a post-render update to its

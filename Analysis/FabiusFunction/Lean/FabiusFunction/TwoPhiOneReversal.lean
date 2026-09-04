@@ -193,7 +193,6 @@ theorem twoPhiOneFinite_reversal {q : K} (hq : q ≠ 0) {a c z : K} (ha : a ≠ 
   have hzn0 : zn ≠ 0 := pow_ne_zero _ hz
   have hqii : qi ^ i ≠ 0 := pow_ne_zero _ hqi0
   field_simp
-  all_goals ring
 
 /-- The terminating sum is the partial sum of the series `₂φ₁` of `HeineTransformation`. -/
 theorem twoPhiOneFinite_eq_sum_twoPhiOneTerm {𝕜 : Type*} [NormedField 𝕜] [CompleteSpace 𝕜]

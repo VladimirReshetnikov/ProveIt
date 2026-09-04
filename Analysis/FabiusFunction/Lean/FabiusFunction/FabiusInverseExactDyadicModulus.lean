@@ -1,4 +1,5 @@
 import FabiusFunction.FabiusInverseLogarithmicModulus
+import Mathlib.Algebra.Order.Floor.Div
 
 /-!
 # Exact dyadic reciprocal moduli for the inverse Fabius function
@@ -36,6 +37,248 @@ private theorem inverseTwoPow_mem_Icc_exact (r : ℕ) :
   refine ⟨by positivity, ?_⟩
   exact (inv_le_one₀ (by positivity)).2 (one_le_pow₀ (by norm_num))
 
+/-! ## A primitive-recursive natural code for the exact endpoint mass -/
+
+private theorem natFactorial_primrec_exact :
+    Primrec Nat.factorial := by
+  have hstep : Primrec₂ (fun n a : ℕ => (n + 1) * a) := by
+    exact Primrec.nat_mul.comp₂
+      (Primrec.succ.comp₂ Primrec₂.left) Primrec₂.right
+  exact (Primrec.nat_rec₁ 1 hstep).of_eq fun n => by
+    induction n with
+    | zero => rfl
+    | succ n ih => simp [Nat.factorial_succ, ih]
+
+private theorem mersenneProduct_primrec_exact :
+    Primrec mersenneProduct := by
+  have hstep :
+      Primrec₂ (fun n a : ℕ => a * (2 ^ (n + 1) - 1)) := by
+    exact Primrec.nat_mul.comp₂ Primrec₂.right
+      (Primrec.nat_sub.comp₂
+        (primrec₂_nat_pow.comp₂ (Primrec.const 2).to₂
+          (Primrec.succ.comp₂ Primrec₂.left))
+        (Primrec.const 1).to₂)
+  exact (Primrec.nat_rec₁ 1 hstep).of_eq fun n => by
+    induction n with
+    | zero => simp [mersenneProduct]
+    | succ n ih => simp [mersenneProduct_succ_eq, ih]
+
+private def natChooseExactCode (n k : ℕ) : ℕ :=
+  if k ≤ n then n.factorial / (k.factorial * (n - k).factorial) else 0
+
+private theorem natChooseExactCode_primrec :
+    Primrec₂ natChooseExactCode := by
+  apply Primrec₂.mk
+  have hnfac : Primrec (fun p : ℕ × ℕ => p.1.factorial) :=
+    natFactorial_primrec_exact.comp Primrec.fst
+  have hkfac : Primrec (fun p : ℕ × ℕ => p.2.factorial) :=
+    natFactorial_primrec_exact.comp Primrec.snd
+  have hsubfac : Primrec (fun p : ℕ × ℕ => (p.1 - p.2).factorial) :=
+    natFactorial_primrec_exact.comp
+      (Primrec.nat_sub.comp Primrec.fst Primrec.snd)
+  exact Primrec.ite
+    (Primrec.nat_le.comp Primrec.snd Primrec.fst)
+    (Primrec.nat_div.comp hnfac (Primrec.nat_mul.comp hkfac hsubfac))
+    (Primrec.const 0)
+
+private theorem natChoose_primrec_exact :
+    Primrec₂ (fun n k : ℕ => Nat.choose n k) := by
+  exact natChooseExactCode_primrec.of_eq fun n k => by
+    by_cases hk : k ≤ n
+    · simp [natChooseExactCode, hk,
+        Nat.choose_eq_factorial_div_factorial hk]
+    · have hnk : n < k := Nat.lt_of_not_ge hk
+      simp [natChooseExactCode, hk, Nat.choose_eq_zero_of_lt hnk]
+
+private def halfMomentCoefficientExactCode (n k : ℕ) : ℕ :=
+  Nat.choose (n + 2) k *
+    ((n + 1).factorial / (k + 1).factorial) *
+    (mersenneProduct n / mersenneProduct k)
+
+private theorem halfMomentCoefficientExactCode_primrec :
+    Primrec₂ halfMomentCoefficientExactCode := by
+  apply Primrec₂.mk
+  have hn : Primrec (fun p : ℕ × ℕ => p.1) := Primrec.fst
+  have hk : Primrec (fun p : ℕ × ℕ => p.2) := Primrec.snd
+  have hnOne : Primrec (fun p : ℕ × ℕ => p.1 + 1) :=
+    Primrec.succ.comp hn
+  have hnTwo : Primrec (fun p : ℕ × ℕ => p.1 + 2) :=
+    Primrec.succ.comp hnOne
+  have hkOne : Primrec (fun p : ℕ × ℕ => p.2 + 1) :=
+    Primrec.succ.comp hk
+  have hchoose : Primrec (fun p : ℕ × ℕ => Nat.choose (p.1 + 2) p.2) :=
+    natChoose_primrec_exact.comp hnTwo hk
+  have hfactorialQuotient : Primrec
+      (fun p : ℕ × ℕ => (p.1 + 1).factorial / (p.2 + 1).factorial) :=
+    Primrec.nat_div.comp
+      (natFactorial_primrec_exact.comp hnOne)
+      (natFactorial_primrec_exact.comp hkOne)
+  have hmersenneQuotient : Primrec
+      (fun p : ℕ × ℕ => mersenneProduct p.1 / mersenneProduct p.2) :=
+    Primrec.nat_div.comp
+      (mersenneProduct_primrec_exact.comp hn)
+      (mersenneProduct_primrec_exact.comp hk)
+  exact Primrec.nat_mul.comp
+    (Primrec.nat_mul.comp hchoose hfactorialQuotient)
+    hmersenneQuotient
+
+private theorem halfMomentCoefficientExactCode_eq
+    (n k : ℕ) (hk : k ≤ n) :
+    halfMomentCoefficientExactCode n k =
+      Nat.choose (n + 2) k *
+        (∏ j ∈ Finset.Ico (k + 2) (n + 2), j) *
+        mersenneIntervalProduct (k + 1) (n + 1) := by
+  have hfactorial := factorial_mul_interval n k hk
+  have hmersenne := mersenneProduct_mul_interval n k hk
+  rw [halfMomentCoefficientExactCode, ← hfactorial, ← hmersenne]
+  simp [Nat.factorial_ne_zero, Nat.ne_of_gt (mersenneProduct_pos k)]
+
+private theorem listSum_primrec_exact :
+    Primrec (fun values : List ℕ => values.sum) := by
+  exact (Primrec.list_foldr Primrec.id (Primrec.const 0)
+    (Primrec.nat_add.comp₂
+      (Primrec.fst.comp₂ Primrec₂.right)
+      (Primrec.snd.comp₂ Primrec₂.right))).of_eq fun values => by
+        induction values <;> simp_all
+
+private def halfMomentNumeratorSuccStepExactCode
+    (values : List ℕ) (n : ℕ) : ℕ :=
+  ((List.range values.length).map fun k =>
+    values.getD k 0 * halfMomentCoefficientExactCode n k).sum
+
+private theorem halfMomentNumeratorSuccStepExactCode_primrec :
+    Primrec₂ halfMomentNumeratorSuccStepExactCode := by
+  apply Primrec₂.mk
+  have hrange : Primrec
+      (fun p : List ℕ × ℕ => List.range p.1.length) :=
+    Primrec.list_range.comp (Primrec.list_length.comp Primrec.fst)
+  have hterm : Primrec₂
+      (fun (p : List ℕ × ℕ) k =>
+        p.1.getD k 0 * halfMomentCoefficientExactCode p.2 k) := by
+    exact Primrec.nat_mul.comp₂
+      (Primrec.list_getD 0 |>.comp₂
+        (Primrec.fst.comp₂ Primrec₂.left) Primrec₂.right)
+      (halfMomentCoefficientExactCode_primrec.comp₂
+        (Primrec.snd.comp₂ Primrec₂.left) Primrec₂.right)
+  exact listSum_primrec_exact.comp (Primrec.list_map hrange hterm)
+
+private def halfMomentNumeratorStepExactCode (values : List ℕ) : ℕ :=
+  values.length.casesOn 1 (halfMomentNumeratorSuccStepExactCode values)
+
+private theorem halfMomentNumeratorStepExactCode_primrec :
+    Primrec halfMomentNumeratorStepExactCode := by
+  exact Primrec.nat_casesOn Primrec.list_length (Primrec.const 1)
+    halfMomentNumeratorSuccStepExactCode_primrec
+
+private theorem halfMomentNumeratorStepExactCode_spec (n : ℕ) :
+    halfMomentNumeratorStepExactCode
+        ((List.range n).map halfMomentNumerator) =
+      halfMomentNumerator n := by
+  cases n with
+  | zero => simp [halfMomentNumeratorStepExactCode, halfMomentNumerator]
+  | succ n =>
+      simp only [halfMomentNumeratorStepExactCode, List.length_map,
+        List.length_range]
+      rw [halfMomentNumeratorSuccStepExactCode,
+        List.length_map, List.length_range,
+        ← List.sum_toFinset _ List.nodup_range, List.toFinset_range,
+        halfMomentNumerator_succ]
+      rw [Fin.sum_univ_eq_sum_range
+        (fun k =>
+          halfMomentNumerator k * Nat.choose (n + 2) k *
+            (∏ j ∈ Finset.Ico (k + 2) (n + 2), j) *
+            mersenneIntervalProduct (k + 1) (n + 1))
+        (n + 1)]
+      apply Finset.sum_congr rfl
+      intro k hk
+      have hklt : k < n + 1 := Finset.mem_range.mp hk
+      have hkle : k ≤ n := by omega
+      rw [halfMomentCoefficientExactCode_eq n k hkle]
+      simp [List.getD_eq_getElem?_getD, List.getElem?_map,
+        List.getElem?_range hklt, mul_assoc]
+
+private theorem halfMomentNumerator_primrec_exact :
+    Primrec halfMomentNumerator := by
+  have hgenerator : Primrec₂
+      (fun (_ : Unit) (values : List ℕ) =>
+        some (halfMomentNumeratorStepExactCode values)) := by
+    exact Primrec.option_some.comp
+      (halfMomentNumeratorStepExactCode_primrec.comp Primrec.snd)
+  have hcourse : Primrec₂ (fun (_ : Unit) n => halfMomentNumerator n) := by
+    refine Primrec.nat_strong_rec _ hgenerator ?_
+    intro _ n
+    rw [halfMomentNumeratorStepExactCode_spec]
+  exact hcourse.comp (Primrec.const ()) Primrec.id
+
+private def fabiusAtInverseTwoPowNaturalDenominator (r : ℕ) : ℕ :=
+  2 ^ (r * (r - 1) / 2) * r.factorial * (r + 1).factorial *
+    mersenneProduct r
+
+private theorem fabiusAtInverseTwoPowNaturalDenominator_primrec :
+    Primrec fabiusAtInverseTwoPowNaturalDenominator := by
+  have htriangle : Primrec (fun r : ℕ => r * (r - 1) / 2) :=
+    Primrec.nat_div.comp
+      (Primrec.nat_mul.comp Primrec.id
+        (Primrec.nat_sub.comp Primrec.id (Primrec.const 1)))
+      (Primrec.const 2)
+  have hpow : Primrec (fun r : ℕ => 2 ^ (r * (r - 1) / 2)) :=
+    primrec₂_nat_pow.comp (Primrec.const 2) htriangle
+  have hfactorial : Primrec (fun r : ℕ => r.factorial) :=
+    natFactorial_primrec_exact
+  have hfactorialSucc : Primrec (fun r : ℕ => (r + 1).factorial) :=
+    natFactorial_primrec_exact.comp Primrec.succ
+  exact Primrec.nat_mul.comp
+    (Primrec.nat_mul.comp
+      (Primrec.nat_mul.comp hpow hfactorial) hfactorialSucc)
+    mersenneProduct_primrec_exact
+
+private theorem fabiusAtInverseTwoPow_eq_naturalQuotient (r : ℕ) :
+    fabiusAtInverseTwoPow r =
+      (halfMomentNumerator r : ℚ) /
+        (fabiusAtInverseTwoPowNaturalDenominator r : ℚ) := by
+  rw [fabiusAtInverseTwoPow_eq_halfMomentNumerator_formula,
+    fabiusAtInverseTwoPowNaturalDenominator, Nat.choose_two_right]
+  push_cast
+  rfl
+
+private theorem halfMomentNumerator_pos_exact (r : ℕ) :
+    0 < halfMomentNumerator r := by
+  have hmass := fabiusAtInverseTwoPow_pos_exact r
+  rw [fabiusAtInverseTwoPow_eq_naturalQuotient] at hmass
+  apply Nat.pos_of_ne_zero
+  intro hzero
+  rw [hzero] at hmass
+  norm_num at hmass
+
+private def natCeilQuotientExactCode (a b : ℕ) : ℕ :=
+  (a + b - 1) / b
+
+private theorem natCeilQuotientExactCode_primrec :
+    Primrec₂ natCeilQuotientExactCode := by
+  apply Primrec₂.mk
+  exact Primrec.nat_div.comp
+    (Primrec.nat_sub.comp
+      (Primrec.nat_add.comp Primrec.fst Primrec.snd)
+      (Primrec.const 1))
+    Primrec.snd
+
+private theorem natCeil_ratQuotient_eq_exactCode
+    (a b : ℕ) (hb : 0 < b) :
+    ⌈(a : ℚ) / (b : ℚ)⌉₊ = natCeilQuotientExactCode a b := by
+  rw [natCeilQuotientExactCode, ← Nat.ceilDiv_eq_add_pred_div]
+  apply le_antisymm
+  · rw [Nat.ceil_le, div_le_iff₀ (by exact_mod_cast hb)]
+    have hbound : a ≤ b * (a ⌈/⌉ b) :=
+      (ceilDiv_le_iff_le_mul hb).mp le_rfl
+    have hbound' : a ≤ (a ⌈/⌉ b) * b := by
+      simpa [Nat.mul_comm] using hbound
+    exact_mod_cast hbound'
+  · rw [ceilDiv_le_iff_le_mul hb]
+    have hceil := Nat.le_ceil ((a : ℚ) / (b : ℚ))
+    rw [div_le_iff₀ (by exact_mod_cast hb)] at hceil
+    rw [mul_comm] at hceil
+    exact_mod_cast hceil
+
 /-! ## The least denominator at a fixed dyadic target -/
 
 /-- The least positive natural denominator whose reciprocal is at most the
@@ -45,6 +288,32 @@ The definition uses the exact rational evaluator, so no ceiling of an
 approximated real number is involved. -/
 def inverseFabiusExactDyadicDenominator (r : ℕ) : ℕ :=
   ⌈(fabiusAtInverseTwoPow r)⁻¹⌉₊
+
+private theorem inverseFabiusExactDyadicDenominator_eq_naturalCode
+    (r : ℕ) :
+    inverseFabiusExactDyadicDenominator r =
+      natCeilQuotientExactCode
+        (fabiusAtInverseTwoPowNaturalDenominator r)
+        (halfMomentNumerator r) := by
+  rw [inverseFabiusExactDyadicDenominator,
+    fabiusAtInverseTwoPow_eq_naturalQuotient, inv_div]
+  exact natCeil_ratQuotient_eq_exactCode _ _
+    (halfMomentNumerator_pos_exact r)
+
+/-- The least exact dyadic denominator is primitive recursive.  The proof
+uses a natural numerator/denominator code for the exact rational endpoint
+mass, so it does not require a computability API for normalized rationals. -/
+theorem inverseFabiusExactDyadicDenominator_primrec :
+    Primrec inverseFabiusExactDyadicDenominator := by
+  have hcode : Primrec (fun r =>
+      natCeilQuotientExactCode
+        (fabiusAtInverseTwoPowNaturalDenominator r)
+        (halfMomentNumerator r)) :=
+    natCeilQuotientExactCode_primrec.comp
+      fabiusAtInverseTwoPowNaturalDenominator_primrec
+      halfMomentNumerator_primrec_exact
+  exact hcode.of_eq fun r =>
+    (inverseFabiusExactDyadicDenominator_eq_naturalCode r).symm
 
 /-- The exact dyadic denominator is strictly positive at every order,
 including order zero. -/
@@ -159,6 +428,15 @@ def inverseFabiusExactLogarithmicDenominator : ℕ → ℕ
   | n + 1 =>
       inverseFabiusExactDyadicDenominator
         (inverseFabiusLogarithmicOrder (n + 1))
+
+/-- The exact logarithmic denominator, including its convention-only value
+at zero, is primitive recursive. -/
+theorem inverseFabiusExactLogarithmicDenominator_primrec :
+    Primrec inverseFabiusExactLogarithmicDenominator := by
+  exact (Primrec.nat_casesOn₁ 1
+    (inverseFabiusExactDyadicDenominator_primrec.comp
+      (inverseFabiusLogarithmicOrder_primrec.comp Primrec.succ))).of_eq
+        fun n => by cases n <;> rfl
 
 /-- At positive inputs the logarithmic denominator is exactly the fixed-target
 ceiling denominator at the least logarithmic dyadic order. -/

@@ -345,7 +345,7 @@ eight-declaration rational-gap inverse module, and the parity-selected Rvachev
 superconvergence leaf and the subsequent binary-word, box-partition, and
 telescoping-certificate leaves.  That earlier source census was 675 facade-reachable
 modules and 8,909 public declarations.  A fresh post-merge source audit
-reports 901 facade-reachable modules and 11,418 public declarations.  The retained
+reports 902 facade-reachable modules and 11,424 public declarations.  The retained
 237-page A4 PDF, SHA-256
 \nolinkurl{21180fa05a754b52a057495464674e9d6ac26a51488c2c770730c641b5ffe887},
 predates these source-only overlays and the expanded ledger and is therefore a
@@ -606,12 +606,31 @@ Primitive-root Gaussian block &
 \nolinkurl{finiteQPochhammerIn_isPrimitiveRoot} &
 \nolinkurl{PrimitiveRootBlock.lean}; zero definitions and three theorems \\
 The q-Lucas theorem &
-\nolinkurl{two_mul_choose_two}, \nolinkurl{add_mul_add_sub_one},
+\nolinkurl{add_mul_add_sub_one},
 \nolinkurl{choose_two_add}, \nolinkurl{coeff_finiteQPochhammerIn_neg_X},
 \nolinkurl{finiteQPochhammerIn_neg_X_block},
 \nolinkurl{coeff_block_pow_mul}, \nolinkurl{pow_choose_two_add_mul_eq},
 \nolinkurl{gaussianBinomial_q_lucas} &
-\nolinkurl{QLucas.lean}; zero definitions and eight theorems \\
+\nolinkurl{QLucas.lean}; zero definitions and seven theorems; its local
+\nolinkurl{two_mul_choose_two} is private, while the public theorem belongs to
+\nolinkurl{QChuVandermonde.lean} \\
+Terminating two-phi-one reversal and q-Chu--Vandermonde &
+\nolinkurl{twoPhiOneFinite}, \nolinkurl{twoPhiOneFinite_reversal},
+\nolinkurl{finiteQPochhammerIn_div_eq_sum_chu},
+\nolinkurl{q_chu_vandermonde_first},
+\nolinkurl{q_chu_vandermonde_second} &
+\nolinkurl{TwoPhiOneReversal.lean} 1+6 and
+\nolinkurl{QChuVandermonde.lean} 0+5; the latter owns public
+\nolinkurl{two_mul_choose_two}; rational-extension removal of auxiliary
+nonvanishing hypotheses is not separately formalized \\
+Jacobi two-square count and Lambert forms &
+\nolinkurl{sumSqRep_two_eq_four_mul_twoSquareDivisorSum},
+\nolinkurl{sumSqRep_two_eq_four_mul_prod},
+\nolinkurl{theta_sq_eq_chi4_lambert},
+\nolinkurl{theta_sq_eq_odd_lambert} &
+\nolinkurl{JacobiTwoSquareCount.lean}; zero definitions and four theorems;
+the product form retains its valuation hypothesis and both Lambert forms are
+unconditional in a complete normed field under \(\lVert q\rVert<1\) \\
 Cyclotomic carry criterion and primitive-root multiple value &
 \nolinkurl{cyclotomic_exponent_eq_one_iff},
 \nolinkurl{cyclotomic_dvd_gaussianBinomial_iff},
@@ -874,7 +893,7 @@ record the downstream realizer closure. &
 \nolinkurl{fabiusInv_effectivelyUniformContinuous_logarithmic},
 \nolinkurl{fabiusInv_effectivelyUniformContinuous_logarithmicDelta} &
 \nolinkurl{FabiusInverseLogarithmicModulus.lean} \\
-Sharp exact dyadic inverse modulus (two definitions and eight theorems).
+Sharp exact dyadic inverse modulus (two definitions and ten theorems).
 For fixed \(r\), the natural ceiling of \(1/F(2^{-r})\) is positive, has
 reciprocal at most the exact rational endpoint mass, and is the least positive
 integer with that property.  It gives the strict output target \(2^{-r}\);
@@ -883,16 +902,18 @@ every smaller positive denominator fails at the endpoint pair
 dyadic target.  The logarithmic wrapper takes value \(1\) at zero and uses the
 fixed-target ceiling at \(r_{\log}(n)\) for \(n>0\), giving a strict \(1/n\)
 output witness.  This does not prove leastness for the weaker \(1/n\) target,
-assert a modulus at the convention-only zero input, or export a named
-primitive-recursiveness/computability theorem. &
+assert a modulus at the convention-only zero input, or claim an input-bit
+running-time bound.  Both denominator maps are primitive recursive. &
 \nolinkurl{inverseFabiusExactDyadicDenominator},
 \nolinkurl{inverseFabiusExactLogarithmicDenominator};
+\nolinkurl{inverseFabiusExactDyadicDenominator_primrec},
 \nolinkurl{inverseFabiusExactDyadicDenominator_pos},
 \nolinkurl{inv_inverseFabiusExactDyadicDenominator_le_fabiusAtInverseTwoPow},
 \nolinkurl{inverseFabiusExactDyadicDenominator_isLeast},
 \nolinkurl{abs_fabiusInv_sub_lt_inverse_two_pow_of_lt_exactDyadicDenominator},
 \nolinkurl{exists_fabiusInv_gap_of_lt_exactDyadicDenominator},
 \nolinkurl{inverseFabiusExactDyadicDenominator_isLeast_strictModulus},
+\nolinkurl{inverseFabiusExactLogarithmicDenominator_primrec},
 \nolinkurl{inverseFabiusExactLogarithmicDenominator_of_pos},
 \nolinkurl{abs_fabiusInv_sub_lt_inv_nat_of_lt_exactLogarithmicDenominator} &
 \nolinkurl{FabiusInverseExactDyadicModulus.lean} \\
@@ -2245,8 +2266,7 @@ a primitive \(d\)-th root kills \(\GaussianBinomial{d}{k}{\zeta}\) for
 \(0<k<d\); under \(d>0\), the top phase is \,\(-1\) and
 \((y;\zeta)_d=1-y^d\).
 
-\path{QLucas.lean} is 0+8: \lean{two_mul_choose_two},
-\lean{add_mul_add_sub_one}, \lean{choose_two_add},
+\path{QLucas.lean} is 0+7: \lean{add_mul_add_sub_one}, \lean{choose_two_add},
 \lean{coeff_finiteQPochhammerIn_neg_X},
 \lean{finiteQPochhammerIn_neg_X_block}, \lean{coeff_block_pow_mul},
 \lean{pow_choose_two_add_mul_eq}, and \lean{gaussianBinomial_q_lucas}.
@@ -2254,6 +2274,8 @@ For \(d>0\), a primitive \(d\)-th root in a commutative integral domain, and
 \(b,s<d\), the conclusion is
 \(\GaussianBinomial{ad+b}{rd+s}{\zeta}=\binom ar
 \GaussianBinomial{b}{s}{\zeta}\).
+Its local \path{two_mul_choose_two} is private; the unique public theorem of
+that name belongs to \path{QChuVandermonde.lean}.
 
 \path{CyclotomicDivisibility.lean} is 0+3:
 \lean{cyclotomic_exponent_eq_one_iff},
@@ -2479,7 +2501,7 @@ The four root-of-unity and q-Catalan module counts are
 \path{CyclotomicDivisibility.lean} (0+3),
 \path{PrimitiveRootBlock.lean} (0+3),
 \path{QCatalan.lean} (1+11), and
-\path{QLucas.lean} (0+8).  Their one definition and twenty-five theorems add
+\path{QLucas.lean} (0+7).  Their one definition and twenty-four theorems add
 the cyclotomic carry criterion, complete primitive-root q-Pochhammer blocks,
 q-Lucas over integral domains, and the integral q-Catalan polynomial with its
 exact degree and Catalan specialization.
@@ -4599,7 +4621,13 @@ The exhaustive zero-definition, seven-theorem finite-product and Gaussian cyclot
 \path{PrimitiveRootBlock.lean} &
 The exhaustive zero-definition, three-theorem primitive-root Gaussian-vanishing, phase, and complete-block interface.\\
 \path{QLucas.lean} &
-The exhaustive zero-definition, eight-theorem natural quadratic, block-coefficient, phase, and q-Lucas interface.\\
+The exhaustive zero-definition, seven-theorem natural quadratic, block-coefficient, phase, and q-Lucas interface; its similarly named local helper is private, and the public \path{two_mul_choose_two} belongs to \path{QChuVandermonde.lean}.\\
+\path{TwoPhiOneReversal.lean} &
+The exhaustive one-definition, six-theorem reflected finite-product and terminating two-phi-one reversal interface.\\
+\path{QChuVandermonde.lean} &
+The exhaustive zero-definition, five-theorem q-Chu--Vandermonde interface, including the public \path{two_mul_choose_two}, denominator-cleared first sum, two quotient evaluations, and reversal proof of the second.\\
+\path{JacobiTwoSquareCount.lean} &
+The exhaustive zero-definition, four-theorem nonzero two-square count, conditional prime product, and unconditional chi-four and alternating-odd Lambert interface.\\
 \path{CyclotomicDivisibility.lean} &
 The exhaustive zero-definition, three-theorem cyclotomic carry, rational divisibility, and primitive-root multiple-value interface.\\
 \path{QCatalan.lean} &
@@ -10674,7 +10702,10 @@ Module & Role in the present article \\
 \path{CentralQBinomialReduction.lean} & Exactly six public theorems and no definitions: sign pairing, even--odd dissection, naturality, integral and general division-free central reduction, and the field quotient under two nonvanishing hypotheses. \\
 \path{CyclotomicFactorization.lean} & Exactly seven public theorems and no definitions: floor-quotient bounds, divisor reindexing, commutative-ring finite-product identities, interval extension, and Gaussian cyclotomic factorization over an integral domain. \\
 \path{PrimitiveRootBlock.lean} & Exactly three public theorems and no definitions: \lean{gaussianBinomial_isPrimitiveRoot_eq_zero}, \lean{neg_one_pow_mul_pow_choose_two}, and \lean{finiteQPochhammerIn_isPrimitiveRoot}; in a commutative integral domain they give interior vanishing and, for positive primitive-root order, the top phase and complete block. \\
-\path{QLucas.lean} & Exactly eight public theorems and no definitions: \lean{two_mul_choose_two}, \lean{add_mul_add_sub_one}, \lean{choose_two_add}, \lean{coeff_finiteQPochhammerIn_neg_X}, \lean{finiteQPochhammerIn_neg_X_block}, \lean{coeff_block_pow_mul}, \lean{pow_choose_two_add_mul_eq}, and \lean{gaussianBinomial_q_lucas}.  The final theorem assumes only positive primitive-root order and the residue bounds \(b,s<d\), not \(r\le a\) or \(s\le b\). \\
+\path{QLucas.lean} & Exactly seven public theorems and no definitions: \lean{add_mul_add_sub_one}, \lean{choose_two_add}, \lean{coeff_finiteQPochhammerIn_neg_X}, \lean{finiteQPochhammerIn_neg_X_block}, \lean{coeff_block_pow_mul}, \lean{pow_choose_two_add_mul_eq}, and \lean{gaussianBinomial_q_lucas}.  The final theorem assumes only positive primitive-root order and the residue bounds \(b,s<d\), not \(r\le a\) or \(s\le b\).  Its local \path{two_mul_choose_two} is private; the public theorem belongs to \path{QChuVandermonde.lean}. \\
+\path{TwoPhiOneReversal.lean} & Exactly one public definition and six theorems: the finite normalization, reflected finite-product identity and nonvanishing transfer, terminating reversal, and bridge to the analytic two-phi-one term convention. \\
+\path{QChuVandermonde.lean} & Exactly five public theorems and no definitions: \lean{two_mul_choose_two}, \lean{mul_sub_one_eq_mul_sub_add}, \lean{finiteQPochhammerIn_div_eq_sum_chu}, \lean{q_chu_vandermonde_first}, and \lean{q_chu_vandermonde_second}.  All nonvanishing hypotheses remain explicit; rational-extension removal is not a separate theorem. \\
+\path{JacobiTwoSquareCount.lean} & Exactly four public theorems and no definitions: \lean{sumSqRep_two_eq_four_mul_twoSquareDivisorSum}, \lean{sumSqRep_two_eq_four_mul_prod}, \lean{theta_sq_eq_chi4_lambert}, and \lean{theta_sq_eq_odd_lambert}.  The count holds for nonzero natural input, the product keeps its even-valuation hypothesis, and both Lambert identities require only \(\lVert q\rVert<1\) in a complete normed field. \\
 \path{CyclotomicDivisibility.lean} & Exactly three public theorems and no definitions: \lean{cyclotomic_exponent_eq_one_iff}, \lean{cyclotomic_dvd_gaussianBinomial_iff}, and \lean{gaussianBinomial_mul_isPrimitiveRoot}.  The carry criterion assumes \(k\le n\), \(d>0\); divisibility is in \(\RationalNumbers[X]\); the primitive-root value needs no \(b\le a\). \\
 \path{QCatalan.lean} & Exactly one public definition, \lean{qCatalan}, and eleven theorems: \lean{map_qInt}, \lean{qInt_X_monic}, \lean{qInt_X_natDegree}, \lean{X_sub_one_mul_qInt}, \lean{qInt_X_eq_prod_cyclotomic}, \lean{qInt_X_dvd_gaussianBinomial_rat}, \lean{qInt_X_dvd_gaussianBinomial_int}, \lean{qInt_X_mul_qCatalan}, \lean{qCatalan_natDegree}, \lean{qCatalan_eval_one_mul}, and \lean{qCatalan_eval_one}.  The integral \path{divByMonic} quotient is defined for every natural \(n\); coefficient positivity, palindromicity, and a combinatorial interpretation are not asserted. \\
 \path{NewtonInterpolation.lean} & Exactly three definitions and nineteen theorems: \lean{newtonCoeff}, \lean{nodeNewtonPoly}, \lean{newtonInterpolant}; \lean{newtonCoeff_eq}, \lean{newtonCoeff_zero}, \lean{newtonCoeff_mul_prod}, \lean{nodeNewtonPoly_succ}, \lean{eval_nodeNewtonPoly}, \lean{degree_nodeNewtonPoly_lt}, \lean{nodeNewtonPoly_eq_interpolate}, \lean{eq_nodeNewtonPoly_of_eval_eq}, \lean{coeff_nodeNewtonPoly_self}, \lean{newtonCoeff_eq_sum}, \lean{nodal_range_pow}, \lean{prod_erase_pow_sub_pow}, \lean{newtonCoeff_pow_eq_sum}, \lean{newtonPoly_succ}, \lean{eval_newtonPoly}, \lean{degree_newtonPoly_lt}, \lean{newtonPoly_eq_interpolate}, \lean{eq_newtonPoly_of_eval_eq}, and \lean{coeff_newtonPoly_self}. \\

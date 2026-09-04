@@ -676,6 +676,7 @@ import FabiusFunction.FormalQBinomial
 import FabiusFunction.BorweinReciprocity
 import FabiusFunction.GaussianUnimodality
 import FabiusFunction.TwoSquareTheorem
+import FabiusFunction.JacobiTwoSquareCount
 import FabiusFunction.FourSquareTheorem
 import FabiusFunction.JacksonVeryWellPoised
 import FabiusFunction.QSeriesTruncation
@@ -870,6 +871,14 @@ proves `fabiusInv_isComputableRealFunction` for every bounded Fabius witness.
 This is a computability certificate for the total inverse, not an input-bit
 running-time theorem or an exact least endpoint-mass denominator.
 
+The adjacent exact endpoint-mass layer closes that last denominator clause.
+`FabiusInverseExactDyadicModulus` has two definitions and ten theorems: its
+fixed-order ceiling is least among positive strict integer moduli for the
+target `2⁻ʳ`, and both that denominator and its logarithmic composition are
+primitive recursive.  The reciprocal `1/n` conclusion remains witness-only,
+the value at zero is a totalization convention, and no input-bit running-time
+bound is asserted.
+
 The adjacent `EffectiveGapInverse` module has four definitions and four
 theorems.  It derives the required inverse modulus, sequential computability,
 and effective uniform continuity from computable positive rational lower
@@ -922,11 +931,23 @@ sign-pairing and even--odd dissection identities and reduces `[2k,k]_(q²)` to
 finite q-Pochhammer products, with the quotient form retaining both explicit
 nonvanishing-denominator hypotheses.
 
-Four root-of-unity and q-Catalan companions add one definition and twenty-five
+Four root-of-unity and q-Catalan companions add one definition and twenty-four
 theorems: `CyclotomicDivisibility` 0+3, `PrimitiveRootBlock` 0+3,
-`QCatalan` 1+11, and `QLucas` 0+8.  They prove the cyclotomic carry criterion,
+`QCatalan` 1+11, and `QLucas` 0+7.  They prove the cyclotomic carry criterion,
 complete primitive-root blocks, the q-Lucas theorem over integral domains, and
 MacMahon's integral q-Catalan polynomial with its degree and value at one.
+QLucas's `two_mul_choose_two` helper is private; the public theorem of that
+name belongs to `QChuVandermonde`.
+
+`TwoPhiOneReversal` (1+6) and `QChuVandermonde` (0+5) prove the reflected
+finite-product identity, terminating two-phi-one reversal, denominator-cleared
+first q-Chu sum, both quotient evaluations, and the second evaluation by
+reversal.  Their generic-field nonvanishing assumptions remain explicit;
+rational-extension removal of auxiliary hypotheses is not a separate theorem.
+`JacobiTwoSquareCount` (0+4) then closes the nonzero two-square count and
+instantiates both Lambert kernels from `TwoSquareTheorem`; its product form
+retains the even-valuation hypothesis, while both analytic identities hold in
+every complete normed field under `‖q‖ < 1`.
 The zeta–Lambert tail calculus of the Thue–Morse frontier results is
 formalized end to end.  The engine is the Euler log transform: for any
 absolutely summable family with all norms below one, over any index type,
