@@ -135,8 +135,9 @@ location `t` and scale `ε`. -/
 theorem inv_pi_mul_poisson_kernel_eq_cauchyPDFReal (x t : ℝ) {ε : ℝ}
     (hε : 0 < ε) :
     π⁻¹ * (ε / ((x - t) ^ 2 + ε ^ 2)) =
-      ProbabilityTheory.cauchyPDFReal t ⟨ε, hε.le⟩ x := by
-  rw [ProbabilityTheory.cauchyPDFReal_def, NNReal.coe_mk]
+      ProbabilityTheory.cauchyPDFReal t ε.toNNReal x := by
+  have hcoe : ((ε.toNNReal : ℝ)) = ε := Real.coe_toNNReal ε hε.le
+  rw [ProbabilityTheory.cauchyPDFReal_def, hcoe]
   ring
 
 /-- The normalised Poisson kernel in `x`, as a function, is the Cauchy
@@ -144,7 +145,7 @@ density. -/
 theorem inv_pi_mul_poisson_kernel_fun_eq_cauchyPDFReal (t : ℝ) {ε : ℝ}
     (hε : 0 < ε) :
     (fun x : ℝ => π⁻¹ * (ε / ((x - t) ^ 2 + ε ^ 2))) =
-      ProbabilityTheory.cauchyPDFReal t ⟨ε, hε.le⟩ :=
+      ProbabilityTheory.cauchyPDFReal t ε.toNNReal :=
   funext fun x => inv_pi_mul_poisson_kernel_eq_cauchyPDFReal x t hε
 
 /-- For a fixed `t`, the normalised kernel is Lebesgue integrable in
@@ -163,10 +164,8 @@ theorem integral_poisson_kernel_swapped_eq_one (t : ℝ) {ε : ℝ}
     ∫ x : ℝ, π⁻¹ * (ε / ((x - t) ^ 2 + ε ^ 2)) = 1 := by
   rw [inv_pi_mul_poisson_kernel_fun_eq_cauchyPDFReal t hε]
   refine ProbabilityTheory.integral_cauchyPDFReal_eq_one t ?_
-  intro h
-  apply hε.ne'
-  have := congrArg NNReal.toReal h
-  simpa using this
+  rw [ne_eq, Real.toNNReal_eq_zero]
+  exact not_le.mpr hε
 
 /-- The `ℝ≥0∞` form of the `x`-side normalisation. -/
 theorem lintegral_ofReal_poisson_kernel_swapped (t : ℝ) {ε : ℝ}
