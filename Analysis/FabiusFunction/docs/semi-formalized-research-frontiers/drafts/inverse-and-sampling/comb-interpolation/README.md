@@ -17,6 +17,16 @@ The canonical package keeps each kind of record in one place:
 - its [companion-evidence index](comb_interpolation_synthesis/assets/README.md)
   routes the unique retained scripts, data, outputs, and figures.
 
+The current source-only formalization checkpoint promotes canonical label
+`gq:thm:richardson-generating` to the exact Lean declaration
+`Fabius.geometricLagrangeRichardson_generating` in the new
+three-definition/seven-theorem module
+`FabiusFunction.GeometricRichardsonGenerating`. Its analytic companion is
+`Fabius.hasSum_geometricLagrangeRichardson_mul_pow`, under the module's explicit
+convergence hypotheses. The canonical package's retained 158-page PDF predates
+this chapter-01 crosswalk and remains a historical artifact; no PDF was
+generated for the update.
+
 The geometric q-series layer also cross-links to the forward-theory part of
 the canonical
 [`q_pochhammer_q_binomial_monograph`](../../exponents-and-q-series/q_pochhammer_q_binomial_monograph/)

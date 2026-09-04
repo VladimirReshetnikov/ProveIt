@@ -5517,7 +5517,8 @@ Central squared-base Gaussian reduction & \nolinkurl{finiteQPochhammerIn_mul_neg
 Cyclotomic q-factorizations & \nolinkurl{div_add_div_le_div}, \nolinkurl{div_le_div_add_div_add_one}, \nolinkurl{mem_range_and_mem_divisors_iff}, \nolinkurl{finiteQPochhammerIn_X_eq_prod_cyclotomic}, \nolinkurl{finiteQPochhammerIn_X_eq_gaussianBinomial_mul}, \nolinkurl{prod_cyclotomic_pow_div_extend}, \nolinkurl{gaussianBinomial_X_eq_prod_cyclotomic} & Exhaustive zero-definition/seven-theorem surface of \nolinkurl{CyclotomicFactorization.lean} \\
 Primitive-root Gaussian block & \nolinkurl{gaussianBinomial_isPrimitiveRoot_eq_zero}, \nolinkurl{neg_one_pow_mul_pow_choose_two}, \nolinkurl{finiteQPochhammerIn_isPrimitiveRoot} & Exhaustive zero-definition/three-theorem surface of \nolinkurl{PrimitiveRootBlock.lean}; interior vanishing, top phase, and complete block in a commutative integral domain \\
 The q-Lucas theorem & \nolinkurl{add_mul_add_sub_one}, \nolinkurl{choose_two_add}, \nolinkurl{coeff_finiteQPochhammerIn_neg_X}, \nolinkurl{finiteQPochhammerIn_neg_X_block}, \nolinkurl{coeff_block_pow_mul}, \nolinkurl{pow_choose_two_add_mul_eq}, \nolinkurl{gaussianBinomial_q_lucas} & Exhaustive zero-definition/seven-theorem surface of \nolinkurl{QLucas.lean}; positive primitive-root order and residue bounds remain explicit, and its local \nolinkurl{two_mul_choose_two} is private \\
-Terminating two-phi-one reversal and q-Chu--Vandermonde & \nolinkurl{twoPhiOneFinite}, \nolinkurl{twoPhiOneFinite_reversal}, \nolinkurl{finiteQPochhammerIn_div_eq_sum_chu}, \nolinkurl{q_chu_vandermonde_first}, \nolinkurl{q_chu_vandermonde_second} & Exhaustive 1+6 \nolinkurl{TwoPhiOneReversal.lean} and 0+5 \nolinkurl{QChuVandermonde.lean} surfaces; the latter owns the public \nolinkurl{two_mul_choose_two}; all nonvanishing hypotheses remain explicit \\
+Terminating two-phi-one reversal & \nolinkurl{twoPhiOneFinite}, \nolinkurl{twoPhiOneReflection}; \nolinkurl{choose_two_add_succ_choose_two}, \nolinkurl{finiteQPochhammerIn_sub_eq}, \nolinkurl{finiteQPochhammerIn_reversal_ne_zero}, \nolinkurl{finiteQPochhammerIn_inv_pow_self}, \nolinkurl{twoPhiOneReflection_involutive}, \nolinkurl{twoPhiOneFinite_reversal}, \nolinkurl{twoPhiOneFinite_reversal_twice}, \nolinkurl{twoPhiOneFinite_eq_sum_twoPhiOneTerm}, \nolinkurl{twoPhiOne_eq_twoPhiOneFinite_inv_pow}, \nolinkurl{twoPhiOne_reversal}, \nolinkurl{twoPhiOne_reversal_twice}, \nolinkurl{twoPhiOne_one_eq_twoPhiOneFinite_zero} & Exhaustive two-definition/twelve-theorem surface of \nolinkurl{TwoPhiOneReversal.lean}; the actual-tsum reversal is exact under its displayed nonvanishing hypotheses, reflection is involutive, and the separate zero-depth bridge includes \(q=0\) \\
+The two q-Chu--Vandermonde sums & \nolinkurl{two_mul_choose_two}, \nolinkurl{mul_sub_one_eq_mul_sub_add}, \nolinkurl{finiteQPochhammerIn_div_eq_sum_chu}, \nolinkurl{q_chu_vandermonde_first}, \nolinkurl{finiteQPochhammerIn_div_eq_sum_chu_second}, \nolinkurl{twoPhiOneFinite_mul_finiteQPochhammerIn_eq_chu_second}, \nolinkurl{q_chu_vandermonde_second}, \nolinkurl{q_chu_vandermonde_second_by_reversal}, \nolinkurl{twoPhiOne_q_chu_vandermonde_first}, \nolinkurl{twoPhiOne_q_chu_vandermonde_second} & Exhaustive zero-definition/ten-theorem surface of \nolinkurl{QChuVandermonde.lean}; both displayed q-Chu formulas are exact on the full rational domain, while the specifically by-reversal route retains the additional \(C\ne0\) and \((A;q)_n\ne0\) assumptions \\
 Jacobi two-square count and Lambert forms & \nolinkurl{sumSqRep_two_eq_four_mul_twoSquareDivisorSum}, \nolinkurl{sumSqRep_two_eq_four_mul_prod}, \nolinkurl{theta_sq_eq_chi4_lambert}, \nolinkurl{theta_sq_eq_odd_lambert} & Exhaustive zero-definition/four-theorem \nolinkurl{JacobiTwoSquareCount.lean} surface; the product retains its valuation hypothesis, while both Lambert identities are unconditional under \(\lVert q\rVert<1\) \\
 Cyclotomic carry criterion & \nolinkurl{cyclotomic_exponent_eq_one_iff}, \nolinkurl{cyclotomic_dvd_gaussianBinomial_iff}, \nolinkurl{gaussianBinomial_mul_isPrimitiveRoot} & Exhaustive zero-definition/three-theorem surface of \nolinkurl{CyclotomicDivisibility.lean}; rational-polynomial divisibility and integral-domain primitive-root value \\
 MacMahon q-Catalan polynomial & \nolinkurl{qCatalan}; \nolinkurl{map_qInt}, \nolinkurl{qInt_X_monic}, \nolinkurl{qInt_X_natDegree}, \nolinkurl{X_sub_one_mul_qInt}, \nolinkurl{qInt_X_eq_prod_cyclotomic}, \nolinkurl{qInt_X_dvd_gaussianBinomial_rat}, \nolinkurl{qInt_X_dvd_gaussianBinomial_int}, \nolinkurl{qInt_X_mul_qCatalan}, \nolinkurl{qCatalan_natDegree}, \nolinkurl{qCatalan_eval_one_mul}, \nolinkurl{qCatalan_eval_one} & Exhaustive one-definition/eleven-theorem surface of \nolinkurl{QCatalan.lean}; integral quotient, degree \(n(n-1)\), and Catalan value at one \\
@@ -5688,8 +5689,8 @@ Module & Role in the development \\
 \nolinkurl{CyclotomicFactorization.lean} & Exactly seven theorems and no definitions: quotient bounds, divisor reindexing, finite-product and factorial identities over commutative rings, interval-product extension, and Gaussian cyclotomic factorization over an integral domain. \\
 \nolinkurl{PrimitiveRootBlock.lean} & Exactly three theorems and no definitions: primitive-root interior Gaussian vanishing, the top phase, and the complete finite q-Pochhammer block. \\
 \nolinkurl{QLucas.lean} & Exactly seven theorems and no definitions: two natural quadratic identities, signed-product coefficient and block formulas, the primitive-root phase, and q-Lucas.  Its local \nolinkurl{two_mul_choose_two} is private; the public theorem is in \nolinkurl{QChuVandermonde.lean}. \\
-\nolinkurl{TwoPhiOneReversal.lean} & Exactly one definition and six theorems: the finite normalization, reflected finite-product identity, nonvanishing transfer, terminating reversal, and bridge to the established analytic term convention. \\
-\nolinkurl{QChuVandermonde.lean} & Exactly five theorems and no definitions: two exponent identities including the public \nolinkurl{two_mul_choose_two}, the denominator-cleared first sum, both quotient evaluations, and the second evaluation by reversal; rational-extension removal of auxiliary hypotheses is not separately formalized. \\
+\nolinkurl{TwoPhiOneReversal.lean} & Exactly two definitions and twelve theorems: the finite normalization and reflected parameter map, finite-to-tsum bridge, involution, terminating reversal, and one- and two-step actual-tsum reversal laws. \\
+\nolinkurl{QChuVandermonde.lean} & Exactly ten theorems and no definitions: the public \nolinkurl{two_mul_choose_two}, both denominator-cleared sums and quotient evaluations, actual-tsum wrappers, and the separately named by-reversal route; only that route retains the two auxiliary nonvanishing assumptions. \\
 \nolinkurl{JacobiTwoSquareCount.lean} & Exactly four theorems and no definitions: the nonzero two-square divisor count, its conditional prime product, and the unconditional chi-four and alternating-odd Lambert identities over complete normed fields under \(\lVert q\rVert<1\). \\
 \nolinkurl{CyclotomicDivisibility.lean} & Exactly three theorems and no definitions: the carry characterization of exponent one, the rational-polynomial divisibility iff, and the multiple-index primitive-root value. \\
 \nolinkurl{QCatalan.lean} & Exactly one definition and eleven theorems: q-integer naturality, degree and cyclotomic identities, rational and integral divisibility, and the integral q-Catalan quotient with its degree and value at one. \\
@@ -5802,6 +5803,7 @@ Module & Role in the development \\
 \nolinkurl{GeometricLagrangeWeights.lean} & Identification of the geometric Lagrange row with the Richardson coefficient polynomial and its complete-homogeneous all-order moments. \\
 \nolinkurl{GeometricLagrangeQBinomial.lean} & Field-valued q-Pochhammer weight formulas and report-facing rational q-binomial and quarter-base coefficient formulas. \\
 \nolinkurl{GeometricLagrangeQMoments.lean} & Closed forms for every rational geometric moment under nonzero-base and nonvanishing finite-denominator hypotheses, with exact residual sign and finite total variation for \(0<q<1\) and dedicated quarter-base corollaries. \\
+\nolinkurl{GeometricRichardsonGenerating.lean} & Exhaustive three-definition/seven-theorem surface.  The definitions are \nolinkurl{geometricRichardsonKernel}, \nolinkurl{qPochhammerNormalizedDataSeries}, and \nolinkurl{geometricRichardsonTransform}; the theorems are \nolinkurl{coeff_rescale_qPochhammerSeries_eq_geometricRichardsonKernel}, \nolinkurl{coeff_qPochhammerNormalizedDataSeries}, \nolinkurl{geometricRichardsonTransform_generating}, \nolinkurl{geometricRichardsonTransform_eq_sum_lagrange}, \nolinkurl{geometricLagrangeRichardson_generating}, \nolinkurl{hasSum_geometricRichardsonTransform_mul_pow}, and \nolinkurl{hasSum_geometricLagrangeRichardson_mul_pow}.  The first generating identity is formal over a commutative ring with totalized inverses; the exact geometric-Lagrange form assumes a field and nonzero nome; the two analytic \nolinkurl{HasSum} forms additionally require completeness, strict nome contraction, and absolute summability of the normalized data. \\
 \nolinkurl{LambertPhaseLockedRichardson.lean} & Exact lower-Lambert phase locking, reciprocal-grid Lagrange weights, cancellation, and every complete-homogeneous residual moment. \\
 \nolinkurl{LambertPhaseLockedBell.lean} & Generalized harmonic power sums and Bell input for the shifted reciprocal alphabet, together with exact complete-homogeneous and reciprocal-Lagrange moment rewrites in factorially normalized complete-Bell form over characteristic-zero fields (with the direct rewrite using the rational-algebra structure).  Total field inversion requires no positivity or nonvanishing hypothesis on the shift. \\
 \nolinkurl{FabiusLambertPhaseLockedPullback.lean} & Pullback of the arbitrary-order logarithmic Fabius expansion to every fixed phase-locked Lambert node, with the periodic correction and saddle coefficients frozen at the base phase. \\
@@ -6009,7 +6011,7 @@ Lean audits of the previously recorded new or refactored declarations,
 for each.  At that upstream checkpoint, static inspection found all 610 modules
 below \nolinkurl{FabiusFunction/} reachable from the facade and every one of
 the 105 activation declarations documented.  The live current-tree audit scans
-904 modules and 11,449 public declarations, with no missing module headers or
+905 modules and 11,471 public declarations, with no missing module headers or
 declaration comments.  At the retained historical mainline checkpoint before the latest
 six-module q-series tranche was 623 modules and 8,476 declarations.  Its
 immediately preceding census, after the Rvachev Appell and original
@@ -6073,7 +6075,7 @@ q leaves contribute thirteen.  Two later linear-coefficient theorems enlarge
 \nolinkurl{EffectiveGapInverse.lean} contributes one module and eight
 declarations.  The one-definition/eight-theorem
 \nolinkurl{RvachevSuperconvergentSynthesis.lean} leaf contributes nine;
-the four root-of-unity/q-Catalan modules contribute twenty-six; the original
+the four root-of-unity/q-Catalan modules contribute twenty-five; the original
 q-beta/Newton pair contributes twenty-four; the integer/complex upper Gaussian
 and q-Pfaff--Saalsch\"utz tail contributes twenty; and the noncommutative
 q-multinomial leaf contributes five.  Finally,
@@ -6085,12 +6087,14 @@ intermediate census is therefore 672/8,875.  The subsequent
 \nolinkurl{TelescopingCertificate.lean} leaves add three modules and thirty-four
 declarations, giving the historical 675/8,909 checkpoint.  The subsequent
 source union, including the exact 0+7, 4+16, and 0+9 Lambert branch-pairing,
-gap-bijection, and symmetry surfaces, was followed by the exact inverse and
-Jacobi two-square leaves; the live census is 904/11,449, with every module
-reachable from the facade.  No aggregate facade build is claimed for this
-current-tree census.  The retained PDF and the title-page pin remain historical
-receipts and do not claim parity with the merged source; no PDF was built for
-this source-only update.
+gap-bijection, and symmetry surfaces, was followed by the exact inverse,
+Jacobi two-square, Lagrange--Rvachev Matrix, weighted/geometric barycenter,
+twelve-declaration terminating-basic-hypergeometric, and 3+7
+\nolinkurl{GeometricRichardsonGenerating.lean} tranches.  The live census is
+905/11,471, with every module reachable from the facade.  No aggregate facade
+build is claimed for this current-tree census.  The retained PDF and the
+title-page pin remain historical receipts and do not claim parity with the
+merged source; no PDF was built for this source-only union.
 
 Those six counts are \nolinkurl{QPochhammerInfiniteBounds.lean} (0+5),
 \nolinkurl{HeineTransformation.lean} (2+5),
@@ -6147,11 +6151,12 @@ q-binomial series, and prove the terminating balanced \({}_3\phi_2\)
 q-Pfaff--Saalsch\"utz sum.  All nonzero, strict-contraction, and denominator
 hypotheses are retained explicitly.
 The terminating reversal pair contributes
-\nolinkurl{TwoPhiOneReversal.lean} (1+6) and
-\nolinkurl{QChuVandermonde.lean} (0+5), with the public
-\nolinkurl{two_mul_choose_two} in the latter module.  The rational-extension
-removal of the second q-Chu evaluation's auxiliary hypotheses is not a
-separate theorem.  The subsequent \nolinkurl{JacobiTwoSquareCount.lean}
+\nolinkurl{TwoPhiOneReversal.lean} (2+12) and
+\nolinkurl{QChuVandermonde.lean} (0+10), with the public
+\nolinkurl{two_mul_choose_two} in the latter module.  The actual-tsum reversal
+and both displayed q-Chu formulas are exact; the separately named by-reversal
+proof of the second formula retains its two auxiliary nonvanishing hypotheses.
+The subsequent \nolinkurl{JacobiTwoSquareCount.lean}
 leaf is 0+4 and closes the nonzero two-square count and both Lambert forms;
 its prime-product valuation hypothesis and the analytic condition
 \(\lVert q\rVert<1\) remain explicit.
@@ -6171,6 +6176,19 @@ uniform bounds for \(0\le q<1\) and dimension-dominant bounds for \(Q>1\),
 with all index and order hypotheses explicit.  The proof reuses the stronger
 generic \nolinkurl{finiteQPochhammerIn_self_pos} theorem from
 \nolinkurl{GeneralQConditionNumber.lean} rather than exporting a duplicate.
+The final terminating-basic-hypergeometric pair is
+\nolinkurl{TwoPhiOneReversal.lean} (2+12) and
+\nolinkurl{QChuVandermonde.lean} (0+10).  The first connects the finite
+terminating sum to the actual \nolinkurl{twoPhiOne} tsum and proves that the
+parameter reflection and the full reversal are involutive.  The second proves
+both q-Chu--Vandermonde evaluations, their actual-tsum wrappers, a
+denominator-cleared second identity, and a separately named reversal route.
+Thus the two displayed q-Chu evaluations and the reversal lemma are exact.
+The claim that reversal alone yields the second identity over its full
+displayed domain remains partial: the compiled by-reversal theorem assumes
+\(C\ne0\) and \((A;q)_n\ne0\), while the unrestricted denominator-defined
+theorem is obtained directly from finite q-Cauchy.  Rational continuation and
+a commutative-ring cleared extension are not claimed.
 \end{remark}
 
 \section{Corrections and critical distinctions}\label{app:corrections}

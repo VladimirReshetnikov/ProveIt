@@ -27,6 +27,14 @@ an identity of rational functions in any field with `q ≠ 0`, `(q;q)_n ≠ 0`, 
 * `finiteQPochhammerIn_sub_eq`, `finiteQPochhammerIn_reversal_ne_zero`.
 * `finiteQPochhammerIn_inv_pow_self`: `(q^{-n};q)_n = (-1)^n q^{-C(n+1,2)} (q;q)_n`.
 * `twoPhiOneFinite`, `twoPhiOneFinite_reversal`, `twoPhiOneFinite_eq_sum_twoPhiOneTerm`.
+* `twoPhiOneReflection`, `twoPhiOneReflection_involutive`: the reflected parameter map and its
+  involutivity on nonzero parameters.
+* `twoPhiOneFinite_reversal_twice`: applying the finite reversal twice, including both
+  prefactors, recovers the original sum.
+* `twoPhiOne_eq_twoPhiOneFinite_inv_pow`, `twoPhiOne_one_eq_twoPhiOneFinite_zero`: the
+  terminating finite sum is the actual `₂φ₁` tsum, including the `n = 0`, `q = 0` boundary.
+* `twoPhiOne_reversal`, `twoPhiOne_reversal_twice`: reversal and its double application for the
+  actual tsum.
 -/
 
 set_option autoImplicit false
@@ -101,6 +109,32 @@ theorem finiteQPochhammerIn_inv_pow_self {q : K} (hq : q ≠ 0) (n : ℕ) :
 noncomputable def twoPhiOneFinite (a b c q z : K) (n : ℕ) : K :=
   ∑ j ∈ range (n + 1), finiteQPochhammerIn a q j * finiteQPochhammerIn b q j /
     (finiteQPochhammerIn q q j * finiteQPochhammerIn c q j) * z ^ j
+
+/-- The parameter reflection in the terminating `₂φ₁` reversal:
+`(a,c,z) ↦ (q^{1-n}/c, q^{1-n}/a, c q^{n+1}/(a z))`, where
+`q^{1-n}` is represented by `q * (q^n)⁻¹`.
+
+The nested product stores the parameters as `(a, (c, z))`. -/
+def twoPhiOneReflection (q : K) (n : ℕ) (p : K × (K × K)) : K × (K × K) :=
+  (q * (q ^ n)⁻¹ / p.2.1,
+    (q * (q ^ n)⁻¹ / p.1, p.2.1 * q ^ (n + 1) / (p.1 * p.2.2)))
+
+/-- The reflected `(a,c,z)` substitution is an involution when `q`, `a`, `c`, and `z` are
+nonzero.  These are exactly the scalar nonvanishing assumptions in the reversal formula. -/
+theorem twoPhiOneReflection_involutive {q : K} (hq : q ≠ 0) {a c z : K} (ha : a ≠ 0)
+    (hc : c ≠ 0) (hz : z ≠ 0) (n : ℕ) :
+    twoPhiOneReflection q n (twoPhiOneReflection q n (a, (c, z))) = (a, (c, z)) := by
+  have hqn : q ^ n ≠ 0 := pow_ne_zero _ hq
+  have hqn1 : q ^ (n + 1) ≠ 0 := pow_ne_zero _ hq
+  have hs : q * (q ^ n)⁻¹ ≠ 0 := mul_ne_zero hq (inv_ne_zero hqn)
+  apply Prod.ext
+  · simp only [twoPhiOneReflection]
+    field_simp [hs, ha, hc, hz, hqn, hqn1]
+  · apply Prod.ext
+    · simp only [twoPhiOneReflection]
+      field_simp [hs, ha, hc, hz, hqn, hqn1]
+    · simp only [twoPhiOneReflection]
+      field_simp [hs, ha, hc, hz, hqn, hqn1]
 
 set_option maxRecDepth 16384 in
 /-- **Reversal of a terminating `₂φ₁`**: for `q ≠ 0`, nonzero `a, c, z`, `(q;q)_n ≠ 0`,
@@ -194,9 +228,119 @@ theorem twoPhiOneFinite_reversal {q : K} (hq : q ≠ 0) {a c z : K} (ha : a ≠ 
   have hqii : qi ^ i ≠ 0 := pow_ne_zero _ hqi0
   field_simp
 
+/-- Applying the terminating `₂φ₁` reversal twice returns the original finite sum.  The
+second application uses exactly the reflected hypotheses supplied by the first; it introduces
+no additional nonvanishing assumptions. -/
+theorem twoPhiOneFinite_reversal_twice {q : K} (hq : q ≠ 0) {a c z : K} (ha : a ≠ 0)
+    (hc : c ≠ 0) (hz : z ≠ 0) {n : ℕ} (hqq : finiteQPochhammerIn q q n ≠ 0)
+    (hcn : finiteQPochhammerIn c q n ≠ 0)
+    (han : finiteQPochhammerIn (q * (q ^ n)⁻¹ / a) q n ≠ 0) :
+    let a' := q * (q ^ n)⁻¹ / c
+    let c' := q * (q ^ n)⁻¹ / a
+    let z' := c * q ^ (n + 1) / (a * z)
+    let factor := fun x y w : K =>
+      (-1) ^ n * (q ^ ((n + 1).choose 2))⁻¹ * w ^ n *
+        (finiteQPochhammerIn x q n / finiteQPochhammerIn y q n)
+    factor a c z *
+        (factor a' c' z' * twoPhiOneFinite (q ^ n)⁻¹ a c q z n) =
+      twoPhiOneFinite (q ^ n)⁻¹ a c q z n := by
+  dsimp only
+  have hqn : q ^ n ≠ 0 := pow_ne_zero _ hq
+  have hs : q * (q ^ n)⁻¹ ≠ 0 := mul_ne_zero hq (inv_ne_zero hqn)
+  have ha' : q * (q ^ n)⁻¹ / c ≠ 0 := div_ne_zero hs hc
+  have hc' : q * (q ^ n)⁻¹ / a ≠ 0 := div_ne_zero hs ha
+  have hz' : c * q ^ (n + 1) / (a * z) ≠ 0 :=
+    div_ne_zero (mul_ne_zero hc (pow_ne_zero _ hq)) (mul_ne_zero ha hz)
+  have hinv := twoPhiOneReflection_involutive hq ha hc hz n
+  have hbackA : q * (q ^ n)⁻¹ / (q * (q ^ n)⁻¹ / a) = a := by
+    simpa only [twoPhiOneReflection] using
+      congrArg (fun p : K × (K × K) => p.1) hinv
+  have hbackC : q * (q ^ n)⁻¹ / (q * (q ^ n)⁻¹ / c) = c := by
+    simpa only [twoPhiOneReflection] using
+      congrArg (fun p : K × (K × K) => p.2.1) hinv
+  have hbackZ :
+      (q * (q ^ n)⁻¹ / a) * q ^ (n + 1) /
+          ((q * (q ^ n)⁻¹ / c) * (c * q ^ (n + 1) / (a * z))) = z := by
+    simpa only [twoPhiOneReflection] using
+      congrArg (fun p : K × (K × K) => p.2.2) hinv
+  have hlast :
+      finiteQPochhammerIn (q * (q ^ n)⁻¹ / (q * (q ^ n)⁻¹ / c)) q n ≠ 0 := by
+    rwa [hbackC]
+  have hrev1 := twoPhiOneFinite_reversal hq ha hc hz hqq hcn han
+  have hrev2 := twoPhiOneFinite_reversal hq ha' hc' hz' hqq han hlast
+  rw [hbackA, hbackC, hbackZ] at hrev2
+  calc
+    _ = (-1) ^ n * (q ^ ((n + 1).choose 2))⁻¹ * z ^ n *
+          (finiteQPochhammerIn a q n / finiteQPochhammerIn c q n) *
+          twoPhiOneFinite (q ^ n)⁻¹ (q * (q ^ n)⁻¹ / c) (q * (q ^ n)⁻¹ / a) q
+            (c * q ^ (n + 1) / (a * z)) n := by
+      rw [← hrev2]
+    _ = _ := hrev1.symm
+
 /-- The terminating sum is the partial sum of the series `₂φ₁` of `HeineTransformation`. -/
 theorem twoPhiOneFinite_eq_sum_twoPhiOneTerm {𝕜 : Type*} [NormedField 𝕜] [CompleteSpace 𝕜]
     (a b c q z : 𝕜) (n : ℕ) : twoPhiOneFinite a b c q z n = ∑ j ∈ range (n + 1), twoPhiOneTerm a b c q z j :=
   rfl
+
+/-- A terminating `₂φ₁` with numerator parameter `q⁻ⁿ` is exactly its finite sum.
+No analytic bounds on `q` or `z`, and no denominator nonvanishing assumptions, are needed:
+for every `k > n`, the numerator factor `((q^n)⁻¹;q)_k` vanishes, so the term is zero and
+the defining tsum has finite support. -/
+theorem twoPhiOne_eq_twoPhiOneFinite_inv_pow {𝕜 : Type*} [NormedField 𝕜]
+    [CompleteSpace 𝕜] {q : 𝕜} (hq : q ≠ 0) (a c z : 𝕜) (n : ℕ) :
+    twoPhiOne (q ^ n)⁻¹ a c q z = twoPhiOneFinite (q ^ n)⁻¹ a c q z n := by
+  rw [twoPhiOne, twoPhiOneFinite_eq_sum_twoPhiOneTerm]
+  refine tsum_eq_sum fun k hk => ?_
+  rw [mem_range, not_lt] at hk
+  rw [twoPhiOneTerm, finiteQPochhammerIn_inv_pow_eq_zero_of_lt q hq (by omega), zero_mul,
+    zero_div, zero_mul]
+
+/-- Reversal of a terminating `₂φ₁`, stated for the actual `twoPhiOne` tsum.  Its two
+tails vanish identically, so no norm bounds or convergence hypotheses are needed. -/
+theorem twoPhiOne_reversal {𝕜 : Type*} [NormedField 𝕜] [CompleteSpace 𝕜]
+    {q : 𝕜} (hq : q ≠ 0) {a c z : 𝕜} (ha : a ≠ 0) (hc : c ≠ 0) (hz : z ≠ 0)
+    {n : ℕ} (hqq : finiteQPochhammerIn q q n ≠ 0)
+    (hcn : finiteQPochhammerIn c q n ≠ 0)
+    (han : finiteQPochhammerIn (q * (q ^ n)⁻¹ / a) q n ≠ 0) :
+    twoPhiOne (q ^ n)⁻¹ a c q z =
+      (-1) ^ n * (q ^ ((n + 1).choose 2))⁻¹ * z ^ n *
+        (finiteQPochhammerIn a q n / finiteQPochhammerIn c q n) *
+        twoPhiOne (q ^ n)⁻¹ (q * (q ^ n)⁻¹ / c) (q * (q ^ n)⁻¹ / a) q
+          (c * q ^ (n + 1) / (a * z)) := by
+  simpa only [twoPhiOne_eq_twoPhiOneFinite_inv_pow hq] using
+    (twoPhiOneFinite_reversal (K := 𝕜) hq ha hc hz hqq hcn han)
+
+/-- Applying the terminating reversal twice returns the original actual `₂φ₁` tsum,
+including cancellation of the two displayed prefactors. -/
+theorem twoPhiOne_reversal_twice {𝕜 : Type*} [NormedField 𝕜] [CompleteSpace 𝕜]
+    {q : 𝕜} (hq : q ≠ 0) {a c z : 𝕜} (ha : a ≠ 0) (hc : c ≠ 0) (hz : z ≠ 0)
+    {n : ℕ} (hqq : finiteQPochhammerIn q q n ≠ 0)
+    (hcn : finiteQPochhammerIn c q n ≠ 0)
+    (han : finiteQPochhammerIn (q * (q ^ n)⁻¹ / a) q n ≠ 0) :
+    let a' := q * (q ^ n)⁻¹ / c
+    let c' := q * (q ^ n)⁻¹ / a
+    let z' := c * q ^ (n + 1) / (a * z)
+    let factor := fun x y w : 𝕜 =>
+      (-1) ^ n * (q ^ ((n + 1).choose 2))⁻¹ * w ^ n *
+        (finiteQPochhammerIn x q n / finiteQPochhammerIn y q n)
+    factor a c z * (factor a' c' z' * twoPhiOne (q ^ n)⁻¹ a c q z) =
+      twoPhiOne (q ^ n)⁻¹ a c q z := by
+  simpa only [twoPhiOne_eq_twoPhiOneFinite_inv_pow hq] using
+    (twoPhiOneFinite_reversal_twice (K := 𝕜) hq ha hc hz hqq hcn han)
+
+/-- The `n = 0` terminating boundary does not require `q ≠ 0`: the first numerator parameter
+is `1`, so `(1;q)_k = 0` for every positive `k`.  In particular this covers `q = 0`, which the
+general `q⁻ⁿ` theorem above intentionally excludes. -/
+theorem twoPhiOne_one_eq_twoPhiOneFinite_zero {𝕜 : Type*} [NormedField 𝕜]
+    [CompleteSpace 𝕜] (a c q z : 𝕜) :
+    twoPhiOne 1 a c q z = twoPhiOneFinite 1 a c q z 0 := by
+  rw [twoPhiOne, twoPhiOneFinite_eq_sum_twoPhiOneTerm]
+  refine tsum_eq_sum fun k hk => ?_
+  rw [mem_range, not_lt] at hk
+  have hkpos : 0 < k := by omega
+  have hzero : finiteQPochhammerIn (1 : 𝕜) q k = 0 := by
+    obtain ⟨j, rfl⟩ := Nat.exists_eq_succ_of_ne_zero (Nat.ne_of_gt hkpos)
+    exact finiteQPochhammerIn_one_left q j
+  rw [twoPhiOneTerm, hzero, zero_mul, zero_div, zero_mul]
 
 end Fabius

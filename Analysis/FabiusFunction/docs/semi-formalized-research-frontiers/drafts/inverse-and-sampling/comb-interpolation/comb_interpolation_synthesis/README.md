@@ -70,6 +70,20 @@ arbitrary-prime identities `Fabius.primePowerChoose_padicValNat_add` and
 `0 < j < p^m`, and `Fabius.twoPowSubTwoChoose_padicValNat` is the exact
 dyadic wrapper used by the endpoint-flat weights.
 
+The exact row for `gq:thm:richardson-generating` maps to
+`Fabius.geometricLagrangeRichardson_generating` in
+`FabiusFunction.GeometricRichardsonGenerating`. It proves the stated
+Euler-coefficient formal-power-series factorization over a field for nonzero
+`q`. No root-of-unity exclusion is needed for that totalized algebraic
+identity, but interpreting its coefficients as genuine Lagrange
+interpolation requires pairwise-distinct nodes. The separate explicit
+convolution `Fabius.geometricRichardsonTransform_generating` remains valid
+over commutative rings even at `q = 0`, without providing Lagrange
+interpolation semantics there. The analytic companion
+`Fabius.hasSum_geometricLagrangeRichardson_mul_pow` additionally assumes a
+complete normed field, `‖q‖ < 1`, and absolute summability of the normalized
+data series.
+
 ## Sources reconciled
 
 The earlier `Dyadic_Comb_Frontiers` volume had already absorbed nine nested
@@ -124,8 +138,9 @@ The later canonical-notation edits in `chapters/01_geometric_core.tex`,
 `chapters/03_additive_dyadic.tex`, and `chapters/90_reference_appendices.tex`,
 together with the document-local geometric-Newton command in the driver, make
 that PDF a validated historical checkpoint rather than a rendering of the
-current source; a fresh exact three-pass build is pending. The root ledger
-verifies the current source and retained PDF as distinct payloads. The complete
+current source; a fresh exact three-pass build is pending. The former root
+ledger recorded the source and retained PDF as distinct payloads at its
+historical checkpoint. The complete
 checkpoint receipt and the older historical receipts are recorded once in
 [`assets/VALIDATION.md`](assets/VALIDATION.md).
 
@@ -165,10 +180,12 @@ not a live checksum certificate.
 The current source preserves the completed publication union's stable-path edits
 in `chapters/01_geometric_core.tex` and `chapters/99_bibliography.tex` together
 with the local general-$q$, endpoint-jet, Lagrange-synthesis,
-`PrimePowerBinomialValuation`, reference-appendix, layout, and driver edits in
+`PrimePowerBinomialValuation`, `GeometricRichardsonGenerating`,
+reference-appendix, layout, and driver edits in
 `chapters/03_additive_dyadic.tex`, `chapters/90_reference_appendices.tex`, and
 `comb_interpolation_synthesis.tex`, and adds the exact generic-prime and dyadic
-companion-row valuation crosswalk described above.  It now spells every genuine
+companion-row valuation crosswalk and Richardson generating-function crosswalk
+described above.  It now spells every genuine
 two-adic valuation with the shared `\TwoAdicValuation` command and uses the
 document-local `\FabiusGeometricNewtonCoefficient{k}{q}` family for the
 geometric Newton coefficients formerly homographic with that valuation. The

@@ -112,13 +112,90 @@ numbers rather than copying these historical values.
 The historical post-merge 2026-09-01 inventory contained 675 modules and 8,909
 lexically visible public declarations, with zero missing module headers and
 zero missing doc comments.  A fresh 2026-09-03 audit for this documentation
-pass scans 904 facade-reachable modules and 11,449 public declarations.  It
+pass scans 905 facade-reachable modules and 11,471 public declarations.  It
 finds no missing module header or declaration comment, including throughout
 `FabiusInverseExactDyadicModulus.lean`, `JacobiTwoSquareCount.lean`, and
-`LagrangeRvachevMatrix.lean`.  Relative to the 610/8,318 activation
-checkpoint, the current tree adds 294 modules and 3,131 declarations.
+`LagrangeRvachevMatrix.lean`, as well as the incoming
+`GeometricRichardsonGenerating.lean`, `TwoPhiOneReversal.lean`, and
+`QChuVandermonde.lean` APIs.  Relative to the 610/8,318 activation
+checkpoint, the current tree adds 295 modules and 3,153 declarations.
 Relative to the earlier 630/8,552 merged checkpoint, concurrent source work
-adds 274 modules and 2,897 declarations.
+adds 275 modules and 2,919 declarations.
+
+#### Terminating `₂φ₁` reversal and q-Chu--Vandermonde tranche
+
+That public API growth left the module count unchanged and added twelve
+declarations to the immediately preceding 901/11,418 live inventory.
+`TwoPhiOneReversal.lean` grows from 1+6 to 2+12 (one definition and six
+theorems added), and `QChuVandermonde.lean` grows from 0+5 to 0+10 (five
+theorems added).  The resulting q-Chu checkpoint was therefore exactly 901
+modules and 11,430 public declarations; the generating-function tranche below
+is the subsequent live increment.
+
+The exhaustive `TwoPhiOneReversal.lean` inventory is two definitions,
+`twoPhiOneFinite` and `twoPhiOneReflection`, and twelve theorems:
+`choose_two_add_succ_choose_two`, `finiteQPochhammerIn_sub_eq`,
+`finiteQPochhammerIn_reversal_ne_zero`,
+`finiteQPochhammerIn_inv_pow_self`, `twoPhiOneReflection_involutive`,
+`twoPhiOneFinite_reversal`, `twoPhiOneFinite_reversal_twice`,
+`twoPhiOneFinite_eq_sum_twoPhiOneTerm`,
+`twoPhiOne_eq_twoPhiOneFinite_inv_pow`, `twoPhiOne_reversal`,
+`twoPhiOne_reversal_twice`, and `twoPhiOne_one_eq_twoPhiOneFinite_zero`.
+The monograph label `lem:2phi1-reversal` is **Exact**: the theorem is exposed
+for the actual `twoPhiOne` tsum, the terminating bridge has no analytic
+convergence premise, reflection is involutive, and double reversal cancels
+both prefactors.  The reversal retains exactly `q,a,c,z ≠ 0` and nonvanishing
+of `(q;q)_n`, `(c;q)_n`, and `(q^{1-n}/a;q)_n`; its separate `n=0` bridge
+also covers `q=0`.
+
+The exhaustive `QChuVandermonde.lean` inventory has no definitions and ten
+theorems: `two_mul_choose_two`, `mul_sub_one_eq_mul_sub_add`,
+`finiteQPochhammerIn_div_eq_sum_chu`, `q_chu_vandermonde_first`,
+`finiteQPochhammerIn_div_eq_sum_chu_second`,
+`twoPhiOneFinite_mul_finiteQPochhammerIn_eq_chu_second`,
+`q_chu_vandermonde_second`, `q_chu_vandermonde_second_by_reversal`,
+`twoPhiOne_q_chu_vandermonde_first`, and
+`twoPhiOne_q_chu_vandermonde_second`.  The label `cor:q-chu` is **Exact**:
+both formulas have actual-`twoPhiOne` wrappers throughout their displayed
+rational domain `q ≠ 0`, `A ≠ 0`, `(q;q)_n ≠ 0`, `(C;q)_n ≠ 0`; in
+particular the second formula assumes neither `C ≠ 0` nor `(A;q)_n ≠ 0`.
+The label `prop:qchu2-by-reversal` is **Partial**.  Its provenance theorem
+uses `twoPhiOneFinite_reversal` only on the additional locus `C ≠ 0` and
+`(A;q)_n ≠ 0`; the stronger full-domain finite theorem and actual-tsum
+wrapper instead follow from a direct denominator-cleared q-Cauchy argument.
+The monograph's rational-continuation step and cleared commutative-ring
+extension remain unformalized.
+
+#### Geometric Richardson generating-function tranche
+
+`GeometricRichardsonGenerating.lean` adds one source module and exactly ten
+public declarations to the 901/11,430 q-Chu checkpoint.  The incoming q-series
+checkpoint is therefore 902 modules and 11,440 public declarations.  Its three definitions
+are `geometricRichardsonKernel`, `qPochhammerNormalizedDataSeries`, and
+`geometricRichardsonTransform`.  Its seven theorems are
+`coeff_rescale_qPochhammerSeries_eq_geometricRichardsonKernel`,
+`coeff_qPochhammerNormalizedDataSeries`,
+`geometricRichardsonTransform_generating`,
+`geometricRichardsonTransform_eq_sum_lagrange`,
+`geometricLagrangeRichardson_generating`,
+`hasSum_geometricRichardsonTransform_mul_pow`, and
+`hasSum_geometricLagrangeRichardson_mul_pow`.  Two private proof helpers are
+excluded from the public count.
+
+The comb-interpolation label `gq:thm:richardson-generating` is **Exact** via
+`geometricLagrangeRichardson_generating`.  The stronger formal layer works
+over every commutative ring, with no topology or `QRegular` hypothesis, and
+uses `Ring.inverse` to make coefficients total even when a finite
+q-Pochhammer factor is not a unit.  Over a field, `q ≠ 0` identifies this
+convolution with the canonical totalized Lagrange row.  Roots of unity need
+not be excluded for the algebraic equality, but colliding nodes are not
+thereby a valid interpolation scheme; at `q = 0`, nodes repeat for `n ≥ 2`
+and the closed Lagrange formula fails, so the report-facing bridge correctly
+excludes that base.  The analytic pair assumes a complete normed field,
+`‖q‖ < 1`, and norm-summability of the normalized data series at the chosen
+`z`; the Lagrange form additionally assumes `q ≠ 0` and proves a `HasSum`
+identity.  It does not claim a general analytic evaluation operation for
+arbitrary formal power series.
 
 #### Exact Lambert branch-pairing tranche
 
@@ -211,7 +288,7 @@ a q-gamma quotient, with positivity, symmetry, and successor recurrences; the
 latter supplies triangular Newton coefficients and the node-qualified polynomial,
 interpolation and uniqueness, divided differences, the geometric-grid specialization,
 and seven compatibility declarations for the `newtonInterpolant` family.
-The latest three q modules contribute two definitions and eighteen theorems:
+The integer/complex-upper and q-Pfaff--Saalschuetz modules contribute two definitions and eighteen theorems:
 `GaussianBinomialInteger.lean` 1+10,
 `GaussianBinomialComplexOrder.lean` 1+5, and
 `QPfaffSaalschutz.lean` 0+3.  They extend Gaussian coefficients to integer
@@ -219,12 +296,12 @@ and principal-branch complex upper parameters, derive the associated finite
 and reciprocal q-binomial series, and prove the terminating balanced
 q-Pfaff--Saalschuetz summation over a field.  Their nonzero-nome,
 strict-contraction, and finite-product nonvanishing hypotheses remain explicit.
-The latest `QuantumMultinomial.lean` leaf has no definitions and exactly five
+`QuantumMultinomial.lean` has no definitions and exactly five
 theorems.  It decomposes natural tuple antidiagonals, transports Gaussian
 symmetry to arbitrary semirings, proves q-multinomial coefficient commutation,
 and establishes the ordered noncommutative q-multinomial expansion from the
 displayed pairwise q-commutation laws.  The API is finite and division-free.
-Finally, `GaussianBinomialBounds.lean` has no definitions and exactly
+`GaussianBinomialBounds.lean` has no definitions and exactly
 six theorems: `gaussianBinomial_inv`, `one_le_gaussianBinomial`,
 `finiteQPochhammerIn_pow_le_one`,
 `gaussianBinomial_le_inv_qPochhammerInfIn`,
@@ -567,23 +644,6 @@ quadratic identities.  The coefficient, block, and phase lemmas prove
 `two_mul_choose_two` helper is private; the unique public theorem of that name
 belongs to `QChuVandermonde.lean`.
 
-The terminating summation pair is also exhaustive.
-`TwoPhiOneReversal.lean` is 1+6: the definition `Fabius.twoPhiOneFinite` and
-the theorems `Fabius.choose_two_add_succ_choose_two`,
-`Fabius.finiteQPochhammerIn_sub_eq`,
-`Fabius.finiteQPochhammerIn_reversal_ne_zero`,
-`Fabius.finiteQPochhammerIn_inv_pow_self`,
-`Fabius.twoPhiOneFinite_reversal`, and
-`Fabius.twoPhiOneFinite_eq_sum_twoPhiOneTerm`.
-`QChuVandermonde.lean` is 0+5:
-`Fabius.two_mul_choose_two`, `Fabius.mul_sub_one_eq_mul_sub_add`,
-`Fabius.finiteQPochhammerIn_div_eq_sum_chu`,
-`Fabius.q_chu_vandermonde_first`, and
-`Fabius.q_chu_vandermonde_second`.  These are generic field identities with
-their nonzero parameters and finite-product denominators explicit; removing
-the second evaluation's auxiliary `C ≠ 0` and `(A;q)_n ≠ 0` hypotheses by
-rational extension is not a separate Lean theorem.
-
 `JacobiTwoSquareCount.lean` is 0+4:
 `Fabius.sumSqRep_two_eq_four_mul_twoSquareDivisorSum`,
 `Fabius.sumSqRep_two_eq_four_mul_prod`,
@@ -910,19 +970,16 @@ The retained comb-interpolation synthesis PDF is a validated 158-page A4
 historical receipt: the current source includes a post-render update to its
 additive-dyadic chapter, so a fresh parity build remains pending.  The rebuilt
 Integration-and-Transform master retains a historical 377-page PDF.  The canonical
-q-series synthesis is a validated 354-page historical receipt.  It contains
-the earlier general finite/infinite q-Pochhammer crosswalks and six q-series
-modules; the merged fifth fixed-nome theorem, two later general
-q-Pochhammer theorems, and the twenty-five newest
-q-series/q-calculus/interpolation modules make
-final parity
-pending.  The retained 183-page primary, 130-page walkthrough, 257-page
+q-series synthesis is a validated 389-page historical receipt synchronized to
+the immediately preceding source checkpoint.  The current source adds the
+twelve-declaration terminating q-Chu/reversal closure, so final parity is
+again pending.  The retained 183-page primary, 130-page walkthrough, 257-page
 canonical frontier, 301-page Representation Frontiers, 41-page New Frontiers,
 and 88-page notation-catalogue artifacts likewise predate their current merged
 sources.  Their package notices treat those PDFs as historical validation
 receipts, not parity claims, until fresh uninterrupted three-pass builds
 complete.  The inverse-computability receipt likewise still reflects the
-historical 675/8,909 census and requires refresh against the live 904/11,449
+historical 675/8,909 census and requires refresh against the live 905/11,471
 inventory.  The canonical inverse-theory publication retains a 134-page
 artifact synchronized at its latest-main source checkpoint; the merged
 effective-inversion and superconvergent-synthesis tranches make current parity

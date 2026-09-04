@@ -63,8 +63,16 @@ module tranches and the zero-definition, three-theorem
 crosswalk. That source is a source-only successor to the fresh artifact receipt
 and requires a later synchronized three-pass build. Retained PDFs under its `assets/` tree are
 research figures, not alternate manuscript renderings. The current Lean audit
-contains 903 facade-reachable modules and 11,437 public declarations, with no
+contains 905 facade-reachable modules and 11,471 public declarations, with no
 missing module headers or declaration documentation.
+
+The sibling source-only `FabiusFunction.GeometricRichardsonGenerating` module
+(three definitions and seven theorems) does not change this q-series package's
+forward-status totals.
+Its exact comb crosswalk is
+`Fabius.geometricLagrangeRichardson_generating`, with
+`Fabius.hasSum_geometricLagrangeRichardson_mul_pow` as the analytic companion.
+No retained PDF in this group renders that unrelated promotion.
 
 That repository-wide census includes a sibling, source-only Lambert-W
 promotion rather than a new q-series result. Its exhaustive module counts are
@@ -144,13 +152,15 @@ Current packages and retained intake records:
   figures. Pinned source revisions and Git history preserve every superseded
   layout and arrival fact.
 
-  The current `q_pochhammer_q_binomial_monograph.tex` has 14,531 lines and
-  683,936 bytes. Its retained `q_pochhammer_q_binomial_monograph.pdf` is a
-  historical 354-page A4 artifact of 3,030,302 bytes, with SHA-256
-  `1050a9a3b0b7a8df8e7de0870946ae64940d7d7839a2f20427be0ebe14b0ba8c`.
-  That PDF was built in exactly three guarded serial passes (343, 354, and 354
-  pages) from the preceding 14,381-line, 675,239-byte source with SHA-256
-  `240bff72fb47562e9a8fd87085b5a3a96d738189714518db17988f7c4ac15d31`.
+  The current `q_pochhammer_q_binomial_monograph.tex` has 16,359 lines and
+  812,257 bytes, with SHA-256
+  `e90f46955d9a9792ce469d29ceaa3aa538874eb1e94cf4c2dd7e50dbaf63b10e`.
+  Its retained `q_pochhammer_q_binomial_monograph.pdf` is a historical
+  389-page A4 artifact of 3,254,138 bytes, with SHA-256
+  `b8add607c85ee35be98dabf36879e1d45fb093c6b453e93679c80295fae715bc`.
+  That PDF was synchronized to the preceding 16,339-line, 810,779-byte source
+  checkpoint with SHA-256
+  `14c444feb14c435bc300becd9c8cd2765c1e96f608dd79da462becc41b28ed22`.
   Its A4 boxes, text extraction, embedded/subset Type-1 fonts including
   Libertinus, absence of Type-3 fonts, and targeted visual review passed at
   that checkpoint. The current TeX adds explicit Bell-multiplicity and
@@ -166,10 +176,10 @@ Current packages and retained intake records:
   integer/complex-order Gaussian, q-Pfaff--Saalschuetz, quantum-multinomial,
   and Gaussian reciprocity/growth APIs, and the three-theorem
   `GeometricPochhammerNormalConvergence.lean` outer-product API. The forward
-  crosswalk is now 171 Exact, 85 Partial, 18 None, and 8 interface rows; the
-  source ledger is 69 Lean-proved, 409 human-proved frontier, 60 not
+  crosswalk is now 170 Exact, 86 Partial, 18 None, and 8 interface rows; the
+  source ledger is 79 Lean-proved, 399 human-proved frontier, 60 not
   applicable, and 9 conjectures. No PDF was generated locally while resolving
-  this source-only merge, so the retained 354-page artifact does not render
+  this source-only merge, so the retained 389-page artifact does not render
   the current source. PDF files retained
   beneath `assets/` are vector research figures, not manuscript builds.
   Manuscript result labels and numerical checks remain
@@ -862,7 +872,7 @@ claims about the current canonical source. The canonical synthesis's current
 source and retained historical PDF are identified by the single exact receipt
 in the detailed package record above.
 
-The latest validated forward formalization ledger has 282 rows: 171 Exact, 85
+The latest validated forward formalization ledger has 282 rows: 170 Exact, 86
 Partial, 18 with no counterpart, and 8 interface-only.  The basic
 geometric-uniform row remains Partial under the strict ledger rule: the Lean
 suite proves the canonical product-law realization, including the generic
@@ -878,14 +888,14 @@ inside-`q^2` Pochhammer factorization and the outer product's locally uniform
 (normal) convergence are now formal for every complex strict contraction,
 including `q = 0`. The compound spectral theorem remains partial at its named
 centered/MGF wrappers and exterior reciprocal clauses. The algebra of
-q-shifted factorials now accounts for 11 exact, 2 partial, and 2
-unformalized results; the q-integer and Gaussian-coefficient chapter for
-8 exact, 1 partial, and 0 unformalized results. The finite
-q-binomial/inversion chapter now accounts for 9 exact, 1 partial, and 0
-unformalized results; the weighted chapter for 3 exact, 2 partial, and 3
-unformalized results; and the basic-hypergeometric chapter for 1 exact, 3
-partial, and 5 unformalized results. The cyclotomic chapter now has 6 exact,
-1 partial, and 2 unformalized results. The exact rows include the primary and
+q-shifted factorials now accounts for 13 exact, 1 partial, and 1
+unformalized result; the q-integer and Gaussian-coefficient chapter for
+9 exact, 0 partial, and 0 unformalized results. The finite
+q-binomial/inversion chapter now accounts for 10 exact, 0 partial, and 0
+unformalized results; the weighted chapter for 5 exact, 3 partial, and 0
+unformalized results; and the basic-hypergeometric chapter for 6 exact, 3
+partial, and 0 unformalized results. The cyclotomic chapter now has 9 exact,
+0 partial, and 0 unformalized results. The exact rows include the primary and
 second q-Cauchy identities, both weighted-Pascal recurrences,
 elementary--complete orthogonality, and weighted symmetric-function inversion.
 Their adjacent strengthenings are recorded human-readably in the canonical
@@ -919,8 +929,8 @@ compatibility spelling of its primary identity),
 `QCatalan.lean` (one definition, eleven theorems),
 `QLucas.lean` (zero definitions, seven theorems; its local
 `two_mul_choose_two` is private),
-`TwoPhiOneReversal.lean` (one definition, six theorems),
-`QChuVandermonde.lean` (zero definitions, five theorems, including the public
+`TwoPhiOneReversal.lean` (two definitions, twelve theorems),
+`QChuVandermonde.lean` (zero definitions, ten theorems, including the public
 `two_mul_choose_two`),
 `JacobiTwoSquareCount.lean` (zero definitions, four theorems),
 `QBetaIntegral.lean` (one definition, eight theorems),
@@ -1235,11 +1245,12 @@ closes the nonzero two-square count and both Lambert forms, retaining the
 prime-product valuation condition and requiring only `‖q‖ < 1` for the two
 complete-normed-field analytic identities.
 The newest analytic/algebraic tail adds `QBetaIntegral.lean` (one definition,
-eight theorems) and `NewtonInterpolation.lean` (two definitions, thirteen
+eight theorems) and `NewtonInterpolation.lean` (three definitions, nineteen
 theorems). It formalizes the Jackson q-beta product and q-gamma evaluation,
 symmetry, positivity, and recurrences, together with generic Newton
 interpolation and its geometric-grid specialization; the interpolation
-polynomial is named `nodeNewtonPoly` to remain distinct from the older
+polynomial is named `nodeNewtonPoly`, with the definitionally identical
+`newtonInterpolant` compatibility surface, and remains distinct from the older
 Newton-basis generating-function `newtonPoly`.
 The final three-module tail adds integer and principal-complex upper-index
 Gaussian coefficients and the terminating balanced q-Pfaff--Saalschütz sum:
@@ -1259,3 +1270,11 @@ closed, while the compound
 greater-than-one row remains Partial at its asymptotic clauses. The
 primitive-root value in the Babbage corollary is exact, while its derivative
 clause keeps that compound row Partial.
+The terminating basic-hypergeometric closure consists of
+`TwoPhiOneReversal.lean` (two definitions and twelve theorems) and
+`QChuVandermonde.lean` (ten theorems). It makes both q-Chu evaluations and the
+terminating reversal lemma exact for the actual `twoPhiOne` tsum. The separate
+full-domain-by-reversal proposition remains Partial: the provenance theorem
+needs `C ≠ 0` and `(A;q)_n ≠ 0`, while the full-domain result is proved by
+finite q-Cauchy; rational continuation and the cleared commutative-ring
+extension remain outside Lean.

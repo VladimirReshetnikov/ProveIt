@@ -68,8 +68,15 @@ It preserves the distinct modal, Mellin, regular-variation, spline,
 reciprocal-product, Euler--Maclaurin, Ruffa, Thue--Morse, and interpolation
 results while stating their common Gaussian--Pascal and Jackson--Newton spine
 once. Its 180-row source disposition and 151-row historical-ledger audit pass;
-the retained 158-page PDF is a historical checkpoint pending a fresh render of
-the current notation-normalized source.
+its 232-row theorem concordance now maps canonical label
+`gq:thm:richardson-generating` exactly to
+`Fabius.geometricLagrangeRichardson_generating` in the new three-definition,
+seven-theorem `FabiusFunction.GeometricRichardsonGenerating` module. The module
+also exposes `Fabius.hasSum_geometricLagrangeRichardson_mul_pow` as the analytic
+companion under its explicit convergence hypotheses. The retained 158-page PDF
+predates both the notation normalization and this chapter-01 crosswalk, so it
+remains a historical checkpoint; no PDF was generated for the source-only
+Richardson update.
 
 [`fabius_information_frontier/`](fabius_information_frontier/) remains an
 archival information-geometry intake. Its arrival and operational ledgers

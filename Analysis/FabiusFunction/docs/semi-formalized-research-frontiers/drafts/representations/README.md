@@ -26,16 +26,17 @@ New standalone intake members:
   deterministic experiment in the recorded and a newer compatible
   environment; and rebuilt the figures and report without Type 3 fonts.  The
   retained seven PDFs comprise 46 pages: a 40-page A4 report and six one-page
-  vector figures.  The current live TeX is 3,153 lines and 112,391 bytes with
+  vector figures. A historical 3,153-line, 112,391-byte source checkpoint had
   SHA-256
   `34241042a005ea529219aca0761c121760a2574324bbb2300c365012cc1435c2`.
-  It is newer than the retained report PDF, whose 819,265 bytes have SHA-256
+  That source checkpoint is newer than the retained report PDF, whose 819,265
+  bytes have SHA-256
   `0be7f0943e8d5fb795878aa0b3ecb21af25680155ad214ee2f1598de50e705ea`;
-  a source-parity rebuild is pending. The active 33-entry mixed
-  current-source/retained-artifact checksum ledger covers every non-ledger
-  file, including the preserved immutable arrival ledger
-  `fabius_dyadic_chaos_frontier/SHA256SUMS.arrival.txt`, without asserting that
-  the retained PDF renders the current TeX.
+  a source-parity rebuild is pending. The repository-wide checksum-ledger
+  retirement removed the former active and arrival ledger files; their
+  historical contents remain recoverable from Git history. No live checksum
+  manifest or current-source digest is maintained, and the retained PDF is not
+  asserted to render the current TeX.
 
   The [label-complete Lean crosswalk](fabius_dyadic_chaos_frontier/LEAN_CROSSWALK.md)
   inventories all 41 nonconjectural report results: 12 Unformalized, 20
@@ -829,8 +830,23 @@ Thus `is:p3:cor:forced-superconvergence` and
 concordance. This source postdates the retained Representation and inverse
 PDFs, which remain historical artifacts rather than renders of the promotion.
 The corresponding historical documentation checkpoint was 671 modules and
-8,858 public declarations. The later live repository census is 903 modules
-and 11,437 public declarations. It includes the sibling source-only Lambert
+8,858 public declarations. The later live repository census is 905 modules
+and 11,471 public declarations. It includes the unrelated sibling source-only
+`FabiusFunction.GeometricRichardsonGenerating` module (three definitions and
+seven theorems), whose exact comb-manuscript crosswalk is
+`Fabius.geometricLagrangeRichardson_generating`. It also includes the
+source-only `FabiusFunction.LagrangeRvachevMatrix` module (three definitions,
+one abbreviation, and six theorems). Its exact finite matrix identity
+`Fabius.lagrangeRvachevEncoderMatrix_mul_decoderMatrix` closes the comb row
+`gq:thm:gaussian-Appell-biorthogonality` and, together with encoder
+nonnegativity, both row-unit theorems, and the conditional signed-decoder
+theorem, closes representation proposition `prop:lag-markov`. The larger
+`thm:lag-right-inverse` remains Partial: Lean proves only the node-space
+identity `U B = I`, not a coefficient-space projector identity, and the
+negative-entry conclusion retains the source proposition's strictly positive
+row-overlap hypothesis. Neither source-only promotion is rendered by the
+retained Representation or inverse PDFs; no PDF was rebuilt for them. The
+census also includes the sibling source-only Lambert
 branch-coordinate tranche: `LambertWBranchPairing.lean` has 0 definitions + 7
 theorems, `LambertWGapBijection.lean` has 4 + 16, and
 `LambertWBranchSymmetry.lean` has 0 + 9. These three modules prove the exact

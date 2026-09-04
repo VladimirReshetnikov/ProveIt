@@ -92,24 +92,18 @@ validation state. Deleted checksum manifests must not be recreated. Historical
 SHA-256 values recorded directly in this README and in `PROVENANCE.md` remain
 provenance receipts for the named artifacts.
 
-The retained `q_pochhammer_q_binomial_monograph.pdf` is a 378-page A4
-historical build of the then-current master source (15,630 lines, 764,952 bytes,
-SHA-256 `403a25dccadc15e7a34bedd8d28a2dc3369cb6e6a046cd199a30ed178742a32d`).
-The PDF is 3,175,603 bytes with SHA-256
-`5d0dac5a8d1cba7bedab9055a51f59478054de22969dcf75b0f58ce3f3c265bc`.
-It was built by exactly three serial
-`pdflatex -interaction=nonstopmode -halt-on-error` passes, which produced 378,
-378, and 378 pages, with `makeindex` run on the `.idx` file after each pass.
-3 overfull hboxes All pages are A4. `pdffonts` reports 43 font rows, all
-embedded and subsetted, including 5 Libertinus rows, with no Type-3
-fonts. The files under `assets/experiments/**/figures/` remain research
+The retained `q_pochhammer_q_binomial_monograph.pdf` is a historical 389-page
+A4 artifact of 3,254,138 bytes with SHA-256
+`b8add607c85ee35be98dabf36879e1d45fb093c6b453e93679c80295fae715bc`.
+It was synchronized to the source checkpoint at commit
+`736a241d1a025d64ac73b1573b17a7b3fc02652d`: 16,339 lines and 810,779
+bytes, with SHA-256
+`14c444feb14c435bc300becd9c8cd2765c1e96f608dd79da462becc41b28ed22`.
+The checked working source now contains newer editorial changes, so this is
+historical artifact metadata only and no render parity with the current TeX is
+claimed. `pdffonts` reports 43 font rows, all embedded and subsetted, with no
+Type-3 fonts. The files under `assets/experiments/**/figures/` remain research
 figures, not publication manuscripts.
-
-That source hash and the PDF hash record a synchronized historical checkpoint.
-The live TeX now includes the later exact even/odd Thue--Morse partition and
-Jacobi two-square crosswalks and therefore postdates the retained PDF; no
-current source/PDF parity is claimed until a fresh three-pass build is
-completed.
 
 The current source includes exhaustive crosswalks for `QPochhammerEntire`
 (zero definitions
@@ -142,18 +136,20 @@ definitions and seven public theorems). Its local `two_mul_choose_two` helper
 is private; the unique public declaration of that name belongs to
 `QChuVandermonde`. The analytic and interpolation tail adds
 `QBetaIntegral` (one definition and eight theorems) and
-`NewtonInterpolation` (two definitions and thirteen theorems), covering the
+`NewtonInterpolation` (three definitions and nineteen theorems), covering the
 Jackson q-beta product and arbitrary-node/geometric-grid interpolation.
-The collision-free polynomial API is `nodeNewtonPoly`,
-`nodeNewtonPoly_succ`, `eval_nodeNewtonPoly`,
-`degree_nodeNewtonPoly_lt`, `nodeNewtonPoly_eq_interpolate`,
-`eq_nodeNewtonPoly_of_eval_eq`, and `coeff_nodeNewtonPoly_self`; the remaining
-eight Newton declarations retain their incoming names.
+The primary collision-avoiding surface is `nodeNewtonPoly` together with its
+six `nodeNewtonPoly`-qualified theorems.  The compatibility surface is
+`newtonInterpolant`, `newtonPoly_succ`, `eval_newtonPoly`,
+`degree_newtonPoly_lt`, `newtonPoly_eq_interpolate`,
+`eq_newtonPoly_of_eval_eq`, and `coeff_newtonPoly_self`; the other eight
+declarations supply the recursive coefficients, divided differences, and
+geometric-grid specialization.
 The newest finite-q surfaces are `GaussianBinomialInteger` (one definition
 and ten theorems), `GaussianBinomialComplexOrder` (one definition and five
 theorems), `QPfaffSaalschutz` (zero definitions and three theorems),
-`TwoPhiOneReversal` (one definition and six theorems),
-`QChuVandermonde` (zero definitions and five theorems),
+`TwoPhiOneReversal` (two definitions and twelve theorems),
+`QChuVandermonde` (zero definitions and ten theorems),
 `QuantumMultinomial` (zero definitions and five theorems), and
 `GaussianBinomialBounds` (zero definitions and six theorems), together with
 expanded Euler, Jacobi, and Rogers--Szegő material.
@@ -164,9 +160,12 @@ The newest combinatorial and certification tranche adds
 binary-word inversion and path-area generating functions, rectangular-box
 partition generating functions and counts, finite telescoping certificates,
 recurrence uniqueness, and rational-identity specialization. The live facade
-audit at the synchronized PDF checkpoint contained 675 modules and 8,909
-public declarations; those figures are historical rather than a census of the
-larger current tree.
+audit now contains 905 modules and 11,471 public declarations, with no
+documentation gaps. The sibling `FabiusFunction.GeometricRichardsonGenerating`
+module (three definitions and seven theorems) has the exact comb-manuscript
+crosswalk
+`Fabius.geometricLagrangeRichardson_generating`; it does not change this
+monograph's forward-status inventory or make its retained PDF current.
 
 The latest `ThueMorseSparseProuhet` partition tranche adds no definitions and
 three theorems to that module's prior twelve-theorem surface, for a current
@@ -200,14 +199,15 @@ entireness, zero-locus, reciprocal-power, and analytic-order results rather
 than duplicating their analytic proofs. In `QBinomialTheoremInfinite`,
 `finiteQPochhammerIn_zero_left` remains the unique declaration owned by
 `GaussianBinomialAtOne` and is imported rather than redeclared. The forward
-status ledger is 171 Exact, 85 Partial, 18 None, and 8 interface rows; the
+status ledger is 170 Exact, 86 Partial, 18 None, and 8 interface rows; the
 original 191-result pre-Fabius core is 36/29/123/3, and the
-completed pinned-source concordance records 69 Lean-proved rows, 409
-human-proved frontier rows, 60 not-applicable rows, and 9 conjectures.  Its
+completed source concordance records 79 Lean-proved rows, 399 human-proved
+frontier rows, 60 not-applicable rows, and 9 conjectures.  Its
 immutable source inventory and editorial dispositions remain unchanged; the
-generator's current-status projection now advances the two retained Jacobi
-two-square rows and the partition-symmetry row, while the later live-source
-promotion of the Prouhet-partition row remains outside the pinned ledger.
+generator's current-status projection records the q-Chu, terminating-reversal,
+q-Pfaff, two retained Jacobi two-square, and partition-symmetry advances, while
+the later live-source promotion of the Prouhet-partition row remains outside
+the pinned ledger.
 The basic geometric-uniform row remains Partial under the strict ledger rule:
 the Lean suite covers the canonical product-space law's absolute convergence,
 the interval and exact support, mean one half, reflection, affine
@@ -272,12 +272,15 @@ two Pascal laws, and reciprocal series are Exact; so are the upper-parameter
 and generalized complex-order series on their stated norm domains.  The
 separate complex-parameter property and classical-specialization rows remain
 None and are not inferred from those series identities.
-The terminating two-phi-one reversal and both q-Chu--Vandermonde evaluations
-are Exact on their explicitly recorded generic-field domains.  The second
-q-Chu theorem retains the reversal proof's auxiliary assumptions that its
-denominator parameter is nonzero and that its numerator finite product does
-not vanish.  The monograph's subsequent rational-extension removal of those
-two assumptions is not a separate Lean theorem.
+The two q-Chu--Vandermonde evaluations are Exact for the actual `twoPhiOne`
+tsum on their full displayed domain: the second no longer requires `C ≠ 0` or
+`(A;q)_n ≠ 0`.  The terminating reversal lemma is also Exact, including the
+finite-to-tsum bridge, involutivity of the reflected parameters, and double
+application.  The separate proposition deriving the full second evaluation
+by reversal remains Partial: its compiled reversal route retains those two
+auxiliary hypotheses, while the full-domain proof uses direct finite q-Cauchy;
+the manuscript's rational-continuation and commutative-ring extensions remain
+unformalized.
 The quantum-multinomial row is Exact over every semiring under the stated
 pairwise q-commutation laws and commutation of q with each variable; neither
 centrality of q nor commutativity of the ambient semiring is claimed.
@@ -299,7 +302,7 @@ reciprocal-product expansions, the complex upper-parameter series, and the
 generalized q-binomial theorem. The remaining complex-Gaussian property and
 classical-limit rows stay unformalized.
 
-The retained PDF and its named source hash were synchronized at the recorded
-build checkpoint.  The present TeX is source-newer because of the exact
-even/odd partition integration.  PDFs are rebuilt in batches, at most about
-once per hour; the figures above describe only the retained historical PDF.
+The retained PDF and the source at commit
+`736a241d1a025d64ac73b1573b17a7b3fc02652d` were synchronized at the
+historical checkpoint recorded above. The checked working source is newer;
+these edits are source-only and make no current source/PDF parity claim.

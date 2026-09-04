@@ -54,8 +54,9 @@ declaration.  The formal API was audited at the source snapshot
 declarations listed below were unchanged when rechecked at intake head
 \path{ffcdbdac47246bd553f272bd1ceac441f8dd4f0c}.  The current crosswalk also
 audits the later source modules
-\path{FabiusFunction.LagrangeRvachevSynthesis} and
-\path{FabiusFunction.LagrangeRvachevMatrix}; that current formal API is
+\path{FabiusFunction.LagrangeRvachevSynthesis},
+\path{FabiusFunction.LagrangeRvachevMatrix}, and
+\path{FabiusFunction.GeometricRichardsonGenerating}; that current formal API is
 separate from the immutable manuscript source pin.
 
 The repository already formalizes substantial finite foundations:
@@ -120,10 +121,12 @@ multiplicative normalization is $\alpha=0$, $\beta=c$; the reflected
 boundary normalization used for $\RvachevUp$ is $\alpha=1$, $\beta=-1$.
 \end{definition}
 
-Finite interpolation requires distinct nodes, equivalently
-$q^d\ne1$ for $1\le d\le n$.  Most algebraic formulae remain valid over an
-arbitrary field under that hypothesis.  The convergence and Lebesgue theory
-will assume
+Finite interpolation requires the nodes to be pairwise distinct.  For
+$q\ne0$, this is equivalent to $q^d\ne1$ for $1\le d\le n$.  The exceptional
+base $q=0$ gives a distinct grid only for $n\le1$ and repeated zero nodes
+thereafter.  Most algebraic formulae remain valid over an arbitrary field
+under the direct distinctness hypothesis.  The convergence and Lebesgue
+theory will assume
 \begin{equation}
  0<q<1,
  \qquad c>0,
@@ -714,6 +717,25 @@ where Euler's identity
 $(a;q)_\infty=\sum_{m\ge0}(-1)^mq^{\binom m2}a^m/(q;q)_m$
 was used with $a=qz$.
 \end{proof}
+
+\paragraph{Lean crosswalk.}
+The exact formal-series counterpart is
+\path{Fabius.geometricLagrangeRichardson_generating} in
+\path{FabiusFunction.GeometricRichardsonGenerating}.  It holds over a field
+for $q\ne0$; no root-of-unity exclusion is needed for this algebraic identity
+with Lean's totalized inverses.  Genuine interpolation still requires the
+nodes to be pairwise distinct, equivalently for nonzero $q$,
+$q^d\ne1$ for $1\le d\le n$ in each row.  The separate explicit-convolution
+theorem \path{Fabius.geometricRichardsonTransform_generating} is unconditional
+over commutative rings, including $q=0$, but does not supply a Lagrange
+interpolation interpretation there.  In the formal theorem,
+$(qz;q)_\infty$ denotes the Euler-coefficient series
+\path{qPochhammerSeries} after \path{PowerSeries.rescale} by $q$, not a claim
+that a literal fixed-$q$ product converges $z$-adically.  The analytic companion
+\path{Fabius.hasSum_geometricLagrangeRichardson_mul_pow} is a
+\path{HasSum} statement over a complete normed field under
+$\lVert q\rVert<1$, $q\ne0$, and absolute summability of the normalized data
+series at $z$.
 
 This factorization will become a $q$-Borel-type transform of the Fabius
 moment sequence in \Cref{gq:sec:fabius-boundary-transform}.
