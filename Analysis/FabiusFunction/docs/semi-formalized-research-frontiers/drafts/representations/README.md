@@ -852,7 +852,19 @@ and geometric decoder formulas combine with the existing synthesis theorems
 to make comb rows `gq:prop:q-Appell-falling` and
 `gq:thm:gaussian-Appell-decoder` Exact. It asserts neither analytic
 reciprocal-MGF convergence nor decoder optimality and is likewise absent from
-the retained PDFs. The newest three declarations
+the retained PDFs. The subsequent source-only
+`FabiusFunction.RvachevLagrangeNodesOnly` module contributes one definition
+and fourteen theorems and promotes representation corollary
+`cor:lag-nodes-only` to Exact/Complete by composition. It formalizes the
+ordinary-derivative cutoff, the raw omitted-node
+elementary-symmetric/Rvachev--Appell expansion, rational coefficient descent
+and rational lattice samples, and the formal complete-Bell identity in the
+negated centered cumulants with the Bernoulli--Mersenne even specialization.
+Rationality is not claimed at irrational evaluation points, the Bell identity
+does not supply analytic reciprocal-MGF convergence, and neither
+`thm:lag-cardinal` nor the compound `thm:lag-right-inverse` is promoted. This
+source-only addition is not rendered in the retained Representation PDFs.
+The newest three declarations
 strengthen the existing sibling `FabiusFunction.GaussianBinomialCumulants`
 module with second-derivative, raw-second-moment, and variance-numerator
 identities; they likewise do not change the Representation or inverse results.

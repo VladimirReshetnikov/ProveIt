@@ -92,10 +92,12 @@ For every $0\le j\le d$ and every $t\in\RealNumbers$,
  &=\lambda_j\sum_{n=0}^{d}(-1)^{d-n}e_{d-n}^{(j)}\Gd_n(t).
  \label{eq:lag-nodes-only}
 \end{align}
-Thus rational nodes give rational amplitudes.  More explicitly, the
-$\gamma_{2r}$ are complete Bell polynomials in the negated Bernoulli
-cumulants of \eqref{eq:appell-pair}, so no implicit linear solve is hidden in
-\eqref{eq:lag-cardinal}.
+Thus rational nodes give a deconvolved cardinal polynomial over
+$\RationalNumbers$, and rational evaluation points give rational amplitudes.
+No rationality is asserted for evaluation at an arbitrary irrational real.
+More explicitly, the $\gamma_{2r}$ are complete Bell polynomials in the
+negated Bernoulli cumulants of \eqref{eq:appell-pair}, so no implicit linear
+solve is hidden in \eqref{eq:lag-cardinal}.
 \end{corollary}
 
 \begin{proof}
@@ -109,6 +111,41 @@ and applying $\mathscr D_ux^n=\Gd_n(x)$ term by term gives
 \eqref{eq:lag-nodes-only}.  The Bell--cumulant description is exactly the
 coefficient identity following \eqref{eq:appell-pair}.
 \end{proof}
+
+\paragraph{Exact Lean counterpart.}
+The source-only module \path{FabiusFunction.RvachevLagrangeNodesOnly}
+formalizes this corollary completely, by composition rather than through one
+monolithic wrapper theorem.  The derivative identity is
+\path{eval_rvachevDeconvolvedPolynomial_lagrangeBasis_eq_sum_even_iterateDerivative},
+under the displayed pairwise-distinct-node hypothesis; the raw omitted-node
+expansion is
+\path{eval_rvachevDeconvolvedPolynomial_lagrangeBasis_eq_nodalWeight_mul_sum_appell};
+and \path{lagrangeRvachevDecoder_eq_nodalWeight_mul_sum_appell} gives its
+lattice-sampled form.  Here \path{Lagrange.nodalWeight} is the displayed
+$\lambda_j$, and \path{rvachevAppellPolynomial} is $\Gd_n$.
+
+For rational nodes,
+\path{rvachevDeconvolvedPolynomialRat},
+\path{map_rvachevDeconvolvedPolynomialRat_lagrangeBasis}, and
+\path{lagrangeRvachevDecoder_eq_ratCast} give respectively the rational
+polynomial, its coefficientwise real cast, and rationality at $t=k/M$.
+The last identity is totalized at $M=0$ in Lean; its use in synthesis still
+has the separate positive, admissible-mesh hypotheses of
+\Cref{thm:lag-cardinal}.  It does not imply rational values at irrational
+$t$.
+
+Finally,
+\path{rvachevReciprocalMomentRat_eq_completeBellPolynomial_neg_centeredCumulant}
+identifies the full reciprocal coefficient sequence $\gamma$ with complete
+Bell polynomials in the negated full centered cumulants, while
+\path{momentCumulant_rvachevRawMomentRat_even_eq_bernoulliMersenne} and the
+existing \path{centeredRvachevFullCumulant_odd} give the even
+Bernoulli--Mersenne formula and odd vanishing.  This is an equality of formal
+coefficient sequences; it does not assert analytic convergence of a
+reciprocal moment-generating function.  Accordingly
+\Cref{cor:lag-nodes-only} is Exact/Complete in Lean.  This promotion does not
+promote the global synthesis statement \Cref{thm:lag-cardinal} or any of the
+still-human clauses of \Cref{thm:lag-right-inverse}.
 
 \subsection{The exact right inverse and its projector}
 

@@ -108,6 +108,33 @@ Cauchy--Binet clauses remain human proofs. The crosswalk therefore remains at
 80 canonical assertion rows (including 11 conjectures); no assertion-count
 delta accompanies these evidence-status changes.
 
+The compiled source-only `FabiusFunction.RvachevLagrangeNodesOnly` module
+promotes `cor:lag-nodes-only` from a human proof with no Lean anchor to an
+Exact/Complete compositional counterpart. Its exhaustive public surface is
+one definition, `rvachevDeconvolvedPolynomialRat`, and fourteen theorems:
+`map_rvachevDeconvolvedPolynomialRat`,
+`rvachevDeconvolvedPolynomial_eq_sum_appell`,
+`eval_rvachevDeconvolvedPolynomial_eq_sum_even_iterateDerivative`,
+`rvachevDeconvolvedPolynomial_prod_X_sub_C_eq_sum_appell`,
+`eval_rvachevDeconvolvedPolynomial_lagrangeBasis_eq_sum_even_iterateDerivative`,
+`eval_rvachevDeconvolvedPolynomial_lagrangeBasis_eq_nodalWeight_mul_sum_appell`,
+`lagrangeRvachevDecoder_eq_nodalWeight_mul_sum_appell`,
+`map_lagrangeBasis_ratCast`,
+`map_rvachevDeconvolvedPolynomialRat_lagrangeBasis`,
+`lagrangeRvachevDecoder_eq_ratCast`,
+`rvachevRawMomentRat_eq_centeredRvachevFullMoment`,
+`momentCumulant_rvachevRawMomentRat_eq_centeredRvachevFullCumulant`,
+`momentCumulant_rvachevRawMomentRat_even_eq_bernoulliMersenne`, and
+`rvachevReciprocalMomentRat_eq_completeBellPolynomial_neg_centeredCumulant`.
+Together they give the printed derivative cutoff, the raw omitted-node
+elementary-symmetric/Appell expansion, rational coefficient descent and
+rational lattice values, and the complete-Bell link to formal centered
+cumulants. This is exact by assembly rather than by a single wrapper theorem.
+It does not claim rational values at irrational evaluation points or analytic
+convergence of the reciprocal MGF, and it does not promote either
+`thm:lag-cardinal` or the larger `thm:lag-right-inverse`. The retained package
+PDF predates this source-only status promotion and was not rebuilt.
+
 The Q12 root transition is exact computer-assisted mathematics: rational
 polynomials and rational Sturm chains decide root counts. Approximate complex
 root locations are diagnostics only.
