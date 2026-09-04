@@ -96,14 +96,28 @@ of the first fifteen incoming leaves are directly relevant here; the later
 Stirling, Wright-omega two-orders, and unit-series power leaves are also focused.
 `TransseriesWellBased.lean` contributes seven written declarations plus its two
 generated additive twins, and `WrightOmega.lean` contributes one definition
-and thirteen theorems. They now crosswalk the following parts of this volume:
+and thirteen theorems. `TransseriesMonomialUniqueness.lean` now has four
+theorems, adding `tendsto_const_mul_plMonomial_div_one_iff` and
+`isEquivalent_const_mul_plMonomial_iff` to its two compatibility wrappers.
+The new `TransseriesWrightOmegaTerms.lean` leaf has ten theorems:
+`plMonomial_one_zero_eventuallyEq`, `plMonomial_zero_one_eventuallyEq`,
+`plMonomial_neg_one_one_eventuallyEq`, `exponents_of_wrightOmega`,
+`exponents_of_wrightOmega_sub`, `exponents_of_wrightOmega_residual`,
+`not_pure_of_wrightOmega_three_terms`,
+`not_isEquivalent_pure_power_wrightOmega_sub`,
+`tendsto_wrightOmega_div_plMonomial_zero_atTop`, and
+`isLittleO_wrightOmega_residual_plMonomial_zero`. They now crosswalk the
+following parts of this volume:
 
 - Exact: the sequence-scale/Poincaré definitions, coefficient limits and
   uniqueness; flatness and the invisible-function proposition; Dickson's
   lemma; Neumann's lemma through literal `OrderDual` wrappers (the manuscript's
   total order is a specialization); the analytic power–log dominance
   trichotomy; the logarithmic block-class equivalence;
-  `plt:prop:mot-omega-basic` over the reals only; the abstract Bell derivation
+  `plt:prop:mot-omega-basic` over the reals only; the unique first three
+  Wright-omega monomial terms and the real-`atTop` content of
+  `plt:cor:mot-both-generators-needed` and
+  `plt:prop:mot-one-generator-fails`; the abstract Bell derivation
   recurrence; the
   ordinary/exponential partial-Bell normalization; `p0:lem:bell-conversion`,
   `p0:lem:power-log`, and `p0:cor:exp-log-jets`; the integer block derivative
@@ -121,8 +135,8 @@ and thirteen theorems. They now crosswalk the following parts of this volume:
   error law but omits the closing asymptotic clause; the three abstract
   differential-minimality assertions are exact but the concrete germ growth
   and algebraic-independence clauses are not; both concluding Wright-omega
-  equivalences and the monomial uniqueness engine are exact, but the explicit
-  second-order block and full arbitrary-scale corollary are not packaged;
+  equivalences are exact, but the four-term quantitative expansion and an
+  abstract transseries-scale construction are not packaged;
   staircase inversion omits the Fourier/interpolation layer; the nearest-
   integer theorem omits its real-argument and branch-family claims; and the
   quadratic coefficient recurrence is checked without the assembled square-

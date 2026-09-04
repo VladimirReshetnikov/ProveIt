@@ -41,19 +41,25 @@ source-inventory rows. The obsolete live checksum ledger was retired as upstream
 intended. At that checkpoint the register had 60 `Lean`, 35 `partial`, and 111 `none` rows;
 these totals include inherited claims and are not a fresh audit of all 206 rows.
 The latest upstream rescaling and formal-power recurrence upgrades are retained;
-the new Bernoulli formal-logarithm and Abel sources remain separately pending.
+the Bernoulli formal-logarithm and Abel sources were compiled in the following
+checkpoint and are reflected in the current register rather than left pending.
 The upstream duplicate-crosswalk validator's eight regression tests pass.
 
-The subsequent Nörlund synchronization incorporates main through
-`2ccc7f787becde416b234d40093876eac9f9c35e` and the source checkpoint
-`16975fdfd`. The regenerated register has 207 results: 60 `Lean`, 35 `partial`,
-and 112 `none`. `NorlundGeneralized` and the coefficient-base-change extension
-of `BernoulliFormalLog` have independent source/API reviews but still await
-compilation; no coverage upgrade is inferred from those reviews. Their human
-proofs now include normalization, zero-ring boundaries, and degree zero.
-The inherited PDF predates these latest source edits. PDF rebuilding remains
-skipped in this work at the user's request, without discarding the upstream
-render or claiming current render parity.
+The subsequent Nörlund synchronization incorporates the intermediate main
+checkpoint `2ccc7f787becde416b234d40093876eac9f9c35e`, source checkpoint
+`16975fdfd`, and current pinned main
+`b50d5349ec2db42d056fe3a6f6c7286365ff77ed`. The pre-sweep register at that
+source checkpoint had 207 results: 64 `Lean`, 38 `partial`, and 105 `none`.
+After the focused checks and exact symmetric-function promotions, the live
+register has 69 `Lean`, 35 `partial`, and 103 `none`. `NorlundGeneralized` and the coefficient-base-change extension
+of `BernoulliFormalLog` have now passed focused compiler validation. The latter
+makes `lem:merged-log-base-change` Exact; the former strengthens the two
+Nörlund rows while their specifically named residual gaps remain Partial. Their
+human proofs include normalization, zero-ring boundaries, and degree zero. The
+current merged source census is 987 modules and 12,207 explicit declarations.
+The inherited 208-page, 2,014,975-byte PDF predates these latest source edits.
+PDF rebuilding remains skipped in this work at the user's request, without
+discarding the upstream render or claiming current render parity.
 
 The present merge preserves the independently compiled Bell-normalization,
 Bell-support, Cauchy-polynomial, and second-kind reverse-row correspondences and
@@ -67,6 +73,16 @@ for every `n`, including `n < k` where both sides vanish. The separately merged
 `StirlingSecondReverseRowIdentity.second_reverse_row_sum` and its triangular
 generic wrapper have also passed focused compilation. The wrapper now reuses
 the all-boundary ring theorem, removing a separate private rational derivation.
+
+The present merge preserves the independently compiled Bell-normalization,
+Bell-support, Cauchy-polynomial, and second-kind reverse-row correspondences.
+Together with the upstream results above, the regenerated 207-row register is
+classified as 63 `Lean`, 36 `partial`, and 108 `none`. The compiled
+`StirlingSecondReverseRow.second_reverse_row` is the declaration used to close
+the manuscript's reverse-row identity. The separately merged
+`StirlingSecondReverseRowIdentity` source contains the collision-free alternate
+`second_reverse_row_commRing_of_le` plus the stronger `second_reverse_row_sum`;
+it remains pending validation and contributes no additional status upgrade.
 
 `NewtonReciprocal.lean` passed focused compilation on 2026-09-04 using
 `lake env lean -o .lake/build/lib/lean/FabiusFunction/NewtonReciprocal.olean
@@ -98,7 +114,7 @@ explicitly identified as Mathlib.
 | `thm:merged-moment-cumulant` | `CumulantBellFormula.lean`: `Fabius.logOf_egfA`, `Fabius.cumulant_eq_cumulantSum` | The formal logarithm and closed partial-Bell expression are present, assuming the moment sequence starts with one. This does not identify these recurrence-defined polynomials with sums over actual set partitions. |
 | `thm:merged-catalan-first-return` | `SquareRootSeries.lean`: `Fabius.sq_sqrtOf`, `Fabius.sqrt_unique`, `Fabius.sqrtOf_one_sub_four_X` | The square-root identity is present as a formal series identity with constant term one over a commutative rational algebra. Analytic branch and convergence statements remain separate obligations. |
 | `thm:merged-riordan` | `ExponentialRiordan.lean`: `Fabius.expRiordan_action`, `Fabius.expRiordan_mul`, `Fabius.expRiordan_mul_inverse` | Action and multiplication are explicit. The inverse theorem is conditional: it assumes a compositional inverse and a suitable multiplicative reciprocal, and concludes one product is the identity. Construction of these data and the two-sided inverse assertion are not the statement of this declaration. |
-| `thm:lagrange-burmann` | `LagrangeInversion.lean`: `Fabius.Lagrange.solution`, `Fabius.Lagrange.solution_eq`, `Fabius.Lagrange.coeff_solution_subst_derivative`, `Fabius.Lagrange.coeff_solution` | A solution and its coefficient formulas are constructed from a supplied inverse of the weight series. The reviewed source does not yet state solution uniqueness or the alternative coefficient formula. The phrase “unconditional” in its doc comments refers to constructing the solution; the supplied inverse hypothesis remains. |
+| `thm:lagrange-burmann` | `LagrangeInversion.lean` and `LagrangeInversionUniqueness.lean`: `Fabius.Lagrange.solution`, `Fabius.Lagrange.solution_eq`, `Fabius.Lagrange.coeff_solution_subst_derivative`, `Fabius.Lagrange.coeff_solution`, `Fabius.Lagrange.eq_solution_of_eq_X_mul_subst`, `Fabius.Lagrange.existsUnique_solution`, `Fabius.Lagrange.existsUnique_of_isUnit_constantCoeff`, `Fabius.Lagrange.coeff_jacobian_mul`, `Fabius.Lagrange.coeff_subst_alt`, `Fabius.Lagrange.coeff_solution_subst_alt` | The construction, uniqueness, Jacobian identity, and alternative coefficient formula are compiler-checked. Construction and uniqueness work over a commutative ring when the weight constant coefficient is a unit; the coefficient formulas use a commutative rational algebra and `1≤n`. Formal power-series algebra is covered; analytic convergence and residue language are not asserted. |
 | `thm:second-recurrence` | Mathlib `Combinatorics/Enumerative/Stirling.lean`: `Nat.stirlingSecond`, `Nat.stirlingSecond_succ_succ` | Mathlib defines the array recursively. Its counting description in a doc comment is not a theorem equating it with the cardinality of set partitions. The recurrence correspondence must not claim that missing bridge. |
 
 ## Editorial repairs identified in this audit
@@ -170,7 +186,8 @@ normalization, discarded zero prefix, finite-sum reindexing, binomial symmetry,
 and transfer through the integers. It caught a mismatch between rational
 subtraction in the logarithmic-tail denominator and natural subtraction in the
 kernel helper; the author added an explicit rational normalization. The revised
-source has no further concrete blocker identified, but awaits compilation.
+source has no further concrete blocker identified and now passes direct
+sequential Lean elaboration.
 
 ## Substantive remaining obligations
 

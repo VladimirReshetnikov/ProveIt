@@ -18,6 +18,10 @@ The mechanism is that `v^{M+1} g'` has vanishing `M`-th coefficient for every `M
 `M`-th coefficient of a derivative-times-`z` cancels the first term exactly.  Feeding that into the
 truncated substitution expansion `Fabius.coeff_mul_subst_eq` collapses the sum to a single term.
 
+The elementary identities and the canonical solution construction work over every commutative
+ring.  Only the coefficient-calculus sections require a `ℚ`-algebra: their proof divides by a
+positive integer, even though the final coefficient identities are written without division.
+
 ## Main results
 
 * `constantCoeff_eq_zero_of_eq_X_mul`, `hasSubst_of_eq_X_mul`, `derivative_eq_X_mul`.
