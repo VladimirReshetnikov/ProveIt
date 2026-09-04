@@ -57,9 +57,10 @@ end Conv
 
 section Power
 
-variable (A : Type*) [CommRing A] [Algebra ℚ A]
+variable (A : Type*) [CommSemiring A]
 
-/-- The `k`-fold diamond power, with the unit sequence `δ_{n,0}` as the empty product. -/
+/-- The `k`-fold diamond power over any commutative semiring, with the unit
+sequence `δ_{n,0}` as the empty product. -/
 noncomputable def diamondPow (x : ℕ → A) : ℕ → (ℕ → A)
   | 0 => Bell.unitSeq A
   | k + 1 => Bell.binomialConv x (diamondPow x k)
@@ -82,6 +83,12 @@ theorem diamondPow_succ (x : ℕ → A) (k : ℕ) :
       have := Finset.mem_range.mp hb
       omega⟩
     rw [hc, Bell.unitSeq_succ, mul_zero, mul_zero]
+
+end Power
+
+section PowerEGF
+
+variable (A : Type*) [CommRing A] [Algebra ℚ A]
 
 /-- The exponential generating function of the unit sequence is `1`. -/
 theorem egfA_unitSeq : egfA A (Bell.unitSeq A) = 1 := by
@@ -136,6 +143,6 @@ theorem partialBell_eq_diamondPow_div (x : ℕ → A) (hx : x 0 = 0) (k n : ℕ)
         rw [← hinv]; ring
     _ = algebraMap ℚ A (1 / k.factorial) * diamondPow A x k n := by rw [diamondPow_apply A x hx]
 
-end Power
+end PowerEGF
 
 end Fabius

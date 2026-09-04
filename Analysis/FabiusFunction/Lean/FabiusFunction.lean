@@ -24,13 +24,13 @@ import FabiusFunction.TouchardEulerOperator
 import FabiusFunction.StirlingGeneratingFunctions
 import FabiusFunction.EulerianNumbers
 import FabiusFunction.PartialBellPolynomials
-import FabiusFunction.BellSetPartitions
 import FabiusFunction.BellGeneratingFunctions
 import FabiusFunction.BellLeibnizTower
 import FabiusFunction.BellComposition
 import FabiusFunction.BernoulliStirling
 import FabiusFunction.BellHomogeneity
 import FabiusFunction.StirlingOrdinaryGF
+import FabiusFunction.StirlingCompleteHomogeneous
 import FabiusFunction.EulerianGeneratingFunctions
 import FabiusFunction.ExponentialRiordan
 import FabiusFunction.ExponentialFormula
@@ -72,15 +72,30 @@ import FabiusFunction.BellDerivative
 import FabiusFunction.AssociatedStirling
 import FabiusFunction.RStirling
 import FabiusFunction.FallingFactorialSeries
+import FabiusFunction.PochhammerFalling
 import FabiusFunction.CauchyPolynomials
 import FabiusFunction.CoefficientRules
+import FabiusFunction.GridEvaluationCertificate
+import FabiusFunction.IntegerCRTCertificate
+import FabiusFunction.UnitSeriesPowerRecurrence
 import FabiusFunction.ExpSeriesRecurrence
 import FabiusFunction.StirlingSeriesCoefficients
 import FabiusFunction.IteratedLeibniz
 import FabiusFunction.NorlundDiagonal
+import FabiusFunction.ExponentialRescaling
+import FabiusFunction.BernoulliFormalLog
+import FabiusFunction.NorlundGeneralized
 import FabiusFunction.NarayanaNumbers
+import FabiusFunction.AssociahedronFaceNumbers
 import FabiusFunction.StirlingFirstModH
+import FabiusFunction.StirlingSymmetricFunctions
 import FabiusFunction.LagrangeInversion
+import FabiusFunction.LagrangeInversionUniqueness
+import FabiusFunction.NewtonReciprocal
+import FabiusFunction.RaneyNumbers
+import FabiusFunction.AssociahedronFaceNumbers
+import FabiusFunction.PochhammerFalling
+import FabiusFunction.AbelPolynomialSeries
 import FabiusFunction.LambertWSeries
 import FabiusFunction.FussCatalanSeries
 import FabiusFunction.InverseBellCoefficients
@@ -101,6 +116,7 @@ import FabiusFunction.SquareRootSeries
 import FabiusFunction.PowerSumOrdinaryBell
 import FabiusFunction.StirlingParityBitwise
 import FabiusFunction.StirlingSecondReverseRow
+import FabiusFunction.StirlingSecondReverseRowIdentity
 import FabiusFunction.SymmetricFunctionTransform
 import FabiusFunction.SymmetricFunctionGenerating
 import FabiusFunction.FiniteQBinomialCore
@@ -541,6 +557,7 @@ import FabiusFunction.TransseriesHarmonicIncrement
 import FabiusFunction.TransseriesScaleDominance
 import FabiusFunction.TransseriesBlockClasses
 import FabiusFunction.TransseriesMonomialUniqueness
+import FabiusFunction.TransseriesWrightOmegaTerms
 import FabiusFunction.TransseriesPolyLogScale
 import FabiusFunction.TriangularPowerProduct
 import FabiusFunction.LasotaYorkeIteration
@@ -818,6 +835,10 @@ import FabiusFunction.LinLogCoreInversion
 import FabiusFunction.StaircaseInversion
 import FabiusFunction.RemainderTransport
 import FabiusFunction.LeastTermIndex
+import FabiusFunction.BellSetPartitions
+import FabiusFunction.StirlingIdentities
+import FabiusFunction.BellDeterminants
+import FabiusFunction.EulerianPermutohedron
 
 set_option autoImplicit false
 
@@ -1176,7 +1197,8 @@ finite q-Pochhammer products, with the quotient form retaining both explicit
 nonvanishing-denominator hypotheses.
 
 Four root-of-unity and q-Catalan companions add one definition and twenty-four
-theorems: `CyclotomicDivisibility` 0+3, `PrimitiveRootBlock` 0+3,
+theorems (twenty-five declarations): `CyclotomicDivisibility` 0+3,
+`PrimitiveRootBlock` 0+3,
 `QCatalan` 1+11, and `QLucas` 0+7.  They prove the cyclotomic carry criterion,
 complete primitive-root blocks, the q-Lucas theorem over integral domains, and
 MacMahon's integral q-Catalan polynomial with its degree and value at one.
@@ -1397,15 +1419,4 @@ random-series law, by Lévy's continuity theorem with the pointwise
 characteristic-function convergence supplied by dominated convergence;
 the companion quantitative statement is the all-real uniform CDF bound
 `|C_p - F| ≤ 2^{-p}` of the computability module.
-The combinatorial layer also exposes the polytopal reading of the two
-Eulerian triangles, as a 3+21 public surface: `permutohedronFaceNumber`
-with `∑_k k! S(n,k) (t-1)^{n-k} = A_n(t)` in both `R⟦X⟧` and `Polynomial R`
-and its coefficientwise `h`-vector form; `cubeSliceCount`, the
-inclusion–exclusion count whose successive differences are the Eulerian
-numbers, so that the half-open hypersimplices have normalized volumes
-`A(n,k)`; and `typeBFaceNumber` with the sign-free Newton expansion
-`(2m+1)^n = ∑_k T(n,k) C(m,k)` and the type-`B` transform
-`∑_k T(n,k) t^k (1-t)^{n-k} = B_n(t)`.  These are algebraic statements
-only: no face lattice, shelling or Lebesgue measure occurs in them, and the
-Irwin--Hall theorem itself remains open for want of the volume computation.
 -/

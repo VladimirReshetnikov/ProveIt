@@ -227,6 +227,12 @@
 \maketitle
 \hypersetup{pageanchor=true}
 
+\begin{center}
+\small\itshape This merged source edition incorporates the post-receipt
+closures described below.  Any pre-merge PDF receipt is retained solely as
+historical provenance and is not a receipt for this edition.
+\end{center}
+
 \chapter*{Abstract}
 \addcontentsline{toc}{chapter}{Abstract}
 The finite and infinite $q$-Pochhammer symbols and the Gaussian, or
@@ -7229,7 +7235,9 @@ which proves \eqref{eq:fixed-column-limit} and
 \path{GaussianBinomialFixedColumnRate.lean}, together with the earlier
 unshifted limit \path{Fabius.tendsto_gaussianBinomial_atTop}.  Over any
 normed field and for \(\lVert q\rVert<1\),
-\path{Fabius.tendsto_gaussianBinomial_add_atTop} is the shifted limit, while
+\path{Fabius.tendsto_gaussianBinomial_add_const_atTop} in
+\path{QBinomialTheoremInfinite.lean} is the shifted limit --- stated there for
+an arbitrary shift, of which the shift by \(k\) used here is one case --- while
 \path{Fabius.gaussianBinomial_fixedColumn_relativeError_isBigO} and
 \path{Fabius.gaussianBinomial_shifted_fixedColumn_relativeError_isBigO}
 prove the two displayed multiplicative estimates.  The additional wrappers
@@ -7241,9 +7249,12 @@ additive forms.  The underlying nonasymptotic inequalities are
 \path{Fabius.norm_gaussianBinomial_add_sub_inv_finiteQPochhammerIn_le}; their
 elementary constant is \(k\exp(k)\), multiplied by the displayed geometric
 power.  At the generic product level,
-\path{Fabius.norm_finiteQPochhammerIn_pow_sub_one_le_exp} and
+\path{Fabius.norm_finiteQPochhammerIn_pow_sub_one_le_exp'} and
 \path{Fabius.norm_finiteQPochhammerIn_pow_sub_one_le} work in a normed
-commutative ring with multiplicative norm.  The formal statements require no
+commutative ring with multiplicative norm and \(\lVert1\rVert=1\).
+The primed exponential bound generalizes the normed-field result
+\path{Fabius.norm_finiteQPochhammerIn_pow_sub_one_le_exp_of_norm_le_one}
+in \path{QBinomialTheoremInfinite.lean}. The formal statements require no
 nonzero-nome premise and therefore include \(q=0\), where every error vanishes
 once its displayed exponent is positive.
 
@@ -13887,7 +13898,7 @@ theorems;\\
 \path{QBinomialTheoremInfinite.lean}: one definition and 22 theorems; its
 use of \path{Fabius.finiteQPochhammerIn_zero_left} imports the unique
 declaration from \path{GaussianBinomialAtOne.lean};\\
-\path{GaussianBinomialFixedColumnRate.lean}: zero definitions and ten
+\path{GaussianBinomialFixedColumnRate.lean}: zero definitions and nine
 theorems;\\
 \path{BasicHypergeometricSeries.lean}: two definitions and five theorems;\\
 \path{HeineTransformation.lean}: two definitions and five theorems;\\
@@ -13949,24 +13960,36 @@ and twenty-seven theorems.  In particular,
 \path{Fabius.finiteQPochhammerIn_zero_left} is canonically declared in
 \path{GaussianBinomialAtOne.lean} and merely made available by that import; it
 is not redeclared in \path{QBinomialTheoremInfinite.lean}.
+The normed-field product bound
+\path{Fabius.norm_finiteQPochhammerIn_pow_sub_one_le_exp_of_norm_le_one}
+for \(\lVert q\rVert\leq1\) and the arbitrary-shift limit
+\path{Fabius.tendsto_gaussianBinomial_add_const_atTop}
+for \(\lVert q\rVert<1\) are declared in
+\path{QBinomialTheoremInfinite.lean}, not in the rate module below; the
+shifted fixed-column limit takes its shift parameter \(r=k\).
 
-The zero-definition, ten-theorem
+The zero-definition, nine-theorem
 \path{GaussianBinomialFixedColumnRate.lean} surface is exhaustively
-\path{Fabius.norm_finiteQPochhammerIn_pow_sub_one_le_exp},
+\path{Fabius.norm_finiteQPochhammerIn_pow_sub_one_le_exp'},
 \path{Fabius.norm_finiteQPochhammerIn_pow_sub_one_le},
 \path{Fabius.norm_finiteQPochhammerIn_self_mul_gaussianBinomial_sub_one_le},
 \path{Fabius.norm_gaussianBinomial_sub_inv_finiteQPochhammerIn_le},
 \path{Fabius.norm_gaussianBinomial_add_sub_inv_finiteQPochhammerIn_le},
-\path{Fabius.tendsto_gaussianBinomial_add_atTop},
 \path{Fabius.gaussianBinomial_fixedColumn_relativeError_isBigO},
 \path{Fabius.gaussianBinomial_shifted_fixedColumn_relativeError_isBigO},
 \path{Fabius.gaussianBinomial_fixedColumn_error_isBigO}, and
 \path{Fabius.gaussianBinomial_shifted_fixedColumn_error_isBigO}.  The first
 two are generic finite-product defect bounds, the third is the denominator-free
 relative Gaussian bound, the next two are fixed and shifted nonasymptotic
-additive bounds, the sixth is the shifted limit, and the last four are the
-relative and additive Big-O forms.  Every declaration includes the zero nome
-at its stated norm boundary.
+additive bounds, and the last four are the relative and additive Big-O forms.
+The first three work over a normed commutative ring with
+\path{NormOneClass} and \path{NormMulClass}, under
+\(\lVert q\rVert\leq1\); the third also assumes \(k\leq n\).
+The remaining six work over a normed field under \(\lVert q\rVert<1\),
+with \(k\leq n\) for the unshifted nonasymptotic bound.  The geometric
+factors are \(q^{n-k+1}\) and \(q^{n+1}\) in the fixed and shifted Big-O
+forms, respectively.  Every declaration includes the zero nome at its stated
+norm boundary.
 
 The added finite \(q\)-algebra and geometric layers have the following
 exhaustive public surfaces.
@@ -16125,15 +16148,19 @@ convergence}\\[2pt]
 \Cref{thm:fixed-column-limit} & \statusexact &
 \texttt{tendsto\_\allowbreak{}gaussianBinomial\_\allowbreak{}atTop},
 \texttt{tendsto\_\allowbreak{}gaussianBinomial\_\allowbreak{}add\_\allowbreak{}atTop},
+\texttt{norm\_\allowbreak{}finiteQPochhammerIn\_\allowbreak{}pow\_\allowbreak{}sub\_\allowbreak{}one\_\allowbreak{}le\_\allowbreak{}exp},
+\texttt{isBigO\_\allowbreak{}finiteQPochhammerIn\_\allowbreak{}pow\_\allowbreak{}sub\_\allowbreak{}one},
+\texttt{isBigO\_\allowbreak{}gaussianBinomial\_\allowbreak{}sub\_\allowbreak{}inv},
+\texttt{isBigO\_\allowbreak{}gaussianBinomial\_\allowbreak{}add\_\allowbreak{}sub\_\allowbreak{}inv},
 \texttt{gaussianBinomial\_\allowbreak{}fixedColumn\_\allowbreak{}relativeError\_\allowbreak{}isBigO},
 \texttt{gaussianBinomial\_\allowbreak{}shifted\_\allowbreak{}fixedColumn\_\allowbreak{}relativeError\_\allowbreak{}isBigO},
 \texttt{gaussianBinomial\_\allowbreak{}fixedColumn\_\allowbreak{}error\_\allowbreak{}isBigO},
 \texttt{gaussianBinomial\_\allowbreak{}shifted\_\allowbreak{}fixedColumn\_\allowbreak{}error\_\allowbreak{}isBigO}\newline
 {\footnotesize\texttt{QBinomialTheoremInfinite};
 \texttt{GaussianBinomialFixedColumnRate}; over every normed field for
-\(\lVert q\rVert<1\).  The relative wrappers are exactly the two printed
-multiplicative errors; the additive wrappers and explicit nonasymptotic
-\(k\exp(k)\)-bounds are stronger.  No \(q\ne0\) premise is used, so the zero
+\(\lVert q\rVert<1\).  The upstream theorem permits an arbitrary fixed shift;
+the nine-theorem rate leaf supplies the relative wrappers and explicit
+nonasymptotic \(k\exp(k)\)-bounds.  No \(q\ne0\) premise is used, so the zero
 nome is included.}\\[2pt]
 \Cref{thm:central-fixed-q} & \statuspartial &
 \texttt{tendsto\_\allowbreak{}gaussianBinomialInt\_\allowbreak{}central}\newline
@@ -16394,7 +16421,7 @@ $n\ge1$, with the expectation represented by the full-line measure integral}\\[2
 {\footnotesize\texttt{FabiusComplexMGF};
 \texttt{GeometricUniformMomentPolynomialBridge};
 \texttt{GeometricUniformComplexMomentProduct};
-\texttt{GeometricUniformExteriorComplexMomentGerm};
+\texttt{GeometricUniformExterior}\allowbreak{}\texttt{ComplexMomentGerm};
 \texttt{GeometricUniformMomentRatFunc}; the half-base transform, the
 zero-definition/one-theorem real genuine-MGF coefficient bridge, and the
 one-definition/three-theorem complex strict-contraction product, local-uniformity,
@@ -16611,7 +16638,7 @@ zero--pole exchange are not packaged}\\[2pt]
 {\footnotesize\texttt{GeometricUniformMomentPolynomial};
 \texttt{GeometricUniformMomentPolynomialBridge};
 \texttt{GeometricUniformComplexMomentProduct};
-\texttt{GeometricUniformExteriorComplexMomentGerm};
+\texttt{GeometricUniformExterior}\allowbreak{}\texttt{ComplexMomentGerm};
 \texttt{GeometricUniformMomentRatFunc}; the recursively defined
 polynomial family, its zeroth value and residual-product recurrence, the degree
 bound, the specialization at $q=0$, and the displayed cases $\mathcal P_1$
@@ -16654,7 +16681,7 @@ historical post-Prouhet checkpoint.  Subsequent source-only
 transseries/Catalan and Thue--Morse additions made 943/11,791 the next
 historical checkpoint.  The finalized one-definition/eleven-theorem
 \texttt{TransseriesFlat} module and three integer-zpow theorems in
-\texttt{TransseriesDifferentialBlock} make the live census 944/11,806}\\[2pt]
+\texttt{TransseriesDifferentialBlock} gave the historical census 944/11,806; the merged live census is 985/12,199}\\[2pt]
 \Cref{prop:qF-P-degree-sharp} & \statusexact &
 \texttt{coeff\_geometricUniformMomentPolynomial\_choose\_two},
 \texttt{coeff\_geometricUniformMomentPolynomial\_choose\_two\_sub\_one}, and
@@ -16676,8 +16703,8 @@ public declarations an explicitly historical post-Prouhet checkpoint.
 Subsequent source-only transseries/Catalan and Thue--Morse additions made
 943/11,791 the next historical checkpoint.  The finalized one-definition/
 eleven-theorem \texttt{TransseriesFlat} module and three integer-zpow theorems
-in \texttt{TransseriesDifferentialBlock} make the live facade census 944
-modules and 11,806 public declarations}\\[2pt]
+in \texttt{TransseriesDifferentialBlock} gave the historical facade census 944
+modules and 11,806 public declarations; the merged live census is 985/12,199}\\[2pt]
 \Cref{cor:qF-halfbase-dictionary} & \statuspartial &
 \texttt{fabiusAtInverseTwoPow\_eq\_halfMoment},
 \texttt{halfQPochhammer\_eq\_mersenne\_div}\newline

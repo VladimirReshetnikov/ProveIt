@@ -49,7 +49,9 @@ theorem exp_eq_egfA_one : exp A = egfA A fun _ => (1 : A) := by
 /-- The exponential generating function of `(-1)^n`, i.e. `e^{-z}`. -/
 noncomputable def altSeries : A⟦X⟧ := egfA A fun n => (-1 : A) ^ n
 
-/-- Convolving against the constant sequence `1` is the forward binomial transform. -/
+omit [Algebra ℚ A] in
+/-- Convolving against the constant sequence `1` is the forward binomial transform,
+over any commutative ring. -/
 theorem binomialConv_one_left (a : ℕ → A) (n : ℕ) :
     Bell.binomialConv (fun _ => (1 : A)) a n = ∑ k ∈ range (n + 1), (n.choose k : A) * a k := by
   have hrefl := Finset.sum_range_reflect (fun k => (n.choose k : A) * a k) (n + 1)
@@ -59,7 +61,9 @@ theorem binomialConv_one_left (a : ℕ → A) (n : ℕ) :
   simp only [Nat.add_sub_cancel]
   rw [Nat.choose_symm hkn, one_mul]
 
-/-- Convolving against `(-1)^n` is the backward binomial transform. -/
+omit [Algebra ℚ A] in
+/-- Convolving against `(-1)^n` is the backward binomial transform,
+over any commutative ring. -/
 theorem binomialConv_altSeries_left (b : ℕ → A) (n : ℕ) :
     Bell.binomialConv (fun i => (-1 : A) ^ i) b n =
       ∑ k ∈ range (n + 1), (-1 : A) ^ (n - k) * (n.choose k : A) * b k := by

@@ -216,7 +216,7 @@ historical post-Prouhet checkpoint.  Subsequent source-only
 transseries/Catalan and Thue--Morse additions made 943/11,791 the next
 historical checkpoint.  The finalized one-definition/eleven-theorem
 `TransseriesFlat.lean` module and three integer-zpow theorems in
-`TransseriesDifferentialBlock.lean` make the live census 944/11,806.
+`TransseriesDifferentialBlock.lean` gave the historical census 944/11,806; the merged live census is 985/12,199.
 The exhaustive audit still has no missing module header or public-declaration
 doc comment.  The q forward
 ledger is now 181 Exact / 79 Partial / 14 None / 8 interface rows, its relevant

@@ -39,6 +39,7 @@ import io
 import re
 import subprocess
 import sys
+from collections import Counter
 from dataclasses import dataclass
 from pathlib import Path, PurePosixPath, PureWindowsPath
 from typing import Iterable, Iterator, Sequence
@@ -514,6 +515,40 @@ def validate_cross_references(path: Path, clean: str, report: Report) -> None:
                 )
 
 
+def validate_duplicate_crosswalks(
+    path: Path,
+    clean: str,
+    blocks: Sequence[tuple[str, int, int, int]],
+    report: Report,
+) -> None:
+    """Reject repeated crosswalk bodies after comment and whitespace normalization.
+
+    ``clean`` has already passed through ``strip_comments``, preserving source
+    offsets and escaped percent signs. Only whole bodies are compared: sharing
+    declaration names or other fragments is not a duplication diagnostic.
+    """
+    opening = re.compile(r"\\begin\s*\{remark\}\s*\[\s*Formal\s+crosswalk\s*\]")
+    closing = re.compile(r"\\end\s*\{remark\}$")
+    first_lines: dict[str, int] = {}
+    for name, begin, end, line in sorted(blocks, key=lambda block: block[1]):
+        if name != "remark":
+            continue
+        match = opening.match(clean, begin, end)
+        if match is None:
+            continue
+        body = " ".join(closing.sub("", clean[match.end():end]).split())
+        if body in first_lines:
+            report.error(
+                "DUPLICATE_FORMAL_CROSSWALK",
+                path,
+                f"Formal crosswalk repeats the body from line {first_lines[body]} "
+                "after removing comments and normalizing whitespace",
+                line,
+            )
+        else:
+            first_lines[body] = line
+
+
 def validate_citations(path: Path, clean: str, report: Report) -> None:
     source_map = SourceMap(clean)
     bibitems = [
@@ -885,6 +920,37 @@ def validate_final_layout(report: Report) -> None:
                 )
 
 
+def validate_register_totals(path: Path, clean: str, report: Report) -> None:
+    """Check the register's advertised totals against its actual status rows.
+
+    This is an accounting check, not validation that a cited Lean theorem
+    proves the human statement. Unlabelled rows count just like labelled ones.
+    """
+    marker = r"\section{Lean formalization register}"
+    start = clean.find(marker)
+    if start < 0:
+        report.error("LEAN_REGISTER_MISSING", path, "missing Lean formalization register")
+        return
+    register = clean[start:].split(r"\backmatter", 1)[0]
+    summary = re.search(
+        r"Current totals:\s*(\d+) Lean,\s*(\d+) partial,\s*(\d+) none,"
+        r"\s*of (\d+) results\.", register,
+    )
+    if summary is None:
+        report.error("LEAN_REGISTER_SUMMARY", path, "missing or malformed register totals",
+                     SourceMap(clean).line(start))
+        return
+    rows = Counter(re.findall(r"(?m)^.*? & (Lean|partial|none) & ", register))
+    actual = (rows["Lean"], rows["partial"], rows["none"], sum(rows.values()))
+    advertised = tuple(map(int, summary.groups()))
+    if advertised != actual:
+        report.error(
+            "LEAN_REGISTER_TOTALS", path,
+            f"advertised Lean/partial/none/total {advertised}, but actual rows are {actual}",
+            SourceMap(clean).line(start + summary.start()),
+        )
+
+
 def validate_package(final: bool) -> Report:
     repo_root = locate_repo_root(PACKAGE_DIR)
     report = Report(repo_root)
@@ -908,9 +974,11 @@ def validate_package(final: bool) -> Report:
         validate_braces(CANONICAL_TEX, brace_clean, report)
         blocks = environment_blocks(CANONICAL_TEX, clean, report)
         validate_cross_references(CANONICAL_TEX, clean, report)
+        validate_duplicate_crosswalks(CANONICAL_TEX, clean, blocks, report)
         validate_citations(CANONICAL_TEX, clean, report)
         validate_statement_proofs(CANONICAL_TEX, raw, clean, blocks, report)
         validate_frontier_disclaimer(CANONICAL_TEX, clean, report)
+        validate_register_totals(CANONICAL_TEX, clean, report)
 
     disposition_rows: list[dict[str, str]] = []
     disposition = find_metadata(DISPOSITION_NAME, report, final)
