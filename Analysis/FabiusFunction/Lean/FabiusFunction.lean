@@ -521,6 +521,7 @@ import FabiusFunction.BoundednessSkeleton
 import FabiusFunction.TransferOperatorStep
 import FabiusFunction.TransseriesBlockAntiderivative
 import FabiusFunction.TransseriesDifferentialBlock
+import FabiusFunction.TransseriesHarmonicIncrement
 import FabiusFunction.TransseriesScaleDominance
 import FabiusFunction.TransseriesPolyLogScale
 import FabiusFunction.TriangularPowerProduct
@@ -794,6 +795,7 @@ import FabiusFunction.GeneralLinearThueMorseSum
 import FabiusFunction.QuadraticCoreCatalan
 import FabiusFunction.DerangementNearestInteger
 import FabiusFunction.PowerLogCoreInversion
+import FabiusFunction.LinLogCoreInversion
 
 set_option autoImplicit false
 
