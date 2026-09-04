@@ -1056,10 +1056,18 @@ The three facts the proof uses are formal in \path{HalfIntegerAliasIdentity.lean
 mode, \(A_{N,2s}=0\) for \(0<s<N\) (\path{Fabius.foldedCoefficient_two_mul_eq_zero}, since
 each alias point \(qN+s\) is a nonzero integer, where \(\FourierTwoPi{\RvachevUp}\) vanishes);
 and the symmetry \(A_{N,-r}=A_{N,r}\) (\path{Fabius.foldedCoefficient_neg}, from the
-evenness of \(\FourierTwoPi{\RvachevUp}\)).  The final pairing of \(r\) with \(2N-r\) into the
-cosine form \eqref{p1:eq:inverse-DCT} is not separately formalized; the dual statement on
-the sample side, the cosine form of \(A_{N,r}\) over all residues \(j\), is
-\path{Fabius.foldedCoefficient_eq_sum_cos}.
+evenness of \(\FourierTwoPi{\RvachevUp}\)).  The pairing of \(r\) with \(2N-r\) into the cosine
+form \eqref{p1:eq:inverse-DCT} is formal as well, for every even \(N\):
+\path{Fabius.gridSample_eq_half_add_sum_odd} in \path{AliasDyadicBridge.lean} is the boxed
+display verbatim.  It is the same two steps as on the sample side --- the reconstruction sum is
+made real by pairing \(r\) with \(-r\) (\path{Fabius.sum_char_mul_foldedCoefficient_eq_sum_cos},
+using \(A_{N,-r}=A_{N,r}\) and \(\chi(rj)+\chi(-rj)=2\cos(\pi rj/N)\)), and the resulting even
+sum is folded to \(1\le r<N\) by \path{Fabius.sum_zmod_even_eq_fold}, the cosine factor being
+even in the frequency by \path{Fabius.cos_alias_angle_neg_left}.  The constant \(\tfrac12\) is
+\(A_{N,0}=1\) halved, the frequency \(r=N\) drops out because \(N\) is then an even residue, and
+the surviving even frequencies below \(N\) vanish by
+\path{Fabius.foldedCoefficient_two_mul_eq_zero}, which is what leaves the odd ones alone.  The
+dual statement on the sample side is \path{Fabius.foldedCoefficient_eq_sum_cos}.
 
 \begin{corollary}[Exact discrete energy identity]\label{p1:cor:discrete-energy}
 One has
@@ -1086,10 +1094,21 @@ for every \(N\ge1\).  It rests on a Parseval-type identity for Mathlib's DFT on
 \(\IntegerNumbers/M\IntegerNumbers\) proved for every vector \(\Phi\),
 \(\sum_r\mathcal D\Phi(r)\,\mathcal D\Phi(-r)=M\sum_j\Phi(j)^2\)
 (\path{Fabius.sum_dft_mul_dft_neg}, from \path{ZMod.dft_apply} and \path{ZMod.dft_dft} alone),
-combined with the symmetry \path{Fabius.foldedCoefficient_neg}.  Restricting the left side
-to odd \(r<N\) (the even modes vanish, \path{Fabius.foldedCoefficient_two_mul_eq_zero}, and
-\(A_{N,0}=1\)) and folding the right side with \(P(0)=1\), \(P(1)=0\) produces the displayed
-\eqref{p1:eq:discrete-energy}; that bookkeeping is not separately formalized.
+combined with the symmetry \path{Fabius.foldedCoefficient_neg}.  The bookkeeping that turns it
+into the displayed \eqref{p1:eq:discrete-energy} is formal too, for every even \(N\):
+\path{Fabius.sum_odd_foldedCoefficient_sq} in \path{AliasDyadicBridge.lean} is
+\[
+  \sum_{\substack{1\le r<N\\ r\ \mathrm{odd}}}A_{N,r}^2
+  =\frac1N\Bigl[1+2\sum_{j=1}^{N-1}\RvachevUp(j/N)^2\Bigr]-\frac12 .
+\]
+Both sides of the Parseval identity are sums of an even function over
+\(\IntegerNumbers/2N\IntegerNumbers\), so the same half-range fold applies to each
+(\path{Fabius.sum_gridSample_sq_eq_fold} on the samples, using \(P(0)=1\) and \(P(1)=0\);
+\path{Fabius.sum_foldedCoefficient_sq_eq_fold} on the coefficients, using \(A_{N,0}=1\) and,
+because \(N\) is even, \(A_{N,N}=0\)); the even residues strictly between \(0\) and \(N\) then
+drop out by \path{Fabius.foldedCoefficient_sq_eq_zero_of_even}, leaving only the odd ones.  The
+hypothesis that \(N\) be even is what makes \(r\mapsto2N-r\) fix no odd residue; it holds in
+every dyadic case \(N=2^n\), \(n\ge1\).
 
 \begin{remark}[Continuous limit]
 As $n\to\infty$, the right side of \eqref{p1:eq:discrete-energy} tends
@@ -1281,8 +1300,21 @@ exact rational values \(\mathtt{fabiusDyadic}\,n\,(2^n-k)\)
 (\path{Fabius.foldedCoefficient_two_pow_eq_fabiusDyadic}, \path{AliasDyadicBridge.lean}).
 The sign form \eqref{p1:eq:A-F-DCT} is \path{Fabius.foldedCoefficient_eq_halfRange_cos_odd}
 (odd \(r\), with \(1-\RvachevUp\) for \(\FabiusBounded\)).  The substitution of the
-\(q\)-binomial closed form for those rational values into the transform is not formalized,
-nor is the convergence statement, which is analytic.
+\(q\)-binomial closed form for those rational values into the transform is formal too, in
+\path{AliasQBinomialBridge.lean}: \path{Fabius.foldedCoefficient_two_pow_eq_qBinomial} is
+\[
+  A_{2^n,r}=\frac1{2^n}\Bigl[1+2\sum_{k=1}^{2^n-1}
+    Q(2^n-k,n)\cos\Bigl(\frac{\pi rk}{2^n}\Bigr)\Bigr],
+\]
+where \(Q(m,n)\) is \path{Fabius.qBinomialThueMorseDyadicTranslatedFormulaIn}, the
+\(q\)-binomial closed form of \(\FabiusBounded(m/2^n)\) --- the general dyadic identity
+\path{Fabius.fabiusFunction_dyadic_eq_qBinomialThueMorseDyadicTranslatedFormulaIn_real}, valid
+for every \(m\le2^n\) and every translation parameter, not only at the single point
+\(1/2^n\).  The reflected index \(2^n-k\) is the sample identity
+\(\RvachevUp(k/2^n)=\FabiusBounded((2^n-k)/2^n)\)
+(\path{Fabius.rvachevUp_dyadic_eq_qBinomial}).  So the whole of \eqref{p1:eq:q-approximant}
+except its convergence, which is analytic, is now formal: the folded alias class of the
+infinite sinc product equals a finite cosine sum of \(q\)-binomial expressions.
 
 \begin{remark}[Three structures in one finite expression]
 Formula \eqref{p1:eq:q-approximant} simultaneously contains
@@ -1447,8 +1479,13 @@ Ramanujan sum \eqref{p1:eq:Ramanujan-power-two} over the odd residues modulo \(2
 (\path{Fabius.ramanujanOddSum_eq}, with \path{Fabius.ramanujanOddSum} the sum
 parametrized as \(r=2s+1\), \(s\in\IntegerNumbers/N\IntegerNumbers\)).  The power-trace
 formula \eqref{p1:eq:Ramanujan-traces} itself --- the \(m\)-fold expansion of
-\(A_{n,r}^m\) and the resummation over the odd residues --- is not formalized; the
-universal trace \eqref{p1:eq:universal-trace} is formal in the form
+\(A_{n,r}^m\) and the resummation over the odd residues --- is not formalized for general
+\(m\).  Its first two cases are.  The case \(m=2\), which the theorem records as reducing to
+\eqref{p1:eq:discrete-energy}, is \path{Fabius.sum_odd_foldedCoefficient_sq} in
+\path{AliasDyadicBridge.lean}, for every even \(N\); it is proved there not by the \(m\)-fold
+expansion but by folding both sides of the Parseval identity onto the half range, which for
+\(m=2\) replaces the Ramanujan resummation entirely.  The universal trace
+\eqref{p1:eq:universal-trace} is formal in the form
 \(\sum_{s<N}A_{N,2s+1}=1\), for every \(N\ge1\)
 (\path{Fabius.sum_foldedCoefficient_odd}, in \path{HalfIntegerAliasIdentity.lean}): the
 inverse transform at \(j=0\) gives \(\sum_{r}A_{N,r}=2\)

@@ -27,6 +27,8 @@ This module formalizes exactly that layer:
   `abs_residual_le_two_mul_abs_sub_lambertShiftInv` the residual certificate.
 * `lambertShiftInv_hasDerivAt` differentiates `g` by the inverse-function rule,
   and `deriv_lambertShiftInv_bounds` is `1/2 < g' < 1` on the open half-line.
+* `strictConvexOn_lambertShiftInv`: `g` is strictly convex on the open
+  half-line, the counterpart of the concavity of `f`.
 -/
 
 set_option autoImplicit false
@@ -445,5 +447,64 @@ theorem half_lt_deriv_lambertShiftInv {z : ℝ} (hz : 0 < z) :
 theorem deriv_lambertShiftInv_bounds {z : ℝ} (hz : 0 < z) :
     1 / 2 < deriv lambertShiftInv z ∧ deriv lambertShiftInv z < 1 :=
   ⟨half_lt_deriv_lambertShiftInv hz, deriv_lambertShiftInv_lt_one hz⟩
+
+/-! ### Concavity of `f` and convexity of `g`
+
+The drafts observe that `W'' < 0` makes `f` concave and therefore `g` convex.
+The corpus already has the strict concavity of the branch
+(`strictConcaveOn_principalLambertW`); here the consequence for `g` is taken
+from the derivative instead, since `g' = (1 + W'(g))⁻¹` is strictly increasing
+as soon as `W'` is strictly decreasing. -/
+
+/-- `W'` is strictly decreasing on `[0,∞)`: the inverse-function derivative
+`(e^{W}(W+1))⁻¹` falls as `W` rises. -/
+theorem inv_exp_mul_add_one_strictAntiOn :
+    StrictAntiOn (fun x : ℝ => (Real.exp (principalLambertW x) *
+      (principalLambertW x + 1))⁻¹) (Ici 0) := by
+  intro a ha b hb hab
+  have hWa : 0 ≤ principalLambertW a := principalLambertW_nonneg (mem_Ici.mp ha)
+  have hWab : principalLambertW a < principalLambertW b :=
+    principalLambertW_strictMonoOn
+      (mem_Ici.mpr (neg_exp_neg_one_le_of_nonneg (mem_Ici.mp ha)))
+      (mem_Ici.mpr (neg_exp_neg_one_le_of_nonneg (mem_Ici.mp hb))) hab
+  have hexp : Real.exp (principalLambertW a) < Real.exp (principalLambertW b) :=
+    Real.exp_lt_exp.mpr hWab
+  have hlin : principalLambertW a + 1 < principalLambertW b + 1 := by linarith
+  have hprod : Real.exp (principalLambertW a) * (principalLambertW a + 1) <
+      Real.exp (principalLambertW b) * (principalLambertW b + 1) :=
+    mul_lt_mul'' hexp hlin (Real.exp_pos _).le (by linarith)
+  have hpos : 0 < Real.exp (principalLambertW a) * (principalLambertW a + 1) :=
+    mul_pos (Real.exp_pos _) (by linarith)
+  simpa only [one_div] using one_div_lt_one_div_of_lt hpos hprod
+
+/-- `g'` is strictly increasing on the open half-line. -/
+theorem deriv_lambertShiftInv_strictMonoOn :
+    StrictMonoOn (deriv lambertShiftInv) (Ioi 0) := by
+  intro a ha b hb hab
+  have ha0 : 0 < a := mem_Ioi.mp ha
+  have hb0 : 0 < b := mem_Ioi.mp hb
+  rw [(lambertShiftInv_hasDerivAt ha0).deriv, (lambertShiftInv_hasDerivAt hb0).deriv]
+  have hga : 0 < lambertShiftInv a := lambertShiftInv_pos ha0
+  have hgab : lambertShiftInv a < lambertShiftInv b :=
+    lambertShiftInv_strictMonoOn (mem_Ici.mpr ha0.le) (mem_Ici.mpr hb0.le) hab
+  have hanti := inv_exp_mul_add_one_strictAntiOn (mem_Ici.mpr hga.le)
+    (mem_Ici.mpr (lambertShiftInv_pos hb0).le) hgab
+  simp only at hanti
+  have hposb : 0 < (Real.exp (principalLambertW (lambertShiftInv b)) *
+      (principalLambertW (lambertShiftInv b) + 1))⁻¹ :=
+    inv_pos.mpr (mul_pos (Real.exp_pos _)
+      (by linarith [principalLambertW_nonneg (lambertShiftInv_pos hb0).le]))
+  have h1 : (0 : ℝ) < 1 + (Real.exp (principalLambertW (lambertShiftInv b)) *
+      (principalLambertW (lambertShiftInv b) + 1))⁻¹ := by linarith
+  simpa only [one_div] using one_div_lt_one_div_of_lt h1 (by linarith)
+
+/-- **The inverse is strictly convex** on the open half-line, the drafts'
+counterpart of the concavity of `f`. -/
+theorem strictConvexOn_lambertShiftInv :
+    StrictConvexOn ℝ (Ioi 0) lambertShiftInv := by
+  refine StrictMonoOn.strictConvexOn_of_deriv (convex_Ioi 0)
+    (fun z hz => (lambertShiftInv_continuousAt (mem_Ioi.mp hz)).continuousWithinAt) ?_
+  rw [interior_Ioi]
+  exact deriv_lambertShiftInv_strictMonoOn
 
 end Fabius

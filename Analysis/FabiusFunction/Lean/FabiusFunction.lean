@@ -268,7 +268,9 @@ import FabiusFunction.HalfIntegerOddDFT
 import FabiusFunction.SummableCyclicAlias
 import FabiusFunction.HalfIntegerAliasIdentity
 import FabiusFunction.AliasDyadicBridge
+import FabiusFunction.AliasQBinomialBridge
 import FabiusFunction.LambertShiftInverse
+import FabiusFunction.LambertInverseCoefficients
 import FabiusFunction.CyclicCharacterSums
 import FabiusFunction.AliasErrorBound
 import FabiusFunction.DyadicDerivativeFiltration
