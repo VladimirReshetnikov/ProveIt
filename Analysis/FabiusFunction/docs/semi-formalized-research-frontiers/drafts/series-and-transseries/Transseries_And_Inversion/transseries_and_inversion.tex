@@ -1624,6 +1624,19 @@ particular \(\psi_{2}>0\).  For any \(b\),
 (iii) This is the last assertion of \cref{plt:prop:mot-two-orders}.
 \end{proof}
 
+\emph{Lean status: Exact.}  In \lean{TransseriesWrightOmegaTerms.lean}:
+part~(i) is \lean{Fabius.not_isEquivalent_pure_power_wrightOmega_sub}, no
+\(cX^{a}\) with \(c\ne0\) is asymptotic to \(\psi_{1}\), obtained in one
+line from the rigidity of the second term; part~(ii) is
+\lean{Fabius.tendsto_wrightOmega_div_plMonomial_zero_atTop},
+\(\WrightOmega(X)/(\log X)^{b}\to+\infty\) for every real \(b\), together
+with \lean{Fabius.isLittleO_wrightOmega_residual_plMonomial_zero},
+\(\psi_{2}=\LittleOAt{(\log X)^{b}}{X\to+\infty}\) for every real \(b\);
+part~(iii) is \lean{Fabius.wrightOmega_residual_isEquivalent} in
+\lean{WrightOmegaTwoOrders.lean}.  The one clause not carried over is the
+strict positivity of \(\psi_{2}\) for large \(X\), which is a consequence of
+the equivalence in~(iii) and is not stated separately.
+
 \begin{remark}[The two failures are not symmetric]
 \label{plt:rmk:mot-asymmetry}
 Part~(i) is a \emph{gap}: the true size of the correction, \(\log X\), lies
@@ -1830,13 +1843,25 @@ first partial sum is therefore exactly \(X\), and the second term satisfies
 \((0,1)\) generate \(\IntegerNumbers^{2}\).
 \end{proof}
 
-\emph{Lean status: partial, with the uniqueness engine formal.}  The first
-paragraph of the proof is \lean{Fabius.isEquivalent_plMonomial_const_mul_iff}
-in \lean{TransseriesMonomialUniqueness.lean}: for a positive coefficient, an
-asymptotic equivalence of two power--logarithmic monomials forces both
-exponents to agree and the coefficient to be one.  The analytic three-term
-Wright-omega residual input used afterwards is not packaged as this corollary,
-so the corollary itself is not claimed Exact.
+\emph{Lean status: Exact for monomial scales.}  The uniqueness engine is
+\lean{Fabius.isEquivalent_const_mul_plMonomial_iff} in
+\lean{TransseriesMonomialUniqueness.lean}, stated with a coefficient on
+\emph{both} sides and no sign hypothesis: for \(c,c'\ne0\), an asymptotic
+equivalence \(cX^{a}(\log X)^{b}\sim c'X^{a'}(\log X)^{b'}\) forces
+\(a=a'\), \(b=b'\) and \(c=c'\).  No case split on the sign of \(c/c'\) is
+needed: in the divergent case, multiplying the quotient by the inverse
+constant would hand a divergent function a finite limit.  The three
+rigidity statements that are the content of the corollary are
+\lean{Fabius.exponents_of_wrightOmega},
+\lean{Fabius.exponents_of_wrightOmega_sub} and
+\lean{Fabius.exponents_of_wrightOmega_residual} in
+\lean{TransseriesWrightOmegaTerms.lean}: any scaled monomial with a nonzero
+coefficient representing \(\WrightOmega\), \(\WrightOmega-X\) or
+\(\WrightOmega-X+\log X\) has exponent pair \((1,0)\), \((0,1)\), \((-1,1)\)
+and coefficient \(1\), \(-1\), \(1\) respectively.  The ``consequently''
+clause is \lean{Fabius.not_pure_of_wrightOmega_three_terms}.  The
+hypothesis ``an expansion with at least three terms'' is rendered as the
+three equivalences of the residuals, which is what the proof uses.
 
 \begin{remark}[Scope of the corollary]
 \label{plt:rmk:mot-corollary-scope}
