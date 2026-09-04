@@ -301,6 +301,7 @@ import FabiusFunction.ThueMorseHessenberg
 import FabiusFunction.ExponentialPartition
 import FabiusFunction.ThueMorsePartition
 import FabiusFunction.ExponentialBell
+import FabiusFunction.UnitSeriesBellCoefficients
 import FabiusFunction.ThueMorseIntegerLift
 import FabiusFunction.ThueMorseBoundaryFlatness
 import FabiusFunction.ThueMorseDirichlet
@@ -516,6 +517,7 @@ import FabiusFunction.RvachevFourierDecay
 import FabiusFunction.BoundednessSkeleton
 import FabiusFunction.TransferOperatorStep
 import FabiusFunction.TransseriesBlockAntiderivative
+import FabiusFunction.TransseriesScaleDominance
 import FabiusFunction.TriangularPowerProduct
 import FabiusFunction.LasotaYorkeIteration
 import FabiusFunction.TransferPositivity
