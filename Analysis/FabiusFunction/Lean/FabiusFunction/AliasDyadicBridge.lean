@@ -329,7 +329,7 @@ theorem sum_char_mul_foldedCoefficient_eq_sum_cos (F : BoundedFabius) (hF : IsFa
       = ∑ r : ZMod (2 * N), ZMod.stdAddChar (r * j) * foldedCoefficient F N r := by
     refine Fintype.sum_equiv (Equiv.neg (ZMod (2 * N))) _ _ fun r => ?_
     simp only [Equiv.neg_apply]
-    rw [foldedCoefficient_neg F hF, neg_mul, neg_neg]
+    rw [foldedCoefficient_neg F hF, neg_mul]
   have h2 : (2 : ℂ) * ∑ r : ZMod (2 * N), ZMod.stdAddChar (r * j) * foldedCoefficient F N r
       = 2 * ∑ r : ZMod (2 * N),
           foldedCoefficient F N r * Complex.cos ((Real.pi * r.val * j.val / N : ℝ) : ℂ) := by
@@ -339,11 +339,10 @@ theorem sum_char_mul_foldedCoefficient_eq_sum_cos (F : BoundedFabius) (hF : IsFa
     refine sum_congr rfl fun r _ => ?_
     have hangle : (Real.pi * j.val * r.val / N : ℝ) = (Real.pi * r.val * j.val / N : ℝ) := by
       ring
-    rw [stdAddChar_mul_eq_exp N j r, hangle]
-    rw [show -(r * j) = -(r * j) from rfl]
+    rw [stdAddChar_mul_eq_exp N r j, hangle]
     have hneg' : ZMod.stdAddChar (-(r * j))
         = Complex.exp (-((Real.pi * r.val * j.val / N : ℝ) : ℂ) * Complex.I) := by
-      have := stdAddChar_neg_mul_eq_exp N j r
+      have := stdAddChar_neg_mul_eq_exp N r j
       rwa [hangle] at this
     rw [hneg']
     rw [show (2 : ℂ) * (foldedCoefficient F N r *
