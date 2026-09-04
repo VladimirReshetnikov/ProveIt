@@ -33,7 +33,7 @@ vanish once the displayed exponent is positive.
   `norm_gaussianBinomial_add_sub_inv_finiteQPochhammerIn_le` are the fixed
   and shifted nonasymptotic additive error bounds.
 * the shifted fixed-column limit `[n+k,k]_q → (q;q)_k⁻¹` is
-  `tendsto_gaussianBinomial_add_atTop` from `QBinomialTheoremInfinite.lean`,
+  `tendsto_gaussianBinomial_add_const_atTop` from `QBinomialTheoremInfinite.lean`,
   read at `r = k`; it is stated there for an arbitrary shift.
 * `gaussianBinomial_fixedColumn_relativeError_isBigO` and
   `gaussianBinomial_shifted_fixedColumn_relativeError_isBigO` give the

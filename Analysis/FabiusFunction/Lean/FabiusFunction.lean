@@ -82,6 +82,7 @@ import FabiusFunction.BernoulliFormalLog
 import FabiusFunction.NarayanaNumbers
 import FabiusFunction.StirlingFirstModH
 import FabiusFunction.LagrangeInversion
+import FabiusFunction.RaneyNumbers
 import FabiusFunction.AbelPolynomialSeries
 import FabiusFunction.LambertWSeries
 import FabiusFunction.FussCatalanSeries
