@@ -262,7 +262,7 @@ theorem numLeaves_eq_of_tamariRotate {s t : BinaryTree Unit} (h : TamariRotate s
     s.numLeaves = t.numLeaves := by
   induction h with
   | root a b c =>
-    simp only [BinaryTree.numLeaves]
+    show a.numLeaves + b.numLeaves + c.numLeaves = a.numLeaves + (b.numLeaves + c.numLeaves)
     omega
   | left a a' c _ ih => simp only [BinaryTree.numLeaves, ih]
   | right a c c' _ ih => simp only [BinaryTree.numLeaves, ih]
