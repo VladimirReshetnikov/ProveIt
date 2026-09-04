@@ -106,7 +106,7 @@ odd-degree drop remain unproved, so the compound `p7:thm:Pn` remains
 zero-definition/one-theorem bridge produced the historical checkpoint 905
 modules and 11,458 public declarations.
 
-The newest source-only leaf is
+The next source-only leaf is
 `FabiusFunction.GeometricUniformComplexMomentProduct`, with one public
 definition and exactly two public theorems. The definition
 `Fabius.geometricUniformComplexMomentProduct` is the actual infinite product;
@@ -117,11 +117,25 @@ identifies its normalized Taylor coefficient with the recursive polynomial.
 This is the complex analytic analogue of the real moment identity, not a
 complex probability-moment interpretation of `p7:eq:Pn-def`, whose Exact
 status remains restricted to real `|q| < 1`. The canonical q-monograph
-compound label `thm:qF-moment-polynomial` remains **Partial**: the exterior
-reciprocal-germ coefficient, its identification with a single rational
-`a_n = d_n/n!`, and the pole-cleared removable continuation at roots of unity
-are not formalized. The `1+2` leaf raises the live documentation census to 906
-modules and 11,461 public declarations. The retained frontier, primary,
+compound label is not promoted by this inner-disc analogue.
+
+The newest source-only leaf is
+`FabiusFunction.GeometricUniformExteriorComplexMomentGerm`, also with one
+public definition and exactly two public theorems. The definition
+`Fabius.geometricUniformExteriorComplexMomentGerm` is the actual reciprocal
+germ `(A_{q⁻¹}(-z))⁻¹` for complex `1 < ‖q‖`;
+`Fabius.analyticAt_geometricUniformExteriorComplexMomentGerm` proves genuine
+analyticity at the origin, and
+`Fabius.geometricUniformMomentPolynomial_eval₂_eq_exteriorComplexMomentGerm_taylorCoefficient`
+identifies its normalized Taylor coefficient with the recursive polynomial.
+The canonical q-monograph compound label `thm:qF-moment-polynomial` remains
+**Partial**: no Lean `RatFunc` packages a single rational `a_n = d_n/n!`
+across the inner and exterior regimes or proves its pole-clearing identity and
+the resulting polynomial continuation at roots of unity. No boundary claim at
+`‖q‖ = 1` is made. The inner complex `1+2` leaf produced the historical
+checkpoint 906 modules and 11,461 public declarations; the exterior `1+2`
+leaf raises the live documentation census to 907 modules and 11,464 public
+declarations. The retained frontier, primary,
 walkthrough, and geometric-q PDFs predate these source-only overlays and claim
 no render parity.
 
@@ -162,8 +176,8 @@ q-beta, geometric Newton-interpolation, integer/complex upper Gaussian, and
 q-Pfaff--Saalschütz, and noncommutative q-multinomial tranches. Its 282-result forward
 status totals are now 166 exact / 91 partial / 17 none / 8 interface. The
 outer spectral product now has an exact
-locally-uniform/normal-convergence theorem; the compound centered/MGF and
-exterior reciprocal/pole layers remain partial.
+locally-uniform/normal-convergence theorem; the compound centered/MGF and full
+exterior uniqueness/pole-divisor layers remain partial.
 
 The final terminating-basic-hypergeometric inventory is
 `TwoPhiOneReversal.lean` (2 definitions + 12 theorems) and

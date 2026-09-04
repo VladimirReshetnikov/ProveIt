@@ -109,12 +109,13 @@ only 4,606 declarations and
 declarations, including 69 undocumented ones.  Run the script for the live
 numbers rather than copying these historical values.
 
-The live 2026-09-04 inventory contains 906 modules and 11,461 lexically
+The live 2026-09-04 inventory contains 907 modules and 11,464 lexically
 visible public declarations, with zero missing module headers and zero missing
-doc comments.  The immediately preceding real-MGF bridge checkpoint of 905
-modules and 11,458 declarations, the algebraic moment-polynomial checkpoint of
-904 modules and 11,457 declarations, and the earlier Lambert-series checkpoint
-of 903 modules and 11,448 declarations remain historical.  The post-merge 2026-09-01
+doc comments.  The immediately preceding inner-complex checkpoint of 906
+modules and 11,461 declarations, the real-MGF bridge checkpoint of 905 modules
+and 11,458 declarations, the algebraic moment-polynomial checkpoint of 904
+modules and 11,457 declarations, and the earlier Lambert-series checkpoint of
+903 modules and 11,448 declarations remain historical.  The post-merge 2026-09-01
 inventory of 675 modules and 8,909
 declarations remains a historical checkpoint: relative to the 610/8,318
 activation checkpoint, that tree added sixty-five modules and 591
@@ -352,7 +353,7 @@ leading-coefficient formula and consequent strict odd-degree drop are absent.
 
 `GeometricUniformComplexMomentProduct.lean` adds one source module and three
 public declarations to the historical 905/11,458 real-bridge checkpoint,
-bringing the live census to 906/11,461.  Its exhaustive 1+2 surface is the
+bringing the next historical checkpoint to 906/11,461.  Its exhaustive 1+2 surface is the
 definition `geometricUniformComplexMomentProduct` and the theorems
 `hasProdLocallyUniformly_geometricUniformComplexMomentProduct` and
 `geometricUniformMomentPolynomial_eval₂_eq_complexMomentProduct_taylorCoefficient`.
@@ -367,11 +368,31 @@ on the whole complex plane, and identifies the recursive polynomial by
 analytic product is not described as a probability MGF; the preceding real
 0+1 theorem remains the exact probability-law MGF bridge.
 
-The inner-disc complex product and coefficient normalization are therefore
-exact, but monograph label `thm:qF-moment-polynomial` remains **Partial**.  Its
-source uses one rational-function coefficient object across the inner product
-and the `|q|>1` reciprocal germ, and no named exterior-germ, `RatFunc`, or
-root-of-unity continuation theorem identifies that same object in Lean.
+#### Exterior complex reciprocal-germ normalization bridge
+
+`GeometricUniformExteriorComplexMomentGerm.lean` adds one source module and
+three public declarations to the historical 906/11,461 inner-complex
+checkpoint, bringing the live census to 907/11,464.  Its exhaustive 1+2
+surface is the definition `geometricUniformExteriorComplexMomentGerm` and the
+theorems `analyticAt_geometricUniformExteriorComplexMomentGerm` and
+`geometricUniformMomentPolynomial_eval₂_eq_exteriorComplexMomentGerm_taylorCoefficient`.
+Its twelve helper declarations are private and excluded from the public
+count.
+
+For every complex `q` with `1 < ‖q‖`, the leaf defines the manuscript's actual
+reciprocal germ `M_q(z)=(A_{q⁻¹}(-z))⁻¹`, proves that it is analytic at zero,
+and identifies the recursive polynomial by
+`P_n(q)=((q;q)_n/(1-q)^n)·(iteratedDeriv n M_q 0/n!)`.  The definition is a
+total Lean inverse, but its analytic claim is deliberately local at the
+origin.  It asserts no global holomorphy across poles, pole divisor, boundary
+case `‖q‖=1`, or rational-function continuation in the parameter.
+
+The inner-disc product, exterior reciprocal germ, and both Taylor-coefficient
+normalizations are therefore exact, but monograph label
+`thm:qF-moment-polynomial` remains **Partial**.  Its source uses one
+rational-function coefficient object across the two analytic regimes, and no
+named `RatFunc` or root-of-unity continuation theorem identifies those
+regime-wise coefficients as that same global parameter object in Lean.
 Label `thm:geometric-uniform-mgf` remains **Partial** because no public theorem
 packages the product's dilation/Mahler law, entireness and normalization,
 formal uniqueness, coefficient rationality and pole data, or its direct
@@ -1062,7 +1083,7 @@ and 88-page notation-catalogue artifacts likewise predate their current merged
 sources.  Their package notices treat those PDFs as historical validation
 receipts, not parity claims, until fresh uninterrupted three-pass builds
 complete.  The inverse-computability receipt likewise still reflects the
-historical 675/8,909 census and requires refresh against the live 906/11,461
+historical 675/8,909 census and requires refresh against the live 907/11,464
 inventory.  The canonical inverse-theory publication retains a 134-page
 artifact synchronized at its latest-main source checkpoint; the merged
 effective-inversion and superconvergent-synthesis tranches make current parity

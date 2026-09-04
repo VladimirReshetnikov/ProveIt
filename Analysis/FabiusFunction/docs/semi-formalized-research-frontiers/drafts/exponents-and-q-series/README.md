@@ -63,7 +63,7 @@ module tranches and the zero-definition, three-theorem
 crosswalk. That source is a source-only successor to the fresh artifact receipt
 and requires a later synchronized three-pass build. Retained PDFs under its `assets/` tree are
 research figures, not alternate manuscript renderings. The current Lean audit
-contains 906 facade-reachable modules and 11,461 public declarations, with no
+contains 907 facade-reachable modules and 11,464 public declarations, with no
 missing module headers or declaration documentation.
 
 The ten-declaration increase is the sibling source-only
@@ -134,17 +134,25 @@ geometric-uniform MGF.  The subsequent
 For every complex strict contraction, including `q = 0`, this exhaustive 1+2
 surface gives the actual manuscript product, locally uniform convergence on
 the whole complex plane, and the exact normalized Taylor-coefficient bridge.
-The inner complex product/coefficient claim is therefore exact.  Under the
-strict whole-label policy, `thm:qF-moment-polynomial` remains Partial rather
-than Exact because the exterior reciprocal germ is not connected to the same
-rational `a_n(q) = d_n(q) / n!`, and no theorem identifies the polynomial
-obtained by clearing that RatFunc's root-of-unity poles, including at `q = 1`.
+The inner complex product/coefficient claim is therefore exact.  The following
+`GeometricUniformExteriorComplexMomentGerm.lean` leaf has the one definition
+`geometricUniformExteriorComplexMomentGerm` and exactly two theorems,
+`analyticAt_geometricUniformExteriorComplexMomentGerm` and
+`geometricUniformMomentPolynomial_eval₂_eq_exteriorComplexMomentGerm_taylorCoefficient`.
+For every complex `1 < ‖q‖`, it constructs the actual reciprocal product germ,
+proves its analyticity at zero, and gives the same normalized Taylor-coefficient
+identity.  Under the strict whole-label policy,
+`thm:qF-moment-polynomial` remains Partial rather than Exact because no single
+Lean `RatFunc` packages the common inner/exterior coefficient or identifies
+the polynomial as its root-of-unity pole-clearing, including the removable
+value at `q = 1`.
 `thm:geometric-uniform-mgf` also remains
 Partial, and the sharp-degree proposition remains None.
 The base leaf gives the historical 904/11,457 checkpoint and moved the row
 from None to Partial; the real bridge gives the historical 905/11,458
-checkpoint, and the complex leaf gives the live 906/11,461 census without
-changing the 166/91/17/8 forward ledger or the 78/400/60/9 source concordance.
+checkpoint, the inner complex leaf gives the historical 906/11,461 checkpoint,
+and the exterior leaf gives the live 907/11,464 census without changing the
+166/91/17/8 forward ledger or the 78/400/60/9 source concordance.
 No retained PDF renders the new source-only crosswalk.
 
 ## Detailed package record

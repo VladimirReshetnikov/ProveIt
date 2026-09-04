@@ -355,9 +355,11 @@ module, and the three-theorem second-moment
 strengthening of the existing Gaussian-binomial cumulant module, followed by
 the one-definition/eight-theorem geometric-uniform moment-polynomial algebra
 module, its zero-definition/one-theorem real-MGF bridge, and the subsequent
-one-definition/two-theorem complex moment-product leaf.  The live source
-census is 906 facade-reachable modules and 11,461 public declarations; the
-immediately preceding real-MGF bridge checkpoint was 905/11,458, the preceding
+one-definition/two-theorem complex moment-product leaf and
+one-definition/two-theorem exterior reciprocal-germ leaf.  The live source
+census is 907 facade-reachable modules and 11,464 public declarations; the
+immediately preceding inner complex-product checkpoint was 906/11,461, the
+preceding real-MGF bridge checkpoint was 905/11,458, the preceding
 algebraic moment-polynomial checkpoint was 904/11,457, the preceding complex
 value-completion checkpoint was 903/11,448, and the preceding exact-radius
 four-theorem checkpoint was 903/11,447.
@@ -2561,13 +2563,25 @@ For every complex \(q\) with \(\lVert q\rVert<1\), these construct the actual
 infinite product, prove its locally uniform convergence on the complex plane,
 and give the finite-q-Pochhammer normalization of its Taylor coefficient.  The
 result is a complex analytic analogue, not a complex probability-moment
-extension of \nolinkurl{p7:eq:Pn-def}.  The canonical q-monograph compound
-\nolinkurl{thm:qF-moment-polynomial} remains Partial because the exterior
-reciprocal-germ coefficient, its global rational \(a_n=d_n/n!\), and the
-pole-cleared removable continuation at roots are not identified in Lean.  The
+extension of \nolinkurl{p7:eq:Pn-def}.  The subsequent
+\path{GeometricUniformExteriorComplexMomentGerm.lean} leaf also has the
+exhaustive public surface one definition and two theorems:
+\lean{geometricUniformExteriorComplexMomentGerm},
+\lean{analyticAt_geometricUniformExteriorComplexMomentGerm}, and
+\lean{geometricUniformMomentPolynomial_eval₂_eq_exteriorComplexMomentGerm_taylorCoefficient}.
+For every complex \(q\) with \(1<\lVert q\rVert\), they define the actual
+reciprocal germ \((\mathcal A_{q^{-1}}(-z))^{-1}\), prove its analyticity at
+zero, and give the same finite-q-Pochhammer normalization of its Taylor
+coefficient.  The canonical q-monograph compound
+\nolinkurl{thm:qF-moment-polynomial} remains Partial because no global
+\texttt{RatFunc} declaration identifies one rational \(a_n=d_n/n!\) across
+the two regimes or proves its pole-clearing identity and resulting polynomial
+continuation at roots.  No boundary statement at \(\lVert q\rVert=1\) is made.  The
 leading-coefficient formula and consequent strict odd-degree drop also remain
 absent, so the compound \nolinkurl{p7:thm:Pn} remains Partial rather than
-Exact.  The complex \(1+2\) leaf raises the live census to 906/11,461.  These
+Exact.  The inner complex \(1+2\) leaf produced the historical 906/11,461
+checkpoint, and the exterior \(1+2\) leaf raises the live census to
+907/11,464.  These
 additions are source-only, and the retained 257-page PDF remains explicitly
 historical; no PDF was built for this update.
 The newest six module counts are
@@ -9397,9 +9411,17 @@ exhaustive public surface of
 \path{Fabius.geometricUniformMomentPolynomial_eval₂_eq_complexMomentProduct_taylorCoefficient}.
 They construct the actual locally uniform product and its normalized
 Taylor-coefficient bridge for every complex \(\lVert q\rVert<1\).  This is an
-analytic analogue rather than a complex probability-moment identity, and it
-does not identify the exterior reciprocal germ or the global rational/removable
-continuation at roots required by the canonical q-monograph
+analytic analogue rather than a complex probability-moment identity.  The
+exhaustive public surface of
+\path{GeometricUniformExteriorComplexMomentGerm.lean} is the definition
+\path{Fabius.geometricUniformExteriorComplexMomentGerm} and the two theorems
+\path{Fabius.analyticAt_geometricUniformExteriorComplexMomentGerm} and
+\path{Fabius.geometricUniformMomentPolynomial_eval₂_eq_exteriorComplexMomentGerm_taylorCoefficient}.
+They construct the actual reciprocal germ, prove its analyticity at zero, and
+give its normalized Taylor-coefficient bridge for every complex
+\(1<\lVert q\rVert\).  Neither analytic leaf supplies the global
+\texttt{RatFunc} identification or pole-clearing continuation at roots
+required by the canonical q-monograph
 \nolinkurl{thm:qF-moment-polynomial}; that compound label remains Partial.
 Neither module proves the leading-coefficient formula and strict degree drop
 for odd \(n>1\).  Therefore the compound frontier label

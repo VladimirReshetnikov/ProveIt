@@ -851,11 +851,22 @@ give its normalized Taylor-coefficient bridge to the recursive polynomial.
 This is an analytic analogue rather than a complex probability-moment
 extension of `p7:eq:Pn-def`, whose Exact scope remains real `|q| < 1`. The
 canonical q-monograph `thm:qF-moment-polynomial` remains Partial because its
-exterior reciprocal-germ/rational-function identification and removable
-continuation at roots are not formalized. The leading-coefficient and strict
+global `RatFunc` identification and pole-clearing polynomial continuation at
+roots are not formalized. The leading-coefficient and strict
 odd-degree clauses also remain absent, so the compound `p7:thm:Pn` remains
-Partial. The complex `1+2` leaf raises the live repository census to 906
-modules and 11,461 public declarations. These sibling source-only modules are
+Partial. The complex `1+2` leaf produced the historical checkpoint 906
+modules and 11,461 public declarations. The subsequent sibling
+`FabiusFunction.GeometricUniformExteriorComplexMomentGerm` has the exhaustive
+surface one public definition and two public theorems:
+`Fabius.geometricUniformExteriorComplexMomentGerm`,
+`Fabius.analyticAt_geometricUniformExteriorComplexMomentGerm`, and
+`Fabius.geometricUniformMomentPolynomial_eval₂_eq_exteriorComplexMomentGerm_taylorCoefficient`.
+For every complex `q` with `1 < ‖q‖`, these provide the actual reciprocal
+germ, analyticity at the origin, and its normalized Taylor-coefficient bridge
+to the recursive polynomial. They assert neither a unit-circle value nor a
+global rational-function continuation. This exterior `1+2` leaf raises the
+live repository census to 907 modules and 11,464 public declarations. These
+sibling source-only modules are
 not rendered by the retained Representation or inverse PDFs. The immediately
 preceding complex Bernoulli value-completion checkpoint was 903 modules and
 11,448 public declarations. The earlier

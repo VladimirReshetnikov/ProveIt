@@ -21,8 +21,8 @@ so no PDF was rebuilt for it.  The same holds for the 2026-09-02 split that
 moved the six polynomial-logarithmic transseries packages out of `lambert-w/`
 into the new `series-and-transseries/` group.
 
-**Current artifact checkpoint (2026-09-04).** The live Lean audit scans 906
-source modules and 11,461 public declarations, with no missing module headers or
+**Current artifact checkpoint (2026-09-04).** The live Lean audit scans 907
+source modules and 11,464 public declarations, with no missing module headers or
 declaration comments.
 Several PDFs below are retained,
 readable publication checkpoints rather than renders of the final merged TeX.
@@ -404,15 +404,24 @@ theorems, `hasProdLocallyUniformly_geometricUniformComplexMomentProduct` and
 For every complex `‖q‖ < 1`, including `q = 0`, it supplies the manuscript's
 actual infinite product, its locally uniform convergence, and its exact
 normalized Taylor-coefficient bridge.  The inner complex product/coefficient
-claim is exact, but `thm:qF-moment-polynomial` remains conservatively Partial:
-the exterior reciprocal germ is not identified with the same rational
-`a_n(q) = d_n(q) / n!`, and no theorem identifies the polynomial obtained by
-clearing that RatFunc's root-of-unity poles, including at `q = 1`.
+claim is exact.  The next `GeometricUniformExteriorComplexMomentGerm.lean`
+leaf has one definition, `geometricUniformExteriorComplexMomentGerm`, and
+exactly two theorems, `analyticAt_geometricUniformExteriorComplexMomentGerm`
+and
+`geometricUniformMomentPolynomial_eval₂_eq_exteriorComplexMomentGerm_taylorCoefficient`.
+For every complex `1 < ‖q‖`, it constructs the manuscript's actual reciprocal
+germ, proves analyticity at zero, and identifies its normalized Taylor
+coefficient with the same recursive polynomial.  Nevertheless,
+`thm:qF-moment-polynomial` remains conservatively Partial: no single Lean
+`RatFunc` packages the common inner/exterior coefficient, and no theorem
+identifies the polynomial as its root-of-unity pole-clearing, including the
+removable value at `q = 1`.
 `thm:geometric-uniform-mgf` remains Partial
 and `prop:qF-P-degree-sharp` remains None.  The base addition gives the
 historical 904/11,457 checkpoint and moved the row from None to Partial; the
-real bridge gives the historical 905/11,458 checkpoint, while the complex
-leaf gives the live census 906/11,461.  The q forward totals remain 166 Exact /
+real bridge gives the historical 905/11,458 checkpoint, the inner complex leaf
+gives the historical 906/11,461 checkpoint, and the exterior leaf gives the
+live census 907/11,464.  The q forward totals remain 166 Exact /
 91 Partial / 17 None / 8 N/A.  The source concordance stays unchanged at 78
 Lean-proved / 400 human-proved frontier / 60 N/A / 9 conjectures because its
 historical-source disposition does not encode partial Lean coverage.  The

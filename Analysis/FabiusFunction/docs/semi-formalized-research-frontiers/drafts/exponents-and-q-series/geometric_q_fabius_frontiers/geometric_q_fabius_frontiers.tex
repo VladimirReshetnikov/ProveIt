@@ -16510,10 +16510,21 @@ infinite product, proves locally uniform convergence on the complex plane, and
 identifies its normalized Taylor coefficient with the same polynomial.  This
 is a complex analytic analogue, not a complex probability-moment reading of
 \eqref{p7:eq:Pn-def}; that equation is Exact only in the real contraction
-regime stated above.  The canonical q-monograph compound label
-\nolinkurl{thm:qF-moment-polynomial} remains Partial because the exterior
-reciprocal-germ coefficient, the single rational function \(a_n=d_n/n!\), and
-the pole-cleared removable continuation at roots of unity are not formalized.
+regime stated above.  The subsequent source-only
+\path{GeometricUniformExteriorComplexMomentGerm.lean} leaf also has one
+public definition, \lean{geometricUniformExteriorComplexMomentGerm}, and
+exactly two public theorems,
+\lean{analyticAt_geometricUniformExteriorComplexMomentGerm} and
+\lean{geometricUniformMomentPolynomial_eval₂_eq_exteriorComplexMomentGerm_taylorCoefficient}.
+For every complex \(q\) with \(1<\lVert q\rVert\), it defines the actual
+reciprocal germ \((\mathcal A_{q^{-1}}(-z))^{-1}\), proves its analyticity at
+the origin, and identifies its normalized Taylor coefficient with the same
+polynomial.  The canonical q-monograph compound label
+\nolinkurl{thm:qF-moment-polynomial} remains Partial because no Lean
+\texttt{RatFunc} packages the single rational function \(a_n=d_n/n!\)
+across both regimes or proves its pole-clearing identity and resulting
+polynomial continuation at roots of unity.  No boundary claim at
+\(\lVert q\rVert=1\) is made.
 Nor does any of these modules prove the leading-coefficient formula and
 consequent strict degree drop for odd \(n>1\).  Thus the compound theorem
 \cref{p7:thm:Pn} remains Partial, not Exact: its algebraic
@@ -16522,8 +16533,10 @@ are supplied, while its leading/odd-degree clause remains open.  The \(1+8\)
 algebraic leaf raised the historical 903/11,448 checkpoint to the historical
 904 modules and 11,457 public declarations; the exhaustive \(0+1\) real bridge
 raised the next historical checkpoint to 905 modules and 11,458 public
-declarations; and the exhaustive \(1+2\) complex leaf raises the live facade
-census to 906 modules and 11,461 public declarations.
+declarations; and the exhaustive \(1+2\) complex leaf raised the next
+historical checkpoint to 906 modules and 11,461 public declarations.  The exhaustive
+\(1+2\) exterior leaf raises the live facade census to 907 modules and 11,464
+public declarations.
 The retained PDF predates these source-only crosswalks, remains historical,
 and claims no render parity.
 \end{statusbox}

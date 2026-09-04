@@ -159,7 +159,7 @@ The newest combinatorial and certification tranche adds
 binary-word inversion and path-area generating functions, rectangular-box
 partition generating functions and counts, finite telescoping certificates,
 recurrence uniqueness, and rational-identity specialization. The live facade
-audit now contains 906 modules and 11,461 public declarations, with no
+audit now contains 907 modules and 11,464 public declarations, with no
 documentation gaps. Ten declarations come from the sibling
 `FabiusFunction.GeometricRichardsonGenerating` module (three definitions and
 seven theorems), whose exact comb-manuscript crosswalk is
@@ -170,8 +170,9 @@ and division-free variance-numerator theorems in
 `GaussianBinomialCumulants`; they strengthen the already-Exact
 `thm:qbinom-moments` row without changing its disposition.
 The three declarations beyond the historical 905-module/11,458-declaration
-checkpoint are the one-definition, two-theorem complex moment-product leaf
-described below.
+checkpoint form the one-definition, two-theorem inner complex moment-product
+leaf described below.  The next three declarations form its one-definition,
+two-theorem exterior reciprocal-germ companion.
 The subsequent one-module/five-declaration increase is the unrelated sibling
 `LambertWBranchGapBernoulli.lean` leaf. Its exhaustive zero-definition public
 surface is `summable_norm_bernoulli_mul_pow_div_factorial`,
@@ -223,10 +224,17 @@ For every complex `q` with `‖q‖ < 1`, including `q = 0`, these declarations
 give the manuscript's actual infinite product, its locally uniform convergence
 on the whole complex plane, and the exact finite-q-Pochhammer normalization of
 its Taylor coefficient.  Thus the inner complex product/coefficient bridge is
-exact.  The compound `thm:qF-moment-polynomial` nevertheless remains Partial:
-Lean does not yet identify the exterior reciprocal-germ coefficients with the
-same rational function `a_n(q) = d_n(q) / n!`, or prove that clearing that
-RatFunc's root-of-unity poles gives the same total polynomial at `q = 1`.  The broader
+exact.  The subsequent `GeometricUniformExteriorComplexMomentGerm.lean` leaf
+has one definition, `geometricUniformExteriorComplexMomentGerm`, and exactly
+two public theorems, `analyticAt_geometricUniformExteriorComplexMomentGerm`
+and
+`geometricUniformMomentPolynomial_eval₂_eq_exteriorComplexMomentGerm_taylorCoefficient`.
+For every complex `1 < ‖q‖`, it constructs the manuscript's actual reciprocal
+germ, proves analyticity at zero, and identifies the same normalized Taylor
+coefficient.  The compound `thm:qF-moment-polynomial` nevertheless remains
+Partial: Lean does not yet package the inner and exterior coefficients as one
+rational function `a_n(q) = d_n(q) / n!`, or prove that clearing that RatFunc's
+root-of-unity poles gives the same total polynomial at `q = 1`.  The broader
 `thm:geometric-uniform-mgf` likewise remains Partial at its unbundled direct
 dilation, coefficient-recurrence, formal-uniqueness, and rationality clauses;
 `prop:qF-P-degree-sharp` remains None, and `cor:qF-halfbase-dictionary`
@@ -234,8 +242,9 @@ remains Partial at its still-missing endpoint formula even though the
 half-base polynomial and genuine-MGF normalization are now available.  The
 base leaf produced the historical 904/11,457 checkpoint and the exact
 None-to-Partial move; the real bridge produced the historical 905/11,458
-checkpoint, and the complex leaf raises the live census to 906/11,461 without
-changing the 166 Exact / 91 Partial / 17 None / 8 N/A forward ledger or the
+checkpoint, the inner complex leaf gives the historical 906/11,461 checkpoint,
+and the exterior leaf raises the live census to 907/11,464 without changing
+the 166 Exact / 91 Partial / 17 None / 8 N/A forward ledger or the
 78 Lean-proved / 400 human-proved frontier / 60 N/A / 9 conjecture source
 concordance.  The retained historical PDF renders none of these q-series
 leaves or the preceding Lambert tranche, and no source/PDF parity is claimed.

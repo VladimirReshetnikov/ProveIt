@@ -136,10 +136,20 @@ For complex `‖q‖ < 1` it supplies the actual locally uniform product and its
 normalized Taylor-coefficient bridge.  This is an analytic analogue; it does
 not extend the probability-moment reading of `p7:eq:Pn-def` beyond real
 `|q| < 1`.  The canonical q-monograph `thm:qF-moment-polynomial` remains
-Partial because the exterior reciprocal-germ coefficient and the global
-rational/removable continuation at roots are absent.  This exhaustive `1+2`
-leaf raises the live documentation census to 906 modules and 11,461 public
-declarations.  All three sibling source-only additions are likewise absent
+Partial because the global `RatFunc` identification and its pole-clearing
+polynomial continuation at roots are absent.  This exhaustive `1+2` leaf
+produced the historical checkpoint 906 modules and 11,461 public declarations.
+The subsequent sibling
+`FabiusFunction.GeometricUniformExteriorComplexMomentGerm` also has the
+exhaustive surface one public definition and two public theorems:
+`Fabius.geometricUniformExteriorComplexMomentGerm`,
+`Fabius.analyticAt_geometricUniformExteriorComplexMomentGerm`, and
+`Fabius.geometricUniformMomentPolynomial_eval₂_eq_exteriorComplexMomentGerm_taylorCoefficient`.
+For complex `1 < ‖q‖` it supplies the actual reciprocal germ, analyticity at
+the origin, and its normalized Taylor-coefficient bridge.  It makes no unit-
+circle or global rational-function claim and raises the live documentation
+census to 907 modules and 11,464 public declarations.  All four sibling
+source-only additions are likewise absent
 from the retained historical PDFs.
 
 The exact raw second-order package is `LambertWCurvature.lean`.  Its

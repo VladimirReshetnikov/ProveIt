@@ -163,6 +163,7 @@ import FabiusFunction.GeometricUniformCDF
 import FabiusFunction.GeometricUniformMomentPolynomial
 import FabiusFunction.GeometricUniformMomentPolynomialBridge
 import FabiusFunction.GeometricUniformComplexMomentProduct
+import FabiusFunction.GeometricUniformExteriorComplexMomentGerm
 import FabiusFunction.Paper05442
 import FabiusFunction.Paper06487
 import FabiusFunction.PaperFabiusAsymptotic
@@ -956,14 +957,26 @@ convergence on the whole complex plane, and proves
 `P_n(q) = ((q;q)_n / (1-q)^n) * (iteratedDeriv n A_q 0 / n!)`.
 For nonreal `q`, this analytic product is not described as a probability MGF.
 
-These leaves make the real probability-law normalization and the inner
-complex-disc product/Taylor normalization exact.  Frontier label `p7:thm:Pn`
+The exterior reciprocal-germ companion also has the exhaustive public surface
+of one definition and two theorems:
+`geometricUniformExteriorComplexMomentGerm`,
+`analyticAt_geometricUniformExteriorComplexMomentGerm`, and
+`geometricUniformMomentPolynomial_eval₂_eq_exteriorComplexMomentGerm_taylorCoefficient`.
+For every complex `q` with `1 < ‖q‖`, it defines the actual manuscript germ
+`M_q(z) = (A_{q⁻¹}(-z))⁻¹`, proves analyticity at zero, and proves
+`P_n(q) = ((q;q)_n / (1-q)^n) * (iteratedDeriv n M_q 0 / n!)`.
+The inverse is total in Lean, but only the germ at zero is asserted analytic;
+no boundary or global pole statement is included.
+
+These leaves make the real probability-law normalization and both the inner
+complex-disc and exterior complex-germ Taylor normalizations exact.  Frontier label `p7:thm:Pn`
 nevertheless remains Partial because its leading-coefficient formula and
 strict odd-degree drop are absent.  Monograph label
 `thm:qF-moment-polynomial` also remains Partial: its source uses one
 rational-function coefficient object across the inner product and the
-`|q| > 1` reciprocal germ, while no named exterior-germ, `RatFunc`, or
-root-of-unity continuation theorem identifies that same object in Lean.
+`|q| > 1` reciprocal germ, while no named `RatFunc` or root-of-unity
+continuation theorem identifies the two analytic regimes as that same global
+parameter object in Lean.
 Label `thm:geometric-uniform-mgf` remains Partial: no public theorem packages
 the product's dilation/Mahler law, entireness and normalization, formal
 uniqueness, coefficient rationality and pole data, or its direct
