@@ -211,6 +211,370 @@ established.
 
 \mainmatter
 
+
+\part{Orientation}
+
+\chapter{What a transseries is, and why one is needed}
+\label{q0:sec:why}
+
+\begin{sourcebox}
+This part replaces four independently written expository introductions:
+\texttt{Transseries\_Tutorial-1}, \texttt{-2},
+\texttt{Transseries\_Tutorial-3} (\emph{Transseries for Mere Mortals}) and
+\texttt{-4}.  Between them they state $58$ named results, of which $21$ are
+already theorems of the later parts of this volume and are cited here rather
+than restated.  Of the remainder, most are definitions --- the vocabulary is
+genuinely common to all four --- and those are given once.  Five of the named
+theorems are labelled in their sources ``stated without proof'' or
+``schematic''; \cref{q0:sec:quoted} says which, and why they stay quoted.
+Everything else stated here as a theorem is proved here.
+\end{sourcebox}
+
+\section{An expansion needs a scale}
+\label{q0:sec:scale}
+
+A limit remembers too little.  Knowing that $f(x)\to0$ says nothing about
+whether $f$ is $1/x$, $\e^{-x}$ or $1/\log x$, and those three behave so
+differently that no single statement covers them.  An asymptotic expansion
+records more: it compares $f$ against a fixed yardstick.
+
+\begin{definition}[Asymptotic scale]\label{q0:def:scale}
+Let $\mathcal{S}$ be a filter base on a set --- for us always $x\to+\infty$
+along a real ray, or $x\to\infty$ in a sector.  A sequence
+$(\varphi_n)_{n\ge0}$ of eventually nonvanishing functions is an
+\emph{asymptotic scale} if
+\begin{equation}\label{q0:eq:scale}
+ \varphi_{n+1}=\littleo(\varphi_n)\qquad\text{for every }n\ge0 .
+\end{equation}
+\end{definition}
+
+\begin{definition}[Poincar\'e asymptotic expansion]\label{q0:def:poincare}
+Given a scale $(\varphi_n)$ and constants $a_n$, write
+\begin{equation}\label{q0:eq:poincare}
+ f\sim\sum_{n\ge0}a_n\varphi_n
+ \quad\text{to mean}\quad
+ f-\sum_{n<N}a_n\varphi_n=\bigO(\varphi_N)\ \ \text{for every fixed }N .
+\end{equation}
+The number of retained terms is fixed \emph{before} the limit is taken.  No
+claim is made that the infinite series converges, and in the cases that matter
+in this volume it does not.
+\end{definition}
+
+\begin{proposition}[Uniqueness relative to a scale]\label{q0:prop:uniqueness}
+The coefficients in \eqref{q0:eq:poincare} are uniquely determined by $f$ and
+the scale:
+\begin{equation}\label{q0:eq:coefficients}
+ a_N=\lim\frac{f-\sum_{n<N}a_n\varphi_n}{\varphi_N},
+\end{equation}
+the limit being along $\mathcal S$.  In particular two different sequences of
+coefficients cannot represent the same $f$ on the same scale.
+\end{proposition}
+
+\begin{proof}
+Induction on $N$.  For $N=0$, \eqref{q0:eq:poincare} at $N=1$ gives
+$f-a_0\varphi_0=\bigO(\varphi_1)=\littleo(\varphi_0)$, so
+$f/\varphi_0\to a_0$; this both proves the formula and shows $a_0$ is
+determined.  Suppose $a_0,\dots,a_{N-1}$ are determined.  Applying
+\eqref{q0:eq:poincare} at $N+1$ to $g:=f-\sum_{n<N}a_n\varphi_n$ gives
+$g-a_N\varphi_N=\bigO(\varphi_{N+1})=\littleo(\varphi_N)$, whence
+$g/\varphi_N\to a_N$, which is \eqref{q0:eq:coefficients}.
+\end{proof}
+
+\begin{remark}[Uniqueness is relative, and that is the whole point]
+\label{q0:rem:relative}
+\Cref{q0:prop:uniqueness} says the coefficients are unique \emph{given the
+scale}.  It does not say the expansion determines $f$.  It cannot: the two
+functions $f$ and $f+\e^{-x}$ have identical expansions on the scale
+$(x^{-n})_{n\ge0}$, because $\e^{-x}=\bigO(x^{-N})$ for every $N$.  This is
+the single fact that makes transseries necessary, and \cref{q0:sec:flat}
+develops it.
+\end{remark}
+
+\section{Beyond all algebraic orders}
+\label{q0:sec:flat}
+
+\begin{definition}[Flatness]\label{q0:def:flat}
+A function $\varepsilon$ is \emph{flat} relative to a scale $(\varphi_n)$ if
+$\varepsilon=\bigO(\varphi_n)$ for every $n$.  Relative to the power scale
+$(x^{-n})$ this is often written $\varepsilon=\bigO(x^{-\infty})$.
+\end{definition}
+
+\begin{proposition}[The invisible-function problem]\label{q0:prop:invisible}
+$\e^{-x}$ is flat relative to $(x^{-n})_{n\ge0}$, and the set of functions
+flat relative to a given scale is a vector space closed under multiplication
+by anything of at most polynomial growth.  Consequently a Poincar\'e
+expansion on the power scale determines $f$ only up to a flat function, and no
+refinement of the coefficients can recover the difference.
+\end{proposition}
+
+\begin{proof}
+For any $N$, $x^{N}\e^{-x}\to0$ as $x\to+\infty$, since $\e^{x}$ exceeds
+$x^{N+1}/(N+1)!$; hence $\e^{-x}=\littleo(x^{-N})$ for every $N$.  Closure
+under sums and under multiplication by $\bigO(x^{M})$ is immediate from the
+definition.  The last sentence is \cref{q0:prop:uniqueness} applied to $f$ and
+$f+\varepsilon$: both have the same coefficients, so the expansion cannot
+separate them.
+\end{proof}
+
+\begin{remark}[This volume is a catalogue of the phenomenon]
+\label{q0:rem:catalogue}
+Almost every chapter of this volume is, at bottom, an instance of
+\cref{q0:prop:invisible}.  In \cref{q1:sec:top} the entire block structure of
+the inverse of $x+\LambertW(x)$ is flat relative to the inverse-logarithmic
+scale, so an expansion in powers of $1/\log z$ --- correct to every order ---
+sees none of it.  In \cref{p6:sec:top} the constant $\tfrac12$ in
+$\Gamma_+^{-1}$ is flat relative to the outer expansion of the Lambert core.
+In \cref{q2:sec:bell} the third family of sectors is flat relative to the
+first two.  In \cref{p8:sec:top} the whole subfactorial correction is flat
+relative to every fixed exponential.  The remedy is always the same: enlarge
+the scale until the invisible term becomes a monomial of it.
+\end{remark}
+
+\section{Divergence is not failure}
+\label{q0:sec:divergence}
+
+\begin{remark}[The Euler example]\label{q0:rem:euler}
+The classical illustration is the Euler equation $x^{2}y'+y=x$, whose formal
+solution is $\sum_{n\ge0}(-1)^{n}n!\,x^{n+1}$.  The series diverges for every
+$x\ne0$, and yet its truncations approximate a genuine solution extremely
+well: the error after $N$ terms is about $N!\,|x|^{N+1}$, which for fixed $x$
+first decreases and then grows.  Stopping at the smallest term --- optimal
+truncation --- leaves an error of order $\e^{-1/|x|}$, exponentially small.
+The rigorous version of this, for the Gevrey-$1$ remainder bounds this volume
+actually needs, is \cref{p0:thm:optimal-truncation}; the point to carry
+forward is that a divergent expansion can be more informative than a
+convergent one, and that the size of its least term is itself a meaningful
+quantity.
+\end{remark}
+
+\begin{remark}[Where the exponentially small term goes]\label{q0:rem:beyond}
+The $\e^{-1/|x|}$ left over by optimal truncation is exactly a flat function
+in the sense of \cref{q0:def:flat}.  It is not noise: it is a term of the
+answer, on a scale the power series cannot express.  A transseries is the
+bookkeeping that lets one write it down --- and then, if one wishes, expand
+\emph{its} coefficient in powers again, producing a second series, and so on.
+\end{remark}
+
+\chapter{The algebra of monomials}
+\label{q0:sec:algebra}
+
+The vocabulary below is common to all four source tutorials and to the
+calculus parts of this volume; it is fixed once here.
+
+\section{Ordered monomials and well-based support}
+\label{q0:sec:monomials}
+
+\begin{definition}[Ordered monomial group]\label{q0:def:group}
+A \emph{monomial group} is a totally ordered abelian group
+$(\mathfrak M,\cdot,\prec)$: multiplication of monomials is the group law, and
+$\mathfrak m\prec\mathfrak n$ means $\mathfrak m$ is asymptotically negligible
+against $\mathfrak n$.  Compatibility means $\mathfrak m\prec\mathfrak n$
+implies $\mathfrak{mp}\prec\mathfrak{np}$ for every $\mathfrak p$.
+\end{definition}
+
+\begin{remark}[Why the ordering cannot be Archimedean]\label{q0:rem:archimedean}
+In $\mathfrak M$ the monomials $x^{-1}$ and $\e^{-x}$ satisfy
+$\e^{-x}\prec x^{-n}$ for every $n$; so no multiple of $\e^{-x}$ ever reaches
+$x^{-1}$, and the ordered group is not Archimedean.  This is the algebraic
+shadow of \cref{q0:prop:invisible}, and it is why the value group of a
+transseries field is large and the field is not a Hardy field of finite rank.
+\end{remark}
+
+\begin{definition}[Well-based support and Hahn series]\label{q0:def:hahn}
+A subset $S\subseteq\mathfrak M$ is \emph{well-based} (equivalently
+\emph{reverse well-ordered}) if every nonempty subset of $S$ has a
+$\prec$-greatest element; equivalently, $S$ contains no strictly increasing
+infinite sequence.  Given a coefficient field $\K$, the \emph{Hahn
+series} field $\K[[\mathfrak M]]$ consists of the formal sums
+$\sum_{\mathfrak m\in S}c_{\mathfrak m}\mathfrak m$ with $S$ well-based.  The
+\emph{leading monomial} of a nonzero such series is the greatest element of
+its support, and its coefficient the \emph{leading coefficient}.
+\end{definition}
+
+The next two lemmas are what make that definition usable: they are the reason
+products and infinite sums of Hahn series exist.  Both are stated in the
+sources; one of them is stated there without proof.
+
+\begin{lemma}[Neumann's lemma]\label{q0:lem:neumann}
+Let $A,B\subseteq\mathfrak M$ be well-based.  Then $A\cdot B$ is well-based,
+and every $\mathfrak c\in A\cdot B$ has only finitely many factorizations
+$\mathfrak c=\mathfrak{ab}$ with $\mathfrak a\in A$, $\mathfrak b\in B$.
+\end{lemma}
+
+\begin{proof}
+Write the group additively for the proof, so $A+B$ and $\mathfrak c=a+b$.
+
+\emph{Finiteness of factorizations.}  Suppose $c=a_i+b_i$ for infinitely many
+distinct pairs $(a_i,b_i)$, $i\in\Nat$.  Every sequence in a totally ordered
+set has a monotone subsequence, so we may assume $(a_i)$ is monotone.  It
+cannot be strictly increasing, since $A$ is well-based; so $(a_i)$ is
+non-increasing.  Then $b_i=c-a_i$ is non-decreasing, and because the pairs are
+distinct and determined by $a_i$, infinitely many $b_i$ are distinct, giving a
+strictly increasing sequence in $B$ --- contradicting that $B$ is well-based.
+
+\emph{$A+B$ is well-based.}  Suppose $c_1\prec c_2\prec\cdots$ in $A+B$, with
+$c_i=a_i+b_i$.  Passing to a subsequence, assume $(a_i)$ monotone; as above it
+is non-increasing.  Then $b_i=c_i-a_i$ is strictly increasing, since $c_i$ is
+strictly increasing and $-a_i$ is non-decreasing --- again contradicting that
+$B$ is well-based.
+\end{proof}
+
+\begin{lemma}[Dickson's lemma]\label{q0:lem:dickson}
+Every subset of $\Nat^{k}$ has finitely many minimal elements for the
+componentwise order; equivalently, $\Nat^{k}$ contains no infinite antichain.
+\end{lemma}
+
+\begin{proof}
+Let $(v_i)_{i\ge1}$ be any sequence in $\Nat^{k}$.  Its first coordinates form
+a sequence in $\Nat$, which has a non-decreasing subsequence; within that
+subsequence the second coordinates again have a non-decreasing subsequence;
+after $k$ such extractions we obtain a subsequence non-decreasing in every
+coordinate, so its first two terms satisfy $v\le v'$ componentwise.  Hence no
+infinite antichain exists, and a set whose minimal elements were infinite
+would contain one.
+\end{proof}
+
+\begin{remark}[What these two are for]\label{q0:rem:why-lemmas}
+\Cref{q0:lem:neumann} is what makes the \emph{product} of two Hahn series
+well defined: each coefficient of the product is a finite sum.  It is used in
+this volume at \cref{p6:thm:triangular}, where it is exactly the hypothesis
+that lets a triangular recurrence terminate at each exponent, and it is the
+reason that theorem needs only well-basedness and not the stronger local
+finiteness one source assumed.  \Cref{q0:lem:dickson} is what makes a
+\emph{grid} --- a support contained in a finitely generated monoid --- behave
+like a finite object, and it underlies the closure properties that the
+calculus parts use without further comment.
+\end{remark}
+
+\begin{definition}[Summable family]\label{q0:def:summable}
+A family $(f_j)_{j\in J}$ of Hahn series is \emph{summable} if the union of
+their supports is well-based and each monomial lies in only finitely many
+supports.  Its sum is then defined coefficientwise.
+\end{definition}
+
+\section{Height, depth, and how monomials compare}
+\label{q0:sec:height}
+
+\begin{definition}[Exponential height and logarithmic depth]
+\label{q0:def:height}
+The \emph{exponential height} of a transmonomial is the number of nested
+exponentials it carries; the \emph{logarithmic depth} is the number of nested
+logarithms.  Thus $x=\e^{\log x}$ has height $0$ and depth $0$ in the usual
+normalization, $\e^{x}$ has height $1$, and $\log\log x$ has depth $2$.
+\end{definition}
+
+\begin{proposition}[Height wins]\label{q0:prop:height}
+For all $N,M\ge0$,
+\begin{equation}\label{q0:eq:height}
+ x^{N}(\log x)^{M}=\littleo\bigl(\e^{\varepsilon x}\bigr)
+ \qquad\text{for every }\varepsilon>0,
+\end{equation}
+and consequently no product of powers and logarithms can compare with a
+monomial of greater exponential height.  Dually, $(\log x)^{M}=\littleo(x^{\delta})$
+for every $\delta>0$: a greater logarithmic depth is always negligible against
+any positive power.
+\end{proposition}
+
+\begin{proof}
+Taking logarithms, $N\log x+M\log\log x-\varepsilon x\to-\infty$, since
+$\log x=\littleo(x)$ and $\log\log x=\littleo(\log x)$; exponentiating gives
+\eqref{q0:eq:height}.  The dual statement is the same computation with
+$M\log\log x-\delta\log x\to-\infty$.
+\end{proof}
+
+\begin{remark}[The comparison algorithm]\label{q0:rem:compare}
+\Cref{q0:prop:height} is the top of a decision procedure: to compare two
+transmonomials, compare exponential heights first; on a tie, compare the
+exponents recursively; on a further tie, compare powers; and only at the
+bottom compare logarithmic depths.  That is exactly the order in which the
+scale part of this volume organizes the polynomial--logarithmic monomials, and
+it is why the degree profile there is a lexicographic invariant rather than a
+single number.
+\end{remark}
+
+\section{How to read this volume}
+\label{q0:sec:roadmap}
+
+The parts that follow fall into three groups.
+
+\emph{The calculus} develops one scale in operational depth: the
+polynomial--logarithmic transseries, whose monomials are
+$X^{-\mu}(\log X)^{k}$.  It builds the rings, then arithmetic and
+differentiation, then composition, then reversal at infinity; then it
+specializes to $\LambertW$ and the Wright $\omega$ function; then it converts
+formal identities into Poincar\'e asymptotics with certificates; then
+algorithms and diagnostics.  A reader who wants the machinery should read
+these in order.
+
+\emph{The inversion apparatus} is a single part standing between the calculus
+and its applications.  It contains what the calculus does not: the
+exponential--power model, the monomial $\alpha$-reduction, the axiomatized
+dominant core, perturbed inversion around it, and --- the part with no analogue
+in the calculus --- the theory of inverting a \emph{sequence}, where three
+different inverse objects must be distinguished and a staircase theorem
+relates them.
+
+\emph{The applications} are independent of one another.  Each takes a
+rapidly growing function or sequence, identifies its dominant block, inverts
+that block in closed form, and reverts the rest.  A reader interested in one
+subject can read its part alone, following the citations back into the
+calculus as needed.
+
+\begin{remark}[The one thing worth carrying through all of it]
+\label{q0:rem:moral}
+Every part of this volume repeats one manoeuvre: \emph{normalize until what
+remains is an ordinary reversion}.  Whether the normalization is the
+substitution $u=\e^{-\lambda x}$ of \cref{p9:thm:factorization}, the Lambert
+coordinate of \cref{p6:sec:core}, the change $q=L/(L-v)-\e^{-v}$ of
+\cref{q1:prop:B}, or the saddle $r=\Wlam_0(n)$ of \cref{q2:thm:bell}, the shape
+is the same: find the block that can be inverted exactly, check that its
+normalized slope is a unit, and revert the remainder by a triangular
+recurrence whose only division is by that slope.  What differs between
+chapters is which block and what the slope is.
+\end{remark}
+
+\section{What is quoted rather than proved}
+\label{q0:sec:quoted}
+
+Five statements appear in the source tutorials as named theorems that they do
+not prove, and this volume does not prove them either.  They are recorded here,
+demoted from theorems to attributed quotations, so that nothing in the volume
+carries the authority of a proof it does not have.
+
+\begin{enumerate}
+\item \emph{Real closedness of the transseries field.}  The field of
+      logarithmic-exponential transseries is real closed.  This is a theorem
+      of the literature (van der Hoeven; Aschenbrenner--van den
+      Dries--van der Hoeven), and neither the sources nor this volume proves
+      it.  Nothing in the volume depends on it.
+\item \emph{Closure under antidifferentiation.}  Every transseries has a
+      transseries antiderivative.  Again a theorem of the literature; the
+      calculus part of this volume proves the corresponding statement only for
+      the polynomial--logarithmic scale, where it is elementary and where a
+      genuine obstruction --- the appearance of a new logarithm --- is visible
+      and is handled explicitly.
+\item \emph{The formal Taylor principle} and \emph{the formal contraction
+      principle}, stated schematically in two of the sources.  This volume
+      proves the versions it uses --- the composition part for the first, and
+      the reversal part for the second --- on the polynomial--logarithmic
+      scale with explicit hypotheses.  The schematic general forms are not
+      established here.
+\item \emph{Generalized Borel reconstruction.}  That a resurgent germ is
+      recovered from its Borel transform by a directional Laplace integral,
+      with Stokes jumps across singular directions, is quoted schematically.
+      This volume uses only the elementary Watson-type statements it proves,
+      and every hyperasymptotic claim in the applications is labelled as
+      quoted or as open --- see \cref{p6:rem:not-claimed}.
+\end{enumerate}
+
+\begin{remark}[Why this list exists]\label{q0:rem:honesty}
+A tutorial may reasonably state a deep theorem without proof, to orient the
+reader.  A reference volume may not do so silently, because a later chapter
+may then appear to rest on it.  Listing the five here, and checking that no
+result of this volume uses any of them, is cheaper than tracking the
+dependency later.
+\end{remark}
+
 \clearpage
 \chapter{Reader's guide and the structure of this volume}
 \label{plt:sec:readers-guide}
@@ -37974,6 +38338,229 @@ numerical constant is asserted anywhere in this chapter.
 \end{remark}
 
 %% ==================== fragment p1 ====================
+\chapter{Concordance: the calculus and the inversion apparatus}
+\label{q3:sec:top}
+
+\section{Why this chapter exists}
+\label{q3:sec:why}
+
+The calculus parts of this volume and the inversion apparatus of
+\cref{p0:sec:top} were written independently, as separate consolidations of
+separate groups of articles, and the group they came from recorded as an open
+question whether their machinery coincides.  This chapter answers it, pair by
+pair.
+
+The answer is more interesting than either ``yes'' or ``no''.  A crude
+comparison --- matching the two apparatuses by the titles of their results ---
+suggests heavy duplication: Lagrange--B\"urmann appears on both sides, so do
+Bell polynomials, so does residual-to-error transfer, so does a closed-form
+Lambert block.  On inspection, most of those pairs are \emph{not} the same
+statement.  They are different theorems about the same subject, and the volume
+needs both.  Exactly one pair is a genuine duplicate, and one pair is a strict
+strengthening.  \Cref{q3:tab:concordance} records the verdicts and the rest of
+this chapter justifies them.
+
+\begin{table}[htbp]
+\centering
+\caption{Apparent overlaps between the calculus parts and
+\cref{p0:sec:top}, with the verdict for each.}
+\label{q3:tab:concordance}
+\small
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{@{}p{0.30\textwidth}p{0.30\textwidth}p{0.32\textwidth}@{}}
+\toprule
+Calculus & Inversion apparatus & Verdict\\
+\midrule
+\cref{plt:def:bell-partial} exponential partial and complete Bell polynomials
+ & \cref{p0:def:ebell} exponential partial Bell polynomials
+ & \textbf{same definition}; see \cref{q3:prop:bell-same}\\
+\addlinespace
+--- (no counterpart)
+ & \cref{p0:def:obell} \emph{ordinary} partial Bell polynomials
+ & \textbf{new}; the calculus defines only the exponential family\\
+\addlinespace
+\cref{plt:prop:rev-analytic-transfer} analytic residual transfer
+ & \cref{p0:thm:backward-error} residual-to-root conversion
+ & \textbf{strengthening}; see \cref{q3:prop:transfer}\\
+\addlinespace
+\cref{plt:thm:lag-burmann} and \cref{plt:thm:du-lagrange-zero},
+ near-identity operator form
+ & \cref{p0:thm:LB}, classical coefficient form
+ & \textbf{different statements}; \cref{q3:rem:lb}\\
+\addlinespace
+\cref{plt:thm:lw-affine-log} reversion of $X+aL$ by Lambert polynomials
+ & \cref{p0:thm:pure-stirling} the pure Lambert block in closed form
+ & \textbf{different objects}; \cref{q3:rem:lambert}\\
+\addlinespace
+\cref{plt:prop:lead-slope} slope transport
+ & \cref{p0:thm:remainder-transport} remainder transport
+ & \textbf{different}; one is a leading-order rule, the other a bound with an
+   explicit second-order error\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{The one genuine duplicate}
+\label{q3:sec:duplicate}
+
+\begin{proposition}[The two Bell definitions coincide]\label{q3:prop:bell-same}
+For all $n\ge k\ge0$ and all indeterminates $x_1,x_2,\dots$,
+\begin{equation}\label{q3:eq:bell-same}
+ \EB_{n,k}(x_1,x_2,\dots)
+ =\ExponentialPartialBellPolynomial{n}{k}(x_1,x_2,\dots),
+\end{equation}
+and the two complete polynomials agree as well.  That is,
+\cref{p0:def:ebell} and \cref{plt:def:bell-partial} define the same object in
+different notation.
+\end{proposition}
+
+\begin{proof}
+\Cref{plt:eq:bell-partial-def} reads
+\[
+ \ExponentialPartialBellPolynomial{n}{k}
+ =\sum\frac{n!}{\prod_jm_j!\,(j!)^{m_j}}\prod_jx_j^{m_j},
+\]
+summed over $(m_j)$ with $\sum_jm_j=k$ and $\sum_jjm_j=n$, while
+\eqref{p0:eq:ebell-def} reads
+\[
+ \EB_{n,k}=n!\sum\prod_j\frac1{m_j!}\Bigl(\frac{x_j}{j!}\Bigr)^{m_j}
+ =\sum\frac{n!}{\prod_jm_j!\,(j!)^{m_j}}\prod_jx_j^{m_j}
+\]
+over the same index set.  The summands are identical term by term.  Both
+sources then define the complete polynomial as $\sum_{k=0}^{n}$ of the
+partial one, so those agree too.
+\end{proof}
+
+\begin{remark}[What is done about it]\label{q3:rem:bell-action}
+Nothing is deleted.  \Cref{p0:def:ebell} additionally records the two
+generating identities \eqref{p0:eq:ebell-egf-partial} and
+\eqref{p0:eq:ebell-egf-complete}, which the later chapters use constantly and
+which \cref{plt:def:bell-partial} does not state; and the calculus parts use
+the long normative names throughout, while the inversion chapters use the
+short $\EB$.  Collapsing one into the other would cost more in readability
+than the duplication costs in length.  What \cref{q3:prop:bell-same} buys is
+that a reader who meets both knows they are the same object and may use a
+result about either.
+\end{remark}
+
+\section{The one strengthening}
+\label{q3:sec:strengthening}
+
+\begin{proposition}[The inversion apparatus proves more]\label{q3:prop:transfer}
+\Cref{plt:prop:rev-analytic-transfer} is the implication
+\begin{equation}\label{q3:eq:one-sided}
+ |f'|\ge m>0\ \text{between }x_N\text{ and }x_*
+ \ \Longrightarrow\
+ |x_N-x_*|\le\frac{|f(x_N)-y|}{m},
+\end{equation}
+and is exactly the upper bound of \cref{p0:thm:backward-error}.  The latter
+proves two further things: the matching \emph{lower} bound
+$|r_*|/M\le|x_*-x_\dagger|$ under a two-sided slope bracket
+$m\le f'\le M$, and that the residual is a \emph{certificate} --- if
+$[x_*-\varrho,x_*+\varrho]$ lies in the interval, with
+$\varrho=|r_*|/m$, then a root exists within that distance, so no separate
+existence argument is needed.  Hence
+\cref{plt:prop:rev-analytic-transfer} is a corollary of
+\cref{p0:thm:backward-error}, and not conversely.
+\end{proposition}
+
+\begin{proof}
+For the first sentence, take $M=\infty$ in \cref{p0:thm:backward-error}, or
+read its proof, which is the same mean-value argument.  The lower bound and
+the existence clause are proved there and are not stated in
+\cref{plt:prop:rev-analytic-transfer}; that the converse fails is immediate,
+since \eqref{q3:eq:one-sided} says nothing when $f'$ is unbounded above and
+asserts no existence.
+\end{proof}
+
+\begin{remark}[Where the difference is used]\label{q3:rem:transfer-use}
+The lower bound is what makes a residual a two-sided measurement rather than
+a one-sided guarantee, and \cref{q1:prop:certificate} uses exactly that: for
+$x+\LambertW(x)$ the slope bracket is the constant pair $(1,2)$, so the
+residual determines the error to within a factor of two, uniformly in $z$.
+The existence clause is used in the proofs of
+\cref{p6:thm:gamma,p6:thm:barnes}, where it removes the obligation to prove
+separately that the truncated expansion is near an actual root.
+\end{remark}
+
+\section{The pairs that only look alike}
+\label{q3:sec:different}
+
+\begin{remark}[Lagrange--B\"urmann, twice, differently]\label{q3:rem:lb}
+The calculus proves the \emph{operator} form: for a near-identity map
+$F=X+A$ in a reversion frame,
+\[
+ \rev F=X+\sum_{r\ge1}\frac{(-1)^{r}}{r!}\partial^{\,r-1}\bigl(A^{r}\bigr),
+\]
+at infinity in \cref{plt:thm:lag-burmann} and at a finite point in
+\cref{plt:thm:du-lagrange-zero}, in both cases with a summability statement
+that is the real content.  \Cref{p0:thm:LB} proves the \emph{coefficient}
+form: if $W=t\varphi(W)$ with $\varphi(0)$ invertible then
+$\Coef{t^{n}}G(W)=n^{-1}\Coef{w^{n-1}}(G'\varphi^{n})$.
+
+These are the two classical faces of the same theorem, and each is the natural
+tool for a different job: the operator form reverses a perturbation of the
+identity, which is what the calculus parts need; the coefficient form
+extracts a single coefficient of a composite, which is what the reversion
+recurrences of the application chapters need.  Deriving either from the other
+is a genuine argument, not a rewriting, so neither is redundant and neither
+proof is removed.  What \emph{is} avoided is a third copy: the application
+chapters cite \cref{p0:thm:LB} and the $x+\LambertW(x)$ chapter cites the
+calculus, rather than either re-deriving.
+\end{remark}
+
+\begin{remark}[Affine-logarithmic reversion is not the Lambert block]
+\label{q3:rem:lambert}
+\Cref{plt:thm:lw-affine-log} reverses $X+aL$, a perturbation of the identity
+by a multiple of the logarithm, and its answer is a Lambert-polynomial series
+$X-aL+\sum_{n\ge1}a^{n+1}\LamP{n}(L)t^{n}$.  \Cref{p0:thm:pure-stirling}
+evaluates the pure Lambert block of the exponential--power model in closed
+form.  The first is a statement about the near-identity group; the second is a
+closed-form evaluation of a specific reversion.  They meet only in that both
+involve $\LambertW$, and neither implies the other.
+\end{remark}
+
+\section{What this comparison changes}
+\label{q3:sec:verdict}
+
+\begin{remark}[A correction to a claim made earlier in this merge]
+\label{q3:rem:correction}
+An earlier stage of this consolidation, working from the title-level
+concordance alone, recorded that the calculus ``already contains''
+Lagrange--B\"urmann at infinity and at a finite point, residual-to-error
+transfer, both Bell families, affine-logarithmic reversion and the pure
+Lambert block, and that the inversion apparatus was therefore largely
+redundant.  That overstated the overlap, and this chapter is the correction.
+The accurate statement is the one in \cref{q3:tab:concordance}: of six
+apparent overlaps, one is a genuine duplicate of a \emph{definition}, one is a
+strengthening in the inversion apparatus's favour, one item exists only in the
+inversion apparatus, and the remaining three are distinct theorems that the
+volume needs separately.
+
+The moral is worth keeping, because the same trap recurs whenever two
+independently written treatments are compared: shared vocabulary is a weak
+signal.  Two results called ``Lagrange--B\"urmann'' may be different theorems,
+and a mechanical concordance will report them as the same.  Only reading the
+statements settles it.
+\end{remark}
+
+\begin{remark}[What the inversion apparatus really adds]
+\label{q3:rem:what-adds}
+Setting the false positives aside, the apparatus of \cref{p0:sec:top}
+contributes, over and above the calculus: the exponential--power model and its
+axiomatized dominant core; the monomial $\alpha$-reduction that brings a
+fractional phase into the linear case; perturbed inversion around an exactly
+invertible core, in both an analytic and a formal-jet form; the ordinary
+partial Bell polynomials and their conversion to the exponential family; the
+two-sided backward-error certificate; and --- with no analogue anywhere in the
+calculus --- the theory of inverting a \emph{sequence}: the three distinct
+inverse objects, the staircase theorem relating them, and the separation
+condition under which an asymptotic inverse determines an integer one.  The
+calculus is a theory of functions on a scale; that last group of results is
+about the passage from a function to a sequence, and it is the reason the two
+halves of this volume are complementary rather than redundant.
+\end{remark}
+
 
 \part{One map in depth: reversing \(x+\LambertW(x)\)}
 
