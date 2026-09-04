@@ -21,8 +21,8 @@ so no PDF was rebuilt for it.  The same holds for the 2026-09-02 split that
 moved the six polynomial-logarithmic transseries packages out of `lambert-w/`
 into the new `series-and-transseries/` group.
 
-**Current artifact checkpoint (2026-09-04).** The live Lean audit scans 921
-source modules and 11,575 public declarations, with no missing module headers or
+**Current artifact checkpoint (2026-09-04).** The live Lean audit scans 923
+source modules and 11,610 public declarations, with no missing module headers or
 declaration comments.
 Several PDFs below are retained,
 readable publication checkpoints rather than renders of the final merged TeX.
@@ -195,7 +195,14 @@ composed with
 `cor:geometric-prouhet-affine` Exact under the established rational-polynomial
 half-base convention. The generic transport works over every commutative
 semiring, needs neither `b != 0` nor distinct nodes, and includes `b = 0` and
-`n = 0`; it does not generalize the half-base extractor's coefficient ring. The
+`n = 0`; it does not generalize the half-base extractor's coefficient ring.
+The zero-definition, one-theorem `HalfQBinomialRootSimplicity.lean` leaf adds
+`halfQBinomial_sum_rootMultiplicity_two_pow`; together with the existing
+rational zero classifier and Gaussian/half-q coefficient identification, it
+makes `cor:halfbase-root-locus` Exact under the rational-polynomial and
+rational-root convention. Injective scalar extension preserves the displayed
+multiplicities, but the leaf does not classify all roots over every extension
+field. The
 terminating-basic-hypergeometric closure is `TwoPhiOneReversal.lean` (2+12)
 and `QChuVandermonde.lean` (0+10): both q-Chu evaluations and the reversal
 lemma are Exact for the actual tsum, while the claimed full-domain derivation
@@ -497,8 +504,16 @@ The base 904/11,457, real-bridge 905/11,458, inner-complex 906/11,461, and
 pre-merge exterior-branch 907/11,464 counts remain labelled historical
 checkpoints.  The actual merged-main pre-local checkpoint is 919/11,569; the
 exterior leaf gives the next historical checkpoint 920/11,572 without a
-status move; and the sharp-degree leaf gives the live 921/11,575 census.  In
-the current semantic union, the subsequent
+status move; and the sharp-degree leaf gives the historical 921/11,575
+checkpoint.  The one-definition/six-theorem `RvachevLaurentLeading.lean` leaf
+then gives 922/11,582 and makes `is:p2:thm:Laurent-leading` Exact at the
+manuscript's centered-MGF normalization and punctured-limit boundary, without
+claiming lower Laurent coefficients or pole-shell asymptotics.  The
+eleven-definition/seventeen-theorem `FinitePrefixAppellRecovery.lean` leaf
+then gives the live 923/11,610 census and makes
+`is:p2:thm:finite-prefix-expansion` and `is:p2:thm:exact-recovery` Exact as
+finite rational identities, without asserting analytic-MGF convergence or a
+universal fixed-evaluation-point degree.  In the current semantic union, the subsequent
 zero-definition/two-theorem greater-than-one leaf makes `cor:qgreaterone`
 Exact, and the scaled-geometric polynomial theorem completes
 `cor:scaled-geometric-moments`. The subsequent affine transport theorem in

@@ -54,6 +54,7 @@ The current source incorporates exhaustive crosswalks for
 `GaussianBinomialCumulants` (two definitions and twenty-four theorems),
 `GaussianBinomialBounds` (zero definitions and six theorems),
 `FinitePolynomialFunctional` (zero definitions and sixteen theorems),
+`HalfQBinomialRootSimplicity` (zero definitions and one theorem),
 `GeometricPochhammerNormalConvergence` (zero definitions and three theorems),
 `GeometricResidualMoments` (zero definitions and nine theorems),
 and `GeometricUniformRealization` (one definition and seventeen theorems).
@@ -99,7 +100,7 @@ complex strict contraction, including `q = 0`, and gives the dyadic Rvachev
 product and bounded-Fabius Fourier specializations. The compound
 `thm:qF-spectral` row remains Partial because its named centered/MGF packaging
 and exterior reciprocal, pole-divisor, and zero--pole clauses are absent. The
-live facade audit contains 921 modules and 11,575 public declarations with no
+live facade audit contains 923 modules and 11,610 public declarations with no
 documentation gaps. Those corpus-wide totals include the q--Chu, Richardson,
 geometric-law barycenter, Lagrange--Rvachev matrix, arbitrary-space geometric
 realization, regular-central-sum, Lambert branch-gap Bernoulli, affine
@@ -201,7 +202,9 @@ The base 904/11,457, real-bridge 905/11,458, inner-complex 906/11,461, and
 pre-merge exterior-branch 907/11,464 counts remain historical checkpoints.
 The actual merged-main pre-local checkpoint is 919/11,569; the exterior leaf
 gives the next historical checkpoint 920/11,572 without another status move;
-and the sharp-degree leaf gives the live 921/11,575 census.
+the sharp-degree leaf gives the historical 921/11,575 checkpoint; the Laurent
+tranche gives the historical 922/11,582 checkpoint; and the finite-prefix
+tranche gives the live 923/11,610 census.
 The facade also contains the zero-definition/two-theorem
 `GaussianBinomialGreaterOneAsymptotics.lean` leaf; its exhaustive declarations
 are `gaussianBinomial_gt_one_fixedColumn_relativeError_isBigO` and
@@ -228,8 +231,17 @@ extractor across `a + b * node i` over every commutative semiring. Composed
 with `halfQBinomial_negativeDyadic_polynomial_sum_eq_mersenne`, it makes
 `cor:geometric-prouhet-affine` Exact under the canonical rational-polynomial
 convention. It assumes neither `b != 0` nor distinct transformed nodes and
-therefore includes `b = 0` and `n = 0`. The current semantic-union census is
-921/11,575.
+therefore includes `b = 0` and `n = 0`. The zero-definition, one-theorem
+`HalfQBinomialRootSimplicity.lean` leaf supplies
+`halfQBinomial_sum_rootMultiplicity_two_pow`. Together with
+`halfQBinomial_sum_eq_zero_iff` and
+`gaussianBinomial_half_eq_halfQBinomial`, it makes
+`cor:halfbase-root-locus` Exact under the canonical rational-polynomial and
+rational-root convention: all rational roots are the displayed `2^j`, and
+each has multiplicity one. Injective scalar extension preserves those
+displayed multiplicities, but the leaf does not package an all-roots
+classification over every extension field. The current semantic-union census
+is 923/11,610.
 Neither these source-only additions nor the preceding Lambert addition changes
 the retained historical artifact, and no render parity is claimed. The
 forward status inventory covers 282 labelled results:
@@ -238,14 +250,8 @@ Dyadic Gaussian--Thue--Morse chapter is 9/46/1/0, and the 191-result pre-Fabius 
 36 / 29 / 123 / 3.
 The five-publication concordance
 has 91 Lean-proved, 387 human-proved frontier, 60 not-applicable, and 9
-conjecture rows. The zero-definition/one-theorem
-`HalfQBinomialRootSimplicity.lean` leaf contributes
-`halfQBinomial_sum_rootMultiplicity_two_pow`; together with
-`halfQBinomial_sum_eq_zero_iff` and
-`gaussianBinomial_half_eq_halfQBinomial`, it makes
-`cor:halfbase-root-locus` Exact under the canonical rational-polynomial
-convention. The unrelated `cor:qbinom-inversion-law` remains Partial. Both the
-retained `thm:fixed-column-limit` source row and the
+conjecture rows. The unrelated `cor:qbinom-inversion-law` remains Partial.
+Both the retained `thm:fixed-column-limit` source row and the
 older `prop:fixed-k-limit` row redirected to it now inherit the exact canonical
 status. The `cor:positivity`, `thm:qbinom-structure`, and
 `prop:gq-positive-palindromic` rows are Exact: both Gaussian structure APIs

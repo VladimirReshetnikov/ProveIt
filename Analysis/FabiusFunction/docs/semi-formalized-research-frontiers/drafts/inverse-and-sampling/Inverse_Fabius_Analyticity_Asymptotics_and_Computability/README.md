@@ -19,7 +19,7 @@ only as reproducible checks.
 The package audit surfaces are:
 
 - [`theorem_concordance.csv`](theorem_concordance.csv): all 194 immutable
-  source-result rows, fully dispositioned as 52 Lean-proved, 93 human-proved
+  source-result rows, fully dispositioned as 54 Lean-proved, 91 human-proved
   frontier results, 10 conjectures, 15 open problems, and 24 non-applicable
   source environments;
 - [`LEAN_CROSSWALK.md`](LEAN_CROSSWALK.md): exact module and declaration
@@ -46,7 +46,7 @@ neither checker was run in this source-only documentation pass.
 
 `theorem_concordance.csv` records the disposition of all 194 source-result
 environments while preserving the ten immutable source fields reproduced from
-`audit/SOURCE_REVISION`.  Its current totals are 52 Lean-proved, 93
+`audit/SOURCE_REVISION`.  Its current totals are 54 Lean-proved, 91
 human-proved frontier results, 10 conjectures, 15 open problems, and 24
 nonassertoric rows.  Ten inverse-computability rows now have exact compiled
 counterparts: the main theorem, the three tolerant-difference branch
@@ -78,7 +78,7 @@ counterexample, and the logarithmic `1/n` witness with convention `d(0)=1`.
 The compiled declarations
 `Fabius.inverseFabiusExactDyadicDenominator_primrec` and
 `Fabius.inverseFabiusExactLogarithmicDenominator_primrec` close the remaining
-recursion clause, so that source proposition is now one of the 52 Lean-proved
+recursion clause, so that source proposition is now one of the 54 Lean-proved
 rows.  Its leastness is only for the fixed dyadic target; `1/n` is witness-only,
 and `d(0)=1` is a convention with no modulus asserted at zero.
 
@@ -94,11 +94,12 @@ at `93db15ad3c0645bd3cfd0a3e6e694e3c86a3aa2b`, a complete pre-retirement
 repository snapshot. The old paths are retained as provenance locators, not
 as live links.
 
-The eight newest exact source-row matches are abstract effective inversion,
+The ten newest exact source-row matches are abstract effective inversion,
 centered Appell deconvolution, positive-degree Appell mean-zero,
 arbitrary-phase polynomial deconvolution, forced superconvergence, and finite
 Appell lattice reproduction, together with the exact-dyadic repository modulus
-and the leading Laurent coefficient at every nonzero centered-MGF pole.
+and the leading Laurent coefficient at every nonzero centered-MGF pole, plus
+the exact finite-prefix Appell expansions and their finite Richardson recovery.
 The superconvergence pair uses
 `FabiusFunction.RvachevSuperconvergentSynthesis`: its phase dictionary
 specializes the selected phases at `M = 2^N`, its physical quadrature wrapper
@@ -121,6 +122,27 @@ neighborhoods: Lean totalizes the inverse to zero at a pole, so an unpunctured
 limit would be false.  This promotion does not cover lower Laurent
 coefficients or the later Appell-coefficient asymptotics.
 
+`FabiusFunction.FinitePrefixAppellRecovery` is the exact eleven-definition,
+seventeen-theorem compositional package for
+`is:p2:thm:finite-prefix-expansion` and
+`is:p2:thm:exact-recovery`.  The declarations
+`Fabius.uncenteredDyadicPrefixAppellPolynomialRat_eq_sum` and
+`Fabius.centeredDyadicPrefixAppellPolynomialRat_eq_sum_even` give the printed
+uncentered and centered expansions for every `N,n`, including `N = 0`, with
+`mu_r = halfMoment r`, `m_(2r) = moment r`, and exact bases `1/2` and `1/4`.
+The two free-scale polynomials, their `eq_eval_scale` bridges, and
+`Fabius.natDegree_uncenteredDyadicPrefixAppellScalePolynomialRat` and
+`Fabius.natDegree_centeredDyadicPrefixAppellScalePolynomialRat` prove degrees
+`n` and `n/2` in `Polynomial (Polynomial ℚ)`.  That coefficient-ring statement
+is essential: after fixing the inner variable, the centered leading
+coefficient can vanish (for example for odd degree at `x = 0`).  Finally,
+`Fabius.kabayaIriAppellPolynomialRat_eq_sum_prefix` and
+`Fabius.rvachevAppellPolynomialRat_eq_sum_prefix` recover the full polynomials
+from respectively `n+1` prefixes at base `1/2` and `n/2+1` prefixes at base
+`1/4`, at every starting depth and without a limit.  The prefix moments are an
+algebraic finite-binomial-convolution model; no random-variable, `HasLaw`, or
+MGF realization bridge is claimed.
+
 ## Inverse-asymptotics subgroup closure
 
 The former `inverse-asymptotics-and-computability/` subgroup is fully
@@ -131,7 +153,7 @@ masters contribute 152 of the 194 concordance rows:
 - `Inverse_Endpoint_All_Orders`: 29 rows; and
 - `Inverse_Fabius_Computability_Report`: 40 rows.
 
-Their canonical classifications are 36 exact Lean matches, 75 complete
+Their canonical classifications are 38 exact Lean matches, 73 complete
 human-proved frontier results, 18 non-live source environments (seven
 definitions, three algorithms, two examples, four editorial obligations, and
 two superseded source conjectures), nine explicitly retained conjectures, and

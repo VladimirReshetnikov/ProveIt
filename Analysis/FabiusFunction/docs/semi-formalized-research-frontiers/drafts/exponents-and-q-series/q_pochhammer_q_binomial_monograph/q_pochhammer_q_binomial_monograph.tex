@@ -8199,6 +8199,21 @@ has the simple roots $1,2,4,\ldots,2^{n-1}$ and no others.
 It is $(z;1/2)_n=\prod_{j=0}^{n-1}(1-z/2^j)$, a degree-$n$ polynomial with exactly the displayed roots.
 \end{proof}
 
+\paragraph{Lean counterpart.}
+Under the canonical rational-polynomial and rational-root convention,
+\texttt{halfQBinomial\_sum\_eq\_zero\_iff} classifies all roots as
+$2^j$ with $j<n$, while
+\texttt{gaussianBinomial\_half\_eq\_halfQBinomial} identifies the displayed
+Gaussian coefficients with that rational polynomial.  The
+zero-definition, one-theorem leaf
+\texttt{HalfQBinomialRootSimplicity.lean} adds
+\texttt{halfQBinomial\_sum\_rootMultiplicity\_two\_pow}, which proves that
+each displayed root has multiplicity exactly one.  Thus
+\Cref{cor:halfbase-root-locus} is exact by composition over $\RationalNumbers$.
+Injective scalar extension preserves these displayed multiplicities, but the
+new leaf does not package a separate classification of every root over every
+extension field.
+
 \section{A compressed geometric Prouhet functional}
 
 Define nodes and weights
@@ -15693,12 +15708,14 @@ $0\le[m-1,n]_q\le1/(q;q)_n$; the exponent is written $n(n+1)/2$}\\[2pt]
 \Cref{thm:dyadic-product-evaluation} & \statusexact & \texttt{qPochhammer\_\allowbreak{}two\_\allowbreak{}pow\_\allowbreak{}eq\_\allowbreak{}ite}\newline{\footnotesize\texttt{HalfQBinomial}}\\[2pt]
 \Cref{cor:halfbase-root-locus} & \statusexact &
 \texttt{halfQBinomial\_\allowbreak{}sum\_\allowbreak{}eq\_\allowbreak{}zero\_\allowbreak{}iff},
+\texttt{gaussianBinomial\_\allowbreak{}half\_\allowbreak{}eq\_\allowbreak{}halfQBinomial},
 \texttt{halfQBinomial\_\allowbreak{}sum\_\allowbreak{}rootMultiplicity\_\allowbreak{}two\_\allowbreak{}pow}\newline
 {\footnotesize\texttt{HalfQBinomial};
-\texttt{HalfQBinomialRootSimplicity}; the first theorem classifies all rational
-roots as $2^j$ with $j<n$, and the second proves root multiplicity exactly one
-at every such point.  Thus the displayed roots are simple and there are no
-others over the canonical rational polynomial}\\[2pt]
+\texttt{HalfQBinomialRootSimplicity}; exact by composition in
+$\RationalNumbers[X]$: all rational roots are the displayed dyadic powers and
+each has multiplicity one.  Injective scalar extension preserves those
+multiplicities, but no separate all-roots classifier over every extension
+field is claimed}\\[2pt]
 \Cref{thm:geometric-prouhet} & \statusexact & \texttt{halfQBinomial\_\allowbreak{}negativeDyadic\_\allowbreak{}polynomial\_\allowbreak{}sum\_\allowbreak{}eq\_\allowbreak{}mersenne}\newline{\footnotesize\texttt{HalfQBinomial}}\\[2pt]
 \Cref{cor:geometric-prouhet-affine} & \statusexact &
 \texttt{sum\_\allowbreak{}weight\_\allowbreak{}mul\_\allowbreak{}eval\_\allowbreak{}affine\_\allowbreak{}of\_\allowbreak{}topCoeff\_\allowbreak{}extractor},
@@ -16031,8 +16048,9 @@ at the triangular degree bound is exactly $B_n(1)/n!=(-1)^nB_n/n!$, the
 subleading coefficient has the displayed formula for $n\ge2$, and the
 parity-split degree is exact, including $n=0$ and $n=1$.  This is a purely
 algebraic polynomial theorem and adds no analytic or root-of-unity
-hypothesis.  Its zero-definition/three-theorem leaf raises the live corpus to
-921 modules and 11,575 public declarations}\\[2pt]
+hypothesis.  Its zero-definition/three-theorem leaf raised the then-current
+corpus to the historical 921-module/11,575-declaration checkpoint; the live
+facade census is 923 modules and 11,610 public declarations}\\[2pt]
 \Cref{cor:qF-halfbase-dictionary} & \statuspartial &
 \texttt{fabiusAtInverseTwoPow\_eq\_halfMoment},
 \texttt{halfQPochhammer\_eq\_mersenne\_div}\newline

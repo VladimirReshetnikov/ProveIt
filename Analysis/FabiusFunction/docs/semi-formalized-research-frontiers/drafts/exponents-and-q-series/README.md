@@ -63,7 +63,7 @@ module tranches and the zero-definition, three-theorem
 crosswalk. That source is a source-only successor to the fresh artifact receipt
 and requires a later synchronized three-pass build. Retained PDFs under its `assets/` tree are
 research figures, not alternate manuscript renderings. The current Lean audit
-contains 921 facade-reachable modules and 11,575 public declarations, with no
+contains 923 facade-reachable modules and 11,610 public declarations, with no
 missing module headers or declaration documentation.
 
 The sibling source-only `FabiusFunction.GeometricRichardsonGenerating` module
@@ -161,7 +161,15 @@ The base 904/11,457, real-bridge 905/11,458, inner-complex 906/11,461, and
 pre-merge exterior-branch 907/11,464 counts remain historical checkpoints.
 The actual merged-main pre-local checkpoint is 919/11,569; the exterior leaf
 gives the next historical 920/11,572 checkpoint; and the sharp-degree leaf
-gives the live 921/11,575 census.  The q ledger is 178/81/15/8, its relevant
+gives the historical 921/11,575 checkpoint.  The sibling
+`RvachevLaurentLeading.lean` leaf (one definition and six theorems) then gives
+922/11,582 and makes `is:p2:thm:Laurent-leading` Exact with the manuscript's
+centered-MGF normalization and a punctured Laurent limit.  The sibling
+`FinitePrefixAppellRecovery.lean` leaf (eleven definitions and seventeen
+theorems) gives the live 923/11,610 census and makes
+`is:p2:thm:finite-prefix-expansion` and `is:p2:thm:exact-recovery` Exact as
+finite rational identities; it adds no analytic-MGF convergence or universal
+fixed-evaluation-point degree claim.  The q ledger remains 178/81/15/8, its relevant
 Dyadic Gaussian--Thue--Morse chapter is 9/46/1/0, and the source projection
 is 91/387/60/9. The zero-definition/one-theorem
 `HalfQBinomialRootSimplicity.lean` leaf exports
@@ -277,8 +285,9 @@ Current packages and retained intake records:
   `GeometricUniformMomentPolynomial.lean` (one definition and eight theorems),
   `HalfQBinomialRootSimplicity.lean` (zero definitions and one theorem),
   `GaussianBinomialGreaterOneAsymptotics.lean` (zero definitions and two
-  theorems), and `GeometricResidualMoments.lean` (zero definitions and nine
-  theorems). The existing `FinitePolynomialFunctional.lean` module now has
+  theorems), `GeometricResidualMoments.lean` (zero definitions and nine
+  theorems), and `HalfQBinomialRootSimplicity.lean` (zero definitions and one
+  theorem). The existing `FinitePolynomialFunctional.lean` module now has
   zero definitions and sixteen public theorems. The forward crosswalk is now
   178 Exact, 81 Partial, 15 None, and 8 interface rows; the source ledger is
   91 Lean-proved, 387 human-proved
@@ -624,6 +633,15 @@ with `halfQBinomial_negativeDyadic_polynomial_sum_eq_mersenne`, it proves
 `cor:geometric-prouhet-affine` exactly under the established rational-polynomial
 convention. It requires neither a nonzero scale nor distinct transformed
 nodes, so `b = 0` and `n = 0` are included.
+The zero-definition, one-theorem `HalfQBinomialRootSimplicity.lean` leaf proves
+`halfQBinomial_sum_rootMultiplicity_two_pow`. Combined with
+`halfQBinomial_sum_eq_zero_iff` and
+`gaussianBinomial_half_eq_halfQBinomial`, it makes
+`cor:halfbase-root-locus` Exact under the rational-polynomial/rational-root
+convention: the rational roots are precisely `2^j`, `j < n`, and each is
+simple. Injective scalar extension preserves the displayed multiplicities,
+but no public theorem in the leaf classifies all roots over every extension
+field.
 `AnalyticSeriesFilter.lean` carries the core to exact
 diagonal and Gaussian-tail identities for unconditionally summable sampled
 series. Its hypotheses are sharp at zero-weight nodes. The current
