@@ -131,7 +131,7 @@ theorem norm_rvachevFourierProduct_dyadic_boundary (k : ℕ) {z : ℝ}
   have hcast2 : ((z : ℂ) / (2 : ℂ) ^ (k + 1)) = ((z / (2 : ℝ) ^ (k + 1) : ℝ) : ℂ) := by
     push_cast
     ring
-  have hcast3 : ((1 : ℂ) / 2 + (z : ℂ) / (2 : ℂ) ^ (k + 1))
+  have hcast3 : ((1 : ℂ) / 2 + (((z / (2 : ℝ) ^ (k + 1) : ℝ)) : ℂ))
       = ((1 / 2 + z / (2 : ℝ) ^ (k + 1) : ℝ) : ℂ) := by
     push_cast
     ring
