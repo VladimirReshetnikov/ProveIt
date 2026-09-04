@@ -39270,6 +39270,35 @@ $(1-uv)^{-1}=\sum_k u^{k}v^{k}$ and
 $\e^{-v}=\sum_k(-1)^{k}v^{k}/k!$ and subtracting gives
 \eqref{q1:eq:Bvu}; the $k=0$ terms cancel.
 \end{proof}
+\emph{Lean status.}  The analytic content is formal in
+\lean{LambertCorrectionEquation.lean}, a module with no dependence on the rest of the
+corpus, since it is a statement about one explicit two-variable function.
+\lean{Fabius.corrB} is \(B(v,u)=(1-uv)^{-1}-\EulerE^{-v}\) and \lean{Fabius.corrCoeff} is
+\(b_{k}(u)=u^{k}-(-1)^{k}/k!\).  The two facts that make the reversion ordinary are
+\lean{Fabius.corrB_zero}, that \(B(0,u)=0\), and \lean{Fabius.hasDerivAt_corrB_zero}, that
+\(\partial_{v}B(0,u)=1+u\) --- a \lean{HasDerivAt} statement, so the derivative is
+established and not merely computed from a \lean{deriv} that might be junk;
+\lean{Fabius.hasDerivAt_corrB} is the derivative at a general \(v\) with \(uv\ne1\), and
+\lean{Fabius.deriv_corrB_zero_pos} the positivity for \(u\ge0\).  The
+coefficient expansion \eqref{q1:eq:Bvu} is
+\lean{Fabius.corrB_eq_tsum}, proved for \(\lvert uv\rvert<1\) by subtracting the
+exponential series from the geometric one, with \lean{Fabius.tsum_corrExpTerm} and
+\lean{Fabius.summable_corrExpTerm} the supporting lemmas.
+
+One point where the formal statement is cleaner than the display.  The volume sums from
+\(k=1\), which requires knowing separately that the constant terms cancel; the formal sum
+runs over every \(k\ge0\) and needs no such side condition, because
+\(b_{0}(u)=u^{0}-(-1)^{0}/0!=1-1=0\) identically --- \lean{Fabius.corrCoeff_zero}.  So the
+vanishing of the constant term is a consequence of the coefficient formula rather than an
+extra hypothesis, and \(B(0,u)=0\) is that same \(k=0\) term read off.
+\lean{Fabius.corrCoeff_one} records \(b_{1}(u)=1+u\).
+
+What is \emph{not} formalized: that the \(v\) of \eqref{q1:eq:g-L-v} satisfies
+\(q=B_{L}(v)\).  That is the characterization the proposition is about, and it depends on
+the reduction leading to \eqref{q1:eq:g-L-v} rather than on the identity above; the module
+proves everything the proposition asserts \emph{about} \(B\), and nothing about where
+\(B\) came from.
+
 
 \begin{remark}[What has been gained]\label{q1:rem:gain}
 \Cref{q1:prop:B} is the whole trick.  Before it, one faces a reversion at
