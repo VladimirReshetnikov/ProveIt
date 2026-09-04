@@ -1,0 +1,2287 @@
+\documentclass[11pt,a4paper,oneside]{article}
+
+% Standalone ProveIt research note.  No external TeX inputs are required.
+\usepackage[a4paper,margin=25mm,headheight=15pt]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\IfFileExists{libertinus.sty}{\usepackage{libertinus}}{\usepackage{lmodern}}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb,amsthm,mathtools,mathrsfs,bm}
+\usepackage{booktabs,longtable,tabularx,array}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{xurl}
+\usepackage{listings}
+\usepackage[most]{tcolorbox}
+\usepackage{hyperref}
+\usepackage[nameinlink,noabbrev,capitalise]{cleveref}
+
+\definecolor{linkblue}{RGB}{31,76,122}
+\definecolor{deepolive}{RGB}{67,79,45}
+\definecolor{softolive}{RGB}{236,239,226}
+\definecolor{darkteal}{RGB}{31,83,84}
+\definecolor{softteal}{RGB}{232,244,243}
+\definecolor{warmgray}{RGB}{92,87,78}
+\definecolor{softcoral}{RGB}{246,225,219}
+\definecolor{softgold}{RGB}{251,245,230}
+\definecolor{rulegray}{RGB}{195,201,208}
+\definecolor{shadegray}{RGB}{246,247,249}
+
+\hypersetup{
+  hypertexnames=false,
+  colorlinks=true,
+  linkcolor=deepolive,
+  citecolor=darkteal,
+  urlcolor=linkblue,
+  pdftitle={The Double Factorial and Its Inverse: Complete Asymptotic Transseries},
+  pdfauthor={Vladimir Reshetnikov},
+  pdfsubject={Parity-resolved double factorial asymptotics, Borel summation, Lambert-W inverse transseries, Bell-polynomial coefficient formulae, and the periodic OEIS interpolation},
+  pdfkeywords={double factorial, inverse double factorial, asymptotic transseries, Lambert W, Bernoulli numbers, Bell polynomials, Lagrange inversion, Borel summation}
+}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Double factorial transseries}
+\fancyhead[R]{\small\nouppercase{\leftmark}}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+\setcounter{tocdepth}{2}
+\setcounter{secnumdepth}{3}
+\setlist[itemize]{leftmargin=1.5em,itemsep=0.25ex,topsep=0.6ex}
+\setlist[enumerate]{leftmargin=1.9em,itemsep=0.35ex,topsep=0.6ex}
+\allowdisplaybreaks[2]
+\emergencystretch=2em
+
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{algorithm}[theorem]{Algorithm}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\crefname{algorithm}{algorithm}{algorithms}
+\Crefname{algorithm}{Algorithm}{Algorithms}
+
+\newtcolorbox{mainbox}[1][]{%
+  enhanced,breakable,colback=softolive,colframe=deepolive,
+  boxrule=0.7pt,arc=1.2mm,left=2mm,right=2mm,top=1.4mm,bottom=1.4mm,
+  title={Main result},fonttitle=\bfseries,#1}
+\newtcolorbox{methodbox}[1][]{%
+  enhanced,breakable,colback=softteal,colframe=darkteal,
+  boxrule=0.6pt,arc=1.2mm,left=2mm,right=2mm,top=1.2mm,bottom=1.2mm,
+  title={Coefficient calculus},fonttitle=\bfseries,#1}
+\newtcolorbox{warningbox}[1][]{%
+  enhanced,breakable,colback=softcoral,colframe=warmgray,
+  boxrule=0.6pt,arc=1.2mm,left=2mm,right=2mm,top=1.2mm,bottom=1.2mm,
+  title={Interpretive point},fonttitle=\bfseries,#1}
+\newtcolorbox{summarybox}[1][]{%
+  enhanced,breakable,colback=softgold,colframe=warmgray,
+  boxrule=0.6pt,arc=1.2mm,left=2mm,right=2mm,top=1.2mm,bottom=1.2mm,
+  title={Summary},fonttitle=\bfseries,#1}
+
+\lstdefinestyle{pseudo}{%
+  basicstyle=\ttfamily\small,
+  columns=fullflexible,
+  frame=single,
+  rulecolor=\color{rulegray},
+  backgroundcolor=\color{shadegray},
+  showstringspaces=false,
+  keepspaces=true,
+  breaklines=true,
+  xleftmargin=0.4em,xrightmargin=0.4em,
+  aboveskip=0.8em,belowskip=0.8em
+}
+\lstset{style=pseudo}
+
+\newcommand{\e}{\mathrm e}
+\newcommand{\dd}{\mathop{}\!\mathrm d}
+\newcommand{\ii}{\mathrm i}
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\N}{\mathbb N}
+\newcommand{\W}{\operatorname W}
+\newcommand{\Log}{\operatorname{Log}}
+\newcommand{\coeff}[2]{\left[#1^{#2}\right]}
+\newcommand{\BellP}[2]{\mathrm B_{#1,#2}}
+\newcommand{\BellC}[1]{\mathrm Y_{#1}}
+\newcommand{\stirlingone}[2]{\genfrac{[}{]}{0pt}{}{#1}{#2}}
+\newcommand{\D}{\mathcal D}
+\newcommand{\DO}{\mathfrak D}
+\newcommand{\etaD}{\eta}
+\newcommand{\asympseq}{\mathrel{\sim}}
+\DeclareMathOperator{\Res}{Res}
+\DeclareMathOperator{\sgn}{sgn}
+
+\begin{document}
+
+\title{\textbf{The Double Factorial and Its Inverse}\\[0.35em]
+  \Large Complete Asymptotic Transseries, Borel Summation,\\
+  and General Coefficient Formulae}
+\author{Vladimir Reshetnikov\\
+  \small ProveIt research note}
+\date{3 September 2026}
+\maketitle
+
+\begin{abstract}
+The double factorial sequence $n!!$ is not the restriction of one canonical
+slowly varying function: its even and odd subsequences are two gamma-function
+branches whose quotient contains a non-vanishing parity factor.  This article
+therefore treats three related inverse problems separately and exactly: the two
+parity-resolved smooth inverses, the integer-valued generalized inverse, and the
+eventual inverse of the periodic analytic continuation recorded in OEIS
+A006882.
+
+For $r\in\{0,1\}$ we introduce
+\[
+ \D_r(x)=\kappa_r2^{x/2}\Gamma\!\left(\frac{x}{2}+1\right),
+ \qquad \kappa_0=1,\qquad \kappa_1=\sqrt{\frac2\pi},
+\]
+so that $\D_r(n)=n!!$ whenever $n\equiv r\pmod2$.  With $s=x+1$ and
+$C_0=\tfrac12\log\pi$, $C_1=\tfrac12\log2$, the optimally centred logarithm is
+\[
+ \log\D_r(s-1)\sim \frac{s}{2}(\log s-1)+C_r
+ +\sum_{k\ge1}\frac{\beta_k}{s^{2k-1}},
+ \qquad
+ \beta_k=\frac{(1-2^{2k-1})B_{2k}}{2k(2k-1)}.
+\]
+We give all-order additive and multiplicative coefficient formulae in terms of
+Bernoulli numbers, integer partitions, and complete Bell polynomials.  More
+strongly, the divergent logarithmic series is the asymptotic expansion of the
+exact Borel--Laplace integral
+\[
+ \int_0^\infty \e^{-st}
+ \left(\frac{1}{2t\sinh t}-\frac{1}{2t^2}\right)\dd t.
+\]
+This supplies alternating remainder bounds, the complete Borel singularity
+lattice, factorial large-order estimates, and the optimal-truncation scale.
+
+For the large real inverse, put
+\[
+ R_r=\log y-C_r,\qquad w_r=\W_0(2R_r/\e),\qquad
+ T_r=\frac{2R_r}{w_r},\qquad \Lambda_r=w_r+1=\log T_r.
+\]
+Then, for every fixed $N$,
+\[
+ \D_r^{-1}(y)=T_r-1+
+ \sum_{n=1}^{N}\frac{d_{2n-1}(\Lambda_r)}{T_r^{2n-1}}
+ +O\!\left(\frac{1}{T_r^{2N+1}\Lambda_r}\right).
+\]
+The coefficient $d_{2n-1}$ is a rational polynomial in $\Lambda^{-1}$ of
+degree at most $2n-1$.  We derive both a triangular recurrence and a finite,
+non-recursive Lagrange--B\"urmann formula.  The latter is expressed through
+partial Bell polynomials and proves the global sign law
+$(-1)^{n+1}d_{2n-1}\in\Lambda^{-1}\Q_{>0}[\Lambda^{-1}]$.  Explicit blocks are
+listed through $T^{-9}$, and the Lambert core is expanded to all orders in
+iterated logarithms using unsigned Stirling numbers of the first kind.
+
+Finally, for the OEIS continuation
+\[
+ \DO(x)=2^{x/2}\Gamma\!\left(\frac{x}{2}+1\right)
+ \left(\frac2\pi\right)^{(1-\cos\pi x)/4},
+\]
+the inverse has a leading log-periodic sector of order $1/\log T$, larger than
+all inverse-power corrections.  We give its closed Fourier--Lagrange
+coefficients and a second triangular recurrence that couples this periodic
+sector to the Bernoulli grid.  Thus the ambiguity in ``the inverse double
+factorial'' is resolved rather than hidden.
+\end{abstract}
+
+\noindent\textbf{Keywords.}
+Double factorial; inverse double factorial; Lambert $W$; asymptotic
+transseries; Stirling series; Borel summation; Bernoulli numbers; Bell
+polynomials; Lagrange--B\"urmann inversion; parity; log-periodic asymptotics.
+
+{\small\tableofcontents}
+\clearpage
+
+\section{Introduction}
+\label{sec:intro}
+
+The double factorial is defined on nonnegative integers by
+\begin{equation}
+ 0!!=1!!=1,\qquad n!!=n(n-2)!!\quad(n\ge2).
+ \label{eq:sequence-def}
+\end{equation}
+Equivalently, $n!!$ is the product of the positive integers not exceeding $n$
+that have the same parity as $n$.  The sequence begins
+\[
+ 1,1,2,3,8,15,48,105,384,945,\ldots
+\]
+and is OEIS A006882 \cite{OEIS}.  Its elementary closed forms are
+\begin{equation}
+ (2m)!!=2^m m!,
+ \qquad
+ (2m-1)!!=\frac{(2m)!}{2^m m!}
+          =\frac{2^m\Gamma(m+1/2)}{\sqrt\pi}.
+ \label{eq:parity-closed}
+\end{equation}
+These identities already expose the main asymptotic issue: the even and odd
+subsequences have different multiplicative constants of leading order.  A
+single ordinary Poincar\'e expansion with constant coefficients cannot represent
+both without retaining a parity monomial such as $(-1)^n$.
+
+The word \emph{inverse} introduces a second issue.  A sequence has no ordinary
+inverse function until an interpolation or a generalized-inverse convention is
+chosen.  There are three natural choices here.
+\begin{enumerate}
+\item The even and odd subsequences have canonical gamma continuations
+      $\D_0$ and $\D_1$.  Their smooth inverses are the cleanest objects for
+      high-accuracy asymptotics and preserve the exact parity normalization.
+\item The integer sequence has a right-continuous generalized inverse, obtained
+      by applying a parity-preserving floor to the two smooth inverses.
+\item OEIS records a single analytic continuation $\DO$ which agrees with both
+      parities.  It contains a periodic factor, and its eventual inverse has a
+      log-periodic transseries qualitatively different from either $\D_r^{-1}$.
+\end{enumerate}
+The article develops all three and makes their relationship explicit.
+
+Two asymptotic scales must also be separated.  Taking the logarithm converts
+the main growth into
+\[
+ \frac{s}{2}(\log s-1),\qquad s=x+1.
+\]
+Its inverse is exactly a Lambert-$W$ expression.  Expanding $W$ produces an
+\emph{outer} series in powers of $1/\log\log y$ with polynomial dependence on
+$\log\log\log y$.  The Bernoulli corrections generate a much finer grid in
+odd inverse powers of the Lambert core $T$.  The fixed shift $-1$ lies between
+these levels: it is beyond every finite order of the outer Lambert expansion,
+but much larger than $1/(T\log T)$.  Treating all these terms as one ordinary
+series loses the natural well-ordering of the transseries.
+
+\begin{warningbox}
+There is no contradiction between the two statements
+\[
+ n!!\sim A_n\sqrt n\,(n/\e)^{n/2}
+ \quad\hbox{and}\quad
+ n!!\sim A_n\bigl((n+1)/\e\bigr)^{(n+1)/2}.
+\]
+They use different normal forms.  The first leaves a factor $\sqrt n$ and has
+an uncentred Stirling series.  The second absorbs that factor by the optimal
+shift $s=n+1$ and has an odd inverse-power logarithmic series.  The centred
+form is far better for inversion.
+\end{warningbox}
+
+\subsection{Principal formulae}
+
+Put
+\begin{equation}
+ \kappa_0=1,\qquad \kappa_1=\sqrt{2/\pi},
+ \qquad
+ C_0=\frac12\log\pi,\qquad C_1=\frac12\log2.
+ \label{eq:constants}
+\end{equation}
+For $r\in\{0,1\}$ define
+\begin{equation}
+ \D_r(x)=\kappa_r2^{x/2}\Gamma\!\left(\frac{x}{2}+1\right).
+ \label{eq:Dr-def}
+\end{equation}
+The direct logarithmic coefficients in the centred variable $s=x+1$ are
+\begin{equation}
+ \beta_k=\frac{(1-2^{2k-1})B_{2k}}{2k(2k-1)}
+ =(-1)^k\frac{(2k-2)!\,\etaD(2k)}{\pi^{2k}},
+ \label{eq:beta-def}
+\end{equation}
+where $\etaD(z)=(1-2^{1-z})\zeta(z)$ is the Dirichlet eta function.  Let
+\begin{equation}
+ \alpha_k=2\beta_k
+ =\frac{(1-2^{2k-1})B_{2k}}{k(2k-1)}.
+ \label{eq:alpha-def}
+\end{equation}
+
+\begin{mainbox}
+For $y\to+\infty$ and $r\in\{0,1\}$, define
+\begin{equation}
+ R_r=\log y-C_r,
+ \qquad w_r=\W_0(2R_r/\e),
+ \qquad T_r=\frac{2R_r}{w_r}=\e^{w_r+1},
+ \qquad \Lambda_r=w_r+1.
+ \label{eq:inverse-core-summary}
+\end{equation}
+Then
+\begin{equation}
+ \D_r^{-1}(y)
+ \sim T_r-1+\sum_{n\ge1}
+ \frac{d_{2n-1}(\Lambda_r)}{T_r^{2n-1}},
+ \label{eq:inverse-main-summary}
+\end{equation}
+where $d_{2n-1}(\Lambda)\in
+\Lambda^{-1}\Q[\Lambda^{-1}]$ and
+\begin{align}
+ d_1(\Lambda)&=\frac{1}{6\Lambda},
+ \label{eq:d1-summary}\\
+ d_3(\Lambda)&=-\frac{14\Lambda^2+10\Lambda+5}
+ {360\Lambda^3},
+ \label{eq:d3-summary}\\
+ d_5(\Lambda)&=\frac{2232\Lambda^4+1176\Lambda^3+714\Lambda^2
+ +350\Lambda+105}{45360\Lambda^5}.
+ \label{eq:d5-summary}
+\end{align}
+Every coefficient is generated by the recurrence in
+\cref{thm:branch-inverse}; the finite closed formula is
+\cref{thm:closed-coefficients}.  Expanding the retained Lambert function gives
+an outer iterated-logarithmic transseries with coefficients generated from
+unsigned Stirling numbers; see \cref{sec:outer}.
+\end{mainbox}
+
+\section{Exact continuations and the meaning of the inverse}
+\label{sec:continuations}
+
+\subsection{The two parity-resolved gamma branches}
+
+\begin{proposition}[Exact parity interpolation]
+\label{prop:parity-interpolation}
+For every integer $n\ge0$ and $r\in\{0,1\}$ with $n\equiv r\pmod2$,
+\begin{equation}
+ \D_r(n)=n!!.
+ \label{eq:Dr-interpolation}
+\end{equation}
+Moreover, $\D_r$ is strictly increasing on $[0,\infty)$, and hence has a
+single-valued inverse on its range.
+\end{proposition}
+
+\begin{proof}
+If $n=2m$, then
+$\D_0(2m)=2^m\Gamma(m+1)=2^m m!=(2m)!!$.  If $n=2m+1$, then
+\[
+ \D_1(2m+1)=\sqrt{\frac2\pi}\,2^{m+1/2}\Gamma(m+3/2)
+ =\frac{2^{m+1}}{\sqrt\pi}\Gamma(m+3/2)=(2m+1)!!.
+\]
+For real $x\ge0$,
+\begin{equation}
+ \frac{\D_r'(x)}{\D_r(x)}
+ =\frac12\left(\log2+\psi\!\left(\frac{x}{2}+1\right)\right),
+ \label{eq:Dr-logder-exact}
+\end{equation}
+where $\psi=\Gamma'/\Gamma$.  The trigamma series
+$\psi'(z)=\sum_{m\ge0}(z+m)^{-2}$ is positive for $z>0$, so the right-hand
+side is increasing.  At $x=0$ it equals
+$\tfrac12(\log2-\gamma)>0$.  Thus it remains positive.
+\end{proof}
+
+\begin{remark}
+The factor $\kappa_r$ affects only the target normalization; it disappears
+from the logarithmic derivative.  Consequently both parity branches have the
+same local conditioning and the same inverse correction polynomials.  Their
+only asymptotic difference is the constant $C_r$ absorbed into $R_r$.
+\end{remark}
+
+\subsection{The single periodic OEIS continuation}
+
+A convenient one-function interpolation is
+\begin{equation}
+ \DO(x)=2^{x/2}\Gamma\!\left(\frac{x}{2}+1\right)
+ \left(\frac2\pi\right)^{(1-\cos\pi x)/4}.
+ \label{eq:OEIS-continuation}
+\end{equation}
+For even integers the periodic factor is $1$, while for odd integers it is
+$\sqrt{2/\pi}$; hence $\DO(n)=n!!$ for all $n\ge0$.  This is the analytic
+extension recorded in the OEIS entry \cite{OEIS}.
+
+Let
+\begin{equation}
+ C_*=\frac14\log(2\pi),
+ \qquad a=\frac14\log\frac\pi2>0.
+ \label{eq:mean-periodic-constants}
+\end{equation}
+In the centred variable $s=x+1$, the exact relation developed below is
+\begin{equation}
+ \log\DO(s-1)
+ =\frac{s}{2}(\log s-1)+C_*-a\cos(\pi s)+\mathcal C(s),
+ \label{eq:OEIS-centered-exact}
+\end{equation}
+where $\mathcal C$ is the Borel-summed centred Stirling correction.  Thus the
+periodic term remains $O(1)$ in the logarithm.  On inversion it produces an
+$O(1/\log T)$ displacement, which is much larger than the
+$O(1/(T\log T))$ first Bernoulli displacement.
+
+The function $\DO$ is eventually strictly increasing.  Indeed,
+\begin{equation}
+ \frac{\DO'(x)}{\DO(x)}
+ =\frac12\left(\log2+\psi\!\left(\frac{x}{2}+1\right)\right)
+ +\frac{\pi}{4}\log\frac2\pi\,\sin(\pi x).
+ \label{eq:OEIS-logder}
+\end{equation}
+The first term grows like $\tfrac12\log x$, while the second is bounded.
+More explicitly, the standard bound
+$\psi(z)>\log(z-1/2)$ for $z>1/2$ gives a lower bound
+$\tfrac12\log(x+1)-\pi a$, which is positive for all sufficiently large $x$.
+The eventual inverse $\DO_+^{-1}$ is therefore well defined; its complete
+formal construction is given in \cref{sec:periodic-inverse}.
+
+\subsection{The discrete generalized inverse}
+
+For a fixed parity, define the largest same-parity index whose double
+factorial does not exceed $y$ by
+\begin{equation}
+ J_r(y)=r+2\left\lfloor\frac{\D_r^{-1}(y)-r}{2}\right\rfloor,
+ \qquad r\in\{0,1\},
+ \label{eq:discrete-parity-inverse}
+\end{equation}
+whenever $y$ is in the relevant range.  The generalized inverse of the whole
+sequence is then
+\begin{equation}
+ J(y)=\max\{J_0(y),J_1(y)\}.
+ \label{eq:discrete-global-inverse}
+\end{equation}
+The smooth transseries computed later can be inserted into
+\cref{eq:discrete-parity-inverse}.  Because the final floor is discontinuous,
+a rigorous integer answer requires an error bound smaller than the distance to
+the nearest parity threshold; this is discussed in \cref{sec:algorithm}.
+
+\section{Direct asymptotics: two optimal normal forms}
+\label{sec:direct}
+
+Throughout, Bernoulli numbers are normalized by
+\begin{equation}
+ \frac{t}{\e^t-1}=\sum_{n\ge0}B_n\frac{t^n}{n!},
+ \qquad B_1=-\frac12.
+ \label{eq:bernoulli-convention}
+\end{equation}
+The classical Stirling series is
+\begin{equation}
+ \log\Gamma(z)
+ \sim\left(z-\frac12\right)\log z-z+\frac12\log(2\pi)
+ +\sum_{k\ge1}\frac{B_{2k}}{2k(2k-1)z^{2k-1}},
+ \label{eq:stirling-log}
+\end{equation}
+valid in closed subsectors of $|\arg z|<\pi$ \cite{DLMFGamma}.
+
+\subsection{Uncentred expansion}
+
+\begin{theorem}[Uncentred logarithmic expansion]
+\label{thm:uncentred-log}
+As $x\to+\infty$,
+\begin{equation}
+ \log\D_r(x)
+ \sim \frac{x}{2}(\log x-1)+\frac12\log x+C_r
+ +\sum_{k\ge1}\frac{\delta_k}{x^{2k-1}},
+ \label{eq:uncentred-log}
+\end{equation}
+where
+\begin{equation}
+ \delta_k=\frac{2^{2k-1}B_{2k}}{2k(2k-1)}
+ =(-1)^{k-1}\frac{(2k-2)!\zeta(2k)}{\pi^{2k}}.
+ \label{eq:delta-def}
+\end{equation}
+In particular,
+\begin{equation}
+ \delta_1=\frac16,\quad
+ \delta_2=-\frac1{45},\quad
+ \delta_3=\frac8{315},\quad
+ \delta_4=-\frac8{105},\quad
+ \delta_5=\frac{128}{297}.
+ \label{eq:delta-first}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Apply \cref{eq:stirling-log} to
+$\Gamma(x/2+1)$ in the equivalent shifted form
+\[
+ \log\Gamma(z+1)
+ \sim\left(z+\frac12\right)\log z-z+\frac12\log(2\pi)
+ +\sum_{k\ge1}\frac{B_{2k}}{2k(2k-1)z^{2k-1}}
+\]
+with $z=x/2$, and add $(x/2)\log2+\log\kappa_r$.
+The elementary terms reduce to the first three terms in
+\cref{eq:uncentred-log}, while $z^{-(2k-1)}=2^{2k-1}x^{-(2k-1)}$.
+Euler's evaluation of $\zeta(2k)$ gives the second form of $\delta_k$.
+\end{proof}
+
+Exponentiating gives
+\begin{equation}
+ \D_r(x)
+ \sim A_r\sqrt{x}\left(\frac{x}{\e}\right)^{x/2}
+ \sum_{n\ge0}\frac{g_n}{x^n},
+ \qquad A_0=\sqrt\pi,\quad A_1=\sqrt2.
+ \label{eq:uncentred-multiplicative}
+\end{equation}
+The coefficients $g_n$ are developed in \cref{sec:direct-coefficients}.
+
+\subsection{The optimally centred expansion}
+
+The shift $s=x+1$ removes the explicit square-root factor and annihilates all
+even inverse powers in the logarithm.
+
+\begin{theorem}[Centred logarithmic expansion]
+\label{thm:centered-log}
+Let $s=x+1$.  Then
+\begin{equation}
+ \log\D_r(s-1)
+ \sim \frac{s}{2}(\log s-1)+C_r
+ +\sum_{k\ge1}\frac{\beta_k}{s^{2k-1}},
+ \label{eq:centered-log}
+\end{equation}
+where $\beta_k$ is given by \cref{eq:beta-def}.  The first terms are
+\begin{equation}
+ \beta_1=-\frac1{12},\quad
+ \beta_2=\frac7{360},\quad
+ \beta_3=-\frac{31}{1260},\quad
+ \beta_4=\frac{127}{1680},\quad
+ \beta_5=-\frac{511}{1188}.
+ \label{eq:beta-first}
+\end{equation}
+Equivalently,
+\begin{equation}
+ \D_r(s-1)
+ \sim A_r\left(\frac{s}{\e}\right)^{s/2}
+ \sum_{n\ge0}\frac{c_n}{s^n}.
+ \label{eq:centered-multiplicative}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+The duplication formula
+\begin{equation}
+ \Gamma(s)=\frac{2^{s-1}}{\sqrt\pi}
+ \Gamma\!\left(\frac{s}{2}\right)
+ \Gamma\!\left(\frac{s+1}{2}\right)
+ \label{eq:duplication}
+\end{equation}
+(see, for example, \cite{DLMFDuplication})
+rewrites \cref{eq:Dr-def} as
+\begin{equation}
+ \D_r(s-1)=\kappa_r\sqrt\pi\,2^{(1-s)/2}
+ \frac{\Gamma(s)}{\Gamma(s/2)}.
+ \label{eq:Dr-ratio}
+\end{equation}
+Subtracting the two Stirling expansions cancels the logarithmic square-root
+term.  The $k$th correction is
+\[
+ \frac{B_{2k}}{2k(2k-1)}
+ \left(s^{-(2k-1)}-(s/2)^{-(2k-1)}\right),
+\]
+which is precisely $\beta_ks^{-(2k-1)}$.  The constant is
+$\log(\kappa_r\sqrt\pi)=C_r$.  Exponentiation gives
+\cref{eq:centered-multiplicative}.
+\end{proof}
+
+At integer $n$, the two parity constants can be written in one expression:
+\begin{equation}
+ A_n=(2\pi)^{1/4}\left(\frac\pi2\right)^{(-1)^n/4}
+ =\pi^{(1+(-1)^n)/4}2^{(1-(-1)^n)/4}.
+ \label{eq:parity-amplitude}
+\end{equation}
+Hence the unified centred sequence expansion is
+\begin{equation}
+ n!!\sim A_n\left(\frac{n+1}{\e}\right)^{(n+1)/2}
+ \sum_{j\ge0}\frac{c_j}{(n+1)^j}.
+ \label{eq:sequence-centered-unified}
+\end{equation}
+The periodic amplitude is not an error term; it is part of the leading
+transmonomial.
+
+\section{Combinatorial formulae for the direct coefficients}
+\label{sec:direct-coefficients}
+
+The passage from the logarithmic series to the multiplicative series is an
+instance of the exponential formula.  We record it in three equivalent forms:
+a partition sum, a complete Bell polynomial, and a triangular recurrence.
+This makes every direct coefficient computable without re-expanding an
+exponential from scratch.
+
+\subsection{Bell-polynomial conventions}
+
+The exponential partial Bell polynomials are defined by
+\begin{equation}
+ \frac1{k!}\left(\sum_{m\ge1}x_m\frac{z^m}{m!}\right)^k
+ =\sum_{n\ge k}\BellP{n}{k}(x_1,\ldots,x_{n-k+1})\frac{z^n}{n!},
+ \label{eq:partial-bell-def}
+\end{equation}
+and the complete Bell polynomial is
+\begin{equation}
+ \BellC{n}(x_1,\ldots,x_n)
+ =\sum_{k=0}^n\BellP{n}{k}(x_1,\ldots,x_{n-k+1}).
+ \label{eq:complete-bell-def}
+\end{equation}
+Thus
+\begin{equation}
+ \exp\!\left(\sum_{m\ge1}x_m\frac{z^m}{m!}\right)
+ =\sum_{n\ge0}\BellC{n}(x_1,\ldots,x_n)\frac{z^n}{n!}.
+ \label{eq:bell-exponential}
+\end{equation}
+These conventions agree with the coefficient calculus used in
+\cite{ProveItCCC,Comtet}.
+
+\begin{theorem}[All direct multiplicative coefficients]
+\label{thm:direct-coefficients}
+Define sparse logarithmic coefficient sequences
+\begin{equation}
+ \ell^{(u)}_{2k-1}=\delta_k,\quad \ell^{(u)}_{2k}=0,
+ \qquad
+ \ell^{(c)}_{2k-1}=\beta_k,\quad \ell^{(c)}_{2k}=0.
+ \label{eq:sparse-log-coeff}
+\end{equation}
+Then the coefficients in \cref{eq:uncentred-multiplicative} and
+\cref{eq:centered-multiplicative} are
+\begin{align}
+ g_n&=\frac1{n!}\BellC{n}
+ \bigl(1!\ell^{(u)}_1,2!\ell^{(u)}_2,\ldots,n!\ell^{(u)}_n\bigr),
+ \label{eq:g-bell}\\
+ c_n&=\frac1{n!}\BellC{n}
+ \bigl(1!\ell^{(c)}_1,2!\ell^{(c)}_2,\ldots,n!\ell^{(c)}_n\bigr).
+ \label{eq:c-bell}
+\end{align}
+Equivalently,
+\begin{align}
+ g_n&=\sum_{\substack{m_1,m_2,\ldots\ge0\\
+             \sum_{k\ge1}(2k-1)m_k=n}}
+       \prod_{k\ge1}\frac{\delta_k^{m_k}}{m_k!},
+ \label{eq:g-partition}\\
+ c_n&=\sum_{\substack{m_1,m_2,\ldots\ge0\\
+             \sum_{k\ge1}(2k-1)m_k=n}}
+       \prod_{k\ge1}\frac{\beta_k^{m_k}}{m_k!}.
+ \label{eq:c-partition}
+\end{align}
+They obey the recurrences
+\begin{align}
+ g_0&=1,&
+ n g_n&=\sum_{1\le k\le(n+1)/2}(2k-1)\delta_k\,g_{n-2k+1},
+ \label{eq:g-recurrence}\\
+ c_0&=1,&
+ n c_n&=\sum_{1\le k\le(n+1)/2}(2k-1)\beta_k\,c_{n-2k+1}.
+ \label{eq:c-recurrence}
+\end{align}
+\end{theorem}
+
+\begin{proof}
+Put $z=x^{-1}$ in the uncentred expansion.  The correction factor is
+\[
+ \exp\!\left(\sum_{k\ge1}\delta_kz^{2k-1}\right).
+\]
+The formula in \cref{eq:g-bell} follows from \cref{eq:bell-exponential}, and expanding
+the exponential as a product of
+$\sum_{m_k\ge0}\delta_k^{m_k}z^{(2k-1)m_k}/m_k!$ gives
+\cref{eq:g-partition}.  If $G(z)=\sum_{n\ge0}g_nz^n$, logarithmic
+differentiation gives
+\[
+ zG'(z)=G(z)\sum_{k\ge1}(2k-1)\delta_kz^{2k-1}.
+\]
+Coefficient extraction proves \cref{eq:g-recurrence}.  Replacing $\delta_k$
+by $\beta_k$ proves all centred statements.
+\end{proof}
+
+The first coefficients are as follows.
+\begin{table}[htbp]
+\centering
+\caption{Multiplicative coefficients in the uncentred and centred normal forms.}
+\label{tab:direct-coefficients}
+\small
+\begin{tabular}{c@{\qquad}r@{\qquad}r}
+\toprule
+$n$ & $g_n$ & $c_n$\\
+\midrule
+0 & $1$ & $1$\\
+1 & $1/6$ & $-1/12$\\
+2 & $1/72$ & $1/288$\\
+3 & $-139/6480$ & $1003/51840$\\
+4 & $-571/155520$ & $-4027/2488320$\\
+5 & $163879/6531840$ & $-5128423/209018880$\\
+6 & $5246819/1175731200$ & $168359651/75246796800$\\
+7 & $-534703531/7054387200$ & $68168266699/902961561600$\\
+8 & $-4483131259/338610585600$ & $-587283555451/86684309913600$\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{remark}[Arithmetic]
+All $g_n$ and $c_n$ are rational because the logarithmic coefficients are
+rational.  The Bell formula is preferable for structural arguments, while the
+recurrence is normally preferable for exact computation: it produces the first
+$N$ coefficients with $O(N^2)$ rational operations and exposes the sparse odd
+support directly.
+\end{remark}
+
+\section{Exact Borel sums, remainder bounds, and large order}
+\label{sec:borel}
+
+The Stirling series is divergent, but in the present problem its Borel
+transform is elementary.  This gives more information than a formal expansion:
+it identifies the exact analytic function represented by the series and makes
+its remainder mechanism transparent.
+
+\subsection{Borel convention and Binet's remainder}
+
+For a formal inverse-power series
+\begin{equation}
+ F(s)\sim\sum_{m\ge0}\frac{a_m}{s^{m+1}},
+ \label{eq:borel-convention-series}
+\end{equation}
+we use the formal Borel transform
+\begin{equation}
+ \widehat F(t)=\sum_{m\ge0}a_m\frac{t^m}{m!}.
+ \label{eq:borel-convention-transform}
+\end{equation}
+Whenever the integral exists along the positive ray, its Laplace sum is
+\begin{equation}
+ \mathscr S_0F(s)=\int_0^\infty\e^{-st}\widehat F(t)\dd t.
+ \label{eq:borel-laplace}
+\end{equation}
+
+For $\Re z>0$, define the exact Binet correction
+\begin{equation}
+ \Omega(z)=\log\Gamma(z)-\left(z-\frac12\right)\log z+z
+ -\frac12\log(2\pi).
+ \label{eq:Omega-def}
+\end{equation}
+Binet's integral can be written as
+\begin{equation}
+ \Omega(z)=\int_0^\infty\e^{-zt}
+ \left(\frac{\coth(t/2)}{2t}-\frac1{t^2}\right)\dd t.
+ \label{eq:Binet-Laplace}
+\end{equation}
+The apparent singularity at $t=0$ is removable.  Taylor expansion of the
+kernel gives Stirling's Bernoulli series, while exponential decay at infinity
+makes the integral convergent for $\Re z>0$.
+
+\subsection{The two elementary Borel transforms}
+
+Define the exact uncentred and centred logarithmic corrections by
+\begin{align}
+ \mathcal U(x)&=\log\D_r(x)
+ -\frac{x}{2}(\log x-1)-\frac12\log x-C_r,
+ \label{eq:U-def}\\
+ \mathcal C(s)&=\log\D_r(s-1)
+ -\frac{s}{2}(\log s-1)-C_r.
+ \label{eq:C-def}
+\end{align}
+They do not depend on $r$.
+
+\begin{theorem}[Exact Borel--Laplace representations]
+\label{thm:exact-borel}
+For $x>0$ and $s>0$,
+\begin{align}
+ \mathcal U(x)
+ &=\int_0^\infty\e^{-xt}
+ \left(\frac{\coth t}{2t}-\frac1{2t^2}\right)\dd t,
+ \label{eq:U-Laplace}\\
+ \mathcal C(s)
+ &=\int_0^\infty\e^{-st}
+ \left(\frac{1}{2t\sinh t}-\frac1{2t^2}\right)\dd t.
+ \label{eq:C-Laplace}
+\end{align}
+Their Borel transforms admit the Mittag--Leffler sums
+\begin{align}
+ \widehat{\mathcal U}(t)
+ &=\frac{\coth t}{2t}-\frac1{2t^2}
+ =\sum_{m=1}^\infty\frac1{\pi^2m^2+t^2},
+ \label{eq:U-partial-fractions}\\
+ \widehat{\mathcal C}(t)
+ &=\frac{1}{2t\sinh t}-\frac1{2t^2}
+ =-\sum_{m=1}^\infty\frac{(-1)^{m-1}}{\pi^2m^2+t^2}.
+ \label{eq:C-partial-fractions}
+\end{align}
+Consequently \cref{eq:uncentred-log,eq:centered-log} are Borel summable along
+the positive real direction, and their Borel sums are the exact gamma
+expressions.
+\end{theorem}
+
+\begin{proof}
+The uncentred correction is $\mathcal U(x)=\Omega(x/2)$.  Substitute $t=2u$
+in \cref{eq:Binet-Laplace} to obtain \cref{eq:U-Laplace}.  From
+\cref{eq:Dr-ratio}, the centred correction is
+$\mathcal C(s)=\Omega(s)-\Omega(s/2)$.  Subtracting the corresponding kernels
+and using
+\[
+ \coth(t/2)-\coth t=\frac1{\sinh t}
+\]
+gives \cref{eq:C-Laplace}.  The classical Mittag--Leffler expansion
+\[
+ \frac{\coth t}{t}=\frac1{t^2}
+ +2\sum_{m\ge1}\frac1{t^2+\pi^2m^2}
+\]
+proves \cref{eq:U-partial-fractions}.  Splitting this sum into even and odd
+indices, or equivalently subtracting the scaled kernel, gives
+\cref{eq:C-partial-fractions}.  Both kernels are analytic on the positive
+integration ray and have at most exponential growth in sectors avoiding their
+poles, so the Laplace integrals are unambiguous there.
+\end{proof}
+
+Expanding the partial fractions at $t=0$ immediately recovers
+\begin{align}
+ \widehat{\mathcal U}(t)
+ &=\sum_{k\ge1}(-1)^{k-1}
+   \frac{\zeta(2k)}{\pi^{2k}}t^{2k-2},
+ \label{eq:U-borel-series}\\
+ \widehat{\mathcal C}(t)
+ &=\sum_{k\ge1}(-1)^k
+   \frac{\etaD(2k)}{\pi^{2k}}t^{2k-2},
+ \label{eq:C-borel-series}
+\end{align}
+which is equivalent to \cref{eq:delta-def,eq:beta-def} after Laplace
+integration.
+
+\subsection{Sharp alternating remainder bounds}
+
+\begin{theorem}[First-omitted-term bounds]
+\label{thm:remainder-bounds}
+For $x>0$, $s>0$, and $N\ge0$, put
+\begin{align}
+ U_N(x)&=\sum_{k=1}^{N}\frac{\delta_k}{x^{2k-1}},
+ \label{eq:UN-def}\\
+ C_N(s)&=\sum_{k=1}^{N}\frac{\beta_k}{s^{2k-1}}.
+ \label{eq:CN-def}
+\end{align}
+Then
+\begin{align}
+ 0&<(-1)^N\bigl(\mathcal U(x)-U_N(x)\bigr)
+ <\frac{|\delta_{N+1}|}{x^{2N+1}},
+ \label{eq:U-remainder-bound}\\
+ 0&<(-1)^{N+1}\bigl(\mathcal C(s)-C_N(s)\bigr)
+ <\frac{|\beta_{N+1}|}{s^{2N+1}}.
+ \label{eq:C-remainder-bound}
+\end{align}
+The convention is that the empty sum for $N=0$ equals zero.
+\end{theorem}
+
+\begin{proof}
+For $a>0$,
+\begin{equation}
+ \frac1{a^2+t^2}
+ =\sum_{j=0}^{N-1}\frac{(-1)^jt^{2j}}{a^{2j+2}}
+ +\frac{(-1)^Nt^{2N}}{a^{2N}(a^2+t^2)}.
+ \label{eq:partial-fraction-remainder}
+\end{equation}
+Insert this identity into \cref{eq:U-partial-fractions}, sum over
+$a=\pi m$, and integrate.  The remainder has sign $(-1)^N$; replacing
+$a^2+t^2$ by $a^2$ gives the upper bound, and
+$\int_0^\infty\e^{-xt}t^{2N}\dd t=(2N)!x^{-(2N+1)}$ yields
+\cref{eq:U-remainder-bound}.
+
+For the centred transform, the residual kernel is
+\[
+ (-1)^{N+1}t^{2N}S_N(t),\qquad
+ S_N(t)=\sum_{m\ge1}\frac{(-1)^{m-1}}
+ { (\pi m)^{2N}\bigl((\pi m)^2+t^2\bigr)}.
+\]
+To see that $S_N(t)>0$ and decreases with $t^2$, use
+\[
+ S_N(t)=\int_0^\infty\e^{-t^2v}
+ \sum_{m\ge1}\frac{(-1)^{m-1}\e^{-\pi^2m^2v}}{(\pi m)^{2N}}\dd v.
+\]
+For every $v\ge0$ the inner series is an alternating series with strictly
+decreasing positive terms, hence is positive.  Therefore
+$0<S_N(t)\le S_N(0)=\etaD(2N+2)/\pi^{2N+2}$.  Laplace integration now gives
+\cref{eq:C-remainder-bound}.
+\end{proof}
+
+These inequalities are particularly useful for inversion: they give a
+certified logarithmic residual without evaluating a huge double factorial.
+They also show directly that the centred series alternates with its first term
+negative.
+
+\subsection{Large-order growth and optimal truncation}
+
+The exact coefficient formulae imply
+\begin{align}
+ \delta_k&=(-1)^{k-1}\frac{(2k-2)!}{\pi^{2k}}
+ \left(1+O(2^{-2k})\right),
+ \label{eq:delta-large-order}\\
+ \beta_k&=(-1)^k\frac{(2k-2)!}{\pi^{2k}}
+ \left(1+O(2^{-2k})\right).
+ \label{eq:beta-large-order}
+\end{align}
+Thus the $k$th centred term is smallest when
+$2k\approx\pi s$.  Stirling's formula then gives the least-term envelope
+\begin{equation}
+ \min_k\left|\frac{\beta_k}{s^{2k-1}}\right|
+ =O\!\left(s^{-1/2}\e^{-\pi s}\right).
+ \label{eq:least-term-envelope}
+\end{equation}
+The nearest Borel singularities are the simple poles $t=\pm\ii\pi$; the full
+lattice is $t=\pm\ii\pi m$, $m\ge1$.  This pole geometry simultaneously
+explains the factorial coefficient growth and the scale
+\cref{eq:least-term-envelope}.
+
+\begin{remark}[Exponentially improved interpretation]
+The optimal remainder on the positive real axis has the envelope
+$\e^{-\pi s}$, but the analytically continued hyperasymptotic sectors are not
+plain real exponentials.  They are terminant-weighted contributions associated
+with singulants $\pm\ii\pi ms$.  Away from a Stokes direction the terminant
+multiplier itself is exponentially small.  This distinction matters: appending
+$\e^{-\pi s}$ with an arbitrary constant to the divergent Bernoulli series is
+not a valid transseries completion.  The exact Borel integral
+\cref{eq:C-Laplace} is the unambiguous positive-real completion.
+\end{remark}
+
+\section{Lambert normalization of the branchwise inverse}
+\label{sec:lambert-core}
+
+The centred phase is ideal for inversion because its dominant part has an
+exact Lambert-$W$ inverse and its perturbation occupies only odd inverse powers.
+We first isolate the core, then solve the perturbation on a well-ordered
+$q$-grid.
+
+\subsection{Exact inversion of the core}
+
+Let
+\begin{equation}
+ \Phi_0(s)=s(\log s-1),\qquad s>1.
+ \label{eq:core-phase}
+\end{equation}
+For $R>0$, the equation $\Phi_0(T)=2R$ has an exact solution.
+
+\begin{lemma}[Lambert core]
+\label{lem:lambert-core}
+Define
+\begin{equation}
+ w=\W_0(2R/\e),
+ \qquad T=\frac{2R}{w}=\e^{w+1},
+ \qquad \Lambda=w+1=\log T.
+ \label{eq:lambert-core}
+\end{equation}
+Then
+\begin{equation}
+ T(\log T-1)=2R,
+ \qquad \Phi_0'(T)=\Lambda,
+ \qquad \frac{\dd T}{\dd R}=\frac{2}{\Lambda}.
+ \label{eq:core-identities}
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Since $w\e^w=2R/\e$, one has
+$T=2R/w=\e^{w+1}$ and therefore $\log T-1=w$.  Multiplication gives the first
+identity.  The other two follow by differentiation.
+\end{proof}
+
+For the parity branch $r$, take $R=R_r=\log y-C_r$.  The leading inverse is
+$x=T_r-1$.  Retaining $W_0$ exactly packages infinitely many outer logarithmic
+terms into one analytic quantity; this is both more accurate and algebraically
+cleaner than expanding $W_0$ at the outset.
+
+\subsection{The exact normalized formal equation}
+
+Multiply \cref{eq:centered-log} by $2$ and use $\alpha_k=2\beta_k$.  Formally,
+solving $\D_r(s-1)=y$ is equivalent to
+\begin{equation}
+ 2R_r=s(\log s-1)+\sum_{k\ge1}\frac{\alpha_k}{s^{2k-1}}.
+ \label{eq:inverse-forward-formal}
+\end{equation}
+Let $T=T_r$, $\Lambda=\Lambda_r$, $q=T^{-1}$, and write
+\begin{equation}
+ s=T(1+E),
+ \qquad E=O(q^2).
+ \label{eq:relative-displacement}
+\end{equation}
+Subtracting the core equation and dividing by $T$ gives
+\begin{equation}
+ \Lambda E+\varphi(E)
+ +\sum_{k\ge1}\alpha_kq^{2k}(1+E)^{-(2k-1)}=0,
+ \label{eq:normalized-inverse-equation}
+\end{equation}
+where
+\begin{equation}
+ \varphi(u)=(1+u)\log(1+u)-u
+ =\sum_{m\ge2}\frac{(-1)^m}{m(m-1)}u^m.
+ \label{eq:varphi-def}
+\end{equation}
+The support is $2\N$: if $E$ contains only even powers of $q$, so does the
+right-hand side, and the linear coefficient $\Lambda$ is invertible in the
+coefficient field $\Q(\Lambda)$.
+
+\section{All-orders parity-resolved inverse transseries}
+\label{sec:branch-inverse}
+
+\subsection{Triangular recurrence and analytic remainder}
+
+\begin{theorem}[Complete branchwise inverse expansion]
+\label{thm:branch-inverse}
+Let $r\in\{0,1\}$ and define $R_r,w_r,T_r,\Lambda_r$ by
+\cref{eq:inverse-core-summary}.  For every fixed $N\ge0$,
+\begin{equation}
+ \D_r^{-1}(y)
+ =T_r-1+\sum_{n=1}^{N}
+ \frac{d_{2n-1}(\Lambda_r)}{T_r^{2n-1}}
+ +O\!\left(\frac{1}{T_r^{2N+1}\Lambda_r}\right),
+ \qquad y\to+\infty.
+ \label{eq:branch-inverse-all-orders}
+\end{equation}
+The coefficients are uniquely determined as follows.  Put
+\begin{equation}
+ E_{n-1}(q)=\sum_{j=1}^{n-1}e_j(\Lambda)q^{2j}.
+ \label{eq:E-truncated}
+\end{equation}
+Then
+\begin{equation}
+ e_n(\Lambda)=-\frac1\Lambda\coeff{q}{2n}
+ \left[
+  \varphi(E_{n-1})+
+  \sum_{k=1}^{n}\alpha_kq^{2k}
+       (1+E_{n-1})^{-(2k-1)}
+ \right],
+ \label{eq:inverse-triangular-recurrence}
+\end{equation}
+with
+\begin{equation}
+ d_{2n-1}(\Lambda)=e_n(\Lambda).
+ \label{eq:d-e-identification}
+\end{equation}
+Furthermore,
+\begin{equation}
+ d_{2n-1}(\Lambda)\in\Lambda^{-1}\Q[\Lambda^{-1}],
+ \qquad
+ \deg_{\Lambda^{-1}}d_{2n-1}\le2n-1,
+ \label{eq:d-ring-degree}
+\end{equation}
+and
+\begin{equation}
+ d_{2n-1}(\Lambda)=-\frac{\alpha_n}{\Lambda}
+ +O(\Lambda^{-2}).
+ \label{eq:d-leading-slope}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Seek a solution of \cref{eq:normalized-inverse-equation} in the form
+$E=\sum_{n\ge1}e_nq^{2n}$.  At order $q^{2n}$, the only term containing the
+unknown $e_n$ is $\Lambda e_nq^{2n}$.  The nonlinear series $\varphi(E)$
+starts with $E^2/2$, and every term in the Bernoulli sector has positive
+$q$-valuation.  Consequently the remaining coefficient of $q^{2n}$ depends
+only on $e_1,\ldots,e_{n-1}$, and solving the coefficient equation gives
+\cref{eq:inverse-triangular-recurrence}.  This proves formal existence and
+uniqueness by induction.
+
+The same induction proves \cref{eq:d-ring-degree}.  The coefficient inside the
+brackets is a polynomial in $\Lambda^{-1}$ of degree at most $2n-2$; division
+by $\Lambda$ gives the claimed bound.  The only contribution at $q^{2n}$ that
+is independent of lower $e_j$ is $\alpha_nq^{2n}$, proving
+\cref{eq:d-leading-slope}.
+
+For the analytic statement, truncate the exact centred Borel sum after the
+term $\beta_{N+1}s^{-(2N+1)}$.  By \cref{thm:remainder-bounds}, the omitted
+forward logarithmic residual is $O(s^{-(2N+3)})$.  Substituting the formal
+inverse through $e_Nq^{2N}$ cancels the doubled phase through order $q^{2N}$
+and leaves a residual $O(T^{-(2N+1)})$.  The derivative of the doubled phase
+is
+\begin{equation}
+ \log s-2\sum_{k\ge1}(2k-1)\beta_ks^{-2k}
+ =\Lambda+O(T^{-2}).
+ \label{eq:doubled-phase-slope}
+\end{equation}
+For large $T$ it is bounded below by a fixed positive multiple of $\Lambda$.
+The mean-value theorem therefore transfers the forward residual to an inverse
+error $O(T^{-(2N+1)}/\Lambda)$.
+\end{proof}
+
+\begin{remark}[Uniformity in parity]
+The implied constants in \cref{eq:branch-inverse-all-orders} can be chosen
+uniformly for $r=0,1$.  The coefficient recurrence contains no parity label;
+$r$ enters only through the bounded constants $C_r$ in $R_r$.
+\end{remark}
+
+\subsection{Explicit inverse blocks}
+
+Successive use of \cref{eq:inverse-triangular-recurrence} gives
+\begin{align}
+ d_1(\Lambda)={}&\frac1{6\Lambda},
+ \label{eq:d1}\\[0.35em]
+ d_3(\Lambda)={}&-\frac{14\Lambda^2+10\Lambda+5}
+ {360\Lambda^3},
+ \label{eq:d3}\\[0.35em]
+ d_5(\Lambda)={}&\frac{1}{45360\Lambda^5}
+ \bigl(2232\Lambda^4+1176\Lambda^3+714\Lambda^2
+ +350\Lambda+105\bigr),
+ \label{eq:d5}\\[0.35em]
+ d_7(\Lambda)={}&-\frac{1}{5443200\Lambda^7}
+ \bigl(822960\Lambda^6+292536\Lambda^5+136956\Lambda^4
+ \notag\\[-0.2em]
+ &\hspace{5.1em}{}+68040\Lambda^3+32970\Lambda^2
+ +12250\Lambda+2625\bigr),
+ \label{eq:d7}\\[0.35em]
+ d_9(\Lambda)={}&\frac{1}{359251200\Lambda^9}
+ \bigl(309052800\Lambda^8+77920128\Lambda^7+26024592\Lambda^6
+ \notag\\[-0.2em]
+ &\hspace{2.8em}{}+10019592\Lambda^5+4516028\Lambda^4
+ +2023560\Lambda^3+812350\Lambda^2
+ \notag\\[-0.2em]
+ &\hspace{2.8em}{}+242550\Lambda+40425\bigr).
+ \label{eq:d9}
+\end{align}
+Thus the first three correction blocks are
+\begin{align}
+ \D_r^{-1}(y)={}&T_r-1+\frac{1}{6T_r\Lambda_r}
+ -\frac{14\Lambda_r^2+10\Lambda_r+5}
+ {360T_r^3\Lambda_r^3}
+ \notag\\
+ &+\frac{2232\Lambda_r^4+1176\Lambda_r^3+714\Lambda_r^2
+ +350\Lambda_r+105}{45360T_r^5\Lambda_r^5}
+ +O\!\left(\frac1{T_r^7\Lambda_r}\right).
+ \label{eq:first-three-inverse-blocks}
+\end{align}
+
+For completeness, the next block is
+\begin{align}
+ d_{11}(\Lambda)={}&-\frac{1}{5884534656000\Lambda^{11}}
+ \bigl(46195687238400\Lambda^{10}+8854370366400\Lambda^9
+ \notag\\[-0.2em]
+ &+2171643318000\Lambda^8+605515022112\Lambda^7
+ +212869408752\Lambda^6+84136852800\Lambda^5
+ \notag\\[-0.2em]
+ &+35589153600\Lambda^4+14234019800\Lambda^3
+ +4868113250\Lambda^2+1213962750\Lambda
+ \notag\\[-0.2em]
+ &+165540375\bigr).
+ \label{eq:d11}
+\end{align}
+The rapidly growing numerators are an argument for using the general formulae
+rather than storing a table.
+
+\subsection{Low-order derivation by hand}
+
+At order $q^2$, \cref{eq:normalized-inverse-equation} gives
+$\Lambda e_1+\alpha_1=0$.  Since $\alpha_1=-1/6$,
+\[
+ e_1=\frac1{6\Lambda}.
+\]
+At order $q^4$ one obtains
+\begin{equation}
+ \Lambda e_2+\frac12e_1^2-\alpha_1e_1+\alpha_2=0.
+ \label{eq:e2-hand}
+\end{equation}
+Substitution of $\alpha_1=-1/6$, $\alpha_2=7/180$ yields
+\cref{eq:d3}.  At every subsequent order the calculation is finite; the
+number of additive partitions grows, but no new analytic idea is required.
+
+\section{A finite closed formula for every inverse coefficient}
+\label{sec:closed-coefficients}
+
+The triangular recurrence is optimal for computation, but it conceals the
+combinatorial content.  Lagrange--B\"urmann inversion converts it into a finite,
+non-recursive expression involving two coefficient arrays: one built from the
+Bernoulli data and one from the universal nonlinear kernel $\varphi$.
+
+\subsection{Bernoulli convolution and kernel arrays}
+
+Define
+\begin{equation}
+ A(z)=\sum_{k\ge1}\alpha_kz^k,
+ \qquad
+ A_{n,p}=\coeff{z}{n}A(z)^p.
+ \label{eq:A-np-def}
+\end{equation}
+By the defining identity for partial Bell polynomials,
+\begin{equation}
+ A_{n,p}=\frac{p!}{n!}
+ \BellP{n}{p}\bigl(1!\alpha_1,2!\alpha_2,\
+ \ldots,(n-p+1)!\alpha_{n-p+1}\bigr).
+ \label{eq:A-np-bell}
+\end{equation}
+For integers $n,j,p$ define
+\begin{equation}
+ K_{n;j,p}=\coeff{u}{j-1}
+ \varphi(u)^{j-p}(1+u)^{-(2n-p)}.
+ \label{eq:K-def}
+\end{equation}
+If $p>j$, or if $2(j-p)>j-1$, this coefficient is zero.
+
+To express $K_{n;j,p}$ itself through Bell polynomials, put
+\begin{equation}
+ \nu_1=0,
+ \qquad \nu_m=(-1)^m(m-2)!\quad(m\ge2),
+ \label{eq:nu-def}
+\end{equation}
+so that $\varphi(u)=\sum_{m\ge1}\nu_mu^m/m!$.  With
+$r=j-p$ and the conventions $\BellP{0}{0}=1$ and
+$\BellP{h}{0}=0$ for $h>0$, one has the finite formula
+\begin{align}
+ K_{n;j,p}={}&
+ \sum_{h=2r}^{j-1}
+ \frac{r!}{h!}\BellP{h}{r}(\nu_1,\ldots,\nu_{h-r+1})
+ (-1)^{j-1-h}
+ \notag\\[-0.2em]
+ &\hspace{5em}{}\times
+ \binom{2n-p+j-2-h}{j-1-h}.
+ \label{eq:K-bell}
+\end{align}
+When $r=0$, only the $h=0$ term is retained.
+
+\begin{theorem}[Closed coefficient formula]
+\label{thm:closed-coefficients}
+Write
+\begin{equation}
+ d_{2n-1}(\Lambda)=\sum_{j=1}^{2n-1}c_{n,j}\Lambda^{-j}.
+ \label{eq:c-nj-expansion}
+\end{equation}
+Then, for $1\le j\le2n-1$,
+\begin{equation}
+ \boxed{
+ c_{n,j}=\frac{(-1)^j}{j}
+ \sum_{p=\lceil(j+1)/2\rceil}^{\min(j,n)}
+ \binom{j}{p}A_{n,p}K_{n;j,p}.}
+ \label{eq:closed-c-nj}
+\end{equation}
+\Cref{eq:A-np-bell,eq:K-bell} make the right-hand side a completely
+finite expression in Bernoulli numbers, binomial coefficients, and partial
+Bell polynomials.
+\end{theorem}
+
+\begin{proof}
+Introduce an auxiliary homotopy parameter $\zeta$ and rewrite
+\cref{eq:normalized-inverse-equation} as
+\begin{equation}
+ E=-\frac{\zeta}{\Lambda}H(q,E),
+ \qquad
+ H(q,u)=\varphi(u)+
+ \sum_{k\ge1}\alpha_kq^{2k}(1+u)^{-(2k-1)}.
+ \label{eq:homotopy-equation}
+\end{equation}
+The formal Lagrange--B\"urmann formula gives
+\begin{equation}
+ E(q,\zeta)=\sum_{j\ge1}\frac{(-1)^j\zeta^j}{j!\Lambda^j}
+ \left.\frac{\dd^{j-1}}{\dd u^{j-1}}H(q,u)^j\right|_{u=0}.
+ \label{eq:LB-homotopy}
+\end{equation}
+Set $\zeta=1$ and extract $q^{2n}$.  In $H^j$, choose $p$ of the $j$
+factors from the Bernoulli sector and the other $j-p$ from $\varphi$.
+The binomial choice contributes $\binom jp$.  If the selected Bernoulli
+indices sum to $n$, then
+\[
+ \prod_{\ell=1}^p(1+u)^{-(2k_\ell-1)}
+ =(1+u)^{-(2n-p)},
+\]
+and their coefficient sum is $A_{n,p}$.  The remaining coefficient of
+$u^{j-1}$ is $K_{n;j,p}$.  Since differentiation contributes $(j-1)!$, the
+factor $1/j!$ becomes $1/j$, proving \cref{eq:closed-c-nj}.
+
+The factor $\varphi^{j-p}$ starts in degree $2(j-p)$, so a nonzero
+$u^{j-1}$ coefficient requires $p\ge\lceil(j+1)/2\rceil$.  As $p\le n$, this
+also forces $j\le2n-1$, proving directly that the sum in
+\cref{eq:c-nj-expansion} terminates.  Finally, expanding $\varphi^r$ by
+\cref{eq:partial-bell-def} and multiplying by the binomial series for
+$(1+u)^{-(2n-p)}$ gives \cref{eq:K-bell}.
+\end{proof}
+
+\begin{methodbox}
+There are now two all-orders algorithms.
+\begin{itemize}
+\item The recurrence in \cref{eq:inverse-triangular-recurrence}
+      generates complete blocks $d_1,d_3,\ldots,d_{2N-1}$ with aggressive
+      truncation in $q$ and is the fastest route in a computer algebra system.
+\item The closed formula in \cref{eq:closed-c-nj} computes any isolated scalar
+      coefficient $c_{n,j}$ without constructing lower inverse blocks.  It is
+      the better formula for sign, support, denominator, and boundary analyses.
+\end{itemize}
+Both use exactly the Bell-polynomial/Fa\`a di Bruno coefficient machinery of
+combinatorial coefficient calculus.
+\end{methodbox}
+
+\subsection{Boundary coefficients}
+
+Two edges of the triangular array $c_{n,j}$ simplify immediately.
+
+\begin{corollary}[First and deepest inverse-logarithmic coefficients]
+\label{cor:boundary-coefficients}
+For $n\ge1$,
+\begin{align}
+ c_{n,1}&=-\alpha_n,
+ \label{eq:c-n1}\\
+ c_{n,2n-1}&=-\frac1{2^{n-1}(2n-1)}
+ \binom{2n-1}{n}\alpha_1^n.
+ \label{eq:c-deepest}
+\end{align}
+\end{corollary}
+
+\begin{proof}
+For $j=1$, only $p=1$ contributes, $K_{n;1,1}=1$, and
+$A_{n,1}=\alpha_n$.  For $j=2n-1$, the support restriction forces $p=n$.
+Then $A_{n,n}=\alpha_1^n$, and the required coefficient is the lowest term of
+$\varphi(u)^{n-1}$, namely
+$[u^{2n-2}](u^2/2)^{n-1}=2^{1-n}$.  Substitution in
+\cref{eq:closed-c-nj} proves the result.
+\end{proof}
+
+\subsection{Global alternating sign law}
+
+The signs visible in \cref{eq:d1,eq:d3,eq:d5,eq:d7,eq:d9} persist in every
+coefficient of every block.
+
+\begin{theorem}[Coefficientwise sign theorem]
+\label{thm:sign-law}
+For every $n\ge1$,
+\begin{equation}
+ (-1)^{n+1}d_{2n-1}(\Lambda)
+ \in\Lambda^{-1}\Q_{>0}[\Lambda^{-1}].
+ \label{eq:sign-law}
+\end{equation}
+In particular, every nonzero scalar coefficient $c_{n,j}$ has sign
+$(-1)^{n+1}$.
+\end{theorem}
+
+\begin{proof}
+By \cref{eq:alpha-def}, write
+\begin{equation}
+ \alpha_k=(-1)^k a_k^+,
+ \qquad
+ a_k^+=\frac{2(2k-2)!\etaD(2k)}{\pi^{2k}}>0.
+ \label{eq:alpha-positive}
+\end{equation}
+Set $z=-q^2$ and $E=-P$.  Since
+\begin{equation}
+ \varphi(-P)=\sum_{m\ge2}\frac{P^m}{m(m-1)},
+ \label{eq:varphi-positive}
+\end{equation}
+all coefficients are positive, and the normalized equation becomes
+\begin{equation}
+ \Lambda P=
+ \sum_{m\ge2}\frac{P^m}{m(m-1)}
+ +\sum_{k\ge1}a_k^+z^k(1-P)^{-(2k-1)}.
+ \label{eq:positive-fixed-point}
+\end{equation}
+Starting from $P=0$ and solving coefficient by coefficient first gives
+$P=\sum_{n\ge1}p_n(\Lambda^{-1})z^n$ with nonnegative rational
+coefficients.  Strict positivity at every power
+$\Lambda^{-j}$, $1\le j\le2n-1$, follows constructively.  For
+$1\le j\le n$, take the forcing term with index $n-j+1$ and the
+$P^{j-1}$ term in its positive binomial expansion, using the leading
+$a_1^+z/\Lambda$ contribution in every copy of $P$.  For
+$n<j\le2n-1$, use a positive rooted-tree contribution with $n$ leaves and
+$j-n$ internal vertices from the nonlinear series
+$\sum_{m\ge2}P^m/(m(m-1))$; such a tree exists for every
+$1\le j-n\le n-1$.  Hence
+$p_n\in\Lambda^{-1}\Q_{>0}[\Lambda^{-1}]$.  Returning to $q$,
+\[
+ E(q)=-P(-q^2)=\sum_{n\ge1}(-1)^{n+1}p_nq^{2n}.
+\]
+Thus $d_{2n-1}=(-1)^{n+1}p_n$, proving the theorem.
+\end{proof}
+
+\subsection{Scaling relation with the inverse-Gamma blocks}
+
+Let $a_k^{\Gamma}=B_{2k}(1/2)/(2k(2k-1))$ be the half-shifted logarithmic
+coefficients used for inverse Gamma.  Since
+\begin{equation}
+ \alpha_k=4^k a_k^{\Gamma},
+ \label{eq:alpha-gamma-scale}
+\end{equation}
+the normalized double-factorial equation is obtained from the normalized
+inverse-Gamma equation by replacing $q$ with $2q$, while leaving $\Lambda$
+formal.  Therefore
+\begin{equation}
+ d_{2n-1}^{!!}(\Lambda)=4^n d_{2n-1}^{\Gamma}(\Lambda).
+ \label{eq:inverse-gamma-scaling}
+\end{equation}
+This identity is an independent all-orders check on both recurrences.  It is a
+coefficient-polynomial identity; the numerical Lambert variables used in the
+two inverse problems need not coincide.
+
+\section{Outer iterated-logarithmic expansion}
+\label{sec:outer}
+
+The Lambert form is the natural compact transseries.  When an expansion using
+only elementary iterated logarithms is required, $W$ can itself be expanded.
+The resulting coefficient calculus is again governed by classical
+combinatorial numbers.
+
+\subsection{Unsigned-Stirling formula for Lambert \texorpdfstring{$W$}{W}}
+
+Set
+\begin{equation}
+ Z=\frac{2R}{\e},
+ \qquad L_1=\log Z,
+ \qquad L_2=\log L_1.
+ \label{eq:L1-L2-def}
+\end{equation}
+For $Z\to+\infty$, the complete Poincar\'e expansion is
+\begin{equation}
+ \W_0(Z)\sim L_1-L_2+
+ \sum_{a\ge0}\sum_{b\ge1}
+ \frac{(-1)^a}{b!}
+ \stirlingone{a+b}{a+1}
+ \frac{L_2^b}{L_1^{a+b}},
+ \label{eq:W-Stirling-expansion}
+\end{equation}
+where $\stirlingone{n}{k}$ is the unsigned Stirling number of the first
+kind \cite{Corless,DLMFW}.  This double sum is understood by increasing total
+power $a+b$.
+
+Write
+\begin{equation}
+ \frac{\W_0(Z)}{L_1}=1+\sum_{m\ge1}\frac{u_m(L_2)}{L_1^m}.
+ \label{eq:u-def}
+\end{equation}
+Then
+\begin{align}
+ u_1(L_2)&=-L_2,
+ \label{eq:u1}\\
+ u_m(L_2)&=
+ \sum_{b=1}^{m-1}\frac{(-1)^{m-1-b}}{b!}
+ \stirlingone{m-1}{m-b}L_2^b,
+ \qquad m\ge2.
+ \label{eq:um-general}
+\end{align}
+Thus every outer coefficient is an explicit polynomial in $L_2$ with integer
+Stirling data.
+
+\subsection{Reciprocal coefficients and the core}
+
+Define $\tau_m(L_2)$ by
+\begin{equation}
+ \frac1{\W_0(Z)}\sim\frac1{L_1}
+ \sum_{m\ge0}\frac{\tau_m(L_2)}{L_1^m}.
+ \label{eq:tau-def}
+\end{equation}
+Then
+\begin{equation}
+ \tau_0=1,
+ \qquad
+ \tau_m=-\sum_{j=1}^m u_j\tau_{m-j}.
+ \label{eq:tau-recurrence}
+\end{equation}
+A non-recursive partition form is
+\begin{equation}
+ \tau_m=
+ \sum_{\substack{k_1,\ldots,k_m\ge0\\
+                  \sum_{j=1}^mjk_j=m}}
+ (-1)^K\frac{K!}{k_1!\cdots k_m!}
+ \prod_{j=1}^m u_j^{k_j},
+ \qquad K=\sum_{j=1}^m k_j.
+ \label{eq:tau-partition}
+\end{equation}
+The first polynomials are
+\begin{align}
+ \tau_0={}&1,
+ \notag\\
+ \tau_1={}&L_2,
+ \notag\\
+ \tau_2={}&L_2(L_2-1),
+ \notag\\
+ \tau_3={}&\frac12L_2(2L_2^2-5L_2+2),
+ \notag\\
+ \tau_4={}&\frac16L_2(6L_2^3-26L_2^2+27L_2-6),
+ \label{eq:tau-first}\\
+ \tau_5={}&\frac1{12}L_2
+ (12L_2^4-77L_2^3+142L_2^2-84L_2+12).
+ \notag
+\end{align}
+Since $T=2R/W_0(Z)$,
+\begin{align}
+ T\sim\frac{2R}{L_1}\biggl[{}&1+\frac{L_2}{L_1}
+ +\frac{L_2(L_2-1)}{L_1^2}
+ +\frac{L_2(2L_2^2-5L_2+2)}{2L_1^3}
+ \notag\\
+ &+\frac{L_2(6L_2^3-26L_2^2+27L_2-6)}{6L_1^4}
+ +O\!\left(\frac{L_2^5}{L_1^5}\right)\biggr].
+ \label{eq:T-outer-first}
+\end{align}
+\Cref{eq:um-general,eq:tau-partition} give every omitted coefficient.
+
+\subsection{All coefficients after expanding the inverse blocks}
+
+The compact complete branchwise transseries can be written directly in $R$
+and $w=W_0(2R/\e)$ as
+\begin{equation}
+ \boxed{
+ \D_r^{-1}(y)\sim
+ \frac{2R_r}{w_r}-1+
+ \sum_{n\ge1}\sum_{j=1}^{2n-1}
+ c_{n,j}
+ \left(\frac{w_r}{2R_r}\right)^{2n-1}
+ (w_r+1)^{-j}.}
+ \label{eq:compact-full-transseries}
+\end{equation}
+Together, \cref{eq:closed-c-nj,eq:W-Stirling-expansion} are already a general
+formula for every coefficient of the fully elementary expansion.  For
+completeness we spell out the final composition step.
+
+Put
+\begin{equation}
+ v_1=1+u_1=1-L_2,
+ \qquad v_m=u_m\quad(m\ge2),
+ \label{eq:v-def}
+\end{equation}
+so that
+\begin{equation}
+ w+1=L_1\left(1+\sum_{m\ge1}\frac{v_m}{L_1^m}\right).
+ \label{eq:wplus1-v}
+\end{equation}
+For positive integers $p,j$, define
+\begin{align}
+ (1+\textstyle\sum_{m\ge1}u_mz^m)^p
+ &=\sum_{m\ge0}\sigma_m^{(p)}z^m,
+ \label{eq:sigma-def}\\
+ (1+\textstyle\sum_{m\ge1}v_mz^m)^{-j}
+ &=\sum_{m\ge0}\rho_m^{(j)}z^m.
+ \label{eq:rho-def}
+\end{align}
+Their finite partition formulae are
+\begin{align}
+ \sigma_m^{(p)}={}&
+ \sum_{\substack{k_1,\ldots,k_m\ge0\\\sum hk_h=m}}
+ \binom{p}{K}\frac{K!}{\prod_hk_h!}
+ \prod_{h=1}^m u_h^{k_h},
+ \label{eq:sigma-partition}\\
+ \rho_m^{(j)}={}&
+ \sum_{\substack{k_1,\ldots,k_m\ge0\\\sum hk_h=m}}
+ (-1)^K\binom{j+K-1}{K}\frac{K!}{\prod_hk_h!}
+ \prod_{h=1}^m v_h^{k_h},
+ \label{eq:rho-partition}
+\end{align}
+where $K=\sum_hk_h$.  It follows that
+\begin{equation}
+ w^p(w+1)^{-j}
+ \sim L_1^{p-j}\sum_{m\ge0}\frac1{L_1^m}
+ \sum_{a+b=m}\sigma_a^{(p)}\rho_b^{(j)}.
+ \label{eq:w-power-composition}
+\end{equation}
+Substituting $p=2n-1$ in \cref{eq:w-power-composition} and then using
+\cref{eq:compact-full-transseries} gives a finite combinatorial formula for
+any prescribed coefficient at any prescribed triple of levels
+$(R^{-1},L_1^{-1},L_2)$.
+
+\subsection{Ordering of the scales}
+
+For every fixed $M$,
+\begin{equation}
+ \frac{T}{L_1^M}\longrightarrow\infty.
+ \label{eq:T-beyond-outer}
+\end{equation}
+Therefore the fixed centring shift and the first Bernoulli blocks obey
+\begin{equation}
+ \frac{T}{L_1^M}\gg1\gg\frac1{T\Lambda}
+ \gg\frac1{T^3\Lambda}\gg\frac1{T^5\Lambda}\gg\cdots.
+ \label{eq:nested-scale-ordering}
+\end{equation}
+This is the reason for retaining $-1$ explicitly in
+\cref{eq:branch-inverse-all-orders}.  It is invisible to every finite
+outer Lambert expansion, yet dominates the complete inverse-power grid.
+
+\section{The inverse of the periodic OEIS continuation}
+\label{sec:periodic-inverse}
+
+The one-function continuation \cref{eq:OEIS-continuation} is useful, but its
+inverse cannot be obtained by merely inserting a parity-averaged constant into
+the branchwise formula.  The periodic factor creates a new sector before the
+Bernoulli grid.
+
+\subsection{Exact displacement equation}
+
+Let
+\begin{equation}
+ R_*=\log y-C_*,
+ \qquad w=\W_0(2R_*/\e),
+ \qquad T=\frac{2R_*}{w},
+ \qquad \Lambda=w+1,
+ \qquad q=T^{-1},
+ \qquad \theta=\pi T.
+ \label{eq:periodic-core}
+\end{equation}
+Write the inverse in centred form as
+\begin{equation}
+ \DO_+^{-1}(y)=T-1+\Delta.
+ \label{eq:periodic-inverse-displacement}
+\end{equation}
+Using the exact identity in \cref{eq:OEIS-centered-exact}, the displacement
+satisfies
+\begin{equation}
+ \Lambda\Delta+q^{-1}\varphi(q\Delta)
+ -2a\cos(\theta+\pi\Delta)
+ +2\mathcal C(T+\Delta)=0.
+ \label{eq:periodic-exact-equation}
+\end{equation}
+The second term begins with $q\Delta^2/2$; the Borel correction begins with
+$-q/6$.  In contrast, the cosine term is $O(1)$.  Thus
+$\Delta=O(\Lambda^{-1})$, not $O(q\Lambda^{-1})$.
+
+\subsection{The complete zero-grid log-periodic sector}
+
+At $q=0$, \cref{eq:periodic-exact-equation} reduces to
+\begin{equation}
+ \Lambda\Delta_0=2a\cos(\theta+\pi\Delta_0).
+ \label{eq:periodic-zero-grid}
+\end{equation}
+For $\Lambda>2\pi a$, the right-hand side divided by $\Lambda$ is a
+contraction on the real line, so \cref{eq:periodic-zero-grid} has a unique real
+solution.  Its complete inverse-logarithmic expansion has closed Fourier
+coefficients.
+
+\begin{theorem}[Closed log-periodic sector]
+\label{thm:periodic-zero-sector}
+Let $\lambda=\Lambda^{-1}$.  The solution of
+\cref{eq:periodic-zero-grid} has the expansion
+\begin{equation}
+ \Delta_0(\theta,\lambda)
+ =\sum_{m\ge1}p_m(\theta)\lambda^m,
+ \label{eq:Delta0-expansion}
+\end{equation}
+where
+\begin{align}
+ p_m(\theta)
+ &={\frac{(2a)^m}{m!}}
+ \left.\frac{\dd^{m-1}}{\dd u^{m-1}}
+ \cos^m(\theta+\pi u)\right|_{u=0}
+ \label{eq:pm-derivative}\\
+ &=\frac{a^m}{m!}
+ \sum_{j=0}^{m}\binom mj
+ \bigl(\ii\pi(m-2j)\bigr)^{m-1}
+ \e^{\ii(m-2j)\theta}.
+ \label{eq:pm-Fourier}
+\end{align}
+The second expression is real despite its complex notation.  The first terms
+are
+\begin{align}
+ \Delta_0={}&\frac{2a\cos\theta}{\Lambda}
+ -\frac{4\pi a^2\cos\theta\sin\theta}{\Lambda^2}
+ \notag\\
+ &+\frac{4\pi^2a^3\cos\theta(2-3\cos^2\theta)}{\Lambda^3}
+ +O(\Lambda^{-4}).
+ \label{eq:Delta0-first}
+\end{align}
+\end{theorem}
+
+\begin{proof}
+\Cref{eq:periodic-zero-grid} is
+$\Delta_0=2a\lambda\cos(\theta+\pi\Delta_0)$.  Lagrange--B\"urmann inversion
+in the parameter $\lambda$ gives \cref{eq:pm-derivative}.  Expanding
+$\cos^m v=2^{-m}\sum_{j=0}^m\binom mj\e^{\ii(m-2j)v}$ and differentiating
+gives \cref{eq:pm-Fourier}.  Direct evaluation for $m=1,2,3$ yields
+\cref{eq:Delta0-first}.
+\end{proof}
+
+The formula in \cref{eq:pm-Fourier} exhibits the precise harmonic content: at
+inverse-logarithmic order $m$, only Fourier modes
+$m,m-2,\ldots,-m$ occur.  Thus the periodic sector forms a finitely generated
+coefficient algebra at every order, even though it lies outside ordinary
+polynomial-logarithmic transseries.
+
+\subsection{Coupling the periodic sector to all inverse powers}
+
+Replace the exact $\mathcal C$ in \cref{eq:periodic-exact-equation} by its
+Borel-summable asymptotic series and define the formal function
+\begin{align}
+ \mathcal F(q,u)={}&\Lambda u+
+ \sum_{m\ge2}\frac{(-1)^m}{m(m-1)}u^mq^{m-1}
+ -2a\cos(\theta+\pi u)
+ \notag\\
+ &+2\sum_{k\ge1}\beta_kq^{2k-1}(1+qu)^{-(2k-1)}.
+ \label{eq:periodic-formal-F}
+\end{align}
+Seek
+\begin{equation}
+ \Delta=\Delta_0+\sum_{n\ge1}\Delta_nq^n,
+ \label{eq:periodic-q-expansion}
+\end{equation}
+where each $\Delta_n$ is a formal series in $\Lambda^{-1}$ with trigonometric
+polynomial coefficients.  Put
+\begin{equation}
+ M=\Lambda+2\pi a\sin(\theta+\pi\Delta_0).
+ \label{eq:periodic-M}
+\end{equation}
+The leading term of $M$ is $\Lambda$, so it is invertible in this coefficient
+field.
+
+\begin{theorem}[Triangular periodic-grid recurrence]
+\label{thm:periodic-grid}
+For $n\ge1$, let
+\begin{equation}
+ \Delta_{<n}(q)=\Delta_0+\sum_{j=1}^{n-1}\Delta_jq^j.
+ \label{eq:Delta-less-n}
+\end{equation}
+Then the unique formal solution of \cref{eq:periodic-formal-F} is generated by
+\begin{equation}
+ \boxed{
+ \Delta_n=-\frac1M\coeff{q}{n}
+ \mathcal F\bigl(q,\Delta_{<n}(q)\bigr).}
+ \label{eq:periodic-grid-recurrence}
+\end{equation}
+The first coefficient is
+\begin{equation}
+ \Delta_1=\frac{1/6-\Delta_0^2/2}{M}.
+ \label{eq:Delta1}
+\end{equation}
+The second is
+\begin{align}
+ \Delta_2=-\frac1M\biggl[{}&
+ a\pi^2\cos(\theta+\pi\Delta_0)\Delta_1^2
+ +\Delta_0\Delta_1
+ +\frac{\Delta_0-\Delta_0^3}{6}\biggr].
+ \label{eq:Delta2}
+\end{align}
+\end{theorem}
+
+\begin{proof}
+The coefficient of a new $\Delta_nq^n$ in the $q^n$ part of
+$\mathcal F(q,\Delta)$ is the derivative of the zero-grid function
+$\Lambda u-2a\cos(\theta+\pi u)$ at $u=\Delta_0$, namely $M$.  Every other
+contribution involves only lower $\Delta_j$.  Solving the coefficient equation
+gives \cref{eq:periodic-grid-recurrence}.
+
+At order $q$, the core kernel contributes $\Delta_0^2/2$, and
+$2\beta_1=-1/6$ supplies the Bernoulli contribution, proving
+\cref{eq:Delta1}.  At order $q^2$, Taylor expansion of the zero-grid function,
+the $u^2q/2-u^3q^2/6$ core kernel, and the expansion of
+$2\beta_1q(1+qu)^{-1}$ give \cref{eq:Delta2}.
+\end{proof}
+
+\begin{corollary}[Asymptotic meaning of the periodic grid]
+\label{cor:periodic-asymptotic-meaning}
+Fix nonnegative integers $N$ and $M$.  Truncate
+\cref{eq:periodic-q-expansion} after $q^N$, and in each coefficient retain the
+inverse-logarithmic expansion through $\Lambda^{-M}$.  If the centred forward
+series is retained far enough to determine these coefficients, substitution
+into \cref{eq:periodic-exact-equation} leaves a residual that
+is smaller in the lexicographic scale
+\[
+ 1,\Lambda^{-1},\Lambda^{-2},\ldots;
+ \quad q,q\Lambda^{-1},q\Lambda^{-2},\ldots;
+ \quad q^2,\ldots .
+\]
+Since the exact derivative with respect to $\Delta$ equals
+$M+O(q)$ and $M\sim\Lambda$, the residual transfers to an inverse error after
+division by $\Lambda$.  The assertion is uniform in the phase
+$\theta=\pi T$, because all trigonometric coefficients and their derivatives
+are bounded.
+\end{corollary}
+
+\begin{proof}
+The recurrence cancels the formal residual successively in $q$.  At each fixed
+$q$-order, Lagrange inversion cancels it successively in $\Lambda^{-1}$.
+The exact Borel remainder estimate \cref{thm:remainder-bounds} controls the
+replacement of $\mathcal C$ by its finite Bernoulli expansion.  Finally, the
+implicit derivative is bounded below by a positive multiple of $\Lambda$ for
+large $T$, uniformly in $\theta$, so the mean-value argument used in
+\cref{thm:branch-inverse} applies.
+\end{proof}
+
+\begin{summarybox}
+The eventual inverse of the OEIS continuation is
+\begin{equation}
+ \DO_+^{-1}(y)
+ \sim T-1+\Delta_0(\pi T,\Lambda^{-1})
+ +\sum_{n\ge1}\Delta_n(\pi T,\Lambda^{-1})T^{-n}.
+ \label{eq:periodic-full-transseries}
+\end{equation}
+The coefficient $\Delta_0$ is given explicitly by
+\cref{eq:pm-derivative,eq:pm-Fourier}; all finer coefficients are generated by
+\cref{eq:periodic-grid-recurrence}.  This is a log-periodic transseries over
+the monomial group generated by $\Lambda^{-1}$, $T^{-1}$, and
+$\e^{\ii\pi T}$.
+\end{summarybox}
+
+\subsection{How the parity branches resum the periodic sector}
+
+At an integer $n$, $s=n+1$ and
+\begin{equation}
+ C_*-a\cos(\pi s)=
+ \begin{cases}
+ C_0,&n\ \hbox{even},\\
+ C_1,&n\ \hbox{odd}.
+ \end{cases}
+ \label{eq:periodic-freeze}
+\end{equation}
+The branchwise normalization absorbs this entire constant before the Lambert
+inversion.  Hence the large $O(\Lambda^{-1})$ periodic displacement disappears,
+and the first remaining correction is the much smaller
+$1/(6T\Lambda)$.  In this precise sense the two parity-resolved transseries are
+subsequence resummations of the periodic inverse: they build the parity phase
+into the core instead of expanding it perturbatively.
+
+\section{Divergence and beyond-all-orders inverse accuracy}
+\label{sec:inverse-large-order}
+
+The branchwise inverse series is Poincar\'e asymptotic, not convergent.  An
+exact large-order statement follows immediately from the shallow edge of the
+coefficient triangle:
+\begin{equation}
+ [\Lambda^{-1}]\,d_{2n-1}(\Lambda)
+ =(-1)^{n+1}\frac{2(2n-2)!\,\etaD(2n)}{\pi^{2n}}
+ =(-1)^{n+1}\frac{2(2n-2)!}{\pi^{2n}}
+ \left(1+O(2^{-2n})\right).
+ \label{eq:d-large-order-leading}
+\end{equation}
+At this fixed inverse-logarithmic depth, the term
+$[\Lambda^{-1}]d_{2n-1}/T^{2n-1}$ is smallest near
+$2n\approx\pi T$.  The deeper powers of $\Lambda^{-1}$ are not uniform in
+that diagonal limit, so \cref{eq:d-large-order-leading} alone should not be
+used as a proof of optimal truncation for the full block polynomial.
+
+A rigorous envelope follows instead from the exact forward remainder.  Divide
+the optimally truncated centred logarithmic residual
+\cref{eq:least-term-envelope} by the inverse slope
+$\tfrac12\Lambda+O(T^{-2})$.  This gives
+\begin{equation}
+ \operatorname{error}_{\mathrm{opt}}
+ =O\!\left(\frac{\e^{-\pi T}}{\sqrt T\,\Lambda}\right).
+ \label{eq:inverse-optimal-envelope}
+\end{equation}
+Thus the exponential envelope is established without assuming any unproved
+uniform large-$n$ estimate for the complete polynomials $d_{2n-1}$.
+
+\begin{proposition}[Transport of a forward beyond-all-orders sector]
+\label{prop:sector-transport}
+Suppose a chosen exponentially improved representation of the centred forward
+phase retains the algebraic terms $\beta_1,\ldots,\beta_K$ and has an
+additional residual $\mathcal E(s)$.  Let $s_{\mathrm{alg}}$ solve the
+correspondingly truncated algebraic inverse problem.  Then the leading induced
+inverse correction is
+\begin{equation}
+ \Delta_{\mathcal E}
+ =-\frac{2\mathcal E(s_{\mathrm{alg}})}
+ {\log s_{\mathrm{alg}}-2\sum_{k=1}^{K}(2k-1)\beta_k
+  s_{\mathrm{alg}}^{-2k}}
+ +O\!\left(
+ \frac{\sup|F_{\mathrm{alg}}''|\,|\mathcal E|^2}{\Lambda^3}
+ +\frac{|\mathcal E\,\mathcal E'|}{\Lambda^2}
+ \right),
+ \label{eq:sector-transport}
+\end{equation}
+where $F_{\mathrm{alg}}$ is the doubled algebraic phase and the supremum is
+taken between the algebraic and exact inverse points.  The estimate assumes
+the displayed denominator is comparable to $\Lambda$ and
+$|\mathcal E'|=o(\Lambda)$.
+\end{proposition}
+
+\begin{proof}
+Let $F(s)$ denote the exact doubled forward phase minus $2R$, and let
+$F_{\mathrm{alg}}$ denote the same expression with $\mathcal E$ omitted.
+By construction, $F_{\mathrm{alg}}(s_{\mathrm{alg}})=0$ and
+$F(s_{\mathrm{alg}})=2\mathcal E(s_{\mathrm{alg}})$.  Taylor expansion
+$0=F(s_{\mathrm{alg}}+\Delta)=F(s_{\mathrm{alg}})+F'(s_{\mathrm{alg}})\Delta
++O(F''\Delta^2)$ gives the first Newton correction.  Replacing
+$F'(s_{\mathrm{alg}})=F_{\mathrm{alg}}'(s_{\mathrm{alg}})
++2\mathcal E'(s_{\mathrm{alg}})$ by $F_{\mathrm{alg}}'$ and iterating once
+produces the two displayed remainder terms and proves
+\cref{eq:sector-transport}.
+\end{proof}
+
+This proposition is deliberately stated in terms of a supplied forward sector.
+The Borel poles at $\pm\ii\pi m$ generate terminant functions whose form and
+Stokes multipliers depend on the sector of analytic continuation.  The transport law
+in \cref{eq:sector-transport} carries any such rigorously normalized forward
+completion without inventing a spurious exponential term.
+
+\section{Complex inverse sheets}
+\label{sec:complex}
+
+Although the principal application is the large positive real inverse, the
+Lambert normalization also labels complex asymptotic sheets.  Fix a branch of
+$\Log y$ and an integer logarithmic winding number $m$.  Put
+\begin{equation}
+ R_{r,m}=\Log y+2\pi\ii m-C_r.
+ \label{eq:complex-R}
+\end{equation}
+For a Lambert branch $k\in\mathbb Z$, define
+\begin{equation}
+ w_{r,m,k}=\W_k(2R_{r,m}/\e),
+ \qquad
+ T_{r,m,k}=\exp(w_{r,m,k}+1)=\frac{2R_{r,m}}{w_{r,m,k}},
+ \qquad
+ \Lambda_{r,m,k}=w_{r,m,k}+1.
+ \label{eq:complex-core}
+\end{equation}
+Whenever $T_{r,m,k}$ lies in a sector in which the gamma Stirling expansion is
+uniform and avoids the poles of the forward branch, the same coefficient
+polynomials give the local formal sheet
+\begin{equation}
+ x_{r,m,k}(y)
+ \sim T_{r,m,k}-1+
+ \sum_{n\ge1}\frac{d_{2n-1}(\Lambda_{r,m,k})}
+ {T_{r,m,k}^{2n-1}}.
+ \label{eq:complex-inverse-sheet}
+\end{equation}
+The pair $(m,k)$ is an asymptotic label, not a global classification: distinct
+labels can meet after analytic continuation around gamma poles or logarithmic
+cuts.  The expansion in \cref{eq:complex-inverse-sheet} nevertheless gives a convenient
+local atlas at large modulus.
+
+\section{Numerical evaluation and certification}
+\label{sec:algorithm}
+
+\subsection{Stable evaluation from a logarithmic target}
+
+Directly forming $y=n!!$ quickly overflows fixed-precision arithmetic.  The
+inverse should therefore accept $\ell=\log y$ as its primary input.
+
+\begin{algorithm}[Parity-resolved inverse double factorial]
+\label{alg:inverse-double-factorial}
+Given $\ell=\log y$, parity $r\in\{0,1\}$, and a desired number $N$ of
+algebraic correction blocks:
+\begin{lstlisting}
+C := (log(pi))/2              if r = 0
+     (log(2))/2               if r = 1
+R := ell - C
+w := LambertW(0, 2*R/e)
+T := 2*R/w
+Lambda := w + 1
+x := T - 1
+for n := 1,...,N:
+    x := x + d[2*n-1](Lambda) / T^(2*n-1)
+return x
+\end{lstlisting}
+The polynomials $d_{2n-1}$ may be precomputed by
+\cref{eq:inverse-triangular-recurrence}, or individual scalar coefficients may
+be generated by \cref{eq:closed-c-nj}.
+\end{algorithm}
+
+For full working precision, use the transseries approximation as a starting
+point for Newton's method applied to the logarithmic residual
+\begin{equation}
+ F_r(x)=\log\kappa_r+\frac{x}{2}\log2
+ +\log\Gamma\!\left(\frac{x}{2}+1\right)-\ell.
+ \label{eq:Newton-residual}
+\end{equation}
+Its derivative is the positive quantity in \cref{eq:Dr-logder-exact}, so the
+Newton update is
+\begin{equation}
+ x_{\mathrm{new}}=x-
+ \frac{F_r(x)}{\tfrac12\left(\log2+\psi(x/2+1)\right)}.
+ \label{eq:Newton-update}
+\end{equation}
+A few asymptotic blocks normally place the initial value well inside the
+quadratic convergence region.
+
+For the OEIS interpolation, add
+$\tfrac14(1-\cos\pi x)\log(2/\pi)$ to $F_0(x)$ and its derivative to the
+Newton denominator.  The transseries in \cref{eq:periodic-full-transseries} gives the
+appropriate initial approximation.
+
+\subsection{A posteriori inverse certificate}
+
+Let $\widetilde x$ be any approximation and let
+$\rho=F_r(\widetilde x)$.  If an interval $I$ containing both
+$\widetilde x$ and the exact inverse has
+\begin{equation}
+ m_I=\inf_{x\in I}F_r'(x)>0,
+ \label{eq:slope-lower-bound}
+\end{equation}
+then the mean-value theorem gives
+\begin{equation}
+ |\D_r^{-1}(y)-\widetilde x|\le\frac{|\rho|}{m_I}.
+ \label{eq:a-posteriori-bound}
+\end{equation}
+Because $F_r'$ is increasing, a convenient lower bound is its value at the left
+endpoint of $I$.  Combining \cref{eq:a-posteriori-bound} with the parity floor
+in \cref{eq:discrete-parity-inverse} certifies the exact integer generalized
+inverse whenever the resulting interval does not cross a same-parity integer.
+
+\subsection{Numerical validation}
+
+To test the expansion without root-finding ambiguity, choose an exact index
+$n$, set $\ell=\log\D_r(n)$, reconstruct the Lambert variables from $\ell$,
+and compare each truncation with $n$.  The following values were computed with
+80-decimal arithmetic.  Each entry is approximation minus exact index; $E_0$
+uses only $T-1$, and $E_j$ successively includes $d_1,d_3,\ldots,d_{2j-1}$.
+
+\begin{table}[htbp]
+\centering
+\caption{Errors for the even branch $r=0$.}
+\label{tab:even-errors}
+\scriptsize
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{r@{\quad}rrrrr}
+\toprule
+$n$ & $E_0$ & $E_1$ & $E_2$ & $E_3$ & $E_4$\\
+\midrule
+10  & $-6.3073664\times10^{-3}$ & $ 1.6443978\times10^{-5}$
+    & $-1.6096633\times10^{-7}$ & $ 3.6889599\times10^{-9}$
+    & $-1.6035926\times10^{-10}$\\
+20  & $-2.6054931\times10^{-3}$ & $ 1.7519735\times10^{-6}$
+    & $-4.7751372\times10^{-9}$ & $ 3.1028710\times10^{-11}$
+    & $-3.8172037\times10^{-13}$\\
+50  & $-8.3108660\times10^{-4}$ & $ 8.9793611\times10^{-8}$
+    & $-4.1940787\times10^{-11}$ & $ 4.7155771\times10^{-14}$
+    & $-9.9985171\times10^{-17}$\\
+100 & $-3.5754817\times10^{-4}$ & $ 9.5804953\times10^{-9}$
+    & $-1.1469146\times10^{-12}$ & $ 3.3159325\times10^{-16}$
+    & $-1.8032908\times10^{-19}$\\
+\bottomrule
+\end{tabular}%
+}
+\end{table}
+
+\begin{table}[htbp]
+\centering
+\caption{Errors for the odd branch $r=1$.}
+\label{tab:odd-errors}
+\scriptsize
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{r@{\quad}rrrrr}
+\toprule
+$n$ & $E_0$ & $E_1$ & $E_2$ & $E_3$ & $E_4$\\
+\midrule
+9  & $-7.2226927\times10^{-3}$ & $ 2.3054068\times10^{-5}$
+   & $-2.7222582\times10^{-7}$ & $ 7.4928917\times10^{-9}$
+   & $-3.9120795\times10^{-10}$\\
+19 & $-2.7801819\times10^{-3}$ & $ 2.0689304\times10^{-6}$
+   & $-6.2119116\times10^{-9}$ & $ 4.4426296\times10^{-11}$
+   & $-6.0165406\times10^{-13}$\\
+49 & $-8.5199643\times10^{-4}$ & $ 9.5862235\times10^{-8}$
+   & $-4.6575971\times10^{-11}$ & $ 5.4466224\times10^{-14}$
+   & $-1.2012435\times10^{-16}$\\
+99 & $-3.6190377\times10^{-4}$ & $ 9.8955366\times10^{-9}$
+   & $-1.2083617\times10^{-12}$ & $ 3.5634509\times10^{-16}$
+   & $-1.9767173\times10^{-19}$\\
+\bottomrule
+\end{tabular}%
+}
+\end{table}
+
+The parity dependence is confined to the Lambert core.  Once the proper
+constant $C_r$ is used, the same sequence of coefficient polynomials produces
+nearly identical convergence patterns on the two subsequences.
+
+\section{Checks, alternative derivations, and implementation notes}
+\label{sec:checks}
+
+\subsection{Formal residual check}
+
+A generated block list should always be checked by substitution rather than by
+comparing displayed numerators.  If
+\begin{equation}
+ E_N(q)=\sum_{n=1}^{N}d_{2n-1}(\Lambda)q^{2n},
+ \label{eq:EN-check}
+\end{equation}
+then the exact formal certificate is
+\begin{equation}
+ \Lambda E_N+\varphi(E_N)
+ +\sum_{k=1}^{N+1}\alpha_kq^{2k}(1+E_N)^{-(2k-1)}
+ =O(q^{2N+2}).
+ \label{eq:formal-residual-certificate}
+\end{equation}
+The coefficient of $q^{2N+2}$ predicts the next block after division by
+$-\Lambda$.  This identity catches sign, indexing, and centring mistakes at
+once.
+
+\subsection{Independent checks}
+
+The formulae in this article admit four independent comparisons.
+\begin{enumerate}
+\item Expanding the exact gamma ratio \cref{eq:Dr-ratio} reproduces
+      $\beta_k$ directly.
+\item Expanding the Borel kernels \cref{eq:U-partial-fractions,eq:C-partial-fractions}
+      reproduces $\delta_k$ and $\beta_k$ from zeta and eta values.
+\item The triangular inverse recurrence and the closed
+      Lagrange--Bell formula agree coefficient by coefficient.
+\item The scaling identity in \cref{eq:inverse-gamma-scaling} compares every
+      inverse block with the independently derived half-shifted inverse-Gamma
+      expansion in \cite{ProveItGammaInverse}.
+\end{enumerate}
+The displayed coefficients through $d_{11}$ pass all four checks.
+
+\subsection{Truncation discipline}
+
+At recurrence step $n$, every formal operation may be truncated above
+$q^{2n}$.  In particular, there is no reason to form a full symbolic logarithm
+or a full negative binomial series.  A practical implementation maintains a
+vector of coefficients in $q^2$ whose entries are rational functions of
+$\Lambda$; multiplication is truncated convolution.  The formal residual
+\cref{eq:formal-residual-certificate} should be evaluated after each step.
+
+For high $n$, it is often more efficient to represent a rational function in
+$z=\Lambda^{-1}$ as a dense polynomial and postpone common-denominator
+normalization.  The degree bound $2n-1$ gives an exact allocation size.  The
+\Cref{thm:sign-law} provides a cheap additional invariant: after
+multiplication by $(-1)^{n+1}$, every coefficient must be positive.
+
+\section{Conclusions}
+\label{sec:conclusion}
+
+The double factorial has a particularly transparent all-orders asymptotic
+structure once the two correct normalizations are made.
+
+First, parity must be resolved.  The branches $\D_0$ and $\D_1$ share the same
+gamma factor and differ only by a target constant.  This isolates parity in
+the Lambert core and leaves a universal correction calculus.  For the integer
+sequence, the equivalent leading amplitude is the periodic transmonomial
+$A_n=(2\pi)^{1/4}(\pi/2)^{(-1)^n/4}$.
+
+Second, the shift $s=x+1$ is the natural inversion coordinate.  It converts the
+forward logarithm to
+\[
+ \frac{s}{2}(\log s-1)+C_r+\text{odd inverse powers},
+\]
+so the exact dominant inverse is $2R/W_0(2R/\e)$ and the correction support is
+an even grid in the relative displacement.  Every inverse block is a finite
+polynomial in $1/\log T$.
+
+The coefficient problem is completely solved in two complementary ways.  The
+triangular recurrence gives an efficient constructive algorithm, while the
+Lagrange--B\"urmann formula in \cref{eq:closed-c-nj} expresses every scalar
+coefficient as a finite sum of partial Bell polynomials.  It yields degree and
+support bounds, boundary coefficients, and the coefficientwise alternating
+sign law.  Unsigned Stirling numbers then generate the outer expansion of the
+Lambert core, so the complete elementary transseries has explicit
+combinatorial coefficients at every level.
+
+The exact Borel kernels
+\[
+ \frac{\coth t}{2t}-\frac1{2t^2},
+ \qquad
+ \frac1{2t\sinh t}-\frac1{2t^2}
+\]
+complete the direct asymptotic series analytically.  They give rigorous
+first-omitted-term bounds on the positive axis and identify the pole lattice
+responsible for divergence and hyperasymptotic corrections.  The inverse
+transport formula then converts any normalized forward exponential sector
+into its inverse counterpart.
+
+Finally, the single OEIS interpolation demonstrates why the interpolation
+choice cannot be ignored.  Its periodic factor survives at leading logarithmic
+order and produces a bounded but rapidly oscillating $1/\log T$ sector.  The
+closed Fourier--Lagrange formula and the periodic-grid recurrence provide its
+complete inverse transseries.  The parity-resolved expansions are not competing
+answers: they are the cleaner subsequence-resummed forms appropriate when the
+original integer parity is known.
+
+\appendix
+
+\section{Coefficient data in separated inverse-logarithmic form}
+\label{app:separated}
+
+For some comparisons it is useful to separate each block into powers of
+$\Lambda^{-1}$.  The first four are
+\begin{align}
+ d_1={}&\frac1{6\Lambda},
+ \notag\\
+ d_3={}&-\frac7{180\Lambda}
+         -\frac1{36\Lambda^2}
+         -\frac1{72\Lambda^3},
+ \label{eq:d3-separated}\\
+ d_5={}&\frac{31}{630\Lambda}
+ +\frac7{270\Lambda^2}
+ +\frac{17}{1080\Lambda^3}
+ +\frac5{648\Lambda^4}
+ +\frac1{432\Lambda^5},
+ \label{eq:d5-separated}\\
+ d_7={}&-\frac{127}{840\Lambda}
+ -\frac{4063}{75600\Lambda^2}
+ -\frac{11413}{453600\Lambda^3}
+ -\frac1{80\Lambda^4}
+ \notag\\
+ &-\frac{157}{25920\Lambda^5}
+ -\frac{35}{15552\Lambda^6}
+ -\frac5{10368\Lambda^7}.
+ \label{eq:d7-separated}
+\end{align}
+The compact common-denominator forms in \cref{eq:d3,eq:d5,eq:d7} are less
+susceptible to transcription error; the separated form makes
+\cref{eq:d-leading-slope} visible.
+
+\section{A generic coefficient-generation pseudocode}
+\label{app:pseudocode}
+
+The following pseudocode implements \cref{eq:inverse-triangular-recurrence}
+on the variable $z=q^2$.
+\begin{lstlisting}
+input: N, symbolic Lambda
+E := 0
+for n := 1,...,N:
+    H := (1+E)*log(1+E) - E
+    for k := 1,...,n:
+        H := H + alpha[k]*z^k*(1+E)^(-(2*k-1))
+    H := truncate(H, z^(n+1))
+    e[n] := -coefficient(H, z^n)/Lambda
+    E := E + e[n]*z^n
+    assert truncate(residual(E), z^(n+1)) = 0
+return e[1],...,e[N]
+\end{lstlisting}
+All logarithms and powers here are formal truncated series.  The assertion uses
+\cref{eq:formal-residual-certificate}.
+
+\section{Notation crosswalk}
+\label{app:crosswalk}
+
+\begin{center}
+\begin{tabularx}{\textwidth}{@{}lX@{}}
+\toprule
+Symbol & Meaning\\
+\midrule
+$\D_r(x)$ & parity-resolved gamma interpolation, $r=0$ even and $r=1$ odd\\
+$\DO(x)$ & periodic analytic continuation agreeing with all integer values\\
+$s=x+1$ & optimal centred forward variable\\
+$C_0,C_1,C_*$ & even, odd, and parity-mean logarithmic constants\\
+$\delta_k$ & uncentred logarithmic Stirling coefficients\\
+$\beta_k$ & centred logarithmic coefficients\\
+$\alpha_k=2\beta_k$ & coefficients in the doubled inverse phase\\
+$R_r$ & $\log y-C_r$\\
+$w_r$ & $W_0(2R_r/\e)$\\
+$T_r$ & exact Lambert core $2R_r/w_r$\\
+$\Lambda_r$ & core slope $w_r+1=\log T_r$\\
+$d_{2n-1}$ & branchwise inverse correction polynomial\\
+$c_{n,j}$ & coefficient of $\Lambda^{-j}$ in $d_{2n-1}$\\
+$\Delta_0,\Delta_n$ & periodic inverse sectors for $\DO_+^{-1}$\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\begin{thebibliography}{99}
+
+\bibitem{OEIS}
+OEIS Foundation Inc.,
+\emph{The On-Line Encyclopedia of Integer Sequences},
+entry A006882, ``Double factorials $n!!$,''
+\url{https://oeis.org/A006882}.
+
+\bibitem{DLMFGamma}
+NIST Digital Library of Mathematical Functions,
+\S5.11, ``Asymptotic Expansions'' in Chapter 5, Gamma Function,
+\url{https://dlmf.nist.gov/5.11}.
+
+\bibitem{DLMFDuplication}
+NIST Digital Library of Mathematical Functions,
+\S5.5, ``Functional Relations'' in Chapter 5, Gamma Function,
+\url{https://dlmf.nist.gov/5.5}.
+
+\bibitem{DLMFW}
+NIST Digital Library of Mathematical Functions,
+\S4.13, ``Lambert $W$-Function,''
+\url{https://dlmf.nist.gov/4.13}.
+
+\bibitem{Corless}
+R.~M. Corless, G.~H. Gonnet, D.~E.~G. Hare, D.~J. Jeffrey, and D.~E. Knuth,
+On the Lambert $W$ function,
+\emph{Advances in Computational Mathematics} \textbf{5} (1996), 329--359.
+\url{https://doi.org/10.1007/BF02124750}.
+
+\bibitem{Olver}
+F.~W.~J. Olver,
+\emph{Asymptotics and Special Functions},
+AKP Classics, A K Peters, Wellesley, MA, 1997.
+
+\bibitem{Comtet}
+L. Comtet,
+\emph{Advanced Combinatorics: The Art of Finite and Infinite Expansions},
+Reidel, Dordrecht, 1974.
+
+\bibitem{FlajoletSedgewick}
+P. Flajolet and R. Sedgewick,
+\emph{Analytic Combinatorics},
+Cambridge University Press, Cambridge, 2009.
+
+\bibitem{Meserve}
+B.~E. Meserve,
+Double factorials,
+\emph{American Mathematical Monthly} \textbf{55} (1948), 425--426.
+
+\bibitem{ParisKaminski}
+R.~B. Paris and D. Kaminski,
+\emph{Asymptotics and Mellin--Barnes Integrals},
+Cambridge University Press, Cambridge, 2001.
+
+\bibitem{ProveItCCC}
+V. Reshetnikov,
+\emph{Combinatorial Coefficient Calculus},
+ProveIt semi-formalized research-frontier draft, September 2026,
+repository revision \texttt{b150e77f2a03d776201159d5b45f44c50c13c268}.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/combinatorial-coefficient-calculus/Combinatorial_Coefficient_Calculus}.
+
+\bibitem{ProveItGammaInverse}
+V. Reshetnikov,
+\emph{Asymptotic Inversion of the Gamma and Barnes $G$-Functions:
+Lambert-Core Transseries and a General Reversion Calculus},
+ProveIt semi-formalized research-frontier draft, 3 September 2026,
+repository revision \texttt{b150e77f2a03d776201159d5b45f44c50c13c268}.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/series-and-transseries/special-function-inversion/Asymptotic_Inversion_Gamma_Barnes_G}.
+
+\end{thebibliography}
+
+\end{document}

@@ -62,7 +62,47 @@ This `README.md` is the permanent explanation of the directory and
 **must not be deleted** — it also keeps the directory present in git
 when no archives are waiting.
 
-Most recent processed batch (five archives, filed and removed on 2026-09-03,
+Most recent processed batch (twelve archives, filed and removed on 2026-09-03,
+after the Bell/Fubini batch below): twelve independently written articles on
+the asymptotic transseries **and asymptotic inverse** of four combinatorial
+sequences, three articles each, all to
+`../series-and-transseries/special-function-inversion/` beside the twelve
+already there.  Each inverts its sequence at infinity to all orders and ends at
+a Lambert-`W` reversion, which is the subgroup's criterion; unlike the earlier
+Bell and Fubini batch these are inversions, not forward asymptotics only.
+
+- `Butcher_Tree_Transseries.zip` → `Butcher_Tree_Transseries/`: 1,674-line/55,275-byte source, 21-page A4/593,560-byte PDF.
+- `Butcher_Tree_Transseries-2.zip` → `Butcher_Tree_Transseries-2/`: 2,853-line/100,576-byte source, 62-page A4/763,748-byte PDF; `book` class.
+- `Butcher_Tree_Transseries-3.zip` → `Butcher_Tree_Transseries-3/`: 2,382-line/91,654-byte source, 35-page A4/697,611-byte PDF.
+- `Double_Factorial_Transseries.zip` → `Double_Factorial_Transseries/`: 1,552-line/52,202-byte source, 18-page A4/632,400-byte PDF.
+- `Double_Factorial_Transseries-3.zip` → `Double_Factorial_Transseries-3/`: 2,287-line/79,355-byte source, 28-page A4/662,997-byte PDF.
+- `double_factorial_transseries-2.zip` → `double_factorial_transseries-2/`: 2,138-line/63,319-byte source, 44-page A4/622,907-byte PDF; `book` class.
+- `Partition_Number_Transseries_and_Asymptotic_Inverse.zip` → same-named directory: 1,901-line/83,252-byte source, 32-page A4/369,259-byte PDF.
+- `Partition_Number_Transseries_and_Inverse.zip` → same-named directory: 2,020-line/72,533-byte source, 27-page A4/354,685-byte PDF.
+- `Partition_Numbers_Transseries_and_Inverse.zip` → same-named directory: 1,905-line/78,298-byte source, 33-page **Letter**/553,908-byte PDF.
+- `Swing_Factorial_Transseries.zip` → `Swing_Factorial_Transseries/`: 1,885-line/75,057-byte source, 28-page A4/688,586-byte PDF.
+- `Swing_Factorial_Transseries_Article.zip` → `Swing_Factorial_Transseries_Article/`: 1,824-line/62,179-byte source, 25-page A4/666,609-byte PDF.
+- `Swing_Factorial_Transseries_and_Inverse.zip` → same-named directory: 1,389-line/56,138-byte source, 22-page A4/326,626-byte PDF.
+
+Every archive passed a CRC check with no absolute path, parent-directory
+traversal, or symlink entry; each held exactly one `.tex` and one `.pdf` with
+no wrapping directory, so the distinct archive stems name the directories.  Two
+collision hazards were checked rather than assumed: the three Butcher archives
+ship identical inner filenames, and two double-factorial archives ship inner
+names differing only in case — the exact case-insensitive nesting trap — so
+each destination directory was created explicitly and the thirteen pre-existing
+members of the group were verified intact afterwards.  All twelve sources are
+LF with a final newline, filed byte-for-byte; git reported no line-ending
+normalization at staging.  All twelve PDFs are readable, unencrypted,
+pdfTeX-1.40.26, every font subset-embedded, no Type 3 rows; eleven A4 and one
+Letter; eight carry Libertinus faces; two documents are `book` class.  None
+loads `docs/fabius-notation.tex`.  No checksum ledgers submitted or added.
+Longest filed path 228 characters from the repository root, though four of the
+twelve exceed the Windows 260-character limit when the repository is checked
+out as a nested git worktree.  Comparison, deduplication, proof checking and
+crosswalking deferred.
+
+Previous batch (five archives, filed and removed on 2026-09-03,
 after the Thue–Morse batch below): two independently written articles on the
 asymptotic transseries of the Bell numbers and three on the Fubini numbers,
 all to a new subgroup `../series-and-transseries/sequence-transseries/`

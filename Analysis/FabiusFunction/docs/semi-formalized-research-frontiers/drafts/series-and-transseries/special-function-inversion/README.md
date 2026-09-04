@@ -1,12 +1,12 @@
 # Special-function inversion at infinity
 
-Twelve independently written articles that invert a rapidly growing special
-function at infinity to all orders, filed here on 2026-09-03 as quick-gate
-intakes in three batches: three from commit `5a453e1dc`, six more that
-arrived while that first batch was being published, and three (the Fibonacci
-subject below) later the same day.  All twelve came as ZIP
-archives; the archives were deleted after unpacking and git history is the
-archive.
+Twenty-four independently written articles that invert a rapidly growing
+special function at infinity to all orders, filed here on 2026-09-03 as
+quick-gate intakes in four batches: three from commit `5a453e1dc`, six more
+that arrived while that first batch was being published, three (the Fibonacci
+subject) later the same day, and twelve more (the last four subjects) in a
+fourth batch that evening.  All twenty-four came as ZIP archives; the archives
+were deleted after unpacking and git history is the archive.
 
 They share a method rather than a function.  In each, the map to be inverted
 has a dominant *power–logarithmic* phase, so ordinary series reversion does not
@@ -21,10 +21,10 @@ three articles all invert the single map `x + W(x)`: the subgroups share the
 Lambert-core technique, but that one treats one map in depth while this one
 applies the technique across different special functions.
 
-## The four subjects
+## The eight subjects
 
-The twelve fall into four subjects, three articles each, written independently
-of one another.  That was noted at intake as provenance; **no comparison,
+The twenty-four fall into eight subjects, three articles each, written
+independently of one another.  That was noted at intake as provenance; **no comparison,
 deduplication, or canonical selection has been made**, and the titles below are
 transcribed rather than assessed.
 
@@ -68,6 +68,60 @@ titles are transcribed, not assessed.
 | `fibonacci_inverse_transseries_article/` | *Log-Periodic Transseries for the Inverse of a Real Fibonacci Continuation* | 2,857 lines; 98,788 bytes | 36 A4 pages; 797,090 bytes |
 | `fibonacci_inverse_transseries_article-2/` | *Inverse Asymptotics for a Real-Argument Fibonacci Function* | 1,884 lines; 64,334 bytes | 24 A4 pages; 759,845 bytes |
 
+### The Butcher--Pólya rooted-tree numbers (A000081)
+
+The fourth batch's first subject leaves the Stirling-type world: the sequence
+is defined by the functional equation `T(z) = z exp(sum_k T(z^k)/k)`, so the
+inversion runs through a Pólya-tree singularity analysis and a Lambert--`W`
+reversion of the exponential-power model rather than through a gamma-ratio
+normal form.
+
+| Directory | Document | Source | PDF |
+| --- | --- | --- | --- |
+| `Butcher_Tree_Transseries/` | *All-Orders Asymptotic Transseries for the Butcher--Pólya Tree Numbers and Their Inverses* | 1,674 lines; 55,275 bytes | 21 A4 pages; 593,560 bytes |
+| `Butcher_Tree_Transseries-2/` | *The Butcher-Tree Counting Transseries: All-Order Pólya-Tree Asymptotics, Lambert--`W` Reversion, and the Asymptotic Inverse of A000081* — the only `book`-class member of the subgroup | 2,853 lines; 100,576 bytes | 62 A4 pages; 763,748 bytes |
+| `Butcher_Tree_Transseries-3/` | *Asymptotic Transseries of the Butcher--Pólya Rooted-Tree Numbers: Bell-Polynomial Coefficients, Lambert--`W` Reversion, and Exponentially Small Singularity Sectors* | 2,382 lines; 91,654 bytes | 35 A4 pages; 697,611 bytes |
+
+### The double factorial
+
+Here the object is an *interleaving* of two gamma-type branches, so all three
+articles make the same structural point at intake: there is no canonical real
+inverse of the sequence until an interpolation is fixed, and the even and odd
+branches must be inverted separately before any discrete inverse is defined.
+
+| Directory | Document | Source | PDF |
+| --- | --- | --- | --- |
+| `Double_Factorial_Transseries/` | *Complete Asymptotic Transseries for the Double Factorial and Its Inverses: Bernoulli--Bell coefficient formulae, Lambert-`W` reversion, parity branches, and the periodic OEIS interpolation* | 1,552 lines; 52,202 bytes | 18 A4 pages; 632,400 bytes |
+| `Double_Factorial_Transseries-3/` | *The Double Factorial and Its Inverse: Complete Asymptotic Transseries, Borel Summation, and General Coefficient Formulae* | 2,287 lines; 79,355 bytes | 28 A4 pages; 662,997 bytes |
+| `double_factorial_transseries-2/` | *Double-Factorial Transseries and Their Inversion: Bernoulli--Bell Coefficients, Lambert-`W` Cores, Parity Sectors, Borel Structure, and Discrete Inverses* — `book` class; inner files are lowercase `double_factorial_transseries.*`, kept as submitted | 2,138 lines; 63,319 bytes | 44 A4 pages; 622,907 bytes |
+
+### The partition numbers (A000041)
+
+The only arithmetic subject in the subgroup: the transseries is Rademacher's
+convergent series reorganized into root-of-unity sectors with periodic
+Dedekind-sum amplitudes, and the inversion is of the Hardy--Ramanujan phase
+`pi sqrt(2N/3)`.  These three are also the only members that carry no
+Libertinus faces.
+
+| Directory | Document | Source | PDF |
+| --- | --- | --- | --- |
+| `Partition_Number_Transseries_and_Asymptotic_Inverse/` | *Arithmetic Rademacher Transseries for the Partition Numbers: Exact Exponential Sectors, All-Order Coefficients, and Asymptotic Inversion* | 1,901 lines; 83,252 bytes | 32 A4 pages; 369,259 bytes |
+| `Partition_Number_Transseries_and_Inverse/` | *Rademacher Transseries for the Partition Numbers and Their Inverse: All-order arithmetic sectors, coefficient formulae, Lambert--Lagrange reversion, and phase-locked inversion* | 2,020 lines; 72,533 bytes | 27 A4 pages; 354,685 bytes |
+| `Partition_Numbers_Transseries_and_Inverse/` | *Rademacher Towers and the Asymptotic Inverse of the Partition Numbers: Exact root-of-unity sectors, all-order coefficient formulae, Lambert--`W` reversion, and the discrete staircase* | 1,905 lines; 78,298 bytes | 33 **Letter** pages; 553,908 bytes |
+
+### The swing factorial (A056040)
+
+The central binomial-type quotient `n!/floor(n/2)!^2`, whose even and odd
+subsequences carry different power prefactors (`2^n n^(-1/2)` and
+`2^n n^(1/2)`), so — as with the double factorial — the parity split precedes
+the inversion and each branch gets its own Lambert-normalized reversion.
+
+| Directory | Document | Source | PDF |
+| --- | --- | --- | --- |
+| `Swing_Factorial_Transseries/` | *All-Orders Asymptotic Transseries for the Swing Factorial and Its Two Inverse Branches: Bernoulli--Bell coefficient calculus, Lambert--`W` normal forms, logarithmic reversion, and beyond-all-orders control* | 1,885 lines; 75,057 bytes | 28 A4 pages; 688,586 bytes |
+| `Swing_Factorial_Transseries_Article/` | *The Full Asymptotic Transseries of the Swing Factorial and Its Inverse: Gamma-Ratio Normal Forms, Bernoulli--Bell Coefficient Calculus, Borel Geometry, and Lambert-Normalized Reversion* — inner files are lowercase `swing_factorial_transseries.*`, kept as submitted | 1,824 lines; 62,179 bytes | 25 A4 pages; 666,609 bytes |
+| `Swing_Factorial_Transseries_and_Inverse/` | *Parity-Resolved Transseries for the Swing Factorial and Its Inverse: Exact Borel normal form, Bell-polynomial coefficient formulae, Lambert-`W` cores, and all-orders reversion* | 1,389 lines; 56,138 bytes | 22 A4 pages; 326,626 bytes |
+
 ## Intake receipts
 
 Every archive passed a CRC check and carried no absolute path, no
@@ -106,6 +160,45 @@ also the convention the rest of the corpus follows.  Its contents are
 unchanged.  The remaining paths run 249–259 characters; the longest,
 `Asymptotic_Inversion_Gamma_Barnes_G/`, sits one character inside the limit, so
 this subgroup has no headroom for deeper nesting or longer names.
+
+### The fourth batch (twelve archives)
+
+All twelve passed a CRC check and carried no absolute path, parent-directory
+traversal, or symlink entry; each held exactly one `.tex` and one `.pdf` at top
+level with no wrapping directory, and the twelve archive stems are distinct, so
+they name the directories.  Two collision hazards were checked rather than
+assumed: the three Butcher archives ship **identical** inner file names
+(`Butcher_Tree_Transseries.tex`/`.pdf`), and `Double_Factorial_Transseries.zip`
+and `double_factorial_transseries-2.zip` ship inner names differing only in
+case, which on a case-insensitive filesystem is the hazard that silently nests
+one arrival inside another; distinct destination directories were created
+explicitly and the thirteen pre-existing members were verified intact after
+filing.
+
+All twelve sources are LF with a final newline and were filed byte-for-byte;
+git reported no line-ending normalization at staging.  All twelve PDFs are
+readable and unencrypted, produced by pdfTeX-1.40.26, with every font row
+subset-embedded and no Type 3 row.  Eleven are A4;
+`Partition_Numbers_Transseries_and_Inverse/` is Letter.  Eight carry Libertinus
+faces; the four that do not are exactly the three partition articles and
+`Swing_Factorial_Transseries_and_Inverse/`.  Two members are `book` class
+(`Butcher_Tree_Transseries-2/`, `double_factorial_transseries-2/`) where the
+rest are `article`.  None of the twelve loads `docs/fabius-notation.tex`, so
+all twelve are outside the notation migration.  No checksum ledger was
+submitted and none was added.
+
+**Path lengths.**  Measured from the repository root the longest filed path in
+this batch is 228 characters
+(`Partition_Number_Transseries_and_Asymptotic_Inverse/…​.pdf`), and 239 from the
+root of a checkout at `C:\ProveIt`.  In a *git worktree* nested under
+`.claude/worktrees/<name>/`, however, four of the twelve exceed the Windows
+`MAX_PATH` limit of 260 — the longest reaching 291 — so tools that are not
+long-path aware report a misleading *"No such file or directory"* for files
+that plainly exist.  Git itself is configured with `core.longpaths`, and the
+metadata above was read with Python, which is long-path safe.  Nothing was
+renamed on that account, because the repository-root path is what the corpus
+convention measures and it is well inside the limit; the constraint is recorded
+here so the next batch does not nest deeper without checking.
 
 ## Deferred
 

@@ -441,6 +441,29 @@ as provenance, and no comparison among them has been made.  A third batch of
 three, filed 2026-09-03 in the same quick-intake mode, adds a fourth subject:
 the inverse of a real-argument continuation of the Fibonacci function, whose
 transseries is log-periodic (the golden-ratio phase) rather than Lambert-cored.
+A fourth batch of twelve, filed 2026-09-03 the same evening, doubles the
+subgroup to twenty-four members and adds four more subjects, again three
+independently written articles each: the Butcher--Pólya rooted-tree numbers
+(A000081), the double factorial, the partition numbers (A000041), and the
+swing factorial (A056040).  Three of the four leave the single-gamma setting
+that unified the first four subjects — the tree numbers are inverted through a
+Pólya-tree singularity analysis, the partition numbers through Rademacher's
+root-of-unity sectors, and the double and swing factorials only after a parity
+split into two gamma-ratio branches, since neither sequence is the restriction
+of one smooth interpolation.  All twelve nevertheless end at a Lambert-`W`
+reversion of a power--logarithmic or exponential-power phase, which is why they
+are filed here.  Every archive passed a CRC check with no absolute path,
+parent-directory traversal, or symlink entry, and each held exactly one `.tex`
+and one `.pdf` with no wrapping directory; the three Butcher archives ship
+identical inner filenames and two double-factorial archives ship inner names
+differing only in case, so distinct destination directories were created
+explicitly and the pre-existing members verified intact.  All twelve sources
+are LF with a final newline and were filed byte-for-byte, with no normalization
+reported at staging; all twelve PDFs are readable, unencrypted, pdfTeX-1.40.26,
+fully subset-embedded and Type-3-free; eleven are A4 and one is Letter; eight
+carry Libertinus faces; two are `book` class.  Longest filed path 228
+characters from the repository root.
+
 Comparison, deduplication, proof checking, numerical reproduction and Lean
 crosswalking are deferred; see
 [`series-and-transseries/special-function-inversion/README.md`](series-and-transseries/special-function-inversion/README.md).
@@ -459,6 +482,18 @@ crosswalking are deferred; see
 | `special-function-inversion/Fibonacci_Inverse_LogPeriodic_Transseries/` | *Inverting a Real-Argument Fibonacci Function: Log-Periodic Transseries, Exact Coefficients, and a General Product-Reversion Calculus* — 2,554-line/89,365-byte source and 33-page A4/787,646-byte PDF | `drafts/incoming/Fibonacci_Inverse_LogPeriodic_Transseries.zip`, third batch, filed 2026-09-03 |
 | `special-function-inversion/fibonacci_inverse_transseries_article/` | *Log-Periodic Transseries for the Inverse of a Real Fibonacci Continuation* — 2,857-line/98,788-byte source and 36-page A4/797,090-byte PDF; inner files are plain `fibonacci_inverse_transseries.*`, kept as submitted | `drafts/incoming/fibonacci_inverse_transseries_article.zip`, third batch, filed 2026-09-03 |
 | `special-function-inversion/fibonacci_inverse_transseries_article-2/` | *Inverse Asymptotics for a Real-Argument Fibonacci Function* — 1,884-line/64,334-byte source and 24-page A4/759,845-byte PDF; inner files are plain `fibonacci_inverse_transseries.*`, kept as submitted | `drafts/incoming/fibonacci_inverse_transseries_article-2.zip`, third batch, filed 2026-09-03 |
+| `special-function-inversion/Butcher_Tree_Transseries/` | *All-Orders Asymptotic Transseries for the Butcher--Pólya Tree Numbers and Their Inverses* — 1,674-line/55,275-byte source and 21-page A4/593,560-byte PDF | `drafts/incoming/Butcher_Tree_Transseries.zip`, fourth batch, filed 2026-09-03 |
+| `special-function-inversion/Butcher_Tree_Transseries-2/` | *The Butcher-Tree Counting Transseries: All-Order Pólya-Tree Asymptotics, Lambert--`W` Reversion, and the Asymptotic Inverse of A000081* — 2,853-line/100,576-byte source and 62-page A4/763,748-byte PDF; `book` class; inner files are plain `Butcher_Tree_Transseries.*`, kept as submitted | `drafts/incoming/Butcher_Tree_Transseries-2.zip`, fourth batch, filed 2026-09-03 |
+| `special-function-inversion/Butcher_Tree_Transseries-3/` | *Asymptotic Transseries of the Butcher--Pólya Rooted-Tree Numbers: Bell-Polynomial Coefficients, Lambert--`W` Reversion, and Exponentially Small Singularity Sectors* — 2,382-line/91,654-byte source and 35-page A4/697,611-byte PDF; inner files are plain `Butcher_Tree_Transseries.*`, kept as submitted | `drafts/incoming/Butcher_Tree_Transseries-3.zip`, fourth batch, filed 2026-09-03 |
+| `special-function-inversion/Double_Factorial_Transseries/` | *Complete Asymptotic Transseries for the Double Factorial and Its Inverses: Bernoulli--Bell coefficient formulae, Lambert-`W` reversion, parity branches, and the periodic OEIS interpolation* — 1,552-line/52,202-byte source and 18-page A4/632,400-byte PDF | `drafts/incoming/Double_Factorial_Transseries.zip`, fourth batch, filed 2026-09-03 |
+| `special-function-inversion/Double_Factorial_Transseries-3/` | *The Double Factorial and Its Inverse: Complete Asymptotic Transseries, Borel Summation, and General Coefficient Formulae* — 2,287-line/79,355-byte source and 28-page A4/662,997-byte PDF; inner files are plain `Double_Factorial_Transseries.*`, kept as submitted | `drafts/incoming/Double_Factorial_Transseries-3.zip`, fourth batch, filed 2026-09-03 |
+| `special-function-inversion/double_factorial_transseries-2/` | *Double-Factorial Transseries and Their Inversion: Bernoulli--Bell Coefficients, Lambert-`W` Cores, Parity Sectors, Borel Structure, and Discrete Inverses* — 2,138-line/63,319-byte source and 44-page A4/622,907-byte PDF; `book` class; inner files are lowercase `double_factorial_transseries.*`, kept as submitted | `drafts/incoming/double_factorial_transseries-2.zip`, fourth batch, filed 2026-09-03 |
+| `special-function-inversion/Partition_Number_Transseries_and_Asymptotic_Inverse/` | *Arithmetic Rademacher Transseries for the Partition Numbers: Exact Exponential Sectors, All-Order Coefficients, and Asymptotic Inversion* — 1,901-line/83,252-byte source and 32-page A4/369,259-byte PDF | `drafts/incoming/Partition_Number_Transseries_and_Asymptotic_Inverse.zip`, fourth batch, filed 2026-09-03 |
+| `special-function-inversion/Partition_Number_Transseries_and_Inverse/` | *Rademacher Transseries for the Partition Numbers and Their Inverse: All-order arithmetic sectors, coefficient formulae, Lambert--Lagrange reversion, and phase-locked inversion* — 2,020-line/72,533-byte source and 27-page A4/354,685-byte PDF | `drafts/incoming/Partition_Number_Transseries_and_Inverse.zip`, fourth batch, filed 2026-09-03 |
+| `special-function-inversion/Partition_Numbers_Transseries_and_Inverse/` | *Rademacher Towers and the Asymptotic Inverse of the Partition Numbers: Exact root-of-unity sectors, all-order coefficient formulae, Lambert--`W` reversion, and the discrete staircase* — 1,905-line/78,298-byte source and 33-page **Letter**/553,908-byte PDF | `drafts/incoming/Partition_Numbers_Transseries_and_Inverse.zip`, fourth batch, filed 2026-09-03 |
+| `special-function-inversion/Swing_Factorial_Transseries/` | *All-Orders Asymptotic Transseries for the Swing Factorial and Its Two Inverse Branches: Bernoulli--Bell coefficient calculus, Lambert--`W` normal forms, logarithmic reversion, and beyond-all-orders control* — 1,885-line/75,057-byte source and 28-page A4/688,586-byte PDF | `drafts/incoming/Swing_Factorial_Transseries.zip`, fourth batch, filed 2026-09-03 |
+| `special-function-inversion/Swing_Factorial_Transseries_Article/` | *The Full Asymptotic Transseries of the Swing Factorial and Its Inverse: Gamma-Ratio Normal Forms, Bernoulli--Bell Coefficient Calculus, Borel Geometry, and Lambert-Normalized Reversion* — 1,824-line/62,179-byte source and 25-page A4/666,609-byte PDF; inner files are lowercase `swing_factorial_transseries.*`, kept as submitted | `drafts/incoming/Swing_Factorial_Transseries_Article.zip`, fourth batch, filed 2026-09-03 |
+| `special-function-inversion/Swing_Factorial_Transseries_and_Inverse/` | *Parity-Resolved Transseries for the Swing Factorial and Its Inverse: Exact Borel normal form, Bell-polynomial coefficient formulae, Lambert-`W` cores, and all-orders reversion* — 1,389-line/56,138-byte source and 22-page A4/326,626-byte PDF | `drafts/incoming/Swing_Factorial_Transseries_and_Inverse.zip`, fourth batch, filed 2026-09-03 |
 
 ## spectra-and-arithmetic — `spectra-and-arithmetic/`
 
