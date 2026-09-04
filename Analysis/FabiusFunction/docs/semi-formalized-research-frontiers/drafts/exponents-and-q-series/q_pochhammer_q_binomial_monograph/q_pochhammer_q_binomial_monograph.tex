@@ -7351,6 +7351,23 @@ and
 \begin{proof}
 The reciprocity identity was proved in \Cref{thm:qbinom-structure}.  Apply \Cref{thm:fixed-column-limit,thm:central-fixed-q} with $q^{-1}$ in place of $q$.
 \end{proof}
+\emph{Lean status.}  Exact.  The evaluated reciprocity is
+\path{Fabius.gaussianBinomial_inv}, with its explicit admissibility hypothesis
+\(k\le n\).  For real \(q>1\),
+\path{Fabius.gaussianBinomial_gt_one_fixedColumn_relativeError_isBigO}
+proves that
+\((q^{-1};q^{-1})_k(q^{k(n-k)})^{-1}\GaussianBinomial{n}{k}{q}-1\)
+is \(O((q^{-1})^{n-k+1})\), exactly
+\(O(q^{-n+k-1})\) eventually for fixed \(k\).  Its natural subtraction is
+total, while reciprocity is used only eventually once \(k\le n\).
+Finally,
+\path{Fabius.gaussianBinomial_gt_one_central_isEquivalent} proves the
+displayed \(r=0\) central equivalence with the exact factor
+\((q^{-1};q^{-1})_\infty^{-1}\).  Both asymptotic declarations are the
+zero-definition, two-theorem module
+\path{GaussianBinomialGreaterOneAsymptotics.lean}; they assume precisely
+\(q>1\), which makes the reciprocal nome a strict contraction and its
+infinite q-Pochhammer nonzero.
 
 \section{Extreme specializations}
 
@@ -13624,7 +13641,7 @@ inside the proof below does not formalize the result the proof concludes.
   than a mathematical claim.
 \end{description}
 
-Of the 282 labelled forward results, 173 are \statusexact, 85 are
+Of the 282 labelled forward results, 174 are \statusexact, 84 are
 \statuspartial, 16 are \statusnone, and 8 are \statusna.  The original
 191-result pre-Fabius core had 36 \statusexact, 29 \statuspartial, 123
 \statusnone, and 3 \statusna{} entries.  The four integrated guide chapters
@@ -14235,7 +14252,7 @@ Bailey transforms and the Andrews--Gordon identities & 5 & 3 & 0 & 1\\
 Cyclotomic factorization and congruences & 9 & 0 & 0 & 0\\
 Negative upper indices and geometric Newton interpolation & 9 & 0 & 0 & 0\\
 Central $q$-binomial sums and Lambert series & 3 & 0 & 4 & 0\\
-Asymptotic regimes and Bernoulli expansions & 4 & 2 & 2 & 0\\
+Asymptotic regimes and Bernoulli expansions & 5 & 1 & 2 & 0\\
 Exact limits, reciprocity, and research frontiers & 5 & 0 & 0 & 0\\
 Computation, certification, and formal proof architecture & 7 & 2 & 2 & 3\\
 Geometric interpolation and exact $q$-filters & 7 & 2 & 0 & 0\\
@@ -14243,7 +14260,7 @@ Half-base arithmetic and Prouhet--Thue--Morse cancellation & 7 & 2 & 0 & 0\\
 Geometric uniform sums, $q$-cumulants, and the Fabius--Rvachev functions & 3 & 10 & 0 & 0\\
 Dyadic Gaussian--Thue--Morse structure and the values of $F$ & 8 & 46 & 2 & 0\\
 \midrule
-\textbf{Forward total} & 173 & 85 & 16 & 8\\
+\textbf{Forward total} & 174 & 84 & 16 & 8\\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -15528,13 +15545,21 @@ the zero-extended integer-indexed coefficient}\\[2pt]
 {\footnotesize\texttt{GaussianBinomialBounds}, \texttt{GeometricFilterBound}; the lower
 bound for $0\le q$ in any ordered field, the upper bound for $0\le q<1$ real,
 through the intermediate bound $[n,k]_q\le1/(q;q)_k$}\\[2pt]
-\Cref{cor:qgreaterone} & \statuspartial &
-\texttt{gaussianBinomial\_\allowbreak{}inv}\newline
-{\footnotesize\texttt{GaussianBinomialBounds}; the reciprocity
-\eqref{eq:qgreaterone-reciprocity} in every field for $q\ne0$, evaluated
-from palindromicity; the asymptotic statements
-\eqref{eq:qgreaterone-fixed-k} and \eqref{eq:qgreaterone-central} are not
-formalized}\\[2pt]
+\Cref{cor:qgreaterone} & \statusexact &
+\texttt{gaussianBinomial\_\allowbreak{}inv},
+\texttt{gaussianBinomial\_\allowbreak{}gt\_\allowbreak{}one\_\allowbreak{}fixedColumn\_\allowbreak{}relativeError\_\allowbreak{}isBigO},
+\texttt{gaussianBinomial\_\allowbreak{}gt\_\allowbreak{}one\_\allowbreak{}central\_\allowbreak{}isEquivalent}\newline
+{\footnotesize\texttt{GaussianBinomialBounds};
+\texttt{GaussianBinomialGreaterOneAsymptotics}.  Reciprocity holds in every
+field for $q\ne0$ and $k\le n$.  For real $q>1$ and fixed $k$, the normalized
+error
+$(q^{-1};q^{-1})_k(q^{k(n-k)})^{-1}[n,k]_q-1$ is
+$O((q^{-1})^{n-k+1})$, the printed $O(q^{-n+k-1})$ eventually; natural
+subtraction is total and reciprocity is invoked only eventually when
+$k\le n$.  The central theorem is exactly
+$[2m,m]_q\sim q^{m^2}(q^{-1};q^{-1})_\infty^{-1}$.  The strict hypothesis
+$q>1$ makes the reciprocal nome contractive and the infinite product
+nonzero; no shifted-central or wider nome-domain claim is made.}\\[2pt]
 \Cref{prop:extreme-specializations} & \statusexact &
 \texttt{gaussianBinomial\_\allowbreak{}zero\_\allowbreak{}left},
 \texttt{tendsto\_\allowbreak{}gaussianBinomial\_\allowbreak{}nhds\_\allowbreak{}one},

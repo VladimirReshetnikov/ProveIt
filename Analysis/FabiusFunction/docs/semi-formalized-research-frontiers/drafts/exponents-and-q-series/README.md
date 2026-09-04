@@ -127,10 +127,16 @@ Exact; all of its algebraic clauses are exact, while that analytic
 normalization bridge is missing.  The sharp-degree proposition remains None.
 Together with the facade-reachable zero-definition/two-theorem
 `GaussianBinomialGreaterOneAsymptotics.lean` leaf, the live census is
-913/11,551. This conflict-resolution pass leaves `cor:qgreaterone` Partial
-while moving only `thm:qF-moment-polynomial` from None to Partial. The
-source concordance remains unchanged, and no retained PDF renders the new
-source-only crosswalk.
+913/11,551. Its declarations
+`gaussianBinomial_gt_one_fixedColumn_relativeError_isBigO` and
+`gaussianBinomial_gt_one_central_isEquivalent`, together with
+`gaussianBinomial_inv`, make `cor:qgreaterone` Exact. For real `q > 1`, they
+use exactly the normalized fixed-column error
+`(q⁻¹;q⁻¹)_k (q^(k*(n-k)))⁻¹ [n,k]_q - 1` with
+`O((q⁻¹)^(n-k+1))`, and the central scale
+`q^(m*m) (q⁻¹;q⁻¹)_∞⁻¹`. Natural subtraction is total, reciprocity is used
+only eventually when `k ≤ n`, and no shifted-central or wider nome-domain
+claim is made. No retained PDF renders the new source-only crosswalk.
 
 ## Detailed package record
 
@@ -227,8 +233,8 @@ Current packages and retained intake records:
   `RegularCentralQBinomialSum.lean` (two definitions and one theorem),
   `GeometricUniformMomentPolynomial.lean` (one definition and eight theorems),
   and `GaussianBinomialGreaterOneAsymptotics.lean` (zero definitions and two
-  theorems). The forward crosswalk is now 173 Exact, 85 Partial, 16 None, and
-  8 interface rows; the source ledger is 86 Lean-proved, 392 human-proved
+  theorems). The forward crosswalk is now 174 Exact, 84 Partial, 16 None, and
+  8 interface rows; the source ledger is 87 Lean-proved, 391 human-proved
   frontier, 60 not
   applicable, and 9 conjectures. No PDF was generated locally while resolving
   this source-only merge, so the retained 389-page artifact does not render
@@ -924,7 +930,7 @@ claims about the current canonical source. The canonical synthesis's current
 source and retained historical PDF are identified by the single exact receipt
 in the detailed package record above.
 
-The latest validated forward formalization ledger has 282 rows: 173 Exact, 85
+The latest validated forward formalization ledger has 282 rows: 174 Exact, 84
 Partial, 16 with no counterpart, and 8 interface-only. The basic
 geometric-uniform row is Exact: `GeometricUniformRealization.lean` proves that
 an `iIndepFun` process of unit-interval coordinates with uniform marginal laws
@@ -1360,8 +1366,8 @@ pairwise q-commuting variables.
 reciprocity, the finite bounds for `0 <= q < 1`, and the dimension-dominant
 lower and upper bounds for `q > 1`. The imported positivity theorem is not
 counted as a declaration of the bounds leaf. The exact finite-growth row is
-closed, while the compound
-greater-than-one row remains Partial at its asymptotic clauses. The
+closed, and `GaussianBinomialGreaterOneAsymptotics.lean` closes the compound
+greater-than-one row at its exact fixed-column and central normalizations. The
 primitive-root value in the Babbage corollary is exact, while its derivative
 clause keeps that compound row Partial.
 `GaussianBinomialFixedColumnRate.lean` adds no definitions and exactly ten

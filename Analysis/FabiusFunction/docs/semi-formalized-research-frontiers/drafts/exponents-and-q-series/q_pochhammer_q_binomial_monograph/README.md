@@ -111,6 +111,7 @@ and five legacy compatibility theorems), `QPochhammerInfinite` (one definition
 and twenty-nine theorems), `QPochhammerDissection` (zero definitions and two
 theorems), `QBinomialTheoremInfinite` (one definition and twenty-two
 theorems), `GaussianBinomialFixedColumnRate` (zero definitions and ten
+theorems), `GaussianBinomialGreaterOneAsymptotics` (zero definitions and two
 theorems), `GaussianBinomialPalindromic` (zero definitions and fourteen
 theorems), `GaussianBinomialPolynomialStructure` (zero definitions and five
 theorems), `GaussianBinomialCumulants` (two definitions and twenty-four
@@ -217,10 +218,18 @@ from None to Partial, not Exact; `prop:qF-P-degree-sharp` remains None, and
 eight-theorem addition changes the forward ledger by exactly one
 None-to-Partial move. The same current census includes the facade-reachable
 zero-definition/two-theorem `GaussianBinomialGreaterOneAsymptotics.lean`
-leaf, whose `cor:qgreaterone` row remains Partial in this conflict-resolution
-pass: 913 modules and 11,551 public declarations. The source concordance
-is unchanged because its provenance disposition remains a human-proved
-frontier result.  The retained historical PDF renders neither this tranche
+leaf. Its exhaustive surface is
+`gaussianBinomial_gt_one_fixedColumn_relativeError_isBigO` and
+`gaussianBinomial_gt_one_central_isEquivalent`. For real `q > 1`, the first
+controls `(q⁻¹;q⁻¹)_k (q^(k*(n-k)))⁻¹ [n,k]_q - 1` by
+`O((q⁻¹)^(n-k+1))`, exactly the printed `O(q^(-n+k-1))` eventually for fixed
+`k`; natural subtraction is total, and reciprocity is used only eventually
+when `k ≤ n`. The second is exactly
+`[2m,m]_q ~ q^(m*m) (q⁻¹;q⁻¹)_∞⁻¹`. Together with
+`gaussianBinomial_inv`, whose explicit hypotheses are `q ≠ 0` and `k ≤ n`,
+these declarations make `cor:qgreaterone` Exact. No shifted-central or wider
+nome-domain statement is claimed. The live census is 913 modules and 11,551
+public declarations. The retained historical PDF renders neither this tranche
 nor the preceding Lambert tranche, and no source/PDF parity is claimed.
 
 The arbitrary-space realization leaf proves that an `iIndepFun` family of
@@ -297,15 +306,15 @@ entireness, zero-locus, reciprocal-power, and analytic-order results rather
 than duplicating their analytic proofs. In `QBinomialTheoremInfinite`,
 `finiteQPochhammerIn_zero_left` remains the unique declaration owned by
 `GaussianBinomialAtOne` and is imported rather than redeclared. The forward
-status ledger is 173 Exact, 85 Partial, 16 None, and 8 interface rows; the
+status ledger is 174 Exact, 84 Partial, 16 None, and 8 interface rows; the
 original 191-result pre-Fabius core is 36/29/123/3, and the
-completed source concordance records 86 Lean-proved rows, 392 human-proved
+completed source concordance records 87 Lean-proved rows, 391 human-proved
 frontier rows, 60 not-applicable rows, and 9 conjectures.  Its
 immutable source inventory and editorial dispositions remain unchanged; the
 generator's current-status projection records the q-Chu, terminating-reversal,
 q-Pfaff, two retained Jacobi two-square, partition-symmetry,
 Prouhet-partition, arbitrary-space geometric-uniform, and regular-central-sum
-advances, together with the fixed-column rate closure.
+advances, together with the fixed-column rate and greater-than-one closures.
 The basic geometric-uniform row is Exact under its arbitrary-space wording.
 The generic Banach-valued barycenter is
 `integral_id_weightedUniformDistribution`, and its real geometric
@@ -341,7 +350,8 @@ a probability space.
 The six-theorem `GaussianBinomialBounds` surface reuses the stronger
 `finiteQPochhammerIn_self_pos` from `GeneralQConditionNumber` and supplies
 evaluated reciprocity and the exact finite growth bounds on both sides of `q = 1`; the
-compound greater-than-one row remains Partial only at its asymptotic clauses.
+two-theorem greater-than-one asymptotic leaf now closes the compound row with
+the exact printed fixed-column normalization and the central equivalence.
 The new tranche makes `thm:binary-inversions`,
 `thm:rectangle-partitions`, `cor:path-area`,
 `thm:telescoping-certificate`, `cor:identity-certification`,

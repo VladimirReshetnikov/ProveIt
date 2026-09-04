@@ -48,6 +48,7 @@ The current source incorporates exhaustive crosswalks for
 `QPochhammerInfinite` (one definition and twenty-nine theorems),
 `QPochhammerDissection` (zero definitions and two theorems),
 `GaussianBinomialFixedColumnRate` (zero definitions and ten theorems),
+`GaussianBinomialGreaterOneAsymptotics` (zero definitions and two theorems),
 `GaussianBinomialPalindromic` (zero definitions and fourteen theorems),
 `GaussianBinomialPolynomialStructure` (zero definitions and five theorems),
 `GaussianBinomialCumulants` (two definitions and twenty-four theorems),
@@ -163,15 +164,23 @@ coefficients `a_n(q)` or with the geometric-uniform moment-generating product.
 Accordingly `thm:qF-moment-polynomial` moves from None to Partial, not Exact;
 the sharp-degree proposition stays None. The facade also contains the
 zero-definition/two-theorem `GaussianBinomialGreaterOneAsymptotics.lean` leaf;
-this conflict-resolution pass records that source without yet changing the
-Partial disposition of `cor:qgreaterone`. The live census is 913/11,551.
+its exhaustive declarations are
+`gaussianBinomial_gt_one_fixedColumn_relativeError_isBigO` and
+`gaussianBinomial_gt_one_central_isEquivalent`. For real `q > 1` they prove,
+respectively, the exact printed normalized fixed-column error
+`(q⁻¹;q⁻¹)_k (q^(k*(n-k)))⁻¹ [n,k]_q - 1 = O((q⁻¹)^(n-k+1))` and
+the central equivalence `[2m,m]_q ~ q^(m*m) (q⁻¹;q⁻¹)_∞⁻¹`. Natural
+subtraction is total in the first statement, while reciprocity is needed only
+eventually when `k ≤ n`; together with `gaussianBinomial_inv`, these make
+`cor:qgreaterone` Exact without asserting a shifted-central or wider
+nome-domain result. The live census is 913/11,551.
 Neither this source-only addition nor the preceding Lambert addition changes
 the retained historical artifact, and no render parity is claimed. The
 forward status inventory covers 282 labelled results:
-173 Exact / 85 Partial / 16 None / 8 N/A; the 191-result pre-Fabius core is
+174 Exact / 84 Partial / 16 None / 8 N/A; the 191-result pre-Fabius core is
 36 / 29 / 123 / 3.
 The five-publication concordance
-has 86 Lean-proved, 392 human-proved frontier, 60 not-applicable, and 9
+has 87 Lean-proved, 391 human-proved frontier, 60 not-applicable, and 9
 conjecture rows. Both the retained `thm:fixed-column-limit` source row and the
 older `prop:fixed-k-limit` row redirected to it now inherit the exact canonical
 status. The `cor:positivity`, `thm:qbinom-structure`, and
@@ -207,8 +216,8 @@ that the ambient semiring is commutative. `GaussianBinomialBounds` reuses
 evaluated reciprocity and the finite growth bounds on both sides of `q = 1`;
 the imported positivity theorem is not counted as a declaration of the
 bounds leaf. Its six exported theorems close the exact finite-growth row, while
-the greater-than-one compound row remains Partial only at its asymptotic
-clauses. No PDF was generated locally while resolving this merge; the
+the two-theorem greater-than-one leaf closes the remaining fixed-column and
+central asymptotic clauses in their printed normalization. No PDF was generated locally while resolving this merge; the
 389-page artifact remains the retained historical publication checkpoint and
 does not render the current source.
 

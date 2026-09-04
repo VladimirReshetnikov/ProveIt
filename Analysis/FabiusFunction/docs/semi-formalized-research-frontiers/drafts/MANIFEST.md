@@ -137,6 +137,16 @@ estimate, fixed and shifted nonasymptotic additive errors, the shifted limit,
 and four fixed/shifted relative/additive Big-O wrappers. The ring-level bounds
 need a multiplicative norm, the quotient statements need a normed field with
 `‖q‖ < 1`, and every result includes `q = 0`.
+`GaussianBinomialGreaterOneAsymptotics.lean` adds no definitions and two
+theorems. For real `q > 1`,
+`gaussianBinomial_gt_one_fixedColumn_relativeError_isBigO` proves the printed
+normalized fixed-column error with rate `(q⁻¹)^(n-k+1)`, and
+`gaussianBinomial_gt_one_central_isEquivalent` proves
+`[2m,m]_q ~ q^(m*m) (q⁻¹;q⁻¹)_∞⁻¹`. Together with evaluated
+reciprocity, whose explicit admissibility premise is `k ≤ n`, they make
+`cor:qgreaterone` Exact. Natural subtraction is total in the rate theorem,
+reciprocity is used only eventually, and no shifted-central or wider
+nome-domain claim is made.
 The existing `GaussianBinomialCumulants.lean` module now has two definitions
 and twenty-four theorems. Its three newest declarations are
 `eval_one_derivative_derivative_gaussianBinomial_X`,
@@ -166,7 +176,7 @@ copy independent of the head coordinate. The regular-central leaf proves the
 displayed sum under the exact infinite-product denominator condition, with the
 full complex zero lattice and field-totalized `qGammaC` pole behavior kept
 explicit. The forward status ledger covers 282 labelled results:
-173 Exact / 85 Partial / 16 None / 8 N/A interface rows. The
+174 Exact / 84 Partial / 16 None / 8 N/A interface rows. The
 terminating-basic-hypergeometric closure is `TwoPhiOneReversal.lean` (2+12)
 and `QChuVandermonde.lean` (0+10): both q-Chu evaluations and the reversal
 lemma are Exact for the actual tsum, while the claimed full-domain derivation
@@ -430,11 +440,10 @@ with the normalized analytic coefficients `a_n(q)` or the underlying
 moment-generating product.  Therefore `thm:qF-moment-polynomial` moves from
 None to Partial, not Exact, while `prop:qF-P-degree-sharp` remains None.  This
 one-definition/eight-theorem addition is included in the live census
-913/11,551 and the q forward totals are 173 Exact / 85 Partial / 16 None /
-8 N/A.  The source
-concordance stays unchanged at 78 Lean-proved / 400 human-proved frontier /
-60 N/A / 9 conjectures because its historical-source disposition does not
-encode partial Lean coverage.  The retained 389-page q-series PDF is a
+913/11,551. The subsequent zero-definition/two-theorem greater-than-one leaf
+makes `cor:qgreaterone` Exact, so the q forward totals are 174 Exact / 84
+Partial / 16 None / 8 N/A and the source concordance is 87 Lean-proved / 391
+human-proved frontier / 60 N/A / 9 conjectures. The retained 389-page q-series PDF is a
 historical checkpoint and does not render this source-only crosswalk.
 
 No finite endpoint derivative is asserted.  An `O(z + exp(-1))` remainder
