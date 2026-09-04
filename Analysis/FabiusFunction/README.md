@@ -82,10 +82,11 @@ That primary exposition is deliberately proof-backed: every mathematical claim
 in it must have a proved counterpart in the Lean development.
 
 > **Artifact status (2026-09-04).**  The live facade union contains exactly
-> 908 source modules and 11,498 public declarations.  The documentation audit
+> 910 source modules and 11,523 public declarations.  The documentation audit
 > reports no missing module headers or declaration comments; the exact-dyadic
 > inverse, Jacobi two-square, Lagrange--Rvachev Matrix, geometric Richardson,
-> Gaussian-binomial second-moment, arbitrary-space geometric-uniform
+> Gaussian-binomial second-moment and fixed-column rate, Rvachev--Appell Hasse,
+> arbitrary-space geometric-uniform
 > realization, regular central q-binomial sum, and Lambert branch-gap
 > Bernoulli additions are included in that clean census.  Its q-series union
 > retains
@@ -100,7 +101,8 @@ in it must have a proved counterpart in the Lean development.
 > `CentralQBinomialReduction` 0+6, `RegularCentralQBinomialSum` 2+1,
 > `CyclotomicFactorization` 0+7,
 > `JacobiTripleProduct` 2+25,
-> `QBinomialTheoremInfinite` 1+22, `QPascalSummation` 0+4,
+> `QBinomialTheoremInfinite` 1+22,
+> `GaussianBinomialFixedColumnRate` 0+10, `QPascalSummation` 0+4,
 > `QuantumBinomial` 0+2, `RogersSzegoPolynomial` 1+9,
 > `QPochhammerInfiniteBounds` 0+5, `HeineTransformation` 2+5,
 > `QGaussSummation` 0+2, `QPochhammerComplexOrder` 1+4,
@@ -117,7 +119,8 @@ in it must have a proved counterpart in the Lean development.
 > `QChuVandermonde` 0+10, `JacobiTwoSquareCount` 0+4,
 > `QuantumMultinomial` 0+5, and
 > `GaussianBinomialBounds` 0+6.  The geometric-interpolation union now also
-> includes `GeometricRichardsonGenerating` 3+7.
+> includes `GeometricRichardsonGenerating` 3+7 and
+> `RvachevAppellHasse` 1+14.
 > The Lambert branch-gap union now also includes
 > `LambertWBranchGapBernoulli` 0+3.
 > The retained
@@ -372,6 +375,7 @@ Padé/J-fractions, infinite Jacobi theory, and asymptotics also remain open.
 | Parity-selected one-extra-degree Rvachev quadrature and Appell synthesis | `FabiusFunction.RvachevSuperconvergentSynthesis` | Exhaustive public surface: one definition, `IsRvachevSuperconvergentPhase`, and exactly eight theorems, `isRvachevSuperconvergentPhase_two_pow_iff`, `tsum_quarter_monomial_eq_integral_of_even_deg`, `tsum_three_quarters_monomial_eq_integral_of_even_deg`, `tsum_shifted_monomial_eq_integral_superconvergent`, `tsum_shifted_polynomial_eq_integral_superconvergent`, `integral_polynomial_mul_rvachevUp_eq_normalized_tsum_superconvergent`, `normalized_tsum_shifted_rvachevDeconvolvedPolynomial_mul_rvachevUp_superconvergent`, and `normalized_tsum_shifted_rvachevAppellPolynomial_mul_rvachevUp_superconvergent`.  For every nonzero natural mesh `M`, the selected endpoint or quarter phases give exactness through degree `v₂(M)+1`, physical-coordinate quadrature, deconvolved-polynomial reconstruction, and the Appell monomial specialization.  On `M=2^N`, even `N` selects `0,1/2` and odd `N` selects `1/4,3/4`.  This generic-mesh theorem is stronger than the dyadic manuscript form.  The predicate records exact real representatives, not integer translates or a complete classification; no maximality, positivity, or rationality theorem is claimed. |
 | Shifted dyadic polynomial comb exactness and normalized self-sampling quadrature | `FabiusFunction.PolynomialCombExactness` | Exhaustive public surface: zero definitions and exactly three theorems, `finite_support_comb`, `tsum_shifted_polynomial_eq_integral`, and `integral_polynomial_mul_rvachevUp_eq_dyadic_tsum`.  For every bounded Fabius solution, natural level `m`, real phase `theta`, and arbitrary real weight function `g`, the sampled product `g(theta+k) * up(2^-m * (theta+k))` has finite integer support.  Every real polynomial `P` with `P.natDegree <= m` therefore satisfies the corresponding whole-line shifted comb identity.  In physical coordinates, for every natural `N`, arbitrary real phase, and `P.natDegree <= N`, its integral against `up` equals `2^-N` times the integer sum over nodes `2^-N * (theta+k)` weighted by `up` at those same nodes.  The statements include level zero; the sums are finite by compact support, and no phase rationality, positivity, infinite-support convergence, or optimal-mesh claim is imposed. |
 | Generic finite-node Lagrange--Rvachev decoder, cardinal biorthogonality, and exact interpolation loop | `FabiusFunction.LagrangeRvachevSynthesis` | Exhaustive public surface: two definitions, `lagrangeRvachevDecoder` and `lagrangeRvachevAtomCoefficient`; and seven theorems, `natDegree_lagrangeBasis_le_card_sub_one`, `natDegree_lagrangeInterpolate_le_card_sub_one`, `normalized_sum_Ioo_lagrangeRvachevDecoder_mul_shifted_rvachevUp`, `normalized_sum_Ioo_lagrangeRvachevDecoder_eval_node`, `lagrangeRvachevAtomCoefficient_eq_deconvolved_interpolate`, `sum_Ioo_lagrangeRvachevAtomCoefficient_mul_shifted_rvachevUp`, and `sum_lagrangeRvachevDecoder_eq_one`.  The degree bounds and polynomial reconstruction need no distinct-node hypothesis; componentwise Kronecker biorthogonality requires distinct nodes and evaluation inside `[-1,1]`, while the row-sum theorem additionally requires a nonempty node set.  This closes the reusable generic finite-node synthesis loop, not a geometric Gaussian closed-form decoder, bundled matrix/right-inverse wrapper, or optimal/minimum-variation decoder theorem. |
+| Finite Appell--Hasse calculus and the geometric Gaussian decoder | `FabiusFunction.RvachevAppellHasse` | Exhaustive public surface: one definition, `Appell.polynomialTransform`, and fourteen theorems, `Appell.polynomialTransform_apply`, `Appell.polynomialTransform_monomial`, `Appell.polynomialTransform_eq_sum_hasseDeriv_of_natDegree_lt`, `Appell.polynomialTransform_eq_sum_hasseDeriv`, `rvachevReciprocalMomentRat_odd`, `rvachevDeconvolutionLinearMap_eq_appellPolynomialTransform`, `rvachevDeconvolvedPolynomial_eq_sum_even_hasseDeriv`, `eval_hasseDeriv_prod_X_sub_C_eq_elementarySymmetricEval`, `eval_rvachevDeconvolvedPolynomial_prod_X_sub_C`, `eval_rvachevDeconvolvedPolynomial_qFallingPower`, `lagrangeBasis_eq_nodalWeight_mul_prod_X_sub_C`, `lagrangeRvachevDecoder_eq_nodalWeight_mul_sum`, `geometric_nodalWeight_eq_geometricQPochhammer`, and `geometric_lagrangeRvachevDecoder_eq`.  Over a commutative semiring the transform replaces monomials by an arbitrary Appell family and equals a finite Hasse-derivative sum; the Rvachev specialization proves odd reciprocal moments vanish and reduces deconvolution to even Hasse derivatives.  Taylor/Vieta then give the complementary elementary-symmetric formula for arbitrary root products and the exact q-falling formula.  The field-level Lagrange factorization and real geometric specialization give the full Gaussian q-Pochhammer prefactor times the finite even reciprocal-moment sum.  These algebraic formulas are total even at zero or colliding nodes, where inverse-defined Lagrange bases are not cardinals; the manuscript's cardinal use retains `c>0` and `0<q<1`.  Composed with `normalized_sum_Ioo_rvachevDeconvolvedPolynomial_mul_shifted_rvachevUp` and the generic Lagrange synthesis theorem, they make both `gq:prop:q-Appell-falling` and `gq:thm:gaussian-Appell-decoder` Exact.  Here the coefficients `rvachevReciprocalMomentRat` are the formal reciprocal-moment sequence: no analytic reciprocal-MGF convergence is claimed.  Atom reconstruction remains supplied by the separate synthesis API, and no larger matrix right-inverse or decoder-optimality assertion is added. |
 | Typed finite Lagrange--Rvachev Matrix/Markov layer and overlap sign obstruction | `FabiusFunction.LagrangeRvachevMatrix` | Exhaustive public surface: four definitions/abbreviations, `rvachevAtomIndexSet`, `RvachevAtomIndex`, `lagrangeRvachevEncoderMatrix`, and `lagrangeRvachevDecoderMatrix`; and six theorems, `lagrangeRvachevEncoderMatrix_nonneg`, `sum_lagrangeRvachevEncoderMatrix_row_eq_one`, `sum_lagrangeRvachevDecoderMatrix_row_eq_one`, `lagrangeRvachevEncoderMatrix_mul_decoderMatrix`, `exists_neg_entry_of_rightInverse_of_row_overlap`, and `exists_lagrangeRvachevDecoderMatrix_entry_neg_of_row_overlap`.  The atom type is the exact integer block `Ioo (-(2*M)) (2*M)`.  The normalized encoder has entries `M⁻¹ * rvachevUp F (v i - k/M)`, is entrywise nonnegative without distinctness or `M ≠ 0`, and has unit row sums for `IsFabius F`, `M ≠ 0`, and in-range nodes.  The sampled decoder has unit row sums for a nonempty distinct node family, and `encoder * decoder = 1` when the nodes are distinct and in `[-1,1]`, `M ≠ 0`, and `s.card - 1 ≤ padicValNat 2 M`.  Generically, a nonnegative matrix with a row-unital right inverse has a negative decoder entry whenever one column is strictly positive in two distinct rows; the Rvachev specialization remains conditional on such an overlap, and encoder row normalization is not used in the generic obstruction.  No `decoder * encoder` projector range/kernel, rank, trace, characteristic-polynomial, Cauchy--Binet, geometric closed-form, or decoder-optimality theorem is asserted. |
 | Sharp universal composite-mesh exactness and least natural meshes | `FabiusFunction.CompositeMeshSharpness` | Exhaustive public surface: `exists_shift_tsum_shifted_monomial_ne_integral_nat_real`, `rvachevCombExactThrough`, `rvachevCombExactThrough_iff_padicValNat`, `rvachevCombExactThrough_iff_pow_two_dvd`, `rvachevCombExactThrough_two_pow`, `two_pow_le_of_rvachevCombExactThrough`, `isLeast_rvachevCombExactThrough`, `isLeast_rvachevCombExactThrough_even`.  The `IsLeast` results quantify over meshes exact for the whole real polynomial space through the stated degree; they do not assert minimality for an individual Legendre polynomial, a fixed Legendre partial sum, or a target-adapted mesh. |
 | Universal endpoint-transfer polynomials and their formal exponential series | `FabiusFunction.EndpointTransferPolynomials` | `endpointTransferPolynomial_succ`, `endpointTransferPolynomial_eq_partitionExpSum`, `endpointTransferSeries_eq_exp_subst`, `aeval_endpointTransferPolynomial`, `map_endpointTransferSeries` |
@@ -457,6 +461,7 @@ Padé/J-fractions, infinite Jacobi theory, and asymptotics also remain open.
 | Gaussian-polynomial continuity and the finite-product quotient bridge | `FabiusFunction.GaussianBinomialContinuity` | Retained 0+3 theorem inventory: `continuous_gaussianBinomial`, `tendsto_gaussianBinomial_nhds_one`, and `gaussianBinomial_eq_finiteQPochhammerIn_div`. |
 | Jacobi triple product and Euler pentagonal sums | `FabiusFunction.JacobiTripleProduct` | Retained 2-definition/25-theorem inventory: finite triple-product polynomial and field forms, the bilateral Jacobi `HasSum` identities, and pentagonal and paired-pentagonal `HasSum` corollaries. |
 | Infinite q-binomial and reciprocal Euler theorems | `FabiusFunction.QBinomialTheoremInfinite` | Retained 1-definition/22-theorem q-facing inventory: comparison and norm bounds, the fixed-column Gaussian limit, Euler product, analytic q-binomial theorem, and reciprocal Euler `HasSum`; the shared finite zero-left identity is imported from `GaussianBinomialAtOne`. |
+| Effective fixed-column Gaussian convergence | `FabiusFunction.GaussianBinomialFixedColumnRate` | Exhaustive zero-definition/ten-theorem surface: `norm_finiteQPochhammerIn_pow_sub_one_le_exp`, `norm_finiteQPochhammerIn_pow_sub_one_le`, `norm_finiteQPochhammerIn_self_mul_gaussianBinomial_sub_one_le`, `norm_gaussianBinomial_sub_inv_finiteQPochhammerIn_le`, `norm_gaussianBinomial_add_sub_inv_finiteQPochhammerIn_le`, `tendsto_gaussianBinomial_add_atTop`, `gaussianBinomial_fixedColumn_relativeError_isBigO`, `gaussianBinomial_shifted_fixedColumn_relativeError_isBigO`, `gaussianBinomial_fixedColumn_error_isBigO`, and `gaussianBinomial_shifted_fixedColumn_error_isBigO`.  In a normed commutative ring with normalized multiplicative norm and `‖q‖ ≤ 1`, the first two bound `‖(q^m;q)_k-1‖` first by `exp(k‖q‖^m)-1` and then by `(k exp k)‖q‖^m`; the third gives the denominator-free relative bound `‖(q;q)_k[n,k]_q-1‖ ≤ (k exp k)‖q‖^(n-k+1)` for `k≤n`, so it remains meaningful at roots of unity.  Over an arbitrary normed field with `‖q‖<1`, the remaining declarations give fixed and shifted nonasymptotic additive bounds, the shifted limit, and relative and additive `IsBigO` estimates with rates `q^(n-k+1)` and `q^(n+1)`.  They require neither completeness nor `q≠0`; the constant is elementary rather than sharp.  Together with `tendsto_gaussianBinomial_atTop`, this closes all four clauses of the q-monograph's `thm:fixed-column-limit`, with the two relative results encoding its multiplicative `1+O(·)` statements. |
 | Weighted q-Pascal summation | `FabiusFunction.QPascalSummation` | Retained 0+4 theorem inventory: `sum_gaussianBinomial_succ_mul`, `sum_gaussianBinomial_succ_mul'`, `Commute.gaussianBinomial_left`, and `Commute.gaussianBinomial_right`. |
 | Quantum-plane binomial expansion | `FabiusFunction.QuantumBinomial` | Retained 0+2 theorem inventory: `quantumPlane_mul_pow` and `quantum_binomial`. |
 | Rogers--Szegő recurrences and generating series | `FabiusFunction.RogersSzegoPolynomial` | Retained 1-definition/9-theorem inventory: the zero, row-sum, successor, dilation, and three-term laws, the Gaussian successor factor identity, summability and Euler antidiagonal convolution, and `hasSum_rogersSzego_generating`. |
@@ -849,7 +854,10 @@ biorthogonality, and exact finite interpolation loop are formalized.  No
 theorem here gives the geometric-node Gaussian q-binomial/q-Pochhammer or
 elementary-symmetric closed form for the decoder entries, packages the
 componentwise identity as a matrix/right-inverse equation, or proves an
-optimal or minimum-variation decoder.
+optimal or minimum-variation decoder.  The first omission is supplied by the
+separate `RvachevAppellHasse.lean` leaf inventoried above, and the typed
+right-inverse packaging by `LagrangeRvachevMatrix.lean`; decoder optimization
+remains open.
 
 The focused-build `CompositeMeshSharpness.lean` module exports one public
 definition and seven public theorems.  The definition
@@ -933,19 +941,19 @@ interval supremum norm; the module also exports the raw `TendstoUniformlyOn`
 form, convergence of the supremum-norm error to zero, and the pointwise
 corollary on `[-1,1]`.
 
-The seven modules in this tranche have respectively `6/33`, `0/5`, `1/8`,
-`2/7`, `1/7`, `6/7`, and `5/25` public definition/theorem inventories, for
-exactly 113 public declarations in total.  The added `1/8` inventory is
-`RvachevSuperconvergentSynthesis`.  Universal whole-space mesh sharpness is now proved,
+The eight modules in this tranche have respectively `6/33`, `0/5`, `1/8`,
+`2/7`, `1/14`, `1/7`, `6/7`, and `5/25` public definition/theorem inventories,
+for exactly 128 public declarations in total.  The added `1/8` and `1/14`
+inventories are `RvachevSuperconvergentSynthesis` and `RvachevAppellHasse`.
+Universal whole-space mesh sharpness is now proved,
 but target-specific minimality for an individual Legendre polynomial or
-partial sum is not.  The modules also do not assert an
-analytic reciprocal-MGF or Appell generating-series realization of
-deconvolution, a literal differential-operator expansion, the displayed low
-reciprocal coefficients, reciprocal/deconvolution parity or the displayed closed
-formulas for the deconvolved Legendre family,
+partial sum is not.  The finite Hasse-operator expansion, odd reciprocal-moment
+vanishing, and geometric elementary-symmetric decoder are now proved.  The
+modules still do not assert analytic convergence of a reciprocal MGF or
+Appell generating series, the displayed low reciprocal coefficients, or the
+displayed closed formulas for the deconvolved Legendre family,
 coefficient rationality for the atom rows, equality of the fixed-scale and
-separately scaled coefficient vectors, a geometric closed-form or bundled
-matrix form of the finite-node decoder, decoder optimality, an unconditional
+separately scaled coefficient vectors, decoder optimality, an unconditional
 `natDegree(S_N) = 2*N` theorem or nonvanishing of its top Legendre
 coefficient, or the later refinement, projector, and asymptotic layers.
 

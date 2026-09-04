@@ -94,8 +94,63 @@ The one-definition/seventeen-theorem
 law to arbitrary probability spaces carrying independent uniform coordinates;
 the two-definition/one-theorem `FabiusFunction.RegularCentralQBinomialSum`
 leaf proves `thm:regular-central-sum` under its exact product-nonvanishing
-hypothesis. Together with the Lambert--Bernoulli leaf, they bring the live
-documentation census to 908 modules and 11,498 public declarations.
+hypothesis. Together with the Lambert--Bernoulli and fixed-column-rate leaves,
+they bring the live documentation census to 910 modules and 11,523 public
+declarations.
+
+The final source-only `FabiusFunction.GaussianBinomialFixedColumnRate` leaf has
+no definitions and ten theorems:
+`Fabius.norm_finiteQPochhammerIn_pow_sub_one_le_exp`,
+`Fabius.norm_finiteQPochhammerIn_pow_sub_one_le`,
+`Fabius.norm_finiteQPochhammerIn_self_mul_gaussianBinomial_sub_one_le`,
+`Fabius.norm_gaussianBinomial_sub_inv_finiteQPochhammerIn_le`,
+`Fabius.norm_gaussianBinomial_add_sub_inv_finiteQPochhammerIn_le`,
+`Fabius.tendsto_gaussianBinomial_add_atTop`,
+`Fabius.gaussianBinomial_fixedColumn_relativeError_isBigO`,
+`Fabius.gaussianBinomial_shifted_fixedColumn_relativeError_isBigO`,
+`Fabius.gaussianBinomial_fixedColumn_error_isBigO`, and
+`Fabius.gaussianBinomial_shifted_fixedColumn_error_isBigO`. In a normed
+commutative ring with normalized multiplicative norm, `‖q‖ ≤ 1` gives the
+exponential and elementary bounds on `‖(q^m;q)_k-1‖` and the denominator-free
+relative Gaussian bound, the last meaningful even at roots of unity. Over a
+normed field, `‖q‖ < 1` gives fixed and shifted nonasymptotic bounds, shifted
+convergence, and relative/additive `IsBigO` laws at `q^(n-k+1)` and `q^(n+1)`.
+No completeness or `q ≠ 0` hypothesis is imposed, and the constant is not
+claimed sharp. Together with the existing fixed-column limit, these results
+make every clause of `thm:fixed-column-limit` exact; the relative pair encodes
+the two displayed multiplicative `1+O` estimates.
+
+The source-only `FabiusFunction.RvachevAppellHasse` leaf has one definition,
+`Fabius.Appell.polynomialTransform`, and exactly fourteen theorems:
+`Fabius.Appell.polynomialTransform_apply`,
+`Fabius.Appell.polynomialTransform_monomial`,
+`Fabius.Appell.polynomialTransform_eq_sum_hasseDeriv_of_natDegree_lt`,
+`Fabius.Appell.polynomialTransform_eq_sum_hasseDeriv`,
+`Fabius.rvachevReciprocalMomentRat_odd`,
+`Fabius.rvachevDeconvolutionLinearMap_eq_appellPolynomialTransform`,
+`Fabius.rvachevDeconvolvedPolynomial_eq_sum_even_hasseDeriv`,
+`Fabius.eval_hasseDeriv_prod_X_sub_C_eq_elementarySymmetricEval`,
+`Fabius.eval_rvachevDeconvolvedPolynomial_prod_X_sub_C`,
+`Fabius.eval_rvachevDeconvolvedPolynomial_qFallingPower`,
+`Fabius.lagrangeBasis_eq_nodalWeight_mul_prod_X_sub_C`,
+`Fabius.lagrangeRvachevDecoder_eq_nodalWeight_mul_sum`,
+`Fabius.geometric_nodalWeight_eq_geometricQPochhammer`, and
+`Fabius.geometric_lagrangeRvachevDecoder_eq`. It identifies the generic finite
+Appell transform with a Hasse-derivative sum, proves odd reciprocal centered
+Rvachev moments vanish and hence gives the even-Hasse deconvolution, expands
+root products through elementary symmetric polynomials, and specializes this
+to q-falling powers and the full geometric Lagrange--Rvachev decoder. Thus
+`gq:prop:q-Appell-falling` is exact by composition with
+`Fabius.normalized_sum_Ioo_rvachevDeconvolvedPolynomial_mul_shifted_rvachevUp`,
+and `gq:thm:gaussian-Appell-decoder` is exact by composition with
+`Fabius.normalized_sum_Ioo_lagrangeRvachevDecoder_mul_shifted_rvachevUp`;
+those separate synthesis theorems, rather than this algebraic leaf alone,
+supply atom reconstruction. Here gamma is the formal reciprocal-moment
+sequence `rvachevReciprocalMomentRat`, not a claim of analytic reciprocal-MGF
+convergence. The displayed algebra is total at zero or colliding nodes because
+field inversion is total, while the manuscript cardinal use assumes `c > 0`
+and `0 < q < 1` (together with its mesh, interval, and degree hypotheses).
+No larger matrix right inverse or decoder-optimality result is asserted.
 
 The newest source-only addition leaves the module count unchanged and adds
 three theorems to `FabiusFunction.GaussianBinomialCumulants`: the explicit
@@ -121,11 +176,12 @@ the later Euler, q-binomial, Jacobi, quantum-binomial, Rogers--Szegő,
 cyclotomic-divisibility, q-Catalan, primitive-root-block, q-Lucas, Jackson
 q-beta, geometric Newton-interpolation, integer/complex upper Gaussian, and
 q-Pfaff--Saalschütz, and noncommutative q-multinomial tranches. Its 282-result
-forward status totals are now 171 exact / 85 partial / 18 none / 8 interface.
+forward status totals are now 173 exact / 84 partial / 17 none / 8 interface.
 The partition-symmetry row is exact; the basic geometric-uniform row is now
 exact because `GeometricUniformRealization.lean` transfers the canonical law
 to an arbitrary ambient probability space carrying independent coordinates
-with the uniform marginal law. The
+with the uniform marginal law. The fixed-column Gaussian row is also exact by
+the fixed and shifted limits and relative geometric-rate theorems above. The
 outer spectral product now has an exact
 locally-uniform/normal-convergence theorem; the compound centered/MGF and
 exterior reciprocal/pole layers remain partial.

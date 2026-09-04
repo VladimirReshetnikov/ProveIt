@@ -112,18 +112,19 @@ numbers rather than copying these historical values.
 The historical post-merge 2026-09-01 inventory contained 675 modules and 8,909
 lexically visible public declarations, with zero missing module headers and
 zero missing doc comments.  A fresh 2026-09-04 audit for this documentation
-pass scans 908 facade-reachable modules and 11,498 public declarations.  It
+pass scans 910 facade-reachable modules and 11,523 public declarations.  It
 finds no missing module header or declaration comment, including throughout
 `FabiusInverseExactDyadicModulus.lean`, `JacobiTwoSquareCount.lean`, and
 `LagrangeRvachevMatrix.lean`, as well as the incoming
 `GeometricRichardsonGenerating.lean`, `TwoPhiOneReversal.lean`, and
 `QChuVandermonde.lean` APIs and the strengthened
 `GaussianBinomialCumulants.lean` surface, and the new
-`GeometricUniformRealization.lean`, `RegularCentralQBinomialSum.lean`, and
-`LambertWBranchGapBernoulli.lean` leaves.  Relative to the 610/8,318 activation
-checkpoint, the current tree adds 298 modules and 3,180 declarations.
+`GeometricUniformRealization.lean`, `RegularCentralQBinomialSum.lean`,
+`LambertWBranchGapBernoulli.lean`, `GaussianBinomialFixedColumnRate.lean`, and
+`RvachevAppellHasse.lean` leaves.  Relative to the 610/8,318 activation
+checkpoint, the current tree adds 300 modules and 3,205 declarations.
 Relative to the earlier 630/8,552 merged checkpoint, concurrent source work
-adds 278 modules and 2,946 declarations.  The post-merge 675/8,909 inventory
+adds 280 modules and 2,971 declarations.  The post-merge 675/8,909 inventory
 and the intervening 903/11,446 Lambert-series inventory remain historical
 checkpoints, not descriptions of the live facade.
 
@@ -346,10 +347,86 @@ q-Gamma quotient, like the product evaluation used in the proof, is zero.
 This closes `thm:regular-central-sum`; it does not formalize the separate
 classical-limit corollary.
 
+#### Effective fixed-column Gaussian-rate tranche
+
+`GaussianBinomialFixedColumnRate.lean` adds one source module, no definitions,
+and exactly ten theorems:
+`norm_finiteQPochhammerIn_pow_sub_one_le_exp`,
+`norm_finiteQPochhammerIn_pow_sub_one_le`,
+`norm_finiteQPochhammerIn_self_mul_gaussianBinomial_sub_one_le`,
+`norm_gaussianBinomial_sub_inv_finiteQPochhammerIn_le`,
+`norm_gaussianBinomial_add_sub_inv_finiteQPochhammerIn_le`,
+`tendsto_gaussianBinomial_add_atTop`,
+`gaussianBinomial_fixedColumn_relativeError_isBigO`,
+`gaussianBinomial_shifted_fixedColumn_relativeError_isBigO`,
+`gaussianBinomial_fixedColumn_error_isBigO`, and
+`gaussianBinomial_shifted_fixedColumn_error_isBigO`.
+
+The first two estimates hold in every normed commutative ring with normalized
+multiplicative norm when `‖q‖ ≤ 1`: they bound
+`‖(q^m;q)_k-1‖` by `exp(k‖q‖^m)-1` and then by
+`(k exp k)‖q‖^m`.  Under `k≤n`, the third gives the denominator-free relative
+bound `‖(q;q)_k[n,k]_q-1‖ ≤ (k exp k)‖q‖^(n-k+1)`, which remains meaningful at
+roots of unity.  Over any normed field, `‖q‖<1` suffices for the fixed and
+shifted nonasymptotic additive bounds, the shifted `Tendsto`, and all four
+relative/additive `IsBigO` results at the rates `q^(n-k+1)` and `q^(n+1)`.
+There is no completeness or `q≠0` hypothesis, and the displayed constant is
+elementary rather than sharp.  Together with the pre-existing
+`tendsto_gaussianBinomial_atTop`, the shifted limit and two relative-error
+theorems discharge every clause of `thm:fixed-column-limit`; the two additive
+theorems are stronger companion estimates.
+
 Together with the prior 905/11,474 branch inventory and the three-declaration
-Lambert leaf, these two modules give the final merged live inventory of 908
-modules and 11,498 public declarations, with no missing module header or
-declaration comment.
+Lambert leaf, the geometric-uniform and regular-central leaves, and this final
+ten-theorem leaf, the fixed-column checkpoint was 909 modules and 11,508
+public declarations.
+
+#### Rvachev--Appell Hasse and geometric-decoder tranche
+
+`RvachevAppellHasse.lean` adds one source module, one definition,
+`Fabius.Appell.polynomialTransform`, and exactly fourteen theorems:
+`Fabius.Appell.polynomialTransform_apply`,
+`Fabius.Appell.polynomialTransform_monomial`,
+`Fabius.Appell.polynomialTransform_eq_sum_hasseDeriv_of_natDegree_lt`,
+`Fabius.Appell.polynomialTransform_eq_sum_hasseDeriv`,
+`Fabius.rvachevReciprocalMomentRat_odd`,
+`Fabius.rvachevDeconvolutionLinearMap_eq_appellPolynomialTransform`,
+`Fabius.rvachevDeconvolvedPolynomial_eq_sum_even_hasseDeriv`,
+`Fabius.eval_hasseDeriv_prod_X_sub_C_eq_elementarySymmetricEval`,
+`Fabius.eval_rvachevDeconvolvedPolynomial_prod_X_sub_C`,
+`Fabius.eval_rvachevDeconvolvedPolynomial_qFallingPower`,
+`Fabius.lagrangeBasis_eq_nodalWeight_mul_prod_X_sub_C`,
+`Fabius.lagrangeRvachevDecoder_eq_nodalWeight_mul_sum`,
+`Fabius.geometric_nodalWeight_eq_geometricQPochhammer`, and
+`Fabius.geometric_lagrangeRvachevDecoder_eq`.
+
+The commutative-semiring foundation is the coefficientwise linear transform
+which sends each monomial to the corresponding arbitrary Appell polynomial;
+the two cutoff theorems identify it with a finite Hasse-derivative sum.  The
+reciprocal centered-Rvachev coefficients vanish in odd degrees, so real
+Rvachev deconvolution is the finite even-Hasse sum.  Taylor's coefficient
+formula and Vieta's identity turn Hasse derivatives of a root product into
+complementary elementary symmetric functions, yielding the displayed
+q-falling-power formula with no condition on `c` or `q`.  The field-level
+Lagrange factorization, general sampled-decoder formula, geometric nodal
+weight, and final real specialization then give the full Gaussian
+q-Pochhammer prefactor times the same finite even-moment sum.
+
+Those algebraic identities are total at zero and colliding nodes because the
+Lagrange basis uses totalized inversion; at collisions they are not cardinal
+interpolation statements.  The manuscript application retains `c>0`,
+`0<q<1`, the dyadic nonzero mesh, degree, and interval hypotheses required by
+the separate synthesis theorems.  In composition with
+`normalized_sum_Ioo_rvachevDeconvolvedPolynomial_mul_shifted_rvachevUp` and
+the generic Lagrange--Rvachev synthesis theorem, the new formulas make both
+`gq:prop:q-Appell-falling` and `gq:thm:gaussian-Appell-decoder` Exact.  The
+coefficients `rvachevReciprocalMomentRat` are a formal reciprocal-moment
+sequence; no convergence of an analytic reciprocal MGF is asserted.  Atom
+reconstruction remains owned by the separate synthesis API, and there is no
+new larger matrix right-inverse or decoder-optimality theorem.
+
+The resulting live inventory is 910 modules and 11,523 public declarations,
+with no missing module header or declaration comment.
 
 The one-definition/eight-theorem
 `RvachevSuperconvergentSynthesis.lean` leaf contributes
@@ -985,7 +1062,10 @@ polynomial and field identities, the bilateral Jacobi `HasSum` forms, and the
 pentagonal and paired-pentagonal `HasSum` corollaries.  The
 `QBinomialTheoremInfinite.lean` 1-definition/22-theorem tranche contains the real comparison and
 norm bounds, fixed-column Gaussian limit, Euler product, analytic q-binomial,
-and reciprocal Euler `HasSum` results.  `QPascalSummation.lean` is 0+4:
+and reciprocal Euler `HasSum` results.  The subsequent
+`GaussianBinomialFixedColumnRate.lean` 0+10 tranche supplies the explicit
+finite-product defect, nonasymptotic fixed/shifted errors, shifted limit, and
+relative/additive geometric-rate results inventoried above.  `QPascalSummation.lean` is 0+4:
 `sum_gaussianBinomial_succ_mul`, `sum_gaussianBinomial_succ_mul'`,
 `Commute.gaussianBinomial_left`, and `Commute.gaussianBinomial_right`.
 `QuantumBinomial.lean` is 0+2, namely `quantumPlane_mul_pow` and
@@ -1089,7 +1169,7 @@ and 88-page notation-catalogue artifacts likewise predate their current merged
 sources.  Their package notices treat those PDFs as historical validation
 receipts, not parity claims, until fresh uninterrupted three-pass builds
 complete.  The inverse-computability receipt likewise still reflects the
-historical 675/8,909 census and requires refresh against the live 908/11,498
+historical 675/8,909 census and requires refresh against the live 910/11,523
 inventory.  The canonical inverse-theory publication retains a 134-page
 artifact synchronized at its latest-main source checkpoint; the merged
 effective-inversion and superconvergent-synthesis tranches make current parity

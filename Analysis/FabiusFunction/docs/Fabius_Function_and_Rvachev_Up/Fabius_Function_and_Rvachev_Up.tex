@@ -3343,6 +3343,40 @@ theorems; its public surface comprises \lean{gaussianMajorant},
 \lean{hasSum_qBinomial_theorem}, and
 \lean{hasSum_euler_reciprocal}.
 
+The subsequent zero-definition/ten-theorem
+\path{GaussianBinomialFixedColumnRate.lean} surface is
+\lean{norm_finiteQPochhammerIn_pow_sub_one_le_exp},
+\lean{norm_finiteQPochhammerIn_pow_sub_one_le},
+\lean{norm_finiteQPochhammerIn_self_mul_gaussianBinomial_sub_one_le},
+\lean{norm_gaussianBinomial_sub_inv_finiteQPochhammerIn_le},
+\lean{norm_gaussianBinomial_add_sub_inv_finiteQPochhammerIn_le},
+\lean{tendsto_gaussianBinomial_add_atTop},
+\lean{gaussianBinomial_fixedColumn_relativeError_isBigO},
+\lean{gaussianBinomial_shifted_fixedColumn_relativeError_isBigO},
+\lean{gaussianBinomial_fixedColumn_error_isBigO}, and
+\lean{gaussianBinomial_shifted_fixedColumn_error_isBigO}.
+In a normed commutative ring with normalized multiplicative norm,
+\(\lVert q\rVert\le1\) gives
+\[
+ \bigl\lVert(q^m;q)_k-1\bigr\rVert
+ \le \exp\!\bigl(k\lVert q\rVert^m\bigr)-1
+ \le k e^k\lVert q\rVert^m,
+\]
+and, when \(k\le n\), the denominator-free relative estimate
+\[
+ \bigl\lVert(q;q)_k{n\brack k}_q-1\bigr\rVert
+ \le k e^k\lVert q\rVert^{n-k+1}.
+\]
+This ring-level statement remains meaningful at roots of unity.  Over an
+arbitrary normed field, \(\lVert q\rVert<1\) gives the fixed and shifted
+nonasymptotic additive estimates, the shifted limit, and relative and additive
+\texttt{IsBigO} bounds with rates \(q^{n-k+1}\) and \(q^{n+1}\).  No
+completeness or \(q\ne0\) hypothesis is used, so \(q=0\) is included; the
+constant is elementary rather than asserted sharp.  Together with
+\lean{tendsto_gaussianBinomial_atTop}, the shifted limit and the two relative
+error bounds prove all four clauses of the q-monograph's
+\nolinkurl{thm:fixed-column-limit}; the additive pair are companion estimates.
+
 \path{JacobiTripleProduct.lean} has two definitions and twenty-five theorems.
 Its exact public inventory is \lean{thetaExponent},
 \lean{pentagonalExponent}, \lean{two_dvd_mul_sub_one},
@@ -3841,7 +3875,7 @@ because the underlying infinite product is totalized outside its admissible
 range.  No spectral-zeta recovery, cumulant-sample recovery, or
 identifiability of an underlying probability law is asserted; those remain
 open interfaces.  With the later concurrent source union, the live facade
-census is 908 modules and 11,498 public declarations.  The current TeX also
+census is 910 modules and 11,523 public declarations.  The current TeX also
 contains the six-theorem prime-power companion-row API and the
 zero-definition/three-theorem outer Pochhammer normal-convergence API, plus
 the two-module/nine-declaration fixed-depth effective-inverse tranche, the
@@ -3857,8 +3891,10 @@ theorems, the
 three-definition/seven-theorem geometric Richardson generating-function
 module, the three-theorem second-moment strengthening of the existing
 \path{GaussianBinomialCumulants.lean} module, the one-definition/seventeen-
-theorem \path{GeometricUniformRealization.lean} module, and the two-definition/
-one-theorem \path{RegularCentralQBinomialSum.lean} leaf.
+theorem \path{GeometricUniformRealization.lean} module, the two-definition/
+one-theorem \path{RegularCentralQBinomialSum.lean} leaf, and the zero-definition/
+ten-theorem \path{GaussianBinomialFixedColumnRate.lean} leaf, followed by the
+one-definition/fourteen-theorem \path{RvachevAppellHasse.lean} leaf.
 These are
 source-only overlays; the retained 183-page, 1,899,243-byte PDF is explicitly
 historical and has not been regenerated for these additions.
@@ -6129,7 +6165,55 @@ Consequently generic finite-node synthesis, componentwise biorthogonality,
 and the exact finite interpolation loop are proved.  This does not supply the
 geometric-node Gaussian q-binomial/q-Pochhammer or elementary-symmetric
 closed form for decoder entries, a bundled matrix/right-inverse or stochastic
-matrix wrapper, or an optimal or minimum-variation decoder.
+matrix wrapper, or an optimal or minimum-variation decoder.  The geometric
+closed form is supplied by the next module and the typed right-inverse wrapper
+by \path{LagrangeRvachevMatrix.lean}; optimization remains open.
+
+\path{RvachevAppellHasse.lean} has exactly one public definition,
+\lean{Appell.polynomialTransform}, and fourteen public theorems:
+\lean{Appell.polynomialTransform_apply},
+\lean{Appell.polynomialTransform_monomial},
+\lean{Appell.polynomialTransform_eq_sum_hasseDeriv_of_natDegree_lt},
+\lean{Appell.polynomialTransform_eq_sum_hasseDeriv},
+\lean{rvachevReciprocalMomentRat_odd},
+\lean{rvachevDeconvolutionLinearMap_eq_appellPolynomialTransform},
+\lean{rvachevDeconvolvedPolynomial_eq_sum_even_hasseDeriv},
+\lean{eval_hasseDeriv_prod_X_sub_C_eq_elementarySymmetricEval},
+\lean{eval_rvachevDeconvolvedPolynomial_prod_X_sub_C},
+\lean{eval_rvachevDeconvolvedPolynomial_qFallingPower},
+\lean{lagrangeBasis_eq_nodalWeight_mul_prod_X_sub_C},
+\lean{lagrangeRvachevDecoder_eq_nodalWeight_mul_sum},
+\lean{geometric_nodalWeight_eq_geometricQPochhammer}, and
+\lean{geometric_lagrangeRvachevDecoder_eq}.
+Over a commutative semiring, the coefficientwise linear transform sends
+monomials to an arbitrary Appell family and is exactly a finite sum of Hasse
+derivatives.  The Rvachev specialization proves that the formal reciprocal
+moment sequence vanishes in odd degree and reduces deconvolution to the even
+Hasse derivatives.  Taylor's coefficient theorem and Vieta's formula identify
+the Hasse derivatives of a finite root product with complementary elementary
+symmetric functions.  In particular,
+\lean{eval_rvachevDeconvolvedPolynomial_qFallingPower} is the exact
+q-falling-power formula of
+\nolinkurl{gq:prop:q-Appell-falling}.
+
+The field-valued Lagrange factorization and nodal-weight identity, followed by
+the real geometric specialization
+\lean{geometric_lagrangeRvachevDecoder_eq}, give the complete Gaussian
+q-Pochhammer prefactor times the finite even reciprocal-moment sum in
+\nolinkurl{gq:thm:gaussian-Appell-decoder}.  These formulas are algebraically
+total even when \(c=0\), \(q=0\), or nodes collide, because the Lagrange basis
+uses totalized inversion; on that locus it is not a cardinal basis.  The
+manuscript's cardinal interpretation retains \(c>0\), \(0<q<1\), a nonzero
+dyadic mesh, and the degree and interval conditions of the separate synthesis
+theorems.  Composing the q-falling formula with
+\lean{normalized_sum_Ioo_rvachevDeconvolvedPolynomial_mul_shifted_rvachevUp},
+and the decoder formula with
+\lean{normalized_sum_Ioo_lagrangeRvachevDecoder_mul_shifted_rvachevUp},
+makes both cited comb results Exact.  The coefficients
+\lean{rvachevReciprocalMomentRat} are the formal reciprocal-moment sequence;
+no convergence theorem for an analytic reciprocal MGF is asserted.  Atom
+reconstruction remains owned by those synthesis declarations, and this leaf
+adds no larger matrix right-inverse or decoder-optimality statement.
 
 The downstream \path{LagrangeRvachevMatrix.lean} module packages precisely this scalar
 loop as typed rectangular matrices.  Its exhaustive four-definition/abbreviation surface is
@@ -6169,8 +6253,9 @@ strictly positive in two distinct rows force some entry of (D) to be negative; e
 normalization is not used.  The final theorem applies this implication to the Rvachev
 matrices, conditional on an actual strictly positive overlap.  It does not prove that every
 admissible node family has such an overlap.  This finite layer makes no claim about the
-range, kernel, rank, trace, characteristic polynomial, or Cauchy--Binet data of (DA), and
-supplies neither a geometric Gaussian closed form nor an optimal/minimum-variation decoder.
+range, kernel, rank, trace, characteristic polynomial, or Cauchy--Binet data of (DA).
+The preceding Hasse leaf supplies the scalar geometric closed form, but neither
+module proves an optimal or minimum-variation decoder.
 
 \clearpage
 At the focused-build checkpoint of 30 August 2026,
@@ -12186,20 +12271,23 @@ supremum norm.  The API also provides the raw
 to zero, and the pointwise corollary at every \(x\in[-1,1]\).  It asserts no
 rate, coefficientwise limit, or uniform convergence outside this interval.
 
-The eight modules \path{RvachevMomentAppell.lean},
+The nine modules \path{RvachevMomentAppell.lean},
 \path{RvachevPolynomialSynthesis.lean},
 \path{RvachevSuperconvergentSynthesis.lean},
 \path{LagrangeRvachevSynthesis.lean},
+\path{RvachevAppellHasse.lean},
 \path{LagrangeRvachevMatrix.lean},
 \path{CompositeMeshSharpness.lean},
 \path{FabiusLegendreTranslateBlocks.lean}, and
 \path{FabiusLegendreTranslateSeries.lean} therefore have public
-definition/theorem inventories $6/33$, $0/5$, $1/8$, $2/7$, $4/6$, $1/7$, $6/7$,
-and $5/25$, respectively: exactly $123$ public declarations.  The sixth module proves
+definition/theorem inventories $6/33$, $0/5$, $1/8$, $2/7$, $1/14$, $4/6$,
+$1/7$, $6/7$, and $5/25$, respectively: exactly $138$ public declarations.
+The seventh module proves
 least-mesh sharpness only for universal exactness on the complete polynomial
 space through a degree cutoff.  It does not prove minimality for an individual
-Legendre polynomial or a particular partial sum.  The eight modules also do not
-prove a geometric closed form for the finite-node decoder, decoder optimality,
+Legendre polynomial or a particular partial sum.  The finite Hasse expansion,
+odd reciprocal-moment vanishing, and geometric closed decoder are now proved.
+The nine modules still do not prove decoder optimality,
 range/kernel/rank/trace/characteristic-polynomial or Cauchy--Binet results for the
 coefficient-space projector, rationality of the atom rows, equality of the fixed-scale and separately
 scaled coefficient vectors, an unconditional
@@ -13431,7 +13519,8 @@ Rogers--Szeg\H{o} polynomial APIs &
 Gaussian (q=-1) first jets, generic and universal Gaussian-polynomial degree,
 palindromicity, mean and linear coefficient, central/cyclotomic factorization,
 primitive-root blocks, q-Lucas and q-Catalan theory, Euler and infinite
-q-binomial expansions, Jacobi and pentagonal products, q-Pascal summation,
+q-binomial expansions, effective fixed-column Gaussian rates, Jacobi and
+pentagonal products, q-Pascal summation,
 Gaussian continuity, the quantum binomial theorem, and Rogers--Szeg\H{o}
 polynomials &
 \path{GaussianBinomialAtNegOneDerivative.lean},
@@ -13441,7 +13530,8 @@ polynomials &
 \path{PrimitiveRootBlock.lean}, \path{QLucas.lean},
 \path{CyclotomicDivisibility.lean}, \path{QCatalan.lean},
 \path{TwoPhiOneReversal.lean}, \path{QChuVandermonde.lean},
-\path{QBinomialTheoremInfinite.lean}, \path{JacobiTripleProduct.lean},
+\path{QBinomialTheoremInfinite.lean},
+\path{GaussianBinomialFixedColumnRate.lean}, \path{JacobiTripleProduct.lean},
 \path{TwoSquareTheorem.lean}, \path{JacobiTwoSquareCount.lean},
 \path{QPascalSummation.lean}, \path{GaussianBinomialContinuity.lean},
 \path{QuantumBinomial.lean}, \path{RogersSzegoPolynomial.lean}\\
@@ -13491,6 +13581,7 @@ Moments and exact arithmetic &
 \path{CenteredMomentCumulants.lean}, \path{CenteredMomentParity.lean},
 \path{SinhDivBernoulliLog.lean},
 \path{PolynomialExpectationCumulant.lean}, \path{RvachevMomentAppell.lean},
+\path{RvachevAppellHasse.lean},
 \path{WeightedScaleMultiplicity.lean}, \path{BaseDigitMultiplicity.lean},
 \path{ExactInversePower.lean}, \path{Parity.lean}, \path{TwoAdic.lean},
 \path{CentralBinomialValuation.lean},
