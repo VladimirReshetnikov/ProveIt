@@ -109,14 +109,94 @@ only 4,606 declarations and
 declarations, including 69 undocumented ones.  Run the script for the live
 numbers rather than copying these historical values.
 
-The live 2026-09-03 semantic union contains 901 modules and 11,419
-lexically visible public declarations, with zero missing module headers and
-zero missing doc comments; the checked JSON baseline records this clean state.
-Relative to the pre-d8b 900/11,404 checkpoint, the union adds one module and
-fifteen declarations: thirteen from the incoming Lambert branch tranche and
-the two below-depth derivative-filtration theorems.  Relative to d8b's
-901/11,418 inventory, the remaining declaration is the local unique public
-`complexQPochhammerInf_eq_qPochhammerInfIn` bridge.
+The live 2026-09-03 semantic union contains 902 modules and 11,441 lexically
+visible public declarations, with zero missing module headers and zero missing
+doc comments; the checked JSON baseline records this clean state.  The
+corresponding origin inventory has 11,440 declarations because it lacks this
+tree's unique public `complexQPochhammerInf_eq_qPochhammerInfIn` bridge.  The
+earlier 901/11,419 local semantic union remains a historical checkpoint, as
+does the post-merge 2026-09-01 inventory of 675 modules and 8,909 declarations.
+Relative to the 610/8,318 activation checkpoint, that tree added sixty-five
+modules and 591 declarations, and relative to the earlier 630/8,552 merged checkpoint it added
+forty-five modules and 357 declarations.
+
+#### Terminating `₂φ₁` reversal and q-Chu--Vandermonde tranche
+
+In the origin progression, that public API growth left the module count
+unchanged and added twelve declarations to the immediately preceding
+901/11,418 inventory.
+`TwoPhiOneReversal.lean` grows from 1+6 to 2+12 (one definition and six
+theorems added), and `QChuVandermonde.lean` grows from 0+5 to 0+10 (five
+theorems added).  The resulting origin q-Chu checkpoint was therefore exactly
+901 modules and 11,430 public declarations; carrying the unique local bridge
+gives 11,431.  The generating-function tranche below is the subsequent live
+increment.
+
+The exhaustive `TwoPhiOneReversal.lean` inventory is two definitions,
+`twoPhiOneFinite` and `twoPhiOneReflection`, and twelve theorems:
+`choose_two_add_succ_choose_two`, `finiteQPochhammerIn_sub_eq`,
+`finiteQPochhammerIn_reversal_ne_zero`,
+`finiteQPochhammerIn_inv_pow_self`, `twoPhiOneReflection_involutive`,
+`twoPhiOneFinite_reversal`, `twoPhiOneFinite_reversal_twice`,
+`twoPhiOneFinite_eq_sum_twoPhiOneTerm`,
+`twoPhiOne_eq_twoPhiOneFinite_inv_pow`, `twoPhiOne_reversal`,
+`twoPhiOne_reversal_twice`, and `twoPhiOne_one_eq_twoPhiOneFinite_zero`.
+The monograph label `lem:2phi1-reversal` is **Exact**: the theorem is exposed
+for the actual `twoPhiOne` tsum, the terminating bridge has no analytic
+convergence premise, reflection is involutive, and double reversal cancels
+both prefactors.  The reversal retains exactly `q,a,c,z ≠ 0` and nonvanishing
+of `(q;q)_n`, `(c;q)_n`, and `(q^{1-n}/a;q)_n`; its separate `n=0` bridge
+also covers `q=0`.
+
+The exhaustive `QChuVandermonde.lean` inventory has no definitions and ten
+theorems: `two_mul_choose_two`, `mul_sub_one_eq_mul_sub_add`,
+`finiteQPochhammerIn_div_eq_sum_chu`, `q_chu_vandermonde_first`,
+`finiteQPochhammerIn_div_eq_sum_chu_second`,
+`twoPhiOneFinite_mul_finiteQPochhammerIn_eq_chu_second`,
+`q_chu_vandermonde_second`, `q_chu_vandermonde_second_by_reversal`,
+`twoPhiOne_q_chu_vandermonde_first`, and
+`twoPhiOne_q_chu_vandermonde_second`.  The label `cor:q-chu` is **Exact**:
+both formulas have actual-`twoPhiOne` wrappers throughout their displayed
+rational domain `q ≠ 0`, `A ≠ 0`, `(q;q)_n ≠ 0`, `(C;q)_n ≠ 0`; in
+particular the second formula assumes neither `C ≠ 0` nor `(A;q)_n ≠ 0`.
+The label `prop:qchu2-by-reversal` is **Partial**.  Its provenance theorem
+uses `twoPhiOneFinite_reversal` only on the additional locus `C ≠ 0` and
+`(A;q)_n ≠ 0`; the stronger full-domain finite theorem and actual-tsum
+wrapper instead follow from a direct denominator-cleared q-Cauchy argument.
+The monograph's rational-continuation step and cleared commutative-ring
+extension remain unformalized.
+
+#### Geometric Richardson generating-function tranche
+
+`GeometricRichardsonGenerating.lean` adds one source module and exactly ten
+public declarations to the origin 901/11,430 q-Chu checkpoint, giving the
+origin 902/11,440 inventory and the authoritative local 902/11,441 union after
+the unique public bridge is retained.  Its three definitions
+are `geometricRichardsonKernel`, `qPochhammerNormalizedDataSeries`, and
+`geometricRichardsonTransform`.  Its seven theorems are
+`coeff_rescale_qPochhammerSeries_eq_geometricRichardsonKernel`,
+`coeff_qPochhammerNormalizedDataSeries`,
+`geometricRichardsonTransform_generating`,
+`geometricRichardsonTransform_eq_sum_lagrange`,
+`geometricLagrangeRichardson_generating`,
+`hasSum_geometricRichardsonTransform_mul_pow`, and
+`hasSum_geometricLagrangeRichardson_mul_pow`.  Two private proof helpers are
+excluded from the public count.
+
+The comb-interpolation label `gq:thm:richardson-generating` is **Exact** via
+`geometricLagrangeRichardson_generating`.  The stronger formal layer works
+over every commutative ring, with no topology or `QRegular` hypothesis, and
+uses `Ring.inverse` to make coefficients total even when a finite
+q-Pochhammer factor is not a unit.  Over a field, `q ≠ 0` identifies this
+convolution with the canonical totalized Lagrange row.  Roots of unity need
+not be excluded for the algebraic equality, but colliding nodes are not
+thereby a valid interpolation scheme; at `q = 0`, nodes repeat for `n ≥ 2`
+and the closed Lagrange formula fails, so the report-facing bridge correctly
+excludes that base.  The analytic pair assumes a complete normed field,
+`‖q‖ < 1`, and norm-summability of the normalized data series at the chosen
+`z`; the Lagrange form additionally assumes `q ≠ 0` and proves a `HasSum`
+identity.  It does not claim a general analytic evaluation operation for
+arbitrary formal power series.
 
 #### Exact Lambert branch-pairing tranche
 
@@ -212,8 +292,8 @@ The two newest algebra leaves add thirteen theorems and no definitions:
 The two added Gaussian linear-coefficient theorems and the eight-declaration
 `EffectiveGapInverse.lean` leaf account for ten declarations and
 one module.
-The finite-q tranche adds four modules and 26 declarations:
-`PrimitiveRootBlock.lean` 0+3, `QLucas.lean` 0+8,
+The finite-q tranche adds four modules and 25 declarations:
+`PrimitiveRootBlock.lean` 0+3, `QLucas.lean` 0+7,
 `CyclotomicDivisibility.lean` 0+3, and `QCatalan.lean` 1+11.  They add the carry criterion,
 primitive-root block formula, q-Lucas theorem, and integral q-Catalan API.
 The interpolation/q-beta pair now contributes four definitions and twenty-seven theorems:
@@ -223,7 +303,7 @@ a q-gamma quotient, with positivity, symmetry, and successor recurrences; the
 latter supplies triangular Newton coefficients and the node-qualified polynomial,
 interpolation and uniqueness, divided differences, the geometric-grid specialization,
 and seven compatibility declarations for the `newtonInterpolant` family.
-The latest three q modules contribute two definitions and eighteen theorems:
+The integer/complex-upper and q-Pfaff--Saalschuetz modules contribute two definitions and eighteen theorems:
 `GaussianBinomialInteger.lean` 1+10,
 `GaussianBinomialComplexOrder.lean` 1+5, and
 `QPfaffSaalschutz.lean` 0+3.  They extend Gaussian coefficients to integer
@@ -231,12 +311,12 @@ and principal-branch complex upper parameters, derive the associated finite
 and reciprocal q-binomial series, and prove the terminating balanced
 q-Pfaff--Saalschuetz summation over a field.  Their nonzero-nome,
 strict-contraction, and finite-product nonvanishing hypotheses remain explicit.
-The latest `QuantumMultinomial.lean` leaf has no definitions and exactly five
+`QuantumMultinomial.lean` has no definitions and exactly five
 theorems.  It decomposes natural tuple antidiagonals, transports Gaussian
 symmetry to arbitrary semirings, proves q-multinomial coefficient commutation,
 and establishes the ordered noncommutative q-multinomial expansion from the
 displayed pairwise q-commutation laws.  The API is finite and division-free.
-Finally, `GaussianBinomialBounds.lean` has no definitions and exactly
+`GaussianBinomialBounds.lean` has no definitions and exactly
 six theorems: `gaussianBinomial_inv`, `one_le_gaussianBinomial`,
 `finiteQPochhammerIn_pow_le_one`,
 `gaussianBinomial_le_inv_qPochhammerInfIn`,
@@ -247,8 +327,9 @@ dimension-dominant real bounds for `Q > 1`, with `k ≤ n` and all nonzero and
 order hypotheses explicit.  The module reuses the stronger ordered-field
 `finiteQPochhammerIn_self_pos` theorem from `GeneralQConditionNumber.lean`
 rather than exporting a duplicate.
-The rigorous forward q-monograph ledger is 166 Exact, 90 Partial, 18 None,
-and 8 interface rows.  `prop:gaussian-bound` is Exact.  `thm:q-lucas` remains
+The rigorous forward q-monograph ledger is 165 Exact, 91 Partial, 18 None,
+and 8 interface rows; its source concordance is 76 Lean, 402 human, 60 N/A,
+and 9 conjecture rows.  `prop:gaussian-bound` is Exact.  `thm:q-lucas` remains
 Partial because the proved evaluated primitive-root identity is weaker than
 the manuscript's polynomial congruence modulo `Φ_d`, and
 `cor:babbage-derivative` remains Partial because only its value is formalized.
@@ -549,15 +630,16 @@ domain, a primitive `d`-th root `ζ` kills `[d,k]_ζ` for `0 < k < d`; for
 `0 < d`, the top phase is `(-1)^d * ζ^(choose d 2) = -1` and the complete
 block is `(y;ζ)_d = 1-y^d`.
 
-`QLucas.lean` is 0+8: `Fabius.two_mul_choose_two`,
-`Fabius.add_mul_add_sub_one`, `Fabius.choose_two_add`,
+`QLucas.lean` is 0+7: `Fabius.add_mul_add_sub_one`, `Fabius.choose_two_add`,
 `Fabius.coeff_finiteQPochhammerIn_neg_X`,
 `Fabius.finiteQPochhammerIn_neg_X_block`, `Fabius.coeff_block_pow_mul`,
 `Fabius.pow_choose_two_add_mul_eq`, and
-`Fabius.gaussianBinomial_q_lucas`.  The first three are natural-number
+`Fabius.gaussianBinomial_q_lucas`.  The first two are natural-number
 quadratic identities.  The coefficient, block, and phase lemmas prove
 `[a*d+b,r*d+s]_ζ = choose(a,r) * [b,s]_ζ` when `0 < d`, `ζ` is a primitive
 `d`-th root in a commutative integral domain, and `b,s < d`.
+The local `two_mul_choose_two` helper is private; its public owner is
+`QChuVandermonde.lean`.
 
 `CyclotomicDivisibility.lean` is 0+3:
 `Fabius.cyclotomic_exponent_eq_one_iff`,
@@ -836,7 +918,7 @@ and `central_gaussianBinomial_sq_div`.  `CyclotomicFactorization.lean` is
 `finiteQPochhammerIn_X_eq_gaussianBinomial_mul`,
 `prod_cyclotomic_pow_div_extend`, and
 `gaussianBinomial_X_eq_prod_cyclotomic`.  The
-`PrimitiveRootBlock.lean` 0+3, `QLucas.lean` 0+8,
+`PrimitiveRootBlock.lean` 0+3, `QLucas.lean` 0+7,
 `CyclotomicDivisibility.lean` 0+3, and `QCatalan.lean` 1+11 surfaces are
 listed exhaustively above.  The
 `NewtonInterpolation.lean` 3+19 and `QBetaIntegral.lean` 1+8 surfaces are
@@ -1055,8 +1137,10 @@ an exact least endpoint-mass denominator.  The third module,
 above, and supplies the generic rational-gap-to-modulus bridge; its clamped
 extension boundary remains explicit.
 
-Four direct artifact receipts identify synchronized final-source
-publications.  The primary receipt is a 14,037-line, 702,119-byte TeX source
+Four direct artifact receipts record the last synchronized pre-9135 source/PDF
+pairs and are now historical because the live sources include the new
+q-Chu/reversal and geometric-generating APIs.  The primary receipt is a
+14,037-line, 702,119-byte TeX source
 (SHA-256
 `6a20e02cf300c0b29ba8d175831b4f86e4b336601cc5bd5f5752d5c5889be69a`)
 and a 197-page, 1,602,500-byte PDF (SHA-256
@@ -1079,8 +1163,26 @@ Their exact successful three-pass page sequences were respectively
 walkthrough logs and publication gates are clean; the frontier retains only
 expected underfull diagnostics, and the q-series master retains one harmless,
 readable 32.5659 pt overfull line.  All page, metadata, font, render, text,
-and representative-visual gates passed.  The q ledger passes all 282 rows:
-166 Exact, 90 Partial, 18 None, and 8 interface.
+and representative-visual gates passed.  These receipts certify their named
+pre-9135 pairs, not parity with the 902/11,441 live union; all four publications
+require new final-source rebuilds.
+
+The independently scoped Lambert and Sequence publications remain current.
+The Lambert guide's 4,829-line, 174,423-byte TeX has SHA-256
+`724dfe5b1effcda29325a5bdfb066ff970eb74ab460f650185339fefce40ebc1`;
+its 69-page, 952,929-byte PDF has SHA-256
+`0b5f28dbfe590658e74150e8ccff6f023ecd0b8fb4e3e978ec275d9ddd244de6`.
+Its successful page sequence was 67→69→69; machine and visual gates passed,
+with expected underfull diagnostics and one harmless readable 0.825 pt
+internal overfull line.  The Sequence inversion/transseries volume's
+16,705-line, 778,477-byte TeX has SHA-256
+`4aa038c10ddd931b7c1248095ddfdf0ce8769c69cc0df4f344f6365d0e45e8e1`;
+its 205-page, 2,198,655-byte PDF has SHA-256
+`ec1f4d2ac608786f33be97d040fdfd03b6f74494dee74f044fd2e6631217d4fb`.
+Its successful page sequence was 198→205→205; corrected title/author metadata,
+machine gates, and extensive visual checks passed.  The final log retains one
+duplicate-page-destination notice, nine PDF-string notices, 47 overfull and
+12 underfull diagnostics; sampled largest cases are clean and unclipped.
 
 For provenance, the superseded pre-d8b pairs remain historical receipts:
 primary TeX/PDF `938517a92565685ac9f7194b879cfe752ce783f258bde8b7b685aee41aed13dc` /
@@ -1096,13 +1198,16 @@ primary TeX/PDF `938517a92565685ac9f7194b879cfe752ce783f258bde8b7b685aee41aed13d
 `5d25df07e6df1cd32118ee87e64c1cc54ad32da7c578a182231f98dd9fee9d5c`
 (837,715 / 2,494,949 bytes; 395 pages).
 
-The comb-interpolation synthesis, Integration-and-Transform master,
-Representation Frontiers, New Frontiers, and notation catalogue retain
-validated historical 158-, 377-, 301-, 41-, and 88-page receipts.  The
-inverse-computability receipt likewise requires refresh for the 901/11,419
-census.  Checksum ledgers remain abolished repository-wide; no
-`SHA256SUMS*` files exist or participate in validation.  The canonical
-inverse-theory publication retains a 134-page
+The retained comb-interpolation synthesis PDF is a validated 158-page A4
+historical receipt: the current source includes a post-render update to its
+additive-dyadic chapter, so a fresh parity build remains pending.  The rebuilt
+Integration-and-Transform master retains a historical 377-page PDF.
+Representation Frontiers, New Frontiers, and the notation catalogue retain
+historical 301-, 41-, and 88-page receipts.  The inverse-computability receipt
+likewise still reflects the historical 675/8,909 census and requires refresh
+against the live 902/11,441 inventory.  Checksum ledgers remain abolished and
+hardened repository-wide; no `SHA256SUMS*` files exist or participate in
+validation.  The canonical inverse-theory publication retains a 134-page
 artifact synchronized at its latest-main source checkpoint; the merged
 effective-inversion and superconvergent-synthesis tranches make current parity
 pending.

@@ -8,8 +8,8 @@ pre-retirement snapshot of all five source packages is commit
 `9560165ae2eb33590404a090ab26bd3ca715f32f`, recorded in
 `audit/MERGE_SOURCE_REVISION`; the completed `source_concordance.csv` gives a
 reviewed disposition for all 547 source result environments. This immutable
-merger ledger's canonical-status distribution remains 74 Lean-proved rows,
-404 human-proved frontier result rows, 60 not-applicable rows, and 9
+merger ledger's canonical-status distribution remains 76 Lean-proved rows,
+402 human-proved frontier result rows, 60 not-applicable rows, and 9
 conjecture rows.
 Directory names
 in the table are historical paths in that pinned snapshot, not live package
@@ -70,10 +70,11 @@ has no TeX or package warning, undefined reference or citation, duplicate
 destination, or rerun request. Its one 32.5659 pt overfull paragraph was
 visually checked on physical page 17 and is readable and unclipped. The
 validation record in `README.md` gives the complete page-render and visual
-sample receipt. No live checksum manifest is maintained. PDFs retained beneath
+sample receipt. Package-local checksum ledgers have been abolished. PDFs retained beneath
 `assets/` are research figures, not manuscripts.
 
-The current post-merge publication supersedes that historical receipt. Its
+The most recent retained publication checkpoint supersedes that earlier
+historical receipt. Its
 16,834-line, 837,715-byte TeX source has SHA-256
 `4785625c1399558f3ca59481888fc76514e0a327a1faa16945c61851f874f3d5`;
 exactly three successful serial passes produced 386, 395, and 395 pages, and
@@ -84,18 +85,23 @@ rendering, and visual inspection all passed. The final log is clean apart from
 one harmless 32.5659 pt overfull paragraph, inspected at full resolution and
 confirmed readable and unclipped. No `SHA256SUMS*` file exists or participates
 in validation, and none should be recreated. The validation record in
-`README.md` gives the complete current gate and visual-sample receipt.
+`README.md` gives the complete gate and visual-sample receipt for that named
+source. The checkpoint predates the `9135` final source union, so its 395-page
+PDF is now historical and the merged source remains pending a final union
+rebuild.
 
-The repository-wide live documentation census is 901 facade-reachable modules
-and 11,419 public declarations with both documentation gaps zero.  Two sibling
-source-only promotions are recorded here only to delimit this q-volume's
-receipt: `LambertWBranchPairing.lean`, `LambertWGapBijection.lean`, and
-`LambertWBranchSymmetry.lean` have exhaustive surfaces 0+7, 4+16, and 0+9
-(36 current declarations, 13 supplied by the upstream delta), while
-`DyadicDerivativeFiltration.lean` is 0+6 after adding exactly
-`iteratedDeriv_rvachevUp_eq_extendedFabius` and
-`iteratedDeriv_rvachevUp_dyadic_below`. Both promotions are rendered by the
-current 395-page PDF.
+The repository-wide documentation census is 902 facade-reachable modules and
+11,441 public declarations, with zero missing module headers and zero
+declaration-documentation gaps. The final count is one above origin's 11,440
+because the union retains the public
+`Fabius.complexQPochhammerInf_eq_qPochhammerInfIn` bridge.
+Sibling source-only promotions are recorded here only to delimit this
+q-volume's receipt: `LambertWBranchPairing.lean`,
+`LambertWGapBijection.lean`, and `LambertWBranchSymmetry.lean` have exhaustive
+surfaces 0+7, 4+16, and 0+9; `DyadicDerivativeFiltration.lean` is 0+6; and
+`GeometricRichardsonGenerating.lean` is 3+7. The last module changes no row in
+this monograph's forward-status inventory. None of these source-only
+promotions is claimed to be rendered by the retained PDF.
 
 The current source incorporates exhaustive crosswalks for
 `QPochhammerEntire` (zero definitions and five legacy compatibility theorems),
@@ -128,7 +134,9 @@ definition and eight theorems) and `NewtonInterpolation` (three definitions
 and nineteen theorems),
 followed by `GaussianBinomialInteger` (one definition and ten theorems),
 `GaussianBinomialComplexOrder` (one definition and five theorems), and
-`QPfaffSaalschutz` (zero definitions and three theorems), together with
+`QPfaffSaalschutz` (zero definitions and three theorems),
+`TwoPhiOneReversal` (two definitions and twelve theorems), and
+`QChuVandermonde` (zero definitions and ten theorems), together with
 `GaussianBinomialBounds` (zero definitions and six theorems). The
 `QPochhammerEntire.lean` leaf proves the fixed-nome
 single-symbol locally uniform product and differentiability, the
@@ -146,10 +154,15 @@ complex strict contraction, including `q = 0`, and gives the dyadic Rvachev
 product and bounded-Fabius Fourier specializations. The compound
 `thm:qF-spectral` row remains Partial because its named centered/MGF packaging
 and exterior reciprocal, pole-divisor, and zero--pole clauses are absent. The
-forward status inventory covers 282 labelled results: 166 Exact / 90 Partial /
-18 None / 8 N/A; the 191-result pre-Fabius core remains 36 / 29 / 123 / 3.
-The five-publication concordance
-has 74 Lean-proved, 404 human-proved frontier, 60 not-applicable, and 9
+live facade audit contains 902 modules and 11,441 public declarations, with
+zero documentation gaps. `GeometricRichardsonGenerating` contributes 3
+definitions and 7 theorems to that sibling source-only census but alters no q
+forward row. The final count is one above origin's 11,440 because the union
+retains the public `complexQPochhammerInf_eq_qPochhammerInfIn` bridge. The
+forward status inventory covers 282 labelled results: 165 Exact / 91 Partial /
+18 None / 8 interface; the 191-result pre-Fabius core remains 36 / 29 / 123 /
+3 interface. The five-publication concordance has 76 Lean-proved, 402
+human-proved frontier, 60 not-applicable, and 9
 conjecture rows. The `cor:positivity`, `thm:qbinom-structure`, and
 `prop:gq-positive-palindromic` rows are Exact: both Gaussian structure APIs
 support the structure row, and the fourteen-theorem generic API now gives
@@ -172,7 +185,13 @@ terminating q-Pfaff--Saalschütz row is Exact under its explicit denominator
 hypotheses; the integer-index Gaussian identities and reciprocal series and
 the two complex-order series rows are also Exact on the domains recorded in
 the crosswalk, while the separate complex-parameter property rows remain
-unformalized. The quantum-multinomial row is Exact over every semiring under
+unformalized. The two q-Chu--Vandermonde evaluations and the terminating
+reversal lemma are Exact for the actual `twoPhiOne` tsum, including the
+full-domain second sum, reflection involutivity, and double reversal. The
+separate reversal-derivation proposition remains Partial: its compiled route
+assumes `C ≠ 0` and `(A;q)_n ≠ 0`, while the full-domain proof uses direct
+finite q-Cauchy; rational continuation and the commutative-ring extension are
+not formalized. The quantum-multinomial row is Exact over every semiring under
 the displayed q-commutation hypotheses, without assuming that q is central or
 that the ambient semiring is commutative. `GaussianBinomialBounds` reuses
 `finiteQPochhammerIn_self_pos` from `GeneralQConditionNumber` and supplies
@@ -181,8 +200,8 @@ the imported positivity theorem is not counted as a declaration of the
 bounds leaf. Its six exported theorems close the exact finite-growth row, while
 the greater-than-one compound row remains Partial only at its asymptotic
 clauses. No PDF was generated locally while resolving this merge; the retained
-artifact remains a historical publication checkpoint and does not render the
-current source.
+395-page artifact remains a historical pre-`9135` publication checkpoint and
+does not render the final source; a final union rebuild remains pending.
 
 The former q-Pochhammer/q-binomial monograph arrived in commit
 `47172bc03ec078961d8b023dfe156ecd712efb65`. Its pre-repair source SHA-256 was
@@ -432,7 +451,7 @@ rewrite.  The programs were rerun serially;
 [`assets/VALIDATION.md`](assets/VALIDATION.md) records exact-output parity and
 the one disclosed last-digit runtime drift. Canonical destination digests in
 `assets/ASSET_DISPOSITION.csv` and repository history preserve the
-post-migration byte receipts; no live `SHA256SUMS` file remains, and none
+post-migration byte receipts. No package-local checksum ledger remains or
 should be recreated.
 
 All six superseded directories were removed from the live tree.

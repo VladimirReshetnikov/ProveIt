@@ -2829,7 +2829,7 @@ those columns; $U$ has full column rank, and as a map $\FiniteField_Q^{\,r}\to\F
 it is injective with image $C$.  Each column $a_j$ of $A$ lies in $C$, so $a_j=Uv_j$ for a unique
 $v_j\in\FiniteField_Q^{\,r}$; let $V$ be the $r\times n$ matrix with columns $v_1,\dots,v_n$.  Then
 $A=UV$.  Moreover $V$ has full row rank: its row space has dimension
-$\operatorname{rank}V=\operatorname{rank}UV=\operatorname{rank}A=r$, the middle equality because
+$\RankOperator V=\RankOperator UV=\RankOperator A=r$, the middle equality because
 $U$ is injective.
 
 \emph{Counting the pairs.}  A matrix $U$ of full column rank is an ordered linearly independent
@@ -8040,7 +8040,7 @@ which proves \eqref{eq:halfbase-gaussian}.
 \emph{Lean status.}  Exactly \path{Fabius.halfQPochhammer_eq_mersenne_div} for \eqref{eq:halfbase-factorial} and
 \path{Fabius.halfQBinomial_eq_mersenne} for \eqref{eq:halfbase-gaussian}, both in \path{HalfQBinomial.lean}, with
 \(\mathfrak m_n\) the product \path{Fabius.halfMersenneProduct} and the same hypothesis \(k\le n\).  Lean places the
-powers of two in the denominator, which is the displayed identities rearranged, and works over \(\mathbb Q\);
+powers of two in the denominator, which is the displayed identities rearranged, and works over \(\RationalNumbers\);
 \path{Fabius.gaussianBinomial_half_eq_halfQBinomial} identifies \path{Fabius.halfQBinomial} with the generic recursive
 Gaussian coefficient at base \(1/2\).
 
@@ -8134,11 +8134,11 @@ Therefore
 by \eqref{eq:halfbase-factorial}.  Linearity now proves \eqref{eq:geometric-prouhet}.
 \end{proof}
 \emph{Lean status.}  Exactly \path{Fabius.halfQBinomial_negativeDyadic_polynomial_sum_eq_mersenne} in
-\path{HalfQBinomial.lean}: for \(p\in\mathbb Q[X]\) of degree at most \(n\), the sum of the weights
+\path{HalfQBinomial.lean}: for \(p\in\RationalNumbers[X]\) of degree at most \(n\), the sum of the weights
 \path{Fabius.halfQBinomialDyadicWeight} against the nodes \path{Fabius.negativeDyadicNode} is
 \(\mathfrak m_n[X^n]p\), with \(\mathfrak m_n\) supplied by \path{Fabius.halfMersenneProduct}.  The
 annihilation clause is \path{Fabius.halfQBinomial_negativeDyadic_polynomial_sum_eq_zero_of_degree_lt}.
-The Lean coefficient ring is fixed to \(\mathbb Q\).
+The Lean coefficient ring is fixed to \(\RationalNumbers\).
 
 
 \begin{corollary}[Affine form]\label{cor:geometric-prouhet-affine}
@@ -13475,8 +13475,12 @@ three views are complementary: the table below answers the Lean-status
 question for each labelled forward result, while the concordances preserve
 complete merger provenance without counting a repeated theorem twice.
 An independent lexical audit of the live Lean facade at this checkpoint finds
-901 source modules and 11,419 public declarations, with no missing module
-headers or declaration doc comments.
+902 source modules and 11,441 public declarations, with zero missing module
+headers and zero declaration-documentation gaps.  The sibling source-only
+\path{GeometricRichardsonGenerating.lean} module contributes three definitions
+and seven theorems but changes no row in this forward \(q\)-series crosswalk.
+The declaration count is one above origin's 11,440 because the union retains
+the public \path{Fabius.complexQPochhammerInf_eq_qPochhammerInfIn} bridge.
 The census includes \path{RvachevSuperconvergentSynthesis.lean} (one
 definition and eight theorems); that synthesis module changes no row in this
 forward \(q\)-series crosswalk and no row in the immutable source
@@ -13503,7 +13507,7 @@ inside the proof below does not formalize the result the proof concludes.
   than a mathematical claim.
 \end{description}
 
-Of the 282 labelled forward results, 166 are \statusexact, 90 are
+Of the 282 labelled forward results, 165 are \statusexact, 91 are
 \statuspartial, 18 are \statusnone, and 8 are \statusna.  The original
 191-result pre-Fabius core had 36 \statusexact, 29 \statuspartial, 123
 \statusnone, and 3 \statusna{} entries.  The four integrated guide chapters
@@ -13629,6 +13633,8 @@ theorems;\\
 \path{CyclotomicDivisibility.lean}: zero definitions and three theorems;\\
 \path{QCatalan.lean}: one definition and eleven theorems;\\
 \path{QPfaffSaalschutz.lean}: zero definitions and three theorems;\\
+\path{TwoPhiOneReversal.lean}: two definitions and twelve theorems;\\
+\path{QChuVandermonde.lean}: zero definitions and ten theorems;\\
 \path{GaussianBinomialInteger.lean}: one definition and ten theorems;\\
 \path{GaussianBinomialComplexOrder.lean}: one definition and five theorems;\\
 \path{GaussianBinomialPalindromic.lean}: zero definitions and fourteen
@@ -13660,7 +13666,7 @@ declaration from \path{GaussianBinomialAtOne.lean};\\
 \path{QGaussSummation.lean}: zero definitions and two theorems;\\
 \path{GeometricCompleteHomogeneous.lean}: six theorems;\\
 \path{GeometricLagrangeCompleteHomogeneous.lean}: five theorems;\\
-\path{GeometricLagrangeQMoments.lean}: one definition and 37 theorems;\\
+\path{GeometricLagrangeQMoments.lean}: one definition and 44 theorems;\\
 \path{FinitePolynomialFilterExactness.lean}: five theorems;\\
 \path{QuarterCatalanGerm.lean}: two definitions and thirteen theorems;\\
 \path{FabiusInverseQuarterJet.lean}: two theorems;\\
@@ -14398,7 +14404,9 @@ the rational quotient bridges retain their explicit nonzero-Pochhammer or
 \(0<q<1\) assumptions.
 
 \item \path{GeometricLagrangeQMoments.lean} has the one definition
-\path{Fabius.geometricLagrangeQMoment} and exactly 37 theorems:
+\path{Fabius.geometricLagrangeQMoment} and exactly 44 theorems:
+\path{Fabius.neg_one_pow_mul_self},
+\path{Fabius.neg_one_pow_sub},
 \path{Fabius.geometricLagrangeQMoment_eq_weightPolynomial_eval},
 \path{Fabius.geometricLagrangeQMoment_eq_forwardRichardson_eval},
 \path{Fabius.geometricRootPolynomial_inv_eval_pow_mul_signedPowers},
@@ -14412,6 +14420,10 @@ the rational quotient bridges retain their explicit nonzero-Pochhammer or
 \path{Fabius.qPochhammer_self_add},
 \path{Fabius.qPochhammer_self_pos_of_pos_of_lt_one},
 \path{Fabius.qBinomial_pos_of_pos_of_lt_one},
+\path{Fabius.injOn_pow_range_iff_finiteQPochhammerIn_self_ne_zero},
+\path{Fabius.injOn_pow_range_iff_forall_pow_ne_one},
+\path{Fabius.qPochhammer_self_ne_zero_of_le},
+\path{Fabius.gaussianBinomial_eq_qBinomial_of_qPochhammer_ne_zero},
 \path{Fabius.gaussianBinomial_eq_qBinomial_of_pos_of_lt_one},
 \path{Fabius.qPochhammer_pow_pos_of_pos_of_lt_one},
 \path{Fabius.qPochhammer_tail_div_self_eq_qBinomial},
@@ -14422,6 +14434,7 @@ the rational quotient bridges retain their explicit nonzero-Pochhammer or
 \path{Fabius.qPochhammer_self_succ},
 \path{Fabius.qBinomial_succ_succ_of_pos_of_lt_one'},
 \path{Fabius.qBinomial_succ_succ_of_pos_of_lt_one},
+\path{Fabius.qBinomial_theorem_of_qPochhammer_ne_zero},
 \path{Fabius.qBinomial_theorem_of_pos_of_lt_one},
 \path{Fabius.sum_qBinomial_triangular_succ_eq_neg_qPochhammer},
 \path{Fabius.abs_geometricLagrangeWeight_eq_qBinomial},
@@ -14535,7 +14548,7 @@ Partitions, words, paths, and inversion statistics & 7 & 2 & 0 & 0\\
 Finite fields, Grassmannians, and rank enumeration & 3 & 3 & 0 & 0\\
 Symmetry and unimodality & 0 & 1 & 2 & 0\\
 The infinite $q$-binomial theorem & 4 & 0 & 0 & 0\\
-Basic hypergeometric series & 7 & 2 & 0 & 0\\
+Basic hypergeometric series & 6 & 3 & 0 & 0\\
 Euler telescoping and very-well-poised summations & 3 & 0 & 1 & 0\\
 Bilateral series and Ramanujan's \texorpdfstring{${}_1\psi_1$}{1psi1} sum & 2 & 0 & 0 & 0\\
 $q$-difference calculus and the quantum binomial & 10 & 0 & 0 & 0\\
@@ -14556,7 +14569,7 @@ Half-base arithmetic and Prouhet--Thue--Morse cancellation & 6 & 3 & 0 & 0\\
 Geometric uniform sums, $q$-cumulants, and the Fabius--Rvachev functions & 2 & 11 & 0 & 0\\
 Dyadic Gaussian--Thue--Morse structure and the values of $F$ & 8 & 45 & 3 & 0\\
 \midrule
-\textbf{Forward total} & 166 & 90 & 18 & 8\\
+\textbf{Forward total} & 165 & 91 & 18 & 8\\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -14668,7 +14681,7 @@ of \texttt{QPochhammerInfinite}}\\[2pt]
 \texttt{differentiableOn\_\allowbreak{}qPochhammerC},
 \texttt{qPochhammerC\_\allowbreak{}ne\_\allowbreak{}zero}\newline
 {\footnotesize\texttt{QPochhammerOrderDerivative}, \texttt{QGammaMeromorphic}; $\alpha\mapsto(a;q)_\alpha$
-is meromorphic on $\mathbb C$ and holomorphic on every open set avoiding the poles
+is meromorphic on $\ComplexNumbers$ and holomorphic on every open set avoiding the poles
 $aq^{\alpha+j}=1$, and is nonvanishing there under the proposition's standing hypothesis
 $(a;q)_\infty\ne0$ (\texttt{qPochhammerC\_\allowbreak{}ne\_\allowbreak{}zero}); without that
 hypothesis the symbol can vanish identically, as at $a=1$.  The derivative has the displayed
@@ -14998,7 +15011,7 @@ therefore checked by hand here, not mechanically}\\[2pt]
 {\footnotesize\texttt{SubspaceCount}; the entire algebraic content, over every semiring and every
 $t$: $\sum_{\lambda\subseteq k\times(n-k)}(t^2)^{\lvert\lambda\rvert}=\GaussianBinomial{n}{k}{t^2}$
 and its graded form.  The topological identification of the coefficients with
-$\operatorname{rank}H^{2d}(\mathrm{Gr}(k,n);\IntegerNumbers)$ --- Schubert cells, vanishing
+$\RankOperator H^{2d}(\mathrm{Gr}(k,n);\IntegerNumbers)$ --- Schubert cells, vanishing
 cellular boundaries, cellular cohomology --- is not formalized and is not currently formalizable,
 Mathlib's Grassmannian carrying neither a topology nor a cohomology}\\[2pt]
 \Cref{prop:qbinom-growth} & \statusexact &
@@ -15137,31 +15150,42 @@ denominators nonzero, derived algebraically from
 exactly as in the proof; $q^{-n}$ is $(q^n)^{-1}$ and $abq^{1-n}/c$ is
 $abq/(cq^n)$}\\[2pt]
 \Cref{cor:q-chu} & \statusexact &
+\texttt{twoPhiOne\_\allowbreak{}q\_\allowbreak{}chu\_\allowbreak{}vandermonde\_\allowbreak{}first},
+\texttt{twoPhiOne\_\allowbreak{}q\_\allowbreak{}chu\_\allowbreak{}vandermonde\_\allowbreak{}second},
 \texttt{q\_\allowbreak{}chu\_\allowbreak{}vandermonde\_\allowbreak{}first},
 \texttt{q\_\allowbreak{}chu\_\allowbreak{}vandermonde\_\allowbreak{}second},
-\texttt{finiteQPochhammerIn\_\allowbreak{}div\_\allowbreak{}eq\_\allowbreak{}sum\_\allowbreak{}chu}\newline
-{\footnotesize\texttt{QChuVandermonde}; both sums for the terminating sum
-\texttt{twoPhiOneFinite} in any field with $q\ne0$, $(q;q)_n\ne0$ and the
-displayed denominators nonzero (the second sum also assumes $(a;q)_n\ne0$,
-as its reversal derivation does); the first sum is proved algebraically as the
-finite $q$-Cauchy identity at base $q^{-1}$ with $u=1/a$, $v=cq^{n-1}$, so
-neither the $q$-Gauss sum nor the rational-extension argument is needed}\\[2pt]
+\texttt{finiteQPochhammerIn\_\allowbreak{}div\_\allowbreak{}eq\_\allowbreak{}sum\_\allowbreak{}chu},
+\texttt{finiteQPochhammerIn\_\allowbreak{}div\_\allowbreak{}eq\_\allowbreak{}sum\_\allowbreak{}chu\_\allowbreak{}second}\newline
+{\footnotesize\texttt{QChuVandermonde}; both evaluations for the actual
+\texttt{twoPhiOne} tsum in every complete normed field with $q\ne0$, $a\ne0$,
+$(q;q)_n\ne0$, and $(c;q)_n\ne0$.  Neither $c\ne0$ nor $(a;q)_n\ne0$ is
+assumed.  The underlying finite identities hold over arbitrary fields and are
+proved directly from finite $q$-Cauchy at base $q^{-1}$; the second full-domain
+proof is independent of the restricted reversal derivation}\\[2pt]
 \Cref{lem:2phi1-reversal} & \statusexact &
+\texttt{twoPhiOne\_\allowbreak{}reversal},
+\texttt{twoPhiOneReflection\_\allowbreak{}involutive},
+\texttt{twoPhiOne\_\allowbreak{}reversal\_\allowbreak{}twice},
+\texttt{twoPhiOne\_\allowbreak{}eq\_\allowbreak{}twoPhiOneFinite\_\allowbreak{}inv\_\allowbreak{}pow},
 \texttt{twoPhiOneFinite\_\allowbreak{}reversal},
 \texttt{finiteQPochhammerIn\_\allowbreak{}sub\_\allowbreak{}eq},
-\texttt{finiteQPochhammerIn\_\allowbreak{}inv\_\allowbreak{}pow\_\allowbreak{}self},
-\texttt{twoPhiOneFinite\_\allowbreak{}eq\_\allowbreak{}sum\_\allowbreak{}twoPhiOneTerm}\newline
-{\footnotesize\texttt{TwoPhiOneReversal}; in any field with $q\ne0$ and the
-additional explicit hypothesis $(q;q)_n\ne0$ for the denominators; the
-terminating sum is \texttt{twoPhiOneFinite}, with $q^{-n}=(q^n)^{-1}$ and
-$q^{1-n}=q(q^n)^{-1}$; the four symbols are reversed by the general rule
-$(x;q)_{n-i}\,(-xq^{n-i})^i q^{\binom i2}(q^{1-n}/x;q)_i=(x;q)_n$}\\[2pt]
-\Cref{prop:qchu2-by-reversal} & \statusexact &
-\texttt{q\_\allowbreak{}chu\_\allowbreak{}vandermonde\_\allowbreak{}second}\newline
-{\footnotesize\texttt{QChuVandermonde}; the proof is the reversal argument of the
-text: \texttt{twoPhiOneFinite\_\allowbreak{}reversal} applied to
-\texttt{q\_\allowbreak{}chu\_\allowbreak{}vandermonde\_\allowbreak{}first} at the reflected
-parameters $a=q^{1-n}/C$, $c=q^{1-n}/A$, $z=cq^n/a$; no limiting process}\\[2pt]
+\texttt{finiteQPochhammerIn\_\allowbreak{}inv\_\allowbreak{}pow\_\allowbreak{}self}\newline
+{\footnotesize\texttt{TwoPhiOneReversal}; the displayed identity is stated for
+the actual \texttt{twoPhiOne} tsum with the printed nonvanishing hypotheses.
+The tail-vanishing bridge needs no analytic norm bounds, the reflected
+$(a,c,z)$ map is proved involutive, and \texttt{twoPhiOne\_reversal\_twice}
+proves that the two prefactors and reflected sums return the original series.
+The finite reversal itself holds over an arbitrary field, with
+$q^{-n}=(q^n)^{-1}$ and $q^{1-n}=q(q^n)^{-1}$}\\[2pt]
+\Cref{prop:qchu2-by-reversal} & \statuspartial &
+\texttt{q\_\allowbreak{}chu\_\allowbreak{}vandermonde\_\allowbreak{}second\_\allowbreak{}by\_\allowbreak{}reversal},
+\texttt{twoPhiOne\_\allowbreak{}q\_\allowbreak{}chu\_\allowbreak{}vandermonde\_\allowbreak{}second}\newline
+{\footnotesize\texttt{QChuVandermonde}; the named reversal proof follows the
+text without $q$-Pfaff--Saalsch\"utz or a limiting process, but only on the
+auxiliary locus $C\ne0$ and $(A;q)_n\ne0$.  The full-domain theorem removes
+those hypotheses by a separate direct finite-$q$-Cauchy proof, not by reversal.
+The manuscript's rational-continuation step and its cleared commutative-ring
+extension have not been formalized}\\[2pt]
 \midrule
 \multicolumn{3}{@{}l}{\itshape Bilateral series and Ramanujan's \texorpdfstring{${}_1\psi_1$}{1psi1} sum}\\
 \midrule
@@ -15184,7 +15208,7 @@ $(a;q)_{-m}/(b;q)_{-m}=(b/a)^m(q/b;q)_m/(q/a;q)_m$}\\[2pt]
 \texttt{onePsiOne\_\allowbreak{}eq},
 \texttt{hasSum\_\allowbreak{}onePsiOneCleared},
 \texttt{hasSum\_\allowbreak{}onePsiOneCleared\_\allowbreak{}pow}\newline
-{\footnotesize\texttt{RamanujanOnePsiOne}; over $\mathbb C$, for $0<\lvert q\rvert<1$, $a\ne0$,
+{\footnotesize\texttt{RamanujanOnePsiOne}; over $\ComplexNumbers$, for $0<\lvert q\rvert<1$, $a\ne0$,
 $(q/a;q)_\infty\ne0$, $(b;q)_\infty\ne0$ and $\lvert b/a\rvert<\lvert z\rvert<1$, by Ismail's
 identity-theorem argument in $b$ applied to the cleared series
 $\sum_n(a;q)_nz^n(bq^n;q)_\infty$ (\texttt{onePsiOneCleared}), whose terms are entire in $b$
@@ -15298,7 +15322,7 @@ second half of the fundamental theorem}\\[2pt]
 {\footnotesize\texttt{QGamma}, \texttt{QGammaMeromorphic}; the three real identities for $x>0$
 and $0<q<1$, with $[x]_q$ as \texttt{qNumber}; the complex
 $\Gamma_q(z)=(q;q)_\infty(1-q)^{1-z}/(q^z;q)_\infty$ (\texttt{qGammaC}, principal branch) is
-meromorphic on $\mathbb C$ as a quotient of entire functions and holomorphic off the zeros of
+meromorphic on $\ComplexNumbers$ as a quotient of entire functions and holomorphic off the zeros of
 $(q^z;q)_\infty$; it is genuinely a continuation of the real function, since
 \texttt{qGammaC\_\allowbreak{}ofReal} identifies the \texttt{Complex.cpow} definition with the
 \texttt{Real.rpow} one at real arguments; and it satisfies
@@ -15389,7 +15413,7 @@ $z\ne0$ and $\lVert q\rVert<1$ in any complete normed field, with the exponent
 {\footnotesize\texttt{ThetaQuasiPeriodicity}, \texttt{ThetaSimpleZeros}; for
 $\lVert q\rVert<1$, $q\ne0$ and $z\ne0$ in every complete normed field: the functional equation
 by reindexing the bilateral series, and the zero set $\{-q^m: m\in\IntegerNumbers\}$ (among
-$z\ne0$) from the product form.  Over $\mathbb C$, under the same hypotheses, the zeros are
+$z\ne0$) from the product form.  Over $\ComplexNumbers$, under the same hypotheses, the zeros are
 simple: at every $-q^m$ the theta function has a nonzero derivative, obtained by isolating the
 vanishing factor of the triple product
 (\texttt{hasDerivAt\_\allowbreak{}of\_\allowbreak{}eventuallyEq\_\allowbreak{}mul})}\\[2pt]
@@ -15712,9 +15736,10 @@ $\lVert z\rVert<1$ (reciprocal form); the integral specializations follow
 from \texttt{gaussianBinomialC\_\allowbreak{}natCast}, and the terminating
 polynomial identity is \texttt{FiniteQBinomialCore}}\\[2pt]
 \Cref{thm:geometric-newton} & \statusexact &
-\texttt{nodeNewtonPoly},
-\texttt{eval\_\allowbreak{}nodeNewtonPoly},
-\texttt{eq\_\allowbreak{}nodeNewtonPoly\_\allowbreak{}of\_\allowbreak{}eval\_\allowbreak{}eq},
+\texttt{newtonInterpolant},
+\texttt{eval\_\allowbreak{}newtonPoly},
+\texttt{newtonPoly\_\allowbreak{}eq\_\allowbreak{}interpolate},
+\texttt{eq\_\allowbreak{}newtonPoly\_\allowbreak{}of\_\allowbreak{}eval\_\allowbreak{}eq},
 \texttt{newtonCoeff\_\allowbreak{}eq\_\allowbreak{}sum},
 \texttt{nodal\_\allowbreak{}range\_\allowbreak{}pow},
 \texttt{prod\_\allowbreak{}erase\_\allowbreak{}pow\_\allowbreak{}sub\_\allowbreak{}pow},
@@ -16074,7 +16099,7 @@ $\alpha_0=1$, $\alpha_n=\sum_{k<n}\beta_{n,k}\alpha_k$, proved through the adjug
 (the recurrence reads $\mathcal H_n\alpha=\alpha_ne_n$, and the cofactor
 $\operatorname{adj}(\mathcal H_n)_{0,n}$ is the determinant of a lower-triangular matrix with
 diagonal $-1$ up to the sign $(-1)^{n-1}$).  Not formalised: the identification of this
-$\alpha_n$ with $\mathbb E X^n/n!$ and with $2^{\binom n2}F(2^{-n})$, which rests on
+$\alpha_n$ with $\Expectation X^n/n!$ and with $2^{\binom n2}F(2^{-n})$, which rests on
 \Cref{lem:fabius-moment-dilation,thm:fabius-half-moment}}\\[2pt]
 \Cref{cor:fabius-fourier-formula} & \statuspartial &
 \texttt{rvachev\_fourier\_inversion\_analytic},
@@ -16337,7 +16362,7 @@ there is no free commutative-ring or normed-field version}\\[2pt]
 \texttt{poisson\_\allowbreak{}summation\_\allowbreak{}of\_\allowbreak{}rpow\_\allowbreak{}decay}\newline
 {\footnotesize\texttt{GaussianFourierTheta}; verbatim, in the text's own transform convention,
 which is Mathlib's with no normalization or sign discrepancy.  Also proved under a hypothesis
-strictly weaker than Schwartz: continuity together with $f$ and $\widehat f=O(\lvert x\rvert^{-b})$
+strictly weaker than Schwartz: continuity together with $f$ and $\FourierTwoPi{f}=O(\lvert x\rvert^{-b})$
 for a single $b>1$.  The text's own proof is not the one formalized --- Mathlib argues through the
 Fourier series of the periodization, which discharges the two uniform-convergence assertions the
 text leaves unproved}\\[2pt]
@@ -16397,14 +16422,14 @@ product in the $\sum Q^{n^2}x^n$ normalization}\\[2pt]
 {\footnotesize\texttt{SumsOfSquaresGeneratingFunction}; the analytic identity for every
 $d\ge0$ and $\lVert q\rVert<1$ in any complete normed field, with $r_d(n)$ the cardinality
 of the finite set of ordered integer $d$-tuples of squares summing to $n$; the $d$-fold
-theta product is the sum over $\mathbb Z^d$ regrouped by the value of $\sum x_k^2$.  The
-coefficientwise identity in $\mathbb Z[[q]]$ is not stated separately}\\[2pt]
+theta product is the sum over $\IntegerNumbers^d$ regrouped by the value of $\sum x_k^2$.  The
+coefficientwise identity in $\IntegerNumbers[[q]]$ is not stated separately}\\[2pt]
 \Cref{qg:lem-gaussian-ufd} & \statusexact &
 \texttt{gaussianInt\_\allowbreak{}two\_\allowbreak{}eq},
 \texttt{gaussianInt\_\allowbreak{}irreducible\_\allowbreak{}of\_\allowbreak{}mod\_\allowbreak{}four\_\allowbreak{}eq\_\allowbreak{}three},
 \texttt{gaussianInt\_\allowbreak{}exists\_\allowbreak{}prime\_\allowbreak{}mul\_\allowbreak{}star},
 \texttt{irreducible\_\allowbreak{}of\_\allowbreak{}norm\_\allowbreak{}natAbs\_\allowbreak{}prime}\newline
-{\footnotesize\texttt{GaussianIntegerPrimes}; the Euclidean structure of $\mathbb Z[i]$ for the
+{\footnotesize\texttt{GaussianIntegerPrimes}; the Euclidean structure of $\IntegerNumbers[i]$ for the
 norm and its unique factorisation are Mathlib's
 (\texttt{GaussianInt.instEuclideanDomain}, the principal-ideal-domain route); (i) by
 computation, (ii) from Mathlib's

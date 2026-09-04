@@ -349,9 +349,13 @@ branch-pairing, gap-bijection, and symmetric-identity tranche (respectively
 derivative filtration.  The Lambert surfaces contain 36 current declarations,
 13 of them supplied by the upstream delta; the filtration delta is exactly
 \lean{iteratedDeriv_rvachevUp_eq_extendedFabius} and
-\lean{iteratedDeriv_rvachevUp_dyadic_below}.  The live source census is
-exactly 901 facade-reachable modules and 11,419 unique public declarations,
-with no missing module headers or declaration documentation.  The final-source
+\lean{iteratedDeriv_rvachevUp_dyadic_below}.  The finalized union also contains
+the exhaustive 2+12 \path{TwoPhiOneReversal.lean}, 0+10
+\path{QChuVandermonde.lean}, and 3+7
+\path{GeometricRichardsonGenerating.lean} surfaces while retaining the public
+\lean{complexQPochhammerInf_eq_qPochhammerInfIn} bridge.  The live source
+census is exactly 902 facade-reachable modules and 11,441 unique public
+declarations, with no missing module headers or declaration documentation.  The final-source
 publication is validated by exactly three successful serial halt-on-error
 passes and the repository's PDF gates.  Exact page-count, byte-count, and
 SHA-256 receipts for the frozen TeX and resulting PDF are kept externally in
@@ -630,7 +634,7 @@ The q-Lucas theorem &
 \nolinkurl{finiteQPochhammerIn_neg_X_block},
 \nolinkurl{coeff_block_pow_mul}, \nolinkurl{pow_choose_two_add_mul_eq},
 \nolinkurl{gaussianBinomial_q_lucas} &
-\nolinkurl{QLucas.lean}; zero definitions and eight theorems \\
+\nolinkurl{QLucas.lean}; zero definitions and seven theorems \\
 Cyclotomic carry criterion and primitive-root multiple value &
 \nolinkurl{cyclotomic_exponent_eq_one_iff},
 \nolinkurl{cyclotomic_dvd_gaussianBinomial_iff},
@@ -2281,8 +2285,7 @@ a primitive \(d\)-th root kills \(\GaussianBinomial{d}{k}{\zeta}\) for
 \(0<k<d\); under \(d>0\), the top phase is \,\(-1\) and
 \((y;\zeta)_d=1-y^d\).
 
-\path{QLucas.lean} is 0+8: \lean{two_mul_choose_two},
-\lean{add_mul_add_sub_one}, \lean{choose_two_add},
+\path{QLucas.lean} is 0+7: \lean{add_mul_add_sub_one}, \lean{choose_two_add},
 \lean{coeff_finiteQPochhammerIn_neg_X},
 \lean{finiteQPochhammerIn_neg_X_block}, \lean{coeff_block_pow_mul},
 \lean{pow_choose_two_add_mul_eq}, and \lean{gaussianBinomial_q_lucas}.
@@ -2290,6 +2293,8 @@ For \(d>0\), a primitive \(d\)-th root in a commutative integral domain, and
 \(b,s<d\), the conclusion is
 \(\GaussianBinomial{ad+b}{rd+s}{\zeta}=\binom ar
 \GaussianBinomial{b}{s}{\zeta}\).
+The identically named \lean{two_mul_choose_two} helper is private here; its
+public owner is \path{QChuVandermonde.lean}.
 
 \path{CyclotomicDivisibility.lean} is 0+3:
 \lean{cyclotomic_exponent_eq_one_iff},
@@ -2488,11 +2493,17 @@ the upstream delta.  It also preserves the unconditional public Pochhammer
 bridge and adds exactly
 \lean{iteratedDeriv_rvachevUp_eq_extendedFabius} and
 \lean{iteratedDeriv_rvachevUp_dyadic_below} to the now 0+6
-\path{DyadicDerivativeFiltration.lean} surface.  The live source census is
-therefore 901/11,419 with both documentation-gap counts zero.  These additions
+\path{DyadicDerivativeFiltration.lean} surface.  It also contains the
+exhaustive 2+12 \path{TwoPhiOneReversal.lean} and 0+10
+\path{QChuVandermonde.lean} surfaces.  The origin-side checkpoint before
+Richardson was recorded as 901/11,430; the 3+7
+\path{GeometricRichardsonGenerating.lean} leaf raised that origin census to
+902/11,440.  Retaining the unconditional public
+\lean{complexQPochhammerInf_eq_qPochhammerInfIn} bridge yields the final live
+union 902/11,441 with both documentation-gap counts zero.  These additions
 are included in the finalized canonical-frontier publication; exact
 frozen-source and final-PDF receipts are kept externally in the repository
-documentation.
+documentation so that no artifact embeds a mutable self-receipt.
 The newest six module counts are
 \path{QPochhammerInfiniteBounds.lean} (0+5),
 \path{HeineTransformation.lean} (2+5),
@@ -2528,7 +2539,7 @@ The four root-of-unity and q-Catalan module counts are
 \path{CyclotomicDivisibility.lean} (0+3),
 \path{PrimitiveRootBlock.lean} (0+3),
 \path{QCatalan.lean} (1+11), and
-\path{QLucas.lean} (0+8).  Their one definition and twenty-five theorems add
+\path{QLucas.lean} (0+7).  Their one definition and twenty-four theorems add
 the cyclotomic carry criterion, complete primitive-root q-Pochhammer blocks,
 q-Lucas over integral domains, and the integral q-Catalan polynomial with its
 exact degree and Catalan specialization.
@@ -2603,7 +2614,7 @@ Consequently the growth, uniform-bound, and extreme-specialization rows are
 Exact, while the \(q>1\) transfer row remains Partial because only its
 reciprocity clause is formalized.
 
-The rigorous 282-row forward q-series ledger is therefore 166 Exact, 90
+The rigorous 282-row forward q-series ledger is therefore 165 Exact, 91
 Partial, 18 None, and 8 interface rows.  The evaluated q-Lucas theorem remains
 Partial because its polynomial-congruence lift is absent; the Gaussian
 majorant is Exact; and the \(Q>1\) asymptotic row remains Partial.  The
@@ -2612,6 +2623,39 @@ parity-selected synthesis module
 dyadic phase representatives and proves the corresponding monomial,
 polynomial, deconvolution, and Appell sampling identities.  It asserts neither
 a complete phase classification nor maximality beyond those representatives.
+
+The final terminating-basic-hypergeometric inventory is
+\path{TwoPhiOneReversal.lean} (2+12) and
+\path{QChuVandermonde.lean} (0+10).  The two definitions of the first are
+\lean{twoPhiOneFinite} and \lean{twoPhiOneReflection}; its twelve theorems are
+\lean{choose_two_add_succ_choose_two}, \lean{finiteQPochhammerIn_sub_eq},
+\lean{finiteQPochhammerIn_reversal_ne_zero},
+\lean{finiteQPochhammerIn_inv_pow_self},
+\lean{twoPhiOneReflection_involutive}, \lean{twoPhiOneFinite_reversal},
+\lean{twoPhiOneFinite_reversal_twice},
+\lean{twoPhiOneFinite_eq_sum_twoPhiOneTerm},
+\lean{twoPhiOne_eq_twoPhiOneFinite_inv_pow}, \lean{twoPhiOne_reversal},
+\lean{twoPhiOne_reversal_twice}, and
+\lean{twoPhiOne_one_eq_twoPhiOneFinite_zero}.
+The ten theorems of \path{QChuVandermonde.lean} are
+\lean{two_mul_choose_two}, \lean{mul_sub_one_eq_mul_sub_add},
+\lean{finiteQPochhammerIn_div_eq_sum_chu},
+\lean{q_chu_vandermonde_first},
+\lean{finiteQPochhammerIn_div_eq_sum_chu_second},
+\lean{twoPhiOneFinite_mul_finiteQPochhammerIn_eq_chu_second},
+\lean{q_chu_vandermonde_second},
+\lean{q_chu_vandermonde_second_by_reversal},
+\lean{twoPhiOne_q_chu_vandermonde_first}, and
+\lean{twoPhiOne_q_chu_vandermonde_second}.  Together they prove the
+finite-to-tsum termination bridge, reflected-parameter involution, one- and
+two-step reversal formulas, both q-Chu--Vandermonde evaluations, and
+full-domain actual-tsum wrappers.
+Accordingly the two q-Chu formulas and the reversal lemma are exact.  The
+stronger provenance statement that reversal proves the second formula on the
+whole displayed domain remains partial: the named by-reversal theorem needs
+\(C\ne0\) and \((A;q)_n\ne0\), while the full-domain theorem instead uses a
+direct denominator-cleared finite q-Cauchy proof.  No rational-continuation or
+cleared commutative-ring extension is formalized.
 
 The earlier compiler-validated checkpoint \texttt{e6f535e5d} supplied the two modules that
 promote the
@@ -4699,7 +4743,7 @@ The exhaustive zero-definition, seven-theorem finite-product and Gaussian cyclot
 \path{PrimitiveRootBlock.lean} &
 The exhaustive zero-definition, three-theorem primitive-root Gaussian-vanishing, phase, and complete-block interface.\\
 \path{QLucas.lean} &
-The exhaustive zero-definition, eight-theorem natural quadratic, block-coefficient, phase, and q-Lucas interface.\\
+The exhaustive zero-definition, seven-theorem natural quadratic, block-coefficient, phase, and q-Lucas interface.\\
 \path{CyclotomicDivisibility.lean} &
 The exhaustive zero-definition, three-theorem cyclotomic carry, rational divisibility, and primitive-root multiple-value interface.\\
 \path{QCatalan.lean} &
@@ -9363,6 +9407,28 @@ These are finite rational identities.  Quotient statements retain their
 nonzero denominators, and positivity, sign, and absolute-value formulas retain
 \(0<q<1\); the module makes no analytic convergence or remainder claim.
 
+\item \path{GeometricRichardsonGenerating.lean} has exactly three public
+definitions,
+\path{Fabius.geometricRichardsonKernel},
+\path{Fabius.qPochhammerNormalizedDataSeries}, and
+\path{Fabius.geometricRichardsonTransform}, and seven public theorems:
+\path{Fabius.coeff_rescale_qPochhammerSeries_eq_geometricRichardsonKernel},
+\path{Fabius.coeff_qPochhammerNormalizedDataSeries},
+\path{Fabius.geometricRichardsonTransform_generating},
+\path{Fabius.geometricRichardsonTransform_eq_sum_lagrange},
+\path{Fabius.geometricLagrangeRichardson_generating},
+\path{Fabius.hasSum_geometricRichardsonTransform_mul_pow}, and
+\path{Fabius.hasSum_geometricLagrangeRichardson_mul_pow}.
+The theorem \path{Fabius.geometricLagrangeRichardson_generating} is the exact
+formal counterpart of the canonical comb-manuscript label
+\path{gq:thm:richardson-generating}.  The underlying convolution factorization
+is formal over an arbitrary commutative ring with totalized inverses; its
+Lagrange-row identification assumes a field and nonzero nome.  The two
+analytic \path{HasSum} theorems additionally assume a complete normed field,
+strict nome contraction, and absolute summability of the normalized data
+series.  They do not provide convergence without those hypotheses or an
+analytic acceleration bound.
+
 \item The five theorems of \path{FinitePolynomialFilterExactness.lean} are
 \path{Fabius.polynomialFilter_response_eq},
 \path{Fabius.polynomialFilter_exact},
@@ -9384,6 +9450,38 @@ spelling of the primary finite $q$-Cauchy identity.  The reflected convolution, 
 denominator-free $q$-Bernstein partition of unity, and the second Cauchy identity hold
 over every commutative ring, including degree zero, $q=0$, roots of unity, positive
 characteristic, and zero divisors, with no quotient or nonvanishing hypothesis.
+
+\item \path{TwoPhiOneReversal.lean} has exactly two public definitions,
+\path{Fabius.twoPhiOneFinite} and \path{Fabius.twoPhiOneReflection}, and twelve
+public theorems:
+\path{Fabius.choose_two_add_succ_choose_two},
+\path{Fabius.finiteQPochhammerIn_sub_eq},
+\path{Fabius.finiteQPochhammerIn_reversal_ne_zero},
+\path{Fabius.finiteQPochhammerIn_inv_pow_self},
+\path{Fabius.twoPhiOneReflection_involutive},
+\path{Fabius.twoPhiOneFinite_reversal},
+\path{Fabius.twoPhiOneFinite_reversal_twice},
+\path{Fabius.twoPhiOneFinite_eq_sum_twoPhiOneTerm},
+\path{Fabius.twoPhiOne_eq_twoPhiOneFinite_inv_pow},
+\path{Fabius.twoPhiOne_reversal},
+\path{Fabius.twoPhiOne_reversal_twice}, and
+\path{Fabius.twoPhiOne_one_eq_twoPhiOneFinite_zero}.  This is the exhaustive
+finite/actual-tsum reversal and reflected-parameter involution surface.
+
+\item \path{QChuVandermonde.lean} has no public definitions and exactly ten
+public theorems:
+\path{Fabius.two_mul_choose_two},
+\path{Fabius.mul_sub_one_eq_mul_sub_add},
+\path{Fabius.finiteQPochhammerIn_div_eq_sum_chu},
+\path{Fabius.q_chu_vandermonde_first},
+\path{Fabius.finiteQPochhammerIn_div_eq_sum_chu_second},
+\path{Fabius.twoPhiOneFinite_mul_finiteQPochhammerIn_eq_chu_second},
+\path{Fabius.q_chu_vandermonde_second},
+\path{Fabius.q_chu_vandermonde_second_by_reversal},
+\path{Fabius.twoPhiOne_q_chu_vandermonde_first}, and
+\path{Fabius.twoPhiOne_q_chu_vandermonde_second}.  It contains both cleared
+and quotient q-Chu--Vandermonde forms, the separately named reversal route,
+and the two full-domain actual-tsum wrappers with their exact hypotheses.
 
 \item \path{QuarterCatalanGerm.lean} has the two definitions
 \path{Fabius.quarterCatalanCoefficient} and
@@ -10839,7 +10937,7 @@ Module & Role in the present article \\
 \path{CentralQBinomialReduction.lean} & Exactly six public theorems and no definitions: sign pairing, even--odd dissection, naturality, integral and general division-free central reduction, and the field quotient under two nonvanishing hypotheses. \\
 \path{CyclotomicFactorization.lean} & Exactly seven public theorems and no definitions: floor-quotient bounds, divisor reindexing, commutative-ring finite-product identities, interval extension, and Gaussian cyclotomic factorization over an integral domain. \\
 \path{PrimitiveRootBlock.lean} & Exactly three public theorems and no definitions: \lean{gaussianBinomial_isPrimitiveRoot_eq_zero}, \lean{neg_one_pow_mul_pow_choose_two}, and \lean{finiteQPochhammerIn_isPrimitiveRoot}; in a commutative integral domain they give interior vanishing and, for positive primitive-root order, the top phase and complete block. \\
-\path{QLucas.lean} & Exactly eight public theorems and no definitions: \lean{two_mul_choose_two}, \lean{add_mul_add_sub_one}, \lean{choose_two_add}, \lean{coeff_finiteQPochhammerIn_neg_X}, \lean{finiteQPochhammerIn_neg_X_block}, \lean{coeff_block_pow_mul}, \lean{pow_choose_two_add_mul_eq}, and \lean{gaussianBinomial_q_lucas}.  The final theorem assumes only positive primitive-root order and the residue bounds \(b,s<d\), not \(r\le a\) or \(s\le b\). \\
+\path{QLucas.lean} & Exactly seven public theorems and no definitions: \lean{add_mul_add_sub_one}, \lean{choose_two_add}, \lean{coeff_finiteQPochhammerIn_neg_X}, \lean{finiteQPochhammerIn_neg_X_block}, \lean{coeff_block_pow_mul}, \lean{pow_choose_two_add_mul_eq}, and \lean{gaussianBinomial_q_lucas}.  The final theorem assumes only positive primitive-root order and the residue bounds \(b,s<d\), not \(r\le a\) or \(s\le b\); the duplicate arithmetic helper is private. \\
 \path{CyclotomicDivisibility.lean} & Exactly three public theorems and no definitions: \lean{cyclotomic_exponent_eq_one_iff}, \lean{cyclotomic_dvd_gaussianBinomial_iff}, and \lean{gaussianBinomial_mul_isPrimitiveRoot}.  The carry criterion assumes \(k\le n\), \(d>0\); divisibility is in \(\RationalNumbers[X]\); the primitive-root value needs no \(b\le a\). \\
 \path{QCatalan.lean} & Exactly one public definition, \lean{qCatalan}, and eleven theorems: \lean{map_qInt}, \lean{qInt_X_monic}, \lean{qInt_X_natDegree}, \lean{X_sub_one_mul_qInt}, \lean{qInt_X_eq_prod_cyclotomic}, \lean{qInt_X_dvd_gaussianBinomial_rat}, \lean{qInt_X_dvd_gaussianBinomial_int}, \lean{qInt_X_mul_qCatalan}, \lean{qCatalan_natDegree}, \lean{qCatalan_eval_one_mul}, and \lean{qCatalan_eval_one}.  The integral \path{divByMonic} quotient is defined for every natural \(n\); coefficient positivity, palindromicity, and a combinatorial interpretation are not asserted. \\
 \path{NewtonInterpolation.lean} & Exactly three definitions and nineteen theorems: \lean{newtonCoeff}, \lean{nodeNewtonPoly}, \lean{newtonInterpolant}; \lean{newtonCoeff_eq}, \lean{newtonCoeff_zero}, \lean{newtonCoeff_mul_prod}, \lean{nodeNewtonPoly_succ}, \lean{eval_nodeNewtonPoly}, \lean{degree_nodeNewtonPoly_lt}, \lean{nodeNewtonPoly_eq_interpolate}, \lean{eq_nodeNewtonPoly_of_eval_eq}, \lean{coeff_nodeNewtonPoly_self}, \lean{newtonCoeff_eq_sum}, \lean{nodal_range_pow}, \lean{prod_erase_pow_sub_pow}, \lean{newtonCoeff_pow_eq_sum}, \lean{newtonPoly_succ}, \lean{eval_newtonPoly}, \lean{degree_newtonPoly_lt}, \lean{newtonPoly_eq_interpolate}, \lean{eq_newtonPoly_of_eval_eq}, and \lean{coeff_newtonPoly_self}. \\

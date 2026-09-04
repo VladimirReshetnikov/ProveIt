@@ -60,8 +60,8 @@ and its 395-page, 2,494,949-byte PDF (SHA-256
 `5d25df07e6df1cd32118ee87e64c1cc54ad32da7c578a182231f98dd9fee9d5c`).
 Its exact final three-pass cycle and publication gates were clean for that
 named source. The merged source now postdates the receipt and remains
-rebuild-pending. No live `SHA256SUMS*` ledger is maintained or should be
-regenerated. The merged source incorporates the later
+rebuild-pending. Package-local checksum ledgers have been abolished and must
+not be regenerated. The merged source incorporates the later
 five-theorem
 `QPochhammerEntire.lean`, `QPochhammerInfinite.lean`, and
 `QPochhammerDissection.lean` surfaces, together with the subsequent q-series
@@ -69,8 +69,18 @@ module tranches and the zero-definition, three-theorem
 `GeometricPochhammerNormalConvergence.lean` leaf, in its formalization
 crosswalk. Retained PDFs under its `assets/` tree are
 research figures, not alternate manuscript renderings. The current Lean audit
-contains 901 facade-reachable modules and 11,419 public declarations, with no
-missing module headers or declaration documentation.
+contains 902 facade-reachable modules and 11,441 public declarations, with zero
+missing module headers and zero declaration-documentation gaps. The final
+declaration count is one above origin's 11,440 because this union retains the
+public `Fabius.complexQPochhammerInf_eq_qPochhammerInfIn` bridge.
+
+The ten-declaration increase is the sibling source-only
+`FabiusFunction.GeometricRichardsonGenerating` module (three definitions and
+seven theorems), not a change to this q-series package's forward-status totals.
+Its exact comb crosswalk is
+`Fabius.geometricLagrangeRichardson_generating`, with
+`Fabius.hasSum_geometricLagrangeRichardson_mul_pow` as the analytic companion.
+No retained PDF in this group renders that unrelated promotion.
 
 That repository-wide census includes a sibling, source-only Lambert-W
 promotion rather than a new q-series result. Its exhaustive module counts are
@@ -153,8 +163,8 @@ Current packages and retained intake records:
   and the historical artifact lineage. The completed
   [`source_concordance.csv`](q_pochhammer_q_binomial_monograph/source_concordance.csv)
   gives a reviewed disposition for all 547 source result environments from the
-  five merged publications. Its canonical destinations comprise 74 Lean-proved
-  rows, 404 human-proved
+  five merged publications. Its canonical destinations comprise 76 Lean-proved
+  rows, 402 human-proved
   frontier results, 60 not-applicable rows, and 9 conjectures. The historical
   [`theorem_concordance.csv`](q_pochhammer_q_binomial_monograph/theorem_concordance.csv)
   continues to account for all 260 inverse-source result environments, and
@@ -171,9 +181,15 @@ Current packages and retained intake records:
   `403a25dccadc15e7a34bedd8d28a2dc3369cb6e6a046cd199a30ed178742a32d`.
   Its A4 and embedded/subset-font checks passed, with five Libertinus rows and
   no Type-3 fonts. Those fingerprints remain historical receipts for that
-  source state. The later pre-`d8b` 16,834-line source and 395-page PDF have
-  the hashes and validation receipt stated above; the merged source postdates
-  them and is rebuild-pending.
+  source state. The most recent retained publication checkpoint was built in
+  exactly three guarded serial passes (386, 395, and 395 pages) from a
+  16,834-line, 837,715-byte source with SHA-256
+  `4785625c1399558f3ca59481888fc76514e0a327a1faa16945c61851f874f3d5`.
+  Its 395-page, 2,494,961-byte A4 PDF has SHA-256
+  `89159b2635f489a42d4c972fac95332808b1d637dee7921085db1ed7d6e055af`;
+  its compilation, index, reference, font, page-render, and visual gates
+  passed. That receipt predates the `9135` final source union and is therefore
+  historical; the merged source is pending a final union rebuild.
   It carries the five-theorem `QPochhammerEntire.lean`, the generic
   `QPochhammerInfinite.lean` and `QPochhammerDissection.lean` APIs, both
   Gaussian structure modules, `CentralQBinomialReduction.lean`,
@@ -183,9 +199,11 @@ Current packages and retained intake records:
   integer/complex-order Gaussian, q-Pfaff--Saalschuetz, quantum-multinomial,
   and Gaussian reciprocity/growth APIs, and the three-theorem
   `GeometricPochhammerNormalConvergence.lean` outer-product API. The forward
-  crosswalk is now 166 Exact, 90 Partial, 18 None, and 8 interface rows; the
-  source ledger is 74 Lean-proved, 404 human-proved frontier, 60 not
-  applicable, and 9 conjectures. PDF files retained
+  crosswalk is now 165 Exact, 91 Partial, 18 None, and 8 interface rows; the
+  source ledger is 76 Lean-proved, 402 human-proved frontier, 60 not
+  applicable, and 9 conjectures. No PDF was generated while resolving this
+  source-only union, so the retained 395-page artifact does not render the
+  final source. PDF files retained
   beneath `assets/` are vector research figures, not manuscript builds.
   Manuscript result labels and numerical checks remain
   distinct from Lean verification.
@@ -866,7 +884,7 @@ claims about the current canonical source. The pre-`d8b` receipt appears in the
 detailed package record above; the merged source is rebuild-pending and no
 current source/PDF parity claim is made.
 
-The latest validated forward formalization ledger has 282 rows: 166 Exact, 90
+The latest validated forward formalization ledger has 282 rows: 165 Exact, 91
 Partial, 18 with no counterpart, and 8 interface-only. The original
 191-result pre-Fabius core had 36 exact, 29 partial, 123 with no counterpart,
 and 3 interface-only entries. The four integrated-guide chapters add 31
@@ -1209,7 +1227,8 @@ eight theorems) and `NewtonInterpolation.lean` (three definitions, nineteen
 theorems). It formalizes the Jackson q-beta product and q-gamma evaluation,
 symmetry, positivity, and recurrences, together with generic Newton
 interpolation and its geometric-grid specialization; the interpolation
-polynomial is named `nodeNewtonPoly` to remain distinct from the older
+polynomial is named `nodeNewtonPoly`, with the definitionally identical
+`newtonInterpolant` compatibility surface, and remains distinct from the older
 Newton-basis generating-function `newtonPoly`.
 The final three-module tail adds integer and principal-complex upper-index
 Gaussian coefficients and the terminating balanced q-Pfaff--Saalschütz sum:
@@ -1229,3 +1248,11 @@ closed, while the compound
 greater-than-one row remains Partial at its asymptotic clauses. The
 primitive-root value in the Babbage corollary is exact, while its derivative
 clause keeps that compound row Partial.
+The terminating basic-hypergeometric closure consists of
+`TwoPhiOneReversal.lean` (two definitions and twelve theorems) and
+`QChuVandermonde.lean` (ten theorems). It makes both q-Chu evaluations and the
+terminating reversal lemma exact for the actual `twoPhiOne` tsum. The separate
+full-domain-by-reversal proposition remains Partial: the provenance theorem
+needs `C ≠ 0` and `(A;q)_n ≠ 0`, while the full-domain result is proved by
+finite q-Cauchy; rational continuation and the cleared commutative-ring
+extension remain outside Lean.

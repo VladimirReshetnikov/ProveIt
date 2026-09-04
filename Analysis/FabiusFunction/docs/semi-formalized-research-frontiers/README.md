@@ -21,15 +21,17 @@ The canonical frontier artifacts are:
 - [`semi-formalized-research-frontiers.tex`](semi-formalized-research-frontiers.tex)
 - [`semi-formalized-research-frontiers.pdf`](semi-formalized-research-frontiers.pdf)
 
-> **Current publication receipt (2026-09-03).** The synchronized canonical
+> **Historical publication receipt (2026-09-03).** The most recent pre-`9135bd7e`
 > source is the 17,954-line, 813,297-byte TeX file with SHA-256
 > `bcd9eefce2ead08e2cbb283e091a859aa31f36c67416543e994e10e8f9db3075`.
 > Its exact guarded three-pass cycle ran 254 -> 262 -> 262 pages and produced
-> the current 262-page, 1,885,642-byte A4 PDF with SHA-256
+> the then-current 262-page, 1,885,642-byte A4 PDF with SHA-256
 > `7f7e1279e38c766a465e640638ea7e0079a942de0bc84a5c22be497af27c7bab`.
-> The recorded publication gates are clean apart from the expected underfull
-> box diagnostics.  No `SHA256SUMS*` file exists or participates in
-> validation.  Earlier renders remain historical receipts for their own named
+> The recorded publication gates were clean apart from the expected underfull
+> box diagnostics.  The subsequent q-Chu/Richardson source union means this
+> PDF is historical and a final-source rebuild is pending.  No `SHA256SUMS*`
+> file exists or participates in validation.  Earlier renders remain
+> historical receipts for their own named
 > source states only: the immediately preceding 808,185-byte TeX file
 > (SHA-256
 > `7dd140370a0ac68522364a83a3c6423df93570741eafaef2ee8c1fac17670e2f`)
@@ -44,8 +46,8 @@ The canonical frontier artifacts are:
 > and a 257-page, 2,438,299-byte PDF (SHA-256
 > `3766761aac90247061f5c955dc84a0feb8567454e10839f1508b9431797ee980`).
 
-The authoritative live Lean audit now contains exactly 901 facade-reachable
-modules and 11,419 unique public declarations, with no missing module headers
+The authoritative live Lean audit now contains exactly 902 facade-reachable
+modules and 11,441 unique public declarations, with no missing module headers
 or declaration documentation.  The checked baseline records both zero-gap
 invariants.  The q-Pochhammer ownership remains
 `RvachevPochhammerFactorization` 1+10, `QPochhammerEntire` 0+5, and
@@ -74,8 +76,7 @@ also complete.  In addition to support vanishing, above-depth vanishing, the
 critical signed value, and exact depth detection, its two new theorems are
 `iteratedDeriv_rvachevUp_eq_extendedFabius` and
 `iteratedDeriv_rvachevUp_dyadic_below`; they identify every below-depth
-derivative with the corresponding rescaled global Fabius value.  The current
-262-page canonical-frontier PDF renders this merged source state.
+derivative with the corresponding rescaled global Fabius value.
 
 `RvachevSuperconvergentSynthesis.lean` contributes one definition and eight
 theorems for arbitrary nonzero natural meshes.  It packages the literal
@@ -93,15 +94,58 @@ nonnegative lower bounds, finite and infinite Pochhammer bounds for
 fixed-column or central asymptotic.  The stronger generic positivity theorem
 `finiteQPochhammerIn_self_pos` is reused from `GeneralQConditionNumber` and is
 not counted again.  The rigorous 282-row q-monograph totals
-are therefore 166 Exact / 90 Partial / 18 None / 8 interface: q-Lucas remains
+are therefore 165 Exact / 91 Partial / 18 None / 8 interface: q-Lucas remains
 Partial because the polynomial-congruence lift is absent, the Gaussian
 majorant is Exact, and the `Q > 1` asymptotic row remains Partial.
 
-The synchronized 262-page canonical-frontier PDF above and the current
-395-page q-series master render their respective final TeX sources and the
-merged semantic-union crosswalks.  Other retained subgroup PDFs must not be
-cited as displaying later source changes unless their own package records
-parity with an explicitly named source state.
+The newest source-only addition is
+`FabiusFunction.GeometricRichardsonGenerating`, with three definitions and
+seven theorems. Its
+`Fabius.geometricLagrangeRichardson_generating` theorem is the exact formal
+counterpart of canonical comb label `gq:thm:richardson-generating`; the module
+also supplies the report-facing analytic companion
+`Fabius.hasSum_geometricLagrangeRichardson_mul_pow` under strict nome
+contraction and absolute summability. The retained canonical-frontier,
+primary, walkthrough, q-series, and comb-synthesis PDFs all predate this
+crosswalk and remain historical artifacts until their affected roots are
+rebuilt.
+
+The 1 September 2026 source-only q-Pochhammer overlay is likewise newer than
+the retained PDFs.  The new `QPochhammerEntire.lean` leaf has zero definitions
+and five theorems: for a fixed complex nome with norm less than one it proves
+local uniform convergence of the infinite product, differentiability in the
+symbol, the division-free factor-zero criterion, the reciprocal-power zero
+lattice when the nome is nonzero, and analytic order one at every zero.  This
+promotes only `thm:poch-entire` in the consolidated q-series monograph.  The
+same current source also crosswalks the generic infinite/dissection API and
+the later Euler, q-binomial, Jacobi, quantum-binomial, Rogers--Szegő,
+cyclotomic-divisibility, q-Catalan, primitive-root-block, q-Lucas, Jackson
+q-beta, geometric Newton-interpolation, integer/complex upper Gaussian, and
+q-Pfaff--Saalschütz, and noncommutative q-multinomial tranches. Its 282-result forward
+status totals are now 165 exact / 91 partial / 18 none / 8 interface. The
+outer spectral product now has an exact
+locally-uniform/normal-convergence theorem; the compound centered/MGF and
+exterior reciprocal/pole layers remain partial.
+
+The final terminating-basic-hypergeometric inventory is
+`TwoPhiOneReversal.lean` (2 definitions + 12 theorems) and
+`QChuVandermonde.lean` (10 theorems). The two q-Chu evaluations and the
+terminating reversal lemma are exact for the actual `twoPhiOne` tsum. The
+claim that reversal alone proves the second evaluation on its full displayed
+domain remains partial: the compiled by-reversal theorem retains `C ≠ 0` and
+`(A;q)_n ≠ 0`, while the unrestricted theorem uses finite q-Cauchy directly;
+no rational-continuation or cleared commutative-ring extension is claimed.
+
+The latest pre-`9135bd7e` q-series receipt names the 16,834-line,
+837,715-byte source (SHA-256
+`4785625c1399558f3ca59481888fc76514e0a327a1faa16945c61851f874f3d5`)
+and its 395-page, 2,494,961-byte A4 PDF (SHA-256
+`89159b2635f489a42d4c972fac95332808b1d637dee7921085db1ed7d6e055af`).
+The present q-Chu/Richardson source union postdates that exact receipt.  Its
+completed source concordance now records 76 Lean-proved, 402 human-proved,
+60 not-applicable, and 9 conjectural rows; the forward ledger is 165
+Exact / 91 Partial / 18 None / 8 interface.  No current source/PDF parity is
+claimed until the final union is rebuilt.
 
 The current finite-moment/Legendre/Gaunt crosswalk covers eleven modules with
 20 public definitions and 109 public theorems, 129 declarations in all. The

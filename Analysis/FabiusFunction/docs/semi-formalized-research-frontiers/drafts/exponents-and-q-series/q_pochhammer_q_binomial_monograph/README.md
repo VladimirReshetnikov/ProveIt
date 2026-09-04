@@ -16,7 +16,7 @@ their repeated results map to one strongest canonical statement, while only
 genuinely stronger or independent material was transplanted. The completed
 `source_concordance.csv` assigns every one of the 547 source result
 environments a reviewed disposition. This immutable merger ledger's reviewed
-canonical-status totals remain 74 Lean-proved rows, 404 human-proved frontier
+canonical-status totals remain 76 Lean-proved rows, 402 human-proved frontier
 result rows, 60 not-applicable rows, and 9 conjecture rows. All five
 source-publication trees are
 therefore historical inputs preserved by the pinned revision and repository
@@ -50,8 +50,8 @@ The migrated `assets/` tree preserves six experiment programs, nineteen
 CSV/TXT outputs, and fourteen vector figures selected by the historical
 77-row `assets/ASSET_DISPOSITION.csv`. That disposition ledger remains the
 authoritative inventory of the 39 retained historical payloads; the pinned
-source revisions and repository history preserve their digest receipts. No
-live checksum manifest is maintained.
+source revisions and repository history preserve their digest receipts.
+Checksum manifests have been abolished and must not be recreated.
 
 ## Validation state
 
@@ -95,7 +95,7 @@ checksum manifests must not be recreated. Historical SHA-256 values recorded
 directly in this README and in `PROVENANCE.md` remain provenance receipts for
 the named artifacts.
 
-The current publication artifact was rebuilt on 2026-09-03 from a clean
+The most recent retained publication checkpoint was rebuilt on 2026-09-03 from a clean
 auxiliary state. Exactly three successful
 serial `pdflatex -interaction=nonstopmode -halt-on-error` passes produced 386,
 395, and 395 pages. During each pass `imakeidx` ran `makeindex` successfully:
@@ -118,11 +118,11 @@ material, Gaussian inversion, the formalization appendix, and both ends of
 the index. All blocking compilation, index, reference, font, page-render, and
 visual gates passed; the one harmless, readable 32.5659 pt overfull paragraph
 is the only disclosed exception to otherwise clean diagnostics. This receipt
-establishes current source/PDF rendering parity. The current formalization
-ledger closes at 166 Exact, 90 Partial, 18 None, and 8 interface rows.
-Files under `assets/experiments/**/figures/` remain research figures, not
-publication manuscripts.
-
+validates only its named source checkpoint: it predates the `9135` final source
+union, so the 395-page PDF is now historical and a final union rebuild remains
+pending. The current formalization ledger closes at 165 Exact, 91 Partial, 18
+None, and 8 interface rows. Files under `assets/experiments/**/figures/`
+remain research figures, not publication manuscripts.
 The current source includes exhaustive crosswalks for `QPochhammerEntire`
 (zero definitions
 and five legacy compatibility theorems), `QPochhammerInfinite` (one definition
@@ -164,6 +164,8 @@ retain their established names.
 The newest finite-q surfaces are `GaussianBinomialInteger` (one definition
 and ten theorems), `GaussianBinomialComplexOrder` (one definition and five
 theorems), `QPfaffSaalschutz` (zero definitions and three theorems),
+`TwoPhiOneReversal` (two definitions and twelve theorems),
+`QChuVandermonde` (zero definitions and ten theorems),
 `QuantumMultinomial` (zero definitions and five theorems), and
 `GaussianBinomialBounds` (zero definitions and six theorems), together with
 expanded Euler, Jacobi, and Rogers--Szegő material.
@@ -174,7 +176,15 @@ The newest combinatorial and certification tranche adds
 binary-word inversion and path-area generating functions, rectangular-box
 partition generating functions and counts, finite telescoping certificates,
 recurrence uniqueness, and rational-identity specialization. The live facade
-audit now contains 901 modules and 11,419 public declarations.
+audit now contains 902 modules and 11,441 public declarations, with zero
+missing module headers and zero declaration-documentation gaps. The
+ten-declaration increase is the unrelated sibling
+`FabiusFunction.GeometricRichardsonGenerating` module (three definitions and
+seven theorems), whose exact comb-manuscript crosswalk is
+`Fabius.geometricLagrangeRichardson_generating`; it does not change this
+monograph's forward-status inventory or make its retained PDF current.
+The final declaration count is one above origin's 11,440 because this union
+retains the public `Fabius.complexQPochhammerInf_eq_qPochhammerInfIn` bridge.
 
 The two newest generic theorems are
 `deriv_qPochhammerInfIn_ne_zero_of_mul_pow_eq_one`, which gives a nonzero
@@ -189,9 +199,9 @@ complex parameter and nome; it is a definitional equality, not a convergence
 claim. In `QBinomialTheoremInfinite`,
 `finiteQPochhammerIn_zero_left` remains the unique declaration owned by
 `GaussianBinomialAtOne` and is imported rather than redeclared. The forward
-status ledger is 166 Exact, 90 Partial, 18 None, and 8 interface rows; the
+status ledger is 165 Exact, 91 Partial, 18 None, and 8 interface rows; the
 original 191-result pre-Fabius core is 36/29/123/3, and the
-completed source concordance records 74 Lean-proved rows, 404 human-proved
+completed source concordance records 76 Lean-proved rows, 402 human-proved
 frontier rows, 60 not-applicable rows, and 9 conjectures.
 The fourteen-theorem `GaussianBinomialPalindromic` API and five-theorem
 `GaussianBinomialPolynomialStructure` API give exact degree,
@@ -244,6 +254,15 @@ two Pascal laws, and reciprocal series are Exact; so are the upper-parameter
 and generalized complex-order series on their stated norm domains.  The
 separate complex-parameter property and classical-specialization rows remain
 None and are not inferred from those series identities.
+The two q-Chu--Vandermonde evaluations are Exact for the actual `twoPhiOne`
+tsum on their full displayed domain: the second no longer requires `C ≠ 0` or
+`(A;q)_n ≠ 0`.  The terminating reversal lemma is also Exact, including the
+finite-to-tsum bridge, involutivity of the reflected parameters, and double
+application.  The separate proposition deriving the full second evaluation
+by reversal remains Partial: its compiled reversal route retains those two
+auxiliary hypotheses, while the full-domain proof uses direct finite q-Cauchy;
+the manuscript's rational-continuation and commutative-ring extensions remain
+unformalized.
 The quantum-multinomial row is Exact over every semiring under the stated
 pairwise q-commutation laws and commutation of q with each variable; neither
 centrality of q nor commutativity of the ambient semiring is claimed.
@@ -268,5 +287,8 @@ reciprocal-product expansions, the complex upper-parameter series, and the
 generalized q-binomial theorem. The remaining complex-Gaussian property and
 classical-limit rows stay unformalized.
 
-The current 395-page PDF is the validated rendering of this resolved source
-union; no further synchronization rebuild is pending.
+The retained 395-page PDF and source SHA-256
+`4785625c1399558f3ca59481888fc76514e0a327a1faa16945c61851f874f3d5`
+were synchronized at the historical checkpoint recorded above. The final
+`9135` source union is newer; these edits are source-only, make no current
+source/PDF parity claim, and remain pending a final union rebuild.
