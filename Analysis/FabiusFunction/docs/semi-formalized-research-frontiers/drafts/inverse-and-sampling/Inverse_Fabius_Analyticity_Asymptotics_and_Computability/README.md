@@ -19,7 +19,7 @@ only as reproducible checks.
 The package audit surfaces are:
 
 - [`theorem_concordance.csv`](theorem_concordance.csv): all 194 immutable
-  source-result rows, fully dispositioned as 54 Lean-proved, 91 human-proved
+  source-result rows, fully dispositioned as 57 Lean-proved, 88 human-proved
   frontier results, 10 conjectures, 15 open problems, and 24 non-applicable
   source environments;
 - [`LEAN_CROSSWALK.md`](LEAN_CROSSWALK.md): exact module and declaration
@@ -46,7 +46,7 @@ neither checker was run in this source-only documentation pass.
 
 `theorem_concordance.csv` records the disposition of all 194 source-result
 environments while preserving the ten immutable source fields reproduced from
-`audit/SOURCE_REVISION`.  Its current totals are 54 Lean-proved, 91
+`audit/SOURCE_REVISION`.  Its current totals are 57 Lean-proved, 88
 human-proved frontier results, 10 conjectures, 15 open problems, and 24
 nonassertoric rows.  Ten inverse-computability rows now have exact compiled
 counterparts: the main theorem, the three tolerant-difference branch
@@ -78,7 +78,7 @@ counterexample, and the logarithmic `1/n` witness with convention `d(0)=1`.
 The compiled declarations
 `Fabius.inverseFabiusExactDyadicDenominator_primrec` and
 `Fabius.inverseFabiusExactLogarithmicDenominator_primrec` close the remaining
-recursion clause, so that source proposition is now one of the 54 Lean-proved
+recursion clause, so that source proposition is now one of the 57 Lean-proved
 rows.  Its leastness is only for the fixed dyadic target; `1/n` is witness-only,
 and `d(0)=1` is a convention with no modulus asserted at zero.
 
@@ -94,12 +94,14 @@ at `93db15ad3c0645bd3cfd0a3e6e694e3c86a3aa2b`, a complete pre-retirement
 repository snapshot. The old paths are retained as provenance locators, not
 as live links.
 
-The ten newest exact source-row matches are abstract effective inversion,
+The thirteen newest exact source-row matches are abstract effective inversion,
 centered Appell deconvolution, positive-degree Appell mean-zero,
 arbitrary-phase polynomial deconvolution, forced superconvergence, and finite
 Appell lattice reproduction, together with the exact-dyadic repository modulus
 and the leading Laurent coefficient at every nonzero centered-MGF pole, plus
-the exact finite-prefix Appell expansions and their finite Richardson recovery.
+the exact finite-prefix Appell expansions and their finite Richardson recovery,
+the uncentered finite-prefix Thue--Morse collapse, its canonical Prouhet
+corollary, and the centered collapse.
 The superconvergence pair uses
 `FabiusFunction.RvachevSuperconvergentSynthesis`: its phase dictionary
 specializes the selected phases at `M = 2^N`, its physical quadrature wrapper
@@ -143,6 +145,20 @@ from respectively `n+1` prefixes at base `1/2` and `n/2+1` prefixes at base
 algebraic finite-binomial-convolution model; no random-variable, `HasLaw`, or
 MGF realization bridge is claimed.
 
+The zero-definition/eight-theorem
+`FabiusFunction.FinitePrefixThueMorseCollapse` module makes
+`is:p2:thm:TM-uncentered`, `is:p2:cor:Prouhet-canonical`, and
+`is:p2:thm:TM-centered` exact.  The uncentered main theorem gives
+`(-1)^N (1/2)^choose(N+1,2) n.descFactorial N x^(n-N)` on the complete
+depth-`N` signed grid, with companion theorems for the vanishing range `n < N`
+and the first constant `(-1)^N N! (1/2)^choose(N+1,2)`.  The centered
+successor theorem uses the manuscript's literal grid
+`x + (1 - 2^-(m+1)) - k/2^m` and has the sign-free scale
+`(1/2)^choose(m+1,2)`; its total common-denominator companion extends the
+formula to `N = 0`.  All eight declarations are rational coefficient-model
+identities.  They add no random-variable, `HasLaw`, analytic-MGF, or separate
+Barnes-identification theorem.
+
 ## Inverse-asymptotics subgroup closure
 
 The former `inverse-asymptotics-and-computability/` subgroup is fully
@@ -153,7 +169,7 @@ masters contribute 152 of the 194 concordance rows:
 - `Inverse_Endpoint_All_Orders`: 29 rows; and
 - `Inverse_Fabius_Computability_Report`: 40 rows.
 
-Their canonical classifications are 38 exact Lean matches, 73 complete
+Their canonical classifications are 41 exact Lean matches, 70 complete
 human-proved frontier results, 18 non-live source environments (seven
 definitions, three algorithms, two examples, four editorial obligations, and
 two superseded source conjectures), nine explicitly retained conjectures, and

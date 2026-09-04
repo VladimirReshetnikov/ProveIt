@@ -387,7 +387,10 @@ one-definition/four-theorem
 the existing \path{ProbabilityLaplaceMoments.lean} module; and the exhaustive
 one-definition/one-theorem
 \path{RvachevLegendreBiorthogonality.lean} leaf.  The live source census is
-925 facade-reachable modules and 11,619 public declarations.
+932 facade-reachable modules and 11,688 public declarations, with zero missing
+module headers and zero missing declaration comments.  The
+Legendre-biorthogonality 925/11,619 census remains an explicit historical
+checkpoint.
 The sharp
 leaf makes \nolinkurl{prop:qF-P-degree-sharp} Exact and supplies the formerly
 missing leading/odd-degree clause, so the represented
@@ -408,8 +411,9 @@ half-base root-simplicity leaf gave the actual merged-main pre-local checkpoint
 historical 921/11,575 checkpoint.  The Laurent leaf then gave 922/11,582, and
 the finite-prefix leaf gave the historical 923/11,610 checkpoint.  The RatFunc
 leaf gives the historical 924/11,615 checkpoint, the two probability theorems
-give 924/11,617, and the Legendre biorthogonality leaf gives the live
-925/11,619 union.  The incoming-branch
+give 924/11,617, and the Legendre biorthogonality leaf gives the historical
+925/11,619 checkpoint.  The subsequent merged source union gives the live
+932-module/11,688-public-declaration census with zero documentation gaps.  The incoming-branch
 906/11,461 and earlier exterior-branch 907/11,464 censuses remain explicitly
 historical.
 The retained
@@ -2761,8 +2765,10 @@ historical 921/11,575 checkpoint.  The
 checkpoint.  The \path{GeometricUniformMomentRatFunc.lean} (1+4) leaf gives
 the historical 924/11,615 checkpoint.  The two-theorem
 \path{ProbabilityLaplaceMoments.lean} extension then gives 924/11,617, and
-the \path{RvachevLegendreBiorthogonality.lean} (1+1) leaf gives the live
-925/11,619 union.
+the \path{RvachevLegendreBiorthogonality.lean} (1+1) leaf gives the historical
+925/11,619 checkpoint.  The subsequent merged source union gives the live
+932-module/11,688-public-declaration census, with zero missing module headers
+and zero missing declaration comments.
 
 The Laurent leaf makes \nolinkurl{is:p2:thm:Laurent-leading} Exact through
 the manuscript-normalized punctured-neighborhood limit and its Fourier
@@ -2779,8 +2785,51 @@ The finite-prefix leaf then makes
 \(\lean{Polynomial}\,(\lean{Polynomial}\,\RationalNumbers)\); a fixed-inner-\(x\)
 centered specialization can drop degree, for example for odd \(n\) at
 \(x=0\).  Its prefix moments are an algebraic finite-convolution model, not a
-random-variable, \lean{HasLaw}, or analytic-MGF realization.  The inverse
-package therefore has 54 Lean-proved and 91 human-proved frontier rows.
+random-variable, \lean{HasLaw}, or analytic-MGF realization.  At that
+checkpoint the inverse package had 54 Lean-proved and 91 human-proved
+frontier rows.
+
+The exhaustive public surface of
+\path{FinitePrefixThueMorseCollapse.lean} is zero definitions and eight
+theorems:
+\lean{Appell.sum_thueMorseSign_mul_eval_poly},
+\lean{Fabius.sum_thueMorseSign_mul_uncenteredDyadicPrefixAppellPolynomialRat},
+\lean{Fabius.sum_thueMorseSign_mul_uncenteredDyadicPrefixAppellPolynomialRat_of_lt},
+\lean{Fabius.sum_thueMorseSign_mul_uncenteredDyadicPrefixAppellPolynomialRat_self},
+\lean{Fabius.sum_thueMorseSign_mul_centeredDyadicPrefixAppellPolynomialRat},
+\lean{Fabius.sum_thueMorseSign_mul_centeredDyadicPrefixAppellPolynomialRat_succ},
+\lean{Fabius.sum_thueMorseSign_mul_centeredDyadicPrefixAppellPolynomialRat_of_lt},
+and
+\lean{Fabius.sum_thueMorseSign_mul_centeredDyadicPrefixAppellPolynomialRat_self}.
+Writing \(A^{\mathrm{unc}}_{N,n}\) and \(A^{\mathrm{cen}}_{N,n}\) for the
+two rational prefix Appell polynomials and \(s_N=1-2^{-N}\), their exact
+complete signed responses are
+\[
+ \sum_{k<2^N}\varepsilon_k
+   A^{\mathrm{unc}}_{N,n}(x+k/2^N)
+ =(-1)^N2^{-\binom{N+1}{2}}n^{\underline{N}}x^{n-N}
+\]
+and
+\[
+ \sum_{k<2^N}\varepsilon_k
+   A^{\mathrm{cen}}_{N,n}(x+s_N-2k/2^N)
+ =2^{-\binom{N}{2}}n^{\underline{N}}x^{n-N}.
+\]
+The uncentered formula has the manuscript's sign and
+\(2^{-\binom{N+1}{2}}\) factor, whereas the centered formula is sign-free
+with \(2^{-\binom{N}{2}}\).  When \(N=m+1\), the successor theorem uses the
+literal manuscript grid \(x+s_{m+1}-k/2^m\).  The two \texttt{of\_lt}
+theorems supply Prouhet cancellation below the block depth, and the two
+\texttt{self} theorems give the first nonzero constants.  Consequently
+\nolinkurl{is:p2:thm:TM-uncentered},
+\nolinkurl{is:p2:cor:Prouhet-canonical}, and
+\nolinkurl{is:p2:thm:TM-centered} are Exact by composition.  Both total main
+theorems include \(N=0\), strengthening the positive-depth statements.  The
+leaf is rational coefficient algebra only: it creates no random variable or
+\lean{HasLaw}, proves no analytic MGF, and supplies no Barnes-function
+identification.  These three promotions put the 194-row inverse concordance
+at 57 Lean-proved, 88 human-proved, 10 conjectural, 15 open, and 24
+nonassertoric rows.
 
 The existing \path{ProbabilityLaplaceMoments.lean} module adds exactly the
 two theorems
@@ -3011,7 +3060,9 @@ sharp-degree leaf gave the historical 921/11,575 checkpoint.  The Laurent leaf
 then gave 922/11,582, and the finite-prefix leaf gave the historical
 923/11,610 checkpoint.  The RatFunc leaf gives the historical 924/11,615
 checkpoint, the two probability theorems give 924/11,617, and the Legendre
-biorthogonality leaf gives the live 925/11,619 census.
+biorthogonality leaf gives the historical 925/11,619 checkpoint.  The
+subsequent merged source union gives the live census of 932 modules and
+11,688 public declarations, with zero documentation gaps.
 The existing
 \path{GeometricResidualMoments.lean} module now has zero definitions and nine
 public theorems.  Its

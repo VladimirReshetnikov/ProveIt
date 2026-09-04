@@ -128,6 +128,7 @@ import FabiusFunction.FabiusLambertPhaseExtraction
 import FabiusFunction.FabiusLambertPhaseExtractionBell
 import FabiusFunction.PrincipalLambertW
 import FabiusFunction.PrincipalLambertWAtTop
+import FabiusFunction.ProuhetBaseTwoBridge
 import FabiusFunction.AutonomousIteratedDeriv
 import FabiusFunction.LambertWHigherDerivatives
 import FabiusFunction.LambertWAntiderivative
