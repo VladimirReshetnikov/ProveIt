@@ -55,10 +55,10 @@ The shifted generalized harmonic sums `eq:merged-shifted-harmonic`
   `eq:merged-pochhammer-derivatives` and `eq:merged-reciprocal-pochhammer` for
   `m ≥ 2` need the exponential Faà di Bruno formula for the `m`-th derivative
   of `exp ∘ L`, which the corpus does not have: `Fabius.completeBellPolynomial`
-  (`MomentCumulantAlgebra`) and its partition expansion
-  (`ExponentialBell.completeBellPolynomial_eq_partitionExpSum`) are purely
-  formal-power-series objects, with no bridge to iterated derivatives of a
-  real or complex function.  Only `m = 1` is proved here, where the Bell
+  (in `MomentCumulantAlgebra`) and its partition expansion
+  `Fabius.completeBellPolynomial_eq_partitionExpSum` (in `ExponentialBell`) are
+  purely formal-power-series objects, with no bridge to iterated derivatives of
+  a real or complex function.  Only `m = 1` is proved here, where the Bell
   polynomial degenerates to `B_1(x_1) = x_1` and no Faà di Bruno is needed.
 * **The sign-flip identity `eq:merged-bell-sign-flip`**
   `B_m(-x_1, x_2, …, (-1)^m x_m) = (-1)^m B_m(x_1, …, x_m)`, which is the
@@ -73,9 +73,10 @@ The shifted generalized harmonic sums `eq:merged-shifted-harmonic`
   `(a)_n/n!` is a `Ring.choose`/`descPochhammer.smeval` computation that is
   orthogonal to everything else in this file.
 * **Chu--Vandermonde `eq:merged-vandermonde-rising`** is not restated: the
-  falling-factorial form is already `Fabius.descPochhammer_eval_add`
-  (`FallingFactorialSeries`), and the `q`-analogue layer carries the rising
-  form.
+  binomial-convolution identity is already available in falling-factorial form
+  as `Fabius.descPochhammer_eval_add` (in `FallingFactorialSeries`), proved
+  there from the formal binomial series rather than from the analytic argument
+  of the manuscript.
 -/
 
 set_option autoImplicit false
@@ -167,7 +168,7 @@ theorem derivative_ascPochhammer_eval {K : Type*} [Field K] {n : ℕ} {a : K}
     (ha : ∀ j : ℕ, j < n → a + (j : K) ≠ 0) :
     (Polynomial.derivative (ascPochhammer K n)).eval a
       = (ascPochhammer K n).eval a * shiftedHarmonic a n 1 := by
-  rw [shiftedHarmonic_one, ascPochhammer_eval_eq_prod_range, Finset.mul_sum,
+  rw [shiftedHarmonic_one, ascPochhammer_eval_eq_prod_range n a, Finset.mul_sum,
     derivative_ascPochhammer]
   simp only [Polynomial.eval_finsetSum, Polynomial.eval_prod, Polynomial.eval_add,
     Polynomial.eval_X, Polynomial.eval_C]
@@ -252,7 +253,8 @@ induction of the manuscript proof is Mathlib's
 identification of its denominator `∏_{j≤n}(a+j)` with `(a)_{n+1}`. -/
 theorem betaIntegral_eq_factorial_div_ascPochhammer {a : ℂ} (ha : 0 < a.re) (n : ℕ) :
     Complex.betaIntegral a ((n : ℂ) + 1) = (n ! : ℂ) / (ascPochhammer ℂ (n + 1)).eval a := by
-  rw [Complex.betaIntegral_eval_nat_add_one_right ha n, ascPochhammer_eval_eq_prod_range]
+  rw [Complex.betaIntegral_eval_nat_add_one_right ha n,
+    ascPochhammer_eval_eq_prod_range (n + 1) a]
 
 /-- `prop:merged-beta-integral` verbatim, `eq:merged-beta-integral`:
 `∫₀¹ t^{a-1}(1-t)^n dt = n!/(a)_{n+1}` for `Re a > 0` and every integer
