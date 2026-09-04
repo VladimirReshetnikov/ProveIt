@@ -3043,9 +3043,22 @@ and
 The current integrated tree adds the ninth public tower declaration
 \lean{ofReal_exp_mpLimit_eq_gammaTower_div}: for \(a,b>0\), the complex
 embedding of \lean{Real.exp} of \lean{mpLimit} at \((a,b)\) is
-\(T_0(b)/T_0(a)\).  Within this tower tranche, only the differential and
-iterated differential ladder in the real parameter \(a\) remains frontier; it
-requires a parameter-under-the-Mellin-integral theorem.  The raw Gamma product,
+\(T_0(b)/T_0(a)\).  The source-only leaf
+\path{ThueMorseGammaTowerDifferential.lean} has no definitions and exactly
+three public theorems: \lean{hasDerivAt_mellin_mellinKernel_parameter},
+\lean{hasDerivAt_thueMorseGammaLog_succ}, and
+\lean{iteratedDeriv_thueMorseGammaLog}.  Under exactly \(a>0\), they prove
+the arbitrary-complex-spectral parameter shift
+\(\frac d{da}M_a(s)=-M_a(s+1)\), the successor law
+\(L_{r+1}'(a)=(r+1)L_r(a)\), and
+\[
+ \frac{d^k}{da^k}L_r(a)=r^{\underline{k}}L_{r-k}(a),\qquad k\le r.
+\]
+Together with the existing Mellin, integral, dyadic, and ratio declarations,
+this makes \nolinkurl{p2:thm:gamma-tower} Exact on its positive-parameter
+domain.  Its displayed logarithm is the chosen \lean{thueMorseGammaLog}
+coordinate, not a proved branch or principal-\lean{Complex.log} identity; no
+nonpositive-parameter differential law is claimed.  The raw Gamma product,
 canonical regrouping, logarithmic/digamma expansions, Gamma-product Malmsten
 and heat-trace representations, D-finiteness, and general-base collision order listed above
 remain separate frontiers.
@@ -3376,6 +3389,23 @@ constant is elementary rather than asserted sharp.  Together with
 \lean{tendsto_gaussianBinomial_atTop}, the shifted limit and the two relative
 error bounds prove all four clauses of the q-monograph's
 \nolinkurl{thm:fixed-column-limit}; the additive pair are companion estimates.
+
+The source-only \path{GaussianBinomialGreaterOneAsymptotics.lean} leaf has no
+definitions and exactly two public theorems,
+\lean{gaussianBinomial_gt_one_fixedColumn_relativeError_isBigO} and
+\lean{gaussianBinomial_gt_one_central_isEquivalent}.  For real \(q>1\) they
+give, respectively,
+\[
+ (q^{-1};q^{-1})_k q^{-k(n-k)}{n\brack k}_q-1
+   =O\bigl((q^{-1})^{n-k+1}\bigr),
+ \qquad
+ {2m\brack m}_q\sim q^{m^2}(q^{-1};q^{-1})_\infty^{-1}.
+\]
+Natural subtraction is total in the first theorem, and
+\lean{gaussianBinomial_inv} is invoked only eventually once \(k\le n\).
+These three declarations make \nolinkurl{cor:qgreaterone} Exact with the
+printed normalization.  No shifted-central, non-real, or wider-nome theorem
+is asserted.
 
 \path{JacobiTripleProduct.lean} has two definitions and twenty-five theorems.
 Its exact public inventory is \lean{thetaExponent},
@@ -3875,7 +3905,7 @@ because the underlying infinite product is totalized outside its admissible
 range.  No spectral-zeta recovery, cumulant-sample recovery, or
 identifiability of an underlying probability law is asserted; those remain
 open interfaces.  With the later concurrent source union, the live facade
-census is 913 modules and 11,551 public declarations.  The immediately
+census is 914 modules and 11,554 public declarations.  The immediately
 preceding Appell/fixed-column/barycenter/Matrix checkpoint was 910/11,525;
 the complex Bernoulli value-completion checkpoint 903/11,448 remains
 historical.  The current TeX also
@@ -3902,7 +3932,8 @@ one-definition/fourteen-theorem \path{RvachevLagrangeNodesOnly.lean} leaf, the
 zero-definition/two-theorem
 \path{GaussianBinomialGreaterOneAsymptotics.lean} leaf, and the
 one-definition/eight-theorem
-\path{GeometricUniformMomentPolynomial.lean} module.
+\path{GeometricUniformMomentPolynomial.lean} module, and the zero-definition/
+three-theorem \path{ThueMorseGammaTowerDifferential.lean} leaf.
 These are
 source-only overlays; the retained 183-page, 1,899,243-byte PDF is explicitly
 historical and has not been regenerated for these additions.
@@ -6238,6 +6269,34 @@ makes both cited comb results Exact.  The coefficients
 no convergence theorem for an analytic reciprocal MGF is asserted.  Atom
 reconstruction remains owned by those synthesis declarations, and this leaf
 adds no larger matrix right-inverse or decoder-optimality statement.
+
+The subsequent \path{RvachevLagrangeNodesOnly.lean} leaf has the one public
+definition \lean{rvachevDeconvolvedPolynomialRat} and exactly fourteen public
+theorems:
+\lean{map_rvachevDeconvolvedPolynomialRat},
+\lean{rvachevDeconvolvedPolynomial_eq_sum_appell},
+\lean{eval_rvachevDeconvolvedPolynomial_eq_sum_even_iterateDerivative},
+\lean{rvachevDeconvolvedPolynomial_prod_X_sub_C_eq_sum_appell},
+\lean{eval_rvachevDeconvolvedPolynomial_lagrangeBasis_eq_sum_even_iterateDerivative},
+\lean{eval_rvachevDeconvolvedPolynomial_lagrangeBasis_eq_nodalWeight_mul_sum_appell},
+\lean{lagrangeRvachevDecoder_eq_nodalWeight_mul_sum_appell},
+\lean{map_lagrangeBasis_ratCast},
+\lean{map_rvachevDeconvolvedPolynomialRat_lagrangeBasis},
+\lean{lagrangeRvachevDecoder_eq_ratCast},
+\lean{rvachevRawMomentRat_eq_centeredRvachevFullMoment},
+\lean{momentCumulant_rvachevRawMomentRat_eq_centeredRvachevFullCumulant},
+\lean{momentCumulant_rvachevRawMomentRat_even_eq_bernoulliMersenne}, and
+\lean{rvachevReciprocalMomentRat_eq_completeBellPolynomial_neg_centeredCumulant}.
+By composition, not by a single wrapper, these declarations make
+\nolinkurl{cor:lag-nodes-only} Exact/Complete: they supply the distinct-node
+ordinary-derivative form, the raw omitted-node Appell form, rational descent
+and rational lattice samples, and the finite complete-Bell/Bernoulli--Mersenne
+coefficient identification.  Rationality is asserted only at rational
+evaluation points; the sampled identity is total at \(M=0\), while synthesis
+retains \(M\ne0\) and its degree and interval hypotheses.  The Bell statement
+is formal coefficient algebra, not analytic reciprocal-MGF convergence.  No
+promotion of the larger cardinal/right-inverse rows or decoder optimality is
+implied.
 
 The downstream \path{LagrangeRvachevMatrix.lean} module packages precisely this scalar
 loop as typed rectangular matrices.  Its exhaustive four-definition/abbreviation surface is
@@ -13607,12 +13666,15 @@ polynomials &
 \path{CyclotomicDivisibility.lean}, \path{QCatalan.lean},
 \path{TwoPhiOneReversal.lean}, \path{QChuVandermonde.lean},
 \path{QBinomialTheoremInfinite.lean},
-\path{GaussianBinomialFixedColumnRate.lean}, \path{JacobiTripleProduct.lean},
+\path{GaussianBinomialFixedColumnRate.lean},
+\path{GaussianBinomialGreaterOneAsymptotics.lean}, \path{JacobiTripleProduct.lean},
 \path{TwoSquareTheorem.lean}, \path{JacobiTwoSquareCount.lean},
 \path{QPascalSummation.lean}, \path{GaussianBinomialContinuity.lean},
 \path{QuantumBinomial.lean}, \path{RogersSzegoPolynomial.lean}\\
-Reciprocal-Gamma first jets and the Thue--Morse Gamma tower &
-\path{ReciprocalGammaJets.lean}, \path{ThueMorseGammaTower.lean}\\
+Reciprocal-Gamma first jets and the Thue--Morse Gamma tower, including its
+positive-parameter differential ladder &
+\path{ReciprocalGammaJets.lean}, \path{ThueMorseGammaTower.lean},
+\path{ThueMorseGammaTowerDifferential.lean}\\
 Local all-order jet calculus &
 \path{LeadingJet.lean}\\
 Normalized integer- and positive-real-order Volterra calculus, affine covariance,

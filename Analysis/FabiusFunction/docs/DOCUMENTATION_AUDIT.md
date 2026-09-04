@@ -112,7 +112,7 @@ numbers rather than copying these historical values.
 The historical post-merge 2026-09-01 inventory contained 675 modules and 8,909
 lexically visible public declarations, with zero missing module headers and
 zero missing doc comments.  A fresh 2026-09-04 audit for this documentation
-pass scans 913 facade-reachable modules and 11,551 public declarations.  It
+pass scans 914 facade-reachable modules and 11,554 public declarations.  It
 finds no missing module header or declaration comment, including throughout
 `FabiusInverseExactDyadicModulus.lean`, `JacobiTwoSquareCount.lean`, and
 `LagrangeRvachevMatrix.lean`, as well as the incoming
@@ -122,11 +122,11 @@ finds no missing module header or declaration comment, including throughout
 `GeometricUniformRealization.lean`, `RegularCentralQBinomialSum.lean`,
 `LambertWBranchGapBernoulli.lean`, `GaussianBinomialFixedColumnRate.lean`, and
 `RvachevAppellHasse.lean`, `GeometricUniformMomentPolynomial.lean`,
-`RvachevLagrangeNodesOnly.lean`, and
-`GaussianBinomialGreaterOneAsymptotics.lean` leaves.  Relative to the
-610/8,318 activation checkpoint, the current tree adds 303 modules and 3,233 declarations.
+`RvachevLagrangeNodesOnly.lean`, `GaussianBinomialGreaterOneAsymptotics.lean`,
+and `ThueMorseGammaTowerDifferential.lean` leaves.  Relative to the
+610/8,318 activation checkpoint, the current tree adds 304 modules and 3,236 declarations.
 Relative to the earlier 630/8,552 merged checkpoint, concurrent source work
-adds 283 modules and 2,999 declarations.  The post-merge 675/8,909 inventory,
+adds 284 modules and 3,002 declarations.  The post-merge 675/8,909 inventory,
 the intervening 903/11,448 Lambert-series inventory, and the immediately
 preceding 910/11,525 Appell/fixed-column checkpoint remain historical, not
 descriptions of the live facade.
@@ -400,6 +400,20 @@ Lambert leaf, the geometric-uniform and regular-central leaves, and this final
 ten-theorem leaf, the fixed-column checkpoint was 909 modules and 11,508
 public declarations.
 
+#### Greater-than-one Gaussian asymptotics
+
+`GaussianBinomialGreaterOneAsymptotics.lean` adds no definitions and exactly
+two theorems:
+`gaussianBinomial_gt_one_fixedColumn_relativeError_isBigO` and
+`gaussianBinomial_gt_one_central_isEquivalent`.  For real `q` under exactly
+`1 < q`, the first gives the fixed-column normalization
+`(q⁻¹;q⁻¹)_k * (q^(k*(n-k)))⁻¹ * [n,k]_q - 1 =
+O((q⁻¹)^(n-k+1))`; natural subtraction is total, and reciprocity is invoked
+only eventually once `k ≤ n`.  The second gives the central equivalence
+`[2m,m]_q ~ q^(m*m) * (q⁻¹;q⁻¹)_∞⁻¹`.  Together with the existing
+`gaussianBinomial_inv`, this makes `cor:qgreaterone` **Exact**.  No
+shifted-central statement or wider nome domain is claimed.
+
 #### Rvachev--Appell Hasse and geometric-decoder tranche
 
 `RvachevAppellHasse.lean` adds one source module, one definition,
@@ -447,14 +461,49 @@ new larger matrix right-inverse or decoder-optimality theorem.
 The resulting Appell/fixed-column checkpoint was 910 modules and 11,525
 public declarations, with no missing module header or declaration comment.
 
+#### Nodes-only Lagrange--Rvachev amplitude tranche
+
+`RvachevLagrangeNodesOnly.lean` adds one definition,
+`rvachevDeconvolvedPolynomialRat`, and exactly fourteen theorems:
+`map_rvachevDeconvolvedPolynomialRat`,
+`rvachevDeconvolvedPolynomial_eq_sum_appell`,
+`eval_rvachevDeconvolvedPolynomial_eq_sum_even_iterateDerivative`,
+`rvachevDeconvolvedPolynomial_prod_X_sub_C_eq_sum_appell`,
+`eval_rvachevDeconvolvedPolynomial_lagrangeBasis_eq_sum_even_iterateDerivative`,
+`eval_rvachevDeconvolvedPolynomial_lagrangeBasis_eq_nodalWeight_mul_sum_appell`,
+`lagrangeRvachevDecoder_eq_nodalWeight_mul_sum_appell`,
+`map_lagrangeBasis_ratCast`,
+`map_rvachevDeconvolvedPolynomialRat_lagrangeBasis`,
+`lagrangeRvachevDecoder_eq_ratCast`,
+`rvachevRawMomentRat_eq_centeredRvachevFullMoment`,
+`momentCumulant_rvachevRawMomentRat_eq_centeredRvachevFullCumulant`,
+`momentCumulant_rvachevRawMomentRat_even_eq_bernoulliMersenne`, and
+`rvachevReciprocalMomentRat_eq_completeBellPolynomial_neg_centeredCumulant`.
+
+By composition these declarations give `cor:lag-nodes-only` an
+**Exact/Complete** Lean counterpart; no single wrapper theorem is claimed.
+The ordinary-derivative Lagrange form assumes `Set.InjOn v s`, matching
+distinct nodes, while the raw omitted-node elementary-symmetric/Appell form
+uses `Lagrange.nodalWeight`.  Rational nodes produce a polynomial over `ℚ`
+whose coefficientwise real cast is the real decoder polynomial.  Rational
+values are consequently asserted only at rational evaluation points, notably
+the lattice points `k/M`, not at arbitrary irrational real points.  The
+lattice identity is total when `M=0`; actual reconstruction retains its
+separate nonzero and admissible-mesh hypotheses.  The complete-Bell identity
+is formal coefficient-sequence algebra, not analytic reciprocal-MGF
+convergence, and odd-cumulant vanishing uses the pre-existing centered-parity
+theorem.  This closure promotes neither `thm:lag-cardinal` nor the larger
+compound `thm:lag-right-inverse`, global atom synthesis, or decoder
+optimality.
+
 #### Algebraic geometric-uniform moment-polynomial tranche
 
 `GeometricUniformMomentPolynomial.lean` adds one source module and nine public
 declarations.  Concurrently, the one-definition/fourteen-theorem
 `RvachevLagrangeNodesOnly.lean` and zero-definition/two-theorem
 `GaussianBinomialGreaterOneAsymptotics.lean` leaves moved the 910/11,525
-checkpoint to 912/11,542; the moment-polynomial leaf brings the merged live
-census to 913/11,551.  Its exhaustive 1+8 surface is the definition
+checkpoint to 912/11,542; the moment-polynomial leaf brought that checkpoint
+to 913/11,551.  Its exhaustive 1+8 surface is the definition
 `geometricUniformMomentPolynomial` and the theorems
 `geometricUniformMomentPolynomial_zero`,
 `geometricUniformMomentPolynomial_succ`,
@@ -478,7 +527,26 @@ identifies those analytic/MGF coefficients with the recursive Lean family.
 The leading and subleading coefficients and exact degree asserted by
 `prop:qF-P-degree-sharp` remain unformalized.
 
-The resulting live inventory is 913 modules and 11,551 public declarations,
+That source checkpoint was 913 modules and 11,551 public declarations, with
+no missing module header or declaration comment.  The canonical
+`thm:qF-moment-polynomial` status remains **Partial** exactly as stated above.
+
+#### Thue--Morse Gamma-tower differential tranche
+
+`ThueMorseGammaTowerDifferential.lean` adds no definitions and exactly three
+theorems: `hasDerivAt_mellin_mellinKernel_parameter`,
+`hasDerivAt_thueMorseGammaLog_succ`, and
+`iteratedDeriv_thueMorseGammaLog`.  For every complex Mellin exponent and
+positive real damping parameter, the first differentiates under the integral
+and shifts `s` to `s+1`; the other two give
+`L_(r+1)'(a)=(r+1)L_r(a)` and the falling-factorial iterated law through
+exactly `k ≤ r`.  With the existing Gamma-tower Mellin, integral, dyadic, and
+ratio results, this makes `p2:thm:gamma-tower` **Exact** on the stated `0 < a`
+domain.  These theorems concern the chosen `thueMorseGammaLog` coordinate,
+not a proved branch or principal-`Complex.log` identity, and assert no
+nonpositive-parameter extension.
+
+The resulting live inventory is 914 modules and 11,554 public declarations,
 with no missing module header or declaration comment.
 
 The one-definition/eight-theorem
@@ -1222,8 +1290,7 @@ and 88-page notation-catalogue artifacts likewise predate their current merged
 sources.  Their package notices treat those PDFs as historical validation
 receipts, not parity claims, until fresh uninterrupted three-pass builds
 complete.  The inverse-computability receipt likewise still reflects the
-historical 675/8,909 census and requires refresh against the live 910/11,525
-historical 675/8,909 census and requires refresh against the live 913/11,551
+historical 675/8,909 census and requires refresh against the live 914/11,554
 inventory.  The canonical inverse-theory publication retains a 134-page
 artifact synchronized at its latest-main source checkpoint; the merged
 effective-inversion and superconvergent-synthesis tranches make current parity
