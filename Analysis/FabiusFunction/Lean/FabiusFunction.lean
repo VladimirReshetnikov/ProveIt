@@ -75,6 +75,8 @@ import FabiusFunction.FallingFactorialSeries
 import FabiusFunction.PochhammerFalling
 import FabiusFunction.CauchyPolynomials
 import FabiusFunction.CoefficientRules
+import FabiusFunction.GridEvaluationCertificate
+import FabiusFunction.IntegerCRTCertificate
 import FabiusFunction.UnitSeriesPowerRecurrence
 import FabiusFunction.ExpSeriesRecurrence
 import FabiusFunction.StirlingSeriesCoefficients

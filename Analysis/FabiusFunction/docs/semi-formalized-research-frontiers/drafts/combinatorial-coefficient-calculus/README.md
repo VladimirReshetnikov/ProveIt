@@ -152,7 +152,7 @@ specializations over every commutative rational algebra. They replace the
 rational-only helpers in `NorlundDiagonal` without changing their names. The
 manuscript supplies full coefficient proofs and an exact crosswalk.
 
-The pending `AbelPolynomialSeries` source constructs a solution over every
+The compiled `AbelPolynomialSeries` source constructs a solution over every
 commutative rational algebra, derives coefficients for every solution, and
 proves the full EGF and binomial identity including degree zero. The new
 `BernoulliFormalLog` source derives the rational formal logarithm of the

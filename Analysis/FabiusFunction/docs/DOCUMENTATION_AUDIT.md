@@ -159,7 +159,8 @@ together with `StirlingSeriesCoefficients.lean`,
 `WrightOmegaTwoOrders.lean`, and `UnitSeriesPowerRecurrence.lean`,
 together with the strengthened
 `ProbabilityLaplaceMoments.lean` surface,
-as well as the sixteenth theorem in `FinitePolynomialFunctional.lean`.
+as well as the sixteenth theorem in `FinitePolynomialFunctional.lean` and the
+new `GridEvaluationCertificate.lean` and `IntegerCRTCertificate.lean` leaves.
 Relative to the
 610/8,318 activation checkpoint, the current tree adds 367 modules and 3,815 declarations.
 Relative to the earlier 630/8,552 merged checkpoint, concurrent source work

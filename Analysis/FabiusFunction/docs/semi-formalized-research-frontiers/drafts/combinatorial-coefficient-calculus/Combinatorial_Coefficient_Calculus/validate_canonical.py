@@ -39,6 +39,7 @@ import io
 import re
 import subprocess
 import sys
+from collections import Counter
 from dataclasses import dataclass
 from pathlib import Path, PurePosixPath, PureWindowsPath
 from typing import Iterable, Iterator, Sequence
@@ -919,6 +920,37 @@ def validate_final_layout(report: Report) -> None:
                 )
 
 
+def validate_register_totals(path: Path, clean: str, report: Report) -> None:
+    """Check the register's advertised totals against its actual status rows.
+
+    This is an accounting check, not validation that a cited Lean theorem
+    proves the human statement. Unlabelled rows count just like labelled ones.
+    """
+    marker = r"\section{Lean formalization register}"
+    start = clean.find(marker)
+    if start < 0:
+        report.error("LEAN_REGISTER_MISSING", path, "missing Lean formalization register")
+        return
+    register = clean[start:].split(r"\backmatter", 1)[0]
+    summary = re.search(
+        r"Current totals:\s*(\d+) Lean,\s*(\d+) partial,\s*(\d+) none,"
+        r"\s*of (\d+) results\.", register,
+    )
+    if summary is None:
+        report.error("LEAN_REGISTER_SUMMARY", path, "missing or malformed register totals",
+                     SourceMap(clean).line(start))
+        return
+    rows = Counter(re.findall(r"(?m)^.*? & (Lean|partial|none) & ", register))
+    actual = (rows["Lean"], rows["partial"], rows["none"], sum(rows.values()))
+    advertised = tuple(map(int, summary.groups()))
+    if advertised != actual:
+        report.error(
+            "LEAN_REGISTER_TOTALS", path,
+            f"advertised Lean/partial/none/total {advertised}, but actual rows are {actual}",
+            SourceMap(clean).line(start + summary.start()),
+        )
+
+
 def validate_package(final: bool) -> Report:
     repo_root = locate_repo_root(PACKAGE_DIR)
     report = Report(repo_root)
@@ -946,6 +978,7 @@ def validate_package(final: bool) -> Report:
         validate_citations(CANONICAL_TEX, clean, report)
         validate_statement_proofs(CANONICAL_TEX, raw, clean, blocks, report)
         validate_frontier_disclaimer(CANONICAL_TEX, clean, report)
+        validate_register_totals(CANONICAL_TEX, clean, report)
 
     disposition_rows: list[dict[str, str]] = []
     disposition = find_metadata(DISPOSITION_NAME, report, final)
