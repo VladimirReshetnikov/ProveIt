@@ -129,6 +129,11 @@ import FabiusFunction.PrincipalLambertW
 import FabiusFunction.PrincipalLambertWAtTop
 import FabiusFunction.AutonomousIteratedDeriv
 import FabiusFunction.LambertWHigherDerivatives
+import FabiusFunction.LambertWAntiderivative
+import FabiusFunction.LambertWLogBounds
+import FabiusFunction.LambertWNegativeBounds
+import FabiusFunction.LambertWAdditionIdentity
+import FabiusFunction.LambertWBranchPairing
 import FabiusFunction.LowerLambertW
 import FabiusFunction.GeneralizedLambertCoordinate
 import FabiusFunction.LambertBranchDichotomy
