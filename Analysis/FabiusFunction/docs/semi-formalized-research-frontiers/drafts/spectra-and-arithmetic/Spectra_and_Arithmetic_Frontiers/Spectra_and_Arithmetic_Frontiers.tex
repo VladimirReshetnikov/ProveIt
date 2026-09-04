@@ -1300,8 +1300,21 @@ exact rational values \(\mathtt{fabiusDyadic}\,n\,(2^n-k)\)
 (\path{Fabius.foldedCoefficient_two_pow_eq_fabiusDyadic}, \path{AliasDyadicBridge.lean}).
 The sign form \eqref{p1:eq:A-F-DCT} is \path{Fabius.foldedCoefficient_eq_halfRange_cos_odd}
 (odd \(r\), with \(1-\RvachevUp\) for \(\FabiusBounded\)).  The substitution of the
-\(q\)-binomial closed form for those rational values into the transform is not formalized,
-nor is the convergence statement, which is analytic.
+\(q\)-binomial closed form for those rational values into the transform is formal too, in
+\path{AliasQBinomialBridge.lean}: \path{Fabius.foldedCoefficient_two_pow_eq_qBinomial} is
+\[
+  A_{2^n,r}=\frac1{2^n}\Bigl[1+2\sum_{k=1}^{2^n-1}
+    Q(2^n-k,n)\cos\Bigl(\frac{\pi rk}{2^n}\Bigr)\Bigr],
+\]
+where \(Q(m,n)\) is \path{Fabius.qBinomialThueMorseDyadicTranslatedFormulaIn}, the
+\(q\)-binomial closed form of \(\FabiusBounded(m/2^n)\) --- the general dyadic identity
+\path{Fabius.fabiusFunction_dyadic_eq_qBinomialThueMorseDyadicTranslatedFormulaIn_real}, valid
+for every \(m\le2^n\) and every translation parameter, not only at the single point
+\(1/2^n\).  The reflected index \(2^n-k\) is the sample identity
+\(\RvachevUp(k/2^n)=\FabiusBounded((2^n-k)/2^n)\)
+(\path{Fabius.rvachevUp_dyadic_eq_qBinomial}).  So the whole of \eqref{p1:eq:q-approximant}
+except its convergence, which is analytic, is now formal: the folded alias class of the
+infinite sinc product equals a finite cosine sum of \(q\)-binomial expressions.
 
 \begin{remark}[Three structures in one finite expression]
 Formula \eqref{p1:eq:q-approximant} simultaneously contains
