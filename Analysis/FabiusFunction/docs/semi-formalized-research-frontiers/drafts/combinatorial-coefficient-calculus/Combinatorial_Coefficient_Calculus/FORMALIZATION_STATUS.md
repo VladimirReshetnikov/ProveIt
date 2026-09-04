@@ -49,6 +49,22 @@ The inherited PDF predates these latest source edits. PDF rebuilding remains
 skipped in this work at the user's request, without discarding the upstream
 render or claiming current render parity.
 
+The finite-difference and Bell-multiplicity source checkpoint incorporates
+main through `5fddefb43b6f4009df826b68aedbdb1c6112e0d0`. It adds seven public
+theorems: three generic formulas in `BellCompletePartitions`, two
+arbitrary-scalar difference laws and two multiplicity specializations in
+`NorlundGeneralized`. Independent source/API review checked the factorial
+normalizations, unrestricted zeroth Bell input, zero-ring scope, degree zero,
+and negative orders. No Lean process was started while external Lean/Lake
+jobs occupied the host; these declarations are not compiler-verified yet.
+The generic human Bell proof is now shared by the Nörlund section.
+At this checkpoint the generated register has 208 rows, classified as
+62 `Lean`, 35 `partial`, and 111 `none`. The two added upstream `Lean`
+classifications are inherited certificate work, not promotions from this
+source review. Fourteen validator regression tests and the canonical
+structural/provenance check pass. The manifest and package README now refer
+to the canonical register instead of maintaining competing current totals.
+
 `NewtonReciprocal.lean` passed focused compilation on 2026-09-04 using
 `lake env lean -o .lake/build/lib/lean/FabiusFunction/NewtonReciprocal.olean
 Analysis/FabiusFunction/Lean/FabiusFunction/NewtonReciprocal.lean` (exit zero).
