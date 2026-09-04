@@ -3690,9 +3690,10 @@ out-of-range cases.  Its denominator-cleared companion is
 $n!\OrdinaryPartialBellPolynomial nk(x)=k!\ExponentialPartialBellPolynomial
 nk(1!x_1,2!x_2,\ldots)$.  The Lean proof compares the ordinary coefficient of
 the $k$-th power of the factorially weighted Bell series with its exponential
-Bell coefficient.  These declarations prove the polynomial normalization;
-they do not formalize the labelled-set partition interpretation of
-\cref{thm:bell-poly-partitions}, whose register row remains \emph{none}.
+Bell coefficient.  These declarations prove the polynomial normalization.
+The distinct labelled-set partition interpretation of
+\cref{thm:bell-poly-partitions} is supplied independently by
+\lean{BellSetPartitions}, as recorded beside that theorem.
 \end{remark}
 
 \section{Combinatorial interpretation}
@@ -3737,8 +3738,9 @@ What is \emph{not} formal: \cref{cor:partition-type}, and the multinomial
 expansion \eqref{eq:partial-bell-definition} it is read off from.  Those are
 statements about the individual monomials $\prod_i x_i^{j_i}$ of
 $\ExponentialPartialBellPolynomial nk$, whereas the theorem above is about its
-\emph{value}; extracting a coefficient needs a multivariate-polynomial layer the
-corpus does not have, and nothing in the module implies the per-type count.
+\emph{value}.  A proof by extracting coefficients would require a separate
+comparison in a multivariate polynomial ring; this module supplies no such
+per-type coefficient-extraction theorem.
 \end{remark}
 
 Thus
@@ -3804,6 +3806,84 @@ formal variable, and the identity is read on the coefficient of $t^n$; the
 formal statements are also slightly more general than the displays, since they
 ask only that the substituted series have no constant term rather than that it
 be presented as $\sum_{j\ge1}x_jt^j$.
+\end{remark}
+
+\begin{lemma}[Complete Bell multiplicity formula]
+\label{lem:merged-complete-bell-multiplicities}
+Let $R$ be a commutative $\RationalNumbers$-algebra and let
+$c=(c_j)_{j\geq0}$ be any sequence in $R$.  For every $n\geq0$,
+\begin{equation}
+ \ExponentialCompleteBellPolynomial n(c_1,\ldots,c_n)
+ =n!\!\sum_{\substack{m_1,\ldots,m_n\geq0\\
+                         \sum_{j=1}^n jm_j=n}}
+       \prod_{j=1}^n\frac{(c_j/j!)^{m_j}}{m_j!}.
+ \label{eq:merged-complete-bell-multiplicities}
+\end{equation}
+The value $c_0$ is unrestricted and does not enter the formula.
+All factorial reciprocals are rational scalars acting through the structure
+map $\RationalNumbers\to R$; division in $R$ is not assumed.
+At $n=0$ the sum has one empty vector and both empty products equal $1$.
+Equivalently, multiplying by $1/n!$ gives the normalized coefficient
+formula; over a characteristic-zero field the rational scalar actions
+are ordinary divisions.
+\end{lemma}
+
+\begin{proof}
+Put $D(t)=\sum_{j\geq1}c_jt^j/j!$.  By
+\cref{thm:bell-poly-egf}, the left side is
+$n!\CoefficientExtraction tn\exp D(t)$.
+This also identifies the recurrence-defined complete Bell sequence:
+if $A(t)=\exp D(t)=\sum_{r\geq0}a_rt^r/r!$, then
+$A(0)=1$ and $A'=D'A$, hence
+\[
+ a_{r+1}=\sum_{j=0}^r\binom rj c_{j+1}a_{r-j}.
+\]
+The initial value and this triangular recurrence determine $a_r$ uniquely
+by induction, so no counting interpretation of labelled partitions is
+needed to identify the sequence.
+
+To compute degree $n$, discard the terms of $D$ of degree greater than $n$.
+They cannot contribute, since $D(0)=0$ and every product contributing to
+degree $n$ has only positive-degree factors.  The formal exponential product
+law therefore gives
+\[
+ \CoefficientExtraction tn\exp D(t)
+ =\CoefficientExtraction tn
+   \prod_{j=1}^n\left(\sum_{m_j\geq0}
+       \frac{(c_j/j!)^{m_j}}{m_j!}t^{jm_j}\right).
+\]
+A choice contributes precisely when $\sum_{j=1}^n jm_j=n$; there are only
+finitely many such choices, since $jm_j\leq n$ for each $j$.
+Taking the coefficient and multiplying by $n!$ proves the formula.
+The same computation at $n=0$ is the constant coefficient of $\exp D$,
+namely $1$.  Every step is finite coefficient algebra, including over the
+zero ring; neither convergence nor cancellation of a nonzero element of
+$R$ is used.
+For the normalized form, multiply the identity by the rational scalar
+$1/n!$ and use $(1/n!)n!=1$ in $\RationalNumbers$.
+In a characteristic-zero field its canonical rational structure map
+sends each reciprocal factorial to that factorial's multiplicative
+inverse, which gives the division notation.
+\end{proof}
+
+\begin{remark}[Formal crosswalk]
+The source-reviewed module \lean{BellCompletePartitions} states
+\cref{eq:merged-complete-bell-multiplicities} as
+\lean{Fabius.bell_complete_eq_sum_weightedPartitions}, and its
+inverse-factorial normalization as
+\lean{Fabius.inv_factorial_smul_complete_eq_sum_weightedPartitions}.
+Over a characteristic-zero field the same identity in division notation is
+\lean{Fabius.bell_complete_eq_sum_div_weightedPartitions}.
+Its finite set \lean{Fabius.weightedPartitions} records multiplicities,
+not partitions of an actual labelled set.  The proof shares
+\lean{Fabius.completeBellPolynomial_eq_complete} and
+\lean{Fabius.completeBellPolynomial_eq_partitionExpSum};
+it introduces no duplicate coefficient recurrence.
+These three new declarations await compilation, so this lemma remains
+\emph{none} in the register.  These multiplicity-vector declarations do
+not themselves establish a labelled-set interpretation; that independent
+interpretation is supplied by \lean{BellSetPartitions} for
+\cref{thm:bell-poly-partitions}.  The prescribed-type count remains separate.
 \end{remark}
 
 \begin{masterbox}
@@ -6616,18 +6696,21 @@ a delta series, as required by the definition of binomial type.
 \end{proof}
 
 \begin{remark}[Formal crosswalk]
-% ed.: crosswalk added 2026-09-04; every clause is formal, including the hedge.
-All of this is formal in module \lean{AbelPolynomialSeries}, and the
-division-free bookkeeping of the statement is respected.
+% ed.: source correspondence; compiler validation is still pending.
+Module \lean{AbelPolynomialSeries} supplies source for all clauses of this
+statement, with compiler validation still pending.
 \lean{Fabius.abelPolynomial} is $P_n(a,x)=x(x-na)^{n-1}$ over any commutative
 ring, with $P_0=1$; \eqref{eq:merged-abel-binomial} is
-\lean{Fabius.abelPolynomial_eval_add}, again over any commutative ring.  The
-series clauses need the $\RationalNumbers$-algebra: \lean{Fabius.abelSeries_eq} is
+\lean{Fabius.abelPolynomial_eval_add}, whose current source requires a
+commutative $\RationalNumbers$-algebra.  The series clauses use the same
+rational-algebra hypothesis: \lean{Fabius.abelSeries_eq} is
 a solution of $T=t\EulerE^{-aT}$, and \eqref{eq:merged-abel-egf} is
 \lean{Fabius.exp_subst_eq_egfA_abelPolynomial}, which is stated for an
 \emph{arbitrary} series $T$ satisfying that equation rather than for the
 constructed one --- so the phrase ``every such solution'' above is exactly
-what is proved, not a strengthening left to the reader.
+what the source states, not a strengthening left to the reader.
+Reading that source is not a compiler receipt; the register therefore
+retains \emph{none} until validation of this module and its dependencies.
 \end{remark}
 
 \section{Exponential Riordan arrays}
@@ -6791,8 +6874,15 @@ applied to component weights $+1$ and $-1$.
 
 \begin{theorem}[Coordinate-free Faà di Bruno]
 \label{thm:merged-frechet-faa}
-Let $E,F,G$ be Banach spaces, $g:E\to F$, $f:F\to G$, and let $D^r$ denote
-the symmetric $r$-linear Fréchet derivative.  Then
+Fix an integer $n\geq1$.  Let $E,F,G$ be normed spaces over
+$\mathbb K=\RealNumbers$ or $\ComplexNumbers$, let $V\subseteq E$ and
+$W\subseteq F$ be open, and let $g:E\to F$ and $f:F\to G$ satisfy
+$g(V)\subseteq W$.  Suppose $g$ on $V$ and $f$ on $W$ are
+$\mathcal C^n$ in the Fréchet sense over $\mathbb K$.
+Write $\Pi_n$ for partitions of $\{1,\ldots,n\}$ represented with blocks
+ordered by increasing maximum and each block enumerated increasingly.
+For $x\in V$, directions $h_1,\ldots,h_n\in E$, and $D^r$ denoting
+the iterated $r$-linear Fréchet derivative in that order, one has
 \begin{equation}
  D^n(f\circ g)(x)[h_1,\ldots,h_n]
  =\sum_{\pi\in\Pi_n}D^{|\pi|}f(g(x))
@@ -6801,30 +6891,46 @@ the symmetric $r$-linear Fréchet derivative.  Then
 \end{theorem}
 
 \begin{proof}
-Induct on $n$.  For $n=1$ this is the chain rule.  Differentiate a term
-indexed by $\pi\in\Pi_n$ in direction $h_{n+1}$.  Either the derivative hits
-the outer derivative, creating the new singleton block $\{n+1\}$, or it hits
-one inner derivative associated with a block $B$, adjoining $n+1$ to $B$.
-Every partition of $[n+1]$ is obtained uniquely in one of these two ways,
-according as $\{n+1\}$ is a singleton or not.  The product and chain rules for
-multilinear maps supply no further multiplicities because blocks are already
-labelled subsets.
+Prove the identity simultaneously at every point of $V$ by induction on
+the derivative order $m=1,\ldots,n$.  At $m=1$ there is exactly one
+partition and the identity is the chain rule.  For $m<n$, all derivatives
+in the order-$m$ formula are differentiable on the stated open sets,
+and $g(V)\subseteq W$ permits the chain rule for every outer factor.
+To form the next iterated derivative, shift the existing labels from
+$\{1,\ldots,m\}$ to $\{2,\ldots,m+1\}$ and prepend the direction
+with label $1$.  Differentiating the outer derivative creates the first
+singleton block $\{1\}$.  Differentiating the inner derivative associated
+with a block $B$ inserts $1$ as its first element.  This insertion changes
+no block maximum, so the blocks retain their prescribed order.
+The derivative of a multilinear
+evaluation is the sum of its derivative in the operator and its derivative
+in each argument, so these are exactly all terms, each with coefficient one.
+Every represented partition of $[m+1]$ is obtained uniquely: remove the
+singleton $\{1\}$ if present; otherwise delete $1$ from its unique block,
+then shift all remaining labels down by one.
+No derivative arguments are permuted in either construction.
+Thus the differentiated
+sum is precisely the order-$m+1$ formula, completing the induction using
+only the assumed derivatives through order $n$.
 \end{proof}
 
 \begin{remark}[Formal crosswalk]
-% ed.: crosswalk added 2026-09-04; Mathlib proves this, under a different indexing.
-This is Mathlib's Fa\`a di Bruno formula,
-\texttt{HasFTaylorSeriesUpToOn.comp} in \texttt{Mathlib/Analysis/Calculus/ContDiff/FaaDiBruno.lean},
-for maps between normed spaces with Taylor series up to order $n$.  One
-convention differs and is worth knowing before comparing the two displays:
-Mathlib indexes the sum by \texttt{OrderedFinpartition} --- partitions of
-$\{0,\ldots,n-1\}$ whose blocks are listed in a canonical order, each block
-listed in increasing order --- rather than by the unordered partitions
-$\Pi_n$ of \eqref{eq:merged-frechet-faa}.  Because the outer derivative
-$D^{|\pi|}f$ is symmetric, every ordering of the blocks contributes the same
-term, and Mathlib's canonical ordering picks exactly one representative; so the
-two sums agree term by term and no multiplicity is lost or gained.  The
-regrouping of Mathlib's indexed sum into the partial-Bell form
+The actual derivative identity is Mathlib's \lean{iteratedFDeriv_comp}
+in \path{Mathlib/Analysis/Calculus/ContDiff/Comp.lean}, applied at order $n$.
+Its \lean{ContDiffAt} hypotheses follow from the stated local
+$\mathcal C^n$ assumptions on open sets.  Its conclusion unfolds using
+\lean{FormalMultilinearSeries.taylorComp} and
+\lean{FormalMultilinearSeries.compAlongOrderedFinpartition_apply}
+to exactly \cref{eq:merged-frechet-faa}.
+The index \lean{OrderedFinpartition} uses the same increasing-maximum
+block order and increasing order inside each block, with labels
+$0,\ldots,n-1$ instead of $1,\ldots,n$.
+The proof's insertion of the new least label is the
+\lean{OrderedFinpartition.extendLeft}/\lean{OrderedFinpartition.extendMiddle}
+decomposition.  No symmetry or unordered-index conversion is needed.
+Mathlib in fact allows normed spaces over any nontrivially normed field;
+neither completeness nor finite dimension is required here.
+The distinct regrouping into the partial-Bell tensor form
 \eqref{eq:merged-frechet-bell} below is not yet formal in the corpus.
 \end{remark}
 
@@ -7681,6 +7787,13 @@ formally in $R[x]$,
  \beta_n^{(\alpha)}(x+1)-\beta_n^{(\alpha)}(x)
  &=n\beta_{n-1}^{(\alpha-1)}(x).                                 \label{eq:merged-norlund-difference}
 \end{align}
+The translation identity also holds at $n=0$.  The difference identity
+has the successor-index form
+\[
+ \beta_{n+1}^{(\alpha+1)}(x+1)-\beta_{n+1}^{(\alpha+1)}(x)
+ =(n+1)\beta_n^{(\alpha)}(x)\qquad(n\geq0),
+\]
+and the difference of the degree-zero polynomial is zero.
 More generally, for $\alpha,\gamma,x,y\in R$ and $n\geq0$,
 \begin{equation}
  \beta_n^{(\alpha+\gamma)}(x+y)
@@ -7706,6 +7819,11 @@ Together with $B(\EulerE^t-1)=t$, this gives
 \]
 Coefficient comparison proves the third formula, with no restriction on
 $\alpha$; at order zero it legitimately uses the order $-1$ family.
+Comparing degree $n+1$ after replacing $\alpha$ by $\alpha+1$ gives the
+successor-index form, while $\beta_0^{(\alpha)}=1$ proves the zero-degree
+case directly.  Multiplication by factorials and their inverses is
+performed through rational scalars, so these arguments need no field or
+nonzero-ring hypothesis.
 Finally $\exp(\alpha L)\exp(\gamma L)=\exp((\alpha+\gamma)L)$, so multiplying
 the two generating functions and taking the coefficient of $t^n/n!$
 proves the convolution identity, including $n=0$.
@@ -7727,8 +7845,25 @@ from the product of the two exponential generating functions
 \cref{eq:merged-norlund-translation} is its case $\gamma=0$
 (\lean{Fabius.norlund_eval_add}); and \cref{eq:merged-norlund-difference} is
 \lean{Fabius.norlund_succ_eval_add_one_sub}, from
-$(\EulerE^{(x+1)t}-\EulerE^{xt})\,t/(\EulerE^t-1)=t\EulerE^{xt}$.  Complex
-orders, which need $\exp(\alpha\log(t/(\EulerE^t-1)))$, are not formalized.
+$(\EulerE^{(x+1)t}-\EulerE^{xt})\,t/(\EulerE^t-1)=t\EulerE^{xt}$.
+
+The arbitrary-scalar construction is now present as source in
+\lean{NorlundGeneralized}, but has not yet passed compiler validation.
+Its \lean{Fabius.generalizedNorlund} is an actual polynomial over every
+commutative rational algebra.
+\lean{Fabius.egfA_generalizedNorlund_eval} states the full EGF,
+\lean{Fabius.derivative_generalizedNorlund_succ} the polynomial derivative,
+\lean{Fabius.generalizedNorlund_eval_add} the translation, and
+\lean{Fabius.generalizedNorlund_add_eval_add} the convolution.
+The new difference declarations are
+\lean{Fabius.generalizedNorlund_succ_eval_add_one_sub} and
+\lean{Fabius.generalizedNorlund_eval_add_one_sub}; the latter uses natural
+subtraction on the index and checks degree zero separately.
+Neither restricts the scalar order, excludes the zero ring, or assumes
+a field.  The natural-order polynomial comparison over
+$\RationalNumbers$ is \lean{Fabius.generalizedNorlund_natCast}.
+Until this source and its dependencies compile, the row remains
+\emph{partial}; no analytic convergence claim follows from the formal EGF.
 \end{remark}
 
 \begin{theorem}[Bell-polynomial construction and the N\"orlund diagonal]
@@ -7768,7 +7903,7 @@ These expressions may be read as formal series over $R$, with rational
 coefficients interpreted through its structure map: the reciprocal kernel
 $G(t)=(\EulerE^t-1)/t$ has constant term $1$, and $B(t)G(t)=1$.
 Thus the formal logarithm product law also gives $L=-\log G$.
-To compute its coefficients without dividing by the nonunit series $t$,
+To compute its coefficients without requiring division by $t$,
 differentiate $B(\EulerE^t-1)=t$ and multiply by $B$.  The identities
 $B(\EulerE^t-1)=t$ and $B\EulerE^t=B+t$ give
 \[
@@ -7794,17 +7929,13 @@ Thus \eqref{eq:merged-norlund-egf} is
 $\exp(\sum_{j\geq1}c_j(\alpha,x)t^j/j!)$.
 The complete Bell-polynomial generating function
 \cref{thm:bell-poly-egf} proves the first formula.
-For the explicit formula, a coefficient of degree $n$ is unchanged if the
-inner sum is truncated at $j=n$.  Expand the finite product
-\[
- \prod_{j=1}^n\exp\!\left(c_j\frac{t^j}{j!}\right)
- =\prod_{j=1}^n\left(\sum_{m_j\geq0}
-       \frac{c_j^{m_j}t^{jm_j}}{m_j!\,(j!)^{m_j}}\right).
-\]
-Precisely the choices with $\sum_{j=1}^n jm_j=n$ contribute to degree
-$n$.  Multiplication by $n!$ gives
+Apply the generic multiplicity formula
+\cref{lem:merged-complete-bell-multiplicities} to this cumulant sequence.
+Distributing the powers across $c_j/j!$ and moving the rational
+factorials outside the product gives
 \cref{eq:merged-norlund-bell-explicit}, including the empty choice at
-$n=0$.
+$n=0$.  Thus the finite-partition expansion is a shared Bell identity,
+not a separate property that must be proved again for the N\"orlund family.
 
 For the diagonal, work over the coefficient algebra $R[x]$, with
 $(1+z)^{x-1}$ interpreted by its binomial series, and set
@@ -7848,10 +7979,22 @@ $\FallingFactorial{x-1}{n+1}=(x-1)\FallingFactorial{x-2}{n}$ then gives the
 closed form, and $x=0$ with
 $\FallingFactorial{-1}{n}=(-1)^nn!$ (\lean{Fabius.descPochhammer_eval_neg_one})
 gives the other two.  Transport of the diagonal to an arbitrary coefficient
-algebra is not yet a separate proved declaration. Complex orders are not
-compiler-verified here, nor is the
-Bell-polynomial construction
-\cref{eq:merged-norlund-bell,eq:merged-norlund-bell-explicit}.
+algebra is not yet a separate proved declaration.
+
+The arbitrary-order Bell construction now has explicit source in
+\lean{NorlundGeneralized}:
+\lean{Fabius.bellWeightSeries_generalizedNorlundCumulant} identifies the
+computed logarithm with the Bell weight series, and
+\lean{Fabius.generalizedNorlund_eval_eq_completeBell} states
+\cref{eq:merged-norlund-bell}.  The literal finite sum is
+\lean{Fabius.generalizedNorlund_eval_eq_sum_weightedPartitions}, with
+\lean{Fabius.generalizedNorlund_eval_eq_sum_div_weightedPartitions}
+giving its characteristic-zero-field notation.
+These specializations use the common formulas of
+\cref{lem:merged-complete-bell-multiplicities}.  Their source and the
+underlying \lean{BernoulliFormalLog} extension await compiler validation;
+the row remains \emph{partial}, without claiming either the general
+coefficient-algebra diagonal or analytic convergence.
 \end{remark}
 
 \section{Genocchi numbers}
@@ -10809,7 +10952,7 @@ coefficient calculus rather than a catalogue of isolated identities.
 
 \section{Lean formalization register}
 \label{sec:lean-register}
-Every theorem-like environment of this monograph is listed here with the status of its formalization in the Lean development \path{Analysis/FabiusFunction/Lean/FabiusFunction} (Mathlib \texttt{v4.32.0}).  \emph{Lean} means that a public, compiled declaration proves the exact statement or a more general one (the generalization is then noted next to the result); \emph{partial} means that a named part of the statement is proved and the rest is named; \emph{none} means that no compiler-verified counterpart is recorded yet, even if source under validation is identified.  A citation, a numerical check, or a plausible derivation does not count.  The register is generated from the source; its mappings must be updated when results are added or validated.  Current totals: 67 Lean, 36 partial, 104 none, of 207 results.
+Every theorem-like environment of this monograph is listed here with the status of its formalization in the Lean development \path{Analysis/FabiusFunction/Lean/FabiusFunction} (Mathlib \texttt{v4.32.0}).  \emph{Lean} means that a public, compiled declaration proves the exact statement or a more general one (the generalization is then noted next to the result); \emph{partial} means that a named part of the statement is proved and the rest is named; \emph{none} means that no compiler-verified counterpart is recorded yet, even if source under validation is identified.  A citation, a numerical check, or a plausible derivation does not count.  The register is generated from the source; its mappings must be updated when results are added or validated.  Current totals: 66 Lean, 36 partial, 106 none, of 208 results.
 
 \begin{footnotesize}
 \begin{longtable}{@{}p{0.16\textwidth}p{0.22\textwidth}p{0.08\textwidth}p{0.40\textwidth}@{}}
@@ -10888,6 +11031,7 @@ corollary (unlabelled, no.~5) & Cauchy integral & none &  \\
 \Cref{cor:bell-debruijn} & de Bruijn logarithmic expansion & none &  \\
 \Cref{thm:bell-poly-partitions} & Weighted-partition interpretation & Lean & \lean{Fabius.partialBell_eq_sum_setPartitions} and \lean{Fabius.bell_complete_eq_sum_allSetPartitions} (\lean{BellSetPartitions}), over any commutative semiring of weights; the per-type count \cref{cor:partition-type} is not covered \\
 \Cref{thm:bell-poly-egf} & Bell-polynomial generating functions & Lean & all five identities, as formal power series over any commutative $\mathbb Q$-algebra.  The first is \lean{Fabius.bellWeightSeries_pow} and the third \lean{Fabius.exp_subst_bellWeightSeries} (\lean{BellGeneratingFunctions}); the exponential bivariate form is \lean{Fabius.exp_subst_smul_bellWeightSeries} (\lean{ExponentialFormula}); the ordinary Bell polynomials are \lean{Fabius.ordPartialBell} with \cref{eq:ordinary-bell-ogf} as \lean{Fabius.coeff_pow_eq_ordPartialBell} (\lean{OrdinaryBellComposition}); and \cref{eq:ordinary-bell-bivariate} is \lean{Fabius.coeff_exp_subst_smul} (\lean{OrdinaryBellBivariate}).  In both bivariate statements $u$ is a scalar parameter rather than a second formal variable \\
+\Cref{lem:merged-complete-bell-multiplicities} & Complete Bell multiplicity formula & none & The new \lean{BellCompletePartitions} source states \lean{Fabius.bell_complete_eq_sum_weightedPartitions}, \lean{Fabius.inv_factorial_smul_complete_eq_sum_weightedPartitions}, and \lean{Fabius.bell_complete_eq_sum_div_weightedPartitions}, including degree zero and unrestricted zeroth input. It shares the existing complete-Bell and weighted-partition bridges, but still awaits compilation. This is an integer-multiplicity sum, not a labelled-set partition theorem. \\
 \Cref{thm:bell-poly-recurrences} & Complete and partial recurrences & Lean & \lean{Fabius.partialBell} is defined by \cref{eq:partial-bell-recurrence} (\lean{Fabius.partialBell_succ_succ}, \lean{Fabius.partialBell_succ_succ_eq_binomialConv}); \cref{eq:complete-bell-recurrence} is Mathlib-free \lean{Bell.complete_succ} together with \lean{Fabius.bell_complete_eq_sum_partialBell} (\lean{PartialBellPolynomials}, \lean{BellPolynomialInversion}); the boundary values are \lean{Fabius.partialBell_zero_succ}, \lean{Fabius.partialBell_succ_zero}, \lean{Fabius.partialBell_eq_zero_of_lt} \\
 \Cref{thm:bell-partial-convolution} & Block-colour convolution & Lean & \lean{Fabius.factorial_mul_partialBell_add} (\lean{BellComposition}), in the division-free form $(k_1+k_2)!\,B_{n,k_1+k_2}=k_1!k_2!\sum_i\binom ni B_{i,k_1}B_{n-i,k_2}$ \\
 \Cref{thm:bell-near-diagonal} &  & none &  \\
@@ -10942,11 +11086,11 @@ theorem (unlabelled, no.~77) &  & none &  \\
 \Cref{thm:merged-binomial-type-characterization} & Generating-function characterization of binomial type & none &  \\
 \Cref{thm:merged-sheffer} & Addition and lowering & partial & \cref{eq:merged-sheffer-addition} is \lean{Fabius.shefferPoly_add} (\lean{BinomialType}), for \lean{Fabius.shefferPoly} $=c\star p$ (binomial convolution of the coefficients of $g$ with the binomial-type sequence), with generating function \lean{Fabius.egfA_mul_exp_subst_smul_bellWeightSeries}; the lowering law \cref{eq:merged-sheffer-lowering} is not formalized \\
 \Cref{lem:merged-formal-rescaling} & Formal rescaling and exponentials & Lean & \cref{eq:merged-formal-rescaling-derivative} is \lean{Fabius.derivative_rescale} over every commutative semiring; \lean{Fabius.derivative_rescale_exp}, \lean{Fabius.rescale_zero_exp}, and \lean{Fabius.rescale_exp_add_one} give the exponential specializations over every commutative $\RationalNumbers$-algebra (\lean{ExponentialRescaling}). The general product law is Mathlib's \lean{PowerSeries.exp_mul_exp_eq_exp_add}. \\
-\Cref{prop:merged-abel} & Abel polynomials & Lean & \lean{Fabius.abelPolynomial}, \lean{Fabius.abelPolynomial_eval_add}, \lean{Fabius.abelSeries_eq}, \lean{Fabius.exp_subst_eq_egfA_abelPolynomial} (\lean{AbelPolynomialSeries}); the EGF identity is proved for every solution of $T=te^{-aT}$, not only the constructed one \\
+\Cref{prop:merged-abel} & Abel polynomials & none & \lean{Fabius.abelPolynomial}, \lean{Fabius.abelPolynomial_eval_add}, \lean{Fabius.abelSeries_eq}, \lean{Fabius.exp_subst_eq_egfA_abelPolynomial} (\lean{AbelPolynomialSeries}) state the EGF for every solution of $T=te^{-aT}$ over a commutative rational algebra, not only the constructed one. The polynomial definition needs only a commutative ring, but the current binomial-identity proof also assumes a rational algebra. Compiler validation is pending. \\
 \Cref{thm:merged-riordan} & Riordan action, product, and inverse & partial & \lean{Fabius.expRiordan_action}, \lean{Fabius.expRiordan_mul}, \lean{Fabius.expRiordan_mul_inverse} (\lean{ExponentialRiordan}) prove the action, product, and a conditional one-sided inverse law, assuming the inverse series and $g\,(h\circ f)=1$.  Construction of these inverse series from the theorem's unit hypotheses and the full two-sided inverse statement remain to be formalized.  The Stirling examples are \lean{Fabius.expRiordan_one_exp_sub_one} and \lean{Fabius.expRiordan_one_log}. \\
 \Cref{thm:merged-complementary-bell} & EGF, recurrence, and Dobiński-type series & Lean & \lean{Fabius.complementaryBell} (\lean{ComplementaryBell}); \cref{eq:merged-complementary-egf} is \lean{Fabius.exp_subst_neg_exp_sub_one}, \cref{eq:merged-complementary-recurrence} is \lean{Fabius.complementaryBell_succ}, and \cref{eq:merged-complementary-dobinski} is \lean{Fabius.complementaryBell_eq_exp_mul_tsum} (the series converges absolutely as the Poisson moment series of \lean{Fabius.tsum_pow_mul_pow_div_factorial}) \\
 \Cref{cor:merged-bell-convolution-inverse} & Convolution inverse of the Bell sequence & Lean & \lean{Fabius.sum_choose_bell_mul_complementaryBell} (\lean{ComplementaryBell}), from the addition law \lean{Bell.complete_add} of complete Bell polynomials at weights $\pm1$ \\
-\Cref{thm:merged-frechet-faa} & Coordinate-free Faà di Bruno & Lean & Mathlib's \texttt{HasFTaylorSeriesUpToOn.comp} (FaaDiBruno.lean), indexed by \texttt{OrderedFinpartition} rather than unordered partitions; the regrouping into partial-Bell form is not formal \\
+\Cref{thm:merged-frechet-faa} & Coordinate-free Faà di Bruno & Lean & Mathlib's \lean{iteratedFDeriv_comp} (ContDiff/Comp.lean), unfolded with \lean{FormalMultilinearSeries.taylorComp} and \lean{FormalMultilinearSeries.compAlongOrderedFinpartition_apply}. The statement includes local $C^n$ hypotheses and explicitly uses \lean{OrderedFinpartition}'s increasing-maximum block order. No symmetry conversion is required; the separate partial-Bell regrouping remains open. \\
 corollary (unlabelled, no.~11) &  & none &  \\
 \Cref{thm:merged-inverse-derivative} & Inverse derivative recursion & none &  \\
 \Cref{thm:merged-inverse-derivative-operator} & Inverse-derivative operator & none &  \\
@@ -10962,8 +11106,8 @@ corollary (unlabelled, no.~11) &  & none &  \\
 \Cref{thm:merged-bernoulli-difference} & Bernoulli polynomials from finite differences & Lean & \cref{eq:merged-bernoulli-newton-basis} is \lean{Fabius.bernoulli_eq_sum_fwdDiff} (module \lean{BernoulliNewtonBasis}), an identity in $\mathbb Q[x]$ with $\Delta^kx^n$ written out as $\sum_j(-1)^{k-j}\binom kj(x+j)^n$; the truncated Gregory composition is \lean{Fabius.X_pow_dvd_bernoulliPowerSeries_sub_gregory}. \\
 \Cref{cor:merged-bernoulli-stirling-second-proof} & Second proof of the Bernoulli--Stirling formula & Lean & \lean{Fabius.bernoulli_eq_sum_fwdDiff_zero} (module \lean{BernoulliNewtonBasis}): $\beta_n=\sum_k\frac{(-1)^k}{k+1}\Delta^k0^n$, and with the surjection formula \lean{Fabius.factorial_mul_stirlingSecond_eq_sum} this is \lean{Fabius.bernoulli_eq_sum_stirlingSecond}. \\
 \Cref{lem:merged-log-base-change} & Change of coefficient algebra & none &  \\
-\Cref{thm:merged-norlund-calculus} & Appell, difference, and convolution calculus & partial & For natural orders $\alpha,\gamma\in\mathbb N$ (module \lean{NorlundPolynomials}, $\beta_n^{(a)}$ defined by \lean{Fabius.norlund}): \cref{eq:merged-norlund-appell} is \lean{Fabius.derivative_norlund_succ}, \cref{eq:merged-norlund-translation} is \lean{Fabius.norlund_eval_add}, \cref{eq:merged-norlund-difference} is \lean{Fabius.norlund_succ_eval_add_one_sub} and \cref{eq:merged-norlund-convolution} is \lean{Fabius.norlund_add_eval_add}; complex orders are not formalized. \\
-\Cref{thm:merged-norlund-bell-diagonal} & Bell-polynomial construction and the N\"orlund diagonal & partial & The three diagonal displays are formalized for natural orders (module \lean{NorlundDiagonal}): \cref{eq:merged-norlund-polynomial-diagonal} is \lean{Fabius.norlund_diagonal}, \cref{eq:merged-norlund-number-diagonal} is \lean{Fabius.norlund_eval_zero_diagonal} and \cref{eq:merged-norlund-diagonal} is \lean{Fabius.coeff_bernoulliPowerSeries_pow_succ}; the Bell-polynomial construction \cref{eq:merged-norlund-bell,eq:merged-norlund-bell-explicit} is not formalized. \\
+\Cref{thm:merged-norlund-calculus} & Appell, difference, and convolution calculus & partial & For natural orders $\alpha,\gamma\in\mathbb N$ (module \lean{NorlundPolynomials}, $\beta_n^{(a)}$ defined by \lean{Fabius.norlund}): \cref{eq:merged-norlund-appell} is \lean{Fabius.derivative_norlund_succ}, \cref{eq:merged-norlund-translation} is \lean{Fabius.norlund_eval_add}, \cref{eq:merged-norlund-difference} is \lean{Fabius.norlund_succ_eval_add_one_sub} and \cref{eq:merged-norlund-convolution} is \lean{Fabius.norlund_add_eval_add}. The arbitrary-order source in \lean{NorlundGeneralized}, including \lean{Fabius.generalizedNorlund_succ_eval_add_one_sub} and \lean{Fabius.generalizedNorlund_eval_add_one_sub}, awaits compilation; the row is not promoted on source review alone. \\
+\Cref{thm:merged-norlund-bell-diagonal} & Bell-polynomial construction and the N\"orlund diagonal & partial & The three diagonal displays are formalized for natural orders and rational evaluation points (module \lean{NorlundDiagonal}): \cref{eq:merged-norlund-polynomial-diagonal} is \lean{Fabius.norlund_diagonal}, \cref{eq:merged-norlund-number-diagonal} is \lean{Fabius.norlund_eval_zero_diagonal} and \cref{eq:merged-norlund-diagonal} is \lean{Fabius.coeff_bernoulliPowerSeries_pow_succ}. The arbitrary-order Bell and multiplicity constructions in \lean{NorlundGeneralized} and \lean{BellCompletePartitions} await compilation. Transport of the polynomial diagonal to an arbitrary coefficient algebra remains open. \\
 \Cref{thm:merged-genocchi} & Bernoulli--Euler--Genocchi relations & Lean & with \lean{Fabius.genocchi} defined by $2(1-2^n)\beta_n$, the generating function \cref{eq:merged-genocchi-egf} is \lean{Fabius.egf_genocchi_mul_exp_add_one} (\lean{GenocchiNumbers}), i.e. the first equality of \cref{eq:merged-genocchi}, and the second equality is \lean{Fabius.genocchi_succ_eq} (\lean{EulerPolynomials}); \lean{Fabius.genocchi_one}, \lean{Fabius.genocchi_two}, \lean{Fabius.genocchi_odd} give the initial values and the parity \\
 \Cref{thm:merged-cauchy-polynomials} & Integral, Stirling, difference, addition, and reflection formulas & partial & Module \lean{CauchyPolynomials} defines $b_n$ by \cref{eq:merged-bernoulli-second-egf} (\lean{Fabius.cauchyPoly}): \cref{eq:merged-cauchy-derivative} is \lean{Fabius.derivative_cauchyPoly_succ}, \cref{eq:merged-cauchy-difference} is \lean{Fabius.cauchyPoly_succ_eval_add_one_sub}, \cref{eq:merged-cauchy-addition} is \lean{Fabius.cauchyPoly_eval_add}, \cref{eq:merged-cauchy-explicit} is \lean{Fabius.cauchyPoly_succ_eq} and \cref{eq:merged-cauchy-stirling-numbers} is \lean{Fabius.cauchyPoly_eval_zero}; the integral representation \cref{eq:merged-cauchy-integral} and the reflection \cref{eq:merged-cauchy-reflection} are not formalized. \\
 proposition (unlabelled, no.~6) &  & none &  \\

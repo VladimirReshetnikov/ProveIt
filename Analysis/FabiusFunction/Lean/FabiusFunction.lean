@@ -99,7 +99,6 @@ import FabiusFunction.AbelPolynomialSeries
 import FabiusFunction.LambertWSeries
 import FabiusFunction.FussCatalanSeries
 import FabiusFunction.InverseBellCoefficients
-import FabiusFunction.InverseDerivativeRecursion
 import FabiusFunction.StirlingFirstDiagonal
 import FabiusFunction.DiamondPower
 import FabiusFunction.OrdinaryBellBivariate
@@ -337,6 +336,7 @@ import FabiusFunction.ExponentialPartition
 import FabiusFunction.ThueMorsePartition
 import FabiusFunction.ExponentialBell
 import FabiusFunction.UnitSeriesBellCoefficients
+import FabiusFunction.BellCompletePartitions
 import FabiusFunction.ThueMorseIntegerLift
 import FabiusFunction.ThueMorseBoundaryFlatness
 import FabiusFunction.ThueMorseDirichlet
@@ -559,6 +559,7 @@ import FabiusFunction.TransseriesScaleDominance
 import FabiusFunction.TransseriesBlockClasses
 import FabiusFunction.TransseriesMonomialUniqueness
 import FabiusFunction.TransseriesWrightOmegaTerms
+import FabiusFunction.LambertCoefficientPolynomials
 import FabiusFunction.TransseriesPolyLogScale
 import FabiusFunction.TriangularPowerProduct
 import FabiusFunction.LasotaYorkeIteration
