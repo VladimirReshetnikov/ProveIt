@@ -40,6 +40,7 @@ variable {R : Type*} [CommRing R]
 /-- **`p1:eq:divisor`.**  The divisor transform `b_m = ∑_{d ∣ m} d a_d`. -/
 def divisorTransform (a : ℕ → R) (m : ℕ) : R := ∑ d ∈ m.divisors, (d : R) * a d
 
+/-- `b_0 = 0`: zero has no divisors in Mathlib's convention. -/
 @[simp] theorem divisorTransform_zero (a : ℕ → R) : divisorTransform a 0 = 0 := by
   simp [divisorTransform]
 
@@ -59,15 +60,10 @@ theorem divisorTransform_sub (a : ℕ → R) {m : ℕ} (hm : m ≠ 0) :
 /-- A proper divisor is at most half: `d ∣ m` and `d < m` force `2d ≤ m`. -/
 theorem two_mul_le_of_mem_properDivisors {m d : ℕ} (h : d ∈ m.properDivisors) :
     2 * d ≤ m := by
-  obtain ⟨hdvd, hlt⟩ := Nat.mem_properDivisors.mp h
-  have hd0 : 0 < d := Nat.pos_of_mem_properDivisors h
-  obtain ⟨k, hk⟩ := hdvd
-  have hk2 : 2 ≤ k := by
-    rcases Nat.lt_or_ge k 2 with hsmall | hbig
-    · interval_cases k <;> omega
-    · exact hbig
-  calc 2 * d ≤ k * d := Nat.mul_le_mul hk2 (le_refl d)
-    _ = m := by rw [hk]; ring
+  have hdvd := (Nat.mem_properDivisors.mp h).1
+  have hq : 2 ≤ m / d := Nat.one_lt_div_of_mem_properDivisors h
+  calc 2 * d ≤ (m / d) * d := Nat.mul_le_mul hq (le_refl d)
+    _ = m := Nat.div_mul_cancel hdvd
 
 /-! ### The disturbance coefficients -/
 
@@ -107,7 +103,8 @@ theorem disturbanceCoeff_prime (a : ℕ → K) {p : ℕ} (hp : p.Prime) :
 `ϱ_r ∈ ℚ_{≥0}`. -/
 theorem disturbanceCoeff_nonneg {a : ℕ → ℚ} (ha : ∀ n, 0 ≤ a n) (r : ℕ) :
     0 ≤ disturbanceCoeff a r := by
-  refine div_nonneg (Finset.sum_nonneg fun d _ => ?_) (by positivity)
-  exact mul_nonneg (by positivity) (ha d)
+  rw [disturbanceCoeff]
+  refine div_nonneg ?_ (Nat.cast_nonneg r)
+  exact Finset.sum_nonneg fun d _ => mul_nonneg (Nat.cast_nonneg d) (ha d)
 
 end Fabius
