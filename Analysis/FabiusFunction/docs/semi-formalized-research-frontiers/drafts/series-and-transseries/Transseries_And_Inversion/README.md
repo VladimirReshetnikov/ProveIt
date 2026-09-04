@@ -2,10 +2,10 @@
 
 **Single consolidated volume for the whole `series-and-transseries` group.**
 `transseries_and_inversion.tex` is the canonical editable source. The retained
-702-page PDF was built on 4 September 2026 from the 55,005-line,
-3,111-label publication checkpoint. The current 55,319-line source has 3,118
-distinct labels and includes later Lean-crosswalk edits; the retained artifact
-is therefore historical and no current source/render parity is claimed.
+711-page A4 PDF is a 4 September 2026 publication checkpoint. The current
+55,847-line source has 3,124 distinct labels and includes later merged
+source-only Lean crosswalks; the retained artifact is therefore historical and
+no current source/render parity is claimed.
 
 ## Status
 
@@ -26,10 +26,10 @@ absorbed each; the repair appendix lists every correction made.
 
 ## Lean formalization inventory
 
-The live corpus census is 952 modules and 11,884 explicit public declarations,
+The live corpus census is 967 modules and 12,001 explicit public declarations,
 with zero missing declaration comments and zero missing module headers. The
-eighteen directly relevant modules contain 169 explicit public commands; two
-named `to_additive` declarations bring this inventory to 171 named API entries.
+thirty-two directly relevant modules contain 265 explicit public commands; two
+named `to_additive` declarations bring this inventory to 267 named API entries.
 Automatically generated structure projections are outside both tallies.
 
 - `TransseriesScale.lean` (one structure, one definition, three theorems):
@@ -132,9 +132,9 @@ Automatically generated structure projections are outside both tallies.
   `powerLogCore_exp`, `log_powerLogCoreRoot_sub`,
   `powerLogCore_of_lambert`, `powerLogCore_powerLogCoreRoot`,
   `hasDerivAt_powerLogCore`, and `hasDerivAt_powerLogCore_root`.
-- `RemainderTransport.lean` (three theorems):
-  `lipschitzOn_of_abs_deriv_le`, `transport_bound_mul`, and
-  `transport_bound`.
+- `RemainderTransport.lean` (four theorems):
+  `lipschitzOn_of_abs_deriv_le`, `transport_bound_mul`, `transport_first_order`,
+  and `transport_bound`.
 - `StaircaseInversion.lean` (seven theorems): `isLeast_ceil`,
   `staircase_ceil`, `staircase_separation`, `staircase_separation_fails`,
   `staircase_round`, `isLeast_residue_class`, and
@@ -146,6 +146,19 @@ Automatically generated structure projections are outside both tallies.
   `abs_numDerangements_sub_lt_half`, and
   `round_factorial_mul_exp_neg_one`.
 
+Fourteen incoming leaves add 95 focused declarations:
+`BackwardErrorExistence.lean` (7), `BellLeibnizTower.lean` (5),
+`CayleyKernel.lean` (10), `CayleyLocalCoordinate.lean` (7),
+`CayleyTreeFunction.lean` (7), `DivisorTransform.lean` (9),
+`ExpSeriesRecurrence.lean` (4), `LambertCorrectionEquation.lean` (8),
+`LambertShiftConcavity.lean` (5), `LeastTermIndex.lean` (7),
+`TouchardEulerOperator.lean` (9), `TransseriesBlockClasses.lean` (3),
+`TransseriesDifferentialClosure.lean` (12), and
+`TransseriesMonomialUniqueness.lean` (2). Their declaration-level boundaries
+are recorded beside the corresponding results in the canonical TeX. The
+fifteenth incoming leaf, `NewtonInterpolation.lean` (22), belongs to another
+focused package and is included only in the global 967/12,001 census.
+
 The exact status map is deliberately narrower than the inventory:
 
 - Exact: `q0:def:scale`, `q0:eq:scale`, `q0:def:poincare`,
@@ -153,7 +166,8 @@ The exact status map is deliberately narrower than the inventory:
   `q0:def:flat`, `q0:prop:invisible`, `q0:lem:dickson`, `q0:lem:neumann`
   through its literal `OrderDual` wrappers (the printed total order is a
   specialization), the analytic content of `plt:lem:mot-dominance`,
-  `plt:prop:mot-omega-basic` over the reals only, and the displayed equations
+  `plt:prop:mot-blocks`, `plt:prop:mot-omega-basic` over the reals only,
+  `plt:lem:tay-bell-recurrence`, and the displayed equations
   `plt:eq:mot-block-derivative` and `plt:eq:dif-block` in the abstract unit
   model, `plt:lem:bell-normalizations`, all three
   unit-series Bell results
@@ -162,13 +176,18 @@ The exact status map is deliberately narrower than the inventory:
 - Partial: `q0:prop:height` beyond its two exact displayed estimates;
   `plt:def:mot-scale` beyond the ordered-sequence version;
   `plt:lem:mot-harmonic` beyond its leading Stolz limit;
+  `plt:cor:mot-both-generators-needed` beyond its exact monomial-uniqueness
+  engine; `plt:thm:mot-smallest-differential-algebra` beyond its exact
+  abstract minimality statements and integer block law, since the concrete
+  germ-model growth and algebraic-independence clauses remain absent;
   the compound `plt:lem:mot-block-antiderivative` and `plt:prop:dif-block`
   beyond their exact integer equations and polynomial coefficient operator,
   since the concrete Laurent ambient, faithful evaluation, ambient uniqueness,
   and general-exponent apparatus are absent;
   `p0:thm:lambert-core` beyond its real algebra and branch rules;
   `p0:thm:staircase` beyond its order-theoretic clauses;
-  `p0:thm:remainder-transport` beyond the displacement bound;
+  `p0:thm:remainder-transport` beyond its exact displacement and explicit-error
+  clauses, since the closing asymptotic clause remains absent;
   `p6:lem:core` beyond the real `r = 1` case;
   `p8:cor:nearest-integer` beyond integer arguments; and
   `p6:lem:quadratic-core` beyond its verified coefficient recurrence.
@@ -242,7 +261,6 @@ a real-argument Fibonacci function); the reversal of `x + W(x)` in depth; the Be
 The former assembler cannot be rerun; the `.tex` header identifies the
 consolidated file as the canonical source and it is now edited in place. A
 future publication build would use three `pdflatex` passes, but none was run
-for this tranche. The current TeX has 55,319 lines and 3,118 distinct labels.
-The retained historical PDF has 702 A4 pages and was built from the preceding
-55,005-line, 3,111-label source checkpoint; no current source/render parity is
-claimed.
+for this tranche. The current TeX has 55,847 lines and 3,124 distinct labels.
+The retained historical PDF has 711 A4 pages and predates the merged
+source-only crosswalk overlay; no current source/render parity is claimed.

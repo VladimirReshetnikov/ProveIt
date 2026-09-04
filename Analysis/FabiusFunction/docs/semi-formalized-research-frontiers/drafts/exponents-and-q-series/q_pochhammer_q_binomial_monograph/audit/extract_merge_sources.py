@@ -389,6 +389,7 @@ CURRENT_Q_STATUS_OVERRIDES = {
     "qg:thm-two-square": "Lean-proved",
     "thm:qbinom-structure": "Lean-proved",
     "thm:poch-entire": "Lean-proved",
+    "cor:qbinom-classical": "Lean-proved",
     "prop:rogers-szego-recurrence": "Lean-proved",
     "prop:rogers-szego-three-term": "Lean-proved",
     "cor:rogers-szego-dilation": "Lean-proved",

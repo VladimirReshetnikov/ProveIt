@@ -1,13 +1,19 @@
 # Exact Information Geometry and New Frontiers for the Fabius--Rvachev System
 
-> **Source-only merge status (2026-08-31).** The current TeX has 2,139 lines
-> (SHA-256
-> `d1b90d107a38219a2ff64bbae883d6172b49b70721b631b58cd3b6072781c6dd`).
-> The retained submitted 30-page PDF was not rebuilt after the notation
-> migration and is not claimed to be synchronized with that source.
-> The refreshed 19-entry `SHA256SUMS` verifies the current TeX and README
-> together with the retained PDF and other payloads; it does not assert
-> source/PDF synchronization.
+> **Current publication receipt (2026-09-04).** The synchronized
+> `fabius_information_frontier.tex` has 2,138 lines and 78,310 bytes (SHA-256
+> `57a06279153b6e4c97ea0c084a193867b2f5c60a0163983149f36453eb196c9d`).
+> From absent auxiliaries, three successful serial halt-on-error passes produced
+> 28 pages/778,760 bytes, 29 pages/790,804 bytes, and finally 29 pages/790,802
+> bytes. The final PDF has SHA-256
+> `3af03cd4dcc7fb1a502976f47edb56ee7d5c2b8dc9a8da537e79f8382ef885d5`.
+> Its log has no TeX error, unresolved reference or citation, or rerun request;
+> title, author, subject, and keywords metadata are present. All 29 pages are A4
+> at rotation zero, render, and contain extractable text. All 23 font rows are
+> embedded and subset, six are Libertinus, and none is Type 3; representative
+> title, body, figure, table, and final pages passed visual inspection. Generated
+> sidecars were removed. The former 19-entry operational ledger remains retired
+> and Git-recoverable; it is not a live publication gate.
 
 This archive accompanies the report
 `fabius_information_frontier.pdf` and its complete LaTeX source
@@ -75,8 +81,8 @@ The source expects the vector figures under `figures/`.
 ## File map
 
 - `fabius_information_frontier.tex`: complete report source.
-- `fabius_information_frontier.pdf`: retained submitted 30-page report, not
-  rebuilt from the current source.
+- `fabius_information_frontier.pdf`: synchronized 29-page canonical report;
+  the distinct submitted 30-page payload remains recoverable from Git history.
 - `experiments.py`: documented experiment and figure generator.
 - `requirements.txt`: Python dependencies.
 - `CORPUS_AUDIT.md`: repository-relative nonduplication audit.
@@ -90,7 +96,8 @@ The source expects the vector figures under `figures/`.
   coefficients.
 - `figures/*.pdf`: vector figures used in the report.
 - `figures/*.png`: raster previews.
-- `SHA256SUMS`: integrity hashes.
+- Former checksum ledgers: verified at intake or their recorded checkpoint,
+  since retired and recoverable from Git.
 
 The exact theorems do not depend on the numerical experiments.
 
@@ -99,17 +106,17 @@ The exact theorems do not depend on the numerical experiments.
 This package was quick-gate filed on 2026-08-30 from
 `fabius_information_frontier_report.zip` (751,588 bytes; SHA-256
 `41f9aba6eb85bb173827f13cb6b7b1d54b7ea9346faf7c9e5b1af859bbd42ec7`).
-The archive was path-safe and passed its CRC test.  Its submitted 18-entry
-ledger verified 18/18 before normalization and is preserved byte-for-byte as
-`SHA256SUMS.arrival.txt`.  Four CSV files are stored with repository-standard
-LF endings. `SHA256SUMS` is the refreshed 19-entry operational ledger; it
-verifies the current package while retaining the submitted PDF as a distinct
-historical payload.
+The archive was path-safe and passed its CRC test. Its submitted 18-entry
+ledger verified 18/18 before normalization and was filed byte-for-byte as
+`SHA256SUMS.arrival.txt`. Four CSV files are stored with repository-standard
+LF endings. The arrival and later 19-entry operational ledgers are now retired;
+their bytes and checkpoints remain recoverable from Git. The submitted PDF
+remains a distinct historical payload.
 
-This is an archival intake, not a claim-level acceptance.  The theorem labels
-record manuscript statements and do not assert Lean formalization.  A hostile
-mathematical audit, numerical replay, exact Lean crosswalk, canonical-preamble
-normalization, figure-font regeneration, and PDF rebuild are deliberately
-deferred to a later commit.  In particular, the submitted PDF remains an
-A4/Latin-Modern artifact with Type 3 plot-font rows and is not yet the
-repository's canonical publication artifact.
+This remains an archival intake, not a claim-level acceptance. The theorem
+labels record manuscript statements and do not assert Lean formalization. The
+canonical-preamble normalization, figure-font repair, and synchronized PDF
+rebuild are complete under the receipt above; a hostile mathematical audit,
+numerical replay, and exact Lean crosswalk remain deferred. The submitted
+A4/Latin-Modern PDF with Type 3 plot-font rows remains a distinct historical
+payload, not the current repository publication artifact.

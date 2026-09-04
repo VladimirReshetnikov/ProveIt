@@ -106,6 +106,8 @@
 % declaration name, typeset verbatim.
 \newcommand{\lean}[1]{%
   \ifmmode\text{\texttt{\detokenize{#1}}}\else\nolinkurl{#1}\fi}
+\newcommand{\leansubtwo}[2]{%
+  \nolinkurl{#1}\texttt{\textsubscript{2}}\nolinkurl{#2}}
 \newcommand{\decl}[1]{\nolinkurl{#1}}
 \newcommand{\stirling}[2]{\genfrac{[}{]}{0pt}{}{#1}{#2}}
 \newcommand{\brak}[1]{\left(#1\right)}
@@ -173,9 +175,13 @@ unique layers of the other three are merged in
 data, and deterministic scripts --- is preserved under \path{assets/}; the
 absorbed source documents themselves are deleted once merged (git history is
 the archive, pinned by the SHA-256 hashes below).
-The retained PDF is a historical 66-page A4 artifact of 1,107,064 bytes.
-The current source contains later crosswalk edits, so no source/PDF render
-parity is claimed.
+The last synchronized source checkpoint was validated by exactly three
+successful serial halt-on-error passes and the repository's PDF gates.  The
+merged source now postdates that checkpoint, so the retained PDF is historical
+until a fresh three-pass parity rebuild.  Exact page-count, byte-count, and
+SHA-256 receipts are kept externally in the repository documentation so that
+neither artifact embeds a self-invalidating fingerprint. No
+\nolinkurl{SHA256SUMS*} ledger exists or participates in validation.
 \begin{itemize}
 \item \path{Lambert_W_Function_Article/Lambert_W_Function_Article.tex} (the spine)\\
 {\footnotesize SHA-256 \path{5bca61c4e906ca8a92f283bc92913355ccd4aee26d65112b41474fd16862c6ba}}
@@ -2880,7 +2886,8 @@ The normalized Lambert argument is continuous by
 are \path{principalPowerExponentialPhase_continuousOn_Icc} on
 \([0,P_{m,A,\beta}]\) and
 \path{lowerPowerExponentialPhase_continuousOn_Ioc} on
-\((0,P_{m,A,\beta}]\).  Moreover, if
+\((0,P_{m,A,\beta}]\); all three are in
+\path{PowerExponentialLambertCalculus.lean}.  Moreover, if
 \(0<x\leq P_{m,A,\beta}\) and \(\lambda\geq0\), then the exact equivalence
 \[
  S_{m,A,\beta}(\lambda)=x
@@ -2947,7 +2954,7 @@ closed principal and positive endpoint-inclusive lower value intervals is
 \path{fabiusPrincipalLambertPhase_isEquivalent_id} states that the principal
 Fabius phase is asymptotic to \(x\) at zero, while
 \path{lowerPowerExponentialPhase_one_one_log_two} in
-\path{PowerExponentialLambertFabius}\texttt{.lean} identifies the lower generic phase
+\path{PowerExponentialLambertFabius.lean} identifies the lower generic phase
 exactly with the Fabius lower-Lambert phase.
 
 The separate specialization
@@ -4395,7 +4402,7 @@ Its companion \path{GeometricUniformMomentPolynomialBridge.lean} has the
 exhaustive count \(0+1\) and raised the next historical census to 905/11,458.
 Its sole
 theorem,
-\nolinkurl{geometricUniformMomentPolynomial_eval₂_eq_mgf_taylorCoefficient},
+\leansubtwo{geometricUniformMomentPolynomial_eval}{_eq_mgf_taylorCoefficient},
 supplies the real-\(\lvert q\rvert<1\) actual-MGF normalization and makes
 \nolinkurl{p7:eq:Pn-def} Exact in that regime.  It supplies no complex-q
 infinite-product realization by itself.  The subsequent current \(1+3\)
@@ -4428,7 +4435,7 @@ exhaustive \(1+2\)
 \path{GeometricUniformExteriorComplexMomentGerm.lean} sibling consists of
 \nolinkurl{geometricUniformExteriorComplexMomentGerm},
 \nolinkurl{analyticAt_geometricUniformExteriorComplexMomentGerm}, and
-\nolinkurl{geometricUniformMomentPolynomial_eval₂_eq_exteriorComplexMomentGerm_taylorCoefficient}.
+\leansubtwo{geometricUniformMomentPolynomial_eval}{_eq_exteriorComplexMomentGerm_taylorCoefficient}.
 For every complex \(q\) with \(1<\lVert q\rVert\), these define the actual
 reciprocal germ, prove its analyticity at the origin, and identify its
 normalized Taylor coefficient with the recursive polynomial.  No unit-circle
@@ -4455,6 +4462,12 @@ makes \nolinkurl{is:p2:thm:Laurent-leading} Exact.  The exhaustive
 \path{FinitePrefixAppellRecovery.lean} \((11+17)\) sibling gives the
 923/11,610 checkpoint and makes \nolinkurl{is:p2:thm:finite-prefix-expansion} and
 \nolinkurl{is:p2:thm:exact-recovery} Exact as finite rational identities.
+Retaining the unconditional public
+\lean{complexQPochhammerInf_eq_qPochhammerInfIn} bridge gives the semantic
+live union 923 modules and 11,611 public declarations, with both documentation
+gap counts zero.  The q-Lucas manuscript result remains Partial: Lean proves
+the evaluated primitive-root identity, not the polynomial congruence modulo
+the cyclotomic polynomial.
 
 The final exhaustive \(1+4\)
 \path{GeometricUniformMomentRatFunc.lean} sibling consists of
@@ -4640,7 +4653,7 @@ side condition for the caller.\\
 \lean{AutonomousIteratedDeriv}) &
 Lean's \(P_n\) is this guide's \(P_{n+1}\): the recurrence is stated as
 \(P_{n+1}=(1+w)P_n'-((n+1)w+3n+2)P_n\) from \(P_0=1\), and the formula as
-\(W^{(n+1)}=\EulerE^{-(n+1)W}P_n(W)/(1+W)^{2n+1}\), on the open domains
+\(W^{(n+1)}=\frac{\EulerE^{-(n+1)W}P_n(W)}{(1+W)^{2n+1}}\), on the open domains
 \((-1/\EulerE,\infty)\) and \((-1/\EulerE,0)\).  The engine is stated for an
 arbitrary solution of an autonomous equation \(W'=\varphi\circ W\) on an open
 set, with the derivative family as hypotheses, so it applies beyond Lambert's
@@ -4758,15 +4771,15 @@ identity and the compact paired series for \(0<\Delta<2\pi\) on
 \decl{hasSum\_bernoulli\_mul\_pow\_div\_factorial\_complex\_iff}, and
 \decl{principalLambertW\_lowerLambertW\_eq\_bernoulliSeries} (module
 \lean{LambertWBranchGapBernoulli}) &
-Exact for the complex generating identity, the compact real branch pair, and
+{\footnotesize Exact for the complex generating identity, the compact real branch pair, and
 the convergence locus.  The
 first theorem proves absolute summability for every real
 \(z\) with \(\lvert z\rvert<2\pi\); the second proves, for complex \(z\), that
 the Bernoulli series is summable if and only if \(\lVert z\rVert<2\pi\), hence
 it diverges on \(\lVert z\rVert=2\pi\) and throughout the exterior; the third
 proves the actual all-index real sum \(z/(\exp z-1)\) when \(z\ne0\); the
-fourth proves the complex \(\operatorname{HasSum}\) value
-\(\lean{complexExpm1Div}(z)^{-1}\) if and only if
+fourth proves the complex \(\operatorname{HasSum}\) value given by the
+inverse of \decl{complexExpm1Div} at \(z\) if and only if
 \(\lVert z\rVert<2\pi\); and the fifth specializes both real sums on the
 strict common branch domain when the positive branch gap is below \(2\pi\).
 At \(z=0\), the fourth theorem's target is the removable value \(1\); away
@@ -4775,7 +4788,7 @@ identities in this row Exact under the stated convention, but claims no
 equality with Lean's totalized quotient at zero.  The compiled radius proof
 uses even Bernoulli--zeta coefficient bounds and a positive even subsequence;
 it does not formalize the Guide's nearest-nonzero-zero explanation.  The
-surrounding expanded displays and every Puiseux claim remain unpromoted.\\
+surrounding expanded displays and every Puiseux claim remain unpromoted.}\\
 \addlinespace
 \Cref{thm:W0negativebounds}: for \(-1/\EulerE<x<0\),
 \(-1+\sqrt{1+\EulerE x}<\Wz(x)<-1+\sqrt{2(1+\EulerE x)}\) and \(\Wz(x)<x\) &

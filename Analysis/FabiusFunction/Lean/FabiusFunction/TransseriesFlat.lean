@@ -147,7 +147,9 @@ open Real
 that the results of `TransseriesPolyLogScale.lean` apply to it. -/
 noncomputable def powScale (n : ℕ) (X : ℝ) : ℝ := plMonomial (-(n : ℝ)) 0 X
 
-/-- The power scale reduces to the corresponding real power. -/
+/-- The power scale written as a plain real power: the logarithmic exponent is
+`0`, and `Real.rpow_zero` holds at every base including `0`, so no positivity
+hypothesis is needed here. -/
 theorem powScale_eq_rpow (n : ℕ) (X : ℝ) : powScale n X = X ^ (-(n : ℝ)) := by
   rw [powScale, plMonomial, Real.rpow_zero, mul_one]
 

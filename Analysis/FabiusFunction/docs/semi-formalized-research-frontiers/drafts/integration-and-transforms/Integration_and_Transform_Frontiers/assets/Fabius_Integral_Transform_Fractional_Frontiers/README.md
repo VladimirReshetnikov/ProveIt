@@ -19,7 +19,6 @@ arithmetic and independent numerical checks of the former standalone report.
 - `jacobi_coefficients.png` - exact Jacobi-coefficient trend.
 - `power_quantile_ratio.png` - nonlinear power-integral asymptotic diagnostic.
 - `requirements.txt` - Python package versions used for the supplied outputs.
-- `SHA256SUMS` - checksums for the release files.
 
 ## Principal new results developed in the report
 

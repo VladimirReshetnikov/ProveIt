@@ -4156,7 +4156,7 @@ vanish for that reason rather than by convention.
 product, so that $k=0$ gives $\ExponentialPartialBellPolynomial n0=\delta_{n,0}$
 and $x^{1\diamondsuit}=x$ (\lean{Fabius.diamondPow_one}); for $k\ge1$ this is
 the $k$-fold product of the source.
-The proof is the one above.  \lean{Bell.egfA_mul} turns a binomial convolution
+The proof is the one above.  \lean{Fabius.egfA_mul} turns a binomial convolution
 into a product of exponential generating functions, so
 \lean{Fabius.egfA_diamondPow} gives $X(t)^k$ by induction, and
 \lean{Fabius.bellWeightSeries_pow} already reads the coefficients of $X(t)^k$
@@ -5834,7 +5834,7 @@ implication: \lean{Fabius.egfA_eq_exp_mul_iff} and
 \lean{Fabius.egfA_eq_exp_mul_iff_egfA_eq_altSeries_mul} relating the two
 generating-function equations directly.
 Two remarks on the formal proofs.  Multiplying exponential generating functions
-is binomial convolution (\lean{Bell.egfA_mul}), so the only content is that
+is binomial convolution (\lean{Fabius.egfA_mul}), so the only content is that
 convolving against the constant sequence $1$, or against $(-1)^n$, gives the
 displayed sums after reflecting the summation index
 (\lean{Fabius.binomialConv_one_left},
@@ -10086,7 +10086,7 @@ corollary (unlabelled, no.~4) & Cauchy integral & none &  \\
 \Cref{thm:bell-leading-zeros} & Insertion of $q$ leading zeros & Lean & \lean{Fabius.partialBell_leadingZeros} (\lean{BellLeadingZeros}), over any $\RationalNumbers$-algebra, with the zero-padded weights \lean{Fabius.leadingZeros} and the rescaled weights \lean{Fabius.qScaled}; the proof compares the weight series (\lean{Fabius.bellWeightSeries_leadingZeros}) exactly as in the text \\
 \Cref{thm:bell-transform-inverse} & Bell transform and its inverse & Lean & \cref{eq:bell-transform-x} is \lean{Fabius.bell_transform_inverse} (\lean{BellComposition}), from $X=\log(1+Y)$ formalized as \lean{Fabius.log_subst_exp_sub_one} and the composition theorem; the recursive inversion over every commutative ring is \lean{Bell.complete_cumulant} and \lean{Bell.cumulant_complete} (\lean{BellPolynomialInversion}).  The more general locally-inverse transform \cref{eq:general-bell-inverse}, which the text states after this theorem rather than inside it, is not formalized \\
 \Cref{thm:bell-determinants} & Bell determinants & none &  \\
-\Cref{thm:diamond-bell} &  & Lean & \lean{Fabius.diamondPow_apply} and \lean{Fabius.partialBell_eq_diamondPow_div} (\lean{DiamondPower}); the diamond product is \lean{Bell.binomialConv}, and \lean{Fabius.binomialConv_eq_sum_Ico} checks that the two extreme terms the source omits do vanish, so the two definitions agree.  The proof is the source's: \lean{Bell.egfA_mul} makes the generating function of the power a power (\lean{Fabius.egfA_diamondPow}), and \lean{Fabius.bellWeightSeries_pow} reads off its coefficients \\
+\Cref{thm:diamond-bell} &  & Lean & \lean{Fabius.diamondPow_apply} and \lean{Fabius.partialBell_eq_diamondPow_div} (\lean{DiamondPower}); the diamond product is \lean{Bell.binomialConv}, and \lean{Fabius.binomialConv_eq_sum_Ico} checks that the two extreme terms the source omits do vanish, so the two definitions agree.  The proof is the source's: \lean{Fabius.egfA_mul} makes the generating function of the power a power (\lean{Fabius.egfA_diamondPow}), and \lean{Fabius.bellWeightSeries_pow} reads off its coefficients \\
 \Cref{thm:bell-symmetric-functions} &  & Lean & \cref{eq:elementary-via-bell} is \lean{Fabius.esymm_eq_bell_complete} and its sign variant \lean{Fabius.esymm_eq_neg_bell_complete} (\lean{ElementarySymmetricBell}), for a finite family in any commutative $\mathbb Q$-algebra; \cref{eq:powersum-via-bell} is \lean{Fabius.newton_power_sum} in cleared form and \lean{Fabius.power_sum_eq} in the divided form (\lean{NewtonPowerSumBell}), with its second form, through the ordinary partial Bell polynomials, as \lean{Fabius.power_sum_eq_ord_bell} (\lean{PowerSumOrdinaryBell}).  All of it rests on \lean{Fabius.exp_subst_logOf} (\lean{ExpLog}), which supplies the $\exp\circ\log$ inverse Mathlib lacks, and on \lean{Fabius.cumulant_eq_cumulantSum} (\lean{CumulantBellFormula}); the two forms of \cref{eq:powersum-via-bell} are the exponential and the ordinary reading of the same $\log E$, equated \\
 \Cref{cor:det-traces-bell} & Determinant from traces & none &  \\
 \Cref{thm:cycle-index-bell} &  & none &  \\

@@ -4,14 +4,23 @@ Antiderivatives, integral calculus, transform dualities, and fractional
 calculus of the Fabius–Rvachev system, consolidated (2026-08-28) into
 the single volume
 [`Integration_and_Transform_Frontiers/`](Integration_and_Transform_Frontiers/)
-(376 pp; twelve parts):
+(377 pp; twelve parts):
 
-> **Source/PDF synchronization.** The current consolidated TeX includes a
-> source-only Legendre Gaunt--Wigner-square status overlay added on 31 August
-> 2026. The retained 376-page A4 PDF (SHA-256
-> `a395829ff9944343d8804df220605c3f6ea5e7641fac927e6749c2a7b435e695`)
-> predates that overlay and was not rebuilt. It remains a historical render,
-> not a rendering of the current source.
+> **Current publication receipt (2026-09-04).** The synchronized
+> `Integration_and_Transform_Frontiers.tex` has 25,147 lines and 1,058,819
+> bytes (SHA-256
+> `b60b232e55af7c021e82dec476823e727ef8398388bda9af0a3334aba4a30be3`).
+> From absent auxiliaries, three successful serial halt-on-error passes produced
+> 359 pages/3,125,415 bytes, 377 pages/3,292,590 bytes, and finally 377
+> pages/3,292,594 bytes. The final PDF has SHA-256
+> `52b1b7e5cd86cbd8d00cb0d90580ea555b2762d7a638aa52b5ea680dcbca7199`.
+> Its log has no TeX error, unresolved reference or citation, or rerun request;
+> it has zero overfull and 81 underfull diagnostics, and metadata is present.
+> All 377 pages are A4 at rotation zero, render, and contain
+> extractable text. All 42 font rows are embedded and subset, nine are
+> Libertinus, and none is Type 3; representative title, body, table, figure, and
+> final pages passed visual inspection. Generated sidecars were removed, and no
+> package-local checksum ledger is a live publication dependency.
 
 - **Part I** — *Antiderivatives of Monomially Weighted Fabius-Type
   Functions* (formerly `Fabius_Antiderivatives_Report/`);

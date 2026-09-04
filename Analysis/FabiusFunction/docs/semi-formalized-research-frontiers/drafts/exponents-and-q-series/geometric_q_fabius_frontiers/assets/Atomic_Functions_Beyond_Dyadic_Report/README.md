@@ -20,7 +20,6 @@ This package contains the English reconstruction and substantial expansion of th
 - `figures/` — five figures in both PDF and PNG formats.
 - `data/` — CSV audits for geometry, derivative norms, moments, periodicity, and Gamma–zeta Fourier modes.
 - `requirements.txt` — Python dependencies.
-- `SHA256SUMS` — checksums for every packaged file except the checksum manifest itself.
 
 ## Mathematical scope
 
@@ -88,4 +87,4 @@ The living canonical TeX documents and the current consolidated frontier volume 
 
 “New” therefore means new relative to the audited repository snapshot and the literature explicitly cited in the report.  It is not a claim of worldwide historical priority.  The report’s appendix records the corpus layers, the formula-level nonduplication test, and the exact limits of that audit.
 
-> **Editorial note (2026-08-28):** the report source and compiled PDF listed above (and, where listed, the supplied source scan/OCR) were removed from this directory after their content was merged into the volume `Exponents_and_q_Series_Frontiers.tex`; their SHA-256 hashes remain in the volume provenance list (and in `SHA256SUMS` here where present), and git history archives the files. This directory keeps only figures, data, and scripts.
+> **Editorial note (2026-08-28):** the report source and compiled PDF listed above (and, where listed, the supplied source scan/OCR) were removed from this directory after their content was merged into the volume `Exponents_and_q_Series_Frontiers.tex`; their SHA-256 hashes remain in the volume provenance list, and Git history archives the files. This directory keeps only figures, data, and scripts.

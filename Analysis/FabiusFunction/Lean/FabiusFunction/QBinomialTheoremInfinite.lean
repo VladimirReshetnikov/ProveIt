@@ -38,7 +38,10 @@ symbols.
 * `norm_finiteQPochhammerIn_le`, `qPochhammerInfIn_norm_le_norm_finiteQPochhammerIn`:
   the real sandwich for the norms of finite symbols.
 * `gaussianMajorant`, `norm_gaussianBinomial_le`: the uniform bound.
-* `tendsto_gaussianBinomial_atTop`: the fixed-column limit.
+* `tendsto_gaussianBinomial_atTop`, `tendsto_gaussianBinomial_add_atTop`:
+  the fixed-column limit, unchanged by any fixed upper-index shift.
+* `isBigO_gaussianBinomial_sub_inv`, `isBigO_gaussianBinomial_add_sub_inv`:
+  the corresponding geometric error estimates.
 * `summable_pow_choose_two_mul_pow`: summability of `r^{C(k,2)} s^k`.
 * `hasSum_euler_product`: Euler's product expansion.
 * `hasSum_qBinomial_theorem`: the infinite `q`-binomial theorem.
@@ -267,6 +270,59 @@ theorem tendsto_finiteQPochhammerIn_pow_atTop {q : 𝕜} (hq : ‖q‖ < 1) (k :
     tendsto_finsetProd _ fun j _ => tendsto_const_nhds.sub (h0.mul_const _)
   simpa [finiteQPochhammerIn] using h
 
+/-- **Effective finite-product convergence.**  When `‖q‖ ≤ 1`, the deviation
+of `(q^m;q)_k` from one has the explicit bound
+
+`‖(q^m;q)_k - 1‖ ≤ exp (k ‖q‖^m) - 1`.
+
+This is the product estimate `‖∏(1+x_j)-1‖ ≤ exp(∑ ‖x_j‖)-1`, together with
+`∑_{j<k} ‖q^(m+j)‖ ≤ k ‖q‖^m`. -/
+theorem norm_finiteQPochhammerIn_pow_sub_one_le_exp {q : 𝕜}
+    (hq : ‖q‖ ≤ 1) (m k : ℕ) :
+    ‖finiteQPochhammerIn (q ^ m) q k - 1‖ ≤
+      Real.exp ((k : ℝ) * ‖q‖ ^ m) - 1 := by
+  calc
+    ‖finiteQPochhammerIn (q ^ m) q k - 1‖ ≤
+        Real.exp (∑ j ∈ Finset.range k, ‖-(q ^ m * q ^ j)‖) - 1 := by
+      simpa only [finiteQPochhammerIn, sub_eq_add_neg] using
+        Finset.norm_prod_one_add_sub_one_le (Finset.range k)
+          (fun j : ℕ => -(q ^ m * q ^ j))
+    _ ≤ Real.exp ((k : ℝ) * ‖q‖ ^ m) - 1 := by
+      gcongr
+      calc
+        (∑ j ∈ Finset.range k, ‖-(q ^ m * q ^ j)‖) ≤
+            ∑ j ∈ Finset.range k, ‖q‖ ^ m := by
+          refine Finset.sum_le_sum fun j _ => ?_
+          rw [norm_neg, norm_mul, norm_pow, norm_pow]
+          exact mul_le_of_le_one_right (pow_nonneg (norm_nonneg q) m)
+            (pow_le_one₀ (norm_nonneg q) hq)
+        _ = (k : ℝ) * ‖q‖ ^ m := by simp
+
+/-- For a contracting nome, the effective finite-product error is
+`O(q^m)` for every fixed column length `k`. -/
+theorem isBigO_finiteQPochhammerIn_pow_sub_one {q : 𝕜}
+    (hq : ‖q‖ < 1) (k : ℕ) :
+    (fun m : ℕ => finiteQPochhammerIn (q ^ m) q k - 1) =O[atTop]
+      (fun m : ℕ => q ^ m) := by
+  rw [Asymptotics.isBigO_iff]
+  refine ⟨2 * k, ?_⟩
+  have hlim : Tendsto (fun m : ℕ => (k : ℝ) * ‖q‖ ^ m) atTop (𝓝 0) := by
+    simpa using
+      (tendsto_pow_atTop_nhds_zero_of_lt_one (norm_nonneg q) hq).const_mul (k : ℝ)
+  filter_upwards [hlim.eventually_lt_const zero_lt_one] with m hm
+  have hx0 : 0 ≤ (k : ℝ) * ‖q‖ ^ m :=
+    mul_nonneg (Nat.cast_nonneg k) (pow_nonneg (norm_nonneg q) m)
+  have hexp := Real.abs_exp_sub_one_le (show |(k : ℝ) * ‖q‖ ^ m| ≤ 1 by
+    rw [abs_of_nonneg hx0]
+    exact hm.le)
+  rw [abs_of_nonneg (sub_nonneg.mpr (Real.one_le_exp hx0)), abs_of_nonneg hx0] at hexp
+  calc
+    ‖finiteQPochhammerIn (q ^ m) q k - 1‖ ≤
+        Real.exp ((k : ℝ) * ‖q‖ ^ m) - 1 :=
+      norm_finiteQPochhammerIn_pow_sub_one_le_exp hq.le m k
+    _ ≤ 2 * ((k : ℝ) * ‖q‖ ^ m) := hexp
+    _ = (2 * k) * ‖q ^ m‖ := by rw [norm_pow]; ring
+
 /-- **The fixed-column limit** `[n,k]_q → 1/(q;q)_k` as `n → ∞`, because
 `(q;q)_k [n,k]_q = (q^{n-k+1};q)_k → 1`. -/
 theorem tendsto_gaussianBinomial_atTop {q : 𝕜} (hq : ‖q‖ < 1) (k : ℕ) :
@@ -283,6 +339,51 @@ theorem tendsto_gaussianBinomial_atTop {q : 𝕜} (hq : ‖q‖ < 1) (k : ℕ) :
   refine h1.congr' ?_
   filter_upwards [eventually_ge_atTop k] with n hn
   rw [div_eq_iff hk0, ← finiteQPochhammerIn_self_mul_gaussianBinomial q hn, mul_comm]
+
+/-- A fixed additive shift of the upper index does not change the
+fixed-column limit.  In particular, taking `r = k` gives
+`[n+k,k]_q → 1/(q;q)_k`. -/
+theorem tendsto_gaussianBinomial_add_atTop {q : 𝕜}
+    (hq : ‖q‖ < 1) (k r : ℕ) :
+    Tendsto (fun n : ℕ => gaussianBinomial q (n + r) k) atTop
+      (𝓝 (finiteQPochhammerIn q q k)⁻¹) := by
+  simpa only [Function.comp_def] using
+    (tendsto_gaussianBinomial_atTop hq k).comp (tendsto_add_atTop_nat r)
+
+/-- **Effective fixed-column limit.**  For fixed `k`,
+
+`[n,k]_q - 1/(q;q)_k = O(q^(n-k+1))`.
+
+The denominator-free identity
+`(q;q)_k [n,k]_q = (q^(n-k+1);q)_k` reduces the claim to the effective
+finite-product estimate above. -/
+theorem isBigO_gaussianBinomial_sub_inv {q : 𝕜}
+    (hq : ‖q‖ < 1) (k : ℕ) :
+    (fun n : ℕ => gaussianBinomial q n k - (finiteQPochhammerIn q q k)⁻¹) =O[atTop]
+      (fun n : ℕ => q ^ (n - k + 1)) := by
+  have hk0 : finiteQPochhammerIn q q k ≠ 0 := finiteQPochhammerIn_self_ne_zero hq k
+  have hshift : Tendsto (fun n : ℕ => n - k + 1) atTop atTop :=
+    (tendsto_add_atTop_nat 1).comp (tendsto_sub_atTop_nat k)
+  have hnum :
+      (fun n : ℕ => finiteQPochhammerIn (q ^ (n - k + 1)) q k - 1) =O[atTop]
+        (fun n : ℕ => q ^ (n - k + 1)) := by
+    simpa only [Function.comp_def] using
+      (isBigO_finiteQPochhammerIn_pow_sub_one hq k).comp_tendsto hshift
+  have hscaled := hnum.const_mul_left (finiteQPochhammerIn q q k)⁻¹
+  refine hscaled.congr' ?_ (Filter.Eventually.of_forall fun _ => rfl)
+  filter_upwards [eventually_ge_atTop k] with n hn
+  have hG := finiteQPochhammerIn_self_mul_gaussianBinomial q hn
+  rw [← hG, mul_sub, ← mul_assoc, inv_mul_cancel₀ hk0, one_mul, mul_one]
+
+/-- The shifted effective limit has the cleaner rate
+`[n+k,k]_q - 1/(q;q)_k = O(q^(n+1))`. -/
+theorem isBigO_gaussianBinomial_add_sub_inv {q : 𝕜}
+    (hq : ‖q‖ < 1) (k : ℕ) :
+    (fun n : ℕ => gaussianBinomial q (n + k) k - (finiteQPochhammerIn q q k)⁻¹) =O[atTop]
+      (fun n : ℕ => q ^ (n + 1)) := by
+  simpa only [Function.comp_def, Nat.add_sub_cancel] using
+    (isBigO_gaussianBinomial_sub_inv hq k).comp_tendsto
+      (tendsto_add_atTop_nat k)
 
 end NormBounds
 

@@ -181,12 +181,12 @@ against the immutable source pin gives:
 The row-level evidence is preserved in
 [`assets/HISTORICAL_LEDGER_AUDIT.csv`](assets/HISTORICAL_LEDGER_AUDIT.csv).
 These ledgers describe earlier package states and are not a checksum manifest
-for the canonical tree. The live `assets/COMPANION_PAYLOADS.csv` provenance
-ledger is deliberately separate from this historical audit. The package uses
-no live package checksum manifest. The former root ledger was exhaustive at
-the recorded upstream publication checkpoint, but repository policy has since
-retired that gate; scoped hashes in the provenance CSVs remain historical
-receipts.
+for the canonical tree. `assets/COMPANION_PAYLOADS.csv` is a purpose-specific
+provenance map, deliberately separate from this historical audit; its scoped
+hashes remain provenance receipts rather than a live whole-package gate. Live
+package-wide checksum ledgers are retired. The former root ledger was exhaustive
+at its recorded upstream publication checkpoint, but it is now retired,
+recoverable from Git, and not a current validation requirement.
 
 ## Recoverability
 
@@ -199,10 +199,13 @@ store for superseded wrappers and publications.
 
 Publication validation is recorded once in
 [`assets/VALIDATION.md`](assets/VALIDATION.md). It preserves the completed
-historical PDF, canonical-validator, and root-ledger gates while marking the
-current semantic union—upstream Lagrange-crosswalk material together with the
-replayed general-$q$ and endpoint-jet chapter edits and the source-only
-Rvachev--Appell Hasse crosswalk—as requiring a new build and validation cycle.
+historical PDF, canonical-validator, and root-ledger gates and records the
+current synchronized `b899` semantic union: a 187-line / 6,724-byte driver,
+15-file / 12,597-line / 477,163-byte recursive TeX closure, and 160-page /
+2,468,000-byte PDF. Their SHA-256 receipts and three-pass/gate evidence are kept
+there. This current build renders the upstream Lagrange-crosswalk material,
+replayed general-$q$ and endpoint-jet chapter edits, and Rvachev--Appell Hasse
+crosswalk.
 Full numerical replay and fresh-checkout reproduction
 remain separate reproducibility work; this provenance record neither
 duplicates nor supersedes those checks.

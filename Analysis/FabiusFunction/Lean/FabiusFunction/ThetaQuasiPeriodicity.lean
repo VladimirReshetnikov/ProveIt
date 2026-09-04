@@ -39,6 +39,7 @@ theorem thetaExponent_add_one (k : ℤ) : (thetaExponent (k + 1) : ℤ) = thetaE
 
 variable {𝕜 : Type*} [NormedField 𝕜] [CompleteSpace 𝕜]
 
+omit [CompleteSpace 𝕜] in
 /-- `q^{θ(k+1)} = q^{θ(k)} q^k` for `q ≠ 0`. -/
 theorem pow_thetaExponent_add_one {q : 𝕜} (hq0 : q ≠ 0) (k : ℤ) :
     (q ^ thetaExponent (k + 1) : 𝕜) = q ^ thetaExponent k * q ^ k := by
@@ -47,8 +48,7 @@ theorem pow_thetaExponent_add_one {q : 𝕜} (hq0 : q ≠ 0) (k : ℤ) :
 /-- The bilateral theta series `θ(z;q) = ∑_{k∈ℤ} q^{k(k-1)/2} z^k`. -/
 noncomputable def bilateralTheta (q z : 𝕜) : 𝕜 := ∑' k : ℤ, q ^ thetaExponent k * z ^ k
 
-/-- For a strict contraction and nonzero argument, the bilateral theta terms
-sum to `bilateralTheta`. -/
+/-- Jacobi's bilateral theta summands sum to `bilateralTheta` for `‖q‖ < 1` and `z ≠ 0`. -/
 theorem hasSum_bilateralTheta {q : 𝕜} (hq : ‖q‖ < 1) {z : 𝕜} (hz : z ≠ 0) :
     HasSum (fun k : ℤ => q ^ thetaExponent k * z ^ k) (bilateralTheta q z) :=
   (hasSum_jacobi_triple_product' hq hz).summable.hasSum

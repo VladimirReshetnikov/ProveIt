@@ -180,9 +180,9 @@ inventory has twenty definitions and 109 theorems, 129 declarations in all.
 The retained 41-page PDF is a verified historical 99-name artifact and
 predates this last addition.
 
-The previously validated PDF, preflight, and checksum receipt predate this
-crosswalk correction. They remain historical evidence but are stale for the
-current source; a new build and refreshed preflight/ledger are pending.
+The previously validated PDF and preflight receipt predate this crosswalk
+correction. They remain historical evidence but are stale for the current
+source; a new build and refreshed preflight are pending.
 
 ## Status discipline
 

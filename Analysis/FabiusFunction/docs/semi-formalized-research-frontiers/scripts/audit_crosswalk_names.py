@@ -45,9 +45,26 @@ for root, _dirs, files in os.walk(LEAN):
         if not fn.endswith('.lean'):
             continue
         stack = []
+        comment_depth = 0
         with io.open(os.path.join(root, fn), encoding='utf-8',
                      errors='replace') as fh:
             for line in fh:
+                # Skip block and doc comments.  Prose inside a docstring can
+                # begin a line with "namespace ...", and treating that as a
+                # namespace opening corrupts the stack for the rest of the
+                # file: the phantom segment is never popped, because the
+                # matching `end <Name>` no longer matches the top of the
+                # stack.  That mis-qualified 57 declarations of
+                # OriginalUniqueness.lean as Fabius.IsOriginalFabius.form.*,
+                # so a CORRECT citation of any of them would have been
+                # reported missing.
+                opens, closes = line.count('/-'), line.count('-/')
+                if comment_depth:
+                    comment_depth = max(0, comment_depth + opens - closes)
+                    continue
+                if opens > closes:
+                    comment_depth += opens - closes
+                    continue
                 m = NS_OPEN.match(line)
                 if m:
                     stack.extend(m.group(1).split('.'))
@@ -85,7 +102,12 @@ for full in list(defined) + list(namespaces):
         resolvable.add('.'.join(parts[i:]))
 
 # 2. Citations.  Dotted names are captured whole.
-CITE = re.compile(r"Fabius\.((?:[A-Za-z0-9_'\\]|\.(?=[A-Za-z_]))+)")
+# The negative lookbehind is necessary, not decorative: without it the
+# module name `PowerExponentialLambertFabius.lean` matches as the citation
+# `Fabius.lean`, which is then reported MISSING.  A false positive against
+# correct text is the worst kind of audit failure, so the match must not
+# be allowed to start in the middle of an identifier.
+CITE = re.compile(r"(?<![A-Za-z0-9_])Fabius\.((?:[A-Za-z0-9_'\\]|\.(?=[A-Za-z_]))+)")
 # Ledger-style citations `\decl{name}` (Fourier-decay, Integration, Lambert W
 # volumes): a bare declaration name understood in namespace `Fabius`, or a
 # module path `FabiusFunction.Foo`.  A bare name resolves through the

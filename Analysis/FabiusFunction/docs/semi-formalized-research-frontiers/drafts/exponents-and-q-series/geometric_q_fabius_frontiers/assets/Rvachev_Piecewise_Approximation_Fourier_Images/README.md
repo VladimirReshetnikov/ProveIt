@@ -20,7 +20,6 @@ This archive accompanies the research report
 - `fourier_piecewise_experiments.py` — commented symbolic and numerical experiments.
 - `requirements.txt` — Python packages used for the reproducibility run.
 - `data/` — exact CSV tables, a JSON summary, and all report figures in PDF and PNG form.
-- `SHA256SUMS.txt` — checksums for the packaged files.
 
 The LaTeX source loads its figures from `data/*.pdf`, so preserve the directory
 layout when recompiling.
@@ -65,4 +64,4 @@ of contents and cross-references).
 
 The packaged PDF was built with pdfTeX 1.40.26 from TeX Live 2025/dev.
 
-> **Editorial note (2026-08-28):** the report source and compiled PDF listed above (and, where listed, the supplied source scan/OCR) were removed from this directory after their content was merged into the volume `Exponents_and_q_Series_Frontiers.tex`; their SHA-256 hashes remain in the volume provenance list (and in `SHA256SUMS` here where present), and git history archives the files. This directory keeps only figures, data, and scripts.
+> **Editorial note (2026-08-28):** the report source and compiled PDF listed above (and, where listed, the supplied source scan/OCR) were removed from this directory after their content was merged into the volume `Exponents_and_q_Series_Frontiers.tex`; their SHA-256 hashes remain in the volume provenance list, and Git history archives the files. This directory keeps only figures, data, and scripts.
