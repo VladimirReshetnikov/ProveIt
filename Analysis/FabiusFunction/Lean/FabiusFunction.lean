@@ -84,6 +84,7 @@ import FabiusFunction.StirlingSymmetricFunctions
 import FabiusFunction.LagrangeInversion
 import FabiusFunction.LagrangeInversionUniqueness
 import FabiusFunction.NewtonReciprocal
+import FabiusFunction.RaneyNumbers
 import FabiusFunction.AbelPolynomialSeries
 import FabiusFunction.LambertWSeries
 import FabiusFunction.FussCatalanSeries
