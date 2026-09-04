@@ -928,6 +928,21 @@ Taking expectations in \eqref{eq:power-to-fall} proves the formula.  The upper
 limit $m$ is essential: it records the finite size of the permutation, even when
 $n>m$.
 \end{proof}
+
+\begin{remark}[Formal crosswalk]
+% ed.: crosswalk added 2026-09-04; proved division-free, and for all n and all set sizes.
+Formal in \lean{StirlingIdentities}, in a division-free form that is slightly
+stronger than the display: \lean{Fabius.sum_card_fixedPointsFinset_pow} states
+$\sum_{\sigma\in S_m}(\operatorname{fix}\sigma)^{n}=m!\sum_{k\le\min(m,n)}\StirlingSecondKind nk$
+for every finite type of $m$ elements and every $n$, with the expectation
+over $\RationalNumbers$ as a corollary.  Two things the formalization
+changed.  The count is done with $k$-subsets rather than ordered $k$-tuples,
+which removes a $k!$ from both sides; and dropping the $1/m!$ makes the
+statement hypothesis-free --- it holds at $m=0$ and at $n=0$, which the
+probabilistic phrasing hides.  The engine is
+$\sum_\sigma\binom{\operatorname{fix}\sigma}{k}=\binom mk(m-k)!$, a double count of pairs
+($k$-subset, permutation fixing it pointwise).
+\end{remark}
 \section{Lah numbers}
 \begin{definition}
 For $1\le k\le n$, the unsigned Lah number is
@@ -1545,6 +1560,24 @@ $(-1)^{2j-k-n-m}=(-1)^{m+n-k}$, because the exponents differ by the even integer
 % conclusion is unaffected.
 $2(j-n-m)$.  Substitution proves \eqref{eq:first-double-sum}.
 \end{proof}
+
+\begin{remark}[Formal crosswalk]
+% ed.: crosswalk added 2026-09-04; partial -- the theorem's own proof is formal, its input is not.
+Partially formal in \lean{StirlingIdentities}.  The whole of the proof given
+above --- that the inner sum collapses to $(-1)^{j-k}\StirlingSecondKind{j-k}{j-n}$ and
+the double sum therefore equals the symmetric cross-sum --- is
+\lean{Fabius.firstDoubleSumInner_eq_stirlingSecond} and
+\lean{Fabius.firstDoubleSum_eq_crossSum}.  What is \emph{not} formal is the
+quoted input \eqref{eq:symmetric-cross1}, Schl\"omilch's formula, whose proof
+here goes through the $\omega$-involution on symmetric functions, a layer the
+corpus lacks.  One unconditional instance is proved outright:
+\lean{Fabius.firstDoubleSum_diagonal} gives the double sum at $k=n$ equal to
+$1$.  Both cross-formulas were checked in exact arithmetic for
+$1\le k\le n\le15$; and the editorial correction already
+annotated in the exponent --- $2(j-n-m)$, not the archived $2(j-m-n+k)$ --- is
+confirmed: the archived form fails in $1080$ of the $1296$ index quadruples
+with all indices below $6$.
+\end{remark}
 
 \section{A partition formula for signed near-diagonal coefficients}
 The near-diagonal coefficient $\SignedStirlingFirstKind{n}{n-p}$ is a polynomial in $n$ of degree $2p$.
@@ -2611,6 +2644,32 @@ Apply the ordinary Stirling basis expansion to the last power:
 Comparison with \eqref{eq:reduced-chromatic-falling} gives
 $k=r+d-1$ and proves \eqref{eq:reduced-stirling}.
 \end{proof}
+
+\begin{remark}[Formal crosswalk]
+% ed.: crosswalk added 2026-09-04; the polynomial core is formal, the graph-theoretic inputs are not.
+The algebraic core is formal in \lean{StirlingIdentities}:
+\lean{Fabius.descPochhammer_mul_sub_pow_eq_sum_stirlingSecond} is
+$\FallingFactorial Xe\,(X-e)^{m}=\sum_{r\le m}\StirlingSecondKind mr\FallingFactorial X{r+e}$ over any
+commutative ring, with its $\NaturalNumbers$ shadow
+\lean{Fabius.descFactorial_mul_pow_eq_sum_stirlingSecond};
+\lean{Fabius.eq_of_forall_sum_descFactorial_eq} is uniqueness of falling-factorial
+coordinates, proved \emph{triangularly} --- evaluate at $q=0,1,2,\ldots$ and
+cancel $q!$ --- rather than by a polynomial-roots argument; and
+\lean{Fabius.reducedStirling_eq_stirlingSecond} is the reduction formula as a
+characterization: any sequence whose falling-factorial expansion is the
+chromatic polynomial $\FallingFactorial q{d-1}(q-d+1)^{n-d+1}$ has coefficients
+$\StirlingSecondKind{n-d+1}{k-d+1}$.  Not formal, because the corpus has no
+set-partition-of-a-graph or chromatic-polynomial layer: that the independent-set
+partitions of $G_{n,d}$ are the minimum-gap-$d$ partitions, and the greedy
+colouring count $\chi_{G_{n,d}}(q)=\FallingFactorial q{d-1}(q-d+1)^{n-d+1}$ itself.
+
+One index remark.  The coefficient is determined one index \emph{below}
+the stated range as well: at $k=d-1$ it is $\StirlingSecondKind{n-d+1}{0}$.  The
+expression $k-d+1$ cannot say so in the natural numbers, where
+$(d-1)-d+1$ is $1$ by truncation rather than $0$; the formal statement uses
+the index $k-e$ with $e=d-1$, which is robust, and recovers $k-d+1$ under
+$d\le k$.
+\end{remark}
 \part{Bell Numbers and Set Partitions}
 
 \chapter{Set partitions and the many meanings of the Bell numbers}
@@ -10979,7 +11038,7 @@ coefficient calculus rather than a catalogue of isolated identities.
 
 \section{Lean formalization register}
 \label{sec:lean-register}
-Every theorem-like environment of this monograph is listed here with the status of its formalization in the Lean development \path{Analysis/FabiusFunction/Lean/FabiusFunction} (Mathlib \texttt{v4.32.0}).  \emph{Lean} means that a public, compiled declaration proves the exact statement or a more general one (the generalization is then noted next to the result); \emph{partial} means that a named part of the statement is proved and the rest is named; \emph{none} means that no compiler-verified counterpart is recorded yet, even if source under validation is identified.  A citation, a numerical check, or a plausible derivation does not count.  The register is generated from the source; its mappings must be updated when results are added or validated.  Current totals: 67 Lean, 37 partial, 104 none, of 208 results.
+Every theorem-like environment of this monograph is listed here with the status of its formalization in the Lean development \path{Analysis/FabiusFunction/Lean/FabiusFunction} (Mathlib \texttt{v4.32.0}).  \emph{Lean} means that a public, compiled declaration proves the exact statement or a more general one (the generalization is then noted next to the result); \emph{partial} means that a named part of the statement is proved and the rest is named; \emph{none} means that no compiler-verified counterpart is recorded yet, even if source under validation is identified.  A citation, a numerical check, or a plausible derivation does not count.  The register is generated from the source; its mappings must be updated when results are added or validated.  Current totals: 68 Lean, 39 partial, 101 none, of 208 results.
 
 \begin{footnotesize}
 \begin{longtable}{@{}p{0.16\textwidth}p{0.22\textwidth}p{0.08\textwidth}p{0.40\textwidth}@{}}
@@ -11007,7 +11066,7 @@ Result & Title & Status & Lean declarations (module) \\
 \Cref{cor:shifted-stirling-evaluations} & Shifted factorial evaluations & Lean & \cref{eq:shifted-power-to-fall} is \lean{Fabius.X_pow_eq_sum_stirlingSecond_succ_mul_descPochhammer_comp} in $R[x]$ over any commutative ring (cancelling $x$ via \lean{Fabius.X_mul_cancel}) and \cref{eq:stirling-n-to-n} is \lean{Fabius.pow_self_eq_sum_stirlingSecond_mul_descFactorial} (\lean{StirlingShiftedEvaluations}) \\
 \Cref{cor:stirling-inverse} & Inverse matrices & Lean & \lean{Fabius.sum_range_stirlingSecond_mul_signedStirlingFirst}, \lean{Fabius.sum_range_signedStirlingFirst_mul_stirlingSecond} and their \lean{Finset.Icc} forms (\lean{StirlingBasisChange}) \\
 \Cref{thm:poisson-stirling-moments} & Poisson moments & partial & the moment series $\sum_m m^n\lambda^m/m! = e^{\lambda}\sum_k S(n,k)\lambda^k$ is \lean{Fabius.tsum_pow_mul_pow_div_factorial} (\lean{BellStirling}) for every real $\lambda$; the probabilistic phrasing is not formalized \\
-\Cref{thm:fixed-point-stirling-moments} & Moments of the number of fixed points & none &  \\
+\Cref{thm:fixed-point-stirling-moments} & Moments of the number of fixed points & Lean & \lean{Fabius.sum_card_fixedPointsFinset_pow} (\lean{StirlingIdentities}), division-free, for every finite type and every exponent; the expectation is a corollary \\
 \Cref{thm:lah-conv} & Conversion between rising and falling factorials & Lean & \lean{Fabius.ascPochhammer_eq_sum_lahNumber_mul_descPochhammer}, \lean{Fabius.descPochhammer_eq_sum_lahNumber_mul_ascPochhammer}, \lean{Fabius.sum_range_lahNumber_mul_lahNumber}, \lean{Fabius.lahNumber_eq_sum_stirlingFirst_mul_stirlingSecond} (\lean{LahNumbers}); the closed form of the definition is \lean{Fabius.lahNumber_succ_succ_mul_factorial} \\
 \Cref{thm:stirling-egfs} & Column generating functions & Lean & \lean{Fabius.exp_sub_one_pow}, \lean{Fabius.egf_stirlingSecond}, \lean{Fabius.negLogOneSub_pow}, \lean{Fabius.egf_stirlingFirst}, \lean{Fabius.log_pow} (\lean{StirlingGeneratingFunctions}), as formal power series over any commutative $\mathbb Q$-algebra.  \cref{eq:second-double-egf} is \lean{Fabius.exp_subst_smul_exp_sub_one} (\lean{BellHomogeneity}), which proves $\exp(y(\EulerE^z-1))=\sum_n\bigl(\sum_k\StirlingSecondKind nk y^k\bigr)z^n/n!$ for every scalar $y$ of the coefficient algebra; taking that algebra to be $\mathbb Q[y]$ and the scalar to be $y$ recovers the display, so the content is formalized even though no Lean statement writes $y$ as a formal variable \\
 \Cref{thm:second-ogf} & Fixed-$k$ ordinary generating function & Lean & \lean{Fabius.prod_one_sub_mul_X_mul_stirlingColumnOGF} and \lean{Fabius.stirlingColumnOGF_eq_prod_mk_pow} (\lean{StirlingOrdinaryGF}) prove the formal inverse and finite geometric-product identities.  The compiled \lean{StirlingCompleteHomogeneous} declarations \lean{Fabius.stirlingColumnOGF_eq_completeHomogeneousGeneratingSeriesOn}, \lean{Fabius.stirlingSecond_add_eq_completeHomogeneousEvalOn}, \lean{Fabius.stirlingSecond_eq_completeHomogeneousEvalOn_of_le}, \lean{Fabius.stirlingSecond_add_eq_completeHomogeneousEval}, \lean{Fabius.stirlingSecond_add_eq_eval_hsymm}, and \lean{Fabius.stirlingSecond_add_eq_sum_finsuppAntidiag} cover inverse uniqueness, the $n=k+r$ and $n\ge k$ complete-homogeneous identities over every commutative semiring, universal \lean{MvPolynomial.hsymm} evaluation, and the explicit multiplicity sum.  Its \lean{Fabius.pow_mul_descPochhammer_eval_inv_eq_prod_one_sub_natCast_mul} and \lean{Fabius.prod_inv_one_sub_natCast_mul_eq_inv_pow_mul_descPochhammer_eval_inv} cover the scalar falling-factorial factorization under $x\ne0$ and its reciprocal under nonvanishing of every $1-jx$. \\
@@ -11016,7 +11075,7 @@ Result & Title & Status & Lean declarations (module) \\
 \Cref{thm:stirling-symmetric-semirings} & Symmetric descriptions over a commutative semiring & partial & The second-kind identities are compiled as \lean{Fabius.stirlingSecond_add_eq_completeHomogeneousEvalOn} and \lean{Fabius.stirlingSecond_eq_completeHomogeneousEvalOn_of_le} in \lean{StirlingCompleteHomogeneous}, over every commutative semiring.  New source \lean{Fabius.stirlingFirst_eq_sum_powersetCard} and \lean{Fabius.stirlingFirst_eq_esymm} in \lean{StirlingSymmetricFunctions} supplies the first-kind identities; compiler validation of those additions is pending. \\
 \Cref{cor:stirling-symmetric-scaling} & Homogeneous scaling & none & New source: \lean{Fabius.completeHomogeneousEvalOn_scaled_range} and \lean{Fabius.esymm_scaled_range} in \lean{StirlingSymmetricFunctions}; compiler validation pending. \\
 \Cref{thm:paired-sums} & First- and second-kind summations & Lean & \lean{StirlingSummations}: \cref{eq:first-two-sums} is \lean{Fabius.stirlingFirst_succ_succ_eq_sum_choose} (module \lean{StirlingBasisChange}) and \lean{Fabius.stirlingFirst_succ_succ_eq_sum_descFactorial}, \cref{eq:second-two-sums} is \lean{Fabius.stirlingSecond_succ_succ_eq_sum} (\lean{BellStirling}) and \lean{Fabius.stirlingSecond_succ_succ_eq_sum_pow}, the hockey sticks \cref{eq:first-hockey,eq:second-hockey} are \lean{Fabius.stirlingFirst_add_succ_eq_sum} and \lean{Fabius.stirlingSecond_add_succ_eq_sum} (with lower index $k$ in the first-kind case, correcting a misprint), and the convolutions \cref{eq:first-convolution,eq:second-convolution} are \lean{Fabius.choose_mul_stirlingFirst_add} and \lean{Fabius.choose_mul_stirlingSecond_add} \\
-\Cref{thm:first-double-sum} & Explicit first-kind double sum & none &  \\
+\Cref{thm:first-double-sum} & Explicit first-kind double sum & partial & \lean{Fabius.firstDoubleSumInner_eq_stirlingSecond}, \lean{Fabius.firstDoubleSum_eq_crossSum} (\lean{StirlingIdentities}) are the theorem's own proof; the quoted input \eqref{eq:symmetric-cross1} (Schl\"omilch) is not formal; the diagonal instance \lean{Fabius.firstDoubleSum_diagonal} is unconditional \\
 \Cref{thm:signed-near-diagonal-partition} & Near-diagonal partition formula & none &  \\
 \Cref{thm:mod-h-structure} & Rigorous finite-modulus replacement for the archived spectral form & partial & \cref{eq:mod-h-block-product} is \lean{Fabius.stirlingFirst_cast_eq_coeff_block} (module \lean{StirlingFirstModH}), together with the rising-factorial product form \lean{Fabius.ascPochhammer_eq_prod_range}; the eventual vanishing that makes the spectral reading vacuous is \lean{Fabius.stirlingFirst_cast_eq_zero_of_lt}.  The linear recurrence over $\IntegerNumbers/h\IntegerNumbers$ and the Jordan decomposition are not formalized. \\
 \Cref{thm:second-parity} & Parity criterion & Lean & \cref{eq:second-parity-binomial} is \lean{Fabius.stirlingSecond_modEq_choose_two} (module \lean{StirlingParity}), for $1\le k\le n$, from the column series modulo $2$, \lean{Fabius.stirlingColumnOGF_zmod_two}.  The bitwise form \cref{eq:second-parity-bit} is \lean{Fabius.stirlingSecond_odd_iff} and the central case is \lean{Fabius.stirlingSecond_two_mul_odd_iff} (module \lean{StirlingParityBitwise}), both resting on Kummer's theorem at the prime two, \lean{Fabius.odd_choose_add_iff}, which is proved there from Mathlib's Lucas theorem by induction on the binary digits. \\
@@ -11030,7 +11089,7 @@ Result & Title & Status & Lean declarations (module) \\
 \Cref{thm:stieltjes-stirling-series} & Stirling series for the Stieltjes constants & none &  \\
 \Cref{thm:r-stirling-recurrence} & $r$-Stirling recurrence & partial & With $\StirlingSecondKind nk_{\!r}$ defined by the recurrence (\lean{Fabius.rStirling}, module \lean{RStirling}): \cref{eq:r-stirling-recurrence} is \lean{Fabius.rStirling_succ_succ}, the explicit formula $\StirlingSecondKind{n+r}{k+r}_{\!r}=\sum_j\binom nj\StirlingSecondKind jk r^{n-j}$ is \lean{Fabius.rStirlingShift_eq_sum} and \cref{eq:r-stirling-egf} is \lean{Fabius.egfA_rStirlingPoly}; the distinct-blocks count is not formalized. \\
 \Cref{thm:associated-stirling-recurrence} & Associated recurrence & partial & With $\mathsf S_r$ defined as the partial Bell polynomial with weights $[j\ge r]$ (\lean{Fabius.associatedStirling}, module \lean{AssociatedStirling}): \cref{eq:associated-stirling-recurrence} is \lean{Fabius.associatedStirling_succ_succ} and \cref{eq:associated-stirling-egf} is \lean{Fabius.egfA_associatedStirling}; the block-size count is not formalized. \\
-\Cref{thm:reduced-stirling} & Reduction formula & none &  \\
+\Cref{thm:reduced-stirling} & Reduction formula & partial & polynomial core \lean{Fabius.descPochhammer_mul_sub_pow_eq_sum_stirlingSecond} and the characterization \lean{Fabius.reducedStirling_eq_stirlingSecond} (\lean{StirlingIdentities}); the graph-colouring inputs are not formal \\
 proposition (unlabelled, no.~1) &  & none &  \\
 \Cref{thm:ordered-bell} & Ordered Bell numbers & partial & \lean{Fabius.fubini} is defined by \cref{eq:ordered-bell-stirling}; \cref{eq:ordered-bell-egf} is \lean{Fabius.two_sub_exp_mul_egfA_fubini} (via \lean{Fabius.egfA_fubini}: the generating function is $1/(1-u)$ at $u=\EulerE^t-1$) and \cref{eq:ordered-bell-recurrence} is \lean{Fabius.fubini_succ} (\lean{OrderedBell}); the ordered-partition count itself is not formalized \\
 proposition (unlabelled, no.~2) &  & none &  \\

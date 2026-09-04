@@ -102,6 +102,18 @@ STATUS = {
  'thm:merged-inverse-derivative-operator': ('Lean',
    r"\lean{Fabius.iteratedDeriv_eq_inverseDerivOp} (\lean{InverseDerivativeRecursion}), via the "
    r"corpus autonomous-ODE iterated derivative"),
+ 'thm:fixed-point-stirling-moments': ('Lean',
+   r"\lean{Fabius.sum_card_fixedPointsFinset_pow} (\lean{StirlingIdentities}), division-free, "
+   r"for every finite type and every exponent; the expectation is a corollary"),
+ 'thm:first-double-sum': ('partial',
+   r"\lean{Fabius.firstDoubleSumInner_eq_stirlingSecond}, \lean{Fabius.firstDoubleSum_eq_crossSum} "
+   r"(\lean{StirlingIdentities}) are the theorem's own proof; the quoted input "
+   r"\eqref{eq:symmetric-cross1} (Schl\"omilch) is not formal; the diagonal instance "
+   r"\lean{Fabius.firstDoubleSum_diagonal} is unconditional"),
+ 'thm:reduced-stirling': ('partial',
+   r"polynomial core \lean{Fabius.descPochhammer_mul_sub_pow_eq_sum_stirlingSecond} and the "
+   r"characterization \lean{Fabius.reducedStirling_eq_stirlingSecond} (\lean{StirlingIdentities}); "
+   r"the graph-colouring inputs are not formal"),
  'thm:bell-poly-partitions': ('Lean',
    r"\lean{Fabius.partialBell_eq_sum_setPartitions} and "
    r"\lean{Fabius.bell_complete_eq_sum_allSetPartitions} (\lean{BellSetPartitions}), "

@@ -841,6 +841,7 @@ import FabiusFunction.LeastTermIndex
 import FabiusFunction.BellSetPartitions
 import FabiusFunction.EulerianPermutohedron
 import FabiusFunction.InverseDerivativeRecursion
+import FabiusFunction.StirlingIdentities
 
 set_option autoImplicit false
 
