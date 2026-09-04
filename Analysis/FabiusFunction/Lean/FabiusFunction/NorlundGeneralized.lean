@@ -1,7 +1,8 @@
 import FabiusFunction.AppellSequence
+import FabiusFunction.BellCompletePartitions
+import FabiusFunction.UnitSeriesBellCoefficients
 import FabiusFunction.BernoulliFormalLog
 import FabiusFunction.NorlundPolynomials
-import FabiusFunction.UnitSeriesBellCoefficients
 import Mathlib.Algebra.Polynomial.Roots
 
 /-!
@@ -20,8 +21,11 @@ In particular, zero and negative orders are included in the definition.
 
 The construction agrees, as a polynomial equality over `ℚ`, with the
 existing `norlund` at every natural order.  Its Appell derivative, translation,
-convolution, and degree properties follow from the shared polynomial and
-exponential algebra.
+convolution, finite-difference, and degree properties follow from the shared
+polynomial and exponential algebra.
+The explicit cumulants identify the family with complete Bell polynomials,
+and the shared Bell multiplicity formula gives its finite expansion over
+weighted partitions, including the empty partition in degree zero.
 
 All statements here concern formal series and polynomials.  They do not
 assert analytic convergence or choose an analytic logarithm branch.
@@ -162,6 +166,55 @@ theorem generalizedNorlund_add_eval_add (α β x y : A) (n : ℕ) :
   rw [Bell.binomialConv_eq_sum_range] at hn
   exact hn
 
+/-- The finite-difference law with arbitrary scalar successor order.
+No cancellation in the coefficient algebra is needed: factorials are
+cleared using identities in `ℚ`, so the zero algebra is included. -/
+theorem generalizedNorlund_succ_eval_add_one_sub (α x : A) (n : ℕ) :
+    (generalizedNorlund (α + 1) (n + 1)).eval (x + 1) -
+        (generalizedNorlund (α + 1) (n + 1)).eval x =
+      ((n : A) + 1) * (generalizedNorlund α n).eval x := by
+  have h : egfA A (fun m => (generalizedNorlund (α + 1) m).eval (x + 1)) -
+      egfA A (fun m => (generalizedNorlund (α + 1) m).eval x) =
+        X * egfA A (fun m => (generalizedNorlund α m).eval x) := by
+    simp only [egfA_generalizedNorlund_eval, generalizedNorlundKernel_add,
+      generalizedNorlundKernel_one]
+    rw [← exp_mul_exp_eq_exp_add, rescale_one, RingHom.id_apply]
+    have hB := bernoulliPowerSeries_mul_exp_sub_one A
+    linear_combination (generalizedNorlundKernel α * rescale x (exp A)) * hB
+  have hc := congrArg (coeff (n + 1)) h
+  rw [map_sub, coeff_egfA, coeff_egfA, coeff_succ_X_mul, coeff_egfA,
+    ← mul_sub] at hc
+  have hratio : ((n + 1).factorial : ℚ) * (1 / n.factorial) = (n : ℚ) + 1 := by
+    rw [Nat.factorial_succ, Nat.cast_mul, Nat.cast_succ, mul_assoc,
+      mul_one_div_cancel (by positivity), mul_one]
+  calc
+    (generalizedNorlund (α + 1) (n + 1)).eval (x + 1) -
+        (generalizedNorlund (α + 1) (n + 1)).eval x =
+      algebraMap ℚ A ((n + 1).factorial : ℚ) *
+        (algebraMap ℚ A (1 / (n + 1).factorial) *
+          ((generalizedNorlund (α + 1) (n + 1)).eval (x + 1) -
+            (generalizedNorlund (α + 1) (n + 1)).eval x)) := by
+      rw [← mul_assoc, ← map_mul, mul_one_div_cancel (by positivity), map_one, one_mul]
+    _ = algebraMap ℚ A ((n + 1).factorial : ℚ) *
+        (algebraMap ℚ A (1 / n.factorial) * (generalizedNorlund α n).eval x) := by
+      rw [hc]
+    _ = ((n : A) + 1) * (generalizedNorlund α n).eval x := by
+      rw [← mul_assoc, ← map_mul, hratio]
+      simp only [map_add, map_natCast, map_one]
+
+/-- The finite-difference law in every degree and at every scalar order:
+`B_n^(α)(x+1) - B_n^(α)(x) = n B_(n-1)^(α-1)(x)`.
+Degree zero gives zero on both sides; order zero legitimately uses order `-1`
+on the right, rather than imposing a positivity assumption. -/
+theorem generalizedNorlund_eval_add_one_sub (α x : A) (n : ℕ) :
+    (generalizedNorlund α n).eval (x + 1) - (generalizedNorlund α n).eval x =
+      (n : A) * (generalizedNorlund (α - 1) (n - 1)).eval x := by
+  cases n with
+  | zero => simp
+  | succ n =>
+      simpa only [Nat.succ_eq_add_one, Nat.cast_add, Nat.cast_one, Nat.add_sub_cancel,
+        sub_add_cancel] using generalizedNorlund_succ_eval_add_one_sub (α - 1) x n
+
 /-- The arbitrary-order construction agrees as an actual polynomial with
 the existing rational Nörlund family at every natural order. -/
 theorem generalizedNorlund_natCast (m n : ℕ) :
@@ -250,5 +303,28 @@ theorem generalizedNorlund_eval_eq_completeBell (α x : A) (n : ℕ) :
       ← exp_subst_add (scaledBernoulliLog_constantCoeff α) hx,
       ← bellWeightSeries_generalizedNorlundCumulant, exp_subst_bellWeightSeries]
   exact congrFun (seq_eq_of_egfA_eq A h) n
+
+/-- The finite multiplicity-vector expansion of the arbitrary-order Nörlund
+polynomials.  Rational scalar actions express reciprocal factorials in any
+commutative rational algebra; degree zero is the unique empty partition. -/
+theorem generalizedNorlund_eval_eq_sum_weightedPartitions (α x : A) (n : ℕ) :
+    (generalizedNorlund α n).eval x =
+      (n.factorial : ℚ) •
+        ∑ f ∈ weightedPartitions n, ∏ j ∈ Finset.Icc 1 n,
+          (((f j).factorial : ℚ)⁻¹) •
+            ((((j.factorial : ℚ)⁻¹) • generalizedNorlundCumulant α x j) ^ f j) := by
+  rw [generalizedNorlund_eval_eq_completeBell, bell_complete_eq_sum_weightedPartitions]
+
+/-- The familiar division form of the explicit Nörlund expansion over a
+characteristic-zero field.  No condition is imposed on the scalar order,
+and the empty product gives the degree-zero polynomial. -/
+theorem generalizedNorlund_eval_eq_sum_div_weightedPartitions
+    {F : Type*} [Field F] [CharZero F] (α x : F) (n : ℕ) :
+    (generalizedNorlund α n).eval x =
+      (n.factorial : F) *
+        ∑ f ∈ weightedPartitions n, ∏ j ∈ Finset.Icc 1 n,
+          (generalizedNorlundCumulant α x j / (j.factorial : F)) ^ f j /
+            ((f j).factorial : F) := by
+  rw [generalizedNorlund_eval_eq_completeBell, bell_complete_eq_sum_div_weightedPartitions]
 
 end Fabius

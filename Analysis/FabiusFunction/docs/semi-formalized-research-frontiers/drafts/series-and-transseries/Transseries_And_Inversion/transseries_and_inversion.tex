@@ -46,6 +46,12 @@
 \usepackage{listings}
 \usepackage[most]{tcolorbox}
 \usepackage[hidelinks]{hyperref}
+\hypersetup{
+  pdftitle={Transseries: the polynomial-logarithmic calculus, series reversal at infinity, and inversion},
+  pdfauthor={Vladimir Reshetnikov; ProveIt formal-development synthesis},
+  pdfsubject={A consolidated and Lean-crosswalked treatment of polynomial-logarithmic transseries and asymptotic inversion},
+  pdfkeywords={transseries, asymptotic inversion, Lambert W, Bell polynomials, Lean formalization}
+}
 \usepackage[nameinlink,noabbrev,capitalise]{cleveref}
 
 \setlength{\parindent}{1.1em}
@@ -335,7 +341,7 @@ content of the argument and the only place the scale property is used.
 \begin{remark}[Formal crosswalk]
 \label{q0:rem:scale-lean}
 The sequence-indexed content of
-\cref{q0:def:scale,q0:eq:scale,q0:def:poincare,q0:eq:poincare,
+\cref{q0:def:scale,q0:eq:scale,q0:def:poincare,q0:eq:poincare,%
 q0:eq:coefficients,q0:prop:uniqueness} is Exact in
 \lean{TransseriesScale.lean}.  The structure
 \lean{Fabius.IsAsymptoticScale} records eventual nonvanishing and the
@@ -1627,6 +1633,19 @@ particular \(\psi_{2}>0\).  For any \(b\),
 (iii) This is the last assertion of \cref{plt:prop:mot-two-orders}.
 \end{proof}
 
+\emph{Lean status: Exact.}  In \lean{TransseriesWrightOmegaTerms.lean}:
+part~(i) is \lean{Fabius.not_isEquivalent_pure_power_wrightOmega_sub}, no
+\(cX^{a}\) with \(c\ne0\) is asymptotic to \(\psi_{1}\), obtained in one
+line from the rigidity of the second term; part~(ii) is
+\lean{Fabius.tendsto_wrightOmega_div_plMonomial_zero_atTop},
+\(\WrightOmega(X)/(\log X)^{b}\to+\infty\) for every real \(b\), together
+with \lean{Fabius.isLittleO_wrightOmega_residual_plMonomial_zero},
+\(\psi_{2}=\LittleOAt{(\log X)^{b}}{X\to+\infty}\) for every real \(b\);
+part~(iii) is \lean{Fabius.wrightOmega_residual_isEquivalent} in
+\lean{WrightOmegaTwoOrders.lean}.  The one clause not carried over is the
+strict positivity of \(\psi_{2}\) for large \(X\), which is a consequence of
+the equivalence in~(iii) and is not stated separately.
+
 \begin{remark}[The two failures are not symmetric]
 \label{plt:rmk:mot-asymmetry}
 Part~(i) is a \emph{gap}: the true size of the correction, \(\log X\), lies
@@ -1833,14 +1852,25 @@ first partial sum is therefore exactly \(X\), and the second term satisfies
 \((0,1)\) generate \(\IntegerNumbers^{2}\).
 \end{proof}
 
-\emph{Lean status: partial, with both engines formal.}  The first paragraph of
-the proof is \lean{Fabius.isEquivalent_plMonomial_const_mul_iff} in
-\lean{TransseriesMonomialUniqueness.lean}: for a positive coefficient, an
-asymptotic equivalence of two power--logarithmic monomials forces both
-exponents to agree and the coefficient to be one.  The two residual
-equivalences used afterwards are formal in \lean{WrightOmegaTwoOrders.lean}.
-Their assembly from the premise of an arbitrary three-term asymptotic scale is
-not packaged as this corollary, so the corollary itself is not claimed Exact.
+\emph{Lean status: Exact for monomial scales.}  The uniqueness engine is
+\lean{Fabius.isEquivalent_const_mul_plMonomial_iff} in
+\lean{TransseriesMonomialUniqueness.lean}, stated with a coefficient on
+\emph{both} sides and no sign hypothesis: for \(c,c'\ne0\), an asymptotic
+equivalence \(cX^{a}(\log X)^{b}\sim c'X^{a'}(\log X)^{b'}\) forces
+\(a=a'\), \(b=b'\) and \(c=c'\).  No case split on the sign of \(c/c'\) is
+needed: in the divergent case, multiplying the quotient by the inverse
+constant would hand a divergent function a finite limit.  The three
+rigidity statements that are the content of the corollary are
+\lean{Fabius.exponents_of_wrightOmega},
+\lean{Fabius.exponents_of_wrightOmega_sub} and
+\lean{Fabius.exponents_of_wrightOmega_residual} in
+\lean{TransseriesWrightOmegaTerms.lean}: any scaled monomial with a nonzero
+coefficient representing \(\WrightOmega\), \(\WrightOmega-X\) or
+\(\WrightOmega-X+\log X\) has exponent pair \((1,0)\), \((0,1)\), \((-1,1)\)
+and coefficient \(1\), \(-1\), \(1\) respectively.  The ``consequently''
+clause is \lean{Fabius.not_pure_of_wrightOmega_three_terms}.  The
+hypothesis ``an expansion with at least three terms'' is rendered as the
+three equivalences of the residuals, which is what the proof uses.
 
 \begin{remark}[Scope of the corollary]
 \label{plt:rmk:mot-corollary-scope}
@@ -30280,19 +30310,23 @@ the proof of \cref{plt:prop:bell-gf}, now without the factors \(1/j!\).  The
 last sentence is \cref{plt:prop:tay-convolution}\,(i) combined with that
 generating identity.
 \end{proof}
-\emph{Lean status: Exact.}  The two-definition, four-theorem module
-\lean{OrdinaryPartialBell.lean} defines the ordinary series and its coefficient family as
-\lean{Fabius.ordinarySeries} and \lean{Fabius.ordinaryPartialBell}.
-The defining power identity is \lean{Fabius.ordinaryPartialBell_pow};
-\lean{Fabius.bellWeightSeries_eq_ordinarySeries} identifies the factorially weighted
-exponential input with the corresponding ordinary series; and
-\lean{Fabius.factorial_mul_ordinaryPartialBell} is the denominator-cleared form of
-\eqref{plt:eq:bell-ord-exp}.  The supporting theorem
-\lean{Fabius.ordinaryPartialBell_eq_zero_of_lt} supplies its triangular vanishing.
-Thus the normalization bridge is a formal power-series identity over every commutative
-rational algebra.  This does not identify the ordinary Bell family with labelled set
-partitions, and the similarly named \lean{OrdinaryBellBivariate.lean} and
-\lean{PowerSumOrdinaryBell.lean} concern different objects.
+\emph{Lean status: Exact.}  The new two-definition/four-theorem module
+\lean{OrdinaryPartialBell.lean} represents the ordinary family by its
+equivalent characterizing coefficient definition rather than by the displayed
+multiplicity sum.  Its definitions \lean{Fabius.ordinarySeries} and
+\lean{Fabius.ordinaryPartialBell}, together with
+\lean{Fabius.ordinaryPartialBell_pow}, give exactly the ordinary generating
+identity following~\eqref{plt:eq:bell-ord-def};
+\lean{Fabius.ordinaryPartialBell_eq_zero_of_lt} records its triangular
+support.  The theorem \lean{Fabius.bellWeightSeries_eq_ordinarySeries}
+identifies the divided-coefficient ordinary series, and the multiplicatively
+cleared theorem \lean{Fabius.factorial_mul_ordinaryPartialBell} is precisely
+the normalization bridge~\eqref{plt:eq:bell-ord-exp} over every commutative
+\(\RationalNumbers\)-algebra.  Composing that bridge with the coefficient
+identity in \cref{plt:prop:tay-convolution}\,(i) gives the final statement for
+\(C_{n,k}\); no different object from \lean{OrdinaryBellBivariate.lean} or
+\lean{PowerSumOrdinaryBell.lean} is being substituted.
+This does not identify the ordinary family with labelled set partitions.
 
 
 \begin{warningbox}[title={Three two-index arrays, three index orders}]
@@ -37210,12 +37244,12 @@ Lecture Notes in Mathematics, vol.~1888, Springer, Berlin, 2006.
 \chapter{Apparatus for inverting a rapidly growing function}\label{p0:sec:top}
 
 \begin{sourcebox}
-All twelve filed articles carry a private copy of the material of this
+All of the first twelve filed articles carry a private copy of the material of this
 chapter.  The presentation below follows, in the main, the two sections
 \emph{A universal coefficient calculus for exponential--power inversion} and
 \emph{Lambert-normalized inverse transseries} of
 \textsf{Swing\_Factorial\_Transseries\_Article}, which state the reversion in
-the greatest generality of the twelve.  Four things have been changed.
+the greatest generality of the first twelve.  Four things have been changed.
 (i)~The Lagrange fixed-point lemma is reproved: the swing article's proof
 appeals to Lagrange--B\"urmann inversion in a setting where the required
 invertibility hypothesis fails, and the gap is closed here by a universality
@@ -37705,7 +37739,7 @@ two logarithmic normalizations are
 \lean{Fabius.coeff_logOf_eq_sum_ordPartialBell} and
 \lean{Fabius.coeff_logOf_eq_sum_partialBell}.
 
-For \cref{p0:cor:exp-log-jets}, the boundary value (A_0=1) is
+For \cref{p0:cor:exp-log-jets}, the boundary value \(A_0=1\) is
 \lean{Fabius.constantCoeff_exp_subst}, and coefficient reweighting is pinned by
 \lean{Fabius.egfA_factorialDenormalize_coeff_eq} and
 \lean{Fabius.bellWeightSeries_factorialDenormalize_coeff_eq}; the complete-Bell
@@ -39125,6 +39159,22 @@ value theorem is applied: the proof above takes $[x_\ast-\varrho,x_\ast]$
 precisely because $r_\ast>0$, the slope bound guaranteeing that $f$ has already
 fallen to $\lambda$ by the far end.  Same quantity, two roles, and only the
 second is essential.
+\end{remark}
+
+\begin{remark}[Formal residual certificate]\label{p0:rem:backward-error-lean}
+The ``moreover'' clause is machine-checked by
+\lean{Fabius.exists_eq_in_residual_interval} in
+\lean{MeanValueBracket.lean}.  The Lean theorem is slightly stronger and more
+structural than the displayed specialization: for an arbitrary convex set
+\(D\), continuity on \(D\), differentiability on its interior, and the sole
+lower derivative bound \(m\le f'\) with \(m>0\), containment of
+\([x-|f(x)-z|/m,x+|f(x)-z|/m]\) in \(D\) produces a point \(y\) in that
+same interval with \(f(y)=z\).  It assumes neither a previously known root nor
+the unused upper derivative bound \(M\), and includes the zero-residual and
+degenerate-interval cases.  The two-sided error inequalities remain the
+separate theorems \lean{Fabius.abs_sub_right_inverse_le_div} and
+\lean{Fabius.div_le_abs_sub_right_inverse}, which appropriately require a
+chosen right-inverse value.
 \end{remark}
 
 \begin{remark}[Use in the logarithmic variable]\label{p0:rem:log-residual}
@@ -51072,7 +51122,7 @@ ratio, closed falling-product bridge, and antidiagonal convolution; the last
 four package the displayed shifted coefficient family and verify
 \eqref{p6:eq:quadratic-model} coefficient by coefficient under
 \(A\ne0\) and \(c\ne0\).  The index is shifted so that the convolution runs
-over \texttt{Finset.antidiagonal}; the empty boundary case at (n=1) is
+over \texttt{Finset.antidiagonal}; the empty boundary case at \(n=1\) is
 carried by \lean{Fabius.quadCoef_zero} rather than folded into the recurrence.
 
 The larger \cref{p6:lem:quadratic-core} is only Partial.  The Lean leaf does
@@ -55137,7 +55187,7 @@ prove.
 
 \section{One inversion, four dictionaries}\label{p5:sec:one-inversion}
 
-The four subjects of this volume were written about independently, and their
+The first four subjects of this volume were written about independently, and their
 \emph{forward} analyses have almost nothing in common: a singularity analysis
 of a Pólya functional equation, a pair of gamma-quotient branches, a
 convergent Rademacher series over root-of-unity sectors, and a second, quite
@@ -55195,7 +55245,7 @@ therefore not ``four instances of one model'' but ``four instances of one
 \emph{core calculus}, of which three share a model''.
 
 \paragraph{The Lambert branch is determined by a sign.}
-Each of the twelve articles verifies by hand, for its own case, which branch
+Each of the first twelve articles verifies by hand, for its own case, which branch
 of $\Wlam$ produces the large root; several remark that the appearance of
 $\Wlam_{-1}$ is essential and surprising.  With the signed convention of
 \cref{p0:rem:conventions} it is neither: by \cref{p0:cor:branch-rule} the
@@ -55286,14 +55336,14 @@ inverse.  No amount of further reversion crosses it.
 
 \section{What this consolidation establishes}\label{p5:sec:new}
 
-Several statements in this volume are not in any of its twelve sources.  They
+Several statements in this volume are not in any of its first twelve sources.  They
 are listed here because a reader who knows the sources should be able to see
 quickly what has changed; the corrections themselves are boxed where they
 occur and collected in \cref{app:repairs}.
 
 \begin{enumerate}[label=(\arabic*),leftmargin=*]
 \item \emph{A correct proof of the Lagrange fixed-point formula.}  Five of the
-      twelve articles derive
+      first twelve articles derive
       $\Coef{t^n}U=\sum_{m\le n}\tfrac1m\Coef{t^nu^{m-1}}\Psi^m$ by
       introducing a marker $z$ and applying Lagrange--Bürmann in $z$.  That
       application is not available: Lagrange--Bürmann needs $\varphi(0)$
@@ -55512,6 +55562,7 @@ converged on the same apparatus independently.
 \end{enumerate}
 
 \appendix
+\renewcommand*{\theHchapter}{qfour.\Alph{chapter}}
 
 \chapter{Provenance}
 \label{q4:app:provenance}
@@ -55654,7 +55705,7 @@ This volume consolidates twenty-four independently written articles, three on
 each of its eight subjects.  All twenty-four were filed in this repository on
 3~September 2026 as a single quick-intake batch, at
 \texttt{drafts/series-and-transseries/special-function-inversion/}; the
-directories below are relative to that path.  Nothing in the twelve was
+directories below are relative to that path.  Nothing in the twenty-four was
 edited in place: this volume is a new document, and the sources remain
 available in git history.
 
@@ -55849,7 +55900,7 @@ at eighty digits --- give
   r_0^{-}=0.468636627924845548087202621931819314\ldots,
 \]
 and the volume prints only digits it has verified.  This is the one place in
-the twelve articles where a printed numeral is wrong; it is a precision
+the twenty-four articles where a printed numeral is wrong; it is a precision
 failure rather than a mistake in a formula.
 
 \paragraph{An audit appendix that contradicts its own main text.}

@@ -82,6 +82,17 @@ theorem ordPartialBell_mul_left (c : R) (x : ℕ → R) (n k : ℕ) :
     rw [ih]
     ring
 
+/-- Ring homomorphisms commute with ordinary partial Bell polynomials. -/
+theorem map_ordPartialBell {S : Type*} [CommSemiring S] (f : R →+* S)
+    (x : ℕ → R) (n k : ℕ) :
+    f (ordPartialBell x n k) = ordPartialBell (fun j => f (x j)) n k := by
+  induction k generalizing n with
+  | zero => simp
+  | succ k ih =>
+    rw [ordPartialBell_succ_right, ordPartialBell_succ_right, map_sum]
+    refine Finset.sum_congr rfl fun i _ => ?_
+    rw [map_mul, ih]
+
 end Def
 
 section PowerCoefficients

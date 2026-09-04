@@ -25,8 +25,12 @@ Nothing here needs the ring `K[t,t⁻¹][L]` to be constructed; every
 differential ring containing such a `t` and `L` obeys the law, and the
 concrete ring is one model of it.
 
-* `derivation_pow_t` — `d (tⁿ) = -n·t^(n+1)` for natural powers.
-* `derivation_block` — **the natural-power block law**.
+* `derivation_pow_t` — `d (tⁿ) = -n·t^(n+1)`.
+* `derivation_block` — **the block law**.
+* `successiveBlockOperator` — the commuting product
+  `(∂_L-c-k+1)⋯(∂_L-c)` governing `k` successive derivatives.
+* `derivation_iterate_block`, `derivation_iterate_block_zpow` — the
+  **repeated block law**, respectively without and with negative powers.
 * `derivation_zpow_block` — the source-shaped block law for every
   integer Laurent exponent, in an ambient field where `t ≠ 0`.
 * `exists_block_primitive` — **antidifferentiation inside a nonresonant
@@ -76,6 +80,100 @@ theorem derivation_block (hdt : d t = -t ^ 2) (hdL : d L = t) (n : ℕ)
     map_sub, map_mul, aeval_C, map_natCast]
   simp only [smul_eq_mul]
   ring
+
+/-! ## Successive block operators and repeated derivatives -/
+
+/-- The successive block operator
+
+`Δ(c, k) = (∂_L - c - (k-1)) ∘ ⋯ ∘ (∂_L - c)`.
+
+The empty operator `Δ(c, 0)` is the identity.  Defining the product in
+this order makes the recurrence which arises by taking one more derivative
+definitional; commutativity of the factors is proved below.  The parameter
+`c` is an arbitrary scalar, so this same operator applies to integral,
+Puiseux, and Hahn exponents whenever their exponent group maps into the
+coefficient ring. -/
+noncomputable def successiveBlockOperator {R : Type*} [CommRing R]
+    (c : R) : ℕ → R[X] → R[X]
+  | 0, p => p
+  | k + 1, p =>
+      blockOperator (c + (k : R)) (successiveBlockOperator c k p)
+
+/-- The length-zero successive block operator is the identity. -/
+@[simp] theorem successiveBlockOperator_zero {R : Type*} [CommRing R]
+    (c : R) (p : R[X]) :
+    successiveBlockOperator c 0 p = p := rfl
+
+/-- Appending the last factor gives
+`Δ(c, k+1)p = (∂_L-c-k)(Δ(c,k)p)`. -/
+theorem successiveBlockOperator_succ_last {R : Type*} [CommRing R]
+    (c : R) (k : ℕ) (p : R[X]) :
+    successiveBlockOperator c (k + 1) p =
+      blockOperator (c + (k : R)) (successiveBlockOperator c k p) := rfl
+
+/-- Any two scalar-shifted polynomial derivatives commute:
+`(∂_L-a)(∂_L-b)p = (∂_L-b)(∂_L-a)p`. -/
+theorem blockOperator_comm {R : Type*} [CommRing R] (a b : R) (p : R[X]) :
+    blockOperator a (blockOperator b p) =
+      blockOperator b (blockOperator a p) := by
+  simp only [blockOperator, map_sub, Polynomial.derivative_C_mul]
+  ring
+
+/-- Every block operator commutes with every successive block operator. -/
+theorem blockOperator_successiveBlockOperator {R : Type*} [CommRing R]
+    (a c : R) (k : ℕ) (p : R[X]) :
+    blockOperator a (successiveBlockOperator c k p) =
+      successiveBlockOperator c k (blockOperator a p) := by
+  induction k with
+  | zero => rfl
+  | succ k ih =>
+      rw [successiveBlockOperator_succ_last,
+        successiveBlockOperator_succ_last, blockOperator_comm, ih]
+
+/-- **Cocycle law for successive block operators.**  Splitting `k+ℓ`
+successive factors after the first `k` shifts the starting scalar of the
+remaining `ℓ` factors by `k`:
+
+`Δ(c, k+ℓ)p = Δ(c+k, ℓ)(Δ(c,k)p)`. -/
+theorem successiveBlockOperator_add {R : Type*} [CommRing R]
+    (c : R) (k ℓ : ℕ) (p : R[X]) :
+    successiveBlockOperator c (k + ℓ) p =
+      successiveBlockOperator (c + (k : R)) ℓ
+        (successiveBlockOperator c k p) := by
+  induction ℓ with
+  | zero => simp
+  | succ ℓ ih =>
+      rw [Nat.add_succ, successiveBlockOperator_succ_last,
+        successiveBlockOperator_succ_last, ih]
+      congr 1
+      push_cast
+      ring
+
+/-- Removing the first factor gives the manuscript's other recurrence
+`Δ(c,k+1)p = Δ(c+1,k)((∂_L-c)p)`. -/
+theorem successiveBlockOperator_succ_first {R : Type*} [CommRing R]
+    (c : R) (k : ℕ) (p : R[X]) :
+    successiveBlockOperator c (k + 1) p =
+      successiveBlockOperator (c + 1) k (blockOperator c p) := by
+  simpa [Nat.one_add, successiveBlockOperator] using
+    successiveBlockOperator_add c 1 k p
+
+/-- **Repeated block law for natural exponents.**  In any commutative
+differential algebra with `d t = -t²` and `d L = t`, taking `k`
+derivatives of `tⁿ p(L)` raises the outer exponent by `k` and applies the
+successive operator `Δ(n,k)` to `p`.  No field or characteristic hypothesis
+is needed, and `t` need not be a unit. -/
+theorem derivation_iterate_block (hdt : d t = -t ^ 2) (hdL : d L = t)
+    (n k : ℕ) (p : K[X]) :
+    (d^[k]) (t ^ n * aeval L p) =
+      t ^ (n + k) * aeval L (successiveBlockOperator (n : K) k p) := by
+  induction k with
+  | zero => simp
+  | succ k ih =>
+      rw [Function.iterate_succ_apply', ih]
+      simpa [successiveBlockOperator, Nat.cast_add, Nat.add_assoc] using
+        derivation_block d hdt hdL (n + k)
+          (successiveBlockOperator (n : K) k p)
 
 /-! ## Laurent blocks -/
 
@@ -242,7 +340,7 @@ theorem derivation_zpow_t {u : Aˣ} (hdt : d (u : A) = -(u : A) ^ 2)
       rw [show (-((m : ℤ) + 1)) = -((m + 1 : ℕ) : ℤ) by push_cast; ring,
         zpow_neg, zpow_natCast, ← inv_pow, Units.val_pow_eq_pow_val]
     have h2 : ((u ^ (-((m : ℤ) + 1) + 1) : Aˣ) : A) = ((u⁻¹ : Aˣ) : A) ^ m := by
-      rw [show (-((m : ℤ) + 1) + 1) = -((m : ℕ) : ℤ) by ring,
+      rw [show (-((m : ℤ) + 1) + 1) = -((m : ℕ) : ℤ) by omega,
         zpow_neg, zpow_natCast, ← inv_pow, Units.val_pow_eq_pow_val]
     rw [h1, h2, derivation_pow_inv d hdt (m + 1), Nat.add_sub_cancel]
     push_cast
@@ -264,5 +362,28 @@ theorem derivation_block_zpow {u : Aˣ} (hdt : d (u : A) = -(u : A) ^ 2)
     map_sub, map_mul, aeval_C, map_intCast, e1]
   simp only [smul_eq_mul]
   ring
+
+/-- **Repeated block law for every integer exponent.**  When `t` is a unit,
+the natural-exponent formula extends without further hypotheses to all
+`n : ℤ`:
+
+`d^[k] (tⁿ p(L)) = t^(n+k) (Δ(n,k)p)(L)`.
+
+This is the Laurent-polynomial instance of the manuscript's repeated
+derivative formula. -/
+theorem derivation_iterate_block_zpow {u : Aˣ}
+    (hdt : d (u : A) = -(u : A) ^ 2) (hdL : d L = (u : A))
+    (n : ℤ) (k : ℕ) (p : K[X]) :
+    (d^[k]) (((u ^ n : Aˣ) : A) * aeval L p) =
+      ((u ^ (n + (k : ℤ)) : Aˣ) : A) *
+        aeval L (successiveBlockOperator (n : K) k p) := by
+  induction k with
+  | zero => simp
+  | succ k ih =>
+      rw [Function.iterate_succ_apply', ih]
+      simpa [successiveBlockOperator, Nat.cast_add, Int.cast_add, Nat.add_assoc,
+        add_assoc] using
+        derivation_block_zpow d hdt hdL (n + (k : ℤ))
+          (successiveBlockOperator (n : K) k p)
 
 end Fabius

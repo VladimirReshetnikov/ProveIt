@@ -45,12 +45,15 @@ checkpoint `2ccc7f787becde416b234d40093876eac9f9c35e`, source checkpoint
 `b50d5349ec2db42d056fe3a6f6c7286365ff77ed`. The pre-sweep register at that
 source checkpoint had 207 results: 64 `Lean`, 38 `partial`, and 105 `none`.
 After the focused checks and exact symmetric-function promotions, the live
-register has 69 `Lean`, 35 `partial`, and 103 `none`. `NorlundGeneralized` and the coefficient-base-change extension
-of `BernoulliFormalLog` have now passed focused compiler validation. The latter
-makes `lem:merged-log-base-change` Exact; the former strengthens the two
-Nörlund rows while their specifically named residual gaps remain Partial. Their
-human proofs include normalization, zero-ring boundaries, and degree zero. The
-current merged source census is 987 modules and 12,207 explicit declarations.
+register has 69 `Lean`, 35 `partial`, and 103 `none`. That is an intermediate
+checkpoint; the current merged register has 81 `Lean`, 51 `partial`, and 76
+`none`. `NorlundGeneralized`, `BellCompletePartitions`, and the
+coefficient-base-change extension of `BernoulliFormalLog` have passed focused
+compiler validation. The latter makes `lem:merged-log-base-change` Exact; the
+former strengthens the Nörlund and complete-Bell rows while their specifically
+named residual gaps remain Partial. Their human proofs include normalization,
+zero-ring boundaries, and degree zero. The
+current merged source census is 1,001 modules and 12,447 explicit declarations.
 The inherited 208-page, 2,014,975-byte PDF predates these latest source edits.
 PDF rebuilding remains skipped in this work at the user's request, without
 discarding the upstream render or claiming current render parity.
@@ -59,8 +62,8 @@ All affected leaves passed focused compilation on 2026-09-04 using
 `lake env lean -o .lake/build/lib/lean/FabiusFunction/NewtonReciprocal.olean
 Analysis/FabiusFunction/Lean/FabiusFunction/NewtonReciprocal.lean` (exit zero),
 with the same single-module driver applied to the remaining affected closure.
-All 36 modules in that closure are compiler-checked; no aggregate build is
-claimed.
+All 174 modules in that affected dependency closure are compiler-checked; the
+full facade was also checked directly. No aggregate build is claimed.
 After the latest synchronization, the cited-name and duplicate-name structural
 audits pass: 3,500 distinct cited names resolve and there are no duplicate
 declaration names. The facade audit found two missing upstream imports,
@@ -68,7 +71,7 @@ declaration names. The facade audit found two missing upstream imports,
 structural checks are not a fresh aggregate Lean build. All new modules have facade imports and contain no
 `sorry`, `admit`, `axiom`, or `opaque` declarations. The register-generator mappings
 preserve the new pending and compiled distinctions; both generator scripts passed
-read-only syntax and mapping checks without rewriting the canonical document.
+syntax and mapping checks, and the canonical register was regenerated.
 
 ## Source correspondences inspected
 

@@ -1,5 +1,6 @@
 import FabiusFunction.StirlingSecondReverseRow
 import FabiusFunction.StirlingTransformEGF
+import Mathlib.Data.Nat.Choose.Cast
 
 /-!
 # The finite reverse-row identity for second-kind Stirling numbers
@@ -36,20 +37,16 @@ private theorem reverseRowKernel_factorial (k j : ℕ) :
         ((-1 : ℚ) ^ (j + 2) * j.factorial * (k + j + 2).choose k) =
       (1 / (k.factorial : ℚ)) *
         ((-1 : ℚ) ^ (j + 2) / ((j + 2 : ℕ) * (j + 1 : ℕ))) := by
-  have hc : ((k + j + 2).choose k : ℚ) * k.factorial * (j + 2).factorial =
-      (k + j + 2).factorial := by
-    have h := Nat.choose_mul_factorial_mul_factorial
-      (show k ≤ k + j + 2 by omega)
-    rw [show k + j + 2 - k = j + 2 by omega] at h
-    exact_mod_cast h
-  rw [Nat.factorial_succ, Nat.factorial_succ] at hc
-  push_cast at hc ⊢
+  rw [Nat.cast_choose ℚ (show k ≤ k + j + 2 by omega),
+    show k + j + 2 - k = j + 2 by omega,
+    Nat.factorial_succ (j + 1), Nat.factorial_succ j]
+  push_cast
   have hk : (k.factorial : ℚ) ≠ 0 := by positivity
   have hn : ((k + j + 2).factorial : ℚ) ≠ 0 := by positivity
+  have hj : (j.factorial : ℚ) ≠ 0 := by positivity
   have hj1 : (j : ℚ) + 1 ≠ 0 := by positivity
   have hj2 : (j : ℚ) + 2 ≠ 0 := by positivity
-  field_simp [hk, hn, hj1, hj2]
-  linear_combination hc
+  field_simp [hk, hn, hj, hj1, hj2] <;> ring
 
 private theorem egfA_reverseRowKernel (k : ℕ) :
     egfA ℚ (reverseRowKernel k) =
@@ -78,9 +75,9 @@ private theorem factorial_succ_reciprocal (k : ℕ) :
   rw [← map_natCast (C : ℚ →+* ℚ⟦X⟧) (k + 1), ← map_mul]
   congr 1
   rw [Nat.factorial_succ, Nat.cast_mul]
-  have hk : (k.factorial : ℚ) ≠ 0 := by positivity
   have hk1 : ((k + 1 : ℕ) : ℚ) ≠ 0 := by positivity
-  field_simp [hk, hk1]
+  simp only [one_div, mul_inv]
+  rw [← mul_assoc, mul_inv_cancel₀ hk1, one_mul]
 
 private theorem reverseRow_series (k : ℕ) :
     (egfA ℚ (reverseRowKernel k)).subst (exp ℚ - 1) =
@@ -162,8 +159,10 @@ private theorem second_reverse_row_rat (n k : ℕ) (hk : 1 ≤ k) (hkn : k ≤ n
 commutative ring, with source index `j = i + 2`. Its factor
 `(-1)^j * choose (k+j-1) j` is the generalized binomial coefficient
 `choose (-k) j`. Every Stirling entry on the right is strictly to the right
-of column `k`, and the sum is empty at the diagonal. -/
-theorem second_reverse_row {R : Type*} [CommRing R]
+of column `k`, and the sum is empty at the diagonal. This generic, triangular
+version has a distinct name from the all-boundary integer theorem
+`second_reverse_row` in `StirlingSecondReverseRow`. -/
+theorem second_reverse_row_commRing_of_le {R : Type*} [CommRing R]
     (n k : ℕ) (hk : 1 ≤ k) (hkn : k ≤ n) :
     ((n : R) - k) * Nat.stirlingSecond n k =
       ∑ i ∈ range (n - k),

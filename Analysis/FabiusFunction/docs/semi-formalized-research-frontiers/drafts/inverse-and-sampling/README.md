@@ -82,24 +82,20 @@ Barnes-identification result.  The current concordance is therefore 57
 Lean-proved / 88 human-proved frontier / 10 conjecture / 15 open-problem / 24
 nonassertoric rows.
 
-The retained, fully reviewed publication checkpoint has 134 A4 pages and
-2,027,726 bytes, with SHA-256
-`22bc68d855ad04dde9654e9fbd20b3ba7f05a33e3c5df0e5b80bb8991c94b41d`.
-Its historical three-pass receipt and page/font/visual gates, together with the
-historical 23-input `SOURCE_CLOSURE.sha256` record, are recorded in the
-canonical package's
+The canonical inverse package preserves its 134-page and two 137-page
+historical checkpoints in
 [`VALIDATION.md`](Inverse_Fabius_Analyticity_Asymptotics_and_Computability/VALIDATION.md).
-That closure file was intentionally not regenerated and does not describe the
-current build graph. The synchronized `b899` receipt superseding both historical
-records has a 293-line / 11,514-byte driver (SHA-256
-`92fab1fae38bbcf86a45b51bfe7ff34e2801361df9d2f3d6aa3de4dc966eaa3c`),
-a 17-file / 10,682-line / 431,748-byte recursive TeX closure (digest
-`6e4e6fde424fd5046467b1f1cec0c19b6c10eb681fae4ba7cc53e14b6a5bf61e`),
-passes 132 pages / 1,983,313 bytes → 137 / 2,045,485 → 137 / 2,045,486,
-and a final 137-page PDF with SHA-256
+The incoming `b899` tuple used a 293-line / 11,514-byte driver, a 17-file /
+10,682-line / 431,748-byte closure with digest
+`6e4e6fde424fd5046467b1f1cec0c19b6c10eb681fae4ba7cc53e14b6a5bf61e`,
+and a 137-page / 2,045,486-byte PDF with SHA-256
 `cee0de894656562fbdb75d6304055fc03fae06203985119419e465a5cd213995`.
-All publication gates passed; the two 2.42/2.45 pt horizontal boxes are
-nonblocking.
+The local first-merge tuple and older purpose-specific closure digests remain
+history. The accepted current inverse source/PDF receipt is in the
+[authoritative receipt
+register](../MANIFEST.md#current-post-merge-publication-receipts); the
+purpose-specific 23-input closure is regenerated independently and has no
+PDF-parity role.
 
 The immutable extraction pin is
 `0a0cdabeb72a6f7d67cfdfb76d02a8f7381c7bf7`. The five old layouts are also
@@ -129,29 +125,26 @@ companion under its explicit convergence hypotheses. The one-definition,
 fourteen-theorem `FabiusFunction.RvachevAppellHasse` leaf additionally makes
 `gq:prop:q-Appell-falling` and `gq:thm:gaussian-Appell-decoder` exact by
 combining their explicit q-falling and geometric decoder formulas with the
-existing finite synthesis theorems. The retained 158-page PDF remains the
-historical pre-update checkpoint. The current synchronized `b899` comb receipt
-has a 187-line / 6,724-byte driver (SHA-256
-`a4c1e33165ff7291682cd890f23fe4af98e9f11f7ad1d9a7f8b68c78d53f9a56`),
-a 15-file / 12,597-line / 477,163-byte closure (digest
-`9e22455b3f65eb48306ad21c57445b6052a56498cb363666ffb9b160f5cc8090`),
-and a 160-page / 2,468,000-byte PDF (SHA-256
-`ad8587049580e6fde371f534b6f8b4e56fa4c929173f87d3021ed369e5225d4c`).
+existing finite synthesis theorems. The retained 158-page and both later
+160-page comb PDFs are historical checkpoints. The local nine-file
+aggregate/PDF tuple is
+`cef466ee56f6bb864faaac2244bccf1dbc2fd4032a717b6c81604551c0427309` /
+`bb714c8be4b82de2a888e0302da3aaf957b9e885f2c5f59466b3ea5d659e3f71`;
+the incoming `b899` 15-file closure/PDF tuple is
+`9e22455b3f65eb48306ad21c57445b6052a56498cb363666ffb9b160f5cc8090` /
+`ad8587049580e6fde371f534b6f8b4e56fa4c929173f87d3021ed369e5225d4c`.
+Merged TeX inputs are newer, so a synchronized comb rerender is pending.
 
 [`fabius_information_frontier/`](fabius_information_frontier/) remains an
 archival information-geometry intake. Its retired arrival and operational
 ledger checkpoints remain recoverable from Git and distinguish the submitted
-PDF from the current canonical publication. The current source is 2,138 lines
-and 78,310 bytes (SHA-256
+PDF from the current incoming publication checkpoint. The source is 2,138
+lines and 78,310 bytes (SHA-256
 `57a06279153b6e4c97ea0c084a193867b2f5c60a0163983149f36453eb196c9d`);
-exactly three serial halt-on-error passes from absent auxiliaries produced
-28 pages/778,760 bytes, 29 pages/790,804 bytes, and a final 29-page,
-790,802-byte PDF (SHA-256
-`3af03cd4dcc7fb1a502976f47edb56ee7d5c2b8dc9a8da537e79f8382ef885d5`).
-The final log and metadata gates passed; every page is A4 at rotation zero,
-rendered, and has extractable text; all 23 font rows are embedded/subset, six
-are Libertinus, and none is Type 3; representative visuals passed. Generated
-sidecars are absent, and no checksum ledger is a live gate. Manuscript theorem
+passes 28/29/29 produced a final 790,802-byte PDF with SHA-256
+`3af03cd4dcc7fb1a502976f47edb56ee7d5c2b8dc9a8da537e79f8382ef885d5`.
+Its recorded publication gates passed and no checksum ledger is a live gate.
+Manuscript theorem
 labels do not by themselves establish current Lean verification.
 
 ## Formalization notes
@@ -216,15 +209,16 @@ historical post-Prouhet checkpoint.  Subsequent source-only
 transseries/Catalan and Thue--Morse additions made 943/11,791 the next
 historical checkpoint.  The finalized one-definition/eleven-theorem
 `TransseriesFlat.lean` module and three integer-zpow theorems in
-`TransseriesDifferentialBlock.lean` gave the historical census 944/11,806; the merged live census is 987/12,207.
+`TransseriesDifferentialBlock.lean` gave the historical census 944/11,806; the merged live census is 1,001/12,447.
 The exhaustive audit still has no missing module header or public-declaration
 doc comment.  The q forward
 ledger is now 181 Exact / 79 Partial / 14 None / 8 interface rows, its relevant
 Dyadic Gaussian--Thue--Morse chapter is 13/43/0/0, and its source concordance
 is 103 Lean-proved / 375 human-proved frontier / 60 non-applicable / 9
 conjectures.  The preceding finite-prefix checkpoint was 923/11,610.  The
-retired source layouts remain immutable
-provenance only; the source is newer than the retained historical PDF.
+retired source layouts remain immutable provenance only. The first-merge
+inverse receipt is historical and the current source requires rerender; the
+comb receipt remains current.
 
 `QuarterCatalanGerm.lean` proves that the distinguished rational quarter germ
 becomes the Catalan inverse of `X + 4 X^2` under the exact `9/4` parameter

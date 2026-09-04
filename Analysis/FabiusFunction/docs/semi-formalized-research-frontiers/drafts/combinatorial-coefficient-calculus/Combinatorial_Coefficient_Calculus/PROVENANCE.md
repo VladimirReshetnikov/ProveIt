@@ -5,6 +5,22 @@ this package. The five donor directories have been retired; their original
 archives and their filed TeX/PDF pairs remain recoverable from Git. The canonical
 source continues to evolve as proofs are repaired, strengthened, and formalized.
 
+**The editorial consolidation is closed.**  The union, claim review, proof
+repair, and donor retirement have all occurred.  Every row of
+`SOURCE_DISPOSITION.csv` carries a completed disposition, the five donor
+directories have been deleted, and the live package has contracted to the
+single canonical TeX/PDF location.  The canonical source continues to evolve;
+its register now accounts for 207 theorem-like or algorithm items, classified
+as 63 Lean, 36 partial, and 108 none.  The retained PDF is historical, and no
+current source/PDF parity is claimed because rebuilding was deferred at the
+user's request.
+
+The six intake TeX files are research-frontier manuscripts.  Their theorem and
+proof environments are human-readable mathematical writing, not evidence of
+Lean verification.  Machine-checked coverage added to the evolving canonical
+source is asserted only by its result-by-result Lean formalization register;
+the immutable intake records below make no such claim.
+
 [`SOURCE_INVENTORY.csv`](SOURCE_INVENTORY.csv) records one row for each original
 manuscript: its stable source identifier, filed package, immutable snapshot
 commit, repository-relative TeX/PDF paths, archive Git blob, and archive member
@@ -22,6 +38,10 @@ editorial decisions for each source, topic, and reviewed claim.
 | Pre-consolidation snapshot | `55038f2fc7d20a483a48125f086a6c8488e45530` | The complete six-source input tree identified by `SOURCE_INVENTORY.csv`. |
 
 The stable source identifiers are:
+
+Standalone checksum ledgers and the former mutable source-closure receipt are
+retired. The source inventory and immutable Git locators are authoritative for
+the historical inputs.
 
 | ID | Historical package | Arrival archive |
 | --- | --- | --- |
@@ -46,8 +66,9 @@ include the consolidation and subsequent work. The `CCC` inventory row always
 identifies the historical snapshot, never the changing live source.
 
 The earlier 174-page PDF was a historical consolidation render. Upstream
-subsequently supplied a 208-page, 2,014,975-byte PDF at its own checkpoint;
-that artifact is retained, but the latest merged source edits postdate it.
+subsequently supplied a rebuilt PDF at its own checkpoint; that artifact is
+retained, but the merged Stirling, Nörlund, Bell, and Cauchy-polynomial source
+edits postdate it.
 No current render parity is claimed, and further PDF building remains skipped
 in this work at the user's request. Render and compiler evidence are separate:
 PDF parity and adjacent proof environments do not establish Lean verification.

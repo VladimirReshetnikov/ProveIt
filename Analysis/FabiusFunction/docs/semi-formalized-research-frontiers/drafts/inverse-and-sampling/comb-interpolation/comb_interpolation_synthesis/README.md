@@ -158,15 +158,13 @@ pages. Its 158-page, 2,456,105-byte PDF had SHA-256
 `81d249c8b2bb124836c858bd8e0ef9c8764606a2f9655a798d69e7565b1759b4`.
 The later canonical-notation edits in `chapters/01_geometric_core.tex`,
 `chapters/03_additive_dyadic.tex`, and `chapters/90_reference_appendices.tex`,
-together with the document-local geometric-Newton command in the driver, make
-that PDF a validated historical checkpoint rather than a rendering of the
-current source. The former root
-ledger recorded the source and retained PDF as distinct payloads at its
-historical checkpoint. The complete
-checkpoint receipt and the older historical receipts are recorded once in
+together with the document-local geometric-Newton command in the driver, made
+the 158-page PDF a validated historical checkpoint. The subsequent local and
+incoming 160-page receipts are also historical after this merge changed the
+TeX inputs. The complete checkpoint receipts are recorded once in
 [`assets/VALIDATION.md`](assets/VALIDATION.md).
 
-The current synchronized `b899` driver has 187 lines and 6,724 bytes, with
+The historical synchronized `b899` driver has 187 lines and 6,724 bytes, with
 SHA-256
 `a4c1e33165ff7291682cd890f23fe4af98e9f11f7ad1d9a7f8b68c78d53f9a56`.
 Its 15-file recursive TeX closure has 12,597 lines and 477,163 bytes, with
@@ -179,6 +177,9 @@ All 160 pages are A4 at rotation zero, render successfully, and contain nonblank
 text. All 33 font rows are embedded and subset, seven are Libertinus, and none
 is Type 3. Log, metadata, visual, cleanup, and forbidden-basename gates passed,
 with no overfull box.
+
+The accepted merged-source render is recorded in the [merge-28de4e51 receipt
+register](../../../MANIFEST.md#merge-28de4e51-publication-receipts).
 
 ## Reproduce the computational evidence
 

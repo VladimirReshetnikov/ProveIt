@@ -82,34 +82,39 @@ data, figures, captured outputs, requirements, and audit material were migrated
 or explicitly dispositioned. No numerical output is used as a premise of a
 theorem.
 
-## Canonical source and synchronized publication artifact
+## Historical source and publication receipts
 
-The current canonical master `inverse_fabius_theory.tex` has 293 lines and
+At the first-merge receipt, the canonical master `inverse_fabius_theory.tex` had 293 lines and
 11,514 bytes and SHA-256
 `92fab1fae38bbcf86a45b51bfe7ff34e2801361df9d2f3d6aa3de4dc966eaa3c`.
-Its independently measured `b899` recursive TeX closure has 17 files, 10,682
-lines, and 431,748 bytes, with digest
+The ordered 14-file first-merge TeX graph has 10,909 lines and 438,542
+bytes, with aggregate SHA-256
+`24bdab6491f5ca84fbb9e716f92c7923e8961b6acbc793d9aa5e0faa68852444`.
+Its purpose-specific 23-input source-only closure had SHA-256
+`e07cb51f4fe072cd79a014cc891cb8cede62880593d7659b17da9377a21099bc`.
+Three passes produced 132/137/137 pages; the 2,045,463-byte PDF has SHA-256
+`ca403c74e2b46923ce9ac1eda547ab1bcb5e71039b35c8ee394acdd2014c4f8e`
+and its 1,569-line / 64,081-byte log has SHA-256
+`d4aa25579c958e11c59d914c74dfca331fc2bbccf7bba4715dcd18fa050e771f`.
+All recorded gates passed.
+
+The incoming `b899` historical checkpoint used a 17-file / 10,682-line /
+431,748-byte recursive TeX closure with digest
 `6e4e6fde424fd5046467b1f1cec0c19b6c10eb681fae4ba7cc53e14b6a5bf61e`.
+Its passes produced 132/137/137 pages and a 2,045,486-byte PDF with SHA-256
+`cee0de894656562fbdb75d6304055fc03fae06203985119419e465a5cd213995`;
+all recorded gates passed, with only the disclosed 2.42 and 2.45 pt horizontal
+boxes. The still earlier 134-page / 2,027,726-byte PDF has SHA-256
+`22bc68d855ad04dde9654e9fbd20b3ba7f05a33e3c5df0e5b80bb8991c94b41d`.
+Historical purpose-specific closure-file identities include
+`418f6f93e5b40ec2fa441cc6379a21c9587f2b6e6c50f7863c75595c062e606c`
+and `aedf007c2cd150b1f83de6d8996b4bf31e267b3dbcec2d5cd4720f5d92122bdb`.
 
-Exactly three serial halt-on-error passes from absent sidecars ran 132 pages /
-1,983,313 bytes → 137 / 2,045,485 → 137 / 2,045,486. The synchronized PDF
-has 137 A4 pages and 2,045,486 bytes, with SHA-256
-`cee0de894656562fbdb75d6304055fc03fae06203985119419e465a5cd213995`.
-All log, reference/rerun, metadata, all-page A4/rotation/render/text, font, visual,
-cleanup, and forbidden-basename gates passed; all 31 font rows are embedded and
-subset, six are Libertinus, none is Type 3, and the only box diagnostics are
-two nonblocking horizontal boxes of 2.42 and 2.45 pt.
-
-The purpose-specific 23-input `SOURCE_CLOSURE.sha256` file has SHA-256
-`aedf007c2cd150b1f83de6d8996b4bf31e267b3dbcec2d5cd4720f5d92122bdb`.
-It comprises the master, shared notation, all nine chapters, three generated
-TeX fragments, and nine publication figures at its named pre-overlay
-checkpoint. It was intentionally not regenerated for `b899` and is historical,
-not the current closure receipt. The prior PDF has 134 A4 pages and 2,027,726
-bytes, with SHA-256
-`22bc68d855ad04dde9654e9fbd20b3ba7f05a33e3c5df0e5b80bb8991c94b41d`;
-its historical passes produced 127 → 134 → 134 pages. Detailed evidence for
-both current and historical receipts is recorded in `VALIDATION.md`.
+The accepted current inverse source/PDF receipt is recorded separately in the
+[authoritative receipt
+register](../../MANIFEST.md#current-post-merge-publication-receipts). The
+purpose-specific 23-input closure is regenerated independently for the merged
+inputs and is not a whole-package or PDF gate.
 The former root and nested asset checksum ledgers are retired and recoverable
 from Git; publication validation changes no historical claim, concordance row,
 disposition, lineage, or arrival checksum recorded above.

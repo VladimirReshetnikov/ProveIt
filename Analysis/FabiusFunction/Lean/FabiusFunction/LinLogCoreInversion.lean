@@ -117,7 +117,7 @@ theorem principalLambertW_linLogCoreArg_pos {a b : ℝ} (ha : 0 < a) (hb : 0 < b
     (mem_Ici.mpr (le_of_lt (lt_of_le_of_lt neg_exp_neg_one_le_zero hz))) hz
   rwa [principalLambertW_zero] at h
 
-/-- For positive coefficients, the principal-branch linear--logarithmic root
+/-- For positive core parameters, the principal-branch linear--logarithmic root
 is positive. -/
 theorem linLogCoreRoot_pos {a b : ℝ} (ha : 0 < a) (hb : 0 < b) (L : ℝ) :
     0 < linLogCoreRoot a b L := by
@@ -233,7 +233,7 @@ theorem principalLambertW_linLogCoreArg_neg {a b L : ℝ}
     (mem_Ici.mpr neg_exp_neg_one_le_zero) hz.2
   rwa [principalLambertW_zero] at h
 
-/-- When `b < 0`, the root obtained from the principal Lambert branch is
+/-- When `a > 0` and `b < 0`, the root obtained from the principal Lambert branch is
 positive throughout the two-real-branch window. -/
 theorem linLogCoreRoot_pos_of_neg {a b : ℝ} (ha : 0 < a) (hb : b < 0) {L : ℝ}
     (hz : linLogCoreArg a b L ∈ Ioo (-Real.exp (-1)) 0) :
@@ -242,7 +242,7 @@ theorem linLogCoreRoot_pos_of_neg {a b : ℝ} (ha : 0 < a) (hb : b < 0) {L : ℝ
   exact mul_pos_of_neg_of_neg (div_neg_of_neg_of_pos hb ha)
     (principalLambertW_linLogCoreArg_neg hz)
 
-/-- When `b < 0`, the root obtained from the lower Lambert branch is positive
+/-- When `a > 0` and `b < 0`, the root obtained from the lower Lambert branch is positive
 throughout the two-real-branch window. -/
 theorem linLogCoreRootLower_pos {a b : ℝ} (ha : 0 < a) (hb : b < 0) {L : ℝ}
     (hz : linLogCoreArg a b L ∈ Ioo (-Real.exp (-1)) 0) :

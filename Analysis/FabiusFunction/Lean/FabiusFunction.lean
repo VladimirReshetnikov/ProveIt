@@ -33,6 +33,7 @@ import FabiusFunction.StirlingOrdinaryGF
 import FabiusFunction.StirlingCompleteHomogeneous
 import FabiusFunction.EulerianGeneratingFunctions
 import FabiusFunction.ExponentialRiordan
+import FabiusFunction.ExponentialRiordanInverse
 import FabiusFunction.ExponentialFormula
 import FabiusFunction.OrderedBell
 import FabiusFunction.OrdinaryPartialBell
@@ -75,6 +76,7 @@ import FabiusFunction.RStirling
 import FabiusFunction.FallingFactorialSeries
 import FabiusFunction.PochhammerFalling
 import FabiusFunction.CauchyPolynomials
+import FabiusFunction.CauchyPolynomialReflection
 import FabiusFunction.CoefficientRules
 import FabiusFunction.GridEvaluationCertificate
 import FabiusFunction.IntegerCRTCertificate
@@ -92,9 +94,12 @@ import FabiusFunction.StirlingFirstModH
 import FabiusFunction.StirlingSymmetricFunctions
 import FabiusFunction.LagrangeInversion
 import FabiusFunction.LagrangeInversionUniqueness
+import FabiusFunction.LagrangeExistence
 import FabiusFunction.NewtonReciprocal
 import FabiusFunction.RaneyNumbers
 import FabiusFunction.RaneyNumbersUniqueness
+import FabiusFunction.IdentityCertificates
+import FabiusFunction.BinaryTreeRotations
 import FabiusFunction.AbelPolynomialSeries
 import FabiusFunction.LambertWSeries
 import FabiusFunction.FussCatalanSeries
@@ -336,6 +341,7 @@ import FabiusFunction.ExponentialPartition
 import FabiusFunction.ThueMorsePartition
 import FabiusFunction.ExponentialBell
 import FabiusFunction.UnitSeriesBellCoefficients
+import FabiusFunction.BellCompletePartitions
 import FabiusFunction.ThueMorseIntegerLift
 import FabiusFunction.ThueMorseBoundaryFlatness
 import FabiusFunction.ThueMorseDirichlet
@@ -553,11 +559,14 @@ import FabiusFunction.TransferOperatorStep
 import FabiusFunction.TransseriesBlockAntiderivative
 import FabiusFunction.TransseriesDifferentialBlock
 import FabiusFunction.TransseriesDifferentialClosure
+import FabiusFunction.TransseriesIteratedBlock
 import FabiusFunction.TransseriesHarmonicIncrement
 import FabiusFunction.TransseriesScaleDominance
 import FabiusFunction.TransseriesBlockClasses
 import FabiusFunction.TransseriesMonomialUniqueness
 import FabiusFunction.TransseriesWrightOmegaTerms
+import FabiusFunction.LambertCoefficientPolynomials
+import FabiusFunction.LambertPolynomialStirling
 import FabiusFunction.TransseriesPolyLogScale
 import FabiusFunction.TriangularPowerProduct
 import FabiusFunction.LasotaYorkeIteration
@@ -835,6 +844,11 @@ import FabiusFunction.LinLogCoreInversion
 import FabiusFunction.StaircaseInversion
 import FabiusFunction.RemainderTransport
 import FabiusFunction.LeastTermIndex
+import FabiusFunction.BellSetPartitions
+import FabiusFunction.EulerianPermutohedron
+import FabiusFunction.InverseDerivativeRecursion
+import FabiusFunction.StirlingIdentities
+import FabiusFunction.BellDeterminants
 
 set_option autoImplicit false
 
@@ -865,8 +879,9 @@ core-inversion utilities, backward-error, remainder-transport, staircase and
 least-term lemmas, and abstract differential-closure and harmonic-increment
 tools.  Their lexical inventory is 21 definitions and 115 theorems.  The
 existing flatness module is the semantic union of its generic-vector 1+11 API
-and a scalar-compatibility 3+11 API; the differential-block and infinite
-q-binomial modules are respectively 0+12 and 1+27.  These census statements
+and a scalar-compatibility 3+11 API; the differential-block, infinite
+q-binomial, and fixed-column-rate modules are respectively 0+12, 1+29, and
+0+9.  These census statements
 describe the public surface only: they do not supply analytic continuation,
 an unnamed error term, a concrete transseries field, or a broader paper claim
 than the hypotheses of the individual declarations support.
@@ -1387,13 +1402,15 @@ leaf.  Its public surface is `Appell.sum_thueMorseSign_mul_eval_poly`,
 are finite rational coefficient identities, total at depth zero; they add no
 analytic generating-function or convergence claim.
 
-`DyadicBoundaryIdentity` is an exhaustive zero-definition/two-theorem leaf.
+`DyadicBoundaryIdentity` is an exhaustive zero-definition/three-theorem leaf.
 `prod_complexSinc_prefix_mul_rvachevFourierProduct` clears the finite sinc
 prefix against the rescaled product, and
 `rvachevFourierProduct_dyadic_boundary` composes that result with the
 integer-zero factorization to give the entire denominator-cleared boundary
-identity for every natural shell and complex displacement.  No nonvanishing
-hypothesis is needed until one passes to a quotient formulation.  These two
+identity for every natural shell and complex displacement.  The third theorem,
+`norm_rvachevFourierProduct_dyadic_boundary`, is the volume's quotient form on
+the real range where its denominator is nonzero.  No nonvanishing hypothesis
+is needed until one passes to that quotient formulation.  These three
 upstream API descriptions do not change any source-coverage status.
 
 The probabilistic layer is closed at the level of measures.  The up-measure

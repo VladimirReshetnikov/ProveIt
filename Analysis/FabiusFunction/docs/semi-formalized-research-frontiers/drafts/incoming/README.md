@@ -6,8 +6,8 @@
 > When one or more reports arrive, perform a **quick archival intake only**:
 > fetch and merge `origin/main`; check archive safety and integrity; unpack each
 > report; move it to the appropriate thematic directory; normalize repository
-> line endings; record provenance in the surviving purpose-specific records;
-> retire any submitted `SHA256SUMS` or `SHA256SUMS.*` ledger;
+> line endings; retire submitted files whose basename is `SHA256SUMS` or matches
+> `SHA256SUMS.*`; record intake provenance in surviving purpose-specific records;
 > delete the ZIP; update
 > `MANIFEST.md` and the destination `README.md`; then commit and immediately
 > publish that intake commit to the feature branch and to `origin/main` by an
@@ -161,12 +161,13 @@ third package, which git applied at commit. All three PDFs are readable,
 unencrypted, pdfTeX-1.40.26, A4;
 one is fully embedded and Type-3-free, the other two carry two or three Type-3
 rows inherited from a Matplotlib figure. Two carry Libertinus faces. None loads
-`docs/fabius-notation.tex`. Two archives shipped a submitted checksum manifest
-and one shipped `MANIFEST.sha256`; all three were verified at intake. The two
-prohibited package ledgers were retired under repository policy, while the
-purpose-specific `MANIFEST.sha256` remains in the filed package. Historical
-bytes remain recoverable from Git. Comparison, deduplication, canonical selection,
-proof checking, numerical reproduction and Lean crosswalking were all deferred.
+`docs/fabius-notation.tex`. Two archives shipped a submitted `SHA256SUMS` and
+one a `MANIFEST.sha256`; all three were verified at intake. The two prohibited
+package ledgers were retired, while the purpose-specific manifest remains in
+the filed package. Historical bytes remain recoverable from the filing revision
+in Git, and no replacement package ledger was added. Comparison,
+deduplication, canonical selection, proof checking, numerical reproduction,
+and Lean crosswalking were all deferred.
 
 Previous batch (three archives, filed and removed on 2026-09-03): the three Fibonacci-inversion articles, all to
 `../series-and-transseries/special-function-inversion/` as its fourth subject.
@@ -185,7 +186,7 @@ already there, and the nine now fall into three subjects with three
 independently written articles each.
 
 > **Superseded.** Every package named in this section was merged into
-> [`special-function-inversion/Sequence_Inversion_Transseries/`](../series-and-transseries/Transseries_And_Inversion/)
+> [`series-and-transseries/Transseries_And_Inversion/`](../series-and-transseries/Transseries_And_Inversion/)
 > and deleted on 4 September 2026, after a residue audit. Git history is
 > the archive; the volume's Appendix A lists each source with the chapter
 > that absorbed it.
@@ -288,7 +289,7 @@ arrival was filed, which is what this log is for, but the packages were filed
 under `../lambert-w/` on 2026-09-01, regrouped into
 `../series-and-transseries/polynomial-logarithmic-transseries/` on 2026-09-02,
 and merged editorially the same day into the single canonical volume
-[`../series-and-transseries/polynomial-logarithmic-transseries/Polynomial_Logarithmic_Transseries/`](../series-and-transseries/Transseries_And_Inversion/).
+[`../series-and-transseries/Transseries_And_Inversion/`](../series-and-transseries/Transseries_And_Inversion/).
 The six directories were then deleted; git history is the archive, and that
 volume's provenance appendix carries every source's intake and absorbed
 SHA-256 receipt together with what each one uniquely contributed.

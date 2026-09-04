@@ -19,6 +19,8 @@ condition.
 
 * `complexQPochhammerInf` is the complex infinite q-Pochhammer product,
   an abbreviation of `qPochhammerInfIn` at `ℂ`.
+* `complexQPochhammerInf_eq_qPochhammerInfIn` is the unconditional public
+  compatibility bridge to that generic topological-ring symbol.
 * `multipliable_one_sub_mul_pow_complex`,
   `hasProd_complexQPochhammerInf`, and
   `tendsto_finiteQPochhammerIn_complex` give its convergence for

@@ -105,24 +105,65 @@ theorem derivative_cauchyPoly_succ (n : ℕ) :
 
 /-! ### Evaluation generating functions -/
 
+/-- The EGF of the Cauchy polynomials after evaluation in an arbitrary
+commutative `ℚ`-algebra: `∑ b_n(a)t^n/n! = (1+t)^a t/log(1+t)`. -/
+theorem egfA_cauchyPoly_aeval {A : Type*} [CommRing A] [Algebra ℚ A]
+    (a : A) :
+    egfA A (fun n => Polynomial.aeval a (cauchyPoly n)) =
+      fallingSeries A a * PowerSeries.map (algebraMap ℚ A) tOverLog := by
+  have hpoch (n : ℕ) :
+      Polynomial.aeval a (descPochhammer ℚ n) =
+        (descPochhammer A n).eval a := by
+    rw [Polynomial.aeval_def, ← descPochhammer_map (algebraMap ℚ A),
+      Polynomial.eval_map]
+  have hfall :
+      PowerSeries.map (Polynomial.aeval a).toRingHom fallingPoly =
+        fallingSeries A a := by
+    ext n
+    rw [PowerSeries.coeff_map, fallingPoly, fallingSeries, coeff_egfA,
+      fallingSeries, coeff_egfA, descPochhammer_eval_X]
+    have hq :
+        Polynomial.aeval a
+            (algebraMap ℚ (Polynomial ℚ) (1 / n.factorial)) =
+          algebraMap ℚ A (1 / n.factorial) :=
+      (Polynomial.aeval a).commutes _
+    rw [map_mul]
+    change
+      Polynomial.aeval a
+            (algebraMap ℚ (Polynomial ℚ) (1 / n.factorial)) *
+          Polynomial.aeval a (descPochhammer ℚ n) =
+        algebraMap ℚ A (1 / n.factorial) *
+          (descPochhammer A n).eval a
+    rw [hq, hpoch]
+  have ht :
+      PowerSeries.map (Polynomial.aeval a).toRingHom tOverLogPoly =
+        PowerSeries.map (algebraMap ℚ A) tOverLog := by
+    ext n
+    rw [PowerSeries.coeff_map, tOverLogPoly, PowerSeries.coeff_map]
+    change Polynomial.aeval a (Polynomial.C (coeff n tOverLog)) =
+      algebraMap ℚ A (coeff n tOverLog)
+    rw [Polynomial.aeval_C]
+  have hcauchy :
+      PowerSeries.map (Polynomial.aeval a).toRingHom cauchySeries =
+        fallingSeries A a * PowerSeries.map (algebraMap ℚ A) tOverLog := by
+    rw [cauchySeries, map_mul, hfall, ht]
+  rw [← hcauchy]
+  ext n
+  rw [coeff_egfA, PowerSeries.coeff_map, coeff_cauchySeries,
+    Algebra.smul_def, map_mul]
+  change algebraMap ℚ A (1 / n.factorial) *
+        Polynomial.aeval a (cauchyPoly n) =
+      Polynomial.aeval a
+          (algebraMap ℚ (Polynomial ℚ) (1 / n.factorial)) *
+        Polynomial.aeval a (cauchyPoly n)
+  rw [(Polynomial.aeval a).commutes]
+
 /-- The EGF of `n ↦ b_n(a)` is `(1+t)^a · t/log(1+t)`. -/
 theorem egfA_cauchyPoly_eval (a : ℚ) :
     egfA ℚ (fun n => (cauchyPoly n).eval a) = fallingSeries ℚ a * tOverLog := by
-  have h1 : PowerSeries.map (Polynomial.evalRingHom a) fallingPoly = fallingSeries ℚ a := by
-    ext n
-    rw [coeff_map, fallingPoly, fallingSeries, coeff_egfA, fallingSeries, coeff_egfA,
-      descPochhammer_eval_X, Polynomial.algebraMap_eq, Polynomial.coe_evalRingHom,
-      Polynomial.eval_mul, Polynomial.eval_C, Algebra.algebraMap_self, RingHom.id_apply]
-  have h2 : PowerSeries.map (Polynomial.evalRingHom a) tOverLogPoly = tOverLog := by
-    ext n
-    rw [coeff_map, tOverLogPoly, coeff_map, Polynomial.coe_evalRingHom, Polynomial.eval_C]
-  have h3 : PowerSeries.map (Polynomial.evalRingHom a) cauchySeries =
-      fallingSeries ℚ a * tOverLog := by
-    rw [cauchySeries, map_mul, h1, h2]
-  rw [← h3]
-  ext n
-  rw [coeff_egfA, coeff_map, coeff_cauchySeries, Polynomial.coe_evalRingHom, Polynomial.eval_smul,
-    smul_eq_mul, Algebra.algebraMap_self, RingHom.id_apply]
+  simpa only [Polynomial.coe_aeval_eq_eval, Algebra.algebraMap_self,
+    RingHom.id_apply, PowerSeries.map_id, id_eq] using
+    egfA_cauchyPoly_aeval (A := ℚ) a
 
 /-- **The difference equation:** `b_{n+1}(a+1) - b_{n+1}(a) = (n+1) b_n(a)`. -/
 theorem cauchyPoly_succ_eval_add_one_sub (n : ℕ) (a : ℚ) :
@@ -147,21 +188,37 @@ theorem cauchyPoly_succ_eval_add_one_sub (n : ℕ) (a : ℚ) :
         push_cast
         field_simp
 
+/-- The Cauchy addition formula after evaluation in any commutative
+`ℚ`-algebra: `b_n(a+c) = ∑_k C(n,k) b_k(a) (c)_{n-k}`. -/
+theorem cauchyPoly_aeval_add {A : Type*} [CommRing A] [Algebra ℚ A]
+    (n : ℕ) (a c : A) :
+    Polynomial.aeval (a + c) (cauchyPoly n) =
+      ∑ k ∈ range (n + 1),
+        (n.choose k : A) *
+          (Polynomial.aeval a (cauchyPoly k) *
+            (descPochhammer A (n - k)).eval c) := by
+  have h : egfA A (fun m => Polynomial.aeval (a + c) (cauchyPoly m)) =
+      egfA A (Bell.binomialConv
+        (fun k => Polynomial.aeval a (cauchyPoly k))
+        (fun k => (descPochhammer A k).eval c)) := by
+    rw [← egfA_mul, egfA_cauchyPoly_aeval, egfA_cauchyPoly_aeval,
+      ← fallingSeries_mul]
+    show fallingSeries A a * fallingSeries A c *
+        PowerSeries.map (algebraMap ℚ A) tOverLog =
+      fallingSeries A a * PowerSeries.map (algebraMap ℚ A) tOverLog *
+        fallingSeries A c
+    ring
+  have h' := congrFun (seq_eq_of_egfA_eq A h) n
+  rw [Bell.binomialConv_eq_sum_range] at h'
+  exact h'
+
 /-- **The addition formula:** `b_n(a+c) = ∑_k C(n,k) b_k(a) (c)_{n-k}`. -/
 theorem cauchyPoly_eval_add (n : ℕ) (a c : ℚ) :
     (cauchyPoly n).eval (a + c) =
       ∑ k ∈ range (n + 1),
         (n.choose k : ℚ) * ((cauchyPoly k).eval a * (descPochhammer ℚ (n - k)).eval c) := by
-  have h : egfA ℚ (fun m => (cauchyPoly m).eval (a + c)) =
-      egfA ℚ (Bell.binomialConv (fun k => (cauchyPoly k).eval a)
-        (fun k => (descPochhammer ℚ k).eval c)) := by
-    rw [← egfA_mul, egfA_cauchyPoly_eval, egfA_cauchyPoly_eval, ← fallingSeries_mul]
-    show fallingSeries ℚ a * fallingSeries ℚ c * tOverLog =
-      fallingSeries ℚ a * tOverLog * fallingSeries ℚ c
-    ring
-  have h' := congrFun (seq_eq_of_egfA_eq ℚ h) n
-  rw [Bell.binomialConv_eq_sum_range] at h'
-  exact h'
+  simpa only [Polynomial.coe_aeval_eq_eval] using
+    cauchyPoly_aeval_add (A := ℚ) n a c
 
 /-! ### Formal integration and the explicit formula -/
 
