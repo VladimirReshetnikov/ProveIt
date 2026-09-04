@@ -39,12 +39,6 @@ LEGACY_DIRECTORIES = (
     "Legendre_Rvachev_Closed_Loop_Report_v4",
     "Legendre_Rvachev_Self_Reconstruction",
 )
-ROOT_AUXILIARIES = {
-    "Up_Polynomial_Synthesis.aux",
-    "Up_Polynomial_Synthesis.log",
-    "Up_Polynomial_Synthesis.out",
-    "Up_Polynomial_Synthesis.toc",
-}
 
 
 def fail(message: str) -> None:
@@ -53,24 +47,6 @@ def fail(message: str) -> None:
 
 def digest(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
-
-
-def read_ledger(path: Path) -> dict[Path, str]:
-    entries: dict[Path, str] = {}
-    pattern = re.compile(r"^([0-9a-f]{64})  (.+)$")
-    for number, line in enumerate(path.read_text(encoding="utf-8").splitlines(), 1):
-        match = pattern.fullmatch(line)
-        if match is None:
-            fail(f"malformed {path.name} line {number}")
-        target = (path.parent / match.group(2)).resolve()
-        try:
-            target.relative_to(PACKAGE)
-        except ValueError:
-            fail(f"ledger target escapes the package: {match.group(2)}")
-        if target in entries:
-            fail(f"duplicate ledger target: {match.group(2)}")
-        entries[target] = match.group(1)
-    return entries
 
 
 def verify_hashes(entries: dict[Path, str], name: str) -> None:
@@ -143,14 +119,33 @@ def verify_companion_payloads() -> int:
     if not rows or set(rows[0]) != required:
         fail("companion mapping has the wrong columns")
     old_paths = {row["old_path"] for row in rows}
-    new_paths = {row["new_path"] for row in rows}
-    if len(old_paths) != 113 or len(new_paths) != 113:
-        fail("companion mapping is not one-to-one")
+    if len(old_paths) != 113 or "" in old_paths:
+        fail("companion mapping does not identify 113 unique historical sources")
     dispositions = [row["disposition"] for row in rows]
-    if dispositions.count("migrated") != 111 or dispositions.count("already-canonical") != 2:
-        fail("companion disposition counts are not 111 migrated plus 2 canonical")
+    if (
+        dispositions.count("migrated") != 104
+        or dispositions.count("already-canonical") != 2
+        or dispositions.count("retired_checksum_ledger") != 7
+    ):
+        fail(
+            "companion disposition counts are not 104 migrated, 2 canonical, "
+            "and 7 retired checksum ledgers"
+        )
+    retired = [row for row in rows if row["disposition"] == "retired_checksum_ledger"]
+    live = [row for row in rows if row["disposition"] != "retired_checksum_ledger"]
+    for row in retired:
+        basename = Path(row["old_path"]).name
+        if basename != "SHA256SUMS" and not basename.startswith("SHA256SUMS."):
+            fail(f"retired checksum row has an unexpected source: {row['old_path']}")
+        if row["new_path"]:
+            fail(f"retired checksum row still has a live destination: {row['old_path']}")
+        if re.fullmatch(r"[0-9a-f]{64}", row["sha256"]) is None:
+            fail(f"retired checksum row has an invalid historical digest: {row['old_path']}")
+    new_paths = {row["new_path"] for row in live}
+    if len(new_paths) != len(live) or "" in new_paths:
+        fail("live companion mapping is not one-to-one")
     mapped_entries: dict[Path, str] = {}
-    for row in rows:
+    for row in live:
         target = (PACKAGE / row["new_path"]).resolve()
         try:
             target.relative_to(PACKAGE)
@@ -158,10 +153,6 @@ def verify_companion_payloads() -> int:
             fail(f"mapped target escapes the package: {row['new_path']}")
         mapped_entries[target] = row["sha256"]
     verify_hashes(mapped_entries, "companion mapping")
-    ledger = read_ledger(PACKAGE / "assets/companion-evidence/SHA256SUMS")
-    if ledger != mapped_entries:
-        fail("companion ledger and old-to-new mapping disagree")
-    verify_hashes(ledger, "companion ledger")
     return len(rows)
 
 
@@ -191,24 +182,6 @@ def verify_historical_sources() -> int:
     return len(rows)
 
 
-def verify_root_ledger() -> int:
-    ledger_path = PACKAGE / "SHA256SUMS"
-    ledger = read_ledger(ledger_path)
-    expected = {
-        path.resolve()
-        for path in PACKAGE.rglob("*")
-        if path.is_file()
-        and path != ledger_path
-        and not (path.parent == PACKAGE and path.name in ROOT_AUXILIARIES)
-    }
-    if set(ledger) != expected:
-        missing = sorted(str(path.relative_to(PACKAGE)) for path in expected - set(ledger))
-        extra = sorted(str(path.relative_to(PACKAGE)) for path in set(ledger) - expected)
-        fail(f"root ledger coverage mismatch: missing={missing}, extra={extra}")
-    verify_hashes(ledger, "root ledger")
-    return len(ledger)
-
-
 def main() -> int:
     environments, proofs, conjectures = canonical_assertions()
     if len(environments) != 80 or proofs != 80 or conjectures != 11:
@@ -219,12 +192,11 @@ def main() -> int:
     verify_crosswalk(environments)
     payloads = verify_companion_payloads()
     sources = verify_historical_sources()
-    root_entries = verify_root_ledger()
     print(
         "consolidation audit passed: "
         f"assertions={len(environments)}, proofs={proofs}, conjectures={conjectures}, "
         f"crosswalk={len(environments)}, companion_payloads={payloads}, "
-        f"retired_sources={sources}, root_ledger={root_entries}"
+        f"retired_sources={sources}"
     )
     return 0
 

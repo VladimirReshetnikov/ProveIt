@@ -1633,6 +1633,35 @@ All exponentials cancel, leaving
 $\EulerE^{xt}t^N\prod_ja_j=2^{-N(N-1)/2}t^N\EulerE^{xt}$.  Coefficient comparison proves the theorem.
 \end{proof}
 
+\paragraph{Exact Lean correspondence.}
+The zero-definition/eight-theorem module
+\path{FabiusFunction.FinitePrefixThueMorseCollapse} proves these three
+canonical results in the rational finite-prefix coefficient model.  Its
+principal uncentered declaration
+\path{Fabius.sum_thueMorseSign_mul_uncenteredDyadicPrefixAppellPolynomialRat}
+is exactly \eqref{is:p2:eq:TM-P-collapse}, including the sign
+$(-1)^N$ and scale $2^{-\binom{N+1}{2}}$, and strengthens it to $N=0$.
+The companion declaration with suffix \path{_of_lt} proves the vanishing
+range in \cref{is:p2:cor:Prouhet-canonical}; the unsuffixed theorem gives the
+$n>N$ monomial response, and the \path{_self} companion gives the first
+constant $(-1)^N N!2^{-\binom{N+1}{2}}$.  For the centered result,
+\path{Fabius.sum_thueMorseSign_mul_centeredDyadicPrefixAppellPolynomialRat_succ}
+uses the literal grid in \eqref{is:p2:eq:TM-A-collapse}, with $N=m+1$, and
+proves the sign-free scale $2^{-\binom{N}{2}}$.  Its unsuffixed companion uses
+the total common-denominator grid
+
+\[
+ x+(1-2^{-N})-\frac{2k}{2^N}
+\]
+
+and therefore extends the centered identity to $N=0$; its \path{_of_lt} and
+\path{_self} companions give the centered cancellation and first constant.
+The generic theorem \path{Appell.sum_thueMorseSign_mul_eval_poly} records the
+response of any rational Appell polynomial through the signed power moments.
+These are coefficientwise finite identities.  They introduce no random
+variable or \path{HasLaw} bridge, assert no analytic MGF, and do not promote
+the separate Barnes identification in \cref{is:p2:thm:Barnes-identification}.
+
 \begin{example}[The first genuinely centered identity]
 For $N=2$,
 \begin{equation}
@@ -1714,8 +1743,12 @@ For the centered sequence,
  }
  \label{is:p2:eq:A-prefix-expansion}
 \end{equation}
-Thus $P_n^{[N]}(x)$ is exactly a polynomial of degree $n$ in $2^{-N}$, while
-$A_n^{[N]}(x)$ is exactly a polynomial of degree $\Floor{n/2}$ in $4^{-N}$.
+Equivalently, before specializing \(x\), \(P_n^{[N]}\) is exactly a
+\(\mathbb Q[x]\)-valued polynomial of degree \(n\) in \(2^{-N}\), while
+\(A_n^{[N]}\) is exactly a \(\mathbb Q[x]\)-valued polynomial of degree
+\(\Floor{n/2}\) in \(4^{-N}\).  The uncentered degree remains exact after a
+fixed-\(x\) specialization, but the centered degree can drop: for odd \(n\),
+the leading coefficient contains \(A_1(x)=x\) and vanishes at \(x=0\).
 \end{theorem}
 
 \begin{proof}
@@ -1729,6 +1762,31 @@ From \eqref{is:p2:eq:finite-infinite-mgf},
 Expand the first extra factor in moments and compare exponential generating coefficients.  In the
 centered case all odd moments vanish, so only powers $2^{-2Nr}=4^{-Nr}$ survive.
 \end{proof}
+
+\paragraph{Lean correspondence.}
+The eleven-definition, seventeen-theorem module
+\path{FabiusFunction.FinitePrefixAppellRecovery} proves both displayed
+identities for every \(N,n\in\mathbb N\), including \(N=0\), in exact rational
+polynomial arithmetic.  The direct declarations are
+\path{Fabius.uncenteredDyadicPrefixAppellPolynomialRat_eq_sum} and
+\path{Fabius.centeredDyadicPrefixAppellPolynomialRat_eq_sum_even}; their
+coefficients identify the manuscript's \(\mu_r\) with \path{halfMoment r} and
+\(m_{2r}\) with \path{moment r}.  The free-scale definitions
+\path{Fabius.uncenteredDyadicPrefixAppellScalePolynomialRat} and
+\path{Fabius.centeredDyadicPrefixAppellScalePolynomialRat}, the bridges
+\path{Fabius.uncenteredDyadicPrefixAppellPolynomialRat_eq_eval_scale} and
+\path{Fabius.centeredDyadicPrefixAppellPolynomialRat_eq_eval_scale}, and
+\path{Fabius.natDegree_uncenteredDyadicPrefixAppellScalePolynomialRat} and
+\path{Fabius.natDegree_centeredDyadicPrefixAppellScalePolynomialRat}
+formalize exact outer degrees
+\(n\) and \(\Floor{n/2}\) over the coefficient ring \(\mathbb Q[x]\).  This is
+the symbolic degree statement above, not the false assertion that every
+fixed-\(x\) centered specialization retains its leading coefficient.  The
+prefix moment sequences are constructed noncircularly by finite binomial
+convolution.  The module does not additionally realize them as random
+variables or supply a \path{HasLaw} or analytic-MGF theorem; those
+probabilistic identities motivate, but are not hypotheses of, the polynomial
+conclusion certified here.
 
 \begin{remark}
 Earlier extrapolation results in the repository accelerate an infinite sinc product or extract
@@ -1805,6 +1863,17 @@ at most $n$, and its value at $z=0$ is $P_n(x)$.  The values at depths $N+j$ are
 $zq^j$ with $q=1/2$.  Lagrange interpolation at zero is scale-invariant, so the weights are
 $w_{n,j}(1/2)$.  The centered proof is identical with $z=4^{-N}$, degree $d$, and $q=1/4$.
 \end{proof}
+
+\paragraph{Lean correspondence.}
+The direct declarations
+\path{Fabius.kabayaIriAppellPolynomialRat_eq_sum_prefix} and
+\path{Fabius.rvachevAppellPolynomialRat_eq_sum_prefix} prove these identities
+for all \(N,n\in\mathbb N\), including the empty starting prefix \(N=0\).
+They use exactly \(n+1\) consecutive prefixes at geometric base \(1/2\) in
+the uncentered case and \(\Floor{n/2}+1\) consecutive prefixes at base \(1/4\)
+in the centered case.  The conclusions are finite polynomial identities, not
+limits.  As above, their finite-prefix inputs are the algebraic
+binomial-convolution moment model; no random-variable realization is inferred.
 
 \begin{resultbox}[Richardson without an error term]
 For fixed degree $n$, the infinite Rvachev-Appell polynomial is a finite linear combination of the
@@ -1897,10 +1966,11 @@ then \path{sum_weight_mul_scaled_geometric_pow_succ_add} gives, for \(s\ge0\),
  =c^{p+1+s}(-1)^p q^{\binom{p+1}{2}}\GaussianBinomial{p+s}{p}{q}.
 \]
 Exactness is assumed directly after scaling, so \(c\) need not be a unit or
-even nonzero.  These results discharge the finite principal-specialization and
-residual-moment algebra only.  The prefix-polynomial identifications and
-\cref{is:p2:thm:exact-recovery} are not consequences
-of them and remain outside the Lean development at this checkpoint.
+even nonzero.  These residual declarations alone discharge the finite
+principal-specialization and residual-moment algebra; they do not imply the
+prefix-polynomial identifications or \cref{is:p2:thm:exact-recovery}.  Those
+identities are now formalized separately, with their algebraic-model boundary,
+in \path{FabiusFunction.FinitePrefixAppellRecovery}.
 
 \subsection{Worked centered recovery in degree six}
 
@@ -2049,10 +2119,31 @@ Consequently
 Taking reciprocals proves \eqref{is:p2:eq:Laurent-leading}.
 \end{proof}
 
+\paragraph{Exact Lean status.}
+The compiled module \path{FabiusFunction.RvachevLaurentLeading} formalizes
+this theorem with the manuscript's normalization.  Its definition
+\path{Fabius.rvachevCenteredMGF} is connected to the sinc product by
+\path{Fabius.rvachevCenteredMGF_eq_rvachevFourierProduct}; the odd-core value
+and its nonvanishing are
+\path{Fabius.rvachevCenteredMGF_pi_mul_I_int} and
+\path{Fabius.rvachevCenteredMGF_pi_mul_I_int_ne_zero_of_odd}.  The reusable
+product-coordinate limit is
+\path{Fabius.tendsto_sub_pow_mul_inv_rvachevFourierProduct_int}, the arbitrary
+nonzero-integer centered-MGF form is
+\path{Fabius.tendsto_rvachevCenteredMGF_laurent_int}, and
+\path{Fabius.tendsto_rvachevCenteredMGF_laurent_two_pow_mul_odd} is exactly
+\eqref{is:p2:eq:Laurent-leading} for $n=2^v u$, $u$ odd.  These limit
+theorems use a punctured neighborhood of the pole.  This is the precise
+meaning of the displayed meromorphic limit: Lean's inverse is totalized to
+zero at a zero of $M$, so the value at the pole itself must be excluded.
+No lower Laurent coefficients or subsequent coefficient asymptotics are
+claimed by this formalization.
+
 \begin{remark}
-The repository already identifies the zero multiplicity $\TwoAdicValuation(n)+1$ of the sinc product.  The new
-step is to retain the leading Laurent amplitude and to propagate the full divisor into coefficient
-asymptotics for the polynomial deconvolution sequence.
+The repository now identifies both the zero multiplicity
+$\TwoAdicValuation(n)+1$ and the exact leading Laurent amplitude.  Propagating
+the full divisor into coefficient asymptotics for the polynomial
+deconvolution sequence remains a separate step.
 \end{remark}
 
 \subsection{A \texorpdfstring{$2$}{2}-adic hierarchy of exponentially small corrections}

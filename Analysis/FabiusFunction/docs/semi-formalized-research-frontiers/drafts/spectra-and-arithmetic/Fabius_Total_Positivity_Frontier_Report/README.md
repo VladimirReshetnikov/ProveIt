@@ -44,9 +44,10 @@ The current live TeX is 1,060 lines and 58,362 bytes with SHA-256
 `e7f05ac66a92284e82886bfe8b3376715ca0f71493a217d5a1adab6c17171475`.
 It now uses the shared `\TwoAdicValuation` command and postdates the render;
 therefore the PDF is a retained validated checkpoint, not a rendering of the
-current source. The live 12-entry payload ledger inventories the current
-source, retained PDF, script, README, three PNG
-figures, generated TeX table, and four CSV evidence tables.  The exact
+current source. The former 12-entry payload ledger inventoried the source,
+retained PDF, script, README, three PNG figures, generated TeX table, and four
+CSV evidence tables at its checkpoint. It is now retired and recoverable from
+Git history. The exact
 five-theorem `BaseDigitMultiplicity.lean` crosswalk closes the finite
 general-base digit count only; analytic zero order, product convergence, and
 the sign law remain paper-level claims.

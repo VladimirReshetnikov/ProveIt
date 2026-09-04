@@ -32,15 +32,24 @@ By \Cref{thm:jtp},
 \end{align*}
 Consequently, the left side of
 \eqref{eq:qg-quintuple-product}, multiplied by $(q^2;q^2)_\infty$, is
-the product of these two bilateral series.  Normal convergence on compact
-annuli permits coefficient extraction.  The coefficient of $z^m$ is
+the product of these two bilateral series.  Both converge absolutely for $0<\AbsoluteValue q<1$
+and $z\ne0$, so the doubly indexed family of products is unconditionally summable over
+$\IntegerNumbers^2$; grouping it along the fibres $r+2s=m$ is therefore a legitimate
+rearrangement, and no appeal to uniqueness of Laurent coefficients is required.  The coefficient
+of $z^m$ is
 \begin{equation}
  q^{m(m-1)/2}\sum_{s\in\IntegerNumbers}(-1)^s
  q^{3s^2+(1-2m)s}.
 \label{eq:qg-quintuple-coefficient}
 \end{equation}
-Apply the minus-sign form of the triple product with base $Q=q^6$.
-Quasi-periodicity gives, when $m=3n$,
+Apply the minus-sign form of the triple product with base $Q=q^6$, together with the iterated
+quasi-periodicity
+\[
+ \BilateralTheta{Q^{j}w}{Q}\,Q^{\binom j2}w^{\,j}=\BilateralTheta{w}{Q}
+ \qquad(j\in\IntegerNumbers),
+\]
+which follows from \Cref{cor:theta-quasi} by induction in both directions.  This gives, when
+$m=3n$,
 \[
  \sum_{s\in\IntegerNumbers}(-1)^sq^{3s^2+(1-6n)s}
  =(-1)^nq^{-3n^2+n}(q^2;q^2)_\infty.
@@ -48,9 +57,19 @@ Quasi-periodicity gives, when $m=3n$,
 Thus \eqref{eq:qg-quintuple-coefficient} equals
 $(-1)^nq^{n(3n-1)/2}(q^2;q^2)_\infty$.  When $m=3n+1$, the same
 calculation gives
-$(-1)^nq^{n(3n+1)/2}(q^2;q^2)_\infty$.  When $m=3n+2$, the remaining
-Jacobi factor is evaluated at $Q^{-n}$ and vanishes, because the product
-contains the factor $1-Q^0$ after an integral quasi-periodic shift.
+$(-1)^nq^{n(3n+1)/2}(q^2;q^2)_\infty$; explicitly, the shift is by $Q^{-n}$ starting from $-q^{2}$
+rather than from $-q^{4}$, which contributes $(-1)^nq^{-3n^2-n}$, and
+$\binom{3n+1}{2}-3n^2-n=n(3n+1)/2$.
+
+When $m=3n+2$ the inner sum is $\BilateralTheta{-q^{-6n}}{Q}=\BilateralTheta{-Q^{-n}}{Q}$, and
+$-Q^{-n}$ lies in the zero set $\{-Q^{j}:j\in\IntegerNumbers\}$ of $\BilateralTheta{\cdot}{Q}$
+given by \Cref{cor:theta-quasi}; hence it vanishes, uniformly in $n$ and with no case
+distinction.  The shift used above is equally uniform: taking $w=-1$ and $j=-n$ in the iterated
+quasi-periodicity gives $\BilateralTheta{-Q^{-n}}{Q}\,Q^{\binom{-n}{2}}(-1)^{-n}
+=\BilateralTheta{-1}{Q}=0$, since $-1=-Q^{0}$ lies in the zero set.  What does require a case
+distinction is reading the vanishing directly off the product without shifting: the offending
+factor then sits in $(q^{-6n};q^6)_\infty$ when $n\ge0$, but in $(q^{6n+6};q^6)_\infty$ when
+$n\le-1$.
 
 After division by the nonzero product $(q^2;q^2)_\infty$, only the powers
 $z^{3n}$ and $z^{3n+1}$ remain.  Their coefficients are respectively
@@ -703,6 +722,28 @@ in the first Lambert series is $4\sum_{d\mid n}\chi_4(d)=r_2(n)$.
 Since $\chi_4$ vanishes on even integers and equals $(-1)^j$ at $2j+1$,
 the second form follows.
 \end{proof}
+
+\paragraph{Lean realization.}
+The complete Gaussian-integer proof above is retained as the human proof.  The
+formal proof in \texttt{JacobiTwoSquareCount} takes a complementary analytic
+route: over $\ComplexNumbers$ it specializes Ramanujan's ${}_1\psi_1$
+summation at base $Q=q^2$ with $a=-1$, $b=-Q$, and $z=q$, proves that the
+bilateral summand is even, expands the resulting positive-index terms as an
+absolutely summable double series, and reduces the product side by elementary
+$q$-Pochhammer product identities.  Uniqueness of coefficients of convergent
+power series then gives the arithmetic count.  Concretely,
+\texttt{sumSqRep\_two\_eq\_four\_mul\_twoSquareDivisorSum} proves
+\eqref{eq:qg-two-square} for every $n:\NaturalNumbers$ with $n\ne0$, as an
+identity in $\IntegerNumbers$, while
+\texttt{sumSqRep\_two\_eq\_four\_mul\_prod} gives the displayed product under
+the explicit hypothesis that every prime divisor congruent to $3$ modulo $4$
+has even valuation.  Finally,
+\texttt{theta\_sq\_eq\_chi4\_lambert} and
+\texttt{theta\_sq\_eq\_odd\_lambert} give the two respective Lambert forms
+unconditionally for $q$ in any complete normed field with $\lVert q\rVert<1$;
+thus the complex coefficient argument feeds the already general
+hypothesis-parameterized analytic kernels rather than restricting the final
+corollary to $\ComplexNumbers$.
 
 \begin{theorem}[Jacobi's four-square theorem]
 \label{qg:thm-four-square}

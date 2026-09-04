@@ -13,13 +13,14 @@ packages:
 - `computability/` contains the standard-library finite-spline and modulus
   check;
 - `inverse-iterates/` contains the inverse formal-reversion diagnostic;
-- `provenance/` preserves immutable arrival ledgers and corpus audits.
+- `provenance/` preserves the surviving source inventory and corpus audits.
 
-`SHA256SUMS` is the live integrity ledger for every retained file below
-`assets/`, except the ledger itself.  The root-level `ASSET_DISPOSITION.csv`
+The former asset checkpoint contained 63 payloads, including eight historical
+ledger payloads that are now retired; the canonical tree contains 55 files.
+The root-level `ASSET_DISPOSITION.csv`
 records the SHA-256, size, semantic class, destination, and disposition of all
-88 files in the two superseded source subgroups.  Reproduce and validate both
-files with:
+88 files in the two superseded source subgroups; retired ledger bytes remain
+recoverable from Git. Audit the migrated asset records with:
 
 ```text
 python -B ../audit/build_asset_manifest.py --check
@@ -49,9 +50,9 @@ pdftoppm -png -r 300 -singlefile \
   endpoint/dyadic-completion/figures/dyadic_tail_convergence
 ```
 
-Their exact bytes are pinned in `SHA256SUMS`.  This changes only the publication
-container: the plotted data and visual content remain those of the retained
-vector originals.
+Their migration receipts are recorded in `ASSET_DISPOSITION.csv`. This changes
+only the publication container: the plotted data and visual content remain
+those of the retained vector originals.
 
 ```text
 python -m pip install -r requirements.txt

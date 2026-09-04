@@ -4,9 +4,11 @@
 The source corpus is read from the exact Git commit recorded in
 ``audit/SOURCE_REVISION``; later edits or retirement of the source packages
 therefore cannot change this audit.  This program copies only reviewed, unique
-payloads, writes the exhaustive 88-row disposition ledger, and writes the live
-checksum ledger for the canonical ``assets`` tree.  ``--check`` is a strict
-read-only replay after the initial build.
+payloads and writes the exhaustive 88-row disposition ledger.  ``--check`` is
+a strict read-only replay after the initial build.  The retired root and asset
+``SHA256SUMS`` workflows are outside this audit.  Repository policy bans only
+the exact basenames ``SHA256SUMS`` and ``SHA256SUMS.*``; previously removed
+alternately named ledger records remain historical and are not regenerated.
 """
 
 from __future__ import annotations
@@ -30,7 +32,6 @@ SOURCE_ROOT = CANONICAL_ROOT.parent
 SOURCE_REVISION_FILE = CANONICAL_ROOT / "audit/SOURCE_REVISION"
 ASSET_ROOT = CANONICAL_ROOT / "assets"
 DISPOSITION_CSV = CANONICAL_ROOT / "ASSET_DISPOSITION.csv"
-LIVE_LEDGER = ASSET_ROOT / "SHA256SUMS"
 STURM_CERTIFICATE = ASSET_ROOT / "self-sampling/appell_a8_sturm_certificate.txt"
 SOURCE_GROUPS = (
     "inverse-asymptotics-and-computability",
@@ -80,6 +81,15 @@ DEFAULT_RATIONALE = {
     "claim_audit": "Source-corpus audit retained as historical provenance.",
     "run_metadata": "Unique numerical replay metadata retained.",
 }
+RETIRED_CHECKSUM_RATIONALE = (
+    "This formerly retained ledger had an alternately named canonical destination; "
+    "it is separately retired and is not regenerated. Its historical source path "
+    "and SHA-256 remain recorded in this disposition."
+)
+NOT_RETAINED_CHECKSUM_RATIONALE = (
+    "The historical checksum ledger remains recoverable from the pinned Git "
+    "revision; its SHA256SUMS/SHA256SUMS.* canonical basename is not retained."
+)
 
 
 def add(
@@ -312,10 +322,11 @@ omit(
     "Commands, dependencies, and status notes are consolidated into the asset README.",
     "assets/README.md",
 )
-retain(
+omit(
     f"{GERMS}/SHA256SUMS.txt",
-    "assets/provenance/sampling/inverse-frontier-SHA256SUMS.txt",
     "provenance_ledger",
+    "retired_checksum_ledger",
+    RETIRED_CHECKSUM_RATIONALE,
 )
 retain(
     f"{GERMS}/verify_symbolic_fast.py",
@@ -345,10 +356,11 @@ for name in (
     )
 
 # Endpoint all-orders lane.
-retain(
+omit(
     f"{ENDPOINT}/assets/SHA256SUMS-absorbed.txt",
-    "assets/provenance/endpoint/SHA256SUMS-absorbed.txt",
     "provenance_ledger",
+    "retired_checksum_ledger",
+    RETIRED_CHECKSUM_RATIONALE,
 )
 retain(
     f"{ALL_ORDERS}/inverse_fabius_asymptotics.py",
@@ -362,10 +374,11 @@ omit(
     "Commands and package layout are consolidated into the asset README.",
     "assets/README.md",
 )
-retain(
+omit(
     f"{ALL_ORDERS}/SHA256SUMS.txt",
-    "assets/provenance/endpoint/all-orders-SHA256SUMS.txt",
     "provenance_ledger",
+    "retired_checksum_ledger",
+    RETIRED_CHECKSUM_RATIONALE,
 )
 retain(
     f"{ALL_ORDERS}/results/constants.txt",
@@ -419,10 +432,11 @@ omit(
     "The strongest supplied lower bounds are merged into one canonical requirement set.",
     "assets/requirements.txt",
 )
-retain(
+omit(
     f"{WRIGHT}/SHA256SUMS.txt",
-    "assets/provenance/endpoint/wright-omega-SHA256SUMS.txt",
     "provenance_ledger",
+    "retired_checksum_ledger",
+    RETIRED_CHECKSUM_RATIONALE,
 )
 retain(
     f"{WRIGHT}/data/carrier_comparison.png",
@@ -509,10 +523,11 @@ omit(
     "The strongest supplied lower bounds are merged into one canonical requirement set.",
     "assets/requirements.txt",
 )
-retain(
+omit(
     f"{COMPLETION}/SHA256SUMS",
-    "assets/provenance/endpoint/dyadic-completion-SHA256SUMS.txt",
     "provenance_ledger",
+    "retired_checksum_ledger",
+    RETIRED_CHECKSUM_RATIONALE,
 )
 retain(
     f"{COMPLETION}/verification_output.txt",
@@ -521,10 +536,11 @@ retain(
 )
 
 # Computability lane.
-retain(
+omit(
     f"{COMPUTABILITY}/ARRIVAL_SHA256SUMS.txt",
-    "assets/provenance/computability/ARRIVAL_SHA256SUMS.txt",
     "provenance_ledger",
+    "retired_checksum_ledger",
+    RETIRED_CHECKSUM_RATIONALE,
 )
 retain(
     f"{COMPUTABILITY}/inverse_fabius_computability_experiments.py",
@@ -547,14 +563,16 @@ omit(
     f"{COMPUTABILITY}/SHA256SUMS.txt",
     "operational_checksum_ledger",
     "not_retained_stale_operational_ledger",
-    "The TeX and README rows are stale; the canonical live ledger replaces it.",
+    "The stale SHA256SUMS.* operational ledger is retired; no replacement checksum ledger is maintained.",
 )
 
-# Non-elementarity provenance.
-retain(
+# Non-elementarity provenance remains recoverable from the pinned source
+# revision; the banned checksum-ledger payload is not copied into the live tree.
+omit(
     f"{NON_ELEMENTARY}/SHA256SUMS",
-    "assets/provenance/non-elementarity/SHA256SUMS.txt",
     "provenance_ledger",
+    "not_retained_historical_checksum_ledger",
+    NOT_RETAINED_CHECKSUM_RATIONALE,
 )
 
 # Inverse-iterate lane.
@@ -579,6 +597,8 @@ retain(
     f"{ITERATES}/REPOSITORY_AUDIT.md",
     "assets/provenance/inverse-iterates/REPOSITORY_AUDIT.md",
     "claim_audit",
+    disposition="retained_with_retired_ledger_note",
+    transform="retire_inverse_iterate_ledger_note",
 )
 omit(
     f"{ITERATES}/requirements.txt",
@@ -587,16 +607,17 @@ omit(
     "The dependency names are merged into one canonical requirement set.",
     "assets/requirements.txt",
 )
-retain(
+omit(
     f"{ITERATES}/SHA256SUMS.arrival.txt",
-    "assets/provenance/inverse-iterates/SHA256SUMS.arrival.txt",
     "provenance_ledger",
+    "not_retained_historical_checksum_ledger",
+    NOT_RETAINED_CHECKSUM_RATIONALE,
 )
 omit(
     f"{ITERATES}/SHA256SUMS.txt",
     "operational_checksum_ledger",
     "not_retained_stale_operational_ledger",
-    "The source and README rows are stale; the canonical live ledger replaces it.",
+    "The stale SHA256SUMS.* operational ledger is retired; no replacement checksum ledger is maintained.",
 )
 for name in ("fabius_iterates.png", "spine_comparison.png", "spine_remainder.png"):
     omit(
@@ -667,6 +688,28 @@ def portable_inverse_germ_output(payload: bytes) -> bytes:
 
 
 TRANSFORMS["portable_inverse_germ_output"] = portable_inverse_germ_output
+
+
+def retire_inverse_iterate_ledger_note(payload: bytes) -> bytes:
+    text = payload.decode("utf-8")
+    old = (
+        "all 13 listed payload entries verified before any normalization.  Its exact\n"
+        "bytes are preserved as `SHA256SUMS.arrival.txt`.  `MANIFEST.txt` remains the\n"
+        "unchanged submitted 13-file inventory.  The live `SHA256SUMS.txt` is the\n"
+        "post-review ledger and therefore intentionally differs from the arrival copy."
+    )
+    new = (
+        "all 13 listed payload entries verified before any normalization. Its exact\n"
+        "bytes remain recoverable from Git, and `MANIFEST.txt` remains the unchanged\n"
+        "submitted 13-file inventory. The former post-review `SHA256SUMS.txt` also\n"
+        "remains recoverable from Git; neither checksum ledger is live or required."
+    )
+    if text.count(old) != 1:
+        raise ValueError("inverse-iterate checksum-note anchor changed")
+    return text.replace(old, new).encode("utf-8")
+
+
+TRANSFORMS["retire_inverse_iterate_ledger_note"] = retire_inverse_iterate_ledger_note
 
 
 CSV_FIELDS = (
@@ -1027,7 +1070,6 @@ def expected_asset_files() -> set[str]:
         "endpoint/dyadic-completion/figures/psi_periodic.png",
         "requirements.txt",
         "self-sampling/appell_a8_sturm_certificate.txt",
-        "SHA256SUMS",
     }
 
 
@@ -1051,23 +1093,10 @@ def write_or_check(path: Path, payload: bytes, check: bool) -> None:
         path.write_bytes(payload)
 
 
-def ledger_payload() -> bytes:
-    paths = sorted(
-        path
-        for path in ASSET_ROOT.rglob("*")
-        if path.is_file() and path != LIVE_LEDGER
-    )
-    lines = [
-        f"{sha256_file(path)}  {path.relative_to(ASSET_ROOT).as_posix()}\n"
-        for path in paths
-    ]
-    return "".join(lines).encode("ascii")
-
-
 def validate_no_duplicate_assets() -> None:
     groups: defaultdict[str, list[str]] = defaultdict(list)
     for path in ASSET_ROOT.rglob("*"):
-        if path.is_file() and path != LIVE_LEDGER:
+        if path.is_file():
             groups[sha256_file(path)].append(path.relative_to(ASSET_ROOT).as_posix())
     duplicates = {digest: names for digest, names in groups.items() if len(names) > 1}
     if duplicates:
@@ -1082,7 +1111,7 @@ def main() -> int:
     parser.add_argument(
         "--check",
         action="store_true",
-        help="verify the existing migration and ledgers without writing",
+        help="verify the existing migration outputs without writing",
     )
     args = parser.parse_args()
     try:
@@ -1107,13 +1136,12 @@ def main() -> int:
         write_or_check(STURM_CERTIFICATE, sturm_certificate_payload(), args.check)
 
         expected = expected_asset_files()
-        actual_without_ledger = actual_asset_files() - {"SHA256SUMS"}
-        expected_without_ledger = expected - {"SHA256SUMS"}
-        if actual_without_ledger != expected_without_ledger:
+        actual = actual_asset_files()
+        if actual != expected:
             raise ValueError(
                 "canonical asset file set differs; "
-                f"missing={sorted(expected_without_ledger - actual_without_ledger)!r}; "
-                f"unexpected={sorted(actual_without_ledger - expected_without_ledger)!r}"
+                f"missing={sorted(expected - actual)!r}; "
+                f"unexpected={sorted(actual - expected)!r}"
             )
 
         # Verify source duplicates deliberately mapped to one retained payload.
@@ -1127,18 +1155,13 @@ def main() -> int:
         rows = disposition_rows(files)
         write_or_check(DISPOSITION_CSV, csv_payload(rows), args.check)
         validate_no_duplicate_assets()
-        write_or_check(LIVE_LEDGER, ledger_payload(), args.check)
-
-        # The ledger must become exact after its own write/check, while omitting itself.
-        if LIVE_LEDGER.read_bytes() != ledger_payload():
-            raise ValueError("live asset checksum ledger is stale")
 
         dispositions = Counter(row["disposition"] for row in rows)
-        asset_count = len(actual_asset_files() - {"SHA256SUMS"})
+        asset_count = len(actual_asset_files())
         mode = "verified" if args.check else "built"
         print(f"asset migration {mode}")
         print(f"source disposition rows: {len(rows)}")
-        print(f"canonical payloads in live ledger: {asset_count}")
+        print(f"canonical asset files: {asset_count}")
         print("dispositions:")
         for disposition, count in sorted(dispositions.items()):
             print(f"  {disposition:46s} {count:3d}")

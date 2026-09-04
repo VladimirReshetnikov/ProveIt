@@ -43,7 +43,8 @@ characteristic, and in the presence of zero divisors.
 * `sum_pow_sum_powersetCard_Icc_eq_gaussianBinomial` — the equivalent
   one-based subset formula on the interval `1, ..., N`.
 * `gaussianBinomial_one_eq_choose` — the `q = 1` shadow, matching the
-  atlas count `card_filter_binaryWeight_eq`.
+  atlas count `card_filter_binaryWeight_eq`; and
+  `gaussianBinomial_one_eq_choose_ring`, the same shadow in every ring.
 -/
 
 set_option autoImplicit false

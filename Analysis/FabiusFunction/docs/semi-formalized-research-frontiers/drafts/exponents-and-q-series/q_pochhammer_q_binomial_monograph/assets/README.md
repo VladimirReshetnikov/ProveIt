@@ -62,7 +62,6 @@ directories:
 assets/
 ├── README.md
 ├── VALIDATION.md
-├── SHA256SUMS
 ├── requirements.txt
 ├── ASSET_DISPOSITION.csv
 └── experiments/
@@ -242,16 +241,15 @@ rendering metadata and last-digit floating-point drift.
 
 The six old report PDFs and LaTeX manuscripts are superseded by the single
 canonical volume.  Their mathematical provenance lives in the theorem
-concordance rather than in six competing renderings.  Source READMEs were
-absorbed here; source checksum ledgers were replaced by the canonical
-post-migration ledger; the two source requirements files were replaced by the
+concordance rather than in six competing renderings. Source READMEs were
+absorbed here; source checksum ledgers were retired after their historical
+receipts were recorded; the two source requirements files were replaced by the
 single requirements file above; generated LaTeX table fragments and TeX
 `.aux`, `.log`, `.out`, and `.toc` files are build products; and PNG previews
 are unnecessary when the corresponding vector PDFs are present.
 
 Retirement does not erase history: every old package remains recoverable from
 repository snapshot `f46e5d7f6f225bf0a43d8945e67d6f0e4aec8d54`.
-`SHA256SUMS` is the canonical post-migration ledger.  It covers every
-retained file beneath `assets/` except the ledger itself; a verifier can thus
-detect changes to programs, historical numerical snapshots, vector figures,
-the dependency manifest, or the migration documentation.
+Package checksum manifests are retired. Source and canonical-destination
+digests in `ASSET_DISPOSITION.csv`, together with pinned repository history,
+preserve migration receipts without creating a live checksum gate.

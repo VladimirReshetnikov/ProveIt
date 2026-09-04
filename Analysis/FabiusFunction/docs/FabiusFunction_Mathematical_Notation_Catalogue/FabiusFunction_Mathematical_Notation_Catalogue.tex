@@ -1731,6 +1731,44 @@ spellings may occur in quotations.  Normative prose uses \commandname{BinaryDigi
 an unsubscripted weight is especially unsafe because it can denote an integration weight.}
 \end{catalogueentry}
 
+\begin{catalogueentry}{base-q-digits}{Base-\(q\) digits, digit sums, digit characters,
+and digit power sums}
+\entryfield{Digits}{For an integer base $q\ge2$ and $n\in\NaturalNumbers$, the $j$-th
+base-$q$ digit is
+\[
+ d_j(n)\DefinitionEquals\Floor{n/q^{j}}\bmod q\in\{0,\dots,q-1\},\qquad j\in\NaturalNumbers,
+\]
+so that $n=\sum_{j\ge0}d_j(n)\,q^{j}$.  At $q=2$ this is the bit $b_j(n)$ of the
+\hyperlink{notation:binary-weight}{binary-weight entry}.  The base is always written
+explicitly; it is never inferred from context.}
+\entryfield{Digit sum}{$s_q(n)\DefinitionEquals\sum_{j\ge0}d_j(n)$.  At $q=2$ normative
+prose writes $\BinaryDigitSum(n)$, not $s_2(n)$; a document that abbreviates
+$s_2\DefinitionEquals\BinaryDigitSum$ must say so once.  These are plain-math
+conventions, not shared commands.}
+\entryfield{Digit window}{A statement over the block $0\le n<q^{m}$ may use the window
+product $\prod_{j<m}w\bigl(d_j(n)\bigr)$ for a digit weight $w$; leading zeros inside
+the window are weighted by $w(0)$, which is why identities stated with the window need
+no normalisation $w(0)=1$, whereas $s_q$ ignores leading zeros.}
+\entryfield{Digit character}{For $\zeta$ in a commutative ring, $u_n\DefinitionEquals
+\zeta^{s_q(n)}$.  The recursion $u_{qn+r}=\zeta^{r}u_n$ ($r<q$) and the digit product
+$\sum_{n<q^{m}}u_nz^{n}=\prod_{j<m}\sum_{r<q}\zeta^{r}z^{rq^{j}}$ hold for every $\zeta$;
+the hypothesis that $\zeta$ be a nontrivial $q$-th root of unity, $\sum_{r<q}\zeta^{r}=0$,
+enters only through the vanishing of each factor at $z=1$.  At $q=2$, $\zeta=-1$ gives
+$u_n=\ThueMorseSign n$.}
+\entryfield{Digit power sums}{$P_d(m)\DefinitionEquals\sum_{n<q^{m}}u_n\,n^{d}$.  Under
+$\sum_{r<q}\zeta^{r}=0$, $P_d(m)=0$ for $d<m$ (Prouhet cancellation), and with
+$\zeta^{q}=1$ the sharp value is
+$(\zeta-1)^{m}P_m(m)=m!\,q^{m(m+1)/2}$, stated division-free so that it holds in any
+commutative ring.}
+\entryfield{Lean crosswalk}{\lean{digitAt} is $d_j(n)$, \lean{windowWeight} the window
+product, \lean{digitPowerSum} is $P_d(m)$; the digit product is
+\lean{sum_zeta_pow_digits_sum_mul_pow} and its arbitrary-weight form
+\lean{sum_windowWeight_mul_pow} (\modulepath{BaseDigitProduct.lean}); cancellation and the
+sharp moment are \lean{digitPowerSum_eq_zero_of_lt} and
+\lean{sub_one_pow_mul_digitPowerSum_self} (\modulepath{BaseDigitProuhet.lean}).  The
+digit sum itself is Mathlib's \lean{(Nat.digits q n).sum}.}
+\end{catalogueentry}
+
 \begin{catalogueentry}{thue-morse}{Thue--Morse bit and sign sequences}
 \entryfield{Bit sequence}{$t_n\DefinitionEquals\BinaryDigitSum(n)\bmod2\in\{0,1\}$ for
 $n\in\NaturalNumbers$.}
@@ -1756,9 +1794,73 @@ $\ThueMorseSign{2n+1}=-\ThueMorseSign n$.}
 \]
 At $N=0$ both sides are $1$: the sum contains the sole term $n=0$ and the product is
 empty.}
+\entryfield{Rademacher--sine representation}{For every $n\in\NaturalNumbers$,
+\[
+ \ThueMorseSign n=\prod_{j=0}^{\infty}
+ \Sign\Bigl(\sin\frac{\pi(n+\frac12)}{2^{j}}\Bigr),
+\]
+and the $j$-th factor equals $(-1)^{b_j(n)}$ exactly.  Every factor with $2^{j}>n$ is
+$1$, so the product has finite multiplicative support and is asserted without a
+convergence hypothesis.  The half-unit shift is essential: the unshifted product
+$\prod_{j}\Sign(\sin(\pi n/2^{j}))$ contains the factor $\Sign(\sin\pi n)=0$ at $j=0$
+and is identically zero.}
+\entryfield{Square wave}{For every $x\in\RealNumbers$,
+$\sin(\pi x)=(-1)^{\Floor{x}}\sin(\pi\FractionalPart{x})$; the identity holds at the
+integers as well, where both sides vanish.  Off the integers
+$\sin(\pi\FractionalPart{x})>0$, hence $\Sign(\sin\pi x)=(-1)^{\Floor{x}}$ there.  At the
+Rademacher points $x=(n+\frac12)/2^{j}$ one has $\Floor{x}=\Floor{n/2^{j}}$ and
+$\FractionalPart{x}\ne0$.}
 \entryfield{Lean crosswalk}{The formal sign sequence uses declarations in
 \modulepath{ThueMorse.lean} and related prefix modules.  Exact theorem names are recorded in
-the crosswalk appendix; prose identities are not upgraded beyond their verified status.}
+the crosswalk appendix; prose identities are not upgraded beyond their verified status.
+The Rademacher--sine representation is \lean{thueMorseSign_eq_tprod_sign_sin} with factor
+law \lean{sign_sin_rademacherPoint}, and the factored square wave is
+\lean{sin_pi_mul_eq_neg_one_zpow_floor}, all in \modulepath{RademacherSine.lean}.}
+\end{catalogueentry}
+
+\begin{catalogueentry}{thue-morse-autocorrelation}{Thue--Morse autocorrelations, normalized
+and limiting}
+\entryfield{Window and dyadic autocorrelation}{For $N,k\in\NaturalNumbers$,
+$R_N(k)\DefinitionEquals\sum_{n<N}\ThueMorseSign n\,\ThueMorseSign{n+k}$, and at the dyadic
+window $A_m(k)\DefinitionEquals R_{2^{m}}(k)$.  These are integers; $R_N(0)=N$ and
+$|R_N(k)|\le N$.}
+\entryfield{Exact recursions}{$R_{2K}(2r)=2R_K(r)$ and $R_{2K}(2r+1)=-(R_K(r)+R_K(r+1))$
+for every even window; nothing uses that the window is a power of two.}
+\entryfield{Normalized and limiting values}{$\eta_m(k)\DefinitionEquals A_m(k)/2^{m}\in[-1,1]$,
+so that $\eta_{m+1}(2r)=\eta_m(r)$ and $\eta_{m+1}(2r+1)=-(\eta_m(r)+\eta_m(r+1))/2$
+exactly.  The limit $\eta(k)\DefinitionEquals\lim_{m\to\infty}\eta_m(k)$ exists for every
+$k$ and is the unique solution of $\eta(0)=1$, $\eta(2r)=\eta(r)$,
+$\eta(2r+1)=-(\eta(r)+\eta(r+1))/2$; in particular $\eta(1)=\eta(2)=-\tfrac13$,
+$\eta(3)=\tfrac13$, $\eta(5)=0$.  The symbol $\eta$ is document-local to the Thue--Morse
+spectral discussion; it is not a shared command and must not be reused for a different
+sequence in the same document.}
+\entryfield{Lean crosswalk}{\lean{thueMorseWindowAutocorrelation} is $R_N(k)$,
+\lean{thueMorseAutocorrelation} is $A_m(k)$ (\modulepath{ThueMorseAutocorrelation.lean});
+\lean{normalizedAutocorrelation} is $\eta_m(k)$, \lean{limitingAutocorrelation} is
+$\eta(k)$ defined by the recursion, and \lean{tendsto_normalizedAutocorrelation} is the
+convergence (\modulepath{ThueMorseAutocorrelationLimit.lean}).}
+\end{catalogueentry}
+
+\begin{catalogueentry}{thue-morse-block-sum}{Thue--Morse block sums and the nested dyadic
+integral}
+\entryfield{Block sum}{For $f:\RealNumbers\to\RealNumbers$, $x,h\in\RealNumbers$ and
+$m\in\NaturalNumbers$, the block sum is
+$\sum_{n<2^{m}}\ThueMorseSign n\,f(x+nh)$.  It is the $m$-fold dyadic difference
+$\prod_{j<m}(I-T_{2^{j}h})f$ evaluated at $x$, with $T_a$ the translation by $a$.}
+\entryfield{Nested dyadic integral}{The iterated integral
+$\int_0^{h}\int_0^{2h}\cdots\int_0^{2^{m-1}h}g(x+t_0+\cdots+t_{m-1})\,dt_{m-1}\cdots dt_0$
+is written with the outermost variable on $[0,h]$ and the step doubling inward; its box
+volume is $h^{m}2^{0+1+\cdots+(m-1)}=h^{m}2^{\binom m2}$.  Because the integrand depends
+only on the sum of the variables, any other nesting order gives the same value, but the
+displayed order is the one the recursion produces.}
+\entryfield{Cubature identity}{For $f$ of class $C^{m}$ and every real $x$, $h$, the block
+sum equals $(-1)^{m}$ times the nested dyadic integral of $f^{(m)}$; no sign condition on
+$h$ is needed for the identity.  Consequences stated with $h\ge0$: the block sum is
+nonnegative when $(-1)^{m}f^{(m)}\ge0$ on $[x,x+(2^{m}-1)h]$, and is bounded by
+$C\,h^{m}2^{\binom m2}$ when $|f^{(m)}|\le C$ there.}
+\entryfield{Lean crosswalk}{\lean{thueMorseBlockSum}, \lean{nestedDyadicIntegral},
+\lean{thueMorseBlockSum_eq_nestedDyadicIntegral}, \lean{thueMorseBlockSum_nonneg},
+\lean{abs_thueMorseBlockSum_le}, all in \modulepath{ThueMorseCubature.lean}.}
 \end{catalogueentry}
 
 \begin{catalogueentry}{padic-valuation}{\(p\)-adic and \(2\)-adic valuations}
@@ -6520,6 +6622,21 @@ sequence uses $\ThueMorseSign{n}$.  A dynamical map $T:X\to X$ is typed at first
 $W$ & Lambert function, Wasserstein distance, Walsh function, and weight. & Use
 $\LambertW_k$ with branch $k$ and $W_p(\mu,\nu)$ with transport exponent $p$.  Walsh
 functions and weights carry their own indices and domains.\\
+$X,Y,Z$ & The geometric-uniform random variable in three different affine
+normalizations, together with a generic random variable, a state space, and a
+spatial coordinate. & The three normalizations are genuinely different random
+variables and must never be identified by their letter.  A source using seeds
+uniform on $[0,1]$ and writing $X_q=(1-q)\sum_jq^jU_j$ has support $[0,1]$ and
+mean $\tfrac12$; a source using seeds uniform on $[-1,1]$ and writing the same
+formula obtains twice the centering of the first, with support $[-1,1]$; a
+standardized variable divides the centering by $\sigma_q$.  Consequently the
+same symbol $Y_q$ denotes the uncentered, the centered, and the doubled centered
+variable in three different frontier reports.  Any document using more than one
+of them declares the seed interval, the centering, and the scaling at first use,
+and states the affine map to the others; the consolidated
+\modulepath{geometric_q_fabius_frontiers/} volume fixes one canonical
+normalization in sans serif and carries the dictionary as a proved
+proposition.\\
 $\nu,\nu_j$ & Finite $p$-adic valuation, a signed or probability measure, an integer or
 complex order in a generalized q-series, a fractional order, and formerly several local
 indexed families. & Valuations use $\PadicValuation{p}$ or $\TwoAdicValuation$ and state
@@ -6538,9 +6655,63 @@ $\varepsilon$ & Thue--Morse sign, small positive tolerance, perturbation paramet
 error sequence. & Use $\ThueMorseSign{n}$ for the sign.  A tolerance is quantified
 $\varepsilon>0$; perturbations and errors receive semantic subscripts when signs occur
 in the same scope.\\
+$\varphi,\phi,\Phi$ & Characteristic function, standard normal density and
+distribution function, a Fourier product in a rescaled frequency, an Euler
+totient, and a refinable scaling function. & Use
+$\CharacteristicFunction{Z}$ for the characteristic function of a named
+variable; the subscript is the variable, not the parameter, unless the source
+says otherwise.  A bare $\varphi$ or $\Phi$ with no subscript is the standard
+normal density or distribution function only where a source declares it so.
+The most dangerous case in the active corpus is a characteristic function of a
+\emph{rescaled} variable printed with a parameter subscript: a source writing
+$\phi_q(t)$ for the transform of the $[-1,1]$-normalized geometric-uniform
+variable means $\CharacteristicFunction{q}(2t)$ in the $[0,1]$ normalization,
+and the two are distinguished in print only by $\phi$ against $\varphi$.
+Such a source states the argument scaling explicitly; the glyph is not
+sufficient qualification.  A totient is $\varphi(n)$ on integer argument, and a
+refinable scaling function is declared with its mask.\\
 \bottomrule
 \end{longtable}
 \endgroup
+
+\begin{catalogueentry}{geometric-q-fabius-canonical-namespace}
+{The canonical geometric-uniform family of the consolidated \texorpdfstring{$q$}{q}-Fabius volume}
+\entryfield{Scope}{Local to the standalone exponents-and-$q$-series volume
+\modulepath{geometric_q_fabius_frontiers/}.  The symbols $\mathsf X_q$,
+$\mathsf X^{\circ}_q$, and $\mathsf X^{\ast}_q$ are declared in that volume's
+Part~0 and are not shared-API commands.  They are typeset in sans serif
+precisely so that they cannot be read as any of the roman $X_q$, $Y_q$, $Z_q$
+that the volume's twelve absorbed parts use for three different affine images of
+the same random variable.}
+\entryfield{Formula}{For independent $U_j$ uniform on $[0,1]$ and real
+$\AbsoluteValue q<1$,
+\[
+ \mathsf X_q=(1-q)\sum_{j\ge0}q^{j}U_j,
+ \qquad
+ \mathsf X^{\circ}_q=\mathsf X_q-\tfrac12,
+ \qquad
+ \mathsf X^{\ast}_q=\mathsf X^{\circ}_q/\sigma_q,
+\]
+with $\sigma_q^{2}=(1-q)/\bigl(12(1+q)\bigr)$.}
+\entryfield{Normalization}{The weights sum to one, so $\Expectation\mathsf X_q=\tfrac12$
+and the support is $[0,1]$ for $0\le q<1$ and
+$[-a/(1-a),\,1/(1-a)]$ for $q=-a$ with $0<a<1$.  At $q=\tfrac12$ the distribution
+function is $\FabiusBounded$ exactly, which is why this normalization and not one of
+the $[-1,1]$ variants is canonical.  The characteristic function of the centered
+variable is $\prod_{j\ge0}\SincRad\bigl((1-q)q^{j}t/2\bigr)$.}
+\entryfield{Relation to the parts}{A part using seeds uniform on $[-1,1]$ works with
+$2\mathsf X^{\circ}_q$, so its cumulants carry an extra $2^{2m}$ and its variance is
+$(1-q)/\bigl(3(1+q)\bigr)$; a part working in the standardized scale uses
+$\mathsf X^{\ast}_q$, whose normalizing constant $\sqrt{3(1-q^{2})}$ equals
+$(1-q)/(2\sigma_q)$.  The volume states the whole dictionary as a proved
+proposition rather than leaving it to be read off letter by letter.}
+\entryfield{Status}{Definition, with the convergence, support, uniqueness,
+transform, and cumulant statements proved in the volume's Part~0.  The $q=\tfrac12$
+identification with $\FabiusBounded$ and $\RvachevUp$ is classical.}
+\entryfield{Scope end}{The standalone volume.  Outside it the letters $X$, $Y$, $Z$
+carry no geometric-uniform meaning without a local declaration, per the collision
+register above.}
+\end{catalogueentry}
 
 \begin{catalogueentry}{inverse-synthesis-local-namespace}
 {Finite-spline, Fourier-product, and endpoint-kernel notation in the inverse-synthesis
@@ -6716,6 +6887,68 @@ algebraic power.}
 followed by a second raw subscript.  Use the command's arguments or introduce a wrapper
 whose expansion has one syntactically valid script.  This rule covers number systems,
 quantiles, transform hats, and any future decorated semantic command.}
+% ed.: the three fields below were added on 2026-09-02.  The subscript rule above
+% stated only half of the constraint and read as a style preference; the omitted
+% half is a build-stopping TeX error that had silently broken six active sources.
+\entryfield{Script-final commands: the rule is a build constraint}{Many shared
+commands expand to a base atom that already carries a script.  TeX permits at
+most one superscript and one subscript per atom, so a directly following script
+of a type the atom already carries is the fatal error \texttt{Double
+superscript} or \texttt{Double subscript}, not a typographic infelicity.  A
+prime counts as a superscript.  \emph{Mixed types are legal}: since
+\commandname{NaturalNumbers} expands to \(\NaturalNumbers\), which carries only
+a subscript, \(\NaturalNumbers^{2}\) is correct, and so are
+\(\FabiusQuantile'\) and \(\SincPi^{(r)}\).  Any audit of this rule that
+searches for a command followed by a script, without first asking which script
+types that command's trailing atom carries, reports roughly ten false positives
+for every real one.}
+\entryfield{Classification of the shared commands}{Twenty-seven commands expand
+to an atom carrying \emph{both} scripts, so any following \texttt{\textasciicircum},
+\texttt{\_} or prime is fatal:
+\commandname{AssociahedronByDimension},
+\commandname{BellHessenbergMatrixH}, \commandname{BellHessenbergMatrixK},
+\commandname{BellNumber}, \commandname{CatalanNumber},
+\commandname{ComplementaryBellNumber},
+\commandname{ExponentialCompleteBellPolynomial},
+\commandname{ExponentialPartialBellPolynomial},
+\commandname{GenocchiNumber}, \commandname{GenocchiPolynomial},
+\commandname{GeometricBernoulliPolynomial},
+\commandname{GregoryCoefficient},
+\commandname{InverseFourierAngularOperator},
+\commandname{InverseFourierTwoPiOperator}, \commandname{LahNumber},
+\commandname{LambertPolynomial}, \commandname{LinearizedDecayObjective},
+\commandname{NormalizedReversionCoefficient},
+\commandname{OrdinaryGeneratingCoefficient},
+\commandname{OrdinaryPartialBellPolynomial},
+\commandname{ScaledLambertPolynomial},
+\commandname{SecondOrderEulerianPolynomial},
+\commandname{TouchardPolynomial}, \commandname{TraceBellArgument},
+\commandname{TypeAEulerianPolynomial}, \commandname{TypeBEulerianNumber}, and
+\commandname{TypeBEulerianPolynomial}.
+Seven are superscript-only and break on a following \texttt{\textasciicircum} or prime:
+\commandname{CompositionalInverseOf}, \commandname{MultiplicativeInverseOf},
+\commandname{FormalBigO}, \commandname{FallingFactorial},
+\commandname{RisingFactorial},
+\commandname{ExponentialGeneratingFunctionOf}, and
+\commandname{OrdinaryGeneratingFunctionOf}.
+The remaining thirty-eight script-final commands are subscript-only and break
+only on a following \texttt{\_}.
+This classification is derived from the expansions, so it must be recomputed
+whenever a command's definition changes rather than trusted as a fixed list.}
+\entryfield{Remedy, and document-local aliases}{Prefer the command whose
+meaning is the one intended: writing the power-series ring as
+\commandname{PolynomialLogPowerSeriesRing} is better than decorating the
+Laurent-ring command with a range subscript.  When a genuine extra script is
+needed, brace-wrap the call so the script attaches to the whole group, as in
+\texttt{\{\textbackslash LambertPolynomial\{n\}\}'}, which is valid and renders as intended.  A
+derivative may instead be printed in Leibniz form.
+
+The constraint propagates through \emph{document-local aliases}.  A definition
+such as \texttt{\textbackslash newcommand\{\textbackslash PL\}\{\textbackslash PolynomialLogLaurentRing\{\textbackslash K\}\}} makes
+\texttt{\textbackslash PL} script-final too, so \texttt{\textbackslash PL\_\{\textbackslash ge0\}} is fatal even though the
+shared command never appears with a script beside it.  An audit that inspects
+only the shared command names will not see this; alias chains must be resolved
+first.}
 \end{catalogueentry}
 
 \subsection{Exhaustive register of document-local non-Fourier hats}
@@ -6869,93 +7102,6 @@ coefficients, Gevrey order, sector, and Borel convention are suppressed by the
 printed symbol.  The accent means formal asymptotic series prior to Borel
 transformation.  The series name, including any semantic script, must be placed
 inside the one argument; any subsequent decoration must group the expansion.
-
-\Needspace{16\baselineskip}
-\paragraph{\localaccentname{FormalAsymptoticExpansionOf}}
-TeX arity is one; argument \(1\) is the name \(f\) of an actual function.  The command
-prints a wide hat over \(f\); its evaluation variable remains outside the macro.  In the
-incoming transseries volume, fix \(X>0\), \(t=X^{-1}\), \(\lambda=\log X\), a
-characteristic-zero coefficient field \(K\), and polynomial blocks
-\(A_n\in K[\lambda]\).  The formal object is
-\[
- \widehat f(X)
- \DefinitionEquals
- \sum_{n\ge n_0}A_n(\log X)X^{-n}
- \in K[\lambda]((t)).
-\]
-It is a coefficient array in the \(t\)-adic completion.  The separate analytic assertion
-that it is a Poincaré expansion of \(f\) means that, for every truncation index \(N\), the
-difference between \(f(X)\) and the sum through the block \(N-1\) is little-oh of the
-last retained scale along a declared ray or sector.  The field, limit direction, branch
-of \(\log X\), block degrees, and precise remainder scale are suppressed data.  The
-accent means formal asymptotic expansion, not Fourier transformation and not equality of
-the formal sum with \(f\).
-
-\Needspace{18\baselineskip}
-\paragraph{\localaccentname{LambertAsymptoticApproximation}}
-TeX arity is one; argument \(1\) is the truncation order
-\(N\in\PositiveIntegers\).  It prints \(\widehat W_N\), already owning the subscript
-\(N\).  On the positive principal-branch ray, let \(z=\EulerE^L\), \(L>1\), put
-\(\ell=\log L\), and let \(P_n\) be the explicitly defined Lambert polynomial family of
-that document.  Then
-\[
- \widehat W_N
- \DefinitionEquals
- L-\ell+\sum_{n=1}^{N}\frac{P_n(\ell)}{L^n}.
-\]
-This is a finite real scalar approximation to \(W_0(z)\), not the Lambert function
-itself and not a Fourier transform.  Its logarithmic residual is
-\[
- \rho_N\DefinitionEquals\widehat W_N+\log\widehat W_N-L
-\]
-whenever \(\widehat W_N>0\).  If \(W=W_0(\EulerE^L)\), the mean-value theorem gives
-\(\widehat W_N-W=\rho_N/(1+1/\theta_N)\) for some \(\theta_N\) between them, provided
-that interval avoids zero.  The branch, positive ray, variables \(L,\ell\), polynomial
-normalization, and residual domain are suppressed.  A semantic superscript such as
-\(\mathrm{new}\) for one Newton correction may follow the complete command expansion;
-no second raw subscript may be appended.
-
-\Needspace{13\baselineskip}
-\paragraph{\localaccentname{wideeq}}
-TeX arity is zero; the command prints a hatted equality sign as a binary relation.  For
-two formal polynomial--logarithmic series
-\[
- A=\sum_{\gamma}a_\gamma\mathfrak m_\gamma,\qquad
- B=\sum_{\gamma}b_\gamma\mathfrak m_\gamma
-\]
-written over the same coefficient field, ordered monomial family, and locally finite
-support convention,
-\[
- A\mathrel{\widehat=}B
- \quad\Longleftrightarrow\quad
- a_\gamma=b_\gamma\ \text{for every index }\gamma.
-\]
-It is coefficientwise formal identity, not equality of convergent numerical sums,
-asymptotic equivalence, equality modulo a truncation ideal, or Fourier equality.  The
-ambient coefficient field, monomial group, ordering, support condition, and formal
-variables must already be declared.
-
-\Needspace{16\baselineskip}
-\paragraph{\localaccentname{DulacFormalSeriesOf}}
-TeX arity is one; argument \(1\) is the name \(f\) of a function or germ.  The command
-prints a wide hat over \(f\), with the small evaluation variable supplied after the
-expansion.  For \(x\to0^+\), put
-\[
- X=x^{-1},\qquad \ell=\log(1/x)=\log X,
-\]
-choose a strictly increasing exponent sequence
-\(\lambda_0<\lambda_1<\cdots\to+\infty\), and polynomial blocks
-\(P_j\in K[\ell]\).  Then
-\[
- \widehat f(x)
- \DefinitionEquals\sum_{j\ge0}x^{\lambda_j}P_j(\ell)
-\]
-is the formal Dulac or power--log series, subject to the declared local-finiteness
-condition that makes each formal coefficient operation finite.  The dominance order
-compares the exponent \(\lambda_j\) first and logarithmic degree second.  The coefficient
-field, exponent group, branch and sign of the logarithm, support condition, and whether
-the formal series is an actual asymptotic expansion of a germ are suppressed.  The
-accent means formal Dulac expansion, not Fourier transformation.
 
 \subsubsection{Inverse, sampling, and prediction constructions}
 
@@ -8859,13 +9005,15 @@ or a catalogue entry are not substitutes for inspecting the current declaration.
 
 \subsection{Snapshot boundary}
 
-The inventory below is the recursive active tree observed on 2026-09-01 at the
-source-validation checkpoint.  It excludes every path below \modulepath{docs/archive/} and
-counts this catalogue exactly once.  It contains 160 mathematical content sources: 62
+The inventory below is the recursive active tree observed on 2026-09-03, after the
+consolidation of the six exponents-and-$q$-series drafts into one volume and of the six
+polynomial--logarithmic transseries drafts into one volume, and after the arrival of the
+special-function-inversion intake.  It excludes every path below \modulepath{docs/archive/} and
+counts this catalogue exactly once.  It contains 170 mathematical content sources: 72
 standalone documents and 98 included or generated fragments.  The separate shared
-contract \modulepath{docs/fabius-notation.tex} raises the total before this catalogue to 161
-active TeX files.  Including this standalone catalogue gives 162 active TeX files and
-63 standalone documents.  ``Standalone'' means that the uncommented source
+contract \modulepath{docs/fabius-notation.tex} raises the total before this catalogue to 171
+active TeX files.  Including this standalone catalogue gives 172 active TeX files and
+73 standalone documents.  ``Standalone'' means that the uncommented source
 contains \commandname{documentclass}; every other content source is a fragment inheriting
 its root preamble.
 
@@ -8884,22 +9032,23 @@ Manifest group & Standalone & Fragments & Total\\
 \modulepath{FabiusFunction_Mathematical_Glossary/} & 1 & 0 & 1\\
 \modulepath{papers/} & 7 & 0 & 7\\
 Frontier synthesis root & 1 & 0 & 1\\
-\modulepath{drafts/combinatorial-coefficient-calculus/} & 6 & 0 & 6\\
-\modulepath{drafts/exponents-and-q-series/} & 7 & 20 & 27\\
+\modulepath{drafts/combinatorial-coefficient-calculus/} & 1 & 0 & 1\\
+\modulepath{drafts/exponents-and-q-series/} & 2 & 20 & 22\\
 \modulepath{drafts/frontier-compilations/} & 3 & 1 & 4\\
 \modulepath{drafts/integration-and-transforms/} & 1 & 7 & 8\\
-\modulepath{drafts/inverse-and-sampling/} & 3 & 30 & 33\\
-\modulepath{drafts/lambert-w/} & 7 & 4 & 11\\
+\modulepath{drafts/inverse-and-sampling/} & 9 & 30 & 39\\
+\modulepath{drafts/lambert-w/} & 1 & 4 & 5\\
 \modulepath{drafts/representations/} & 12 & 26 & 38\\
 \modulepath{drafts/rvachev_up_fourier_decay/} & 1 & 0 & 1\\
+\modulepath{drafts/series-and-transseries/} & 20 & 0 & 20\\
 \modulepath{drafts/spectra-and-arithmetic/} & 10 & 10 & 20\\
 \modulepath{drafts/thue-morse/} & 1 & 0 & 1\\
 \midrule
-Mathematical content subtotal & 62 & 98 & 160\\
+Mathematical content subtotal & 72 & 98 & 170\\
 Shared notation contract & 0 & 1 & 1\\
 This catalogue & 1 & 0 & 1\\
 \midrule
-Active TeX total including catalogue & 63 & 99 & 162\\
+Active TeX total including catalogue & 73 & 99 & 172\\
 \bottomrule
 \end{longtable}
 \endgroup
@@ -8946,9 +9095,15 @@ listings.  Rendered-PDF inspection later closes the composition and layout gap.
 At shared-contract version \FabiusNotationVersion:
 
 \begin{itemize}
-\item \modulepath{docs/fabius-notation.tex} defines exactly 91 shared commands.
-\item Every one of those 91 command names occurs in the canonical quick reference and
-      in the alphabetical command index, with its exact arity.
+\item \modulepath{docs/fabius-notation.tex} defines exactly 146 shared commands, not
+      counting the version stamp \commandname{FabiusNotationVersion}: the 91 of the
+      original contract, the combinatorial coefficient-calculus block, and the
+      polynomial--logarithmic transseries block.
+\item Every one of those 146 command names occurs in the canonical quick reference and
+      in the alphabetical command index, with its exact arity.  This was re-derived on
+      2026-09-03 by comparing the \commandname{newcommand} names of the shared file
+      against the \commandname{commandname} entries of both sections, not by
+      adjusting the previous count.
 \item Every command belongs to a detailed normative entry defining its type-level role,
       normalization, exceptional cases, or the local data the command intentionally
       requires at each use.
@@ -8958,8 +9113,12 @@ At shared-contract version \FabiusNotationVersion:
       decay objectives, and pointwise/topological support have distinct printed forms.
 \item The retired-alias index is exhaustive with respect to the audit's retired-command
       registry.  Ambiguous aliases map only after semantic classification.
-\item The active corpus has 35 validated \texttt{LOCAL-NON-FOURIER-HAT:}
-      marker/declaration pairs representing 35 distinct document-local command names.
+\item The active corpus has 30 validated \texttt{LOCAL-NON-FOURIER-HAT:}
+      marker/declaration pairs representing 30 distinct document-local command names
+      (re-derived on 2026-09-03 from the audit's registry after the transseries
+      consolidation retired four document-local hats whose macros no longer exist;
+      the register held 34 rows before that retirement, so the previously stated
+      35 was already stale by one).
       Every distinct name occurs exactly once in the exhaustive accent register, and the
       whole-corpus audit rejects missing, extra, or duplicate registry metadata.
 \item Symbols not promoted to the shared API remain governed by the local declaration

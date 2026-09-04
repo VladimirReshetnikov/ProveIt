@@ -73,6 +73,8 @@
 \newcommand{\repo}{\nolinkurl{Analysis/FabiusFunction}}
 \newcommand{\leanevaltwo}[1]{%
   \nolinkurl{integral_eval}\texttt{\textsubscript{2}}\nolinkurl{#1}}
+\newcommand{\leansubtwo}[2]{%
+  \nolinkurl{#1}\texttt{\textsubscript{2}}\nolinkurl{#2}}
 % LOCAL-NON-FOURIER-HAT: \ClampedExtensionOf denotes the clamped extension of an admissible function.
 \newcommand{\ClampedExtensionOf}[1]{\widehat{#1}}
 % LOCAL-NON-FOURIER-HAT: \FullRvachevLegendreCoefficientRat denotes the parity-completed rational Legendre coefficient sequence.
@@ -123,6 +125,79 @@ This document is a proof-oriented walkthrough of that codebase.  Its aim is not 
 
 \begin{boxedremark}\textbf{Reader's map.}\space
 A mathematically oriented reader should begin with Sections~\ref{ch:objects}, \ref{ch:existence}, \ref{ch:regularity}, \ref{ch:dyadic-bridge}, \ref{ch:fourier}, and \ref{ch:asymptotics}.  A Lean developer should read Sections~\ref{ch:build}, \ref{ch:architecture}, \ref{ch:arithmetic}, \ref{ch:engineering}, and \ref{ch:extending}.  Readers interested in the two source papers can use the theorem map in Appendix~\ref{app:paper-map}; readers trying to locate a particular implementation should use the annotated module guide in Appendix~\ref{app:modules}; and readers reproducing trust checks should use Appendix~\ref{app:reproduction}.
+\end{boxedremark}
+
+\begin{boxedremark}\textbf{Artifact status (4 September 2026).}\space
+The authoritative live lexical audit of the facade semantic union contains
+exactly 923 source modules and 11,611 public declarations.  It finds no
+missing module headers and no public declarations without doc comments; the
+checked baseline records this zero-gap state.  The merge target contributes
+11,610 declarations, and the retained unconditional public Pochhammer bridge
+contributes the one additional declaration in the present union.  The
+historical 671/8,859 local checkpoint was the 649/8,698 checkpoint plus 22
+modules and 161 declarations.  The
+Pochhammer ownership census remains
+\nolinkurl{RvachevPochhammerFactorization.lean} (1+10), including
+\nolinkurl{complexQPochhammerInf_eq_qPochhammerInfIn};
+\nolinkurl{QPochhammerEntire.lean} (0+5); and
+\nolinkurl{QPochhammerInfinite.lean} (1+29), while
+\nolinkurl{QMultinomial.lean} remains 1+9 and
+\nolinkurl{GaussianBinomialPolynomialStructure.lean} remains 0+5.
+The historical 665/8,819 checkpoint includes
+\nolinkurl{CyclotomicDivisibility.lean} (0+3),
+\nolinkurl{PrimitiveRootBlock.lean} (0+3), \nolinkurl{QLucas.lean} (0+7),
+\nolinkurl{QCatalan.lean} (1+11), \nolinkurl{NewtonInterpolation.lean} (2+13),
+and \nolinkurl{QBetaIntegral.lean} (1+8).  Newton's definitions are
+\nolinkurl{newtonCoeff} and \nolinkurl{newtonInterpolant}; the latter preserves
+the established scalar-sequence \nolinkurl{Fabius.newtonPoly} API.
+The current Newton module is expanded to 3+19 by the node-qualified family and
+its compatibility aliases.  The retained six-module tranche comprises
+\nolinkurl{GaussianBinomialInteger.lean} (1+10),
+\nolinkurl{GaussianBinomialComplexOrder.lean} (1+5),
+\nolinkurl{QPfaffSaalschutz.lean} (0+3),
+\nolinkurl{QuantumMultinomial.lean} (0+5),
+\nolinkurl{RvachevSuperconvergentSynthesis.lean} (1+8), and
+\nolinkurl{GaussianBinomialBounds.lean} (0+6): three definitions and 37
+theorems, hence six modules and 40 unique declarations.
+The live union additionally contains the exhaustive
+\nolinkurl{TwoPhiOneReversal.lean} (2+12) and
+\nolinkurl{QChuVandermonde.lean} (0+10) surfaces and the
+\nolinkurl{GeometricRichardsonGenerating.lean} (3+7) generating-function
+surface, together with the three-theorem extension that brings
+\nolinkurl{GaussianBinomialCumulants.lean} from 2+21 to 2+24 and the
+zero-definition/five-theorem
+\nolinkurl{LambertWBranchGapBernoulli.lean} leaf, while retaining the public
+\nolinkurl{complexQPochhammerInf_eq_qPochhammerInfIn} bridge.
+The subsequent one-definition/eight-theorem
+\nolinkurl{GeometricUniformMomentPolynomial.lean} leaf supplies the algebraic
+part of \nolinkurl{p7:thm:Pn} and moves that row from None to Partial; the
+analytic normalization and leading-coefficient/strict-odd-degree clause remain
+open.
+The retained five-module polynomial q-calculus increment is exactly
+\nolinkurl{PolynomialQDerivative.lean} (2+17),
+\nolinkurl{PolynomialQLeibniz.lean} (0+4),
+\nolinkurl{QPochhammerDerivative.lean} (0+3),
+\nolinkurl{LambertSeriesLog.lean} (0+4), and
+\nolinkurl{QGamma.lean} (2+10): four definitions and thirty-eight theorems,
+forty-two public declarations in all, with the exact algebraic, analytic,
+nonvanishing, and boundary hypotheses recorded in the module guide below.
+The rigorous forward q-monograph ledger is 177 Exact, 82 Partial, 15 None,
+and 8 interface rows; its source concordance is 99 Lean, 379 human, 60 N/A,
+and 9 conjecture rows.  The bound leaf changes
+\nolinkurl{prop:gaussian-bound} from None to Exact, witnessed by
+\nolinkurl{one_le_gaussianBinomial} and
+\nolinkurl{gaussianBinomial_le_inv_qPochhammerInfIn}.
+\nolinkurl{thm:q-lucas} remains Partial: Lean proves the evaluated
+primitive-root identity, while the manuscript's polynomial congruence modulo
+\(\Phi_d\) still needs a minimal-polynomial lift.
+\nolinkurl{cor:babbage-derivative} also remains Partial because its value,
+but not its derivative, is formalized.  The retained companion PDF is a
+historical receipt for its named source checkpoint; this source-only merge
+requires a fresh uninterrupted three-pass Libertinus rebuild before parity can
+again be claimed.  Exact historical source/PDF validation receipts are kept
+externally in the repository documentation so that neither artifact embeds a
+self-invalidating fingerprint.  Package-local \nolinkurl{SHA256SUMS*} ledgers
+remain abolished and do not participate in validation.
 \end{boxedremark}
 
 \section*{Scope and conventions}
@@ -998,6 +1073,41 @@ prove \nolinkurl{SequentiallyComputable} and the combined
 \nolinkurl{IsComputableRealFunction} statement; no input-bit asymptotic is
 claimed.
 
+The adjacent \nolinkurl{FabiusInverseExactDyadicModulus.lean} closes the
+fixed-target ceiling problem without replacing those computable witnesses.
+For a dyadic order \(r\),
+\nolinkurl{inverseFabiusExactDyadicDenominator} is the natural ceiling of the
+reciprocal of the exact rational evaluator at \(2^{-r}\).
+\nolinkurl{inverseFabiusExactDyadicDenominator_pos},
+\nolinkurl{inv_inverseFabiusExactDyadicDenominator_le_fabiusAtInverseTwoPow},
+and \nolinkurl{inverseFabiusExactDyadicDenominator_isLeast} prove positivity,
+the reciprocal endpoint bound, and leastness among positive integer
+denominators satisfying that bound.  Casting the exact evaluator to the real
+Fabius value gives
+\nolinkurl{abs_fabiusInv_sub_lt_inverse_two_pow_of_lt_exactDyadicDenominator}.
+If a positive \(d\) is smaller, the endpoint pair \((0,F(2^{-r}))\) has input
+gap below \(d^{-1}\) and inverse-output gap exactly \(2^{-r}\); this is
+\nolinkurl{exists_fabiusInv_gap_of_lt_exactDyadicDenominator}.  Combining the
+two directions gives
+\nolinkurl{inverseFabiusExactDyadicDenominator_isLeast_strictModulus}, whose
+leastness is only for that fixed dyadic output target.
+
+The second definition,
+\nolinkurl{inverseFabiusExactLogarithmicDenominator}, is \(1\) at zero and is
+the fixed-target ceiling at \(r_{\log}(n)\) when \(n>0\).  The latter equation
+is \nolinkurl{inverseFabiusExactLogarithmicDenominator_of_pos}; composing its
+strict dyadic modulus with \(2^{-r_{\log}(n)}<1/n\) gives
+\nolinkurl{abs_fabiusInv_sub_lt_inv_nat_of_lt_exactLogarithmicDenominator}.
+This reciprocal-target theorem is a witness only, not leastness for \(1/n\),
+and no conclusion is asserted at the convention-only input \(n=0\).  The
+the two exact denominator maps are primitive recursive by
+\nolinkurl{inverseFabiusExactDyadicDenominator_primrec} and
+\nolinkurl{inverseFabiusExactLogarithmicDenominator_primrec}; the proof uses
+natural recurrence codes and does not assume normalized-rational
+computability.  These two definitions and ten theorems are
+its complete public surface.  This is a source-only overlay: the retained
+walkthrough PDF is historical and was not rebuilt for it.
+
 The generic \nolinkurl{EffectiveMonotoneInverse.lean} layer has exactly two
 public definitions and six theorems.  Its definitions are
 \nolinkurl{SequentiallyComputableOn} and \nolinkurl{unitClamp}; its theorems
@@ -1077,7 +1187,7 @@ hypothesis is
 This yields the inverse modulus.  A computable dyadic evaluator for \(f\) and
 interval maps for both functions then yield sequential computability and
 effective uniform continuity of \(g\) on \([0,1]\).  The total theorem certifies
-exactly \(x\mapsto g(\nolinkurl{unitClamp}(x))\); it agrees with \(g\) on the
+exactly \(x\mapsto g(\text{\texttt{unitClamp}}(x))\); it agrees with \(g\) on the
 unit interval but makes no claim about the unclamped values of \(g\) outside it.
 
 The specialization \nolinkurl{FabiusInverseComputable.lean} has no public
@@ -1244,7 +1354,9 @@ not a name-producing algorithm, so this module by itself proves neither
 \nolinkurl{SequentiallyComputable} nor a combined
 \nolinkurl{IsComputableRealFunction} theorem.  The later logarithmic and
 tolerant-bisection modules provide the selector and name-producing algorithm;
-the exact least/ceiling denominator and input-bit complexity remain open.
+the exact-dyadic leaf supplies fixed-target ceiling leastness, while a named
+recursion certificate for that exact denominator and input-bit complexity
+remain open.
 
 \subsection{Generic formal implicit roots versus inverse-Fabius germs}
 \nolinkurl{ImplicitPowerSeries.lean} isolates a purely formal root engine.
@@ -1442,6 +1554,34 @@ In Lean, density can be applied through a generic theorem saying continuous maps
   \item representation invariance.
 \end{enumerate}
 This stronger formulation is the one required by the q-binomial identities, where summation indices naturally produce numerators outside \([0,2^n]\).
+
+\subsection{The dyadic derivative filtration}
+The zero-definition/six-theorem module
+\nolinkurl{DyadicDerivativeFiltration.lean} gives the complete derivative
+trichotomy at reduced dyadics.  Its public surface is
+\nolinkurl{rvachevUp_eq_zero_of_one_le_abs},
+\nolinkurl{iteratedDeriv_rvachevUp_dyadic_eq_zero},
+\nolinkurl{iteratedDeriv_rvachevUp_dyadic_critical},
+\nolinkurl{dyadic_depth_eq_max_nonzero_iteratedDeriv},
+\nolinkurl{iteratedDeriv_rvachevUp_eq_extendedFabius}, and
+\nolinkurl{iteratedDeriv_rvachevUp_dyadic_below}.  The first four supply the
+support lemma, vanishing above a reduced dyadic's depth, its critical signed
+power of two, and exact depth detection.  The final two are the new
+below-depth closure.  In fact the first of them is stronger than a dyadic
+statement: for every natural \(m\) and every \(x<1\),
+\[
+ \RvachevUp^{(m)}(x)
+ =2^{\binom{m+1}{2}}\FabiusGlobal\!\left(2^m(x+1)\right).
+\]
+Consequently, if \(m<n\) and \(a<2^n\),
+\[
+ \RvachevUp^{(m)}\!\left(\frac a{2^n}\right)
+ =2^{\binom{m+1}{2}}\FabiusGlobal\!\left(\frac{2^n+a}{2^{n-m}}\right).
+\]
+Together with the critical and above-depth theorems, this exhausts the
+module's public declarations.  The source statements concern the derivatives
+themselves; they do not add the frontier volume's normalized-by-\(\pi^m\)
+notation.
 
 \begin{boxedremark}\textbf{Architectural point.}\space
 The dyadic bridge is the repository's main ``commuting square.''  One path starts with an analytic function and derives a finite Taylor recurrence; the other starts with exact rational recurrences and an evaluator.  The correctness theorem says both paths produce the same real number.
@@ -1730,8 +1870,10 @@ interfaces remain open.  The zero-definition/six-theorem module
 \nolinkurl{GeneralizedRvachevIdentifiability.lean} contains the order formula,
 the head and successor decoders, the dyadic-order uniqueness theorem, its
 general-base additive-cancellation core, and
-\nolinkurl{generalizedRvachevProduct_eq_iff}.  This is a source-only overlay;
-the retained 126-page walkthrough PDF is historical and was not rebuilt.
+\nolinkurl{generalizedRvachevProduct_eq_iff}.  This overlay is included in the
+named historical walkthrough checkpoint; its exact frozen-source and final-PDF
+receipt is kept externally in the repository documentation.  The merged source
+now postdates that checkpoint, so no current source/PDF parity is claimed.
 
 \subsection{Fourier injectivity and uniqueness}
 If two original candidates satisfy the same hypotheses, the iteration argument gives the same Fourier transform for both.  The source then uses injectivity of the Fourier transform on Schwartz functions to conclude equality.  The final transition is:
@@ -1828,9 +1970,41 @@ The module proves globally that \(H=F\), and identifies the folded function by
 \[
   \RvachevUp(x)=H(1-|x|).
 \]
+The existing \nolinkurl{ProbabilityLaplaceMoments.lean} module now adds
+exactly two report-facing consequences.  Atomlessness identifies the closed
+and open tails, so for every \(t\geq0\),
+\[
+ \Probability[X\geq t]=\Probability[X>t]=\RvachevUp(t),
+\]
+which is
+\nolinkurl{weightedSumDistribution_real_Ici_eq_rvachevUp_of_nonneg}.  For
+every natural \(n\geq1\),
+\[
+ \int_{\RealNumbers}x^n\Differential\mu_X(x)
+ =n\int_0^1t^{n-1}\RvachevUp(t)\Differential t,
+\]
+which is
+\nolinkurl{integral_pow_weightedSumDistribution_eq_mul_intervalIntegral_rvachevUp}.
+The expectation is over the full weighted-sum law; its compact support is
+consumed by the existing survival layer-cake theorem.  Together with the
+global up/Fabius identities, these make \nolinkurl{prop:up-tail} and
+\nolinkurl{cor:up-moments} Exact.  They add no density statement and the
+moment theorem deliberately assumes positive degree.
 This is the direct CDF model on \([0,1]\).  It should not be conflated with
 the centered finite-convolution measures used by the original-paper
 approximants.
+
+The generic weighted-law compatibility layer also supplies an exact Bochner barycenter.
+For norm-summable weights in a complete Borel real normed space,
+\[
+ \int_E x\,\Differential\mu_w(x)=\frac12\mathbin{\cdot}\sum_{n=0}^{\infty}w_n.
+\]
+This is
+\nolinkurl{integral_id_weightedUniformDistribution} in
+\nolinkurl{WeightedUniformDistribution.lean}.  It assumes no sign or order on the weights
+and uses bounded-series integrability plus central reflection, not a termwise integration
+or coordinate-independence expansion.  That module now has exactly eleven public theorems
+and no public definitions.
 
 The self-similarity of \(X\) is the probabilistic counterpart of the fixed-point integral equation.  It supplies a second route to the same canonical bounded function once uniqueness of the \nolinkurl{IsFabius} specification is available.
 
@@ -1904,6 +2078,14 @@ For the geometric weights \(w_n(q)=(1-q)q^n\), write \(\mu_q\) for the law,
   f_q(x)=
   \frac{F_q(x/q)-F_q((x-(1-q))/q)}{1-q}.
 \]
+The exhaustive \nolinkurl{GeometricUniformLaw.lean} surface now has twenty-four public
+declarations.  The new specialization
+\nolinkurl{integral_id_geometricUniformDistribution_eq_one_half} proves
+\[
+ \int_{\RealNumbers}x\,\Differential\mu_q(x)=\frac12
+ \qquad\text{whenever }\lvert q\rvert<1.
+\]
+It includes \(q=0\) and every negative contraction and uses no positivity hypothesis.
 The Lean definition \nolinkurl{geometricUniformDensity q} is total in \(q\),
 but only \(0<q<1\) gives this classical density interpretation.  The formal
 boundary is now exact: at \(q=0\) the selected quotient is identically zero,
@@ -2005,49 +2187,26 @@ to \(\phi_q\), and uniformly on every compact set \(K\subseteq\RealNumbers\).  T
 locally uniform theorem concerns \(S_q\) as a complex-variable pure sinc product, whereas
 the full phase-bearing theorem is stated for real frequencies.  No complex-frequency
 analogue of the latter or uniform-convergence claim on all of \(\RealNumbers\) is made.
-The one-definition, nine-theorem module
-\nolinkurl{RvachevPochhammerFactorization.lean} then supplies the independent spectral
-rearrangement.  Besides the total \nolinkurl{complexQPochhammerInf} and its
-contracting-nome convergence API, the declarations
-\nolinkurl{summable_norm_sineTerm_qpow_pair},
-\nolinkurl{geometricSincProduct_eq_tprod_pair}, and
-\nolinkurl{geometricSincProduct_eq_tprod_complexQPochhammerInf} prove, for complex
-\(\lVert q\rVert<1\) and arbitrary \(z\),
-\[
- S_q(z)=\prod_{k\ge0}
- \left(\frac{z^2}{(k+1)^2};q^2\right)_\infty .
-\]
-The identity includes \(q=0\) and individual zero factors; its final two theorems are the
-dyadic nome-\(1/4\) Rvachev-product and bounded-Fabius Fourier specializations.  A named
-centered/MGF wrapper and the outside-disk reciprocal formula and zero--pole exchange remain
-outside this module.  The zero-definition, three-theorem module
-\nolinkurl{GeometricPochhammerNormalConvergence.lean} supplies the missing outer-product
-local uniformity: \nolinkurl{hasProdLocallyUniformly_geometricSincProduct_complexQPochhammerInf}
-works for every complex \(\lVert q\rVert<1\), including \(q=0\), and the other two theorems
-are the nome-\(1/4\) Rvachev-product and bounded-Fabius specializations.  This closes only
-that normal-convergence clause; the compound spectral theorem remains partial because the
-centered/MGF, outside-disk, pole-divisor, and zero--pole clauses are still absent.  The downstream
-\nolinkurl{QPochhammerEntire.lean} closes the locally uniform, entire, zero-locus, and
-simple-zero API for each inner Pochhammer function of \(a\), as detailed below.
-Rapid-decay bounds, Fourier inversion, a named centered family or MGF wrapper, explicit
-Bernoulli-cumulant and Bell-moment formulas and asymptotics, further transform formulas,
-and shape theory remain separate targets.
-
-The one-definition, nine-theorem module
+The one-definition, ten-theorem module
 \nolinkurl{RvachevPochhammerFactorization.lean} gives a second, spectral
 description of this pure sinc product.  It defines
 \nolinkurl{complexQPochhammerInf} by
 \[
  (a;q)_{\infty,\ComplexNumbers}=\prod_{j=0}^{\infty}(1-aq^j).
 \]
-The four foundational declarations
+The five foundational declarations
 \nolinkurl{complexQPochhammerInf_eq_tprod},
+\nolinkurl{complexQPochhammerInf_eq_qPochhammerInfIn},
 \nolinkurl{multipliable_one_sub_mul_pow_complex},
 \nolinkurl{hasProd_complexQPochhammerInf}, and
 \nolinkurl{tendsto_finiteQPochhammerIn_complex}
-state its defining product and prove, for exactly \(\lVert q\rVert<1\),
-multipliability, the named product, and convergence of the finite prefixes,
-with no restriction on \(a\).
+state its defining product, identify it with the generic public name, and
+prove, for exactly \(\lVert q\rVert<1\), multipliability, the named product,
+and convergence of the finite prefixes, with no restriction on \(a\).  The
+bridge theorem is stronger in a different direction: for every complex
+\(a,q\), with no hypothesis, it is a definitional equality between the two
+identical total \texttt{tprod}s.  It therefore remains true in Mathlib's
+nonmultipliable junk-value regime, without asserting convergence there.
 
 For every strict complex contraction \(q\) and every \(z\in\ComplexNumbers\),
 the remaining geometric layer starts from
@@ -2074,12 +2233,11 @@ factors.  The final declarations
 \(q=1/2\), nome \(1/4\), first for the standalone Rvachev product and then for
 every bounded \nolinkurl{IsFabius} witness.  This factorization module itself
 does not classify the single-symbol zero lattice or multiplicities; the next
-leaf closes that fixed-nome problem.  The separate
-\nolinkurl{GeometricPochhammerNormalConvergence.lean} leaf establishes locally
-uniform convergence of the rearranged outer Pochhammer product.  These modules
-still do not construct a reciprocal zero--pole factorization, prove joint
-holomorphy in \(q\), supply a centered characteristic-function/MGF package,
-or treat \(\lVert q\rVert>1\).
+leaf closes that fixed-nome problem.  Neither module constructs a reciprocal
+zero--pole factorization or joint holomorphy in \(q\), supplies a centered
+characteristic-function/MGF package, or treats \(\lVert q\rVert>1\).  The
+separate normal-convergence leaf described below closes the former
+local-uniform outer-product boundary.
 
 \subsubsection{Entire fixed-nome q-Pochhammer symbol and simple zeros}
 \label{ch:qpochhammer-entire}
@@ -2108,7 +2266,9 @@ is entire.  The next two give the exact zero descriptions
    \exists j\in\NaturalNumbers:\ a=(q^j)^{-1}
    \qquad(q\ne0),                                           \label{eq:walk-qpochhammer-inverse-lattice}
 \end{align}
-and the final theorem proves analytic order one at every zero.  The raw
+and the final theorem proves analytic order one at every zero under the
+historical complex-product name.  The generic-name order theorem is owned by
+\nolinkurl{QPochhammerInfinite.lean}.  The raw
 factor-zero line is primary because it also covers \(q=0\): in that case only
 the index-zero factor can vanish, at \(a=1\), and the zero is simple.
 
@@ -2142,11 +2302,13 @@ This is a fixed-\(q\), single-symbol result.  It proves no joint holomorphy in
 wrapper.  The separate three-theorem normal-convergence leaf proves the
 locally uniform outer spectral product
 \(\prod_k(z^2/(k+1)^2;q^2)_\infty\) and its two dyadic specializations, but
-does not close those other compound spectral clauses.  This subsection is
-source-only: the retained 126-page walkthrough PDF predates both the
-five-theorem fixed-nome overlay and the outer-product convergence overlay and
-is a historical render until the documented three-pass Libertinus rebuild is
-performed.
+does not close those other compound spectral clauses and does not replace the
+public unconditional bridge
+\nolinkurl{complexQPochhammerInf_eq_qPochhammerInfIn}.  This subsection is
+included in the named historical walkthrough checkpoint; its exact
+frozen-source and final-PDF receipt is kept externally in the repository
+documentation.  The merged source now postdates that checkpoint, so no current
+source/PDF parity is claimed.
 
 Two further modules supply the finite and general-ring layers without
 replacing that \nolinkurl{complexQPochhammerInf} interface.
@@ -2174,34 +2336,24 @@ The one-definition, twenty-nine-theorem module
 \nolinkurl{qPochhammerInfIn_eq_factor_mul},
 \nolinkurl{qPochhammerInfIn_dissection},
 \nolinkurl{qPochhammerInfIn_ne_zero},
-\nolinkurl{qPochhammerInfIn_eq_zero_iff},
-\nolinkurl{qPochhammerInfIn_self_ne_zero},
-\nolinkurl{qPochhammerInfIn_eq_tprod_smul},
-\nolinkurl{summable_norm_pow_of_norm_lt_one},
-\nolinkurl{isBigO_one_sub_sub_one},
-\nolinkurl{differentiable_finiteQPochhammerIn},
-\nolinkurl{qPochhammerInfIn_eq_zero_iff_exists_inv_pow},
-\nolinkurl{hasProdLocallyUniformly_qPochhammerInfIn},
-\nolinkurl{continuous_qPochhammerInfIn},
-\nolinkurl{pow_sq_mul_finiteQPochhammerIn_inv_pow_self},
-\nolinkurl{differentiable_qPochhammerInfIn},
-\nolinkurl{hasDerivAt_qPochhammerInfIn_of_mul_pow_eq_one},
-\nolinkurl{hasDerivAt_qPochhammerInfIn_inv_pow},
-\nolinkurl{deriv_qPochhammerInfIn_inv_pow_ne_zero},
-\nolinkurl{deriv_qPochhammerInfIn_ne_zero_of_mul_pow_eq_one}, and
-\nolinkurl{analyticOrderAt_qPochhammerInfIn_of_eq_zero}.
-The total definition needs only a topological commutative ring.  For
-\(\lVert q\rVert<1\), completeness, a commutative normed-ring structure, and
-\(\lVert1\rVert=1\) support the product, finite-prefix limit, shift and
-factor-removal laws, and positive-modulus infinite dissection; a
-multiplicative norm gives the raw zero equivalence \(aq^j=1\) and
-\((q;q)_\infty\ne0\).  In a complete normed field, \(q\ne0\) gives the
-inverse-power parametrization.  Local compactness gives locally uniform
-convergence and continuity in \(a\) for fixed \(q\).  Over
-\(\ComplexNumbers\), the symbol is entire and has the raw factor-zero
-derivative formula; under \(q\ne0\), the inverse-power derivative has the
-displayed closed form and is nonzero.  The module proves no joint-\(q\)
-holomorphy or global growth/order/type/asymptotic result.
+\nolinkurl{qPochhammerInfIn_eq_zero_iff}, and
+\nolinkurl{qPochhammerInfIn_self_ne_zero}.
+
+The unconditional normed-field support declarations are
+\nolinkurl{qPochhammerInfIn_eq_tprod_smul} and
+\nolinkurl{isBigO_one_sub_sub_one};
+\nolinkurl{summable_norm_pow_of_norm_lt_one} additionally assumes
+\(\lVert q\rVert<1\), while
+\nolinkurl{differentiable_finiteQPochhammerIn} needs only a nontrivially
+normed field.  A complete normed field, \(\lVert q\rVert<1\), and \(q\ne0\)
+give the reciprocal-power
+zero list in
+\nolinkurl{qPochhammerInfIn_eq_zero_iff_exists_inv_pow}; the same strict
+contraction together with local compactness is required by
+\nolinkurl{hasProdLocallyUniformly_qPochhammerInfIn} and
+\nolinkurl{continuous_qPochhammerInfIn}.  The purely algebraic identity
+\nolinkurl{pow_sq_mul_finiteQPochhammerIn_inv_pow_self} holds in every field
+with \(q\ne0\).
 
 \subsubsection{Latest q-series limit, triple-product, and polynomial tranche}
 
@@ -2235,8 +2387,8 @@ public definitions and exactly five public theorems:
 \nolinkurl{coeff_zero_gaussianBinomial_universal},
 \nolinkurl{gaussianBinomial_universal_reflect}, and
 \nolinkurl{coeff_gaussianBinomial_universal_symm}.  For \(k\le n\), the
-universal polynomial \(\nolinkurl{gaussianBinomial}
-(X:\NaturalNumbers[X])\,n\,k\) has exact natural degree \(k(n-k)\), is monic,
+universal polynomial \nolinkurl{gaussianBinomial}
+\((X:\NaturalNumbers[X])\,n\,k\) has exact natural degree \(k(n-k)\), is monic,
 has constant coefficient one, and is fixed by reflection in that degree.  If
 also \(d\le k(n-k)\), the last theorem identifies the coefficients in degrees
 \(d\) and \(k(n-k)-d\).  With the existing Gaussian symmetry and reciprocity
@@ -2244,7 +2396,7 @@ results this closes the canonical forward q-binomial structure theorem.  The
 adjacent general-semiring theorem \nolinkurl{coeff_gaussianBinomial_one}
 supplies the complete linear-coefficient classifier.
 
-The source-only \nolinkurl{CentralQBinomialReduction.lean} surface has no
+The \nolinkurl{CentralQBinomialReduction.lean} surface has no
 definitions and six theorems:
 \nolinkurl{finiteQPochhammerIn_mul_neg},
 \nolinkurl{finiteQPochhammerIn_two_mul},
@@ -2274,12 +2426,12 @@ domain, a primitive \(d\)-th root \(\zeta\) kills the interior coefficients
 \(\GaussianBinomial{d}{k}{\zeta}\); for \(d>0\), its top phase is \(-1\) and
 the complete block is \((y;\zeta)_d=1-y^d\).
 
-\nolinkurl{QLucas.lean} is 0+8:
-\nolinkurl{two_mul_choose_two}, \nolinkurl{add_mul_add_sub_one},
+\nolinkurl{QLucas.lean} is 0+7:
+\nolinkurl{add_mul_add_sub_one},
 \nolinkurl{choose_two_add}, \nolinkurl{coeff_finiteQPochhammerIn_neg_X},
 \nolinkurl{finiteQPochhammerIn_neg_X_block},
 \nolinkurl{coeff_block_pow_mul}, \nolinkurl{pow_choose_two_add_mul_eq}, and
-\nolinkurl{gaussianBinomial_q_lucas}.  Its natural quadratic, polynomial
+\nolinkurl{gaussianBinomial_q_lucas}.  Its two natural quadratic, polynomial
 coefficient, block, and phase identities prove
 \[
  \GaussianBinomial{ad+b}{rd+s}{\zeta}
@@ -2287,6 +2439,8 @@ coefficient, block, and phase identities prove
 \]
 when \(d>0\), \(\zeta\) is a primitive \(d\)-th root in a commutative integral
 domain, and \(b,s<d\).
+Its local \nolinkurl{two_mul_choose_two} helper is private; the unique public
+theorem of that name belongs to \nolinkurl{QChuVandermonde.lean}.
 
 \nolinkurl{CyclotomicDivisibility.lean} is 0+3:
 \nolinkurl{cyclotomic_exponent_eq_one_iff},
@@ -2306,7 +2460,7 @@ gives \(\GaussianBinomial{an}{bn}{\zeta}=\binom ab\) when \(n>0\).
 \nolinkurl{qInt_X_mul_qCatalan}, \nolinkurl{qCatalan_natDegree},
 \nolinkurl{qCatalan_eval_one_mul}, and \nolinkurl{qCatalan_eval_one}.
 The q-integer identities give \([n+1]_X\mid\GaussianBinomial{2n}{n}{X}\)
-over both \(\RationalNumbers[X]\) and \(\Integers[X]\); the integral quotient
+over both \(\RationalNumbers[X]\) and \(\IntegerNumbers[X]\); the integral quotient
 has degree \(n(n-1)\) and evaluates at one to the ordinary Catalan number.
 
 \nolinkurl{NewtonInterpolation.lean} is 3+19.  Its definitions are
@@ -2339,6 +2493,105 @@ q-beta integral by infinite products and q-Gamma and give symmetry,
 positivity, and both recurrences under the displayed positive-argument
 hypotheses.
 
+The zero-definition/fourteen-theorem
+\nolinkurl{GaussianBinomialPalindromic.lean} surface is
+\nolinkurl{reflect_add_of_natDegree_le}, \nolinkurl{reflect_one'},
+\nolinkurl{gaussianBinomial_natDegree_le},
+\nolinkurl{gaussianBinomial_zero_left}, \nolinkurl{gaussianBinomial_diag'},
+\nolinkurl{reflect_gaussianBinomial},
+\nolinkurl{coeff_gaussianBinomial_reflect},
+\nolinkurl{coeff_gaussianBinomial_zero},
+\nolinkurl{coeff_gaussianBinomial_top},
+\nolinkurl{gaussianBinomial_natDegree}, \nolinkurl{gaussianBinomial_monic},
+\nolinkurl{two_mul_derivative_gaussianBinomial_eval_one},
+\nolinkurl{coeff_gaussianBinomial_one_of_pos_of_lt}, and
+\nolinkurl{coeff_gaussianBinomial_one}.  All are over
+an arbitrary commutative semiring.  The Gaussian statements use \(k\le n\);
+coefficient reversal additionally bounds \(j\le k(n-k)\), while exact degree
+and monicity alone require a nontrivial coefficient semiring.  The last
+theorem is the division-free identity
+\(2G'_{n,k}(1)=k(n-k)\binom nk\).  The final two declarations identify the
+linear coefficient as one exactly for \(0<k<n\), and as zero otherwise,
+including the zero, diagonal, and above-row boundaries.  With row symmetry
+and reciprocity these results close the canonical forward structure theorem;
+no characteristic restriction, positivity, or unimodality claim is hidden in
+them.
+
+The three definitions \nolinkurl{qDeriv}, \nolinkurl{qExp}, and
+\nolinkurl{qExpBig}, together with the eight theorems
+\nolinkurl{qFactorial_mul_one_sub_pow}, \nolinkurl{qFactorial_ne_zero},
+\nolinkurl{qDeriv_mul}, \nolinkurl{hasSum_qExp},
+\nolinkurl{hasSum_qExpBig}, \nolinkurl{qExp_mul_qExpBig_neg},
+\nolinkurl{qDeriv_qExp}, and \nolinkurl{qDeriv_qExpBig}, are the exhaustive
+public surface of \nolinkurl{QExponential.lean}.  The factorial identity is
+purely algebraic over a commutative ring, and the product rule is total over a
+normed field.  The analytic statements use a complete normed field and
+\(\lVert q\rVert<1\): the small exponential series, reciprocal product, and
+its eigenfunction law require \(\lVert(1-q)x\rVert<1\) (with the displayed
+scaled argument in the eigenfunction theorem), whereas the big exponential
+series is global in \(x\).  Both q-derivative eigenfunction laws require
+\(x\ne0\); the big one needs no small-argument hypothesis.
+
+The one-definition/seven-theorem \nolinkurl{JacksonIntegral.lean} inventory
+is \nolinkurl{jacksonIntegral}, \nolinkurl{qDeriv_jacksonIntegral},
+\nolinkurl{one_sub_mul_pow_mul_qDeriv},
+\nolinkurl{tendsto_jackson_sum_qDeriv},
+\nolinkurl{jacksonIntegral_qDeriv},
+\nolinkurl{tendsto_jackson_sum_parts},
+\nolinkurl{jackson_parts_of_tendsto}, and
+\nolinkurl{jacksonIntegral_mul_qDeriv}.  It works over a complete normed
+field.  The first fundamental-theorem direction assumes exactly \(q\ne1\),
+\(x\ne0\), and summability of the defining series.  The telescoping identity
+itself is unconditional; the converse and integration-by-parts statements
+separate explicit convergence of partial sums from the stronger summable
+forms, and retain the boundary limit \(G(aq^n)\to l\) or
+\(f(aq^n)g(aq^n)\to l\) rather than silently replacing it by a zero limit.
+
+The definition \nolinkurl{bilateralTheta} and six theorems
+\nolinkurl{thetaExponent_add_one},
+\nolinkurl{pow_thetaExponent_add_one},
+\nolinkurl{hasSum_bilateralTheta}, \nolinkurl{bilateralTheta_eq_prod},
+\nolinkurl{bilateralTheta_mul_left}, and
+\nolinkurl{bilateralTheta_eq_zero_iff} form all of
+\nolinkurl{ThetaQuasiPeriodicity.lean}.  The integer exponent recurrence is
+unconditional and its power form requires only \(q\ne0\).  Over a complete
+normed field, the sum and product formulas assume \(\lVert q\rVert<1\) and
+\(z\ne0\); quasi-periodicity and the exact zero lattice
+\(z=-q^m\), \(m\in\mathbb Z\), additionally assume \(q\ne0\).
+The companion \nolinkurl{JacobiCubic.lean} has no definitions and exactly the
+two theorems \nolinkurl{two_mul_add_one_le_three_pow} and
+\nolinkurl{hasSum_jacobi_cubic}.  The former is an unconditional natural-number
+bound; the latter is the complex \texttt{HasSum} cubic identity under only
+\(\lVert q\rVert<1\), including \(q=0\).
+
+The zero-definition/ten-theorem
+\nolinkurl{QPochhammerLogDerivative.lean} surface is
+\nolinkurl{one_sub_le_norm_one_sub_mul_pow},
+\nolinkurl{summable_pow_div_one_sub_mul_pow},
+\nolinkurl{summable_log_one_sub_mul_pow},
+\nolinkurl{one_sub_mul_pow_ne_zero},
+\nolinkurl{qPochhammerInfIn_eq_cexp_tsum_log},
+\nolinkurl{hasDerivAt_tsum_log_one_sub_mul_pow},
+\nolinkurl{hasDerivAt_qPochhammerInfIn},
+\nolinkurl{hasDerivAt_lambert_series},
+\nolinkurl{tsum_neg_pow_div_one_sub_mul_pow_eq}, and
+\nolinkurl{hasDerivAt_qPochhammerInfIn_lambert}.  These are complex
+statements.  The norm lower bound permits \(\lVert q\rVert\le1\) and
+\(\lVert y\rVert<r\); logarithm summability holds for arbitrary \(a\) once
+\(\lVert q\rVert<1\).  Nonvanishing, the exponential-product formula, the
+reciprocal and Lambert sums, and the final derivative formulas restrict to
+\(\lVert a\rVert<1\).  The two termwise-differentiation theorems expose their
+working disc explicitly as \(\lVert a\rVert<r<1\).
+
+Finally, \nolinkurl{QPochhammerOrderDerivative.lean} has no definitions and
+exactly \nolinkurl{hasDerivAt_const_cpow'},
+\nolinkurl{hasDerivAt_qPochhammerInfIn_mul_cpow}, and
+\nolinkurl{hasDerivAt_qPochhammerC}.  The constant-base complex-power
+derivative requires \(q\ne0\).  The composite and order derivatives add
+\(\lVert q\rVert<1\) and \(\lVert a q^\alpha\rVert<1\); they assert local
+complex derivatives in \(\alpha\), not a boundary continuation at
+\(q=0\) or \(\lVert a q^\alpha\rVert=1\).
+
 Six further facade-reachable modules contribute exactly seventy public
 declarations.  The small-module inventories are exhaustive:
 \nolinkurl{GaussianBinomialContinuity.lean} has the three theorems
@@ -2353,7 +2606,7 @@ declarations.  The small-module inventories are exhaustive:
 \nolinkurl{QuantumBinomial.lean} has the two noncommutative theorems
 \nolinkurl{quantumPlane_mul_pow} and \nolinkurl{quantum_binomial}.
 
-The one-definition/twenty-two-theorem
+The one-definition/twenty-seven-theorem
 \nolinkurl{QBinomialTheoremInfinite.lean} surface is
 \nolinkurl{gaussianMajorant},
 \nolinkurl{hasSum_of_tendsto_of_dominated},
@@ -2372,12 +2625,57 @@ The one-definition/twenty-two-theorem
 \nolinkurl{gaussianMajorant_nonneg},
 \nolinkurl{norm_gaussianBinomial_le},
 \nolinkurl{tendsto_finiteQPochhammerIn_pow_atTop},
+\nolinkurl{norm_finiteQPochhammerIn_pow_sub_one_le_exp},
+\nolinkurl{isBigO_finiteQPochhammerIn_pow_sub_one},
 \nolinkurl{tendsto_gaussianBinomial_atTop},
+\nolinkurl{tendsto_gaussianBinomial_add_atTop},
+\nolinkurl{isBigO_gaussianBinomial_sub_inv},
+\nolinkurl{isBigO_gaussianBinomial_add_sub_inv},
 \nolinkurl{summable_pow_choose_two_mul_pow},
 \nolinkurl{hasSum_euler_product},
 \nolinkurl{qPochhammerInfIn_ne_zero_of_norm_lt_one},
 \nolinkurl{hasSum_qBinomial_theorem}, and
 \nolinkurl{hasSum_euler_reciprocal}.
+
+The subsequent zero-definition/ten-theorem
+\nolinkurl{GaussianBinomialFixedColumnRate.lean} surface is
+\nolinkurl{norm_finiteQPochhammerIn_pow_sub_one_le_exp},
+\nolinkurl{norm_finiteQPochhammerIn_pow_sub_one_le},
+\nolinkurl{norm_finiteQPochhammerIn_self_mul_gaussianBinomial_sub_one_le},
+\nolinkurl{norm_gaussianBinomial_sub_inv_finiteQPochhammerIn_le},
+\nolinkurl{norm_gaussianBinomial_add_sub_inv_finiteQPochhammerIn_le},
+\nolinkurl{tendsto_gaussianBinomial_add_atTop},
+\nolinkurl{gaussianBinomial_fixedColumn_relativeError_isBigO},
+\nolinkurl{gaussianBinomial_shifted_fixedColumn_relativeError_isBigO},
+\nolinkurl{gaussianBinomial_fixedColumn_error_isBigO}, and
+\nolinkurl{gaussianBinomial_shifted_fixedColumn_error_isBigO}.
+In a normed commutative ring with normalized multiplicative norm, the first
+two bound \(\lVert(q^m;q)_k-1\rVert\) by
+\(\exp(k\lVert q\rVert^m)-1\) and by
+\(k e^k\lVert q\rVert^m\); the third turns the latter into
+the denominator-free relative Gaussian bound for \(k\le n\), so roots of
+unity are still covered.  Over any normed field,
+\(\lVert q\rVert<1\) gives both
+nonasymptotic fixed/shifted additive errors, shifted convergence, and the four
+relative/additive \nolinkurl{IsBigO} bounds at \(q^{n-k+1}\) and
+\(q^{n+1}\).  No completeness or \(q\ne0\) assumption is present, and the
+constant is elementary rather than sharp.  With the existing
+\nolinkurl{tendsto_gaussianBinomial_atTop}, this proves all four clauses of
+\nolinkurl{thm:fixed-column-limit}; the relative pair is exactly the two
+multiplicative \(1+O(\cdot)\) claims.
+
+The zero-definition/two-theorem
+\nolinkurl{GaussianBinomialGreaterOneAsymptotics.lean} leaf consists of
+\nolinkurl{gaussianBinomial_gt_one_fixedColumn_relativeError_isBigO} and
+\nolinkurl{gaussianBinomial_gt_one_central_isEquivalent}.  For real \(q>1\)
+they prove the exact printed normalizations
+\((q^{-1};q^{-1})_kq^{-k(n-k)}{n\brack k}_q-1=
+O((q^{-1})^{n-k+1})\) and
+\({2m\brack m}_q\sim q^{m^2}(q^{-1};q^{-1})_\infty^{-1}\).
+Natural subtraction is total, while the existing
+\nolinkurl{gaussianBinomial_inv} is used only eventually for \(k\le n\).
+Thus \nolinkurl{cor:qgreaterone} is Exact; no shifted-central, non-real, or
+wider-nome result is claimed.
 
 The two-definition/twenty-five-theorem
 \nolinkurl{JacobiTripleProduct.lean} inventory is
@@ -2410,8 +2708,7 @@ Finally, \nolinkurl{RogersSzegoPolynomial.lean} has the definition
 \nolinkurl{summable_norm_pow_div_finiteQPochhammerIn_self},
 \nolinkurl{sum_antidiagonal_euler_mul_euler}, and
 \nolinkurl{hasSum_rogersSzego_generating}.  The six-module total is four
-definitions and sixty-five theorems.  This inventory records the source API;
-it does not assert a fresh aggregate build or source/PDF parity.
+definitions and seventy theorems, seventy-four declarations.
 
 The definition of \(F_q\), together with its monotonicity, range bounds, and
 measurability, is total in real \(q\).  If \(\lvert q\rvert<1\), then \(F_q\)
@@ -2802,6 +3099,41 @@ The positive-order spelling with \(m+1\) differences and mesh \(2^{-m}\) is
 These are all two definitions and eleven theorems in the module; it proves no
 analytic limit or differentiability statement.
 
+The companion \nolinkurl{ThueMorseCornerIntegral.lean} supplies precisely that
+local analytic step.  Its one public definition,
+\nolinkurl{centeredBoxIntegral}, recursively nests the intervals
+\([-a_i,a_i]\); its zero and successor equations are
+\nolinkurl{centeredBoxIntegral_zero} and
+\nolinkurl{centeredBoxIntegral_succ}.  If \(a_i\geq0\) for \(i<N\), \(I\) is
+open and order-connected, \(g\) is \nolinkurl{ContDiffOn} of order \(N\) on
+\(I\), and
+\[
+ [x-\sum_{i<N}a_i,\ x+\sum_{i<N}a_i]\subseteq I,
+\]
+then
+\[
+ \Delta^{\mathrm{sym}}_{a,\{0,\ldots,N-1\}}g(x)
+ =\mathcal B_{a,N}(g^{(N)};x).
+\]
+This is
+\nolinkurl{symmetricMixedDifference_range_eq_centeredBoxIntegral};
+\nolinkurl{symmetricMixedDifference_univ_eq_centeredBoxIntegral} is its
+\nolinkurl{Fin N}-indexed reindexing.  Those four theorems plus the definition
+are the exhaustive 1+4 public surface.
+
+The proof is an induction on \(N\).  Peeling the last symmetric difference
+reduces each Boolean-cube corner to an endpoint difference.  The full-segment
+containment and order-connectedness put every translated interval inside
+\(I\), so the local interval fundamental theorem of calculus replaces that
+difference by an integral of \(g'\).  Finite linearity moves the corner sum
+through the outer integral, and the induction hypothesis applies to \(g'\).
+Thus the theorem keeps the manuscript's local regularity rather than assuming
+global smoothness.  It includes zero half-steps and \(N=0\), strengthening the
+printed positive-step case, but does not cover arbitrary signed half-steps.
+Together with the algebraic module it makes
+\nolinkurl{thm:TM-corner} \emph{Exact/Complete}; the following Walsh probability
+corollary remains separate.
+
 \subsection{The finite q-Pochhammer infrastructure}
 \nolinkurl{HalfQBinomial.lean} develops exact q-binomial algebra at \(q=1/2\) over \(\RationalNumbers\).  The finite q-Pochhammer product is represented without analytic convergence issues:
 \[
@@ -2810,6 +3142,19 @@ analytic limit or differentiability statement.
 At \(q=1/2\), clearing powers of two turns many factors into Mersenne numbers.  This is why the Mersenne products introduced in \nolinkurl{Arithmetic.lean} reappear.
 
 The module defines a rational \nolinkurl{halfQBinomial} and proves its q-Pascal recurrence.  It then proves a finite q-binomial theorem by induction.  The induction step is not a black-box appeal to an imported polynomial theorem; it matches the precise normalization required downstream.  Summands are shifted and paired so the q-Pascal recurrence telescopes into the next product.
+
+The exhaustive zero-definition/one-theorem companion
+\nolinkurl{HalfQBinomialRootSimplicity.lean} supplies the missing multiplicity
+clause.  For every \(j<n\),
+\nolinkurl{halfQBinomial_sum_rootMultiplicity_two_pow} proves over
+\(\RationalNumbers\) that the coefficientwise half-base polynomial has root
+multiplicity one at \(2^j\).  Together with
+\nolinkurl{halfQBinomial_sum_eq_zero_iff} and
+\nolinkurl{gaussianBinomial_half_eq_halfQBinomial}, this makes the complete
+simple-root classification \nolinkurl{cor:halfbase-root-locus} Exact.  It
+makes no arbitrary-base, arbitrary-field, or general cyclotomic simplicity
+claim, and does not promote the probabilistic
+\nolinkurl{cor:qbinom-inversion-law}, which remains Partial.
 
 \nolinkurl{QBinomialCauchy.lean} supplies the denominator-free finite
 q-Cauchy layer over every commutative ring.  Its five public theorem names are
@@ -2821,6 +3166,45 @@ q-Cauchy layer over every commutative ring.  Its five public theorem names are
 \nolinkurl{qBernsteinBasis}.  All five theorems include degree zero,
 \(q=0\), roots of unity, positive characteristic, and zero divisors; none
 uses division, cancellation, or a nonvanishing hypothesis.
+
+\subsection{Finite moment functionals and affine Prouhet transport}
+\nolinkurl{FinitePolynomialFunctional.lean} has no public definitions and
+exactly sixteen public theorems:
+\leansubtwo{sum_weight_mul_eval}{_eq_sum_coeff_mul_moment},
+\leansubtwo{sum_weight_mul_eval}{_eq_eval}\texttt{\textsubscript{2}}\nolinkurl{_of_moments},
+\leansubtwo{sum_weight_mul_eval}{_eq_coeff_mul_moment},
+\leansubtwo{sum_weight_mul_eval}{_eq_topCoeff_mul_moment},
+\leansubtwo{sum_weight_mul_eval}{_eq_constantCoeff_mul_sum},
+\leansubtwo{sum_weight_mul_eval}{_eq_constantCoeff},
+\leansubtwo{sum_weight_mul_eval}{_eq_map_coeff_mul_of_moments},
+\leansubtwo{sum_weight_mul_eval}{_eq_map_coeff_mul_top_moment},
+\leansubtwo{sum_weight_mul_eval}{_eq_zero_of_degree_lt},
+\leansubtwo{sum_weight_mul_eval}{_congr_of_map_coeff_eq},
+\nolinkurl{sum_weight_mul_eval_eq_eval_of_moments},
+\nolinkurl{sum_weight_mul_eval_eq_coeff_mul_of_moments},
+\nolinkurl{sum_weight_mul_eval_eq_coeff_mul_top_moment},
+\nolinkurl{sum_weight_mul_eval_eq_zero_of_degree_lt},
+\nolinkurl{sum_weight_mul_eval_congr_of_coeff_eq}, and
+\nolinkurl{sum_weight_mul_eval_affine_of_topCoeff_extractor}.
+The scalar-extension results work from an arbitrary semiring into a
+commutative semiring; the same-ring results need only a commutative semiring.
+Expanding polynomial evaluation, interchanging the two finite sums, and
+substituting the prescribed monomial moments prove reproduction, selected
+coefficient extraction, strict-degree cancellation, and congruence.  Repeated
+nodes and a zero selected moment are allowed.
+
+The last theorem says that any same-ring functional extracting
+\([X^n]p\,c\) at nodes \(x_i\) extracts
+\[
+ b^n c[X^n]p
+\]
+after the affine replacement \(x_i\mapsto a+b x_i\).  Its proof applies the
+original extractor to \(p(a+bX)\) and computes the top coefficient; the
+zero-scale case is included, so neither \(b\ne0\) nor distinct transformed
+nodes is assumed.  Composing this transport with
+\nolinkurl{halfQBinomial_negativeDyadic_polynomial_sum_eq_mersenne} proves
+\nolinkurl{cor:geometric-prouhet-affine} exactly under the established
+\(\RationalNumbers[X]\) convention, including \(b=0\) and \(n=0\).
 
 \subsection{Why prove a specialized q-binomial theorem?}
 Mathlib contains general polynomial and combinatorial infrastructure, but a specialized theorem at \(q=1/2\) gives the repository:
@@ -3508,15 +3892,174 @@ forms are
 \nolinkurl{sum_weight_mul_scaled_geometric_pow_of_pos}.
 
 For a field, finite-node injectivity is used only to obtain those low moments
-from the geometric Lagrange row.  The four resulting declarations are
+from the geometric Lagrange row.  The five resulting declarations are
 \nolinkurl{sum_geometricLagrangeWeight_mul_pow_succ_add},
 \nolinkurl{sum_geometricLagrangeWeight_mul_pow_of_pos},
 \nolinkurl{sum_geometricLagrangeWeight_mul_scaled_geometric_pow_of_pos}, and
-\nolinkurl{sum_geometricLagrangeWeight_mul_shifted_pow_of_pos}.  In the final
+\nolinkurl{sum_geometricLagrangeWeight_mul_shifted_pow_of_pos}, together with
+\nolinkurl{sum_geometricLagrangeWeight_mul_eval_scaled_geometric}.  The last
+theorem says, for every polynomial \(P\) of natural degree at most \(p\),
+\[
+ \sum_{k=0}^{p}\lambda_{p,k}^{(q)}P(cq^k)=P(0),
+\]
+under injectivity of \(k\mapsto q^k\) on the finite node range.  Its scale
+\(c\) is arbitrary, including zero, so it subsumes the manuscript's
+\(c\ne0\) case.  Along with the scaled positive-moment theorem it makes
+\nolinkurl{cor:scaled-geometric-moments} Exact by composition.  In the shifted
 form the nodes are \(q^{start+k}\), and the exponent of \(q\) is exactly
-\(start\,m+\binom{p+1}{2}\).  These sixteen declarations are finite algebra:
+\(start\,m+\binom{p+1}{2}\).  These seventeen declarations are finite algebra:
 by themselves they assert no analytic Richardson remainder, convergence rate,
 or sign bound for a sampled function.
+
+\subsection{The recursive geometric-uniform moment polynomial}
+The source-only algebraic leaf
+\nolinkurl{GeometricUniformMomentPolynomial.lean} has one public definition,
+\nolinkurl{geometricUniformMomentPolynomial}, and exactly eight public
+theorems.  The base and residual-product recurrence are
+\nolinkurl{geometricUniformMomentPolynomial_zero} and
+\nolinkurl{geometricUniformMomentPolynomial_succ};
+\nolinkurl{geometricUniformMomentPolynomial_natDegree_le} proves the
+triangular bound, and
+\nolinkurl{geometricUniformMomentPolynomial_eval_zero} gives the reciprocal
+factorial value at zero.  The remaining four theorems,
+\nolinkurl{geometricUniformMomentPolynomial_one} through
+\nolinkurl{geometricUniformMomentPolynomial_four}, are the displayed small
+polynomials.  The finite residual product makes this recursively defined
+family meaningful at \(q=0\), \(q=1\), and roots of unity without a quotient.
+
+The companion
+\nolinkurl{GeometricUniformMomentPolynomialBridge.lean} has no public
+definitions and exactly one public theorem,
+\leansubtwo{geometricUniformMomentPolynomial_eval}{_eq_mgf_taylorCoefficient}.
+For every real \(q\) with \(\lvert q\rvert<1\) and every \(n\), it identifies
+the recursive polynomial with the finite-q-Pochhammer normalization of the
+\(n\)-th Taylor coefficient of the genuine geometric-uniform moment
+generating function.  This exhaustive \(0+1\) bridge makes
+\nolinkurl{p7:eq:Pn-def} Exact in the real contraction regime, including
+signed \(q\) and \(q=0\).
+
+The subsequent source-only leaf
+\nolinkurl{GeometricUniformComplexMomentProduct.lean} has the exhaustive
+public surface one definition,
+\nolinkurl{geometricUniformComplexMomentProduct}, and three theorems,
+\nolinkurl{hasProdLocallyUniformly_geometricUniformComplexMomentProduct},
+\nolinkurl{differentiable_geometricUniformComplexMomentProduct}, and
+\nolinkurl{geometricUniformMomentPolynomial_eval₂_eq_complexMomentProduct_taylorCoefficient}.
+For every complex \(q\) with \(\lVert q\rVert<1\), it constructs the actual
+infinite product, proves locally uniform convergence on the complex plane, and
+proves complex differentiability on the whole plane, then identifies the
+recursive polynomial with the finite-q-Pochhammer normalization of its
+\(n\)-th Taylor coefficient.  This is a complex analytic analogue, not
+a complex probability-moment extension of \nolinkurl{p7:eq:Pn-def}; that label
+remains Exact only in the stated real contraction regime.
+
+The next source-only leaf
+\nolinkurl{GeometricUniformExteriorComplexMomentGerm.lean} also has the
+exhaustive surface one definition,
+\nolinkurl{geometricUniformExteriorComplexMomentGerm}, and two theorems,
+\nolinkurl{analyticAt_geometricUniformExteriorComplexMomentGerm} and
+\leansubtwo{geometricUniformMomentPolynomial_eval}{_eq_exteriorComplexMomentGerm_taylorCoefficient}.
+For every complex \(q\) with \(1<\lVert q\rVert\), it defines the actual
+reciprocal germ \((\mathcal A_{q^{-1}}(-z))^{-1}\), proves analyticity at the
+origin, and identifies its normalized Taylor coefficient with the same
+recursive polynomial.  No boundary claim at \(\lVert q\rVert=1\) is made by
+this analytic leaf.
+
+The sharp-degree source-only leaf
+\nolinkurl{GeometricUniformMomentPolynomialDegree.lean} has no public
+definitions and exactly three public theorems:
+\nolinkurl{coeff_geometricUniformMomentPolynomial_choose_two},
+\nolinkurl{coeff_geometricUniformMomentPolynomial_choose_two_sub_one}, and
+\nolinkurl{geometricUniformMomentPolynomial_natDegree_eq}.  If
+\(T_n=\binom n2\), they give
+\([q^{T_n}]\mathcal P_n=B_n(1)/n!\),
+\([q^{T_n-1}]\mathcal P_n=-B_n(1)/n!+B_{n-1}(1)/(2(n-1)!)\) for
+\(n\geq2\), and exact degree \(T_n\) for even \(n\) or \(n=1\), versus
+\(T_n-1\) otherwise.  Lean writes \(B_n(1)\) as
+\nolinkurl{bernoulli' n}; equivalently it is \((-1)^nB_n\) for Mathlib's
+negative convention \(B_1=-1/2\).  Together with the algebraic and analytic
+leaves above, this makes \nolinkurl{p7:thm:Pn} Exact, and it makes the
+q-monograph proposition \nolinkurl{prop:qF-P-degree-sharp} Exact.
+
+The final rational-coefficient leaf
+\nolinkurl{GeometricUniformMomentRatFunc.lean} has one public definition,
+\nolinkurl{geometricUniformMomentRatFunc}, and exactly four public theorems:
+\nolinkurl{qFactorial_mul_geometricUniformMomentRatFunc},
+\nolinkurl{eval_geometricUniformMomentRatFunc_eq_complexMomentProduct_taylorCoefficient},
+\nolinkurl{eval_geometricUniformMomentRatFunc_eq_exteriorComplexMomentGerm_taylorCoefficient},
+and \nolinkurl{eval_geometricUniformMomentRatFunc_one}.  It defines the single
+rational coefficient \(a_n=\mathcal P_n/[n]_q!\), proves globally in
+\nolinkurl{RatFunc} that \([n]_X!a_n=\mathcal P_n\), and identifies its safe
+evaluations with the actual inner and exterior Taylor coefficients under
+\(\lVert q\rVert<1\) and \(1<\lVert q\rVert\).  At \(q=1\) it uses the
+continued polynomial identity \([n]_1!=n!\), not the literal totalized
+\((q;q)_n/(1-q)^n\), whose positive-degree scalar presentation is \(0/0\).
+Together with the preceding algebra, this exhaustive \(1+4\) surface makes
+the canonical q-monograph \nolinkurl{thm:qF-moment-polynomial} Exact.  It does
+not evaluate through genuine poles at nontrivial roots of unity or assert a
+unit-circle analytic continuation; the broader MGF, germ-uniqueness, and
+pole-divisor claims remain Partial at those boundaries.
+
+\subsection{Reciprocity of the inner and exterior moment germs}
+The source-only \nolinkurl{GeometricUniformMomentReciprocity.lean} leaf has
+exactly one public definition,
+\nolinkurl{geometricUniformComplexMomentGerm}, and five public theorems:
+\nolinkurl{geometricUniformComplexMomentGerm_of_norm_lt_one},
+\nolinkurl{geometricUniformComplexMomentGerm_of_one_lt_norm},
+\nolinkurl{analyticAt_geometricUniformComplexMomentGerm},
+\nolinkurl{geometricUniformComplexMomentGerm_reciprocity}, and
+\nolinkurl{geometricUniformComplexMomentGerm_moment_convolution}.
+The combined germ is the entire inner product when \(\lVert q\rVert<1\) and
+the exterior reciprocal germ when \(1<\lVert q\rVert\).  For
+\(q\ne0\) and \(\lVert q\rVert\ne1\), the reciprocity theorem states as an
+\nolinkurl{EventuallyEq} at zero that
+\[
+ M_q(z)M_{q^{-1}}(-z)=1.
+\]
+This filter-level conclusion is the precise Lean form of equality as analytic
+germs.  It is intentionally not a global pointwise identity: the relevant
+inner product is one at zero, so continuity makes it nonzero on a neighbourhood,
+but it can vanish farther away and Lean's inverse is total at those zeros.
+
+For the proof, if \(\lVert q\rVert<1\), then
+\(1<\lVert q^{-1}\rVert\) and the definition of the exterior branch rewrites
+\(M_{q^{-1}}(-z)\) as \(M_q(z)^{-1}\); continuity supplies the neighbourhood
+on which cancellation is legitimate.  If \(1<\lVert q\rVert\), apply the same
+argument to \(q^{-1}\) with the factors reversed.  Differentiating this local
+identity, applying Leibniz, and differentiating the negation map gives
+\[
+ \sum_{k=0}^{n}\binom nk(-1)^{n-k}
+ M_q^{(k)}(0)M_{q^{-1}}^{(n-k)}(0)=\delta_{n0}.
+\]
+These derivatives are the manuscript's \(d_n\), so the theorem and its
+coefficient form make \nolinkurl{thm:qF-reciprocity} Exact.  No claim is made
+at \(q=0\) or \(\lVert q\rVert=1\), on an explicit maximal disc, or about a
+global reciprocal identity, Mahler-germ uniqueness, or the exterior pole
+divisor.
+
+\subsection{Closed Rvachev survival and positive raw moments}
+The existing module \nolinkurl{ProbabilityLaplaceMoments.lean} now adds
+exactly two public theorems.  The first,
+\nolinkurl{weightedSumDistribution_real_Ici_eq_rvachevUp_of_nonneg}, states
+for every bounded Fabius solution and every \(t\geq0\) that
+\[
+ \operatorname{weightedSumDistribution}([t,\infty))=\RvachevUp(t).
+\]
+It obtains the closed ray from the existing strict-survival identity using
+the proved nullity of every singleton.  Together with the global reflection
+identity and the nonnegative-ray formula \(\RvachevUp(t)=1-F(t)\), this makes
+the q-monograph label \nolinkurl{prop:up-tail} Exact with its literal
+\(\Probability(X\geq t)\) convention.  The second theorem,
+\nolinkurl{integral_pow_weightedSumDistribution_eq_mul_intervalIntegral_rvachevUp},
+states for every natural \(n\geq1\) that
+\[
+ \int_{\RealNumbers}x^n\,\Differential\mu_X(x)
+ =n\int_0^1t^{n-1}\RvachevUp(t)\,\Differential t.
+\]
+It is the exact full-law expectation in \nolinkurl{cor:up-moments}.  The
+restriction \(n\geq1\) is essential: at \(n=0\) the left side is one and the
+displayed right side is zero.  Neither theorem adds a fractional-, complex-,
+or general-q moment statement.
 
 \subsection{Fixed-order phase-locked Lambert extraction}
 The later current-tree phase-extraction tranche supplies the analytic layer
@@ -3862,6 +4405,58 @@ The formal proof represents the finite span either as a submodule of \(L^2\)-typ
 \(\lVert S_N^{\mathrm{even}}-p\rVert_2=0\), hence equality almost everywhere;
 polynomial continuity upgrades this to pointwise polynomial equality.
 
+\subsection{Central cancellation in the finite even-mode synthesis}
+The existing Legendre translate synthesis has the exact mesh \(M=4^n\) for
+the even mode.  Evaluating it at zero gives the representation-frontier
+corollary
+\[
+ Q_{2n}(0)+2\sum_{0<k<M}Q_{2n}(k/M)\RvachevUp(k/M)
+ =(-1)^n\binom{2n}{n}.
+\]
+\nolinkurl{RvachevLegendreCentralSum.lean} has no public definitions and
+exactly three public theorems:
+\nolinkurl{eval_legendrePolynomial_even_zero},
+\nolinkurl{eval_rvachevLegendreDeconvolutionPolynomial_even}, and
+\nolinkurl{rvachevLegendreCentralSum}.  The last quantifies over every
+\nolinkurl{F : BoundedFabius} satisfying \nolinkurl{IsFabius F} and includes
+\(n=0\).
+
+The proof starts from the finite synthesis block \(-2M<k<2M\).  Compact
+support removes the terms with \(M\leq |k|<2M\).  The second theorem makes the
+deconvolved even mode even; evenness of \(\RvachevUp\) then pairs \(k\) with
+\(-k\), and the central term uses \(\RvachevUp(0)=1\).  Clearing \(M=4^n\)
+and applying the first theorem,
+\(P_{2n}(0)=(-1)^n4^{-n}\binom{2n}{n}\), proves the formula.  Thus
+\nolinkurl{cor:leg-central-sum} is \emph{Exact/Complete}.  This result does not
+add a Jacobi closed form, all-degree decoder parity or rationality, reverse
+spectral closure, mesh minimality, or a larger Lagrange right inverse.
+
+\subsection{Finite Legendre--Rvachev biorthogonality}
+The subsequent exhaustive one-definition/one-theorem leaf
+\nolinkurl{RvachevLegendreBiorthogonality.lean} defines
+\nolinkurl{rvachevLegendreAnalysisKernel} by
+\[
+ \Lambda_m(c)=\frac{2m+1}{2}\int_{-1}^{1}
+ \RvachevUp(x-c)P_m(x)\Differential x
+\]
+and proves \nolinkurl{rvachevLegendreBiorthogonality}.  Thus
+\nolinkurl{def:leg-Lambda} is Exact.  For every
+\nolinkurl{F : BoundedFabius} satisfying \nolinkurl{IsFabius F}, natural
+\(M\ne0\), arbitrary \(\ell,m\), and
+\(\ell\leq\TwoAdicValuation(M)\), its literal open-block identity is
+\[
+ \frac1M\sum_{-2M<k<2M}Q_\ell^-(k/M)\Lambda_m(k/M)=\delta_{m\ell}.
+\]
+There is no restriction on the analysis degree \(m\).  The proof inserts the
+degree-\(\ell\) finite synthesis on \([-1,1]\), commutes its finite sum with
+the normalized Legendre integral, and applies orthogonality.  Hence
+\nolinkurl{thm:leg-biorthogonality} is \emph{Exact/Complete}, including
+degree zero.  The larger \nolinkurl{thm:leg-Lambda} support, smoothness,
+parity, origin-value, and Fourier--Bessel claims remain Partial, and
+\nolinkurl{cor:leg-biorthogonal-matrices} remains Partial: the reverse
+projector, its rank and trace, and Cauchy--Binet are not formalized, and the
+leaf proves no dyadic rationality theorem for \(\Lambda_m\).
+
 The later module \nolinkurl{FabiusLegendreEnergy.lean} closes the coefficient
 energy side of the same expansion.  It defines the polynomial-form blocks
 \(B_n=u_nP_{2n}\) and proves their complete orthogonality, including the
@@ -4108,10 +4703,11 @@ infinite-series result.
 
 \begin{boxedremark}\textbf{Source/PDF parity convention.}\space
 This source contains the exhaustive two-definition, twenty-eight-theorem closed-form
-inventory and the expanded formula-and-proof ledger in this subsubsection.  Source/PDF
-parity is certified only by the repository metadata for a successful final-source build
-of this exact TeX checkpoint; the page count, checksum, and validation facts in that
-build receipt are authoritative.
+inventory and the expanded formula-and-proof ledger in this subsubsection.  The
+external repository metadata certifies only its named historical source/PDF
+checkpoint; this merged source postdates that receipt, and a fresh uninterrupted
+three-pass Libertinus parity rebuild remains pending.  Repository checksum ledgers
+have been abolished.
 \end{boxedremark}
 
 The limitations just stated remain exact descriptions of the two predecessor modules.
@@ -4187,7 +4783,7 @@ The separately named half-sum theorem says that, under the explicit hypotheses
 Those dominance hypotheses matter because all indices and subtractions in the Lean
 statement are natural-number operations.
 
-For \(G^{\RationalNumbers}_{ijk}=\mathtt{legendreGauntRat}(i,j,k)\), the public
+For \(G^{\RationalNumbers}_{ijk}=\text{\ttfamily legendreGauntRat}(i,j,k)\), the public
 boundary formulas are
 \[
  G^{\RationalNumbers}_{i,j,i+j}
@@ -4201,13 +4797,13 @@ boundary formulas are
 The identification is global, not merely a necessary support statement:
 \[
  G^{\RationalNumbers}_{ijk}=2W^2_{ijk},\qquad
- \mathtt{legendreGaunt}(i,j,k)=2(W^2_{ijk}:\RealNumbers).
+ \text{\ttfamily legendreGaunt}(i,j,k)=2(W^2_{ijk}:\RealNumbers).
 \]
 For each of \(W^2_{ijk}\), \(G^{\RationalNumbers}_{ijk}\), and the real Gaunt integral,
 the API separately proves positivity exactly on \(\mathsf A\), zero exactly off
 \(\mathsf A\), and global nonnegativity.  Finally,
 \[
- \mathtt{legendreProductLinearizationCoeffRat}(i,j,k)
+ \text{\ttfamily legendreProductLinearizationCoeffRat}(i,j,k)
  =(2k+1)W^2_{ijk},
 \]
 and that coefficient is positive exactly on \(\mathsf A(i,j,k)\).
@@ -4260,19 +4856,19 @@ The first two are unconditional rational identities:
 \]
 first for \nolinkurl{rvachevLegendreGramEntryRat} and then entrywise for
 \nolinkurl{rvachevLegendreGramMatrixRat}.  The third requires
-\(F:\mathtt{BoundedFabius}\) and \(h_F:\mathtt{IsFabius\ F}\), and for
+\(F:\text{\ttfamily BoundedFabius}\) and \(h_F:\text{\ttfamily IsFabius}\ F\), and for
 \(i,j:\operatorname{Fin}n\) states
 \[
  \begin{aligned}
- \mathtt{upLegendreGramMatrix}(F,n,i,j)
- &=2\sum_{r=0}^{\Floor{((i:\NaturalNumbers)+(j:\NaturalNumbers))/2}}
-   \mathtt{rvachevLegendreCoefficient}(F,r)\\
+ &\text{\ttfamily upLegendreGramMatrix}(F,n,i,j)\\
+ &\quad=2\sum_{r=0}^{\Floor{((i:\NaturalNumbers)+(j:\NaturalNumbers))/2}}
+   \text{\ttfamily rvachevLegendreCoefficient}(F,r)\\
  &\qquad{}\times
    \left(W^2_{(i:\NaturalNumbers),(j:\NaturalNumbers),2r}:\RealNumbers\right).
  \end{aligned}
 \]
 All three sums are finite, with Lean's actual index set
-\(\mathtt{range}(\Floor{(i+j)/2}+1)\).  Their proofs simply substitute the global
+\(\text{\ttfamily range}(\Floor{(i+j)/2}+1)\).  Their proofs simply substitute the global
 Gaunt identity into the three predecessor sums and move the scalar \(2\) outside.
 
 The boundary of this API is deliberate and exact.  It defines only a total rational
@@ -4426,6 +5022,213 @@ its right, and zero exactly there.  Consequently
 \([-2e^{-2},0)\).  These are regular-interior derivative results plus shape
 theorems that include the finite branch point and shared inflection endpoint;
 the lower domain remains open at zero.
+
+\subsubsection{A global coordinate for the branch pair}
+The two branches on their common open domain admit a more economical
+description than two unrelated inverse functions.  For
+\(-\exp(-1)<x<0\), define
+\[
+ a=W_0(x),\qquad b=W_{-1}(x),\qquad
+ \delta=a-b>0.
+\]
+The exact forward identities are
+\begin{align*}
+ a&=-\frac{\delta}{\exp(\delta)-1},&
+ b&=-\frac{\delta\exp(\delta)}{\exp(\delta)-1}
+    =-\frac{\delta}{1-\exp(-\delta)},\\
+ x&=-\frac{\delta}{\exp(\delta)-1}
+       \exp\!\left(-\frac{\delta}{\exp(\delta)-1}\right).
+\end{align*}
+They come from one cancellation.  Since
+\(a\exp(a)=b\exp(b)=x\) and \(a,b\ne0\), division gives
+\(b/a=\exp(a-b)=\exp(\delta)\).  Thus
+\(b=a\exp(\delta)\) and
+\(\delta=a-b=a(1-\exp(\delta))\), which yields the first two formulas;
+the defining equation yields the third.
+
+The converse is just as explicit.  For \(\delta>0\), define
+\[
+ A(\delta)=-\frac{\delta}{\exp(\delta)-1},\quad
+ B(\delta)=-\frac{\delta\exp(\delta)}{\exp(\delta)-1},\quad
+ X(\delta)=A(\delta)\exp(A(\delta)).
+\]
+The strict exponential tangent inequalities give
+\(-1<A(\delta)<0\) and \(B(\delta)<-1\).  Direct algebra gives
+\(B=A-\delta\) and \(B\exp(B)=A\exp(A)\), so branch uniqueness proves
+\(W_0(X(\delta))=A(\delta)\),
+\(W_{-1}(X(\delta))=B(\delta)\), and
+\(W_0(X(\delta))-W_{-1}(X(\delta))=\delta\).  Conversely,
+substituting the gap of \(x\) into \(X\) returns \(x\).  Hence the branch-gap
+map is a bijection
+\[
+ (-\exp(-1),0)\longleftrightarrow(0,\infty).
+\]
+With \(t=\exp(\delta)>1\), the inverse coordinate becomes
+\[
+ W_0=-\frac{\log t}{t-1},\qquad
+ W_{-1}=-\frac{t\log t}{t-1},\qquad
+ x=-\frac{\log t}{t-1}\,t^{-1/(t-1)}.
+\]
+
+Adding, multiplying, and dividing the paired formulas gives
+\[
+ \frac{W_{-1}(x)}{W_0(x)}=\exp(\delta),\qquad
+ W_0(x)+W_{-1}(x)=-\delta\coth(\delta/2),\qquad
+ W_0(x)W_{-1}(x)=\frac{\delta^2}{4\sinh^2(\delta/2)}.
+\]
+For \(y>0\), the inequalities \(\sinh y>y\) and
+\(y\coth y>1\) prove the strict consequences
+\[
+ W_0(x)+W_{-1}(x)<-2,
+ \qquad 0<W_0(x)W_{-1}(x)<1.
+\]
+
+The Lean layering follows the proof rather than merging all of this into one
+opaque theorem.  \nolinkurl{LambertWBranchPairing.lean} has no definitions
+and exactly seven theorems:
+\nolinkurl{principalLambertW_sub_lowerLambertW_pos},
+\nolinkurl{lowerLambertW_eq_principalLambertW_mul_exp_gap},
+\nolinkurl{principalLambertW_eq_neg_gap_div},
+\nolinkurl{lowerLambertW_eq_neg_gap_mul_exp_div},
+\nolinkurl{lowerLambertW_eq_neg_gap_div_one_sub_exp_neg},
+\nolinkurl{eq_neg_gap_div_mul_exp}, and
+\nolinkurl{principalLambertW_lowerLambertW_eq_of_exp_gap}.
+\nolinkurl{LambertWGapBijection.lean} has the four definitions
+\nolinkurl{gapPrincipal}, \nolinkurl{gapLower}, \nolinkurl{gapArg}, and
+\nolinkurl{branchGap}, followed by exactly sixteen theorems:
+\nolinkurl{gap_denominator_pos}, \nolinkurl{gapPrincipal_mem_Ioo},
+\nolinkurl{gapLower_eq_mul_exp}, \nolinkurl{gapLower_eq_sub},
+\nolinkurl{gapLower_lt_neg_one}, \nolinkurl{gapLower_mul_exp},
+\nolinkurl{gapArg_mem_Ioo}, \nolinkurl{principalLambertW_gapArg},
+\nolinkurl{lowerLambertW_gapArg}, \nolinkurl{branchGap_gapArg},
+\nolinkurl{gapArg_branchGap}, \nolinkurl{branchGap_invOn},
+\nolinkurl{branchGap_bijOn}, \nolinkurl{principalLambertW_gapArg_log},
+\nolinkurl{lowerLambertW_gapArg_log}, and \nolinkurl{gapArg_log}.
+The zero-definition/nine-theorem
+\nolinkurl{LambertWBranchSymmetry.lean} surface is
+\nolinkurl{lowerLambertW_div_principalLambertW_eq_exp_branchGap},
+\nolinkurl{principalLambertW_add_lowerLambertW_eq_exp_branchGap},
+\nolinkurl{principalLambertW_add_lowerLambertW_eq_cosh_div_sinh_branchGap},
+\nolinkurl{principalLambertW_mul_lowerLambertW_eq_exp_branchGap},
+\nolinkurl{principalLambertW_mul_lowerLambertW_eq_sinh_sq_branchGap},
+\nolinkurl{principalLambertW_add_lowerLambertW_lt_neg_two},
+\nolinkurl{principalLambertW_mul_lowerLambertW_pos},
+\nolinkurl{principalLambertW_mul_lowerLambertW_lt_one}, and
+\nolinkurl{principalLambertW_mul_lowerLambertW_mem_Ioo}.
+
+The openness of both intervals is substantive.  At the finite branch point
+the gap is zero, the rational formulas have a zero denominator, and their
+limiting sum and product are \(-2\) and \(1\), so the strict inequalities do
+not extend there.  At zero the classical lower branch is singular; the
+theorems make no assertion about its all-real totalization.
+
+The separate leaf
+\nolinkurl{LambertWBranchGapBernoulli.lean} has no definitions and exactly
+five theorems:
+\nolinkurl{summable_norm_bernoulli_mul_pow_div_factorial},
+\nolinkurl{summable_bernoulli_mul_pow_div_factorial_iff},
+\nolinkurl{hasSum_bernoulli_mul_pow_div_factorial},
+\nolinkurl{hasSum_bernoulli_mul_pow_div_factorial_complex_iff}, and
+\nolinkurl{principalLambertW_lowerLambertW_eq_bernoulliSeries}.
+They prove absolute summability of
+\(\sum_{n\geq0}B_nz^n/n!\) for real \(z\) with \(\lvert z\rvert<2\pi\), its
+exact complex convergence locus
+\[
+ \sum_{n\geq0}B_nw^n/n!\text{ is summable}
+ \quad\Longleftrightarrow\quad \lvert w\rvert<2\pi,
+\]
+its actual real \nolinkurl{HasSum} value \(z/(\exp z-1)\) when \(z\ne0\),
+its actual complex \nolinkurl{HasSum} value
+\nolinkurl{complexExpm1Div}\((w)^{-1}\) throughout that disk, and, on
+\(-e^{-1}<x<0\) with \(0<\delta<2\pi\),
+\[
+ W_0(x)=-\sum_{n\geq0}B_n\frac{\delta^n}{n!},\qquad
+ W_{-1}(x)=-\delta-\sum_{n\geq0}B_n\frac{\delta^n}{n!}.
+\]
+Together with the preceding three finite branch-coordinate modules, this is
+an exhaustive four-module surface of four definitions and thirty-seven
+theorems, forty-one public declarations in all.
+
+The analytic proof is explicit.  Put
+\[
+ q=\frac{\lvert z\rvert}{2\pi}<1,\qquad
+ c_r=\frac{B_{2(r+1)}}{2(r+1)(2(r+1))!}.
+\]
+The even-zeta majorant from \nolinkurl{BasicBernoulliLog.lean} gives
+\[
+ \lvert c_rz^{2(r+1)}\rvert
+ \le\frac{\pi^2}{6}q^{2(r+1)}.
+\]
+The odd Bernoulli numbers beyond \(B_1\) vanish, and an even EGF term is
+\(2(r+1)c_rz^{2(r+1)}\).  Hence, for every \(n\ge2\),
+\[
+ \left\lvert\frac{B_nz^n}{n!}\right\rvert
+ \le n\frac{\pi^2}{6}q^n.
+\]
+Comparison with the convergent series \(\sum n q^n\), plus the two initial
+terms, proves absolute summability.
+
+For complex \(w\), sufficiency follows from the same comparison because each
+term norm depends only on \(\lvert w\rvert\).  For necessity, put
+\[
+ Z_{r+1}=\sum_{m=1}^{\infty}m^{-2(r+1)}\ge1.
+\]
+The exact even-Bernoulli identity used by the Lean proof is
+\[
+ \left\lvert
+   \frac{B_{2(r+1)}w^{2(r+1)}}{(2(r+1))!}
+ \right\rvert
+ =2Z_{r+1}
+  \left(\frac{\lvert w\rvert}{2\pi}\right)^{2(r+1)}.
+\]
+When \(\lvert w\rvert\ge2\pi\), every displayed even-index term norm is at
+least \(2\), so the terms fail to tend to zero.  Hence the complex series is
+summable exactly inside the disk and diverges at every boundary or exterior
+point.
+
+For evaluation set
+\[
+ f_n=\frac{B_nz^n}{n!},\qquad
+ g_n=\frac{z^n}{n!}-\IndicatorOf{\{n=0\}}.
+\]
+Both sequences are absolutely summable: this was just proved for \(f\), while
+for \(g\) it follows from absolute summability of the exponential series and
+the finite-support correction.  Its sum is \(\exp z-1\).  The formal identity
+\[
+ \left(\sum_{n\ge0}\frac{B_n}{n!}X^n\right)(\exp X-1)=X
+\]
+says, after multiplying the coefficient of degree \(n\) by \(z^n\), that
+\[
+ \sum_{i+j=n}f_i g_j=
+ \begin{cases}z,&n=1,\\0,&n\ne1.\end{cases}
+\]
+The absolutely convergent Cauchy-product theorem therefore yields, over
+\(\ComplexNumbers\),
+\[
+ \left(\sum_{n\ge0}f_n\right)(\exp z-1)=z.
+\]
+If \(z\ne0\), this identity itself forces \(\exp z-1\ne0\), and division
+proves the complex quotient evaluation.  At \(z=0\), the series reduces to
+its constant term \(B_0=1\).  The definition
+\nolinkurl{complexExpm1Div} records exactly these two cases: it is
+\((\exp z-1)/z\) away from zero and \(1\) at zero, so its inverse is the
+canonical removable value of the Bernoulli EGF.  The theorem
+\nolinkurl{hasSum_bernoulli_mul_pow_div_factorial_complex_iff} packages this
+actual value together with the exact open-disk criterion.  For the branch
+wrapper, positivity of \(\delta\) turns \(\delta<2\pi\) into
+\(\lvert\delta\rvert<2\pi\); substituting the EGF in
+\(W_0=-\delta/(\exp\delta-1)\) and then using \(W_{-1}=W_0-\delta\) proves the
+paired series.
+
+The last theorem is the exact Lean crosswalk for the compact
+\nolinkurl{eq:pair-Bernoulli-general} in the retained Lambert guide, and the
+complex \nolinkurl{HasSum} equivalence makes the radius-\(2\pi\), boundary
+divergence, and canonical-removable reading of
+\nolinkurl{eq:bernoulli-gen} Exact.  This does not assert the false literal
+totalized quotient at the origin---where Lean evaluates
+\(0/(\exp 0-1)\) as zero---or holomorphy of a named sum function.  No other
+label in the surrounding corollary is promoted, and higher or convergent
+Puiseux/logarithmic expansions remain open.
 
 The next two raw-branch leaves resolve the formerly open branch-point
 geometry.  Write
@@ -5308,7 +6111,8 @@ The declaration named after a source theorem is normally the best citation targe
 
 \section{Mathematical object--Lean crosswalk}\label{app:crosswalk}
 
-\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.25\textwidth} >{\raggedright\arraybackslash}p{0.33\textwidth} >{\raggedright\arraybackslash}p{0.34\textwidth}@{}}
+\footnotesize
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.23\textwidth} >{\raggedright\arraybackslash}p{0.33\textwidth} >{\raggedright\arraybackslash}p{0.36\textwidth}@{}}
 \toprule
 Mathematical object & Principal Lean name & Defining or identifying module \\
 \midrule
@@ -5317,6 +6121,9 @@ Mathematical object & Principal Lean name & Defining or identifying module \\
 Mathematical object & Principal Lean name & Defining or identifying module \\
 \midrule
 \endhead
+Half-base Gaussian root locus & \nolinkurl{halfQBinomial_sum_rootMultiplicity_two_pow}, composed with \nolinkurl{halfQBinomial_sum_eq_zero_iff} and \nolinkurl{gaussianBinomial_half_eq_halfQBinomial} & Exhaustive zero-definition/one-theorem \nolinkurl{HalfQBinomialRootSimplicity.lean} surface.  Over \(\RationalNumbers\), every classified root \(2^j\), \(j<n\), has multiplicity one; composition gives exactly the rational roots \(1,2,\ldots,2^{n-1}\), no others, all simple, and makes \nolinkurl{cor:halfbase-root-locus} Exact.  The derivative proof deletes the unique vanishing finite-product factor.  No arbitrary-characteristic simplicity or arbitrary-base root classification is claimed. \\
+Leading Laurent coefficient of the reciprocal centered Rvachev MGF & Definition \nolinkurl{rvachevCenteredMGF}; theorems \nolinkurl{rvachevCenteredMGF_eq_rvachevFourierProduct}, \nolinkurl{rvachevCenteredMGF_pi_mul_I_int}, \nolinkurl{rvachevCenteredMGF_pi_mul_I_int_ne_zero_of_odd}, \nolinkurl{tendsto_sub_pow_mul_inv_rvachevFourierProduct_int}, \nolinkurl{tendsto_rvachevCenteredMGF_laurent_int}, \nolinkurl{tendsto_rvachevCenteredMGF_laurent_two_pow_mul_odd} & Exhaustive one-definition/six-theorem \nolinkurl{RvachevLaurentLeading.lean} surface.  It normalizes \(M(t)\) as the existing centered generating function at \(2t\), proves \(M(t)=\Phi(\mathrm i t/(2\pi))\), and transports the exact integer-zero cofactor limit.  For \(n=2^v u\), \(u\) odd, the pole at \(T_n=2\pi\mathrm i n\) has leading coefficient \(-T_n^{v+1}/M(\pi\mathrm i u)\), with nonzero denominator.  All limits use \(\mathcal N[\ne]\), because inverse is totalized at the pole.  This makes \nolinkurl{is:p2:thm:Laurent-leading} Exact but adds no lower Laurent coefficients or pole-shell/Appell asymptotics. \\
+Finite dyadic Appell prefixes and exact recovery & Definitions \nolinkurl{unitUniformRawMomentRat}, \nolinkurl{centeredUnitUniformRawMomentRat}, \nolinkurl{dyadicPrefixScaleRat}, \nolinkurl{dyadicPrefixMomentRat}, \nolinkurl{uncenteredDyadicPrefixMomentRat}, \nolinkurl{centeredDyadicPrefixMomentRat}, \nolinkurl{kabayaIriAppellPolynomialRat}, \nolinkurl{uncenteredDyadicPrefixAppellPolynomialRat}, \nolinkurl{centeredDyadicPrefixAppellPolynomialRat}, \nolinkurl{uncenteredDyadicPrefixAppellScalePolynomialRat}, \nolinkurl{centeredDyadicPrefixAppellScalePolynomialRat}; theorems \nolinkurl{Appell.poly_binomialConv}, \nolinkurl{Appell.binomialConv_dilate}, \nolinkurl{Appell.dilate_dilate}, \nolinkurl{dyadicPrefixMomentRat_zero}, \nolinkurl{uncenteredDyadicPrefixMomentRat_zero}, \nolinkurl{centeredDyadicPrefixMomentRat_zero}, \nolinkurl{dyadicPrefixMomentRat_binomialConv_tail}, \nolinkurl{binomialConv_uncenteredDyadicPrefixMomentRat_tail}, \nolinkurl{binomialConv_centeredDyadicPrefixMomentRat_tail}, \nolinkurl{uncenteredDyadicPrefixAppellPolynomialRat_eq_sum}, \nolinkurl{centeredDyadicPrefixAppellPolynomialRat_eq_sum_even}, \nolinkurl{uncenteredDyadicPrefixAppellPolynomialRat_eq_eval_scale}, \nolinkurl{centeredDyadicPrefixAppellPolynomialRat_eq_eval_scale}, \nolinkurl{natDegree_uncenteredDyadicPrefixAppellScalePolynomialRat}, \nolinkurl{natDegree_centeredDyadicPrefixAppellScalePolynomialRat}, \nolinkurl{kabayaIriAppellPolynomialRat_eq_sum_prefix}, \nolinkurl{rvachevAppellPolynomialRat_eq_sum_prefix} & Exhaustive eleven-definition/seventeen-theorem \nolinkurl{FinitePrefixAppellRecovery.lean} surface.  Finite digit-moment convolution and reciprocal uniqueness give the exact uncentered \(2^{-N}\) and centered even \(4^{-N}\) expansions.  Their outer degrees in \(\operatorname{Polynomial}(\operatorname{Polynomial}\RationalNumbers)\) are \(n\) and \(\Floor{n/2}\); fixing the inner point can lower that degree, notably in centered odd degree at \(x=0\).  Geometric Lagrange evaluation recovers the full uncentered polynomial from any \(n+1\) consecutive prefixes and the centered polynomial from any \(\Floor{n/2}+1\), without a limit.  Thus \nolinkurl{is:p2:thm:finite-prefix-expansion} and \nolinkurl{is:p2:thm:exact-recovery} are Exact.  This is rational coefficient algebra, not analytic MGF convergence. \\
 Abstract bounded Fabius specification & \nolinkurl{IsFabius} & \nolinkurl{Basic.lean} \\
 Canonical bounded function \(F\) & \nolinkurl{fabius}, \nolinkurl{fabius_spec} & chosen in \nolinkurl{PaperStatements.lean}; existence and uniqueness proved in \nolinkurl{Existence.lean} \\
 Rvachev up-function \(\RvachevUp\) & \nolinkurl{rvachevUp} & \nolinkurl{Basic.lean}; analytic properties in \nolinkurl{Differential.lean} and later shape modules \\
@@ -5326,8 +6133,11 @@ Exact Fabius primitive ladders & \nolinkurl{normalizedVolterra_extendedFabius}, 
 Fractional Volterra operator and order calculus & \nolinkurl{fractionalVolterra}, \nolinkurl{fractionalVolterra_add}, \nolinkurl{fractionalVolterra_affine}, \nolinkurl{fractionalVolterra_add_one_deriv} & \nolinkurl{FractionalVolterra.lean}, \nolinkurl{FractionalVolterraSemigroup.lean}, and \nolinkurl{FractionalVolterraCalculus.lean} \\
 Fractional Fabius--Rvachev shifts & \nolinkurl{fractionalVolterra_add_one_extendedFabius_of_nonneg}, \nolinkurl{fractionalVolterra_add_one_fabiusReal}, \nolinkurl{fractionalVolterra_add_one_rvachevUp} & \nolinkurl{FabiusFractionalVolterra.lean} \\
 Pointwise analytic finite filters & \nolinkurl{finiteAnalyticSeriesFilter}, \nolinkurl{geometricAnalyticSeriesFilter}, \nolinkurl{geometricLagrangeAnalyticSeriesFilter_shifted} & unconditional diagonal, exact-head/tail, and Gaussian-residual identities in \nolinkurl{AnalyticSeriesFilter.lean} \\
-Rvachev Appell deconvolution, arbitrary-phase reproduction, and parity-selected superconvergence & \nolinkurl{integral_eval_rvachevDeconvolvedPolynomial_sub_mul_rvachev}, \nolinkurl{integral_eval_rvachevAppellPolynomial_sub_mul_rvachev}, \nolinkurl{integral_eval_rvachevAppellPolynomial_mul_rvachev_eq_zero}, \nolinkurl{normalized_tsum_shifted_rvachevDeconvolvedPolynomial_mul_rvachevUp}, and the exact one-definition/eight-theorem \nolinkurl{RvachevSuperconvergentSynthesis.lean} API & The first three belong to the exact six-definition/thirty-three-theorem surface of \nolinkurl{RvachevMomentAppell.lean}: evenness converts additive smoothing into centered \(x-y\) convolution for every deconvolved polynomial and every Appell monomial, and every positive-degree Appell polynomial has Rvachev mean zero.  The fourth is the fifth theorem of the zero-definition/five-theorem \nolinkurl{RvachevPolynomialSynthesis.lean}: for \(M\ne0\), \(\deg P\le \TwoAdicValuation(M)\), and arbitrary real \(\theta,x\), the normalized lattice sum of \((\mathscr D_{\RvachevUp}P)(x-(\theta+k)/M)\RvachevUp((\theta+k)/M)\) is \(P(x)\).  Here division by \(M\) means real scalar division, and compact support makes the bilateral \texttt{tsum} pointwise finite.  Thus \(M=2^N\) formalizes arbitrary-phase reproduction of every polynomial \(P\) with \(\deg P\le N\), equivalently every monomial \(X^n\) for \(0\le n\le N\).  The new superconvergent module defines \nolinkurl{IsRvachevSuperconvergentPhase} and proves \nolinkurl{isRvachevSuperconvergentPhase_two_pow_iff}, \nolinkurl{tsum_quarter_monomial_eq_integral_of_even_deg}, \nolinkurl{tsum_three_quarters_monomial_eq_integral_of_even_deg}, \nolinkurl{tsum_shifted_monomial_eq_integral_superconvergent}, \nolinkurl{tsum_shifted_polynomial_eq_integral_superconvergent}, \nolinkurl{integral_polynomial_mul_rvachevUp_eq_normalized_tsum_superconvergent}, \nolinkurl{normalized_tsum_shifted_rvachevDeconvolvedPolynomial_mul_rvachevUp_superconvergent}, and \nolinkurl{normalized_tsum_shifted_rvachevAppellPolynomial_mul_rvachevUp_superconvergent}.  For every nonzero natural \(M\), these give degree \(\TwoAdicValuation(M)+1\) exactness at selected exact phase representatives; even dyadic level selects \(0,1/2\) and odd level \(1/4,3/4\).  This is stronger than the dyadic-only claim, but is not a modulo-one phase classification or a maximality, positivity, or rationality theorem.  None of these modules supplies an analytic reciprocal MGF or Appell generating series, a literal differential-operator expansion, reciprocal/deconvolution parity, or the displayed low reciprocal coefficients.  With the four unchanged downstream modules, the seven-module tranche has inventories \(6/33,0/5,1/8,2/7,1/7,6/7,5/25\), hence exactly 113 public declarations. \\
-Generic finite-node Lagrange--Rvachev dictionary & Definitions \nolinkurl{lagrangeRvachevDecoder}, \nolinkurl{lagrangeRvachevAtomCoefficient}; theorems \nolinkurl{natDegree_lagrangeBasis_le_card_sub_one}, \nolinkurl{natDegree_lagrangeInterpolate_le_card_sub_one}, \nolinkurl{normalized_sum_Ioo_lagrangeRvachevDecoder_mul_shifted_rvachevUp}, \nolinkurl{normalized_sum_Ioo_lagrangeRvachevDecoder_eval_node}, \nolinkurl{lagrangeRvachevAtomCoefficient_eq_deconvolved_interpolate}, \nolinkurl{sum_Ioo_lagrangeRvachevAtomCoefficient_mul_shifted_rvachevUp}, \nolinkurl{sum_lagrangeRvachevDecoder_eq_one} & Exact two-definition/seven-theorem surface in \nolinkurl{LagrangeRvachevSynthesis.lean}.  It proves the generic finite-node cardinal synthesis, componentwise biorthogonality, linear data-to-atom transform, full interpolation loop, and unit row mass under the displayed mesh, interval, distinctness, and nonemptiness hypotheses.  It does not give a geometric Gaussian q-binomial/q-Pochhammer or elementary-symmetric decoder formula, a bundled matrix/right-inverse or stochastic-matrix wrapper, or an optimal/minimum-variation decoder. \\
+Rvachev Appell deconvolution, arbitrary-phase reproduction, and parity-selected superconvergence & \nolinkurl{integral_eval_rvachevDeconvolvedPolynomial_sub_mul_rvachev}, \nolinkurl{integral_eval_rvachevAppellPolynomial_sub_mul_rvachev}, \nolinkurl{integral_eval_rvachevAppellPolynomial_mul_rvachev_eq_zero}, \nolinkurl{normalized_tsum_shifted_rvachevDeconvolvedPolynomial_mul_rvachevUp}, and the exact one-definition/eight-theorem \nolinkurl{RvachevSuperconvergentSynthesis.lean} API & The first three belong to the exact six-definition/thirty-three-theorem surface of \nolinkurl{RvachevMomentAppell.lean}; the fourth belongs to the zero-definition/five-theorem \nolinkurl{RvachevPolynomialSynthesis.lean} and gives arbitrary-phase reproduction through degree \(\TwoAdicValuation(M)\) for \(M\ne0\).  The superconvergent leaf defines \nolinkurl{IsRvachevSuperconvergentPhase} and its eight theorems give selected-phase exactness through degree \(\TwoAdicValuation(M)+1\).  It is not a modulo-one phase classification and proves no maximality, positivity, or rationality theorem.  The separate Hasse row below supplies finite Appell--Hasse formulas and reciprocal odd parity, but still no analytic reciprocal-MGF convergence or displayed low reciprocal coefficients.  Together with the Hasse leaf and four unchanged downstream modules, the eight-module tranche has inventories \(6/33,0/5,1/8,2/7,1/14,1/7,6/7,5/25\), hence exactly 128 public declarations. \\
+Generic finite-node Lagrange--Rvachev dictionary & Definitions \nolinkurl{lagrangeRvachevDecoder}, \nolinkurl{lagrangeRvachevAtomCoefficient}; theorems \nolinkurl{natDegree_lagrangeBasis_le_card_sub_one}, \nolinkurl{natDegree_lagrangeInterpolate_le_card_sub_one}, \nolinkurl{normalized_sum_Ioo_lagrangeRvachevDecoder_mul_shifted_rvachevUp}, \nolinkurl{normalized_sum_Ioo_lagrangeRvachevDecoder_eval_node}, \nolinkurl{lagrangeRvachevAtomCoefficient_eq_deconvolved_interpolate}, \nolinkurl{sum_Ioo_lagrangeRvachevAtomCoefficient_mul_shifted_rvachevUp}, \nolinkurl{sum_lagrangeRvachevDecoder_eq_one} & Exact two-definition/seven-theorem surface in \nolinkurl{LagrangeRvachevSynthesis.lean}.  It proves the generic finite-node cardinal synthesis, componentwise biorthogonality, linear data-to-atom transform, full interpolation loop, and unit row mass under the displayed hypotheses.  The Hasse leaf below supplies the geometric Gaussian q-binomial/q-Pochhammer and elementary-symmetric decoder formula; the Matrix wrapper is separate, and no optimal/minimum-variation decoder is asserted. \\
+Finite Appell--Hasse and geometric Gaussian decoder & Definition \nolinkurl{Appell.polynomialTransform}; theorems \nolinkurl{Appell.polynomialTransform_apply}, \nolinkurl{Appell.polynomialTransform_monomial}, \nolinkurl{Appell.polynomialTransform_eq_sum_hasseDeriv_of_natDegree_lt}, \nolinkurl{Appell.polynomialTransform_eq_sum_hasseDeriv}, \nolinkurl{rvachevReciprocalMomentRat_odd}, \nolinkurl{rvachevDeconvolutionLinearMap_eq_appellPolynomialTransform}, \nolinkurl{rvachevDeconvolvedPolynomial_eq_sum_even_hasseDeriv}, \nolinkurl{eval_hasseDeriv_prod_X_sub_C_eq_elementarySymmetricEval}, \nolinkurl{eval_rvachevDeconvolvedPolynomial_prod_X_sub_C}, \nolinkurl{eval_rvachevDeconvolvedPolynomial_qFallingPower}, \nolinkurl{lagrangeBasis_eq_nodalWeight_mul_prod_X_sub_C}, \nolinkurl{lagrangeRvachevDecoder_eq_nodalWeight_mul_sum}, \nolinkurl{geometric_nodalWeight_eq_geometricQPochhammer}, \nolinkurl{geometric_lagrangeRvachevDecoder_eq} & Exhaustive one-definition/fourteen-theorem \nolinkurl{RvachevAppellHasse.lean} surface.  It gives the generic finite Appell--Hasse transform, odd reciprocal-moment vanishing, even-Hasse Rvachev deconvolution, root-product/elementary-symmetric formulas, q-falling specialization, and the full geometric decoder.  The q-falling and Gaussian-decoder manuscript rows are exact only after composition with the separate deconvolution and Lagrange synthesis theorems that reconstruct atoms.  Here \(\gamma\) is the formal \nolinkurl{rvachevReciprocalMomentRat} sequence, with no analytic reciprocal-MGF convergence claim.  Algebra is total at zero or colliding nodes; cardinal use assumes \(c>0\), \(0<q<1\), and its mesh/interval/degree hypotheses.  No larger right inverse or decoder optimality is claimed. \\
+Nodes-only Rvachev--Appell amplitudes & Definition \nolinkurl{rvachevDeconvolvedPolynomialRat}; theorems \nolinkurl{map_rvachevDeconvolvedPolynomialRat}, \nolinkurl{rvachevDeconvolvedPolynomial_eq_sum_appell}, \nolinkurl{eval_rvachevDeconvolvedPolynomial_eq_sum_even_iterateDerivative}, \nolinkurl{rvachevDeconvolvedPolynomial_prod_X_sub_C_eq_sum_appell}, \nolinkurl{eval_rvachevDeconvolvedPolynomial_lagrangeBasis_eq_sum_even_iterateDerivative}, \nolinkurl{eval_rvachevDeconvolvedPolynomial_lagrangeBasis_eq_nodalWeight_mul_sum_appell}, \nolinkurl{lagrangeRvachevDecoder_eq_nodalWeight_mul_sum_appell}, \nolinkurl{map_lagrangeBasis_ratCast}, \nolinkurl{map_rvachevDeconvolvedPolynomialRat_lagrangeBasis}, \nolinkurl{lagrangeRvachevDecoder_eq_ratCast}, \nolinkurl{rvachevRawMomentRat_eq_centeredRvachevFullMoment}, \nolinkurl{momentCumulant_rvachevRawMomentRat_eq_centeredRvachevFullCumulant}, \nolinkurl{momentCumulant_rvachevRawMomentRat_even_eq_bernoulliMersenne}, \nolinkurl{rvachevReciprocalMomentRat_eq_completeBellPolynomial_neg_centeredCumulant} & Exhaustive one-definition/fourteen-theorem \nolinkurl{RvachevLagrangeNodesOnly.lean} surface.  By composition, not a single wrapper, it makes \nolinkurl{cor:lag-nodes-only} Exact/Complete.  The derivative form assumes distinct nodes; rationality is only at rational evaluation points, including \(k/M\); reconstruction separately retains \(M\ne0\), degree, and interval hypotheses.  The Bell identity is finite formal coefficient algebra, not analytic reciprocal-MGF convergence, and no larger cardinal/right-inverse row is promoted. \\
+Typed finite Lagrange--Rvachev Matrix/Markov layer & Definitions/abbreviation \nolinkurl{rvachevAtomIndexSet}, \nolinkurl{RvachevAtomIndex}, \nolinkurl{lagrangeRvachevEncoderMatrix}, \nolinkurl{lagrangeRvachevDecoderMatrix}; theorems \nolinkurl{lagrangeRvachevEncoderMatrix_nonneg}, \nolinkurl{sum_lagrangeRvachevEncoderMatrix_row_eq_one}, \nolinkurl{sum_lagrangeRvachevDecoderMatrix_row_eq_one}, \nolinkurl{lagrangeRvachevEncoderMatrix_mul_decoderMatrix}, \nolinkurl{exists_neg_entry_of_rightInverse_of_row_overlap}, \nolinkurl{exists_lagrangeRvachevDecoderMatrix_entry_neg_of_row_overlap} & Exhaustive four-definition/six-theorem surface of \nolinkurl{LagrangeRvachevMatrix.lean}.  On the exact atom block \(\{-2M<k<2M\}\), the normalized encoder is nonnegative and row-unital and the sampled decoder is row-unital under their exact hypotheses; distinct in-range nodes, \(M\ne0\), and \(\lvert s\rvert-1\le\TwoAdicValuation(M)\) give \(AD=I\).  A shared strictly positive column forces a negative decoder entry under the stated conditional overlap.  No \(DA\) range/kernel/rank/trace/characteristic-polynomial or Cauchy--Binet theorem or decoder-optimality result is asserted.  Adding this leaf to the preceding eight-module \(128\)-declaration subtotal gives nine modules and exactly \(138\) declarations. \\
 Exact even moment \(c_n\) & \nolinkurl{moment}, \nolinkurl{momentIntegral} & \nolinkurl{Arithmetic.lean}, \nolinkurl{Basic.lean}, and \nolinkurl{AnalyticMoments.lean} \\
 Normalized half moment \(d_n\) & \nolinkurl{halfMoment}, \nolinkurl{halfMomentIntegral} & \nolinkurl{Arithmetic.lean}, \nolinkurl{Basic.lean}, and \nolinkurl{AnalyticMoments.lean} \\
 Canonical moment numerators \(F_n,G_n\) & \nolinkurl{momentNumerator}, \nolinkurl{halfMomentNumerator} & \nolinkurl{Arithmetic.lean}, \nolinkurl{NormalizedEvenMoments.lean}, and \nolinkurl{NormalizedMoments.lean} \\
@@ -5338,31 +6148,47 @@ Reshetnikov quantity \(R_n\) & \nolinkurl{reshetnikov} & \nolinkurl{Arithmetic.l
 Prime-power Pascal-row valuation & \nolinkurl{primePowerChoose_padicValNat_add}, \nolinkurl{primePowerChoose_padicValNat}, \nolinkurl{primePowerSubOneChoose_padicValNat}, \nolinkurl{primePowerSubTwoChoose_padicValNat}, \nolinkurl{twoPowChoose_padicValNat}, \nolinkurl{twoPowSubTwoChoose_padicValNat} & Exhaustive zero-definition/six-theorem surface of \nolinkurl{PrimePowerBinomialValuation.lean}; the row-\(p^m\) formulas include \(j=p^m\) and \(m=0\), row \(p^m-1\) is a unit row for \(j<p^m\), and the row-\(p^m-2\) formula and its dyadic wrapper assume exactly \(0<j<p^m\) \\
 Generic continuous-CDF and density extraction & \nolinkurl{continuous_cdf_of_nullSingleton}, \nolinkurl{cdf_reflection_sub}, \nolinkurl{measure_eq_withDensity_of_cdf_hasDerivAt} & \nolinkurl{ContinuousCDF.lean} \\
 Affine independent-copy operator and uniqueness & \nolinkurl{affineIndependentCopyLaw}, \nolinkurl{affineIndependentCopyLaw_isProbabilityMeasure}, \nolinkurl{affineIndependentCopyLaw_eq_map_prod}, \nolinkurl{charFun_affineIndependentCopyLaw}, \nolinkurl{charFun_eq_mul_charFun_of_affineIndependentCopy_fixedPoint}, \nolinkurl{charFun_iterate_of_affineIndependentCopy_fixedPoint}, \nolinkurl{eq_of_charFun_affine_recurrence}, \nolinkurl{affineIndependentCopyLaw_fixedPoint_unique}, \nolinkurl{affineIndependentCopy_map_fixedPoint_unique} & \nolinkurl{AffineIndependentCopy.lean}; arbitrary measurable digit space and second-countable Borel real inner-product target, with completeness only for the three uniqueness declarations \\
-Geometric uniform law \(\mu_q\) & \nolinkurl{geometricUniformDistribution}, \nolinkurl{geometricUniformDistribution_selfSimilar}, \nolinkurl{geometricUniformDistribution_support_eq_Icc}, \nolinkurl{eq_geometricUniformDistribution_of_selfSimilar} & \nolinkurl{GeometricUniformLaw.lean} and \nolinkurl{GeometricUniformUniqueness.lean}; the characterization holds for \(\lvert q\rvert<1\) without support, density, or moment assumptions \\
+Geometric uniform law \(\mu_q\) & \nolinkurl{geometricUniformDistribution}, \nolinkurl{geometricUniformDistribution_selfSimilar}, \nolinkurl{integral_id_geometricUniformDistribution_eq_one_half}, \nolinkurl{geometricUniformDistribution_support_eq_Icc}, \nolinkurl{eq_geometricUniformDistribution_of_selfSimilar} & The exhaustive \nolinkurl{GeometricUniformLaw.lean} surface has 24 declarations and gives mean \(1/2\) for every \(\lvert q\rvert<1\), including zero and negative ratios; \nolinkurl{GeometricUniformUniqueness.lean} gives the characterization without support, density, or moment assumptions \\
 Fixed half--quarter multisection & \nolinkurl{evenCoordinates}, \nolinkurl{oddCoordinates}, \nolinkurl{geometricUniformSeries_one_half_multisection}, \nolinkurl{geometricUniformDistribution_one_half_multisection}, \nolinkurl{geometricUniformDistribution_one_half_conv_one_quarter} & \nolinkurl{GeometricUniformMultisection.lean}; fixed normalized two-section only \\
-General geometric-sinc Pochhammer factorization & \nolinkurl{complexQPochhammerInf}, \nolinkurl{summable_norm_sineTerm_qpow_pair}, \nolinkurl{geometricSincProduct_eq_tprod_pair}, \nolinkurl{geometricSincProduct_eq_tprod_complexQPochhammerInf}, \nolinkurl{rvachevFourierProduct_eq_tprod_complexQPochhammerInf}, \nolinkurl{rvachevFourier_eq_tprod_complexQPochhammerInf} & \nolinkurl{RvachevPochhammerFactorization.lean}; one definition and nine theorems, with the three additional symbol-convergence theorems listed in the text above \\
-Outer geometric spectral Pochhammer normal convergence & \nolinkurl{hasProdLocallyUniformly_geometricSincProduct_complexQPochhammerInf}, \nolinkurl{hasProdLocallyUniformly_rvachevFourierProduct_complexQPochhammerInf}, \nolinkurl{hasProdLocallyUniformly_rvachevFourier_complexQPochhammerInf} & Exhaustive zero-definition/three-theorem surface of \nolinkurl{GeometricPochhammerNormalConvergence.lean}; the general theorem assumes exactly \(\lVert q\rVert<1\), includes \(q=0\), and the last two are dyadic Rvachev/Fabius specializations; the centered/MGF and outside-disk/pole clauses remain open \\
-Fixed-nome entire Pochhammer symbol and simple zero lattice & \nolinkurl{hasProdLocallyUniformly_complexQPochhammerInf}, \nolinkurl{complexQPochhammerInf_differentiable}, \nolinkurl{complexQPochhammerInf_eq_zero_iff}, \nolinkurl{complexQPochhammerInf_eq_zero_iff_eq_inv_pow}, \nolinkurl{analyticOrderAt_complexQPochhammerInf_of_eq_zero} & \nolinkurl{QPochhammerEntire.lean}; zero definitions and five theorems, including the \(q=0\)-safe factor-zero form and the reciprocal-power lattice under \(q\ne0\) \\
+General geometric-sinc Pochhammer factorization & \nolinkurl{complexQPochhammerInf}, \nolinkurl{complexQPochhammerInf_eq_qPochhammerInfIn}, \nolinkurl{summable_norm_sineTerm_qpow_pair}, \nolinkurl{geometricSincProduct_eq_tprod_pair}, \nolinkurl{geometricSincProduct_eq_tprod_complexQPochhammerInf}, \nolinkurl{rvachevFourierProduct_eq_tprod_complexQPochhammerInf}, \nolinkurl{rvachevFourier_eq_tprod_complexQPochhammerInf} & \nolinkurl{RvachevPochhammerFactorization.lean}; one definition and ten theorems, with the remaining defining and symbol-convergence theorems listed in the text above; the bridge to \nolinkurl{qPochhammerInfIn} is an unconditional definitional equality, including the total-product junk-value regime \\
+Fixed-nome entire Pochhammer symbol and simple zero lattice & \nolinkurl{hasProdLocallyUniformly_complexQPochhammerInf}, \nolinkurl{complexQPochhammerInf_differentiable}, \nolinkurl{complexQPochhammerInf_eq_zero_iff}, \nolinkurl{complexQPochhammerInf_eq_zero_iff_eq_inv_pow}, \nolinkurl{analyticOrderAt_complexQPochhammerInf_of_eq_zero} & Exhaustive zero-definition/five-theorem surface of \nolinkurl{QPochhammerEntire.lean}; for complex \(\lVert q\rVert<1\), locally uniform convergence in \(a\), entireness, the \(q=0\)-safe factor-zero equivalence, the reciprocal-power lattice under \(q\ne0\), and analytic order one under the historical complex-product name; the generic analytic-order theorem belongs to \nolinkurl{QPochhammerInfinite.lean} \\
+Normal convergence of the outer spectral Pochhammer product & \nolinkurl{hasProdLocallyUniformly_geometricSincProduct_complexQPochhammerInf}, \nolinkurl{hasProdLocallyUniformly_rvachevFourierProduct_complexQPochhammerInf}, \nolinkurl{hasProdLocallyUniformly_rvachevFourier_complexQPochhammerInf} & Exhaustive zero-definition/three-theorem surface of \nolinkurl{GeometricPochhammerNormalConvergence.lean}; locally uniform on the full complex plane for \(\lVert q\rVert<1\), including \(q=0\), with dyadic product and bounded-Fabius specializations \\
 Finite q-Pochhammer residue-class dissection & \nolinkurl{finiteQPochhammerIn_dissection}, \nolinkurl{finiteQPochhammerIn_dissection_remainder} & Exhaustive zero-definition/two-theorem surface of \nolinkurl{QPochhammerDissection.lean}; arbitrary commutative ring, all natural \(r,n\), and remainder boundary \(u\le r\), with no hypothesis on \(q\) \\
 Generic infinite q-Pochhammer product & \nolinkurl{qPochhammerInfIn} and the twenty-nine theorems listed exhaustively in the current-tree discussion above & \nolinkurl{QPochhammerInfinite.lean}; total topological-ring definition, complete-normed-ring convergence/concatenation/dissection, multiplicative-norm zero locus, locally compact field continuity, complex entireness, nonzero raw-factor derivatives, and analytic order one, including \(q=0\); distinct from the \nolinkurl{complexQPochhammerInf} compatibility wrapper \\
 Infinite q-binomial theorem and Euler expansions & \nolinkurl{gaussianMajorant}, \nolinkurl{hasSum_qBinomial_theorem}, \nolinkurl{hasSum_euler_product}, \nolinkurl{hasSum_euler_reciprocal} & \nolinkurl{QBinomialTheoremInfinite.lean}; one definition and twenty-two theorems, listed exhaustively above \\
+Effective fixed-column Gaussian limit and rates & \nolinkurl{tendsto_gaussianBinomial_add_atTop}, \nolinkurl{gaussianBinomial_fixedColumn_relativeError_isBigO}, \nolinkurl{gaussianBinomial_shifted_fixedColumn_relativeError_isBigO} & \nolinkurl{GaussianBinomialFixedColumnRate.lean}; zero definitions and ten theorems, listed exhaustively above; with the existing fixed limit this makes \nolinkurl{thm:fixed-column-limit} exact, including \(q=0\) \\
+Greater-than-one Gaussian asymptotics & \nolinkurl{gaussianBinomial_gt_one_fixedColumn_relativeError_isBigO}, \nolinkurl{gaussianBinomial_gt_one_central_isEquivalent} & Exhaustive zero-definition/two-theorem \nolinkurl{GaussianBinomialGreaterOneAsymptotics.lean} surface; real \(q>1\), exact fixed-column and central normalizations, and \nolinkurl{cor:qgreaterone} Exact together with reciprocity \\
+Thue--Morse GammaLog differential ladder & \nolinkurl{hasDerivAt_mellin_mellinKernel_parameter}, \nolinkurl{hasDerivAt_thueMorseGammaLog_succ}, \nolinkurl{iteratedDeriv_thueMorseGammaLog} & Exhaustive zero-definition/three-theorem \nolinkurl{ThueMorseGammaTowerDifferential.lean} surface.  For \(a>0\) it gives the arbitrary-complex-spectral Mellin parameter shift, \(L_{r+1}'=(r+1)L_r\), and the falling-factorial law for \(k\le r\), making \nolinkurl{p2:thm:gamma-tower} Exact for the chosen GammaLog coordinate; no principal-\nolinkurl{Complex.log} or nonpositive-parameter claim \\
 Jacobi triple product and pentagonal sums & \nolinkurl{thetaExponent}, \nolinkurl{pentagonalExponent}, \nolinkurl{hasSum_jacobi_triple_product}, \nolinkurl{hasSum_pentagonal}, \nolinkurl{hasSum_pentagonal_pairs} & \nolinkurl{JacobiTripleProduct.lean}; two definitions and twenty-five theorems, listed exhaustively above \\
 Finite q-Pascal summations & \nolinkurl{sum_gaussianBinomial_succ_mul}, \nolinkurl{sum_gaussianBinomial_succ_mul'}, \nolinkurl{Commute.gaussianBinomial_left}, \nolinkurl{Commute.gaussianBinomial_right} & Exhaustive zero-definition/four-theorem surface of \nolinkurl{QPascalSummation.lean} \\
 Continuity and classical limit of Gaussian binomials & \nolinkurl{continuous_gaussianBinomial}, \nolinkurl{tendsto_gaussianBinomial_nhds_one}, \nolinkurl{gaussianBinomial_eq_finiteQPochhammerIn_div} & Exhaustive zero-definition/three-theorem surface of \nolinkurl{GaussianBinomialContinuity.lean} \\
 Generic Gaussian-polynomial degree, palindromicity, mean, and linear coefficient & \nolinkurl{reflect_add_of_natDegree_le}, \nolinkurl{reflect_one'}, \nolinkurl{gaussianBinomial_natDegree_le}, \nolinkurl{gaussianBinomial_zero_left}, \nolinkurl{gaussianBinomial_diag'}, \nolinkurl{reflect_gaussianBinomial}, \nolinkurl{coeff_gaussianBinomial_reflect}, \nolinkurl{coeff_gaussianBinomial_zero}, \nolinkurl{coeff_gaussianBinomial_top}, \nolinkurl{gaussianBinomial_natDegree}, \nolinkurl{gaussianBinomial_monic}, \nolinkurl{two_mul_derivative_gaussianBinomial_eval_one}, \nolinkurl{coeff_gaussianBinomial_one_of_pos_of_lt}, \nolinkurl{coeff_gaussianBinomial_one} & Exhaustive zero-definition/fourteen-theorem surface of \nolinkurl{GaussianBinomialPalindromic.lean}; total arbitrary-commutative-semiring classifier, one exactly for \(0<k<n\) and zero otherwise \\
+Gaussian-binomial second derivative and cleared second moments & \nolinkurl{eval_one_derivative_derivative_gaussianBinomial_X}, \nolinkurl{twelve_mul_secondMoment_gaussianBinomial_eval_one}, \nolinkurl{twelve_mul_varianceNumerator_gaussianBinomial_eval_one} & Three-theorem delta in the 2+24 \nolinkurl{GaussianBinomialCumulants.lean} surface; the first uses a characteristic-zero field and \(k\le n\), while the latter two are division-free and total in \(n,k\) over every commutative semiring \\
+Half-base q-binomial simple-root locus & \nolinkurl{halfQBinomial_sum_rootMultiplicity_two_pow}, together with \nolinkurl{halfQBinomial_sum_eq_zero_iff} and \nolinkurl{gaussianBinomial_half_eq_halfQBinomial} & Exhaustive zero-definition/one-theorem surface of \nolinkurl{HalfQBinomialRootSimplicity.lean}; every rational dyadic root \(2^j\), \(j<n\), has multiplicity one, completing \nolinkurl{cor:halfbase-root-locus} as Exact.  No arbitrary-base or arbitrary-field simplicity claim; \nolinkurl{cor:qbinom-inversion-law} remains Partial \\
 Universal Gaussian-polynomial degree and palindromicity & \nolinkurl{natDegree_gaussianBinomial_universal}, \nolinkurl{gaussianBinomial_universal_monic}, \nolinkurl{coeff_zero_gaussianBinomial_universal}, \nolinkurl{gaussianBinomial_universal_reflect}, \nolinkurl{coeff_gaussianBinomial_universal_symm} & Exhaustive zero-definition/five-theorem surface of \nolinkurl{GaussianBinomialPolynomialStructure.lean}; the adjacent generic theorem supplies the linear-coefficient classifier \\
 Central squared-base Gaussian reduction & \nolinkurl{finiteQPochhammerIn_mul_neg}, \nolinkurl{finiteQPochhammerIn_two_mul}, \nolinkurl{finiteQPochhammerIn_map_ringHom}, \nolinkurl{central_gaussianBinomial_sq_mul_int}, \nolinkurl{central_gaussianBinomial_sq_mul}, \nolinkurl{central_gaussianBinomial_sq_div} & Exhaustive zero-definition/six-theorem surface of \nolinkurl{CentralQBinomialReduction.lean} \\
 Cyclotomic q-factorizations & \nolinkurl{div_add_div_le_div}, \nolinkurl{div_le_div_add_div_add_one}, \nolinkurl{mem_range_and_mem_divisors_iff}, \nolinkurl{finiteQPochhammerIn_X_eq_prod_cyclotomic}, \nolinkurl{finiteQPochhammerIn_X_eq_gaussianBinomial_mul}, \nolinkurl{prod_cyclotomic_pow_div_extend}, \nolinkurl{gaussianBinomial_X_eq_prod_cyclotomic} & Exhaustive zero-definition/seven-theorem surface of \nolinkurl{CyclotomicFactorization.lean} \\
 Primitive-root Gaussian block & \nolinkurl{gaussianBinomial_isPrimitiveRoot_eq_zero}, \nolinkurl{neg_one_pow_mul_pow_choose_two}, \nolinkurl{finiteQPochhammerIn_isPrimitiveRoot} & Exhaustive zero-definition/three-theorem surface of \nolinkurl{PrimitiveRootBlock.lean}; interior vanishing, top phase, and complete block in a commutative integral domain \\
-The q-Lucas theorem & \nolinkurl{two_mul_choose_two}, \nolinkurl{add_mul_add_sub_one}, \nolinkurl{choose_two_add}, \nolinkurl{coeff_finiteQPochhammerIn_neg_X}, \nolinkurl{finiteQPochhammerIn_neg_X_block}, \nolinkurl{coeff_block_pow_mul}, \nolinkurl{pow_choose_two_add_mul_eq}, \nolinkurl{gaussianBinomial_q_lucas} & Exhaustive zero-definition/eight-theorem surface of \nolinkurl{QLucas.lean}; positive primitive-root order and residue bounds remain explicit \\
+The q-Lucas theorem & \nolinkurl{add_mul_add_sub_one}, \nolinkurl{choose_two_add}, \nolinkurl{coeff_finiteQPochhammerIn_neg_X}, \nolinkurl{finiteQPochhammerIn_neg_X_block}, \nolinkurl{coeff_block_pow_mul}, \nolinkurl{pow_choose_two_add_mul_eq}, \nolinkurl{gaussianBinomial_q_lucas} & Exhaustive zero-definition/seven-theorem surface of \nolinkurl{QLucas.lean}; positive primitive-root order and residue bounds remain explicit, and its local \nolinkurl{two_mul_choose_two} is private \\
+Terminating two-phi-one reversal & \nolinkurl{twoPhiOneFinite}, \nolinkurl{twoPhiOneReflection}; \nolinkurl{choose_two_add_succ_choose_two}, \nolinkurl{finiteQPochhammerIn_sub_eq}, \nolinkurl{finiteQPochhammerIn_reversal_ne_zero}, \nolinkurl{finiteQPochhammerIn_inv_pow_self}, \nolinkurl{twoPhiOneReflection_involutive}, \nolinkurl{twoPhiOneFinite_reversal}, \nolinkurl{twoPhiOneFinite_reversal_twice}, \nolinkurl{twoPhiOneFinite_eq_sum_twoPhiOneTerm}, \nolinkurl{twoPhiOne_eq_twoPhiOneFinite_inv_pow}, \nolinkurl{twoPhiOne_reversal}, \nolinkurl{twoPhiOne_reversal_twice}, \nolinkurl{twoPhiOne_one_eq_twoPhiOneFinite_zero} & Exhaustive two-definition/twelve-theorem surface of \nolinkurl{TwoPhiOneReversal.lean}; the actual-tsum reversal is exact under its displayed nonvanishing hypotheses, reflection is involutive, and the separate zero-depth bridge includes \(q=0\) \\
+The two q-Chu--Vandermonde sums & \nolinkurl{two_mul_choose_two}, \nolinkurl{mul_sub_one_eq_mul_sub_add}, \nolinkurl{finiteQPochhammerIn_div_eq_sum_chu}, \nolinkurl{q_chu_vandermonde_first}, \nolinkurl{finiteQPochhammerIn_div_eq_sum_chu_second}, \nolinkurl{twoPhiOneFinite_mul_finiteQPochhammerIn_eq_chu_second}, \nolinkurl{q_chu_vandermonde_second}, \nolinkurl{q_chu_vandermonde_second_by_reversal}, \nolinkurl{twoPhiOne_q_chu_vandermonde_first}, \nolinkurl{twoPhiOne_q_chu_vandermonde_second} & Exhaustive zero-definition/ten-theorem surface of \nolinkurl{QChuVandermonde.lean}; both displayed q-Chu formulas are exact on the full rational domain, while the specifically by-reversal route retains the additional \(C\ne0\) and \((A;q)_n\ne0\) assumptions \\
+Jacobi two-square count and Lambert forms & \nolinkurl{sumSqRep_two_eq_four_mul_twoSquareDivisorSum}, \nolinkurl{sumSqRep_two_eq_four_mul_prod}, \nolinkurl{theta_sq_eq_chi4_lambert}, \nolinkurl{theta_sq_eq_odd_lambert} & Exhaustive zero-definition/four-theorem \nolinkurl{JacobiTwoSquareCount.lean} surface; the product retains its valuation hypothesis, while both Lambert identities are unconditional under \(\lVert q\rVert<1\) \\
 Cyclotomic carry criterion & \nolinkurl{cyclotomic_exponent_eq_one_iff}, \nolinkurl{cyclotomic_dvd_gaussianBinomial_iff}, \nolinkurl{gaussianBinomial_mul_isPrimitiveRoot} & Exhaustive zero-definition/three-theorem surface of \nolinkurl{CyclotomicDivisibility.lean}; rational-polynomial divisibility and integral-domain primitive-root value \\
 MacMahon q-Catalan polynomial & \nolinkurl{qCatalan}; \nolinkurl{map_qInt}, \nolinkurl{qInt_X_monic}, \nolinkurl{qInt_X_natDegree}, \nolinkurl{X_sub_one_mul_qInt}, \nolinkurl{qInt_X_eq_prod_cyclotomic}, \nolinkurl{qInt_X_dvd_gaussianBinomial_rat}, \nolinkurl{qInt_X_dvd_gaussianBinomial_int}, \nolinkurl{qInt_X_mul_qCatalan}, \nolinkurl{qCatalan_natDegree}, \nolinkurl{qCatalan_eval_one_mul}, \nolinkurl{qCatalan_eval_one} & Exhaustive one-definition/eleven-theorem surface of \nolinkurl{QCatalan.lean}; integral quotient, degree \(n(n-1)\), and Catalan value at one \\
 Newton interpolation and geometric divided differences & \nolinkurl{newtonCoeff}, \nolinkurl{nodeNewtonPoly}, \nolinkurl{newtonInterpolant}; \nolinkurl{newtonCoeff_eq}, \nolinkurl{newtonCoeff_zero}, \nolinkurl{newtonCoeff_mul_prod}, \nolinkurl{nodeNewtonPoly_succ}, \nolinkurl{eval_nodeNewtonPoly}, \nolinkurl{degree_nodeNewtonPoly_lt}, \nolinkurl{nodeNewtonPoly_eq_interpolate}, \nolinkurl{eq_nodeNewtonPoly_of_eval_eq}, \nolinkurl{coeff_nodeNewtonPoly_self}, \nolinkurl{newtonCoeff_eq_sum}, \nolinkurl{nodal_range_pow}, \nolinkurl{prod_erase_pow_sub_pow}, \nolinkurl{newtonCoeff_pow_eq_sum}, \nolinkurl{newtonPoly_succ}, \nolinkurl{eval_newtonPoly}, \nolinkurl{degree_newtonPoly_lt}, \nolinkurl{newtonPoly_eq_interpolate}, \nolinkurl{eq_newtonPoly_of_eval_eq}, \nolinkurl{coeff_newtonPoly_self} & Exhaustive three-definition/nineteen-theorem field-valued surface of \nolinkurl{NewtonInterpolation.lean} \\
 Jackson q-beta integral & \nolinkurl{qBeta}; \nolinkurl{qNumber_pos}, \nolinkurl{qBeta_term_eq}, \nolinkurl{qBeta_eq_prod}, \nolinkurl{qBeta_eq_qGamma}, \nolinkurl{qBeta_comm}, \nolinkurl{qBeta_pos}, \nolinkurl{qBeta_add_one_left}, \nolinkurl{qBeta_add_one_right} & Exhaustive one-definition/eight-theorem surface of \nolinkurl{QBetaIntegral.lean}; product and q-Gamma evaluations for \(0<q<1\) \\
 Quantum binomial theorem & \nolinkurl{quantumPlane_mul_pow}, \nolinkurl{quantum_binomial} & Exhaustive zero-definition/two-theorem noncommutative surface of \nolinkurl{QuantumBinomial.lean} \\
 Rogers--Szeg\H{o} polynomials & \nolinkurl{rogersSzego}, \nolinkurl{rogersSzego_succ}, \nolinkurl{rogersSzego_three_term}, \nolinkurl{hasSum_rogersSzego_generating} & \nolinkurl{RogersSzegoPolynomial.lean}; one definition and nine theorems, listed exhaustively above \\
+Geometric-uniform moment-polynomial algebra & \nolinkurl{geometricUniformMomentPolynomial}; \nolinkurl{geometricUniformMomentPolynomial_zero}, \nolinkurl{geometricUniformMomentPolynomial_succ}, \nolinkurl{geometricUniformMomentPolynomial_natDegree_le}, \nolinkurl{geometricUniformMomentPolynomial_eval_zero}, \nolinkurl{geometricUniformMomentPolynomial_one}, \nolinkurl{geometricUniformMomentPolynomial_two}, \nolinkurl{geometricUniformMomentPolynomial_three}, \nolinkurl{geometricUniformMomentPolynomial_four} & Exhaustive one-definition/eight-theorem surface of \nolinkurl{GeometricUniformMomentPolynomial.lean}; recursive polynomial algebra, bound, zero value, and \(P_0\) through \(P_4\) \\
+Real geometric-uniform moment bridge & \nolinkurl{geometricUniformMomentPolynomial_eval₂_eq_mgf_taylorCoefficient} & Exhaustive zero-definition/one-theorem surface of \nolinkurl{GeometricUniformMomentPolynomialBridge.lean}; exact \nolinkurl{p7:eq:Pn-def} for real \(\lvert q\rvert<1\) \\
+Complex geometric-uniform moment product & \nolinkurl{geometricUniformComplexMomentProduct}; \nolinkurl{hasProdLocallyUniformly_geometricUniformComplexMomentProduct}, \nolinkurl{differentiable_geometricUniformComplexMomentProduct}, \nolinkurl{geometricUniformMomentPolynomial_eval₂_eq_complexMomentProduct_taylorCoefficient} & Exhaustive one-definition/three-theorem surface of \nolinkurl{GeometricUniformComplexMomentProduct.lean}; actual locally uniform differentiable product and normalized Taylor-coefficient bridge for complex \(\lVert q\rVert<1\).  This is an analytic analogue and does not turn the real probability identity into a complex one \\
+Exterior complex geometric-uniform moment germ & \nolinkurl{geometricUniformExteriorComplexMomentGerm}; \nolinkurl{analyticAt_geometricUniformExteriorComplexMomentGerm}, \nolinkurl{geometricUniformMomentPolynomial_eval₂_eq_exteriorComplexMomentGerm_taylorCoefficient} & Exhaustive one-definition/two-theorem surface of \nolinkurl{GeometricUniformExteriorComplexMomentGerm.lean}; actual reciprocal germ, analyticity at zero, and normalized Taylor-coefficient bridge for complex \(1<\lVert q\rVert\); no unit-circle analytic value is asserted \\
+Sharp geometric-uniform moment-polynomial degree & \nolinkurl{coeff_geometricUniformMomentPolynomial_choose_two}, \nolinkurl{coeff_geometricUniformMomentPolynomial_choose_two_sub_one}, \nolinkurl{geometricUniformMomentPolynomial_natDegree_eq} & Exhaustive zero-definition/three-theorem surface of \nolinkurl{GeometricUniformMomentPolynomialDegree.lean}; the top and subleading coefficients are \(B_n(1)/n!\) and \(-B_n(1)/n!+B_{n-1}(1)/(2(n-1)!)\), and the degree is \(\binom n2\) exactly for even \(n\) or \(n=1\), one less otherwise.  Thus \nolinkurl{p7:thm:Pn} and \nolinkurl{prop:qF-P-degree-sharp} are Exact \\
+Common rational geometric-uniform moment coefficient & \nolinkurl{geometricUniformMomentRatFunc}; \nolinkurl{qFactorial_mul_geometricUniformMomentRatFunc}, \nolinkurl{eval_geometricUniformMomentRatFunc_eq_complexMomentProduct_taylorCoefficient}, \nolinkurl{eval_geometricUniformMomentRatFunc_eq_exteriorComplexMomentGerm_taylorCoefficient}, \nolinkurl{eval_geometricUniformMomentRatFunc_one} & Exhaustive one-definition/four-theorem surface of \nolinkurl{GeometricUniformMomentRatFunc.lean}; global \([n]_X!a_n=\mathcal P_n\), safe inner/exterior coefficient evaluation, and the removable \(q=1\) specialization.  This makes \nolinkurl{thm:qF-moment-polynomial} Exact without asserting analytic values at nontrivial unit roots \\
+Geometric-uniform germ reciprocity & \nolinkurl{geometricUniformComplexMomentGerm}; \nolinkurl{geometricUniformComplexMomentGerm_of_norm_lt_one}, \nolinkurl{geometricUniformComplexMomentGerm_of_one_lt_norm}, \nolinkurl{analyticAt_geometricUniformComplexMomentGerm}, \nolinkurl{geometricUniformComplexMomentGerm_reciprocity}, \nolinkurl{geometricUniformComplexMomentGerm_moment_convolution} & Exhaustive one-definition/five-theorem surface of \nolinkurl{GeometricUniformMomentReciprocity.lean}; for \(q\ne0\), \(\lVert q\rVert\ne1\), proves \nolinkurl{EventuallyEq} reciprocity at zero and the exact derivative convolution, making \nolinkurl{thm:qF-reciprocity} Exact; no global, unit-circle, maximal-disc, uniqueness, or pole-divisor claim \\
 Geometric CDF \(F_q\) and density \(f_q\) & \nolinkurl{geometricUniformCDF}, \nolinkurl{geometricUniformDensity}, \nolinkurl{geometricUniformDensity_zero}, \nolinkurl{geometricUniformDensity_nonpos_of_neg}, \nolinkurl{volume_withDensity_geometricUniformDensity_eq_zero_of_nonpos}, \nolinkurl{geometricUniformDistribution_ne_withDensity_geometricUniformDensity_of_nonpos}, \nolinkurl{geometricUniformCDF_hasDerivAt}, \nolinkurl{geometricUniformDistribution_eq_withDensity}, \nolinkurl{contDiff_geometricUniformCDF}, \nolinkurl{contDiff_geometricUniformDensity} & \nolinkurl{GeometricUniformCDF.lean} \\
 Weighted-sum CDF and half-base bridges & \nolinkurl{weightedSumCDF}, \nolinkurl{weightedSumCDF_eq_geometricUniformCDF_one_half}, \nolinkurl{geometricUniformCDF_one_half_eq_fabiusReal}, \nolinkurl{geometricUniformDensity_one_half_eq_rvachevUp} & \nolinkurl{ProbabilityRepresentation.lean} \\
+Closed Rvachev tail and positive raw moments & \nolinkurl{weightedSumDistribution_real_Ici_eq_rvachevUp_of_nonneg}, \nolinkurl{integral_pow_weightedSumDistribution_eq_mul_intervalIntegral_rvachevUp} & Exactly two new theorems in the existing \nolinkurl{ProbabilityLaplaceMoments.lean}: atomlessness gives the closed tail for every \(t\geq0\), and survival layer cake gives the full-law moment identity for every natural \(n\geq1\).  With the existing global up/Fabius bridges they make \nolinkurl{prop:up-tail} and \nolinkurl{cor:up-moments} Exact \\
 Totalized activation kernel \(p\) & \nolinkurl{activationProbability}, \nolinkurl{tanhDiv_eq_dslope}, \nolinkurl{activationProbability_le_min_one_sq_div_three}, \nolinkurl{activationProbability_mul_le_quadratic}, \nolinkurl{tendsto_activationProbability_mul_div_sq} & \nolinkurl{HyperbolicActivation.lean}, \nolinkurl{ActivationSeries.lean}, and \nolinkurl{ActivationAsymptotics.lean} \\
 Finite activation Taylor jet & \nolinkurl{tanh_sub_taylor_nine_isBigO}, \nolinkurl{activationProbability_sub_taylor_eight_isBigO}, \nolinkurl{activationProbability_sub_taylor_eight_isBigO_pow} & \nolinkurl{ActivationTaylor.lean}; exact degree-nine \(\tanh\) and degree-eight \(p\) polynomials with respective \(O(\lVert x\rVert^{11})\) and \(O(\lVert x\rVert^{10})\) remainders, plus the equivalent \(O(x^{10})\) activation form \\
 Square-summable activation series \(D_w\) & \nolinkurl{summable_activationProbability_mul_of_summable_sq}, \nolinkurl{tsum_activationProbability_mul_le}, \nolinkurl{tendsto_tsum_activationProbability_mul_div_sq} & \nolinkurl{ActivationSeries.lean} and \nolinkurl{ActivationSeriesAsymptotics.lean}; \(D_w\) is guide notation, not a Lean definition \\
@@ -5373,13 +6199,22 @@ Inverse curvature & \nolinkurl{deriv_deriv_fabiusInv}, \nolinkurl{deriv_deriv_fa
 Exact inverse modulus & \nolinkurl{fabiusIntervalMass}, \nolinkurl{strictMonoOn_fabiusIntervalMass_firstHalf}, \nolinkurl{fabiusIntervalMass_eq_fabiusReal_iff}, \nolinkurl{fabiusInv_sub_eq_sub_iff_of_mem_Icc}, \nolinkurl{abs_fabiusInv_sub_le}, \nolinkurl{abs_fabiusInv_sub_eq_iff_of_mem_Icc}, \nolinkurl{sSup_abs_fabiusInv_sub_eq}, \nolinkurl{forall_abs_fabiusInv_sub_lt_iff} & \nolinkurl{InverseModulus.lean}; strict and equality refinements are unit-interval qualified where clamping requires it \\
 Effective dyadic inverse modulus & \nolinkurl{inverseFabiusFactorialDenominator}, \nolinkurl{inverseFabiusDeltaDenominator}, \nolinkurl{fabiusInv_effectivelyUniformContinuous} & \nolinkurl{FabiusInverseEffectiveContinuity.lean}; explicit primitive-recursive continuity modulus, not an inverse realizer \\
 Logarithmic reciprocal inverse modulus & \nolinkurl{inverseFabiusLogarithmicOrder}, \nolinkurl{inverseFabiusLogarithmicFactorialDenominator}, \nolinkurl{inverseFabiusLogarithmicDeltaDenominator}, \nolinkurl{fabiusInv_effectivelyUniformContinuous_logarithmic}, \nolinkurl{fabiusInv_effectivelyUniformContinuous_logarithmicDelta} & \nolinkurl{FabiusInverseLogarithmicModulus.lean}; least binary-length selector and two primitive-recursive witnesses, not an inverse realizer \\
+Sharp exact dyadic inverse modulus & \nolinkurl{inverseFabiusExactDyadicDenominator}, \nolinkurl{inverseFabiusExactDyadicDenominator_primrec}, \nolinkurl{inverseFabiusExactDyadicDenominator_isLeast_strictModulus}, \nolinkurl{inverseFabiusExactLogarithmicDenominator}, \nolinkurl{inverseFabiusExactLogarithmicDenominator_primrec}, \nolinkurl{abs_fabiusInv_sub_lt_inv_nat_of_lt_exactLogarithmicDenominator} & \nolinkurl{FabiusInverseExactDyadicModulus.lean}; exact fixed-target ceiling and endpoint sharpness, primitive-recursive dyadic and logarithmic denominators, with \(1/n\) only a witness and the zero input only a totalization convention \\
 Fixed-depth effective monotone inversion & \nolinkurl{SequentiallyComputableOn}, \nolinkurl{unitClamp}, \nolinkurl{unitClamp_sequentiallyComputable}, \nolinkurl{tolerantDifference_error}, \nolinkurl{tolerantDifference_safe_updates}, \nolinkurl{tolerantDifference_inconclusive}, \nolinkurl{tolerantBisection_correct}, \nolinkurl{effectiveInversionOn_Icc} & \nolinkurl{EffectiveMonotoneInverse.lean}; exact two-definition/six-theorem public surface, with a fixed \(p\)-step dyadic controller consuming a supplied positive computable inverse modulus \\
 Positive-rational-gap effective inversion & \nolinkurl{EffectivelyUniformContinuousOn}, \nolinkurl{ComputablePositiveRationalSequence}, \nolinkurl{ComputablePositiveRationalSequence.value}, \nolinkurl{ComputablePositiveRationalSequence.reciprocalDenominator}, \nolinkurl{ComputablePositiveRationalSequence.reciprocalDenominator_spec}, \nolinkurl{inverseModulus_of_positiveRationalGap}, \nolinkurl{effectiveInversionOn_Icc_of_computablePositiveRationalGap}, \nolinkurl{clampedEffectiveInversion_of_computablePositiveRationalGap} & Exhaustive eight-declaration surface of \nolinkurl{EffectiveGapInverse.lean}; derives the unit-interval modulus and continuity from supplied rational dyadic-gap bounds and certifies exactly the clamped total extension \\
 Computable totalized Fabius inverse & \nolinkurl{fabiusInv_isComputableRealFunction} & \nolinkurl{FabiusInverseComputable.lean}; zero definitions and one theorem combining clamped tolerant-bisection sequential computability with logarithmic-Delta effective uniform continuity \\
 Actual quarter inverse jet & \nolinkurl{iteratedDeriv_centeredFabiusInv_quarter_eq_quadraticInverse}, \nolinkurl{iteratedDeriv_fabiusInv_five_seventy_two_succ} & \nolinkurl{FabiusInverseQuarterJet.lean}; equality of jets, not local analytic equality \\
 Centered Thue--Morse mixed differences & \nolinkurl{symmetricMixedDifference}, \nolinkurl{symmetricMixedDifference_polynomial_eq_coeff_card}, \nolinkurl{symmetricDyadicMixedDifference_eq_sum_thueMorseSign_smul} & \nolinkurl{ThueMorseSymmetricDifference.lean}; finite algebraic identities, with no analytic limit claim \\
+Local Thue--Morse corner integral & \nolinkurl{centeredBoxIntegral}, \nolinkurl{symmetricMixedDifference_range_eq_centeredBoxIntegral}, \nolinkurl{symmetricMixedDifference_univ_eq_centeredBoxIntegral} & Exhaustive 1+4 \nolinkurl{ThueMorseCornerIntegral.lean} surface; local open/order-connected \nolinkurl{ContDiffOn} hypotheses on the full symmetric segment, zero widths and order zero included; makes \nolinkurl{thm:TM-corner} Exact/Complete with the preceding algebra \\
+Finite moment functional and affine Prouhet transport & \nolinkurl{sum_weight_mul_eval₂_eq_sum_coeff_mul_moment}, \nolinkurl{sum_weight_mul_eval₂_eq_eval₂_of_moments}, \nolinkurl{sum_weight_mul_eval_affine_of_topCoeff_extractor} & Exhaustive 0+16 \nolinkurl{FinitePolynomialFunctional.lean} surface; scalar-extension extraction and same-ring affine transport over commutative semirings, including zero scale; makes \nolinkurl{cor:geometric-prouhet-affine} Exact with the half-base extractor \\
+Central Rvachev--Legendre cancellation & \nolinkurl{eval_legendrePolynomial_even_zero}, \nolinkurl{eval_rvachevLegendreDeconvolutionPolynomial_even}, \nolinkurl{rvachevLegendreCentralSum} & Exhaustive 0+3 \nolinkurl{RvachevLegendreCentralSum.lean} surface; exact \(M=4^n\) finite identity, including \(n=0\), making \nolinkurl{cor:leg-central-sum} Exact/Complete \\
+Rvachev--Legendre analysis biorthogonality & \nolinkurl{rvachevLegendreAnalysisKernel}, \nolinkurl{rvachevLegendreBiorthogonality} & Exhaustive 1+1 \nolinkurl{RvachevLegendreBiorthogonality.lean} surface.  For \(M\ne0\) and synthesis degree \(\ell\leq\TwoAdicValuation(M)\), with arbitrary analysis degree \(m\), it proves the normalized open-block delta identity and makes \nolinkurl{def:leg-Lambda} and \nolinkurl{thm:leg-biorthogonality} Exact.  It does not prove the larger \nolinkurl{thm:leg-Lambda} support/Fourier--Bessel claims, analysis-kernel rationality, or the reverse projector/rank/trace/Cauchy--Binet clauses, so \nolinkurl{cor:leg-biorthogonal-matrices} remains Partial \\
 Uniform spline \(S_p\) & \nolinkurl{fabiusUniformSpline} & \nolinkurl{FabiusUniformSpline.lean} and \nolinkurl{FabiusComputability.lean} \\
 Logarithmic profile & \nolinkurl{fabiusLogProfile} & \nolinkurl{FabiusLogScale.lean} \\
+Forward real Lambert branch pairing & \nolinkurl{principalLambertW_sub_lowerLambertW_pos}, \nolinkurl{principalLambertW_eq_neg_gap_div}, \nolinkurl{lowerLambertW_eq_neg_gap_mul_exp_div}, \nolinkurl{lowerLambertW_eq_neg_gap_div_one_sub_exp_neg}, \nolinkurl{eq_neg_gap_div_mul_exp} & Exhaustive zero-definition/seven-theorem surface of \nolinkurl{LambertWBranchPairing.lean}; exact \(\delta\)- and \(t=e^\delta\)-forms on \((-e^{-1},0)\) only \\
+Lambert branch-gap coordinate and inverse & \nolinkurl{gapPrincipal}, \nolinkurl{gapLower}, \nolinkurl{gapArg}, \nolinkurl{branchGap}, \nolinkurl{branchGap_invOn}, \nolinkurl{branchGap_bijOn}, \nolinkurl{gapArg_log} & Exhaustive four-definition/sixteen-theorem surface of \nolinkurl{LambertWGapBijection.lean}; explicit bijection \((-e^{-1},0)\leftrightarrow(0,\infty)\), with the \(t>1\) inverse formulas \\
+Symmetric real Lambert branch laws & \nolinkurl{lowerLambertW_div_principalLambertW_eq_exp_branchGap}, \nolinkurl{principalLambertW_add_lowerLambertW_eq_cosh_div_sinh_branchGap}, \nolinkurl{principalLambertW_mul_lowerLambertW_eq_sinh_sq_branchGap}, \nolinkurl{principalLambertW_add_lowerLambertW_lt_neg_two}, \nolinkurl{principalLambertW_mul_lowerLambertW_mem_Ioo} & Exhaustive zero-definition/nine-theorem surface of \nolinkurl{LambertWBranchSymmetry.lean}; ratio, sum, product, and strict open-domain bounds, with no endpoint or Bernoulli/higher-expansion claim \\
+Bernoulli EGF and real branch-gap series & \nolinkurl{summable_norm_bernoulli_mul_pow_div_factorial}, \nolinkurl{summable_bernoulli_mul_pow_div_factorial_iff}, \nolinkurl{hasSum_bernoulli_mul_pow_div_factorial}, \nolinkurl{hasSum_bernoulli_mul_pow_div_factorial_complex_iff}, \nolinkurl{principalLambertW_lowerLambertW_eq_bernoulliSeries} & Exhaustive zero-definition/five-theorem surface of \nolinkurl{LambertWBranchGapBernoulli.lean}.  The complex series has sum \nolinkurl{complexExpm1Div}\((z)^{-1}\) exactly for \(\lvert z\rvert<2\pi\), hence diverges on and outside the boundary; \nolinkurl{eq:pair-Bernoulli-general} and the canonical-removable reading of \nolinkurl{eq:bernoulli-gen} are Exact.  This is not the literal totalized quotient at zero and asserts no holomorphy; higher/full Puiseux claims remain open \\
 Real Lambert-branch curvature & \nolinkurl{deriv_deriv_principalLambertW}, \nolinkurl{deriv_deriv_lowerLambertW}, the lower sign iff family, \nolinkurl{strictConcaveOn_principalLambertW}, \nolinkurl{strictConvexOn_lowerLambertW_left}, \nolinkurl{strictConcaveOn_lowerLambertW_right} & \nolinkurl{LambertWCurvature.lean}; exact regular-domain second derivatives, with shape theorems including the branch point and inflection while the lower domain stays open at zero \\
 Real Lambert branch-point vertical geometry & \nolinkurl{tendsto_deriv_principalLambertW_branchPoint_atTop}, \nolinkurl{tendsto_deriv_lowerLambertW_branchPoint_atBot}, the two \nolinkurl{secantSlope_branchPoint} limits, and the four \nolinkurl{not_differentiable} endpoint theorems & \nolinkurl{LambertWBranchPointGeometry.lean}; exactly eight theorems giving signed right-hand derivative/secant blow-up, failure of finite right derivatives, and failure of full differentiability \\
 Real Lambert leading branch-point asymptotics & \nolinkurl{lambertWBranchPointScale}, the two squared-ratio limits, the two squared equivalences, and \nolinkurl{principalLambertW_add_one_isEquivalent_branchPoint}, \nolinkurl{lowerLambertW_add_one_isEquivalent_branchPoint} & \nolinkurl{LambertWBranchPointAsymptotics.lean}; one definition and eight theorems, with signed \(+\sqrt{2e\Delta}\) and \(-\sqrt{2e\Delta}\) laws only \\
@@ -5392,6 +6227,7 @@ Total squared zero-row integer Wigner datum & \nolinkurl{legendreGauntAdmissible
 Finite Rvachev/up-law Wigner-square Gram sums & \nolinkurl{rvachevLegendreGramEntryRat_eq_two_mul_sum_wignerThreeJZeroSqRat}, \nolinkurl{rvachevLegendreGramMatrixRat_apply_eq_two_mul_sum_wignerThreeJZeroSqRat}, \nolinkurl{upLegendreGramMatrix_apply_eq_two_mul_sum_wignerThreeJZeroSqRat} & Exact zero-definition/three-theorem rational-entry, rational-matrix, and real-matrix surface of \nolinkurl{FabiusLegendreGauntClosedForm.lean} \\
 \bottomrule
 \end{longtable}
+\normalsize
 
 \begin{boxedremark}
 The table maps notation to declarations; it does not assert that every
@@ -5428,6 +6264,7 @@ Module & Role in the development \\
 \nolinkurl{FractionalVolterraSemigroup.lean} & Shifted beta-kernel integrability and evaluation, and addition of two positive real orders for continuous Banach-valued inputs on ordered compact intervals. \\
 \nolinkurl{FractionalVolterraCalculus.lean} & Positive-scale affine covariance at arbitrary real order on ordered endpoints, its inverse-smul form, and the positive-order integration-by-parts law raising the order of a right interior derivative, including the exact boundary-free specialization. \\
 \nolinkurl{GlobalDyadic.lean} & Exact dyadic identities for the signed extension with unrestricted and nonreduced representatives. \\
+\nolinkurl{DyadicDerivativeFiltration.lean} & Zero definitions and six theorems: support vanishing, the above-depth zero and critical-depth signed value, exact denominator-depth detection, and the all-real and dyadic below-depth formulas through \nolinkurl{extendedFabius}. \\
 \addlinespace[0.45em]
 \multicolumn{2}{l}{\textbf{Global shape, inversion, and computability}}\\[0.25em]
 \nolinkurl{ScalingRecurrence.lean} & Mathlib-only chain rules for arbitrary positive dilations, in vector and scalar forms, with caller-normalized outgoing weight; inert-parameter variants and dyadic wrappers used by negative-Laplace derivatives. \\
@@ -5445,6 +6282,7 @@ Module & Role in the development \\
 \nolinkurl{InverseModulus.lean} & Exhaustive one-definition/thirty-one-theorem structural inverse-modulus layer: global weak and maximal strict fixed-length increment shape, exact endpoint minimizers, constrained-superadditivity equality, unit-interval inverse-gap rigidity, global sharp modulus bounds and attained suprema, and effective injectivity.  The inverse equality loci are deliberately not global because of the clamped tails. \\
 \nolinkurl{FabiusInverseEffectiveContinuity.lean} & Exhaustive two-definition/twelve-theorem effective inverse-continuity layer: primitive-recursive factorial and report denominators, recurrence and endpoint-mass lower bounds, strict and closed global inverse moduli, and \nolinkurl{EffectivelyUniformContinuous}; the inverse remains noncomputable and no sequential realizer or combined computable-function theorem is supplied. \\
 \nolinkurl{FabiusInverseLogarithmicModulus.lean} & Three definitions and fifteen theorems: the primitive-recursive least binary-length order, its exact \nolinkurl{Nat.log2} formula and minimality, factorial and Delta denominators at that order, strict/closed-input reciprocal moduli, and an effective-uniform-continuity theorem for either witness; no exact endpoint-mass ceiling, tolerant-bisection realizer, sequential computability, combined computable-real-function theorem, or input-bit asymptotic. \\
+\nolinkurl{FabiusInverseExactDyadicModulus.lean} & Exactly two definitions and ten theorems: the positive primitive-recursive exact endpoint-mass ceiling denominator, its rational bound and arithmetic leastness, its strict inverse modulus, the endpoint counterexample for every smaller positive denominator, fixed-dyadic strict-modulus leastness, and the primitive-recursive logarithmic \(1/n\) witness with \(d(0)=1\).  Leastness is only for the fixed dyadic target; no leastness for \(1/n\), zero-input modulus conclusion, or input-bit asymptotic is asserted. \\
 \nolinkurl{EffectiveMonotoneInverse.lean} & Exactly two public definitions and six theorems: sequential computability on a set, the computable unit clamp, the difference certificate and its safe-update and inconclusive-success consequences, fixed-depth dyadic tolerant-bisection correctness, and the abstract unit-interval inversion theorem.  The abstract theorem consumes a positive computable inverse modulus. \\
 \nolinkurl{EffectiveGapInverse.lean} & Exactly eight public declarations: effective uniform continuity on a set; a computable positive rational sequence, its value and reciprocal denominator with specification; the rational-gap inverse modulus; unit-interval sequential computability plus effective continuity; and the total computability of the clamped extension. \\
 \nolinkurl{FabiusInverseComputable.lean} & Zero public definitions and exactly one theorem, \nolinkurl{fabiusInv_isComputableRealFunction}: the total inverse preserves computable real sequences by clamping and tolerant bisection and has the logarithmic-Delta effective continuity modulus. \\
@@ -5474,6 +6312,7 @@ Module & Role in the development \\
 \multicolumn{2}{l}{\textbf{Moments, arithmetic, and denominators}}\\[0.25em]
 \nolinkurl{AnalyticMoments.lean} & Compact-support integration, total mass, moment and half-moment recurrences, identification with exact rational sequences, and the named even Fourier modes \nolinkurl{rvachevFourierMomentTerm} with their zero term, scaling law, and genuine \nolinkurl{HasSum} to the Rvachev Fourier transform. \\
 \nolinkurl{MomentPowerSeries.lean} & Exact \nolinkurl{PowerSeries} algebra over \(\RationalNumbers\), including \(M(4X)=M(X)S(X)\); analytic evaluation is deferred to later modules. \\
+\nolinkurl{FinitePrefixAppellRecovery.lean} & Exhaustive 11+17 rational finite-prefix Appell API named in the crosswalk: constructive digit-moment convolutions, exact uncentered and centered-even expansions, exact symbolic outer degrees, and finite geometric-Lagrange recovery.  Specializing the inner variable can lower the centered outer degree; no analytic MGF convergence is asserted. \\
 \nolinkurl{NormalizedMoments.lean} & Division-free normalization theorem for half moments using factorial and Mersenne products. \\
 \nolinkurl{NormalizedEvenMoments.lean} & Natural numerator and common-denominator formula for even centered moments. \\
 \nolinkurl{Parity.lean} & Lucas-theorem parity analysis and oddness of natural moment numerators. \\
@@ -5484,41 +6323,48 @@ Module & Role in the development \\
 \nolinkurl{BernoulliRecurrences.lean} & Translation of moment recurrences into Bernoulli-number identities used by the arithmetic paper. \\
 \nolinkurl{LaplaceMoments.lean} & Moment identities in the Laplace-transform normalization. \\
 \nolinkurl{LaplaceMomentBounds.lean} & Uniform factorial/exponential bounds needed for transform series and differentiation. \\
-\nolinkurl{ProbabilityLaplaceMoments.lean} & Moment and Laplace identities connecting the weighted-sum probability model with the analytic generating function. \\
+\nolinkurl{ProbabilityLaplaceMoments.lean} & Moment and Laplace identities connecting the weighted-sum probability model with the analytic generating function; its two newest theorems, \nolinkurl{weightedSumDistribution_real_Ici_eq_rvachevUp_of_nonneg} and \nolinkurl{integral_pow_weightedSumDistribution_eq_mul_intervalIntegral_rvachevUp}, identify the atomless closed tail with \(\RvachevUp\) on the nonnegative ray and give the full-law positive-natural-degree tail-moment formula, making \nolinkurl{prop:up-tail} and \nolinkurl{cor:up-moments} Exact for \(t\geq0\) and natural \(n\geq1\). \\
 \nolinkurl{FabiusRecurrenceSequence.lean} & Auxiliary exact recurrence sequence used in asymptotic and dyadic estimates. \\
 \addlinespace[0.45em]
 \multicolumn{2}{l}{\textbf{Fourier, probability, and the first paper}}\\[0.25em]
 \nolinkurl{FourierProduct.lean} & Entire sinc, pointwise multipliability, finite-product recurrence, and equality of the product with the analytic Fourier transform. \\
+\nolinkurl{RvachevLaurentLeading.lean} & Exhaustive 1+6 centered-MGF/Fourier rotation and integer-cofactor limit API, including the manuscript's exact odd-core leading Laurent coefficient.  Limits are punctured because inversion is totalized at the pole; no lower Laurent coefficients are supplied. \\
 \nolinkurl{GeneralizedRvachevIdentifiability.lean} & Zero definitions and six theorems recovering an admissible exponent sequence from dyadic analytic orders, with the exact generalized-product equality criterion. \\
 \nolinkurl{FourierAnalytic.lean} & Entire Fourier transform of \(\RvachevUp\), Fourier inversion consequences, and its imaginary-axis relation to the half-moment generating function. \\
 \nolinkurl{OriginalCharacterization.lean} & Rvachev's original compact-support predicate, derived scale positivity, the forced scale and normalization, and the general fold from bounded Fabius solutions. \\
 \nolinkurl{OriginalUniqueness.lean} & Fourier-refinement uniqueness, the exact kernel of the fold, and the equivalences with fixed candidates or unique bounded Fabius witnesses. \\
 \nolinkurl{WeightedUniformSeries.lean} & Absolutely summable uniform-coordinate series, their canonical pushforward laws, pointwise and law-level head--tail splitting, reflection, and carried-interval results. \\
-\nolinkurl{WeightedUniformDistribution.lean} & Compatibility and naturality API for weighted laws, including scalar transport, affine recursion, sharp absolute continuity from any nonzero real coefficient, and null singletons. \\
+\nolinkurl{WeightedUniformDistribution.lean} & Exact zero-definition/eleven-theorem compatibility API for weighted laws, including the generic half-total-weight barycenter, scalar transport, affine recursion, sharp absolute continuity from any nonzero real coefficient, and null singletons. \\
 \nolinkurl{WeightedUniformSupport.lean} & Support equal to the continuous series range, exact signed-real min/max support intervals, and nonnegative unit-mass specializations. \\
 \nolinkurl{ContinuousCDF.lean} & Generic continuity of atomless probability CDFs, reflection symmetry from measure invariance, and the theorem identifying any everywhere pointwise CDF derivative as the exact Lebesgue density without prior regularity or absolute continuity assumptions. \\
 \nolinkurl{AffineIndependentCopy.lean} & The affine independent-copy convolution operator, its probability and product-map forms, characteristic-function factorization and finite fixed-point iteration, and contractive uniqueness.  The digit space is arbitrary measurable, the target is second-countable Borel real inner-product, and completeness is confined to the three uniqueness declarations; \(\lvert q\rvert<1\) includes zero and negative scales without support, density, or moment hypotheses. \\
-\nolinkurl{GeometricUniformLaw.lean} & Named weights \((1-q)q^n\), their series and probability law, affine self-similarity, reflection, absolute continuity, null singletons, and exact range/support statements. \\
+\nolinkurl{GeometricUniformLaw.lean} & Exhaustive 24-declaration API for the named weights \((1-q)q^n\), their series and probability law, exact mean \(1/2\) for \(\lvert q\rvert<1\) including zero and negative ratios, affine self-similarity, reflection, absolute continuity, null singletons, and exact range/support statements. \\
 \nolinkurl{GeometricUniformMultisection.lean} & Fixed normalized even/odd split of the half-ratio coordinate series into two independent quarter-ratio copies, with pointwise, product-map, and convolution forms. \\
 \nolinkurl{GeometricUniformUniqueness.lean} & Specializes the generic product-map theorem to prove \nolinkurl{eq_geometricUniformDistribution_of_selfSimilar}: every probability solution of the geometric affine head--tail equation is \(\mu_q\) when \(\lvert q\rvert<1\), including \(q=0\) and negative \(q\), with no support, density, or moment assumption. \\
 \nolinkurl{GeometricSincFactorization.lean} & Closed characteristic function of the scaled uniform digit, exact closed-factor and phase-collapsed finite residual formulas for \(\lvert q\rvert<1\), pointwise convergence of the phase-bearing sinc prefixes, and the two dyadic weighted-sum wrappers. \\
 \nolinkurl{GeometricReciprocalGamma.lean} & Locally uniform convergence, pointwise multipliability and \nolinkurl{HasProd}, and entireness of the geometric sinc product, together with its reciprocal-Gamma reflection factorization. \\
 \nolinkurl{GeometricSincCharacteristicFunction.lean} & The four-theorem, zero-definition surface: two exact phase-bearing bridges from the geometric-uniform characteristic function to the rescaled geometric sinc product and paired reciprocal-Gamma factors, plus locally uniform convergence of the full phase-bearing prefixes on the real frequency line and uniform convergence on every compact real frequency set, for every \(\lvert q\rvert<1\), including zero and negative ratios. \\
-\nolinkurl{RvachevPochhammerFactorization.lean} & One definition and nine theorems: the total complex infinite Pochhammer product and its strict-contraction convergence API, absolute summability and paired scale--zero product, the global \(S_q(z)=\prod_{k\ge0}(z^2/(k+1)^2;q^2)_\infty\) factorization for complex \(\lVert q\rVert<1\), and its two dyadic Rvachev/Fabius specializations. \\
-\nolinkurl{QPochhammerEntire.lean} & No definitions and five theorems: for each fixed complex \(\lVert q\rVert<1\), locally uniform convergence in \(a\), entireness of \(a\mapsto(a;q)_\infty\), the total factor-zero criterion, the reciprocal-power lattice when \(q\ne0\), and analytic order one at every zero.  The \(q=0\)-safe theorem remains division-free; no joint holomorphy or centered/MGF wrapper is asserted. \\
-\nolinkurl{GeometricPochhammerNormalConvergence.lean} & No definitions and three theorems: locally uniform convergence on \(\ComplexNumbers\) of the outer spectral Pochhammer product to \(S_q\) for every \(\lVert q\rVert<1\), including \(q=0\), and the dyadic Rvachev/Fabius specializations.  The compound centered/MGF, outside-disk reciprocal, pole-divisor, and zero--pole clauses remain unproved. \\
+\nolinkurl{RvachevPochhammerFactorization.lean} & One definition and ten theorems: the total complex infinite Pochhammer product, its unconditional definitional equality with \nolinkurl{qPochhammerInfIn}, its strict-contraction convergence API, absolute summability and paired scale--zero product, the global \(S_q(z)=\prod_{k\ge0}(z^2/(k+1)^2;q^2)_\infty\) factorization for complex \(\lVert q\rVert<1\), and its two dyadic Rvachev/Fabius specializations. \\
+\nolinkurl{QPochhammerEntire.lean} & Exactly five compatibility theorems and no public definitions: for each fixed complex \(\lVert q\rVert<1\), locally uniform convergence in \(a\), entireness of \(a\mapsto(a;q)_\infty\), the total factor-zero criterion, the reciprocal-power lattice when \(q\ne0\), and analytic order one at every zero under the historical complex-product name.  The generic analytic-order theorem is owned by \nolinkurl{QPochhammerInfinite.lean}; the \(q=0\)-safe statements remain division-free, and no joint holomorphy or centered/MGF wrapper is asserted. \\
+\nolinkurl{GeometricPochhammerNormalConvergence.lean} & Exactly three theorems and no public definitions: locally uniform convergence on the whole complex plane of the outer geometric-sinc Pochhammer product for every strict contraction \(\lVert q\rVert<1\), including \(q=0\), and its dyadic standalone-product and bounded-Fabius specializations. \\
 \nolinkurl{QPochhammerDissection.lean} & Exactly two theorems and no public definitions: finite exact residue-class dissection over every commutative ring, and its remainder form under \(u\le r\), including all empty and \(u=r\) boundaries. \\
 \nolinkurl{QPochhammerInfinite.lean} & One definition and exactly twenty-nine theorems: the total generic \(q\)-Pochhammer \texttt{tprod}; strict-contraction summability, multipliability, finite-prefix convergence, concatenation, factor removal and positive-modulus dissection in complete normed commutative rings; the exact factor-zero locus under a multiplicative norm; locally uniform convergence and continuity over complete locally compact normed fields; complex entireness, nonzero derivatives at raw factor zeros (including \(q=0\)), reciprocal-power derivative formulas for \(q\ne0\), and analytic order one at every zero. \\
 \nolinkurl{QBinomialTheoremInfinite.lean} & One definition and exactly twenty-two theorems: dominated passage from finite Gaussian coefficients, positivity and nonvanishing controls, the infinite q-binomial theorem, and Euler product and reciprocal expansions. \\
+\nolinkurl{GaussianBinomialFixedColumnRate.lean} & No definitions and exactly ten theorems: two finite-product defect bounds, the denominator-free relative Gaussian bound, fixed and shifted nonasymptotic additive bounds, shifted convergence, and four relative/additive geometric \nolinkurl{IsBigO} laws.  The ring layer assumes a normalized multiplicative norm and \(\lVert q\rVert\le1\); the field layer assumes only \(\lVert q\rVert<1\), without completeness or \(q\ne0\). \\
+\nolinkurl{GaussianBinomialGreaterOneAsymptotics.lean} & No definitions and exactly two theorems, named in the crosswalk: reciprocity transfers the printed fixed-column rate and central equivalence to every real \(q>1\), making \nolinkurl{cor:qgreaterone} Exact; no shifted-central or wider-domain claim. \\
 \nolinkurl{JacobiTripleProduct.lean} & Two definitions and exactly twenty-five theorems: theta and pentagonal exponents, finite and infinite Jacobi triple products, and Euler pentagonal sums. \\
 \nolinkurl{QPascalSummation.lean} & Exactly four theorems and no public definitions: two finite Gaussian-binomial summations and the left and right commuting q-binomial identities. \\
 \nolinkurl{GaussianBinomialContinuity.lean} & Exactly three theorems and no public definitions: continuity, the classical \(q\to1\) limit, and the finite-Pochhammer quotient formula. \\
 \nolinkurl{GaussianBinomialPalindromic.lean} & Exactly fourteen theorems and no public definitions: general reflection helpers; generic degree bound, boundary values, reflection, constant/top coefficients, coefficient symmetry, mean identity, and the interior/total linear-coefficient theorems; exact degree and monicity over a nontrivial commutative semiring. \\
+\nolinkurl{GaussianBinomialCumulants.lean} & Exactly two definitions and twenty-four theorems.  Its three newest theorems are \nolinkurl{eval_one_derivative_derivative_gaussianBinomial_X} over a characteristic-zero field under \(k\le n\), and the all-\(n,k\), arbitrary-commutative-semiring, division-free \nolinkurl{twelve_mul_secondMoment_gaussianBinomial_eval_one} and \nolinkurl{twelve_mul_varianceNumerator_gaussianBinomial_eval_one}; the latter include the zero, diagonal, and above-row boundaries. \\
 \nolinkurl{GaussianBinomialPolynomialStructure.lean} & Exactly five theorems and no public definitions: universal natural degree, monicity, constant coefficient one, exact reflection, and bounded-index coefficient symmetry. \\
 \nolinkurl{CentralQBinomialReduction.lean} & Exactly six theorems and no definitions: sign pairing, even--odd dissection, naturality, integral and commutative-ring division-free central reduction, and a field quotient under two nonvanishing hypotheses. \\
 \nolinkurl{CyclotomicFactorization.lean} & Exactly seven theorems and no definitions: quotient bounds, divisor reindexing, finite-product and factorial identities over commutative rings, interval-product extension, and Gaussian cyclotomic factorization over an integral domain. \\
 \nolinkurl{PrimitiveRootBlock.lean} & Exactly three theorems and no definitions: primitive-root interior Gaussian vanishing, the top phase, and the complete finite q-Pochhammer block. \\
-\nolinkurl{QLucas.lean} & Exactly eight theorems and no definitions: three natural quadratic identities, signed-product coefficient and block formulas, the primitive-root phase, and q-Lucas. \\
+\nolinkurl{QLucas.lean} & Exactly seven theorems and no definitions: two natural quadratic identities, signed-product coefficient and block formulas, the primitive-root phase, and q-Lucas.  Its local \nolinkurl{two_mul_choose_two} is private; the public theorem is in \nolinkurl{QChuVandermonde.lean}. \\
+\nolinkurl{TwoPhiOneReversal.lean} & Exactly two definitions and twelve theorems: the finite normalization and reflected parameter map, finite-to-tsum bridge, involution, terminating reversal, and one- and two-step actual-tsum reversal laws. \\
+\nolinkurl{QChuVandermonde.lean} & Exactly ten theorems and no definitions: the public \nolinkurl{two_mul_choose_two}, both denominator-cleared sums and quotient evaluations, actual-tsum wrappers, and the separately named by-reversal route; only that route retains the two auxiliary nonvanishing assumptions. \\
+\nolinkurl{JacobiTwoSquareCount.lean} & Exactly four theorems and no definitions: the nonzero two-square divisor count, its conditional prime product, and the unconditional chi-four and alternating-odd Lambert identities over complete normed fields under \(\lVert q\rVert<1\). \\
 \nolinkurl{CyclotomicDivisibility.lean} & Exactly three theorems and no definitions: the carry characterization of exponent one, the rational-polynomial divisibility iff, and the multiple-index primitive-root value. \\
 \nolinkurl{QCatalan.lean} & Exactly one definition and eleven theorems: q-integer naturality, degree and cyclotomic identities, rational and integral divisibility, and the integral q-Catalan quotient with its degree and value at one. \\
 \nolinkurl{NewtonInterpolation.lean} & Exactly three definitions and nineteen theorems: triangular Newton coefficients, the node polynomial, interpolation and uniqueness, divided differences, the geometric-power-grid formulas, and the definitionally identical \nolinkurl{newtonInterpolant} compatibility API over a field. \\
@@ -5550,9 +6396,23 @@ Module & Role in the development \\
 \addlinespace[0.45em]
 \multicolumn{2}{l}{\textbf{Finite q-binomial and Thue--Morse algebra}}\\[0.25em]
 \nolinkurl{HalfQBinomial.lean} & Exact q-binomial coefficients at q=1/2, q-Pascal recurrence, Mersenne normalization, and a finite q-binomial theorem. \\
+\nolinkurl{HalfQBinomialRootSimplicity.lean} & Exhaustive zero-definition/one-theorem surface: \nolinkurl{halfQBinomial_sum_rootMultiplicity_two_pow} proves multiplicity one at every dyadic root \(2^j\), \(j<n\), of the exact rational half-base polynomial.  With the complete root classification this makes \nolinkurl{cor:halfbase-root-locus} Exact; \nolinkurl{cor:qbinom-inversion-law} remains Partial. \\
 \nolinkurl{QBinomialCauchy.lean} & One q-Bernstein definition and five denominator-free finite q-Cauchy/q-Bernstein theorems over arbitrary commutative rings, including the compatibility alias \nolinkurl{finiteQPochhammerIn_mul_eq_sum_gaussianBinomial}. \\
+\nolinkurl{GaussianBinomialContinuity.lean} & Zero definitions and exactly three theorems: \nolinkurl{continuous_gaussianBinomial}, \nolinkurl{tendsto_gaussianBinomial_nhds_one}, and \nolinkurl{gaussianBinomial_eq_finiteQPochhammerIn_div}.  The first two hold for all \(n,k\) in every topological semiring with continuous operations.  The quotient identity needs only a field, \(k\le n\), and \((q;q)_k\ne0\), with no topology. \\
+\nolinkurl{JacobiTripleProduct.lean} & Two definitions, \nolinkurl{thetaExponent} and \nolinkurl{pentagonalExponent}, and exactly twenty-five theorems: \nolinkurl{two_dvd_mul_sub_one}, \nolinkurl{mul_sub_one_nonneg}, \nolinkurl{two_mul_thetaExponent}, \nolinkurl{thetaExponent_natCast}, \nolinkurl{thetaExponent_neg_natCast}, \nolinkurl{choose_two_add_choose_two_succ_eq}, \nolinkurl{sum_mul_sum_eq_sum_antidiagonal}, \nolinkurl{thetaCoeff_pair_eq}, \nolinkurl{sum_antidiagonal_thetaCoeff}, \nolinkurl{finite_triple_product_poly}, \nolinkurl{pow_mul_finiteQPochhammerIn_div}, \nolinkurl{neg_one_zpow_natCast_sub}, \nolinkurl{finite_triple_product}, \nolinkurl{norm_gaussianBinomialInt_le}, \nolinkurl{tendsto_gaussianBinomialInt_central}, \nolinkurl{summable_pow_thetaExponent_mul_zpow}, \nolinkurl{hasSum_jacobi_triple_product}, \nolinkurl{hasSum_jacobi_triple_product'}, \nolinkurl{mul_three_mul_sub_one_nonneg}, \nolinkurl{two_dvd_mul_three_mul_sub_one}, \nolinkurl{two_mul_pentagonalExponent}, \nolinkurl{pentagonalExponent_eq}, \nolinkurl{pentagonalExponent_pos}, \nolinkurl{hasSum_pentagonal}, and \nolinkurl{hasSum_pentagonal_pairs}.  Exponent arithmetic is unconditional; the finite polynomial block is over commutative rings, while the Laurent block is over fields and its divided-product formulas assume \(z\ne0\).  The norm bound needs a normed field and \(\lVert q\rVert<1\); the central limit, Jacobi, and pentagonal identities add completeness, with \(z\ne0\) exactly for Jacobi.  The pentagonal results include \(q=0\); the real theta majorant assumes \(0\le r<1\) and \(0<s\). \\
+\nolinkurl{QBinomialTheoremInfinite.lean} & One definition, \nolinkurl{gaussianMajorant}, and exactly twenty-two theorems: \nolinkurl{hasSum_of_tendsto_of_dominated}, \nolinkurl{one_le_qPochhammerInfIn_neg}, \nolinkurl{finiteQPochhammerIn_neg_le_qPochhammerInfIn}, \nolinkurl{qPochhammerInfIn_nonneg}, \nolinkurl{qPochhammerInfIn_le_finiteQPochhammerIn}, \nolinkurl{qPochhammerInfIn_pos_of_lt_one}, \nolinkurl{qPochhammerInfIn_zero_left}, \nolinkurl{norm_finiteQPochhammerIn_le_neg_norm}, \nolinkurl{finiteQPochhammerIn_norm_le_norm}, \nolinkurl{norm_finiteQPochhammerIn_le}, \nolinkurl{qPochhammerInfIn_norm_le_norm_finiteQPochhammerIn}, \nolinkurl{finiteQPochhammerIn_ne_zero_of_norm_lt_one}, \nolinkurl{gaussianBinomial_eq_div}, \nolinkurl{gaussianMajorant_nonneg}, \nolinkurl{norm_gaussianBinomial_le}, \nolinkurl{tendsto_finiteQPochhammerIn_pow_atTop}, \nolinkurl{tendsto_gaussianBinomial_atTop}, \nolinkurl{summable_pow_choose_two_mul_pow}, \nolinkurl{hasSum_euler_product}, \nolinkurl{qPochhammerInfIn_ne_zero_of_norm_lt_one}, \nolinkurl{hasSum_qBinomial_theorem}, and \nolinkurl{hasSum_euler_reciprocal}.  The Tannery theorem is Banach-valued with its common summable bound, row limits, row \texttt{HasSum}s, and sum limit.  The real comparison block uses exactly \(0\le r<1\) and its displayed hypotheses on \(x\); the infinite zero-left theorem is unconditional over a topological commutative ring.  Norm bounds and fixed-column limits need a normed field and their displayed contraction/unit-ball hypotheses.  Over a complete normed field Euler's product needs only \(\lVert q\rVert<1\) and arbitrary \(z\), while the infinite q-binomial and reciprocal identities add \(\lVert z\rVert<1\), with arbitrary \(a\) and no \(q\ne0\).  The finite zero-left theorem belongs to \nolinkurl{GaussianBinomialAtOne.lean}. \\
+\nolinkurl{QPascalSummation.lean} & Zero definitions and exactly four theorems: \nolinkurl{sum_gaussianBinomial_succ_mul}, \nolinkurl{sum_gaussianBinomial_succ_mul'}, \nolinkurl{Commute.gaussianBinomial_left}, and \nolinkurl{Commute.gaussianBinomial_right}.  The first summation and both commutation laws hold in every semiring, with only the indicated \texttt{Commute} hypothesis for the latter; the second summation assumes a commutative semiring.  There is no division, order, topology, or restriction on \(q,n\), or the weight sequence. \\
+\nolinkurl{QuantumBinomial.lean} & Zero definitions and exactly two theorems, \nolinkurl{quantumPlane_mul_pow} and \nolinkurl{quantum_binomial}, over an arbitrary possibly noncommutative semiring.  The first assumes that \(q\) commutes with \(X\) and \(YX=q(XY)\); the second additionally assumes that \(q\) commutes with \(Y\).  No division or topology is used. \\
+\nolinkurl{RogersSzegoPolynomial.lean} & One definition, \nolinkurl{rogersSzego}, and exactly nine theorems: \nolinkurl{rogersSzego_zero}, \nolinkurl{rogersSzego_one}, \nolinkurl{rogersSzego_succ}, \nolinkurl{one_sub_pow_succ_mul_gaussianBinomial_succ_succ}, \nolinkurl{rogersSzego_dilation}, \nolinkurl{rogersSzego_three_term}, \nolinkurl{summable_norm_pow_div_finiteQPochhammerIn_self}, \nolinkurl{sum_antidiagonal_euler_mul_euler}, and \nolinkurl{hasSum_rogersSzego_generating}.  The definition and first three theorems use a commutative semiring; the cross, dilation, and three-term laws use a commutative ring and are total in their natural indices.  The summability theorem needs a normed field, \(\lVert q\rVert<1\), and \(\lVert z\rVert<1\); the antidiagonal identity needs only the contraction.  The generating function adds completeness and assumes exactly \(\lVert q\rVert<1\), \(\lVert t\rVert<1\), and \(\lVert zt\rVert<1\). \\
+\nolinkurl{PolynomialQDerivative.lean} & Two definitions, \nolinkurl{qInt} and \nolinkurl{qDerivative}, and exactly seventeen theorems: \nolinkurl{qInt_zero}, \nolinkurl{qInt_one}, \nolinkurl{qInt_succ}, \nolinkurl{qInt_succ'}, \nolinkurl{qInt_add}, \nolinkurl{qInt_one_left}, \nolinkurl{one_sub_mul_qInt}, \nolinkurl{qDerivative_apply}, \nolinkurl{qDerivative_monomial}, \nolinkurl{qDerivative_C}, \nolinkurl{qDerivative_X_pow}, \nolinkurl{qDerivative_X}, \nolinkurl{qDerivative_C_mul_X_pow}, \nolinkurl{eval_qDerivative_mul}, \nolinkurl{qDerivative_comp_C_mul_X}, \nolinkurl{qDerivative_mul}, and \nolinkurl{qDerivative_mul'}.  The q-integer layer is semiring-valued; its geometric identity and the division-free evaluation law use a commutative ring; the remaining polynomial derivative API uses a commutative semiring.  Arbitrary \(q\), including zero and one; no analytic or limiting derivative. \\
+\nolinkurl{PolynomialQLeibniz.lean} & Zero definitions and exactly four theorems: \nolinkurl{comp_C_mul_X_comp_C_mul_X}, \nolinkurl{qDerivative_C_mul}, \nolinkurl{qDerivative_iterate_comp_C_mul_X}, and \nolinkurl{qDerivative_iterate_mul}.  All hold over a commutative semiring for arbitrary \(q\) and every natural order, with no division, nonvanishing, topology, or convergence hypothesis. \\
+\nolinkurl{QPochhammerDerivative.lean} & Zero definitions and exactly three theorems: \nolinkurl{hasDerivAt_finiteQPochhammerIn}, \nolinkurl{hasDerivAt_finiteQPochhammerIn_of_ne_zero}, and \nolinkurl{hasDerivAt_finiteQPochhammerIn_comp}.  Arbitrary \(q,a,n\) over a nontrivially normed field; unconditional cofactor derivative, logarithmic form under exact factorwise nonvanishing, and chain rule under the supplied pointwise derivative.  No infinite-product derivative. \\
+\nolinkurl{LambertSeriesLog.lean} & Zero definitions and exactly four theorems: \nolinkurl{one_le_norm_natCast_add_one}, \nolinkurl{summable_lambert_series}, \nolinkurl{hasSum_lambert_log_complex}, and \nolinkurl{exp_neg_tsum_lambert_eq_qPochhammerInfIn}.  Apart from the unconditional norm helper, exactly complex \(\lVert a\rVert<1\), \(\lVert q\rVert<1\); principal factor logs and a branch-free exponential identity, with no norm-one boundary, product-log branch identity, continuation, or differentiated series. \\
+\nolinkurl{QGamma.lean} & Two total real definitions, \nolinkurl{qGamma} and \nolinkurl{qNumber}, and exactly ten theorems: \nolinkurl{norm_lt_one_of_pos_of_lt_one}, \nolinkurl{qPochhammerInfIn_rpow_pos}, \nolinkurl{qPochhammerInfIn_self_pos}, \nolinkurl{qGamma_pos}, \nolinkurl{qGamma_one}, \nolinkurl{qGamma_add_one}, \nolinkurl{qGamma_nat_succ}, \nolinkurl{qNumber_natCast}, \nolinkurl{qGamma_mul_qGamma_one_sub}, and \nolinkurl{hasSum_theta_qGamma_reflection}.  Positive recurrence API under \(0<q<1\) and displayed \(x>0\); natural bridge under \(q\ne1\); reflection under only \(q<1\) and arbitrary real \(x\); theta form under \(0<q<1\), \(0<x<1\).  No complex continuation, classical limit, pole, log-convexity, uniqueness, or digamma theorem. \\
 \nolinkurl{ThueMorseMixedDifference.lean} & Order-independent translation differences, Boolean-cube expansion, polynomial coefficient extraction, and dyadic Thue--Morse specialization. \\
 \nolinkurl{ThueMorseSymmetricDifference.lean} & Centered half-step recurrence and Boolean-cube expansion, sign-free sharp polynomial extraction, strict-degree cancellation, and centered/increasing-grid dyadic Thue--Morse block formulas. \\
+\nolinkurl{ThueMorseCornerIntegral.lean} & Exhaustive one-definition/four-theorem surface giving the recursive centered box integral and the exact range/\nolinkurl{Fin N} local corner identities under open, order-connected, segment-local \nolinkurl{ContDiffOn} hypotheses. \\
+\nolinkurl{FinitePolynomialFunctional.lean} & Exhaustive zero-definition/sixteen-theorem surface giving scalar-extended moment expansion, reproduction, coefficient extraction, cancellation and congruence, same-ring forms, and affine top-coefficient transport including zero scale. \\
 \nolinkurl{FabiusRawQBinomialFormula.lean} & Raw coefficient-valued finite q-binomial identity before scalar or analytic specialization. \\
 \nolinkurl{FabiusRawQBinomialScalar.lean} & Scalar evaluation of the raw finite identity. \\
 \nolinkurl{FabiusQBinomialFormula.lean} & Principal exact Thue--Morse/q-binomial formula for unrestricted natural parameters. \\
@@ -5622,7 +6482,7 @@ Module & Role in the development \\
 \nolinkurl{CompleteHomogeneousBell.lean} & Finite power sums and factorially weighted Bell input; the division-free complete-homogeneous/complete-Bell identity over every commutative semiring and its factorially normalized pointwise report form over commutative \(\RationalNumbers\)-algebras.  No analytic convergence is asserted. \\
 \nolinkurl{GeometricCompleteHomogeneous.lean} & Denominator-free principal specialization \(h_n(1,q,\ldots,q^p)=\GaussianBinomial{n+p}{p}{q}\), its arbitrary common-scale form over every commutative semiring, and the range-indexed bridge used by interpolation rows. \\
 \nolinkurl{LagrangeResidualMoments.lean} & Every higher residual moment of a polynomially exact finite row, with a representation-independent commutative-ring theorem and the distinct-node Lagrange specialization. \\
-\nolinkurl{GeometricResidualMoments.lean} & Every positive residual moment on \(c,cq,\ldots,cq^p\) over a commutative ring, assuming exactness directly on those scaled nodes, together with distinct-node Lagrange, arbitrary-dilation, and shifted-block field corollaries. \\
+\nolinkurl{GeometricResidualMoments.lean} & Exhaustive zero-definition/nine-theorem surface: every positive residual moment on \(c,cq,\ldots,cq^p\) over a commutative ring, assuming exactness directly on those scaled nodes, together with distinct-node Lagrange, arbitrary-dilation, shifted-block, and polynomial-exactness field corollaries.  The theorem \nolinkurl{sum_geometricLagrangeWeight_mul_eval_scaled_geometric} assumes finite power-node injectivity and allows arbitrary \(c\), making \nolinkurl{cor:scaled-geometric-moments} Exact by composition with the positive-moment theorem. \\
 \nolinkurl{AnalyticSeriesFilter.lean} & Unconditional pointwise evaluation of finite coefficient filters: diagonalization under weighted sampled-series summability, exact finite heads and tails, and Gaussian residual tails for geometric and geometric-Lagrange rows, including shifted scales.  This generic module does not supply conditional boundary summation, uniform estimates, asymptotic rates, or a sinc-product instantiation. \\
 \nolinkurl{RvachevQBinomialFilter.lean} & Exact specialization of the Gaussian filter to the actual infinite Rvachev product: the named even modes sum to the product and scale by powers of \(c^2\); the generic complex theorem assumes exactly finite-power injectivity, the \(c=1/2\), \(q=1/4\) theorem is assumption-free, and the model-generic wrapper applies to every bounded \nolinkurl{IsFabius} solution.  Finite-prefix quotients and analytic acceleration estimates are not asserted. \\
 \nolinkurl{QBinomialVandermonde.lean} & Both zero-extended \(q\)-Vandermonde orientations, full-range and exact-\(\min\)-support central forms, the total positive shifted-central identity, and two negative-shift forms under exactly \(k\leq N\), plus the total integer-index shifted-central identity and its finitely supported \nolinkurl{finsum} form built from \nolinkurl{gaussianBinomialInt}, all denominator-free over arbitrary commutative semirings. \\
@@ -5630,6 +6490,16 @@ Module & Role in the development \\
 \nolinkurl{GeometricLagrangeWeights.lean} & Identification of the geometric Lagrange row with the Richardson coefficient polynomial and its complete-homogeneous all-order moments. \\
 \nolinkurl{GeometricLagrangeQBinomial.lean} & Field-valued q-Pochhammer weight formulas and report-facing rational q-binomial and quarter-base coefficient formulas. \\
 \nolinkurl{GeometricLagrangeQMoments.lean} & Closed forms for every rational geometric moment under nonzero-base and nonvanishing finite-denominator hypotheses, with exact residual sign and finite total variation for \(0<q<1\) and dedicated quarter-base corollaries. \\
+\nolinkurl{GeometricRichardsonGenerating.lean} & Exhaustive three-definition/seven-theorem surface.  The definitions are \nolinkurl{geometricRichardsonKernel}, \nolinkurl{qPochhammerNormalizedDataSeries}, and \nolinkurl{geometricRichardsonTransform}; the theorems are \nolinkurl{coeff_rescale_qPochhammerSeries_eq_geometricRichardsonKernel}, \nolinkurl{coeff_qPochhammerNormalizedDataSeries}, \nolinkurl{geometricRichardsonTransform_generating}, \nolinkurl{geometricRichardsonTransform_eq_sum_lagrange}, \nolinkurl{geometricLagrangeRichardson_generating}, \nolinkurl{hasSum_geometricRichardsonTransform_mul_pow}, and \nolinkurl{hasSum_geometricLagrangeRichardson_mul_pow}.  The first generating identity is formal over a commutative ring with totalized inverses; the exact geometric-Lagrange form assumes a field and nonzero nome; the two analytic \nolinkurl{HasSum} forms additionally require completeness, strict nome contraction, and absolute summability of the normalized data. \\
+\nolinkurl{GeometricUniformMomentPolynomial.lean} & Exhaustive one-definition/eight-theorem algebraic surface: recursive rational polynomial family, residual-product recurrence, triangular \nolinkurl{natDegree} bound, reciprocal-factorial value at zero, and \(P_0\) through \(P_4\). \\
+\nolinkurl{GeometricUniformMomentPolynomialBridge.lean} & Exhaustive zero-definition/one-theorem surface: \leansubtwo{geometricUniformMomentPolynomial_eval}{_eq_mgf_taylorCoefficient} identifies that polynomial with the normalized Taylor coefficient of the actual geometric-uniform MGF for every real \(\lvert q\rvert<1\), making \nolinkurl{p7:eq:Pn-def} Exact in that regime.  It supplies no complex-q product or sharp degree theorem by itself; the later product, exterior-germ, and degree leaves supply those clauses. \\
+\nolinkurl{RvachevLagrangeNodesOnly.lean} & Exhaustive one-definition/fourteen-theorem surface named in the crosswalk: ordinary-derivative and raw omitted-node Appell forms, rational descent and rational lattice samples, and formal complete-Bell/Bernoulli--Mersenne coefficients.  It makes \nolinkurl{cor:lag-nodes-only} Exact only by composition; the rational-point, synthesis-hypothesis, and non-analytic-MGF caveats remain explicit. \\
+\nolinkurl{ThueMorseGammaTowerDifferential.lean} & No definitions and exactly three theorems, named in the crosswalk: positive-parameter Mellin differentiation and the full finite GammaLog derivative ladder.  This makes \nolinkurl{p2:thm:gamma-tower} Exact under its chosen-coordinate convention, not as a principal-log identity. \\
+\nolinkurl{GeometricUniformComplexMomentProduct.lean} & Exhaustive one-definition/three-theorem surface: \nolinkurl{geometricUniformComplexMomentProduct} is the actual complex product, \nolinkurl{hasProdLocallyUniformly_geometricUniformComplexMomentProduct} proves its locally uniform convergence for \(\lVert q\rVert<1\), \nolinkurl{differentiable_geometricUniformComplexMomentProduct} proves complex differentiability on the whole plane, and \nolinkurl{geometricUniformMomentPolynomial_eval₂_eq_complexMomentProduct_taylorCoefficient} gives the normalized Taylor-coefficient bridge.  It is an analytic analogue of the real identity, not a complex probability statement. \\
+\nolinkurl{GeometricUniformExteriorComplexMomentGerm.lean} & Exhaustive one-definition/two-theorem surface: \nolinkurl{geometricUniformExteriorComplexMomentGerm} is the actual \(\mathcal A_{q^{-1}}(-z)^{-1}\) reciprocal germ, \nolinkurl{analyticAt_geometricUniformExteriorComplexMomentGerm} proves analyticity at zero for \(1<\lVert q\rVert\), and \nolinkurl{geometricUniformMomentPolynomial_eval₂_eq_exteriorComplexMomentGerm_taylorCoefficient} gives its normalized Taylor-coefficient bridge; no unit-circle analytic value is asserted. \\
+\nolinkurl{GeometricUniformMomentPolynomialDegree.lean} & Exhaustive zero-definition/three-theorem surface: \nolinkurl{coeff_geometricUniformMomentPolynomial_choose_two} and \nolinkurl{coeff_geometricUniformMomentPolynomial_choose_two_sub_one} give the top and subleading Bernoulli coefficients, while \nolinkurl{geometricUniformMomentPolynomial_natDegree_eq} gives the exact parity-sensitive degree.  Together with the preceding leaves this makes \nolinkurl{p7:thm:Pn} Exact and independently makes \nolinkurl{prop:qF-P-degree-sharp} Exact. \\
+\nolinkurl{GeometricUniformMomentRatFunc.lean} & Exhaustive one-definition/four-theorem surface: \nolinkurl{geometricUniformMomentRatFunc}; \nolinkurl{qFactorial_mul_geometricUniformMomentRatFunc}; \nolinkurl{eval_geometricUniformMomentRatFunc_eq_complexMomentProduct_taylorCoefficient}; \nolinkurl{eval_geometricUniformMomentRatFunc_eq_exteriorComplexMomentGerm_taylorCoefficient}; and \nolinkurl{eval_geometricUniformMomentRatFunc_one}.  It packages one rational \(a_n\), proves its global q-factorial clearing, identifies its safe inner/exterior values, and handles \(q=1\) by polynomial continuation.  Thus \nolinkurl{thm:qF-moment-polynomial} is Exact; genuine poles and unit-circle analytic values are not totalized. \\
+\nolinkurl{GeometricUniformMomentReciprocity.lean} & Exhaustive one-definition/five-theorem surface: \nolinkurl{geometricUniformComplexMomentGerm}; \nolinkurl{geometricUniformComplexMomentGerm_of_norm_lt_one}; \nolinkurl{geometricUniformComplexMomentGerm_of_one_lt_norm}; \nolinkurl{analyticAt_geometricUniformComplexMomentGerm}; \nolinkurl{geometricUniformComplexMomentGerm_reciprocity}; and \nolinkurl{geometricUniformComplexMomentGerm_moment_convolution}.  Under exactly \(q\ne0\) and \(\lVert q\rVert\ne1\), it proves local \nolinkurl{EventuallyEq} reciprocity and the derivative convolution, making \nolinkurl{thm:qF-reciprocity} Exact; no global or unit-circle identity, maximal disc, uniqueness, or pole divisor is asserted. \\
 \nolinkurl{LambertPhaseLockedRichardson.lean} & Exact lower-Lambert phase locking, reciprocal-grid Lagrange weights, cancellation, and every complete-homogeneous residual moment. \\
 \nolinkurl{LambertPhaseLockedBell.lean} & Generalized harmonic power sums and Bell input for the shifted reciprocal alphabet, together with exact complete-homogeneous and reciprocal-Lagrange moment rewrites in factorially normalized complete-Bell form over characteristic-zero fields (with the direct rewrite using the rational-algebra structure).  Total field inversion requires no positivity or nonvanishing hypothesis on the shift. \\
 \nolinkurl{FabiusLambertPhaseLockedPullback.lean} & Pullback of the arbitrary-order logarithmic Fabius expansion to every fixed phase-locked Lambert node, with the periodic correction and saddle coefficients frozen at the base phase. \\
@@ -5689,6 +6559,8 @@ Module & Role in the development \\
 \nolinkurl{FabiusLegendreSeries.lean} & Orthogonality, absolute/uniform convergence, and pointwise identification of the up-function series. \\
 \nolinkurl{FabiusTranslatedLegendreSeries.lean} & Affine translation to the signed Fabius function and monomial expansion of the translated series. \\
 \nolinkurl{FabiusLegendreLeastSquares.lean} & Pythagorean identity and unique least-squares optimality of finite Legendre truncations. \\
+\nolinkurl{RvachevLegendreCentralSum.lean} & Exhaustive zero-definition/three-theorem surface: the central value of (P_{2n}), evenness of the deconvolved even mode, and the exact finite central-binomial cancellation at mesh (4^n), including (n=0). \\
+\nolinkurl{RvachevLegendreBiorthogonality.lean} & Exhaustive one-definition/one-theorem surface: \nolinkurl{rvachevLegendreAnalysisKernel} is the normalized translated Legendre analysis kernel and \nolinkurl{rvachevLegendreBiorthogonality} is its exact finite open-block pairing with the Rvachev deconvolution polynomial for every nonzero natural mesh with \(\ell\leq v_2(M)\) and arbitrary analysis degree.  It closes \nolinkurl{def:leg-Lambda} and \nolinkurl{thm:leg-biorthogonality}; the larger \nolinkurl{thm:leg-Lambda} Fourier--Bessel claims and matrix/projector corollary remain Partial. \\
 \nolinkurl{FabiusLegendreEnergy.lean} & Polynomial-form Legendre blocks, their complete orthogonality, full coefficient Parseval identity, exact shifted coefficient-energy tails in \nolinkurl{HasSum} and \nolinkurl{tsum} form, and the real-variable Legendre series for \(\int_0^1F(t)^2\,dt\).  Finite up-translate realization, Fourier/sinc energy formulas, and rationality of partial sums remain outside the module. \\
 \nolinkurl{LegendreGaunt.lean} & Four definitions and twelve theorems giving executable rational Lebesgue moments and Gaunt coefficients, real-cast and moment-functional bridges, two index swaps, finite real/rational Legendre product linearizations, and the proved parity and triangle-support zeros; see \cref{ch:legendre-gaunt}. \\
 \nolinkurl{LegendreGauntClosedForm.lean} & Two definitions and twenty-five theorems giving the total rational integer-index zero-row Wigner-square datum, pairwise-coordinate central-binomial and factorial forms, the half-sum factorial form, exact global rational and real Gaunt identities, sharp support, positivity, nonnegativity, degenerate and zero-index boundary values, and product-coefficient laws; no signed phase, half-integer or nonzero magnetic indices, Wigner orthogonality, or recoupling; see \cref{ch:legendre-gaunt-closed-form}. \\
@@ -5704,6 +6576,7 @@ Module & Role in the development \\
 \nolinkurl{StirlingAsymptotics.lean} & Factorial and binomial asymptotics needed for the k-fold scale. \\
 \nolinkurl{LowerLambertW.lean} & Correctly defined lower Lambert branch, endpoint-inclusive continuity on \([-\exp(-1),0)\), smooth-interior calculus, divergence at zero, and intrinsic two-term small-argument expansion. \\
 \nolinkurl{PrincipalLambertW.lean} & Principal real branch, endpoint-inclusive continuity on \([-\exp(-1),\infty)\), smooth-interior calculus, unit derivative at zero, and \(W_0(z)\sim z\). \\
+\nolinkurl{LambertWBranchGapBernoulli.lean} & Exactly five theorems: real absolute convergence inside \(\lvert z\rvert<2\pi\), complex summability iff \(\lvert z\rvert<2\pi\), the actual real nonzero-argument sum, the actual complex sum with its canonical removable origin, and the paired compact branch-gap series.  Thus the radius, boundary divergence, \nolinkurl{eq:pair-Bernoulli-general}, and the canonical-removable reading of \nolinkurl{eq:bernoulli-gen} are Exact; the literal totalized quotient and holomorphy are not claimed, and higher/full Puiseux claims remain open. \\
 \nolinkurl{LambertWCurvature.lean} & Nonsingular raw-branch second derivatives; principal strict concavity on its closed natural domain; and the lower branch's exact inflection, left strict convexity, and right strict concavity. \\
 \nolinkurl{LambertWBranchPointGeometry.lean} & Exactly eight theorems: signed right-hand derivative blow-up, signed endpoint-secant blow-up, failure of finite right differentiability, and failure of full differentiability for both totalized real branches. \\
 \nolinkurl{LambertWBranchPointAsymptotics.lean} & One noncomputable scale definition and eight theorems: positivity and square of \(\sqrt{2\exp(1)(z+\exp(-1))}\), two squared-ratio limits, two squared equivalences, and the signed principal/lower leading square-root equivalents. \\
@@ -5782,7 +6655,7 @@ crosswalk.  The three added rows
 curvature tranche, compiled 30 Aug 2026.  They are recorded
 declaration-by-declaration without a fabricated checkpoint or aggregate
 hash.  This tranche closes raw-branch curvature, the four generic
-second-derivative formulas, and the nineteen-declaration Fabius leaf; it
+second-derivative formulas, and the nineteen-declaration Fabius leaf.
 The two additional rows
 \nolinkurl{LambertWBranchPointGeometry.lean} and
 \nolinkurl{LambertWBranchPointAsymptotics.lean} are the later current-tree
@@ -5794,6 +6667,19 @@ non-differentiability, squared-ratio limits, and leading signed square-root
 equivalences.  They do not close \(O(\Delta)\) remainders, higher or
 convergent/full Puiseux expansions, generic/Fabius endpoint wrappers, or
 the generic \(m\mathbin{\pm}\sqrt m\) threshold and shape layer.
+The later row
+\nolinkurl{LambertWBranchGapBernoulli.lean}, compiled in a focused build on
+4 September 2026, has the exhaustive zero-definition/five-theorem surface
+listed above.  It makes the Lambert guide's compact
+\nolinkurl{eq:pair-Bernoulli-general} Exact and also makes the complex
+radius-\(2\pi\), boundary-divergence, and canonical-removable
+\nolinkurl{eq:bernoulli-gen} clauses Exact.  The literal totalized quotient at
+zero and holomorphy of a named sum function are not claimed, and all higher
+Puiseux claims remain open.  The walkthrough and Lambert-guide PDFs remain exact
+historical receipts for their respective named source checkpoints, with validation
+records kept externally in the repository documentation.  Their current merged
+sources postdate those receipts, so fresh uninterrupted three-pass Libertinus parity
+rebuilds remain pending.
 The \nolinkurl{FabiusInverseLogarithmicModulus.lean} row is a still later
 current-tree addition inspected declaration-by-declaration on 30 August 2026.
 Its three definitions and fifteen theorems close the least logarithmic scale
@@ -5802,6 +6688,13 @@ the exact endpoint-mass ceiling, tolerant bisection, sequential computability,
 combined computable-real-function theorem, and input-bit asymptotics remain
 outside that leaf.  No aggregate checkpoint is fabricated for this merged
 surface.
+The subsequent \nolinkurl{FabiusInverseExactDyadicModulus.lean} source-only
+row has exactly two definitions and ten theorems.  It closes the exact
+fixed-dyadic ceiling, endpoint counterexample, and target-specific strict
+leastness, and composes them with the logarithmic selector to obtain a
+reciprocal \(1/n\) witness, and proves both denominator maps primitive
+recursive.  It does not claim leastness for \(1/n\) or assert a modulus at its convention-only zero
+input.  The retained walkthrough PDF predates this row.
 The still later compiled current-tree tranche
 \nolinkurl{EffectiveMonotoneInverse.lean} and
 \nolinkurl{FabiusInverseComputable.lean} has exactly the two-definition,
@@ -5829,9 +6722,13 @@ Lean audits of the previously recorded new or refactored declarations,
 \nolinkurl{propext}, \nolinkurl{Classical.choice}, and \nolinkurl{Quot.sound}
 for each.  At that upstream checkpoint, static inspection found all 610 modules
 below \nolinkurl{FabiusFunction/} reachable from the facade and every one of
-the 105 activation declarations documented.  The live current-tree audit scans
-675 modules and 8,909 public declarations, with no missing module headers or
-declaration comments.  At the retained historical mainline checkpoint before the latest
+the 105 activation declarations documented.  A later historical current-tree
+audit scanned 925 modules and 11,619 public declarations, with no missing
+module headers or declaration comments.  The live current-tree audit now scans
+934 modules and 11,709 public declarations, with zero missing module headers
+and zero missing declaration comments; the Legendre-biorthogonality 925/11,619
+census remains an explicit historical checkpoint.  At the retained historical
+mainline checkpoint before the latest
 six-module q-series tranche was 623 modules and 8,476 declarations.  Its
 immediately preceding census, after the Rvachev Appell and original
 four-theorem \nolinkurl{QPochhammerEntire.lean} tranche but before the generic
@@ -5843,6 +6740,10 @@ declarations), the two Legendre--Gaunt leaves (twenty-five),
 three half--quarter laws), and the four-declaration
 \nolinkurl{GaussianBinomialAtNegOneDerivative.lean} leaf.  It also adds the
 two-definition/seven-theorem \nolinkurl{LagrangeRvachevSynthesis.lean} leaf,
+the four-definition/six-theorem \nolinkurl{LagrangeRvachevMatrix.lean} leaf,
+the generic and geometric barycenter theorems
+\nolinkurl{integral_id_weightedUniformDistribution} and
+\nolinkurl{integral_id_geometricUniformDistribution_eq_one_half},
 the historical three-theorem surface of
 \nolinkurl{PrimePowerBinomialValuation.lean} (now expanded to six), the
 two-definition/twenty-five-theorem \nolinkurl{LegendreGauntClosedForm.lean}
@@ -5859,8 +6760,8 @@ at that historical stage, from 620/8,438 to 621/8,446, consisted exactly of the 
 and mean-zero theorems added to \nolinkurl{RvachevMomentAppell.lean}, the
 arbitrary-phase synthesis theorem added to
 \nolinkurl{RvachevPolynomialSynthesis.lean}, and the zero-definition/four-theorem
-\nolinkurl{QPochhammerEntire.lean} leaf as it then stood.  After that prior
-Appell/entire tranche, the historical increment from 621/8,446 to 623/8,476 is exactly
+\nolinkurl{QPochhammerEntire.lean} leaf documented above.  After that prior
+Appell/entire tranche, the increment from 621/8,446 to 623/8,476 is exactly
 \nolinkurl{QPochhammerDissection.lean}, with zero definitions and two theorems,
 and \nolinkurl{QPochhammerInfinite.lean}, with one definition and twenty-seven
 theorems: two modules and thirty public declarations.  The current merge then
@@ -5890,19 +6791,170 @@ q leaves contribute thirteen.  Two later linear-coefficient theorems enlarge
 \nolinkurl{EffectiveGapInverse.lean} contributes one module and eight
 declarations.  The one-definition/eight-theorem
 \nolinkurl{RvachevSuperconvergentSynthesis.lean} leaf contributes nine;
-the four root-of-unity/q-Catalan modules contribute twenty-six; the original
+the four root-of-unity/q-Catalan modules contribute twenty-five; the original
 q-beta/Newton pair contributes twenty-four; the integer/complex upper Gaussian
 and q-Pfaff--Saalsch\"utz tail contributes twenty; and the noncommutative
 q-multinomial leaf contributes five.  Finally,
 \nolinkurl{GaussianBinomialBounds.lean} contributes six theorems and the
-Newton compatibility union contributes seven declarations.  The live source
-intermediate census is therefore 672/8,875.  The subsequent
+Newton compatibility union contributes seven declarations.  That source
+intermediate census was therefore 672/8,875.  The subsequent
 5+14 \nolinkurl{BinaryWordInversions.lean}, 2+8
 \nolinkurl{BoxPartitions.lean}, and 0+5
 \nolinkurl{TelescopingCertificate.lean} leaves add three modules and thirty-four
-declarations, giving the live 675/8,909 census.  No aggregate facade build is claimed for this
-current-tree census.  The retained PDF and the title-page pin remain historical
-receipts and do not claim parity with the merged source.
+declarations, giving the historical 675/8,909 checkpoint.  The subsequent
+source union, including the exact 0+7, 4+16, and 0+9 Lambert branch-pairing,
+gap-bijection, and symmetry surfaces, was followed by the exact inverse,
+Jacobi two-square, Lagrange--Rvachev Matrix, weighted/geometric barycenter,
+twelve-declaration terminating-basic-hypergeometric, and 3+7
+\nolinkurl{GeometricRichardsonGenerating.lean} tranches.  Three subsequent
+theorems in the existing 2+24
+\nolinkurl{GaussianBinomialCumulants.lean} module add the explicit second
+derivative at one and the division-free raw second moment and variance
+numerator.  The later 0+5
+\nolinkurl{LambertWBranchGapBernoulli.lean} leaf adds
+\nolinkurl{summable_bernoulli_mul_pow_div_factorial_iff} and
+\nolinkurl{hasSum_bernoulli_mul_pow_div_factorial_complex_iff}; together with
+the three finite branch-coordinate modules it gives four definitions and
+thirty-seven theorems, forty-one declarations in all.  The initial
+four-theorem exact-radius tranche formed the historical 903/11,447 checkpoint,
+and the complex \nolinkurl{HasSum} equivalence raised that checkpoint to
+903/11,448.  Its complex Bernoulli
+series converges exactly on the open radius-\(2\pi\) disk and there has the
+canonical removable \nolinkurl{complexExpm1Div} inverse as its sum; this is not
+the literal totalized quotient at zero and asserts no holomorphy.  The real
+quotient evaluation retains exactly \(z\ne0\), the branch theorem excludes
+both endpoints, and no remainder, higher-Puiseux, or Guide nearest-zero proof
+route is claimed.  The two new
+\nolinkurl{iteratedDeriv_rvachevUp_eq_extendedFabius} and
+\nolinkurl{iteratedDeriv_rvachevUp_dyadic_below} theorems also remain in the
+exhaustive zero-definition/six-theorem
+\nolinkurl{DyadicDerivativeFiltration.lean} surface.  The later 1+17
+\nolinkurl{GeometricUniformRealization.lean} and 2+1
+\nolinkurl{RegularCentralQBinomialSum.lean} leaves, followed by the 0+10
+\nolinkurl{GaussianBinomialFixedColumnRate.lean} leaf and the 1+14
+\nolinkurl{RvachevAppellHasse.lean} leaf, brought that checkpoint to
+910/11,525.  The subsequent 1+14
+\nolinkurl{RvachevLagrangeNodesOnly.lean} and 0+2
+\nolinkurl{GaussianBinomialGreaterOneAsymptotics.lean} leaves brought it to
+912/11,542.  Finally, the 1+8
+\nolinkurl{GeometricUniformMomentPolynomial.lean} leaf brings that census
+to 913/11,551 and supplies the algebraic portion of \nolinkurl{p7:thm:Pn}; the
+analytic normalization and sharp leading, subleading, and exact-degree claims
+remain absent.  The final 0+3
+\nolinkurl{ThueMorseGammaTowerDifferential.lean} leaf raises the historical census
+to 914/11,554 and makes \nolinkurl{p2:thm:gamma-tower} Exact on \(a>0\) for
+the chosen GammaLog coordinate.  The subsequent polynomial-exactness theorem
+in \nolinkurl{GeometricResidualMoments.lean} raises that declaration count
+to 11,555 and makes \nolinkurl{cor:scaled-geometric-moments} Exact by
+composition.  The exhaustive zero-definition/one-theorem
+\nolinkurl{GeometricUniformMomentPolynomialBridge.lean} companion then raises
+that checkpoint to 915/11,556; its sole theorem,
+\leansubtwo{geometricUniformMomentPolynomial_eval}{_eq_mgf_taylorCoefficient},
+supplies the real-\(\lvert q\rvert<1\) analytic normalization and makes
+\nolinkurl{p7:eq:Pn-def} Exact in that regime.  The leading-coefficient and
+strict odd-degree clauses are supplied below by the sharp-degree leaf.  The
+final exact-closure tranche adds
+the 1+4 \nolinkurl{ThueMorseCornerIntegral.lean} and 0+3
+\nolinkurl{RvachevLegendreCentralSum.lean} leaves, while the existing
+zero-definition \nolinkurl{FinitePolynomialFunctional.lean} module grows to
+sixteen theorems.  The subsequent then-public \(1+2\)
+\nolinkurl{GeometricUniformComplexMomentProduct.lean} leaf constructs the
+actual product for complex \(\lVert q\rVert<1\), proves its locally uniform
+convergence, and identifies its normalized Taylor coefficient with the same
+polynomial.  On its source branch it formed the historical 906/11,461
+checkpoint; in the merged chronology it formed the historical 918/11,568
+checkpoint.  The exhaustive \(0+1\)
+\nolinkurl{HalfQBinomialRootSimplicity.lean} leaf then completed the
+half-base simple-root locus and raised the actual merged-main checkpoint to
+919/11,569.  The subsequent exhaustive \(1+2\)
+\nolinkurl{GeometricUniformExteriorComplexMomentGerm.lean} leaf defines the
+actual reciprocal germ for complex \(1<\lVert q\rVert\), proves it analytic at
+zero, and identifies its normalized Taylor coefficient with the same
+polynomial, raising the census to 920/11,572.  Neither
+analytic leaf alone supplies the global rational \nolinkurl{RatFunc}; the
+later rational-coefficient leaf provides that assembly.  The exhaustive
+zero-definition/three-theorem
+\nolinkurl{GeometricUniformMomentPolynomialDegree.lean} leaf then proves the
+top and subleading Bernoulli coefficients and the exact parity-sensitive
+degree, making \nolinkurl{p7:thm:Pn} and
+\nolinkurl{prop:qF-P-degree-sharp} Exact and raising the census to the
+historical 921/11,575 checkpoint.  The exhaustive \(1+6\)
+\nolinkurl{RvachevLaurentLeading.lean} leaf then makes
+\nolinkurl{is:p2:thm:Laurent-leading} Exact and gives 922/11,582.  The
+exhaustive \(11+17\) \nolinkurl{FinitePrefixAppellRecovery.lean} leaf makes
+\nolinkurl{is:p2:thm:finite-prefix-expansion} and
+\nolinkurl{is:p2:thm:exact-recovery} Exact and gives the historical
+923/11,610 checkpoint.  The exhaustive \(1+4\)
+\nolinkurl{GeometricUniformMomentRatFunc.lean} leaf then packages the common
+rational coefficient, its global q-factorial clearing, both safe analytic
+evaluations, and the removable \(q=1\) value.  It makes
+\nolinkurl{thm:qF-moment-polynomial} Exact and gives the historical
+924/11,615 checkpoint.  The two new theorems in the existing
+\nolinkurl{ProbabilityLaplaceMoments.lean} module then give 924/11,617, and
+the exhaustive one-definition/one-theorem
+\nolinkurl{RvachevLegendreBiorthogonality.lean} leaf gives the historical
+925/11,619 census.  Subsequent merged-main additions give the pre-reciprocity
+930/11,678 checkpoint.  Publicizing
+\nolinkurl{differentiable_geometricUniformComplexMomentProduct} gives
+930/11,679, and the exhaustive \(1+5\)
+\nolinkurl{GeometricUniformMomentReciprocity.lean} leaf gives the historical
+reciprocity checkpoint 931/11,685.  The subsequently merged upstream
+\nolinkurl{DyadicBoundaryIdentity.lean} and
+\nolinkurl{FinitePrefixThueMorseCollapse.lean} modules add two facade modules
+and ten public declarations, giving the historical dyadic/finite-prefix
+checkpoint 933/11,695.  The incoming union adds one module and fourteen public
+declarations: the new zero-definition/six-theorem
+\nolinkurl{ProuhetBaseTwoBridge.lean} module, one theorem added to
+\nolinkurl{DyadicBoundaryIdentity.lean}, and seven theorems added to
+\nolinkurl{ThueMorseNewmanSelfSimilarity.lean}.  This gives the live
+934/11,709 census, with zero missing module headers and zero missing declaration
+comments.  Every module is reachable from the facade.  No aggregate facade
+build is claimed for this current-tree census.  The retained PDF and title-page pin
+remain historical receipts and do not claim parity with the merged source; no
+PDF was built for this source-only union.
+
+The exhaustive public surface of
+\nolinkurl{FinitePrefixThueMorseCollapse.lean} is zero definitions and eight
+theorems:
+\lean{Appell.sum_thueMorseSign_mul_eval_poly},
+\lean{Fabius.sum_thueMorseSign_mul_uncenteredDyadicPrefixAppellPolynomialRat},
+\lean{Fabius.sum_thueMorseSign_mul_uncenteredDyadicPrefixAppellPolynomialRat_of_lt},
+\lean{Fabius.sum_thueMorseSign_mul_uncenteredDyadicPrefixAppellPolynomialRat_self},
+\lean{Fabius.sum_thueMorseSign_mul_centeredDyadicPrefixAppellPolynomialRat},
+\lean{Fabius.sum_thueMorseSign_mul_centeredDyadicPrefixAppellPolynomialRat_succ},
+\lean{Fabius.sum_thueMorseSign_mul_centeredDyadicPrefixAppellPolynomialRat_of_lt},
+and
+\lean{Fabius.sum_thueMorseSign_mul_centeredDyadicPrefixAppellPolynomialRat_self}.
+Writing \(A^{\mathrm{unc}}_{N,n}\) and \(A^{\mathrm{cen}}_{N,n}\) for the
+two rational prefix Appell polynomials and \(s_N=1-2^{-N}\), their complete
+signed responses are
+\[
+ \sum_{k<2^N}\varepsilon_k
+   A^{\mathrm{unc}}_{N,n}(x+k/2^N)
+ =(-1)^N2^{-\binom{N+1}{2}}n^{\underline{N}}x^{n-N}
+\]
+and
+\[
+ \sum_{k<2^N}\varepsilon_k
+   A^{\mathrm{cen}}_{N,n}(x+s_N-2k/2^N)
+ =2^{-\binom{N}{2}}n^{\underline{N}}x^{n-N}.
+\]
+Thus the uncentered response has the exact sign and
+\(2^{-\binom{N+1}{2}}\) normalization, while the centered response is
+sign-free with \(2^{-\binom{N}{2}}\).  For positive depth \(N=m+1\), the
+successor theorem uses the literal manuscript grid
+\(x+s_{m+1}-k/2^m\).  The two \texttt{of\_lt} theorems give cancellation
+below the block depth, and the two \texttt{self} theorems give the first
+nonzero constants.  These results make
+\nolinkurl{is:p2:thm:TM-uncentered},
+\nolinkurl{is:p2:cor:Prouhet-canonical}, and
+\nolinkurl{is:p2:thm:TM-centered} Exact by composition.  The total main
+theorems include \(N=0\), strengthening the positive-depth formulas.  The
+entire leaf is rational coefficient algebra: it introduces no random
+variable or \lean{HasLaw}, proves no analytic MGF, and makes no Barnes-function
+identification.  The three promotions move the 194-row inverse concordance to
+57 Lean-proved, 88 human-proved, 10 conjectural, 15 open, and 24
+nonassertoric rows.
 
 Those six counts are \nolinkurl{QPochhammerInfiniteBounds.lean} (0+5),
 \nolinkurl{HeineTransformation.lean} (2+5),
@@ -5937,7 +6989,7 @@ The four root-of-unity and q-Catalan counts are
 \nolinkurl{CyclotomicDivisibility.lean} (0+3),
 \nolinkurl{PrimitiveRootBlock.lean} (0+3),
 \nolinkurl{QCatalan.lean} (1+11), and
-\nolinkurl{QLucas.lean} (0+8).  Their one definition and twenty-five theorems
+\nolinkurl{QLucas.lean} (0+7).  Their one definition and twenty-four theorems
 add the cyclotomic carry criterion, primitive-root blocks, q-Lucas, and the
 integral q-Catalan polynomial with exact degree and specialization at one.
 The newest two counts are
@@ -5958,6 +7010,16 @@ reflection, give the reciprocal finite and generalized complex-order
 q-binomial series, and prove the terminating balanced \({}_3\phi_2\)
 q-Pfaff--Saalsch\"utz sum.  All nonzero, strict-contraction, and denominator
 hypotheses are retained explicitly.
+The terminating reversal pair contributes
+\nolinkurl{TwoPhiOneReversal.lean} (2+12) and
+\nolinkurl{QChuVandermonde.lean} (0+10), with the public
+\nolinkurl{two_mul_choose_two} in the latter module.  The actual-tsum reversal
+and both displayed q-Chu formulas are exact; the separately named by-reversal
+proof of the second formula retains its two auxiliary nonvanishing hypotheses.
+The subsequent \nolinkurl{JacobiTwoSquareCount.lean}
+leaf is 0+4 and closes the nonzero two-square count and both Lambert forms;
+its prime-product valuation hypothesis and the analytic condition
+\(\lVert q\rVert<1\) remain explicit.
 The final zero-definition/five-theorem
 \nolinkurl{QuantumMultinomial.lean} module decomposes tuple antidiagonals,
 transports Gaussian symmetry to arbitrary semirings, proves q-multinomial
@@ -5974,6 +7036,61 @@ uniform bounds for \(0\le q<1\) and dimension-dominant bounds for \(Q>1\),
 with all index and order hypotheses explicit.  The proof reuses the stronger
 generic \nolinkurl{finiteQPochhammerIn_self_pos} theorem from
 \nolinkurl{GeneralQConditionNumber.lean} rather than exporting a duplicate.
+The final terminating-basic-hypergeometric pair is
+\nolinkurl{TwoPhiOneReversal.lean} (2+12) and
+\nolinkurl{QChuVandermonde.lean} (0+10).  The two definitions in the first are
+\nolinkurl{twoPhiOneFinite} and \nolinkurl{twoPhiOneReflection}; its twelve
+theorems are \nolinkurl{choose_two_add_succ_choose_two},
+\nolinkurl{finiteQPochhammerIn_sub_eq},
+\nolinkurl{finiteQPochhammerIn_reversal_ne_zero},
+\nolinkurl{finiteQPochhammerIn_inv_pow_self},
+\nolinkurl{twoPhiOneReflection_involutive},
+\nolinkurl{twoPhiOneFinite_reversal},
+\nolinkurl{twoPhiOneFinite_reversal_twice},
+\nolinkurl{twoPhiOneFinite_eq_sum_twoPhiOneTerm},
+\nolinkurl{twoPhiOne_eq_twoPhiOneFinite_inv_pow},
+\nolinkurl{twoPhiOne_reversal}, \nolinkurl{twoPhiOne_reversal_twice}, and
+\nolinkurl{twoPhiOne_one_eq_twoPhiOneFinite_zero}.  Thus it connects the
+finite terminating sum to the actual \nolinkurl{twoPhiOne} tsum and proves
+that the parameter reflection and the full reversal are involutive.
+
+The ten theorems of \nolinkurl{QChuVandermonde.lean} are
+\nolinkurl{two_mul_choose_two}, \nolinkurl{mul_sub_one_eq_mul_sub_add},
+\nolinkurl{finiteQPochhammerIn_div_eq_sum_chu},
+\nolinkurl{q_chu_vandermonde_first},
+\nolinkurl{finiteQPochhammerIn_div_eq_sum_chu_second},
+\nolinkurl{twoPhiOneFinite_mul_finiteQPochhammerIn_eq_chu_second},
+\nolinkurl{q_chu_vandermonde_second},
+\nolinkurl{q_chu_vandermonde_second_by_reversal},
+\nolinkurl{twoPhiOne_q_chu_vandermonde_first}, and
+\nolinkurl{twoPhiOne_q_chu_vandermonde_second}.  They prove both
+q-Chu--Vandermonde evaluations, their actual-tsum wrappers, a
+denominator-cleared second identity, and a separately named reversal route.
+Thus the two displayed q-Chu evaluations and the reversal lemma are exact.
+The claim that reversal alone yields the second identity over its full
+displayed domain remains partial: the compiled by-reversal theorem assumes
+\(C\ne0\) and \((A;q)_n\ne0\), while the unrestricted denominator-defined
+theorem is obtained directly from finite q-Cauchy.  Rational continuation and
+a commutative-ring cleared extension are not claimed.
+
+The three later additions to
+\nolinkurl{GaussianBinomialCumulants.lean}, now 2+24, are
+\nolinkurl{eval_one_derivative_derivative_gaussianBinomial_X},
+\nolinkurl{twelve_mul_secondMoment_gaussianBinomial_eval_one}, and
+\nolinkurl{twelve_mul_varianceNumerator_gaussianBinomial_eval_one}.  For
+\(P=[n,k]_X\), \(D=k(n-k)\), and \(C=\binom nk\), the first assumes a
+characteristic-zero field and exactly \(k\le n\), and proves
+\(P''(1)=D(3D+n-5)C/12\).  The other two hold for every \(n,k\) over an
+arbitrary commutative semiring and state
+\[
+12\bigl(P''(1)+P'(1)\bigr)=D(3D+n+1)C,
+\qquad
+12C\bigl(P''(1)+P'(1)\bigr)=12P'(1)^2+D(n+1)C^2.
+\]
+They use no division, nonvanishing, or characteristic hypothesis, are total
+above the Gaussian row by zero extension, and include the zero and diagonal
+rows.  The first cleared identity is the raw second moment; the second is the
+variance numerator.
 \end{remark}
 
 \section{Corrections and critical distinctions}\label{app:corrections}

@@ -6,6 +6,7 @@ import Mathlib.Analysis.Calculus.ContDiff.Deriv
 import Mathlib.Analysis.Calculus.ContDiff.Operations
 import Mathlib.Analysis.Calculus.Deriv.Inv
 import Mathlib.Analysis.Calculus.Deriv.Inverse
+import Mathlib.Analysis.Calculus.Deriv.Shift
 import Mathlib.Order.Hom.Set
 import Mathlib.Topology.Order.ProjIcc
 import Mathlib.Topology.Order.MonotoneContinuity
@@ -454,6 +455,78 @@ theorem fabiusInv_half (F : BoundedFabius) (hF : IsFabius F) :
   norm_num at h ⊢
   linarith
 
+/-! ## Reflection transport
+
+The reflection symmetry `G(1 - y) = 1 - G(y)` transports every local
+property of the inverse across the midpoint.  The derivative identities
+below hold at **every** real `y`, with no differentiability hypothesis:
+where `G` is not differentiable, neither is its reflection, and both
+derivatives are `0`. -/
+
+/-- The inverse is its own reflection, in function form. -/
+theorem fabiusInv_eq_one_sub_comp_one_sub (F : BoundedFabius) (hF : IsFabius F) :
+    fabiusInv F hF = fun y => 1 - fabiusInv F hF (1 - y) := by
+  funext y
+  rw [fabiusInv_one_sub F hF y]
+  ring
+
+/-- **Reflection of the derivative**: `G'(1 - y) = G'(y)` for every real
+`y`. -/
+theorem deriv_fabiusInv_one_sub (F : BoundedFabius) (hF : IsFabius F) (y : ℝ) :
+    deriv (fabiusInv F hF) (1 - y) = deriv (fabiusInv F hF) y := by
+  have h : deriv (fabiusInv F hF) y =
+      deriv (fun y => 1 - fabiusInv F hF (1 - y)) y :=
+    congrArg (fun f => deriv f y) (fabiusInv_eq_one_sub_comp_one_sub F hF)
+  rw [h, deriv_const_sub, deriv_comp_const_sub, neg_neg]
+
+/-- **Reflection of the second derivative**: `G''(1 - y) = -G''(y)` for
+every real `y`. -/
+theorem deriv_deriv_fabiusInv_one_sub (F : BoundedFabius) (hF : IsFabius F)
+    (y : ℝ) :
+    deriv (deriv (fabiusInv F hF)) (1 - y) =
+      -deriv (deriv (fabiusInv F hF)) y := by
+  have hfun : deriv (fabiusInv F hF) =
+      fun y => deriv (fabiusInv F hF) (1 - y) :=
+    funext fun y => (deriv_fabiusInv_one_sub F hF y).symm
+  have h : deriv (deriv (fabiusInv F hF)) y =
+      deriv (fun y => deriv (fabiusInv F hF) (1 - y)) y :=
+    congrArg (fun f => deriv f y) hfun
+  rw [h, deriv_comp_const_sub, neg_neg]
+
+/-- Differentiability of the inverse reflects: `G` is differentiable at
+`1 - y` iff it is differentiable at `y`. -/
+theorem fabiusInv_differentiableAt_one_sub_iff (F : BoundedFabius)
+    (hF : IsFabius F) (y : ℝ) :
+    DifferentiableAt ℝ (fabiusInv F hF) (1 - y) ↔
+      DifferentiableAt ℝ (fabiusInv F hF) y := by
+  suffices H : ∀ z : ℝ, DifferentiableAt ℝ (fabiusInv F hF) (1 - z) →
+      DifferentiableAt ℝ (fabiusInv F hF) z by
+    refine ⟨H y, fun h => H (1 - y) ?_⟩
+    rwa [sub_sub_cancel]
+  intro z hz
+  have hcomp : DifferentiableAt ℝ (fun t : ℝ => fabiusInv F hF (1 - t)) z :=
+    differentiableAt_comp_const_sub.mpr hz
+  rw [fabiusInv_eq_one_sub_comp_one_sub F hF]
+  exact (differentiableAt_const (1 : ℝ)).sub hcomp
+
+/-- Analyticity of the inverse reflects: `G` is analytic at `1 - y` iff it
+is analytic at `y`. -/
+theorem fabiusInv_analyticAt_one_sub_iff (F : BoundedFabius)
+    (hF : IsFabius F) (y : ℝ) :
+    AnalyticAt ℝ (fabiusInv F hF) (1 - y) ↔
+      AnalyticAt ℝ (fabiusInv F hF) y := by
+  suffices H : ∀ z : ℝ, AnalyticAt ℝ (fabiusInv F hF) (1 - z) →
+      AnalyticAt ℝ (fabiusInv F hF) z by
+    refine ⟨H y, fun h => H (1 - y) ?_⟩
+    rwa [sub_sub_cancel]
+  intro z hz
+  have haff : AnalyticAt ℝ (fun t : ℝ => 1 - t) z :=
+    analyticAt_const.sub analyticAt_id
+  have hcomp : AnalyticAt ℝ (fun t : ℝ => fabiusInv F hF (1 - t)) z :=
+    hz.comp haff
+  rw [fabiusInv_eq_one_sub_comp_one_sub F hF]
+  exact analyticAt_const.fun_sub hcomp
+
 /-! ## The inverse graph and the diagonal -/
 
 /-- On the open first half of the unit interval, the inverse Fabius graph lies
@@ -591,24 +664,16 @@ theorem deriv_deriv_fabiusInv_pos_iff
     (F : BoundedFabius) (hF : IsFabius F)
     {y : ℝ} (hy : y ∈ Ioo (0 : ℝ) 1) :
     0 < deriv (deriv (fabiusInv F hF)) y ↔ y ∈ Ioo (1 / 2 : ℝ) 1 := by
-  rw [deriv_deriv_fabiusInv F hF hy]
-  have hx := fabiusInv_mem_Ioo F hF hy
-  have hden : 0 < deriv (fabiusReal F) (fabiusInv F hF y) ^ 3 :=
-    pow_pos (deriv_fabiusReal_pos F hF hx) 3
-  rw [lt_div_iff₀ hden]
-  simp only [zero_mul, neg_pos]
-  rw [deriv_deriv_fabiusReal_neg_iff F hF]
-  have hyIcc : y ∈ Icc (0 : ℝ) 1 := Ioo_subset_Icc_self hy
-  have hhalfIcc : (1 / 2 : ℝ) ∈ Icc (0 : ℝ) 1 := by norm_num
+  have hy' : 1 - y ∈ Ioo (0 : ℝ) 1 :=
+    ⟨by linarith [hy.2], by linarith [hy.1]⟩
+  have h := deriv_deriv_fabiusInv_neg_iff F hF hy'
+  rw [deriv_deriv_fabiusInv_one_sub F hF y, neg_lt_zero] at h
+  rw [h]
   constructor
-  · intro hG
-    refine ⟨?_, hy.2⟩
-    have h := (fabiusReal_lt_iff_lt_fabiusInv F hF hhalfIcc hyIcc).mpr hG.1
-    rwa [fabius_half F hF] at h
-  · intro hyhalf
-    refine ⟨?_, hx.2⟩
-    apply (fabiusReal_lt_iff_lt_fabiusInv F hF hhalfIcc hyIcc).mp
-    simpa only [fabius_half F hF] using hyhalf.1
+  · rintro ⟨h1, h2⟩
+    exact ⟨by linarith, by linarith⟩
+  · rintro ⟨h1, h2⟩
+    exact ⟨by linarith, by linarith⟩
 
 /-- Within the open unit interval, the inverse second derivative vanishes
 exactly at the midpoint. -/
@@ -973,29 +1038,10 @@ theorem tendsto_one_sub_fabiusInv_div_one_sub_atTop
 the argument approaches the right clamping endpoint from the left. -/
 theorem tendsto_deriv_fabiusInv_atTop_at_one_left
     (F : BoundedFabius) (hF : IsFabius F) :
-    Tendsto (deriv (fabiusInv F hF)) (nhdsWithin (1 : ℝ) (Iio 1)) atTop := by
-  let G := fabiusInv F hF
-  let D := fun y : ℝ => deriv (fabiusReal F) (G y)
-  have hG1 : Tendsto G (nhdsWithin (1 : ℝ) (Iio 1)) (nhds (1 : ℝ)) := by
-    exact ((continuous_fabiusInv F hF).tendsto' 1 1
-      (fabiusInv_one F hF)).mono_left nhdsWithin_le_nhds
-  have hderivF : Continuous (deriv (fabiusReal F)) :=
-    ((contDiff_infty_iff_deriv.mp hF.contDiff).2).continuous
-  have hD0 : Tendsto D (nhdsWithin (1 : ℝ) (Iio 1)) (nhds (0 : ℝ)) := by
-    have h := hderivF.continuousAt.tendsto.comp hG1
-    simpa only [D, G, Function.comp_def,
-      (deriv_fabiusReal_eq_zero_iff F hF 1).2 (by simp)] using h
-  have hD : Tendsto D (nhdsWithin (1 : ℝ) (Iio 1))
-      (nhdsWithin (0 : ℝ) (Ioi 0)) := by
-    rw [tendsto_nhdsWithin_iff]
-    refine ⟨hD0, ?_⟩
-    filter_upwards [self_mem_nhdsWithin,
-      nhdsWithin_le_nhds (Ioi_mem_nhds (zero_lt_one : (0 : ℝ) < 1))] with y hy1 hy0
-    exact deriv_fabiusReal_pos F hF (fabiusInv_mem_Ioo F hF ⟨hy0, hy1⟩)
-  refine hD.inv_tendsto_nhdsGT_zero.congr' ?_
-  filter_upwards [self_mem_nhdsWithin,
-    nhdsWithin_le_nhds (Ioi_mem_nhds (zero_lt_one : (0 : ℝ) < 1))] with y hy1 hy0
-  exact (deriv_fabiusInv F hF ⟨hy0, hy1⟩).symm
+    Tendsto (deriv (fabiusInv F hF)) (nhdsWithin (1 : ℝ) (Iio 1)) atTop :=
+  ((tendsto_deriv_fabiusInv_atTop_at_zero_right F hF).comp
+    tendsto_one_sub_nhdsLT_one_nhdsGT_zero).congr'
+    (Filter.Eventually.of_forall fun y => deriv_fabiusInv_one_sub F hF y)
 
 /-! ## Exact smoothness locus -/
 
@@ -1020,26 +1066,14 @@ theorem fabiusInv_not_differentiableAt_zero
     exact fabiusReal_fabiusInv F hF hy
   exact hnot hdiff.differentiableWithinAt
 
-/-- The totalized inverse is not differentiable at the right clamping point.
-The symmetric local inverse argument uses the vanishing derivative of
-`fabiusReal` at one. -/
+/-- The totalized inverse is not differentiable at the right clamping point:
+the reflection of the left clamping point. -/
 theorem fabiusInv_not_differentiableAt_one
     (F : BoundedFabius) (hF : IsFabius F) :
     ¬ DifferentiableAt ℝ (fabiusInv F hF) 1 := by
   intro hdiff
-  have hnot : ¬ DifferentiableWithinAt ℝ (fabiusInv F hF)
-      (Icc (0 : ℝ) 1) 1 := by
-    apply not_differentiableWithinAt_of_local_left_inverse_hasDerivWithinAt_zero
-      (f := fabiusReal F) (g := fabiusInv F hF)
-      (s := Icc (0 : ℝ) 1) (t := Icc (0 : ℝ) 1)
-      (right_mem_Icc.2 zero_le_one)
-      (uniqueDiffOn_Icc_zero_one 1 (right_mem_Icc.2 zero_le_one))
-      (by simpa only [fabiusInv_one] using
-        (fabius_hasDerivAt_one F hF).hasDerivWithinAt)
-      (fun y _hy => fabiusInv_mem_Icc F hF y)
-    filter_upwards [self_mem_nhdsWithin] with y hy
-    exact fabiusReal_fabiusInv F hF hy
-  exact hnot hdiff.differentiableWithinAt
+  apply fabiusInv_not_differentiableAt_zero F hF
+  exact (fabiusInv_differentiableAt_one_sub_iff F hF 0).mp (by simpa using hdiff)
 
 /-- Exact differentiability locus of the totalized inverse: the inverse is
 smooth in the open interval and on both constant tails, but not at either

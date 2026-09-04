@@ -217,6 +217,84 @@ theorem geometricSeriesFilter_eq_residual_mk
     exact coeff_geometricSeriesFilter_of_exact q p weight f hmoment m
       (Nat.pos_of_ne_zero hm)
 
+/-! ## Scaled geometric nodes
+
+`GeometricResidualMoments` carries both the plain and the scaled
+(`c · q^k`) residual theorems, but this filter layer had only the plain
+one, so a sample block beginning at an arbitrary scale had to be routed
+through `geometricSeriesFilter_rescale` by hand.  The scaled filter and
+its residual are direct transcriptions of the scaled moment identity. -/
+
+/-- The finite formal-series filter attached to weights `weight j` on the
+**scaled** geometric nodes `c · q ^ j`, `0 ≤ j ≤ p`. -/
+noncomputable def geometricScaledSeriesFilter
+    {R : Type*} [CommSemiring R]
+    (c q : R) (p : ℕ) (weight : ℕ → R) (f : PowerSeries R) : PowerSeries R :=
+  finitePowerSeriesFilter (Finset.range (p + 1)) (fun j ↦ c * q ^ j) weight f
+
+/-- Scale one is the unscaled filter. -/
+@[simp]
+theorem geometricScaledSeriesFilter_one
+    {R : Type*} [CommSemiring R]
+    (q : R) (p : ℕ) (weight : ℕ → R) (f : PowerSeries R) :
+    geometricScaledSeriesFilter 1 q p weight f =
+      geometricSeriesFilter q p weight f := by
+  simp only [geometricScaledSeriesFilter, geometricSeriesFilter, one_mul]
+
+/-- **Diagonal coefficient action of a scaled geometric filter.** -/
+@[simp]
+theorem coeff_geometricScaledSeriesFilter
+    {R : Type*} [CommSemiring R]
+    (c q : R) (p : ℕ) (weight : ℕ → R) (f : PowerSeries R) (m : ℕ) :
+    PowerSeries.coeff m (geometricScaledSeriesFilter c q p weight f) =
+      (∑ j ∈ Finset.range (p + 1), weight j * (c * q ^ j) ^ m) *
+        PowerSeries.coeff m f := by
+  simpa only [geometricScaledSeriesFilter] using
+    coeff_finitePowerSeriesFilter (Finset.range (p + 1))
+      (fun j ↦ c * q ^ j) weight f m
+
+/-- **Exact positive-degree residual multiplier at scale `c`.**  An exact
+scaled row acts in positive degree `m` by `c^m` times the denominator-free
+Gaussian coefficient of the unscaled row: the scale enters only through the
+homogeneity factor. -/
+theorem coeff_geometricScaledSeriesFilter_of_exact
+    {R : Type*} [CommRing R]
+    (c q : R) (p : ℕ) (weight : ℕ → R) (f : PowerSeries R)
+    (hmoment : ∀ d ≤ p,
+      ∑ j ∈ Finset.range (p + 1),
+        weight j * (c * q ^ j) ^ d = (0 : R) ^ d)
+    (m : ℕ) (hmpos : 0 < m) :
+    PowerSeries.coeff m (geometricScaledSeriesFilter c q p weight f) =
+      (c ^ m * ((-1 : R) ^ p * q ^ ((p + 1).choose 2) *
+        gaussianBinomial q (m - 1) p)) * PowerSeries.coeff m f := by
+  rw [coeff_geometricScaledSeriesFilter,
+    sum_weight_mul_scaled_geometric_pow_of_pos c q p weight hmoment m hmpos]
+
+/-- All coefficients of an exact scaled geometric filter, packaged as one
+formal-series identity.  As in the unscaled case the degree-zero boundary is
+kept separate, since natural subtraction would lose the mass-one value. -/
+theorem geometricScaledSeriesFilter_eq_residual_mk
+    {R : Type*} [CommRing R]
+    (c q : R) (p : ℕ) (weight : ℕ → R) (f : PowerSeries R)
+    (hmoment : ∀ d ≤ p,
+      ∑ j ∈ Finset.range (p + 1),
+        weight j * (c * q ^ j) ^ d = (0 : R) ^ d) :
+    geometricScaledSeriesFilter c q p weight f =
+      PowerSeries.mk fun m ↦
+        if m = 0 then PowerSeries.coeff 0 f
+        else
+          (c ^ m * ((-1 : R) ^ p * q ^ ((p + 1).choose 2) *
+            gaussianBinomial q (m - 1) p)) * PowerSeries.coeff m f := by
+  ext m
+  rw [PowerSeries.coeff_mk]
+  by_cases hm : m = 0
+  · subst m
+    rw [if_pos rfl, coeff_geometricScaledSeriesFilter,
+      hmoment 0 (Nat.zero_le p), pow_zero, one_mul]
+  · rw [if_neg hm]
+    exact coeff_geometricScaledSeriesFilter_of_exact c q p weight f hmoment m
+      (Nat.pos_of_ne_zero hm)
+
 /-! ## The geometric Lagrange specialization -/
 
 /-- The geometric Lagrange filter has the universal Gaussian residual

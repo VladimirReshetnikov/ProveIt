@@ -28,9 +28,6 @@ PDF_VALIDATION.txt
     Historical preflight, render, reference, and numerical reproducibility
     checks for the removed standalone PDF.
 
-SHA256SUMS.txt
-    SHA-256 checksums for the retained files and the consolidated source/PDF.
-
 Corpus snapshot
 ---------------
 The theorem comparison was pinned to ProveIt commit:

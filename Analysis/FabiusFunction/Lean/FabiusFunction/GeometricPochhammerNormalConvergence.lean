@@ -60,7 +60,7 @@ theorem hasProdLocallyUniformly_geometricSincProduct_complexQPochhammerInf
   have hf : Differentiable ℂ f :=
     complexQPochhammerInf_differentiable (q ^ 2) hq_sq
   have hf0 : f 0 = 1 := by
-    simp [f, complexQPochhammerInf]
+    simp [f, complexQPochhammerInf, qPochhammerInfIn]
   have hfO : (fun w => f w - 1) =O[𝓝 0] (fun w : ℂ => w) := by
     simpa only [hf0, sub_self, sub_zero] using (hf 0).isBigO_sub
   have hprod :=

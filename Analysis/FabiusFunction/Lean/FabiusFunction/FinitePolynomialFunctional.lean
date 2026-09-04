@@ -1,4 +1,4 @@
-import Mathlib.Algebra.Polynomial.Eval.Degree
+import Mathlib.Algebra.Polynomial.Degree.Lemmas
 
 /-!
 # Finite polynomial functionals determined by their moments
@@ -25,6 +25,8 @@ commutative semiring `S`, and write
   top-coefficient form with a supplied exact top moment.
 * `sum_weight_mul_eval_eq_zero_of_degree_lt` is its same-ring strict-degree
   annihilation corollary.
+* `sum_weight_mul_eval_affine_of_topCoeff_extractor` transports any such
+  same-ring top-coefficient extractor across an affine change of nodes.
 
 The nodes may repeat, the surviving moment may itself be zero, and no field
 or subtraction is needed.  The endpoint `r = N` is the algebra behind
@@ -301,5 +303,94 @@ theorem sum_weight_mul_eval_congr_of_coeff_eq
     sum_weight_mul_eval_eq_coeff_mul_top_moment
       s weight node n hlower q hq,
     hcoeff]
+
+/-! ### Affine transport -/
+
+private theorem coeff_comp_linear_of_degree_le
+    {R : Type*} [CommSemiring R] (p : Polynomial R) (a b : R) (n : ℕ)
+    (hp : p.degree ≤ (n : WithBot ℕ)) :
+    (p.comp (Polynomial.C b * Polynomial.X + Polynomial.C a)).coeff n =
+      p.coeff n * b ^ n := by
+  by_cases hb : b = 0
+  · subst b
+    cases n with
+    | zero =>
+        have hp0 : p.degree ≤ (0 : WithBot ℕ) := by simpa using hp
+        rw [Polynomial.eq_C_of_degree_le_zero hp0]
+        simp
+    | succ n => simp
+  · have hlinear :
+        (Polynomial.C b * Polynomial.X + Polynomial.C a).natDegree = 1 :=
+      Polynomial.natDegree_linear hb
+    have hlinear0 :
+        (Polynomial.C b * Polynomial.X + Polynomial.C a).natDegree ≠ 0 := by
+      rw [hlinear]
+      exact Nat.one_ne_zero
+    have hnat : p.natDegree ≤ n :=
+      Polynomial.natDegree_le_of_degree_le hp
+    rcases eq_or_lt_of_le hnat with heq | hlt
+    · calc
+        (p.comp (Polynomial.C b * Polynomial.X + Polynomial.C a)).coeff n =
+            (p.comp (Polynomial.C b * Polynomial.X + Polynomial.C a)).coeff
+              (p.natDegree *
+                (Polynomial.C b * Polynomial.X + Polynomial.C a).natDegree) := by
+              rw [hlinear, Nat.mul_one, heq]
+        _ = p.leadingCoeff *
+              (Polynomial.C b * Polynomial.X + Polynomial.C a).leadingCoeff ^
+                p.natDegree :=
+          Polynomial.coeff_comp_degree_mul_degree hlinear0
+        _ = p.coeff n * b ^ n := by
+          rw [Polynomial.leadingCoeff_linear hb,
+            ← Polynomial.coeff_natDegree, heq]
+    · have hcomp :
+          (p.comp (Polynomial.C b * Polynomial.X + Polynomial.C a)).natDegree < n :=
+        lt_of_le_of_lt Polynomial.natDegree_comp_le (by
+          simpa only [hlinear, Nat.mul_one] using hlt)
+      rw [Polynomial.coeff_eq_zero_of_natDegree_lt hcomp,
+        Polynomial.coeff_eq_zero_of_natDegree_lt hlt, zero_mul]
+
+/-- **Affine transport of a top-coefficient extractor.** Suppose a finite
+weighted evaluation functional sends every polynomial of degree at most `n`
+to its coefficient of degree `n` times a fixed scalar `c`.  Evaluating instead
+at the affine nodes `a + b * node i` multiplies the extracted coefficient by
+`b ^ n`.
+
+This holds over every commutative semiring.  In particular, neither `b ≠ 0`
+nor distinctness of the transformed nodes is required; the cases `b = 0` and
+`n = 0` are included in the statement. -/
+theorem sum_weight_mul_eval_affine_of_topCoeff_extractor
+    {R ι : Type*} [CommSemiring R]
+    (s : Finset ι) (weight node : ι → R) (n : ℕ) (c a b : R)
+    (hextract : ∀ q : Polynomial R, q.degree ≤ (n : WithBot ℕ) →
+      (∑ i ∈ s, weight i * q.eval (node i)) = q.coeff n * c)
+    (p : Polynomial R) (hp : p.degree ≤ (n : WithBot ℕ)) :
+    (∑ i ∈ s, weight i * p.eval (a + b * node i)) =
+      b ^ n * c * p.coeff n := by
+  let q : Polynomial R :=
+    p.comp (Polynomial.C b * Polynomial.X + Polynomial.C a)
+  have hqnat : q.natDegree ≤ n := by
+    calc
+      q.natDegree ≤ p.natDegree *
+          (Polynomial.C b * Polynomial.X + Polynomial.C a).natDegree := by
+        exact Polynomial.natDegree_comp_le
+      _ ≤ p.natDegree * 1 :=
+        Nat.mul_le_mul_left p.natDegree Polynomial.natDegree_linear_le
+      _ = p.natDegree := by rw [Nat.mul_one]
+      _ ≤ n := Polynomial.natDegree_le_of_degree_le hp
+  have hqdeg : q.degree ≤ (n : WithBot ℕ) :=
+    Polynomial.degree_le_of_natDegree_le hqnat
+  calc
+    (∑ i ∈ s, weight i * p.eval (a + b * node i)) =
+        ∑ i ∈ s, weight i * q.eval (node i) := by
+      apply Finset.sum_congr rfl
+      intro i _hi
+      simp only [q, Polynomial.eval_comp, Polynomial.eval_add,
+        Polynomial.eval_mul, Polynomial.eval_C, Polynomial.eval_X]
+      rw [add_comm (b * node i) a]
+    _ = q.coeff n * c := hextract q hqdeg
+    _ = b ^ n * c * p.coeff n := by
+      rw [show q.coeff n = p.coeff n * b ^ n from
+        coeff_comp_linear_of_degree_le p a b n hp]
+      ac_rfl
 
 end Fabius

@@ -242,20 +242,6 @@ theorem factorial_mul_coeff_uniformSplineCellPolynomial_dyadic
 
 /-! ### The derivative of the cell polynomial -/
 
-private theorem iteratedDeriv_eval_poly_const
-    (r : ℕ) (Q : Polynomial ℝ) (x : ℝ) :
-    iteratedDeriv r (fun y : ℝ => Q.eval y) x =
-      (Polynomial.derivative^[r] Q).eval x := by
-  induction r generalizing Q with
-  | zero => simp [iteratedDeriv_zero]
-  | succ r ih =>
-      have hd : deriv (fun y : ℝ => Q.eval y) =
-          fun y : ℝ => (Polynomial.derivative Q).eval y := by
-        funext y
-        exact Polynomial.deriv Q
-      rw [iteratedDeriv_succ', hd, Function.iterate_succ_apply]
-      exact ih (Polynomial.derivative Q)
-
 /-- The `r`-th formal derivative of a polynomial of degree at most `r`
 is the constant `r !` times its degree-`r` coefficient. -/
 private theorem iterate_derivative_eq_C_of_natDegree_le
@@ -286,7 +272,7 @@ theorem iteratedDeriv_uniformSplineCellPolynomial_dyadic {p r : ℕ}
         (fun y : ℝ =>
           (uniformSplineCellPolynomial p (2 ^ (p - r))).eval y) x
       = (2 : ℝ) ^ ((r + 1).choose 2) := by
-  rw [iteratedDeriv_eval_poly_const,
+  rw [iteratedDeriv_eval_polynomial,
     iterate_derivative_eq_C_of_natDegree_le
       (natDegree_uniformSplineCellPolynomial_dyadic_le hrp),
     Polynomial.eval_C]

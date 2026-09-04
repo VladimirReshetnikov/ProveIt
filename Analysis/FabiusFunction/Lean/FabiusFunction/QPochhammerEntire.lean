@@ -47,9 +47,6 @@ noncomputable section
 -- C-star-algebra hierarchy, as in `RvachevPochhammerFactorization`.
 attribute [-instance] Complex.commRing
 
-private theorem complexQPochhammerInf_eq_qPochhammerInfIn (a q : ℂ) :
-    complexQPochhammerInf a q = qPochhammerInfIn a q := rfl
-
 /-- For `‖q‖ < 1`, the factors defining `(a;q)_∞` converge locally
 uniformly as functions of `a` on the whole complex plane. -/
 theorem hasProdLocallyUniformly_complexQPochhammerInf

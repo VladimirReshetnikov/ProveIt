@@ -49,32 +49,45 @@ statements of the whole `Fabius*QBinomial*` family.
   nonvanishing that every later denominator argument needs.
 * `qBinomial`, `qBinomial_eq_quotient`, `qBinomial_symm`, `halfQBinomial`,
   `halfQBinomial_pos`, `halfQBinomial_symm`, `qBinomial_half_eq_zero_iff`,
-  `halfQBinomial_succ_succ`, `halfQBinomial_succ_succ'` -- the generic
-  quotient and reflection, their `q = 1/2` specialization and zero locus,
-  positivity for `k ≤ n`, and both orientations of the q-Pascal recurrence.
+  `gaussianBinomial_half_eq_halfQBinomial`, `halfQBinomial_succ_succ`,
+  `halfQBinomial_succ_succ'` -- the generic quotient and reflection,
+  their `q = 1/2` specialization and zero locus, positivity for
+  `k ≤ n`, the identification with the denominator-free Gaussian
+  coefficient of
+  `FiniteQBinomialCore`, and both orientations of the q-Pascal
+  recurrence, inherited from that core through the identification.
 * `halfQBinomial_theorem` -- the q-binomial theorem displayed above.
-* `finiteQPochhammer_eq_zero_iff`,
+* `finiteQPochhammerIn_eq_zero_iff`, `finiteQPochhammer_eq_zero_iff`,
+  `finiteQPochhammerIn_half_eq_zero_iff`,
   `finiteQPochhammer_half_eq_zero_iff`,
   `halfQBinomial_sum_eq_zero_iff`, and
-  `qBinomial_half_sum_eq_zero_iff` -- the general product-zero criterion and
-  the complete rational root locus `2^j` for `j < n` at `q = 1/2`.
+  `qBinomial_half_sum_eq_zero_iff` -- the product-zero criterion over
+  every nontrivial ring without zero divisors, the complete root locus
+  `2^j` for `j < n` at `q = 1/2` in every field of characteristic zero,
+  and their rational instances.
 * `qBinomial_half_sum_algebraMap_eq_zero_iff` -- the same root locus after
   embedding the rational argument and coefficients in an arbitrary field
   over `ℚ`.
 * `halfQBinomial_two_pow_sum_eq_qPochhammer` -- the all-index dyadic-node
   specialization, with an exact piecewise Mersenne-product form and the
   existing zero/endpoint interpolation boundaries.
+* `sum_gaussianWeight_mul_neg_inv_pow` -- the field-level node/weight
+  identity: the signed Gaussian weights at the nodes `-(q⁻¹)^k` have
+  the monomial moments `(-1)^d (q^(-d); q)_n`.
 * `halfQBinomialDyadicWeight`, `negativeDyadicNode`,
+  `halfQBinomialDyadicWeight_nodes_pow`,
   `halfQBinomialDyadicWeight_nodes_zero`, and
   `halfQBinomialDyadicWeight_nodes_self` -- the signed Gaussian weights,
-  their negative dyadic nodes, and the lower/top monomial moments.
+  their negative dyadic nodes, and the all-degree, lower, and top
+  monomial moments.
 * `halfQBinomial_negativeDyadic_polynomial_sum_eq_coeff` -- the
   degree-valued Gaussian/Prouhet extractor, including the zero-polynomial
   boundary, with q-Pochhammer and Mersenne-product right-hand sides.
 * `qPochhammer_two_pow_eq_mersenne_div` and `qPochhammer_two_pow_eq_ite` --
   the closed Mersenne-product value at every dyadic node.
-* `four_pow_choose_two` -- `4^(C(k,2)) = 2^(k(k-1))`, which rewrites the
-  Wolfram denominator as a pure power of two.
+* `four_pow_choose_two_semiring` and `four_pow_choose_two` --
+  `4^(C(k,2)) = 2^(k(k-1))` in every semiring and over `ℚ`, which
+  rewrites the Wolfram denominator as a pure power of two.
 
 The remaining declarations are edge-case `simp` lemmas, `qBinomial_half_*`
 restatements of the results above in literal Wolfram notation, and a
@@ -91,9 +104,11 @@ vanishes---as it can at roots of unity---the quotient definition can instead
 disagree with the polynomial continuation.  Natural subtraction is
 truncated, so the quotient lemmas carry
 `k ≤ n` hypotheses, and `C(k,2)` above is Lean's `k.choose 2`.  The base
-root-locus theorems classify rational arguments, while the scalar-extension
-form classifies their images in fields over `ℚ`; these results do not yet
-classify arbitrary scalar arguments or package root multiplicities.
+root-locus theorems classify rational arguments, the scalar-extension
+form classifies their images in fields over `ℚ`, and
+`finiteQPochhammerIn_half_eq_zero_iff` classifies arbitrary arguments in
+every field of characteristic zero; root multiplicities are not packaged
+here.
 -/
 
 set_option autoImplicit false
@@ -143,12 +158,15 @@ theorem qPochhammer_succ (a q : ℚ) (n : ℕ) :
       qPochhammer a q n * (1 - a * q ^ n) :=
   finiteQPochhammer_succ a q n
 
-/-- A finite q-Pochhammer product vanishes exactly when one of its factors
-vanishes.  No nonzero or positivity hypothesis on `q` is needed. -/
-theorem finiteQPochhammer_eq_zero_iff (a q : ℚ) (n : ℕ) :
-    finiteQPochhammer a q n = 0 ↔
+/-- A finite q-Pochhammer product over a nontrivial commutative ring
+without zero divisors vanishes exactly when one of its factors vanishes.
+No nonzero or positivity hypothesis on `q` is needed. -/
+theorem finiteQPochhammerIn_eq_zero_iff
+    {R : Type*} [CommRing R] [NoZeroDivisors R] [Nontrivial R]
+    (a q : R) (n : ℕ) :
+    finiteQPochhammerIn a q n = 0 ↔
       ∃ j < n, a * q ^ j = 1 := by
-  unfold finiteQPochhammer
+  unfold finiteQPochhammerIn
   rw [Finset.prod_eq_zero_iff]
   constructor
   · rintro ⟨j, hj, hzero⟩
@@ -156,28 +174,50 @@ theorem finiteQPochhammer_eq_zero_iff (a q : ℚ) (n : ℕ) :
   · rintro ⟨j, hj, hone⟩
     exact ⟨j, Finset.mem_range.mpr hj, sub_eq_zero.mpr hone.symm⟩
 
-private theorem mul_half_pow_eq_one_iff (z : ℚ) (j : ℕ) :
-    z * (1 / 2 : ℚ) ^ j = 1 ↔ z = (2 : ℚ) ^ j := by
+/-- A finite q-Pochhammer product vanishes exactly when one of its
+factors vanishes.  No nonzero or positivity hypothesis on `q` is needed.
+This is the rational instance of `finiteQPochhammerIn_eq_zero_iff`. -/
+theorem finiteQPochhammer_eq_zero_iff (a q : ℚ) (n : ℕ) :
+    finiteQPochhammer a q n = 0 ↔
+      ∃ j < n, a * q ^ j = 1 :=
+  finiteQPochhammerIn_eq_zero_iff a q n
+
+private theorem mul_half_pow_eq_one_iff
+    {K : Type*} [Field K] [CharZero K] (z : K) (j : ℕ) :
+    z * (1 / 2 : K) ^ j = 1 ↔ z = (2 : K) ^ j := by
+  have h2 : (2 : K) ≠ 0 := two_ne_zero
+  have hcancel : (2 : K) ^ j * (1 / 2 : K) ^ j = 1 := by
+    rw [← mul_pow, mul_one_div_cancel h2, one_pow]
   constructor
   · intro h
-    apply mul_right_cancel₀ (pow_ne_zero j (by norm_num : (1 / 2 : ℚ) ≠ 0))
-    rw [h, ← mul_pow]
-    norm_num
+    apply mul_right_cancel₀ (pow_ne_zero j (one_div_ne_zero h2))
+    rw [h, hcancel]
   · rintro rfl
-    rw [← mul_pow]
-    norm_num
+    exact hcancel
 
-/-- At `q = 1/2`, the finite q-Pochhammer product vanishes at exactly the
-rational points `2^j` with `j < n`. -/
-theorem finiteQPochhammer_half_eq_zero_iff (z : ℚ) (n : ℕ) :
-    finiteQPochhammer z (1 / 2) n = 0 ↔
-      ∃ j < n, z = (2 : ℚ) ^ j := by
-  rw [finiteQPochhammer_eq_zero_iff]
+/-- **Root locus of `(z; 1/2)_n` in characteristic zero.**  In every
+field of characteristic zero, the finite q-Pochhammer product at
+`q = 1/2` vanishes at exactly the points `2^j` with `j < n`.  The
+argument `z` is an arbitrary element of the field, not merely the image
+of a rational. -/
+theorem finiteQPochhammerIn_half_eq_zero_iff
+    {K : Type*} [Field K] [CharZero K] (z : K) (n : ℕ) :
+    finiteQPochhammerIn z (1 / 2 : K) n = 0 ↔
+      ∃ j < n, z = (2 : K) ^ j := by
+  rw [finiteQPochhammerIn_eq_zero_iff]
   constructor
   · rintro ⟨j, hj, hterm⟩
     exact ⟨j, hj, (mul_half_pow_eq_one_iff z j).1 hterm⟩
   · rintro ⟨j, hj, hz⟩
     exact ⟨j, hj, (mul_half_pow_eq_one_iff z j).2 hz⟩
+
+/-- At `q = 1/2`, the finite q-Pochhammer product vanishes at exactly
+the rational points `2^j` with `j < n`; the rational instance of
+`finiteQPochhammerIn_half_eq_zero_iff`. -/
+theorem finiteQPochhammer_half_eq_zero_iff (z : ℚ) (n : ℕ) :
+    finiteQPochhammer z (1 / 2) n = 0 ↔
+      ∃ j < n, z = (2 : ℚ) ^ j :=
+  finiteQPochhammerIn_half_eq_zero_iff z n
 
 /-- The specialization `QPochhammer[1/2,1/2,n]`. -/
 noncomputable def halfQPochhammer (n : ℕ) : ℚ :=
@@ -307,18 +347,27 @@ theorem one_div_two_pow_nat_sq_mul_halfQPochhammer (n : ℕ) :
       1 / ((2 : ℚ) ^ (n.choose 2) * halfMersenneProduct n) := by
   rw [two_pow_nat_sq_mul_halfQPochhammer]
 
-/-- The Wolfram denominator `4^Binomial[k,2]` as a pure power of two. -/
-theorem four_pow_choose_two (k : ℕ) :
-    (4 : ℚ) ^ (k.choose 2) = (2 : ℚ) ^ (k * (k - 1)) := by
+/-- The Wolfram denominator `4^Binomial[k,2]` as a pure power of two,
+in every semiring. -/
+theorem four_pow_choose_two_semiring
+    {R : Type*} [Semiring R] (k : ℕ) :
+    (4 : R) ^ (k.choose 2) = (2 : R) ^ (k * (k - 1)) := by
   have htwo : 2 * k.choose 2 = k * (k - 1) := by
     cases k with
     | zero => simp
     | succ k =>
         simpa [mul_comm] using two_mul_choose_succ_two k
   calc
-    (4 : ℚ) ^ (k.choose 2) = ((2 : ℚ) ^ 2) ^ (k.choose 2) := by norm_num
-    _ = (2 : ℚ) ^ (2 * k.choose 2) := by rw [pow_mul]
-    _ = (2 : ℚ) ^ (k * (k - 1)) := by rw [htwo]
+    (4 : R) ^ (k.choose 2) = ((2 : R) ^ 2) ^ (k.choose 2) := by
+      norm_num
+    _ = (2 : R) ^ (2 * k.choose 2) := by rw [pow_mul]
+    _ = (2 : R) ^ (k * (k - 1)) := by rw [htwo]
+
+/-- The Wolfram denominator `4^Binomial[k,2]` as a pure power of two;
+the rational instance of `four_pow_choose_two_semiring`. -/
+theorem four_pow_choose_two (k : ℕ) :
+    (4 : ℚ) ^ (k.choose 2) = (2 : ℚ) ^ (k * (k - 1)) :=
+  four_pow_choose_two_semiring k
 
 /-- `QBinomial[n,k,1/2]`, extended by zero for `k > n`. -/
 noncomputable def halfQBinomial (n k : ℕ) : ℚ :=
@@ -457,128 +506,55 @@ theorem qBinomial_symm (q : ℚ) {n k : ℕ} (hk : k ≤ n) :
 
 /-- Reflection `k ↦ n - k` for `k ≤ n`: the quotient is unchanged because
 its two denominator factors merely swap.  It supplies the reindexing in
-`FabiusDiscreteLimitIntegration.discreteLimit_coefficient_reindex` and turns
-`halfQBinomial_succ_succ` into its symmetric partner
-`halfQBinomial_succ_succ'`. -/
+`FabiusDiscreteLimitIntegration.discreteLimit_coefficient_reindex`. -/
 theorem halfQBinomial_symm {n k : ℕ} (hk : k ≤ n) :
     halfQBinomial n (n - k) = halfQBinomial n k := by
   simpa only [qBinomial_half_eq] using qBinomial_symm (1 / 2) hk
 
+/-- **The half-base Gaussian coefficient is the quotient coefficient.**
+The denominator-free Gaussian coefficient from `FiniteQBinomialCore`
+specializes at `q = 1/2` to the established rational half-q coefficient.
+The proof is the direct consequence of the full q-factorial identity
+`(q;q)_n = (q;q)_k (q;q)_(n-k) [n choose k]_q`
+(`finiteQPochhammerIn_self_eq_mul_mul_gaussianBinomial`), divided by the
+nonvanishing denominator; above the diagonal both sides vanish.  Both
+q-Pascal recurrences of `halfQBinomial` are inherited from the core
+through this identification. -/
+theorem gaussianBinomial_half_eq_halfQBinomial (n k : ℕ) :
+    gaussianBinomial (1 / 2 : ℚ) n k = halfQBinomial n k := by
+  by_cases hk : k ≤ n
+  · have h := finiteQPochhammerIn_self_eq_mul_mul_gaussianBinomial
+      (1 / 2 : ℚ) hk
+    change halfQPochhammer n =
+      halfQPochhammer k * halfQPochhammer (n - k) *
+        gaussianBinomial (1 / 2 : ℚ) n k at h
+    rw [halfQBinomial_eq_quotient hk,
+      eq_div_iff (mul_ne_zero (halfQPochhammer_ne_zero k)
+        (halfQPochhammer_ne_zero (n - k))),
+      h]
+    ring
+  · have hnk : n < k := Nat.lt_of_not_ge hk
+    rw [gaussianBinomial_eq_zero_of_lt _ hnk,
+      halfQBinomial_eq_zero_of_lt hnk]
+
 /-- The q-Pascal recurrence, in the orientation suited to the finite
-q-binomial theorem. -/
+q-binomial theorem.  It is the `q = 1/2` instance of the core recurrence
+`gaussianBinomial_succ_succ_alt`. -/
 theorem halfQBinomial_succ_succ (n k : ℕ) :
     halfQBinomial (n + 1) (k + 1) =
       halfQBinomial n k +
         (1 / 2 : ℚ) ^ (k + 1) * halfQBinomial n (k + 1) := by
-  by_cases hkn : k < n
-  · have hk1n1 : k + 1 ≤ n + 1 := by omega
-    have hknle : k ≤ n := hkn.le
-    have hk1n : k + 1 ≤ n := hkn
-    rw [halfQBinomial_eq_quotient hk1n1,
-      halfQBinomial_eq_quotient hknle,
-      halfQBinomial_eq_quotient hk1n]
-    have hsub : n - k = (n - (k + 1)) + 1 := by omega
-    have hpow : (1 / 2 : ℚ) ^ (n + 1) =
-        (1 / 2 : ℚ) ^ (k + 1) * (1 / 2 : ℚ) ^ (n - k) := by
-      rw [← pow_add]
-      congr 1
-      omega
-    have hkfactor : 1 - (1 / 2 : ℚ) ^ (k + 1) ≠ 0 := by
-      have hlt := pow_lt_one₀ (a := (1 / 2 : ℚ)) (by norm_num) (by norm_num)
-        (by omega : k + 1 ≠ 0)
-      linarith
-    have hnfactor : 1 - (1 / 2 : ℚ) ^ (n - k) ≠ 0 := by
-      have hlt := pow_lt_one₀ (a := (1 / 2 : ℚ)) (by norm_num) (by norm_num)
-        (by omega : n - k ≠ 0)
-      linarith
-    have hpowSub : (1 / 2 : ℚ) ^ (n - k) =
-        (1 / 2 : ℚ) ^ (n - (k + 1)) * (1 / 2 : ℚ) := by
-      rw [hsub, pow_succ]
-    have hnfactor' :
-        1 + (1 / 2 : ℚ) ^ (n - (1 + k)) * (-1 / 2) ≠ 0 := by
-      have heq : 1 + (1 / 2 : ℚ) ^ (n - (1 + k)) * (-1 / 2) =
-          1 - (1 / 2 : ℚ) ^ (n - k) := by
-        rw [show 1 + k = k + 1 by omega]
-        rw [hpowSub]
-        ring
-      rw [heq]
-      exact hnfactor
-    have hden : 1 - (1 / 2 : ℚ) ^ (n - (k + 1) + 1) ≠ 0 := by
-      rw [← hsub]
-      exact hnfactor
-    rw [show n + 1 - (k + 1) = n - k by omega]
-    rw [halfQPochhammer_succ n, halfQPochhammer_succ k]
-    rw [hsub, halfQPochhammer_succ]
-    rw [hpow]
-    field_simp [halfQPochhammer_ne_zero, hkfactor, hnfactor, hnfactor']
-    rw [hpowSub]
-    field_simp [hden]
-    ring
-  · have hnk : n ≤ k := Nat.le_of_not_gt hkn
-    rcases hnk.eq_or_lt with rfl | hnk
-    · rw [halfQBinomial_self, halfQBinomial_self,
-        halfQBinomial_eq_zero_of_lt (Nat.lt_succ_self n)]
-      ring
-    · rw [halfQBinomial_eq_zero_of_lt (by omega),
-        halfQBinomial_eq_zero_of_lt hnk,
-        halfQBinomial_eq_zero_of_lt (by omega)]
-      ring
+  simp only [← gaussianBinomial_half_eq_halfQBinomial]
+  rw [gaussianBinomial_succ_succ_alt, add_comm]
 
-/-- The symmetric q-Pascal recurrence. -/
+/-- The symmetric q-Pascal recurrence, the `q = 1/2` instance of the
+core recurrence `gaussianBinomial_succ_succ`. -/
 theorem halfQBinomial_succ_succ' (n k : ℕ) :
     halfQBinomial (n + 1) (k + 1) =
       halfQBinomial n (k + 1) +
         (1 / 2 : ℚ) ^ (n - k) * halfQBinomial n k := by
-  by_cases hkn : k < n
-  · have hk1n : k + 1 ≤ n := hkn
-    have hk1n1 : k + 1 ≤ n + 1 := by omega
-    calc
-      halfQBinomial (n + 1) (k + 1) =
-          halfQBinomial (n + 1) ((n + 1) - (k + 1)) :=
-        (halfQBinomial_symm hk1n1).symm
-      _ = halfQBinomial (n + 1) (n - k) := by
-        rw [show (n + 1) - (k + 1) = n - k by omega]
-      _ = halfQBinomial (n + 1) ((n - (k + 1)) + 1) := by
-        rw [show n - k = (n - (k + 1)) + 1 by omega]
-      _ = halfQBinomial n (n - (k + 1)) +
-          (1 / 2 : ℚ) ^ ((n - (k + 1)) + 1) *
-            halfQBinomial n ((n - (k + 1)) + 1) :=
-        halfQBinomial_succ_succ n (n - (k + 1))
-      _ = halfQBinomial n (k + 1) +
-          (1 / 2 : ℚ) ^ (n - k) * halfQBinomial n k := by
-        rw [show n - (k + 1) = n - (k + 1) by rfl]
-        rw [halfQBinomial_symm hk1n]
-        rw [show n - (k + 1) + 1 = n - k by omega]
-        rw [halfQBinomial_symm hkn.le]
-  · have hnk : n ≤ k := Nat.le_of_not_gt hkn
-    rcases hnk.eq_or_lt with rfl | hnk
-    · rw [halfQBinomial_self,
-        halfQBinomial_eq_zero_of_lt (Nat.lt_succ_self n),
-        halfQBinomial_self]
-      simp
-    · rw [halfQBinomial_eq_zero_of_lt (by omega),
-        halfQBinomial_eq_zero_of_lt (by omega),
-        halfQBinomial_eq_zero_of_lt hnk]
-      ring
-
-/-- The denominator-free Gaussian coefficient from
-`FiniteQBinomialCore` specializes at `q = 1/2` to the established rational
-half-q coefficient.  This makes the generic theorem the common
-finite-product engine, with compatibility certified by the established
-half-base q-Pascal recurrence. -/
-theorem gaussianBinomial_half_eq_halfQBinomial (n k : ℕ) :
-    gaussianBinomial (1 / 2 : ℚ) n k = halfQBinomial n k := by
-  induction n generalizing k with
-  | zero =>
-      cases k with
-      | zero => simp
-      | succ k => simp
-  | succ n ih =>
-      cases k with
-      | zero => simp
-      | succ k =>
-          rw [gaussianBinomial_succ_succ, halfQBinomial_succ_succ',
-            ih (k + 1), ih k]
+  simp only [← gaussianBinomial_half_eq_halfQBinomial]
+  exact gaussianBinomial_succ_succ (1 / 2 : ℚ) n k
 
 /-- The finite q-binomial theorem specialized to `q = 1/2`.  Its proof is
 now the direct rational specialization of the denominator-free
@@ -888,23 +864,63 @@ theorem halfQBinomialDyadicWeight_mul_negativeDyadicNode_pow
   rw [neg_pow ((2 : ℚ) ^ k) d, hp]
   ring
 
+/-- **Field-level node/weight identity.**  In any field, the signed
+Gaussian weights `(-1)^k q^(C(k,2)) [n choose k]_q` at the nodes
+`-(q⁻¹)^k` have the monomial moments
+
+`∑_{k=0}^n (-1)^k q^(C(k,2)) [n choose k]_q (-(q⁻¹)^k)^d
+  = (-1)^d (q^(-d); q)_n`.
+
+This is the finite q-binomial theorem at `z = q^(-d)` after pulling the
+sign `(-1)^d` out of every node power.  The specialization `q = 1/2` is
+the Gaussian/Prouhet layer of `halfQBinomialDyadicWeight` at the
+negative dyadic nodes.  No hypothesis on `q` is needed, since
+`0⁻¹ = 0`. -/
+theorem sum_gaussianWeight_mul_neg_inv_pow {K : Type*} [Field K]
+    (q : K) (n d : ℕ) :
+    (∑ k ∈ Finset.range (n + 1),
+      ((-1 : K) ^ k * q ^ k.choose 2 * gaussianBinomial q n k) *
+        (-(q⁻¹) ^ k) ^ d) =
+      (-1 : K) ^ d * finiteQPochhammerIn ((q ^ d)⁻¹) q n := by
+  rw [← finite_qBinomial_theorem, Finset.mul_sum]
+  apply Finset.sum_congr rfl
+  intro k _hk
+  have hpow : ((q⁻¹) ^ k) ^ d = ((q ^ d)⁻¹) ^ k := by
+    rw [← inv_pow, ← pow_mul, ← pow_mul, mul_comm]
+  rw [neg_pow ((q⁻¹) ^ k) d, hpow]
+  ring
+
+/-- **All monomial moments of the negative-dyadic Gaussian functional.**
+The `q = 1/2` instance of `sum_gaussianWeight_mul_neg_inv_pow`: for
+every degree `d`,
+
+`∑_{k=0}^n halfQBinomialDyadicWeight n k (-(2^k))^d
+  = (-1)^d (2^d; 1/2)_n`.
+
+The lower and top moments `halfQBinomialDyadicWeight_nodes_zero` and
+`halfQBinomialDyadicWeight_nodes_self` are its evaluations through the
+dyadic-node values of `qPochhammer`. -/
+theorem halfQBinomialDyadicWeight_nodes_pow (n d : ℕ) :
+    (∑ k ∈ Finset.range (n + 1),
+      halfQBinomialDyadicWeight n k * negativeDyadicNode k ^ d) =
+      (-1 : ℚ) ^ d * qPochhammer ((2 : ℚ) ^ d) (1 / 2) n := by
+  have h := sum_gaussianWeight_mul_neg_inv_pow (1 / 2 : ℚ) n d
+  have hinv : ((1 / 2 : ℚ)⁻¹) = 2 := by norm_num
+  have hinvd : (((1 / 2 : ℚ) ^ d)⁻¹) = (2 : ℚ) ^ d := by
+    rw [← inv_pow, hinv]
+  rw [hinv, hinvd] at h
+  simp only [gaussianBinomial_half_eq_halfQBinomial,
+    finiteQPochhammerIn_rat_eq] at h
+  unfold halfQBinomialDyadicWeight negativeDyadicNode
+  exact h
+
 /-- **Lower Gaussian/Prouhet moments.**  The signed half-q-binomial weights
 at the nodes `-(2^k)` annihilate every monomial of degree `d < n`. -/
 theorem halfQBinomialDyadicWeight_nodes_zero {n d : ℕ} (hd : d < n) :
     (∑ k ∈ Finset.range (n + 1),
       halfQBinomialDyadicWeight n k * negativeDyadicNode k ^ d) = 0 := by
-  calc
-    (∑ k ∈ Finset.range (n + 1),
-        halfQBinomialDyadicWeight n k * negativeDyadicNode k ^ d) =
-        (-1 : ℚ) ^ d *
-          ∑ k ∈ Finset.range (n + 1),
-            (-1 : ℚ) ^ k * (1 / 2 : ℚ) ^ k.choose 2 *
-              halfQBinomial n k * ((2 : ℚ) ^ d) ^ k := by
-      rw [Finset.mul_sum]
-      apply Finset.sum_congr rfl
-      intro k _hk
-      exact halfQBinomialDyadicWeight_mul_negativeDyadicNode_pow n d k
-    _ = 0 := by rw [halfQBinomial_two_pow_sum_eq_zero hd, mul_zero]
+  rw [halfQBinomialDyadicWeight_nodes_pow,
+    qPochhammer_two_pow_eq_zero hd, mul_zero]
 
 /-- **Top Gaussian/Prouhet moment.**  At degree `n`, the signed
 negative-dyadic functional is the positive exact factor
@@ -913,28 +929,18 @@ theorem halfQBinomialDyadicWeight_nodes_self (n : ℕ) :
     (∑ k ∈ Finset.range (n + 1),
       halfQBinomialDyadicWeight n k * negativeDyadicNode k ^ n) =
         (2 : ℚ) ^ ((n + 1).choose 2) * halfQPochhammer n := by
+  rw [halfQBinomialDyadicWeight_nodes_pow,
+    ← halfQBinomial_two_pow_sum_eq_qPochhammer,
+    halfQBinomial_two_pow_sum_eq_self]
+  have hsign : (-1 : ℚ) ^ n * (-1 : ℚ) ^ n = 1 := by
+    rw [← pow_add, ← two_mul, pow_mul]
+    norm_num
   calc
-    (∑ k ∈ Finset.range (n + 1),
-        halfQBinomialDyadicWeight n k * negativeDyadicNode k ^ n) =
-        (-1 : ℚ) ^ n *
-          ∑ k ∈ Finset.range (n + 1),
-            (-1 : ℚ) ^ k * (1 / 2 : ℚ) ^ k.choose 2 *
-              halfQBinomial n k * ((2 : ℚ) ^ n) ^ k := by
-      rw [Finset.mul_sum]
-      apply Finset.sum_congr rfl
-      intro k _hk
-      exact halfQBinomialDyadicWeight_mul_negativeDyadicNode_pow n n k
-    _ = (2 : ℚ) ^ ((n + 1).choose 2) * halfQPochhammer n := by
-      rw [halfQBinomial_two_pow_sum_eq_self]
-      have hsign : (-1 : ℚ) ^ n * (-1 : ℚ) ^ n = 1 := by
-        rw [← pow_add, ← two_mul, pow_mul]
-        norm_num
-      calc
-        (-1 : ℚ) ^ n *
-              ((-1 : ℚ) ^ n * 2 ^ (n + 1).choose 2 * halfQPochhammer n) =
-            (((-1 : ℚ) ^ n * (-1 : ℚ) ^ n) *
-              2 ^ (n + 1).choose 2) * halfQPochhammer n := by ring
-        _ = _ := by rw [hsign, one_mul]
+    (-1 : ℚ) ^ n *
+          ((-1 : ℚ) ^ n * 2 ^ (n + 1).choose 2 * halfQPochhammer n) =
+        (((-1 : ℚ) ^ n * (-1 : ℚ) ^ n) *
+          2 ^ (n + 1).choose 2) * halfQPochhammer n := by ring
+    _ = _ := by rw [hsign, one_mul]
 
 /-- **Degree-valued Gaussian/Prouhet extractor.**  On rational polynomials
 of degree at most `n`, the signed half-q-binomial functional at the negative

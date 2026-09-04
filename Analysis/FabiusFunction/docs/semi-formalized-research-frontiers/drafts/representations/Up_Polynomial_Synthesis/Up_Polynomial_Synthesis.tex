@@ -35,6 +35,7 @@
   pdfsubject={Finite exact polynomial synthesis, Lagrange cardinal loops,
     Legendre spectral closure, operator transmutation, and self-reconstruction
     by Rvachev up-functions},
+  pdfauthor={Consolidated frontier volume for Vladimir Reshetnikov's ProveIt project},
   pdfkeywords={Rvachev up function, Fabius function, Strang-Fix, polynomial
     reproduction, Thue-Morse, q-integer, binary partitions, Appell polynomials,
     shift-invariant space}
@@ -257,6 +258,71 @@ algorithms, and atom-count results are not formalized in Lean.  The focused
 2026-08-30 module \path{CompositeMeshSharpness.lean} now formalizes only the
 natural-mesh, universally quantified shifted-comb threshold described below;
 its claim boundary is recorded after \cref{thm:scale-classification}.
+The existing module \path{LagrangeRvachevSynthesis.lean} makes
+\cref{thm:lag-cardinal} Exact/Complete by assembly, without a redundant
+report-shaped wrapper:
+\path{normalized_sum_Ioo_lagrangeRvachevDecoder_mul_shifted_rvachevUp}
+is the individual-cardinal identity, and
+\path{sum_Ioo_lagrangeRvachevAtomCoefficient_mul_shifted_rvachevUp}
+is its arbitrary-data counterpart.  The Lean hypotheses match the positive
+mesh, two-adic degree admissibility, $[-1,1]$ evaluation domain, open lattice
+block $\lvert k\rvert<2M$, spacing $h=M^{-1}$, and literal unit-radius
+translates of the theorem.  Injectivity is unnecessary for the polynomial
+identities and is supplied by the report's distinct-node assumption for the
+cardinal reading.  This does not promote \cref{thm:lag-right-inverse}.
+The current source API \path{LagrangeRvachevMatrix.lean} exactly formalizes
+the finite Markov encoder, decoder row-unit law, right inverse, and the
+strictly-positive-overlap sign obstruction of \cref{prop:lag-markov}.  For the
+larger \cref{thm:lag-right-inverse}, it formalizes only the boxed $UB=I$
+clause; the $BU$ projector and the remaining basis, spectral, moment,
+intertwining, and Cauchy--Binet clauses remain human proofs.
+The subsequent source-only module \path{RvachevLagrangeNodesOnly.lean}
+formalizes \cref{cor:lag-nodes-only} completely: its one definition and
+fourteen theorems give the ordinary-derivative and raw-node Appell forms,
+coefficientwise rational descent and rational lattice samples, and the formal
+complete-Bell/Bernoulli--Mersenne description of the reciprocal coefficients.
+This is a compositional Exact result, not a claim of analytic reciprocal-MGF
+convergence; it asserts value rationality only at rational evaluation points
+and leaves the unformalized clauses of \cref{thm:lag-right-inverse}
+unchanged.  Its promotion is independent of the preceding exact synthesis
+assembly for \cref{thm:lag-cardinal}.
+\end{statusbox}
+
+\begin{statusbox}{Status discipline: matrix and source-only leaves}
+The compiled module \path{RvachevLegendreCentralSum.lean} makes
+\cref{cor:leg-central-sum} Exact/Complete.  Its exhaustive public surface has
+zero definitions and three theorems:
+\path{eval_legendrePolynomial_even_zero},
+\path{eval_rvachevLegendreDeconvolutionPolynomial_even}, and
+\path{rvachevLegendreCentralSum}.  These respectively supply the normalized
+central Legendre value, the pointwise evenness of the deconvolved even mode,
+and the literal finite identity at $M=4^n$ (including $n=0$), using the
+existing synthesis theorem and compact support.  The theorem allows any
+bounded Fabius realization satisfying the canonical axioms.  It does not
+formalize the Jacobi formula, all-degree parity or rationality in
+\cref{thm:leg-mode-synthesis}, reverse closure, target-specific mesh
+minimality, or any clause of \cref{thm:lag-right-inverse}.
+The compiled source-only module
+\path{RvachevLegendreBiorthogonality.lean} makes only
+\cref{thm:leg-biorthogonality} Exact/Complete.  Its one definition,
+\path{rvachevLegendreAnalysisKernel}, is the displayed
+$(2m+1)/2$-normalized integral, and its one theorem,
+\path{rvachevLegendreBiorthogonality}, has exactly the positive-mesh condition
+\path{M != 0}, admissibility \path{l <= padicValNat 2 M}, open block
+$\lvert k\rvert<2M$, factor $M^{-1}$, and Kronecker normalization.  It
+includes degree zero and allows any bounded Fabius realization satisfying the
+canonical axioms.  It does not formalize the other support, smoothness,
+Fourier--Bessel, or rationality clauses of \cref{thm:leg-Lambda}, nor the
+matrix/projector conclusions of \cref{cor:leg-biorthogonal-matrices}, reverse
+closure, the full mode theorem, or a Lagrange right inverse.
+Independently, the existing \path{TwoAdic.lean} declarations
+\path{moment_padicVal_two} and \path{moment_num_den_odd} make
+\cref{thm:leg2-moment-units} Exact/Complete.  Lean's \path{moment m} is
+$\mu_{2m}$: the first declaration gives valuation zero, and the second gives
+odd reduced numerator and denominator, equivalently residue one modulo two
+for a rational two-adic unit.  Both include $m=0$.  This is the report's
+rational valuation/residue convention, not a new construction in a separate
+topological $\RationalNumbers_2$ type, and it promotes no neighboring Legendre row.
 \end{statusbox}
 
 \subsection*{Notation}
@@ -2033,7 +2099,7 @@ with figures, classical Rvachev bibliography. \\
 \emph{Exact Polynomial Plateaux from Rvachev's Up-Function}
 (seventh wave;
 \nolinkurl{Rvachev_Up_Exact_Polynomial_Representation_Report};
-SHA in \nolinkurl{assets/SHA256SUMS-absorbed.txt})
+source provenance recoverable from Git history)
 & The oversampled lattice of \cref{sec:lattice}: twisted Poisson
 identity, general-ratio reproduction with sharp order
 $\TwoAdicValuation(m)$ and the general first-defect series
@@ -2134,13 +2200,13 @@ exact lifting, derivative energies, and central non-flattening.\\
 \end{longtable}
 \end{center}
 
-The canonical \nolinkurl{assets/} directory retains the historical hashes of
-the three earlier absorbed \texttt{.tex} sources in its
-\nolinkurl{SHA256SUMS-absorbed.txt} ledger.  After the ten later
-reports were completely absorbed, their individual prose/PDF directories were
-retired.  Their 113 selected evidence payloads now have one-to-one canonical
-destinations and live hashes under \nolinkurl{assets/companion-evidence/},
-\nolinkurl{assets/evidence/}, and
+The historical hashes and bytes of the three earlier absorbed \texttt{.tex}
+sources remain recoverable from Git history.  After the ten later reports were
+completely absorbed, their individual prose/PDF directories were retired.  The
+113-row companion disposition records 106 retained payloads with live canonical
+destinations under \nolinkurl{assets/companion-evidence/} and
+\nolinkurl{assets/evidence/}; the other seven rows are retired checksum ledgers
+with no live destinations.  Their hashes and mappings are recorded in
 \nolinkurl{assets/provenance/COMPANION_PAYLOADS.csv}.  The ten hashes above,
 historical source snapshots, companion-asset roles, and the exact
 computer-assisted certificate boundary are mirrored in the canonical

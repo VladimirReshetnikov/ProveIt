@@ -412,6 +412,24 @@ lemma weightedSumDistribution_real_Ioi_eq_rvachevUp_of_nonneg
     _ = rvachevUp F t :=
       (rvachevUp_eq_one_sub_fabiusReal_of_nonneg F hF ht).symm
 
+/-- The closed-tail survival function of the atomless weighted-sum law is
+Rvachev's bump on the whole nonnegative ray.  Thus the strict survival event
+in `weightedSumDistribution_real_Ioi_eq_rvachevUp_of_nonneg` may be replaced
+by the probabilistic convention `X ≥ t` without changing its mass. -/
+theorem weightedSumDistribution_real_Ici_eq_rvachevUp_of_nonneg
+    (F : BoundedFabius) (hF : IsFabius F) {t : ℝ} (ht : 0 ≤ t) :
+    weightedSumDistribution.real (Ici t) = rvachevUp F t := by
+  calc
+    weightedSumDistribution.real (Ici t) =
+        weightedSumDistribution.real (Ioi t) := by
+      simp only [Measure.real]
+      exact congrArg ENNReal.toReal
+        (measure_congr
+          (Ioi_ae_eq_Ici'
+            (weightedSumDistribution_singleton t))).symm
+    _ = rvachevUp F t :=
+      weightedSumDistribution_real_Ioi_eq_rvachevUp_of_nonneg F hF ht
+
 /-- Unit-interval compatibility form of
 `weightedSumDistribution_real_Ioi_eq_rvachevUp_of_nonneg`. -/
 lemma weightedSumDistribution_real_Ioi_eq_rvachevUp
@@ -532,6 +550,44 @@ theorem intervalIntegral_mul_rvachevUp_eq_integral_Icc_intervalIntegral
   intro t _ht
   simp only [smul_eq_mul]
   ring
+
+/-- **Raw moments from the Rvachev survival function.**  Every positive-degree
+moment of the binary weighted-sum law satisfies the tail-integral formula
+
+`E[X^n] = n ∫₀¹ t^(n-1) up(t) dt`.
+
+The expectation is taken over the full real line; compact support of the law
+is already built into the survival layer-cake theorem. -/
+theorem integral_pow_weightedSumDistribution_eq_mul_intervalIntegral_rvachevUp
+    (F : BoundedFabius) (hF : IsFabius F) (n : ℕ) (hn : 1 ≤ n) :
+    (∫ x : ℝ, x ^ n ∂weightedSumDistribution) =
+      (n : ℝ) *
+        ∫ t in (0 : ℝ)..1, t ^ (n - 1) * rvachevUp F t := by
+  have hk : IntervalIntegrable
+      (fun t : ℝ => (n : ℝ) * t ^ (n - 1)) volume 0 1 :=
+    (continuous_const.mul (continuous_id.pow (n - 1))).intervalIntegrable 0 1
+  have hprimitive (x : ℝ) :
+      (∫ t in (0 : ℝ)..x, (n : ℝ) * t ^ (n - 1)) = x ^ n := by
+    rw [intervalIntegral.integral_eq_sub_of_hasDerivAt
+      (fun t _ht => hasDerivAt_pow n t)
+      ((continuous_const.mul (continuous_id.pow (n - 1))).intervalIntegrable 0 x)]
+    simp [Nat.ne_of_gt hn]
+  calc
+    (∫ x : ℝ, x ^ n ∂weightedSumDistribution) =
+        ∫ x : ℝ, (∫ t in (0 : ℝ)..x,
+          (n : ℝ) * t ^ (n - 1)) ∂weightedSumDistribution := by
+      apply integral_congr_ae
+      exact Filter.Eventually.of_forall fun x => (hprimitive x).symm
+    _ = ∫ t in (0 : ℝ)..1,
+          rvachevUp F t • ((n : ℝ) * t ^ (n - 1)) :=
+      (intervalIntegral_rvachevUp_smul_eq_integral F hF _ hk).symm
+    _ = (n : ℝ) *
+          ∫ t in (0 : ℝ)..1, t ^ (n - 1) * rvachevUp F t := by
+      rw [← intervalIntegral.integral_const_mul]
+      apply intervalIntegral.integral_congr
+      intro t _ht
+      simp only [smul_eq_mul]
+      ring
 
 /-- Real scalar clipped survival identity in the report's orientation:
 

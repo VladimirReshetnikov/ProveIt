@@ -27,7 +27,13 @@ noncomputable section
 
 /-! ## A branch-independent differentiation step -/
 
-private theorem lambertDerivativeFormula_hasDerivAt
+/-- **Branch-independent differentiation step.**  If a function `W`
+satisfies the Lambert inverse-derivative law `W' = (eᵂ (W + 1))⁻¹` at
+`z`, with `W z ≠ -1`, then that derivative expression is itself
+differentiable at `z`, with the exponential-form second derivative.
+Both real branches are instances; the lemma carries no branch
+information. -/
+theorem lambertDerivativeFormula_hasDerivAt
     {W : ℝ → ℝ} {z : ℝ}
     (hW : HasDerivAt W
       (Real.exp (W z) * (W z + 1))⁻¹ z)
@@ -186,76 +192,50 @@ private lemma neg_two_mul_exp_neg_two_mem_lowerDomain :
       _ = z := lowerLambertW_mul_exp hz
   rwa [hzEq]
 
+/-- **The one sign analysis of the lower branch.**  On the smooth
+interior the second derivative is a positive multiple of
+`W₋₁(z) + 2`, so its sign, and its vanishing, are those of
+`W₋₁(z) + 2`. -/
+theorem deriv_deriv_lowerLambertW_eq_pos_mul {z : ℝ}
+    (hz : z ∈ Ioo (-Real.exp (-1)) 0) :
+    ∃ c : ℝ, 0 < c ∧
+      deriv (deriv lowerLambertW) z = c * (lowerLambertW z + 2) := by
+  have hW := lowerLambertW_lt_neg_one hz
+  have hden : (lowerLambertW z + 1) ^ 3 < 0 :=
+    (show Odd 3 by decide).pow_neg (by linarith)
+  refine ⟨-(Real.exp (-2 * lowerLambertW z) /
+      (lowerLambertW z + 1) ^ 3),
+    neg_pos.mpr (div_neg_of_pos_of_neg (Real.exp_pos _) hden), ?_⟩
+  rw [deriv_deriv_lowerLambertW hz]
+  ring
+
 private lemma lowerLambertW_secondDeriv_pos_iff_add_two_pos {z : ℝ}
     (hz : z ∈ Ioo (-Real.exp (-1)) 0) :
     0 < deriv (deriv lowerLambertW) z ↔
       0 < lowerLambertW z + 2 := by
-  rw [deriv_deriv_lowerLambertW hz]
-  have hW := lowerLambertW_lt_neg_one hz
-  have hden : (lowerLambertW z + 1) ^ 3 < 0 :=
-    (show Odd 3 by decide).pow_neg (by linarith)
-  have hnegExp : -Real.exp (-2 * lowerLambertW z) < 0 :=
-    neg_lt_zero.mpr (Real.exp_pos _)
-  have hnum :
-      -Real.exp (-2 * lowerLambertW z) *
-          (lowerLambertW z + 2) < 0 ↔
-        0 < lowerLambertW z + 2 := by
-    constructor
-    · intro h
-      rcases (mul_neg_iff.mp h) with hcase | hcase
-      · exact False.elim ((not_lt_of_ge hnegExp.le) hcase.1)
-      · exact hcase.2
-    · intro h
-      exact mul_neg_of_neg_of_pos hnegExp h
-  constructor
-  · intro h
-    rcases (div_pos_iff.mp h) with hcase | hcase
-    · exact False.elim ((not_lt_of_ge hden.le) hcase.2)
-    · exact hnum.mp hcase.1
-  · intro h
-    exact (div_pos_iff.mpr (Or.inr ⟨hnum.mpr h, hden⟩))
+  obtain ⟨c, hc, hmul⟩ := deriv_deriv_lowerLambertW_eq_pos_mul hz
+  rw [hmul]
+  exact mul_pos_iff_of_pos_left hc
 
 private lemma lowerLambertW_secondDeriv_neg_iff_add_two_neg {z : ℝ}
     (hz : z ∈ Ioo (-Real.exp (-1)) 0) :
     deriv (deriv lowerLambertW) z < 0 ↔
       lowerLambertW z + 2 < 0 := by
-  rw [deriv_deriv_lowerLambertW hz]
-  have hW := lowerLambertW_lt_neg_one hz
-  have hden : (lowerLambertW z + 1) ^ 3 < 0 :=
-    (show Odd 3 by decide).pow_neg (by linarith)
-  have hnegExp : -Real.exp (-2 * lowerLambertW z) < 0 :=
-    neg_lt_zero.mpr (Real.exp_pos _)
-  have hnum :
-      0 < -Real.exp (-2 * lowerLambertW z) *
-          (lowerLambertW z + 2) ↔
-        lowerLambertW z + 2 < 0 := by
-    constructor
-    · intro h
-      rcases (mul_pos_iff.mp h) with hcase | hcase
-      · exact False.elim ((not_lt_of_ge hnegExp.le) hcase.1)
-      · exact hcase.2
-    · intro h
-      exact mul_pos_of_neg_of_neg hnegExp h
+  obtain ⟨c, hc, hmul⟩ := deriv_deriv_lowerLambertW_eq_pos_mul hz
+  rw [hmul]
   constructor
   · intro h
-    rcases (div_neg_iff.mp h) with hcase | hcase
-    · exact hnum.mp hcase.1
-    · exact False.elim ((not_lt_of_ge hden.le) hcase.2)
-  · intro h
-    exact div_neg_iff.mpr (Or.inl ⟨hnum.mpr h, hden⟩)
+    rcases mul_neg_iff.mp h with hcase | hcase
+    · exact hcase.2
+    · exact absurd hcase.1 (not_lt.mpr hc.le)
+  · exact mul_neg_of_pos_of_neg hc
 
 private lemma lowerLambertW_secondDeriv_eq_zero_iff_add_two_eq_zero {z : ℝ}
     (hz : z ∈ Ioo (-Real.exp (-1)) 0) :
     deriv (deriv lowerLambertW) z = 0 ↔
       lowerLambertW z + 2 = 0 := by
-  rw [deriv_deriv_lowerLambertW hz]
-  have hW1 : lowerLambertW z + 1 ≠ 0 := by
-    linarith [lowerLambertW_lt_neg_one hz]
-  have hden : (lowerLambertW z + 1) ^ 3 ≠ 0 :=
-    pow_ne_zero 3 hW1
-  rw [div_eq_zero_iff]
-  simp only [hden, or_false, mul_eq_zero, neg_eq_zero,
-    Real.exp_ne_zero, false_or]
+  obtain ⟨c, hc, hmul⟩ := deriv_deriv_lowerLambertW_eq_pos_mul hz
+  rw [hmul, mul_eq_zero, or_iff_right hc.ne']
 
 /-- On the smooth lower branch, the second derivative is positive exactly to
 the left of the inflection argument `-2 * exp (-2)`. -/

@@ -67,11 +67,10 @@ pdf_preflight.json
     preflight for the retained post-union render.  It explicitly records that
     the current source/PDF pair is not synchronized.
 
-SHA256SUMS.txt
-    Current 20-payload mixed source/retained-artifact inventory.  Its fixed
-    payload scope is preserved, every row is current, and all 20 entries verify.
-    It hashes the live TeX and metadata alongside the byte-retained historical
-    PDF; ledger validity does not assert source/PDF rendering parity.
+Historical checksum checkpoint
+    The former 20-payload mixed source/retained-artifact inventory verified at
+    its recorded checkpoint. It is now retired and recoverable from Git
+    history; its validity did not assert source/PDF rendering parity.
 
 Numerical publication run
 -------------------------
@@ -96,7 +95,7 @@ pdflatex -interaction=nonstopmode -halt-on-error fabius_rvachev_new_frontiers.te
 
 After each rebuild, verify A4 page geometry, embedded/subset fonts, a positive
 Libertinus font count, no Type 3 fonts, and the final page count before
-refreshing the PDF preflight and checksum ledger.
+refreshing the PDF preflight.
 
 Re-run the numerical experiment
 -------------------------------
@@ -146,8 +145,8 @@ Retained post-union PDF verification (historical)
   17, 22, 29 (two figures), and 30, with intact axes, legends, captions, and
   curves.
 * At that checkpoint the fixed-scope checksum ledger verified all 20 payloads.
-  The current ledger is refreshed independently for the newer source while
-  retaining this PDF byte-for-byte.
+  It is now retired and recoverable from Git history; the PDF remains retained
+  byte-for-byte while the newer source awaits a synchronized rebuild.
 
 Historical verification
 -----------------------

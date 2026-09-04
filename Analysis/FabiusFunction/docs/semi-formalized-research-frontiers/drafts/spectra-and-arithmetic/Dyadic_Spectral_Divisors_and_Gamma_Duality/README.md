@@ -50,5 +50,6 @@ The synchronized 2026-08-31 rebuild is 22 A4 pages. Every page rendered and
 contained extractable text. All 18 font rows are embedded and subset, five are
 Libertinus, and none is Type 3. The final log has no TeX error, unresolved
 reference/citation, rerun request, overfull box, or underfull box. The separate
-`ARRIVAL_SHA256SUMS` ledger remains unchanged; `SHA256SUMS` records the current
-source, PDF, and experiment script.
+former arrival and normalized-package ledgers verified the source, PDF, and
+experiment-script checkpoint. Both are now retired and recoverable from Git
+history.

@@ -1,5 +1,6 @@
 import FabiusFunction.LobeSignCount
 import FabiusFunction.Arithmetic
+import FabiusFunction.ThueMorseBasicLemmas
 import Mathlib.NumberTheory.Padics.PadicVal.Basic
 
 /-!
@@ -42,24 +43,9 @@ theorem sum_padicValNat_Icc (m : ℕ) :
   induction m with
   | zero => simp
   | succ n ih =>
-      have hIcc : Finset.Icc 1 (n + 1) =
-          insert (n + 1) (Finset.Icc 1 n) := by
-        ext k
-        rw [Finset.mem_insert, Finset.mem_Icc, Finset.mem_Icc]
-        constructor
-        · rintro ⟨h1, h2⟩
-          rcases eq_or_lt_of_le h2 with rfl | h
-          · exact Or.inl rfl
-          · exact Or.inr ⟨h1, by omega⟩
-        · rintro (rfl | ⟨h1, h2⟩)
-          · exact ⟨by omega, le_refl _⟩
-          · exact ⟨h1, by omega⟩
-      have hnot : (n + 1) ∉ Finset.Icc 1 n := by
-        rw [Finset.mem_Icc]
-        omega
-      rw [hIcc, Finset.sum_insert hnot, ih, Nat.factorial_succ,
-        padicValNat.mul (Nat.succ_ne_zero n)
-          (Nat.factorial_ne_zero n)]
+      rw [Finset.sum_Icc_succ_top (by omega), ih, Nat.factorial_succ,
+        padicValNat.mul (Nat.succ_ne_zero n) (Nat.factorial_ne_zero n),
+        add_comm]
 
 /-- **The closed-form count**: the lattice points at or below `m`
 number `2m − w(m)`, stated additively to stay inside `ℕ`. -/
@@ -82,21 +68,8 @@ theorem card_lobeExceptional_add_binaryWeight (m : ℕ) :
 /-- **The sign collapse**: `(−1)^{#{lattice ≤ m}} = (−1)^{w(m)}`. -/
 theorem neg_one_pow_card_lobeExceptional (m : ℕ) :
     ((-1 : ℝ)) ^ (lobeExceptional (m:ℝ)).card =
-      ((-1 : ℝ)) ^ binaryWeight m := by
-  set c : ℕ := (lobeExceptional (m:ℝ)).card with hc
-  set w : ℕ := binaryWeight m with hw
-  have hsum : c + w = 2 * m := card_lobeExceptional_add_binaryWeight m
-  have h1 : ((-1 : ℝ)) ^ c * ((-1 : ℝ)) ^ w = 1 := by
-    rw [← pow_add, hsum, pow_mul]
-    norm_num
-  have h2 : ((-1 : ℝ)) ^ w * ((-1 : ℝ)) ^ w = 1 := by
-    rw [← pow_add, ← two_mul, pow_mul]
-    norm_num
-  calc ((-1 : ℝ)) ^ c
-      = ((-1 : ℝ)) ^ c * (((-1 : ℝ)) ^ w * ((-1 : ℝ)) ^ w) := by
-        rw [h2, mul_one]
-    _ = (((-1 : ℝ)) ^ c * ((-1 : ℝ)) ^ w) * ((-1 : ℝ)) ^ w := by ring
-    _ = ((-1 : ℝ)) ^ w := by rw [h1, one_mul]
+      ((-1 : ℝ)) ^ binaryWeight m :=
+  neg_one_pow_eq_of_add_eq_two_mul (card_lobeExceptional_add_binaryWeight m)
 
 /-- **The Thue–Morse lobe sign**: on the lobe `(m, m+1)`,
 `Φ(x) = (−1)^{w(m)}·‖Φ(x)‖`. -/

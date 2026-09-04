@@ -24,6 +24,13 @@ is `1` by `PeriodDoublingHankel`.  Strong induction then gives the
 exact two-adic valuation `v₂(H_r) = r - 1`, so `H_r ≠ 0`.
 
 * `mseq` — the integer difference sequence.
+* `thueMorseSign_two_mul_add_two_mul` and its three companions — the
+  doubling laws `ε(2h) = ε(h)`, `ε(2h+1) = -ε(h)` in the four
+  parity-interleaved shapes `ε(2i + 2j)`, `ε(2i + (2j+1))`,
+  `ε(2i+1 + 2j)`, `ε(2i+1 + (2j+1))`.
+* `hankelSign_submatrix_eq_fromBlocks` — parity-interleaving the
+  sign Hankel matrix exposes the block form `[H, -H; -H, H⁺]`, for
+  any even/odd interleaving of the index set.
 * `hankelSign_det_two_mul` / `hankelSign_det_two_mul_add_one` — the
   two doubling factorizations.
 * `mseqHankel_det_odd` — the mod-two transfer.
@@ -66,6 +73,68 @@ theorem mseq_cast (k : ℕ) : ((mseq k : ℤ) : ZMod 2) = pdBit k := by
   push_cast
   rw [zmod_two_sub_eq_add]
 
+/-! ### The doubling laws in parity-interleaved shape
+
+Interleaving even and odd indices produces Hankel entries at the four
+sums `2i + 2j`, `2i + (2j+1)`, `2i+1 + 2j`, `2i+1 + (2j+1)`; the
+doubling laws `ε(2h) = ε(h)` and `ε(2h+1) = -ε(h)` evaluate each. -/
+
+/-- `ε(2i + 2j) = ε(i + j)`: an even-even entry is a sign entry. -/
+theorem thueMorseSign_two_mul_add_two_mul (i j : ℕ) :
+    thueMorseSign (2 * i + 2 * j) = thueMorseSign (i + j) := by
+  rw [show 2 * i + 2 * j = 2 * (i + j) by ring, thueMorseSign_two_mul]
+
+/-- `ε(2i + (2j+1)) = -ε(i + j)`: an even-odd entry is a negated sign
+entry. -/
+theorem thueMorseSign_two_mul_add_two_mul_add_one (i j : ℕ) :
+    thueMorseSign (2 * i + (2 * j + 1)) = -thueMorseSign (i + j) := by
+  rw [show 2 * i + (2 * j + 1) = 2 * (i + j) + 1 by ring,
+    thueMorseSign_two_mul_add_one]
+
+/-- `ε(2i+1 + 2j) = -ε(i + j)`: an odd-even entry is a negated sign
+entry. -/
+theorem thueMorseSign_two_mul_add_one_add_two_mul (i j : ℕ) :
+    thueMorseSign (2 * i + 1 + 2 * j) = -thueMorseSign (i + j) := by
+  rw [show 2 * i + 1 + 2 * j = 2 * (i + j) + 1 by ring,
+    thueMorseSign_two_mul_add_one]
+
+/-- `ε(2i+1 + (2j+1)) = ε(i + j + 1)`: an odd-odd entry is a shifted
+sign entry. -/
+theorem thueMorseSign_two_mul_add_one_add_two_mul_add_one (i j : ℕ) :
+    thueMorseSign (2 * i + 1 + (2 * j + 1)) =
+      thueMorseSign (i + j + 1) := by
+  rw [show 2 * i + 1 + (2 * j + 1) = 2 * (i + j + 1) by ring,
+    thueMorseSign_two_mul]
+
+/-- **Parity interleaving exposes the block structure.**  For any
+even/odd interleaving `e` of the index set — `e (inl i) = 2i` on the
+left summand and `e (inr j) = 2j + 1` on the right — the interleaved
+sign Hankel matrix is the block matrix
+
+`[H_p(ε), -H; -H, H⁺]`, with `H(i,j) = ε(i+j)`, `H⁺(i,j) = ε(i+j+1)`,
+
+by the four interleaved doubling laws.  Both doubling factorizations
+below are this one lemma at `interleaveEquiv` and `interleaveOddEquiv`
+respectively. -/
+theorem hankelSign_submatrix_eq_fromBlocks {p q N : ℕ}
+    (e : Fin p ⊕ Fin q ≃ Fin N)
+    (hl : ∀ i : Fin p, ((e (Sum.inl i)) : ℕ) = 2 * i)
+    (hr : ∀ j : Fin q, ((e (Sum.inr j)) : ℕ) = 2 * j + 1) :
+    (hankelSign N).submatrix e e =
+      fromBlocks (hankelSign p)
+        (of fun (i : Fin p) (j : Fin q) => -thueMorseSign ((i : ℕ) + j))
+        (of fun (i : Fin q) (j : Fin p) => -thueMorseSign ((i : ℕ) + j))
+        (of fun i j : Fin q => thueMorseSign ((i : ℕ) + j + 1)) := by
+  refine Matrix.ext ?_
+  rintro (i | i) (j | j) <;>
+    simp only [submatrix_apply, hankelSign, of_apply,
+      fromBlocks_apply₁₁, fromBlocks_apply₁₂, fromBlocks_apply₂₁,
+      fromBlocks_apply₂₂, hl, hr]
+  · exact thueMorseSign_two_mul_add_two_mul _ _
+  · exact thueMorseSign_two_mul_add_two_mul_add_one _ _
+  · exact thueMorseSign_two_mul_add_one_add_two_mul _ _
+  · exact thueMorseSign_two_mul_add_one_add_two_mul_add_one _ _
+
 /-- **The even doubling factorization**:
 `H_{2n}(ε) = 2^n · H_n(ε) · H_n(m)`. -/
 theorem hankelSign_det_two_mul (n : ℕ) :
@@ -77,20 +146,9 @@ theorem hankelSign_det_two_mul (n : ℕ) :
       fromBlocks (hankelSign n)
         (of fun i j : Fin n => -thueMorseSign ((i : ℕ) + j))
         (of fun i j : Fin n => -thueMorseSign ((i : ℕ) + j))
-        (of fun i j : Fin n => thueMorseSign ((i : ℕ) + j + 1)) := by
-    refine Matrix.ext ?_
-    rintro (i | i) (j | j) <;>
-      simp only [submatrix_apply, hankelSign, of_apply,
-        fromBlocks_apply₁₁, fromBlocks_apply₁₂, fromBlocks_apply₂₁,
-        fromBlocks_apply₂₂, interleaveEquiv_inl, interleaveEquiv_inr]
-    · rw [show 2 * (i : ℕ) + 2 * (j : ℕ) = 2 * ((i : ℕ) + j) by ring,
-        thueMorseSign_two_mul]
-    · rw [show 2 * (i : ℕ) + (2 * (j : ℕ) + 1) =
-        2 * ((i : ℕ) + j) + 1 by ring, thueMorseSign_two_mul_add_one]
-    · rw [show 2 * (i : ℕ) + 1 + 2 * (j : ℕ) =
-        2 * ((i : ℕ) + j) + 1 by ring, thueMorseSign_two_mul_add_one]
-    · rw [show 2 * (i : ℕ) + 1 + (2 * (j : ℕ) + 1) =
-        2 * ((i : ℕ) + j + 1) by ring, thueMorseSign_two_mul]
+        (of fun i j : Fin n => thueMorseSign ((i : ℕ) + j + 1)) :=
+    hankelSign_submatrix_eq_fromBlocks (interleaveEquiv n)
+      (interleaveEquiv_inl n) (interleaveEquiv_inr n)
   have hC : (of fun i j : Fin n => -thueMorseSign ((i : ℕ) + j)) =
       (-1 : Matrix (Fin n) (Fin n) ℤ) * hankelSign n := by
     refine Matrix.ext fun i j => ?_
@@ -124,21 +182,9 @@ theorem hankelSign_det_two_mul_add_one (n : ℕ) :
           -thueMorseSign ((i : ℕ) + j))
         (of fun (i : Fin n) (j : Fin (n + 1)) =>
           -thueMorseSign ((i : ℕ) + j))
-        (of fun i j : Fin n => thueMorseSign ((i : ℕ) + j + 1)) := by
-    refine Matrix.ext ?_
-    rintro (i | i) (j | j) <;>
-      simp only [submatrix_apply, hankelSign, of_apply,
-        fromBlocks_apply₁₁, fromBlocks_apply₁₂, fromBlocks_apply₂₁,
-        fromBlocks_apply₂₂, interleaveOddEquiv_inl,
-        interleaveOddEquiv_inr]
-    · rw [show 2 * (i : ℕ) + 2 * (j : ℕ) = 2 * ((i : ℕ) + j) by ring,
-        thueMorseSign_two_mul]
-    · rw [show 2 * (i : ℕ) + (2 * (j : ℕ) + 1) =
-        2 * ((i : ℕ) + j) + 1 by ring, thueMorseSign_two_mul_add_one]
-    · rw [show 2 * (i : ℕ) + 1 + 2 * (j : ℕ) =
-        2 * ((i : ℕ) + j) + 1 by ring, thueMorseSign_two_mul_add_one]
-    · rw [show 2 * (i : ℕ) + 1 + (2 * (j : ℕ) + 1) =
-        2 * ((i : ℕ) + j + 1) by ring, thueMorseSign_two_mul]
+        (of fun i j : Fin n => thueMorseSign ((i : ℕ) + j + 1)) :=
+    hankelSign_submatrix_eq_fromBlocks (interleaveOddEquiv n)
+      (interleaveOddEquiv_inl n) (interleaveOddEquiv_inr n)
   have hC : (of fun (i : Fin n) (j : Fin (n + 1)) =>
       -thueMorseSign ((i : ℕ) + j)) =
       (-(of fun (i : Fin n) (k : Fin (n + 1)) =>

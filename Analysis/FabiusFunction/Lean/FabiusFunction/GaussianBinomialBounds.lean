@@ -2,15 +2,16 @@ import FabiusFunction.GaussianBinomialPalindromic
 import FabiusFunction.GaussianBinomialContinuity
 import FabiusFunction.GaussianBinomialUniversal
 import FabiusFunction.GeneralQConditionNumber
+import FabiusFunction.QBinomialReciprocity
 import FabiusFunction.QBinomialTheoremInfinite
 
 /-!
 # Gaussian coefficients at `q > 1`: reciprocity and dimension-dominant bounds
 
-Palindromicity of `[n,k]_X` evaluates to the **reciprocity**
-`[n,k]_q = q^{k(n-k)} [n,k]_{q⁻¹}` (`q ≠ 0`), which transfers everything known for
-`0 ≤ q < 1` to `q > 1`.  For `0 ≤ q < 1` the coefficient lies between its constant term
-`1` and `1/(q;q)_∞`:
+The **reciprocity** `[n,k]_q = q^{k(n-k)} [n,k]_{q⁻¹}` (`q ≠ 0`), proved
+division-free over units in `QBinomialReciprocity`, transfers everything
+known for `0 ≤ q < 1` to `q > 1`.  For `0 ≤ q < 1` the coefficient lies
+between its constant term `1` and `1/(q;q)_∞`:
 
 `1 ≤ [n,k]_q ≤ 1/(q;q)_k ≤ 1/(q;q)_∞`,
 
@@ -24,6 +25,8 @@ numerator at most `1`.  Hence for `Q > 1`
 
 * `gaussianBinomial_inv`: reciprocity in any field.
 * `one_le_gaussianBinomial`: `1 ≤ [n,k]_q` for `q ≥ 0` in any ordered field.
+* `finiteQPochhammerIn_pow_le_one`: the finite numerator bound; positivity of
+  `(q;q)_k` is reused from `GeneralQConditionNumber`.
 * `gaussianBinomial_le_inv_qPochhammerInfIn`: `[n,k]_q ≤ 1/(q;q)_∞` for `0 ≤ q < 1`.
 * `pow_le_gaussianBinomial_of_one_lt`, `gaussianBinomial_le_pow_div_of_one_lt`: the bounds at
   `Q > 1`.
@@ -41,19 +44,15 @@ section Field
 
 variable {K : Type*} [Field K]
 
-/-- **Reciprocity** `[n,k]_q = q^{k(n-k)} [n,k]_{q⁻¹}` for `q ≠ 0`, the evaluated form of
-palindromicity. -/
-theorem gaussianBinomial_inv (q : K) (hq0 : q ≠ 0) {n k : ℕ} (hk : k ≤ n) :
-    gaussianBinomial q n k = q ^ (k * (n - k)) * gaussianBinomial q⁻¹ n k := by
-  letI : Invertible q := invertibleOfNonzero hq0
-  have e : ∀ x : K, eval₂ (RingHom.id K) x (gaussianBinomial (X : K[X]) n k) =
-      gaussianBinomial x n k := fun x => by
-    have h := map_gaussianBinomial (eval₂RingHom (RingHom.id K) x) (X : K[X]) n k
-    rwa [coe_eval₂RingHom, eval₂_X] at h
-  have h := eval₂_reflect_mul_pow (RingHom.id K) q (k * (n - k))
-    (gaussianBinomial (X : K[X]) n k) (gaussianBinomial_natDegree_le n k)
-  rw [reflect_gaussianBinomial hk, e, e, invOf_eq_inv] at h
-  rw [← h, mul_comm]
+/-- **Reciprocity** `[n,k]_q = q^{k(n-k)} [n,k]_{q⁻¹}` for `q ≠ 0`, the
+evaluated form of palindromicity.  This is `gaussianBinomial_reciprocity`
+read from right to left; the hypothesis `k ≤ n` is not needed (both sides
+vanish above the diagonal) and is kept only for the signature. -/
+theorem gaussianBinomial_inv (q : K) (hq0 : q ≠ 0) {n k : ℕ}
+    (_hk : k ≤ n) :
+    gaussianBinomial q n k =
+      q ^ (k * (n - k)) * gaussianBinomial q⁻¹ n k :=
+  (gaussianBinomial_reciprocity q hq0 n k).symm
 
 end Field
 
