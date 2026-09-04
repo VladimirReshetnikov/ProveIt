@@ -587,8 +587,14 @@ finite poles are removable.  The difference is therefore a polynomial; it is
 $O(z^{-1})$ at infinity, so it is identically zero.
 \end{proof}
 
-\emph{Lean status.}  Not formalized; the corpus has no partial-fraction decomposition of
-$1/(z;q)_{n+1}$.
+\emph{Lean status.}  Formal, in \path{QPartialFractions.lean}.  The coefficient
+$c_j=(-1)^jq^{\binom{j+1}{2}}/((q;q)_j(q;q)_{n-j})$ is \path{Fabius.partialFractionCoeff}, the
+division-free polynomial form of \Cref{rem:partial-fraction-formalization} is
+\path{Fabius.sum_partialFractionCoeff_mul_prod_erase} (an identity in $K[X]$ under
+$(q;q)_n\ne0$ alone), and the displayed decomposition is
+\path{Fabius.one_div_finiteQPochhammerIn_eq_sum}, over every field, under $(q;q)_n\ne0$ together
+with $1-zq^j\ne0$ for $j\le n$ --- the hypothesis that the poles are simple and that $z$ is not
+one of them, which the distinctness assumption $q^i\ne q^j$ supplies here.
 
 
 % ed.: remark added to record the division-free form proved in Lean.
@@ -626,12 +632,17 @@ If $a=a(x)$ is differentiable, then
 Differentiate the logarithm of the finite product term by term.
 \end{proof}
 
-\emph{Lean status.}  The finite logarithmic derivative is not formalized as such.  Its
-infinite counterpart is: \path{Fabius.hasDerivAt_qPochhammerInfIn_lambert} in
-\path{QPochhammerLogDerivative.lean} gives
-$\partial_a(a;q)_\infty=-(a;q)_\infty\sum_{m\ge0}a^m/(1-q^{m+1})$ for $|a|,|q|<1$, which is
-$\partial_a\log(a;q)_\infty=-\sum_j q^j/(1-aq^j)$ after resummation
-(\path{Fabius.tsum_neg_pow_div_one_sub_mul_pow_eq}).
+\emph{Lean status.}  Formal in \path{QPochhammerDerivative.lean}, in the equivalent
+division-free form that multiplies through by the value:
+\path{Fabius.hasDerivAt_finiteQPochhammerIn_of_ne_zero} is
+$\partial_a(a;q)_n=-(a;q)_n\sum_{j<n}q^j/(1-aq^j)$ over any nontrivially normed field, under the
+hypothesis $1-aq^j\ne0$ for $j<n$ that ``away from its zeros'' expresses; without that hypothesis
+\path{Fabius.hasDerivAt_finiteQPochhammerIn} gives the polynomial form
+$\partial_a(a;q)_n=-\sum_{j<n}q^j\prod_{i\ne j}(1-aq^i)$.  The second display, for a
+differentiable parameter $a(x)$, is the chain rule
+\path{Fabius.hasDerivAt_finiteQPochhammerIn_comp}.  The infinite counterpart is
+\path{Fabius.hasDerivAt_qPochhammerInfIn_lambert} in \path{QPochhammerLogDerivative.lean}, with
+the resummation \path{Fabius.tsum_neg_pow_div_one_sub_mul_pow_eq}.
 
 
 \section{Infinite products and Lambert series}
@@ -1351,8 +1362,18 @@ The first sum is $k(n-k)$.  The second equals
 Since the first and second derivatives of $\log M$ at $0$ are the mean and variance, respectively, the result follows.
 \end{proof}
 
-\emph{Lean status.}  Not formalized; the corpus has no moments of the inversion-number
-distribution.
+\emph{Lean status.}  Formal, in \path{GaussianBinomialCumulants.lean}, through the cumulant
+functionals of a generating polynomial: with \path{Fabius.meanAtOne} the mean $P'(1)/P(1)$ and
+\path{Fabius.varAtOne} the second cumulant,
+\path{Fabius.meanAtOne_gaussianBinomial_X} is $\Expectation X=k(n-k)/2$ and
+\path{Fabius.varAtOne_gaussianBinomial_X} is $\Variance(X)=k(n-k)(n+1)/12$, both for $k\le n$
+over a field, applied to the universal polynomial $\GaussianBinomial{n}{k}{X}$.  The proof is the
+one above in cumulant form: both functionals are additive on products
+(\path{Fabius.meanAtOne_prod}, \path{Fabius.varAtOne_prod}), the factorization
+$\GaussianBinomial{n}{k}{X}\prod_{j<k}[j+1]_X=\prod_{j<k}[n-k+1+j]_X$ is
+\path{Fabius.gaussianBinomial_X_mul_prod_qInt}, and the $q$-integer contributes the uniform
+distribution's mean and variance (\path{Fabius.meanAtOne_qInt_X},
+\path{Fabius.varAtOne_qInt_X}).
 
 
 \chapter{Finite \texorpdfstring{$q$}{q}-binomial theorems and inversion}\label{chap:finite-qbinomial}
@@ -3156,8 +3177,14 @@ Collecting the terms of total degree $N$ gives the displayed finite
 convolution.
 \end{proof}
 
-\emph{Lean status.}  Not formalized as a statement about the general ratio; the single-factor
-cases are \Cref{cor:euler-infinite}.
+\emph{Lean status.}  Formal, in \path{RatioExpansion.lean}:
+\path{Fabius.hasSum_ratio_expansion} is the displayed expansion in any complete normed field, for
+$\lVert q\rVert<1$ and every $r,s$, under exactly the stated hypothesis
+$\lVert b_jz\rVert<1$ for all $j$ --- no condition on the numerator parameters $a_i$.  Its
+coefficient $c_N$ is produced in the explicit Cauchy-product form, a sum over the compositions of
+$N$ into $r+s$ parts of the products of Euler's coefficients, rather than left implicit; the
+underlying regrouping of the multiple series by total degree is
+\path{Fabius.hasSum_prod_powerSeries}.
 
 
 \section{Formal and analytic interpretations}
@@ -3199,8 +3226,20 @@ Because $1-q^n$ is a unit, this recurrence has a unique solution, namely
 $c_n=(a;q)_n/(q;q)_n$.
 \end{proof}
 
-\emph{Lean status.}  Not formalized in the $I$-adic setting; the analytic version is
-\Cref{thm:infinite-qbinomial}.
+\emph{Lean status.}  Formal, and in a strictly stronger form, in \path{FormalQBinomial.lean}.
+The infinite products are \emph{defined} there by their Euler coefficient expansions
+(\path{Fabius.qPochhammerSeries}, \path{Fabius.qBinomialSeries}), so the only role left for the
+completeness hypothesis is the invertibility of each $1-q^{n+1}$, isolated as the purely algebraic
+predicate \path{Fabius.QRegular}.  The proposition is then
+\path{Fabius.qPochhammerSeries_mul_qBinomialSeries}, $(z;q)_\infty\sum_n(a;q)_nz^n/(q;q)_n=(az;q)_\infty$
+in $A[[z]]$ over an arbitrary commutative ring, with the quotient form
+\path{Fabius.qBinomialSeries_eq_inverse_mul} and the uniqueness clause
+\path{Fabius.eq_qBinomialSeries_of_isQDifference}.  The printed hypothesis implies the one used
+(\path{Fabius.qRegular_of_isAdicComplete}), so the statement above is covered verbatim; the
+converse fails, and $q$ nilpotent and $q=X$ in a power-series ring are further instances
+(\path{Fabius.qRegular_of_isNilpotent}, \path{Fabius.qRegular_X}).  The identification of the
+defined series with the honest finite products carries an explicit modulus,
+\path{Fabius.dvd_coeff_partialQPochhammer_sub}.
 
 
 \section{Limits in the number of factors}
@@ -6087,6 +6126,15 @@ From the definition,
 \end{align*}
 After division by $(q;q)_k$, the final ratio is $\GaussianBinomial{m+k-1}{k}{q}$.
 \end{proof}
+\emph{Lean status.}  Exactly \path{Fabius.gaussianBinomialZ_neg_natCast} in
+\path{GaussianBinomialInteger.lean}, with \path{Fabius.gaussianBinomialZ} the coefficient
+\(\GeneralizedGaussianBinomial{N}{k}{q}=(q^{N-k+1};q)_k/(q;q)_k\) in an arbitrary field, not
+only in \(\RationalNumbers(q)\).  The reflection is proved for every \(m\ge0\) (the extra case
+\(m=0\) reads \(0=0\) for \(k\ge1\)) under the side conditions \(q\ne0\) and \((q;q)_k\ne0\), both
+automatic here, and \(q^{-mk-\binom k2}\) is written as the inverse of a natural power.  The
+definitional clause that \(\GeneralizedGaussianBinomial{n}{k}{q}=\GaussianBinomial{n}{k}{q}\) for
+\(n\ge0\), value \(0\) above the diagonal included, is \path{Fabius.gaussianBinomialZ_natCast}.
+
 
 \begin{theorem}[Pascal recurrences for all integral upper indices]\label{thm:generalized-pascal}
 For every integer $N$ and every $k\ge1$,
@@ -6243,6 +6291,18 @@ proves \eqref{eq:complex-pascal-a}.  The alternative identity
 \)
 proves \eqref{eq:complex-pascal-b}.
 \end{proof}
+\emph{Lean status.}  Exactly, clause by clause, in \path{ComplexGaussianBinomial.lean} for real
+\(0<q<1\) and \(q^z=\exp(z\log q)\): \eqref{eq:complex-gaussian-gamma} is
+\path{Fabius.gaussianBinomialCC_eq_qGammaC} (with \path{Fabius.qGammaC} the product definition
+of \(\Gamma_q\)), \eqref{eq:complex-gaussian-symmetry} is \path{Fabius.gaussianBinomialCC_symm},
+and \eqref{eq:complex-pascal-a}, \eqref{eq:complex-pascal-b} are
+\path{Fabius.gaussianBinomialCC_succ_left} and \path{Fabius.gaussianBinomialCC_succ_left'}.  The
+blanket ``wherever defined'' is made precise and is sharper than uniform: the gamma quotient needs
+all three of \((q^{\alpha+1};q)_\infty\), \((q^{\beta+1};q)_\infty\),
+\((q^{\alpha-\beta+1};q)_\infty\) nonzero, both Pascal laws and the agreement
+\path{Fabius.gaussianBinomialCC_natCast} at \(\beta=k\) need only \((q^{\alpha+1};q)_\infty\ne0\),
+and symmetry is unconditional.
+
 
 \begin{corollary}[Classical generalized binomial]\label{cor:complex-gaussian-classical}
 Let $\alpha,\beta$ be real with $\alpha+1>0$, $\beta+1>0$ and $\alpha-\beta+1>0$ --- in
@@ -6382,6 +6442,14 @@ The coefficients in \eqref{eq:geometric-newton} can be recovered successively by
 \begin{proof}
 Evaluate \eqref{eq:geometric-newton} at $x=q^k$.  Every term with index greater than $k$ vanishes, while the coefficient multiplying $c_k$ is nonzero by the distinct-node hypothesis.  Solving for $c_k$ gives the formula.
 \end{proof}
+\emph{Lean status.}  Exactly \path{Fabius.newtonCoeff_eq} together with
+\path{Fabius.newtonCoeff_zero} in \path{NewtonInterpolation.lean}, at arbitrary nodes of any
+field.  The logical direction is reversed: \path{Fabius.newtonCoeff} is \emph{defined} by the
+triangular recursion \eqref{eq:triangular-newton}, and
+\eqref{eq:geometric-divided-difference} is then the derived theorem
+\path{Fabius.newtonCoeff_eq_sum} (under the same distinct-node hypothesis); the two together give
+the corollary as printed.  \path{Fabius.newtonCoeff_mul_prod} is the step cleared of division.
+
 
 \begin{remark}
 Kupershmidt's $q$-Newton viewpoint emphasizes that the classical binomial theorem, Newton interpolation, and $q$-difference calculus are not separate constructions: each is controlled by a basis whose successive factors form a geometric progression.  The finite formula above is algebraic and needs no convergence hypothesis; infinite Newton series require additional growth conditions on the data.
@@ -6418,6 +6486,17 @@ gives
 \end{align*}
 which is the claimed quotient.
 \end{proof}
+\emph{Lean status.}  Exactly \path{Fabius.central_gaussianBinomial_sq_div} in
+\path{CentralQBinomialReduction.lean}, over any field, with the two nonvanishing hypotheses
+\(\QPochhammer{-q}{q}{2k}\ne0\) and \(\QPochhammer{q^2}{q^2}{k}\ne0\) that the quotient form
+requires.  The corpus is stronger in the division-free
+\path{Fabius.central_gaussianBinomial_sq_mul}, namely
+\(\GaussianBinomial{2k}{k}{q^2}\QPochhammer{q^2}{q^2}{k}
+ =\QPochhammer{q}{q^2}{k}\QPochhammer{-q}{q}{2k}\), valid with no hypotheses in every commutative
+ring (proved in \(\IntegerNumbers[X]\) by cancellation and transported by naturality); the two
+steps of the printed proof are \path{Fabius.finiteQPochhammerIn_mul_neg} and
+\path{Fabius.finiteQPochhammerIn_two_mul}.
+
 
 For a complex parameter $z$ and $0<q<1$, we use the analytic extension
 \[
@@ -6514,6 +6593,8 @@ Gauss's classical summation gives
 \]
 Since $\Gamma((\alpha+3)/2)=((\alpha+1)/2)\Gamma((\alpha+1)/2)$ and $\Gamma(1/2)/2=\Gamma(3/2)$, this is \eqref{eq:regular-central-classical}.  The same identity is also the $q\to1^-$ limit of \Cref{thm:regular-central-sum} by the $q$-gamma limit in \Cref{thm:qgamma-classical-limit}.
 \end{proof}
+\emph{Lean status.}  Not formalized; neither route exists in the corpus --- Gauss's classical \({}_2F_1\) summation at \(z=1\) is absent (\path{ClassicalHypergeometricLimit.lean} carries only the \(q\to1\) degeneration of \({}_r\phi_{r-1}\) to \({}_rF_{r-1}\), and its nonterminating case is confined to \(\lVert z\rVert<1\)), and the \(q\to1^-\) passage from \Cref{thm:regular-central-sum} is unavailable because that theorem is itself unformalized.
+
 
 \section{Deleting a singular term}
 
@@ -7044,6 +7125,8 @@ which proves \eqref{eq:fixed-column-limit} and
 \eqref{eq:fixed-column-shifted-limit} and
 \eqref{eq:fixed-column-shifted-error}.
 \end{proof}
+\emph{Lean status.}  Partial: \path{Fabius.tendsto_gaussianBinomial_atTop} in \path{QBinomialTheoremInfinite.lean} proves \eqref{eq:fixed-column-limit} for any fixed \(k\) over an arbitrary normed field, with \(\AbsoluteValue q<1\) read as the norm, so that the \(q=0\) case the proof separates is subsumed rather than argued; the route is \path{Fabius.tendsto_finiteQPochhammerIn_pow_atTop}, that \((q^{m};q)_k\to1\), against the identity \path{Fabius.finiteQPochhammerIn_self_mul_gaussianBinomial}.  Not stated: the shifted limit \eqref{eq:fixed-column-shifted-limit}, which would follow by composing with \(n\mapsto n+k\), and both geometric error terms \eqref{eq:fixed-column-error} and \eqref{eq:fixed-column-shifted-error}, for which the corpus carries only uniform majorants, never a decaying one.
+
 
 % ed.: replaces the former statement of thm:central-fixed-q (monograph lines
 % ed.: 4205--4222), which covered only the exactly central column.  The
@@ -7115,6 +7198,15 @@ hypothesis; in the second, $n=2m$ and $k=m+r$ give
 $\min(k,n-k)=m-\AbsoluteValue r\to\infty$, which is also what makes both indices
 admissible once $m\ge\AbsoluteValue r$.
 \end{proof}
+\emph{Lean status.}  Partial.  The four-product display is the definition of
+\path{Fabius.gaussianBinomialCC} in \path{ComplexGaussianBinomial.lean}, identified with
+\(\GaussianBinomial{n}{k}{q}\) by \path{Fabius.gaussianBinomialCC_natCast} together with
+\path{Fabius.gaussianBinomialC_natCast} of \path{GaussianBinomialComplexOrder.lean}, but only for
+a real base \(0<q<1\) read in the complex field.  The shifted central limit is exactly
+\path{Fabius.tendsto_gaussianBinomialInt_central} in \path{JacobiTripleProduct.lean}, for every
+\(r\in\IntegerNumbers\) and every \(\AbsoluteValue q<1\) in a complete normed field.  The error term
+\(O(\AbsoluteValue q^{\,\min(k,n-k)+1})\) and the limit along \(\min(k,n-k)\to\infty\) are not formalized.
+
 
 \begin{remark}\label{rem:offcentre-qgreaterone}
 The off-centre column in the regime $q>1$ needs no new argument.  By
@@ -7187,6 +7279,13 @@ and the leading term as $q\to\infty$ is $q^{k(n-k)}$ with coefficient $1$.
 \begin{proof}
 The partition generating polynomial has constant term $1$, proving the first assertion.  The second follows by replacing every ratio $(1-q^a)/(1-q^b)$ in the product formula by its limit $a/b$.  Palindromicity and degree $k(n-k)$ show that the leading coefficient equals the constant coefficient, namely $1$.
 \end{proof}
+\emph{Lean status.}  Exactly, clause by clause: \path{Fabius.gaussianBinomial_zero_left} in
+\path{GaussianBinomialPalindromic.lean} for the value at \(q=0\);
+\path{Fabius.tendsto_gaussianBinomial_nhds_one} in \path{GaussianBinomialContinuity.lean} for
+\(q\to1\), in any topological semiring and without the restriction \(k\le n\); and, for the
+leading term, \path{Fabius.gaussianBinomial_natDegree} (degree exactly \(k(n-k)\)) together with
+\path{Fabius.coeff_gaussianBinomial_top}, packaged as \path{Fabius.gaussianBinomial_monic}.
+
 
 \input{chapters/12_limits_reciprocity_and_frontiers}
 
@@ -7262,6 +7361,14 @@ The output of \Cref{alg:cyclotomic-list} is exactly the set of cyclotomic factor
 \begin{proof}
 This is \Cref{thm:cyclotomic-pochhammer}: the exponent of $\Phi_d(q)$ is $e_d$, and the floor calculation in that theorem proves $e_d\in\{0,1\}$.
 \end{proof}
+\emph{Lean status.}  Exactly \path{Fabius.gaussianBinomial_X_eq_prod_cyclotomicFactorList} in
+\path{CyclotomicFactorList.lean}: for \(k\le n\), \(\GaussianBinomial{n}{k}{X}=\prod_{d}\Phi_d\) over the
+\path{Finset} \path{Fabius.cyclotomicFactorList}, each factor to the first power, over every integral
+domain; \path{Fabius.cyclotomic_exponent_le_one} supplies \(e_d\in\{0,1\}\) and
+\path{Fabius.mem_cyclotomicFactorList} the carry form \(n\bmod d<k\bmod d\) of the membership test.
+That the listed \(d\) are precisely the cyclotomic divisors is
+\path{Fabius.cyclotomic_dvd_gaussianBinomial_iff_mem}, proved over \(\RationalNumbers\).
+
 
 \begin{remark}
 The factor-list algorithm takes only $O(n)$ integer floor operations.  It is therefore far cheaper than expanding $\GaussianBinomial{n}{k}{q}$ when the purpose is root-of-unity evaluation, divisibility testing, or congruence work.  Polynomial expansion may be postponed until the selected cyclotomic factors are actually multiplied.
@@ -7307,6 +7414,13 @@ If two finite sums satisfy the same recurrence of order $r$ and agree for $r$ co
 \begin{proof}
 Subtract the two sequences.  The difference satisfies the homogeneous recurrence and has $r$ consecutive zero initial values.  Induction through the recurrence gives zero thereafter.
 \end{proof}
+\emph{Lean status.}  Exactly \path{Fabius.eq_of_recurrence} in \path{TelescopingCertificate.lean}:
+in any field, two sequences \(S,T\) each satisfying \(\sum_{j=0}^{r}A_j(n)S_{n+j}=0\), with leading
+coefficient \(A_r(n)\ne0\) for every \(n\) and \(S_i=T_i\) for \(i<r\), agree at every index.  The
+``nonsingular parameter choice'' is made explicit as \(A_r(n)\ne0\), the \(r\) agreeing values are the
+initial segment \(0,\dots,r-1\) rather than an arbitrary consecutive block, and the sequences need not
+be sums.
+
 
 \begin{remark}[Creative telescoping]
 The $q$-Zeilberger method~\cite{PetkovsekWilfZeilberger1996} searches algorithmically for a rational multiple $G(n,k)=R(q^n,q^k)T(n,k)$ satisfying \eqref{eq:certificate}.  Once found, the certificate is independently checkable by rational-function arithmetic.  The search may be sophisticated, but verification is elementary: divide by $T(n,k)$ and clear denominators.
@@ -7321,6 +7435,14 @@ Let $R(q),S(q)\in\RationalNumbers(q)$.  If $R(q)=S(q)$ at infinitely many comple
 \begin{proof}
 Write $R-S=A/B$ with $A,B\in\RationalNumbers[q]$ and $B\ne0$.  The hypothesis says that $A$ has infinitely many zeros.  A nonzero polynomial has only finitely many zeros, so $A=0$.
 \end{proof}
+\emph{Lean status.}  Exactly \path{Fabius.rational_identity_principle} in
+\path{TelescopingCertificate.lean}: over any field \(K\), if the set of \(z\) with \(q_1(z)\ne0\),
+\(q_2(z)\ne0\) and \(p_1(z)/q_1(z)=p_2(z)/q_2(z)\) is infinite, then \(p_1q_2=p_2q_1\) in \(K[X]\), via
+Mathlib's \path{Polynomial.eq_of_infinite_eval_eq}.  Two presentational differences: coefficients and
+evaluation points lie in the same field (take \(K=\ComplexNumbers\) and note the cleared identity has
+rational coefficients), and the conclusion is that cleared identity, the corpus carrying no
+\(\RationalNumbers(q)\) fraction-field object.
+
 
 \begin{corollary}[Safe generic specialization]\label{cor:safe-specialization}
 A rational $q$-identity proved under generic nonvanishing assumptions remains valid after any specialization at which the denominator-cleared identity is defined.  Apparent excluded values may therefore be recovered by cancellation or by taking limits.
@@ -7367,6 +7489,8 @@ $-q^{-m+j}$ from the $j$th factor:
 \end{align*}
 Divide by $(q;q)_k$ to obtain \eqref{eq:negative-integer-translation}.
 \end{proof}
+\emph{Lean status.}  Exactly the three rules, one theorem each in \path{IntegerParameterTranslation.lean}: \path{Fabius.finiteQPochhammerIn_pow_succ_div_self} is \eqref{eq:positive-integer-translation}, \path{Fabius.finiteQPochhammerIn_inv_pow_div_self} is \eqref{eq:negative-integer-translation} (with \(q^{-m}\) read as \((q^{m})^{-1}\)), and \path{Fabius.finiteQPochhammerIn_pow_succ_eq_div} is \eqref{eq:factorial-block-translation}.  They are stated in any field under the nonvanishing hypotheses the quotients presuppose, namely \((q;q)_n\ne0\), resp. \(q\ne0\) with \((q;q)_k\ne0\), resp. \((q;q)_a\ne0\); the division-free core \path{Fabius.finiteQPochhammerIn_self_mul_gaussianBinomial} in \path{FiniteQBinomialCore.lean} holds over every commutative ring.
+
 
 \begin{theorem}[Certified integral-parameter translation]\label{thm:certified-integral-translation}
 Consider a terminating identity in which every summand and the closed form are products and quotients of monomials in $q$ and shifted factorials of the forms
@@ -7599,6 +7723,8 @@ Now substitute $z=q^d$.  At $d=0$ the product is
 $\prod_{j=1}^{n}(1-q^j)=(q;q)_n$.  If $1\le d\le n$, the factor with
 $j=d$ vanishes.  This proves \eqref{eq:reversed-moments}.
 \end{proof}
+\emph{Lean status.}  Exactly \path{Fabius.reversed_finite_qBinomial_theorem} in \path{GeometricQBinomialLagrange.lean} for \eqref{eq:reversed-product}, where \(N_{n,k}\) is the definition \path{Fabius.geometricQBinomialWeightNumerator}, identified with \eqref{eq:reversed-gaussian-row} at every index by \path{Fabius.geometricQBinomialWeightNumerator_eq_forward}.  The moment clause \eqref{eq:reversed-moments} is \path{Fabius.sum_geometricQBinomialWeightNumerator_mul_pow}, packaged for \(d\le n\) as the single value \((q;q)_n\cdot 0^{d}\).  Both hold over an arbitrary commutative ring, with no field or nonvanishing hypothesis.
+
 
 \begin{remark}[Denominator-free meaning]\label{rem:denominator-free-reversed}
 The identity \eqref{eq:reversed-product} belongs to $\IntegerNumbers[q,z]$ and therefore remains valid after mapping $q$ into any commutative ring.  No division by $1-q^j$ is needed.  This is the robust way to use Gaussian coefficients when $q$ is a root of unity or when the coefficient ring has zero divisors.
@@ -7709,6 +7835,14 @@ $H_r(v_i)=v_i^{N+r}$.  Since $H_r$ has degree less than $N$, Lagrange interpolat
 \]
 Substituting the definition of $H_r$ proves \eqref{eq:universal-residual}.
 \end{proof}
+\emph{Lean status.}  Exactly \path{Fabius.sum_lagrangeEvalWeight_mul_pow_card_add} in
+\path{LagrangeResidualMoments.lean}, with \(h_r(x,v_1,\ldots,v_N)\) carried by
+\path{Fabius.completeHomogeneousEvalAt}, the complete homogeneous evaluation on the target together
+with the node family; the clause for \(0\le d<N\) is \path{Fabius.sum_lagrangeEvalWeight_mul_pow}.
+Lean is more general: \path{Fabius.sum_weight_mul_pow_card_add} keeps the free target \(x\) but drops
+the field, the distinctness and the Lagrange normalization, assuming only the moments below \(N\)
+over an arbitrary commutative ring.
+
 
 \begin{theorem}[Complete geometric moment formula]\label{thm:complete-geometric-moments}
 Under the distinct-node hypothesis, for every integer $d\ge0$,
@@ -7812,6 +7946,13 @@ and the complete asymptotic error is the convergent specialization of
 \begin{proof}
 Apply \Cref{thm:geometric-filter-diagonal} to the Taylor series of $f$.  The first nonconstant surviving term has degree $n+1$.
 \end{proof}
+\emph{Lean status.}  Partial: \path{AnalyticSeriesFilter.lean} proves the convergent tail identity as
+\path{Fabius.geometricLagrangeAnalyticSeriesFilter_eq_constant_add_gaussian_tsum}, giving
+\(\sum_{k}\lambda_{n,k}^{(q)}f(q^kz)=a_0+\sum_{r\ge0}(-1)^nq^{\binom{n+1}{2}}\GaussianBinomial{n+r}{n}{q}z^{n+1+r}a_{n+1+r}\).
+It hypothesizes a coefficient sequence in a normed module together with unconditional summability at each sampled node,
+not analyticity of \(f\) at \(0\), and it makes no Landau claim: the order estimate \(O(z^{n+1})\) is nowhere stated.
+Its effective substitute is the explicit inequality \path{Fabius.norm_geometricFilter_sub_le} in \path{GeometricFilterBound.lean}.
+
 
 \begin{theorem}[A quantitative analytic bound]\label{thm:geometric-filter-bound}
 Assume $0<q<1$ and
@@ -7888,6 +8029,13 @@ The power of $2$ in the quotient is
 \]
 which proves \eqref{eq:halfbase-gaussian}.
 \end{proof}
+\emph{Lean status.}  Exactly \path{Fabius.halfQPochhammer_eq_mersenne_div} for \eqref{eq:halfbase-factorial} and
+\path{Fabius.halfQBinomial_eq_mersenne} for \eqref{eq:halfbase-gaussian}, both in \path{HalfQBinomial.lean}, with
+\(\mathfrak m_n\) the product \path{Fabius.halfMersenneProduct} and the same hypothesis \(k\le n\).  Lean places the
+powers of two in the denominator, which is the displayed identities rearranged, and works over \(\mathbb Q\);
+\path{Fabius.gaussianBinomial_half_eq_halfQBinomial} identifies \path{Fabius.halfQBinomial} with the generic recursive
+Gaussian coefficient at base \(1/2\).
+
 
 \begin{theorem}[Dyadic evaluation of the finite product]\label{thm:dyadic-product-evaluation}
 For integers $m,n\ge0$,
@@ -7977,6 +8125,13 @@ Therefore
 \]
 by \eqref{eq:halfbase-factorial}.  Linearity now proves \eqref{eq:geometric-prouhet}.
 \end{proof}
+\emph{Lean status.}  Exactly \path{Fabius.halfQBinomial_negativeDyadic_polynomial_sum_eq_mersenne} in
+\path{HalfQBinomial.lean}: for \(p\in\mathbb Q[X]\) of degree at most \(n\), the sum of the weights
+\path{Fabius.halfQBinomialDyadicWeight} against the nodes \path{Fabius.negativeDyadicNode} is
+\(\mathfrak m_n[X^n]p\), with \(\mathfrak m_n\) supplied by \path{Fabius.halfMersenneProduct}.  The
+annihilation clause is \path{Fabius.halfQBinomial_negativeDyadic_polynomial_sum_eq_zero_of_degree_lt}.
+The Lean coefficient ring is fixed to \(\mathbb Q\).
+
 
 \begin{corollary}[Affine form]\label{cor:geometric-prouhet-affine}
 For constants $a,b$ and every polynomial $p$ of degree at most $n$,
@@ -8020,6 +8175,13 @@ $r=\sum_{j=0}^{n-1}\varepsilon_j2^j$ with $\varepsilon_j\in\{0,1\}$.  Expanding 
 \]
 Summing over all binary choices gives the identity.
 \end{proof}
+\emph{Lean status.}  Exactly \path{Fabius.prod_one_sub_pow_two_pow} in
+\path{ThueMorseProductIdentity.lean}, proved by the Boolean-cube expansion
+\path{Fabius.prod_one_sub_pow_eq_sum_thueMorseSign}, and stated for an element of an arbitrary
+commutative ring rather than for a single indeterminate.  The sign \(\tau_r\) is
+\path{Fabius.thueMorseSign} of \path{Arithmetic.lean}, defined as \((-1)^{\BinaryDigitSum(r)}\) with
+the digit sum taken from \texttt{Nat.digits}.
+
 
 \begin{theorem}[Prouhet cancellation and first surviving moment]\label{thm:thue-morse-moments}
 For $n\ge1$,
@@ -8059,6 +8221,14 @@ The leading coefficient of the local expansion at $1$ is the product of the firs
 \]
 This proves \eqref{eq:thue-morse-moments}.  Apply it termwise to the polynomial $X\mapsto p(a+bX)$; all terms below degree $n$ vanish, and its leading coefficient is $b^n[X^n]p(X)$.  This gives \eqref{eq:thue-morse-polynomial-functional}.
 \end{proof}
+\emph{Lean status.}  Exactly \path{Fabius.sum_thueMorseSign_mul_affine_eval_eq_coeff_card} in
+\path{ThueMorseSparseProuhet.lean}: over any commutative ring,
+\(\sum_{r<2^n}\tau_r\,p(a+br)=(-1)^n2^{\binom n2}n!\,b^n[X^n]p(X)\) for \(\deg p\le n\).  The two
+moment clauses are its monomial corollaries \path{Fabius.sum_thueMorseSign_mul_affine_pow_eq_zero}
+and \path{Fabius.sum_thueMorseSign_mul_affine_pow_card} at \(a=0\), \(b=1\).  The Lean proof factors
+through a signed powerset functional with arbitrary steps, so the dyadic grid is a specialization
+there rather than a hypothesis.
+
 
 \begin{corollary}[Equal power sums]\label{cor:thue-morse-prouhet-partition}
 Partition $\{0,1,\ldots,2^n-1\}$ according to the parity of $\BinaryDigitSum(r)$.  The two classes have equal sums of $d$th powers for every $0\le d<n$.
