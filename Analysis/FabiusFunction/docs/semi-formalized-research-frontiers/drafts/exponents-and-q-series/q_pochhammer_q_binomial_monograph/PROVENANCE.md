@@ -8,8 +8,8 @@ pre-retirement snapshot of all five source packages is commit
 `9560165ae2eb33590404a090ab26bd3ca715f32f`, recorded in
 `audit/MERGE_SOURCE_REVISION`; the completed `source_concordance.csv` gives a
 reviewed disposition for all 547 source result environments. This immutable
-merger ledger's canonical-status distribution remains 76 Lean-proved rows,
-402 human-proved frontier result rows, 60 not-applicable rows, and 9
+merger ledger's canonical-status distribution remains 86 Lean-proved rows,
+392 human-proved frontier result rows, 60 not-applicable rows, and 9
 conjecture rows.
 Directory names
 in the table are historical paths in that pinned snapshot, not live package
@@ -91,8 +91,8 @@ PDF is now historical and the merged source remains pending a final union
 rebuild.
 
 The repository-wide documentation census is 902 facade-reachable modules and
-11,441 public declarations, with zero missing module headers and zero
-declaration-documentation gaps. The final count is one above origin's 11,440
+11,444 public declarations, with zero missing module headers and zero
+declaration-documentation gaps. The final count is one above origin's 11,443
 because the union retains the public
 `Fabius.complexQPochhammerInf_eq_qPochhammerInfIn` bridge.
 Sibling source-only promotions are recorded here only to delimit this
@@ -109,6 +109,7 @@ The current source incorporates exhaustive crosswalks for
 `QPochhammerDissection` (zero definitions and two theorems),
 `GaussianBinomialPalindromic` (zero definitions and fourteen theorems),
 `GaussianBinomialPolynomialStructure` (zero definitions and five theorems),
+`GaussianBinomialCumulants` (two definitions and twenty-four theorems),
 `GaussianBinomialBounds` (zero definitions and six theorems), and
 `GeometricPochhammerNormalConvergence` (zero definitions and three theorems).
 It also inventories `QMultinomial` (one definition and nine
@@ -154,15 +155,17 @@ complex strict contraction, including `q = 0`, and gives the dyadic Rvachev
 product and bounded-Fabius Fourier specializations. The compound
 `thm:qF-spectral` row remains Partial because its named centered/MGF packaging
 and exterior reciprocal, pole-divisor, and zero--pole clauses are absent. The
-live facade audit contains 902 modules and 11,441 public declarations, with
-zero documentation gaps. `GeometricRichardsonGenerating` contributes 3
-definitions and 7 theorems to that sibling source-only census but alters no q
-forward row. The final count is one above origin's 11,440 because the union
-retains the public `complexQPochhammerInf_eq_qPochhammerInfIn` bridge. The
-forward status inventory covers 282 labelled results: 165 Exact / 91 Partial /
-18 None / 8 interface; the 191-result pre-Fabius core remains 36 / 29 / 123 /
-3 interface. The five-publication concordance has 76 Lean-proved, 402
-human-proved frontier, 60 not-applicable, and 9
+live facade audit contains 902 modules and 11,444 public declarations, with
+zero documentation gaps. Ten declarations come from the sibling
+`FabiusFunction.GeometricRichardsonGenerating` source-only module. The union
+also retains the public `complexQPochhammerInf_eq_qPochhammerInfIn` bridge and
+adds the three explicit Gaussian second-moment theorems described below.
+These changes alter neither this monograph's forward-status counts nor its
+retained historical artifact. The forward status inventory covers 282
+labelled results: 165 Exact / 91 Partial / 18 None / 8 interface; the
+191-result pre-Fabius core remains 36 / 29 / 123 / 3 interface. The
+five-publication concordance has 86 Lean-proved, 392 human-proved frontier, 60
+not-applicable, and 9
 conjecture rows. The `cor:positivity`, `thm:qbinom-structure`, and
 `prop:gq-positive-palindromic` rows are Exact: both Gaussian structure APIs
 support the structure row, and the fourteen-theorem generic API now gives

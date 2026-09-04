@@ -1323,16 +1323,26 @@ and choose an exponent $X$ with probability
 The combinatorial meaning of $X$ will be established in \Cref{chap:combinatorics}; its moments can already be found algebraically.
 
 \begin{theorem}[Mean and variance]\label{thm:qbinom-moments}
-For the preceding distribution,
+For the preceding distribution, with $0\le k\le n$, put
+$D=k(n-k)$ and $C=\binom nk$.  Then
 \[
  \Expectation X=\frac{k(n-k)}2,
  \qquad
  \Variance(X)=\frac{k(n-k)(n+1)}{12}.
 \]
-Equivalently,
+Equivalently, its raw second moment and the first two derivatives of the
+unnormalized generating polynomial are
+\[
+ \Expectation(X^2)=\frac{D(3D+n+1)}{12},
+ \qquad
+ \left.\frac{\Differential^2}{\Differential q^2}
+   \GaussianBinomial{n}{k}{q}\right|_{q=1}
+ =\frac{CD(3D+n-5)}{12},
+\]
+and
 \[
  \left.\frac{\Differential}{\Differential q}\GaussianBinomial{n}{k}{q}\right|_{q=1}
- =\frac{k(n-k)}2\binom nk.
+ =\frac{CD}{2}.
 \]
 \end{theorem}
 
@@ -1362,6 +1372,16 @@ The first sum is $k(n-k)$.  The second equals
  =k(n-k)(n+1).
 \]
 Since the first and second derivatives of $\log M$ at $0$ are the mean and variance, respectively, the result follows.
+
+Finally,
+\[
+ \Expectation(X^2)=\Variance(X)+(\Expectation X)^2
+ =\frac{D(n+1)}{12}+\frac{D^2}{4}
+ =\frac{D(3D+n+1)}{12}.
+\]
+If $P(q)=\GaussianBinomial{n}{k}{q}$, then
+$P''(1)/C=\Expectation(X(X-1))=\Expectation(X^2)-\Expectation X$;
+substitution gives $P''(1)=CD(3D+n-5)/12$.
 \end{proof}
 
 \emph{Lean status.}  Formal, in \path{GaussianBinomialCumulants.lean}, through the cumulant
@@ -1375,7 +1395,13 @@ one above in cumulant form: both functionals are additive on products
 $\GaussianBinomial{n}{k}{X}\prod_{j<k}[j+1]_X=\prod_{j<k}[n-k+1+j]_X$ is
 \path{Fabius.gaussianBinomial_X_mul_prod_qInt}, and the $q$-integer contributes the uniform
 distribution's mean and variance (\path{Fabius.meanAtOne_qInt_X},
-\path{Fabius.varAtOne_qInt_X}).
+\path{Fabius.varAtOne_qInt_X}).  The explicit falling-factorial moment is
+\path{Fabius.eval_one_derivative_derivative_gaussianBinomial_X}.  The identities
+\path{Fabius.twelve_mul_secondMoment_gaussianBinomial_eval_one} and
+\path{Fabius.twelve_mul_varianceNumerator_gaussianBinomial_eval_one} clear every division and
+hold over an arbitrary commutative semiring, including the zero, diagonal, above-row, and
+positive-characteristic cases.  These are algebraic coefficient-moment identities; they do not
+construct a probability space in Lean.
 
 
 \chapter{Finite \texorpdfstring{$q$}{q}-binomial theorems and inversion}\label{chap:finite-qbinomial}
@@ -13475,11 +13501,11 @@ three views are complementary: the table below answers the Lean-status
 question for each labelled forward result, while the concordances preserve
 complete merger provenance without counting a repeated theorem twice.
 An independent lexical audit of the live Lean facade at this checkpoint finds
-902 source modules and 11,441 public declarations, with zero missing module
+902 source modules and 11,444 public declarations, with zero missing module
 headers and zero declaration-documentation gaps.  The sibling source-only
 \path{GeometricRichardsonGenerating.lean} module contributes three definitions
 and seven theorems but changes no row in this forward \(q\)-series crosswalk.
-The declaration count is one above origin's 11,440 because the union retains
+The declaration count is one above origin's 11,443 because the union retains
 the public \path{Fabius.complexQPochhammerInf_eq_qPochhammerInfIn} bridge.
 The census includes \path{RvachevSuperconvergentSynthesis.lean} (one
 definition and eight theorems); that synthesis module changes no row in this
@@ -14788,14 +14814,21 @@ totally for all \(n,k\) by zero extension}\\[2pt]
 \texttt{meanAtOne\_\allowbreak{}gaussianBinomial\_\allowbreak{}X},
 \texttt{varAtOne\_\allowbreak{}gaussianBinomial\_\allowbreak{}X},
 \texttt{eval\_\allowbreak{}one\_\allowbreak{}derivative\_\allowbreak{}gaussianBinomial\_\allowbreak{}X},
+\texttt{eval\_\allowbreak{}one\_\allowbreak{}derivative\_\allowbreak{}derivative\_\allowbreak{}gaussianBinomial\_\allowbreak{}X},
+\texttt{twelve\_\allowbreak{}mul\_\allowbreak{}secondMoment\_\allowbreak{}gaussianBinomial\_\allowbreak{}eval\_\allowbreak{}one},
+\texttt{twelve\_\allowbreak{}mul\_\allowbreak{}varianceNumerator\_\allowbreak{}gaussianBinomial\_\allowbreak{}eval\_\allowbreak{}one},
 \texttt{two\_\allowbreak{}mul\_\allowbreak{}derivative\_\allowbreak{}gaussianBinomial\_\allowbreak{}eval\_\allowbreak{}one}\newline
 {\footnotesize\texttt{GaussianBinomialCumulants}: the mean and variance as the
 first two cumulant functionals $P'(1)/P(1)$ and
 $P''(1)/P(1)+P'(1)/P(1)-(P'(1)/P(1))^2$ of the generating polynomial
 $[n,k]_X$ over any field of characteristic zero, by additivity of cumulants on
 the factorization $[n,k]_X\prod_{j<k}[j+1]_X=\prod_{j<k}[n-k+1+j]_X$ and the
-uniform-distribution values for the $q$-integers; the derivative formula both
-in this form and division-free (\texttt{GaussianBinomialPalindromic})}\\[2pt]
+uniform-distribution values for the $q$-integers; the first derivative formula both
+in this form and division-free (\texttt{GaussianBinomialPalindromic}); the raw
+second moment and second falling-factorial moment explicitly; and the
+raw-second-moment and variance-numerator identities division-free over every
+commutative semiring; the Lean layer formalizes generating-polynomial identities,
+not a separate probability-space object}\\[2pt]
 \midrule
 \multicolumn{3}{@{}l}{\itshape Finite $q$-binomial theorems and inversion}\\
 \midrule

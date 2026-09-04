@@ -127,7 +127,7 @@ A mathematically oriented reader should begin with Sections~\ref{ch:objects}, \r
 
 \begin{boxedremark}\textbf{Artifact status (3 September 2026).}\space
 The authoritative live lexical audit of the facade contains exactly 902
-source modules and 11,441 public declarations.  It finds no missing module
+source modules and 11,444 public declarations.  It finds no missing module
 headers and no public declarations without doc comments; the checked baseline
 records this zero-gap state.  The historical 671/8,859 local
 checkpoint was the 649/8,698 checkpoint plus 22 modules and 161 declarations;
@@ -160,7 +160,8 @@ The live union additionally contains the exhaustive
 \nolinkurl{TwoPhiOneReversal.lean} (2+12) and
 \nolinkurl{QChuVandermonde.lean} (0+10) surfaces and the
 \nolinkurl{GeometricRichardsonGenerating.lean} (3+7) generating-function
-surface, while retaining the public
+surface, together with the three-theorem extension that brings
+\nolinkurl{GaussianBinomialCumulants.lean} from 2+21 to 2+24, while retaining the public
 \nolinkurl{complexQPochhammerInf_eq_qPochhammerInfIn} bridge.
 The rigorous forward q-monograph ledger is 165 Exact, 91 Partial, 18 None,
 and 8 interface rows.  The new bound leaf changes
@@ -171,13 +172,12 @@ and 8 interface rows.  The new bound leaf changes
 primitive-root identity, while the manuscript's polynomial congruence modulo
 \(\Phi_d\) still needs a minimal-polynomial lift.
 \nolinkurl{cor:babbage-derivative} also remains Partial because its value,
-but not its derivative, is formalized.
-The final-source publication is validated by exactly three successful serial
-halt-on-error passes and the repository's PDF gates.  Exact page-count,
-byte-count, and SHA-256 receipts for the frozen TeX and resulting PDF are kept
-externally in the repository documentation so that neither artifact embeds a
-self-invalidating fingerprint.  No \nolinkurl{SHA256SUMS*} ledger exists or
-participates in validation.
+but not its derivative, is formalized.  The retained PDF predates the
+Gaussian-cumulant source update and remains an explicitly historical render
+until the current TeX is rebuilt; it makes no parity claim.  Exact source and
+PDF validation receipts are kept externally in the repository documentation
+so that neither artifact embeds a self-invalidating fingerprint.  No
+\nolinkurl{SHA256SUMS*} ledger exists or participates in validation.
 \end{boxedremark}
 
 \section*{Scope and conventions}
@@ -2393,7 +2393,7 @@ q-beta integral by infinite products and q-Gamma and give symmetry,
 positivity, and both recurrences under the displayed positive-argument
 hypotheses.
 
-The zero-definition/twelve-theorem
+The zero-definition/fourteen-theorem
 \nolinkurl{GaussianBinomialPalindromic.lean} surface is
 \nolinkurl{reflect_add_of_natDegree_le}, \nolinkurl{reflect_one'},
 \nolinkurl{gaussianBinomial_natDegree_le},
@@ -2403,15 +2403,19 @@ The zero-definition/twelve-theorem
 \nolinkurl{coeff_gaussianBinomial_zero},
 \nolinkurl{coeff_gaussianBinomial_top},
 \nolinkurl{gaussianBinomial_natDegree}, \nolinkurl{gaussianBinomial_monic},
-and \nolinkurl{two_mul_derivative_gaussianBinomial_eval_one}.  All are over
+\nolinkurl{two_mul_derivative_gaussianBinomial_eval_one},
+\nolinkurl{coeff_gaussianBinomial_one_of_pos_of_lt}, and
+\nolinkurl{coeff_gaussianBinomial_one}.  All are over
 an arbitrary commutative semiring.  The Gaussian statements use \(k\le n\);
 coefficient reversal additionally bounds \(j\le k(n-k)\), while exact degree
 and monicity alone require a nontrivial coefficient semiring.  The last
 theorem is the division-free identity
-\(2G'_{n,k}(1)=k(n-k)\binom nk\).  With row symmetry and reciprocity these
-results close the canonical forward structure theorem; they do not identify
-the coefficient of \(q\) with one, and no characteristic restriction,
-positivity, or unimodality claim is hidden in them.
+\(2G'_{n,k}(1)=k(n-k)\binom nk\).  The final two declarations identify the
+linear coefficient as one exactly for \(0<k<n\), and as zero otherwise,
+including the zero, diagonal, and above-row boundaries.  With row symmetry
+and reciprocity these results close the canonical forward structure theorem;
+no characteristic restriction, positivity, or unimodality claim is hidden in
+them.
 
 The three definitions \nolinkurl{qDeriv}, \nolinkurl{qExp}, and
 \nolinkurl{qExpBig}, together with the eight theorems
@@ -5601,6 +5605,7 @@ Jacobi triple product and pentagonal sums & \nolinkurl{thetaExponent}, \nolinkur
 Finite q-Pascal summations & \nolinkurl{sum_gaussianBinomial_succ_mul}, \nolinkurl{sum_gaussianBinomial_succ_mul'}, \nolinkurl{Commute.gaussianBinomial_left}, \nolinkurl{Commute.gaussianBinomial_right} & Exhaustive zero-definition/four-theorem surface of \nolinkurl{QPascalSummation.lean} \\
 Continuity and classical limit of Gaussian binomials & \nolinkurl{continuous_gaussianBinomial}, \nolinkurl{tendsto_gaussianBinomial_nhds_one}, \nolinkurl{gaussianBinomial_eq_finiteQPochhammerIn_div} & Exhaustive zero-definition/three-theorem surface of \nolinkurl{GaussianBinomialContinuity.lean} \\
 Generic Gaussian-polynomial degree, palindromicity, mean, and linear coefficient & \nolinkurl{reflect_add_of_natDegree_le}, \nolinkurl{reflect_one'}, \nolinkurl{gaussianBinomial_natDegree_le}, \nolinkurl{gaussianBinomial_zero_left}, \nolinkurl{gaussianBinomial_diag'}, \nolinkurl{reflect_gaussianBinomial}, \nolinkurl{coeff_gaussianBinomial_reflect}, \nolinkurl{coeff_gaussianBinomial_zero}, \nolinkurl{coeff_gaussianBinomial_top}, \nolinkurl{gaussianBinomial_natDegree}, \nolinkurl{gaussianBinomial_monic}, \nolinkurl{two_mul_derivative_gaussianBinomial_eval_one}, \nolinkurl{coeff_gaussianBinomial_one_of_pos_of_lt}, \nolinkurl{coeff_gaussianBinomial_one} & Exhaustive zero-definition/fourteen-theorem surface of \nolinkurl{GaussianBinomialPalindromic.lean}; total arbitrary-commutative-semiring classifier, one exactly for \(0<k<n\) and zero otherwise \\
+Gaussian-binomial second derivative and cleared second moments & \nolinkurl{eval_one_derivative_derivative_gaussianBinomial_X}, \nolinkurl{twelve_mul_secondMoment_gaussianBinomial_eval_one}, \nolinkurl{twelve_mul_varianceNumerator_gaussianBinomial_eval_one} & Three-theorem delta in the 2+24 \nolinkurl{GaussianBinomialCumulants.lean} surface; the first uses a characteristic-zero field and \(k\le n\), while the latter two are division-free and total in \(n,k\) over every commutative semiring \\
 Universal Gaussian-polynomial degree and palindromicity & \nolinkurl{natDegree_gaussianBinomial_universal}, \nolinkurl{gaussianBinomial_universal_monic}, \nolinkurl{coeff_zero_gaussianBinomial_universal}, \nolinkurl{gaussianBinomial_universal_reflect}, \nolinkurl{coeff_gaussianBinomial_universal_symm} & Exhaustive zero-definition/five-theorem surface of \nolinkurl{GaussianBinomialPolynomialStructure.lean}; the adjacent generic theorem supplies the linear-coefficient classifier \\
 Central squared-base Gaussian reduction & \nolinkurl{finiteQPochhammerIn_mul_neg}, \nolinkurl{finiteQPochhammerIn_two_mul}, \nolinkurl{finiteQPochhammerIn_map_ringHom}, \nolinkurl{central_gaussianBinomial_sq_mul_int}, \nolinkurl{central_gaussianBinomial_sq_mul}, \nolinkurl{central_gaussianBinomial_sq_div} & Exhaustive zero-definition/six-theorem surface of \nolinkurl{CentralQBinomialReduction.lean} \\
 Cyclotomic q-factorizations & \nolinkurl{div_add_div_le_div}, \nolinkurl{div_le_div_add_div_add_one}, \nolinkurl{mem_range_and_mem_divisors_iff}, \nolinkurl{finiteQPochhammerIn_X_eq_prod_cyclotomic}, \nolinkurl{finiteQPochhammerIn_X_eq_gaussianBinomial_mul}, \nolinkurl{prod_cyclotomic_pow_div_extend}, \nolinkurl{gaussianBinomial_X_eq_prod_cyclotomic} & Exhaustive zero-definition/seven-theorem surface of \nolinkurl{CyclotomicFactorization.lean} \\
@@ -5770,6 +5775,7 @@ Module & Role in the development \\
 \nolinkurl{QPascalSummation.lean} & Exactly four theorems and no public definitions: two finite Gaussian-binomial summations and the left and right commuting q-binomial identities. \\
 \nolinkurl{GaussianBinomialContinuity.lean} & Exactly three theorems and no public definitions: continuity, the classical \(q\to1\) limit, and the finite-Pochhammer quotient formula. \\
 \nolinkurl{GaussianBinomialPalindromic.lean} & Exactly fourteen theorems and no public definitions: general reflection helpers; generic degree bound, boundary values, reflection, constant/top coefficients, coefficient symmetry, mean identity, and the interior/total linear-coefficient theorems; exact degree and monicity over a nontrivial commutative semiring. \\
+\nolinkurl{GaussianBinomialCumulants.lean} & Exactly two definitions and twenty-four theorems.  Its three newest theorems are \nolinkurl{eval_one_derivative_derivative_gaussianBinomial_X} over a characteristic-zero field under \(k\le n\), and the all-\(n,k\), arbitrary-commutative-semiring, division-free \nolinkurl{twelve_mul_secondMoment_gaussianBinomial_eval_one} and \nolinkurl{twelve_mul_varianceNumerator_gaussianBinomial_eval_one}; the latter include the zero, diagonal, and above-row boundaries. \\
 \nolinkurl{GaussianBinomialPolynomialStructure.lean} & Exactly five theorems and no public definitions: universal natural degree, monicity, constant coefficient one, exact reflection, and bounded-index coefficient symmetry. \\
 \nolinkurl{CentralQBinomialReduction.lean} & Exactly six theorems and no definitions: sign pairing, even--odd dissection, naturality, integral and commutative-ring division-free central reduction, and a field quotient under two nonvanishing hypotheses. \\
 \nolinkurl{CyclotomicFactorization.lean} & Exactly seven theorems and no definitions: quotient bounds, divisor reindexing, finite-product and factorial identities over commutative rings, interval-product extension, and Gaussian cyclotomic factorization over an integral domain. \\
@@ -6097,10 +6103,12 @@ Lean audits of the previously recorded new or refactored declarations,
 \nolinkurl{propext}, \nolinkurl{Classical.choice}, and \nolinkurl{Quot.sound}
 for each.  At that upstream checkpoint, static inspection found all 610 modules
 below \nolinkurl{FabiusFunction/} reachable from the facade and every one of
-the 105 activation declarations documented.  The live current-tree lexical
-audit scans 902 modules and 11,441 public declarations, with no missing module
-headers and no missing declaration comments.  The checked baseline records
-both zero-gap invariants.  At the retained historical mainline checkpoint before the latest
+the 105 activation declarations documented.  The merged live current-tree
+lexical audit scans 902 modules and 11,444 public declarations, with no missing
+module headers and no missing declaration comments.  The origin-side census is
+11,443; the extra declaration is the retained unconditional public Pochhammer
+bridge.  The checked baseline records both zero-gap invariants.  At the retained
+historical mainline checkpoint before the latest
 six-module q-series tranche was 623 modules and 8,476 declarations.  Its
 immediately preceding census, after the Rvachev Appell and original
 four-theorem \nolinkurl{QPochhammerEntire.lean} tranche but before the generic
@@ -6170,25 +6178,32 @@ intermediate census was therefore 672/8,875.  The subsequent
 \nolinkurl{BoxPartitions.lean}, and 0+5
 \nolinkurl{TelescopingCertificate.lean} leaves add three modules and thirty-four
 declarations, giving the historical 675/8,909 checkpoint.  The subsequent
-source union, including the exact 0+7, 4+16, and 0+9 Lambert branch-pairing,
+source union includes the exact 0+7, 4+16, and 0+9 Lambert branch-pairing,
 gap-bijection, and symmetry surfaces, the unconditional public Pochhammer
 bridge, and the two new
 \nolinkurl{iteratedDeriv_rvachevUp_eq_extendedFabius} and
-\nolinkurl{iteratedDeriv_rvachevUp_dyadic_below} theorems, also incorporates
+\nolinkurl{iteratedDeriv_rvachevUp_dyadic_below} theorems, and also incorporates
 the exhaustive 2+12 \nolinkurl{TwoPhiOneReversal.lean} and 0+10
 \nolinkurl{QChuVandermonde.lean} surfaces.  The origin-side checkpoint before
 Richardson was recorded as 901/11,430, and its 3+7
 \nolinkurl{GeometricRichardsonGenerating.lean} leaf raised that origin census
-to 902/11,440.  Retaining the unconditional public
+to 902/11,440.  Three subsequent theorems expand the existing 2+21
+\nolinkurl{GaussianBinomialCumulants.lean} surface to 2+24 and raise the
+origin-side census to 902/11,443.  Retaining the unconditional public
 \nolinkurl{complexQPochhammerInf_eq_qPochhammerInfIn} bridge yields the final
-merged live census 902/11,441.  The three Lambert modules contain 36
+merged live census 902/11,444.  The three Lambert modules contain 36
 declarations in their current exhaustive surfaces, 13 of them supplied by the
 upstream delta; \nolinkurl{DyadicDerivativeFiltration.lean} contains zero
-definitions and six theorems after its two-theorem extension.  No aggregate
-facade build is claimed for this current-tree census.  The title-page pin
-remains an explicitly historical checkpoint; exact frozen-source and final-PDF
-receipts for the finalized walkthrough publication are kept externally in the
-repository documentation so that no artifact embeds a mutable self-receipt.
+definitions and six theorems after its two-theorem extension.  The three new
+Gaussian declarations are
+\nolinkurl{eval_one_derivative_derivative_gaussianBinomial_X},
+\nolinkurl{twelve_mul_secondMoment_gaussianBinomial_eval_one}, and
+\nolinkurl{twelve_mul_varianceNumerator_gaussianBinomial_eval_one}; their exact
+hypotheses and totality boundaries are recorded below.  No aggregate facade
+build is claimed for this current-tree census.  The retained PDF and title-page
+pin remain historical and do not claim parity with the merged source; exact
+source and PDF receipts are kept externally so that no artifact embeds a
+mutable self-receipt.
 
 Those six counts are \nolinkurl{QPochhammerInfiniteBounds.lean} (0+5),
 \nolinkurl{HeineTransformation.lean} (2+5),
@@ -6296,6 +6311,25 @@ displayed domain remains partial: the compiled by-reversal theorem assumes
 \(C\ne0\) and \((A;q)_n\ne0\), while the unrestricted denominator-defined
 theorem is obtained directly from finite q-Cauchy.  Rational continuation and
 a commutative-ring cleared extension are not claimed.
+
+The three later additions to
+\nolinkurl{GaussianBinomialCumulants.lean}, now 2+24, are
+\nolinkurl{eval_one_derivative_derivative_gaussianBinomial_X},
+\nolinkurl{twelve_mul_secondMoment_gaussianBinomial_eval_one}, and
+\nolinkurl{twelve_mul_varianceNumerator_gaussianBinomial_eval_one}.  For
+\(P=[n,k]_X\), \(D=k(n-k)\), and \(C=\binom nk\), the first assumes a
+characteristic-zero field and exactly \(k\le n\), and proves
+\(P''(1)=D(3D+n-5)C/12\).  The other two hold for every \(n,k\) over an
+arbitrary commutative semiring and state
+\[
+12\bigl(P''(1)+P'(1)\bigr)=D(3D+n+1)C,
+\qquad
+12C\bigl(P''(1)+P'(1)\bigr)=12P'(1)^2+D(n+1)C^2.
+\]
+They use no division, nonvanishing, or characteristic hypothesis, are total
+above the Gaussian row by zero extension, and include the zero and diagonal
+rows.  The first cleared identity is the raw second moment; the second is the
+variance numerator.
 \end{remark}
 
 \section{Corrections and critical distinctions}\label{app:corrections}

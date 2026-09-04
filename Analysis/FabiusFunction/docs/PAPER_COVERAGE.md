@@ -11,10 +11,10 @@ see its
 or [rendered PDF](Fabius_Function_and_Rvachev_Up/Fabius_Function_and_Rvachev_Up.pdf).
 
 > **Artifact status (2026-09-03).**  The live lexical audit of the facade
-> union contains exactly 902 source modules and 11,441 public declarations.
+> union contains exactly 902 source modules and 11,444 public declarations.
 > It reports no missing module headers and no missing declaration comments;
 > the checked baseline records this zero-gap state.  The corresponding origin
-> inventory has 11,440 declarations because it lacks this tree's unique
+> inventory has 11,443 declarations because it lacks this tree's unique
 > unconditional public `complexQPochhammerInf_eq_qPochhammerInfIn` bridge.
 > This crosswalk records all
 > 30 declarations in `LegendreGauntClosedForm.lean` and
@@ -26,6 +26,7 @@ or [rendered PDF](Fabius_Function_and_Rvachev_Up/Fabius_Function_and_Rvachev_Up.
 > `QPochhammerDissection` 0+2,
 > `QPochhammerInfinite` 1+29, `GaussianBinomialAtNegOneDerivative` 0+4,
 > `GaussianBinomialContinuity` 0+3,
+> `GaussianBinomialCumulants` 2+24,
 > `GaussianBinomialPalindromic` 0+14,
 > `GaussianBinomialPolynomialStructure` 0+5,
 > `CentralQBinomialReduction` 0+6, `CyclotomicFactorization` 0+7,
@@ -50,8 +51,9 @@ or [rendered PDF](Fabius_Function_and_Rvachev_Up/Fabius_Function_and_Rvachev_Up.
 > The bounds module reuses `finiteQPochhammerIn_self_pos` from
 > `GeneralQConditionNumber`; it does not redeclare it.  The rigorous forward
 > q-monograph ledger is 165 Exact, 91 Partial, 18 None, and 8 interface
-> rows; its source concordance is 76 Lean, 402 human, 60 N/A, and 9 conjecture
-> rows.  `prop:gaussian-bound` is Exact; `thm:q-lucas` and
+> rows; its source concordance is 86 Lean, 392 human, 60 N/A, and 9 conjecture
+> rows, and the concordance extractor passes.  `prop:gaussian-bound` is Exact;
+> `thm:q-lucas` and
 > `cor:babbage-derivative` remain Partial at their stated polynomial-congruence
 > and derivative boundaries.
 >
@@ -80,7 +82,7 @@ or [rendered PDF](Fabius_Function_and_Rvachev_Up/Fabius_Function_and_Rvachev_Up.
 > expected underfull diagnostics, and the q-series master retains one harmless,
 > readable 32.5659 pt overfull line.  All page, metadata, font, render, text,
 > and representative-visual gates passed.  These receipts certify their named
-> pre-9135 pairs, not parity with the 902/11,441 live union; all four publications
+> pre-9135 pairs, not parity with the 902/11,444 live union; all four publications
 > require new final-source rebuilds.
 >
 > The independently scoped Lambert and Sequence publications remain current.
@@ -410,6 +412,7 @@ prefixes on the real frequency line and uniform convergence on its compact sets.
 | Real `q`-gamma recurrence, reflection product, and theta form | `QGamma.lean` has two definitions and exactly ten theorems.  `qGamma` and `qNumber` are total real definitions.  Product positivity, gamma positivity, `Γ_q(1)=1`, the functional equation, and the natural factorial product use `0<q<1`; positivity and the functional equation additionally assume `x>0`.  `qNumber_natCast` assumes only `q≠1`.  The reflection-product equality is totalized field algebra for every real `x` under only `q<1`; its bilateral theta `HasSum` form assumes `0<q<1` and `0<x<1`.  No complex continuation, pole theorem, classical-gamma limit, log-convexity/uniqueness, or digamma layer is present. | Definitions: `Fabius.qGamma`, `Fabius.qNumber`.  Theorems: `Fabius.norm_lt_one_of_pos_of_lt_one`, `Fabius.qPochhammerInfIn_rpow_pos`, `Fabius.qPochhammerInfIn_self_pos`, `Fabius.qGamma_pos`, `Fabius.qGamma_one`, `Fabius.qGamma_add_one`, `Fabius.qGamma_nat_succ`, `Fabius.qNumber_natCast`, `Fabius.qGamma_mul_qGamma_one_sub`, `Fabius.hasSum_theta_qGamma_reflection` |
 
 | Gaussian-polynomial continuity and specialization at `q = 1` | `GaussianBinomialContinuity.lean` retains its complete 0+3 theorem inventory: polynomial continuity over a topological semiring, convergence to the ordinary binomial coefficient as `q → 1`, and the finite-q-Pochhammer quotient formula over a field under its stated nonvanishing hypotheses. | `Fabius.continuous_gaussianBinomial`, `Fabius.tendsto_gaussianBinomial_nhds_one`, `Fabius.gaussianBinomial_eq_finiteQPochhammerIn_div` |
+| Gaussian-polynomial cumulants, second derivative, and cleared moments at `q = 1` | `GaussianBinomialCumulants.lean` has an exhaustive 2+24 public surface.  Its newest three theorems are exact at their displayed boundaries: `eval_one_derivative_derivative_gaussianBinomial_X` gives the explicit second derivative over a characteristic-zero field under exactly `k ≤ n`; `twelve_mul_secondMoment_gaussianBinomial_eval_one` and `twelve_mul_varianceNumerator_gaussianBinomial_eval_one` give the denominator-cleared raw second moment and variance numerator over every commutative semiring for all natural `n,k`, including `n < k`, where zero extension makes both sides vanish.  The cleared forms require no division, nonvanishing, or characteristic hypothesis. | Definitions: `Fabius.meanAtOne`, `Fabius.varAtOne`.  Theorems: `Fabius.meanAtOne_one`, `Fabius.varAtOne_one`, `Fabius.meanAtOne_mul`, `Fabius.varAtOne_mul`, `Fabius.meanAtOne_prod`, `Fabius.varAtOne_prod`, `Fabius.eval_one_derivative_X_pow`, `Fabius.eval_one_derivative_derivative_X_pow`, `Fabius.eval_one_qInt_X`, `Fabius.eval_one_derivative_qInt_X`, `Fabius.eval_one_derivative_derivative_qInt_X`, `Fabius.meanAtOne_qInt_X`, `Fabius.varAtOne_qInt_X`, `Fabius.one_sub_X_pow_succ_eq`, `Fabius.gaussianBinomial_X_mul_prod_qInt`, `Fabius.eval_one_gaussianBinomial_X`, `Fabius.sum_mean_diff`, `Fabius.sum_var_diff`, `Fabius.meanAtOne_gaussianBinomial_X`, `Fabius.varAtOne_gaussianBinomial_X`, `Fabius.eval_one_derivative_gaussianBinomial_X`, `Fabius.eval_one_derivative_derivative_gaussianBinomial_X`, `Fabius.twelve_mul_secondMoment_gaussianBinomial_eval_one`, `Fabius.twelve_mul_varianceNumerator_gaussianBinomial_eval_one` |
 | Generic Gaussian-polynomial palindromicity, mean, and linear coefficient | `GaussianBinomialPalindromic.lean` has an exhaustive 0+14 inventory over a general commutative semiring.  Besides reflection, degree, boundary, coefficient-reversal, and mean results, `coeff_gaussianBinomial_one_of_pos_of_lt` proves the linear coefficient is one under exactly `0 < k` and `k < n`; the total `coeff_gaussianBinomial_one` theorem returns `if 0 < k ∧ k < n then 1 else 0`, covering `k = 0`, `k = n`, and `n < k`.  These two results need no nontriviality assumption; exact degree and monicity do. | `Fabius.reflect_add_of_natDegree_le`, `Fabius.reflect_one'`, `Fabius.gaussianBinomial_natDegree_le`, `Fabius.gaussianBinomial_zero_left`, `Fabius.gaussianBinomial_diag'`, `Fabius.reflect_gaussianBinomial`, `Fabius.coeff_gaussianBinomial_reflect`, `Fabius.coeff_gaussianBinomial_zero`, `Fabius.coeff_gaussianBinomial_top`, `Fabius.gaussianBinomial_natDegree`, `Fabius.gaussianBinomial_monic`, `Fabius.two_mul_derivative_gaussianBinomial_eval_one`, `Fabius.coeff_gaussianBinomial_one_of_pos_of_lt`, `Fabius.coeff_gaussianBinomial_one` |
 | Universal Gaussian-polynomial structure | `GaussianBinomialPolynomialStructure.lean` retains its exhaustive 0+5 inventory: exact degree, monicity, constant coefficient one, exact reflection, and bounded-index coefficient symmetry for the natural-coefficient universal polynomial under `k ≤ n`.  The adjacent general-semiring `coeff_gaussianBinomial_one` theorem now supplies the complete linear-coefficient clause, including every boundary case. | `Fabius.natDegree_gaussianBinomial_universal`, `Fabius.gaussianBinomial_universal_monic`, `Fabius.coeff_zero_gaussianBinomial_universal`, `Fabius.gaussianBinomial_universal_reflect`, `Fabius.coeff_gaussianBinomial_universal_symm` |
 | Central squared-base Gaussian reduction | `CentralQBinomialReduction.lean` has no definitions and exactly six theorems: sign pairing, even/odd dissection, finite-symbol naturality, the integral-polynomial certificate, the division-free commutative-ring central reduction, and its field quotient wrapper with the two displayed nonvanishing denominators. | `Fabius.finiteQPochhammerIn_mul_neg`, `Fabius.finiteQPochhammerIn_two_mul`, `Fabius.finiteQPochhammerIn_map_ringHom`, `Fabius.central_gaussianBinomial_sq_mul_int`, `Fabius.central_gaussianBinomial_sq_mul`, `Fabius.central_gaussianBinomial_sq_div` |

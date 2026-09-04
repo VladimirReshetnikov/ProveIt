@@ -28,7 +28,11 @@ mean `(m-1)/2`, variance `(m^2-1)/12`), and use the factorization
 * `meanAtOne_qInt_X`, `varAtOne_qInt_X`.
 * `gaussianBinomial_X_mul_prod_qInt`: the factorization into `q`-integers.
 * `meanAtOne_gaussianBinomial_X`, `varAtOne_gaussianBinomial_X`,
-  `eval_one_derivative_gaussianBinomial_X`.
+  `eval_one_derivative_gaussianBinomial_X`,
+  `eval_one_derivative_derivative_gaussianBinomial_X`.
+* `twelve_mul_secondMoment_gaussianBinomial_eval_one` and
+  `twelve_mul_varianceNumerator_gaussianBinomial_eval_one`: division-free second-moment and
+  variance-numerator identities.
 -/
 
 set_option autoImplicit false
@@ -297,6 +301,134 @@ theorem eval_one_derivative_gaussianBinomial_X {n k : ℕ} (hk : k ≤ n) :
   rw [div_eq_iff hc] at h
   exact h
 
+/-- The second derivative of the universal Gaussian coefficient at one:
+`[n,k]''_1 = C(n,k) k(n-k) (3k(n-k)+n-5) / 12`.
+
+Equivalently, this is the unnormalized second falling-factorial moment of the inversion
+distribution.  The division-free companion below remains valid in arbitrary characteristic. -/
+theorem eval_one_derivative_derivative_gaussianBinomial_X {n k : ℕ} (hk : k ≤ n) :
+    (derivative (derivative (gaussianBinomial (X : K[X]) n k))).eval 1 =
+      (k : K) * ((n : K) - k) *
+        (3 * ((k : K) * ((n : K) - k)) + (n : K) - 5) / 12 * (n.choose k : K) := by
+  have h := varAtOne_gaussianBinomial_X (K := K) hk
+  rw [varAtOne, meanAtOne_gaussianBinomial_X (K := K) hk,
+    eval_one_gaussianBinomial_X] at h
+  have hc : (n.choose k : K) ≠ 0 := by exact_mod_cast (Nat.choose_pos hk).ne'
+  field_simp [hc] at h ⊢
+  linear_combination (1 / 4) * h
+
 end CharZeroField
+
+/-! ### Division-free second moments -/
+
+private theorem map_eval_one_derivative_gaussianBinomial
+    {R S : Type*} [Semiring R] [Semiring S] (φ : R →+* S) (n k : ℕ) :
+    φ ((derivative (gaussianBinomial (X : R[X]) n k)).eval 1) =
+      (derivative (gaussianBinomial (X : S[X]) n k)).eval 1 := by
+  rw [← eval_map_apply, ← derivative_map]
+  have hmap : (gaussianBinomial (X : R[X]) n k).map φ =
+      gaussianBinomial (X : S[X]) n k := by
+    simpa only [Polynomial.coe_mapRingHom, Polynomial.map_X] using
+      map_gaussianBinomial (Polynomial.mapRingHom φ) (X : R[X]) n k
+  rw [hmap, map_one]
+
+private theorem map_eval_one_derivative_derivative_gaussianBinomial
+    {R S : Type*} [Semiring R] [Semiring S] (φ : R →+* S) (n k : ℕ) :
+    φ ((derivative (derivative (gaussianBinomial (X : R[X]) n k))).eval 1) =
+      (derivative (derivative (gaussianBinomial (X : S[X]) n k))).eval 1 := by
+  rw [← eval_map_apply, ← derivative_map, ← derivative_map]
+  have hmap : (gaussianBinomial (X : R[X]) n k).map φ =
+      gaussianBinomial (X : S[X]) n k := by
+    simpa only [Polynomial.coe_mapRingHom, Polynomial.map_X] using
+      map_gaussianBinomial (Polynomial.mapRingHom φ) (X : R[X]) n k
+  rw [hmap, map_one]
+
+private theorem twelve_mul_secondMoment_gaussianBinomial_eval_one_nat (n k : ℕ) :
+    12 * ((derivative (derivative (gaussianBinomial (X : ℕ[X]) n k))).eval 1 +
+      (derivative (gaussianBinomial (X : ℕ[X]) n k)).eval 1) =
+      k * (n - k) * (3 * (k * (n - k)) + n + 1) * n.choose k := by
+  by_cases hk : k ≤ n
+  · apply Nat.cast_injective (R := ℚ)
+    push_cast [hk]
+    have h₂ :
+        (((derivative (derivative (gaussianBinomial (X : ℕ[X]) n k))).eval 1 : ℕ) : ℚ) =
+          (derivative (derivative (gaussianBinomial (X : ℚ[X]) n k))).eval 1 :=
+      map_eval_one_derivative_derivative_gaussianBinomial (Nat.castRingHom ℚ) n k
+    have h₁ : (((derivative (gaussianBinomial (X : ℕ[X]) n k)).eval 1 : ℕ) : ℚ) =
+        (derivative (gaussianBinomial (X : ℚ[X]) n k)).eval 1 :=
+      map_eval_one_derivative_gaussianBinomial (Nat.castRingHom ℚ) n k
+    rw [h₂, h₁, eval_one_derivative_derivative_gaussianBinomial_X hk,
+      eval_one_derivative_gaussianBinomial_X hk]
+    ring
+  · have hlt : n < k := Nat.lt_of_not_ge hk
+    simp [gaussianBinomial_eq_zero_of_lt (X : ℕ[X]) hlt,
+      Nat.choose_eq_zero_of_lt hlt]
+
+/-- **Division-free raw second moment of a Gaussian row.**  If
+`P = [n,k]_X`, `D = k(n-k)`, and `C = C(n,k)`, then
+`12 (P''(1) + P'(1)) = D (3D+n+1) C`.
+
+The left side is twelve times the unnormalized coefficient moment `∑ j² c_j`.  The theorem is
+total in `n,k`: above the Gaussian row both sides vanish by zero extension.  It uses no division,
+nonvanishing, or characteristic assumption. -/
+theorem twelve_mul_secondMoment_gaussianBinomial_eval_one
+    {R : Type*} [CommSemiring R] (n k : ℕ) :
+    12 * ((derivative (derivative (gaussianBinomial (X : R[X]) n k))).eval 1 +
+      (derivative (gaussianBinomial (X : R[X]) n k)).eval 1) =
+      ((k * (n - k) : ℕ) : R) *
+        (3 * ((k * (n - k) : ℕ) : R) + (n : R) + 1) * (n.choose k : R) := by
+  have h := congrArg (Nat.castRingHom R)
+    (twelve_mul_secondMoment_gaussianBinomial_eval_one_nat n k)
+  push_cast at h
+  have h₂ :
+      (((derivative (derivative (gaussianBinomial (X : ℕ[X]) n k))).eval 1 : ℕ) : R) =
+        (derivative (derivative (gaussianBinomial (X : R[X]) n k))).eval 1 :=
+    map_eval_one_derivative_derivative_gaussianBinomial (Nat.castRingHom R) n k
+  have h₁ : (((derivative (gaussianBinomial (X : ℕ[X]) n k)).eval 1 : ℕ) : R) =
+      (derivative (gaussianBinomial (X : R[X]) n k)).eval 1 :=
+    map_eval_one_derivative_gaussianBinomial (Nat.castRingHom R) n k
+  rw [h₂, h₁] at h
+  simpa only [Nat.cast_mul] using h
+
+/-- **Division-free variance numerator of a Gaussian row.**  If
+`P = [n,k]_X`, `D = k(n-k)`, and `C = C(n,k)`, then
+`12 C (P''(1)+P'(1)) = 12 P'(1)^2 + D(n+1)C^2`.
+
+Over a characteristic-zero field, for `k ≤ n`, division by `12 C²` makes this exactly
+`Var(X) = D(n+1)/12`.  In the displayed cleared form it is total in `n,k`, includes the zero and
+diagonal rows, and remains valid in arbitrary characteristic. -/
+theorem twelve_mul_varianceNumerator_gaussianBinomial_eval_one
+    {R : Type*} [CommSemiring R] (n k : ℕ) :
+    12 * (n.choose k : R) *
+        ((derivative (derivative (gaussianBinomial (X : R[X]) n k))).eval 1 +
+          (derivative (gaussianBinomial (X : R[X]) n k)).eval 1) =
+      12 * (derivative (gaussianBinomial (X : R[X]) n k)).eval 1 ^ 2 +
+        ((k * (n - k) : ℕ) : R) * ((n : R) + 1) * (n.choose k : R) ^ 2 := by
+  by_cases hk : k ≤ n
+  · let P : R[X] := gaussianBinomial (X : R[X]) n k
+    let d : R := ((k * (n - k) : ℕ) : R)
+    let c : R := (n.choose k : R)
+    let m₁ : R := (derivative P).eval 1
+    let m₂ : R := (derivative (derivative P)).eval 1 + (derivative P).eval 1
+    have hs : 12 * m₂ = d * (3 * d + (n : R) + 1) * c := by
+      simpa [P, d, c, m₂] using
+        twelve_mul_secondMoment_gaussianBinomial_eval_one (R := R) n k
+    have hm : 2 * m₁ = d * c := by
+      simpa [P, d, c, m₁] using
+        two_mul_derivative_gaussianBinomial_eval_one (R := R) hk
+    have hm_sq : 12 * m₁ ^ 2 = 3 * d ^ 2 * c ^ 2 := by
+      calc
+        12 * m₁ ^ 2 = 3 * (2 * m₁) ^ 2 := by ring
+        _ = 3 * (d * c) ^ 2 := by rw [hm]
+        _ = 3 * d ^ 2 * c ^ 2 := by ring
+    change 12 * c * m₂ = 12 * m₁ ^ 2 + d * ((n : R) + 1) * c ^ 2
+    calc
+      12 * c * m₂ = c * (12 * m₂) := by ring
+      _ = c * (d * (3 * d + (n : R) + 1) * c) := by rw [hs]
+      _ = 3 * d ^ 2 * c ^ 2 + d * ((n : R) + 1) * c ^ 2 := by ring
+      _ = 12 * m₁ ^ 2 + d * ((n : R) + 1) * c ^ 2 := by rw [hm_sq]
+  · have hlt : n < k := Nat.lt_of_not_ge hk
+    simp [gaussianBinomial_eq_zero_of_lt (X : R[X]) hlt,
+      Nat.choose_eq_zero_of_lt hlt]
 
 end Fabius

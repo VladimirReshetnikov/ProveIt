@@ -198,9 +198,9 @@ an exact Lean theorem are kept in the companion volume under
 
 \begin{boxedremark}\textbf{Artifact status (3 September 2026).}\space
 The authoritative live lexical audit contains exactly 902 facade-reachable
-source modules and 11,441 unique public declarations: 292 modules and 3,123
+source modules and 11,444 unique public declarations: 292 modules and 3,126
 declarations beyond the 610/8,318 activation checkpoint, and 253 modules and
-2,743 declarations beyond the 649/8,698 publication-union checkpoint.  Module
+2,746 declarations beyond the 649/8,698 publication-union checkpoint.  Module
 headers and declaration documentation are complete; the checked baseline records
 both zero-gap invariants.  This source includes the earlier finite and
 infinite q-series APIs together with the final Gaussian-palindromic, Jackson
@@ -212,13 +212,13 @@ the real Jackson q-beta integral, Gaussian upper-index and quantum identities,
 superconvergent Rvachev synthesis, Gaussian bounds, the complete terminating
 \({}_2\phi_1\) reversal and q-Chu--Vandermonde surfaces, the geometric
 Richardson generating-function module, the complete Lambert branch-coordinate
-surfaces, and the six-theorem dyadic derivative filtration.
-The final-source publication is validated by exactly three successful serial
-halt-on-error passes and the repository's PDF gates.  Exact page-count,
-byte-count, and SHA-256 receipts for the frozen TeX and resulting PDF are kept
-externally in the repository documentation so that neither artifact embeds a
-self-invalidating fingerprint.  No \nolinkurl{SHA256SUMS*} ledger exists or
-participates in validation.
+surfaces, the six-theorem dyadic derivative filtration, and the three-theorem
+second-moment extension of \path{GaussianBinomialCumulants.lean}.  The retained
+PDF predates the Gaussian-cumulant source update and remains an explicitly
+historical render until the current TeX is rebuilt; it makes no parity claim.
+Exact source and PDF validation receipts are kept externally in the repository
+documentation so that neither artifact embeds a self-invalidating fingerprint.
+No \nolinkurl{SHA256SUMS*} ledger exists or participates in validation.
 \end{boxedremark}
 
 \tableofcontents
@@ -3992,10 +3992,11 @@ The two summability hypotheses in the comparison theorem are essential
 because the underlying infinite product is totalized outside its admissible
 range.  No spectral-zeta recovery, cumulant-sample recovery, or
 identifiability of an underlying probability law is asserted; those remain
-open interfaces.  With the completed concurrent source union and the retained
-public \lean{complexQPochhammerInf_eq_qPochhammerInfIn} bridge, the live facade
-census is exactly 902 modules and 11,441 unique public declarations, with no
-missing module headers or declaration documentation.  The current TeX also
+open interfaces.  The origin-side source union contains 902 modules and
+11,443 public declarations.  Retaining the unconditional public
+\lean{complexQPochhammerInf_eq_qPochhammerInfIn} bridge gives the merged live
+facade census of exactly 902 modules and 11,444 unique public declarations,
+with no missing module headers or declaration documentation.  The current TeX also
 contains the six-theorem prime-power companion-row API and the
 zero-definition/three-theorem outer Pochhammer normal-convergence API, plus
 the two-module/nine-declaration fixed-depth effective-inverse tranche, the
@@ -4011,9 +4012,12 @@ zero-definition/six-theorem dyadic derivative-filtration module likewise
 contains the two new below-depth theorems inventoried below.  The exhaustive
 terminating-basic-hypergeometric pair contributes two definitions and twenty-two
 theorems, and \path{GeometricRichardsonGenerating.lean} contributes three
-definitions and seven theorems.  These overlays are included in the finalized
-publication; exact frozen-source and final-PDF receipts are kept externally in
-the repository documentation so that no artifact embeds a mutable self-receipt.
+definitions and seven theorems.  Three subsequent theorems expand
+\path{GaussianBinomialCumulants.lean} from 2+21 to its current 2+24 surface.  These
+source overlays are integrated into the TeX, while the retained PDF remains
+historical until rebuild.  Exact source and PDF receipts are kept externally
+in the repository documentation so that no artifact embeds a mutable
+self-receipt.
 
 The six q-calculus module counts are
 \path{QPochhammerInfiniteBounds.lean} (0+5),
@@ -4153,17 +4157,21 @@ primitive-root identity, while the manuscript's polynomial congruence modulo
 \(\Phi_d\) still needs a minimal-polynomial lift.
 
 \paragraph{Final q-calculus, theta, and derivative tranche.}
-Eight facade-reachable modules add exactly five definitions and fifty-three
+Eight facade-reachable modules add exactly five definitions and fifty-five
 theorems.  \path{GaussianBinomialPalindromic.lean} has no definitions and the
-twelve theorems \lean{reflect_add_of_natDegree_le}, \lean{reflect_one'},
+fourteen theorems \lean{reflect_add_of_natDegree_le}, \lean{reflect_one'},
 \lean{gaussianBinomial_natDegree_le}, \lean{gaussianBinomial_zero_left},
 \lean{gaussianBinomial_diag'}, \lean{reflect_gaussianBinomial},
 \lean{coeff_gaussianBinomial_reflect},
 \lean{coeff_gaussianBinomial_zero}, \lean{coeff_gaussianBinomial_top},
 \lean{gaussianBinomial_natDegree}, \lean{gaussianBinomial_monic}, and
-\lean{two_mul_derivative_gaussianBinomial_eval_one}.  Over a commutative
+\lean{two_mul_derivative_gaussianBinomial_eval_one},
+\lean{coeff_gaussianBinomial_one_of_pos_of_lt}, and
+\lean{coeff_gaussianBinomial_one}.  Over a commutative
 semiring they give the degree bound, reflection, coefficient symmetry,
-constant and top coefficients, and the division-free first-moment identity;
+constant and top coefficients, the division-free first-moment identity, and
+the total linear-coefficient classifier (one exactly for \(0<k<n\), zero
+otherwise);
 exact degree and monicity additionally require a nontrivial coefficient type.
 
 \path{QExponential.lean} has the three definitions \lean{qDeriv},
@@ -4328,6 +4336,29 @@ displayed domain remains only partial: the compiled provenance theorem
 \(C\ne0\) and \((A;q)_n\ne0\), whereas the full-domain proof uses finite
 q-Cauchy directly.  No rational-continuation or cleared commutative-ring
 extension is asserted here.
+
+\paragraph{Gaussian-binomial second cumulants.}
+The later three-theorem delta in
+\path{GaussianBinomialCumulants.lean}, whose complete public surface is now
+2+24, is
+\lean{eval_one_derivative_derivative_gaussianBinomial_X},
+\lean{twelve_mul_secondMoment_gaussianBinomial_eval_one}, and
+\lean{twelve_mul_varianceNumerator_gaussianBinomial_eval_one}.  Put
+\(P=[n,k]_X\), \(D=k(n-k)\), and \(C=\binom nk\).  The first theorem is over a
+characteristic-zero field and assumes exactly \(k\le n\); it gives
+\[
+ P''(1)=\frac{D(3D+n-5)}{12}\,C.
+\]
+The other two hold for every \(n,k\) over an arbitrary commutative semiring,
+with no division, nonvanishing, or characteristic hypothesis:
+\[
+ 12\bigl(P''(1)+P'(1)\bigr)=D(3D+n+1)C,
+ \qquad
+ 12C\bigl(P''(1)+P'(1)\bigr)=12P'(1)^2+D(n+1)C^2.
+\]
+They are total above the Gaussian row by zero extension and include the zero
+and diagonal rows; the first displayed cleared identity is the unnormalized
+raw second moment, and the second is the variance numerator.
 
 On the real axis the origin is the unique global point of unit modulus:
 \begin{equation}
@@ -13519,13 +13550,15 @@ Rogers--Szeg\H{o} polynomial APIs &
 \path{GeometricPochhammerNormalConvergence.lean},
 \path{ReciprocalIntegerGammaZeros.lean}, \path{DyadicGammaOrder.lean}\\
 Gaussian (q=-1) first jets, generic and universal Gaussian-polynomial degree,
-palindromicity, mean and linear coefficient, central/cyclotomic factorization,
+palindromicity, mean, linear coefficient, and second cumulants,
+central/cyclotomic factorization,
 primitive-root blocks, q-Lucas and q-Catalan theory, Euler and infinite
 q-binomial expansions, Jacobi and pentagonal products, q-Pascal summation,
 Gaussian continuity, the quantum binomial theorem, and Rogers--Szeg\H{o}
 polynomials &
 \path{GaussianBinomialAtNegOneDerivative.lean},
 \path{GaussianBinomialPalindromic.lean},
+\path{GaussianBinomialCumulants.lean},
 \path{GaussianBinomialPolynomialStructure.lean},
 \path{CentralQBinomialReduction.lean}, \path{CyclotomicFactorization.lean},
 \path{PrimitiveRootBlock.lean}, \path{QLucas.lean},
@@ -13800,6 +13833,7 @@ Dyadic and \(q\)-binomial formulas &
 \path{DyadicCorrectness.lean}, \path{FiniteQBinomialCore.lean},
 \path{QBinomialReciprocity.lean},
 \path{GaussianBinomialPalindromic.lean},
+\path{GaussianBinomialCumulants.lean},
 \path{GaussianBinomialPolynomialStructure.lean},
 \path{CentralQBinomialReduction.lean}, \path{CyclotomicFactorization.lean},
 \path{PrimitiveRootBlock.lean}, \path{QLucas.lean},

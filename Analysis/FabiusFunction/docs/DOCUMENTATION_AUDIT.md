@@ -109,10 +109,10 @@ only 4,606 declarations and
 declarations, including 69 undocumented ones.  Run the script for the live
 numbers rather than copying these historical values.
 
-The live 2026-09-03 semantic union contains 902 modules and 11,441 lexically
+The live 2026-09-03 semantic union contains 902 modules and 11,444 lexically
 visible public declarations, with zero missing module headers and zero missing
 doc comments; the checked JSON baseline records this clean state.  The
-corresponding origin inventory has 11,440 declarations because it lacks this
+corresponding origin inventory has 11,443 declarations because it lacks this
 tree's unique public `complexQPochhammerInf_eq_qPochhammerInfIn` bridge.  The
 earlier 901/11,419 local semantic union remains a historical checkpoint, as
 does the post-merge 2026-09-01 inventory of 675 modules and 8,909 declarations.
@@ -197,6 +197,35 @@ excludes that base.  The analytic pair assumes a complete normed field,
 `z`; the Lagrange form additionally assumes `q ≠ 0` and proves a `HasSum`
 identity.  It does not claim a general analytic evaluation operation for
 arbitrary formal power series.
+
+#### Gaussian-binomial second-moment tranche
+
+The later strengthening of the existing `GaussianBinomialCumulants.lean`
+module leaves the module count at 902 and adds three public theorems, bringing
+the origin census to 11,443 public declarations and, with the retained public
+q-Pochhammer bridge, the authoritative local union to 11,444.  The module's exhaustive public
+inventory is two definitions, `meanAtOne` and `varAtOne`, and twenty-four
+theorems: `meanAtOne_one`, `varAtOne_one`, `meanAtOne_mul`, `varAtOne_mul`,
+`meanAtOne_prod`, `varAtOne_prod`, `eval_one_derivative_X_pow`,
+`eval_one_derivative_derivative_X_pow`, `eval_one_qInt_X`,
+`eval_one_derivative_qInt_X`, `eval_one_derivative_derivative_qInt_X`,
+`meanAtOne_qInt_X`, `varAtOne_qInt_X`, `one_sub_X_pow_succ_eq`,
+`gaussianBinomial_X_mul_prod_qInt`, `eval_one_gaussianBinomial_X`,
+`sum_mean_diff`, `sum_var_diff`, `meanAtOne_gaussianBinomial_X`,
+`varAtOne_gaussianBinomial_X`, `eval_one_derivative_gaussianBinomial_X`,
+`eval_one_derivative_derivative_gaussianBinomial_X`,
+`twelve_mul_secondMoment_gaussianBinomial_eval_one`, and
+`twelve_mul_varianceNumerator_gaussianBinomial_eval_one`.
+
+The last three are the new declarations.  The first gives the explicit second
+derivative at one over a characteristic-zero field when `k ≤ n`.  The other
+two clear all denominators: over every commutative semiring and for all natural
+`n,k`, including the above-row zero case, they give the raw second coefficient
+moment and the variance numerator.  The probability terminology is the
+interpretation of the normalized coefficient generating polynomial; the
+generic theorems themselves are algebraic identities and do not construct a
+separate probability-space random variable.  Three private transport helpers
+are excluded from the public census.
 
 #### Exact Lambert branch-pairing tranche
 
@@ -328,8 +357,9 @@ order hypotheses explicit.  The module reuses the stronger ordered-field
 `finiteQPochhammerIn_self_pos` theorem from `GeneralQConditionNumber.lean`
 rather than exporting a duplicate.
 The rigorous forward q-monograph ledger is 165 Exact, 91 Partial, 18 None,
-and 8 interface rows; its source concordance is 76 Lean, 402 human, 60 N/A,
-and 9 conjecture rows.  `prop:gaussian-bound` is Exact.  `thm:q-lucas` remains
+and 8 interface rows; its source concordance is 86 Lean, 392 human, 60 N/A,
+and 9 conjecture rows, and the concordance extractor passes.
+`prop:gaussian-bound` is Exact.  `thm:q-lucas` remains
 Partial because the proved evaluated primitive-root identity is weaker than
 the manuscript's polynomial congruence modulo `Φ_d`, and
 `cor:babbage-derivative` remains Partial because only its value is formalized.
@@ -1164,7 +1194,7 @@ walkthrough logs and publication gates are clean; the frontier retains only
 expected underfull diagnostics, and the q-series master retains one harmless,
 readable 32.5659 pt overfull line.  All page, metadata, font, render, text,
 and representative-visual gates passed.  These receipts certify their named
-pre-9135 pairs, not parity with the 902/11,441 live union; all four publications
+pre-9135 pairs, not parity with the 902/11,444 live union; all four publications
 require new final-source rebuilds.
 
 The independently scoped Lambert and Sequence publications remain current.
@@ -1201,11 +1231,18 @@ primary TeX/PDF `938517a92565685ac9f7194b879cfe752ce783f258bde8b7b685aee41aed13d
 The retained comb-interpolation synthesis PDF is a validated 158-page A4
 historical receipt: the current source includes a post-render update to its
 additive-dyadic chapter, so a fresh parity build remains pending.  The rebuilt
-Integration-and-Transform master retains a historical 377-page PDF.
-Representation Frontiers, New Frontiers, and the notation catalogue retain
-historical 301-, 41-, and 88-page receipts.  The inverse-computability receipt
+Integration-and-Transform master retains a historical 377-page PDF.  The canonical
+q-series synthesis is a validated 389-page historical receipt synchronized to
+the immediately preceding source checkpoint.  The current merged source adds
+the terminating q-Chu/reversal, geometric-generating, and Gaussian second-moment
+tranches, so final parity is again pending.  The retained 183-page primary,
+130-page walkthrough, 257-page canonical frontier, 301-page Representation
+Frontiers, 41-page New Frontiers, and 88-page notation-catalogue artifacts
+likewise predate their current merged sources.  Their package notices treat
+those PDFs as historical validation receipts, not parity claims, until fresh
+uninterrupted three-pass builds complete.  The inverse-computability receipt
 likewise still reflects the historical 675/8,909 census and requires refresh
-against the live 902/11,441 inventory.  Checksum ledgers remain abolished and
+against the live 902/11,444 inventory.  Checksum ledgers remain abolished and
 hardened repository-wide; no `SHA256SUMS*` files exist or participate in
 validation.  The canonical inverse-theory publication retains a 134-page
 artifact synchronized at its latest-main source checkpoint; the merged

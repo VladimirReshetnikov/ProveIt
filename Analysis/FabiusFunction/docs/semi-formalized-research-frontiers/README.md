@@ -47,7 +47,7 @@ The canonical frontier artifacts are:
 > `3766761aac90247061f5c955dc84a0feb8567454e10839f1508b9431797ee980`).
 
 The authoritative live Lean audit now contains exactly 902 facade-reachable
-modules and 11,441 unique public declarations, with no missing module headers
+modules and 11,444 unique public declarations, with no missing module headers
 or declaration documentation.  The checked baseline records both zero-gap
 invariants.  The q-Pochhammer ownership remains
 `RvachevPochhammerFactorization` 1+10, `QPochhammerEntire` 0+5, and
@@ -98,7 +98,7 @@ are therefore 165 Exact / 91 Partial / 18 None / 8 interface: q-Lucas remains
 Partial because the polynomial-congruence lift is absent, the Gaussian
 majorant is Exact, and the `Q > 1` asymptotic row remains Partial.
 
-The newest source-only addition is
+The preceding source-only addition is
 `FabiusFunction.GeometricRichardsonGenerating`, with three definitions and
 seven theorems. Its
 `Fabius.geometricLagrangeRichardson_generating` theorem is the exact formal
@@ -109,6 +109,18 @@ contraction and absolute summability. The retained canonical-frontier,
 primary, walkthrough, q-series, and comb-synthesis PDFs all predate this
 crosswalk and remain historical artifacts until their affected roots are
 rebuilt.
+
+The newest source-only addition leaves the module count unchanged and adds
+three theorems to `FabiusFunction.GaussianBinomialCumulants`: the explicit
+second derivative at one
+`Fabius.eval_one_derivative_derivative_gaussianBinomial_X`, the division-free
+raw second moment `Fabius.twelve_mul_secondMoment_gaussianBinomial_eval_one`,
+and the division-free variance numerator
+`Fabius.twelve_mul_varianceNumerator_gaussianBinomial_eval_one`. The first is a
+characteristic-zero field identity on `k ≤ n`; the cleared identities are total
+over every commutative semiring, including the above-row zero case. Their
+probability language is the normalized-generating-polynomial interpretation of
+algebraic identities, not a new probability-space construction.
 
 The 1 September 2026 source-only q-Pochhammer overlay is likewise newer than
 the retained PDFs.  The new `QPochhammerEntire.lean` leaf has zero definitions
@@ -142,7 +154,7 @@ The latest pre-`9135bd7e` q-series receipt names the 16,834-line,
 and its 395-page, 2,494,961-byte A4 PDF (SHA-256
 `89159b2635f489a42d4c972fac95332808b1d637dee7921085db1ed7d6e055af`).
 The present q-Chu/Richardson source union postdates that exact receipt.  Its
-completed source concordance now records 76 Lean-proved, 402 human-proved,
+completed source concordance now records 86 Lean-proved, 392 human-proved,
 60 not-applicable, and 9 conjectural rows; the forward ledger is 165
 Exact / 91 Partial / 18 None / 8 interface.  No current source/PDF parity is
 claimed until the final union is rebuilt.

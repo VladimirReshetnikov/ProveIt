@@ -22,13 +22,14 @@ moved the six polynomial-logarithmic transseries packages out of `lambert-w/`
 into the new `series-and-transseries/` group.
 
 **Current artifact checkpoint (2026-09-03).** The live Lean audit scans exactly
-902 facade-reachable source modules and 11,441 unique public declarations, with
+902 facade-reachable source modules and 11,444 unique public declarations, with
 no missing module headers and no missing documentation comments; the checked
 baseline records this zero-gap state.
-The q-Chu/Richardson merge changes the primary exposition, Lean walkthrough,
-canonical frontier, and canonical q-series sources after their latest renders;
-those four PDFs are therefore named historical checkpoints pending final-source
-rebuilds.  Other packages retain their own explicit source/PDF status.
+The q-Chu/Richardson/Gaussian-moment union changes the primary exposition,
+Lean walkthrough, canonical frontier, and canonical q-series sources after
+their latest renders; those four PDFs are therefore named historical
+checkpoints pending final-source rebuilds.  Other packages retain their own
+explicit source/PDF status.
 
 Four pre-`9135bd7e` publication pairs have exact historical receipts.  The
 primary exposition is a 14,037-line, 702,119-byte TeX source (SHA-256
@@ -111,7 +112,10 @@ its 354-page, 3,030,302-byte A4 PDF had SHA-256
 `1050a9a3b0b7a8df8e7de0870946ae64940d7d7839a2f20427be0ebe14b0ba8c`
 and was built from the preceding 14,381-line source with SHA-256
 `240bff72fb47562e9a8fd87085b5a3a96d738189714518db17988f7c4ac15d31`.
-The still earlier 348-page artifact checkpoint also remains historical evidence:
+The live TeX additionally contains the q-Chu/Richardson crosswalk and the
+Gaussian second-derivative and division-free moment formulas, so it is newer
+than every receipt in this paragraph.  The still earlier 348-page artifact
+checkpoint also remains historical evidence:
 its PDF SHA-256 is
 `8bf14b52d8a0fc0abc4d54cca503fd47a2df37cf76ee1bb4e442bea1fd2a4aa7`,
 and its 14,158-line, 661,835-byte build source had SHA-256

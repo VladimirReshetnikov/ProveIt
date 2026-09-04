@@ -349,19 +349,21 @@ branch-pairing, gap-bijection, and symmetric-identity tranche (respectively
 derivative filtration.  The Lambert surfaces contain 36 current declarations,
 13 of them supplied by the upstream delta; the filtration delta is exactly
 \lean{iteratedDeriv_rvachevUp_eq_extendedFabius} and
-\lean{iteratedDeriv_rvachevUp_dyadic_below}.  The finalized union also contains
-the exhaustive 2+12 \path{TwoPhiOneReversal.lean}, 0+10
+\lean{iteratedDeriv_rvachevUp_dyadic_below}.  The union also contains the
+exhaustive 2+12 \path{TwoPhiOneReversal.lean}, 0+10
 \path{QChuVandermonde.lean}, and 3+7
-\path{GeometricRichardsonGenerating.lean} surfaces while retaining the public
-\lean{complexQPochhammerInf_eq_qPochhammerInfIn} bridge.  The live source
-census is exactly 902 facade-reachable modules and 11,441 unique public
-declarations, with no missing module headers or declaration documentation.  The final-source
-publication is validated by exactly three successful serial halt-on-error
-passes and the repository's PDF gates.  Exact page-count, byte-count, and
-SHA-256 receipts for the frozen TeX and resulting PDF are kept externally in
-the repository documentation so that neither artifact embeds a
-self-invalidating fingerprint.  No \nolinkurl{SHA256SUMS*} ledger exists or
-participates in validation.
+\path{GeometricRichardsonGenerating.lean} surfaces, and the three-theorem
+second-moment extension that brings \path{GaussianBinomialCumulants.lean} to
+2+24.  The origin-side source census is 902 facade-reachable modules and
+11,443 public declarations; retaining the unconditional public
+\lean{complexQPochhammerInf_eq_qPochhammerInfIn} bridge gives the merged live
+census of exactly 902 modules and 11,444 unique public declarations, with no
+missing module headers or declaration documentation.  The retained PDF
+predates the Gaussian-cumulant source update and remains an explicitly
+historical render until the current TeX is rebuilt; it makes no parity claim.
+Exact source and PDF validation receipts are kept externally in the repository
+documentation so that neither artifact embeds a self-invalidating fingerprint.
+No \nolinkurl{SHA256SUMS*} ledger exists or participates in validation.
 \end{boxedremark}
 
 \tableofcontents
@@ -616,6 +618,14 @@ Generic Gaussian-polynomial degree, palindromicity, mean, and linear coefficient
 \nolinkurl{coeff_gaussianBinomial_one_of_pos_of_lt},
 \nolinkurl{coeff_gaussianBinomial_one} &
 \nolinkurl{GaussianBinomialPalindromic.lean}; zero definitions and fourteen theorems \\
+Gaussian-binomial second derivative and cleared second moments &
+\nolinkurl{eval_one_derivative_derivative_gaussianBinomial_X},
+\nolinkurl{twelve_mul_secondMoment_gaussianBinomial_eval_one},
+\nolinkurl{twelve_mul_varianceNumerator_gaussianBinomial_eval_one} &
+Three-theorem delta in the 2+24
+\nolinkurl{GaussianBinomialCumulants.lean} surface; the first uses a
+characteristic-zero field and \(k\le n\), while the latter two are
+division-free and total in \(n,k\) over every commutative semiring \\
 Universal Gaussian-polynomial degree and palindromicity &
 \nolinkurl{natDegree_gaussianBinomial_universal},
 \nolinkurl{gaussianBinomial_universal_monic},
@@ -2498,12 +2508,19 @@ exhaustive 2+12 \path{TwoPhiOneReversal.lean} and 0+10
 \path{QChuVandermonde.lean} surfaces.  The origin-side checkpoint before
 Richardson was recorded as 901/11,430; the 3+7
 \path{GeometricRichardsonGenerating.lean} leaf raised that origin census to
-902/11,440.  Retaining the unconditional public
-\lean{complexQPochhammerInf_eq_qPochhammerInfIn} bridge yields the final live
-union 902/11,441 with both documentation-gap counts zero.  These additions
-are included in the finalized canonical-frontier publication; exact
-frozen-source and final-PDF receipts are kept externally in the repository
-documentation so that no artifact embeds a mutable self-receipt.
+902/11,440.  Three later theorems expand the existing 2+21
+\path{GaussianBinomialCumulants.lean} surface to 2+24 and bring the origin-side
+census to 902/11,443.  Retaining the unconditional public
+\lean{complexQPochhammerInf_eq_qPochhammerInfIn} bridge yields the final merged
+live union 902/11,444 with both documentation-gap counts zero.  The three new
+Gaussian declarations are
+\lean{eval_one_derivative_derivative_gaussianBinomial_X},
+\lean{twelve_mul_secondMoment_gaussianBinomial_eval_one}, and
+\lean{twelve_mul_varianceNumerator_gaussianBinomial_eval_one}; their exact
+hypotheses and totality boundaries are recorded below.  The retained PDF
+remains explicitly historical until rebuild and does not claim parity with
+the current TeX.  Exact source and PDF receipts are kept externally in the
+repository documentation so that no artifact embeds a mutable self-receipt.
 The newest six module counts are
 \path{QPochhammerInfiniteBounds.lean} (0+5),
 \path{HeineTransformation.lean} (2+5),
@@ -2656,6 +2673,24 @@ whole displayed domain remains partial: the named by-reversal theorem needs
 \(C\ne0\) and \((A;q)_n\ne0\), while the full-domain theorem instead uses a
 direct denominator-cleared finite q-Cauchy proof.  No rational-continuation or
 cleared commutative-ring extension is formalized.
+
+The three later additions to \path{GaussianBinomialCumulants.lean}, now 2+24,
+are \lean{eval_one_derivative_derivative_gaussianBinomial_X},
+\lean{twelve_mul_secondMoment_gaussianBinomial_eval_one}, and
+\lean{twelve_mul_varianceNumerator_gaussianBinomial_eval_one}.  For
+\(P=[n,k]_X\), \(D=k(n-k)\), and \(C=\binom nk\), the first theorem assumes a
+characteristic-zero field and exactly \(k\le n\), and proves
+\(P''(1)=D(3D+n-5)C/12\).  The other two hold for every \(n,k\) over an
+arbitrary commutative semiring and state
+\[
+12\bigl(P''(1)+P'(1)\bigr)=D(3D+n+1)C,
+\qquad
+12C\bigl(P''(1)+P'(1)\bigr)=12P'(1)^2+D(n+1)C^2.
+\]
+They use no division, nonvanishing, or characteristic hypothesis, are total
+above the Gaussian row by zero extension, and include the zero and diagonal
+rows.  The first cleared identity is the raw second moment; the second is the
+variance numerator.
 
 The earlier compiler-validated checkpoint \texttt{e6f535e5d} supplied the two modules that
 promote the
@@ -4733,6 +4768,11 @@ finite-Pochhammer quotient interface.\\
 The exhaustive zero-definition, fourteen-theorem generic reflection, degree,
 boundary coefficient, palindromicity, exact-degree/monicity, mean, and total
 linear-coefficient interface.\\
+\path{GaussianBinomialCumulants.lean} &
+The complete 2+24 mean/variance surface, including the characteristic-zero
+field second derivative under \(k\le n\) and the two all-row, arbitrary-
+commutative-semiring, division-free raw-second-moment and variance-numerator
+identities.\\
 \path{GaussianBinomialPolynomialStructure.lean} &
 The exhaustive zero-definition, five-theorem universal degree, monicity,
 constant-coefficient, reflection, and bounded-index coefficient-symmetry interface.\\
@@ -10933,6 +10973,7 @@ Module & Role in the present article \\
 \path{QGamma.lean} & Two total real definitions, \lean{qGamma} and \lean{qNumber}, and exactly ten theorems: \lean{norm_lt_one_of_pos_of_lt_one}, \lean{qPochhammerInfIn_rpow_pos}, \lean{qPochhammerInfIn_self_pos}, \lean{qGamma_pos}, \lean{qGamma_one}, \lean{qGamma_add_one}, \lean{qGamma_nat_succ}, \lean{qNumber_natCast}, \lean{qGamma_mul_qGamma_one_sub}, and \lean{hasSum_theta_qGamma_reflection}.  The positive recurrence API uses \(0<q<1\) and displayed \(x>0\); the natural bridge only \(q\ne1\); reflection only \(q<1\) and arbitrary real \(x\); theta form \(0<q<1\), \(0<x<1\).  Complex continuation, poles, the classical-gamma limit, log-convexity/uniqueness, and q-digamma calculus remain outside Lean. \\
 \path{QBinomialReciprocity.lean} & Exactly four public theorems: \lean{gaussianBinomial_reciprocity_units}, \lean{gaussianBinomial_reciprocity}, \lean{gaussianBinomial_neg_one_eq_zero_of_odd_degree}, and \lean{gaussianBinomial_neg_one_even_odd_eq_zero}.  They give unit-valued reciprocity over every commutative semiring, its nonzero-element semifield wrapper, odd-degree vanishing at \(q=-1\) over every commutative ring, and the total even-row/odd-column specialization.  The two reciprocity identities are total above the diagonal by zero extension; no quotient, cancellation, domain, characteristic, topology, or convergence assumption is used. \\
 \path{GaussianBinomialPalindromic.lean} & Exactly fourteen public theorems and no definitions: generic reflection helpers, Gaussian degree bound, zero/diagonal values, reflection, constant/top coefficients, coefficient symmetry, division-free mean, exact degree/monicity over a nontrivial commutative semiring, and the arbitrary-commutative-semiring linear-coefficient classifier, equal to one exactly for \(0<k<n\) and zero otherwise. \\
+\path{GaussianBinomialCumulants.lean} & Exactly two public definitions and twenty-four theorems.  Its three newest theorems are \lean{eval_one_derivative_derivative_gaussianBinomial_X} over a characteristic-zero field under \(k\le n\), and the all-\(n,k\), arbitrary-commutative-semiring, division-free \lean{twelve_mul_secondMoment_gaussianBinomial_eval_one} and \lean{twelve_mul_varianceNumerator_gaussianBinomial_eval_one}; the latter include the zero, diagonal, and above-row boundaries. \\
 \path{GaussianBinomialPolynomialStructure.lean} & Exactly five public theorems and no definitions: exact universal natural degree, monicity, constant coefficient one, reflection at degree \(k(n-k)\), and bounded-index coefficient palindromicity; the adjacent generic module supplies the complete linear-coefficient classifier. \\
 \path{CentralQBinomialReduction.lean} & Exactly six public theorems and no definitions: sign pairing, even--odd dissection, naturality, integral and general division-free central reduction, and the field quotient under two nonvanishing hypotheses. \\
 \path{CyclotomicFactorization.lean} & Exactly seven public theorems and no definitions: floor-quotient bounds, divisor reindexing, commutative-ring finite-product identities, interval extension, and Gaussian cyclotomic factorization over an integral domain. \\

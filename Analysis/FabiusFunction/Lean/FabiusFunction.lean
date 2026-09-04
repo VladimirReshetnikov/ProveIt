@@ -1097,6 +1097,29 @@ strict contractions, and transfers these to dimension-dominant two-sided
 bounds at every real `Q > 1`.  The index premise `k ≤ n` and the displayed
 nonzero, order, and strict-contraction hypotheses remain explicit.
 
+`GaussianBinomialCumulants` has exactly two definitions, `meanAtOne` and
+`varAtOne`, and twenty-four theorems.  Its exhaustive theorem inventory is
+`meanAtOne_one`, `varAtOne_one`, `meanAtOne_mul`, `varAtOne_mul`,
+`meanAtOne_prod`, `varAtOne_prod`, `eval_one_derivative_X_pow`,
+`eval_one_derivative_derivative_X_pow`, `eval_one_qInt_X`,
+`eval_one_derivative_qInt_X`, `eval_one_derivative_derivative_qInt_X`,
+`meanAtOne_qInt_X`, `varAtOne_qInt_X`, `one_sub_X_pow_succ_eq`,
+`gaussianBinomial_X_mul_prod_qInt`, `eval_one_gaussianBinomial_X`,
+`sum_mean_diff`, `sum_var_diff`, `meanAtOne_gaussianBinomial_X`,
+`varAtOne_gaussianBinomial_X`, `eval_one_derivative_gaussianBinomial_X`,
+`eval_one_derivative_derivative_gaussianBinomial_X`,
+`twelve_mul_secondMoment_gaussianBinomial_eval_one`, and
+`twelve_mul_varianceNumerator_gaussianBinomial_eval_one`.  The last three add
+the explicit second derivative at one and division-free raw-second-moment and
+variance-numerator identities.  The two functionals are total field-valued
+definitions, while their product laws assume nonvanishing at one.  The
+q-integer and Gaussian closed forms use a characteristic-zero field, and the
+Gaussian formulas assume `k ≤ n`; the two cleared identities are total for all
+natural `n,k` over every commutative semiring, including above-row zero
+extension.  Probability language describes the normalized coefficient
+generating polynomial; these declarations prove its algebraic moment
+identities and do not construct a separate random variable.
+
 The probabilistic layer is closed at the level of measures.  The up-measure
 `μ_up = up·Leb` satisfies the refinement equation
 `μ_up = Uniform[-½,½] ∗ (μ_up ∘ (·/2)⁻¹)` and its iterate, the

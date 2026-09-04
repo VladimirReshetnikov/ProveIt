@@ -77,10 +77,10 @@ That primary exposition is deliberately proof-backed: every mathematical claim
 in it must have a proved counterpart in the Lean development.
 
 > **Artifact status (2026-09-03).**  The live lexical audit of the facade
-> union contains exactly 902 source modules and 11,441 public declarations.
+> union contains exactly 902 source modules and 11,444 public declarations.
 > It finds no missing module headers and no public declarations without doc
 > comments; the checked baseline records that zero-gap state.  The corresponding
-> origin inventory has 11,440 declarations because it lacks this tree's unique
+> origin inventory has 11,443 declarations because it lacks this tree's unique
 > unconditional public `complexQPochhammerInf_eq_qPochhammerInfIn` bridge in
 > `RvachevPochhammerFactorization` 1+10.  The q-series union also retains
 > `QPochhammerEntire` 0+5, `GeometricPochhammerNormalConvergence` 0+3,
@@ -88,6 +88,7 @@ in it must have a proved counterpart in the Lean development.
 > `QPochhammerInfinite` 1+29,
 > `GaussianBinomialAtNegOneDerivative` 0+4,
 > `GaussianBinomialContinuity` 0+3,
+> `GaussianBinomialCumulants` 2+24,
 > `GaussianBinomialPalindromic` 0+14,
 > `GaussianBinomialPolynomialStructure` 0+5,
 > `CentralQBinomialReduction` 0+6, `CyclotomicFactorization` 0+7,
@@ -112,8 +113,9 @@ in it must have a proved counterpart in the Lean development.
 > The bounds module reuses `finiteQPochhammerIn_self_pos` from
 > `GeneralQConditionNumber`; it does not redeclare that theorem.  The rigorous
 > forward q-monograph ledger is 165 Exact, 91 Partial, 18 None, and 8
-> interface rows; its source concordance is 76 Lean, 402 human, 60 N/A, and
-> 9 conjecture rows.  In particular, `prop:gaussian-bound` is Exact, while
+> interface rows; its source concordance is 86 Lean, 392 human, 60 N/A, and
+> 9 conjecture rows, and the concordance extractor passes.  In particular,
+> `prop:gaussian-bound` is Exact, while
 > `thm:q-lucas` remains Partial because Lean proves the evaluated primitive-root
 > identity rather than the manuscript's polynomial congruence modulo `Φ_d`;
 > `cor:babbage-derivative` remains Partial because only its value is formalized.
@@ -143,7 +145,7 @@ in it must have a proved counterpart in the Lean development.
 > expected underfull diagnostics, and the q-series master retains one harmless,
 > readable 32.5659 pt overfull line.  All page, metadata, font, render, text,
 > and representative-visual gates passed.  These receipts certify their named
-> pre-9135 pairs, not parity with the 902/11,441 live union; all four publications
+> pre-9135 pairs, not parity with the 902/11,444 live union; all four publications
 > require new final-source rebuilds.
 >
 > The independently scoped Lambert and Sequence publications remain current.
@@ -495,6 +497,7 @@ Padé/J-fractions, infinite Jacobi theory, and asymptotics also remain open.
 | Elementary functions and non-elementarity | `FabiusFunction.ElementaryFunction`, `FabiusFunction.AlgebraicBranch`, `FabiusFunction.InverseBranch`, `FabiusFunction.NotElementary`, `FabiusFunction.InverseNotElementary` | `IsElementary`, `IsElementary.comp`, `IsElementary.rpow_of_ne_zero`, `IsElementary.dense_analyticLocus`, `analyticDenseOn_of_algebraic`, `canonical_fabius_not_isElementary_on_Ioo`, `canonical_fabius_not_isElementary`, `canonical_fabius_not_algebraicBranch_on_Ioo`, `IsElementaryOrInverse`, `fabiusInv_not_analyticAt`, `canonical_fabiusInv_not_isElementary_on_Ioo`, `canonical_fabiusInv_not_isElementaryOrInverse_on_Ioo` |
 | Computable-real-function theorems | `FabiusFunction.FabiusComputableSpline` | `fabiusSplineApproxPR_computable`, `extendedFabiusSplineApproxPR_computable`, `fabius_isComputableRealFunction`, `globalFabius_isComputableRealFunction` |
 | Gaussian-polynomial continuity and the finite-product quotient bridge | `FabiusFunction.GaussianBinomialContinuity` | Retained 0+3 theorem inventory: `continuous_gaussianBinomial`, `tendsto_gaussianBinomial_nhds_one`, and `gaussianBinomial_eq_finiteQPochhammerIn_div`. |
+| Gaussian-polynomial cumulants, second derivative, and cleared moments at `q = 1` | `FabiusFunction.GaussianBinomialCumulants` | Exhaustive public surface (two definitions and 24 theorems): `meanAtOne`, `varAtOne`; `meanAtOne_one`, `varAtOne_one`, `meanAtOne_mul`, `varAtOne_mul`, `meanAtOne_prod`, `varAtOne_prod`, `eval_one_derivative_X_pow`, `eval_one_derivative_derivative_X_pow`, `eval_one_qInt_X`, `eval_one_derivative_qInt_X`, `eval_one_derivative_derivative_qInt_X`, `meanAtOne_qInt_X`, `varAtOne_qInt_X`, `one_sub_X_pow_succ_eq`, `gaussianBinomial_X_mul_prod_qInt`, `eval_one_gaussianBinomial_X`, `sum_mean_diff`, `sum_var_diff`, `meanAtOne_gaussianBinomial_X`, `varAtOne_gaussianBinomial_X`, `eval_one_derivative_gaussianBinomial_X`, `eval_one_derivative_derivative_gaussianBinomial_X`, `twelve_mul_secondMoment_gaussianBinomial_eval_one`, and `twelve_mul_varianceNumerator_gaussianBinomial_eval_one`.  The last three are the new declarations.  The explicit second-derivative formula holds over a characteristic-zero field under exactly `k ≤ n`.  The two denominator-cleared raw-second-moment and variance-numerator identities hold over every commutative semiring for all natural `n,k`, including the above-row case `n < k`, where zero extension makes both sides vanish; they require no division, nonvanishing, or characteristic hypothesis. |
 | Jacobi triple product and Euler pentagonal sums | `FabiusFunction.JacobiTripleProduct` | Retained 2-definition/25-theorem inventory: finite triple-product polynomial and field forms, the bilateral Jacobi `HasSum` identities, and pentagonal and paired-pentagonal `HasSum` corollaries. |
 | Infinite q-binomial and reciprocal Euler theorems | `FabiusFunction.QBinomialTheoremInfinite` | Retained 1-definition/22-theorem q-facing inventory: comparison and norm bounds, the fixed-column Gaussian limit, Euler product, analytic q-binomial theorem, and reciprocal Euler `HasSum`; the shared finite zero-left identity is imported from `GaussianBinomialAtOne`. |
 | Weighted q-Pascal summation | `FabiusFunction.QPascalSummation` | Retained 0+4 theorem inventory: `sum_gaussianBinomial_succ_mul`, `sum_gaussianBinomial_succ_mul'`, `Commute.gaussianBinomial_left`, and `Commute.gaussianBinomial_right`. |
