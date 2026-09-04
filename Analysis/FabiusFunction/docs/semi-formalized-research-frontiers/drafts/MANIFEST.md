@@ -603,14 +603,15 @@ The final pass proved the sharp Bell bound the arrivals had only asserted,
 supplied Euler's limit and the Weierstrass product on which an existing
 polygamma proof silently depended, merged thirteen further donor-only results,
 repaired eight double-superscript errors that had made the source fail to
-compile at all, and completed the notation-catalogue migration. The filed PDF
-now renders the filed TeX. None of the manuscript proofs is claimed as Lean
+compile at all, and completed the notation-catalogue migration. The retained
+174-page PDF is an earlier render; the source has changed since that checkpoint,
+and rebuilding remains deferred at the user's request. None of the manuscript proofs is claimed as Lean
 verification; the in-document "Lean formalization register" states the
 formalization status per result.
 
 | Directory | Document | Previous path / provenance |
 | --- | --- | --- |
-| `Combinatorial_Coefficient_Calculus/` | **Canonical, editorial consolidation complete:** *Combinatorial Coefficient Calculus* — synchronized 206-page A4 PDF rebuilt on 2026-09-04. The source adds arbitrary-ring Stirling reverse-row and formal-power recurrences, semiring complete-homogeneous/weak-composition bridges, and a Bell power-sum consequence. The 205-row register distinguishes 58 Lean / 34 partial / 113 without compiler verification; all new source proofs still await compilation. | Six-source provenance and disposition records in the package; original non-suffixed arrival was `incoming/Combinatorial_Coefficient_Calculus.zip`; `SOURCE_INVENTORY.csv` records immutable Git locators for all six inputs, including the five retired donors. No checksum ledger is required. |
+| `Combinatorial_Coefficient_Calculus/` | **Canonical, editorial consolidation complete:** *Combinatorial Coefficient Calculus* — synchronized 207-page A4 PDF rebuilt on 2026-09-04. The source adds arbitrary-ring Stirling reverse-row and formal-power recurrences, semiring complete-homogeneous/weak-composition bridges, and a Bell power-sum consequence, and retains the upstream Abel/rescaling checkpoint. The 206-row register distinguishes 58 Lean / 34 partial / 114 without compiler verification; the new Stirling and power source proofs still await compilation. | Six-source provenance and disposition records in the package; original non-suffixed arrival was `incoming/Combinatorial_Coefficient_Calculus.zip`; `SOURCE_INVENTORY.csv` records immutable Git locators for all six inputs, including the five retired donors. No checksum ledger is required. |
 
 ## exponents-and-q-series — `exponents-and-q-series/`
 

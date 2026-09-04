@@ -29,7 +29,7 @@ mode this package is now expected to pass.
 
 | Directory | Document |
 | --- | --- |
-| `Combinatorial_Coefficient_Calculus/` | **Canonical:** *Combinatorial Coefficient Calculus* — the evolving source and its synchronized 206-page A4 PDF |
+| `Combinatorial_Coefficient_Calculus/` | **Canonical:** *Combinatorial Coefficient Calculus* — the evolving source and its synchronized 207-page A4 PDF |
 
 The PDF was rebuilt from the accompanying source on 2026-09-04 using three
 strict pdfLaTeX passes and a generated index. This render checkpoint does not
@@ -89,7 +89,7 @@ caller refactor has been independently source-reviewed but awaits its own build.
 At that checkpoint the register contained 203 rows: 58 marked Lean, 34 partial, and 111 without a
 Lean counterpart. The earlier classifications are inherited; this checkpoint
 adds two compiler-backed entries and does not claim a fresh build of the whole
-corpus. The final structural/provenance validator passes with 203 adjacent
+corpus. The final structural/provenance validator passed with 203 adjacent
 proofs, 27 disposition records, and six original-source inventory rows. PDF
 rebuilding was deferred at that checkpoint and was completed in the later
 source/render synchronization below.
@@ -113,14 +113,41 @@ declaration to its mathematical statement.
 These additions have passed independent mathematical and exact-library source
 reviews, but **none of the new proofs is counted as compiler-verified yet**.
 Other worktrees held the machine-wide Lean build slot during this checkpoint.
-The register has 205 rows: 58 marked Lean, 34 partial, and 113 without a
+After merging the Abel/rescaling checkpoint, the register has 206 rows:
+58 marked Lean, 34 partial, and 114 without a
 compiler-verified counterpart. The two new rows have human proofs and pending
 Lean source implementations; earlier statuses are inherited, not freshly
 validated by an aggregate build.
 
-The final structural/provenance validator passes with 205 adjacent proofs,
+The final structural/provenance validator passes with 206 adjacent proofs,
 27 disposition records, and six original-source inventory rows. The source is
-10,625 lines / 515,956 UTF-8 bytes. The rebuilt 206-page PDF uses Libertinus text
+10,780 lines / 523,775 UTF-8 bytes. The rebuilt 207-page PDF uses Libertinus text
 and Computer Modern mathematics. Validation includes focused visual inspection
 of the revised recurrence, coefficient, crosswalk, and register pages; it is
 not a claim of a fresh page-by-page audit of the whole monograph.
+
+The merged near-diagonal Bell formula now caps the nonsingleton count by the
+total degree before forming powers of the singleton weight. This removes
+undefined negative powers from nominally zero terms. Its multiplicity proof
+also now includes the missing singleton factorial; the displayed edge formulas
+state the corresponding omission and degree conventions explicitly.
+
+The standard-library script
+`Analysis/FabiusFunction/scripts/verify_stirling_coefficient_identities.py`
+performs exact finite regressions: 255 reverse-row cases in two summation
+ranges, 49 weak-composition cases (1,716 tuples), 49 Bell power-sum cases,
+and 462 near-diagonal Bell cases over seven integer/rational weight families.
+The last set includes 198 cases with zero singleton weight and 210 cases where
+the new summation cap shortens the range. All pass. These computations are
+regression evidence, not infinite-domain proofs or Lean compilation results.
+
+## Integrated Abel and moment-cumulant checkpoint (2026-09-04)
+
+The pending Abel checkpoint adds the formal-series construction over an arbitrary
+commutative rational algebra, the coefficient formula for every solution, and
+the full EGF and binomial identity. `ExponentialRescaling` has passed a focused
+build; the Abel module and affected callers still await compilation, so the
+new manuscript entries have not yet been promoted in the register. The human
+moment-cumulant proof now states its normalization and positive-degree boundaries
+explicitly, with formal logarithm identities separated from the still-open
+set-partition interpretation.

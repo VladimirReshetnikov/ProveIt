@@ -3876,7 +3876,7 @@ factor $(k_1!k_2!)/(k_1+k_2)!$ and the binomial EGF convolution.
 For $1\le a<n$,
 \begin{multline}\label{eq:bell-near-diagonal}
  \ExponentialPartialBellPolynomial n{n-a}(x_1,\ldots,x_{a+1})\\
- =\sum_{j=a+1}^{2a}\frac{j!}{a!}\binom nj x_1^{n-j}
+ =\sum_{j=a+1}^{\min(2a,n)}\frac{j!}{a!}\binom nj x_1^{n-j}
  \ExponentialPartialBellPolynomial a{j-a}\!\left(\frac{x_2}{2},\frac{x_3}{3},\ldots,
  \frac{x_{2a-j+2}}{2a-j+2}\right).
 \end{multline}
@@ -3884,17 +3884,32 @@ For $1\le a<n$,
 \begin{proof}
 A partition into $n-a$ blocks has total \emph{excess}
 $\sum_B(|B|-1)=a$.  Let $j$ be the number of elements in nonsingleton blocks.
-Then the number of those blocks is $j-a$, so $a+1\le j\le2a$.  Choose the $j$
+Then the number of those blocks is $j-a$, so
+$a+1\le j\le\min(2a,n)$.  In particular, $n-j\ge0$; no negative power of
+$x_1$ is introduced, even when $x_1=0$.  Choose the $j$
 elements, leave the other $n-j$ as singleton blocks, and count the nonsingleton
 partition.  Replacing a block of size $r+1$ by an atom of size $r$ removes one
 distinguished element per block; the factor $j!/a!$ and weights $x_{r+1}/(r+1)$
 are exactly the labelled pointing factors.  Equivalently, make the substitution in
-\eqref{eq:partial-bell-definition}; the coefficient of every multiplicity vector
-on both sides is
-$n!x_1^{n-j}\prod_{r\ge2}x_r^{j_r}/((r!)^{j_r}j_r!)$.
+\eqref{eq:partial-bell-definition}.  For a multiplicity vector
+$(m_r)_{r\ge2}$ with $\sum_r m_r=j-a$ and $\sum_r r m_r=j$, the monomial
+$x_1^{n-j}\prod_{r\ge2}x_r^{m_r}$ has coefficient
+\[
+ \frac{n!}{(n-j)!\prod_{r\ge2}(r!)^{m_r}m_r!}
+\]
+on both sides.  Indeed, the partial Bell polynomial on the right contributes
+$a!/\prod_{r\ge2}(r!)^{m_r}m_r!$ after its rescaled weights are inserted,
+and its prefactor $j!\binom nj/a!$ supplies the remaining factor
+$n!/((n-j)!a!)$.  This verifies every monomial, including its singleton factor.
 \end{proof}
 
 The first cases, obtained by listing integer partitions of the excess, are
+listed below.  Use the first-column formula for $n\ge1$, the second-column
+formula for $n\ge2$, the diagonal for $n\ge0$, and the row of excess $a>0$
+for $n>a$.  In these displayed subdiagonal formulas, a summand with
+$\binom nj$ and $j>n$ is omitted \emph{before} evaluating its powers of $x_1$;
+this is the explicit upper bound $j\le n$ in the theorem, not a convention
+that multiplies an undefined negative power by zero.
 \begin{align}
  \ExponentialPartialBellPolynomial n1&=x_n, &
  \ExponentialPartialBellPolynomial n2&=\frac12\sum_{j=1}^{n-1}\binom njx_jx_{n-j},
@@ -3914,6 +3929,33 @@ The first cases, obtained by listing integer partitions of the excess, are
 \end{align}
 Their coefficients are the corresponding block-size counts from
 \cref{thm:bell-poly-partitions}.
+
+\begin{remark}[Formal crosswalk]
+% ed.: crosswalk added 2026-09-04; edge values only, deliberately.
+Two of the values displayed above are formal, and they are the two that are
+structural rather than computational.  The diagonal
+$\ExponentialPartialBellPolynomial nn=x_1^{n}$ is
+\lean{Fabius.partialBell_self} (module \lean{PartialBellPolynomials}), proved
+directly from the block recurrence \lean{Fabius.partialBell_succ_succ}; and the
+vanishing above the diagonal, $\ExponentialPartialBellPolynomial nk=0$ for
+$n<k$, is \lean{Fabius.partialBell_eq_zero_of_lt}.
+
+The remaining displayed cases --- \cref{eq:bell-edge-first} and the sub-diagonal
+rows through $\ExponentialPartialBellPolynomial n{n-4}$ --- are \emph{not}
+individually formal, and neither is the sentence above about their
+coefficients, which appeals to \cref{thm:bell-poly-partitions}.  The subdiagonal
+rows follow by fixed-excess specialization of \cref{thm:bell-near-diagonal}
+on its stated domain.  The first two columns follow directly from the block
+recurrence and its boundary values.  These are distinct formal obligations;
+the diagonal and the smallest-degree base cases must not be inferred from a
+theorem whose hypothesis $1\le a<n$ excludes them.
+
+A caution for anyone extending this crosswalk: \lean{Fabius.partialBell_one} is
+\emph{not} the edge value $\ExponentialPartialBellPolynomial n1=x_n$.  It is
+the specialization at all weights equal to $1$, giving the Stirling numbers of
+the second kind, and Mathlib spells those \texttt{Nat.stirlingSecond}.  The name
+is short for ``all weights one'', not for ``second column''.
+\end{remark}
 
 \section{Partial derivatives}
 \begin{theorem}[Derivative identities]\label{thm:bell-poly-derivatives}
@@ -6105,60 +6147,115 @@ the general formula.
 
 \begin{theorem}[Moment--cumulant inversion]
 \label{thm:merged-moment-cumulant}
-The relations
+Let $R$ be a commutative ring, and let $(m_n)$ and $(\kappa_n)$ be
+$R$-valued sequences normalized by $m_0=1$ and $\kappa_0=0$.
+For every $n\geq1$, the relations
 \begin{align}
  m_n&=\sum_{\pi\in\Pi_n}\prod_{B\in\pi}\kappa_{|B|},               \label{eq:merged-moment-cumulant-forward}\\
  \kappa_n&=\sum_{\pi\in\Pi_n}(-1)^{|\pi|-1}(|\pi|-1)!
                  \prod_{B\in\pi}m_{|B|}                            \label{eq:merged-moment-cumulant-backward}
 \end{align}
-are inverse.  Equivalently, if
+are mutually inverse.  The first formula also holds at $n=0$, by the
+empty-product convention; the second is asserted only in positive degree.
+If $R$ is additionally a $\RationalNumbers$-algebra, put
 $M(z)=1+\sum_{n\geq1}m_nz^n/n!$ and
-$K(z)=\sum_{n\geq1}\kappa_nz^n/n!$, then $M=\EulerE^K$ and $K=\log M$.
+$K(z)=\sum_{n\geq1}\kappa_nz^n/n!$.
+The forward relation is equivalent to $M=\EulerE^K$, and the backward
+relation is equivalent to $K=\log M$, as identities in $R[[z]]$.
 \end{theorem}
 
 \begin{proof}
-The forward relation is the exponential formula for a set of blocks weighted
-by cumulants.  Möbius inversion on $\Pi_n$, using
-\eqref{eq:merged-partition-mobius-top}, gives the backward relation.  Grouping
-partitions by block sizes is exactly the coefficient expansion of $\EulerE^K$ and
-$\log M$.
+For a partition $\pi$, write $m_\pi=\prod_{B\in\pi}m_{|B|}$ and
+$\kappa_\pi=\prod_{B\in\pi}\kappa_{|B|}$.
+Expanding the forward relation independently inside each block of $\pi$
+gives
+\[
+ m_\pi=\sum_{\sigma\leq\pi}\kappa_\sigma:
+\]
+a refinement $\sigma$ is exactly one choice of a partition inside each
+block.  Möbius inversion therefore gives
+$\kappa_\pi=\sum_{\sigma\leq\pi}\mu(\sigma,\pi)m_\sigma$.
+At the top partition, \eqref{eq:merged-partition-mobius-top} is precisely
+the backward relation.  Conversely, expanding the backward relation inside
+each block gives this same Möbius-transform identity for every $\pi$,
+because the interval Möbius function factors over its blocks by
+\eqref{eq:merged-partition-mobius}.  Inverting once more recovers the
+forward relation.  All these sums are finite and use only integer
+coefficients, so the argument holds over every commutative ring.
+
+For the formal-series statements, assume $R$ is a $\RationalNumbers$-algebra.
+Expanding $\exp K=\sum_{k\geq0}K^k/k!$ and multiplying its degree-$n$
+coefficient by $n!$ enumerates partitions of $[n]$ into $k$ nonempty
+blocks: $K^k$ orders the blocks, and division by $k!$ forgets that order.
+This is the forward relation, including the constant coefficient.
+Similarly, the degree-$n$ coefficient of
+$\log M=\sum_{k\geq1}(-1)^{k-1}(M-1)^k/k$
+uses only $1\leq k\leq n$.
+Each unordered partition into $k$ blocks has $k!$ block orders, so its
+logarithmic weight is $(-1)^{k-1}k!/k=(-1)^{k-1}(k-1)!$.
+This gives the backward relation coefficientwise and proves the two
+formal-series equivalences without any convergence assumption.
 \end{proof}
 
 \begin{remark}[Formal crosswalk]
-% ed.: crosswalk added 2026-09-02; the formal statement is the block-size (Bell polynomial) form.
-Module \lean{BellPolynomialInversion} defines the complete Bell polynomials
-\lean{Bell.complete} by the recurrence $m_{n+1}=\sum_k\binom nk\kappa_{k+1}m_{n-k}$
-(the sum over partitions grouped by the block containing $n+1$) and the
-cumulant sequence \lean{Bell.cumulant} by the inverse recurrence, and proves
-that the two constructions are mutually inverse
-(\lean{Bell.complete_cumulant} for $m_0=1$, \lean{Bell.cumulant_complete}
-for $\kappa_0=0$), over any commutative ring; the generating-function form
-$M=\EulerE^K$ is \lean{Fabius.exp_subst_bellWeightSeries} (module
-\lean{BellGeneratingFunctions}), where $K$ is the weight series
-\lean{Fabius.bellWeightSeries}.  The sums over the partition lattice
-\cref{eq:merged-moment-cumulant-forward,eq:merged-moment-cumulant-backward}
-and the identity $K=\log M$ are not formalized.
+% ed.: crosswalk updated 2026-09-04; recurrence, formal series, and partitions have distinct scopes.
+Module \lean{BellPolynomialInversion} defines the complete Bell family
+\lean{Bell.complete} and its inverse recurrence \lean{Bell.cumulant}.
+They are mutually inverse over every commutative ring:
+\lean{Bell.complete_cumulant} assumes $m_0=1$, and
+\lean{Bell.cumulant_complete} assumes $\kappa_0=0$.
+
+The generating-function statements are formal power-series identities over
+every commutative $\RationalNumbers$-algebra.
+\lean{Fabius.exp_subst_bellWeightSeries} in
+\lean{BellGeneratingFunctions} identifies the exponential of the cumulant
+weight series with the EGF of its complete Bell family.
+For $m_0=1$, \lean{Fabius.logOf_egfA} in
+\lean{CumulantBellFormula} identifies $\log M$ with the EGF of the
+alternating factorial-weighted partial Bell sum
+\lean{Fabius.cumulantSum}; \lean{Fabius.cumulant_eq_cumulantSum}
+identifies that sequence with \lean{Bell.cumulant}.
+Together they prove $K=\log M$ for the recursively defined cumulants.
+The inverse identity used in the proof is
+\lean{Fabius.exp_subst_logOf} in \lean{ExpLog}, for a formal series with
+constant coefficient $1$.
+
+The remaining obligation is the identification with the sums over actual
+set partitions in
+\cref{eq:merged-moment-cumulant-forward,eq:merged-moment-cumulant-backward}.
+Thus the formal-series and block-size formulas are formalized, while the
+set-partition formulation remains partial.
 \end{remark}
 
 \begin{example}[The first cumulants]\label{ex:merged-first-cumulants}
 Expanding \eqref{eq:merged-moment-cumulant-backward} over the partitions of
-$[n]$ for $n\leq4$, and grouping by block-size type, gives
+$[n]$ for $1\leq n\leq4$, and grouping by block-size type, gives
 \begin{align}
  \kappa_1&=m_1,                                                    \notag\\
  \kappa_2&=m_2-m_1^2,                                              \notag\\
  \kappa_3&=m_3-3m_2m_1+2m_1^3,                                     \notag\\
  \kappa_4&=m_4-4m_3m_1-3m_2^2+12m_2m_1^2-6m_1^4.                   \label{eq:merged-first-cumulants}
 \end{align}
-For a random variable these are the mean, the variance, the third central
-moment, and the fourth cumulant, whose normalization $\kappa_4/\kappa_2^2$ is
-the excess kurtosis.  All cumulants beyond the second vanish for a Gaussian
-law; the vanishing of $\kappa_4$ alone does not characterize it, and by
-Marcinkiewicz's theorem no finite set of cumulant conditions does --- only
-$\kappa_n=0$ for every $n\geq3$.  The coefficients are read off the partition
-lattice:
-$\Pi_4$ has one partition of type $4$, four of type $3+1$, three of type
-$2+2$, six of type $2+1+1$ and one of type $1+1+1+1$, and the Möbius weights
-$(-1)^{|\pi|-1}(|\pi|-1)!$ are $1,-1,-1,2,-6$ respectively.
+For a real random variable with finite fourth moment, these formulas give
+the mean $\kappa_1$, the variance $\kappa_2$, and the third central moment
+$\kappa_3$.  Indeed, writing $\mu_r$ for the $r$th central moment, the
+binomial expansion about the mean gives, for $0\leq r\leq4$,
+$\mu_r=\sum_{j=0}^r\binom rj(-m_1)^{r-j}m_j$.
+Substitution for $r=2,3,4$ yields
+$\kappa_2=\mu_2$, $\kappa_3=\mu_3$, and
+$\kappa_4=\mu_4-3\mu_2^2$.
+If the variance is positive, division by $\mu_2^2$ shows that
+$\kappa_4/\kappa_2^2=\mu_4/\mu_2^2-3$ is the excess kurtosis.
+
+The integer coefficients above come directly from the partition lattice.
+For $n=1,2,3$ the block-size counts are respectively $1$;
+$1,1$ for types $2,1+1$; and $1,3,1$ for types $3,2+1,1+1+1$.
+For $n=4$ the counts are $1,4,3,6,1$ for types
+$4,3+1,2+2,2+1+1,1+1+1+1$: choose the singleton in type $3+1$,
+choose a pair and divide by two in type $2+2$, and choose the unique
+pair in type $2+1+1$.
+Their Möbius weights $(-1)^{|\pi|-1}(|\pi|-1)!$ are
+$1,-1,-1,2,-6$, giving the displayed fourth-order formula.
 \end{example}
 
 \section{Sheffer sequences}
@@ -6276,23 +6373,80 @@ ring.  The lowering law \cref{eq:merged-sheffer-lowering} is not
 formalized.
 \end{remark}
 
+\begin{lemma}[Formal rescaling and exponentials]
+\label{lem:merged-formal-rescaling}
+For a formal series $f(t)$ over a commutative semiring and a scalar $c$,
+\begin{equation}
+ \frac{\Differential}{\Differential t}f(ct)=c f'(ct).
+ \label{eq:merged-formal-rescaling-derivative}
+\end{equation}
+Over a commutative $\RationalNumbers$-algebra this gives, in particular,
+\[
+ \frac{\Differential}{\Differential t}\EulerE^{ct}
+     =c\EulerE^{ct},\qquad
+ \EulerE^{0t}=1,\qquad
+ \EulerE^{(c+1)t}=\EulerE^{ct}\EulerE^t.
+\]
+\end{lemma}
+
+\begin{proof}
+Write $f(t)=\sum_{n\geq0}f_nt^n$.  The coefficient of $t^n$ on the
+left of \cref{eq:merged-formal-rescaling-derivative} is
+$(n+1)c^{n+1}f_{n+1}$; on the right it is
+$c\,c^n(n+1)f_{n+1}$.  These agree by associativity and commutativity,
+without division.  The exponential derivative follows from
+$(\EulerE^t)'=\EulerE^t$, which is the coefficient identity
+$(n+1)/(n+1)!=1/n!$.  At $c=0$ only the constant term of the exponential
+survives.  Finally, the coefficient of $t^n$ in
+$\EulerE^{ct}\EulerE^t$ is
+$\sum_{k=0}^n c^k/(k!(n-k)!)=(c+1)^n/n!$ by the binomial theorem.
+\end{proof}
+
 \begin{proposition}[Abel polynomials]
 \label{prop:merged-abel}
-Let $T(t)$ solve $T=t \EulerE^{-aT}$.  Then
+Let $R$ be a commutative $\RationalNumbers$-algebra and $a\in R$.
+There is a formal series $T(t)\in R[[t]]$ satisfying
+$T=t\EulerE^{-aT}$, and every such solution has
+$T(0)=0$ and $\CoefficientExtraction{t}{1}T=1$.
+Define polynomials
+\[
+ P_0(a,x)=1,\qquad P_n(a,x)=x(x-na)^{n-1}\quad(n\geq1).
+\]
+For every such solution and every $x\in R$,
 \begin{equation}
  \EulerE^{xT(t)}=1+\sum_{n\geq1}x(x-na)^{n-1}\frac{t^n}{n!}.              \label{eq:merged-abel-egf}
 \end{equation}
-Thus $x(x-na)^{n-1}$ is a sequence of binomial type.
+The polynomials satisfy, for all $x,y\in R$ and $n\geq0$,
+\begin{equation}
+ P_n(a,x+y)=\sum_{k=0}^n\binom nk P_k(a,x)P_{n-k}(a,y).
+ \label{eq:merged-abel-binomial}
+\end{equation}
+Thus $(P_n)_{n\geq0}$ is a sequence of binomial type, with its zeroth
+term included explicitly.
 \end{proposition}
 
 \begin{proof}
-Lagrange--Bürmann gives
+The exponential series $\EulerE^{-at}$ and $\EulerE^{at}$ multiply to $1$.
+The formal Lagrange construction therefore supplies a solution, equivalently
+the compositional inverse of $t\EulerE^{at}$, whose linear coefficient is $1$.
+For any solution, its defining equation forces $T(0)=0$ and then
+$\CoefficientExtraction{t}{1}T=\EulerE^{-aT(0)}=1$.
+In particular all compositions used below are well defined.
+For $n\geq1$, Lagrange--Bürmann and
+\cref{eq:merged-formal-rescaling-derivative} give
 \[
- \CoefficientExtraction{t}{n}\EulerE^{xT(t)}=\frac{x}{n}\CoefficientExtraction{w}{n-1}\EulerE^{xw}\EulerE^{-anw}
- =\frac{x(x-na)^{n-1}}{n!}.
+ n\CoefficientExtraction{t}{n}\EulerE^{xT(t)}
+ =x\CoefficientExtraction{w}{n-1}\EulerE^{xw}\EulerE^{-anw}
+ =\frac{x(x-na)^{n-1}}{(n-1)!}.
 \]
-An EGF of the form $\EulerE^{xB(t)}$ satisfies the binomial identity by
-multiplication at $x$ and $y$.
+The scalar $n$ is a unit in a $\RationalNumbers$-algebra, so this gives
+\cref{eq:merged-abel-egf} in every positive degree; its constant term is
+$\EulerE^{xT(0)}=1$.  Multiplying the identities with parameters $x$ and
+$y$ gives $\EulerE^{xT}\EulerE^{yT}=\EulerE^{(x+y)T}$.
+The coefficient of $t^n/n!$ in that product is exactly the sum in
+\cref{eq:merged-abel-binomial}, proving the result also at $n=0$.
+Finally, $T(0)=0$ and its unit linear coefficient show that the EGF uses
+a delta series, as required by the definition of binomial type.
 \end{proof}
 
 \section{Exponential Riordan arrays}
@@ -10263,7 +10417,7 @@ coefficient calculus rather than a catalogue of isolated identities.
 
 \section{Lean formalization register}
 \label{sec:lean-register}
-Every theorem-like environment of this monograph is listed here with the status of its formalization in the Lean development \path{Analysis/FabiusFunction/Lean/FabiusFunction} (Mathlib \texttt{v4.32.0}).  \emph{Lean} means that a public, compiled declaration proves the exact statement or a more general one (the generalization is then noted next to the result); \emph{partial} means that a named part of the statement is proved and the rest is named; \emph{none} means that no Lean counterpart exists yet.  A citation, a numerical check, or a plausible derivation does not count.  The register is generated from the source and must be regenerated when results are added.  Current totals: 58 Lean, 34 partial, 113 none, of 205 results.
+Every theorem-like environment of this monograph is listed here with the status of its formalization in the Lean development \path{Analysis/FabiusFunction/Lean/FabiusFunction} (Mathlib \texttt{v4.32.0}).  \emph{Lean} means that a public, compiled declaration proves the exact statement or a more general one (the generalization is then noted next to the result); \emph{partial} means that a named part of the statement is proved and the rest is named; \emph{none} means that no Lean counterpart exists yet.  A citation, a numerical check, or a plausible derivation does not count.  The register is generated from the source and must be regenerated when results are added.  Current totals: 58 Lean, 34 partial, 114 none, of 206 results.
 
 \begin{footnotesize}
 \begin{longtable}{@{}p{0.16\textwidth}p{0.22\textwidth}p{0.08\textwidth}p{0.40\textwidth}@{}}
@@ -10394,6 +10548,7 @@ theorem (unlabelled, no.~76) &  & none &  \\
 \Cref{thm:merged-moment-cumulant} & Moment--cumulant inversion & partial & In the block-size form: \lean{Bell.complete} and \lean{Bell.cumulant} are mutually inverse (\lean{Bell.complete_cumulant}, \lean{Bell.cumulant_complete}, module \lean{BellPolynomialInversion}) and $M=\EulerE^K$ is \lean{Fabius.exp_subst_bellWeightSeries}; $K=\log M$ is now \lean{Fabius.logOf_egfA} together with \lean{Fabius.cumulant_eq_cumulantSum} (\lean{CumulantBellFormula}), which also gives the closed form $\kappa_n=\sum_k(-1)^{k-1}(k-1)!\,\ExponentialPartialBellPolynomial nk(m)$, resting on the formal $\exp\circ\log$ inverse \lean{Fabius.exp_subst_logOf} (\lean{ExpLog}); the sums over set partitions are not formalized. \\
 \Cref{thm:merged-binomial-type-characterization} & Generating-function characterization of binomial type & none &  \\
 \Cref{thm:merged-sheffer} & Addition and lowering & partial & \cref{eq:merged-sheffer-addition} is \lean{Fabius.shefferPoly_add} (\lean{BinomialType}), for \lean{Fabius.shefferPoly} $=c\star p$ (binomial convolution of the coefficients of $g$ with the binomial-type sequence), with generating function \lean{Fabius.egfA_mul_exp_subst_smul_bellWeightSeries}; the lowering law \cref{eq:merged-sheffer-lowering} is not formalized \\
+\Cref{lem:merged-formal-rescaling} & Formal rescaling and exponentials & none &  \\
 \Cref{prop:merged-abel} & Abel polynomials & none &  \\
 \Cref{thm:merged-riordan} & Riordan action, product, and inverse & Lean & \lean{Fabius.expRiordan_action}, \lean{Fabius.expRiordan_mul}, \lean{Fabius.expRiordan_mul_inverse} (\lean{ExponentialRiordan}), for exponential Riordan arrays $[g,f]$ over any $\RationalNumbers$-algebra, with the inverse law in the form $[g,f]\,[h,\overline f]=[1,t]$ whenever $g\,(h\circ f)=1$; the Stirling examples are \lean{Fabius.expRiordan_one_exp_sub_one} and \lean{Fabius.expRiordan_one_log} \\
 \Cref{thm:merged-complementary-bell} & EGF, recurrence, and Dobiński-type series & Lean & \lean{Fabius.complementaryBell} (\lean{ComplementaryBell}); \cref{eq:merged-complementary-egf} is \lean{Fabius.exp_subst_neg_exp_sub_one}, \cref{eq:merged-complementary-recurrence} is \lean{Fabius.complementaryBell_succ}, and \cref{eq:merged-complementary-dobinski} is \lean{Fabius.complementaryBell_eq_exp_mul_tsum} (the series converges absolutely as the Poisson moment series of \lean{Fabius.tsum_pow_mul_pow_div_factorial}) \\
