@@ -22,10 +22,9 @@ census recorded at the earlier merge checkpoint was 629 Lean modules and 8,546
 public declarations. The checked-in PDF was built from the earlier source graph
 and passed the complete publication gate recorded below. Later
 canonical-notation edits in chapters 01, 03, and 90 and in the driver require
-a fresh exact three-pass render. The
-root `SHA256SUMS` is the single exhaustive package ledger and verifies the
-current source and retained PDF as distinct payloads; there is no
-`assets/SHA256SUMS`.
+a fresh exact three-pass render. Package checksum manifests are retired and no
+longer participate in current validation. The retained PDF and current source
+remain distinct payloads.
 
 ## Completed source and evidence checks
 
@@ -160,8 +159,7 @@ rewritten. They do not certify the current canonical payloads.
   result environments (149 proof-required), 800 labels, 782 references, 62
   bibliography keys, source disposition, post-pin reconciliation, historical-
   ledger audit, companion-payload provenance, 232-row theorem concordance, and
-  exhaustive root checksum ledger. The root `SHA256SUMS` covers every other
-  permanent package file exactly once and verifies in full.
+  canonical source/evidence checks. No package checksum manifest is required.
 
 ## Historical canonical publication checkpoints
 
@@ -239,9 +237,9 @@ rewritten. They do not certify the current canonical payloads.
   37, 38, 45, 149, 150, and 156 were additionally inspected at full size; no
   clipping, overlap, corrupt image, missing glyph, or unintended blank page
   was found.
-- The root `SHA256SUMS` exhaustively covers every other permanent package file,
-  including the complete evidence tree, without duplicate or stale paths, and
-  verified in full at this checkpoint. The eight historical source-package
+- The now-retired root checksum manifest exhaustively covered every other
+  permanent package file, including the complete evidence tree, without
+  duplicate or stale paths, and verified in full at this historical checkpoint. The eight historical source-package
   ledgers summarized by the audit remain unchanged and are not live manifests.
 
 ### Replayed-side pre-merge checkpoint
@@ -334,13 +332,13 @@ rewritten. They do not certify the current canonical payloads.
   labels, 782 references, 62 bibliography keys, the 180-row source disposition,
   23-row post-pin reconciliation, 151-row historical-ledger audit, 111
   companion-payload provenance rows for 110 physical payloads, 232-row theorem
-  concordance, and the single exhaustive root checksum ledger. The concordance
+  concordance, and the then-current exhaustive root checksum gate. The concordance
   source projection is
   `a065b161c80786829033f1efd39bb5d1e4c521b9b9c4446959a73729a55718e0`.
-- The root `SHA256SUMS` exhaustively covered every other permanent package file,
-  including that PDF and complete evidence tree, without duplicate or stale
-  paths, and verified in full at this checkpoint. It does not certify the
-  current union.
+- The now-retired root checksum manifest exhaustively covered every other
+  permanent package file, including that PDF and complete evidence tree,
+  without duplicate or stale paths, and verified in full at this historical
+  checkpoint. It does not certify the current union.
 
 ## Reproducibility work not rerun
 
@@ -370,7 +368,6 @@ Then inspect the final log for errors, unresolved references, rerun requests,
 and overfull boxes; inspect PDF metadata and fonts; render every page; and
 visually examine every rendered page. Record the new measurements here, update
 the README, refresh `COMPANION_PAYLOADS.csv` if the retained evidence inventory
-changed, regenerate the root `SHA256SUMS`, rerun the canonical validator, and
-verify that single ledger without further source or documentation edits. The
-current receipt above remains valid only while the publication-source,
-documentation, ledger, and PDF bytes are unchanged.
+changed, and rerun the canonical validator without recreating a package
+checksum manifest. The current receipt above remains valid only while the
+publication-source, documentation, and PDF bytes are unchanged.

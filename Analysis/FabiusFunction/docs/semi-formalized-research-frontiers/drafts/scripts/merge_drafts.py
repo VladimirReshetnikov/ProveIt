@@ -449,21 +449,9 @@ def consolidate(group_dir, members, out_name, title, out_subdir=None):
                 src = os.path.join(root, fn)
                 dst = os.path.join(d, fn)
                 if fn in ('SHA256SUMS', 'SHA256SUMS.txt'):
-                    # The member source and companion PDF are absorbed by the
-                    # volume and deliberately not copied into assets.  Their
-                    # checksum entries must disappear with them.
-                    companion_pdf = os.path.splitext(mtex)[0] + '.pdf'
-                    lines = io.open(src, encoding='utf-8').read().splitlines()
-                    kept = []
-                    for line in lines:
-                        fields = line.split(None, 1)
-                        target = fields[1].lstrip('*') if len(fields) == 2 else ''
-                        target = target.removeprefix('./')
-                        if '/' not in target and target in (mtex, companion_pdf):
-                            continue
-                        kept.append(line)
-                    io.open(dst, 'w', encoding='utf-8', newline='\n').write(
-                        '\n'.join(kept) + ('\n' if kept else ''))
+                    # Package checksum manifests are retired repository-wide;
+                    # consolidation must not copy or regenerate them.
+                    continue
                 elif fn.lower().endswith('.tex'):
                     frag = io.open(src, encoding='utf-8').read()
                     frag = prefix_labels(frag, pfx)

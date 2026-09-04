@@ -35,13 +35,13 @@ normalization claims have been demoted to problems.
 - assets/provenance/ — source snapshots, migration map, and asset policy.
 - assets/provenance/COMPANION_PAYLOADS.csv — one-to-one old-to-new map for all
   113 selected companion payloads.
-- assets/companion-evidence/ — 111 migrated scripts, exact tables, captured
-  outputs, requirements, historical ledgers, and useful PNG diagnostics,
-  grouped by source slug; its ledger also covers the two already-canonical
-  root-geometry files.
+- assets/companion-evidence/ — 104 migrated scripts, exact tables, captured
+  outputs, requirements, and useful PNG diagnostics, grouped by source slug;
+  the provenance map also covers the two already-canonical root-geometry files.
 - assets/evidence/legendre/root-geometry/ — exact Q12 Sturm certificate,
   complete counts through degree twenty, and a focused verifier.
-- SHA256SUMS — live root ledger for every other canonical package file.
+- Package checksum manifests are retired; scoped hashes remain in the
+  provenance CSVs and historical artifact receipts.
 
 ## Notation contract
 
