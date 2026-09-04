@@ -58,111 +58,59 @@ K-function's "accelerated coordinate" is the resummation of its own resonant
 subsector, a device that applies to Barnes `G` as well but which no Barnes
 source attempted.
 
-The twenty-four source packages below are **retained** for now; deleting them
-is a separate step, after a residue audit.
+The twenty-four source packages were residue-audited and deleted on
+4 September 2026; git history is the archive.
 
-## The eight subjects
+## The eight subjects, and what became of them
 
-The twenty-four fall into eight subjects, three articles each, written
-independently of one another.  That was noted at intake as provenance; **no comparison,
-deduplication, or canonical selection has been made**, and the titles below are
-transcribed rather than assessed.
+The twenty-four articles fell into eight subjects, three articles each,
+written independently of one another.  All twenty-four have been **merged into
+the volume above and deleted**; they remain in git history.  The volume's
+Appendix~A lists every one of them with its line and page count and the
+chapter that absorbed it, and Appendix~B lists every correction made to them.
 
-### Gamma and Barnes `G`
+| Subject | Volume chapter | Sources (deleted 2026-09-04) |
+| --- | --- | --- |
+| Butcher--Pólya rooted trees, A000081 | 1 | `Butcher_Tree_Transseries{,-2,-3}` |
+| the double factorial | 2 | `Double_Factorial_Transseries{,-3}`, `double_factorial_transseries-2` |
+| the partition numbers, A000041 | 3 | `Partition_Number_Transseries_and_{Asymptotic_,}Inverse`, `Partition_Numbers_Transseries_and_Inverse` |
+| the swing factorial, A056040 | 4 | `Swing_Factorial_Transseries{,_Article,_and_Inverse}` |
+| Gamma and Barnes `G` | 5 | `Asymptotic_Inversion_Gamma_Barnes_G`, `inverse_gamma_barnesG_transseries`, `inverse_gamma_barnes_transseries` |
+| the hyperfactorial `K`-function | 6 | `inverse_k_function_transseries`, `K_Function_Inverse_Transseries`, `K_function_inverse_transseries_article` |
+| the subfactorial | 7 | `inverse_subfactorial_transseries{,-2,-3}` |
+| a real-argument Fibonacci function | 8 | `Fibonacci_Inverse_LogPeriodic_Transseries`, `fibonacci_inverse_transseries_article{,-2}` |
 
-| Directory | Document | Source | PDF |
-| --- | --- | --- | --- |
-| `Asymptotic_Inversion_Gamma_Barnes_G/` | *Asymptotic Inversion of the Gamma and Barnes `G`-Functions: Lambert-Core Transseries and a General Reversion Calculus* | 2,376 lines; 83,252 bytes | 29 A4 pages; 646,225 bytes |
-| `inverse_gamma_barnesG_transseries/` | *Asymptotic Transseries for the Inverses of the Gamma and Barnes `G`-Functions: Lambert–`W` Normal Forms, All-Orders Reversion, and Residual Certification* | 1,655 lines; 72,966 bytes | 28 A4 pages; 663,480 bytes |
-| `inverse_gamma_barnes_transseries/` | *Asymptotic Inversion of the Gamma and Barnes `G` Functions: Lambert-Normalized Transseries, Explicit Coefficients, and a General Power–Logarithmic Reversion Calculus* | 1,827 lines; 60,596 bytes | 25 A4 pages; 324,795 bytes |
+### The residue audit that preceded deletion
 
-### The hyperfactorial `K`-function
+Two probes were run over all twenty-four sources against the assembled volume.
 
-| Directory | Document | Source | PDF |
-| --- | --- | --- | --- |
-| `inverse_k_function_transseries/` | *Inverting the K-Function at Infinity: Lambert–`W` Normalization, All-Orders Transseries, and a General Theory of Power–Logarithmic Reversion* | 2,259 lines; 66,867 bytes | 29 A4 pages; 349,822 bytes |
-| `K_Function_Inverse_Transseries/` | *Asymptotic Inversion of the Generalized Hyperfactorial `K`-Function: Lambert and `r`-Lambert Anchors, Centered Bernoulli Structure, and a General Calculus for Power–Logarithmic Transseries* | 2,644 lines; 90,380 bytes | 33 A4 pages; 724,630 bytes |
-| `K_function_inverse_transseries_article/` | *Asymptotic Inversion of the Kinkelin–Bendersky `K`-Function: Lambert-Anchored Transseries for the Generalized Hyperfactorial and a General Theory of `x^p log x` Reversion* | 2,581 lines; 84,722 bytes | 30 A4 pages; 743,783 bytes |
+*Named results.* Every `\begin{theorem}[Title]` and its kin in every source
+was matched against the volume's 409 titled results by content-word overlap.
+Seven had no overlap at all; six of those turned out to be covered under
+different names (lateral determinations, the Dobiński moment identity, the two
+representations of the Bell tail, and so on).  The seventh was a genuine
+omission — a **formal Newton valuation-doubling theorem**, stated in three
+sources and nowhere in the volume — and it was added before deletion, as
+Theorem `p6:thm:newton`.
 
-### The subfactorial
-
-| Directory | Document | Source | PDF |
-| --- | --- | --- | --- |
-| `inverse_subfactorial_transseries/` | *Inverting the Subfactorial at Infinity: Bell-Sector Transseries, Inverse-Gamma Geometry, and a General Reversion Calculus for Rapid Cores with Tiny Oscillatory Tails* | 2,631 lines; 95,404 bytes | 38 A4 pages; 688,626 bytes |
-| `inverse_subfactorial_transseries-2/` | *Asymptotic Inversion of the Subfactorial: Bell-Number Tails, Inverse-Gamma Anchoring, and a Calculus for Exponentially Separated Transseries* | 2,188 lines; 73,742 bytes | 27 A4 pages; 725,870 bytes |
-| `inverse_subfactorial_transseries-3/` | *Inverse Subfactorials at Infinity: Lambert–`W` Carriers, Bell-Number Sectors, and a General Calculus of Gamma-Dominant Transseries* | 1,878 lines; 81,203 bytes | 35 Letter pages; 530,302 bytes |
-
-### A real-argument Fibonacci function
-
-The fourth subject differs from the first three in its core: the map inverted
-is a real continuation of the Fibonacci numbers, so the dominant phase is a pure
-exponential in the golden ratio and the inverse transseries is *log-periodic*
-(oscillatory in `log` of the argument) rather than Lambert-cored.  Filed here
-because the purpose is the same, inverting a rapidly growing special function
-at infinity to all orders with an extracted general reversion calculus; the
-titles are transcribed, not assessed.
-
-| Directory | Document | Source | PDF |
-| --- | --- | --- | --- |
-| `Fibonacci_Inverse_LogPeriodic_Transseries/` | *Inverting a Real-Argument Fibonacci Function: Log-Periodic Transseries, Exact Coefficients, and a General Product-Reversion Calculus* | 2,554 lines; 89,365 bytes | 33 A4 pages; 787,646 bytes |
-| `fibonacci_inverse_transseries_article/` | *Log-Periodic Transseries for the Inverse of a Real Fibonacci Continuation* | 2,857 lines; 98,788 bytes | 36 A4 pages; 797,090 bytes |
-| `fibonacci_inverse_transseries_article-2/` | *Inverse Asymptotics for a Real-Argument Fibonacci Function* | 1,884 lines; 64,334 bytes | 24 A4 pages; 759,845 bytes |
-
-### The Butcher--Pólya rooted-tree numbers (A000081)
-
-The fourth batch's first subject leaves the Stirling-type world: the sequence
-is defined by the functional equation `T(z) = z exp(sum_k T(z^k)/k)`, so the
-inversion runs through a Pólya-tree singularity analysis and a Lambert--`W`
-reversion of the exponential-power model rather than through a gamma-ratio
-normal form.
-
-| Directory | Document | Source | PDF |
-| --- | --- | --- | --- |
-| `Butcher_Tree_Transseries/` | *All-Orders Asymptotic Transseries for the Butcher--Pólya Tree Numbers and Their Inverses* | 1,674 lines; 55,275 bytes | 21 A4 pages; 593,560 bytes |
-| `Butcher_Tree_Transseries-2/` | *The Butcher-Tree Counting Transseries: All-Order Pólya-Tree Asymptotics, Lambert--`W` Reversion, and the Asymptotic Inverse of A000081* — the only `book`-class member of the subgroup | 2,853 lines; 100,576 bytes | 62 A4 pages; 763,748 bytes |
-| `Butcher_Tree_Transseries-3/` | *Asymptotic Transseries of the Butcher--Pólya Rooted-Tree Numbers: Bell-Polynomial Coefficients, Lambert--`W` Reversion, and Exponentially Small Singularity Sectors* | 2,382 lines; 91,654 bytes | 35 A4 pages; 697,611 bytes |
-
-### The double factorial
-
-Here the object is an *interleaving* of two gamma-type branches, so all three
-articles make the same structural point at intake: there is no canonical real
-inverse of the sequence until an interpolation is fixed, and the even and odd
-branches must be inverted separately before any discrete inverse is defined.
-
-| Directory | Document | Source | PDF |
-| --- | --- | --- | --- |
-| `Double_Factorial_Transseries/` | *Complete Asymptotic Transseries for the Double Factorial and Its Inverses: Bernoulli--Bell coefficient formulae, Lambert-`W` reversion, parity branches, and the periodic OEIS interpolation* | 1,552 lines; 52,202 bytes | 18 A4 pages; 632,400 bytes |
-| `Double_Factorial_Transseries-3/` | *The Double Factorial and Its Inverse: Complete Asymptotic Transseries, Borel Summation, and General Coefficient Formulae* | 2,287 lines; 79,355 bytes | 28 A4 pages; 662,997 bytes |
-| `double_factorial_transseries-2/` | *Double-Factorial Transseries and Their Inversion: Bernoulli--Bell Coefficients, Lambert-`W` Cores, Parity Sectors, Borel Structure, and Discrete Inverses* — `book` class; inner files are lowercase `double_factorial_transseries.*`, kept as submitted | 2,138 lines; 63,319 bytes | 44 A4 pages; 622,907 bytes |
-
-### The partition numbers (A000041)
-
-The only arithmetic subject in the subgroup: the transseries is Rademacher's
-convergent series reorganized into root-of-unity sectors with periodic
-Dedekind-sum amplitudes, and the inversion is of the Hardy--Ramanujan phase
-`pi sqrt(2N/3)`.  These three are also the only members that carry no
-Libertinus faces.
-
-| Directory | Document | Source | PDF |
-| --- | --- | --- | --- |
-| `Partition_Number_Transseries_and_Asymptotic_Inverse/` | *Arithmetic Rademacher Transseries for the Partition Numbers: Exact Exponential Sectors, All-Order Coefficients, and Asymptotic Inversion* | 1,901 lines; 83,252 bytes | 32 A4 pages; 369,259 bytes |
-| `Partition_Number_Transseries_and_Inverse/` | *Rademacher Transseries for the Partition Numbers and Their Inverse: All-order arithmetic sectors, coefficient formulae, Lambert--Lagrange reversion, and phase-locked inversion* | 2,020 lines; 72,533 bytes | 27 A4 pages; 354,685 bytes |
-| `Partition_Numbers_Transseries_and_Inverse/` | *Rademacher Towers and the Asymptotic Inverse of the Partition Numbers: Exact root-of-unity sectors, all-order coefficient formulae, Lambert--`W` reversion, and the discrete staircase* | 1,905 lines; 78,298 bytes | 33 **Letter** pages; 553,908 bytes |
-
-### The swing factorial (A056040)
-
-The central binomial-type quotient `n!/floor(n/2)!^2`, whose even and odd
-subsequences carry different power prefactors (`2^n n^(-1/2)` and
-`2^n n^(1/2)`), so — as with the double factorial — the parity split precedes
-the inversion and each branch gets its own Lambert-normalized reversion.
-
-| Directory | Document | Source | PDF |
-| --- | --- | --- | --- |
-| `Swing_Factorial_Transseries/` | *All-Orders Asymptotic Transseries for the Swing Factorial and Its Two Inverse Branches: Bernoulli--Bell coefficient calculus, Lambert--`W` normal forms, logarithmic reversion, and beyond-all-orders control* | 1,885 lines; 75,057 bytes | 28 A4 pages; 688,586 bytes |
-| `Swing_Factorial_Transseries_Article/` | *The Full Asymptotic Transseries of the Swing Factorial and Its Inverse: Gamma-Ratio Normal Forms, Bernoulli--Bell Coefficient Calculus, Borel Geometry, and Lambert-Normalized Reversion* — inner files are lowercase `swing_factorial_transseries.*`, kept as submitted | 1,824 lines; 62,179 bytes | 25 A4 pages; 666,609 bytes |
-| `Swing_Factorial_Transseries_and_Inverse/` | *Parity-Resolved Transseries for the Swing Factorial and Its Inverse: Exact Borel normal form, Bell-polynomial coefficient formulae, Lambert-`W` cores, and all-orders reversion* | 1,389 lines; 56,138 bytes | 22 A4 pages; 326,626 bytes |
+*Numbers.* Every integer of at least four digits and every decimal constant
+was looked for in the volume, decimals matched on their leading eight
+significant digits so that a source printing forty digits and the volume
+printing twelve count as agreeing.  Of 963 integers, 198 were unseen; of 1,288
+decimals, 772.  Inspection showed these fall into three classes, none of them
+substantive: standard number-theoretic tables (Bell numbers, derangement
+numbers, swing-factorial values), the sources' own numerical error tables at
+arguments the volume does not tabulate — the volume recomputed its own — and
+coefficients printed one or two orders beyond the volume's truncation.  The
+last class is regenerable in seconds from the recurrences the volume proves;
+the two cases where the volume had stopped exactly one term short of a source
+(`c_6` and `d_6` of the `K`-function) were filled in before deletion.
 
 ## Intake receipts
+
+> **Superseded.** The packages these receipts describe were merged
+> into the volume above and deleted on 4 September 2026, after a
+> residue audit. The receipts are kept as the record of what arrived.
 
 Every archive passed a CRC check and carried no absolute path, no
 parent-directory traversal, and no symlink entry.  Each contained exactly one
