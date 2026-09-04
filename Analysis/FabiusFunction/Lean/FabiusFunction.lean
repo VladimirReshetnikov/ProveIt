@@ -42,6 +42,7 @@ import FabiusFunction.ComplementaryBell
 import FabiusFunction.StirlingTriangularExplicit
 import FabiusFunction.BellShiftEGF
 import FabiusFunction.OrdinaryBellComposition
+import FabiusFunction.OrdinaryBellMultinomial
 import FabiusFunction.EulerianEGF
 import FabiusFunction.BernoulliAppell
 import FabiusFunction.StirlingShiftedEvaluations

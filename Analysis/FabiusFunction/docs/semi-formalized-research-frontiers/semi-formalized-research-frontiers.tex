@@ -1444,6 +1444,86 @@ the 207-row coefficient-calculus concordance is 65 Lean, 35 Partial, and
 \nolinkurl{Fabius.mul_derivative_fallingSeries_subst_sub_one},
 \nolinkurl{Fabius.coeff_fallingSeries_subst_sub_one_recurrence} &
 \nolinkurl{UnitSeriesPowerRecurrence.lean} \\
+Ordinary composition in multiplicity form (one upstream theorem plus 1+3).
+A \(\lean{Fin}\,n\)-profile records part count and weighted sum, with
+\nolinkurl{Nat.multinomial} counting its orderings.  The formal identity
+includes \(n=0\) through the unique empty profile and has an empty \(k=0\)
+term for \(n>0\), so \nolinkurl{thm:ordinary-composition} is Exact.  It does
+not prove the separate labelled-set-partition interpretation. &
+\nolinkurl{Fabius.ordPartialBell_congr_of_le},
+\nolinkurl{Fabius.ordinaryMultiplicityProfiles},
+\nolinkurl{Fabius.mem_ordinaryMultiplicityProfiles},
+\nolinkurl{Fabius.ordPartialBell_eq_sum_multinomial},
+\nolinkurl{Fabius.coeff_subst_eq_sum_multinomial} &
+\nolinkurl{OrdinaryBellComposition.lean},
+\nolinkurl{OrdinaryBellMultinomial.lean} \\
+Formal rescaling (0+4).  Coefficient comparison proves
+\((f(cX))'=cf'(cX)\) over a commutative semiring; the exponential cases use a
+commutative rational algebra.  Three helpers moved from the N\"orlund module
+without changing the global declaration total. &
+\nolinkurl{Fabius.derivative_rescale},
+\nolinkurl{Fabius.derivative_rescale_exp},
+\nolinkurl{Fabius.rescale_zero_exp},
+\nolinkurl{Fabius.rescale_exp_add_one} &
+\nolinkurl{ExponentialRescaling.lean} \\
+Abel polynomials (2+9).  The closed polynomial formula is division-free; over
+a commutative rational algebra, Lagrange--B\"urmann proves the exponential
+generating function for every solution of \(T=X\exp(-aT)\), including its
+constant term, and multiplication proves the all-index binomial law.  Thus
+\nolinkurl{prop:merged-abel} is Exact. &
+\nolinkurl{Fabius.abelPolynomial},
+\nolinkurl{Fabius.abelPolynomial_zero},
+\nolinkurl{Fabius.abelPolynomial_succ},
+\nolinkurl{Fabius.abelPolynomial_succ_eval},
+\nolinkurl{Fabius.abelSeries},
+\nolinkurl{Fabius.abelSeries_eq},
+\nolinkurl{Fabius.hasSubst_abelSeries},
+\nolinkurl{Fabius.abel_eq_zero_and_one},
+\nolinkurl{Fabius.coeff_exp_subst_of_abel_eq},
+\nolinkurl{Fabius.exp_subst_eq_egfA_abelPolynomial},
+\nolinkurl{Fabius.abelPolynomial_eval_add} &
+\nolinkurl{AbelPolynomialSeries.lean} \\
+Formal Bernoulli-kernel logarithm (0+5).  The constructed reciprocal and the
+logarithm product law give
+\(\log(X/(\exp X-1))=-X/2-\sum_{n\ge2}\beta_nX^n/(n\,n!)\) over
+\(\RationalNumbers\).  Degree one is separated because the Bernoulli
+conventions differ; no analytic logarithm is asserted. &
+\nolinkurl{Fabius.bernoulliPowerSeries_mul_massSeries_expm1Div},
+\nolinkurl{Fabius.logOf_bernoulliPowerSeries},
+\nolinkurl{Fabius.coeff_logOf_bernoulliPowerSeries},
+\nolinkurl{Fabius.coeff_one_logOf_bernoulliPowerSeries},
+\nolinkurl{Fabius.coeff_logOf_bernoulliPowerSeries_of_two_le} &
+\nolinkurl{BernoulliFormalLog.lean} \\
+Raney numbers (4+12).  Lagrange--B\"urmann gives both the denominator-cleared
+and divided coefficient formulas, including \(n=0\), for the canonically
+constructed \(T_p\).  No uniqueness theorem transports them to an arbitrary
+solution of \(T=1+XT^p\), so the printed row remains Partial. &
+\nolinkurl{Fabius.raneyPhi}, \nolinkurl{Fabius.raneyPsi},
+\nolinkurl{Fabius.raneyG}, \nolinkurl{Fabius.raneyT},
+\nolinkurl{Fabius.raneyT_eq},
+\nolinkurl{Fabius.natCast_mul_coeff_raneyT_pow},
+\nolinkurl{Fabius.coeff_raneyT_pow},
+\nolinkurl{Fabius.coeff_raneyT} &
+\nolinkurl{RaneyNumbers.lean} \\
+Kirkman--Cayley and associahedral arithmetic (4+23).  Binomial absorption
+proves the determinant, exact quotient, divisibility, support, and boundary
+values; reindexing and existing Narayana identities prove the face- and
+\(h\)-array formulas.  The arrays are definitions, with no dissection type,
+face lattice, bijection, or face-to-\(h\) transform, so all three geometric
+rows remain Partial.  The current 204-row concordance is 62 Lean, 36 Partial,
+and 106 None. &
+\nolinkurl{Fabius.dissectionNumber},
+\nolinkurl{Fabius.dissectionNumber_mul},
+\nolinkurl{Fabius.succ_dvd_choose_mul_choose},
+\nolinkurl{Fabius.dissectionNumber_eq_div},
+\nolinkurl{Fabius.dissectionNumber_nonneg},
+\nolinkurl{Fabius.associahedronFaceNumber},
+\nolinkurl{Fabius.associahedronFaceNumber_mul},
+\nolinkurl{Fabius.associahedronH},
+\nolinkurl{Fabius.associahedronH_symm},
+\nolinkurl{Fabius.sum_associahedronH},
+\nolinkurl{Fabius.associahedronHPoly_one} &
+\nolinkurl{AssociahedronFaceNumbers.lean} \\
 Weighted binomial translation and inversion (+11).
 \nolinkurl{thm:merged-weighted-binomial-translation} is Exact over
 commutative semirings, with left-cancellative addition needed only for
