@@ -1,7 +1,9 @@
 %% =====================================================================
 %%  Transseries: the polynomial--logarithmic calculus and its inversions
 %%  Single consolidated volume for drafts/series-and-transseries/.
-%%  ASSEMBLED FILE -- do not edit here; edit the sources and re-run build.py.
+%%  This file is now the canonical source: the five source groups it was
+%%  assembled from were merged into it and deleted on 2026-09-04, and the
+%%  assembler cannot be re-run.  Edit here.
 %% =====================================================================
 \documentclass[11pt,openany]{book}
 \usepackage[a4paper,margin=26mm,headheight=15pt]{geometry}
@@ -38644,9 +38646,11 @@ and $g$ is \path{Fabius.lambertShiftInv}; the three identities of
 \path{Fabius.lambertShiftInv_eq_mul_exp} and
 \path{Fabius.principalLambertW_lambertShiftInv}, and $g$ is the two-sided
 inverse of $f$ by \path{Fabius.lambertShiftInv_lambertShift} together with
-\path{Fabius.lambertShift_eq_iff}.  This is the only result in the present
-volume with a formal counterpart, and it is recorded because the corpus keeps
-a register of what is proved and what is merely written down.
+\path{Fabius.lambertShift_eq_iff}.  This chapter is the only place in the present
+volume with formal counterparts --- this theorem, the numerator recursion of
+\cref{q1:prop:recursion}, and the general bracket of \cref{q1:rem:two-sided} ---
+and they are recorded because the corpus keeps a register of what is proved
+and what is merely written down.
 \end{remark}
 
 \begin{proposition}[Brackets]\label{q1:prop:brackets}
@@ -38704,7 +38708,25 @@ improves with $z$ but with a $z$-dependent constant.  Here the certificate is
 uniform, which is what makes numerical work on this map unusually comfortable.
 The sandwich is machine-checked as well, as
 \path{Fabius.abs_sub_lambertShiftInv_le_abs_residual} and
-\path{Fabius.abs_residual_le_two_mul_abs_sub_lambertShiftInv}.
+\path{Fabius.abs_residual_le_two_mul_abs_sub_lambertShiftInv}; and so is the
+general two-sided statement, for an arbitrary function on a convex set, in
+\path{MeanValueBracket.lean} --- the brackets are
+\path{Fabius.mul_abs_sub_le_abs_sub_of_le_deriv} and
+\path{Fabius.abs_sub_le_of_le_deriv}, and the transfer against a right inverse
+is \path{Fabius.abs_sub_right_inverse_le_div} together with
+\path{Fabius.div_le_abs_sub_right_inverse}.
+\end{remark}
+
+\begin{remark}[The sign hypothesis is not decoration]\label{q1:rem:sign}
+\Cref{p0:thm:backward-error} assumes $0<m\le f'\le M$, and the positivity of
+$m$ is needed for the \emph{upper} bracket, not merely for the interpretation.
+Dropping it fails at once: with $f'\equiv-10$ the bracket $m\le f'\le M$ holds
+for $m=-10$, $M=0$, while $|f(x)-f(y)|=10|x-y|$ exceeds $M|x-y|=0$.  What the
+sign supplies is monotonicity, which is what makes $|f(x)-f(y)|$ the signed
+increment.  The lower bracket needs no sign condition.  This is worth stating
+because a theorem quoted as ``$f$ strictly increasing with $m\le f'\le M$''
+leaves the role of the sign implicit, and the two-sided form is the one this
+volume uses most.
 \end{remark}
 
 \section{The small parameter, and reduction to an ordinary reversion}
@@ -38837,6 +38859,61 @@ $P_4=6v^{6}-8v^{5}-69v^{4}-40v^{3}+96v^{2}+72v-24$ read off
 \eqref{q1:eq:A1}--\eqref{q1:eq:A4} satisfy \eqref{q1:eq:Pm-data} exactly, as
 recorded in \cref{q1:rem:verification}.
 \end{proof}
+
+
+\begin{proposition}[A recursion for the numerators]\label{q1:prop:recursion}
+Define $R_{n,k}\in\Int[v]$ by
+\begin{equation}\label{q1:eq:recursion}
+ R_{n,1}=n,
+ \qquad
+ R_{n,k+1}=v(1+v)\,R_{n,k}'
+ +\Bigl(n(1+v)-(2k-1)v-k(1+v)^{2}\Bigr)R_{n,k}.
+\end{equation}
+Then $R_{n,k}\in n\,\Int[v]$, $\deg R_{n,k}=2(k-1)$,
+$\Coef{v^{2(k-1)}}R_{n,k}=n(-1)^{k-1}(k-1)!$ and
+$R_{n,k}(0)=n(n-1)\cdots(n-k+1)$; and the numerators of
+\cref{q1:prop:structure} are the diagonal
+\begin{equation}\label{q1:eq:Pm-from-R}
+ P_m=\frac{(-1)^{m+1}}{m+1}\,R_{m+1,m}.
+\end{equation}
+The three data \eqref{q1:eq:Pm-data} are exactly the three displayed facts
+read on that diagonal.
+\end{proposition}
+
+\begin{proof}
+Divisibility by $n$ is immediate from \eqref{q1:eq:recursion} by induction,
+since $R_{n,1}=n$ and every step is $\Int[v]$-linear in $R_{n,k}$.  For the
+degree, the derivative term $v(1+v)R_{n,k}'$ has degree at most
+$2+\bigl(2(k-1)-1\bigr)=2k-1$, strictly below the degree
+$2+2(k-1)=2k$ of the multiplier term, whose leading coefficient is that of
+$-k(1+v)^{2}$ against $R_{n,k}$, namely $-k$ times $n(-1)^{k-1}(k-1)!$; and
+$-k\cdot(-1)^{k-1}(k-1)!=(-1)^{k}k!$, which is the claim at $k+1$.  The value
+at $v=0$ satisfies $R_{n,k+1}(0)=(n-k)R_{n,k}(0)$, giving the falling
+factorial.  Substituting $n=m+1$, $k=m$ into the three then gives
+$\deg P_m=2m-2$, $\Coef{v^{2m-2}}P_m=(m-1)!$ and
+$P_m(0)=(-1)^{m+1}m!$, which is \eqref{q1:eq:Pm-data}; the normalization
+\eqref{q1:eq:Pm-from-R} is fixed by matching $P_1=1$.
+\end{proof}
+
+\begin{remark}[Formalization status of the numerator family]
+\label{q1:rem:lean-coefficients}
+\Cref{q1:prop:recursion} is machine-checked, in
+\path{LambertInverseCoefficients.lean}, a module of pure polynomial algebra
+with no dependence on the rest of the corpus.  With indices shifted so the
+recursion starts at $0$, \path{Fabius.lambertNumerator} is $R_{n,j+1}$;
+\path{Fabius.lambertNumerator_succ_eq_draft} is \eqref{q1:eq:recursion},
+\path{Fabius.natCast_dvd_lambertNumerator} is $R_{n,k}\in n\Int[v]$,
+\path{Fabius.natDegree_lambertNumerator} the degree,
+\path{Fabius.leadingCoeff_lambertNumerator} the leading coefficient, and
+\path{Fabius.eval_zero_lambertNumerator} the value at $0$.
+
+What is \emph{not} formalized, and should not be read as though it were: the
+closed form for $(\dd/\dd z)^{k}v^{n}$, and hence the identification of this
+polynomial family with the coefficients $A_m$ of \cref{q1:thm:blocks}; and the
+asymptotic reading $A_m\sim v^{m}/m$ of \eqref{q1:eq:Am-leading}.  Both need
+the operator calculus on functions rather than the recursion, and the
+formalized statements are about $\Int[v]$ alone.
+\end{remark}
 
 \begin{theorem}[The error law, and how slowly it is approached]
 \label{q1:thm:error-law}
