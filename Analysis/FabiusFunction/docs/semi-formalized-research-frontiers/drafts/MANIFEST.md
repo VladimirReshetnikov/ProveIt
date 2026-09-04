@@ -578,7 +578,7 @@ open.
 
 The six polynomial-logarithmic transseries packages filed here on 2026-09-01
 moved to
-[`series-and-transseries/polynomial-logarithmic-transseries/`](series-and-transseries/polynomial-logarithmic-transseries/)
+[`series-and-transseries/polynomial-logarithmic-transseries/`](series-and-transseries/Transseries_And_Inversion/)
 on 2026-09-02; their receipts are in that group's section below.
 
 ## series-and-transseries — `series-and-transseries/`
@@ -592,18 +592,19 @@ Lambert W only as their guiding example, so they are filed by that subject,
 leaving `lambert-w/` to the articles about the function itself.  That move was
 verbatim: no source, checksum ledger, or PDF changed.
 
-The group now has four subgroups.  `polynomial-logarithmic-transseries/` holds
-the operational treatment of one scale, consolidated into the single canonical
-volume recorded below; `lambert-inverse-transseries/` holds three articles that
-invert `x + W(x)`; `transseries-tutorials/` holds four general expositions; and
-`special-function-inversion/` holds three articles that apply the Lambert-core
-technique to several different special functions.  The first two overlap enough
+The group grew to five subgroups and, on 2026-09-04, was consolidated in full:
+all forty-two articles across `polynomial-logarithmic-transseries/`,
+`lambert-inverse-transseries/`, `transseries-tutorials/`,
+`special-function-inversion/` and `sequence-transseries/` are now the single
+volume `Transseries_And_Inversion/`, and those five directories have been
+deleted after a residue audit.  The paragraphs below record what was filed,
+not what is present; git history is the archive.  The first two overlap enough
 that a later consolidation may merge them, but that comparison has not been
 made, and neither has the comparison between the second and the fourth.
 
 | Directory | Document | Previous path |
 | --- | --- | --- |
-| `polynomial-logarithmic-transseries/Polynomial_Logarithmic_Transseries/` | **Canonical, consolidation complete:** *Polynomial--Logarithmic Transseries: Algebra, Composition, Series Reversal, and the Lambert W Archetype* — 36{,}033-line/1{,}834{,}190-byte source (`2d57052c…5952c7`) and the 412-page A4 PDF built from it in the same three-pass run (4{,}504{,}362 bytes, `9d3dd9ad…06e1d5`) | Editorial merge (2026-09-02) of the six 2026-09-01 arrivals `Polynomial-Logarithmic-Transseries-1/`, `-2/`, `-4/` and `Polynomial_Logarithmic_Transseries-3/`, `-5/`, `-6/`, all from direct-arrival commit `730e1763…95ab4f`; absorbed sources deleted, git history is the archive, per-source receipts in the volume's provenance appendix |
+| `series-and-transseries/Transseries_And_Inversion/` | **Canonical consolidation of the whole `series-and-transseries` group.** *Transseries: the polynomial--logarithmic calculus, series reversal at infinity, and the inversion of rapidly growing functions* — 54,306-line source and the 694-page A4 PDF built from it in the same run; 15 parts, 58 chapters, 3,095 labels all distinct, no dangling references, no LaTeX errors, no undefined references. Merges forty-two independently written articles in five groups, thirty of which had already been consolidated once. Part~I orients (replacing four parallel expository introductions, proving what they state and demoting five theorems they quote without proof); the calculus parts develop the polynomial--logarithmic scale through arithmetic, composition and reversal at infinity, then Lambert~$\LambertW$ and Wright~$\omega$, then formal to analytic with certificates, then algorithms; the inversion parts add the exponential--power model, perturbed inversion, and the theory of inverting a sequence; the application parts invert $x+\LambertW(x)$, four combinatorial sequences, four special functions, and the Bell and Fubini numbers. A concordance chapter settles the comparison this group had recorded as open: the calculus and the inversion apparatus overlap far less than title matching suggests — of six apparent overlaps one is a genuine duplicate, one a strengthening, one has no counterpart, and three are different theorems, the two Lagrange--Bürmanns being the near-identity operator form and the classical coefficient form. All five source groups were residue-audited and deleted on 2026-09-04; the two previously consolidated volumes are absorbed verbatim, differing in 36 of 47,854 substantive lines, every difference a deliberate assembly transformation | consolidation of forty-two articles filed 2026-09-01 to -03, all of which it replaces; the sources survive in git history |
 
 The consolidation is complete.  The six arrival packages and their
 retained historical PDFs were deleted once every source was absorbed and
@@ -624,9 +625,6 @@ worked case.  Quick intake only; no comparison or review yet.
 
 | Directory | Document | Supporting evidence | Previous path / provenance |
 | --- | --- | --- | --- |
-| `lambert-inverse-transseries/lambert_inverse_transseries/` | *Asymptotic Reversion of x + W(x) and a Calculus for Logarithmic Transseries* (1,846-line/61,003-byte source, 24-page/667,582-byte PDF) | none | `drafts/incoming/lambert_inverse_transseries.zip` (outer SHA-256 `8bef8fbbe36688daca7631bff16354dc486496cf49ce016e090fef64e86bf879`), filed 2026-09-02 |
-| `lambert-inverse-transseries/lambert_inverse_transseries_bundle/` | *Reversing x + W(x): Exact Reduction and Logarithmic Transseries* (1,378-line/48,108-byte source, 21-page/299,709-byte PDF) | none | `drafts/incoming/lambert_inverse_transseries_bundle.zip` (outer SHA-256 `9c4ea8f8b2e7d0129aa95afaea5715cf629704e6c025bcc78729d38798756654`), filed 2026-09-02 |
-| `lambert-inverse-transseries/reversing_x_plus_lambert_w_transseries/` | *Reversing x+W(x): Exact Reduction, All-Orders Asymptotics, and Logarithmic Transseries* (1,871-line/64,213-byte source, 28-page/332,829-byte PDF) | none | `drafts/incoming/reversing_x_plus_lambert_w_transseries.zip` (outer SHA-256 `4a628a31c4f95a1bafb85206ced18e341af7257afb53cf232dfe1489e237a867`), filed 2026-09-02 |
 
 A third subgroup, `transseries-tutorials/`, was filed on 2026-09-02 from the
 direct-arrival commit `e23bad1bb0ab91fea6df5a1cfd2525eea28dcb16`.  Its four
@@ -637,14 +635,10 @@ repository-generated.  None of the four loads `docs/fabius-notation.tex`, so
 all four are free of the notation-migration defect classes recorded against
 their neighbours.  Comparison, deduplication, canonical selection, and
 consolidation are deferred; see
-[`series-and-transseries/transseries-tutorials/README.md`](series-and-transseries/transseries-tutorials/README.md).
+[`series-and-transseries/transseries-tutorials/README.md`](series-and-transseries/Transseries_And_Inversion/).
 
 | Directory | Document | Previous path / provenance |
 | --- | --- | --- |
-| `transseries-tutorials/Transseries_Tutorial-1/` | *Transseries Tutorial* — 5,159-line/188,639-byte source (`75f427b8…0fcd324`) and 143-page/793,390-byte Letter PDF (`81e6c8b0…f10b841a`) | bare arrival; direct-arrival commit `e23bad1b…28dcb16` |
-| `transseries-tutorials/Transseries_Tutorial-2/` | *Transseries Tutorial* (second treatment) — 7,749-line/250,478-byte source (`50da0899…8d95ffb2`) and 164-page/817,544-byte Letter PDF (`4bc99417…39b26453`) | bare arrival; direct-arrival commit `e23bad1b…28dcb16` |
-| `transseries-tutorials/Transseries_Tutorial-3/` | *Transseries for Mere Mortals* — 4,410-line/134,470-byte source (`26fb3f4a…5412c348`) and 121-page/656,187-byte Letter PDF (`8d34824a…5477bbf7`) | bare arrival; direct-arrival commit `e23bad1b…28dcb16` |
-| `transseries-tutorials/Transseries_Tutorial-4/` | *Transseries Tutorial* (fourth treatment) — 8,781-line/344,893-byte source (`f00fe3aa…c1779105`) and 217-page/893,129-byte custom 522-by-738-point PDF (`6e2065d4…401fe4ba`) | bare arrival; direct-arrival commit `e23bad1b…28dcb16` |
 
 All four tutorial PDFs are readable and unencrypted, every font row is embedded,
 and none is Type 3 or Libertinus; three are Letter and one is custom
@@ -707,11 +701,10 @@ characters from the repository root.
 
 Comparison, deduplication, proof checking, numerical reproduction and Lean
 crosswalking are deferred; see
-[`series-and-transseries/special-function-inversion/README.md`](series-and-transseries/special-function-inversion/README.md).
+[`series-and-transseries/special-function-inversion/README.md`](series-and-transseries/Transseries_And_Inversion/).
 
 | Directory | Document | Previous path / provenance |
 | --- | --- | --- |
-| `special-function-inversion/Sequence_Inversion_Transseries/` | **Canonical consolidation of the twenty-four articles below.** *Asymptotic Transseries and Inversion of Eight Sequences and Special Functions* — 16,704-line source and the 205-page A4 PDF built from it in the same run; 235 named results (230 with proofs), 1,315 labels, no dangling references, no LaTeX errors. Chapter~0 states the shared apparatus once (exponential--power model and axiomatized dominant core, Bell calculus, Lagrange--Bürmann, the Lagrange fixed point, perturbed inversion around an exactly invertible core, the Lambert carrier and branch rule, all-orders reversion, flattening, the three inverse objects and the staircase theorem, backward error, remainder transport, optimal truncation); Chapters~1--8 cite it 266 times and restate none of it. The eight subjects are rooted trees, the double factorial, the partition numbers, the swing factorial, Gamma and Barnes~$G$, the hyperfactorial~$K$, the subfactorial, and a real-argument Fibonacci function. Chapters~5--6 need a second exactly invertible core, $a x^p(\log x-\beta)$, in which the unknown multiplies the logarithm; Chapter~7's carrier is Chapter~5's inverse Gamma, cited rather than rederived as all three of its sources do; Chapter~8 has no Lambert core at all and its expansion converges. Repairs are boxed in the text and listed in Appendix~B; the sharpest is that five of the first twelve derive the Lagrange fixed-point formula from Lagrange--Bürmann in a case where the required invertibility fails, so the identity — on which every reversion in the volume depends — is reproved here by universality. Every printed coefficient and decimal in all twenty-four sources was recomputed independently and reproduced, with one exception: one article prints the inherited $-\sqrt\rho$ sector constants to forty digits of which about twenty-five are correct, and its own audit appendix contradicts its main text. Apart from that, no source contained an arithmetic error, and every other defect found is in a statement, a hypothesis, or a formal-versus-analytic conflation. New results the merge made visible: the slope-denominator bound is attained, with deepest pole $\binom{1/2}{n}12^{-n}$ for Gamma; four apparently unrelated square roots are one quadratic lemma seen through two extractions (deepest pole, and coefficientwise large-slope limit); and the $K$-function's “accelerated coordinate” is the resummation of its own resonant subsector, a device that applies to Barnes~$G$ but which no Barnes source attempted. Comparison against the wider corpus and Lean crosswalking are deferred | consolidation of twenty-four articles filed 2026-09-03, all of which it replaces; the sources were residue-audited and deleted on 2026-09-04 and survive in git history |
 
 ## spectra-and-arithmetic — `spectra-and-arithmetic/`
 
@@ -727,15 +720,10 @@ distinct archive stems name the directories. Longest filed path 252
 characters. All sources LF with a final newline; all PDFs fully embedded,
 Type-3-free, pdfTeX-1.40.26. None loads `docs/fabius-notation.tex`. Quick
 intake only; see
-[`series-and-transseries/sequence-transseries/README.md`](series-and-transseries/sequence-transseries/README.md).
+[`series-and-transseries/sequence-transseries/README.md`](series-and-transseries/Transseries_And_Inversion/).
 
 | Directory | Document | Previous path |
 | --- | --- | --- |
-| `sequence-transseries/Bell_Number_Asymptotic_Transseries/` | *The Full Asymptotic Transseries of the Bell Numbers* — 2,211-line/78,882-byte source, 32-page A4/724,026-byte PDF; 6 theorems, 2 propositions, 2 lemmas, 1 corollary, 2 definitions in 18 sections | `incoming/Bell_Number_Asymptotic_Transseries.zip` |
-| `sequence-transseries/Bell_Number_Transseries_Article/` | *The Full Saddle–Transseries Expansion of the Bell Numbers* — 1,714-line/60,076-byte source, 23-page A4/665,924-byte PDF; 7 theorems, 2 propositions, 2 lemmas, 2 corollaries in 17 sections | `incoming/Bell_Number_Transseries_Article.zip` |
-| `sequence-transseries/Fubini_Number_Full_Transseries/` | *The Full Asymptotic Transseries of the Fubini Numbers* — 2,465-line/86,507-byte source, 33-page A4/741,812-byte PDF; 17 theorems, 2 propositions, 5 corollaries, 1 definition in 18 sections | `incoming/Fubini_Number_Full_Transseries.zip` |
-| `sequence-transseries/Fubini_Number_Transseries/` | *The Complete Asymptotic Transseries of the Fubini Numbers* — 1,881-line/64,271-byte source, 25-page A4/699,100-byte PDF; 10 theorems, 2 propositions, 1 lemma, 3 corollaries in 16 sections | `incoming/Fubini_Number_Transseries.zip` |
-| `sequence-transseries/Fubini_Number_Transseries_Article/` | untitled in source (exact identity `F_n = Γ(N)/2 · Σ_k ρ_k^{−N}`) — 1,472-line/57,681-byte source, 25-page Letter/490,186-byte PDF; 8 theorems, 1 proposition, 1 definition in 14 sections | `incoming/Fubini_Number_Transseries_Article.zip` |
 
 Current source counts for unaffected rows still supersede their older intake
 figures below: Dyadic Radon Profiles has 2,050 lines and a 29-page main PDF;

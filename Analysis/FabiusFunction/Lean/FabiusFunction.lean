@@ -254,6 +254,7 @@ import FabiusFunction.ThueMorseBlockAlgebra
 import FabiusFunction.ThueMorseProductIdentity
 import FabiusFunction.ApproximationLadder
 import FabiusFunction.ThueMorseMoments
+import FabiusFunction.FinitePrefixThueMorseCollapse
 import FabiusFunction.ThueMorseArtinSchreier
 import FabiusFunction.ThueMorseEulerTransform
 import FabiusFunction.ThueMorseLucasSupport
@@ -279,6 +280,7 @@ import FabiusFunction.ThueMorseFourierInversion
 import FabiusFunction.HalfIntegerOddDFT
 import FabiusFunction.SummableCyclicAlias
 import FabiusFunction.HalfIntegerAliasIdentity
+import FabiusFunction.DyadicBoundaryIdentity
 import FabiusFunction.AliasDyadicBridge
 import FabiusFunction.AliasQBinomialBridge
 import FabiusFunction.MeanValueBracket
