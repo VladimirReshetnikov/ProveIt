@@ -89,7 +89,108 @@ Several analytical and finite-dimensional results in the new Lagrange and
 Legendre chapters remain human proofs backed by exact scripts rather than Lean
 theorems. The report says so explicitly. Existing compiled Lean declarations
 are named where they discharge a claim; no source-only statement is presented
-as kernel verified.
+as kernel verified. The translated Legendre analysis kernel and its finite
+biorthogonality identity are now the explicit exception described below.
+
+The current `FabiusFunction.LagrangeRvachevMatrix` surface consists of the
+finite-index declarations `rvachevAtomIndexSet` and `RvachevAtomIndex`, the
+definitions `lagrangeRvachevEncoderMatrix` and
+`lagrangeRvachevDecoderMatrix`, and six theorems:
+`lagrangeRvachevEncoderMatrix_nonneg`,
+`sum_lagrangeRvachevEncoderMatrix_row_eq_one`,
+`sum_lagrangeRvachevDecoderMatrix_row_eq_one`,
+`lagrangeRvachevEncoderMatrix_mul_decoderMatrix`,
+`exists_neg_entry_of_rightInverse_of_row_overlap`, and
+`exists_lagrangeRvachevDecoderMatrix_entry_neg_of_row_overlap`. This closes
+`prop:lag-markov` exactly, with positive row overlap retained as a hypothesis.
+For the compound `thm:lag-right-inverse`, it closes only the boxed `UB = I`
+clause; the `BU` projector, basis, spectral, moment, intertwining, and
+Cauchy--Binet clauses remain human proofs. The crosswalk therefore remains at
+80 canonical assertion rows (including 11 conjectures); no assertion-count
+delta accompanies these evidence-status changes.
+
+The older compiled module `FabiusFunction.LagrangeRvachevSynthesis` already
+closes `thm:lag-cardinal` Exact/Complete by assembly, without a redundant
+report-shaped wrapper. The individual-cardinal declaration is
+`normalized_sum_Ioo_lagrangeRvachevDecoder_mul_shifted_rvachevUp`; the
+arbitrary-data declaration is
+`sum_Ioo_lagrangeRvachevAtomCoefficient_mul_shifted_rvachevUp`. Here `M ≠ 0`
+is the positive-mesh condition, `s.card - 1 ≤ padicValNat 2 M` is admissibility
+through degree `d = |s|-1`, the evaluation point remains in `[-1,1]`, the
+integer open interval is exactly `|k| < 2M`, and `(M : ℝ)⁻¹` is the displayed
+spacing `h`. The atoms are literal unit-radius translates. Node injectivity is
+not needed for the polynomial identities and is supplied by the report when
+they are read as cardinal interpolation. This promotion does not promote any
+additional clause of the compound `thm:lag-right-inverse`.
+
+The compiled source-only `FabiusFunction.RvachevLagrangeNodesOnly` module
+promotes `cor:lag-nodes-only` from a human proof with no Lean anchor to an
+Exact/Complete compositional counterpart. Its exhaustive public surface is
+one definition, `rvachevDeconvolvedPolynomialRat`, and fourteen theorems:
+`map_rvachevDeconvolvedPolynomialRat`,
+`rvachevDeconvolvedPolynomial_eq_sum_appell`,
+`eval_rvachevDeconvolvedPolynomial_eq_sum_even_iterateDerivative`,
+`rvachevDeconvolvedPolynomial_prod_X_sub_C_eq_sum_appell`,
+`eval_rvachevDeconvolvedPolynomial_lagrangeBasis_eq_sum_even_iterateDerivative`,
+`eval_rvachevDeconvolvedPolynomial_lagrangeBasis_eq_nodalWeight_mul_sum_appell`,
+`lagrangeRvachevDecoder_eq_nodalWeight_mul_sum_appell`,
+`map_lagrangeBasis_ratCast`,
+`map_rvachevDeconvolvedPolynomialRat_lagrangeBasis`,
+`lagrangeRvachevDecoder_eq_ratCast`,
+`rvachevRawMomentRat_eq_centeredRvachevFullMoment`,
+`momentCumulant_rvachevRawMomentRat_eq_centeredRvachevFullCumulant`,
+`momentCumulant_rvachevRawMomentRat_even_eq_bernoulliMersenne`, and
+`rvachevReciprocalMomentRat_eq_completeBellPolynomial_neg_centeredCumulant`.
+Together they give the printed derivative cutoff, the raw omitted-node
+elementary-symmetric/Appell expansion, rational coefficient descent and
+rational lattice values, and the complete-Bell link to formal centered
+cumulants. This is exact by assembly rather than by a single wrapper theorem.
+It does not claim rational values at irrational evaluation points or analytic
+convergence of the reciprocal MGF. Its promotion is independent of the
+existing synthesis assembly for `thm:lag-cardinal`, and neither result
+promotes the larger `thm:lag-right-inverse`.
+
+The compiled `FabiusFunction.RvachevLegendreCentralSum` module promotes
+`cor:leg-central-sum` to Exact/Complete. Its exhaustive public surface has no
+definitions and three theorems: `eval_legendrePolynomial_even_zero`,
+`eval_rvachevLegendreDeconvolutionPolynomial_even`, and
+`rvachevLegendreCentralSum`. The last theorem is the printed identity with
+`M = 4 ^ n`: it evaluates the existing even Legendre synthesis at zero,
+removes `|k| >= M` by compact support, pairs the remaining nonzero nodes by
+evenness, clears the mesh factor, and uses the exact central Legendre value.
+It is slightly stronger only in allowing any `BoundedFabius` satisfying
+`IsFabius`, and it includes `n = 0`. This promotion does not formalize the
+Jacobi closed form, all-degree parity or rationality in `thm:leg-mode-synthesis`,
+nor reverse closure, mesh minimality, or any larger Lagrange right-inverse
+claim. The retained package PDF predates these source-only status annotations
+and was not rebuilt.
+
+The compiled source-only `FabiusFunction.RvachevLegendreBiorthogonality`
+module promotes only `thm:leg-biorthogonality` to Exact/Complete. Its
+exhaustive public surface is one definition,
+`rvachevLegendreAnalysisKernel`, and one theorem,
+`rvachevLegendreBiorthogonality`. The definition is exactly the printed
+translated kernel `def:leg-Lambda`, the `(2m+1)/2`-normalized integral against
+`P_m`; the theorem has exactly the
+positive natural mesh encoded by `M != 0`, admissibility
+`l <= padicValNat 2 M`, the open integer block `|k| < 2M`, the outer factor
+`M^-1`, and the Kronecker value `if m = l then 1 else 0`. It includes
+`l = 0` and `m = 0` and harmlessly allows any `BoundedFabius` satisfying
+`IsFabius`. It does not promote the support, smoothness, Fourier--Bessel, or
+rationality package in `thm:leg-Lambda`, nor
+`cor:leg-biorthogonal-matrices`, the compound mode-synthesis/reverse/Gram
+rows, or any Lagrange right-inverse claim.
+
+Independently, the existing `FabiusFunction.TwoAdic` declarations make
+`thm:leg2-moment-units` Exact/Complete by assembly. The repository sequence
+`moment m : ℚ` is the manuscript's even moment `mu_(2m)`;
+`moment_padicVal_two` proves its rational two-adic valuation is zero, and
+`moment_num_den_odd` proves that its reduced numerator and denominator are
+both odd. The latter is exactly `mu_(2m) = 1 mod 2` under the standard residue
+convention for rational two-adic units. Both declarations include `m = 0`.
+This is executable rational valuation/parity data, not construction of a
+separate topological `ℚ_2` value, and it promotes no neighboring Legendre
+asymptotic or matrix row. The retained package PDF predates both promotions.
 
 The Q12 root transition is exact computer-assisted mathematics: rational
 polynomials and rational Sturm chains decide root counts. Approximate complex

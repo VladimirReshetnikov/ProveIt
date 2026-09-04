@@ -10,11 +10,12 @@ uniform-coordinate construction to
 `w q n = (1 - q) * q ^ n`.
 
 The definitions are total in `q`.  Absolute convergence, affine
-self-similarity, reflection, and support as the exact series range use the
-natural hypothesis `|q| < 1`; nonnegativity, concentration, and exact
-interval support `[0,1]` use `0 ≤ q < 1`.  In particular, the foundational
-law includes the endpoint `q = 0`.  Strict positivity is needed only by later
-density and CDF-change-of-variables arguments.
+self-similarity, reflection, the exact mean, and support as the exact series
+range use the natural hypothesis `|q| < 1`; nonnegativity, concentration,
+and exact interval support `[0,1]` use `0 ≤ q < 1`.  In particular, the
+foundational law and its mean theorem include the endpoint `q = 0` and
+negative contractions.  Strict positivity is needed only by later density
+and CDF-change-of-variables arguments.
 -/
 
 open Filter Set MeasureTheory ProbabilityTheory Topology
@@ -230,6 +231,22 @@ theorem geometricUniformDistribution_reflection
   simpa only [geometricUniformDistribution,
     (hasSum_geometricUniformWeight hq).tsum_eq] using
     (weightedUniformDistribution_reflection
+      (summable_norm_geometricUniformWeight hq))
+
+/-! ## Mean -/
+
+/-- Every real geometric uniform law with `|q| < 1` has mean `1 / 2`.
+
+This is the generic weighted-law barycenter applied to the normalized
+geometric weights.  It includes `q = 0` and all negative contractions in the
+open unit interval; no positivity hypothesis is used. -/
+theorem integral_id_geometricUniformDistribution_eq_one_half
+    {q : ℝ} (hq : |q| < 1) :
+    (∫ x : ℝ, x ∂geometricUniformDistribution q) = 1 / 2 := by
+  simpa only [geometricUniformDistribution,
+    (hasSum_geometricUniformWeight hq).tsum_eq, smul_eq_mul, mul_one] using
+    (integral_id_weightedUniformDistribution
+      (w := geometricUniformWeight q)
       (summable_norm_geometricUniformWeight hq))
 
 /-- For `0 ≤ q < 1`, the geometric law is concentrated on `[0,1]`. -/

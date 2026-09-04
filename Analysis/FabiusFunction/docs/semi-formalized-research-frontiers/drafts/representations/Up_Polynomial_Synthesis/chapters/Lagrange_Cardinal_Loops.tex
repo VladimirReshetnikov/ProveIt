@@ -74,6 +74,31 @@ $|k|<2m$.  Multiply by $y_j$, sum over the finite node set, and use linearity
 of $\mathscr D_u$ to obtain \eqref{eq:lag-interpolant}.
 \end{proof}
 
+\paragraph{Exact Lean counterpart.}
+The two displayed synthesis identities are Exact/Complete in the existing
+module \path{FabiusFunction.LagrangeRvachevSynthesis}, by composition rather
+than through a redundant report-shaped wrapper.  The theorem
+\path{normalized_sum_Ioo_lagrangeRvachevDecoder_mul_shifted_rvachevUp}
+is \eqref{eq:lag-cardinal}: its finite node set has
+$\lvert s\rvert=d+1$, the hypothesis
+\path{s.card - 1 <= padicValNat 2 M} is
+$d\le\TwoAdicValuation(M)$, \path{M != 0} is the positive-mesh condition,
+and \path{x in Icc (-1) 1} is exactly $x\in[-1,1]$.  Its integer index set
+\path{Finset.Ioo (-(2 * M)) (2 * M)} is $\lvert k\rvert<2M$, its prefactor is
+$M^{-1}=h$, and its atoms are the literal unit-radius translates
+$u(x-k/M)$.
+
+The theorem
+\path{sum_Ioo_lagrangeRvachevAtomCoefficient_mul_shifted_rvachevUp}
+is \eqref{eq:lag-interpolant} for arbitrary nodal data: the definition
+\path{lagrangeRvachevAtomCoefficient} is the same normalized decoder applied
+to the data, and \path{Lagrange.interpolate} is $I_Xy$.  The Lean results do
+not need node injectivity for these polynomial identities; the pairwise
+distinct nodes fixed above supply the usual cardinal interpretation.  No new
+wrapper theorem or source declaration is needed.  This promotion concerns
+only \Cref{thm:lag-cardinal}; it does not promote any still-human clause of
+\Cref{thm:lag-right-inverse}.
+
 The coefficients are closed algebraic expressions in the nodes.  Put
 \[
  \lambda_j=\left(\prod_{r\ne j}(x_j-x_r)\right)^{-1},
@@ -92,10 +117,12 @@ For every $0\le j\le d$ and every $t\in\RealNumbers$,
  &=\lambda_j\sum_{n=0}^{d}(-1)^{d-n}e_{d-n}^{(j)}\Gd_n(t).
  \label{eq:lag-nodes-only}
 \end{align}
-Thus rational nodes give rational amplitudes.  More explicitly, the
-$\gamma_{2r}$ are complete Bell polynomials in the negated Bernoulli
-cumulants of \eqref{eq:appell-pair}, so no implicit linear solve is hidden in
-\eqref{eq:lag-cardinal}.
+Thus rational nodes give a deconvolved cardinal polynomial over
+$\RationalNumbers$, and rational evaluation points give rational amplitudes.
+No rationality is asserted for evaluation at an arbitrary irrational real.
+More explicitly, the $\gamma_{2r}$ are complete Bell polynomials in the
+negated Bernoulli cumulants of \eqref{eq:appell-pair}, so no implicit linear
+solve is hidden in \eqref{eq:lag-cardinal}.
 \end{corollary}
 
 \begin{proof}
@@ -109,6 +136,42 @@ and applying $\mathscr D_ux^n=\Gd_n(x)$ term by term gives
 \eqref{eq:lag-nodes-only}.  The Bell--cumulant description is exactly the
 coefficient identity following \eqref{eq:appell-pair}.
 \end{proof}
+
+\paragraph{Exact Lean counterpart.}
+The source-only module \path{FabiusFunction.RvachevLagrangeNodesOnly}
+formalizes this corollary completely, by composition rather than through one
+monolithic wrapper theorem.  The derivative identity is
+\path{eval_rvachevDeconvolvedPolynomial_lagrangeBasis_eq_sum_even_iterateDerivative},
+under the displayed pairwise-distinct-node hypothesis; the raw omitted-node
+expansion is
+\path{eval_rvachevDeconvolvedPolynomial_lagrangeBasis_eq_nodalWeight_mul_sum_appell};
+and \path{lagrangeRvachevDecoder_eq_nodalWeight_mul_sum_appell} gives its
+lattice-sampled form.  Here \path{Lagrange.nodalWeight} is the displayed
+$\lambda_j$, and \path{rvachevAppellPolynomial} is $\Gd_n$.
+
+For rational nodes,
+\path{rvachevDeconvolvedPolynomialRat},
+\path{map_rvachevDeconvolvedPolynomialRat_lagrangeBasis}, and
+\path{lagrangeRvachevDecoder_eq_ratCast} give respectively the rational
+polynomial, its coefficientwise real cast, and rationality at $t=k/M$.
+The last identity is totalized at $M=0$ in Lean; its use in synthesis still
+has the separate positive, admissible-mesh hypotheses of
+\Cref{thm:lag-cardinal}.  It does not imply rational values at irrational
+$t$.
+
+Finally,
+\path{rvachevReciprocalMomentRat_eq_completeBellPolynomial_neg_centeredCumulant}
+identifies the full reciprocal coefficient sequence $\gamma$ with complete
+Bell polynomials in the negated full centered cumulants, while
+\path{momentCumulant_rvachevRawMomentRat_even_eq_bernoulliMersenne} and the
+existing \path{centeredRvachevFullCumulant_odd} give the even
+Bernoulli--Mersenne formula and odd vanishing.  This is an equality of formal
+coefficient sequences; it does not assert analytic convergence of a
+reciprocal moment-generating function.  Accordingly
+\Cref{cor:lag-nodes-only} is Exact/Complete in Lean.  Its compositional
+promotion is logically separate from the preceding, already-existing exact
+synthesis counterpart for \Cref{thm:lag-cardinal}, and neither promotion
+formalizes any still-human clause of \Cref{thm:lag-right-inverse}.
 
 \subsection{The exact right inverse and its projector}
 
@@ -204,6 +267,20 @@ the synthesized function and then synthesizes its cardinal interpolant.
 Finally apply Cauchy--Binet to $\det(UB)=1$.
 \end{proof}
 
+\paragraph{Lean coverage boundary.}
+The finite index block \path{rvachevAtomIndexSet} and its typed index
+\path{RvachevAtomIndex}, together with
+\path{lagrangeRvachevEncoderMatrix} and
+\path{lagrangeRvachevDecoderMatrix} in
+\path{FabiusFunction.LagrangeRvachevMatrix}, identify the Lean matrices as
+$A=hU$ and $D=h^{-1}B$.  Hence
+\path{lagrangeRvachevEncoderMatrix_mul_decoderMatrix} is an exact formal proof
+of the boxed clause $UB=I_{d+1}$.  It deliberately makes no claim about
+$BU$, so the projector range/kernel, rank, trace, characteristic polynomial,
+intertwining, basis-factorization, moment-transmutation, and Cauchy--Binet
+clauses above remain human proofs.  Accordingly
+\Cref{thm:lag-right-inverse} remains only partially Lean-covered.
+
 The factorization has an exact probabilistic normalization.  Put
 \[
  \widetilde U=hU,
@@ -237,6 +314,18 @@ used with positive weight must therefore equal $e_i$.  A column positive in
 two different encoder rows would force the same decoder row to equal two
 different extreme points, a contradiction.
 \end{proof}
+
+\paragraph{Lean counterpart.}
+Under the same identifications, \path{lagrangeRvachevEncoderMatrix_nonneg},
+\path{sum_lagrangeRvachevEncoderMatrix_row_eq_one},
+\path{sum_lagrangeRvachevDecoderMatrix_row_eq_one}, and
+\path{lagrangeRvachevEncoderMatrix_mul_decoderMatrix} prove every Markov and
+right-inverse clause of \Cref{prop:lag-markov}.  The general theorem
+\path{exists_neg_entry_of_rightInverse_of_row_overlap} proves the finite
+matrix obstruction, and
+\path{exists_lagrangeRvachevDecoderMatrix_entry_neg_of_row_overlap} is its
+exact Lagrange--Rvachev specialization.  Both retain the displayed strictly
+positive overlap as a hypothesis; no unconditional overlap claim is made.
 
 The sign obstruction has a quantitative form.  For a row-unital right
 inverse $E$ of a nonnegative row-stochastic matrix $A$, write

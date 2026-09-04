@@ -26,8 +26,9 @@ series.
 - `audit/POST_INTAKE_REVIEW.md` - repository-side mathematical corrections,
   reproducibility replay, and formalization boundary.
 - `audit/corpus_manifest_2026-08-27.txt` - preserved recursive TeX path ledger.
-- `SHA256SUMS.arrival.txt` - immutable submitted 30-entry ledger.
-- `SHA256SUMS` - authoritative integrity hashes for every other current file.
+- Historical checksum records - the submitted 30-entry ledger and the later
+  normalized-package ledger are retired; their exact bytes remain recoverable
+  from Git history.
 
 ## Mathematical contribution map
 
@@ -75,12 +76,13 @@ imported into the report. They are **not Lean status markers**.
 
 `LEAN_CROSSWALK.md` audits all 41 labeled
 theorem/proposition/lemma/corollary statements. The maintained report now
-contains six statement-exact, compiler-backed results: the totalized
+contains seven statement-exact, compiler-backed results: the totalized
 activation dictionary, the activation-bounds lemma including its finite Taylor
 jet, the sharp local quadratic coefficient, the geometric
 activation-dimension proposition, the certified dyadic prefix/tail corollary,
-and the square-summable activation-series theorem. The remaining status counts
-are 12 Unformalized, 20 Partial, and 3 Near-complete.
+the square-summable activation-series theorem, and the continuous
+Thue--Morse corner theorem. The remaining status counts are 12 Unformalized,
+20 Partial, and 2 Near-complete.
 
 The older compound statement `lem:p-bounds` is now Complete.  The divided-slope
 bridge is `Fabius.tanhDiv_eq_dslope`; the finite analytic calculation is
@@ -117,9 +119,25 @@ bridge, and q-binomial chaos coefficient remain outside this activation
 milestone.  The proved finite Taylor jet does not imply any of those stronger
 claims.
 
-For `thm:TM-corner`, Lean now contains the exact Boolean-cube, polynomial,
-dyadic-sign, and report-grid clauses over a more general algebraic target. The
-repeated `C^N` integral identity and one final report-shaped wrapper remain.
+For `thm:TM-corner`, Lean now contains every clause, exactly by composition.
+The one-definition/four-theorem `FabiusFunction.ThueMorseCornerIntegral`
+surface is `Fabius.centeredBoxIntegral`, `centeredBoxIntegral_zero`,
+`centeredBoxIntegral_succ`,
+`symmetricMixedDifference_range_eq_centeredBoxIntegral`, and
+`symmetricMixedDifference_univ_eq_centeredBoxIntegral`.  Its local analytic
+theorem allows arbitrary nonnegative half-steps and assumes `IsOpen I`,
+`OrdConnected I`, `ContDiffOn ℝ N g I`, and containment of the full closed
+symmetric segment in `I`.  It therefore covers the report's positive steps
+and open-interval `C^N` hypothesis without imposing global smoothness, and it
+also includes zero steps and `N = 0`.  The proof is a finite powerset
+expansion, local interval FTC, finite sum--integral exchange, and induction on
+the derivative order; the univ form merely reindexes through
+`Fin.valEmbedding`.  Together with the exact Boolean-cube, polynomial,
+dyadic-sign, and report-grid declarations in
+`FabiusFunction.ThueMorseSymmetricDifference`, this makes row 33 Complete.
+The analytic leaf is real-valued and uses a fixed recursive integral order; it
+does not construct the following Walsh conditional expectation or its
+`2^(-N)` normalization.
 
 ## Reproduce the numerical files
 
@@ -199,19 +217,14 @@ Libertinus fonts when available and Latin Modern as a fallback.
   output for the vector plots; the numerical data were retained where the
   replay audit found only the documented last-bit platform drift.
 
-## Integrity check
+## Integrity provenance
 
-From the archive root:
-
-```bash
-sha256sum -c SHA256SUMS
-```
-
-The active ledger contains exactly 33 entries—every regular package file
-except `SHA256SUMS` itself, including this README, the immutable arrival
-ledger, the Lean crosswalk, and all four audit files---and verifies against the
-repository-normalized bytes. It is a mixed current-source/retained-artifact
-ledger: successful verification does not claim that the historical report PDF
+Package-local checksum manifests are retired repository-wide and must not be
+recreated.  Before retirement, the normalized-package ledger contained exactly
+33 entries covering every other regular package file, including this README,
+the submitted checksum record, the Lean crosswalk, and all four audit files.
+Its exact bytes and verification result remain recoverable from Git history.
+That historical verification did not claim that the retained report PDF
 renders the current TeX.
 
 ## Repository filing provenance
@@ -223,11 +236,13 @@ SHA-256
 The archive was a safe single-wrapper delivery: it contained no absolute or
 parent-traversal paths, symlinks, encrypted entries, duplicate paths, or
 case-folding collisions, and its CRC check passed.  The submitted 30-entry
-ledger verified 30/30 against the arrival bytes and is preserved unchanged as
-`SHA256SUMS.arrival.txt` (SHA-256
+ledger verified 30/30 against the arrival bytes.  Its exact historical bytes
+remain recoverable from Git at the former path `SHA256SUMS.arrival.txt`
+(SHA-256
 `85c42740d869c520d5264049f945e52b3c9cfc1bc837a19aaf05c886c55aa6ea`).
 Nine CSV files were then normalized from CRLF to the repository's required LF
-line endings; `SHA256SUMS` is the authoritative current-package ledger.
+line endings; the subsequent normalized-package checksum ledger was later
+retired under the repository-wide policy.
 
 After that intake checkpoint was published, the repository-side review
 replayed the numerical program, repaired the six vector figures to remove

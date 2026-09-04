@@ -576,6 +576,12 @@ The Bernoulli numbers \(B_n\) are defined by the generating function
        =\sum_{n=0}^{\infty}B_n\frac{z^n}{n!},
        \qquad |z|<2\pi.
 \end{equation}
+At \(z=0\), the left side of \eqref{eq:bernoulli-gen} is understood in the
+standard removable-origin sense, with value \(1\).  The Lean crosswalk below
+represents that convention by
+\(\lean{complexExpm1Div}(z)^{-1}\): this is \(1\) at the origin and is the
+literal quotient \(z/(\exp z-1)\) when \(z\ne0\).  It does not identify the
+series with Lean's totalized literal quotient at zero, whose value is \(0\).
 Thus \(B_0=1\), \(B_1=-1/2\), \(B_2=1/6\),
 \(B_4=-1/30\), and all odd \(B_n\) beyond \(B_1\) vanish.
 
@@ -4374,11 +4380,105 @@ domain \([-1/\EulerE,\infty)\); module \lean{PrincipalLambertW}) and
 real function whose values off the intended domain are junk; every theorem
 below carries the domain hypothesis explicitly.
 
-The focused branch-pair tranche is exhaustive at this checkpoint:
+The focused branch-pair and Bernoulli tranche is exhaustive at this checkpoint:
 \lean{LambertWBranchPairing} has \(0+7\) public definitions/theorems,
 \lean{LambertWGapBijection} has \(4+16\), and
-\lean{LambertWBranchSymmetry} has \(0+9\).  Their union is therefore four
-definitions and 32 theorems, 36 public declarations in all.
+\lean{LambertWBranchSymmetry} has \(0+9\), while
+\lean{LambertWBranchGapBernoulli} has \(0+5\).  Their four-module union is
+therefore four definitions and 37 theorems, 41 public declarations in all.
+The preceding exact-radius checkpoint had the then-current census 903/11,447; the
+complex value-completion theorem brought the next historical checkpoint to
+903/11,448.  The later sibling
+\path{GeometricUniformMomentPolynomial.lean} module has \(1+8\) public
+definitions/theorems and raised the next historical census to 904/11,457.
+Its companion \path{GeometricUniformMomentPolynomialBridge.lean} has the
+exhaustive count \(0+1\) and raised the next historical census to 905/11,458.
+Its sole
+theorem,
+\nolinkurl{geometricUniformMomentPolynomial_eval₂_eq_mgf_taylorCoefficient},
+supplies the real-\(\lvert q\rvert<1\) actual-MGF normalization and makes
+\nolinkurl{p7:eq:Pn-def} Exact in that regime.  It supplies no complex-q
+infinite-product realization by itself.  The subsequent exhaustive \(1+2\)
+\path{GeometricUniformComplexMomentProduct.lean} leaf consists of
+\nolinkurl{geometricUniformComplexMomentProduct},
+\nolinkurl{hasProdLocallyUniformly_geometricUniformComplexMomentProduct}, and
+\nolinkurl{geometricUniformMomentPolynomial_eval₂_eq_complexMomentProduct_taylorCoefficient}.
+For every complex \(\lVert q\rVert<1\), these give the actual locally uniform
+product and identify its normalized Taylor coefficient with the recursive
+polynomial.  This is a complex analytic analogue, not a complex
+probability-moment extension of \nolinkurl{p7:eq:Pn-def}, whose Exact status
+remains restricted to real \(\lvert q\rvert<1\).  At this historical point the
+canonical q-monograph compound \nolinkurl{thm:qF-moment-polynomial} remained
+Partial because neither the global \texttt{RatFunc} identification nor its
+pole-clearing polynomial continuation at roots was formalized.  The complex leaf raised the next
+incoming-branch checkpoint to the historical 906/11,461, and in the merged
+chronology it formed the historical 918/11,568 checkpoint.  The exhaustive
+zero-definition/one-theorem \path{HalfQBinomialRootSimplicity.lean} leaf then
+gave the merged-main 919/11,569 checkpoint.  Its
+\nolinkurl{halfQBinomial_sum_rootMultiplicity_two_pow}, together with the
+existing complete rational root classification, makes
+\nolinkurl{cor:halfbase-root-locus} Exact.  No arbitrary-base or
+arbitrary-field simplicity is claimed, and
+\nolinkurl{cor:qbinom-inversion-law} remains Partial.  The subsequent
+exhaustive \(1+2\)
+\path{GeometricUniformExteriorComplexMomentGerm.lean} sibling consists of
+\nolinkurl{geometricUniformExteriorComplexMomentGerm},
+\nolinkurl{analyticAt_geometricUniformExteriorComplexMomentGerm}, and
+\nolinkurl{geometricUniformMomentPolynomial_eval₂_eq_exteriorComplexMomentGerm_taylorCoefficient}.
+For every complex \(q\) with \(1<\lVert q\rVert\), these define the actual
+reciprocal germ, prove its analyticity at the origin, and identify its
+normalized Taylor coefficient with the recursive polynomial.  No unit-circle
+or global rational-function claim is made.  The exterior leaf raises the
+census to 920/11,572.
+
+The final exhaustive \(0+3\)
+\path{GeometricUniformMomentPolynomialDegree.lean} sibling consists of
+\nolinkurl{coeff_geometricUniformMomentPolynomial_choose_two},
+\nolinkurl{coeff_geometricUniformMomentPolynomial_choose_two_sub_one}, and
+\nolinkurl{geometricUniformMomentPolynomial_natDegree_eq}.  With
+\(T_n=\binom n2\), these prove the top coefficient \(B_n(1)/n!\), the
+subleading coefficient
+\(-B_n(1)/n!+B_{n-1}(1)/(2(n-1)!)\) for \(n\geq2\), and degree \(T_n\) for
+even \(n\) or \(n=1\), one less otherwise.  Here Lean's
+\nolinkurl{bernoulli'} is \(B_n(1)=(-1)^nB_n\) under Mathlib's convention
+\(B_1=-1/2\).  This makes \nolinkurl{p7:thm:Pn} and
+\nolinkurl{prop:qF-P-degree-sharp} Exact.  At that checkpoint the global
+\nolinkurl{thm:qF-moment-polynomial} was still Partial for the separate
+\texttt{RatFunc}/root-continuation gap.  The sharp leaf raises the census to
+the historical 921/11,575 checkpoint.  The exhaustive
+\path{RvachevLaurentLeading.lean} \((1+6)\) sibling then gives 922/11,582 and
+makes \nolinkurl{is:p2:thm:Laurent-leading} Exact.  The exhaustive
+\path{FinitePrefixAppellRecovery.lean} \((11+17)\) sibling gives the
+923/11,610 checkpoint and makes \nolinkurl{is:p2:thm:finite-prefix-expansion} and
+\nolinkurl{is:p2:thm:exact-recovery} Exact as finite rational identities.
+
+The final exhaustive \(1+4\)
+\path{GeometricUniformMomentRatFunc.lean} sibling consists of
+\nolinkurl{geometricUniformMomentRatFunc},
+\nolinkurl{qFactorial_mul_geometricUniformMomentRatFunc},
+\nolinkurl{eval_geometricUniformMomentRatFunc_eq_complexMomentProduct_taylorCoefficient},
+\nolinkurl{eval_geometricUniformMomentRatFunc_eq_exteriorComplexMomentGerm_taylorCoefficient},
+and \nolinkurl{eval_geometricUniformMomentRatFunc_one}.  It packages one
+\texttt{RatFunc} over the rationals, proves the global q-factorial clearing
+identity, identifies that same rational function with both strict
+off-unit-circle Taylor-coefficient regimes, and handles \(q=1\) through
+\([n]_1!=n!\).  Together with the recursive polynomial leaf, this makes
+\nolinkurl{thm:qF-moment-polynomial} Exact and gives the historical
+924/11,615 checkpoint.  No analytic value, pole order, or divisor is asserted
+at a genuine unit-root pole.  The later
+\nolinkurl{weightedSumDistribution_real_Ici_eq_rvachevUp_of_nonneg} and
+\nolinkurl{integral_pow_weightedSumDistribution_eq_mul_intervalIntegral_rvachevUp}
+theorems make \nolinkurl{prop:up-tail} and \nolinkurl{cor:up-moments} Exact.
+The unrelated exhaustive (1+1)
+\path{RvachevLegendreBiorthogonality.lean} leaf consists of
+\nolinkurl{rvachevLegendreAnalysisKernel} and
+\nolinkurl{rvachevLegendreBiorthogonality}; it closes the translated-kernel
+definition and finite Legendre biorthogonality, but not the larger
+Fourier--Bessel or projector claims.  These additions give the live
+925-module/11,619-declaration census.  The q forward ledger is 181 Exact /
+78 Partial / 15 None / 8 interface rows, and its source concordance is
+94 Lean-proved / 384 human-proved frontier / 60 non-applicable /
+9 conjectures.
 
 \begin{longtable}{@{}p{0.30\textwidth}p{0.42\textwidth}p{0.22\textwidth}@{}}
 \toprule
@@ -4620,6 +4720,35 @@ bounds.  The left endpoint is sharp: at \(x=-1/\EulerE\), both branches are
 are therefore essential.  The endpoint \(x=0\) remains excluded because the
 lower real branch has no finite value there.\\
 \addlinespace
+\eqref{eq:bernoulli-gen}, with the standard removable-origin convention above,
+and \eqref{eq:pair-Bernoulli-general}: the complex Bernoulli generating
+identity and the compact paired series for \(0<\Delta<2\pi\) on
+\(-1/\EulerE<x<0\), together with the exact convergence locus &
+\decl{summable\_norm\_bernoulli\_mul\_pow\_div\_factorial},
+\decl{summable\_bernoulli\_mul\_pow\_div\_factorial\_iff},
+\decl{hasSum\_bernoulli\_mul\_pow\_div\_factorial},
+\decl{hasSum\_bernoulli\_mul\_pow\_div\_factorial\_complex\_iff}, and
+\decl{principalLambertW\_lowerLambertW\_eq\_bernoulliSeries} (module
+\lean{LambertWBranchGapBernoulli}) &
+Exact for the complex generating identity, the compact real branch pair, and
+the convergence locus.  The
+first theorem proves absolute summability for every real
+\(z\) with \(\lvert z\rvert<2\pi\); the second proves, for complex \(z\), that
+the Bernoulli series is summable if and only if \(\lVert z\rVert<2\pi\), hence
+it diverges on \(\lVert z\rVert=2\pi\) and throughout the exterior; the third
+proves the actual all-index real sum \(z/(\exp z-1)\) when \(z\ne0\); the
+fourth proves the complex \(\operatorname{HasSum}\) value
+\(\lean{complexExpm1Div}(z)^{-1}\) if and only if
+\(\lVert z\rVert<2\pi\); and the fifth specializes both real sums on the
+strict common branch domain when the positive branch gap is below \(2\pi\).
+At \(z=0\), the fourth theorem's target is the removable value \(1\); away
+from zero it rewrites to the literal quotient.  This makes both displayed
+identities in this row Exact under the stated convention, but claims no
+equality with Lean's totalized quotient at zero.  The compiled radius proof
+uses even Bernoulli--zeta coefficient bounds and a positive even subsequence;
+it does not formalize the Guide's nearest-nonzero-zero explanation.  The
+surrounding expanded displays and every Puiseux claim remain unpromoted.\\
+\addlinespace
 \Cref{thm:W0negativebounds}: for \(-1/\EulerE<x<0\),
 \(-1+\sqrt{1+\EulerE x}<\Wz(x)<-1+\sqrt{2(1+\EulerE x)}\) and \(\Wz(x)<x\) &
 \decl{principalLambertW\_negative\_bounds}, with the halves
@@ -4636,8 +4765,8 @@ are the exponential inequalities \(\EulerE^s>1+s\) and
 \end{longtable}
 
 Not formalized, in the order they appear above: the moments of
-\Cref{sec:integrals}, the local Taylor
-expansion, convergence of the Maclaurin series, the full Puiseux and
+\Cref{sec:integrals}, the local Taylor expansion, convergence of the
+Maclaurin series, the full Puiseux and
 logarithmic asymptotic expansions, the remaining bounds of
 \Cref{sec:bounds} (the two-sided \(W_{-1}\) bound of
 \Cref{thm:chatzbound}), and everything from

@@ -68,7 +68,6 @@ theorem finiteQPochhammerZ_div_neg_natCast {a b q : 𝕜} (ha : a ≠ 0) (hb : b
   have hs0 : s ≠ 0 := pow_ne_zero _ (neg_ne_zero.mpr one_ne_zero)
   have hC0 : C ≠ 0 := pow_ne_zero _ hq
   field_simp
-  all_goals ring
 
 /-- The positive tail of `₁ψ₁` is dominated by a geometric series in `‖z‖`. -/
 theorem summable_onePsiOneTerm_nat {a b q z : 𝕜} (hq : ‖q‖ < 1) (hb : qPochhammerInfIn b q ≠ 0)

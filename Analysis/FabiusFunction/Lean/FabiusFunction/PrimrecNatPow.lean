@@ -1,4 +1,3 @@
-import Mathlib.Computability.Primrec
 import Mathlib.Computability.Partrec
 
 /-!

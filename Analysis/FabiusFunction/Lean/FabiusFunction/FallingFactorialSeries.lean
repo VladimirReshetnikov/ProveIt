@@ -42,7 +42,7 @@ theorem egfA_add (a b : ℕ → A) : egfA A a + egfA A b = egfA A (a + b) := by
   ext n
   rw [map_add, coeff_egfA, coeff_egfA, coeff_egfA, Pi.add_apply, mul_add]
 
-/-- Multiplication by a constant series scales every term of an exponential generating function. -/
+/-- Multiplication by a constant series scales every coefficient of an exponential generating function. -/
 theorem C_mul_egfA (c : A) (a : ℕ → A) :
     PowerSeries.C c * egfA A a = egfA A fun n => c * a n := by
   ext n
@@ -182,7 +182,7 @@ theorem Dx_C (p : Polynomial ℚ) :
   rw [coeff_Dx, coeff_C, coeff_C]
   split_ifs <;> simp
 
-/-- A power series whose coefficients are constant polynomials is annihilated by `Dx`. -/
+/-- A rational-coefficient power series mapped to constant polynomials is annihilated by `Dx`. -/
 theorem Dx_map_C (f : ℚ⟦X⟧) : Dx (PowerSeries.map (Polynomial.C : ℚ →+* Polynomial ℚ) f) = 0 := by
   ext n
   rw [coeff_Dx, coeff_map, map_zero, Polynomial.derivative_C]
@@ -193,7 +193,7 @@ theorem Dx_one : Dx (1 : (Polynomial ℚ)⟦X⟧) = 0 := by
   rw [coeff_Dx, coeff_one, map_zero]
   split_ifs <;> simp
 
-/-- The coefficientwise polynomial derivative does not differentiate the series variable `X`. -/
+/-- The coefficientwise polynomial derivative does not differentiate the power-series variable `X`. -/
 theorem Dx_X : Dx (X : (Polynomial ℚ)⟦X⟧) = 0 := by
   ext n
   rw [coeff_Dx, coeff_X, map_zero]
@@ -233,7 +233,7 @@ theorem constantCoeff_logPoly : constantCoeff logPoly = 0 := by
 /-- Since `logPoly` has constant polynomial coefficients, `Dx logPoly = 0`. -/
 theorem Dx_logPoly : Dx logPoly = 0 := Dx_map_C _
 
-/-- Formal differentiation commutes with mapping rational coefficients to constant polynomials. -/
+/-- Formal differentiation commutes with mapping rational coefficients to constant polynomials in `ℚ[x]`. -/
 theorem derivative_map_C (f : ℚ⟦X⟧) :
     d⁄dX (Polynomial ℚ) (PowerSeries.map (Polynomial.C : ℚ →+* Polynomial ℚ) f) =
       PowerSeries.map (Polynomial.C : ℚ →+* Polynomial ℚ) (d⁄dX ℚ f) := by
@@ -241,7 +241,7 @@ theorem derivative_map_C (f : ℚ⟦X⟧) :
   rw [coeff_derivative, coeff_map, coeff_map, coeff_derivative, map_mul, map_add, map_natCast,
     map_one]
 
-/-- The mapped logarithm satisfies `(1 + X) logPoly' = 1`. -/
+/-- The lifted logarithm satisfies `(1 + X) · logPoly' = 1`. -/
 theorem one_add_X_mul_derivative_logPoly : (1 + X) * d⁄dX (Polynomial ℚ) logPoly = 1 := by
   rw [logPoly, derivative_map_C, derivative_log]
   have h2 := congrArg (PowerSeries.map (Polynomial.C : ℚ →+* Polynomial ℚ))
