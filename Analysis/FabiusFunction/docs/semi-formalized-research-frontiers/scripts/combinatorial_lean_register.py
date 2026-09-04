@@ -80,12 +80,6 @@ STATUS = {
    r"The statement includes local $C^n$ hypotheses and explicitly uses "
    r"\lean{OrderedFinpartition}'s increasing-maximum block order. "
    r"No symmetry conversion is required; the separate partial-Bell regrouping remains open."),
- 'prop:merged-abel': ('Lean',
-   r"\lean{Fabius.abelPolynomial}, \lean{Fabius.abelPolynomial_zero}, \lean{Fabius.abelPolynomial_succ}, "
-   r"\lean{Fabius.abelPolynomial_succ_eval} give the polynomial formulas over every commutative "
-   r"ring and \lean{Fabius.abelPolynomial_eval_add} the binomial identity; \lean{Fabius.abelSeries_eq} "
-   r"and \lean{Fabius.exp_subst_eq_egfA_abelPolynomial} (\lean{AbelPolynomialSeries}) give the EGF "
-   r"identity for every solution of $T=te^{-aT}$, not only the constructed one"),
  'thm:bell-poly-partitions': ('Lean',
    r"\lean{Fabius.partialBell_eq_sum_setPartitions} and "
    r"\lean{Fabius.bell_complete_eq_sum_allSetPartitions} (\lean{BellSetPartitions}), over any "
@@ -387,6 +381,16 @@ STATUS = {
    r"\lean{Fabius.natCast_mul_coeff_raneyT_pow} is the positive-degree denominator-free "
    r"form (\lean{RaneyNumbers}).  The manuscript quantifies over every solution $T$; "
    r"uniqueness or transfer from an arbitrary solution to the constructed one is not formalized"),
+ 'prop:merged-abel': ('Lean',
+   r"\lean{Fabius.abelPolynomial}, \lean{Fabius.abelPolynomial_zero}, "
+   r"\lean{Fabius.abelPolynomial_succ}, and \lean{Fabius.abelPolynomial_succ_eval} "
+   r"give the polynomial formulas over every commutative ring.  Over every commutative "
+   r"$\RationalNumbers$-algebra, \lean{Fabius.abelSeries_eq} constructs a solution, "
+   r"\lean{Fabius.abel_eq_zero_and_one} gives the boundary coefficients for every solution, "
+   r"and \lean{Fabius.exp_subst_eq_egfA_abelPolynomial} proves "
+   r"\cref{eq:merged-abel-egf} for every solution, including degree zero.  "
+   r"\cref{eq:merged-abel-binomial} is \lean{Fabius.abelPolynomial_eval_add}, also for "
+   r"every $n\geq0$ (\lean{AbelPolynomialSeries})"),
  'thm:eulerian-binomial-recurrence': ('Lean',
    r"\lean{Fabius.eulerianPolynomial_binomial_recurrence} in $R[t]$ and "
    r"\lean{Fabius.eulerian_binomial_recurrence_series} in $R[[t]]$ (\lean{EulerianEGF}), for "
@@ -831,6 +835,49 @@ STATUS = {
    r"\lean{Fabius.coeff_mul_newtonReciprocalStep}, and actual truncation "
    r"\lean{Fabius.X_pow_dvd_one_sub_mul_trunc_newtonReciprocalStep}; all over an arbitrary "
    r"commutative ring and checked by focused compilation."),
+ # --- second half (from the Bernoulli/Euler/Genocchi chapter on), session funny-gates ---
+ 'prop:merged-loday-hyperplane': ('Lean',
+   r"\lean{Fabius.lodaySum_eq}, \lean{Fabius.two_mul_lodaySum_add_numLeaves}, "
+   r"\lean{Fabius.sum_lodayCoordinates_eq_of_mem_treesOfNumNodesEq} "
+   r"(\lean{BinaryTreeRotations}); the lowest-common-ancestor bijection is not formalized"),
+ 'thm:merged-tamari-order': ('Lean',
+   r"\lean{Fabius.TamariRotate}, \lean{Fabius.tamariPotential_lt_of_tamariRotate}, "
+   r"\lean{Fabius.reflTransGen_tamariRotate_antisymm}, \lean{Fabius.instPartialOrderTamari} "
+   r"(\lean{BinaryTreeRotations})"),
+ 'thm:merged-pochhammer': ('partial',
+   r"\lean{Fabius.ascPochhammer_eval_add_index}, \lean{Fabius.descPochhammer_eval_add_index}, "
+   r"\lean{Fabius.ascPochhammer_eval_eq_Gamma_div}, "
+   r"\lean{Fabius.Gamma_add_natCast_eq_ascPochhammer_mul} (\lean{PochhammerFalling}); "
+   r"the binomial series is not formalized in Pochhammer form"),
+ 'thm:merged-pochhammer-derivatives': ('partial',
+   r"$m=1$: \lean{Fabius.derivative_ascPochhammer}, \lean{Fabius.derivative_ascPochhammer_eval}, "
+   r"\lean{Fabius.hasDerivAt_ascPochhammer_eval} (\lean{PochhammerFalling})"),
+ 'cor:merged-reciprocal-pochhammer': ('partial',
+   r"$m=1$: \lean{Fabius.hasDerivAt_inv_ascPochhammer_eval} (\lean{PochhammerFalling})"),
+ 'prop:merged-beta-integral': ('Lean',
+   r"\lean{Fabius.integral_cpow_mul_one_sub_natPow}, "
+   r"\lean{Fabius.betaIntegral_eq_factorial_div_ascPochhammer} (\lean{PochhammerFalling}), "
+   r"on Mathlib's \lean{Complex.betaIntegral_eval_nat_add_one_right}"),
+ 'thm:merged-catalan-bijection': ('partial',
+   r"Mathlib's \lean{DyckWord.equivTreesOfNumNodesEq} and "
+   r"\lean{card_dyckWord_semilength_eq_catalan}; parenthesizations not a separate type"),
+ 'thm:merged-periodic-bernoulli-fourier': ('partial',
+   r"$n\ge2$: Mathlib's \lean{fourierCoeff_bernoulli_eq}, \lean{summable_bernoulli_fourier}, "
+   r"\lean{hasSum_one_div_nat_pow_mul_cos}, \lean{hasSum_one_div_nat_pow_mul_sin}, "
+   r"\lean{hasSum_zeta_nat}; the $n=1$ clauses are not formalized"),
+ 'thm:merged-euler-gamma-limit': ('partial',
+   r"Euler's limit is Mathlib's \lean{Complex.GammaSeq_tendsto_Gamma} (pointwise); "
+   r"the Weierstrass product is not formalized"),
+ 'cor:merged-harmonic-expansion': ('partial',
+   r"leading order: Mathlib's \lean{Real.tendsto_harmonic_sub_log}; the Bernoulli tail "
+   r"needs Euler--Maclaurin, not formalized"),
+ 'prop:merged-modified-bernoulli': ('partial',
+   r"\lean{Fabius.sinhDivLogCoefficient_eq_bernoulli_formula} (\lean{SinhDivBernoulliLog}) "
+   r"at unit scale; the rescaling to $\beta^{\sharp}$ is not recorded"),
+ 'prop:merged-recurrence-uniqueness': ('Lean',
+   r"\lean{Fabius.eq_of_row_recurrence} (\lean{IdentityCertificates}), arrays with equal "
+   r"row 0, equal boundary values and equal row step; one-index ancestor "
+   r"\lean{Fabius.eq_of_recurrence} (\lean{TelescopingCertificate})"),
 }
 
 # A dict literal keeps the LAST of two equal keys and reports nothing, so a
