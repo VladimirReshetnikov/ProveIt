@@ -6,17 +6,27 @@ pre-consolidation source pool at commit
 `55038f2fc7d20a483a48125f086a6c8488e45530`.
 
 **The consolidation is now closed.**  The editorial union, claim review, proof
-repair, donor retirement, and the final PDF build have all occurred.  Every row
-of `SOURCE_DISPOSITION.csv` carries a completed disposition, the five donor
-directories have been deleted, the active closure has contracted to the single
-canonical TeX/PDF pair, and `validate_canonical.py --final` passes with no
-errors and no warnings.  What this file continues to do is identify the six
-original inputs and give two independent Git routes back to each of them.
+repair, donor retirement, and its PDF publication checkpoint have all occurred.
+Every row of `SOURCE_DISPOSITION.csv` carries a completed disposition, and the
+five donor directories have been deleted.  At that publication checkpoint the
+active closure had contracted to the single canonical TeX/PDF pair and
+`validate_canonical.py --final` passed with no errors and no warnings.  What
+this file continues to do is identify the six original inputs and give two
+independent Git routes back to each of them.
 
-The six TeX files are research-frontier manuscripts.  Their theorem and proof
-environments are human-readable mathematical writing, not evidence of Lean
-verification.  No Lean build was run for this provenance checkpoint, and no
-claim in the source pool is represented here as machine checked.
+The live TeX changed again on 2026-09-04 to add Lean crosswalks and regenerate
+the formalization register.  The retained PDF was not rebuilt, and the closure
+digest was not refreshed.  Consequently the PDF and active closure rows are
+historical publication records rather than identities of the current TeX:
+there is **no current TeX/PDF render-parity claim**.  A later publication cycle
+may rebuild and recertify them; this crosswalk-only update does neither.
+
+The six input TeX files are research-frontier manuscripts.  Their theorem and
+proof environments are human-readable mathematical writing, not by themselves
+evidence of Lean verification.  No Lean build was run for the immutable
+provenance checkpoint.  The evolving canonical TeX now contains a separately
+generated Lean formalization register; only the exact declaration mappings in
+that register, not this provenance ledger, record machine-checked counterparts.
 
 ## Immutable intake chain
 
@@ -45,9 +55,11 @@ The records distinguish four intentionally different identities.
    changed TeX without rebuilding PDF, the PDF is not asserted to render the
    snapshot source.
 4. **Live canonical source** means the evolving TeX at the surviving
-   non-suffixed path.  Its active row in `SOURCE_CLOSURE.sha256` is refreshed at
-   every consolidation checkpoint; its immutable `CCC` snapshot identity remains
-   recorded here even after the canonical text diverges from that donor.
+   non-suffixed path.  Its immutable `CCC` snapshot identity remains recorded
+   here even after the canonical text diverges from that donor.  The active row
+   in `SOURCE_CLOSURE.sha256` records the last PDF publication checkpoint; since
+   the 2026-09-04 crosswalk update it is intentionally not a digest of the live
+   TeX.
 
 The former six package-local `SHA256SUMS` checksum manifests were derivative
 two-row ledgers, not additional research payloads.  They were removed under the
@@ -61,14 +73,15 @@ happened: the transitional twelve-payload closure has contracted to the one
 canonical TeX/PDF pair, and the commented historical records continue to
 identify all six inputs.
 
-One point of the identity model changed at retirement.  The retained
-historical PDFs were never asserted to render their notation-migrated TeX, and
-that caveat was carried in every earlier revision of these records.  It no
-longer applies to the surviving pair: the canonical PDF was produced from the
-canonical TeX in a single three-pass `pdflatex` run reporting no errors, no
-undefined references, and no multiply-defined labels, and both bytes are hashed
-in the active closure rows.  The five arrival PDFs remain historical artifacts
-with no render-parity claim, recoverable only through the Git locators below.
+One point of the identity model changed twice.  At donor retirement the
+canonical PDF was produced from the then-current canonical TeX in a single
+three-pass `pdflatex` run reporting no errors, no undefined references, and no
+multiply-defined labels; render parity held at that checkpoint.  The
+2026-09-04 Lean-crosswalk update changed the TeX without rebuilding the PDF, so
+that parity is now historical rather than current.  The retained canonical PDF
+and the five arrival PDFs are historical artifacts with no render-parity claim
+against the live TeX; the original artifacts remain recoverable through the
+Git locators below.
 
 The stable source identifiers used below and in the disposition ledger are:
 
@@ -179,15 +192,19 @@ filed paths have the common prefix
 
 ## Reproduction and verification
 
-From the repository root, the live transitional payloads are checked with:
+At the recorded PDF publication checkpoint, the then-live payloads were checked
+with:
 
 ```text
 sha256sum -c Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/combinatorial-coefficient-calculus/Combinatorial_Coefficient_Calculus/SOURCE_CLOSURE.sha256
 ```
 
-The active rows in that file are conventional `sha256sum` rows and describe the
-working consolidation tree at the current checkpoint.  Its commented
-`HISTORICAL_*` rows identify immutable intake data rather than mutable live paths.
+The active rows in that file are conventional `sha256sum` rows and describe
+that historical publication tree, not the current crosswalk-extended TeX.  Its
+commented `HISTORICAL_*` rows identify immutable intake data rather than mutable
+live paths.  Running the check against the current worktree is therefore not a
+current-source validation: the TeX row is expected to differ until a future
+publication cycle explicitly refreshes the closure.
 To reproduce one historical record, obtain the ZIP by its Git blob ID in a
 binary-safe shell, verify the archive, and stream the named member:
 
@@ -211,18 +228,20 @@ each original TeX/PDF identity: through the arrival ZIP and through the filed
 extraction commit.
 
 No command above establishes mathematical correctness or Lean verification;
-those remain separate publication and formalization gates, and the
-in-document "Lean formalization register" states the formalization status
-result by result.  Two things that earlier revisions of this file listed as
-open are, however, now established by commands here.  Render parity holds for
-the surviving pair, since the hashed PDF is the output of the run that
-consumed the hashed TeX.  Proof pairing is checked mechanically:
+those remain separate publication and formalization gates, and the in-document
+"Lean formalization register" states the formalization status result by result.
+At the historical publication checkpoint, proof pairing was checked
+mechanically with:
 
 ```text
 python Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/combinatorial-coefficient-calculus/Combinatorial_Coefficient_Calculus/validate_canonical.py --final
 ```
 
-reports 201 theorem-like or algorithm items with 201 adjacent proofs and no
-explicit open-status markers, together with the completed disposition ledger,
-the contracted closure, and the one-document layout.  "Adjacent proof" is a
-structural property, not a claim that each proof is correct.
+and reported 201 theorem-like or algorithm items with 201 adjacent proofs and
+no explicit open-status markers, together with the completed disposition
+ledger, the contracted closure, and the one-document layout.  "Adjacent proof"
+is a structural property, not a claim that each proof is correct.  Because the
+live TeX now intentionally differs from the recorded closure, that historical
+`--final` result is not represented as a current pass; the current register and
+crosswalk generators are validated separately without rebuilding the PDF or
+refreshing any digest.

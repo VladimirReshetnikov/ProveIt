@@ -597,6 +597,18 @@ STATUS = {
  'cor:eulerian-power-sum': ('Lean',
    r"\lean{Fabius.sum_range_pow_succ_eq_sum_eulerianNumber} (\lean{EulerianNumbers}), "
    r"in the form $\sum_{r=0}^{m} r^{n+1}=\sum_k A(n+1,k)\binom{m+k+1}{n+2}$"),
+ 'alg:merged-exp-log-power': ('partial',
+   r"\cref{eq:merged-alg-log} is the reflected-index form of "
+   r"\lean{Fabius.SaddleExpansion.logCoeff_succ}, with "
+   r"\lean{Fabius.SaddleExpansion.logSeries_eq_logOf} identifying that recurrence with the "
+   r"formal logarithm (\lean{SaddleLogExpansionAlgebra}, "
+   r"\lean{SaddleLogExpansionPowerSeries}); \cref{eq:merged-alg-exp} is "
+   r"\lean{Fabius.coeff_exp_subst_recurrence} (\lean{UnitSeriesBellCoefficients}) in the "
+   r"denominator-cleared form $na_n=\sum_{j=1}^n j\ell_j a_{n-j}$.  The same module proves "
+   r"closed Bell-polynomial formulas for arbitrary powers as "
+   r"\lean{Fabius.coeff_fallingSeries_subst_eq_sum_ordPartialBell_of_pos} and "
+   r"\lean{Fabius.coeff_fallingSeries_subst_eq_sum_partialBell}, but the separate recurrence "
+   r"\cref{eq:merged-alg-power} is not formalized"),
 }
 
 # A dict literal keeps the LAST of two equal keys and reports nothing, so a
