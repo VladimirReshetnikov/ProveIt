@@ -112,7 +112,7 @@ numbers rather than copying these historical values.
 The historical post-merge 2026-09-01 inventory contained 675 modules and 8,909
 lexically visible public declarations, with zero missing module headers and
 zero missing doc comments.  A fresh 2026-09-04 audit for this documentation
-pass scans 925 facade-reachable modules and 11,622 public declarations.  It
+pass scans 952 facade-reachable modules and 11,884 public declarations.  It
 finds no missing module header or declaration comment, including throughout
 `FabiusInverseExactDyadicModulus.lean`, `JacobiTwoSquareCount.lean`, and
 `LagrangeRvachevMatrix.lean`, as well as the incoming
@@ -130,14 +130,19 @@ finds no missing module header or declaration comment, including throughout
 `GeometricUniformExteriorComplexMomentGerm.lean`,
 `GeometricUniformMomentPolynomialDegree.lean`,
 `RvachevLaurentLeading.lean`, `FinitePrefixAppellRecovery.lean`,
-`GeometricUniformMomentRatFunc.lean`, and
-`RvachevLegendreBiorthogonality.lean` leaves, together with the strengthened
+`GeometricUniformMomentRatFunc.lean`, `RvachevLegendreBiorthogonality.lean`,
+`GeometricUniformMomentReciprocity.lean`,
+`QPochhammerLambertForm.lean`, `CentralQVandermondeInfinite.lean`,
+`ThueMorseNewmanSelfSimilarity.lean`, `TriangularPowerProduct.lean`,
+`DyadicBoundaryIdentity.lean`, `MeanValueBracket.lean`, and
+`FinitePrefixThueMorseCollapse.lean`, `ProuhetBaseTwoBridge.lean` leaves,
+together with the strengthened
 `ProbabilityLaplaceMoments.lean` surface,
 as well as the sixteenth theorem in `FinitePolynomialFunctional.lean`.
 Relative to the
-610/8,318 activation checkpoint, the current tree adds 315 modules and 3,304 declarations.
+610/8,318 activation checkpoint, the current tree adds 342 modules and 3,566 declarations.
 Relative to the earlier 630/8,552 merged checkpoint, concurrent source work
-adds 295 modules and 3,070 declarations.  The post-merge 675/8,909 inventory,
+adds 322 modules and 3,332 declarations.  The post-merge 675/8,909 inventory,
 the intervening 903/11,448 Lambert-series inventory, and the immediately
 preceding 914/11,555 scaled-geometric and 915/11,556 real-MGF-bridge
 checkpoints, together with the incoming branch's 906/11,461 complex-product
@@ -151,11 +156,18 @@ checkpoint.  The one-definition/six-theorem Laurent-leading leaf then gave
 the historical pre-RatFunc checkpoint 923/11,610, and the one-definition/
 four-theorem global RatFunc leaf gave the historical 924/11,615 checkpoint.
 Two theorems added to `ProbabilityLaplaceMoments.lean` then gave 924/11,617,
-and the one-definition/one-theorem Legendre--Rvachev biorthogonality leaf gives
-the incoming-target 925/11,619 checkpoint.  The five local
-`QBinomialTheoremInfinite.lean` additions overlap in exactly two public names;
-after those shared declarations remain canonically upstream, their three other
-names give the live exact-name-deduplicated 925/11,622 union.  On the earlier
+and the one-definition/one-theorem Legendre--Rvachev biorthogonality leaf gave
+the historical 925/11,619 checkpoint. Later merged source work contributes
+the zero-definition leaves `QPochhammerLambertForm` 0+5,
+`CentralQVandermondeInfinite` 0+4, `TriangularPowerProduct` 0+2,
+and `MeanValueBracket` 0+6; the 1+12 `ThueMorseNewmanSelfSimilarity` leaf; and
+a net twenty-nine further declarations in existing modules. These changes
+reached the pre-reciprocity 930/11,678 checkpoint. Reciprocity then gave the
+historical 931/11,685 checkpoint, and the dyadic-boundary and finite-prefix
+leaves gave 933/11,695. The base-two Prouhet tranche gave the historical
+934/11,709 checkpoint. Later upstream work reaches 952/11,881; the three
+unique local q-binomial compatibility wrappers give the exact-name-deduplicated
+live 952/11,884 union. On the earlier
 exterior-germ branch, the inner-complex 906/11,461 checkpoint was followed by
 the branch-local 907/11,464 checkpoint; its preceding real-MGF and algebraic
 moment-polynomial checkpoints were 905/11,458 and 904/11,457.  These older
@@ -604,6 +616,17 @@ on the whole complex plane, and identifies the recursive polynomial by
 analytic product is not described as a probability MGF; the preceding real
 0+1 theorem remains the exact probability-law MGF bridge.
 
+The later reciprocity tranche promotes
+`differentiable_geometricUniformComplexMomentProduct` to the public API.
+Thus the current exhaustive surface of this module is one definition and
+three theorems: `geometricUniformComplexMomentProduct`,
+`hasProdLocallyUniformly_geometricUniformComplexMomentProduct`,
+`differentiable_geometricUniformComplexMomentProduct`, and
+`geometricUniformMomentPolynomial_eval₂_eq_complexMomentProduct_taylorCoefficient`.
+The added theorem packages differentiability on all of `ℂ`, so the product
+is now publicly known to be entire; the 906/11,461 count above remains the
+historical checkpoint before that theorem was public.
+
 #### Half-base q-binomial root-simplicity tranche
 
 After the merged exact-closure and inner-complex union reached the historical
@@ -648,7 +671,7 @@ rational parameter object.  The later RatFunc tranche below closes exactly
 that assembly boundary.  Label `thm:geometric-uniform-mgf` remains
 **Partial**: coefficient rationality and the `q=1` specialization are now
 packaged, but no public theorem packages the product's dilation/Mahler law,
-full entireness and normalization, formal uniqueness, exact pole data, or
+normalization, formal uniqueness, exact pole data, or
 direct equality of the complex product with the real MGF or characteristic
 function.  Frontier label `p7:thm:Pn` and proposition
 `prop:qF-P-degree-sharp` are accounted for by the following sharp-degree
@@ -725,11 +748,13 @@ historical 921/11,575 checkpoint.  `RvachevLaurentLeading.lean` then gave
 checkpoint 923/11,610, and `GeometricUniformMomentRatFunc.lean` gave the
 historical RatFunc checkpoint 924/11,615.  The two new
 `ProbabilityLaplaceMoments.lean` theorems gave 924/11,617, and
-`RvachevLegendreBiorthogonality.lean` gives the incoming-target inventory
-925/11,619.  Deduplicating the two fixed-column public names shared with the
-five local `QBinomialTheoremInfinite.lean` additions contributes three other
-names, giving the live facade inventory of 925 modules and 11,622 public
-declarations, with no missing module header or public declaration comment.
+`RvachevLegendreBiorthogonality.lean` gave the historical facade inventory
+925/11,619. Later merged work reached the pre-reciprocity 930/11,678 checkpoint;
+reciprocity gave 931/11,685, and the dyadic-boundary and finite-prefix-collapse
+leaves gave 933/11,695. The base-two Prouhet tranche gave 934/11,709. Later
+upstream work reaches 952/11,881, and the three unique local q-binomial
+compatibility wrappers give the live 952/11,884 inventory, with no missing
+module header or public declaration comment.
 
 `FinitePolynomialFunctional.lean` remains a zero-definition module and now has
 exactly sixteen public theorems:
@@ -804,10 +829,12 @@ upstream leaves add exactly two modules and 35 public declarations:
 `FinitePrefixAppellRecovery.lean` gives the historical pre-RatFunc checkpoint
 923 modules and 11,610 public declarations.  The subsequent global RatFunc
 leaf gives the historical 924 modules and 11,615 public declarations; the
-post-RatFunc probability and finite-biorthogonality additions below give the
-incoming-target 925/11,619 checkpoint.  The exact-name-deduplicated local
-fixed-column additions then give the live 925 modules and 11,622 public
-declarations, with no missing module header or public declaration comment.
+post-RatFunc probability and finite-biorthogonality additions below gave the
+historical 925/11,619 checkpoint. Later source work and reciprocity gave
+931/11,685; the dyadic-boundary and finite-prefix-collapse leaves then gave
+933/11,695, and the base-two Prouhet tranche gave 934/11,709. Later upstream
+work reaches 952/11,881; the three unique local q-binomial compatibility
+wrappers give the live 952/11,884 inventory, with no documentation gaps.
 
 `HalfQBinomialRootSimplicity.lean` has no public definitions and exactly one
 public theorem, `halfQBinomial_sum_rootMultiplicity_two_pow`.  Over `ℚ`, for
@@ -914,6 +941,73 @@ theorem, analytic continuation through `‖q‖=1`, or global holomorphy of the
 exterior reciprocal is claimed.  Label `thm:geometric-uniform-mgf` remains
 **Partial** under the boundary stated above.
 
+#### Complex moment-product entireness and germ reciprocity
+
+Merged upstream additions reached the immediate pre-reciprocity checkpoint
+930 modules and 11,678 public declarations.  The reciprocity tranche promotes
+one theorem in the existing complex-product module and adds the new
+`GeometricUniformMomentReciprocity.lean` module with one definition and five
+theorems.  It therefore adds one source module and seven public declarations
+in total, giving the historical reciprocity checkpoint 931/11,685.
+
+The current exhaustive 1+3 surface of
+`GeometricUniformComplexMomentProduct.lean` is the definition
+`geometricUniformComplexMomentProduct` and the theorems
+`hasProdLocallyUniformly_geometricUniformComplexMomentProduct`,
+`differentiable_geometricUniformComplexMomentProduct`, and
+`geometricUniformMomentPolynomial_eval₂_eq_complexMomentProduct_taylorCoefficient`.
+The promoted differentiability theorem is global on `ℂ`, so the locally
+uniform product is publicly packaged as an entire function.
+
+The reciprocity leaf's exhaustive 1+5 surface is the definition
+`geometricUniformComplexMomentGerm` and the theorems
+`geometricUniformComplexMomentGerm_of_norm_lt_one`,
+`geometricUniformComplexMomentGerm_of_one_lt_norm`,
+`analyticAt_geometricUniformComplexMomentGerm`,
+`geometricUniformComplexMomentGerm_reciprocity`, and
+`geometricUniformComplexMomentGerm_moment_convolution`.  The combined function
+is the inner product when `‖q‖<1`, the exterior reciprocal when `1<‖q‖`, and
+is analytic at zero whenever `‖q‖≠1`.  Under exactly `q≠0` and `‖q‖≠1`,
+the reciprocity theorem proves
+`M_q(z) * M_{q⁻¹}(-z) = 1` locally as an `EventuallyEq` in `𝒩 0`, and
+the convolution theorem proves for every order `n` the exact binomial
+iterated-derivative convolution with value `if n=0 then 1 else 0`.  The germ
+boundary is deliberate: the inner product can have remote zeros and Lean's
+inverse is total, so no global pointwise reciprocal identity or unit-circle
+continuation is asserted.  This makes canonical `thm:qF-reciprocity`
+**Exact**.
+
+#### Dyadic-boundary and finite-prefix Thue--Morse-collapse census overlay
+
+Two subsequently merged zero-definition leaves add two source modules and ten
+public theorems to the historical reciprocity checkpoint 931/11,685, giving
+the historical 933/11,695 inventory.
+
+At that checkpoint, `DyadicBoundaryIdentity.lean` had exactly two public theorems,
+`prod_complexSinc_prefix_mul_rvachevFourierProduct` and
+`rvachevFourierProduct_dyadic_boundary`.  The first clears the finite sinc
+prefix against the rescaled Rvachev product.  The second composes that identity
+with the integer-zero factorization to give the denominator-cleared
+dyadic-boundary equality for every natural shell and complex displacement,
+without a nonvanishing hypothesis.  A quotient formulation still requires the
+denominator to be nonzero.
+
+`FinitePrefixThueMorseCollapse.lean` has exactly eight public theorems:
+`Appell.sum_thueMorseSign_mul_eval_poly`,
+`sum_thueMorseSign_mul_uncenteredDyadicPrefixAppellPolynomialRat`,
+`sum_thueMorseSign_mul_uncenteredDyadicPrefixAppellPolynomialRat_of_lt`,
+`sum_thueMorseSign_mul_uncenteredDyadicPrefixAppellPolynomialRat_self`,
+`sum_thueMorseSign_mul_centeredDyadicPrefixAppellPolynomialRat`,
+`sum_thueMorseSign_mul_centeredDyadicPrefixAppellPolynomialRat_succ`,
+`sum_thueMorseSign_mul_centeredDyadicPrefixAppellPolynomialRat_of_lt`, and
+`sum_thueMorseSign_mul_centeredDyadicPrefixAppellPolynomialRat_self`.  The
+general Appell theorem reduces a complete signed block to its Thue--Morse
+power moments; the rational prefix specializations are total at depth zero,
+with lower-degree cancellation and first-surviving-response corollaries.
+These are finite coefficient identities rather than analytic convergence
+statements.  This overlay records the merged APIs and changes no source-result
+coverage status.
+
 #### Closed-tail moments and finite Legendre--Rvachev biorthogonality
 
 The post-RatFunc union first adds exactly two public theorems to the existing
@@ -937,9 +1031,9 @@ the manuscript's `X`, not a new arbitrary-random-variable wrapper.  The moment
 theorem does not assert the `n=0` case.
 
 `RvachevLegendreBiorthogonality.lean` then adds one source module and exactly
-one definition plus one theorem, giving the incoming-target 925/11,619
-inventory.  After the fixed-column union is deduplicated, the live inventory is
-925/11,622.  Its
+one definition plus one theorem, giving the historical 925/11,619 checkpoint.
+The live inventory after all later upstream work and exact-name deduplication is
+952/11,884. Its
 exhaustive public surface is `rvachevLegendreAnalysisKernel` and
 `rvachevLegendreBiorthogonality`, both in `Fabius`.  For
 clarity, the former is literally the normalized kernel
@@ -955,10 +1049,117 @@ rationality are not all formalized; `cor:leg-biorthogonal-matrices` remains
 incomplete because no bundled matrix projector or reverse spectral closure is
 provided.
 
-The combined 282-result q-series forward ledger is therefore 181 Exact / 78
-Partial / 15 None / 8 interface rows.  In particular,
-`GeometricUniformMomentRatFunc.lean` 1+4 promotes
-`thm:qF-moment-polynomial` to **Exact by assembly**; the broader
+#### Merged support leaves, reciprocity, and finite-prefix Thue--Morse collapse
+
+Relative to the historical 925/11,619 checkpoint, five merged support modules
+and consolidation of existing surfaces first added five modules and fifty-nine
+public declarations, reaching the immediate pre-reciprocity 930/11,678
+checkpoint.  The five modules account for thirty declarations:
+`QPochhammerLambertForm.lean` is 0+5,
+`CentralQVandermondeInfinite.lean` is 0+4,
+`ThueMorseNewmanSelfSimilarity.lean` is 1+12,
+`TriangularPowerProduct.lean` is 0+2, and `MeanValueBracket.lean` is 0+6.
+Respectively, these expose the complex and
+real Lambert exponential forms of the infinite q-Pochhammer symbol; the
+central q-Vandermonde limit and its `HasSum`/`Summable`/`tsum` forms; exact
+base-four Newman amplification, geometric-ray ratios, and nonconvergence; two
+commutative-monoid triangular exponent products; and two-sided mean-value and
+residual-to-error brackets.  Consolidation of existing source surfaces gives
+the remaining net twenty-nine declarations.  The reciprocity tranche then
+added one module and seven public declarations, giving the historical
+931/11,685 checkpoint.  `DyadicBoundaryIdentity.lean` 0+2 and the finite-prefix
+collapse leaf below added two modules and ten declarations, giving the
+historical 933/11,695 checkpoint.
+This census accounting records the merged public API and by itself assigns no
+new frontier status to those support results.
+
+`FinitePrefixThueMorseCollapse.lean` accounts for eight of those ten final
+declarations.  It has no public definitions and exactly eight
+public theorems.  The generic theorem
+`Appell.sum_thueMorseSign_mul_eval_poly` states, for an arbitrary rational
+Appell sequence, that the signed block on the grid `x+k*h` is the coefficient
+sum with factors `(n.choose r) * h^r * thueMorsePowerSum N r` and lower Appell
+polynomial `n-r`.
+
+The uncentered main theorem
+`Fabius.sum_thueMorseSign_mul_uncenteredDyadicPrefixAppellPolynomialRat`
+uses `thueMorseSign k` on the exact grid `x+k/2^N` and returns
+`(-1)^N * 2^{-((N+1).choose 2)} * n.descFactorial N * x^(n-N)`.
+`Fabius.sum_thueMorseSign_mul_uncenteredDyadicPrefixAppellPolynomialRat_of_lt`
+specializes this to zero for `n<N`, while
+`Fabius.sum_thueMorseSign_mul_uncenteredDyadicPrefixAppellPolynomialRat_self`
+gives the first response
+`(-1)^N * N! * 2^{-((N+1).choose 2)}`.
+
+The centered main theorem
+`Fabius.sum_thueMorseSign_mul_centeredDyadicPrefixAppellPolynomialRat`
+uses the total grid `x+(1-2^-N)-2k/2^N` and returns the sign-free response
+`2^{-(N.choose 2)} * n.descFactorial N * x^(n-N)`.
+`Fabius.sum_thueMorseSign_mul_centeredDyadicPrefixAppellPolynomialRat_succ`
+rewrites the positive depth as `N=m+1` and uses the manuscript's literal grid
+`x+(1-2^{-(m+1)})-k/2^m` with the same scale.
+`Fabius.sum_thueMorseSign_mul_centeredDyadicPrefixAppellPolynomialRat_of_lt`
+gives zero for `n<N`, and
+`Fabius.sum_thueMorseSign_mul_centeredDyadicPrefixAppellPolynomialRat_self`
+gives `N! * 2^{-(N.choose 2)}`.  The two primary theorems and both first-response
+corollaries include `N=0`; only the literal-grid successor wrapper is
+positive-depth-indexed.
+
+Consequently the uncentered main theorem supplies the exact compositional
+closure of `is:p2:thm:TM-uncentered`; its `_of_lt` and `_self` corollaries give
+the exact Prouhet cancellation and first surviving value required by
+`is:p2:cor:Prouhet-canonical`; and the centered `_succ` theorem supplies the
+exact printed grid for `is:p2:thm:TM-centered`, strengthened at `N=0` by the
+total centered theorem.  This is rational coefficient-model algebra only.  It
+introduces no random variable or `HasLaw` theorem and proves no analytic MGF or
+Barnes-function identification.
+
+#### Base-two Prouhet, printed dyadic boundary, and Newman oscillation overlay
+
+The base-two Prouhet tranche adds one module and fourteen public declarations to
+the historical 933/11,695 checkpoint, giving the historical 934/11,709
+inventory. Later upstream work reaches 952/11,881, and the three unique local
+q-binomial compatibility wrappers give the live 952/11,884 inventory. The delta
+is the union of the new zero-definition/six-theorem
+`ProuhetBaseTwoBridge.lean` leaf, one theorem added to
+`DyadicBoundaryIdentity.lean`, and seven theorems added to
+`ThueMorseNewmanSelfSimilarity.lean`; it is not fourteen declarations in the
+new module alone.
+
+The exhaustive `ProuhetBaseTwoBridge.lean` surface is
+`thueMorseSign_cast_eq_neg_one_pow_digits_sum`,
+`digitPowerSum_neg_one_two`, `sum_range_two_neg_one_pow`,
+`digitPowerSum_neg_one_two_eq_zero_of_lt`,
+`digitPowerSum_neg_one_two_self`, and
+`sub_one_pow_mul_thueMorsePowerSumRing_self`.  Over every commutative ring it
+identifies the base-two digit-weighted sum at `ζ=-1` with the Thue--Morse power
+sum, obtains strict-low-degree Prouhet cancellation from the general digit
+machine, and gives both the closed sharp moment
+`(-1)^m * 2^(m.choose 2) * m!` and its division-free general-machine form.
+
+`DyadicBoundaryIdentity.lean` is now 0+3.  Its added theorem,
+`norm_rvachevFourierProduct_dyadic_boundary`, states the printed norm-quotient
+identity on exactly `0 < z < 2^k`; central-lobe positivity proves that the
+divided product is nonzero.  The existing prefix-product and denominator-free
+entire identities remain unchanged.
+
+`ThueMorseNewmanSelfSimilarity.lean` is now 1+19.  Its seven added theorems are
+`eight_rpow_logb_four_three`,
+`sqrt_three_div_three_lt_two_div_three`, `newman_ratio_eight`,
+`newman_ratio_eight_lt_two_div_three`,
+`frequently_newmanRatio_eq_two_div_three`,
+`frequently_newmanRatio_eq_sqrt_three_div_three`, and
+`newmanRatio_oscillates`.  They identify the second recurrent ratio as
+`sqrt 3 / 3`, compare it strictly with `2/3`, prove both values recur
+frequently at `atTop`, and package the resulting explicit oscillation.  This
+overlay preserves the incoming API descriptions and makes no additional
+source-result status move.
+
+The combined 282-result q-series forward ledger is 182 Exact / 78 Partial /
+14 None / 8 interface rows, and its source concordance is 95 Lean-proved /
+383 human-proved frontier / 60 not-applicable / 9 conjecture rows. In
+particular, `GeometricUniformMomentRatFunc.lean` 1+4 makes
+`thm:qF-moment-polynomial` **Exact by assembly**; the broader
 `thm:geometric-uniform-mgf` remains **Partial**.
 
 The one-definition/eight-theorem
@@ -1562,7 +1763,8 @@ the analytic-order layer for the latter symbol, and no named equality bridge
 between the two definitions is counted.
 
 The synchronized q-series API also retains the full `origin/main` theorem
-inventory.  `GaussianBinomialAtNegOneDerivative.lean` is 0+4, and
+inventory.  `GaussianBinomialAtNegOneDerivative.lean` is 0+5, including the
+commutative-semiring evaluation theorem `gaussianBinomial_X_eval`, and
 `GaussianBinomialContinuity.lean` is 0+3:
 `continuous_gaussianBinomial`, `tendsto_gaussianBinomial_nhds_one`, and
 `gaussianBinomial_eq_finiteQPochhammerIn_div`.
@@ -1706,8 +1908,8 @@ the convention `d(0)=1`, with no zero-input modulus conclusion.  The two
 named `Primrec` theorems close the recursive-denominator clause without
 asserting an input-bit running-time bound.
 
-The current comb-interpolation synthesis receipt is the accepted 160-page A4
-merged-source build recorded below. Its former 158-page artifact remains an
+The comb-interpolation synthesis receipt remains the accepted current 160-page A4
+build recorded below. Its former 158-page artifact remains an
 explicit historical receipt. The rebuilt
 Integration-and-Transform master retains a historical 377-page PDF.  The
 five source/PDF pairs synchronized by commit
@@ -1716,7 +1918,7 @@ the parallel upstream-only moment-polynomial checkpoint
 `3b6396deb6056523d944d79602d1bf7ecf18ec10` changes all five TeX sources and the
 independently published standalone geometric-q root.
 
-**Current merged-source publication receipts (10/10 accepted).** Primary:
+**Historical first-merge publication receipts (10/10 accepted at their recorded source snapshots).** Primary:
 root `14628L/733516B/39d1b0b87cabbd75622b2c882db34bc842f9057561efa8d8a93918acaa97d7ea`;
 two-file aggregate
 `14912L/745351B/2f56e31a0545297886fd0b9f2c9005053f6d902a99f3b1b965b5d659277c71b2`;
@@ -1758,7 +1960,7 @@ Inverse: root
 passes `132/137/137`; PDF
 `137pp/2045463B/ca403c74e2b46923ce9ac1eda547ab1bcb5e71039b35c8ee394acdd2014c4f8e`;
 log `1569L/64081B/d4aa25579c958e11c59d914c74dfca331fc2bbccf7bba4715dcd18fa050e771f`;
-source-only 23-input closure digest
+then-current source-only 23-input closure digest
 `e07cb51f4fe072cd79a014cc891cb8cede62880593d7659b17da9377a21099bc`.
 Comb: root
 `187L/6724B/a4c1e33165ff7291682cd890f23fe4af98e9f11f7ad1d9a7f8b68c78d53f9a56`;
@@ -1874,12 +2076,16 @@ their package notices correctly treat them as historical validation receipts
 rather than parity claims.  They are not members of the exact merge-affected
 set below and retain their separately recorded pending status.  The retired
 inverse-computability predecessor likewise still reflects the historical
-675/8,909 census and requires refresh against the live 925/11,622 inventory.
+675/8,909 census and requires refresh against the live 952/11,884 inventory.
 
-This merge changed the source closure of exactly ten retained publications.
-All ten now have accepted merged-source PDFs: primary 199 pages, walkthrough 171,
-canonical 273, q series 401, Lambert 70, inverse 137, comb 160, Up 63, and
-Thue--Morse 144, plus the standalone geometric-q volume at 404 pages.
+The first merge changed the source closure of exactly ten retained publications
+and produced the accepted receipts above. Up and comb remain current. All
+accepted current campaign receipts are centralized in the [draft
+manifest](semi-formalized-research-frontiers/drafts/MANIFEST.md#current-post-merge-publication-receipts).
+All nine campaign roots now have current source/PDF parity. The incoming
+Transseries PDF remains a historical pre-merge checkpoint; its new 704-page
+render is current but retains 114 overfull boxes and 11 duplicate Hyperref
+targets for a later layout-repair pass.
 
 ### What the review pass caught
 

@@ -23,6 +23,10 @@ The derivative formula is the inverse derivative of
 
 It is asserted only for `0 < x < powerExponentialPeak m A beta`; the common
 turning point is excluded because the inverse derivative is singular there.
+The formula is proved once, for an arbitrary real Lambert branch `W`
+satisfying the inverse-derivative law and the defining equation at the
+normalized argument (`powerExponentialPhase_hasDerivAt_of_branch`); the
+two concrete phases are instances.
 -/
 
 set_option autoImplicit false
@@ -189,6 +193,58 @@ theorem powerExponentialLambertArgument_continuous
       (inv_nonneg.mpr (Nat.cast_nonneg m))).comp
         (continuous_id.div_const A))).neg
 
+/-- **Branch-generic inverse-profile derivative.**  Let `W` be any real
+Lambert branch, i.e. a function satisfying the inverse-derivative law
+`W' = (eᵂ (W + 1))⁻¹` and the defining equation `W u · e^(W u) = u` at
+the normalized argument `u` (`powerExponentialLambertArgument m A beta`
+at `x`), with `W u ≠ -1`.  Then the phase
+`y ↦ -(m / beta) · W (argument y)` has derivative
+`lambda / (x (m - beta lambda))` at `x`, where `lambda` is its value at
+`x`.  Both concrete phases are instances. -/
+theorem powerExponentialPhase_hasDerivAt_of_branch
+    {m : ℕ} (hm : m ≠ 0) {A beta x : ℝ}
+    (hA : 0 < A) (hbeta : 0 < beta) (hx : 0 < x) {W : ℝ → ℝ}
+    (hW : HasDerivAt W
+      (Real.exp (W (powerExponentialLambertArgument m A beta x)) *
+        (W (powerExponentialLambertArgument m A beta x) + 1))⁻¹
+      (powerExponentialLambertArgument m A beta x))
+    (hW1 : W (powerExponentialLambertArgument m A beta x) + 1 ≠ 0)
+    (hwu : W (powerExponentialLambertArgument m A beta x) *
+        Real.exp (W (powerExponentialLambertArgument m A beta x)) =
+      powerExponentialLambertArgument m A beta x) :
+    HasDerivAt
+      (fun y : ℝ ↦ -((m : ℝ) / beta) *
+        W (powerExponentialLambertArgument m A beta y))
+      (-((m : ℝ) / beta) *
+          W (powerExponentialLambertArgument m A beta x) /
+        (x * ((m : ℝ) - beta * (-((m : ℝ) / beta) *
+          W (powerExponentialLambertArgument m A beta x))))) x := by
+  have hmR : (m : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr hm
+  have hbeta0 : beta ≠ 0 := hbeta.ne'
+  have hx0 : x ≠ 0 := hx.ne'
+  have hcomp := hW.comp x
+    (powerExponentialLambertArgument_hasDerivAt hm hA hx)
+  have hscaled := hcomp.const_mul (-((m : ℝ) / beta))
+  let u := powerExponentialLambertArgument m A beta x
+  let w := W u
+  have hwu' : w * Real.exp w = u := by
+    dsimp only [w, u]
+    exact hwu
+  have hW1' : w + 1 ≠ 0 := by
+    dsimp only [w, u]
+    exact hW1
+  refine hscaled.congr_deriv ?_
+  change
+    (-((m : ℝ) / beta)) *
+        ((Real.exp w * (w + 1))⁻¹ * (u / ((m : ℝ) * x))) =
+      ((-((m : ℝ) / beta)) * w) /
+        (x * ((m : ℝ) - beta * ((-((m : ℝ) / beta)) * w)))
+  have hW1'' : (1 : ℝ) + w ≠ 0 := by
+    rwa [add_comm] at hW1'
+  rw [← hwu']
+  field_simp [hmR, hbeta0, hx0, hW1', hW1'', Real.exp_ne_zero]
+  ring
+
 /-- Interior derivative of the principal power--exponential phase, in
 inverse-profile coordinates. -/
 theorem principalPowerExponentialPhase_hasDerivAt
@@ -199,31 +255,14 @@ theorem principalPowerExponentialPhase_hasDerivAt
       (principalPowerExponentialPhase m A beta x /
         (x * ((m : ℝ) - beta *
           principalPowerExponentialPhase m A beta x))) x := by
-  have hmR : (m : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr hm
-  have hbeta0 : beta ≠ 0 := hbeta.ne'
-  have hx0 : x ≠ 0 := hx.1.ne'
   have harg := powerExponentialLambertArgument_mem_Ioo hm hA hbeta hx
   have hW1 : principalLambertW
       (powerExponentialLambertArgument m A beta x) + 1 ≠ 0 := by
     linarith [neg_one_lt_principalLambertW harg.1]
-  have hcomp := (principalLambertW_hasDerivAt harg.1).comp x
-    (powerExponentialLambertArgument_hasDerivAt hm hA hx.1)
-  have hscaled := hcomp.const_mul (-((m : ℝ) / beta))
-  let u := powerExponentialLambertArgument m A beta x
-  let w := principalLambertW u
-  have hwu : w * Real.exp w = u := by
-    dsimp only [w, u]
-    exact principalLambertW_mul_exp harg.1.le
   unfold principalPowerExponentialPhase
-  refine hscaled.congr_deriv ?_
-  change
-    (-((m : ℝ) / beta)) *
-        ((Real.exp w * (w + 1))⁻¹ * (u / ((m : ℝ) * x))) =
-      ((-((m : ℝ) / beta)) * w) /
-        (x * ((m : ℝ) - beta * ((-((m : ℝ) / beta)) * w)))
-  rw [← hwu]
-  field_simp [hmR, hbeta0, hx0, hW1, Real.exp_ne_zero]
-  ring
+  exact powerExponentialPhase_hasDerivAt_of_branch hm hA hbeta hx.1
+    (principalLambertW_hasDerivAt harg.1) hW1
+    (principalLambertW_mul_exp harg.1.le)
 
 /-- Interior derivative of the lower power--exponential phase, in
 inverse-profile coordinates. -/
@@ -235,31 +274,14 @@ theorem lowerPowerExponentialPhase_hasDerivAt
       (lowerPowerExponentialPhase m A beta x /
         (x * ((m : ℝ) - beta *
           lowerPowerExponentialPhase m A beta x))) x := by
-  have hmR : (m : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr hm
-  have hbeta0 : beta ≠ 0 := hbeta.ne'
-  have hx0 : x ≠ 0 := hx.1.ne'
   have harg := powerExponentialLambertArgument_mem_Ioo hm hA hbeta hx
   have hW1 : lowerLambertW
       (powerExponentialLambertArgument m A beta x) + 1 ≠ 0 := by
     linarith [lowerLambertW_lt_neg_one harg]
-  have hcomp := (lowerLambertW_hasDerivAt harg).comp x
-    (powerExponentialLambertArgument_hasDerivAt hm hA hx.1)
-  have hscaled := hcomp.const_mul (-((m : ℝ) / beta))
-  let u := powerExponentialLambertArgument m A beta x
-  let w := lowerLambertW u
-  have hwu : w * Real.exp w = u := by
-    dsimp only [w, u]
-    exact lowerLambertW_mul_exp harg
   unfold lowerPowerExponentialPhase
-  refine hscaled.congr_deriv ?_
-  change
-    (-((m : ℝ) / beta)) *
-        ((Real.exp w * (w + 1))⁻¹ * (u / ((m : ℝ) * x))) =
-      ((-((m : ℝ) / beta)) * w) /
-        (x * ((m : ℝ) - beta * ((-((m : ℝ) / beta)) * w)))
-  rw [← hwu]
-  field_simp [hmR, hbeta0, hx0, hW1, Real.exp_ne_zero]
-  ring
+  exact powerExponentialPhase_hasDerivAt_of_branch hm hA hbeta hx.1
+    (lowerLambertW_hasDerivAt harg) hW1
+    (lowerLambertW_mul_exp harg)
 
 /-- Quotient formula for the derivative of the principal phase. -/
 theorem deriv_principalPowerExponentialPhase

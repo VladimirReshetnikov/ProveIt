@@ -20,7 +20,7 @@ Four independently written article packages arrived together on
 consolidated volume:
 
 Member: `Lambert_W_Guide/` — *The Lambert W Function: A Real-Variable
-Guide*. Its current merged-source receipt is root
+Guide*. Its first-merge accepted receipt is root
 `4961L/183269B/83301b4c66660713a70974263b6f191ea01f9ed8f5ae228495f644887b616568`,
 two-file aggregate
 `5245L/195104B/25141b9ee818b20ddf8349d88ec4f2dc977ff0ab35ca34e62cd62da64c2cf06a`,
@@ -29,7 +29,11 @@ passes `68/70/70`, PDF
 and final log
 `1574L/57800B/9f995a50e3ab25256083edee745a1889027787194e3b3c6d1f12f60bf687145c`.
 Every recorded prohibited-log, A4/rotation, PDF 1.5, encryption, font/subsetting,
-Libertinus, Type-3, and visual gate passed.
+Libertinus, Type-3, and visual gate passed for that source snapshot. Later
+source changes make the tuple historical. The accepted current source/PDF
+receipt is the Lambert row in the [authoritative receipt
+register](../MANIFEST.md#current-post-merge-publication-receipts); source/PDF
+parity is current and every documented gate passed.
 
 The following receipts are explicit history. At the pre-upstream commit
 `581bf`, its source had 4,864 lines and
@@ -48,7 +52,8 @@ the final 1,574-line, 57,795-byte log has SHA-256
 `5c81cd6b8dc2cf070c4b1995c98c0d046c54d28f0e682b78b5ad9e16c0a8caa7`.
 All documented log, page, font, Type-3, extraction, and visual gates passed at
 that revision after the clipping repair. This `2d434eec` receipt is historical
-and is superseded by the accepted current receipt above. The `581bf` pair is retained as a historical
+and was superseded by the later first-merge receipt above; both are now
+historical. The `581bf` pair is retained as a historical
 pre-upstream receipt. The superseded 4,872-line, 177,384-byte source-only pin,
 SHA-256 `4200ac6ccd23e950bcbd0cba61aca256cd9e1a647667436120cc82e8e7876b11`,
 records the state before that repair. The preceding 66-page, 1,107,064-byte
@@ -71,9 +76,11 @@ Six polynomial-logarithmic transseries packages were also filed here on
 2026-09-01, because Lambert W is their guiding example.  Their subject is the
 transseries calculus rather than the function, so on 2026-09-02 they were
 regrouped into
-[`../series-and-transseries/polynomial-logarithmic-transseries/`](../series-and-transseries/polynomial-logarithmic-transseries/),
-which now holds their intake receipts.  This group keeps only the articles
-about the Lambert W function itself.
+[`../series-and-transseries/polynomial-logarithmic-transseries/`](../series-and-transseries/Transseries_And_Inversion/),
+which held their intake receipts.  Those six were consolidated, and on
+2026-09-04 the whole `series-and-transseries` group became the single volume
+linked above.  This group keeps only the articles about the Lambert W
+function itself.
 
 See [`../MANIFEST.md`](../MANIFEST.md) for the group record.
 
@@ -143,9 +150,10 @@ remains open. The exact `581bf` Guide, primary, walkthrough, and canonical-
 frontier receipts include this overlay; the q-series PDF is the exact receipt
 for its own pre-upstream source. The later historical `2d434eec` receipts for those five
 roots and the standalone geometric-q root all passed their documented gates.
-The primary, walkthrough, canonical, Lambert, and q-series roots now have
-accepted current merged-source PDFs; the geometric-q root now also has its
-accepted current 404-page merged-source PDF.
+The later first-merge primary, walkthrough, canonical, Lambert, q-series, and
+404-page geometric-q receipts are also retained as historical provenance. The
+primary, walkthrough, canonical, Lambert, q series, and geometric-q now all
+have accepted current receipts.
 The local declaration
 chronology is 902/11,440 after `GeometricRichardsonGenerating`, 902/11,443 at
 Gaussian checkpoint `71c908e`, 903/11,448 after this five-theorem leaf at
@@ -168,18 +176,21 @@ compound `p7:thm:Pn` was then Partial; the later sharp-degree sibling below
 makes it Exact.  This bridge produced the historical checkpoint 905 modules
 and 11,458 public declarations.  The subsequent sibling
 `FabiusFunction.GeometricUniformComplexMomentProduct` has the exhaustive
-surface one public definition and two public theorems:
+current surface one public definition and three public theorems:
 `Fabius.geometricUniformComplexMomentProduct`,
-`Fabius.hasProdLocallyUniformly_geometricUniformComplexMomentProduct`, and
+`Fabius.hasProdLocallyUniformly_geometricUniformComplexMomentProduct`,
+`Fabius.differentiable_geometricUniformComplexMomentProduct`, and
 `Fabius.geometricUniformMomentPolynomial_eval₂_eq_complexMomentProduct_taylorCoefficient`.
 For complex `‖q‖ < 1` it supplies the actual locally uniform product and its
-normalized Taylor-coefficient bridge.  This is an analytic analogue; it does
+complex differentiability on the whole plane, together with its normalized
+Taylor-coefficient bridge.  This is an analytic analogue; it does
 not extend the probability-moment reading of `p7:eq:Pn-def` beyond real
 `|q| < 1`.  At this historical checkpoint the canonical q-monograph
 `thm:qF-moment-polynomial` remained Partial because the global `RatFunc`
 identification and its pole-clearing polynomial continuation at roots were
-absent.  This exhaustive `1+2` leaf produced the historical checkpoint 906
-modules and 11,461 public declarations.
+absent.  The original `1+2` surface produced the historical checkpoint 906
+modules and 11,461 public declarations; the subsequently exposed
+differentiability theorem belongs only to the live census below.
 The zero-definition/one-theorem
 `FabiusFunction.HalfQBinomialRootSimplicity` sibling exposes
 `Fabius.halfQBinomial_sum_rootMultiplicity_two_pow`; composed with the
@@ -215,6 +226,21 @@ polynomial leaf, this makes `thm:qF-moment-polynomial` Exact.  It does not
 assign analytic values at genuine unit-root poles or prove their divisor or
 orders.
 
+The later `FabiusFunction.GeometricUniformMomentReciprocity` sibling has one
+public definition, `Fabius.geometricUniformComplexMomentGerm`, and five public
+theorems:
+`Fabius.geometricUniformComplexMomentGerm_of_norm_lt_one`,
+`Fabius.geometricUniformComplexMomentGerm_of_one_lt_norm`,
+`Fabius.analyticAt_geometricUniformComplexMomentGerm`,
+`Fabius.geometricUniformComplexMomentGerm_reciprocity`, and
+`Fabius.geometricUniformComplexMomentGerm_moment_convolution`.  It joins and
+identifies the strict inner and exterior branches, proves analyticity at zero
+off the unit circle, and, for `q != 0` and `‖q‖ != 1`, proves the local
+`EventuallyEq` `M_q(z) * M_(q⁻¹)(-z) = 1` and its exact all-order binomial
+derivative convolution.  It makes `thm:qF-reciprocity` Exact.  A global
+pointwise identity through genuine inner-product zeros is deliberately not
+claimed.
+
 The later germ-related addition
 `FabiusFunction.RvachevLaurentLeading` has one definition and six theorems and
 makes `is:p2:thm:Laurent-leading` exact through the manuscript-normalized
@@ -235,16 +261,26 @@ checkpoint, `RvachevLaurentLeading` gave 922/11,582, and
 historical 924/11,615 checkpoint.  Two later theorems in
 `ProbabilityLaplaceMoments` make `prop:up-tail` and `cor:up-moments` Exact,
 and the unrelated exhaustive 1+1
-`FabiusFunction.RvachevLegendreBiorthogonality` leaf gives the incoming
-925/11,619 checkpoint. Preserving the three unique local
-`QBinomialTheoremInfinite` compatibility wrappers gives the live 925/11,622
-census. Its public declarations are
+`FabiusFunction.RvachevLegendreBiorthogonality` leaf gives the historical
+925/11,619 checkpoint.  Its public declarations are
 `Fabius.rvachevLegendreAnalysisKernel` and
 `Fabius.rvachevLegendreBiorthogonality`; they close the normalized translated
 kernel definition and finite Legendre biorthogonality, but not the larger
-Fourier--Bessel or matrix-projector claims.  The q ledger is 181 Exact / 78
-Partial / 15 None / 8 interface, and the source concordance is 94 Lean-proved
-/ 384 human-proved frontier / 60 non-applicable / 9 conjectures.
+Fourier--Bessel or matrix-projector claims.  Subsequent source-only tranches,
+including the reciprocity sibling, give the historical reciprocity checkpoint
+931/11,685.  The subsequently merged upstream `DyadicBoundaryIdentity.lean`
+and `FinitePrefixThueMorseCollapse.lean` modules add two modules and ten
+public declarations, making the historical dyadic/finite-prefix census
+933/11,695.  The incoming union adds one module and fourteen public
+declarations: the new zero-definition/six-theorem
+`ProuhetBaseTwoBridge.lean` module, one theorem added to
+`DyadicBoundaryIdentity.lean`, and seven theorems added to
+`ThueMorseNewmanSelfSimilarity.lean`.  This makes 934/11,709 a historical
+checkpoint. Later upstream work and the three unique local q-binomial
+compatibility wrappers give the live census 952/11,884.
+The q ledger is 182 Exact / 78 Partial / 14 None / 8 interface, the relevant Dyadic
+Gaussian--Thue--Morse chapter is 13/43/0/0, and the source concordance is 95
+Lean-proved / 383 human-proved frontier / 60 non-applicable / 9 conjectures.
 All of these sibling source-only additions are likewise absent
 from the retained historical PDFs.
 

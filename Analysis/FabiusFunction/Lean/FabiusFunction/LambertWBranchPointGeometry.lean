@@ -13,15 +13,37 @@ at the branch point.
 
 The proofs use only the endpoint continuity, inverse-function derivative,
 and curvature APIs.  No square-root or Puiseux expansion is needed.
+
+Two small filter facts about the right neighbourhood of the branch point
+(`Ioo_mem_nhdsGT_branchPoint`, `nhdsGT_branchPoint_le_nhdsWithin_Ico`)
+are recorded first; the asymptotics module reuses them.
 -/
 
 set_option autoImplicit false
 
 open Set Filter
+open scoped Topology
 
 namespace Fabius
 
 noncomputable section
+
+/-! ## Right neighbourhoods of the branch point -/
+
+/-- The open lower-branch domain `(-e⁻¹, 0)` is a right neighbourhood of
+the branch point. -/
+theorem Ioo_mem_nhdsGT_branchPoint :
+    Ioo (-Real.exp (-1)) 0 ∈ 𝓝[>] (-Real.exp (-1)) :=
+  Ioo_mem_nhdsGT (neg_lt_zero.mpr (Real.exp_pos (-1)))
+
+/-- The right filter at the branch point refines the within-filter of
+the closed-left lower-branch domain `[-e⁻¹, 0)`. -/
+theorem nhdsGT_branchPoint_le_nhdsWithin_Ico :
+    𝓝[>] (-Real.exp (-1)) ≤
+      𝓝[Ico (-Real.exp (-1)) 0] (-Real.exp (-1)) := by
+  rw [nhdsWithin_le_iff]
+  exact Filter.mem_of_superset Ioo_mem_nhdsGT_branchPoint
+    Ioo_subset_Ico_self
 
 /-! ## Infinite one-sided derivatives -/
 
@@ -77,20 +99,11 @@ theorem tendsto_deriv_lowerLambertW_branchPoint_atBot :
         (nhds (-1 : ℝ)) := by
     simpa only [lowerLambertW_branchPoint] using
       lowerLambertW_continuousWithinAt_branchPoint.tendsto
-  have hsource :
-      nhdsWithin (-Real.exp (-1)) (Ioi (-Real.exp (-1))) ≤
-        nhdsWithin (-Real.exp (-1))
-          (Ico (-Real.exp (-1)) 0) := by
-    rw [nhdsWithin_le_iff]
-    filter_upwards [self_mem_nhdsWithin,
-      nhdsWithin_le_nhds
-        (Iio_mem_nhds (neg_lt_zero.mpr (Real.exp_pos (-1))))] with z hz hz0
-    exact ⟨hz.le, hz0⟩
   have hW :
       Tendsto lowerLambertW
         (nhdsWithin (-Real.exp (-1)) (Ioi (-Real.exp (-1))))
         (nhds (-1 : ℝ)) :=
-    hWclosed.mono_left hsource
+    hWclosed.mono_left nhdsGT_branchPoint_le_nhdsWithin_Ico
   have hD0 :
       Tendsto D
         (nhdsWithin (-Real.exp (-1)) (Ioi (-Real.exp (-1))))
@@ -103,16 +116,12 @@ theorem tendsto_deriv_lowerLambertW_branchPoint_atBot :
         (nhdsWithin (0 : ℝ) (Iio 0)) := by
     rw [tendsto_nhdsWithin_iff]
     refine ⟨hD0, ?_⟩
-    filter_upwards [self_mem_nhdsWithin,
-      nhdsWithin_le_nhds
-        (Iio_mem_nhds (neg_lt_zero.mpr (Real.exp_pos (-1))))] with z hz hz0
+    filter_upwards [Ioo_mem_nhdsGT_branchPoint] with z hz
     exact mul_neg_of_pos_of_neg (Real.exp_pos _) (by
-      linarith [lowerLambertW_lt_neg_one ⟨hz, hz0⟩])
+      linarith [lowerLambertW_lt_neg_one hz])
   refine hD.inv_tendsto_nhdsLT_zero.congr' ?_
-  filter_upwards [self_mem_nhdsWithin,
-    nhdsWithin_le_nhds
-      (Iio_mem_nhds (neg_lt_zero.mpr (Real.exp_pos (-1))))] with z hz hz0
-  exact (lowerLambertW_hasDerivAt ⟨hz, hz0⟩).deriv.symm
+  filter_upwards [Ioo_mem_nhdsGT_branchPoint] with z hz
+  exact (lowerLambertW_hasDerivAt hz).deriv.symm
 
 /-! ## Endpoint secant slopes -/
 
@@ -138,16 +147,7 @@ theorem tendsto_principalLambertW_secantSlope_branchPoint_atTop :
 
 private lemma branchPoint_lt_lowerInflection :
     -Real.exp (-1) < -2 * Real.exp (-2) := by
-  have h2e : (2 : ℝ) < Real.exp 1 := by
-    nlinarith [Real.add_one_lt_exp (by norm_num : (1 : ℝ) ≠ 0)]
-  have hmul := mul_lt_mul_of_pos_right h2e (Real.exp_pos (-2))
-  have hprod : Real.exp 1 * Real.exp (-2) = Real.exp (-1) := by
-    calc
-      Real.exp 1 * Real.exp (-2) = Real.exp (1 + -2) :=
-        (Real.exp_add 1 (-2)).symm
-      _ = Real.exp (-1) := by norm_num
-  rw [hprod] at hmul
-  linarith
+  linarith [two_mul_exp_neg_two_lt_exp_neg_one]
 
 /-- The secant slopes from the branch point to the lower branch diverge to
 negative infinity.  This is the endpoint-slope form of its vertical

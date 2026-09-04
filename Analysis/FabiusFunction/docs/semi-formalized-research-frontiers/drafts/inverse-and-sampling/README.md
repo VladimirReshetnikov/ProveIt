@@ -23,8 +23,8 @@ computation.
 
 Its
 [`theorem_concordance.csv`](Inverse_Fabius_Analyticity_Asymptotics_and_Computability/theorem_concordance.csv)
-fully dispositions all 194 immutable source-result rows: 54 are Lean-proved,
-91 are human-proved frontier results, 10 are conjectures, 15 are open
+fully dispositions all 194 immutable source-result rows: 57 are Lean-proved,
+88 are human-proved frontier results, 10 are conjectures, 15 are open
 problems, and 24 are non-applicable source environments.
 [`LEAN_CROSSWALK.md`](Inverse_Fabius_Analyticity_Asymptotics_and_Computability/LEAN_CROSSWALK.md)
 records exact module/declaration matches and separately classifies five
@@ -34,13 +34,15 @@ accounts for all 88 source-subgroup files, and the asset inventory covers 55
 retained files. Eight checksum-ledger rows from the former 63-payload checkpoint
 are retired.
 
-The ten newest exact source-row matches are abstract effective inversion,
+The thirteen newest exact source-row matches are abstract effective inversion,
 centered Appell deconvolution, positive-degree Appell mean-zero,
 arbitrary-phase polynomial deconvolution,
 `is:p3:cor:forced-superconvergence`, and
 `is:p3:thm:Appell-lattice-reproduction`, together with the exact-dyadic
 repository modulus, `is:p2:thm:Laurent-leading`,
-`is:p2:thm:finite-prefix-expansion`, and `is:p2:thm:exact-recovery`.
+`is:p2:thm:finite-prefix-expansion`, `is:p2:thm:exact-recovery`,
+`is:p2:thm:TM-uncentered`, `is:p2:cor:Prouhet-canonical`, and
+`is:p2:thm:TM-centered`.
 The superconvergence pair is the parity-selected degree-`N+1` quadrature and
 its explicit Rvachev--Appell lattice specialization.
 
@@ -62,11 +64,25 @@ respectively `n+1` and `⌊n/2⌋+1` consecutive prefixes. Exact degrees `n` and
 `Polynomial (Polynomial ℚ)`. A fixed-inner-`x` centered specialization can
 drop degree, for example at odd `n` and `x = 0`. The prefix moments form an
 algebraic finite-convolution model; no random-variable, `HasLaw`, or
-analytic-MGF realization is claimed. These two promotions give the current
-inverse concordance totals: 54 Lean-proved and 91 human-proved frontier rows,
-with the other categories unchanged.
+analytic-MGF realization is claimed. These two promotions gave the historical
+inverse concordance checkpoint of 54 Lean-proved and 91 human-proved frontier
+rows.
 
-The accepted merged-source receipt is root
+The zero-definition/eight-theorem
+`FabiusFunction.FinitePrefixThueMorseCollapse` module now makes the two
+finite-prefix collapses and the intervening Prouhet corollary exact.  Its
+uncentered block has sign `(-1)^N`, scale `(1/2)^choose(N+1,2)`, and residual
+`n.descFactorial N * x^(n-N)`; its centered block is sign-free with scale
+`(1/2)^choose(N,2)`.  The successor-indexed centered theorem is on the
+manuscript's literal grid, while the common-denominator form strengthens the
+statement to `N = 0`.  The cancellation and first-response companions cover
+every clause of the Prouhet row.  These are rational coefficient-model
+identities, not a new random-variable, `HasLaw`, analytic-MGF, or
+Barnes-identification result.  The current concordance is therefore 57
+Lean-proved / 88 human-proved frontier / 10 conjecture / 15 open-problem / 24
+nonassertoric rows.
+
+The accepted first-merge receipt, now retained as historical provenance, is root
 `293L/11514B/92fab1fae38bbcf86a45b51bfe7ff34e2801361df9d2f3d6aa3de4dc966eaa3c`,
 14-file aggregate
 `10909L/438542B/24bdab6491f5ca84fbb9e716f92c7923e8961b6acbc793d9aa5e0faa68852444`,
@@ -74,15 +90,21 @@ passes `132/137/137`, PDF
 `137pp/2045463B/ca403c74e2b46923ce9ac1eda547ab1bcb5e71039b35c8ee394acdd2014c4f8e`,
 and log
 `1569L/64081B/d4aa25579c958e11c59d914c74dfca331fc2bbccf7bba4715dcd18fa050e771f`.
-The purpose-specific 23-input source-only closure digest is
+The first-merge purpose-specific 23-input source-only closure digest was
 `e07cb51f4fe072cd79a014cc891cb8cede62880593d7659b17da9377a21099bc`.
-All recorded publication gates passed. This receipt and the earlier historical
+The live purpose-specific closure has since been regenerated for the current
+23 inputs at
+`76ac9fd6fadbf8291fe186a111330d098c2ed12ceda67aa32031d424ba67d611`;
+it is a source-only receipt with no PDF-parity role. The accepted current
+source/PDF receipt is in the [authoritative receipt
+register](../MANIFEST.md#current-post-merge-publication-receipts).
+All recorded publication gates passed at that checkpoint. This receipt and the earlier historical
 134-page tuple are recorded in the
 canonical package's
 [`VALIDATION.md`](Inverse_Fabius_Analyticity_Asymptotics_and_Computability/VALIDATION.md).
 The historical PDF was 134 A4 pages and 2,027,726 bytes, SHA-256
 `22bc68d855ad04dde9654e9fbd20b3ba7f05a33e3c5df0e5b80bb8991c94b41d`;
-it is superseded by the accepted current receipt.
+it precedes the later first-merge receipt, and both are historical.
 
 The immutable extraction pin is
 `0a0cdabeb72a6f7d67cfdfb76d02a8f7381c7bf7`. The five old layouts are also
@@ -145,8 +167,9 @@ monomial and polynomial rules, generic-mesh physical quadrature, deconvolved
 polynomial synthesis, and the Rvachev--Appell specialization. These two latest
 row promotions brought the canonical concordance to the historical
 51 Lean-proved / 94 human-proved checkpoint. The Laurent promotion then made
-that 52 / 93, and the finite-prefix pair gives the current 54 / 91, with 10
-conjectures, 15 open problems, and 24 nonassertoric environments. The
+that 52 / 93, the finite-prefix pair gave 54 / 91, and the finite-prefix
+Thue--Morse tranche gives the current 57 / 88, with 10 conjectures, 15 open
+problems, and 24 nonassertoric environments. The
 zero-definition/one-theorem `FabiusFunction.HalfQBinomialRootSimplicity` leaf
 also completes the separate q-frontier label `cor:halfbase-root-locus` over
 the canonical rational polynomial: its simple-root theorem composes with the
@@ -166,17 +189,38 @@ historical 924-module/11,615-declaration checkpoint.  The subsequent
 make q-frontier labels `prop:up-tail` and `cor:up-moments` Exact, including
 the closed-tail convention and every positive natural moment order.  The
 unrelated one-definition/one-theorem
-`FabiusFunction.RvachevLegendreBiorthogonality` leaf gives the incoming
-pre-compatibility checkpoint of 925 modules and 11,619 public declarations.
-Preserving the three unique local `QBinomialTheoremInfinite` compatibility
-wrappers gives the live union of 925 modules and 11,622 public declarations.
-Its exact finite Legendre pairing does not change this inverse-package ledger.
-The q forward ledger is now 181
-Exact / 78 Partial / 15 None / 8 interface rows, and its source concordance
-is 94 Lean-proved / 384 human-proved frontier / 60 non-applicable / 9
-conjectures.  The preceding finite-prefix checkpoint was 923/11,610. The
-retired source layouts and superseded PDF receipts remain immutable provenance
-only; the current inverse and comb receipts are recorded above.
+`FabiusFunction.RvachevLegendreBiorthogonality` leaf then gave the historical
+925-module/11,619-declaration checkpoint.  Its exact finite Legendre pairing
+and the other intervening declarations do not change this inverse-package
+ledger; the finite-prefix Thue--Morse module changes only the three rows
+identified above.  The later
+one-definition/five-theorem
+`FabiusFunction.GeometricUniformMomentReciprocity` leaf defines the combined
+inner/exterior germ, identifies both strict branches, proves analyticity at
+zero off the unit circle, and proves for `q != 0`, `‖q‖ != 1` the local
+`EventuallyEq` `M_q(z) * M_(q⁻¹)(-z) = 1` and its exact all-order binomial
+derivative convolution.  It makes q-monograph label `thm:qF-reciprocity`
+Exact; no global pointwise identity through genuine inner-product zeros is
+claimed.  Subsequent source-only tranches, including that reciprocity leaf,
+give the historical reciprocity checkpoint 931/11,685.  The subsequently
+merged upstream `DyadicBoundaryIdentity.lean` and
+`FinitePrefixThueMorseCollapse.lean` modules add two modules and ten public
+declarations, making the historical 933/11,695 census.  The incoming union
+adds one module and fourteen public declarations: the new zero-definition/
+six-theorem `ProuhetBaseTwoBridge.lean` module, one theorem added to
+`DyadicBoundaryIdentity.lean`, and seven theorems added to
+`ThueMorseNewmanSelfSimilarity.lean`.  This makes 934/11,709 a historical
+checkpoint. Later upstream work reaches 952/11,881, and the three unique local
+q-binomial compatibility wrappers give the live 952/11,884 census. The
+exhaustive audit still has no missing module header or public-declaration
+doc comment.  The q forward
+ledger is now 182 Exact / 78 Partial / 14 None / 8 interface rows, its relevant
+Dyadic Gaussian--Thue--Morse chapter is 13/43/0/0, and its source concordance
+is 95 Lean-proved / 383 human-proved frontier / 60 non-applicable / 9
+conjectures.  The preceding finite-prefix checkpoint was 923/11,610.  The
+retired source layouts remain immutable provenance only. The first-merge
+inverse receipt is historical and the current source requires rerender; the
+comb receipt remains current.
 
 `QuarterCatalanGerm.lean` proves that the distinguished rational quarter germ
 becomes the Catalan inverse of `X + 4 X^2` under the exact `9/4` parameter

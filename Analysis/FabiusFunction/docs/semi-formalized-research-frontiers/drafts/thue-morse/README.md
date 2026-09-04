@@ -101,7 +101,7 @@ under the integral with the exponent shift `s ↦ s + 1`; the other two give
 `k ≤ r`.  Thus `p2:thm:gamma-tower` is Exact when its displayed logarithm is
 read, as above, as the chosen GammaLog coordinate.  Every differential theorem
 retains `0 < a`; no principal-`Complex.log` identity or nonpositive-parameter
-extension is asserted. The accepted merged-source receipt is root
+extension is asserted. The accepted first-merge receipt, now historical, is root
 `10557L/482022B/8cef828c3d92a0017e22463ac90878a5e3a98e1138059d5f4793d47c04a88404`,
 two-file aggregate
 `10841L/493857B/79a43711c6989336166d6b2ed1faa306cc985b8d70557025ab139791d455723c`,
@@ -110,8 +110,10 @@ passes `139/144/144`, PDF
 and final log
 `1503L/59417B/1219dbc87bc4f9920c40b24659182220b14e7908a45a9eb33d0f19390148c64b`.
 Every recorded prohibited-log, A4/rotation, PDF 1.5, encryption, font/subsetting,
-Libertinus, Type-3, and visual gate passed. The former 143-page PDF remains an
-explicit historical render.
+Libertinus, Type-3, and visual gate passed at that checkpoint. The former
+143-page PDF remains an earlier historical render. The accepted current
+source/PDF receipt is in the [authoritative receipt
+register](../MANIFEST.md#current-post-merge-publication-receipts).
 
 `CentralBinomialValuation.lean` supplies the atlas's direct central-binomial
 crosswalk.  Its exhaustive public API is

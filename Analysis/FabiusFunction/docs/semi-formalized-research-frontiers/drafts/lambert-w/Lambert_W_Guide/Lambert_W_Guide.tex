@@ -4400,21 +4400,25 @@ theorem,
 \nolinkurl{geometricUniformMomentPolynomial_eval}\texttt{\textsubscript{2}}\nolinkurl{_eq_mgf_taylorCoefficient},
 supplies the real-\(\lvert q\rvert<1\) actual-MGF normalization and makes
 \nolinkurl{p7:eq:Pn-def} Exact in that regime.  It supplies no complex-q
-infinite-product realization by itself.  The subsequent exhaustive \(1+2\)
+infinite-product realization by itself.  The subsequent current \(1+3\)
 \path{GeometricUniformComplexMomentProduct.lean} leaf consists of
 \nolinkurl{geometricUniformComplexMomentProduct},
-\nolinkurl{hasProdLocallyUniformly_geometricUniformComplexMomentProduct}, and
+\nolinkurl{hasProdLocallyUniformly_geometricUniformComplexMomentProduct},
+\nolinkurl{differentiable_geometricUniformComplexMomentProduct}, and
 \nolinkurl{geometricUniformMomentPolynomial_eval}\texttt{\textsubscript{2}}\nolinkurl{_eq_complexMomentProduct_taylorCoefficient}.
 For every complex \(\lVert q\rVert<1\), these give the actual locally uniform
-product and identify its normalized Taylor coefficient with the recursive
-polynomial.  This is a complex analytic analogue, not a complex
-probability-moment extension of \nolinkurl{p7:eq:Pn-def}, whose Exact status
+product, prove complex differentiability on the whole plane, and identify its
+normalized Taylor coefficient with the recursive polynomial.  This is a
+complex analytic analogue, not a complex probability-moment extension of
+\nolinkurl{p7:eq:Pn-def}, whose Exact status
 remains restricted to real \(\lvert q\rvert<1\).  At this historical point the
 canonical q-monograph compound \nolinkurl{thm:qF-moment-polynomial} remained
 Partial because neither the global \texttt{RatFunc} identification nor its
-pole-clearing polynomial continuation at roots was formalized.  The complex leaf raised the next
+pole-clearing polynomial continuation at roots was formalized.  The original
+\(1+2\) complex surface raised the next
 incoming-branch checkpoint to the historical 906/11,461, and in the merged
-chronology it formed the historical 918/11,568 checkpoint.  The exhaustive
+chronology it formed the historical 918/11,568 checkpoint; the subsequently
+exposed differentiability theorem belongs only to the live census below.  The exhaustive
 zero-definition/one-theorem \path{HalfQBinomialRootSimplicity.lean} leaf then
 gave the merged-main 919/11,569 checkpoint.  Its
 \nolinkurl{halfQBinomial_sum_rootMultiplicity_two_pow}, together with the
@@ -4468,6 +4472,19 @@ off-unit-circle Taylor-coefficient regimes, and handles \(q=1\) through
 \nolinkurl{thm:qF-moment-polynomial} Exact and gives the historical
 924/11,615 checkpoint.  No analytic value, pole order, or divisor is asserted
 at a genuine unit-root pole.  The later
+\path{GeometricUniformMomentReciprocity.lean} sibling consists of one public
+definition, \nolinkurl{geometricUniformComplexMomentGerm}, and five public
+theorems:
+\nolinkurl{geometricUniformComplexMomentGerm_of_norm_lt_one},
+\nolinkurl{geometricUniformComplexMomentGerm_of_one_lt_norm},
+\nolinkurl{analyticAt_geometricUniformComplexMomentGerm},
+\nolinkurl{geometricUniformComplexMomentGerm_reciprocity}, and
+\nolinkurl{geometricUniformComplexMomentGerm_moment_convolution}.  It identifies
+the strict inner and exterior branches, proves analyticity at zero off the unit
+circle, and proves for \(q\ne0\) and \(\lVert q\rVert\ne1\) the local germ
+identity \(M_q(z)M_{q^{-1}}(-z)=1\) and its exact all-order binomial derivative
+convolution.  Thus \nolinkurl{thm:qF-reciprocity} is Exact; no global pointwise
+identity through genuine inner-product zeros is asserted.  The later
 \nolinkurl{weightedSumDistribution_real_Ici_eq_rvachevUp_of_nonneg} and
 \nolinkurl{integral_pow_weightedSumDistribution_eq_mul_intervalIntegral_rvachevUp}
 theorems make \nolinkurl{prop:up-tail} and \nolinkurl{cor:up-moments} Exact.
@@ -4476,14 +4493,28 @@ The unrelated exhaustive (1+1)
 \nolinkurl{rvachevLegendreAnalysisKernel} and
 \nolinkurl{rvachevLegendreBiorthogonality}; it closes the translated-kernel
 definition and finite Legendre biorthogonality, but not the larger
-Fourier--Bessel or projector claims.  These additions give the incoming-branch
-925-module/11,619-declaration census.  After the two shared fixed-column names
-are counted once, the other three local declarations give the merged live
-925-module/11,622-declaration census.  The q forward ledger is 181 Exact /
-78 Partial / 15 None / 8 interface rows, and its source concordance is
-94 Lean-proved / 384 human-proved frontier / 60 non-applicable /
-9 conjectures.  The pre-merge Guide PDF receipt remains recorded solely as
-historical provenance and is not the render receipt for this merged edition.
+Fourier--Bessel or projector claims.  These additions give the historical
+925-module/11,619-declaration checkpoint.  Subsequent source-only
+tranches, including the reciprocity sibling, give the historical reciprocity
+checkpoint of 931 modules and 11,685 public declarations.  The subsequently
+merged upstream \path{DyadicBoundaryIdentity.lean} and
+\path{FinitePrefixThueMorseCollapse.lean} modules add two modules and ten
+public declarations, making the historical dyadic/finite-prefix census 933
+modules and 11,695 public declarations.  The incoming union adds one module
+and fourteen public declarations: the new zero-definition/six-theorem
+\path{ProuhetBaseTwoBridge.lean} module, one theorem added to
+\path{DyadicBoundaryIdentity.lean}, and seven theorems added to
+\path{ThueMorseNewmanSelfSimilarity.lean}.  This made the historical census
+934 modules and 11,709 public declarations.  Subsequent source tranches add
+eighteen modules and 172 public declarations, reaching the upstream-tip
+952/11,881 census; fixed-column reconciliation adds three net declarations
+and gives the authoritative live census of 952 modules and 11,884 public
+declarations.  The q forward ledger is 182 Exact /
+78 Partial / 14 None / 8 interface rows, the relevant Dyadic
+Gaussian--Thue--Morse chapter is 13/43/0/0, and its source concordance is
+95 Lean-proved / 383 human-proved frontier / 60 non-applicable / 9 conjectures.
+The accepted 70-page preintegration Guide PDF receipt remains recorded solely
+as historical provenance for the edition preceding this merged source.
 
 \begin{longtable}{@{}p{0.30\textwidth}p{0.42\textwidth}p{0.22\textwidth}@{}}
 \toprule

@@ -19,7 +19,7 @@ only as reproducible checks.
 The package audit surfaces are:
 
 - [`theorem_concordance.csv`](theorem_concordance.csv): all 194 immutable
-  source-result rows, fully dispositioned as 54 Lean-proved, 91 human-proved
+  source-result rows, fully dispositioned as 57 Lean-proved, 88 human-proved
   frontier results, 10 conjectures, 15 open problems, and 24 non-applicable
   source environments;
 - [`LEAN_CROSSWALK.md`](LEAN_CROSSWALK.md): exact module and declaration
@@ -27,9 +27,11 @@ The package audit surfaces are:
   post-snapshot additions;
 - [`ASSET_DISPOSITION.csv`](ASSET_DISPOSITION.csv): the disposition of all 88
   files in the two superseded source subgroups;
-- [`SOURCE_CLOSURE.sha256`](SOURCE_CLOSURE.sha256): the current source-only
-  receipt for the 23 files consumed by the TeX build, with digest
-  `e07cb51f4fe072cd79a014cc891cb8cede62880593d7659b17da9377a21099bc`;
+- [`SOURCE_CLOSURE.sha256`](SOURCE_CLOSURE.sha256): a purpose-specific
+  source-only receipt for the 23 files consumed by the TeX build; its current
+  digest is
+  `76ac9fd6fadbf8291fe186a111330d098c2ed12ceda67aa32031d424ba67d611`,
+  while the first-merge digest is preserved in the historical receipt below;
 - [`PROVENANCE.md`](PROVENANCE.md): source hashes, arrival lineage, nested
   predecessors, and immutable recovery points.
 
@@ -40,15 +42,18 @@ python -B audit/build_source_closure.py --check
 python -B audit/build_asset_manifest.py --check
 ```
 
-The asset audit remains separate. The source-closure check passes against the
-refreshed current 23-input ledger, including the merged chapters 03, 06, and
-07. That check verifies the present source inputs. Publication parity is
-recorded separately by the accepted 14-file build aggregate and PDF/log receipt
-below. The asset checker was not rerun in this source-only closure refresh.
+The asset audit remains separate. The 23-input source-closure ledger was
+regenerated for the present inputs and its independent checker passes at
+digest `76ac9fd6fadbf8291fe186a111330d098c2ed12ceda67aa32031d424ba67d611`.
+Publication parity is recorded separately by the historical 14-file build
+aggregate and PDF/log receipt below. The accepted current source/PDF receipt is
+in the [authoritative receipt
+register](../../MANIFEST.md#current-post-merge-publication-receipts).
+The asset checker was not rerun in this source-only closure refresh.
 
 `theorem_concordance.csv` records the disposition of all 194 source-result
 environments while preserving the ten immutable source fields reproduced from
-`audit/SOURCE_REVISION`.  Its current totals are 54 Lean-proved, 91
+`audit/SOURCE_REVISION`.  Its current totals are 57 Lean-proved, 88
 human-proved frontier results, 10 conjectures, 15 open problems, and 24
 nonassertoric rows.  Ten inverse-computability rows now have exact compiled
 counterparts: the main theorem, the three tolerant-difference branch
@@ -80,14 +85,16 @@ counterexample, and the logarithmic `1/n` witness with convention `d(0)=1`.
 The compiled declarations
 `Fabius.inverseFabiusExactDyadicDenominator_primrec` and
 `Fabius.inverseFabiusExactLogarithmicDenominator_primrec` close the remaining
-recursion clause, so that source proposition is now one of the 54 Lean-proved
+recursion clause, so that source proposition is now one of the 57 Lean-proved
 rows.  Its leastness is only for the fixed dyadic target; `1/n` is witness-only,
 and `d(0)=1` is a convention with no modulus asserted at zero.
 
-There is no package-wide checksum gate.  The current purpose-specific source
-closure has a narrow source-integrity role, while the migrated-asset
-disposition records migration evidence. Publication parity is established by
-the separate accepted build receipt below, not by either ledger.
+There is no package-wide checksum gate.  The purpose-specific source closure
+has a narrow source-integrity role, while the migrated-asset disposition
+records migration evidence. The current closure describes the present 23
+inputs; the retained build tuple and first-merge closure digest below remain
+historical. Current publication parity is recorded in the
+[authoritative receipt register](../../MANIFEST.md#current-post-merge-publication-receipts).
 
 The result and asset extractors are pinned by
 [`audit/SOURCE_REVISION`](audit/SOURCE_REVISION) to
@@ -97,12 +104,14 @@ at `93db15ad3c0645bd3cfd0a3e6e694e3c86a3aa2b`, a complete pre-retirement
 repository snapshot. The old paths are retained as provenance locators, not
 as live links.
 
-The ten newest exact source-row matches are abstract effective inversion,
+The thirteen newest exact source-row matches are abstract effective inversion,
 centered Appell deconvolution, positive-degree Appell mean-zero,
 arbitrary-phase polynomial deconvolution, forced superconvergence, and finite
 Appell lattice reproduction, together with the exact-dyadic repository modulus
 and the leading Laurent coefficient at every nonzero centered-MGF pole, plus
-the exact finite-prefix Appell expansions and their finite Richardson recovery.
+the exact finite-prefix Appell expansions and their finite Richardson recovery,
+the uncentered finite-prefix Thue--Morse collapse, its canonical Prouhet
+corollary, and the centered collapse.
 The superconvergence pair uses
 `FabiusFunction.RvachevSuperconvergentSynthesis`: its phase dictionary
 specializes the selected phases at `M = 2^N`, its physical quadrature wrapper
@@ -146,6 +155,20 @@ from respectively `n+1` prefixes at base `1/2` and `n/2+1` prefixes at base
 algebraic finite-binomial-convolution model; no random-variable, `HasLaw`, or
 MGF realization bridge is claimed.
 
+The zero-definition/eight-theorem
+`FabiusFunction.FinitePrefixThueMorseCollapse` module makes
+`is:p2:thm:TM-uncentered`, `is:p2:cor:Prouhet-canonical`, and
+`is:p2:thm:TM-centered` exact.  The uncentered main theorem gives
+`(-1)^N (1/2)^choose(N+1,2) n.descFactorial N x^(n-N)` on the complete
+depth-`N` signed grid, with companion theorems for the vanishing range `n < N`
+and the first constant `(-1)^N N! (1/2)^choose(N+1,2)`.  The centered
+successor theorem uses the manuscript's literal grid
+`x + (1 - 2^-(m+1)) - k/2^m` and has the sign-free scale
+`(1/2)^choose(m+1,2)`; its total common-denominator companion extends the
+formula to `N = 0`.  All eight declarations are rational coefficient-model
+identities.  They add no random-variable, `HasLaw`, analytic-MGF, or separate
+Barnes-identification theorem.
+
 ## Inverse-asymptotics subgroup closure
 
 The former `inverse-asymptotics-and-computability/` subgroup is fully
@@ -156,7 +179,7 @@ masters contribute 152 of the 194 concordance rows:
 - `Inverse_Endpoint_All_Orders`: 29 rows; and
 - `Inverse_Fabius_Computability_Report`: 40 rows.
 
-Their canonical classifications are 38 exact Lean matches, 73 complete
+Their canonical classifications are 41 exact Lean matches, 70 complete
 human-proved frontier results, 18 non-live source environments (seven
 definitions, three algorithms, two examples, four editorial obligations, and
 two superseded source conjectures), nine explicitly retained conjectures, and
@@ -169,16 +192,17 @@ from the immutable pre-retirement revision. Thus the historical subgroup
 contains no live theorem, proof, or reproducibility payload that is absent or
 unaccounted for here.
 
-## Current source and accepted publication receipt
+## Historical first-merge publication receipt
 
-The current master, source graph, source-only closure, PDF, and log receipt is:
+The following master, source graph, source-only closure, PDF, and log tuple was
+accepted for the first-merge source snapshot:
 
 - `inverse_fabius_theory.tex`: 293 lines, 11,514 bytes, SHA-256
   `92fab1fae38bbcf86a45b51bfe7ff34e2801361df9d2f3d6aa3de4dc966eaa3c`;
 - the ordered 14-file TeX graph: 10,909 lines, 438,542 bytes, aggregate
   SHA-256
   `24bdab6491f5ca84fbb9e716f92c7923e8961b6acbc793d9aa5e0faa68852444`;
-- its current 23-input source-only closure digest: SHA-256
+- its then-current 23-input source-only closure digest: SHA-256
   `e07cb51f4fe072cd79a014cc891cb8cede62880593d7659b17da9377a21099bc`;
 - three passes at 132/137/137 pages;
 - `inverse_fabius_theory.pdf`: 137 A4 pages, 2,045,463 bytes, SHA-256
@@ -188,17 +212,21 @@ The current master, source graph, source-only closure, PDF, and log receipt is:
 
 The accepted build passed every recorded prohibited-log, A4/rotation, PDF 1.5,
 encryption, embedded/subset-font, Libertinus, Type-3, and visual gate. The
-23-input closure remains source-only evidence; the 14-file aggregate records
-the exact TeX graph used for the accepted build.
+23-input closure remains historical source-only evidence; the 14-file aggregate
+records the exact TeX graph used for that build. The live 23-input closure
+ledger has since been regenerated at
+`76ac9fd6fadbf8291fe186a111330d098c2ed12ceda67aa32031d424ba67d611`;
+the synchronized current source/PDF receipt is recorded in the
+[authoritative receipt register](../../MANIFEST.md#current-post-merge-publication-receipts).
 
 For explicit history, the preceding fully reviewed publication checkpoint was
 134 A4 pages and 2,027,726 bytes, SHA-256
 `22bc68d855ad04dde9654e9fbd20b3ba7f05a33e3c5df0e5b80bb8991c94b41d`,
 after passes 127/134/134. Its preceding source-closure digest was
 `418f6f93e5b40ec2fa441cc6379a21c9587f2b6e6c50f7863c75595c062e606c`.
-Those bytes remain historical provenance and are superseded by the current
-receipt above. `VALIDATION.md` keeps the current build evidence and the older
-receipt distinct. Package checksum
+Those bytes remain historical provenance and were superseded by the later
+first-merge receipt above. `VALIDATION.md` keeps the two historical receipts
+distinct. Package checksum
 manifests are retired repository-wide;
 `SOURCE_CLOSURE.sha256` and `ASSET_DISPOSITION.csv` retain the scoped source
 and migration evidence without acting as whole-package checksum gates.

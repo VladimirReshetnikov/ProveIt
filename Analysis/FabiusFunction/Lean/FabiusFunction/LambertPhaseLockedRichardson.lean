@@ -1,6 +1,7 @@
 import FabiusFunction.FabiusLambertSaddle
 import FabiusFunction.GeometricLagrange
 import FabiusFunction.LagrangeResidualMoments
+import FabiusFunction.PowerExponentialLambertFabius
 
 /-!
 # Phase-locked Lambert nodes and reciprocal Richardson weights
@@ -49,52 +50,16 @@ private theorem lowerLambertNode_spec {y : ℝ}
         Ioo (0 : ℝ) (Real.exp (-1) / Real.log 2) ∧
       fabiusLambertPhase (y * (2 : ℝ) ^ (-y)) = y := by
   have hL : 0 < Real.log 2 := Real.log_pos (by norm_num)
-  have hy0 : 0 < y := by nlinarith
-  let u : ℝ := Real.log 2 * y
-  let x : ℝ := y * (2 : ℝ) ^ (-y)
-  have hu : 1 < u := hy
-  have hx : 0 < x := by
-    dsimp [x]
-    exact mul_pos hy0 (Real.rpow_pos_of_pos (by norm_num) _)
-  have hrpow : (2 : ℝ) ^ (-y) = Real.exp (-u) := by
-    rw [Real.rpow_def_of_pos (by norm_num : (0 : ℝ) < 2)]
-    congr 1
-    dsimp [u]
-    ring
-  have hux : Real.log 2 * x = u * Real.exp (-u) := by
-    dsimp [x, u]
-    rw [hrpow]
-    ring
-  have hlt : u * Real.exp (-u) < Real.exp (-1) := by
-    have hexp : u < Real.exp (u - 1) := by
-      have h := Real.add_one_lt_exp (by linarith : u - 1 ≠ 0)
-      simpa only [sub_add_cancel] using h
-    have hmul := mul_lt_mul_of_pos_right hexp (Real.exp_pos (-u))
-    calc
-      u * Real.exp (-u) < Real.exp (u - 1) * Real.exp (-u) := hmul
-      _ = Real.exp (-1) := by
-        rw [← Real.exp_add]
-        congr 1
-        ring
-  have hxsmall : x < Real.exp (-1) / Real.log 2 := by
-    apply (lt_div_iff₀ hL).2
-    rw [mul_comm, hux]
-    exact hlt
-  have hz : -(Real.log 2 * x) ∈ Ioo (-Real.exp (-1)) 0 := by
-    constructor
-    · rw [hux]
-      linarith
-    · exact neg_lt_zero.mpr (mul_pos hL hx)
-  have hw : -u < -1 := neg_lt_neg hu
-  have heq : (-u) * Real.exp (-u) = -(Real.log 2 * x) := by
-    rw [hux]
-    ring
-  have hunique := lowerLambertW_unique hz hw heq
-  refine ⟨⟨hx, hxsmall⟩, ?_⟩
-  unfold fabiusLambertPhase paperLambertN
-  rw [← hunique]
-  dsimp [u]
-  field_simp [hL.ne']
+  have hy' : (Real.log 2)⁻¹ < y := by
+    rw [inv_eq_one_div, div_lt_iff₀ hL]
+    linarith
+  have hmem : y ∈ fabiusLambertPhase ''
+      Ioo (0 : ℝ) (Real.exp (-1) / Real.log 2) := by
+    rw [fabiusLambertPhase_image]
+    exact mem_Ioi.mpr hy'
+  obtain ⟨x, hx, rfl⟩ := hmem
+  rw [fabiusLambertPhase_rightInv ⟨hx.1, hx.2.le⟩]
+  exact ⟨hx, rfl⟩
 
 private lemma one_lt_log_two_mul_phaseLockedParameter
     {lambda : ℝ} (hlambda : (Real.log 2)⁻¹ < lambda) (j : ℕ) :

@@ -4007,12 +4007,27 @@ checkpoint.  The exhaustive one-definition/four-theorem
 \path{ProbabilityLaplaceMoments.lean} module then gives 924/11,617, and the
 exhaustive one-definition/one-theorem
 \path{RvachevLegendreBiorthogonality.lean} leaf gives the historical
-925/11,619 census on the incoming branch.  Consolidating the two shared fixed-column
-names once and retaining the three other local declarations gives the merged
-live census of 925 modules and 11,622 public declarations, with no missing
-module headers or public-declaration doc comments.
-The q forward ledger at this union is 181 Exact / 78 Partial / 15 None /
-8 N/A.
+925/11,619 census.  Subsequent merged-main additions brought the
+pre-reciprocity census to 930/11,678.  Making complex-product
+differentiability public adds one declaration without adding a module, and
+the exhaustive one-definition/five-theorem
+\path{GeometricUniformMomentReciprocity.lean} leaf gives the historical
+reciprocity checkpoint 931/11,685.  The subsequently merged upstream
+\path{DyadicBoundaryIdentity.lean} and
+\path{FinitePrefixThueMorseCollapse.lean} modules add two facade-reachable
+modules and ten public declarations, giving the historical dyadic/finite-prefix
+checkpoint 933/11,695.  The incoming union adds one module and fourteen public
+declarations: the new zero-definition/six-theorem
+\path{ProuhetBaseTwoBridge.lean} module, one theorem added to
+\path{DyadicBoundaryIdentity.lean}, and seven theorems added to
+\path{ThueMorseNewmanSelfSimilarity.lean}.  This gives the historical
+934/11,709 checkpoint.  Subsequent source tranches add eighteen modules and
+172 public declarations, giving the upstream-tip 952/11,881 inventory.
+Consolidating the two shared fixed-column names once and retaining the three
+other local declarations gives the live merged census of 952 modules and
+11,884 public declarations, with no missing module headers or
+public-declaration doc comments.  The q forward ledger at this union is
+182 Exact / 78 Partial / 14 None / 8 N/A.
 The immediately preceding algebraic moment-polynomial checkpoint was
 904/11,457, and the complex Bernoulli value-completion checkpoint 903/11,448
 remains historical.  The merged chronology also records the scaled-geometric
@@ -4046,7 +4061,7 @@ one-definition/eight-theorem
 three-theorem \path{ThueMorseGammaTowerDifferential.lean} leaf, and the
 zero-definition/one-theorem
 \path{GeometricUniformMomentPolynomialBridge.lean} companion, the
-one-definition/two-theorem
+one-definition/three-theorem
 \path{GeometricUniformComplexMomentProduct.lean} complex-product leaf, the
 one-definition/two-theorem
 \path{GeometricUniformExteriorComplexMomentGerm.lean} exterior-germ leaf, the
@@ -4062,10 +4077,13 @@ eleven-definition/seventeen-theorem \path{FinitePrefixAppellRecovery.lean},
 the one-definition/four-theorem
 \path{GeometricUniformMomentRatFunc.lean} leaf, the two new theorems in
 \path{ProbabilityLaplaceMoments.lean}, and the one-definition/one-theorem
-\path{RvachevLegendreBiorthogonality.lean} leaf.
-These overlays are incorporated in this merged source edition.  The pre-merge
-PDF receipt remains recorded solely as historical provenance and is not the
-render receipt for this edition.
+\path{RvachevLegendreBiorthogonality.lean} leaf, followed after the later
+merged-main additions by the one newly public complex-product differentiability
+theorem and the one-definition/five-theorem
+\path{GeometricUniformMomentReciprocity.lean} leaf.
+These overlays are incorporated in this merged source edition.  The accepted
+199-page pre-integration PDF and the earlier 183-page, 1,899,243-byte PDF are
+historical provenance for the editions preceding this merged source.
 
 The six q-calculus module counts are
 \path{QPochhammerInfiniteBounds.lean} (0+5),
@@ -4098,10 +4116,12 @@ the derivative with respect to complex order under the displayed hypotheses.
 The newest moment-polynomial and product counts are
 \path{GeometricUniformMomentPolynomial.lean} (1+8) and
 \path{GeometricUniformMomentPolynomialBridge.lean} (0+1), followed by
-\path{GeometricUniformComplexMomentProduct.lean} (1+2) and
+\path{GeometricUniformComplexMomentProduct.lean} (1+3) and
 \path{GeometricUniformExteriorComplexMomentGerm.lean} (1+2), and finally
 \path{GeometricUniformMomentPolynomialDegree.lean} (0+3) and
-\path{GeometricUniformMomentRatFunc.lean} (1+4).  The algebraic
+\path{GeometricUniformMomentRatFunc.lean} (1+4), with
+\path{GeometricUniformMomentReciprocity.lean} (1+5) completing the current
+germ-reciprocity layer.  The algebraic
 module's definition is
 \lean{geometricUniformMomentPolynomial}; its theorems are
 \lean{geometricUniformMomentPolynomial_zero},
@@ -4122,12 +4142,14 @@ function.  Thus \nolinkurl{p7:eq:Pn-def} is Exact in this real contraction
 regime, including signed \(q\) and \(q=0\).
 
 The complex leaf's exhaustive public surface is the definition
-\lean{geometricUniformComplexMomentProduct} and the two theorems
-\lean{hasProdLocallyUniformly_geometricUniformComplexMomentProduct} and
+\lean{geometricUniformComplexMomentProduct} and the three theorems
+\lean{hasProdLocallyUniformly_geometricUniformComplexMomentProduct},
+\lean{differentiable_geometricUniformComplexMomentProduct}, and
 \nolinkurl{geometricUniformMomentPolynomial_eval}\texttt{\textsubscript{2}}\nolinkurl{_eq_complexMomentProduct_taylorCoefficient}.
 For every complex \(q\) with \(\lVert q\rVert<1\), they give the actual
 infinite product, its locally uniform convergence on the complex plane, and
-the same finite-q-Pochhammer normalization of its \(n\)-th Taylor coefficient.
+its complex differentiability on the whole plane, together with the same
+finite-q-Pochhammer normalization of its \(n\)-th Taylor coefficient.
 This is the complex analytic analogue of the real moment identity, not a
 complex probability-moment statement.
 
@@ -4159,8 +4181,40 @@ meaning of the manuscript normalization.  Thus
 algebraic and analytic leaves above.  This does not turn
 \texttt{RatFunc.eval} into evaluation through a genuine pole, assign analytic
 coefficients at nontrivial roots of unity, or provide a unit-circle analytic
-continuation; the broader \nolinkurl{thm:geometric-uniform-mgf} and germ
-claims remain Partial, and the unit-circle analytic continuation remains open.
+continuation; the broader \nolinkurl{thm:geometric-uniform-mgf}, normalized
+germ-uniqueness, and pole-divisor claims remain Partial.
+
+The reciprocity leaf has exactly the one definition
+\lean{geometricUniformComplexMomentGerm} and the five theorems
+\lean{geometricUniformComplexMomentGerm_of_norm_lt_one},
+\lean{geometricUniformComplexMomentGerm_of_one_lt_norm},
+\lean{analyticAt_geometricUniformComplexMomentGerm},
+\lean{geometricUniformComplexMomentGerm_reciprocity}, and
+\lean{geometricUniformComplexMomentGerm_moment_convolution}.  Off the unit
+circle, the combined germ selects the inner entire product for
+\(\lVert q\rVert<1\) and the exterior reciprocal germ for
+\(1<\lVert q\rVert\).  If additionally \(q\ne0\), Lean proves, as an
+\texttt{EventuallyEq} in the neighbourhood filter at zero,
+\[
+ M_q(z)M_{q^{-1}}(-z)=1.
+\]
+This is deliberately a local germ identity: the inner product equals one at
+zero and hence is nonzero on some neighbourhood by continuity, but it has
+zeros farther away, where Lean's total inverse would make a global pointwise
+identity false.  In the inner regime the exterior definition gives
+\(M_{q^{-1}}(-z)=M_q(z)^{-1}\) locally; in the outer regime the same argument
+with \(q^{-1}\) reverses the two factors.  Differentiating the local identity
+and using Leibniz together with the sign from \(z\mapsto-z\) gives, for every
+\(n\),
+\[
+ \sum_{k=0}^{n}\binom nk(-1)^{n-k}
+ M_q^{(k)}(0)M_{q^{-1}}^{(n-k)}(0)=\delta_{n0}.
+\]
+Thus the analytic-germ identity and its Taylor-moment convolution make the
+canonical q-series theorem \nolinkurl{thm:qF-reciprocity} Exact.  The
+hypotheses \(q\ne0\) and \(\lVert q\rVert\ne1\) are retained literally; no
+unit-circle continuation, explicit common germ disc, global reciprocal
+identity, Mahler-germ uniqueness theorem, or pole-divisor theorem is claimed.
 
 The sharp-degree leaf's exhaustive public surface consists of
 \lean{coeff_geometricUniformMomentPolynomial_choose_two},
@@ -4192,8 +4246,71 @@ merged-main checkpoint was 919/11,569, the exterior \(1+2\) leaf raises it to
 RatFunc \((1+4)\) leaf gives the historical 924/11,615 checkpoint.  The
 closed-tail and raw-moment additions to \path{ProbabilityLaplaceMoments.lean}
 then give 924/11,617, and the Legendre biorthogonality \((1+1)\) leaf gives
-the historical incoming-branch 925/11,619 census; the fixed-column
-reconciliation described above gives the final 925/11,622 census.
+the historical 925/11,619 census.  The later merged-main additions give the
+pre-reciprocity 930/11,678 checkpoint; the newly public product
+differentiability theorem gives 930/11,679, and the reciprocity \((1+5)\) leaf
+gives the historical 931/11,685 checkpoint.  The subsequently merged upstream
+\path{DyadicBoundaryIdentity.lean} and
+\path{FinitePrefixThueMorseCollapse.lean} modules add two modules and ten
+public declarations, giving the historical dyadic/finite-prefix checkpoint
+933/11,695.  The incoming union adds one module and fourteen public
+declarations: the new zero-definition/six-theorem
+\path{ProuhetBaseTwoBridge.lean} module, one theorem added to
+\path{DyadicBoundaryIdentity.lean}, and seven theorems added to
+\path{ThueMorseNewmanSelfSimilarity.lean}.  This gave the historical
+934/11,709 census.  Subsequent source tranches add eighteen modules and 172
+public declarations, reaching the upstream-tip 952/11,881 census;
+fixed-column reconciliation adds three net declarations and gives the
+authoritative live 952/11,884 census, with zero missing module headers and
+zero missing declaration comments.
+
+The exhaustive public surface of
+\path{FinitePrefixThueMorseCollapse.lean} is zero definitions and eight
+theorems:
+\lean{Appell.sum_thueMorseSign_mul_eval_poly},
+\lean{Fabius.sum_thueMorseSign_mul_uncenteredDyadicPrefixAppellPolynomialRat},
+\lean{Fabius.sum_thueMorseSign_mul_uncenteredDyadicPrefixAppellPolynomialRat_of_lt},
+\lean{Fabius.sum_thueMorseSign_mul_uncenteredDyadicPrefixAppellPolynomialRat_self},
+\lean{Fabius.sum_thueMorseSign_mul_centeredDyadicPrefixAppellPolynomialRat},
+\lean{Fabius.sum_thueMorseSign_mul_centeredDyadicPrefixAppellPolynomialRat_succ},
+\lean{Fabius.sum_thueMorseSign_mul_centeredDyadicPrefixAppellPolynomialRat_of_lt},
+and
+\lean{Fabius.sum_thueMorseSign_mul_centeredDyadicPrefixAppellPolynomialRat_self}.
+Writing \(A^{\mathrm{unc}}_{N,n}\) and \(A^{\mathrm{cen}}_{N,n}\) for the
+two rational prefix Appell polynomials and \(s_N=1-2^{-N}\), the two main
+responses are exactly
+\[
+ \sum_{k<2^N}\varepsilon_k
+   A^{\mathrm{unc}}_{N,n}(x+k/2^N)
+ =(-1)^N2^{-\binom{N+1}{2}}n^{\underline{N}}x^{n-N}
+\]
+and
+\[
+ \sum_{k<2^N}\varepsilon_k
+   A^{\mathrm{cen}}_{N,n}(x+s_N-2k/2^N)
+ =2^{-\binom{N}{2}}n^{\underline{N}}x^{n-N}.
+\]
+The first response has the manuscript's sign and
+\(2^{-\binom{N+1}{2}}\) normalization; the second is sign-free with
+\(2^{-\binom{N}{2}}\).  At positive depth \(N=m+1\), the successor theorem
+uses the literal printed grid \(x+s_{m+1}-k/2^m\).  The two \texttt{of\_lt}
+theorems give Prouhet cancellation below the block depth, and the two
+\texttt{self} theorems give the first nonzero constants.  The main
+uncentered theorem, its cancellation and first-response corollaries, and the
+successor-indexed centered theorem make
+\nolinkurl{is:p2:thm:TM-uncentered},
+\nolinkurl{is:p2:cor:Prouhet-canonical}, and
+\nolinkurl{is:p2:thm:TM-centered} Exact by composition.  The total main
+statements include \(N=0\), strengthening the positive-depth presentation.
+This is rational coefficient algebra only: it constructs no random variable
+or \lean{HasLaw}, asserts no analytic MGF, and supplies no Barnes-function
+identification.  These three promotions move the 194-row inverse concordance
+to 57 Lean-proved, 88 human-proved, 10 conjectural, 15 open, and 24
+nonassertoric rows.
+The resulting 934/11,709 checkpoint is historical.  Subsequent source
+tranches give the upstream-tip 952/11,881 inventory, and the three net local
+fixed-column declarations give the live merged census of 952 modules and
+11,884 public declarations, with no documentation gaps.
 
 The final two module counts are
 \path{CentralQBinomialReduction.lean} (0+6) and

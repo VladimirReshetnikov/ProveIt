@@ -6,9 +6,11 @@ import FabiusFunction.FabiusQBinomialTaylor
 `FabiusRawQBinomialFormula` proves the raw-coordinate identity with inner
 power `(r + q)^(n+k)` for rational `q`.  Here the finite numerator is first
 viewed as a polynomial over `ℚ`.  Its rational identity makes that polynomial
-constant, so it can be evaluated at an arbitrary element of any field carrying
-an `ℚ`-algebra structure.  In particular, the formula holds for every real or
-complex translation, not merely for rational or Gaussian-rational ones.
+constant, so it can be evaluated at an arbitrary element of any
+commutative ring carrying an `ℚ`-algebra structure.  In particular,
+the formula holds for every real or complex translation, not merely for
+rational or Gaussian-rational ones.  Only the literal `1 / algebraMap`
+display of the `(-2)^(n^2)` denominator needs a field.
 
 The generic algebraic theorem is accompanied by one `RCLike`-valued
 Fabius-function wrapper, with real and complex compatibility forms and fully
@@ -94,15 +96,16 @@ theorem qBinomialThueMorseRawTranslatedNumeratorPolynomial_coeff
     rw [Polynomial.coeff_C_zero, if_pos rfl]
   · rw [Polynomial.coeff_C_of_ne_zero hj, if_neg hj]
 
-/-- Evaluation of the raw numerator at a scalar in any field over `ℚ`. -/
+/-- Evaluation of the raw numerator at a scalar in any commutative ring
+over `ℚ`. -/
 def qBinomialThueMorseRawTranslatedNumeratorIn
-    {K : Type*} [Field K] [Algebra ℚ K] (q : K) (n : ℕ) : K :=
+    {K : Type*} [CommRing K] [Algebra ℚ K] (q : K) (n : ℕ) : K :=
   Polynomial.eval₂ (algebraMap ℚ K) q
     (qBinomialThueMorseRawTranslatedNumeratorPolynomial n)
 
 /-- Scalar-valued raw numerators are independent of their translation. -/
 theorem qBinomialThueMorseRawTranslatedNumeratorIn_eq_centered
-    {K : Type*} [Field K] [Algebra ℚ K] (q : K) (n : ℕ) :
+    {K : Type*} [CommRing K] [Algebra ℚ K] (q : K) (n : ℕ) :
     qBinomialThueMorseRawTranslatedNumeratorIn q n =
       algebraMap ℚ K
         ((-1 : ℚ) ^ n * qBinomialThueMorseNumerator n) := by
@@ -113,7 +116,7 @@ theorem qBinomialThueMorseRawTranslatedNumeratorIn_eq_centered
 /-- Scalar evaluation at a rational translation is the scalar embedding of
 the original rational raw numerator. -/
 theorem qBinomialThueMorseRawTranslatedNumeratorIn_ratCast
-    {K : Type*} [Field K] [Algebra ℚ K] (q : ℚ) (n : ℕ) :
+    {K : Type*} [CommRing K] [Algebra ℚ K] (q : ℚ) (n : ℕ) :
     qBinomialThueMorseRawTranslatedNumeratorIn
         (algebraMap ℚ K q) n =
       algebraMap ℚ K
@@ -123,7 +126,7 @@ theorem qBinomialThueMorseRawTranslatedNumeratorIn_ratCast
 
 /-- Literal expansion of the scalar-valued raw numerator. -/
 theorem qBinomialThueMorseRawTranslatedNumeratorIn_eq_wolfram_sum
-    {K : Type*} [Field K] [Algebra ℚ K] (q : K) (n : ℕ) :
+    {K : Type*} [CommRing K] [Algebra ℚ K] (q : K) (n : ℕ) :
     qBinomialThueMorseRawTranslatedNumeratorIn q n =
       ∑ k ∈ Finset.range (n + 1),
         algebraMap ℚ K
@@ -146,42 +149,32 @@ theorem qBinomialThueMorseRawTranslatedNumeratorIn_eq_wolfram_sum
   simp only [map_pow, map_neg, map_one, map_natCast]
 
 /-- The raw-coordinate expression with denominator `(-2)^(n^2)`, evaluated
-in an arbitrary field over `ℚ`. -/
+in an arbitrary commutative ring over `ℚ`.  The reciprocal of the
+rational prefactor is taken in `ℚ` before the scalar embedding, so no
+division in the target is needed; over a field this agrees with the
+literal `1 / algebraMap ℚ K (…)` display, see
+`fabiusAtInverseTwoPow_cast_eq_qBinomialThueMorse_rawTranslated_sum`. -/
 def qBinomialThueMorseRawTranslatedFormulaIn
-    {K : Type*} [Field K] [Algebra ℚ K] (q : K) (n : ℕ) : K :=
-  (1 / algebraMap ℚ K
-      ((-2 : ℚ) ^ (n ^ 2) * qPochhammer (1 / 2) (1 / 2) n)) *
+    {K : Type*} [CommRing K] [Algebra ℚ K] (q : K) (n : ℕ) : K :=
+  algebraMap ℚ K
+      (1 / ((-2 : ℚ) ^ (n ^ 2) * qPochhammer (1 / 2) (1 / 2) n)) *
     qBinomialThueMorseRawTranslatedNumeratorIn q n
 
 /-- The scalar raw formula is the cast of the centered rational formula. -/
 theorem qBinomialThueMorseRawTranslatedFormulaIn_eq_centered
-    {K : Type*} [Field K] [Algebra ℚ K] (q : K) (n : ℕ) :
+    {K : Type*} [CommRing K] [Algebra ℚ K] (q : K) (n : ℕ) :
     qBinomialThueMorseRawTranslatedFormulaIn q n =
       algebraMap ℚ K (qBinomialThueMorseFormula n) := by
   rw [qBinomialThueMorseRawTranslatedFormulaIn,
-    qBinomialThueMorseRawTranslatedNumeratorIn_eq_centered]
-  have h := congrArg (algebraMap ℚ K)
-    (qBinomialThueMorseRawTranslatedFormula_eq_centered 0 n)
-  rw [qBinomialThueMorseRawTranslatedFormula,
-    qBinomialThueMorseRawTranslatedNumerator] at h
-  simp only [map_mul] at h
-  have hden :
-      1 / algebraMap ℚ K
-          ((-2 : ℚ) ^ (n ^ 2) * qPochhammer (1 / 2) (1 / 2) n) =
-        algebraMap ℚ K
-          (1 / ((-2 : ℚ) ^ (n ^ 2) *
-            qPochhammer (1 / 2) (1 / 2) n)) := by
-    simp only [one_div, map_inv₀]
-  rw [hden]
-  rw [← h]
-  congr 1
-  exact congrArg (algebraMap ℚ K)
-    (qBinomialThueMorseRawTranslatedNumerator_eq_neg_one_pow_mul_centered
-      0 n).symm
+    qBinomialThueMorseRawTranslatedNumeratorIn_eq_centered, ← map_mul]
+  refine congrArg (algebraMap ℚ K) ?_
+  rw [← qBinomialThueMorseRawTranslatedFormula_eq_centered 0 n,
+    qBinomialThueMorseRawTranslatedFormula,
+    qBinomialThueMorseRawTranslatedNumerator_eq_neg_one_pow_mul_centered]
 
 /-- Compatibility with the original rational-valued raw formula. -/
 theorem qBinomialThueMorseRawTranslatedFormulaIn_ratCast
-    {K : Type*} [Field K] [Algebra ℚ K] (q : ℚ) (n : ℕ) :
+    {K : Type*} [CommRing K] [Algebra ℚ K] (q : ℚ) (n : ℕ) :
     qBinomialThueMorseRawTranslatedFormulaIn (algebraMap ℚ K q) n =
       algebraMap ℚ K (qBinomialThueMorseRawTranslatedFormula q n) := by
   rw [qBinomialThueMorseRawTranslatedFormulaIn_eq_centered,
@@ -190,7 +183,7 @@ theorem qBinomialThueMorseRawTranslatedFormulaIn_ratCast
 /-- At degree zero the scalar formula is one for every translation, including
 the literal `q = 0` case containing `0^0`. -/
 @[simp] theorem qBinomialThueMorseRawTranslatedFormulaIn_zero
-    {K : Type*} [Field K] [Algebra ℚ K] (q : K) :
+    {K : Type*} [CommRing K] [Algebra ℚ K] (q : K) :
     qBinomialThueMorseRawTranslatedFormulaIn q 0 = 1 := by
   rw [qBinomialThueMorseRawTranslatedFormulaIn_eq_centered,
     ← qBinomialThueMorseRawTranslatedFormula_eq_centered 0 0,
@@ -199,13 +192,15 @@ the literal `q = 0` case containing `0^0`. -/
 /-- Generic exact inverse-dyadic Fabius identity for every scalar
 translation. -/
 theorem qBinomialThueMorseRawTranslatedFormulaIn_eq_fabiusAtInverseTwoPow
-    {K : Type*} [Field K] [Algebra ℚ K] (q : K) (n : ℕ) :
+    {K : Type*} [CommRing K] [Algebra ℚ K] (q : K) (n : ℕ) :
     qBinomialThueMorseRawTranslatedFormulaIn q n =
       algebraMap ℚ K (fabiusAtInverseTwoPow n) := by
   rw [qBinomialThueMorseRawTranslatedFormulaIn_eq_centered,
     fabiusAtInverseTwoPow_eq_qBinomialThueMorseFormula]
 
-/-- Fully expanded generic scalar identity. -/
+/-- Fully expanded generic scalar identity.  The literal reciprocal
+`1 / algebraMap ℚ K (…)` is the one place where the target must be a
+field. -/
 theorem fabiusAtInverseTwoPow_cast_eq_qBinomialThueMorse_rawTranslated_sum
     {K : Type*} [Field K] [Algebra ℚ K] (q : K) (n : ℕ) :
     algebraMap ℚ K (fabiusAtInverseTwoPow n) =
@@ -220,7 +215,8 @@ theorem fabiusAtInverseTwoPow_cast_eq_qBinomialThueMorse_rawTranslated_sum
                 ((r : K) + q) ^ (n + k) := by
   rw [← qBinomialThueMorseRawTranslatedFormulaIn_eq_fabiusAtInverseTwoPow
     q n, qBinomialThueMorseRawTranslatedFormulaIn,
-    qBinomialThueMorseRawTranslatedNumeratorIn_eq_wolfram_sum]
+    qBinomialThueMorseRawTranslatedNumeratorIn_eq_wolfram_sum,
+    map_div₀, map_one]
 
 /-- `RCLike` wrapper for every bounded function satisfying the Fabius
 characterization and every scalar translation.  This simultaneously covers
@@ -291,7 +287,8 @@ theorem fabius_inverse_two_pow_eq_qBinomialThueMorse_rawTranslated_sum_real
                 ((r : ℝ) + q) ^ (n + k) := by
   rw [fabius_inverse_two_pow_eq_qBinomialThueMorseRawTranslatedFormula_real,
     qBinomialThueMorseRawTranslatedFormulaIn,
-    qBinomialThueMorseRawTranslatedNumeratorIn_eq_wolfram_sum]
+    qBinomialThueMorseRawTranslatedNumeratorIn_eq_wolfram_sum,
+    map_div₀, map_one]
   rfl
 
 /-- Canonical fully literal complex-translation identity. -/
@@ -308,7 +305,8 @@ theorem fabius_inverse_two_pow_eq_qBinomialThueMorse_rawTranslated_sum_complex
                 ((r : ℂ) + q) ^ (n + k) := by
   rw [fabius_inverse_two_pow_eq_qBinomialThueMorseRawTranslatedFormula_complex,
     qBinomialThueMorseRawTranslatedFormulaIn,
-    qBinomialThueMorseRawTranslatedNumeratorIn_eq_wolfram_sum]
+    qBinomialThueMorseRawTranslatedNumeratorIn_eq_wolfram_sum,
+    map_div₀, map_one]
   rfl
 
 end

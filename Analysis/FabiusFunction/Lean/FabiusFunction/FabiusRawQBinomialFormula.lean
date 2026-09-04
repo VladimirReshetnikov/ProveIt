@@ -116,6 +116,16 @@ theorem qBinomialThueMorseNumerator_eq_neg_one_pow_mul_raw
   rw [thueMorseTranslatedPowerSum_one_sub_eq_raw_diagonal]
   ring
 
+/-- The dyadic-reflection sign is an involution: `(-1)^n (-1)^n = 1`. -/
+private theorem neg_one_pow_mul_self (n : ℕ) :
+    (-1 : ℚ) ^ n * (-1 : ℚ) ^ n = 1 := by
+  rw [← pow_add, ← two_mul, pow_mul, neg_one_sq, one_pow]
+
+/-- The reciprocal of the reflection sign is the sign itself. -/
+private theorem one_div_neg_one_pow (n : ℕ) :
+    1 / (-1 : ℚ) ^ n = (-1 : ℚ) ^ n :=
+  (eq_one_div_of_mul_eq_one_left (neg_one_pow_mul_self n)).symm
+
 /-- Reverse orientation of the raw/centered numerator normalization.  Since
 `(-1)^n` is its own inverse, the same sign converts centered coordinates back
 to raw coordinates. -/
@@ -123,16 +133,8 @@ theorem qBinomialThueMorseRawTranslatedNumerator_eq_neg_one_pow_mul_centered
     (q : ℚ) (n : ℕ) :
     qBinomialThueMorseRawTranslatedNumerator q n =
       (-1 : ℚ) ^ n * qBinomialThueMorseNumerator n := by
-  have h := qBinomialThueMorseNumerator_eq_neg_one_pow_mul_raw q n
-  have hsquare : ((-1 : ℚ) ^ n) ^ 2 = 1 := by
-    rw [← pow_mul]
-    norm_num
-  calc
-    qBinomialThueMorseRawTranslatedNumerator q n =
-        1 * qBinomialThueMorseRawTranslatedNumerator q n := by ring
-    _ = ((-1 : ℚ) ^ n) ^ 2 *
-        qBinomialThueMorseRawTranslatedNumerator q n := by rw [hsquare]
-    _ = (-1 : ℚ) ^ n * qBinomialThueMorseNumerator n := by rw [h]; ring
+  rw [qBinomialThueMorseNumerator_eq_neg_one_pow_mul_raw q n,
+    ← mul_assoc, neg_one_pow_mul_self, one_mul]
 
 /-- The rational right-hand side with raw powers `(r+q)^(n+k)` and
 denominator `(-2)^(n^2)`. -/
@@ -163,13 +165,13 @@ theorem qBinomialThueMorseRawTranslatedFormula_eq_centered
       qBinomialThueMorseFormula n := by
   rw [qBinomialThueMorseRawTranslatedFormula,
     qBinomialThueMorseFormula,
-    qBinomialThueMorseNumerator_eq_neg_one_pow_mul_raw q n,
-    neg_two_pow_nat_sq]
-  field_simp
-  have hsquare : ((-1 : ℚ) ^ n) ^ 2 = 1 := by
-    rw [← pow_mul]
-    norm_num
-  rw [hsquare, one_mul]
+    qBinomialThueMorseRawTranslatedNumerator_eq_neg_one_pow_mul_centered
+      q n,
+    neg_two_pow_nat_sq, mul_assoc ((-1 : ℚ) ^ n),
+    ← one_div_mul_one_div (a := (-1 : ℚ) ^ n), one_div_neg_one_pow]
+  linear_combination
+    (1 / ((2 : ℚ) ^ (n ^ 2) * qPochhammer (1 / 2) (1 / 2) n) *
+      qBinomialThueMorseNumerator n) * neg_one_pow_mul_self n
 
 /-- Exact rational form of the arbitrary-`q` raw-coordinate identity. -/
 theorem fabiusAtInverseTwoPow_eq_qBinomialThueMorseRawTranslatedFormula

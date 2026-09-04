@@ -30,7 +30,7 @@ and inverse manuscript PDFs were removed for the same reason. The merged
 master retains one publication artifact,
 `q_pochhammer_q_binomial_monograph.pdf`.
 
-The current merged-source receipt is: master 16,812 lines / 840,316 bytes /
+The first-merge accepted receipt is: master 16,812 lines / 840,316 bytes /
 SHA-256 `64dc18dedbd1966624162b64129128b24b51ca88d8a9e496c661cc1a46a24ba6`;
 15-file graph 26,593 lines / 1,198,416 bytes / aggregate SHA-256
 `762e6d6ca441de51db9679f95d6a01d8353e8044639f99803734719b8a65a5f8`;
@@ -40,7 +40,11 @@ passes 393/401/401, with `makeindex` after each pass (164 accepted, 0 rejected,
 and final 1,230-line, 44,401-byte log, SHA-256
 `37dca6371ea8bf9285e5f104d550bd584a290f4aa92fcf5679b028c9dfd3079d`.
 All recorded log, A4/rotation, PDF 1.5, encryption, font/subsetting,
-Libertinus, Type-3, index, and visual gates passed.
+Libertinus, Type-3, index, and visual gates passed for that source snapshot.
+Later source changes make this an exact historical receipt. The accepted
+current source/PDF receipt, including three clean `makeindex` runs, is in the
+[authoritative receipt
+register](../../MANIFEST.md#current-post-merge-publication-receipts).
 
 The following tuples are retained as explicit history. At the pre-upstream
 commit `581bf`,
@@ -61,8 +65,8 @@ accepted, 0 rejected, 0 warnings), produced the then-accepted 391-page,
 The final 1,231-line, 44,343-byte log has SHA-256
 `fb74b0c4cbd75d9022c78c1df5c1d567120bd67728d5b418697ddc5a2aa8f450`;
 all documented log, page, font, Type-3, extraction, and visual gates passed at
-that revision. The `2d434eec` tuple is historical and is superseded by the
-accepted current receipt above.
+that revision. The `2d434eec` tuple is historical and was superseded by the
+later first-merge receipt above; both are now historical.
 The `581bf` pair above is retained as an exact historical pre-upstream receipt.
 The preceding 389-page, 3,254,138-byte A4 artifact with SHA-256
 `b8add607c85ee35be98dabf36879e1d45fb093c6b453e93679c80295fae715bc`
@@ -73,7 +77,7 @@ bytes, with SHA-256
 
 That preceding pair remains historical provenance. No live `SHA256SUMS` file
 is maintained or should be recreated. The record in `README.md` gives the
-current merged-source receipt, the historical `2d434eec` source-graph/PDF/
+historical first-merge receipt, the historical `2d434eec` source-graph/PDF/
 final-log receipt, the frozen historical `581bf` receipt, and the earlier
 historical artifact's page, size, and font metadata.
 PDFs retained beneath `assets/` are research figures, not manuscripts.
@@ -136,13 +140,25 @@ complex strict contraction, including `q = 0`, and gives the dyadic Rvachev
 product and bounded-Fabius Fourier specializations. The compound
 `thm:qF-spectral` row remains Partial because its named centered/MGF packaging
 and exterior reciprocal, pole-divisor, and zero--pole clauses are absent. The
-live facade audit contains 925 modules and 11,622 public declarations with no
-documentation gaps. Those corpus-wide totals include the q--Chu, Richardson,
+historical dyadic/finite-prefix facade audit contains 933 modules and 11,695
+public declarations with no documentation gaps. The merged upstream
+`DyadicBoundaryIdentity.lean` and
+`FinitePrefixThueMorseCollapse.lean` modules add two modules and ten public
+declarations beyond the historical reciprocity checkpoint 931/11,685. The
+incoming union adds one module and fourteen public declarations: the new
+zero-definition/six-theorem `ProuhetBaseTwoBridge.lean` module, one theorem
+added to `DyadicBoundaryIdentity.lean`, and seven theorems added to
+`ThueMorseNewmanSelfSimilarity.lean`. This makes 934/11,709 a historical
+facade checkpoint. Later upstream work reaches 952/11,881, and the three
+unique local q-binomial compatibility wrappers give the live facade audit of
+952 modules and 11,884 public declarations. The historical 933/11,695 corpus-wide
+totals include the q--Chu, Richardson,
 geometric-law barycenter, Lagrange--Rvachev matrix, arbitrary-space geometric
 realization, regular-central-sum, Lambert branch-gap Bernoulli, affine
 Prouhet, and complex moment-product follow-ups; they do not make the retained
-historical 391-page artifact current. The accepted 401-page receipt above is
-the current publication. Ten declarations come from the sibling
+historical 391-page artifact current. The accepted 401-page first-merge receipt
+above is also historical after later source changes; the accepted current
+receipt is linked above. Ten declarations come from the sibling
 `FabiusFunction.GeometricRichardsonGenerating` source-only module; three more
 are the explicit Gaussian second-derivative and division-free moment
 identities. The sibling `LambertWBranchGapBernoulli.lean` leaf contributes
@@ -165,7 +181,8 @@ equals `(exp z - 1) / z` away from zero; this is not the literal totalized
 quotient at zero and asserts no holomorphy. Higher/full Puiseux and logarithmic
 expansions remain open. None of these sibling changes alters this monograph's
 forward-status counts. The Lambert material belongs to its separate
-publication; the accepted 401-page receipt covers the current q-series source.
+publication; the accepted 401-page first-merge receipt is historical and does
+not claim parity with the later q-series source.
 The
 one-definition/seventeen-theorem `GeometricUniformRealization.lean` leaf
 proves the missing arbitrary-space bridge: `iIndepFun` unit-interval
@@ -211,13 +228,15 @@ full real domain `|q| < 1`, it identifies the recursive polynomial with the
 finite-q-Pochhammer normalization of the genuine geometric-uniform MGF Taylor
 coefficient; the theorem is regular at `q = 0` and includes negative
 contractions.  The next `GeometricUniformComplexMomentProduct.lean` leaf has
-one definition, `geometricUniformComplexMomentProduct`, and exactly two public
-theorems, `hasProdLocallyUniformly_geometricUniformComplexMomentProduct` and
+one definition, `geometricUniformComplexMomentProduct`, and exactly three public
+theorems, `hasProdLocallyUniformly_geometricUniformComplexMomentProduct`,
+`differentiable_geometricUniformComplexMomentProduct`, and
 `geometricUniformMomentPolynomial_eval₂_eq_complexMomentProduct_taylorCoefficient`.
 They construct the actual manuscript product for every complex `‖q‖ < 1`,
-including `q = 0`, prove its locally uniform convergence, and identify the
-recursive polynomial with the finite-q-Pochhammer normalization of its Taylor
-coefficient.  This makes the inner complex product/coefficient bridge exact.
+including `q = 0`, prove its locally uniform convergence and complex
+differentiability on the whole plane, and identify the recursive polynomial
+with the finite-q-Pochhammer normalization of its Taylor coefficient.  This
+makes the inner complex product/coefficient bridge exact.
 The following `GeometricUniformExteriorComplexMomentGerm.lean` leaf has one
 definition, `geometricUniformExteriorComplexMomentGerm`, and exactly two
 theorems, `analyticAt_geometricUniformExteriorComplexMomentGerm` and
@@ -234,6 +253,18 @@ coefficient as `P_n/[n]_q!` in `RatFunc ℚ`, proves its global polynomial
 q-factorial clearing identity, specializes safely to both analytic regimes,
 and handles `q = 1` through `[n]_1! = n!`; it makes no evaluation claim at a
 genuine reduced-denominator zero.  Thus `thm:qF-moment-polynomial` is Exact.
+The subsequent `GeometricUniformMomentReciprocity.lean` leaf contributes one
+definition, `geometricUniformComplexMomentGerm`, and five theorems:
+`geometricUniformComplexMomentGerm_of_norm_lt_one`,
+`geometricUniformComplexMomentGerm_of_one_lt_norm`,
+`analyticAt_geometricUniformComplexMomentGerm`,
+`geometricUniformComplexMomentGerm_reciprocity`, and
+`geometricUniformComplexMomentGerm_moment_convolution`.  It identifies both
+strict branches, proves the combined germ analytic at zero off the unit
+circle, and proves for `q != 0` and `‖q‖ != 1` the local `EventuallyEq`
+`M_q(z) * M_(q⁻¹)(-z) = 1` and its exact all-order binomial derivative
+convolution.  This makes `thm:qF-reciprocity` Exact.  No global pointwise
+identity through genuine inner-product zeros is asserted.
 The broader `thm:geometric-uniform-mgf` remains Partial because its public
 direct dilation/coefficient recurrence, formal-power-series uniqueness,
 single bundled genuine-MGF/characteristic-function identification, and
@@ -258,9 +289,18 @@ gives the historical 923/11,610 checkpoint; and the RatFunc leaf gives the
 historical 924/11,615 checkpoint.  After adjoining the unrelated
 one-definition/one-theorem `RvachevLegendreBiorthogonality.lean` leaf and the
 two new declarations in the existing `ProbabilityLaplaceMoments.lean` module,
-the incoming pre-compatibility checkpoint is 925/11,619. Preserving the three
-unique local `QBinomialTheoremInfinite` wrappers gives the live union
-925/11,622.
+the historical census reached 925/11,619.  Subsequent source-only tranches,
+including the reciprocity leaf, give the historical reciprocity checkpoint
+931/11,685.  The subsequently merged upstream `DyadicBoundaryIdentity.lean`
+and `FinitePrefixThueMorseCollapse.lean` modules add two modules and ten
+public declarations, making the historical dyadic/finite-prefix census
+933/11,695.  The incoming union adds one module and fourteen public
+declarations: the new zero-definition/six-theorem
+`ProuhetBaseTwoBridge.lean` module, one theorem added to
+`DyadicBoundaryIdentity.lean`, and seven theorems added to
+`ThueMorseNewmanSelfSimilarity.lean`.  This makes 934/11,709 historical.
+Later upstream work reaches 952/11,881, and the three unique local
+`QBinomialTheoremInfinite` wrappers give the live union 952/11,884.
 The facade also contains the zero-definition/two-theorem
 `GaussianBinomialGreaterOneAsymptotics.lean` leaf; its exhaustive declarations
 are `gaussianBinomial_gt_one_fixedColumn_relativeError_isBigO` and
@@ -296,8 +336,19 @@ therefore includes `b = 0` and `n = 0`. The zero-definition, one-theorem
 rational-root convention: all rational roots are the displayed `2^j`, and
 each has multiplicity one. Injective scalar extension preserves those
 displayed multiplicities, but the leaf does not package an all-roots
-classification over every extension field. The current semantic-union census
-is 925/11,622.  The existing `ProbabilityLaplaceMoments.lean` module now also
+classification over every extension field. The historical reciprocity
+checkpoint of the semantic union is 931/11,685.  The subsequently merged
+upstream `DyadicBoundaryIdentity.lean` and
+`FinitePrefixThueMorseCollapse.lean` modules add two modules and ten public
+declarations, making the historical dyadic/finite-prefix semantic-union census
+933/11,695.  The incoming union adds one module and fourteen public
+declarations: the new zero-definition/six-theorem
+`ProuhetBaseTwoBridge.lean` module, one theorem added to
+`DyadicBoundaryIdentity.lean`, and seven theorems added to
+`ThueMorseNewmanSelfSimilarity.lean`.  This makes 934/11,709 a historical
+semantic-union checkpoint. Later upstream work and the three unique local
+q-binomial compatibility wrappers give the current 952/11,884 census. The
+existing `ProbabilityLaplaceMoments.lean` module now also
 contains exactly the two new declarations
 `weightedSumDistribution_real_Ici_eq_rvachevUp_of_nonneg` and
 `integral_pow_weightedSumDistribution_eq_mul_intervalIntegral_rvachevUp`.
@@ -307,14 +358,15 @@ the exact positive-natural-degree layer-cake specialization over the full
 law.  Composed with the already stronger global reflection and nonnegative
 tail identities, they make `prop:up-tail` and `cor:up-moments` Exact.
 Neither these additions nor the preceding Lambert addition changes the old
-391-page historical artifact. The accepted 401-page receipt renders the
-current q-series source; Lambert parity is recorded by the Lambert package. The
+391-page historical artifact. The accepted 401-page first-merge receipt is
+also historical after later source changes; Lambert parity is recorded by the
+Lambert package. The
 forward status inventory covers 282 labelled results:
-181 Exact / 78 Partial / 15 None / 8 N/A; the relevant
-Dyadic Gaussian--Thue--Morse chapter is 12/43/1/0, and the 191-result pre-Fabius core is
+182 Exact / 78 Partial / 14 None / 8 N/A; the relevant
+Dyadic Gaussian--Thue--Morse chapter is 13/43/0/0, and the 191-result pre-Fabius core is
 36 / 29 / 123 / 3.
 The five-publication concordance
-has 94 Lean-proved, 384 human-proved frontier, 60 not-applicable, and 9
+has 95 Lean-proved, 383 human-proved frontier, 60 not-applicable, and 9
 conjecture rows. The unrelated `cor:qbinom-inversion-law` remains Partial.
 Both the retained `thm:fixed-column-limit` source row and the
 older `prop:fixed-k-limit` row redirected to it now inherit the exact canonical
@@ -354,8 +406,8 @@ bounds leaf. Its six exported theorems close the exact finite-growth row, while
 the two-theorem greater-than-one leaf closes the remaining fixed-column and
 central asymptotic clauses in their printed normalization. No PDF was generated
 at the source-resolution checkpoint; the 391-page `2d434eec` artifact and the
-389-page predecessor are history. The accepted 401-page receipt above renders
-the current source.
+389-page predecessor are history. The accepted 401-page first-merge receipt
+above is historical; the accepted current receipt is linked above.
 
 The former q-Pochhammer/q-binomial monograph arrived in commit
 `47172bc03ec078961d8b023dfe156ecd712efb65`. Its pre-repair source SHA-256 was

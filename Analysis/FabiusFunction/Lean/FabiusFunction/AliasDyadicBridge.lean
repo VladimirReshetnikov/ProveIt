@@ -417,4 +417,49 @@ theorem gridSample_eq_half_add_sum_odd (F : BoundedFabius) (hF : IsFabius F)
   rw [hfilter]
   ring
 
+/-! ## The energy at a dyadic modulus is an explicit rational
+
+The volume's power-trace theorem stresses that every `P_j = P(j/N)` is rational,
+so that `p_m(n)` is a rational number given by a finite expression.  For `m = 2`
+that is now literal: the energy identity's right-hand side is a finite sum of
+squares of the exact rational dyadic values. -/
+
+/-- The samples at a dyadic modulus are the exact rational values, extracted
+from `foldedCoefficient_two_pow_eq_fabiusDyadic` for reuse. -/
+theorem rvachevUp_two_pow_eq_fabiusDyadic (F : BoundedFabius) (hF : IsFabius F)
+    {n k : ℕ} (hk : k < 2 ^ n) :
+    rvachevUp F ((k : ℝ) / 2 ^ n) = (fabiusDyadic n (2 ^ n - k) : ℝ) := by
+  have h2 : (0 : ℝ) < 2 ^ n := by positivity
+  rw [fabiusDyadic_cast F hF n (2 ^ n - k) (Nat.sub_le _ _),
+    rvachevUp_eq_fabiusReal_one_sub_abs, abs_of_nonneg (by positivity),
+    Nat.cast_sub hk.le]
+  congr 1
+  push_cast
+  rw [sub_div, div_self h2.ne']
+
+/-- **`p_2(n)` in explicit rational form.**  At `N = 2^n`, `n ≥ 1`, the energy of
+the odd folded classes is a finite expression in the rational dyadic values:
+
+`∑_{1 ≤ r < 2^n, r odd} A_{2^n,r}² = 2^{-n}(1 + 2 ∑_{1 ≤ k < 2^n} F((2^n-k)/2^n)²) - 1/2`. -/
+theorem sum_odd_foldedCoefficient_sq_two_pow (F : BoundedFabius) (hF : IsFabius F)
+    {n : ℕ} (hn : 1 ≤ n) :
+    ∑ k ∈ (Ico 1 (2 ^ n)).filter (fun k => Odd k),
+        foldedCoefficient F (2 ^ n) ((k : ℕ) : ZMod (2 * 2 ^ n)) ^ 2
+      = ((2 : ℂ) ^ n)⁻¹ *
+          (1 + 2 * ∑ k ∈ (Ico 1 (2 ^ n) : Finset ℕ),
+            ((fabiusDyadic n (2 ^ n - k) : ℝ) : ℂ) ^ 2) - 1 / 2 := by
+  haveI : NeZero (2 ^ n) := ⟨by positivity⟩
+  have hEven : Even (2 ^ n) := by
+    obtain ⟨m, rfl⟩ : ∃ m, n = m + 1 := ⟨n - 1, by omega⟩
+    exact ⟨2 ^ m, by ring⟩
+  have hsum : ∑ k ∈ (Ico 1 (2 ^ n) : Finset ℕ),
+        (rvachevUp F ((k : ℝ) / 2 ^ n) : ℂ) ^ 2
+      = ∑ k ∈ (Ico 1 (2 ^ n) : Finset ℕ),
+        ((fabiusDyadic n (2 ^ n - k) : ℝ) : ℂ) ^ 2 := by
+    refine Finset.sum_congr rfl fun k hk => ?_
+    rw [Finset.mem_Ico] at hk
+    rw [rvachevUp_two_pow_eq_fabiusDyadic F hF hk.2]
+  rw [sum_odd_foldedCoefficient_sq F hF (2 ^ n) hEven]
+  simp only [Nat.cast_pow, Nat.cast_ofNat, hsum]
+
 end Fabius

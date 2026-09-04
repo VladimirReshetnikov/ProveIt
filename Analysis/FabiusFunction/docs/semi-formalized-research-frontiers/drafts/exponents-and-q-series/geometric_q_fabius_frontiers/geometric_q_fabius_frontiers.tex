@@ -353,6 +353,20 @@ $\tfrac12\bigl(\tfrac1{1-a}-\tfrac a{1-a}\bigr)=\tfrac12$, and for
 $0\le q<1$ the midpoint of $[0,1]$ is again $\tfrac12$, consistently with
 the symmetry of $\GeoLawCentered{q}$.
 \end{proof}
+\emph{Lean status.}  Partial.  Absolute convergence of the defining series is
+\lean{Fabius.summable_norm_geometricUniformWeight} and
+\lean{Fabius.hasSum_geometricUniformWeight}, with the sum continuous and measurable in the
+sample point (\lean{Fabius.continuous_geometricUniformSeries},
+\lean{Fabius.measurable_geometricUniformSeries}); the support statement for \(0\le q<1\) is
+\lean{Fabius.geometricUniformSeries_mem_Icc} together with
+\lean{Fabius.geometricUniformDistribution_support_eq_range}, and the symmetry of the centered
+law is \lean{Fabius.geometricUniformSeries_reflect}, in distribution-function form
+\lean{Fabius.geometricUniformCDF_reflection} (all in \path{GeometricUniformLaw.lean} and
+\path{GeometricUniformCDF.lean}).  Not formalized as such: the \(L^p\) convergence clause, the
+mean \(\Expectation\GeoLaw{q}=\tfrac12\) --- the corpus states the median form
+\lean{Fabius.geometricUniformCDF_one_half}, which is what the reflection gives --- and the
+support for negative \(q\).
+
 
 \begin{proposition}[Affine fixed point and its uniqueness]
 \label{p0:prop:fixed-point}
@@ -389,6 +403,14 @@ one fixed point in $\mathcal P_1(\RealNumbers)$.  By the first paragraph
 $\LawOf{\GeoLaw{q}}$ is a fixed point, and it has finite first moment by
 \cref{p0:prop:basic}.
 \end{proof}
+\emph{Lean status.}  Both clauses are formal.  The fixed-point identity is
+\lean{Fabius.geometricUniformDistribution_selfSimilar}, with the convolution form
+\lean{Fabius.geometricUniformDistribution_conv} in \path{GeometricUniformDictionary.lean}; the
+converse --- that it characterizes the law --- is
+\lean{Fabius.eq_geometricUniformDistribution_of_selfSimilar} in
+\path{GeometricUniformUniqueness.lean}, for every probability measure on \(\RealNumbers\)
+satisfying the same push-forward equation, at every ratio with \(\AbsoluteValue q<1\).
+
 
 \begin{remark}
 \label{p0:rem:uniqueness-scope}
@@ -425,6 +447,16 @@ $[-1,1]$, i.e. into the standard Rvachev series, whose density is
 $\RvachevUp$.  Undoing the two affine steps gives
 \eqref{p0:eq:fabius-point}.
 \end{proof}
+\emph{Lean status.}  The identification of the distribution function is formal: at
+\(q=\tfrac12\) the law is the classical dyadic weighted-sum law
+(\lean{Fabius.weightedSumDistribution_eq_geometricUniformDistribution_one_half},
+\path{ProbabilityRepresentation.lean}), whose distribution function is the bounded Fabius
+function (\lean{Fabius.weightedSumDistribution_real_Iic_eq_fabiusReal},
+\path{IncompleteBetaMaster.lean}).  The density display \eqref{p0:eq:fabius-point} is not
+stated in that form; what the corpus carries about the density is the general
+\lean{Fabius.geometricUniformDensity} with its continuity, nonnegativity and compact support
+in \([0,1]\) (\path{GeometricUniformCDF.lean}).
+
 
 \begin{remark}[Degenerate and boundary parameters]
 \label{p0:rem:endpoints}
@@ -656,6 +688,13 @@ $k\in\IntegerNumbers\setminus\SetOf0$; the principal logarithm is
 therefore holomorphic on the disc of radius $2\pi$ and no larger, and the
 same computation in the variable $w$ gives radius $\pi$.
 \end{proof}
+\emph{Lean status.}  Formal coefficientwise rather than analytically:
+\lean{Fabius.sinhDivLogCoefficient_eq_bernoulli} in \path{SinhDivBernoulliLog.lean} identifies
+every coefficient of the formal logarithm of \(\sinh(z/2)/(z/2)\) with
+\(B_{2m}/(2m\,(2m)!)\), which is \eqref{p0:eq:log-sinhc-half} as an identity of formal power
+series.  The proof is deliberately free of any analytic logarithm, branch choice, or
+convergence statement, so the disc of validity \(\AbsoluteValue z<2\pi\) is not part of it.
+
 
 \begin{theorem}[Exact cumulants of the family]
 \label{p0:thm:cumulants}
@@ -16501,13 +16540,15 @@ coefficient of the genuine geometric-uniform MGF.  Hence
 \eqref{p7:eq:Pn-def} is Exact in the real contraction regime, including
 signed \(q\) and \(q=0\).  The subsequent source-only
 \path{GeometricUniformComplexMomentProduct.lean} leaf has one public
-definition, \lean{geometricUniformComplexMomentProduct}, and exactly two
+definition, \lean{geometricUniformComplexMomentProduct}, and exactly three
 public theorems,
-\lean{hasProdLocallyUniformly_geometricUniformComplexMomentProduct} and
+\lean{hasProdLocallyUniformly_geometricUniformComplexMomentProduct},
+\lean{differentiable_geometricUniformComplexMomentProduct}, and
 \nolinkurl{geometricUniformMomentPolynomial_eval}\texttt{\textsubscript{2}}\nolinkurl{_eq_complexMomentProduct_taylorCoefficient}.
 For every complex \(q\) with \(\lVert q\rVert<1\), it constructs the actual
-infinite product, proves locally uniform convergence on the complex plane, and
-identifies its normalized Taylor coefficient with the same polynomial.  This
+infinite product, proves locally uniform convergence and complex
+differentiability on the whole plane, and identifies its normalized Taylor
+coefficient with the same polynomial.  This
 is a complex analytic analogue, not a complex probability-moment reading of
 \eqref{p7:eq:Pn-def}; that equation is Exact only in the real contraction
 regime stated above.  The subsequent source-only
@@ -16534,6 +16575,28 @@ exterior analytic coefficients, and handles \(q=1\) through
 \([n]_1!=n!\) rather than totalized \(0/0\).  No \texttt{RatFunc.eval}
 identity is asserted at a genuine reduced-denominator zero, and no general
 unit-circle analytic-germ claim is made.
+\end{statusbox}
+
+\begin{statusbox}{Post-snapshot Lean status (continued): Reciprocity}
+The subsequent source-only
+\path{GeometricUniformMomentReciprocity.lean} leaf has one public definition,
+\lean{geometricUniformComplexMomentGerm}, and exactly five public theorems:
+\lean{geometricUniformComplexMomentGerm_of_norm_lt_one},
+\lean{geometricUniformComplexMomentGerm_of_one_lt_norm},
+\lean{analyticAt_geometricUniformComplexMomentGerm},
+\lean{geometricUniformComplexMomentGerm_reciprocity}, and
+\lean{geometricUniformComplexMomentGerm_moment_convolution}.  The first two
+identify the strict inner and exterior branches, the third proves analyticity
+at the origin off the unit circle, and the last two prove, for \(q\ne0\) and
+\(\lVert q\rVert\ne1\),
+\[
+ M_q(z)M_{q^{-1}}(-z)=1
+\]
+as a local germ equality and give its exact all-order binomial derivative
+convolution.  The germ formulation is essential: at a genuine zero of the
+inner product, Lean's total inverse does not yield a global pointwise
+reciprocal identity.  Thus the q-monograph label
+\nolinkurl{thm:qF-reciprocity} is Exact.
 \end{statusbox}
 
 \begin{statusbox}{Post-snapshot Lean status (continued): Sharp degree}
@@ -16593,20 +16656,31 @@ one; together with the existing global up/Fabius identities, they make
 zero-definition/two-theorem increment gives the intermediate 924/11,617
 checkpoint.  The unrelated one-definition/one-theorem
 \path{RvachevLegendreBiorthogonality.lean} leaf then gives the historical
-925/11,619 incoming-branch census.  The local fixed-column branch separately
-recorded 903/11,453 and its first union with the algebraic polynomial branch
-recorded 904/11,462.  In the final union, its two shared declarations are
-counted once and its three remaining declarations give the live repository
-census of 925 modules and 11,622 public declarations.  The q forward ledger
-is 181 Exact / 78 Partial / 15 None / 8 interface rows, and the
-five-publication source concordance is
-94 Lean-proved / 384 human-proved frontier / 60 not-applicable / 9 conjecture
-rows.  The Laurent and finite-prefix leaves are
+925/11,619 repository checkpoint.  Subsequent source-only tranches, including
+the reciprocity leaf above, give the historical reciprocity checkpoint
+931/11,685.  The subsequently merged upstream
+\path{DyadicBoundaryIdentity.lean} and
+\path{FinitePrefixThueMorseCollapse.lean} modules add two modules and ten
+public declarations, making the historical dyadic/finite-prefix census
+933/11,695.  The incoming union adds one module and fourteen public
+declarations: the new zero-definition/six-theorem
+\path{ProuhetBaseTwoBridge.lean} module, one theorem added to
+\path{DyadicBoundaryIdentity.lean}, and seven theorems added to
+\path{ThueMorseNewmanSelfSimilarity.lean}.  This makes the historical census
+934/11,709.  Subsequent source tranches add eighteen modules and 172 public
+declarations, giving the upstream-tip 952/11,881 inventory.  The local
+fixed-column branch separately recorded 903/11,453 and its first union with
+the algebraic polynomial branch recorded 904/11,462; counting its two shared
+declarations once and retaining its three other declarations gives the live
+merged census of 952 modules and 11,884 public declarations.  The q forward
+ledger is 182 Exact / 78 Partial / 14 None / 8 interface rows, the relevant
+Dyadic Gaussian--Thue--Morse chapter is 13/43/0/0, and the five-publication
+source concordance is 95 Lean-proved / 383 human-proved frontier / 60
+not-applicable / 9 conjecture rows.  The Laurent and finite-prefix leaves are
 included here for the census and exhaustive API counts; their Exact inverse-
 series status rows belong to the inverse-series crosswalk.
-The pre-merge PDF receipt predates these crosswalks and remains recorded solely
-as historical provenance; it is not the render receipt for this merged source
-edition.
+The accepted 404-page pre-integration PDF and all earlier receipts predate
+this source union and remain solely historical provenance.
 \end{statusbox}
 
 The polynomial is not decorative: the exact endpoint lattice of
