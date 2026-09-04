@@ -38,6 +38,7 @@ noncomputable def stirlingKernelCoeff (r : ℕ) : ℚ :=
 /-- The kernel series `∑_{r ≥ 1} κ_r t^r` of `q2:eq:stirling-cj`. -/
 noncomputable def stirlingKernel : ℚ⟦X⟧ := PowerSeries.mk stirlingKernelCoeff
 
+/-- The coefficients of the kernel series are the Bernoulli quotients. -/
 @[simp] theorem coeff_stirlingKernel (r : ℕ) :
     coeff r stirlingKernel = stirlingKernelCoeff r := coeff_mk _ _
 
