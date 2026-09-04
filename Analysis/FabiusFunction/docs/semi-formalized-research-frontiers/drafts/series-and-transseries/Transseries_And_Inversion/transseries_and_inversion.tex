@@ -332,7 +332,6 @@ every sequence expands every function.  The step that does the work is isolated 
 the \(N\)-th remainder into \(a_{N}\varphi_{N}+\littleo(\varphi_{N})\), which is the whole
 content of the argument and the only place the scale property is used.
 
-
 \emph{Lean status.}  Exact, in \lean{TransseriesScale.lean}.  The structure
 \lean{Fabius.IsAsymptoticScale} is \cref{q0:def:scale}, including eventual
 nonvanishing, and \lean{Fabius.IsPoincareExpansion} is
@@ -580,9 +579,10 @@ is non-increasing.  Then $b_i=c_i-a_i$ is strictly increasing, since $c_i$ is
 strictly increasing and $-a_i$ is non-decreasing --- again contradicting that
 $B$ is well-based.
 \end{proof}
-\emph{Lean status.}  Formal in \lean{TransseriesWellBased.lean}, both halves, for an
-arbitrary commutative monoid that is partially ordered and order-cancellative --- so in
-particular for any monomial group in the sense of \cref{q0:def:group}.  The first half is
+\emph{Lean status.}  Exact in
+\lean{TransseriesWellBased.lean} in Mathlib's partially-well-ordered
+orientation, for an arbitrary commutative monoid that is partially ordered
+and order-cancellative.  The first half is
 \lean{Fabius.neumann_isPWO}, that a product of well-based sets is well-based, and the
 second is \lean{Fabius.neumann_finite_factorizations}, that
 \(\{(\mathfrak m,\mathfrak n)\in A\times B:\mathfrak{mn}=\mathfrak c\}\) is finite for
@@ -590,9 +590,14 @@ every \(\mathfrak c\) --- which is exactly what makes the convolution defining a
 Hahn series a finite sum.  Both are bridges to Mathlib (\lean{Set.IsPWO.mul} and
 \lean{Set.MulAntidiagonal.finite_of_isPWO}) rather than new arguments; the point of
 recording them is that the volume notes one of the two is asserted without proof in its
-sources, and here both are machine-checked.  ``Well-based'' is \lean{Set.IsPWO}, partial
-well-ordering, which on a linear order is the condition stated in \cref{q0:def:hahn} and in
-general is the right hypothesis, since it is the one that closes under products.
+sources, and here both are machine-checked.  Mathlib's \lean{Set.IsPWO}
+rules out decreasing chains and selects least elements; the manuscript's
+literal greatest-element/no-increasing convention is recorded by the public
+wrappers \lean{Fabius.neumann_isPWO_orderDual} and
+\lean{Fabius.neumann_finite_factorizations_orderDual}.  The manuscript's
+totally ordered abelian group is a specialization of their more general
+partially ordered, order-cancellative commutative-monoid setting.  This is an
+exact order-theoretic crosswalk; it does not construct a Hahn-series type.
 
 
 \begin{lemma}[Dickson's lemma]\label{q0:lem:dickson}
@@ -616,14 +621,15 @@ an arbitrary finite index type and \lean{Fabius.dickson_antichain_finite} the an
 form.  Again a bridge rather than a proof: the content is Mathlib's
 \lean{Pi.wellQuasiOrderedLE}.
 
-
 \emph{Lean status.}  Exact, in \lean{TransseriesWellBased.lean}, with one
 order translation made explicit.  The Dickson statements are
 \lean{Fabius.dickson_isPWO}, \lean{Fabius.dickson_antichain_finite}, and the
 finite-index generalization \lean{Fabius.dickson_isPWO_pi}.  The two clauses of
 Neumann's lemma are \lean{Fabius.neumann_isPWO} and
-\lean{Fabius.neumann_finite_factorizations}; the module also generates their
-additive companions.  Mathlib's \texttt{Set.IsPWO} uses its native order,
+\lean{Fabius.neumann_finite_factorizations}; the literal reverse-order
+wrappers are \lean{Fabius.neumann_isPWO_orderDual} and
+\lean{Fabius.neumann_finite_factorizations_orderDual}, and the module also
+generates their additive companions.  Mathlib's \texttt{Set.IsPWO} uses its native order,
 whereas \(\mathfrak m\prec\mathfrak n\) here means that
 \(\mathfrak m\) is the \emph{smaller} asymptotic monomial and well-basedness
 forbids an infinite \(\prec\)-increasing chain.  Thus the faithful
@@ -700,6 +706,20 @@ formalized as a statement about heights, there being no formal notion of transmo
 the corpus; what is formal is the inequality that would prove it in any given case.
 
 
+\begin{remark}[Formal crosswalk]
+\label{q0:rem:height-lean}
+The two displayed asymptotic estimates in \cref{q0:prop:height} are Exact in
+\lean{TransseriesHeight.lean} for natural \(N,M\):
+\lean{Fabius.isLittleO_pow_mul_log_pow_exp} proves
+\eqref{q0:eq:height}, and \lean{Fabius.isLittleO_log_pow_rpow} proves the
+dual logarithm-versus-power estimate;
+\lean{Fabius.isLittleO_log_pow_id} is the unit-power specialization.  The
+full proposition remains Partial because the Lean module does not define
+general transmonomial height or logarithmic depth and therefore does not
+formalize the prose consequences for arbitrary nested exponentials and
+logarithms.
+\end{remark}
+
 \begin{remark}[The comparison algorithm]\label{q0:rem:compare}
 \Cref{q0:prop:height} is the top of a decision procedure: to compare two
 transmonomials, compare exponential heights first; on a tie, compare the
@@ -708,6 +728,38 @@ bottom compare logarithmic depths.  That is exactly the order in which the
 scale part of this volume organizes the polynomial--logarithmic monomials, and
 it is why the degree profile there is a lexicographic invariant rather than a
 single number.
+\end{remark}
+
+\begin{remark}[Branch hypotheses, and which way to get them wrong]
+\label{q0:rem:branch-hypotheses}
+Every inverse-function statement in this volume carries a hypothesis choosing a
+branch, and the same question about that hypothesis has arisen independently in
+three different chapters --- for the Lambert equation of
+\cref{p0:thm:lambert-core}, for the shifted inverse of \cref{q1:thm:exact}, and
+for the Cayley tree function of \cref{p1:def:cayley}.  It is worth settling
+once.
+
+The branch point of \(\LambertW\) at \(z=-\EulerE^{-1}\) belongs to the
+principal branch: \(\LambertW_{0}(-\EulerE^{-1})=-1\), and the principal branch
+is defined and monotone on the \emph{closed} ray \([-\EulerE^{-1},\infty)\).
+So a statement \emph{about} \(\LambertW_{0}\) --- monotonicity, concavity, a
+bound, a functional equation --- should take the closed hypothesis, and loses
+nothing by it.  But a statement asserting that the two branches are
+\emph{distinct} must take the open one.  At \(z=-\EulerE^{-1}\) the two
+branches coincide, so a phase with two positive roots for \(z\) inside the
+punctured interval has exactly one at the endpoint: the assertion
+\(X_{0}<|b|/a<X_{-1}\) is not vacuous there, it is false.
+
+The asymmetry is what makes this worth stating rather than remembering.  A
+hypothesis that is too weak yields a theorem that is \emph{wrong} at one point;
+a hypothesis that is too strong yields one that is merely \emph{vacuous}
+there.  Only the second failure is safe, so where the two readings compete, take
+the stronger hypothesis and weaken it at the point of use --- passing
+\(z>-\EulerE^{-1}\) to a lemma that asks only \(z\ge-\EulerE^{-1}\) costs one
+token and no generality.  The corresponding formal hypotheses are the closed
+\lean{Set.Ici} for statements about the branch and the open \lean{Set.Ioo} for
+statements separating two of them; both readings typecheck, which is precisely
+why the distinction has to be made by the author rather than by the checker.
 \end{remark}
 
 \section{How to read this volume}
@@ -1067,7 +1119,7 @@ therefore \(w\EulerE^{w}=z\).  Since \(v\mapsto v\EulerE^{v}\) is strictly
 increasing on \((-1,\infty)\) and \(w>0>-1\), the value \(w\) is the principal
 branch \(\LambertW_{0}(z)\).
 \end{proof}
-\emph{Lean status.}  Formal, with one clause excepted, in \lean{WrightOmega.lean}.
+\emph{Lean status.}  Exact over the reals in \lean{WrightOmega.lean}.
 Rather than construct the inverse of \(\Phi\) from scratch, \(\WrightOmega\) is
 \emph{defined} there by the last relation of the proposition,
 \lean{Fabius.wrightOmega}\ \(X=\LambertW_{0}(\EulerE^{X})\), which makes
@@ -1089,8 +1141,10 @@ the logarithm, with no appeal to the asymptotics of \(\LambertW\).  Divergence
 hypothesis-free linear minorant proved along the way,
 \lean{Fabius.add_one_div_two_le_wrightOmega}: since \(\log y\le y-1\), the defining equation
 gives \((X+1)/2\le\WrightOmega(X)\) for \emph{every} real \(X\).
-Real analyticity of \(\WrightOmega\) is the one clause not formalized; the corpus carries
-continuity and differentiability of \(\LambertW_{0}\) but not its analyticity.
+Finally \lean{Fabius.analyticAt_wrightOmega} proves real analyticity at every
+real \(X\), by composing the real-analytic principal Lambert branch with the real
+exponential.  This is exactly the real analyticity asserted here; it makes no
+complex holomorphy or branch-domain claim.
 
 
 The envelope \eqref{plt:eq:mot-envelope} already contains the message of this
@@ -1293,18 +1347,20 @@ A finite such expansion is \emph{maximal} when it admits no further term, that
 is, when the final remainder is not asymptotically equivalent to a constant
 multiple of any element of \(\mathfrak{M}\).
 \end{definition}
-\emph{Lean status.}  This working definition has a formal counterpart in the sequence-indexed
-form the rest of the corpus uses: \lean{Fabius.IsAsymptoticScale} in
-\lean{TransseriesScale.lean}, for an arbitrary filter on an arbitrary normed field, asks that
-each \(\varphi_{n}\) be eventually nonvanishing and that \(\varphi_{n+1}=\littleo(\varphi_{n})\),
-and \lean{Fabius.IsPoincareExpansion} is the expansion relation.  That the
-power-logarithmic monomials form such a scale is \lean{Fabius.isAsymptoticScale_plMonomial} in
-\lean{TransseriesPolyLogScale.lean}, for any lexicographically decreasing sequence of exponent
-pairs, with the two ladders used most often supplied ready-made:
-\lean{Fabius.isAsymptoticScale_plMonomial_pow} for \(X^{-n}\) and
-\lean{Fabius.isAsymptoticScale_plMonomial_log} for \(X^{c}(\log X)^{-n}\).  The set-indexed
-formulation above, quantifying over an unordered \(\mathfrak M\), is not formalized as such;
-the sequence form is what the uniqueness theorem \cref{q0:prop:uniqueness} is stated against.
+\emph{Lean status.}  Partial.  The ordered-sequence core is formalized by
+\lean{Fabius.IsAsymptoticScale} and \lean{Fabius.IsPoincareExpansion} in
+\lean{TransseriesScale.lean}; \cref{q0:rem:scale-lean} records the exact
+five-declaration API.  The power--logarithmic sequence is supplied by all four
+declarations in \lean{TransseriesPolyLogScale.lean}:
+\lean{Fabius.isLittleO_plMonomial},
+\lean{Fabius.isAsymptoticScale_plMonomial},
+\lean{Fabius.isAsymptoticScale_plMonomial_pow}, and
+\lean{Fabius.isAsymptoticScale_plMonomial_log}.  The definition printed here
+also asks for an unordered set of eventually positive monomials, nonzero
+coefficients, finite as well as infinite lists, maximality of finite
+expansions, and a little-\(o\) remainder after the retained last term.  Those
+data are not bundled by the sequence API, whose remainder convention is the
+sharper first-omitted-term \(O(\varphi_N)\) relation.
 
 
 This is the coarse blockwise notion adequate for a motivating discussion.
@@ -1422,6 +1478,18 @@ two constants; by the equivalence just proved, its classes are the fibres of
 \(t^{n}L^{j}\mapsto n\).  That \(\succdom\) induces the order of \(-n\) on
 classes is \eqref{plt:eq:mot-dominance}.
 \end{proof}
+\emph{Lean status.}  Formal in \lean{TransseriesBlockClasses.lean}, and generalized past
+the statement above.  The equivalence as displayed, for integer exponents, is
+\lean{Fabius.exists_log_bracket_div_iff}; it rests on
+\lean{Fabius.exists_log_bracket_iff}, the same statement with \emph{real} exponents ---
+\(X^{a}(\log X)^{b}\) is trapped between two fixed powers of \(\log X\) if and only if
+\(a=0\).  The generalization is not decoration: with real exponents the quantifier over
+\(N\) never has to be handled, because \(a\ne0\) destroys the bracket for every \(N\) at
+once through the two dominance limits, whereas the integer form invites an induction on
+\(N\).  \lean{Fabius.plMonomial_zero_left} is the degenerate case \(a=0\), and the last
+clause --- that \(\succdom\) descends to the order of \(-n\) on classes --- is
+\lean{Fabius.plMonomial_generators_dominance} in \lean{TransseriesScaleDominance.lean}.
+
 
 \Cref{plt:prop:mot-blocks} is the structural justification for the normal form
 used throughout this volume: a polynomial-logarithmic transseries is written
@@ -1643,7 +1711,7 @@ determined freely by its values on the variables, and it extends uniquely to
 any localization by the quotient rule; taking \(\DX t=-t^{2}\), \(\DX L=t\)
 gives the derivation in question.
 \end{proof}
-\emph{Lean status: partial, item \textup{(v)} only.}  The block
+\emph{Lean status: partial; \textup{(i)}--\textup{(iii)} and \textup{(v)} formal.}  The block
 law~\eqref{plt:eq:mot-block-derivative} is formal in
 \lean{TransseriesDifferentialBlock.lean}, and in greater generality than stated here:
 no ambient \(\mathcal{G}\) and no construction of \(\K[t,t^{-1}][L]\) is needed, only a
@@ -1663,12 +1731,18 @@ case \(n=0\), where the law degenerates to \(d(p(L))=t\,p'(L)\), is
 controls are \lean{Fabius.exists_block_primitive} (for \((n:F)\ne0\), with the primitive
 given explicitly by the Neumann sum) and \lean{Fabius.exists_block_primitive_resonant}.
 
-Items~\textup{(i)}--\textup{(iv)} are \emph{not} formalized: neither the minimality of the
-three \(\DX\)-stable subrings, nor the growth statement in \textup{(i)}, nor the
-algebraic independence of \(t\) and \(L\) over \(\RealNumbers\) in \textup{(iv)} with the
-unique block representation it yields.  Item~\textup{(iv)} in particular is a
-transcendence statement about the concrete ring of germs and is not implied by anything
-above.
+The three minimality statements are formal as well, in
+\lean{TransseriesDifferentialClosure.lean} and as genuine \lean{IsLeast} assertions rather
+than inclusions in one direction: \lean{Fabius.isLeast_adjoin_singleton_of_derivation_eq_one}
+is~\textup{(i)}, \lean{Fabius.isLeast_adjoin_pair_of_derivation_log} is~\textup{(ii)}, and
+\lean{Fabius.isLeast_adjoin_triple_of_derivation_log} is~\textup{(iii)}.
+
+What is \emph{not} formalized is item~\textup{(iv)} and the growth clause of~\textup{(i)}.
+Both are statements about the concrete ring of germs rather than about an abstract
+differential ring: the growth clause says every unbounded element of
+\(\RationalNumbers[X]\) grows at least like \(X\), and \textup{(iv)} is the algebraic
+independence of \(t\) and \(L\) over \(\RealNumbers\), a transcendence statement that is
+not implied by anything above and that the unique block representation depends on.
 
 
 \begin{remark}[Reading the theorem]
@@ -1734,6 +1808,14 @@ first partial sum is therefore exactly \(X\), and the second term satisfies
 \(m_{3}=X^{-1}\log X\), \(c_{3}=1\) and \((-1,1)\in S\).  Finally \((1,0)\) and
 \((0,1)\) generate \(\IntegerNumbers^{2}\).
 \end{proof}
+
+\emph{Lean status: partial, with the uniqueness engine formal.}  The first
+paragraph of the proof is \lean{Fabius.isEquivalent_plMonomial_const_mul_iff}
+in \lean{TransseriesMonomialUniqueness.lean}: for a positive coefficient, an
+asymptotic equivalence of two power--logarithmic monomials forces both
+exponents to agree and the coefficient to be one.  The analytic three-term
+Wright-omega residual input used afterwards is not packaged as this corollary,
+so the corollary itself is not claimed Exact.
 
 \begin{remark}[Scope of the corollary]
 \label{plt:rmk:mot-corollary-scope}
@@ -1805,41 +1887,38 @@ term raises degree by one.  The case \(p=1\), \(q=L\) is
 \(\int X^{-1}\Differential X=\log X\).
 \end{proof}
 \emph{Lean status.}  Partial for the compound lemma.  Its polynomial-operator
-clauses are Exact in \lean{TransseriesBlockAntiderivative.lean}: the operator is
-\lean{Fabius.blockOperator}; the explicit finite Neumann inverse is
-\lean{Fabius.blockAntiderivative}, with
-\lean{Fabius.blockOperator_blockAntiderivative},
-\lean{Fabius.blockOperator_injective},
-\lean{Fabius.natDegree_blockOperator}, and the resulting
-\lean{Fabius.blockOperator_bijective}.  At resonance,
-\lean{Fabius.resonantAntiderivative},
-\lean{Fabius.derivative_resonantAntiderivative},
-\lean{Fabius.derivative_surjective}, and
-\lean{Fabius.natDegree_resonantAntiderivative} give the second operator clause,
-including the necessary nonzero hypothesis for the degree statement.  The
-telescoping engine is \lean{Fabius.sum_sub_sum_shift}.
+clauses are Exact in \lean{TransseriesBlockAntiderivative.lean}.  The three
+definitions are \lean{Fabius.blockOperator},
+\lean{Fabius.blockAntiderivative}, and
+\lean{Fabius.resonantAntiderivative}; the twelve theorems include the finite
+Neumann inverse, surjectivity, injectivity, bijectivity, degree preservation,
+and the resonant derivative and degree laws, with
+\lean{Fabius.sum_sub_sum_shift} as the telescoping engine.  The nonresonant
+operator core needs only a field and a nonzero scalar; characteristic zero is
+needed for resonant surjectivity and the printed resonant degree claims.
 
-\lean{TransseriesDifferentialBlock.lean} bridges those operators to an abstract
-differential ring satisfying \(\DX t=-t^{2}\), \(\DX L=t\):
-\lean{Fabius.derivation_pow_t} and \lean{Fabius.derivation_block} prove the
-block law for natural powers; \lean{Fabius.exists_block_primitive} proves the
-nonresonant primitive; and \lean{Fabius.derivation_block_zero} with
-\lean{Fabius.exists_block_primitive_resonant} proves the resonant primitive.
-The integer block law itself is Exact:
-\lean{Fabius.derivation_zpow_block} treats every Laurent exponent in an
-ambient field with \(t\ne0\), and
-\lean{Fabius.exists_zpow_block_primitive} gives the nonresonant primitive and
-degree statement for every \(n\ne1\).
-\lean{Fabius.existsUnique_zpow_block_primitive} also gives uniqueness under
-the explicit hypothesis that evaluation at \(L\) is injective.
+The complete zero-definition/twelve-theorem
+\lean{TransseriesDifferentialBlock.lean} bridge is
+\lean{Fabius.derivation_pow_t}, \lean{Fabius.derivation_block},
+\lean{Fabius.derivation_zpow_block},
+\lean{Fabius.exists_zpow_block_primitive},
+\lean{Fabius.existsUnique_zpow_block_primitive},
+\lean{Fabius.exists_block_primitive},
+\lean{Fabius.derivation_block_zero},
+\lean{Fabius.exists_block_primitive_resonant},
+\lean{Fabius.derivation_val_inv}, \lean{Fabius.derivation_pow_inv},
+\lean{Fabius.derivation_zpow_t}, and
+\lean{Fabius.derivation_block_zpow}.  These declarations prove the natural-
+and integer-power block laws in abstract differential algebras, the
+nonresonant primitive and its conditional uniqueness, the resonant primitive,
+and the inverse-power/unit reformulations.  In particular the displayed
+integer block equation is Exact when the power generator is a unit.
 
 The full source lemma nevertheless remains Partial.  Lean has not constructed
-the concrete free ring \(\K[t,t^{-1}][L]\) used here or proved the required
-injectivity of polynomial evaluation in that model, so the conditional
-uniqueness theorem does not discharge the source's hypothesis.  At resonance
-it proves existence and degree growth, but does not package the kernel statement
-needed for uniqueness up to an additive constant.  Neither gap may be inferred
-from the exact integer block-derivative identity.
+the concrete free Laurent ring \(\K[t,t^{-1}][L]\), proved faithful polynomial
+evaluation there, or packaged the resonant kernel statement needed for
+uniqueness modulo constants.  Those ambient and uniqueness clauses may not be
+inferred from the exact abstract integer block identity.
 
 
 \begin{lemma}[The discrete counterpart: a harmonic increment makes a logarithm]
@@ -2185,6 +2264,15 @@ Hence \(\ell^{2}-2aC\ell-2aB\le0\), so
 \(\sqrt{p+q}\le\sqrt p+\sqrt q\).  As \(\ell=\log(1/\FabiusQuantile(y))\), this
 is \eqref{plt:eq:mot-fabius-inverse}.
 \end{proof}
+\emph{Lean status: covered, by a sharper statement.}  The corpus does not carry this
+corollary as such; what it has is strictly stronger, a two-sided asymptotic law with an
+explicit error term.  \lean{Fabius.log_fabiusInv_sub_fabiusInverseLogAsymptoticMain_isBigO}
+in \lean{FabiusInverseAsymptotic.lean} gives the main term
+\(-\sqrt{2\log 2\cdot B}+\tfrac12\log B-1-\tfrac12\log\log 2\) with error
+\(\BigO(\log B/\sqrt B)\), from which the corollary above follows by discarding everything
+past the leading term.  No separate module is needed for it, and the crosswalk records the
+implication rather than a restatement.
+
 
 \begin{remark}[What the corpus adds, and what must not be inferred]
 \label{plt:rmk:mot-fabius-status}
@@ -8526,6 +8614,32 @@ is additive and commutes with summable sums, being continuous by
 \cref{plt:eq:dif-scale-derivation}, which was verified to be a derivation in
 \cref{plt:lem:dif-scale-basic}(i).
 \end{proof}
+
+\begin{remark}[Formal crosswalk]
+\label{plt:rem:dif-block-lean}
+The displayed equation \eqref{plt:eq:dif-block} is Exact in
+\lean{TransseriesDifferentialBlock.lean}, while
+\cref{plt:prop:dif-block} is Partial overall.  The module's nine-theorem surface is
+\lean{Fabius.derivation_pow_t}, \lean{Fabius.derivation_block},
+\lean{Fabius.exists_block_primitive},
+\lean{Fabius.derivation_block_zero}, and
+\lean{Fabius.exists_block_primitive_resonant}, together with
+\lean{Fabius.derivation_val_inv}, \lean{Fabius.derivation_pow_inv},
+\lean{Fabius.derivation_zpow_t}, and
+\lean{Fabius.derivation_block_zpow}.  In an abstract differential
+algebra with \(d(t)=-t^2\), \(d(L)=t\), and unit \(t\), the last theorem gives
+exactly \eqref{plt:eq:dif-block} for \(n\in\IntegerNumbers\); the natural-power
+form needs no unit hypothesis.  The two primitive theorems give
+nonresonant primitives for input exponents at least two in characteristic
+zero (more generally, when the relevant natural-number cast is nonzero) and
+the resonant exponent-one primitive.  The printed proposition also includes
+the Laurent-series coefficient formula,
+rational and inverse-log coefficient fields, arbitrary scale exponents, and
+the one-input-block assertion.  Those extensions require a concrete Laurent
+ambient ring and are not present.  In particular the
+abstract evaluation \(p\mapsto p(L)\) need not be injective, so it cannot by
+itself yield the manuscript's ambient uniqueness and degree claims.
+\end{remark}
 
 \begin{proposition}[The Euler derivation]\label{plt:prop:dif-euler}
 Put \(\EulerOp\DefinitionEquals t^{-1}\DX\), the formal counterpart of
@@ -30127,12 +30241,19 @@ the proof of \cref{plt:prop:bell-gf}, now without the factors \(1/j!\).  The
 last sentence is \cref{plt:prop:tay-convolution}\,(i) combined with that
 generating identity.
 \end{proof}
-\emph{Lean status: not formalized.}  The corpus has no ordinary partial Bell polynomial
-\(\OrdinaryPartialBellPolynomial{n}{k}\) with the \(k!/\prod_{j}m_{j}!\) weighting
-of~\eqref{plt:eq:bell-ord-def}, so the bridge~\eqref{plt:eq:bell-ord-exp} between the two
-normalizations has no counterpart --- the modules \lean{OrdinaryBellBivariate.lean} and
-\lean{PowerSumOrdinaryBell.lean}, whose names invite the confusion, are about different
-objects.  This is the one statement of the present chapter with no formal analogue.
+\emph{Lean status: Exact.}  The two-definition, four-theorem module
+\lean{OrdinaryPartialBell.lean} defines the ordinary series and its coefficient family as
+\lean{Fabius.ordinarySeries} and \lean{Fabius.ordinaryPartialBell}.
+The defining power identity is \lean{Fabius.ordinaryPartialBell_pow};
+\lean{Fabius.bellWeightSeries_eq_ordinarySeries} identifies the factorially weighted
+exponential input with the corresponding ordinary series; and
+\lean{Fabius.factorial_mul_ordinaryPartialBell} is the denominator-cleared form of
+\eqref{plt:eq:bell-ord-exp}.  The supporting theorem
+\lean{Fabius.ordinaryPartialBell_eq_zero_of_lt} supplies its triangular vanishing.
+Thus the normalization bridge is a formal power-series identity over every commutative
+rational algebra.  This does not identify the ordinary Bell family with labelled set
+partitions, and the similarly named \lean{OrdinaryBellBivariate.lean} and
+\lean{PowerSumOrdinaryBell.lean} concern different objects.
 
 
 \begin{warningbox}[title={Three two-index arrays, three index orders}]
@@ -30571,6 +30692,12 @@ nothing is lost).  By \cref{plt:lem:tay-bell-recurrence} evaluated at
 \(x_{1},\ldots,x_{n+1-k+1}\), that is
 \(\gamma,\ldots,\partial^{\,n+1-k}\gamma\).  All sums are finite.
 \end{proof}
+\emph{Lean status.}  Formal in \lean{BellLeibnizTower.lean} as
+\lean{Fabius.iterate_derivation_eq_sum_partialBell}, with \lean{Fabius.derivationTower} and
+\lean{Fabius.derivation_partialBell_tower} as the engine.  The partial Bell polynomials it
+is stated against are the corpus family of \cref{plt:def:bell-partial}, so this lemma and
+the Bell chapter share one object rather than two definitions that happen to agree.
+
 
 \begin{remark}[The two Fa\`a di Bruno statements are two towers]
 \label{plt:rmk:bell-two-faa}
@@ -36247,8 +36374,121 @@ remaining boundaries are recorded at the statements themselves.
 Those pieces do not yet assemble the polynomial--logarithmic calculus.  The
 corpus still has no single construction carrying the concrete
 \(\K[L][[t]]\)/Laurent ring, its outer valuation, its distinguished derivation,
-composition, and reversion at infinity.  To close that gap a formalization
-campaign would have to build, in order:
+composition, and reversion at infinity.  The following table summarizes the
+finite and sequence-level statements that now have exact or explicitly
+delimited partial crosswalks in the body of the volume.
+
+\begin{longtable}{@{}p{0.31\textwidth}p{0.18\textwidth}p{0.45\textwidth}@{}}
+\toprule
+Result & Status & Lean surface and boundary \\
+\midrule
+\endfirsthead
+\toprule
+Result & Status & Lean surface and boundary \\
+\midrule
+\endhead
+\cref{q0:def:scale,q0:def:poincare,q0:eq:coefficients,q0:prop:uniqueness}
+  & Exact & \lean{TransseriesScale.lean}; sequence-indexed, with
+    \texttt{NeBot} for uniqueness. \\
+\cref{q0:lem:dickson} & Exact & \lean{TransseriesWellBased.lean}; finite
+  antichains in \(\NaturalNumbers^k\). \\
+\cref{q0:lem:neumann} & Exact &
+  \lean{TransseriesWellBased.lean}; the public \texttt{OrderDual} wrappers
+  encode the printed greatest-element convention, and the printed total order
+  specializes their stronger partial-order hypotheses. \\
+\cref{q0:prop:height} & Partial & Both displayed analytic little-\(o\) laws
+  are exact; the general nested height/depth prose has no datatype. \\
+\cref{q0:def:flat,q0:prop:invisible} & Exact &
+  \lean{TransseriesFlat.lean}; abstract flatness, its submodule and absorbing
+  multipliers, the power-scale exponential example, and the sharp same-expansion iff. \\
+\cref{plt:lem:mot-dominance} & Partial &
+  \lean{TransseriesScaleDominance.lean} and
+  \lean{TransseriesPolyLogScale.lean}; the analytic real-exponent trichotomy
+  and ordered sequence scales are Exact, but the unordered full-set packaging
+  and reverse generator implication are not named as the compound claim. \\
+\cref{plt:prop:mot-omega-basic} & Exact & \lean{WrightOmega.lean}; all clauses
+  including \lean{Fabius.analyticAt_wrightOmega}, over the reals only, with no
+  complex branch or holomorphy assertion. \\
+\cref{plt:thm:mot-smallest-differential-algebra} & Partial & The integer
+  block law is exact in \lean{TransseriesDifferentialBlock.lean} when the
+  power generator is a unit; the concrete Laurent ring, minimality, growth,
+  and algebraic independence clauses remain absent. \\
+\cref{plt:eq:mot-block-derivative,plt:eq:dif-block} & Exact &
+  \lean{Fabius.derivation_block_zpow}; the integer block identity in an
+  abstract differential algebra with a unit power generator. \\
+\cref{plt:lem:mot-block-antiderivative,plt:prop:dif-block} & Partial &
+  \lean{TransseriesBlockAntiderivative.lean} and
+  \lean{TransseriesDifferentialBlock.lean}; polynomial operator and exact
+  integer equations, but not the concrete Laurent-series, faithful evaluation,
+  ambient uniqueness, and general-exponent apparatus of the compound claims. \\
+\cref{plt:lem:mot-harmonic} & Partial &
+  \lean{TransseriesHarmonicIncrement.lean} proves the Stolz leading term;
+  the logarithmic correction, constant, and little-\(o(1)\) term remain absent. \\
+\cref{plt:lem:bell-normalizations} & Exact &
+  \lean{OrdinaryPartialBell.lean}; ordinary powers and the exact
+  factorial normalization bridge to exponential partial Bell polynomials. \\
+\cref{p0:lem:bell-conversion,p0:lem:power-log,p0:cor:exp-log-jets} & Exact &
+  All sixteen declarations of \lean{UnitSeriesBellCoefficients.lean}; purely
+  formal coefficient identities. \\
+\cref{p0:thm:lambert-core} & Partial & \lean{LinLogCoreInversion.lean} proves
+  the real substitution, both real branch rules, uniqueness, threshold, and
+  slope; the asymptotic and general complex-branch clauses remain absent. \\
+\cref{p0:thm:staircase} & Partial & \lean{StaircaseInversion.lean} proves the
+  five order/rounding/jump mechanisms (including residue classes); the printed
+  Fourier layer and analytic interpolation construction remain absent. \\
+\cref{p0:thm:remainder-transport} & Partial &
+  \lean{RemainderTransport.lean} proves the sharp displacement bound; the
+  displayed second-order first-correction estimate remains absent. \\
+\cref{p6:lem:core} & Partial & \lean{PowerLogCoreInversion.lean} proves the
+  real \(r=1\) Lambert inversion and slope; general \(r\), complex powers,
+  and branch bookkeeping remain absent. \\
+\cref{p6:prop:quadratic-core-catalan} & Exact &
+  \lean{QuadraticCoreCatalan.lean}; Catalan/falling-product and finite
+  coefficient recurrence. \\
+\cref{p6:lem:quadratic-core} & Partial & Its coefficient recurrence is
+  checked; assembled power-series existence, uniqueness, square root, and
+  denominator depth remain absent. \\
+\cref{p8:cor:nearest-integer} & Partial &
+  \lean{DerangementNearestInteger.lean} proves the integer defect identity,
+  strict half-unit error, and rounding; the real-argument bound and the
+  branch-splitting family remain absent. \\
+\bottomrule
+\end{longtable}
+
+Together these eighteen modules expose \(178\) explicit public commands:
+\lean{TransseriesScale.lean} \(5\),
+\lean{TransseriesScaleDominance.lean} \(8\),
+\lean{TransseriesPolyLogScale.lean} \(4\),
+\lean{TransseriesWellBased.lean} \(7\) written declarations,
+\lean{TransseriesHeight.lean} \(3\),
+\lean{TransseriesBlockAntiderivative.lean} \(15\),
+\lean{TransseriesDifferentialBlock.lean} \(12\),
+\lean{UnitSeriesBellCoefficients.lean} \(16\),
+\lean{QuadraticCoreCatalan.lean} \(11\),
+\lean{TransseriesFlat.lean} \(26\),
+\lean{WrightOmega.lean} \(14\) (one definition and thirteen theorems),
+\lean{TransseriesHarmonicIncrement.lean} \(2\),
+\lean{OrdinaryPartialBell.lean} \(6\),
+\lean{LinLogCoreInversion.lean} \(22\),
+\lean{PowerLogCoreInversion.lean} \(9\),
+\lean{RemainderTransport.lean} \(3\),
+\lean{StaircaseInversion.lean} \(7\), and
+\lean{DerangementNearestInteger.lean} \(8\).  In addition, the named
+\texttt{to\_additive} attributes in \lean{TransseriesWellBased.lean} generate
+two public additive twins, for \(180\) named inventory/API entries under this
+convention.  The corpus's
+lexical documentation census intentionally counts explicit commands only;
+automatically generated structure projections are outside both tallies.
+
+\section{The remaining two-generator formal algebra: absent}
+
+The finite and abstract fragments above do not yet assemble the volume's
+two-generator transseries calculus.  The corpus has no completed
+polynomial--logarithmic Laurent-series ring, outer valuation, composition of
+such transseries, or reversion at infinity.  Its abstract derivation block now
+covers integer powers when the power generator is a unit, but does not construct
+the ambient Laurent ring.  Concretely, a formalization campaign would have to
+build, in order:
 
 \begin{enumerate}
 \item the ring \(\PLpow=\K[L][[t]]\) with \(t\) and \(L\) as independent
@@ -36458,17 +36698,22 @@ convention.
 \section{Summary}
 
 The former conclusion that none of the volume's own results was crosswalked is
-obsolete.  The inline entries now identify Exact results for scales and
+obsolete.  Exact results include sequence-scale coefficient recovery and
 Poincar\'e uniqueness, flatness and the corrected invisible-function
-proposition, Dickson and Neumann support lemmas, the displayed
-power--logarithmic limits and sequence scales, the unit-series Bell coefficient
-calculus, and the quadratic Catalan identity.  They also mark the compound
-power--log dominance lemma, the Laurent block-antiderivative lemma, and the
-quadratic-core lemma Partial at their precise boundaries.  The assembled
-polynomial--logarithmic ring, composition, and reversion theory remain absent,
-while the small-argument Lagrange and Lambert series remain Neighbouring
-results.  This register is deliberately conservative: a strict fragment or a
-neighbour is never reported as whole-label coverage.
+proposition, Dickson and Neumann support lemmas, the three real power--log
+limits and chosen sequence scales, the real Wright-omega proposition, both
+displayed integer block equations, the unit-series Bell coefficient calculus,
+and the quadratic Catalan identity.  The general height prose, the compound
+unordered power--log scale claim, the ambient Laurent block-antiderivative and
+differential propositions, and the assembled quadratic core remain Partial at
+their stated boundaries.  The real Lambert branch facts and lower-branch
+asymptotics have only the precise coverage recorded above.
+
+The assembled two-generator Laurent-series calculus, its composition
+operation, and its reversion at infinity remain absent, while the
+small-argument Lagrange and Lambert series remain Neighbouring.  This register
+is deliberately conservative: a strict fragment or a neighbour is never
+reported as whole-label coverage.
 
 % ---- fragment 98-provenance ----
 \chapter{Provenance of the consolidation}
@@ -36662,7 +36907,10 @@ The proofs printed here remain human proofs, but several of their statements
 now have separate Exact or Partial Lean counterparts.  The inline crosswalks
 and \cref{plt:sec:formalization} give their precise scope; in particular, a
 machine-checked component is not evidence for an unlisted clause of its source
-lemma.  Results without such an entry remain human-proved frontier mathematics.
+lemma.  This includes the finite formal algebra and the precisely enumerated
+real Lambert and branch-point results.  Statements not identified there as
+Exact remain human-proved frontier mathematics or are explicitly marked
+Partial, Neighbouring, conjectural, or open.
 
 \clearpage
 \begin{thebibliography}{99}
@@ -37243,6 +37491,18 @@ is $\OB_{n,k}(\gamma)/k!$; the right-hand side has coefficient
 $\EB_{n,k}(1!\gamma_1,\dots)/n!$.
 \end{proof}
 
+\begin{remark}[Formal crosswalk]
+\label{p0:rem:bell-conversion-lean}
+\Cref{p0:lem:bell-conversion} is Exact in
+\lean{UnitSeriesBellCoefficients.lean}.
+\lean{Fabius.ordPartialBell_eq_factorialRatio_partialBell} is
+\eqref{p0:eq:bell-conversion} over every commutative rational algebra, and
+\lean{Fabius.factorial_mul_ordPartialBell_eq_factorial_mul_partialBell} is
+its denominator-cleared companion.  Both are polynomial identities; the
+second form is the robust one to transport to coefficient rings in which a
+displayed quotient would be inappropriate.
+\end{remark}
+
 \subsection{Powers and logarithms of a unit series}
 
 \begin{lemma}[Powers and logarithms]\label{p0:lem:power-log}
@@ -37282,7 +37542,7 @@ Equivalently, in exponential form, for $U(t)=1+\sum_{j\ge1}u_jt^j$,
 \end{lemma}
 
 \begin{proof}
-All four identities are the substitution of $w$ into a formal series in one
+All five displayed identities are the substitution of $w$ into a formal series in one
 variable.  Since $w\in tR[[t]]$, the family $(w^k)_{k\ge0}$ is summable in the
 $t$-adic topology and $\Coef{t^n}w^k=0$ for $k>n$, so every sum displayed is
 finite and the substitution is legitimate.  Now
@@ -37296,6 +37556,27 @@ For the exponential forms write $U=1+w$ with $\gamma_j=u_j$ and substitute
 \eqref{p0:eq:log-obell}, using
 $\binom\beta k=\beta^{\underline k}/k!$ and $(-1)^{k+1}/k=(-1)^{k-1}(k-1)!/k!$.
 \end{proof}
+
+\begin{remark}[Formal crosswalk]
+\label{p0:rem:power-log-lean}
+\Cref{p0:lem:power-log} is Exact, coefficient by coefficient, in
+\lean{UnitSeriesBellCoefficients.lean}.  The ordinary-Bell power formulas are
+\lean{Fabius.coeff_fallingSeries_subst_eq_sum_ordPartialBell} and its literal
+\(1\le k\le n\) specialization
+\lean{Fabius.coeff_fallingSeries_subst_eq_sum_ordPartialBell_of_pos}; the
+exponential-Bell form is
+\lean{Fabius.coeff_fallingSeries_subst_eq_sum_partialBell}.  Negative
+integral powers are
+\lean{Fabius.coeff_negBinomSeries_subst_eq_sum_ordPartialBell} and
+\lean{Fabius.coeff_negBinomSeries_subst_eq_sum_ordPartialBell_of_pos}.
+The two logarithmic forms are
+\lean{Fabius.coeff_logOf_eq_sum_ordPartialBell} and
+\lean{Fabius.coeff_logOf_eq_sum_partialBell}.  Here
+\texttt{fallingSeries.subst} is the formal meaning of
+\((1+w)^\beta\), and \texttt{negBinomSeries.subst} is the canonical formal
+negative integral power.  No analytic convergence or logarithm-branch claim
+is involved.
+\end{remark}
 
 \begin{corollary}[Exponential and logarithmic jets]\label{p0:cor:exp-log-jets}
 Let $D(t)=\sum_{j\ge1}d_jt^j\in tR[[t]]$ and $A(t)=\exp D(t)=\sum_{n\ge0}A_nt^n$.
@@ -37313,8 +37594,10 @@ $d_n=\Coef{t^n}\log A$ is given by \eqref{p0:eq:log-ebell}.
 \end{corollary}
 
 \begin{proof}
-The first equality is \eqref{p0:eq:ebell-egf-complete} with $x_j=j!d_j$; the
-second is the expansion of $\exp$ as a product over $j$.  For
+The constant term is \(A_0=1\) because the substituted formal exponential has
+constant coefficient one.  The first equality is
+\eqref{p0:eq:ebell-egf-complete} with $x_j=j!d_j$; the second is the
+coefficientwise-finite expansion of $\exp$ as a product over $j$.  For
 \eqref{p0:eq:exp-recurrence} differentiate $A=\exp D$ to get $A'=D'A$ and
 compare coefficients of $t^{n-1}$.  The converse is
 \eqref{p0:eq:log-ebell}.
@@ -37338,7 +37621,8 @@ two logarithmic normalizations are
 \lean{Fabius.coeff_logOf_eq_sum_ordPartialBell} and
 \lean{Fabius.coeff_logOf_eq_sum_partialBell}.
 
-For \cref{p0:cor:exp-log-jets}, coefficient reweighting is pinned by
+For \cref{p0:cor:exp-log-jets}, the boundary value (A_0=1) is
+\lean{Fabius.constantCoeff_exp_subst}, and coefficient reweighting is pinned by
 \lean{Fabius.egfA_factorialDenormalize_coeff_eq} and
 \lean{Fabius.bellWeightSeries_factorialDenormalize_coeff_eq}; the complete-Bell
 formula is \lean{Fabius.coeff_exp_subst_eq_completeBell}; the finite
@@ -38718,6 +39002,46 @@ $f(x_\ast)=\lambda+r_\ast>\lambda$, while
 using $f'\ge m$.  The intermediate value theorem supplies a point of
 $[x_\ast-\varrho,x_\ast]$ where $f=\lambda$.
 \end{proof}
+\begin{remark}[Formalization: the bound, and the certificate]
+\label{p0:rem:backward-error-lean}
+Both halves are machine-checked, in two modules, and the split between them
+follows the split in the statement.
+
+The two-sided bound \eqref{p0:eq:backward-two-sided} is
+\lean{MeanValueBracket.lean}: \lean{Fabius.abs_sub_right_inverse_le_div}
+is the upper half and \lean{Fabius.div_le_abs_sub_right_inverse} the lower,
+resting on the brackets \lean{Fabius.abs_sub_le_of_le_deriv} and
+\lean{Fabius.mul_abs_sub_le_abs_sub_of_le_deriv}.  The hypothesis $0<m$ in
+\eqref{p0:eq:slope-bounds} is genuinely needed for the \emph{upper} bound and not
+merely for the interpretation; \cref{q1:rem:sign} gives the counterexample.
+
+The certificate clause is \lean{BackwardErrorExistence.lean}.  Its hypothesis is
+deliberately weaker than a derivative bracket: \lean{Fabius.HasSlopeLowerBound}
+asks only that $m(v-u)\le f(v)-f(u)$ for $u\le v$ in the domain, a condition
+on \emph{slopes} rather than on a derivative, so the theorem applies where one
+has monotonicity data and no differentiability at all.
+\lean{Fabius.hasSlopeLowerBound_of_le_deriv} recovers it from $f'\ge m$, and
+\lean{Fabius.exists_eq_of_le_deriv} is the differentiable form matching the
+statement above.  The certificate itself is \lean{Fabius.exists_eq_of_residual};
+\lean{Fabius.exists_eq_and_abs_sub_le} packages it with the bound, so that
+existence is \emph{discharged} rather than assumed.
+
+Two things the formalization adds.  First, the root is unique:
+\lean{Fabius.injOn_of_hasSlopeLowerBound} and
+\lean{Fabius.existsUnique_eq_of_residual} upgrade ``$f$ takes the value
+$\lambda$ somewhere in that interval'' to ``at exactly one point of the
+domain'', which the theorem above does not claim and every use of it wants.
+
+Second, and worth stating because the proof above does it without saying so: the
+\emph{sign} of the residual does two different jobs.  In the bound
+\eqref{p0:eq:backward-two-sided} it is discarded --- only $|r_\ast|$ appears ---
+and tells the reader at most whether the candidate overshoots.  In the
+certificate it is what \emph{selects} the half-interval on which the intermediate
+value theorem is applied: the proof above takes $[x_\ast-\varrho,x_\ast]$
+precisely because $r_\ast>0$, the slope bound guaranteeing that $f$ has already
+fallen to $\lambda$ by the far end.  Same quantity, two roles, and only the
+second is essential.
+\end{remark}
 
 \begin{remark}[Use in the logarithmic variable]\label{p0:rem:log-residual}
 In every application $f=\log F$ and $\lambda=\log y$: $F$ itself overflows any
@@ -38808,8 +39132,30 @@ instances with $\varepsilon$ a sinusoid of exactly the permitted Lipschitz
 constant, the ratio of the true displacement to the bound reached $0.9999$.
 So the denominator $m-\theta$ is the right one and cannot be improved to $m$.
 
-Not formalized: part (2), the first-order law \eqref{p0:eq:transport-first-order},
-which needs $f_0\in C^{2}$ and a second-order Taylor estimate.
+Part (2), \eqref{p0:eq:transport-first-order}, is formalized as well, as
+\lean{Fabius.transport_first_order} --- and formalizing it showed that it does
+\emph{not} need the second-order Taylor estimate the proof above reaches for.
+The mean value point already gives
+\begin{equation}\label{p0:eq:transport-exact}
+ x-x_0=-\frac{\varepsilon(x_0)}{f'(\xi)},
+\end{equation}
+which is \emph{exact}, so the whole of $E$ is the mismatch between $f'(\xi)$ and
+$f_0'(x_0)$ --- a perturbation $\varepsilon'(\xi)$ and a curvature
+$M_2|\xi-x_0|$.  Two consequences.  The hypothesis $f_0\in C^{2}$ is not used:
+what the argument consumes is a Lipschitz bound on $f_0'$, which is weaker, and
+which \lean{Fabius.lipschitzOn_of_abs_deriv_le} supplies from $|f_0''|\le M_2$.
+And part (1) is not an input to part (2): the same $\xi$ that gives
+\eqref{p0:eq:transport-exact} gives \eqref{p0:eq:transport-bound} too, so the
+two parts are siblings rather than a chain.
+
+The bound is close to sharp.  Over four hundred random instances with $f_0$ of
+controlled curvature and $\varepsilon$ a sinusoid at exactly the permitted
+Lipschitz constant, $|E|$ reached $0.92$ of the stated bound, mean $0.28$, with no
+violations.
+
+Still not formalized: the closing asymptotic clause, that $\varepsilon(x)=\bigO(x^{-M-1})$
+and $\varepsilon'(x)=\littleo(1)$ give
+$x-x_0=-\varepsilon(x_0)/f_0'(x_0)\,(1+\littleo(1))$.
 \end{remark}
 
 \begin{corollary}[Forward truncation to inverse accuracy]
@@ -39410,10 +39756,11 @@ of \(f\) as such --- what the corpus carries is the strict concavity of the bran
 itself, \lean{Fabius.strictConcaveOn_principalLambertW}, proved from
 \(\LambertW''<0\).
 
-This chapter is the only place in the present volume with formal counterparts ---
-this theorem and its differential layer, the numerator recursion of
+Within the present volume, this chapter's formal counterparts include this
+theorem and its differential layer, the numerator recursion of
 \cref{q1:prop:recursion}, and the general bracket of \cref{q1:rem:two-sided} ---
-and they are recorded because the corpus keeps a register of what is proved
+and they are recorded alongside the formal counterparts now identified in
+other chapters because the corpus keeps a register of what is proved
 and what is merely written down.
 \end{remark}
 
@@ -39994,6 +40341,13 @@ For $m\ge1$ put
  \label{p1:eq:divisor}
 \end{equation}
 \end{definition}
+\emph{Lean status.}  Formal as \lean{Fabius.divisorTransform} in
+\lean{DivisorTransform.lean}, for a sequence valued in an arbitrary commutative ring, since
+nothing in \eqref{p1:eq:divisor} is about rooted trees.  The splitting that the next lemma
+needs is \lean{Fabius.divisorTransform_eq_add_properDivisors}, that
+\(b_{m}=m\,a_{m}+\sum_{d\mid m,\,d<m}d\,a_{d}\) --- the divisors of \(m\) are its proper
+divisors together with \(m\) itself, and the term \(m\) contributes is exactly \(m\,a_{m}\).
+
 
 \begin{theorem}[Otter--P\'olya recurrence]
 \label{p1:thm:recurrence}
@@ -40073,6 +40427,31 @@ $\left(b_r-ra_r\right)/r$ by \cref{p1:eq:divisor}. Every divisor $d<r$ of $r$ sa
 r/2$.  The listed values follow from $a_1=a_2=1$, $a_3=2$, $a_4=4$: e.g.\
 $\varrho_4=(1\cdot1+2\cdot1)/4=\tfrac34$ and $\varrho_6=(1+2\cdot1+3\cdot2)/6=\tfrac32$.
 \end{proof}
+\emph{Lean status: the arithmetic clauses are formal; the numerical values are not.}  In
+\lean{DivisorTransform.lean}.  The coefficient itself is
+\lean{Fabius.disturbanceCoeff}, defined by the first expression
+of~\eqref{p1:eq:varrho}, and the equality with the second is
+\lean{Fabius.disturbanceCoeff_eq_divisorTransform}, an immediate consequence of
+\lean{Fabius.divisorTransform_sub}.  Nonnegativity, the \(\Rat_{\ge0}\) of the display, is
+\lean{Fabius.disturbanceCoeff_nonneg} under the hypothesis that the sequence is
+nonnegative.
+
+The clause that \(\varrho_{r}\) depends only on \(a_{d}\) with \(d\le r/2\) is formal in the
+form that makes it usable: \lean{Fabius.disturbanceCoeff_congr} says that two sequences
+agreeing at every \(d\) with \(2d\le r\) give the same \(\varrho_{r}\).  The arithmetic
+underneath is \lean{Fabius.two_mul_le_of_mem_properDivisors}, that a proper divisor is at
+most half of its multiple.
+
+The seven numerical values are treated unevenly, and deliberately.  Four of them are not
+four facts but one: a prime has \(\{1\}\) for its proper divisors, so
+\lean{Fabius.disturbanceCoeff_prime} gives \(\varrho_{p}=a_{1}/p\) for \emph{every} prime
+\(p\), which with \(a_{1}=1\) is \(\varrho_{2}=\tfrac12\), \(\varrho_{3}=\tfrac13\),
+\(\varrho_{5}=\tfrac15\) and \(\varrho_{7}=\tfrac17\) at once.  The remaining three,
+\(\varrho_{4}=\tfrac34\), \(\varrho_{6}=\tfrac32\) and \(\varrho_{8}=\tfrac{19}{8}\), depend
+on the tree numbers \(a_{2},a_{3},a_{4}\) themselves; the module carries no particular
+sequence, so they are not formalized, and neither is \cref{p1:thm:recurrence}, which is what
+would supply them.
+
 
 \Cref{p1:lem:R-coefficients} is due to \textsf{S2}; \textsf{S1} and \textsf{S3} carry $R$ only
 through the double sum $\sum_{k\ge2}\sum_na_n\rho^{kn}(\cdots)$. The single-sum form is used
@@ -40094,6 +40473,29 @@ $\mathcal C(0)=0$.  It is analytic on $|w|<\e^{-1}$ and
 \end{equation}
 where $\Wlam_0$ is the principal Lambert branch.
 \end{definition}
+\emph{Lean status.}  Formal in \lean{CayleyTreeFunction.lean}, with
+\eqref{p1:eq:cayley-lambert} taken as the \emph{definition}:
+\lean{Fabius.cayleyTree}\ \(w=-\Wlam_{0}(-w)\).  That makes the identification with the
+principal branch a rewriting step in both directions ---
+\lean{Fabius.principalLambertW_eq_neg_cayleyTree} reads it as a statement about
+\(\Wlam_{0}\) --- and leaves the rest of the definition as consequences of the Lambert
+API: the functional equation \(\mathcal C=w\EulerE^{\mathcal C}\) is
+\lean{Fabius.cayleyTree_eq_mul_exp}, the initial condition
+\lean{Fabius.cayleyTree_zero}, positivity \lean{Fabius.cayleyTree_nonneg}, strict growth
+\lean{Fabius.cayleyTree_strictMonoOn} and the bound \lean{Fabius.cayleyTree_le_one}.  The
+boundary value \(\mathcal C(\EulerE^{-1})=1\) is \lean{Fabius.cayleyTree_exp_neg_one}: the
+tree function reaches \(1\) exactly where \(\Wlam_{0}\) reaches its branch point, which
+is why that is also where \(\mathcal C\) ceases to be analytic.
+
+Two limitations of the formal statement, both deliberate.  The domain is real: the corpus
+carries the real principal branch on \([-\EulerE^{-1},\infty)\), so \(\mathcal C(w)\) is
+available for \(w\le\EulerE^{-1}\), and the analyticity on the complex disc
+\(\lvert w\rvert<\EulerE^{-1}\) asserted here is not formalized.  And uniqueness carries the
+branch condition explicitly: \lean{Fabius.cayleyTree_unique} asks \(c\le1\), which is
+\(-c\ge-1\), the principal side of \(\Wlam_{0}\).  That hypothesis is not decoration ---
+for \(0<w<\EulerE^{-1}\) the equation \(c=w\EulerE^{c}\) has a second, larger root coming
+from the lower branch, so the statement without it is false, not merely unproved.
+
 
 Comparing \cref{p1:eq:T-zeta} with \cref{p1:def:cayley},
 \begin{equation}
@@ -40279,6 +40681,29 @@ Put
  \label{p1:eq:Phi}
 \end{equation}
 \end{definition}
+\emph{Lean status.}  Formal in \lean{CayleyKernel.lean}, all three displays of
+\eqref{p1:eq:Phi}.  That the two coefficient formulas agree ---
+\(2(m+1)/(m+2)!=2/((m+2)m!)\), since \((m+2)!=(m+2)(m+1)m!\) --- is
+\lean{Fabius.cayleyKernelCoeff_eq_factorial}; the numerical values \(1,\ 2/3,\ 1/4,\ 1/15\)
+are \lean{Fabius.cayleyKernelCoeff_zero} through \lean{Fabius.cayleyKernelCoeff_three}.  The
+closed form is \lean{Fabius.tsum_cayleyKernelTerm}, and its denominator-free version
+\lean{Fabius.tsum_cayleyKernelTerm_mul_sq}, \(v^{2}\Phi(v)=2(1-(1-v)\EulerE^{v})\), holds
+with no hypothesis on \(v\) at all.  The proof is a subtraction of two shifted exponential
+series, \lean{Fabius.tsum_exp_shift_one} and \lean{Fabius.tsum_exp_shift_two}, after the
+termwise identity \lean{Fabius.cayleyKernelCoeff_mul_pow_eq_sub}, which is where the two
+coefficient formulas do their work.  The kernel is entire:
+\lean{Fabius.summable_cayleyKernelTerm} holds for every real \(v\).
+
+Which display is the definition matters, and the formal treatment differs from the one the
+notation above suggests.  The closed form \(2(1-(1-v)\EulerE^{v})/v^{2}\) is undefined at
+\(v=0\); the series is not, and \(\Phi(0)=1\).  So the series is primitive in the corpus,
+the closed form is a theorem for \(v\ne0\), and the removable singularity is recorded
+separately as \lean{Fabius.tsum_cayleyKernelTerm_zero}.  Taking the closed form as the
+definition would have been actively harmful: Lean's convention \(x/0=0\) would have made
+\(\Phi(0)=0\) rather than \(1\), and every statement about the kernel at the origin ---
+which is where it is used --- would have been silently wrong, with nothing in the type
+checker to object.
+
 
 The two displayed coefficient forms agree because $2(m+1)/(m+2)!=2/((m+2)\,m!)$; \textsf{S1}
 and \textsf{S3} use the first, \textsf{S2} the second.
@@ -40326,6 +40751,36 @@ $\OB_{m-1,k}$ is a polynomial with rational coefficients in rational arguments. 
 $\mathcal C=1-v=1-\sum_m\omega_m\varsigma^m =1-\sum_m\omega_m2^{m/2}\upsilon^{m/2}$, which is
 \cref{p1:eq:cayley-puiseux}.
 \end{proof}
+\emph{Lean status: partial.}  In \lean{CayleyLocalCoordinate.lean}.  What is formal is the
+setup, and it is formal in both of its parts.  The identity
+\(\upsilon=\tfrac12v^{2}\Phi(v)\) is \lean{Fabius.cayleyUpsilon_eq_half_mul_kernel}, where
+\lean{Fabius.cayleyUpsilon}\ \(v=1-(1-v)\EulerE^{v}\); it is the kernel's defining relation
+\lean{Fabius.tsum_cayleyKernelTerm_mul_sq} rearranged, and stating it against the series
+rather than the closed form makes it hold at \(v=0\) too, where the closed form does not
+exist.  \lean{Fabius.cayleyUpsilon_eq_half_mul_sq_kernel} is the closed-form version for
+\(v\ne0\).
+
+The substitution itself is not free and is proved separately:
+\lean{Fabius.cayleyTree_eq_one_sub} says that
+\(\mathcal C\bigl((1-\upsilon(v))/\EulerE\bigr)=1-v\) for \(v\ge0\), so that \(\upsilon\) is
+genuinely the local coordinate of the branch rather than a function that happens to have the
+right series.  Two things make it work.  The argument never leaves the domain, by
+\lean{Fabius.one_sub_upsilon_div_exp_one_le}, which rests on
+\lean{Fabius.one_sub_mul_exp_le_one}: \((1-v)\EulerE^{v}\le1\) for \emph{every} real \(v\),
+in one step from \(1-v\le\EulerE^{-v}\) scaled by \(\EulerE^{v}>0\), with no case split on
+the sign of \(1-v\).  And the hypothesis \(v\ge0\) is exactly the branch condition
+\(1-v\le1\) of \lean{Fabius.cayleyTree_unique} --- which is the formal content of the
+phrase ``on the branch reached from \(0<w<\EulerE^{-1}\)''.  Positivity of the local
+coordinate, \lean{Fabius.cayleyUpsilon_nonneg}, is the same inequality again.
+
+What is \emph{not} formalized: everything after the setup.  The reversion
+\(v=\sum_{m\ge1}\omega_{m}(2\upsilon)^{m/2}\), the master
+formula~\eqref{p1:eq:omega-master} for \(\omega_{m}\) through the ordinary partial Bell
+polynomials, and the Puiseux expansion~\eqref{p1:eq:cayley-puiseux} all need Lagrange
+reversion at a square-root branch point, which the corpus does not carry.  The ordinary
+Bell polynomials the master formula is written in are themselves unformalized; see the
+note at \cref{plt:lem:bell-normalizations}.
+
 
 \begin{remark}[Two normalisations, one object]
 \label{p1:rem:omega-vs-c}
@@ -40704,6 +41159,32 @@ $\beta=0$, so a monomial $\prod\varkappa_{m_i}$ with $\sum m_i=r$ has degree $\l
 r+\#\{i\}\le2r$; the displayed $g_1,\ldots,g_4$ were recomputed here from
 \cref{p1:eq:varkappa} by exact rational arithmetic.
 \end{proof}
+\emph{Lean status: partial, the coefficient recurrence only.}  The recurrence
+in~\eqref{p1:eq:g-recurrence} is formal in \lean{ExpSeriesRecurrence.lean}, and in the
+generality it deserves: it has nothing to do with gamma ratios.  For an arbitrary power
+series \(K\) without constant term over a commutative \(\RationalNumbers\)-algebra,
+\lean{Fabius.expCoeff} is the coefficient sequence of \(\exp K\),
+\lean{Fabius.expCoeff_zero} is \(g_{0}=1\), and \lean{Fabius.natCast_mul_expCoeff} is
+\(n\,g_{n}=\sum_{m\le n}m\,\varkappa_{m}\,g_{n-m}\) with \(\varkappa_{m}\) the
+coefficients of \(K\).  \lean{Fabius.succ_mul_expCoeff_succ} is the same fact in the shape
+the Cauchy product produces, before reindexing.
+
+Two remarks on the formal statement.  It is the coefficient form of \(G'=K'G\), so
+\lean{derivative_subst} and \lean{derivative_exp} give it at once and all the work is the
+reindexing --- the convolution runs the other way round from the display above.  And the
+sum is taken over \(0\le m\le n\) rather than \(1\le m\le n\); the \(m=0\) term carries the
+factor \(m\) and vanishes, which costs nothing and makes the identity true at \(n=0\) as
+well, where the volume's indexing would compare an empty sum with \(0\cdot g_{0}\).
+
+What is \emph{not} formalized: everything else in the lemma.  The definition of
+\(\varkappa_{m}(\beta)\) through Bernoulli polynomials, the closed forms
+\eqref{p1:eq:g-first} and~\eqref{p1:eq:g4} and the degree-\(2r\) statement, the ordinary
+Bell form of \eqref{p1:eq:g-recurrence} --- which would need the ordinary partial Bell
+polynomials, themselves unformalized, see \cref{plt:lem:bell-normalizations} --- and the
+asymptotic~\eqref{p1:eq:gamma-ratio} itself, which needs Stirling's expansion to all orders
+in a sector.  The formalized content is the recurrence that turns \(\varkappa\) into
+\(g\), and nothing about where \(\varkappa\) comes from.
+
 
 \begin{remark}[Part~0 candidate]
 \label{p1:rem:gamma-part0}
@@ -50404,8 +50885,8 @@ the coefficient of the deepest pole in closed form, in both subjects at once.
 % divisors or nilpotents.  The closed-form lemma is now stated over a field,
 % and exact pole order is asserted only in the universal indeterminate case.
 \begin{lemma}[The quadratic core]\label{p6:lem:quadratic-core}
-Let $\K$ be a field of characteristic zero, let $A,c\in\K$ be nonzero, let
-$\sigma\in\K$, and let
+Let $\K$ be a field of characteristic zero, let \(A,c,\sigma\in\K\), and
+assume \(A\ne0\) and \(c\ne0\).  Let
 $\epsilon=\sum_{n\ge1}\epsilon_nq^{n}$ be the unique solution of positive
 valuation of the \emph{quadratic model}
 \begin{equation}\label{p6:eq:quadratic-model}
@@ -50489,40 +50970,36 @@ packaging by a finite coefficient recursion.  The only property of the
 coefficient family the quadratic model actually uses is the convolution
 \eqref{p6:eq:half-binom-convolution}, and under
 \eqref{p6:eq:half-binom-catalan} that convolution is a finite combinatorial
-recursion.  Thus the coefficient calculation rests on no analysis.
+recursion.  Thus the Catalan identities and the coefficient recurrence rest
+on no analysis; assembling them into the unique formal square-root solution
+and identifying the coefficients as the deepest poles of the two inversions
+are separate steps.
 
 \emph{Lean status.}  \Cref{p6:prop:quadratic-core-catalan} is Exact in the
-Mathlib-only leaf \lean{QuadraticCoreCatalan.lean}, machine-checked over an
-arbitrary field of characteristic zero and with no dependence on the rest of
-the corpus.  \lean{Fabius.catalan_two_step} is the Catalan ratio recursion;
-\lean{Fabius.quadHalf} is the coefficient family, indexed from zero and
-defined by the closed form \eqref{p6:eq:half-binom-catalan};
-\lean{Fabius.quadHalf_zero} is its boundary value;
-\lean{Fabius.quadHalf_antidiagonal} is
-\eqref{p6:eq:half-binom-convolution}; \lean{Fabius.halfBinom} and
-\lean{Fabius.halfBinom_step} define and control the falling-product
-normalization; and \lean{Fabius.quadHalf_rat} is
-\eqref{p6:eq:half-binom-catalan} itself,
-identifying that family over $\Rat$ with $\binom{1/2}{n+1}$ as defined by the
-falling product.  The index is shifted so that the convolution runs over
-$\texttt{Finset.antidiagonal}$ and the sum
-\eqref{p6:eq:half-binom-convolution}, which is empty at $n=1$, is carried by the
-separate statement \lean{Fabius.quadCoef_zero} rather than by a boundary case.
-Together with \lean{Fabius.quadCoef_rec}, that boundary theorem gives the two
-halves of the order-by-order statement that
-$\epsilon_n=((-4c\sigma)^{n}/2c)\binom{1/2}{n}A^{-(2n-1)}$ solves
-\eqref{p6:eq:quadratic-model}.
+Mathlib-only leaf \lean{QuadraticCoreCatalan.lean}.  Its complete
+three-definition, eight-theorem surface is
+\lean{Fabius.catalan_two_step}, \lean{Fabius.quadHalf},
+\lean{Fabius.quadHalf_zero}, \lean{Fabius.quadHalf_antidiagonal},
+\lean{Fabius.halfBinom}, \lean{Fabius.halfBinom_step},
+\lean{Fabius.quadHalf_rat}, \lean{Fabius.quadCoef},
+\lean{Fabius.quadCoef_rat}, \lean{Fabius.quadCoef_zero}, and
+\lean{Fabius.quadCoef_rec}.  The first seven declarations prove the Catalan
+ratio, closed falling-product bridge, and antidiagonal convolution; the last
+four package the displayed shifted coefficient family and verify
+\eqref{p6:eq:quadratic-model} coefficient by coefficient under
+\(A\ne0\) and \(c\ne0\).  The index is shifted so that the convolution runs
+over \texttt{Finset.antidiagonal}; the empty boundary case at (n=1) is
+carried by \lean{Fabius.quadCoef_zero} rather than folded into the recurrence.
 
-\Cref{p6:lem:quadratic-core} is only Partial.  The family
-\lean{Fabius.quadCoef}, its rational closed-form rewrite
-\lean{Fabius.quadCoef_rat}, and
-\lean{Fabius.quadCoef_zero} together with \lean{Fabius.quadCoef_rec} verify
-the displayed coefficients against the quadratic equation order by order.
-They do not construct a \texttt{PowerSeries}, prove the full quadratic
-identity and positive-valuation uniqueness there, package the formal
-square-root identity, or prove the universal exact pole-order clause.
-\Cref{p6:thm:deepest-pole}, which identifies this family inside the two
-transseries inversions, is likewise not formalized.
+The larger \cref{p6:lem:quadratic-core} is only Partial.  The Lean leaf does
+not construct the assembled positive-valuation power series, prove its
+existence or uniqueness, identify it with the formal square root, or state
+the exact denominator-exponent/nonvanishing conclusion.  Nor does it identify
+this family with the deepest poles in the Gamma or Barnes inversions:
+\cref{p6:thm:deepest-pole} remains unformalized.  The field hypotheses above
+are essential for the displayed divisions; a general commutative rational
+algebra with merely \(c\ne0\) would not suffice in the presence of
+nonunits or zero divisors.
 \end{remark}
 
 \begin{theorem}[The deepest pole is attained, with an explicit coefficient]
@@ -54317,6 +54794,30 @@ amplitude $C_{j,k}$ is then the product of the $j$-th Stirling coefficient and
 the constant $\rho/\zeta_k$ of \cref{q2:rem:simple-pole}; no $k$-dependence
 enters the $j$-sum, which is why the same series multiplies every sector.
 \end{proof}
+\emph{Lean status: partial, the Stirling coefficients only.}  The definition
+\eqref{q2:eq:stirling-cj} and its four listed values are formal in
+\lean{StirlingSeriesCoefficients.lean}.  \lean{Fabius.stirlingKernelCoeff} is
+\(\varkappa_{r}=B_{r+1}/(r(r+1))\), \lean{Fabius.stirlingKernel} the series it assembles,
+\lean{Fabius.constantCoeff_stirlingKernel} the fact that makes \(\exp\) of it a
+substitution, and \lean{Fabius.stirlingCoeff} the coefficients \(c_{j}\).  Their values are
+\lean{Fabius.stirlingCoeff_zero}, \lean{Fabius.stirlingCoeff_one},
+\lean{Fabius.stirlingCoeff_two} and \lean{Fabius.stirlingCoeff_three}, giving
+\(1,\ \tfrac1{12},\ \tfrac1{288},\ -\tfrac{139}{51840}\) --- constants that this volume
+quotes rather than derives, so it is worth having them machine-checked from the definition
+rather than from a table.
+
+The derivation is the general recurrence of \lean{ExpSeriesRecurrence.lean} read at this
+kernel (\lean{Fabius.stirlingCoeff_recurrence}); the only arithmetic inputs are
+\(B_{2}=\tfrac16\), \(B_{3}=0\) and \(B_{4}=-\tfrac1{30}\), the last of which is derived
+formally from \(\sum_{k<5}\binom5k B_{k}=0\) rather than assumed
+(\lean{Fabius.bernoulli_four}).  The vanishing of \(B_{3}\) is why \(c_{2}\) receives no
+contribution from \(\varkappa_{2}\) and equals \(\varkappa_{1}^{2}/2\).
+
+Not formalized: the asymptotic~\eqref{q2:eq:fubini-elementary} itself, the convergence of
+the \(k\)-sum, and the identification of \(\sum_{j}c_{j}t^{j}\) with the Stirling series of
+the gamma factor.  What is formal is the coefficient family, defined exactly as the
+corollary defines it.
+
 
 \section{Certified truncation}
 \label{q2:sec:fubini-truncation}
@@ -54467,6 +54968,21 @@ $\gamma_1=-2/24=-\tfrac1{12}$, $\gamma_2=4/1152=\tfrac1{288}$ and
 $\gamma_3=1112/414720=\tfrac{139}{51840}$.  Comparison with the expansion of
 \eqref{q2:eq:stirling-cj} gives \eqref{q2:eq:gamma-c}.
 \end{proof}
+\emph{Lean status: one side of the comparison is formal.}  The Stirling coefficients
+\(c_{1},c_{2},c_{3}\) of the right-hand side are machine-checked ---
+\(\tfrac1{12},\ \tfrac1{288},\ -\tfrac{139}{51840}\), by
+\lean{Fabius.stirlingCoeff_one}, \lean{Fabius.stirlingCoeff_two} and
+\lean{Fabius.stirlingCoeff_three} in \lean{StirlingSeriesCoefficients.lean}, derived from
+the definition rather than quoted.  So the numbers this proposition compares against are no
+longer taken on trust, and the displayed values agree with the formal ones under the sign
+convention \(\gamma_{m}=(-1)^{m}c_{m}\).
+
+The other side is not formalized: \(\gamma_{m}=\lim_{r\to\infty}c_{m}(r)/r^{m}\) requires
+the Bell saddle expansion of \cref{q2:thm:bell} and the coefficient structure of
+\cref{q2:prop:bell-structure}, neither of which the corpus carries.  So the proposition's
+content --- that the two families coincide up to sign --- remains unformalized; what is
+settled is that one of the two families is what the volume says it is.
+
 
 \begin{remark}[Why that is not a coincidence, and what is not proved]
 \label{q2:rem:gamma-c}

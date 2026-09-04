@@ -6,6 +6,9 @@ import FabiusFunction.PascalParityPeriodic
 import FabiusFunction.RvachevHalfIntegerEnergy
 import FabiusFunction.LambertWElementaryBounds
 import FabiusFunction.CayleyTreeFunction
+import FabiusFunction.CayleyKernel
+import FabiusFunction.CayleyLocalCoordinate
+import FabiusFunction.DivisorTransform
 import FabiusFunction.CompleteHomogeneous
 import FabiusFunction.CompleteHomogeneousGenerating
 import FabiusFunction.CompleteHomogeneousBell
@@ -71,6 +74,8 @@ import FabiusFunction.RStirling
 import FabiusFunction.FallingFactorialSeries
 import FabiusFunction.CauchyPolynomials
 import FabiusFunction.CoefficientRules
+import FabiusFunction.ExpSeriesRecurrence
+import FabiusFunction.StirlingSeriesCoefficients
 import FabiusFunction.IteratedLeibniz
 import FabiusFunction.NorlundDiagonal
 import FabiusFunction.NarayanaNumbers
@@ -297,6 +302,7 @@ import FabiusFunction.TransseriesScale
 import FabiusFunction.TransseriesFlat
 import FabiusFunction.TransseriesWellBased
 import FabiusFunction.WrightOmega
+import FabiusFunction.WrightOmegaTwoOrders
 import FabiusFunction.LambertShiftInverse
 import FabiusFunction.LambertShiftConcavity
 import FabiusFunction.LambertCorrectionEquation
@@ -533,6 +539,8 @@ import FabiusFunction.TransseriesDifferentialBlock
 import FabiusFunction.TransseriesDifferentialClosure
 import FabiusFunction.TransseriesHarmonicIncrement
 import FabiusFunction.TransseriesScaleDominance
+import FabiusFunction.TransseriesBlockClasses
+import FabiusFunction.TransseriesMonomialUniqueness
 import FabiusFunction.TransseriesPolyLogScale
 import FabiusFunction.TriangularPowerProduct
 import FabiusFunction.LasotaYorkeIteration
@@ -576,6 +584,7 @@ import FabiusFunction.Regularity
 import FabiusFunction.Convexity
 import FabiusFunction.EffectiveFlatness
 import FabiusFunction.SharpFlatness
+import FabiusFunction.FabiusEndpointTwoTerm
 import FabiusFunction.FabiusInverse
 import FabiusFunction.InverseModulus
 import FabiusFunction.FabiusInverseEffectiveContinuity

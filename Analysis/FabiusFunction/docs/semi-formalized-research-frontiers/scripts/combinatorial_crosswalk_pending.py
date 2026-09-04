@@ -3,7 +3,10 @@ r"""Pending formal-crosswalk remarks for
 drafts/combinatorial-coefficient-calculus/Combinatorial_Coefficient_Calculus.tex.
 
 Division of labour (2026-09-01): the consolidation owner edits the manuscript
-body and rebuilds its PDF; the Lean side supplies crosswalk remarks here.
+body and controls PDF publication; the Lean side supplies crosswalk remarks
+here.  Applying this script changes only the TeX.  Until a separate publication
+cycle rebuilds the retained PDF, that PDF is historical and has no render-parity
+claim against the live source.
 Each entry is (anchor, remark): the remark is inserted right after the anchor
 text, which must occur exactly once.  An entry whose remark is already present
 is skipped, so the script is idempotent.  After applying, regenerate the
@@ -1491,7 +1494,7 @@ vanish for that reason rather than by convention.
 product, so that $k=0$ gives $\ExponentialPartialBellPolynomial n0=\delta_{n,0}$
 and $x^{1\diamondsuit}=x$ (\lean{Fabius.diamondPow_one}); for $k\ge1$ this is
 the $k$-fold product of the source.
-The proof is the one above.  \lean{Bell.egfA_mul} turns a binomial convolution
+The proof is the one above.  \lean{Fabius.egfA_mul} turns a binomial convolution
 into a product of exponential generating functions, so
 \lean{Fabius.egfA_diamondPow} gives $X(t)^k$ by induction, and
 \lean{Fabius.bellWeightSeries_pow} already reads the coefficients of $X(t)^k$
@@ -1555,7 +1558,7 @@ implication: \lean{Fabius.egfA_eq_exp_mul_iff} and
 \lean{Fabius.egfA_eq_exp_mul_iff_egfA_eq_altSeries_mul} relating the two
 generating-function equations directly.
 Two remarks on the formal proofs.  Multiplying exponential generating functions
-is binomial convolution (\lean{Bell.egfA_mul}), so the only content is that
+is binomial convolution (\lean{Fabius.egfA_mul}), so the only content is that
 convolving against the constant sequence $1$, or against $(-1)^n$, gives the
 displayed sums after reflecting the summation index
 (\lean{Fabius.binomialConv_one_left},
@@ -1720,6 +1723,73 @@ described, not a real or complex one, so the identity is between power series
 over a commutative $\mathbb Q$-algebra.  And the radius of convergence, together
 with the branch of the square root that the analytic statement selects, is not
 formalized.""")),
+]
+
+PENDING += [
+ # --- eq:ordinary-exponential-scaling ---
+ (r"""\begin{proof}[Proof of \eqref{eq:ordinary-exponential-scaling}]
+Substitute $i!x_i$ for $x_i$ in \eqref{eq:partial-bell-definition}; the factorials
+$(i!)^{j_i}$ cancel, and multiplication by $k!/n!$ leaves exactly
+\eqref{eq:ordinary-bell-definition}.
+\end{proof}
+""",
+  remark(r"""% ed.: crosswalk added 2026-09-04; exact algebraic normalization only.
+The displayed conversion is
+\lean{Fabius.ordPartialBell_eq_factorialRatio_partialBell} in module
+\lean{UnitSeriesBellCoefficients}, over every commutative $\mathbb Q$-algebra
+and for all $n,k\geq0$; thus Lean also covers the automatically vanishing
+out-of-range cases.  Its denominator-cleared companion is
+\lean{Fabius.factorial_mul_ordPartialBell_eq_factorial_mul_partialBell}:
+$n!\OrdinaryPartialBellPolynomial nk(x)=k!\ExponentialPartialBellPolynomial
+nk(1!x_1,2!x_2,\ldots)$.  The Lean proof compares the ordinary coefficient of
+the $k$-th power of the factorially weighted Bell series with its exponential
+Bell coefficient.  These declarations prove the polynomial normalization;
+they do not formalize the labelled-set partition interpretation of
+\cref{thm:bell-poly-partitions}, whose register row remains \emph{none}.""")),
+
+ # --- eq:merged-bell-normalization ---
+ (r"""\begin{proof}[Proof of \eqref{eq:merged-bell-normalization}]
+The exponential definition gives
+\[
+ \frac1{k!}\left(\sum_{j\geq1}x_jt^j\right)^k
+ =\sum_{n\geq k}\ExponentialPartialBellPolynomial nk(1!x_1,2!x_2,\ldots)\frac{t^n}{n!}.
+\]
+The coefficient on the left is $\OrdinaryPartialBellPolynomial nk(x)/k!$ in ordinary normalization.
+Comparison proves the conversion.
+\end{proof}
+""",
+  remark(r"""% ed.: crosswalk added 2026-09-04; exact normalization dictionary.
+Equation~\eqref{eq:merged-bell-normalization} is exactly
+\lean{Fabius.ordPartialBell_eq_factorialRatio_partialBell}; the integral,
+denominator-cleared form is
+\lean{Fabius.factorial_mul_ordPartialBell_eq_factorial_mul_partialBell}, both
+in module \lean{UnitSeriesBellCoefficients}.  They hold for every pair
+$n,k\geq0$ over a commutative $\mathbb Q$-algebra and use precisely the
+factorially weighted input $(j!x_j)_{j\geq0}$.  This crosswalk certifies the
+algebraic normalization only, not the separate labelled-set interpretation.""")),
+
+ # --- alg:merged-exp-log-power ---
+ (r"""\begin{proof}
+Compare coefficients in $A'=AL'$ to obtain the first two recurrences.  For
+powers, compare degree $n-1$ in $AC'=\alpha A'C$ and isolate $nc_n$.
+\end{proof}
+""",
+  remark(r"""% ed.: crosswalk added 2026-09-04; two recurrences exact, one open.
+The logarithmic recurrence \eqref{eq:merged-alg-log} is the positive-degree
+unfolding \lean{Fabius.SaddleExpansion.logCoeff_succ}, after reflecting its
+finite summation index; its output is identified with Mathlib's formal
+logarithm by \lean{Fabius.SaddleExpansion.logSeries_eq_logOf} (modules
+\lean{SaddleLogExpansionAlgebra} and \lean{SaddleLogExpansionPowerSeries}).
+The exponential recurrence \eqref{eq:merged-alg-exp} is
+\lean{Fabius.coeff_exp_subst_recurrence} in module
+\lean{UnitSeriesBellCoefficients}, stated in the denominator-cleared form
+$na_n=\sum_{j=1}^n j\ell_j a_{n-j}$ and valid also at $n=0$.
+The same module gives nonrecursive Bell-polynomial coefficient formulas for
+arbitrary formal powers in
+\lean{Fabius.coeff_fallingSeries_subst_eq_sum_ordPartialBell_of_pos} and
+\lean{Fabius.coeff_fallingSeries_subst_eq_sum_partialBell}.  It does not prove
+the distinct recursive identity \eqref{eq:merged-alg-power}; that clause remains
+the precise missing obligation, so the algorithm is only \emph{partial}.""")),
 ]
 
 applied = 0

@@ -15,15 +15,16 @@ with the strongest correct hypotheses and one complete proof. A second proof
 survives only where it exposes a different mechanism.
 
 The consolidation boundary is recorded in
-[`PROVENANCE.md`](Combinatorial_Coefficient_Calculus/PROVENANCE.md), the live
-and historical hashes in
-[`SOURCE_CLOSURE.sha256`](Combinatorial_Coefficient_Calculus/SOURCE_CLOSURE.sha256),
+[`PROVENANCE.md`](Combinatorial_Coefficient_Calculus/PROVENANCE.md), the six
+original sources and their immutable Git recovery locators in
+[`SOURCE_INVENTORY.csv`](Combinatorial_Coefficient_Calculus/SOURCE_INVENTORY.csv),
 and the topic/claim decisions in
 [`SOURCE_DISPOSITION.csv`](Combinatorial_Coefficient_Calculus/SOURCE_DISPOSITION.csv).
 The standard-library
 [`validate_canonical.py`](Combinatorial_Coefficient_Calculus/validate_canonical.py)
-checks LaTeX structure, labels, references, citations, proof pairing, source
-coverage, and the one-publication layout; run it with `--final`, which is the
+checks LaTeX structure, labels, references, citations, proof pairing, exact
+source coverage, Git object availability, and the one-publication layout;
+run it with `--final`, which is the
 mode this package is now expected to pass.
 
 | Directory | Document |
@@ -37,6 +38,9 @@ later source-only editorial and Lean-crosswalk changes. The PDF was
 intentionally not rebuilt for this overlay, so no present-source render parity,
 current page count, or current source-size claim is made. The historical
 receipts and closure evidence remain valid for their named source state.
+Standalone checksum files are retired: provenance is kept in Git and
+`SOURCE_INVENTORY.csv`, and the validator neither maintains nor requires file
+digests.
 
 ## What the final merge changed
 
@@ -104,3 +108,24 @@ The manuscript is research-frontier mathematical writing. Its theorem and proof
 environments are human-readable mathematics, not evidence of Lean verification.
 The section "Lean formalization register" states, per result, what is formalized
 and what is not; it is maintained separately from this consolidation.
+
+## Weighted-transform checkpoint (2026-09-04)
+
+The `AppellSequence` extension has passed a focused Lean build with
+`LAKE_JOBS=1`: eleven public lemmas provide weighted binomial translation,
+convolution transport, cancellation, and inversion. The manuscript gives their
+complete human proofs and exact declaration crosswalks. Three private rational
+helpers in `FinitePrefixThueMorseCollapse` were replaced by the shared API; that
+caller refactor has been independently source-reviewed but awaits its own build.
+
+The register contains 203 rows: 58 marked Lean, 34 partial, and 111 without a
+Lean counterpart. The earlier classifications are inherited; this checkpoint
+adds two compiler-backed entries and does not claim a fresh build of the whole
+corpus. The final structural/provenance validator passes with 203 adjacent
+proofs, 27 disposition records, and six original-source inventory rows. PDF
+rebuilding remains deferred at the user's request.
+
+The same-day upstream crosswalk connects the Bell normalization and unit-series
+coefficient formulas to `UnitSeriesBellCoefficients`; its labelled-set partition
+interpretation remains unformalized. That partial result is included in the
+register totals above.

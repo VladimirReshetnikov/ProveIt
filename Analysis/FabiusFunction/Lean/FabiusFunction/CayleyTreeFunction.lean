@@ -11,15 +11,16 @@ The transseries volume's `p1:def:cayley`: the solution of `C = w e^C` with
 The corpus takes that identification as the *definition*, which makes
 `p1:eq:cayley-lambert` a rewriting step and leaves the functional equation, the
 initial condition, monotonicity and the value at the singularity as short
-consequences of the Lambert API.  Reading it the other way round,
+consequences of the Lambert API.  Read the other way round,
 `principalLambertW_eq_neg_cayleyTree` expresses `W₀` through `C`.
 
 Domain.  The real principal branch is defined on `[-e⁻¹, ∞)`, so `C(w)` is
 meaningful for `w ≤ e⁻¹`, and that is the hypothesis carried throughout.  The
 volume's analyticity on `|w| < e⁻¹` is a complex statement and is not
-formalized; what is formal here is the real function on `(-∞, e⁻¹]`, on which
-it is strictly increasing, and the boundary value `C(e⁻¹) = 1`, the point where
-the tree function reaches the branch point of `W₀` and its own singularity.
+formalized; what is formal here is the real function on `(-∞, e⁻¹]`, on which it
+is strictly increasing, together with the boundary value `C(e⁻¹) = 1`, the point
+where the tree function reaches the branch point of `W₀` and its own
+singularity.
 
 Uniqueness carries the branch condition explicitly: `cayleyTree_unique` asks
 `c ≤ 1`, which is `-c ≥ -1`, the principal-branch side of `W₀`.  Without it the
@@ -47,17 +48,15 @@ theorem cayleyTree_eq_mul_exp {w : ℝ} (hw : w ≤ Real.exp (-1)) :
     cayleyTree w = w * Real.exp (cayleyTree w) := by
   have hdom : -Real.exp (-1) ≤ -w := by linarith
   have hkey := principalLambertW_mul_exp hdom
-  have hexp : Real.exp (cayleyTree w) * Real.exp (principalLambertW (-w)) = 1 := by
-    rw [cayleyTree, ← Real.exp_add, neg_add_cancel, Real.exp_zero]
-  have hw' : w = -(principalLambertW (-w) * Real.exp (principalLambertW (-w))) := by
+  rw [cayleyTree]
+  set W := principalLambertW (-w) with hWdef
+  have hexp : Real.exp W * Real.exp (-W) = 1 := by
+    rw [← Real.exp_add, add_neg_cancel, Real.exp_zero]
+  have hwv : w = -(W * Real.exp W) := by
     rw [hkey, neg_neg]
-  calc
-    cayleyTree w = -principalLambertW (-w) * 1 := by rw [mul_one, cayleyTree]
-    _ = -principalLambertW (-w) *
-        (Real.exp (cayleyTree w) * Real.exp (principalLambertW (-w))) := by rw [hexp]
-    _ = -(principalLambertW (-w) * Real.exp (principalLambertW (-w))) *
-        Real.exp (cayleyTree w) := by ring
-    _ = w * Real.exp (cayleyTree w) := by rw [← hw']
+  rw [hwv]
+  calc -W = -(W * (Real.exp W * Real.exp (-W))) := by rw [hexp]; ring
+    _ = -(W * Real.exp W) * Real.exp (-W) := by ring
 
 /-- `C(0) = 0`, the initial condition. -/
 @[simp] theorem cayleyTree_zero : cayleyTree 0 = 0 := by
@@ -83,7 +82,7 @@ theorem cayleyTree_strictMonoOn : StrictMonoOn cayleyTree (Iic (Real.exp (-1))) 
     have := mem_Iic.mp ha; linarith
   have hB : -Real.exp (-1) ≤ -b := by
     have := mem_Iic.mp hb; linarith
-  have := principalLambertW_strictMonoOn (mem_Ici.mpr hB) (mem_Ici.mpr hA)
+  have hlt := principalLambertW_strictMonoOn (mem_Ici.mpr hB) (mem_Ici.mpr hA)
     (by linarith : -b < -a)
   rw [cayleyTree, cayleyTree]
   linarith
@@ -99,16 +98,14 @@ dropped: for `0 < w < e⁻¹` the equation has a second, larger root. -/
 theorem cayleyTree_unique {w c : ℝ} (hw : w ≤ Real.exp (-1)) (hc : c ≤ 1)
     (heq : c = w * Real.exp c) : c = cayleyTree w := by
   have hdom : -Real.exp (-1) ≤ -w := by linarith
+  have hexp : Real.exp c * Real.exp (-c) = 1 := by
+    rw [← Real.exp_add, add_neg_cancel, Real.exp_zero]
+  have hcw : c * Real.exp (-c) = w := by
+    nth_rewrite 1 [heq]
+    rw [mul_assoc, hexp, mul_one]
   have hmul : (-c) * Real.exp (-c) = -w := by
-    have hexp : Real.exp c * Real.exp (-c) = 1 := by
-      rw [← Real.exp_add, add_neg_cancel, Real.exp_zero]
-    calc
-      (-c) * Real.exp (-c) = -(w * Real.exp c) * Real.exp (-c) := by
-        nth_rewrite 1 [heq]
-        rfl
-      _ = -w * (Real.exp c * Real.exp (-c)) := by ring
-      _ = -w := by rw [hexp, mul_one]
-  have := principalLambertW_unique hdom (by linarith : (-1 : ℝ) ≤ -c) hmul
-  rw [cayleyTree, ← this, neg_neg]
+    rw [neg_mul, hcw]
+  have huniq := principalLambertW_unique hdom (by linarith : (-1 : ℝ) ≤ -c) hmul
+  rw [cayleyTree, ← huniq, neg_neg]
 
 end Fabius
