@@ -43,9 +43,26 @@ for root, _dirs, files in os.walk(LEAN):
         if not fn.endswith('.lean'):
             continue
         stack = []
+        comment_depth = 0
         with io.open(os.path.join(root, fn), encoding='utf-8',
                      errors='replace') as fh:
             for line in fh:
+                # Skip block and doc comments.  Prose inside a docstring can
+                # begin a line with "namespace ...", and treating that as a
+                # namespace opening corrupts the stack for the rest of the
+                # file: the phantom segment is never popped, because the
+                # matching `end <Name>` no longer matches the top of the
+                # stack.  That mis-qualified 57 declarations of
+                # OriginalUniqueness.lean as Fabius.IsOriginalFabius.form.*,
+                # so a CORRECT citation of any of them would have been
+                # reported missing.
+                opens, closes = line.count('/-'), line.count('-/')
+                if comment_depth:
+                    comment_depth = max(0, comment_depth + opens - closes)
+                    continue
+                if opens > closes:
+                    comment_depth += opens - closes
+                    continue
                 m = NS_OPEN.match(line)
                 if m:
                     stack.extend(m.group(1).split('.'))
