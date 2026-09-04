@@ -131,8 +131,10 @@ historical checkpoint 906 modules and 11,461 public declarations. The
 leading-coefficient formula and resulting strict odd-degree drop also remain
 unproved, so the compound `p7:thm:Pn` remains **Partial**. After the subsequent
 source-only affine-Prouhet, local TM-corner, and central-Legendre closures, the
-current live documentation census is 918 modules and 11,568 public
-declarations. The retained frontier, primary,
+complex moment-product leaf formed the historical checkpoint of 918 modules
+and 11,568 public declarations. The later Laurent, finite-prefix Appell, and half-base
+root-simplicity leaves bring the current live documentation census to 921
+modules and 11,604 public declarations. The retained frontier, primary,
 walkthrough, and geometric-q PDFs predate these source-only overlays and claim
 no render parity.
 
@@ -172,7 +174,41 @@ one-definition/four-theorem `ThueMorseCornerIntegral` leaf then raised it to
 916/11,562, and the zero-definition/three-theorem
 `RvachevLegendreCentralSum` leaf brought the next checkpoint to 917 modules
 and 11,565 public declarations. The complex moment-product leaf gives the
-current live union, 918 modules and 11,568 public declarations.
+historical 918-module / 11,568-declaration union. The three compiled leaves
+described next give the current live union, 921 modules and 11,604 public
+declarations.
+
+`FabiusFunction.RvachevLaurentLeading` has one definition and six theorems.
+Its manuscript-normalized punctured-neighborhood limit, together with the
+Fourier-product coordinate, odd-core value and nonvanishing, generic cofactor
+limit, and general integer-pole companion, makes
+`is:p2:thm:Laurent-leading` Exact. Puncturing is necessary because Lean
+totalizes inversion at a pole. No lower Laurent coefficients or later
+Appell-coefficient asymptotics are promoted. This leaf first raised the
+inverse package to 52 Lean-proved / 93 human-proved rows.
+
+The eleven-definition/seventeen-theorem
+`FabiusFunction.FinitePrefixAppellRecovery` leaf then makes both
+`is:p2:thm:finite-prefix-expansion` and `is:p2:thm:exact-recovery` Exact. Its
+uncentered and centered formulas hold for every `N,n`, including `N = 0`, at
+the exact bases `1/2` and `1/4`; the recovery rows use respectively `n+1` and
+`⌊n/2⌋+1` consecutive prefixes. The exact degrees `n` and `⌊n/2⌋` are outer
+degrees in `Polynomial (Polynomial ℚ)`: a fixed-inner-`x` centered
+specialization can drop degree, for example for odd `n` at `x = 0`. The
+prefix moments are an algebraic finite-convolution model, not a new
+random-variable, `HasLaw`, or analytic-MGF realization. These promotions give
+the inverse package's current 54 Lean-proved / 91 human-proved totals.
+
+Finally, the zero-definition/one-theorem
+`FabiusFunction.HalfQBinomialRootSimplicity` leaf adds
+`Fabius.halfQBinomial_sum_rootMultiplicity_two_pow`. Composed with the
+existing rational zero classifier and Gaussian/half-q coefficient identity,
+it makes `cor:halfbase-root-locus` Exact under the canonical rational-polynomial
+and rational-root convention. Injective scalar extension preserves
+the displayed multiplicities, but the leaf does not classify all roots over
+every extension field. The q forward ledger is now 177 Exact / 81 Partial /
+16 None / 8 interface rows, and its source concordance is 90 Lean-proved /
+388 human-proved frontier / 60 non-applicable / 9 conjectures.
 
 `FabiusFunction.GaussianBinomialGreaterOneAsymptotics` has exactly the two
 theorems
@@ -331,7 +367,7 @@ the later Euler, q-binomial, Jacobi, quantum-binomial, Rogers--Szegő,
 cyclotomic-divisibility, q-Catalan, primitive-root-block, q-Lucas, Jackson
 q-beta, geometric Newton-interpolation, integer/complex upper Gaussian, and
 q-Pfaff--Saalschütz, and noncommutative q-multinomial tranches. Its 282-result
-forward status totals are now 176 Exact / 82 Partial / 16 None / 8 interface.
+forward status totals are now 177 Exact / 81 Partial / 16 None / 8 interface.
 `FabiusFunction.GeometricResidualMoments` now has zero definitions and nine
 public theorems. Its existing
 `Fabius.sum_geometricLagrangeWeight_mul_scaled_geometric_pow_of_pos` supplies
@@ -501,10 +537,12 @@ closure has SHA-256
 `aedf007c2cd150b1f83de6d8996b4bf31e267b3dbcec2d5cd4720f5d92122bdb`
 and postdates the retained PDF, so a fresh three-pass build is required before
 source/PDF synchronization may be claimed. The reviewed concordance classifies
-49 source rows as Lean-proved and 96 as human-proved frontier results. Its two
-newest exact matches are the forced parity-selected superconvergence corollary
-and the full Appell lattice-reproduction theorem, including its degree-`N+1`
-selected-phase clause.
+54 source rows as Lean-proved and 91 as human-proved frontier results, with 10
+conjectures, 15 open problems, and 24 non-applicable rows. Its newest exact
+matches include the punctured leading-Laurent theorem and the full uncentered/
+centered finite-prefix Appell expansion and exact-recovery pair described
+above; these do not assert lower Laurent coefficients or a probabilistic
+realization of the algebraic prefix model.
 
 Later the same day the groups other than the Fourier-decay corpus were
 **consolidated into volumes**, in two styles: the original members were

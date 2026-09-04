@@ -373,8 +373,12 @@ theorem local corner-integral leaf \path{ThueMorseCornerIntegral.lean}; and
 the zero-definition/three-theorem central Legendre cancellation leaf
 \path{RvachevLegendreCentralSum.lean}; and the one-definition/two-theorem
 complex moment-product leaf
-\path{GeometricUniformComplexMomentProduct.lean}.  The live source census is
-918 facade-reachable modules and 11,568 public declarations.  The compound
+\path{GeometricUniformComplexMomentProduct.lean}; followed by the
+one-definition/six-theorem \path{RvachevLaurentLeading.lean} leaf, the
+eleven-definition/seventeen-theorem \path{FinitePrefixAppellRecovery.lean} leaf, and
+the zero-definition/one-theorem \path{HalfQBinomialRootSimplicity.lean} leaf.
+The live source census is 921 facade-reachable modules and 11,604 public
+declarations.  The compound
 moment-polynomial row remains Partial only because its leading-coefficient
 and strict odd-degree clauses are absent; its actual-MGF normalization is
 Exact for real \(\lvert q\rvert<1\).  The incoming bridge branch recorded the
@@ -382,8 +386,9 @@ successive historical checkpoints 903/11,447, 903/11,448, 904/11,457, and
 905/11,458.  In the merged chronology the real-MGF bridge first reached
 915/11,556; the affine theorem, local corner leaf, and central Legendre leaf
 then give the successive checkpoints 915/11,557, 916/11,562, and 917/11,565;
-the complex product leaf forms the live 918/11,568 union.  Its incoming-branch
-906/11,461 census is historical.
+the complex product leaf forms the historical 918/11,568 union.  Its
+incoming-branch 906/11,461 census is historical.  The Laurent, finite-prefix,
+and half-base root leaves then give the live 921/11,604 union.
 The retained
 257-page, 2,438,299-byte A4 PDF, SHA-256
 \nolinkurl{3766761aac90247061f5c955dc84a0feb8567454e10839f1508b9431797ee980},
@@ -2723,7 +2728,41 @@ leaves the module count unchanged and brings the next checkpoint to
 915/11,557.  The \path{ThueMorseCornerIntegral.lean} (1+4) and
 \path{RvachevLegendreCentralSum.lean} (0+3) leaves then bring the successive
 checkpoints to 916/11,562 and 917/11,565; the complex moment-product leaf
-gives the live 918/11,568 union.  The nodes-only leaf makes
+gives the historical 918/11,568 union.  The subsequent
+\path{RvachevLaurentLeading.lean} (1+6),
+\path{FinitePrefixAppellRecovery.lean} (11+17), and
+\path{HalfQBinomialRootSimplicity.lean} (0+1) leaves give the live
+921/11,604 union.
+
+The Laurent leaf makes \nolinkurl{is:p2:thm:Laurent-leading} Exact through
+the manuscript-normalized punctured-neighborhood limit and its Fourier
+coordinate, odd-core, nonvanishing, generic-cofactor, and general integer-pole
+companions.  Puncturing is essential because inversion is totalized at the
+pole; no lower Laurent coefficient or later Appell-coefficient asymptotic is
+promoted.  It first raised the inverse concordance to 52 Lean-proved rows.
+The finite-prefix leaf then makes
+\nolinkurl{is:p2:thm:finite-prefix-expansion} and
+\nolinkurl{is:p2:thm:exact-recovery} Exact for every \(N,n\), including
+\(N=0\), with bases \(1/2\) and \(1/4\) and respectively \(n+1\) and
+\(\Floor{n/2}+1\) consecutive prefixes.  Its exact degrees \(n\) and
+\(\Floor{n/2}\) are outer degrees in
+\(\lean{Polynomial}\,(\lean{Polynomial}\,\mathbb Q)\); a fixed-inner-\(x\)
+centered specialization can drop degree, for example for odd \(n\) at
+\(x=0\).  Its prefix moments are an algebraic finite-convolution model, not a
+random-variable, \lean{HasLaw}, or analytic-MGF realization.  The inverse
+package therefore has 54 Lean-proved and 91 human-proved frontier rows.
+
+Finally,
+\lean{halfQBinomial_sum_rootMultiplicity_two_pow}, composed with the existing
+rational root classifier and Gaussian/half-q coefficient identification,
+makes \nolinkurl{cor:halfbase-root-locus} Exact for the canonical rational
+polynomial.  Injective scalar extension preserves the multiplicities, but
+this does not classify all roots over every extension field.  The q forward
+ledger is 177 Exact / 81 Partial / 16 None / 8 interface rows; its source
+concordance is 90 Lean-proved / 388 human-proved frontier /
+60 non-applicable / 9 conjectures.
+
+The nodes-only leaf makes
 \nolinkurl{cor:lag-nodes-only} Exact/Complete by composition, with rationality
 only at rational evaluation points and a formal coefficient-level Bell
 identity; it does not promote the larger right-inverse row.  Within this
@@ -2840,7 +2879,8 @@ pole-cleared removable continuation at roots are not identified in Lean.  The
 leading-coefficient formula and consequent strict odd-degree drop also remain
 absent, so the compound \nolinkurl{p7:thm:Pn} remains Partial rather than
 Exact.  The complex \(1+2\) leaf formed the historical 906/11,461 checkpoint;
-the merged live census is 918/11,568.  The existing
+the merged complex-product checkpoint is 918/11,568, and the subsequent three
+leaves give the live 921/11,604 census.  The existing
 \path{GeometricResidualMoments.lean} module now has zero definitions and nine
 public theorems.  Its
 \lean{sum_geometricLagrangeWeight_mul_scaled_geometric_pow_of_pos} theorem
@@ -2862,7 +2902,7 @@ commutative semiring.  Composed with
 rational-polynomial half-base convention.  It needs neither \(b\ne0\) nor
 distinct transformed nodes and includes \(b=0\) and \(n=0\); it does not
 extend the concrete half-base extractor to arbitrary coefficient rings.
-The q forward ledger is 176 Exact / 82 Partial / 16 None / 8 interface rows.
+The q forward ledger is 177 Exact / 81 Partial / 16 None / 8 interface rows.
 These
 additions are source-only, and the retained 257-page PDF
 remains explicitly historical; no PDF was built for this update.
