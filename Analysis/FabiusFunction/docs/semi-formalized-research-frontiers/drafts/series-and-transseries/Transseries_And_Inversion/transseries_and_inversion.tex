@@ -37343,6 +37343,43 @@ the reciprocal of $\Phi_0'$ by the inverse function theorem, applicable
 because $\Phi_0'\ne0$ on the relevant interval.
 \end{proof}
 
+\begin{remark}[Formalization of the linear--logarithmic core]
+\label{p0:rem:lambert-core-lean}
+Parts (2) and (4), and the $b>0$ half of the branch rule, are machine-checked
+over $\Real$ in \lean{LinLogCoreInversion.lean}.
+
+The part worth isolating is (2), because the formal statement is stronger than
+the prose suggests.  \lean{Fabius.linLogCore_eq_iff} is an \emph{equivalence}
+\begin{equation}\label{p0:eq:core-iff}
+ aX+b\log X=L\iff\Bigl(\frac ab X\Bigr)\e^{\frac ab X}=\frac ab\e^{L/b}
+\end{equation}
+holding for \emph{every} nonzero $a$ and $b$ and every $X>0$, with no branch
+chosen and no sign condition on $b$.  That is exactly the uniformity the proof
+above claims when it observes that no logarithm of a negative number occurs,
+and making it an $\mathrm{iff}$ separates the algebra of the substitution from
+the analysis of which solutions exist --- which is where the sign of $b$
+genuinely matters, and which is (3).
+
+For (3) with $b>0$ the module proves the whole first bullet.
+\lean{Fabius.linLogCoreArg} is $z(L)$, \lean{Fabius.linLogCoreRoot} is
+$X=(b/a)\Wlam_0(z(L))$ --- the \emph{principal} branch, which is the correct
+one here because $z(L)>0$ --- and \lean{Fabius.linLogCoreRoot_pos},
+\lean{Fabius.linLogCore_linLogCoreRoot} and \lean{Fabius.linLogCoreRoot_unique}
+give positivity, that it solves \eqref{p0:eq:core-equation}, and that it is the
+only positive solution.  Uniqueness comes from
+\lean{Fabius.strictMonoOn_linLogCore}, strict monotonicity of $\Phi_0$ on
+$(0,\infty)$, rather than from any property of the branch.  Part (4) is
+\lean{Fabius.hasDerivAt_linLogCore} for $\Phi_0'(X)=a+b/X$ and
+\lean{Fabius.linLogCore_slope_eq} for the Lambert form $a(1+W)/W$.
+
+Not formalized: the $b<0$ half of (3).  There $\Phi_0$ has an interior critical
+point at $X_\ast=|b|/a$, the threshold $L_c$ of \eqref{p0:eq:core-threshold}
+appears, and above it there are two positive solutions --- the smaller from
+$\Wlam_0$ and the larger from $\Wlam_{-1}$, the order being reversed by
+$W\mapsto(b/a)W$.  \Cref{p0:eq:core-iff} already covers that case; what is
+missing is only the branch bookkeeping, which needs the lower real branch.
+\end{remark}
+
 \begin{corollary}[Branch rule]\label{p0:cor:branch-rule}
 For $b\ne0$ the branch of the Lambert function carrying the large solution of
 $L=aX+b\log X$ is determined by the sign of $b$ alone: $\Wlam_0$ if $b>0$,
@@ -49326,27 +49363,27 @@ $pu+r=v+1$.
 \begin{remark}[Formalization of the core at \(r=1\)]\label{p6:rem:core-lean}
 The case $r=1$ --- the one used for $\Gamma$ in \cref{p6:sec:gamma} and for the
 $K$-function, and the case in which no determination of an $r$-th root has to
-be made --- is machine-checked over $\Real$, in \path{PowerLogCoreInversion.lean}.
-\path{Fabius.powerLogCore} is $\Phi_0(x)=ax^{p}(\log x-\beta)$ with the real power;
-\path{Fabius.powerLogCoreArg} is the Lambert argument $pR\e^{-p\beta}/a$ and
-\path{Fabius.powerLogCoreRoot} the root $X=\e^{\beta+v/p}$;
-\path{Fabius.powerLogCore_powerLogCoreRoot} is $\Phi_0(X)=R$;
-\path{Fabius.log_powerLogCoreRoot_sub} is $\log X-\beta=v/p$; and
-\path{Fabius.hasDerivAt_powerLogCore_root} is the slope $aX^{p-1}(v+1)$, the
+be made --- is machine-checked over $\Real$, in \lean{PowerLogCoreInversion.lean}.
+\lean{Fabius.powerLogCore} is $\Phi_0(x)=ax^{p}(\log x-\beta)$ with the real power;
+\lean{Fabius.powerLogCoreArg} is the Lambert argument $pR\e^{-p\beta}/a$ and
+\lean{Fabius.powerLogCoreRoot} the root $X=\e^{\beta+v/p}$;
+\lean{Fabius.powerLogCore_powerLogCoreRoot} is $\Phi_0(X)=R$;
+\lean{Fabius.log_powerLogCoreRoot_sub} is $\log X-\beta=v/p$; and
+\lean{Fabius.hasDerivAt_powerLogCore_root} is the slope $aX^{p-1}(v+1)$, the
 third formula of \eqref{p6:eq:core-r1}.  The Lambert branch is the corpus's
-real principal branch \path{Fabius.principalLambertW}, so the hypothesis is the
+real principal branch \lean{Fabius.principalLambertW}, so the hypothesis is the
 one that branch needs, $-\e^{-1}\le pR\e^{-p\beta}/a$.
 
 Two features of the formal statement are worth naming, because they say what
 the lemma actually depends on.  First, the inversion is proved in the form
-\path{Fabius.powerLogCore_of_lambert}, which assumes only that $v$ solves
+\lean{Fabius.powerLogCore_of_lambert}, which assumes only that $v$ solves
 $v\e^{v}=pR\e^{-p\beta}/a$ and concludes $\Phi_0(\e^{\beta+v/p})=R$; the
 principal branch enters only in the corollary.  So the lemma is a statement
 about the Lambert \emph{equation}, not about any branch of its solution, and
 it transfers to the lower real branch, or to $\Wlam_k$, unchanged.  Second,
 nothing analytic is used beyond that equation: the substitution $x=\e^{\beta+u}$
 makes $\log x-\beta=u$ and $x^{p}=\e^{p\beta}\e^{pu}$ by construction
-(\path{Fabius.powerLogCore_exp}), and the rest is field arithmetic.
+(\lean{Fabius.powerLogCore_exp}), and the rest is field arithmetic.
 
 Not formalized: general $r$, which needs a determination of the $r$-th root
 and is where the branch bookkeeping of \eqref{p6:eq:core-vars} lives; and the
@@ -49703,22 +49740,22 @@ recursion.  So \cref{p6:lem:quadratic-core}, and with it the deepest-pole
 family of \cref{p6:thm:deepest-pole} in both the $\Gamma$ and the Barnes
 $G$ cases, rests on no analysis at all.
 
-This is machine-checked, in \path{QuadraticCoreCatalan.lean}, over an arbitrary
+This is machine-checked, in \lean{QuadraticCoreCatalan.lean}, over an arbitrary
 field of characteristic zero, and as a Mathlib-only leaf with no dependence on
-the rest of the corpus.  \path{Fabius.catalan_two_step} is the ratio recursion;
-\path{Fabius.quadHalf} is the coefficient family, indexed from zero, defined by
+the rest of the corpus.  \lean{Fabius.catalan_two_step} is the ratio recursion;
+\lean{Fabius.quadHalf} is the coefficient family, indexed from zero, defined by
 the closed form \eqref{p6:eq:half-binom-catalan};
-\path{Fabius.quadHalf_antidiagonal} is the convolution
+\lean{Fabius.quadHalf_antidiagonal} is the convolution
 \eqref{p6:eq:half-binom-convolution};
-\path{Fabius.quadHalf_rat} is \eqref{p6:eq:half-binom-catalan} itself, 
+\lean{Fabius.quadHalf_rat} is \eqref{p6:eq:half-binom-catalan} itself, 
 identifying that family over $\Rat$ with $\binom{1/2}{n+1}$ as defined by the
-falling product; and \path{Fabius.quadCoef_zero} together with
-\path{Fabius.quadCoef_rec} are the two halves of \cref{p6:lem:quadratic-core}
+falling product; and \lean{Fabius.quadCoef_zero} together with
+\lean{Fabius.quadCoef_rec} are the two halves of \cref{p6:lem:quadratic-core}
 --- that $\epsilon_n=((-4c\sigma)^{n}/2c)\binom{1/2}{n}A^{-(2n-1)}$ solves
 \eqref{p6:eq:quadratic-model} order by order.  The index is shifted so that the
 convolution runs over $\texttt{Finset.antidiagonal}$ and the sum
 \eqref{p6:eq:half-binom-convolution}, which is empty at $n=1$, is carried by the
-separate statement \path{Fabius.quadCoef_zero} rather than by a boundary case.
+separate statement \lean{Fabius.quadCoef_zero} rather than by a boundary case.
 
 What is \emph{not} formalized: that this family is the deepest-pole family of
 the two inversions, which is \cref{p6:thm:deepest-pole} and needs the
@@ -51889,16 +51926,16 @@ gamma function --- enters at all.  What the branch-splitting theorem adds is
 the whole family $\mathcal{S}_\kappa$ and the interpolations built from it;
 for the nearest-integer property alone it is more than is needed.
 
-This cheaper route is machine-checked, in \path{DerangementNearestInteger.lean}.
-\path{Fabius.subfactorialDefect} is $C(n)$ as the interval integral
+This cheaper route is machine-checked, in \lean{DerangementNearestInteger.lean}.
+\lean{Fabius.subfactorialDefect} is $C(n)$ as the interval integral
 $\int_0^{1}\e^{t-1}t^{n}\dd t$;
-\path{Fabius.subfactorialDefect_succ} is \eqref{p8:eq:C-recursion};
-\path{Fabius.numDerangements_sub_eq} is the identity
+\lean{Fabius.subfactorialDefect_succ} is \eqref{p8:eq:C-recursion};
+\lean{Fabius.numDerangements_sub_eq} is the identity
 $D_n-n!\e^{-1}=(-1)^{n}C(n)$;
-\path{Fabius.subfactorialDefect_pos} and \path{Fabius.subfactorialDefect_lt}
+\lean{Fabius.subfactorialDefect_pos} and \lean{Fabius.subfactorialDefect_lt}
 are the two halves of \eqref{p8:eq:C-bound} at integer argument;
-\path{Fabius.abs_numDerangements_sub_lt_half} is the bound $|D_n-n!/\e|<\tfrac12$
-for $n\ge1$; and \path{Fabius.round_factorial_mul_exp_neg_one} is the
+\lean{Fabius.abs_numDerangements_sub_lt_half} is the bound $|D_n-n!/\e|<\tfrac12$
+for $n\ge1$; and \lean{Fabius.round_factorial_mul_exp_neg_one} is the
 nearest-integer property itself, $\operatorname{round}(n!/\e)=D_n$.  Mathlib
 knows the derangement numbers and that $D_n/n!\to\e^{-1}$, but carries no
 quantitative form of that limit and no nearest-integer statement, so this is
