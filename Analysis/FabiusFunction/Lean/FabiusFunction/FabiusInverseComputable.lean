@@ -18,7 +18,7 @@ open Set
 
 namespace Fabius
 
-/-- Clamping an argument to the unit interval does not change its inverse Fabius value. -/
+/-- Clamping the argument to `[0,1]` does not change the total inverse Fabius function. -/
 theorem fabiusInv_unitClamp
     (F : BoundedFabius) (hF : IsFabius F) (x : ℝ) :
     fabiusInv F hF (unitClamp x) = fabiusInv F hF x := by

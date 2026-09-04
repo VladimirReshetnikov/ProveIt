@@ -165,10 +165,7 @@ The deterministic validator passes the nine-file TeX graph, structural and
 proof discipline (213 result environments, 150 proof-required), 801 labels,
 783 references, 62 bibliography keys,
 disposition, historical-ledger, companion-payload, 232-row
-theorem-concordance, and exhaustive package-checksum gates. Its narrow Lean
-identifier check is not a live theorem-type check. The root `SHA256SUMS` is the
-single exhaustive ledger for every other permanent package file, including
-the retained PDF and complete evidence tree; it verifies current bytes without
-asserting source/PDF synchronization. There is no
-`assets/SHA256SUMS`. A fresh-checkout reproduction and a full rerun of every
+theorem-concordance gates. Its narrow Lean identifier check is not a live
+theorem-type check. Package checksum manifests are retired and are not part of
+the current validator. A fresh-checkout reproduction and a full rerun of every
 retained numerical script remain separate reproducibility work.

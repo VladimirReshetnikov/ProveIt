@@ -109,17 +109,74 @@ only 4,606 declarations and
 declarations, including 69 undocumented ones.  Run the script for the live
 numbers rather than copying these historical values.
 
-The live post-merge 2026-09-03 inventory contains 900 modules and 11,404
-lexically visible public declarations.  It has zero missing module headers and
+The live 2026-09-03 semantic union contains 901 modules and 11,419
+lexically visible public declarations, with zero missing module headers and
 zero missing doc comments; the checked JSON baseline records this clean state.
-Relative to the 610/8,318 activation checkpoint, the current tree adds 290
-modules and 3,086 declarations.  Relative to the earlier 630/8,552 merged
-checkpoint, it adds 270 modules and 2,852 declarations.  The later arithmetic
-below ends at the then-current 675/8,909 checkpoint.  The newer origin corpus
-adds 225 modules and 2,494 declarations to that checkpoint, and the local
-unconditional Pochhammer-symbol bridge contributes the remaining one
-declaration, giving the authoritative 900/11,404 union.  The
-one-definition/eight-theorem
+Relative to the pre-d8b 900/11,404 checkpoint, the union adds one module and
+fifteen declarations: thirteen from the incoming Lambert branch tranche and
+the two below-depth derivative-filtration theorems.  Relative to d8b's
+901/11,418 inventory, the remaining declaration is the local unique public
+`complexQPochhammerInf_eq_qPochhammerInfIn` bridge.
+
+#### Exact Lambert branch-pairing tranche
+
+The three-module Lambert branch-pairing union is exhaustively counted as
+`LambertWBranchPairing.lean` 0+7, `LambertWGapBijection.lean` 4+16, and
+`LambertWBranchSymmetry.lean` 0+9: four definitions and 32 theorems, hence 36
+public declarations.  The incoming d8b delta contributes thirteen declarations
+across this final surface.  The seven pairing theorems are
+`principalLambertW_sub_lowerLambertW_pos`,
+`lowerLambertW_eq_principalLambertW_mul_exp_gap`,
+`principalLambertW_eq_neg_gap_div`,
+`lowerLambertW_eq_neg_gap_mul_exp_div`,
+`lowerLambertW_eq_neg_gap_div_one_sub_exp_neg`,
+`eq_neg_gap_div_mul_exp`, and
+`principalLambertW_lowerLambertW_eq_of_exp_gap`.
+
+The converse module defines `gapPrincipal`, `gapLower`, `gapArg`, and
+`branchGap`.  Its sixteen theorems are `gap_denominator_pos`,
+`gapPrincipal_mem_Ioo`, `gapLower_eq_mul_exp`, `gapLower_eq_sub`,
+`gapLower_lt_neg_one`, `gapLower_mul_exp`, `gapArg_mem_Ioo`,
+`principalLambertW_gapArg`, `lowerLambertW_gapArg`, `branchGap_gapArg`,
+`gapArg_branchGap`, `branchGap_invOn`, `branchGap_bijOn`,
+`principalLambertW_gapArg_log`, `lowerLambertW_gapArg_log`, and `gapArg_log`.
+Together with the forward formulas they prove that the positive gap and the
+explicit reconstructed argument are two-sided inverses between the strict
+domains `(-exp(-1),0)` and `(0,∞)`.  The final three declarations give all
+three `t=exp Δ`, `t>1` forms: the principal branch, lower branch, and common
+argument.
+
+The nine symmetric theorems are
+`lowerLambertW_div_principalLambertW_eq_exp_branchGap`,
+`principalLambertW_add_lowerLambertW_eq_exp_branchGap`,
+`principalLambertW_add_lowerLambertW_eq_cosh_div_sinh_branchGap`,
+`principalLambertW_mul_lowerLambertW_eq_exp_branchGap`,
+`principalLambertW_mul_lowerLambertW_eq_sinh_sq_branchGap`,
+`principalLambertW_add_lowerLambertW_lt_neg_two`,
+`principalLambertW_mul_lowerLambertW_pos`,
+`principalLambertW_mul_lowerLambertW_lt_one`, and
+`principalLambertW_mul_lowerLambertW_mem_Ioo`.  They record the exact branch
+ratio, both exponential and hyperbolic sum/product forms, and the strict
+interior inequalities `W₀+W₋₁<-2` and `0<W₀W₋₁<1`.  Their hypotheses exclude
+both the branch point and zero endpoint.  These modules make no
+Bernoulli-series, convergence, remainder, or endpoint-asymptotic claim.
+
+#### Completed dyadic derivative filtration
+
+`DyadicDerivativeFiltration.lean` has zero definitions and six theorems:
+`rvachevUp_eq_zero_of_one_le_abs`,
+`iteratedDeriv_rvachevUp_dyadic_eq_zero`,
+`iteratedDeriv_rvachevUp_dyadic_critical`,
+`dyadic_depth_eq_max_nonzero_iteratedDeriv`,
+`iteratedDeriv_rvachevUp_eq_extendedFabius`, and
+`iteratedDeriv_rvachevUp_dyadic_below`.  The first four give support
+vanishing, above-depth vanishing, the signed critical-depth value, and exact
+depth detection.  The final two are the new declarations: the first identifies
+every up derivative at every `x<1` with the scaled signed global Fabius value,
+and the second specializes it for `m<n` and `a<2^n` to the report's
+denominator-`2^(n-m)` dyadic formula.
+
+The one-definition/eight-theorem
 `RvachevSuperconvergentSynthesis.lean` leaf contributes
 `IsRvachevSuperconvergentPhase`,
 `isRvachevSuperconvergentPhase_two_pow_iff`,
@@ -998,34 +1055,34 @@ an exact least endpoint-mass denominator.  The third module,
 above, and supplies the generic rational-gap-to-modulus bridge; its clamped
 extension boundary remains explicit.
 
-Four major publication pairs now have final-source parity.  The primary pair
-is a 694,350-byte TeX source (SHA-256
+Four direct artifact receipts record clean pre-d8b source/PDF pairs.  The
+primary receipt is a 694,350-byte TeX source (SHA-256
 `938517a92565685ac9f7194b879cfe752ce783f258bde8b7b685aee41aed13dc`)
 and a 195-page, 1,593,577-byte PDF (SHA-256
 `bf26d78dd2cc49feb87a85413ef9c04c7a8a3dac4f793cf86e3436f7502cb2a7`).
-The Lean-walkthrough pair is a 456,855-byte TeX source (SHA-256
+The Lean-walkthrough receipt is a 456,855-byte TeX source (SHA-256
 `e598aa02d4d10eda8bcfdafe3731f4a663bdcba58407f454485fae6796b41050`)
 and a 145-page, 1,219,336-byte PDF (SHA-256
 `5ff79c24fbced37dfaa5eb9c34447d0e7661b2b2bc5a0597687e43f93d7e189a`).
-The canonical-frontier pair is an 808,185-byte TeX source (SHA-256
+The canonical-frontier receipt is an 808,185-byte TeX source (SHA-256
 `7dd140370a0ac68522364a83a3c6423df93570741eafaef2ee8c1fac17670e2f`)
 and a 260-page, 1,877,159-byte PDF (SHA-256
 `9d38ab9d43befd6e26fd06ab9680b4a761365fb9d8a9f0de18489c243bd62d3e`).
-The q-series pair is a 16,834-line, 837,715-byte TeX source (SHA-256
+The q-series receipt is a 16,834-line, 837,715-byte TeX source (SHA-256
 `d8f730b8eb6602d4d16112aea77a3e67dfbeadf46bcd28c1cdf3b12450b7d4fb`)
 and a 395-page, 2,494,949-byte PDF (SHA-256
 `5d25df07e6df1cd32118ee87e64c1cc54ad32da7c578a182231f98dd9fee9d5c`).
-Each completed an exact clean final three-pass cycle and its recorded
-publication gates.
+Each passed its recorded clean three-pass publication gate.  The 15-API d8b
+semantic union now makes all four receipts historical and requires fresh
+final-source rebuilds before parity is claimed.
 
 The comb-interpolation synthesis, Integration-and-Transform master,
 Representation Frontiers, New Frontiers, and notation catalogue retain
-validated historical 158-, 377-, 301-, 41-, and 88-page receipts; their live
-sources still require final-source rebuilds before parity is claimed.  The
-inverse-computability receipt likewise requires refresh for the 900/11,404
-census.  Direct SHA-256 values here are artifact receipts, not operational
-`SHA256SUMS*` verification claims.  The canonical inverse-theory publication
-retains a 134-page
+validated historical 158-, 377-, 301-, 41-, and 88-page receipts.  The
+inverse-computability receipt likewise requires refresh for the 901/11,419
+census.  Checksum ledgers remain abolished repository-wide; no
+`SHA256SUMS*` files exist or participate in validation.  The canonical
+inverse-theory publication retains a 134-page
 artifact synchronized at its latest-main source checkpoint; the merged
 effective-inversion and superconvergent-synthesis tranches make current parity
 pending.

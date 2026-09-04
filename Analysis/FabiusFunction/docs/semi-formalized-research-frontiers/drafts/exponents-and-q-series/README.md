@@ -52,13 +52,16 @@ general-q-series guides, forward q-Pochhammer/q-binomial monograph, and
 inverse-q synthesis have been dispositioned into
 [`q_pochhammer_q_binomial_monograph/`](q_pochhammer_q_binomial_monograph/).
 Their earlier names, arrival hashes, and publication facts remain provenance,
-not parallel live documents. The current canonical publication has a
+not parallel live documents. The most recent pre-`d8b` canonical publication
+receipt names a
 16,834-line, 837,715-byte TeX source (SHA-256
 `d8f730b8eb6602d4d16112aea77a3e67dfbeadf46bcd28c1cdf3b12450b7d4fb`)
-and a synchronized 395-page, 2,494,949-byte PDF (SHA-256
+and its 395-page, 2,494,949-byte PDF (SHA-256
 `5d25df07e6df1cd32118ee87e64c1cc54ad32da7c578a182231f98dd9fee9d5c`).
-Its exact final three-pass cycle and publication gates are recorded in the
-package README. The merged source incorporates the later
+Its exact final three-pass cycle and publication gates were clean for that
+named source. The merged source now postdates the receipt and remains
+rebuild-pending. No live `SHA256SUMS*` ledger is maintained or should be
+regenerated. The merged source incorporates the later
 five-theorem
 `QPochhammerEntire.lean`, `QPochhammerInfinite.lean`, and
 `QPochhammerDissection.lean` surfaces, together with the subsequent q-series
@@ -66,8 +69,31 @@ module tranches and the zero-definition, three-theorem
 `GeometricPochhammerNormalConvergence.lean` leaf, in its formalization
 crosswalk. Retained PDFs under its `assets/` tree are
 research figures, not alternate manuscript renderings. The current Lean audit
-contains 900 facade-reachable modules and 11,404 public declarations, with no
+contains 901 facade-reachable modules and 11,419 public declarations, with no
 missing module headers or declaration documentation.
+
+That repository-wide census includes a sibling, source-only Lambert-W
+promotion rather than a new q-series result. Its exhaustive module counts are
+`LambertWBranchPairing.lean` (0 definitions + 7 theorems),
+`LambertWGapBijection.lean` (4 + 16), and
+`LambertWBranchSymmetry.lean` (0 + 9). Together they prove, only for the open
+two-branch domain `(-exp(-1), 0)`, the exact gap parametrization and its
+inverse bijection, the `t = exp(delta) > 1` formulas, and the exact
+ratio/sum/product laws with strict sum and product bounds. They do not include
+either endpoint, the Bernoulli-number expansion in the gap, its convergence,
+or any higher branch expansion. No retained PDF in this group renders that
+unrelated source-only promotion, and none was rebuilt for this update.
+
+The sibling `DyadicDerivativeFiltration.lean` module has zero definitions and
+exactly six theorems. Its exhaustive surface consists of
+`rvachevUp_eq_zero_of_one_le_abs`,
+`iteratedDeriv_rvachevUp_dyadic_eq_zero`,
+`iteratedDeriv_rvachevUp_dyadic_critical`,
+`dyadic_depth_eq_max_nonzero_iteratedDeriv`, and the two new declarations
+`iteratedDeriv_rvachevUp_eq_extendedFabius` and
+`iteratedDeriv_rvachevUp_dyadic_below`. The new pair completes the
+below-depth derivative formula through the rescaled global Fabius value; this
+is another non-q source-only overlay absent from the retained PDFs.
 
 ## Detailed package record
 
@@ -145,8 +171,9 @@ Current packages and retained intake records:
   `403a25dccadc15e7a34bedd8d28a2dc3369cb6e6a046cd199a30ed178742a32d`.
   Its A4 and embedded/subset-font checks passed, with five Libertinus rows and
   no Type-3 fonts. Those fingerprints remain historical receipts for that
-  source state. The current synchronized 16,834-line source and 395-page PDF
-  have the hashes and validation receipt stated above.
+  source state. The later pre-`d8b` 16,834-line source and 395-page PDF have
+  the hashes and validation receipt stated above; the merged source postdates
+  them and is rebuild-pending.
   It carries the five-theorem `QPochhammerEntire.lean`, the generic
   `QPochhammerInfinite.lean` and `QPochhammerDissection.lean` APIs, both
   Gaussian structure modules, `CentralQBinomialReduction.lean`,
@@ -570,12 +597,13 @@ remain research frontiers. These fractional-Volterra API claims were checked at 
 Geometric-sinc subgroup member:
 [`geometric_q_fabius_frontiers/`](geometric_q_fabius_frontiers/), whose
 Parts~I--VII are the former `Exponents_and_q_Series_Frontiers/`
-(current TeX: 808,185 bytes, SHA-256
+(pre-`d8b` receipt TeX: 808,185 bytes, SHA-256
 `7dd140370a0ac68522364a83a3c6423df93570741eafaef2ee8c1fac17670e2f`;
-current PDF: 260 A4 pages and 1,877,159 bytes, SHA-256
+historical PDF: 260 A4 pages and 1,877,159 bytes, SHA-256
 `9d38ab9d43befd6e26fd06ab9680b4a761365fb9d8a9f0de18489c243bd62d3e`).
-An exact clean final three-pass cycle produced the synchronized PDF, and the
-recorded publication gates are clean. The current source includes the upstream q-API crosswalk
+An exact clean final three-pass cycle produced that PDF, and its recorded
+publication gates are clean. The merged source postdates the receipt and is
+rebuild-pending. The current source includes the upstream q-API crosswalk
 material and the exact `GeneralizedRvachevIdentifiability.lean`
 zero-order/exponent crosswalk after the PDF's source checkpoint. The latter
 gives constructive dyadic-order first differences and full-product rigidity;
@@ -816,7 +844,7 @@ volume's Part VII; their figures/data are likewise under `assets/`.)
 
 Canonical forward/inverse publication:
 [`q_pochhammer_q_binomial_monograph/`](q_pochhammer_q_binomial_monograph/)
-(current synchronized 16,834-line TeX and 395-page A4 PDF; exact receipt in the
+(pre-`d8b` 16,834-line TeX and 395-page A4 PDF receipt; exact details in the
 detailed package record above) — *q-Series and Inverse q-Analogs:
 A Proof-Oriented Synthesis*. Its forward backbone proves from first principles
 the shifted-factorial, Gaussian, hypergeometric, theta, partition, Bailey,
@@ -834,8 +862,9 @@ pre-consolidation rendered checkpoint had 13,117 source lines (SHA-256
 and a 1,582,997-byte, 213-page PDF (SHA-256
 `7ee6f8f6d8e72228a5b20daa119caa4d834b11063f910b526897b2677a2ede7b`).
 Those figures identify a retired historical artifact; they are not build
-claims about the current canonical source. The current receipt appears in the
-detailed package record above and establishes source/PDF parity.
+claims about the current canonical source. The pre-`d8b` receipt appears in the
+detailed package record above; the merged source is rebuild-pending and no
+current source/PDF parity claim is made.
 
 The latest validated forward formalization ledger has 282 rows: 166 Exact, 90
 Partial, 18 with no counterpart, and 8 interface-only. The original

@@ -54,13 +54,13 @@ in three serial passes from a 15,630-line, 764,952-byte source with SHA-256
 `403a25dccadc15e7a34bedd8d28a2dc3369cb6e6a046cd199a30ed178742a32d`.
 That receipt remains provenance for its named historical source only.
 
-The current canonical publication was rebuilt on 2026-09-03 from clean
+The most recent pre-`d8b` canonical publication was rebuilt on 2026-09-03 from clean
 auxiliaries at fixed source epoch `1788495770`. Exactly three successful
 serial `pdflatex -interaction=nonstopmode -halt-on-error` passes produced 386,
 395, and 395 pages, with `imakeidx` successfully generating the index during
 each pass. Its 16,834-line, 837,715-byte source has SHA-256
 `d8f730b8eb6602d4d16112aea77a3e67dfbeadf46bcd28c1cdf3b12450b7d4fb`;
-the current 395-page, 2,494,949-byte A4 PDF has SHA-256
+the resulting 395-page, 2,494,949-byte A4 PDF has SHA-256
 `5d25df07e6df1cd32118ee87e64c1cc54ad32da7c578a182231f98dd9fee9d5c`.
 Every page is rotation zero, rendered successfully, and nonblank; all 43 font
 rows are embedded and subset Type 1 fonts, five are Libertinus, and none is
@@ -71,6 +71,22 @@ visually checked on physical page 17 and is readable and unclipped. The
 validation record in `README.md` gives the complete page-render and visual
 sample receipt. No live checksum manifest is maintained. PDFs retained beneath
 `assets/` are research figures, not manuscripts.
+The merged live source now postdates that receipt and is rebuild-pending.  No
+live `SHA256SUMS*` file is maintained or should be recreated; the retained PDF
+therefore does not claim render parity with the current TeX.  The validation
+record in `README.md` distinguishes compilation, font embedding, complete page
+rendering, contact-sheet review, and full-resolution inspection.
+
+The repository-wide live documentation census is 901 facade-reachable modules
+and 11,419 public declarations with both documentation gaps zero.  Two sibling
+source-only promotions are recorded here only to delimit this q-volume's
+receipt: `LambertWBranchPairing.lean`, `LambertWGapBijection.lean`, and
+`LambertWBranchSymmetry.lean` have exhaustive surfaces 0+7, 4+16, and 0+9
+(36 current declarations, 13 supplied by the upstream delta), while
+`DyadicDerivativeFiltration.lean` is 0+6 after adding exactly
+`iteratedDeriv_rvachevUp_eq_extendedFabius` and
+`iteratedDeriv_rvachevUp_dyadic_below`.  Neither promotion is rendered by the
+retained 395-page PDF.
 
 The current source incorporates exhaustive crosswalks for
 `QPochhammerEntire` (zero definitions and five legacy compatibility theorems),
@@ -405,8 +421,10 @@ canonical layout; the forward `q_expansion_experiments.py` stayed
 byte-identical because it writes only to standard output and required no path
 rewrite.  The programs were rerun serially;
 [`assets/VALIDATION.md`](assets/VALIDATION.md) records exact-output parity and
-the one disclosed last-digit runtime drift. Repository history preserves the
-post-migration digest receipts; no live checksum manifest remains.
+the one disclosed last-digit runtime drift. Canonical destination digests in
+`assets/ASSET_DISPOSITION.csv` and repository history preserve the
+post-migration byte receipts; no live `SHA256SUMS` file remains, and none
+should be recreated.
 
 All six superseded directories were removed from the live tree.
 All tracked superseded material remains recoverable from Git history.  The

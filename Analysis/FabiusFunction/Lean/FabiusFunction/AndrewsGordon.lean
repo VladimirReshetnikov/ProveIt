@@ -47,7 +47,7 @@ theorem summable_succ_pow_mul_geometric {r : ℝ} (hr0 : 0 ≤ r) (hr : r < 1) (
 variable {𝕜 : Type*} [NormedField 𝕜] [CompleteSpace 𝕜]
 
 omit [CompleteSpace 𝕜] in
-/-- Iterating the Bailey-chain beta transform preserves its value at index zero. -/
+/-- Iterating the Bailey-chain transform on `β` preserves its zeroth term. -/
 theorem baileyChainBeta_apply_zero (a q : 𝕜) (β : ℕ → 𝕜) (t : ℕ) :
     baileyChainBeta a q β t 0 = β 0 := by
   induction t with
@@ -88,7 +88,7 @@ theorem baileyLowered_chain_unit_succ {q : 𝕜} (hq : ‖q‖ < 1) (t n : ℕ) 
   ring
 
 omit [CompleteSpace 𝕜] in
-/-- The lowered Bailey chain of the unit pair has norm at most two when `‖q‖ < 1`. -/
+/-- The lowered `t`-fold Bailey chain of the unit pair has norm at most `2` when `‖q‖ < 1`. -/
 theorem norm_baileyLowered_chain_unit_le {q : 𝕜} (hq : ‖q‖ < 1) (t n : ℕ) :
     ‖baileyLowered q q (baileyChainAlpha q q (unitBaileyAlphaQ q) t) n‖ ≤ 2 := by
   cases n with

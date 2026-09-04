@@ -49,7 +49,7 @@ noncomputable def lambertDerivPoly : ℕ → ℝ[X]
 /-- The zeroth Lambert derivative polynomial is one. -/
 @[simp] theorem lambertDerivPoly_zero : lambertDerivPoly 0 = 1 := rfl
 
-/-- The Lambert derivative polynomials satisfy their defining successor recurrence. -/
+/-- The defining recurrence for the Lambert derivative polynomials. -/
 theorem lambertDerivPoly_succ (n : ℕ) :
     lambertDerivPoly (n + 1) =
       (1 + X) * derivative (lambertDerivPoly n) -

@@ -37,12 +37,12 @@ section Generic
 
 variable (A : Type*) [CommRing A] [Algebra ℚ A]
 
-/-- Exponential generating series preserve pointwise addition of sequences. -/
+/-- Exponential generating functions preserve pointwise addition of sequences. -/
 theorem egfA_add (a b : ℕ → A) : egfA A a + egfA A b = egfA A (a + b) := by
   ext n
   rw [map_add, coeff_egfA, coeff_egfA, coeff_egfA, Pi.add_apply, mul_add]
 
-/-- Multiplication by a constant series scales every coefficient of an EGF. -/
+/-- Multiplication by a constant series scales every term of an exponential generating function. -/
 theorem C_mul_egfA (c : A) (a : ℕ → A) :
     PowerSeries.C c * egfA A a = egfA A fun n => c * a n := by
   ext n
@@ -52,7 +52,7 @@ theorem C_mul_egfA (c : A) (a : ℕ → A) :
 /-- `1/(1+t) = ∑_n (-1)^n t^n`. -/
 noncomputable def invOneAdd : A⟦X⟧ := rescale (-1 : A) (PowerSeries.mk 1)
 
-/-- The series `invOneAdd` is a right inverse of `1 + X`. -/
+/-- The geometric series `invOneAdd` is a right inverse of `1 + X`. -/
 theorem one_add_X_mul_invOneAdd : (1 + X) * invOneAdd A = 1 := by
   have h := congrArg (rescale (-1 : A)) (mk_one_mul_one_sub_eq_one (S := A))
   rw [map_mul, map_sub, map_one, rescale_neg_one_X, sub_neg_eq_add] at h
@@ -87,11 +87,11 @@ theorem one_add_X_mul_derivative_fallingSeries (u : A) :
   rw [Pi.add_apply, Bell.shift_apply, descPochhammer_succ_eval]
   ring
 
-/-- The constant coefficient of the falling-factorial series is one. -/
+/-- Every falling-factorial series has constant coefficient `1`. -/
 @[simp] theorem constantCoeff_fallingSeries (u : A) : constantCoeff (fallingSeries A u) = 1 := by
   rw [fallingSeries, constantCoeff_egfA, descPochhammer_zero, Polynomial.eval_one]
 
-/-- The falling-factorial series at exponent zero is the constant series one. -/
+/-- The falling-factorial series at exponent zero is the constant series `1`. -/
 theorem fallingSeries_zero : fallingSeries A 0 = 1 := by
   ext n
   rw [fallingSeries, coeff_egfA, coeff_one, descPochhammer_eval_zero]
@@ -153,16 +153,16 @@ section PolyDeriv
 noncomputable def Dx (f : (Polynomial ℚ)⟦X⟧) : (Polynomial ℚ)⟦X⟧ :=
   PowerSeries.mk fun n => Polynomial.derivative (coeff n f)
 
-/-- The `n`th coefficient of `Dx f` is the derivative of the `n`th coefficient of `f`. -/
+/-- The `n`-th coefficient of `Dx f` is the derivative of the `n`-th coefficient of `f`. -/
 @[simp] theorem coeff_Dx (f : (Polynomial ℚ)⟦X⟧) (n : ℕ) :
     coeff n (Dx f) = Polynomial.derivative (coeff n f) := coeff_mk _ _
 
-/-- The coefficientwise derivative `Dx` preserves addition. -/
+/-- The coefficientwise polynomial derivative preserves addition. -/
 theorem Dx_add (f g : (Polynomial ℚ)⟦X⟧) : Dx (f + g) = Dx f + Dx g := by
   refine PowerSeries.ext fun n => ?_
   simp only [coeff_Dx, map_add]
 
-/-- The coefficientwise derivative `Dx` preserves subtraction. -/
+/-- The coefficientwise polynomial derivative preserves subtraction. -/
 theorem Dx_sub (f g : (Polynomial ℚ)⟦X⟧) : Dx (f - g) = Dx f - Dx g := by
   refine PowerSeries.ext fun n => ?_
   simp only [coeff_Dx, map_sub]
@@ -175,25 +175,25 @@ theorem Dx_mul (f g : (Polynomial ℚ)⟦X⟧) : Dx (f * g) = Dx f * g + f * Dx 
   refine Finset.sum_congr rfl fun q _ => ?_
   rw [Polynomial.derivative_mul, coeff_Dx, coeff_Dx]
 
-/-- On constant power series, `Dx` differentiates the polynomial value. -/
+/-- On a constant power series, `Dx` differentiates its polynomial value. -/
 theorem Dx_C (p : Polynomial ℚ) :
     Dx (PowerSeries.C p) = PowerSeries.C (Polynomial.derivative p) := by
   ext n
   rw [coeff_Dx, coeff_C, coeff_C]
   split_ifs <;> simp
 
-/-- A power series whose polynomial coefficients are constant is annihilated by `Dx`. -/
+/-- A power series whose coefficients are constant polynomials is annihilated by `Dx`. -/
 theorem Dx_map_C (f : ℚ⟦X⟧) : Dx (PowerSeries.map (Polynomial.C : ℚ →+* Polynomial ℚ) f) = 0 := by
   ext n
   rw [coeff_Dx, coeff_map, map_zero, Polynomial.derivative_C]
 
-/-- The coefficientwise derivative of the unit series is zero. -/
+/-- The coefficientwise polynomial derivative of the unit series vanishes. -/
 theorem Dx_one : Dx (1 : (Polynomial ℚ)⟦X⟧) = 0 := by
   ext n
   rw [coeff_Dx, coeff_one, map_zero]
   split_ifs <;> simp
 
-/-- The coefficientwise polynomial derivative annihilates the series variable `X`. -/
+/-- The coefficientwise polynomial derivative does not differentiate the series variable `X`. -/
 theorem Dx_X : Dx (X : (Polynomial ℚ)⟦X⟧) = 0 := by
   ext n
   rw [coeff_Dx, coeff_X, map_zero]
@@ -230,7 +230,7 @@ theorem constantCoeff_logPoly : constantCoeff logPoly = 0 := by
   rw [← coeff_zero_eq_constantCoeff_apply, logPoly, coeff_map, coeff_zero_eq_constantCoeff_apply,
     constantCoeff_log, map_zero]
 
-/-- The coefficientwise polynomial derivative annihilates `logPoly`. -/
+/-- Since `logPoly` has constant polynomial coefficients, `Dx logPoly = 0`. -/
 theorem Dx_logPoly : Dx logPoly = 0 := Dx_map_C _
 
 /-- Formal differentiation commutes with mapping rational coefficients to constant polynomials. -/
@@ -241,7 +241,7 @@ theorem derivative_map_C (f : ℚ⟦X⟧) :
   rw [coeff_derivative, coeff_map, coeff_map, coeff_derivative, map_mul, map_add, map_natCast,
     map_one]
 
-/-- The formal derivative of `logPoly` satisfies `(1 + X) logPoly' = 1`. -/
+/-- The mapped logarithm satisfies `(1 + X) logPoly' = 1`. -/
 theorem one_add_X_mul_derivative_logPoly : (1 + X) * d⁄dX (Polynomial ℚ) logPoly = 1 := by
   rw [logPoly, derivative_map_C, derivative_log]
   have h2 := congrArg (PowerSeries.map (Polynomial.C : ℚ →+* Polynomial ℚ))
@@ -252,7 +252,7 @@ theorem one_add_X_mul_derivative_logPoly : (1 + X) * d⁄dX (Polynomial ℚ) log
 /-- The series `(1+t)^x = ∑_n (x)_n t^n/n!` over `ℚ[x]`. -/
 noncomputable def fallingPoly : (Polynomial ℚ)⟦X⟧ := fallingSeries (Polynomial ℚ) Polynomial.X
 
-/-- The constant coefficient of `fallingPoly` is one. -/
+/-- The universal falling-factorial series has constant coefficient `1`. -/
 theorem constantCoeff_fallingPoly : constantCoeff fallingPoly = 1 :=
   constantCoeff_fallingSeries (Polynomial ℚ) Polynomial.X
 

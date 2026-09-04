@@ -52,7 +52,7 @@ sequence, as a power series over a `ℚ`-algebra. -/
 noncomputable def egf (a : ℕ → ℚ) : A⟦X⟧ :=
   PowerSeries.mk fun n => algebraMap ℚ A (a n / n.factorial)
 
-/-- The `n`th coefficient of `egf A a` is the image of `a n / n!` in `A`. -/
+/-- The `n`-th coefficient of `egf A a` is the image of `a n / n!` in `A`. -/
 @[simp] theorem coeff_egf (a : ℕ → ℚ) (n : ℕ) :
     coeff n (egf A a) = algebraMap ℚ A (a n / n.factorial) :=
   coeff_mk _ _
@@ -104,12 +104,12 @@ theorem egf_stirlingSecond (k : ℕ) :
 noncomputable def negLogOneSub : A⟦X⟧ :=
   PowerSeries.mk fun n => if n = 0 then 0 else algebraMap ℚ A (1 / n)
 
-/-- The coefficients of `-log(1-X)` are zero at index zero and `1/n` otherwise. -/
+/-- The coefficient of `X^n` in `-log(1-X)` is zero at `n = 0` and `1/n` otherwise. -/
 theorem coeff_negLogOneSub (n : ℕ) :
     coeff n (negLogOneSub A) = if n = 0 then 0 else algebraMap ℚ A (1 / n) :=
   coeff_mk _ _
 
-/-- The constant coefficient of `-log(1-X)` is zero. -/
+/-- The series `-log(1-X)` has zero constant coefficient. -/
 @[simp] theorem constantCoeff_negLogOneSub : constantCoeff (negLogOneSub A) = 0 := by
   rw [← coeff_zero_eq_constantCoeff_apply, coeff_negLogOneSub, if_pos rfl]
 

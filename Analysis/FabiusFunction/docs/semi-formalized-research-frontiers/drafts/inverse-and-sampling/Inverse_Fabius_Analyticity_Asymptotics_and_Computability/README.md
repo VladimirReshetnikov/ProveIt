@@ -27,18 +27,16 @@ The package audit surfaces are:
   post-snapshot additions;
 - [`ASSET_DISPOSITION.csv`](ASSET_DISPOSITION.csv): the disposition of all 88
   files in the two superseded source subgroups;
-- [`assets/SHA256SUMS`](assets/SHA256SUMS): the exhaustive live ledger for 63
-  retained, deduplicated reproducibility payloads;
 - [`SOURCE_CLOSURE.sha256`](SOURCE_CLOSURE.sha256): the reproducible ledger
   of the 23 files consumed by the TeX build;
 - [`PROVENANCE.md`](PROVENANCE.md): source hashes, arrival lineage, nested
   predecessors, and immutable recovery points.
 
-The two live publication ledgers are checked independently:
+The source-closure ledger and migrated-asset audit are checked independently:
 
 ```bash
 python -B audit/build_source_closure.py --check
-python -B audit/build_package_checksums.py --check
+python -B audit/build_asset_manifest.py --check
 ```
 
 `theorem_concordance.csv` records the disposition of all 194 source-result
@@ -130,9 +128,9 @@ shared notation have changed since that render, so this document does **not**
 claim that the retained PDF renders the current source.  A fresh three-pass
 render is required before source/PDF synchronization is claimed again.
 `VALIDATION.md` separates current source-integrity evidence from the retained
-artifact receipt.  The exhaustive root `SHA256SUMS` covers every permanent
-package file except itself, including the independent nested
-`assets/SHA256SUMS` ledger.
+artifact receipt. Package checksum manifests are retired repository-wide;
+`SOURCE_CLOSURE.sha256` and `ASSET_DISPOSITION.csv` retain the scoped source
+and migration evidence without acting as whole-package checksum gates.
 
 The mathematical consolidation and provenance gate are complete.  The five
 source packages and their retained renderings are historical inputs represented

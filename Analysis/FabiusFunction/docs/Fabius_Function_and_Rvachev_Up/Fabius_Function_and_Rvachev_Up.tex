@@ -197,23 +197,28 @@ an exact Lean theorem are kept in the companion volume under
 \end{abstract}
 
 \begin{boxedremark}\textbf{Artifact status (3 September 2026).}\space
-The live facade contains exactly 900 source modules and 11,404 unique public
-declarations: 290 modules and 3,086 declarations beyond the 610/8,318 activation
-checkpoint, and 251 modules and 2,706 declarations beyond the 649/8,698
-publication-union checkpoint.  Module headers are complete, while 85 public
-declarations still need documentation comments.  This source includes the earlier finite and
+The authoritative live lexical audit contains exactly 901 facade-reachable
+source modules and 11,419 unique public declarations: 291 modules and 3,101
+declarations beyond the 610/8,318 activation checkpoint, and 252 modules and
+2,721 declarations beyond the 649/8,698 publication-union checkpoint.  Module
+headers and declaration documentation are complete; the checked baseline records
+both zero-gap invariants.  This source includes the earlier finite and
 infinite q-series APIs together with the final Gaussian-palindromic, Jackson
 integral, q-exponential, theta, Jacobi-cubic, logarithmic-derivative,
 order-derivative, universal-polynomial, central-reduction, and cyclotomic-
 factorization tranche, followed by primitive-root blocks, q-Lucas evaluation,
 cyclotomic divisibility, q-Catalan polynomials, finite Newton interpolation,
 the real Jackson q-beta integral, Gaussian upper-index and quantum identities,
-superconvergent Rvachev synthesis, and Gaussian bounds.  The retained
-189-page A4 PDF, SHA-256
-\nolinkurl{de0fc11a0ee45cd5a8942385aea543ec456b869a09e560878b021363a657796c},
-is the validated pre-union checkpoint for the 659-module/8,769-declaration
-source.  It is a historical publication receipt, not a render of the present
-TeX; a fresh strict build is pending.
+superconvergent Rvachev synthesis, Gaussian bounds, the complete Lambert
+branch-coordinate surfaces, and the six-theorem dyadic derivative filtration.
+The most recent pre-\nolinkurl{d8b} publication receipt names a 694,350-byte
+TeX source (SHA-256
+\nolinkurl{938517a92565685ac9f7194b879cfe752ce783f258bde8b7b685aee41aed13dc})
+and its validated 195-page, 1,593,577-byte A4 PDF (SHA-256
+\nolinkurl{bf26d78dd2cc49feb87a85413ef9c04c7a8a3dac4f793cf86e3436f7502cb2a7}).
+Those fingerprints are a historical receipt for that named source only; the
+present semantic union postdates it and remains rebuild-pending.  No live
+checksum ledger is maintained or should be regenerated.
 \end{boxedremark}
 
 \tableofcontents
@@ -3987,9 +3992,9 @@ The two summability hypotheses in the comparison theorem are essential
 because the underlying infinite product is totalized outside its admissible
 range.  No spectral-zeta recovery, cumulant-sample recovery, or
 identifiability of an underlying probability law is asserted; those remain
-open interfaces.  With the latest concurrent source union, the live facade
-census is exactly 900 modules and 11,404 unique public declarations; 85 of
-those declarations still need documentation comments.  The current TeX also
+open interfaces.  With the completed concurrent source union, the live facade
+census is exactly 901 modules and 11,419 unique public declarations, with no
+missing module headers or declaration documentation.  The current TeX also
 contains the six-theorem prime-power companion-row API and the
 zero-definition/three-theorem outer Pochhammer normal-convergence API, plus
 the two-module/nine-declaration fixed-depth effective-inverse tranche, the
@@ -3998,9 +4003,14 @@ q-calculus modules contributing 36 declarations, plus the two source-only
 central-reduction and cyclotomic-factorization modules contributing thirteen
 theorems, and the four-module root-of-unity, q-Lucas, cyclotomic-divisibility,
 and q-Catalan tranche contributing one definition and twenty-five theorems.
-These and the later extensions recorded below are source-only overlays.  The
-retained PDF is explicitly historical and has not been regenerated for the
-present source union.
+The three Lambert modules now expose their exhaustive 0+7 branch-pairing,
+4+16 gap-bijection, and 0+9 branch-symmetry surfaces (36 declarations in the
+current surfaces, with 13 declarations supplied by the upstream delta).  The
+zero-definition/six-theorem dyadic derivative-filtration module likewise
+contains the two new below-depth theorems inventoried below.  These are
+source-only overlays.  The retained 195-page PDF is the pre-\nolinkurl{d8b}
+historical receipt named above and has not been regenerated for this semantic
+union.
 
 The six q-calculus module counts are
 \path{QPochhammerInfiniteBounds.lean} (0+5),
@@ -4268,8 +4278,8 @@ Its proof
 reuses the stronger ordered-field theorem
 \lean{finiteQPochhammerIn_self_pos} from
 \path{GeneralQConditionNumber.lean} rather than exporting a duplicate.
-The rigorous 282-row forward q-series ledger is therefore 90 Exact, 85
-Partial, 99 None, and 8 interface rows.  In particular q-Lucas remains Partial
+The rigorous 282-row forward q-series ledger is therefore 166 Exact, 90
+Partial, 18 None, and 8 interface rows.  In particular q-Lucas remains Partial
 because Lean proves the evaluated primitive-root identity rather than the
 polynomial congruence modulo \(\Phi_d\); the Gaussian majorant row is Exact,
 while the \(Q>1\) asymptotic row remains Partial because only reciprocity and
@@ -5157,6 +5167,41 @@ packages for the complete \(\RvachevUp\) ladder based at \(-1\), the reflected \
 arbitrary affine copies of \(F\), and the full piecewise polynomial tail after the support
 of \(\RvachevUp\) also remain frontier targets.
 \end{boxedremark}
+
+\subsection{Reduced-dyadic derivative filtration}
+\label{sec:rvachev-dyadic-derivative-filtration}
+
+The module \path{DyadicDerivativeFiltration.lean} has no public definitions
+and exactly six theorems.  The support helper
+\lean{rvachevUp_eq_zero_of_one_le_abs} proves vanishing whenever
+\(1\le |x|\).  At a reduced dyadic point \((2c+1)/2^n\),
+\lean{iteratedDeriv_rvachevUp_dyadic_eq_zero} gives zero above depth \(n\),
+\lean{iteratedDeriv_rvachevUp_dyadic_critical} gives
+\[
+ \RvachevUp^{(n)}\!\left(\frac{2c+1}{2^n}\right)
+ =-\varepsilon_c\,2^{\binom{n+1}{2}},
+\]
+and \lean{dyadic_depth_eq_max_nonzero_iteratedDeriv} packages the critical
+nonvanishing and all higher vanishing as exact denominator-depth detection.
+
+The two newest theorems complete the below-depth case.  The stronger
+all-real statement \lean{iteratedDeriv_rvachevUp_eq_extendedFabius} says that
+for every \(m\in\NaturalNumbers\) and \(x<1\),
+\[
+ \RvachevUp^{(m)}(x)
+ =2^{\binom{m+1}{2}}\,
+   \FabiusGlobal\!\left(2^m(x+1)\right).
+\]
+Its exact dyadic specialization
+\lean{iteratedDeriv_rvachevUp_dyadic_below} states, for \(m<n\) and
+\(a<2^n\),
+\[
+ \RvachevUp^{(m)}\!\left(\frac a{2^n}\right)
+ =2^{\binom{m+1}{2}}\,
+   \FabiusGlobal\!\left(\frac{2^n+a}{2^{n-m}}\right).
+\]
+Thus the source proves all three regimes---below, at, and above the reduced
+dyadic depth---without adding a normalized-by-\(\pi^m\) wrapper.
 
 \subsection{Dyadic derivative cells and exact value distributions}
 \label{sec:rvachev-derivative-distribution}
@@ -10640,6 +10685,115 @@ The strict-shape theorems include the finite branch point by continuity; they do
 a derivative or a second derivative there.  The later branch-point leaves close the
 one-sided vertical geometry and the first square-root term, as follows.
 
+\subsubsection{The exact branch-gap coordinate and its symmetric laws}
+On the common open branch domain, put
+\begin{equation}
+ -\EulerE^{-1}<x<0,
+ \qquad a=W_0(x),\qquad b=W_{-1}(x),\qquad
+ \delta=a-b>0.                                             \label{eq:lambert-branch-gap}
+\end{equation}
+Then the two branches and their common argument are determined by the single
+positive coordinate \(\delta\):
+\begin{align}
+ a&=-\frac{\delta}{\exp(\delta)-1},
+ &b&=-\frac{\delta\exp(\delta)}{\exp(\delta)-1}
+     =-\frac{\delta}{1-\exp(-\delta)},                    \label{eq:lambert-gap-pair}\\
+ x&=-\frac{\delta}{\exp(\delta)-1}
+       \exp\!\left(-\frac{\delta}{\exp(\delta)-1}\right). \label{eq:lambert-gap-arg}
+\end{align}
+Conversely, every \(\delta>0\) inserted into these formulas produces exactly
+one \(x\in(-\EulerE^{-1},0)\), and the displayed \(a,b\) are respectively
+\(W_0(x),W_{-1}(x)\).  Thus
+\(x\mapsto W_0(x)-W_{-1}(x)\) is a bijection from
+\((-\EulerE^{-1},0)\) onto \((0,\infty)\), with inverse given by
+\eqref{eq:lambert-gap-arg}.  In the equivalent coordinate
+\(t=\exp(\delta)>1\),
+\begin{equation}
+ W_0(x)=-\frac{\log t}{t-1},\qquad
+ W_{-1}(x)=-\frac{t\log t}{t-1},\qquad
+ x=-\frac{\log t}{t-1}\,t^{-1/(t-1)}.                    \label{eq:lambert-gap-t}
+\end{equation}
+
+Here is the elementary proof mirrored by the Lean decomposition.  The two
+defining equations give \(a\exp(a)=b\exp(b)\).  Since neither branch value is
+zero, division yields \(b/a=\exp(a-b)=\exp(\delta)\).  Hence
+\(b=a\exp(\delta)\), while
+\(\delta=a-b=a(1-\exp(\delta))\); solving gives
+\eqref{eq:lambert-gap-pair}, and substitution into \(x=a\exp(a)\) gives
+\eqref{eq:lambert-gap-arg}.  For the converse define \(a,b\) by the same
+formulas.  The strict tangent inequality
+\(1+\delta<\exp(\delta)\) gives \(-1<a<0\), its negative-argument form gives
+\(b<-1\), and direct algebra gives \(b=a-\delta\) and
+\(b\exp(b)=a\exp(a)\).  The two real-branch uniqueness theorems therefore
+identify these values with \(W_0,W_{-1}\).  They also prove both inverse laws,
+and hence the claimed bijection.
+
+The same coordinate makes every symmetric identity immediate:
+\begin{align}
+ \frac{W_{-1}(x)}{W_0(x)}&=\exp(\delta),                  \label{eq:lambert-gap-ratio}\\
+ W_0(x)+W_{-1}(x)&=-\delta\coth(\delta/2),               \label{eq:lambert-gap-sum}\\
+ W_0(x)W_{-1}(x)&=\frac{\delta^2}{4\sinh^2(\delta/2)}.  \label{eq:lambert-gap-product}
+\end{align}
+Indeed, adding and multiplying \eqref{eq:lambert-gap-pair} gives the
+exponential-rational forms; the definitions of \(\cosh\) and \(\sinh\)
+give \eqref{eq:lambert-gap-sum}--\eqref{eq:lambert-gap-product}.  For
+\(y>0\), \(\sinh y>y\) and
+\((y\cosh y-\sinh y)'=y\sinh y>0\).  With \(y=\delta/2\), these facts give
+the strict interior bounds
+\begin{equation}
+ W_0(x)+W_{-1}(x)<-2,
+ \qquad 0<W_0(x)W_{-1}(x)<1.                              \label{eq:lambert-gap-strict}
+\end{equation}
+
+The three files have the following exhaustive public inventories.  The
+forward file \path{LambertWBranchPairing.lean} has zero definitions and seven
+theorems:
+\lean{principalLambertW_sub_lowerLambertW_pos},
+\lean{lowerLambertW_eq_principalLambertW_mul_exp_gap},
+\lean{principalLambertW_eq_neg_gap_div},
+\lean{lowerLambertW_eq_neg_gap_mul_exp_div},
+\lean{lowerLambertW_eq_neg_gap_div_one_sub_exp_neg},
+\lean{eq_neg_gap_div_mul_exp}, and
+\lean{principalLambertW_lowerLambertW_eq_of_exp_gap}.
+The converse file \path{LambertWGapBijection.lean} has the four
+noncomputable definitions
+\lean{gapPrincipal}, \lean{gapLower}, \lean{gapArg}, and \lean{branchGap},
+and exactly sixteen theorems:
+\lean{gap_denominator_pos}, \lean{gapPrincipal_mem_Ioo},
+\lean{gapLower_eq_mul_exp}, \lean{gapLower_eq_sub},
+\lean{gapLower_lt_neg_one}, \lean{gapLower_mul_exp},
+\lean{gapArg_mem_Ioo}, \lean{principalLambertW_gapArg},
+\lean{lowerLambertW_gapArg}, \lean{branchGap_gapArg},
+\lean{gapArg_branchGap}, \lean{branchGap_invOn},
+\lean{branchGap_bijOn}, \lean{principalLambertW_gapArg_log},
+\lean{lowerLambertW_gapArg_log}, and \lean{gapArg_log}.
+Finally, \path{LambertWBranchSymmetry.lean} has zero definitions and nine
+theorems:
+\lean{lowerLambertW_div_principalLambertW_eq_exp_branchGap},
+\lean{principalLambertW_add_lowerLambertW_eq_exp_branchGap},
+\lean{principalLambertW_add_lowerLambertW_eq_cosh_div_sinh_branchGap},
+\lean{principalLambertW_mul_lowerLambertW_eq_exp_branchGap},
+\lean{principalLambertW_mul_lowerLambertW_eq_sinh_sq_branchGap},
+\lean{principalLambertW_add_lowerLambertW_lt_neg_two},
+\lean{principalLambertW_mul_lowerLambertW_pos},
+\lean{principalLambertW_mul_lowerLambertW_lt_one}, and
+\lean{principalLambertW_mul_lowerLambertW_mem_Ioo}.
+
+The forward pairing and symmetric identities have the strict input hypotheses
+in \eqref{eq:lambert-branch-gap}.  The four converse-coordinate definitions
+are total, \lean{gapLower_eq_mul_exp} is unconditional, the reconstruction
+theorems use \(\delta>0\), and the logarithmic-coordinate theorems use
+\(t>1\); the inverse and bijection packages connect exactly the two open
+domains.  At the branch point \(x=-\EulerE^{-1}\), the
+gap is zero, the displayed quotients have zero denominators, and the limiting
+sum and product attain \(-2\) and \(1\), so neither the parametrization as
+stated nor the strict inequalities include that endpoint.  At \(x=0\), the
+classical lower branch has a singular extended endpoint, so it too is
+excluded; no claim is made about the all-real totalization there.  These
+three modules prove exact finite identities only.  They do not formalize the
+Bernoulli-number power-series expansions in the gap, their convergence, or
+any higher Puiseux or logarithmic branch expansion.
+
 \subsubsection{Branch-point vertical geometry and leading square-root law}
 Put
 \begin{equation}
@@ -13327,7 +13481,7 @@ fractional primitives, and first fractional Fabius--Rvachev shifts &
 Global derivatives, value distributions, and flatness &
 \path{GlobalExtension.lean}, \path{GlobalBounds.lean},
 \path{BoundedDerivatives.lean}, \path{MidpointEndpointTransfer.lean},
-\path{RvachevDerivativeDistribution.lean},
+\path{DyadicDerivativeFiltration.lean}, \path{RvachevDerivativeDistribution.lean},
 \path{EffectiveFlatness.lean}, \path{SharpFlatness.lean},
 \path{FabiusFlatness.lean}\\
 Analyticity, inverse, effective inverse continuity, elementary obstruction &
@@ -13610,6 +13764,8 @@ Endpoint asymptotics &
 \path{PowerExponentialLambertInverse.lean},
 \path{PowerExponentialLambertAsymptotics.lean},
 \path{PowerExponentialLambertFabius}\texttt{.lean}, \path{FabiusLambertPhase.lean},
+\path{LambertWBranchPairing.lean}, \path{LambertWGapBijection.lean},
+\path{LambertWBranchSymmetry.lean},
 \path{LambertWCurvature.lean}, \path{LambertWBranchPointGeometry.lean},
 \path{LambertWBranchPointAsymptotics.lean},
 \path{PowerExponentialLambertCurvature.lean},

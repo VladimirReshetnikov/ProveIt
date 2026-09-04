@@ -126,8 +126,8 @@ A mathematically oriented reader should begin with Sections~\ref{ch:objects}, \r
 \end{boxedremark}
 
 \begin{boxedremark}\textbf{Artifact status (3 September 2026).}\space
-The authoritative live lexical audit of the facade contains exactly 900
-source modules and 11,404 public declarations.  It finds no missing module
+The authoritative live lexical audit of the facade contains exactly 901
+source modules and 11,419 public declarations.  It finds no missing module
 headers and no public declarations without doc comments; the checked baseline
 records this zero-gap state.  The historical 671/8,859 local
 checkpoint was the 649/8,698 checkpoint plus 22 modules and 161 declarations;
@@ -156,7 +156,7 @@ its compatibility aliases.  The retained six-module tranche comprises
 \nolinkurl{RvachevSuperconvergentSynthesis.lean} (1+8), and
 \nolinkurl{GaussianBinomialBounds.lean} (0+6): three definitions and 37
 theorems, hence six modules and 40 unique declarations.
-The rigorous forward q-monograph ledger is 90 Exact, 85 Partial, 99 None,
+The rigorous forward q-monograph ledger is 166 Exact, 90 Partial, 18 None,
 and 8 interface rows.  The new bound leaf changes
 \nolinkurl{prop:gaussian-bound} from None to Exact, witnessed by
 \nolinkurl{one_le_gaussianBinomial} and
@@ -166,10 +166,14 @@ primitive-root identity, while the manuscript's polynomial congruence modulo
 \(\Phi_d\) still needs a minimal-polynomial lift.
 \nolinkurl{cor:babbage-derivative} also remains Partial because its value,
 but not its derivative, is formalized.
-The committed 150-page PDF and all other retained PDFs predate the present
-source union.  They are historical validation receipts pending fresh
-uninterrupted parity rebuilds; repository checksum ledgers have been
-abolished.
+The most recent pre-\nolinkurl{d8b} walkthrough receipt names a 456,855-byte
+TeX source (SHA-256
+\nolinkurl{e598aa02d4d10eda8bcfdafe3731f4a663bdcba58407f454485fae6796b41050})
+and its validated 145-page, 1,219,336-byte A4 PDF (SHA-256
+\nolinkurl{5ff79c24fbced37dfaa5eb9c34447d0e7661b2b2bc5a0597687e43f93d7e189a}).
+Those fingerprints are historical receipts for that named source only; this
+semantic union postdates them and remains rebuild-pending.  Repository checksum
+ledgers have been abolished and must not be regenerated.
 \end{boxedremark}
 
 \section*{Scope and conventions}
@@ -1490,6 +1494,34 @@ In Lean, density can be applied through a generic theorem saying continuous maps
 \end{enumerate}
 This stronger formulation is the one required by the q-binomial identities, where summation indices naturally produce numerators outside \([0,2^n]\).
 
+\subsection{The dyadic derivative filtration}
+The zero-definition/six-theorem module
+\nolinkurl{DyadicDerivativeFiltration.lean} gives the complete derivative
+trichotomy at reduced dyadics.  Its public surface is
+\nolinkurl{rvachevUp_eq_zero_of_one_le_abs},
+\nolinkurl{iteratedDeriv_rvachevUp_dyadic_eq_zero},
+\nolinkurl{iteratedDeriv_rvachevUp_dyadic_critical},
+\nolinkurl{dyadic_depth_eq_max_nonzero_iteratedDeriv},
+\nolinkurl{iteratedDeriv_rvachevUp_eq_extendedFabius}, and
+\nolinkurl{iteratedDeriv_rvachevUp_dyadic_below}.  The first four supply the
+support lemma, vanishing above a reduced dyadic's depth, its critical signed
+power of two, and exact depth detection.  The final two are the new
+below-depth closure.  In fact the first of them is stronger than a dyadic
+statement: for every natural \(m\) and every \(x<1\),
+\[
+ \RvachevUp^{(m)}(x)
+ =2^{\binom{m+1}{2}}\FabiusGlobal\!\left(2^m(x+1)\right).
+\]
+Consequently, if \(m<n\) and \(a<2^n\),
+\[
+ \RvachevUp^{(m)}\!\left(\frac a{2^n}\right)
+ =2^{\binom{m+1}{2}}\FabiusGlobal\!\left(\frac{2^n+a}{2^{n-m}}\right).
+\]
+Together with the critical and above-depth theorems, this exhausts the
+module's public declarations.  The source statements concern the derivatives
+themselves; they do not add the frontier volume's normalized-by-\(\pi^m\)
+notation.
+
 \begin{boxedremark}\textbf{Architectural point.}\space
 The dyadic bridge is the repository's main ``commuting square.''  One path starts with an analytic function and derives a finite Taylor recurrence; the other starts with exact rational recurrences and an evaluator.  The correctness theorem says both paths produce the same real number.
 \end{boxedremark}
@@ -1778,8 +1810,8 @@ interfaces remain open.  The zero-definition/six-theorem module
 the head and successor decoders, the dyadic-order uniqueness theorem, its
 general-base additive-cancellation core, and
 \nolinkurl{generalizedRvachevProduct_eq_iff}.  This is a source-only overlay;
-the retained 150-page walkthrough PDF is historical and predates the current
-source union.
+the retained 145-page walkthrough PDF is the pre-\nolinkurl{d8b} historical
+receipt named above and predates the current source union.
 
 \subsection{Fourier injectivity and uniqueness}
 If two original candidates satisfy the same hypotheses, the iteration argument gives the same Fourier transform for both.  The source then uses injectivity of the Fourier transform on Schwartz functions to conclude equality.  The final transition is:
@@ -2164,12 +2196,15 @@ factor with index \(j+1+k\).  Hence \(U(a)\ne0\), which is exactly analytic
 order one.
 
 This is a fixed-\(q\), single-symbol result.  It proves no joint holomorphy in
-\((a,q)\), outside-disk reciprocal formula, or centered
-characteristic-function/MGF wrapper.  Local-uniform convergence of the outer
-spectral product \(\prod_k(z^2/(k+1)^2;q^2)_\infty\) is a distinct downstream
-result, not a theorem of this leaf.  This subsection is source-only: the
-retained walkthrough PDF is a historical render and remains rebuild-pending
-until the documented three-pass Libertinus build is performed.
+\((a,q)\), outside-disk reciprocal formula, or centered characteristic-function/MGF
+wrapper.  The separate three-theorem normal-convergence leaf proves the
+locally uniform outer spectral product
+\(\prod_k(z^2/(k+1)^2;q^2)_\infty\) and its two dyadic specializations, but
+does not close those other compound spectral clauses and does not replace the
+public unconditional bridge
+\nolinkurl{complexQPochhammerInf_eq_qPochhammerInfIn}.  This subsection is
+source-only: the retained 145-page pre-\nolinkurl{d8b} walkthrough PDF is a
+historical render, and the merged source remains rebuild-pending.
 
 Two further modules supply the finite and general-ring layers without
 replacing that \nolinkurl{complexQPochhammerInf} interface.
@@ -4535,6 +4570,107 @@ its right, and zero exactly there.  Consequently
 theorems that include the finite branch point and shared inflection endpoint;
 the lower domain remains open at zero.
 
+\subsubsection{A global coordinate for the branch pair}
+The two branches on their common open domain admit a more economical
+description than two unrelated inverse functions.  For
+\(-\exp(-1)<x<0\), define
+\[
+ a=W_0(x),\qquad b=W_{-1}(x),\qquad
+ \delta=a-b>0.
+\]
+The exact forward identities are
+\begin{align*}
+ a&=-\frac{\delta}{\exp(\delta)-1},&
+ b&=-\frac{\delta\exp(\delta)}{\exp(\delta)-1}
+    =-\frac{\delta}{1-\exp(-\delta)},\\
+ x&=-\frac{\delta}{\exp(\delta)-1}
+       \exp\!\left(-\frac{\delta}{\exp(\delta)-1}\right).
+\end{align*}
+They come from one cancellation.  Since
+\(a\exp(a)=b\exp(b)=x\) and \(a,b\ne0\), division gives
+\(b/a=\exp(a-b)=\exp(\delta)\).  Thus
+\(b=a\exp(\delta)\) and
+\(\delta=a-b=a(1-\exp(\delta))\), which yields the first two formulas;
+the defining equation yields the third.
+
+The converse is just as explicit.  For \(\delta>0\), define
+\[
+ A(\delta)=-\frac{\delta}{\exp(\delta)-1},\quad
+ B(\delta)=-\frac{\delta\exp(\delta)}{\exp(\delta)-1},\quad
+ X(\delta)=A(\delta)\exp(A(\delta)).
+\]
+The strict exponential tangent inequalities give
+\(-1<A(\delta)<0\) and \(B(\delta)<-1\).  Direct algebra gives
+\(B=A-\delta\) and \(B\exp(B)=A\exp(A)\), so branch uniqueness proves
+\(W_0(X(\delta))=A(\delta)\),
+\(W_{-1}(X(\delta))=B(\delta)\), and
+\(W_0(X(\delta))-W_{-1}(X(\delta))=\delta\).  Conversely,
+substituting the gap of \(x\) into \(X\) returns \(x\).  Hence the branch-gap
+map is a bijection
+\[
+ (-\exp(-1),0)\longleftrightarrow(0,\infty).
+\]
+With \(t=\exp(\delta)>1\), the inverse coordinate becomes
+\[
+ W_0=-\frac{\log t}{t-1},\qquad
+ W_{-1}=-\frac{t\log t}{t-1},\qquad
+ x=-\frac{\log t}{t-1}\,t^{-1/(t-1)}.
+\]
+
+Adding, multiplying, and dividing the paired formulas gives
+\[
+ \frac{W_{-1}(x)}{W_0(x)}=\exp(\delta),\qquad
+ W_0(x)+W_{-1}(x)=-\delta\coth(\delta/2),\qquad
+ W_0(x)W_{-1}(x)=\frac{\delta^2}{4\sinh^2(\delta/2)}.
+\]
+For \(y>0\), the inequalities \(\sinh y>y\) and
+\(y\coth y>1\) prove the strict consequences
+\[
+ W_0(x)+W_{-1}(x)<-2,
+ \qquad 0<W_0(x)W_{-1}(x)<1.
+\]
+
+The Lean layering follows the proof rather than merging all of this into one
+opaque theorem.  \nolinkurl{LambertWBranchPairing.lean} has no definitions
+and exactly seven theorems:
+\nolinkurl{principalLambertW_sub_lowerLambertW_pos},
+\nolinkurl{lowerLambertW_eq_principalLambertW_mul_exp_gap},
+\nolinkurl{principalLambertW_eq_neg_gap_div},
+\nolinkurl{lowerLambertW_eq_neg_gap_mul_exp_div},
+\nolinkurl{lowerLambertW_eq_neg_gap_div_one_sub_exp_neg},
+\nolinkurl{eq_neg_gap_div_mul_exp}, and
+\nolinkurl{principalLambertW_lowerLambertW_eq_of_exp_gap}.
+\nolinkurl{LambertWGapBijection.lean} has the four definitions
+\nolinkurl{gapPrincipal}, \nolinkurl{gapLower}, \nolinkurl{gapArg}, and
+\nolinkurl{branchGap}, followed by exactly sixteen theorems:
+\nolinkurl{gap_denominator_pos}, \nolinkurl{gapPrincipal_mem_Ioo},
+\nolinkurl{gapLower_eq_mul_exp}, \nolinkurl{gapLower_eq_sub},
+\nolinkurl{gapLower_lt_neg_one}, \nolinkurl{gapLower_mul_exp},
+\nolinkurl{gapArg_mem_Ioo}, \nolinkurl{principalLambertW_gapArg},
+\nolinkurl{lowerLambertW_gapArg}, \nolinkurl{branchGap_gapArg},
+\nolinkurl{gapArg_branchGap}, \nolinkurl{branchGap_invOn},
+\nolinkurl{branchGap_bijOn}, \nolinkurl{principalLambertW_gapArg_log},
+\nolinkurl{lowerLambertW_gapArg_log}, and \nolinkurl{gapArg_log}.
+The zero-definition/nine-theorem
+\nolinkurl{LambertWBranchSymmetry.lean} surface is
+\nolinkurl{lowerLambertW_div_principalLambertW_eq_exp_branchGap},
+\nolinkurl{principalLambertW_add_lowerLambertW_eq_exp_branchGap},
+\nolinkurl{principalLambertW_add_lowerLambertW_eq_cosh_div_sinh_branchGap},
+\nolinkurl{principalLambertW_mul_lowerLambertW_eq_exp_branchGap},
+\nolinkurl{principalLambertW_mul_lowerLambertW_eq_sinh_sq_branchGap},
+\nolinkurl{principalLambertW_add_lowerLambertW_lt_neg_two},
+\nolinkurl{principalLambertW_mul_lowerLambertW_pos},
+\nolinkurl{principalLambertW_mul_lowerLambertW_lt_one}, and
+\nolinkurl{principalLambertW_mul_lowerLambertW_mem_Ioo}.
+
+The openness of both intervals is substantive.  At the finite branch point
+the gap is zero, the rational formulas have a zero denominator, and their
+limiting sum and product are \(-2\) and \(1\), so the strict inequalities do
+not extend there.  At zero the classical lower branch is singular; the
+theorems make no assertion about its all-real totalization.  Nor do these
+three exact-identity modules prove the guide's Bernoulli expansion in
+\(\delta\), its convergence, or any higher Puiseux or logarithmic expansion.
+
 The next two raw-branch leaves resolve the formerly open branch-point
 geometry.  Write
 \[
@@ -5489,6 +5625,9 @@ Actual quarter inverse jet & \nolinkurl{iteratedDeriv_centeredFabiusInv_quarter_
 Centered Thue--Morse mixed differences & \nolinkurl{symmetricMixedDifference}, \nolinkurl{symmetricMixedDifference_polynomial_eq_coeff_card}, \nolinkurl{symmetricDyadicMixedDifference_eq_sum_thueMorseSign_smul} & \nolinkurl{ThueMorseSymmetricDifference.lean}; finite algebraic identities, with no analytic limit claim \\
 Uniform spline \(S_p\) & \nolinkurl{fabiusUniformSpline} & \nolinkurl{FabiusUniformSpline.lean} and \nolinkurl{FabiusComputability.lean} \\
 Logarithmic profile & \nolinkurl{fabiusLogProfile} & \nolinkurl{FabiusLogScale.lean} \\
+Forward real Lambert branch pairing & \nolinkurl{principalLambertW_sub_lowerLambertW_pos}, \nolinkurl{principalLambertW_eq_neg_gap_div}, \nolinkurl{lowerLambertW_eq_neg_gap_mul_exp_div}, \nolinkurl{lowerLambertW_eq_neg_gap_div_one_sub_exp_neg}, \nolinkurl{eq_neg_gap_div_mul_exp} & Exhaustive zero-definition/seven-theorem surface of \nolinkurl{LambertWBranchPairing.lean}; exact \(\delta\)- and \(t=e^\delta\)-forms on \((-e^{-1},0)\) only \\
+Lambert branch-gap coordinate and inverse & \nolinkurl{gapPrincipal}, \nolinkurl{gapLower}, \nolinkurl{gapArg}, \nolinkurl{branchGap}, \nolinkurl{branchGap_invOn}, \nolinkurl{branchGap_bijOn}, \nolinkurl{gapArg_log} & Exhaustive four-definition/sixteen-theorem surface of \nolinkurl{LambertWGapBijection.lean}; explicit bijection \((-e^{-1},0)\leftrightarrow(0,\infty)\), with the \(t>1\) inverse formulas \\
+Symmetric real Lambert branch laws & \nolinkurl{lowerLambertW_div_principalLambertW_eq_exp_branchGap}, \nolinkurl{principalLambertW_add_lowerLambertW_eq_cosh_div_sinh_branchGap}, \nolinkurl{principalLambertW_mul_lowerLambertW_eq_sinh_sq_branchGap}, \nolinkurl{principalLambertW_add_lowerLambertW_lt_neg_two}, \nolinkurl{principalLambertW_mul_lowerLambertW_mem_Ioo} & Exhaustive zero-definition/nine-theorem surface of \nolinkurl{LambertWBranchSymmetry.lean}; ratio, sum, product, and strict open-domain bounds, with no endpoint or Bernoulli/higher-expansion claim \\
 Real Lambert-branch curvature & \nolinkurl{deriv_deriv_principalLambertW}, \nolinkurl{deriv_deriv_lowerLambertW}, the lower sign iff family, \nolinkurl{strictConcaveOn_principalLambertW}, \nolinkurl{strictConvexOn_lowerLambertW_left}, \nolinkurl{strictConcaveOn_lowerLambertW_right} & \nolinkurl{LambertWCurvature.lean}; exact regular-domain second derivatives, with shape theorems including the branch point and inflection while the lower domain stays open at zero \\
 Real Lambert branch-point vertical geometry & \nolinkurl{tendsto_deriv_principalLambertW_branchPoint_atTop}, \nolinkurl{tendsto_deriv_lowerLambertW_branchPoint_atBot}, the two \nolinkurl{secantSlope_branchPoint} limits, and the four \nolinkurl{not_differentiable} endpoint theorems & \nolinkurl{LambertWBranchPointGeometry.lean}; exactly eight theorems giving signed right-hand derivative/secant blow-up, failure of finite right derivatives, and failure of full differentiability \\
 Real Lambert leading branch-point asymptotics & \nolinkurl{lambertWBranchPointScale}, the two squared-ratio limits, the two squared equivalences, and \nolinkurl{principalLambertW_add_one_isEquivalent_branchPoint}, \nolinkurl{lowerLambertW_add_one_isEquivalent_branchPoint} & \nolinkurl{LambertWBranchPointAsymptotics.lean}; one definition and eight theorems, with signed \(+\sqrt{2e\Delta}\) and \(-\sqrt{2e\Delta}\) laws only \\
@@ -5538,6 +5677,7 @@ Module & Role in the development \\
 \nolinkurl{FractionalVolterraSemigroup.lean} & Shifted beta-kernel integrability and evaluation, and addition of two positive real orders for continuous Banach-valued inputs on ordered compact intervals. \\
 \nolinkurl{FractionalVolterraCalculus.lean} & Positive-scale affine covariance at arbitrary real order on ordered endpoints, its inverse-smul form, and the positive-order integration-by-parts law raising the order of a right interior derivative, including the exact boundary-free specialization. \\
 \nolinkurl{GlobalDyadic.lean} & Exact dyadic identities for the signed extension with unrestricted and nonreduced representatives. \\
+\nolinkurl{DyadicDerivativeFiltration.lean} & Zero definitions and six theorems: support vanishing, the above-depth zero and critical-depth signed value, exact denominator-depth detection, and the all-real and dyadic below-depth formulas through \nolinkurl{extendedFabius}. \\
 \addlinespace[0.45em]
 \multicolumn{2}{l}{\textbf{Global shape, inversion, and computability}}\\[0.25em]
 \nolinkurl{ScalingRecurrence.lean} & Mathlib-only chain rules for arbitrary positive dilations, in vector and scalar forms, with caller-normalized outgoing weight; inert-parameter variants and dyadic wrappers used by negative-Laplace derivatives. \\
@@ -5951,10 +6091,9 @@ Lean audits of the previously recorded new or refactored declarations,
 for each.  At that upstream checkpoint, static inspection found all 610 modules
 below \nolinkurl{FabiusFunction/} reachable from the facade and every one of
 the 105 activation declarations documented.  The live current-tree lexical
-audit scans 900 modules and 11,404 public declarations, with no missing module
+audit scans 901 modules and 11,419 public declarations, with no missing module
 headers and no missing declaration comments.  The checked baseline records
-both zero-gap invariants.
-At the retained historical mainline checkpoint before the latest
+both zero-gap invariants.  At the retained historical mainline checkpoint before the latest
 six-module q-series tranche was 623 modules and 8,476 declarations.  Its
 immediately preceding census, after the Rvachev Appell and original
 four-theorem \nolinkurl{QPochhammerEntire.lean} tranche but before the generic
@@ -6023,12 +6162,19 @@ intermediate census was therefore 672/8,875.  The subsequent
 5+14 \nolinkurl{BinaryWordInversions.lean}, 2+8
 \nolinkurl{BoxPartitions.lean}, and 0+5
 \nolinkurl{TelescopingCertificate.lean} leaves add three modules and thirty-four
-declarations, giving the historical 675/8,909 checkpoint.  The newer origin
-corpus adds 225 modules and 2,494 declarations to that checkpoint, while the
-local unconditional Pochhammer bridge adds one declaration, yielding the live
-900/11,404 census.  No aggregate facade build is claimed here.  The retained
-PDF and the title-page pin remain historical receipts and do not claim parity
-with the merged source.
+declarations, giving the historical 675/8,909 checkpoint.  The subsequent
+source union, including the exact 0+7, 4+16, and 0+9 Lambert branch-pairing,
+gap-bijection, and symmetry surfaces, the unconditional public Pochhammer
+bridge, and the two new
+\nolinkurl{iteratedDeriv_rvachevUp_eq_extendedFabius} and
+\nolinkurl{iteratedDeriv_rvachevUp_dyadic_below} theorems, brings the live
+census to 901/11,419.  The three Lambert modules contain 36 declarations in
+their current exhaustive surfaces, 13 of them supplied by the upstream delta;
+\nolinkurl{DyadicDerivativeFiltration.lean} contains zero definitions and six
+theorems after its two-theorem extension.  No aggregate facade build is claimed
+for this current-tree census.  The retained 145-page PDF and the title-page pin
+remain pre-\nolinkurl{d8b} historical receipts and do not claim parity with the
+merged source; no PDF was built for this source-only update.
 
 Those six counts are \nolinkurl{QPochhammerInfiniteBounds.lean} (0+5),
 \nolinkurl{HeineTransformation.lean} (2+5),

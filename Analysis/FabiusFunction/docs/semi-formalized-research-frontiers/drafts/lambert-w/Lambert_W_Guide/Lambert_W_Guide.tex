@@ -173,6 +173,9 @@ unique layers of the other three are merged in
 data, and deterministic scripts --- is preserved under \path{assets/}; the
 absorbed source documents themselves are deleted once merged (git history is
 the archive, pinned by the SHA-256 hashes below).
+The retained PDF is a historical 66-page A4 artifact of 1,107,064 bytes.
+The current source contains later crosswalk edits, so no source/PDF render
+parity is claimed.
 \begin{itemize}
 \item \path{Lambert_W_Function_Article/Lambert_W_Function_Article.tex} (the spine)\\
 {\footnotesize SHA-256 \path{5bca61c4e906ca8a92f283bc92913355ccd4aee26d65112b41474fd16862c6ba}}
@@ -4371,6 +4374,12 @@ domain \([-1/\EulerE,\infty)\); module \lean{PrincipalLambertW}) and
 real function whose values off the intended domain are junk; every theorem
 below carries the domain hypothesis explicitly.
 
+The focused branch-pair tranche is exhaustive at this checkpoint:
+\lean{LambertWBranchPairing} has \(0+7\) public definitions/theorems,
+\lean{LambertWGapBijection} has \(4+16\), and
+\lean{LambertWBranchSymmetry} has \(0+9\).  Their union is therefore four
+definitions and 32 theorems, 36 public declarations in all.
+
 \begin{longtable}{@{}p{0.30\textwidth}p{0.42\textwidth}p{0.22\textwidth}@{}}
 \toprule
 Statement in this guide & Exact Lean declaration(s) & Remarks\\
@@ -4434,7 +4443,7 @@ interval \([-1/\EulerE,-2/\EulerE^2]\) and the half-open
 \Cref{thm:maclaurin}, \Cref{thm:cayley}: the Maclaurin coefficients
 \((-n)^{n-1}/n!\) &
 \decl{coeff\_lambertW} (module \lean{LambertWSeries}) &
-A statement about the \emph{formal} series over \(\mathbb{Q}\): the
+A statement about the \emph{formal} series over \(\RationalNumbers\): the
 compositional inverse of \(X\EulerE^{X}\) has \((n+1)\)-st coefficient
 \((-(n+1))^n/(n+1)!\).  It is obtained from the library's
 Lagrange--B\"urmann inversion (\Cref{thm:lagrange}), and carries no
@@ -4555,13 +4564,15 @@ add to the principal value, with no side condition.\\
 \addlinespace
 \Cref{thm:pairing}, forward direction: with \(\Delta=\Wz(x)-\Wm(x)>0\) on
 \((-1/\EulerE,0)\), \(\Wz=-\Delta/(\EulerE^\Delta-1)\),
-\(\Wm=-\Delta\EulerE^\Delta/(\EulerE^\Delta-1)\),
+\(\Wm=-\Delta/(1-\EulerE^{-\Delta})
+=-\Delta\EulerE^\Delta/(\EulerE^\Delta-1)\),
 \(x=\Wz\EulerE^{\Wz}\) in the \(\Delta\)-form, and the \(t=\EulerE^\Delta\)
 forms &
 \decl{principalLambertW\_sub\_lowerLambertW\_pos},
 \decl{lowerLambertW\_eq\_principalLambertW\_mul\_exp\_gap},
 \decl{principalLambertW\_eq\_neg\_gap\_div},
 \decl{lowerLambertW\_eq\_neg\_gap\_mul\_exp\_div},
+\decl{lowerLambertW\_eq\_neg\_gap\_div\_one\_sub\_exp\_neg},
 \decl{eq\_neg\_gap\_div\_mul\_exp},
 \decl{principalLambertW\_lowerLambertW\_eq\_of\_exp\_gap} (module
 \lean{LambertWBranchPairing}) &
@@ -4576,7 +4587,10 @@ functions of \(\Delta\)), \decl{branchGap} (the map
 \(x\mapsto\Wz(x)-\Wm(x)\)); \decl{gapArg\_mem\_Ioo},
 \decl{principalLambertW\_gapArg}, \decl{lowerLambertW\_gapArg},
 \decl{branchGap\_gapArg}, \decl{gapArg\_branchGap}; the two directions
-packaged as \decl{branchGap\_invOn} and \decl{branchGap\_bijOn} (module
+packaged as \decl{branchGap\_invOn} and \decl{branchGap\_bijOn}; and the
+three \(t>1\) coordinate formulas are
+\decl{principalLambertW\_gapArg\_log},
+\decl{lowerLambertW\_gapArg\_log}, and \decl{gapArg\_log} (module
 \lean{LambertWGapBijection}) &
 Exact, and stated as a bijection: \(x\mapsto\Delta\) is a bijection from
 \((-1/\EulerE,0)\) onto \((0,\infty)\) with the explicit inverse
@@ -4585,6 +4599,26 @@ The proof is uniqueness on each branch: \(b(\Delta)=a(\Delta)\EulerE^\Delta\)
 equals \(a(\Delta)-\Delta\), so \(b\EulerE^b=a\EulerE^a\), and
 \(-1<a<0\), \(b<-1\) are the tangent-line inequalities
 \(\Delta<\EulerE^\Delta-1\) and \(\EulerE^\Delta(1-\Delta)<1\).\\
+\addlinespace
+\Cref{cor:pair-symmetric}: the exact quotient, sum, and product identities,
+and \(\Wz(x)+\Wm(x)<-2\),
+\(0<\Wz(x)\Wm(x)<1\) on \((-1/\EulerE,0)\) &
+\decl{lowerLambertW\_div\_principalLambertW\_eq\_exp\_branchGap},
+\decl{principalLambertW\_add\_lowerLambertW\_eq\_exp\_branchGap},
+\decl{principalLambertW\_add\_lowerLambertW\_eq\_cosh\_div\_sinh\_branchGap},
+\decl{principalLambertW\_mul\_lowerLambertW\_eq\_exp\_branchGap},
+\decl{principalLambertW\_mul\_lowerLambertW\_eq\_sinh\_sq\_branchGap},
+\decl{principalLambertW\_add\_lowerLambertW\_lt\_neg\_two},
+\decl{principalLambertW\_mul\_lowerLambertW\_pos},
+\decl{principalLambertW\_mul\_lowerLambertW\_lt\_one}, and
+\decl{principalLambertW\_mul\_lowerLambertW\_mem\_Ioo} (module
+\lean{LambertWBranchSymmetry}) &
+Exact.  The exponential-rational sum and product forms strengthen the printed
+hyperbolic identities, and the final theorem packages the two strict product
+bounds.  The left endpoint is sharp: at \(x=-1/\EulerE\), both branches are
+\(-1\), hence the sum is \(-2\) and the product is \(1\); the open hypotheses
+are therefore essential.  The endpoint \(x=0\) remains excluded because the
+lower real branch has no finite value there.\\
 \addlinespace
 \Cref{thm:W0negativebounds}: for \(-1/\EulerE<x<0\),
 \(-1+\sqrt{1+\EulerE x}<\Wz(x)<-1+\sqrt{2(1+\EulerE x)}\) and \(\Wz(x)<x\) &

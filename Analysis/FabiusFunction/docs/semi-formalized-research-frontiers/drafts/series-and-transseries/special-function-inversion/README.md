@@ -21,6 +21,43 @@ three articles all invert the single map `x + W(x)`: the subgroups share the
 Lambert-core technique, but that one treats one map in depth while this one
 applies the technique across different special functions.
 
+## The consolidated volume
+
+Six subjects were merged, together with the shared apparatus of all eighteen
+articles, into
+
+> [`Sequence_Inversion_Transseries/`](Sequence_Inversion_Transseries/) ---
+> *Asymptotic Transseries and Inversion of Four Combinatorial Sequences*,
+> 183 A4 pages, 3 September 2026.
+
+Chapter~0 of that volume states once, with complete proofs, the apparatus that
+all eighteen articles carry a copy of: the exponential--power model and an
+axiomatized dominant core, the Bell-polynomial coefficient calculus,
+Lagrange--Bürmann, the Lagrange fixed-point formula and perturbed inversion
+around an exactly invertible core, the exact Lambert
+carrier with its branch rule, the all-orders reversion, the flattening into a
+polynomial--logarithmic transseries, the three inverse objects of a discrete
+sequence, backward error, remainder transport and optimal truncation.  Its six
+subject chapters supply the parameter dictionaries and subject-specific
+mathematics while citing the common apparatus rather than restating it.
+
+Two facts the merge made visible: the partition numbers are the `alpha = 1/2`
+case of the same model and reduce to the others by `xi = sqrt(N)` (with the
+arithmetic shift taken first), and the double factorial is *not* an
+exponential--power model at all --- its phase is `(s/2) log s` --- so the
+right common object is the core, not the model.  Corrections to the sources
+are boxed in the text and listed in the volume's Appendix~B.  Every printed
+coefficient and decimal in all eighteen was recomputed independently and
+reproduced except in one place: one article prints the constants of the
+inherited `-sqrt(rho)` sector to forty digits of which only about twenty-five
+are correct, and its own audit appendix contradicts its main text on `D_3`.
+Both are corrected in Chapter~1.  Apart from that, no source contained an
+arithmetic error; every other defect found is in a statement, a hypothesis, or
+a formal-versus-analytic conflation.
+
+The eighteen consolidated source packages below are **retained** for now; deleting them is a
+separate step, after a residue audit.
+
 ## The eight subjects
 
 The twenty-four fall into eight subjects, three articles each, written

@@ -21,39 +21,58 @@ The canonical frontier artifacts are:
 - [`semi-formalized-research-frontiers.tex`](semi-formalized-research-frontiers.tex)
 - [`semi-formalized-research-frontiers.pdf`](semi-formalized-research-frontiers.pdf)
 
-> **Source/PDF synchronization (2026-09-03).** The current 808,185-byte TeX
-> source has SHA-256
+> **Pre-`d8b` publication receipt (2026-09-03; rebuild pending).** The most
+> recent validated source was the 808,185-byte TeX file with SHA-256
 > `7dd140370a0ac68522364a83a3c6423df93570741eafaef2ee8c1fac17670e2f`.
-> An exact clean final three-pass cycle produced the synchronized 260-page,
-> 1,877,159-byte A4 PDF with SHA-256
+> Its exact clean final three-pass cycle produced a 260-page, 1,877,159-byte
+> A4 PDF with SHA-256
 > `9d38ab9d43befd6e26fd06ab9680b4a761365fb9d8a9f0de18489c243bd62d3e`;
-> the recorded final log and publication gates are clean.  Two earlier
-> canonical-frontier renders remain historical publication checkpoints.  The
-> first is the
-> 237-page A4 PDF (SHA-256
-> `21180fa05a754b52a057495464674e9d6ac26a51488c2c770730c641b5ffe887`)
-> includes the 31 August 2026 Legendre Gaunt--Wigner-square overlay.  After the
-> `c5633206e` notation sync, exactly three clean serial passes over source
-> SHA-256
+> the final log and recorded publication gates were clean for that named source.
+> The present semantic union postdates both fingerprints, so the PDF is a
+> historical receipt and must not be cited as rendering the current TeX.  No
+> live `SHA256SUMS*` ledger is maintained or should be regenerated.  Earlier
+> renders remain historical receipts for their own named source states only:
+> a 237-page PDF (SHA-256
+> `21180fa05a754b52a057495464674e9d6ac26a51488c2c770730c641b5ffe887`),
+> a post-`c5633206e` 243-page, 1,789,269-byte PDF from source SHA-256
 > `8daa2e6ee194f3f98799699beb56761289a0a1bd0f94745c0ebc7fefad6c454f`
-> produced a later 243-page, 1,789,269-byte A4 PDF with SHA-256
-> `45552dfbaa48ecd3183830b403cd651a979a57b50d2da6c3ff58af2ac1f02549`.
-> That render passed the recorded page, text, rotation, Type-1 embedding,
-> Libertinus, and no-Type-3 checks.  Both older fingerprints remain receipts
-> for their named source states only.
+> (PDF SHA-256
+> `45552dfbaa48ecd3183830b403cd651a979a57b50d2da6c3ff58af2ac1f02549`),
+> and a 257-page, 2,438,299-byte PDF (SHA-256
+> `3766761aac90247061f5c955dc84a0feb8567454e10839f1508b9431797ee980`).
 
-The live Lean audit now contains exactly 900 facade-reachable modules and
-11,404 unique public declarations, with no missing module headers and no
-missing documentation comments.  The checked baseline records this zero-gap
-state.  The current q-Pochhammer ownership is
+The authoritative live Lean audit now contains exactly 901 facade-reachable
+modules and 11,419 unique public declarations, with no missing module headers
+or declaration documentation.  The checked baseline records both zero-gap
+invariants.  The q-Pochhammer ownership remains
 `RvachevPochhammerFactorization` 1+10, `QPochhammerEntire` 0+5, and
 `QPochhammerInfinite` 1+29;
-`complexQPochhammerInf_eq_qPochhammerInfIn` is retained as the unconditional
-public definitional bridge to the generic symbol.  Fixed-nome normal convergence, product identifiability,
-the finite/infinite q-calculus tranches, the root-of-unity and q-Catalan
-layers, finite Newton interpolation, q-beta integration, integer and complex
-Gaussian upper indices, q-Pfaff--Saalschütz, and the noncommutative quantum
-multinomial theorem all have declaration-level crosswalks.
+`complexQPochhammerInf_eq_qPochhammerInfIn` remains the unconditional public
+definitional bridge to the generic symbol.  Fixed-nome normal convergence,
+product identifiability, all finite/infinite q-calculus tranches, the
+root-of-unity and q-Catalan layers, finite Newton interpolation, q-beta
+integration, integer and complex Gaussian upper indices,
+q-Pfaff--Saalschütz, and the noncommutative quantum multinomial theorem all
+have declaration-level crosswalks.
+
+The Lambert branch-coordinate surface is exhaustive:
+`LambertWBranchPairing.lean` has 0 definitions + 7 theorems,
+`LambertWGapBijection.lean` has 4 + 16, and
+`LambertWBranchSymmetry.lean` has 0 + 9.  These are 36 current declarations,
+13 of them supplied by the upstream delta.  On `(-exp(-1), 0)` they prove the
+exact branch pairing, explicit gap inverse and bijection, the
+`t = exp(delta) > 1` coordinate, ratio/sum/product identities, and the strict
+bounds `W_0 + W_{-1} < -2` and `0 < W_0 W_{-1} < 1`.  They include neither
+endpoint and do not prove the Guide's Bernoulli gap series or higher branch
+expansions.
+
+The zero-definition/six-theorem `DyadicDerivativeFiltration.lean` surface is
+also complete.  In addition to support vanishing, above-depth vanishing, the
+critical signed value, and exact depth detection, its two new theorems are
+`iteratedDeriv_rvachevUp_eq_extendedFabius` and
+`iteratedDeriv_rvachevUp_dyadic_below`; they identify every below-depth
+derivative with the corresponding rescaled global Fabius value.  None of the
+retained PDFs renders this merged source-only delta.
 
 `RvachevSuperconvergentSynthesis.lean` contributes one definition and eight
 theorems for arbitrary nonzero natural meshes.  It packages the literal
@@ -75,10 +94,12 @@ are therefore 166 Exact / 90 Partial / 18 None / 8 interface: q-Lucas remains
 Partial because the polynomial-congruence lift is absent, the Gaussian
 majorant is Exact, and the `Q > 1` asymptotic row remains Partial.
 
-The synchronized canonical-frontier PDF above and the current 395-page
-q-series master display this semantic union.  Other retained subgroup PDFs
-remain historical publication checkpoints and must not be cited as displaying
-later source changes unless their own package records current parity.
+The retained 260-page canonical-frontier PDF above and the 395-page q-series
+master are pre-`d8b` historical publication receipts.  Their merged TeX
+sources now postdate those renders, so both are rebuild-pending and neither
+displays this semantic union.  Other retained subgroup PDFs likewise must not
+be cited as displaying later source changes unless their own package records
+parity with an explicitly named source state.
 
 The current finite-moment/Legendre/Gaunt crosswalk covers eleven modules with
 20 public definitions and 109 public theorems, 129 declarations in all. The

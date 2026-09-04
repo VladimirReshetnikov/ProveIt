@@ -22,7 +22,6 @@ from pathlib import Path, PurePosixPath
 
 import build_historical_ledger_audit as historical
 import build_companion_payloads as companion
-import build_package_checksums as package_checksums
 import build_post_pin_disposition as post_pin
 import build_source_disposition as disposition
 import build_theorem_concordance as concordance
@@ -742,24 +741,6 @@ def validate_companion_payloads(audit: Audit) -> None:
     )
 
 
-def validate_package_checksums(audit: Audit) -> None:
-    try:
-        expected = package_checksums.ledger_bytes()
-    except (OSError, RuntimeError, ValueError, subprocess.CalledProcessError) as error:
-        audit.fail(f"cannot reproduce package checksum ledger: {error}")
-        return
-    if not package_checksums.OUTPUT.is_file():
-        audit.fail(f"missing package checksum ledger: {display(package_checksums.OUTPUT)}")
-        return
-    if package_checksums.OUTPUT.read_bytes() != expected:
-        audit.fail(f"package checksum ledger is stale: {display(package_checksums.OUTPUT)}")
-        return
-    rows = expected.decode("utf-8").splitlines()
-    if any(line.endswith("  ./SHA256SUMS") for line in rows):
-        audit.fail("package checksum ledger incorrectly includes itself")
-    audit.note(f"package checksum ledger ({len(rows)} exhaustive rows)")
-
-
 def validate_concordance(commit: str, labels: set[str], audit: Audit) -> None:
     fields, rows = read_csv(CONCORDANCE, audit)
     try:
@@ -865,7 +846,6 @@ def main() -> int:
     validate_historical_ledger(blobs, audit)
     validate_companion_payloads(audit)
     validate_concordance(commit, labels, audit)
-    validate_package_checksums(audit)
     return audit.finish()
 
 
