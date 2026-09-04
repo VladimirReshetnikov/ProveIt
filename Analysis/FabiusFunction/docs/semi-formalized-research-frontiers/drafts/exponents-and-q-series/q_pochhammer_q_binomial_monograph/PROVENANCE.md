@@ -49,6 +49,7 @@ The current source incorporates exhaustive crosswalks for
 `QPochhammerDissection` (zero definitions and two theorems),
 `GaussianBinomialPalindromic` (zero definitions and fourteen theorems),
 `GaussianBinomialPolynomialStructure` (zero definitions and five theorems),
+`GaussianBinomialCumulants` (two definitions and twenty-four theorems),
 `GaussianBinomialBounds` (zero definitions and six theorems), and
 `GeometricPochhammerNormalConvergence` (zero definitions and three theorems).
 It also inventories `QMultinomial` (one definition and nine
@@ -92,15 +93,18 @@ complex strict contraction, including `q = 0`, and gives the dyadic Rvachev
 product and bounded-Fabius Fourier specializations. The compound
 `thm:qF-spectral` row remains Partial because its named centered/MGF packaging
 and exterior reciprocal, pole-divisor, and zero--pole clauses are absent. The
-live facade audit contains 905 modules and 11,471 public declarations with no
+live facade audit contains 905 modules and 11,474 public declarations with no
 documentation gaps. Those corpus-wide totals include the q--Chu, Richardson,
 geometric-law barycenter, and Lagrange--Rvachev matrix follow-ups; they do not
-alter this monograph's retained historical artifact. The
+alter this monograph's retained historical artifact. The three newest
+declarations are the explicit Gaussian second-derivative and division-free
+moment identities; they likewise leave the forward-status counts unchanged.
+The
 forward status inventory covers 282 labelled results:
 170 Exact / 86 Partial / 18 None / 8 N/A; the 191-result pre-Fabius core is
 36 / 29 / 123 / 3.
 The five-publication concordance
-has 79 Lean-proved, 399 human-proved frontier, 60 not-applicable, and 9
+has 81 Lean-proved, 397 human-proved frontier, 60 not-applicable, and 9
 conjecture rows. The `cor:positivity`, `thm:qbinom-structure`, and
 `prop:gq-positive-palindromic` rows are Exact: both Gaussian structure APIs
 support the structure row, and the fourteen-theorem generic API now gives

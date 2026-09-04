@@ -831,7 +831,7 @@ concordance. This source postdates the retained Representation and inverse
 PDFs, which remain historical artifacts rather than renders of the promotion.
 The corresponding historical documentation checkpoint was 671 modules and
 8,858 public declarations. The later live repository census is 905 modules
-and 11,471 public declarations. It includes the unrelated sibling source-only
+and 11,474 public declarations. It includes the unrelated sibling source-only
 `FabiusFunction.GeometricRichardsonGenerating` module (three definitions and
 seven theorems), whose exact comb-manuscript crosswalk is
 `Fabius.geometricLagrangeRichardson_generating`. It also includes the
@@ -846,7 +846,11 @@ identity `U B = I`, not a coefficient-space projector identity, and the
 negative-entry conclusion retains the source proposition's strictly positive
 row-overlap hypothesis. Neither source-only promotion is rendered by the
 retained Representation or inverse PDFs; no PDF was rebuilt for them. The
-census also includes the sibling source-only Lambert
+newest three declarations
+strengthen the existing sibling `FabiusFunction.GaussianBinomialCumulants`
+module with second-derivative, raw-second-moment, and variance-numerator
+identities; they likewise do not change the Representation or inverse results.
+The census also includes the sibling source-only Lambert
 branch-coordinate tranche: `LambertWBranchPairing.lean` has 0 definitions + 7
 theorems, `LambertWGapBijection.lean` has 4 + 16, and
 `LambertWBranchSymmetry.lean` has 0 + 9. These three modules prove the exact

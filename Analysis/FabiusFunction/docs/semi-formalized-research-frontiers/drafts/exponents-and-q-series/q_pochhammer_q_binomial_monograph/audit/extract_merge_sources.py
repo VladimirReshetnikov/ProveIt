@@ -368,6 +368,8 @@ CURRENT_Q_STATUS_OVERRIDES = {
     "cor:q-chu": "Lean-proved",
     "lem:2phi1-reversal": "Lean-proved",
     "thm:q-pfaff": "Lean-proved",
+    "thm:qbinom-moments": "Lean-proved",
+    "thm:geometric-filter-bound": "Lean-proved",
     "cor:positivity": "Lean-proved",
     "cor:partition-symmetries": "Lean-proved",
     "prop:dissection": "Lean-proved",

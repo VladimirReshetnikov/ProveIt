@@ -68,7 +68,7 @@ only its `UB = I` clause is formalized. Its negative-decoder theorem retains
 strictly positive row overlap as an explicit hypothesis. No retained frontier,
 primary, walkthrough, comb, or representation PDF renders this addition.
 
-The newest source-only addition is
+The preceding source-only addition is
 `FabiusFunction.GeometricRichardsonGenerating`, with three definitions and
 seven theorems. Its
 `Fabius.geometricLagrangeRichardson_generating` theorem is the exact formal
@@ -80,7 +80,19 @@ primary, walkthrough, and comb-synthesis PDFs all predate this crosswalk and
 remain historical artifacts; none was rebuilt for this update.
 
 The live documentation census after these source-only additions is 905 modules
-and 11,471 public declarations.
+and 11,474 public declarations.
+
+The newest source-only addition leaves the module count unchanged and adds
+three theorems to `FabiusFunction.GaussianBinomialCumulants`: the explicit
+second derivative at one
+`Fabius.eval_one_derivative_derivative_gaussianBinomial_X`, the division-free
+raw second moment `Fabius.twelve_mul_secondMoment_gaussianBinomial_eval_one`,
+and the division-free variance numerator
+`Fabius.twelve_mul_varianceNumerator_gaussianBinomial_eval_one`. The first is a
+characteristic-zero field identity on `k ≤ n`; the cleared identities are total
+over every commutative semiring, including the above-row zero case. Their
+probability language is the normalized-generating-polynomial interpretation of
+algebraic identities, not a new probability-space construction.
 
 The 1 September 2026 source-only q-Pochhammer overlay is likewise newer than
 the retained PDFs.  The new `QPochhammerEntire.lean` leaf has zero definitions

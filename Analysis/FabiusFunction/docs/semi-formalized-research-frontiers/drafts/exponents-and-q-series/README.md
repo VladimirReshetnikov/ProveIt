@@ -63,7 +63,7 @@ module tranches and the zero-definition, three-theorem
 crosswalk. That source is a source-only successor to the fresh artifact receipt
 and requires a later synchronized three-pass build. Retained PDFs under its `assets/` tree are
 research figures, not alternate manuscript renderings. The current Lean audit
-contains 905 facade-reachable modules and 11,471 public declarations, with no
+contains 905 facade-reachable modules and 11,474 public declarations, with no
 missing module headers or declaration documentation.
 
 The sibling source-only `FabiusFunction.GeometricRichardsonGenerating` module
@@ -73,6 +73,9 @@ Its exact comb crosswalk is
 `Fabius.geometricLagrangeRichardson_generating`, with
 `Fabius.hasSum_geometricLagrangeRichardson_mul_pow` as the analytic companion.
 No retained PDF in this group renders that unrelated promotion.
+The additional three declarations are the second-derivative, raw-second-moment,
+and variance-numerator identities in `GaussianBinomialCumulants`; they
+strengthen the existing q-series moment crosswalk without changing its status.
 
 That repository-wide census includes a sibling, source-only Lambert-W
 promotion rather than a new q-series result. Its exhaustive module counts are
@@ -152,9 +155,9 @@ Current packages and retained intake records:
   figures. Pinned source revisions and Git history preserve every superseded
   layout and arrival fact.
 
-  The current `q_pochhammer_q_binomial_monograph.tex` has 16,359 lines and
-  812,257 bytes, with SHA-256
-  `e90f46955d9a9792ce469d29ceaa3aa538874eb1e94cf4c2dd7e50dbaf63b10e`.
+  The current `q_pochhammer_q_binomial_monograph.tex` has 16,392 lines and
+  814,045 bytes, with SHA-256
+  `184f828b53b95cbc8580af1750cc868ac6b68aee982657af1414f9889ac6c718`.
   Its retained `q_pochhammer_q_binomial_monograph.pdf` is a historical
   389-page A4 artifact of 3,254,138 bytes, with SHA-256
   `b8add607c85ee35be98dabf36879e1d45fb093c6b453e93679c80295fae715bc`.
@@ -163,9 +166,9 @@ Current packages and retained intake records:
   `14c444feb14c435bc300becd9c8cd2765c1e96f608dd79da462becc41b28ed22`.
   Its A4 boxes, text extraction, embedded/subset Type-1 fonts including
   Libertinus, absence of Type-3 fonts, and targeted visual review passed at
-  that checkpoint. The current TeX adds explicit Bell-multiplicity and
-  MacMahon q-Catalan notation and normalizes the merged status formulas;
-  because it is newer, no current render parity is claimed.
+  that checkpoint. The current TeX additionally records the exact Gaussian
+  raw-second-moment and second-derivative identities and normalizes the merged
+  status formulas; because it is newer, no current render parity is claimed.
   It carries the five-theorem `QPochhammerEntire.lean`, the generic
   `QPochhammerInfinite.lean` and `QPochhammerDissection.lean` APIs, both
   Gaussian structure modules, `CentralQBinomialReduction.lean`,
@@ -177,7 +180,7 @@ Current packages and retained intake records:
   and Gaussian reciprocity/growth APIs, and the three-theorem
   `GeometricPochhammerNormalConvergence.lean` outer-product API. The forward
   crosswalk is now 170 Exact, 86 Partial, 18 None, and 8 interface rows; the
-  source ledger is 79 Lean-proved, 399 human-proved frontier, 60 not
+  source ledger is 81 Lean-proved, 397 human-proved frontier, 60 not
   applicable, and 9 conjectures. No PDF was generated locally while resolving
   this source-only merge, so the retained 389-page artifact does not render
   the current source. PDF files retained
@@ -922,6 +925,7 @@ compatibility spelling of its primary identity),
 `GaussianBinomialBounds.lean` (zero definitions, six theorems),
 `GaussianBinomialPalindromic.lean` (zero definitions, fourteen theorems),
 `GaussianBinomialPolynomialStructure.lean` (zero definitions, five theorems),
+`GaussianBinomialCumulants.lean` (two definitions, twenty-four theorems),
 `CentralQBinomialReduction.lean` (zero definitions, six theorems),
 `CyclotomicFactorization.lean` (zero definitions, seven theorems),
 `CyclotomicDivisibility.lean` (zero definitions, three theorems),
@@ -960,6 +964,15 @@ division-free mean identity
 interior column and zero on every boundary. The `cor:positivity`,
 `thm:qbinom-structure`, and inverse-source
 `prop:gq-positive-palindromic` rows are therefore Exact.
+The `GaussianBinomialCumulants` surface includes
+`eval_one_derivative_derivative_gaussianBinomial_X`,
+`twelve_mul_secondMoment_gaussianBinomial_eval_one`, and
+`twelve_mul_varianceNumerator_gaussianBinomial_eval_one`. The divided
+second-derivative formula assumes `k ≤ n` over a characteristic-zero field;
+the two cleared coefficient-moment identities are total over every
+commutative semiring, including above-row and positive-characteristic cases.
+They formalize the universal generating polynomial, not a separate
+probability-space object.
 The five `GaussianBinomialAtNegOne` theorems are
 `gaussianBinomial_neg_one_even_even`,
 `gaussianBinomial_neg_one_odd_even`,

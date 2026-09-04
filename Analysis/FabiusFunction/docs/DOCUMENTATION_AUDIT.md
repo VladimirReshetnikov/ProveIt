@@ -112,15 +112,16 @@ numbers rather than copying these historical values.
 The historical post-merge 2026-09-01 inventory contained 675 modules and 8,909
 lexically visible public declarations, with zero missing module headers and
 zero missing doc comments.  A fresh 2026-09-03 audit for this documentation
-pass scans 905 facade-reachable modules and 11,471 public declarations.  It
+pass scans 905 facade-reachable modules and 11,474 public declarations.  It
 finds no missing module header or declaration comment, including throughout
 `FabiusInverseExactDyadicModulus.lean`, `JacobiTwoSquareCount.lean`, and
 `LagrangeRvachevMatrix.lean`, as well as the incoming
 `GeometricRichardsonGenerating.lean`, `TwoPhiOneReversal.lean`, and
-`QChuVandermonde.lean` APIs.  Relative to the 610/8,318 activation
-checkpoint, the current tree adds 295 modules and 3,153 declarations.
+`QChuVandermonde.lean` APIs and the strengthened
+`GaussianBinomialCumulants.lean` surface.  Relative to the 610/8,318 activation
+checkpoint, the current tree adds 295 modules and 3,156 declarations.
 Relative to the earlier 630/8,552 merged checkpoint, concurrent source work
-adds 275 modules and 2,919 declarations.
+adds 275 modules and 2,922 declarations.
 
 #### Terminating `₂φ₁` reversal and q-Chu--Vandermonde tranche
 
@@ -168,10 +169,11 @@ extension remain unformalized.
 
 #### Geometric Richardson generating-function tranche
 
-`GeometricRichardsonGenerating.lean` adds one source module and exactly ten
-public declarations to the 901/11,430 q-Chu checkpoint.  The incoming q-series
-checkpoint is therefore 902 modules and 11,440 public declarations.  Its three definitions
-are `geometricRichardsonKernel`, `qPochhammerNormalizedDataSeries`, and
+`GeometricRichardsonGenerating.lean` added one source module and exactly ten
+public declarations to the 901/11,430 q-Chu checkpoint.  The resulting
+historical checkpoint was 902 modules and 11,440 public declarations.  Its
+three definitions are `geometricRichardsonKernel`,
+`qPochhammerNormalizedDataSeries`, and
 `geometricRichardsonTransform`.  Its seven theorems are
 `coeff_rescale_qPochhammerSeries_eq_geometricRichardsonKernel`,
 `coeff_qPochhammerNormalizedDataSeries`,
@@ -196,6 +198,34 @@ excludes that base.  The analytic pair assumes a complete normed field,
 `z`; the Lagrange form additionally assumes `q ≠ 0` and proves a `HasSum`
 identity.  It does not claim a general analytic evaluation operation for
 arbitrary formal power series.
+
+#### Gaussian-binomial second-moment tranche
+
+The later strengthening of the existing `GaussianBinomialCumulants.lean`
+module leaves the live module count at 905 and adds three public theorems,
+bringing the live census to 11,474 public declarations.  The module's exhaustive public
+inventory is two definitions, `meanAtOne` and `varAtOne`, and twenty-four
+theorems: `meanAtOne_one`, `varAtOne_one`, `meanAtOne_mul`, `varAtOne_mul`,
+`meanAtOne_prod`, `varAtOne_prod`, `eval_one_derivative_X_pow`,
+`eval_one_derivative_derivative_X_pow`, `eval_one_qInt_X`,
+`eval_one_derivative_qInt_X`, `eval_one_derivative_derivative_qInt_X`,
+`meanAtOne_qInt_X`, `varAtOne_qInt_X`, `one_sub_X_pow_succ_eq`,
+`gaussianBinomial_X_mul_prod_qInt`, `eval_one_gaussianBinomial_X`,
+`sum_mean_diff`, `sum_var_diff`, `meanAtOne_gaussianBinomial_X`,
+`varAtOne_gaussianBinomial_X`, `eval_one_derivative_gaussianBinomial_X`,
+`eval_one_derivative_derivative_gaussianBinomial_X`,
+`twelve_mul_secondMoment_gaussianBinomial_eval_one`, and
+`twelve_mul_varianceNumerator_gaussianBinomial_eval_one`.
+
+The last three are the new declarations.  The first gives the explicit second
+derivative at one over a characteristic-zero field when `k ≤ n`.  The other
+two clear all denominators: over every commutative semiring and for all natural
+`n,k`, including the above-row zero case, they give the raw second coefficient
+moment and the variance numerator.  The probability terminology is the
+interpretation of the normalized coefficient generating polynomial; the
+generic theorems themselves are algebraic identities and do not construct a
+separate probability-space random variable.  Three private transport helpers
+are excluded from the public census.
 
 #### Exact Lambert branch-pairing tranche
 
@@ -979,7 +1009,7 @@ and 88-page notation-catalogue artifacts likewise predate their current merged
 sources.  Their package notices treat those PDFs as historical validation
 receipts, not parity claims, until fresh uninterrupted three-pass builds
 complete.  The inverse-computability receipt likewise still reflects the
-historical 675/8,909 census and requires refresh against the live 905/11,471
+historical 675/8,909 census and requires refresh against the live 905/11,474
 inventory.  The canonical inverse-theory publication retains a 134-page
 artifact synchronized at its latest-main source checkpoint; the merged
 effective-inversion and superconvergent-synthesis tranches make current parity

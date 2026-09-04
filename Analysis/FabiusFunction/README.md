@@ -82,15 +82,17 @@ That primary exposition is deliberately proof-backed: every mathematical claim
 in it must have a proved counterpart in the Lean development.
 
 > **Artifact status (2026-09-03).**  The live facade union contains exactly
-> 905 source modules and 11,471 public declarations.  The documentation audit
+> 905 source modules and 11,474 public declarations.  The documentation audit
 > reports no missing module headers or declaration comments; the exact-dyadic
-> inverse, Jacobi two-square, Lagrange--Rvachev Matrix, and geometric
-> Richardson leaves are included in that clean census.  Its q-series union retains
+> inverse, Jacobi two-square, Lagrange--Rvachev Matrix, geometric Richardson,
+> and Gaussian-binomial second-moment additions are included in that clean
+> census.  Its q-series union retains
 > `QPochhammerEntire` 0+5, `GeometricPochhammerNormalConvergence` 0+3,
 > `QPochhammerDissection` 0+2,
 > `QPochhammerInfinite` 1+29,
 > `GaussianBinomialAtNegOneDerivative` 0+4,
 > `GaussianBinomialContinuity` 0+3,
+> `GaussianBinomialCumulants` 2+24,
 > `GaussianBinomialPalindromic` 0+14,
 > `GaussianBinomialPolynomialStructure` 0+5,
 > `CentralQBinomialReduction` 0+6, `CyclotomicFactorization` 0+7,

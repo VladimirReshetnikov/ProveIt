@@ -22,7 +22,7 @@ moved the six polynomial-logarithmic transseries packages out of `lambert-w/`
 into the new `series-and-transseries/` group.
 
 **Current artifact checkpoint (2026-09-03).** The live Lean audit scans 905
-source modules and 11,471 public declarations, with no missing module headers or
+source modules and 11,474 public declarations, with no missing module headers or
 declaration comments.
 Several PDFs below are retained,
 readable publication checkpoints rather than renders of the final merged TeX.
@@ -68,9 +68,10 @@ SHA-256
 built from the preceding 16,339-line, 810,779-byte source with SHA-256
 `14c444feb14c435bc300becd9c8cd2765c1e96f608dd79da462becc41b28ed22`.
 The live TeX adds the Bell-block and MacMahon q-Catalan notation successor as
-well as later formalization crosswalks, so it is source-only relative to that
-build; the two payloads are distinct and no render parity is claimed. No live
-checksum manifest or current-source digest is maintained. The
+well as later formalization crosswalks and the Gaussian second-moment formulas,
+so it is source-only relative to that build; the two payloads are distinct and
+no render parity is claimed. No live checksum manifest or current-source digest
+is maintained. The
 still earlier 348-page artifact checkpoint also remains historical evidence:
 its PDF SHA-256 is
 `8bf14b52d8a0fc0abc4d54cca503fd47a2df37cf76ee1bb4e442bea1fd2a4aa7`,
@@ -128,6 +129,15 @@ evaluated reciprocity, nonnegative-nome lower and strict-contraction upper
 bounds, and dimension-dominant two-sided estimates for real nomes greater than
 one. Its positivity input is the already-counted
 `finiteQPochhammerIn_self_pos` imported from `GeneralQConditionNumber.lean`.
+The existing `GaussianBinomialCumulants.lean` module now has two definitions
+and twenty-four theorems. Its three newest declarations are
+`eval_one_derivative_derivative_gaussianBinomial_X`,
+`twelve_mul_secondMoment_gaussianBinomial_eval_one`, and
+`twelve_mul_varianceNumerator_gaussianBinomial_eval_one`; they strengthen the
+already-Exact `thm:qbinom-moments` row without changing its disposition. The
+first is a characteristic-zero field identity under `k ≤ n`, while the two
+division-free identities are total over every commutative semiring, including
+the above-row zero case.
 `RvachevSuperconvergentSynthesis.lean` adds one definition and eight theorems
 for the selected dyadic phases and their monomial, polynomial, deconvolution,
 and Appell sampling identities, without a maximality claim.
