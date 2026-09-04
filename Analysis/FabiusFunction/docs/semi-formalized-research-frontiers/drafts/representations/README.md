@@ -841,14 +841,20 @@ concordance. This source postdates the retained Representation and inverse
 PDFs, which remain historical artifacts rather than renders of the promotion.
 The corresponding historical documentation checkpoint was 671 modules and
 8,858 public declarations. The later live repository census is 903 modules
-and 11,448 public declarations. The preceding ten-declaration increment was the
-unrelated sibling `FabiusFunction.GeometricRichardsonGenerating` module (three
+and 11,453 public declarations. The recent source-only declaration chronology
+is 11,440 after `GeometricRichardsonGenerating`, 11,443 after the Gaussian
+second-moment tranche, 11,448 after the five fixed-column q-binomial
+declarations, and 11,453 after the five-theorem
+`LambertWBranchGapBernoulli` leaf. Ten declarations
+come from the unrelated sibling `FabiusFunction.GeometricRichardsonGenerating`
+module (three
 definitions and seven theorems), whose exact comb-manuscript crosswalk is
-`Fabius.geometricLagrangeRichardson_generating`. This promotion is not rendered
-by the retained Representation or inverse PDFs. The newest three declarations
-strengthen the existing sibling `FabiusFunction.GaussianBinomialCumulants`
-module with second-derivative, raw-second-moment, and variance-numerator
-identities; they likewise do not change the Representation or inverse results.
+`Fabius.geometricLagrangeRichardson_generating`; three strengthen the sibling
+`FabiusFunction.GaussianBinomialCumulants` module with second-derivative,
+raw-second-moment, and variance-numerator identities; and five give effective
+fixed-column Gaussian limits and rates. None changes the Representation or
+inverse results, and none is rendered by the retained Representation or inverse
+PDFs.
 The census also includes the
 sibling source-only Lambert
 branch-coordinate tranche: `LambertWBranchPairing.lean` has 0 definitions + 7

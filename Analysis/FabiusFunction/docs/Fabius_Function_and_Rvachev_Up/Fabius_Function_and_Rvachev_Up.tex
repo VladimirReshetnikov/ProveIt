@@ -3294,7 +3294,7 @@ noncommutative theorems \lean{quantumPlane_mul_pow} and
 \lean{quantum_binomial}.
 
 The remaining three modules carry the longer analytic inventories.
-\path{QBinomialTheoremInfinite.lean} has one definition and twenty-two
+\path{QBinomialTheoremInfinite.lean} has one definition and twenty-seven
 theorems; its public surface comprises \lean{gaussianMajorant},
 \lean{hasSum_of_tendsto_of_dominated},
 \lean{one_le_qPochhammerInfIn_neg},
@@ -3312,12 +3312,44 @@ theorems; its public surface comprises \lean{gaussianMajorant},
 \lean{gaussianMajorant_nonneg},
 \lean{norm_gaussianBinomial_le},
 \lean{tendsto_finiteQPochhammerIn_pow_atTop},
+\lean{norm_finiteQPochhammerIn_pow_sub_one_le_exp},
+\lean{isBigO_finiteQPochhammerIn_pow_sub_one},
 \lean{tendsto_gaussianBinomial_atTop},
+\lean{tendsto_gaussianBinomial_add_atTop},
+\lean{isBigO_gaussianBinomial_sub_inv},
+\lean{isBigO_gaussianBinomial_add_sub_inv},
 \lean{summable_pow_choose_two_mul_pow},
 \lean{hasSum_euler_product},
 \lean{qPochhammerInfIn_ne_zero_of_norm_lt_one},
 \lean{hasSum_qBinomial_theorem}, and
 \lean{hasSum_euler_reciprocal}.
+
+The five effective fixed-column additions are exact.  For \(\lVert q\rVert\le1\),
+the finite-product estimate is
+\[
+ \left\lVert(q^m;q)_k-1\right\rVert
+ \le \exp\!\left(k\lVert q\rVert^m\right)-1.
+\]
+For fixed \(k\) and \(\lVert q\rVert<1\), Lean records the resulting rate in
+the equivalent additive \texttt{IsBigO} form
+\[
+ (q^m;q)_k-1=\operatorname{O}(q^m),\qquad
+ \GaussianBinomial{n}{k}{q}-(q;q)_k^{-1}
+ =\operatorname{O}\!\left(q^{n-k+1}\right).
+\]
+Since \((q;q)_k\ne0\) under the same strict-contraction hypothesis,
+multiplying the Gaussian additive error by the fixed denominator \((q;q)_k\)
+gives the manuscript's relative-error form.
+The shifted convergence theorem is stronger than the usual \(n+k\)
+specialization: for every fixed \(r\in\NaturalNumbers\),
+\[
+ \GaussianBinomial{n+r}{k}{q}\longrightarrow(q;q)_k^{-1}.
+\]
+For the specialization \(r=k\), the quantitative wrapper gives the cleaner
+error \(\GaussianBinomial{n+k}{k}{q}-(q;q)_k^{-1}
+=\operatorname{O}(q^{n+1})\).
+This promotes exactly the fixed-column row from Partial to Exact, so the
+282-result forward q ledger is now 167 Exact, 89 Partial, 18 None, and 8 N/A.
 
 \path{JacobiTripleProduct.lean} has two definitions and twenty-five theorems.
 Its exact public inventory is \lean{thetaExponent},
@@ -3348,7 +3380,7 @@ theorems: \lean{rogersSzego}, \lean{rogersSzego_zero},
 \lean{summable_norm_pow_div_finiteQPochhammerIn_self},
 \lean{sum_antidiagonal_euler_mul_euler}, and
 \lean{hasSum_rogersSzego_generating}.  Thus the six modules contribute four
-definitions and sixty-five theorems, sixty-nine public declarations in total.
+definitions and seventy theorems, seventy-four public declarations in total.
 
 The exponent in the canonical product has a finite, base-generic double-counting
 origin that is useful independently of sinc products.  For \(b,N,J\in\NaturalNumbers\), put
@@ -3817,24 +3849,37 @@ because the underlying infinite product is totalized outside its admissible
 range.  No spectral-zeta recovery, cumulant-sample recovery, or
 identifiability of an underlying probability law is asserted; those remain
 open interfaces.  With the later concurrent source union, the live facade
-census is 903 modules and 11,448 public declarations.  The current TeX also
+census is 903 modules and 11,453 public declarations, with no missing module
+headers or public-declaration doc comments.  The current TeX also
 contains the six-theorem prime-power companion-row API and the
 zero-definition/three-theorem outer Pochhammer normal-convergence API, plus
 the two-module/nine-declaration fixed-depth effective-inverse tranche, the
 eight-declaration rational-gap inverse module, and six new
-q-calculus modules contributing 36 declarations, plus the two source-only
+q-calculus modules contributing 36 declarations, plus the two
 central-reduction and cyclotomic-factorization modules contributing thirteen
 theorems, and the four-module root-of-unity, q-Lucas, cyclotomic-divisibility,
 and q-Catalan tranche contributing one definition and twenty-four theorems,
-and the four-module Lambert branch-pairing, gap-bijection, symmetric-identity,
-and Bernoulli-series tranche contributing four definitions and thirty-seven
-theorems (forty-one public declarations), the
+and the three-module Lambert branch-pairing, gap-bijection, and symmetric-
+identity tranche contributing four definitions and thirty-two theorems, the
+twelve later terminating-basic-hypergeometric declarations, the
 three-definition/seven-theorem geometric Richardson generating-function
-module, and the three-theorem second-moment strengthening of the existing
-\path{GaussianBinomialCumulants.lean} module.
-These are
-source-only overlays; the retained 183-page, 1,899,243-byte PDF is explicitly
-historical and has not been regenerated for these additions.
+module; the three-theorem second-moment strengthening that enlarges
+\path{GaussianBinomialCumulants.lean} from its former
+two-definition/twenty-one-theorem surface to two definitions and twenty-four
+theorems, comprising the characteristic-zero second derivative at one and
+the division-free raw-second-moment and variance-numerator identities over
+every commutative semiring; the five-theorem effective fixed-column q-binomial
+closure, comprising an explicit finite-product exponential bound, its geometric
+\(\operatorname{O}(q^m)\) consequence, arbitrary fixed upper-index shifts,
+and the unshifted and shifted Gaussian-binomial error estimates; and the
+subsequent zero-definition/five-theorem
+\path{LambertWBranchGapBernoulli.lean} leaf.  Its earlier four APIs prove
+absolute real convergence, the exact complex convergence radius and boundary
+divergence, the nonzero-real sum, and the paired real branch formulas.  Its
+added fifth theorem packages the exact complex removable-origin sum
+\(\lean{complexExpm1Div}(z)^{-1}\) if and only if
+\(\lVert z\rVert<2\pi\).  The four Lambert modules therefore have four
+definitions and thirty-seven theorems (forty-one public declarations).
 
 The six q-calculus module counts are
 \path{QPochhammerInfiniteBounds.lean} (0+5),
@@ -7092,7 +7137,7 @@ natural-coefficient-polynomial form of the same structure theorem.  The
 adjacent fourteen-theorem module supplies the complete linear-coefficient
 classifier over every commutative semiring.
 
-Two further source-only modules have exhaustive finite-algebra inventories.
+Two further modules have exhaustive finite-algebra inventories.
 \path{CentralQBinomialReduction.lean} has no definitions and six theorems:
 \lean{finiteQPochhammerIn_mul_neg}, \lean{finiteQPochhammerIn_two_mul},
 \lean{finiteQPochhammerIn_map_ringHom},
@@ -12882,14 +12927,6 @@ or phase convention, half-integer or nonzero-magnetic-index theory, infinite
 Legendre-series/integral interchange or infinite expansion, root or quadrature theorem,
 Christoffel reconstruction or Pad\'e approximation, and named values for the individual
 entries of the displayed low-order \(G_3\).
-
-\begin{boxedremark}\textbf{Source/PDF parity convention.}\space
-This source contains the exhaustive two-definition, twenty-eight-theorem closed-form
-inventory and the expanded formula-and-proof ledger below.  Source/PDF parity is
-certified only by the repository metadata for a successful final-source build of this
-exact TeX checkpoint; the page count, checksum, and validation facts in that build
-receipt are authoritative.
-\end{boxedremark}
 
 For a formula-level audit of the preceding inventory, the core
 \path{LegendreGauntClosedForm.lean} has exactly two public

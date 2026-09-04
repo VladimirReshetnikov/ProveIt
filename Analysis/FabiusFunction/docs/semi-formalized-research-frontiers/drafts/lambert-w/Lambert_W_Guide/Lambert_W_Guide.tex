@@ -173,9 +173,8 @@ unique layers of the other three are merged in
 data, and deterministic scripts --- is preserved under \path{assets/}; the
 absorbed source documents themselves are deleted once merged (git history is
 the archive, pinned by the SHA-256 hashes below).
-The retained PDF is a historical 66-page A4 artifact of 1,107,064 bytes.
-The current source contains later crosswalk edits, so no source/PDF render
-parity is claimed.
+The pre-crosswalk publication checkpoint was a 66-page A4 artifact of
+1,107,064 bytes.  The present edition incorporates the later crosswalk edits.
 \begin{itemize}
 \item \path{Lambert_W_Function_Article/Lambert_W_Function_Article.tex} (the spine)\\
 {\footnotesize SHA-256 \path{5bca61c4e906ca8a92f283bc92913355ccd4aee26d65112b41474fd16862c6ba}}
@@ -4386,8 +4385,9 @@ The focused branch-pair and Bernoulli tranche is exhaustive at this checkpoint:
 \lean{LambertWBranchSymmetry} has \(0+9\), while
 \lean{LambertWBranchGapBernoulli} has \(0+5\).  Their four-module union is
 therefore four definitions and 37 theorems, 41 public declarations in all.
-The preceding exact-radius checkpoint had the live census 903/11,447; the
-complex value-completion theorem brings the live census to 903/11,448.
+The preceding fixed-column (q)-binomial checkpoint had the live census
+902/11,448; the exact-radius Bernoulli tranche raised it to 903/11,452, and
+the complex value-completion theorem brings the live census to 903/11,453.
 
 \begin{longtable}{@{}p{0.30\textwidth}p{0.42\textwidth}p{0.22\textwidth}@{}}
 \toprule
@@ -4521,7 +4521,7 @@ side condition for the caller.\\
 \lean{AutonomousIteratedDeriv}) &
 Lean's \(P_n\) is this guide's \(P_{n+1}\): the recurrence is stated as
 \(P_{n+1}=(1+w)P_n'-((n+1)w+3n+2)P_n\) from \(P_0=1\), and the formula as
-\(W^{(n+1)}=\EulerE^{-(n+1)W}P_n(W)/(1+W)^{2n+1}\), on the open domains
+\(W^{(n+1)}=\frac{\EulerE^{-(n+1)W}P_n(W)}{(1+W)^{2n+1}}\), on the open domains
 \((-1/\EulerE,\infty)\) and \((-1/\EulerE,0)\).  The engine is stated for an
 arbitrary solution of an autonomous equation \(W'=\varphi\circ W\) on an open
 set, with the derivative family as hypotheses, so it applies beyond Lambert's
@@ -4646,8 +4646,8 @@ first theorem proves absolute summability for every real
 the Bernoulli series is summable if and only if \(\lVert z\rVert<2\pi\), hence
 it diverges on \(\lVert z\rVert=2\pi\) and throughout the exterior; the third
 proves the actual all-index real sum \(z/(\exp z-1)\) when \(z\ne0\); the
-fourth proves the complex \(\operatorname{HasSum}\) value
-\(\lean{complexExpm1Div}(z)^{-1}\) if and only if
+fourth proves the complex \(\operatorname{HasSum}\) value given by the
+inverse of \decl{complexExpm1Div} at \(z\) if and only if
 \(\lVert z\rVert<2\pi\); and the fifth specializes both real sums on the
 strict common branch domain when the positive branch gap is below \(2\pi\).
 At \(z=0\), the fourth theorem's target is the removable value \(1\); away

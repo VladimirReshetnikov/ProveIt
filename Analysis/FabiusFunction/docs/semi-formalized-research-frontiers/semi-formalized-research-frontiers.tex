@@ -329,9 +329,9 @@ formalize their later deductions.
 \end{boxedremark}
 
 \begin{boxedremark}
-\textbf{Current source and retained PDF.}
-The retained PDF contains the 31 August 2026 Legendre Gaunt--Wigner-square
-closed-form overlay.  This source additionally contains the 1 September 2026
+\textbf{Current source checkpoint.}
+The current source retains the 31 August 2026 Legendre Gaunt--Wigner-square
+closed-form overlay and additionally contains the 1 September 2026
 five-theorem fixed-nome q-Pochhammer entire-function overlay and the later
 zero-definition/six-theorem generalized Rvachev identifiability overlay
 described in the audit map below, as well as the six-theorem prime-power
@@ -345,21 +345,21 @@ eight-declaration rational-gap inverse module, and the parity-selected Rvachev
 superconvergence leaf and the subsequent binary-word, box-partition, and
 telescoping-certificate leaves, as well as the exact three-module Lambert
 branch-pairing, gap-bijection, and symmetric-identity tranche (respectively
-0+7, 4+16, and 0+9), its subsequent zero-definition/five-theorem
-Bernoulli branch-gap companion crosswalking
+0+7, 4+16, and 0+9), the three-definition/seven-theorem geometric Richardson
+generating-function module, the three-theorem second-moment strengthening that
+enlarges the Gaussian-binomial cumulant module from 2+21 to 2+24, the
+five-theorem effective fixed-column q-binomial closure, and the subsequent
+zero-definition/five-theorem Bernoulli branch-gap companion.  Its earlier four
+theorems prove the exact complex convergence radius and boundary divergence,
+the nonzero-real sum, and the paired real branch formulas; its added fifth gives the
+complex removable-origin sum given by the inverse of
+\nolinkurl{complexExpm1Div} at \(z\), exactly when
+\(\lVert z\rVert<2\pi\).  It therefore crosswalks
 \nolinkurl{eq:pair-Bernoulli-general} and, under the standard removable-origin
-convention, \nolinkurl{eq:bernoulli-gen}; those four Lambert modules total four
-definitions and 37 theorems, 41 declarations; and the
-three-definition/seven-theorem geometric Richardson generating-function
-module, and the three-theorem second-moment
-strengthening of the existing Gaussian-binomial cumulant module.  The live
-source census is 903 facade-reachable modules and 11,448 public declarations;
-the preceding exact-radius four-theorem checkpoint was 903/11,447.
-The retained
-257-page, 2,438,299-byte A4 PDF, SHA-256
-\nolinkurl{3766761aac90247061f5c955dc84a0feb8567454e10839f1508b9431797ee980},
-predates these source-only overlays and the expanded ledger and is therefore a
-historical render, not a rendering of the current TeX.
+convention, \nolinkurl{eq:bernoulli-gen}.  The four Lambert modules total four
+definitions and 37 theorems, 41 declarations.  The live source census is 903
+facade-reachable modules and 11,453 public declarations, with no missing
+module headers or public-declaration doc comments.
 \end{boxedremark}
 
 \tableofcontents
@@ -572,7 +572,7 @@ theorems, distinct from the complex analytic-order wrapper above \\
 Infinite q-binomial theorem and Euler expansions &
 \nolinkurl{gaussianMajorant}, \nolinkurl{hasSum_qBinomial_theorem},
 \nolinkurl{hasSum_euler_product}, \nolinkurl{hasSum_euler_reciprocal} &
-\nolinkurl{QBinomialTheoremInfinite.lean}; one definition and twenty-two
+\nolinkurl{QBinomialTheoremInfinite.lean}; one definition and twenty-seven
 theorems, inventoried below \\
 Jacobi triple product and pentagonal sums &
 \nolinkurl{thetaExponent}, \nolinkurl{pentagonalExponent},
@@ -995,8 +995,8 @@ The Bernoulli branch-gap series and complex generating identity
 removable-origin convention, \nolinkurl{eq:bernoulli-gen}.  The complex
 Bernoulli exponential generating series is summable if and only if
 \(\lVert z\rVert<2\pi\), so it diverges on the boundary and throughout the
-exterior; precisely on that disk it has sum
-\(\lean{complexExpm1Div}(z)^{-1}\), which is \(1\) at zero and rewrites to
+exterior; precisely on that disk its sum is the inverse of
+\nolinkurl{complexExpm1Div} at \(z\), which is \(1\) at zero and rewrites to
 \(z/(e^z-1)\) away from zero.  On
 \(x\in(-e^{-1},0)\) with positive gap \(\delta<2\pi\), the two sums are
 \(W_0=-\sum_{n\geq0}B_n\delta^n/n!\) and
@@ -2165,10 +2165,8 @@ They are fixed-\(q\), single-symbol results.  They prove no joint holomorphy in
 characteristic-function/MGF package.  The separate three-theorem module above
 proves local-uniform convergence of the outer product in
 \eqref{integration:eq:geometric-sinc-pochhammer}, but none of those remaining
-compound spectral clauses.  This is a source-only overlay: the retained
-257-page canonical PDF predates both these five theorems and the outer-product
-convergence tranche and remains a historical render until a three-pass
-Libertinus rebuild is performed.
+compound spectral clauses.  Both current source surfaces and their exact
+boundaries are recorded in this crosswalk.
 
 \paragraph{Exact generic infinite-product and dissection crosswalk.}
 The newer generic layer is complementary to, and not a renaming of, the
@@ -2288,7 +2286,7 @@ this closes the canonical forward q-binomial structure theorem.  The adjacent
 general-semiring theorem \lean{coeff_gaussianBinomial_one} supplies the
 complete linear-coefficient classifier.
 
-The source-only \path{CentralQBinomialReduction.lean} has no definitions and
+The \path{CentralQBinomialReduction.lean} has no definitions and
 six theorems: \lean{finiteQPochhammerIn_mul_neg},
 \lean{finiteQPochhammerIn_two_mul},
 \lean{finiteQPochhammerIn_map_ringHom},
@@ -2367,7 +2365,8 @@ retains its field, distinct-node, nonzero-product, and geometric-grid
 hypotheses; the second retains \(0<q<1\) and its positive-argument hypotheses.
 
 Six further facade-reachable modules contribute exactly four definitions and
-sixty-five theorems.  The small public inventories are
+seventy theorems, seventy-four public declarations in total.  The small public
+inventories are
 \lean{continuous_gaussianBinomial},
 \lean{tendsto_gaussianBinomial_nhds_one}, and
 \lean{gaussianBinomial_eq_finiteQPochhammerIn_div} in the zero-definition,
@@ -2380,7 +2379,7 @@ three-theorem \path{GaussianBinomialContinuity.lean};
 \lean{quantum_binomial} in the zero-definition, two-theorem
 \path{QuantumBinomial.lean}.
 
-The one-definition/twenty-two-theorem
+The one-definition/twenty-seven-theorem
 \path{QBinomialTheoremInfinite.lean} surface is
 \lean{gaussianMajorant}, \lean{hasSum_of_tendsto_of_dominated},
 \lean{one_le_qPochhammerInfIn_neg},
@@ -2397,10 +2396,42 @@ The one-definition/twenty-two-theorem
 \lean{gaussianBinomial_eq_div}, \lean{gaussianMajorant_nonneg},
 \lean{norm_gaussianBinomial_le},
 \lean{tendsto_finiteQPochhammerIn_pow_atTop},
+\lean{norm_finiteQPochhammerIn_pow_sub_one_le_exp},
+\lean{isBigO_finiteQPochhammerIn_pow_sub_one},
 \lean{tendsto_gaussianBinomial_atTop},
+\lean{tendsto_gaussianBinomial_add_atTop},
+\lean{isBigO_gaussianBinomial_sub_inv},
+\lean{isBigO_gaussianBinomial_add_sub_inv},
 \lean{summable_pow_choose_two_mul_pow}, \lean{hasSum_euler_product},
 \lean{qPochhammerInfIn_ne_zero_of_norm_lt_one},
 \lean{hasSum_qBinomial_theorem}, and \lean{hasSum_euler_reciprocal}.
+
+The five effective fixed-column additions are exact.  For \(\lVert q\rVert\le1\),
+the finite-product estimate is
+\[
+ \left\lVert(q^m;q)_k-1\right\rVert
+ \le \exp\!\left(k\lVert q\rVert^m\right)-1.
+\]
+For fixed \(k\) and \(\lVert q\rVert<1\), Lean states the resulting rate in
+the equivalent additive \texttt{IsBigO} form
+\[
+ (q^m;q)_k-1=\operatorname{O}(q^m),\qquad
+ \GaussianBinomial{n}{k}{q}-(q;q)_k^{-1}
+ =\operatorname{O}\!\left(q^{n-k+1}\right).
+\]
+Since \((q;q)_k\ne0\) under the same strict-contraction hypothesis,
+multiplying the Gaussian additive error by the fixed denominator \((q;q)_k\)
+gives the manuscript's relative-error form.
+The shifted convergence theorem is stronger than the usual \(n+k\)
+specialization: for every fixed \(r\in\NaturalNumbers\),
+\[
+ \GaussianBinomial{n+r}{k}{q}\longrightarrow(q;q)_k^{-1}.
+\]
+For \(r=k\), the quantitative wrapper gives
+\(\GaussianBinomial{n+k}{k}{q}-(q;q)_k^{-1}
+=\operatorname{O}(q^{n+1})\).
+This promotes exactly the fixed-column row from Partial to Exact, so the
+282-result forward q ledger is now 167 Exact, 89 Partial, 18 None, and 8 N/A.
 
 The two-definition/twenty-five-theorem \path{JacobiTripleProduct.lean}
 inventory is \lean{thetaExponent}, \lean{pentagonalExponent},
@@ -2431,8 +2462,7 @@ Finally, the one-definition/nine-theorem
 \lean{rogersSzego_dilation}, \lean{rogersSzego_three_term},
 \lean{summable_norm_pow_div_finiteQPochhammerIn_self},
 \lean{sum_antidiagonal_euler_mul_euler}, and
-\lean{hasSum_rogersSzego_generating}.  This is a source inventory, not a claim
-that the retained 257-page PDF has been rebuilt from the merged source.
+\lean{hasSum_rogersSzego_generating}.
 
 \begin{theorem}[Dyadic orders identify generalized Rvachev exponents]
 \label{integration:thm:generalized-rvachev-identifiability}
@@ -2519,22 +2549,24 @@ union, including the exact 36-declaration Lambert branch-coordinate tranche
 and the subsequent twelve-declaration terminating-basic-hypergeometric
 closure, brings the preceding source checkpoint to 901/11,430.  The later
 three-definition/seven-theorem
-\path{GeometricRichardsonGenerating.lean} leaf brought that source checkpoint
-to 902/11,440.  Three later theorems in the existing
-\path{GaussianBinomialCumulants.lean} module brought that source census to
-902/11,443: the characteristic-zero second-derivative formula and the two
-division-free raw-second-moment and variance-numerator identities over every
-commutative semiring.  The subsequent zero-definition/four-theorem
-\path{LambertWBranchGapBernoulli.lean} leaf first brought the exact-radius
-checkpoint to 903/11,447.  Its fifth theorem brings the live source census to
-903/11,448 and adds the complex \(\operatorname{HasSum}\) value
-\(\lean{complexExpm1Div}(z)^{-1}\) exactly on the open disk.  Thus it crosswalks
+\path{GeometricRichardsonGenerating.lean} leaf brings the next source checkpoint
+to 902/11,440.  Three later theorems enlarge the existing
+\path{GaussianBinomialCumulants.lean} module from 2+21 to 2+24 and bring that
+source census to 902/11,443: the characteristic-zero second-derivative formula
+and the two division-free raw-second-moment and variance-numerator identities
+over every commutative semiring.  The five-theorem effective fixed-column
+q-binomial closure enlarges \path{QBinomialTheoremInfinite.lean} to 1+27 and
+brings the next source census to 902/11,448.  The initial
+zero-definition/four-theorem \path{LambertWBranchGapBernoulli.lean} tranche
+then brings the exact-radius checkpoint to 903/11,452.  Its fifth theorem,
+\nolinkurl{hasSum_bernoulli_mul_pow_div_factorial_complex_iff}, brings the live
+source census to 903/11,453 and gives the complex \(\operatorname{HasSum}\)
+value given by the inverse of \nolinkurl{complexExpm1Div} at \(z\), exactly when
+\(\lVert z\rVert<2\pi\).  Thus the exhaustive 0+5 leaf crosswalks
 \nolinkurl{eq:pair-Bernoulli-general} and, under the explicit standard
 removable-origin convention, the whole \nolinkurl{eq:bernoulli-gen}.  This
 does not claim the literal Lean quotient at zero or formalize the Guide's
-nearest-zero proof route; Puiseux claims remain open.  These additions are
-source-only, and the retained 257-page PDF
-remains explicitly historical; no PDF was built for this update.
+nearest-zero proof route; Puiseux claims remain open.
 The newest six module counts are
 \path{QPochhammerInfiniteBounds.lean} (0+5),
 \path{HeineTransformation.lean} (2+5),
@@ -4677,8 +4709,9 @@ Gaussian derivative evaluations and simple-root multiplicity for the
 even-row/odd-column locus, first over \(\IntegerNumbers\) and then over
 characteristic-zero commutative rings under the strict interior hypothesis.\\
 \path{QBinomialTheoremInfinite.lean} &
-The exhaustive one-definition, twenty-two-theorem dominated-limit and
-infinite q-binomial interface, including Euler's product and reciprocal sums.\\
+The exhaustive one-definition, twenty-seven-theorem dominated-limit and
+infinite q-binomial interface, including the effective fixed-column limits
+and geometric error rates, Euler's product, and reciprocal sums.\\
 \path{JacobiTripleProduct.lean} &
 The exhaustive two-definition, twenty-five-theorem finite/infinite triple-product
 and pentagonal-sum interface.\\
@@ -16673,7 +16706,7 @@ exact global differentiability and $C^\infty$ loci, and endpoint quotient diverg
 \texttt{InverseNotElementary.lean} &
 Exact analytic locus of the totalized inverse and the analytic-density
 obstructions used in its non-elementarity theorem. & \Formalized\\
-\texttt{EffectiveMonotoneInverse.lean} &
+\texttt{EffectiveMonotone}\newline\texttt{Inverse.lean} &
 Exact two-definition/six-theorem generic surface for the computable unit
 clamp, tolerant difference certificates, fixed-depth dyadic bisection, and
 sequential inversion on \([0,1]\) from a supplied positive computable inverse
@@ -16684,7 +16717,7 @@ Exact eight-declaration surface deriving an inverse modulus, sequential
 computability, and effective uniform continuity from computable positive
 rational dyadic-gap lower bounds.  Its total theorem certifies precisely the
 clamped extension, not arbitrary off-interval values of the inverse. & \Formalized\\
-\texttt{FabiusInverseComputable.lean} &
+\texttt{FabiusInverse}\newline\texttt{Computable.lean} &
 The zero-definition/one-theorem specialization proving
 \texttt{fabiusInv\_isComputableRealFunction} for the total clamped inverse. &
 \Formalized\\

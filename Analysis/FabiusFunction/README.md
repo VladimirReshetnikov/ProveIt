@@ -77,7 +77,7 @@ That primary exposition is deliberately proof-backed: every mathematical claim
 in it must have a proved counterpart in the Lean development.
 
 > **Artifact status (2026-09-04).**  The live facade union contains exactly
-> 903 source modules and 11,448 public declarations.  The documentation audit
+> 903 source modules and 11,453 public declarations.  The documentation audit
 > reports no missing module headers or declaration comments.  Its q-series union retains
 > `QPochhammerEntire` 0+5, `GeometricPochhammerNormalConvergence` 0+3,
 > `QPochhammerDissection` 0+2,
@@ -89,16 +89,15 @@ in it must have a proved counterpart in the Lean development.
 > `GaussianBinomialPolynomialStructure` 0+5,
 > `CentralQBinomialReduction` 0+6, `CyclotomicFactorization` 0+7,
 > `JacobiTripleProduct` 2+25,
-> `QBinomialTheoremInfinite` 1+22, `QPascalSummation` 0+4,
+> `QBinomialTheoremInfinite` 1+27, `QPascalSummation` 0+4,
 > `QuantumBinomial` 0+2, `RogersSzegoPolynomial` 1+9,
 > `QPochhammerInfiniteBounds` 0+5, `HeineTransformation` 2+5,
 > `QGaussSummation` 0+2, `QPochhammerComplexOrder` 1+4,
 > `BasicHypergeometricSeries` 2+5, `QMultinomial` 1+9,
-> `GaussianBinomialPalindromic` 0+14, `JacksonIntegral` 1+7,
+> `JacksonIntegral` 1+7,
 > `QExponential` 3+8, `ThetaQuasiPeriodicity` 1+6,
-> `GaussianBinomialPolynomialStructure` 0+5, `JacobiCubic` 0+2,
+> `JacobiCubic` 0+2,
 > `QPochhammerLogDerivative` 0+10, `QPochhammerOrderDerivative` 0+3,
-> `CentralQBinomialReduction` 0+6, `CyclotomicFactorization` 0+7,
 > `PrimitiveRootBlock` 0+3, `QLucas` 0+7,
 > `CyclotomicDivisibility` 0+3, `QCatalan` 1+11,
 > `NewtonInterpolation` 3+19, `QBetaIntegral` 1+8,
@@ -110,21 +109,34 @@ in it must have a proved counterpart in the Lean development.
 > The Lambert branch-gap union now also includes
 > `LambertWBranchGapBernoulli` 0+5; the four-module union is 4+37, forty-one
 > declarations.
-> The retained
-> primary exposition, Lean walkthrough, canonical frontier, Representation
-> Frontiers, filed New Frontiers, notation catalogue, Integration-and-Transform
-> master, comb-interpolation, and q-series synthesis PDFs contain respectively
-> 183, 130, 257, 301, 41, 88, 377, 158, and 389 A4 pages.  Their current TeX
-> sources contain post-render unions, including the centered
-> Appell/deconvolution, arbitrary-phase synthesis, Lagrange--Rvachev,
-> prime-power companion-row, outer Pochhammer normal convergence, total
-> rational integer-index zero-row Wigner-square, and
-> finite/infinite q-Pochhammer material, as well as the fixed-depth effective
-> inverse realizer, total inverse computability theorem, and actual Lambert
-> branch-gap Bernoulli series.  These retained PDFs
-> are historical receipts, not source/PDF-parity claims; fresh uninterrupted three-pass
-> Libertinus rebuilds remain pending.  The reorganized q-series roots whose
-> shared-notation input paths changed likewise remain pending parity rebuilds.
+> Five final-source publications now have accepted source/PDF-parity receipts.
+> The 187-page, 1,578,751-byte primary PDF has SHA-256
+> `7a93d9c47c22c62dc50cda6a64d030bfad5f44a9ef4cc5568b3b8b16b014bc8f`
+> and matches its 13,720-line, 684,413-byte source with SHA-256
+> `7efb8d2294a15cf6b150bb0b04b35db74cf68db3f3cdb4bc5d765b7738504019`.
+> The 150-page, 1,185,846-byte Lean-walkthrough PDF has SHA-256
+> `8a5416061addfb480f410e8306340994fe7f5160927a928112087b6b1d5c0cf5`
+> and matches its 6,603-line, 457,421-byte source with SHA-256
+> `4e6ea24897a31683c53e71c6cb97eb21f37eff3ae4e452add429bd9f47646ea6`.
+> The 260-page, 1,875,190-byte canonical-frontier PDF has SHA-256
+> `fee3b5af21b01b16c41cf8291ba0508d1e6c613bfd098cdef457cde44ea693c2`
+> and matches its 17,947-line, 804,625-byte source with SHA-256
+> `ac6b28fb8a98d97ed4b7a0fe7a5ba2cdfab852fb6de1ee2ecfda4aed75804371`.
+> The 70-page, 958,713-byte Lambert Guide PDF has SHA-256
+> `24e8bf561283ffc5427297df6f656696a7e2538731e53d03d59e4268b50772fc`
+> and matches its 4,864-line, 176,796-byte source with SHA-256
+> `3f3552983a73db2dab94f3625d10d054b747ee03fc2758e257af86f6216deab5`.
+> The 391-page, 2,464,122-byte q-series PDF has SHA-256
+> `c0a00720685f40e0684b4858e7ce18ce134701529898fd4574d09b6c090e0e91`
+> and matches its 16,433-line, 815,194-byte master with SHA-256
+> `f2aae6ddc3d7a399f9ed47806a0abe6458cbcab37bf2aac9f55ad3913b5a0e2d`.
+> The preceding 257-page canonical-frontier artifact remains a historical
+> receipt.  The 301-page Representation Frontiers, 41-page filed New Frontiers,
+> 88-page notation catalogue, 377-page Integration-and-Transform master, and
+> 158-page comb-interpolation artifacts likewise remain historical receipts whose
+> package notices make no current source/PDF-parity claim.  Those artifacts
+> still require fresh uninterrupted three-pass Libertinus rebuilds where their
+> package notices say so.
 
 The formally proved small-argument hierarchy—including the corrected sharp
 asymptotic, the general coefficient algebra for the recursive all-orders
@@ -440,7 +452,7 @@ Padé/J-fractions, infinite Jacobi theory, and asymptotics also remain open.
 | Computable-real-function theorems | `FabiusFunction.FabiusComputableSpline` | `fabiusSplineApproxPR_computable`, `extendedFabiusSplineApproxPR_computable`, `fabius_isComputableRealFunction`, `globalFabius_isComputableRealFunction` |
 | Gaussian-polynomial continuity and the finite-product quotient bridge | `FabiusFunction.GaussianBinomialContinuity` | Retained 0+3 theorem inventory: `continuous_gaussianBinomial`, `tendsto_gaussianBinomial_nhds_one`, and `gaussianBinomial_eq_finiteQPochhammerIn_div`. |
 | Jacobi triple product and Euler pentagonal sums | `FabiusFunction.JacobiTripleProduct` | Retained 2-definition/25-theorem inventory: finite triple-product polynomial and field forms, the bilateral Jacobi `HasSum` identities, and pentagonal and paired-pentagonal `HasSum` corollaries. |
-| Infinite q-binomial and reciprocal Euler theorems | `FabiusFunction.QBinomialTheoremInfinite` | Retained 1-definition/22-theorem q-facing inventory: comparison and norm bounds, the fixed-column Gaussian limit, Euler product, analytic q-binomial theorem, and reciprocal Euler `HasSum`; the shared finite zero-left identity is imported from `GaussianBinomialAtOne`. |
+| Infinite q-binomial and reciprocal Euler theorems | `FabiusFunction.QBinomialTheoremInfinite` | Retained 1-definition/27-theorem q-facing inventory: comparison and norm bounds, effective finite-product convergence, the fixed-column Gaussian limit with arbitrary fixed upper-index shift and geometric error rates, Euler product, analytic q-binomial theorem, and reciprocal Euler `HasSum`.  The five newest declarations are `norm_finiteQPochhammerIn_pow_sub_one_le_exp`, `isBigO_finiteQPochhammerIn_pow_sub_one`, `tendsto_gaussianBinomial_add_atTop`, `isBigO_gaussianBinomial_sub_inv`, and `isBigO_gaussianBinomial_add_sub_inv`.  The fixed-column limit and rates are Exact: Lean gives additive `IsBigO` errors `O(q^(n-k+1))` and, after the shift by `k`, `O(q^(n+1))`; multiplying the additive error by the fixed nonzero denominator `(q;q)_k` gives the manuscript's equivalent relative-error form.  The shared finite zero-left identity is imported from `GaussianBinomialAtOne`. |
 | Weighted q-Pascal summation | `FabiusFunction.QPascalSummation` | Retained 0+4 theorem inventory: `sum_gaussianBinomial_succ_mul`, `sum_gaussianBinomial_succ_mul'`, `Commute.gaussianBinomial_left`, and `Commute.gaussianBinomial_right`. |
 | Quantum-plane binomial expansion | `FabiusFunction.QuantumBinomial` | Retained 0+2 theorem inventory: `quantumPlane_mul_pow` and `quantum_binomial`. |
 | Rogers--Szegő recurrences and generating series | `FabiusFunction.RogersSzegoPolynomial` | Retained 1-definition/9-theorem inventory: the zero, row-sum, successor, dilation, and three-term laws, the Gaussian successor factor identity, summability and Euler antidiagonal convolution, and `hasSum_rogersSzego_generating`. |

@@ -588,7 +588,10 @@ $O(z^{-1})$ at infinity, so it is identically zero.
 \end{proof}
 
 \emph{Lean status.}  Formal, in \path{QPartialFractions.lean}.  The coefficient
-$c_j=(-1)^jq^{\binom{j+1}{2}}/((q;q)_j(q;q)_{n-j})$ is \path{Fabius.partialFractionCoeff}, the
+\[
+c_j=\frac{(-1)^jq^{\binom{j+1}{2}}}{(q;q)_j(q;q)_{n-j}}
+\]
+is \path{Fabius.partialFractionCoeff}, the
 division-free polynomial form of \Cref{rem:partial-fraction-formalization} is
 \path{Fabius.sum_partialFractionCoeff_mul_prod_erase} (an identity in $K[X]$ under
 $(q;q)_n\ne0$ alone), and the displayed decomposition is
@@ -696,15 +699,18 @@ with $g_j$ entire.  Differentiating at $a_0$, where $1-a_0q^j=0$, leaves only $-
 This theorem has an exact Lean counterpart in
 \path{FabiusFunction.QPochhammerEntire}.  For a fixed complex nome with
 $\Norm q<1$, the declaration
-\texttt{hasProdLocallyUniformly\_complexQPochhammerInf} proves locally
+\path{hasProdLocallyUniformly_complexQPochhammerInf} proves locally
 uniform convergence on the whole $a$-plane and
-\texttt{complexQPochhammerInf\_differentiable} proves entirety.  The
-division-free theorem \texttt{complexQPochhammerInf\_eq\_zero\_iff} says
+\path{complexQPochhammerInf_differentiable} proves entirety.  The
+division-free theorem
+\path{complexQPochhammerInf_eq_zero_iff} says
 that the product vanishes exactly when some factor $1-aq^j$ vanishes; it
 remains valid at $q=0$.  Under the present theorem's hypothesis $q\ne0$,
-\texttt{complexQPochhammerInf\_eq\_zero\_iff\_eq\_inv\_pow} gives the
+\path{complexQPochhammerInf_eq_zero_iff_eq_inv_pow}
+gives the
 literal lattice $a=(q^j)^{-1}$.  Finally,
-\texttt{analyticOrderAt\_complexQPochhammerInf\_of\_eq\_zero} proves that
+\path{analyticOrderAt_complexQPochhammerInf_of_eq_zero}
+proves that
 every zero has analytic order one.  Its proof splits the infinite product
 into the first $j+1$ factors and a shifted tail; uniqueness of the vanishing
 factor makes both complementary factors nonzero, leaving a nonzero analytic
@@ -1087,7 +1093,8 @@ Induct on $n$.  The boundary values are $1$.  Either recurrence in \Cref{thm:qpa
 
 \begin{remark}[Exact universal polynomial in Lean]
 The theorem
-\lean{Fabius.gaussianBinomial_eq_eval₂_universal} in
+\texttt{Fabius.gaussianBinomial\_\allowbreak{}eq\_\allowbreak{}eval}%
+\textsubscript{2}\allowbreak{}\texttt{\_universal} in
 \path{GaussianBinomialUniversal.lean} identifies every Gaussian coefficient
 over a commutative semiring with the evaluation of the universal polynomial
 \(GaussianBinomial{n}{k}{X}\in\NaturalNumbers[X]\).  Thus the polynomiality
@@ -3780,8 +3787,8 @@ $q^{\binom k2}$, and the $k$-th summand of the transcribed identity is the
 $k$-th summand of \eqref{eq:qchu1-cleared}.  Thus \eqref{eq:qchu1} holds in
 every field with $q\ne0$, $a\ne0$, $(q;q)_n\ne0$ and $(c;q)_n\ne0$, with no
 limiting process; combined with \Cref{prop:qchu2-by-reversal} the same is
-true of \eqref{eq:qchu2} (with the additional hypothesis $(a;q)_n\ne0$ that
-the reversal uses).
+true of \eqref{eq:qchu2} (with the additional hypotheses $c\ne0$ and
+$(a;q)_n\ne0$ that the reversal uses).
 \end{remark}
 
 % -----------------------------------------------------------------
@@ -3885,7 +3892,17 @@ Fix $n\in\NaturalNumbers$ and nonzero parameters $A,C$ with $(A;q)_n\ne0$ and $(
  c=\frac{q^{1-n}}{A},\qquad
  z=\frac{cq^{n}}{a}=\frac{Cq^{n}}{A}.
 \]
-These are nonzero, and by \Cref{prop:base-reversal} the hypotheses of \Cref{lem:2phi1-reversal} hold: $(c;q)_n=(q^{1-n}/A;q)_n=(-A)^{-n}q^{-\binom n2}(A;q)_n\ne0$ and $(q^{1-n}/a;q)_n=(C;q)_n\ne0$.  Since $az=cq^{n}$, the reflected argument in \eqref{eq:2phi1-reversal} is $cq^{n+1}/(az)=q$, and the reflected parameters are $q^{1-n}/c=A$ and $q^{1-n}/a=C$.  Hence \eqref{eq:2phi1-reversal} reads
+These are nonzero, and by \Cref{prop:base-reversal} the hypotheses of
+\Cref{lem:2phi1-reversal} hold:
+\[
+ (c;q)_n=(q^{1-n}/A;q)_n
+ =(-A)^{-n}q^{-\binom n2}(A;q)_n\ne0,
+ \qquad
+ (q^{1-n}/a;q)_n=(C;q)_n\ne0.
+\]
+Since $az=cq^{n}$, the reflected argument in \eqref{eq:2phi1-reversal} is
+$cq^{n+1}/(az)=q$, and the reflected parameters are $q^{1-n}/c=A$ and
+$q^{1-n}/a=C$.  Hence \eqref{eq:2phi1-reversal} reads
 \[
  {}_2\phi_1\!\left[
  \begin{matrix}q^{-n},a\\c\end{matrix};q,\frac{cq^n}{a}\right]
@@ -3915,7 +3932,7 @@ By \Cref{prop:base-reversal} once more, $(a;q)_n=(q^{1-n}/C;q)_n=(-C)^{-n}q^{-\b
  =q^{\binom{n+1}{2}+\binom n2-n^2}\,A^{n}\frac{(C/A;q)_n}{(C;q)_n}
  =A^{n}\frac{(C/A;q)_n}{(C;q)_n},
 \]
-because $\binom{n+1}{2}+\binom n2=\tfrac{n^2+n}{2}+\tfrac{n^2-n}{2}=n^2$.  This is \eqref{eq:qchu2} at the pair $(A,C)$, which was an arbitrary admissible pair.  The auxiliary condition $(A;q)_n\ne0$ excludes only a proper algebraic
+because $\binom{n+1}{2}+\binom n2=\tfrac{n^2+n}{2}+\tfrac{n^2-n}{2}=n^2$.  This is \eqref{eq:qchu2} at the pair $(A,C)$, which was an arbitrary admissible pair.  The auxiliary conditions $C\ne0$ and $(A;q)_n\ne0$ exclude only a proper algebraic
 subset of the parameter space, and both sides of \eqref{eq:qchu2} are
 rational functions of $(A,C)$ there; agreeing off a proper algebraic
 subset, they agree wherever both are defined.  This is the same
@@ -7155,7 +7172,26 @@ which proves \eqref{eq:fixed-column-limit} and
 \eqref{eq:fixed-column-shifted-limit} and
 \eqref{eq:fixed-column-shifted-error}.
 \end{proof}
-\emph{Lean status.}  Partial: \path{Fabius.tendsto_gaussianBinomial_atTop} in \path{QBinomialTheoremInfinite.lean} proves \eqref{eq:fixed-column-limit} for any fixed \(k\) over an arbitrary normed field, with \(\AbsoluteValue q<1\) read as the norm, so that the \(q=0\) case the proof separates is subsumed rather than argued; the route is \path{Fabius.tendsto_finiteQPochhammerIn_pow_atTop}, that \((q^{m};q)_k\to1\), against the identity \path{Fabius.finiteQPochhammerIn_self_mul_gaussianBinomial}.  Not stated: the shifted limit \eqref{eq:fixed-column-shifted-limit}, which would follow by composing with \(n\mapsto n+k\), and both geometric error terms \eqref{eq:fixed-column-error} and \eqref{eq:fixed-column-shifted-error}, for which the corpus carries only uniform majorants, never a decaying one.
+\emph{Lean status.}  Exact in \path{QBinomialTheoremInfinite.lean} over an arbitrary
+normed field.  \path{Fabius.tendsto_gaussianBinomial_atTop} proves
+\eqref{eq:fixed-column-limit}, while the stronger
+\path{Fabius.tendsto_gaussianBinomial_add_atTop} permits any fixed upper-index
+shift and gives \eqref{eq:fixed-column-shifted-limit} at shift \(k\).  The five
+new declarations are the explicit finite-product bound
+\path{Fabius.norm_finiteQPochhammerIn_pow_sub_one_le_exp}, its asymptotic form
+\path{Fabius.isBigO_finiteQPochhammerIn_pow_sub_one}, the just-mentioned shifted
+limit, and the two rates
+\path{Fabius.isBigO_gaussianBinomial_sub_inv} and
+\path{Fabius.isBigO_gaussianBinomial_add_sub_inv}.  The last two state the errors
+additively as
+\(\GaussianBinomial{n}{k}{q}-(q;q)_k^{-1}=O(q^{n-k+1})\) and
+\(\GaussianBinomial{n+k}{k}{q}-(q;q)_k^{-1}=O(q^{n+1})\).  This is exactly
+equivalent to the multiplicative notation in \eqref{eq:fixed-column-error} and
+\eqref{eq:fixed-column-shifted-error}: \((q;q)_k\ne0\) when
+\(\lVert q\rVert<1\), multiplication by its fixed nonzero value converts the
+additive error into the relative error, and field-valued \texttt{IsBigO}
+compares norms, with \(\lVert q^m\rVert=\lVert q\rVert^m\).  The formal statements
+also cover \(q=0\), where the manuscript states only the limits separately.
 
 
 % ed.: replaces the former statement of thm:central-fixed-q (monograph lines
@@ -13510,7 +13546,7 @@ inside the proof below does not formalize the result the proof concludes.
   than a mathematical claim.
 \end{description}
 
-Of the 282 labelled forward results, 166 are \statusexact, 90 are
+Of the 282 labelled forward results, 167 are \statusexact, 89 are
 \statuspartial, 18 are \statusnone, and 8 are \statusna.  The original
 191-result pre-Fabius core had 35 \statusexact, 30 \statuspartial, 123
 \statusnone, and 3 \statusna{} entries.  The four integrated guide chapters
@@ -13616,7 +13652,7 @@ compatibility spelling of the primary identity;\\
 theorems;\\
 \path{GeometricPochhammerNormalConvergence.lean}: zero definitions and three
 theorems;\\
-\path{QBinomialTheoremInfinite.lean}: one definition and 22 theorems; its
+\path{QBinomialTheoremInfinite.lean}: one definition and 27 theorems; its
 use of \path{Fabius.finiteQPochhammerIn_zero_left} imports the unique
 declaration from \path{GaussianBinomialAtOne.lean};\\
 \path{BasicHypergeometricSeries.lean}: two definitions and five theorems;\\
@@ -13655,7 +13691,7 @@ generic theorem imported from \path{GeneralQConditionNumber.lean};\\
 \end{center}
 
 The imported \path{QBinomialTheoremInfinite.lean} surface has one definition
-and 22 theorems.  In particular,
+and twenty-seven theorems.  In particular,
 \path{Fabius.finiteQPochhammerIn_zero_left} is canonically declared in
 \path{GaussianBinomialAtOne.lean} and merely made available by that import; it
 is not redeclared in \path{QBinomialTheoremInfinite.lean}.
@@ -14096,7 +14132,7 @@ Bailey transforms and the Andrews--Gordon identities & 5 & 3 & 0 & 1\\
 Cyclotomic factorization and congruences & 9 & 0 & 0 & 0\\
 Negative upper indices and geometric Newton interpolation & 9 & 0 & 0 & 0\\
 Central $q$-binomial sums and Lambert series & 2 & 0 & 5 & 0\\
-Asymptotic regimes and Bernoulli expansions & 3 & 3 & 2 & 0\\
+Asymptotic regimes and Bernoulli expansions & 4 & 2 & 2 & 0\\
 Exact limits, reciprocity, and research frontiers & 5 & 0 & 0 & 0\\
 Computation, certification, and formal proof architecture & 7 & 2 & 2 & 3\\
 Geometric interpolation and exact $q$-filters & 7 & 2 & 0 & 0\\
@@ -14104,7 +14140,7 @@ Half-base arithmetic and Prouhet--Thue--Morse cancellation & 6 & 3 & 0 & 0\\
 Geometric uniform sums, $q$-cumulants, and the Fabius--Rvachev functions & 2 & 11 & 0 & 0\\
 Dyadic Gaussian--Thue--Morse structure and the values of $F$ & 8 & 45 & 3 & 0\\
 \midrule
-\textbf{Forward total} & 166 & 90 & 18 & 8\\
+\textbf{Forward total} & 167 & 89 & 18 & 8\\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -15346,12 +15382,17 @@ $x/(\EulerE^{x}-1)$, which Mathlib does not carry.  Not claimed: that $2\pi$ is 
 convergence}\\[2pt]
 \Cref{thm:gaussian-bernoulli} & \statusnone & ---\\[2pt]
 \Cref{cor:gaussian-first-asymptotic} & \statusnone & ---\\[2pt]
-\Cref{thm:fixed-column-limit} & \statuspartial &
+\Cref{thm:fixed-column-limit} & \statusexact &
 \texttt{tendsto\_\allowbreak{}gaussianBinomial\_\allowbreak{}atTop},
-\texttt{tendsto\_\allowbreak{}finiteQPochhammerIn\_\allowbreak{}pow\_\allowbreak{}atTop}\newline
-{\footnotesize\texttt{QBinomialTheoremInfinite}; the limit
-\eqref{eq:fixed-column-limit} in any complete normed field; the geometric
-error terms are not stated}\\[2pt]
+\texttt{tendsto\_\allowbreak{}gaussianBinomial\_\allowbreak{}add\_\allowbreak{}atTop},
+\texttt{norm\_\allowbreak{}finiteQPochhammerIn\_\allowbreak{}pow\_\allowbreak{}sub\_\allowbreak{}one\_\allowbreak{}le\_\allowbreak{}exp},
+\texttt{isBigO\_\allowbreak{}finiteQPochhammerIn\_\allowbreak{}pow\_\allowbreak{}sub\_\allowbreak{}one},
+\texttt{isBigO\_\allowbreak{}gaussianBinomial\_\allowbreak{}sub\_\allowbreak{}inv},
+\texttt{isBigO\_\allowbreak{}gaussianBinomial\_\allowbreak{}add\_\allowbreak{}sub\_\allowbreak{}inv}\newline
+{\footnotesize\texttt{QBinomialTheoremInfinite}; both limits and both geometric
+rates over any normed field.  The rates are stated as additive
+\texttt{IsBigO} errors, equivalently to the displayed relative errors because
+the fixed factor \((q;q)_k\) is nonzero}\\[2pt]
 \Cref{thm:central-fixed-q} & \statuspartial &
 \texttt{tendsto\_\allowbreak{}gaussianBinomialInt\_\allowbreak{}central}\newline
 {\footnotesize\texttt{JacobiTripleProduct}; only the last clause, the limit

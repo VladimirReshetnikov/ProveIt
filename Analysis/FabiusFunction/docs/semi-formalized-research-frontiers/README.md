@@ -21,15 +21,27 @@ The canonical frontier artifacts are:
 - [`semi-formalized-research-frontiers.tex`](semi-formalized-research-frontiers.tex)
 - [`semi-formalized-research-frontiers.pdf`](semi-formalized-research-frontiers.pdf)
 
-> **Source/PDF synchronization.** The retained 257-page, 2,438,299-byte A4 PDF
-> includes the 31 August 2026 Legendre Gaunt--Wigner-square closed-form overlay.
-> Its PDF (SHA-256
-> `3766761aac90247061f5c955dc84a0feb8567454e10839f1508b9431797ee980`)
-> source predates the later q-Pochhammer overlay and expanded ledger, so it is
-> a historical render and must not be cited as displaying the final source union.
+> **Source/PDF synchronization.** The accepted current source has 17,947 lines
+> and 804,625 bytes, with SHA-256
+> `ac6b28fb8a98d97ed4b7a0fe7a5ba2cdfab852fb6de1ee2ecfda4aed75804371`.
+> Its matching 260-page, 1,875,190-byte A4 PDF has SHA-256
+> `fee3b5af21b01b16c41cf8291ba0508d1e6c613bfd098cdef457cde44ea693c2`.
+> The preceding 257-page, 2,438,299-byte A4 PDF, SHA-256
+> `3766761aac90247061f5c955dc84a0feb8567454e10839f1508b9431797ee980`,
+> remains a historical receipt for the source before the later q-Pochhammer
+> overlay and expanded ledger.
 
-The current source-only superconvergence overlay is also newer than every
-retained frontier PDF. `RvachevSuperconvergentSynthesis.lean` contributes one
+After integration of upstream revision `71c908e` and the subsequent
+Lambert--Bernoulli overlay, the primary exposition, Lean walkthrough, and
+Lambert Guide received accepted final-source renders: respectively 187, 150,
+and 70 A4 pages.  Their exact source and PDF receipts are recorded in the root
+README and documentation audit.  The consolidated q-series synthesis likewise
+has the accepted current 391-page receipt recorded below.  The canonical
+frontier's accepted 260-page receipt above completes those four formerly queued
+renders.
+
+The superconvergence overlay initially postdated every then-retained frontier
+PDF. `RvachevSuperconvergentSynthesis.lean` contributes one
 definition and eight theorems for arbitrary nonzero natural meshes: it
 packages the parity-selected phases, exactness through degree `v₂(M)+1`,
 physical-coordinate quadrature, deconvolved-polynomial synthesis, and the
@@ -39,9 +51,11 @@ this promotes exactly `is:p3:cor:forced-superconvergence` and
 49 Lean-proved / 96 human-proved / 10 conjectural / 15 open / 24
 nonassertoric. At that superconvergence checkpoint the documentation census
 was 671 modules and 8,858 public declarations; no PDF was rebuilt for that
-source-only update.
+source-only update.  The overlay is now present in the accepted primary,
+walkthrough, and canonical-frontier renders; the unrelated inverse and comb
+artifacts remain historical.
 
-The newest source-only Lambert branch-coordinate overlay formalizes the exact
+The later Lambert branch-coordinate overlay formalizes the exact
 pairing theorem, its symmetric corollary, the compact Bernoulli-series identity,
 and the complex Bernoulli generating function with its standard removable
 value and exact convergence radius from `Lambert_W_Guide/`.
@@ -76,25 +90,26 @@ removable-origin convention. The Guide's nearest-nonzero-zero explanation is
 not the formal proof route. With the three finite branch-coordinate modules,
 the four-module union is 4 definitions + 37 theorems = 41 declarations.
 Higher or convergent Puiseux/logarithmic
-expansions remain open. The affected retained frontier, primary, walkthrough,
-and Lambert-Guide PDFs are historical artifacts and do not render this
-source-only overlay; no render parity is claimed. The live documentation
-census at the exact-radius four-theorem checkpoint was 903 modules and 11,447
-public declarations; the value-completion theorem brings the live census to
-903 modules and 11,448 public declarations.
+expansions remain open. The accepted primary, walkthrough, and Lambert-Guide
+PDFs now render this overlay, as does the accepted canonical-frontier PDF. The
+live documentation census reached 902 modules and 11,448 public declarations
+after the fixed-column q-binomial closure.  The initial four-theorem Bernoulli leaf gave
+the exact-radius checkpoint 903/11,452; the value-completion theorem brings the
+live census to 903 modules and 11,453 public declarations.
 
-The preceding source-only addition is
+The preceding declaration addition is
 `FabiusFunction.GeometricRichardsonGenerating`, with three definitions and
 seven theorems. Its
 `Fabius.geometricLagrangeRichardson_generating` theorem is the exact formal
 counterpart of canonical comb label `gq:thm:richardson-generating`; the module
 also supplies the report-facing analytic companion
 `Fabius.hasSum_geometricLagrangeRichardson_mul_pow` under strict nome
-contraction and absolute summability. The retained canonical-frontier,
-primary, walkthrough, and comb-synthesis PDFs all predate this crosswalk and
-remain historical artifacts; none was rebuilt for this update.
+contraction and absolute summability. The accepted primary and walkthrough
+PDFs now include this crosswalk, as does the accepted canonical-frontier PDF.
+The retained comb-synthesis PDF still predates it and remains a historical
+artifact.
 
-The newest source-only addition leaves the module count unchanged and adds
+The next declaration addition leaves the module count unchanged and adds
 three theorems to `FabiusFunction.GaussianBinomialCumulants`: the explicit
 second derivative at one
 `Fabius.eval_one_derivative_derivative_gaussianBinomial_X`, the division-free
@@ -106,8 +121,10 @@ over every commutative semiring, including the above-row zero case. Their
 probability language is the normalized-generating-polynomial interpretation of
 algebraic identities, not a new probability-space construction.
 
-The 1 September 2026 source-only q-Pochhammer overlay is likewise newer than
-the retained PDFs.  The new `QPochhammerEntire.lean` leaf has zero definitions
+The 1 September 2026 q-Pochhammer overlay initially postdated the retained
+PDFs; it is now included in the accepted q-series, primary, walkthrough, and
+canonical-frontier renders.  The new
+`QPochhammerEntire.lean` leaf has zero definitions
 and five theorems: for a fixed complex nome with norm less than one it proves
 local uniform convergence of the infinite product, differentiability in the
 symbol, the division-free factor-zero criterion, the reciprocal-power zero
@@ -117,8 +134,22 @@ same current source also crosswalks the generic infinite/dissection API and
 the later Euler, q-binomial, Jacobi, quantum-binomial, Rogers--Szegő,
 cyclotomic-divisibility, q-Catalan, primitive-root-block, q-Lucas, Jackson
 q-beta, geometric Newton-interpolation, integer/complex upper Gaussian, and
-q-Pfaff--Saalschütz, and noncommutative q-multinomial tranches. Its 282-result forward
-status totals are now 166 exact / 90 partial / 18 none / 8 interface. The
+q-Pfaff--Saalschütz, and noncommutative q-multinomial tranches.
+`QBinomialTheoremInfinite.lean` now has one definition and twenty-seven
+theorems.  Its five newest declarations are
+`norm_finiteQPochhammerIn_pow_sub_one_le_exp`,
+`isBigO_finiteQPochhammerIn_pow_sub_one`,
+`tendsto_gaussianBinomial_add_atTop`,
+`isBigO_gaussianBinomial_sub_inv`, and
+`isBigO_gaussianBinomial_add_sub_inv`.  They add an explicit finite-product
+error bound, its geometric rate, arbitrary fixed upper-index shifts in the
+Gaussian limit, and unshifted/shifted geometric error rates.  The manuscript's
+fixed-column limit/rate claim is therefore Exact.  Lean states the errors in
+additive `IsBigO` form as `O(q^(n-k+1))` and, after shifting by `k`,
+`O(q^(n+1))`; multiplying by the fixed nonzero denominator `(q;q)_k` gives
+the equivalent relative-error form used in the manuscript.  Its
+282-result forward status totals are now 167 Exact / 89 Partial / 18 None / 8
+interface, with the fixed-column row promoted from Partial to Exact.  The
 outer spectral product now has an exact
 locally-uniform/normal-convergence theorem; the compound centered/MGF and
 exterior reciprocal/pole layers remain partial.
@@ -135,14 +166,17 @@ no rational-continuation or cleared commutative-ring extension is claimed.
 Immediately before the Gaussian second-moment edit, the monograph source had
 16,359 lines and 812,257 bytes, with SHA-256
 `e90f46955d9a9792ce469d29ceaa3aa538874eb1e94cf4c2dd7e50dbaf63b10e`.
-The working source is newer, and no replacement digest is recorded here for
-this source-only update.
-Its retained 389-page A4 PDF (3,254,138 bytes; SHA-256
+The formerly retained 389-page A4 PDF (3,254,138 bytes; SHA-256
 `b8add607c85ee35be98dabf36879e1d45fb093c6b453e93679c80295fae715bc`)
 was synchronized to the preceding 16,339-line, 810,779-byte source checkpoint
 (SHA-256 `14c444feb14c435bc300becd9c8cd2765c1e96f608dd79da462becc41b28ed22`).
-The current source-only theorem promotions postdate that artifact, so no
-current source/PDF parity is claimed.
+The 16,359-line checkpoint already included the merged q-Chu/reversal union.
+The Gaussian-moment and fixed-column theorem tranches postdated that historical
+receipt.  The accepted current q-series receipt is now a 391-page,
+2,464,122-byte A4 PDF with SHA-256
+`c0a00720685f40e0684b4858e7ce18ce134701529898fd4574d09b6c090e0e91`.
+It matches the current 16,433-line, 815,194-byte master with SHA-256
+`f2aae6ddc3d7a399f9ed47806a0abe6458cbcab37bf2aac9f55ad3913b5a0e2d`.
 
 The current finite-moment/Legendre/Gaunt crosswalk covers eleven modules with
 20 public definitions and 109 public theorems, 129 declarations in all. The
@@ -209,6 +243,9 @@ metadata, not a formalization claim; where no reachable repository blob
 reproduces it, the canonical TeX labels it explicitly as unverified rather than
 silently treating it as authenticated. The source snapshots consolidated on
 25 August 2026 were recorded as follows:
+
+No live `SHA256SUMS` or `SHA256SUMS.*` manifest is maintained; the inline
+values below are historical provenance receipts only.
 
 | Former source | SHA-256 |
 | --- | --- |

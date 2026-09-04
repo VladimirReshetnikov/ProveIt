@@ -92,24 +92,28 @@ validation state. Deleted package ledgers must not be recreated. Historical
 SHA-256 values recorded directly in this README and in `PROVENANCE.md` remain
 provenance receipts for the named artifacts.
 
-The retained `q_pochhammer_q_binomial_monograph.pdf` is a historical 389-page
-A4 artifact of 3,254,138 bytes with SHA-256
-`b8add607c85ee35be98dabf36879e1d45fb093c6b453e93679c80295fae715bc`.
-It was synchronized to the source checkpoint at commit
+The accepted current `q_pochhammer_q_binomial_monograph.tex` has 16,433 lines
+and 815,194 bytes, with SHA-256
+`f2aae6ddc3d7a399f9ed47806a0abe6458cbcab37bf2aac9f55ad3913b5a0e2d`.
+Its matching `q_pochhammer_q_binomial_monograph.pdf` is a 391-page,
+2,464,122-byte A4 artifact with SHA-256
+`c0a00720685f40e0684b4858e7ce18ce134701529898fd4574d09b6c090e0e91`.
+The preceding 389-page, 3,254,138-byte A4 artifact with SHA-256
+`b8add607c85ee35be98dabf36879e1d45fb093c6b453e93679c80295fae715bc`
+was synchronized to the source checkpoint at commit
 `736a241d1a025d64ac73b1573b17a7b3fc02652d`: 16,339 lines and 810,779
 bytes, with SHA-256
 `14c444feb14c435bc300becd9c8cd2765c1e96f608dd79da462becc41b28ed22`.
-The checked working source now contains newer editorial changes, so this is
-historical artifact metadata only and no render parity with the current TeX is
-claimed. `pdffonts` reports 43 font rows, all embedded and subsetted, with no
-Type-3 fonts. The files under `assets/experiments/**/figures/` remain research
-figures, not publication manuscripts.
+It remains historical provenance. At that checkpoint `pdffonts` reported 43
+font rows, all embedded and subsetted, with no Type-3 fonts. The files under
+`assets/experiments/**/figures/` remain research figures, not publication
+manuscripts.
 
 The current source includes exhaustive crosswalks for `QPochhammerEntire`
 (zero definitions
 and five legacy compatibility theorems), `QPochhammerInfinite` (one definition
 and twenty-nine theorems), `QPochhammerDissection` (zero definitions and two
-theorems), `QBinomialTheoremInfinite` (one definition and twenty-two
+theorems), `QBinomialTheoremInfinite` (one definition and twenty-seven
 theorems), `GaussianBinomialPalindromic` (zero definitions and fourteen
 theorems), `GaussianBinomialPolynomialStructure` (zero definitions and five
 theorems), `GaussianBinomialCumulants` (two definitions and twenty-four
@@ -159,16 +163,24 @@ The newest combinatorial and certification tranche adds
 binary-word inversion and path-area generating functions, rectangular-box
 partition generating functions and counts, finite telescoping certificates,
 recurrence uniqueness, and rational-identity specialization. The live facade
-audit now contains 903 modules and 11,448 public declarations, with no
-documentation gaps. Ten declarations come from the sibling
+audit now contains 903 modules and 11,453 public declarations, with no
+documentation gaps. The recent declaration chronology is 11,440
+after `GeometricRichardsonGenerating`, 11,443 after the Gaussian second-moment
+tranche, 11,448 after the five fixed-column q-binomial declarations, and 11,453
+after the five-theorem `LambertWBranchGapBernoulli` leaf. Ten declarations come
+from the sibling
 `FabiusFunction.GeometricRichardsonGenerating` module (three definitions and
 seven theorems), whose exact comb-manuscript crosswalk is
 `Fabius.geometricLagrangeRichardson_generating`; it does not change this
-monograph's forward-status inventory or make its retained PDF current. The
+monograph's forward-status inventory. The
 other three are the explicit second-derivative, division-free raw-second-moment,
 and division-free variance-numerator theorems in
-`GaussianBinomialCumulants`; they strengthen the already-Exact
+the two-definition, twenty-four-theorem `GaussianBinomialCumulants` surface;
+they strengthen the already-Exact
 `thm:qbinom-moments` row without changing its disposition.
+The five effective fixed-column limit and rate declarations belong to the
+one-definition, twenty-seven-theorem `QBinomialTheoremInfinite` surface and
+promote that fixed-column row from Partial to Exact.
 The final one-module/five-declaration increase is the unrelated sibling
 `LambertWBranchGapBernoulli.lean` leaf. Its exhaustive zero-definition public
 surface is `summable_norm_bernoulli_mul_pow_div_factorial`,
@@ -189,7 +201,8 @@ equals `(exp z - 1) / z` away from zero; this is not the literal totalized
 quotient at zero and asserts no holomorphy. Higher/full Puiseux and logarithmic
 expansions remain open. This
 sibling promotion changes none of the forward-status or concordance totals
-below, and the retained historical PDF does not render it.
+below and is outside the q-series publication; neither the accepted current
+PDF nor its historical predecessor renders it.
 
 The two newest generic theorems are
 `deriv_qPochhammerInfIn_ne_zero_of_mul_pow_eq_one`, which gives a nonzero
@@ -198,10 +211,18 @@ derivative at every raw factor zero `a*q^j = 1` including `q = 0`, and
 exactly one at every zero. The `QPochhammerEntire` wrappers retain the older
 `complexQPochhammerInf` names by transferring the generic local-uniformity,
 entireness, zero-locus, reciprocal-power, and analytic-order results rather
-than duplicating their analytic proofs. In `QBinomialTheoremInfinite`,
+than duplicating their analytic proofs. In `QBinomialTheoremInfinite`, the five
+new theorems are `norm_finiteQPochhammerIn_pow_sub_one_le_exp`,
+`isBigO_finiteQPochhammerIn_pow_sub_one`,
+`tendsto_gaussianBinomial_add_atTop`,
+`isBigO_gaussianBinomial_sub_inv`, and
+`isBigO_gaussianBinomial_add_sub_inv`. They close both fixed-column limits and
+both geometric rates: the two Gaussian rates use additive `IsBigO` errors,
+which are equivalent to the manuscript's multiplicative relative errors
+because `(q;q)_k` is fixed and nonzero when `‖q‖ < 1`.
 `finiteQPochhammerIn_zero_left` remains the unique declaration owned by
 `GaussianBinomialAtOne` and is imported rather than redeclared. The forward
-status ledger is 166 Exact, 90 Partial, 18 None, and 8 interface rows; the
+status ledger is 167 Exact, 89 Partial, 18 None, and 8 interface rows; the
 original 191-result pre-Fabius core is 35/30/123/3, and the
 completed source concordance records 78 Lean-proved rows, 400 human-proved
 frontier rows, 60 not-applicable rows, and 9 conjectures.
@@ -295,7 +316,7 @@ reciprocal-product expansions, the complex upper-parameter series, and the
 generalized q-binomial theorem. The remaining complex-Gaussian property and
 classical-limit rows stay unformalized.
 
-The retained PDF and the source at commit
+The PDF and source at commit
 `736a241d1a025d64ac73b1573b17a7b3fc02652d` were synchronized at the
-historical checkpoint recorded above. The checked working source is newer;
-these edits are source-only and make no current source/PDF parity claim.
+historical checkpoint recorded above.  The accepted current source/PDF pair is
+identified by the 391-page receipt above.

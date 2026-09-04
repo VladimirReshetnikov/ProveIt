@@ -20,9 +20,13 @@ Four independently written article packages arrived together on
 consolidated volume:
 
 Member: `Lambert_W_Guide/` — *The Lambert W Function: A Real-Variable
-Guide*.  Its retained PDF is a historical 66-page A4 artifact of 1,107,064
-bytes; the current source is newer, so no render parity is claimed.  The most
-complete of the four treatments forms the body; the unique layers of the
+Guide*.  Its accepted current source has 4,864 lines and 176,796 bytes, with
+SHA-256
+`3f3552983a73db2dab94f3625d10d054b747ee03fc2758e257af86f6216deab5`.
+The matching 70-page, 958,713-byte A4 PDF has SHA-256
+`24e8bf561283ffc5427297df6f656696a7e2538731e53d03d59e4268b50772fc`.
+The preceding 66-page, 1,107,064-byte artifact remains a historical receipt.
+The most complete of the four treatments forms the body; the unique layers of the
 other three (the
 complete power-tower convergence theorem, inverse-Taylor corrections,
 the branch-exchange involution, the transcendence theorem, a
@@ -87,7 +91,7 @@ statements connect exactly the two open domains.  At the input interval's
 left endpoint both branches equal `-1`, so the sum is exactly `-2` and the
 product exactly `1`, while the lower branch has no finite value at zero.
 
-The source-only companion `LambertWBranchGapBernoulli.lean` has the exhaustive
+The companion `LambertWBranchGapBernoulli.lean` has the exhaustive
 surface zero definitions and five theorems:
 `summable_norm_bernoulli_mul_pow_div_factorial`,
 `summable_bernoulli_mul_pow_div_factorial_iff`,
@@ -108,11 +112,13 @@ that explicit removable-origin convention.  The Guide's nearest-nonzero-zero
 argument is not the formal proof route.  With the three finite
 branch-coordinate modules, the four-module union is four definitions and 37
 theorems, 41 declarations.  The signed higher/convergent Puiseux program
-remains open.  The retained 66-page Guide PDF and the other affected retained
-PDFs predate this source-only overlay, so no render parity is claimed.  The
-exact-radius four-theorem checkpoint had census 903/11,447; the fifth theorem
-brings the live documentation census to 903 modules and 11,448 public
-declarations.
+remains open.  The accepted 70-page Guide PDF renders this overlay, and the
+accepted primary, walkthrough, and canonical-frontier PDFs incorporate it as
+well.  The recent declaration chronology is 11,440 after
+`GeometricRichardsonGenerating`, 11,443 after the Gaussian second-moment
+tranche, 11,448 after the five fixed-column q-binomial declarations, and
+11,453 after this five-theorem leaf.  The live documentation census is
+therefore 903 modules and 11,453 public declarations.
 
 The exact raw second-order package is `LambertWCurvature.lean`.  Its
 principal API is `deriv_principalLambertW`,

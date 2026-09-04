@@ -27,20 +27,23 @@ assets: each donor package consisted only of TeX, PDF, and a historical digest
 receipt. Their superseded PDFs were retired with the donor packages
 and are not canonical renderings of this larger source. The former forward
 and inverse manuscript PDFs were removed for the same reason. The merged
-master retains one publication checkpoint,
-`q_pochhammer_q_binomial_monograph.pdf`. This retained PDF is a historical
-389-page A4 artifact of 3,254,138 bytes with SHA-256
-`b8add607c85ee35be98dabf36879e1d45fb093c6b453e93679c80295fae715bc`.
-It was synchronized to the source checkpoint at commit
+master retains one current publication artifact,
+`q_pochhammer_q_binomial_monograph.pdf`. The accepted source has 16,433 lines
+and 815,194 bytes, with SHA-256
+`f2aae6ddc3d7a399f9ed47806a0abe6458cbcab37bf2aac9f55ad3913b5a0e2d`;
+the matching 391-page, 2,464,122-byte A4 PDF has SHA-256
+`c0a00720685f40e0684b4858e7ce18ce134701529898fd4574d09b6c090e0e91`.
+The preceding 389-page, 3,254,138-byte A4 artifact with SHA-256
+`b8add607c85ee35be98dabf36879e1d45fb093c6b453e93679c80295fae715bc`
+was synchronized to the source checkpoint at commit
 `736a241d1a025d64ac73b1573b17a7b3fc02652d`: 16,339 lines and 810,779
 bytes, with SHA-256
 `14c444feb14c435bc300becd9c8cd2765c1e96f608dd79da462becc41b28ed22`.
 
-The live working source now postdates that receipt. No live `SHA256SUMS` file
-is maintained or should be recreated; this is historical artifact metadata
-only, and the retained PDF does not claim render parity with the current TeX.
-The record in `README.md` gives the retained artifact's page, size, and font
-metadata and makes the same no-current-parity qualification.
+That preceding pair remains historical provenance. No live `SHA256SUMS` file
+is maintained or should be recreated. The record in `README.md` gives both the
+accepted current receipt and the historical artifact's page, size, and font
+metadata.
 PDFs retained beneath `assets/` are research figures, not manuscripts.
 
 The current source incorporates exhaustive crosswalks for
@@ -91,12 +94,20 @@ complex strict contraction, including `q = 0`, and gives the dyadic Rvachev
 product and bounded-Fabius Fourier specializations. The compound
 `thm:qF-spectral` row remains Partial because its named centered/MGF packaging
 and exterior reciprocal, pole-divisor, and zero--pole clauses are absent. The
-live facade audit contains 903 modules and 11,448 public declarations with no
-documentation gaps. Ten declarations come from the sibling
-`FabiusFunction.GeometricRichardsonGenerating` source-only module; the other
-three are the explicit Gaussian second-derivative and division-free moment
-identities. The subsequent sibling `LambertWBranchGapBernoulli.lean` leaf
-contributes zero definitions and exactly five theorems:
+live facade audit contains 903 modules and 11,453 public declarations with no
+documentation gaps. The recent declaration chronology is 11,440
+after `GeometricRichardsonGenerating`, 11,443 after the Gaussian second-moment
+tranche, 11,448 after the five fixed-column q-binomial declarations, and 11,453
+after the five-theorem `LambertWBranchGapBernoulli` leaf. Ten declarations come
+from the sibling
+`FabiusFunction.GeometricRichardsonGenerating` source-only module. Three are
+the explicit Gaussian second-derivative and division-free moment identities in
+the two-definition, twenty-four-theorem `GaussianBinomialCumulants` surface.
+Five are the effective fixed-column limit and rate declarations in the
+one-definition, twenty-seven-theorem `QBinomialTheoremInfinite` surface; only
+this fixed-column tranche changes this monograph's forward-status counts. The
+subsequent sibling `LambertWBranchGapBernoulli.lean` leaf contributes zero
+definitions and exactly five theorems:
 `summable_norm_bernoulli_mul_pow_div_factorial`,
 `summable_bernoulli_mul_pow_div_factorial_iff`,
 `hasSum_bernoulli_mul_pow_div_factorial`,
@@ -113,11 +124,12 @@ clause, Guide label `eq:pair-Bernoulli-general`, and canonical-removable
 reading of `eq:bernoulli-gen` are Exact. Here `complexExpm1Div 0 = 1` and it
 equals `(exp z - 1) / z` away from zero; this is not the literal totalized
 quotient at zero and asserts no holomorphy. Higher/full Puiseux and logarithmic
-expansions remain open. None of
-these source-only changes alters this monograph's forward-status counts or
-retained historical artifact, and no render parity is claimed. The
+expansions remain open. The
+Richardson, Gaussian-moment, and Lambert sibling additions leave this
+monograph's forward-status counts unchanged; the fixed-column promotion is
+reflected in the inventory below. The
 forward status inventory covers 282 labelled results:
-166 Exact / 90 Partial / 18 None / 8 N/A; the 191-result pre-Fabius core is
+167 Exact / 89 Partial / 18 None / 8 N/A; the 191-result pre-Fabius core is
 35 / 30 / 123 / 3.
 The five-publication concordance
 has 78 Lean-proved, 400 human-proved frontier, 60 not-applicable, and 9
@@ -155,9 +167,9 @@ evaluated reciprocity and the finite growth bounds on both sides of `q = 1`;
 the imported positivity theorem is not counted as a declaration of the
 bounds leaf. Its six exported theorems close the exact finite-growth row, while
 the greater-than-one compound row remains Partial only at its asymptotic
-clauses. No PDF was generated locally while resolving this merge; the
-389-page artifact remains the retained historical publication checkpoint and
-does not render the current source.
+clauses. No PDF was generated locally while resolving that merge; the
+389-page artifact therefore records the historical publication checkpoint at
+that stage.  The accepted 391-page PDF now renders the current source.
 
 The former q-Pochhammer/q-binomial monograph arrived in commit
 `47172bc03ec078961d8b023dfe156ecd712efb65`. Its pre-repair source SHA-256 was

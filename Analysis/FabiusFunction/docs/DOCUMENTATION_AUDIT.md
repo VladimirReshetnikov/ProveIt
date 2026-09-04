@@ -109,7 +109,7 @@ only 4,606 declarations and
 declarations, including 69 undocumented ones.  Run the script for the live
 numbers rather than copying these historical values.
 
-The live 2026-09-04 inventory contains 903 modules and 11,448 lexically
+The live 2026-09-04 inventory contains 903 modules and 11,453 lexically
 visible public declarations, with zero missing module headers and zero missing
 doc comments.  The post-merge 2026-09-01 inventory of 675 modules and 8,909
 declarations remains a historical checkpoint: relative to the 610/8,318
@@ -165,9 +165,13 @@ extension remain unformalized.
 
 `GeometricRichardsonGenerating.lean` added one source module and exactly ten
 public declarations to the 901/11,430 q-Chu checkpoint.  The resulting
-historical checkpoint was 902 modules and 11,440 public declarations.  Its
-three definitions are `geometricRichardsonKernel`,
-`qPochhammerNormalizedDataSeries`, and
+historical checkpoint was 902 modules and 11,440 public declarations.  The
+three Gaussian second-moment declarations recorded next give the subsequent
+902/11,443 checkpoint; the five fixed-column declarations recorded below give
+the 902/11,448 checkpoint; the first four theorems of the new
+Lambert--Bernoulli leaf give the exact-radius 903/11,452 checkpoint; and its
+fifth theorem gives the live 903/11,453 union.  Its three definitions are
+`geometricRichardsonKernel`, `qPochhammerNormalizedDataSeries`, and
 `geometricRichardsonTransform`.  Its seven theorems are
 `coeff_rescale_qPochhammerSeries_eq_geometricRichardsonKernel`,
 `coeff_qPochhammerNormalizedDataSeries`,
@@ -196,9 +200,12 @@ arbitrary formal power series.
 #### Gaussian-binomial second-moment tranche
 
 The later strengthening of the existing `GaussianBinomialCumulants.lean`
-module left the module count at 902 and added three public theorems, bringing
-that historical checkpoint to 11,443 public declarations.  The module's
-exhaustive public
+module leaves the module count at 902 and adds three public theorems, bringing
+that historical checkpoint to 11,443 public declarations.  The five subsequent
+fixed-column declarations give the 902/11,448 checkpoint, the first four
+theorems of the subsequent Lambert--Bernoulli leaf give the exact-radius
+903/11,452 checkpoint, and its fifth theorem gives the live 903/11,453 census.  The
+module's exhaustive public
 inventory is two definitions, `meanAtOne` and `varAtOne`, and twenty-four
 theorems: `meanAtOne_one`, `varAtOne_one`, `meanAtOne_mul`, `varAtOne_mul`,
 `meanAtOne_prod`, `varAtOne_prod`, `eval_one_derivative_X_pow`,
@@ -268,9 +275,10 @@ asymptotic; the separate analytic series leaf is inventoried next.
 #### Exact Lambert branch-gap Bernoulli tranche
 
 `LambertWBranchGapBernoulli.lean` first added one source module and four public
-theorems to the historical 902/11,443 checkpoint, giving the historical exact-radius
-checkpoint 903/11,447.  Its fifth public theorem leaves the module count fixed
-and brings the live census to 903/11,448.  Its exhaustive public surface is
+theorems after the 902/11,448 fixed-column checkpoint, giving the historical
+exact-radius checkpoint 903/11,452.  Its fifth public theorem leaves the module
+count fixed and brings the live census to 903/11,453.  Its exhaustive public
+surface is
 `summable_norm_bernoulli_mul_pow_div_factorial`,
 `summable_bernoulli_mul_pow_div_factorial_iff`,
 `hasSum_bernoulli_mul_pow_div_factorial`,
@@ -536,9 +544,9 @@ two product definitions is counted.
 The final incoming seven-module increment consists of the four-theorem
 `GaussianBinomialAtNegOneDerivative.lean` leaf described above and six further
 q-series modules contributing exactly sixty-nine declarations.
-`QBinomialTheoremInfinite.lean` contributes one definition and twenty-two
-theorems: real comparison products and Gaussian majorants, fixed-column
-convergence, Tannery transfer, Euler's product and reciprocal expansions, and
+At that checkpoint, `QBinomialTheoremInfinite.lean` contributed one definition
+and twenty-two theorems: real comparison products and Gaussian majorants,
+fixed-column convergence, Tannery transfer, Euler's product and reciprocal expansions, and
 the infinite q-binomial theorem over complete normed fields under the stated
 strict nome and series-variable contractions.  The reused theorem
 `finiteQPochhammerIn_zero_left` remains canonically owned by
@@ -558,7 +566,9 @@ one definition and nine theorems: finite commutative-(semi)ring boundary and
 recurrence laws, plus the complete-normed-field generating series under
 `‖q‖ < 1`, `‖t‖ < 1`, and `‖z*t‖ < 1`.  These six module counts sum to
 69, and with the four q=-1 derivative declarations give the deduplicated
-73-name incoming increment.  The two subsequent
+73-name incoming increment.  Those 1+22, 69, and 73 counts are historical;
+the current-tip expansion of `QBinomialTheoremInfinite.lean` is recorded in
+the synchronized inventory below.  The two subsequent
 `QPochhammerInfinite.lean` theorems brought that historical feature snapshot
 from 622/8,472 to 629/8,547, a seven-module/75-declaration change.  The two
 inverse-computability modules then brought that feature snapshot to 631/8,556,
@@ -571,8 +581,11 @@ thirteen declarations and brought the audit to 659/8,768.  Two Gaussian
 linear-coefficient theorems then brought it to 659/8,770, and the
 eight-declaration `EffectiveGapInverse.lean` leaf brought the audit to
 660/8,778.  The superconvergent synthesis leaf adds one module and nine
-declarations, yielding 661/8,787.  The four root-of-unity/q-Catalan modules
-add twenty-six declarations, yielding 665/8,813.  The original Jackson
+declarations, yielding 661/8,787.  At that checkpoint the four
+root-of-unity/q-Catalan modules were recorded as a twenty-six-declaration
+tranche, yielding 665/8,813.  After the later `QLucas` correction, their
+current exhaustive total is twenty-five declarations (0+3, 0+3, 1+11,
+and 0+7).  The original Jackson
 q-beta/Newton pair adds twenty-four declarations, yielding 667/8,837; the
 integer/complex upper Gaussian and q-Pfaff--Saalschuetz leaves add twenty,
 yielding 670/8,857; and the noncommutative q-multinomial leaf adds five,
@@ -895,9 +908,19 @@ also listed exhaustively above.  The
 `JacobiTripleProduct.lean` 2-definition/25-theorem tranche contains the finite triple-product
 polynomial and field identities, the bilateral Jacobi `HasSum` forms, and the
 pentagonal and paired-pentagonal `HasSum` corollaries.  The
-`QBinomialTheoremInfinite.lean` 1-definition/22-theorem tranche contains the real comparison and
-norm bounds, fixed-column Gaussian limit, Euler product, analytic q-binomial,
-and reciprocal Euler `HasSum` results.  `QPascalSummation.lean` is 0+4:
+`QBinomialTheoremInfinite.lean` 1-definition/27-theorem tranche contains the real comparison and
+norm bounds, effective finite-product convergence, fixed-column Gaussian limits
+and geometric rates, Euler product, analytic q-binomial, and reciprocal Euler
+`HasSum` results.  Its five newest declarations are
+`norm_finiteQPochhammerIn_pow_sub_one_le_exp`,
+`isBigO_finiteQPochhammerIn_pow_sub_one`,
+`tendsto_gaussianBinomial_add_atTop`,
+`isBigO_gaussianBinomial_sub_inv`, and
+`isBigO_gaussianBinomial_add_sub_inv`.  The fixed-column limit and rates are
+Exact: the Lean rate statements use additive `IsBigO`, which is equivalent to
+the manuscript's multiplicative form after multiplying by the fixed nonzero
+denominator `(q;q)_k`; the unshifted and `k`-shifted errors are respectively
+`O(q^(n-k+1))` and `O(q^(n+1))`.  `QPascalSummation.lean` is 0+4:
 `sum_gaussianBinomial_succ_mul`, `sum_gaussianBinomial_succ_mul'`,
 `Commute.gaussianBinomial_left`, and `Commute.gaussianBinomial_right`.
 `QuantumBinomial.lean` is 0+2, namely `quantumPlane_mul_pow` and
@@ -972,18 +995,39 @@ extension boundary remains explicit.
 The retained comb-interpolation synthesis PDF is a validated 158-page A4
 historical receipt: the current source includes a post-render update to its
 additive-dyadic chapter, so a fresh parity build remains pending.  The rebuilt
-Integration-and-Transform master retains a historical 377-page PDF.  The canonical
-q-series synthesis is a validated 389-page historical receipt synchronized to
-the immediately preceding source checkpoint.  The current source adds the
-twelve-declaration terminating q-Chu/reversal closure, so final parity is
-again pending.  The retained 183-page primary, 130-page walkthrough, 257-page
-canonical frontier, 301-page Representation Frontiers, 41-page New Frontiers,
-and 88-page notation-catalogue artifacts likewise predate their current merged
-sources.  Their package notices treat those PDFs as historical validation
-receipts, not parity claims, until fresh uninterrupted three-pass builds
-complete.  The inverse-computability receipt likewise still reflects the
-historical 675/8,909 census and requires refresh against the live 903/11,448
-inventory.  The canonical inverse-theory publication retains a 134-page
+Integration-and-Transform master retains a historical 377-page PDF.  The
+canonical q-series synthesis has an accepted current 391-page,
+2,464,122-byte A4 receipt with SHA-256
+`c0a00720685f40e0684b4858e7ce18ce134701529898fd4574d09b6c090e0e91`,
+matching its 16,433-line, 815,194-byte master with SHA-256
+`f2aae6ddc3d7a399f9ed47806a0abe6458cbcab37bf2aac9f55ad3913b5a0e2d`.
+The preceding 389-page artifact remains a historical receipt.  The primary
+exposition now has an accepted 187-page, 1,578,751-byte A4 PDF with SHA-256
+`7a93d9c47c22c62dc50cda6a64d030bfad5f44a9ef4cc5568b3b8b16b014bc8f`,
+matching its 13,720-line, 684,413-byte source with SHA-256
+`7efb8d2294a15cf6b150bb0b04b35db74cf68db3f3cdb4bc5d765b7738504019`.
+The Lean walkthrough now has an accepted 150-page, 1,185,846-byte A4 PDF with
+SHA-256
+`8a5416061addfb480f410e8306340994fe7f5160927a928112087b6b1d5c0cf5`,
+matching its 6,603-line, 457,421-byte source with SHA-256
+`4e6ea24897a31683c53e71c6cb97eb21f37eff3ae4e452add429bd9f47646ea6`.
+The canonical frontier now has an accepted 260-page, 1,875,190-byte A4 PDF
+with SHA-256
+`fee3b5af21b01b16c41cf8291ba0508d1e6c613bfd098cdef457cde44ea693c2`,
+matching its 17,947-line, 804,625-byte source with SHA-256
+`ac6b28fb8a98d97ed4b7a0fe7a5ba2cdfab852fb6de1ee2ecfda4aed75804371`.
+The Lambert Guide now has an accepted 70-page, 958,713-byte A4 PDF with SHA-256
+`24e8bf561283ffc5427297df6f656696a7e2538731e53d03d59e4268b50772fc`,
+matching its 4,864-line, 176,796-byte source with SHA-256
+`3f3552983a73db2dab94f3625d10d054b747ee03fc2758e257af86f6216deab5`.
+Their preceding 183-page, 130-page, 257-page, and 66-page artifacts remain
+historical receipts.  The 301-page Representation Frontiers, 41-page New
+Frontiers, and 88-page notation-catalogue artifacts likewise predate their
+current merged sources; their package notices correctly treat them as
+historical validation receipts rather than parity claims.  The
+inverse-computability receipt likewise still
+reflects the historical 675/8,909 census and requires refresh against the live
+903/11,453 inventory.  The canonical inverse-theory publication retains a 134-page
 artifact synchronized at its latest-main source checkpoint; the merged
 effective-inversion and superconvergent-synthesis tranches make current parity
 pending.
