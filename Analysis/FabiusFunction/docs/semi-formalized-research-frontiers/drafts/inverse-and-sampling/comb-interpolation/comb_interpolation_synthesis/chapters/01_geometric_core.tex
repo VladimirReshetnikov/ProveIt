@@ -1696,8 +1696,8 @@ This transform is a meeting point of three triangular arrays:
 The resulting coefficients need not be small.  Exact values begin
 \begin{align}
  \FabiusGeometricNewtonCoefficient{0}{1/2}&=1,
- &\FabiusGeometricNewtonCoefficient{1}{1/2}&=1,
- &\FabiusGeometricNewtonCoefficient{2}{1/2}&=-\frac{26}{27},
+ &\FabiusGeometricNewtonCoefficient{1}{1/2}&=1,\notag\\
+ \FabiusGeometricNewtonCoefficient{2}{1/2}&=-\frac{26}{27},
  &\FabiusGeometricNewtonCoefficient{3}{1/2}&=-\frac{128}{27},
  \label{gq:eq:first-fabius-newton-1}\\
  \FabiusGeometricNewtonCoefficient{4}{1/2}&=-\frac{4253248}{637875},
@@ -2237,7 +2237,7 @@ Substitute $r=2s$ into \eqref{gq:eq:up-Appell-operator}, and then apply
 \eqref{gq:eq:q-Appell-falling} with the finite Bell/binomial-convolution
 reciprocal Rvachev moments.  Combined with
 \path{normalized_sum_Ioo_rvachevDeconvolvedPolynomial_mul_shifted_rvachevUp}
-at (M=2^n), the exact degree of the q-falling power, and (kle n), it also
+at \(M=2^n\), the exact degree of the q-falling power, and \(k\le n\), it also
 proves \eqref{gq:eq:q-falling-up-synthesis}.  Thus
 \cref{gq:prop:q-Appell-falling} is recorded as Lean-proved.  This finite
 identity does not separately formalize the analytic reciprocal-MGF expansion
@@ -2312,9 +2312,9 @@ the geometric elementary-symmetric formula
 \eqref{gq:eq:decoder-entry-explicit} together with the Gaussian prefactor
 \eqref{gq:eq:decoder-gaussian-prefactor}.  Lean writes the latter as division
 by
-(c^nq^{inom{j}{2}+j(n-j)}), which under (c>0) and (0<q<1) is exactly
-the displayed (c^{-n}q^{-nj+inom{j+1}{2}}) form.  Combined with the generic
-synthesis theorem at (M=2^n), these declarations prove all three formulas,
+\(c^nq^{\binom{j}{2}+j(n-j)}\), which under \(c>0\) and \(0<q<1\) is exactly
+the displayed \(c^{-n}q^{-nj+\binom{j+1}{2}}\) form.  Combined with the generic
+synthesis theorem at \(M=2^n\), these declarations prove all three formulas,
 so \cref{gq:thm:gaussian-Appell-decoder} is recorded as Lean-proved.  The
 algebraic coefficient theorem is totalized even at zero or colliding nodes;
 only the manuscript's distinct positive nodes carry the cardinal

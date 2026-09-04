@@ -14,7 +14,8 @@ This archive accompanies the report
 - `data/` -- CSV and text outputs used for validation and conjecture discovery.
 - `numerical_summary.txt` -- parameters and diagnostic summary from the final run.
 - `corpus_audit.txt` -- pinned repository-comparison method and novelty boundary.
-- `SHA256SUMS.txt` -- checksums for every packaged payload other than the ledger itself.
+- The former package checksum ledger is retired and recoverable from Git
+  history.
 
 ## Reproduce the numerical layer
 

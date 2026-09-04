@@ -13,12 +13,14 @@ packages:
 - `computability/` contains the standard-library finite-spline and modulus
   check;
 - `inverse-iterates/` contains the inverse formal-reversion diagnostic;
-- `provenance/` preserves immutable arrival ledgers and corpus audits.
+- `provenance/` preserves the surviving source inventory and corpus audits.
 
+The former asset checkpoint contained 63 payloads, including eight historical
+ledger payloads that are now retired; the canonical tree contains 55 files.
 The root-level `ASSET_DISPOSITION.csv`
 records the SHA-256, size, semantic class, destination, and disposition of all
-88 files in the two superseded source subgroups. Package checksum manifests are
-retired. Reproduce and validate the migration record with:
+88 files in the two superseded source subgroups; retired ledger bytes remain
+recoverable from Git. Audit the migrated asset records with:
 
 ```text
 python -B ../audit/build_asset_manifest.py --check

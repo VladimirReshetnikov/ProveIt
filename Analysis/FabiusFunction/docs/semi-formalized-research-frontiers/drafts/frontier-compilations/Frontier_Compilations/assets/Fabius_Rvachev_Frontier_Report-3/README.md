@@ -53,7 +53,6 @@ search recorded in the report, not as an unconditional worldwide priority claim.
 - `figures/*.png` — all generated figures used in the report.
 - `experiment_summary.txt` — compact run summary.
 - `requirements.txt` — Python dependencies.
-- `SHA256SUMS` — checksums for the retained supporting files.
 
 ## Reproduce the numerical experiments
 

@@ -49,7 +49,7 @@ noncomputable def newtonCoeff (v y : ℕ → F) (k : ℕ) : F :=
   (y k - ∑ r : Fin k, newtonCoeff v y r * ∏ j ∈ range (r : ℕ), (v k - v j)) /
     ∏ j ∈ range k, (v k - v j)
 termination_by k
-decreasing_by all_goals first | exact r.isLt | (simp_wf; exact r.isLt)
+decreasing_by all_goals exact r.isLt
 
 /-- **Triangular reconstruction** of the Newton coefficients. -/
 theorem newtonCoeff_eq (v y : ℕ → F) (k : ℕ) :

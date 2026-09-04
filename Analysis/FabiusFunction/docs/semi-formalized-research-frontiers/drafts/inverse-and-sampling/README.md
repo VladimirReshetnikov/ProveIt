@@ -7,8 +7,8 @@ This theme has three live navigation targets:
 - [`comb-interpolation/comb_interpolation_synthesis/`](comb-interpolation/comb_interpolation_synthesis/)
   — the canonical additive and geometric comb synthesis;
 - [`fabius_information_frontier/`](fabius_information_frontier/)
-  — a separate information-geometry intake whose source/PDF synchronization
-  and claim-level acceptance remain explicitly qualified.
+  — a separate information-geometry intake with a synchronized canonical
+  source/PDF pair; claim-level acceptance remains explicitly qualified.
 
 ## Canonical inverse synthesis
 
@@ -30,8 +30,9 @@ problems, and 24 are non-applicable source environments.
 records exact module/declaration matches and separately classifies five
 post-snapshot additions without changing those source totals.
 [`ASSET_DISPOSITION.csv`](Inverse_Fabius_Analyticity_Asymptotics_and_Computability/ASSET_DISPOSITION.csv)
-accounts for all 88 source-subgroup files, and the live asset ledger covers 63
-retained, deduplicated payloads.
+accounts for all 88 source-subgroup files, and the asset inventory covers 55
+retained files. Eight checksum-ledger rows from the former 63-payload checkpoint
+are retired.
 
 The thirteen newest exact source-row matches are abstract effective inversion,
 centered Appell deconvolution, positive-degree Appell mean-zero,
@@ -85,11 +86,20 @@ The retained, fully reviewed publication checkpoint has 134 A4 pages and
 2,027,726 bytes, with SHA-256
 `22bc68d855ad04dde9654e9fbd20b3ba7f05a33e3c5df0e5b80bb8991c94b41d`.
 Its historical three-pass receipt and page/font/visual gates, together with the
-independently checked current 23-input source closure, are recorded in the
+historical 23-input `SOURCE_CLOSURE.sha256` record, are recorded in the
 canonical package's
 [`VALIDATION.md`](Inverse_Fabius_Analyticity_Asymptotics_and_Computability/VALIDATION.md).
-The source changed after that render, so a fresh three-pass build remains
-necessary before source/PDF synchronization is claimed.
+That closure file was intentionally not regenerated and does not describe the
+current build graph. The synchronized `b899` receipt superseding both historical
+records has a 293-line / 11,514-byte driver (SHA-256
+`92fab1fae38bbcf86a45b51bfe7ff34e2801361df9d2f3d6aa3de4dc966eaa3c`),
+a 17-file / 10,682-line / 431,748-byte recursive TeX closure (digest
+`6e4e6fde424fd5046467b1f1cec0c19b6c10eb681fae4ba7cc53e14b6a5bf61e`),
+passes 132 pages / 1,983,313 bytes → 137 / 2,045,485 → 137 / 2,045,486,
+and a final 137-page PDF with SHA-256
+`cee0de894656562fbdb75d6304055fc03fae06203985119419e465a5cd213995`.
+All publication gates passed; the two 2.42/2.45 pt horizontal boxes are
+nonblocking.
 
 The immutable extraction pin is
 `0a0cdabeb72a6f7d67cfdfb76d02a8f7381c7bf7`. The five old layouts are also
@@ -119,13 +129,29 @@ companion under its explicit convergence hypotheses. The one-definition,
 fourteen-theorem `FabiusFunction.RvachevAppellHasse` leaf additionally makes
 `gq:prop:q-Appell-falling` and `gq:thm:gaussian-Appell-decoder` exact by
 combining their explicit q-falling and geometric decoder formulas with the
-existing finite synthesis theorems. The retained 158-page PDF predates the
-notation normalization and all of these chapter-01 crosswalks, so it remains a
-historical checkpoint; no PDF was generated for the source-only updates.
+existing finite synthesis theorems. The retained 158-page PDF remains the
+historical pre-update checkpoint. The current synchronized `b899` comb receipt
+has a 187-line / 6,724-byte driver (SHA-256
+`a4c1e33165ff7291682cd890f23fe4af98e9f11f7ad1d9a7f8b68c78d53f9a56`),
+a 15-file / 12,597-line / 477,163-byte closure (digest
+`9e22455b3f65eb48306ad21c57445b6052a56498cb363666ffb9b160f5cc8090`),
+and a 160-page / 2,468,000-byte PDF (SHA-256
+`ad8587049580e6fde371f534b6f8b4e56fa4c929173f87d3021ed369e5225d4c`).
 
 [`fabius_information_frontier/`](fabius_information_frontier/) remains an
-archival information-geometry intake. Its arrival and operational ledgers
-distinguish the submitted PDF from later source changes; manuscript theorem
+archival information-geometry intake. Its retired arrival and operational
+ledger checkpoints remain recoverable from Git and distinguish the submitted
+PDF from the current canonical publication. The current source is 2,138 lines
+and 78,310 bytes (SHA-256
+`57a06279153b6e4c97ea0c084a193867b2f5c60a0163983149f36453eb196c9d`);
+exactly three serial halt-on-error passes from absent auxiliaries produced
+28 pages/778,760 bytes, 29 pages/790,804 bytes, and a final 29-page,
+790,802-byte PDF (SHA-256
+`3af03cd4dcc7fb1a502976f47edb56ee7d5c2b8dc9a8da537e79f8382ef885d5`).
+The final log and metadata gates passed; every page is A4 at rotation zero,
+rendered, and has extractable text; all 23 font rows are embedded/subset, six
+are Libertinus, and none is Type 3; representative visuals passed. Generated
+sidecars are absent, and no checksum ledger is a live gate. Manuscript theorem
 labels do not by themselves establish current Lean verification.
 
 ## Formalization notes

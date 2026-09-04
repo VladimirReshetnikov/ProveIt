@@ -15,7 +15,8 @@ available through git history.
 - `data/up_jacobi_coefficients.csv` — exact Jacobi coefficients through order 40.
 - `data/numerical_checks.txt` — high-precision checks of the resolvent and logarithmic-derivative identities.
 - `figures/` — PDF and PNG versions of both numerical figures; the consolidated volume embeds the PNG copies to avoid Type-3 fonts from the generated PDFs.
-- `SHA256SUMS` — checksums for the package files.
+- The former package-file checksum ledger is retired and recoverable from Git
+  history.
 
 ## Principal new results developed in the report
 

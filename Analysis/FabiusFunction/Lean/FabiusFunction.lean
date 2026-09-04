@@ -5,6 +5,7 @@ import FabiusFunction.PeriodicOrbitGelfondBound
 import FabiusFunction.PascalParityPeriodic
 import FabiusFunction.RvachevHalfIntegerEnergy
 import FabiusFunction.LambertWElementaryBounds
+import FabiusFunction.CayleyTreeFunction
 import FabiusFunction.CompleteHomogeneous
 import FabiusFunction.CompleteHomogeneousGenerating
 import FabiusFunction.CompleteHomogeneousBell
@@ -16,6 +17,7 @@ import FabiusFunction.BinomialInversion
 import FabiusFunction.StirlingBasisChange
 import FabiusFunction.LahNumbers
 import FabiusFunction.BellStirling
+import FabiusFunction.TouchardEulerOperator
 import FabiusFunction.StirlingGeneratingFunctions
 import FabiusFunction.EulerianNumbers
 import FabiusFunction.PartialBellPolynomials
@@ -288,11 +290,14 @@ import FabiusFunction.DyadicBoundaryIdentity
 import FabiusFunction.AliasDyadicBridge
 import FabiusFunction.AliasQBinomialBridge
 import FabiusFunction.MeanValueBracket
+import FabiusFunction.BackwardErrorExistence
 import FabiusFunction.TransseriesHeight
 import FabiusFunction.TransseriesScale
 import FabiusFunction.TransseriesWellBased
 import FabiusFunction.WrightOmega
 import FabiusFunction.LambertShiftInverse
+import FabiusFunction.LambertShiftConcavity
+import FabiusFunction.LambertCorrectionEquation
 import FabiusFunction.LambertInverseCoefficients
 import FabiusFunction.CyclicCharacterSums
 import FabiusFunction.AliasErrorBound
@@ -802,6 +807,7 @@ import FabiusFunction.PowerLogCoreInversion
 import FabiusFunction.LinLogCoreInversion
 import FabiusFunction.StaircaseInversion
 import FabiusFunction.RemainderTransport
+import FabiusFunction.LeastTermIndex
 
 set_option autoImplicit false
 
@@ -1239,9 +1245,9 @@ with the two positivity checks discharged by 32-piece subdivided Bernstein
 certificates — integer coefficients verified by `ring` normalization, no
 Sturm sequences — on a general piecewise-positivity engine for `[0,1]`.
 
-The Newton-interpolation and Jackson-q-beta tail contributes three definitions
-and twenty-one theorems.  `NewtonInterpolation` has two definitions and
-thirteen theorems: triangular Newton coefficients and polynomials,
+The Newton-interpolation and Jackson-q-beta tail contributes four definitions
+and twenty-seven theorems.  `NewtonInterpolation` has three definitions and
+nineteen theorems: triangular Newton coefficients and polynomials,
 interpolation and uniqueness, the divided-difference formula, and its explicit
 geometric-grid specialization.  `QBetaIntegral` has one definition and eight
 theorems: for `0 < q < 1` and positive arguments it evaluates the Jackson

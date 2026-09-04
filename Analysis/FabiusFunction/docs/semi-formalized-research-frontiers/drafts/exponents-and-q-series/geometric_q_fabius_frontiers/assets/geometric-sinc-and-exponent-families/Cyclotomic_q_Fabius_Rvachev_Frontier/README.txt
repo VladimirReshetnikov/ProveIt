@@ -49,8 +49,9 @@ The 31 August 2026 rebuild matches the current 1,873-line source and is a
 font rows are embedded and subset; four are Libertinus rows and nine are
 Type-3 rows inherited from the four included Matplotlib vector figures.  The
 standalone figure PDFs contain the same nine Type-3 rows, so figure-font
-normalization remains outstanding.  The active 22-entry checksum ledger
-verifies the current package in full.
+normalization remains outstanding. At that validation checkpoint, a 22-entry
+checksum ledger verified the package in full; it has since been retired and
+remains recoverable from Git history.
 
 Result status and inventory
 ---------------------------
