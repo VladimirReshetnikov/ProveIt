@@ -1,5 +1,6 @@
 import FabiusFunction.Differential
 import FabiusFunction.DyadicClosedForm
+import FabiusFunction.GlobalExtension
 
 /-!
 # The dyadic derivative filtration
@@ -124,5 +125,56 @@ theorem dyadic_depth_eq_max_nonzero_iteratedDeriv (F : BoundedFabius) (hF : IsFa
     push_cast
     exact pow_ne_zero _ (by norm_num)
   exact mul_ne_zero (neg_ne_zero.mpr hsign) (pow_ne_zero _ two_ne_zero)
+
+/-! ## Below the depth: every derivative is a rescaled global value
+
+The volume's third filtration case, `p1:eq:filtration-below`, reads
+`S_m(a/2^n) = 2^{m(m+1)/2} π^{-m} F((2^n + a)/2^{n-m})` for `0 ≤ m < n`.
+Since `(2^n + a)/2^{n-m} = 2^m (1 + a/2^n)`, it is the composite of two facts
+already in the corpus, and neither of them needs the argument to be dyadic or
+the order to be below the depth:
+
+* on `(-∞, 1)` the up-function is a single translate of the signed extension
+  (`extendedFabius_add_one_eq_rvachevUp`), so their derivatives agree there;
+* every iterated derivative of the extension is a rescaled global value
+  (`iteratedDeriv_extendedFabius`).
+
+The statement below is therefore strictly more general than the volume's: it
+holds at every `x < 1` and for every order `m`. -/
+
+/-- **`p1:eq:filtration-below`, generalized.**  For every order `m` and every
+`x < 1`, `up^{(m)}(x) = 2^{m(m+1)/2} F(2^m (1 + x))`. -/
+theorem iteratedDeriv_rvachevUp_eq_extendedFabius (F : BoundedFabius) (hF : IsFabius F)
+    (m : ℕ) {x : ℝ} (hx : x < 1) :
+    iteratedDeriv m (rvachevUp F) x
+      = 2 ^ ((m + 1).choose 2) * extendedFabius F (2 ^ m * (x + 1)) := by
+  have hev : (fun y : ℝ => rvachevUp F y) =ᶠ[nhds x] fun y : ℝ => extendedFabius F (y + 1) := by
+    filter_upwards [(isOpen_Iio (a := (1 : ℝ))).mem_nhds hx] with y hy
+    exact (extendedFabius_add_one_eq_rvachevUp F hF (le_of_lt hy)).symm
+  rw [hev.iteratedDeriv_eq m, iteratedDeriv_comp_add_const]
+  show iteratedDeriv m (extendedFabius F) (x + 1) = _
+  rw [iteratedDeriv_extendedFabius F hF m (x + 1)]
+
+/-- The volume's own form, at a dyadic point: for `a ≤ 2^n` and `m < n`,
+`up^{(m)}(a/2^n) = 2^{m(m+1)/2} F((2^n + a)/2^{n-m})`. -/
+theorem iteratedDeriv_rvachevUp_dyadic_below (F : BoundedFabius) (hF : IsFabius F)
+    {n m a : ℕ} (hmn : m < n) (ha : a < 2 ^ n) :
+    iteratedDeriv m (rvachevUp F) ((a : ℝ) / 2 ^ n)
+      = 2 ^ ((m + 1).choose 2) *
+          extendedFabius F (((2 ^ n + a : ℕ) : ℝ) / 2 ^ (n - m)) := by
+  have h2n : (0 : ℝ) < 2 ^ n := by positivity
+  have hx : (a : ℝ) / 2 ^ n < 1 := by
+    rw [div_lt_one h2n]
+    exact_mod_cast ha
+  rw [iteratedDeriv_rvachevUp_eq_extendedFabius F hF m hx]
+  congr 2
+  have hnm : m + (n - m) = n := by omega
+  have h2 : (2 : ℝ) ^ (n - m) ≠ 0 := by positivity
+  have hpow : (2 : ℝ) ^ m * 2 ^ (n - m) = 2 ^ n := by
+    rw [← pow_add, hnm]
+  rw [eq_div_iff h2]
+  push_cast
+  field_simp
+  linear_combination ((a : ℝ) + 2 ^ n) * hpow
 
 end Fabius
