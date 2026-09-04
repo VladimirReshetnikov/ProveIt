@@ -111,17 +111,21 @@ numbers rather than copying these historical values.
 
 The historical post-merge 2026-09-01 inventory contained 675 modules and 8,909
 lexically visible public declarations, with zero missing module headers and
-zero missing doc comments.  A fresh 2026-09-03 audit for this documentation
-pass scans 905 facade-reachable modules and 11,474 public declarations.  It
+zero missing doc comments.  A fresh 2026-09-04 audit for this documentation
+pass scans 908 facade-reachable modules and 11,498 public declarations.  It
 finds no missing module header or declaration comment, including throughout
 `FabiusInverseExactDyadicModulus.lean`, `JacobiTwoSquareCount.lean`, and
 `LagrangeRvachevMatrix.lean`, as well as the incoming
 `GeometricRichardsonGenerating.lean`, `TwoPhiOneReversal.lean`, and
 `QChuVandermonde.lean` APIs and the strengthened
-`GaussianBinomialCumulants.lean` surface.  Relative to the 610/8,318 activation
-checkpoint, the current tree adds 295 modules and 3,156 declarations.
+`GaussianBinomialCumulants.lean` surface, and the new
+`GeometricUniformRealization.lean`, `RegularCentralQBinomialSum.lean`, and
+`LambertWBranchGapBernoulli.lean` leaves.  Relative to the 610/8,318 activation
+checkpoint, the current tree adds 298 modules and 3,180 declarations.
 Relative to the earlier 630/8,552 merged checkpoint, concurrent source work
-adds 275 modules and 2,922 declarations.
+adds 278 modules and 2,946 declarations.  The post-merge 675/8,909 inventory
+and the intervening 903/11,446 Lambert-series inventory remain historical
+checkpoints, not descriptions of the live facade.
 
 #### Terminating `₂φ₁` reversal and q-Chu--Vandermonde tranche
 
@@ -202,8 +206,9 @@ arbitrary formal power series.
 #### Gaussian-binomial second-moment tranche
 
 The later strengthening of the existing `GaussianBinomialCumulants.lean`
-module leaves the live module count at 905 and adds three public theorems,
-bringing the live census to 11,474 public declarations.  The module's exhaustive public
+module left its then-live module count at 905 and added three public theorems,
+bringing that historical checkpoint to 11,474 public declarations.  The
+module's exhaustive public
 inventory is two definitions, `meanAtOne` and `varAtOne`, and twenty-four
 theorems: `meanAtOne_one`, `varAtOne_one`, `meanAtOne_mul`, `varAtOne_mul`,
 `meanAtOne_prod`, `varAtOne_prod`, `eval_one_derivative_X_pow`,
@@ -266,10 +271,85 @@ The nine symmetric theorems are
 `principalLambertW_mul_lowerLambertW_mem_Ioo`.  They record the exact branch
 ratio, both exponential and hyperbolic sum/product forms, and the strict
 interior inequalities `W₀+W₋₁<-2` and `0<W₀W₋₁<1`.  Their hypotheses exclude
-both the branch point and zero endpoint.  This declaration census makes no
-Bernoulli-series or asymptotic claim: these three modules do not prove a
-Bernoulli-number expansion, convergence or remainder estimates for one, or
-any branch-point or small-input asymptotic.
+both the branch point and zero endpoint.  These three finite modules do not
+themselves prove a Bernoulli-number series or any branch-point or small-input
+asymptotic; the separate analytic series leaf is inventoried next.
+
+#### Exact Lambert branch-gap Bernoulli tranche
+
+`LambertWBranchGapBernoulli.lean` adds one source module and exactly three
+public theorems to the historical 902/11,443 checkpoint, giving the historical
+903/11,446 census.  Its exhaustive public surface is
+`summable_norm_bernoulli_mul_pow_div_factorial`,
+`hasSum_bernoulli_mul_pow_div_factorial`, and
+`principalLambertW_lowerLambertW_eq_bernoulliSeries`; two private majorant and
+coefficient-transport helpers are excluded from the public count.
+
+The first theorem proves absolute convergence of the real Bernoulli
+exponential generating series for `|z| < 2π`.  The second gives its actual
+`HasSum` value `z/(exp z-1)` under the additional condition `z ≠ 0`.  The final
+theorem specializes this evaluation to `x ∈ (-exp(-1),0)` and
+`branchGap x < 2π`, returning both branch identities as one conjunction.  It
+makes only the Lambert Guide label `eq:pair-Bernoulli-general` **Exact**.  The
+quotient theorem deliberately excludes the removable point `z=0`, while the
+branch theorem excludes both endpoints.  No exact or maximal radius theorem,
+boundary convergence or divergence statement at `|z|=2π`, remainder estimate,
+or higher/convergent Puiseux expansion is included.
+
+#### Arbitrary-space geometric-uniform realization tranche
+
+`GeometricUniformRealization.lean` adds one source module, one definition, and
+seventeen theorems.  The definition is `geometricUniformRealization`.  The
+theorems are `geometricUniformRealization_eq_tsum`,
+`geometricUniformRealization_split`, `uniformProcess_hasLaw_uniformProduct`,
+`weightedUniformSeries_hasLaw_of_iIndep_uniform`,
+`geometricUniformRealization_hasLaw`,
+`summable_norm_geometricUniformRealization_terms`,
+`geometricUniformRealization_mem_Icc`,
+`map_geometricUniformRealization_support_eq_Icc`,
+`integral_geometricUniformRealization_eq_one_half`,
+`one_sub_geometricUniformRealization_hasLaw`,
+`geometricUniformRealization_identDistrib_one_sub`,
+`affine_uniform_geometric_hasLaw`,
+`geometricUniformRealization_identDistrib_affine`,
+`measureReal_geometricUniformRealization_le_eq_cdf`,
+`measureReal_geometricUniformRealization_le_eq_integral`,
+`measureReal_geometricUniformRealization_le_eq_zero_of_nonpos`, and
+`measureReal_geometricUniformRealization_le_eq_one_of_one_le`.
+
+The definition, literal tsum identity, and absolute-convergence theorem are
+pointwise on any type.  The probabilistic transport applies on any supplied
+measurable space and measure carrying `Icc 0 1`-valued coordinates whose
+marginals have the interval-volume law and which satisfy `iIndepFun`; it does
+not construct those coordinates on every probability space.  Under `|q|<1`
+the realization has the canonical law, mean `1/2`, reflection symmetry, and
+canonical CDF.  The range, support, and exterior-CDF statements use
+`0≤q<1`; the conditioning integral uses `0<q<1`.  The affine fixed-point
+wrappers additionally assume `IsProbabilityMeasure P` and the displayed
+independence of the fresh uniform coordinate and canonical-law copy.  Thus the
+q-monograph's `thm:geometric-uniform-basic` is Exact on its stated `0<q<1`
+domain, without silently asserting universal existence of a realization.
+
+#### Regular central q-binomial-sum tranche
+
+`RegularCentralQBinomialSum.lean` adds one source module and exactly three
+public declarations: definitions `qNumberC` and
+`regularCentralQBinomialTerm`, and theorem
+`hasSum_regularCentralQBinomial`.  For real `0<q<1` and complex `alpha`, it
+proves the actual series `HasSum` with value
+`qGammaC (q^2) (3/2) * qGammaC (q^2) ((alpha+1)/2) /
+qGammaC (q^2) ((alpha+2)/2)`.  Its sole parameter condition is
+`qPochhammerInfIn (q^(alpha+1)) (q^2) ≠ 0`, exactly the simultaneous
+nonvanishing condition for the generalized q-numbers in the summand.  Even
+negative integral `alpha` are not excluded; at those parameters the totalized
+q-Gamma quotient, like the product evaluation used in the proof, is zero.
+This closes `thm:regular-central-sum`; it does not formalize the separate
+classical-limit corollary.
+
+Together with the prior 905/11,474 branch inventory and the three-declaration
+Lambert leaf, these two modules give the final merged live inventory of 908
+modules and 11,498 public declarations, with no missing module header or
+declaration comment.
 
 The one-definition/eight-theorem
 `RvachevSuperconvergentSynthesis.lean` leaf contributes
@@ -1009,7 +1089,7 @@ and 88-page notation-catalogue artifacts likewise predate their current merged
 sources.  Their package notices treat those PDFs as historical validation
 receipts, not parity claims, until fresh uninterrupted three-pass builds
 complete.  The inverse-computability receipt likewise still reflects the
-historical 675/8,909 census and requires refresh against the live 905/11,474
+historical 675/8,909 census and requires refresh against the live 908/11,498
 inventory.  The canonical inverse-theory publication retains a 134-page
 artifact synchronized at its latest-main source checkpoint; the merged
 effective-inversion and superconvergent-synthesis tranches make current parity

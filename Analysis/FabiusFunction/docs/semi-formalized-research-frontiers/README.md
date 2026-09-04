@@ -42,7 +42,8 @@ was 671 modules and 8,858 public declarations; no PDF was rebuilt for that
 source-only update.
 
 The newest source-only Lambert branch-coordinate overlay formalizes the exact
-pairing theorem and its symmetric corollary from `Lambert_W_Guide/`.
+pairing theorem, its symmetric corollary, and one compact Bernoulli-series
+identity from `Lambert_W_Guide/`.
 `LambertWBranchPairing.lean` has 0 definitions + 7 theorems,
 `LambertWGapBijection.lean` has 4 definitions + 16 theorems, and
 `LambertWBranchSymmetry.lean` has 0 definitions + 9 theorems. For
@@ -54,11 +55,20 @@ the two equations `W_j exp(W_j) = x`, then uses branch-range uniqueness for
 the converse; `sinh(y) > y` and `y coth(y) > 1` give the strict bounds.
 The interval is deliberately open: at the branch point the rational formulas
 have zero denominator and their limiting sum/product are `-2` and `1`, while
-zero is the singular classical lower endpoint. These modules do not prove the
-Guide's Bernoulli-number gap series, convergence of that series, or higher
-Puiseux/logarithmic expansions. The affected retained frontier, primary,
-walkthrough, and Lambert-Guide PDFs are historical artifacts and do not render
-this source-only overlay.
+zero is the singular classical lower endpoint.
+
+The companion `LambertWBranchGapBernoulli.lean` has the exhaustive surface
+0 definitions + 3 theorems. It proves absolute summability of the real
+Bernoulli exponential generating series on `|z| < 2*pi`, its actual all-index
+`HasSum` value `z / (exp z - 1)` for `z != 0`, and the two paired branch sums
+when `x in (-exp(-1), 0)` and the positive branch gap is below `2*pi`. This is
+an exact crosswalk only for `eq:pair-Bernoulli-general`. At `z = 0` the
+convergence theorem still applies, but the quotient evaluation excludes the
+removable value; the endpoint `|z| = 2*pi`, exact maximality of the radius,
+and higher or convergent Puiseux/logarithmic expansions remain open. The
+affected retained frontier, primary, walkthrough, and Lambert-Guide PDFs are
+historical artifacts and do not render this source-only overlay; no render
+parity is claimed.
 
 The source-only `FabiusFunction.LagrangeRvachevMatrix` module adds three
 definitions, one abbreviation, and six theorems. It promotes
@@ -79,8 +89,13 @@ contraction and absolute summability. The retained canonical-frontier,
 primary, walkthrough, and comb-synthesis PDFs all predate this crosswalk and
 remain historical artifacts; none was rebuilt for this update.
 
-The live documentation census after these source-only additions is 905 modules
-and 11,474 public declarations.
+The one-definition/seventeen-theorem
+`FabiusFunction.GeometricUniformRealization` module transfers the canonical
+law to arbitrary probability spaces carrying independent uniform coordinates;
+the two-definition/one-theorem `FabiusFunction.RegularCentralQBinomialSum`
+leaf proves `thm:regular-central-sum` under its exact product-nonvanishing
+hypothesis. Together with the Lambert--Bernoulli leaf, they bring the live
+documentation census to 908 modules and 11,498 public declarations.
 
 The newest source-only addition leaves the module count unchanged and adds
 three theorems to `FabiusFunction.GaussianBinomialCumulants`: the explicit
@@ -107,9 +122,10 @@ cyclotomic-divisibility, q-Catalan, primitive-root-block, q-Lucas, Jackson
 q-beta, geometric Newton-interpolation, integer/complex upper Gaussian, and
 q-Pfaff--Saalschütz, and noncommutative q-multinomial tranches. Its 282-result
 forward status totals are now 171 exact / 85 partial / 18 none / 8 interface.
-The partition-symmetry row is exact; the basic geometric-uniform row remains
-partial because the current Lean law fixes `uniformProduct`, while the
-manuscript theorem quantifies over an arbitrary ambient probability space. The
+The partition-symmetry row is exact; the basic geometric-uniform row is now
+exact because `GeometricUniformRealization.lean` transfers the canonical law
+to an arbitrary ambient probability space carrying independent coordinates
+with the uniform marginal law. The
 outer spectral product now has an exact
 locally-uniform/normal-convergence theorem; the compound centered/MGF and
 exterior reciprocal/pole layers remain partial.

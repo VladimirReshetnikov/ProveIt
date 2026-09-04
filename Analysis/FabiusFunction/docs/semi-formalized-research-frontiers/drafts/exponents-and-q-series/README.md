@@ -63,7 +63,7 @@ module tranches and the zero-definition, three-theorem
 crosswalk. That source is a source-only successor to the fresh artifact receipt
 and requires a later synchronized three-pass build. Retained PDFs under its `assets/` tree are
 research figures, not alternate manuscript renderings. The current Lean audit
-contains 905 facade-reachable modules and 11,474 public declarations, with no
+contains 908 facade-reachable modules and 11,498 public declarations, with no
 missing module headers or declaration documentation.
 
 The sibling source-only `FabiusFunction.GeometricRichardsonGenerating` module
@@ -81,13 +81,21 @@ That repository-wide census includes a sibling, source-only Lambert-W
 promotion rather than a new q-series result. Its exhaustive module counts are
 `LambertWBranchPairing.lean` (0 definitions + 7 theorems),
 `LambertWGapBijection.lean` (4 + 16), and
-`LambertWBranchSymmetry.lean` (0 + 9). Together they prove, only for the open
-two-branch domain `(-exp(-1), 0)`, the exact gap parametrization and its
+`LambertWBranchSymmetry.lean` (0 + 9), followed by
+`LambertWBranchGapBernoulli.lean` (0 + 3). The first three prove, only for the
+open two-branch domain `(-exp(-1), 0)`, the exact gap parametrization and its
 inverse bijection, the `t = exp(delta) > 1` formulas, and the exact
-ratio/sum/product laws with strict sum and product bounds. They do not include
-either endpoint, the Bernoulli-number expansion in the gap, its convergence,
-or any higher branch expansion. No retained PDF in this group renders that
-unrelated source-only promotion, and none was rebuilt for this update.
+ratio/sum/product laws with strict sum and product bounds. The last module's
+exhaustive public surface is
+`summable_norm_bernoulli_mul_pow_div_factorial`,
+`hasSum_bernoulli_mul_pow_div_factorial`, and
+`principalLambertW_lowerLambertW_eq_bernoulliSeries`: real absolute
+convergence for `|z| < 2*pi`, the quotient sum for nonzero `z`, and the paired
+branch series on the same strict x-domain when the positive gap is below
+`2*pi`. It proves neither the endpoint `|z| = 2*pi` nor maximality of that
+radius, and it adds no higher or full Puiseux/logarithmic branch expansion.
+No retained PDF in this group renders this unrelated source-only promotion,
+and none was rebuilt for this update.
 
 ## Detailed package record
 

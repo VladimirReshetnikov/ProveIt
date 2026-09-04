@@ -161,16 +161,27 @@ The newest combinatorial and certification tranche adds
 binary-word inversion and path-area generating functions, rectangular-box
 partition generating functions and counts, finite telescoping certificates,
 recurrence uniqueness, and rational-identity specialization. The live facade
-audit now contains 905 modules and 11,474 public declarations, with no
-documentation gaps. The sibling `FabiusFunction.GeometricRichardsonGenerating`
-module (three definitions and seven theorems) has the exact comb-manuscript
-crosswalk
+audit now contains 908 modules and 11,498 public declarations, with no
+documentation gaps. Ten declarations come from the sibling
+`FabiusFunction.GeometricRichardsonGenerating` module (three definitions and
+seven theorems), whose exact comb-manuscript crosswalk is
 `Fabius.geometricLagrangeRichardson_generating`; it does not change this
 monograph's forward-status inventory or make its retained PDF current. The
 other three are the explicit second-derivative, division-free raw-second-moment,
 and division-free variance-numerator theorems in
 `GaussianBinomialCumulants`; they strengthen the already-Exact
 `thm:qbinom-moments` row without changing its disposition.
+The final one-module/three-declaration increase is the unrelated sibling
+`LambertWBranchGapBernoulli.lean` leaf. Its exhaustive zero-definition public
+surface is `summable_norm_bernoulli_mul_pow_div_factorial`,
+`hasSum_bernoulli_mul_pow_div_factorial`, and
+`principalLambertW_lowerLambertW_eq_bernoulliSeries`: real absolute
+convergence for `|z| < 2*pi`, the nonzero Bernoulli-EGF quotient evaluation,
+and the paired Lambert formulas on the strict common branch domain with gap
+below `2*pi`. It asserts neither the boundary nor exact maximality of that
+radius and adds no higher/full Puiseux or logarithmic expansion. This sibling
+promotion changes none of the forward-status or concordance totals below, and
+the retained historical PDF does not render it.
 
 The latest `ThueMorseSparseProuhet` partition tranche adds no definitions and
 three theorems to that module's prior twelve-theorem surface, for a current
