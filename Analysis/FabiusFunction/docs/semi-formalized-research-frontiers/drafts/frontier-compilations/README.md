@@ -1,14 +1,23 @@
 # Frontier compilations
 
-> **Source-only merge status (2026-08-31).** Canonical-notation edits changed
-> the consolidated `Frontier_Compilations.tex`, but the retained 274-page PDF
-> was not rebuilt. Its previous page, font, and build facts are historical
-> validation facts rather than a synchronization claim; recompilation and any
-> dependent metadata refresh are deferred.
+> **Current publication receipt (2026-09-04).** The synchronized
+> `Frontier_Compilations.tex` has 17,311 lines and 748,733 bytes (SHA-256
+> `600bab0556c95661c6963438ea3e8e5ed1c691af36d64e1c105435199e605736`).
+> From absent auxiliaries, three successful serial halt-on-error passes produced
+> 258 pages/2,660,225 bytes, 275 pages/2,790,715 bytes, and finally 275
+> pages/2,790,721 bytes. The final PDF has SHA-256
+> `49159c19d59fdd5bd397d3ab70bd024ea5bc7995fb037a532bc1fded9c9ad4fa`.
+> Its log has no TeX error, unresolved reference or citation, or rerun request;
+> metadata is present. All 275 pages are A4 at rotation zero, render, and contain
+> extractable text. All 39 font rows are embedded and subset, ten are
+> Libertinus, and none is Type 3; representative title, body, table, figure, and
+> final pages passed visual inspection. Generated sidecars were removed, and no
+> package-local checksum ledger is a live publication dependency.
 
 The Digital Spectral Geometry intake is registered once, in the
 [`spectra-and-arithmetic`](../spectra-and-arithmetic/) group.  That filing
-preserves the full verified arrival ledger, repairs the failed audit and
+records verification of the full arrival ledger, which is recoverable from
+Git history, repairs the failed audit and
 numerical generation, corrects the false curvature claim, and supplies the
 policy-conforming canonical build; the unrepaired duplicate formerly listed
 here has been removed.
@@ -21,8 +30,9 @@ package, *Frontier Directions for Fabius--Rvachev Analysis*, was filed on
 2026-08-30 from `fabius_frontier_report_bundle-D.zip` (1,508,514 bytes;
 SHA-256
 `39f3638f52f19955b88b7a865a60b76d9ce31154d98967d1400a6ad97396fa9a`).
-Its submitted 34-row ledger was verified and is preserved as
-`ARRIVAL_SHA256SUMS`; the normalized 36-row current ledger passes in full.
+Its submitted 34-row ledger was verified at intake and remains recoverable
+from Git history; a later normalized 36-row ledger also passed before
+checksum ledgers were retired.
 The 1,641-line report and 874-line deterministic experiment suite were
 replayed, audited, normalized to the shared A4/27 mm/Libertinus style, and
 rebuilt as a 30-page PDF with embedded/subset fonts and no Type 3.  Exact
@@ -44,7 +54,8 @@ audited packages, without wholesale textual duplication.
   delivery consists of one 1,656-line LF TeX manuscript: no PDF, README,
   external code, data, figures, captured output, checksum file, repository
   metadata, or archive was supplied.  Intake repaired three form-feed-corrupted
-  `\frac` tokens and added a repository-generated one-entry `SHA256SUMS`.  The
+  `\frac` tokens and added a repository-generated one-entry checksum ledger,
+  now retired but recoverable from Git history.  The
   package still has no PDF, and the source has not yet been shown to compile.
 
   Its q-deformed derivative formulas, Gaussian/Edgeworth layer,
@@ -56,7 +67,7 @@ audited packages, without wholesale textual duplication.
   establishes that any manuscript theorem is proved in Lean.
 
 The broad multi-topic "collected new results" report series,
-consolidated (2026-08-28) into the retained 274-page single volume
+consolidated (2026-08-28) into the current 275-page single volume
 [`Frontier_Compilations/`](Frontier_Compilations/): ten absorbed reports,
 displayed as ten outer parts.
 

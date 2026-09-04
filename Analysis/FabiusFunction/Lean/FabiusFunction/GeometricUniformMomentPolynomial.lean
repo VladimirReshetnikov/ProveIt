@@ -7,12 +7,12 @@ import Mathlib.Algebra.Polynomial.Degree.Lemmas
 
 This file isolates the algebraic recursion for the moment polynomials from the
 geometric-uniform model.  It proves the recurrence, the triangular degree
-bound, the value at zero, and the first four nonconstant examples.
+bound, the value at zero, and the first four positive-index examples.
 
 The identification of this recursive family with coefficients of the analytic
 moment-generating product is deliberately not made here.  Likewise, the sharp
-leading- and subleading-degree statements require additional input and are out
-of scope for this base module.
+degree equality and the leading- and subleading-coefficient formulas require
+additional input and are out of scope for this base module.
 
 ## Main declarations
 

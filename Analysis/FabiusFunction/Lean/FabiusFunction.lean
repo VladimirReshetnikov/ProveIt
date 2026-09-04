@@ -1243,9 +1243,9 @@ with the two positivity checks discharged by 32-piece subdivided Bernstein
 certificates — integer coefficients verified by `ring` normalization, no
 Sturm sequences — on a general piecewise-positivity engine for `[0,1]`.
 
-The Newton-interpolation and Jackson-q-beta tail contributes three definitions
-and twenty-one theorems.  `NewtonInterpolation` has two definitions and
-thirteen theorems: triangular Newton coefficients and polynomials,
+The Newton-interpolation and Jackson-q-beta tail contributes four definitions
+and twenty-seven theorems.  `NewtonInterpolation` has three definitions and
+nineteen theorems: triangular Newton coefficients and polynomials,
 interpolation and uniqueness, the divided-difference formula, and its explicit
 geometric-grid specialization.  `QBetaIntegral` has one definition and eight
 theorems: for `0 < q < 1` and positive arguments it evaluates the Jackson

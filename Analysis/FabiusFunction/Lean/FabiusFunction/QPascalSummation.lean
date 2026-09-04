@@ -76,11 +76,11 @@ theorem _root_.Commute.gaussianBinomial_left {R : Type*} [Semiring R] {q x : R}
   induction n generalizing k with
   | zero =>
       cases k with
-      | zero => simpa using Commute.one_left x
-      | succ k => simpa using Commute.zero_left x
+      | zero => simp
+      | succ k => simp
   | succ n ih =>
       cases k with
-      | zero => simpa using Commute.one_left x
+      | zero => simp
       | succ k =>
           rw [gaussianBinomial_succ_succ]
           exact (ih (k + 1)).add_left ((h.pow_left _).mul_left (ih k))

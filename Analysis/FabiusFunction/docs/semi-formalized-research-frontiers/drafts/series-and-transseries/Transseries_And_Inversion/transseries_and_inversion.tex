@@ -37059,6 +37059,44 @@ characterized by the generating identities
  \label{p0:eq:ebell-egf-complete}
 \end{align}
 \end{definition}
+\begin{remark}[These are already formal, but not by this definition]
+\label{p0:rem:ebell-lean}
+The corpus carries exactly one exponential partial Bell polynomial,
+\lean{Fabius.partialBell} in \lean{PartialBellPolynomials.lean}, built during
+the combinatorial-coefficient-calculus work rather than for this volume.  It is
+defined by the block recurrence, \emph{not} by the multinomial sum
+\eqref{p0:eq:ebell-def}.
+
+Both generating identities offered above as the characterization are formal:
+\lean{Fabius.bellWeightSeries_pow} is \eqref{p0:eq:ebell-egf-partial} and
+\lean{Fabius.exp_subst_bellWeightSeries} is \eqref{p0:eq:ebell-egf-complete},
+both in \lean{BellGeneratingFunctions.lean}.  Moreover
+\lean{Fabius.partialBell_eq_of_bellWeightSeries_pow_eq_egf} shows that those
+identities \emph{determine} the coefficients, so any family satisfying the
+characterization above is that object.  Adjacent formal facts, should a proof
+in this part want them: \lean{Fabius.partialBell_bihomogeneous}
+(in \lean{BellHomogeneity.lean}), \lean{Fabius.partialBell_self},
+\lean{Fabius.partialBell_eq_zero_of_lt}, \lean{Fabius.partialBell_one}
+(Stirling numbers of the second kind), \lean{Fabius.partialBell_factorial_pred}
+(unsigned Stirling numbers of the first kind), \lean{Fabius.partialBell_factorial}
+(Lah numbers), \lean{Fabius.bell_complete_eq_sum_partialBell},
+\lean{Fabius.bell_complete_one} and \lean{Fabius.bell_complete_factorial_pred}.
+
+The gap, stated plainly because it is easy to overclaim here: the equivalence
+of the multinomial sum \eqref{p0:eq:ebell-def} with the recurrence is \emph{not}
+formalized, in this notation or in the \cref{plt:eq:bell-partial-def} one.  Neither
+sum appears formally anywhere in the corpus.  What is formal is that the two
+generating identities pin down a unique object, and that the corpus's
+recurrence-defined family satisfies them --- which is enough to transfer any
+consequence of the characterization, and not enough to call \eqref{p0:eq:ebell-def}
+itself proved.
+
+One naming trap, recorded because the crosswalk name audit cannot catch it:
+the complete Bell polynomial is \texttt{Bell.complete}, in a \emph{top-level}
+namespace \texttt{Bell}, not in \texttt{Fabius}.  The audit checks only
+\texttt{Fabius.*} names, so a citation written \texttt{Fabius.Bell.complete} would
+pass unexamined while naming nothing.
+\end{remark}
 
 \begin{lemma}[Conversion]\label{p0:lem:bell-conversion}
 For all $n\ge k\ge0$,
@@ -49899,7 +49937,8 @@ be made --- is machine-checked over $\Real$, in \lean{PowerLogCoreInversion.lean
 \lean{Fabius.log_powerLogCoreRoot_sub} is $\log X-\beta=v/p$; and
 \lean{Fabius.hasDerivAt_powerLogCore_root} is the slope $aX^{p-1}(v+1)$, the
 third formula of \eqref{p6:eq:core-r1}.  The Lambert branch is the corpus's
-real principal branch \lean{Fabius.principalLambertW}, so the hypothesis is the
+real principal branch \lean{Fabius.principalLambertW} of
+\lean{PrincipalLambertW.lean}, so the hypothesis is the
 one that branch needs, $-\e^{-1}\le pR\e^{-p\beta}/a$.
 
 Two features of the formal statement are worth naming, because they say what

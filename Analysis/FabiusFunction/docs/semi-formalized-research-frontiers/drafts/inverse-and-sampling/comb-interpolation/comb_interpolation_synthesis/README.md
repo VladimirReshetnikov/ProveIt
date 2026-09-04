@@ -150,11 +150,25 @@ The later canonical-notation edits in `chapters/01_geometric_core.tex`,
 `chapters/03_additive_dyadic.tex`, and `chapters/90_reference_appendices.tex`,
 together with the document-local geometric-Newton command in the driver, make
 that PDF a validated historical checkpoint rather than a rendering of the
-current source; a fresh exact three-pass build is pending. The former root
+current source. The former root
 ledger recorded the source and retained PDF as distinct payloads at its
 historical checkpoint. The complete
 checkpoint receipt and the older historical receipts are recorded once in
 [`assets/VALIDATION.md`](assets/VALIDATION.md).
+
+The current synchronized `b899` driver has 187 lines and 6,724 bytes, with
+SHA-256
+`a4c1e33165ff7291682cd890f23fe4af98e9f11f7ad1d9a7f8b68c78d53f9a56`.
+Its 15-file recursive TeX closure has 12,597 lines and 477,163 bytes, with
+digest `9e22455b3f65eb48306ad21c57445b6052a56498cb363666ffb9b160f5cc8090`.
+Exactly three passes from absent sidecars ran 153 pages / 2,383,950 bytes →
+160 / 2,467,995 → 160 / 2,468,000. The final 160-page, 2,468,000-byte PDF
+has SHA-256
+`ad8587049580e6fde371f534b6f8b4e56fa4c929173f87d3021ed369e5225d4c`.
+All 160 pages are A4 at rotation zero, render successfully, and contain nonblank
+text. All 33 font rows are embedded and subset, seven are Libertinus, and none
+is Type 3. Log, metadata, visual, cleanup, and forbidden-basename gates passed,
+with no overfull box.
 
 ## Reproduce the computational evidence
 
@@ -211,6 +225,8 @@ proof discipline (213 result environments, 150 proof-required), 801 labels,
 783 references, 62 bibliography keys,
 disposition, historical-ledger, companion-payload, 232-row
 theorem-concordance gates. Its narrow Lean identifier check is not a live
-theorem-type check. Package checksum manifests are retired and are not part of
-the current validator. A fresh-checkout reproduction and a full rerun of every
-retained numerical script remain separate reproducibility work.
+theorem-type check. No live package-wide checksum ledger is generated or checked
+by the current validator. The retired root checkpoint remains recoverable from
+Git, but does not certify current package state. A fresh-checkout reproduction
+and a full rerun of every retained numerical script remain separate
+reproducibility work.

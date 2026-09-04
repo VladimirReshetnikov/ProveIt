@@ -27,7 +27,8 @@ Repository/source snapshot date: **2026-08-28**.
 - `data/` - exact moment, weighted-Prouhet, and finite-product convergence tables.
 - `corpus_audit.txt` - scope and limitations of the recursive repository audit.
 - `requirements.txt` - Python dependencies.
-- `SHA256SUMS` - checksums for every packaged file other than the checksum file.
+- The standalone package's historical `SHA256SUMS` ledger is retired from the
+  live tree and must not be recreated; Git history preserves it as provenance.
 
 ## Status labels used in the report
 
@@ -132,14 +133,12 @@ the public GitHub tree, raw canonical source files, and the archive manifest and
 README.  Therefore it is a substantive mathematical non-duplication audit, not a
 claim of an exact byte-level census of every historical `.tex` object.
 
-## Verify package integrity
+## Historical standalone integrity instruction
 
-On a Unix-like system:
+The original standalone package instructed users to run
+`sha256sum -c SHA256SUMS`. That command is recorded here only as historical,
+non-executable provenance and is not a current validation step. The ledger is
+absent from the live tree and must not be recreated; use the consolidated
+volume's provenance and Git history instead.
 
-```bash
-sha256sum -c SHA256SUMS
-```
-
-All entries should report `OK`.
-
-> **Editorial note (2026-08-28):** the report source and compiled PDF listed above (and, where listed, the supplied source scan/OCR) were removed from this directory after their content was merged into the volume `Exponents_and_q_Series_Frontiers.tex`; their SHA-256 hashes remain in the volume provenance list (and in `SHA256SUMS` here where present), and git history archives the files. This directory keeps only figures, data, and scripts.
+> **Editorial note (2026-08-28):** the report source and compiled PDF listed above (and, where listed, the supplied source scan/OCR) were removed from this directory after their content was merged into the volume `Exponents_and_q_Series_Frontiers.tex`; their SHA-256 hashes remain in the volume provenance list, and git history archives the files. This directory keeps only figures, data, and scripts.

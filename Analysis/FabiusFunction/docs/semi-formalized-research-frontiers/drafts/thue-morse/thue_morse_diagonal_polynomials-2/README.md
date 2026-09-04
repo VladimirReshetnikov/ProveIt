@@ -11,7 +11,8 @@ signed Thue–Morse sequence.
 - `diagonal_polynomials.wl` — exact Wolfram Language implementation.
 - `diagonal_polynomials.py` — exact SymPy implementation and regression suite.
 - `VERIFICATION.txt` — commands, versions, and verification results.
-- `SHA256SUMS` — checksums of all other distributed files.
+- The former package checksum ledger is retired; its historical bytes remain
+  recoverable from Git.
 
 ## Principal formula
 
