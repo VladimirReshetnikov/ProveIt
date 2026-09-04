@@ -35,7 +35,7 @@ import csv
 from dataclasses import dataclass
 from fractions import Fraction
 from functools import lru_cache
-from math import factorial, floor
+from math import comb, factorial, floor
 from pathlib import Path
 from typing import Iterable, List, Sequence, Tuple
 
@@ -536,12 +536,23 @@ class ExtraSummary:
     nonzero_mode_checks: int
     reversed_row_checks: int
     lebesgue_checks: int
+    knot_defect_checks: int
 
 
 def verify_volume_claims(max_depth: int = 7) -> ExtraSummary:
-    """The five additional claims, all in exact rational arithmetic."""
-    assert reciprocal_sinc_coefficients(5) == PRINTED_A, reciprocal_sinc_coefficients(5)
+    """The six additional claims, all in exact rational arithmetic.
 
+    The sixth is the volume's closed form for the defect at the knot level
+    n = s-1 (Theorem "Exact defect at the knot level"): with k the index of x
+    in the knot lattice t_{s-1,k} = -1 + (2k+1) 2^{-s} and eps_k its Thue--Morse
+    sign,  up_{s-1}(x) - [law at n = s-1]  =  -eps_k 2^{-C(s,2)} beta_s,  where
+    beta_s = B_s / s! for even s and 0 for odd s.  It subsumes the odd-onset
+    check (beta_s = 0) and explains every even-depth failure exactly.
+    """
+    assert reciprocal_sinc_coefficients(5) == PRINTED_A, reciprocal_sinc_coefficients(5)
+    bern = bernoulli_numbers(max_depth + 1)
+
+    knot_defect = 0
     odd_onset = 0
     even_pts = 0
     even_fail = 0
@@ -573,13 +584,21 @@ def verify_volume_claims(max_depth: int = 7) -> ExtraSummary:
                 even_pts += 1
                 if law_prev != actual_prev:
                     even_fail += 1
+            # 6. exact knot-level defect
+            k2 = 2 ** s * (x + 1) - 1
+            assert k2.denominator == 1 and int(k2) % 2 == 0, (x, s)
+            k = int(k2) // 2
+            beta = bern[s] / factorial(s) if s % 2 == 0 else Fraction(0)
+            predicted_defect = -thue_morse_sign(k) * Fraction(1, 2 ** comb(s, 2)) * beta
+            assert actual_prev - law_prev == predicted_defect, ("knot defect", x, s, actual_prev - law_prev, predicted_defect)
+            knot_defect += 1
             # 4. reversed row equals forward row
             N = s
             forward = sum(w[j] * user_approximation(x, N + j) for j in range(d + 1))
             backward = sum(wr[j] * user_approximation(x, N + d - j) for j in range(d + 1))
             assert forward == backward == fitted[0], (x, forward, backward, fitted[0])
             reversed_rows += 1
-    return ExtraSummary(odd_onset, even_pts, even_fail, nonzero, reversed_rows, lebesgue)
+    return ExtraSummary(odd_onset, even_pts, even_fail, nonzero, reversed_rows, lebesgue, knot_defect)
 
 
 def main() -> None:
@@ -609,7 +628,8 @@ def main() -> None:
     print(extra)
     print(
         "All exact checks passed; the even-depth knot level n = s-1 violates the law at "
-        f"{extra.even_knot_failures} of {extra.even_knot_points} interior points."
+        f"{extra.even_knot_failures} of {extra.even_knot_points} interior points, by exactly "
+        f"-eps_k 2^(-C(s,2)) B_s/s! at every one of the {extra.knot_defect_checks} interior points of depth >= 2."
     )
 
     if args.out_dir is not None:
