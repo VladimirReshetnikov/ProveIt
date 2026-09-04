@@ -1086,10 +1086,21 @@ for every \(N\ge1\).  It rests on a Parseval-type identity for Mathlib's DFT on
 \(\IntegerNumbers/M\IntegerNumbers\) proved for every vector \(\Phi\),
 \(\sum_r\mathcal D\Phi(r)\,\mathcal D\Phi(-r)=M\sum_j\Phi(j)^2\)
 (\path{Fabius.sum_dft_mul_dft_neg}, from \path{ZMod.dft_apply} and \path{ZMod.dft_dft} alone),
-combined with the symmetry \path{Fabius.foldedCoefficient_neg}.  Restricting the left side
-to odd \(r<N\) (the even modes vanish, \path{Fabius.foldedCoefficient_two_mul_eq_zero}, and
-\(A_{N,0}=1\)) and folding the right side with \(P(0)=1\), \(P(1)=0\) produces the displayed
-\eqref{p1:eq:discrete-energy}; that bookkeeping is not separately formalized.
+combined with the symmetry \path{Fabius.foldedCoefficient_neg}.  The bookkeeping that turns it
+into the displayed \eqref{p1:eq:discrete-energy} is formal too, for every even \(N\):
+\path{Fabius.sum_odd_foldedCoefficient_sq} in \path{AliasDyadicBridge.lean} is
+\[
+  \sum_{\substack{1\le r<N\\ r\ \mathrm{odd}}}A_{N,r}^2
+  =\frac1N\Bigl[1+2\sum_{j=1}^{N-1}\RvachevUp(j/N)^2\Bigr]-\frac12 .
+\]
+Both sides of the Parseval identity are sums of an even function over
+\(\IntegerNumbers/2N\IntegerNumbers\), so the same half-range fold applies to each
+(\path{Fabius.sum_gridSample_sq_eq_fold} on the samples, using \(P(0)=1\) and \(P(1)=0\);
+\path{Fabius.sum_foldedCoefficient_sq_eq_fold} on the coefficients, using \(A_{N,0}=1\) and,
+because \(N\) is even, \(A_{N,N}=0\)); the even residues strictly between \(0\) and \(N\) then
+drop out by \path{Fabius.foldedCoefficient_sq_eq_zero_of_even}, leaving only the odd ones.  The
+hypothesis that \(N\) be even is what makes \(r\mapsto2N-r\) fix no odd residue; it holds in
+every dyadic case \(N=2^n\), \(n\ge1\).
 
 \begin{remark}[Continuous limit]
 As $n\to\infty$, the right side of \eqref{p1:eq:discrete-energy} tends
