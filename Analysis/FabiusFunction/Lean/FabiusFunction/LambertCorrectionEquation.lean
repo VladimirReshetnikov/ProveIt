@@ -1,6 +1,7 @@
 import Mathlib.Analysis.SpecificLimits.Normed
 import Mathlib.Analysis.SpecialFunctions.Exponential
 import Mathlib.Analysis.SpecialFunctions.ExpDeriv
+import Mathlib.Analysis.Calculus.Deriv.Inv
 
 /-!
 # The exact equation for the Lambert correction
@@ -43,7 +44,8 @@ noncomputable def corrCoeff (u : ℝ) (k : ℕ) : ℝ := u ^ k - (-1) ^ k / k.fa
 
 /-- `b_1(u) = 1 + u`, the coefficient that makes the reversion ordinary. -/
 @[simp] theorem corrCoeff_one (u : ℝ) : corrCoeff u 1 = 1 + u := by
-  simp [corrCoeff]
+  simp only [corrCoeff, pow_one, Nat.factorial_one, Nat.cast_one, div_one]
+  ring
 
 /-- **`q1:prop:B`, first clause.**  `B(0,u) = 0`. -/
 @[simp] theorem corrB_zero (u : ℝ) : corrB u 0 = 0 := by
@@ -52,14 +54,19 @@ noncomputable def corrCoeff (u : ℝ) (k : ℕ) : ℝ := u ^ k - (-1) ^ k / k.fa
 /-- The derivative of `B` in `v`, wherever the denominator does not vanish. -/
 theorem hasDerivAt_corrB (u : ℝ) {v : ℝ} (h : 1 - u * v ≠ 0) :
     HasDerivAt (corrB u) (u / (1 - u * v) ^ 2 + Real.exp (-v)) v := by
+  have hmul : HasDerivAt (fun v : ℝ => u * v) u v := by
+    simpa using (hasDerivAt_id v).const_mul u
   have hden : HasDerivAt (fun v : ℝ => 1 - u * v) (-u) v := by
-    simpa using ((hasDerivAt_id v).const_mul u).const_sub 1
+    simpa using hmul.const_sub 1
   have hinv : HasDerivAt (fun v : ℝ => (1 - u * v)⁻¹) (-(-u) / (1 - u * v) ^ 2) v :=
     hden.inv h
   have hexp : HasDerivAt (fun v : ℝ => Real.exp (-v)) (Real.exp (-v) * (-1)) v :=
     (hasDerivAt_neg v).exp
   have hsub := hinv.sub hexp
-  simpa [corrB, neg_neg, sub_neg_eq_add] using hsub
+  have hval : u / (1 - u * v) ^ 2 + Real.exp (-v) =
+      -(-u) / (1 - u * v) ^ 2 - Real.exp (-v) * (-1) := by ring
+  rw [hval]
+  exact hsub
 
 /-- **`q1:prop:B`, second clause.**  `∂_v B(0,u) = 1 + u`. -/
 theorem hasDerivAt_corrB_zero (u : ℝ) : HasDerivAt (corrB u) (1 + u) 0 := by
