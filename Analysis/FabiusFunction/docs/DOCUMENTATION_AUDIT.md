@@ -493,9 +493,11 @@ lattice identity is total when `M=0`; actual reconstruction retains its
 separate nonzero and admissible-mesh hypotheses.  The complete-Bell identity
 is formal coefficient-sequence algebra, not analytic reciprocal-MGF
 convergence, and odd-cumulant vanishing uses the pre-existing centered-parity
-theorem.  This closure promotes neither `thm:lag-cardinal` nor the larger
-compound `thm:lag-right-inverse`, global atom synthesis, or decoder
-optimality.
+theorem.  Independently, the exact decoder and atom-coefficient synthesis
+declarations in `LagrangeRvachevSynthesis` make `thm:lag-cardinal`
+**Exact/Complete by assembly**.  The larger compound
+`thm:lag-right-inverse`, global atom synthesis, and decoder optimality remain
+unpromoted.
 
 #### Algebraic geometric-uniform moment-polynomial tranche
 
