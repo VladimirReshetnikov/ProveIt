@@ -82,6 +82,15 @@ STATUS = {
    r"Mathlib's \texttt{HasFTaylorSeriesUpToOn.comp} (FaaDiBruno.lean), indexed by "
    r"\texttt{OrderedFinpartition} rather than unordered partitions; the regrouping "
    r"into partial-Bell form is not formal"),
+ 'thm:eulerian-irwin-hall': ('partial',
+   r"\lean{Fabius.cubeSliceCount_succ_sub} (\lean{EulerianPermutohedron}), the combinatorial "
+   r"slab count; the Fubini volume step is not formal"),
+ 'thm:permutohedron-h-polynomial': ('Lean',
+   r"\lean{Fabius.permutohedron_h_polynomial}, \lean{Fabius.permutohedron_h_vector} "
+   r"(\lean{EulerianPermutohedron}); the face numbers of the polytope are taken as input"),
+ 'thm:typeB-permutohedron-h-polynomial': ('Lean',
+   r"\lean{Fabius.sum_typeBEulerian_mul_X_pow_eq_sum_typeBFaceNumber} via the sign-free "
+   r"\lean{Fabius.typeB_newton} (\lean{EulerianPermutohedron})"),
  'thm:bell-poly-partitions': ('Lean',
    r"\lean{Fabius.partialBell_eq_sum_setPartitions} and "
    r"\lean{Fabius.bell_complete_eq_sum_allSetPartitions} (\lean{BellSetPartitions}), "

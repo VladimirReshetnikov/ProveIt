@@ -837,6 +837,7 @@ import FabiusFunction.StaircaseInversion
 import FabiusFunction.RemainderTransport
 import FabiusFunction.LeastTermIndex
 import FabiusFunction.BellSetPartitions
+import FabiusFunction.EulerianPermutohedron
 
 set_option autoImplicit false
 
