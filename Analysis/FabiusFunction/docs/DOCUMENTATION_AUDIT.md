@@ -112,7 +112,7 @@ numbers rather than copying these historical values.
 The historical post-merge 2026-09-01 inventory contained 675 modules and 8,909
 lexically visible public declarations, with zero missing module headers and
 zero missing doc comments.  A fresh 2026-09-04 audit for this documentation
-pass scans 918 facade-reachable modules and 11,568 public declarations.  It
+pass scans 921 facade-reachable modules and 11,604 public declarations.  It
 finds no missing module header or declaration comment, including throughout
 `FabiusInverseExactDyadicModulus.lean`, `JacobiTwoSquareCount.lean`, and
 `LagrangeRvachevMatrix.lean`, as well as the incoming
@@ -126,12 +126,13 @@ finds no missing module header or declaration comment, including throughout
 `ThueMorseGammaTowerDifferential.lean`,
 `GeometricUniformMomentPolynomialBridge.lean`,
 `GeometricUniformComplexMomentProduct.lean`, `ThueMorseCornerIntegral.lean`,
-and `RvachevLegendreCentralSum.lean` leaves,
+`RvachevLegendreCentralSum.lean`, `HalfQBinomialRootSimplicity.lean`,
+`RvachevLaurentLeading.lean`, and `FinitePrefixAppellRecovery.lean` leaves,
 as well as the sixteenth theorem in `FinitePolynomialFunctional.lean`.
 Relative to the
-610/8,318 activation checkpoint, the current tree adds 308 modules and 3,250 declarations.
+610/8,318 activation checkpoint, the current tree adds 311 modules and 3,286 declarations.
 Relative to the earlier 630/8,552 merged checkpoint, concurrent source work
-adds 288 modules and 3,016 declarations.  The post-merge 675/8,909 inventory,
+adds 291 modules and 3,052 declarations.  The post-merge 675/8,909 inventory,
 the intervening 903/11,448 Lambert-series inventory, and the immediately
 preceding 914/11,555 scaled-geometric and 915/11,556 real-MGF-bridge
 checkpoints, together with the incoming branch's 906/11,461 complex-product
@@ -623,7 +624,7 @@ with no missing module header or declaration comment.
 The final exact-closure tranche adds two modules and nine public declarations
 to the 915/11,556 bridge checkpoint.  That exact-closure checkpoint was
 therefore 917 modules and 11,565 public declarations.  With the subsequent
-inner complex-product union, the live facade inventory is 918 modules and
+inner complex-product union, that facade checkpoint was 918 modules and
 11,568 public declarations, with no missing module header or public
 declaration comment.
 
@@ -689,6 +690,91 @@ central value of `P_(2n)`.  Hence `cor:leg-central-sum` is **Exact/Complete**.
 No Jacobi closed form, all-degree decoder parity or rationality, reverse
 spectral closure, mesh minimality, or larger Lagrange right-inverse statement
 is inferred.
+
+#### Half-base roots, Laurent-leading, and finite-prefix Appell recovery tranche
+
+The three subsequent facade-reachable leaves add exactly three modules and 36
+public declarations to the 918/11,568 complex-product checkpoint.  The live
+inventory is therefore 921 modules and 11,604 public declarations, with no
+missing module header or public declaration comment.
+
+`HalfQBinomialRootSimplicity.lean` has no public definitions and exactly one
+public theorem, `halfQBinomial_sum_rootMultiplicity_two_pow`.  Over `ℚ`, for
+every `j<n`, it proves root multiplicity one at `2^j` for the coefficientwise
+half-base q-binomial polynomial.  The proof differentiates the finite product:
+at `2^j` every product-rule term except the deleted-`j` factor vanishes, and
+the remaining product is nonzero.  Together with
+`halfQBinomial_sum_eq_zero_iff` and
+`gaussianBinomial_half_eq_halfQBinomial`, this supplies exactly the manuscript
+polynomial's roots `1,2,…,2^(n-1)`, proves that all are simple, and excludes
+all other rational roots.  Thus `cor:halfbase-root-locus` is **Exact by
+composition**.  No arbitrary-characteristic simplicity statement or
+arbitrary-base root classification is inferred.
+
+`RvachevLaurentLeading.lean` adds one definition,
+`rvachevCenteredMGF`, and exactly six theorems:
+`rvachevCenteredMGF_eq_rvachevFourierProduct`,
+`rvachevCenteredMGF_pi_mul_I_int`,
+`rvachevCenteredMGF_pi_mul_I_int_ne_zero_of_odd`,
+`tendsto_sub_pow_mul_inv_rvachevFourierProduct_int`,
+`tendsto_rvachevCenteredMGF_laurent_int`, and
+`tendsto_rvachevCenteredMGF_laurent_two_pow_mul_odd`.
+The definition corrects for the existing generating function's half-scale by
+setting `M(t)=centeredComplexGeneratingFunction F (2*t)`; the first theorem
+then proves the exact rotation `M(t)=Φ(i*t/(2π))`.  The generic limit cancels
+the order `padicValNat 2 |m|+1` of every nonzero integer zero of `Φ` and tends
+to the inverse analytic cofactor.  Transport through the rotation gives the
+integer centered-MGF limit.  Finally, if `n=2^v*u` with `u` an odd signed
+integer, the manuscript-normalized wrapper proves pole order `v+1` and
+leading coefficient `-T_n^(v+1)/M(π*i*u)` at `T_n=2π*i*n`; the preceding
+odd-core theorem proves the displayed denominator nonzero.  Every reciprocal
+limit is taken through `𝓝[≠]`, not the full neighborhood: Lean's inverse is
+totalized by `0⁻¹=0` at the pole.  This makes
+`is:p2:thm:Laurent-leading` **Exact** without asserting lower Laurent
+coefficients, pole-shell summation, or Appell-coefficient asymptotics.
+
+`FinitePrefixAppellRecovery.lean` adds eleven definitions:
+`unitUniformRawMomentRat`, `centeredUnitUniformRawMomentRat`,
+`dyadicPrefixScaleRat`, `dyadicPrefixMomentRat`,
+`uncenteredDyadicPrefixMomentRat`, `centeredDyadicPrefixMomentRat`,
+`kabayaIriAppellPolynomialRat`,
+`uncenteredDyadicPrefixAppellPolynomialRat`,
+`centeredDyadicPrefixAppellPolynomialRat`,
+`uncenteredDyadicPrefixAppellScalePolynomialRat`, and
+`centeredDyadicPrefixAppellScalePolynomialRat`.  Its exactly seventeen public
+theorems are `Appell.poly_binomialConv`, `Appell.binomialConv_dilate`,
+`Appell.dilate_dilate`, `dyadicPrefixMomentRat_zero`,
+`uncenteredDyadicPrefixMomentRat_zero`,
+`centeredDyadicPrefixMomentRat_zero`,
+`dyadicPrefixMomentRat_binomialConv_tail`,
+`binomialConv_uncenteredDyadicPrefixMomentRat_tail`,
+`binomialConv_centeredDyadicPrefixMomentRat_tail`,
+`uncenteredDyadicPrefixAppellPolynomialRat_eq_sum`,
+`centeredDyadicPrefixAppellPolynomialRat_eq_sum_even`,
+`uncenteredDyadicPrefixAppellPolynomialRat_eq_eval_scale`,
+`centeredDyadicPrefixAppellPolynomialRat_eq_eval_scale`,
+`natDegree_uncenteredDyadicPrefixAppellScalePolynomialRat`,
+`natDegree_centeredDyadicPrefixAppellScalePolynomialRat`,
+`kabayaIriAppellPolynomialRat_eq_sum_prefix`, and
+`rvachevAppellPolynomialRat_eq_sum_prefix`.
+
+The prefix moments are constructed independently by finite binomial
+convolution of scaled uniform digits.  The one-step full-moment recurrences
+give exact tail factorizations, reciprocal uniqueness reverses them, and the
+generic Appell transform gives the complete uncentered expansion in powers of
+`2^-N` and the centered even expansion in powers of `4^-N`.  As elements of
+`Polynomial (Polynomial ℚ)`, their outer degrees are exactly `n` and
+`⌊n/2⌋`.  That qualifier is essential: evaluating the inner polynomial at a
+fixed `x` can lower the outer degree, and in the centered odd case the top
+inner coefficient vanishes at `x=0`.  The final two theorems evaluate these
+scale polynomials at zero with the existing geometric Lagrange rows.  From any
+starting depth `N`, they recover the full Kabaya--Iri polynomial from the
+`n+1` prefixes `N,…,N+n` at base `1/2`, and the full centered
+Rvachev--Appell polynomial from the `⌊n/2⌋+1` prefixes
+`N,…,N+⌊n/2⌋` at base `1/4`.  These are finite exact rational identities,
+not limits.  Accordingly both `is:p2:thm:finite-prefix-expansion` and
+`is:p2:thm:exact-recovery` are **Exact**.  No analytic MGF convergence or
+universal fixed-`x` degree statement is added.
 
 The one-definition/eight-theorem
 `RvachevSuperconvergentSynthesis.lean` leaf contributes
@@ -1431,7 +1517,7 @@ and 88-page notation-catalogue artifacts likewise predate their current merged
 sources.  Their package notices treat those PDFs as historical validation
 receipts, not parity claims, until fresh uninterrupted three-pass builds
 complete.  The inverse-computability receipt likewise still reflects the
-historical 675/8,909 census and requires refresh against the live 918/11,568
+historical 675/8,909 census and requires refresh against the live 921/11,604
 inventory.  The canonical inverse-theory publication retains a 134-page
 artifact synchronized at its latest-main source checkpoint; the merged
 effective-inversion and superconvergent-synthesis tranches make current parity

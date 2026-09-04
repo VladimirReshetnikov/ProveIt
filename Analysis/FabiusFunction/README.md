@@ -82,23 +82,26 @@ That primary exposition is deliberately proof-backed: every mathematical claim
 in it must have a proved counterpart in the Lean development.
 
 > **Artifact status (2026-09-04).**  The live facade union contains exactly
-> 918 source modules and 11,568 public declarations.  The documentation audit
+> 921 source modules and 11,604 public declarations.  The documentation audit
 > reports no missing module headers or declaration comments; the exact-dyadic
 > inverse, Jacobi two-square, Lagrange--Rvachev Matrix, geometric Richardson,
-> Gaussian-binomial second-moment and fixed-column rate, Rvachev--Appell Hasse,
+> Gaussian-binomial second-moment, fixed-column rate, and half-base root
+> simplicity, Rvachev--Appell Hasse,
 > arbitrary-space geometric-uniform
 > realization, regular central q-binomial sum, and Lambert branch-gap
 > Bernoulli additions, together with the geometric-uniform moment-polynomial,
 > its real-MGF normalization bridge, Lagrange-nodes-only, greater-than-one
 > Gaussian asymptotic, Thue--Morse Gamma-tower differential, local
 > Thue--Morse corner-integral, and central Rvachev--Legendre cancellation
-> leaves, together with the strengthened affine finite-polynomial functional
-> and the complex geometric-uniform moment-product bridge, are included in
+> leaves, together with the strengthened affine finite-polynomial functional,
+> the complex geometric-uniform moment-product bridge, the centered-MGF
+> Laurent-leading theorem, and finite-prefix Appell recovery, are included in
 > that clean census.  Its q-series union retains
 > `QPochhammerEntire` 0+5, `GeometricPochhammerNormalConvergence` 0+3,
 > `QPochhammerDissection` 0+2,
 > `QPochhammerInfinite` 1+29,
 > `GaussianBinomialAtNegOneDerivative` 0+4,
+> `HalfQBinomialRootSimplicity` 0+1,
 > `GaussianBinomialContinuity` 0+3,
 > `GaussianBinomialCumulants` 2+24,
 > `GaussianBinomialPalindromic` 0+14,
@@ -126,7 +129,9 @@ in it must have a proved counterpart in the Lean development.
 > `QuantumMultinomial` 0+5, and
 > `GaussianBinomialBounds` 0+6.  The geometric-interpolation union now also
 > includes `GeometricRichardsonGenerating` 3+7,
-> `RvachevAppellHasse` 1+14, and `RvachevLagrangeNodesOnly` 1+14.
+> `RvachevAppellHasse` 1+14, `RvachevLagrangeNodesOnly` 1+14, and
+> `FinitePrefixAppellRecovery` 11+17.  The Fourier/inverse union now also
+> includes `RvachevLaurentLeading` 1+6.
 > The Lambert branch-gap union now also includes
 > `LambertWBranchGapBernoulli` 0+5; the four-module union is 4+37, forty-one
 > declarations.
@@ -298,6 +303,9 @@ Padé/J-fractions, infinite Jacobi theory, and asymptotics also remain open.
 
 | Purpose | Focused import | Good starting declarations |
 | --- | --- | --- |
+| Simple dyadic roots of the half-base Gaussian polynomial (`cor:halfbase-root-locus`) | `FabiusFunction.HalfQBinomialRootSimplicity` | Exhaustive zero-definition/one-theorem surface: `halfQBinomial_sum_rootMultiplicity_two_pow`.  Over `ℚ`, every root `2^j` with `j<n` of the coefficientwise half-base q-binomial polynomial has root multiplicity exactly one.  Composed with `halfQBinomial_sum_eq_zero_iff` and `gaussianBinomial_half_eq_halfQBinomial`, this proves that the manuscript polynomial has exactly the simple roots `1,2,…,2^(n-1)` and no others, so `cor:halfbase-root-locus` is **Exact by composition**.  This leaf does not generalize simplicity to arbitrary characteristic or classify roots for an arbitrary base. |
+| Leading Laurent term of the reciprocal centered Rvachev MGF (`is:p2:thm:Laurent-leading`) | `FabiusFunction.RvachevLaurentLeading` | Exhaustive public surface: one definition, `rvachevCenteredMGF`, and six theorems, `rvachevCenteredMGF_eq_rvachevFourierProduct`, `rvachevCenteredMGF_pi_mul_I_int`, `rvachevCenteredMGF_pi_mul_I_int_ne_zero_of_odd`, `tendsto_sub_pow_mul_inv_rvachevFourierProduct_int`, `tendsto_rvachevCenteredMGF_laurent_int`, and `tendsto_rvachevCenteredMGF_laurent_two_pow_mul_odd`.  The definition uses the repository's half-scale generating coordinate as `centeredComplexGeneratingFunction F (2*t)`, and the rotation theorem gives `M(t)=Φ(i*t/(2π))`.  At every nonzero integer zero the generic theorem cancels the exact order `v₂(|m|)+1` against the analytic cofactor.  If `n=2^v*u` with odd signed `u`, the manuscript wrapper proves the leading coefficient `-T_n^(v+1)/M(π*i*u)` at `T_n=2π*i*n`, and the denominator is nonzero.  All limits use the punctured neighborhood `𝓝[≠]`, which is essential because inversion is totalized at the pole; no lower Laurent coefficients or downstream pole-shell asymptotics are claimed.  Thus `is:p2:thm:Laurent-leading` is **Exact**. |
+| Finite dyadic Appell-prefix expansions and exact recovery | `FabiusFunction.FinitePrefixAppellRecovery` | Exhaustive 11-definition/17-theorem surface.  Definitions: `unitUniformRawMomentRat`, `centeredUnitUniformRawMomentRat`, `dyadicPrefixScaleRat`, `dyadicPrefixMomentRat`, `uncenteredDyadicPrefixMomentRat`, `centeredDyadicPrefixMomentRat`, `kabayaIriAppellPolynomialRat`, `uncenteredDyadicPrefixAppellPolynomialRat`, `centeredDyadicPrefixAppellPolynomialRat`, `uncenteredDyadicPrefixAppellScalePolynomialRat`, and `centeredDyadicPrefixAppellScalePolynomialRat`.  Theorems: `Appell.poly_binomialConv`, `Appell.binomialConv_dilate`, `Appell.dilate_dilate`, `dyadicPrefixMomentRat_zero`, `uncenteredDyadicPrefixMomentRat_zero`, `centeredDyadicPrefixMomentRat_zero`, `dyadicPrefixMomentRat_binomialConv_tail`, `binomialConv_uncenteredDyadicPrefixMomentRat_tail`, `binomialConv_centeredDyadicPrefixMomentRat_tail`, `uncenteredDyadicPrefixAppellPolynomialRat_eq_sum`, `centeredDyadicPrefixAppellPolynomialRat_eq_sum_even`, `uncenteredDyadicPrefixAppellPolynomialRat_eq_eval_scale`, `centeredDyadicPrefixAppellPolynomialRat_eq_eval_scale`, `natDegree_uncenteredDyadicPrefixAppellScalePolynomialRat`, `natDegree_centeredDyadicPrefixAppellScalePolynomialRat`, `kabayaIriAppellPolynomialRat_eq_sum_prefix`, and `rvachevAppellPolynomialRat_eq_sum_prefix`.  Finite binomial convolution constructs the prefix moments and proves the exact uncentered `2^-N` and centered even `4^-N` expansions.  Their outer polynomial-valued degrees are respectively `n` and `⌊n/2⌋`; this does not assert the same degree after fixing the inner evaluation point, where the centered leading coefficient can vanish (notably for odd degree at `x=0`).  The last two theorems recover the full rational Kabaya--Iri polynomial from any `n+1` consecutive prefixes at base `1/2`, and the full centered Rvachev--Appell polynomial from any `⌊n/2⌋+1` consecutive prefixes at base `1/4`, with no limit.  Hence `is:p2:thm:finite-prefix-expansion` and `is:p2:thm:exact-recovery` are both **Exact**; the API is exact rational coefficient algebra and makes no analytic-MGF convergence or universal fixed-`x` degree claim. |
 | Definitions, the bounded characterization, folded `up`, and the global first-jet reflection law | `FabiusFunction.Basic`, `FabiusFunction.Differential` | `BoundedFabius`, `IsFabius`, `rvachevUp`, `rvachevUp_even`, `rvachevUp_eq_zero_of_not_mem_Ioo`, `support_rvachev_subset_Ioo`, `rvachev_hasDerivAt`, `fabius_hasDerivAt`, `deriv_fabiusReal`, `deriv_fabiusReal_one_sub` |
 | Sharp bounded derivatives and the exact zero-interleaved Thue--Morse pattern on every matched dyadic grid | `FabiusFunction.BoundedDerivatives` | `iteratedDeriv_fabiusReal_of_lt_one`, `iteratedDeriv_fabiusReal_dyadicGrid_eq_ite`, `iteratedDeriv_fabiusReal_dyadicGrid_eq_zero_iff`, `abs_iteratedDeriv_fabiusReal_dyadicGrid_of_odd`, `abs_iteratedDeriv_fabiusReal_le`, `isGreatest_abs_iteratedDeriv_fabiusReal` |
 | Exact derivative cells, signed natural moments, and normalized signed/absolute-value distributions | `FabiusFunction.RvachevDerivativeDistribution` | Exhaustive public surface (one definition and 18 theorems): `rvachevDerivativeCell`; `rvachevDerivativeCell_eq_div_add`, `rvachevDerivativeCell_one_eq_succ_neg_one`, `rvachevDerivativeCell_zero_neg_one`, `rvachevDerivativeCell_two_pow_neg_one`, `rvachevDerivativeCell_mem_Icc`, `iteratedDeriv_rvachev_cell`, `iteratedDeriv_rvachev_cell_zero`, `abs_iteratedDeriv_rvachev_cell`, `intervalIntegral_comp_iteratedDeriv_rvachev`, `intervalIntegral_iteratedDeriv_rvachev_pow`, `intervalIntegral_iteratedDeriv_rvachev_pow_of_even`, `intervalIntegral_iteratedDeriv_rvachev_pow_eq_zero_of_odd`, `intervalIntegral_comp_normalized_iteratedDeriv_rvachev`, `intervalIntegral_comp_abs_iteratedDeriv_rvachev`, `intervalIntegral_comp_normalized_abs_iteratedDeriv_rvachev`, `map_normalized_abs_iteratedDeriv_rvachev_restrict_Icc`, `map_normalized_iteratedDeriv_rvachev_restrict_Icc`, and `intervalIntegral_abs_iteratedDeriv_rvachev_rpow`.  The signed-moment theorems take `F : BoundedFabius`, `hF : IsFabius F`, and `n m : ℕ`.  With `T_n=(n+1).choose 2`, the hypothesis-free general formula multiplies the base moment by `((2 : ℝ)^n)⁻¹ * (1 + (-1 : ℝ)^m)^n * ((2 : ℝ)^T_n)^m`; at `n=0` and odd `m`, its Boolean-cube factor is deliberately `0^0=1`, so it recovers the generally nonzero original odd moment.  The even corollary assumes exactly `Even m` and holds for every `n`, including `n=0` and `m=0`; the odd vanishing corollary assumes exactly `0<n` and `Odd m`.  At every positive derivative order, `intervalIntegral_comp_normalized_iteratedDeriv_rvachev` gives the sharply normalized symmetric half-mixture of `up` and `-up` for a continuous `H : ℝ → E` valued in any real Banach space: the normalization is `((2 : ℝ)^T_n)⁻¹` and the mixture scalar is `(2 : ℝ)⁻¹`.  Under the same exact hypothesis `0<n`, `map_normalized_iteratedDeriv_rvachev_restrict_Icc` gives the corresponding equality of Borel pushforwards of `volume.restrict (Set.Icc (-1) 1)`, with measure scalar `(2 : NNReal)⁻¹`.  This positivity hypothesis is essential: at `n=0` the normalized signed derivative has the unsymmetrized original `rvachevUp` law.  Separately, the absolute-moment theorem uses `Real.rpow` for every real `p>=0`, and the normalized absolute derivative has the same restricted-Lebesgue pushforward as `up` at every order, including zero.  No separate product-space Rademacher realization, `eLpNorm` or general rearrangement-invariant norm ladder, inverse-Fabius level-set formula, packaged beta theorem, or spectral layer is asserted. |
