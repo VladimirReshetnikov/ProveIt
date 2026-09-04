@@ -11,7 +11,7 @@ see its
 or [rendered PDF](Fabius_Function_and_Rvachev_Up/Fabius_Function_and_Rvachev_Up.pdf).
 
 > **Artifact status (2026-09-03).**  The live facade union contains exactly
-> 902 source modules and 11,440 public declarations.  The live audit reports no
+> 902 source modules and 11,443 public declarations.  The live audit reports no
 > missing module headers or declaration comments.  This crosswalk records all
 > 30 declarations in `LegendreGauntClosedForm.lean` and
 > `FabiusLegendreGauntClosedForm.lean`, together with the prime-power,
@@ -21,6 +21,7 @@ or [rendered PDF](Fabius_Function_and_Rvachev_Up/Fabius_Function_and_Rvachev_Up.
 > `QPochhammerDissection` 0+2,
 > `QPochhammerInfinite` 1+29, `GaussianBinomialAtNegOneDerivative` 0+4,
 > `GaussianBinomialContinuity` 0+3,
+> `GaussianBinomialCumulants` 2+24,
 > `GaussianBinomialPalindromic` 0+14,
 > `GaussianBinomialPolynomialStructure` 0+5,
 > `CentralQBinomialReduction` 0+6, `CyclotomicFactorization` 0+7,

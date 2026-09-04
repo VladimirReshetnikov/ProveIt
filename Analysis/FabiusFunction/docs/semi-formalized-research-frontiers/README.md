@@ -59,9 +59,9 @@ Guide's Bernoulli-number gap series, convergence of that series, or higher
 Puiseux/logarithmic expansions. The affected retained frontier, primary,
 walkthrough, and Lambert-Guide PDFs are historical artifacts and do not render
 this source-only overlay. The live documentation census is now 902 modules and
-11,440 public declarations.
+11,443 public declarations.
 
-The newest source-only addition is
+The preceding source-only addition is
 `FabiusFunction.GeometricRichardsonGenerating`, with three definitions and
 seven theorems. Its
 `Fabius.geometricLagrangeRichardson_generating` theorem is the exact formal
@@ -71,6 +71,18 @@ also supplies the report-facing analytic companion
 contraction and absolute summability. The retained canonical-frontier,
 primary, walkthrough, and comb-synthesis PDFs all predate this crosswalk and
 remain historical artifacts; none was rebuilt for this update.
+
+The newest source-only addition leaves the module count unchanged and adds
+three theorems to `FabiusFunction.GaussianBinomialCumulants`: the explicit
+second derivative at one
+`Fabius.eval_one_derivative_derivative_gaussianBinomial_X`, the division-free
+raw second moment `Fabius.twelve_mul_secondMoment_gaussianBinomial_eval_one`,
+and the division-free variance numerator
+`Fabius.twelve_mul_varianceNumerator_gaussianBinomial_eval_one`. The first is a
+characteristic-zero field identity on `k ≤ n`; the cleared identities are total
+over every commutative semiring, including the above-row zero case. Their
+probability language is the normalized-generating-polynomial interpretation of
+algebraic identities, not a new probability-space construction.
 
 The 1 September 2026 source-only q-Pochhammer overlay is likewise newer than
 the retained PDFs.  The new `QPochhammerEntire.lean` leaf has zero definitions
@@ -98,8 +110,11 @@ domain remains partial: the compiled by-reversal theorem retains `C ≠ 0` and
 `(A;q)_n ≠ 0`, while the unrestricted theorem uses finite q-Cauchy directly;
 no rational-continuation or cleared commutative-ring extension is claimed.
 
-The monograph's current source has 16,359 lines and 812,257 bytes, with
-SHA-256 `e90f46955d9a9792ce469d29ceaa3aa538874eb1e94cf4c2dd7e50dbaf63b10e`.
+Immediately before the Gaussian second-moment edit, the monograph source had
+16,359 lines and 812,257 bytes, with SHA-256
+`e90f46955d9a9792ce469d29ceaa3aa538874eb1e94cf4c2dd7e50dbaf63b10e`.
+The working source is newer, and no replacement digest is recorded here for
+this source-only update.
 Its retained 389-page A4 PDF (3,254,138 bytes; SHA-256
 `b8add607c85ee35be98dabf36879e1d45fb093c6b453e93679c80295fae715bc`)
 was synchronized to the preceding 16,339-line, 810,779-byte source checkpoint
