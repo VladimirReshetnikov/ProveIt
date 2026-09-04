@@ -130,9 +130,11 @@ A mathematically oriented reader should begin with Sections~\ref{ch:objects}, \r
 \end{boxedremark}
 
 \begin{boxedremark}\textbf{Artifact status (4 September 2026).}\space
-The authoritative live lexical audit of the facade semantic union contains
-exactly 986 source modules and 12,233 public declarations.  It finds no
-missing module headers and no public declarations without doc comments.  The
+The authoritative live lexical audit is computed by \path{scripts/doc_audit.py}
+and pinned in \path{docs/doc_audit_baseline.json}. The earlier incoming
+985-module/12,199-declaration checkpoint had no missing module headers or
+public declaration comments. The merged source also retains
+\nolinkurl{exists_eq_in_residual_interval} in \path{MeanValueBracket.lean}. The
 historical 923/11,611 snapshot comprised the merge target's 11,610
 declarations and the retained unconditional public Pochhammer bridge.  Later
 branch inventories, including 952/11,884, 967/12,001, 970/12,051,
@@ -7072,9 +7074,9 @@ module headers or declaration comments.  The later 934/11,709 checkpoint
 and both branches' subsequent inventories are historical: the local branch
 reached 961/11,974 and then 970/12,056, while the incoming branch reached
 952/11,884, 967/12,001, 969/12,048, and 970/12,051.
-The live merged audit scans 986 modules and 12,233 explicit public
-declarations, with zero missing module headers and zero missing declaration
-comments.  The Legendre-biorthogonality 925/11,619 census remains an explicit
+The later incoming audit scanned 985 modules and 12,199 explicit public
+declarations, with zero documentation gaps. These are historical figures;
+the current census is pinned in \path{docs/doc_audit_baseline.json}.  The Legendre-biorthogonality 925/11,619 census remains an explicit
 historical checkpoint.  At the retained historical
 mainline checkpoint before the latest
 six-module q-series tranche was 623 modules and 8,476 declarations.  Its
@@ -7349,10 +7351,11 @@ new leaves contribute 80 declarations, while three existing declarations
 move from \path{NorlundDiagonal.lean} to \path{ExponentialRescaling.lean},
 for a net increase of 77.  The eight-theorem Stirling leaf is retained.
 The two certificate leaves added nine public theorems at the historical
-979/12,142 checkpoint. Six further leaves and extensions to existing modules
-then added 57 declarations. The incoming BellSetPartitions module adds 34
-more, giving the current merged inventory of 986/12,233. No new aggregate-build
-or PDF-parity claim is made.
+979/12,142 checkpoint. The incoming branch recorded a historical 985/12,199 inventory after six
+further leaves added 57 declarations. The authoritative current census is
+computed by \path{scripts/doc_audit.py} and pinned in
+\path{docs/doc_audit_baseline.json}. No new aggregate-build or PDF-parity
+claim is made.
 
 The crosswalk remains conservative: the abstract Fa\`a di Bruno result, the
 ordinary Bell normalization, and the Touchard definition and displayed

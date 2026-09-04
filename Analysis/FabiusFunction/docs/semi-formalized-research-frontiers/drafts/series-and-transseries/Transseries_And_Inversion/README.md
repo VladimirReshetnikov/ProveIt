@@ -35,7 +35,6 @@ The live corpus census is 988 modules and 12,257 explicit public declarations,
 with zero missing declaration comments and zero missing module headers. The
 thirty-five directly relevant modules contain 304 explicit public commands; two
 named `to_additive` declarations bring this inventory to 306 named API entries.
-The 979/12,142 census is the preceding historical checkpoint.
 Automatically generated structure projections are outside both tallies.
 
 - `TransseriesScale.lean` (one structure, two definitions, six theorems):
@@ -108,10 +107,6 @@ Automatically generated structure projections are outside both tallies.
 - `TransseriesFlat.lean` (four definitions, twenty-two theorems): `IsFlat`,
   `flatSubmodule`, `AbsorbsScale`, `powScale`, `isFlat_zero`, `IsFlat.add`,
   `IsFlat.neg`, `IsFlat.sub`, `IsFlat.const_smul`,
-  `isFlat_exp_neg_rpow_atTop`, `IsPoincareExpansion.add_flat`,
-  `IsPoincareExpansion.sub_same_coeff_isFlat`,
-  `IsPoincareExpansion.iff_sub_isFlat`,
-  `IsFlat.smul_of_scale_absorption`, `IsFlat.smul_of_isBigO_inv_pow`,
   `mem_flatSubmodule_iff`, `IsFlat.mul_absorbsScale`,
   `absorbsScale_const`, `IsPoincareExpansion.add_isFlat`,
   `isFlat_sub_of_isPoincareExpansion`,
@@ -179,8 +174,8 @@ fifteenth incoming leaf, `NewtonInterpolation.lean` (22), belongs to another
 focused package. Three later focused leaves add
 `StirlingSeriesCoefficients.lean` (15), `WrightOmegaTwoOrders.lean` (8), and
 `UnitSeriesPowerRecurrence.lean` (3). `NewtonInterpolation.lean` and the eleven
-new `AppellSequence.lean` declarations are included only in the global corpus
-census above.
+new `AppellSequence.lean` declarations are included only in the global
+970/12,051 census.
 
 The final focused addition is the ten-theorem
 `TransseriesWrightOmegaTerms.lean` leaf:
@@ -281,14 +276,12 @@ Shared vocabulary is a weak signal: two results both called
 "Lagrange–Bürmann" turned out to be different theorems, and a mechanical
 concordance reports them as the same. Only reading the statements settles it.
 
-The current source adds a scoped Lean crosswalk rather than a title-based one.
-It identifies exact counterparts for the abstract asymptotic-scale and
-Poincaré-expansion core, flatness and invisible functions, the relevant
-Hahn-series foundations, polynomial--logarithmic height estimates, Wright omega
-apart from real analyticity, differential-block integration, staircase
-inversion, and residual/error transport. Each note records its boundary; the
-crosswalk does not promote the volume's remaining human proofs or frontier
-claims wholesale.
+The source also carries a statement-level Lean crosswalk for the abstract
+asymptotic-scale and Poincaré-expansion core, flatness and invisible functions,
+the relevant Hahn-series foundations, polynomial--logarithmic height
+estimates, Wright omega, differential-block integration, staircase inversion,
+and residual/error transport. Each note records its boundary; the crosswalk
+does not promote the volume's remaining human proofs or frontier claims.
 
 What the inversion apparatus genuinely adds over the calculus is the
 exponential–power model and its axiomatized dominant core, the monomial
@@ -324,14 +317,13 @@ The incoming `BellLeibnizTower` and `OrdinaryPartialBell` modules supply the
 abstract Faà di Bruno formula and the ordinary/exponential normalization
 bridge. `TouchardEulerOperator` supplies the Touchard definition, coefficient
 identities, and displayed Euler-operator equation. The backward-error,
-transfer, and Lambert-certificate
-claims depend on assembling their named existence and comparison theorems.
-The broader Wright-omega, differential-closure, harmonic-increment, Cayley,
-derangement, Lambert-correction and bracket, core-inversion,
-remainder-transport, and staircase claims remain Partial where their source
-clauses exceed the exposed APIs. `LeastTermIndex` supplies neighboring
-ratio and unimodality lemmas; it does not prove the full optimal-truncation
-claim.
+transfer, and Lambert-certificate claims depend on their named existence and
+comparison theorems. The broader Wright-omega, differential-closure,
+harmonic-increment, Cayley, derangement, Lambert-correction and bracket,
+core-inversion, remainder-transport, and staircase claims remain Partial where
+their source clauses exceed the APIs. `LeastTermIndex` supplies neighboring
+ratio and unimodality lemmas, not the full optimal-truncation claim.
+
 ## Structure
 
 Part I orients: what a transseries is, why a scale is needed, why divergence is not failure, and the algebra of monomials — replacing four parallel expository introductions.

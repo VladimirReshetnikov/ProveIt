@@ -290,6 +290,9 @@ historical checkpoint.  The finalized one-definition/eleven-theorem
 The q ledger is 181 Exact / 79 Partial / 14 None / 8 interface, the relevant Dyadic
 Gaussian--Thue--Morse chapter is 13/43/0/0, and the source concordance is 103
 Lean-proved / 375 human-proved frontier / 60 non-applicable / 9 conjectures.
+The q-Lucas row remains Partial because the Lean declaration proves only
+primitive-root evaluation, not the polynomial congruence modulo the
+cyclotomic polynomial.
 All of these sibling source-only additions are likewise absent
 from the retained historical PDFs.
 

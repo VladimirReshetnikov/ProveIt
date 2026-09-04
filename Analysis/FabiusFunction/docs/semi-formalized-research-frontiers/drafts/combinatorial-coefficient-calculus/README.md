@@ -46,10 +46,10 @@ and addition laws are now represented, with the latter two valid after
 evaluation in any commutative rational algebra. The analytic convergence and
 branch assertion attached to the generating function remains outside that
 formalized theorem block. The second-kind reverse-row recurrence is now
-machine checked in a division-free integral form, including its zero boundary
-case beyond the range used by the displayed human formula; the separately
-merged unrestricted rational-index source identity remains pending validation
-under its collision-free declaration name. The ordinary versus
+machine checked in a division-free integral form and, by transport from the
+integers, over every commutative ring, including its zero boundary case beyond
+the range used by the displayed human formula. The separately merged
+unrestricted rational-index source identity remains pending validation. The ordinary versus
 exponential Bell normalization now has both its rational ratio form and a
 denominator-free commutative-semiring form, together with functoriality and the
 upper variable-support cutoff. The sharpness witness for that cutoff, the
@@ -132,20 +132,19 @@ complete human proofs and exact declaration crosswalks. Three private rational
 helpers in `FinitePrefixThueMorseCollapse` were replaced by the shared API; that
 caller refactor has now passed its own direct Lean check as well.
 
-The document's generated register is the single source of current row counts
-and Lean/partial/none classifications. Its inherited formal-power, Stirling,
-Newton, and certificate checkpoints are not a fresh compilation of the whole
-corpus. The final structural/provenance validator checks the advertised totals
-against the actual rows as well as adjacent proofs, the 27 disposition records,
-and six original-source inventory rows. PDF building remains skipped for this
-source-only synchronization.
+The merged register contains 207 rows: 68 marked Lean, 35 partial, and 104
+without a compiler-verified counterpart. The grid and CRT certificates, the
+Bell set-partition interpretation, and the retained Bell, Cauchy, and reverse-row
+crosswalks contribute compiler-backed entries alongside the incoming
+classifications; this is not a fresh build of the whole corpus. The source-level
+validator accounts for 207 adjacent proofs, 27 disposition records, and six
+original-source inventory rows. The retained PDF is historical; current render
+parity requires a new build unless the prior deferral is extended to this merge.
 
-The same-day upstream crosswalk connects the Bell normalization and unit-series
-coefficient formulas to `UnitSeriesBellCoefficients`. The subsequent incoming
-`BellSetPartitions` independently supplies the weighted labelled-set
-interpretation and the Stirling block-count specialization; its compiled
-status is recorded by upstream commit `dd554e5a8`, not a fresh local replay.
-The prescribed-block-size type count remains a separate obligation.
+The Bell normalization and unit-series coefficient formulas are connected to
+`UnitSeriesBellCoefficients`; `BellSetPartitions` separately supplies the exact
+weighted labelled-set partition interpretation. The finer per-type coefficient
+count remains outside that theorem, as recorded in the register.
 
 ## Formal-power recurrence (2026-09-04)
 

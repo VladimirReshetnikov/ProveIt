@@ -552,11 +552,12 @@ theorems. Its exhaustive public surface is
 `gaussianBinomial_shifted_fixedColumn_error_isBigO`. This closure additionally
 reuses `norm_finiteQPochhammerIn_pow_sub_one_le_exp_of_norm_le_one` and
 `tendsto_gaussianBinomial_add_const_atTop` from the one-definition,
-twenty-seven-theorem `QBinomialTheoremInfinite` module. The rate leaf's first two
-theorems give the generic finite-product defect bounds; the latter seven declarations give the denominator-free
+twenty-seven-theorem `QBinomialTheoremInfinite` module. The imported
+exponential bound and the rate leaf's elementary bound give the generic
+finite-product defect; the latter seven declarations give the denominator-free
 relative estimate, fixed and shifted nonasymptotic additive errors, and all
 four fixed/shifted relative and additive Big-O wrappers. The reused theorem
-supplies the shifted limit. All eleven closure names include `q = 0` at their
+supplies the shifted limit. All ten closure names include `q = 0` at their
 respective `‖q‖ ≤ 1` or `‖q‖ < 1` boundaries; no nonzero-nome premise is hidden.
 
 The latest `ThueMorseSparseProuhet` partition tranche adds no definitions and
@@ -720,7 +721,10 @@ reciprocal-product expansions, the complex upper-parameter series, and the
 generalized q-binomial theorem. The remaining complex-Gaussian property and
 classical-limit rows stay unformalized.
 
-The retained 389-, 391-, 395-, 398-, 401-, 402-, and 405-page
-source/PDF tuples remain synchronized historical evidence for their named
-checkpoints. The merged q-series source is newer than all of them; no current
-source/render parity is claimed and a new render is pending.
+The retained 395-page PDF and source SHA-256
+`4785625c1399558f3ca59481888fc76514e0a327a1faa16945c61851f874f3d5`
+remain synchronized historical evidence for the checkpoint recorded above.
+The retained 398-page PDF is likewise a historical 2026-09-04 receipt. The
+405-page PDF and its named source remain synchronized historical evidence for
+the `b899` checkpoint above; the current merged source has advanced beyond
+that checkpoint, so the changed canonical root is PDF-regeneration-deferred by user approval.

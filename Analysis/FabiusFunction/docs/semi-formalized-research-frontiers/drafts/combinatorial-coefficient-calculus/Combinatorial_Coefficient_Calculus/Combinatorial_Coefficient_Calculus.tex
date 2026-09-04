@@ -611,6 +611,11 @@ $\binom{-k}{i+2}=(-1)^{i+2}\binom{k+i+1}{i+2}$.  The supporting coefficient
 identity for $(1+t)\log(1+t)-t$ is \lean{Fabius.coeff_logTail}, and its
 substitution at $t=\EulerE^x-1$ is \lean{Fabius.subst_logTail}; these are the
 formal one-variable series steps used in the proof above.
+The compiled \lean{Fabius.second_reverse_row_commRing} transports that integral
+identity through \lean{Int.castRingHom} to every commutative ring, still for all
+$n$ and every $k\ge1$.  When $k\le n$, the cast converts the natural difference
+$n-k$ into the displayed ring subtraction; when $n<k$, both the Stirling entry
+and the finite sum vanish.
 \cref{eq:second-reverse-column} is \lean{Fabius.second_reverse_column} in module
 \lean{StirlingSecondReverseColumn}, and the formal proof is the one given here.
 The right-hand side is read as a binomial convolution of the kernel
@@ -641,9 +646,10 @@ Its $n$th exponential coefficient is the left side; the logarithmic-tail
 coefficient in degree $m-q$ is $(-1)^{m-q}/((m-q)(m-q-1))$, and multiplying
 by $m!/q!$ gives the displayed kernel.  This coefficient argument applies
 also below the diagonal, when both sides vanish.
-That source module is retained pending compiler validation; the compiled
-\lean{StirlingSecondReverseRow} declaration above is the one used for the
-exact register status.
+That additional rational identity has also passed focused compiler validation.
+The triangular-domain wrapper \lean{Fabius.second_reverse_row_commRing_of_le}
+is now a direct corollary of the all-boundary theorem, so it needs no second
+rational-to-integral derivation.
 \end{remark}
 
 The factor interchange mentioned in the source produces a parallel pair for the
@@ -3760,20 +3766,30 @@ Over a rational algebra, division by $n!$ gives
 \end{proof}
 
 \begin{remark}[Formal crosswalk]
-% ed.: crosswalk added 2026-09-04; exact algebraic normalization only.
-The displayed conversion is
-\lean{Fabius.ordPartialBell_eq_factorialRatio_partialBell} in module
-\lean{UnitSeriesBellCoefficients}, over every commutative $\mathbb Q$-algebra
-and for all $n,k\geq0$; thus Lean also covers the automatically vanishing
-out-of-range cases.  Its denominator-cleared companion is
-\lean{Fabius.factorial_mul_ordPartialBell_eq_factorial_mul_partialBell}:
-$n!\OrdinaryPartialBellPolynomial nk(x)=k!\ExponentialPartialBellPolynomial
-nk(1!x_1,2!x_2,\ldots)$.  The Lean proof compares the ordinary coefficient of
-the $k$-th power of the factorially weighted Bell series with its exponential
-Bell coefficient.  These declarations prove the polynomial normalization.
-The distinct labelled-set partition interpretation of
-\cref{thm:bell-poly-partitions} is supplied independently by
-\lean{BellSetPartitions}, as recorded beside that theorem.
+The denominator-free identity in the proof is
+\lean{Fabius.factorial_mul_ordPartialBell_eq_factorial_mul_partialBell}
+in \lean{UnitSeriesBellCoefficients}, for coefficients in an arbitrary
+commutative semiring.  Thus the formal theorem is stronger than the displayed
+rational-algebra equation and requires neither division nor cancellation.
+The printed ratio itself is
+\lean{Fabius.ordPartialBell_eq_factorialRatio_partialBell} over a commutative
+$\mathbb Q$-algebra.  The functoriality theorem
+\lean{Fabius.map_ordPartialBell} says that ordinary partial Bell polynomials
+commute with every commutative-semiring homomorphism; its proof applies the map
+to the defining recurrence, and it supplies the evaluation step in the
+universal-polynomial descent above.  The upper-support cutoff above is
+\lean{Fabius.partialBell_congr_of_eq_of_le}: if two weight sequences agree for
+$1\le i\le n-k+1$, their $(n,k)$ partial Bell polynomials agree, again over
+every commutative semiring.  The formal theorem proves independence from
+weights above the cutoff; the preceding witness that the endpoint can occur is
+the combinatorial sharpness argument, not a claim of endpoint dependence in
+every semiring.
+The coefficient proof compares the ordinary coefficient of the $k$th power
+of the factorially weighted Bell series with its exponential Bell
+coefficient.  These declarations prove the polynomial normalization rather
+than the labelled-set partition interpretation of
+\cref{thm:bell-poly-partitions}; the latter is now separately formalized by
+\lean{BellSetPartitions} as recorded below.
 \end{remark}
 
 \section{Combinatorial interpretation}
@@ -11581,7 +11597,7 @@ Result & Title & Status & Lean declarations (module) \\
 \Cref{thm:first-cycle} & Permutation interpretation & partial & recurrence and boundary values are Mathlib's \lean{Nat.stirlingFirst_succ_succ}, \lean{Nat.stirlingFirst_succ_zero}, \lean{Nat.stirlingFirst_eq_zero_of_lt}; the defining expansions are \lean{Fabius.ascPochhammer_eq_sum_monomial_stirlingFirst} and \lean{Fabius.descPochhammer_eq_sum_monomial_signedStirlingFirst} (\lean{StirlingBasisChange}); the permutation count itself is not formalized \\
 \Cref{thm:second-recurrence} & Second-kind recurrence & partial & \lean{Nat.stirlingSecond_succ_succ}, \lean{Nat.stirlingSecond_succ_zero}, \lean{Nat.stirlingSecond_eq_zero_of_lt} (Mathlib); the set-partition count, which Mathlib leaves as a docstring claim, is \lean{Fabius.card_setPartitions} (\lean{BellSetPartitions}) \\
 \Cref{thm:second-explicit} & Surjection formula & Lean & \lean{Fabius.factorial_mul_stirlingSecond_eq_sum} (over $\mathbb Z$) and \lean{Fabius.stirlingSecond_eq_sum_div_factorial} (over $\mathbb Q$) (\lean{StirlingBasisChange}); proved by binomial inversion of \lean{Fabius.pow_eq_sum_stirlingSecond_mul_factorial_mul_choose} \\
-\Cref{thm:second-reverse-recurrences} & Alternative second-kind recurrences & Lean & \cref{eq:second-triangular-explicit} is \lean{Fabius.stirlingSecond_eq_pow_div_factorial_sub_sum} (\lean{StirlingTriangularExplicit}), for all $n,k$ with the $r=0$ term included; \cref{eq:second-reverse-row} is \lean{Fabius.second_reverse_row} (\lean{StirlingSecondReverseRow}), in a division-free integral form assuming only $1\le k$ and covering $n\le k$, with $i=j-2$ and $\binom{-k}{i+2}=(-1)^{i+2}\binom{k+i+1}{i+2}$; its one-variable series steps are \lean{Fabius.coeff_logTail} and \lean{Fabius.subst_logTail}.  \cref{eq:second-reverse-column} is \lean{Fabius.second_reverse_column} (\lean{StirlingSecondReverseColumn}), by the column differential equation $(1-\EulerE^{-x})F_k'=kF_k$ (\lean{Fabius.one_sub_altSeries_mul_derivative_egfA_stirlingSecond}).  The alternate commutative-ring form \lean{Fabius.second_reverse_row_commRing_of_le} and the stronger unrestricted rational-index form \lean{Fabius.second_reverse_row_sum} in \lean{StirlingSecondReverseRowIdentity} remain source-reviewed pending compiler validation and are not used for this status. \\
+\Cref{thm:second-reverse-recurrences} & Alternative second-kind recurrences & Lean & \cref{eq:second-triangular-explicit} is \lean{Fabius.stirlingSecond_eq_pow_div_factorial_sub_sum} (\lean{StirlingTriangularExplicit}), for all $n,k$ with the $r=0$ term included; \cref{eq:second-reverse-row} is \lean{Fabius.second_reverse_row} and, over every commutative ring, \lean{Fabius.second_reverse_row_commRing} (\lean{StirlingSecondReverseRow}), both assuming only $1\le k$ and covering all $n$, including $n<k$ where both sides vanish.  The integral proof uses \lean{Fabius.coeff_logTail} and \lean{Fabius.subst_logTail}; the generic theorem transports it through \lean{Int.castRingHom}.  \cref{eq:second-reverse-column} is \lean{Fabius.second_reverse_column} (\lean{StirlingSecondReverseColumn}), by the column differential equation $(1-\EulerE^{-x})F_k'=kF_k$ (\lean{Fabius.one_sub_altSeries_mul_derivative_egfA_stirlingSecond}).  The stronger unrestricted rational-index form \lean{Fabius.second_reverse_row_sum} in \lean{StirlingSecondReverseRowIdentity} is also compiler-verified; its triangular generic wrapper is a direct corollary of the all-boundary ring theorem. \\
 \Cref{thm:first-reverse-recurrences} & Reverse recurrences of the first kind & Lean & \cref{eq:first-reverse-row} is \lean{Fabius.first_reverse_row} and \cref{eq:first-reverse-column} is \lean{Fabius.first_reverse_column} (module \lean{StirlingFirstReverse}), the first from the rising factorial, the second by comparing exponential generating functions (\lean{Fabius.egfA_first_reverse_column}). \\
 \Cref{thm:stirling-basis} & Stirling basis transformations & Lean & \lean{Fabius.ascPochhammer_eq_sum_monomial_stirlingFirst}, \lean{Fabius.descPochhammer_eq_sum_monomial_signedStirlingFirst}, \lean{Fabius.X_pow_eq_sum_stirlingSecond_mul_descPochhammer}, \lean{Fabius.X_pow_eq_sum_stirlingSecond_mul_ascPochhammer}, \lean{Fabius.pow_eq_sum_stirlingSecond_mul_factorial_mul_choose} (\lean{StirlingBasisChange}); polynomial identities over every commutative ring \\
 \Cref{cor:shifted-stirling-evaluations} & Shifted factorial evaluations & Lean & \cref{eq:shifted-power-to-fall} is \lean{Fabius.X_pow_eq_sum_stirlingSecond_succ_mul_descPochhammer_comp} in $R[x]$ over any commutative ring (cancelling $x$ via \lean{Fabius.X_mul_cancel}) and \cref{eq:stirling-n-to-n} is \lean{Fabius.pow_self_eq_sum_stirlingSecond_mul_descFactorial} (\lean{StirlingShiftedEvaluations}) \\
