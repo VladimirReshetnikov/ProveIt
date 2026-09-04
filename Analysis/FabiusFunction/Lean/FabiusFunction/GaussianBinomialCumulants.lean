@@ -21,6 +21,10 @@ show that both are additive on products (they are the first two cumulants), comp
 `q`-integers `[m]_X = 1 + X + ⋯ + X^{m-1}` (the uniform distribution on `{0, …, m-1}`:
 mean `(m-1)/2`, variance `(m^2-1)/12`), and use the factorization
 `[n,k]_X ∏_{j<k} [j+1]_X = ∏_{j<k} [n-k+1+j]_X` to add up the cumulants.
+The derivative formula `([n,k]_X)'(1) = k(n-k)/2 · C(n,k)` is the
+division-free palindromicity mean
+`two_mul_derivative_gaussianBinomial_eval_one` of
+`GaussianBinomialPalindromic` halved.
 
 ## Main declarations
 
@@ -246,25 +250,53 @@ section CharZeroField
 
 variable [CharZero K]
 
+/-- The cumulant skeleton shared by the mean and the variance.  Any
+functional `F` that is additive on products of polynomials nonvanishing
+at `1` — both for a pair and for a finite product — satisfies, along the
+factorization `gaussianBinomial_X_mul_prod_qInt`,
+
+`F [n,k]_X + ∑_{j<k} F [j+1]_X = ∑_{j<k} F [n-k+1+j]_X`.
+
+The nonvanishing side conditions are discharged once and for all
+here. -/
+private theorem cumulant_gaussianBinomial_X (F : K[X] → K)
+    (Fmul : ∀ {A B : K[X]}, A.eval 1 ≠ 0 → B.eval 1 ≠ 0 →
+      F (A * B) = F A + F B)
+    (Fprod : ∀ (s : Finset ℕ) (f : ℕ → K[X]),
+      (∀ i ∈ s, (f i).eval 1 ≠ 0) → F (∏ i ∈ s, f i) = ∑ i ∈ s, F (f i))
+    {n k : ℕ} (hk : k ≤ n) :
+    F (gaussianBinomial (X : K[X]) n k) +
+        ∑ j ∈ range k, F (qInt (X : K[X]) (j + 1)) =
+      ∑ j ∈ range k, F (qInt (X : K[X]) (n - k + 1 + j)) := by
+  have hG : (gaussianBinomial (X : K[X]) n k).eval 1 ≠ 0 := by
+    rw [eval_one_gaussianBinomial_X]
+    exact_mod_cast (Nat.choose_pos hk).ne'
+  have hL : ∀ j ∈ range k, (qInt (X : K[X]) (j + 1)).eval 1 ≠ 0 :=
+    fun j _ => by
+      rw [eval_one_qInt_X]
+      exact_mod_cast Nat.succ_ne_zero j
+  have hR : ∀ j ∈ range k,
+      (qInt (X : K[X]) (n - k + 1 + j)).eval 1 ≠ 0 :=
+    fun j _ => by
+      rw [eval_one_qInt_X]
+      exact_mod_cast (by omega : n - k + 1 + j ≠ 0)
+  have hPL : (∏ j ∈ range k, qInt (X : K[X]) (j + 1)).eval 1 ≠ 0 := by
+    rw [eval_prod]
+    exact prod_ne_zero_iff.mpr hL
+  have key := congrArg F (gaussianBinomial_X_mul_prod_qInt (K := K) hk)
+  rwa [Fmul hG hPL, Fprod _ _ hL, Fprod _ _ hR] at key
+
 /-- **Mean of the inversion distribution**: `E X = k(n-k)/2`, i.e.
 `([n,k]_X)'(1) / C(n,k) = k(n-k)/2`. -/
 theorem meanAtOne_gaussianBinomial_X {n k : ℕ} (hk : k ≤ n) :
     meanAtOne (gaussianBinomial (X : K[X]) n k) = (k : K) * ((n : K) - k) / 2 := by
   obtain ⟨m, rfl⟩ := Nat.exists_eq_add_of_le hk
-  have hprod := gaussianBinomial_X_mul_prod_qInt (K := K) hk
-  rw [Nat.add_sub_cancel_left] at hprod
-  have hG : (gaussianBinomial (X : K[X]) (k + m) k).eval 1 ≠ 0 := by
-    rw [eval_one_gaussianBinomial_X]; exact_mod_cast (Nat.choose_pos hk).ne'
-  have hL : ∀ j ∈ range k, (qInt (X : K[X]) (j + 1)).eval 1 ≠ 0 := fun j _ => by
-    rw [eval_one_qInt_X]; exact_mod_cast Nat.succ_ne_zero j
-  have hR : ∀ j ∈ range k, (qInt (X : K[X]) (m + 1 + j)).eval 1 ≠ 0 := fun j _ => by
-    rw [eval_one_qInt_X]; exact_mod_cast (by omega : m + 1 + j ≠ 0)
-  have hPL : (∏ j ∈ range k, qInt (X : K[X]) (j + 1)).eval 1 ≠ 0 := by
-    rw [eval_prod]; exact prod_ne_zero_iff.mpr hL
-  have key := congrArg meanAtOne hprod
-  rw [meanAtOne_mul hG hPL, meanAtOne_prod _ _ hL, meanAtOne_prod _ _ hR,
+  have key := cumulant_gaussianBinomial_X (meanAtOne : K[X] → K)
+    (fun hA hB => meanAtOne_mul hA hB) (fun s f hf => meanAtOne_prod s f hf) hk
+  rw [Nat.add_sub_cancel_left,
     sum_congr rfl fun j _ => meanAtOne_qInt_X (K := K) (Nat.succ_pos j),
-    sum_congr rfl fun j _ => meanAtOne_qInt_X (K := K) (by omega : 0 < m + 1 + j)] at key
+    sum_congr rfl fun j _ =>
+      meanAtOne_qInt_X (K := K) (by omega : 0 < m + 1 + j)] at key
   have hs := sum_mean_diff (K := K) m k
   push_cast at key hs ⊢
   linear_combination key + hs
@@ -273,33 +305,26 @@ theorem meanAtOne_gaussianBinomial_X {n k : ℕ} (hk : k ≤ n) :
 theorem varAtOne_gaussianBinomial_X {n k : ℕ} (hk : k ≤ n) :
     varAtOne (gaussianBinomial (X : K[X]) n k) = (k : K) * ((n : K) - k) * ((n : K) + 1) / 12 := by
   obtain ⟨m, rfl⟩ := Nat.exists_eq_add_of_le hk
-  have hprod := gaussianBinomial_X_mul_prod_qInt (K := K) hk
-  rw [Nat.add_sub_cancel_left] at hprod
-  have hG : (gaussianBinomial (X : K[X]) (k + m) k).eval 1 ≠ 0 := by
-    rw [eval_one_gaussianBinomial_X]; exact_mod_cast (Nat.choose_pos hk).ne'
-  have hL : ∀ j ∈ range k, (qInt (X : K[X]) (j + 1)).eval 1 ≠ 0 := fun j _ => by
-    rw [eval_one_qInt_X]; exact_mod_cast Nat.succ_ne_zero j
-  have hR : ∀ j ∈ range k, (qInt (X : K[X]) (m + 1 + j)).eval 1 ≠ 0 := fun j _ => by
-    rw [eval_one_qInt_X]; exact_mod_cast (by omega : m + 1 + j ≠ 0)
-  have hPL : (∏ j ∈ range k, qInt (X : K[X]) (j + 1)).eval 1 ≠ 0 := by
-    rw [eval_prod]; exact prod_ne_zero_iff.mpr hL
-  have key := congrArg varAtOne hprod
-  rw [varAtOne_mul hG hPL, varAtOne_prod _ _ hL, varAtOne_prod _ _ hR,
+  have key := cumulant_gaussianBinomial_X (varAtOne : K[X] → K)
+    (fun hA hB => varAtOne_mul hA hB) (fun s f hf => varAtOne_prod s f hf) hk
+  rw [Nat.add_sub_cancel_left,
     sum_congr rfl fun j _ => varAtOne_qInt_X (K := K) (Nat.succ_pos j),
-    sum_congr rfl fun j _ => varAtOne_qInt_X (K := K) (by omega : 0 < m + 1 + j)] at key
+    sum_congr rfl fun j _ =>
+      varAtOne_qInt_X (K := K) (by omega : 0 < m + 1 + j)] at key
   have hs := sum_var_diff (K := K) m k
   push_cast at key hs ⊢
   linear_combination key + hs
 
-/-- The derivative formula `d/dq [n,k]_q |_{q=1} = k(n-k)/2 · C(n,k)`. -/
+/-- The derivative formula `d/dq [n,k]_q |_{q=1} = k(n-k)/2 · C(n,k)`: the
+division-free palindromicity mean `2 · ([n,k]_X)'(1) = k(n-k) · C(n,k)`
+(`two_mul_derivative_gaussianBinomial_eval_one`) halved. -/
 theorem eval_one_derivative_gaussianBinomial_X {n k : ℕ} (hk : k ≤ n) :
     (derivative (gaussianBinomial (X : K[X]) n k)).eval 1 =
       (k : K) * ((n : K) - k) / 2 * (n.choose k : K) := by
-  have h := meanAtOne_gaussianBinomial_X (K := K) hk
-  rw [meanAtOne, eval_one_gaussianBinomial_X] at h
-  have hc : (n.choose k : K) ≠ 0 := by exact_mod_cast (Nat.choose_pos hk).ne'
-  rw [div_eq_iff hc] at h
-  exact h
+  have h := two_mul_derivative_gaussianBinomial_eval_one (R := K) hk
+  rw [Nat.cast_mul, Nat.cast_sub hk] at h
+  rw [div_mul_eq_mul_div, eq_div_iff (two_ne_zero : (2 : K) ≠ 0)]
+  linear_combination h
 
 /-- The second derivative of the universal Gaussian coefficient at one:
 `[n,k]''_1 = C(n,k) k(n-k) (3k(n-k)+n-5) / 12`.
