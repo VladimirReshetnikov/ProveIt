@@ -5770,21 +5770,112 @@ repeatedly lead to the same matrices.
 
 \section{Binomial inversion}
 
+\begin{theorem}[Weighted binomial transforms as translations]
+\label{thm:merged-weighted-binomial-translation}
+Let $R$ be a commutative semiring.  For sequences $a,b:\NaturalNumbers\to R$
+and $c\in R$, define
+\[
+ (a\star b)_n=\sum_{k=0}^n\binom nk a_kb_{n-k},\qquad
+ (T_ca)_n=\sum_{k=0}^n\binom nk c^{n-k}a_k.
+\]
+All coefficients and powers are interpreted in $R$, with $c^0=1$ even when
+$c=0$.  Then, for $c,d\in R$,
+\begin{align}
+ T_0a&=a,& T_c(T_da)&=T_{c+d}a,                                  \label{eq:merged-weighted-translation-law}\\
+ (T_ca)\star(T_db)&=T_{c+d}(a\star b).                            \label{eq:merged-weighted-convolution-law}
+\end{align}
+If addition in $R$ is cancellative, each $T_c$ is injective.
+\end{theorem}
+
+\begin{proof}
+Write $g_c(n)=c^n$ and let $\epsilon$ be the sequence whose zeroth entry is
+$1$ and whose positive entries are zero.  Reflecting the summation index and
+using $\binom n{n-k}=\binom nk$ gives $T_ca=g_c\star a$.
+The binomial theorem gives $g_c\star g_d=g_{c+d}$, and $g_0=\epsilon$.
+Binomial convolution is commutative and associative: after expanding a triple
+product, the coefficient of $a_ib_jb'_{\ell}$ with $i+j+\ell=n$ is
+$\binom ni\binom{n-i}j=\binom n{i+j}\binom{i+j}i$ in either association.
+This is an identity of natural numbers, so it remains valid in every semiring.
+Also $\epsilon\star a=a$, since only the summand of index zero survives.
+Reassociating and commuting the middle two factors in particular gives the
+general four-factor identity
+$(a\star b)\star(u\star v)=(a\star u)\star(b\star v)$.
+Consequently
+\[
+ T_c(T_da)=(g_c\star g_d)\star a=g_{c+d}\star a,
+\]
+and commutativity and associativity give
+\[
+ (g_c\star a)\star(g_d\star b)
+   =(g_c\star g_d)\star(a\star b)
+   =g_{c+d}\star(a\star b).
+\]
+This proves both identities and the zero-shift statement.  Finally,
+$(T_ca)_n=a_n+\sum_{k<n}\binom nk c^{n-k}a_k$.
+If $T_ca=T_cb$, induction on $n$ identifies all lower entries, and cancellation
+of their common sum identifies $a_n$ and $b_n$.  Thus $a=b$.
+\end{proof}
+
+\begin{corollary}[Weighted binomial inversion and reciprocal pairs]
+\label{cor:merged-weighted-binomial-inversion}
+If $R$ is a commutative ring, $T_{-c}$ is the two-sided inverse of $T_c$.
+In particular,
+\begin{equation}
+ b_n=\sum_{k=0}^n\binom nk c^{n-k}a_k\quad\hbox{for every }n
+ \quad\Longleftrightarrow\quad
+ a_n=\sum_{k=0}^n\binom nk(-c)^{n-k}b_k\quad\hbox{for every }n.   \label{eq:merged-weighted-binomial-inversion}
+\end{equation}
+Opposite shifts preserve convolution:
+$(T_{-c}a)\star(T_cb)=a\star b$.  Thus, if $a\star b=\epsilon$,
+the oppositely shifted sequences are again a reciprocal pair.
+\end{corollary}
+
+\begin{proof}
+Substitute $d=-c$ and $d=c$ with first shift $-c$ into
+\cref{eq:merged-weighted-translation-law}, and use $T_0=\mathrm{id}$.
+Applying $T_{-c}$ or $T_c$ to an equality gives the two implications in
+\cref{eq:merged-weighted-binomial-inversion}.
+The convolution assertion is \cref{eq:merged-weighted-convolution-law} with
+the shifts $-c,c$; substituting $a\star b=\epsilon$ proves the final assertion.
+\end{proof}
+
+\begin{remark}[Weighted-transform formal crosswalk]
+The source counterparts are in \lean{AppellSequence}, with no new transform
+definition: $T_c$ is \lean{Appell.translate}.
+\lean{Appell.translate_eq_sum} and
+\lean{Appell.translate_eq_binomialConv_pow} identify its two finite forms.
+\lean{Appell.translate_translate} and \lean{Appell.binomialConv_translate}
+state \cref{eq:merged-weighted-translation-law,eq:merged-weighted-convolution-law};
+the four-factor rearrangement is \lean{Bell.binomialConv_four_swap}, and the
+cancellative-semiring result is \lean{Appell.translate_injective}.
+\lean{Appell.translate_neg_translate} and
+\lean{Appell.translate_translate_neg} give the two inverse compositions.
+\lean{Appell.translate_eq_iff} is the sequence form of
+\lean{Appell.weighted_binomial_inversion_iff}, while
+\lean{Appell.binomialConv_translate_neg_translate} preserves reciprocal pairs.
+The extension was checked by the focused \lean{AppellSequence} build on
+2026-09-04.  The specialized rational proofs in
+\lean{FinitePrefixThueMorseCollapse} now reuse these shared declarations;
+the caller refactor has been source-reviewed and awaits its own rebuild.
+\end{remark}
+
 \begin{theorem}[Binomial inversion]
 \label{thm:merged-binomial-inversion}
-For sequences $(a_n)$ and $(b_n)$ in a commutative $\RationalNumbers$-algebra, the formulas
+For sequences $(a_n)$ and $(b_n)$ in a commutative ring, the formulas
 \begin{align}
  b_n&=\sum_{k=0}^{n}\binom nk a_k,                                  \label{eq:merged-binomial-forward}\\
  a_n&=\sum_{k=0}^{n}(-1)^{n-k}\binom nk b_k                         \label{eq:merged-binomial-backward}
 \end{align}
-are equivalent.  In exponential generating functions,
+are equivalent.  If the ring is a commutative $\RationalNumbers$-algebra, the
+equivalent exponential-generating-function identities are
 \begin{equation}
  B(z)=\EulerE^zA(z),\qquad A(z)=\EulerE^{-z}B(z).                               \label{eq:merged-binomial-egf}
 \end{equation}
 \end{theorem}
 
 \begin{proof}
-Multiplication of EGFs gives
+The finite formulas are \cref{eq:merged-weighted-binomial-inversion} with
+$c=1$.  In a $\RationalNumbers$-algebra, multiplication of EGFs gives
 \[
  \EulerE^zA(z)=\sum_{n\geq0}\left(\sum_{k=0}^{n}\binom nk a_k\right)
              \frac{z^n}{n!},
@@ -5823,28 +5914,14 @@ convolving against the constant sequence $1$, or against $(-1)^n$, gives the
 displayed sums after reflecting the summation index
 (\lean{Fabius.binomialConv_one_left},
 \lean{Fabius.binomialConv_altSeries_left}).  And
-\lean{Fabius.exp_mul_altSeries} is the binomial theorem at $-1+1=0$ rather than
-a separate alternating-sum computation, which keeps it valid over an arbitrary
-commutative ring instead of only over $\IntegerNumbers$.
-\end{remark}
-
-\begin{remark}[Formal crosswalk]
-% ed.: crosswalk added 2026-09-01; the Lean statement drops the Q-algebra
-% hypothesis.
-The equivalence of \cref{eq:merged-binomial-forward} and
-\cref{eq:merged-binomial-backward} is \lean{Fabius.binomial_inversion_ring_iff}
-for sequences in any commutative ring and
-\lean{Fabius.binomial_inversion_iff} for sequences in any additive commutative
-group (module \lean{BinomialInversion}); the hypothesis of a commutative
-$\mathbb Q$-algebra is unnecessary, since the proof is the inverse-matrix
-computation of the last display,
-\lean{Fabius.sum_Icc_neg_one_pow_choose_mul_choose}, which reduces through
-\lean{Nat.choose_mul} to the alternating row sums of Pascal's triangle.  The
-reverse product is supplied by the general commutation theorem
+\lean{Fabius.exp_mul_altSeries} uses the binomial theorem at $-1+1=0$ for
+coefficient cancellation.  This cancellation is valid in every commutative
+ring; the EGF statements retain their $\RationalNumbers$-algebra hypothesis
+because their coefficients contain inverse factorials.
+The reverse triangular product is supplied by the general commutation theorem
 \lean{Fabius.lowerTriangular_orthogonal_comm}, and both directions are
 instances of the finite triangular transform calculus of
-\lean{Fabius.lowerTriangularTransform}.  The exponential-generating-function
-form \cref{eq:merged-binomial-egf} is not formalized.
+\lean{Fabius.lowerTriangularTransform}.
 \end{remark}
 
 \section{The partition lattice and cumulants}
@@ -9951,7 +10028,7 @@ coefficient calculus rather than a catalogue of isolated identities.
 
 \section{Lean formalization register}
 \label{sec:lean-register}
-Every theorem-like environment of this monograph is listed here with the status of its formalization in the Lean development \path{Analysis/FabiusFunction/Lean/FabiusFunction} (Mathlib \texttt{v4.32.0}).  \emph{Lean} means that a public, compiled declaration proves the exact statement or a more general one (the generalization is then noted next to the result); \emph{partial} means that a named part of the statement is proved and the rest is named; \emph{none} means that no Lean counterpart exists yet.  A citation, a numerical check, or a plausible derivation does not count.  The register is generated from the source and must be regenerated when results are added.  Current totals: 56 Lean, 33 partial, 112 none, of 201 results.
+Every theorem-like environment of this monograph is listed here with the status of its formalization in the Lean development \path{Analysis/FabiusFunction/Lean/FabiusFunction} (Mathlib \texttt{v4.32.0}).  \emph{Lean} means that a public, compiled declaration proves the exact statement or a more general one (the generalization is then noted next to the result); \emph{partial} means that a named part of the statement is proved and the rest is named; \emph{none} means that no Lean counterpart exists yet.  A citation, a numerical check, or a plausible derivation does not count.  The register must be updated when results are added.  Current totals: 58 Lean, 33 partial, 112 none, of 203 results.
 
 \begin{footnotesize}
 \begin{longtable}{@{}p{0.16\textwidth}p{0.22\textwidth}p{0.08\textwidth}p{0.40\textwidth}@{}}
@@ -10074,6 +10151,8 @@ theorem (unlabelled, no.~76) &  & none &  \\
 \Cref{thm:lambert-W-zero} &  & partial & The series \cref{eq:lambert-W-zero} is \lean{Fabius.coeff_lambertW} (module \lean{LambertWSeries}), for \lean{Fabius.lambertW} constructed as the Lagrange solution of $W=z\EulerE^{-W}$; the defining equation in the form $W\EulerE^W=z$ is \lean{Fabius.lambertW_mul_exp_subst}.  The radius of convergence $\EulerE^{-1}$ is analytic and is not formalized. \\
 \Cref{thm:shifted-lagrange-reversion} & Lagrange reversion & none &  \\
 \Cref{thm:laplace-bell} & Laplace--Erd\'elyi coefficient formula & none &  \\
+\Cref{thm:merged-weighted-binomial-translation} & Weighted binomial translations & Lean & \lean{Appell.translate_eq_sum}, \lean{Appell.translate_translate}, \lean{Appell.binomialConv_translate}, and \lean{Appell.translate_injective} (\lean{AppellSequence}); semiring identities, with additive cancellation only for injectivity. \\
+\Cref{cor:merged-weighted-binomial-inversion} & Weighted inversion and reciprocal pairs & Lean & \lean{Appell.weighted_binomial_inversion_iff}, \lean{Appell.translate_neg_translate}, \lean{Appell.translate_translate_neg}, and \lean{Appell.binomialConv_translate_neg_translate} (\lean{AppellSequence}), over arbitrary commutative rings. \\
 \Cref{thm:merged-binomial-inversion} & Binomial inversion & Lean & the equivalence of \cref{eq:merged-binomial-forward,eq:merged-binomial-backward} is \lean{Fabius.binomial_inversion_iff} (additive commutative groups) and \lean{Fabius.binomial_inversion_ring_iff} (commutative rings) (\lean{BinomialInversion}), with the kernel orthogonality \lean{Fabius.sum_Icc_neg_one_pow_choose_mul_choose}; \cref{eq:merged-binomial-egf} is \lean{Fabius.egfA_eq_exp_mul_iff} and \lean{Fabius.egfA_eq_altSeries_mul_iff} (\lean{BinomialInversionEGF}), each an iff with its sequence form, together with \lean{Fabius.egfA_eq_exp_mul_iff_egfA_eq_altSeries_mul} for the equivalence of the two generating-function equations \\
 \Cref{thm:merged-partition-mobius} & Möbius function of $\Pi\_n$ & none &  \\
 \Cref{thm:merged-moment-cumulant} & Moment--cumulant inversion & partial & In the block-size form: \lean{Bell.complete} and \lean{Bell.cumulant} are mutually inverse (\lean{Bell.complete_cumulant}, \lean{Bell.cumulant_complete}, module \lean{BellPolynomialInversion}) and $M=\EulerE^K$ is \lean{Fabius.exp_subst_bellWeightSeries}; $K=\log M$ is now \lean{Fabius.logOf_egfA} together with \lean{Fabius.cumulant_eq_cumulantSum} (\lean{CumulantBellFormula}), which also gives the closed form $\kappa_n=\sum_k(-1)^{k-1}(k-1)!\,\ExponentialPartialBellPolynomial nk(m)$, resting on the formal $\exp\circ\log$ inverse \lean{Fabius.exp_subst_logOf} (\lean{ExpLog}); the sums over set partitions are not formalized. \\

@@ -602,7 +602,7 @@ formalization status per result.
 
 | Directory | Document | Previous path / provenance |
 | --- | --- | --- |
-| `Combinatorial_Coefficient_Calculus/` | **Canonical, consolidation complete:** *Combinatorial Coefficient Calculus* — 8,966-line/390,732-byte source and the 174-page A4 PDF built from it in the same run | Six-source provenance plus purpose-specific closure and disposition records in the package; original non-suffixed arrival was `incoming/Combinatorial_Coefficient_Calculus.zip` (SHA-256 `a22479ac8f58e1710117af9d0a3f515c7d24ec250548f537520c9f9024f4321a`); the five retired donors are identified in `SOURCE_CLOSURE.sha256` |
+| `Combinatorial_Coefficient_Calculus/` | **Canonical, editorial consolidation complete:** *Combinatorial Coefficient Calculus* — the current source extends the consolidated manuscript with weighted binomial translation and inversion; the retained 174-page A4 PDF is an earlier render. PDF rebuilding is deferred by user instruction. Lean coverage is tracked result by result in the source. | Six-source provenance and disposition records in the package; original non-suffixed arrival was `incoming/Combinatorial_Coefficient_Calculus.zip`; `SOURCE_INVENTORY.csv` records immutable Git locators for all six inputs, including the five retired donors. No checksum ledger is required. |
 
 ## exponents-and-q-series — `exponents-and-q-series/`
 
