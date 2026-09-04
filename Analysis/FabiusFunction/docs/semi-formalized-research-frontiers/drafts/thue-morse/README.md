@@ -2,8 +2,10 @@
 
 The Thue-Morse side of the corpus, consolidated (2026-08-28) into the
 single volume [`Thue_Morse_Atlas_and_Frontiers.tex`](Thue_Morse_Atlas_and_Frontiers/Thue_Morse_Atlas_and_Frontiers.tex)
-([PDF](Thue_Morse_Atlas_and_Frontiers/Thue_Morse_Atlas_and_Frontiers.pdf),
-current synchronized 144-page `b899` publication; historical predecessor 137 pages):
+([PDF](Thue_Morse_Atlas_and_Frontiers/Thue_Morse_Atlas_and_Frontiers.pdf);
+the 144-page `b899` publication and 137-page predecessor are historical; the
+accepted merged-source render is in the [merge-28de4e51 receipt
+register](../MANIFEST.md#merge-28de4e51-publication-receipts)):
 
 - **Part I** — *A Unified Formula Atlas for the Thue–Morse Sequence*
   (formerly `Thue_Morse_Formula_Atlas/`);
@@ -112,20 +114,22 @@ under the integral with the exponent shift `s ↦ s + 1`; the other two give
 `k ≤ r`.  Thus `p2:thm:gamma-tower` is Exact when its displayed logarithm is
 read, as above, as the chosen GammaLog coordinate.  Every differential theorem
 retains `0 < a`; no principal-`Complex.log` identity or nonpositive-parameter
-extension is asserted. The retained 137-page PDF predates this source closure
-and is a historical render. The current synchronized `b899` TeX has 10,553
-lines and 481,614 bytes, with SHA-256
-`cced4128c359ec467baaf1a55c21c68424397f783a39ea7fe2af5a94975b9dd5`.
-Exactly three serial halt-on-error passes from absent sidecars ran 139 pages /
-1,681,559 bytes → 144 / 1,739,891 → 144 / 1,739,884. The final 144-page,
-1,739,884-byte PDF has SHA-256
+extension is asserted. The local and incoming 144-page receipts are both
+historical after the merged TeX source changed. The local first-merge tuple is
+root
+`10557L/482022B/8cef828c3d92a0017e22463ac90878a5e3a98e1138059d5f4793d47c04a88404`,
+two-file aggregate
+`10841L/493857B/79a43711c6989336166d6b2ed1faa306cc985b8d70557025ab139791d455723c`,
+passes `139/144/144`, PDF
+`144pp/1740015B/deb63fe66fc8f020bb072acbc4301e9b7c9f0559b165cbae2c076f261405c5be`,
+and final log
+`1503L/59417B/1219dbc87bc4f9920c40b24659182220b14e7908a45a9eb33d0f19390148c64b`.
+The incoming `b899` source had 10,553 lines / 481,614 bytes / SHA-256
+`cced4128c359ec467baaf1a55c21c68424397f783a39ea7fe2af5a94975b9dd5`;
+passes 139/144/144 produced a 1,739,884-byte PDF with SHA-256
 `1c81863b0976017fab1b7f5972c50cd541b3ffb05306bf85994548a56a782fc0`.
-All 144 pages are A4 at rotation zero, render successfully, and contain
-nonblank text. All 38 font rows are embedded and subset, eight are Libertinus,
-and none is Type 3. Required log, reference/rerun, metadata (including the
-populated intended author), visual, cleanup, and forbidden-basename gates
-passed with no horizontal or vertical box. Visual inspection covered physical
-pages 1, 93, 128, 138, and 144; every sample was clean.
+Both checkpoints passed their recorded gates. The former 137- and 143-page
+artifacts remain earlier history, and a merged-source receipt is pending.
 
 `CentralBinomialValuation.lean` supplies the atlas's direct central-binomial
 crosswalk.  Its exhaustive public API is

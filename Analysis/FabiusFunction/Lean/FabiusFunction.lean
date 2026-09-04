@@ -33,6 +33,7 @@ import FabiusFunction.StirlingOrdinaryGF
 import FabiusFunction.StirlingCompleteHomogeneous
 import FabiusFunction.EulerianGeneratingFunctions
 import FabiusFunction.ExponentialRiordan
+import FabiusFunction.ExponentialRiordanInverse
 import FabiusFunction.ExponentialFormula
 import FabiusFunction.OrderedBell
 import FabiusFunction.OrdinaryPartialBell
@@ -42,6 +43,7 @@ import FabiusFunction.ComplementaryBell
 import FabiusFunction.StirlingTriangularExplicit
 import FabiusFunction.BellShiftEGF
 import FabiusFunction.OrdinaryBellComposition
+import FabiusFunction.OrdinaryBellMultinomial
 import FabiusFunction.EulerianEGF
 import FabiusFunction.BernoulliAppell
 import FabiusFunction.StirlingShiftedEvaluations
@@ -74,6 +76,7 @@ import FabiusFunction.RStirling
 import FabiusFunction.FallingFactorialSeries
 import FabiusFunction.PochhammerFalling
 import FabiusFunction.CauchyPolynomials
+import FabiusFunction.CauchyPolynomialReflection
 import FabiusFunction.CoefficientRules
 import FabiusFunction.GridEvaluationCertificate
 import FabiusFunction.IntegerCRTCertificate
@@ -91,15 +94,15 @@ import FabiusFunction.StirlingFirstModH
 import FabiusFunction.StirlingSymmetricFunctions
 import FabiusFunction.LagrangeInversion
 import FabiusFunction.LagrangeInversionUniqueness
+import FabiusFunction.LagrangeExistence
 import FabiusFunction.NewtonReciprocal
 import FabiusFunction.RaneyNumbers
-import FabiusFunction.AssociahedronFaceNumbers
-import FabiusFunction.PochhammerFalling
+import FabiusFunction.IdentityCertificates
+import FabiusFunction.BinaryTreeRotations
 import FabiusFunction.AbelPolynomialSeries
 import FabiusFunction.LambertWSeries
 import FabiusFunction.FussCatalanSeries
 import FabiusFunction.InverseBellCoefficients
-import FabiusFunction.InverseDerivativeRecursion
 import FabiusFunction.StirlingFirstDiagonal
 import FabiusFunction.DiamondPower
 import FabiusFunction.OrdinaryBellBivariate
@@ -841,6 +844,10 @@ import FabiusFunction.StaircaseInversion
 import FabiusFunction.RemainderTransport
 import FabiusFunction.LeastTermIndex
 import FabiusFunction.BellSetPartitions
+import FabiusFunction.EulerianPermutohedron
+import FabiusFunction.InverseDerivativeRecursion
+import FabiusFunction.StirlingIdentities
+import FabiusFunction.BellDeterminants
 
 set_option autoImplicit false
 
@@ -871,8 +878,9 @@ core-inversion utilities, backward-error, remainder-transport, staircase and
 least-term lemmas, and abstract differential-closure and harmonic-increment
 tools.  Their lexical inventory is 21 definitions and 115 theorems.  The
 existing flatness module is the semantic union of its generic-vector 1+11 API
-and a scalar-compatibility 3+11 API; the differential-block and infinite
-q-binomial modules are respectively 0+12 and 1+27.  These census statements
+and a scalar-compatibility 3+11 API; the differential-block, infinite
+q-binomial, and fixed-column-rate modules are respectively 0+12, 1+29, and
+0+9.  These census statements
 describe the public surface only: they do not supply analytic continuation,
 an unnamed error term, a concrete transseries field, or a broader paper claim
 than the hypotheses of the individual declarations support.

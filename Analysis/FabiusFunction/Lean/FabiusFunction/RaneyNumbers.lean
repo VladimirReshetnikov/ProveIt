@@ -27,13 +27,13 @@ is `natCast_mul_coeff_raneyT_pow`.  The manuscript's divided form follows from
 `Nat.succ_mul_choose_eq`, which is the exact statement that clearing the
 denominator is legitimate.
 
-Two things are proved here in slightly more generality than the manuscript
-states.  The divided form `coeff_raneyT_pow` holds at `n = 0` as well, where
-the manuscript's `n ≥ 0` is vacuous for the division-free version but the
-formula still reads `r/r · C(r,0) = 1`; and it holds at `p = 0`, where
-`T = 1 + z` and the formula degenerates correctly to `C(r,n)`.  Only `r ≥ 1` is
-needed, and it is needed: at `r = 0` the left side is `[z^n] 1` and the right
-side divides by zero.
+The divided form `coeff_raneyT_pow` includes the manuscript's degree-zero
+case explicitly, where the formula reads `r/r · C(r,0) = 1`; the
+division-free extraction theorem instead assumes `n ≥ 1`.  The divided
+formula is slightly more general than the manuscript in allowing `p = 0`,
+where `T = 1 + z` and it degenerates correctly to `C(r,n)`.  The hypothesis
+`r ≥ 1` is needed: for `r = n = 0`, the left side is `1`, whereas the
+displayed quotient evaluates to `0` under Lean's totalized division.
 -/
 
 set_option autoImplicit false

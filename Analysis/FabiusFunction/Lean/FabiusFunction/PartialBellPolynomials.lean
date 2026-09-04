@@ -29,7 +29,8 @@ functions developed in `BellPolynomialInversion` applies.
 ## Main results
 
 * `partialBell`, `partialBell_succ_succ`, `partialBell_eq_zero_of_lt`,
-  `partialBell_self`.
+  `partialBell_congr_of_eq_of_le`, `partialBell_self`, `partialBell_one_right`,
+  `partialBell_pred_right`.
 * `bell_complete_eq_sum_partialBell`.
 * `partialBell_one`, `partialBell_factorial_pred`, `partialBell_factorial`.
 -/
@@ -93,6 +94,30 @@ theorem partialBell_eq_zero_of_lt (x : ℕ → R) : ∀ {n k : ℕ}, n < k → p
     intro i _
     rw [partialBell_eq_zero_of_lt x (show n - i < k by omega), mul_zero, mul_zero]
 
+/-- **Sharp input support.** `B_{n,k}` is unchanged when the weights agree
+through index `n - k + 1`; weights with larger indices cannot occur. -/
+theorem partialBell_congr_of_eq_of_le {x y : ℕ → R} {n k : ℕ}
+    (hxy : ∀ j, 1 ≤ j → j ≤ n - k + 1 → x j = y j) :
+    partialBell x n k = partialBell y n k := by
+  induction n using Nat.strong_induction_on generalizing k with
+  | h n ih =>
+    cases n with
+    | zero =>
+      cases k <;> simp
+    | succ n =>
+      cases k with
+      | zero => simp
+      | succ k =>
+        rw [partialBell_succ_succ, partialBell_succ_succ]
+        refine Finset.sum_congr rfl fun i hi => ?_
+        have hin : i ≤ n := Nat.lt_succ_iff.mp (Finset.mem_range.mp hi)
+        by_cases hik : k ≤ n - i
+        · rw [hxy (i + 1) (by omega) (by omega),
+              ih (n - i) (by omega) (fun j hj hj' => hxy j hj (by omega))]
+        · have hlt : n - i < k := Nat.lt_of_not_ge hik
+          rw [partialBell_eq_zero_of_lt x hlt, partialBell_eq_zero_of_lt y hlt]
+          simp
+
 /-- `B_{n,n} = x_1^n`: only singleton blocks. -/
 theorem partialBell_self (x : ℕ → R) (n : ℕ) : partialBell x n n = x 1 ^ n := by
   induction n with
@@ -103,6 +128,66 @@ theorem partialBell_self (x : ℕ → R) (n : ℕ) : partialBell x n n = x 1 ^ n
     · intro i hi
       have hin : i < n := Finset.mem_range.mp hi
       rw [partialBell_eq_zero_of_lt x (show n - (i + 1) < n by omega), mul_zero, mul_zero]
+
+/-- The one-block column is the weight itself: `B_{n,1}(x) = x_n` for
+positive `n`. -/
+theorem partialBell_one_right (x : ℕ → R) {n : ℕ} (hn : 1 ≤ n) :
+    partialBell x n 1 = x n := by
+  obtain ⟨m, rfl⟩ : ∃ m, n = m + 1 := ⟨n - 1, by omega⟩
+  rw [partialBell_succ_succ, Finset.sum_eq_single m]
+  · simp
+  · intro i hi him
+    have hi' : i < m := by
+      rw [Finset.mem_range] at hi
+      omega
+    obtain ⟨r, hr⟩ : ∃ r, m - i = r + 1 := ⟨m - i - 1, by omega⟩
+    rw [hr, partialBell_succ_zero, mul_zero, mul_zero]
+  · simp
+
+/-- The first subdiagonal has one doubleton and otherwise singletons:
+`B_{n,n-1}(x) = choose(n,2) x₁^(n-2) x₂` for `n ≥ 2`. -/
+theorem partialBell_pred_right (x : ℕ → R) {n : ℕ} (hn : 2 ≤ n) :
+    partialBell x n (n - 1) =
+      (n.choose 2 : R) * x 1 ^ (n - 2) * x 2 := by
+  obtain ⟨m, rfl⟩ : ∃ m, n = m + 2 := ⟨n - 2, by omega⟩
+  clear hn
+  rw [show m + 2 - 1 = m + 1 by omega, Nat.add_sub_cancel]
+  induction m with
+  | zero =>
+    simpa using partialBell_one_right x (n := 2) (by omega)
+  | succ m ih =>
+    change partialBell x (m + 3) (m + 2) =
+      ((m + 3).choose 2 : R) * x 1 ^ (m + 1) * x 2
+    have hstep :
+        partialBell x (m + 3) (m + 2) =
+          x 1 * partialBell x (m + 2) (m + 1) +
+            (m + 2 : R) * x 2 * partialBell x (m + 1) (m + 1) := by
+      rw [show m + 3 = (m + 2) + 1 by omega,
+        show m + 2 = (m + 1) + 1 by omega, partialBell_succ_succ]
+      have hsum :
+          (∑ i ∈ Finset.range (m + 3),
+              ((m + 2).choose i : R) *
+                (x (i + 1) * partialBell x (m + 2 - i) (m + 1))) =
+            ∑ i ∈ Finset.range 2,
+              ((m + 2).choose i : R) *
+                (x (i + 1) * partialBell x (m + 2 - i) (m + 1)) := by
+        symm
+        apply Finset.sum_subset (Finset.range_mono (by omega))
+        intro i hi hi'
+        have hi2 : 2 ≤ i := by
+          rw [Finset.mem_range, not_lt] at hi'
+          exact hi'
+        rw [partialBell_eq_zero_of_lt x (show m + 2 - i < m + 1 by omega),
+          mul_zero, mul_zero]
+      rw [hsum]
+      simp [Finset.sum_range_succ, partialBell_self, Nat.add_assoc, mul_assoc]
+    rw [hstep, ih, partialBell_self, pow_succ]
+    have hchoose : (m + 3).choose 2 = (m + 2).choose 2 + (m + 2) := by
+      rw [Nat.choose_succ_succ, Nat.choose_one_right]
+      exact Nat.add_comm _ _
+    rw [hchoose, Nat.cast_add]
+    push_cast
+    ring
 
 /-- **Row sums are the complete Bell polynomials:**
 `Bell.complete x n = ∑_{k ≤ n} B_{n,k}(x)`. -/

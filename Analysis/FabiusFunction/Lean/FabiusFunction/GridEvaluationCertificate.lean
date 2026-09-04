@@ -73,4 +73,3 @@ theorem mvPolynomial_grid_eval_injective (S : σ → Finset R) :
     exact congrFun h ⟨x, hx⟩
 
 end Fabius
-

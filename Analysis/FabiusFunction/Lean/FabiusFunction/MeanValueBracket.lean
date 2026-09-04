@@ -15,6 +15,11 @@ That is the shape every numerical certificate in those drafts uses, so it is
 worth having once, for an arbitrary function on an arbitrary convex set, rather
 than re-proved at each instance.
 
+The companion theorem `exists_eq_in_residual_interval` supplies the logically
+stronger certificate clause: a positive lower derivative bound and containment
+of the residual-radius interval imply that an exact preimage exists inside that
+interval, without assuming a right inverse or a root beforehand.
+
 ## The sign hypothesis is necessary
 
 `abs_sub_le_of_le_deriv` assumes `0 ≤ m` as well as `f' ≤ M`, and it must: with
@@ -76,6 +81,63 @@ theorem mul_abs_sub_le_abs_sub_of_le_deriv (hD : Convex ℝ D) (hf : ContinuousO
     rw [abs_of_nonneg (by linarith : (0 : ℝ) ≤ x - y)]
     calc m * (x - y) ≤ f x - f y := hlo
       _ ≤ |f x - f y| := le_abs_self _
+
+/-- A positive lower derivative bound turns a residual at `x` into a certified
+nearby solution of `f y = z`.  The interval-containment hypothesis is the
+entire domain side condition; in particular, it also implies `x ∈ D`. -/
+theorem exists_eq_in_residual_interval
+    (hD : Convex ℝ D) (hf : ContinuousOn f D)
+    (hf' : DifferentiableOn ℝ f (interior D))
+    (hm : ∀ w ∈ interior D, m ≤ deriv f w) (hmpos : 0 < m)
+    {z : ℝ}
+    (hIcc : Icc (x - |f x - z| / m) (x + |f x - z| / m) ⊆ D) :
+    ∃ y ∈ Icc (x - |f x - z| / m) (x + |f x - z| / m), f y = z := by
+  let ρ : ℝ := |f x - z| / m
+  change Icc (x - ρ) (x + ρ) ⊆ D at hIcc
+  change ∃ y ∈ Icc (x - ρ) (x + ρ), f y = z
+  have hρ : 0 ≤ ρ := by
+    dsimp [ρ]
+    exact div_nonneg (abs_nonneg _) hmpos.le
+  have hscale : m * ρ = |f x - z| := by
+    simpa [ρ] using (mul_div_cancel₀ |f x - z| (ne_of_gt hmpos))
+  have hleft : x - ρ ≤ x := sub_le_self x hρ
+  have hright : x ≤ x + ρ := le_add_of_nonneg_right hρ
+  have hlr : x - ρ ≤ x + ρ := hleft.trans hright
+  have hleftD : x - ρ ∈ D := hIcc (left_mem_Icc.mpr hlr)
+  have hxD : x ∈ D := hIcc ⟨hleft, hright⟩
+  have hrightD : x + ρ ∈ D := hIcc (right_mem_Icc.mpr hlr)
+  rcases le_total (f x) z with hxz | hzx
+  · have habs : |f x - z| = z - f x := by
+      rw [abs_of_nonpos (sub_nonpos.mpr hxz)]
+      ring
+    have hslope :=
+      hD.mul_sub_le_image_sub_of_le_deriv
+        hf hf' hm x hxD (x + ρ) hrightD hright
+    have hzright : z ≤ f (x + ρ) := by
+      rw [show x + ρ - x = ρ by ring, hscale, habs] at hslope
+      linarith
+    have hsub : Icc x (x + ρ) ⊆ D := by
+      intro w hw
+      exact hIcc ⟨hleft.trans hw.1, hw.2⟩
+    have hcont : ContinuousOn f (Icc x (x + ρ)) := hf.mono hsub
+    obtain ⟨y, hy, hfy⟩ :=
+      intermediate_value_Icc hright hcont ⟨hxz, hzright⟩
+    exact ⟨y, ⟨hleft.trans hy.1, hy.2⟩, hfy⟩
+  · have habs : |f x - z| = f x - z :=
+      abs_of_nonneg (sub_nonneg.mpr hzx)
+    have hslope :=
+      hD.mul_sub_le_image_sub_of_le_deriv
+        hf hf' hm (x - ρ) hleftD x hxD hleft
+    have hleftz : f (x - ρ) ≤ z := by
+      rw [show x - (x - ρ) = ρ by ring, hscale, habs] at hslope
+      linarith
+    have hsub : Icc (x - ρ) x ⊆ D := by
+      intro w hw
+      exact hIcc ⟨hw.1, hw.2.trans hright⟩
+    have hcont : ContinuousOn f (Icc (x - ρ) x) := hf.mono hsub
+    obtain ⟨y, hy, hfy⟩ :=
+      intermediate_value_Icc hleft hcont ⟨hleftz, hzx⟩
+    exact ⟨y, ⟨hy.1, hy.2.trans hright⟩, hfy⟩
 
 /-- **Residual-to-error transfer, upper half.**  With `g` a right inverse of `f`
 and `m ≤ f'`, the error is controlled by the residual: `m |x - g z| ≤ |f x - z|`. -/

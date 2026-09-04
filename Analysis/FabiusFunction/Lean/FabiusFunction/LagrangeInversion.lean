@@ -24,8 +24,10 @@ truncated substitution expansion `Fabius.coeff_mul_subst_eq` collapses the sum t
 * `derivative_pow_inv`, `coeff_inv_mul_derivative`, `coeff_pow_succ_mul_derivative_eq_zero`.
 * `subst_mul_pow_inv`, `coeff_subst_mul_derivative`.
 * `coeff_subst_derivative`, `coeff_subst_id`.
-* `solution`, `solution_eq`, `subst_solution_mul`, `coeff_solution_subst_derivative`,
-  `coeff_solution` (the unconditional forms, with the solution constructed).
+* `solution`, `solution_eq`, `subst_solution_mul`: construction over every commutative ring
+  from a supplied inverse of the weight series.
+* `coeff_solution_subst_derivative`, `coeff_solution`: coefficient formulas for that
+  constructed solution over a commutative rational algebra.
 -/
 
 set_option autoImplicit false
@@ -36,7 +38,7 @@ namespace Fabius
 
 namespace Lagrange
 
-variable {R : Type*} [CommRing R] [Algebra ℚ R]
+variable {R : Type*} [CommRing R]
 variable {φ g u v : R⟦X⟧}
 
 /-- `g = z u` has vanishing constant term. -/
@@ -56,7 +58,6 @@ theorem derivative_eq_X_mul (hg : g = X * u) :
 theorem derivative_inv (hv : u * v = 1) : d⁄dX R v = -(v ^ 2 * d⁄dX R u) := by
   have h := congrArg (d⁄dX R) hv
   rw [Derivation.leibniz, Derivation.map_one_eq_zero, smul_eq_mul, smul_eq_mul] at h
-  have hvv : v * (u * v) = v * 1 := by rw [hv]
   have hv1 : v * u = 1 := by rw [mul_comm]; exact hv
   -- `u v' + v u' = 0`, multiply by `v`
   have h2 : v * (u * d⁄dX R v) + v * (v * d⁄dX R u) = 0 := by
@@ -89,6 +90,17 @@ theorem coeff_inv_mul_derivative (hg : g = X * u) (hv : u * v = 1) :
     exact hc
   rw [h0, h1, add_zero]
 
+/-- Substitution transports a supplied multiplicative inverse over every commutative ring:
+`A(g) = (A φ^n)(g) · v^n`. -/
+theorem subst_mul_pow_inv (hg : g = X * u) (hu : u = φ.subst g) (hv : u * v = 1)
+    (A : R⟦X⟧) (n : ℕ) : A.subst g = ((A * φ ^ n).subst g) * v ^ n := by
+  have hs : HasSubst g := hasSubst_of_eq_X_mul hg
+  rw [subst_mul hs, subst_pow hs, ← hu, mul_assoc, ← mul_pow, hv, one_pow, mul_one]
+
+section RatAlgebra
+
+variable [Algebra ℚ R]
+
 /-- **The vanishing that collapses the sum:** for `M ≥ 1`, `[z^M] (v^{M+1} g') = 0`. -/
 theorem coeff_pow_succ_mul_derivative_eq_zero (hg : g = X * u) (hv : u * v = 1) (M : ℕ)
     (hM : 1 ≤ M) : coeff M (v ^ (M + 1) * d⁄dX R g) = 0 := by
@@ -119,12 +131,6 @@ theorem coeff_pow_succ_mul_derivative_eq_zero (hg : g = X * u) (hv : u * v = 1) 
     have hcancel : algebraMap ℚ R (1 / ((M : ℚ) + 1)) * ((M : R) + 1) = 1 := by
       rw [hMc, ← map_mul, one_div, inv_mul_cancel₀ (by positivity : ((M : ℚ) + 1) ≠ 0), map_one]
     linear_combination (-(coeff (M + 1) (v ^ (M + 1)))) * hcancel
-
-/-- `A(g) = (A φ^n)(g) · v^n`. -/
-theorem subst_mul_pow_inv (hg : g = X * u) (hu : u = φ.subst g) (hv : u * v = 1)
-    (A : R⟦X⟧) (n : ℕ) : A.subst g = ((A * φ ^ n).subst g) * v ^ n := by
-  have hs : HasSubst g := hasSubst_of_eq_X_mul hg
-  rw [subst_mul hs, subst_pow hs, ← hu, mul_assoc, ← mul_pow, hv, one_pow, mul_one]
 
 /-- **Lagrange–Bürmann, division-free:** `[z^{n-1}] (A(g) g') = [w^{n-1}] (A φ^n)`. -/
 theorem coeff_subst_mul_derivative (hg : g = X * u) (hu : u = φ.subst g) (hv : u * v = 1)
@@ -192,7 +198,9 @@ theorem coeff_subst_id (hg : g = X * u) (hu : u = φ.subst g) (hv : u * v = 1)
   rw [derivative_X, one_mul, subst_X hs] at h
   exact h
 
-/-! ### Existence of the solution -/
+end RatAlgebra
+
+/-! ### Existence of the solution over a commutative ring -/
 
 section Existence
 
@@ -213,8 +221,8 @@ theorem constantCoeff_X_mul (f : R⟦X⟧) : constantCoeff (X * f) = 0 := by
 theorem coeff_one_X_mul (f : R⟦X⟧) : coeff 1 (X * f) = constantCoeff f := by
   rw [coeff_succ_X_mul, coeff_zero_eq_constantCoeff_apply]
 
-/-- **The solution of `g = z φ(g)`**, as the compositional inverse of `z ψ(z)`, where `ψ` is the
-inverse of `φ`.  This is what makes the Lagrange formulas below unconditional. -/
+/-- The solution of `g = z φ(g)`, as the compositional inverse of `z ψ(z)`, where the supplied
+series `ψ` satisfies `φ * ψ = 1`. The construction works over every commutative ring. -/
 noncomputable def solution (hψ : φ * ψ = 1) : R⟦X⟧ :=
   substInvOfIsUnit (X * ψ)
     (by rw [coeff_one_X_mul]; exact isUnit_constantCoeff_right φ ψ hψ)
@@ -247,13 +255,16 @@ theorem solution_eq (hψ : φ * ψ = 1) :
     _ = solution φ ψ hψ * ψ.subst (solution φ ψ hψ) * φ.subst (solution φ ψ hψ) := by ring
     _ = X * φ.subst (solution φ ψ hψ) := by rw [hsub]
 
-/-- **Lagrange–Bürmann, unconditional:** `n [z^n] H(g) = [w^{n-1}] (H' φ^n)` for the canonical
-solution `g` of `g = z φ(g)`. -/
+variable [Algebra ℚ R]
+
+/-- Lagrange–Bürmann for the constructed solution: `n [z^n] H(g) = [w^{n-1}] (H' φ^n)`,
+where the supplied series `ψ` is a multiplicative inverse of `φ`. -/
 theorem coeff_solution_subst_derivative (hψ : φ * ψ = 1) (H : R⟦X⟧) (n : ℕ) (hn : 1 ≤ n) :
     (n : R) * coeff n (H.subst (solution φ ψ hψ)) = coeff (n - 1) (d⁄dX R H * φ ^ n) :=
   coeff_subst_derivative (solution_eq φ ψ hψ) rfl (subst_solution_mul φ ψ hψ) H n hn
 
-/-- **The basic case, unconditional:** `n [z^n] g = [w^{n-1}] φ^n`. -/
+/-- The basic coefficient formula `n [z^n] g = [w^{n-1}] φ^n` for the constructed solution,
+under the supplied inverse hypothesis `φ * ψ = 1`. -/
 theorem coeff_solution (hψ : φ * ψ = 1) (n : ℕ) (hn : 1 ≤ n) :
     (n : R) * coeff n (solution φ ψ hψ) = coeff (n - 1) (φ ^ n) :=
   coeff_subst_id (solution_eq φ ψ hψ) rfl (subst_solution_mul φ ψ hψ) n hn

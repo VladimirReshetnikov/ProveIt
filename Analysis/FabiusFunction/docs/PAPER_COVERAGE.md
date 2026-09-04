@@ -11,9 +11,9 @@ see its
 or [rendered PDF](Fabius_Function_and_Rvachev_Up/Fabius_Function_and_Rvachev_Up.pdf).
 
 > **Artifact status (2026-09-04).**  The live facade union contains exactly
-> 985 source modules and 12,199 explicit public declarations.  The live audit
+> 986 source modules and 12,233 explicit public declarations.  The live audit
 > reports no missing module headers or declaration comments.  The preceding
-> 979/12,142, 977/12,133, and earlier reconciled 970/12,056 inventories remain historical
+> 985/12,199, 979/12,142, 977/12,133, and earlier reconciled 970/12,056 inventories remain historical
 > checkpoints.  The exact-dyadic inverse,
 > Jacobi two-square, Lagrange--Rvachev Matrix, geometric Richardson,
 > Gaussian-binomial second-moment, fixed-column rate, and half-base root
@@ -55,7 +55,7 @@ or [rendered PDF](Fabius_Function_and_Rvachev_Up/Fabius_Function_and_Rvachev_Up.
 > `CentralQVandermondeInfinite` 0+4,
 > `CyclotomicFactorization` 0+7,
 > `JacobiTripleProduct` 2+25,
-> `QBinomialTheoremInfinite` 1+27,
+> `QBinomialTheoremInfinite` 1+29,
 > `GaussianBinomialFixedColumnRate` 0+9,
 > `GaussianBinomialGreaterOneAsymptotics` 0+2, `QPascalSummation` 0+4,
 > `QuantumBinomial` 0+2, `RogersSzegoPolynomial` 1+9,
@@ -72,6 +72,274 @@ or [rendered PDF](Fabius_Function_and_Rvachev_Up/Fabius_Function_and_Rvachev_Up.
 > `GaussianBinomialInteger` 1+10, `GaussianBinomialComplexOrder` 1+5,
 > `QPfaffSaalschutz` 0+3, `TwoPhiOneReversal` 2+12,
 > `QChuVandermonde` 0+10, `JacobiTwoSquareCount` 0+4,
+> `QuantumMultinomial` 0+5, and `GaussianBinomialBounds` 0+6.  The
+> geometric-interpolation union also includes
+> `GeometricRichardsonGenerating` 3+7, `RvachevAppellHasse` 1+14,
+> `RvachevLagrangeNodesOnly` 1+14, and `FinitePrefixAppellRecovery` 11+17.
+> The Fourier/inverse union also includes `RvachevLaurentLeading` 1+6, and the
+> Thue--Morse continuation union includes
+> `ThueMorseGammaTowerDifferential` 0+3.
+> The Lambert branch-gap union adds `LambertWBranchGapBernoulli` 0+5.  Its
+> `summable_bernoulli_mul_pow_div_factorial_iff` theorem proves for every
+> complex `z` that the Bernoulli exponential generating series is summable
+> exactly when `‖z‖ < 2π`, hence diverges on the boundary and throughout the
+> exterior.  Its new `hasSum_bernoulli_mul_pow_div_factorial_complex_iff`
+> theorem gives the canonical removable complex value
+> `(complexExpm1Div z)⁻¹` exactly on that disk, including value `1` at
+> `z = 0`; it does not identify the sum with Lean's literal totalized quotient
+> at zero or assert holomorphy.  The exhaustive theorem names, the real
+> evaluation and branch hypotheses, and the remaining excluded claims appear
+> in the Lambert Guide row below.  With the three finite branch-coordinate
+> modules, the four-module Lambert union is 4+37, forty-one declarations.
+> The geometric-uniform moment-polynomial union retains
+> `GeometricUniformMomentPolynomial` 1+8,
+> `GeometricUniformMomentPolynomialBridge` 0+1,
+> `GeometricUniformComplexMomentProduct` 1+3,
+> `GeometricUniformExteriorComplexMomentGerm` 1+2, and
+> `GeometricUniformMomentPolynomialDegree` 0+3.  The historical target chronology closes
+> at 923 modules and 11,610 declarations; retaining the unconditional public
+> Pochhammer bridge yielded the `b899` 923/11,611 semantic union.
+> The five-module polynomial q-calculus increment is retained exhaustively:
+> `PolynomialQDerivative` 2+17, `PolynomialQLeibniz` 0+4,
+> `QPochhammerDerivative` 0+3, `LambertSeriesLog` 0+4, and `QGamma` 2+10,
+> totaling four definitions and thirty-eight theorems, forty-two declarations.
+> The bounds module reuses `finiteQPochhammerIn_self_pos` from
+> `GeneralQConditionNumber`; it does not redeclare it.  The rigorous forward
+> q-monograph ledger is 181 Exact, 79 Partial, 14 None, and 8 interface
+> rows; its source concordance is 103 Lean, 375 human, 60 N/A, and 9 conjecture
+> rows, and the concordance extractor passes.  `prop:gaussian-bound` is Exact;
+> `thm:q-lucas` and
+> `cor:babbage-derivative` remain Partial at their stated polynomial-congruence
+> and derivative boundaries.
+>
+> **Deferred publication status.**  The fixed-26 publication check—14 fresh
+> build cycles and 12 retained verified pairs—is recorded once in the
+> [draft manifest](semi-formalized-research-frontiers/drafts/MANIFEST.md#fixed-26-publication-checkpoint).
+> A row still marked pending makes no synchronization claim.  The exact older
+> receipts below remain historical evidence; under the user-directed deferral,
+> the fixed-26 table is an inventory rather than a merged-current parity receipt.
+>
+> Four exact direct receipts record the last synchronized pre-9135 source/PDF
+> pairs and are now historical because the live sources include the new
+> q-Chu/reversal, geometric-generating, Gaussian second-moment, Lambert
+> branch-gap Bernoulli, and geometric-uniform moment-polynomial APIs.  The
+> primary exposition's
+> 14,037-line, 702,119-byte TeX has SHA-256
+> `6a20e02cf300c0b29ba8d175831b4f86e4b336601cc5bd5f5752d5c5889be69a`,
+> and its 197-page, 1,602,500-byte PDF has SHA-256
+> `f083cd78308aba99d23d42372786c4b0a946ea8f5d47445c44d664fccfdde5e3`.
+> The Lean walkthrough's 6,598-line, 465,231-byte TeX has SHA-256
+> `796dd849fa423ba07413eaf0a1f30dc608355c5a3cd877aa7409ad089c54794e`,
+> and its 149-page, 1,231,442-byte PDF has SHA-256
+> `bc6e3e716a1a10daf24a065f6c97e2d00cbc95071ada777050a95f91598db4a0`.
+> The canonical frontier's 17,954-line, 813,297-byte TeX has SHA-256
+> `bcd9eefce2ead08e2cbb283e091a859aa31f36c67416543e994e10e8f9db3075`,
+> and its 262-page, 1,885,642-byte PDF has SHA-256
+> `7f7e1279e38c766a465e640638ea7e0079a942de0bc84a5c22be497af27c7bab`.
+> The q-series master's 16,834-line, 837,715-byte TeX has SHA-256
+> `4785625c1399558f3ca59481888fc76514e0a327a1faa16945c61851f874f3d5`,
+> and its 395-page, 2,494,961-byte PDF has SHA-256
+> `89159b2635f489a42d4c972fac95332808b1d637dee7921085db1ed7d6e055af`.
+> Their exact successful three-pass page sequences were respectively
+> 194→197→197, 144→149→149, 254→262→262, and 386→395→395.  Primary and
+> walkthrough logs and publication gates are clean; the frontier retains only
+> expected underfull diagnostics, and the q-series master retains one harmless,
+> readable 32.5659 pt overfull line.  All page, metadata, font, render, text,
+> and representative-visual gates passed.  These receipts certify their named
+> pre-9135 pairs only and are superseded by the synchronized 2026-09-04 receipts
+> below.
+>
+> The formerly independent Sequence publication receipt is historical: its
+> material is now absorbed into the consolidated `Transseries_And_Inversion`
+> root listed in the fixed-26 checkpoint.  The Lambert
+> guide's preceding synchronized receipt is a 4,829-line, 174,423-byte TeX with SHA-256
+> `724dfe5b1effcda29325a5bdfb066ff970eb74ab460f650185339fefce40ebc1`;
+> its 69-page, 952,929-byte PDF has SHA-256
+> `0b5f28dbfe590658e74150e8ccff6f023ecd0b8fb4e3e978ec275d9ddd244de6`.
+> Its successful page sequence was 67→69→69; machine and visual gates passed,
+> with expected underfull diagnostics and one harmless readable 0.825 pt
+> internal overfull line.  The Bernoulli-series source overlay made that
+> Lambert PDF historical; the synchronized 2026-09-04 receipt below supersedes
+> it.  The Sequence inversion/transseries volume's
+> 16,705-line, 778,477-byte TeX has SHA-256
+> `4aa038c10ddd931b7c1248095ddfdf0ce8769c69cc0df4f344f6365d0e45e8e1`;
+> its 205-page, 2,198,655-byte PDF has SHA-256
+> `ec1f4d2ac608786f33be97d040fdfd03b6f74494dee74f044fd2e6631217d4fb`.
+> Its successful page sequence was 198→205→205; corrected title/author metadata,
+> machine gates, and extensive visual checks passed.  The final log retains one
+> duplicate-page-destination notice, nine PDF-string notices, 47 overfull and
+> 12 underfull diagnostics; sampled largest cases are clean and unclipped.
+>
+> **Historical synchronized publication receipts (2026-09-04).** Each pass
+> tuple below is `pages/bytes`.  At their named source checkpoints, all six
+> TeX/PDF pairs completed exactly three
+> successful serial halt-on-error passes from absent sidecars.  Final-log
+> reference/rerun/error checks, metadata, A4 rotation zero, every-page render
+> and nonblank-text checks, embedded/subset fonts with Libertinus and no Type 3,
+> and representative visual checks all passed; generated sidecars were cleaned
+> and forbidden checksum-ledger basenames were absent.  These six pairs remain
+> historical receipts for their named source checkpoints; the later historical
+> `b899` receipts below superseded them where a rebuilt root was listed.
+>
+> - Primary exposition: TeX 14,328 lines / 715,760 bytes / SHA-256
+>   `60c0a6ff4e75ec37e6928067859671d87622ad8f430a1006dd4c71c7e7b25674`;
+>   passes 197/1,579,558 → 200/1,621,473 → 200/1,621,467; final PDF
+>   200 pages / 1,621,467 bytes / SHA-256
+>   `50febffeb7dda743330bd346b8f5fd45f85668db97c19fb52d4cd741d1692826`;
+>   fonts 29 total / 6 Libertinus / 0 Type 3.
+> - Lean walkthrough: TeX 6,855 lines / 482,759 bytes / SHA-256
+>   `1c48c54b194eb9e99dae64ddca70e2aa5d2edd995160ee2d5bc6455b545683f7`;
+>   passes 149/1,225,017 → 154/1,262,552 → 154/1,262,574; final PDF
+>   154 pages / 1,262,574 bytes / SHA-256
+>   `f9cba79348ffb81c41fc08b6523548effcc45ded9a2eb2b18e618ac9d59d0648`;
+>   fonts 30 / 7 / 0.
+> - Lambert Guide: TeX 4,876 lines / 177,511 bytes / SHA-256
+>   `d852a345685dd61335a89fc4fd1092680bdc597a5d1e6ac612883946ad0d99ea`;
+>   passes 68/963,230 → 70/986,865 → 70/986,865; final PDF 70 pages /
+>   986,865 bytes / SHA-256
+>   `0b8801649a6dd43d9f02dcfc2f60cac50b5c8f88bd782645bf97d30cc3dfbd41`;
+>   fonts 42 / 5 / 0; one harmless readable 0.82504 pt overfull and 133
+>   underfull diagnostics.
+> - Canonical frontier: TeX 18,173 lines / 826,738 bytes / SHA-256
+>   `844842bf699a24651f660bd7d81d814f6396b4fe6fc6de66a04908904221860b`;
+>   passes 257/1,822,725 → 265/1,904,567 → 265/1,904,551; final PDF
+>   265 pages / 1,904,551 bytes / SHA-256
+>   `dcaa7ac1e5397912c97a474b4023521e49d0785eb6ef67d83d0ce002d9cbb6e6`;
+>   fonts 40 / 8 / 0; one readable unclipped 9.43108 pt overfull at source
+>   lines 1032–1043 and 299 underfull diagnostics.
+> - Geometric q-frontier: TeX 27,598 lines / 1,270,870 bytes / SHA-256
+>   `6db4e211b0588ed75a0e89e13d97306f1d5d38b42a2bf941914ea16b9ca93dae`;
+>   passes 386/8,157,293 → 403/8,339,780 → 403/8,339,736; final PDF
+>   403 pages / 8,339,736 bytes / SHA-256
+>   `4d909b5e228e2053d473dc75da502382c7a4fe2b096f798e124e6530d3a15027`;
+>   fonts 43 / 11 / 0; zero overfull and 37 underfull diagnostics.
+> - Canonical q-series synthesis: TeX 16,910 lines / 842,514 bytes / SHA-256
+>   `196f219d5e1efba463ebabb69659697b1afb28989ef1a8da6219226d3262ad32`;
+>   passes 390/2,386,364 → 398/2,501,624 → 398/2,501,638; final PDF
+>   398 pages / 2,501,638 bytes / SHA-256
+>   `e8094b054f52b1fb71c7540f0834155fae0eac17887cb7cac1567848bd65d3b3`;
+>   fonts 43 / 5 / 0.  Every pass's index run accepted 164 entries, rejected
+>   none, produced 254 lines, and emitted no warning.  The sole retained
+>   32.5659 pt overfull paragraph at source lines 590–598 is readable and
+>   unclipped; the final log has zero underfull diagnostics.
+>
+> **Historical `b899` synchronized publication receipts (2026-09-04).** Each pass
+> tuple below is `pages/bytes`.  All ten roots were frozen and built in exactly
+> three serial halt-on-error passes from absent sidecars.  Subsequent merged
+> source changes make these receipts historical; current rebuild state is
+> recorded only in the fixed-26 checkpoint linked above.
+>
+> - Primary exposition: TeX 15,148 lines / 759,509 bytes / SHA-256
+>   `721cb901de2254ef48991452c4831762f54a36e0a405b4bbeb7f812653e71754`;
+>   passes 208/1,640,077 → 210/1,683,143 → 210/1,683,141; final PDF
+>   210 pages / 1,683,141 bytes / SHA-256
+>   `afe85efec5716fe85cc7d8a5d6af459fd72775526f4bda11df04e6ff275b36c9`;
+>   fonts 29 total / 6 Libertinus / 0 Type 3.
+> - Lean walkthrough: TeX 7,260 lines / 526,929 bytes / SHA-256
+>   `2005d4a70a66a1d8f3eac9be6d83585ea70c9312b09b098f2c65025db9fca814`;
+>   passes 160/1,281,609 → 165/1,319,585 → 165/1,319,594; final PDF
+>   165 pages / 1,319,594 bytes / SHA-256
+>   `b5e886d7c76db56fd9e9e1552bdd78fbd65ea9075ea1e04d62c00a7c04e948fb`;
+>   fonts 30 / 7 / 0.
+> - Geometric q-frontier: driver 27,671 lines / 1,275,367 bytes / SHA-256
+>   `d47c0ad93eb359d13e7e9772668f16dbc98bcb4d880f3679366e1d461451bbcd`;
+>   recursive TeX closure 8 files / 27,777 lines / 1,281,413 bytes / digest
+>   `39f7cd41e706314f2cafb903c2da2e6e83d2b17f5bb0612492204d15c1a28d91`;
+>   passes 388/8,163,847 → 405/8,346,265 → 405/8,346,247; final PDF
+>   405 pages / 8,346,247 bytes / SHA-256
+>   `fef7d8260543ad1d20d69e9e41fa0cfc31603de7961f6aeb97a50740aecd596c`;
+>   fonts 43 / 11 / 0.
+> - Canonical q-series synthesis: driver 17,265 lines / 864,659 bytes /
+>   SHA-256
+>   `4dd3f7fb22387d8e3d039e8d49cd870a63ebe0881f7f215c7074854825a27bb9`;
+>   recursive TeX closure 14 files / 26,762 lines / 1,210,902 bytes / digest
+>   `b567430fdd64f6d50bd24fcb070216c27f7e3e81e8b0c76c3228767ebdf980c6`;
+>   passes 397/2,417,476 → 405/2,533,717 → 405/2,533,715; final PDF
+>   405 pages / 2,533,715 bytes / SHA-256
+>   `055eb1fc26467857394a5b3bd8cd327f6985ea5d2f966ab5f099ac20bb2b8fb2`;
+>   fonts 43 / 5 / 0; every pass's index run accepted 164 entries, rejected
+>   none, produced 254 lines, and emitted no warning.
+> - Inverse-theory synthesis: driver 293 lines / 11,514 bytes / SHA-256
+>   `92fab1fae38bbcf86a45b51bfe7ff34e2801361df9d2f3d6aa3de4dc966eaa3c`;
+>   recursive TeX closure 17 files / 10,682 lines / 431,748 bytes / digest
+>   `6e4e6fde424fd5046467b1f1cec0c19b6c10eb681fae4ba7cc53e14b6a5bf61e`;
+>   passes 132/1,983,313 → 137/2,045,485 → 137/2,045,486; final PDF
+>   137 pages / 2,045,486 bytes / SHA-256
+>   `cee0de894656562fbdb75d6304055fc03fae06203985119419e465a5cd213995`;
+>   fonts 31 / 6 / 0.
+> - Comb-interpolation synthesis: driver 187 lines / 6,724 bytes / SHA-256
+>   `a4c1e33165ff7291682cd890f23fe4af98e9f11f7ad1d9a7f8b68c78d53f9a56`;
+>   recursive TeX closure 15 files / 12,597 lines / 477,163 bytes / digest
+>   `9e22455b3f65eb48306ad21c57445b6052a56498cb363666ffb9b160f5cc8090`;
+>   passes 153/2,383,950 → 160/2,467,995 → 160/2,468,000; final PDF
+>   160 pages / 2,468,000 bytes / SHA-256
+>   `ad8587049580e6fde371f534b6f8b4e56fa4c929173f87d3021ed369e5225d4c`;
+>   fonts 33 / 7 / 0.
+> - Lambert Guide: TeX 4,940 lines / 181,577 bytes / SHA-256
+>   `2e6a4782fc4e4b945869f5fb45b39cf94e8dc34296866edf26b4cdfe19b1898b`;
+>   passes 68/968,083 → 70/991,847 → 70/991,848; final PDF 70 pages /
+>   991,848 bytes / SHA-256
+>   `f802d78299f8f6aca7d31b935a4884f9343389a7307decb04c18b5159c8a4f04`;
+>   fonts 42 / 5 / 0.
+> - Up Polynomial Synthesis: driver 2,368 lines / 98,609 bytes / SHA-256
+>   `95d293e34559e910cca2df4547e6e181a8d26bc8e8cf61c4445cf12c57ed8e0e`;
+>   four-file TeX closure 5,434 lines / 211,270 bytes / digest
+>   `62aa76428089cd164705b1d31e038d4e48545681eedc01cb491e6a94f07b0e41`;
+>   passes 61/1,045,488 → 62/1,071,179 → 62/1,071,181; final PDF
+>   62 pages / 1,071,181 bytes / SHA-256
+>   `99c5d8256b983652755fe8e46ef015277e61b94941a4ca6c875bddaf0493b101`;
+>   fonts 27 / 4 / 0.
+> - Thue--Morse Atlas: TeX 10,553 lines / 481,614 bytes / SHA-256
+>   `cced4128c359ec467baaf1a55c21c68424397f783a39ea7fe2af5a94975b9dd5`;
+>   passes 139/1,681,559 → 144/1,739,891 → 144/1,739,884; final PDF
+>   144 pages / 1,739,884 bytes / SHA-256
+>   `1c81863b0976017fab1b7f5972c50cd541b3ffb05306bf85994548a56a782fc0`;
+>   fonts 38 / 8 / 0.
+> - Canonical semi-formalized frontier: TeX 18,651 lines / 858,502 bytes /
+>   SHA-256
+>   `140256058b7a01bcdb4f1592cfab9e6c2ac170f5f0863572627a9b2f93ab7793`;
+>   passes 265/1,868,249 → 273/1,950,120 → 273/1,950,112; final PDF
+>   273 pages / 1,950,112 bytes / SHA-256
+>   `17525c7623bf774f515ecf1a949d533bbe125fde036356c4bb9f787eedad0322`;
+>   fonts 40 / 8 / 0.
+>
+> Across all ten roots, required final-log error/reference/rerun
+> gates, metadata, A4/rotation-zero checks, every-page render and nonblank-text
+> checks, embedded/subset fonts with Libertinus and no Type 3, representative
+> visual checks, sidecar cleanup, and the forbidden-checksum-basename search all
+> passed. Diagnostics are clean except for five minor q-series horizontal boxes
+> (maximum 10.14 pt), two inverse horizontal boxes (2.42 and 2.45 pt), one
+> Lambert horizontal box (0.83 pt), and one canonical-frontier horizontal box
+> (9.43108 pt), all nonblocking. The final aggregate TeX closure contains 76
+> files / 140,223 lines / 6,439,569 bytes, with direct aggregate digest
+> `ae8690ad8d160055cbae36eff96d858f87572d171e7aacf7540d67543998af21`.
+> All ten rows were synchronized at the named `b899` checkpoint; they and the
+> earlier receipts below remain historical provenance for their named sources.
+>
+> For provenance, the superseded pre-d8b pairs remain historical receipts:
+> primary TeX/PDF `938517a92565685ac9f7194b879cfe752ce783f258bde8b7b685aee41aed13dc` /
+> `bf26d78dd2cc49feb87a85413ef9c04c7a8a3dac4f793cf86e3436f7502cb2a7`
+> (694,350 / 1,593,577 bytes; 195 PDF pages); walkthrough
+> `e598aa02d4d10eda8bcfdafe3731f4a663bdcba58407f454485fae6796b41050` /
+> `5ff79c24fbced37dfaa5eb9c34447d0e7661b2b2bc5a0597687e43f93d7e189a`
+> (456,855 / 1,219,336 bytes; 145 pages); frontier
+> `7dd140370a0ac68522364a83a3c6423df93570741eafaef2ee8c1fac17670e2f` /
+> `9d38ab9d43befd6e26fd06ab9680b4a761365fb9d8a9f0de18489c243bd62d3e`
+> (808,185 / 1,877,159 bytes; 260 pages); and q-series
+> `d8f730b8eb6602d4d16112aea77a3e67dfbeadf46bcd28c1cdf3b12450b7d4fb` /
+> `5d25df07e6df1cd32118ee87e64c1cc54ad32da7c578a182231f98dd9fee9d5c`
+> (837,715 / 2,494,949 bytes; 395 pages).  Representation Frontiers and the
+> Integration-and-Transform master retain exact historical 301- and 377-page
+> receipts in the frontier manifest and their local group records; those
+> receipts certify only their named source checkpoints.  Replacement parity is
+> recorded only in the fixed-26 checkpoint linked above.
+> Filed New Frontiers and the notation catalogue retain historical 41- and
+> 88-page receipts; the comb-interpolation 158-page receipt is historical and
+> was superseded by the later historical 160-page receipt above.  Checksum
+> ledgers remain abolished and hardened
+> repository-wide; no `SHA256SUMS*` files exist or participate in validation.
+>
+> **Post-`b899` upstream API chronology.**  The q-series union retains
 > `QuantumMultinomial` 0+5, and
 > `GaussianBinomialBounds` 0+6.  The geometric-interpolation union now also
 > includes `GeometricRichardsonGenerating` 3+7.
@@ -83,7 +351,7 @@ or [rendered PDF](Fabius_Function_and_Rvachev_Up/Fabius_Function_and_Rvachev_Up.
 > `3b6396deb6056523d944d79602d1bf7ecf18ec10` was 904/11,457.  These are
 > historical checkpoints, not descriptions of the live facade.
 >
-> **Current merged-source publication receipts (10/10 accepted).** Primary:
+> **Historical d130 publication receipts (accepted at their recorded source snapshots).** Primary:
 > root `14628L/733516B/39d1b0b87cabbd75622b2c882db34bc842f9057561efa8d8a93918acaa97d7ea`;
 > two-file aggregate
 > `14912L/745351B/2f56e31a0545297886fd0b9f2c9005053f6d902a99f3b1b965b5d659277c71b2`;
@@ -259,7 +527,20 @@ or [rendered PDF](Fabius_Function_and_Rvachev_Up/Fabius_Function_and_Rvachev_Up.
 > declarations, giving the historical 933/11,695 checkpoint.  Finally,
 > `ProuhetBaseTwoBridge` 0+6, one new theorem in `DyadicBoundaryIdentity`, and
 > seven new theorems in `ThueMorseNewmanSelfSimilarity` add one module and
-> fourteen declarations in total, giving the historical 934/11,709 census.
+> fourteen declarations in total, giving the historical 934/11,709
+> pre-transseries census.  The later transseries tranche raises the frozen
+> upstream tree to 957/11,920; retaining the unconditional Pochhammer bridge
+> gives the historical merge-union checkpoint 957/11,921, and the
+> residual-existence certificate `exists_eq_in_residual_interval` is included
+> in the live semantic union computed by `scripts/doc_audit.py` and pinned in
+> `docs/doc_audit_baseline.json`.
+> At their named historical checkpoints, the retained primary exposition, Lean
+> walkthrough, canonical frontier, Representation Frontiers, filed New
+> Frontiers, notation catalogue, comb-interpolation synthesis, and q-series
+> synthesis PDFs contained respectively
+> 183, 130, 257, 301, 41, 88, 158, and 389 pages.  Their current TeX sources
+> On the incoming branch the same tranche gives the historical 934/11,709
+> census.
 > The subsequent nine-module series/transseries overlay contributed 72 explicit
 > declarations, with two additional Neumann names generated by `to_additive`;
 > six concurrent declarations outside those modules produced the historical
@@ -287,8 +568,9 @@ or [rendered PDF](Fabius_Function_and_Rvachev_Up/Fabius_Function_and_Rvachev_Up.
 > `LagrangeInversionUniqueness` 0+6, `NewtonReciprocal` 1+5,
 > `StirlingSecondReverseRowIdentity` 0+2, and
 > `TransseriesWrightOmegaTerms` 0+10, plus eight declarations in existing
-> modules.  This +6/+57 delta gives the live 985/12,199 census with no
-> documentation gaps.  The inventory does not by itself
+> modules.  This +6/+57 delta gives the historical 985/12,199 census.
+> `BellSetPartitions` then adds one module and 34 public declarations, giving
+> the live 986/12,233 census with no documentation gaps.  The inventory does not by itself
 > promote a broader manuscript claim.
 > The retained primary exposition, Lean walkthrough, canonical frontier,
 > Representation Frontiers, filed New Frontiers, notation catalogue,
@@ -298,6 +580,14 @@ or [rendered PDF](Fabius_Function_and_Rvachev_Up/Fabius_Function_and_Rvachev_Up.
 > rather than source/PDF-parity claims.  The Integration-and-Transform master
 > likewise retains a historical 377-page PDF; all of these documents await fresh uninterrupted
 > three-pass rebuilds.
+> The authoritative live census is 983 modules and 12,192 public declarations,
+> with no documentation gaps.  The combined q ledger is 181 Exact / 79 Partial /
+> 14 None / 8 interface rows, with source concordance 103 Lean-proved / 375
+> human-proved frontier / 60 not-applicable / 9 conjecture rows.
+> Exact prior receipts remain historical in the [draft manifest](semi-formalized-research-frontiers/drafts/MANIFEST.md).
+> Accepted synchronized merged-source renders for all eleven affected roots are
+> recorded in the [merge-28de4e51 receipt
+> register](semi-formalized-research-frontiers/drafts/MANIFEST.md#merge-28de4e51-publication-receipts).
 
 The Wigner boundary in this crosswalk is literal: the directly defined
 integer-index zero-row square datum is not a bridge to a separately implemented
@@ -439,6 +729,12 @@ prefixes on the real frequency line and uniform convergence on its compact sets.
 | Stirling-series coefficients (`q2:eq:stirling-cj`) | **Exact formal coefficient clause.** `StirlingSeriesCoefficients.lean` is 3+12 and proves the formal kernel, exponential recurrence, and `c₀=1`, `c₁=1/12`, `c₂=1/288`, `c₃=-139/51840`.  It does not prove the surrounding analytic Fubini-sector expansion. | Definitions: `Fabius.stirlingKernelCoeff`, `Fabius.stirlingKernel`, `Fabius.stirlingCoeff`. Theorems: `Fabius.coeff_stirlingKernel`, `Fabius.constantCoeff_stirlingKernel`, `Fabius.stirlingCoeff_zero`, `Fabius.stirlingCoeff_recurrence`, `Fabius.bernoulli_three`, `Fabius.bernoulli_four`, `Fabius.stirlingKernelCoeff_one`, `Fabius.stirlingKernelCoeff_two`, `Fabius.stirlingKernelCoeff_three`, `Fabius.stirlingCoeff_one`, `Fabius.stirlingCoeff_two`, `Fabius.stirlingCoeff_three` |
 | Leading harmonic-increment asymptotic (`plt:lem:mot-harmonic`) | **Partial: leading order only.**  `TransseriesHarmonicIncrement.lean` has no definitions and exactly two theorems.  It proves the general Stolz--Cesàro implication from convergent increments to `w_n/n`, and derives the Exact leading law `w_n/n → c₀` from the manuscript's recurrence and error hypotheses.  The `(c₁/c₀) log n` correction, the limiting constant, and the final `o(1)` remainder remain unformalized. | `Fabius.tendsto_div_atTop_of_tendsto_sub`, `Fabius.tendsto_div_atTop_of_harmonic_increment` |
 | Ordinary/exponential partial-Bell normalization (`plt:lem:bell-normalizations`) | **Exact generating-series bridge; full printed lemma Partial.**  `OrdinaryPartialBell.lean` has two definitions and four theorems.  It defines the ordinary family coefficientwise from the power of its ordinary series, proves that defining power-series identity, identifies the divided exponential Bell weight series with it, proves `n! B̂_(n,k)(x_j/j!) = k! B_(n,k)(x)`, and proves above-diagonal vanishing.  The explicit multinomial-sum presentation printed in the volume and the final identification with its convolution polynomial are not separate Lean theorems. | Definitions: `Fabius.ordinarySeries`, `Fabius.ordinaryPartialBell`. Theorems: `Fabius.ordinaryPartialBell_pow`, `Fabius.bellWeightSeries_eq_ordinarySeries`, `Fabius.factorial_mul_ordinaryPartialBell`, `Fabius.ordinaryPartialBell_eq_zero_of_lt` |
+| Formal rescaling and exponentials (`lem:merged-formal-rescaling`) | **Exact as formal power series.** `ExponentialRescaling.lean` is 0+4.  Its chain rule is division-free over every commutative semiring; the exponential specializations use a commutative rational algebra.  The last three declarations retain public names moved out of `NorlundDiagonal.lean`, now 0+10, so only the general chain rule is new in the combined declaration inventory.  No analytic exponential claim is made. | `Fabius.derivative_rescale`, `Fabius.derivative_rescale_exp`, `Fabius.rescale_zero_exp`, `Fabius.rescale_exp_add_one` |
+| Abel polynomials (`prop:merged-abel`) | **Exact.** `AbelPolynomialSeries.lean` is 2+9.  Its polynomial formulas work over every commutative ring; its EGF formulas use a commutative rational algebra.  It constructs the canonical Abel series and proves the coefficient and full-EGF identities for every solution of the functional equation, including degree zero, then proves the binomial-type identity.  No analytic convergence is asserted. | Definitions: `Fabius.abelPolynomial`, `Fabius.abelSeries`. Theorems: `Fabius.abelPolynomial_zero`, `Fabius.abelPolynomial_succ`, `Fabius.abelPolynomial_succ_eval`, `Fabius.abelSeries_eq`, `Fabius.hasSubst_abelSeries`, `Fabius.abel_eq_zero_and_one`, `Fabius.coeff_exp_subst_of_abel_eq`, `Fabius.exp_subst_eq_egfA_abelPolynomial`, `Fabius.abelPolynomial_eval_add` |
+| Formal logarithm of the Bernoulli kernel (`eq:merged-log-bernoulli-kernel`) | **Exact formal clause; enclosing theorem Partial.** `BernoulliFormalLog.lean` is 0+5 and proves over `ℚ` that the Bernoulli kernel and its explicit reciprocal multiply to one, identifies the formal logarithm and all its coefficients, and separates the degree-one Bernoulli convention.  No analytic logarithm or convergence radius is asserted.  `thm:merged-norlund-bell-diagonal` remains Partial at its Bell-polynomial construction. | `Fabius.bernoulliPowerSeries_mul_massSeries_expm1Div`, `Fabius.logOf_bernoulliPowerSeries`, `Fabius.coeff_logOf_bernoulliPowerSeries`, `Fabius.coeff_one_logOf_bernoulliPowerSeries`, `Fabius.coeff_logOf_bernoulliPowerSeries_of_two_le` |
+| Ordinary composition and its multiplicity formula (`thm:ordinary-composition`) | **Exact as formal coefficient algebra.** `OrdinaryBellComposition.lean` is now 2+9: its added bounded congruence says `B̂_(n,k)` depends only on weights `1≤i≤n`, and its old unbounded congruence remains a wrapper.  `OrdinaryBellMultinomial.lean` is 1+3 and gives the finite profile definition, exact membership constraints, multinomial Bell expansion over every commutative semiring, and substitution formula over a commutative ring when the inner series has zero constant term.  Degree zero is included; no analytic composition or convergence is claimed.  The coefficient-calculus register is 62 Lean, 36 Partial, 106 None, 204 total. | Existing addition: `Fabius.ordPartialBell_congr_of_le`. New leaf: `Fabius.ordinaryMultiplicityProfiles`, `Fabius.mem_ordinaryMultiplicityProfiles`, `Fabius.ordPartialBell_eq_sum_multinomial`, `Fabius.coeff_subst_eq_sum_multinomial` |
+| Raney numbers (`thm:merged-raney`) | **Exact for the constructed canonical series; arbitrary-solution reading Partial.** `RaneyNumbers.lean` is 4+12.  It constructs a rational formal solution `T` of `T=1+XT^p` and proves its division-free and divided coefficient laws, including degree zero and the Fuss--Catalan specialization.  It supplies no uniqueness theorem or transfer to an arbitrary solution and makes no convergence claim. | Definitions: `Fabius.raneyPhi`, `Fabius.raneyPsi`, `Fabius.raneyG`, `Fabius.raneyT`. Theorems: `Fabius.coeff_one_add_X_pow`, `Fabius.constantCoeff_raneyPhi`, `Fabius.raneyPhi_mul_raneyPsi`, `Fabius.raneyG_def`, `Fabius.hasSubst_raneyG`, `Fabius.constantCoeff_raneyG`, `Fabius.subst_one_add_X_pow_raneyG`, `Fabius.raneyT_eq`, `Fabius.constantCoeff_raneyT`, `Fabius.natCast_mul_coeff_raneyT_pow`, `Fabius.coeff_raneyT_pow`, `Fabius.coeff_raneyT` |
+| Kirkman--Cayley and associahedron arithmetic (`thm:merged-kirkman-cayley`, `cor:merged-associahedron-f`, `thm:merged-associahedron-h`) | **Exact arithmetic; geometric statements Partial.** `AssociahedronFaceNumbers.lean` is 4+23.  It proves division-free and divided dissection formulas, integrality, nonnegativity, boundary values, the arithmetically defined face formulas, and the arithmetically defined Narayana `h`-row with symmetry and Catalan sum.  It does not construct dissections, a face lattice, either bijection, or the face transform; the face and `h` values are definitions by the claimed formulas. | Definitions: `Fabius.dissectionNumber`, `Fabius.associahedronFaceNumber`, `Fabius.associahedronH`, `Fabius.associahedronHPoly`. Dissection theorems: `Fabius.dissectionNumber_mul`, `Fabius.succ_dvd_choose_mul_choose`, `Fabius.dissectionNumber_eq_div`, `Fabius.dissectionNumber_nonneg`, `Fabius.dissectionNumber_eq_zero_of_lt`, `Fabius.dissectionNumber_mul_of_three_le`, `Fabius.succ_dvd_choose_mul_choose_of_three_le`, `Fabius.dissectionNumber_zero_right`, `Fabius.dissectionNumber_one`, `Fabius.dissectionNumber_self`. Face theorems: `Fabius.associahedronFaceNumber_eq`, `Fabius.associahedronFaceNumber_mul`, `Fabius.associahedronFaceNumber_zero`, `Fabius.two_mul_associahedronFaceNumber_facet`, `Fabius.associahedronFaceNumber_top`. `h`-theorems: `Fabius.associahedronH_eq`, `Fabius.associahedronH_mul`, `Fabius.associahedronH_symm`, `Fabius.associahedronH_zero`, `Fabius.associahedronH_top`, `Fabius.sum_associahedronH`, `Fabius.associahedronHPoly_one`, `Fabius.associahedronHPoly_one_eq_faceNumber_zero` |
 | Real linear--logarithmic core (`p0:thm:lambert-core`) | **Exact real algebra and branch rule; full theorem Partial.**  `LinLogCoreInversion.lean` has four definitions and eighteen theorems.  It proves the branch-free Lambert equivalence, the unique positive principal root for `b>0`, the sharp threshold equivalence and two distinct separated real roots for `b<0`, and both slope identities.  Only the large-`L` asymptotic clause and the complex general-branch interpretation remain unformalized. | Definitions: `Fabius.linLogCoreArg`, `Fabius.linLogCoreRoot`, `Fabius.linLogCoreThreshold`, `Fabius.linLogCoreRootLower`. Theorems: `Fabius.linLogCore_eq_iff`, `Fabius.principalLambertW_linLogCoreArg_pos`, `Fabius.linLogCoreRoot_pos`, `Fabius.linLogCore_linLogCoreRoot`, `Fabius.strictMonoOn_linLogCore`, `Fabius.linLogCoreRoot_unique`, `Fabius.hasDerivAt_linLogCore`, `Fabius.linLogCore_slope_eq`, `Fabius.linLogCore_critical`, `Fabius.linLogCoreArg_mem_Ioo_iff`, `Fabius.principalLambertW_linLogCoreArg_neg`, `Fabius.linLogCoreRoot_pos_of_neg`, `Fabius.linLogCoreRootLower_pos`, `Fabius.linLogCore_linLogCoreRoot_of_neg`, `Fabius.linLogCore_linLogCoreRootLower`, `Fabius.linLogCoreRoot_lt_critical`, `Fabius.critical_lt_linLogCoreRootLower`, `Fabius.linLogCoreRoot_ne_linLogCoreRootLower` |
 | Real power--logarithmic core at `r=1` (`p6:eq:core-r1`, `p6:lem:core`) | **Equation Exact; general lemma Partial.**  `PowerLogCoreInversion.lean` has three definitions and six theorems.  It proves the exponential substitution, root logarithm, branch-independent solve law for any real Lambert-equation solution, principal-branch solve law, and derivative at an arbitrary point and at the root.  This exactly covers `r=1`, the case used for Gamma and the `K`-function.  General `r`, the associated root determination, and complex branches remain unformalized. | Definitions: `Fabius.powerLogCore`, `Fabius.powerLogCoreArg`, `Fabius.powerLogCoreRoot`. Theorems: `Fabius.powerLogCore_exp`, `Fabius.log_powerLogCoreRoot_sub`, `Fabius.powerLogCore_of_lambert`, `Fabius.powerLogCore_powerLogCoreRoot`, `Fabius.hasDerivAt_powerLogCore`, `Fabius.hasDerivAt_powerLogCore_root` |
 | Controlled forward-remainder transport (`p0:thm:remainder-transport`) | **Exact.**  `RemainderTransport.lean` has no definitions and four theorems.  The first three give the derivative-to-Lipschitz bridge and division-free/divided transport bounds; `transport_first_order` proves part (2) with an explicit error under the weaker Lipschitz condition on the core derivative.  The perturbation's two-sided derivative bound remains distinct from the core's one-sided derivative floor. | `Fabius.lipschitzOn_of_abs_deriv_le`, `Fabius.transport_bound_mul`, `Fabius.transport_bound`, `Fabius.transport_first_order` |
@@ -525,12 +821,12 @@ prefixes on the real frequency line and uniform convergence on its compact sets.
 | Continuity and the classical limit of Gaussian binomial coefficients | `GaussianBinomialContinuity.lean` has zero public definitions and three public theorems.  Continuity and `[n,k]_q → C(n,k)` as `q → 1` hold in every topological semiring for every natural `n,k`, including degree zero and out-of-range columns.  The finite q-Pochhammer quotient form instead works over a field and assumes exactly `k ≤ n` and `(q;q)_k ≠ 0`.  No differentiability, convergence rate, or quotient statement at a vanishing denominator is asserted. | `Fabius.continuous_gaussianBinomial`, `Fabius.tendsto_gaussianBinomial_nhds_one`, `Fabius.gaussianBinomial_eq_finiteQPochhammerIn_div` |
 | q-Pascal row summation and Gaussian-coefficient commutation | `QPascalSummation.lean` has zero public definitions and four public theorems.  The first q-Pascal row split holds in every semiring and the second in every commutative semiring, total in the row index and including `n = 0`.  In an arbitrary semiring, Gaussian coefficients commute in either orientation with every element that commutes with `q`.  These are finite algebraic statements with no subtraction, division, topology, or convergence hypothesis. | `Fabius.sum_gaussianBinomial_succ_mul`, `Fabius.sum_gaussianBinomial_succ_mul'`, `Commute.gaussianBinomial_left`, `Commute.gaussianBinomial_right` |
 | Noncommutative q-binomial theorem for the quantum plane | `QuantumBinomial.lean` has zero public definitions and two public theorems.  In every possibly noncommutative semiring, the relation `Y*X = q*(X*Y)` and the displayed commutation of `q` with `X` and `Y` give both `Y*X^m = q^m*(X^m*Y)` and the ordered Gaussian expansion of `(X+Y)^n`.  Both results include exponent zero and need no inverses or subtraction; `q` need not be central outside the stated variables. | `Fabius.quantumPlane_mul_pow`, `Fabius.quantum_binomial` |
-| Euler identities, effective Gaussian bounds, and the infinite q-binomial theorem | `QBinomialTheoremInfinite.lean` has one public definition and 27 public theorems.  It packages Tannery's theorem, comparison products, uniform Gaussian bounds, arbitrary fixed-shift convergence and geometric rates, Euler's product, the infinite q-binomial theorem, and Euler's reciprocal expansion under the displayed strict-contraction hypotheses. | Definition: `Fabius.gaussianMajorant`. Added names: `Fabius.norm_finiteQPochhammerIn_pow_sub_one_le_exp_of_norm_le_one`, `Fabius.isBigO_finiteQPochhammerIn_pow_sub_one`, `Fabius.tendsto_gaussianBinomial_add_const_atTop`, `Fabius.isBigO_gaussianBinomial_sub_inv`, `Fabius.isBigO_gaussianBinomial_add_sub_inv`; the retained 22-name inventory is unchanged. |
+| Euler identities, effective Gaussian bounds, and the infinite q-binomial theorem | `QBinomialTheoremInfinite.lean` has one public definition and 29 public theorems.  It packages Tannery's theorem, comparison products, uniform Gaussian bounds, arbitrary fixed-shift convergence and geometric rates, Euler's product, the infinite q-binomial theorem, and Euler's reciprocal expansion under the displayed strict-contraction hypotheses. | Definition: `Fabius.gaussianMajorant`. Added names: `Fabius.norm_finiteQPochhammerIn_pow_sub_one_le_exp_of_norm_le_one`, `Fabius.isBigO_finiteQPochhammerIn_pow_sub_one`, `Fabius.tendsto_gaussianBinomial_add_const_atTop`, `Fabius.isBigO_gaussianBinomial_sub_inv`, `Fabius.isBigO_gaussianBinomial_add_sub_inv`; the retained inventory includes both strengthened names and compatibility aliases. |
 | Rogers--Szegő polynomials, finite recurrences, and generating function | `RogersSzegoPolynomial.lean` has one public definition and nine public theorems.  The polynomial, its zero-degree and `z = 1` evaluations, and its two-term recurrence are finite algebra over every commutative semiring; the adjacent-column, dilation, and three-term identities use a commutative ring and include every natural index.  Over a normed field, the absolute-summability helper assumes `‖q‖ < 1` and norm below one for its series variable, while the finite antidiagonal coefficient identity assumes only `‖q‖ < 1`.  Over a complete normed field, the generating function assumes exactly `‖q‖ < 1`, `‖t‖ < 1`, and `‖z*t‖ < 1`, including `q = 0` and `t = 0`.  No unit-circle boundary, orthogonality measure, zero-location, or asymptotic theorem is asserted. | Definition: `Fabius.rogersSzego`.  Theorems: `Fabius.rogersSzego_zero`, `Fabius.rogersSzego_one`, `Fabius.rogersSzego_succ`, `Fabius.one_sub_pow_succ_mul_gaussianBinomial_succ_succ`, `Fabius.rogersSzego_dilation`, `Fabius.rogersSzego_three_term`, `Fabius.summable_norm_pow_div_finiteQPochhammerIn_self`, `Fabius.sum_antidiagonal_euler_mul_euler`, `Fabius.hasSum_rogersSzego_generating` |
 | Jacobi triple product and Euler pentagonal theorem | `JacobiTripleProduct.lean` has two public definitions and 25 public theorems.  Its integer theta and pentagonal exponents are total.  The finite polynomial triple product holds over every commutative ring for arbitrary `q,z,N`, including `N = 0`; the Laurent form works over a field under exactly `z ≠ 0`.  Over every complete normed field, both Jacobi bilateral forms assume `‖q‖ < 1` and `z ≠ 0`, while the two pentagonal forms assume only `‖q‖ < 1` and explicitly include `q = 0`.  The current edit only renames the unused proof binder `hi` to `_hi` in `thetaCoeff_pair_eq`; it changes no public type, hypothesis, result, or count.  No norm-one boundary, modular transformation, theta functional equation, or analytic continuation is claimed. | Definitions: `Fabius.thetaExponent`, `Fabius.pentagonalExponent`.  Theorems: `Fabius.two_dvd_mul_sub_one`, `Fabius.mul_sub_one_nonneg`, `Fabius.two_mul_thetaExponent`, `Fabius.thetaExponent_natCast`, `Fabius.thetaExponent_neg_natCast`, `Fabius.choose_two_add_choose_two_succ_eq`, `Fabius.sum_mul_sum_eq_sum_antidiagonal`, `Fabius.thetaCoeff_pair_eq`, `Fabius.sum_antidiagonal_thetaCoeff`, `Fabius.finite_triple_product_poly`, `Fabius.pow_mul_finiteQPochhammerIn_div`, `Fabius.neg_one_zpow_natCast_sub`, `Fabius.finite_triple_product`, `Fabius.norm_gaussianBinomialInt_le`, `Fabius.tendsto_gaussianBinomialInt_central`, `Fabius.summable_pow_thetaExponent_mul_zpow`, `Fabius.hasSum_jacobi_triple_product`, `Fabius.hasSum_jacobi_triple_product'`, `Fabius.mul_three_mul_sub_one_nonneg`, `Fabius.two_dvd_mul_three_mul_sub_one`, `Fabius.two_mul_pentagonalExponent`, `Fabius.pentagonalExponent_eq`, `Fabius.pentagonalExponent_pos`, `Fabius.hasSum_pentagonal`, `Fabius.hasSum_pentagonal_pairs` |
 | Finite `q`-Pochhammer residue-class dissections (exhaustive foundational API) | `QPochhammerDissection.lean` has no public definitions and exactly two public theorems.  Over every commutative ring and for arbitrary `a,q,r,n`, the exact-multiple identity sorts `(a;q)_(r*n)` into the `r` products `(a*q^s;q^r)_n`.  Under only `u ≤ r`, the remainder identity gives length `n+1` to residues `s<u` and length `n` to `u≤s<r`.  Both endpoint cases `u=0,r` are literal; no topology, convergence, division, cancellation, or nonvanishing hypothesis occurs. | `Fabius.finiteQPochhammerIn_dissection`, `Fabius.finiteQPochhammerIn_dissection_remainder` |
 | General infinite `q`-Pochhammer algebra, zeros, regularity, and simple-zero derivatives (exhaustive foundational API) | `QPochhammerInfinite.lean` defines the total `qPochhammerInfIn` in every topological commutative ring and exports exactly 29 theorems.  A complete commutative normed ring with `‖1‖=1` and `‖q‖<1` has multipliability, finite-prefix convergence, prefix/tail concatenation, first- and arbitrary-factor removal, and positive-modulus infinite dissection.  With a multiplicative norm, zeros are exactly the raw factors `a*q^j=1` and `(q;q)_∞≠0`.  In a complete normed field, `q≠0` gives the inverse-power parametrization; local compactness gives local uniformity and continuity in `a` for fixed `q`.  Over `ℂ` the function of `a` is entire; the module gives the derivative and its nonvanishing at every raw factor zero, analytic order one at every zero, and, under `q≠0`, its closed inverse-power value and coefficient nonvanishing.  It claims neither joint holomorphy in `q` nor global growth/order/type/asymptotics.  The separate five-theorem `QPochhammerEntire.lean` compatibility API covers `complexQPochhammerInf`, including its nonzero-nome reciprocal-power spelling; the unconditional bridge `complexQPochhammerInf_eq_qPochhammerInfIn` is canonically owned by `RvachevPochhammerFactorization`. | Definition: `Fabius.qPochhammerInfIn`.  Theorems: `Fabius.qPochhammerInfIn_eq_tprod`, `Fabius.summable_norm_mul_pow`, `Fabius.one_sub_ne_zero_of_norm_lt_one`, `Fabius.norm_mul_pow_self_lt_one`, `Fabius.finiteQPochhammerIn_self_ne_zero`, `Fabius.multipliable_one_sub_mul_pow_of_norm_lt_one`, `Fabius.hasProd_qPochhammerInfIn`, `Fabius.tendsto_finiteQPochhammerIn_qPochhammerInfIn`, `Fabius.qPochhammerInfIn_eq_finite_mul_shift`, `Fabius.qPochhammerInfIn_succ_shift`, `Fabius.qPochhammerInfIn_eq_factor_mul`, `Fabius.qPochhammerInfIn_dissection`, `Fabius.qPochhammerInfIn_ne_zero`, `Fabius.qPochhammerInfIn_eq_zero_iff`, `Fabius.qPochhammerInfIn_self_ne_zero`, `Fabius.qPochhammerInfIn_eq_tprod_smul`, `Fabius.summable_norm_pow_of_norm_lt_one`, `Fabius.isBigO_one_sub_sub_one`, `Fabius.differentiable_finiteQPochhammerIn`, `Fabius.qPochhammerInfIn_eq_zero_iff_exists_inv_pow`, `Fabius.hasProdLocallyUniformly_qPochhammerInfIn`, `Fabius.continuous_qPochhammerInfIn`, `Fabius.pow_sq_mul_finiteQPochhammerIn_inv_pow_self`, `Fabius.differentiable_qPochhammerInfIn`, `Fabius.hasDerivAt_qPochhammerInfIn_of_mul_pow_eq_one`, `Fabius.hasDerivAt_qPochhammerInfIn_inv_pow`, `Fabius.deriv_qPochhammerInfIn_inv_pow_ne_zero`, `Fabius.deriv_qPochhammerInfIn_ne_zero_of_mul_pow_eq_one`, `Fabius.analyticOrderAt_qPochhammerInfIn_of_eq_zero` |
-| Euler expansions and the infinite q-binomial theorem (exhaustive foundational API) | `QBinomialTheoremInfinite.lean` has one public definition and exactly 27 public theorems.  It retains its comparison, majorant, Tannery, Euler, and q-binomial API and adds the five effective fixed-column declarations named above. | Definition and exhaustive additions are given in the preceding q-binomial row. |
+| Euler expansions and the infinite q-binomial theorem (exhaustive foundational API) | `QBinomialTheoremInfinite.lean` has one public definition and exactly 29 public theorems.  It retains its comparison, majorant, Tannery, Euler, and q-binomial API together with the strengthened fixed-column declarations and compatibility aliases named above. | Definition and exhaustive additions are given in the preceding q-binomial row. |
 | Effective fixed-column Gaussian convergence (`thm:fixed-column-limit`; exhaustive companion API) | **Exact.** `GaussianBinomialFixedColumnRate.lean` has no public definitions and exactly nine public theorems after ownership transfer.  Its ring-level product-defect/denominator-free bounds and field-level fixed/shifted relative/additive estimates retain their hypotheses; the stronger fixed-shift limit is `QBinomialTheoremInfinite.tendsto_gaussianBinomial_add_const_atTop`. | `Fabius.norm_finiteQPochhammerIn_pow_sub_one_le_exp'`, `Fabius.norm_finiteQPochhammerIn_pow_sub_one_le`, `Fabius.norm_finiteQPochhammerIn_self_mul_gaussianBinomial_sub_one_le`, `Fabius.norm_gaussianBinomial_sub_inv_finiteQPochhammerIn_le`, `Fabius.norm_gaussianBinomial_add_sub_inv_finiteQPochhammerIn_le`, `Fabius.gaussianBinomial_fixedColumn_relativeError_isBigO`, `Fabius.gaussianBinomial_shifted_fixedColumn_relativeError_isBigO`, `Fabius.gaussianBinomial_fixedColumn_error_isBigO`, `Fabius.gaussianBinomial_shifted_fixedColumn_error_isBigO` |
 | Greater-than-one Gaussian asymptotics (`cor:qgreaterone`) | **Exact.** `GaussianBinomialGreaterOneAsymptotics.lean` has no public definitions and exactly two theorems.  For real `q` under exactly `1<q`, the fixed-column theorem controls `(q⁻¹;q⁻¹)_k * (q^(k*(n-k)))⁻¹ * [n,k]_q - 1` by `O((q⁻¹)^(n-k+1))`; natural subtraction is total and reciprocity is used only eventually when `k≤n`.  The central theorem gives `[2m,m]_q ~ q^(m*m) * (q⁻¹;q⁻¹)_∞⁻¹`.  Together with `Fabius.gaussianBinomial_inv`, these close the printed corollary without asserting a shifted-central or wider-domain result. | `Fabius.gaussianBinomial_gt_one_fixedColumn_relativeError_isBigO`, `Fabius.gaussianBinomial_gt_one_central_isEquivalent`; reused reciprocity: `Fabius.gaussianBinomial_inv` |
 | Jacobi triple product and Euler pentagonal theorem (exhaustive companion API) | `JacobiTripleProduct.lean` has two public definitions and exactly 25 public theorems.  The finite triple-product polynomial identity is ring-level and division-free; its Laurent form is field-level and assumes `z≠0`.  The bilateral Jacobi identities hold in every complete normed field for exactly `‖q‖<1` and `z≠0`; Euler's pentagonal theorem follows by the cubic-nome specialization and positive-modulus q-Pochhammer dissection.  No boundary `‖q‖=1`, `z=0` Laurent value, modular transformation, or theta-functional-equation theorem is asserted. | Definitions: `Fabius.thetaExponent`, `Fabius.pentagonalExponent`.  Theorems: `Fabius.two_dvd_mul_sub_one`, `Fabius.mul_sub_one_nonneg`, `Fabius.two_mul_thetaExponent`, `Fabius.thetaExponent_natCast`, `Fabius.thetaExponent_neg_natCast`, `Fabius.choose_two_add_choose_two_succ_eq`, `Fabius.sum_mul_sum_eq_sum_antidiagonal`, `Fabius.thetaCoeff_pair_eq`, `Fabius.sum_antidiagonal_thetaCoeff`, `Fabius.finite_triple_product_poly`, `Fabius.pow_mul_finiteQPochhammerIn_div`, `Fabius.neg_one_zpow_natCast_sub`, `Fabius.finite_triple_product`, `Fabius.norm_gaussianBinomialInt_le`, `Fabius.tendsto_gaussianBinomialInt_central`, `Fabius.summable_pow_thetaExponent_mul_zpow`, `Fabius.hasSum_jacobi_triple_product`, `Fabius.hasSum_jacobi_triple_product'`, `Fabius.mul_three_mul_sub_one_nonneg`, `Fabius.two_dvd_mul_three_mul_sub_one`, `Fabius.two_mul_pentagonalExponent`, `Fabius.pentagonalExponent_eq`, `Fabius.pentagonalExponent_pos`, `Fabius.hasSum_pentagonal`, `Fabius.hasSum_pentagonal_pairs` |
@@ -631,7 +927,7 @@ prefixes on the real frequency line and uniform convergence on its compact sets.
 | Generic complete-Bell and moment--cumulant algebra (reusable infrastructure beyond the two source papers) | Proved over every commutative `ℚ`-algebra. Factorial normalization conjugates the ordinary `expCoeff` and `logCoeff` recurrences into named complete-Bell and moment--cumulant transforms, with the classical Bell recurrence, normalized all-index inverse laws, and functoriality under algebra morphisms. This is formal coefficient algebra; no probabilistic interpretation or hierarchy-specific cumulant formula is claimed. | `Fabius.factorialNormalize`, `Fabius.factorialDenormalize`, `Fabius.completeBellPolynomial`, `Fabius.momentCumulant`, `Fabius.completeBellPolynomial_succ`, `Fabius.completeBellPolynomial_momentCumulant`, `Fabius.momentCumulant_completeBellPolynomial`, `Fabius.map_completeBellPolynomial`, `Fabius.map_momentCumulant` |
 | Division-free Bell-polynomial inversion and binomial convolution (exhaustive companion API) | The shift is structure-free, while the unit sequence needs only `[Zero R] [One R]`.  The convolution definition, its finite-sum formula, two distributivity laws, Pascal/product rules, and associativity hold over every `[Semiring R]`; right cancellation additionally assumes `[IsLeftCancelAdd R]`, `IsUnit (w 0)`, and coefficientwise equality against the fixed right factor `w`.  Commutativity and the complete-Bell definition, recurrence/uniqueness, shift law, addition law, and degree-one-through-three formulas use `[CommSemiring R]`; `κ 0` is unconstrained, and recurrence uniqueness assumes exactly `a 0 = 1` and `a (n+1) = binomialConv a (shift κ) n`.  The cumulant definition, its zero/successor laws, and its first three formulas are unconditional over `[CommRing R]`; `binomialConv_cumulant_shift` and `complete_cumulant` assume `m 0 = 1`, while `eq_cumulant_of_complete` assumes exactly `κ 0 = 0` and `complete κ = m`.  Thus the inversion includes positive characteristic and the zero ring and uses no factorial division.  This is finite formal coefficient algebra only: it supplies no analytic exponential generating function, convergence, probability law, or Fabius-function specialization. | Structure-free/unit layer: `Bell.shift`, `Bell.shift_apply`, `Bell.unitSeq`, `Bell.unitSeq_zero`, `Bell.unitSeq_succ`.  Semiring layer: `Bell.binomialConv`, `Bell.binomialConv_eq_sum_range`, `Bell.binomialConv_add_left`, `Bell.binomialConv_add_right`, `Bell.binomialConv_succ`, `Bell.shift_binomialConv`, `Bell.binomialConv_assoc`, `Bell.binomialConv_right_cancel`.  Commutative-semiring layer: `Bell.binomialConv_comm`, `Bell.complete`, `Bell.complete_zero`, `Bell.complete_succ`, `Bell.eq_complete_of_recurrence`, `Bell.shift_complete`, `Bell.complete_add`, `Bell.complete_one`, `Bell.complete_two`, `Bell.complete_three`.  Commutative-ring layer: `Bell.cumulant`, `Bell.cumulant_zero`, `Bell.cumulant_succ`, `Bell.binomialConv_cumulant_shift`, `Bell.complete_cumulant`, `Bell.eq_cumulant_of_complete`, `Bell.cumulant_one`, `Bell.cumulant_two`, `Bell.cumulant_three`. |
 | Generic Appell sequences, affine transport, and weighted-binomial inversion (exhaustive companion API) | `AppellSequence.lean` is 3+34.  Its arbitrary-sequence polynomial, degree, derivative, evaluation, affine, and reciprocal-moment APIs remain over the stated commutative-semiring hypotheses.  The +11 translation extension makes `thm:merged-weighted-binomial-translation` **Exact** over a commutative semiring (left cancellation only for injectivity) and `cor:merged-weighted-binomial-inversion` **Exact** over a commutative ring.  These are finite coefficient identities, not analytic EGF claims. | Bell theorems: `Bell.binomialConv_map`, `Bell.binomialConv_unitSeq`, `Bell.binomialConv_pow`, `Bell.binomialConv_four_swap`, `Bell.binomialConv_pow_mul`. Appell definitions: `Appell.poly`, `Appell.translate`, `Appell.dilate`. Appell theorems: `Appell.poly_eq_binomialConv`, `Appell.coeff_poly`, `Appell.coeff_poly_self`, `Appell.poly_zero`, `Appell.poly_one`, `Appell.natDegree_poly_le`, `Appell.monic_poly`, `Appell.natDegree_poly`, `Appell.derivative_poly`, `Appell.derivative_poly_nsmul`, `Appell.eval_poly`, `Appell.eval_poly_eq_sum`, `Appell.poly_comp`, `Appell.translate_eq_binomialConv_pow`, `Appell.translate_eq_sum`, `Appell.translate_zero`, `Appell.poly_translate`, `Appell.translate_translate`, `Appell.binomialConv_translate`, `Appell.translate_injective`, `Appell.poly_dilate_comp`, `Appell.poly_affine`, `Appell.binomialConv_eval_poly`, `Appell.sum_choose_eval_poly`, `Appell.translate_neg_translate`, `Appell.translate_translate_neg`, `Appell.translate_eq_iff`, `Appell.weighted_binomial_inversion_iff`, `Appell.binomialConv_translate_neg_translate` |
-| Formal power recurrence (`alg:merged-exp-log-power`) | **Exact.** `UnitSeriesPowerRecurrence.lean` is 0+3.  The general denominator-free recurrence works over every commutative ring without assuming `F(0)=1`; its falling-factorial formal-power specialization uses a commutative rational algebra and `F(0)=1`.  No analytic power or branch is asserted.  The coefficient-calculus register is 63 Lean, 32 Partial, 109 None, 204 total. | `Fabius.coeff_recurrence_of_mul_derivative_eq`, `Fabius.mul_derivative_fallingSeries_subst_sub_one`, `Fabius.coeff_fallingSeries_subst_sub_one_recurrence` |
+| Formal power recurrence (`alg:merged-exp-log-power`) | **Exact.** `UnitSeriesPowerRecurrence.lean` is 0+3.  The general denominator-free recurrence works over every commutative ring without assuming `F(0)=1`; its falling-factorial formal-power specialization uses a commutative rational algebra and `F(0)=1`.  No analytic power or branch is asserted.  The preceding 204-row coefficient-calculus register was 63 Lean, 32 Partial, and 109 None; the current 207-row register is 65 Lean, 35 Partial, and 107 None. | `Fabius.coeff_recurrence_of_mul_derivative_eq`, `Fabius.mul_derivative_fallingSeries_subst_sub_one`, `Fabius.coeff_fallingSeries_subst_sub_one_recurrence` |
 | Reciprocal exponential-generating coefficient sequences and the rational-algebra dictionary (exhaustive companion API) | The two-sided unit laws and `complete 0 = unitSeq` hold over every `[CommSemiring R]`.  Over `[CommRing R]`, negated complete-Bell families invert one another and `Bell.reciprocal m := Bell.complete (-Bell.cumulant m)` is defined for every `m`; its normalization, cumulant-negation identity, and first three coefficients need no hypothesis on `m`.  The actual left/right inverse laws, uniqueness, backward recursion, and involution assume exactly `m 0 = 1` (uniqueness also assumes `binomialConv m b = unitSeq R`).  Only the four dictionary declarations require `[Algebra ℚ R]` in addition to `[CommRing R]`: `completeBellPolynomial_eq_complete` is unconditional, while each of the other three assumes that the displayed sequence has zeroth coefficient one.  The `Fabius` namespace there is a generic notation bridge, not a specialization to the Fabius function.  No analytic reciprocal, radius of convergence, limit, probability interpretation, or Fabius-specific coefficient formula is asserted. | Commutative-semiring unit layer: `Bell.binomialConv_unitSeq_right`, `Bell.binomialConv_unitSeq_left`, `Bell.complete_zero_eq_unitSeq`.  Commutative-ring reciprocal layer: `Bell.binomialConv_complete_neg`, `Bell.reciprocal`, `Bell.reciprocal_eq_complete_neg_cumulant`, `Bell.reciprocal_zero`, `Bell.binomialConv_reciprocal`, `Bell.binomialConv_reciprocal_left`, `Bell.eq_reciprocal_of_binomialConv`, `Bell.reciprocal_succ`, `Bell.cumulant_reciprocal`, `Bell.reciprocal_reciprocal`, `Bell.reciprocal_one`, `Bell.reciprocal_two`, `Bell.reciprocal_three`.  Commutative-`ℚ`-algebra dictionary: `Fabius.completeBellPolynomial_eq_complete`, `Fabius.momentCumulant_eq_cumulant`, `Fabius.reciprocal_eq_completeBellPolynomial`, `Fabius.binomialConv_completeBellPolynomial_neg_momentCumulant`. |
 | Rvachev raw moments, reciprocal-moment Appell polynomials, and triangular injective polynomial deconvolution | In the current compiled tree, `RvachevMomentAppell` has six public definitions and thirty-three public theorems.  It constructs the full rational raw-moment sequence (the executable even moments and zero odd moments), its formal binomial-convolution reciprocal and complete-Bell description, rational and real monic Appell polynomials of exact degree, and coefficientwise deconvolution as a real linear map.  Deconvolution preserves zero, addition, scalar multiplication, finite sums, and multiplication by a constant polynomial; it sends a monomial and `X^n` to the correspondingly scaled and unscaled Rvachev--Appell polynomial.  It preserves the original top coefficient, exact natural degree, and leading coefficient, has trivial kernel, and is injective both as a linear map and as the underlying operation.  For every bounded Fabius solution, the raw moments cast to the analytic integrals, smoothing the `n`-th Appell polynomial recovers `x^n`, and smoothing the deconvolution of any real polynomial recovers that polynomial.  Reflection invariance of the even density gives the centered `x-y` counterparts `Fabius.integral_eval_rvachevDeconvolvedPolynomial_sub_mul_rvachev` and `Fabius.integral_eval_rvachevAppellPolynomial_sub_mul_rvachev`; `Fabius.integral_eval_rvachevAppellPolynomial_mul_rvachev_eq_zero` says that every positive-degree Appell polynomial has Rvachev mean zero.  The module does not prove an analytic reciprocal-MGF or Appell generating-series identity, a literal differential-operator expansion, reciprocal/deconvolution parity, or the displayed low reciprocal coefficients. | Definitions: `Fabius.rvachevRawMomentRat`, `Fabius.rvachevReciprocalMomentRat`, `Fabius.rvachevAppellPolynomialRat`, `Fabius.rvachevAppellPolynomial`, `Fabius.rvachevDeconvolvedPolynomial`, `Fabius.rvachevDeconvolutionLinearMap`.  Theorems: `Fabius.rvachevRawMomentRat_zero`, `Fabius.rvachevRawMomentRat_even`, `Fabius.rvachevRawMomentRat_odd`, `Fabius.rvachevReciprocalMomentRat_zero`, `Fabius.binomialConv_rvachevRawMomentRat_reciprocal`, `Fabius.rvachevReciprocalMomentRat_eq_completeBellPolynomial`, `Fabius.monic_rvachevAppellPolynomialRat`, `Fabius.natDegree_rvachevAppellPolynomialRat`, `Fabius.rvachevAppellPolynomial_eq_poly_cast`, `Fabius.monic_rvachevAppellPolynomial`, `Fabius.natDegree_rvachevAppellPolynomial`, `Fabius.eval_rvachevAppellPolynomial_add`, `Fabius.integral_pow_mul_rvachev_eq_rvachevRawMomentRat_cast`, `Fabius.integral_eval_rvachevAppellPolynomial_add_mul_rvachev`, `Fabius.rvachevDeconvolutionLinearMap_apply`, `Fabius.rvachevDeconvolvedPolynomial_zero`, `Fabius.rvachevDeconvolvedPolynomial_add`, `Fabius.rvachevDeconvolvedPolynomial_smul`, `Fabius.rvachevDeconvolvedPolynomial_finsetSum`, `Fabius.rvachevDeconvolvedPolynomial_C_mul`, `Fabius.rvachevDeconvolvedPolynomial_monomial`, `Fabius.rvachevDeconvolvedPolynomial_X_pow`, `Fabius.coeff_rvachevDeconvolvedPolynomial_natDegree`, `Fabius.natDegree_rvachevDeconvolvedPolynomial_le`, `Fabius.natDegree_rvachevDeconvolvedPolynomial`, `Fabius.leadingCoeff_rvachevDeconvolvedPolynomial`, `Fabius.rvachevDeconvolvedPolynomial_eq_zero_iff`, `Fabius.rvachevDeconvolutionLinearMap_injective`, `Fabius.rvachevDeconvolvedPolynomial_injective`, `Fabius.integral_eval_rvachevDeconvolvedPolynomial_add_mul_rvachev`, `Fabius.integral_eval_rvachevDeconvolvedPolynomial_sub_mul_rvachev`, `Fabius.integral_eval_rvachevAppellPolynomial_sub_mul_rvachev`, `Fabius.integral_eval_rvachevAppellPolynomial_mul_rvachev_eq_zero` |
 | Nonmonic Hensel lifting and formal implicit roots (reusable foundation) | In an `I`-adically complete commutative ring, any polynomial---not assumed monic---with an approximate root modulo `I` and derivative a unit modulo `I` has a unique exact root in that residue class.  For every commutative ring `R`, if `constantCoeff (P.eval S₀) = 0` and `constantCoeff (P.derivative.eval S₀)` is a unit, the specialization to `R⟦X⟧` gives a unique root with scalar constant coefficient `constantCoeff S₀`; in particular, a polynomial whose parameter-constant constant coefficient vanishes and whose parameter-constant linear coefficient is a unit has a distinguished unique zero-constant formal root.  No field, domain, characteristic-zero, Noetherian, finite-generation, degree, monicity, or analytic-convergence hypothesis is used.  This module does not define or instantiate the dyadic Fabius jet polynomials, prove a coefficient recursion or analytic realization, enter a finite-prefix plateau, identify a flat defect, or prove an inverse/quantile result. | `FormalImplicitRoot.exists_isRoot_sub_mem`, `FormalImplicitRoot.eq_of_isRoot_of_sub_mem`, `FormalImplicitRoot.existsUnique_isRoot_sub_mem`, `PowerSeries.Implicit.existsUnique_isRoot_constantCoeff`, `PowerSeries.Implicit.existsUnique_zeroConstant_root`, `PowerSeries.Implicit.root`, `PowerSeries.Implicit.constantCoeff_root`, `PowerSeries.Implicit.eval_root`, `PowerSeries.Implicit.eq_root` |
@@ -659,8 +955,9 @@ prefixes on the real frequency line and uniform convergence on its compact sets.
 | Regular central q-binomial sum (`thm:regular-central-sum`) | **Exact.**  `RegularCentralQBinomialSum.lean` has exactly two definitions and one theorem.  For real `0<q<1` and complex `alpha`, it proves the displayed series as an actual `HasSum` to `qGammaC (q^2) (3/2) * qGammaC (q^2) ((alpha+1)/2) / qGammaC (q^2) ((alpha+2)/2)`, under exactly `qPochhammerInfIn (q^(alpha+1)) (q^2) ≠ 0`.  This condition is the simultaneous nonvanishing condition for the generalized q-numbers in the summand.  It includes even negative integral `alpha`, where the totalized q-Gamma quotient and its product form vanish.  No classical `q→1⁻` limit or classical hypergeometric corollary is asserted. | `Fabius.qNumberC`, `Fabius.regularCentralQBinomialTerm`, `Fabius.hasSum_regularCentralQBinomial` |
 | Cyclotomic q-factorizations | `CyclotomicFactorization.lean` has no definitions and exactly seven theorems: the two floor-quotient bounds, the divisor-index exchange, the commutative-ring factorization of `(X;X)_n`, its Gaussian factorial bridge, interval-product extension, and the exact Gaussian cyclotomic product over an integral domain. | `Fabius.div_add_div_le_div`, `Fabius.div_le_div_add_div_add_one`, `Fabius.mem_range_and_mem_divisors_iff`, `Fabius.finiteQPochhammerIn_X_eq_prod_cyclotomic`, `Fabius.finiteQPochhammerIn_X_eq_gaussianBinomial_mul`, `Fabius.prod_cyclotomic_pow_div_extend`, `Fabius.gaussianBinomial_X_eq_prod_cyclotomic` |
 | Jacobi triple product and Euler pentagonal theorem | `JacobiTripleProduct.lean` retains its 2-definition/25-theorem inventory, from the integer theta-exponent arithmetic and finite triple-product identities through the bilateral Jacobi `HasSum` forms and the pentagonal and paired-pentagonal `HasSum` corollaries. | Key terminal results: `Fabius.finite_triple_product_poly`, `Fabius.finite_triple_product`, `Fabius.hasSum_jacobi_triple_product`, `Fabius.hasSum_jacobi_triple_product'`, `Fabius.hasSum_pentagonal`, `Fabius.hasSum_pentagonal_pairs` |
-| Infinite q-binomial and reciprocal Euler sums | `QBinomialTheoremInfinite.lean` now has a 1-definition/27-theorem q-facing inventory: the retained comparison, positivity, uniform Gaussian, Euler-product, q-binomial, and reciprocal-Euler results plus the five effective fixed-column names recorded in the foundational row. | Key terminal results: `Fabius.tendsto_gaussianBinomial_atTop`, `Fabius.tendsto_gaussianBinomial_add_const_atTop`, `Fabius.isBigO_gaussianBinomial_sub_inv`, `Fabius.isBigO_gaussianBinomial_add_sub_inv`, `Fabius.hasSum_euler_product`, `Fabius.hasSum_qBinomial_theorem`, `Fabius.hasSum_euler_reciprocal` |
+| Infinite q-binomial and reciprocal Euler sums | `QBinomialTheoremInfinite.lean` now has a 1-definition/29-theorem q-facing inventory: the retained comparison, positivity, uniform Gaussian, Euler-product, q-binomial, and reciprocal-Euler results plus the five effective fixed-column names recorded in the foundational row. | Key terminal results: `Fabius.tendsto_gaussianBinomial_atTop`, `Fabius.tendsto_gaussianBinomial_add_const_atTop`, `Fabius.isBigO_gaussianBinomial_sub_inv`, `Fabius.isBigO_gaussianBinomial_add_sub_inv`, `Fabius.hasSum_euler_product`, `Fabius.hasSum_qBinomial_theorem`, `Fabius.hasSum_euler_reciprocal` |
 | Effective fixed-column Gaussian limit and geometric rates (`thm:fixed-column-limit`) | **Exact.**  `GaussianBinomialFixedColumnRate.lean` is now 0+9 after the unprimed exponential bound and shifted-limit ownership move to `QBinomialTheoremInfinite`.  Its ring and field hypotheses and fixed/shifted relative/additive rate conclusions are unchanged. | `Fabius.norm_finiteQPochhammerIn_pow_sub_one_le_exp'`, `Fabius.norm_finiteQPochhammerIn_pow_sub_one_le`, `Fabius.norm_finiteQPochhammerIn_self_mul_gaussianBinomial_sub_one_le`, `Fabius.norm_gaussianBinomial_sub_inv_finiteQPochhammerIn_le`, `Fabius.norm_gaussianBinomial_add_sub_inv_finiteQPochhammerIn_le`, `Fabius.gaussianBinomial_fixedColumn_relativeError_isBigO`, `Fabius.gaussianBinomial_shifted_fixedColumn_relativeError_isBigO`, `Fabius.gaussianBinomial_fixedColumn_error_isBigO`, `Fabius.gaussianBinomial_shifted_fixedColumn_error_isBigO` |
+| Gaussian-binomial asymptotics for real `q > 1` (`cor:qgreaterone`) | `GaussianBinomialGreaterOneAsymptotics.lean` is 0+2 and gives an **Exact** counterpart.  For exactly `1<q`, it proves the fixed-column relative `IsBigO` estimate and the central asymptotic equivalence; no shifted-central formula or wider nome domain is claimed. | `Fabius.gaussianBinomial_gt_one_fixedColumn_relativeError_isBigO`, `Fabius.gaussianBinomial_gt_one_central_isEquivalent`; reused reciprocity: `Fabius.gaussianBinomial_inv` |
 | Weighted q-Pascal summation | `QPascalSummation.lean` retains its complete 0+4 theorem inventory over the stated semiring and commutation hypotheses. | `Fabius.sum_gaussianBinomial_succ_mul`, `Fabius.sum_gaussianBinomial_succ_mul'`, `Commute.gaussianBinomial_left`, `Commute.gaussianBinomial_right` |
 | Quantum-plane binomial theorem | `QuantumBinomial.lean` retains its complete 0+2 theorem inventory for q-commuting variables in an associative algebra. | `Fabius.quantumPlane_mul_pow`, `Fabius.quantum_binomial` |
 | Rogers--Szegő polynomial recurrences and generating function | `RogersSzegoPolynomial.lean` retains its 1-definition/9-theorem inventory: zero, row-sum, successor, dilation, and three-term laws; the Gaussian successor-factor identity; the required summability and Euler antidiagonal convolution; and the generating `HasSum`. | `Fabius.rogersSzego_zero`, `Fabius.rogersSzego_one`, `Fabius.rogersSzego_succ`, `Fabius.one_sub_pow_succ_mul_gaussianBinomial_succ_succ`, `Fabius.rogersSzego_dilation`, `Fabius.rogersSzego_three_term`, `Fabius.summable_norm_pow_div_finiteQPochhammerIn_self`, `Fabius.sum_antidiagonal_euler_mul_euler`, `Fabius.hasSum_rogersSzego_generating` |
@@ -684,7 +981,7 @@ The q-series union above retains the exhaustive `QPochhammerEntire` 0+5,
 `PrimitiveRootBlock` 0+3, `QLucas` 0+7,
 `CyclotomicDivisibility` 0+3, `QCatalan` 1+11,
 `JacobiTripleProduct` 2+25,
-`QBinomialTheoremInfinite` 1+27, `GaussianBinomialFixedColumnRate` 0+9,
+`QBinomialTheoremInfinite` 1+29, `GaussianBinomialFixedColumnRate` 0+9,
 `GaussianBinomialGreaterOneAsymptotics` 0+2,
 `QPascalSummation` 0+4,
 `QuantumBinomial` 0+2, `RogersSzegoPolynomial` 1+9,
