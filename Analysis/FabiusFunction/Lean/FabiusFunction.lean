@@ -285,6 +285,7 @@ import FabiusFunction.DyadicBoundaryIdentity
 import FabiusFunction.AliasDyadicBridge
 import FabiusFunction.AliasQBinomialBridge
 import FabiusFunction.MeanValueBracket
+import FabiusFunction.TransseriesHeight
 import FabiusFunction.LambertShiftInverse
 import FabiusFunction.LambertInverseCoefficients
 import FabiusFunction.CyclicCharacterSums
