@@ -835,8 +835,7 @@ Thus `is:p3:cor:forced-superconvergence` and
 concordance. This source postdates the retained Representation and inverse
 PDFs, which remain historical artifacts rather than renders of the promotion.
 The corresponding historical documentation checkpoint was 671 modules and
-8,858 public declarations. The later live repository census is 921 modules
-and 11,575 public declarations; the q forward ledger is 178 Exact / 81 Partial /
+8,858 public declarations. The q forward ledger is 178 Exact / 81 Partial /
 15 None / 8 N/A, with chapter splits 9/0/0/0 for Half-base and 9/46/1/0 for
 Dyadic, while the source concordance is 91/387/60/9. The merged-main
 increment to 919/11,569 is the exhaustive zero-definition/one-theorem sibling
@@ -846,7 +845,21 @@ at every rational dyadic root `2^j`, `j < n`. Together with the existing
 complete root classification, this makes `cor:halfbase-root-locus` Exact; it
 makes no arbitrary-base or arbitrary-field claim, and
 `cor:qbinom-inversion-law` remains Partial. The census also includes the
-unrelated sibling source-only
+exterior and sharp-degree siblings detailed below, which give 920/11,572 and
+the historical sharp checkpoint 921/11,575. The later source union adds the one-definition/
+six-theorem `FabiusFunction.RvachevLaurentLeading` module, which makes
+`is:p2:thm:Laurent-leading` exact through a punctured pole limit without
+claiming lower Laurent coefficients, and the eleven-definition/
+seventeen-theorem `FabiusFunction.FinitePrefixAppellRecovery` module, which
+makes `is:p2:thm:finite-prefix-expansion` and
+`is:p2:thm:exact-recovery` exact for all starting depths, including zero, at
+bases `1/2` and `1/4`. The prefix module's exact degrees are symbolic outer
+degrees in `Polynomial (Polynomial ℚ)`; a fixed-inner-variable centered
+degree can drop, and its algebraic finite-convolution moments are not a
+random-variable or MGF realization. The Laurent leaf gives checkpoint
+922/11,582, and the finite-prefix leaf gives the live repository census 923
+modules and 11,610 public declarations. The census also includes the unrelated
+sibling source-only
 `FabiusFunction.GeometricRichardsonGenerating` module (three definitions and
 seven theorems), whose exact comb-manuscript crosswalk is
 `Fabius.geometricLagrangeRichardson_generating`. It also includes the
@@ -937,8 +950,9 @@ and degree `T_n` for even `n` or `n = 1`, versus `T_n - 1` otherwise.
 Mathlib uses `B₁ = -1/2`, so its `bernoulli' n` is the source convention
 `B_n(1) = (-1)^n B_n`. This sharp `0+3` leaf makes `p7:thm:Pn` and
 `prop:qF-P-degree-sharp` Exact while leaving the global
-`thm:qF-moment-polynomial` Partial, and raises the live census to 921 modules
-and 11,575 public declarations. These sibling source-only modules are
+`thm:qF-moment-polynomial` Partial, and raises the historical sharp checkpoint
+to 921 modules and 11,575 public declarations. The Laurent and finite-prefix
+leaves then give 922/11,582 and the live 923/11,610 census. These sibling source-only modules are
 not rendered by the retained Representation or inverse PDFs. The immediately
 preceding complex Bernoulli value-completion checkpoint was 903 modules and
 11,448 public declarations. The earlier

@@ -123,9 +123,10 @@ surface zero definitions and one theorem,
 `Fabius.geometricUniformMomentPolynomial_eval₂_eq_mgf_taylorCoefficient`.
 For every real `|q| < 1`, it supplies the actual-MGF normalization and makes
 external source label `p7:eq:Pn-def` Exact in that real regime.  It constructs
-no complex-q infinite product by itself, and the leading-coefficient and
-strict odd-degree clauses remain absent; therefore the compound `p7:thm:Pn`
-remains Partial.  This bridge produced the historical checkpoint 905 modules
+no complex-q infinite product by itself.  At this bridge checkpoint the
+leading-coefficient and strict odd-degree clauses were still absent, so the
+compound `p7:thm:Pn` was then Partial; the later sharp-degree sibling below
+makes it Exact.  This bridge produced the historical checkpoint 905 modules
 and 11,458 public declarations.  The subsequent sibling
 `FabiusFunction.GeometricUniformComplexMomentProduct` has the exhaustive
 surface one public definition and two public theorems:
@@ -139,6 +140,11 @@ not extend the probability-moment reading of `p7:eq:Pn-def` beyond real
 Partial because the global `RatFunc` identification and its pole-clearing
 polynomial continuation at roots are absent.  This exhaustive `1+2` leaf
 produced the historical checkpoint 906 modules and 11,461 public declarations.
+The zero-definition/one-theorem
+`FabiusFunction.HalfQBinomialRootSimplicity` sibling exposes
+`Fabius.halfQBinomial_sum_rootMultiplicity_two_pow`; composed with the
+existing rational root classifier, it makes `cor:halfbase-root-locus` Exact
+without an arbitrary-base or arbitrary-field claim.
 The subsequent sibling
 `FabiusFunction.GeometricUniformExteriorComplexMomentGerm` also has the
 exhaustive surface one public definition and two public theorems:
@@ -147,9 +153,35 @@ exhaustive surface one public definition and two public theorems:
 `Fabius.geometricUniformMomentPolynomial_eval₂_eq_exteriorComplexMomentGerm_taylorCoefficient`.
 For complex `1 < ‖q‖` it supplies the actual reciprocal germ, analyticity at
 the origin, and its normalized Taylor-coefficient bridge.  It makes no unit-
-circle or global rational-function claim and raises the live documentation
-census to 907 modules and 11,464 public declarations.  All four sibling
-source-only additions are likewise absent
+circle or global rational-function claim.  The exhaustive zero-definition/
+three-theorem `FabiusFunction.GeometricUniformMomentPolynomialDegree` sibling
+consists of `Fabius.coeff_geometricUniformMomentPolynomial_choose_two`,
+`Fabius.coeff_geometricUniformMomentPolynomial_choose_two_sub_one`, and
+`Fabius.geometricUniformMomentPolynomial_natDegree_eq`.  It proves the exact
+top and subleading Bernoulli coefficients and the parity-sensitive degree,
+making `p7:thm:Pn` and `prop:qF-P-degree-sharp` Exact while leaving
+`thm:qF-moment-polynomial` Partial at the global `RatFunc` boundary.
+
+The later germ-related addition
+`FabiusFunction.RvachevLaurentLeading` has one definition and six theorems and
+makes `is:p2:thm:Laurent-leading` exact through the manuscript-normalized
+punctured-neighborhood limit and its coordinate, odd-core, nonvanishing,
+cofactor, and general-pole companions.  Puncturing is essential because Lean
+totalizes inversion at a pole; no lower Laurent coefficient is claimed.  The
+eleven-definition/seventeen-theorem
+`FabiusFunction.FinitePrefixAppellRecovery` sibling makes
+`is:p2:thm:finite-prefix-expansion` and `is:p2:thm:exact-recovery` Exact for
+every starting depth, including zero, at bases `1/2` and `1/4`.  Its exact
+degrees are outer degrees in `Polynomial (Polynomial ℚ)` and may drop after a
+fixed-inner-variable specialization; its finite-convolution moments are not a
+random-variable or analytic-MGF realization.
+
+In the merged chronology the sharp leaf gave the historical 921/11,575
+checkpoint, `RvachevLaurentLeading` gave 922/11,582, and
+`FinitePrefixAppellRecovery` gives the live 923/11,610 census.  The q ledger is
+178 Exact / 81 Partial / 15 None / 8 interface, and the source concordance is
+91 Lean-proved / 387 human-proved frontier / 60 non-applicable / 9 conjectures.
+All of these sibling source-only additions are likewise absent
 from the retained historical PDFs.
 
 The exact raw second-order package is `LambertWCurvature.lean`.  Its

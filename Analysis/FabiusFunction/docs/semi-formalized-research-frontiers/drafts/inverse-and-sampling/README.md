@@ -135,10 +135,10 @@ the canonical rational polynomial: its simple-root theorem composes with the
 existing rational zero classifier and Gaussian/half-q coefficient identity.
 Injective scalar extension preserves the multiplicities, but this does not
 classify every root over every extension field. The q forward ledger is now
-177 Exact / 81 Partial / 16 None / 8 interface rows, and its source
-concordance is 90 Lean-proved / 388 human-proved frontier / 60 non-applicable /
-9 conjectures. After these three compiled
-tranches the live Lean documentation census is 921 modules and 11,604 public
+178 Exact / 81 Partial / 15 None / 8 interface rows, and its source
+concordance is 91 Lean-proved / 387 human-proved frontier / 60 non-applicable /
+9 conjectures. After these compiled
+tranches the live Lean documentation census is 923 modules and 11,610 public
 declarations with no gaps. The retired source layouts remain immutable
 provenance only; the source is newer than the retained historical PDF.
 
