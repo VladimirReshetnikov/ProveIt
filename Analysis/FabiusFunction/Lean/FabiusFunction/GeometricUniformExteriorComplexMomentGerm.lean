@@ -80,29 +80,6 @@ private theorem exterior_iteratedDeriv_complexExpm1Div_zero (n : ℕ) :
   field_simp [hnfac] at hcoeff ⊢
   simpa [mul_comm] using hcoeff.symm
 
-private theorem exterior_summable_norm_complex_qpow
-    (q : ℂ) (hq : ‖q‖ < 1) :
-    Summable fun n : ℕ ↦ ‖q ^ n‖ := by
-  simpa only [norm_pow] using
-    summable_geometric_of_lt_one (norm_nonneg q) hq
-
-private theorem exterior_summable_norm_momentScale
-    (q : ℂ) (hq : ‖q‖ < 1) :
-    Summable fun n : ℕ ↦ ‖(1 - q) * q ^ n‖ := by
-  simpa only [norm_mul] using
-    (exterior_summable_norm_complex_qpow q hq).mul_left ‖1 - q‖
-
-private theorem geometricUniformComplexMomentProduct_differentiable_of_norm_lt_one
-    {q : ℂ} (hq : ‖q‖ < 1) :
-    Differentiable ℂ (geometricUniformComplexMomentProduct q) := by
-  change Differentiable ℂ
-    (fun z ↦ ∏' j : ℕ, complexExpm1Div (((1 - q) * q ^ j) * z))
-  simpa only [smul_eq_mul] using
-    differentiable_tprod_scaled_of_eq_one complexExpm1Div
-      (fun j : ℕ ↦ (1 - q) * q ^ j)
-      (exterior_summable_norm_momentScale q hq)
-      exterior_complexExpm1Div_differentiable complexExpm1Div_zero
-
 /-- The exterior reciprocal complex moment germ.
 
 For `1 < ‖q‖`, the parameter `q⁻¹` is a strict contraction, and reindexing
@@ -125,7 +102,7 @@ theorem analyticAt_geometricUniformExteriorComplexMomentGerm
     exact Or.inr hq
   have hdiff : Differentiable ℂ
       (fun z ↦ geometricUniformComplexMomentProduct q⁻¹ (-z)) :=
-    (geometricUniformComplexMomentProduct_differentiable_of_norm_lt_one hqi).comp
+    (differentiable_geometricUniformComplexMomentProduct hqi).comp
       (by fun_prop)
   have hzero : geometricUniformComplexMomentProduct q⁻¹ (-(0 : ℂ)) ≠ 0 := by
     simp [geometricUniformComplexMomentProduct]
@@ -171,7 +148,7 @@ private theorem normalized_exteriorComplexMomentGerm_recurrence
   let M : ℂ → ℂ := geometricUniformExteriorComplexMomentGerm q
   let L : ℂ → ℂ := fun z ↦ complexExpm1Div ((r - 1) * z)
   have hDdiff : Differentiable ℂ D := by
-    exact (geometricUniformComplexMomentProduct_differentiable_of_norm_lt_one hr).comp
+    exact (differentiable_geometricUniformComplexMomentProduct hr).comp
       (by fun_prop)
   have hDzero : D 0 = 1 := by
     simp [D, geometricUniformComplexMomentProduct]
