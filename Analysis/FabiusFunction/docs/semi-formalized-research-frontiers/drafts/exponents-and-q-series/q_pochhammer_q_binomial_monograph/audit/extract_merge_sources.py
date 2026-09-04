@@ -379,6 +379,7 @@ CURRENT_Q_STATUS_OVERRIDES = {
     "cor:partition-symmetries": "Lean-proved",
     "cor:thue-morse-prouhet-partition": "Lean-proved",
     "thm:geometric-uniform-basic": "Lean-proved",
+    "thm:qF-reciprocity": "Lean-proved",
     "prop:up-tail": "Lean-proved",
     "cor:up-moments": "Lean-proved",
     "thm:regular-central-sum": "Lean-proved",
