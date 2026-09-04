@@ -306,6 +306,7 @@ import FabiusFunction.FrullaniIntegral
 import FabiusFunction.ReciprocalGammaJets
 import FabiusFunction.ThueMorseGDirichlet
 import FabiusFunction.ThueMorseGammaTower
+import FabiusFunction.ThueMorseGammaTowerDifferential
 import FabiusFunction.ThueMorseQuarterProduct
 import FabiusFunction.ThueMorseDiscSeries
 import FabiusFunction.ThueMorseNaturalBoundary
