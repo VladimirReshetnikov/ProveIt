@@ -241,10 +241,10 @@ in it must have a proved counterpart in the Lean development.
 > finite/infinite q-Pochhammer material, as well as the fixed-depth effective
 > inverse realizer, total inverse computability theorem, sharp exact
 > endpoint-mass denominator, and actual Lambert branch-gap Bernoulli series.
-> These retained PDFs
-> are historical receipts, not source/PDF-parity claims; fresh uninterrupted three-pass
-> Libertinus rebuilds remain pending.  The reorganized q-series roots whose
-> shared-notation input paths changed likewise remain pending parity rebuilds.
+> The older Representation Frontiers, filed New Frontiers, notation
+> catalogue, and Integration-and-Transform artifacts are separately historical
+> or unsynchronized; they are not members of this exact ten-root merge set and
+> retain the pending status recorded by their package notices.
 
 The formally proved small-argument hierarchy—including the corrected sharp
 asymptotic, the general coefficient algebra for the recursive all-orders
