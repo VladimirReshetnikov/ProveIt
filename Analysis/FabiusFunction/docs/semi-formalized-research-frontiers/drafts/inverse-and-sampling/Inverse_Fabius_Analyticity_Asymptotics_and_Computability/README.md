@@ -26,9 +26,10 @@ The package audit surfaces are:
   matches, formalization boundaries, and five separately classified
   post-snapshot additions;
 - [`ASSET_DISPOSITION.csv`](ASSET_DISPOSITION.csv): the disposition of all 88
-  files in the two superseded source subgroups;
+  files in the two superseded source subgroups and the migration from the
+  former 63-payload checkpoint to the current 55-file canonical asset tree;
 - [`SOURCE_CLOSURE.sha256`](SOURCE_CLOSURE.sha256): the reproducible ledger
-  of the 23 files consumed by the TeX build;
+  of the current 23 files consumed by the TeX build;
 - [`PROVENANCE.md`](PROVENANCE.md): source hashes, arrival lineage, nested
   predecessors, and immutable recovery points.
 
@@ -64,9 +65,11 @@ classification of every superconvergent phase or sharpness beyond the stated
 degree.  The static canonical validator passes.  `PROVENANCE.md` records source
 and asset lineage.
 
-The package checksum inventory is defined by the Git index. Resolve unmerged
-paths and stage every intended permanent package file before generating or
-checking it; the source-closure check is independent of that index state.
+The former root and asset `SHA256SUMS` inventory workflows are retired and no
+longer generated. The repository ban applies exactly to basenames
+`SHA256SUMS` and `SHA256SUMS.*`; six alternately named historical ledger
+payloads were retired separately and are not regenerated. The purpose-specific
+`SOURCE_CLOSURE.sha256` remains the current 23-input build-graph record.
 
 The result and asset extractors are pinned by
 [`audit/SOURCE_REVISION`](audit/SOURCE_REVISION) to
@@ -115,7 +118,7 @@ The canonical source surface is current and exhaustively inventoried:
 
 - `inverse_fabius_theory.tex`: 293 lines, 11,514 bytes, SHA-256
   `92fab1fae38bbcf86a45b51bfe7ff34e2801361df9d2f3d6aa3de4dc966eaa3c`;
-- its exhaustive 23-input source closure: SHA-256
+- its purpose-specific 23-input source closure has SHA-256
   `aedf007c2cd150b1f83de6d8996b4bf31e267b3dbcec2d5cd4720f5d92122bdb`;
 - the retained `inverse_fabius_theory.pdf`: 134 A4 pages, 2,027,726 bytes,
   SHA-256
@@ -128,9 +131,9 @@ shared notation have changed since that render, so this document does **not**
 claim that the retained PDF renders the current source.  A fresh three-pass
 render is required before source/PDF synchronization is claimed again.
 `VALIDATION.md` separates current source-integrity evidence from the retained
-artifact receipt. Package checksum manifests are retired repository-wide;
-`SOURCE_CLOSURE.sha256` and `ASSET_DISPOSITION.csv` retain the scoped source
-and migration evidence without acting as whole-package checksum gates.
+artifact receipt. The former root and asset `SHA256SUMS` ledgers are retired;
+the purpose-specific source-closure record and asset-disposition audit remain
+live.
 
 The mathematical consolidation and provenance gate are complete.  The five
 source packages and their retained renderings are historical inputs represented

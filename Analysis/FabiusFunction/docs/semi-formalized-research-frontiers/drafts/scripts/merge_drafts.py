@@ -45,6 +45,10 @@ def sha256(path):
             h.update(chunk)
     return h.hexdigest()
 
+def is_retired_checksum_basename(path):
+    basename = os.path.basename(path)
+    return basename == 'SHA256SUMS' or basename.startswith('SHA256SUMS.')
+
 LABEL_CMDS = ['label', 'ref', 'eqref', 'pageref', 'autoref', 'cref', 'Cref',
               'cite', 'bibitem', 'nameref']
 
@@ -274,6 +278,9 @@ def normalize_base_fonts(preamble):
     return preamble[:dc.end()] + '\n' + font_line + preamble[dc.end():]
 
 def consolidate(group_dir, members, out_name, title, out_subdir=None):
+    output_name = out_name + '.tex'
+    if is_retired_checksum_basename(output_name):
+        raise ValueError('output filename is reserved by the retired checksum-ledger policy')
     out_dir = os.path.join(group_dir, out_subdir or out_name)
     os.makedirs(os.path.join(out_dir, 'assets'), exist_ok=True)
     base_pre = None
@@ -448,7 +455,7 @@ def consolidate(group_dir, members, out_name, title, out_subdir=None):
                 os.makedirs(d, exist_ok=True)
                 src = os.path.join(root, fn)
                 dst = os.path.join(d, fn)
-                if fn == 'SHA256SUMS' or fn.startswith('SHA256SUMS.'):
+                if is_retired_checksum_basename(fn):
                     # Package checksum manifests are retired repository-wide;
                     # consolidation must not copy or regenerate them.
                     continue
@@ -487,8 +494,8 @@ def consolidate(group_dir, members, out_name, title, out_subdir=None):
     out = (base_pre + '\n'.join(extra_pkgs) + '\n' + pdf_metadata +
            newtitle + '\\begin{document}\n\\maketitle\n\\tableofcontents\n\\clearpage\n'
            + banner + '\n'.join(parts) + '\n\\end{document}\n')
-    io.open(os.path.join(out_dir, out_name + '.tex'), 'w', encoding='utf-8', newline='\n').write(out)
-    print('wrote', os.path.join(out_dir, out_name + '.tex'))
+    io.open(os.path.join(out_dir, output_name), 'w', encoding='utf-8', newline='\n').write(out)
+    print('wrote', os.path.join(out_dir, output_name))
     return out_dir
 
 if __name__ == '__main__':

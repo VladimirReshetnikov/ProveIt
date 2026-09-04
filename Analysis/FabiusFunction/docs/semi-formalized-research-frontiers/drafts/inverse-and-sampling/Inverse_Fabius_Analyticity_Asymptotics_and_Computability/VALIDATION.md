@@ -10,14 +10,14 @@ below are **not** asserted to form a synchronized source/PDF pair.
 | Item | Size | SHA-256 |
 | --- | ---: | --- |
 | `inverse_fabius_theory.tex` | 293 lines; 11,514 bytes | `92fab1fae38bbcf86a45b51bfe7ff34e2801361df9d2f3d6aa3de4dc966eaa3c` |
-| `SOURCE_CLOSURE.sha256` | Exhaustive ledger of 23 permanent build inputs | `aedf007c2cd150b1f83de6d8996b4bf31e267b3dbcec2d5cd4720f5d92122bdb` |
+| `SOURCE_CLOSURE.sha256` | Exhaustive purpose-specific record of 23 permanent build inputs | `aedf007c2cd150b1f83de6d8996b4bf31e267b3dbcec2d5cd4720f5d92122bdb` |
 | `inverse_fabius_theory.pdf` | 134 A4 pages; 2,027,726 bytes | `22bc68d855ad04dde9654e9fbd20b3ba7f05a33e3c5df0e5b80bb8991c94b41d` |
 
-The first two rows identify the current source surface.  The third identifies
-the retained historical PDF checkpoint.  A fresh three-pass render is required
+The first two rows identify the current source surface. The third is a
+historical artifact receipt. A fresh three-pass render is required
 before those surfaces may again be described as a publication pair.
 
-The 23-input closure consists of:
+The 23-input source closure consists of:
 
 - the master `inverse_fabius_theory.tex`;
 - the shared `../../../../fabius-notation.tex`;
@@ -90,10 +90,16 @@ claiming byte identity between intermediate pass artifacts.
 
 - No canonical `.aux`, `.log`, `.out`, or `.toc` file, guarded-pass/render
   temporary, or shallow generated sidecar remains in the package.
-- Package checksum manifests are retired and are not a validation gate.
+- The current canonical asset tree contains 55 files. Its former 63-row asset
+  checkpoint included eight historical ledger payloads that are now retired.
+- The former 90-row root ledger and 63-row asset ledger are retired and
+  recoverable from Git; the latter had SHA-256
+  `b274fe39cde808c34e82789136af51616e9177f424763b3eec153bc18e10fa3c`.
+  Their workflows no longer generate either root or asset `SHA256SUMS` files.
+- The purpose-specific 23-input `SOURCE_CLOSURE.sha256` record remains current.
 - Python byte-code caches and other transient files are not publication
   payloads.
 
-The source-closure hash identifies the current build inputs, while the PDF hash
-identifies the reviewed historical artifact. Their independent validity must
-not be mistaken for current source/PDF synchronization.
+The retired package-ledger receipts, current purpose-specific source-closure
+record, and PDF hash serve different purposes. Historical receipt validity and
+current source integrity must not be mistaken for source/PDF synchronization.
