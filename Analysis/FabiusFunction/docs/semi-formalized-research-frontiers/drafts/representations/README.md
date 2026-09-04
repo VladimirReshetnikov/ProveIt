@@ -835,10 +835,10 @@ Thus `is:p3:cor:forced-superconvergence` and
 concordance. This source postdates the retained Representation and inverse
 PDFs, which remain historical artifacts rather than renders of the promotion.
 The corresponding historical documentation checkpoint was 671 modules and
-8,858 public declarations. After the probability-row promotions, the q
-forward ledger is 181 Exact / 78 Partial / 15 None / 8 N/A, with chapter
-splits 9/0/0/0 for Half-base and 12/43/1/0 for Dyadic, while the source
-concordance is 94/384/60/9. The merged-main
+8,858 public declarations. After the reciprocity promotion, the q forward
+ledger is 182 Exact / 78 Partial / 14 None / 8 N/A, with chapter splits
+9/0/0/0 for Half-base and 13/43/0/0 for Dyadic, while the source concordance
+is 95/383/60/9. The merged-main
 increment to 919/11,569 is the exhaustive zero-definition/one-theorem sibling
 `FabiusFunction.HalfQBinomialRootSimplicity`, whose
 `Fabius.halfQBinomial_sum_rootMultiplicity_two_pow` proves multiplicity one
@@ -863,8 +863,10 @@ one-definition/four-theorem geometric-uniform RatFunc leaf gives the
 historical 924/11,615 checkpoint.  The two-theorem extension of the existing
 `FabiusFunction.ProbabilityLaplaceMoments` module then gives 924/11,617, and
 the exhaustive one-definition/one-theorem
-`FabiusFunction.RvachevLegendreBiorthogonality` leaf gives the live repository
-census of 925 modules and 11,619 public declarations. The census also includes
+`FabiusFunction.RvachevLegendreBiorthogonality` leaf gives the repository
+checkpoint of 925 modules and 11,619 public declarations. This is now the
+historical pre-reciprocity checkpoint; subsequent source-only tranches give
+the live census of 931 modules and 11,685 public declarations. The census also includes
 the unrelated
 sibling source-only
 `FabiusFunction.GeometricRichardsonGenerating` module (three definitions and
@@ -922,17 +924,20 @@ making `p7:eq:Pn-def` Exact in that real regime, including signed `q` and
 `q = 0`. It supplies no complex-q infinite-product realization by itself and
 formed the historical 905/11,458 checkpoint. The
 subsequent sibling `FabiusFunction.GeometricUniformComplexMomentProduct` has
-the exhaustive surface one public definition and two public theorems:
+the exhaustive current surface one public definition and three public theorems:
 `Fabius.geometricUniformComplexMomentProduct`,
-`Fabius.hasProdLocallyUniformly_geometricUniformComplexMomentProduct`, and
+`Fabius.hasProdLocallyUniformly_geometricUniformComplexMomentProduct`,
+`Fabius.differentiable_geometricUniformComplexMomentProduct`, and
 `Fabius.geometricUniformMomentPolynomial_eval₂_eq_complexMomentProduct_taylorCoefficient`.
 For complex `‖q‖ < 1` these construct the actual locally uniform product and
-give its normalized Taylor-coefficient bridge to the recursive polynomial.
+prove complex differentiability on the whole plane, and give its normalized
+Taylor-coefficient bridge to the recursive polynomial.
 This is an analytic analogue rather than a complex probability-moment
 extension of `p7:eq:Pn-def`, whose Exact scope remains real `|q| < 1`. At this
 historical checkpoint the canonical q-monograph `thm:qF-moment-polynomial`
 remained Partial because its global `RatFunc` identification and pole-clearing
-polynomial continuation at roots were not formalized. The complex `1+2` leaf produced the historical checkpoint 906
+polynomial continuation at roots were not formalized. The original complex
+`1+2` surface produced the historical checkpoint 906
 modules and 11,461 public declarations. The subsequent sibling
 `FabiusFunction.GeometricUniformExteriorComplexMomentGerm` has the exhaustive
 surface one public definition and two public theorems:
@@ -970,8 +975,24 @@ now has a named q-factorial clearing identity, safe inner and exterior
 Taylor-coefficient specializations, and the removable `q = 1` value.  This
 makes `thm:qF-moment-polynomial` Exact and gives the historical 924/11,615
 checkpoint; the probability and Legendre additions described below give the
-live 925/11,619 census. No analytic value or pole order is asserted at a
+historical 925/11,619 checkpoint. No analytic value or pole order is asserted at a
 genuine unit-root pole.
+
+The later exhaustive `1+5`
+`FabiusFunction.GeometricUniformMomentReciprocity` leaf adds
+`Fabius.geometricUniformComplexMomentGerm`,
+`Fabius.geometricUniformComplexMomentGerm_of_norm_lt_one`,
+`Fabius.geometricUniformComplexMomentGerm_of_one_lt_norm`,
+`Fabius.analyticAt_geometricUniformComplexMomentGerm`,
+`Fabius.geometricUniformComplexMomentGerm_reciprocity`, and
+`Fabius.geometricUniformComplexMomentGerm_moment_convolution`.  It identifies
+the combined germ's strict inner and exterior branches, proves analyticity at
+zero off the unit circle, and proves for `q != 0`, `‖q‖ != 1` the local
+`EventuallyEq` `M_q(z) * M_(q⁻¹)(-z) = 1` and its exact all-order binomial
+derivative convolution.  This makes `thm:qF-reciprocity` Exact.  No global
+pointwise identity through genuine inner-product zeros is claimed.  Together
+with the other subsequent source-only tranches, it belongs to the live
+931/11,685 census.
 
 The existing `FabiusFunction.ProbabilityLaplaceMoments` module adds exactly
 the two theorems

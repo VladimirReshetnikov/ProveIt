@@ -986,7 +986,8 @@ definition and three theorems: `geometricUniformComplexMomentProduct`,
 For every complex `q` with `‖q‖ < 1`, including `q = 0` and negative real
 contractions, it constructs the genuine product
 `A_q(z) = ∏' j, complexExpm1Div ((1-q) * q^j * z)`, proves locally uniform
-convergence on the whole complex plane, and proves
+convergence on the whole complex plane, proves that the resulting function is
+entire, and proves
 `P_n(q) = ((q;q)_n / (1-q)^n) * (iteratedDeriv n A_q 0 / n!)`.
 For nonreal `q`, this analytic product is not described as a probability MGF.
 
@@ -1052,7 +1053,7 @@ algebraic polynomial leaf.  This is a polynomial continuation statement, not
 an analytic continuation of either product through `‖q‖ = 1`.
 Label `thm:geometric-uniform-mgf` remains Partial: although coefficient
 rationality is now packaged, no public theorem packages the product's
-dilation/Mahler law, entireness and normalization, formal uniqueness, exact
+dilation/Mahler law, normalization, formal uniqueness, exact
 root-of-unity pole data, or its direct identification with the real MGF or
 characteristic function.  The
 leading/subleading coefficient and exact-degree claims of

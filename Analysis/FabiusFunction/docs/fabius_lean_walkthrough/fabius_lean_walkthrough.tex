@@ -3764,13 +3764,15 @@ signed \(q\) and \(q=0\).
 The subsequent source-only leaf
 \nolinkurl{GeometricUniformComplexMomentProduct.lean} has the exhaustive
 public surface one definition,
-\nolinkurl{geometricUniformComplexMomentProduct}, and two theorems,
-\nolinkurl{hasProdLocallyUniformly_geometricUniformComplexMomentProduct} and
+\nolinkurl{geometricUniformComplexMomentProduct}, and three theorems,
+\nolinkurl{hasProdLocallyUniformly_geometricUniformComplexMomentProduct},
+\nolinkurl{differentiable_geometricUniformComplexMomentProduct}, and
 \nolinkurl{geometricUniformMomentPolynomial_eval₂_eq_complexMomentProduct_taylorCoefficient}.
 For every complex \(q\) with \(\lVert q\rVert<1\), it constructs the actual
 infinite product, proves locally uniform convergence on the complex plane, and
-identifies the recursive polynomial with the finite-q-Pochhammer normalization
-of its \(n\)-th Taylor coefficient.  This is a complex analytic analogue, not
+proves complex differentiability on the whole plane, then identifies the
+recursive polynomial with the finite-q-Pochhammer normalization of its
+\(n\)-th Taylor coefficient.  This is a complex analytic analogue, not
 a complex probability-moment extension of \nolinkurl{p7:eq:Pn-def}; that label
 remains Exact only in the stated real contraction regime.
 
@@ -3818,8 +3820,45 @@ continued polynomial identity \([n]_1!=n!\), not the literal totalized
 Together with the preceding algebra, this exhaustive \(1+4\) surface makes
 the canonical q-monograph \nolinkurl{thm:qF-moment-polynomial} Exact.  It does
 not evaluate through genuine poles at nontrivial roots of unity or assert a
-unit-circle analytic continuation; the broader MGF and reciprocal-germ claims
-remain Partial at those boundaries.
+unit-circle analytic continuation; the broader MGF, germ-uniqueness, and
+pole-divisor claims remain Partial at those boundaries.
+
+\subsection{Reciprocity of the inner and exterior moment germs}
+The source-only \nolinkurl{GeometricUniformMomentReciprocity.lean} leaf has
+exactly one public definition,
+\nolinkurl{geometricUniformComplexMomentGerm}, and five public theorems:
+\nolinkurl{geometricUniformComplexMomentGerm_of_norm_lt_one},
+\nolinkurl{geometricUniformComplexMomentGerm_of_one_lt_norm},
+\nolinkurl{analyticAt_geometricUniformComplexMomentGerm},
+\nolinkurl{geometricUniformComplexMomentGerm_reciprocity}, and
+\nolinkurl{geometricUniformComplexMomentGerm_moment_convolution}.
+The combined germ is the entire inner product when \(\lVert q\rVert<1\) and
+the exterior reciprocal germ when \(1<\lVert q\rVert\).  For
+\(q\ne0\) and \(\lVert q\rVert\ne1\), the reciprocity theorem states as an
+\nolinkurl{EventuallyEq} at zero that
+\[
+ M_q(z)M_{q^{-1}}(-z)=1.
+\]
+This filter-level conclusion is the precise Lean form of equality as analytic
+germs.  It is intentionally not a global pointwise identity: the relevant
+inner product is one at zero, so continuity makes it nonzero on a neighbourhood,
+but it can vanish farther away and Lean's inverse is total at those zeros.
+
+For the proof, if \(\lVert q\rVert<1\), then
+\(1<\lVert q^{-1}\rVert\) and the definition of the exterior branch rewrites
+\(M_{q^{-1}}(-z)\) as \(M_q(z)^{-1}\); continuity supplies the neighbourhood
+on which cancellation is legitimate.  If \(1<\lVert q\rVert\), apply the same
+argument to \(q^{-1}\) with the factors reversed.  Differentiating this local
+identity, applying Leibniz, and differentiating the negation map gives
+\[
+ \sum_{k=0}^{n}\binom nk(-1)^{n-k}
+ M_q^{(k)}(0)M_{q^{-1}}^{(n-k)}(0)=\delta_{n0}.
+\]
+These derivatives are the manuscript's \(d_n\), so the theorem and its
+coefficient form make \nolinkurl{thm:qF-reciprocity} Exact.  No claim is made
+at \(q=0\) or \(\lVert q\rVert=1\), on an explicit maximal disc, or about a
+global reciprocal identity, Mahler-germ uniqueness, or the exterior pole
+divisor.
 
 \subsection{Closed Rvachev survival and positive raw moments}
 The existing module \nolinkurl{ProbabilityLaplaceMoments.lean} now adds
@@ -5962,10 +6001,11 @@ Quantum binomial theorem & \nolinkurl{quantumPlane_mul_pow}, \nolinkurl{quantum_
 Rogers--Szeg\H{o} polynomials & \nolinkurl{rogersSzego}, \nolinkurl{rogersSzego_succ}, \nolinkurl{rogersSzego_three_term}, \nolinkurl{hasSum_rogersSzego_generating} & \nolinkurl{RogersSzegoPolynomial.lean}; one definition and nine theorems, listed exhaustively above \\
 Geometric-uniform moment-polynomial algebra & \nolinkurl{geometricUniformMomentPolynomial}; \nolinkurl{geometricUniformMomentPolynomial_zero}, \nolinkurl{geometricUniformMomentPolynomial_succ}, \nolinkurl{geometricUniformMomentPolynomial_natDegree_le}, \nolinkurl{geometricUniformMomentPolynomial_eval_zero}, \nolinkurl{geometricUniformMomentPolynomial_one}, \nolinkurl{geometricUniformMomentPolynomial_two}, \nolinkurl{geometricUniformMomentPolynomial_three}, \nolinkurl{geometricUniformMomentPolynomial_four} & Exhaustive one-definition/eight-theorem surface of \nolinkurl{GeometricUniformMomentPolynomial.lean}; recursive polynomial algebra, bound, zero value, and \(P_0\) through \(P_4\) \\
 Real geometric-uniform moment bridge & \nolinkurl{geometricUniformMomentPolynomial_eval₂_eq_mgf_taylorCoefficient} & Exhaustive zero-definition/one-theorem surface of \nolinkurl{GeometricUniformMomentPolynomialBridge.lean}; exact \nolinkurl{p7:eq:Pn-def} for real \(\lvert q\rvert<1\) \\
-Complex geometric-uniform moment product & \nolinkurl{geometricUniformComplexMomentProduct}; \nolinkurl{hasProdLocallyUniformly_geometricUniformComplexMomentProduct}, \nolinkurl{geometricUniformMomentPolynomial_eval₂_eq_complexMomentProduct_taylorCoefficient} & Exhaustive one-definition/two-theorem surface of \nolinkurl{GeometricUniformComplexMomentProduct.lean}; actual locally uniform product and normalized Taylor-coefficient bridge for complex \(\lVert q\rVert<1\).  This is an analytic analogue and does not turn the real probability identity into a complex one \\
+Complex geometric-uniform moment product & \nolinkurl{geometricUniformComplexMomentProduct}; \nolinkurl{hasProdLocallyUniformly_geometricUniformComplexMomentProduct}, \nolinkurl{differentiable_geometricUniformComplexMomentProduct}, \nolinkurl{geometricUniformMomentPolynomial_eval₂_eq_complexMomentProduct_taylorCoefficient} & Exhaustive one-definition/three-theorem surface of \nolinkurl{GeometricUniformComplexMomentProduct.lean}; actual locally uniform differentiable product and normalized Taylor-coefficient bridge for complex \(\lVert q\rVert<1\).  This is an analytic analogue and does not turn the real probability identity into a complex one \\
 Exterior complex geometric-uniform moment germ & \nolinkurl{geometricUniformExteriorComplexMomentGerm}; \nolinkurl{analyticAt_geometricUniformExteriorComplexMomentGerm}, \nolinkurl{geometricUniformMomentPolynomial_eval₂_eq_exteriorComplexMomentGerm_taylorCoefficient} & Exhaustive one-definition/two-theorem surface of \nolinkurl{GeometricUniformExteriorComplexMomentGerm.lean}; actual reciprocal germ, analyticity at zero, and normalized Taylor-coefficient bridge for complex \(1<\lVert q\rVert\); no unit-circle analytic value is asserted \\
 Sharp geometric-uniform moment-polynomial degree & \nolinkurl{coeff_geometricUniformMomentPolynomial_choose_two}, \nolinkurl{coeff_geometricUniformMomentPolynomial_choose_two_sub_one}, \nolinkurl{geometricUniformMomentPolynomial_natDegree_eq} & Exhaustive zero-definition/three-theorem surface of \nolinkurl{GeometricUniformMomentPolynomialDegree.lean}; the top and subleading coefficients are \(B_n(1)/n!\) and \(-B_n(1)/n!+B_{n-1}(1)/(2(n-1)!)\), and the degree is \(\binom n2\) exactly for even \(n\) or \(n=1\), one less otherwise.  Thus \nolinkurl{p7:thm:Pn} and \nolinkurl{prop:qF-P-degree-sharp} are Exact \\
 Common rational geometric-uniform moment coefficient & \nolinkurl{geometricUniformMomentRatFunc}; \nolinkurl{qFactorial_mul_geometricUniformMomentRatFunc}, \nolinkurl{eval_geometricUniformMomentRatFunc_eq_complexMomentProduct_taylorCoefficient}, \nolinkurl{eval_geometricUniformMomentRatFunc_eq_exteriorComplexMomentGerm_taylorCoefficient}, \nolinkurl{eval_geometricUniformMomentRatFunc_one} & Exhaustive one-definition/four-theorem surface of \nolinkurl{GeometricUniformMomentRatFunc.lean}; global \([n]_X!a_n=\mathcal P_n\), safe inner/exterior coefficient evaluation, and the removable \(q=1\) specialization.  This makes \nolinkurl{thm:qF-moment-polynomial} Exact without asserting analytic values at nontrivial unit roots \\
+Geometric-uniform germ reciprocity & \nolinkurl{geometricUniformComplexMomentGerm}; \nolinkurl{geometricUniformComplexMomentGerm_of_norm_lt_one}, \nolinkurl{geometricUniformComplexMomentGerm_of_one_lt_norm}, \nolinkurl{analyticAt_geometricUniformComplexMomentGerm}, \nolinkurl{geometricUniformComplexMomentGerm_reciprocity}, \nolinkurl{geometricUniformComplexMomentGerm_moment_convolution} & Exhaustive one-definition/five-theorem surface of \nolinkurl{GeometricUniformMomentReciprocity.lean}; for \(q\ne0\), \(\lVert q\rVert\ne1\), proves \nolinkurl{EventuallyEq} reciprocity at zero and the exact derivative convolution, making \nolinkurl{thm:qF-reciprocity} Exact; no global, unit-circle, maximal-disc, uniqueness, or pole-divisor claim \\
 Geometric CDF \(F_q\) and density \(f_q\) & \nolinkurl{geometricUniformCDF}, \nolinkurl{geometricUniformDensity}, \nolinkurl{geometricUniformDensity_zero}, \nolinkurl{geometricUniformDensity_nonpos_of_neg}, \nolinkurl{volume_withDensity_geometricUniformDensity_eq_zero_of_nonpos}, \nolinkurl{geometricUniformDistribution_ne_withDensity_geometricUniformDensity_of_nonpos}, \nolinkurl{geometricUniformCDF_hasDerivAt}, \nolinkurl{geometricUniformDistribution_eq_withDensity}, \nolinkurl{contDiff_geometricUniformCDF}, \nolinkurl{contDiff_geometricUniformDensity} & \nolinkurl{GeometricUniformCDF.lean} \\
 Weighted-sum CDF and half-base bridges & \nolinkurl{weightedSumCDF}, \nolinkurl{weightedSumCDF_eq_geometricUniformCDF_one_half}, \nolinkurl{geometricUniformCDF_one_half_eq_fabiusReal}, \nolinkurl{geometricUniformDensity_one_half_eq_rvachevUp} & \nolinkurl{ProbabilityRepresentation.lean} \\
 Closed Rvachev tail and positive raw moments & \nolinkurl{weightedSumDistribution_real_Ici_eq_rvachevUp_of_nonneg}, \nolinkurl{integral_pow_weightedSumDistribution_eq_mul_intervalIntegral_rvachevUp} & Exactly two new theorems in the existing \nolinkurl{ProbabilityLaplaceMoments.lean}: atomlessness gives the closed tail for every \(t\geq0\), and survival layer cake gives the full-law moment identity for every natural \(n\geq1\).  With the existing global up/Fabius bridges they make \nolinkurl{prop:up-tail} and \nolinkurl{cor:up-moments} Exact \\
@@ -6261,10 +6301,11 @@ Module & Role in the development \\
 \nolinkurl{GeometricUniformMomentPolynomialBridge.lean} & Exhaustive zero-definition/one-theorem surface: \nolinkurl{geometricUniformMomentPolynomial_eval₂_eq_mgf_taylorCoefficient} identifies that polynomial with the normalized Taylor coefficient of the actual geometric-uniform MGF for every real \(\lvert q\rvert<1\), making \nolinkurl{p7:eq:Pn-def} Exact in that regime.  It supplies no complex-q product or sharp degree theorem by itself; the later product, exterior-germ, and degree leaves supply those clauses. \\
 \nolinkurl{RvachevLagrangeNodesOnly.lean} & Exhaustive one-definition/fourteen-theorem surface named in the crosswalk: ordinary-derivative and raw omitted-node Appell forms, rational descent and rational lattice samples, and formal complete-Bell/Bernoulli--Mersenne coefficients.  It makes \nolinkurl{cor:lag-nodes-only} Exact only by composition; the rational-point, synthesis-hypothesis, and non-analytic-MGF caveats remain explicit. \\
 \nolinkurl{ThueMorseGammaTowerDifferential.lean} & No definitions and exactly three theorems, named in the crosswalk: positive-parameter Mellin differentiation and the full finite GammaLog derivative ladder.  This makes \nolinkurl{p2:thm:gamma-tower} Exact under its chosen-coordinate convention, not as a principal-log identity. \\
-\nolinkurl{GeometricUniformComplexMomentProduct.lean} & Exhaustive one-definition/two-theorem surface: \nolinkurl{geometricUniformComplexMomentProduct} is the actual complex product, \nolinkurl{hasProdLocallyUniformly_geometricUniformComplexMomentProduct} proves its locally uniform convergence for \(\lVert q\rVert<1\), and \nolinkurl{geometricUniformMomentPolynomial_eval₂_eq_complexMomentProduct_taylorCoefficient} gives the normalized Taylor-coefficient bridge.  It is an analytic analogue of the real identity, not a complex probability statement. \\
+\nolinkurl{GeometricUniformComplexMomentProduct.lean} & Exhaustive one-definition/three-theorem surface: \nolinkurl{geometricUniformComplexMomentProduct} is the actual complex product, \nolinkurl{hasProdLocallyUniformly_geometricUniformComplexMomentProduct} proves its locally uniform convergence for \(\lVert q\rVert<1\), \nolinkurl{differentiable_geometricUniformComplexMomentProduct} proves complex differentiability on the whole plane, and \nolinkurl{geometricUniformMomentPolynomial_eval₂_eq_complexMomentProduct_taylorCoefficient} gives the normalized Taylor-coefficient bridge.  It is an analytic analogue of the real identity, not a complex probability statement. \\
 \nolinkurl{GeometricUniformExteriorComplexMomentGerm.lean} & Exhaustive one-definition/two-theorem surface: \nolinkurl{geometricUniformExteriorComplexMomentGerm} is the actual \(\mathcal A_{q^{-1}}(-z)^{-1}\) reciprocal germ, \nolinkurl{analyticAt_geometricUniformExteriorComplexMomentGerm} proves analyticity at zero for \(1<\lVert q\rVert\), and \nolinkurl{geometricUniformMomentPolynomial_eval₂_eq_exteriorComplexMomentGerm_taylorCoefficient} gives its normalized Taylor-coefficient bridge; no unit-circle analytic value is asserted. \\
 \nolinkurl{GeometricUniformMomentPolynomialDegree.lean} & Exhaustive zero-definition/three-theorem surface: \nolinkurl{coeff_geometricUniformMomentPolynomial_choose_two} and \nolinkurl{coeff_geometricUniformMomentPolynomial_choose_two_sub_one} give the top and subleading Bernoulli coefficients, while \nolinkurl{geometricUniformMomentPolynomial_natDegree_eq} gives the exact parity-sensitive degree.  Together with the preceding leaves this makes \nolinkurl{p7:thm:Pn} Exact and independently makes \nolinkurl{prop:qF-P-degree-sharp} Exact. \\
 \nolinkurl{GeometricUniformMomentRatFunc.lean} & Exhaustive one-definition/four-theorem surface: \nolinkurl{geometricUniformMomentRatFunc}; \nolinkurl{qFactorial_mul_geometricUniformMomentRatFunc}; \nolinkurl{eval_geometricUniformMomentRatFunc_eq_complexMomentProduct_taylorCoefficient}; \nolinkurl{eval_geometricUniformMomentRatFunc_eq_exteriorComplexMomentGerm_taylorCoefficient}; and \nolinkurl{eval_geometricUniformMomentRatFunc_one}.  It packages one rational \(a_n\), proves its global q-factorial clearing, identifies its safe inner/exterior values, and handles \(q=1\) by polynomial continuation.  Thus \nolinkurl{thm:qF-moment-polynomial} is Exact; genuine poles and unit-circle analytic values are not totalized. \\
+\nolinkurl{GeometricUniformMomentReciprocity.lean} & Exhaustive one-definition/five-theorem surface: \nolinkurl{geometricUniformComplexMomentGerm}; \nolinkurl{geometricUniformComplexMomentGerm_of_norm_lt_one}; \nolinkurl{geometricUniformComplexMomentGerm_of_one_lt_norm}; \nolinkurl{analyticAt_geometricUniformComplexMomentGerm}; \nolinkurl{geometricUniformComplexMomentGerm_reciprocity}; and \nolinkurl{geometricUniformComplexMomentGerm_moment_convolution}.  Under exactly \(q\ne0\) and \(\lVert q\rVert\ne1\), it proves local \nolinkurl{EventuallyEq} reciprocity and the derivative convolution, making \nolinkurl{thm:qF-reciprocity} Exact; no global or unit-circle identity, maximal disc, uniqueness, or pole divisor is asserted. \\
 \nolinkurl{LambertPhaseLockedRichardson.lean} & Exact lower-Lambert phase locking, reciprocal-grid Lagrange weights, cancellation, and every complete-homogeneous residual moment. \\
 \nolinkurl{LambertPhaseLockedBell.lean} & Generalized harmonic power sums and Bell input for the shifted reciprocal alphabet, together with exact complete-homogeneous and reciprocal-Lagrange moment rewrites in factorially normalized complete-Bell form over characteristic-zero fields (with the direct rewrite using the rational-algebra structure).  Total field inversion requires no positivity or nonvanishing hypothesis on the shift. \\
 \nolinkurl{FabiusLambertPhaseLockedPullback.lean} & Pullback of the arbitrary-order logarithmic Fabius expansion to every fixed phase-locked Lambert node, with the periodic correction and saddle coefficients frozen at the base phase. \\
@@ -6610,7 +6651,7 @@ final exact-closure tranche adds
 the 1+4 \nolinkurl{ThueMorseCornerIntegral.lean} and 0+3
 \nolinkurl{RvachevLegendreCentralSum.lean} leaves, while the existing
 zero-definition \nolinkurl{FinitePolynomialFunctional.lean} module grows to
-sixteen theorems.  The subsequent exhaustive \(1+2\)
+sixteen theorems.  The subsequent then-public \(1+2\)
 \nolinkurl{GeometricUniformComplexMomentProduct.lean} leaf constructs the
 actual product for complex \(\lVert q\rVert<1\), proves its locally uniform
 convergence, and identifies its normalized Taylor coefficient with the same
@@ -6645,8 +6686,13 @@ evaluations, and the removable \(q=1\) value.  It makes
 924/11,615 checkpoint.  The two new theorems in the existing
 \nolinkurl{ProbabilityLaplaceMoments.lean} module then give 924/11,617, and
 the exhaustive one-definition/one-theorem
-\nolinkurl{RvachevLegendreBiorthogonality.lean} leaf gives the live
-925/11,619 census.  Every module is reachable from the facade.  No aggregate facade build
+\nolinkurl{RvachevLegendreBiorthogonality.lean} leaf gives the historical
+925/11,619 census.  Subsequent merged-main additions give the pre-reciprocity
+930/11,678 checkpoint.  Publicizing
+\nolinkurl{differentiable_geometricUniformComplexMomentProduct} gives
+930/11,679, and the exhaustive \(1+5\)
+\nolinkurl{GeometricUniformMomentReciprocity.lean} leaf gives the live
+931/11,685 census.  Every module is reachable from the facade.  No aggregate facade build
 is claimed for this current-tree census.  The retained PDF and title-page pin
 remain historical receipts and do not claim parity with the merged source; no
 PDF was built for this source-only union.

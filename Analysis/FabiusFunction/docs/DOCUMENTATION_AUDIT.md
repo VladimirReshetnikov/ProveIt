@@ -112,7 +112,7 @@ numbers rather than copying these historical values.
 The historical post-merge 2026-09-01 inventory contained 675 modules and 8,909
 lexically visible public declarations, with zero missing module headers and
 zero missing doc comments.  A fresh 2026-09-04 audit for this documentation
-pass scans 925 facade-reachable modules and 11,619 public declarations.  It
+pass scans 931 facade-reachable modules and 11,685 public declarations.  It
 finds no missing module header or declaration comment, including throughout
 `FabiusInverseExactDyadicModulus.lean`, `JacobiTwoSquareCount.lean`, and
 `LagrangeRvachevMatrix.lean`, as well as the incoming
@@ -130,14 +130,15 @@ finds no missing module header or declaration comment, including throughout
 `GeometricUniformExteriorComplexMomentGerm.lean`,
 `GeometricUniformMomentPolynomialDegree.lean`,
 `RvachevLaurentLeading.lean`, `FinitePrefixAppellRecovery.lean`,
-`GeometricUniformMomentRatFunc.lean`, and
+`GeometricUniformMomentRatFunc.lean`,
+`GeometricUniformMomentReciprocity.lean`, and
 `RvachevLegendreBiorthogonality.lean` leaves, together with the strengthened
 `ProbabilityLaplaceMoments.lean` surface,
 as well as the sixteenth theorem in `FinitePolynomialFunctional.lean`.
 Relative to the
-610/8,318 activation checkpoint, the current tree adds 315 modules and 3,301 declarations.
+610/8,318 activation checkpoint, the current tree adds 321 modules and 3,367 declarations.
 Relative to the earlier 630/8,552 merged checkpoint, concurrent source work
-adds 295 modules and 3,067 declarations.  The post-merge 675/8,909 inventory,
+adds 301 modules and 3,133 declarations.  The post-merge 675/8,909 inventory,
 the intervening 903/11,448 Lambert-series inventory, and the immediately
 preceding 914/11,555 scaled-geometric and 915/11,556 real-MGF-bridge
 checkpoints, together with the incoming branch's 906/11,461 complex-product
@@ -152,7 +153,11 @@ the historical pre-RatFunc checkpoint 923/11,610, and the one-definition/
 four-theorem global RatFunc leaf gave the historical 924/11,615 checkpoint.
 Two theorems added to `ProbabilityLaplaceMoments.lean` then gave 924/11,617,
 and the one-definition/one-theorem Legendre--Rvachev biorthogonality leaf gives
-the live 925/11,619 census.  On the earlier
+the historical 925/11,619 census.  Merged upstream work then reached the
+immediate pre-reciprocity checkpoint 930/11,678.  Promoting the complex-product
+differentiability theorem and adding the exhaustive one-definition/five-theorem
+reciprocity leaf add one source module and seven public declarations in total,
+giving the live 931/11,685 census.  On the earlier
 exterior-germ branch, the inner-complex 906/11,461 checkpoint was followed by
 the branch-local 907/11,464 checkpoint; its preceding real-MGF and algebraic
 moment-polynomial checkpoints were 905/11,458 and 904/11,457.  These older
@@ -592,6 +597,17 @@ on the whole complex plane, and identifies the recursive polynomial by
 analytic product is not described as a probability MGF; the preceding real
 0+1 theorem remains the exact probability-law MGF bridge.
 
+The later reciprocity tranche promotes
+`differentiable_geometricUniformComplexMomentProduct` to the public API.
+Thus the current exhaustive surface of this module is one definition and
+three theorems: `geometricUniformComplexMomentProduct`,
+`hasProdLocallyUniformly_geometricUniformComplexMomentProduct`,
+`differentiable_geometricUniformComplexMomentProduct`, and
+`geometricUniformMomentPolynomial_eval₂_eq_complexMomentProduct_taylorCoefficient`.
+The added theorem packages differentiability on all of `ℂ`, so the product
+is now publicly known to be entire; the 906/11,461 count above remains the
+historical checkpoint before that theorem was public.
+
 #### Half-base q-binomial root-simplicity tranche
 
 After the merged exact-closure and inner-complex union reached the historical
@@ -636,7 +652,7 @@ rational parameter object.  The later RatFunc tranche below closes exactly
 that assembly boundary.  Label `thm:geometric-uniform-mgf` remains
 **Partial**: coefficient rationality and the `q=1` specialization are now
 packaged, but no public theorem packages the product's dilation/Mahler law,
-full entireness and normalization, formal uniqueness, exact pole data, or
+normalization, formal uniqueness, exact pole data, or
 direct equality of the complex product with the real MGF or characteristic
 function.  Frontier label `p7:thm:Pn` and proposition
 `prop:qF-P-degree-sharp` are accounted for by the following sharp-degree
@@ -713,9 +729,12 @@ historical 921/11,575 checkpoint.  `RvachevLaurentLeading.lean` then gave
 checkpoint 923/11,610, and `GeometricUniformMomentRatFunc.lean` gave the
 historical RatFunc checkpoint 924/11,615.  The two new
 `ProbabilityLaplaceMoments.lean` theorems gave 924/11,617, and
-`RvachevLegendreBiorthogonality.lean` gives the live facade inventory 925
-modules and 11,619 public declarations, with no missing module header or public
-declaration comment.
+`RvachevLegendreBiorthogonality.lean` gave the historical facade inventory 925
+modules and 11,619 public declarations.  Subsequent merged upstream work gave
+the immediate pre-reciprocity checkpoint 930/11,678; the reciprocity tranche
+then added one module and seven public declarations in total, giving the live
+931/11,685 inventory with no missing module header or public declaration
+comment.
 
 `FinitePolynomialFunctional.lean` remains a zero-definition module and now has
 exactly sixteen public theorems:
@@ -791,8 +810,10 @@ upstream leaves add exactly two modules and 35 public declarations:
 923 modules and 11,610 public declarations.  The subsequent global RatFunc
 leaf gives the historical 924 modules and 11,615 public declarations; the
 post-RatFunc probability and finite-biorthogonality additions below give the
-live 925 modules and 11,619 public declarations, with no missing module header
-or public declaration comment.
+historical 925 modules and 11,619 public declarations.  Subsequent merged
+upstream additions and the reciprocity tranche give the live 931 modules and
+11,685 public declarations, with no missing module header or public declaration
+comment.
 
 `HalfQBinomialRootSimplicity.lean` has no public definitions and exactly one
 public theorem, `halfQBinomial_sum_rootMultiplicity_two_pow`.  Over `ℚ`, for
@@ -899,6 +920,42 @@ theorem, analytic continuation through `‖q‖=1`, or global holomorphy of the
 exterior reciprocal is claimed.  Label `thm:geometric-uniform-mgf` remains
 **Partial** under the boundary stated above.
 
+#### Complex moment-product entireness and germ reciprocity
+
+Merged upstream additions reached the immediate pre-reciprocity checkpoint
+930 modules and 11,678 public declarations.  The reciprocity tranche promotes
+one theorem in the existing complex-product module and adds the new
+`GeometricUniformMomentReciprocity.lean` module with one definition and five
+theorems.  It therefore adds one source module and seven public declarations
+in total, giving the live 931/11,685 inventory.
+
+The current exhaustive 1+3 surface of
+`GeometricUniformComplexMomentProduct.lean` is the definition
+`geometricUniformComplexMomentProduct` and the theorems
+`hasProdLocallyUniformly_geometricUniformComplexMomentProduct`,
+`differentiable_geometricUniformComplexMomentProduct`, and
+`geometricUniformMomentPolynomial_eval₂_eq_complexMomentProduct_taylorCoefficient`.
+The promoted differentiability theorem is global on `ℂ`, so the locally
+uniform product is publicly packaged as an entire function.
+
+The reciprocity leaf's exhaustive 1+5 surface is the definition
+`geometricUniformComplexMomentGerm` and the theorems
+`geometricUniformComplexMomentGerm_of_norm_lt_one`,
+`geometricUniformComplexMomentGerm_of_one_lt_norm`,
+`analyticAt_geometricUniformComplexMomentGerm`,
+`geometricUniformComplexMomentGerm_reciprocity`, and
+`geometricUniformComplexMomentGerm_moment_convolution`.  The combined function
+is the inner product when `‖q‖<1`, the exterior reciprocal when `1<‖q‖`, and
+is analytic at zero whenever `‖q‖≠1`.  Under exactly `q≠0` and `‖q‖≠1`,
+the reciprocity theorem proves
+`M_q(z) * M_{q⁻¹}(-z) = 1` locally as an `EventuallyEq` in `𝒩 0`, and
+the convolution theorem proves for every order `n` the exact binomial
+iterated-derivative convolution with value `if n=0 then 1 else 0`.  The germ
+boundary is deliberate: the inner product can have remote zeros and Lean's
+inverse is total, so no global pointwise reciprocal identity or unit-circle
+continuation is asserted.  This makes canonical `thm:qF-reciprocity`
+**Exact**.
+
 #### Closed-tail moments and finite Legendre--Rvachev biorthogonality
 
 The post-RatFunc union first adds exactly two public theorems to the existing
@@ -922,7 +979,7 @@ the manuscript's `X`, not a new arbitrary-random-variable wrapper.  The moment
 theorem does not assert the `n=0` case.
 
 `RvachevLegendreBiorthogonality.lean` then adds one source module and exactly
-one definition plus one theorem, giving the live 925/11,619 inventory.  Its
+one definition plus one theorem, giving the historical 925/11,619 inventory.  Its
 exhaustive public surface is `rvachevLegendreAnalysisKernel` and
 `rvachevLegendreBiorthogonality`, both in `Fabius`.  For
 clarity, the former is literally the normalized kernel
@@ -1679,9 +1736,10 @@ and 88-page notation-catalogue artifacts likewise predate their current merged
 sources.  Their package notices treat those PDFs as historical validation
 receipts, not parity claims, until fresh uninterrupted three-pass builds
 complete.  The inverse-computability receipt likewise still reflects the
-historical 675/8,909 census and requires refresh against the live 925/11,619
-inventory.  The canonical inverse-theory publication retains a 134-page
-artifact synchronized at its latest-main source checkpoint; the merged
+historical 675/8,909 census and requires refresh against the live 931/11,685
+inventory.
+The canonical inverse-theory publication retains a 134-page artifact
+synchronized at its latest-main source checkpoint; the merged
 effective-inversion and superconvergent-synthesis tranches make current parity
 pending.
 

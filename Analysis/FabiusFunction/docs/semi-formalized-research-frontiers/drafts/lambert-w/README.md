@@ -131,18 +131,21 @@ compound `p7:thm:Pn` was then Partial; the later sharp-degree sibling below
 makes it Exact.  This bridge produced the historical checkpoint 905 modules
 and 11,458 public declarations.  The subsequent sibling
 `FabiusFunction.GeometricUniformComplexMomentProduct` has the exhaustive
-surface one public definition and two public theorems:
+current surface one public definition and three public theorems:
 `Fabius.geometricUniformComplexMomentProduct`,
-`Fabius.hasProdLocallyUniformly_geometricUniformComplexMomentProduct`, and
+`Fabius.hasProdLocallyUniformly_geometricUniformComplexMomentProduct`,
+`Fabius.differentiable_geometricUniformComplexMomentProduct`, and
 `Fabius.geometricUniformMomentPolynomial_eval₂_eq_complexMomentProduct_taylorCoefficient`.
 For complex `‖q‖ < 1` it supplies the actual locally uniform product and its
-normalized Taylor-coefficient bridge.  This is an analytic analogue; it does
+complex differentiability on the whole plane, together with its normalized
+Taylor-coefficient bridge.  This is an analytic analogue; it does
 not extend the probability-moment reading of `p7:eq:Pn-def` beyond real
 `|q| < 1`.  At this historical checkpoint the canonical q-monograph
 `thm:qF-moment-polynomial` remained Partial because the global `RatFunc`
 identification and its pole-clearing polynomial continuation at roots were
-absent.  This exhaustive `1+2` leaf produced the historical checkpoint 906
-modules and 11,461 public declarations.
+absent.  The original `1+2` surface produced the historical checkpoint 906
+modules and 11,461 public declarations; the subsequently exposed
+differentiability theorem belongs only to the live census below.
 The zero-definition/one-theorem
 `FabiusFunction.HalfQBinomialRootSimplicity` sibling exposes
 `Fabius.halfQBinomial_sum_rootMultiplicity_two_pow`; composed with the
@@ -178,6 +181,21 @@ polynomial leaf, this makes `thm:qF-moment-polynomial` Exact.  It does not
 assign analytic values at genuine unit-root poles or prove their divisor or
 orders.
 
+The later `FabiusFunction.GeometricUniformMomentReciprocity` sibling has one
+public definition, `Fabius.geometricUniformComplexMomentGerm`, and five public
+theorems:
+`Fabius.geometricUniformComplexMomentGerm_of_norm_lt_one`,
+`Fabius.geometricUniformComplexMomentGerm_of_one_lt_norm`,
+`Fabius.analyticAt_geometricUniformComplexMomentGerm`,
+`Fabius.geometricUniformComplexMomentGerm_reciprocity`, and
+`Fabius.geometricUniformComplexMomentGerm_moment_convolution`.  It joins and
+identifies the strict inner and exterior branches, proves analyticity at zero
+off the unit circle, and, for `q != 0` and `‖q‖ != 1`, proves the local
+`EventuallyEq` `M_q(z) * M_(q⁻¹)(-z) = 1` and its exact all-order binomial
+derivative convolution.  It makes `thm:qF-reciprocity` Exact.  A global
+pointwise identity through genuine inner-product zeros is deliberately not
+claimed.
+
 The later germ-related addition
 `FabiusFunction.RvachevLaurentLeading` has one definition and six theorems and
 makes `is:p2:thm:Laurent-leading` exact through the manuscript-normalized
@@ -194,18 +212,20 @@ random-variable or analytic-MGF realization.
 
 In the merged chronology the sharp leaf gave the historical 921/11,575
 checkpoint, `RvachevLaurentLeading` gave 922/11,582, and
-`FinitePrefixAppellRecovery` gave 923/11,610.  The RatFunc leaf gives the live
+`FinitePrefixAppellRecovery` gave 923/11,610.  The RatFunc leaf gives the
 historical 924/11,615 checkpoint.  Two later theorems in
 `ProbabilityLaplaceMoments` make `prop:up-tail` and `cor:up-moments` Exact,
 and the unrelated exhaustive 1+1
-`FabiusFunction.RvachevLegendreBiorthogonality` leaf gives the live
-925/11,619 census.  Its public declarations are
+`FabiusFunction.RvachevLegendreBiorthogonality` leaf gives the historical
+925/11,619 checkpoint.  Its public declarations are
 `Fabius.rvachevLegendreAnalysisKernel` and
 `Fabius.rvachevLegendreBiorthogonality`; they close the normalized translated
 kernel definition and finite Legendre biorthogonality, but not the larger
-Fourier--Bessel or matrix-projector claims.  The q ledger is 181 Exact / 78
-Partial / 15 None / 8 interface, and the source concordance is 94 Lean-proved
-/ 384 human-proved frontier / 60 non-applicable / 9 conjectures.
+Fourier--Bessel or matrix-projector claims.  Subsequent source-only tranches,
+including the reciprocity sibling, give the live 931/11,685 census.  The q
+ledger is 182 Exact / 78 Partial / 14 None / 8 interface, the relevant Dyadic
+Gaussian--Thue--Morse chapter is 13/43/0/0, and the source concordance is 95
+Lean-proved / 383 human-proved frontier / 60 non-applicable / 9 conjectures.
 All of these sibling source-only additions are likewise absent
 from the retained historical PDFs.
 

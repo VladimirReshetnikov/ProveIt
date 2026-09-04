@@ -371,7 +371,7 @@ strengthening of the existing zero-definition/sixteen-theorem
 \path{FinitePolynomialFunctional.lean} module; the one-definition/four-
 theorem local corner-integral leaf \path{ThueMorseCornerIntegral.lean}; and
 the zero-definition/three-theorem central Legendre cancellation leaf
-\path{RvachevLegendreCentralSum.lean}; and the one-definition/two-theorem
+\path{RvachevLegendreCentralSum.lean}; and the one-definition/three-theorem
 complex moment-product leaf
 \path{GeometricUniformComplexMomentProduct.lean}; the zero-definition/one-
 theorem half-base root-simplicity leaf
@@ -386,8 +386,11 @@ one-definition/four-theorem
 \path{GeometricUniformMomentRatFunc.lean} leaf; the two-theorem extension of
 the existing \path{ProbabilityLaplaceMoments.lean} module; and the exhaustive
 one-definition/one-theorem
-\path{RvachevLegendreBiorthogonality.lean} leaf.  The live source census is
-925 facade-reachable modules and 11,619 public declarations.
+\path{RvachevLegendreBiorthogonality.lean} leaf; and, after the later
+merged-main additions, the newly public complex-product differentiability
+theorem and the exhaustive one-definition/five-theorem
+\path{GeometricUniformMomentReciprocity.lean} leaf.  The live source census is
+931 facade-reachable modules and 11,685 public declarations.
 The sharp
 leaf makes \nolinkurl{prop:qF-P-degree-sharp} Exact and supplies the formerly
 missing leading/odd-degree clause, so the represented
@@ -408,8 +411,11 @@ half-base root-simplicity leaf gave the actual merged-main pre-local checkpoint
 historical 921/11,575 checkpoint.  The Laurent leaf then gave 922/11,582, and
 the finite-prefix leaf gave the historical 923/11,610 checkpoint.  The RatFunc
 leaf gives the historical 924/11,615 checkpoint, the two probability theorems
-give 924/11,617, and the Legendre biorthogonality leaf gives the live
-925/11,619 union.  The incoming-branch
+give 924/11,617, and the Legendre biorthogonality leaf gives the historical
+925/11,619 union.  The subsequent merged-main additions give the
+pre-reciprocity 930/11,678 checkpoint; public complex-product
+differentiability gives 930/11,679, and the reciprocity leaf gives the live
+931/11,685 union.  The incoming-branch
 906/11,461 and earlier exterior-branch 907/11,464 censuses remain explicitly
 historical.
 The retained
@@ -2761,8 +2767,12 @@ historical 921/11,575 checkpoint.  The
 checkpoint.  The \path{GeometricUniformMomentRatFunc.lean} (1+4) leaf gives
 the historical 924/11,615 checkpoint.  The two-theorem
 \path{ProbabilityLaplaceMoments.lean} extension then gives 924/11,617, and
-the \path{RvachevLegendreBiorthogonality.lean} (1+1) leaf gives the live
-925/11,619 union.
+the \path{RvachevLegendreBiorthogonality.lean} (1+1) leaf gives the historical
+925/11,619 union.  Subsequent merged-main additions give the pre-reciprocity
+930/11,678 checkpoint.  Making
+\lean{differentiable_geometricUniformComplexMomentProduct} public gives
+930/11,679, and the \path{GeometricUniformMomentReciprocity.lean} (1+5) leaf
+gives the live 931/11,685 union.
 
 The Laurent leaf makes \nolinkurl{is:p2:thm:Laurent-leading} Exact through
 the manuscript-normalized punctured-neighborhood limit and its Fourier
@@ -2825,8 +2835,8 @@ rational root classifier and Gaussian/half-q coefficient identification,
 makes \nolinkurl{cor:halfbase-root-locus} Exact for the canonical rational
 polynomial.  Injective scalar extension preserves the multiplicities, but
 this does not classify all roots over every extension field.  The q forward
-ledger is 181 Exact / 78 Partial / 15 None / 8 interface rows; its source
-concordance is 94 Lean-proved / 384 human-proved frontier /
+ledger is 182 Exact / 78 Partial / 14 None / 8 interface rows; its source
+concordance is 95 Lean-proved / 383 human-proved frontier /
 60 non-applicable / 9 conjectures.
 
 The nodes-only leaf makes
@@ -2951,13 +2961,15 @@ finite-q-Pochhammer normalization of the Taylor coefficient of the actual
 geometric-uniform MGF.  Hence \nolinkurl{p7:eq:Pn-def} is Exact in this real
 contraction regime, including signed \(q\) and \(q=0\).  The subsequent
 \path{GeometricUniformComplexMomentProduct.lean} leaf has the exhaustive
-public surface one definition and two theorems:
+public surface one definition and three theorems:
 \lean{geometricUniformComplexMomentProduct},
-\lean{hasProdLocallyUniformly_geometricUniformComplexMomentProduct}, and
+\lean{hasProdLocallyUniformly_geometricUniformComplexMomentProduct},
+\lean{differentiable_geometricUniformComplexMomentProduct}, and
 \lean{geometricUniformMomentPolynomial_eval₂_eq_complexMomentProduct_taylorCoefficient}.
 For every complex \(q\) with \(\lVert q\rVert<1\), these construct the actual
 infinite product, prove its locally uniform convergence on the complex plane,
-and give the finite-q-Pochhammer normalization of its Taylor coefficient.  The
+prove its complex differentiability on the whole plane, and give the
+finite-q-Pochhammer normalization of its Taylor coefficient.  The
 result is a complex analytic analogue, not a complex probability-moment
 extension of \nolinkurl{p7:eq:Pn-def}.  The merged-main pre-local
 \path{HalfQBinomialRootSimplicity.lean} leaf has no public definitions and the
@@ -3001,7 +3013,40 @@ exterior coefficients under the two strict norm hypotheses, and specializes
 at \(q=1\) via \([n]_1!=n!\).  Consequently
 \nolinkurl{thm:qF-moment-polynomial} is Exact by composition.  The theorem
 does not evaluate through genuine unit-root poles or assert unit-circle
-analytic continuation, so the broader MGF and germ claims remain Partial.
+analytic continuation, so the broader MGF, germ-uniqueness, and pole-divisor
+claims remain Partial.
+
+The exhaustive public surface of
+\path{GeometricUniformMomentReciprocity.lean} is the definition
+\lean{geometricUniformComplexMomentGerm} and the five theorems
+\lean{geometricUniformComplexMomentGerm_of_norm_lt_one},
+\lean{geometricUniformComplexMomentGerm_of_one_lt_norm},
+\lean{analyticAt_geometricUniformComplexMomentGerm},
+\lean{geometricUniformComplexMomentGerm_reciprocity}, and
+\lean{geometricUniformComplexMomentGerm_moment_convolution}.  The definition
+selects the inner entire product when \(\lVert q\rVert<1\) and the exterior
+reciprocal germ when \(1<\lVert q\rVert\).  For
+\(q\ne0\) and \(\lVert q\rVert\ne1\), the fourth theorem is the
+\texttt{EventuallyEq} at zero
+\[
+ M_q(z)M_{q^{-1}}(-z)=1.
+\]
+This is equality of analytic germs, not a global pointwise identity.  In the
+inner regime, continuity and \(M_q(0)=1\) give a neighbourhood on which the
+inner product is nonzero, while the exterior definition rewrites
+\(M_{q^{-1}}(-z)\) as its inverse.  In the outer regime the same proof with
+\(q^{-1}\) reverses the factors.  Differentiating the local equality and
+using the product and negation rules gives
+\[
+ \sum_{k=0}^{n}\binom nk(-1)^{n-k}
+ M_q^{(k)}(0)M_{q^{-1}}^{(n-k)}(0)=\delta_{n0}.
+\]
+The derivatives are exactly the manuscript coefficients \(d_n\), so
+\nolinkurl{thm:qF-reciprocity} is Exact.  Neither theorem assigns a boundary
+value on \(\lVert q\rVert=1\), includes \(q=0\), chooses an explicit maximal
+disc, cancels globally across product zeros, proves normalized Mahler-germ
+uniqueness, or describes the exterior pole divisor.
+
 The inner complex \(1+2\) leaf produced the historical 906/11,461
 checkpoint, and the earlier exterior branch had the historical 907/11,464
 checkpoint.  In the merged chronology the complex product gave the historical
@@ -3011,7 +3056,10 @@ sharp-degree leaf gave the historical 921/11,575 checkpoint.  The Laurent leaf
 then gave 922/11,582, and the finite-prefix leaf gave the historical
 923/11,610 checkpoint.  The RatFunc leaf gives the historical 924/11,615
 checkpoint, the two probability theorems give 924/11,617, and the Legendre
-biorthogonality leaf gives the live 925/11,619 census.
+biorthogonality leaf gives the historical 925/11,619 census.  Subsequent
+merged-main additions give the pre-reciprocity 930/11,678 checkpoint; public
+complex-product differentiability gives 930/11,679, and the reciprocity leaf
+gives the live 931/11,685 census.
 The existing
 \path{GeometricResidualMoments.lean} module now has zero definitions and nine
 public theorems.  Its
@@ -3034,12 +3082,14 @@ commutative semiring.  Composed with
 rational-polynomial half-base convention.  It needs neither \(b\ne0\) nor
 distinct transformed nodes and includes \(b=0\) and \(n=0\); it does not
 extend the concrete half-base extractor to arbitrary coefficient rings.
-The q forward ledger is 181 Exact / 78 Partial / 15 None / 8 interface rows:
+The q forward ledger is 182 Exact / 78 Partial / 14 None / 8 interface rows:
 \nolinkurl{p7:thm:Pn} moves Partial-to-Exact and
 \nolinkurl{prop:qF-P-degree-sharp} moves None-to-Exact, while the RatFunc
 assembly moves \nolinkurl{thm:qF-moment-polynomial} Partial-to-Exact and the
 probability extension moves \nolinkurl{prop:up-tail} and
 \nolinkurl{cor:up-moments} Partial-to-Exact.
+The reciprocity leaf additionally moves
+\nolinkurl{thm:qF-reciprocity} None-to-Exact.
 These
 additions are source-only, and the retained 257-page PDF
 remains explicitly historical; no PDF was built for this update.
@@ -9969,11 +10019,13 @@ the polynomial evaluation with the finite-q-Pochhammer normalization of the
 \nolinkurl{p7:eq:Pn-def} is Exact in this real contraction regime.  The
 exhaustive public surface of
 \path{GeometricUniformComplexMomentProduct.lean} is the definition
-\path{Fabius.geometricUniformComplexMomentProduct} and the two theorems
-\path{Fabius.hasProdLocallyUniformly_geometricUniformComplexMomentProduct} and
+\path{Fabius.geometricUniformComplexMomentProduct} and the three theorems
+\path{Fabius.hasProdLocallyUniformly_geometricUniformComplexMomentProduct},
+\path{Fabius.differentiable_geometricUniformComplexMomentProduct}, and
 \path{Fabius.geometricUniformMomentPolynomial_eval₂_eq_complexMomentProduct_taylorCoefficient}.
-They construct the actual locally uniform product and its normalized
-Taylor-coefficient bridge for every complex \(\lVert q\rVert<1\).  This is an
+They construct the actual locally uniform product, prove its complex
+differentiability, and give its normalized Taylor-coefficient bridge for
+every complex \(\lVert q\rVert<1\).  This is an
 analytic analogue rather than a complex probability-moment identity.  The
 exhaustive public surface of
 \path{GeometricUniformExteriorComplexMomentGerm.lean} is the definition
@@ -9995,6 +10047,21 @@ specialization.  Accordingly \nolinkurl{thm:qF-moment-polynomial} is Exact by
 composition.  Neither this algebraic continuation nor either analytic leaf
 asserts an analytic value at a genuine unit-root pole or a unit-circle
 continuation theorem.
+
+The exhaustive \(1+5\) companion
+\path{GeometricUniformMomentReciprocity.lean} consists of
+\path{Fabius.geometricUniformComplexMomentGerm},
+\path{Fabius.geometricUniformComplexMomentGerm_of_norm_lt_one},
+\path{Fabius.geometricUniformComplexMomentGerm_of_one_lt_norm},
+\path{Fabius.analyticAt_geometricUniformComplexMomentGerm},
+\path{Fabius.geometricUniformComplexMomentGerm_reciprocity}, and
+\path{Fabius.geometricUniformComplexMomentGerm_moment_convolution}.  For
+\(q\ne0\) and \(\lVert q\rVert\ne1\), its last two declarations prove the
+local analytic-germ reciprocity and its all-degree binomial derivative
+convolution.  The reciprocal equality is an \path{EventuallyEq} at zero, not
+a global cancellation across product zeros.  It makes
+\nolinkurl{thm:qF-reciprocity} Exact and adds no unit-circle, maximal-disc,
+uniqueness, or pole-divisor claim.
 
 \item The five theorems of \path{FinitePolynomialFilterExactness.lean} are
 \path{Fabius.polynomialFilter_response_eq},
