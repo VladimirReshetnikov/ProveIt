@@ -55,7 +55,6 @@ theorem cayleyKernelCoeff_eq_factorial (m : ℕ) :
   have h1 : ((m : ℝ) + 1) ≠ 0 := by positivity
   rw [cayleyKernelCoeff, hfac]
   field_simp
-  ring
 
 /-- `Φ` has constant term `1`. -/
 @[simp] theorem cayleyKernelCoeff_zero : cayleyKernelCoeff 0 = 1 := by
@@ -95,7 +94,7 @@ theorem tsum_exp_shift_two (v : ℝ) :
   have hs := Real.summable_pow_div_factorial v
   have h := hs.sum_add_tsum_nat_add 2
   rw [← exp_eq_tsum_pow_div_factorial v] at h
-  simp only [Finset.sum_range_succ, Finset.sum_range_one, pow_zero, pow_one,
+  simp only [Finset.sum_range_succ, pow_zero, pow_one,
     Nat.factorial_zero, Nat.factorial_one, Nat.cast_one, div_one] at h
   linarith
 
