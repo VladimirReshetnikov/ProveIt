@@ -4,8 +4,10 @@ Everything in this group is now one document.
 
 > [`Transseries_And_Inversion/`](Transseries_And_Inversion/) —
 > *Transseries: the polynomial–logarithmic calculus, series reversal at
-> infinity, and the inversion of rapidly growing functions*, 693 A4 pages,
-> 4 September 2026.
+> infinity, and the inversion of rapidly growing functions*. The current
+> source is accompanied by a retained historical A4 PDF from the consolidation
+> checkpoint; the source now postdates that artifact, and no render parity is
+> claimed. 4 September 2026.
 
 ## What was merged
 

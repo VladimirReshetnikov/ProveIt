@@ -21,8 +21,8 @@ so no PDF was rebuilt for it.  The same holds for the 2026-09-02 split that
 moved the six polynomial-logarithmic transseries packages out of `lambert-w/`
 into the new `series-and-transseries/` group.
 
-**Current artifact checkpoint (2026-09-04).** The live Lean audit scans 934
-source modules and 11,709 public declarations, with no missing module headers or
+**Current artifact checkpoint (2026-09-04).** The live Lean audit scans 944
+source modules and 11,806 public declarations, with no missing module headers or
 declaration comments. The reciprocity leaf's 931/11,685 checkpoint remains
 historical; the subsequently merged upstream `DyadicBoundaryIdentity.lean`
 and `FinitePrefixThueMorseCollapse.lean` modules add two modules and ten public
@@ -30,7 +30,11 @@ declarations, giving the historical 933/11,695 checkpoint. The incoming union
 adds one module and fourteen public declarations: the new zero-definition/
 six-theorem `ProuhetBaseTwoBridge.lean` module, one theorem added to
 `DyadicBoundaryIdentity.lean`, and seven theorems added to
-`ThueMorseNewmanSelfSimilarity.lean`. This gives the live 934/11,709 census.
+`ThueMorseNewmanSelfSimilarity.lean`. This gives the historical 934/11,709
+census. The subsequent transseries-algebra integration gives the historical
+943/11,791 checkpoint. The exhaustive 1+11 `TransseriesFlat.lean` leaf and
+three integer-Laurent additions to `TransseriesDifferentialBlock.lean` then
+give the live 944/11,806 census.
 Several PDFs below are retained,
 readable publication checkpoints rather than renders of the final merged TeX.
 In particular, the primary exposition, Lean walkthrough, canonical frontier,
@@ -582,7 +586,11 @@ declarations, giving the historical 933/11,695 census. The incoming union adds
 one module and fourteen public declarations: the new zero-definition/
 six-theorem `ProuhetBaseTwoBridge.lean` module, one theorem added to
 `DyadicBoundaryIdentity.lean`, and seven theorems added to
-`ThueMorseNewmanSelfSimilarity.lean`. This gives the live 934/11,709 census.
+`ThueMorseNewmanSelfSimilarity.lean`. This gives the historical 934/11,709
+census. The subsequent transseries-algebra integration gives the historical
+943/11,791 checkpoint. The exhaustive 1+11 `TransseriesFlat.lean` leaf and
+three integer-Laurent additions to `TransseriesDifferentialBlock.lean` give
+the live 944/11,806 census.
 In the current semantic union, the subsequent
 zero-definition/two-theorem greater-than-one leaf makes `cor:qgreaterone`
 Exact, and the scaled-geometric polynomial theorem completes
@@ -593,8 +601,10 @@ in `HalfQBinomialRootSimplicity.lean`, composed with the complete rational
 root classification in `HalfQBinomial.lean`, makes
 `cor:halfbase-root-locus` Exact while leaving
 `cor:qbinom-inversion-law` Partial. The live semantic-union facade census is
-934/11,709; the historical dyadic/finite-prefix census is 933/11,695 and the
-historical reciprocity census is 931/11,685, while the RatFunc-only
+944/11,806; the historical transseries-algebra census is 943/11,791, the
+historical dyadic/Prouhet census is 934/11,709, the earlier
+dyadic/finite-prefix census is 933/11,695, and the historical reciprocity
+census is 931/11,685, while the RatFunc-only
 924/11,615 and incoming-only 924/11,614 counts remain historical branch
 checkpoints. The q forward totals are 182 Exact / 78 Partial / 14 None / 8
 N/A, the relevant Dyadic Gaussian--Thue--Morse chapter is 13/43/0/0, and the
@@ -638,13 +648,13 @@ all forty-two articles across `polynomial-logarithmic-transseries/`,
 `special-function-inversion/` and `sequence-transseries/` are now the single
 volume `Transseries_And_Inversion/`, and those five directories have been
 deleted after a residue audit.  The paragraphs below record what was filed,
-not what is present; git history is the archive.  The first two overlap enough
-that a later consolidation may merge them, but that comparison has not been
-made, and neither has the comparison between the second and the fourth.
+not what is present; git history is the archive.  At intake the comparison
+among the overlapping subgroups had not been made; the canonical
+consolidation's concordance chapter now records that later comparison.
 
 | Directory | Document | Previous path |
 | --- | --- | --- |
-| `series-and-transseries/Transseries_And_Inversion/` | **Canonical consolidation of the whole `series-and-transseries` group.** *Transseries: the polynomial--logarithmic calculus, series reversal at infinity, and the inversion of rapidly growing functions* — 54,306-line source and the 694-page A4 PDF built from it in the same run; 15 parts, 58 chapters, 3,095 labels all distinct, no dangling references, no LaTeX errors, no undefined references. Merges forty-two independently written articles in five groups, thirty of which had already been consolidated once. Part~I orients (replacing four parallel expository introductions, proving what they state and demoting five theorems they quote without proof); the calculus parts develop the polynomial--logarithmic scale through arithmetic, composition and reversal at infinity, then Lambert~$\LambertW$ and Wright~$\omega$, then formal to analytic with certificates, then algorithms; the inversion parts add the exponential--power model, perturbed inversion, and the theory of inverting a sequence; the application parts invert $x+\LambertW(x)$, four combinatorial sequences, four special functions, and the Bell and Fubini numbers. A concordance chapter settles the comparison this group had recorded as open: the calculus and the inversion apparatus overlap far less than title matching suggests — of six apparent overlaps one is a genuine duplicate, one a strengthening, one has no counterpart, and three are different theorems, the two Lagrange--Bürmanns being the near-identity operator form and the classical coefficient form. All five source groups were residue-audited and deleted on 2026-09-04; the two previously consolidated volumes are absorbed verbatim, differing in 36 of 47,854 substantive lines, every difference a deliberate assembly transformation | consolidation of forty-two articles filed 2026-09-01 to -03, all of which it replaces; the sources survive in git history |
+| `series-and-transseries/Transseries_And_Inversion/` | **Canonical consolidation of the whole `series-and-transseries` group.** *Transseries: the polynomial--logarithmic calculus, series reversal at infinity, and the inversion of rapidly growing functions* — current source with a retained historical A4 PDF from the consolidation checkpoint; later editorial repairs and Lean crosswalks are source-only, so no render parity or current page count is claimed. Merges forty-two independently written articles in five groups, thirty of which had already been consolidated once. Part~I orients (replacing four parallel expository introductions, proving what they state and demoting five theorems they quote without proof); the calculus parts develop the polynomial--logarithmic scale through arithmetic, composition and reversal at infinity, then Lambert~$\LambertW$ and Wright~$\omega$, then formal to analytic with certificates, then algorithms; the inversion parts add the exponential--power model, perturbed inversion, and the theory of inverting a sequence; the application parts invert $x+\LambertW(x)$, four combinatorial sequences, four special functions, and the Bell and Fubini numbers. A concordance chapter settles the comparison this group had recorded as open: the calculus and the inversion apparatus overlap far less than title matching suggests — of six apparent overlaps one is a genuine duplicate, one a strengthening, one has no counterpart, and three are different theorems, the two Lagrange--Bürmanns being the near-identity operator form and the classical coefficient form. The current claim-level Lean crosswalk marks sequence scales/Poincaré uniqueness, flatness and the corrected invisible-function proposition, Dickson/Neumann with the required order dual, the displayed power--log limits and chosen sequence scales, the unit-series Bell identities, and the quadratic Catalan identity Exact; it keeps the unordered power--log scale package, the all-integer Laurent block-antiderivative statement, and the full quadratic core Partial at their documented boundaries. All five source groups were residue-audited and deleted on 2026-09-04; the two previously consolidated volumes are absorbed verbatim, differing in 36 of 47,854 substantive lines, every difference a deliberate assembly transformation | consolidation of forty-two articles filed 2026-09-01 to -03, all of which it replaces; the sources survive in git history |
 
 The consolidation is complete.  The six arrival packages and their
 retained historical PDFs were deleted once every source was absorbed and
@@ -653,8 +663,10 @@ history is the archive, and the volume's provenance appendix records
 each source's intake and absorbed receipts, what it uniquely contributed,
 and every convention reconciled against the notation catalogue.  The
 canonical volume is A4 with Libertinus, which also clears the styling
-debt recorded against the arrivals.  Lean crosswalking remains open and
-is scoped in the volume's formalization register.
+debt recorded against the arrivals.  The retained package PDF is a historical
+checkpoint and is not a render of the current source.  Lean coverage is now
+recorded claim by claim as Exact, Partial, Neighbouring, or Absent in the
+volume's inline crosswalks and formalization register.
 
 A second subgroup, `lambert-inverse-transseries/`, received three
 independently written articles on 2026-09-02 that invert `f(x) = x + W(x)`

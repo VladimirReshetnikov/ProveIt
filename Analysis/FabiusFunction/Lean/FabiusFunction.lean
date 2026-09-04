@@ -288,6 +288,7 @@ import FabiusFunction.AliasQBinomialBridge
 import FabiusFunction.MeanValueBracket
 import FabiusFunction.TransseriesHeight
 import FabiusFunction.TransseriesScale
+import FabiusFunction.TransseriesFlat
 import FabiusFunction.TransseriesWellBased
 import FabiusFunction.LambertShiftInverse
 import FabiusFunction.LambertInverseCoefficients

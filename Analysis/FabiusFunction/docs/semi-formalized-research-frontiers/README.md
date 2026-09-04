@@ -221,8 +221,12 @@ dyadic/finite-prefix checkpoint 933/11,695. The incoming union adds one module
 and fourteen public declarations: the new zero-definition/six-theorem
 `ProuhetBaseTwoBridge.lean` module, one theorem added to
 `DyadicBoundaryIdentity.lean`, and seven theorems added to
-`ThueMorseNewmanSelfSimilarity.lean`. This gives the live 934/11,709 census,
-with zero missing module headers and zero missing declaration comments.
+`ThueMorseNewmanSelfSimilarity.lean`. This gives the historical 934/11,709
+checkpoint. The subsequent transseries-algebra integration gives the
+historical 943/11,791 checkpoint. The exhaustive 1+11
+`TransseriesFlat.lean` leaf and three new integer-Laurent theorems in
+`TransseriesDifferentialBlock.lean` give the live 944/11,806 census, with zero
+missing module headers and zero missing declaration comments.
 
 The existing `FabiusFunction.ProbabilityLaplaceMoments` module then adds
 exactly two public theorems:
@@ -250,9 +254,10 @@ natural mesh `M`, every `l,m`, and `l <= padicValNat 2 M`. Thus
 does not prove the larger support/smoothness/parity/Fourier--Bessel theorem
 `thm:leg-Lambda` or the matrix-projector corollary. It gives the historical
 925/11,619 census; the historical reciprocity census is 931/11,685 and the
-historical dyadic/finite-prefix census is 933/11,695. The current live census
-is 934/11,709, as recorded above, with zero missing module headers and zero
-missing declaration comments.
+historical dyadic/finite-prefix census is 933/11,695. The later 934/11,709 and
+943/11,791 unions are also historical. The current live census is 944/11,806,
+as recorded above, with zero missing module headers and zero missing declaration
+comments.
 
 The retained frontier, primary, walkthrough, geometric-q, and representation
 PDFs predate these source-only overlays and claim no render parity.
@@ -309,8 +314,11 @@ declarations, giving the historical dyadic/finite-prefix 933/11,695 union.
 The incoming union adds one module and fourteen public declarations: the new
 zero-definition/six-theorem `ProuhetBaseTwoBridge.lean` module, one theorem
 added to `DyadicBoundaryIdentity.lean`, and seven theorems added to
-`ThueMorseNewmanSelfSimilarity.lean`. This gives the live 934/11,709 union,
-with zero documentation gaps.
+`ThueMorseNewmanSelfSimilarity.lean`. This gives the historical 934/11,709
+union. The subsequent transseries-algebra integration gives the historical
+943/11,791 checkpoint; `TransseriesFlat.lean` (1+11) and the three new
+integer-Laurent theorems in `TransseriesDifferentialBlock.lean` give the live
+944/11,806 union, with zero documentation gaps.
 
 `FabiusFunction.RvachevLaurentLeading` has one definition and six theorems.
 Its manuscript-normalized punctured-neighborhood limit, together with the
