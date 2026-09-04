@@ -38,7 +38,7 @@ symbols.
 * `norm_finiteQPochhammerIn_le`, `qPochhammerInfIn_norm_le_norm_finiteQPochhammerIn`:
   the real sandwich for the norms of finite symbols.
 * `gaussianMajorant`, `norm_gaussianBinomial_le`: the uniform bound.
-* `tendsto_gaussianBinomial_atTop`, `tendsto_gaussianBinomial_add_atTop`:
+* `tendsto_gaussianBinomial_atTop`, `tendsto_gaussianBinomial_add_const_atTop`:
   the fixed-column limit, unchanged by any fixed upper-index shift.
 * `isBigO_gaussianBinomial_sub_inv`, `isBigO_gaussianBinomial_add_sub_inv`:
   the corresponding geometric error estimates.
@@ -277,7 +277,7 @@ of `(q^m;q)_k` from one has the explicit bound
 
 This is the product estimate `‖∏(1+x_j)-1‖ ≤ exp(∑ ‖x_j‖)-1`, together with
 `∑_{j<k} ‖q^(m+j)‖ ≤ k ‖q‖^m`. -/
-theorem norm_finiteQPochhammerIn_pow_sub_one_le_exp {q : 𝕜}
+theorem norm_finiteQPochhammerIn_pow_sub_one_le_exp_of_norm_le_one {q : 𝕜}
     (hq : ‖q‖ ≤ 1) (m k : ℕ) :
     ‖finiteQPochhammerIn (q ^ m) q k - 1‖ ≤
       Real.exp ((k : ℝ) * ‖q‖ ^ m) - 1 := by
@@ -319,7 +319,7 @@ theorem isBigO_finiteQPochhammerIn_pow_sub_one {q : 𝕜}
   calc
     ‖finiteQPochhammerIn (q ^ m) q k - 1‖ ≤
         Real.exp ((k : ℝ) * ‖q‖ ^ m) - 1 :=
-      norm_finiteQPochhammerIn_pow_sub_one_le_exp hq.le m k
+      norm_finiteQPochhammerIn_pow_sub_one_le_exp_of_norm_le_one hq.le m k
     _ ≤ 2 * ((k : ℝ) * ‖q‖ ^ m) := hexp
     _ = (2 * k) * ‖q ^ m‖ := by rw [norm_pow]; ring
 
@@ -343,7 +343,7 @@ theorem tendsto_gaussianBinomial_atTop {q : 𝕜} (hq : ‖q‖ < 1) (k : ℕ) :
 /-- A fixed additive shift of the upper index does not change the
 fixed-column limit.  In particular, taking `r = k` gives
 `[n+k,k]_q → 1/(q;q)_k`. -/
-theorem tendsto_gaussianBinomial_add_atTop {q : 𝕜}
+theorem tendsto_gaussianBinomial_add_const_atTop {q : 𝕜}
     (hq : ‖q‖ < 1) (k r : ℕ) :
     Tendsto (fun n : ℕ => gaussianBinomial q (n + r) k) atTop
       (𝓝 (finiteQPochhammerIn q q k)⁻¹) := by

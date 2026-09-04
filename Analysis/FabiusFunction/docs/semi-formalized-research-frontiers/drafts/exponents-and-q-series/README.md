@@ -119,8 +119,13 @@ reciprocity checkpoint 931/11,685.  The incoming union adds one module and
 fourteen public declarations: the new zero-definition/six-theorem
 `ProuhetBaseTwoBridge.lean` module, one theorem added to
 `DyadicBoundaryIdentity.lean`, and seven theorems added to
-`ThueMorseNewmanSelfSimilarity.lean`.  This makes the live Lean audit 934
-modules and 11,709 public declarations.
+`ThueMorseNewmanSelfSimilarity.lean`.  This made 934 modules and 11,709
+public declarations an explicitly historical post-Prouhet checkpoint.
+Subsequent source-only transseries/Catalan and Thue--Morse additions made
+943/11,791 the next historical checkpoint.  The finalized one-definition/
+eleven-theorem `TransseriesFlat.lean` module and three integer-zpow theorems
+in `TransseriesDifferentialBlock.lean` make the live Lean audit 944 modules
+and 11,806 public declarations.
 
 The sibling source-only `FabiusFunction.GeometricRichardsonGenerating` module
 (three definitions and seven theorems) does not change this q-series package's
@@ -271,16 +276,21 @@ dyadic/finite-prefix census 933/11,695.  The incoming union adds one module and
 fourteen public declarations: the new zero-definition/six-theorem
 `ProuhetBaseTwoBridge.lean` module, one theorem added to
 `DyadicBoundaryIdentity.lean`, and seven theorems added to
-`ThueMorseNewmanSelfSimilarity.lean`.  This makes the live census 934/11,709.
+`ThueMorseNewmanSelfSimilarity.lean`.  This made 934/11,709 an explicitly
+historical post-Prouhet checkpoint.  Subsequent source-only
+transseries/Catalan and Thue--Morse additions made 943/11,791 the next
+historical checkpoint.  The finalized one-definition/eleven-theorem
+`TransseriesFlat.lean` module and three integer-zpow theorems in
+`TransseriesDifferentialBlock.lean` make the live census 944/11,806.
 That existing module adds
 `weightedSumDistribution_real_Ici_eq_rvachevUp_of_nonneg` and
 `integral_pow_weightedSumDistribution_eq_mul_intervalIntegral_rvachevUp`.
 Atomlessness identifies the strict and closed tails, and the second theorem
 is the exact full-law moment formula for every natural `n >= 1`; together
 with the existing global up/Fabius identities, these promote `prop:up-tail`
-and `cor:up-moments` to Exact.  The q ledger is 182/78/14/8, its relevant
+and `cor:up-moments` to Exact.  The q ledger is 181/79/14/8, its relevant
 Dyadic Gaussian--Thue--Morse chapter is 13/43/0/0, and the source projection
-is 95/383/60/9. The zero-definition/one-theorem
+is 103/375/60/9. The zero-definition/one-theorem
 `HalfQBinomialRootSimplicity.lean` leaf exports
 `halfQBinomial_sum_rootMultiplicity_two_pow`; with the complete rational
 root classification `halfQBinomial_sum_eq_zero_iff`, it makes
@@ -367,8 +377,8 @@ Current packages and retained intake records:
   and the historical artifact lineage. The completed
   [`source_concordance.csv`](q_pochhammer_q_binomial_monograph/source_concordance.csv)
   gives a reviewed disposition for all 547 source result environments from the
-  five merged publications. Its canonical destinations comprise 99 Lean-proved
-  rows, 379 human-proved
+  five merged publications. Its canonical destinations comprise 103 Lean-proved
+  rows, 375 human-proved
   frontier results, 60 not-applicable rows, and 9 conjectures. The historical
   [`theorem_concordance.csv`](q_pochhammer_q_binomial_monograph/theorem_concordance.csv)
   continues to account for all 260 inverse-source result environments, and
@@ -416,8 +426,8 @@ Current packages and retained intake records:
   theorems), and `GeometricUniformMomentReciprocity.lean` (one definition and
   five theorems). The existing `FinitePolynomialFunctional.lean` module now has
   zero definitions and sixteen public theorems. The forward crosswalk is now
-  182 Exact, 78 Partial, 14 None, and 8 interface rows; the source ledger is
-  95 Lean-proved, 383 human-proved
+  181 Exact, 79 Partial, 14 None, and 8 interface rows; the source ledger is
+  103 Lean-proved, 375 human-proved
   frontier, 60 not
   applicable, and 9 conjectures. The current `b899` 405-page monograph PDF
   renders this merged source and is synchronized by the receipt above; the
@@ -1158,7 +1168,7 @@ claims about the current canonical source. The historical pre-`d8b` and
 2026-09-04 receipts both appear above; neither is a parity claim for the
 current merged source.
 
-The latest validated forward formalization ledger has 282 rows: 182 Exact, 78
+The latest validated forward formalization ledger has 282 rows: 181 Exact, 79
 Partial, 14 with no counterpart, and 8 interface-only. The basic
 geometric-uniform row is Exact: `GeometricUniformRealization.lean` proves that
 an `iIndepFun` process of unit-interval coordinates with uniform marginal laws
@@ -1168,9 +1178,11 @@ seventeen theorems cover absolute convergence, the interval and exact support,
 mean one half, reflection, the conditioning/CDF equation and exterior values;
 the affine fixed-point theorem uses a fresh canonical-law copy independent of
 the head coordinate. The fixed-column row is likewise Exact: the new
-zero-definition/ten-theorem rate leaf adds the shifted limit, explicit
-nonasymptotic estimates, and all four relative/additive Big-O forms, including
-`q = 0`. Both the retained source theorem and its older redirected fixed-`k`
+zero-definition/eight-theorem rate leaf adds explicit nonasymptotic estimates
+and all four relative/additive Big-O forms, including `q = 0`, while reusing the
+exponential product bound and shifted limit from the one-definition,
+twenty-seven-theorem `QBinomialTheoremInfinite` surface. Both the retained
+source theorem and its older redirected fixed-`k`
 donor row are therefore Lean-proved in the current source projection. The original
 191-result pre-Fabius core had 36 exact, 29 partial, 123 with no counterpart,
 and 3 interface-only entries. The four integrated-guide chapters add 31
@@ -1215,7 +1227,7 @@ compatibility spelling of its primary identity),
 `QPochhammerInfinite.lean` (one definition, 29 theorems),
 `QBinomialReciprocity.lean` (four theorems),
 `GaussianBinomialBounds.lean` (zero definitions, six theorems),
-`GaussianBinomialFixedColumnRate.lean` (zero definitions, ten theorems),
+`GaussianBinomialFixedColumnRate.lean` (zero definitions, eight theorems),
 `GaussianBinomialPalindromic.lean` (zero definitions, fourteen theorems),
 `GaussianBinomialPolynomialStructure.lean` (zero definitions, five theorems),
 `GaussianBinomialCumulants.lean` (two definitions, twenty-four theorems),
@@ -1584,21 +1596,22 @@ closed, and `GaussianBinomialGreaterOneAsymptotics.lean` closes the compound
 greater-than-one row at its exact fixed-column and central normalizations. The
 primitive-root value in the Babbage corollary is exact, while its derivative
 clause keeps that compound row Partial.
-`GaussianBinomialFixedColumnRate.lean` adds no definitions and exactly ten
-theorems: `norm_finiteQPochhammerIn_pow_sub_one_le_exp`,
-`norm_finiteQPochhammerIn_pow_sub_one_le`,
+`GaussianBinomialFixedColumnRate.lean` adds no definitions and exactly eight
+theorems: `norm_finiteQPochhammerIn_pow_sub_one_le`,
 `norm_finiteQPochhammerIn_self_mul_gaussianBinomial_sub_one_le`,
 `norm_gaussianBinomial_sub_inv_finiteQPochhammerIn_le`,
 `norm_gaussianBinomial_add_sub_inv_finiteQPochhammerIn_le`,
-`tendsto_gaussianBinomial_add_atTop`,
 `gaussianBinomial_fixedColumn_relativeError_isBigO`,
 `gaussianBinomial_shifted_fixedColumn_relativeError_isBigO`,
 `gaussianBinomial_fixedColumn_error_isBigO`, and
-`gaussianBinomial_shifted_fixedColumn_error_isBigO`. They give the generic
-product defect, denominator-free relative estimate, explicit fixed/shifted
-additive errors, shifted limit, and all four relative/additive Big-O forms.
-Their generic multiplicative-norm-ring and normed-field hypotheses are
-preserved, and every statement includes `q = 0`.
+`gaussianBinomial_shifted_fixedColumn_error_isBigO`. The closure reuses
+`norm_finiteQPochhammerIn_pow_sub_one_le_exp` and
+`tendsto_gaussianBinomial_add_atTop` from the one-definition,
+twenty-seven-theorem `QBinomialTheoremInfinite.lean` module. Together they give
+the generic product defect, denominator-free relative estimate, explicit
+fixed/shifted additive errors, shifted limit, and all four relative/additive
+Big-O forms. Their generic multiplicative-norm-ring and normed-field hypotheses
+are preserved, and every statement includes `q = 0`.
 The terminating basic-hypergeometric closure consists of
 `TwoPhiOneReversal.lean` (two definitions and twelve theorems) and
 `QChuVandermonde.lean` (ten theorems). It makes both q-Chu evaluations and the

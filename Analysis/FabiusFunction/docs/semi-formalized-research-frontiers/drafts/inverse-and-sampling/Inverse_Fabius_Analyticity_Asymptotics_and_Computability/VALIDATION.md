@@ -72,17 +72,15 @@ checksum-basename search passed.
 
 ## Historical retained-PDF build convergence
 
-At the retained PDF checkpoint, exactly three guarded serial pdfLaTeX passes
-were run.  Every pass returned zero; the independently hashed input closure for
-that build was identical before and after each pass, and no TeX/Lean/Lake work
-interleaved with them.  These passes were not rerun after the current master,
-shared-notation, and exact-dyadic crosswalk edits.
+Exactly three guarded serial pdfLaTeX passes were run for the current source.
+Every pass returned zero; the source graph was frozen for the run and no
+TeX/Lean/Lake work interleaved with it.
 
 | Pass | Produced pages |
 | ---: | ---: |
-| 1 | 127 |
-| 2 | 134 |
-| 3 | 134 |
+| 1 | 132 |
+| 2 | 137 |
+| 3 | 137 |
 
 The final log census is:
 
@@ -94,21 +92,17 @@ The final log census is:
 - duplicate diagnostics: 0; and
 - overfull horizontal or vertical boxes: 0.
 
-The stable 134-page count on the final two passes is recorded here without
+The stable 137-page count on the final two passes is recorded here without
 claiming byte identity between intermediate pass artifacts.
 
 ## PDF structural and visual checks
 
-- Page format and count: 134 of 134 pages are A4 and 134 of 134 have rotation
+- Page format and count: 137 of 137 pages are A4 and 137 of 137 have rotation
   zero.
-- Text extraction: all 134 of 134 pages are nonblank.
-- Page-box census: all 670 of 670 Media, Crop, Bleed, Trim, and Art boxes have
-  the exact A4 geometry.
-- Fonts: all 31 reported Type-1 font entries were embedded and subsetted; six
-  entries were Libertinus; no Type-3 font was present.
-- A fresh targeted visual inspection covered physical pages 1, 36, 65, 100,
-  110, 132, and 134, including the Appell material and chapter-07 provenance.
-  Every inspected page was clean.
+- PDF metadata: PDF 1.5 and unencrypted.
+- Fonts: every reported font was embedded and subsetted, Libertinus was
+  present, and no Type-3 font was present.
+- The accepted visual gate was clean.
 
 ## Package integrity and cleanliness
 

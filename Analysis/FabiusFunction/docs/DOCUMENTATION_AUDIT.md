@@ -112,7 +112,7 @@ numbers rather than copying these historical values.
 The historical post-merge 2026-09-01 inventory contained 675 modules and 8,909
 lexically visible public declarations, with zero missing module headers and
 zero missing doc comments.  A fresh 2026-09-04 audit for this documentation
-pass scans 952 facade-reachable modules and 11,884 explicit public declarations.  It
+pass scans 970 facade-reachable modules and 12,051 explicit public declarations.  It
 finds no missing module header or declaration comment, including throughout
 `FabiusInverseExactDyadicModulus.lean`, `JacobiTwoSquareCount.lean`, and
 `LagrangeRvachevMatrix.lean`, as well as the incoming
@@ -147,13 +147,23 @@ finds no missing module header or declaration comment, including throughout
 `TransseriesFlat.lean`, `TransseriesHarmonicIncrement.lean`, and
 `WrightOmega.lean` tranche together with the integer-exponent extension of
 `TransseriesDifferentialBlock.lean`,
+together with `BackwardErrorExistence.lean`, `CayleyKernel.lean`,
+`CayleyLocalCoordinate.lean`, `CayleyTreeFunction.lean`,
+`DivisorTransform.lean`, `ExpSeriesRecurrence.lean`,
+`FabiusEndpointTwoTerm.lean`, `LambertCorrectionEquation.lean`,
+`LambertShiftConcavity.lean`, `LaplaceMomentBoundsSharp.lean`,
+`LeastTermIndex.lean`, `TouchardEulerOperator.lean`,
+`TransseriesBlockClasses.lean`, `TransseriesDifferentialClosure.lean`, and
+`TransseriesMonomialUniqueness.lean`,
+together with `StirlingSeriesCoefficients.lean`,
+`WrightOmegaTwoOrders.lean`, and `UnitSeriesPowerRecurrence.lean`,
 together with the strengthened
 `ProbabilityLaplaceMoments.lean` surface,
 as well as the sixteenth theorem in `FinitePolynomialFunctional.lean`.
 Relative to the
-610/8,318 activation checkpoint, the current tree adds 342 modules and 3,566 declarations.
+610/8,318 activation checkpoint, the current tree adds 360 modules and 3,733 declarations.
 Relative to the earlier 630/8,552 merged checkpoint, concurrent source work
-adds 322 modules and 3,332 declarations.  The post-merge 675/8,909 inventory,
+adds 340 modules and 3,499 declarations.  The post-merge 675/8,909 inventory,
 the intervening 903/11,448 Lambert-series inventory, and the immediately
 preceding 914/11,555 scaled-geometric and 915/11,556 real-MGF-bridge
 checkpoints, together with the incoming branch's 906/11,461 complex-product
@@ -190,13 +200,157 @@ historical 943/11,787 census.  The later nine-module transseries tranche adds
 90 declarations, and four integer-exponent theorems extend
 `TransseriesDifferentialBlock.lean`; this gave the historical incoming
 952/11,881 checkpoint.  The two explicit OrderDual Neumann wrappers and the
-Wright-omega analyticity theorem subsequently bring the live census to
-952/11,884.
+Wright-omega analyticity theorem subsequently give the historical exactness
+checkpoint 952/11,884.  The next fifteen-module tranche contributes 112
+declarations, while five net declarations enter existing modules, giving the
+historical 967/12,001 checkpoint.  Two new leaves and 24 declarations in
+existing modules then give the historical intermediate 969/12,048 checkpoint;
+`UnitSeriesPowerRecurrence` 0+3 gives the live census 970/12,051.
 On the earlier
 exterior-germ branch, the inner-complex 906/11,461 checkpoint was followed by
 the branch-local 907/11,464 checkpoint; its preceding real-MGF and algebraic
 moment-polynomial checkpoints were 905/11,458 and 904/11,457.  These older
 branch-local counts are explicitly historical.
+
+#### Consolidated transseries foundations and corrected flatness
+
+The incoming-branch snapshot in this subsection ran from 943/11,791 to
+944/11,806 by adding its vector 1+11 view of `TransseriesFlat` and three
+Laurent-block theorems.  Those figures are historical and incomplete relative
+to the merged union: the retained scalar compatibility API, explicit
+OrderDual wrappers, later fifteen-leaf tranche, two new leaves, Appell
+extension, and power-recurrence leaf are counted in the live 970/12,051 census
+above.  The inventories below therefore state the semantic union, while
+generated `to_additive` names remain intentionally outside the lexical count.
+
+`TransseriesScale.lean` is exhaustively 3+6.  Its public definitions/structure
+are `IsAsymptoticScale`, `poincarePartialSum`, and `IsPoincareExpansion`; its
+theorems are `poincarePartialSum_zero`, `poincarePartialSum_succ`,
+`IsPoincareExpansion.isLittleO_succ_remainder`,
+`IsPoincareExpansion.tendsto_coeff`,
+`IsPoincareExpansion.tendsto_coeff_div`, and
+`IsPoincareExpansion.coeff_unique`.  The `q0:def:scale`, `q0:def:poincare`,
+`q0:eq:coefficients`, and `q0:prop:uniqueness` correspondence is **Exact**.
+The scale and coefficients are respectively scalar- and vector-valued over an
+arbitrary normed field and filter; uniqueness alone explicitly requires the
+proper-filter hypothesis `NeBot`.
+
+`TransseriesFlat.lean` is exhaustively 4+22 in the merged union.  Its vector
+core is `IsFlat`; `isFlat_zero`, `IsFlat.add`, `IsFlat.neg`, `IsFlat.sub`,
+`IsFlat.const_smul`, `isFlat_exp_neg_rpow_atTop`,
+`IsPoincareExpansion.add_flat`,
+`IsPoincareExpansion.sub_same_coeff_isFlat`,
+`IsPoincareExpansion.iff_sub_isFlat`,
+`IsFlat.smul_of_scale_absorption`, and
+`IsFlat.smul_of_isBigO_inv_pow`.  Its retained scalar compatibility layer is
+`flatSubmodule`, `AbsorbsScale`, `powScale`; `mem_flatSubmodule_iff`,
+`IsFlat.mul_absorbsScale`, `absorbsScale_const`,
+`IsPoincareExpansion.add_isFlat`, `isFlat_sub_of_isPoincareExpansion`,
+`isPoincareExpansion_iff_isFlat_sub`, `isPoincareExpansion_zero_iff`,
+`powScale_eq_rpow`, `absorbsScale_of_isBigO_pow`, `isFlat_exp_neg`, and
+`isPoincareExpansion_add_exp_neg`.  Thus `q0:def:flat` and the corrected
+power-scale `q0:prop:invisible` are **Exact**: the concrete exponentially
+small term, vector-space closure, preservation of coefficients, and the exact
+same-coefficient iff are named.  The generic multiplier theorem assumes
+explicitly that for every target `N` there is an `M` for which
+`m * φ M = O(φ N)`; only the power-scale specialization derives that
+absorption from an inverse-power growth estimate and eventual nonvanishing.
+No polynomial-growth multiplier closure for an arbitrary asymptotic scale is
+claimed.
+
+`TransseriesWellBased.lean` has no definitions and seven lexically visible
+theorems: `dickson_isPWO`, `dickson_antichain_finite`, `dickson_isPWO_pi`,
+`neumann_isPWO`, `neumann_finite_factorizations`,
+`neumann_isPWO_orderDual`, and `neumann_finite_factorizations_orderDual`.
+The multiplicative theorems also
+generate the public additive names `neumann_add_isPWO` and
+`neumann_finite_decompositions`, which the audit does not count.  The
+`q0:lem:dickson` and `q0:lem:neumann` statuses are **Exact**.  The explicit
+wrappers state the manuscript orientation; over a partial order the precise
+claim is `Set.IsPWO` on `OrderDual`, not a greatest-element characterization.
+
+`TransseriesPolyLogScale.lean` has no definitions and four theorems:
+`isLittleO_plMonomial`, `isAsymptoticScale_plMonomial`,
+`isAsymptoticScale_plMonomial_pow`, and
+`isAsymptoticScale_plMonomial_log`.  Together with the three-way limit API in
+`TransseriesScaleDominance.lean`, these make the chosen lexicographically
+decreasing sequence consequence of `plt:lem:mot-dominance` **Exact**.  They do
+not replace the source's unordered set-indexed scale by a formal set-indexed
+API.
+
+`TransseriesScaleDominance.lean` is exhaustively 1+7.  Its definition is
+`plMonomial`; its theorems are `tendsto_plMonomial_atTop_zero`,
+`plMonomial_div_eventuallyEq`, `tendsto_plMonomial_div_atTop_zero`,
+`tendsto_plMonomial_div_atTop_one`, `plMonomial_pos`,
+`tendsto_plMonomial_div_atTop`, and
+`plMonomial_generators_dominance`.  Together with the preceding 0+4 leaf,
+these declarations make the displayed three-way limits and every chosen
+decreasing sequence scale **Exact**.  The compound
+`plt:lem:mot-dominance` remains **Partial** because the unordered set-indexed
+scale and a named reverse generator implication are not packaged.
+
+`TransseriesHeight.lean` has no definitions and three theorems:
+`isLittleO_log_pow_rpow`, `isLittleO_log_pow_id`, and
+`isLittleO_pow_mul_log_pow_exp`.  The displayed `q0:eq:height` comparison and
+its logarithm-versus-power dual are **Exact**.  The broader prose taxonomy and
+comparison algorithm for arbitrarily nested exponential heights and
+logarithmic depths remain **Partial**.
+
+`TransseriesBlockAntiderivative.lean` is exhaustively 3+12.  Its definitions
+are `blockOperator`, `blockAntiderivative`, and `resonantAntiderivative`.  Its
+theorems are `sum_sub_sum_shift`, `blockOperator_zero`, `blockOperator_sub`,
+`blockOperator_blockAntiderivative`, `blockOperator_surjective`,
+`natDegree_C_mul_of_ne_zero`, `natDegree_blockOperator`,
+`blockOperator_injective`, `blockOperator_bijective`,
+`derivative_resonantAntiderivative`, `derivative_surjective`, and
+`natDegree_resonantAntiderivative`.
+
+`TransseriesDifferentialBlock.lean` is now exhaustively 0+12.  Its theorems are
+`derivation_pow_t`, `derivation_block`, `derivation_zpow_block`,
+`exists_zpow_block_primitive`, `existsUnique_zpow_block_primitive`,
+`exists_block_primitive`, `derivation_block_zero`, and
+`exists_block_primitive_resonant`, together with the retained wrappers
+`derivation_val_inv`, `derivation_pow_inv`, `derivation_zpow_t`, and
+`derivation_block_zpow`.  The three newly public Laurent theorems
+give the source-shaped integer block law, nonresonant existence with preserved
+logarithmic degree, and uniqueness under explicit injectivity of evaluation at
+`L`.  The integer formula `plt:eq:mot-block-derivative` is **Exact**, as are
+the polynomial-operator clauses.  The compound
+`plt:lem:mot-block-antiderivative` remains **Partial**: the implementation uses
+an abstract ambient field rather than constructing the concrete Laurent ring,
+does not prove evaluation injectivity for that concrete model, and has no
+single resonant uniqueness-up-to-constants wrapper.
+
+`UnitSeriesBellCoefficients.lean` has no public definitions and exactly sixteen
+theorems: `ordPartialBell_eq_factorialRatio_partialBell`,
+`factorial_mul_ordPartialBell_eq_factorial_mul_partialBell`,
+`coeff_fallingSeries_subst_eq_sum_ordPartialBell`,
+`coeff_fallingSeries_subst_eq_sum_ordPartialBell_of_pos`,
+`coeff_fallingSeries_subst_eq_sum_partialBell`,
+`coeff_negBinomSeries_subst_eq_sum_ordPartialBell`,
+`coeff_negBinomSeries_subst_eq_sum_ordPartialBell_of_pos`,
+`coeff_logOf_eq_sum_ordPartialBell`,
+`egfA_factorialDenormalize_coeff_eq`,
+`bellWeightSeries_factorialDenormalize_coeff_eq`,
+`coeff_logOf_eq_sum_partialBell`, `coeff_exp_subst_eq_completeBell`,
+`coeff_exp_subst_eq_partitionExpSum`,
+`coeff_exp_subst_eq_sum_weightedPartitions`,
+`coeff_exp_subst_eq_sum_div_weightedPartitions`, and
+`coeff_exp_subst_recurrence`.  The `p0:lem:bell-conversion`,
+`p0:lem:power-log`, and `p0:cor:exp-log-jets` correspondence is **Exact as
+formal power-series algebra**; no analytic convergence or logarithm branch is
+asserted.
+
+`QuadraticCoreCatalan.lean` is exhaustively 3+8.  Its definitions are
+`quadHalf`, `halfBinom`, and `quadCoef`; its theorems are `catalan_two_step`,
+`quadHalf_zero`, `quadHalf_antidiagonal`, `halfBinom_step`, `quadHalf_rat`,
+`quadCoef_rat`, `quadCoef_zero`, and `quadCoef_rec`.  The Catalan coefficient
+statement `p6:prop:quadratic-core-catalan` is **Exact**.  The larger
+`p6:lem:quadratic-core` remains **Partial**: the named family satisfies the
+quadratic equation coefficient by coefficient, but there is no packaged full
+power-series identity, positive-valuation uniqueness theorem, or formal
+square-root identity.  `p6:thm:deepest-pole`, identifying this algebraic family
+inside the Gamma and Barnes inversions, remains unformalized.
 
 #### Terminating `₂φ₁` reversal and q-Chu--Vandermonde tranche
 
@@ -440,29 +594,34 @@ q-Gamma quotient, like the product evaluation used in the proof, is zero.
 This closes `thm:regular-central-sum`; it does not formalize the separate
 classical-limit corollary.
 
-#### Effective fixed-column Gaussian-rate tranche
+#### Effective fixed-column Gaussian-rate tranche and current ownership
 
-`GaussianBinomialFixedColumnRate.lean` adds one source module, no definitions,
-and exactly ten theorems:
-`norm_finiteQPochhammerIn_pow_sub_one_le_exp`,
+At its historical incoming checkpoint, `GaussianBinomialFixedColumnRate.lean`
+was 0+10.  In the merged union it is 0+9, while the generalized product bound
+and arbitrary fixed-shift limit are canonically owned by
+`QBinomialTheoremInfinite.lean`.  Its current exhaustive names are
+`norm_finiteQPochhammerIn_pow_sub_one_le_exp'`,
 `norm_finiteQPochhammerIn_pow_sub_one_le`,
 `norm_finiteQPochhammerIn_self_mul_gaussianBinomial_sub_one_le`,
 `norm_gaussianBinomial_sub_inv_finiteQPochhammerIn_le`,
 `norm_gaussianBinomial_add_sub_inv_finiteQPochhammerIn_le`,
-`tendsto_gaussianBinomial_add_atTop`,
 `gaussianBinomial_fixedColumn_relativeError_isBigO`,
 `gaussianBinomial_shifted_fixedColumn_relativeError_isBigO`,
 `gaussianBinomial_fixedColumn_error_isBigO`, and
-`gaussianBinomial_shifted_fixedColumn_error_isBigO`.
+`gaussianBinomial_shifted_fixedColumn_error_isBigO`.  The two current
+`QBinomialTheoremInfinite` names are
+`norm_finiteQPochhammerIn_pow_sub_one_le_exp_of_norm_le_one` and
+`tendsto_gaussianBinomial_add_const_atTop`.
 
-The first two estimates hold in every normed commutative ring with normalized
-multiplicative norm when `‖q‖ ≤ 1`: they bound
-`‖(q^m;q)_k-1‖` by `exp(k‖q‖^m)-1` and then by
-`(k exp k)‖q‖^m`.  Under `k≤n`, the third gives the denominator-free relative
+The upstream `norm_finiteQPochhammerIn_pow_sub_one_le_exp` and the first local
+estimate hold in every normed commutative ring with normalized multiplicative
+norm when `‖q‖ ≤ 1`: they bound `‖(q^m;q)_k-1‖` first by
+`exp(k‖q‖^m)-1` and then by `(k exp k)‖q‖^m`.  Under `k≤n`, the next local theorem gives the denominator-free relative
 bound `‖(q;q)_k[n,k]_q-1‖ ≤ (k exp k)‖q‖^(n-k+1)`, which remains meaningful at
 roots of unity.  Over any normed field, `‖q‖<1` suffices for the fixed and
-shifted nonasymptotic additive bounds, the shifted `Tendsto`, and all four
-relative/additive `IsBigO` results at the rates `q^(n-k+1)` and `q^(n+1)`.
+shifted nonasymptotic additive bounds and all four relative/additive `IsBigO`
+results at the rates `q^(n-k+1)` and `q^(n+1)`.  The shifted
+`tendsto_gaussianBinomial_add_atTop` theorem is reused from the upstream module.
 There is no completeness or `q≠0` hypothesis, and the displayed constant is
 elementary rather than sharp.  Together with the pre-existing
 `tendsto_gaussianBinomial_atTop`, the shifted limit and two relative-error
@@ -470,9 +629,11 @@ theorems discharge every clause of `thm:fixed-column-limit`; the two additive
 theorems are stronger companion estimates.
 
 Together with the prior 905/11,474 branch inventory and the three-declaration
-Lambert leaf, the geometric-uniform and regular-central leaves, and this final
-ten-theorem leaf, the fixed-column checkpoint was 909 modules and 11,508
-public declarations.
+Lambert leaf, the geometric-uniform and regular-central leaves, the incoming
+pre-dedup ten-theorem version gave the historical fixed-column checkpoint of
+909 modules and 11,508 public declarations.  Canonical upstream ownership of
+the two shared names changes the per-module split, not that historical branch
+census.
 
 #### Greater-than-one Gaussian asymptotics
 
@@ -788,8 +949,10 @@ concurrent declarations outside that tranche, gave the historical 943/11,787
 inventory.  The later nine-module/90-declaration transseries tranche and four
 new declarations in `TransseriesDifferentialBlock.lean` gave the historical
 incoming 952/11,881 inventory.  The subsequent three-theorem exactness overlay
-gives the live 952/11,884 inventory, again with no missing module header or
-public declaration comment.
+gave the historical 952/11,884 inventory.  The current fifteen-module tranche
+and five net declarations in existing modules give the historical 967/12,001
+checkpoint.  The later three-module union gives the live 970/12,051 inventory,
+again with no missing module header or public declaration comment.
 
 `FinitePolynomialFunctional.lean` remains a zero-definition module and now has
 exactly sixteen public theorems:
@@ -874,8 +1037,9 @@ historical 934/11,709 inventory.  The first series/transseries tranche and six
 concurrent declarations then gave the
 historical 943/11,787 checkpoint.  The later nine-module transseries tranche
 and four integer-exponent differential-block declarations gave the historical
-incoming 952/11,881 inventory; the three-theorem exactness overlay gives the
-current 952/11,884 inventory, with no documentation gaps.
+incoming 952/11,881 inventory; the three-theorem exactness overlay gave the
+historical 952/11,884 inventory.  The 967/12,001 and 969/12,048 checkpoints are
+also historical; the live inventory is 970/12,051, with no documentation gaps.
 
 `HalfQBinomialRootSimplicity.lean` has no public definitions and exactly one
 public theorem, `halfQBinomial_sum_rootMultiplicity_two_pow`.  Over `ℚ`, for
@@ -1203,7 +1367,7 @@ concurrent merged work account for the rest of the change from the historical
 934/11,709 checkpoint.  This produced the now-historical 943-module/11,787-
 declaration checkpoint, with zero missing module headers and zero missing
 declaration comments.  The later overlays documented below establish the
-authoritative current census of 952 modules and 11,884 explicit public
+historical exactness census of 952 modules and 11,884 explicit public
 declarations, again with zero documentation gaps.
 
 `UnitSeriesBellCoefficients.lean` has no public definitions and exactly sixteen
@@ -1252,17 +1416,20 @@ comparisons in `q0:prop:height` **Exact**, under their natural-power and
 positive-real-exponent hypotheses.  They do not define a recursive global
 height/depth relation on arbitrary nested transmonomials.
 
-`TransseriesScale.lean` has one public structure, one public definition, and
-three public theorems: `IsAsymptoticScale`, `IsPoincareExpansion`,
+`TransseriesScale.lean` has three public definitions/structures and six public
+theorems: `IsAsymptoticScale`, `poincarePartialSum`,
+`IsPoincareExpansion`, `poincarePartialSum_zero`,
+`poincarePartialSum_succ`,
 `IsPoincareExpansion.isLittleO_succ_remainder`,
-`IsPoincareExpansion.tendsto_coeff`, and
+`IsPoincareExpansion.tendsto_coeff`,
+`IsPoincareExpansion.tendsto_coeff_div`, and
 `IsPoincareExpansion.coeff_unique`.  These make the sequence-indexed content
-of `q0:def:scale`, `q0:def:poincare`, and `q0:prop:uniqueness` **Exact** over
-an arbitrary filter and normed field.  The uniqueness theorem requires
-`[l.NeBot]`, and the definition fixes the first-omitted-term remainder
-convention.  It gives neither convergence nor recovery modulo flat functions,
-and it does not package the manuscript's unordered-set or maximal-scale
-notion.
+of `q0:def:scale`, `q0:def:poincare`, `q0:eq:coefficients`, and
+`q0:prop:uniqueness` **Exact** over an arbitrary filter and normed field, with
+scalar scales and vector-valued coefficients/remainders.  The uniqueness
+theorem requires `[l.NeBot]`, and the definition fixes the first-omitted-term
+remainder convention.  It gives neither convergence nor a maximal-scale or
+unordered-set package.
 
 `TransseriesScaleDominance.lean` has one public definition, `plMonomial`, and
 seven public theorems: `tendsto_plMonomial_atTop_zero`,
@@ -1297,20 +1464,18 @@ degree-preserving on nonzero polynomials; at `c=0`, the explicit primitive is
 surjective and raises degree by one.  The theorem is about `K[L]`; it does not
 construct the full Laurent ambient ring `K[t,t⁻¹][L]`.
 
-`TransseriesDifferentialBlock.lean` has no public definitions and exactly nine
-theorems.  Its prior natural-exponent surface is `derivation_pow_t`,
-`derivation_block`, `exists_block_primitive`, `derivation_block_zero`, and
-`exists_block_primitive_resonant`; the incoming integer-exponent extension is
+`TransseriesDifferentialBlock.lean` has no public definitions and exactly
+twelve theorems: `derivation_pow_t`, `derivation_block`,
+`derivation_zpow_block`, `exists_zpow_block_primitive`,
+`existsUnique_zpow_block_primitive`, `exists_block_primitive`,
+`derivation_block_zero`, `exists_block_primitive_resonant`,
 `derivation_val_inv`, `derivation_pow_inv`, `derivation_zpow_t`, and
-`derivation_block_zpow`.  For a commutative algebra with a derivation satisfying
-`d(t)=-t²` and `d(L)=t`, the first five bridge the polynomial operator to
-blocks `t^n p(L)` and supply natural-exponent primitives.  When `t` is the
-value of a unit, the final four prove the inverse-power, integer-power, and
-integer-block derivative laws, making the displayed
-`plt:eq:mot-block-derivative` exact for every integer exponent in that abstract
-model.  The larger `plt:prop:dif-block` remains **Partial**: this module does
-not construct the concrete Laurent ring, and primitive existence is still
-exposed only for natural exponents.
+`derivation_block_zpow`.  These combine the natural-exponent API, generic
+Laurent-block existence/conditional uniqueness, and the abstract-unit
+compatibility wrappers.  The integer derivative formula is **Exact**.  The
+larger `plt:prop:dif-block` remains **Partial** because no concrete Laurent
+ring or faithful evaluation theorem for that model is constructed, and no
+single resonant uniqueness-up-to-constants wrapper is supplied.
 
 `QuadraticCoreCatalan.lean` has three public definitions, `quadHalf`,
 `halfBinom`, and `quadCoef`, and eight public theorems: `catalan_two_step`,
@@ -1333,9 +1498,15 @@ declarations.  Four further theorems extend the existing
 historical 943/11,787 checkpoint, the exact delta is therefore nine modules
 and 94 explicit declarations, giving the historical incoming census of 952
 modules and 11,881 explicit public declarations.  The two OrderDual wrappers
-and Wright-omega analyticity theorem keep 952 modules and give the
-authoritative current census of 11,884 explicit public declarations.  The audit reports zero
-missing module headers and zero missing declaration comments.  The two
+and Wright-omega analyticity theorem keep 952 modules and give the historical
+exactness census of 11,884 explicit public declarations.  The successor
+fifteen-module tranche and five net declarations in existing modules give the
+historical census of 967 modules and 12,001 explicit public declarations.
+The two subsequent leaves and existing-module extensions give the historical
+969/12,048 checkpoint, and `UnitSeriesPowerRecurrence` gives the authoritative
+current census of 970 modules and 12,051 explicit public declarations.  The
+audit reports zero missing module headers and zero missing declaration
+comments.  The two
 `to_additive`-generated Neumann declarations remain usable API outside this
 lexical total, exactly as at the preceding checkpoint.
 
@@ -1395,15 +1566,15 @@ solution of the Lambert equation and the principal-branch corollary.  The full
 `p6:lem:core` remains **Partial** because general `r`, its root determination,
 and a complex `W_k` reading are absent.
 
-`RemainderTransport.lean` has no public definitions and exactly three public
-theorems: `lipschitzOn_of_abs_deriv_le`, `transport_bound_mul`, and
-`transport_bound`.  The derivative-to-Lipschitz bridge and both forms of
-`p0:eq:transport-bound` are **Exact**.  The statements preserve the essential
-asymmetry between a one-sided derivative floor for the core and a two-sided
-derivative bound for the perturbation.  Part (2) of
-`p0:thm:remainder-transport`, the first-order law with an explicit
-second-order error, remains unformalized, so the whole two-part theorem is
-**Partial**.
+`RemainderTransport.lean` has no public definitions and exactly four public
+theorems: `lipschitzOn_of_abs_deriv_le`, `transport_bound_mul`,
+`transport_bound`, and `transport_first_order`.  The derivative-to-Lipschitz
+bridge and both forms of `p0:eq:transport-bound` are **Exact**;
+`transport_first_order` proves the first-order law with an explicit error
+under the weaker Lipschitz condition on the core derivative.  Thus the whole
+`p0:thm:remainder-transport` is **Exact**.  The statements preserve the
+essential asymmetry between a one-sided derivative floor for the core and a
+two-sided derivative bound for the perturbation.
 
 `StaircaseInversion.lean` has no public definitions and exactly seven public
 theorems: `isLeast_ceil`, `staircase_ceil`, `staircase_separation`,
@@ -1417,21 +1588,26 @@ clauses are **Exact**.  The analytic construction of admissible
 interpolations and the Fourier expansion of the periodic layer remain
 unformalized.
 
-`TransseriesFlat.lean` has four public definitions: `IsFlat`,
-`flatSubmodule`, `AbsorbsScale`, and `powScale`.  Its sixteen public theorems
-are `isFlat_zero`, `IsFlat.add`, `IsFlat.neg`, `IsFlat.sub`,
-`IsFlat.const_smul`, `mem_flatSubmodule_iff`,
+`TransseriesFlat.lean` has four public definitions and 22 public theorems.  In
+addition to the scalar compatibility surface `IsFlat`, `flatSubmodule`,
+`AbsorbsScale`, `powScale`, `isFlat_zero`, `IsFlat.add`, `IsFlat.neg`,
+`IsFlat.sub`, `IsFlat.const_smul`, `mem_flatSubmodule_iff`,
 `IsFlat.mul_absorbsScale`, `absorbsScale_const`,
 `IsPoincareExpansion.add_isFlat`,
 `isFlat_sub_of_isPoincareExpansion`,
 `isPoincareExpansion_iff_isFlat_sub`,
 `isPoincareExpansion_zero_iff`, `powScale_eq_rpow`,
 `absorbsScale_of_isBigO_pow`, `isFlat_exp_neg`, and
-`isPoincareExpansion_add_exp_neg`.  They make `q0:def:flat` and all three
-clauses of `q0:prop:invisible` **Exact** for the abstract scale, with
-invisibility sharpened to an iff.  The concrete power-scale theorems prove
-that fixed polynomial growth is an `AbsorbsScale` multiplier and that
-`exp (-x)` is flat; no informal closure assumption is silently substituted.
+`isPoincareExpansion_add_exp_neg`, its vector layer adds
+`isFlat_exp_neg_rpow_atTop`, `IsPoincareExpansion.add_flat`,
+`IsPoincareExpansion.sub_same_coeff_isFlat`,
+`IsPoincareExpansion.iff_sub_isFlat`,
+`IsFlat.smul_of_scale_absorption`, and
+`IsFlat.smul_of_isBigO_inv_pow`.  They make `q0:def:flat` and the valid
+power-scale clauses of `q0:prop:invisible` **Exact**, with same-coefficient
+invisibility sharpened to an iff.  A variable multiplier needs the explicit
+scale-absorption hypothesis; the inverse-power specialization derives it from
+an inverse-power bound and eventual nonvanishing.
 
 `TransseriesHarmonicIncrement.lean` has no public definitions and exactly two
 public theorems: `tendsto_div_atTop_of_tendsto_sub` and
@@ -1452,14 +1628,180 @@ Lambert relation, envelope, and divergence clauses of
 the pointwise statement `AnalyticAt ℝ wrightOmega X` for every real `X`; no
 complex branch or complex-holomorphic Wright-omega claim is made.
 
-Finally, the four declarations added to `TransseriesDifferentialBlock.lean`
-are exactly `derivation_val_inv`, `derivation_pow_inv`,
-`derivation_zpow_t`, and `derivation_block_zpow`.  Together with the five
-previously inventoried natural-exponent theorems, they make the displayed
-integer block law `plt:eq:mot-block-derivative` **Exact** whenever `t` is
-represented by a unit.  They do not construct the concrete Laurent ambient
-ring, and the module's primitive-existence results remain natural-exponent
-statements; the larger `plt:prop:dif-block` therefore remains **Partial**.
+The four compatibility declarations `derivation_val_inv`,
+`derivation_pow_inv`, `derivation_zpow_t`, and `derivation_block_zpow`, plus
+the later `derivation_zpow_block`, `exists_zpow_block_primitive`, and
+`existsUnique_zpow_block_primitive`, bring
+`TransseriesDifferentialBlock.lean` to 0+12.  They make the displayed integer
+block law `plt:eq:mot-block-derivative` **Exact** and provide nonresonant
+Laurent-block existence in an ambient field, with uniqueness under injective
+evaluation at `L`.  They do not construct the concrete Laurent ambient ring
+or prove that evaluation is faithful in that model, and there is no single
+resonant uniqueness-up-to-constants wrapper; the larger
+`plt:prop:dif-block` therefore remains **Partial**.
+
+#### Merged Cayley, Lambert, endpoint, and transseries tranche
+
+The current merged tranche contributes fifteen facade modules, fourteen
+definitions, and 98 theorems, hence 112 explicit public declarations:
+
+- `BackwardErrorExistence.lean` 1+6: `HasSlopeLowerBound`,
+  `hasSlopeLowerBound_of_le_deriv`, `exists_eq_of_residual`,
+  `injOn_of_hasSlopeLowerBound`, `existsUnique_eq_of_residual`,
+  `exists_eq_and_abs_sub_le`, `exists_eq_of_le_deriv`.
+- `CayleyKernel.lean` 1+14: `cayleyKernelCoeff`, `factorial_pos_real`,
+  `cayleyKernelCoeff_eq_factorial`, `cayleyKernelCoeff_zero`,
+  `cayleyKernelCoeff_one`, `cayleyKernelCoeff_two`,
+  `cayleyKernelCoeff_three`, `exp_eq_tsum_pow_div_factorial`,
+  `tsum_exp_shift_one`, `tsum_exp_shift_two`,
+  `cayleyKernelCoeff_mul_pow_eq_sub`, `summable_cayleyKernelTerm`,
+  `tsum_cayleyKernelTerm_mul_sq`, `tsum_cayleyKernelTerm`,
+  `tsum_cayleyKernelTerm_zero`.
+- `CayleyLocalCoordinate.lean` 1+7: `one_sub_mul_exp_le_one`,
+  `cayleyUpsilon`, `cayleyUpsilon_zero`, `cayleyUpsilon_nonneg`,
+  `cayleyUpsilon_eq_half_mul_kernel`, `cayleyUpsilon_eq_half_mul_sq_kernel`,
+  `one_sub_upsilon_div_exp_one_le`, `cayleyTree_eq_one_sub`.
+- `CayleyTreeFunction.lean` 1+8: `cayleyTree`,
+  `principalLambertW_eq_neg_cayleyTree`, `cayleyTree_eq_mul_exp`,
+  `cayleyTree_zero`, `cayleyTree_nonneg`, `cayleyTree_exp_neg_one`,
+  `cayleyTree_strictMonoOn`, `cayleyTree_le_one`, `cayleyTree_unique`.
+- `DivisorTransform.lean` 2+9: `divisorTransform`,
+  `divisorTransform_zero`, `divisorTransform_eq_add_properDivisors`,
+  `divisorTransform_sub`, `two_mul_le_of_mem_properDivisors`,
+  `disturbanceCoeff`, `disturbanceCoeff_eq_divisorTransform`,
+  `disturbanceCoeff_one`, `disturbanceCoeff_congr`,
+  `disturbanceCoeff_prime`, `disturbanceCoeff_nonneg`.
+- `ExpSeriesRecurrence.lean` 1+3: `expCoeff`, `expCoeff_zero`,
+  `succ_mul_expCoeff_succ`, `natCast_mul_expCoeff`.
+- `FabiusEndpointTwoTerm.lean` 0+2: `fabiusReal_le_exp_endpoint`,
+  `log_fabiusReal_le_endpoint`.
+- `LambertCorrectionEquation.lean` 2+9: `corrB`, `corrCoeff`,
+  `corrCoeff_zero`, `corrCoeff_one`, `corrB_zero`, `hasDerivAt_corrB`,
+  `hasDerivAt_corrB_zero`, `deriv_corrB_zero_pos`,
+  `summable_corrExpTerm`, `tsum_corrExpTerm`, `corrB_eq_tsum`.
+- `LambertShiftConcavity.lean` 0+5: `strictConcaveOn_lambertShift`,
+  `strictConcaveOn_lambertShift_Ici_zero`,
+  `abs_sub_lambertShiftInv_sandwich`, `residual_sign_agrees`,
+  `residual_eq_zero_iff`.
+- `LaplaceMomentBoundsSharp.lean` 0+7:
+  `normalizedLaplaceMoment_three_le_sharp`,
+  `normalizedLaplaceMoment_four_le_sharp`,
+  `dyadicHigherLaplaceMoments_le_sharp`,
+  `abs_negativeLaplaceTailError_nat_le_four_div`,
+  `abs_dyadicEndpointLaplaceLogError_add_secondOrder_le_sharp`,
+  `abs_dyadicEndpointLaplaceLogError_add_secondOrder_le_sharp'`,
+  `abs_log_fabius_dyadic_sub_cumulantMain_le_sharp`.
+- `LeastTermIndex.lean` 1+6: `gevreyTerm`, `gevreyTerm_succ`,
+  `gevreyTerm_pos`, `gevreyTerm_succ_lt`, `gevreyTerm_lt_succ`,
+  `gevreyTerm_antitoneOn`, `gevreyTerm_monotoneOn`.
+- `TouchardEulerOperator.lean` 2+8: `touchardPolynomial_zero`,
+  `coeff_touchardPolynomial`,
+  `touchardPolynomial_succ_eq_X_mul_add_derivative`, `eulerOp`,
+  `iterate_eulerOp_exp`, `exp_neg_mul_iterate_eulerOp_exp`,
+  `eval_touchardPolynomial_succ_eq_sum_Icc`, `touchardQ`,
+  `touchardQ_mul`, `touchardQ_one`.
+- `TransseriesBlockClasses.lean` 0+3: `plMonomial_zero_left`,
+  `exists_log_bracket_iff`, `exists_log_bracket_div_iff`.
+- `TransseriesDifferentialClosure.lean` 2+9: `IsDerivationStable`,
+  `isDerivationStable_top`, `isDerivationStable_iInf`,
+  `isDerivationStable_adjoin`, `derivationOrbit`,
+  `subset_derivationOrbit`, `derivation_mem_derivationOrbit`,
+  `isLeast_adjoin_derivationOrbit`,
+  `isLeast_adjoin_singleton_of_derivation_eq_one`,
+  `isLeast_adjoin_pair_of_derivation_log`,
+  `isLeast_adjoin_triple_of_derivation_log`.
+- `TransseriesMonomialUniqueness.lean` 0+2:
+  `tendsto_plMonomial_div_const_mul_one_iff`,
+  `isEquivalent_plMonomial_const_mul_iff`.
+
+The same merge adds five net declarations in existing modules:
+`QBinomialTheoremInfinite.lean` gains
+`norm_finiteQPochhammerIn_pow_sub_one_le_exp_of_norm_le_one`,
+`isBigO_finiteQPochhammerIn_pow_sub_one`,
+`tendsto_gaussianBinomial_add_const_atTop`,
+`isBigO_gaussianBinomial_sub_inv`, and
+`isBigO_gaussianBinomial_add_sub_inv`; `RemainderTransport.lean` gains
+`transport_first_order`; and the shifted-limit ownership move reduces
+`GaussianBinomialFixedColumnRate.lean` from 0+10 to 0+9.  This accounts for
+the exact historical delta from the 952/11,884 checkpoint to
+967/12,001.  This paragraph records that historical tranche completely; the
+later 970/12,051 union is inventoried separately below.
+
+The label crosswalk is deliberately scoped.  `q3:prop:transfer`,
+`plt:prop:mot-fabius-endpoint`, `q1:prop:certificate`,
+`q2:def:touchard`, and `plt:prop:mot-blocks` are **Exact**.  The real
+coefficient and summation content of `p1:def:cayley-kernel` is exact, without
+a complex `Analytic` assertion.  `p1:def:cayley` remains **Partial** only at
+complex-disc analyticity; `p1:thm:omega` remains **Partial** at square-root
+reversion, the Bell master formula, and the Puiseux expansion;
+`p1:lem:R-coefficients`, `p1:lem:gamma-ratio`, `q1:prop:B`,
+`p0:thm:optimal-truncation`,
+`plt:thm:mot-smallest-differential-algebra`, and
+`plt:cor:mot-both-generators-needed` retain the limitations recorded in the
+coverage ledger.  `q1:prop:brackets` is now partial only at the two one-sided
+endpoint derivative values.  The sharp Laplace bounds retain their square-root
+denominators and explicit threshold/constants, with no claim that those
+constants are optimal.
+
+#### Two-order, Stirling, Appell, and formal-power overlay
+
+From the historical 967/12,001 checkpoint, two new modules and 24 declarations
+in existing modules give the historical 969/12,048 checkpoint.  The new leaves
+are `StirlingSeriesCoefficients.lean` 3+12 and
+`WrightOmegaTwoOrders.lean` 0+8.  The existing-module delta is exactly four
+declarations in `TransseriesScale.lean` (`poincarePartialSum`,
+`poincarePartialSum_zero`, `poincarePartialSum_succ`, and
+`IsPoincareExpansion.tendsto_coeff_div`), six in `TransseriesFlat.lean`
+(`isFlat_exp_neg_rpow_atTop`, `IsPoincareExpansion.add_flat`,
+`IsPoincareExpansion.sub_same_coeff_isFlat`,
+`IsPoincareExpansion.iff_sub_isFlat`,
+`IsFlat.smul_of_scale_absorption`, `IsFlat.smul_of_isBigO_inv_pow`), three in
+`TransseriesDifferentialBlock.lean` (`derivation_zpow_block`,
+`exists_zpow_block_primitive`, `existsUnique_zpow_block_primitive`), and the
+following eleven in `AppellSequence.lean`: `Bell.binomialConv_unitSeq`,
+`Bell.binomialConv_four_swap`, `Appell.translate_zero`,
+`Appell.translate_translate`, `Appell.binomialConv_translate`,
+`Appell.translate_injective`, `Appell.translate_neg_translate`,
+`Appell.translate_translate_neg`, `Appell.translate_eq_iff`,
+`Appell.weighted_binomial_inversion_iff`, and
+`Appell.binomialConv_translate_neg_translate`.
+
+`StirlingSeriesCoefficients.lean` defines `stirlingKernelCoeff`,
+`stirlingKernel`, and `stirlingCoeff`; its twelve theorems are
+`coeff_stirlingKernel`, `constantCoeff_stirlingKernel`,
+`stirlingCoeff_zero`, `stirlingCoeff_recurrence`, `bernoulli_three`,
+`bernoulli_four`, `stirlingKernelCoeff_one`, `stirlingKernelCoeff_two`,
+`stirlingKernelCoeff_three`, `stirlingCoeff_one`, `stirlingCoeff_two`, and
+`stirlingCoeff_three`.  The formal definition, recurrence, and displayed
+values in `q2:eq:stirling-cj` are **Exact**; the surrounding analytic
+Fubini-sector expansion is not claimed.
+
+`WrightOmegaTwoOrders.lean` has eight theorems: `wrightOmega_lt_self`,
+`tendsto_log_wrightOmega_div_atTop_zero`,
+`tendsto_wrightOmega_div_atTop_one`,
+`tendsto_log_wrightOmega_sub_log_atTop_zero`,
+`tendsto_log_wrightOmega_div_log_atTop_one`,
+`self_sub_wrightOmega_isEquivalent_log`,
+`wrightOmega_sub_self_isEquivalent_neg_log`, and
+`wrightOmega_residual_isEquivalent`.  The two concluding real equivalences of
+`plt:prop:mot-two-orders` are **Exact** at `atTop`; the proposition remains
+**Partial** at its four-term expansion and explicit quantitative envelope.
+
+The Appell extension makes `thm:merged-weighted-binomial-translation`
+**Exact** over a commutative semiring, with additive left cancellation needed
+only for injectivity, and `cor:merged-weighted-binomial-inversion` **Exact**
+over a commutative ring.  These are finite coefficient identities, not
+analytic EGF claims.
+
+Finally, `UnitSeriesPowerRecurrence.lean` is 0+3:
+`coeff_recurrence_of_mul_derivative_eq`,
+`mul_derivative_fallingSeries_subst_sub_one`, and
+`coeff_fallingSeries_subst_sub_one_recurrence`.  The first is denominator-free
+over any commutative ring and does not assume `F(0)=1`; the latter two work
+over a commutative rational algebra with `F(0)=1`.  They make all of
+`alg:merged-exp-log-power` **Exact**, with no analytic power or branch claim.
+The coefficient-calculus register is now 59 Lean, 33 Partial, and 111 None,
+203 rows total.  This leaf gives the live 970/12,051 census.
 
 The one-definition/eight-theorem
 `RvachevSuperconvergentSynthesis.lean` leaf contributes
@@ -1532,8 +1874,8 @@ dimension-dominant real bounds for `Q > 1`, with `k ≤ n` and all nonzero and
 order hypotheses explicit.  The module reuses the stronger ordered-field
 `finiteQPochhammerIn_self_pos` theorem from `GeneralQConditionNumber.lean`
 rather than exporting a duplicate.
-The rigorous forward q-monograph ledger is 177 Exact, 82 Partial, 15 None,
-and 8 interface rows; its source concordance is 99 Lean, 379 human, 60 N/A,
+The rigorous forward q-monograph ledger is 181 Exact, 79 Partial, 14 None,
+and 8 interface rows; its source concordance is 103 Lean, 375 human, 60 N/A,
 and 9 conjecture rows, and the concordance extractor passes.
 `prop:gaussian-bound` is Exact.  `thm:q-lucas` remains
 Partial because the proved evaluated primitive-root identity is weaker than
@@ -2176,12 +2518,25 @@ also listed exhaustively above.  The
 `JacobiTripleProduct.lean` 2-definition/25-theorem tranche contains the finite triple-product
 polynomial and field identities, the bilateral Jacobi `HasSum` forms, and the
 pentagonal and paired-pentagonal `HasSum` corollaries.  The
-`QBinomialTheoremInfinite.lean` 1-definition/22-theorem tranche contains the real comparison and
-norm bounds, fixed-column Gaussian limit, Euler product, analytic q-binomial,
-and reciprocal Euler `HasSum` results.  The subsequent
-`GaussianBinomialFixedColumnRate.lean` 0+10 tranche supplies the explicit
-finite-product defect, nonasymptotic fixed/shifted errors, shifted limit, and
-relative/additive geometric-rate results inventoried above.  `QPascalSummation.lean` is 0+4:
+`QBinomialTheoremInfinite.lean` 1-definition/27-theorem surface contains the
+real comparison and norm bounds, fixed-column Gaussian limits and rates,
+Euler product, analytic q-binomial, and reciprocal Euler `HasSum` results.  Its
+five added names are
+`norm_finiteQPochhammerIn_pow_sub_one_le_exp_of_norm_le_one`,
+`isBigO_finiteQPochhammerIn_pow_sub_one`,
+`tendsto_gaussianBinomial_add_const_atTop`,
+`isBigO_gaussianBinomial_sub_inv`, and
+`isBigO_gaussianBinomial_add_sub_inv`.  The companion
+`GaussianBinomialFixedColumnRate.lean` surface is now 0+9 after that ownership
+transfer: `norm_finiteQPochhammerIn_pow_sub_one_le_exp'`,
+`norm_finiteQPochhammerIn_pow_sub_one_le`,
+`norm_finiteQPochhammerIn_self_mul_gaussianBinomial_sub_one_le`,
+`norm_gaussianBinomial_sub_inv_finiteQPochhammerIn_le`,
+`norm_gaussianBinomial_add_sub_inv_finiteQPochhammerIn_le`,
+`gaussianBinomial_fixedColumn_relativeError_isBigO`,
+`gaussianBinomial_shifted_fixedColumn_relativeError_isBigO`,
+`gaussianBinomial_fixedColumn_error_isBigO`, and
+`gaussianBinomial_shifted_fixedColumn_error_isBigO`.  `QPascalSummation.lean` is 0+4:
 `sum_gaussianBinomial_succ_mul`, `sum_gaussianBinomial_succ_mul'`,
 `Commute.gaussianBinomial_left`, and `Commute.gaussianBinomial_right`.
 `QuantumBinomial.lean` is 0+2, namely `quantumPlane_mul_pow` and
@@ -2493,7 +2848,7 @@ publication receipts below supersede them where a rebuilt root is listed.
   overfull paragraph at source lines 590–598 is readable and unclipped; the
   final log has zero underfull diagnostics.
 
-**Current `b899` synchronized publication receipts (2026-09-04).** Each pass
+**Historical `b899` synchronized publication receipts (2026-09-04).** Each pass
 tuple below is `pages/bytes`.  All ten roots were frozen and built in exactly
 three serial halt-on-error passes from absent sidecars.
 
@@ -2580,8 +2935,9 @@ Lambert horizontal box (0.83 pt), and one canonical-frontier horizontal box
 (9.43108 pt), all nonblocking. The final aggregate TeX closure contains 76
 files / 140,223 lines / 6,439,569 bytes, with direct aggregate digest
 `ae8690ad8d160055cbae36eff96d858f87572d171e7aacf7540d67543998af21`.
-All ten current source/PDF rows are synchronized; earlier receipts below remain
-historical provenance for their named checkpoints.
+At `b899`, all ten source/PDF rows were synchronized.  They are now historical
+provenance for their named checkpoints because the merged Lean sources have
+moved beyond them.
 
 The B2--B11 publication roots retain exact synchronized or historical receipts
 at their named checkpoints. Their pass, byte-progression, font, and common-gate records are kept in
@@ -2663,20 +3019,20 @@ the convention `d(0)=1`, with no zero-input modulus conclusion.  The two
 named `Primrec` theorems close the recursive-denominator clause without
 asserting an input-bit running-time bound.
 
-The retained comb-interpolation synthesis PDF is a validated 158-page A4
+The retained comb-interpolation synthesis PDF is a validated 160-page A4
 historical receipt: the current source includes a post-render update to its
 additive-dyadic chapter, so a fresh parity build remains pending.  The rebuilt
 Integration-and-Transform master retains a historical 377-page PDF.  The canonical
 q-series synthesis is a validated 389-page historical receipt synchronized to
 the immediately preceding source checkpoint.  The current source adds the
 twelve-declaration terminating q-Chu/reversal closure, so final parity is
-again pending.  The retained 183-page primary, 130-page walkthrough, 257-page
+again pending.  The retained 210-page primary, 165-page walkthrough, 273-page
 canonical frontier, 301-page Representation Frontiers, 41-page New Frontiers,
 and 88-page notation-catalogue artifacts likewise predate their current merged
 sources.  Their package notices treat those PDFs as historical validation
 receipts, not parity claims, until fresh uninterrupted three-pass builds
 complete.  The inverse-computability receipt likewise still reflects the
-historical 675/8,909 census and requires refresh against the live 952/11,884
+historical 675/8,909 census and requires refresh against the live 970/12,051
 inventory.  The canonical inverse-theory publication retains a 134-page
 artifact synchronized at its latest-main source checkpoint; the merged
 effective-inversion and superconvergent-synthesis tranches make current parity

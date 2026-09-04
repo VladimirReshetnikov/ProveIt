@@ -8,8 +8,8 @@ pre-retirement snapshot of all five source packages is commit
 `9560165ae2eb33590404a090ab26bd3ca715f32f`, recorded in
 `audit/MERGE_SOURCE_REVISION`; the completed `source_concordance.csv` gives a
 reviewed disposition for all 547 source result environments. This immutable
-merger ledger's current canonical-status projection is 99 Lean-proved rows,
-379 human-proved frontier result rows, 60 not-applicable rows, and 9
+merger ledger's current canonical-status projection is 103 Lean-proved rows,
+375 human-proved frontier result rows, 60 not-applicable rows, and 9
 conjecture rows.
 That projection is the semantic union of thirteen incoming Lean overrides
 (`cor:geometric-prouhet-affine`, `cor:halfbase-root-locus`,
@@ -23,6 +23,15 @@ overrides (`cor:qbinom-classical`, `cor:qgamma-theta`, `prop:logder-finite`,
 `thm:q-leibniz`, and `thm:quantum-binomial`). It changes no immutable source
 field. In particular, it does not promote `thm:q-lucas`, whose polynomial
 congruence still lacks a Lean proof.
+
+The 2026-09-04 merge-regression check restored the seven missing generator
+entries from that local override set; the classical-limit entry was already
+present. The retained CSV needed no changes. Direct counting gives the
+103/375/60/9 projection above, while the 28 forward chapter subtotals and all
+282 result rows give 181/79/14/8. Their stale grand total and narrative were
+corrected without changing any result-level status. The source-only canonical
+validator passes; this repair performs no Lean or PDF build.
+
 Directory names
 in the table are historical paths in that pinned snapshot, not live package
 paths.
@@ -152,7 +161,8 @@ The current source incorporates exhaustive crosswalks for
 `QPochhammerEntire` (zero definitions and five legacy compatibility theorems),
 `QPochhammerInfinite` (one definition and twenty-nine theorems),
 `QPochhammerDissection` (zero definitions and two theorems),
-`GaussianBinomialFixedColumnRate` (zero definitions and ten theorems),
+`QBinomialTheoremInfinite` (one definition and twenty-seven theorems),
+`GaussianBinomialFixedColumnRate` (zero definitions and eight theorems),
 `GaussianBinomialGreaterOneAsymptotics` (zero definitions and two theorems),
 `GaussianBinomialPalindromic` (zero definitions and fourteen theorems),
 `GaussianBinomialPolynomialStructure` (zero definitions and five theorems),
@@ -221,13 +231,19 @@ declarations beyond the historical reciprocity checkpoint 931/11,685. The
 incoming union adds one module and fourteen public declarations: the new
 zero-definition/six-theorem `ProuhetBaseTwoBridge.lean` module, one theorem
 added to `DyadicBoundaryIdentity.lean`, and seven theorems added to
-`ThueMorseNewmanSelfSimilarity.lean`. This makes the live facade audit 934
-modules and 11,709 public declarations. The historical 933/11,695 corpus-wide
+`ThueMorseNewmanSelfSimilarity.lean`. This made 934 modules and 11,709 public
+declarations an explicitly historical post-Prouhet checkpoint. Subsequent
+source-only transseries/Catalan and Thue--Morse additions made 943/11,791 the
+next historical checkpoint. The finalized one-definition/eleven-theorem
+`TransseriesFlat.lean` module and three integer-zpow theorems in
+`TransseriesDifferentialBlock.lean` make the live facade audit 944 modules and
+11,806 public declarations. The historical 933/11,695 corpus-wide
 totals include the q--Chu, Richardson,
 geometric-law barycenter, Lagrange--Rvachev matrix, arbitrary-space geometric
 realization, regular-central-sum, Lambert branch-gap Bernoulli, affine
 Prouhet, and complex moment-product follow-ups; they do not make the retained
-historical artifact current. Ten declarations come from the sibling
+historical 391-page artifact current. The accepted 401-page receipt above is
+the current publication. Ten declarations come from the sibling
 `FabiusFunction.GeometricRichardsonGenerating` source-only module; three more
 are the explicit Gaussian second-derivative and division-free moment
 identities. The sibling `LambertWBranchGapBernoulli.lean` leaf contributes
@@ -248,9 +264,10 @@ clause, Guide label `eq:pair-Bernoulli-general`, and canonical-removable
 reading of `eq:bernoulli-gen` are Exact. Here `complexExpm1Div 0 = 1` and it
 equals `(exp z - 1) / z` away from zero; this is not the literal totalized
 quotient at zero and asserts no holomorphy. Higher/full Puiseux and logarithmic
-expansions remain open. None of these sibling source-only changes alters this
-monograph's forward-status counts or retained historical artifact, and no
-render parity is claimed. The
+expansions remain open. None of these sibling changes alters this monograph's
+forward-status counts. The Lambert material belongs to its separate
+publication; the accepted 401-page receipt covers the current q-series source.
+The
 one-definition/seventeen-theorem `GeometricUniformRealization.lean` leaf
 proves the missing arbitrary-space bridge: `iIndepFun` unit-interval
 coordinates with uniform marginal laws have joint law `uniformProduct`, so
@@ -264,12 +281,15 @@ complex lattice `alpha = -1 - 2*j + 2*pi*I*m/log q`, not merely its real
 negative-odd slice. Even negative integral parameters remain admitted, where
 the field-totalized `qGammaC` quotient is zero in agreement with the product
 side; no holomorphy at a pole is claimed. The
-zero-definition/ten-theorem `GaussianBinomialFixedColumnRate.lean` leaf gives
-two generic finite-product defect bounds, the denominator-free relative
-Gaussian estimate, fixed and shifted nonasymptotic additive errors, the
-shifted `Tendsto`, and all four fixed/shifted relative/additive Big-O wrappers.
-It works over the stated generic multiplicative-norm ring or normed-field
-interfaces and includes `q = 0`; the older unshifted limit remains in
+zero-definition/eight-theorem `GaussianBinomialFixedColumnRate.lean` leaf gives
+the elementary finite-product defect bound, the denominator-free relative
+Gaussian estimate, fixed and shifted nonasymptotic additive errors, and all
+four fixed/shifted relative/additive Big-O wrappers. The closure reuses
+`norm_finiteQPochhammerIn_pow_sub_one_le_exp` and
+`tendsto_gaussianBinomial_add_atTop` from the one-definition,
+twenty-seven-theorem `QBinomialTheoremInfinite.lean` surface. It works over the
+stated generic multiplicative-norm ring or normed-field interfaces and includes
+`q = 0`; the older unshifted limit also remains in
 `QBinomialTheoremInfinite.lean`.
 
 The current q-series increment starts with the one-definition/eight-theorem
@@ -362,7 +382,12 @@ public declarations, making the historical dyadic/finite-prefix census
 declarations: the new zero-definition/six-theorem
 `ProuhetBaseTwoBridge.lean` module, one theorem added to
 `DyadicBoundaryIdentity.lean`, and seven theorems added to
-`ThueMorseNewmanSelfSimilarity.lean`.  This makes the live census 934/11,709.
+`ThueMorseNewmanSelfSimilarity.lean`.  This made 934/11,709 an explicitly
+historical post-Prouhet checkpoint.  Subsequent source-only
+transseries/Catalan and Thue--Morse additions made 943/11,791 the next
+historical checkpoint.  The finalized one-definition/eleven-theorem
+`TransseriesFlat.lean` module and three integer-zpow theorems in
+`TransseriesDifferentialBlock.lean` make the live census 944/11,806.
 The facade also contains the zero-definition/two-theorem
 `GaussianBinomialGreaterOneAsymptotics.lean` leaf; its exhaustive declarations
 are `gaussianBinomial_gt_one_fixedColumn_relativeError_isBigO` and
@@ -407,8 +432,13 @@ declarations, making the historical dyadic/finite-prefix semantic-union census
 declarations: the new zero-definition/six-theorem
 `ProuhetBaseTwoBridge.lean` module, one theorem added to
 `DyadicBoundaryIdentity.lean`, and seven theorems added to
-`ThueMorseNewmanSelfSimilarity.lean`.  This makes the current semantic-union
-census 934/11,709.  The existing `ProbabilityLaplaceMoments.lean` module now also
+`ThueMorseNewmanSelfSimilarity.lean`.  This made the semantic-union census
+checkpoint 934/11,709 explicitly historical.  Subsequent source-only
+transseries/Catalan and Thue--Morse additions made 943/11,791 the next
+historical checkpoint.  The finalized one-definition/eleven-theorem
+`TransseriesFlat.lean` module and three integer-zpow theorems in
+`TransseriesDifferentialBlock.lean` make the live semantic-union census
+944/11,806.  The existing `ProbabilityLaplaceMoments.lean` module now also
 contains exactly the two new declarations
 `weightedSumDistribution_real_Ici_eq_rvachevUp_of_nonneg` and
 `integral_pow_weightedSumDistribution_eq_mul_intervalIntegral_rvachevUp`.
@@ -417,14 +447,15 @@ replace its strict-Ioi survival event by the closed tail `Ici`; the second is
 the exact positive-natural-degree layer-cake specialization over the full
 law.  Composed with the already stronger global reflection and nonnegative
 tail identities, they make `prop:up-tail` and `cor:up-moments` Exact.
-Neither these source-only additions nor the preceding Lambert addition changes
-the retained historical artifact, and no render parity is claimed. The
+Neither these additions nor the preceding Lambert addition changes the old
+391-page historical artifact. The accepted 401-page receipt renders the
+current q-series source; Lambert parity is recorded by the Lambert package. The
 forward status inventory covers 282 labelled results:
-182 Exact / 78 Partial / 14 None / 8 N/A; the relevant
+181 Exact / 79 Partial / 14 None / 8 N/A; the relevant
 Dyadic Gaussian--Thue--Morse chapter is 13/43/0/0, and the 191-result pre-Fabius core is
 36 / 29 / 123 / 3.
 The five-publication concordance
-has 95 Lean-proved, 383 human-proved frontier, 60 not-applicable, and 9
+has 103 Lean-proved, 375 human-proved frontier, 60 not-applicable, and 9
 conjecture rows. The unrelated `cor:qbinom-inversion-law` remains Partial.
 Both the retained `thm:fixed-column-limit` source row and the
 older `prop:fixed-k-limit` row redirected to it now inherit the exact canonical
